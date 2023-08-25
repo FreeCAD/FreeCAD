@@ -198,7 +198,7 @@ double UnitsApi::toDouble(PyObject *ArgObj, const Base::Unit &u)
 
 Quantity UnitsApi::toQuantity(PyObject *ArgObj, const Base::Unit &u)
 {
-    double d;
+    double d{};
     if (PyUnicode_Check(ArgObj)) {
         QString str = QString::fromUtf8(PyUnicode_AsUTF8(ArgObj));
         // Parse the string

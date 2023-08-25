@@ -564,15 +564,15 @@ protected:
     /// this is the mode switch, all the different viewing modes are collected here
     SoSwitch    *pcModeSwitch;
     /// The root separator for annotations
-    SoSeparator *pcAnnotation;
-    ViewProviderPy* pyViewObject;
+    SoSeparator *pcAnnotation{nullptr};
+    ViewProviderPy* pyViewObject{nullptr};
     std::string overrideMode;
     std::bitset<32> StatusBits;
 
 private:
-    int _iActualMode;
-    int _iEditMode;
-    int viewOverrideMode;
+    int _iActualMode{-1};
+    int _iEditMode{-1};
+    int viewOverrideMode{-1};
     std::string _sCurrentMode;
     std::map<std::string, int> _sDisplayMaskModes;
 };

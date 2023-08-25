@@ -78,7 +78,7 @@ int QuantityPy::PyInit(PyObject* args, PyObject* /*kwd*/)
     Quantity *self = getQuantityPtr();
 
     PyErr_Clear(); // set by PyArg_ParseTuple()
-    PyObject *object;
+    PyObject *object{};
     if (PyArg_ParseTuple(args,"O!",&(Base::QuantityPy::Type), &object)) {
         *self = *(static_cast<Base::QuantityPy*>(object)->getQuantityPtr());
         return 0;
@@ -121,7 +121,7 @@ int QuantityPy::PyInit(PyObject* args, PyObject* /*kwd*/)
     }
 
     PyErr_Clear(); // set by PyArg_ParseTuple()
-    char* string;
+    char* string{};
     if (PyArg_ParseTuple(args,"et", "utf-8", &string)) {
         QString qstr = QString::fromUtf8(string);
         PyMem_Free(string);
@@ -158,7 +158,7 @@ int QuantityPy::PyInit(PyObject* args, PyObject* /*kwd*/)
 PyObject* QuantityPy::getUserPreferred(PyObject* /*args*/)
 {
     QString uus;
-    double factor;
+    double factor{};
     Py::Tuple res(3);
 
     QString uss = getQuantityPtr()->getUserString(factor,uus);
@@ -177,14 +177,14 @@ PyObject* QuantityPy::getValueAs(PyObject *args)
 
     // first try Quantity
     if (!quant.isValid()) {
-        PyObject *object;
+        PyObject *object{};
         if (PyArg_ParseTuple(args,"O!",&(Base::QuantityPy::Type), &object)) {
             quant = * static_cast<Base::QuantityPy*>(object)->getQuantityPtr();
         }
     }
 
     if (!quant.isValid()) {
-        PyObject *object;
+        PyObject *object{};
         PyErr_Clear();
         if (PyArg_ParseTuple(args,"O!",&(Base::UnitPy::Type), &object)) {
             quant.setUnit(*static_cast<Base::UnitPy*>(object)->getUnitPtr());
@@ -193,8 +193,8 @@ PyObject* QuantityPy::getValueAs(PyObject *args)
     }
 
     if (!quant.isValid()) {
-        PyObject *object;
-        double value;
+        PyObject *object{};
+        double value{};
         PyErr_Clear();
         if (PyArg_ParseTuple(args,"dO!",&value, &(Base::UnitPy::Type), &object)) {
             quant.setUnit(*static_cast<Base::UnitPy*>(object)->getUnitPtr());
@@ -229,7 +229,7 @@ PyObject* QuantityPy::getValueAs(PyObject *args)
 
     if (!quant.isValid()) {
         PyErr_Clear();
-        char* string;
+        char* string{};
         if (PyArg_ParseTuple(args,"et", "utf-8", &string)) {
             QString qstr = QString::fromUtf8(string);
             PyMem_Free(string);
@@ -411,7 +411,7 @@ PyObject * QuantityPy::number_remainder_handler (PyObject *self, PyObject *other
         return nullptr;
     }
 
-    double d1, d2;
+    double d1{}, d2{};
     Base::Quantity *a = static_cast<QuantityPy*>(self) ->getQuantityPtr();
     d1 = a->getValue();
 
@@ -635,7 +635,7 @@ void  QuantityPy::setFormat(Py::Dict arg)
             if (fmtstr.size() != 1)
                 throw Py::ValueError("Invalid format character");
 
-            bool ok;
+            bool ok = false;
             fmt.format = Base::QuantityFormat::toFormat(fmtstr[0], &ok);
             if (!ok)
                 throw Py::ValueError("Invalid format character");

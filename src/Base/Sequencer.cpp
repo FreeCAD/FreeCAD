@@ -78,7 +78,6 @@ SequencerBase& SequencerBase::Instance ()
 }
 
 SequencerBase::SequencerBase()
-  : nProgress(0), nTotalSteps(0), _bLocked(false), _bCanceled(false), _nLastPercentage(-1)
 {
     SequencerP::appendInstance(this);
 }

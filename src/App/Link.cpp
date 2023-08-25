@@ -148,7 +148,6 @@ void LinkParams::removeCopyOnChangeApplyToAll() {
 EXTENSION_PROPERTY_SOURCE(App::LinkBaseExtension, App::DocumentObjectExtension)
 
 LinkBaseExtension::LinkBaseExtension()
-    :enableLabelCache(false),hasOldSubElement(false),hasCopyOnChange(true)
 {
     initExtensionType(LinkBaseExtension::getExtensionClassTypeId());
     EXTENSION_ADD_PROPERTY_TYPE(_LinkTouched, (false), " Link",

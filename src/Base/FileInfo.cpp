@@ -248,7 +248,7 @@ std::string FileInfo::fileName() const
 
 std::string FileInfo::dirPath() const
 {
-    std::size_t last_pos;
+    std::size_t last_pos{};
     std::string retval;
     last_pos = FileName.find_last_of('/');
     if (last_pos != std::string::npos) {
@@ -411,7 +411,7 @@ bool FileInfo::isDir() const
         return ((st.st_mode & _S_IFDIR) != 0);
 
 #elif defined (FC_OS_LINUX) || defined(FC_OS_CYGWIN) || defined(FC_OS_MACOSX) || defined(FC_OS_BSD)
-        struct stat st;
+        struct stat st{};
         if (stat(FileName.c_str(), &st) != 0) {
             return false;
         }
@@ -447,7 +447,7 @@ TimeInfo FileInfo::lastModified() const
         }
 
 #elif defined (FC_OS_LINUX) || defined(FC_OS_CYGWIN) || defined(FC_OS_MACOSX) || defined(FC_OS_BSD)
-        struct stat st;
+        struct stat st{};
         if (stat(FileName.c_str(), &st) == 0) {
             ti.setTime_t(st.st_mtime);
         }
@@ -470,7 +470,7 @@ TimeInfo FileInfo::lastRead() const
         }
 
 #elif defined (FC_OS_LINUX) || defined(FC_OS_CYGWIN) || defined(FC_OS_MACOSX) || defined(FC_OS_BSD)
-        struct stat st;
+        struct stat st{};
         if (stat(FileName.c_str(), &st) == 0) {
             ti.setTime_t(st.st_atime);
         }
@@ -494,7 +494,7 @@ bool FileInfo::deleteFile() const
 
 bool FileInfo::renameFile(const char* NewName)
 {
-    bool res;
+    bool res{};
 #if defined (FC_OS_WIN32)
     std::wstring oldname = toStdWString();
     std::wstring newname = ConvertToWideString(NewName);

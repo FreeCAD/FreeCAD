@@ -114,7 +114,7 @@ PyObject* PersistencePy::dumpContent(PyObject *args, PyObject *kwds)
 
 PyObject* PersistencePy::restoreContent(PyObject *args)
 {
-    PyObject* buffer;
+    PyObject* buffer = nullptr;
     if( !PyArg_ParseTuple(args, "O", &buffer) )
         return nullptr;
 

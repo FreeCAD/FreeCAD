@@ -661,8 +661,7 @@ void SoFCCSysDragger::initClass()
 }
 
 SoFCCSysDragger::SoFCCSysDragger()
-    :axisScale(1.0f,1.0f,1.0f)
-    ,scaleInited(false)
+    : axisScale(1.0f,1.0f,1.0f)
 {
     SO_KIT_CONSTRUCTOR(SoFCCSysDragger);
 

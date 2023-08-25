@@ -1968,15 +1968,7 @@ void ObjectIdentifier::resolveAmbiguity(ResolveResults &result) {
  */
 
 ObjectIdentifier::ResolveResults::ResolveResults(const ObjectIdentifier &oi)
-    : propertyIndex(0)
-    , resolvedDocument(nullptr)
-    , resolvedDocumentName()
-    , resolvedDocumentObject(nullptr)
-    , resolvedDocumentObjectName()
-    , resolvedSubObject(nullptr)
-    , resolvedProperty(nullptr)
-    , propertyName()
-    , propertyType(PseudoNone)
+    : propertyType(PseudoNone)
 {
     oi.resolve(*this);
 }

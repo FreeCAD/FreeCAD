@@ -342,12 +342,12 @@ inline std::size_t ColorField::getColorIndex (float fVal) const
 
 struct AppExport ColorGradientProfile
 {
-    ColorBarStyle tStyle;
-    float fMin;
-    float fMax;
-    std::size_t ctColors;
-    std::size_t tColorModel;
-    VisibilityFlags visibility;
+    ColorBarStyle tStyle{ColorBarStyle::FLOW};
+    float fMin{};
+    float fMax{};
+    std::size_t ctColors{};
+    std::size_t tColorModel{};
+    VisibilityFlags visibility{Visibility::Default};
 
     ColorGradientProfile();
     ColorGradientProfile (const ColorGradientProfile &) = default;
@@ -484,7 +484,7 @@ protected:
     std::deque<Color> colorFields;
     std::deque<std::string> names;
     std::deque<float> values;
-    bool outsideGrayed;
+    bool outsideGrayed{false};
 };
 
 inline Color ColorLegend::getColor (float fVal) const

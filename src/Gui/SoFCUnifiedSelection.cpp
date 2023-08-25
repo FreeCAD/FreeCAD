@@ -102,7 +102,7 @@ SO_NODE_SOURCE(SoFCUnifiedSelection)
 /*!
   Constructor.
 */
-SoFCUnifiedSelection::SoFCUnifiedSelection() : pcDocument(nullptr)
+SoFCUnifiedSelection::SoFCUnifiedSelection()
 {
     SO_NODE_CONSTRUCTOR(SoFCUnifiedSelection);
 
@@ -794,7 +794,7 @@ void SoHighlightElementAction::initClass()
     SO_ACTION_ADD_METHOD(SoPointSet,callDoAction);
 }
 
-SoHighlightElementAction::SoHighlightElementAction () : _highlight(false), _det(nullptr)
+SoHighlightElementAction::SoHighlightElementAction ()
 {
     SO_ACTION_CONSTRUCTOR(SoHighlightElementAction);
 }
@@ -863,7 +863,7 @@ void SoSelectionElementAction::initClass()
 }
 
 SoSelectionElementAction::SoSelectionElementAction (Type t, bool secondary)
-    : _type(t), _det(nullptr), _secondary(secondary)
+    : _type(t), _secondary(secondary)
 {
     SO_ACTION_CONSTRUCTOR(SoSelectionElementAction);
 }
@@ -933,7 +933,7 @@ void SoVRMLAction::initClass()
     SO_ACTION_ADD_METHOD(SoPointSet,callDoAction);
 }
 
-SoVRMLAction::SoVRMLAction() : overrideMode(true)
+SoVRMLAction::SoVRMLAction()
 {
     SO_ACTION_CONSTRUCTOR(SoVRMLAction);
 }

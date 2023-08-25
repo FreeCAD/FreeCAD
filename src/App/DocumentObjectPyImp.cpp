@@ -471,11 +471,11 @@ PyObject* DocumentObjectPy::getSubObject(PyObject *args, PyObject *keywds)
     bool transform = Base::asBoolean(doTransform);
 
     struct SubInfo {
-        App::DocumentObject *sobj;
+        App::DocumentObject *sobj{nullptr};
         Py::Object obj;
         Py::Object pyObj;
         Base::Matrix4D mat;
-        explicit SubInfo(const Base::Matrix4D &mat) : sobj(nullptr), mat(mat){}
+        explicit SubInfo(const Base::Matrix4D &mat) : mat(mat){}
     };
 
     Base::Matrix4D mat;

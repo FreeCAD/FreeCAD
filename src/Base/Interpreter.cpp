@@ -48,8 +48,10 @@ PyException::PyException(const Py::Object &obj) {
     // WARNING: we are assuming that python type object will never be
     // destroyed, so we don't keep reference here to save book-keeping in
     // our copy constructor and destructor
+    // NOLINTBEGIN
     _exceptionType = reinterpret_cast<PyObject*>(obj.ptr()->ob_type);
     _errorType = obj.ptr()->ob_type->tp_name;
+    // NOLINTEND
 }
 
 PyException::PyException()
@@ -64,6 +66,7 @@ PyException::PyException()
     _sErrMsg = error;
     _errorType = prefix;
 
+    // NOLINTNEXTLINE
     _exceptionType = PP_last_exception_type;
 
     if (PP_last_exception_type) {
@@ -151,7 +154,7 @@ SystemExitException::SystemExitException()
 
     long int errCode = 1;
     std::string errMsg  = "System exit";
-    PyObject  *type, *value, *traceback, *code;
+    PyObject  *type{}, *value{}, *traceback{}, *code{};
 
     PyGILStateLocker locker;
     PyErr_Fetch(&type, &value, &traceback);
@@ -181,6 +184,7 @@ SystemExitException::SystemExitException()
 // ---------------------------------------------------------
 
 // Fixes #0000831: python print causes File descriptor error on windows
+// NOLINTNEXTLINE
 class PythonStdOutput : public Py::PythonExtension<PythonStdOutput>
 {
 public:
@@ -217,7 +221,7 @@ InterpreterSingleton::~InterpreterSingleton() = default;
 
 std::string InterpreterSingleton::runString(const char *sCmd)
 {
-    PyObject *module, *dict, *presult;          /* "exec code in d, d" */
+    PyObject *module{}, *dict{}, *presult{};          /* "exec code in d, d" */
 
     PyGILStateLocker locker;
     module = PP_Load_Module("__main__");         /* get module, init python */
@@ -293,7 +297,7 @@ std::string InterpreterSingleton::runStringWithKey(const char *psCmd, const char
 
 Py::Object InterpreterSingleton::runStringObject(const char *sCmd)
 {
-    PyObject *module, *dict, *presult;          /* "exec code in d, d" */
+    PyObject *module{}, *dict{}, *presult{};          /* "exec code in d, d" */
 
     PyGILStateLocker locker;
     module = PP_Load_Module("__main__");         /* get module, init python */
@@ -318,13 +322,13 @@ Py::Object InterpreterSingleton::runStringObject(const char *sCmd)
 void InterpreterSingleton::systemExit()
 {
     /* This code is taken from the original Python code */
-    PyObject *exception, *value, *tb;
+    PyObject *exception{}, *value{}, *tb{};
     int exitcode = 0;
 
     PyErr_Fetch(&exception, &value, &tb);
     fflush(stdout);
     if (!value || value == Py_None)
-        goto done;
+        goto done; // NOLINT
     if (PyExceptionInstance_Check(value)) {
         /* The error code should be in the `code' attribute. */
         PyObject *code = PyObject_GetAttrString(value, "code");
@@ -332,7 +336,7 @@ void InterpreterSingleton::systemExit()
             Py_DECREF(value);
             value = code;
             if (value == Py_None)
-                goto done;
+                goto done; // NOLINT
         }
         /* If we failed to dig out the 'code' attribute,
            just let the else clause below print the error. */
@@ -359,7 +363,7 @@ done:
 
 void InterpreterSingleton::runInteractiveString(const char *sCmd)
 {
-    PyObject *module, *dict, *presult;          /* "exec code in d, d" */
+    PyObject *module{}, *dict{}, *presult{};          /* "exec code in d, d" */
 
     PyGILStateLocker locker;
     module = PP_Load_Module("__main__");         /* get module, init python */
@@ -376,7 +380,7 @@ void InterpreterSingleton::runInteractiveString(const char *sCmd)
         }
         /* get latest python exception information */
         /* and print the error to the error output */
-        PyObject *errobj, *errdata, *errtraceback;
+        PyObject *errobj{}, *errdata{}, *errtraceback{};
         PyErr_Fetch(&errobj, &errdata, &errtraceback);
 
         RuntimeError exc(""); // do not use PyException since this clears the error indicator
@@ -403,7 +407,7 @@ void InterpreterSingleton::runFile(const char*pxFileName, bool local)
 #endif
     if (fp) {
         PyGILStateLocker locker;
-        PyObject *module, *dict;
+        PyObject *module{}, *dict{};
         module = PyImport_AddModule("__main__");
         dict = PyModule_GetDict(module);
         if (local) {
@@ -448,6 +452,8 @@ void InterpreterSingleton::runFile(const char*pxFileName, bool local)
 
 bool InterpreterSingleton::loadModule(const char* psModName)
 {
+    // buffer acrobatics
+    //PyBuf ModName(psModName);
     PyObject *module;
 
     PyGILStateLocker locker;
@@ -683,7 +689,7 @@ void InterpreterSingleton::runMethodVoid(PyObject *pobject, const char *method)
 
 PyObject* InterpreterSingleton::runMethodObject(PyObject *pobject, const char *method)
 {
-    PyObject *pcO;
+    PyObject *pcO{};
 
     PyGILStateLocker locker;
     if (PP_Run_Method(pobject ,     // object
@@ -701,7 +707,7 @@ void InterpreterSingleton::runMethod(PyObject *pobject, const char *method,
                                      const char *resfmt,   void *cresult,        /* convert to c/c++ */
                                      const char *argfmt,   ...  )                /* convert to python */
 {
-    PyObject *pmeth, *pargs, *presult;
+    PyObject *pmeth{}, *pargs{}, *presult{};
     va_list argslist;                              /* "pobject.method(args)" */
     va_start(argslist, argfmt);
 
@@ -737,7 +743,7 @@ void InterpreterSingleton::runMethod(PyObject *pobject, const char *method,
 
 PyObject * InterpreterSingleton::getValue(const char * key, const char * result_var)
 {
-    PyObject *module, *dict, *presult;          /* "exec code in d, d" */
+    PyObject *module{}, *dict{}, *presult{};          /* "exec code in d, d" */
 
     PyGILStateLocker locker;
     module = PP_Load_Module("__main__");         /* get module, init python */

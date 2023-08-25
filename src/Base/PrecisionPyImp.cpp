@@ -88,14 +88,14 @@ PyObject* PrecisionPy::approximation(PyObject *args)
 
 PyObject* PrecisionPy::parametric(PyObject *args)
 {
-    double p;
+    double p{};
     if (PyArg_ParseTuple(args, "d", &p)) {
         Py::Float v(Precision::Parametric(p));
         return Py::new_reference_to(v);
     }
 
     PyErr_Clear();
-    double t;
+    double t{};
     if (PyArg_ParseTuple(args, "dd", &p, &t)) {
         Py::Float v(Precision::Parametric(p, t));
         return Py::new_reference_to(v);
@@ -107,7 +107,7 @@ PyObject* PrecisionPy::parametric(PyObject *args)
 
 PyObject* PrecisionPy::isInfinite(PyObject *args)
 {
-    double v;
+    double v{};
     if (!PyArg_ParseTuple(args, "d", &v)) {
         return nullptr;
     }
@@ -118,7 +118,7 @@ PyObject* PrecisionPy::isInfinite(PyObject *args)
 
 PyObject* PrecisionPy::isPositiveInfinite(PyObject *args)
 {
-    double v;
+    double v{};
     if (!PyArg_ParseTuple(args, "d", &v)) {
         return nullptr;
     }
@@ -129,7 +129,7 @@ PyObject* PrecisionPy::isPositiveInfinite(PyObject *args)
 
 PyObject* PrecisionPy::isNegativeInfinite(PyObject *args)
 {
-    double v;
+    double v{};
     if (!PyArg_ParseTuple(args, "d", &v)) {
         return nullptr;
     }

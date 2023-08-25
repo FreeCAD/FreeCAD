@@ -60,7 +60,7 @@ public:
 
     static QString schemaTranslate(const Base::Quantity& quant, double &factor, QString &unitString);
     static QString schemaTranslate(const Base::Quantity& quant) { // to satisfy GCC
-        double  dummy1;
+        double  dummy1{};
         QString dummy2;
         return UnitsApi::schemaTranslate(quant, dummy1, dummy2);
     }

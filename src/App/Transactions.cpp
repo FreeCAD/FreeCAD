@@ -272,10 +272,7 @@ TYPESYSTEM_SOURCE_ABSTRACT(App::TransactionObject, Base::Persistence)
  * A constructor.
  * A more elaborate description of the constructor.
  */
-TransactionObject::TransactionObject()
-  : status(New)
-{
-}
+TransactionObject::TransactionObject() = default;
 
 /**
  * A destructor.

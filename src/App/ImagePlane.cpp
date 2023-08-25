@@ -31,8 +31,6 @@ PROPERTY_SOURCE(Image::ImagePlane, App::GeoFeature)
 
 
 ImagePlane::ImagePlane()
-    : XPixelsPerMeter{1000.0}
-    , YPixelsPerMeter{1000.0}
 {
     ADD_PROPERTY_TYPE( ImageFile,(nullptr)  , "ImagePlane",App::Prop_None,"File of the image");
     ADD_PROPERTY_TYPE( XSize,    (100), "ImagePlane",App::Prop_None,"Size of a pixel in X");

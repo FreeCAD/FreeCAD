@@ -56,9 +56,7 @@ using namespace std;
 // ---------------------------------------------------------------------------
 
 Base::XMLReader::XMLReader(const char* FileName, std::istream& str)
-  : DocumentSchema(0), ProgramVersion(""), FileVersion(0), Level(0),
-    CharacterCount(0), ReadType(None), _File(FileName), _valid(false),
-    _verbose(true)
+  : _File(FileName)
 {
 #ifdef _MSC_VER
     str.imbue(std::locale::empty());
@@ -206,7 +204,7 @@ bool Base::XMLReader::read()
 
 void Base::XMLReader::readElement(const char* ElementName)
 {
-    bool ok;
+    bool ok{};
     int currentLevel = Level;
     std::string currentName = LocalName;
     do {
@@ -243,7 +241,7 @@ void Base::XMLReader::readEndElement(const char* ElementName, int level)
         throw Base::XMLParseException("End of document reached");
     }
 
-    bool ok;
+    bool ok{};
     do {
         ok = read(); if (!ok) break;
         if (ReadType == EndDocument)
@@ -344,7 +342,7 @@ void Base::XMLReader::readBinFile(const char* filename)
     if (!to)
         throw Base::FileException("XMLReader::readBinFile() Could not open file!");
 
-    bool ok;
+    bool ok{};
     do {
         ok = read(); if (!ok) break;
     } while (ReadType != EndCDATA);

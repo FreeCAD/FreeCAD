@@ -530,6 +530,7 @@ def uv_vectors_from_face(face, vec_z=App.Vector(0, 0, 1), tol=-1):
     vec_z: Base::Vector3, optional
         Defaults to Vector(0, 0, 1).
         Z axis vector used for reference.
+        Is replaced by Vector(0, 0, 1) if it matches the +/-normal of the face.
     tol: float, optional
         Defaults to -1.
         Internal tolerance. 1e-7 is used if tol <=0.
@@ -540,6 +541,10 @@ def uv_vectors_from_face(face, vec_z=App.Vector(0, 0, 1), tol=-1):
         U and v vector (Base::Vector3).
     """
     err = 1e-7 if tol <= 0 else tol
+    if not vec_z.isEqual(App.Vector(0, 0, 1), err):
+        nor = face.normalAt(0, 0)
+        if vec_z.isEqual(nor, err) or vec_z.isEqual(nor.negative(), err):
+            vec_z = App.Vector(0, 0, 1)
     vec_u, vec_v = face.tangentAt(0, 0)
     if face.Orientation == "Reversed":
         vec_u, vec_v = vec_v, vec_u
@@ -564,6 +569,7 @@ def placement_from_face(face, vec_z=App.Vector(0, 0, 1), rotated=False, tol=-1):
     vec_z: Base::Vector3, optional
         Defaults to Vector(0, 0, 1).
         Z axis vector used for reference.
+        Is replaced by Vector(0, 0, 1) if it matches the +/-normal of the face.
     rotated: bool, optional
         Defaults to `False`.
         If `False` the v vector of the face defines the Y axis of the placement.
@@ -633,8 +639,7 @@ def placement_from_points(pt_pos, pt_x, pt_y, as_vectors=False, tol=-1):
     else:
         vec_u.normalize()
         vec_v.normalize()
-        if vec_u.isEqual(vec_v, err) \
-                or vec_u.isEqual(vec_v.negative(), err):
+        if vec_u.isEqual(vec_v, err) or vec_u.isEqual(vec_v.negative(), err):
             rot = App.Rotation()
         else:
             rot = App.Rotation(vec_u, vec_v, App.Vector(), "XYZ")

@@ -630,7 +630,7 @@ public:
     Property *CopyOnLinkReplace(const App::DocumentObject *parent,
             App::DocumentObject *oldObj, App::DocumentObject *newObj) const override;
 protected:
-    App::DocumentObject *_pcLink;
+    App::DocumentObject *_pcLink{nullptr};
 };
 
 /** The general Link Property with Child scope
@@ -860,11 +860,11 @@ public:
 
     void setSyncSubObject(bool enable);
 protected:
-    App::DocumentObject*     _pcLinkSub;
+    App::DocumentObject*     _pcLinkSub{nullptr};
     std::vector<std::string> _cSubList;
     std::vector<ShadowSub> _ShadowSubList;
     std::vector<int> _mapped;
-    bool _restoreLabel;
+    bool _restoreLabel{false};
 };
 
 /** The general Link Property with Child scope

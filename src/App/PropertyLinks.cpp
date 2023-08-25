@@ -380,12 +380,7 @@ TYPESYSTEM_SOURCE(App::PropertyLinkHidden , App::PropertyLink)
 // Construction/Destruction
 
 
-PropertyLink::PropertyLink()
-:_pcLink(nullptr)
-{
-
-}
-
+PropertyLink::PropertyLink() = default;
 
 PropertyLink::~PropertyLink()
 {
@@ -882,11 +877,7 @@ TYPESYSTEM_SOURCE(App::PropertyLinkSubHidden, App::PropertyLinkSub)
 // Construction/Destruction
 
 
-PropertyLinkSub::PropertyLinkSub()
-  : _pcLinkSub(nullptr), _restoreLabel(false)
-{
-
-}
+PropertyLinkSub::PropertyLinkSub() = default;
 
 PropertyLinkSub::~PropertyLinkSub()
 {
@@ -2525,7 +2516,7 @@ public:
 
     DocInfoMap::iterator myPos;
     std::string myPath;
-    App::Document *pcDoc;
+    App::Document *pcDoc{nullptr};
     std::set<PropertyXLink*> links;
 
     static std::string getDocPath(
@@ -2636,12 +2627,6 @@ public:
     const char *filePath() const {
         return myPath.c_str();
     }
-
-    DocInfo()
-        :pcDoc(nullptr)
-    {}
-
-    ~DocInfo() = default;
 
     void deinit() {
         FC_LOG("deinit " << (pcDoc?pcDoc->getName():filePath()));

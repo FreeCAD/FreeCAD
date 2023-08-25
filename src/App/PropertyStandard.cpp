@@ -600,12 +600,7 @@ TYPESYSTEM_SOURCE(App::PropertyIntegerConstraint, App::PropertyInteger)
 // Construction/Destruction
 
 
-PropertyIntegerConstraint::PropertyIntegerConstraint()
-  : _ConstStruct(nullptr)
-{
-
-}
-
+PropertyIntegerConstraint::PropertyIntegerConstraint() = default;
 
 PropertyIntegerConstraint::~PropertyIntegerConstraint()
 {
@@ -1044,11 +1039,7 @@ TYPESYSTEM_SOURCE(App::PropertyFloatConstraint, App::PropertyFloat)
 // Construction/Destruction
 
 
-PropertyFloatConstraint::PropertyFloatConstraint()
-  : _ConstStruct(nullptr)
-{
-
-}
+PropertyFloatConstraint::PropertyFloatConstraint() = default;
 
 PropertyFloatConstraint::~PropertyFloatConstraint()
 {

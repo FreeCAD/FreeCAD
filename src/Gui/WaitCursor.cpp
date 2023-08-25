@@ -53,14 +53,14 @@ protected:
 private:
     WaitCursorP(); // Disable constructor
     static WaitCursorP* _instance;
-    bool isOn;
-    WaitCursor::FilterEventsFlags flags;
+    bool isOn{false};
+    WaitCursor::FilterEventsFlags flags{WaitCursor::AllEvents};
 };
 } // namespace Gui
 
 WaitCursorP* WaitCursorP::_instance = nullptr;
 
-WaitCursorP::WaitCursorP() : QObject(nullptr), isOn(false), flags(WaitCursor::AllEvents)
+WaitCursorP::WaitCursorP() : QObject(nullptr)
 {
 }
 

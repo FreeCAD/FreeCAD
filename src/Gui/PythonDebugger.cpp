@@ -321,24 +321,20 @@ private:
 };
 
 struct PythonDebuggerP {
-    PyObject* out_o;
-    PyObject* err_o;
-    PyObject* exc_o;
-    PyObject* out_n;
-    PyObject* err_n;
-    PyObject* exc_n;
+    PyObject* out_o{nullptr};
+    PyObject* err_o{nullptr};
+    PyObject* exc_o{nullptr};
+    PyObject* out_n{nullptr};
+    PyObject* err_n{nullptr};
+    PyObject* exc_n{nullptr};
     PythonDebugExcept* pypde;
-    bool init, trystop, running;
+    bool init{false}, trystop{false}, running{false};
     QEventLoop loop;
-    PyObject* pydbg;
+    PyObject* pydbg{nullptr};
     std::vector<Breakpoint> bps;
 
-    explicit PythonDebuggerP(PythonDebugger* that) :
-        init(false), trystop(false), running(false)
+    explicit PythonDebuggerP(PythonDebugger* that)
     {
-        out_o = nullptr;
-        err_o = nullptr;
-        exc_o = nullptr;
         Base::PyGILStateLocker lock;
         out_n = new PythonDebugStdout();
         err_n = new PythonDebugStderr();

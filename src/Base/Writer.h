@@ -24,7 +24,6 @@
 #define BASE_WRITER_H
 
 
-#include <memory>
 #include <set>
 #include <string>
 #include <sstream>
@@ -150,11 +149,11 @@ protected:
     std::vector<std::string> Errors;
     std::set<std::string> Modes;
 
-    short indent;
-    char indBuf[1024];
+    short indent{0};
+    char indBuf[1024]{};
 
-    bool forceXML;
-    int fileVersion;
+    bool forceXML{false};
+    int fileVersion{1};
 
 public:
     Writer(const Writer&) = delete;
