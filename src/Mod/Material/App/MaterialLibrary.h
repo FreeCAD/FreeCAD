@@ -54,7 +54,7 @@ public:
     bool operator!=(const MaterialLibrary& library) const { return !operator==(library); }
 
     void createPath(const QString& path);
-    void saveMaterial(const Material& material, const QString& path);
+    void saveMaterial(Material& material, const QString& path, bool saveAsCopy);
 
     bool isReadOnly() const { return _readOnly; }
 

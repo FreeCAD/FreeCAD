@@ -73,7 +73,7 @@ QString MaterialLibrary::getFilePath(const QString &path) const
     return filePath;
 }
 
-void MaterialLibrary::saveMaterial(const Material& material, const QString& path)
+void MaterialLibrary::saveMaterial(Material& material, const QString& path, bool saveAsCopy)
 {
     Base::Console().Log("MaterialLibrary::saveMaterial(material(%s), path(%s))\n",
                         material.getName().toStdString().c_str(),
@@ -95,7 +95,7 @@ void MaterialLibrary::saveMaterial(const Material& material, const QString& path
         QTextStream stream(&file);
 
         // Write the contents
-        material.save(stream);
+        material.save(stream, saveAsCopy);
     }
 }
 

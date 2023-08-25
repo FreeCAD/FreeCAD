@@ -25,6 +25,8 @@
 #endif
 
 #include <QMetaType>
+#include <QUuid>
+
 #include <App/Application.h>
 #include <Gui/MetaTypes.h>
 
@@ -705,8 +707,11 @@ void Material::saveAppearanceModels(QTextStream &stream) const
     }
 }
 
-void Material::save(QTextStream &stream) const
+void Material::save(QTextStream &stream, bool saveAsCopy)
 {
+    // Create a new UUID
+    _uuid = QUuid::createUuid().toString(QUuid::WithoutBraces);
+
     stream << "# File created by FreeCAD" << endl;
     saveGeneral(stream);
     saveInherits(stream);

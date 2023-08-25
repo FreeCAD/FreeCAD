@@ -165,7 +165,7 @@ public:
     bool getDereferenced() const { return _dereferenced; }
     void markDereferenced() { _dereferenced = true; }
 
-    void save(QTextStream &stream) const;
+    void save(QTextStream &stream, bool saveAsCopy);
 
 protected:
     void addModel(const QString& uuid);

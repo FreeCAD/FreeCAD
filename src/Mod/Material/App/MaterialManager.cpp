@@ -68,6 +68,14 @@ MaterialManager::~MaterialManager()
 {
 }
 
+void MaterialManager::saveMaterial(MaterialLibrary* library, Material& material, const QString& path, bool saveAsCopy)
+{
+    library->saveMaterial(material, path, saveAsCopy);
+
+    // (*_materialMap)[material.getUUID()] = &material;
+    // (*_materialPathMap)[path] = &material;
+}
+
 bool MaterialManager::isMaterial(const fs::path &p)
 {
     if (!fs::is_regular_file(p))

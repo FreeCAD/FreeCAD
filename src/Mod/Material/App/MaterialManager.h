@@ -52,9 +52,7 @@ public:
     std::map<QString, MaterialTreeNode*>* getMaterialTree(const MaterialLibrary &library);
     std::list<QString>* getMaterialFolders(const MaterialLibrary &library);
     void createPath(MaterialLibrary* library, const QString& path) { library->createPath(path); }
-    void saveMaterial(MaterialLibrary* library, const Material& material, const QString& path) {
-        library->saveMaterial(material, path);
-    }
+    void saveMaterial(MaterialLibrary* library, Material& material, const QString& path, bool saveAsCopy = true);
 
     static bool isMaterial(const fs::path &p);
 
