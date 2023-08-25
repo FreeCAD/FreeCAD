@@ -163,10 +163,7 @@ class Ellipse(gui_base_original.Creator):
             if arg["Key"] == "ESCAPE":
                 self.finish()
         elif arg["Type"] == "SoLocation2Event":  # mouse movement detection
-            (self.point,
-             ctrlPoint, info) = gui_tool_utils.getPoint(self, arg,
-                                                        mobile=True,
-                                                        noTracker=True)
+            self.point, ctrlPoint, info = gui_tool_utils.getPoint(self, arg, noTracker=True)
             self.rect.update(self.point)
             gui_tool_utils.redraw3DView()
         elif arg["Type"] == "SoMouseButtonEvent":
@@ -178,10 +175,7 @@ class Ellipse(gui_base_original.Creator):
 
                 if (not self.node) and (not self.support):
                     gui_tool_utils.getSupport(arg)
-                    (self.point,
-                     ctrlPoint, info) = gui_tool_utils.getPoint(self, arg,
-                                                                mobile=True,
-                                                                noTracker=True)
+                    self.point, ctrlPoint, info = gui_tool_utils.getPoint(self, arg, noTracker=True)
                 if self.point:
                     self.ui.redraw()
                     self.pos = arg["Position"]
