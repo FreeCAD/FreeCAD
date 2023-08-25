@@ -32,6 +32,7 @@
 #endif
 
 #include <Base/BoundBoxPy.h>
+#include <Base/PyWrapParseTupleAndKeywords.h>
 
 #include "PythonWrapper.h"
 #include "SoFCDB.h"
@@ -185,10 +186,11 @@ PyObject*  ViewProviderPy::canDropObject(PyObject *args, PyObject *kw)
     PyObject *owner = Py_None;
     PyObject *pyElements = Py_None;
     const char *subname = nullptr;
-    static char* kwlist[] = {"obj","owner","subname","elem",nullptr};
-    if (!PyArg_ParseTupleAndKeywords(args, kw, "|OOsO", kwlist,
-            &obj, &owner, &subname, &pyElements))
+    static const std::array<const char *, 5> kwlist{"obj", "owner", "subname", "elem", nullptr};
+    if (!Base::Wrapped_ParseTupleAndKeywords(args, kw, "|OOsO", kwlist,
+                                            &obj, &owner, &subname, &pyElements)) {
         return nullptr;
+    }
 
     PY_TRY {
         Base::PyTypeCheck(&obj, &App::DocumentObjectPy::Type, "expecting 'obj' to be of type App.DocumentObject or None");
@@ -245,10 +247,11 @@ PyObject*  ViewProviderPy::dropObject(PyObject *args, PyObject *kw)
     PyObject *owner = Py_None;
     PyObject *pyElements = Py_None;
     const char *subname = nullptr;
-    static char* kwlist[] = {"obj","owner","subname","elem",nullptr};
-    if (!PyArg_ParseTupleAndKeywords(args, kw, "O!|OsO", kwlist,
-            &App::DocumentObjectPy::Type, &obj, &owner, &subname, &pyElements))
+    static const std::array<const char *, 5> kwlist{"obj", "owner", "subname", "elem", nullptr};
+    if (!Base::Wrapped_ParseTupleAndKeywords(args, kw, "O!|OsO", kwlist,
+                                             &App::DocumentObjectPy::Type, &obj, &owner, &subname, &pyElements)) {
         return nullptr;
+    }
 
     PY_TRY {
         Base::PyTypeCheck(&owner, &App::DocumentObjectPy::Type, "expecting 'owner' to be of type App.DocumentObject or None");
