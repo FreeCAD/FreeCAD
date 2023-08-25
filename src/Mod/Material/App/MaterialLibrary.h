@@ -59,6 +59,8 @@ public:
     bool isReadOnly() const { return _readOnly; }
 
 protected:
+    QString getFilePath(const QString &path) const;
+
     QString _name;
     QDir _directory;
     QString _iconPath;

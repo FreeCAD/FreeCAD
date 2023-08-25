@@ -30,6 +30,7 @@
 
 #include "Materials.h"
 #include "ModelManager.h"
+#include "MaterialManager.h"
 
 
 using namespace Materials;
@@ -628,5 +629,90 @@ bool Material::isAppearanceModelComplete(const QString& uuid) const
 
     return true;
 }
+
+void Material::saveGeneral(QTextStream &stream) const
+{
+    stream << "General:" << endl;
+    stream << "  UUID: \"" << _uuid << "\"" << endl;
+    stream << "  Name: \"" << _name << "\"" << endl;
+    if (!_authorAndLicense.isEmpty())
+        stream << "  AuthorAndLicense: \"" << _authorAndLicense << "\"" << endl;
+    if (!_description.isEmpty())
+        stream << "  Description: \"" << _description << "\"" << endl;
+    if (!_url.isEmpty())
+        stream << "  SourceURL: \"" << _url << "\"" << endl;
+    if (!_reference.isEmpty())
+        stream << "  ReferenceSource: \"" << _reference << "\"" << endl;
+}
+
+void Material::saveInherits(QTextStream &stream) const
+{
+    if (!_parentUuid.isEmpty())
+    {
+        MaterialManager manager;
+
+        stream << "Inherits:" << endl;
+        stream << "  " << manager.getMaterial(_parentUuid).getName() << ":" << endl;
+        stream << "    UUID: \"" << _parentUuid << "\"" << endl;
+    }
+}
+
+void Material::saveModels(QTextStream &stream) const
+{
+    if (!_physical.empty())
+    {
+        ModelManager *modelManager = ModelManager::getManager();
+
+        stream << "Models:" << endl;
+        for (auto itm = _physicalUuids.begin(); itm != _physicalUuids.end(); itm++)
+        {
+            auto model = modelManager->getModel(*itm);
+            stream << "  " << model.getName() << ":" << endl;
+            stream << "    UUID: \"" << model.getUUID() << "\"" << endl;
+            for (auto itp = model.begin(); itp != model.end(); itp++)
+            {
+                QString propertyName = itp->first;
+                const MaterialProperty& property = getPhysicalProperty(propertyName);
+
+                if (!property.isNull())
+                    stream << "    " << propertyName << ": \"" << getPhysicalValueString(propertyName) << "\"" << endl;
+            }
+        }
+    }
+}
+
+void Material::saveAppearanceModels(QTextStream &stream) const
+{
+    if (!_appearance.empty())
+    {
+        ModelManager *modelManager = ModelManager::getManager();
+
+        stream << "AppearanceModels:" << endl;
+        for (auto itm = _appearanceUuids.begin(); itm != _appearanceUuids.end(); itm++)
+        {
+            auto model = modelManager->getModel(*itm);
+            stream << "  " << model.getName() << ":" << endl;
+            stream << "    UUID: \"" << model.getUUID() << "\"" << endl;
+            for (auto itp = model.begin(); itp != model.end(); itp++)
+            {
+                QString propertyName = itp->first;
+                const MaterialProperty& property = getAppearanceProperty(propertyName);
+
+                if (!property.isNull())
+                    stream << "    " << propertyName << ": \"" << getAppearanceValueString(propertyName) << "\"" << endl;
+            }
+        }
+    }
+}
+
+void Material::save(QTextStream &stream) const
+{
+    stream << "# File created by FreeCAD" << endl;
+    saveGeneral(stream);
+    saveInherits(stream);
+    saveModels(stream);
+    saveAppearanceModels(stream);
+}
+
 
 #include "moc_Materials.cpp"

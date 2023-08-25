@@ -26,6 +26,7 @@
 #include <Base/BaseClass.h>
 #include <QDir>
 #include <QString>
+#include <QTextStream>
 
 #include "Model.h"
 #include "MaterialLibrary.h"
@@ -164,11 +165,18 @@ public:
     bool getDereferenced() const { return _dereferenced; }
     void markDereferenced() { _dereferenced = true; }
 
+    void save(QTextStream &stream) const;
+
 protected:
     void addModel(const QString& uuid);
 
     const QVariant getValue(const std::map<QString, MaterialProperty> &propertyList, const QString &name) const;
     const QString getValueString(const std::map<QString, MaterialProperty> &propertyList, const QString &name) const;
+
+    void saveGeneral(QTextStream &stream) const;
+    void saveInherits(QTextStream &stream) const;
+    void saveModels(QTextStream &stream) const;
+    void saveAppearanceModels(QTextStream &stream) const;
 
 private:
     MaterialLibrary _library;

@@ -123,7 +123,7 @@ def yamGeneral(card):
     father = ""
     materialStandard = ""
     yamModels = ""
-    yam = "# File greated by ConvertFCMat.py\n"
+    yam = "# File created by ConvertFCMat.py\n"
     yam += "General:\n"
 
     # Add UUIDs

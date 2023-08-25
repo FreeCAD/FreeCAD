@@ -188,6 +188,7 @@ void MaterialSave::showSelectedTree()
         QIcon icon(library.getIconPath());
         QIcon folderIcon(QString::fromStdString(":/icons/folder.svg"));
         _libraryName = library.getName();
+        _selectedPath = QString::fromStdString("/") + _libraryName;
 
         auto lib = new QStandardItem(library.getName());
         lib->setFlags(Qt::ItemIsEnabled | Qt::ItemIsDragEnabled | Qt::ItemIsDropEnabled);
@@ -243,7 +244,7 @@ void MaterialSave::onSelectModel(const QItemSelection& selected, const QItemSele
             } else {
                 _selectedPath = getPath(item);
                 _selectedUUID = QString();
-            }
+            } 
         }
     }
     if (_filename.length() > 0) {

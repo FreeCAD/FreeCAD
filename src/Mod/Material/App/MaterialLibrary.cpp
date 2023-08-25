@@ -26,6 +26,7 @@
 
 #include <App/Application.h>
 
+#include "Materials.h"
 #include "MaterialLibrary.h"
 #include "ModelManager.h"
 
@@ -54,11 +55,48 @@ void MaterialLibrary::createPath(const QString& path)
     Q_UNUSED(path)
 }
 
+QString MaterialLibrary::getFilePath(const QString &path) const
+{
+    Base::Console().Log("MaterialLibrary::getFilePath: directory path '%s'\n", getDirectoryPath().toStdString().c_str());
+
+    QString filePath = getDirectoryPath();
+    QString prefix = QString::fromStdString("/") + getName();
+    if (path.startsWith(prefix))
+    {
+        // Remove the library name from the path
+        filePath += path.right(path.length() - prefix.length());
+    } else {
+        filePath += path;
+    }
+
+    Base::Console().Log("MaterialLibrary::getFilePath: filePath '%s'\n", filePath.toStdString().c_str());
+    return filePath;
+}
+
 void MaterialLibrary::saveMaterial(const Material& material, const QString& path)
 {
-    Q_UNUSED(material)
-    Q_UNUSED(path)
+    Base::Console().Log("MaterialLibrary::saveMaterial(material(%s), path(%s))\n",
+                        material.getName().toStdString().c_str(),
+                        path.toStdString().c_str());
 
+    QString filePath = getFilePath(path);
+    QFile file(filePath);
+
+    QFileInfo info(file);
+    QDir fileDir(info.path());
+    if (!fileDir.exists())
+        if (!fileDir.mkpath(info.path()))
+        {
+            Base::Console().Error("Unable to create directory path '%s'\n", info.path().toStdString().c_str());
+        }
+
+    if (file.open(QIODevice::WriteOnly | QIODevice::Text))
+    {
+        QTextStream stream(&file);
+
+        // Write the contents
+        material.save(stream);
+    }
 }
 
 TYPESYSTEM_SOURCE(Materials::MaterialExternalLibrary, MaterialLibrary::MaterialLibrary)
