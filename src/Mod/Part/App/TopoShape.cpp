@@ -300,7 +300,7 @@ std::pair<std::string, unsigned long> TopoShape::getElementTypeAndIndex(const ch
     boost::regex ex("^(Face|Edge|Vertex)([1-9][0-9]*)$");
     boost::cmatch what;
 
-    if (boost::regex_match(Name, what, ex)) {
+    if (Name && boost::regex_match(Name, what, ex)) {
         element = what[1].str();
         index = std::atoi(what[2].str().c_str());
     }
