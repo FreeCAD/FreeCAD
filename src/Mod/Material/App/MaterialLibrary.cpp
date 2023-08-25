@@ -95,6 +95,8 @@ void MaterialLibrary::saveMaterial(Material& material, const QString& path, bool
         QTextStream stream(&file);
 
         // Write the contents
+        material.setLibrary(*this);
+        material.setDirectory(fileDir);
         material.save(stream, saveAsCopy);
     }
 }

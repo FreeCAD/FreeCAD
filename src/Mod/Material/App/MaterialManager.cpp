@@ -72,8 +72,8 @@ void MaterialManager::saveMaterial(MaterialLibrary* library, Material& material,
 {
     library->saveMaterial(material, path, saveAsCopy);
 
-    // (*_materialMap)[material.getUUID()] = &material;
-    // (*_materialPathMap)[path] = &material;
+    (*_materialMap)[material.getUUID()] = &material;
+    (*_materialPathMap)[path] = &material;
 }
 
 bool MaterialManager::isMaterial(const fs::path &p)
