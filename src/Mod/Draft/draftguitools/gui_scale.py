@@ -161,8 +161,7 @@ class Scale(gui_base_original.Modifier):
         """Handle the mouse event of movement."""
         for ghost in self.ghosts:
             ghost.off()
-        (self.point,
-         ctrlPoint, info) = gui_tool_utils.getPoint(self, arg, sym=True)
+        self.point, ctrlPoint, info = gui_tool_utils.getPoint(self, arg)
 
     def handle_mouse_click_event(self):
         """Handle the mouse click event."""
