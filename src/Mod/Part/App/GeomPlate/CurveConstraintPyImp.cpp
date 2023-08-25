@@ -36,6 +36,7 @@
 #include "GeomPlate/CurveConstraintPy.cpp"
 #include "Geom2d/Curve2dPy.h"
 #include "GeometryCurvePy.h"
+#include <Base/PyWrapParseTupleAndKeywords.h>
 
 
 using namespace Part;
@@ -61,11 +62,13 @@ int CurveConstraintPy::PyInit(PyObject* args, PyObject* kwds)
     // Length(), FirstParameter(), LastParameter(), ...
     // Thus, we don't allow to create an empty GeomPlate_CurveConstraint instance
 
-    static char* keywords[] = {"Boundary", "Order", "NbPts", "TolDist", "TolAng", "TolCurv", nullptr};
-    if (!PyArg_ParseTupleAndKeywords(args, kwds, "O!|iiddd", keywords,
-                                     &(GeometryCurvePy::Type), &bound, &order,
-                                     &nbPts, &tolDist, &tolAng, &tolCurv))
+    static const std::array<const char *, 7> keywords{"Boundary", "Order", "NbPts", "TolDist", "TolAng", "TolCurv",
+                                                      nullptr};
+    if (!Base::Wrapped_ParseTupleAndKeywords(args, kwds, "O!|iiddd", keywords,
+                                             &(GeometryCurvePy::Type), &bound, &order,
+                                             &nbPts, &tolDist, &tolAng, &tolCurv)) {
         return -1;
+    }
 
     try {
         std::unique_ptr<GeomPlate_CurveConstraint> ptr;

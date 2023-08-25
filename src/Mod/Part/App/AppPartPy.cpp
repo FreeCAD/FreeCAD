@@ -80,6 +80,7 @@
 #include <Base/FileInfo.h>
 #include <Base/GeometryPyCXX.h>
 #include <Base/Interpreter.h>
+#include <Base/PyWrapParseTupleAndKeywords.h>
 #include <Base/VectorPy.h>
 
 #include "BSplineSurfacePy.h"
@@ -2229,13 +2230,16 @@ private:
         PyObject *noElementMap = Py_False;
         PyObject *refine = Py_False;
         short retType = 0;
-        static char* kwd_list[] = {"obj", "subname", "mat",
-            "needSubElement","transform","retType","noElementMap","refine",nullptr};
-        if (!PyArg_ParseTupleAndKeywords(args.ptr(), kwds.ptr(), "O!|sO!O!O!hO!O!", kwd_list,
-                &App::DocumentObjectPy::Type, &pObj, &subname, &Base::MatrixPy::Type, &pyMat,
-                &PyBool_Type,&needSubElement,&PyBool_Type,&transform,&retType,
-                &PyBool_Type,&noElementMap,&PyBool_Type,&refine))
+        static const std::array<const char *, 9> kwd_list{"obj", "subname", "mat",
+                                                          "needSubElement", "transform", "retType", "noElementMap",
+                                                          "refine", nullptr};
+        if (!Base::Wrapped_ParseTupleAndKeywords(args.ptr(), kwds.ptr(), "O!|sO!O!O!hO!O!", kwd_list,
+                                                 &App::DocumentObjectPy::Type, &pObj, &subname, &Base::MatrixPy::Type,
+                                                 &pyMat,
+                                                 &PyBool_Type, &needSubElement, &PyBool_Type, &transform, &retType,
+                                                 &PyBool_Type, &noElementMap, &PyBool_Type, &refine)) {
             throw Py::Exception();
+        }
 
         App::DocumentObject *obj =
             static_cast<App::DocumentObjectPy*>(pObj)->getDocumentObjectPtr();

@@ -43,6 +43,7 @@
 #endif
 
 #include <Base/GeometryPyCXX.h>
+#include <Base/PyWrapParseTupleAndKeywords.h>
 #include <Base/VectorPy.h>
 
 #include "GeometrySurfacePy.h"
@@ -133,10 +134,11 @@ PyObject* GeometrySurfacePy::toShell(PyObject *args, PyObject* kwds)
 {
     PyObject* bound = nullptr;
     PyObject* segm = nullptr;
-    static char *kwlist[] = {"Bounds", "Segment", nullptr};
-    if (!PyArg_ParseTupleAndKeywords(args, kwds, "|O!O!", kwlist,
-        &PyTuple_Type, &bound, &PyBool_Type, &segm))
+    static const std::array<const char *, 3> kwlist {"Bounds", "Segment", nullptr};
+    if (!Base::Wrapped_ParseTupleAndKeywords(args, kwds, "|O!O!", kwlist,
+                                             &PyTuple_Type, &bound, &PyBool_Type, &segm)) {
         return nullptr;
+    }
 
     Handle(Geom_Geometry) g = getGeometryPtr()->handle();
     Handle(Geom_Surface) s = Handle(Geom_Surface)::DownCast(g);
@@ -302,10 +304,10 @@ PyObject* GeometrySurfacePy::projectPoint(PyObject *args, PyObject* kwds)
 {
     PyObject* v;
     const char* meth = "NearestPoint";
-    static char *kwlist[] = {"Point", "Method", nullptr};
-    if (!PyArg_ParseTupleAndKeywords(args, kwds, "O!|s", kwlist,
-        &Base::VectorPy::Type, &v, &meth))
+    static const std::array<const char *, 3> kwlist {"Point", "Method", nullptr};
+    if (!Base::Wrapped_ParseTupleAndKeywords(args, kwds, "O!|s", kwlist, &Base::VectorPy::Type, &v, &meth)) {
         return nullptr;
+    }
 
     try {
         Base::Vector3d vec = Py::Vector(v, false).toVector();
@@ -729,11 +731,13 @@ PyObject* GeometrySurfacePy::toBSpline(PyObject * args, PyObject * kwds)
     int maxDegV=Geom_BSplineSurface::MaxDegree();
     int maxSegm=1000, prec=0;
 
-    static char *kwlist[] = {"Tol3d", "UContinuity", "VContinuity", "MaxDegreeU", "MaxDegreeV", "MaxSegments", "PrecisCode", nullptr};
-    if (!PyArg_ParseTupleAndKeywords(args, kwds, "|dssiiii", kwlist,
-                                     &tol3d, &ucont, &vcont,
-                                     &maxDegU, &maxDegV, &maxSegm, &prec))
+    static const std::array<const char *, 8> kwlist{"Tol3d", "UContinuity", "VContinuity", "MaxDegreeU", "MaxDegreeV",
+                                                    "MaxSegments", "PrecisCode", nullptr};
+    if (!Base::Wrapped_ParseTupleAndKeywords(args, kwds, "|dssiiii", kwlist,
+                                             &tol3d, &ucont, &vcont,
+                                             &maxDegU, &maxDegV, &maxSegm, &prec)) {
         return nullptr;
+    }
 
     GeomAbs_Shape absU, absV;
     std::string uc = ucont;
