@@ -40,6 +40,7 @@
 #include <App/DocumentObjectPy.h>
 #include <Base/Console.h>
 #include <Base/Exception.h>
+#include <Base/PyWrapParseTupleAndKeywords.h>
 #include <Base/Vector3D.h>
 #include <Base/VectorPy.h>
 #include <Mod/Import/App/dxf/ImpExpDxf.h>
@@ -1093,7 +1094,9 @@ private:
 
     Py::Object projectToSVG(const Py::Tuple& args, const Py::Dict& keys)
         {
-            static char* argNames[] = {"topoShape", "direction", "type", "tolerance", "vStyle", "v0Style", "v1Style", "hStyle", "h0Style", "h1Style", nullptr};
+            static const std::array<const char *, 11> argNames{"topoShape", "direction", "type", "tolerance", "vStyle",
+                                                               "v0Style", "v1Style", "hStyle", "h0Style", "h1Style",
+                                                               nullptr};
             PyObject *pcObjShape = nullptr;
             PyObject *pcObjDir = nullptr;
             const char *extractionTypePy = nullptr;
@@ -1114,7 +1117,7 @@ private:
 
             // Get the arguments
 
-            if (!PyArg_ParseTupleAndKeywords(
+            if (!Base::Wrapped_ParseTupleAndKeywords(
                     args.ptr(), keys.ptr(),
                     "O!|O!sfOOOOOO",
                     argNames,
@@ -1122,9 +1125,9 @@ private:
                     &(Base::VectorPy::Type), &pcObjDir,
                     &extractionTypePy, &tol,
                     &vStylePy, &v0StylePy, &v1StylePy,
-                    &hStylePy, &h0StylePy, &h1StylePy))
-
+                    &hStylePy, &h0StylePy, &h1StylePy)) {
                 throw Py::Exception();
+            }
 
             // Convert all arguments into the right format
 
