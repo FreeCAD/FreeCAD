@@ -154,6 +154,9 @@ public:
 
     /** @name Subelement management */
     //@{
+    /// Unlike \ref getTypeAndIndex() this function only handles the supported
+    /// element types.
+    static std::pair<std::string, unsigned long> getElementTypeAndIndex(const char* Name);
     /** Sub type list
      *  List of different subelement types
      *  it is NOT a list of the subelements itself

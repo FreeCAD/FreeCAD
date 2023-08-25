@@ -67,7 +67,6 @@
 # include <Inventor/nodes/SoSeparator.h>
 # include <Inventor/nodes/SoShapeHints.h>
 
-# include <boost/regex.hpp>
 # include <boost/algorithm/string/predicate.hpp>
 #endif
 
@@ -509,31 +508,27 @@ std::string ViewProviderPartExt::getElement(const SoDetail* detail) const
 
 SoDetail* ViewProviderPartExt::getDetail(const char* subelement) const
 {
-    std::string element;
-    int index;
-    SoDetail* detail = nullptr;
-    boost::regex ex("^(Face|Edge|Vertex)([1-9][0-9]*)$");
-    boost::cmatch what;
+    auto type = Part::TopoShape::getElementTypeAndIndex(subelement);
+    std::string element = type.first;
+    int index = type.second;
 
-    if (boost::regex_match(subelement, what, ex)) {
-        element = what[1].str();
-        index = std::atoi(what[2].str().c_str());
-
-        if (element == "Face") {
-            detail = new SoFaceDetail();
-            static_cast<SoFaceDetail*>(detail)->setPartIndex(index - 1);
-        }
-        else if (element == "Edge") {
-            detail = new SoLineDetail();
-            static_cast<SoLineDetail*>(detail)->setLineIndex(index - 1);
-        }
-        else if (element == "Vertex") {
-            detail = new SoPointDetail();
-            static_cast<SoPointDetail*>(detail)->setCoordinateIndex(index + nodeset->startIndex.getValue() - 1);
-        }
+    if (element == "Face") {
+        SoFaceDetail* detail = new SoFaceDetail();
+        detail->setPartIndex(index - 1);
+        return detail;
+    }
+    else if (element == "Edge") {
+        SoLineDetail* detail = new SoLineDetail();
+        detail->setLineIndex(index - 1);
+        return detail;
+    }
+    else if (element == "Vertex") {
+        SoPointDetail* detail = new SoPointDetail();
+        static_cast<SoPointDetail*>(detail)->setCoordinateIndex(index + nodeset->startIndex.getValue() - 1);
+        return detail;
     }
 
-    return detail;
+    return nullptr;
 }
 
 std::vector<Base::Vector3d> ViewProviderPartExt::getModelPoints(const SoPickedPoint* pp) const
