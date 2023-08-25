@@ -67,7 +67,7 @@ Data::Segment* ComplexGeoData::getSubElementByName(const char* name) const
     boost::regex ex("^([^0-9]*)([0-9]*)$");
     boost::cmatch what;
 
-    if (boost::regex_match(name, what, ex)) {
+    if (name && boost::regex_match(name, what, ex)) {
         element = what[1].str();
         index = std::atoi(what[2].str().c_str());
     }
