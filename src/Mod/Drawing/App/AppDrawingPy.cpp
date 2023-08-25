@@ -27,6 +27,7 @@
 
 #include <Base/Console.h>
 #include <Base/Interpreter.h>
+#include <Base/PyWrapParseTupleAndKeywords.h>
 #include <Base/VectorPy.h>
 #include <Mod/Part/App/OCCError.h>
 #include <Mod/Part/App/TopoShapePy.h>
@@ -210,7 +211,7 @@ private:
         
             // Get the arguments
 
-            if (!PyArg_ParseTupleAndKeywords(
+            if (!Wrapped_ParseTupleAndKeywords(
                     args.ptr(), keys.ptr(), 
                     "O!|O!sfOOOOOO", 
                     argNames,
