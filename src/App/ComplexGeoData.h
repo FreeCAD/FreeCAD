@@ -95,6 +95,9 @@ public:
      */
     virtual std::vector<const char*> getElementTypes() const=0;
     virtual unsigned long countSubElements(const char* Type) const=0;
+    /// Returns a generic element type and index. The determined element type isn't
+    /// necessarily supported by this geometry.
+    static std::pair<std::string, unsigned long> getTypeAndIndex(const char* Name);
     /// get the sub-element by type and number
     virtual Segment* getSubElement(const char* Type, unsigned long) const=0;
     /// get sub-element by combined name
