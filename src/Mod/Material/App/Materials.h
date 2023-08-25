@@ -79,6 +79,8 @@ public:
     void setQuantity(const QString& value);
     void setURL(const QString& value);
 
+    MaterialProperty& operator=(const MaterialProperty& other);
+
 protected:
     void setType(const QString& type);
     // void setType(MaterialValue::ValueType type) { _valueType = type; }
@@ -166,6 +168,8 @@ public:
     void markDereferenced() { _dereferenced = true; }
 
     void save(QTextStream &stream, bool saveAsCopy);
+
+    Material& operator=(const Material& other);
 
 protected:
     void addModel(const QString& uuid);

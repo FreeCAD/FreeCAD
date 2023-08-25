@@ -62,6 +62,24 @@ ModelProperty::~ModelProperty()
 
 }
 
+ModelProperty& ModelProperty::operator=(const ModelProperty& other)
+{
+    if (this == &other)
+        return *this;
+
+    _name = other._name;
+    _propertyType = other._propertyType;
+    _units = other._units;
+    _url = other._url;
+    _description = other._description;
+    _inheritance = other._inheritance;
+    _columns.clear();
+    for (auto it = other._columns.begin(); it != other._columns.end(); it++)
+        _columns.push_back(*it);
+
+    return *this;
+}
+
 TYPESYSTEM_SOURCE(Materials::Model, Base::BaseClass)
 
 Model::Model()

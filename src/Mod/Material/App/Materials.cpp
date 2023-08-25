@@ -308,6 +308,25 @@ void MaterialProperty::setURL(const QString& value)
     _valuePtr->setValue(QVariant(value));
 }
 
+MaterialProperty& MaterialProperty::operator=(const MaterialProperty& other)
+{
+    if (this == &other)
+        return *this;
+
+    ModelProperty::operator=(other);
+    _modelUUID = other._modelUUID;
+    delete _valuePtr;
+    if (other._valuePtr != nullptr)
+        _valuePtr = new MaterialValue(*(other._valuePtr));
+    else
+        _valuePtr = nullptr;
+
+    _columns.clear();
+    for (auto it = other._columns.begin(); it != other._columns.end(); it++)
+        _columns.push_back(*it);
+
+    return *this;
+}
 
 TYPESYSTEM_SOURCE(Materials::Material, Base::BaseClass)
 
@@ -719,5 +738,42 @@ void Material::save(QTextStream &stream, bool saveAsCopy)
     saveAppearanceModels(stream);
 }
 
+Material& Material::operator=(const Material& other)
+{
+    if (this == &other)
+        return *this;
+
+    _library = other._library;
+    _directory = other._directory;
+    _uuid = other._uuid;
+    _name = other._name;
+    _authorAndLicense = other._authorAndLicense;
+    _parentUuid = other._parentUuid;
+    _description = other._description;
+    _url = other._url;
+    _reference = other._reference;
+    _dereferenced = other._dereferenced;
+
+    _tags.clear();
+    for (auto it = other._tags.begin(); it != other._tags.end(); it++)
+        _tags.push_back(*it);
+    _physicalUuids.clear();
+    for (auto it = other._physicalUuids.begin(); it != other._physicalUuids.end(); it++)
+        _physicalUuids.push_back(*it);
+    _appearanceUuids.clear();
+    for (auto it = other._appearanceUuids.begin(); it != other._appearanceUuids.end(); it++)
+        _appearanceUuids.push_back(*it);
+    _allUuids.clear();
+    for (auto it = other._allUuids.begin(); it != other._allUuids.end(); it++)
+        _allUuids.push_back(*it);
+    _physical.clear();
+    for (auto it = other._physical.begin(); it != other._physical.end(); it++)
+        _physical[it->first] = MaterialProperty(it->second);
+    _appearance.clear();
+    for (auto it = other._appearance.begin(); it != other._appearance.end(); it++)
+        _appearance[it->first] = MaterialProperty(it->second);
+
+    return *this;
+}
 
 #include "moc_Materials.cpp"

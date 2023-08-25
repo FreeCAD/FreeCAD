@@ -87,6 +87,8 @@ public:
     const std::vector<ModelProperty> &getColumns() const { return _columns; }
     int columns() const { return _columns.size(); }
 
+    ModelProperty& operator=(const ModelProperty& other);
+
 private:
     QString _name;
     QString _propertyType;
