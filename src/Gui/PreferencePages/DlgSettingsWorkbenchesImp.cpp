@@ -24,9 +24,11 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+#include <QAction>
 #include <QCheckBox>
-#include <QPushButton>
 #include <QLabel>
+#include <QMenu>
+#include <QPushButton>
 #include <sstream>
 #endif
 
