@@ -263,7 +263,9 @@ bool MaterialsEditor::isRecent(const QString& uuid) const
 
 void MaterialsEditor::propertyChange(const QString &property, const QString value)
 {
-    Base::Console().Log("MaterialsEditor::propertyChange()\n");
+    Base::Console().Log("MaterialsEditor::propertyChange(%s) = '%s'\n", 
+        property.toStdString().c_str(),
+        value.toStdString().c_str());
     if (_material.hasPhysicalProperty(property))
     {
         _material.setPhysicalValue(property, value);
@@ -436,7 +438,11 @@ void MaterialsEditor::createPhysicalTree()
 
     tree->setHeaderHidden(false);
     tree->setUniformRowHeights(true);
-    tree->setItemDelegateForColumn(1, new MaterialDelegate(this));
+    MaterialDelegate* delegate = new MaterialDelegate(this);
+    tree->setItemDelegateForColumn(1, delegate);
+
+    connect(delegate, &MaterialDelegate::propertyChange,
+            this, &MaterialsEditor::propertyChange);
 }
 
 void MaterialsEditor::createPreviews()

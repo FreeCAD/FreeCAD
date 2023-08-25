@@ -307,7 +307,7 @@ void MaterialDelegate::setEditorData(QWidget* editor, const QModelIndex& index) 
 void MaterialDelegate::setModelData(QWidget* editor, QAbstractItemModel* model,
                       const QModelIndex& index) const
 {
-    QStyledItemDelegate::setModelData(editor, model, index);
+        QStyledItemDelegate::setModelData(editor, model, index);
 }
 
 QWidget* MaterialDelegate::createEditor(
