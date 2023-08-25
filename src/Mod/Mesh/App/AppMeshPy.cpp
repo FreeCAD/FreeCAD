@@ -33,6 +33,7 @@
 #include <Base/GeometryPyCXX.h>
 #include <Base/Interpreter.h>
 #include <Base/PlacementPy.h>
+#include <Base/PyWrapParseTupleAndKeywords.h>
 #include <Base/VectorPy.h>
 #include "Core/Approximation.h"
 #include "Core/Evaluation.h"
@@ -211,13 +212,13 @@ private:
 
         int exportAmfCompressed( hGrp->GetBool("ExportAmfCompressed", true) );
 
-        static char *kwList[] = {"objectList", "filename", "tolerance",
-                                 "exportAmfCompressed", nullptr};
+        static const std::array<const char *, 5> kwList{"objectList", "filename", "tolerance",
+                                                        "exportAmfCompressed", nullptr};
 
-        if (!PyArg_ParseTupleAndKeywords( args.ptr(), keywds.ptr(),
-                                          "Oet|dp",
-                                          kwList, &objects, "utf-8", &fileNamePy,
-                                          &fTolerance, &exportAmfCompressed )) {
+        if (!Base::Wrapped_ParseTupleAndKeywords(args.ptr(), keywds.ptr(),
+                                                "Oet|dp",
+                                                kwList, &objects, "utf-8", &fileNamePy,
+                                                &fTolerance, &exportAmfCompressed)) {
             throw Py::Exception();
         }
 
