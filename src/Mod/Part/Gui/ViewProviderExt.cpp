@@ -515,7 +515,7 @@ SoDetail* ViewProviderPartExt::getDetail(const char* subelement) const
     boost::regex ex("^(Face|Edge|Vertex)([1-9][0-9]*)$");
     boost::cmatch what;
 
-    if (boost::regex_match(subelement, what, ex)) {
+    if (subelement && boost::regex_match(subelement, what, ex)) {
         element = what[1].str();
         index = std::atoi(what[2].str().c_str());
 
