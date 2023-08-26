@@ -238,9 +238,19 @@ void LinearPattern::handleChangedPropertyType(Base::XMLReader& reader, const cha
 
 void LinearPattern::onChanged(const App::Property* prop)
 {
+    auto mode = static_cast<LinearPatternMode>(Mode.getValue());
+
     if (prop == &Mode) {
-        auto mode = static_cast<LinearPatternMode>(Mode.getValue());
         setReadWriteStatusForMode(mode);
+    }
+
+    // Keep Length in sync with Offset
+    if (mode == LinearPatternMode::offset && prop == &Offset && !Length.testStatus(App::Property::Status::Immutable)) {
+        Length.setValue(Offset.getValue() * (Occurrences.getValue() - 1));
+    }
+
+    if (mode == LinearPatternMode::length && prop == &Length && !Offset.testStatus(App::Property::Status::Immutable)) {
+        Offset.setValue(Length.getValue() / (Occurrences.getValue() - 1));
     }
 
     Transformed::onChanged(prop);

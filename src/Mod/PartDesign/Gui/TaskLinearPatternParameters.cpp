@@ -198,7 +198,6 @@ void TaskLinearPatternParameters::setupUI()
     }
 
     adaptVisibilityToMode();
-    updateUI();
     connectSignals();
 }
 
@@ -241,6 +240,8 @@ void TaskLinearPatternParameters::adaptVisibilityToMode()
 
     ui->lengthWrapper->setVisible(mode == PartDesign::LinearPatternMode::length);
     ui->offsetWrapper->setVisible(mode == PartDesign::LinearPatternMode::offset);
+
+    updateUI();
 }
 
 void TaskLinearPatternParameters::onUpdateViewTimer()
