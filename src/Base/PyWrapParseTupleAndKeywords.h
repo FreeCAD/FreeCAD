@@ -44,6 +44,8 @@ namespace Base {
                                        const std::array<const char *, arraySize> keywords,
                                        ...)
     {
+        static_assert(arraySize > 0, "keywords array must have at least a single nullptr in it");
+
         // NOTE: This code is from getargs.c in the Python source code (modified to use the public interface at
         // PyArg_VaParseTupleAndKeywords and to return a bool).
         va_list va; // NOLINT
@@ -51,7 +53,6 @@ namespace Base {
         if ((args == nullptr || !PyTuple_Check(args)) ||
             (kw != nullptr && !PyDict_Check(kw)) ||
             format == nullptr ||
-            keywords.empty() || // It must at least have a single nullptr in it (TODO: compilation error instead)
             keywords.back() != nullptr) // It must END with a nullptr
         {
             PyErr_BadInternalCall();
