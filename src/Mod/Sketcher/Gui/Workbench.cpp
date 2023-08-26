@@ -408,7 +408,7 @@ inline void SketcherAddWorkbenchConstraints<Gui::MenuItem>(Gui::MenuItem& cons)
          << "Sketcher_ConstrainSymmetric"
          << "Sketcher_ConstrainBlock"
          << "Separator"
-         << "Sketcher_ConstrainContextual"
+         << "Sketcher_Dimension"
          << "Sketcher_ConstrainLock"
          << "Sketcher_ConstrainDistanceX"
          << "Sketcher_ConstrainDistanceY"
@@ -441,7 +441,7 @@ inline void SketcherAddWorkbenchConstraints<Gui::ToolBarItem>(Gui::ToolBarItem& 
          << "Sketcher_ConstrainBlock"
          << "Separator";
     if (hGrp->GetBool("SingleDimensioningTool", true)) {
-        cons << "Sketcher_ConstrainContextual";
+        cons << "Sketcher_Dimension";
     }
     if (hGrp->GetBool("SeparatedDimensioningTools", false)) {
         cons << "Sketcher_ConstrainLock"

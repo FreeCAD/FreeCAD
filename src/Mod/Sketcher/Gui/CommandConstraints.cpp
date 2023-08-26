@@ -991,12 +991,12 @@ void CmdSketcherConstraint::activated(int /*iMsg*/)
 }
 
 
-// Contextual Constraint tool =======================================================
+// Dimension tool =======================================================
 
-class DrawSketchHandlerConstrainContextual : public DrawSketchHandler
+class DrawSketchHandlerDimension : public DrawSketchHandler
 {
 public:
-    DrawSketchHandlerConstrainContextual()
+    DrawSketchHandlerDimension()
         : specialConstraint(SpecialConstraint::None)
         , availableConstraint(AvailableConstraint::FIRST)
         , previousOnSketchPos(Base::Vector2d(0.f, 0.f))
@@ -1007,7 +1007,7 @@ public:
         , numberOfConstraintsCreated(0)
     {
     }
-    virtual ~DrawSketchHandlerConstrainContextual()
+    virtual ~DrawSketchHandlerDimension()
     {
     }
 
@@ -1028,7 +1028,7 @@ public:
 
     void activated() override
     {
-        Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Contextual Constrain"));
+        Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Dimension"));
 
         Obj = sketchgui->getSketchObject();
 
@@ -1042,7 +1042,7 @@ public:
         qreal fullIconWidth = 32 * pixelRatio;
         qreal iconWidth = 16 * pixelRatio;
         QPixmap cursorPixmap = Gui::BitmapFactory().pixmapFromSvg("Sketcher_Crosshair", QSizeF(fullIconWidth, fullIconWidth), colorMapping),
-            icon = Gui::BitmapFactory().pixmapFromSvg("Constraint_Contextual", QSizeF(iconWidth, iconWidth));
+            icon = Gui::BitmapFactory().pixmapFromSvg("Constraint_Dimension", QSizeF(iconWidth, iconWidth));
         QPainter cursorPainter;
         cursorPainter.begin(&cursorPixmap);
         cursorPainter.drawPixmap(16 * pixelRatio, 16 * pixelRatio, icon);
@@ -1202,7 +1202,7 @@ public:
             bool continuousMode = hGrp->GetBool("ContinuousCreationMode", true);
             if (continuousMode) {
                 Gui::Selection().clearSelection();
-                Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Constrain contextually"));
+                Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Dimension"));
                 numberOfConstraintsCreated = 0;
                 specialConstraint = SpecialConstraint::None;
                 previousOnSketchPos = Base::Vector2d(0.f, 0.f);
@@ -2104,44 +2104,46 @@ protected:
     }
 };
 
-DEF_STD_CMD_AU(CmdSketcherConstrainContextual)
+DEF_STD_CMD_AU(CmdSketcherDimension)
 
-CmdSketcherConstrainContextual::CmdSketcherConstrainContextual()
-    : Command("Sketcher_ConstrainContextual")
+CmdSketcherDimension::CmdSketcherDimension()
+    : Command("Sketcher_Dimension")
 {
     sAppModule = "Sketcher";
     sGroup = "Sketcher";
-    sMenuText = QT_TR_NOOP("Contextual constrain");
-    sToolTipText = QT_TR_NOOP("Constrain contextually based on your selection.\nDepending on your selection you might have several constraints available. You can cycle through them using SHIFT key.\nLeft clicking on empty space will validate the current constraint. Right clicking or pressing Esc will cancel.");
-    sWhatsThis = "Sketcher_ConstrainContextual";
+    sMenuText = QT_TR_NOOP("Dimension");
+    sToolTipText = QT_TR_NOOP("Constrain contextually based on your selection.\n"
+        "Depending on your selection you might have several constraints available. You can cycle through them using SHIFT key.\n"
+        "Left clicking on empty space will validate the current constraint. Right clicking or pressing Esc will cancel.");
+    sWhatsThis = "Sketcher_Dimension";
     sStatusTip = sToolTipText;
-    sPixmap = "Constraint_Contextual";
-    sAccel = "A";
+    sPixmap = "Constraint_Dimension";
+    sAccel = "D";
     eType = ForEdit;
 }
 
-void CmdSketcherConstrainContextual::activated(int iMsg)
+void CmdSketcherDimension::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerConstrainContextual());
+    ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerDimension());
     getSelection().clearSelection();
 }
 
-void CmdSketcherConstrainContextual::updateAction(int mode)
+void CmdSketcherDimension::updateAction(int mode)
 {
     switch (mode) {
     case Reference:
         if (getAction())
-            getAction()->setIcon(Gui::BitmapFactory().iconFromTheme("Constraint_Contextual_Driven"));
+            getAction()->setIcon(Gui::BitmapFactory().iconFromTheme("Constraint_Dimension_Driven"));
         break;
     case Driving:
         if (getAction())
-            getAction()->setIcon(Gui::BitmapFactory().iconFromTheme("Constraint_Contextual"));
+            getAction()->setIcon(Gui::BitmapFactory().iconFromTheme("Constraint_Dimension"));
         break;
     }
 }
 
-bool CmdSketcherConstrainContextual::isActive(void)
+bool CmdSketcherDimension::isActive(void)
 {
     return isCommandActive(getActiveGuiDocument());
 }
@@ -9528,7 +9530,7 @@ CmdSketcherToggleDrivingConstraint::CmdSketcherToggleDrivingConstraint()
     rcCmdMgr.addCommandMode("ToggleDrivingConstraint", "Sketcher_ConstrainRadiam");
     rcCmdMgr.addCommandMode("ToggleDrivingConstraint", "Sketcher_ConstrainAngle");
     rcCmdMgr.addCommandMode("ToggleDrivingConstraint", "Sketcher_CompConstrainRadDia");
-    rcCmdMgr.addCommandMode("ToggleDrivingConstraint", "Sketcher_ConstrainContextual");
+    rcCmdMgr.addCommandMode("ToggleDrivingConstraint", "Sketcher_Dimension");
     // rcCmdMgr.addCommandMode("ToggleDrivingConstraint", "Sketcher_ConstrainSnellsLaw");
 }
 
@@ -9739,7 +9741,7 @@ void CreateSketcherCommandsConstraints()
     rcCmdMgr.addCommand(new CmdSketcherConstrainLock());
     rcCmdMgr.addCommand(new CmdSketcherConstrainBlock());
     rcCmdMgr.addCommand(new CmdSketcherConstrainCoincident());
-    rcCmdMgr.addCommand(new CmdSketcherConstrainContextual());
+    rcCmdMgr.addCommand(new CmdSketcherDimension());
     rcCmdMgr.addCommand(new CmdSketcherConstrainParallel());
     rcCmdMgr.addCommand(new CmdSketcherConstrainPerpendicular());
     rcCmdMgr.addCommand(new CmdSketcherConstrainTangent());
