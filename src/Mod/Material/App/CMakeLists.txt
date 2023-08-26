@@ -16,7 +16,7 @@ include_directories(
     ${ZLIB_INCLUDE_DIR}
     ${YAML_CPP_INCLUDE_DIR}
 )
-#link_directories(${YAML_CPP_LIBRARIES})
+link_directories(${YAML_CPP_LIBRARY_DIR})
 
 set(Material_LIBS
     ${Boost_LIBRARIES}
