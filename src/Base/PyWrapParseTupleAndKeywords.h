@@ -45,20 +45,23 @@ namespace Base {
                                        ...)
     {
         static_assert(arraySize > 0, "keywords array must have at least a single nullptr in it");
+        if (keywords.back()) {
+            PyErr_SetString(PyExc_ValueError, "Last element of keywords array is not null");
+            return false;
+        }
 
         // NOTE: This code is from getargs.c in the Python source code (modified to use the public interface at
         // PyArg_VaParseTupleAndKeywords and to return a bool).
-        va_list va; // NOLINT
 
         if ((args == nullptr || !PyTuple_Check(args)) ||
             (kw != nullptr && !PyDict_Check(kw)) ||
-            format == nullptr ||
-            keywords.back() != nullptr) // It must END with a nullptr
+            format == nullptr)
         {
             PyErr_BadInternalCall();
             return false;
         }
 
+        va_list va; // NOLINT
         va_start(va, keywords);
         // NOLINTNEXTLINE(cppcoreguidelines-pro-type-const-cast)
         int retval = PyArg_VaParseTupleAndKeywords(args, kw, format, const_cast<char **>(keywords.data()), va);
