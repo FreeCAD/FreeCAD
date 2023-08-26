@@ -65,7 +65,7 @@ public:
                                _Precision fMaxZ = -std::numeric_limits<_Precision>::max());
     BoundBox3 (const BoundBox3<_Precision> &rcBB) { *this = rcBB; }
     /** Builds box from an array of points. */
-    inline BoundBox3 (const Vector3<_Precision> *pclVect, unsigned long ulCt);
+    inline BoundBox3 (const Vector3<_Precision> *pclVect, std::size_t ulCt);
 
     /** Defines a bounding box around the center \a rcCnt with the
      * distances \a fDistance in each coordinate.
@@ -232,7 +232,7 @@ inline BoundBox3<_Precision>::BoundBox3 (_Precision fMinX, _Precision fMinY, _Pr
 }
 
 template <class _Precision>
-inline BoundBox3<_Precision>::BoundBox3 (const Vector3<_Precision> *pclVect, unsigned long ulCt)
+inline BoundBox3<_Precision>::BoundBox3 (const Vector3<_Precision> *pclVect, std::size_t ulCt)
   : MinX( std::numeric_limits<_Precision>::max())
   , MinY( std::numeric_limits<_Precision>::max())
   , MinZ( std::numeric_limits<_Precision>::max())
