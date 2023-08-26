@@ -67,17 +67,23 @@ void SketcherSettings::saveSettings()
     ui->checkBoxNotifyConstraintSubstitutions->onSave();
     ui->checkBoxAutoRemoveRedundants->onSave();
 
+    enum {
+        DimensionSingleTool,
+        DimensionSeparateTools,
+        DimensionBoth
+    };
+
     // Dimensioning constraints mode
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher/dimensioning");
     bool singleTool = true;
     bool SeparatedTools = false;
     int index = ui->dimensioningMode->currentIndex();
     switch (index) {
-    case 1:
+    case DimensionSeparateTools:
         singleTool = false;
         SeparatedTools = true;
         break;
-    case 2:
+    case DimensionBoth:
         singleTool = true;
         SeparatedTools = true;
         break;
@@ -87,15 +93,21 @@ void SketcherSettings::saveSettings()
 
     ui->radiusDiameterMode->setEnabled(index != 1);
 
+    enum {
+        DimensionAutoRadiusDiam,
+        DimensionDiameter,
+        DimensionRadius
+    };
+
     bool Diameter = true;
     bool Radius = true;
     index = ui->radiusDiameterMode->currentIndex();
     switch (index) {
-    case 1:
+    case DimensionDiameter:
         Diameter = true;
         Radius = false;
         break;
-    case 2:
+    case DimensionRadius:
         Diameter = false;
         Radius = true;
         break;
