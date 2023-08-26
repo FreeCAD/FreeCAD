@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>434</width>
-    <height>229</height>
+    <height>341</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -121,7 +121,7 @@ will be listed as available.</string>
            </widget>
           </item>
           <item row="1" column="1">
-           <widget class="Gui::PrefFileChooser" name="fc_custom_mat_dir" native="true">
+           <widget class="Gui::PrefFileChooser" name="fc_custom_mat_dir">
             <property name="enabled">
              <bool>true</bool>
             </property>
@@ -207,6 +207,31 @@ If unchecked, they will be sorted by their name.</string>
     </widget>
    </item>
    <item>
+    <widget class="QGroupBox" name="gb_materials_testing">
+     <property name="title">
+      <string>Testing</string>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_4">
+      <item>
+       <widget class="Gui::PrefCheckBox" name="cb_legacy_editor">
+        <property name="text">
+         <string>Use legacy editor</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>LegacyEditor</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Material/Cards</cstring>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
     <spacer name="verticalSpacer">
      <property name="orientation">
       <enum>Qt::Vertical</enum>
@@ -242,6 +267,7 @@ If unchecked, they will be sorted by their name.</string>
    <header>Gui/PrefWidgets.h</header>
   </customwidget>
  </customwidgets>
+ <resources/>
  <connections>
   <connection>
    <sender>cb_use_mat_from_custom_dir</sender>

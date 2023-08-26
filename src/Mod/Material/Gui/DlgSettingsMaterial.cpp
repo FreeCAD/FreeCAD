@@ -51,6 +51,9 @@ void DlgSettingsMaterial::saveSettings()
     ui->fc_custom_mat_dir->onSave();
     ui->cb_delete_duplicates->onSave();
     ui->cb_sort_by_resources->onSave();
+
+    // Temporary for testing
+    ui->cb_legacy_editor->onSave();
 }
 
 void DlgSettingsMaterial::loadSettings()
@@ -62,6 +65,9 @@ void DlgSettingsMaterial::loadSettings()
     ui->fc_custom_mat_dir->onRestore();
     ui->cb_delete_duplicates->onRestore();
     ui->cb_sort_by_resources->onRestore();
+
+    // Temporary for testing
+    ui->cb_legacy_editor->onRestore();
 }
 
 /**

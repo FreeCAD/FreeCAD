@@ -936,8 +936,13 @@ def translate(context, text):
 def openEditor(obj=None, prop=None):
     """openEditor([obj,prop]): opens the editor, optionally with
     an object name and material property name to edit"""
-    editor = MaterialEditor(obj, prop)
-    editor.exec_()
+    param = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Material/Cards")
+    legacy = param.GetBool("LegacyEditor", True)
+    if legacy:
+        editor = MaterialEditor(obj, prop)
+        editor.exec_()
+    else:
+        FreeCADGui.runCommand('Materials_Edit',0)
 
 
 def editMaterial(material=None, card_path=None, category="Solid"):
