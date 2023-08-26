@@ -1423,8 +1423,8 @@ protected:
                 }
             }
         }
-        else if (selLine.size() > 0) {
-            if (selPoints.size() == 0 && selLine.size() == 1 && selCircleArc.size() == 0 && selEllipseAndCo.size() == 0) {
+        else if (selLine.size() > 0) { //selPoints.size() is necessarily 0
+            if (selLine.size() == 1 && selCircleArc.size() == 0 && selEllipseAndCo.size() == 0) {
                 //axis can be selected but we don't want distance on axis!
                 if ((selLine[0].GeoId != Sketcher::GeoEnum::VAxis && selLine[0].GeoId != Sketcher::GeoEnum::HAxis)) {
                     //distance, horizontal, vertical, block
@@ -1458,7 +1458,7 @@ protected:
                     selAllowed = true;
                 }
             }
-            else if (selPoints.size() == 0 && selLine.size() == 2 && selCircleArc.size() == 0 && selEllipseAndCo.size() == 0) {
+            else if (selLine.size() == 2 && selCircleArc.size() == 0 && selEllipseAndCo.size() == 0) {
                 //angle (if parallel: Distance (see in createAngleConstrain)), equal.
                 if (availableConstraint == AvailableConstraint::FIRST) {
                     restartCommand(QT_TRANSLATE_NOOP("Command", "Add Angle constraint"));
@@ -1477,7 +1477,7 @@ protected:
                     availableConstraint = AvailableConstraint::RESET;
                 }
             }
-            else if (selPoints.size() == 0 && selLine.size() >= 3 && selCircleArc.size() == 0 && selEllipseAndCo.size() == 0) {
+            else if (selLine.size() >= 3 && selCircleArc.size() == 0 && selEllipseAndCo.size() == 0) {
                 //equality.
                 if (availableConstraint == AvailableConstraint::FIRST) {
                     restartCommand(QT_TRANSLATE_NOOP("Command", "Add Equality constraints"));
@@ -1488,7 +1488,7 @@ protected:
                     availableConstraint = AvailableConstraint::RESET;
                 }
             }
-            else if (selPoints.size() == 0 && selLine.size() == 1 && selCircleArc.size() == 1 && selEllipseAndCo.size() == 0) {
+            else if (selLine.size() == 1 && selCircleArc.size() == 1 && selEllipseAndCo.size() == 0) {
                 //Distance.
                 if (availableConstraint == AvailableConstraint::FIRST) {
                     restartCommand(QT_TRANSLATE_NOOP("Command", "Add length constraint"));
@@ -1497,7 +1497,7 @@ protected:
                     availableConstraint = AvailableConstraint::RESET;
                 }
             }
-            else if (selPoints.size() == 0 && selLine.size() == 1 && selCircleArc.size() == 2 && selEllipseAndCo.size() == 0) {
+            else if (selLine.size() == 1 && selCircleArc.size() == 2 && selEllipseAndCo.size() == 0) {
                 //symmetry.
                 if (availableConstraint == AvailableConstraint::FIRST) {
                     restartCommand(QT_TRANSLATE_NOOP("Command", "Add Symmetry constraints"));
@@ -1506,7 +1506,7 @@ protected:
                     availableConstraint = AvailableConstraint::RESET;
                 }
             }
-            else if (selPoints.size() == 0 && selLine.size() == 1 && selCircleArc.size() == 0 && selEllipseAndCo.size() == 1) {
+            else if (selLine.size() == 1 && selCircleArc.size() == 0 && selEllipseAndCo.size() == 1) {
                 //TODO distance between line and ellipse/arc of... not supported yet.
                 if (availableConstraint == AvailableConstraint::FIRST) {
                     //selAllowed = true;
@@ -1514,14 +1514,14 @@ protected:
                 }
             }
         }
-        else if (selCircleArc.size() > 0) {
-            if (selPoints.size() == 0 && selLine.size() == 0 && selCircleArc.size() == 1 && selEllipseAndCo.size() == 0) {
+        else if (selCircleArc.size() > 0) { //selPoints.size() & selLine.size() are necessarily 0
+            if (selCircleArc.size() == 1 && selEllipseAndCo.size() == 0) {
                 //Radius/diameter. Mode changes in createRadiusDiameterConstrain.
                 restartCommand(QT_TRANSLATE_NOOP("Command", "Add Radius constraint"));
                 createRadiusDiameterConstrain(selCircleArc[0].GeoId, onSketchPos);
                 selAllowed = true;
             }
-            else if (selPoints.size() == 0 && selLine.size() == 0 && selCircleArc.size() == 2 && selEllipseAndCo.size() == 0) {
+            else if (selCircleArc.size() == 2 && selEllipseAndCo.size() == 0) {
                 //Distance, radial distance, equality
                 if (availableConstraint == AvailableConstraint::FIRST) {
                     restartCommand(QT_TRANSLATE_NOOP("Command", "Add length constraint"));
@@ -1544,7 +1544,7 @@ protected:
                     availableConstraint = AvailableConstraint::RESET;
                 }
             }
-            else if (selPoints.size() == 0 && selLine.size() == 0 && selCircleArc.size() > 2 && selEllipseAndCo.size() == 0) {
+            else if (selCircleArc.size() > 2 && selEllipseAndCo.size() == 0) {
                 //equality.
                 if (availableConstraint == AvailableConstraint::FIRST) {
                     restartCommand(QT_TRANSLATE_NOOP("Command", "Add Equality constraint"));
@@ -1555,7 +1555,7 @@ protected:
                     availableConstraint = AvailableConstraint::RESET;
                 }
             }
-            else if (selPoints.size() == 0 && selLine.size() == 0 && selCircleArc.size() == 1 && selEllipseAndCo.size() == 1) {
+            else if (selCircleArc.size() == 1 && selEllipseAndCo.size() == 1) {
                 //TODO distance between circle and ellipse/arc of... not supported yet.
                 if (availableConstraint == AvailableConstraint::FIRST) {
                     //selAllowed = true;
@@ -1563,12 +1563,12 @@ protected:
                 }
             }
         }
-        else if (selEllipseAndCo.size() > 0) {
-            if (selPoints.size() == 0 && selLine.size() == 0 && selCircleArc.size() == 0 && selEllipseAndCo.size() == 1) {
+        else if (selEllipseAndCo.size() > 0) { //selPoints.size() & selLine.size() & selCircleArc.size() are necessarily 0
+            if (selEllipseAndCo.size() == 1) {
                 //One ellipse or arc of ellipse/hyperbola/parabola - no constrain to attribute
                 selAllowed = true;
             }
-            else if (selPoints.size() == 0 && selLine.size() == 0 && selCircleArc.size() == 0 && selEllipseAndCo.size() > 1) {
+            else if (selEllipseAndCo.size() > 1) {
                 //only ellipse or arc of of same kind, then equality of all radius.
                 bool allTheSame = 1;
                 const Part::Geometry* geom = Obj->getGeometry(selEllipseAndCo[0].GeoId);
