@@ -3,6 +3,7 @@ if(MSVC)
 else(MSVC)
     add_definitions(-DHAVE_LIMITS_H -DHAVE_CONFIG_H)
 endif(MSVC)
+add_definitions(-DYAML_CPP_STATIC_DEFINE)
 
 include_directories(
     ${CMAKE_BINARY_DIR}
