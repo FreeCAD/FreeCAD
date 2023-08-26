@@ -78,8 +78,9 @@ public:
 
 protected:
     void handleChangedPropertyType(Base::XMLReader& reader, const char* TypeName, App::Property* prop) override;
-    static const App::PropertyIntegerConstraint::Constraints intOccurrences;
     void onChanged(const App::Property* prop) override;
+
+    static const App::PropertyIntegerConstraint::Constraints intOccurrences;
 
 private:
     static const char* ModeEnums[];
