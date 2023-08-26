@@ -1,0 +1,51 @@
+---
+# ***************************************************************************
+# *                                                                         *
+# *   Copyright (c) 2023 David Carter <dcarter@davidcarter.ca>              *
+# *                                                                         *
+# *   This program is free software; you can redistribute it and/or modify  *
+# *   it under the terms of the GNU Lesser General Public License (LGPL)    *
+# *   as published by the Free Software Foundation; either version 2 of     *
+# *   the License, or (at your option) any later version.                   *
+# *   for detail see the LICENCE text file.                                 *
+# *                                                                         *
+# *   This program is distributed in the hope that it will be useful,       *
+# *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+# *   GNU Library General Public License for more details.                  *
+# *                                                                         *
+# *   You should have received a copy of the GNU Library General Public     *
+# *   License along with this program; if not, write to the Free Software   *
+# *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
+# *   USA                                                                   *
+# *                                                                         *
+# ***************************************************************************
+
+Model:
+  Name: 'Isotropic Linear Elastic'
+  UUID: 'f6f9e48c-b116-4e82-ad7f-3659a9219c50'
+  URL: 'https://en.wikipedia.org/wiki/Linear_elasticity'
+  Description: >
+    Materials that are linearly elastic obey Hooke's law i.e. the stress
+    and strain relationship is linear
+  DOI: "10.1016/j.ijplas.2004.06.004"
+  BulkModulus:
+    Type: 'Quantity'
+    Units: 'kPa'
+    URL: 'https://en.wikipedia.org/wiki/Bulk_modulus'
+    Description: "Bulk modulus in [FreeCAD Pressure unit]"
+  PoissonRatio:
+    Type: 'Float'
+    Units: ''
+    URL: 'https://en.wikipedia.org/wiki/Poisson%27s_ratio'
+    Description: "Poisson's ratio [unitless]"
+  ShearModulus:
+    Type: 'Quantity'
+    Units: 'kPa'
+    URL: 'https://en.wikipedia.org/wiki/Shear_modulus'
+    Description: "Shear modulus in [FreeCAD Pressure unit]"
+  YoungsModulus:
+    Type: 'Quantity'
+    Units: 'kPa'
+    URL: 'https://en.wikipedia.org/wiki/Young%27s_modulus'
+    Description: "Young's modulus (or E-Module) in [FreeCAD Pressure unit]"

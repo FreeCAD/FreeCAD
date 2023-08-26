@@ -23,3 +23,5 @@ import FreeCAD
 
 # import for the FreeCAD Material card
 FreeCAD.addImportType("FreeCAD Material Card (*.FCMat)", "importFCMat")
+
+FreeCAD.__unit_test__ += [ "TestMaterialsApp" ]

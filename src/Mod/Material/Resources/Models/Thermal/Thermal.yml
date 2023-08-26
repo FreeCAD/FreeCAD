@@ -1,0 +1,47 @@
+---
+# ***************************************************************************
+# *                                                                         *
+# *   Copyright (c) 2023 David Carter <dcarter@davidcarter.ca>              *
+# *                                                                         *
+# *   This program is free software; you can redistribute it and/or modify  *
+# *   it under the terms of the GNU Lesser General Public License (LGPL)    *
+# *   as published by the Free Software Foundation; either version 2 of     *
+# *   the License, or (at your option) any later version.                   *
+# *   for detail see the LICENCE text file.                                 *
+# *                                                                         *
+# *   This program is distributed in the hope that it will be useful,       *
+# *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+# *   GNU Library General Public License for more details.                  *
+# *                                                                         *
+# *   You should have received a copy of the GNU Library General Public     *
+# *   License along with this program; if not, write to the Free Software   *
+# *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
+# *   USA                                                                   *
+# *                                                                         *
+# ***************************************************************************
+
+Model:
+  Name: "Thermal"
+  UUID: '9959d007-a970-4ea7-bae4-3eb1b8b883c7'
+  URL: ''
+  Description: "default thermal model"
+  DOI: ""
+  SpecificHeat:
+    Type: 'Quantity'
+    Units: 'J/kg/K'
+    URL: 'https://en.wikipedia.org/wiki/Heat_capacity'
+    Description: "Specific capacity in [FreeCAD SpecificHeat unit]"
+  ThermalConductivity:
+    Type: 'Quantity'
+    Units: 'W/m/K'
+    URL: 'https://en.wikipedia.org/wiki/Thermal_conductivity'
+    Description: "Thermal conductivity in [FreeCAD ThermalConductivity unit]"
+  ThermalExpansionCoefficient:
+    Type: 'Quantity'
+    Units: 'm/m/K'
+    URL:
+      'https://en.wikipedia.org/wiki/Volumetric_thermal_expansion_coefficient'
+    Description: >
+      Thermal expansion coefficient (linear) in [FreeCAD
+      ThermalExpansionCoefficient unit]

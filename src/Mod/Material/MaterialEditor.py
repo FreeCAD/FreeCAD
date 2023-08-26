@@ -25,12 +25,15 @@ __author__ = "Yorik van Havre, Bernd Hahnebach"
 __url__ = "http://www.freecad.org"
 
 import os
+from pathlib import PurePath
 import sys
 from PySide import QtCore, QtGui, QtSvg
 
 import FreeCAD
 import FreeCADGui
 # import Material_rc
+from materialtools.cardutils import get_material_preferred_directory, get_material_preferred_save_directory
+
 
 # is this still needed after the move to card utils???
 unicode = str
@@ -52,17 +55,21 @@ class MaterialEditor:
         self.customprops = []
         self.internalprops = []
         self.groups = []
-        self.directory = FreeCAD.getResourceDir() + "Mod/Material"
+        self.directory = get_material_preferred_directory()
+        self.save_directory = get_material_preferred_save_directory()
+        if self.directory is None:
+            self.directory = FreeCAD.getResourceDir() + "Mod/Material"
         self.materials = {}
         self.cards = {}
         self.icons = {}
         self.initialIndex = -1
+        self.edited = False
         self.card_path = card_path
         filePath = os.path.dirname(__file__) + os.sep
         self.iconPath = (filePath + "Resources" + os.sep + "icons" + os.sep)
 
         # load the UI file from the same directory as this script
-        self.widget = FreeCADGui.PySideUic.loadUi(filePath + "materials-editor.ui")
+        self.widget = FreeCADGui.PySideUic.loadUi(filePath + "Resources" + os.sep + "ui" + os.sep + "materials-editor.ui")
         # remove unused Help button
         self.widget.setWindowFlags(self.widget.windowFlags()
                                    & ~QtCore.Qt.WindowContextHelpButtonHint)
@@ -104,7 +111,7 @@ class MaterialEditor:
         # currently closes the dialog
 
         standardButtons.rejected.connect(self.reject)
-        standardButtons.accepted.connect(self.accept)
+        standardButtons.button(QtGui.QDialogButtonBox.Ok).clicked.connect(self.verify)
         buttonOpen.clicked.connect(self.openfile)
         buttonSave.clicked.connect(self.savefile)
         buttonURL.clicked.connect(self.openProductURL)
@@ -117,6 +124,7 @@ class MaterialEditor:
         treeView.setModel(model)
         treeView.setUniformRowHeights(True)
         treeView.setItemDelegate(MaterialsDelegate())
+        model.itemChanged.connect(self.modelChange)
 
         # init model
         self.implementModel()
@@ -181,6 +189,7 @@ class MaterialEditor:
             # top.sortChildren(0)
 
         # treeView.expandAll()
+        self.edited = False
 
     def updateMatParamsInTree(self, data):
 
@@ -220,10 +229,20 @@ class MaterialEditor:
             it = QtGui.QStandardItem(i)
             userGroup.appendRow([item, it])
             self.customprops.append(k)
+        self.edited = False
 
     def chooseMaterial(self, index):
         if index < 0:
             return
+        
+        if self.verifyMaterial():
+            """
+                Save any unchanged data
+            """
+            self.edited = False
+        else:
+            return
+        
         self.card_path = self.widget.ComboMaterial.itemData(index)
         FreeCAD.Console.PrintMessage(
             "choose_material in material editor:\n"
@@ -238,6 +257,21 @@ class MaterialEditor:
             self.widget.ComboMaterial.setCurrentIndex(index)  # set after tree params
         else:
             FreeCAD.Console.PrintError("Material card not found: {}\n".format(self.card_path))
+
+    def verifyMaterial(self):
+        if self.edited:
+            reply = QtGui.QMessageBox.question(self.widget, #FreeCADGui.getMainWindow(),
+                                                translate("Material","The document has been modified."),
+                                                translate("Material","Do you want to save your changes?"),
+                                                QtGui.QMessageBox.Save | QtGui.QMessageBox.Discard | QtGui.QMessageBox.Cancel,
+                                                QtGui.QMessageBox.Save)
+
+            if reply == QtGui.QMessageBox.Cancel:
+                return False
+            if reply == QtGui.QMessageBox.Save:
+                self.savefile()
+
+        return True
 
     def updateCardsInCombo(self):
 
@@ -279,6 +313,32 @@ class MaterialEditor:
         url = it.text()
         if url:
             QtGui.QDesktopServices.openUrl(QtCore.QUrl(url, QtCore.QUrl.TolerantMode))
+
+    def modelChange(self, item):
+        """
+            Called when an item in the tree is modfied. This will set edited to True, but this
+            will be reset in the event of mass updates, such as loading a card
+        """
+        self.edited = True
+
+    def verify(self, button):
+        """
+            Verify that the user wants to save any changed data before exiting
+        """
+
+        if self.edited:
+            reply = QtGui.QMessageBox.question(self.widget, #FreeCADGui.getMainWindow(),
+                                                translate("Material","The document has been modified."),
+                                                translate("Material","Do you want to save your changes?"),
+                                                QtGui.QMessageBox.Save | QtGui.QMessageBox.Discard | QtGui.QMessageBox.Cancel,
+                                                QtGui.QMessageBox.Save)
+
+            if reply == QtGui.QMessageBox.Cancel:
+                return
+            if reply == QtGui.QMessageBox.Save:
+                self.savefile()
+        
+        self.accept()
 
     def accept(self):
         ""
@@ -340,6 +400,7 @@ class MaterialEditor:
                 it = QtGui.QStandardItem(value)
                 top.appendRow([item, it])
                 self.customprops.append(key)
+                self.edited = True
 
     def deleteCustomProperty(self, key=None):
 
@@ -375,6 +436,8 @@ class MaterialEditor:
                     it = top.child(row, 1)
                     it.setText("")
                     buttonDeleteProperty.setProperty("text", "Delete value")
+
+                self.edited = True
 
         buttonDeleteProperty.setEnabled(False)
 
@@ -505,12 +568,20 @@ class MaterialEditor:
         return color.name()
 
     def openfile(self):
+        if self.verifyMaterial():
+            """
+                Save any unchanged data
+            """
+            self.edited = False
+        else:
+            return
+
         "Opens a FCMat file"
         if self.category == "Solid":
             directory = self.directory + os.sep + "StandardMaterial"
         else:
             directory = self.directory + os.sep + "FluidMaterial"
-        if self.card_path is None:
+        if self.card_path is None or len(self.card_path) == 0:
             self.card_path = directory
         filetuple = QtGui.QFileDialog.getOpenFileName(
             QtGui.QApplication.activeWindow(),
@@ -529,8 +600,11 @@ class MaterialEditor:
         # D:/FreeCAD-build/data/Mod\Material\FluidMaterial\Air.FCMat
         # To keep it simple, we take a path from the ComboMaterial and change only the
         # material card filename
-        if self.initialIndex > -1:
-            path = self.widget.ComboMaterial.itemData(self.initialIndex)
+        #
+        # Using the initialIndex variable won't work before a card os selected for the
+        # first time, so use index 1. Index 0 is a blank entry
+        if self.widget.ComboMaterial.count() > 1:
+            path = self.widget.ComboMaterial.itemData(1)
             # at first check if we have a uniform usage
             # (if a character is not present, rsplit delivers the initial string)
             testBackslash = path.rsplit('\\', 1)[0]
@@ -590,19 +664,27 @@ class MaterialEditor:
         filetuple = QtGui.QFileDialog.getSaveFileName(
             QtGui.QApplication.activeWindow(),
             "Save FreeCAD Material file",
-            self.directory + "/" + name + ".FCMat",
+            self.save_directory + "/" + name + ".FCMat",
             "*.FCMat"
         )
         # a tuple of two empty strings returns True, so use the filename directly
         filename = filetuple[0]
         if filename:
-            self.directory = os.path.dirname(filename)
-            # should not be resource dir but user result dir instead
+            # Update the directories to the current save value
+            self.save_directory = os.path.dirname(filename)
+            self.directory = self.save_directory
+            self.card_path = filename
+
             d = self.getDict()
             # self.outputDict(d)
             if d:
+                # Set the card name to match the filename
+                path = PurePath(filename)
+                d["CardName"] = path.stem
+
                 from importFCMat import write
                 write(filename, d)
+                self.edited = False
                 self.updateCardsInCombo()
 
     def show(self):
@@ -854,8 +936,13 @@ def translate(context, text):
 def openEditor(obj=None, prop=None):
     """openEditor([obj,prop]): opens the editor, optionally with
     an object name and material property name to edit"""
-    editor = MaterialEditor(obj, prop)
-    editor.exec_()
+    param = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Material/Cards")
+    legacy = param.GetBool("LegacyEditor", True)
+    if legacy:
+        editor = MaterialEditor(obj, prop)
+        editor.exec_()
+    else:
+        FreeCADGui.runCommand('Materials_Edit',0)
 
 
 def editMaterial(material=None, card_path=None, category="Solid"):

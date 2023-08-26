@@ -2,10 +2,29 @@
   "version": "0.2.0",
   "configurations": [
     {
+      "type": "lldb",
+      "request": "launch",
+      "name": "LLDB Launch",
+      "program": "${workspaceFolder}/../freecad-build/bin/FreeCAD",
+      "args": [],
+      "cwd": "${workspaceFolder}"
+    },
+  {
+    "name": "(Windows) Launch",
+    "type": "cppvsdbg",
+    "request": "launch",
+    "program": "${workspaceFolder}/../freecad-build/bin/FreeCAD",
+    "args": [],
+    "stopAtEntry": false,
+    "cwd": "${workspaceFolder}",
+    "environment": [],
+    "externalConsole": false
+    },
+    {
       "name": "C/C++: Linux: build and debug FreeCAD",
       "type": "cppdbg",
       "request": "launch",
-      "program": "${workspaceFolder}/build/bin/FreeCAD",
+      "program": "${workspaceFolder}/../freecad-build/bin/FreeCAD",
       "args": [],
       "stopAtEntry": false,
       "cwd": "${workspaceFolder}",

@@ -1,0 +1,81 @@
+---
+# ***************************************************************************
+# *                                                                         *
+# *   Copyright (c) 2023 David Carter <dcarter@davidcarter.ca>              *
+# *                                                                         *
+# *   This program is free software; you can redistribute it and/or modify  *
+# *   it under the terms of the GNU Lesser General Public License (LGPL)    *
+# *   as published by the Free Software Foundation; either version 2 of     *
+# *   the License, or (at your option) any later version.                   *
+# *   for detail see the LICENCE text file.                                 *
+# *                                                                         *
+# *   This program is distributed in the hope that it will be useful,       *
+# *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+# *   GNU Library General Public License for more details.                  *
+# *                                                                         *
+# *   You should have received a copy of the GNU Library General Public     *
+# *   License along with this program; if not, write to the Free Software   *
+# *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
+# *   USA                                                                   *
+# *                                                                         *
+# ***************************************************************************
+
+Model:
+  Name: 'Linear Elastic'
+  UUID: '7b561d1d-fb9b-44f6-9da9-56a4f74d7536'
+  URL: 'https://en.wikipedia.org/wiki/Linear_elasticity'
+  Description: >
+    Materials that are linearly elastic obey Hooke's law i.e. the stress and
+    strain relationship is linear
+  DOI: "10.1016/j.ijplas.2004.06.004"
+  Inherits:
+    - Density:
+      UUID: '454661e5-265b-4320-8e6f-fcf6223ac3af'
+    - IsotropicLinearElastic:
+      UUID: 'f6f9e48c-b116-4e82-ad7f-3659a9219c50'
+  AngleOfFriction:
+    Type: 'Quantity'
+    Units: 'deg'
+    URL: 'https://en.wikipedia.org/wiki/Friction#Angle_of_friction'
+    Description: >
+      Further information can be found at
+      https://en.wikipedia.org/wiki/Mohr%E2%80%93Coulomb_theory
+  CompressiveStrength:
+    Type: 'Quantity'
+    Units: 'kPa'
+    URL: 'https://en.wikipedia.org/wiki/Compressive_strength'
+    Description: "Compressive strength in [FreeCAD Pressure unit]"
+  FractureToughness:
+    Type: 'Float'
+    Units: ''
+    URL: 'https://en.wikipedia.org/wiki/Fracture_toughness'
+    Description: >
+      Unit MPa * m^0.5 is not possible ATM in FreeCAD thus String. Keep in mind
+      the unit is fixed MPa * m^0.5.
+      https://github.com/FreeCAD/FreeCAD/pull/2156
+  UltimateStrain:
+    Type: 'Quantity'
+    Units: 'kPa'
+    URL: 'https://en.wikipedia.org/wiki/Deformation_(mechanics)'
+    Description: " "
+  UltimateTensileStrength:
+    Type: 'Quantity'
+    Units: 'kPa'
+    URL: 'https://en.wikipedia.org/wiki/Ultimate_tensile_strength'
+    Description: "Ultimate tensile strength in [FreeCAD Pressure unit]"
+  YieldStrength:
+    Type: 'Quantity'
+    Units: 'kPa'
+    URL: 'https://en.wikipedia.org/wiki/Yield_Strength'
+    Description: "Yield strength in [FreeCAD Pressure unit]"
+  Stiffness:
+    Type: 'Quantity'
+    Units: 'N/m'
+    URL: 'https://en.wikipedia.org/wiki/Stiffness'
+    Description: "Stiffness (or Spring Stiffness) in [FreeCAD Stiffness unit]"
+  Hardness:
+    Type: 'Quantity'
+    Units: ''
+    URL: 'https://en.wikipedia.org/wiki/Mohs_scale'
+    Description: "Hardness. FreeCAD does not currently support hardness units"

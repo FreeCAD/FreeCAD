@@ -1,0 +1,51 @@
+---
+# ***************************************************************************
+# *                                                                         *
+# *   Copyright (c) 2023 David Carter <dcarter@davidcarter.ca>              *
+# *                                                                         *
+# *   This program is free software; you can redistribute it and/or modify  *
+# *   it under the terms of the GNU Lesser General Public License (LGPL)    *
+# *   as published by the Free Software Foundation; either version 2 of     *
+# *   the License, or (at your option) any later version.                   *
+# *   for detail see the LICENCE text file.                                 *
+# *                                                                         *
+# *   This program is distributed in the hope that it will be useful,       *
+# *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+# *   GNU Library General Public License for more details.                  *
+# *                                                                         *
+# *   You should have received a copy of the GNU Library General Public     *
+# *   License along with this program; if not, write to the Free Software   *
+# *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
+# *   USA                                                                   *
+# *                                                                         *
+# ***************************************************************************
+Model:
+  Name: "Fluid"
+  UUID: '1ae66d8c-1ba1-4211-ad12-b9917573b202'
+  URL: ''
+  Description: "default fluid model"
+  DOI: ""
+  Inherits:
+    - Density:
+      UUID: '454661e5-265b-4320-8e6f-fcf6223ac3af'
+  DynamicViscosity:
+    Type: 'Quantity'
+    Units: 'Pa*s'
+    URL: 'https://en.wikipedia.org/wiki/Viscosity'
+    Description: >
+      Dynamic viscosity is defined as the ability of a material to resist
+      flow and deform during mechanical oscillation as a function of
+      temperature, frequency, time, or both
+  KinematicViscosity:
+    Type: 'Quantity'
+    Units: 'm^2/s'
+    URL: 'https://en.wikipedia.org/wiki/Viscosity'
+    Description: "Kinematic Viscosity = Dynamic Viscosity / Density"
+  PrandtlNumber:
+    Type: 'Float'
+    Units: ''
+    URL: 'https://en.wikipedia.org/wiki/Prandtl_number'
+    Description: >
+      The Prandtl number is a dimensionless number defined as the ratio
+      of momentum diffusivity to thermal diffusivity
