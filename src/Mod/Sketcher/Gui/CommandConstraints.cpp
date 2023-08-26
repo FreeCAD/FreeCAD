@@ -1007,7 +1007,7 @@ public:
         , numberOfConstraintsCreated(0)
     {
     }
-    virtual ~DrawSketchHandlerDimension()
+    ~DrawSketchHandlerDimension() override
     {
     }
 
@@ -1066,7 +1066,7 @@ public:
         sketchgui->draw(false, false); // Redraw
     }
 
-    virtual void registerPressedKey(bool pressed, int key)
+    void registerPressedKey(bool pressed, int key) override
     {
         if ((key == SoKeyboardEvent::RIGHT_SHIFT || key == SoKeyboardEvent::LEFT_SHIFT) && pressed) {
             if (availableConstraint == AvailableConstraint::FIRST) {
@@ -1088,7 +1088,7 @@ public:
         }
     }
 
-    virtual void mouseMove(Base::Vector2d onSketchPos)
+    void mouseMove(Base::Vector2d onSketchPos) override
     {
         const std::vector<Sketcher::Constraint*>& ConStr = Obj->Constraints.getValues();
         previousOnSketchPos = onSketchPos;
@@ -1119,12 +1119,12 @@ public:
         }
     }
 
-    virtual bool pressButton(Base::Vector2d onSketchPos)
+    bool pressButton(Base::Vector2d onSketchPos) override
     {
         return true;
     }
 
-    virtual bool releaseButton(Base::Vector2d onSketchPos)
+    bool releaseButton(Base::Vector2d onSketchPos) override
     {
         Q_UNUSED(onSketchPos);
 
