@@ -1178,62 +1178,14 @@ public:
 
         if (selIdPair.GeoId == GeoEnum::GeoUndef) {
             // If mouse is released on "blank" space, finalize and start over
-            // Ask for the value of datum constraints
-            ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
-            bool show = hGrp->GetBool("ShowDialogOnDistanceConstraint", true);
-            const std::vector<Sketcher::Constraint*>& ConStr = Obj->Constraints.getValues();
-
-            bool commandHandledInEditDatum = false;
-            for (int i = numberOfConstraintsCreated - 1; i >= 0; i--) {
-                if (show && ConStr[ConStr.size() - 1 - i]->isDimensional() && ConStr[ConStr.size() - 1 - i]->isDriving) {
-                    commandHandledInEditDatum = true;
-                    EditDatumDialog editDatumDialog(sketchgui, ConStr.size() - 1 - i);
-                    editDatumDialog.exec();
-                    if (!editDatumDialog.isSuccess()) {
-                        break;
-                    }
-                }
-            }
-
-            if (!commandHandledInEditDatum)
-                Gui::Command::commitCommand();
-
-            // This code enables the continuous creation mode.
-            bool continuousMode = hGrp->GetBool("ContinuousCreationMode", true);
-            if (continuousMode) {
-                Gui::Selection().clearSelection();
-                Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Dimension"));
-                numberOfConstraintsCreated = 0;
-                specialConstraint = SpecialConstraint::None;
-                previousOnSketchPos = Base::Vector2d(0.f, 0.f);
-                selPoints.clear();
-                selLine.clear();
-                selCircleArc.clear();
-                selEllipseAndCo.clear();
-            }
-            else {
-                sketchgui->purgeHandler(); // no code after this line, Handler get deleted in ViewProvider
-            }
+            finalizeCommand();
         }
 
         else if (notSelectedYet(selIdPair)) {
+            std::vector<SelIdPair>& selVector = getSelectionVector(newselGeoType);
+
             //add the geometry to its type vector. Temporarily if not selAllowed
-            if (newselGeoType == Part::GeomPoint::getClassTypeId()) {
-                selPoints.push_back(selIdPair);
-            }
-            else if (newselGeoType == Part::GeomLineSegment::getClassTypeId()) {
-                selLine.push_back(selIdPair);
-            }
-            else if (newselGeoType == Part::GeomArcOfCircle::getClassTypeId()
-                || newselGeoType == Part::GeomCircle::getClassTypeId()) {
-                selCircleArc.push_back(selIdPair);
-            }
-            else if (newselGeoType == Part::GeomEllipse::getClassTypeId()
-                || newselGeoType == Part::GeomArcOfEllipse::getClassTypeId()
-                || newselGeoType == Part::GeomArcOfHyperbola::getClassTypeId()
-                || newselGeoType == Part::GeomArcOfParabola::getClassTypeId()) {
-                selEllipseAndCo.push_back(selIdPair);
-            }
+            selVector.push_back(selIdPair);
 
             bool selAllowed = makeAppropriateConstraint(onSketchPos);
 
@@ -1245,22 +1197,7 @@ public:
                 sketchgui->draw(false, false); // Redraw
             }
             else {
-                if (newselGeoType == Part::GeomPoint::getClassTypeId()) {
-                    selPoints.pop_back();
-                }
-                else if (newselGeoType == Part::GeomLineSegment::getClassTypeId()) {
-                    selLine.pop_back();
-                }
-                else if (newselGeoType == Part::GeomArcOfCircle::getClassTypeId()
-                    || newselGeoType == Part::GeomCircle::getClassTypeId()) {
-                    selCircleArc.pop_back();
-                }
-                else if (newselGeoType == Part::GeomEllipse::getClassTypeId()
-                    || newselGeoType == Part::GeomArcOfEllipse::getClassTypeId()
-                    || newselGeoType == Part::GeomArcOfHyperbola::getClassTypeId()
-                    || newselGeoType == Part::GeomArcOfParabola::getClassTypeId()) {
-                    selEllipseAndCo.pop_back();
-                }
+                selVector.pop_back();
             }
         }
         return true;
@@ -1279,6 +1216,68 @@ protected:
     int numberOfConstraintsCreated;
 
     Sketcher::SketchObject* Obj;
+
+    void finalizeCommand()
+    {
+        // Ask for the value of datum constraints
+        ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
+        bool show = hGrp->GetBool("ShowDialogOnDistanceConstraint", true);
+        const std::vector<Sketcher::Constraint*>& ConStr = Obj->Constraints.getValues();
+
+        bool commandHandledInEditDatum = false;
+        for (int i = numberOfConstraintsCreated - 1; i >= 0; i--) {
+            if (show && ConStr[ConStr.size() - 1 - i]->isDimensional() && ConStr[ConStr.size() - 1 - i]->isDriving) {
+                commandHandledInEditDatum = true;
+                EditDatumDialog editDatumDialog(sketchgui, ConStr.size() - 1 - i);
+                editDatumDialog.exec();
+                if (!editDatumDialog.isSuccess()) {
+                    break;
+                }
+            }
+        }
+
+        if (!commandHandledInEditDatum)
+            Gui::Command::commitCommand();
+
+        // This code enables the continuous creation mode.
+        bool continuousMode = hGrp->GetBool("ContinuousCreationMode", true);
+        if (continuousMode) {
+            Gui::Selection().clearSelection();
+            Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Dimension"));
+            numberOfConstraintsCreated = 0;
+            specialConstraint = SpecialConstraint::None;
+            previousOnSketchPos = Base::Vector2d(0.f, 0.f);
+            selPoints.clear();
+            selLine.clear();
+            selCircleArc.clear();
+            selEllipseAndCo.clear();
+        }
+        else {
+            sketchgui->purgeHandler(); // no code after this line, Handler get deleted in ViewProvider
+        }
+    }
+
+    std::vector<SelIdPair>& getSelectionVector(Base::Type selGeoType) {
+        if (selGeoType == Part::GeomPoint::getClassTypeId()) {
+            return selPoints;
+        }
+        else if (selGeoType == Part::GeomLineSegment::getClassTypeId()) {
+            return selLine;
+        }
+        else if (selGeoType == Part::GeomArcOfCircle::getClassTypeId() ||
+            selGeoType == Part::GeomCircle::getClassTypeId()) {
+            return selCircleArc;
+        }
+        else if (selGeoType == Part::GeomEllipse::getClassTypeId() ||
+            selGeoType == Part::GeomArcOfEllipse::getClassTypeId() ||
+            selGeoType == Part::GeomArcOfHyperbola::getClassTypeId() ||
+            selGeoType == Part::GeomArcOfParabola::getClassTypeId()) {
+            return selEllipseAndCo;
+        }
+
+        static std::vector<SelIdPair> emptyVector;
+        return emptyVector;
+    }
 
     bool notSelectedYet(const SelIdPair& elem)
     {
