@@ -208,6 +208,10 @@ public:
 
     /** Returns the center of the box. */
     inline Vector3<Precision> GetCenter () const;
+    /** Returns the minimum point of the box. */
+    inline Vector3<Precision> GetMinimum () const;
+    /** Returns the maximum point of the box. */
+    inline Vector3<Precision> GetMaximum () const;
     /** Compute the diagonal length of this bounding box.
      * @note It's up to the client programmer to make sure that this bounding box is valid.
      */
@@ -225,6 +229,8 @@ public:
     inline Precision LengthY () const;
     /** Calculates expansion in z-direction. */
     inline Precision LengthZ () const;
+    /** Calculates the volume. If the box is invalid a negative value is returned */
+    inline Precision Volume () const;
     /** Moves in x-direction. */
     inline void MoveX (Precision value);
     /** Moves in y-direction. */
@@ -972,6 +978,18 @@ inline Vector3<Precision> BoundBox3<Precision>::GetCenter () const
 }
 
 template <class Precision>
+inline Vector3<Precision> BoundBox3<Precision>::GetMinimum () const
+{
+    return Vector3<Precision>(MinX, MinY, MinZ);
+}
+
+template <class Precision>
+inline Vector3<Precision> BoundBox3<Precision>::GetMaximum () const
+{
+    return Vector3<Precision>(MaxX, MaxY, MaxZ);
+}
+
+template <class Precision>
 inline Precision BoundBox3<Precision>::CalcDiagonalLength () const
 {
     return static_cast<Precision>(sqrt (((MaxX - MinX) * (MaxX - MinX)) +
@@ -1016,6 +1034,15 @@ template <class Precision>
 inline Precision BoundBox3<Precision>::LengthZ () const
 {
     return MaxZ - MinZ;
+}
+
+template <class Precision>
+inline Precision BoundBox3<Precision>::Volume () const
+{
+    if (!IsValid()) {
+        return -1.0;
+    }
+    return LengthX() * LengthY() * LengthZ();
 }
 
 template <class Precision>
