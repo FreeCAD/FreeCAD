@@ -64,12 +64,8 @@ public:
     Ui_TaskSweep ui;
     QString buttonText;
     std::string document;
-    Private()
-    {
-    }
-    ~Private()
-    {
-    }
+    Private() = default;
+    ~Private() = default;
 
     class EdgeSelection : public Gui::SelectionFilterGate
     {

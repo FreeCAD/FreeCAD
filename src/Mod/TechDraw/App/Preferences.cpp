@@ -402,3 +402,9 @@ double Preferences::svgHatchFactor()
     return factor;
 }
 
+//! For Sections with a Section as a base view, use the cut shape from the base
+//! view instead of the original shape
+bool Preferences::SectionUsePreviousCut()
+{
+    return getPreferenceGroup("General")->GetBool("SectionUsePreviousCut", false);
+}

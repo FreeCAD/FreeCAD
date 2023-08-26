@@ -23,6 +23,7 @@
 #ifndef MESH_SMOOTHING_H
 #define MESH_SMOOTHING_H
 
+#include <cfloat>
 #include <vector>
 
 #include "Definitions.h"
@@ -62,8 +63,8 @@ public:
 protected:
     MeshKernel& kernel;
 
-    Component   component;
-    Continuity  continuity;
+    Component   component{Normal};
+    Continuity  continuity{C0};
 };
 
 class MeshExport PlaneFitSmoothing : public AbstractSmoothing
@@ -77,7 +78,7 @@ public:
     void SmoothPoints(unsigned int, const std::vector<PointIndex>&) override;
 
 private:
-    float maximum;
+    float maximum{FLT_MAX};
 };
 
 class MeshExport LaplaceSmoothing : public AbstractSmoothing
@@ -96,7 +97,7 @@ protected:
                   const std::vector<PointIndex>&);
 
 protected:
-    double lambda;
+    double lambda{0.6307};
 };
 
 class MeshExport TaubinSmoothing : public LaplaceSmoothing
@@ -108,7 +109,7 @@ public:
     void SetMicro(double m) { micro = m;}
 
 protected:
-    double micro;
+    double micro{0.0424};
 };
 
 /*!
@@ -132,7 +133,7 @@ private:
                       const std::vector<PointIndex>&);
 
 private:
-    int weights;
+    int weights{1};
 };
 
 } // namespace MeshCore

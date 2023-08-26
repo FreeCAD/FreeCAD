@@ -46,7 +46,7 @@ const App::PropertyIntegerConstraint::Constraints EndContinuityConstraint = {0, 
 
 PROPERTY_SOURCE(Surface::FeatureBlendCurve, Part::Spline)
 
-FeatureBlendCurve::FeatureBlendCurve() : lockOnChangeMutex(false)
+FeatureBlendCurve::FeatureBlendCurve()
 {
     ADD_PROPERTY_TYPE(StartEdge, (nullptr), "FirstEdge", App::Prop_None, "");
     ADD_PROPERTY_TYPE(StartContinuity, (2), "FirstEdge", App::Prop_None, "");

@@ -53,10 +53,6 @@ Edge2TracObject::Edge2TracObject()
     NbrOfCluster = 0;
 }
 
-Edge2TracObject::~Edge2TracObject()
-{
-}
-
 App::DocumentObjectExecReturn *Edge2TracObject::execute()
 {
     App::DocumentObject* link = Source.getValue();

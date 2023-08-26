@@ -39,10 +39,7 @@ ViewProviderCylinderParametric::ViewProviderCylinderParametric()
   sPixmap = "Part_Cylinder_Parametric";
 }
 
-ViewProviderCylinderParametric::~ViewProviderCylinderParametric()
-{
-
-}
+ViewProviderCylinderParametric::~ViewProviderCylinderParametric() = default;
 
 
 

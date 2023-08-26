@@ -761,11 +761,6 @@ TaskExtrusion::TaskExtrusion()
     Content.push_back(taskbox);
 }
 
-TaskExtrusion::~TaskExtrusion()
-{
-    // automatically deleted in the sub-class
-}
-
 bool TaskExtrusion::accept()
 {
     widget->accept();

@@ -140,8 +140,6 @@ public:
         initialize("This module is the MeshPart module."); // register with Python
     }
 
-    ~Module() override {}
-
 private:
     Py::Object invoke_method_varargs(void *method_def, const Py::Tuple &args) override
     {

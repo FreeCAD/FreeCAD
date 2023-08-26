@@ -76,11 +76,6 @@ Robot6Axis::Robot6Axis()
     setKinematic(KukaIR500);
 }
 
-Robot6Axis::~Robot6Axis()
-{
-}
-
-
 void Robot6Axis::setKinematic(const AxisDefinition KinDef[6])
 {
     Chain temp;

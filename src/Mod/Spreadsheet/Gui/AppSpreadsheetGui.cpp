@@ -63,8 +63,6 @@ namespace SpreadsheetGui {
             initialize("This module is the SpreadsheetGui module."); // register with Python
         }
 
-        ~Module() override {}
-
     private:
         Py::Object open(const Py::Tuple& args)
         {

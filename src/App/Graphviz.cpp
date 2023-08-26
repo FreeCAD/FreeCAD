@@ -94,7 +94,7 @@ void Document::exportGraphviz(std::ostream& out) const
     class GraphCreator {
     public:
 
-        explicit GraphCreator(struct DocumentP* _d) : d(_d), vertex_no(0), seed(std::random_device()()), distribution(0,255) {
+        explicit GraphCreator(struct DocumentP* _d) : d(_d), seed(std::random_device()()), distribution(0,255) {
             build();
         }
 
@@ -658,7 +658,7 @@ void Document::exportGraphviz(std::ostream& out) const
 
         const struct DocumentP* d;
         Graph DepList;
-        int vertex_no;
+        int vertex_no{0};
         std::map<std::string, Vertex> LocalVertexList;
         std::map<std::string, Vertex> GlobalVertexList;
         std::set<const DocumentObject*> objects;

@@ -305,24 +305,17 @@ private:
     void onRestoreViews();
 
 private:
-    const int maxViews;
-    int savedViews;
-    int offset;
-    QAction* saveView;
-    QAction* freezeView;
-    QAction* clearView;
-    QAction* separator;
+    const int maxViews{50};
+    int savedViews{0};
+    int offset{0};
+    QAction* saveView{nullptr};
+    QAction* freezeView{nullptr};
+    QAction* clearView{nullptr};
+    QAction* separator{nullptr};
 };
 
 StdCmdFreezeViews::StdCmdFreezeViews()
   : Command("Std_FreezeViews")
-  , maxViews(50)
-  , savedViews(0)
-  , offset(0)
-  , saveView(nullptr)
-  , freezeView(nullptr)
-  , clearView(nullptr)
-  , separator(nullptr)
 {
     sGroup        = "Standard-View";
     sMenuText     = QT_TR_NOOP("Freeze display");

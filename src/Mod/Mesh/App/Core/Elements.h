@@ -157,7 +157,7 @@ public:
 class MeshExport MeshGeomEdge
 {
 public:
-  MeshGeomEdge () : _bBorder(false) {}
+  MeshGeomEdge () = default;
 
   /** Checks if the edge is inside the bounding box or intersects with it. */
   bool ContainedByOrIntersectBoundingBox (const Base::BoundBox3f &rclBB ) const;
@@ -212,7 +212,7 @@ public:
 
 public:
   Base::Vector3f _aclPoints[2];  /**< Corner points */
-  bool     _bBorder;       /**< Set to true if border edge */
+  bool     _bBorder{false};       /**< Set to true if border edge */
 };
 
 /**

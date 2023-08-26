@@ -78,7 +78,7 @@ protected:
     void objectDeleted(const App::DocumentObject&);
     boost::signals2::scoped_connection expressionchanged;
     boost::signals2::scoped_connection objectdeleted;
-    bool m_autoApply;
+    bool m_autoApply{false};
 };
 
 class GuiExport ExpressionWidget : public ExpressionBinding
@@ -91,9 +91,9 @@ protected:
     void makeLabel(QLineEdit* parent);
 
 protected:
-    ExpressionLabel* iconLabel;
+    ExpressionLabel* iconLabel{nullptr};
     QPalette defaultPalette;
-    int iconHeight;
+    int iconHeight{-1};
 };
 
 }

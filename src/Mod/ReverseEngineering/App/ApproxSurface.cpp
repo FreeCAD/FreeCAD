@@ -82,9 +82,7 @@ SplineBasisfunction::SplineBasisfunction(TColStd_Array1OfReal& vKnots, int iOrde
     _iOrder = iOrder;
 }
 
-SplineBasisfunction::~SplineBasisfunction()
-{
-}
+SplineBasisfunction::~SplineBasisfunction() = default;
 
 void SplineBasisfunction::SetKnots(TColStd_Array1OfReal& vKnots, int iOrder)
 {
@@ -133,9 +131,7 @@ BSplineBasis::BSplineBasis(TColStd_Array1OfReal& vKnots, int iOrder)
 {
 }
 
-BSplineBasis::~BSplineBasis()
-{
-}
+BSplineBasis::~BSplineBasis() = default;
 
 int BSplineBasis::FindSpan(double fParam)
 {
@@ -559,8 +555,6 @@ ParameterCorrection::ParameterCorrection(unsigned usUOrder, unsigned usVOrder,
   , _usVOrder(usVOrder)
   , _usUCtrlpoints(usUCtrlpoints)
   , _usVCtrlpoints(usVCtrlpoints)
-  , _pvcPoints(nullptr)
-  , _pvcUVParam(nullptr)
   , _vCtrlPntsOfSurf(0,usUCtrlpoints-1,0,usVCtrlpoints-1)
   , _vUKnots(0,usUCtrlpoints-usUOrder+1)
   , _vVKnots(0,usVCtrlpoints-usVOrder+1)

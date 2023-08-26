@@ -65,7 +65,7 @@ protected:
     void transformInput(const Base::Vector3d&, Base::Vector3d&) const;
 
 private:
-    bool hasTransform;
+    bool hasTransform{false};
     Base::Matrix4D transform;
 };
 

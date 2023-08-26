@@ -43,12 +43,7 @@ class PointsExport PropertyGreyValue : public App::PropertyFloat
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
-    PropertyGreyValue()
-    {
-    }
-    ~PropertyGreyValue() override
-    {
-    }
+    PropertyGreyValue() = default;
 };
 
 class PointsExport PropertyGreyValueList: public App::PropertyLists
@@ -57,7 +52,6 @@ class PointsExport PropertyGreyValueList: public App::PropertyLists
 
 public:
     PropertyGreyValueList();
-    ~PropertyGreyValueList() override;
     
     void setSize(int newSize) override;
     int getSize() const override;
@@ -108,7 +102,6 @@ class PointsExport PropertyNormalList: public App::PropertyLists
 
 public:
     PropertyNormalList();
-    ~PropertyNormalList() override;
 
     void setSize(int newSize) override;
     int getSize() const override;
@@ -178,7 +171,6 @@ public:
 
 public:
     PropertyCurvatureList();
-    ~PropertyCurvatureList() override;
 
     void setSize(int newSize) override {
         _lValueList.resize(newSize);

@@ -206,10 +206,7 @@ TaskDlgFilletParameters::TaskDlgFilletParameters(ViewProviderFillet *DressUpView
     Content.push_back(parameter);
 }
 
-TaskDlgFilletParameters::~TaskDlgFilletParameters()
-{
-
-}
+TaskDlgFilletParameters::~TaskDlgFilletParameters() = default;
 
 //==== calls from the TaskView ===============================================================
 

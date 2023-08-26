@@ -35,8 +35,6 @@ import draftutils.todo as todo
 
 from draftutils.messages import _msg, _log
 
-__metaclass__ = type  # to support Python 2 use of `super()`
-
 
 class GuiCommandSimplest:
     """Simplest base class for GuiCommands.

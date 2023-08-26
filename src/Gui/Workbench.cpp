@@ -1021,10 +1021,7 @@ ToolBarItem* TestWorkbench::setupCommandBars() const
 
 TYPESYSTEM_SOURCE_ABSTRACT(Gui::PythonBaseWorkbench, Gui::Workbench)
 
-PythonBaseWorkbench::PythonBaseWorkbench()
-  : _menuBar(nullptr), _contextMenu(nullptr), _toolBar(nullptr), _commandBar(nullptr), _workbenchPy(nullptr)
-{
-}
+PythonBaseWorkbench::PythonBaseWorkbench() = default;
 
 PythonBaseWorkbench::~PythonBaseWorkbench()
 {

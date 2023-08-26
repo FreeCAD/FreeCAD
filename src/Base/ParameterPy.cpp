@@ -263,7 +263,7 @@ Py::Object ParameterGrpPy::repr()
 
 Py::Object ParameterGrpPy::importFrom(const Py::Tuple& args)
 {
-    char *pstr;
+    char *pstr = nullptr;
     if (!PyArg_ParseTuple(args.ptr(), "s", &pstr))
         throw Py::Exception();
 
@@ -273,7 +273,7 @@ Py::Object ParameterGrpPy::importFrom(const Py::Tuple& args)
 
 Py::Object ParameterGrpPy::insert(const Py::Tuple& args)
 {
-    char *pstr;
+    char *pstr = nullptr;
     if (!PyArg_ParseTuple(args.ptr(), "s", &pstr))
         throw Py::Exception();
 
@@ -283,7 +283,7 @@ Py::Object ParameterGrpPy::insert(const Py::Tuple& args)
 
 Py::Object ParameterGrpPy::exportTo(const Py::Tuple& args)
 {
-    char *pstr;
+    char *pstr = nullptr;
     if (!PyArg_ParseTuple(args.ptr(), "s", &pstr))
         throw Py::Exception();
 
@@ -293,7 +293,7 @@ Py::Object ParameterGrpPy::exportTo(const Py::Tuple& args)
 
 Py::Object ParameterGrpPy::getGroup(const Py::Tuple& args)
 {
-    char *pstr;
+    char *pstr = nullptr;
     if (!PyArg_ParseTuple(args.ptr(), "s", &pstr))
         throw Py::Exception();
 
@@ -377,8 +377,8 @@ Py::Object ParameterGrpPy::getGroups(const Py::Tuple& args)
 
 Py::Object ParameterGrpPy::setBool(const Py::Tuple& args)
 {
-    char *pstr;
-    int  Bool;
+    char *pstr = nullptr;
+    int  Bool = 0;
     if (!PyArg_ParseTuple(args.ptr(), "si", &pstr,&Bool))
         throw Py::Exception();
 
@@ -388,7 +388,7 @@ Py::Object ParameterGrpPy::setBool(const Py::Tuple& args)
 
 Py::Object ParameterGrpPy::getBool(const Py::Tuple& args)
 {
-    char *pstr;
+    char *pstr = nullptr;
     int  Bool=0;
     if (!PyArg_ParseTuple(args.ptr(), "s|i", &pstr,&Bool))
         throw Py::Exception();
@@ -413,8 +413,8 @@ Py::Object ParameterGrpPy::getBools(const Py::Tuple& args)
 
 Py::Object ParameterGrpPy::setInt(const Py::Tuple& args)
 {
-    char *pstr;
-    int  Int;
+    char *pstr = nullptr;
+    int  Int = 0;
     if (!PyArg_ParseTuple(args.ptr(), "si", &pstr,&Int))
         throw Py::Exception();
 
@@ -424,7 +424,7 @@ Py::Object ParameterGrpPy::setInt(const Py::Tuple& args)
 
 Py::Object ParameterGrpPy::getInt(const Py::Tuple& args)
 {
-    char *pstr;
+    char *pstr = nullptr;
     int  Int=0;
     if (!PyArg_ParseTuple(args.ptr(), "s|i", &pstr,&Int))
         throw Py::Exception();
@@ -448,8 +448,8 @@ Py::Object ParameterGrpPy::getInts(const Py::Tuple& args)
 
 Py::Object ParameterGrpPy::setUnsigned(const Py::Tuple& args)
 {
-    char *pstr;
-    unsigned int  UInt;
+    char *pstr = nullptr;
+    unsigned int  UInt = 0;
     if (!PyArg_ParseTuple(args.ptr(), "sI", &pstr,&UInt))
         throw Py::Exception();
 
@@ -459,7 +459,7 @@ Py::Object ParameterGrpPy::setUnsigned(const Py::Tuple& args)
 
 Py::Object ParameterGrpPy::getUnsigned(const Py::Tuple& args)
 {
-    char *pstr;
+    char *pstr = nullptr;
     unsigned int  UInt=0;
     if (!PyArg_ParseTuple(args.ptr(), "s|I", &pstr,&UInt))
         throw Py::Exception();
@@ -483,8 +483,8 @@ Py::Object ParameterGrpPy::getUnsigneds(const Py::Tuple& args)
 
 Py::Object ParameterGrpPy::setFloat(const Py::Tuple& args)
 {
-    char *pstr;
-    double  Float;
+    char *pstr = nullptr;
+    double  Float{};
     if (!PyArg_ParseTuple(args.ptr(), "sd", &pstr,&Float))
         throw Py::Exception();
 
@@ -494,7 +494,7 @@ Py::Object ParameterGrpPy::setFloat(const Py::Tuple& args)
 
 Py::Object ParameterGrpPy::getFloat(const Py::Tuple& args)
 {
-    char *pstr;
+    char *pstr = nullptr;
     double  Float=0.0;
     if (!PyArg_ParseTuple(args.ptr(), "s|d", &pstr,&Float))
         throw Py::Exception();
@@ -519,8 +519,8 @@ Py::Object ParameterGrpPy::getFloats(const Py::Tuple& args)
 
 Py::Object ParameterGrpPy::setString(const Py::Tuple& args)
 {
-    char *pstr;
-    char *  str;
+    char *pstr = nullptr;
+    char *  str = nullptr;
     if (!PyArg_ParseTuple(args.ptr(), "ss", &pstr,&str))
         throw Py::Exception();
 
@@ -530,7 +530,7 @@ Py::Object ParameterGrpPy::setString(const Py::Tuple& args)
 
 Py::Object ParameterGrpPy::getString(const Py::Tuple& args)
 {
-    char *pstr;
+    char *pstr = nullptr;
     char *  str="";
     if (!PyArg_ParseTuple(args.ptr(), "s|s", &pstr,&str))
         throw Py::Exception();
@@ -555,7 +555,7 @@ Py::Object ParameterGrpPy::getStrings(const Py::Tuple& args)
 
 Py::Object ParameterGrpPy::remInt(const Py::Tuple& args)
 {
-    char *pstr;
+    char *pstr = nullptr;
     if (!PyArg_ParseTuple(args.ptr(), "s", &pstr))
         throw Py::Exception();
 
@@ -565,7 +565,7 @@ Py::Object ParameterGrpPy::remInt(const Py::Tuple& args)
 
 Py::Object ParameterGrpPy::remUnsigned(const Py::Tuple& args)
 {
-    char *pstr;
+    char *pstr = nullptr;
     if (!PyArg_ParseTuple(args.ptr(), "s", &pstr))
         throw Py::Exception();
 
@@ -575,7 +575,7 @@ Py::Object ParameterGrpPy::remUnsigned(const Py::Tuple& args)
 
 Py::Object ParameterGrpPy::remBool(const Py::Tuple& args)
 {
-    char *pstr;
+    char *pstr = nullptr;
     if (!PyArg_ParseTuple(args.ptr(), "s", &pstr))
         throw Py::Exception();
 
@@ -585,7 +585,7 @@ Py::Object ParameterGrpPy::remBool(const Py::Tuple& args)
 
 Py::Object ParameterGrpPy::remGroup(const Py::Tuple& args)
 {
-    char *pstr;
+    char *pstr = nullptr;
     if (!PyArg_ParseTuple(args.ptr(), "s", &pstr))
         throw Py::Exception();
 
@@ -595,7 +595,7 @@ Py::Object ParameterGrpPy::remGroup(const Py::Tuple& args)
 
 Py::Object ParameterGrpPy::remFloat(const Py::Tuple& args)
 {
-    char *pstr;
+    char *pstr = nullptr;
     if (!PyArg_ParseTuple(args.ptr(), "s", &pstr))
         throw Py::Exception();
 
@@ -605,7 +605,7 @@ Py::Object ParameterGrpPy::remFloat(const Py::Tuple& args)
 
 Py::Object ParameterGrpPy::remString(const Py::Tuple& args)
 {
-    char *pstr;
+    char *pstr = nullptr;
     if (!PyArg_ParseTuple(args.ptr(), "s", &pstr))
         throw Py::Exception();
 
@@ -632,7 +632,7 @@ Py::Object ParameterGrpPy::isEmpty(const Py::Tuple& args)
 
 Py::Object ParameterGrpPy::hasGroup(const Py::Tuple& args)
 {
-    char *pstr;
+    char *pstr = nullptr;
     if (!PyArg_ParseTuple(args.ptr(), "s", &pstr))
         throw Py::Exception();
 
@@ -641,7 +641,7 @@ Py::Object ParameterGrpPy::hasGroup(const Py::Tuple& args)
 
 Py::Object ParameterGrpPy::attach(const Py::Tuple& args)
 {
-    PyObject* obj;
+    PyObject* obj = nullptr;
     if (!PyArg_ParseTuple(args.ptr(), "O", &obj))
         throw Py::Exception();
 
@@ -664,7 +664,7 @@ Py::Object ParameterGrpPy::attach(const Py::Tuple& args)
 
 Py::Object ParameterGrpPy::attachManager(const Py::Tuple& args)
 {
-    PyObject* obj;
+    PyObject* obj = nullptr;
     if (!PyArg_ParseTuple(args.ptr(), "O", &obj))
         throw Py::Exception();
 
@@ -714,7 +714,7 @@ Py::Object ParameterGrpPy::attachManager(const Py::Tuple& args)
 
 Py::Object ParameterGrpPy::detach(const Py::Tuple& args)
 {
-    PyObject* obj;
+    PyObject* obj = nullptr;
     if (!PyArg_ParseTuple(args.ptr(), "O", &obj))
         throw Py::Exception();
 
@@ -737,7 +737,7 @@ Py::Object ParameterGrpPy::detach(const Py::Tuple& args)
 
 Py::Object ParameterGrpPy::notify(const Py::Tuple& args)
 {
-    char *pstr;
+    char *pstr = nullptr;
     if (!PyArg_ParseTuple(args.ptr(), "s", &pstr))
         throw Py::Exception();
 

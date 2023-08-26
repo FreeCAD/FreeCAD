@@ -59,8 +59,8 @@ namespace PointsGui {
 class ViewProviderPointsBuilder : public Gui::ViewProviderBuilder
 {
 public:
-    ViewProviderPointsBuilder(){}
-    ~ViewProviderPointsBuilder() override{}
+    ViewProviderPointsBuilder() = default;
+    ~ViewProviderPointsBuilder() override = default;
     void buildNodes(const App::Property*, std::vector<SoNode*>&) const override;
     void createPoints(const App::Property*, SoCoordinate3*, SoPointSet*) const;
     void createPoints(const App::Property*, SoCoordinate3*, SoIndexedPointSet*) const;

@@ -96,7 +96,7 @@ private:
 
 private:
     MeshKernel& myMesh;
-    bool myInner;
+    bool myInner{true};
     std::vector<MeshGeomFacet> myTriangles;
     const Base::ViewProjMethod* myProj;
     const Base::Polygon2d& myPoly;

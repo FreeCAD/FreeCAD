@@ -56,9 +56,9 @@ namespace PartGui {
     {
     public:
         enum Type {VERTEX, EDGE, FACE, ALL};
-        Type mode;
+        Type mode{ALL};
         ShapeSelection()
-            : Gui::SelectionFilterGate(nullPointer()), mode(ALL)
+            : Gui::SelectionFilterGate(nullPointer())
         {
         }
         void setMode(Type mode)
@@ -98,9 +98,7 @@ public:
         Gui::Command::runCommand(Gui::Command::App, "from FreeCAD import Base");
         Gui::Command::runCommand(Gui::Command::App, "import Part");
     }
-    ~Private()
-    {
-    }
+    ~Private() = default;
 };
 
 /* TRANSLATOR PartGui::ShapeBuilderWidget */
@@ -608,9 +606,7 @@ TaskShapeBuilder::TaskShapeBuilder()
     Content.push_back(taskbox);
 }
 
-TaskShapeBuilder::~TaskShapeBuilder()
-{
-}
+TaskShapeBuilder::~TaskShapeBuilder() = default;
 
 void TaskShapeBuilder::open()
 {

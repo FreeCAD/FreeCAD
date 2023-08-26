@@ -42,9 +42,7 @@
 using namespace MeshCore;
 
 
-MeshOrientationVisitor::MeshOrientationVisitor() : _nonuniformOrientation(false)
-{
-}
+MeshOrientationVisitor::MeshOrientationVisitor() = default;
 
 bool MeshOrientationVisitor::Visit (const MeshFacet &rclFacet, const MeshFacet &rclFrom,
                                     FacetIndex ulFInd, unsigned long ulLevel)

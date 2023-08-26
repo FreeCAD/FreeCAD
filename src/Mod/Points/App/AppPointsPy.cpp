@@ -59,16 +59,14 @@ public:
         initialize("This module is the Points module."); // register with Python
     }
 
-    ~Module() override {}
-
 private:
-    std::tuple<bool, bool, float> readE57Settings() const
+    std::tuple<bool, bool, double> readE57Settings() const
     {
         Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
             .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/Points/E57");
         bool useColor = hGrp->GetBool("UseColor", true);
         bool checkState = hGrp->GetBool("CheckInvalidState", true);
-        float minDistance = hGrp->GetFloat("MinDistance", -1.);
+        double minDistance = hGrp->GetFloat("MinDistance", -1.);
 
         return std::make_tuple(useColor, checkState, minDistance);
     }

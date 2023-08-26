@@ -595,7 +595,7 @@ App::Document* DocumentWeakPtrT::operator->() const noexcept
 
 class DocumentObjectWeakPtrT::Private {
 public:
-    explicit Private(App::DocumentObject* obj) : object(obj), indocument(false) {
+    explicit Private(App::DocumentObject* obj) : object(obj) {
         set(obj);
     }
     void deletedDocument(const App::Document& doc) {
@@ -642,7 +642,7 @@ public:
     }
 
     App::DocumentObject* object;
-    bool indocument;
+    bool indocument{false};
     using Connection = boost::signals2::scoped_connection;
     Connection connectApplicationDeletedDocument;
     Connection connectDocumentCreatedObject;

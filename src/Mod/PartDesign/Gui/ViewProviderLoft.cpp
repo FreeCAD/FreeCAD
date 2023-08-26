@@ -39,13 +39,9 @@ using namespace PartDesignGui;
 
 PROPERTY_SOURCE(PartDesignGui::ViewProviderLoft,PartDesignGui::ViewProvider)
 
-ViewProviderLoft::ViewProviderLoft()
-{
-}
+ViewProviderLoft::ViewProviderLoft() = default;
 
-ViewProviderLoft::~ViewProviderLoft()
-{
-}
+ViewProviderLoft::~ViewProviderLoft() = default;
 
 std::vector<App::DocumentObject*> ViewProviderLoft::claimChildren()const
 {

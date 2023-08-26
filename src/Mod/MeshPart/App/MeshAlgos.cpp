@@ -476,8 +476,7 @@ class _VertexCompare
         return clP1.X() < clP2.X();
     }
 
-    _VertexCompare () : dE(1.0e-5) {}
-    double dE;
+    double dE = 1.0e-5;
 };
 
 

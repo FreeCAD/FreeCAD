@@ -56,9 +56,7 @@ SegmentationManual::SegmentationManual(QWidget* parent, Qt::WindowFlags fl)
     meshSel.setEnabledViewerSelection(false);
 }
 
-SegmentationManual::~SegmentationManual()
-{
-}
+SegmentationManual::~SegmentationManual() = default;
 
 void SegmentationManual::setupConnections()
 {
@@ -320,11 +318,6 @@ TaskSegmentationManual::TaskSegmentationManual()
         QPixmap(), widget->windowTitle(), false, nullptr);
     taskbox->groupLayout()->addWidget(widget);
     Content.push_back(taskbox);
-}
-
-TaskSegmentationManual::~TaskSegmentationManual()
-{
-    // automatically deleted in the sub-class
 }
 
 void TaskSegmentationManual::modifyStandardButtons(QDialogButtonBox* box)

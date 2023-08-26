@@ -84,7 +84,6 @@ class TaskSegmentationManual : public Gui::TaskView::TaskDialog
 
 public:
     TaskSegmentationManual();
-    ~TaskSegmentationManual() override;
 
 public:
     bool accept() override;

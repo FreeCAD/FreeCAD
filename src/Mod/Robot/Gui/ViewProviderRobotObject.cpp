@@ -49,7 +49,6 @@ using namespace RobotGui;
 PROPERTY_SOURCE(RobotGui::ViewProviderRobotObject, Gui::ViewProviderGeometryObject)
 
 ViewProviderRobotObject::ViewProviderRobotObject()
-  : pcDragger(nullptr),toolShape(nullptr)
 {
     ADD_PROPERTY(Manipulator,(0));
 

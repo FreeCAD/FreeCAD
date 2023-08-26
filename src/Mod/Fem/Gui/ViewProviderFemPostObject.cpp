@@ -135,7 +135,7 @@ private:
 
 PROPERTY_SOURCE(FemGui::ViewProviderFemPostObject, Gui::ViewProviderDocumentObject)
 
-ViewProviderFemPostObject::ViewProviderFemPostObject() : m_blockPropertyChanges(false)
+ViewProviderFemPostObject::ViewProviderFemPostObject()
 {
     //initialize the properties
     ADD_PROPERTY_TYPE(Field,

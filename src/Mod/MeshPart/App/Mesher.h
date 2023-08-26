@@ -142,24 +142,24 @@ private:
 
 private:
     const TopoDS_Shape& shape;
-    Method method;
-    double maxLength;
-    double maxArea;
-    double localLength;
-    double deflection;
-    double angularDeflection;
-    double minLen, maxLen;
-    bool relative;
-    bool regular;
-    bool segments;
+    Method method{None};
+    double maxLength{0};
+    double maxArea{0};
+    double localLength{0};
+    double deflection{0};
+    double angularDeflection{0.5};
+    double minLen{0}, maxLen{0};
+    bool relative{false};
+    bool regular{false};
+    bool segments{false};
 #if defined (HAVE_NETGEN)
-    int fineness;
-    double growthRate;
-    double nbSegPerEdge;
-    double nbSegPerRadius;
-    bool secondOrder;
-    bool optimize;
-    bool allowquad;
+    int fineness{5};
+    double growthRate{0};
+    double nbSegPerEdge{0};
+    double nbSegPerRadius{0};
+    bool secondOrder{false};
+    bool optimize{true};
+    bool allowquad{false};
 #endif
     std::vector<uint32_t> colors;
 

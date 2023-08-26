@@ -465,9 +465,7 @@ ImpExpDxfWrite::ImpExpDxfWrite(std::string filepath) :
     setOptions();
 }
 
-ImpExpDxfWrite::~ImpExpDxfWrite()
-{
-}
+ImpExpDxfWrite::~ImpExpDxfWrite() = default;
 
 void ImpExpDxfWrite::setOptions()
 {

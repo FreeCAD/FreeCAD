@@ -56,10 +56,7 @@ ShapeFromMesh::ShapeFromMesh(QWidget* parent, Qt::WindowFlags fl)
     ui->doubleSpinBox->setDecimals(decimals);
 }
 
-ShapeFromMesh::~ShapeFromMesh()
-{
-
-}
+ShapeFromMesh::~ShapeFromMesh() = default;
 
 void ShapeFromMesh::perform()
 {

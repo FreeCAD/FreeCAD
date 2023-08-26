@@ -136,7 +136,7 @@ private:
 
 private:
     MeshRenderer render;
-    GLuint *selectBuf;
+    GLuint *selectBuf{nullptr};
 };
 
 } // namespace MeshGui

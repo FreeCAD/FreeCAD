@@ -94,14 +94,14 @@ public:
     //}
 };
 
-DualQuat operator+(DualQuat a, DualQuat b);
-DualQuat operator-(DualQuat a, DualQuat b);
-DualQuat operator*(DualQuat a, DualQuat b);
+BaseExport DualQuat operator+(DualQuat a, DualQuat b);
+BaseExport DualQuat operator-(DualQuat a, DualQuat b);
+BaseExport DualQuat operator*(DualQuat a, DualQuat b);
 
-DualQuat operator*(DualQuat a, double b);
-DualQuat operator*(double a, DualQuat b);
-DualQuat operator*(DualQuat a, DualNumber b);
-DualQuat operator*(DualNumber a, DualQuat b);
+BaseExport DualQuat operator*(DualQuat a, double b);
+BaseExport DualQuat operator*(double a, DualQuat b);
+BaseExport DualQuat operator*(DualQuat a, DualNumber b);
+BaseExport DualQuat operator*(DualNumber a, DualQuat b);
 
 
 } //namespace

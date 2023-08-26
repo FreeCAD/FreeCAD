@@ -45,14 +45,8 @@ using namespace PartGui;
 class OffsetWidget::Private
 {
 public:
-    Ui_TaskOffset ui;
-    Part::Offset* offset;
-    Private() : offset(nullptr)
-    {
-    }
-    ~Private()
-    {
-    }
+    Ui_TaskOffset ui{};
+    Part::Offset* offset{nullptr};
 };
 
 /* TRANSLATOR PartGui::OffsetWidget */
@@ -251,9 +245,7 @@ TaskOffset::TaskOffset(Part::Offset* offset)
     Content.push_back(taskbox);
 }
 
-TaskOffset::~TaskOffset()
-{
-}
+TaskOffset::~TaskOffset() = default;
 
 Part::Offset* TaskOffset::getObject() const
 {

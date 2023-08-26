@@ -166,9 +166,7 @@ Cell &Cell::operator =(const Cell &rhs)
   *
   */
 
-Cell::~Cell()
-{
-}
+Cell::~Cell() = default;
 
 /**
   * Set the expression tree to \a expr.

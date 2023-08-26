@@ -401,9 +401,9 @@ Rotation Rotation::operator*(const Rotation & q) const
 Rotation& Rotation::multRight(const Base::Rotation& q)
 {
     // Taken from <http://de.wikipedia.org/wiki/Quaternionen>
-    double x0, y0, z0, w0;
+    double x0{}, y0{}, z0{}, w0{};
     this->getValue(x0, y0, z0, w0);
-    double x1, y1, z1, w1;
+    double x1{}, y1{}, z1{}, w1{};
     q.getValue(x1, y1, z1, w1);
 
     this->setValue(w0*x1 + x0*w1 + y0*z1 - z0*y1,
@@ -422,9 +422,9 @@ Rotation& Rotation::multRight(const Base::Rotation& q)
 Rotation& Rotation::multLeft(const Base::Rotation& q)
 {
     // Taken from <http://de.wikipedia.org/wiki/Quaternionen>
-    double x0, y0, z0, w0;
+    double x0{}, y0{}, z0{}, w0{};
     q.getValue(x0, y0, z0, w0);
-    double x1, y1, z1, w1;
+    double x1{}, y1{}, z1{}, w1{};
     this->getValue(x1, y1, z1, w1);
 
     this->setValue(w0*x1 + x0*w1 + y0*z1 - z0*y1,
@@ -496,7 +496,7 @@ Vector3f Rotation::multVec(const Vector3f & src) const
 void Rotation::scaleAngle(const double scaleFactor)
 {
     Vector3d axis;
-    double fAngle;
+    double fAngle{};
     this->getValue(axis, fAngle);
     this->setValue(axis, fAngle * scaleFactor);
 }
@@ -574,7 +574,7 @@ Rotation Rotation::makeRotationByAxes(Vector3d xdir, Vector3d ydir, Vector3d zdi
 
 
     auto dropPriority = [&order](int index){
-        int tmp;
+        int tmp{};
         if (index == 0){
             tmp = order[0];
             order[0] = order[1];

@@ -1064,10 +1064,7 @@ TaskDlgAttacher::TaskDlgAttacher(Gui::ViewProviderDocumentObject *ViewProvider, 
     }
 }
 
-TaskDlgAttacher::~TaskDlgAttacher()
-{
-
-}
+TaskDlgAttacher::~TaskDlgAttacher() = default;
 
 //==== calls from the TaskView ===============================================================
 

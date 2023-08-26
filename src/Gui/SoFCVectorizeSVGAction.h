@@ -78,9 +78,9 @@ protected:
 private:
     SoFCVectorizeSVGActionP* p;
     friend class SoFCVectorizeSVGActionP;
-    bool m_backgroundState;
-    double m_lineWidth;
-    bool m_usemm;
+    bool m_backgroundState{true};
+    double m_lineWidth{1.0};
+    bool m_usemm{false};
 };
 
 } // namespace Gui

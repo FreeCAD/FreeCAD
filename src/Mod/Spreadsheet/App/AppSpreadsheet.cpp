@@ -39,8 +39,6 @@ public:
         initialize("This module is the Spreadsheet module."); // register with Python
     }
 
-    ~Module() override {}
-
 private:
 };
 

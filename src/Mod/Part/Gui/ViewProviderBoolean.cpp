@@ -39,13 +39,9 @@ using namespace PartGui;
 
 PROPERTY_SOURCE(PartGui::ViewProviderBoolean,PartGui::ViewProviderPart)
 
-ViewProviderBoolean::ViewProviderBoolean()
-{
-}
+ViewProviderBoolean::ViewProviderBoolean() = default;
 
-ViewProviderBoolean::~ViewProviderBoolean()
-{
-}
+ViewProviderBoolean::~ViewProviderBoolean() = default;
 
 std::vector<App::DocumentObject*> ViewProviderBoolean::claimChildren()const
 {
@@ -161,13 +157,9 @@ bool ViewProviderBoolean::onDelete(const std::vector<std::string> &)
 
 PROPERTY_SOURCE(PartGui::ViewProviderMultiFuse,PartGui::ViewProviderPart)
 
-ViewProviderMultiFuse::ViewProviderMultiFuse()
-{
-}
+ViewProviderMultiFuse::ViewProviderMultiFuse() = default;
 
-ViewProviderMultiFuse::~ViewProviderMultiFuse()
-{
-}
+ViewProviderMultiFuse::~ViewProviderMultiFuse() = default;
 
 std::vector<App::DocumentObject*> ViewProviderMultiFuse::claimChildren()const
 {
@@ -300,13 +292,9 @@ void ViewProviderMultiFuse::dropObject(App::DocumentObject* obj)
 
 PROPERTY_SOURCE(PartGui::ViewProviderMultiCommon,PartGui::ViewProviderPart)
 
-ViewProviderMultiCommon::ViewProviderMultiCommon()
-{
-}
+ViewProviderMultiCommon::ViewProviderMultiCommon() = default;
 
-ViewProviderMultiCommon::~ViewProviderMultiCommon()
-{
-}
+ViewProviderMultiCommon::~ViewProviderMultiCommon() = default;
 
 std::vector<App::DocumentObject*> ViewProviderMultiCommon::claimChildren()const
 {

@@ -54,7 +54,6 @@ class RobotExport Robot6Axis : public Base::Persistence
 
 public:
     Robot6Axis();
-    ~Robot6Axis() override;
 
     // from base class
     unsigned int getMemSize () const override;

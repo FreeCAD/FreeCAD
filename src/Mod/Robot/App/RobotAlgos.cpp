@@ -48,14 +48,9 @@ using namespace KDL;
 // FeatureView
 //===========================================================================
 
-RobotAlgos::RobotAlgos()
-{
-	
-}
+RobotAlgos::RobotAlgos() = default;
 
-RobotAlgos::~RobotAlgos()
-{
-}
+RobotAlgos::~RobotAlgos() = default;
 
 void RobotAlgos::Test()
 {

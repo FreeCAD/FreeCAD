@@ -210,8 +210,8 @@ protected:
     void addDefaultAction(QMenu*, const QString&);
 
 protected:
-    App::DocumentObject *pcObject;
-    Gui::Document* pcDocument;
+    App::DocumentObject *pcObject{nullptr};
+    Gui::Document* pcDocument{nullptr};
 
 private:
     bool _Showable = true;

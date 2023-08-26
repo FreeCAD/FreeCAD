@@ -278,11 +278,9 @@ namespace Gui {
 class UIntSpinBoxPrivate
 {
 public:
-    UnsignedValidator * mValidator;
+    UnsignedValidator * mValidator{nullptr};
 
-    UIntSpinBoxPrivate() : mValidator(nullptr)
-    {
-    }
+    UIntSpinBoxPrivate() = default;
     uint mapToUInt( int v ) const
     {
         uint ui;

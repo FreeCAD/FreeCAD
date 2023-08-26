@@ -197,7 +197,7 @@ private:
         std::string thread_type;
         std::string cut_name;
     public:
-        CutDimensionKey() {}
+        CutDimensionKey() = default;
         CutDimensionKey(const std::string &t, const std::string &c);
         bool operator<(const CutDimensionKey &b) const;
     };

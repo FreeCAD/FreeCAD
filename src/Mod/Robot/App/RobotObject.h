@@ -39,7 +39,6 @@ class RobotExport RobotObject : public App::GeoFeature
 public:
     /// Constructor
     RobotObject();
-    ~RobotObject() override;
 
     /// returns the type name of the ViewProvider
     const char* getViewProviderName() const override {
@@ -77,7 +76,7 @@ protected:
 
     Robot6Axis robot;
 
-    bool block;
+    bool block{false};
 
 };
 

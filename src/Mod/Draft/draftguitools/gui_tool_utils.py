@@ -146,8 +146,7 @@ def set_mod(args, mod, state):
 setMod = set_mod
 
 
-def get_point(target, args,
-              mobile=False, sym=False, workingplane=True, noTracker=False):
+def get_point(target, args, noTracker=False):
     """Return a constrained 3D point and its original point.
 
     It is used by the Draft tools.
@@ -164,21 +163,6 @@ def get_point(target, args,
 
     args: Coin event
         The Coin event received from the 3D view.
-
-    mobile: bool, optional
-        It defaults to `False`.
-        If it is `True` the constraining occurs from the location of
-        the mouse cursor when `Shift` is pressed; otherwise from the last
-        entered point.
-
-    sym: bool, optional
-        It defaults to `False`.
-        If it is `True`, the x and y values always stay equal.
-
-    workingplane: bool, optional
-        It defaults to `True`.
-        If it is `False`, the point won't be projected on the currently
-        active working plane.
 
     noTracker: bool, optional
         It defaults to `False`.
@@ -202,8 +186,8 @@ def get_point(target, args,
     else:
         last = None
 
-    amod = hasMod(args, MODSNAP)
-    cmod = hasMod(args, MODCONSTRAIN)
+    amod = has_mod(args, MODSNAP)
+    cmod = has_mod(args, MODCONSTRAIN)
     point = None
 
     if hasattr(Gui, "Snapper"):
@@ -221,15 +205,14 @@ def get_point(target, args,
         mask = None
 
     ctrlPoint = App.Vector(point)
+    wp = App.DraftWorkingPlane
     if target.node:
         if target.featureName == "Rectangle":
-            ui.displayPoint(point, target.node[0],
-                            plane=App.DraftWorkingPlane, mask=mask)
+            ui.displayPoint(point, target.node[0], plane=wp, mask=mask)
         else:
-            ui.displayPoint(point, target.node[-1],
-                            plane=App.DraftWorkingPlane, mask=mask)
+            ui.displayPoint(point, target.node[-1], plane=wp, mask=mask)
     else:
-        ui.displayPoint(point, plane=App.DraftWorkingPlane, mask=mask)
+        ui.displayPoint(point, plane=wp, mask=mask)
     return point, ctrlPoint, info
 
 
@@ -363,10 +346,9 @@ def get_support(mouseEvent=None):
         that contains the single selected face that was used
         to align the working plane.
     """
-    App.DraftWorkingPlane.save()
     if mouseEvent:
-        return setWorkingPlaneToObjectUnderCursor(mouseEvent)
-    return setWorkingPlaneToSelectedObject()
+        return set_working_plane_to_object_under_cursor(mouseEvent)
+    return set_working_plane_to_selected_object()
 
 
 getSupport = get_support

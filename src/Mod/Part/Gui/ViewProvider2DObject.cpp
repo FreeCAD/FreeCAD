@@ -318,13 +318,9 @@ void ViewProvider2DObjectGrid::updateGridExtent(float minx, float maxx, float mi
 
 PROPERTY_SOURCE(PartGui::ViewProvider2DObject, PartGui::ViewProviderPart)
 
-ViewProvider2DObject::ViewProvider2DObject()
-{
-}
+ViewProvider2DObject::ViewProvider2DObject() = default;
 
-ViewProvider2DObject::~ViewProvider2DObject()
-{
-}
+ViewProvider2DObject::~ViewProvider2DObject() = default;
 
 std::vector<std::string> ViewProvider2DObject::getDisplayModes() const
 {

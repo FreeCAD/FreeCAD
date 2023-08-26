@@ -185,7 +185,6 @@ public:
 WriterInventor::WriterInventor(const MeshKernel& kernel, const Material* material)
   : _kernel(kernel)
   , _material(material)
-  , apply_transform(false)
 {
 }
 

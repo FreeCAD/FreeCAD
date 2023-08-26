@@ -39,10 +39,7 @@ ViewProviderPrism::ViewProviderPrism()
     sPixmap = "Part_Prism_Parametric";
 }
 
-ViewProviderPrism::~ViewProviderPrism()
-{
-
-}
+ViewProviderPrism::~ViewProviderPrism() = default;
 
 // **********************************************************************************
 
@@ -71,10 +68,7 @@ ViewProviderWedge::ViewProviderWedge()
     sPixmap = "Part_Wedge_Parametric";
 }
 
-ViewProviderWedge::~ViewProviderWedge()
-{
-
-}
+ViewProviderWedge::~ViewProviderWedge() = default;
 
 // **********************************************************************************
 

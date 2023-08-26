@@ -336,10 +336,7 @@ TaskDlgChamferParameters::TaskDlgChamferParameters(ViewProviderChamfer *DressUpV
     Content.push_back(parameter);
 }
 
-TaskDlgChamferParameters::~TaskDlgChamferParameters()
-{
-
-}
+TaskDlgChamferParameters::~TaskDlgChamferParameters() = default;
 
 //==== calls from the TaskView ===============================================================
 

@@ -48,8 +48,6 @@ public:
         initialize("This module is the Surface module.");// register with Python
     }
 
-    ~Module() override {}
-
 private:
 };
 

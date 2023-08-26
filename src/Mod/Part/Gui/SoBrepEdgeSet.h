@@ -46,7 +46,7 @@ public:
     SoBrepEdgeSet();
 
 protected:
-    ~SoBrepEdgeSet() override {}
+    ~SoBrepEdgeSet() override = default;
     void GLRender(SoGLRenderAction *action) override;
     void GLRenderBelowPath(SoGLRenderAction * action) override;
     void doAction(SoAction* action) override;
@@ -72,7 +72,7 @@ private:
     SelContextPtr selContext;
     SelContextPtr selContext2;
     Gui::SoFCSelectionCounter selCounter;
-    uint32_t packedColor;
+    uint32_t packedColor{0};
 };
 
 } // namespace PartGui

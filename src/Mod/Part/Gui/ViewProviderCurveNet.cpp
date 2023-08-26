@@ -58,7 +58,6 @@ PROPERTY_SOURCE(PartGui::ViewProviderCurveNet,PartGui::ViewProviderPart)
 
 
 ViewProviderCurveNet::ViewProviderCurveNet()
-  : bInEdit(false),bMovePointMode(false),EdgeRoot(nullptr),VertexRoot(nullptr)
 {
     LineWidth.setValue(4.0f);
     PointSize.setValue(0.05f);
@@ -72,10 +71,7 @@ ViewProviderCurveNet::ViewProviderCurveNet()
     */
 }
 
-ViewProviderCurveNet::~ViewProviderCurveNet()
-{
-
-}
+ViewProviderCurveNet::~ViewProviderCurveNet() = default;
 
 void ViewProviderCurveNet::attach(App::DocumentObject *pcFeat)
 {

@@ -41,7 +41,6 @@ class RobotGuiExport TaskDlgEdge2Trac : public Gui::TaskView::TaskDialog
 
 public:
     explicit TaskDlgEdge2Trac(Robot::Edge2TracObject *);
-    ~TaskDlgEdge2Trac() override;
 
 public:
     /// is called the TaskView when the dialog is opened

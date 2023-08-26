@@ -64,9 +64,7 @@ ViewProviderSpline::ViewProviderSpline()
     extension.initExtension(this);
 }
 
-ViewProviderSpline::~ViewProviderSpline()
-{
-}
+ViewProviderSpline::~ViewProviderSpline() = default;
 
 QIcon ViewProviderSpline::getIcon() const
 {
@@ -79,7 +77,6 @@ EXTENSION_PROPERTY_SOURCE(PartGui::ViewProviderSplineExtension, Gui::ViewProvide
 
 
 ViewProviderSplineExtension::ViewProviderSplineExtension()
-    : pcControlPoints(nullptr)
 {
     initExtensionType(ViewProviderSplineExtension::getExtensionClassTypeId());
     EXTENSION_ADD_PROPERTY(ControlPoints,(false));

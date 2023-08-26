@@ -38,7 +38,7 @@
 
 using namespace Gui;
 
-AbstractMouseSelection::AbstractMouseSelection() : _pcView3D(nullptr)
+AbstractMouseSelection::AbstractMouseSelection()
 {
     m_iXold = 0;
     m_iYold = 0;
