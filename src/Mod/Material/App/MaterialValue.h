@@ -47,7 +47,7 @@ public:
         URL = 13
     };
     MaterialValue();
-    MaterialValue(ValueType type);
+    explicit MaterialValue(ValueType type);
     virtual ~MaterialValue();
 
     ValueType getType() { return _valueType; }
