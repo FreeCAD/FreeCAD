@@ -256,10 +256,10 @@ class Line(gui_base_original.Creator):
             import DraftGeomUtils
             n = DraftGeomUtils.getNormal(self.obj.Shape)
             if not n:
-                n = App.DraftWorkingPlane.axis
+                n = self.wp.axis
             p = self.node[-1]
             v = self.node[-1].sub(self.node[-2])
-            App.DraftWorkingPlane.alignToPointAndAxis(p, n, upvec=v)
+            self.wp.alignToPointAndAxis(p, n, upvec=v)
             if hasattr(Gui, "Snapper"):
                 Gui.Snapper.setGrid()
                 Gui.Snapper.restack()
