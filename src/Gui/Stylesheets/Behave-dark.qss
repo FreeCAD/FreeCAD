@@ -51,7 +51,7 @@ If you would like to change the overall look/style of the theme, just find and r
     SELECTION (darker to lighter)
         #1b3774
         #2053c0
-         @ThemeAccentColor2
+         @ThemeAccentColor3 text color
          @ThemeAccentColor2 = main selection color
         #6f9efa = used to build QSpinBox up and down buttons, it's used as color in the middle
         #7cabf9
@@ -106,7 +106,7 @@ Reset elements
     border-image: none;
     outline: 0;
     /*font-size: 20px;*/
-    color:  @ThemeAccentColor2; /* Default color for labels and different text elements that usually use dark colors */
+    color:  @ThemeAccentColor3; /* Default color for labels and different text elements that usually use dark colors */
 }
 
 /* specific reset for elements inside QToolBar */
@@ -845,7 +845,7 @@ Gui--PropertyEditor--PropertyEditor QAbstractSpinBox:disabled {
 
 /* hack to hide weird redundant information inside cells with links and no editable data (but editable via "..." button) */
 Gui--PropertyEditor--PropertyEditor > QWidget > QWidget > QLabel {
-    color:  @ThemeAccentColor2;
+    color:  @ThemeAccentColor3;
     background-color: #2C333D;/*was CBD8E6*/
 }
 
@@ -1240,7 +1240,7 @@ QDateTimeEdit {
 
 /* more contrast for QTexEdits */
 QTextEdit {
-    color:  @ThemeAccentColor2;
+    color:  @ThemeAccentColor3;
 }
 
 /* shifts text/number editable field to the left to make space for the up/down or drop-down buttons */
@@ -1270,7 +1270,7 @@ QTextEdit:focus,
 QTimeEdit:focus,
 QDateEdit:focus,
 QDateTimeEdit:focus {
-    color:  @ThemeAccentColor2;
+    color:  @ThemeAccentColor3;
     border-color: #7cabf9;
     border-right-color: qlineargradient(spread:pad, x1:1, y1:0.8, x2:1, y2:0, stop:0  @ThemeAccentColor2, stop:1 #7cabf9); /* same as up/down or drop-down button color */
     background-color: #2C333D;/*was CBD8E6*/
@@ -1595,7 +1595,7 @@ Tool button inside QDialogs that works as QPushButtons
 ==================================================================================================*/
 /* found under Tools -> Customize -> Macros -> Pixmap "..." button */
 QDialog QToolButton {
-    color:  @ThemeAccentColor2;
+    color:  @ThemeAccentColor3;
     text-align: center;
     background-color: qlineargradient(spread:pad, x1:0, y1:0.3, x2:0, y2:1, stop:0 #232932, stop:1 #646464);
     border: 1px solid #232932;
@@ -1630,7 +1630,7 @@ Tool button inside Task Panel content that works as QPushButtons
 ==================================================================================================*/
 /* found inside Part Design Workbench and "make a draft on a face" Task panel options */
 QSint--ActionGroup QFrame[class="content"] QToolButton {
-    color:  @ThemeAccentColor2;
+    color:  @ThemeAccentColor3;
     text-align: center;
     background-color: qlineargradient(spread:pad, x1:0, y1:0.3, x2:0, y2:1, stop:0 #232932, stop:1 #646464);
     border: 1px solid #232932;
@@ -1702,7 +1702,7 @@ QRadioButton::indicator:checked {
 
 QRadioButton,
 QRadioButton:disabled {
-    color:  @ThemeAccentColor2;
+    color:  @ThemeAccentColor3;
     padding: 3px;
     outline: none;
     background-color: transparent;
@@ -1719,7 +1719,7 @@ QRadioButton::indicator:pressed {
 }
 
 QRadioButton::indicator:disabled {
-    color:  @ThemeAccentColor2;
+    color:  @ThemeAccentColor3;
     background-color: transparent;
     border: 1px solid  @ThemeAccentColor2;
 }
@@ -1734,7 +1734,7 @@ Checkbox
 ==================================================================================================*/
 QCheckBox,
 QCheckBox:disabled {
-    color:  @ThemeAccentColor2;
+    color:  @ThemeAccentColor3;
     padding: 3px;
     outline: none;
     background-color: transparent;
@@ -2176,7 +2176,7 @@ QTableView > QWidget > QTextEdit,
 QTableView > QWidget > QTimeEdit,
 QTableView > QWidget > QDateEdit,
 QTableView > QWidget > QDateTimeEdit {
-    color:  @ThemeAccentColor2;
+    color:  @ThemeAccentColor3;
     background-color: transparent;
     border-color: transparent;
 }
@@ -2237,7 +2237,7 @@ QTableView > QWidget > QTextEdit:read-only,
 QTableView > QWidget > QTimeEdit:read-only,
 QTableView > QWidget > QDateEdit:read-only,
 QTableView > QWidget > QDateTimeEdit:read-only {
-    color:  @ThemeAccentColor2;
+    color:  @ThemeAccentColor3;
     background-color: transparent;
     border-color: transparent;
 }
