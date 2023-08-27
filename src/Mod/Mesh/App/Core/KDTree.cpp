@@ -108,7 +108,7 @@ MeshKDTree::~MeshKDTree()
     delete d;
 }
 
-void MeshKDTree::AddPoint(Base::Vector3f& point)
+void MeshKDTree::AddPoint(const Base::Vector3f& point)
 {
     PointIndex index=d->kd_tree.size();
     d->kd_tree.insert(Point3d(point, index));
