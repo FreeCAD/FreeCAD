@@ -1061,7 +1061,6 @@ public:
     void deactivated() override
     {
         Gui::Command::abortCommand();
-        //TODO: When user exit sketch edit while tool is activated solve() crashes. solve is needed to refresh the sketch after abortCommand
         Obj->solve();
         sketchgui->draw(false, false); // Redraw
     }

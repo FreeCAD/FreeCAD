@@ -100,6 +100,10 @@ bool TaskDlgEditSketch::reject()
     hGrp->SetBool("ExpandedConstraintsWidget", Constraints->isGroupVisible());
     hGrp->SetBool("ExpandedElementsWidget", Elements->isGroupVisible());
 
+    if (sketchView && sketchView->getSketchMode() != ViewProviderSketch::STATUS_NONE) {
+        sketchView->purgeHandler();
+    }
+
     std::string document = getDocumentName();// needed because resetEdit() deletes this instance
     Gui::Command::doCommand(
         Gui::Command::Gui, "Gui.getDocument('%s').resetEdit()", document.c_str());
