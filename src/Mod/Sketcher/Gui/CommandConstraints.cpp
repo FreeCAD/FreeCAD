@@ -1305,296 +1305,342 @@ protected:
         size_t s_ell = selEllipseAndCo.size();
 
         if (s_pts > 0) {
-            if (s_pts == 1 && s_lns == 0 && s_cir == 0 && s_ell == 0) {
-                //Lock, autodistance
-                if (availableConstraint == AvailableConstraint::FIRST) {
-                    restartCommand(QT_TRANSLATE_NOOP("Command", "Add lock constraint"));
-                    specialConstraint = SpecialConstraint::Block;
-                    createDistanceXYConstrain(Sketcher::DistanceX, selPoints[0].GeoId, selPoints[0].PosId, Sketcher::GeoEnum::RtPnt, Sketcher::PointPos::start, onSketchPos);
-                    createDistanceXYConstrain(Sketcher::DistanceY, selPoints[0].GeoId, selPoints[0].PosId, Sketcher::GeoEnum::RtPnt, Sketcher::PointPos::start, onSketchPos);
-                    selAllowed = true;
-                }
-                if (availableConstraint == AvailableConstraint::SECOND) {
-                    restartCommand(QT_TRANSLATE_NOOP("Command", "Add 'Distance to origin' constraint"));
-                    createDistanceConstrain(selPoints[0].GeoId, selPoints[0].PosId, Sketcher::GeoEnum::RtPnt, Sketcher::PointPos::start, onSketchPos);
-                    availableConstraint = AvailableConstraint::RESET;
-                }
-            }
-            else if (s_pts == 2 && s_lns == 0 && s_cir == 0 && s_ell == 0) {
-                //distance, horizontal, vertical
-                if (availableConstraint == AvailableConstraint::FIRST) {
-                    restartCommand(QT_TRANSLATE_NOOP("Command", "Add Distance constraint"));
-                    createDistanceConstrain(selPoints[0].GeoId, selPoints[0].PosId, selPoints[1].GeoId, selPoints[1].PosId, onSketchPos);
-                    selAllowed = true;
-                }
-                if (availableConstraint == AvailableConstraint::SECOND) {
-                    restartCommand(QT_TRANSLATE_NOOP("Command", "Add 'Horizontal' constraints"));
-                    createHorizontalConstrain(selPoints[0].GeoId, selPoints[0].PosId, selPoints[1].GeoId, selPoints[1].PosId);
-                }
-                if (availableConstraint == AvailableConstraint::THIRD) {
-                    restartCommand(QT_TRANSLATE_NOOP("Command", "Add 'Vertical' constraints"));
-                    createVerticalConstrain(selPoints[0].GeoId, selPoints[0].PosId, selPoints[1].GeoId, selPoints[1].PosId);
-                    availableConstraint = AvailableConstraint::RESET;
-                }
-            }
-            else if (s_pts == 1 && s_lns == 1 && s_cir == 0 && s_ell == 0) {
-                //distance, Symmetry
-                if (availableConstraint == AvailableConstraint::FIRST) {
-                    restartCommand(QT_TRANSLATE_NOOP("Command", "Add point to line Distance constraint"));
-                    createDistanceConstrain(selPoints[0].GeoId, selPoints[0].PosId, selLine[0].GeoId, selLine[0].PosId, onSketchPos); // line to be on second parameter
-                    selAllowed = true;
-                }
-                if (availableConstraint == AvailableConstraint::SECOND) {
-                    restartCommand(QT_TRANSLATE_NOOP("Command", "Add Symmetry constraint"));
-                    createSymmetryConstrain(selLine[0].GeoId, Sketcher::PointPos::start, selLine[0].GeoId, Sketcher::PointPos::end, selPoints[0].GeoId, selPoints[0].PosId);
-                    availableConstraint = AvailableConstraint::RESET;
-                }
-            }
-            else if (s_pts == 3 && s_lns == 0 && s_cir == 0 && s_ell == 0) {
-                //Horizontal, vertical, symmetry
-                if (availableConstraint == AvailableConstraint::FIRST) {
-                    restartCommand(QT_TRANSLATE_NOOP("Command", "Add 'Horizontal' constraints"));
-                    for (int i = 0; i < s_pts - 1; i++) {
-                        createHorizontalConstrain(selPoints[i].GeoId, selPoints[i].PosId, selPoints[i + 1].GeoId, selPoints[i + 1].PosId);
-                    }
-                    selAllowed = true;
-                }
-                if (availableConstraint == AvailableConstraint::SECOND) {
-                    restartCommand(QT_TRANSLATE_NOOP("Command", "Add 'Vertical' constraints"));
-                    for (int i = 0; i < s_pts - 1; i++) {
-                        createVerticalConstrain(selPoints[i].GeoId, selPoints[i].PosId, selPoints[i + 1].GeoId, selPoints[i + 1].PosId);
-                    }
-                }
-                if (availableConstraint == AvailableConstraint::THIRD) {
-                    restartCommand(QT_TRANSLATE_NOOP("Command", "Add Symmetry constraints"));
-                    createSymmetryConstrain(selPoints[0].GeoId, selPoints[0].PosId, selPoints[1].GeoId, selPoints[1].PosId, selPoints[2].GeoId, selPoints[2].PosId);
-                    availableConstraint = AvailableConstraint::RESET;
-                }
-            }
-            else if (s_pts >= 4 && s_lns == 0 && s_cir == 0 && s_ell == 0) {
-                //Horizontal, vertical
-                if (availableConstraint == AvailableConstraint::FIRST) {
-                    restartCommand(QT_TRANSLATE_NOOP("Command", "Add 'Horizontal' constraints"));
-                    for (int i = 0; i < s_pts - 1; i++) {
-                        createHorizontalConstrain(selPoints[i].GeoId, selPoints[i].PosId, selPoints[i + 1].GeoId, selPoints[i + 1].PosId);
-                    }
-                    selAllowed = true;
-                }
-                if (availableConstraint == AvailableConstraint::SECOND) {
-                    restartCommand(QT_TRANSLATE_NOOP("Command", "Add 'Vertical' constraints"));
-                    for (int i = 0; i < s_pts - 1; i++) {
-                        createVerticalConstrain(selPoints[i].GeoId, selPoints[i].PosId, selPoints[i + 1].GeoId, selPoints[i + 1].PosId);
-                    }
-                    availableConstraint = AvailableConstraint::RESET;
-                }
-            }
-            else if (s_pts == 2 && s_lns == 1 && s_cir == 0 && s_ell == 0) {
-                //symmetry, distances
-                if (availableConstraint == AvailableConstraint::FIRST) {
-                    restartCommand(QT_TRANSLATE_NOOP("Command", "Add Symmetry constraint"));
-                    createSymmetryConstrain(selPoints[0].GeoId, selPoints[0].PosId, selPoints[1].GeoId, selPoints[1].PosId, selLine[0].GeoId, selLine[0].PosId);
-                    selAllowed = true;
-                }
-                if (availableConstraint == AvailableConstraint::SECOND) {
-                    restartCommand(QT_TRANSLATE_NOOP("Command", "Add Distance constraints"));
-                    for (int i = 0; i < s_pts; i++) {
-                        createDistanceConstrain(selPoints[i].GeoId, selPoints[i].PosId, selLine[0].GeoId, selLine[0].PosId, onSketchPos);
-                    }
-                    availableConstraint = AvailableConstraint::RESET;
-                }
-            }
-            else if (s_pts >= 3 && s_lns == 1 && s_cir == 0 && s_ell == 0) {
-                //distances
-                if (availableConstraint == AvailableConstraint::FIRST) {
-                    restartCommand(QT_TRANSLATE_NOOP("Command", "Add Distance constraints"));
-                    for (int i = 0; i < s_pts; i++) {
-                        createDistanceConstrain(selPoints[i].GeoId, selPoints[i].PosId, selLine[0].GeoId, selLine[0].PosId, onSketchPos);
-                    }
-                    selAllowed = true;
-                    availableConstraint = AvailableConstraint::RESET;
-                }
-            }
-            else if (s_pts >= 1 && s_lns == 0 && s_cir == 1 && s_ell == 0) {
-                //distance between 1 point and circle/arc not supported yet.
-                if (availableConstraint == AvailableConstraint::FIRST) {
-                    //nothing yet
-                    //availableConstraint = AvailableConstraint::RESET;
-                }
-            }
-            else if (s_pts >= 1 && s_lns == 0 && s_cir == 0 && s_ell == 1) {
-                //distance between 1 point and elipse/arc of... not supported yet.
-                if (availableConstraint == AvailableConstraint::FIRST) {
-                    //nothing yet
-                    //availableConstraint = AvailableConstraint::RESET;
-                }
-            }
+            if (s_pts == 1 && s_lns == 0 && s_cir == 0 && s_ell == 0) { makeCts_1Point(selAllowed, onSketchPos); }
+            else if (s_pts == 2 && s_lns == 0 && s_cir == 0 && s_ell == 0) { makeCts_2Point(selAllowed, onSketchPos); }
+            else if (s_pts == 1 && s_lns == 1 && s_cir == 0 && s_ell == 0) { makeCts_1Point1Line(selAllowed, onSketchPos); }
+            else if (s_pts == 3 && s_lns == 0 && s_cir == 0 && s_ell == 0) { makeCts_3Point(selAllowed, s_pts); }
+            else if (s_pts >= 4 && s_lns == 0 && s_cir == 0 && s_ell == 0) { makeCts_4MorePoint(selAllowed, s_pts); }
+            else if (s_pts == 2 && s_lns == 1 && s_cir == 0 && s_ell == 0) { makeCts_2Point1Line(selAllowed, onSketchPos, s_pts); }
+            else if (s_pts >= 3 && s_lns == 1 && s_cir == 0 && s_ell == 0) { makeCts_3MorePoint1Line(selAllowed, onSketchPos, s_pts); }
+            else if (s_pts >= 1 && s_lns == 0 && s_cir == 1 && s_ell == 0) { makeCts_1MorePoint1Circle(selAllowed); }
+            else if (s_pts >= 1 && s_lns == 0 && s_cir == 0 && s_ell == 1) { makeCts_1MorePoint1Ellipse(selAllowed); }
         }
         else if (s_lns > 0) { //s_pts is necessarily 0
-            if (s_lns == 1 && s_cir == 0 && s_ell == 0) {
-                //axis can be selected but we don't want distance on axis!
-                if ((selLine[0].GeoId != Sketcher::GeoEnum::VAxis && selLine[0].GeoId != Sketcher::GeoEnum::HAxis)) {
-                    //distance, horizontal, vertical, block
-                    if (availableConstraint == AvailableConstraint::FIRST) {
-                        restartCommand(QT_TRANSLATE_NOOP("Command", "Add length constraint"));
-                        createDistanceConstrain(selLine[0].GeoId, Sketcher::PointPos::start, selLine[0].GeoId, Sketcher::PointPos::end, onSketchPos);
-                        selAllowed = true;
-                    }
-                    if (availableConstraint == AvailableConstraint::SECOND) {
-                        if (isHorizontalVerticalBlock(selLine[0].GeoId)) {
-                            //if the line has a vertical horizontal or block constraint then we don't switch to other modes as they are horizontal, vertical and block.
-                            availableConstraint = AvailableConstraint::RESET;
-                        }
-                        else {
-                            restartCommand(QT_TRANSLATE_NOOP("Command", "Add Horizontal constraint"));
-                            createHorizontalConstrain(selLine[0].GeoId, Sketcher::PointPos::none, GeoEnum::GeoUndef, Sketcher::PointPos::none);
-                        }
-                    }
-                    if (availableConstraint == AvailableConstraint::THIRD) {
-                        restartCommand(QT_TRANSLATE_NOOP("Command", "Add Vertical constraint"));
-                        createVerticalConstrain(selLine[0].GeoId, Sketcher::PointPos::none, GeoEnum::GeoUndef, Sketcher::PointPos::none);
-                    }
-                    if (availableConstraint == AvailableConstraint::FOURTH) {
-                        restartCommand(QT_TRANSLATE_NOOP("Command", "Add Block constraint"));
-                        createBlockConstrain(selLine[0].GeoId);
-                        availableConstraint = AvailableConstraint::RESET;
-                    }
-                }
-                else {
-                    //But axis can still be selected
-                    selAllowed = true;
-                }
-            }
-            else if (s_lns == 2 && s_cir == 0 && s_ell == 0) {
-                //angle (if parallel: Distance (see in createAngleConstrain)), equal.
-                if (availableConstraint == AvailableConstraint::FIRST) {
-                    restartCommand(QT_TRANSLATE_NOOP("Command", "Add Angle constraint"));
-                    createAngleConstrain(selLine[0].GeoId, selLine[1].GeoId, onSketchPos);
-                    selAllowed = true;
-                }
-                if (availableConstraint == AvailableConstraint::SECOND) {
-                    if (selLine[0].GeoId == Sketcher::GeoEnum::VAxis || selLine[1].GeoId == Sketcher::GeoEnum::VAxis
-                        || selLine[0].GeoId == Sketcher::GeoEnum::HAxis || selLine[1].GeoId == Sketcher::GeoEnum::HAxis) {
-                        //if one line is axis, then can't equal..
-                    }
-                    else {
-                        restartCommand(QT_TRANSLATE_NOOP("Command", "Add Equality constraint"));
-                        createEqualityConstrain(selLine[0].GeoId, selLine[1].GeoId);
-                    }
-                    availableConstraint = AvailableConstraint::RESET;
-                }
-            }
-            else if (s_lns >= 3 && s_cir == 0 && s_ell == 0) {
-                //equality.
-                if (availableConstraint == AvailableConstraint::FIRST) {
-                    restartCommand(QT_TRANSLATE_NOOP("Command", "Add Equality constraints"));
-                    for (int i = 0; i < s_lns - 1; i++) {
-                        createEqualityConstrain(selLine[i].GeoId, selLine[i + 1].GeoId);
-                    }
-                    selAllowed = true;
-                    availableConstraint = AvailableConstraint::RESET;
-                }
-            }
-            else if (s_lns == 1 && s_cir == 1 && s_ell == 0) {
-                //Distance.
-                if (availableConstraint == AvailableConstraint::FIRST) {
-                    restartCommand(QT_TRANSLATE_NOOP("Command", "Add length constraint"));
-                    createDistanceConstrain(selCircleArc[0].GeoId, selCircleArc[0].PosId, selLine[0].GeoId, selLine[0].PosId, onSketchPos); // line to be on second parameter
-                    selAllowed = true;
-                    availableConstraint = AvailableConstraint::RESET;
-                }
-            }
-            else if (s_lns == 1 && s_cir == 2 && s_ell == 0) {
-                //symmetry.
-                if (availableConstraint == AvailableConstraint::FIRST) {
-                    restartCommand(QT_TRANSLATE_NOOP("Command", "Add Symmetry constraints"));
-                    createSymmetryConstrain(selCircleArc[0].GeoId, Sketcher::PointPos::mid, selCircleArc[1].GeoId, Sketcher::PointPos::mid, selLine[0].GeoId, selLine[0].PosId);
-                    selAllowed = true;
-                    availableConstraint = AvailableConstraint::RESET;
-                }
-            }
-            else if (s_lns == 1 && s_cir == 0 && s_ell == 1) {
-                //TODO distance between line and ellipse/arc of... not supported yet.
-                if (availableConstraint == AvailableConstraint::FIRST) {
-                    //selAllowed = true;
-                    //availableConstraint = AvailableConstraint::RESET;
-                }
-            }
+            if (s_lns == 1 && s_cir == 0 && s_ell == 0) { makeCts_1Line(selAllowed, onSketchPos); }
+            else if (s_lns == 2 && s_cir == 0 && s_ell == 0) { makeCts_2Line(selAllowed, onSketchPos); }
+            else if (s_lns >= 3 && s_cir == 0 && s_ell == 0) { makeCts_3MoreLine(selAllowed, s_lns); }
+            else if (s_lns == 1 && s_cir == 1 && s_ell == 0) { makeCts_1Line1Circle(selAllowed, onSketchPos); }
+            else if (s_lns == 1 && s_cir == 2 && s_ell == 0) { makeCts_1Line2Circle(selAllowed); }
+            else if (s_lns == 1 && s_cir == 0 && s_ell == 1) { makeCts_1Line1Ellipse(selAllowed); }
         }
         else if (s_cir > 0) { //s_pts & s_lns are necessarily 0
-            if (s_cir == 1 && s_ell == 0) {
-                //Radius/diameter. Mode changes in createRadiusDiameterConstrain.
-                restartCommand(QT_TRANSLATE_NOOP("Command", "Add Radius constraint"));
-                createRadiusDiameterConstrain(selCircleArc[0].GeoId, onSketchPos);
-                selAllowed = true;
-            }
-            else if (s_cir == 2 && s_ell == 0) {
-                //Distance, radial distance, equality
-                if (availableConstraint == AvailableConstraint::FIRST) {
-                    restartCommand(QT_TRANSLATE_NOOP("Command", "Add length constraint"));
-                    createDistanceConstrain(selCircleArc[0].GeoId, selCircleArc[0].PosId, selCircleArc[1].GeoId, selCircleArc[1].PosId, onSketchPos);
-                    selAllowed = true;
-                }
-                if (availableConstraint == AvailableConstraint::SECOND) {
-                    restartCommand(QT_TRANSLATE_NOOP("Command", "Add concentric and length constraint"));
-                    createDistanceConstrain(selCircleArc[0].GeoId, selCircleArc[0].PosId, selCircleArc[1].GeoId, selCircleArc[1].PosId, onSketchPos);
-                    bool created = createCoincidenceConstrain(selCircleArc[0].GeoId, Sketcher::PointPos::mid, selCircleArc[1].GeoId, Sketcher::PointPos::mid);
-                    if (!created) { //Already concentric, so skip to next
-                        availableConstraint = AvailableConstraint::THIRD;
-                    }
-                }
-                if (availableConstraint == AvailableConstraint::THIRD) {
-                    restartCommand(QT_TRANSLATE_NOOP("Command", "Add Equality constraint"));
-                    for (int i = 0; i < s_cir - 1; i++) {
-                        createEqualityConstrain(selCircleArc[i].GeoId, selCircleArc[i + 1].GeoId);
-                    }
-                    availableConstraint = AvailableConstraint::RESET;
-                }
-            }
-            else if (s_cir > 2 && s_ell == 0) {
-                //equality.
-                if (availableConstraint == AvailableConstraint::FIRST) {
-                    restartCommand(QT_TRANSLATE_NOOP("Command", "Add Equality constraint"));
-                    for (int i = 0; i < s_cir - 1; i++) {
-                        createEqualityConstrain(selCircleArc[i].GeoId, selCircleArc[i + 1].GeoId);
-                    }
-                    selAllowed = true;
-                    availableConstraint = AvailableConstraint::RESET;
-                }
-            }
-            else if (s_cir == 1 && s_ell == 1) {
-                //TODO distance between circle and ellipse/arc of... not supported yet.
-                if (availableConstraint == AvailableConstraint::FIRST) {
-                    //selAllowed = true;
-                    //availableConstraint = AvailableConstraint::RESET;
-                }
-            }
+            if (s_cir == 1 && s_ell == 0) { makeCts_1Circle(selAllowed, onSketchPos); }
+            else if (s_cir == 2 && s_ell == 0) { makeCts_2Circle(selAllowed, onSketchPos); }
+            else if (s_cir >= 3 && s_ell == 0) { makeCts_3MoreCircle(selAllowed, s_cir); }
+            else if (s_cir == 1 && s_ell == 1) { makeCts_1Circle1Ellipse(selAllowed); }
         }
         else if (s_ell > 0) { //s_pts & s_lns & s_cir are necessarily 0
-            if (s_ell == 1) {
-                //One ellipse or arc of ellipse/hyperbola/parabola - no constrain to attribute
-                selAllowed = true;
-            }
-            else if (s_ell > 1) {
-                //only ellipse or arc of of same kind, then equality of all radius.
-                bool allTheSame = 1;
-                const Part::Geometry* geom = Obj->getGeometry(selEllipseAndCo[0].GeoId);
-                Base::Type typeOf = geom->getTypeId();
-                for (int i = 1; i < s_ell; i++) {
-                    const Part::Geometry* geomi = Obj->getGeometry(selEllipseAndCo[i].GeoId);
-                    if (typeOf != geomi->getTypeId()) {
-                        allTheSame = 0;
-                    }
-                }
-                if (allTheSame) {
-                    restartCommand(QT_TRANSLATE_NOOP("Command", "Add Equality constraint"));
-                    for (int i = 1; i < s_ell; i++) {
-                        createEqualityConstrain(selEllipseAndCo[0].GeoId, selEllipseAndCo[i].GeoId);
-                    }
-                    selAllowed = true;
-                }
-            }
+            if (s_ell == 1) { makeCts_1Ellipse(selAllowed); }
+            else if (s_ell >= 2) { makeCts_2MoreEllipse(selAllowed, s_ell); }
         }
         return selAllowed;
+    }
+
+    void makeCts_1Point(bool& selAllowed, Base::Vector2d onSketchPos)
+    {
+        //Lock, autodistance
+        if (availableConstraint == AvailableConstraint::FIRST) {
+            restartCommand(QT_TRANSLATE_NOOP("Command", "Add lock constraint"));
+            specialConstraint = SpecialConstraint::Block;
+            createDistanceXYConstrain(Sketcher::DistanceX, selPoints[0].GeoId, selPoints[0].PosId, Sketcher::GeoEnum::RtPnt, Sketcher::PointPos::start, onSketchPos);
+            createDistanceXYConstrain(Sketcher::DistanceY, selPoints[0].GeoId, selPoints[0].PosId, Sketcher::GeoEnum::RtPnt, Sketcher::PointPos::start, onSketchPos);
+            selAllowed = true;
+        }
+        if (availableConstraint == AvailableConstraint::SECOND) {
+            restartCommand(QT_TRANSLATE_NOOP("Command", "Add 'Distance to origin' constraint"));
+            createDistanceConstrain(selPoints[0].GeoId, selPoints[0].PosId, Sketcher::GeoEnum::RtPnt, Sketcher::PointPos::start, onSketchPos);
+            availableConstraint = AvailableConstraint::RESET;
+        }
+    }
+    void makeCts_2Point(bool& selAllowed, Base::Vector2d onSketchPos)
+    {
+        //distance, horizontal, vertical
+        if (availableConstraint == AvailableConstraint::FIRST) {
+            restartCommand(QT_TRANSLATE_NOOP("Command", "Add Distance constraint"));
+            createDistanceConstrain(selPoints[0].GeoId, selPoints[0].PosId, selPoints[1].GeoId, selPoints[1].PosId, onSketchPos);
+            selAllowed = true;
+        }
+        if (availableConstraint == AvailableConstraint::SECOND) {
+            restartCommand(QT_TRANSLATE_NOOP("Command", "Add 'Horizontal' constraints"));
+            createHorizontalConstrain(selPoints[0].GeoId, selPoints[0].PosId, selPoints[1].GeoId, selPoints[1].PosId);
+        }
+        if (availableConstraint == AvailableConstraint::THIRD) {
+            restartCommand(QT_TRANSLATE_NOOP("Command", "Add 'Vertical' constraints"));
+            createVerticalConstrain(selPoints[0].GeoId, selPoints[0].PosId, selPoints[1].GeoId, selPoints[1].PosId);
+            availableConstraint = AvailableConstraint::RESET;
+        }
+    }
+    void makeCts_1Point1Line(bool& selAllowed, Base::Vector2d onSketchPos)
+    {
+        //distance, Symmetry
+        if (availableConstraint == AvailableConstraint::FIRST) {
+            restartCommand(QT_TRANSLATE_NOOP("Command", "Add point to line Distance constraint"));
+            createDistanceConstrain(selPoints[0].GeoId, selPoints[0].PosId, selLine[0].GeoId, selLine[0].PosId, onSketchPos); // line to be on second parameter
+            selAllowed = true;
+        }
+        if (availableConstraint == AvailableConstraint::SECOND) {
+            restartCommand(QT_TRANSLATE_NOOP("Command", "Add Symmetry constraint"));
+            createSymmetryConstrain(selLine[0].GeoId, Sketcher::PointPos::start, selLine[0].GeoId, Sketcher::PointPos::end, selPoints[0].GeoId, selPoints[0].PosId);
+            availableConstraint = AvailableConstraint::RESET;
+        }
+    }
+    void makeCts_3Point(bool& selAllowed, size_t s_pts)
+    {
+        //Horizontal, vertical, symmetry
+        if (availableConstraint == AvailableConstraint::FIRST) {
+            restartCommand(QT_TRANSLATE_NOOP("Command", "Add 'Horizontal' constraints"));
+            for (int i = 0; i < s_pts - 1; i++) {
+                createHorizontalConstrain(selPoints[i].GeoId, selPoints[i].PosId, selPoints[i + 1].GeoId, selPoints[i + 1].PosId);
+            }
+            selAllowed = true;
+        }
+        if (availableConstraint == AvailableConstraint::SECOND) {
+            restartCommand(QT_TRANSLATE_NOOP("Command", "Add 'Vertical' constraints"));
+            for (int i = 0; i < s_pts - 1; i++) {
+                createVerticalConstrain(selPoints[i].GeoId, selPoints[i].PosId, selPoints[i + 1].GeoId, selPoints[i + 1].PosId);
+            }
+        }
+        if (availableConstraint == AvailableConstraint::THIRD) {
+            restartCommand(QT_TRANSLATE_NOOP("Command", "Add Symmetry constraints"));
+            createSymmetryConstrain(selPoints[0].GeoId, selPoints[0].PosId, selPoints[1].GeoId, selPoints[1].PosId, selPoints[2].GeoId, selPoints[2].PosId);
+            availableConstraint = AvailableConstraint::RESET;
+        }
+    }
+    void makeCts_4MorePoint(bool& selAllowed, size_t s_pts)
+    {
+        //Horizontal, vertical
+        if (availableConstraint == AvailableConstraint::FIRST) {
+            restartCommand(QT_TRANSLATE_NOOP("Command", "Add 'Horizontal' constraints"));
+            for (int i = 0; i < s_pts - 1; i++) {
+                createHorizontalConstrain(selPoints[i].GeoId, selPoints[i].PosId, selPoints[i + 1].GeoId, selPoints[i + 1].PosId);
+            }
+            selAllowed = true;
+        }
+        if (availableConstraint == AvailableConstraint::SECOND) {
+            restartCommand(QT_TRANSLATE_NOOP("Command", "Add 'Vertical' constraints"));
+            for (int i = 0; i < s_pts - 1; i++) {
+                createVerticalConstrain(selPoints[i].GeoId, selPoints[i].PosId, selPoints[i + 1].GeoId, selPoints[i + 1].PosId);
+            }
+            availableConstraint = AvailableConstraint::RESET;
+        }
+    }
+    void makeCts_2Point1Line(bool& selAllowed, Base::Vector2d onSketchPos, size_t s_pts)
+    {
+        //symmetry, distances
+        if (availableConstraint == AvailableConstraint::FIRST) {
+            restartCommand(QT_TRANSLATE_NOOP("Command", "Add Symmetry constraint"));
+            createSymmetryConstrain(selPoints[0].GeoId, selPoints[0].PosId, selPoints[1].GeoId, selPoints[1].PosId, selLine[0].GeoId, selLine[0].PosId);
+            selAllowed = true;
+        }
+        if (availableConstraint == AvailableConstraint::SECOND) {
+            restartCommand(QT_TRANSLATE_NOOP("Command", "Add Distance constraints"));
+            for (int i = 0; i < s_pts; i++) {
+                createDistanceConstrain(selPoints[i].GeoId, selPoints[i].PosId, selLine[0].GeoId, selLine[0].PosId, onSketchPos);
+            }
+            availableConstraint = AvailableConstraint::RESET;
+        }
+    }
+    void makeCts_3MorePoint1Line(bool& selAllowed, Base::Vector2d onSketchPos, size_t s_pts)
+    {
+        //distances
+        if (availableConstraint == AvailableConstraint::FIRST) {
+            restartCommand(QT_TRANSLATE_NOOP("Command", "Add Distance constraints"));
+            for (int i = 0; i < s_pts; i++) {
+                createDistanceConstrain(selPoints[i].GeoId, selPoints[i].PosId, selLine[0].GeoId, selLine[0].PosId, onSketchPos);
+            }
+            selAllowed = true;
+            availableConstraint = AvailableConstraint::RESET;
+        }
+    }
+    void makeCts_1MorePoint1Circle(bool& selAllowed)
+    {
+        //distance between 1 point and circle/arc not supported yet.
+        if (availableConstraint == AvailableConstraint::FIRST) {
+            //nothing yet
+            //availableConstraint = AvailableConstraint::RESET;
+        }
+    }
+    void makeCts_1MorePoint1Ellipse(bool& selAllowed)
+    {
+        //distance between 1 point and elipse/arc of... not supported yet.
+        if (availableConstraint == AvailableConstraint::FIRST) {
+            //nothing yet
+            //availableConstraint = AvailableConstraint::RESET;
+        }
+    }
+
+    void makeCts_1Line(bool& selAllowed, Base::Vector2d onSketchPos)
+    {
+        //axis can be selected but we don't want distance on axis!
+        if ((selLine[0].GeoId != Sketcher::GeoEnum::VAxis && selLine[0].GeoId != Sketcher::GeoEnum::HAxis)) {
+            //distance, horizontal, vertical, block
+            if (availableConstraint == AvailableConstraint::FIRST) {
+                restartCommand(QT_TRANSLATE_NOOP("Command", "Add length constraint"));
+                createDistanceConstrain(selLine[0].GeoId, Sketcher::PointPos::start, selLine[0].GeoId, Sketcher::PointPos::end, onSketchPos);
+                selAllowed = true;
+            }
+            if (availableConstraint == AvailableConstraint::SECOND) {
+                if (isHorizontalVerticalBlock(selLine[0].GeoId)) {
+                    //if the line has a vertical horizontal or block constraint then we don't switch to other modes as they are horizontal, vertical and block.
+                    availableConstraint = AvailableConstraint::RESET;
+                }
+                else {
+                    restartCommand(QT_TRANSLATE_NOOP("Command", "Add Horizontal constraint"));
+                    createHorizontalConstrain(selLine[0].GeoId, Sketcher::PointPos::none, GeoEnum::GeoUndef, Sketcher::PointPos::none);
+                }
+            }
+            if (availableConstraint == AvailableConstraint::THIRD) {
+                restartCommand(QT_TRANSLATE_NOOP("Command", "Add Vertical constraint"));
+                createVerticalConstrain(selLine[0].GeoId, Sketcher::PointPos::none, GeoEnum::GeoUndef, Sketcher::PointPos::none);
+            }
+            if (availableConstraint == AvailableConstraint::FOURTH) {
+                restartCommand(QT_TRANSLATE_NOOP("Command", "Add Block constraint"));
+                createBlockConstrain(selLine[0].GeoId);
+                availableConstraint = AvailableConstraint::RESET;
+            }
+        }
+        else {
+            //But axis can still be selected
+            selAllowed = true;
+        }
+    }
+    void makeCts_2Line(bool& selAllowed, Base::Vector2d onSketchPos)
+    {
+        //angle (if parallel: Distance (see in createAngleConstrain)), equal.
+        if (availableConstraint == AvailableConstraint::FIRST) {
+            restartCommand(QT_TRANSLATE_NOOP("Command", "Add Angle constraint"));
+            createAngleConstrain(selLine[0].GeoId, selLine[1].GeoId, onSketchPos);
+            selAllowed = true;
+        }
+        if (availableConstraint == AvailableConstraint::SECOND) {
+            if (selLine[0].GeoId == Sketcher::GeoEnum::VAxis || selLine[1].GeoId == Sketcher::GeoEnum::VAxis
+                || selLine[0].GeoId == Sketcher::GeoEnum::HAxis || selLine[1].GeoId == Sketcher::GeoEnum::HAxis) {
+                //if one line is axis, then can't equal..
+            }
+            else {
+                restartCommand(QT_TRANSLATE_NOOP("Command", "Add Equality constraint"));
+                createEqualityConstrain(selLine[0].GeoId, selLine[1].GeoId);
+            }
+            availableConstraint = AvailableConstraint::RESET;
+        }
+
+    }
+    void makeCts_3MoreLine(bool& selAllowed, size_t s_lns)
+    {
+        //equality.
+        if (availableConstraint == AvailableConstraint::FIRST) {
+            restartCommand(QT_TRANSLATE_NOOP("Command", "Add Equality constraints"));
+            for (int i = 0; i < s_lns - 1; i++) {
+                createEqualityConstrain(selLine[i].GeoId, selLine[i + 1].GeoId);
+            }
+            selAllowed = true;
+            availableConstraint = AvailableConstraint::RESET;
+        }
+    }
+    void makeCts_1Line1Circle(bool& selAllowed, Base::Vector2d onSketchPos)
+    {
+        //Distance.
+        if (availableConstraint == AvailableConstraint::FIRST) {
+            restartCommand(QT_TRANSLATE_NOOP("Command", "Add length constraint"));
+            createDistanceConstrain(selCircleArc[0].GeoId, selCircleArc[0].PosId, selLine[0].GeoId, selLine[0].PosId, onSketchPos); // line to be on second parameter
+            selAllowed = true;
+            availableConstraint = AvailableConstraint::RESET;
+        }
+    }
+    void makeCts_1Line2Circle(bool& selAllowed)
+    {
+        //symmetry.
+        if (availableConstraint == AvailableConstraint::FIRST) {
+            restartCommand(QT_TRANSLATE_NOOP("Command", "Add Symmetry constraints"));
+            createSymmetryConstrain(selCircleArc[0].GeoId, Sketcher::PointPos::mid, selCircleArc[1].GeoId, Sketcher::PointPos::mid, selLine[0].GeoId, selLine[0].PosId);
+            selAllowed = true;
+            availableConstraint = AvailableConstraint::RESET;
+        }
+    }
+    void makeCts_1Line1Ellipse(bool& selAllowed)
+    {
+        //TODO distance between line and ellipse/arc of... not supported yet.
+        if (availableConstraint == AvailableConstraint::FIRST) {
+            //selAllowed = true;
+            //availableConstraint = AvailableConstraint::RESET;
+        }
+    }
+
+    void makeCts_1Circle(bool& selAllowed, Base::Vector2d onSketchPos)
+    {
+        //Radius/diameter. Mode changes in createRadiusDiameterConstrain.
+        restartCommand(QT_TRANSLATE_NOOP("Command", "Add Radius constraint"));
+        createRadiusDiameterConstrain(selCircleArc[0].GeoId, onSketchPos);
+        selAllowed = true;
+    }
+    void makeCts_2Circle(bool& selAllowed, Base::Vector2d onSketchPos)
+    {
+        //Distance, radial distance, equality
+        if (availableConstraint == AvailableConstraint::FIRST) {
+            restartCommand(QT_TRANSLATE_NOOP("Command", "Add length constraint"));
+            createDistanceConstrain(selCircleArc[0].GeoId, selCircleArc[0].PosId, selCircleArc[1].GeoId, selCircleArc[1].PosId, onSketchPos);
+            selAllowed = true;
+        }
+        if (availableConstraint == AvailableConstraint::SECOND) {
+            restartCommand(QT_TRANSLATE_NOOP("Command", "Add concentric and length constraint"));
+            createDistanceConstrain(selCircleArc[0].GeoId, selCircleArc[0].PosId, selCircleArc[1].GeoId, selCircleArc[1].PosId, onSketchPos);
+            bool created = createCoincidenceConstrain(selCircleArc[0].GeoId, Sketcher::PointPos::mid, selCircleArc[1].GeoId, Sketcher::PointPos::mid);
+            if (!created) { //Already concentric, so skip to next
+                availableConstraint = AvailableConstraint::THIRD;
+            }
+        }
+        if (availableConstraint == AvailableConstraint::THIRD) {
+            restartCommand(QT_TRANSLATE_NOOP("Command", "Add Equality constraint"));
+            createEqualityConstrain(selCircleArc[0].GeoId, selCircleArc[1].GeoId);
+            availableConstraint = AvailableConstraint::RESET;
+        }
+
+    }
+    void makeCts_3MoreCircle(bool& selAllowed, size_t s_cir)
+    {
+        //equality.
+        if (availableConstraint == AvailableConstraint::FIRST) {
+            restartCommand(QT_TRANSLATE_NOOP("Command", "Add Equality constraint"));
+            for (int i = 0; i < s_cir - 1; i++) {
+                createEqualityConstrain(selCircleArc[i].GeoId, selCircleArc[i + 1].GeoId);
+            }
+            selAllowed = true;
+            availableConstraint = AvailableConstraint::RESET;
+        }
+    }
+    void makeCts_1Circle1Ellipse(bool& selAllowed)
+    {
+        //TODO distance between circle and ellipse/arc of... not supported yet.
+        if (availableConstraint == AvailableConstraint::FIRST) {
+            //selAllowed = true;
+            //availableConstraint = AvailableConstraint::RESET;
+        }
+    }
+
+    void makeCts_1Ellipse(bool& selAllowed)
+    {
+        //One ellipse or arc of ellipse/hyperbola/parabola - no constrain to attribute
+        selAllowed = true;
+    }
+    void makeCts_2MoreEllipse(bool& selAllowed, size_t s_ell)
+    {
+        //only ellipse or arc of of same kind, then equality of all radius.
+        bool allTheSame = 1;
+        const Part::Geometry* geom = Obj->getGeometry(selEllipseAndCo[0].GeoId);
+        Base::Type typeOf = geom->getTypeId();
+        for (int i = 1; i < s_ell; i++) {
+            const Part::Geometry* geomi = Obj->getGeometry(selEllipseAndCo[i].GeoId);
+            if (typeOf != geomi->getTypeId()) {
+                allTheSame = 0;
+            }
+        }
+        if (allTheSame) {
+            restartCommand(QT_TRANSLATE_NOOP("Command", "Add Equality constraint"));
+            for (int i = 1; i < s_ell; i++) {
+                createEqualityConstrain(selEllipseAndCo[0].GeoId, selEllipseAndCo[i].GeoId);
+            }
+            selAllowed = true;
+        }
     }
 
     void createDistanceConstrain(int GeoId1, Sketcher::PointPos PosId1, int GeoId2, Sketcher::PointPos PosId2, Base::Vector2d onSketchPos) {
