@@ -24,6 +24,7 @@
 #ifndef _PreComp_
 #endif
 
+#include <Qt>
 #include <QMetaType>
 #include <QUuid>
 
@@ -729,7 +730,7 @@ void Material::saveAppearanceModels(QTextStream &stream) const
 void Material::save(QTextStream &stream, bool saveAsCopy)
 {
     Q_UNUSED(saveAsCopy)
-    
+
     // Create a new UUID
     _uuid = QUuid::createUuid().toString(QUuid::WithoutBraces);
 
