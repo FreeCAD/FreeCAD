@@ -93,7 +93,7 @@ void Material2DArray::insertRow(int index, std::vector<QVariant> *row)
 
 void Material2DArray::deleteRow(int row)
 {
-    if (row >= _rows.size() || row < 0)
+    if (static_cast<std::size_t>(row) >= _rows.size() || row < 0)
         throw InvalidRow();
     _rows.erase(_rows.begin() + row);
 }

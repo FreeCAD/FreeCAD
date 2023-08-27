@@ -48,7 +48,7 @@ public:
         Materials::MaterialValue::ValueType type = Materials::MaterialValue::None,
         QString units = QString(), QObject* parent = nullptr);
     void paint(QPainter* painter, const QStyleOptionViewItem& option,
-               const QModelIndex& index) const;
+               const QModelIndex& index) const override;
     QWidget* createEditor(QWidget *parent,
             const QStyleOptionViewItem &, const QModelIndex &index) const override;
     void setEditorData(QWidget* editor, const QModelIndex& index) const override;

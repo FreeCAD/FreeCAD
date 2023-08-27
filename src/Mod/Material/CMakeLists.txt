@@ -10,7 +10,6 @@ ENDIF (BUILD_GUI)
 SET(MaterialScripts_Files
     Init.py
     InitGui.py
-    Material.py
     importFCMat.py
     MaterialEditor.py
     TestMaterialsApp.py

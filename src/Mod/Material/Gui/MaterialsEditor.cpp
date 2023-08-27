@@ -245,7 +245,7 @@ void MaterialsEditor::addRecent(const QString& uuid)
         _recents.remove(uuid);
 
     _recents.push_front(uuid);
-    while (_recents.size() > _recentMax)
+    while (_recents.size() > static_cast<std::size_t>(_recentMax))
         _recents.pop_back();
 
     saveRecents();
