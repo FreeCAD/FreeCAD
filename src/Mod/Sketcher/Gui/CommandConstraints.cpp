@@ -1582,10 +1582,12 @@ protected:
         }
         if (availableConstraint == AvailableConstraint::SECOND) {
             restartCommand(QT_TRANSLATE_NOOP("Command", "Add concentric and length constraint"));
-            createDistanceConstrain(selCircleArc[0].GeoId, selCircleArc[0].PosId, selCircleArc[1].GeoId, selCircleArc[1].PosId, onSketchPos);
             bool created = createCoincidenceConstrain(selCircleArc[0].GeoId, Sketcher::PointPos::mid, selCircleArc[1].GeoId, Sketcher::PointPos::mid);
             if (!created) { //Already concentric, so skip to next
                 availableConstraint = AvailableConstraint::THIRD;
+            }
+            else {
+                createDistanceConstrain(selCircleArc[0].GeoId, selCircleArc[0].PosId, selCircleArc[1].GeoId, selCircleArc[1].PosId, onSketchPos);
             }
         }
         if (availableConstraint == AvailableConstraint::THIRD) {
