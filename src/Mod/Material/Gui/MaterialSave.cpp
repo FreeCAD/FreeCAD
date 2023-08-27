@@ -115,7 +115,7 @@ void MaterialSave::reject()
 void MaterialSave::setLibraries()
 {
     std::list<Materials::MaterialLibrary*> *libraries = _manager.getMaterialLibraries();
-    for (Materials::MaterialLibrary *library: *libraries)
+    for (Materials::MaterialLibrary *library : *libraries)
     {
         if (!library->isReadOnly())
         {
@@ -146,7 +146,7 @@ void MaterialSave::addExpanded(QTreeView *tree, QStandardItemModel *parent, QSta
     tree->setExpanded(child->index(), true);
 }
 
-void MaterialSave::addMaterials(QStandardItem &parent, const std::map<QString, Materials::MaterialTreeNode*>* modelTree, 
+void MaterialSave::addMaterials(QStandardItem &parent, const std::map<QString, Materials::MaterialTreeNode*>* modelTree,
         const QIcon &folderIcon, const QIcon &icon)
 {
     auto tree = ui->treeMaterials;
@@ -244,7 +244,7 @@ void MaterialSave::onSelectModel(const QItemSelection& selected, const QItemSele
             } else {
                 _selectedPath = getPath(item);
                 _selectedUUID = QString();
-            } 
+            }
         }
     }
     if (_filename.length() > 0) {

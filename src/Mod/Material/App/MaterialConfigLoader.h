@@ -34,7 +34,7 @@ namespace Materials {
 class MaterialConfigLoader
 {
 public:
-    explicit MaterialConfigLoader();
+    MaterialConfigLoader();
     virtual ~MaterialConfigLoader();
 
 

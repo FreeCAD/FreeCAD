@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
   <PythonExport
-      Father="BaseClassPy" 
+      Father="BaseClassPy"
       Name="MaterialPy"
       Twin="Material"
       TwinPointer="Material"
       Include="Mod/Material/App/Materials.h"
       Namespace="Materials"
-      FatherInclude="Base/BaseClassPy.h" 
+      FatherInclude="Base/BaseClassPy.h"
       FatherNamespace="Base"
       Constructor="true"
       Delete="true">

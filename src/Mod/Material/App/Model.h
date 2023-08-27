@@ -37,7 +37,7 @@ class MaterialsExport ModelLibrary : public Base::BaseClass
     TYPESYSTEM_HEADER();
 
 public:
-    explicit ModelLibrary();
+    ModelLibrary();
     explicit ModelLibrary(const QString &libraryName, const QDir &dir, const QString &icon);
     virtual ~ModelLibrary();
 
@@ -62,7 +62,7 @@ class MaterialsExport ModelProperty : public Base::BaseClass
     TYPESYSTEM_HEADER();
 
 public:
-    explicit ModelProperty();
+    ModelProperty();
     explicit ModelProperty(const QString& name, const QString& type,
                            const QString& units, const QString& url,
                            const QString& description);
@@ -109,8 +109,8 @@ public:
         ModelType_Appearance
     };
 
-    explicit Model();
-    explicit Model(const ModelLibrary &library, ModelType type, const QString &name, const QDir &directory, 
+    Model();
+    explicit Model(const ModelLibrary &library, ModelType type, const QString &name, const QDir &directory,
         const QString &uuid, const QString& description, const QString& url,
         const QString& doi);
     virtual ~Model();

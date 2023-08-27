@@ -159,7 +159,7 @@ MaterialProperty &MaterialProperty::getColumn(int column)
         throw InvalidColumn();
     }
 }
-    
+
 MaterialValue::ValueType MaterialProperty::getColumnType(int column) const
 {
     try {
@@ -356,7 +356,7 @@ Material::~Material()
 
 void Material::addModel(const QString &uuid)
 {
-    for (QString modelUUID: _allUuids)
+    for (QString modelUUID : _allUuids)
         if (modelUUID == uuid)
             return;
 
@@ -397,11 +397,11 @@ void Material::addPhysical(const QString &uuid)
             }
             catch(const UnknownValueType &)
             {
-                Base::Console().Error("Property '%s' has unknown type '%s'. Ignoring\n", 
+                Base::Console().Error("Property '%s' has unknown type '%s'. Ignoring\n",
                                     property.getName().toStdString().c_str(),
                                     property.getPropertyType().toStdString().c_str());
             }
-            
+
         }
     } catch (ModelNotFound const &) {
     }
@@ -560,7 +560,7 @@ bool Material::hasAppearanceProperty(const QString& name) const
 
 bool Material::hasModel(const QString& uuid) const
 {
-    for (QString modelUUID: _allUuids)
+    for (QString modelUUID : _allUuids)
         if (modelUUID == uuid)
             return true;
 

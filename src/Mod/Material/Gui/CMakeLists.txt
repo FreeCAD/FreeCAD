@@ -76,7 +76,6 @@ SET(MatGui_SRCS
     ModelSelect.ui
     PreCompiled.cpp
     PreCompiled.h
-    ValueEditor.ui
 )
 
 if(FREECAD_USE_PCH)

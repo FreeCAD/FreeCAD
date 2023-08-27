@@ -34,7 +34,7 @@ public:
         FolderNode
     };
 
-    explicit FolderTreeNode() : _folder(nullptr) {}
+    FolderTreeNode() : _folder(nullptr) {}
     virtual ~FolderTreeNode() {}
 
     NodeType getType(void) const { return _type; }

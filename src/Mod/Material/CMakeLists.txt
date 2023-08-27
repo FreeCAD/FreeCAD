@@ -13,14 +13,8 @@ SET(MaterialScripts_Files
     Material.py
     importFCMat.py
     MaterialEditor.py
-    Materials.py
-    ModelSelect.py
     TestMaterialsApp.py
-    ValueEditor.py
-    Resources/ui/materials.ui
     Resources/ui/materials-editor.ui
-    Resources/ui/ValueEditor.ui
-    Resources/ui/ModelSelect.ui
     Templatematerial.yml
     Material_rc.py
 )

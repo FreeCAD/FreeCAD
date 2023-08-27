@@ -234,7 +234,7 @@ class MaterialEditor:
     def chooseMaterial(self, index):
         if index < 0:
             return
-        
+
         if self.verifyMaterial():
             """
                 Save any unchanged data
@@ -242,7 +242,7 @@ class MaterialEditor:
             self.edited = False
         else:
             return
-        
+
         self.card_path = self.widget.ComboMaterial.itemData(index)
         FreeCAD.Console.PrintMessage(
             "choose_material in material editor:\n"
@@ -316,7 +316,7 @@ class MaterialEditor:
 
     def modelChange(self, item):
         """
-            Called when an item in the tree is modfied. This will set edited to True, but this
+            Called when an item in the tree is modified. This will set edited to True, but this
             will be reset in the event of mass updates, such as loading a card
         """
         self.edited = True
@@ -337,7 +337,7 @@ class MaterialEditor:
                 return
             if reply == QtGui.QMessageBox.Save:
                 self.savefile()
-        
+
         self.accept()
 
     def accept(self):

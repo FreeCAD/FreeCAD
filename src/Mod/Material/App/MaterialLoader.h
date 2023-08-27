@@ -39,8 +39,8 @@ namespace Materials {
 class MaterialEntry
 {
 public:
-    explicit MaterialEntry();
-    explicit MaterialEntry(const MaterialLibrary &library, const QString &modelName, const QDir &dir, 
+    MaterialEntry();
+    explicit MaterialEntry(const MaterialLibrary &library, const QString &modelName, const QDir &dir,
         const QString &modelUuid);
     virtual ~MaterialEntry();
 
@@ -61,7 +61,7 @@ protected:
 class MaterialYamlEntry : public MaterialEntry
 {
 public:
-    explicit MaterialYamlEntry(const MaterialLibrary &library, const QString &modelName, const QDir &dir, 
+    explicit MaterialYamlEntry(const MaterialLibrary &library, const QString &modelName, const QDir &dir,
         const QString &modelUuid, const YAML::Node &modelData);
     ~MaterialYamlEntry() override;
 
@@ -71,7 +71,7 @@ public:
     YAML::Node *getModelPtr() { return &_model; }
 
 private:
-    explicit MaterialYamlEntry();
+    MaterialYamlEntry();
 
     QString yamlValue(const YAML::Node& node, const std::string& key,
                                           const std::string& defaultValue);
@@ -90,7 +90,7 @@ public:
     static void showYaml(const YAML::Node& yaml);
 
 private:
-    explicit MaterialLoader();
+    MaterialLoader();
 
     void addToTree(MaterialEntry* model);
     void dereference(Material *material);

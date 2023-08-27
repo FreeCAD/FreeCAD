@@ -110,7 +110,7 @@ void ModelSelect::saveFavorites()
     // Add the current values
     param->SetInt("Favorites", _favorites.size());
     int j = 0;
-    for (auto favorite: _favorites)
+    for (auto favorite : _favorites)
     {
         QString key = QString::fromLatin1("FAV%1").arg(j);
         param->SetASCII(key.toStdString().c_str(), favorite.toStdString());
@@ -139,7 +139,7 @@ void ModelSelect::removeFavorite(const QString& uuid)
 
 bool ModelSelect::isFavorite(const QString& uuid) const
 {
-    for (auto it: _favorites)
+    for (auto it : _favorites)
     {
         if (it == uuid)
             return true;
@@ -183,7 +183,7 @@ void ModelSelect::saveRecents()
         size = _recentMax;
     param->SetInt("Recent", size);
     int j = 0;
-    for (auto recent: _recents)
+    for (auto recent : _recents)
     {
         QString key = QString::fromLatin1("MRU%1").arg(j);
         param->SetASCII(key.toStdString().c_str(), recent.toStdString());
@@ -209,7 +209,7 @@ void ModelSelect::addRecent(const QString& uuid)
 
 bool ModelSelect::isRecent(const QString& uuid) const
 {
-    for (auto it: _recents)
+    for (auto it : _recents)
     {
         if (it == uuid)
             return true;

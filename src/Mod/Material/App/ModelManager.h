@@ -52,7 +52,7 @@ public:
     static ModelManager *getManager();
 
     void refresh();
-    
+
     std::list<ModelLibrary*> *getModelLibraries() { return _libraryList; }
     std::map<QString, Model*> *getModels() { return _modelMap; }
     std::map<QString, ModelTreeNode*>* getModelTree(const ModelLibrary &library, ModelFilter filter=ModelFilter_None);
@@ -64,7 +64,7 @@ public:
     bool passFilter(ModelFilter filter, Model::ModelType modelType) const;
 
 private:
-    explicit ModelManager();
+    ModelManager();
 
     static ModelManager *manager;
     static std::list<ModelLibrary*> *_libraryList;

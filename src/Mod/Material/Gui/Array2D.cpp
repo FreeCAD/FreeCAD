@@ -97,14 +97,12 @@ void Array2D::setupDefault()
     {
         return;
     }
-    
-    
 }
 
 void Array2D::setHeaders(QStandardItemModel *model)
 {
     QStringList headers;
-    for (auto column: _property->getColumns())
+    for (auto column : _property->getColumns())
         headers.append(column.getName());
     model->setHorizontalHeaderLabels(headers);
 }

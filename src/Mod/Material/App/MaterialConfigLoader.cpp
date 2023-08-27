@@ -149,7 +149,7 @@ void MaterialConfigLoader::addRendering(const QSettings &fcmat, Material *finalM
     else if (useBasic)
     {
         finalModel->addAppearance(ModelUUID_Rendering_Basic);
-    }   
+    }
 
     // Now add the data
     setAppearanceValue(finalModel, "AmbientColor", ambientColor);
@@ -296,7 +296,7 @@ void MaterialConfigLoader::addMechanical(const QSettings &fcmat, Material *final
     if (useLinearElastic)
     {
         finalModel->addPhysical(ModelUUID_Mechanical_LinearElastic);
-    } else 
+    } else
     {
         if (useIso)
             finalModel->addPhysical(ModelUUID_Mechanical_IsotropicLinearElastic);

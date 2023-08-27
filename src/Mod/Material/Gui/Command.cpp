@@ -72,76 +72,6 @@ bool CmdMaterialsEdit::isActive()
     return true;
 }
 
-//===========================================================================
-// Material_ValueEdit
-//===========================================================================
-DEF_STD_CMD_A(CmdMaterialsValueEdit)
-
-CmdMaterialsValueEdit::CmdMaterialsValueEdit()
-  :Command("Materials_ValueEdit")
-{
-    sAppModule    = "Material";
-    sGroup        = QT_TR_NOOP("Material");
-    sMenuText     = QT_TR_NOOP("Value Edit...");
-    sToolTipText  = QT_TR_NOOP("Edit material property values");
-    sWhatsThis    = "Materials_ValueEdit";
-    sStatusTip    = sToolTipText;
-    sPixmap       = "Materials_Edit";
-}
-
-void CmdMaterialsValueEdit::activated(int iMsg)
-{
-    Q_UNUSED(iMsg);
-
-    Base::Console().Log("Materials_ValueEdit\n");
-
-    openCommand(QT_TRANSLATE_NOOP("Command", "Material value edit"));
-    addModule(Doc,"ValueEditor");
-    doCommand(Doc,"ValueEditor.openEditor()");
-    commitCommand();
-    // updateActive();
-}
-
-bool CmdMaterialsValueEdit::isActive()
-{
-    return true;
-}
-
-//===========================================================================
-// Materials_ModelSelect
-//===========================================================================
-DEF_STD_CMD_A(CmdMaterialModelSelect)
-
-CmdMaterialModelSelect::CmdMaterialModelSelect()
-  :Command("Materials_ModelSelect")
-{
-    sAppModule    = "Material";
-    sGroup        = QT_TR_NOOP("Material");
-    sMenuText     = QT_TR_NOOP("Material model selection...");
-    sToolTipText  = QT_TR_NOOP("Material model selection");
-    sWhatsThis    = "Materials_ModelSelect";
-    sStatusTip    = sToolTipText;
-    sPixmap       = "Materials_Edit";
-}
-
-void CmdMaterialModelSelect::activated(int iMsg)
-{
-    Q_UNUSED(iMsg);
-
-    Base::Console().Log("Materials_ModelSelect\n");
-
-    static QPointer<QDialog> dlg = nullptr;
-    if (!dlg)
-        dlg = new MatGui::ModelSelect(Gui::getMainWindow());
-    dlg->setAttribute(Qt::WA_DeleteOnClose);
-    dlg->show();
-}
-
-bool CmdMaterialModelSelect::isActive()
-{
-    return true;
-}
-
 //---------------------------------------------------------------
 
 void CreateMaterialCommands()
@@ -149,6 +79,4 @@ void CreateMaterialCommands()
     Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
 
     rcCmdMgr.addCommand(new CmdMaterialsEdit());
-    rcCmdMgr.addCommand(new CmdMaterialsValueEdit());
-    rcCmdMgr.addCommand(new CmdMaterialModelSelect());
 }

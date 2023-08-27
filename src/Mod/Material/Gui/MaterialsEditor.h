@@ -85,7 +85,7 @@ private:
     void addFavorite(const QString& uuid);
     void removeFavorite(const QString& uuid);
     bool isFavorite(const QString& uuid) const;
-    
+
     void getRecents();
     void saveRecents();
     void addRecent(const QString& uuid);
