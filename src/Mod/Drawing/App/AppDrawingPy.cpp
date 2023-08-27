@@ -190,7 +190,17 @@ private:
 
     Py::Object projectToSVG(const Py::Tuple& args, const Py::Dict& keys)
         {
-            static char* argNames[] = {"topoShape", "direction", "type", "tolerance", "vStyle", "v0Style", "v1Style", "hStyle", "h0Style", "h1Style", nullptr};
+            static const std::array<const char *, 11> argNames {"topoShape",
+                                                                "direction",
+                                                                "type",
+                                                                "tolerance",
+                                                                "vStyle",
+                                                                "v0Style",
+                                                                "v1Style",
+                                                                "hStyle",
+                                                                "h0Style",
+                                                                "h1Style",
+                                                                nullptr};
             PyObject *pcObjShape = nullptr;
             PyObject *pcObjDir = nullptr;
             const char *extractionTypePy = nullptr;
@@ -211,7 +221,7 @@ private:
         
             // Get the arguments
 
-            if (!Wrapped_ParseTupleAndKeywords(
+            if (!Base::Wrapped_ParseTupleAndKeywords(
                     args.ptr(), keys.ptr(), 
                     "O!|O!sfOOOOOO", 
                     argNames,
