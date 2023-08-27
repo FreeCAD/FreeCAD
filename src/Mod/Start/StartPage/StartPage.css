@@ -1,18 +1,23 @@
+/* --- MAIN --- */
+
 html {
     height: 100%;
+    color: BGTCOLOR;
     display: flex;
     flex-direction: column;
+    overflow: hidden;
 }
 
 body {
+    height: 100%;
     background: BACKGROUND;
     color: BGTCOLOR;
     font-family: FONTFAMILY;
     font-size: FONTSIZE;
-    height: 100%;
+    overflow: hidden;
 }
 
-OVERFLOW 
+OVERFLOW
 a,
 a:link,
 a:visited {
@@ -29,113 +34,166 @@ h1 {
 h2 {
     text-align: center;
     clear: both;
-    padding-top: 15px;
-}
-
-hr {
-    height: 20px;
-    border: none;
+    padding-top: 5px;
 }
 
 .hidden {
-    display: none;
+    display: none !important;
+}
+
+#main-container {
+    display: flex;
+    flex-direction: column;
+    height: calc(100% - 40px);
+    margin: 20px;
+    background: BASECOLOR;
+    border-radius: 15px;
+}
+
+#title-bar {
+    display: flex;
+    flex-direction: row-reverse;
+    align-items: center;
+    width: 100%;
+    height: 5.5em;
+    min-height: 5.5em;
+    background: BASECOLOR;
+    border-radius: 15px;
+    z-index: 2;
+}
+
+.welcome {
+    display: flex;
+    align-items: center;
+    color: TEXTCOLOR;
+    font-size: 1.3em;
+    margin-left: 25px;
+    font-weight: bold;
+}
+
+.welcome img {
+    width: 28px;
+    height: 28px;
+    margin-right: 10px;
 }
 
 .version {
-    font-size: 0.8em;
-    float: right;
-    padding-right: 10px;
+    font-size: 1em;
+    margin-right: 25px;
 }
 
 .settingsicon {
-    width: 16px;
-    height: 16px;
-    margin-left: 20px;
+    width: 22px;
+    height: 22px;
+    margin-left: 10px;
     vertical-align: middle;
 }
 
-.container {
-    margin: 2%;
-    height: 95%;
+@media only screen and (max-width: 1100px) {
+    .welcome {
+        display: none;
+    }
+
+    .version {
+        display: none;
+    }
 }
 
+/* --- TABS --- */
+
 ul.tabs {
-    margin: 9px 0;
+    display: flex;
+    position: absolute;
+    top: 2em;
+    left: 50%;
+    transform: translateX(-50%);
 }
 
 ul.tabs li {
     list-style: none;
-    display: inline;
 }
 
 ul.tabs li a {
+    display: flex;
+    align-items: center;
+    border-radius: 8px;
+    padding: 6px 12px;
+    margin: 0 3px;
     color: TEXTCOLOR;
-    background-color: BOXCOLOR;
-    padding: 8px 14px 8px 14px;
     text-decoration: none;
-    font-size: 1em;
-    font-weight: bold;
-    text-transform: uppercase;
-    border: 1px solid BOXCOLOR;
-    border-radius: 3px 3px 0px 0px;
-    box-shadow: #445 0 -5px 5px;
     outline: 0;
+    font-size: 1.3em;
+    transition: 100ms;
+}
+
+ul.tabs li a img {
+    margin-right: 5px;
 }
 
 ul.tabs li a:hover {
-    background-color: TEXTCOLOR;
-    color: BASECOLOR;
-    border-color: TEXTCOLOR;
+    background-color: BOXCOLOR;
 }
 
 ul.tabs li a.active,
 ul.tabs li a.active:hover {
-    color: TEXTCOLOR;
-    background-color: BASECOLOR;
-    border-bottom: 1px solid BASECOLOR;
-    border-color: BASECOLOR;
+    background-color: BOXCOLOR;
+    font-weight: bold;
 }
 
 .panel {
-    background: BASECOLOR;
+    display: flex;
+    flex-direction: column;
     color: TEXTCOLOR;
     padding: 15px;
-    clear: both;
-    margin-bottom: 10px;
-    border-radius: 0px 3px 3px 3px;
+    padding-top: 0;
     overflow: auto;
-    box-shadow: SHADOW 0 2px 5px;
+}
+
+.footnote {
+    text-align: center;
+    display: block; /* footnote tips display */
+    clear: both;
+    padding-top: 10px;
+}
+
+/* --- DOCUMENTS TAB --- */
+
+.thumbnails ul {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin: 0;
+    padding: 0;
 }
 
 ul.icons {
     clear: both;
 }
 
-.icon {
+.file-card {
     list-style: none;
     display: inline;
-    float: left;
-    padding: 5px 0px 15px 10px;
+    padding: 10px 0px 15px 10px;
     width: 138px;
     height: 200px;
     background: BOXCOLOR;
-    border-radius: 3px;
+    border-radius: 8px;
     margin: 10px;
-    box-shadow: SHADOW 0 0px 6px;
     word-wrap: break-word;
 }
 
-.icon h4 {
+.file-card h4 {
     margin: 3px 0;
     max-width: 90%;
 }
 
-.icon img {
+.file-card img {
     width: 128px;
     height: 128px;
+    border-radius: 4px;
 }
 
-.icon p {
+.file-card p {
     margin: 0;
 }
 
@@ -154,64 +212,117 @@ a .caption:visited {
     text-decoration-color: TEXTCOLOR;
 }
 
-.icon-new-template {
+.quickstart-button-card {
     list-style: none;
     display: flex;
     align-items: center;
     float: left;
     padding: 5px 10px;
-    width: 235px;
-    height: 70px;
+    width: 18em;
+    height: 5em;
     background: BOXCOLOR;
-    border-radius: 3px;
+    border-radius: 8px;
     margin: 10px;
-    box-shadow: SHADOW 0 0px 6px;
     word-wrap: break-word;
 }
 
-.icon-new-template a {
+.quickstart-button-card a {
     display: flex;
 }
 
-.icon-new-template h3 {
-    margin: 3px 0;
+.quickstart-button-card h3 {
     max-width: 90%;
-    text-align: left;
+    margin: 3px 0;
     margin-bottom: 5px;
+    text-align: left;
 }
 
-.icon-new-template img {
+.quickstart-button-card img {
     width: 64px;
     height: 64px;
     margin-right: 10px;
 }
 
-.icon-new-template p {
+.quickstart-button-card p {
     margin: 0;
 }
 
-.docbox a:hover {
-    text-decoration: underline;
+.notes {
+    display: none; /* notes display */
+    /* don't change this line */
+    width: 100%;
+}
+
+#notepad {
+    width: calc(100% - 30px);
+    min-height: 300px;
+    margin: 10px;
+    color: TEXTCOLOR;
+    background: BOXCOLOR;
+    border: none;
+    padding: 10px;
+    border-radius: 8px;
+}
+
+#notepad:focus {
+    outline: none;
+}
+
+/* --- HELP TAB --- */
+
+#help-tab-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
 }
 
 .docbox {
-    float: left;
     padding: 10px;
     max-width: 360px;
     background: BOXCOLOR;
-    border-radius: 3px;
+    border-radius: 8px;
     margin: 10px;
-    box-shadow: SHADOW 0 0px 6px;
 }
 
 .docbox h2 {
     text-align: center;
 }
 
+.docbox h3 {
+    display: flex;
+    align-items: center;
+}
+
 .docbox img {
     max-width: 24px;
     max-height: 24px;
+    margin-right:10px;
 }
+
+.docbox a:hover {
+    text-decoration: underline;
+}
+
+.workbenches li,
+.addonslist li {
+    display: flex;
+    align-items: center;
+    width: 50%;
+    float: left;
+    margin-bottom: 5px;
+}
+
+.workbenches li img {
+    margin-right: 5px;
+}
+
+ul.workbenches,
+ul.addonslist {
+    overflow: hidden;
+    padding: 10px;
+}
+
+/* --- ACTIVITY TAB --- */
 
 .forum img {
     max-width: 100% !important;
@@ -220,13 +331,6 @@ a .caption:visited {
 
 .allwidth {
     max-width: 98%;
-}
-
-h3 a {
-    height: 32px;
-    vertical-align: middle;
-    padding-bottom: 18px;
-    padding-left: 5px;
 }
 
 #commits ul {
@@ -238,31 +342,8 @@ h3 a {
     margin-bottom: 10px;
 }
 
-.footnote {
-    text-align: center;
-    display: block;
-    /* footnote tips display */
-    clear: both;
-    padding-top: 10px;
-}
-
-ul.workbenches,
-ul.addonslist {
-    overflow: hidden;
-    padding: 10px;
-}
-
-ul.workbenches li,
-ul.addonslist li {
-    list-style: none;
-    float: left;
-    display: inline;
-    width: 50%;
-}
-
 .forum {
-    display: none;
-    /* forum display */
+    display: none; /* forum display */
     /* don't change this line */
 }
 
@@ -270,41 +351,23 @@ ul.addonslist li {
     white-space: pre-wrap;
 }
 
-.thumbnails {
-    float: left;
-    width: 100%;
-    /* thumbs display */
-    /* don't change this line */
+/* --- SCROLLBAR STYLE --- */
+
+::-webkit-scrollbar {
+    width: 20px;
+    background: BASECOLOR;
+    padding: 2px;
 }
 
-.notes {
-    display: none;
-    /* notes display */
-    /* don't change this line */
-    float: right;
-    width: 30%;
-}
-
-#notepad {
-    width: 95%;
-    height: 100%;
-    color: TEXTCOLOR;
+::-webkit-scrollbar-thumb {
     background: BOXCOLOR;
-    border: none;
-    padding: 5px;
-    border-radius: 3px;
-    min-height: 300px;
+    -webkit-border-radius: 999px;
+    background-clip: content-box;
+    border: 6px solid transparent;
 }
 
-
-.iframe {
-    display: block;
-    margin: auto;
-    text-align: center;
-    width: 50%;
-    height: 100%;
-}
-
-.iframecontainer {
-    height: 90%;
+::-webkit-scrollbar-thumb:hover {
+    background: TEXTCOLOR;
+    background-clip: content-box;
+    border: 6px solid transparent;
 }
