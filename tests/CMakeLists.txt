@@ -66,7 +66,9 @@ function(setup_qt_test)
 endfunction()
 
 add_executable(Tests_run)
+add_executable(Mesh_tests_run)
 add_executable(Part_tests_run)
+add_executable(Points_tests_run)
 add_subdirectory(lib)
 add_subdirectory(src)
 target_include_directories(Tests_run PUBLIC
