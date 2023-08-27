@@ -16,7 +16,6 @@ SET(MaterialScripts_Files
     TestMaterialsApp.py
     Resources/ui/materials-editor.ui
     Templatematerial.yml
-    Material_rc.py
 )
 # SOURCE_GROUP("MaterialScripts" FILES ${MaterialScripts_Files})
 
