@@ -41,11 +41,11 @@ inputs:
   ccachedownloadpath:
     description: "Path where to download ccache"
     required: false
-    default: https://github.com/ccache/ccache/releases/download/v4.7.4/
+    default: https://github.com/ccache/ccache/releases/download/v4.8.2/
   ccacheversion:
     description: "Ccache version to be downloaded"
     required: false
-    default: ccache-4.7.4-windows-x86_64
+    default: ccache-4.8.2-windows-x86_64
 
 runs:
   using: "composite"

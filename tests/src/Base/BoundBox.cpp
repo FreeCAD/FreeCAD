@@ -201,6 +201,24 @@ TEST(BoundBox, TestCenter)
     EXPECT_EQ(box.GetCenter(), Base::Vector3d(0.5, 0.5, 0.5));
 }
 
+TEST(BoundBox, TestMinimum)
+{
+    Base::BoundBox3d box;
+    box.Add(Base::Vector3d(0, 0, 0));
+    box.Add(Base::Vector3d(1, 1, 1));
+
+    EXPECT_EQ(box.GetMinimum(), Base::Vector3d(0, 0, 0));
+}
+
+TEST(BoundBox, TestMaximum)
+{
+    Base::BoundBox3d box;
+    box.Add(Base::Vector3d(0, 0, 0));
+    box.Add(Base::Vector3d(1, 1, 1));
+
+    EXPECT_EQ(box.GetMaximum(), Base::Vector3d(1, 1, 1));
+}
+
 TEST(BoundBox, TestDiagonalLength)
 {
     Base::BoundBox3d box;
@@ -209,6 +227,16 @@ TEST(BoundBox, TestDiagonalLength)
 
     EXPECT_GT(box.CalcDiagonalLength(), 1.7);
     EXPECT_LT(box.CalcDiagonalLength(), 1.8);
+}
+
+TEST(BoundBox, TestVolume)
+{
+    Base::BoundBox3d box;
+    EXPECT_LT(box.Volume(), 0.0);
+    box.Add(Base::Vector3d(0, 0, 0));
+    EXPECT_EQ(box.Volume(), 0.0);
+    box.Add(Base::Vector3d(1, 1, 1));
+    EXPECT_GT(box.Volume(), 0.0);
 }
 
 TEST(BoundBox, TestDiagonalEnlarge)
