@@ -35,9 +35,12 @@ def translate(context,text):
     return u.replace(chr(39), "&rsquo;")
 
 T_TITLE = translate("StartPage", "Start")
+T_WELCOME = translate("StartPage", "Welcome to FreeCAD")
 T_DOCUMENTS = translate("StartPage", "Documents")
 T_HELP = translate("StartPage", "Help")
 T_ACTIVITY = translate("StartPage", "Activity")
+T_BLOG = translate("StartPage", "Blog")
+T_BLOG_TOOLTIP = translate("StartPage", "Link to the FreeCAD blog")
 T_NEWFILE = translate("StartPage", "New file")
 T_TEMPLATE_EMPTYFILE_NAME = translate("StartPage", "Empty File")
 T_TEMPLATE_EMPTYFILE_DESC = translate("StartPage", "Create an empty FreeCAD file")
