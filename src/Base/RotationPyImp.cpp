@@ -25,6 +25,7 @@
 
 #include <Base/GeometryPyCXX.h>
 #include <Base/Tools.h>
+#include <Base/PyWrapParseTupleAndKeywords.h>
 
 // inclusion of the generated files (generated out of RotationPy.xml)
 #include "RotationPy.h"
@@ -76,16 +77,16 @@ int RotationPy::PyInit(PyObject* args, PyObject* kwds)
 
     PyErr_Clear();
     double angle{};
-    static char *kw_deg[] = {"Axis", "Degree", nullptr};
-    if (PyArg_ParseTupleAndKeywords(args, kwds, "O!d", kw_deg, &(Base::VectorPy::Type), &o, &angle)) {
+    static const std::array<const char *, 3> kw_deg {"Axis", "Degree", nullptr};
+    if (Base::Wrapped_ParseTupleAndKeywords(args, kwds, "O!d", kw_deg, &(Base::VectorPy::Type), &o, &angle)) {
         // NOTE: The last parameter defines the rotation angle in degree.
         getRotationPtr()->setValue(static_cast<Base::VectorPy*>(o)->value(), Base::toRadians<double>(angle));
         return 0;
     }
 
     PyErr_Clear();
-    static char *kw_rad[] = {"Axis", "Radian", nullptr};
-    if (PyArg_ParseTupleAndKeywords(args, kwds, "O!d", kw_rad, &(Base::VectorPy::Type), &o, &angle)) {
+    static const std::array<const char *, 3> kw_rad {"Axis", "Radian", nullptr};
+    if (Base::Wrapped_ParseTupleAndKeywords(args, kwds, "O!d", kw_rad, &(Base::VectorPy::Type), &o, &angle)) {
         getRotationPtr()->setValue(static_cast<Base::VectorPy*>(o)->value(), angle);
         return 0;
     }

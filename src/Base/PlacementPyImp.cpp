@@ -24,6 +24,7 @@
 #include "PreCompiled.h"
 
 #include "GeometryPyCXX.h"
+#include <Base/PyWrapParseTupleAndKeywords.h>
 
 // inclusion of the generated files (generated out of PlacementPy.xml)
 #include "PlacementPy.h"
@@ -172,14 +173,15 @@ PyObject* PlacementPy::translate(PyObject * args)
 PyObject* PlacementPy::rotate(PyObject *args, PyObject *kwds)
 {
     double angle{};
-    char *keywords[] =  { "center", "axis", "angle", "comp", nullptr };
+    static const std::array<const char *, 6> kwlist { "center", "axis", "angle", "comp", nullptr };
     Vector3d center;
     Vector3d axis;
-    PyObject* pyComp = Py_False;
+    PyObject* pyComp = Py_False; // NOLINT
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwds, "(ddd)(ddd)d|O!", keywords, &center.x, &center.y, &center.z,
-                                     &axis.x, &axis.y, &axis.z, &angle, &PyBool_Type, &pyComp))
+    if (!Base::Wrapped_ParseTupleAndKeywords(args, kwds, "(ddd)(ddd)d|O!", kwlist, &center.x, &center.y, &center.z,
+                                             &axis.x, &axis.y, &axis.z, &angle, &PyBool_Type, &pyComp)) {
         return nullptr;
+    }
 
     try {
         /*

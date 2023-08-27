@@ -29,6 +29,7 @@
 #endif
 
 #include <Base/GeometryPyCXX.h>
+#include <Base/PyWrapParseTupleAndKeywords.h>
 #include <Base/VectorPy.h>
 
 #include "ConePy.h"
@@ -55,22 +56,22 @@ PyObject *ConePy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // Pytho
 // constructor method
 int ConePy::PyInit(PyObject* args, PyObject* kwds)
 {
-    char* keywords_n[] = {nullptr};
-    if (PyArg_ParseTupleAndKeywords(args, kwds, "", keywords_n)) {
+    static const std::array<const char *, 1> keywords_n{nullptr};
+    if (Base::Wrapped_ParseTupleAndKeywords(args, kwds, "", keywords_n)) {
         Handle(Geom_ConicalSurface) s = Handle(Geom_ConicalSurface)::DownCast
-            (getGeometryPtr()->handle());
+                (getGeometryPtr()->handle());
         s->SetRadius(1.0);
         return 0;
     }
 
     PyObject *pV1, *pV2;
     double radius1, radius2;
-    static char* keywords_pprr[] = {"Point1","Point2","Radius1","Radius2",nullptr};
+    static const std::array<const char *, 5> keywords_pprr {"Point1", "Point2", "Radius1", "Radius2", nullptr};
     PyErr_Clear();
-    if (PyArg_ParseTupleAndKeywords(args, kwds, "O!O!dd", keywords_pprr,
-                                        &(Base::VectorPy::Type), &pV1,
-                                        &(Base::VectorPy::Type), &pV2,
-                                        &radius1, &radius2)) {
+    if (Base::Wrapped_ParseTupleAndKeywords(args, kwds, "O!O!dd", keywords_pprr,
+                                            &(Base::VectorPy::Type), &pV1,
+                                            &(Base::VectorPy::Type), &pV2,
+                                            &radius1, &radius2)) {
         Base::Vector3d v1 = static_cast<Base::VectorPy*>(pV1)->value();
         Base::Vector3d v2 = static_cast<Base::VectorPy*>(pV2)->value();
         GC_MakeConicalSurface mc(gp_Pnt(v1.x,v1.y,v1.z),
@@ -88,13 +89,13 @@ int ConePy::PyInit(PyObject* args, PyObject* kwds)
     }
 
     PyObject *pV3, *pV4;
-    static char* keywords_pppp[] = {"Point1","Point2","Point3","Point4",nullptr};
+    static const std::array<const char *, 5> keywords_pppp{"Point1", "Point2", "Point3", "Point4", nullptr};
     PyErr_Clear();
-    if (PyArg_ParseTupleAndKeywords(args, kwds, "O!O!O!O!", keywords_pppp,
-                                        &(Base::VectorPy::Type), &pV1,
-                                        &(Base::VectorPy::Type), &pV2,
-                                        &(Base::VectorPy::Type), &pV3,
-                                        &(Base::VectorPy::Type), &pV4)) {
+    if (Base::Wrapped_ParseTupleAndKeywords(args, kwds, "O!O!O!O!", keywords_pppp,
+                                            &(Base::VectorPy::Type), &pV1,
+                                            &(Base::VectorPy::Type), &pV2,
+                                            &(Base::VectorPy::Type), &pV3,
+                                            &(Base::VectorPy::Type), &pV4)) {
         Base::Vector3d v1 = static_cast<Base::VectorPy*>(pV1)->value();
         Base::Vector3d v2 = static_cast<Base::VectorPy*>(pV2)->value();
         Base::Vector3d v3 = static_cast<Base::VectorPy*>(pV3)->value();
@@ -109,16 +110,16 @@ int ConePy::PyInit(PyObject* args, PyObject* kwds)
         }
 
         Handle(Geom_ConicalSurface) cone = Handle(Geom_ConicalSurface)::DownCast
-            (getGeometryPtr()->handle());
+                (getGeometryPtr()->handle());
         cone->SetCone(mc.Value()->Cone());
         return 0;
     }
 
     PyObject *pCone;
-    static char* keywords_c[] = {"Cone",nullptr};
+    static const std::array<const char *, 2> keywords_c{"Cone", nullptr};
     PyErr_Clear();
-    if (PyArg_ParseTupleAndKeywords(args, kwds, "O!d", keywords_c,
-                                        &(ConePy::Type), &pCone)) {
+    if (Base::Wrapped_ParseTupleAndKeywords(args, kwds, "O!d", keywords_c,
+                                            &(ConePy::Type), &pCone)) {
         ConePy* pcCone = static_cast<ConePy*>(pCone);
         Handle(Geom_ConicalSurface) pcone = Handle(Geom_ConicalSurface)::DownCast
             (pcCone->getGeometryPtr()->handle());

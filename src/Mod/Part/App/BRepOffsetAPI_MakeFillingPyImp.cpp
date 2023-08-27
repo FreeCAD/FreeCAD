@@ -30,6 +30,7 @@
 # include <TopoDS_Face.hxx>
 #endif
 
+#include <Base/PyWrapParseTupleAndKeywords.h>
 #include <Base/VectorPy.h>
 
 #include "BRepOffsetAPI_MakeFillingPy.h"
@@ -91,12 +92,13 @@ int BRepOffsetAPI_MakeFillingPy::PyInit(PyObject* args, PyObject* kwds)
     double tolCurv = 0.1;
     PyObject* anisotropy = Py_False;
 
-    static char* keywords[] = {"Degree", "NbPtsOnCur", "NbIter", "MaxDegree", "MaxSegments", "Tol2d",
-                               "Tol3d", "TolAng", "TolCurv", "Anisotropy", nullptr};
-    if (!PyArg_ParseTupleAndKeywords(args, kwds, "|iiiiiddddO!", keywords,
-                                     &degree, &nbPtsOnCur, &nbIter, &maxDeg, &maxSegments,
-                                     &tol2d, &tol3d, &tolAng, &tolCurv, &PyBool_Type, &anisotropy))
+    static const std::array<const char *, 11> keywords{"Degree", "NbPtsOnCur", "NbIter", "MaxDegree", "MaxSegments",
+                                                       "Tol2d", "Tol3d", "TolAng", "TolCurv", "Anisotropy", nullptr};
+    if (!Base::Wrapped_ParseTupleAndKeywords(args, kwds, "|iiiiiddddO!", keywords,
+                                             &degree, &nbPtsOnCur, &nbIter, &maxDeg, &maxSegments,
+                                             &tol2d, &tol3d, &tolAng, &tolCurv, &PyBool_Type, &anisotropy)) {
         return -1;
+    }
 
     try {
         std::unique_ptr<BRepOffsetAPI_MakeFilling> ptr(new BRepOffsetAPI_MakeFilling(degree, nbPtsOnCur, nbIter,
@@ -126,10 +128,11 @@ PyObject* BRepOffsetAPI_MakeFillingPy::setConstrParam(PyObject *args, PyObject *
     double tolAng = 0.01;
     double tolCurv = 0.1;
 
-    static char* keywords[] = {"Tol2d", "Tol3d", "TolAng", "TolCurv", nullptr};
-    if (!PyArg_ParseTupleAndKeywords(args, kwds, "|dddd", keywords,
-                                     &tol2d, &tol3d, &tolAng, &tolCurv))
+    static const std::array<const char *, 5> keywords {"Tol2d", "Tol3d", "TolAng", "TolCurv", nullptr};
+    if (!Base::Wrapped_ParseTupleAndKeywords(args, kwds, "|dddd", keywords,
+                                            &tol2d, &tol3d, &tolAng, &tolCurv)) {
         return nullptr;
+    }
 
     try {
         getBRepOffsetAPI_MakeFillingPtr()->SetConstrParam(tol2d, tol3d, tolAng, tolCurv);
@@ -148,10 +151,11 @@ PyObject* BRepOffsetAPI_MakeFillingPy::setResolParam(PyObject *args, PyObject *k
     int nbIter = 2;
     PyObject* anisotropy = Py_False;
 
-    static char* keywords[] = {"Degree", "NbPtsOnCur", "NbIter", "Anisotropy", nullptr};
-    if (!PyArg_ParseTupleAndKeywords(args, kwds, "|iiiO!", keywords,
-                                     &degree, &nbPtsOnCur, &nbIter, &PyBool_Type, &anisotropy))
+    static const std::array<const char *, 5> keywords {"Degree", "NbPtsOnCur", "NbIter", "Anisotropy", nullptr};
+    if (!Base::Wrapped_ParseTupleAndKeywords(args, kwds, "|iiiO!", keywords,
+                                             &degree, &nbPtsOnCur, &nbIter, &PyBool_Type, &anisotropy)) {
         return nullptr;
+    }
 
     try {
         getBRepOffsetAPI_MakeFillingPtr()->SetResolParam(degree, nbPtsOnCur, nbIter,
@@ -169,10 +173,11 @@ PyObject* BRepOffsetAPI_MakeFillingPy::setApproxParam(PyObject *args, PyObject *
     int maxDeg = 8;
     int maxSegments = 9;
 
-    static char* keywords[] = {"MaxDegree", "MaxSegments", nullptr};
-    if (!PyArg_ParseTupleAndKeywords(args, kwds, "|ii", keywords,
-                                     &maxDeg, &maxSegments))
+    static const std::array<const char *, 3> keywords {"MaxDegree", "MaxSegments", nullptr};
+    if (!Base::Wrapped_ParseTupleAndKeywords(args, kwds, "|ii", keywords,
+                                             &maxDeg, &maxSegments)) {
         return nullptr;
+    }
 
     try {
         getBRepOffsetAPI_MakeFillingPtr()->SetApproxParam(maxDeg, maxSegments);
@@ -210,9 +215,9 @@ PyObject* BRepOffsetAPI_MakeFillingPy::add(PyObject *args, PyObject *kwds)
 {
     // 1st
     PyObject* pnt;
-    static char* keywords_pnt[] = {"Point", nullptr};
-    if (PyArg_ParseTupleAndKeywords(args, kwds, "O!", keywords_pnt,
-                                    &Base::VectorPy::Type, &pnt)) {
+    static const std::array<const char *, 2> keywords_pnt {"Point", nullptr};
+    if (Base::Wrapped_ParseTupleAndKeywords(args, kwds, "O!", keywords_pnt,
+                                            &Base::VectorPy::Type, &pnt)) {
         try {
             Base::Vector3d vec = static_cast<Base::VectorPy*>(pnt)->value();
             getBRepOffsetAPI_MakeFillingPtr()->Add(gp_Pnt(vec.x, vec.y, vec.z));
@@ -227,10 +232,10 @@ PyObject* BRepOffsetAPI_MakeFillingPy::add(PyObject *args, PyObject *kwds)
     // 2nd
     PyObject* support;
     int order;
-    static char* keywords_sup_ord[] = {"Support", "Order", nullptr};
+    static const std::array<const char *, 3> keywords_sup_ord {"Support", "Order", nullptr};
     PyErr_Clear();
-    if (PyArg_ParseTupleAndKeywords(args, kwds, "O!i", keywords_sup_ord,
-                                    &TopoShapeFacePy::Type, &support, &order)) {
+    if (Base::Wrapped_ParseTupleAndKeywords(args, kwds, "O!i", keywords_sup_ord,
+                                            &TopoShapeFacePy::Type, &support, &order)) {
         try {
             TopoDS_Face face = TopoDS::Face(static_cast<TopoShapeFacePy*>(support)->getTopoShapePtr()->getShape());
             if (face.IsNull()) {
@@ -255,11 +260,11 @@ PyObject* BRepOffsetAPI_MakeFillingPy::add(PyObject *args, PyObject *kwds)
     // 3rd
     PyObject* constr;
     PyObject* isbound = Py_True;
-    static char* keywords_const[] = {"Constraint", "Order", "IsBound", nullptr};
+    static const std::array<const char *, 4> keywords_const {"Constraint", "Order", "IsBound", nullptr};
     PyErr_Clear();
-    if (PyArg_ParseTupleAndKeywords(args, kwds, "O!i|O!", keywords_const,
-                                    &TopoShapeEdgePy::Type, &constr,
-                                    &order, &PyBool_Type, isbound)) {
+    if (Base::Wrapped_ParseTupleAndKeywords(args, kwds, "O!i|O!", keywords_const,
+                                            &TopoShapeEdgePy::Type, &constr,
+                                            &order, &PyBool_Type, isbound)) {
         try {
             TopoDS_Edge edge = TopoDS::Edge(static_cast<TopoShapeEdgePy*>(constr)->getTopoShapePtr()->getShape());
             if (edge.IsNull()) {
@@ -283,12 +288,12 @@ PyObject* BRepOffsetAPI_MakeFillingPy::add(PyObject *args, PyObject *kwds)
     }
 
     // 4th
-    static char* keywords_const_sup[] = {"Constraint", "Support", "Order", "IsBound", nullptr};
+    static const std::array<const char *, 5> keywords_const_sup {"Constraint", "Support", "Order", "IsBound", nullptr};
     PyErr_Clear();
-    if (PyArg_ParseTupleAndKeywords(args, kwds, "O!O!i|O!", keywords_const_sup,
-                                    &TopoShapeEdgePy::Type, &constr,
-                                    &TopoShapeFacePy::Type, &support,
-                                    &order, &PyBool_Type, isbound)) {
+    if (Base::Wrapped_ParseTupleAndKeywords(args, kwds, "O!O!i|O!", keywords_const_sup,
+                                            &TopoShapeEdgePy::Type, &constr,
+                                            &TopoShapeFacePy::Type, &support,
+                                            &order, &PyBool_Type, isbound)) {
         try {
             TopoDS_Edge edge = TopoDS::Edge(static_cast<TopoShapeEdgePy*>(constr)->getTopoShapePtr()->getShape());
             if (edge.IsNull()) {
@@ -318,10 +323,10 @@ PyObject* BRepOffsetAPI_MakeFillingPy::add(PyObject *args, PyObject *kwds)
 
     // 5th
     double u, v;
-    static char* keywords_uv[] = {"U", "V", "Support", "Order", nullptr};
+    static const std::array<const char *, 5> keywords_uv {"U", "V", "Support", "Order", nullptr};
     PyErr_Clear();
-    if (PyArg_ParseTupleAndKeywords(args, kwds, "ddO!i", keywords_uv,
-                                    &u, &v, &TopoShapeFacePy::Type, &support, &order)) {
+    if (Base::Wrapped_ParseTupleAndKeywords(args, kwds, "ddO!i", keywords_uv,
+                                            &u, &v, &TopoShapeFacePy::Type, &support, &order)) {
         try {
             TopoDS_Face face = TopoDS::Face(static_cast<TopoShapeFacePy*>(support)->getTopoShapePtr()->getShape());
             if (face.IsNull()) {
