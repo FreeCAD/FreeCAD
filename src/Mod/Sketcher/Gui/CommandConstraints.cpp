@@ -993,6 +993,47 @@ void CmdSketcherConstraint::activated(int /*iMsg*/)
 
 // Dimension tool =======================================================
 
+class GeomSelectionSizes
+{
+public:
+    GeomSelectionSizes(size_t s_pts, size_t s_lns, size_t s_cir, size_t s_ell) :
+        s_pts(s_pts), s_lns(s_lns), s_cir(s_cir), s_ell(s_ell) {}
+    ~GeomSelectionSizes() {}
+
+
+    bool hasPoints()        const { return s_pts > 0; }
+    bool hasLines()         const { return s_lns > 0; }
+    bool hasCirclesOrArcs() const { return s_cir > 0; }
+    bool hasEllipseAndCo()  const { return s_ell > 0; }
+
+    bool has1Point()             const { return s_pts == 1 && s_lns == 0 && s_cir == 0 && s_ell == 0; }
+    bool has2Points()            const { return s_pts == 2 && s_lns == 0 && s_cir == 0 && s_ell == 0; }
+    bool has1Point1Line()        const { return s_pts == 1 && s_lns == 1 && s_cir == 0 && s_ell == 0; }
+    bool has3Points()            const { return s_pts == 3 && s_lns == 0 && s_cir == 0 && s_ell == 0; }
+    bool has4MorePoints()        const { return s_pts >= 4 && s_lns == 0 && s_cir == 0 && s_ell == 0; }
+    bool has2Points1Line()       const { return s_pts == 2 && s_lns == 1 && s_cir == 0 && s_ell == 0; }
+    bool has3MorePoints1Line()   const { return s_pts >= 3 && s_lns == 1 && s_cir == 0 && s_ell == 0; }
+    bool has1MorePoint1Circle()  const { return s_pts >= 1 && s_lns == 0 && s_cir == 1 && s_ell == 0; }
+    bool has1MorePoint1Ellipse() const { return s_pts >= 1 && s_lns == 0 && s_cir == 0 && s_ell == 1; }
+
+    bool has1Line()              const { return s_pts == 0 && s_lns == 1 && s_cir == 0 && s_ell == 0; }
+    bool has2Lines()             const { return s_pts == 0 && s_lns == 2 && s_cir == 0 && s_ell == 0; }
+    bool has3MoreLines()         const { return s_pts == 0 && s_lns >= 3 && s_cir == 0 && s_ell == 0; }
+    bool has1Line1Circle()       const { return s_pts == 0 && s_lns == 1 && s_cir == 1 && s_ell == 0; }
+    bool has1Line2Circles()      const { return s_pts == 0 && s_lns == 1 && s_cir == 2 && s_ell == 0; }
+    bool has1Line1Ellipse()      const { return s_pts == 0 && s_lns == 1 && s_cir == 0 && s_ell == 1; }
+
+    bool has1Circle()            const { return s_pts == 0 && s_lns == 0 && s_cir == 1 && s_ell == 0; }
+    bool has2Circles()           const { return s_pts == 0 && s_lns == 0 && s_cir == 2 && s_ell == 0; }
+    bool has3MoreCircles()       const { return s_pts == 0 && s_lns == 0 && s_cir >= 3 && s_ell == 0; }
+    bool has1Circle1Ellipse()    const { return s_pts == 0 && s_lns == 0 && s_cir == 1 && s_ell == 1; }
+
+    bool has1Ellipse()           const { return s_pts == 0 && s_lns == 0 && s_cir == 0 && s_ell == 1; }
+    bool has2MoreEllipses()      const { return s_pts == 0 && s_lns == 0 && s_cir == 0 && s_ell >= 2; }
+
+    size_t s_pts, s_lns, s_cir, s_ell;
+};
+
 class DrawSketchHandlerDimension : public DrawSketchHandler
 {
 public:
@@ -1298,39 +1339,36 @@ protected:
     bool makeAppropriateConstraint(Base::Vector2d onSketchPos) {
         bool selAllowed = false;
 
-        size_t s_pts = selPoints.size();
-        size_t s_lns = selLine.size();
-        size_t s_cir = selCircleArc.size();
-        size_t s_ell = selEllipseAndCo.size();
+        GeomSelectionSizes selection(selPoints.size(), selLine.size(), selCircleArc.size(), selEllipseAndCo.size());
 
-        if (s_pts > 0) {
-            if (s_pts == 1 && s_lns == 0 && s_cir == 0 && s_ell == 0) { makeCts_1Point(selAllowed, onSketchPos); }
-            else if (s_pts == 2 && s_lns == 0 && s_cir == 0 && s_ell == 0) { makeCts_2Point(selAllowed, onSketchPos); }
-            else if (s_pts == 1 && s_lns == 1 && s_cir == 0 && s_ell == 0) { makeCts_1Point1Line(selAllowed, onSketchPos); }
-            else if (s_pts == 3 && s_lns == 0 && s_cir == 0 && s_ell == 0) { makeCts_3Point(selAllowed, s_pts); }
-            else if (s_pts >= 4 && s_lns == 0 && s_cir == 0 && s_ell == 0) { makeCts_4MorePoint(selAllowed, s_pts); }
-            else if (s_pts == 2 && s_lns == 1 && s_cir == 0 && s_ell == 0) { makeCts_2Point1Line(selAllowed, onSketchPos, s_pts); }
-            else if (s_pts >= 3 && s_lns == 1 && s_cir == 0 && s_ell == 0) { makeCts_3MorePoint1Line(selAllowed, onSketchPos, s_pts); }
-            else if (s_pts >= 1 && s_lns == 0 && s_cir == 1 && s_ell == 0) { makeCts_1MorePoint1Circle(selAllowed); }
-            else if (s_pts >= 1 && s_lns == 0 && s_cir == 0 && s_ell == 1) { makeCts_1MorePoint1Ellipse(selAllowed); }
+        if (selection.hasPoints()) {
+            if (selection.has1Point()) { makeCts_1Point(selAllowed, onSketchPos); }
+            else if (selection.has2Points()) { makeCts_2Point(selAllowed, onSketchPos); }
+            else if (selection.has1Point1Line()) { makeCts_1Point1Line(selAllowed, onSketchPos); }
+            else if (selection.has3Points()) { makeCts_3Point(selAllowed, selection.s_pts); }
+            else if (selection.has4MorePoints()) { makeCts_4MorePoint(selAllowed, selection.s_pts); }
+            else if (selection.has2Points1Line()) { makeCts_2Point1Line(selAllowed, onSketchPos, selection.s_pts); }
+            else if (selection.has3MorePoints1Line()) { makeCts_3MorePoint1Line(selAllowed, onSketchPos, selection.s_pts); }
+            else if (selection.has1MorePoint1Circle()) { makeCts_1MorePoint1Circle(selAllowed); }
+            else if (selection.has1MorePoint1Ellipse()) { makeCts_1MorePoint1Ellipse(selAllowed); }
         }
-        else if (s_lns > 0) { //s_pts is necessarily 0
-            if (s_lns == 1 && s_cir == 0 && s_ell == 0) { makeCts_1Line(selAllowed, onSketchPos); }
-            else if (s_lns == 2 && s_cir == 0 && s_ell == 0) { makeCts_2Line(selAllowed, onSketchPos); }
-            else if (s_lns >= 3 && s_cir == 0 && s_ell == 0) { makeCts_3MoreLine(selAllowed, s_lns); }
-            else if (s_lns == 1 && s_cir == 1 && s_ell == 0) { makeCts_1Line1Circle(selAllowed, onSketchPos); }
-            else if (s_lns == 1 && s_cir == 2 && s_ell == 0) { makeCts_1Line2Circle(selAllowed); }
-            else if (s_lns == 1 && s_cir == 0 && s_ell == 1) { makeCts_1Line1Ellipse(selAllowed); }
+        else if (selection.hasLines()) {
+            if (selection.has1Line()) { makeCts_1Line(selAllowed, onSketchPos); }
+            else if (selection.has2Lines()) { makeCts_2Line(selAllowed, onSketchPos); }
+            else if (selection.has3MoreLines()) { makeCts_3MoreLine(selAllowed, selection.s_lns); }
+            else if (selection.has1Line1Circle()) { makeCts_1Line1Circle(selAllowed, onSketchPos); }
+            else if (selection.has1Line2Circles()) { makeCts_1Line2Circle(selAllowed); }
+            else if (selection.has1Line1Ellipse()) { makeCts_1Line1Ellipse(selAllowed); }
         }
-        else if (s_cir > 0) { //s_pts & s_lns are necessarily 0
-            if (s_cir == 1 && s_ell == 0) { makeCts_1Circle(selAllowed, onSketchPos); }
-            else if (s_cir == 2 && s_ell == 0) { makeCts_2Circle(selAllowed, onSketchPos); }
-            else if (s_cir >= 3 && s_ell == 0) { makeCts_3MoreCircle(selAllowed, s_cir); }
-            else if (s_cir == 1 && s_ell == 1) { makeCts_1Circle1Ellipse(selAllowed); }
+        else if (selection.hasCirclesOrArcs()) {
+            if (selection.has1Circle()) { makeCts_1Circle(selAllowed, onSketchPos); }
+            else if (selection.has2Circles()) { makeCts_2Circle(selAllowed, onSketchPos); }
+            else if (selection.has3MoreCircles()) { makeCts_3MoreCircle(selAllowed, selection.s_cir); }
+            else if (selection.has1Circle1Ellipse()) { makeCts_1Circle1Ellipse(selAllowed); }
         }
-        else if (s_ell > 0) { //s_pts & s_lns & s_cir are necessarily 0
-            if (s_ell == 1) { makeCts_1Ellipse(selAllowed); }
-            else if (s_ell >= 2) { makeCts_2MoreEllipse(selAllowed, s_ell); }
+        else if (selection.hasEllipseAndCo()) {
+            if (selection.has1Ellipse()) { makeCts_1Ellipse(selAllowed); }
+            else if (selection.has2MoreEllipses()) { makeCts_2MoreEllipse(selAllowed, selection.s_ell); }
         }
         return selAllowed;
     }
