@@ -30,7 +30,7 @@ If you would like to change the overall look/style of the theme, just find and r
 ! If you find not matching or unreadable sections in FreeCAD please tell Chrismettal or open up a PR yourself !
 
     BACKGROUND (darker to lighter)
-        #65A2E5
+         @ThemeAccentColor2
         #1e1e1e
         #3c3c3c
         #434D5B
@@ -45,14 +45,14 @@ If you would like to change the overall look/style of the theme, just find and r
         #232932 = console color
         #d2d2d2
         #588AC1 = top menu item
-        #588AC2
+         @ThemeAccentColor3
         white
 
     SELECTION (darker to lighter)
         #1b3774
         #2053c0
-        #65A2E5
-        #65A2E5 = main selection color
+         @ThemeAccentColor3 text color
+         @ThemeAccentColor2 = main selection color
         #6f9efa = used to build QSpinBox up and down buttons, it's used as color in the middle
         #7cabf9
         #adc5ed
@@ -106,7 +106,7 @@ Reset elements
     border-image: none;
     outline: 0;
     /*font-size: 20px;*/
-    color: #65A2E5; /* Default color for labels and different text elements that usually use dark colors */
+    color:  @ThemeAccentColor3; /* Default color for labels and different text elements that usually use dark colors */
 }
 
 /* specific reset for elements inside QToolBar */
@@ -202,8 +202,8 @@ QMenu::icon {
 }
 
 QMenu::icon:checked { /* appearance of a 'checked' icon */
-    background: #61D29D;
-    border: 2px #61D29D;
+    background:  @ThemeAccentColor1;
+    border: 2px  @ThemeAccentColor1;
     position: absolute;
     border-radius: 2px;
 }
@@ -235,19 +235,19 @@ QMenu QToolButton:pressed,
 QMenu QPushButton:selected,
 QMenu QToolButton:selected {
     color: white;
-    background-color: #65A2E5; /* same as QMenu::item:selected and QMenu::item:pressed */
+    background-color:  @ThemeAccentColor2; /* same as QMenu::item:selected and QMenu::item:pressed */
 }
 
 QMenu QRadioButton:disabled,
 QMenu QCheckBox:disabled {
-    color: #588AC2;
+    color:  @ThemeAccentColor3;
 }
 
 QMenu QRadioButton::indicator:disabled,
 QMenu QCheckBox::indicator:disabled {
-    color: #588AC2;
+    color:  @ThemeAccentColor3;
     background-color: transparent;
-    border: 1px solid #588AC2;
+    border: 1px solid  @ThemeAccentColor3;
 }
 
 
@@ -401,7 +401,7 @@ QProgressBar:horizontal {
 }
 QProgressBar::chunk,
 QProgressBar::chunk:horizontal {
-    background-color: qlineargradient(spread:pad, x1:1, y1:0.545, x2:1, y2:0, stop:0 #65A2E5, stop:1 #65A2E5);
+    background-color: qlineargradient(spread:pad, x1:1, y1:0.545, x2:1, y2:0, stop:0  @ThemeAccentColor2, stop:1  @ThemeAccentColor2);
     border-radius: 3px;
 }
 
@@ -616,22 +616,22 @@ QTabBar::tab:selected {
 }
 
 QTabBar::tab:top:selected {
-    border-top: 4px solid qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 #65A2E5, stop:1 #65A2E5); /* selection color */
+    border-top: 4px solid qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0  @ThemeAccentColor2, stop:1  @ThemeAccentColor2); /* selection color */
     border-bottom-color: #2C333D; /* same as tab content background color */
 }
 
 QTabBar::tab:bottom:selected {
-    border-bottom: 4px solid qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 #65A2E5, stop:1 #65A2E5); /* selection color */
+    border-bottom: 4px solid qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0  @ThemeAccentColor2, stop:1  @ThemeAccentColor2); /* selection color */
     border-top-color: #2C333D; /* same as tab content background color */
 }
 
 QTabBar::tab:right:selected {
-    border-left: 4px solid qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 #65A2E5, stop:1 #65A2E5); /* selection color */
+    border-left: 4px solid qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0  @ThemeAccentColor2, stop:1  @ThemeAccentColor2); /* selection color */
     border-right-color: #2C333D; /* same as tab content background color */
 }
 
 QTabBar::tab:left:selected {
-    border-right: 4px solid qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 #65A2E5, stop:1 #65A2E5); /* selection color */
+    border-right: 4px solid qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0  @ThemeAccentColor2, stop:1  @ThemeAccentColor2); /* selection color */
     border-left-color: #2C333D; /* same as tab content background color */
 }
 
@@ -682,7 +682,7 @@ QDialog#Gui__Dialog__DlgPreferences > QListView::item:hover {
 
 QDialog#Gui__Dialog__DlgPreferences > QListView::item:selected {
     color: #232932;
-    background-color: #61D29D;
+    background-color:  @ThemeAccentColor1;
 }
 
 
@@ -845,7 +845,7 @@ Gui--PropertyEditor--PropertyEditor QAbstractSpinBox:disabled {
 
 /* hack to hide weird redundant information inside cells with links and no editable data (but editable via "..." button) */
 Gui--PropertyEditor--PropertyEditor > QWidget > QWidget > QLabel {
-    color: #65A2E5;
+    color:  @ThemeAccentColor3;
     background-color: #2C333D;/*was CBD8E6*/
 }
 
@@ -940,7 +940,7 @@ Gui--PropertyEditor--PropertyEditor > QWidget > QWidget > QWidget {
 Header of tree and list views
 ==================================================================================================*/
 QHeaderView {
-    color: #61D29D;
+    color:  @ThemeAccentColor1;
     background-color: #434D5B;
     border-top-left-radius: 2px; /* 1px less than its container */
     border-top-right-radius: 2px; /* 1px less than its container */
@@ -993,7 +993,7 @@ QHeaderView::down-arrow:hover {
 
 /* Group header inside Property Editor (FreeCAD custom widget) */
 Gui--PropertyEditor--PropertyEditor {
-    qproperty-groupTextColor: #61D29D;
+    qproperty-groupTextColor:  @ThemeAccentColor1;
     qproperty-groupBackground: #2C333D;
 }
 
@@ -1127,7 +1127,7 @@ QSint--ActionGroup QFrame[class="header"] {
 }
 
 QSint--ActionGroup QFrame[class="header"]:hover {
-    background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 #65A2E5, stop:1 #65A2E5);
+    background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0  @ThemeAccentColor2, stop:1  @ThemeAccentColor2);
 }
 
 QSint--ActionGroup QToolButton[class="header"] {
@@ -1209,7 +1209,7 @@ QSint--ActionGroup QFrame[class="content"] > QWidget > QPushButton {
 /* QSint--ActionGroup QFrame[class="content"] QTreeView,
 QSint--ActionGroup QFrame[class="content"] QListView,
 QSint--ActionGroup QFrame[class="content"] QTableView {
-    color: #588AC2;
+    color:  @ThemeAccentColor3;
     background-color: #787878;
 } */
 
@@ -1230,7 +1230,7 @@ QDateTimeEdit {
     color: #bebebe;
     background-color: #1E2226;
     selection-color: white;
-    selection-background-color: #65A2E5;
+    selection-background-color:  @ThemeAccentColor2;
     border: 1px solid #1E2226;
     border-radius: 3px;
     min-width: 50px; /* it ensures the default value is correctly displayed */
@@ -1240,7 +1240,7 @@ QDateTimeEdit {
 
 /* more contrast for QTexEdits */
 QTextEdit {
-    color: #65A2E5;
+    color:  @ThemeAccentColor3;
 }
 
 /* shifts text/number editable field to the left to make space for the up/down or drop-down buttons */
@@ -1270,9 +1270,9 @@ QTextEdit:focus,
 QTimeEdit:focus,
 QDateEdit:focus,
 QDateTimeEdit:focus {
-    color: #65A2E5;
+    color:  @ThemeAccentColor3;
     border-color: #7cabf9;
-    border-right-color: qlineargradient(spread:pad, x1:1, y1:0.8, x2:1, y2:0, stop:0 #65A2E5, stop:1 #7cabf9); /* same as up/down or drop-down button color */
+    border-right-color: qlineargradient(spread:pad, x1:1, y1:0.8, x2:1, y2:0, stop:0  @ThemeAccentColor2, stop:1 #7cabf9); /* same as up/down or drop-down button color */
     background-color: #2C333D;/*was CBD8E6*/
 }
 
@@ -1342,7 +1342,7 @@ QDoubleSpinBox:down-button:focus,
 QTimeEdit:down-button:focus,
 QDateEdit:down-button:focus,
 QDateTimeEdit:down-button:focus {
-    background-color: qlineargradient(spread:pad, x1:1, y1:0.8, x2:1, y2:0, stop:0 #65A2E5, stop:1 #6f9efa);
+    background-color: qlineargradient(spread:pad, x1:1, y1:0.8, x2:1, y2:0, stop:0  @ThemeAccentColor2, stop:1 #6f9efa);
 }
 
 QAbstractSpinBox:up-button:disabled,
@@ -1447,7 +1447,7 @@ QComboBox::drop-down {
 
 QComboBox::drop-down:on,
 QComboBox::drop-down:focus {
-    background-color: qlineargradient(spread:pad, x1:1, y1:0.8, x2:1, y2:0, stop:0 #65A2E5, stop:1 #7cabf9);
+    background-color: qlineargradient(spread:pad, x1:1, y1:0.8, x2:1, y2:0, stop:0  @ThemeAccentColor2, stop:1 #7cabf9);
 }
 
 QComboBox::down-arrow {
@@ -1467,14 +1467,14 @@ QComboBox::down-arrow:disabled {
 /* ComboBox menu */
 QComboBox {
     selection-color: white;
-    selection-background-color: #65A2E5;
+    selection-background-color:  @ThemeAccentColor2;
 }
 
 QComboBox QAbstractItemView {
     color: #bebebe; /* same as regular QComboBox color */
     background-color: transparent;
     selection-color: white;
-    selection-background-color: #65A2E5;
+    selection-background-color:  @ThemeAccentColor2;
     border-width: 5px 0px 5px 0px;
     border-style: solid;
     border-color: transparent;
@@ -1500,8 +1500,8 @@ QPushButton {
 QPushButton:hover,
 QPushButton:focus {
     color: white;
-    border-color: #65A2E5;
-    background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 #65A2E5, stop:1 #65A2E5);
+    border-color:  @ThemeAccentColor2;
+    background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0  @ThemeAccentColor2, stop:1  @ThemeAccentColor2);
 }
 
 QPushButton:disabled,
@@ -1512,12 +1512,12 @@ QPushButton:disabled:checked {
 }
 
 QPushButton:pressed {
-    background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 #65A2E5, stop:1 #65A2E5);
+    background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0  @ThemeAccentColor2, stop:1  @ThemeAccentColor2);
 }
 
 QPushButton:checked {
-    background-color: #65A2E5;
-    border-color: #65A2E5;
+    background-color:  @ThemeAccentColor2;
+    border-color:  @ThemeAccentColor2;
 }
 
 /* Color Buttons */
@@ -1540,12 +1540,12 @@ Gui--ColorButton:disabled {
 
 Gui--ColorButton:hover,
 Gui--ColorButton:focus {
-    border-color: #65A2E5;
-    background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 #65A2E5, stop:1 #65A2E5);
+    border-color:  @ThemeAccentColor2;
+    background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0  @ThemeAccentColor2, stop:1  @ThemeAccentColor2);
 }
 
 Gui--ColorButton:pressed {
-    background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 #65A2E5, stop:1 #65A2E5);
+    background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0  @ThemeAccentColor2, stop:1  @ThemeAccentColor2);
 }
 
 /* Pushbutton style for "..." inside Placement cell which launches Placement tool */
@@ -1573,8 +1573,8 @@ Gui--PropertyEditor--PropertyEditor > QWidget > QWidget > QWidget > QWidget > QF
 }
 
 QPushButton:checked {
-    background-color: #65A2E5;
-    border-color: #65A2E5;
+    background-color:  @ThemeAccentColor2;
+    border-color:  @ThemeAccentColor2;
 }
 
 /*==================================================================================================
@@ -1595,7 +1595,7 @@ Tool button inside QDialogs that works as QPushButtons
 ==================================================================================================*/
 /* found under Tools -> Customize -> Macros -> Pixmap "..." button */
 QDialog QToolButton {
-    color: #65A2E5;
+    color:  @ThemeAccentColor3;
     text-align: center;
     background-color: qlineargradient(spread:pad, x1:0, y1:0.3, x2:0, y2:1, stop:0 #232932, stop:1 #646464);
     border: 1px solid #232932;
@@ -1609,8 +1609,8 @@ QDialog QToolButton {
 QDialog QToolButton:hover,
 QDialog QToolButton:focus {
     color: white;
-    border-color: #65A2E5;
-    background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 #65A2E5, stop:1 #65A2E5);
+    border-color:  @ThemeAccentColor2;
+    background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0  @ThemeAccentColor2, stop:1  @ThemeAccentColor2);
 }
 
 QDialog QToolButton:disabled,
@@ -1621,7 +1621,7 @@ QDialog QToolButton:disabled:checked {
 }
 
 QDialog QToolButton:pressed {
-    background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 #65A2E5, stop:1 #65A2E5);
+    background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0  @ThemeAccentColor2, stop:1  @ThemeAccentColor2);
 }
 
 
@@ -1630,7 +1630,7 @@ Tool button inside Task Panel content that works as QPushButtons
 ==================================================================================================*/
 /* found inside Part Design Workbench and "make a draft on a face" Task panel options */
 QSint--ActionGroup QFrame[class="content"] QToolButton {
-    color: #65A2E5;
+    color:  @ThemeAccentColor3;
     text-align: center;
     background-color: qlineargradient(spread:pad, x1:0, y1:0.3, x2:0, y2:1, stop:0 #232932, stop:1 #646464);
     border: 1px solid #232932;
@@ -1644,8 +1644,8 @@ QSint--ActionGroup QFrame[class="content"] QToolButton {
 QSint--ActionGroup QFrame[class="content"] QToolButton:hover,
 QSint--ActionGroup QFrame[class="content"] QToolButton:focus {
     color: white;
-    border-color: #65A2E5;
-    background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 #65A2E5, stop:1 #65A2E5);
+    border-color:  @ThemeAccentColor2;
+    background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0  @ThemeAccentColor2, stop:1  @ThemeAccentColor2);
 }
 
 QSint--ActionGroup QFrame[class="content"] QToolButton:disabled,
@@ -1656,7 +1656,7 @@ QSint--ActionGroup QFrame[class="content"] QToolButton:disabled:checked {
 }
 
 QSint--ActionGroup QFrame[class="content"] QToolButton:pressed {
-    background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 #65A2E5, stop:1 #65A2E5);
+    background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0  @ThemeAccentColor2, stop:1  @ThemeAccentColor2);
 }
 
 /* QToolButtons with a menu found in Sketcher task panel*/
@@ -1689,20 +1689,20 @@ QSint--ActionGroup QToolButton#filterButton QListWidget {
 Radio button
 ==================================================================================================*/
 QRadioButton::indicator:unchecked{
-    color: #61D29D;
+    color:  @ThemeAccentColor1;
     background-color: rgba(255,255,255,20);
     border: 1px solid #232932;
 }
 
 QRadioButton::indicator:checked {
-    background-color: #61D29D; /* QCheckBox has the same color */
-    border: 1px solid #61D29D; /* QCheckBox has the same color */
+    background-color:  @ThemeAccentColor1; /* QCheckBox has the same color */
+    border: 1px solid  @ThemeAccentColor1; /* QCheckBox has the same color */
     image:url(qss:images_dark-light/radiobutton_light.svg);
 }
 
 QRadioButton,
 QRadioButton:disabled {
-    color: #65A2E5;
+    color:  @ThemeAccentColor3;
     padding: 3px;
     outline: none;
     background-color: transparent;
@@ -1719,9 +1719,9 @@ QRadioButton::indicator:pressed {
 }
 
 QRadioButton::indicator:disabled {
-    color: #65A2E5;
+    color:  @ThemeAccentColor3;
     background-color: transparent;
-    border: 1px solid #65A2E5;
+    border: 1px solid  @ThemeAccentColor2;
 }
 
 QRadioButton:focus {
@@ -1734,7 +1734,7 @@ Checkbox
 ==================================================================================================*/
 QCheckBox,
 QCheckBox:disabled {
-    color: #65A2E5;
+    color:  @ThemeAccentColor3;
     padding: 3px;
     outline: none;
     background-color: transparent;
@@ -1742,7 +1742,7 @@ QCheckBox:disabled {
 
 QCheckBox::indicator,
 QGroupBox::indicator {
-    color: #61D29D;
+    color:  @ThemeAccentColor1;
     background-color: rgba(255,255,255,20);
     border: 1px solid #232932;
     width: 11px;
@@ -1763,8 +1763,8 @@ QGroupBox::indicator:checked:pressed {
 
 QCheckBox::indicator:checked,
 QGroupBox::indicator:checked {
-    background-color: #61D29D; /* QRadioButton has the same color */
-    border: 1px solid #61D29D; /* QRadioButton has the same color */
+    background-color:  @ThemeAccentColor1; /* QRadioButton has the same color */
+    border: 1px solid  @ThemeAccentColor1; /* QRadioButton has the same color */
     image:url(qss:images_dark-light/checkbox_light.svg);
 }
 
@@ -1781,8 +1781,8 @@ QGroupBox::indicator:disabled {
 
 QCheckBox::indicator:indeterminate,
 QGroupBox::indicator:indeterminate {
-    background-color: #61D29D;
-    border: 1px solid #61D29D;
+    background-color:  @ThemeAccentColor1;
+    border: 1px solid  @ThemeAccentColor1;
     image: url(qss:images_dark-light/checkbox_indeterminate_light.svg);
 }
 
@@ -1835,8 +1835,8 @@ QTreeView::indicator:checked:pressed {
 
 QListWidget::indicator:checked,
 QTreeView::indicator:checked {
-    background-color: #65A2E5; /* QRadioButton has the same color */
-    border: 1px solid #65A2E5; /* QRadioButton has the same color */
+    background-color:  @ThemeAccentColor2; /* QRadioButton has the same color */
+    border: 1px solid  @ThemeAccentColor2; /* QRadioButton has the same color */
     image:url(qss:images_dark-light/checkbox_light.svg);
 }
 
@@ -1848,8 +1848,8 @@ QTreeView::indicator:disabled {
 
 QListWidget::indicator:indeterminate,
 QTreeView::indicator:indeterminate {
-    background-color: #65A2E5;
-    border: 1px solid #65A2E5;
+    background-color:  @ThemeAccentColor2;
+    border: 1px solid  @ThemeAccentColor2;
     image: url(qss:images_dark-light/checkbox_indeterminate_light.svg);
 }
 
@@ -2055,7 +2055,7 @@ QToolBar > QToolButton#qt_toolbutton_menubutton::menu-button {
 QToolBar > QToolButton#qt_toolbutton_menubutton::menu-button:hover,
 QToolBar > QToolButton#qt_toolbutton_menubutton::menu-button:pressed,
 QToolBar > QToolButton#qt_toolbutton_menubutton::menu-button:open {
-    background-color: qlineargradient(spread:pad, x1:1, y1:0.8, x2:1, y2:0, stop:0 #65A2E5, stop:1 #7cabf9);
+    background-color: qlineargradient(spread:pad, x1:1, y1:0.8, x2:1, y2:0, stop:0  @ThemeAccentColor2, stop:1 #7cabf9);
 }
 
 QToolBar > QToolButton::menu-arrow {
@@ -2176,7 +2176,7 @@ QTableView > QWidget > QTextEdit,
 QTableView > QWidget > QTimeEdit,
 QTableView > QWidget > QDateEdit,
 QTableView > QWidget > QDateTimeEdit {
-    color: #65A2E5;
+    color:  @ThemeAccentColor3;
     background-color: transparent;
     border-color: transparent;
 }
@@ -2209,7 +2209,7 @@ QTableView > QWidget > QDateEdit:focus,
 QTableView > QWidget > QDateTimeEdit:focus {
     color: #D2D8E1;
     selection-color: white;
-    selection-background-color: #65A2E5;
+    selection-background-color:  @ThemeAccentColor2;
     border-color: #2C333D;/*was CBD8E6*/
     background-color: #2C333D;/*was CBD8E6*/
 }
@@ -2237,7 +2237,7 @@ QTableView > QWidget > QTextEdit:read-only,
 QTableView > QWidget > QTimeEdit:read-only,
 QTableView > QWidget > QDateEdit:read-only,
 QTableView > QWidget > QDateTimeEdit:read-only {
-    color: #65A2E5;
+    color:  @ThemeAccentColor3;
     background-color: transparent;
     border-color: transparent;
 }
