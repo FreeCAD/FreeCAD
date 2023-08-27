@@ -42,7 +42,7 @@ using namespace Materials;
 MaterialEntry::MaterialEntry()
 {}
 
-MaterialEntry::MaterialEntry(const MaterialLibrary &library, const QString &modelName, const QDir &dir, 
+MaterialEntry::MaterialEntry(const MaterialLibrary &library, const QString &modelName, const QDir &dir,
         const QString &modelUuid):
     _library(library), _name(modelName), _directory(dir), _uuid(modelUuid)
 {}
@@ -50,7 +50,7 @@ MaterialEntry::MaterialEntry(const MaterialLibrary &library, const QString &mode
 MaterialEntry::~MaterialEntry()
 {}
 
-MaterialYamlEntry::MaterialYamlEntry(const MaterialLibrary &library, const QString &modelName, const QDir &dir, 
+MaterialYamlEntry::MaterialYamlEntry(const MaterialLibrary &library, const QString &modelName, const QDir &dir,
         const QString &modelUuid, const YAML::Node &modelData):
     MaterialEntry(library, modelName, dir, modelUuid), _model(modelData)
 {}
@@ -187,8 +187,8 @@ MaterialEntry *MaterialLoader::getMaterialFromPath(const MaterialLibrary &librar
             (*_materialPathMap)[path] = material;
         }
 
-        // Return the nullptr as there are no intermediate staps to take, such
-        // as checking inheritence
+        // Return the nullptr as there are no intermediate steps to take, such
+        // as checking inheritance
         return model;
     }
 
@@ -206,7 +206,7 @@ MaterialEntry *MaterialLoader::getMaterialFromPath(const MaterialLibrary &librar
     } catch (YAML::Exception const &) {
         Base::Console().Error("YAML parsing error: '%s'\n", path.toStdString().c_str());
     }
-   
+
 
     return model;
 }
@@ -242,11 +242,11 @@ void MaterialLoader::dereference(Material *material)
                 material->getName().toStdString().c_str(),
                 parentUUID.toStdString().c_str());
         }
-        
+
         // Ensure the parent has been dereferenced
         dereference(parent);
 
-        // Add pysical models
+        // Add physical models
         auto modelVector = parent->getPhysicalModels();
         for (auto model = modelVector->begin(); model != modelVector->end(); model++)
         {

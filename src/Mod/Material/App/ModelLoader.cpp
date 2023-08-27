@@ -38,7 +38,7 @@
 
 using namespace Materials;
 
-ModelEntry::ModelEntry(const ModelLibrary &library, const QString &baseName, const QString &modelName, const QDir &dir, 
+ModelEntry::ModelEntry(const ModelLibrary &library, const QString &baseName, const QString &modelName, const QDir &dir,
         const QString &modelUuid, const YAML::Node &modelData):
     _library(library), _base(baseName), _name(modelName), _directory(dir), _uuid(modelUuid), _model(modelData), _dereferenced(false)
 {}
@@ -108,7 +108,7 @@ ModelEntry *ModelLoader::getModelFromPath(const ModelLibrary &library, const QSt
     }
 
     QDir modelDir(path);
-    ModelEntry *model = new ModelEntry(library, QString::fromStdString(base), QString::fromStdString(name), 
+    ModelEntry *model = new ModelEntry(library, QString::fromStdString(base), QString::fromStdString(name),
             modelDir, QString::fromStdString(uuid), yamlroot);
 
     return model;
@@ -123,7 +123,7 @@ void ModelLoader::showYaml(const YAML::Node &yaml) const
     Base::Console().Log("%s\n", logData.c_str());
 }
 
-void ModelLoader::dereference(const QString &uuid, ModelEntry *parent, const ModelEntry *child, 
+void ModelLoader::dereference(const QString &uuid, ModelEntry *parent, const ModelEntry *child,
     std::map<std::pair<QString, QString>, QString> *inheritances)
 {
     auto parentPtr = parent->getModelPtr();
@@ -250,7 +250,7 @@ void ModelLoader::addToTree(ModelEntry *model, std::map<std::pair<QString, QStri
                 Base::Console().Log("Reading columns\n");
                 // Read the columns
                 auto cols = yamlProp["Columns"];
-                for (auto col: cols)
+                for (auto col : cols)
                 {
                     std::string colName = col.first.as<std::string>();
                     Base::Console().Log("\tColumns '%s'\n", colName.c_str());

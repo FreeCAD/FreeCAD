@@ -40,7 +40,7 @@ class MaterialsExport MaterialProperty : public ModelProperty
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
-    explicit MaterialProperty();
+    MaterialProperty();
     explicit MaterialProperty(const ModelProperty &property);
     virtual ~MaterialProperty();
 
@@ -98,7 +98,7 @@ class MaterialsExport Material : public Base::BaseClass
     TYPESYSTEM_HEADER();
 
 public:
-    explicit Material();
+    Material();
     explicit Material(const MaterialLibrary &library, const QString& directory,
                       const QString& uuid, const QString& name);
     explicit Material(const MaterialLibrary &library, const QDir& directory,
@@ -134,7 +134,7 @@ public:
     void removeTag(const QString& tag) { Q_UNUSED(tag); }
     void addPhysical(const QString& uuid);
     void addAppearance(const QString& uuid);
-    
+
     void setPhysicalValue(const QString& name, const QString &value);
     void setPhysicalValue(const QString& name, int value);
     void setPhysicalValue(const QString& name, double value);

@@ -46,7 +46,7 @@ public:
         initialize("This module is the Material module."); // register with Python
     }
 
-    ~Module() override {}
+    ~Module() override = default;
 
 private:
 };

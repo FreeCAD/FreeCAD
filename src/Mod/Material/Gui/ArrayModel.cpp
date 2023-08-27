@@ -131,7 +131,7 @@ QVariant Array2DModel::headerData(int section, Qt::Orientation orientation,
 bool Array2DModel::setData(const QModelIndex& index, const QVariant& value, int role)
 {
     Q_UNUSED(role);
-    
+
     if (index.row() == _value->rows())
     {
         insertRows(index.row(), 1);
@@ -275,7 +275,7 @@ QVariant Array3DDepthModel::headerData(int section, Qt::Orientation orientation,
 bool Array3DDepthModel::setData(const QModelIndex& index, const QVariant& value, int role)
 {
     Q_UNUSED(role);
-    
+
     if (index.row() == _value->depth())
     {
         insertRows(index.row(), 1);
@@ -431,7 +431,7 @@ QVariant Array3DModel::headerData(int section, Qt::Orientation orientation,
 bool Array3DModel::setData(const QModelIndex& index, const QVariant& value, int role)
 {
     Q_UNUSED(role);
-    
+
     if (index.row() == _value->depth())
     {
         insertRows(index.row(), 1);

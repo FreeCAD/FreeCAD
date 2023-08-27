@@ -64,7 +64,7 @@ ArrayDelegate::ArrayDelegate(Materials::MaterialValue::ValueType type, QString u
 {
 }
 
-void ArrayDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option, 
+void ArrayDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option,
         const QModelIndex &index) const
 {
 
@@ -139,7 +139,7 @@ QWidget* ArrayDelegate::createWidget(QWidget* parent, const QVariant &item) cons
     } else if (_type == Materials::MaterialValue::Float)
     {
         Gui::DoubleSpinBox *spinner = new Gui::DoubleSpinBox(parent);
-        
+
         // the magnetic permeability is the parameter for which many decimals matter
         // the most however, even for this, 6 digits are sufficient
         spinner->setDecimals(6);

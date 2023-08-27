@@ -34,7 +34,7 @@ namespace Materials {
 class ModelEntry
 {
 public:
-    explicit ModelEntry(const ModelLibrary &library, const QString &baseName, const QString &modelName, const QDir &dir, 
+    explicit ModelEntry(const ModelLibrary &library, const QString &baseName, const QString &modelName, const QDir &dir,
         const QString &modelUuid, const YAML::Node &modelData);
     virtual ~ModelEntry();
 
@@ -50,7 +50,7 @@ public:
     void markDereferenced() { _dereferenced = true; }
 
 private:
-    explicit ModelEntry();
+    ModelEntry();
 
     ModelLibrary _library;
     QString _base;
@@ -71,7 +71,7 @@ public:
     static const QString getUUIDFromPath(const QString &path);
 
 private:
-    explicit ModelLoader();
+    ModelLoader();
 
     QString yamlValue(const YAML::Node& node, const std::string& key,
                       const std::string& defaultValue);

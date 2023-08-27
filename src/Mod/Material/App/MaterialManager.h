@@ -39,7 +39,7 @@ class MaterialsExport MaterialManager : public Base::BaseClass
     TYPESYSTEM_HEADER();
 
 public:
-    explicit MaterialManager();
+    MaterialManager();
     virtual ~MaterialManager();
 
     std::map<QString, Material *> *getMaterials() { return _materialMap; }

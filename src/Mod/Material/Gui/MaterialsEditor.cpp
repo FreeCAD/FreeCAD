@@ -134,7 +134,7 @@ void MaterialsEditor::saveFavorites()
     // Add the current values
     param->SetInt("Favorites", _favorites.size());
     int j = 0;
-    for (auto favorite: _favorites)
+    for (auto favorite : _favorites)
     {
         QString key = QString::fromLatin1("FAV%1").arg(j);
         param->SetASCII(key.toStdString().c_str(), favorite.toStdString());
@@ -154,7 +154,7 @@ void MaterialsEditor::addFavorite(const QString &uuid)
     {
         return;
     }
-    
+
     if (!isFavorite(uuid)) {
         _favorites.push_back(uuid);
         saveFavorites();
@@ -173,7 +173,7 @@ void MaterialsEditor::removeFavorite(const QString& uuid)
 
 bool MaterialsEditor::isFavorite(const QString& uuid) const
 {
-    for (auto it: _favorites)
+    for (auto it : _favorites)
     {
         if (it == uuid)
             return true;
@@ -217,7 +217,7 @@ void MaterialsEditor::saveRecents()
         size = _recentMax;
     param->SetInt("Recent", size);
     int j = 0;
-    for (auto recent: _recents)
+    for (auto recent : _recents)
     {
         QString key = QString::fromLatin1("MRU%1").arg(j);
         param->SetASCII(key.toStdString().c_str(), recent.toStdString());
@@ -239,7 +239,7 @@ void MaterialsEditor::addRecent(const QString& uuid)
     {
         return;
     }
-    
+
     // Ensure no duplicates
     if (isRecent(uuid))
         _recents.remove(uuid);
@@ -253,7 +253,7 @@ void MaterialsEditor::addRecent(const QString& uuid)
 
 bool MaterialsEditor::isRecent(const QString& uuid) const
 {
-    for (auto it: _recents)
+    for (auto it : _recents)
     {
         if (it == uuid)
             return true;
@@ -263,7 +263,7 @@ bool MaterialsEditor::isRecent(const QString& uuid) const
 
 void MaterialsEditor::propertyChange(const QString &property, const QString value)
 {
-    Base::Console().Log("MaterialsEditor::propertyChange(%s) = '%s'\n", 
+    Base::Console().Log("MaterialsEditor::propertyChange(%s) = '%s'\n",
         property.toStdString().c_str(),
         value.toStdString().c_str());
     if (_material.hasPhysicalProperty(property))
@@ -289,7 +289,7 @@ void MaterialsEditor::onURL(bool checked)
 void MaterialsEditor::onPhysicalAdd(bool checked)
 {
     Q_UNUSED(checked)
-    
+
     ModelSelect dialog(this, Materials::ModelManager::ModelFilter_Physical);
     dialog.setModal(true);
     if(dialog.exec() == QDialog::Accepted)
@@ -306,7 +306,7 @@ void MaterialsEditor::onPhysicalAdd(bool checked)
 void MaterialsEditor::onAppearanceAdd(bool checked)
 {
     Q_UNUSED(checked)
-    
+
     ModelSelect dialog(this, Materials::ModelManager::ModelFilter_Appearance);
     dialog.setModal(true);
     if(dialog.exec() == QDialog::Accepted)
@@ -797,7 +797,7 @@ void MaterialsEditor::updateMaterial()
 
     updateMaterialProperties();
     updateMaterialAppearance();
-    
+
     updatePreview();
 }
 

@@ -134,9 +134,9 @@ const QVariant Material2DArray::getValue(int row, int column)
 void Material2DArray::dumpRow(const std::vector<QVariant> &row) const
 {
     Base::Console().Log("row: ");
-    for (auto column: row)
+    for (auto column : row)
     {
-        Base::Console().Log("'%s' ", 
+        Base::Console().Log("'%s' ",
             column.toString().toStdString().c_str());
     }
     Base::Console().Log("\n");
@@ -144,7 +144,7 @@ void Material2DArray::dumpRow(const std::vector<QVariant> &row) const
 
 void Material2DArray::dump() const
 {
-    for (auto row: _rows)
+    for (auto row : _rows)
     {
         dumpRow(*row);
     }

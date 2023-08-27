@@ -89,7 +89,7 @@ void ModelManager::refresh()
     // Load the libraries
     ModelLoader loader(_modelMap, _libraryList);
 }
-    
+
 const Model &ModelManager::getModel(const QString &uuid) const
 {
     try {

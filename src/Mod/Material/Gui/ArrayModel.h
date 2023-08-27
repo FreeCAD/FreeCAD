@@ -35,7 +35,7 @@ namespace MatGui {
 class AbstractArrayModel : public QAbstractTableModel
 {
 public:
-    AbstractArrayModel(QObject *parent = nullptr);
+    explicit AbstractArrayModel(QObject *parent = nullptr);
     ~AbstractArrayModel() override;
 
     virtual bool newRow(const QModelIndex& index) const = 0;
@@ -44,10 +44,10 @@ public:
 class Array2DModel : public AbstractArrayModel
 {
 public:
-    Array2DModel(Materials::MaterialProperty *property = nullptr, Materials::Material2DArray *value = nullptr, QObject *parent = nullptr);
+    explicit Array2DModel(Materials::MaterialProperty *property = nullptr, Materials::Material2DArray *value = nullptr, QObject *parent = nullptr);
     ~Array2DModel() override;
 
-    // Overriden virtual functions
+    // Overridden virtual functions
     int rowCount(const QModelIndex& parent = QModelIndex()) const override;
     bool newRow(const QModelIndex& index) const override;
     int columnCount(const QModelIndex& parent = QModelIndex()) const override;
@@ -71,10 +71,10 @@ private:
 class Array3DDepthModel : public AbstractArrayModel
 {
 public:
-    Array3DDepthModel(Materials::MaterialProperty *property = nullptr, Materials::Material3DArray *value = nullptr, QObject *parent = nullptr);
+    explicit Array3DDepthModel(Materials::MaterialProperty *property = nullptr, Materials::Material3DArray *value = nullptr, QObject *parent = nullptr);
     ~Array3DDepthModel() override;
 
-    // Overriden virtual functions
+    // Overridden virtual functions
     int rowCount(const QModelIndex& parent = QModelIndex()) const override;
     bool newRow(const QModelIndex& index) const override;
     int columnCount(const QModelIndex& parent = QModelIndex()) const override { Q_UNUSED(parent) return 1; }
@@ -98,10 +98,10 @@ private:
 class Array3DModel : public AbstractArrayModel
 {
 public:
-    Array3DModel(Materials::MaterialProperty *property = nullptr, Materials::Material3DArray *value = nullptr, QObject *parent = nullptr);
+    explicit Array3DModel(Materials::MaterialProperty *property = nullptr, Materials::Material3DArray *value = nullptr, QObject *parent = nullptr);
     ~Array3DModel() override;
 
-    // Overriden virtual functions
+    // Overridden virtual functions
     int rowCount(const QModelIndex& parent = QModelIndex()) const override;
     bool newRow(const QModelIndex& index) const override;
     int columnCount(const QModelIndex& parent = QModelIndex()) const override;

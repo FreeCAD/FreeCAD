@@ -175,7 +175,7 @@ void MaterialDelegate::showArray3DModal(const QString &propertyName, QStandardIt
     dlg->exec();
 }
 
-void MaterialDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option, 
+void MaterialDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option,
         const QModelIndex &index) const
 {
     // Base::Console().Log("MaterialsEditor::paint()\n");
@@ -367,7 +367,7 @@ QWidget* MaterialDelegate::createWidget(QWidget* parent, const QString &property
     } else if (type == "Float")
     {
         Gui::DoubleSpinBox *spinner = new Gui::DoubleSpinBox(parent);
-        
+
         // the magnetic permeability is the parameter for which many decimals matter
         // the most however, even for this, 6 digits are sufficient
         spinner->setDecimals(6);

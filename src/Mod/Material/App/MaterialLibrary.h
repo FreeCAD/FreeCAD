@@ -39,7 +39,7 @@ class MaterialsExport MaterialLibrary : public Base::BaseClass
     TYPESYSTEM_HEADER();
 
 public:
-    explicit MaterialLibrary();
+    MaterialLibrary();
     explicit MaterialLibrary(const QString &libraryName, const QDir &dir, const QString &icon, bool readOnly = true);
     virtual ~MaterialLibrary();
 
@@ -72,7 +72,7 @@ class MaterialsExport MaterialExternalLibrary : public MaterialLibrary
     TYPESYSTEM_HEADER();
 
 public:
-    explicit MaterialExternalLibrary();
+    MaterialExternalLibrary();
     explicit MaterialExternalLibrary(const QString &libraryName, const QDir &dir, const QString &icon, bool readOnly = true);
     virtual ~MaterialExternalLibrary();
 };

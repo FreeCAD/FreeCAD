@@ -85,7 +85,7 @@ TYPESYSTEM_SOURCE(Materials::Model, Base::BaseClass)
 Model::Model()
 {}
 
-Model::Model(const ModelLibrary &library, ModelType type, const QString &name, const QDir &directory, 
+Model::Model(const ModelLibrary &library, ModelType type, const QString &name, const QDir &directory,
         const QString &uuid, const QString& description, const QString& url,
         const QString& doi):
     _library(library), _type(type), _name(name), _directory(directory), _uuid(uuid), _description(description),
