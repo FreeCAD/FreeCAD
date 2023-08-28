@@ -454,7 +454,7 @@ bool InterpreterSingleton::loadModule(const char* psModName)
 {
     // buffer acrobatics
     //PyBuf ModName(psModName);
-    PyObject *module;
+    PyObject *module{};
 
     PyGILStateLocker locker;
     module = PP_Load_Module(psModName);
