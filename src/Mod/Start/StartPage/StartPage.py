@@ -390,6 +390,16 @@ def handle():
                         ALTCSS = f.read()
                         HTML = HTML.replace("<!--QSS-->","<style type=\"text/css\">"+ALTCSS+"</style>")
 
+    # handle file thumbnail icons visiblity and size
+
+    if not FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Start").GetBool("ShowFileThumbnailIcons",True):
+        HTML = HTML.replace("display: block; /* thumb icons display */","display: none; /* thumb icons display */")
+        HTML = HTML.replace("THUMBCARDSIZE","75px")
+
+    thumb_icons_size = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Start").GetInt("FileThumbnailIconsSize", 128)
+    HTML = HTML.replace("THUMBSIZE",str(thumb_icons_size)+"px")
+    HTML = HTML.replace("THUMBCARDSIZE",str(thumb_icons_size + 75)+"px")
+
     # turn tips off if needed
 
     if not FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Start").GetBool("ShowTips",True):

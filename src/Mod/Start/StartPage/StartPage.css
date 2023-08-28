@@ -174,23 +174,26 @@ ul.icons {
 .file-card {
     list-style: none;
     display: inline;
-    padding: 10px 0px 15px 10px;
-    width: 138px;
-    height: 200px;
+    padding: 10px;
+    width: 130px;
+    height: THUMBCARDSIZE;
     background: BOXCOLOR;
     border-radius: 8px;
     margin: 10px;
     word-wrap: break-word;
+    text-align: center;
 }
 
 .file-card h4 {
-    margin: 3px 0;
-    max-width: 90%;
+    margin: 5px 0;
 }
 
 .file-card img {
-    width: 128px;
-    height: 128px;
+    display: block; /* thumb icons display */
+    /* don't change this line */
+    margin: auto;
+    width: THUMBSIZE;
+    height: THUMBSIZE;
     border-radius: 4px;
 }
 
@@ -239,8 +242,8 @@ a .caption:visited {
 }
 
 .quickstart-button-card img {
-    width: 64px;
-    height: 64px;
+    width: 60px;
+    height: 60px;
     margin-right: 10px;
 }
 
