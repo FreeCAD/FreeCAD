@@ -1,3 +1,10 @@
+/*
+ * !!! WARNING !!!
+ * DO NOT change lines that have comment labels right beside them
+ * these lines are marked with "don't change this line"
+ * they get replaced by StartPage.py according to the preferences
+*/
+
 /* --- MAIN --- */
 
 html {
@@ -150,9 +157,10 @@ ul.tabs li a.active:hover {
 }
 
 .footnote {
+    /* don't change this line */
+    display: block; /* footnote tips display */
     color: BGTCOLOR;
     text-align: center;
-    display: block; /* footnote tips display */
     clear: both;
     padding-top: 10px;
 }
@@ -189,8 +197,8 @@ ul.icons {
 }
 
 .file-card img {
-    display: block; /* thumb icons display */
     /* don't change this line */
+    display: block; /* thumb icons display */
     margin: auto;
     width: THUMBSIZE;
     height: THUMBSIZE;
@@ -252,8 +260,8 @@ a .caption:visited {
 }
 
 .notes {
-    display: none; /* notes display */
     /* don't change this line */
+    display: none; /* notes display */
     width: 100%;
 }
 
@@ -347,8 +355,8 @@ ul.addonslist {
 }
 
 .forum {
-    display: none; /* forum display */
     /* don't change this line */
+    display: none; /* forum display */
 }
 
 .forum pre {
