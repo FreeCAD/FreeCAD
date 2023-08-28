@@ -203,7 +203,7 @@ class ObjectDressup:
         if not obj.Base.Path:
             return
 
-        if not obj.Base.Active:
+        if hasattr(obj.Base, 'Active') and not obj.Base.Active:
             path = Path.Path("(inactive operation)")
             obj.Path = path
             return
@@ -222,7 +222,7 @@ class ObjectDressup:
 
         self.angle = obj.Angle
         self.method = obj.Method
-        self.wire, self.rapids = Path.Geom.wireForPath(obj.Base.Path)
+        self.wire, self.rapids = Path.Geom.wireForPath(PathUtils.getPathWithPlacement(obj.Base))
         if self.method in ["RampMethod1", "RampMethod2", "RampMethod3"]:
             self.outedges = self.generateRamps()
         else:
@@ -479,9 +479,9 @@ class ObjectDressup:
         ):
             return Part.makeLine(startPoint, endPoint)
         elif type(originalEdge.Curve) == Part.Circle:
-            arcMid = originalEdge.valueAt(
-                (originalEdge.FirstParameter + originalEdge.LastParameter) / 2
-            )
+            firstParameter = originalEdge.Curve.parameter(startPoint)
+            lastParameter = originalEdge.Curve.parameter(endPoint)
+            arcMid = originalEdge.valueAt((firstParameter + lastParameter) / 2)
             arcMid.z = (startPoint.z + endPoint.z) / 2
             return Part.Arc(startPoint, arcMid, endPoint).toShape()
         else:

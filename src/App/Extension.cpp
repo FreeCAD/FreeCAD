@@ -53,10 +53,6 @@ void App::Extension::init(){
 
 using namespace App;
 
-Extension::Extension()
-{
-}
-
 Extension::~Extension()
 {
     if (!ExtensionPythonObject.is(Py::_None())){
@@ -115,11 +111,8 @@ std::string Extension::name() const {
 
     if (pos != std::string::npos)
         return temp.substr(pos+1);
-    else
-        return std::string();
+    return {};
 }
-
-
 
 Property* Extension::extensionGetPropertyByName(const char* name) const {
 
@@ -186,6 +179,24 @@ void Extension::initExtensionSubclass(Base::Type& toInit, const char* ClassName,
     toInit = Base::Type::createType(parentType, ClassName, method);
 }
 
+
+bool Extension::extensionHandleChangedPropertyName(Base::XMLReader &reader, const char * TypeName, const char *PropName)
+{
+    (void) reader;
+    (void) TypeName;
+    (void) PropName;
+
+    return false;
+};
+
+bool Extension::extensionHandleChangedPropertyType(Base::XMLReader &reader, const char * TypeName, Property * prop)
+{
+    (void) reader;
+    (void) TypeName;
+    (void) prop;
+
+    return false;
+};
 
 namespace App {
 EXTENSION_PROPERTY_SOURCE_TEMPLATE(App::ExtensionPython, App::ExtensionPython::Inherited)

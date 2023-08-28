@@ -67,8 +67,8 @@ TaskScaledParameters::TaskScaledParameters(TaskMultiTransformParameters *parentT
 {
     proxy = new QWidget(parentTask);
     ui->setupUi(proxy);
-    connect(ui->buttonOK, SIGNAL(pressed()),
-            parentTask, SLOT(onSubTaskButtonOK()));
+    connect(ui->buttonOK, &QPushButton::pressed,
+            parentTask, &TaskScaledParameters::onSubTaskButtonOK);
     QMetaObject::connectSlotsByName(this);
 
     layout->addWidget(proxy);
@@ -85,8 +85,8 @@ TaskScaledParameters::TaskScaledParameters(TaskMultiTransformParameters *parentT
 
 void TaskScaledParameters::setupUI()
 {
-    connect(ui->buttonAddFeature, SIGNAL(toggled(bool)), this, SLOT(onButtonAddFeature(bool)));
-    connect(ui->buttonRemoveFeature, SIGNAL(toggled(bool)), this, SLOT(onButtonRemoveFeature(bool)));
+    connect(ui->buttonAddFeature, &QPushButton::toggled, this, &TaskScaledParameters::onButtonAddFeature);
+    connect(ui->buttonRemoveFeature, &QPushButton::toggled, this, &TaskScaledParameters::onButtonRemoveFeature);
 
     // Create context menu
     QAction* action = new QAction(tr("Remove"), this);
@@ -96,23 +96,22 @@ void TaskScaledParameters::setupUI()
     action->setShortcutVisibleInContextMenu(true);
 #endif
     ui->listWidgetFeatures->addAction(action);
-    connect(action, SIGNAL(triggered()), this, SLOT(onFeatureDeleted()));
+    connect(action, &QAction::triggered, this, &TaskScaledParameters::onFeatureDeleted);
     ui->listWidgetFeatures->setContextMenuPolicy(Qt::ActionsContextMenu);
 
-    connect(ui->spinFactor, SIGNAL(valueChanged(double)),
-            this, SLOT(onFactor(double)));
-    connect(ui->spinOccurrences, SIGNAL(valueChanged(uint)),
-            this, SLOT(onOccurrences(uint)));
-    connect(ui->checkBoxUpdateView, SIGNAL(toggled(bool)),
-            this, SLOT(onUpdateView(bool)));
+    connect(ui->spinFactor, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            this, &TaskScaledParameters::onFactor);
+    connect(ui->spinOccurrences, &Gui::UIntSpinBox::unsignedChanged,
+            this, &TaskScaledParameters::onOccurrences);
+    connect(ui->checkBoxUpdateView, &QCheckBox::toggled,
+            this, &TaskScaledParameters::onUpdateView);
 
     // Get the feature data
     PartDesign::Scaled* pcScaled = static_cast<PartDesign::Scaled*>(getObject());
     std::vector<App::DocumentObject*> originals = pcScaled->Originals.getValues();
 
     // Fill data into dialog elements
-    for (std::vector<App::DocumentObject*>::const_iterator i = originals.begin(); i != originals.end(); ++i) {
-        const App::DocumentObject* obj = *i;
+    for (auto obj : originals) {
         if (obj) {
             QListWidgetItem* item = new QListWidgetItem();
             item->setText(QString::fromUtf8(obj->Label.getValue()));
@@ -208,7 +207,7 @@ void TaskScaledParameters::onUpdateView(bool on)
     }
 }
 
-void TaskScaledParameters::onFeatureDeleted(void)
+void TaskScaledParameters::onFeatureDeleted()
 {
     PartDesign::Transformed* pcTransformed = getObject();
     std::vector<App::DocumentObject*> originals = pcTransformed->Originals.getValues();
@@ -223,12 +222,12 @@ void TaskScaledParameters::onFeatureDeleted(void)
     recomputeFeature();
 }
 
-double TaskScaledParameters::getFactor(void) const
+double TaskScaledParameters::getFactor() const
 {
     return ui->spinFactor->value().getValue();
 }
 
-unsigned TaskScaledParameters::getOccurrences(void) const
+unsigned TaskScaledParameters::getOccurrences() const
 {
     return ui->spinOccurrences->value();
 }

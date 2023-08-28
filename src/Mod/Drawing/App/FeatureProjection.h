@@ -20,21 +20,17 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef DRAWING_FEATUREPROJECTION
 #define DRAWING_FEATUREPROJECTION
 
-
 #include <App/DocumentObject.h>
-#include <App/PropertyStandard.h>
-#include <App/PropertyGeo.h>
-#include <Mod/Part/App/PartFeature.h>
+#include <App/PropertyLinks.h>
 #include <Mod/Drawing/DrawingGlobal.h>
+#include <Mod/Part/App/PartFeature.h>
 
 
 namespace Drawing
 {
-
 
 /** Base class of all View Features in the drawing module
  */

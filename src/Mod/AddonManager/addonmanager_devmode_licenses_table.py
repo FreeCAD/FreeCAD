@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
 # ***************************************************************************
 # *                                                                         *
 # *   Copyright (c) 2022 FreeCAD Project Association                        *
@@ -34,7 +35,8 @@ from addonmanager_devmode_license_selector import LicenseSelector
 
 translate = FreeCAD.Qt.translate
 
-#pylint: disable=too-few-public-methods
+# pylint: disable=too-few-public-methods
+
 
 class LicensesTable:
     """A QTableWidget and associated buttons for managing the list of authors and maintainers."""
@@ -70,9 +72,9 @@ class LicensesTable:
         """Use the passed metadata object to populate the maintainers and authors"""
         self.widget.tableWidget.setRowCount(0)
         row = 0
-        for l in self.metadata.License:
-            shortcode = l["name"]
-            path = l["file"]
+        for lic in self.metadata.License:
+            shortcode = lic["name"]
+            path = lic["file"]
             self._add_row(row, shortcode, path)
             row += 1
 

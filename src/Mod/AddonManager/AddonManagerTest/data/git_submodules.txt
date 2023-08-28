@@ -1,0 +1,23 @@
+[submodule "3DfindIT"]
+	path = 3DfindIT
+	url = https://github.com/cadenasgmbh/3dfindit-freecad-integration
+[submodule "A2plus"]
+	path = A2plus
+	url = https://github.com/kbwbe/A2plus
+[submodule "Behave-Dark-Colors"]
+	path = Behave-Dark-Colors
+	url = https://github.com/Chrismettal/FreeCAD-Behave-Dark-Preference-Pack
+	branch = main
+[submodule "Beltrami"]
+	path = Beltrami
+	url = https://github.com/Simturb/Beltrami
+	branch = main
+[submodule "CurvedShapes"]
+	path = CurvedShapes
+	url = https://github.com/chbergmann/CurvedShapesWorkbench.git
+[submodule "Curves"]
+	path = Curves
+	url = https://github.com/tomate44/CurvesWB.git
+[submodule "Defeaturing"]
+	path = Defeaturing
+	url = https://github.com/easyw/Defeaturing_WB.git

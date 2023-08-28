@@ -122,8 +122,8 @@ class AddToGroup(gui_base.GuiCommandNeedsSelection):
 
             #if new group is selected then launch AddNamedGroup
             if labelname == self.addNewGroupStr:
-               add=AddNamedGroup()
-               add.Activated()
+                add=AddNamedGroup()
+                add.Activated()
             else:
             #else add selection to the selected group
                 if labelname in self.labels :
@@ -287,7 +287,7 @@ class SetAutoGroup(gui_base.GuiCommandSimplest):
 Gui.addCommand('Draft_AutoGroup', SetAutoGroup())
 
 
-class AddToConstruction(gui_base.GuiCommandSimplest):
+class AddToConstruction(gui_base.GuiCommandNeedsSelection):
     """Gui Command for the AddToConstruction tool.
 
     It adds the selected objects to the construction group

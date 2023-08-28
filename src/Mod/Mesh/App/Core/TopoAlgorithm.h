@@ -47,7 +47,7 @@ class MeshExport MeshTopoAlgorithm
 public:
     // construction/destruction
     explicit MeshTopoAlgorithm (MeshKernel &rclM);
-    virtual ~MeshTopoAlgorithm ();
+    ~MeshTopoAlgorithm ();
 
 public:
     /** @name Topological Operations */
@@ -307,7 +307,7 @@ private:
 
 private:
     MeshKernel& _rclMesh;
-    bool _needsCleanup;
+    bool _needsCleanup{false};
 
     struct Vertex_Less
     {
@@ -316,7 +316,7 @@ private:
 
     // cache
     using tCache = std::map<Base::Vector3f,PointIndex,Vertex_Less>;
-    tCache* _cache;
+    tCache* _cache{nullptr};
 };
 
 /**
@@ -331,7 +331,6 @@ public:
     enum TMode {OverEdge, OverPoint};
 
     explicit MeshComponents( const MeshKernel& rclMesh );
-    ~MeshComponents();
 
     /**
      * Searches for 'isles' of the mesh. If \a tMode is \a OverEdge then facets

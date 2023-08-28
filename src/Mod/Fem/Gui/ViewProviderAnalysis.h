@@ -52,10 +52,10 @@ class FemGuiExport ViewProviderFemAnalysis : public Gui::ViewProviderDocumentObj
     PROPERTY_HEADER_WITH_OVERRIDE(FemGui::ViewProviderAnalysis);
 
 public:
-    /// constructor.
+    /// constructor
     ViewProviderFemAnalysis();
 
-    /// destructor.
+    /// destructor
     ~ViewProviderFemAnalysis() override;
 
     void attach(App::DocumentObject*) override;
@@ -63,17 +63,19 @@ public:
 
     std::vector<App::DocumentObject*> claimChildren()const override;
 
-    // handling when object is deleted
+    /// handling when object is deleted
     bool onDelete(const std::vector<std::string>&) override;
-    /// Asks the view provider if the given object can be deleted.
+    /// warning on deletion when there are children
+    static bool checkSelectedChildren(const std::vector<App::DocumentObject*> objs,
+                                      Gui::Document* docGui, std::string objectName);
+    /// asks the view provider if the given object can be deleted
     bool canDelete(App::DocumentObject* obj) const override;
 
-    //virtual std::vector<App::DocumentObject*> claimChildren3D(void)const;
     void setupContextMenu(QMenu*, QObject*, const char*) override;
 
-    /// A list of all possible display modes
+    /// list of all possible display modes
     std::vector<std::string> getDisplayModes() const override;
-    // shows solid in the tree
+    /// shows solid in the tree
     bool isShow() const override {
         return Visibility.getValue();
     }

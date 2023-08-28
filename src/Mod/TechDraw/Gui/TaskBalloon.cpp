@@ -31,6 +31,7 @@
 #include <Gui/BitmapFactory.h>
 #include <Gui/Command.h>
 #include <Gui/Document.h>
+#include <Gui/Control.h>
 
 #include "TaskBalloon.h"
 #include "ui_TaskBalloon.h"
@@ -49,30 +50,33 @@ TaskBalloon::TaskBalloon(QGIViewBalloon *parent, ViewProviderBalloon *balloonVP)
     int i = 0;
     m_parent = parent;
     m_balloonVP = balloonVP;
+    m_guiDocument = balloonVP->getDocument();
+    m_appDocument = parent->getBalloonFeat()->getDocument();
+    m_balloonName = parent->getBalloonFeat()->getNameInDocument();
 
     ui->setupUi(this);
 
     ui->qsbShapeScale->setValue(parent->getBalloonFeat()->ShapeScale.getValue());
-    connect(ui->qsbShapeScale, SIGNAL(valueChanged(double)), this, SLOT(onShapeScaleChanged()));
+    connect(ui->qsbShapeScale, qOverload<double>(&QuantitySpinBox::valueChanged), this, &TaskBalloon::onShapeScaleChanged);
 
     ui->qsbSymbolScale->setValue(parent->getBalloonFeat()->EndTypeScale.getValue());
-    connect(ui->qsbSymbolScale, SIGNAL(valueChanged(double)), this, SLOT(onEndSymbolScaleChanged()));
+    connect(ui->qsbSymbolScale, qOverload<double>(&QuantitySpinBox::valueChanged), this, &TaskBalloon::onEndSymbolScaleChanged);
 
     std::string value = parent->getBalloonFeat()->Text.getValue();
     QString qs = QString::fromUtf8(value.data(), value.size());
     ui->leText->setText(qs);
     ui->leText->selectAll();
-    connect(ui->leText, SIGNAL(textChanged(QString)), this, SLOT(onTextChanged()));
-    QTimer::singleShot(0, ui->leText, SLOT(setFocus()));
+    connect(ui->leText, &QLineEdit::textChanged, this, &TaskBalloon::onTextChanged);
+    QTimer::singleShot(0, ui->leText, qOverload<>(&QLineEdit::setFocus));
 
     DrawGuiUtil::loadArrowBox(ui->comboEndSymbol);
     i = parent->getBalloonFeat()->EndType.getValue();
     ui->comboEndSymbol->setCurrentIndex(i);
-    connect(ui->comboEndSymbol, SIGNAL(currentIndexChanged(int)), this, SLOT(onEndSymbolChanged()));
+    connect(ui->comboEndSymbol, qOverload<int>(&QComboBox::currentIndexChanged), this, &TaskBalloon::onEndSymbolChanged);
 
     i = parent->getBalloonFeat()->BubbleShape.getValue();
     ui->comboBubbleShape->setCurrentIndex(i);
-    connect(ui->comboBubbleShape, SIGNAL(currentIndexChanged(int)), this, SLOT(onBubbleShapeChanged()));
+    connect(ui->comboBubbleShape, qOverload<int>(&QComboBox::currentIndexChanged), this, &TaskBalloon::onBubbleShapeChanged);
 
     ui->qsbFontSize->setUnit(Base::Unit::Length);
     ui->qsbFontSize->setMinimum(0);
@@ -86,7 +90,7 @@ TaskBalloon::TaskBalloon(QGIViewBalloon *parent, ViewProviderBalloon *balloonVP)
 
     if (balloonVP) {
         ui->textColor->setColor(balloonVP->Color.getValue().asValue<QColor>());
-        connect(ui->textColor, SIGNAL(changed()), this, SLOT(onColorChanged()));
+        connect(ui->textColor, &ColorButton::changed, this, &TaskBalloon::onColorChanged);
         ui->qsbFontSize->setValue(balloonVP->Fontsize.getValue());
         ui->comboLineVisible->setCurrentIndex(balloonVP->LineVisible.getValue());
         ui->qsbLineWidth->setValue(balloonVP->LineWidth.getValue());
@@ -94,10 +98,11 @@ TaskBalloon::TaskBalloon(QGIViewBalloon *parent, ViewProviderBalloon *balloonVP)
     // new balloons have already the preferences BalloonKink length
     ui->qsbKinkLength->setValue(parent->getBalloonFeat()->KinkLength.getValue());
 
-    connect(ui->qsbFontSize, SIGNAL(valueChanged(double)), this, SLOT(onFontsizeChanged()));
-    connect(ui->comboLineVisible, SIGNAL(currentIndexChanged(int)), this, SLOT(onLineVisibleChanged()));
-    connect(ui->qsbLineWidth, SIGNAL(valueChanged(double)), this, SLOT(onLineWidthChanged()));
-    connect(ui->qsbKinkLength, SIGNAL(valueChanged(double)), this, SLOT(onKinkLengthChanged()));
+    connect(ui->qsbFontSize, qOverload<double>(&QuantitySpinBox::valueChanged), this, &TaskBalloon::onFontsizeChanged);
+    connect(ui->comboLineVisible, qOverload<int>(&QComboBox::currentIndexChanged), this, &TaskBalloon::onLineVisibleChanged);
+    connect(ui->qsbLineWidth, qOverload<double>(&QuantitySpinBox::valueChanged), this, &TaskBalloon::onLineWidthChanged);
+    connect(ui->qsbKinkLength, qOverload<double>(&QuantitySpinBox::valueChanged), this, &TaskBalloon::onKinkLengthChanged);
+
 }
 
 TaskBalloon::~TaskBalloon()
@@ -106,22 +111,44 @@ TaskBalloon::~TaskBalloon()
 
 bool TaskBalloon::accept()
 {
-    Gui::Document* doc = m_balloonVP->getDocument();
-    m_balloonVP->getObject()->purgeTouched();
-    doc->commitCommand();
-    doc->resetEdit();
+    // re issue #9626 if the balloon is deleted while the task dialog is in progress we will fail
+    // trying to access the feature object or the viewprovider.  This should be prevented by
+    // change to ViewProviderBalloon
+    // see also reject()
+    App::DocumentObject* balloonFeature = m_appDocument->getObject(m_balloonName.c_str());
+    if(balloonFeature) {
+        // an object with our name still exists in the document
+        balloonFeature->purgeTouched();
+        m_guiDocument->commitCommand();
+    } else {
+        // see comment in reject(). this may not do what we want.
+        Gui::Command::abortCommand();
+    }
+
+    m_guiDocument->resetEdit();
 
     return true;
 }
 
 bool TaskBalloon::reject()
 {
-    Gui::Document* doc = m_balloonVP->getDocument();
-    doc->abortCommand();
-    recomputeFeature();
-    m_parent->updateView(true);
-    m_balloonVP->getObject()->purgeTouched();
-    doc->resetEdit();
+    // re issue #9626 - if the balloon is deleted while the dialog is in progress
+    // the delete transaction is still active and ?locked? so our "abortCommand"
+    // doesn't work properly and a pending transaction is still in place.  This
+    // causes a warning message from App::AutoTransaction (??) that can't be
+    // cleared.  Even closing the document will not clear the warning.
+    // A change to ViewProviderBalloon::onDelete should prevent this from
+    // happening from the Gui.  It is possible(?) that the balloon could be
+    // deleted by a script.
+    m_guiDocument->abortCommand();
+    App::DocumentObject* balloonFeature = m_appDocument->getObject(m_balloonName.c_str());
+    if(balloonFeature) {
+        // an object with our name still exists in the document
+        balloonFeature->recomputeFeature();
+        balloonFeature->purgeTouched();
+    }
+    m_guiDocument->resetEdit();
+    Gui::Command::updateActive();
 
     return true;
 }

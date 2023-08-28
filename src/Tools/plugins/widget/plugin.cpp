@@ -21,12 +21,12 @@
  ***************************************************************************/
 
 
-#include <QtDesigner/QExtensionFactory>
-#include <QtDesigner/QExtensionManager>
+#include <QtDesigner/QDesignerContainerExtension>
 #include <QtDesigner/QDesignerFormEditorInterface>
 #include <QtDesigner/QDesignerFormWindowInterface>
-#include <QtDesigner/QDesignerContainerExtension>
 #include <QtDesigner/QDesignerPropertySheetExtension>
+#include <QtDesigner/QExtensionFactory>
+#include <QtDesigner/QExtensionManager>
 
 #include <QIcon>
 #include <QtGui>
@@ -37,42 +37,40 @@
 
 
 /* XPM */
-static const char *urllabel_pixmap[]={
-"22 22 3 1",
-"# c #000000",
-"x c #ffffff",
-". c None",
-"......................",
-".......##.............",
-"......#xx#............",
-"......#xx#............",
-"......#xx#............",
-"......#xx#............",
-"......#xx###..........",
-"......#xx#xx###.......",
-"......#xx#xx#xx##.....",
-"...##.#xx#xx#xx#x#....",
-"..#xx##xx#xx#xx#x#....",
-"..#xxx#xxxxxxxxxx#....",
-"...#xxxxxxxxxxxxx#....",
-"....#xxxxxxxxxxxx#....",
-"....#xxxxxxxxxxxx#....",
-".....#xxxxxxxxxx#.....",
-".....#xxxxxxxxxx#.....",
-"......#xxxxxxxx#......",
-"......#xxxxxxxx#......",
-"......##########......",
-"......##########......",
-"......##########......"};
+static const char* urllabel_pixmap[] = {"22 22 3 1",
+                                        "# c #000000",
+                                        "x c #ffffff",
+                                        ". c None",
+                                        "......................",
+                                        ".......##.............",
+                                        "......#xx#............",
+                                        "......#xx#............",
+                                        "......#xx#............",
+                                        "......#xx#............",
+                                        "......#xx###..........",
+                                        "......#xx#xx###.......",
+                                        "......#xx#xx#xx##.....",
+                                        "...##.#xx#xx#xx#x#....",
+                                        "..#xx##xx#xx#xx#x#....",
+                                        "..#xxx#xxxxxxxxxx#....",
+                                        "...#xxxxxxxxxxxxx#....",
+                                        "....#xxxxxxxxxxxx#....",
+                                        "....#xxxxxxxxxxxx#....",
+                                        ".....#xxxxxxxxxx#.....",
+                                        ".....#xxxxxxxxxx#.....",
+                                        "......#xxxxxxxx#......",
+                                        "......#xxxxxxxx#......",
+                                        "......##########......",
+                                        "......##########......",
+                                        "......##########......"};
 
-class UrlLabelPlugin : public QDesignerCustomWidgetInterface
+class UrlLabelPlugin: public QDesignerCustomWidgetInterface
 {
     Q_INTERFACES(QDesignerCustomWidgetInterface)
 public:
     UrlLabelPlugin()
-    {
-    }
-    QWidget *createWidget(QWidget *parent)
+    {}
+    QWidget* createWidget(QWidget* parent)
     {
         return new Gui::UrlLabel(parent);
     }
@@ -82,7 +80,7 @@ public:
     }
     QIcon icon() const
     {
-        return QIcon( QPixmap( urllabel_pixmap ) );
+        return QIcon(QPixmap(urllabel_pixmap));
     }
     QString includeFile() const
     {
@@ -100,7 +98,7 @@ public:
     {
         return false;
     }
-//    QString codeTemplate() const;
+    //    QString codeTemplate() const;
     QString domXml() const
     {
         return "<ui language=\"c++\">\n"
@@ -114,14 +112,13 @@ public:
     }
 };
 
-class LocationWidgetPlugin : public QDesignerCustomWidgetInterface
+class LocationWidgetPlugin: public QDesignerCustomWidgetInterface
 {
     Q_INTERFACES(QDesignerCustomWidgetInterface)
 public:
     LocationWidgetPlugin()
-    {
-    }
-    QWidget *createWidget(QWidget *parent)
+    {}
+    QWidget* createWidget(QWidget* parent)
     {
         return new Gui::LocationWidget(parent);
     }
@@ -131,7 +128,7 @@ public:
     }
     QIcon icon() const
     {
-        return QIcon( QPixmap( urllabel_pixmap ) );
+        return QIcon(QPixmap(urllabel_pixmap));
     }
     QString includeFile() const
     {
@@ -162,48 +159,45 @@ public:
     }
 };
 
-static const char *filechooser_pixmap[] = {
-    "22 22 8 1",
-    "  c Gray100",
-    ". c Gray97",
-    "X c #4f504f",
-    "o c #00007f",
-    "O c Gray0",
-    "+ c none",
-    "@ c Gray0",
-    "# c Gray0",
-    "++++++++++++++++++++++",
-    "++++++++++++++++++++++",
-    "++++++++++++++++++++++",
-    "++++++++++++++++++++++",
-    "+OOOOOOOOOOOOOOOOOOOO+",
-    "OOXXXXXXXXXXXXXXXXXXOO",
-    "OXX.          OO OO  O",
-    "OX.      oo     O    O",
-    "OX.      oo     O   .O",
-    "OX  ooo  oooo   O    O",
-    "OX    oo oo oo  O    O",
-    "OX  oooo oo oo  O    O",
-    "OX oo oo oo oo  O    O",
-    "OX oo oo oo oo  O    O",
-    "OX  oooo oooo   O    O",
-    "OX            OO OO  O",
-    "OO..................OO",
-    "+OOOOOOOOOOOOOOOOOOOO+",
-    "++++++++++++++++++++++",
-    "++++++++++++++++++++++",
-    "++++++++++++++++++++++",
-    "++++++++++++++++++++++"
-};
+static const char* filechooser_pixmap[] = {"22 22 8 1",
+                                           "  c Gray100",
+                                           ". c Gray97",
+                                           "X c #4f504f",
+                                           "o c #00007f",
+                                           "O c Gray0",
+                                           "+ c none",
+                                           "@ c Gray0",
+                                           "# c Gray0",
+                                           "++++++++++++++++++++++",
+                                           "++++++++++++++++++++++",
+                                           "++++++++++++++++++++++",
+                                           "++++++++++++++++++++++",
+                                           "+OOOOOOOOOOOOOOOOOOOO+",
+                                           "OOXXXXXXXXXXXXXXXXXXOO",
+                                           "OXX.          OO OO  O",
+                                           "OX.      oo     O    O",
+                                           "OX.      oo     O   .O",
+                                           "OX  ooo  oooo   O    O",
+                                           "OX    oo oo oo  O    O",
+                                           "OX  oooo oo oo  O    O",
+                                           "OX oo oo oo oo  O    O",
+                                           "OX oo oo oo oo  O    O",
+                                           "OX  oooo oooo   O    O",
+                                           "OX            OO OO  O",
+                                           "OO..................OO",
+                                           "+OOOOOOOOOOOOOOOOOOOO+",
+                                           "++++++++++++++++++++++",
+                                           "++++++++++++++++++++++",
+                                           "++++++++++++++++++++++",
+                                           "++++++++++++++++++++++"};
 
-class FileChooserPlugin : public QDesignerCustomWidgetInterface
+class FileChooserPlugin: public QDesignerCustomWidgetInterface
 {
     Q_INTERFACES(QDesignerCustomWidgetInterface)
 public:
     FileChooserPlugin()
-    {
-    }
-    QWidget *createWidget(QWidget *parent)
+    {}
+    QWidget* createWidget(QWidget* parent)
     {
         return new Gui::FileChooser(parent);
     }
@@ -213,7 +207,7 @@ public:
     }
     QIcon icon() const
     {
-        return QIcon( QPixmap( filechooser_pixmap ) );
+        return QIcon(QPixmap(filechooser_pixmap));
     }
     QString includeFile() const
     {
@@ -231,7 +225,7 @@ public:
     {
         return false;
     }
-//    QString codeTemplate() const;
+    //    QString codeTemplate() const;
     QString domXml() const
     {
         return "<ui language=\"c++\">\n"
@@ -245,14 +239,13 @@ public:
     }
 };
 
-class PrefFileChooserPlugin : public QDesignerCustomWidgetInterface
+class PrefFileChooserPlugin: public QDesignerCustomWidgetInterface
 {
     Q_INTERFACES(QDesignerCustomWidgetInterface)
 public:
     PrefFileChooserPlugin()
-    {
-    }
-    QWidget *createWidget(QWidget *parent)
+    {}
+    QWidget* createWidget(QWidget* parent)
     {
         return new Gui::PrefFileChooser(parent);
     }
@@ -262,7 +255,7 @@ public:
     }
     QIcon icon() const
     {
-        return QIcon( QPixmap( filechooser_pixmap ) );
+        return QIcon(QPixmap(filechooser_pixmap));
     }
     QString includeFile() const
     {
@@ -294,45 +287,43 @@ public:
 };
 
 /* XPM */
-static const char *lineedit_pixmap[]={
-"22 22 6 1",
-"a c #000000",
-"# c #000080",
-"b c #008080",
-"c c #808080",
-"d c #c0c0c0",
-". c #ffffff",
-"......................",
-"......................",
-"......................",
-"...#aaaaaaaaaaaaaa#...",
-".baccccccccccccccccab.",
-".acccddddddddddddddca.",
-"#ccd................d#",
-"acc.................da",
-"acd.......d....ca.ac.a",
-"acd......db......a...a",
-"acd.dbbb.dbbbd...a...a",
-"acd.ccdbddb.db...a...a",
-"acd.dbbbddb..b...a...a",
-"acd.bd.bddb..b...a...a",
-"acd.bbbbddbbbc...a...a",
-"acd..d.....dd..ca.acda",
-"#cd.................d#",
-".ac................da.",
-".badd............dda#.",
-"...#aaaaaaaaaaaaaa#...",
-"......................",
-"......................"};
+static const char* lineedit_pixmap[] = {"22 22 6 1",
+                                        "a c #000000",
+                                        "# c #000080",
+                                        "b c #008080",
+                                        "c c #808080",
+                                        "d c #c0c0c0",
+                                        ". c #ffffff",
+                                        "......................",
+                                        "......................",
+                                        "......................",
+                                        "...#aaaaaaaaaaaaaa#...",
+                                        ".baccccccccccccccccab.",
+                                        ".acccddddddddddddddca.",
+                                        "#ccd................d#",
+                                        "acc.................da",
+                                        "acd.......d....ca.ac.a",
+                                        "acd......db......a...a",
+                                        "acd.dbbb.dbbbd...a...a",
+                                        "acd.ccdbddb.db...a...a",
+                                        "acd.dbbbddb..b...a...a",
+                                        "acd.bd.bddb..b...a...a",
+                                        "acd.bbbbddbbbc...a...a",
+                                        "acd..d.....dd..ca.acda",
+                                        "#cd.................d#",
+                                        ".ac................da.",
+                                        ".badd............dda#.",
+                                        "...#aaaaaaaaaaaaaa#...",
+                                        "......................",
+                                        "......................"};
 
-class AccelLineEditPlugin : public QDesignerCustomWidgetInterface
+class AccelLineEditPlugin: public QDesignerCustomWidgetInterface
 {
     Q_INTERFACES(QDesignerCustomWidgetInterface)
 public:
     AccelLineEditPlugin()
-    {
-    }
-    QWidget *createWidget(QWidget *parent)
+    {}
+    QWidget* createWidget(QWidget* parent)
     {
         return new Gui::AccelLineEdit(parent);
     }
@@ -342,7 +333,7 @@ public:
     }
     QIcon icon() const
     {
-        return QIcon( QPixmap( lineedit_pixmap ) );
+        return QIcon(QPixmap(lineedit_pixmap));
     }
     QString includeFile() const
     {
@@ -374,45 +365,43 @@ public:
 };
 
 /* XPM */
-static const char *actionselector_pixmap[]={
-"22 22 6 1",
-"a c #000000",
-"# c #000080",
-"b c #008080",
-"c c #808080",
-"d c #c0c0c0",
-". c #ffffff",
-"......................",
-"......................",
-"......................",
-"...#aaaaaaaaaaaaaa#...",
-".baccccccccccccccccab.",
-".acccddddddddddddddca.",
-"#ccd................d#",
-"acc.................da",
-"acd.......d....ca.ac.a",
-"acd......db......a...a",
-"acd.dbbb.dbbbd...a...a",
-"acd.ccdbddb.db...a...a",
-"acd.dbbbddb..b...a...a",
-"acd.bd.bddb..b...a...a",
-"acd.bbbbddbbbc...a...a",
-"acd..d.....dd..ca.acda",
-"#cd.................d#",
-".ac................da.",
-".badd............dda#.",
-"...#aaaaaaaaaaaaaa#...",
-"......................",
-"......................"};
+static const char* actionselector_pixmap[] = {"22 22 6 1",
+                                              "a c #000000",
+                                              "# c #000080",
+                                              "b c #008080",
+                                              "c c #808080",
+                                              "d c #c0c0c0",
+                                              ". c #ffffff",
+                                              "......................",
+                                              "......................",
+                                              "......................",
+                                              "...#aaaaaaaaaaaaaa#...",
+                                              ".baccccccccccccccccab.",
+                                              ".acccddddddddddddddca.",
+                                              "#ccd................d#",
+                                              "acc.................da",
+                                              "acd.......d....ca.ac.a",
+                                              "acd......db......a...a",
+                                              "acd.dbbb.dbbbd...a...a",
+                                              "acd.ccdbddb.db...a...a",
+                                              "acd.dbbbddb..b...a...a",
+                                              "acd.bd.bddb..b...a...a",
+                                              "acd.bbbbddbbbc...a...a",
+                                              "acd..d.....dd..ca.acda",
+                                              "#cd.................d#",
+                                              ".ac................da.",
+                                              ".badd............dda#.",
+                                              "...#aaaaaaaaaaaaaa#...",
+                                              "......................",
+                                              "......................"};
 
-class ActionSelectorPlugin : public QDesignerCustomWidgetInterface
+class ActionSelectorPlugin: public QDesignerCustomWidgetInterface
 {
     Q_INTERFACES(QDesignerCustomWidgetInterface)
 public:
     ActionSelectorPlugin()
-    {
-    }
-    QWidget *createWidget(QWidget *parent)
+    {}
+    QWidget* createWidget(QWidget* parent)
     {
         return new Gui::ActionSelector(parent);
     }
@@ -422,7 +411,7 @@ public:
     }
     QIcon icon() const
     {
-        return QIcon( QPixmap( actionselector_pixmap ) );
+        return QIcon(QPixmap(actionselector_pixmap));
     }
     QString includeFile() const
     {
@@ -454,45 +443,43 @@ public:
 };
 
 /* XPM */
-static const char *inputfield_pixmap[]={
-"22 22 6 1",
-"a c #000000",
-"# c #000080",
-"b c #008080",
-"c c #808080",
-"d c #c0c0c0",
-". c #ffffff",
-"......................",
-"......................",
-"......................",
-"...#aaaaaaaaaaaaaa#...",
-".baccccccccccccccccab.",
-".acccddddddddddddddca.",
-"#ccd................d#",
-"acc.................da",
-"acd.......d....ca.ac.a",
-"acd......db......a...a",
-"acd.dbbb.dbbbd...a...a",
-"acd.ccdbddb.db...a...a",
-"acd.dbbbddb..b...a...a",
-"acd.bd.bddb..b...a...a",
-"acd.bbbbddbbbc...a...a",
-"acd..d.....dd..ca.acda",
-"#cd.................d#",
-".ac................da.",
-".badd............dda#.",
-"...#aaaaaaaaaaaaaa#...",
-"......................",
-"......................"};
+static const char* inputfield_pixmap[] = {"22 22 6 1",
+                                          "a c #000000",
+                                          "# c #000080",
+                                          "b c #008080",
+                                          "c c #808080",
+                                          "d c #c0c0c0",
+                                          ". c #ffffff",
+                                          "......................",
+                                          "......................",
+                                          "......................",
+                                          "...#aaaaaaaaaaaaaa#...",
+                                          ".baccccccccccccccccab.",
+                                          ".acccddddddddddddddca.",
+                                          "#ccd................d#",
+                                          "acc.................da",
+                                          "acd.......d....ca.ac.a",
+                                          "acd......db......a...a",
+                                          "acd.dbbb.dbbbd...a...a",
+                                          "acd.ccdbddb.db...a...a",
+                                          "acd.dbbbddb..b...a...a",
+                                          "acd.bd.bddb..b...a...a",
+                                          "acd.bbbbddbbbc...a...a",
+                                          "acd..d.....dd..ca.acda",
+                                          "#cd.................d#",
+                                          ".ac................da.",
+                                          ".badd............dda#.",
+                                          "...#aaaaaaaaaaaaaa#...",
+                                          "......................",
+                                          "......................"};
 
-class InputFieldPlugin : public QDesignerCustomWidgetInterface
+class InputFieldPlugin: public QDesignerCustomWidgetInterface
 {
     Q_INTERFACES(QDesignerCustomWidgetInterface)
 public:
     InputFieldPlugin()
-    {
-    }
-    QWidget *createWidget(QWidget *parent)
+    {}
+    QWidget* createWidget(QWidget* parent)
     {
         return new Gui::InputField(parent);
     }
@@ -502,7 +489,7 @@ public:
     }
     QIcon icon() const
     {
-        return QIcon( QPixmap( inputfield_pixmap ) );
+        return QIcon(QPixmap(inputfield_pixmap));
     }
     QString includeFile() const
     {
@@ -537,45 +524,43 @@ public:
 };
 
 /* XPM */
-static const char *quantityspinbox_pixmap[]={
-"22 22 6 1",
-"a c #000000",
-"# c #000080",
-"b c #008080",
-"c c #808080",
-"d c #c0c0c0",
-". c #ffffff",
-"...#aaaaaaaaaaaaaa#...",
-".baccccccccccccccccab.",
-".acccddddddddddddddca.",
-"#ccd................d#",
-"acc.............dcd.da",
-"acd.............dbd..a",
-"acd............dcbbd.a",
-"acd.d..dd..d...dbbbc.a",
-"acddb.dbbdcbb.dbbb#bda",
-"acd.b.d.cc..b.bb###bda",
-"acd.b...bd.cb.dddccdda",
-"acd.b...b..db...dddd.a",
-"acd.b..cd...bdddccbbda",
-"acd.b.dbbccdb.ccbbbbda",
-"acddd.ddd.dd..dbbb#cda",
-"acd............bb##cda",
-"acd............db#cd.a",
-"acd.............bbcdda",
-"#cd.............ddd.d#",
-".ac................da.",
-".badd............dda#.",
-"...#aaaaaaaaaaaaaa#..."};
+static const char* quantityspinbox_pixmap[] = {"22 22 6 1",
+                                               "a c #000000",
+                                               "# c #000080",
+                                               "b c #008080",
+                                               "c c #808080",
+                                               "d c #c0c0c0",
+                                               ". c #ffffff",
+                                               "...#aaaaaaaaaaaaaa#...",
+                                               ".baccccccccccccccccab.",
+                                               ".acccddddddddddddddca.",
+                                               "#ccd................d#",
+                                               "acc.............dcd.da",
+                                               "acd.............dbd..a",
+                                               "acd............dcbbd.a",
+                                               "acd.d..dd..d...dbbbc.a",
+                                               "acddb.dbbdcbb.dbbb#bda",
+                                               "acd.b.d.cc..b.bb###bda",
+                                               "acd.b...bd.cb.dddccdda",
+                                               "acd.b...b..db...dddd.a",
+                                               "acd.b..cd...bdddccbbda",
+                                               "acd.b.dbbccdb.ccbbbbda",
+                                               "acddd.ddd.dd..dbbb#cda",
+                                               "acd............bb##cda",
+                                               "acd............db#cd.a",
+                                               "acd.............bbcdda",
+                                               "#cd.............ddd.d#",
+                                               ".ac................da.",
+                                               ".badd............dda#.",
+                                               "...#aaaaaaaaaaaaaa#..."};
 
-class QuantitySpinBoxPlugin : public QDesignerCustomWidgetInterface
+class QuantitySpinBoxPlugin: public QDesignerCustomWidgetInterface
 {
     Q_INTERFACES(QDesignerCustomWidgetInterface)
 public:
     QuantitySpinBoxPlugin()
-    {
-    }
-    QWidget *createWidget(QWidget *parent)
+    {}
+    QWidget* createWidget(QWidget* parent)
     {
         return new Gui::QuantitySpinBox(parent);
     }
@@ -585,7 +570,7 @@ public:
     }
     QIcon icon() const
     {
-        return QIcon( QPixmap( quantityspinbox_pixmap ) );
+        return QIcon(QPixmap(quantityspinbox_pixmap));
     }
     QString includeFile() const
     {
@@ -619,14 +604,13 @@ public:
     }
 };
 
-class PrefUnitSpinBoxPlugin : public QDesignerCustomWidgetInterface
+class PrefUnitSpinBoxPlugin: public QDesignerCustomWidgetInterface
 {
     Q_INTERFACES(QDesignerCustomWidgetInterface)
 public:
     PrefUnitSpinBoxPlugin()
-    {
-    }
-    QWidget *createWidget(QWidget *parent)
+    {}
+    QWidget* createWidget(QWidget* parent)
     {
         return new Gui::PrefUnitSpinBox(parent);
     }
@@ -636,7 +620,7 @@ public:
     }
     QIcon icon() const
     {
-        return QIcon( QPixmap( quantityspinbox_pixmap ) );
+        return QIcon(QPixmap(quantityspinbox_pixmap));
     }
     QString includeFile() const
     {
@@ -667,13 +651,12 @@ public:
     }
 };
 
-class PrefQuantitySpinBoxPlugin : public QDesignerCustomWidgetInterface
+class PrefQuantitySpinBoxPlugin: public QDesignerCustomWidgetInterface
 {
     Q_INTERFACES(QDesignerCustomWidgetInterface)
 public:
     PrefQuantitySpinBoxPlugin()
-    {
-    }
+    {}
     QWidget* createWidget(QWidget* parent)
     {
         return new Gui::PrefQuantitySpinBox(parent);
@@ -705,9 +688,9 @@ public:
     QString domXml() const
     {
         return "<ui language=\"c++\">\n"
-            " <widget class=\"Gui::PrefQuantitySpinBox\" name=\"unitSpinBox\">\n"
-            " </widget>\n"
-            "</ui>";
+               " <widget class=\"Gui::PrefQuantitySpinBox\" name=\"unitSpinBox\">\n"
+               " </widget>\n"
+               "</ui>";
     }
     QString name() const
     {
@@ -716,49 +699,47 @@ public:
 };
 
 /* XPM */
-static const char *iconview_pixmap[]={
-"22 22 10 1",
-"# c #000000",
-"h c #000080",
-"f c #0000ff",
-"d c #008000",
-"e c #008080",
-"a c #800000",
-"b c #808080",
-"c c #c0c0c0",
-"g c #ff0000",
-". c #ffffff",
-"...################...",
-".a#bbccccccccccccbb#a.",
-".#bcc..............b#.",
-"#bb......c.....c....c#",
-"#bbbbc..cbbc...bbbc.c#",
-"#cccdd....bdb..ccdd..#",
-"#cbcb#c.cbcbd..bcb#c.#",
-"#cbbb#b..bbb#..cbb#c.#",
-"#c..c##...cb#c...c##.#",
-"#c...................#",
-"#ccbbc..c#bbc..cbbcc.#",
-"#c...................#",
-"#cbbbaa.cb..cc..c.bb.#",
-"#cbccca.c#ccb..cecf#.#",
-"#cbcgba..c#b...bfbfh.#",
-"#cacbba..bb#c..bbhb#.#",
-"#caaaaa.bc.bb..bb###.#",
-"#b..................c#",
-"#b.bbcc..cbbbb.cbbc.c#",
-".#b................c#.",
-".a#cc............cc##.",
-"...################..."};
+static const char* iconview_pixmap[] = {"22 22 10 1",
+                                        "# c #000000",
+                                        "h c #000080",
+                                        "f c #0000ff",
+                                        "d c #008000",
+                                        "e c #008080",
+                                        "a c #800000",
+                                        "b c #808080",
+                                        "c c #c0c0c0",
+                                        "g c #ff0000",
+                                        ". c #ffffff",
+                                        "...################...",
+                                        ".a#bbccccccccccccbb#a.",
+                                        ".#bcc..............b#.",
+                                        "#bb......c.....c....c#",
+                                        "#bbbbc..cbbc...bbbc.c#",
+                                        "#cccdd....bdb..ccdd..#",
+                                        "#cbcb#c.cbcbd..bcb#c.#",
+                                        "#cbbb#b..bbb#..cbb#c.#",
+                                        "#c..c##...cb#c...c##.#",
+                                        "#c...................#",
+                                        "#ccbbc..c#bbc..cbbcc.#",
+                                        "#c...................#",
+                                        "#cbbbaa.cb..cc..c.bb.#",
+                                        "#cbccca.c#ccb..cecf#.#",
+                                        "#cbcgba..c#b...bfbfh.#",
+                                        "#cacbba..bb#c..bbhb#.#",
+                                        "#caaaaa.bc.bb..bb###.#",
+                                        "#b..................c#",
+                                        "#b.bbcc..cbbbb.cbbc.c#",
+                                        ".#b................c#.",
+                                        ".a#cc............cc##.",
+                                        "...################..."};
 
-class CommandIconViewPlugin : public QDesignerCustomWidgetInterface
+class CommandIconViewPlugin: public QDesignerCustomWidgetInterface
 {
     Q_INTERFACES(QDesignerCustomWidgetInterface)
 public:
     CommandIconViewPlugin()
-    {
-    }
-    QWidget *createWidget(QWidget *parent)
+    {}
+    QWidget* createWidget(QWidget* parent)
     {
         return new Gui::CommandIconView(parent);
     }
@@ -768,7 +749,7 @@ public:
     }
     QIcon icon() const
     {
-        return QIcon( QPixmap( iconview_pixmap ) );
+        return QIcon(QPixmap(iconview_pixmap));
     }
     QString includeFile() const
     {
@@ -800,45 +781,43 @@ public:
 };
 
 /* XPM */
-static const char *spinbox_pixmap[]={
-"22 22 6 1",
-"a c #000000",
-"# c #000080",
-"b c #008080",
-"c c #808080",
-"d c #c0c0c0",
-". c #ffffff",
-"...#aaaaaaaaaaaaaa#...",
-".baccccccccccccccccab.",
-".acccddddddddddddddca.",
-"#ccd................d#",
-"acc.............dcd.da",
-"acd.............dbd..a",
-"acd............dcbbd.a",
-"acd.d..dd..d...dbbbc.a",
-"acddb.dbbdcbb.dbbb#bda",
-"acd.b.d.cc..b.bb###bda",
-"acd.b...bd.cb.dddccdda",
-"acd.b...b..db...dddd.a",
-"acd.b..cd...bdddccbbda",
-"acd.b.dbbccdb.ccbbbbda",
-"acddd.ddd.dd..dbbb#cda",
-"acd............bb##cda",
-"acd............db#cd.a",
-"acd.............bbcdda",
-"#cd.............ddd.d#",
-".ac................da.",
-".badd............dda#.",
-"...#aaaaaaaaaaaaaa#..."};
+static const char* spinbox_pixmap[] = {"22 22 6 1",
+                                       "a c #000000",
+                                       "# c #000080",
+                                       "b c #008080",
+                                       "c c #808080",
+                                       "d c #c0c0c0",
+                                       ". c #ffffff",
+                                       "...#aaaaaaaaaaaaaa#...",
+                                       ".baccccccccccccccccab.",
+                                       ".acccddddddddddddddca.",
+                                       "#ccd................d#",
+                                       "acc.............dcd.da",
+                                       "acd.............dbd..a",
+                                       "acd............dcbbd.a",
+                                       "acd.d..dd..d...dbbbc.a",
+                                       "acddb.dbbdcbb.dbbb#bda",
+                                       "acd.b.d.cc..b.bb###bda",
+                                       "acd.b...bd.cb.dddccdda",
+                                       "acd.b...b..db...dddd.a",
+                                       "acd.b..cd...bdddccbbda",
+                                       "acd.b.dbbccdb.ccbbbbda",
+                                       "acddd.ddd.dd..dbbb#cda",
+                                       "acd............bb##cda",
+                                       "acd............db#cd.a",
+                                       "acd.............bbcdda",
+                                       "#cd.............ddd.d#",
+                                       ".ac................da.",
+                                       ".badd............dda#.",
+                                       "...#aaaaaaaaaaaaaa#..."};
 
-class UIntSpinBoxPlugin : public QDesignerCustomWidgetInterface
+class UIntSpinBoxPlugin: public QDesignerCustomWidgetInterface
 {
     Q_INTERFACES(QDesignerCustomWidgetInterface)
 public:
     UIntSpinBoxPlugin()
-    {
-    }
-    QWidget *createWidget(QWidget *parent)
+    {}
+    QWidget* createWidget(QWidget* parent)
     {
         return new Gui::UIntSpinBox(parent);
     }
@@ -848,7 +827,7 @@ public:
     }
     QIcon icon() const
     {
-        return QIcon( QPixmap( spinbox_pixmap ) );
+        return QIcon(QPixmap(spinbox_pixmap));
     }
     QString includeFile() const
     {
@@ -879,14 +858,13 @@ public:
     }
 };
 
-class IntSpinBoxPlugin : public QDesignerCustomWidgetInterface
+class IntSpinBoxPlugin: public QDesignerCustomWidgetInterface
 {
     Q_INTERFACES(QDesignerCustomWidgetInterface)
 public:
     IntSpinBoxPlugin()
-    {
-    }
-    QWidget *createWidget(QWidget *parent)
+    {}
+    QWidget* createWidget(QWidget* parent)
     {
         return new Gui::IntSpinBox(parent);
     }
@@ -896,7 +874,7 @@ public:
     }
     QIcon icon() const
     {
-        return QIcon( QPixmap( spinbox_pixmap ) );
+        return QIcon(QPixmap(spinbox_pixmap));
     }
     QString includeFile() const
     {
@@ -927,14 +905,13 @@ public:
     }
 };
 
-class DoubleSpinBoxPlugin : public QDesignerCustomWidgetInterface
+class DoubleSpinBoxPlugin: public QDesignerCustomWidgetInterface
 {
     Q_INTERFACES(QDesignerCustomWidgetInterface)
 public:
     DoubleSpinBoxPlugin()
-    {
-    }
-    QWidget *createWidget(QWidget *parent)
+    {}
+    QWidget* createWidget(QWidget* parent)
     {
         return new Gui::DoubleSpinBox(parent);
     }
@@ -944,7 +921,7 @@ public:
     }
     QIcon icon() const
     {
-        return QIcon( QPixmap( spinbox_pixmap ) );
+        return QIcon(QPixmap(spinbox_pixmap));
     }
     QString includeFile() const
     {
@@ -975,14 +952,13 @@ public:
     }
 };
 
-class PrefSpinBoxPlugin : public QDesignerCustomWidgetInterface
+class PrefSpinBoxPlugin: public QDesignerCustomWidgetInterface
 {
     Q_INTERFACES(QDesignerCustomWidgetInterface)
 public:
     PrefSpinBoxPlugin()
-    {
-    }
-    QWidget *createWidget(QWidget *parent)
+    {}
+    QWidget* createWidget(QWidget* parent)
     {
         return new Gui::PrefSpinBox(parent);
     }
@@ -992,7 +968,7 @@ public:
     }
     QIcon icon() const
     {
-        return QIcon( QPixmap( spinbox_pixmap ) );
+        return QIcon(QPixmap(spinbox_pixmap));
     }
     QString includeFile() const
     {
@@ -1024,45 +1000,43 @@ public:
 };
 
 /* XPM */
-static const char *colorbutton_pixmap[]={
-"21 21 7 1",
-"d c #000000",
-"b c #000080",
-"e c #0000ff",
-"a c #008080",
-"# c #808080",
-"c c #c0c0c0",
-". c #ffffff",
-".....................",
-".#abbbbbbbbbbbbbba#c.",
-"c#c..............c##.",
-"#c................ca.",
-"#..................b.",
-"#...ddddddddddd....b.",
-"#...deeeeeeeeed....b.",
-"#...deeeeeeeeed....b.",
-"#...deeeeeeeeed....b.",
-"#...deeeeeeeeed....b.",
-"#...deeeeeeeeed....b.",
-"#...deeeeeeeeed....b.",
-"#...deeeeeeeeed....b.",
-"#...deeeeeeeeed....b.",
-"#...deeeeeeeeed....b.",
-"#...ddddddddddd....b.",
-"#..................b.",
-"#.................cb.",
-"#cccccccccccccccccca.",
-"c#cccccccccccccccc##.",
-".cccccccccccccccccc.."};
+static const char* colorbutton_pixmap[] = {"21 21 7 1",
+                                           "d c #000000",
+                                           "b c #000080",
+                                           "e c #0000ff",
+                                           "a c #008080",
+                                           "# c #808080",
+                                           "c c #c0c0c0",
+                                           ". c #ffffff",
+                                           ".....................",
+                                           ".#abbbbbbbbbbbbbba#c.",
+                                           "c#c..............c##.",
+                                           "#c................ca.",
+                                           "#..................b.",
+                                           "#...ddddddddddd....b.",
+                                           "#...deeeeeeeeed....b.",
+                                           "#...deeeeeeeeed....b.",
+                                           "#...deeeeeeeeed....b.",
+                                           "#...deeeeeeeeed....b.",
+                                           "#...deeeeeeeeed....b.",
+                                           "#...deeeeeeeeed....b.",
+                                           "#...deeeeeeeeed....b.",
+                                           "#...deeeeeeeeed....b.",
+                                           "#...deeeeeeeeed....b.",
+                                           "#...ddddddddddd....b.",
+                                           "#..................b.",
+                                           "#.................cb.",
+                                           "#cccccccccccccccccca.",
+                                           "c#cccccccccccccccc##.",
+                                           ".cccccccccccccccccc.."};
 
-class ColorButtonPlugin : public QDesignerCustomWidgetInterface
+class ColorButtonPlugin: public QDesignerCustomWidgetInterface
 {
     Q_INTERFACES(QDesignerCustomWidgetInterface)
 public:
     ColorButtonPlugin()
-    {
-    }
-    QWidget *createWidget(QWidget *parent)
+    {}
+    QWidget* createWidget(QWidget* parent)
     {
         return new Gui::ColorButton(parent);
     }
@@ -1072,7 +1046,7 @@ public:
     }
     QIcon icon() const
     {
-        return QIcon( QPixmap( colorbutton_pixmap ) );
+        return QIcon(QPixmap(colorbutton_pixmap));
     }
     QString includeFile() const
     {
@@ -1103,14 +1077,13 @@ public:
     }
 };
 
-class PrefColorButtonPlugin : public QDesignerCustomWidgetInterface
+class PrefColorButtonPlugin: public QDesignerCustomWidgetInterface
 {
     Q_INTERFACES(QDesignerCustomWidgetInterface)
 public:
     PrefColorButtonPlugin()
-    {
-    }
-    QWidget *createWidget(QWidget *parent)
+    {}
+    QWidget* createWidget(QWidget* parent)
     {
         return new Gui::PrefColorButton(parent);
     }
@@ -1120,7 +1093,7 @@ public:
     }
     QIcon icon() const
     {
-        return QIcon( QPixmap( colorbutton_pixmap ) );
+        return QIcon(QPixmap(colorbutton_pixmap));
     }
     QString includeFile() const
     {
@@ -1152,44 +1125,42 @@ public:
 };
 
 /* XPM */
-static const char *slider_pixmap[]={
-"22 22 5 1",
-"b c #000000",
-"c c #008080",
-"# c #808080",
-"a c #c0c0c0",
-". c #ffffff",
-"......................",
-"......................",
-"......................",
-"......................",
-"......................",
-".........#............",
-"........a##...........",
-"........a##...........",
-"........a##...........",
-"..bbbb..a#bbbbbbbbbb..",
-".bbbbb..a#bbbbbbbbbbc.",
-".bb###..a#b########c#.",
-".bbb##..a#b########aa.",
-"..cc##..a#b########a..",
-"........a##...........",
-"........a##...........",
-"........a##...........",
-"......#####...........",
-".......####...........",
-"......................",
-"......................",
-"......................"};
+static const char* slider_pixmap[] = {"22 22 5 1",
+                                      "b c #000000",
+                                      "c c #008080",
+                                      "# c #808080",
+                                      "a c #c0c0c0",
+                                      ". c #ffffff",
+                                      "......................",
+                                      "......................",
+                                      "......................",
+                                      "......................",
+                                      "......................",
+                                      ".........#............",
+                                      "........a##...........",
+                                      "........a##...........",
+                                      "........a##...........",
+                                      "..bbbb..a#bbbbbbbbbb..",
+                                      ".bbbbb..a#bbbbbbbbbbc.",
+                                      ".bb###..a#b########c#.",
+                                      ".bbb##..a#b########aa.",
+                                      "..cc##..a#b########a..",
+                                      "........a##...........",
+                                      "........a##...........",
+                                      "........a##...........",
+                                      "......#####...........",
+                                      ".......####...........",
+                                      "......................",
+                                      "......................",
+                                      "......................"};
 
-class PrefSliderPlugin : public QDesignerCustomWidgetInterface
+class PrefSliderPlugin: public QDesignerCustomWidgetInterface
 {
     Q_INTERFACES(QDesignerCustomWidgetInterface)
 public:
     PrefSliderPlugin()
-    {
-    }
-    QWidget *createWidget(QWidget *parent)
+    {}
+    QWidget* createWidget(QWidget* parent)
     {
         return new Gui::PrefSlider(parent);
     }
@@ -1199,7 +1170,7 @@ public:
     }
     QIcon icon() const
     {
-        return QIcon( QPixmap( slider_pixmap ) );
+        return QIcon(QPixmap(slider_pixmap));
     }
     QString includeFile() const
     {
@@ -1231,43 +1202,41 @@ public:
 };
 
 /* XPM */
-static const char *radiobutton_pixmap[]={
-"22 22 4 1",
-"b c #000000",
-"# c #808080",
-"a c #c0c0c0",
-". c #ffffff",
-"......................",
-"......................",
-"......................",
-"......................",
-".......########.......",
-"......#####aaa##......",
-".....#b##a...aaa#.....",
-"....###aa.aa....a#....",
-"....###a.####a...a....",
-"....##a.####bba..a....",
-"....##.a###bbb#.......",
-"....#a.a##bbbb#.......",
-"....#a..bbbbbba.......",
-"....#aa.abbbb#...a....",
-"....##a..a##a....a....",
-".....#a.........a.....",
-"......#a.......a......",
-".......#aa...aa.......",
-"......................",
-"......................",
-"......................",
-"......................"};
+static const char* radiobutton_pixmap[] = {"22 22 4 1",
+                                           "b c #000000",
+                                           "# c #808080",
+                                           "a c #c0c0c0",
+                                           ". c #ffffff",
+                                           "......................",
+                                           "......................",
+                                           "......................",
+                                           "......................",
+                                           ".......########.......",
+                                           "......#####aaa##......",
+                                           ".....#b##a...aaa#.....",
+                                           "....###aa.aa....a#....",
+                                           "....###a.####a...a....",
+                                           "....##a.####bba..a....",
+                                           "....##.a###bbb#.......",
+                                           "....#a.a##bbbb#.......",
+                                           "....#a..bbbbbba.......",
+                                           "....#aa.abbbb#...a....",
+                                           "....##a..a##a....a....",
+                                           ".....#a.........a.....",
+                                           "......#a.......a......",
+                                           ".......#aa...aa.......",
+                                           "......................",
+                                           "......................",
+                                           "......................",
+                                           "......................"};
 
-class PrefRadioButtonPlugin : public QDesignerCustomWidgetInterface
+class PrefRadioButtonPlugin: public QDesignerCustomWidgetInterface
 {
     Q_INTERFACES(QDesignerCustomWidgetInterface)
 public:
     PrefRadioButtonPlugin()
-    {
-    }
-    QWidget *createWidget(QWidget *parent)
+    {}
+    QWidget* createWidget(QWidget* parent)
     {
         return new Gui::PrefRadioButton(parent);
     }
@@ -1277,7 +1246,7 @@ public:
     }
     QIcon icon() const
     {
-        return QIcon( QPixmap( radiobutton_pixmap ) );
+        return QIcon(QPixmap(radiobutton_pixmap));
     }
     QString includeFile() const
     {
@@ -1309,43 +1278,41 @@ public:
 };
 
 /* XPM */
-static const char *checkbox_pixmap[]={
-"22 22 4 1",
-"# c #000000",
-"a c #808080",
-"b c #c0c0c0",
-". c #ffffff",
-"......................",
-"......................",
-"......................",
-"......................",
-"....###########aaa....",
-"....##aaaaaaaaaabb....",
-"....#aabbbbbbbbbbb....",
-"....#abbbbbbbbaa......",
-"....#abbbbbbba#a......",
-"....#ababbbba##a......",
-"....#ab#abba###a......",
-"....#ab##aa###ab......",
-"....#ab######abb......",
-"....#abb####abbb......",
-"....#abbb##abbbb......",
-"....aabbbbabbbb.......",
-"....abb......b........",
-"....abb...............",
-"......................",
-"......................",
-"......................",
-"......................"};
+static const char* checkbox_pixmap[] = {"22 22 4 1",
+                                        "# c #000000",
+                                        "a c #808080",
+                                        "b c #c0c0c0",
+                                        ". c #ffffff",
+                                        "......................",
+                                        "......................",
+                                        "......................",
+                                        "......................",
+                                        "....###########aaa....",
+                                        "....##aaaaaaaaaabb....",
+                                        "....#aabbbbbbbbbbb....",
+                                        "....#abbbbbbbbaa......",
+                                        "....#abbbbbbba#a......",
+                                        "....#ababbbba##a......",
+                                        "....#ab#abba###a......",
+                                        "....#ab##aa###ab......",
+                                        "....#ab######abb......",
+                                        "....#abb####abbb......",
+                                        "....#abbb##abbbb......",
+                                        "....aabbbbabbbb.......",
+                                        "....abb......b........",
+                                        "....abb...............",
+                                        "......................",
+                                        "......................",
+                                        "......................",
+                                        "......................"};
 
-class PrefCheckBoxPlugin : public QDesignerCustomWidgetInterface
+class PrefCheckBoxPlugin: public QDesignerCustomWidgetInterface
 {
     Q_INTERFACES(QDesignerCustomWidgetInterface)
 public:
     PrefCheckBoxPlugin()
-    {
-    }
-    QWidget *createWidget(QWidget *parent)
+    {}
+    QWidget* createWidget(QWidget* parent)
     {
         return new Gui::PrefCheckBox(parent);
     }
@@ -1355,7 +1322,7 @@ public:
     }
     QIcon icon() const
     {
-        return QIcon( QPixmap( checkbox_pixmap ) );
+        return QIcon(QPixmap(checkbox_pixmap));
     }
     QString includeFile() const
     {
@@ -1387,47 +1354,45 @@ public:
 };
 
 /* XPM */
-static const char *combobox_pixmap[]={
-"22 22 8 1",
-"a c #000000",
-"# c #000080",
-"e c #008080",
-"f c #800000",
-"b c #808080",
-"c c #c0c0c0",
-"d c #ff0000",
-". c #ffffff",
-".#aaaaaaaaaaaaaaaaaa#.",
-"#bbccccccccccccccccdd#",
-"accee#########e.addfaa",
-"#c..............a.fa.#",
-"e#aaaaaaaaaaaaaaaaaa#e",
-"....#c...............#",
-"....ac...............a",
-"....ac.ccbbbbbbbbeb..a",
-"....ac.bbbeeeeeee##c.a",
-"....ac.bee########ac.a",
-"....ac..cccccccccccc.a",
-"....ac.ccccccccccbec.a",
-"....ac.cccccccccbbec.a",
-"....ac.bcbbbbbbbbbec.a",
-"....ac..cccccccccccc.a",
-"....ac.cbbeeeeeee#bc.a",
-"....ac.bee########ac.a",
-"....ab.b##aaaaaaaaacca",
-"....#bc.ccccccccccccc#",
-".....ab............ca.",
-".....eacc.........ca#.",
-".......#aaaaaaaaaa#..."};
+static const char* combobox_pixmap[] = {"22 22 8 1",
+                                        "a c #000000",
+                                        "# c #000080",
+                                        "e c #008080",
+                                        "f c #800000",
+                                        "b c #808080",
+                                        "c c #c0c0c0",
+                                        "d c #ff0000",
+                                        ". c #ffffff",
+                                        ".#aaaaaaaaaaaaaaaaaa#.",
+                                        "#bbccccccccccccccccdd#",
+                                        "accee#########e.addfaa",
+                                        "#c..............a.fa.#",
+                                        "e#aaaaaaaaaaaaaaaaaa#e",
+                                        "....#c...............#",
+                                        "....ac...............a",
+                                        "....ac.ccbbbbbbbbeb..a",
+                                        "....ac.bbbeeeeeee##c.a",
+                                        "....ac.bee########ac.a",
+                                        "....ac..cccccccccccc.a",
+                                        "....ac.ccccccccccbec.a",
+                                        "....ac.cccccccccbbec.a",
+                                        "....ac.bcbbbbbbbbbec.a",
+                                        "....ac..cccccccccccc.a",
+                                        "....ac.cbbeeeeeee#bc.a",
+                                        "....ac.bee########ac.a",
+                                        "....ab.b##aaaaaaaaacca",
+                                        "....#bc.ccccccccccccc#",
+                                        ".....ab............ca.",
+                                        ".....eacc.........ca#.",
+                                        ".......#aaaaaaaaaa#..."};
 
-class PrefComboBoxPlugin : public QDesignerCustomWidgetInterface
+class PrefComboBoxPlugin: public QDesignerCustomWidgetInterface
 {
     Q_INTERFACES(QDesignerCustomWidgetInterface)
 public:
     PrefComboBoxPlugin()
-    {
-    }
-    QWidget *createWidget(QWidget *parent)
+    {}
+    QWidget* createWidget(QWidget* parent)
     {
         return new Gui::PrefComboBox(parent);
     }
@@ -1437,7 +1402,7 @@ public:
     }
     QIcon icon() const
     {
-        return QIcon( QPixmap( combobox_pixmap ) );
+        return QIcon(QPixmap(combobox_pixmap));
     }
     QString includeFile() const
     {
@@ -1468,14 +1433,13 @@ public:
     }
 };
 
-class PrefLineEditPlugin : public QDesignerCustomWidgetInterface
+class PrefLineEditPlugin: public QDesignerCustomWidgetInterface
 {
     Q_INTERFACES(QDesignerCustomWidgetInterface)
 public:
     PrefLineEditPlugin()
-    {
-    }
-    QWidget *createWidget(QWidget *parent)
+    {}
+    QWidget* createWidget(QWidget* parent)
     {
         return new Gui::PrefLineEdit(parent);
     }
@@ -1485,7 +1449,7 @@ public:
     }
     QIcon icon() const
     {
-        return QIcon( QPixmap( lineedit_pixmap ) );
+        return QIcon(QPixmap(lineedit_pixmap));
     }
     QString includeFile() const
     {
@@ -1516,14 +1480,13 @@ public:
     }
 };
 
-class PrefDoubleSpinBoxPlugin : public QDesignerCustomWidgetInterface
+class PrefDoubleSpinBoxPlugin: public QDesignerCustomWidgetInterface
 {
     Q_INTERFACES(QDesignerCustomWidgetInterface)
 public:
     PrefDoubleSpinBoxPlugin()
-    {
-    }
-    QWidget *createWidget(QWidget *parent)
+    {}
+    QWidget* createWidget(QWidget* parent)
     {
         return new Gui::PrefDoubleSpinBox(parent);
     }
@@ -1533,7 +1496,7 @@ public:
     }
     QIcon icon() const
     {
-        return QIcon( QPixmap( spinbox_pixmap ) );
+        return QIcon(QPixmap(spinbox_pixmap));
     }
     QString includeFile() const
     {
@@ -1566,47 +1529,45 @@ public:
 
 
 /* XPM */
-static const char *fontbox_pixmap[]={
-"22 22 8 1",
-"a c #000000",
-"# c #000080",
-"e c #008080",
-"f c #800000",
-"b c #808080",
-"c c #c0c0c0",
-"d c #ff0000",
-". c #ffffff",
-".#aaaaaaaaaaaaaaaaaa#.",
-"#bbccccccccccccccccdd#",
-"accee#########e.addfaa",
-"#c..............a.fa.#",
-"e#aaaaaaaaaaaaaaaaaa#e",
-"....#c...............#",
-"....ac...............a",
-"....ac.ccbbbbbbbbeb..a",
-"....ac.bbbeeeeeee##c.a",
-"....ac.bee########ac.a",
-"....ac..cccccccccccc.a",
-"....ac.ccccccccccbec.a",
-"....ac.cccccccccbbec.a",
-"....ac.bcbbbbbbbbbec.a",
-"....ac..cccccccccccc.a",
-"....ac.cbbeeeeeee#bc.a",
-"....ac.bee########ac.a",
-"....ab.b##aaaaaaaaacca",
-"....#bc.ccccccccccccc#",
-".....ab............ca.",
-".....eacc.........ca#.",
-".......#aaaaaaaaaa#..."};
+static const char* fontbox_pixmap[] = {"22 22 8 1",
+                                       "a c #000000",
+                                       "# c #000080",
+                                       "e c #008080",
+                                       "f c #800000",
+                                       "b c #808080",
+                                       "c c #c0c0c0",
+                                       "d c #ff0000",
+                                       ". c #ffffff",
+                                       ".#aaaaaaaaaaaaaaaaaa#.",
+                                       "#bbccccccccccccccccdd#",
+                                       "accee#########e.addfaa",
+                                       "#c..............a.fa.#",
+                                       "e#aaaaaaaaaaaaaaaaaa#e",
+                                       "....#c...............#",
+                                       "....ac...............a",
+                                       "....ac.ccbbbbbbbbeb..a",
+                                       "....ac.bbbeeeeeee##c.a",
+                                       "....ac.bee########ac.a",
+                                       "....ac..cccccccccccc.a",
+                                       "....ac.ccccccccccbec.a",
+                                       "....ac.cccccccccbbec.a",
+                                       "....ac.bcbbbbbbbbbec.a",
+                                       "....ac..cccccccccccc.a",
+                                       "....ac.cbbeeeeeee#bc.a",
+                                       "....ac.bee########ac.a",
+                                       "....ab.b##aaaaaaaaacca",
+                                       "....#bc.ccccccccccccc#",
+                                       ".....ab............ca.",
+                                       ".....eacc.........ca#.",
+                                       ".......#aaaaaaaaaa#..."};
 
-class PrefFontBoxPlugin : public QDesignerCustomWidgetInterface
+class PrefFontBoxPlugin: public QDesignerCustomWidgetInterface
 {
     Q_INTERFACES(QDesignerCustomWidgetInterface)
 public:
     PrefFontBoxPlugin()
-    {
-    }
-    QWidget *createWidget(QWidget *parent)
+    {}
+    QWidget* createWidget(QWidget* parent)
     {
         return new Gui::PrefFontBox(parent);
     }
@@ -1616,7 +1577,7 @@ public:
     }
     QIcon icon() const
     {
-        return QIcon( QPixmap( fontbox_pixmap ) );
+        return QIcon(QPixmap(fontbox_pixmap));
     }
     QString includeFile() const
     {
@@ -1680,14 +1641,13 @@ static char *listbox_pixmap[]={
 ".c#bb............#b##.",
 "...################..."};
 */
-CustomWidgetPlugin::CustomWidgetPlugin(QObject *parent)
-  : QObject(parent)
-{
-}
+CustomWidgetPlugin::CustomWidgetPlugin(QObject* parent)
+    : QObject(parent)
+{}
 
-QList<QDesignerCustomWidgetInterface *> CustomWidgetPlugin::customWidgets () const
+QList<QDesignerCustomWidgetInterface*> CustomWidgetPlugin::customWidgets() const
 {
-    QList<QDesignerCustomWidgetInterface *> cw;
+    QList<QDesignerCustomWidgetInterface*> cw;
     cw.append(new UrlLabelPlugin);
     cw.append(new LocationWidgetPlugin);
     cw.append(new FileChooserPlugin);
@@ -1714,28 +1674,3 @@ QList<QDesignerCustomWidgetInterface *> CustomWidgetPlugin::customWidgets () con
     cw.append(new PrefQuantitySpinBoxPlugin);
     return cw;
 }
-
-//QString CustomWidgetPlugin::domXml() const
-//{
-//    return QLatin1String("<widget class=\"AnalogClock\" name=\"analogClock\">\n"
-//                         " <property name=\"geometry\">\n"
-//                         "  <rect>\n"
-//                         "   <x>0</x>\n"
-//                         "   <y>0</y>\n"
-//                         "   <width>100</width>\n"
-//                         "   <height>100</height>\n"
-//                         "  </rect>\n"
-//                         " </property>\n"
-//                         " <property name=\"toolTip\" >\n"
-//                         "  <string>The current time</string>\n"
-//                         " </property>\n"
-//                         " <property name=\"whatsThis\" >\n"
-//                         "  <string>The analog clock widget displays "
-//                         "the current time.</string>\n"
-//                         " </property>\n"
-//                         "</widget>\n");
-//}
-
-#if QT_VERSION < 0x050000
-Q_EXPORT_PLUGIN2(containerextension, CustomWidgetPlugin)
-#endif

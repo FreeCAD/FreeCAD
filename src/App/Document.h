@@ -29,6 +29,7 @@
 
 #include <map>
 #include <vector>
+#include <QString>
 
 namespace Base {
     class Writer;
@@ -90,10 +91,7 @@ public:
     PropertyString Id;
     /// unique identifier of the document
     PropertyUUID Uid;
-    /** License string
-      * Holds the short license string for the Item, e.g. CC-BY
-      * for the Creative Commons license suit.
-      */
+    /// Full name of the licence e.g. "Creative Commons Attribution". See https://spdx.org/licenses/
     App::PropertyString License;
     /// License description/contract URL
     App::PropertyString LicenseURL;
@@ -510,7 +508,7 @@ public:
 
 protected:
     /// Construction
-    explicit Document(const char *name = "");
+    explicit Document(const char *documentName = "");
 
     void _removeObject(DocumentObject* pcObject);
     void _addObject(DocumentObject* pcObject, const char* pObjectName);

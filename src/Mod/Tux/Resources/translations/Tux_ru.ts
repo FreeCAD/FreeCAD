@@ -66,7 +66,7 @@
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="332"/>
       <source>Orbit style</source>
-      <translation>Вращение</translation>
+      <translation>Орбитальный стиль</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="333"/>
@@ -81,15 +81,20 @@
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="335"/>
       <source>Turntable</source>
-      <translation>Поворотный круг</translation>
+      <translation>Поворотный стол</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="336"/>
-      <source>Trackball</source>
-      <translation>Trackball</translation>
+      <source>Free Turntable</source>
+      <translation>Свободный Поворотный стол</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="337"/>
+      <source>Trackball</source>
+      <translation>Трекбол</translation>
+    </message>
+    <message>
+      <location filename="../../NavigationIndicatorGui.py" line="338"/>
       <source>Undefined</source>
       <translation>Не определено</translation>
     </message>

@@ -123,6 +123,9 @@ public:
         using u = typename std::underlying_type<Enum>::type;
         return static_cast<u>(i) == static_cast<u>(f.i);
     }
+    typename std::underlying_type<Enum>::type toUnderlyingType() const {
+        return static_cast<typename std::underlying_type<Enum>::type>(i);
+    }
 };
 }
 

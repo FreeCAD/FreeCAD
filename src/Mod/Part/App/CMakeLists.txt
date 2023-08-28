@@ -229,6 +229,8 @@ SET(Properties_SRCS
     PropertyTopoShape.h
     PropertyGeometryList.cpp
     PropertyGeometryList.h
+    PropertyTopoShapeList.cpp
+    PropertyTopoShapeList.h
 )
 SOURCE_GROUP("Properties" FILES ${Properties_SRCS})
 
@@ -533,6 +535,7 @@ SET(Part_SRCS
     ProgressIndicator.h
     TopoShape.cpp
     TopoShape.h
+    TopoShapeOpCode.h
     edgecluster.cpp
     edgecluster.h
     modelRefine.cpp

@@ -20,16 +20,17 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************/
-from __future__ import print_function
+
 import FreeCAD
 import Part
 import Path
+import PathScripts.PathUtils as PathUtils
 import datetime
 import importDXF
 
 TOOLTIP = """
 This is a postprocessor file for the Path workbench. It is used to
-take a pseudo-gcode fragment outputted by a Path object, and output
+take a pseudo-G-code fragment outputted by a Path object, and output
 a dxf file.
 Operations are output to layers.
 vertical moves are ignore
@@ -100,7 +101,7 @@ def parse(pathobj):
 
     # Gotta start somewhere.  Assume 0,0,0
     curPoint = FreeCAD.Vector(0, 0, 0)
-    for c in pathobj.Path.Commands:
+    for c in PathUtils.getPathWithPlacement(pathobj).Commands:
         Path.Log.debug("{} -> {}".format(curPoint, c))
         if "Z" in c.Parameters:
             newparams = c.Parameters

@@ -137,9 +137,7 @@ public:
 
 // ----------------------------------------------------------------
 
-SoSVGVectorOutput::SoSVGVectorOutput()
-{
-}
+SoSVGVectorOutput::SoSVGVectorOutput() = default;
 
 SoSVGVectorOutput::~SoSVGVectorOutput()
 {
@@ -256,39 +254,39 @@ Separator {
 }
 
 <?xml version="1.0"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.0//EN"
-	"http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd">
+    "http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd">
 <svg width="100" height="100" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-	<defs>
-		<linearGradient id="red" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="35" y2="80">
-			<stop offset="0" stop-color="rgb(255,0,0)" stop-opacity="1"/>
-			<stop offset="1" stop-color="rgb(255,0,0)" stop-opacity="0"/>
-		</linearGradient>
-		<linearGradient id="blue" gradientUnits="userSpaceOnUse" x1="100" y1="50" x2="0" y2="50">
-			<stop offset="0" stop-color="rgb(0,0,255)" stop-opacity="1"/>
-			<stop offset="1" stop-color="rgb(0,0,255)" stop-opacity="0"/>
-		</linearGradient>
-		<linearGradient id="yellow" gradientUnits="userSpaceOnUse" x1="0" y1="100" x2="40" y2="20">
-			<stop offset="0" stop-color="rgb(255,255,0)" stop-opacity="1"/>
-			<stop offset="1" stop-color="rgb(255,255,0)" stop-opacity="0"/>
-		</linearGradient>
-		<path id="triangle1" d="M0 0 L100 50 L0 100 z"/>
+    <defs>
+        <linearGradient id="red" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="35" y2="80">
+            <stop offset="0" stop-color="rgb(255,0,0)" stop-opacity="1"/>
+            <stop offset="1" stop-color="rgb(255,0,0)" stop-opacity="0"/>
+        </linearGradient>
+        <linearGradient id="blue" gradientUnits="userSpaceOnUse" x1="100" y1="50" x2="0" y2="50">
+            <stop offset="0" stop-color="rgb(0,0,255)" stop-opacity="1"/>
+            <stop offset="1" stop-color="rgb(0,0,255)" stop-opacity="0"/>
+        </linearGradient>
+        <linearGradient id="yellow" gradientUnits="userSpaceOnUse" x1="0" y1="100" x2="40" y2="20">
+            <stop offset="0" stop-color="rgb(255,255,0)" stop-opacity="1"/>
+            <stop offset="1" stop-color="rgb(255,255,0)" stop-opacity="0"/>
+        </linearGradient>
+        <path id="triangle1" d="M0 0 L100 50 L0 100 z"/>
 <filter id="colorAdd">
-	<feComposite in="SourceGraphic" in2="BackgroundImage" operator="arithmetic" k2="1" k3="1"/>
+    <feComposite in="SourceGraphic" in2="BackgroundImage" operator="arithmetic" k2="1" k3="1"/>
 </filter>
 <filter id="Matrix1">
-	<feColorMatrix type="matrix" values="
-	1 0 0 0 0
-	0 1 0 0 0
-	0 0 1 0 0
-	1 1 1 1 0
-	0 0 0 0 1
-	"/>
+    <feColorMatrix type="matrix" values="
+    1 0 0 0 0
+    0 1 0 0 0
+    0 0 1 0 0
+    1 1 1 1 0
+    0 0 0 0 1
+    "/>
 </filter>
 </defs>
 <g filter="url(#Matrix1)">
-	<use xlink:href="#triangle1" fill="url(#blue)"/>
-	<use xlink:href="#triangle1" fill="url(#yellow)" filter="url(#colorAdd)"/>
-	<use xlink:href="#triangle1" fill="url(#red)" filter="url(#colorAdd)"/>
+    <use xlink:href="#triangle1" fill="url(#blue)"/>
+    <use xlink:href="#triangle1" fill="url(#yellow)" filter="url(#colorAdd)"/>
+    <use xlink:href="#triangle1" fill="url(#red)" filter="url(#colorAdd)"/>
 </g>
 </svg>
 */
@@ -378,10 +376,7 @@ void SoFCVectorizeSVGAction::initClass()
     SO_ACTION_INIT_CLASS(SoFCVectorizeSVGAction, SoVectorizeAction);
 }
 
-SoFCVectorizeSVGAction::SoFCVectorizeSVGAction() :
-    m_backgroundState(true),
-    m_lineWidth(1.0),
-    m_usemm(false)
+SoFCVectorizeSVGAction::SoFCVectorizeSVGAction()
 {
     SO_ACTION_CONSTRUCTOR(SoFCVectorizeSVGAction);
     this->setOutput(new SoSVGVectorOutput);
@@ -402,11 +397,11 @@ SoFCVectorizeSVGAction::getSVGOutput() const
 void SoFCVectorizeSVGAction::printHeader() const
 {
     std::ostream& str = this->getSVGOutput()->getFileStream();
-    str << "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>" << std::endl;
-    str << "<!-- Created with FreeCAD (http://www.freecadweb.org) -->" << std::endl;
+    str << R"(<?xml version="1.0" encoding="UTF-8" standalone="no"?>)" << std::endl;
+    str << "<!-- Created with FreeCAD (http://www.freecad.org) -->" << std::endl;
     str << "<svg xmlns=\"http://www.w3.org/2000/svg\"" << std::endl;
-    str << "     xmlns:xlink=\"http://www.w3.org/1999/xlink\" xmlns:ev=\"http://www.w3.org/2001/xml-events\"" << std::endl;
-    str << "     version=\"1.1\" baseProfile=\"full\""  << std::endl;
+    str << R"(     xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:ev="http://www.w3.org/2001/xml-events")" << std::endl;
+    str << R"(     version="1.1" baseProfile="full")"  << std::endl;
 
     SbVec2f size = getPageSize();
     if (this->getOrientation() == LANDSCAPE) {

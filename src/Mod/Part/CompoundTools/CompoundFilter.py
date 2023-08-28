@@ -21,7 +21,7 @@
 
 __title__ = "CompoundTools.CompoundFilter"
 __author__ = "DeepSOIC, Bernd Hahnebach"
-__url__ = "http://www.freecadweb.org"
+__url__ = "http://www.freecad.org"
 __doc__ = "Compound Filter: remove some children from a compound (features)."
 
 
@@ -242,7 +242,7 @@ class _ViewProviderCompoundFilter:
             try:
                 if self.Object.Base:
                     # the base object might be deleted be the user
-                    # https://forum.freecadweb.org/viewtopic.php?f=3&t=42242
+                    # https://forum.freecad.org/viewtopic.php?f=3&t=42242
                     self.Object.Base.ViewObject.show()
                 if self.Object.Stencil:
                     self.Object.Stencil.ViewObject.show()

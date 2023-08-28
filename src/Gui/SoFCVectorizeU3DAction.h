@@ -33,10 +33,10 @@ namespace Gui {
 class GuiExport SoU3DVectorOutput : public SoVectorOutput {
 public:
     SoU3DVectorOutput();
-    virtual ~SoU3DVectorOutput();
+    ~SoU3DVectorOutput() override;
 
-    virtual SbBool openFile (const char *filename);
-    virtual void closeFile ();
+    SbBool openFile (const char *filename) override;
+    void closeFile () override;
     std::fstream& getFileStream();
 
 private:
@@ -54,19 +54,19 @@ class GuiExport SoFCVectorizeU3DAction : public SoVectorizeAction {
 
 public:
     SoFCVectorizeU3DAction();
-    virtual ~SoFCVectorizeU3DAction();
+    ~SoFCVectorizeU3DAction() override;
 
     static void initClass();
     SoU3DVectorOutput * getU3DOutput() const;
 
 protected:
-    virtual void beginTraversal(SoNode * node);
-    virtual void endTraversal(SoNode *node);
-    virtual void printHeader() const;
-    virtual void printFooter() const;
-    virtual void printBackground() const;
-    virtual void printItem(const SoVectorizeItem * item) const;
-    virtual void printViewport() const;
+    void beginTraversal(SoNode * node) override;
+    void endTraversal(SoNode *node) override;
+    void printHeader() const override;
+    void printFooter() const override;
+    void printBackground() const override;
+    void printItem(const SoVectorizeItem * item) const override;
+    void printViewport() const override;
 
 private:
     static void actionMethod(SoAction *, SoNode *);

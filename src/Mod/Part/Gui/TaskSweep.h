@@ -46,9 +46,9 @@ public:
     bool accept();
     bool reject();
 
-private Q_SLOTS:
+private:
     void onCurrentItemChanged(QTreeWidgetItem*, QTreeWidgetItem*);
-    void on_buttonPath_toggled(bool);
+    void onButtonPathToggled(bool);
 
 private:
     void changeEvent(QEvent *e) override;

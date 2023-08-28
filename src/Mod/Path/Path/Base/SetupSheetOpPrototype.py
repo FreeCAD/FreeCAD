@@ -24,7 +24,7 @@ import Path
 
 __title__ = "Setup Sheet for a Job."
 __author__ = "sliptonic (Brad Collette)"
-__url__ = "https://www.freecadweb.org"
+__url__ = "https://www.freecad.org"
 __doc__ = "Prototype objects to allow extraction of setup sheet values and editing."
 
 

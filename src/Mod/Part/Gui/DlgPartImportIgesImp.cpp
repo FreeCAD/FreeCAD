@@ -50,10 +50,7 @@ DlgPartImportIgesImp::DlgPartImportIgesImp(QWidget* parent, Qt::WindowFlags fl)
 /*
  *  Destroys the object and frees any allocated resources
  */
-DlgPartImportIgesImp::~DlgPartImportIgesImp()
-{
-    // no need to delete child widgets, Qt does it all for us
-}
+DlgPartImportIgesImp::~DlgPartImportIgesImp() = default;
 
 /*
  * public slot

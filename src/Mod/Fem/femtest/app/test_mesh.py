@@ -23,7 +23,7 @@
 
 __title__ = "Mesh FEM unit tests"
 __author__ = "Bernd Hahnebach"
-__url__ = "https://www.freecadweb.org"
+__url__ = "https://www.freecad.org"
 
 import unittest
 from os.path import join
@@ -183,7 +183,7 @@ class TestMeshCommon(unittest.TestCase):
     def test_writeAbaqus_precision(
         self
     ):
-        # https://forum.freecadweb.org/viewtopic.php?f=18&t=22759#p176669
+        # https://forum.freecad.org/viewtopic.php?f=18&t=22759#p176669
         # ccx reads only F20.0 (i. e. Fortran floating point field 20 chars wide)
         # thus precision is set to 13 in writeAbaqus
         seg2 = Fem.FemMesh()

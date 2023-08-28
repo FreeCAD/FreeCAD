@@ -61,7 +61,7 @@ QWidget *SpreadsheetDelegate::createEditor(QWidget *parent,
 
     SpreadsheetGui::LineEdit *editor = new SpreadsheetGui::LineEdit(parent);
     editor->setDocumentObject(sheet);
-    connect(editor, &SpreadsheetGui::LineEdit::finishedWithKey, this, &SpreadsheetDelegate::on_editorFinishedWithKey);
+    connect(editor, &SpreadsheetGui::LineEdit::finishedWithKey, this, &SpreadsheetDelegate::onEditorFinishedWithKey);
     return editor;
 }
 
@@ -85,7 +85,7 @@ void SpreadsheetDelegate::setModelData(QWidget *editor,
     }
 }
 
-void SpreadsheetDelegate::on_editorFinishedWithKey(int key, Qt::KeyboardModifiers modifiers)
+void SpreadsheetDelegate::onEditorFinishedWithKey(int key, Qt::KeyboardModifiers modifiers)
 {
     Q_EMIT finishedWithKey(key, modifiers);
 }
@@ -94,7 +94,7 @@ QSize SpreadsheetDelegate::sizeHint(const QStyleOptionViewItem & option, const Q
 {
     Q_UNUSED(option);
     Q_UNUSED(index);
-    return QSize();
+    return {};
 }
 
 static inline void drawBorder(QPainter *painter, const QStyleOptionViewItem &option,
@@ -112,13 +112,13 @@ static inline void drawBorder(QPainter *painter, const QStyleOptionViewItem &opt
         painter->drawRect(rect.adjusted(0,0,-1,-1));
         return;
     }
-    if(flags & Sheet::BorderLeft) 
+    if(flags & Sheet::BorderLeft)
         painter->drawLine(rect.topLeft(), rect.bottomLeft());
-    if(flags & Sheet::BorderTop) 
+    if(flags & Sheet::BorderTop)
         painter->drawLine(rect.topLeft(), rect.topRight());
-    if(flags & Sheet::BorderRight) 
+    if(flags & Sheet::BorderRight)
         painter->drawLine(rect.topRight(), rect.bottomRight());
-    if(flags & Sheet::BorderBottom) 
+    if(flags & Sheet::BorderBottom)
         painter->drawLine(rect.bottomLeft(), rect.bottomRight());
 }
 

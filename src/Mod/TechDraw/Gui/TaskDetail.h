@@ -62,7 +62,7 @@ class TaskDetail : public QWidget
 public:
     explicit TaskDetail(TechDraw::DrawViewPart* baseFeat);
     explicit TaskDetail(TechDraw::DrawViewDetail* detailFeat);
-    ~TaskDetail() = default;
+    ~TaskDetail() override = default;
 
     virtual bool accept();
     virtual bool reject();

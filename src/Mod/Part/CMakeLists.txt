@@ -30,6 +30,7 @@ set(AttachmentEditor_Scripts
 set(BasicShapes_Scripts
     BasicShapes/__init__.py
     BasicShapes/Shapes.py
+    BasicShapes/Utils.py
 )
 
 if(BUILD_GUI)
@@ -43,6 +44,7 @@ endif(BUILD_GUI)
 
 set(BOPTools_Scripts
     BOPTools/__init__.py
+    BOPTools/BOPFeatures.py
     BOPTools/GeneralFuseResult.py
     BOPTools/JoinAPI.py
     BOPTools/JoinFeatures.py
@@ -64,6 +66,8 @@ set(Part_tests
     parttests/__init__.py
     parttests/part_test_objects.py
     parttests/regression_tests.py
+    parttests/TopoShapeListTest.py
+    parttests/ColorPerFaceTest.py
 )
 
 add_custom_target(PartScripts ALL SOURCES

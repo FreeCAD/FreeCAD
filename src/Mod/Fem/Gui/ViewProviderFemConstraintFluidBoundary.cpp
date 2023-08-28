@@ -49,9 +49,7 @@ ViewProviderFemConstraintFluidBoundary::ViewProviderFemConstraintFluidBoundary()
     sPixmap = "FEM_ConstraintFluidBoundary";
 }
 
-ViewProviderFemConstraintFluidBoundary::~ViewProviderFemConstraintFluidBoundary()
-{
-}
+ViewProviderFemConstraintFluidBoundary::~ViewProviderFemConstraintFluidBoundary() = default;
 
 bool ViewProviderFemConstraintFluidBoundary::setEdit(int ModNum)
 {
@@ -122,7 +120,7 @@ void ViewProviderFemConstraintFluidBoundary::updateData(const App::Property* pro
     float scaledlength = ARROWLENGTH * pcConstraint->Scale.getValue();
 
     std::string boundaryType = pcConstraint->BoundaryType.getValueAsString();
-    if (strcmp(prop->getName(), "BoundaryType") == 0) {
+    if (prop == &pcConstraint->BoundaryType) {
         if (boundaryType == "wall")
             FaceColor.setValue(0.0, 1.0, 1.0);
         else if (boundaryType == "interface")
@@ -147,7 +145,7 @@ void ViewProviderFemConstraintFluidBoundary::updateData(const App::Property* pro
         }
 #endif
 
-        if (strcmp(prop->getName(),"Points") == 0) {
+        if (prop == &pcConstraint->Points) {
             const std::vector<Base::Vector3d>& points = pcConstraint->Points.getValues();
 
 #ifdef USE_MULTIPLE_COPY
@@ -170,9 +168,8 @@ void ViewProviderFemConstraintFluidBoundary::updateData(const App::Property* pro
             SbVec3f dir(forceDirection.x, forceDirection.y, forceDirection.z);
             SbRotation rot(SbVec3f(0, 1, 0), dir);
 
-            for (std::vector<Base::Vector3d>::const_iterator p = points.begin(); p != points.end();
-                 p++) {
-                SbVec3f base(p->x, p->y, p->z);
+            for (const auto & point : points) {
+                SbVec3f base(point.x, point.y, point.z);
                 if (forceDirection.GetAngle(normal) < M_PI_2) // Move arrow so it doesn't disappear inside the solid
                     base = base + dir * scaledlength; //OvG: Scaling
 #ifdef USE_MULTIPLE_COPY
@@ -191,7 +188,8 @@ void ViewProviderFemConstraintFluidBoundary::updateData(const App::Property* pro
             cp->matrix.finishEditing();
 #endif
         }
-        else if (strcmp(prop->getName(),"DirectionVector") == 0) { // Note: "Reversed" also triggers "DirectionVector"
+        else if (prop == &pcConstraint->DirectionVector) {
+            // Note: "Reversed" also triggers "DirectionVector"
             // Re-orient all arrows
             Base::Vector3d normal = pcConstraint->NormalDirection.getValue();
             Base::Vector3d forceDirection = pcConstraint->DirectionVector.getValue();
@@ -213,9 +211,8 @@ void ViewProviderFemConstraintFluidBoundary::updateData(const App::Property* pro
 #endif
             int idx = 0;
 
-            for (std::vector<Base::Vector3d>::const_iterator p = points.begin(); p != points.end();
-                 p++) {
-                SbVec3f base(p->x, p->y, p->z);
+            for (const auto & point : points) {
+                SbVec3f base(point.x, point.y, point.z);
                 if (forceDirection.GetAngle(normal) < M_PI_2)
                     base = base + dir * scaledlength; //OvG: Scaling
 #ifdef USE_MULTIPLE_COPY
@@ -247,7 +244,7 @@ void ViewProviderFemConstraintFluidBoundary::updateData(const App::Property* pro
         }
 #endif
 
-        if (strcmp(prop->getName(),"Points") == 0) {
+        if (prop == &pcConstraint->Points) {
             const std::vector<Base::Vector3d>& points = pcConstraint->Points.getValues();
             const std::vector<Base::Vector3d>& normals = pcConstraint->Normals.getValues();
             if (points.size() != normals.size())
@@ -264,8 +261,8 @@ void ViewProviderFemConstraintFluidBoundary::updateData(const App::Property* pro
             Gui::coinRemoveAllChildren(pShapeSep);
 #endif
 
-            for (std::vector<Base::Vector3d>::const_iterator p = points.begin(); p != points.end(); p++) {
-                SbVec3f base(p->x, p->y, p->z);
+            for (const auto & point : points) {
+                SbVec3f base(point.x, point.y, point.z);
                 SbVec3f dir(n->x, n->y, n->z);
                 SbRotation rot(SbVec3f(0, -1, 0), dir);
 #ifdef USE_MULTIPLE_COPY

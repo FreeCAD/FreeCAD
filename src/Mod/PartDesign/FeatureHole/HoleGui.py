@@ -22,7 +22,7 @@
 
 import FreeCAD, FreeCADGui
 import PartDesignGui
-from PyQt4 import QtCore, QtGui
+from PySide import QtCore, QtGui
 from TaskHole import TaskHole
 from FeatureHole import Hole
 from ViewProviderHole import ViewProviderHole

@@ -44,8 +44,8 @@ public:
     bool isAbsoluteNumber() const;
     int targetNumberOfTriangles() const;
 
-private Q_SLOTS:
-    void on_checkAbsolueNumber_toggled(bool);
+private:
+    void onCheckAbsoluteNumberToggled(bool);
 
 private:
     int numberOfTriangles;
@@ -61,7 +61,6 @@ class TaskDecimating : public Gui::TaskView::TaskDialog
 
 public:
     TaskDecimating();
-    ~TaskDecimating() override;
 
 public:
     bool accept() override;

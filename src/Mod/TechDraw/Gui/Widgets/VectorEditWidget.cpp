@@ -65,10 +65,10 @@ VectorEditWidget::VectorEditWidget(QWidget* parent) : QWidget(parent),
     setObjectName(QString::fromUtf8("VectorEdit"));
     buildWidget();
 
-    connect(tbExpand, SIGNAL(toggled(bool)), this, SLOT(slotExpandButtonToggled(bool)));
-    connect(dsbX, SIGNAL(valueChanged(double)), this, SLOT(xValueChanged(double)));
-    connect(dsbY, SIGNAL(valueChanged(double)), this, SLOT(yValueChanged(double)));
-    connect(dsbZ, SIGNAL(valueChanged(double)), this, SLOT(zValueChanged(double)));
+    connect(tbExpand, &QToolButton::toggled, this, &VectorEditWidget::slotExpandButtonToggled);
+    connect(dsbX, qOverload<double>(&Gui::DoubleSpinBox::valueChanged), this, &VectorEditWidget::slotXValueChanged);
+    connect(dsbY, qOverload<double>(&Gui::DoubleSpinBox::valueChanged), this, &VectorEditWidget::slotYValueChanged);
+    connect(dsbZ, qOverload<double>(&Gui::DoubleSpinBox::valueChanged), this, &VectorEditWidget::slotZValueChanged);
 
     dsbX->installEventFilter(this);
     dsbY->installEventFilter(this);
@@ -107,7 +107,7 @@ void VectorEditWidget::setLabel(QString newLabel)
 
 void VectorEditWidget::setValue(Base::Vector3d newValue)
 {
-//    Base::Console().Message("VEW::setValue(%s)\n", DrawUtil::formatVector(newValue).c_str());
+//    Base::Console().Message("VEW::setValue(%.6f, %.6f, %.6f)\n", newValue.x, newValue.y, newValue.z);
     m_value = newValue;
     dsbX->setValue(m_value.x);
     dsbY->setValue(m_value.y);
@@ -117,7 +117,7 @@ void VectorEditWidget::setValue(Base::Vector3d newValue)
 
 void VectorEditWidget::setValueNoNotify(Base::Vector3d newValue)
 {
-//    Base::Console().Message("VEW::setValue(%s)\n", DrawUtil::formatVector(newValue).c_str());
+//    Base::Console().Message("VEW::setValueNoNotify(%.6f, %.6f, %.6f)\n", newValue.x, newValue.y, newValue.z);
     m_value = newValue;
     m_blockNotify = true;
     dsbX->setValue(m_value.x);
@@ -142,30 +142,35 @@ void VectorEditWidget::slotExpandButtonToggled(bool checked)
     }
 }
 
-void VectorEditWidget::xValueChanged(double newValue)
+//slotXValueChanged can be triggered by the Ui or programmatically.  We only want
+//to tell the world about the change if it comes from the Ui.
+void VectorEditWidget::slotXValueChanged(double newValue)
 {
-//    Base::Console().Message("VEW::xValueChanged(%.3f)\n", newValue);
-    m_value.x = newValue;
-    updateDisplay();
+//    Base::Console().Message("VEW::xValueChanged(%.6f) - m_value.x: %.6f\n", newValue, m_value.x);
     if (!m_blockNotify) {
+        //this is a change from the dsb
+        m_value.x = newValue;
+        updateDisplay();
         Q_EMIT valueChanged(m_value);
     }
 }
-void VectorEditWidget::yValueChanged(double newValue)
+void VectorEditWidget::slotYValueChanged(double newValue)
 {
-//    Base::Console().Message("VEW::yValueChanged(%.3f)\n", newValue);
-    m_value.y = newValue;
-    updateDisplay();
+//    Base::Console().Message("VEW::yValueChanged(%.6f) - m_value.y: %.6f\n", newValue, m_value.y);
     if (!m_blockNotify) {
+        //this is a change from the dsb
+        m_value.y = newValue;
+        updateDisplay();
         Q_EMIT valueChanged(m_value);
     }
 }
-void VectorEditWidget::zValueChanged(double newValue)
+void VectorEditWidget::slotZValueChanged(double newValue)
 {
-//    Base::Console().Message("VEW::zValueChanged(%.3f)\n", newValue);
-    m_value.z = newValue;
-    updateDisplay();
+//    Base::Console().Message("VEW::zValueChanged(%.6f)\n", newValue);
     if (!m_blockNotify) {
+        //this is a change from the dsb
+        m_value.z = newValue;
+        updateDisplay();
         Q_EMIT valueChanged(m_value);
     }
 }
@@ -261,5 +266,4 @@ void VectorEditWidget::buildWidget()
 
     verticalSpacer = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
 }
-
 

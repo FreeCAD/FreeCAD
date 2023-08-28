@@ -116,12 +116,14 @@ void Matrix4D::nullify()
 
 bool Matrix4D::isNull() const
 {
+    //NOLINTBEGIN
     for (int i = 0; i < 4; i++) {
         for (int j = 0; j < 4; j++) {
             if (dMtrx4D[i][j] != 0.0)
                 return false;
         }
     }
+    //NOLINTEND
 
     return true;
 }
@@ -186,7 +188,7 @@ void Matrix4D::scale (const Vector3d& rclVct)
 void Matrix4D::rotX (double fAngle)
 {
     Matrix4D clMat;
-    double fsin, fcos;
+    double fsin{}, fcos{};
 
     fsin = sin (fAngle);
     fcos = cos (fAngle);
@@ -199,7 +201,7 @@ void Matrix4D::rotX (double fAngle)
 void Matrix4D::rotY (double fAngle)
 {
     Matrix4D clMat;
-    double fsin, fcos;
+    double fsin{}, fcos{};
 
     fsin = sin (fAngle);
     fcos = cos (fAngle);
@@ -212,7 +214,7 @@ void Matrix4D::rotY (double fAngle)
 void Matrix4D::rotZ (double fAngle)
 {
     Matrix4D clMat;
-    double fsin, fcos;
+    double fsin{}, fcos{};
 
     fsin = sin (fAngle);
     fcos = cos (fAngle);
@@ -227,8 +229,8 @@ void Matrix4D::rotLine(const Vector3d& rclVct, double fAngle)
     // **** algorithm was taken from a math book
     Matrix4D  clMA, clMB, clMC, clMRot;
     Vector3d  clRotAxis(rclVct);
-    short iz, is;
-    double fcos, fsin;
+    short iz{}, is{};
+    double fcos{}, fsin{};
 
     // set all entries to "0"
     for (iz = 0; iz < 4; iz++) {
@@ -381,7 +383,7 @@ bool Matrix4D::toAxisAngle (Vector3d& rclBase, Vector3d& rclDir, double& rfAngle
     else
     {
       // angle is PI
-      double fHalfInverse;
+      double fHalfInverse{};
       if ( dMtrx4D[0][0] >= dMtrx4D[1][1] )
       {
         // r00 >= r11
@@ -470,7 +472,7 @@ void Matrix4D::transform (const Vector3d& rclVct, const Matrix4D& rclMtrx)
 void Matrix4D::inverse ()
 {
   Matrix4D clInvTrlMat, clInvRotMat;
-  short  iz, is;
+  short  iz{}, is{};
 
   /**** Herausnehmen und Inversion der TranslationsMatrix
   aus der TransformationMatrix                      ****/
@@ -492,10 +494,10 @@ using Matrix = double *;
 void Matrix_gauss(Matrix a, Matrix b)
 {
   int ipiv[4], indxr[4], indxc[4];
-  int i,j,k,l,ll;
+  int i{},j{},k{},l{},ll{};
   int irow=0, icol=0;
-  double big, pivinv;
-  double dum;
+  double big{}, pivinv{};
+  double dum{};
   for (j = 0; j < 4; j++)
     ipiv[j] = 0;
   for (i = 0; i < 4; i++) {
@@ -585,38 +587,38 @@ void Matrix4D::inverseGauss ()
 
 void Matrix4D::getMatrix  (double dMtrx[16]) const
 {
-  short iz, is;
-
-  for (iz = 0; iz < 4; iz++)
-    for (is = 0; is < 4; is++)
-      dMtrx[ 4*iz + is ] = dMtrx4D[iz][is];
+    for (short iz = 0; iz < 4; iz++) {
+        for (short is = 0; is < 4; is++) {
+            dMtrx[ 4*iz + is ] = dMtrx4D[iz][is];
+        }
+    }
 }
 
 void Matrix4D::setMatrix  (const double dMtrx[16])
 {
-  short iz, is;
-
-  for (iz = 0; iz < 4; iz++)
-    for (is = 0; is < 4; is++)
-      dMtrx4D[iz][is] = dMtrx[ 4*iz + is ];
+    for (short iz = 0; iz < 4; iz++) {
+        for (short is = 0; is < 4; is++) {
+            dMtrx4D[iz][is] = dMtrx[ 4*iz + is ];
+        }
+    }
 }
 
 void Matrix4D::getGLMatrix (double dMtrx[16]) const
 {
-  short iz, is;
-
-  for (iz = 0; iz < 4; iz++)
-    for (is = 0; is < 4; is++)
-      dMtrx[ iz + 4*is ] = dMtrx4D[iz][is];
+    for (short iz = 0; iz < 4; iz++) {
+        for (short is = 0; is < 4; is++) {
+            dMtrx[ iz + 4*is ] = dMtrx4D[iz][is];
+        }
+    }
 }
 
 void Matrix4D::setGLMatrix (const double dMtrx[16])
 {
-  short iz, is;
-
-  for (iz = 0; iz < 4; iz++)
-    for (is = 0; is < 4; is++)
-      dMtrx4D[iz][is] = dMtrx[ iz + 4*is ];
+    for (short iz = 0; iz < 4; iz++) {
+        for (short is = 0; is < 4; is++) {
+            dMtrx4D[iz][is] = dMtrx[ iz + 4*is ];
+        }
+    }
 }
 
 unsigned long Matrix4D::getMemSpace ()
@@ -626,22 +628,24 @@ unsigned long Matrix4D::getMemSpace ()
 
 void Matrix4D::Print () const
 {
-    short i;
-    for (i = 0; i < 4; i++)
+    //NOLINTBEGIN
+    for (short i = 0; i < 4; i++) {
         printf("%9.3f %9.3f %9.3f %9.3f\n", dMtrx4D[i][0], dMtrx4D[i][1], dMtrx4D[i][2], dMtrx4D[i][3]);
+    }
+    //NOLINTEND
 }
 
 void Matrix4D::transpose ()
 {
-  double  dNew[4][4];
+    double  dNew[4][4];
 
-  for (int i = 0; i < 4; i++)
-  {
-    for (int j = 0; j < 4; j++)
-      dNew[j][i] = dMtrx4D[i][j];
-  }
+    for (int i = 0; i < 4; i++) {
+        for (int j = 0; j < 4; j++) {
+            dNew[j][i] = dMtrx4D[i][j];
+        }
+    }
 
-  memcpy(dMtrx4D, dNew, sizeof(dMtrx4D));
+    memcpy(dMtrx4D, dNew, sizeof(dMtrx4D));
 }
 
 
@@ -650,11 +654,12 @@ void Matrix4D::transpose ()
 std::string Matrix4D::toString() const
 {
   std::stringstream str;
-  for (int i = 0; i < 4; i++)
-  {
+  //NOLINTBEGIN
+  for (int i = 0; i < 4; i++) {
     for (int j = 0; j < 4; j++)
       str << dMtrx4D[i][j] << " ";
   }
+  //NOLINTEND
 
   return str.str();
 }
@@ -665,11 +670,12 @@ void Matrix4D::fromString(const std::string &str)
   std::stringstream input;
   input.str(str);
 
-  for (int i = 0; i < 4; i++)
-  {
+  //NOLINTBEGIN
+  for (int i = 0; i < 4; i++) {
     for (int j = 0; j < 4; j++)
       input >> dMtrx4D[i][j];
   }
+  //NOLINTEND
 }
 
 // Analyse the a transformation Matrix and describe the transformation
@@ -833,34 +839,43 @@ ScaleType Matrix4D::hasScale(double tol) const
     if (tol == 0.0)
         tol = 1e-9;
 
+    // check if the absolute values are proportionally close or equal
+    auto closeAbs = [&](double a, double b) {
+        double c = fabs(a);
+        double d = fabs(b);
+        if (d>c) return (d-c)/d <= tol;
+        else if (c>d) return (c-d)/c <= tol;
+        return true;
+    };
+
     // get column vectors
-    double dx = Vector3d(dMtrx4D[0][0],dMtrx4D[1][0],dMtrx4D[2][0]).Sqr();
-    double dy = Vector3d(dMtrx4D[0][1],dMtrx4D[1][1],dMtrx4D[2][1]).Sqr();
-    double dz = Vector3d(dMtrx4D[0][2],dMtrx4D[1][2],dMtrx4D[2][2]).Sqr();
+    double dx = getCol(0).Sqr();
+    double dy = getCol(1).Sqr();
+    double dz = getCol(2).Sqr();
     double dxyz = sqrt(dx * dy * dz);
 
     // get row vectors
-    double du = Vector3d(dMtrx4D[0][0],dMtrx4D[0][1],dMtrx4D[0][2]).Sqr();
-    double dv = Vector3d(dMtrx4D[1][0],dMtrx4D[1][1],dMtrx4D[1][2]).Sqr();
-    double dw = Vector3d(dMtrx4D[2][0],dMtrx4D[2][1],dMtrx4D[2][2]).Sqr();
+    double du = getRow(0).Sqr();
+    double dv = getRow(1).Sqr();
+    double dw = getRow(2).Sqr();
     double duvw = sqrt(du * dv * dw);
 
     double d3 = determinant3();
 
     // This could be e.g. a projection, a shearing,... matrix
-    if (fabs(dxyz - d3) > tol && fabs(duvw - d3) > tol) {
+    if (!closeAbs(dxyz, d3) && !closeAbs(duvw, d3)) {
         return ScaleType::Other;
     }
 
-    if (fabs(duvw - d3) <= tol && (fabs(du - dv) > tol || fabs(dv - dw) > tol)) {
+    if (closeAbs(duvw, d3) && (!closeAbs(du, dv) || !closeAbs(dv, dw))) {
         return ScaleType::NonUniformLeft;
     }
 
-    if (fabs(dxyz - d3) <= tol && (fabs(dx - dy) > tol || fabs(dy - dz) > tol)) {
+    if (closeAbs(dxyz, d3) && (!closeAbs(dx, dy) || !closeAbs(dy, dz))) {
         return ScaleType::NonUniformRight;
     }
 
-    if (fabs(dx - 1.0) > tol) {
+    if (fabs(d3 - 1.0) > tol) {
         return ScaleType::Uniform;
     }
 

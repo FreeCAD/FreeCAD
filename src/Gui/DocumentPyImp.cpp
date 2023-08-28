@@ -269,9 +269,33 @@ PyObject* DocumentPy::mdiViewsOfType(PyObject *args)
     PY_TRY {
         std::list<Gui::MDIView*> views = getDocumentPtr()->getMDIViewsOfType(type);
         Py::List list;
-        for (auto it = views.begin(); it != views.end(); ++it)
-            list.append(Py::asObject((*it)->getPyObject()));
+        for (auto it : views)
+            list.append(Py::asObject(it->getPyObject()));
         return Py::new_reference_to(list);
+    }
+    PY_CATCH;
+}
+
+PyObject* DocumentPy::save(PyObject *args)
+{
+    if (!PyArg_ParseTuple(args, ""))
+        return nullptr;
+
+    PY_TRY {
+        bool ok = getDocumentPtr()->save();
+        return Py::new_reference_to(Py::Boolean(ok));
+    }
+    PY_CATCH;
+}
+
+PyObject* DocumentPy::saveAs(PyObject *args)
+{
+    if (!PyArg_ParseTuple(args, ""))
+        return nullptr;
+
+    PY_TRY {
+        bool ok = getDocumentPtr()->saveAs();
+        return Py::new_reference_to(Py::Boolean(ok));
     }
     PY_CATCH;
 }
@@ -472,12 +496,12 @@ Py::Int DocumentPy::getEditMode() const
 
 Py::Boolean DocumentPy::getTransacting() const
 {
-    return Py::Boolean(getDocumentPtr()->isPerformingTransaction());
+    return {getDocumentPtr()->isPerformingTransaction()};
 }
 
 Py::Boolean DocumentPy::getModified() const
 {
-    return Py::Boolean(getDocumentPtr()->isModified());
+    return {getDocumentPtr()->isModified()};
 }
 
 PyObject *DocumentPy::getCustomAttributes(const char* attr) const

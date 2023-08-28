@@ -37,7 +37,7 @@ using namespace App;
 PROPERTY_SOURCE(App::VRMLObject, App::GeoFeature)
 
 
-VRMLObject::VRMLObject() : index(0)
+VRMLObject::VRMLObject()
 {
     ADD_PROPERTY_TYPE(VrmlFile,(nullptr),"",Prop_None,"Included file with the VRML definition");
     ADD_PROPERTY_TYPE(Urls,(""),"",static_cast<PropertyType>(Prop_ReadOnly|Prop_Output|Prop_Transient),
@@ -47,8 +47,6 @@ VRMLObject::VRMLObject() : index(0)
     Urls.setSize(0);
     Resources.setSize(0);
 }
-
-VRMLObject::~VRMLObject() = default;
 
 short VRMLObject::mustExecute() const
 {
@@ -139,8 +137,8 @@ void VRMLObject::Save (Base::Writer &writer) const
 
     // save also the inline files if there
     const std::vector<std::string>& urls = Resources.getValues();
-    for (std::vector<std::string>::const_iterator it = urls.begin(); it != urls.end(); ++it) {
-        writer.addFile(it->c_str(), this);
+    for (const auto & url : urls) {
+        writer.addFile(url.c_str(), this);
     }
 
     this->index = 0;
@@ -153,8 +151,8 @@ void VRMLObject::Restore(Base::XMLReader &reader)
 
     // restore also the inline files if there
     const std::vector<std::string>& urls = Resources.getValues();
-    for(std::vector<std::string>::const_iterator it = urls.begin(); it != urls.end(); ++it) {
-        reader.addFile(it->c_str(), this);
+    for(const auto & url : urls) {
+        reader.addFile(url.c_str(), this);
     }
 
     this->index = 0;

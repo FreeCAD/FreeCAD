@@ -1,22 +1,24 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
 # ***************************************************************************
 # *                                                                         *
-# *   Copyright (c) 2022 FreeCAD Project Association                        *
+# *   Copyright (c) 2022-2023 FreeCAD Project Association                   *
 # *   Copyright (c) 2019 Yorik van Havre <yorik@uncreated.net>              *
 # *                                                                         *
-# *   This library is free software; you can redistribute it and/or         *
-# *   modify it under the terms of the GNU Lesser General Public            *
-# *   License as published by the Free Software Foundation; either          *
-# *   version 2.1 of the License, or (at your option) any later version.    *
+# *   This file is part of FreeCAD.                                         *
 # *                                                                         *
-# *   This library is distributed in the hope that it will be useful,       *
-# *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU     *
+# *   FreeCAD is free software: you can redistribute it and/or modify it    *
+# *   under the terms of the GNU Lesser General Public License as           *
+# *   published by the Free Software Foundation, either version 2.1 of the  *
+# *   License, or (at your option) any later version.                       *
+# *                                                                         *
+# *   FreeCAD is distributed in the hope that it will be useful, but        *
+# *   WITHOUT ANY WARRANTY; without even the implied warranty of            *
+# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU      *
 # *   Lesser General Public License for more details.                       *
 # *                                                                         *
 # *   You should have received a copy of the GNU Lesser General Public      *
-# *   License along with this library; if not, write to the Free Software   *
-# *   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA         *
-# *   02110-1301  USA                                                       *
+# *   License along with FreeCAD. If not, see                               *
+# *   <https://www.gnu.org/licenses/>.                                      *
 # *                                                                         *
 # ***************************************************************************
 
@@ -41,6 +43,7 @@ from addonmanager_macro import Macro
 from Addon import Addon
 import NetworkManager
 from addonmanager_git import initialize_git, GitFailed
+from addonmanager_metadata import MetadataReader
 
 translate = FreeCAD.Qt.translate
 
@@ -193,7 +196,7 @@ class CreateAddonListWorker(QtCore.QThread):
                 md_file = os.path.join(addondir, "package.xml")
                 if os.path.isfile(md_file):
                     repo.load_metadata_file(md_file)
-                    repo.installed_version = repo.metadata.Version
+                    repo.installed_version = repo.metadata.version
                     repo.updated_timestamp = os.path.getmtime(md_file)
                     repo.verify_url_and_branch(addon["url"], addon["branch"])
 
@@ -236,7 +239,7 @@ class CreateAddonListWorker(QtCore.QThread):
             md_file = os.path.join(addondir, "package.xml")
             if os.path.isfile(md_file):
                 repo.load_metadata_file(md_file)
-                repo.installed_version = repo.metadata.Version
+                repo.installed_version = repo.metadata.version
                 repo.updated_timestamp = os.path.getmtime(md_file)
                 repo.verify_url_and_branch(url, branch)
 
@@ -441,7 +444,7 @@ class LoadPackagesFromCacheWorker(QtCore.QThread):
     def run(self):
         """Rarely called directly: create an instance and call start() on it instead to
         launch in a new thread"""
-        with open(self.cache_file, "r", encoding="utf-8") as f:
+        with open(self.cache_file, encoding="utf-8") as f:
             data = f.read()
             if data:
                 dict_data = json.loads(data)
@@ -455,7 +458,7 @@ class LoadPackagesFromCacheWorker(QtCore.QThread):
                     if os.path.isfile(repo_metadata_cache_path):
                         try:
                             repo.load_metadata_file(repo_metadata_cache_path)
-                            repo.installed_version = repo.metadata.Version
+                            repo.installed_version = repo.metadata.version
                             repo.updated_timestamp = os.path.getmtime(
                                 repo_metadata_cache_path
                             )
@@ -480,7 +483,7 @@ class LoadMacrosFromCacheWorker(QtCore.QThread):
         """Rarely called directly: create an instance and call start() on it instead to
         launch in a new thread"""
 
-        with open(self.cache_file, "r", encoding="utf-8") as f:
+        with open(self.cache_file, encoding="utf-8") as f:
             data = f.read()
             dict_data = json.loads(data)
             for item in dict_data:
@@ -642,12 +645,12 @@ class UpdateChecker:
                 return
             package.updated_timestamp = os.path.getmtime(installed_metadata_file)
             try:
-                installed_metadata = FreeCAD.Metadata(installed_metadata_file)
-                package.installed_version = installed_metadata.Version
-                # Packages are considered up-to-date if the metadata version matches. Authors
-                # should update their version string when they want the addon manager to alert
-                # users of a new version.
-                if package.metadata.Version != installed_metadata.Version:
+                installed_metadata = MetadataReader.from_file(installed_metadata_file)
+                package.installed_version = installed_metadata.version
+                # Packages are considered up-to-date if the metadata version matches.
+                # Authors should update their version string when they want the addon
+                # manager to alert users of a new version.
+                if package.metadata.version != installed_metadata.version:
                     package.set_status(Addon.Status.UPDATE_AVAILABLE)
                 else:
                     package.set_status(Addon.Status.NO_UPDATE_AVAILABLE)

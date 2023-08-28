@@ -39,7 +39,7 @@ def get_information():
         "constraints": ["fixed", "self weight"],
         "solvers": ["calculix", "ccxtools", "elmer"],
         "material": "solid",
-        "equation": "mechanical"
+        "equations": ["mechanical"]
     }
 
 
@@ -52,7 +52,7 @@ setup()
 
 
 See forum topic post:
-https://forum.freecadweb.org/viewtopic.php?f=18&t=48513
+https://forum.freecad.org/viewtopic.php?f=18&t=48513
 
 cantilever under self weight made from steel grad 235
 l = 32 m, yields just from self weight, means max sigma around 235 n/mm2
@@ -95,7 +95,7 @@ def setup(doc=None, solvertype="ccxtools"):
         eq_obj.LinearSolverType = "Direct"
     else:
         FreeCAD.Console.PrintWarning(
-            "Not known or not supported solver type: {}. "
+            "Unknown or unsupported solver type: {}. "
             "No solver object was created.\n".format(solvertype)
         )
     if solvertype == "calculix" or solvertype == "ccxtools":

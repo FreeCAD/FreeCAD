@@ -153,13 +153,13 @@ public:
                              std::string &Value,
                              const char *Default) const;
     std::vector<std::pair<std::string, std::string>>
-        GetAttributeMap(ParamType Type, const char * sFilter = NULL) const;
+        GetAttributeMap(ParamType Type, const char * sFilter = nullptr) const;
     /** Return the type and name of all parameters with optional filter
      *  @param sFilter only strings which name includes sFilter are put in the vector
      *  @return std::vector of pair(type, name)
      */
     std::vector<std::pair<ParamType,std::string>>
-        GetParameterNames(const char * sFilter = NULL) const;
+        GetParameterNames(const char * sFilter = nullptr) const;
     //@}
 
     /** @name methods for bool handling */
@@ -219,16 +219,6 @@ public:
     void RemoveFloat(const char* Name);
     //@}
 
-
-    /** @name methods for Blob handling (not implemented yet) */
-    //@{
-    /// set a blob value
-    void  SetBlob(const char* Name, void *pValue, long lLength);
-    /// read blob values or give default
-    void GetBlob(const char* Name, void * pBuf, long lMaxLength, void* pPreset=nullptr) const;
-    /// remove a blob value from this group
-    void RemoveBlob(const char* Name);
-    //@}
 
 
 
@@ -356,8 +346,8 @@ protected:
 class BaseExport ParameterManager : public ParameterGrp
 {
 public:
-    ParameterManager();
-    ~ParameterManager() override;
+    /// Create a reference counted ParameterManager
+    static Base::Reference<ParameterManager> Create();
     static void Init();
     static void Terminate();
 
@@ -414,8 +404,8 @@ public:
 
 private:
 
-    XERCES_CPP_NAMESPACE_QUALIFIER DOMDocument   *_pDocument;
-    ParameterSerializer * paramSerializer;
+    XERCES_CPP_NAMESPACE_QUALIFIER DOMDocument   *_pDocument{nullptr};
+    ParameterSerializer * paramSerializer{nullptr};
 
     bool          gDoNamespaces         ;
     bool          gDoSchema             ;
@@ -431,6 +421,9 @@ private:
     bool          gUseFilter            ;
     bool          gFormatPrettyPrint    ;
 
+private:
+    ParameterManager();
+    ~ParameterManager() override;
 };
 
 /** python wrapper function

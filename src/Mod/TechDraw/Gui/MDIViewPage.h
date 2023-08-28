@@ -116,6 +116,7 @@ public:
     void contextMenuEvent(QContextMenuEvent *event) override;
 
     void setScene(QGSPage* scene, QGVPage* view);
+    void fixSceneDependencies();
 
 public Q_SLOTS:
     void viewAll() override;

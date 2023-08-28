@@ -31,8 +31,8 @@
 
 #include <App/Application.h>
 #include <App/Document.h>
-#include <Base/Console.h>
 #include <Base/Reader.h>
+#include <Base/Tools.h>
 #include <Mod/TechDraw/App/DrawViewPy.h>  // generated from DrawViewPy.xml
 
 #include "DrawView.h"
@@ -45,10 +45,33 @@
 
 
 using namespace TechDraw;
+using DU = DrawUtil;
 
 //===========================================================================
 // DrawView
 //===========================================================================
+
+#if 0   // needed for Qt's lupdate utility
+    QT_TRANSLATE_NOOP("DrawPage", "Page");
+    QT_TRANSLATE_NOOP("DrawSVGTemplate", "Template");
+    QT_TRANSLATE_NOOP("DrawView", "View");
+    QT_TRANSLATE_NOOP("DrawViewPart", "View");
+    QT_TRANSLATE_NOOP("DrawViewSection", "Section");
+    QT_TRANSLATE_NOOP("DrawComplexSection", "Section");
+    QT_TRANSLATE_NOOP("DrawViewDetail", "Detail");
+    QT_TRANSLATE_NOOP("DrawActiveView", "ActiveView");
+    QT_TRANSLATE_NOOP("DrawViewAnnotation", "Annotation");
+    QT_TRANSLATE_NOOP("DrawViewImage", "Image");
+    QT_TRANSLATE_NOOP("DrawViewSymbol", "Symbol");
+    QT_TRANSLATE_NOOP("DrawViewArch", "Arch");
+    QT_TRANSLATE_NOOP("DrawViewDraft", "Draft");
+    QT_TRANSLATE_NOOP("DrawLeaderLine", "LeaderLine");
+    QT_TRANSLATE_NOOP("DrawViewBalloon", "Balloon");
+    QT_TRANSLATE_NOOP("DrawViewDimension", "Dimension");
+    QT_TRANSLATE_NOOP("DrawViewDimExtent", "Extent");
+    QT_TRANSLATE_NOOP("DrawHatch", "Hatch");
+    QT_TRANSLATE_NOOP("DrawGeomHatch", "GeomHatch");
+#endif
 
 const char* DrawView::ScaleTypeEnums[]= {"Page",
                                          "Automatic",
@@ -75,7 +98,7 @@ DrawView::DrawView():
 
     ScaleType.setEnums(ScaleTypeEnums);
     ADD_PROPERTY_TYPE(ScaleType, (prefScaleType()), group, App::Prop_Output, "Scale Type");
-    ADD_PROPERTY_TYPE(Scale, (prefScale()), group, App::Prop_Output, "Scale factor of the view. Scale factors like 1:100 can be written as =1/100");
+    ADD_PROPERTY_TYPE(Scale, (prefScale()), group, App::Prop_None, "Scale factor of the view. Scale factors like 1:100 can be written as =1/100");
     Scale.setConstraints(&scaleRange);
 
     ADD_PROPERTY_TYPE(Caption, (""), group, App::Prop_Output, "Short text about the view");
@@ -208,13 +231,11 @@ void DrawView::handleXYLock()
 
 short DrawView::mustExecute() const
 {
-    short result = 0;
     if (!isRestoring()) {
-        result  =  (Scale.isTouched()  ||
-                    ScaleType.isTouched());
-    }
-    if ((bool) result) {
-        return result;
+        if (Scale.isTouched() ||
+            ScaleType.isTouched()) {
+            return true;
+        }
     }
     return App::DocumentObject::mustExecute();
 }
@@ -222,8 +243,7 @@ short DrawView::mustExecute() const
 ////you must override this in derived class
 QRectF DrawView::getRect() const
 {
-    QRectF result(0, 0,1, 1);
-    return result;
+    return QRectF(0, 0,1, 1);
 }
 
 //get the rectangle centered on the position
@@ -323,12 +343,7 @@ std::vector<DrawPage*> DrawView::findAllParentPages() const
     DrawViewCollection *collection = nullptr;
     std::vector<App::DocumentObject*> parentsAll = getInList();
 
-    //prune the duplicates
-    std::sort(parentsAll.begin(), parentsAll.end());
-    auto last = std::unique(parentsAll.begin(), parentsAll.end());
-    parentsAll.erase(last, parentsAll.end());
-
-    for (auto& parent : parentsAll) {
+   for (auto& parent : parentsAll) {
         if (parent->getTypeId().isDerivedFrom(DrawPage::getClassTypeId())) {
             page = static_cast<TechDraw::DrawPage*>(parent);
         } else if (parent->getTypeId().isDerivedFrom(DrawViewCollection::getClassTypeId())) {
@@ -341,9 +356,13 @@ std::vector<DrawPage*> DrawView::findAllParentPages() const
         }
     }
 
+    //prune the duplicates
+    std::sort(result.begin(), result.end());
+    auto last = std::unique(result.begin(), result.end());
+    result.erase(last, result.end());
+
     return result;
 }
-
 
 bool DrawView::isInClip()
 {
@@ -360,16 +379,15 @@ DrawViewClip* DrawView::getClipGroup()
 {
     std::vector<App::DocumentObject*> parent = getInList();
     App::DocumentObject* obj = nullptr;
-    DrawViewClip* result = nullptr;
     for (std::vector<App::DocumentObject*>::iterator it = parent.begin(); it != parent.end(); ++it) {
         if ((*it)->getTypeId().isDerivedFrom(DrawViewClip::getClassTypeId())) {
             obj = (*it);
-            result = dynamic_cast<DrawViewClip*>(obj);
-            break;
+            DrawViewClip* result = dynamic_cast<DrawViewClip*>(obj);
+            return result;
 
         }
     }
-    return result;
+    return nullptr;
 }
 
 double DrawView::autoScale() const
@@ -458,7 +476,6 @@ double DrawView::getScale() const
     }
     if (!(result > 0.0)) {
         result = 1.0;
-        Base::Console().Log("DrawView - %s - bad scale found (%.3f) using 1.0\n", getNameInDocument(), Scale.getValue());
     }
     return result;
 }
@@ -490,10 +507,6 @@ void DrawView::handleChangedPropertyType(Base::XMLReader &reader, const char * T
             } else {
                 Scale.setValue(1.0);
             }
-        } else {
-            // has Scale prop that isn't Float!
-            Base::Console().Log("DrawPage::Restore - old Document Scale is Not Float!\n");
-            // no idea
         }
     }
     else if (prop->isDerivedFrom(App::PropertyLinkList::getClassTypeId())
@@ -578,24 +591,18 @@ void DrawView::setScaleAttribute()
 
 int DrawView::prefScaleType()
 {
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
-          .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/General");
-    int result = hGrp->GetInt("DefaultScaleType", 0);
-    return result;
+    return Preferences::getPreferenceGroup("General")->GetInt("DefaultScaleType", 0);
 }
 
 double DrawView::prefScale()
 {
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
-          .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/General");
-    double result = hGrp->GetFloat("DefaultViewScale", 1.0);
     if (ScaleType.isValue("Page")) {
         auto page = findParentPage();
         if (page) {
-            result = page->Scale.getValue();
+            return page->Scale.getValue();
         }
     }
-    return result;
+    return Preferences::getPreferenceGroup("General")->GetFloat("DefaultViewScale", 1.0);
 }
 
 void DrawView::requestPaint()
@@ -609,6 +616,17 @@ void DrawView::showProgressMessage(std::string featureName, std::string text)
     if (Preferences::reportProgress()) {
         signalProgressMessage(this, featureName, text);
     }
+}
+
+//! get a translated label string from the context (ex TaskActiveView), the base name (ex ActiveView) and
+//! the unique name within the document (ex ActiveView001), and use it to update the Label property.
+void DrawView::translateLabel(std::string context, std::string baseName, std::string uniqueName)
+{
+//    Base::Console().Message("DV::translateLabel - context: %s baseName: %s uniqueName: %s\n",
+//                            context.c_str(), baseName.c_str(), uniqueName.c_str());
+
+    Label.setValue(DU::translateArbitrary(context, baseName, uniqueName));
+//    Base::Console().Message("DV::translateLabel - new label: %s\n", Label.getValue());
 }
 
 PyObject *DrawView::getPyObject(void)

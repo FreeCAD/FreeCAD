@@ -61,6 +61,8 @@ DlgParameterImp::DlgParameterImp( QWidget* parent,  Qt::WindowFlags fl )
   , ui(new Ui_DlgParameter)
 {
     ui->setupUi(this);
+    setupConnections();
+
     ui->checkSort->setVisible(false); // for testing
 
     QStringList groupLabels;
@@ -104,10 +106,9 @@ DlgParameterImp::DlgParameterImp( QWidget* parent,  Qt::WindowFlags fl )
     if (ui->parameterSet->count() < 2)
         ui->parameterSet->hide();
 
-    connect(ui->parameterSet, SIGNAL(activated(int)),
-            this, SLOT(onChangeParameterSet(int)));
-    connect(paramGroup, SIGNAL(currentItemChanged(QTreeWidgetItem*, QTreeWidgetItem*)),
-            this, SLOT(onGroupSelected(QTreeWidgetItem*)));
+    connect(ui->parameterSet, qOverload<int>(&QComboBox::activated),
+            this, &DlgParameterImp::onChangeParameterSet);
+    connect(paramGroup, &QTreeWidget::currentItemChanged, this, &DlgParameterImp::onGroupSelected);
     onGroupSelected(paramGroup->currentItem());
 
     // setup for function on_findGroup_changed:
@@ -130,14 +131,28 @@ DlgParameterImp::~DlgParameterImp()
     delete ui;
 }
 
-void DlgParameterImp::on_buttonFind_clicked()
+void DlgParameterImp::setupConnections()
+{
+    connect(ui->buttonFind, &QPushButton::clicked,
+            this, &DlgParameterImp::onButtonFindClicked);
+    connect(ui->findGroupLE, &QLineEdit::textChanged,
+            this, &DlgParameterImp::onFindGroupTtextChanged);
+    connect(ui->buttonSaveToDisk, &QPushButton::clicked,
+            this, &DlgParameterImp::onButtonSaveToDiskClicked);
+    connect(ui->closeButton, &QPushButton::clicked,
+            this, &DlgParameterImp::onCloseButtonClicked);
+    connect(ui->checkSort, &QCheckBox::toggled,
+            this, &DlgParameterImp::onCheckSortToggled);
+}
+
+void DlgParameterImp::onButtonFindClicked()
 {
     if (finder.isNull())
         finder = new DlgParameterFind(this);
     finder->show();
 }
 
-void DlgParameterImp::on_findGroupLE_textChanged(const QString &SearchStr)
+void DlgParameterImp::onFindGroupTtextChanged(const QString &SearchStr)
 {
     // search for group tree items and highlight found results
 
@@ -224,7 +239,7 @@ void DlgParameterImp::changeEvent(QEvent *e)
     }
 }
 
-void DlgParameterImp::on_checkSort_toggled(bool on)
+void DlgParameterImp::onCheckSortToggled(bool on)
 {
     paramGroup->setSortingEnabled(on);
     paramGroup->sortByColumn(0, Qt::AscendingOrder);
@@ -235,7 +250,7 @@ void DlgParameterImp::on_checkSort_toggled(bool on)
     paramValue->header()->setProperty("showSortIndicator", QVariant(on));
 }
 
-void DlgParameterImp::on_closeButton_clicked()
+void DlgParameterImp::onCloseButtonClicked()
 {
     close();
 }
@@ -415,7 +430,7 @@ void DlgParameterImp::onChangeParameterSet(int itemPos)
         paramGroup->setCurrentItem(paramGroup->topLevelItem(0));
 }
 
-void DlgParameterImp::on_buttonSaveToDisk_clicked()
+void DlgParameterImp::onButtonSaveToDiskClicked()
 {
     int index = ui->parameterSet->currentIndex();
     ParameterManager* parmgr = App::GetApplication().GetParameterSet(ui->parameterSet->itemData(index).toByteArray());
@@ -453,20 +468,18 @@ ParameterGroup::ParameterGroup( QWidget * parent )
   : QTreeWidget(parent)
 {
     menuEdit = new QMenu(this);
-    expandAct = menuEdit->addAction(tr("Expand"), this, SLOT(onToggleSelectedItem()));
+    expandAct = menuEdit->addAction(tr("Expand"), this, &ParameterGroup::onToggleSelectedItem);
     menuEdit->addSeparator();
-    subGrpAct = menuEdit->addAction(tr("Add sub-group"), this, SLOT(onCreateSubgroup()));
-    removeAct = menuEdit->addAction(tr("Remove group"), this, SLOT(onDeleteSelectedItem()));
-    renameAct = menuEdit->addAction(tr("Rename group"), this, SLOT(onRenameSelectedItem()));
+    subGrpAct = menuEdit->addAction(tr("Add sub-group"), this, &ParameterGroup::onCreateSubgroup);
+    removeAct = menuEdit->addAction(tr("Remove group"), this, &ParameterGroup::onDeleteSelectedItem);
+    renameAct = menuEdit->addAction(tr("Rename group"), this, &ParameterGroup::onRenameSelectedItem);
     menuEdit->addSeparator();
-    exportAct = menuEdit->addAction(tr("Export parameter"), this, SLOT(onExportToFile()));
-    importAct = menuEdit->addAction(tr("Import parameter"), this, SLOT(onImportFromFile()));
+    exportAct = menuEdit->addAction(tr("Export parameter"), this, &ParameterGroup::onExportToFile);
+    importAct = menuEdit->addAction(tr("Import parameter"), this, &ParameterGroup::onImportFromFile);
     menuEdit->setDefaultAction(expandAct);
 }
 
-ParameterGroup::~ParameterGroup()
-{
-}
+ParameterGroup::~ParameterGroup() = default;
 
 void ParameterGroup::contextMenuEvent ( QContextMenuEvent* event )
 {
@@ -647,27 +660,25 @@ ParameterValue::ParameterValue( QWidget * parent )
   : QTreeWidget(parent)
 {
     menuEdit = new QMenu(this);
-    changeAct = menuEdit->addAction(tr("Change value"), this, SLOT(onChangeSelectedItem()));
+    changeAct = menuEdit->addAction(tr("Change value"), this, qOverload<>(&ParameterValue::onChangeSelectedItem));
     menuEdit->addSeparator();
-    removeAct = menuEdit->addAction(tr("Remove key"), this, SLOT(onDeleteSelectedItem()));
-    renameAct = menuEdit->addAction(tr("Rename key"), this, SLOT(onRenameSelectedItem()));
+    removeAct = menuEdit->addAction(tr("Remove key"), this, &ParameterValue::onDeleteSelectedItem);
+    renameAct = menuEdit->addAction(tr("Rename key"), this, &ParameterValue::onRenameSelectedItem);
     menuEdit->setDefaultAction(changeAct);
 
     menuEdit->addSeparator();
     menuNew = menuEdit->addMenu(tr("New"));
-    newStrAct = menuNew->addAction(tr("New string item"), this, SLOT(onCreateTextItem()));
-    newFltAct = menuNew->addAction(tr("New float item"), this, SLOT(onCreateFloatItem()));
-    newIntAct = menuNew->addAction(tr("New integer item"), this, SLOT(onCreateIntItem()));
-    newUlgAct = menuNew->addAction(tr("New unsigned item"), this, SLOT(onCreateUIntItem()));
-    newBlnAct = menuNew->addAction(tr("New Boolean item"), this, SLOT(onCreateBoolItem()));
+    newStrAct = menuNew->addAction(tr("New string item"), this, &ParameterValue::onCreateTextItem);
+    newFltAct = menuNew->addAction(tr("New float item"), this, &ParameterValue::onCreateFloatItem);
+    newIntAct = menuNew->addAction(tr("New integer item"), this, &ParameterValue::onCreateIntItem);
+    newUlgAct = menuNew->addAction(tr("New unsigned item"), this, &ParameterValue::onCreateUIntItem);
+    newBlnAct = menuNew->addAction(tr("New Boolean item"), this, &ParameterValue::onCreateBoolItem);
 
-    connect(this, SIGNAL(itemDoubleClicked(QTreeWidgetItem*, int)),
-            this, SLOT(onChangeSelectedItem(QTreeWidgetItem*, int)));
+    connect(this, &ParameterValue::itemDoubleClicked,
+            this, qOverload<QTreeWidgetItem*, int>(&ParameterValue::onChangeSelectedItem));
 }
 
-ParameterValue::~ParameterValue()
-{
-}
+ParameterValue::~ParameterValue() = default;
 
 void ParameterValue::setCurrentGroup( const Base::Reference<ParameterGrp>& hGrp )
 {
@@ -1005,9 +1016,7 @@ ParameterValueItem::ParameterValueItem ( QTreeWidget* parent, const Base::Refere
     setFlags(flags() | Qt::ItemIsEditable);
 }
 
-ParameterValueItem::~ParameterValueItem()
-{
-}
+ParameterValueItem::~ParameterValueItem() = default;
 
 void ParameterValueItem::setData ( int column, int role, const QVariant & value )
 {
@@ -1037,9 +1046,7 @@ ParameterText::ParameterText ( QTreeWidget * parent, QString label, const char* 
     setText(2, QString::fromUtf8(value));
 }
 
-ParameterText::~ParameterText()
-{
-}
+ParameterText::~ParameterText() = default;
 
 void ParameterText::changeValue()
 {
@@ -1081,9 +1088,7 @@ ParameterInt::ParameterInt ( QTreeWidget * parent, QString label, long value, co
     setText(2, QString::fromLatin1("%1").arg(value));
 }
 
-ParameterInt::~ParameterInt()
-{
-}
+ParameterInt::~ParameterInt() = default;
 
 void ParameterInt::changeValue()
 {
@@ -1125,9 +1130,7 @@ ParameterUInt::ParameterUInt ( QTreeWidget * parent, QString label, unsigned lon
     setText(2, QString::fromLatin1("%1").arg(value));
 }
 
-ParameterUInt::~ParameterUInt()
-{
-}
+ParameterUInt::~ParameterUInt() = default;
 
 void ParameterUInt::changeValue()
 {
@@ -1178,9 +1181,7 @@ ParameterFloat::ParameterFloat ( QTreeWidget * parent, QString label, double val
     setText(2, QString::fromLatin1("%1").arg(value));
 }
 
-ParameterFloat::~ParameterFloat()
-{
-}
+ParameterFloat::~ParameterFloat() = default;
 
 void ParameterFloat::changeValue()
 {
@@ -1222,9 +1223,7 @@ ParameterBool::ParameterBool ( QTreeWidget * parent, QString label, bool value, 
     setText(2, QString::fromLatin1((value ? "true" : "false")));
 }
 
-ParameterBool::~ParameterBool()
-{
-}
+ParameterBool::~ParameterBool() = default;
 
 void ParameterBool::changeValue()
 {

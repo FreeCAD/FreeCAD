@@ -117,12 +117,12 @@ App::DocumentObjectExecReturn *SegmentByMesh::execute()
         MeshFacetIterator cFIt(rMeshKernel);
 
         // get the nearest facet to the user (front clipping plane)
-        for ( std::vector<MeshCore::FacetIndex>::iterator it = faces.begin(); it != faces.end(); ++it ) {
-            cFIt.Set(*it);
+        for (MeshCore::FacetIndex it : faces) {
+            cFIt.Set(it);
             float dist = (float)fabs(cFIt->GetGravityPoint().DistanceToPlane( cBase, cNormal ));
             if ( dist < fDist ) {
                 fDist = dist;
-                uIdx = *it;
+                uIdx = it;
             }
         }
 
@@ -141,8 +141,8 @@ App::DocumentObjectExecReturn *SegmentByMesh::execute()
         }
     }
 
-    for ( std::vector<MeshCore::FacetIndex>::iterator it = faces.begin(); it != faces.end(); ++it )
-        aFaces.push_back( rMeshKernel.GetFacet(*it) );
+    for (MeshCore::FacetIndex it : faces)
+        aFaces.push_back( rMeshKernel.GetFacet(it) );
 
     std::unique_ptr<MeshObject> pcKernel(new MeshObject);
     pcKernel->addFacets(aFaces);

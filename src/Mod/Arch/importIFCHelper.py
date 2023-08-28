@@ -21,13 +21,16 @@
 """Helper functions that are used by IFC importer and exporter."""
 import sys
 import math
-import six
 
 import FreeCAD
 import Arch
 import ArchIFC
 
+if FreeCAD.GuiUp:
+    import FreeCADGui as Gui
+
 from draftutils.messages import _msg, _wrn
+
 
 PREDEFINED_RGB = {"black": (0, 0, 0),
                   "red": (1.0, 0, 0),
@@ -275,7 +278,7 @@ def buildRelMattable(ifcfile):
 
     for r in ifcfile.by_type("IfcRelAssociatesMaterial"):
         # the related object might not exist
-        # https://forum.freecadweb.org/viewtopic.php?f=39&t=58607
+        # https://forum.freecad.org/viewtopic.php?f=39&t=58607
         if r.RelatedObjects:
             for o in r.RelatedObjects:
                 if r.RelatingMaterial.is_a("IfcMaterial"):
@@ -323,7 +326,7 @@ def buildRelColors(ifcfile, prodrepr):
 
         # Nova
         # FIXME: style_entity_id = { style_entity_id: product_id } not material_id ???
-        # see https://forum.freecadweb.org/viewtopic.php?f=39&t=37940&start=10#p329491
+        # see https://forum.freecad.org/viewtopic.php?f=39&t=37940&start=10#p329491
         # last code change in these color code https://github.com/FreeCAD/FreeCAD/commit/2d1f6ab1
         '''
         if r.Item:
@@ -381,6 +384,10 @@ def buildRelProductColors(ifcfile, prodrepr):
     i = 0
 
     for p in prodrepr.keys():
+        # see method getColorFromProduct()
+        # it is a method for the redundant code inside this loop
+        # which can be used to get the color from a product directly
+
         # Representation item, see `IfcRepresentationItem` documentation.
         # All kinds of geometric or topological representation items
         # `IfcExtrudedAreaSolid`, `IfcMappedItem`, `IfcFacetedBrep`,
@@ -441,6 +448,20 @@ def getColorFromMaterial(material):
     return None
 
 
+def color2colorRGB(color_data):
+
+    if color_data is None:
+        return None
+
+    color_rgb = [
+        int(round(color_data[0]*255, 0)),
+        int(round(color_data[1]*255, 0)),
+        int(round(color_data[2]*255, 0))
+    ]  # int(159.99) would return 159 not 160, thus round
+
+    return color_rgb
+
+
 def getColorFromStyledItem(styled_item):
     """Get color from the IfcStyledItem.
 
@@ -491,7 +512,7 @@ def getColorFromStyledItem(styled_item):
     else:
         # never seen an ifc with more than one Styles in IfcStyledItem
         # the above seams to only apply for IFC2x3, IFC4 can have them
-        # see https://forum.freecadweb.org/viewtopic.php?f=39&t=33560&p=437056#p437056
+        # see https://forum.freecad.org/viewtopic.php?f=39&t=33560&p=437056#p437056
 
         # Get the `IfcPresentationStyleAssignment`, there should only be one,
         if styled_item.Styles[0].is_a('IfcPresentationStyleAssignment'):
@@ -605,7 +626,7 @@ def getIfcPropertySets(ifcfile, pid):
     psets = {}
     for rel in ifcfile[pid].IsDefinedBy:
         # the following if condition is needed in IFC2x3 only
-        # https://forum.freecadweb.org/viewtopic.php?f=39&t=37892#p322884
+        # https://forum.freecad.org/viewtopic.php?f=39&t=37892#p322884
         if rel.is_a('IfcRelDefinesByProperties'):
             props = []
             if rel.RelatingPropertyDefinition.is_a("IfcPropertySet"):
@@ -955,8 +976,8 @@ def createFromProperties(propsets,ifcfile,parametrics):
     if appset:
         oname = None
         otype = None
-        if "FreeCADType" in appset.keys():
-            if "FreeCADName" in appset.keys():
+        if "FreeCADType" in appset:
+            if "FreeCADName" in appset:
                 obj = FreeCAD.ActiveDocument.addObject(appset["FreeCADType"],appset["FreeCADName"])
                 if "FreeCADAppObject" in appset:
                     mod,cla = appset["FreeCADAppObject"].split(".")
@@ -1057,6 +1078,7 @@ def createAnnotation(annotation,doc,ifcscale,preferences):
     """creates an annotation object"""
 
     anno = None
+    aid =  annotation.id()
     if annotation.is_a("IfcGrid"):
         axes = []
         uvwaxes = ()
@@ -1086,7 +1108,7 @@ def createAnnotation(annotation,doc,ifcscale,preferences):
             if annotation.Name:
                 name = annotation.Name
             if annotation.ObjectPlacement:
-                # https://forum.freecadweb.org/viewtopic.php?f=39&t=40027
+                # https://forum.freecad.org/viewtopic.php?f=39&t=40027
                 grid_placement = getPlacement(annotation.ObjectPlacement,scaling=1)
             if preferences['PREFIX_NUMBERS']:
                 name = "ID" + str(aid) + " " + name

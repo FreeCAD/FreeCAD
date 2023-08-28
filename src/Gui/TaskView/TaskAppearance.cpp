@@ -35,7 +35,7 @@
 
 
 using namespace Gui::TaskView;
-namespace bp = boost::placeholders;
+namespace sp = std::placeholders;
 
 /* TRANSLATOR Gui::TaskView::TaskAppearance */
 
@@ -46,6 +46,8 @@ TaskAppearance::TaskAppearance(QWidget *parent)
     proxy = new QWidget(this);
     ui = new Ui_TaskAppearance();
     ui->setupUi(proxy);
+    setupConnections();
+
     ui->textLabel1_3->hide();
     ui->changePlot->hide();
     QMetaObject::connectSlotsByName(this);
@@ -53,9 +55,11 @@ TaskAppearance::TaskAppearance(QWidget *parent)
     this->groupLayout()->addWidget(proxy);
     Gui::Selection().Attach(this);
 
+    //NOLINTBEGIN
     this->connectChangedObject =
-    Gui::Application::Instance->signalChangedObject.connect(boost::bind
-        (&TaskAppearance::slotChangedObject, this, bp::_1, bp::_2));
+    Gui::Application::Instance->signalChangedObject.connect(std::bind
+        (&TaskAppearance::slotChangedObject, this, sp::_1, sp::_2));
+    //NOLINTEND
 }
 
 TaskAppearance::~TaskAppearance()
@@ -63,6 +67,27 @@ TaskAppearance::~TaskAppearance()
     delete ui;
     this->connectChangedObject.disconnect();
     Gui::Selection().Detach(this);
+}
+
+void TaskAppearance::setupConnections()
+{
+#if QT_VERSION < QT_VERSION_CHECK(5, 14, 0)
+    connect(ui->changeMode, qOverload<const QString&>(&QComboBox::activated),
+            this, &TaskAppearance::onChangeModeActivated);
+    connect(ui->changePlot, qOverload<const QString&>(&QComboBox::activated),
+            this, &TaskAppearance::onChangePlotActivated);
+#else
+    connect(ui->changeMode, &QComboBox::textActivated,
+            this, &TaskAppearance::onChangeModeActivated);
+    connect(ui->changePlot, &QComboBox::textActivated,
+            this, &TaskAppearance::onChangePlotActivated);
+#endif
+    connect(ui->spinTransparency, qOverload<int>(&QSpinBox::valueChanged),
+            this, &TaskAppearance::onTransparencyValueChanged);
+    connect(ui->spinPointSize, qOverload<int>(&QSpinBox::valueChanged),
+            this, &TaskAppearance::onPointSizeValueChanged);
+    connect(ui->spinLineWidth, qOverload<int>(&QSpinBox::valueChanged),
+            this, &TaskAppearance::onLineWidthValueChanged);
 }
 
 void TaskAppearance::changeEvent(QEvent *e)
@@ -132,7 +157,7 @@ void TaskAppearance::slotChangedObject(const Gui::ViewProvider& obj,
 /**
  * Sets the 'Display' property of all selected view providers.
  */
-void TaskAppearance::on_changeMode_activated(const QString& s)
+void TaskAppearance::onChangeModeActivated(const QString& s)
 {
     Gui::WaitCursor wc;
     std::vector<Gui::ViewProvider*> Provider = getSelection();
@@ -145,7 +170,7 @@ void TaskAppearance::on_changeMode_activated(const QString& s)
     }
 }
 
-void TaskAppearance::on_changePlot_activated(const QString&s)
+void TaskAppearance::onChangePlotActivated(const QString&s)
 {
     Base::Console().Log("Plot = %s\n",(const char*)s.toLatin1());
 }
@@ -153,7 +178,7 @@ void TaskAppearance::on_changePlot_activated(const QString&s)
 /**
  * Sets the 'Transparency' property of all selected view providers.
  */
-void TaskAppearance::on_spinTransparency_valueChanged(int transparency)
+void TaskAppearance::onTransparencyValueChanged(int transparency)
 {
     std::vector<Gui::ViewProvider*> Provider = getSelection();
     for (const auto & It : Provider) {
@@ -168,7 +193,7 @@ void TaskAppearance::on_spinTransparency_valueChanged(int transparency)
 /**
  * Sets the 'PointSize' property of all selected view providers.
  */
-void TaskAppearance::on_spinPointSize_valueChanged(int pointsize)
+void TaskAppearance::onPointSizeValueChanged(int pointsize)
 {
     std::vector<Gui::ViewProvider*> Provider = getSelection();
     for (const auto & It : Provider) {
@@ -183,7 +208,7 @@ void TaskAppearance::on_spinPointSize_valueChanged(int pointsize)
 /**
  * Sets the 'LineWidth' property of all selected view providers.
  */
-void TaskAppearance::on_spinLineWidth_valueChanged(int linewidth)
+void TaskAppearance::onLineWidthValueChanged(int linewidth)
 {
     std::vector<Gui::ViewProvider*> Provider = getSelection();
     for (const auto & It : Provider) {

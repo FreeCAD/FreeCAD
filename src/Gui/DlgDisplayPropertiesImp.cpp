@@ -43,7 +43,7 @@
 
 using namespace Gui::Dialog;
 using namespace std;
-namespace bp = boost::placeholders;
+namespace sp = std::placeholders;
 
 
 /* TRANSLATOR Gui::Dialog::DlgDisplayPropertiesImp */
@@ -156,9 +156,11 @@ DlgDisplayPropertiesImp::DlgDisplayPropertiesImp(bool floating, QWidget* parent,
 
     Gui::Selection().Attach(this);
 
+    //NOLINTBEGIN
     d->connectChangedObject =
-    Gui::Application::Instance->signalChangedObject.connect(boost::bind
-        (&DlgDisplayPropertiesImp::slotChangedObject, this, bp::_1, bp::_2));
+    Gui::Application::Instance->signalChangedObject.connect(std::bind
+        (&DlgDisplayPropertiesImp::slotChangedObject, this, sp::_1, sp::_2));
+    //NOLINTEND
 }
 
 /**
@@ -190,11 +192,6 @@ void DlgDisplayPropertiesImp::setupConnections()
     connect(d->ui.spinLineTransparency, qOverload<int>(&QSpinBox::valueChanged), this, &DlgDisplayPropertiesImp::onSpinLineTransparencyValueChanged);
     connect(d->ui.buttonUserDefinedMaterial, &ColorButton::clicked, this, &DlgDisplayPropertiesImp::onButtonUserDefinedMaterialClicked);
     connect(d->ui.buttonColorPlot, &ColorButton::clicked, this, &DlgDisplayPropertiesImp::onButtonColorPlotClicked);
-}
-
-void DlgDisplayPropertiesImp::showDefaultButtons(bool ok)
-{
-    d->ui.buttonBox->setVisible(ok);
 }
 
 void DlgDisplayPropertiesImp::changeEvent(QEvent *e)
@@ -630,16 +627,12 @@ TaskDisplayProperties::TaskDisplayProperties()
 {
     this->setButtonPosition(TaskDisplayProperties::North);
     widget = new DlgDisplayPropertiesImp(false);
-    widget->showDefaultButtons(false);
     taskbox = new Gui::TaskView::TaskBox(QPixmap(), widget->windowTitle(),true, nullptr);
     taskbox->groupLayout()->addWidget(widget);
     Content.push_back(taskbox);
 }
 
-TaskDisplayProperties::~TaskDisplayProperties()
-{
-    // automatically deleted in the sub-class
-}
+TaskDisplayProperties::~TaskDisplayProperties() = default;
 
 QDialogButtonBox::StandardButtons TaskDisplayProperties::getStandardButtons() const
 {

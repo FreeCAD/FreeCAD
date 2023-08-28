@@ -248,7 +248,11 @@ bool ShortcutManager::checkShortcut(QObject *o, const QKeySequence &key)
     // shortcuts that can match the current key sequence. Now replay the sequence
     // and wait for the next keystroke.
     for (int i=0; i<key.count(); ++i) {
+#if QT_VERSION < QT_VERSION_CHECK(6,0,0)
         int k = key[i];
+#else
+        int k = key[i].key();
+#endif
         Qt::KeyboardModifiers modifiers;
         if ((k & Qt::SHIFT) == Qt::SHIFT)
             modifiers |= Qt::ShiftModifier;
@@ -340,7 +344,7 @@ std::vector<std::pair<QByteArray, QAction*>> ShortcutManager::getActionsByShortc
 {
     const auto &index = actionMap.get<1>();
     std::vector<std::pair<QByteArray, QAction*>> res;
-    std::multimap<int, const ActionData*, std::greater<int>> map;
+    std::multimap<int, const ActionData*, std::greater<>> map;
     for (auto it = index.lower_bound(ActionKey(shortcut)); it != index.end(); ++it) {
         if (it->key.shortcut != shortcut)
             break;

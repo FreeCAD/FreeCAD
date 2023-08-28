@@ -24,6 +24,7 @@
 #include <Base/Interpreter.h>
 #include <Base/PyObjectBase.h>
 
+#include "CenterLine.h"
 #include "CosmeticExtension.h"
 #include "Cosmetic.h"
 #include "DrawComplexSection.h"

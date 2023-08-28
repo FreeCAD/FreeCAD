@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Form</string>
+   <string notr="true">Form</string>
   </property>
   <property name="styleSheet">
    <string notr="true"/>
@@ -32,14 +32,14 @@
       <item row="0" column="0">
        <widget class="QLabel" name="toolController_label">
         <property name="text">
-         <string>ToolController</string>
+         <string>Tool Controller</string>
         </property>
        </widget>
       </item>
       <item row="0" column="1">
        <widget class="QComboBox" name="toolController">
         <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The tool and its settings to be used for this operation.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         <string> The tool and its settings to be used for this operation </string>
         </property>
        </widget>
       </item>
@@ -87,7 +87,7 @@
          </sizepolicy>
         </property>
         <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Choose what point to use on the first selected feature.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         <string> Choose what point to use on the first selected feature </string>
         </property>
         <property name="editable">
          <bool>false</bool>
@@ -99,7 +99,7 @@
         </item>
         <item>
          <property name="text">
-          <string>Center of BoundBox</string>
+          <string>Center of Bounding Box</string>
          </property>
         </item>
         <item>
@@ -159,7 +159,7 @@
          </font>
         </property>
         <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Choose what point to use on the second selected feature.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         <string> Choose what point to use on the second selected feature </string>
         </property>
         <property name="editable">
          <bool>false</bool>
@@ -171,7 +171,7 @@
         </item>
         <item>
          <property name="text">
-          <string>Center of BoundBox</string>
+          <string>Center of Bounding Box</string>
          </property>
         </item>
         <item>
@@ -219,7 +219,7 @@
          </font>
         </property>
         <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;No Base Geometry selected.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         <string> No Base Geometry selected </string>
         </property>
         <property name="styleSheet">
          <string notr="true">color:blue</string>
@@ -238,7 +238,7 @@
       <item>
        <widget class="QLabel" name="usingCustomPoints">
         <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Currently using custom point inputs in the Property View of the Data tab.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         <string> Currently using custom point inputs in the Property View of the Data tab </string>
         </property>
         <property name="text">
          <string>Currently using custom point inputs available in the Property View of the Data tab.</string>
@@ -288,7 +288,7 @@
          </sizepolicy>
         </property>
         <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Positive extends the beginning of the path, negative shortens.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         <string> Positive extends the beginning of the path, negative shortens </string>
         </property>
         <property name="unit" stdset="0">
          <string notr="true"/>
@@ -314,7 +314,7 @@
          </sizepolicy>
         </property>
         <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Positive extends the end of the path, negative shortens.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         <string> Positive extends the end of the path, negative shortens </string>
         </property>
         <property name="unit" stdset="0">
          <string notr="true"/>
@@ -354,7 +354,7 @@
          </font>
         </property>
         <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Complete the operation in a single pass at depth, or mulitiple passes to final depth.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         <string> Complete the operation in a single pass at depth, or multiple passes to final depth </string>
         </property>
         <item>
          <property name="text">
@@ -378,7 +378,7 @@
       <item row="1" column="1">
        <widget class="QComboBox" name="pathOrientation">
         <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Choose the path orientation with regard to the feature(s) selected.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         <string> Choose the path orientation with regard to the feature(s) selected </string>
         </property>
         <item>
          <property name="text">
@@ -395,7 +395,7 @@
       <item row="2" column="1">
        <widget class="QCheckBox" name="reverseDirection">
         <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enable to reverse the cut direction of the slot path.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         <string> Enable to reverse the cut direction of the slot path </string>
         </property>
         <property name="text">
          <string>Reverse cut direction</string>

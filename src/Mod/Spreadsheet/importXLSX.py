@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 #***************************************************************************
 #*   Copyright (c) 2016 Ulrich Brammer <ulrich1a@users.sourceforge.net>    *
@@ -20,11 +20,10 @@
 #*   USA                                                                   *
 #***************************************************************************/
 
-from __future__ import print_function
 
 __title__  = "FreeCAD Spreadsheet Workbench - XLSX importer"
 __author__ = "Ulrich Brammer <ulrich1a@users.sourceforge.net>"
-__url__    = ["https://www.freecadweb.org"]
+__url__    = ["https://www.freecad.org"]
 
 '''
 This library imports an Excel-XLSX-file into FreeCAD.

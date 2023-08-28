@@ -62,7 +62,7 @@ private:
 
 private:
     QWidget* proxy;
-    Ui_TaskObjectName* ui;
+    std::unique_ptr<Ui_TaskObjectName> ui;
 };
 
 } //namespace FemGui

@@ -49,7 +49,7 @@
 
 
 using namespace Gui;
-namespace bp = boost::placeholders;
+namespace sp = std::placeholders;
 
 namespace Gui {
 
@@ -153,12 +153,11 @@ class GraphvizGraphicsView final : public QGraphicsView
     void mouseReleaseEvent(QMouseEvent *event) override;
 
   private:
-    bool   isPanning;
+    bool   isPanning{false};
     QPoint panStart;
 };
 
-GraphvizGraphicsView::GraphvizGraphicsView(QGraphicsScene* scene, QWidget* parent) : QGraphicsView(scene, parent),
-                                                                     isPanning(false)
+GraphvizGraphicsView::GraphvizGraphicsView(QGraphicsScene* scene, QWidget* parent) : QGraphicsView(scene, parent)
 {
 }
 
@@ -248,15 +247,17 @@ GraphvizView::GraphvizView(App::Document & _doc, QWidget* parent)
 
     // Create worker thread
     thread = new GraphvizWorker(this);
-    connect(thread, SIGNAL(emitFinished()), this, SLOT(done()));
-    connect(thread, SIGNAL(finished()), this, SLOT(done()));
-    connect(thread, SIGNAL(error()), this, SLOT(error()));
-    connect(thread, SIGNAL(svgFileRead(const QByteArray &)), this, SLOT(svgFileRead(const QByteArray &)));
+    connect(thread, &GraphvizWorker::emitFinished, this, &GraphvizView::done);
+    connect(thread, &GraphvizWorker::finished, this, &GraphvizView::done);
+    connect(thread, &GraphvizWorker::error, this, &GraphvizView::error);
+    connect(thread, &GraphvizWorker::svgFileRead, this, &GraphvizView::svgFileRead);
 
+    //NOLINTBEGIN
     // Connect signal from document
-    recomputeConnection = _doc.signalRecomputed.connect(boost::bind(&GraphvizView::updateSvgItem, this, bp::_1));
-    undoConnection = _doc.signalUndo.connect(boost::bind(&GraphvizView::updateSvgItem, this, bp::_1));
-    redoConnection = _doc.signalRedo.connect(boost::bind(&GraphvizView::updateSvgItem, this, bp::_1));
+    recomputeConnection = _doc.signalRecomputed.connect(std::bind(&GraphvizView::updateSvgItem, this, sp::_1));
+    undoConnection = _doc.signalUndo.connect(std::bind(&GraphvizView::updateSvgItem, this, sp::_1));
+    redoConnection = _doc.signalRedo.connect(std::bind(&GraphvizView::updateSvgItem, this, sp::_1));
+    //NOLINTEND
 
     updateSvgItem(_doc);
 }
@@ -306,7 +307,7 @@ void GraphvizView::updateSvgItem(const App::Document &doc)
             int ret = QMessageBox::warning(Gui::getMainWindow(),
                                            tr("Graphviz not found"),
                                            QString::fromLatin1("<html><head/><body>%1 "
-                                                               "<a href=\"https://www.freecadweb.org/wiki/Std_DependencyGraph\">%2"
+                                                               "<a href=\"https://www.freecad.org/wiki/Std_DependencyGraph\">%2"
                                                                "</a><p>%3</p></body></html>")
                                            .arg(tr("Graphviz couldn't be found on your system."),
                                                 tr("Read more about it here."),
@@ -413,7 +414,7 @@ QByteArray GraphvizView::exportGraph(const QString& format)
     dotProc.setEnvironment(QProcess::systemEnvironment());
     dotProc.start(exe, args);
     if (!dotProc.waitForStarted()) {
-        return QByteArray();
+        return {};
     }
 
     ParameterGrp::handle depGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/DependencyGraph");
@@ -421,12 +422,12 @@ QByteArray GraphvizView::exportGraph(const QString& format)
         flatProc.setEnvironment(QProcess::systemEnvironment());
         flatProc.start(unflatten, flatArgs);
         if (!flatProc.waitForStarted()) {
-            return QByteArray();
+            return {};
         }
         flatProc.write(graphCode.c_str(), graphCode.size());
         flatProc.closeWriteChannel();
         if (!flatProc.waitForFinished())
-            return QByteArray();
+            return {};
 
         dotProc.write(flatProc.readAll());
     }
@@ -435,7 +436,7 @@ QByteArray GraphvizView::exportGraph(const QString& format)
 
     dotProc.closeWriteChannel();
     if (!dotProc.waitForFinished())
-        return QByteArray();
+        return {};
 
     return dotProc.readAll();
 }
@@ -453,16 +454,16 @@ bool GraphvizView::onMsg(const char* pMsg,const char**)
       //formatMap << qMakePair(tr("VRML format (*.vrml)"), QString::fromLatin1("vrml"));
 
         QStringList filter;
-        for (QList< QPair<QString, QString> >::iterator it = formatMap.begin(); it != formatMap.end(); ++it)
-            filter << it->first;
+        for (const auto & it : formatMap)
+            filter << it.first;
 
         QString selectedFilter;
         QString fn = Gui::FileDialog::getSaveFileName(this, tr("Export graph"), QString(), filter.join(QLatin1String(";;")), &selectedFilter);
         if (!fn.isEmpty()) {
             QString format;
-            for (QList< QPair<QString, QString> >::iterator it = formatMap.begin(); it != formatMap.end(); ++it) {
-                if (selectedFilter == it->first) {
-                    format = it->second;
+            for (const auto & it : formatMap) {
+                if (selectedFilter == it.first) {
+                    format = it.second;
                     break;
                 }
             }
@@ -556,8 +557,8 @@ void GraphvizView::printPreview()
     printer.setPageOrientation(QPageLayout::Landscape);
 
     QPrintPreviewDialog dlg(&printer, this);
-    connect(&dlg, SIGNAL(paintRequested (QPrinter *)),
-            this, SLOT(print(QPrinter *)));
+    connect(&dlg, &QPrintPreviewDialog::paintRequested,
+            this, qOverload<QPrinter*>(&GraphvizView::print));
     dlg.exec();
 }
 

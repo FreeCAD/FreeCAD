@@ -24,7 +24,7 @@ import Path
 
 __title__ = "Property type abstraction for editing purposes"
 __author__ = "sliptonic (Brad Collette)"
-__url__ = "https://www.freecadweb.org"
+__url__ = "https://www.freecad.org"
 __doc__ = "Prototype objects to allow extraction of setup sheet values and editing."
 
 

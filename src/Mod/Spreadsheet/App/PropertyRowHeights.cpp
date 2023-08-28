@@ -37,9 +37,7 @@ const int PropertyRowHeights::defaultHeight = 30;
 
 TYPESYSTEM_SOURCE(Spreadsheet::PropertyRowHeights , App::Property)
 
-PropertyRowHeights::PropertyRowHeights()
-{
-}
+PropertyRowHeights::PropertyRowHeights() = default;
 
 PropertyRowHeights::PropertyRowHeights(const PropertyRowHeights &other)
   : Property(), std::map<int, int>(other)

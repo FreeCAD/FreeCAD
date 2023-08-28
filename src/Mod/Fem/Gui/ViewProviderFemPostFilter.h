@@ -20,30 +20,24 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef FEM_VIEWPROVIDERFEMPOSTFILTER_H
 #define FEM_VIEWPROVIDERFEMPOSTFILTER_H
 
 #include "ViewProviderFemPostObject.h"
 
+
 namespace FemGui
 {
 
-class FemGuiExport ViewProviderFemPostClip : public ViewProviderFemPostObject {
+// ***************************************************************************
+// in the following, the different filters sorted alphabetically
+// ***************************************************************************
 
-    PROPERTY_HEADER_WITH_OVERRIDE(FemGui::ViewProviderFemPostClip);
 
-public:
-    /// constructor.
-    ViewProviderFemPostClip();
-    ~ViewProviderFemPostClip() override;
-
-protected:
-    void setupTaskDialog(TaskDlgPost* dlg) override;
-};
-
-class FemGuiExport ViewProviderFemPostDataAlongLine : public ViewProviderFemPostObject {
-
+// ***************************************************************************
+// data along line filter
+class FemGuiExport ViewProviderFemPostDataAlongLine : public ViewProviderFemPostObject
+{
     PROPERTY_HEADER_WITH_OVERRIDE(FemGui::ViewProviderFemPostDataAlongLine);
 
 public:
@@ -55,8 +49,11 @@ protected:
     void setupTaskDialog(TaskDlgPost* dlg) override;
 };
 
-class FemGuiExport ViewProviderFemPostDataAtPoint: public ViewProviderFemPostObject {
 
+// ***************************************************************************
+// data at point filter
+class FemGuiExport ViewProviderFemPostDataAtPoint: public ViewProviderFemPostObject
+{
     PROPERTY_HEADER_WITH_OVERRIDE(FemGui::ViewProviderFemPostDataAtPoint);
 
 public:
@@ -69,8 +66,60 @@ public:
 protected:
     void setupTaskDialog(TaskDlgPost* dlg) override;
 };
-class FemGuiExport ViewProviderFemPostScalarClip : public ViewProviderFemPostObject {
 
+
+// ***************************************************************************
+// clip filter
+class FemGuiExport ViewProviderFemPostClip: public ViewProviderFemPostObject
+{
+    PROPERTY_HEADER_WITH_OVERRIDE(FemGui::ViewProviderFemPostClip);
+
+public:
+    /// constructor.
+    ViewProviderFemPostClip();
+    ~ViewProviderFemPostClip() override;
+
+protected:
+    void setupTaskDialog(TaskDlgPost* dlg) override;
+};
+
+
+// ***************************************************************************
+// contours filter
+class FemGuiExport ViewProviderFemPostContours: public ViewProviderFemPostObject
+{
+    PROPERTY_HEADER_WITH_OVERRIDE(FemGui::ViewProviderFemPostContours);
+
+public:
+    /// constructor.
+    ViewProviderFemPostContours();
+    ~ViewProviderFemPostContours() override;
+
+protected:
+    void setupTaskDialog(TaskDlgPost* dlg) override;
+};
+
+
+// ***************************************************************************
+// cut filter
+class FemGuiExport ViewProviderFemPostCut: public ViewProviderFemPostObject
+{
+    PROPERTY_HEADER_WITH_OVERRIDE(FemGui::ViewProviderFemPostCut);
+
+public:
+    /// constructor.
+    ViewProviderFemPostCut();
+    ~ViewProviderFemPostCut() override;
+
+protected:
+    void setupTaskDialog(TaskDlgPost* dlg) override;
+};
+
+
+// ***************************************************************************
+// scalar clip filter
+class FemGuiExport ViewProviderFemPostScalarClip: public ViewProviderFemPostObject
+{
     PROPERTY_HEADER_WITH_OVERRIDE(FemGui::ViewProviderFemPostScalarClip);
 
 public:
@@ -82,27 +131,17 @@ protected:
     void setupTaskDialog(TaskDlgPost* dlg) override;
 };
 
-class FemGuiExport ViewProviderFemPostWarpVector : public ViewProviderFemPostObject {
 
+// ***************************************************************************
+// warp vector filter
+class FemGuiExport ViewProviderFemPostWarpVector : public ViewProviderFemPostObject
+{
     PROPERTY_HEADER_WITH_OVERRIDE(FemGui::ViewProviderFemPostWarpVector);
 
 public:
     /// constructor.
     ViewProviderFemPostWarpVector();
     ~ViewProviderFemPostWarpVector() override;
-
-protected:
-    void setupTaskDialog(TaskDlgPost* dlg) override;
-};
-
-class FemGuiExport ViewProviderFemPostCut : public ViewProviderFemPostObject {
-
-    PROPERTY_HEADER_WITH_OVERRIDE(FemGui::ViewProviderFemPostCut);
-
-public:
-    /// constructor.
-    ViewProviderFemPostCut();
-    ~ViewProviderFemPostCut() override;
 
 protected:
     void setupTaskDialog(TaskDlgPost* dlg) override;

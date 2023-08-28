@@ -60,7 +60,7 @@ using namespace Gui;
 namespace Gui {
 class EditorViewP {
 public:
-    QPlainTextEdit* textEdit;
+    TextEdit* textEdit;
     SearchBar* searchBar;
     QString fileName;
     EditorView::DisplayName displayName;
@@ -83,8 +83,9 @@ TYPESYSTEM_SOURCE_ABSTRACT(Gui::EditorView, Gui::MDIView)
  *  Constructs a EditorView which is a child of 'parent', with the
  *  name 'name'.
  */
-EditorView::EditorView(QPlainTextEdit* editor, QWidget* parent)
-    : MDIView(nullptr,parent,Qt::WindowFlags()), WindowParameter( "Editor" )
+EditorView::EditorView(TextEdit* editor, QWidget* parent)
+    : MDIView(nullptr, parent, Qt::WindowFlags())
+    , WindowParameter( "Editor" )
 {
     d = new EditorViewP;
     d->lock = false;
@@ -100,13 +101,13 @@ EditorView::EditorView(QPlainTextEdit* editor, QWidget* parent)
 
     // update editor actions on request
     Gui::MainWindow* mw = Gui::getMainWindow();
-    connect(editor, SIGNAL(undoAvailable(bool)), mw, SLOT(updateEditorActions()));
-    connect(editor, SIGNAL(redoAvailable(bool)), mw, SLOT(updateEditorActions()));
-    connect(editor, SIGNAL(copyAvailable(bool)), mw, SLOT(updateEditorActions()));
+    connect(editor, &QPlainTextEdit::undoAvailable, mw, &MainWindow::updateEditorActions);
+    connect(editor, &QPlainTextEdit::redoAvailable, mw, &MainWindow::updateEditorActions);
+    connect(editor, &QPlainTextEdit::copyAvailable, mw, &MainWindow::updateEditorActions);
 
-    connect(editor, SIGNAL(showSearchBar()), d->searchBar, SLOT(activate()));
-    connect(editor, SIGNAL(findNext()), d->searchBar, SLOT(findNext()));
-    connect(editor, SIGNAL(findPrevious()), d->searchBar, SLOT(findPrevious()));
+    connect(editor, &TextEdit::showSearchBar, d->searchBar, &SearchBar::activate);
+    connect(editor, &TextEdit::findNext, d->searchBar, &SearchBar::findNext);
+    connect(editor, &TextEdit::findPrevious, d->searchBar, &SearchBar::findPrevious);
 
     // Create the layout containing the workspace and a tab bar
     auto hbox = new QFrame(this);
@@ -131,16 +132,16 @@ EditorView::EditorView(QPlainTextEdit* editor, QWidget* parent)
     hPrefGrp->NotifyAll();
 
     d->activityTimer = new QTimer(this);
-    connect(d->activityTimer, SIGNAL(timeout()),
-            this, SLOT(checkTimestamp()) );
-    connect(d->textEdit->document(), SIGNAL(modificationChanged(bool)),
-            this, SLOT(setWindowModified(bool)));
-    connect(d->textEdit->document(), SIGNAL(undoAvailable(bool)),
-            this, SLOT(undoAvailable(bool)));
-    connect(d->textEdit->document(), SIGNAL(redoAvailable(bool)),
-            this, SLOT(redoAvailable(bool)));
-    connect(d->textEdit->document(), SIGNAL(contentsChange(int, int, int)),
-            this, SLOT(contentsChange(int, int, int)));
+    connect(d->activityTimer, &QTimer::timeout,
+            this, &EditorView::checkTimestamp);
+    connect(d->textEdit->document(), &QTextDocument::modificationChanged,
+            this, &EditorView::setWindowModified);
+    connect(d->textEdit->document(), &QTextDocument::undoAvailable,
+            this, &EditorView::undoAvailable);
+    connect(d->textEdit->document(), &QTextDocument::redoAvailable,
+            this, &EditorView::redoAvailable);
+    connect(d->textEdit->document(), &QTextDocument::contentsChange,
+            this, &EditorView::contentsChange);
 }
 
 /** Destroys the object and frees any allocated resources */
@@ -451,8 +452,8 @@ void EditorView::printPreview()
 {
     QPrinter printer(QPrinter::ScreenResolution);
     QPrintPreviewDialog dlg(&printer, this);
-    connect(&dlg, SIGNAL(paintRequested (QPrinter *)),
-            this, SLOT(print(QPrinter *)));
+    connect(&dlg, &QPrintPreviewDialog::paintRequested,
+            this, qOverload<QPrinter *>(&EditorView::print));
     dlg.exec();
 }
 
@@ -470,6 +471,8 @@ void EditorView::printPdf()
         QString::fromLatin1("%1 (*.pdf)").arg(tr("PDF file")));
     if (!filename.isEmpty()) {
         QPrinter printer(QPrinter::ScreenResolution);
+        // setPdfVersion sets the printied PDF Version to comply with PDF/A-1b, more details under: https://www.kdab.com/creating-pdfa-documents-qt/
+        printer.setPdfVersion(QPagedPaintDevice::PdfVersion_A1b);
         printer.setOutputFormat(QPrinter::PdfFormat);
         printer.setOutputFileName(filename);
         d->textEdit->document()->print(&printer);
@@ -591,13 +594,11 @@ TYPESYSTEM_SOURCE_ABSTRACT(Gui::PythonEditorView, Gui::EditorView)
 PythonEditorView::PythonEditorView(PythonEditor* editor, QWidget* parent)
   : EditorView(editor, parent), _pye(editor)
 {
-    connect(this, SIGNAL(changeFileName(const QString&)),
-            editor, SLOT(setFileName(const QString&)));
+    connect(this, &PythonEditorView::changeFileName,
+            editor, &PythonEditor::setFileName);
 }
 
-PythonEditorView::~PythonEditorView()
-{
-}
+PythonEditorView::~PythonEditorView() = default;
 
 /**
  * Runs the action specified by \a pMsg.
@@ -609,7 +610,7 @@ bool PythonEditorView::onMsg(const char* pMsg,const char** ppReturn)
         return true;
     }
     else if (strcmp(pMsg,"StartDebug")==0) {
-        QTimer::singleShot(300, this, SLOT(startDebug()));
+        QTimer::singleShot(300, this, &PythonEditorView::startDebug);
         return true;
     }
     else if (strcmp(pMsg,"ToggleBreakpoint")==0) {

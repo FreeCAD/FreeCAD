@@ -248,7 +248,7 @@
         <cc:license
            rdf:resource="http://creativecommons.ohttps://www.gnu.org/licenses/lgpl.htmlrg/licenses/by-sa/2.0/" />
         <dc:date>2016-02-26</dc:date>
-        <dc:relation>http://www.freecadweb.org/wiki/index.php?title=Artwork</dc:relation>
+        <dc:relation>http://www.freecad.org/wiki/index.php?title=Artwork</dc:relation>
         <dc:publisher>
           <cc:Agent>
             <dc:title>FreeCAD</dc:title>

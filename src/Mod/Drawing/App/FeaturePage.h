@@ -20,20 +20,16 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef _FeaturePage_h_
 #define _FeaturePage_h_
 
-
 #include <App/DocumentObjectGroup.h>
-#include <App/PropertyStandard.h>
 #include <App/PropertyFile.h>
 #include <Mod/Drawing/DrawingGlobal.h>
 
 
 namespace Drawing
 {
-
 
 /** Base class of all View Features in the drawing module
  */

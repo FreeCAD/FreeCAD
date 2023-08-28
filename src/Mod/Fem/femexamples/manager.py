@@ -68,8 +68,16 @@ def run_all():
     run_example("constraint_tie", run_solver=True)
     run_example("constraint_transform_beam_hinged", run_solver=True)
     run_example("elmer_nonguitutorial01_eigenvalue_of_elastic_beam", run_solver=True)
+    run_example("equation_deformation_spring_elmer", run_solver=True)
     run_example("equation_electrostatics_capacitance_two_balls", run_solver=True)
     run_example("equation_electrostatics_electricforce_elmer_nongui6", run_solver=True)
+    run_example("equation_flow_elmer_2D", run_solver=True)
+    run_example("equation_flow_initial_elmer_2D", run_solver=True)
+    run_example("equation_flow_turbulent_elmer_2D", run_solver=True)
+    run_example("equation_flux_elmer", run_solver=True)
+    run_example("equation_magnetodynamics_elmer", run_solver=True)
+    run_example("equation_magnetodynamics_2D_elmer.py", run_solver=True)
+    run_example("equation_magnetostatics_2D_elmer.py", run_solver=True)
     run_example("frequency_beamsimple", run_solver=True)
     run_example("material_multiple_bendingbeam_fiveboxes", run_solver=True)
     run_example("material_multiple_bendingbeam_fivefaces", run_solver=True)
@@ -79,8 +87,6 @@ def run_all():
     run_example("square_pipe_end_twisted_edgeforces", run_solver=True)
     run_example("square_pipe_end_twisted_nodeforces", run_solver=True)
     run_example("thermomech_bimetall", run_solver=True)
-    run_example("thermomech_flow1d", run_solver=True)
-    run_example("thermomech_spine", run_solver=True)
 
 
 def setup_all():
@@ -100,8 +106,16 @@ def setup_all():
     run_example("constraint_tie")
     run_example("constraint_transform_beam_hinged")
     run_example("elmer_nonguitutorial01_eigenvalue_of_elastic_beam")
+    run_example("equation_deformation_spring_elmer")
     run_example("equation_electrostatics_capacitance_two_balls")
     run_example("equation_electrostatics_electricforce_elmer_nongui6")
+    run_example("equation_flow_elmer_2D")
+    run_example("equation_flow_initial_elmer_2D")
+    run_example("equation_flow_turbulent_elmer_2D")
+    run_example("equation_flux_elmer")
+    run_example("equation_magnetodynamics_elmer")
+    run_example("equation_magnetodynamics_2D_elmer.py")
+    run_example("equation_magnetostatics_2D_elmer.py")
     run_example("frequency_beamsimple")
     run_example("material_multiple_bendingbeam_fiveboxes")
     run_example("material_multiple_bendingbeam_fivefaces")
@@ -111,8 +125,6 @@ def setup_all():
     run_example("square_pipe_end_twisted_edgeforces")
     run_example("square_pipe_end_twisted_nodeforces")
     run_example("thermomech_bimetall")
-    run_example("thermomech_flow1d")
-    run_example("thermomech_spine")
 
 
 def run_analysis(doc, base_name, filepath="", run_solver=False):

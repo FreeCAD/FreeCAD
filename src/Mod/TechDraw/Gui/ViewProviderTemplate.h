@@ -25,6 +25,9 @@
 
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
+#include <Gui/ViewProviderDocumentObject.h>
+
+#include "ViewProviderTemplateExtension.h"
 namespace TechDraw{
     class DrawTemplate;
 }
@@ -33,7 +36,8 @@ namespace TechDrawGui {
 class QGITemplate;
 class MDIViewPage;
 
-class TechDrawGuiExport ViewProviderTemplate : public Gui::ViewProviderDocumentObject
+class TechDrawGuiExport ViewProviderTemplate : public Gui::ViewProviderDocumentObject,
+                                               public ViewProviderTemplateExtension
 {
     PROPERTY_HEADER_WITH_OVERRIDE(TechDrawGui::ViewProviderTemplate);
 
@@ -41,21 +45,28 @@ public:
     /// constructor
     ViewProviderTemplate();
     /// destructor
-    virtual ~ViewProviderTemplate();
+    ~ViewProviderTemplate() override = default;
 
-    virtual bool useNewSelectionModel(void) const override {return false;}
-    virtual void updateData(const App::Property*) override;
-    virtual void onChanged(const App::Property *prop) override;
-    virtual void hide(void) override;
-    virtual void show(void) override;
-    virtual bool isShow(void) const override;
+    void attach(App::DocumentObject *) override;
+
+    bool useNewSelectionModel() const override {return false;}
+    void updateData(const App::Property*) override;
+    void onChanged(const App::Property *prop) override;
+    void hide() override;
+    void show() override;
+    bool isShow() const override;
     QGITemplate* getQTemplate(void);
     TechDraw::DrawTemplate* getTemplate() const;
     MDIViewPage* getMDIViewPage(void) const;
-    virtual Gui::MDIView *getMDIView() const override;
+    Gui::MDIView *getMDIView() const override;
 
     void setMarkers(bool state);
-    virtual bool onDelete(const std::vector<std::string> &) override;
+    bool onDelete(const std::vector<std::string> &) override;
+
+    const char* whoAmI() const;
+
+private:
+    std::string m_myName;
 };
 
 } // namespace TechDrawGui

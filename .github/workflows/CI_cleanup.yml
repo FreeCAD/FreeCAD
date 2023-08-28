@@ -1,0 +1,110 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+# ***************************************************************************
+# *                                                                         *
+# *   Copyright (c) 2023 0penBrain.                                         *
+# *                                                                         *
+# *   This file is part of FreeCAD.                                         *
+# *                                                                         *
+# *   FreeCAD is free software: you can redistribute it and/or modify it    *
+# *   under the terms of the GNU Lesser General Public License as           *
+# *   published by the Free Software Foundation, either version 2.1 of the  *
+# *   License, or (at your option) any later version.                       *
+# *                                                                         *
+# *   FreeCAD is distributed in the hope that it will be useful, but        *
+# *   WITHOUT ANY WARRANTY; without even the implied warranty of            *
+# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU      *
+# *   Lesser General Public License for more details.                       *
+# *                                                                         *
+# *   You should have received a copy of the GNU Lesser General Public      *
+# *   License along with FreeCAD. If not, see                               *
+# *   <https://www.gnu.org/licenses/>.                                      *
+# *                                                                         *
+# ***************************************************************************
+
+# This workflow is a complementary one to the master CI.
+# It aims at doing cleanup operations after a CI workflow ran.
+# Being triggered when the master workflow ends allows it to run with necessary privileges.
+# Indeed it always run with push-like rights even for PR events.
+
+# In order to work, this cleanup workflow imposes name formatting for caches
+# Caches that have to be cleaned (typically compiler caches) shall be named as below :
+# ${MARK}-${CONTEXT}-${REF}-${ID}
+# with :
+# ${MARK} => A mark identifying a cache to be cleaned, defined as being "FC" (without quotes)
+# ${CONTEXT} => A string identifying cache saving context, typically OS name or compiler name
+# ${REF} => The full reference of the branch owning the cache (starting with "/refs/pull/" or "/refs/heads/")
+# ${ID} => A cache unique identifier, generally an ascending number, in no case containing a '-' (hyphen) sign
+
+name: FreeCAD CI cleaner
+
+on:
+  workflow_run:
+    workflows: [FreeCAD master CI]
+    types:
+      - completed
+
+env:
+  dryrun: false
+
+concurrency:
+  group: FC-CI-cleaner
+  cancel-in-progress: false
+
+jobs:
+
+  CachesCleanup:
+    runs-on: ubuntu-latest
+    env:
+      logdir: /tmp/log/
+    steps:
+      - name: Make needed directories
+        run: |
+          mkdir -p ${{ env.logdir }}
+      - name: Get existing caches for the repo
+        run: |
+          curl -H "Accept: application/vnd.github+json" -H "authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" $GITHUB_API_URL/repos/$GITHUB_REPOSITORY/actions/caches > ${{ env.logdir }}caches.json
+      - name: Extract pull request caches
+        run: |
+          # Extract caches of which names starts with MARK and contains "/refs/pull/"
+          jq ".actions_caches | map(select(.key | startswith(\"FC-\"))) | map(select(.key | contains(\"refs/pull/\")))" ${{ env.logdir }}caches.json > ${{ env.logdir }}pulls.json
+      - name: Extract and delete pull request obsolete cache IDs
+        run: |
+          # Group the caches by MARK-CONTEXT-REF, sort by ascending last access datetime and keep all but the last as to be deleted
+          # As a consequence, for pull requests, only the most recent cache is kept (one for each context and for each PR)
+          PRID=$(jq "group_by(.key | .[:rindex(\"-\")]) | .[] | sort_by(.last_accessed_at) | .[:-1][].id" ${{ env.logdir }}pulls.json)
+          for id in $PRID
+          do
+            echo "Trying to delete pull request obsolete cache ID : $id"
+            if [ ${{ env.dryrun }} == "false" ]
+            then
+              curl -X DELETE -H "Accept: application/vnd.github+json" -H "authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" $GITHUB_API_URL/repos/$GITHUB_REPOSITORY/actions/caches/$id
+            else
+              echo "DRYRUN: executing : curl -X DELETE -H \"Accept: application/vnd.github+json\" $GITHUB_API_URL/repos/$GITHUB_REPOSITORY/actions/caches/$id"
+            fi
+          done
+      - name: Extract push caches
+        run: |
+          # Extract caches of which names starts with MARK and contains "/refs/heads/"
+          jq ".actions_caches | map(select(.key | startswith(\"FC-\"))) | map(select(.key | contains(\"refs/heads/\")))" ${{ env.logdir }}caches.json > ${{ env.logdir }}pushes.json
+      - name: Extract and delete push obsolete cache IDs
+        run: |
+          # Group the caches by MARK-CONTEXT-REF, sort by ascending last access datetime, keep all but the last 2 and keep all accessed for more than 1 hour as to be deleted
+          # As a consequence, for pushes (repo branches), at least 2 caches (for each context and for each branch) are kept, others are deleted if they have been useless for more than 1 hour
+          PSID=$(jq "group_by(.key | .[:rindex(\"-\")]) | .[] | sort_by(.last_accessed_at) | .[:-2][] | select((.last_accessed_at | if contains(\".\") then .[:rindex(\".\")]+\"Z\" else . end | fromdateiso8601) < (now | floor - 3600)) | .id" ${{ env.logdir }}pushes.json)
+          for id in $PSID
+          do
+            echo "Trying to delete push obsolete cache ID : $id"
+            if [ ${{ env.dryrun }} == "false" ]
+            then
+              curl -X DELETE -H "Accept: application/vnd.github+json" -H "authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" $GITHUB_API_URL/repos/$GITHUB_REPOSITORY/actions/caches/$id
+            else
+              echo "DRYRUN: executing : curl -X DELETE -H \"Accept: application/vnd.github+json\" $GITHUB_API_URL/repos/$GITHUB_REPOSITORY/actions/caches/$id"
+            fi
+          done
+      - name: Upload logs
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: ${{ github.job }}-Logs
+          path: |
+            ${{ env.logdir }}

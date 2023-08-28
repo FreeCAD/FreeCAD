@@ -258,6 +258,28 @@ class DocumentBasicCases(unittest.TestCase):
     cpy = self.Doc.copyObject(obj)
     self.assertListEqual(obj.PlmList, cpy.PlmList)
 
+  def testRawAxis(self):
+    obj = self.Doc.addObject("App::FeaturePython","Label")
+    obj.addProperty("App::PropertyPlacement", "Plm")
+    obj.addProperty("App::PropertyRotation", "Rot")
+    obj.Plm.Rotation.Axis = (1,2,3)
+    obj.Rot.Axis = (3,2,1)
+
+    # saving and restoring
+    SaveName = tempfile.gettempdir() + os.sep + "CreateTest.FCStd"
+    self.Doc.saveAs(SaveName)
+    FreeCAD.closeDocument("CreateTest")
+    self.Doc = FreeCAD.open(SaveName)
+    obj = self.Doc.ActiveObject
+
+    self.assertEqual(obj.Plm.Rotation.RawAxis.x, 1)
+    self.assertEqual(obj.Plm.Rotation.RawAxis.y, 2)
+    self.assertEqual(obj.Plm.Rotation.RawAxis.z, 3)
+
+    self.assertEqual(obj.Rot.RawAxis.x, 3)
+    self.assertEqual(obj.Rot.RawAxis.y, 2)
+    self.assertEqual(obj.Rot.RawAxis.z, 1)
+
   def testAddRemove(self):
     L1 = self.Doc.addObject("App::FeatureTest","Label_1")
     # must delete object
@@ -287,13 +309,6 @@ class DocumentBasicCases(unittest.TestCase):
   def testSubObject(self):
     obj = self.Doc.addObject("App::Origin", "Origin")
     self.Doc.recompute()
-
-    self.assertEqual(obj.getSubObject("XY_Plane", retType=1).Label, "XY_Plane")
-    self.assertEqual(obj.getSubObject("XZ_Plane", retType=1).Label, "XZ_Plane")
-    self.assertEqual(obj.getSubObject("YZ_Plane", retType=1).Label, "YZ_Plane")
-    self.assertEqual(obj.getSubObject("X_Axis", retType=1).Label, "X_Axis")
-    self.assertEqual(obj.getSubObject("Y_Axis", retType=1).Label, "Y_Axis")
-    self.assertEqual(obj.getSubObject("Z_Axis", retType=1).Label, "Z_Axis")
 
     res = obj.getSubObject("X_Axis", retType=2)
     self.assertEqual(res[1].multVec(FreeCAD.Vector(1,0,0)).getAngle(FreeCAD.Vector(1,0,0)), 0.0)
@@ -513,7 +528,7 @@ class DocumentBasicCases(unittest.TestCase):
     self.assertNotEqual(ext.Link, sli)
 
   def testIssue4823(self):
-    # https://forum.freecadweb.org/viewtopic.php?f=3&t=52775
+    # https://forum.freecad.org/viewtopic.php?f=3&t=52775
     # The issue was only visible in GUI mode and it crashed in the tree view
     obj = self.Doc.addObject("App::Origin")
     self.Doc.removeObject(obj.Name)
@@ -1610,6 +1625,12 @@ class DocumentExpressionCases(unittest.TestCase):
       FreeCAD.closeDocument(self.Doc.Name)
       self.Doc = FreeCAD.openDocument(SaveName)
 
+  def testCyclicDependencyOnPlacement(self):
+    obj = self.Doc.addObject("App::FeaturePython","Python")
+    obj.addProperty("App::PropertyPlacement", "Placement")
+    obj.setExpression('.Placement.Base.x', '.Placement.Base.y + 10mm')
+    with self.assertRaises(RuntimeError):
+      obj.setExpression('.Placement.Base.y', '.Placement.Base.x + 10mm')
 
   def tearDown(self):
     #closing doc

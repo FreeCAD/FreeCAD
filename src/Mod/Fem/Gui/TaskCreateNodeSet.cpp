@@ -54,28 +54,30 @@ using namespace Gui;
 
 
 TaskCreateNodeSet::TaskCreateNodeSet(Fem::FemSetNodesObject* pcObject, QWidget* parent)
-    : TaskBox(Gui::BitmapFactory().pixmap("FEM_CreateNodesSet"),
-        tr("Nodes set"),
-        true,
-        parent),
-    pcObject(pcObject),
-    selectionMode(none)
+    : TaskBox(Gui::BitmapFactory().pixmap("FEM_CreateNodesSet"), tr("Nodes set"), true, parent),
+      pcObject(pcObject),
+      selectionMode(none),
+      ui(new Ui_TaskCreateNodeSet)
 {
     // we need a separate container widget to add all controls to
     proxy = new QWidget(this);
-    ui = new Ui_TaskCreateNodeSet();
     ui->setupUi(proxy);
     QMetaObject::connectSlotsByName(this);
 
     this->groupLayout()->addWidget(proxy);
 
-    QObject::connect(ui->toolButton_Poly, SIGNAL(clicked()), this, SLOT(Poly()));
-    QObject::connect(ui->toolButton_Pick, SIGNAL(clicked()), this, SLOT(Pick()));
-    QObject::connect(ui->comboBox, SIGNAL(activated(int)), this, SLOT(SwitchMethod(int)));
+    QObject::connect(ui->toolButton_Poly, &QToolButton::clicked, this, &TaskCreateNodeSet::Poly);
+    QObject::connect(ui->toolButton_Pick, &QToolButton::clicked, this, &TaskCreateNodeSet::Pick);
+    QObject::connect(ui->comboBox,
+                     qOverload<int>(&QComboBox::activated),
+                     this,
+                     &TaskCreateNodeSet::SwitchMethod);
 
     // check if the Link to the FemMesh is defined
     assert(pcObject->FemMesh.getValue<Fem::FemMeshObject*>());
-    MeshViewProvider = dynamic_cast<ViewProviderFemMesh*>(Gui::Application::Instance->getViewProvider(pcObject->FemMesh.getValue<Fem::FemMeshObject*>()));
+    MeshViewProvider =
+        dynamic_cast<ViewProviderFemMesh*>(Gui::Application::Instance->getViewProvider(
+            pcObject->FemMesh.getValue<Fem::FemMeshObject*>()));
     assert(MeshViewProvider);
 
     tempSet = pcObject->Nodes.getValues();
@@ -121,8 +123,6 @@ void TaskCreateNodeSet::SwitchMethod(int Value)
     }
 }
 
-
-
 void TaskCreateNodeSet::DefineNodesCallback(void* ud, SoEventCallback* n)
 {
     // show the wait cursor because this could take quite some time
@@ -148,15 +148,19 @@ void TaskCreateNodeSet::DefineNodesCallback(void* ud, SoEventCallback* n)
     SbViewVolume vv = cam->getViewVolume();
     Gui::ViewVolumeProjection proj(vv);
     Base::Polygon2d polygon;
-    for (std::vector<SbVec2f>::const_iterator it = clPoly.begin(); it != clPoly.end(); ++it)
-        polygon.Add(Base::Vector2d((*it)[0], (*it)[1]));
+    for (auto it : clPoly)
+        polygon.Add(Base::Vector2d(it[0], it[1]));
 
     taskBox->DefineNodes(polygon, proj, role == Gui::SelectionRole::Inner ? true : false);
 }
 
-void TaskCreateNodeSet::DefineNodes(const Base::Polygon2d& polygon, const Gui::ViewVolumeProjection& proj, bool inner)
+void TaskCreateNodeSet::DefineNodes(const Base::Polygon2d& polygon,
+                                    const Gui::ViewVolumeProjection& proj, bool inner)
 {
-    const SMESHDS_Mesh* data = pcObject->FemMesh.getValue<Fem::FemMeshObject*>()->FemMesh.getValue().getSMesh()->GetMeshDS();
+    const SMESHDS_Mesh* data = pcObject->FemMesh.getValue<Fem::FemMeshObject*>()
+                                   ->FemMesh.getValue()
+                                   .getSMesh()
+                                   ->GetMeshDS();
 
     SMDS_NodeIteratorPtr aNodeIter = data->nodesIterator();
     Base::Vector3f pt2d;
@@ -183,38 +187,41 @@ void TaskCreateNodeSet::onSelectionChanged(const Gui::SelectionChanges& msg)
     if (msg.Type == Gui::SelectionChanges::AddSelection) {
         std::string subName(msg.pSubName);
         unsigned int i = 0;
-        for (; i < subName.size(); i++)
-            if (msg.pSubName[i] == 'F')
+        for (; i < subName.size(); i++) {
+            if (msg.pSubName[i] == 'F') {
                 break;
+            }
+        }
 
         int elem = atoi(subName.substr(4).c_str());
         int face = atoi(subName.substr(i + 1).c_str());
 
         tempSet.clear();
 
-
         Base::Console().Message("Picked Element:%i Face:%i\n", elem, face);
 
 
         if (!ui->checkBox_Add->isChecked()) {
-            std::set<long> tmp = pcObject->FemMesh.getValue<Fem::FemMeshObject*>()->FemMesh.getValue().getSurfaceNodes(elem, face);
+            std::set<long> tmp = pcObject->FemMesh.getValue<Fem::FemMeshObject*>()
+                                     ->FemMesh.getValue()
+                                     .getSurfaceNodes(elem, face);
             tempSet.insert(tmp.begin(), tmp.end());
         }
-        else
-            tempSet = pcObject->FemMesh.getValue<Fem::FemMeshObject*>()->FemMesh.getValue().getSurfaceNodes(elem, face);
+        else {
+            tempSet = pcObject->FemMesh.getValue<Fem::FemMeshObject*>()
+                          ->FemMesh.getValue()
+                          .getSurfaceNodes(elem, face);
+        }
 
         selectionMode = none;
         Gui::Selection().rmvSelectionGate();
 
         MeshViewProvider->setHighlightNodes(tempSet);
-
     }
 }
 
-
 TaskCreateNodeSet::~TaskCreateNodeSet()
 {
-    delete ui;
     Gui::Selection().rmvSelectionGate();
 }
 

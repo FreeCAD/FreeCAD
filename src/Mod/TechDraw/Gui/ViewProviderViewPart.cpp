@@ -52,6 +52,10 @@
 #include "QGIView.h"
 #include "TaskDetail.h"
 #include "ViewProviderViewPart.h"
+#include "ViewProviderPage.h"
+#include "QGIViewDimension.h"
+#include "QGIViewBalloon.h"
+#include "QGSPage.h"
 
 using namespace TechDrawGui;
 using namespace TechDraw;
@@ -92,11 +96,8 @@ ViewProviderViewPart::ViewProviderViewPart()
     weight = TechDraw::LineGroup::getDefaultWidth("Extra");
     ADD_PROPERTY_TYPE(ExtraWidth, (weight), group, App::Prop_None, "The thickness of LineGroup Extra lines, if enabled");
 
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp")->
-                                                    GetGroup("Preferences")->GetGroup("Mod/TechDraw/Decorations");
-
-    double defScale = hGrp->GetFloat("CenterMarkScale", 0.50);
-    bool   defShowCenters = hGrp->GetBool("ShowCenterMarks", false);
+    double defScale = Preferences::getPreferenceGroup("Decorations")->GetFloat("CenterMarkScale", 0.50);
+    bool   defShowCenters = Preferences::getPreferenceGroup("Decorations")->GetBool("ShowCenterMarks", false);
 
     //decorations
     ADD_PROPERTY_TYPE(HorizCenterLine ,(false), dgroup, App::Prop_None, "Show a horizontal centerline through view");
@@ -132,6 +133,16 @@ ViewProviderViewPart::~ViewProviderViewPart()
 
 void ViewProviderViewPart::onChanged(const App::Property* prop)
 {
+    if (auto part = getViewPart(); part && part->isDerivedFrom(TechDraw::DrawViewDetail::getClassTypeId()) &&
+        prop == &(HighlightAdjust)) {
+        auto detail = static_cast<DrawViewDetail*>(getViewPart());
+        auto baseDvp = dynamic_cast<DrawViewPart*>(detail->BaseView.getValue());
+        if (baseDvp) {
+            baseDvp->requestPaint();
+        }
+        return;
+    }
+
     if (prop == &(LineWidth)   ||
         prop == &(HiddenWidth) ||
         prop == &(IsoWidth) ||
@@ -160,6 +171,7 @@ void ViewProviderViewPart::onChanged(const App::Property* prop)
 
 void ViewProviderViewPart::attach(App::DocumentObject *pcFeat)
 {
+//    Base::Console().Message("VPVP::attach(%s)\n", pcFeat->getNameInDocument());
     TechDraw::DrawViewMulti* dvm = dynamic_cast<TechDraw::DrawViewMulti*>(pcFeat);
     TechDraw::DrawViewDetail* dvd = dynamic_cast<TechDraw::DrawViewDetail*>(pcFeat);
     if (dvm) {
@@ -215,6 +227,7 @@ std::vector<App::DocumentObject*> ViewProviderViewPart::claimChildren() const
         return std::vector<App::DocumentObject*>();
     }
 }
+
 bool ViewProviderViewPart::setEdit(int ModNum)
 {
     if (ModNum != ViewProvider::Default ) {
@@ -301,27 +314,10 @@ bool ViewProviderViewPart::onDelete(const std::vector<std::string> &)
     // get child views
     auto viewSection = getViewObject()->getSectionRefs();
     auto viewDetail = getViewObject()->getDetailRefs();
-    auto viewLeader = getViewObject()->getLeaders();
 
-    if (!viewSection.empty()) {
+    if (!viewSection.empty() || !viewDetail.empty()) {
         bodyMessageStream << qApp->translate("Std_Delete",
-            "You cannot delete this view because it has a section view that would become broken.");
-        QMessageBox::warning(Gui::getMainWindow(),
-            qApp->translate("Std_Delete", "Object dependencies"), bodyMessage,
-            QMessageBox::Ok);
-        return false;
-    }
-    else if (!viewDetail.empty()) {
-        bodyMessageStream << qApp->translate("Std_Delete",
-            "You cannot delete this view because it has a detail view that would become broken.");
-        QMessageBox::warning(Gui::getMainWindow(),
-            qApp->translate("Std_Delete", "Object dependencies"), bodyMessage,
-            QMessageBox::Ok);
-        return false;
-    }
-    else if (!viewLeader.empty()) {
-        bodyMessageStream << qApp->translate("Std_Delete",
-            "You cannot delete this view because it has a leader line that would become broken.");
+            "You cannot delete this view because it has one or more dependent views that would become broken.");
         QMessageBox::warning(Gui::getMainWindow(),
             qApp->translate("Std_Delete", "Object dependencies"), bodyMessage,
             QMessageBox::Ok);
@@ -347,18 +343,41 @@ App::Color ViewProviderViewPart::prefSectionColor()
 
 App::Color ViewProviderViewPart::prefHighlightColor()
 {
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
-        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Decorations");
     App::Color fcColor;
-    fcColor.setPackedValue(hGrp->GetUnsigned("HighlightColor", 0x00000000));
+    fcColor.setPackedValue(Preferences::getPreferenceGroup("Decorations")->GetUnsigned("HighlightColor", 0x00000000));
     return fcColor;
 }
 
 int ViewProviderViewPart::prefHighlightStyle()
 {
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
-        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Decorations");
-    return hGrp->GetInt("HighlightStyle", 2);
+    return Preferences::getPreferenceGroup("Decorations")->GetInt("HighlightStyle", 2);
 }
 
+// it can happen that Dimensions/Balloons/etc can lose their parent item if the
+// the parent is deleted, then undo is invoked.  The linkages on the App side are
+// handled by the undo mechanism, but the QGraphicsScene parentage is not reset.
+// TODO: does this need to be implemented for Leaderlines and ???? others?
+void ViewProviderViewPart::fixSceneDependencies()
+{
+//    Base::Console().Message("VPVP::fixSceneDependencies()\n");
+    auto scene = getViewProviderPage()->getQGSPage();
+    auto partQView = getQView();
 
+    auto dimensions =  getViewPart()->getDimensions();
+    for (auto& dim : dimensions) {
+        auto dimQView = dynamic_cast<QGIViewDimension *>(scene->findQViewForDocObj(dim));
+        if (dimQView && dimQView->parentItem() != partQView) {
+            // need to add the dim QView to this QGIViewPart
+            scene->addDimToParent(dimQView, partQView);
+        }
+    }
+
+    auto balloons = getViewPart()->getBalloons();
+    for (auto& bal : balloons) {
+        auto balQView = dynamic_cast<QGIViewBalloon*>(scene->findQViewForDocObj(bal));
+        if (balQView && balQView->parentItem() != partQView) {
+            // need to add the balloon QView to this QGIViewPart
+            scene->addBalloonToParent(balQView, partQView);
+        }
+    }
+}

@@ -76,7 +76,7 @@ class Fillet(gui_base_original.Creator):
             tooltip = translate("draft", "Radius of fillet")
 
             # Call the task panel defined in DraftGui to enter a radius.
-            self.ui.taskUi(title=translate("Draft", self.featureName), icon="Draft_Fillet")
+            self.ui.taskUi(title=translate("Draft", "Fillet"), icon="Draft_Fillet")
             self.ui.radiusUi()
             self.ui.sourceCmd = self
             self.ui.labelRadius.setText(label)

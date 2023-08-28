@@ -30,8 +30,8 @@ setup()
 """
 
 # constraint transform with a constraint force
-# https://forum.freecadweb.org/viewtopic.php?t=19037
-# https://forum.freecadweb.org/viewtopic.php?t=18970
+# https://forum.freecad.org/viewtopic.php?t=19037
+# https://forum.freecad.org/viewtopic.php?t=18970
 
 import FreeCAD
 
@@ -52,7 +52,7 @@ def get_information():
         "constraints": ["fixed", "force", "transform"],
         "solvers": ["calculix", "ccxtools"],
         "material": "solid",
-        "equation": "mechanical"
+        "equations": ["mechanical"]
     }
 
 
@@ -65,9 +65,9 @@ setup()
 
 
 See forum topic post:
-https://forum.freecadweb.org/viewtopic.php?f=18&t=19037&start=10#p515447
-https://forum.freecadweb.org/viewtopic.php?t=19037
-https://forum.freecadweb.org/viewtopic.php?t=18970
+https://forum.freecad.org/viewtopic.php?f=18&t=19037&start=10#p515447
+https://forum.freecad.org/viewtopic.php?t=19037
+https://forum.freecad.org/viewtopic.php?t=18970
 
 constraint transform with a constraint force
 
@@ -120,7 +120,7 @@ def setup(doc=None, solvertype="ccxtools"):
         solver_obj.WorkingDir = u""
     else:
         FreeCAD.Console.PrintWarning(
-            "Not known or not supported solver type: {}. "
+            "Unknown or unsupported solver type: {}. "
             "No solver object was created.\n".format(solvertype)
         )
     if solvertype == "calculix" or solvertype == "ccxtools":

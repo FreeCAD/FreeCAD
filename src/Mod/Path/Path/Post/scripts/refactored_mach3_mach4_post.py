@@ -21,7 +21,7 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************/
-from __future__ import print_function
+
 
 import Path.Post.UtilsArguments as PostUtilsArguments
 import Path.Post.UtilsExport as PostUtilsExport
@@ -40,8 +40,8 @@ import Path.Post.UtilsExport as PostUtilsExport
 #
 TOOLTIP = """
 This is a postprocessor file for the Path workbench. It is used to
-take a pseudo-gcode fragment outputted by a Path object, and output
-real GCode suitable for a mach3_4 3 axis mill. This postprocessor, once placed
+take a pseudo-G-code fragment outputted by a Path object, and output
+real G-code suitable for a mach3_4 3 axis mill. This postprocessor, once placed
 in the appropriate PathScripts folder, can be used directly from inside
 FreeCAD, via the GUI importer or via python scripts with:
 
@@ -151,7 +151,8 @@ def init_arguments(values, argument_defaults, arguments_visible):
         values, argument_defaults, arguments_visible
     )
     #
-    # Add any argument definitions that are not shared with all other postprocessors here.
+    # Add any argument definitions that are not shared with all other
+    # postprocessors here.
     #
     return parser
 

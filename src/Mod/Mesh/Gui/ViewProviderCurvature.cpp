@@ -23,6 +23,7 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <algorithm>
+# include <iomanip>
 # include <ios>
 # include <sstream>
 # include <QCursor>
@@ -159,9 +160,9 @@ void ViewProviderMeshCurvature::init(const Mesh::PropertyCurvatureList* pCurvInf
     aMinValues.reserve(fCurvInfo.size());
     aMaxValues.reserve(fCurvInfo.size());
 
-    for ( std::vector<Mesh::CurvatureInfo>::const_iterator jt=fCurvInfo.begin();jt!=fCurvInfo.end(); ++jt ) {
-        aMinValues.push_back( jt->fMinCurvature );
-        aMaxValues.push_back( jt->fMaxCurvature );
+    for (const auto & jt : fCurvInfo) {
+        aMinValues.push_back( jt.fMinCurvature );
+        aMaxValues.push_back( jt.fMaxCurvature );
     }
 
     if ( aMinValues.empty() || aMaxValues.empty() )
@@ -172,15 +173,15 @@ void ViewProviderMeshCurvature::init(const Mesh::PropertyCurvatureList* pCurvInf
 
     // histogram over all values
     std::map<int, int> aHistogram;
-    for ( std::vector<float>::const_iterator kt = aMinValues.begin(); kt != aMinValues.end(); ++kt ) {
-        int grp = (int)(10.0f*( *kt - fMin )/( fMax - fMin ));
+    for (float aMinValue : aMinValues) {
+        int grp = (int)(10.0f*( aMinValue - fMin )/( fMax - fMin ));
         aHistogram[grp]++;
     }
 
     float fRMin=-1.0f;
-    for ( std::map<int, int>::iterator mIt = aHistogram.begin(); mIt != aHistogram.end(); ++mIt ) {
-        if ( (float)mIt->second / (float)aMinValues.size() > 0.15f ) {
-            fRMin = mIt->first * ( fMax - fMin )/10.0f + fMin;
+    for (const auto & mIt : aHistogram) {
+        if ( (float)mIt.second / (float)aMinValues.size() > 0.15f ) {
+            fRMin = mIt.first * ( fMax - fMin )/10.0f + fMin;
             break;
         }
     }
@@ -190,8 +191,8 @@ void ViewProviderMeshCurvature::init(const Mesh::PropertyCurvatureList* pCurvInf
 
     // histogram over all values
     aHistogram.clear();
-    for ( std::vector<float>::const_iterator it2 = aMaxValues.begin(); it2 != aMaxValues.end(); ++it2 ) {
-        int grp = (int)(10.0f*( *it2 - fMin )/( fMax - fMin ));
+    for (float aMaxValue : aMaxValues) {
+        int grp = (int)(10.0f*( aMaxValue - fMin )/( fMax - fMin ));
         aHistogram[grp]++;
     }
 
@@ -424,9 +425,6 @@ public:
         : vp(vp), s(s), p(p), n(n)
     {
     }
-    ~Annotation()
-    {
-    }
 
     static void run(void * data, SoSensor * sensor)
     {
@@ -444,9 +442,9 @@ public:
             (App::DocumentObjectGroup::getClassTypeId());
         App::DocumentObjectGroup* group = nullptr;
         std::string internalname = "CurvatureGroup";
-        for (std::vector<App::DocumentObject*>::iterator it = groups.begin(); it != groups.end(); ++it) {
-            if (internalname == (*it)->getNameInDocument()) {
-                group = static_cast<App::DocumentObjectGroup*>(*it);
+        for (const auto & it : groups) {
+            if (internalname == it->getNameInDocument()) {
+                group = static_cast<App::DocumentObjectGroup*>(it);
                 break;
             }
         }
@@ -459,8 +457,8 @@ public:
             (group->addObject("App::AnnotationLabel", internalname.c_str()));
         QStringList lines = s.split(QLatin1String("\n"));
         std::vector<std::string> text;
-        for (QStringList::Iterator it = lines.begin(); it != lines.end(); ++it)
-            text.emplace_back((const char*)it->toLatin1());
+        for (const auto & line : lines)
+            text.emplace_back((const char*)line.toLatin1());
         anno->LabelText.setValues(text);
         std::stringstream str;
         str << "Curvature info (" << group->Group.getSize() << ")";
@@ -518,7 +516,7 @@ void ViewProviderMeshCurvature::curvatureInfoCallback(void * ud, SoEventCallback
 
             // By specifying the indexed mesh node 'pcFaceSet' we make sure that the picked point is
             // really from the mesh we render and not from any other geometry
-            Gui::ViewProvider* vp = view->getDocument()->getViewProviderByPathFromTail(point->getPath());
+            Gui::ViewProvider* vp = view->getViewProviderByPathFromTail(point->getPath());
             if (!vp || !vp->getTypeId().isDerivedFrom(ViewProviderMeshCurvature::getClassTypeId()))
                 return;
             ViewProviderMeshCurvature* self = static_cast<ViewProviderMeshCurvature*>(vp);
@@ -552,7 +550,7 @@ void ViewProviderMeshCurvature::curvatureInfoCallback(void * ud, SoEventCallback
 
         // By specifying the indexed mesh node 'pcFaceSet' we make sure that the picked point is
         // really from the mesh we render and not from any other geometry
-        Gui::ViewProvider* vp = view->getDocument()->getViewProviderByPathFromTail(point->getPath());
+        Gui::ViewProvider* vp = view->getViewProviderByPathFromTail(point->getPath());
         if (!vp || !vp->getTypeId().isDerivedFrom(ViewProviderMeshCurvature::getClassTypeId()))
             return;
         ViewProviderMeshCurvature* that = static_cast<ViewProviderMeshCurvature*>(vp);

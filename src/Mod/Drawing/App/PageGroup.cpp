@@ -20,17 +20,15 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-
 #ifndef _PreComp_
 # include <sstream>
 #endif
 
 #include "PageGroup.h"
 
-using namespace Drawing;
 
+using namespace Drawing;
 
 //===========================================================================
 // PageGroup

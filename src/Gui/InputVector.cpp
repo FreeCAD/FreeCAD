@@ -74,18 +74,16 @@ LocationWidget::LocationWidget (QWidget * parent)
     auto gridLayout = new QGridLayout(this);
     gridLayout->addLayout(box, 0, 0, 1, 2);
 
-    connect(dValue, SIGNAL(activated(int)),
-            this, SLOT(on_direction_activated(int)));
+    connect(dValue, qOverload<int>(&QComboBox::activated),
+            this, &LocationWidget::onDirectionActivated);
     retranslateUi();
 }
 
-LocationWidget::~LocationWidget()
-{
-}
+LocationWidget::~LocationWidget() = default;
 
 QSize LocationWidget::sizeHint() const
 {
-    return QSize(150,100);
+    return {150,100};
 }
 
 void LocationWidget::changeEvent(QEvent* e)
@@ -202,7 +200,7 @@ Base::Vector3d LocationWidget::getUserDirection(bool* ok) const
     return dir;
 }
 
-void LocationWidget::on_direction_activated(int index)
+void LocationWidget::onDirectionActivated(int index)
 {
     // last item is selected to define direction by user
     if (index+1 == dValue->count()) {
@@ -227,9 +225,7 @@ LocationDialog::LocationDialog(QWidget* parent, Qt::WindowFlags fl)
 {
 }
 
-LocationDialog::~LocationDialog()
-{
-}
+LocationDialog::~LocationDialog() = default;
 
 Base::Vector3d LocationDialog::getUserDirection(bool* ok) const
 {
@@ -253,17 +249,14 @@ Base::Vector3d LocationDialog::getUserDirection(bool* ok) const
     return dir;
 }
 
-void LocationDialog::on_direction_activated(int index)
+void LocationDialog::onDirectionActivated(int index)
 {
     directionActivated(index);
 }
 
 // -----------------------------------------------------------
 
-LocationDialogUiImp::~LocationDialogUiImp()
-{
-    // no need to delete child widgets, Qt does it all for us
-}
+LocationDialogUiImp::~LocationDialogUiImp() = default;
 
 Base::Vector3d LocationDialogUiImp::getDirection() const
 {

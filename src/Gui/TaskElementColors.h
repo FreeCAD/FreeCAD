@@ -44,17 +44,18 @@ public:
     bool accept();
     bool reject();
 
-private Q_SLOTS:
-    void on_removeSelection_clicked();
-    void on_addSelection_clicked();
-    void on_removeAll_clicked();
-    void on_elementList_itemDoubleClicked(QListWidgetItem *item);
-    void on_elementList_itemSelectionChanged();
-    void on_elementList_itemEntered(QListWidgetItem *item);
-    void on_recompute_clicked(bool checked);
-    void on_onTop_clicked(bool checked);
-    void on_hideSelection_clicked();
-    void on_boxSelect_clicked();
+private:
+    void setupConnections();
+    void onRemoveSelectionClicked();
+    void onAddSelectionClicked();
+    void onRemoveAllClicked();
+    void onElementListItemDoubleClicked(QListWidgetItem *item);
+    void onElementListItemSelectionChanged();
+    void onElementListItemEntered(QListWidgetItem *item);
+    void onRecomputeClicked(bool checked);
+    void onTopClicked(bool checked);
+    void onHideSelectionClicked();
+    void onBoxSelectClicked();
 
 protected:
     void onSelectionChanged(const SelectionChanges& msg) override;

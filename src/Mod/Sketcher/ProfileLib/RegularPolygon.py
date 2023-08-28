@@ -25,7 +25,7 @@ import FreeCAD, FreeCADGui, Sketcher, Part, math
 
 __title__="Regular polygon profile lib"
 __author__ = "Johan Kristensen"
-__url__ = "http://www.freecadweb.org"
+__url__ = "http://www.freecad.org"
 
 App = FreeCAD
 Gui = FreeCADGui
@@ -35,7 +35,7 @@ def makeRegularPolygon(
         sides,
         centerPoint=App.Vector(0,0,0),
         firstCornerPoint=App.Vector(-20.00,34.64,0),
-	construction=False):
+    construction=False):
 
     if not sketch:
         App.Console.PrintError("No sketch specified in 'makeRegularPolygon'")

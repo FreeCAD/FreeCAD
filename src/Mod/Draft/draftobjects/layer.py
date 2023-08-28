@@ -30,6 +30,9 @@
 # @{
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
+from draftutils.messages import _wrn
+from draftutils.translate import translate
+
 
 class Layer:
     """The Layer object.
@@ -44,13 +47,6 @@ class Layer:
 
         obj.Proxy = self
 
-    def onDocumentRestored(self, obj):
-        """Execute code when the document is restored.
-
-        Add properties that don't exist.
-        """
-        self.set_properties(obj)
-
     def set_properties(self, obj):
         """Set properties only if they don't exist."""
         if "Group" not in obj.PropertiesList:
@@ -60,6 +56,29 @@ class Layer:
                             "Group",
                             "Layer",
                             _tip)
+
+    def onDocumentRestored(self, obj):
+        """Execute code when the document is restored."""
+        self.set_properties(obj)
+
+        if self.Type != "VisGroup":
+            return
+        if not hasattr(obj, "ViewObject"):
+            return
+        vobj = obj.ViewObject
+        if not vobj:
+            return
+        self.add_missing_properties_0v19(obj, vobj)
+        self.Type = "Layer"
+
+    def add_missing_properties_0v19(self, obj, vobj):
+        """Update view properties."""
+        # It is not possible to change the property group of obj.Group.
+        for prop in ("DrawStyle", "LineColor", "LineWidth", "ShapeColor", "Transparency"):
+            vobj.setGroupOfProperty(prop, "Layer")
+        vobj.Proxy.set_properties(vobj)
+        _wrn("v0.19, " + obj.Label + ", "
+             + translate("draft", "added missing view properties"))
 
     def __getstate__(self):
         """Return a tuple of objects to save or None."""

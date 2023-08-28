@@ -25,14 +25,15 @@
 # *                                                                         *
 # ***************************************************************************
 
-# See: https://wiki.freecadweb.org/Path_Post
-#      https://wiki.freecadweb.org/Path_Postprocessor_Customization
+# See: https://wiki.freecad.org/Path_Post
+#      https://wiki.freecad.org/Path_Postprocessor_Customization
 #      for details on post processors like this one.
 
-from __future__ import print_function
+
 import FreeCAD
 from FreeCAD import Units
 import Path
+import PathScripts.PathUtils as PathUtils
 import argparse
 import datetime
 
@@ -44,8 +45,8 @@ VERSION = "0.0.4"
 TOOLTIP = """ Post processor for UC-CNC.
 
 This is a postprocessor file for the Path workbench. It is used to
-take a pseudo-gcode fragment outputted by a Path object, and output
-real GCode. This postprocessor, once placed in the appropriate
+take a pseudo-G-code fragment outputted by a Path object, and output
+real G-code. This postprocessor, once placed in the appropriate
 Path/Tool folder, can be used directly from inside FreeCAD,
 via the GUI importer or via python scripts with:
 
@@ -178,7 +179,7 @@ POSTAMBLE = POSTAMBLE_DEFAULT
 # MODAL possible values:
 #   bool       Repeat/suppress repeated command arguments.
 #    True        commands are suppressed if the same as previous line.
-#    False       commands are repeated ith the same as previout line.
+#    False       commands are repeated if the same as previous line.
 #                set with --modal
 MODAL = False
 
@@ -602,7 +603,7 @@ def parse(pathobj):
         # if OUTPUT_COMMENTS:
         #    out += linenumber() + "(" + pathobj.Label + ")\n"
 
-        for c in pathobj.Path.Commands:
+        for c in PathUtils.getPathWithPlacement(pathobj).Commands:
             commandlist = []  # list of elements in the command, code and params.
             command = c.Name.strip()  # command M or G code or comment string
             commandlist.append(command)

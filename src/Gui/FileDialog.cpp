@@ -77,17 +77,14 @@ bool DialogOptions::dontUseNativeColorDialog()
 FileDialog::FileDialog(QWidget * parent)
   : QFileDialog(parent)
 {
-    connect(this, SIGNAL(filterSelected(const QString&)),
-            this, SLOT(onSelectedFilter(const QString&)));
+    connect(this, &QFileDialog::filterSelected, this, &FileDialog::onSelectedFilter);
 }
 
-FileDialog::~FileDialog()
-{
-}
+FileDialog::~FileDialog() = default;
 
 void FileDialog::onSelectedFilter(const QString& /*filter*/)
 {
-    QRegularExpression rx(QLatin1String("\\(\\*.(\\w+)"));
+    QRegularExpression rx(QLatin1String(R"(\(\*.(\w+))"));
     QString suf = selectedNameFilter();
     auto match = rx.match(suf);
     if (match.hasMatch()) {
@@ -101,6 +98,7 @@ QList<QUrl> FileDialog::fetchSidebarUrls()
     QStringList list;
     list << QStandardPaths::writableLocation(QStandardPaths::DesktopLocation);
     list << QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation);
+    list << QStandardPaths::writableLocation(QStandardPaths::DownloadLocation);
     list << QStandardPaths::writableLocation(QStandardPaths::HomeLocation);
     list << QStandardPaths::writableLocation(QStandardPaths::PicturesLocation);
     list << getWorkingDirectory();
@@ -186,7 +184,7 @@ QString FileDialog::getSaveFileName (QWidget * parent, const QString & caption, 
         }
 
         QRegularExpression rx;
-        rx.setPattern(QLatin1String("\\s(\\(\\*\\.\\w{1,})\\W"));
+        rx.setPattern(QLatin1String(R"(\s(\(\*\.\w{1,})\W)"));
         auto match = rx.match(*filterToSearch);
         if (match.hasMatch()) {
             int index = match.capturedStart();
@@ -245,7 +243,7 @@ QString FileDialog::getSaveFileName (QWidget * parent, const QString & caption, 
         setWorkingDirectory(file);
         return file;
     } else {
-        return QString();
+        return {};
     }
 }
 
@@ -314,7 +312,7 @@ QString FileDialog::getOpenFileName(QWidget * parent, const QString & caption, c
         setWorkingDirectory(file);
         return file;
     } else {
-        return QString();
+        return {};
     }
 }
 
@@ -452,12 +450,10 @@ FileOptionsDialog::FileOptionsDialog( QWidget* parent, Qt::WindowFlags fl )
     auto grid = this->findChild<QGridLayout*>();
     grid->addWidget(extensionButton, 4, 2, Qt::AlignLeft);
 
-    connect(extensionButton, SIGNAL(clicked()), this, SLOT(toggleExtension()));
+    connect(extensionButton, &QPushButton::clicked, this, &FileOptionsDialog::toggleExtension);
 }
 
-FileOptionsDialog::~FileOptionsDialog()
-{
-}
+FileOptionsDialog::~FileOptionsDialog() = default;
 
 void FileOptionsDialog::accept()
 {
@@ -498,7 +494,7 @@ void FileOptionsDialog::accept()
     else if (!fn.isEmpty()) {
         QFileInfo fi(fn);
         QString ext = fi.completeSuffix();
-        QRegularExpression rx(QLatin1String("\\(\\*.(\\w+)"));
+        QRegularExpression rx(QLatin1String(R"(\(\*.(\w+))"));
         QString suf = selectedNameFilter();
         auto match = rx.match(suf);
         if (match.hasMatch())
@@ -584,13 +580,9 @@ QWidget* FileOptionsDialog::getOptionsWidget() const
 /**
  * Constructs an empty file icon provider called \a name, with the parent \a parent.
  */
-FileIconProvider::FileIconProvider()
-{
-}
+FileIconProvider::FileIconProvider() = default;
 
-FileIconProvider::~FileIconProvider()
-{
-}
+FileIconProvider::~FileIconProvider() = default;
 
 QIcon FileIconProvider::icon(IconType type) const
 {
@@ -675,10 +667,8 @@ FileChooser::FileChooser ( QWidget * parent )
 
     layout->addWidget( lineEdit );
 
-    connect(lineEdit, SIGNAL(textChanged(const QString &)),
-            this, SIGNAL(fileNameChanged(const QString &)));
-
-    connect(lineEdit, SIGNAL(editingFinished()), this, SLOT(editingFinished()));
+    connect(lineEdit, &QLineEdit::textChanged, this, &FileChooser::fileNameChanged);
+    connect(lineEdit, &QLineEdit::editingFinished, this, &FileChooser::editingFinished);
 
     button = new QPushButton(QLatin1String("..."), this);
 
@@ -688,14 +678,12 @@ FileChooser::FileChooser ( QWidget * parent )
 
     layout->addWidget(button);
 
-    connect( button, SIGNAL(clicked()), this, SLOT(chooseFile()));
+    connect(button, &QPushButton::clicked, this, &FileChooser::chooseFile);
 
     setFocusProxy(lineEdit);
 }
 
-FileChooser::~FileChooser()
-{
-}
+FileChooser::~FileChooser() = default;
 
 void FileChooser::resizeEvent(QResizeEvent* e)
 {
@@ -725,11 +713,11 @@ void FileChooser::editingFinished()
 }
 
 /**
- * Sets the file name \a s.
+ * Sets the file name \a fn.
  */
-void FileChooser::setFileName( const QString& s )
+void FileChooser::setFileName( const QString& fn )
 {
-    lineEdit->setText( s );
+    lineEdit->setText( fn );
 }
 
 /**
@@ -871,7 +859,7 @@ SelectModule::SelectModule (const QString& type, const SelectModule::Dict& types
         QString module = it.value();
 
         // ignore file types in (...)
-        rx.setPattern(QLatin1String("\\s+\\([\\w\\*\\s\\.]+\\)$"));
+        rx.setPattern(QLatin1String(R"(\s+\([\w\*\s\.]+\)$)"));
         auto match = rx.match(filter);
         if (match.hasMatch()) {
             filter = filter.left(match.capturedStart());
@@ -910,13 +898,15 @@ SelectModule::SelectModule (const QString& type, const SelectModule::Dict& types
     gridLayout->addLayout(hboxLayout, 2, 0, 1, 1);
 
     // connections
-    connect(okButton, SIGNAL(clicked()), this, SLOT(accept()));
-    connect(group, SIGNAL(buttonClicked(int)), this, SLOT(onButtonClicked()));
+    connect(okButton, &QPushButton::clicked, this, &SelectModule::accept);
+#if QT_VERSION < QT_VERSION_CHECK(5,15,0)
+    connect(group, qOverload<int>(&QButtonGroup::buttonClicked), this, &SelectModule::onButtonClicked);
+#else
+    connect(group, &QButtonGroup::idClicked, this, &SelectModule::onButtonClicked);
+#endif
 }
 
-SelectModule::~SelectModule()
-{
-}
+SelectModule::~SelectModule() = default;
 
 void SelectModule::accept()
 {

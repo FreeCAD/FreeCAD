@@ -48,7 +48,7 @@ class TaskSectionView : public QWidget
 public:
     explicit TaskSectionView(TechDraw::DrawViewPart* base);
     explicit TaskSectionView(TechDraw::DrawViewSection* section);
-    ~TaskSectionView() = default;
+    ~TaskSectionView() override = default;
 
     virtual bool accept();
     virtual bool reject();
@@ -60,7 +60,7 @@ protected:
 
     bool apply(bool forceUpdate = false);
     void applyQuick(std::string dir);
-    void applyAligned(Base::Vector3d localUnit);
+    void applyAligned();
 
     TechDraw::DrawViewSection* createSectionView();
     void updateSectionView();
@@ -93,6 +93,8 @@ protected Q_SLOTS:
     void slotViewDirectionChanged(Base::Vector3d newDirection);
 
 private:
+    double requiredRotation(double inputAngle);
+
     std::unique_ptr<Ui_TaskSectionView> ui;
     TechDraw::DrawViewPart* m_base;
     TechDraw::DrawViewSection* m_section;
@@ -121,10 +123,10 @@ private:
     std::string m_savePageName;
 
     int m_applyDeferred;
-    Base::Vector3d m_localUnit;
     CompassWidget* m_compass;
     VectorEditWidget* m_viewDirectionWidget;
     bool m_directionIsSet;
+    bool m_modelIsDirty;
 };
 
 class TaskDlgSectionView : public Gui::TaskView::TaskDialog

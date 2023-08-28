@@ -20,11 +20,12 @@
  *                                                                         *
  ***************************************************************************/
 
+#include "PreCompiled.h"
 
 /*! \namespace MeshGui
     \brief The namespace of the Mesh Graphical interface layer library
 
-    This namespace includes the grafical interface of FreeCAD like:
+    This namespace includes the graphical interface of FreeCAD such as:
 	- The main window
 	- 3D View
 	- Tree

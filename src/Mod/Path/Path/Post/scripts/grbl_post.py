@@ -29,6 +29,7 @@ from FreeCAD import Units
 import Path
 import Path.Base.Util as PathUtil
 import Path.Post.Utils as PostUtils
+import PathScripts.PathUtils as PathUtils
 import argparse
 import datetime
 import shlex
@@ -481,7 +482,7 @@ def parse(pathobj):
         if OUTPUT_COMMENTS:
             out += linenumber() + "(Path: " + pathobj.Label + ")\n"
 
-        for c in pathobj.Path.Commands:
+        for c in PathUtils.getPathWithPlacement(pathobj).Commands:
             outstring = []
             command = c.Name
 
@@ -603,7 +604,9 @@ def drill_translate(outstring, cmd, params):
     global UNIT_FORMAT
     global UNIT_SPEED_FORMAT
 
+
     strFormat = "." + str(PRECISION) + "f"
+    strG0_Initial_Z=("G0 Z" + format(float(CURRENT_Z.getValueAs(UNIT_FORMAT)), strFormat) + "\n")
 
     trBuff = ""
 
@@ -630,8 +633,8 @@ def drill_translate(outstring, cmd, params):
         drill_Z += CURRENT_Z
         RETRACT_Z += CURRENT_Z
 
-    if DRILL_RETRACT_MODE == "G98" and CURRENT_Z >= RETRACT_Z:
-        RETRACT_Z = CURRENT_Z
+#    if DRILL_RETRACT_MODE == "G98" and CURRENT_Z >= RETRACT_Z:
+#        RETRACT_Z = CURRENT_Z
 
     # get the other parameters
     drill_feedrate = Units.Quantity(params["F"], FreeCAD.Units.Velocity)
@@ -670,10 +673,10 @@ def drill_translate(outstring, cmd, params):
             + "\n"
         )
         if CURRENT_Z > RETRACT_Z:
-            # NIST GCODE 3.5.16.1 Preliminary and In-Between Motion says G0 to RETRACT_Z. Here use G1 since retract height may be below surface !
+            # NIST GCODE 3.5.16.1 Preliminary and In-Between Motion says G0 to RETRACT_Z.
             trBuff += (
                 linenumber()
-                + "G1 Z"
+                + "G0 Z"
                 + format(float(RETRACT_Z.getValueAs(UNIT_FORMAT)), strFormat)
                 + strF_Feedrate
             )
@@ -726,7 +729,11 @@ def drill_translate(outstring, cmd, params):
                             + format(float(drill_Z.getValueAs(UNIT_FORMAT)), strFormat)
                             + strF_Feedrate
                         )
-                        trBuff += linenumber() + strG0_RETRACT_Z
+
+                        if DRILL_RETRACT_MODE == "G98" :
+                            trBuff += (linenumber() + strG0_Initial_Z)
+                        else:
+                            trBuff += (linenumber() + strG0_RETRACT_Z)
                         break
 
     except Exception as e:

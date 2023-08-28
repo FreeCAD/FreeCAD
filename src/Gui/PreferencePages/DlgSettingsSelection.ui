@@ -1,0 +1,293 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Gui::Dialog::DlgSettingsSelection</class>
+ <widget class="QWidget" name="Gui::Dialog::DlgSettingsSelection">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>670</width>
+    <height>411</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Selection</string>
+  </property>
+  <layout class="QGridLayout">
+   <property name="leftMargin">
+    <number>9</number>
+   </property>
+   <property name="topMargin">
+    <number>9</number>
+   </property>
+   <property name="rightMargin">
+    <number>9</number>
+   </property>
+   <property name="bottomMargin">
+    <number>9</number>
+   </property>
+   <property name="spacing">
+    <number>6</number>
+   </property>
+   <item row="0" column="0">
+    <widget class="Gui::PrefCheckBox" name="checkBoxPreselection">
+     <property name="minimumSize">
+      <size>
+       <width>240</width>
+       <height>0</height>
+      </size>
+     </property>
+     <property name="toolTip">
+      <string>Enable preselection, highlighted with specified color</string>
+     </property>
+     <property name="text">
+      <string>Enable preselection</string>
+     </property>
+     <property name="checked">
+      <bool>true</bool>
+     </property>
+     <property name="prefEntry" stdset="0">
+      <cstring>EnablePreselection</cstring>
+     </property>
+     <property name="prefPath" stdset="0">
+      <cstring>View</cstring>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="1">
+    <widget class="Gui::PrefColorButton" name="HighlightColor">
+     <property name="text">
+      <string/>
+     </property>
+     <property name="color">
+      <color>
+       <red>225</red>
+       <green>225</green>
+       <blue>20</blue>
+      </color>
+     </property>
+     <property name="prefEntry" stdset="0">
+      <cstring>HighlightColor</cstring>
+     </property>
+     <property name="prefPath" stdset="0">
+      <cstring>View</cstring>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="0">
+    <widget class="Gui::PrefCheckBox" name="checkBoxSelection">
+     <property name="toolTip">
+      <string>Enable selection, highlighted with specified color</string>
+     </property>
+     <property name="text">
+      <string>Enable selection</string>
+     </property>
+     <property name="checked">
+      <bool>true</bool>
+     </property>
+     <property name="prefEntry" stdset="0">
+      <cstring>EnableSelection</cstring>
+     </property>
+     <property name="prefPath" stdset="0">
+      <cstring>View</cstring>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="1">
+    <widget class="Gui::PrefColorButton" name="SelectionColor">
+     <property name="text">
+      <string/>
+     </property>
+     <property name="color">
+      <color>
+       <red>28</red>
+       <green>173</green>
+       <blue>28</blue>
+      </color>
+     </property>
+     <property name="prefEntry" stdset="0">
+      <cstring>SelectionColor</cstring>
+     </property>
+     <property name="prefPath" stdset="0">
+      <cstring>View</cstring>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="0">
+    <layout class="QHBoxLayout" name="horizontalLayout_1">
+     <item>
+      <widget class="QLabel" name="spinPickRadiusLabel">
+       <property name="text">
+        <string>Pick radius (px):</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <spacer name="horizSpacer_1">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>250</width>
+         <height>10</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+    </layout>
+   </item>
+   <item row="2" column="1">
+    <widget class="Gui::PrefDoubleSpinBox" name="spinPickRadius">
+     <property name="minimumSize">
+      <size>
+       <width>120</width>
+       <height>0</height>
+      </size>
+     </property>
+     <property name="toolTip">
+      <string>Area for picking elements in 3D view.
+Larger value eases to pick things, but can make small features impossible to select.
+      </string>
+     </property>
+     <property name="inputMethodHints">
+      <set>Qt::ImhPreferNumbers</set>
+     </property>
+     <property name="decimals">
+      <number>1</number>
+     </property>
+     <property name="minimum">
+      <double>0.500000000000000</double>
+     </property>
+     <property name="maximum">
+      <double>200.000000000000000</double>
+     </property>
+     <property name="value">
+      <double>5.000000000000000</double>
+     </property>
+     <property name="prefEntry" stdset="0">
+      <cstring>PickRadius</cstring>
+     </property>
+     <property name="prefPath" stdset="0">
+      <cstring>View</cstring>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="0" colspan="2">
+    <widget class="Gui::PrefCheckBox" name="checkBoxAutoSwitch">
+     <property name="text">
+      <string>Auto switch to the 3D view containing the selected item</string>
+     </property>
+     <property name="prefEntry" stdset="0">
+      <cstring>SyncView</cstring>
+     </property>
+     <property name="prefPath" stdset="0">
+      <cstring>TreeView</cstring>
+     </property>
+    </widget>
+   </item>
+   <item row="4" column="0" colspan="2">
+    <widget class="Gui::PrefCheckBox" name="checkBoxAutoExpand">
+     <property name="text">
+      <string>Auto expand tree item when the corresponding object is selected in 3D view</string>
+     </property>
+     <property name="prefEntry" stdset="0">
+      <cstring>SyncSelection</cstring>
+     </property>
+     <property name="prefPath" stdset="0">
+      <cstring>TreeView</cstring>
+     </property>
+    </widget>
+   </item>
+   <item row="5" column="0" colspan="2">
+    <widget class="Gui::PrefCheckBox" name="checkBoxPreselect">
+     <property name="text">
+      <string>Preselect the object in 3D view when mouse over the tree item</string>
+     </property>
+     <property name="prefEntry" stdset="0">
+      <cstring>PreSelection</cstring>
+     </property>
+     <property name="prefPath" stdset="0">
+      <cstring>TreeView</cstring>
+     </property>
+    </widget>
+   </item>
+   <item row="6" column="0" colspan="2">
+    <widget class="Gui::PrefCheckBox" name="checkBoxRecord">
+     <property name="text">
+      <string>Record selection in tree view in order to go back/forward using navigation button</string>
+     </property>
+     <property name="prefEntry" stdset="0">
+      <cstring>RecordSelection</cstring>
+     </property>
+     <property name="prefPath" stdset="0">
+      <cstring>TreeView</cstring>
+     </property>
+    </widget>
+   </item>
+   <item row="7" column="0" colspan="2">
+    <widget class="Gui::PrefCheckBox" name="checkBoxSelectionCheckBoxes">
+     <property name="text">
+      <string>Add checkboxes for selection in document tree</string>
+     </property>
+     <property name="prefEntry" stdset="0">
+      <cstring>CheckBoxesSelection</cstring>
+     </property>
+     <property name="prefPath" stdset="0">
+      <cstring>TreeView</cstring>
+     </property>
+    </widget>
+   </item>
+   <item row="8" column="0" colspan="2">
+    <spacer name="verticalSpacer">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>245</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+  </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>Gui::PrefDoubleSpinBox</class>
+   <extends>QDoubleSpinBox</extends>
+   <header>Gui/PrefWidgets.h</header>
+  </customwidget>
+  <customwidget>
+   <class>Gui::ColorButton</class>
+   <extends>QPushButton</extends>
+   <header>Gui/Widgets.h</header>
+  </customwidget>
+  <customwidget>
+   <class>Gui::PrefColorButton</class>
+   <extends>Gui::ColorButton</extends>
+   <header>Gui/PrefWidgets.h</header>
+  </customwidget>
+  <customwidget>
+   <class>Gui::PrefCheckBox</class>
+   <extends>QCheckBox</extends>
+   <header>Gui/PrefWidgets.h</header>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+  <connections>
+  <connection>
+   <sender>checkBoxPreselection</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>HighlightColor</receiver>
+   <slot>setEnabled(bool)</slot>
+  </connection>
+  <connection>
+   <sender>checkBoxSelection</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>SelectionColor</receiver>
+   <slot>setEnabled(bool)</slot>
+  </connection>
+ </connections>
+</ui>

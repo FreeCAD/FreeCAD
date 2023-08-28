@@ -48,6 +48,7 @@ SET(Points_SRCS
     PropertyPointKernel.h
     Structured.cpp
     Structured.h
+    Tools.h
 )
 
 set(Points_Scripts

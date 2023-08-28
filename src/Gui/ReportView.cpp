@@ -32,6 +32,7 @@
 #endif
 
 #include <Base/Interpreter.h>
+#include <App/Color.h>
 
 #include "ReportView.h"
 #include "Application.h"
@@ -94,10 +95,7 @@ ReportView::ReportView( QWidget* parent )
 /**
  *  Destroys the object and frees any allocated resources
  */
-ReportView::~ReportView()
-{
-    // no need to delete child widgets, Qt does it all for us
-}
+ReportView::~ReportView() = default;
 
 void ReportView::changeEvent(QEvent *e)
 {
@@ -133,9 +131,7 @@ ReportHighlighter::ReportHighlighter(QTextEdit* edit)
     errCol = Qt::red;
 }
 
-ReportHighlighter::~ReportHighlighter()
-{
-}
+ReportHighlighter::~ReportHighlighter() = default;
 
 void ReportHighlighter::highlightBlock (const QString & text)
 {
@@ -169,6 +165,9 @@ void ReportHighlighter::highlightBlock (const QString & text)
         case LogText:
             setFormat(start, it.length-start, logCol);
             break;
+        case Critical:
+            setFormat(start, it.length-start, criticalCol);
+            break;
         default:
             break;
         }
@@ -200,6 +199,11 @@ void ReportHighlighter::setWarningColor( const QColor& col )
 void ReportHighlighter::setErrorColor( const QColor& col )
 {
     errCol = col;
+}
+
+void ReportHighlighter::setCriticalColor( const QColor& col )
+{
+    criticalCol = col;
 }
 
 // ----------------------------------------------------------------------------
@@ -244,6 +248,15 @@ public:
         bool show = showOnError();
         getGroup()->SetBool("checkShowReportViewOnError", !show);
     }
+    static bool showOnCritical()
+    {
+        return getGroup()->GetBool("checkShowReportViewOnCritical", false);
+    }
+    static void toggleShowOnCritical()
+    {
+        bool show = showOnMessage();
+        getGroup()->SetBool("checkShowReportViewOnCritical", !show);
+    }
 
 private:
     static ParameterGrp::handle getGroup()
@@ -270,8 +283,7 @@ public:
     CustomReportEvent(ReportHighlighter::Paragraph p, const QString& s)
     : QEvent(QEvent::Type(QEvent::User))
     { par = p; msg = s;}
-    ~CustomReportEvent() override
-    { }
+    ~CustomReportEvent() override = default;
     const QString& message() const
     { return msg; }
     ReportHighlighter::Paragraph messageType() const
@@ -325,6 +337,11 @@ bool ReportOutputObserver::eventFilter(QObject *obj, QEvent *event)
             }
             else if (msgType == ReportHighlighter::LogText) {
                 if (ReportOutputParameter::showOnLogMessage()) {
+                    showReportView();
+                }
+            }
+            else if (msgType == ReportHighlighter::Critical) {
+                if (ReportOutputParameter::showOnCritical()) {
                     showReportView();
                 }
             }
@@ -449,8 +466,16 @@ void ReportOutput::restoreFont()
     setFont(serifFont);
 }
 
-void ReportOutput::SendLog(const std::string& msg, Base::LogStyle level)
+void ReportOutput::SendLog(const std::string& notifiername, const std::string& msg, Base::LogStyle level,
+                           Base::IntendedRecipient recipient, Base::ContentType content)
 {
+    (void) notifiername;
+
+    // Do not log translated messages, or messages intended only to the user to the Report View
+    if( recipient == Base::IntendedRecipient::User ||
+        content == Base::ContentType::Translated)
+        return;
+
     ReportHighlighter::Paragraph style = ReportHighlighter::LogText;
     switch (level) {
         case Base::LogStyle::Warning:
@@ -464,6 +489,11 @@ void ReportOutput::SendLog(const std::string& msg, Base::LogStyle level)
             break;
         case Base::LogStyle::Log:
             style = ReportHighlighter::LogText;
+            break;
+        case Base::LogStyle::Critical:
+            style = ReportHighlighter::Critical;
+            break;
+        default:
             break;
     }
 
@@ -528,7 +558,7 @@ void ReportOutput::changeEvent(QEvent *ev)
     if (ev->type() == QEvent::StyleChange) {
         QPalette pal = qApp->palette();
         QColor color = pal.windowText().color();
-        unsigned int text = (color.red() << 24) | (color.green() << 16) | (color.blue() << 8);
+        unsigned int text = App::Color::asPackedRGB<QColor>(color);
         auto value = static_cast<unsigned long>(text);
         // if this parameter is not already set use the style's window text color
         value = getWindowParameter()->GetUnsigned("colorText", value);
@@ -543,6 +573,7 @@ void ReportOutput::contextMenuEvent ( QContextMenuEvent * e )
     bool bShowOnNormal = ReportOutputParameter::showOnMessage();
     bool bShowOnWarn = ReportOutputParameter::showOnWarning();
     bool bShowOnError = ReportOutputParameter::showOnError();
+    bool bShowOnCritical = ReportOutputParameter::showOnCritical();
 
     auto menu = new QMenu(this);
     auto optionMenu = new QMenu( menu );
@@ -554,61 +585,70 @@ void ReportOutput::contextMenuEvent ( QContextMenuEvent * e )
     displayMenu->setTitle(tr("Display message types"));
     optionMenu->addMenu(displayMenu);
 
-    QAction* logMsg = displayMenu->addAction(tr("Normal messages"), this, SLOT(onToggleNormalMessage()));
+    QAction* logMsg = displayMenu->addAction(tr("Normal messages"), this, &ReportOutput::onToggleNormalMessage);
     logMsg->setCheckable(true);
     logMsg->setChecked(bMsg);
 
-    QAction* logAct = displayMenu->addAction(tr("Log messages"), this, SLOT(onToggleLogMessage()));
+    QAction* logAct = displayMenu->addAction(tr("Log messages"), this, &ReportOutput::onToggleLogMessage);
     logAct->setCheckable(true);
     logAct->setChecked(bLog);
 
-    QAction* wrnAct = displayMenu->addAction(tr("Warnings"), this, SLOT(onToggleWarning()));
+    QAction* wrnAct = displayMenu->addAction(tr("Warnings"), this, &ReportOutput::onToggleWarning);
     wrnAct->setCheckable(true);
     wrnAct->setChecked(bWrn);
 
-    QAction* errAct = displayMenu->addAction(tr("Errors"), this, SLOT(onToggleError()));
+    QAction* errAct = displayMenu->addAction(tr("Errors"), this, &ReportOutput::onToggleError);
     errAct->setCheckable(true);
     errAct->setChecked(bErr);
+
+    QAction* logCritical = displayMenu->addAction(tr("Critical messages"), this, &ReportOutput::onToggleCritical);
+    logCritical->setCheckable(true);
+    logCritical->setChecked(bCritical);
 
     auto showOnMenu = new QMenu (optionMenu);
     showOnMenu->setTitle(tr("Show Report view on"));
     optionMenu->addMenu(showOnMenu);
 
-    QAction* showNormAct = showOnMenu->addAction(tr("Normal messages"), this, SLOT(onToggleShowReportViewOnNormalMessage()));
+    QAction* showNormAct = showOnMenu->addAction(tr("Normal messages"), this, &ReportOutput::onToggleShowReportViewOnNormalMessage);
     showNormAct->setCheckable(true);
     showNormAct->setChecked(bShowOnNormal);
 
-    QAction* showLogAct = showOnMenu->addAction(tr("Log messages"), this, SLOT(onToggleShowReportViewOnLogMessage()));
+    QAction* showLogAct = showOnMenu->addAction(tr("Log messages"), this, &ReportOutput::onToggleShowReportViewOnLogMessage);
     showLogAct->setCheckable(true);
     showLogAct->setChecked(bShowOnLog);
 
-    QAction* showWrnAct = showOnMenu->addAction(tr("Warnings"), this, SLOT(onToggleShowReportViewOnWarning()));
+    QAction* showWrnAct = showOnMenu->addAction(tr("Warnings"), this, &ReportOutput::onToggleShowReportViewOnWarning);
     showWrnAct->setCheckable(true);
     showWrnAct->setChecked(bShowOnWarn);
 
-    QAction* showErrAct = showOnMenu->addAction(tr("Errors"), this, SLOT(onToggleShowReportViewOnError()));
+    QAction* showErrAct = showOnMenu->addAction(tr("Errors"), this, &ReportOutput::onToggleShowReportViewOnError);
     showErrAct->setCheckable(true);
     showErrAct->setChecked(bShowOnError);
 
+    QAction* showCriticalAct = showOnMenu->addAction(tr("Critical messages"), this, SLOT(onToggleShowReportViewOnCritical()));
+    showCriticalAct->setCheckable(true);
+    showCriticalAct->setChecked(bShowOnCritical);
+
     optionMenu->addSeparator();
 
-    QAction* stdoutAct = optionMenu->addAction(tr("Redirect Python output"), this, SLOT(onToggleRedirectPythonStdout()));
+    QAction* stdoutAct = optionMenu->addAction(tr("Redirect Python output"), this, &ReportOutput::onToggleRedirectPythonStdout);
     stdoutAct->setCheckable(true);
     stdoutAct->setChecked(d->redirected_stdout);
 
-    QAction* stderrAct = optionMenu->addAction(tr("Redirect Python errors"), this, SLOT(onToggleRedirectPythonStderr()));
+    QAction* stderrAct = optionMenu->addAction(tr("Redirect Python errors"), this, &ReportOutput::onToggleRedirectPythonStderr);
     stderrAct->setCheckable(true);
     stderrAct->setChecked(d->redirected_stderr);
 
     optionMenu->addSeparator();
-    QAction* botAct = optionMenu->addAction(tr("Go to end"), this, SLOT(onToggleGoToEnd()));
+    QAction* botAct = optionMenu->addAction(tr("Go to end"), this, &ReportOutput::onToggleGoToEnd);
     botAct->setCheckable(true);
     botAct->setChecked(gotoEnd);
 
     // Use Qt's internal translation of the Copy & Select All commands
     const char* context = "QWidgetTextControl";
     QString copyStr = QCoreApplication::translate(context, "&Copy");
-    QAction* copy = menu->addAction(copyStr, this, SLOT(copy()), QKeySequence(QKeySequence::Copy));
+    QAction* copy = menu->addAction(copyStr, this, &ReportOutput::copy);
+    copy->setShortcut(QKeySequence(QKeySequence::Copy));
     copy->setEnabled(textCursor().hasSelection());
     QIcon icon = QIcon::fromTheme(QString::fromLatin1("edit-copy"));
     if (!icon.isNull())
@@ -616,11 +656,12 @@ void ReportOutput::contextMenuEvent ( QContextMenuEvent * e )
 
     menu->addSeparator();
     QString selectStr = QCoreApplication::translate(context, "Select All");
-    menu->addAction(selectStr, this, SLOT(selectAll()), QKeySequence(QKeySequence::SelectAll));
+    QAction* select = menu->addAction(selectStr, this, &ReportOutput::selectAll);
+    select->setShortcut(QKeySequence(QKeySequence::SelectAll));
 
-    menu->addAction(tr("Clear"), this, SLOT(clear()));
+    menu->addAction(tr("Clear"), this, &ReportOutput::clear);
     menu->addSeparator();
-    menu->addAction(tr("Save As..."), this, SLOT(onSaveAs()));
+    menu->addAction(tr("Save As..."), this, &ReportOutput::onSaveAs);
 
     menu->exec(e->globalPos());
     delete menu;
@@ -663,6 +704,12 @@ bool ReportOutput::isNormalMessage() const
     return bMsg;
 }
 
+
+bool ReportOutput::isCritical() const
+{
+    return bCritical;
+}
+
 void ReportOutput::onToggleError()
 {
     bErr = bErr ? false : true;
@@ -687,6 +734,12 @@ void ReportOutput::onToggleNormalMessage()
     getWindowParameter()->SetBool( "checkMessage", bMsg );
 }
 
+void ReportOutput::onToggleCritical()
+{
+    bCritical = bCritical ? false : true;
+    getWindowParameter()->SetBool( "checkCritical", bCritical );
+}
+
 void ReportOutput::onToggleShowReportViewOnWarning()
 {
     ReportOutputParameter::toggleShowOnWarning();
@@ -700,6 +753,11 @@ void ReportOutput::onToggleShowReportViewOnError()
 void ReportOutput::onToggleShowReportViewOnNormalMessage()
 {
     ReportOutputParameter::toggleShowOnMessage();
+}
+
+void ReportOutput::onToggleShowReportViewOnCritical()
+{
+    ReportOutputParameter::toggleShowOnCritical();
 }
 
 void ReportOutput::onToggleShowReportViewOnLogMessage()
@@ -760,21 +818,28 @@ void ReportOutput::OnChange(Base::Subject<const char*> &rCaller, const char * sR
     else if (strcmp(sReason, "checkMessage") == 0) {
         bMsg = rclGrp.GetBool( sReason, bMsg );
     }
+    else if (strcmp(sReason, "checkCritical") == 0) {
+        bMsg = rclGrp.GetBool( sReason, bMsg );
+    }
     else if (strcmp(sReason, "colorText") == 0) {
+        unsigned long col = rclGrp.GetUnsigned( sReason );
+        reportHl->setTextColor(App::Color::fromPackedRGB<QColor>(col));
+    }
+    else if (strcmp(sReason, "colorCriticalText") == 0) {
         unsigned long col = rclGrp.GetUnsigned( sReason );
         reportHl->setTextColor( QColor( (col >> 24) & 0xff,(col >> 16) & 0xff,(col >> 8) & 0xff) );
     }
     else if (strcmp(sReason, "colorLogging") == 0) {
         unsigned long col = rclGrp.GetUnsigned( sReason );
-        reportHl->setLogColor( QColor( (col >> 24) & 0xff,(col >> 16) & 0xff,(col >> 8) & 0xff) );
+        reportHl->setLogColor(App::Color::fromPackedRGB<QColor>(col));
     }
     else if (strcmp(sReason, "colorWarning") == 0) {
         unsigned long col = rclGrp.GetUnsigned( sReason );
-        reportHl->setWarningColor( QColor( (col >> 24) & 0xff,(col >> 16) & 0xff,(col >> 8) & 0xff) );
+        reportHl->setWarningColor(App::Color::fromPackedRGB<QColor>(col));
     }
     else if (strcmp(sReason, "colorError") == 0) {
         unsigned long col = rclGrp.GetUnsigned( sReason );
-        reportHl->setErrorColor( QColor( (col >> 24) & 0xff,(col >> 16) & 0xff,(col >> 8) & 0xff) );
+        reportHl->setErrorColor(App::Color::fromPackedRGB<QColor>(col));
     }
     else if (strcmp(sReason, "checkGoToEnd") == 0) {
         gotoEnd = rclGrp.GetBool(sReason, gotoEnd);

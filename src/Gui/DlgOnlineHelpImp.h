@@ -53,7 +53,7 @@ protected:
     void changeEvent(QEvent *e) override;
 
 protected:
-    void on_lineEditDownload_fileNameSelected(const QString&);
+    void onLineEditDownloadFileNameSelected(const QString&);
 
 private:
     std::unique_ptr<Ui_DlgOnlineHelp> ui;

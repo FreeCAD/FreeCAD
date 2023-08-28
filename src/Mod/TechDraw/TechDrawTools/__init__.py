@@ -21,7 +21,7 @@
 
 __title__ = "TechDrawTools package"
 __author__  = "WandererFan"
-__url__     = "https://www.freecadweb.org"
+__url__     = "https://www.freecad.org"
 __version__ = "00.01"
 __date__    = "2022-01-11"
 
@@ -33,5 +33,8 @@ from .TDToolsMovers import *
 from .TDToolsUtil import *
 from .CommandShareView import CommandShareView
 from .CommandMoveView import CommandMoveView
+from .CommandAxoLengthDimension import CommandAxoLengthDimension
+from .CommandHoleShaftFit import CommandHoleShaftFit
 from .TaskShareView import TaskShareView
 from .TaskMoveView import TaskMoveView
+from .TaskHoleShaftFit import TaskHoleShaftFit

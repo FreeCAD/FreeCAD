@@ -32,15 +32,13 @@ namespace PartDesign {
 class Module : public Py::ExtensionModule<Module>
 {
 public:
-    Module() : Py::ExtensionModule<Module>("PartDesign")
+    Module() : Py::ExtensionModule<Module>("_PartDesign")
     {
         add_varargs_method("makeFilletArc",&Module::makeFilletArc,
             "makeFilletArc(...) -- Fillet arc."
         );
         initialize("This module is the PartDesign module."); // register with Python
     }
-
-    ~Module() override {}
 
 private:
     Py::Object makeFilletArc(const Py::Tuple& args)

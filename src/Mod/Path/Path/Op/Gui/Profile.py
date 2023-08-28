@@ -31,7 +31,7 @@ from PySide.QtCore import QT_TRANSLATE_NOOP
 
 __title__ = "Path Profile Operation UI"
 __author__ = "sliptonic (Brad Collette)"
-__url__ = "http://www.freecadweb.org"
+__url__ = "http://www.freecad.org"
 __doc__ = "Profile operation page controller and command implementation."
 
 
@@ -68,7 +68,7 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         return form
 
     def getFields(self, obj):
-        """getFields(obj) ... transfers values from UI to obj's proprties"""
+        """getFields(obj) ... transfers values from UI to obj's properties"""
         self.updateToolController(obj, self.form.toolController)
         self.updateCoolant(obj, self.form.coolantController)
 

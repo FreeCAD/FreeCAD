@@ -13265,11 +13265,5 @@
                 "type": "IfcProductRepresentation"
             }
         ]
-    },
-    "IfcUndefined": {
-        "is_abstract": false,
-        "parent": "IfcObject",
-        "attributes": [],
-        "complex_attributes": []
     }
 }

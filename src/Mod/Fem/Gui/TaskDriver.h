@@ -57,16 +57,12 @@ public:
     explicit TaskDriver(Fem::FemAnalysis *pcObject,QWidget *parent = nullptr);
     ~TaskDriver() override;
 
-
-private Q_SLOTS:
-    void SwitchMethod(int Value);
-
 protected:
     Fem::FemAnalysis *pcObject;
 
 private:
     QWidget* proxy;
-    Ui_TaskDriver* ui;
+    std::unique_ptr<Ui_TaskDriver> ui;
 };
 
 } //namespace FemGui

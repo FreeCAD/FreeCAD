@@ -59,8 +59,6 @@ class PythonSyntaxTestCase(unittest.TestCase):
         self.whitelist += ["automotive_design.py"]
         self.whitelist += ["ifc2x3.py"]
         self.whitelist += ["ifc4.py"]
-        self.whitelist += ["__exec_old.py"]
-
 
     def testAll(self):
         mod_dir = os.path.join(App.getHomePath(), "Mod")

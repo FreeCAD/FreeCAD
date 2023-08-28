@@ -67,7 +67,6 @@
 # include <Inventor/nodes/SoSeparator.h>
 # include <Inventor/nodes/SoShapeHints.h>
 
-# include <boost/regex.hpp>
 # include <boost/algorithm/string/predicate.hpp>
 #endif
 
@@ -173,7 +172,7 @@ ViewProviderPartExt::ViewProviderPartExt()
             "in the 3D view (tessellation). Lower values indicate better quality.\n"
             "The value is in percent of object's size.");
     Deviation.setConstraints(&tessRange);
-    ADD_PROPERTY_TYPE(AngularDeflection,(28.65), osgroup, App::Prop_None,
+    ADD_PROPERTY_TYPE(AngularDeflection,(28.5), osgroup, App::Prop_None,
             "Specify how finely to generate the mesh for rendering on screen or when exporting.\n"
             "The default value is 28.5 degrees, or 0.5 radians. The smaller the value\n"
             "the smoother the appearance in the 3D view, and the finer the mesh that will be exported.");
@@ -254,7 +253,7 @@ void ViewProviderPartExt::onChanged(const App::Property* prop)
 {
     // The lower limit of the deviation has been increased to avoid
     // to freeze the GUI
-    // https://forum.freecadweb.org/viewtopic.php?f=3&t=24912&p=195613
+    // https://forum.freecad.org/viewtopic.php?f=3&t=24912&p=195613
     if (prop == &Deviation) {
         if(isUpdateForced()||Visibility.getValue())
             updateVisual();
@@ -509,31 +508,27 @@ std::string ViewProviderPartExt::getElement(const SoDetail* detail) const
 
 SoDetail* ViewProviderPartExt::getDetail(const char* subelement) const
 {
-    std::string element;
-    int index;
-    SoDetail* detail = nullptr;
-    boost::regex ex("^(Face|Edge|Vertex)([1-9][0-9]*)$");
-    boost::cmatch what;
+    auto type = Part::TopoShape::getElementTypeAndIndex(subelement);
+    std::string element = type.first;
+    int index = type.second;
 
-    if (boost::regex_match(subelement, what, ex)) {
-        element = what[1].str();
-        index = std::atoi(what[2].str().c_str());
-
-        if (element == "Face") {
-            detail = new SoFaceDetail();
-            static_cast<SoFaceDetail*>(detail)->setPartIndex(index - 1);
-        }
-        else if (element == "Edge") {
-            detail = new SoLineDetail();
-            static_cast<SoLineDetail*>(detail)->setLineIndex(index - 1);
-        }
-        else if (element == "Vertex") {
-            detail = new SoPointDetail();
-            static_cast<SoPointDetail*>(detail)->setCoordinateIndex(index + nodeset->startIndex.getValue() - 1);
-        }
+    if (element == "Face") {
+        SoFaceDetail* detail = new SoFaceDetail();
+        detail->setPartIndex(index - 1);
+        return detail;
+    }
+    else if (element == "Edge") {
+        SoLineDetail* detail = new SoLineDetail();
+        detail->setLineIndex(index - 1);
+        return detail;
+    }
+    else if (element == "Vertex") {
+        SoPointDetail* detail = new SoPointDetail();
+        static_cast<SoPointDetail*>(detail)->setCoordinateIndex(index + nodeset->startIndex.getValue() - 1);
+        return detail;
     }
 
-    return detail;
+    return nullptr;
 }
 
 std::vector<Base::Vector3d> ViewProviderPartExt::getModelPoints(const SoPickedPoint* pp) const
@@ -578,12 +573,12 @@ std::vector<Base::Vector3d> ViewProviderPartExt::getModelPoints(const SoPickedPo
     }
 
     // if something went wrong returns an empty array
-    return std::vector<Base::Vector3d>();
+    return {};
 }
 
 std::vector<Base::Vector3d> ViewProviderPartExt::getSelectionShape(const char* /*Element*/) const
 {
-    return std::vector<Base::Vector3d>();
+    return {};
 }
 
 void ViewProviderPartExt::setHighlightedFaces(const std::vector<App::Color>& colors)
@@ -787,13 +782,6 @@ void ViewProviderPartExt::setHighlightedPoints(const std::vector<App::Color>& co
         getObject()->touch(true);
     int size = static_cast<int>(colors.size());
     if (size > 1) {
-#if 0
-        int numPoints = coords->point.getNum() - nodeset->startIndex.getValue();
-        if (numPoints != size) {
-            SoDebugError::postWarning("ViewProviderPartExt::setHighlightedPoints",
-                                      "The number of points (%d) doesn't match with the number of colors (%d).", numPoints, size);
-        }
-#endif
         pcPointBind->value = SoMaterialBinding::PER_VERTEX;
         pcPointMaterial->diffuseColor.setNum(size);
         SbColor* ca = pcPointMaterial->diffuseColor.startEditing();
@@ -947,12 +935,30 @@ void ViewProviderPartExt::updateVisual()
 
         // Since OCCT 7.6 a value of equal 0 is not allowed any more, this can happen if a single vertex
         // should be displayed.
-        if (deflection < gp::Resolution())
+        if (deflection < gp::Resolution()) {
             deflection = Precision::Confusion();
+        }
+
+        // For very big objects the computed deflection can become very high and thus leads to a useless
+        // tessellation. To avoid this the upper limit is set to 20.0
+        // See also forum: https://forum.freecad.org/viewtopic.php?t=77521
+        deflection = std::min(deflection, 20.0);
 
         // create or use the mesh on the data structure
         Standard_Real AngDeflectionRads = AngularDeflection.getValue() / 180.0 * M_PI;
+
+#if OCC_VERSION_HEX >= 0x070500
+        IMeshTools_Parameters meshParams;
+        meshParams.Deflection = deflection;
+        meshParams.Relative = Standard_False;
+        meshParams.Angle = AngDeflectionRads;
+        meshParams.InParallel = Standard_True;
+        meshParams.AllowQualityDecrease = Standard_True;
+
+        BRepMesh_IncrementalMesh(cShape, meshParams);
+#else
         BRepMesh_IncrementalMesh(cShape, deflection, Standard_False, AngDeflectionRads, Standard_True);
+#endif
 
         // We must reset the location here because the transformation data
         // are set in the placement property
@@ -1242,8 +1248,8 @@ void ViewProviderPartExt::updateVisual()
             norms[i].normalize();
 
         std::vector<int32_t> lineSetCoords;
-        for (std::map<int, std::vector<int32_t> >::iterator it = lineSetMap.begin(); it != lineSetMap.end(); ++it) {
-            lineSetCoords.insert(lineSetCoords.end(), it->second.begin(), it->second.end());
+        for (const auto & it : lineSetMap) {
+            lineSetCoords.insert(lineSetCoords.end(), it.second.begin(), it.second.end());
             lineSetCoords.push_back(-1);
         }
 
@@ -1275,9 +1281,17 @@ void ViewProviderPartExt::updateVisual()
         // printing some information
         Base::Console().Log("ViewProvider update time: %f s\n",Base::TimeInfo::diffTimeF(start_time,Base::TimeInfo()));
         Base::Console().Log("Shape tria info: Faces:%d Edges:%d Nodes:%d Triangles:%d IdxVec:%d\n",numFaces,numEdges,numNodes,numTriangles,numLines);
+#   else
+    (void)numEdges;
 #   endif
     VisualTouched = false;
+
+    // The material has to be checked again
+    setHighlightedFaces(DiffuseColor.getValues());
+    setHighlightedEdges(LineColorArray.getValues());
+    setHighlightedPoints(PointColorArray.getValue());
 }
+
 void ViewProviderPartExt::forceUpdate(bool enable) {
     if(enable) {
         if(++forceUpdateCount == 1) {

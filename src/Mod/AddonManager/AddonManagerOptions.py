@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
 # ***************************************************************************
 # *                                                                         *
 # *   Copyright (c) 2022 FreeCAD Project Association                        *
@@ -42,7 +43,8 @@ from PySide.QtWidgets import (
 
 translate = FreeCAD.Qt.translate
 
-#pylint: disable=too-few-public-methods
+# pylint: disable=too-few-public-methods
+
 
 class AddonManagerOptions:
     """A class containing a form element that is inserted as a FreeCAD preference page."""

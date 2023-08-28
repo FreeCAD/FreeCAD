@@ -61,22 +61,21 @@ public:
      */
     struct ExtrusionParameters {
         gp_Dir dir;
-        double lengthFwd;
-        double lengthRev;
-        bool solid;
-        double taperAngleFwd; //in radians
-        double taperAngleRev;
+        double lengthFwd{0};
+        double lengthRev{0};
+        bool solid{false};
+        double taperAngleFwd{0}; //in radians
+        double taperAngleRev{0};
         std::string faceMakerClass;
-        ExtrusionParameters(): lengthFwd(0), lengthRev(0), solid(false), taperAngleFwd(0), taperAngleRev(0) {}// constructor to keep garbage out
     };
 
     /** @name methods override feature */
     //@{
     /// recalculate the feature
-    App::DocumentObjectExecReturn *execute(void) override;
+    App::DocumentObjectExecReturn *execute() override;
     short mustExecute() const override;
     /// returns the type name of the view provider
-    const char* getViewProviderName(void) const override {
+    const char* getViewProviderName() const override {
         return "PartGui::ViewProviderExtrusion";
     }
     //@}

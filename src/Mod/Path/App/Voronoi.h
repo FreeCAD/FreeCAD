@@ -28,6 +28,7 @@
 #include <Base/BaseClass.h>
 #include <Base/Handle.h>
 #include <Base/Vector3D.h>
+#include <Mod/Path/PathGlobal.h>
 
 #include <boost/polygon/polygon.hpp>
 #include <boost/polygon/voronoi.hpp>
@@ -43,12 +44,12 @@ namespace Path
   class PathExport Voronoi
     : public Base::BaseClass
   {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
   public:
     //constructors
     Voronoi();
-    ~Voronoi();
+    ~Voronoi() override;
 
     using color_type = std::size_t;
     static const int        InvalidIndex = INT_MAX;

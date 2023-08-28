@@ -5,7 +5,7 @@
       Name="CenterLinePy"
       Twin="CenterLine"
       TwinPointer="CenterLine"
-      Include="Mod/TechDraw/App/Cosmetic.h"
+      Include="Mod/TechDraw/App/CenterLine.h"
       Namespace="TechDraw"
       FatherInclude="Base/PyObjectBase.h"
       FatherNamespace="Base"

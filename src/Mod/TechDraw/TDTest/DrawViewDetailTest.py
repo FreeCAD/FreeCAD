@@ -1,9 +1,9 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
 # test script for DrawViewDetail
 # creates a page, a view and a detail view
-from __future__ import print_function
+
 
 import FreeCAD
 import unittest
@@ -69,7 +69,7 @@ class DrawViewDetailTest(unittest.TestCase):
         loop.exec_()
 
         edges = detail.getVisibleEdges()
-        
+
         self.assertEqual(len(edges), 4, "DrawViewDetail has wrong number of edges")
         self.assertTrue("Up-to-date" in detail.State, "DrawViewDetail is not Up-to-date")
 

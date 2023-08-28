@@ -272,7 +272,7 @@ class MeshFastFacetIterator
 {
 public:
   inline explicit MeshFastFacetIterator (const MeshKernel &rclM);
-  virtual ~MeshFastFacetIterator () {}
+  virtual ~MeshFastFacetIterator () = default;
 
   void Init () { _clIter = _rclFAry.begin(); }
   inline void Next ();
@@ -286,9 +286,9 @@ protected:
   const MeshPointArray& _rclPAry;
   MeshFacetArray::_TConstIterator _clIter;
 
-private:
-  MeshFastFacetIterator (const MeshFastFacetIterator&);
-  void operator = (const MeshFastFacetIterator&);
+public:
+  MeshFastFacetIterator (const MeshFastFacetIterator&) = delete;
+  void operator = (const MeshFastFacetIterator&) = delete;
 };
 
 inline MeshFastFacetIterator::MeshFastFacetIterator (const MeshKernel &rclM)

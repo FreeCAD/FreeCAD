@@ -25,6 +25,8 @@
 
 #include <Base/Placement.h>
 #include <Base/Vector3D.h>
+#include <Mod/Robot/RobotGlobal.h>
+#include "kdl_cp/frames_io.hpp"
 
 
 namespace Robot
@@ -37,10 +39,10 @@ class RobotExport RobotAlgos
 
 public:
 	/// Constructor
-	RobotAlgos(void);
+    RobotAlgos();
 	virtual ~RobotAlgos();
 
-    void Test(void);
+    void Test();
 };
 
 inline  KDL::Frame toFrame(const Base::Placement &To){

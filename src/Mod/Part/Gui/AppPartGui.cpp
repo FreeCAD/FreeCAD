@@ -50,6 +50,7 @@
 #include "ViewProvider.h"
 #include "ViewProvider2DObject.h"
 #include "ViewProviderAttachExtension.h"
+#include "ViewProviderGridExtension.h"
 #include "ViewProviderBoolean.h"
 #include "ViewProviderBox.h"
 #include "ViewProviderCircleParametric.h"
@@ -86,6 +87,7 @@ void loadPartResource()
 {
     // add resources and reloads the translators
     Q_INIT_RESOURCE(Part);
+    Q_INIT_RESOURCE(Part_translation);
     Gui::Translator::instance()->refresh();
 }
 
@@ -97,8 +99,6 @@ public:
     {
         initialize("This module is the PartGui module."); // register with Python
     }
-
-    ~Module() override {}
 
 private:
 };
@@ -155,6 +155,8 @@ PyMOD_INIT_FUNC(PartGui)
     PartGui::SoFCControlPoints                      ::initClass();
     PartGui::ViewProviderAttachExtension            ::init();
     PartGui::ViewProviderAttachExtensionPython      ::init();
+    PartGui::ViewProviderGridExtension              ::init();
+    PartGui::ViewProviderGridExtensionPython        ::init();
     PartGui::ViewProviderSplineExtension            ::init();
     PartGui::ViewProviderSplineExtensionPython      ::init();
     PartGui::ViewProviderPartExt                    ::init();

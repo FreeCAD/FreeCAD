@@ -31,7 +31,7 @@
     <message>
       <location filename="../../UnitTest.ui" line="128"/>
       <source>&amp;Help</source>
-      <translation>&amp; Помоћ</translation>
+      <translation>&amp;Помоћ</translation>
     </message>
     <message>
       <location filename="../../UnitTest.ui" line="131"/>
@@ -51,7 +51,7 @@
     <message>
       <location filename="../../UnitTest.ui" line="154"/>
       <source>&amp;Close</source>
-      <translation>Zatvori</translation>
+      <translation>&amp;Затвори</translation>
     </message>
     <message>
       <location filename="../../UnitTest.ui" line="157"/>
@@ -66,7 +66,7 @@
     <message>
       <location filename="../../UnitTest.ui" line="188"/>
       <source>Run:</source>
-      <translation>Покретање:</translation>
+      <translation>Покрени:</translation>
     </message>
     <message>
       <location filename="../../UnitTest.ui" line="205"/>
@@ -102,12 +102,12 @@
   <context>
     <name>TestGui::UnitTestDialog</name>
     <message>
-      <location filename="../../UnitTestImp.cpp" line="155"/>
+      <location filename="../../UnitTestImp.cpp" line="167"/>
       <source>Help</source>
       <translation>Помоћ</translation>
     </message>
     <message>
-      <location filename="../../UnitTestImp.cpp" line="155"/>
+      <location filename="../../UnitTestImp.cpp" line="167"/>
       <source>Enter the name of a callable object which, when called, will return a TestCase.
 Click 'start', and the test thus produced will be run.
 
@@ -118,12 +118,12 @@ Double click on an error in the tree view to see more information about it, incl
 Два пута кликните на грешку у прегледу стаблом да видите више информација о њему, укључујући праћење спремника.</translation>
     </message>
     <message>
-      <location filename="../../UnitTestImp.cpp" line="167"/>
+      <location filename="../../UnitTestImp.cpp" line="179"/>
       <source>About FreeCAD UnitTest</source>
       <translation>О FreeCAD UnitTest програму</translation>
     </message>
     <message>
-      <location filename="../../UnitTestImp.cpp" line="167"/>
+      <location filename="../../UnitTestImp.cpp" line="179"/>
       <source>Copyright (c) Werner Mayer
 
 FreeCAD UnitTest is part of FreeCAD and supports writing Unit Tests for ones own modules.</source>

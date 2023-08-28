@@ -69,7 +69,7 @@ private:
 
 InputField::InputField(QWidget * parent)
   : ExpressionLineEdit(parent),
-    ExpressionBinding(),
+    ExpressionWidget(),
     validInput(true),
     actUnitValue(0),
     Maximum(DOUBLE_MAX),
@@ -91,7 +91,7 @@ InputField::InputField(QWidget * parent)
     iconLabel->setPixmap(pixmap);
     iconLabel->setStyleSheet(QString::fromLatin1("QLabel { border: none; padding: 0px; }"));
     iconLabel->hide();
-    connect(this, SIGNAL(textChanged(const QString&)), this, SLOT(updateIconLabel(const QString&)));
+    connect(this, &QLineEdit::textChanged, this, &InputField::updateIconLabel);
     int frameWidth = style()->pixelMetric(QStyle::PM_DefaultFrameWidth);
     setStyleSheet(QString::fromLatin1("QLineEdit { padding-right: %1px } ").arg(iconLabel->sizeHint().width() + frameWidth + 1));
     QSize msz = minimumSizeHint();
@@ -100,13 +100,10 @@ InputField::InputField(QWidget * parent)
 
     this->setContextMenuPolicy(Qt::DefaultContextMenu);
 
-    QObject::connect(this, SIGNAL(textChanged(QString)),
-                     this, SLOT(newInput(QString)));
+    connect(this, &QLineEdit::textChanged, this, &InputField::newInput);
 }
 
-InputField::~InputField()
-{
-}
+InputField::~InputField() = default;
 
 void InputField::bind(const App::ObjectIdentifier &_path)
 {
@@ -417,7 +414,7 @@ QByteArray InputField::paramGrpPath() const
 {
     if(_handle.isValid())
         return sGroupString.c_str();
-    return QByteArray();
+    return {};
 }
 
 /// sets the field with a quantity
@@ -568,7 +565,7 @@ void InputField::setPrecision(const int precision)
 
 QString InputField::getFormat() const
 {
-    return QString(QChar::fromLatin1(actQuantity.getFormat().toFormat()));
+    return {QChar::fromLatin1(actQuantity.getFormat().toFormat())};
 }
 
 void InputField::setFormat(const QString& format)
@@ -766,9 +763,7 @@ InputValidator::InputValidator(InputField* parent) : QValidator(parent), dptr(pa
 {
 }
 
-InputValidator::~InputValidator()
-{
-}
+InputValidator::~InputValidator() = default;
 
 void InputValidator::fixup(QString& input) const
 {

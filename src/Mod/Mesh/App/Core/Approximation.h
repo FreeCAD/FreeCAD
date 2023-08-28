@@ -53,10 +53,8 @@ public:
   explicit PolynomialSurface (const Real afCoeff[6])
   { for (int i=0; i<6; i++) m_afCoeff[i] = afCoeff[i]; }
 
-  virtual ~PolynomialSurface () {}
-
   // the function
-  virtual Real F (const Vector3<Real>& rkP) const
+  Real F (const Vector3<Real>& rkP) const override
   {
     return ( m_afCoeff[0]*rkP.X()*rkP.X() +
              m_afCoeff[1]*rkP.Y()*rkP.Y() +
@@ -67,25 +65,25 @@ public:
   }
 
   // first-order partial derivatives
-  virtual Real FX (const Vector3<Real>& rkP) const
+  Real FX (const Vector3<Real>& rkP) const override
   { return (Real)(2.0*m_afCoeff[0]*rkP.X() + m_afCoeff[2] + m_afCoeff[4]*rkP.Y()); }
-  virtual Real FY (const Vector3<Real>& rkP) const
+  Real FY (const Vector3<Real>& rkP) const override
   { return (Real)(2.0*m_afCoeff[1]*rkP.Y() + m_afCoeff[3] + m_afCoeff[4]*rkP.X()); }
-  virtual Real FZ (const Vector3<Real>& /*rkP*/) const
+  Real FZ (const Vector3<Real>& /*rkP*/) const override
   { return (Real)-1.0; }
 
   // second-order partial derivatives
-  virtual Real FXX (const Vector3<Real>& /*rkP*/) const
+  Real FXX (const Vector3<Real>& /*rkP*/) const override
   { return (Real)(2.0*m_afCoeff[0]); }
-  virtual Real FXY (const Vector3<Real>& /*rkP*/) const
+  Real FXY (const Vector3<Real>& /*rkP*/) const override
   { return (Real)(m_afCoeff[4]); }
-  virtual Real FXZ (const Vector3<Real>& /*rkP*/) const
+  Real FXZ (const Vector3<Real>& /*rkP*/) const override
   { return (Real)0.0; }
-  virtual Real FYY (const Vector3<Real>& /*rkP*/) const
+  Real FYY (const Vector3<Real>& /*rkP*/) const override
   { return (Real)(2.0*m_afCoeff[1]); }
-  virtual Real FYZ (const Vector3<Real>& /*rkP*/) const
+  Real FYZ (const Vector3<Real>& /*rkP*/) const override
   { return (Real)0.0; }
-  virtual Real FZZ (const Vector3<Real>& /*rkP*/) const
+  Real FZZ (const Vector3<Real>& /*rkP*/) const override
   { return (Real)0.0; }
 
 protected:
@@ -171,9 +169,11 @@ protected:
     void GetMgcVectorArray( std::vector< Wm4::Vector3<double> >& rcPts ) const;
 
 protected:
+    //NOLINTBEGIN
     std::list< Base::Vector3f > _vPoints; /**< Holds the points for the fit algorithm.  */
-    bool _bIsFitted; /**< Flag, whether the fit has been called. */
-    float _fLastResult; /**< Stores the last result of the fit */
+    bool _bIsFitted{false}; /**< Flag, whether the fit has been called. */
+    float _fLastResult{FLOAT_MAX}; /**< Stores the last result of the fit */
+    //NOLINTEND
 };
 
 // -------------------------------------------------------------------------------
@@ -184,14 +184,7 @@ protected:
 class MeshExport PlaneFit : public Approximation
 {
 public:
-    /**
-     * Construction
-     */
     PlaneFit();
-    /**
-     * Destruction
-     */
-    ~PlaneFit() override;
     Base::Vector3f GetBase() const;
     Base::Vector3f GetDirU() const;
     Base::Vector3f GetDirV() const;
@@ -242,10 +235,12 @@ public:
     Base::BoundBox3f GetBoundings() const;
 
 protected:
+    //NOLINTBEGIN
     Base::Vector3f _vBase; /**< Base vector of the plane. */
     Base::Vector3f _vDirU;
     Base::Vector3f _vDirV;
     Base::Vector3f _vDirW; /**< Normal of the plane. */
+    //NOLINTEND
 };
 
 // -------------------------------------------------------------------------------
@@ -262,16 +257,7 @@ protected:
 class MeshExport QuadraticFit : public Approximation
 {
 public:
-    /**
-     * Construction
-     */
-    QuadraticFit() : Approximation() {
-        std::fill(_fCoeff, _fCoeff+10, 0.0);
-    }
-    /**
-     * Destruction
-     */
-    ~QuadraticFit() override{}
+    QuadraticFit() = default;
     /**
      * Get the quadric coefficients
      * @param ulIndex Number of coefficient (0..9)
@@ -321,8 +307,8 @@ public:
     void CalcEigenValues(double &dLambda1, double &dLambda2, double &dLambda3,
                          Base::Vector3f &clEV1, Base::Vector3f &clEV2, Base::Vector3f &clEV3) const;
 
-protected:
-    double _fCoeff[ 10 ];  /**< Coefficients of the fit */
+private:
+    double _fCoeff[ 10 ]{};  /**< Coefficients of the fit */
 };
 
 // -------------------------------------------------------------------------------
@@ -339,14 +325,7 @@ protected:
 class MeshExport SurfaceFit : public PlaneFit
 {
 public:
-    /**
-     * Construction
-     */
     SurfaceFit();
-    /**
-     * Destruction
-     */
-    ~SurfaceFit() override{}
 
     bool GetCurvatureInfo(double x, double y, double z, double &rfCurv0, double &rfCurv1,
                           Base::Vector3f &rkDir0, Base::Vector3f &rkDir1, double &dDistance);
@@ -383,14 +362,7 @@ protected:
 class MeshExport CylinderFit : public Approximation
 {
 public:
-    /**
-     * Construction
-     */
     CylinderFit();
-    /**
-     * Destruction
-     */
-    ~CylinderFit() override;
     float GetRadius() const;
     Base::Vector3f GetBase() const;
     void SetInitialValues(const Base::Vector3f&, const Base::Vector3f&);
@@ -430,8 +402,8 @@ public:
 protected:
     Base::Vector3f _vBase; /**< Base vector of the cylinder. */
     Base::Vector3f _vAxis; /**< Axis of the cylinder. */
-    float _fRadius; /**< Radius of the cylinder. */
-    bool _initialGuess;
+    float _fRadius{0}; /**< Radius of the cylinder. */
+    bool _initialGuess{false};
 };
 
 // -------------------------------------------------------------------------------
@@ -442,14 +414,7 @@ protected:
 class MeshExport SphereFit : public Approximation
 {
 public:
-    /**
-     * Construction
-     */
     SphereFit();
-    /**
-     * Destruction
-     */
-    ~SphereFit() override;
     float GetRadius() const;
     Base::Vector3f GetCenter() const;
     /**
@@ -473,7 +438,7 @@ public:
 
 protected:
     Base::Vector3f _vCenter; /**< Center of the sphere. */
-    float _fRadius; /**< Radius of the cylinder. */
+    float _fRadius{0}; /**< Radius of the cylinder. */
 };
 
 // -------------------------------------------------------------------------------
@@ -645,21 +610,14 @@ private:
     /**
      * Private construction.
      */
-    FunctionContainer(){}
+    FunctionContainer() = default;
 };
 
 class MeshExport PolynomialFit : public Approximation
 {
 public:
-    /**
-     * Construction
-     */
     PolynomialFit();
 
-    /**
-     * Destruction
-     */
-    ~PolynomialFit() override;
     float Fit() override;
     float Value(float x, float y) const;
 

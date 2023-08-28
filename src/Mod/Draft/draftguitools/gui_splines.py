@@ -65,7 +65,7 @@ class BSpline(gui_lines.Line):
 
         Activate the specific BSpline tracker.
         """
-        super(BSpline, self).Activated(name="Bspline", icon="Draft_BSpline")
+        super(BSpline, self).Activated(name="Bspline", icon="Draft_BSpline", task_title=translate("draft","B-Spline"))
         if self.doc:
             self.bsplinetrack = trackers.bsplineTracker()
 
@@ -157,8 +157,6 @@ class BSpline(gui_lines.Line):
         """
         if self.ui:
             self.bsplinetrack.finalize()
-        if not utils.getParam("UiMode", 1):
-            Gui.Control.closeDialog()
         if self.obj:
             # Remove temporary object, if any
             old = self.obj.Name

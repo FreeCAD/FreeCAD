@@ -24,6 +24,7 @@
 
 #ifndef _PreComp_
 #include <numeric>
+#include <boost/core/ignore_unused.hpp>
 
 #include <BRepExtrema_DistShapeShape.hxx>
 #include <BRepBuilderAPI_MakeVertex.hxx>
@@ -57,7 +58,7 @@
 
 
 using namespace Inspection;
-namespace bp = boost::placeholders;
+namespace sp = std::placeholders;
 
 InspectActualMesh::InspectActualMesh(const Mesh::MeshObject& rMesh) : _mesh(rMesh.getKernel())
 {
@@ -66,9 +67,7 @@ InspectActualMesh::InspectActualMesh(const Mesh::MeshObject& rMesh) : _mesh(rMes
     _bApply = _clTrf != tmp;
 }
 
-InspectActualMesh::~InspectActualMesh()
-{
-}
+InspectActualMesh::~InspectActualMesh() = default;
 
 unsigned long InspectActualMesh::countPoints() const
 {
@@ -78,8 +77,9 @@ unsigned long InspectActualMesh::countPoints() const
 Base::Vector3f InspectActualMesh::getPoint(unsigned long index) const
 {
     Base::Vector3f point = _mesh.GetPoint(index);
-    if (_bApply)
+    if (_bApply) {
         _clTrf.multVec(point, point);
+    }
     return point;
 }
 
@@ -96,8 +96,8 @@ unsigned long InspectActualPoints::countPoints() const
 
 Base::Vector3f InspectActualPoints::getPoint(unsigned long index) const
 {
-    Base::Vector3d p = _rKernel.getPoint(index);
-    return Base::Vector3f(float(p.x), float(p.y), float(p.z));
+    Base::Vector3d pnt = _rKernel.getPoint(index);
+    return Base::Vector3f(float(pnt.x), float(pnt.y), float(pnt.z));
 }
 
 // ----------------------------------------------------------------
@@ -146,21 +146,22 @@ namespace Inspection {
     class MeshInspectGrid : public MeshCore::MeshGrid
     {
     public:
-        MeshInspectGrid (const MeshCore::MeshKernel &mesh, float fGridLen, const Base::Matrix4D& m)
-            : MeshCore::MeshGrid(mesh), _transform(m)
+        MeshInspectGrid (const MeshCore::MeshKernel &mesh, float fGridLen, const Base::Matrix4D& mat)
+            : MeshCore::MeshGrid(mesh), _transform(mat)
         {
-            Base::BoundBox3f clBBMesh = _pclMesh->GetBoundBox().Transformed(m);
+            Base::BoundBox3f clBBMesh = _pclMesh->GetBoundBox().Transformed(mat);
             Rebuild(std::max<unsigned long>((unsigned long)(clBBMesh.LengthX() / fGridLen), 1),
                     std::max<unsigned long>((unsigned long)(clBBMesh.LengthY() / fGridLen), 1),
                     std::max<unsigned long>((unsigned long)(clBBMesh.LengthZ() / fGridLen), 1));
         }
 
-        void Validate (const MeshCore::MeshKernel&) override
+        void Validate (const MeshCore::MeshKernel& kernel) override
         {
             // do nothing
+            boost::ignore_unused(kernel);
         }
 
-        void Validate (void)
+        void Validate ()
         {
             // do nothing
         }
@@ -182,7 +183,7 @@ namespace Inspection {
             // do nothing
         }
 
-        unsigned long HasElements (void) const override
+        unsigned long HasElements () const override
         {
             return _pclMesh->CountFacets();
         }
@@ -198,8 +199,12 @@ namespace Inspection {
 
         void AddFacet (const MeshCore::MeshGeomFacet &rclFacet, unsigned long ulFacetIndex)
         {
-            unsigned long ulX, ulY, ulZ;
-            unsigned long ulX1, ulY1, ulZ1, ulX2, ulY2, ulZ2;
+            unsigned long ulX1;
+            unsigned long ulY1;
+            unsigned long ulZ1;
+            unsigned long ulX2;
+            unsigned long ulY2;
+            unsigned long ulZ2;
 
             Base::BoundBox3f clBB;
             clBB.Add(rclFacet._aclPoints[0]);
@@ -211,20 +216,21 @@ namespace Inspection {
   
 
             if ((ulX1 < ulX2) || (ulY1 < ulY2) || (ulZ1 < ulZ2)) {
-                for (ulX = ulX1; ulX <= ulX2; ulX++) {
-                    for (ulY = ulY1; ulY <= ulY2; ulY++) {
-                        for (ulZ = ulZ1; ulZ <= ulZ2; ulZ++) {
+                for (unsigned long ulX = ulX1; ulX <= ulX2; ulX++) {
+                    for (unsigned long ulY = ulY1; ulY <= ulY2; ulY++) {
+                        for (unsigned long ulZ = ulZ1; ulZ <= ulZ2; ulZ++) {
                             if (rclFacet.IntersectBoundingBox(GetBoundBox(ulX, ulY, ulZ)))
                                 _aulGrid[ulX][ulY][ulZ].insert(ulFacetIndex);
                         }
                     }
                 }
             }
-            else
+            else {
                 _aulGrid[ulX1][ulY1][ulZ1].insert(ulFacetIndex);
+            }
         }
 
-        void InitGrid (void) override
+        void InitGrid () override
         {
             unsigned long i, j;
 
@@ -252,7 +258,7 @@ namespace Inspection {
             }
         }
 
-        void RebuildGrid (void) override
+        void RebuildGrid () override
         {
             _ulCtElements = _pclMesh->CountFacets();
             InitGrid();
@@ -316,8 +322,8 @@ float InspectNominalMesh::getDistance(const Base::Vector3f& point) const
 
     float fMinDist=FLT_MAX;
     bool positive = true;
-    for (std::vector<unsigned long>::iterator it = indices.begin(); it != indices.end(); ++it) {
-        MeshCore::MeshGeomFacet geomFace = _mesh.GetFacet(*it);
+    for (unsigned long it : indices) {
+        MeshCore::MeshGeomFacet geomFace = _mesh.GetFacet(it);
         if (_bApply) {
             geomFace.Transform(_clTrf);
         }
@@ -396,8 +402,8 @@ float InspectNominalFastMesh::getDistance(const Base::Vector3f& point) const
 
     float fMinDist=FLT_MAX;
     bool positive = true;
-    for (std::set<unsigned long>::iterator it = indices.begin(); it != indices.end(); ++it) {
-        MeshCore::MeshGeomFacet geomFace = _mesh.GetFacet(*it);
+    for (unsigned long it : indices) {
+        MeshCore::MeshGeomFacet geomFace = _mesh.GetFacet(it);
         if (_bApply) {
             geomFace.Transform(_clTrf);
         }
@@ -438,8 +444,8 @@ float InspectNominalPoints::getDistance(const Base::Vector3f& point) const
     _pGrid->GetElements(x,y,z,indices);
 
     double fMinDist=DBL_MAX;
-    for (std::set<unsigned long>::iterator it = indices.begin(); it != indices.end(); ++it) {
-        Base::Vector3d pt = _rKernel.getPoint(*it);
+    for (unsigned long it : indices) {
+        Base::Vector3d pt = _rKernel.getPoint(it);
         double fDist = Base::Distance(pointd, pt);
         if (fDist < fMinDist) {
             fMinDist = fDist;
@@ -453,7 +459,6 @@ float InspectNominalPoints::getDistance(const Base::Vector3f& point) const
 
 InspectNominalShape::InspectNominalShape(const TopoDS_Shape& shape, float /*radius*/)
     : _rShape(shape)
-    , isSolid(false)
 {
     distss = new BRepExtrema_DistShapeShape();
     distss->LoadS1(_rShape);
@@ -537,22 +542,16 @@ bool InspectNominalShape::isBelowFace(const gp_Pnt& pnt3d) const
 
 TYPESYSTEM_SOURCE(Inspection::PropertyDistanceList, App::PropertyLists)
 
-PropertyDistanceList::PropertyDistanceList()
-{
+PropertyDistanceList::PropertyDistanceList() = default;
 
-}
-
-PropertyDistanceList::~PropertyDistanceList()
-{
-
-}
+PropertyDistanceList::~PropertyDistanceList() = default;
 
 void PropertyDistanceList::setSize(int newSize)
 {
     _lValueList.resize(newSize);
 }
 
-int PropertyDistanceList::getSize(void) const
+int PropertyDistanceList::getSize() const
 {
     return static_cast<int>(_lValueList.size());
 }
@@ -572,7 +571,7 @@ void PropertyDistanceList::setValues(const std::vector<float>& values)
     hasSetValue();
 }
 
-PyObject *PropertyDistanceList::getPyObject(void)
+PyObject *PropertyDistanceList::getPyObject()
 {
     PyObject* list = PyList_New(getSize());
     for (int i = 0;i<getSize(); i++)
@@ -642,8 +641,8 @@ void PropertyDistanceList::SaveDocFile (Base::Writer &writer) const
     Base::OutputStream str(writer.Stream());
     uint32_t uCt = (uint32_t)getSize();
     str << uCt;
-    for (std::vector<float>::const_iterator it = _lValueList.begin(); it != _lValueList.end(); ++it) {
-        str << *it;
+    for (float it : _lValueList) {
+        str << it;
     }
 }
 
@@ -653,13 +652,13 @@ void PropertyDistanceList::RestoreDocFile(Base::Reader &reader)
     uint32_t uCt=0;
     str >> uCt;
     std::vector<float> values(uCt);
-    for (std::vector<float>::iterator it = values.begin(); it != values.end(); ++it) {
-        str >> *it;
+    for (float& it : values) {
+        str >> it;
     }
     setValues(values);
 }
 
-App::Property *PropertyDistanceList::Copy(void) const
+App::Property *PropertyDistanceList::Copy() const
 {
     PropertyDistanceList *p= new PropertyDistanceList();
     p->_lValueList = _lValueList;
@@ -673,7 +672,7 @@ void PropertyDistanceList::Paste(const App::Property &from)
     hasSetValue();
 }
 
-unsigned int PropertyDistanceList::getMemSize (void) const
+unsigned int PropertyDistanceList::getMemSize () const
 {
     return static_cast<unsigned int>(_lValueList.size() * sizeof(float));
 }
@@ -695,8 +694,8 @@ struct DistanceInspection
         Base::Vector3f pnt = actual->getPoint(index);
 
         float fMinDist=FLT_MAX;
-        for (std::vector<InspectNominalGeometry*>::const_iterator it = nominal.begin(); it != nominal.end(); ++it) {
-            float fDist = (*it)->getDistance(pnt);
+        for (auto it : nominal) {
+            float fDist = it->getDistance(pnt);
             if (fabs(fDist) < fabs(fMinDist))
                 fMinDist = fDist;
         }
@@ -717,7 +716,7 @@ struct DistanceInspection
 // Helper internal class for QtConcurrent map operation. Holds sums-of-squares and counts for RMS calculation
 class DistanceInspectionRMS {
 public:
-    DistanceInspectionRMS() : m_numv(0), m_sumsq(0.0) {}
+    DistanceInspectionRMS() = default;
     DistanceInspectionRMS& operator += (const DistanceInspectionRMS& rhs)
     {
         this->m_numv += rhs.m_numv;
@@ -730,8 +729,8 @@ public:
             return 0.0;
         return sqrt(this->m_sumsq / (double)this->m_numv);
     }
-    int m_numv;
-    double m_sumsq;
+    int m_numv{0};
+    double m_sumsq{0.0};
 };
 }
 
@@ -746,9 +745,7 @@ Feature::Feature()
     ADD_PROPERTY(Distances,(0.0));
 }
 
-Feature::~Feature()
-{
-}
+Feature::~Feature() = default;
 
 short Feature::mustExecute() const
 {
@@ -763,7 +760,7 @@ short Feature::mustExecute() const
     return 0;
 }
 
-App::DocumentObjectExecReturn* Feature::execute(void)
+App::DocumentObjectExecReturn* Feature::execute()
 {
     bool useMultithreading = true;
 
@@ -792,19 +789,19 @@ App::DocumentObjectExecReturn* Feature::execute(void)
     // get a list of nominals
     std::vector<InspectNominalGeometry*> inspectNominal;
     const std::vector<App::DocumentObject*>& nominals = Nominals.getValues();
-    for (std::vector<App::DocumentObject*>::const_iterator it = nominals.begin(); it != nominals.end(); ++it) {
+    for (auto it : nominals) {
         InspectNominalGeometry* nominal = nullptr;
-        if ((*it)->getTypeId().isDerivedFrom(Mesh::Feature::getClassTypeId())) {
-            Mesh::Feature* mesh = static_cast<Mesh::Feature*>(*it);
+        if (it->getTypeId().isDerivedFrom(Mesh::Feature::getClassTypeId())) {
+            Mesh::Feature* mesh = static_cast<Mesh::Feature*>(it);
             nominal = new InspectNominalMesh(mesh->Mesh.getValue(), this->SearchRadius.getValue());
         }
-        else if ((*it)->getTypeId().isDerivedFrom(Points::Feature::getClassTypeId())) {
-            Points::Feature* pts = static_cast<Points::Feature*>(*it);
+        else if (it->getTypeId().isDerivedFrom(Points::Feature::getClassTypeId())) {
+            Points::Feature* pts = static_cast<Points::Feature*>(it);
             nominal = new InspectNominalPoints(pts->Points.getValue(), this->SearchRadius.getValue());
         }
-        else if ((*it)->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
+        else if (it->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
             useMultithreading = false;
-            Part::Feature* part = static_cast<Part::Feature*>(*it);
+            Part::Feature* part = static_cast<Part::Feature*>(it);
             nominal = new InspectNominalShape(part->Shape.getValue(), this->SearchRadius.getValue());
         }
 
@@ -818,16 +815,16 @@ App::DocumentObjectExecReturn* Feature::execute(void)
     std::generate(index.begin(), index.end(), Base::iotaGen<unsigned long>(0));
     DistanceInspection check(this->SearchRadius.getValue(), actual, inspectNominal);
     QFuture<float> future = QtConcurrent::mapped
-        (index, boost::bind(&DistanceInspection::mapped, &check, bp::_1));
+        (index, std::bind(&DistanceInspection::mapped, &check, sp::_1));
     //future.waitForFinished(); // blocks the GUI
     Base::FutureWatcherProgress progress("Inspecting...", actual->countPoints());
     QFutureWatcher<float> watcher;
-    QObject::connect(&watcher, SIGNAL(progressValueChanged(int)),
-                     &progress, SLOT(progressValueChanged(int)));
+    QObject::connect(&watcher, &QFutureWatcher<float>::progressValueChanged,
+                     &progress, &Base::FutureWatcherProgress::progressValueChanged);
 
     // keep it responsive during computation
     QEventLoop loop;
-    QObject::connect(&watcher, SIGNAL(finished()), &loop, SLOT(quit()));
+    QObject::connect(&watcher, &QFutureWatcher::finished, &loop, &QEventLoop::quit);
     watcher.setFuture(future);
     loop.exec();
 
@@ -875,8 +872,8 @@ App::DocumentObjectExecReturn* Feature::execute(void)
         Base::Vector3f pnt = actual->getPoint(index);
 
         float fMinDist = FLT_MAX;
-        for (std::vector<InspectNominalGeometry*>::iterator it = inspectNominal.begin(); it != inspectNominal.end(); ++it) {
-            float fDist = (*it)->getDistance(pnt);
+        for (auto it : inspectNominal) {
+            float fDist = it->getDistance(pnt);
             if (fabs(fDist) < fabs(fMinDist))
                 fMinDist = fDist;
         }
@@ -908,11 +905,12 @@ App::DocumentObjectExecReturn* Feature::execute(void)
         // Setup progress bar
         Base::FutureWatcherProgress progress("Inspecting...", actual->countPoints());
         QFutureWatcher<DistanceInspectionRMS> watcher;
-        QObject::connect(&watcher, SIGNAL(progressValueChanged(int)),
-            &progress, SLOT(progressValueChanged(int)));
+        QObject::connect(&watcher, &QFutureWatcher<DistanceInspectionRMS>::progressValueChanged,
+                         &progress, &Base::FutureWatcherProgress::progressValueChanged);
         // Keep UI responsive during computation
         QEventLoop loop;
-        QObject::connect(&watcher, SIGNAL(finished()), &loop, SLOT(quit()));
+        QObject::connect(&watcher, &QFutureWatcher<DistanceInspectionRMS>::finished,
+                         &loop, &QEventLoop::quit);
         watcher.setFuture(future);
         loop.exec();
         res = future.result();
@@ -933,8 +931,8 @@ App::DocumentObjectExecReturn* Feature::execute(void)
 #endif
 
     delete actual;
-    for (std::vector<InspectNominalGeometry*>::iterator it = inspectNominal.begin(); it != inspectNominal.end(); ++it)
-        delete *it;
+    for (auto it : inspectNominal)
+        delete it;
 
     return nullptr;
 }
@@ -944,10 +942,6 @@ App::DocumentObjectExecReturn* Feature::execute(void)
 PROPERTY_SOURCE(Inspection::Group, App::DocumentObjectGroup)
 
 
-Group::Group()
-{
-}
+Group::Group() = default;
 
-Group::~Group()
-{
-}
+Group::~Group() = default;

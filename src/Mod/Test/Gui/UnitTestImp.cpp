@@ -20,23 +20,20 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
+# include <QFontMetrics>
 # include <QMessageBox>
-# include <QStyleFactory>
 #endif
 
-#include <Base/PyObjectBase.h>
 #include <Base/Interpreter.h>
 #include <Gui/MainWindow.h>
+
 #include "UnitTestImp.h"
 #include "ui_UnitTest.h"
-#include "UnitTestPy.h"
 
 
 using namespace TestGui;
-
 
 /* TRANSLATOR TestGui::UnitTestDialog */
 
@@ -85,6 +82,8 @@ UnitTestDialog::UnitTestDialog(QWidget* parent, Qt::WindowFlags f)
   , ui(new Ui_UnitTest)
 {
     ui->setupUi(this);
+    setupConnections();
+
     setProgressColor(QColor(40,210,43)); // a darker green
     ui->progressBar->setAlignment(Qt::AlignCenter);
 
@@ -97,8 +96,19 @@ UnitTestDialog::UnitTestDialog(QWidget* parent, Qt::WindowFlags f)
 /**
  *  Destroys the object and frees any allocated resources
  */
-UnitTestDialog::~UnitTestDialog()
+UnitTestDialog::~UnitTestDialog() = default;
+
+void UnitTestDialog::setupConnections()
 {
+    connect(ui->treeViewFailure, &QTreeWidget::itemDoubleClicked,
+            this, &UnitTestDialog::onTreeViewFailureItemDoubleClicked);
+    connect(ui->helpButton, &QPushButton::clicked,
+            this, &UnitTestDialog::onHelpButtonClicked);
+    connect(ui->aboutButton, &QPushButton::clicked,
+            this, &UnitTestDialog::onAboutButtonClicked);
+    connect(ui->startButton, &QPushButton::clicked,
+            this, &UnitTestDialog::onStartButtonClicked);
+
 }
 
 /**
@@ -122,7 +132,7 @@ void UnitTestDialog::setProgressColor(const QColor& col)
 /**
  * Opens a dialog to display a detailed description about the error.
  */
-void UnitTestDialog::on_treeViewFailure_itemDoubleClicked(QTreeWidgetItem * item, int column)
+void UnitTestDialog::onTreeViewFailureItemDoubleClicked(QTreeWidgetItem * item, int column)
 {
     Q_UNUSED(column);
 
@@ -150,7 +160,7 @@ void UnitTestDialog::on_treeViewFailure_itemDoubleClicked(QTreeWidgetItem * item
 /**
  * Shows the help dialog.
  */
-void UnitTestDialog::on_helpButton_clicked()
+void UnitTestDialog::onHelpButtonClicked()
 {
     QMessageBox::information(this, tr("Help"), tr(
         "Enter the name of a callable object which, when called, will return a TestCase.\n"
@@ -162,7 +172,7 @@ void UnitTestDialog::on_helpButton_clicked()
 /**
  * Shows the about dialog.
  */
-void UnitTestDialog::on_aboutButton_clicked()
+void UnitTestDialog::onAboutButtonClicked()
 {
     QMessageBox::information(this, tr("About FreeCAD UnitTest"), tr(
         "Copyright (c) Werner Mayer\n\n"
@@ -173,7 +183,7 @@ void UnitTestDialog::on_aboutButton_clicked()
 /**
  * Runs the unit tests.
  */
-void UnitTestDialog::on_startButton_clicked()
+void UnitTestDialog::onStartButtonClicked()
 {
     reset();
     setProgressColor(QColor(40,210,43)); // a darker green
@@ -279,11 +289,26 @@ QString UnitTestDialog::getUnitTest() const
 }
 
 /**
+ * Runs the currently selected test and closes the dialog afterwards.
+ * It returns true if all tests have passed and false otherwise.
+ */
+bool UnitTestDialog::runCurrentTest()
+{
+    clearErrorList();
+    onStartButtonClicked();
+    int count = ui->treeViewFailure->topLevelItemCount();
+    reject();
+    return (count == 0);
+}
+
+/**
  * Sets the text in the status bar.
  */
 void UnitTestDialog::setStatusText(const QString& text)
 {
-    ui->textLabelStatus->setText(text);
+    QFontMetrics fm(font());
+    int labelWidth = ui->textLabelStatus->width() - 10;
+    ui->textLabelStatus->setText(fm.elidedText(text, Qt::ElideMiddle, labelWidth));
 }
 
 /**

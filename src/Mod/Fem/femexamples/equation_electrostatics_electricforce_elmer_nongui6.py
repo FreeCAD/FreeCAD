@@ -22,16 +22,16 @@
 # *                                                                         *
 # ***************************************************************************
 
+import sys
 import FreeCAD
 from FreeCAD import Rotation
 from FreeCAD import Vector
 from FreeCAD import Units
 
-import Part
-import Sketcher
-
 import Fem
 import ObjectsFem
+import Part
+import Sketcher
 
 from . import manager
 from .manager import get_meshname
@@ -46,7 +46,7 @@ def get_information():
         "constraints": ["electrostatic potential"],
         "solvers": ["elmer"],
         "material": "fluid",
-        "equation": "electrostatic"
+        "equations": ["electrostatic"]
     }
 
 
@@ -59,7 +59,7 @@ setup()
 
 
 See forum topic post:
-https://forum.freecadweb.org/viewtopic.php?f=18&t=41488&start=40#p373292
+https://forum.freecad.org/viewtopic.php?f=18&t=41488&start=40#p373292
 
 Electrostatics equation in FreeCAD FEM-Elmer
 
@@ -103,6 +103,7 @@ def setup(doc=None, solvertype="elmer"):
     base_sketch.addConstraint(base_conList)
     base_sketch.setDatum(9, Units.Quantity("5000.000000 mm"))
     base_sketch.setDatum(10, Units.Quantity("5000.000000 mm"))
+    base_sketch.ViewObject.Visibility = False
 
     pad = geom_obj.newObject("PartDesign::Pad", "Pad")
     pad.Profile = base_sketch
@@ -145,6 +146,7 @@ def setup(doc=None, solvertype="elmer"):
     upper_sketch.setDatum(15, Units.Quantity("5000.000000 mm"))
     upper_sketch.setDatum(16, Units.Quantity("1500.000000 mm"))
     upper_sketch.setDatum(17, Units.Quantity("1500.000000 mm"))
+    upper_sketch.ViewObject.Visibility = False
 
     pocket = geom_obj.newObject("PartDesign::Pocket", "Pocket")
     pocket.Profile = upper_sketch
@@ -159,6 +161,9 @@ def setup(doc=None, solvertype="elmer"):
 
     # analysis
     analysis = ObjectsFem.makeAnalysis(doc, "Analysis")
+    if FreeCAD.GuiUp:
+        import FemGui
+        FemGui.setActiveAnalysis(analysis)
 
     # solver
     if solvertype == "elmer":
@@ -167,23 +172,24 @@ def setup(doc=None, solvertype="elmer"):
         ObjectsFem.makeEquationElectricforce(doc, solver_obj)
     else:
         FreeCAD.Console.PrintWarning(
-            "Not known or not supported solver type: {}. "
+            "Unknown or unsupported solver type: {}. "
             "No solver object was created.\n".format(solvertype)
         )
     analysis.addObject(solver_obj)
 
     # material
-    material_obj = ObjectsFem.makeMaterialFluid(doc, "FemMaterial")
+    material_obj = ObjectsFem.makeMaterialFluid(doc, "Air")
     mat = material_obj.Material
-    mat["Name"] = "Air-Generic"
-    mat["Density"] = "1.20 kg/m^3"
-    mat["KinematicViscosity"] = "15.11 mm^2/s"
-    mat["VolumetricThermalExpansionCoefficient"] = "0.00 mm/m/K"
-    mat["ThermalConductivity"] = "0.03 W/m/K"
-    mat["ThermalExpansionCoefficient"] = "0.0034/K"
-    mat["SpecificHeat"] = "1.00 J/kg/K"
-    mat["RelativePermittivity"] = "1.00"
+    mat["Name"] = "Air"
+    mat["Density"] = "1.204 kg/m^3"
+    mat["ThermalConductivity"] = "0.02587 W/m/K"
+    mat["ThermalExpansionCoefficient"] = "3.43e-3 1/K"
+    mat["SpecificHeat"] = "1.01 kJ/kg/K"
+    mat["ElectricalConductivity"] = "1e-12 S/m"
+    mat["RelativePermeability"] = "1.0"
+    mat["RelativePermittivity"] = "1.00059"
     material_obj.Material = mat
+    material_obj.References = [(geom_obj, "Solid1")]
     analysis.addObject(material_obj)
 
     # constraint potential 0V
@@ -212,27 +218,44 @@ def setup(doc=None, solvertype="elmer"):
     analysis.addObject(con_elect_pot2)
 
     # mesh
-    from .meshes.mesh_electricforce_elmer_nongui6_tetra10 import create_nodes, create_elements
-    fem_mesh = Fem.FemMesh()
-    control = create_nodes(fem_mesh)
-    if not control:
-        FreeCAD.Console.PrintError("Error on creating nodes.\n")
-    control = create_elements(fem_mesh)
-    if not control:
-        FreeCAD.Console.PrintError("Error on creating elements.\n")
     femmesh_obj = analysis.addObject(ObjectsFem.makeMeshGmsh(doc, get_meshname()))[0]
-    femmesh_obj.FemMesh = fem_mesh
     femmesh_obj.Part = geom_obj
     femmesh_obj.SecondOrderLinear = False
+    femmesh_obj.CharacteristicLengthMax = "500 mm"
+    femmesh_obj.ViewObject.Visibility = False
 
     # mesh_region
     mesh_region = ObjectsFem.makeMeshRegion(doc, femmesh_obj, name="MeshRegion")
-    mesh_region.CharacteristicLength = "300 mm"
+    mesh_region.CharacteristicLength = "250 mm"
     mesh_region.References = [
         (geom_obj, "Face4"),
         (geom_obj, "Face5"),
         (geom_obj, "Face6"),
         (geom_obj, "Face11")]
+    mesh_region.ViewObject.Visibility = False
+
+    # generate the mesh
+    from femmesh import gmshtools
+    gmsh_mesh = gmshtools.GmshTools(femmesh_obj, analysis)
+    try:
+        error = gmsh_mesh.create_mesh()
+    except Exception:
+        error = sys.exc_info()[1]
+        FreeCAD.Console.PrintError(
+            "Unexpected error when creating mesh: {}\n"
+            .format(error)
+        )
+    if error:
+        # try to create from existing rough mesh
+        from .meshes.mesh_electricforce_elmer_nongui6_tetra10 import create_nodes, create_elements
+        fem_mesh = Fem.FemMesh()
+        control = create_nodes(fem_mesh)
+        if not control:
+            FreeCAD.Console.PrintError("Error on creating nodes.\n")
+        control = create_elements(fem_mesh)
+        if not control:
+            FreeCAD.Console.PrintError("Error on creating elements.\n")
+        femmesh_obj.FemMesh = fem_mesh
 
     doc.recompute()
     return doc

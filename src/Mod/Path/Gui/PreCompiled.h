@@ -49,38 +49,27 @@
 // boost
 #include <boost/algorithm/string/replace.hpp>
 
-// standard
-#include <iostream>
-#include <cassert>
-#include <cmath>
-
-// STL
-#include <vector>
-#include <map>
-#include <string>
-#include <list>
-#include <set>
-#include <algorithm>
-#include <stack>
-#include <queue>
-#include <bitset>
-
-#ifdef FC_OS_WIN32
-# include <windows.h>
-#endif
-
 // OCC
 #include <TopExp_Explorer.hxx>
 
 // Qt Toolkit
-#ifndef __QtAll__
-# include <Gui/QtAll.h>
-#endif
+#include <QDialog>
+#include <QDir>
+#include <QFileInfo>
+#include <QRegularExpression>
 
 // all of Inventor
-#ifndef __InventorAll__
-# include <Gui/InventorAll.h>
-#endif
+#include <Inventor/SbVec3f.h>
+#include <Inventor/details/SoLineDetail.h>
+#include <Inventor/nodes/SoBaseColor.h>
+#include <Inventor/nodes/SoCoordinate3.h>
+#include <Inventor/nodes/SoDrawStyle.h>
+#include <Inventor/nodes/SoMaterial.h>
+#include <Inventor/nodes/SoMaterialBinding.h>
+#include <Inventor/nodes/SoPointSet.h>
+#include <Inventor/nodes/SoSeparator.h>
+#include <Inventor/nodes/SoSwitch.h>
+#include <Inventor/nodes/SoTransform.h>
 
 #endif //_PreComp_
 

@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
-  <PythonExport 
-    Father="PropertyContainerPy" 
-    Name="DocumentPy" 
-    Twin="Document" 
-    TwinPointer="Document" 
-    Include="App/Document.h" 
-    Namespace="App" 
-    FatherInclude="App/PropertyContainerPy.h" 
+  <PythonExport
+    Father="PropertyContainerPy"
+    Name="DocumentPy"
+    Twin="Document"
+    TwinPointer="Document"
+    Include="App/Document.h"
+    Namespace="App"
+    FatherInclude="App/PropertyContainerPy.h"
     FatherNamespace="App">
     <Documentation>
       <Author Licence="LGPL" Name="Juergen Riegel" EMail="FreeCAD@juergen-riegel.net" />
@@ -104,6 +104,21 @@ attach (Boolean): if True, then bind the document object first before adding to 
 viewType (String): override the view provider type directly, only effective when attach is False.</UserDocu>
       </Documentation>
     </Methode>
+    <Methode Name="addProperty" Keyword="true">
+        <Documentation>
+            <UserDocu>
+                addProperty(type: string, name: string, group="", doc="", attr=0, read_only=False, hidden=False) -- Add a generic property.
+            </UserDocu>
+        </Documentation>
+    </Methode>
+    <Methode Name="removeProperty">
+        <Documentation>
+            <UserDocu>
+                removeProperty(string) -- Remove a generic property.
+                Note, you can only remove user-defined properties but not built-in ones.
+            </UserDocu>
+        </Documentation>
+    </Methode>
     <Methode Name="removeObject">
       <Documentation>
         <UserDocu>Remove an object from the document</UserDocu>
@@ -113,7 +128,7 @@ viewType (String): override the view provider type directly, only effective when
       <Documentation>
           <UserDocu>
 copyObject(object, with_dependencies=False, return_all=False)
-Copy an object or objects from another document to this document. 
+Copy an object or objects from another document to this document.
 
 object: can either a single object or sequence of objects
 with_dependencies: if True, all internal dependent objects are copied too.
@@ -127,7 +142,7 @@ return_all: if True, return all copied objects, or else return only the copied
         <UserDocu>
 moveObject(object, bool with_dependencies = False)
 Transfers an object from another document to this document.
-              
+
 object: can either a single object or sequence of objects
 with_dependencies: if True, all internal dependent objects are copied too.
         </UserDocu>
@@ -198,23 +213,23 @@ object of this document.
       </Documentation>
     </Methode>
     <Methode Name="getObject">
-		<Documentation>
-			<UserDocu>Return the object with the given name</UserDocu>
-		</Documentation>
-	</Methode>
-	<Methode Name="getObjectsByLabel">
-		<Documentation>
-			<UserDocu>Return the objects with the given label name.
+    <Documentation>
+      <UserDocu>Return the object with the given name</UserDocu>
+    </Documentation>
+  </Methode>
+  <Methode Name="getObjectsByLabel">
+    <Documentation>
+      <UserDocu>Return the objects with the given label name.
 NOTE: It's possible that several objects have the same label name.</UserDocu>
-		</Documentation>
-	</Methode>
+    </Documentation>
+  </Methode>
     <Methode Name="findObjects" Keyword="true">
-		<Documentation>
+    <Documentation>
             <UserDocu>findObjects([Type=string], [Name=string], [Label=string]) -&gt; list
 Return a list of objects that match the specified type, name or label.
 Name and label support regular expressions. All parameters are optional.</UserDocu>
-		</Documentation>
-	</Methode>
+    </Documentation>
+  </Methode>
     <Methode Name="getLinksTo">
         <Documentation>
             <UserDocu>
@@ -225,18 +240,18 @@ maxCount: to limit the number of links returned
             </UserDocu>
         </Documentation>
     </Methode>
-	  <Methode Name="supportedTypes">
-		  <Documentation>
-			  <UserDocu>A list of supported types of objects</UserDocu>
-		  </Documentation>
-	  </Methode>
-	  <Methode Name="getTempFileName">
-		  <Documentation>
-			  <UserDocu>Returns a file name with path in the temp directory of the document.</UserDocu>
-		  </Documentation>
-	  </Methode>
-	  <Methode Name="getDependentDocuments">
-		  <Documentation>
+    <Methode Name="supportedTypes">
+      <Documentation>
+        <UserDocu>A list of supported types of objects</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="getTempFileName">
+      <Documentation>
+        <UserDocu>Returns a file name with path in the temp directory of the document.</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="getDependentDocuments">
+      <Documentation>
               <UserDocu>
 getDependentDocuments(sort=True)
 
@@ -244,21 +259,21 @@ Returns a list of documents that this document directly or indirectly links to i
 
 sort: whether to topologically sort the return list
               </UserDocu>
-		  </Documentation>
-	  </Methode>
-	  <Attribute Name="DependencyGraph" ReadOnly="true">
-		<Documentation>
-			<UserDocu>The dependency graph as GraphViz text</UserDocu>
-		</Documentation>
-		<Parameter Name="DependencyGraph" Type="String" />
-	</Attribute>
-	  <Attribute Name="ActiveObject" ReadOnly="true">
-		  <Documentation>
-			  <UserDocu>The active object of the document</UserDocu>
-		  </Documentation>
-		  <Parameter Name="ActiveObject" Type="Object" />
-	  </Attribute>
-	  <Attribute Name="Objects" ReadOnly="true">
+      </Documentation>
+    </Methode>
+    <Attribute Name="DependencyGraph" ReadOnly="true">
+    <Documentation>
+      <UserDocu>The dependency graph as GraphViz text</UserDocu>
+    </Documentation>
+    <Parameter Name="DependencyGraph" Type="String" />
+  </Attribute>
+    <Attribute Name="ActiveObject" ReadOnly="true">
+      <Documentation>
+        <UserDocu>The active object of the document</UserDocu>
+      </Documentation>
+      <Parameter Name="ActiveObject" Type="Object" />
+    </Attribute>
+    <Attribute Name="Objects" ReadOnly="true">
       <Documentation>
         <UserDocu>The list of object handled by this document</UserDocu>
       </Documentation>
@@ -330,48 +345,48 @@ sort: whether to topologically sort the return list
       </Documentation>
       <Parameter Name="HasPendingTransaction" Type="Boolean"/>
     </Attribute>
-	<Attribute Name="InList" ReadOnly="true">
-	  <Documentation>
+  <Attribute Name="InList" ReadOnly="true">
+    <Documentation>
           <UserDocu>A list of all documents that link to this document.</UserDocu>
-	  </Documentation>
-	  <Parameter Name="InList" Type="List" />
-	</Attribute>
-	<Attribute Name="OutList" ReadOnly="true">
-	  <Documentation>
+    </Documentation>
+    <Parameter Name="InList" Type="List" />
+  </Attribute>
+  <Attribute Name="OutList" ReadOnly="true">
+    <Documentation>
           <UserDocu>A list of all documents that this document links to.</UserDocu>
-	  </Documentation>
-	  <Parameter Name="OutList" Type="List" />
-	</Attribute>
-	<Attribute Name="Restoring" ReadOnly="true">
-	  <Documentation>
+    </Documentation>
+    <Parameter Name="OutList" Type="List" />
+  </Attribute>
+  <Attribute Name="Restoring" ReadOnly="true">
+    <Documentation>
           <UserDocu>Indicate if the document is restoring</UserDocu>
-	  </Documentation>
-	  <Parameter Name="Restoring" Type="Boolean" />
-	</Attribute>
-	<Attribute Name="Partial" ReadOnly="true">
-	  <Documentation>
+    </Documentation>
+    <Parameter Name="Restoring" Type="Boolean" />
+  </Attribute>
+  <Attribute Name="Partial" ReadOnly="true">
+    <Documentation>
           <UserDocu>Indicate if the document is partially loaded</UserDocu>
-	  </Documentation>
-	  <Parameter Name="Partial" Type="Boolean" />
-	</Attribute>
-	<Attribute Name="Importing" ReadOnly="true">
-	  <Documentation>
+    </Documentation>
+    <Parameter Name="Partial" Type="Boolean" />
+  </Attribute>
+  <Attribute Name="Importing" ReadOnly="true">
+    <Documentation>
           <UserDocu>Indicate if the document is importing. Note the document will also report Restoring while importing</UserDocu>
-	  </Documentation>
-	  <Parameter Name="Importing" Type="Boolean" />
-	</Attribute>
-	<Attribute Name="Recomputing" ReadOnly="true">
-	  <Documentation>
+    </Documentation>
+    <Parameter Name="Importing" Type="Boolean" />
+  </Attribute>
+  <Attribute Name="Recomputing" ReadOnly="true">
+    <Documentation>
           <UserDocu>Indicate if the document is recomputing</UserDocu>
-	  </Documentation>
-	  <Parameter Name="Recomputing" Type="Boolean" />
-	</Attribute>
-	<Attribute Name="Transacting" ReadOnly="true">
-	  <Documentation>
+    </Documentation>
+    <Parameter Name="Recomputing" Type="Boolean" />
+  </Attribute>
+  <Attribute Name="Transacting" ReadOnly="true">
+    <Documentation>
           <UserDocu>Indicate whether the document is undoing/redoing</UserDocu>
-	  </Documentation>
-	  <Parameter Name="Transacting" Type="Boolean" />
-	</Attribute>
+    </Documentation>
+    <Parameter Name="Transacting" Type="Boolean" />
+  </Attribute>
     <Attribute Name="OldLabel" ReadOnly="true">
         <Documentation>
             <UserDocu>Contains the old label before change</UserDocu>

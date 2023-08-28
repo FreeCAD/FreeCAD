@@ -1,24 +1,23 @@
-# -*- coding: utf-8 -*-
-
+# SPDX-License-Identifier: LGPL-2.1-or-later
 # ***************************************************************************
 # *                                                                         *
-# *   Copyright (c) 2022 FreeCAD Project Association                        *
+# *   Copyright (c) 2022-2023 FreeCAD Project Association                   *
 # *                                                                         *
-# *   This program is free software; you can redistribute it and/or modify  *
-# *   it under the terms of the GNU Lesser General Public License (LGPL)    *
-# *   as published by the Free Software Foundation; either version 2 of     *
-# *   the License, or (at your option) any later version.                   *
-# *   for detail see the LICENCE text file.                                 *
+# *   This file is part of FreeCAD.                                         *
 # *                                                                         *
-# *   This program is distributed in the hope that it will be useful,       *
-# *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-# *   GNU Library General Public License for more details.                  *
+# *   FreeCAD is free software: you can redistribute it and/or modify it    *
+# *   under the terms of the GNU Lesser General Public License as           *
+# *   published by the Free Software Foundation, either version 2.1 of the  *
+# *   License, or (at your option) any later version.                       *
 # *                                                                         *
-# *   You should have received a copy of the GNU Library General Public     *
-# *   License along with this program; if not, write to the Free Software   *
-# *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
-# *   USA                                                                   *
+# *   FreeCAD is distributed in the hope that it will be useful, but        *
+# *   WITHOUT ANY WARRANTY; without even the implied warranty of            *
+# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU      *
+# *   Lesser General Public License for more details.                       *
+# *                                                                         *
+# *   You should have received a copy of the GNU Lesser General Public      *
+# *   License along with FreeCAD. If not, see                               *
+# *   <https://www.gnu.org/licenses/>.                                      *
 # *                                                                         *
 # ***************************************************************************
 
@@ -27,17 +26,14 @@
 import os
 from typing import Optional
 
-from PySide.QtCore import *
-from PySide.QtGui import *
-from PySide.QtWidgets import *
+from PySide import QtCore, QtGui, QtWidgets
 
-import FreeCAD
-import FreeCADGui
+import addonmanager_freecad_interface as fci
 
 import addonmanager_utilities as utils
+from addonmanager_metadata import Version, UrlType, get_first_supported_freecad_version
 from addonmanager_workers_startup import GetMacroDetailsWorker, CheckSingleUpdateWorker
 from Addon import Addon
-import NetworkManager
 from change_branch import ChangeBranchDialog
 
 have_git = False
@@ -47,39 +43,39 @@ try:
     if hasattr(git, "Repo"):
         have_git = True
 except ImportError:
-    pass
+    git = None
 
 
-translate = FreeCAD.Qt.translate
+translate = fci.translate
 
 show_javascript_console_output = False
 
 try:
-    from PySide.QtWebEngineWidgets import *
+    from PySide import QtWebEngineWidgets
 
     HAS_QTWEBENGINE = True
 except ImportError:
-    FreeCAD.Console.PrintWarning(
+    fci.Console.PrintWarning(
         translate(
             "AddonsInstaller",
-            "Addon Manager Warning: Could not import QtWebEngineWidgets. Your system's package manager may provide a package for this dependency, search the package manager for possible resolutions. Display of package README will be limited until this dependency is resolved.",
+            "Addon Manager Warning: Could not import QtWebEngineWidgets -- README data will display as text-only",
         )
         + "\n"
     )
     HAS_QTWEBENGINE = False
 
 
-class PackageDetails(QWidget):
+class PackageDetails(QtWidgets.QWidget):
     """The PackageDetails QWidget shows package README information and provides
     install, uninstall, and update buttons."""
 
-    back = Signal()
-    install = Signal(Addon)
-    uninstall = Signal(Addon)
-    update = Signal(Addon)
-    execute = Signal(Addon)
-    update_status = Signal(Addon)
-    check_for_update = Signal(Addon)
+    back = QtCore.Signal()
+    install = QtCore.Signal(Addon)
+    uninstall = QtCore.Signal(Addon)
+    update = QtCore.Signal(Addon)
+    execute = QtCore.Signal(Addon)
+    update_status = QtCore.Signal(Addon)
+    check_for_update = QtCore.Signal(Addon)
 
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -129,7 +125,7 @@ class PackageDetails(QWidget):
                 self.ui.webView.setHtml("<html><body>Loading...</body></html>")
                 self.ui.webView.hide()
                 self.ui.progressBar.show()
-                self.timeout = QTimer.singleShot(
+                self.timeout = QtCore.QTimer.singleShot(
                     6000, self.long_load_running
                 )  # Six seconds
             else:
@@ -154,7 +150,7 @@ class PackageDetails(QWidget):
 
         if repo.status() == Addon.Status.UNCHECKED:
             if not self.status_update_thread:
-                self.status_update_thread = QThread()
+                self.status_update_thread = QtCore.QThread()
             self.status_create_addon_list_worker = CheckSingleUpdateWorker(repo)
             self.status_create_addon_list_worker.moveToThread(self.status_update_thread)
             self.status_update_thread.finished.connect(
@@ -175,15 +171,14 @@ class PackageDetails(QWidget):
         self.set_change_branch_button_state()
         self.set_disable_button_state()
         if status != Addon.Status.NOT_INSTALLED:
-
             version = repo.installed_version
             date = ""
             installed_version_string = "<h3>"
             if repo.updated_timestamp:
                 date = (
-                    QDateTime.fromTime_t(repo.updated_timestamp)
+                    QtCore.QDateTime.fromTime_t(repo.updated_timestamp)
                     .date()
-                    .toString(Qt.SystemLocaleShortDate)
+                    .toString(QtCore.Qt.SystemLocaleShortDate)
                 )
             if version and date:
                 installed_version_string += (
@@ -215,7 +210,7 @@ class PackageDetails(QWidget):
                         ).format(repo.branch)
                         + " "
                     )
-                    installed_version_string += repo.metadata.Version
+                    installed_version_string += str(repo.metadata.version)
                     installed_version_string += ".</b>"
                 elif repo.macro and repo.macro.version:
                     installed_version_string += (
@@ -238,7 +233,7 @@ class PackageDetails(QWidget):
                 detached_head = False
                 branch = repo.branch
                 if have_git and repo.repo_type != Addon.Kind.MACRO:
-                    basedir = FreeCAD.getUserAppDataDir()
+                    basedir = fci.getUserAppDataDir()
                     moddir = os.path.join(basedir, "Mod", repo.name)
                     if os.path.exists(os.path.join(moddir, ".git")):
                         gitrepo = git.Repo(moddir)
@@ -269,8 +264,7 @@ class PackageDetails(QWidget):
                     + "."
                 )
             elif status == Addon.Status.UNCHECKED:
-
-                pref = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Addons")
+                pref = fci.ParamGet("User parameter:BaseApp/Preferences/Addons")
                 autocheck = pref.GetBool("AutoCheck", False)
                 if autocheck:
                     installed_version_string += (
@@ -295,9 +289,9 @@ class PackageDetails(QWidget):
             self.ui.labelPackageDetails.show()
 
             if repo.macro is not None:
-                moddir = FreeCAD.getUserMacroDir(True)
+                moddir = fci.getUserMacroDir(True)
             else:
-                basedir = FreeCAD.getUserAppDataDir()
+                basedir = fci.getUserAppDataDir()
                 moddir = os.path.join(basedir, "Mod", repo.name)
             installationLocationString = (
                 translate("AddonsInstaller", "Installation location")
@@ -391,7 +385,7 @@ class PackageDetails(QWidget):
         else:
             self.ui.labelWarningInfo.hide()
 
-    def requires_newer_freecad(self) -> Optional[str]:
+    def requires_newer_freecad(self) -> Optional[Version]:
         """If the current package is not installed, returns the first supported version of
         FreeCAD, if one is set, or None if no information is available (or if the package is
         already installed)."""
@@ -402,28 +396,22 @@ class PackageDetails(QWidget):
             # it's possible that this package actually provides versions of itself
             # for newer and older versions
 
-            first_supported_version = (
-                self.repo.metadata.getFirstSupportedFreeCADVersion()
+            first_supported_version = get_first_supported_freecad_version(
+                self.repo.metadata
             )
             if first_supported_version is not None:
-                required_version = first_supported_version.split(".")
-                fc_major = int(FreeCAD.Version()[0])
-                fc_minor = int(FreeCAD.Version()[1])
-
-                if int(required_version[0]) > fc_major:
+                fc_version = Version(from_list=fci.Version())
+                if first_supported_version > fc_version:
                     return first_supported_version
-                if int(required_version[0]) == fc_major and len(required_version) > 1:
-                    if int(required_version[1]) > fc_minor:
-                        return first_supported_version
         return None
 
     def set_change_branch_button_state(self):
         """The change branch button is only available for installed Addons that have a .git directory
-        and in runs where the GitPython import is available."""
+        and in runs where the git is available."""
 
         self.ui.buttonChangeBranch.hide()
 
-        pref = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Addons")
+        pref = fci.ParamGet("User parameter:BaseApp/Preferences/Addons")
         show_switcher = pref.GetBool("ShowBranchSwitcher", False)
         if not show_switcher:
             return
@@ -441,7 +429,7 @@ class PackageDetails(QWidget):
             return
 
         # Is there a .git subdirectory? If not, return.
-        basedir = FreeCAD.getUserAppDataDir()
+        basedir = fci.getUserAppDataDir()
         path_to_git = os.path.join(basedir, "Mod", self.repo.name, ".git")
         if not os.path.isdir(path_to_git):
             return
@@ -466,11 +454,11 @@ class PackageDetails(QWidget):
         """loads information of a given workbench"""
         url = utils.get_readme_html_url(repo)
         if HAS_QTWEBENGINE:
-            self.ui.webView.load(QUrl(url))
+            self.ui.webView.load(QtCore.QUrl(url))
             self.ui.urlBar.setText(url)
         else:
-            readme_data = NetworkManager.AM_NETWORK_MANAGER.blocking_get(url)
-            text = readme_data.data().decode("utf8")
+            readme_data = utils.blocking_get(url)
+            text = readme_data.decode("utf8")
             self.ui.textBrowserReadMe.setHtml(text)
 
     def show_package(self, repo: Addon) -> None:
@@ -478,19 +466,18 @@ class PackageDetails(QWidget):
 
         readme_url = None
         if repo.metadata:
-            urls = repo.metadata.Urls
-            for url in urls:
-                if url["type"] == "readme":
-                    readme_url = url["location"]
+            for url in repo.metadata.url:
+                if url.type == UrlType.readme:
+                    readme_url = url.location
                     break
         if not readme_url:
             readme_url = utils.get_readme_html_url(repo)
         if HAS_QTWEBENGINE:
-            self.ui.webView.load(QUrl(readme_url))
+            self.ui.webView.load(QtCore.QUrl(readme_url))
             self.ui.urlBar.setText(readme_url)
         else:
-            readme_data = NetworkManager.AM_NETWORK_MANAGER.blocking_get(readme_url)
-            text = readme_data.data().decode("utf8")
+            readme_data = utils.blocking_get(readme_url)
+            text = readme_data.decode("utf8")
             self.ui.textBrowserReadMe.setHtml(text)
 
     def show_macro(self, repo: Addon) -> None:
@@ -512,7 +499,7 @@ class PackageDetails(QWidget):
 
         if HAS_QTWEBENGINE:
             if url:
-                self.ui.webView.load(QUrl(url))
+                self.ui.webView.load(QtCore.QUrl(url))
                 self.ui.urlBar.setText(url)
             else:
                 self.ui.urlBar.setText(
@@ -524,8 +511,8 @@ class PackageDetails(QWidget):
                 )
         else:
             if url:
-                readme_data = NetworkManager.AM_NETWORK_MANAGER.blocking_get(url)
-                text = readme_data.data().decode("utf8")
+                readme_data = utils.blocking_get(url)
+                text = readme_data.decode("utf8")
                 self.ui.textBrowserReadMe.setHtml(text)
             else:
                 self.ui.textBrowserReadMe.setHtml(
@@ -571,7 +558,7 @@ class PackageDetails(QWidget):
             }
         }
     } else if (url.hostname === "wiki.freecad.org" ||
-               url.hostname === "wiki.freecadweb.org") {
+               url.hostname === "wiki.freecad.org") {
         const first_heading = document.getElementById('firstHeading');
         const body_content = document.getElementById('bodyContent');
         const new_node = document.createElement("div");
@@ -612,7 +599,8 @@ class PackageDetails(QWidget):
         ):
             self.timeout.stop()
         if load_succeeded:
-            # It says it succeeded, but it might have only succeeded in loading a "Page not found" page!
+            # It says it succeeded, but it might have only succeeded in loading a
+            # "Page not found" page!
             title = self.ui.webView.title()
             path_components = url.path().split("/")
             expected_content = path_components[-1]
@@ -632,7 +620,7 @@ class PackageDetails(QWidget):
             self.ui.loadingLabel.hide()
             self.ui.webView.show()
 
-    def show_error_for(self, url: QUrl) -> None:
+    def show_error_for(self, url: QtCore.QUrl) -> None:
         """Displays error information."""
         m = translate(
             "AddonsInstaller", "Could not load README data from URL {}"
@@ -642,14 +630,15 @@ class PackageDetails(QWidget):
 
     def change_branch_clicked(self) -> None:
         """Loads the branch-switching dialog"""
-        basedir = FreeCAD.getUserAppDataDir()
+        basedir = fci.getUserAppDataDir()
         path_to_repo = os.path.join(basedir, "Mod", self.repo.name)
         change_branch_dialog = ChangeBranchDialog(path_to_repo, self)
         change_branch_dialog.branch_changed.connect(self.branch_changed)
         change_branch_dialog.exec()
 
     def enable_clicked(self) -> None:
-        """Called by the Enable button, enables this Addon and updates GUI to reflect that status."""
+        """Called by the Enable button, enables this Addon and updates GUI to reflect
+        that status."""
         self.repo.enable()
         self.repo.set_status(Addon.Status.PENDING_RESTART)
         self.set_disable_button_state()
@@ -666,7 +655,8 @@ class PackageDetails(QWidget):
         self.ui.labelWarningInfo.setStyleSheet("color:" + utils.bright_color_string())
 
     def disable_clicked(self) -> None:
-        """Called by the Disable button, disables this Addon and updates the GUI to reflect that status."""
+        """Called by the Disable button, disables this Addon and updates the GUI to
+        reflect that status."""
         self.repo.disable()
         self.repo.set_status(Addon.Status.PENDING_RESTART)
         self.set_disable_button_state()
@@ -685,8 +675,9 @@ class PackageDetails(QWidget):
         )
 
     def branch_changed(self, name: str) -> None:
-        """Displays a dialog confirming the branch changed, and tries to access the metadata file from that branch."""
-        QMessageBox.information(
+        """Displays a dialog confirming the branch changed, and tries to access the
+        metadata file from that branch."""
+        QtWidgets.QMessageBox.information(
             self,
             translate("AddonsInstaller", "Success"),
             translate(
@@ -695,16 +686,18 @@ class PackageDetails(QWidget):
             ),
         )
         # See if this branch has a package.xml file:
-        basedir = FreeCAD.getUserAppDataDir()
+        basedir = fci.getUserAppDataDir()
         path_to_metadata = os.path.join(basedir, "Mod", self.repo.name, "package.xml")
         if os.path.isfile(path_to_metadata):
             self.repo.load_metadata_file(path_to_metadata)
-            self.repo.installed_version = self.repo.metadata.Version
+            self.repo.installed_version = self.repo.metadata.version
         else:
             self.repo.repo_type = Addon.Kind.WORKBENCH
             self.repo.metadata = None
             self.repo.installed_version = None
-        self.repo.updated_timestamp = QDateTime.currentDateTime().toSecsSinceEpoch()
+        self.repo.updated_timestamp = (
+            QtCore.QDateTime.currentDateTime().toSecsSinceEpoch()
+        )
         self.repo.branch = name
         self.repo.set_status(Addon.Status.PENDING_RESTART)
 
@@ -722,41 +715,55 @@ class PackageDetails(QWidget):
 
 if HAS_QTWEBENGINE:
 
-    class RestrictedWebPage(QWebEnginePage):
-        """A class that follows links to FreeCAD wiki pages, but opens all other clicked links in the system web browser"""
+    class RestrictedWebPage(QtWebEngineWidgets.QWebEnginePage):
+        """A class that follows links to FreeCAD wiki pages, but opens all other
+        clicked links in the system web browser"""
 
         def __init__(self, parent):
             super().__init__(parent)
-            self.settings().setAttribute(QWebEngineSettings.ErrorPageEnabled, False)
+            self.settings().setAttribute(
+                QtWebEngineWidgets.QWebEngineSettings.ErrorPageEnabled, False
+            )
+            self.stored_url = None
 
-        def acceptNavigationRequest(self, url, _type, isMainFrame):
-            """A callback for navigation requests: this widget will only display navigation requests to the
-            FreeCAD Wiki (for translation purposes) -- anything else will open in a new window."""
-            if _type == QWebEnginePage.NavigationTypeLinkClicked:
-
-                # See if the link is to a FreeCAD Wiki page -- if so, follow it, otherwise ask the OS to open it
+        def acceptNavigationRequest(self, requested_url, _type, isMainFrame):
+            """A callback for navigation requests: this widget will only display
+            navigation requests to the FreeCAD Wiki (for translation purposes) --
+            anything else will open in a new window.
+            """
+            if _type == QtWebEngineWidgets.QWebEnginePage.NavigationTypeLinkClicked:
+                # See if the link is to a FreeCAD Wiki page -- if so, follow it,
+                # otherwise ask the OS to open it
                 if (
-                    url.host() == "wiki.freecad.org"
-                    or url.host() == "wiki.freecadweb.org"
+                    requested_url.host() == "wiki.freecad.org"
+                    or requested_url.host() == "wiki.freecad.org"
                 ):
-                    return super().acceptNavigationRequest(url, _type, isMainFrame)
-                QDesktopServices.openUrl(url)
+                    return super().acceptNavigationRequest(
+                        requested_url, _type, isMainFrame
+                    )
+                QtGui.QDesktopServices.openUrl(requested_url)
+                self.stored_url = self.url()
+                QtCore.QTimer.singleShot(0, self._reload_stored_url)
                 return False
-            return super().acceptNavigationRequest(url, _type, isMainFrame)
+            return super().acceptNavigationRequest(requested_url, _type, isMainFrame)
 
         def javaScriptConsoleMessage(self, level, message, lineNumber, _):
-            """Handle JavaScript console messages by optionally outputting them to the FreeCAD Console. This
-            must be manually enabled in this Python file by setting the global show_javascript_console_output
-            to true."""
+            """Handle JavaScript console messages by optionally outputting them to
+            the FreeCAD Console. This must be manually enabled in this Python file by
+            setting the global show_javascript_console_output to true."""
             global show_javascript_console_output
             if show_javascript_console_output:
                 tag = translate("AddonsInstaller", "Page JavaScript reported")
-                if level == QWebEnginePage.InfoMessageLevel:
-                    FreeCAD.Console.PrintMessage(f"{tag} {lineNumber}: {message}\n")
-                elif level == QWebEnginePage.WarningMessageLevel:
-                    FreeCAD.Console.PrintWarning(f"{tag} {lineNumber}: {message}\n")
-                elif level == QWebEnginePage.ErrorMessageLevel:
-                    FreeCAD.Console.PrintError(f"{tag} {lineNumber}: {message}\n")
+                if level == QtWebEngineWidgets.QWebEnginePage.InfoMessageLevel:
+                    fci.Console.PrintMessage(f"{tag} {lineNumber}: {message}\n")
+                elif level == QtWebEngineWidgets.QWebEnginePage.WarningMessageLevel:
+                    fci.Console.PrintWarning(f"{tag} {lineNumber}: {message}\n")
+                elif level == QtWebEngineWidgets.QWebEnginePage.ErrorMessageLevel:
+                    fci.Console.PrintError(f"{tag} {lineNumber}: {message}\n")
+
+        def _reload_stored_url(self):
+            if self.stored_url:
+                self.load(self.stored_url)
 
 
 class Ui_PackageDetails(object):
@@ -765,123 +772,127 @@ class Ui_PackageDetails(object):
     def setupUi(self, PackageDetails):
         if not PackageDetails.objectName():
             PackageDetails.setObjectName("PackageDetails")
-        self.verticalLayout_2 = QVBoxLayout(PackageDetails)
+        self.verticalLayout_2 = QtWidgets.QVBoxLayout(PackageDetails)
         self.verticalLayout_2.setObjectName("verticalLayout_2")
-        self.layoutDetailsBackButton = QHBoxLayout()
+        self.layoutDetailsBackButton = QtWidgets.QHBoxLayout()
         self.layoutDetailsBackButton.setObjectName("layoutDetailsBackButton")
-        self.buttonBack = QToolButton(PackageDetails)
+        self.buttonBack = QtWidgets.QToolButton(PackageDetails)
         self.buttonBack.setObjectName("buttonBack")
         self.buttonBack.setIcon(
-            QIcon.fromTheme("back", QIcon(":/icons/button_left.svg"))
+            QtGui.QIcon.fromTheme("back", QtGui.QIcon(":/icons/button_left.svg"))
         )
 
         self.layoutDetailsBackButton.addWidget(self.buttonBack)
 
-        self.horizontalSpacer = QSpacerItem(
-            40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum
+        self.horizontalSpacer = QtWidgets.QSpacerItem(
+            40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum
         )
 
         self.layoutDetailsBackButton.addItem(self.horizontalSpacer)
 
-        self.buttonInstall = QPushButton(PackageDetails)
+        self.buttonInstall = QtWidgets.QPushButton(PackageDetails)
         self.buttonInstall.setObjectName("buttonInstall")
 
         self.layoutDetailsBackButton.addWidget(self.buttonInstall)
 
-        self.buttonUninstall = QPushButton(PackageDetails)
+        self.buttonUninstall = QtWidgets.QPushButton(PackageDetails)
         self.buttonUninstall.setObjectName("buttonUninstall")
 
         self.layoutDetailsBackButton.addWidget(self.buttonUninstall)
 
-        self.buttonUpdate = QPushButton(PackageDetails)
+        self.buttonUpdate = QtWidgets.QPushButton(PackageDetails)
         self.buttonUpdate.setObjectName("buttonUpdate")
 
         self.layoutDetailsBackButton.addWidget(self.buttonUpdate)
 
-        self.buttonCheckForUpdate = QPushButton(PackageDetails)
+        self.buttonCheckForUpdate = QtWidgets.QPushButton(PackageDetails)
         self.buttonCheckForUpdate.setObjectName("buttonCheckForUpdate")
 
         self.layoutDetailsBackButton.addWidget(self.buttonCheckForUpdate)
 
-        self.buttonChangeBranch = QPushButton(PackageDetails)
+        self.buttonChangeBranch = QtWidgets.QPushButton(PackageDetails)
         self.buttonChangeBranch.setObjectName("buttonChangeBranch")
 
         self.layoutDetailsBackButton.addWidget(self.buttonChangeBranch)
 
-        self.buttonExecute = QPushButton(PackageDetails)
+        self.buttonExecute = QtWidgets.QPushButton(PackageDetails)
         self.buttonExecute.setObjectName("buttonExecute")
 
         self.layoutDetailsBackButton.addWidget(self.buttonExecute)
 
-        self.buttonDisable = QPushButton(PackageDetails)
+        self.buttonDisable = QtWidgets.QPushButton(PackageDetails)
         self.buttonDisable.setObjectName("buttonDisable")
 
         self.layoutDetailsBackButton.addWidget(self.buttonDisable)
 
-        self.buttonEnable = QPushButton(PackageDetails)
+        self.buttonEnable = QtWidgets.QPushButton(PackageDetails)
         self.buttonEnable.setObjectName("buttonEnable")
 
         self.layoutDetailsBackButton.addWidget(self.buttonEnable)
 
         self.verticalLayout_2.addLayout(self.layoutDetailsBackButton)
 
-        self.labelPackageDetails = QLabel(PackageDetails)
+        self.labelPackageDetails = QtWidgets.QLabel(PackageDetails)
         self.labelPackageDetails.hide()
 
         self.verticalLayout_2.addWidget(self.labelPackageDetails)
 
-        self.labelInstallationLocation = QLabel(PackageDetails)
-        self.labelInstallationLocation.setTextInteractionFlags(Qt.TextSelectableByMouse)
+        self.labelInstallationLocation = QtWidgets.QLabel(PackageDetails)
+        self.labelInstallationLocation.setTextInteractionFlags(
+            QtCore.Qt.TextSelectableByMouse
+        )
         self.labelInstallationLocation.hide()
 
         self.verticalLayout_2.addWidget(self.labelInstallationLocation)
 
-        self.labelWarningInfo = QLabel(PackageDetails)
+        self.labelWarningInfo = QtWidgets.QLabel(PackageDetails)
         self.labelWarningInfo.hide()
 
         self.verticalLayout_2.addWidget(self.labelWarningInfo)
 
-        sizePolicy1 = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+        sizePolicy1 = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding
+        )
         sizePolicy1.setHorizontalStretch(0)
         sizePolicy1.setVerticalStretch(0)
 
         if HAS_QTWEBENGINE:
-            self.webView = QWebEngineView(PackageDetails)
+            self.webView = QtWebEngineWidgets.QWebEngineView(PackageDetails)
             self.webView.setObjectName("webView")
             self.webView.setSizePolicy(sizePolicy1)
             self.webView.setPage(RestrictedWebPage(PackageDetails))
 
             self.verticalLayout_2.addWidget(self.webView)
 
-            self.loadingLabel = QWebEngineView(PackageDetails)
+            self.loadingLabel = QtWebEngineWidgets.QWebEngineView(PackageDetails)
             self.loadingLabel.setObjectName("loadingLabel")
             self.loadingLabel.setSizePolicy(sizePolicy1)
 
             self.verticalLayout_2.addWidget(self.loadingLabel)
 
-            self.slowLoadLabel = QLabel(PackageDetails)
+            self.slowLoadLabel = QtWidgets.QLabel(PackageDetails)
             self.slowLoadLabel.setObjectName("slowLoadLabel")
 
             self.verticalLayout_2.addWidget(self.slowLoadLabel)
 
-            self.progressBar = QProgressBar(PackageDetails)
+            self.progressBar = QtWidgets.QProgressBar(PackageDetails)
             self.progressBar.setObjectName("progressBar")
             self.progressBar.setTextVisible(False)
 
             self.verticalLayout_2.addWidget(self.progressBar)
 
-            self.urlBar = QLineEdit(PackageDetails)
+            self.urlBar = QtWidgets.QLineEdit(PackageDetails)
             self.urlBar.setObjectName("urlBar")
             self.urlBar.setReadOnly(True)
 
             self.verticalLayout_2.addWidget(self.urlBar)
         else:
-            self.missingWebViewLabel = QLabel(PackageDetails)
+            self.missingWebViewLabel = QtWidgets.QLabel(PackageDetails)
             self.missingWebViewLabel.setObjectName("missingWebViewLabel")
             self.missingWebViewLabel.setWordWrap(True)
             self.verticalLayout_2.addWidget(self.missingWebViewLabel)
 
-            self.textBrowserReadMe = QTextBrowser(PackageDetails)
+            self.textBrowserReadMe = QtWidgets.QTextBrowser(PackageDetails)
             self.textBrowserReadMe.setObjectName("textBrowserReadMe")
             self.textBrowserReadMe.setOpenExternalLinks(True)
             self.textBrowserReadMe.setOpenLinks(True)
@@ -890,54 +901,56 @@ class Ui_PackageDetails(object):
 
         self.retranslateUi(PackageDetails)
 
-        QMetaObject.connectSlotsByName(PackageDetails)
+        QtCore.QMetaObject.connectSlotsByName(PackageDetails)
 
     # setupUi
 
     def retranslateUi(self, _):
         self.buttonBack.setText("")
         self.buttonInstall.setText(
-            QCoreApplication.translate("AddonsInstaller", "Install", None)
+            QtCore.QCoreApplication.translate("AddonsInstaller", "Install", None)
         )
         self.buttonUninstall.setText(
-            QCoreApplication.translate("AddonsInstaller", "Uninstall", None)
+            QtCore.QCoreApplication.translate("AddonsInstaller", "Uninstall", None)
         )
         self.buttonUpdate.setText(
-            QCoreApplication.translate("AddonsInstaller", "Update", None)
+            QtCore.QCoreApplication.translate("AddonsInstaller", "Update", None)
         )
         self.buttonCheckForUpdate.setText(
-            QCoreApplication.translate("AddonsInstaller", "Check for Update", None)
+            QtCore.QCoreApplication.translate(
+                "AddonsInstaller", "Check for Update", None
+            )
         )
         self.buttonExecute.setText(
-            QCoreApplication.translate("AddonsInstaller", "Run Macro", None)
+            QtCore.QCoreApplication.translate("AddonsInstaller", "Run Macro", None)
         )
         self.buttonChangeBranch.setText(
-            QCoreApplication.translate("AddonsInstaller", "Change Branch", None)
+            QtCore.QCoreApplication.translate("AddonsInstaller", "Change Branch", None)
         )
         self.buttonEnable.setText(
-            QCoreApplication.translate("AddonsInstaller", "Enable", None)
+            QtCore.QCoreApplication.translate("AddonsInstaller", "Enable", None)
         )
         self.buttonDisable.setText(
-            QCoreApplication.translate("AddonsInstaller", "Disable", None)
+            QtCore.QCoreApplication.translate("AddonsInstaller", "Disable", None)
         )
         self.buttonBack.setToolTip(
-            QCoreApplication.translate(
+            QtCore.QCoreApplication.translate(
                 "AddonsInstaller", "Return to package list", None
             )
         )
         if not HAS_QTWEBENGINE:
             self.missingWebViewLabel.setText(
                 "<h3>"
-                + QCoreApplication.translate(
+                + QtCore.QCoreApplication.translate(
                     "AddonsInstaller",
-                    "QtWebEngine Python bindings not installed -- using fallback README display. See Report View for details and installation instructions.",
+                    "QtWebEngine Python bindings not installed -- using fallback README display.",
                     None,
                 )
                 + "</h3>"
             )
         else:
             self.slowLoadLabel.setText(
-                QCoreApplication.translate(
+                QtCore.QCoreApplication.translate(
                     "AddonsInstaller",
                     "The page is taking a long time to load... showing the data we have so far...",
                 )

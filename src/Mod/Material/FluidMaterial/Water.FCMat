@@ -19,7 +19,8 @@ ThermalConductivity = 0.591 W/m/K
 ; https://en.wikipedia.org/wiki/Water
 ThermalExpansionCoefficient = 2.07e-4 m/m/K
 
-[Electrical]
+[Electromagnetic]
 RelativePermittivity = 80.0
 ; at 20°C and 50Hz
 ElectricalConductivity = 5.5e-6 S/m
+RelativePermeability = 0.999992

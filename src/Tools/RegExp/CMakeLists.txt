@@ -20,7 +20,7 @@ QT5_WRAP_CPP(RegExp_MOC_SRCS
     regexpdialog.h
 )
 
-QT5_WRAP_UI(RegExp_UIC_HDRS 
+QT5_WRAP_UI(RegExp_UIC_HDRS
     regexpdialog.ui
 )
 

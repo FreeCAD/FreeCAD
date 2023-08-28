@@ -43,11 +43,6 @@ TaskWatcherRobot::TaskWatcherRobot()
 
 }
 
-TaskWatcherRobot::~TaskWatcherRobot()
-{
-
-}
-
 //==== calls from the TaskView ===============================================================
 
 bool TaskWatcherRobot::shouldShow()

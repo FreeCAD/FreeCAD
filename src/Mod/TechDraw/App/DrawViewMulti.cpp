@@ -108,15 +108,15 @@ App::DocumentObjectExecReturn *DrawViewMulti::execute()
 
     gp_Pnt inputCenter;
     try {
-        inputCenter = TechDraw::findCentroid(comp,
+        inputCenter = ShapeUtils::findCentroid(comp,
                                                      Direction.getValue());
         shapeCentroid = Base::Vector3d(inputCenter.X(), inputCenter.Y(), inputCenter.Z());
-        TopoDS_Shape mirroredShape = TechDraw::mirrorShape(comp,
+        TopoDS_Shape mirroredShape = ShapeUtils::mirrorShape(comp,
                                                     inputCenter,
                                                     getScale());
         gp_Ax2 viewAxis = getViewAxis(Base::Vector3d(inputCenter.X(), inputCenter.Y(), inputCenter.Z()), Direction.getValue());
         if (!DrawUtil::fpCompare(Rotation.getValue(), 0.0)) {
-            mirroredShape = TechDraw::rotateShape(mirroredShape,
+            mirroredShape = ShapeUtils::rotateShape(mirroredShape,
                                                           viewAxis,
                                                           Rotation.getValue());
         }
@@ -127,7 +127,6 @@ App::DocumentObjectExecReturn *DrawViewMulti::execute()
 #endif //#if MOD_TECHDRAW_HANDLE_FACES
     }
     catch (Standard_Failure& e1) {
-        Base::Console().Log("LOG - DVM::execute - projection failed for %s - %s **\n", getNameInDocument(), e1.GetMessageString());
         return new App::DocumentObjectExecReturn(e1.GetMessageString());
     }
 

@@ -223,8 +223,8 @@ private:
     void write();
 
 private:
-    std::ostream *outputStreamPtr;
-    int nextObjectIndex;
+    std::ostream *outputStreamPtr{nullptr};
+    int nextObjectIndex{0};
 
     /// Helper for putting Base::Vector3f objects into a std::map in addMesh()
     class VertLess;

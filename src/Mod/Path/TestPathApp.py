@@ -22,9 +22,10 @@
 
 import TestApp
 
+from PathTests.TestPathProfile import TestPathProfile
+
 from PathTests.TestPathAdaptive import TestPathAdaptive
 from PathTests.TestPathCore import TestPathCore
-from PathTests.TestPathDeburr import TestPathDeburr
 from PathTests.TestPathDepthParams import depthTestCases
 from PathTests.TestPathDressupDogbone import TestDressupDogbone
 from PathTests.TestPathDressupDogboneII import TestDressupDogboneII
@@ -34,6 +35,7 @@ from PathTests.TestPathDrillGenerator import TestPathDrillGenerator
 from PathTests.TestPathGeneratorDogboneII import TestGeneratorDogboneII
 from PathTests.TestPathGeom import TestPathGeom
 from PathTests.TestPathLanguage import TestPathLanguage
+from PathTests.TestPathOpDeburr import TestPathOpDeburr
 
 # from PathTests.TestPathHelix import TestPathHelix
 from PathTests.TestPathHelpers import TestPathHelpers
@@ -47,6 +49,7 @@ from PathTests.TestPathPost import TestBuildPostList
 from PathTests.TestPathPost import TestOutputNameSubstitution
 
 from PathTests.TestPathPreferences import TestPathPreferences
+from PathTests.TestPathProfile import TestPathProfile
 from PathTests.TestPathPropertyBag import TestPathPropertyBag
 from PathTests.TestPathRotationGenerator import TestPathRotationGenerator
 from PathTests.TestPathSetupSheet import TestPathSetupSheet
@@ -82,7 +85,7 @@ False if TestPathLanguage.__name__ else True
 False if TestOutputNameSubstitution.__name__ else True
 False if TestPathAdaptive.__name__ else True
 False if TestPathCore.__name__ else True
-False if TestPathDeburr.__name__ else True
+False if TestPathOpDeburr.__name__ else True
 False if TestPathDrillable.__name__ else True
 False if TestPathGeom.__name__ else True
 False if TestPathHelpers.__name__ else True
@@ -92,6 +95,7 @@ False if TestPathOpUtil.__name__ else True
 # False if TestPathPost.__name__ else True
 False if TestPathPostUtils.__name__ else True
 False if TestPathPreferences.__name__ else True
+False if TestPathProfile.__name__ else True
 False if TestPathPropertyBag.__name__ else True
 False if TestPathRotationGenerator.__name__ else True
 False if TestPathSetupSheet.__name__ else True

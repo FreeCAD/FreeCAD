@@ -142,7 +142,7 @@ public:
         funcs["ItemBackground"] = &TreeParamsP::updateItemBackground;
         ItemBackgroundPadding = handle->GetInt("ItemBackgroundPadding", 10);
         funcs["ItemBackgroundPadding"] = &TreeParamsP::updateItemBackgroundPadding;
-        HideColumn = handle->GetBool("HideColumn", false);
+        HideColumn = handle->GetBool("HideColumn", true);
         funcs["HideColumn"] = &TreeParamsP::updateHideColumn;
         HideScrollBar = handle->GetBool("HideScrollBar", true);
         funcs["HideScrollBar"] = &TreeParamsP::updateHideScrollBar;
@@ -159,18 +159,17 @@ public:
     }
 
     // Auto generated code (Tools/params_utils.py:217)
-    ~TreeParamsP() {
-    }
+    ~TreeParamsP() override = default;
 
     // Auto generated code (Tools/params_utils.py:222)
-    void OnChange(Base::Subject<const char*> &, const char* sReason) {
+    void OnChange(Base::Subject<const char*> &, const char* sReason) override {
         if(!sReason)
             return;
         auto it = funcs.find(sReason);
         if(it == funcs.end())
             return;
         it->second(this);
-        
+
     }
 
 
@@ -356,7 +355,7 @@ public:
     }
     // Auto generated code (Tools/params_utils.py:244)
     static void updateHideColumn(TreeParamsP *self) {
-        auto v = self->handle->GetBool("HideColumn", false);
+        auto v = self->handle->GetBool("HideColumn", true);
         if (self->HideColumn != v) {
             self->HideColumn = v;
             TreeParams::onHideColumnChanged();
@@ -1137,7 +1136,7 @@ void TreeParams::removeItemSpacing() {
 // Auto generated code (Tools/params_utils.py:288)
 const char *TreeParams::docItemBackground() {
     return QT_TRANSLATE_NOOP("TreeParams",
-"Tree view item background. Only effecitve in overlay.");
+"Tree view item background. Only effective in overlay.");
 }
 
 // Auto generated code (Tools/params_utils.py:294)
@@ -1203,7 +1202,7 @@ const bool & TreeParams::getHideColumn() {
 
 // Auto generated code (Tools/params_utils.py:300)
 const bool & TreeParams::defaultHideColumn() {
-    const static bool def = false;
+    const static bool def = true;
     return def;
 }
 
@@ -1221,7 +1220,7 @@ void TreeParams::removeHideColumn() {
 // Auto generated code (Tools/params_utils.py:288)
 const char *TreeParams::docHideScrollBar() {
     return QT_TRANSLATE_NOOP("TreeParams",
-"Hide tree view scroll bar in dock overlay");
+"Hide tree view scroll bar in dock overlay.");
 }
 
 // Auto generated code (Tools/params_utils.py:294)
@@ -1249,7 +1248,7 @@ void TreeParams::removeHideScrollBar() {
 // Auto generated code (Tools/params_utils.py:288)
 const char *TreeParams::docHideHeaderView() {
     return QT_TRANSLATE_NOOP("TreeParams",
-"Hide tree view header view in dock overlay");
+"Hide tree view header view in dock overlay.");
 }
 
 // Auto generated code (Tools/params_utils.py:294)
@@ -1277,7 +1276,7 @@ void TreeParams::removeHideHeaderView() {
 // Auto generated code (Tools/params_utils.py:288)
 const char *TreeParams::docResizableColumn() {
     return QT_TRANSLATE_NOOP("TreeParams",
-"Allow tree view columns to be manually resized");
+"Allow tree view columns to be manually resized.");
 }
 
 // Auto generated code (Tools/params_utils.py:294)

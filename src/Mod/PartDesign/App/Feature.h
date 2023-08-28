@@ -81,6 +81,11 @@ public:
         return "PartDesignGui::ViewProvider";
     }
 
+
+    App::DocumentObject *getSubObject(const char *subname, 
+        PyObject **pyObj, Base::Matrix4D *pmat, bool transform, int depth) const override;
+
+
 protected:
 
     /**

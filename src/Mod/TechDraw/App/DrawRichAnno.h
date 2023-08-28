@@ -39,7 +39,7 @@ class TechDrawExport DrawRichAnno : public TechDraw::DrawView
 
 public:
     DrawRichAnno();
-    ~DrawRichAnno() = default;
+    ~DrawRichAnno() override = default;
 
     App::PropertyLink         AnnoParent;
     App::PropertyString       AnnoText;

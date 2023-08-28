@@ -5,4 +5,4 @@ https://www.engineersedge.com/thread_strength/internal_screw_threads_chart.htm
 
 https://www.engineersedge.com/hardware/metric-external-thread-sizes1.htm
 https://www.engineersedge.com/hardware/metric-external-thread-sizes2.htm
-  dMinorMin = dPitchMin - (dMajorMax - dPitchMax) * 0.948 
+  dMinorMin = dPitchMin - (dMajorMax - dPitchMax) * 0.948

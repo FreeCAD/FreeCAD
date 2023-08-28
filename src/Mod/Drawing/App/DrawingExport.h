@@ -20,13 +20,13 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef DRAWING_EXPORT_H
 #define DRAWING_EXPORT_H
 
 #include <string>
 #include <TopoDS_Edge.hxx>
 #include <Mod/Drawing/DrawingGlobal.h>
+
 
 class TopoDS_Shape;
 class BRepAdaptor_Curve;

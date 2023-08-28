@@ -253,7 +253,7 @@ class AppExport ColorField
 {
 public:
     ColorField ();
-    ColorField (const ColorField &rclCF);
+    ColorField (const ColorField &rclCF) = default;
     ColorField (const ColorModel &rclModel, float fMin, float fMax, std::size_t usCt);
     virtual ~ColorField () = default;
 
@@ -342,12 +342,12 @@ inline std::size_t ColorField::getColorIndex (float fVal) const
 
 struct AppExport ColorGradientProfile
 {
-    ColorBarStyle tStyle;
-    float fMin;
-    float fMax;
-    std::size_t ctColors;
-    std::size_t tColorModel;
-    VisibilityFlags visibility;
+    ColorBarStyle tStyle{ColorBarStyle::FLOW};
+    float fMin{};
+    float fMax{};
+    std::size_t ctColors{};
+    std::size_t tColorModel{};
+    VisibilityFlags visibility{Visibility::Default};
 
     ColorGradientProfile();
     ColorGradientProfile (const ColorGradientProfile &) = default;
@@ -441,10 +441,10 @@ class AppExport ColorLegend
 {
 public:
     ColorLegend ();
-    ColorLegend (const ColorLegend &rclCL);
+    ColorLegend (const ColorLegend &rclCL) = default;
     virtual ~ColorLegend () = default;
 
-    ColorLegend& operator = (const ColorLegend &rclCL);
+    ColorLegend& operator = (const ColorLegend &rclCL) = default;
     bool operator == (const ColorLegend &rclCL) const;
     bool operator != (const ColorLegend &rclCL) const {
         return !(*this == rclCL);
@@ -484,7 +484,7 @@ protected:
     std::deque<Color> colorFields;
     std::deque<std::string> names;
     std::deque<float> values;
-    bool outsideGrayed;
+    bool outsideGrayed{false};
 };
 
 inline Color ColorLegend::getColor (float fVal) const

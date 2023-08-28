@@ -24,7 +24,7 @@
 
 __title__ = "FreeCAD FEM base python object"
 __author__ = "Markus Hovorka, Bernd Hahnebach"
-__url__ = "https://www.freecadweb.org"
+__url__ = "https://www.freecad.org"
 
 ## @package base_fempythonobject
 #  \ingroup FEM
@@ -40,8 +40,8 @@ class BaseFemPythonObject(object):
         obj.Proxy = self  # link between App::DocumentObject to this object
 
     # they are needed, see:
-    # https://forum.freecadweb.org/viewtopic.php?f=18&t=44021
-    # https://forum.freecadweb.org/viewtopic.php?f=18&t=44009
+    # https://forum.freecad.org/viewtopic.php?f=18&t=44021
+    # https://forum.freecad.org/viewtopic.php?f=18&t=44009
     def __getstate__(self):
         return None
 

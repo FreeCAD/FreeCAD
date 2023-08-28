@@ -37,21 +37,20 @@ PROPERTY_SOURCE(Fem::FemPostObject, App::GeoFeature)
 
 FemPostObject::FemPostObject()
 {
-    ADD_PROPERTY(Data,(nullptr));
+    ADD_PROPERTY(Data, (nullptr));
 }
 
-FemPostObject::~FemPostObject()
-{
-}
+FemPostObject::~FemPostObject() = default;
 
 vtkBoundingBox FemPostObject::getBoundingBox() {
 
     vtkBoundingBox box;
 
-    if(Data.getValue() && Data.getValue()->IsA("vtkDataSet"))
-        box.AddBounds(vtkDataSet::SafeDownCast(Data.getValue())->GetBounds());
+    vtkDataSet* dset = vtkDataSet::SafeDownCast(Data.getValue());
+    if (dset)
+        box.AddBounds(dset->GetBounds());
 
-    //TODO: add calculation of multiblock and Multipiece datasets
+    // TODO: add calculation of multiblock and Multipiece datasets
 
     return box;
 }

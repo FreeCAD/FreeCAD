@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
 # ***************************************************************************
 # *                                                                         *
 # *   Copyright (c) 2022 FreeCAD Project Association                        *
@@ -37,7 +38,7 @@ from addonmanager_utilities import get_readme_url
 
 translate = FreeCAD.Qt.translate
 
-#pylint: disable=too-few-public-methods
+# pylint: disable=too-few-public-methods
 
 
 class AddonSlice:
@@ -62,7 +63,7 @@ class Predictor:
         if not self.git_manager:
             raise Exception("Cannot use Developer Mode without git installed")
 
-    def predict_metadata(self, path: os.PathLike) -> FreeCAD.Metadata:
+    def predict_metadata(self, path: str) -> FreeCAD.Metadata:
         """Create a predicted Metadata object based on the contents of the passed-in directory"""
         if not os.path.isdir(path):
             return None
@@ -84,17 +85,17 @@ class Predictor:
 
         committers = self.git_manager.get_last_committers(self.path)
 
-        # This is a dictionary keyed to the author's name (which can be many different
+        # This is a dictionary keyed to the author's name (which can be many
         # things, depending on the author) containing two fields, "email" and "count". It
         # is common for there to be multiple entries representing the same human being,
         # so a passing attempt is made to reconcile:
         filtered_committers = {}
-        for key,committer in committers.items():
+        for key, committer in committers.items():
             if "github" in key.lower():
                 # Robotic merge commit (or other similar), ignore
                 continue
             # Does any other committer share any of these emails?
-            for other_key,other_committer in committers.items():
+            for other_key, other_committer in committers.items():
                 if other_key == key:
                     continue
                 for other_email in other_committer["email"]:
@@ -262,7 +263,7 @@ class Predictor:
         for name in valid_names:
             full_path = os.path.join(self.path, name)
             if os.path.exists(full_path):
-                with open(full_path, "r", encoding="utf-8") as f:
+                with open(full_path, encoding="utf-8") as f:
                     self.readme_data = f.read()
                     return
 
@@ -279,7 +280,7 @@ class Predictor:
         for name in valid_names:
             full_path = os.path.join(self.path.replace("/", os.path.sep), name)
             if os.path.isfile(full_path):
-                with open(full_path, "r", encoding="utf-8") as f:
+                with open(full_path, encoding="utf-8") as f:
                     self.license_data = f.read()
                     self.license_file = name
                     return

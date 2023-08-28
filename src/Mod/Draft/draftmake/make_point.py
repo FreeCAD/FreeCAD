@@ -75,6 +75,7 @@ def make_point(X=0, Y=0, Z=0, color=None, name="Point", point_size=5):
         X = X.x
 
     Point(obj, X, Y, Z)
+    obj.Placement.Base = App.Vector(X, Y, Z)
 
     if App.GuiUp:
         ViewProviderPoint(obj.ViewObject)

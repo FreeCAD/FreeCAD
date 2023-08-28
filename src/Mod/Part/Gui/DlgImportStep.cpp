@@ -50,10 +50,7 @@ DlgImportStep::DlgImportStep(QWidget* parent)
 /**
  *  Destroys the object and frees any allocated resources
  */
-DlgImportStep::~DlgImportStep()
-{
-    // no need to delete child widgets, Qt does it all for us
-}
+DlgImportStep::~DlgImportStep() = default;
 
 void DlgImportStep::saveSettings()
 {

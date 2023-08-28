@@ -1,0 +1,19 @@
+name: Request a Backport
+description: Suggest that a commit from the main development branch be backported to the next point release
+title: "[Backport] "
+labels: ["needs triage", "backport"]
+body:
+  - type: input
+    id: pull_request
+    attributes:
+      label: Original PR
+      description: A link to the PR that contains the commits to be backported
+      placeholder: https://github.com/FreeCAD/FreeCAD/pulls/1234
+    validations:
+      required: true
+  - type: textarea
+    id: description
+    attributes:
+      label: Description and Justification
+      description: Why should this PR (or individual commit) be backported?
+      placeholder: Please explain why this PR or commit should be backported to the next point release.

@@ -62,15 +62,11 @@
 
 
 using namespace Gui;
-namespace bp = boost::placeholders;
+namespace sp = std::placeholders;
 
-AlignmentGroup::AlignmentGroup()
-{
-}
+AlignmentGroup::AlignmentGroup() = default;
 
-AlignmentGroup::~AlignmentGroup()
-{
-}
+AlignmentGroup::~AlignmentGroup() = default;
 
 void AlignmentGroup::addView(App::DocumentObject* pView)
 {
@@ -254,33 +250,21 @@ Base::BoundBox3d AlignmentGroup::getBoundingBox() const
 
 // ------------------------------------------------------------------
 
-MovableGroup::MovableGroup()
-{
-}
+MovableGroup::MovableGroup() = default;
 
-MovableGroup::~MovableGroup()
-{
-}
+MovableGroup::~MovableGroup() = default;
 
 // ------------------------------------------------------------------
 
-FixedGroup::FixedGroup()
-{
-}
+FixedGroup::FixedGroup() = default;
 
-FixedGroup::~FixedGroup()
-{
-}
+FixedGroup::~FixedGroup() = default;
 
 // ------------------------------------------------------------------
 
-MovableGroupModel::MovableGroupModel()
-{
-}
+MovableGroupModel::MovableGroupModel() = default;
 
-MovableGroupModel::~MovableGroupModel()
-{
-}
+MovableGroupModel::~MovableGroupModel() = default;
 
 void MovableGroupModel::addGroup(const MovableGroup& grp)
 {
@@ -381,16 +365,13 @@ public:
         mainSplitter = new QSplitter(Qt::Horizontal, this);
         if (glformat) {
             _viewer.push_back(new View3DInventorViewer(f, mainSplitter));
-            _viewer.back()->setDocument(pcDocument);
             _viewer.push_back(new View3DInventorViewer(f, mainSplitter));
-            _viewer.back()->setDocument(pcDocument);
         }
         else {
             _viewer.push_back(new View3DInventorViewer(mainSplitter));
-            _viewer.back()->setDocument(pcDocument);
             _viewer.push_back(new View3DInventorViewer(mainSplitter));
-            _viewer.back()->setDocument(pcDocument);
         }
+        setDocumentOfViewers(pcDocument);
 
         auto vbox = new QFrame(this);
         auto layout = new QVBoxLayout();
@@ -429,9 +410,7 @@ public:
         static_cast<SoGroup*>(getViewer(1)->getSoRenderManager()->getSceneGraph())->
             addChild(setupHeadUpDisplay(tr("Fixed object")));
     }
-    ~AlignmentView() override
-    {
-    }
+    ~AlignmentView() override = default;
     PyObject* getPyObject() override
     {
         Py_Return;
@@ -492,13 +471,12 @@ class ManualAlignment::Private {
 public:
     SoSeparator * picksepLeft;
     SoSeparator * picksepRight;
-    SoNodeSensor* sensorCam1;
-    SoNodeSensor* sensorCam2;
+    SoNodeSensor* sensorCam1{nullptr};
+    SoNodeSensor* sensorCam2{nullptr};
     SbRotation rot_cam1, rot_cam2;
     SbVec3f pos_cam1, pos_cam2;
 
     Private()
-      : sensorCam1(nullptr), sensorCam2(nullptr)
     {
         // left view
         picksepLeft = new SoSeparator;
@@ -612,7 +590,7 @@ public:
         Base::Vector3d pln_base;
         rot.multVec(plane1_base,pln_base);
         Base::Vector3d dif = plane2_base - pln_base;
-        return Base::Placement(dif, rot);
+        return {dif, rot};
     }
 
     static Base::Placement
@@ -657,9 +635,11 @@ ManualAlignment* ManualAlignment::_instance = nullptr;
 ManualAlignment::ManualAlignment()
   : myViewer(nullptr), myDocument(nullptr), myPickPoints(3), d(new Private)
 {
+    //NOLINTBEGIN
     // connect with the application's signal for deletion of documents
     this->connectApplicationDeletedDocument = Gui::Application::Instance->signalDeleteDocument
-        .connect(boost::bind(&ManualAlignment::slotDeletedDocument, this, bp::_1));
+        .connect(std::bind(&ManualAlignment::slotDeletedDocument, this, sp::_1));
+    //NOLINTEND
 
     // setup sensor connection
     d->sensorCam1 = new SoNodeSensor(Private::syncCameraCB, this);
@@ -823,7 +803,7 @@ void ManualAlignment::startAlignment(Base::Type mousemodel)
         : tr("Please, select at least %1 points in the left and the right view").arg(n);
     myViewer->myLabel->setText(msg);
 
-    connect(myViewer, SIGNAL(destroyed()), this, SLOT(reset()));
+    connect(myViewer, &QObject::destroyed, this, &ManualAlignment::reset);
 
     // show all aligned views in the 2nd view
     myFixedGroup.addToViewer(myViewer->getViewer(1));
@@ -852,8 +832,10 @@ void ManualAlignment::startAlignment(Base::Type mousemodel)
     // Connect to the document's signal as we want to be notified when something happens
     if (this->connectDocumentDeletedObject.connected())
         this->connectDocumentDeletedObject.disconnect();
-    this->connectDocumentDeletedObject = myDocument->signalDeletedObject.connect(boost::bind
-        (&ManualAlignment::slotDeletedObject, this, bp::_1));
+    //NOLINTBEGIN
+    this->connectDocumentDeletedObject = myDocument->signalDeletedObject.connect(std::bind
+        (&ManualAlignment::slotDeletedObject, this, sp::_1));
+    //NOLINTEND
 
     continueAlignment();
 }
@@ -1135,8 +1117,8 @@ SoNode* ManualAlignment::pickedPointsSubGraph(const SbVec3f& p, const SbVec3f& n
     probe->base.setValue(p);
     probe->normal.setValue(n);
     probe->color.setValue(color_table[index][0],color_table[index][1],color_table[index][2]);
-    SbString s;
-    probe->text.setValue(s.sprintf("RegPoint_%d", id));
+    SbString s(tr("Point_%1").arg(id).toStdString().c_str());
+    probe->text.setValue(s);
     return probe;
 }
 
@@ -1262,35 +1244,35 @@ void ManualAlignment::probePickedCallback(void * ud, SoEventCallback * n)
             else
                 nPoints = self->myFixedGroup.countPoints();
             QMenu menu;
-            QAction* fi = menu.addAction(QLatin1String("&Align"));
-            QAction* rem = menu.addAction(QLatin1String("&Remove last point"));
+            QAction* fi = menu.addAction(tr("&Align"));
+            QAction* rem = menu.addAction(tr("&Remove last point"));
             //QAction* cl = menu.addAction("C&lear");
-            QAction* ca = menu.addAction(QLatin1String("&Cancel"));
+            QAction* ca = menu.addAction(tr("&Cancel"));
             fi->setEnabled(self->canAlign());
             rem->setEnabled(nPoints > 0);
             menu.addSeparator();
-            QAction* sync = menu.addAction(QLatin1String("&Synchronize views"));
+            QAction* sync = menu.addAction(tr("&Synchronize views"));
             sync->setCheckable(true);
             if (self->d->sensorCam1->getAttachedNode())
                 sync->setChecked(true);
             QAction* id = menu.exec(QCursor::pos());
             if (id == fi) {
                 // call align->align();
-                QTimer::singleShot(300, self, SLOT(onAlign()));
+                QTimer::singleShot(300, self, &ManualAlignment::onAlign);
             }
             else if ((id == rem) && (view == self->myViewer->getViewer(0))) {
-                QTimer::singleShot(300, self, SLOT(onRemoveLastPointMoveable()));
+                QTimer::singleShot(300, self, &ManualAlignment::onRemoveLastPointMoveable);
             }
             else if ((id == rem) && (view == self->myViewer->getViewer(1))) {
-                QTimer::singleShot(300, self, SLOT(onRemoveLastPointFixed()));
+                QTimer::singleShot(300, self, &ManualAlignment::onRemoveLastPointFixed);
             }
             //else if (id == cl) {
             //    // call align->clear();
-            //    QTimer::singleShot(300, self, SLOT(onClear()));
+            //    QTimer::singleShot(300, self, &ManualAlignment::onClear);
             //}
             else if (id == ca) {
                 // call align->cancel();
-                QTimer::singleShot(300, self, SLOT(onCancel()));
+                QTimer::singleShot(300, self, &ManualAlignment::onCancel);
             }
             else if (id == sync) {
                 // setup sensor connection

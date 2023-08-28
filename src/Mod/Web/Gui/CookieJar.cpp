@@ -48,7 +48,7 @@ FcCookieJar::FcCookieJar(QObject* parent)
     // syscalls in sequence (when loading pages which set multiple cookies).
     m_timer.setInterval(10000);
     m_timer.setSingleShot(true);
-    connect(&m_timer, SIGNAL(timeout()), this, SLOT(saveToDisk()));
+    connect(&m_timer, &QTimer::timeout, this, &FcCookieJar::saveToDisk);
     Base::FileInfo cookiefile(App::Application::getUserAppDataDir() + "cookies");
     m_file.setFileName(QString::fromUtf8(cookiefile.filePath().c_str()));
     if (allCookies().isEmpty())
@@ -82,9 +82,9 @@ void FcCookieJar::extractRawCookies()
     QList<QNetworkCookie> cookies = allCookies();
     m_rawCookies.clear();
 
-    for (QList<QNetworkCookie>::iterator i = cookies.begin(); i != cookies.end(); i++) {
-        if (!(*i).isSessionCookie())
-            m_rawCookies.append((*i).toRawForm());
+    for (const auto& it : cookies) {
+        if (!it.isSessionCookie())
+            m_rawCookies.append(it.toRawForm());
     }
 }
 
@@ -94,8 +94,8 @@ void FcCookieJar::saveToDisk()
 
     if (m_file.open(QIODevice::WriteOnly | QIODevice::Text)) {
         QTextStream out(&m_file);
-        for (QList<QByteArray>::iterator i = m_rawCookies.begin(); i != m_rawCookies.end(); i++) { 
-            out << (*i) + "\n";
+        for (const auto& it : m_rawCookies) {
+            out << it + "\n";
         }
         m_file.close();
     } else

@@ -78,8 +78,8 @@ TaskFemConstraint::TaskFemConstraint(ViewProviderFemConstraint *ConstraintView,Q
         buttonBox = new QDialogButtonBox();
         buttonBox->addButton(okButton, QDialogButtonBox::AcceptRole);
         buttonBox->addButton(cancelButton, QDialogButtonBox::RejectRole);
-        QObject::connect(okButton, SIGNAL(clicked()), this, SLOT(onButtonWizOk()));
-        QObject::connect(cancelButton, SIGNAL(clicked()), this, SLOT(onButtonWizCancel()));
+        QObject::connect(okButton, &QPushButton::clicked, this, &TaskFemConstraint::onButtonWizOk);
+        QObject::connect(cancelButton, &QPushButton::clicked, this, &TaskFemConstraint::onButtonWizCancel);
         ConstraintView->wizardWidget->addWidget(buttonBox);
     }
 }

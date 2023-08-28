@@ -47,7 +47,7 @@
        </property>
       </widget>
      </item>
-	 <item>
+     <item>
       <widget class="QToolButton" name="filterButton">
        <property name="sizePolicy">
         <sizepolicy hsizetype="MinimumExpanding" vsizetype="Preferred">

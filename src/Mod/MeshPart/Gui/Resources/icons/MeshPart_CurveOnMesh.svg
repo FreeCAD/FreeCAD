@@ -2221,7 +2221,7 @@
           </cc:Agent>
         </dc:publisher>
         <dc:identifier>FreeCAD/src/Mod/Surface/Gui/Resources/icons/MeshPart_CurveOnMesh.svg</dc:identifier>
-        <dc:relation>http://www.freecadweb.org/wiki/index.php?title=Artwork</dc:relation>
+        <dc:relation>http://www.freecad.org/wiki/index.php?title=Artwork</dc:relation>
         <dc:description>A green curved surface that has a thick, red, highlighted curve on top of it, in the middle of the shape. The surface has mesh lines. It is based on the 'Surface_CurveOnMesh' icon, but on green tone, instead of purple.</dc:description>
         <dc:contributor>
           <cc:Agent>

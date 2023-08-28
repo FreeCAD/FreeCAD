@@ -79,7 +79,7 @@ class TaskSurfaceFinishSymbols : public QWidget
 
 public:
     explicit TaskSurfaceFinishSymbols(TechDraw::DrawViewPart* view);
-    ~TaskSurfaceFinishSymbols() = default;
+    ~TaskSurfaceFinishSymbols() override = default;
 
     virtual bool accept();
     virtual bool reject();

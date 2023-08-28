@@ -59,6 +59,7 @@ public:
     bool setEdit(int ModNum) override;
     bool doubleClicked() override;
     bool canDelete(App::DocumentObject* obj) const override;
+    bool onDelete(const std::vector<std::string> & parms) override;
 
     TechDraw::DrawViewBalloon* getViewObject() const override;
 

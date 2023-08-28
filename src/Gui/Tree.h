@@ -60,7 +60,7 @@ public:
     explicit TreeWidget(const char *name, QWidget* parent=nullptr);
     ~TreeWidget() override;
 
-    static void setupResizableColumn(TreeWidget *tree=0);
+    static void setupResizableColumn(TreeWidget *tree=nullptr);
     static void scrollItemToTop();
     void selectAllInstances(const ViewProviderDocumentObject &vpd);
     void selectLinkedObject(App::DocumentObject *linked);
@@ -157,7 +157,7 @@ protected Q_SLOTS:
     void onPreSelectTimer();
     void onSelectTimer();
     void onShowHidden();
-    void onHideInTree();
+    void onToggleVisibilityInTree();
     void onSearchObjects();
 
 private Q_SLOTS:
@@ -205,7 +205,7 @@ private:
     QAction* markRecomputeAction;
     QAction* recomputeObjectAction;
     QAction* showHiddenAction;
-    QAction* hideInTreeAction;
+    QAction* toggleVisibilityInTreeAction;
     QAction* reloadDocAction;
     QAction* closeDocAction;
     QAction* searchObjectsAction;
@@ -412,6 +412,9 @@ public:
     // cannot handle selection with sub name. So only a linked group can have
     // subname in selection
     int getSubName(std::ostringstream &str, App::DocumentObject *&topParent) const;
+    const std::vector<std::string>& getSubNames() const {
+        return mySubs;
+    }
 
     void setHighlight(bool set, HighlightMode mode = HighlightMode::LightBlue);
 

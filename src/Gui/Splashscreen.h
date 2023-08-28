@@ -57,7 +57,7 @@ class Ui_AboutApplication;
 class GuiExport AboutDialogFactory
 {
 public:
-    AboutDialogFactory() {}
+    AboutDialogFactory() = default;
     virtual ~AboutDialogFactory();
 
     virtual QDialog *create(QWidget *parent) const;
@@ -107,8 +107,8 @@ protected:
     void showCollectionInformation();
     void showOrHideImage(const QRect& rect);
 
-protected Q_SLOTS:
-    virtual void on_copyButton_clicked();
+protected:
+    virtual void copyToClipboard();
     void linkActivated(const QUrl& link);
 
 private:

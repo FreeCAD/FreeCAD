@@ -130,7 +130,7 @@ private:
      * a ToolBarItem tree structure.
      */
     void setupCustomToolbars(ToolBarItem* root, const char* toolbar) const;
-    void setupCustomToolbars(ToolBarItem* root, const Base::Reference<ParameterGrp>& hGrp) const;
+    void setupCustomToolbars(ToolBarItem* root, const Base::Reference<ParameterGrp> hGrp) const;
     void setupCustomShortcuts() const;
 
 private:
@@ -289,11 +289,11 @@ protected:
     DockWindowItems* setupDockWindows() const override;
 
 protected:
-    MenuItem* _menuBar;
-    MenuItem* _contextMenu;
-    ToolBarItem* _toolBar;
-    ToolBarItem* _commandBar;
-    Base::PyObjectBase* _workbenchPy;
+    MenuItem* _menuBar{nullptr};
+    MenuItem* _contextMenu{nullptr};
+    ToolBarItem* _toolBar{nullptr};
+    ToolBarItem* _commandBar{nullptr};
+    Base::PyObjectBase* _workbenchPy{nullptr};
 };
 
 class GuiExport PythonBlankWorkbench : public PythonBaseWorkbench

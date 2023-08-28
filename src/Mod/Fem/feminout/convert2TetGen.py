@@ -24,7 +24,7 @@
 
 __title__ = "FreeCAD tetgen exporter"
 __author__ = "Juergen Riegel"
-__url__ = "https://www.freecadweb.org"
+__url__ = "https://www.freecad.org"
 
 ## \addtogroup FEM
 #  @{

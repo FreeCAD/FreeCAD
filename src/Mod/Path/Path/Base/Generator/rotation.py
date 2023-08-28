@@ -32,7 +32,7 @@ from enum import Enum
 
 __title__ = "Rotation Path Generator"
 __author__ = "sliptonic (Brad Collette)"
-__url__ = "https://www.freecadweb.org"
+__url__ = "https://www.freecad.org"
 __doc__ = "Generates the rotation toolpath"
 
 

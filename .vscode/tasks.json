@@ -1,0 +1,58 @@
+{
+  "tasks": [
+    {
+      "type": "shell",
+      "label": "conda: activate environment",
+      "command": "activate freecad",
+      "problemMatcher": [],
+      "detail": "Activate conda environment",
+      "group": "build"
+    },
+    {
+      "type": "cmake",
+      "label": "CMake: configure",
+      "command": "configure",
+      "problemMatcher": [],
+      "detail": "CMake template configure task",
+      "group": "build"
+    },
+    {
+      "type": "cmake",
+      "label": "CMake: build",
+      "command": "build",
+      "targets": ["all"],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "problemMatcher": [],
+      "detail": "CMake template build task"
+    },
+    {
+      "type": "cmake",
+      "label": "CMake: test",
+      "command": "test",
+      "problemMatcher": [],
+      "detail": "CMake template test task",
+      "group": "build"
+    },
+    {
+      "type": "cmake",
+      "label": "CMake: clean",
+      "command": "clean",
+      "problemMatcher": [],
+      "detail": "CMake template clean task",
+      "group": "build"
+    },
+    {
+      "type": "cmake",
+      "label": "CMake: clean rebuild",
+      "command": "cleanRebuild",
+      "targets": ["all"],
+      "problemMatcher": [],
+      "detail": "CMake template clean rebuild task",
+      "group": "build"
+    }
+  ],
+  "version": "2.0.0"
+}

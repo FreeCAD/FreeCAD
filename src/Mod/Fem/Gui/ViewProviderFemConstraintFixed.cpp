@@ -48,9 +48,7 @@ ViewProviderFemConstraintFixed::ViewProviderFemConstraintFixed()
     sPixmap = "FEM_ConstraintFixed";
 }
 
-ViewProviderFemConstraintFixed::~ViewProviderFemConstraintFixed()
-{
-}
+ViewProviderFemConstraintFixed::~ViewProviderFemConstraintFixed() = default;
 
 bool ViewProviderFemConstraintFixed::setEdit(int ModNum)
 {
@@ -124,7 +122,7 @@ void ViewProviderFemConstraintFixed::updateData(const App::Property* prop)
     }
 #endif
 
-    if (strcmp(prop->getName(),"Points") == 0) {
+    if (prop == &pcConstraint->Points) {
         const std::vector<Base::Vector3d>& points = pcConstraint->Points.getValues();
         const std::vector<Base::Vector3d>& normals = pcConstraint->Normals.getValues();
         if (points.size() != normals.size())
@@ -141,9 +139,8 @@ void ViewProviderFemConstraintFixed::updateData(const App::Property* prop)
         Gui::coinRemoveAllChildren(pShapeSep);
 #endif
 
-        for (std::vector<Base::Vector3d>::const_iterator p = points.begin(); p != points.end();
-             p++) {
-            SbVec3f base(p->x, p->y, p->z);
+        for (const auto & point : points) {
+            SbVec3f base(point.x, point.y, point.z);
             SbVec3f dir(n->x, n->y, n->z);
             SbRotation rot(SbVec3f(0, -1, 0), dir);
 #ifdef USE_MULTIPLE_COPY

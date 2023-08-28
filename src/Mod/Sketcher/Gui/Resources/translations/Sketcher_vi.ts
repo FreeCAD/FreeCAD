@@ -4,12 +4,12 @@
   <context>
     <name>CmdSketcherBSplineComb</name>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="202"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="196"/>
       <source>Show/hide B-spline curvature comb</source>
       <translation type="unfinished">Show/hide B-spline curvature comb</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="203"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="197"/>
       <source>Switches between showing and hiding the curvature comb for all B-splines</source>
       <translation>Chuyển giữa hiển thị và ẩn đỉnh đường cong cho tất cả các đường cong B-splines</translation>
     </message>
@@ -17,12 +17,12 @@
   <context>
     <name>CmdSketcherBSplineDegree</name>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="144"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="138"/>
       <source>Show/hide B-spline degree</source>
       <translation type="unfinished">Show/hide B-spline degree</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="145"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="139"/>
       <source>Switches between showing and hiding the degree for all B-splines</source>
       <translation>Chuyển giữa chế độ hiển thị và ẩn bậc cho tất cả các đường cong B-splines</translation>
     </message>
@@ -30,12 +30,12 @@
   <context>
     <name>CmdSketcherBSplineKnotMultiplicity</name>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="231"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="225"/>
       <source>Show/hide B-spline knot multiplicity</source>
       <translation type="unfinished">Show/hide B-spline knot multiplicity</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="232"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="226"/>
       <source>Switches between showing and hiding the knot multiplicity for all B-splines</source>
       <translation>Chuyển đổi giữa chế độ hiển thị và ẩn bội số nút cho tất cả các đường cong B-splines</translation>
     </message>
@@ -43,12 +43,12 @@
   <context>
     <name>CmdSketcherBSplinePoleWeight</name>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="260"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="254"/>
       <source>Show/hide B-spline control point weight</source>
       <translation type="unfinished">Show/hide B-spline control point weight</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="261"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="255"/>
       <source>Switches between showing and hiding the control point weight for all B-splines</source>
       <translation type="unfinished">Switches between showing and hiding the control point weight for all B-splines</translation>
     </message>
@@ -56,12 +56,12 @@
   <context>
     <name>CmdSketcherBSplinePolygon</name>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="173"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="167"/>
       <source>Show/hide B-spline control polygon</source>
       <translation type="unfinished">Show/hide B-spline control polygon</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="174"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="168"/>
       <source>Switches between showing and hiding the control polygons for all B-splines</source>
       <translation>Chuyển giữa chế độ hiển thị và ẩn đa giác khống chế đường cong cho tất cả các đường cong B-splines</translation>
     </message>
@@ -69,12 +69,12 @@
   <context>
     <name>CmdSketcherCarbonCopy</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1498"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1483"/>
       <source>Carbon copy</source>
       <translation>Sao chép bằng giấy than</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1499"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1484"/>
       <source>Copies the geometry of another sketch</source>
       <translation>Sao chép hình học của bản phác họa khác</translation>
     </message>
@@ -82,12 +82,12 @@
   <context>
     <name>CmdSketcherClone</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1417"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1454"/>
       <source>Clone</source>
       <translation>Nhân bản</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1418"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1456"/>
       <source>Creates a clone of the geometry taking as reference the last selected point</source>
       <translation>Tạo một bản sao của hình học lấy làm tham chiếu điểm cuối cùng đã chọn</translation>
     </message>
@@ -95,32 +95,32 @@
   <context>
     <name>CmdSketcherCompBSplineShowHideGeometryInformation</name>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="289"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="283"/>
       <source>Show/hide B-spline information layer</source>
       <translation>Hiển thị/ẩn lớp thông tin đường cong B-spline</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="364"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="358"/>
       <source>Show/hide B-spline degree</source>
       <translation type="unfinished">Show/hide B-spline degree</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="371"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="365"/>
       <source>Show/hide B-spline control polygon</source>
       <translation type="unfinished">Show/hide B-spline control polygon</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="378"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="372"/>
       <source>Show/hide B-spline curvature comb</source>
       <translation type="unfinished">Show/hide B-spline curvature comb</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="385"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="379"/>
       <source>Show/hide B-spline knot multiplicity</source>
       <translation type="unfinished">Show/hide B-spline knot multiplicity</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="393"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="387"/>
       <source>Show/hide B-spline control point weight</source>
       <translation type="unfinished">Show/hide B-spline control point weight</translation>
     </message>
@@ -128,27 +128,27 @@
   <context>
     <name>CmdSketcherCompConstrainRadDia</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5575"/>
+      <location filename="../../CommandConstraints.cpp" line="5637"/>
       <source>Constrain arc or circle</source>
       <translation>Ràng buộc cung hay đường tròn</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5576"/>
+      <location filename="../../CommandConstraints.cpp" line="5638"/>
       <source>Constrain an arc or a circle</source>
       <translation>Ràng buộc một cung hay đường tròn</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5681"/>
+      <location filename="../../CommandConstraints.cpp" line="5743"/>
       <source>Constrain radius</source>
       <translation>Cố định bán kính</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5685"/>
+      <location filename="../../CommandConstraints.cpp" line="5747"/>
       <source>Constrain diameter</source>
       <translation>Ràng buộc đường kính</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5689"/>
+      <location filename="../../CommandConstraints.cpp" line="5751"/>
       <source>Constrain auto radius/diameter</source>
       <translation type="unfinished">Constrain auto radius/diameter</translation>
     </message>
@@ -156,12 +156,12 @@
   <context>
     <name>CmdSketcherCompCopy</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1494"/>
-      <source>Copy</source>
-      <translation>Sao chép</translation>
+      <location filename="../../CommandSketcherTools.cpp" line="1536"/>
+      <source>Clone</source>
+      <translation>Nhân bản</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1495"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1538"/>
       <source>Creates a clone of the geometry taking as reference the last selected point</source>
       <translation>Tạo một bản sao của hình học lấy làm tham chiếu điểm cuối cùng đã chọn</translation>
     </message>
@@ -169,22 +169,22 @@
   <context>
     <name>CmdSketcherCompCreateArc</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="452"/>
+      <location filename="../../CommandCreateGeo.cpp" line="437"/>
       <source>Create arc</source>
       <translation type="unfinished">Create arc</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="453"/>
+      <location filename="../../CommandCreateGeo.cpp" line="438"/>
       <source>Create an arc in the sketcher</source>
       <translation>Tạo một cung tròn trong bản phác họa</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="530"/>
+      <location filename="../../CommandCreateGeo.cpp" line="515"/>
       <source>Center and end points</source>
       <translation>Điểm trung tâm và điểm cuối</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="534"/>
+      <location filename="../../CommandCreateGeo.cpp" line="519"/>
       <source>End points and rim point</source>
       <translation>Các điểm cuối và điểm ở rìa</translation>
     </message>
@@ -192,12 +192,12 @@
   <context>
     <name>CmdSketcherCompCreateBSpline</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="950"/>
+      <location filename="../../CommandCreateGeo.cpp" line="935"/>
       <source>Create a B-spline</source>
       <translation>Tạo một đường cong B-spline</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="951"/>
+      <location filename="../../CommandCreateGeo.cpp" line="936"/>
       <source>Create a B-spline in the sketch</source>
       <translation>Tạo một đường cong B-spline trong bản phác họa</translation>
     </message>
@@ -205,22 +205,22 @@
   <context>
     <name>CmdSketcherCompCreateCircle</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1089"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1074"/>
       <source>Create circle</source>
       <translation>Tạo đường tròn</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1090"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1075"/>
       <source>Create a circle in the sketcher</source>
       <translation>Tạo một đường tròn trong bản phác họa</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1167"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1152"/>
       <source>Center and rim point</source>
       <translation>Điểm ở trung tâm và ở rìa</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1171"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1156"/>
       <source>3 rim points</source>
       <translation>3 điểm ở rìa</translation>
     </message>
@@ -228,37 +228,37 @@
   <context>
     <name>CmdSketcherCompCreateConic</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="743"/>
+      <location filename="../../CommandCreateGeo.cpp" line="728"/>
       <source>Create a conic</source>
       <translation>Tạo một hình nón</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="744"/>
+      <location filename="../../CommandCreateGeo.cpp" line="729"/>
       <source>Create a conic in the sketch</source>
       <translation>Tạo một hình nón trong bản phác họa</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="848"/>
+      <location filename="../../CommandCreateGeo.cpp" line="833"/>
       <source>Ellipse by center, major radius, point</source>
       <translation>Hình elip theo tâm, bán kính chính, điểm</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="852"/>
+      <location filename="../../CommandCreateGeo.cpp" line="837"/>
       <source>Ellipse by periapsis, apoapsis, minor radius</source>
       <translation type="unfinished">Ellipse by periapsis, apoapsis, minor radius</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="856"/>
+      <location filename="../../CommandCreateGeo.cpp" line="841"/>
       <source>Arc of ellipse by center, major radius, endpoints</source>
       <translation>Cung tròn e líp tạo bởi tâm, bán kính lớn, điểm cuối</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="860"/>
+      <location filename="../../CommandCreateGeo.cpp" line="845"/>
       <source>Arc of hyperbola by center, major radius, endpoints</source>
       <translation>Cung hyperbol tạo bởi tâm, bán kính lớn, điểm cuối</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="864"/>
+      <location filename="../../CommandCreateGeo.cpp" line="849"/>
       <source>Arc of parabola by focus, vertex, endpoints</source>
       <translation>Cung hyperbol tạo bởi trọng tâm, đỉnh và điểm cuối</translation>
     </message>
@@ -266,22 +266,22 @@
   <context>
     <name>CmdSketcherCompCreateFillets</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1281"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1266"/>
       <source>Fillets</source>
       <translation>Bo tròn</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1282"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1267"/>
       <source>Create a fillet between two lines</source>
       <translation type="unfinished">Create a fillet between two lines</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1357"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1342"/>
       <source>Sketch fillet</source>
       <translation>Bo tròn sketch</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1361"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1346"/>
       <source>Constraint-preserving sketch fillet</source>
       <translation>Bo tròn sketch giữ nguyên ràng buộc</translation>
     </message>
@@ -289,27 +289,27 @@
   <context>
     <name>CmdSketcherCompCreateRectangles</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="247"/>
+      <location filename="../../CommandCreateGeo.cpp" line="232"/>
       <source>Create rectangles</source>
       <translation type="unfinished">Create rectangles</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="248"/>
+      <location filename="../../CommandCreateGeo.cpp" line="233"/>
       <source>Creates a rectangle in the sketch</source>
       <translation type="unfinished">Creates a rectangle in the sketch</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="331"/>
+      <location filename="../../CommandCreateGeo.cpp" line="316"/>
       <source>Rectangle</source>
       <translation>Hình chữ nhật</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="335"/>
+      <location filename="../../CommandCreateGeo.cpp" line="320"/>
       <source>Centered rectangle</source>
       <translation type="unfinished">Centered rectangle</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="339"/>
+      <location filename="../../CommandCreateGeo.cpp" line="324"/>
       <source>Rounded rectangle</source>
       <translation type="unfinished">Rounded rectangle</translation>
     </message>
@@ -317,47 +317,47 @@
   <context>
     <name>CmdSketcherCompCreateRegularPolygon</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1771"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1756"/>
       <source>Create regular polygon</source>
       <translation>Tạo đa giác đều</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1772"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1757"/>
       <source>Create a regular polygon in the sketcher</source>
       <translation>Tạo một đa giác đều trong bản phác họa</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1888"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1873"/>
       <source>Triangle</source>
       <translation>Tam giác</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1892"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1877"/>
       <source>Square</source>
       <translation>Hình vuông</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1896"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1881"/>
       <source>Pentagon</source>
       <translation>Hình ngũ giác</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1900"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1885"/>
       <source>Hexagon</source>
       <translation>Hình lục giác</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1904"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1889"/>
       <source>Heptagon</source>
       <translation>Hình thất giác</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1908"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1893"/>
       <source>Octagon</source>
       <translation>Hình bát giác</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1912"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1897"/>
       <source>Regular polygon</source>
       <translation>Đa giác cân</translation>
     </message>
@@ -365,22 +365,22 @@
   <context>
     <name>CmdSketcherCompModifyKnotMultiplicity</name>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="905"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="899"/>
       <source>Modify knot multiplicity</source>
       <translation>Sửa đổi bội số nút</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="906"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="900"/>
       <source>Modifies the multiplicity of the selected knot of a B-spline</source>
       <translation>Sửa đổi bội số của nút được chọn của đường cong B-spline</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="967"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="961"/>
       <source>Increase knot multiplicity</source>
       <translation>Tăng bội số nút</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="974"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="968"/>
       <source>Decrease knot multiplicity</source>
       <translation>Giảm bội số nút</translation>
     </message>
@@ -388,12 +388,12 @@
   <context>
     <name>CmdSketcherConstrainAngle</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5719"/>
+      <location filename="../../CommandConstraints.cpp" line="5781"/>
       <source>Constrain angle</source>
       <translation>Cố định góc</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5720"/>
+      <location filename="../../CommandConstraints.cpp" line="5782"/>
       <source>Fix the angle of a line or the angle between two lines</source>
       <translation>Sửa góc của một đường thẳng hoặc góc giữa hai đường thẳng</translation>
     </message>
@@ -401,12 +401,12 @@
   <context>
     <name>CmdSketcherConstrainBlock</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="1576"/>
+      <location filename="../../CommandConstraints.cpp" line="1582"/>
       <source>Constrain block</source>
       <translation>Ngăn chặn ràng buộc</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="1577"/>
+      <location filename="../../CommandConstraints.cpp" line="1583"/>
       <source>Block constraint: block the selected edge from moving</source>
       <translation>Ngăn chặn ràng buộc: ngăn không cho các cạnh đã chọn di chuyển</translation>
     </message>
@@ -414,25 +414,25 @@
   <context>
     <name>CmdSketcherConstrainCoincident</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="1892"/>
+      <location filename="../../CommandConstraints.cpp" line="1898"/>
       <source>Constrain coincident</source>
       <translation>Cố định trùng nhau</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="1893"/>
-      <source>Create a coincident constraint on the selected item</source>
-      <translation>Tạo ràng buộc trùng hợp ngẫu nhiên trên đối tượng đã chọn</translation>
+      <location filename="../../CommandConstraints.cpp" line="1899"/>
+      <source>Create a coincident constraint between points, or a concentric constraint between circles, arcs, and ellipses</source>
+      <translation type="unfinished">Create a coincident constraint between points, or a concentric constraint between circles, arcs, and ellipses</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherConstrainDiameter</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4999"/>
+      <location filename="../../CommandConstraints.cpp" line="5061"/>
       <source>Constrain diameter</source>
       <translation>Ràng buộc đường kính</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5000"/>
+      <location filename="../../CommandConstraints.cpp" line="5062"/>
       <source>Fix the diameter of a circle or an arc</source>
       <translation>Sửa đường kính của một cung hay đường tròn</translation>
     </message>
@@ -440,12 +440,12 @@
   <context>
     <name>CmdSketcherConstrainDistance</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2094"/>
+      <location filename="../../CommandConstraints.cpp" line="2148"/>
       <source>Constrain distance</source>
       <translation>Cố định khoảng cách</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2095"/>
+      <location filename="../../CommandConstraints.cpp" line="2149"/>
       <source>Fix a length of a line or the distance between a line and a vertex</source>
       <translation>Sửa chiều dài của một đường hoặc khoảng cách giữa một đường thẳng và một đỉnh</translation>
     </message>
@@ -453,12 +453,12 @@
   <context>
     <name>CmdSketcherConstrainDistanceX</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2686"/>
+      <location filename="../../CommandConstraints.cpp" line="2723"/>
       <source>Constrain horizontal distance</source>
       <translation type="unfinished">Constrain horizontal distance</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2687"/>
+      <location filename="../../CommandConstraints.cpp" line="2724"/>
       <source>Fix the horizontal distance between two points or line ends</source>
       <translation>Sửa khoảng cách ngang giữa hai điểm hoặc hai đầu của đường thẳng</translation>
     </message>
@@ -466,12 +466,12 @@
   <context>
     <name>CmdSketcherConstrainDistanceY</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2940"/>
+      <location filename="../../CommandConstraints.cpp" line="2977"/>
       <source>Constrain vertical distance</source>
       <translation type="unfinished">Constrain vertical distance</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2941"/>
+      <location filename="../../CommandConstraints.cpp" line="2978"/>
       <source>Fix the vertical distance between two points or line ends</source>
       <translation>Sửa khoảng cách thẳng đứng giữa hai điểm hoặc hai đầu của đường thẳng</translation>
     </message>
@@ -479,12 +479,12 @@
   <context>
     <name>CmdSketcherConstrainEqual</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6246"/>
+      <location filename="../../CommandConstraints.cpp" line="6308"/>
       <source>Constrain equal</source>
       <translation>Cố định ngang bằng</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6247"/>
+      <location filename="../../CommandConstraints.cpp" line="6309"/>
       <source>Create an equality constraint between two lines or between circles and arcs</source>
       <translation>Tạo một ràng buộc ngang bằng giữa hai đường thẳng hoặc giữa các đường tròn và các cung tròn</translation>
     </message>
@@ -492,12 +492,12 @@
   <context>
     <name>CmdSketcherConstrainHorizontal</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="878"/>
+      <location filename="../../CommandConstraints.cpp" line="884"/>
       <source>Constrain horizontally</source>
       <translation>Cố định theo chiều ngang</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="879"/>
+      <location filename="../../CommandConstraints.cpp" line="885"/>
       <source>Create a horizontal constraint on the selected item</source>
       <translation>Tạo ràng buộc theo phương ngang trên đối tượng đã chọn</translation>
     </message>
@@ -505,12 +505,12 @@
   <context>
     <name>CmdSketcherConstrainInternalAlignment</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6929"/>
+      <location filename="../../CommandConstraints.cpp" line="6991"/>
       <source>Constrain internal alignment</source>
       <translation type="unfinished">Constrain internal alignment</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6930"/>
+      <location filename="../../CommandConstraints.cpp" line="6992"/>
       <source>Constrains an element to be aligned with the internal geometry of another element</source>
       <translation>Ràng buộc một phần tử được căn chỉnh với hình bên trong của phần tử khác</translation>
     </message>
@@ -518,12 +518,12 @@
   <context>
     <name>CmdSketcherConstrainLock</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="1350"/>
+      <location filename="../../CommandConstraints.cpp" line="1356"/>
       <source>Constrain lock</source>
       <translation>Cố định chốt</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="1351"/>
+      <location filename="../../CommandConstraints.cpp" line="1357"/>
       <source>Lock constraint: create both a horizontal and a vertical distance constraint
 on the selected vertex</source>
       <translation type="unfinished">Lock constraint: create both a horizontal and a vertical distance constraint
@@ -533,12 +533,12 @@ on the selected vertex</translation>
   <context>
     <name>CmdSketcherConstrainParallel</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3186"/>
+      <location filename="../../CommandConstraints.cpp" line="3222"/>
       <source>Constrain parallel</source>
       <translation>Cố định song song</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3187"/>
+      <location filename="../../CommandConstraints.cpp" line="3223"/>
       <source>Create a parallel constraint between two lines</source>
       <translation>Tạo một sự ràng buộc song song giữa hai đường thẳng</translation>
     </message>
@@ -546,12 +546,12 @@ on the selected vertex</translation>
   <context>
     <name>CmdSketcherConstrainPerpendicular</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3336"/>
+      <location filename="../../CommandConstraints.cpp" line="3372"/>
       <source>Constrain perpendicular</source>
       <translation>Cố định vuông góc</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3337"/>
+      <location filename="../../CommandConstraints.cpp" line="3373"/>
       <source>Create a perpendicular constraint between two lines</source>
       <translation>Tạo một sự ràng buộc vuông góc giữa hai đường thẳng</translation>
     </message>
@@ -559,12 +559,12 @@ on the selected vertex</translation>
   <context>
     <name>CmdSketcherConstrainPointOnObject</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2443"/>
+      <location filename="../../CommandConstraints.cpp" line="2496"/>
       <source>Constrain point onto object</source>
       <translation>Cố định các điểm lên đối tượng</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2444"/>
+      <location filename="../../CommandConstraints.cpp" line="2497"/>
       <source>Fix a point onto an object</source>
       <translation>Sửa một điểm trên một đối tượng</translation>
     </message>
@@ -572,12 +572,12 @@ on the selected vertex</translation>
   <context>
     <name>CmdSketcherConstrainRadiam</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5273"/>
+      <location filename="../../CommandConstraints.cpp" line="5335"/>
       <source>Constrain auto radius/diameter</source>
       <translation type="unfinished">Constrain auto radius/diameter</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5274"/>
+      <location filename="../../CommandConstraints.cpp" line="5336"/>
       <source>Fix the diameter if a circle is chosen, or the radius if an arc/spline pole is chosen</source>
       <translation type="unfinished">Fix the diameter if a circle is chosen, or the radius if an arc/spline pole is chosen</translation>
     </message>
@@ -585,12 +585,12 @@ on the selected vertex</translation>
   <context>
     <name>CmdSketcherConstrainRadius</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4699"/>
+      <location filename="../../CommandConstraints.cpp" line="4761"/>
       <source>Constrain radius or weight</source>
       <translation>Ràng buộc bán kính hay sức nặng</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4700"/>
+      <location filename="../../CommandConstraints.cpp" line="4762"/>
       <source>Fix the radius of a circle or an arc or fix the weight of a pole of a B-Spline</source>
       <translation>Cố định bán kính của đường tròn, cung tròn hay cố định sức nặng của cọc của một đường B-Spline</translation>
     </message>
@@ -598,12 +598,12 @@ on the selected vertex</translation>
   <context>
     <name>CmdSketcherConstrainSnellsLaw</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6761"/>
+      <location filename="../../CommandConstraints.cpp" line="6823"/>
       <source>Constrain refraction (Snell's law')</source>
       <translation>Hạn chế sự khúc xạ (Quy luật của Snell)</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6762"/>
+      <location filename="../../CommandConstraints.cpp" line="6824"/>
       <source>Create a refraction law (Snell's law) constraint between two endpoints of rays
 and an edge as an interface.</source>
       <translation type="unfinished">Create a refraction law (Snell's law) constraint between two endpoints of rays
@@ -613,12 +613,12 @@ and an edge as an interface.</translation>
   <context>
     <name>CmdSketcherConstrainSymmetric</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6462"/>
+      <location filename="../../CommandConstraints.cpp" line="6524"/>
       <source>Constrain symmetrical</source>
       <translation>Hạn chế đối xứng</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6463"/>
+      <location filename="../../CommandConstraints.cpp" line="6525"/>
       <source>Create a symmetry constraint between two points
 with respect to a line or a third point</source>
       <translation type="unfinished">Create a symmetry constraint between two points
@@ -628,12 +628,12 @@ with respect to a line or a third point</translation>
   <context>
     <name>CmdSketcherConstrainTangent</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3980"/>
+      <location filename="../../CommandConstraints.cpp" line="4016"/>
       <source>Constrain tangent</source>
       <translation>Cố định đường tiếp tuyến</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3981"/>
+      <location filename="../../CommandConstraints.cpp" line="4017"/>
       <source>Create a tangent constraint between two entities</source>
       <translation>Tạo một liên kết tiếp tuyến giữa hai đối tượng</translation>
     </message>
@@ -641,12 +641,12 @@ with respect to a line or a third point</translation>
   <context>
     <name>CmdSketcherConstrainVertical</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="1116"/>
+      <location filename="../../CommandConstraints.cpp" line="1122"/>
       <source>Constrain vertically</source>
       <translation>Cố định theo chiều dọc</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="1117"/>
+      <location filename="../../CommandConstraints.cpp" line="1123"/>
       <source>Create a vertical constraint on the selected item</source>
       <translation>Tạo ràng buộc theo chiều dọc trên đối tượng đã chọn</translation>
     </message>
@@ -654,12 +654,12 @@ with respect to a line or a third point</translation>
   <context>
     <name>CmdSketcherConvertToNURBS</name>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="418"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="412"/>
       <source>Convert geometry to B-spline</source>
       <translation>Chuyển đổi hình sang đường cong B-spline</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="419"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="413"/>
       <source>Converts the selected geometry to a B-spline</source>
       <translation>Chuyển đổi hình học đã chọn sang một đường cong B-spline</translation>
     </message>
@@ -667,12 +667,12 @@ with respect to a line or a third point</translation>
   <context>
     <name>CmdSketcherCopy</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1371"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1403"/>
       <source>Copy</source>
       <translation>Sao chép</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1372"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1404"/>
       <source>Creates a simple copy of the geometry taking as reference the last selected point</source>
       <translation>Tạo một bản sao của hình học lấy làm tham chiếu điểm cuối cùng đã chọn</translation>
     </message>
@@ -680,12 +680,12 @@ with respect to a line or a third point</translation>
   <context>
     <name>CmdSketcherCreate3PointArc</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="422"/>
+      <location filename="../../CommandCreateGeo.cpp" line="407"/>
       <source>Create arc by three points</source>
       <translation>Tạo một cung tròn thông qua 3 điểm</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="423"/>
+      <location filename="../../CommandCreateGeo.cpp" line="408"/>
       <source>Create an arc by its end points and a point along the arc</source>
       <translation>Tạo một cung tròn thông qua các điểm cuối và một điểm dọc theo cung tròn</translation>
     </message>
@@ -693,12 +693,12 @@ with respect to a line or a third point</translation>
   <context>
     <name>CmdSketcherCreate3PointCircle</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1059"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1044"/>
       <source>Create circle by three points</source>
       <translation>Tạo đường tròn thông qua 3 điểm</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1060"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1045"/>
       <source>Create a circle by 3 perimeter points</source>
       <translation>Tạo đường tròn thông qua 3 điểm chu vi</translation>
     </message>
@@ -706,12 +706,12 @@ with respect to a line or a third point</translation>
   <context>
     <name>CmdSketcherCreateArc</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="390"/>
+      <location filename="../../CommandCreateGeo.cpp" line="375"/>
       <source>Create arc by center</source>
       <translation>Tạo một cung tròn với một tâm cho trước</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="391"/>
+      <location filename="../../CommandCreateGeo.cpp" line="376"/>
       <source>Create an arc by its center and by its end points</source>
       <translation>Tạo một cung tròn với tâm của nó và các điểm kết thúc của nó</translation>
     </message>
@@ -719,12 +719,12 @@ with respect to a line or a third point</translation>
   <context>
     <name>CmdSketcherCreateArcOfEllipse</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="651"/>
+      <location filename="../../CommandCreateGeo.cpp" line="636"/>
       <source>Create an arc of ellipse</source>
       <translation>Tạo một cung elip</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="652"/>
+      <location filename="../../CommandCreateGeo.cpp" line="637"/>
       <source>Create an arc of ellipse in the sketch</source>
       <translation>Tạo một cung elip trong bản phác họa</translation>
     </message>
@@ -732,12 +732,12 @@ with respect to a line or a third point</translation>
   <context>
     <name>CmdSketcherCreateArcOfHyperbola</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="680"/>
+      <location filename="../../CommandCreateGeo.cpp" line="665"/>
       <source>Create an arc of hyperbola</source>
       <translation>Tạo một cung hyperbol</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="681"/>
+      <location filename="../../CommandCreateGeo.cpp" line="666"/>
       <source>Create an arc of hyperbola in the sketch</source>
       <translation>Tạo một cung hyperbol trong bản phác họa</translation>
     </message>
@@ -745,12 +745,12 @@ with respect to a line or a third point</translation>
   <context>
     <name>CmdSketcherCreateArcOfParabola</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="708"/>
+      <location filename="../../CommandCreateGeo.cpp" line="693"/>
       <source>Create an arc of parabola</source>
       <translation>Tạo một cung parabol</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="709"/>
+      <location filename="../../CommandCreateGeo.cpp" line="694"/>
       <source>Create an arc of parabola in the sketch</source>
       <translation>Tạo một cung parabol trong bản phác họa</translation>
     </message>
@@ -758,12 +758,12 @@ with respect to a line or a third point</translation>
   <context>
     <name>CmdSketcherCreateBSpline</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="883"/>
+      <location filename="../../CommandCreateGeo.cpp" line="868"/>
       <source>Create B-spline</source>
       <translation>Tạo đường cong B-spline</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="884"/>
+      <location filename="../../CommandCreateGeo.cpp" line="869"/>
       <source>Create a B-spline via control points in the sketch.</source>
       <translation>Tạo ra một đường cong spline B qua các điểm khống chế trong bản phác họa.</translation>
     </message>
@@ -771,12 +771,12 @@ with respect to a line or a third point</translation>
   <context>
     <name>CmdSketcherCreateCircle</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="555"/>
+      <location filename="../../CommandCreateGeo.cpp" line="540"/>
       <source>Create circle</source>
       <translation>Tạo đường tròn</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="556"/>
+      <location filename="../../CommandCreateGeo.cpp" line="541"/>
       <source>Create a circle in the sketch</source>
       <translation>Tạo một đường tròn trong bản phác họa</translation>
     </message>
@@ -784,12 +784,12 @@ with respect to a line or a third point</translation>
   <context>
     <name>CmdSketcherCreateEllipseBy3Points</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="622"/>
+      <location filename="../../CommandCreateGeo.cpp" line="607"/>
       <source>Create ellipse by 3 points</source>
       <translation>Tạo hình e líp thông qua 3 điểm</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="623"/>
+      <location filename="../../CommandCreateGeo.cpp" line="608"/>
       <source>Create an ellipse by 3 points in the sketch</source>
       <translation>Tạo một hình e líp thông qua 3 điểm trong bản phác họa</translation>
     </message>
@@ -797,12 +797,12 @@ with respect to a line or a third point</translation>
   <context>
     <name>CmdSketcherCreateEllipseByCenter</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="589"/>
+      <location filename="../../CommandCreateGeo.cpp" line="574"/>
       <source>Create ellipse by center</source>
       <translation>Tạo hình e líp với một tâm cho trước</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="590"/>
+      <location filename="../../CommandCreateGeo.cpp" line="575"/>
       <source>Create an ellipse by center in the sketch</source>
       <translation>Tạo một hình e líp với một tâm cho trước trong bản phác họa</translation>
     </message>
@@ -810,12 +810,12 @@ with respect to a line or a third point</translation>
   <context>
     <name>CmdSketcherCreateFillet</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1221"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1206"/>
       <source>Create fillet</source>
       <translation>Tạo đường gờ</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1222"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1207"/>
       <source>Create a fillet between two lines or at a coincident point</source>
       <translation type="unfinished">Create a fillet between two lines or at a coincident point</translation>
     </message>
@@ -823,12 +823,12 @@ with respect to a line or a third point</translation>
   <context>
     <name>CmdSketcherCreateHeptagon</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1680"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1665"/>
       <source>Create heptagon</source>
       <translation>Tạo hình thất giác</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1681"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1666"/>
       <source>Create a heptagon in the sketch</source>
       <translation>Tạo một hình thất giác trong bản phác họa</translation>
     </message>
@@ -836,12 +836,12 @@ with respect to a line or a third point</translation>
   <context>
     <name>CmdSketcherCreateHexagon</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1651"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1636"/>
       <source>Create hexagon</source>
       <translation>Tạo hình lục giác</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1652"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1637"/>
       <source>Create a hexagon in the sketch</source>
       <translation>Tạo một hình lục giác trong bản phác họa</translation>
     </message>
@@ -849,12 +849,12 @@ with respect to a line or a third point</translation>
   <context>
     <name>CmdSketcherCreateLine</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="123"/>
+      <location filename="../../CommandCreateGeo.cpp" line="108"/>
       <source>Create line</source>
       <translation>Tạo đường</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="124"/>
+      <location filename="../../CommandCreateGeo.cpp" line="109"/>
       <source>Create a line in the sketch</source>
       <translation>Tạo một đường thẳng trong bản phác họa</translation>
     </message>
@@ -862,12 +862,12 @@ with respect to a line or a third point</translation>
   <context>
     <name>CmdSketcherCreateOblong</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="216"/>
+      <location filename="../../CommandCreateGeo.cpp" line="201"/>
       <source>Create rounded rectangle</source>
       <translation type="unfinished">Create rounded rectangle</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="217"/>
+      <location filename="../../CommandCreateGeo.cpp" line="202"/>
       <source>Create a rounded rectangle in the sketch</source>
       <translation type="unfinished">Create a rounded rectangle in the sketch</translation>
     </message>
@@ -875,12 +875,12 @@ with respect to a line or a third point</translation>
   <context>
     <name>CmdSketcherCreateOctagon</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1709"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1694"/>
       <source>Create octagon</source>
       <translation>Tạo hình bát giác</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1710"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1695"/>
       <source>Create an octagon in the sketch</source>
       <translation>Tạo một hình bát giác trong bản phác họa</translation>
     </message>
@@ -888,12 +888,12 @@ with respect to a line or a third point</translation>
   <context>
     <name>CmdSketcherCreatePentagon</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1621"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1606"/>
       <source>Create pentagon</source>
       <translation>Tạo hình ngũ giác</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1622"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1607"/>
       <source>Create a pentagon in the sketch</source>
       <translation>Tạo một hình ngũ giác trong bản phác họa</translation>
     </message>
@@ -901,12 +901,12 @@ with respect to a line or a third point</translation>
   <context>
     <name>CmdSketcherCreatePeriodicBSpline</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="916"/>
+      <location filename="../../CommandCreateGeo.cpp" line="901"/>
       <source>Create periodic B-spline</source>
       <translation>Tạo đường B-spline có chu kỳ</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="917"/>
+      <location filename="../../CommandCreateGeo.cpp" line="902"/>
       <source>Create a periodic B-spline via control points in the sketch.</source>
       <translation>Tạo một đường B-spline có chu kỳ thông qua các điểm khống chế trong bản phác họa.</translation>
     </message>
@@ -914,12 +914,12 @@ with respect to a line or a third point</translation>
   <context>
     <name>CmdSketcherCreatePoint</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1192"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1177"/>
       <source>Create point</source>
       <translation>Tạo điểm</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1193"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1178"/>
       <source>Create a point in the sketch</source>
       <translation>Tạo một điểm trong bản phác họa</translation>
     </message>
@@ -927,12 +927,12 @@ with respect to a line or a third point</translation>
   <context>
     <name>CmdSketcherCreatePointFillet</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1250"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1235"/>
       <source>Create corner-preserving fillet</source>
       <translation type="unfinished">Create corner-preserving fillet</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1251"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1236"/>
       <source>Fillet that preserves intersection point and most constraints</source>
       <translation type="unfinished">Fillet that preserves intersection point and most constraints</translation>
     </message>
@@ -940,12 +940,12 @@ with respect to a line or a third point</translation>
   <context>
     <name>CmdSketcherCreatePolyline</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="358"/>
+      <location filename="../../CommandCreateGeo.cpp" line="343"/>
       <source>Create polyline</source>
       <translation>Tạo đường polyline</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="359"/>
+      <location filename="../../CommandCreateGeo.cpp" line="344"/>
       <source>Create a polyline in the sketch. 'M' Key cycles behaviour</source>
       <translation>Tạo một đường polyline trong bản phác họa. Chiều khóa M chạy theo chu kỳ</translation>
     </message>
@@ -953,12 +953,12 @@ with respect to a line or a third point</translation>
   <context>
     <name>CmdSketcherCreateRectangle</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="155"/>
+      <location filename="../../CommandCreateGeo.cpp" line="140"/>
       <source>Create rectangle</source>
       <translation>Tạo hình chữ nhật</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="156"/>
+      <location filename="../../CommandCreateGeo.cpp" line="141"/>
       <source>Create a rectangle in the sketch</source>
       <translation>Tạo một hình chữ nhật trong bản phác họa</translation>
     </message>
@@ -966,12 +966,12 @@ with respect to a line or a third point</translation>
   <context>
     <name>CmdSketcherCreateRectangleCenter</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="184"/>
+      <location filename="../../CommandCreateGeo.cpp" line="169"/>
       <source>Create centered rectangle</source>
       <translation type="unfinished">Create centered rectangle</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="185"/>
+      <location filename="../../CommandCreateGeo.cpp" line="170"/>
       <source>Create a centered rectangle in the sketch</source>
       <translation type="unfinished">Create a centered rectangle in the sketch</translation>
     </message>
@@ -979,12 +979,12 @@ with respect to a line or a third point</translation>
   <context>
     <name>CmdSketcherCreateRegularPolygon</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1738"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1723"/>
       <source>Create regular polygon</source>
       <translation>Tạo đa giác đều</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1739"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1724"/>
       <source>Create a regular polygon in the sketch</source>
       <translation>Tạo một đa giác đều trong bản phác họa</translation>
     </message>
@@ -992,12 +992,12 @@ with respect to a line or a third point</translation>
   <context>
     <name>CmdSketcherCreateSlot</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1532"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1517"/>
       <source>Create slot</source>
       <translation>Tạo khe</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1533"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1518"/>
       <source>Create a slot in the sketch</source>
       <translation>Tạo một khe trong bản phác họa</translation>
     </message>
@@ -1005,12 +1005,12 @@ with respect to a line or a third point</translation>
   <context>
     <name>CmdSketcherCreateSquare</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1592"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1577"/>
       <source>Create square</source>
       <translation>Tạo hình vuông</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1593"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1578"/>
       <source>Create a square in the sketch</source>
       <translation>Tạo một hình vuông trong bản phác họa</translation>
     </message>
@@ -1018,12 +1018,12 @@ with respect to a line or a third point</translation>
   <context>
     <name>CmdSketcherCreateTriangle</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1563"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1548"/>
       <source>Create equilateral triangle</source>
       <translation>Tạo tam giác đều</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1564"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1549"/>
       <source>Create an equilateral triangle in the sketch</source>
       <translation>Tạo tam giác đều trong bản phác họa</translation>
     </message>
@@ -1031,12 +1031,12 @@ with respect to a line or a third point</translation>
   <context>
     <name>CmdSketcherDecreaseDegree</name>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="565"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="559"/>
       <source>Decrease B-spline degree</source>
       <translation>Giảm bậc của B-spline</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="566"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="560"/>
       <source>Decreases the degree of the B-spline</source>
       <translation>Giảm bậc của đường cong B-spline</translation>
     </message>
@@ -1044,12 +1044,12 @@ with respect to a line or a third point</translation>
   <context>
     <name>CmdSketcherDecreaseKnotMultiplicity</name>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="780"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="774"/>
       <source>Decrease knot multiplicity</source>
       <translation>Giảm bội số nút</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="781"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="775"/>
       <source>Decreases the multiplicity of the selected knot of a B-spline</source>
       <translation>Giảm bội số của nút đường cong B-spline đã chọn</translation>
     </message>
@@ -1057,12 +1057,12 @@ with respect to a line or a third point</translation>
   <context>
     <name>CmdSketcherDeleteAllConstraints</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1983"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2058"/>
       <source>Delete all constraints</source>
       <translation>Xóa mọi ràng buộc</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1984"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2059"/>
       <source>Delete all constraints in the sketch</source>
       <translation>Xóa mọi ràng buộc trong bản phác thảo</translation>
     </message>
@@ -1070,12 +1070,12 @@ with respect to a line or a third point</translation>
   <context>
     <name>CmdSketcherDeleteAllGeometry</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1920"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1990"/>
       <source>Delete all geometry</source>
       <translation>Xóa tất cả các hình</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1921"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1991"/>
       <source>Delete all geometry and constraints in the current sketch, with the exception of external geometry</source>
       <translation type="unfinished">Delete all geometry and constraints in the current sketch, with the exception of external geometry</translation>
     </message>
@@ -1083,12 +1083,12 @@ with respect to a line or a third point</translation>
   <context>
     <name>CmdSketcherEditSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="267"/>
+      <location filename="../../Command.cpp" line="272"/>
       <source>Edit sketch</source>
       <translation type="unfinished">Edit sketch</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="268"/>
+      <location filename="../../Command.cpp" line="273"/>
       <source>Edit the selected sketch.</source>
       <translation>Sửa bản phác họa đã chọn.</translation>
     </message>
@@ -1096,12 +1096,12 @@ with respect to a line or a third point</translation>
   <context>
     <name>CmdSketcherExtend</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1411"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1396"/>
       <source>Extend edge</source>
       <translation>Mở rộng cạnh</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1412"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1397"/>
       <source>Extend an edge with respect to the picked position</source>
       <translation>Mở rộng cạnh đối với vị trí đã chọn</translation>
     </message>
@@ -1109,12 +1109,12 @@ with respect to a line or a third point</translation>
   <context>
     <name>CmdSketcherExternal</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1469"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1454"/>
       <source>External geometry</source>
       <translation>Hình học bên ngoài</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1470"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1455"/>
       <source>Create an edge linked to an external geometry</source>
       <translation>Tạo một cạnh nối với một hình học bên ngoài</translation>
     </message>
@@ -1122,12 +1122,12 @@ with respect to a line or a third point</translation>
   <context>
     <name>CmdSketcherIncreaseDegree</name>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="492"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="486"/>
       <source>Increase B-spline degree</source>
       <translation type="unfinished">Increase B-spline degree</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="493"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="487"/>
       <source>Increases the degree of the B-spline</source>
       <translation>Tăng bậc của đường cong B-spline</translation>
     </message>
@@ -1135,12 +1135,12 @@ with respect to a line or a third point</translation>
   <context>
     <name>CmdSketcherIncreaseKnotMultiplicity</name>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="642"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="636"/>
       <source>Increase knot multiplicity</source>
       <translation>Tăng bội số nút</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="643"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="637"/>
       <source>Increases the multiplicity of the selected knot of a B-spline</source>
       <translation>Tăng bội số của nút đường cong B-spline đã chọn</translation>
     </message>
@@ -1148,25 +1148,38 @@ with respect to a line or a third point</translation>
   <context>
     <name>CmdSketcherInsertKnot</name>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="1144"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="1138"/>
       <source>Insert knot</source>
       <translation type="unfinished">Insert knot</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="1145"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="1139"/>
       <source>Inserts knot at given parameter. If a knot already exists at that parameter, it's multiplicity is increased by one.</source>
       <translation type="unfinished">Inserts knot at given parameter. If a knot already exists at that parameter, it's multiplicity is increased by one.</translation>
     </message>
   </context>
   <context>
+    <name>CmdSketcherJoinCurves</name>
+    <message>
+      <location filename="../../CommandSketcherBSpline.cpp" line="1200"/>
+      <source>Join curves</source>
+      <translation type="unfinished">Join curves</translation>
+    </message>
+    <message>
+      <location filename="../../CommandSketcherBSpline.cpp" line="1201"/>
+      <source>Join two curves at selected end points</source>
+      <translation type="unfinished">Join two curves at selected end points</translation>
+    </message>
+  </context>
+  <context>
     <name>CmdSketcherLeaveSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="297"/>
+      <location filename="../../Command.cpp" line="302"/>
       <source>Leave sketch</source>
       <translation>Rời khỏi bản phác họa</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="298"/>
+      <location filename="../../Command.cpp" line="303"/>
       <source>Finish editing the active sketch.</source>
       <translation>Kết thúc việc sửa bản phác họa hiện kích hoạt.</translation>
     </message>
@@ -1174,12 +1187,12 @@ with respect to a line or a third point</translation>
   <context>
     <name>CmdSketcherMapSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="509"/>
+      <location filename="../../Command.cpp" line="501"/>
       <source>Map sketch to face...</source>
       <translation>Vạch ra bản phác họa cho mặt...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="510"/>
+      <location filename="../../Command.cpp" line="502"/>
       <source>Set the 'Support' of a sketch.
 First select the supporting geometry, for example, a face or an edge of a solid object,
 then call this command, then choose the desired sketch.</source>
@@ -1188,7 +1201,7 @@ First select the supporting geometry, for example, a face or an edge of a solid 
 then call this command, then choose the desired sketch.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="562"/>
+      <location filename="../../Command.cpp" line="554"/>
       <source>Some of the selected objects depend on the sketch to be mapped. Circular dependencies are not allowed.</source>
       <translation type="unfinished">Some of the selected objects depend on the sketch to be mapped. Circular dependencies are not allowed.</translation>
     </message>
@@ -1196,22 +1209,22 @@ then call this command, then choose the desired sketch.</translation>
   <context>
     <name>CmdSketcherMergeSketches</name>
     <message>
-      <location filename="../../Command.cpp" line="869"/>
+      <location filename="../../Command.cpp" line="854"/>
       <source>Merge sketches</source>
       <translation>Hợp nhất các bản phác họa</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="870"/>
+      <location filename="../../Command.cpp" line="855"/>
       <source>Create a new sketch from merging two or more selected sketches.</source>
       <translation type="unfinished">Create a new sketch from merging two or more selected sketches.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="883"/>
+      <location filename="../../Command.cpp" line="868"/>
       <source>Wrong selection</source>
       <translation>Lựa chọn sai</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="884"/>
+      <location filename="../../Command.cpp" line="869"/>
       <source>Select at least two sketches.</source>
       <translation>Hãy chọn ít nhất hai sketche.</translation>
     </message>
@@ -1219,12 +1232,12 @@ then call this command, then choose the desired sketch.</translation>
   <context>
     <name>CmdSketcherMirrorSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="762"/>
+      <location filename="../../Command.cpp" line="747"/>
       <source>Mirror sketch</source>
       <translation>Phác họa đối xứng</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="763"/>
+      <location filename="../../Command.cpp" line="748"/>
       <source>Create a new mirrored sketch for each selected sketch
 by using the X or Y axes, or the origin point,
 as mirroring reference.</source>
@@ -1233,12 +1246,12 @@ by using the X or Y axes, or the origin point,
 as mirroring reference.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="778"/>
+      <location filename="../../Command.cpp" line="763"/>
       <source>Wrong selection</source>
       <translation>Lựa chọn sai</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="779"/>
+      <location filename="../../Command.cpp" line="764"/>
       <source>Select one or more sketches.</source>
       <translation>Chọn một hoặc nhiều sketche.</translation>
     </message>
@@ -1246,12 +1259,12 @@ as mirroring reference.</translation>
   <context>
     <name>CmdSketcherMove</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1460"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1502"/>
       <source>Move</source>
       <translation>Di chuyển</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1461"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1503"/>
       <source>Moves the geometry taking as reference the last selected point</source>
       <translation>Di chuyển hình học lấy làm tham chiếu điểm cuối cùng đã chọn</translation>
     </message>
@@ -1259,12 +1272,12 @@ as mirroring reference.</translation>
   <context>
     <name>CmdSketcherNewSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="143"/>
+      <location filename="../../Command.cpp" line="148"/>
       <source>Create sketch</source>
       <translation>Tạo bản phác họa</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="144"/>
+      <location filename="../../Command.cpp" line="149"/>
       <source>Create a new sketch.</source>
       <translation>Tạo một phác thảo mới.</translation>
     </message>
@@ -1272,12 +1285,12 @@ as mirroring reference.</translation>
   <context>
     <name>CmdSketcherRectangularArray</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1780"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1841"/>
       <source>Rectangular array</source>
       <translation>Dãy hình chữ nhật</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1781"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1842"/>
       <source>Creates a rectangular array pattern of the geometry taking as reference the last selected point</source>
       <translation>Tạo một mẫu dãy hình chữ nhật của hình học lấy làm tham chiếu điểm cuối cùng được chọn</translation>
     </message>
@@ -1285,12 +1298,12 @@ as mirroring reference.</translation>
   <context>
     <name>CmdSketcherRemoveAxesAlignment</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="2047"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2126"/>
       <source>Remove axes alignment</source>
       <translation type="unfinished">Remove axes alignment</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="2048"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2127"/>
       <source>Modifies constraints to remove axes alignment while trying to preserve the constraint relationship of the selection</source>
       <translation type="unfinished">Modifies constraints to remove axes alignment while trying to preserve the constraint relationship of the selection</translation>
     </message>
@@ -1298,12 +1311,12 @@ as mirroring reference.</translation>
   <context>
     <name>CmdSketcherReorientSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="382"/>
+      <location filename="../../Command.cpp" line="374"/>
       <source>Reorient sketch...</source>
       <translation>Đổi hướng bản phác họa...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="383"/>
+      <location filename="../../Command.cpp" line="375"/>
       <source>Place the selected sketch on one of the global coordinate planes.
 This will clear the 'Support' property, if any.</source>
       <translation>Đặt bản phác thảo đã chọn trên một mặt phẳng tọa độ toàn cục.
@@ -1313,12 +1326,12 @@ Nó sẽ xóa mọi thuộc tính 'Hỗ trợ' nếu có.</translation>
   <context>
     <name>CmdSketcherRestoreInternalAlignmentGeometry</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="719"/>
+      <location filename="../../CommandSketcherTools.cpp" line="746"/>
       <source>Show/hide internal geometry</source>
       <translation>Hiển thị/ẩn hình học bên trong</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="720"/>
+      <location filename="../../CommandSketcherTools.cpp" line="747"/>
       <source>Show all internal geometry or hide unused internal geometry</source>
       <translation type="unfinished">Show all internal geometry or hide unused internal geometry</translation>
     </message>
@@ -1326,8 +1339,8 @@ Nó sẽ xóa mọi thuộc tính 'Hỗ trợ' nếu có.</translation>
   <context>
     <name>CmdSketcherSelectConflictingConstraints</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="452"/>
-      <location filename="../../CommandSketcherTools.cpp" line="453"/>
+      <location filename="../../CommandSketcherTools.cpp" line="468"/>
+      <location filename="../../CommandSketcherTools.cpp" line="469"/>
       <source>Select conflicting constraints</source>
       <translation>Chọn các ràng buộc xung đột</translation>
     </message>
@@ -1335,12 +1348,12 @@ Nó sẽ xóa mọi thuộc tính 'Hỗ trợ' nếu có.</translation>
   <context>
     <name>CmdSketcherSelectConstraints</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="73"/>
+      <location filename="../../CommandSketcherTools.cpp" line="67"/>
       <source>Select associated constraints</source>
       <translation>Chọn những ràng buộc liên quan</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="74"/>
+      <location filename="../../CommandSketcherTools.cpp" line="69"/>
       <source>Select the constraints associated with the selected geometrical elements</source>
       <translation type="unfinished">Select the constraints associated with the selected geometrical elements</translation>
     </message>
@@ -1348,12 +1361,12 @@ Nó sẽ xóa mọi thuộc tính 'Hỗ trợ' nếu có.</translation>
   <context>
     <name>CmdSketcherSelectElementsAssociatedWithConstraints</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="507"/>
+      <location filename="../../CommandSketcherTools.cpp" line="529"/>
       <source>Select associated geometry</source>
       <translation type="unfinished">Select associated geometry</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="508"/>
+      <location filename="../../CommandSketcherTools.cpp" line="531"/>
       <source>Select the geometrical elements associated with the selected constraints</source>
       <translation type="unfinished">Select the geometrical elements associated with the selected constraints</translation>
     </message>
@@ -1361,12 +1374,12 @@ Nó sẽ xóa mọi thuộc tính 'Hỗ trợ' nếu có.</translation>
   <context>
     <name>CmdSketcherSelectElementsWithDoFs</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="628"/>
+      <location filename="../../CommandSketcherTools.cpp" line="653"/>
       <source>Select unconstrained DoF</source>
       <translation type="unfinished">Select unconstrained DoF</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="629"/>
+      <location filename="../../CommandSketcherTools.cpp" line="654"/>
       <source>Select geometrical elements where the solver still detects unconstrained degrees of freedom.</source>
       <translation type="unfinished">Select geometrical elements where the solver still detects unconstrained degrees of freedom.</translation>
     </message>
@@ -1374,12 +1387,12 @@ Nó sẽ xóa mọi thuộc tính 'Hỗ trợ' nếu có.</translation>
   <context>
     <name>CmdSketcherSelectHorizontalAxis</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="240"/>
+      <location filename="../../CommandSketcherTools.cpp" line="239"/>
       <source>Select horizontal axis</source>
       <translation>Chọn trục ngang</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="241"/>
+      <location filename="../../CommandSketcherTools.cpp" line="240"/>
       <source>Select the local horizontal axis of the sketch</source>
       <translation>Chọn trục ngang nội bộ của bản phác thảo</translation>
     </message>
@@ -1387,8 +1400,8 @@ Nó sẽ xóa mọi thuộc tính 'Hỗ trợ' nếu có.</translation>
   <context>
     <name>CmdSketcherSelectMalformedConstraints</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="340"/>
-      <location filename="../../CommandSketcherTools.cpp" line="341"/>
+      <location filename="../../CommandSketcherTools.cpp" line="345"/>
+      <location filename="../../CommandSketcherTools.cpp" line="346"/>
       <source>Select malformed constraints</source>
       <translation>Chọn những ràng buộc sai dạng</translation>
     </message>
@@ -1396,12 +1409,12 @@ Nó sẽ xóa mọi thuộc tính 'Hỗ trợ' nếu có.</translation>
   <context>
     <name>CmdSketcherSelectOrigin</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="150"/>
+      <location filename="../../CommandSketcherTools.cpp" line="147"/>
       <source>Select origin</source>
       <translation>Chọn gốc</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="151"/>
+      <location filename="../../CommandSketcherTools.cpp" line="148"/>
       <source>Select the local origin point of the sketch</source>
       <translation>Chọn trục gốc nội bộ của bản phác thảo</translation>
     </message>
@@ -1409,8 +1422,8 @@ Nó sẽ xóa mọi thuộc tính 'Hỗ trợ' nếu có.</translation>
   <context>
     <name>CmdSketcherSelectPartiallyRedundantConstraints</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="396"/>
-      <location filename="../../CommandSketcherTools.cpp" line="397"/>
+      <location filename="../../CommandSketcherTools.cpp" line="406"/>
+      <location filename="../../CommandSketcherTools.cpp" line="407"/>
       <source>Select partially redundant constraints</source>
       <translation>Chọn những ràng buộc dư thừa một phần</translation>
     </message>
@@ -1427,12 +1440,12 @@ Nó sẽ xóa mọi thuộc tính 'Hỗ trợ' nếu có.</translation>
   <context>
     <name>CmdSketcherSelectVerticalAxis</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="196"/>
+      <location filename="../../CommandSketcherTools.cpp" line="194"/>
       <source>Select vertical axis</source>
       <translation>Chọn trục đứng</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="197"/>
+      <location filename="../../CommandSketcherTools.cpp" line="195"/>
       <source>Select the local vertical axis of the sketch</source>
       <translation>Chọn trục đứng nội bộ của bản phác thảo</translation>
     </message>
@@ -1440,12 +1453,12 @@ Nó sẽ xóa mọi thuộc tính 'Hỗ trợ' nếu có.</translation>
   <context>
     <name>CmdSketcherSplit</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1442"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1427"/>
       <source>Split edge</source>
       <translation type="unfinished">Split edge</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1443"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1428"/>
       <source>Splits an edge into two while preserving constraints</source>
       <translation type="unfinished">Splits an edge into two while preserving constraints</translation>
     </message>
@@ -1453,12 +1466,12 @@ Nó sẽ xóa mọi thuộc tính 'Hỗ trợ' nếu có.</translation>
   <context>
     <name>CmdSketcherStopOperation</name>
     <message>
-      <location filename="../../Command.cpp" line="341"/>
+      <location filename="../../Command.cpp" line="339"/>
       <source>Stop operation</source>
       <translation>Dừng thao tác</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="342"/>
+      <location filename="../../Command.cpp" line="340"/>
       <source>When in edit mode, stop the active operation (drawing, constraining, etc.).</source>
       <translation type="unfinished">When in edit mode, stop the active operation (drawing, constraining, etc.).</translation>
     </message>
@@ -1466,12 +1479,12 @@ Nó sẽ xóa mọi thuộc tính 'Hỗ trợ' nếu có.</translation>
   <context>
     <name>CmdSketcherSwitchVirtualSpace</name>
     <message>
-      <location filename="../../CommandSketcherVirtualSpace.cpp" line="93"/>
+      <location filename="../../CommandSketcherVirtualSpace.cpp" line="89"/>
       <source>Switch virtual space</source>
       <translation>Chuyển đổi không gian ảo</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherVirtualSpace.cpp" line="94"/>
+      <location filename="../../CommandSketcherVirtualSpace.cpp" line="90"/>
       <source>Switches the selected constraints or the view to the other virtual space</source>
       <translation>Chuyển các ràng buộc đã chọn hoặc chế độ xem sang không gian ảo khác</translation>
     </message>
@@ -1479,12 +1492,12 @@ Nó sẽ xóa mọi thuộc tính 'Hỗ trợ' nếu có.</translation>
   <context>
     <name>CmdSketcherSymmetry</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="832"/>
+      <location filename="../../CommandSketcherTools.cpp" line="859"/>
       <source>Symmetry</source>
       <translation>Đối xứng</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="833"/>
+      <location filename="../../CommandSketcherTools.cpp" line="861"/>
       <source>Creates symmetric geometry with respect to the last selected line or point</source>
       <translation>Tạo các hình học đối xứng đối với đường hoặc điểm cuối cùng được chọn</translation>
     </message>
@@ -1492,12 +1505,12 @@ Nó sẽ xóa mọi thuộc tính 'Hỗ trợ' nếu có.</translation>
   <context>
     <name>CmdSketcherToggleActiveConstraint</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="7516"/>
+      <location filename="../../CommandConstraints.cpp" line="7578"/>
       <source>Activate/deactivate constraint</source>
       <translation>Kích/bỏ kích hoạt ràng buộc</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="7517"/>
+      <location filename="../../CommandConstraints.cpp" line="7579"/>
       <source>Activates or deactivates the selected constraints</source>
       <translation>Kích hoạt hoặc bỏ kích hoạt các ràng buộc đã chọn</translation>
     </message>
@@ -1505,12 +1518,12 @@ Nó sẽ xóa mọi thuộc tính 'Hỗ trợ' nếu có.</translation>
   <context>
     <name>CmdSketcherToggleConstruction</name>
     <message>
-      <location filename="../../CommandAlterGeometry.cpp" line="74"/>
+      <location filename="../../CommandAlterGeometry.cpp" line="71"/>
       <source>Toggle construction geometry</source>
       <translation>Bật/Tắt hình học xây dựng</translation>
     </message>
     <message>
-      <location filename="../../CommandAlterGeometry.cpp" line="75"/>
+      <location filename="../../CommandAlterGeometry.cpp" line="72"/>
       <source>Toggles the toolbar or selected geometry to/from construction mode</source>
       <translation>Bật/Tắt thanh công cụ hoặc hình đã chọn đến / từ chế độ xây dựng</translation>
     </message>
@@ -1518,12 +1531,12 @@ Nó sẽ xóa mọi thuộc tính 'Hỗ trợ' nếu có.</translation>
   <context>
     <name>CmdSketcherToggleDrivingConstraint</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="7389"/>
+      <location filename="../../CommandConstraints.cpp" line="7451"/>
       <source>Toggle driving/reference constraint</source>
       <translation>Bật/tắt ràng buộc điều khiển/tham chiếu</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="7390"/>
+      <location filename="../../CommandConstraints.cpp" line="7452"/>
       <source>Set the toolbar, or the selected constraints,
 into driving or reference mode</source>
       <translation>Đặt thanh công cụ, hay các ràng buộc đã chọn,
@@ -1533,12 +1546,12 @@ sang chế độ điều khiển hoặc tham chiếu</translation>
   <context>
     <name>CmdSketcherTrimming</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1380"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1365"/>
       <source>Trim edge</source>
       <translation>Cắt rìa</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1381"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1366"/>
       <source>Trim an edge with respect to the picked position</source>
       <translation>Cắt phần rìa đối với vị trí đã chọn</translation>
     </message>
@@ -1546,24 +1559,24 @@ sang chế độ điều khiển hoặc tham chiếu</translation>
   <context>
     <name>CmdSketcherValidateSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="724"/>
+      <location filename="../../Command.cpp" line="709"/>
       <source>Validate sketch...</source>
       <translation>Xác nhận bản phác họa...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="725"/>
+      <location filename="../../Command.cpp" line="710"/>
       <source>Validate a sketch by looking at missing coincidences,
 invalid constraints, degenerated geometry, etc.</source>
       <translation type="unfinished">Validate a sketch by looking at missing coincidences,
 invalid constraints, degenerated geometry, etc.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="739"/>
+      <location filename="../../Command.cpp" line="724"/>
       <source>Wrong selection</source>
       <translation>Lựa chọn sai</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="740"/>
+      <location filename="../../Command.cpp" line="725"/>
       <source>Select only one sketch.</source>
       <translation>Chỉ chọn một sketch.</translation>
     </message>
@@ -1571,12 +1584,12 @@ invalid constraints, degenerated geometry, etc.</translation>
   <context>
     <name>CmdSketcherViewSection</name>
     <message>
-      <location filename="../../Command.cpp" line="953"/>
+      <location filename="../../Command.cpp" line="938"/>
       <source>View section</source>
       <translation>Xem mặt cắt</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="954"/>
+      <location filename="../../Command.cpp" line="939"/>
       <source>When in edit mode, switch between section view and full view.</source>
       <translation type="unfinished">When in edit mode, switch between section view and full view.</translation>
     </message>
@@ -1584,12 +1597,12 @@ invalid constraints, degenerated geometry, etc.</translation>
   <context>
     <name>CmdSketcherViewSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="684"/>
+      <location filename="../../Command.cpp" line="676"/>
       <source>View sketch</source>
       <translation>Xem bản phác họa</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="685"/>
+      <location filename="../../Command.cpp" line="677"/>
       <source>When in edit mode, set the camera orientation perpendicular to the sketch plane.</source>
       <translation>Khi ở chế độ chỉnh sửa, đặt hướng xem vuông góc với mặt phẳng bản phác họa.</translation>
     </message>
@@ -1597,339 +1610,339 @@ invalid constraints, degenerated geometry, etc.</translation>
   <context>
     <name>Command</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="979"/>
-      <location filename="../../CommandConstraints.cpp" line="1054"/>
+      <location filename="../../CommandConstraints.cpp" line="985"/>
+      <location filename="../../CommandConstraints.cpp" line="1060"/>
       <source>Add horizontal constraint</source>
       <translation>Thêm ràng buộc nằm ngang</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="988"/>
-      <location filename="../../CommandConstraints.cpp" line="1080"/>
-      <location filename="../../CommandConstraints.cpp" line="1315"/>
+      <location filename="../../CommandConstraints.cpp" line="994"/>
+      <location filename="../../CommandConstraints.cpp" line="1086"/>
+      <location filename="../../CommandConstraints.cpp" line="1321"/>
       <source>Add horizontal alignment</source>
       <translation>Thêm căn hàng ngang</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="1216"/>
-      <location filename="../../CommandConstraints.cpp" line="1290"/>
+      <location filename="../../CommandConstraints.cpp" line="1222"/>
+      <location filename="../../CommandConstraints.cpp" line="1296"/>
       <source>Add vertical constraint</source>
       <translation>Thêm ràng buộc thẳng đứng</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="1224"/>
+      <location filename="../../CommandConstraints.cpp" line="1230"/>
       <source>Add vertical alignment</source>
       <translation>Thêm căn hàng dọc</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="1430"/>
+      <location filename="../../CommandConstraints.cpp" line="1436"/>
       <source>Add 'Lock' constraint</source>
       <translation>Thêm ràng buộc 'Khóa'</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="1471"/>
+      <location filename="../../CommandConstraints.cpp" line="1477"/>
       <source>Add relative 'Lock' constraint</source>
       <translation type="unfinished">Add relative 'Lock' constraint</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="1516"/>
+      <location filename="../../CommandConstraints.cpp" line="1522"/>
       <source>Add fixed constraint</source>
       <translation>Thêm ràng buộc cố định</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="1659"/>
+      <location filename="../../CommandConstraints.cpp" line="1665"/>
       <source>Add 'Block' constraint</source>
       <translation>Thêm ràng buộc 'Ngăn chặn'</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="1703"/>
+      <location filename="../../CommandConstraints.cpp" line="1709"/>
       <source>Add block constraint</source>
       <translation>Thêm ràng buộc ngăn chặn</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="1838"/>
-      <location filename="../../CommandConstraints.cpp" line="1993"/>
-      <location filename="../../CommandConstraints.cpp" line="2053"/>
+      <location filename="../../CommandConstraints.cpp" line="1844"/>
+      <location filename="../../CommandConstraints.cpp" line="2033"/>
+      <location filename="../../CommandConstraints.cpp" line="2110"/>
       <source>Add coincident constraint</source>
       <translation>Thêm ràng trùng điểm</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2163"/>
-      <location filename="../../CommandConstraints.cpp" line="2295"/>
+      <location filename="../../CommandConstraints.cpp" line="2217"/>
+      <location filename="../../CommandConstraints.cpp" line="2349"/>
       <source>Add distance from horizontal axis constraint</source>
       <translation>Thêm khoảng cách từ ràng buộc trục ngang</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2171"/>
-      <location filename="../../CommandConstraints.cpp" line="2302"/>
+      <location filename="../../CommandConstraints.cpp" line="2225"/>
+      <location filename="../../CommandConstraints.cpp" line="2356"/>
       <source>Add distance from vertical axis constraint</source>
       <translation>Thêm khoảng cách từ ràng buộc trục dọc</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2179"/>
-      <location filename="../../CommandConstraints.cpp" line="2309"/>
+      <location filename="../../CommandConstraints.cpp" line="2233"/>
+      <location filename="../../CommandConstraints.cpp" line="2363"/>
       <source>Add point to point distance constraint</source>
       <translation>Thêm ràng buộc khoảng cách điểm đến điểm</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2214"/>
-      <location filename="../../CommandConstraints.cpp" line="2384"/>
+      <location filename="../../CommandConstraints.cpp" line="2268"/>
+      <location filename="../../CommandConstraints.cpp" line="2437"/>
       <source>Add point to line Distance constraint</source>
       <translation>Thêm ràng buộc khoảng cách điểm đến đường thẳng</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2248"/>
-      <location filename="../../CommandConstraints.cpp" line="2341"/>
+      <location filename="../../CommandConstraints.cpp" line="2302"/>
+      <location filename="../../CommandConstraints.cpp" line="2395"/>
       <source>Add length constraint</source>
       <translation>Thêm ràng buộc chiều dài</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2530"/>
-      <location filename="../../CommandConstraints.cpp" line="2618"/>
+      <location filename="../../CommandConstraints.cpp" line="2583"/>
+      <location filename="../../CommandConstraints.cpp" line="2664"/>
       <source>Add point on object constraint</source>
       <translation>Thêm điểm trên ràng buộc đối tượng</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2787"/>
-      <location filename="../../CommandConstraints.cpp" line="2889"/>
+      <location filename="../../CommandConstraints.cpp" line="2824"/>
+      <location filename="../../CommandConstraints.cpp" line="2926"/>
       <source>Add point to point horizontal distance constraint</source>
       <translation>Thêm ràng buộc khoảng cách theo chiều ngang điểm đến điểm</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2818"/>
+      <location filename="../../CommandConstraints.cpp" line="2855"/>
       <source>Add fixed x-coordinate constraint</source>
       <translation>Thêm ràng buộc tọa độ x cố định</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3036"/>
-      <location filename="../../CommandConstraints.cpp" line="3138"/>
+      <location filename="../../CommandConstraints.cpp" line="3073"/>
+      <location filename="../../CommandConstraints.cpp" line="3174"/>
       <source>Add point to point vertical distance constraint</source>
       <translation>Thêm ràng buộc khoảng cách theo chiều dọc điểm đến điểm</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3066"/>
+      <location filename="../../CommandConstraints.cpp" line="3103"/>
       <source>Add fixed y-coordinate constraint</source>
       <translation>Thêm ràng buộc tọa độ y cố định</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3267"/>
-      <location filename="../../CommandConstraints.cpp" line="3308"/>
+      <location filename="../../CommandConstraints.cpp" line="3303"/>
+      <location filename="../../CommandConstraints.cpp" line="3344"/>
       <source>Add parallel constraint</source>
       <translation>Thêm ràng buộc song song</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3432"/>
-      <location filename="../../CommandConstraints.cpp" line="3500"/>
-      <location filename="../../CommandConstraints.cpp" line="3654"/>
+      <location filename="../../CommandConstraints.cpp" line="3468"/>
+      <location filename="../../CommandConstraints.cpp" line="3536"/>
       <location filename="../../CommandConstraints.cpp" line="3690"/>
-      <location filename="../../CommandConstraints.cpp" line="3835"/>
-      <location filename="../../CommandConstraints.cpp" line="3869"/>
-      <location filename="../../CommandConstraints.cpp" line="3917"/>
+      <location filename="../../CommandConstraints.cpp" line="3726"/>
+      <location filename="../../CommandConstraints.cpp" line="3871"/>
+      <location filename="../../CommandConstraints.cpp" line="3905"/>
+      <location filename="../../CommandConstraints.cpp" line="3953"/>
       <source>Add perpendicular constraint</source>
       <translation>Thêm ràng buộc vuông góc</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3537"/>
+      <location filename="../../CommandConstraints.cpp" line="3573"/>
       <source>Add perpendicularity constraint</source>
       <translation>Thêm ràng buộc vuông góc</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4016"/>
+      <location filename="../../CommandConstraints.cpp" line="4052"/>
       <source>Swap coincident+tangency with ptp tangency</source>
       <translation type="unfinished">Swap coincident+tangency with ptp tangency</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4035"/>
+      <location filename="../../CommandConstraints.cpp" line="4071"/>
       <source>Swap PointOnObject+tangency with point to curve tangency</source>
       <translation type="unfinished">Swap PointOnObject+tangency with point to curve tangency</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4130"/>
-      <location filename="../../CommandConstraints.cpp" line="4182"/>
-      <location filename="../../CommandConstraints.cpp" line="4218"/>
-      <location filename="../../CommandConstraints.cpp" line="4385"/>
-      <location filename="../../CommandConstraints.cpp" line="4547"/>
-      <location filename="../../CommandConstraints.cpp" line="4611"/>
-      <location filename="../../CommandConstraints.cpp" line="4638"/>
+      <location filename="../../CommandConstraints.cpp" line="4166"/>
+      <location filename="../../CommandConstraints.cpp" line="4234"/>
+      <location filename="../../CommandConstraints.cpp" line="4280"/>
+      <location filename="../../CommandConstraints.cpp" line="4447"/>
+      <location filename="../../CommandConstraints.cpp" line="4609"/>
+      <location filename="../../CommandConstraints.cpp" line="4673"/>
+      <location filename="../../CommandConstraints.cpp" line="4700"/>
       <source>Add tangent constraint</source>
       <translation>Thêm ràng tiếp tuyến</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4271"/>
-      <location filename="../../CommandConstraints.cpp" line="4278"/>
-      <location filename="../../CommandConstraints.cpp" line="4285"/>
-      <location filename="../../CommandConstraints.cpp" line="4309"/>
-      <location filename="../../CommandConstraints.cpp" line="4317"/>
-      <location filename="../../CommandConstraints.cpp" line="4342"/>
-      <location filename="../../CommandConstraints.cpp" line="4350"/>
-      <location filename="../../CommandConstraints.cpp" line="4377"/>
-      <location filename="../../CommandConstraints.cpp" line="4468"/>
-      <location filename="../../CommandConstraints.cpp" line="4475"/>
-      <location filename="../../CommandConstraints.cpp" line="4482"/>
-      <location filename="../../CommandConstraints.cpp" line="4506"/>
-      <location filename="../../CommandConstraints.cpp" line="4513"/>
-      <location filename="../../CommandConstraints.cpp" line="4539"/>
+      <location filename="../../CommandConstraints.cpp" line="4333"/>
+      <location filename="../../CommandConstraints.cpp" line="4340"/>
+      <location filename="../../CommandConstraints.cpp" line="4347"/>
+      <location filename="../../CommandConstraints.cpp" line="4371"/>
+      <location filename="../../CommandConstraints.cpp" line="4379"/>
+      <location filename="../../CommandConstraints.cpp" line="4404"/>
+      <location filename="../../CommandConstraints.cpp" line="4412"/>
+      <location filename="../../CommandConstraints.cpp" line="4439"/>
+      <location filename="../../CommandConstraints.cpp" line="4530"/>
+      <location filename="../../CommandConstraints.cpp" line="4537"/>
+      <location filename="../../CommandConstraints.cpp" line="4544"/>
+      <location filename="../../CommandConstraints.cpp" line="4568"/>
+      <location filename="../../CommandConstraints.cpp" line="4575"/>
+      <location filename="../../CommandConstraints.cpp" line="4601"/>
       <source>Add tangent constraint point</source>
       <translation>Thêm điểm ràng buộc tiếp tuyến</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4816"/>
-      <location filename="../../CommandConstraints.cpp" line="4851"/>
-      <location filename="../../CommandConstraints.cpp" line="4870"/>
-      <location filename="../../CommandConstraints.cpp" line="4930"/>
+      <location filename="../../CommandConstraints.cpp" line="4878"/>
+      <location filename="../../CommandConstraints.cpp" line="4913"/>
+      <location filename="../../CommandConstraints.cpp" line="4932"/>
+      <location filename="../../CommandConstraints.cpp" line="4992"/>
       <source>Add radius constraint</source>
       <translation>Thêm ràng buộc bán kính</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5106"/>
-      <location filename="../../CommandConstraints.cpp" line="5135"/>
-      <location filename="../../CommandConstraints.cpp" line="5147"/>
-      <location filename="../../CommandConstraints.cpp" line="5213"/>
+      <location filename="../../CommandConstraints.cpp" line="5168"/>
+      <location filename="../../CommandConstraints.cpp" line="5197"/>
+      <location filename="../../CommandConstraints.cpp" line="5209"/>
+      <location filename="../../CommandConstraints.cpp" line="5275"/>
       <source>Add diameter constraint</source>
       <translation>Thêm ràng buộc chu vi</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5384"/>
-      <location filename="../../CommandConstraints.cpp" line="5423"/>
-      <location filename="../../CommandConstraints.cpp" line="5444"/>
-      <location filename="../../CommandConstraints.cpp" line="5518"/>
+      <location filename="../../CommandConstraints.cpp" line="5446"/>
+      <location filename="../../CommandConstraints.cpp" line="5485"/>
+      <location filename="../../CommandConstraints.cpp" line="5506"/>
+      <location filename="../../CommandConstraints.cpp" line="5580"/>
       <source>Add radiam constraint</source>
       <translation type="unfinished">Add radiam constraint</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5810"/>
-      <location filename="../../CommandConstraints.cpp" line="5943"/>
-      <location filename="../../CommandConstraints.cpp" line="5973"/>
-      <location filename="../../CommandConstraints.cpp" line="5997"/>
-      <location filename="../../CommandConstraints.cpp" line="6110"/>
-      <location filename="../../CommandConstraints.cpp" line="6164"/>
+      <location filename="../../CommandConstraints.cpp" line="5872"/>
+      <location filename="../../CommandConstraints.cpp" line="6005"/>
+      <location filename="../../CommandConstraints.cpp" line="6035"/>
+      <location filename="../../CommandConstraints.cpp" line="6059"/>
+      <location filename="../../CommandConstraints.cpp" line="6172"/>
+      <location filename="../../CommandConstraints.cpp" line="6226"/>
       <source>Add angle constraint</source>
       <translation>Thêm ràng buộc góc</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6378"/>
-      <location filename="../../CommandConstraints.cpp" line="6429"/>
+      <location filename="../../CommandConstraints.cpp" line="6440"/>
+      <location filename="../../CommandConstraints.cpp" line="6491"/>
       <source>Add equality constraint</source>
       <translation>Thêm ràng buộc bằng nhau</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6550"/>
-      <location filename="../../CommandConstraints.cpp" line="6602"/>
-      <location filename="../../CommandConstraints.cpp" line="6618"/>
-      <location filename="../../CommandConstraints.cpp" line="6703"/>
-      <location filename="../../CommandConstraints.cpp" line="6738"/>
+      <location filename="../../CommandConstraints.cpp" line="6612"/>
+      <location filename="../../CommandConstraints.cpp" line="6664"/>
+      <location filename="../../CommandConstraints.cpp" line="6680"/>
+      <location filename="../../CommandConstraints.cpp" line="6765"/>
+      <location filename="../../CommandConstraints.cpp" line="6800"/>
       <source>Add symmetric constraint</source>
       <translation>Thêm ràng buộc đối xứng</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6879"/>
+      <location filename="../../CommandConstraints.cpp" line="6941"/>
       <source>Add Snell's law constraint</source>
       <translation>Thêm ràng buộc theo luật Snell</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="7089"/>
-      <location filename="../../CommandConstraints.cpp" line="7267"/>
+      <location filename="../../CommandConstraints.cpp" line="7151"/>
+      <location filename="../../CommandConstraints.cpp" line="7329"/>
       <source>Add internal alignment constraint</source>
       <translation>Thêm ràng buộc căn hàng bên trong</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="7474"/>
+      <location filename="../../CommandConstraints.cpp" line="7536"/>
       <source>Toggle constraint to driving/reference</source>
       <translation>Bật/tắt ràng buộc sang điều khiển/tham chiếu</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="7558"/>
+      <location filename="../../CommandConstraints.cpp" line="7620"/>
       <source>Activate/Deactivate constraint</source>
       <translation>Kích/Bỏ kích hoạt ràng buộc</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="208"/>
+      <location filename="../../Command.cpp" line="213"/>
       <source>Create a new sketch on a face</source>
       <translation>Tạo bản vẽ phác trên một mặt</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="240"/>
+      <location filename="../../Command.cpp" line="245"/>
       <source>Create a new sketch</source>
       <translation>Tạo một phác thảo mới</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="490"/>
+      <location filename="../../Command.cpp" line="482"/>
       <source>Reorient sketch</source>
       <translation>Đổi hướng bản phác họa</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="645"/>
+      <location filename="../../Command.cpp" line="637"/>
       <source>Attach sketch</source>
       <translation type="unfinished">Attach sketch</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="651"/>
+      <location filename="../../Command.cpp" line="643"/>
       <source>Detach sketch</source>
       <translation type="unfinished">Detach sketch</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="794"/>
+      <location filename="../../Command.cpp" line="779"/>
       <source>Create a mirrored sketch for each selected sketch</source>
       <translation type="unfinished">Create a mirrored sketch for each selected sketch</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="893"/>
+      <location filename="../../Command.cpp" line="878"/>
       <source>Merge sketches</source>
       <translation>Hợp nhất các bản phác họa</translation>
     </message>
     <message>
-      <location filename="../../CommandAlterGeometry.cpp" line="158"/>
+      <location filename="../../CommandAlterGeometry.cpp" line="155"/>
       <source>Toggle draft from/to draft</source>
       <translation type="unfinished">Toggle draft from/to draft</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerLine.h" line="99"/>
+      <location filename="../../DrawSketchHandlerLine.h" line="97"/>
       <source>Add sketch line</source>
       <translation>Thêm đường thẳng vẽ phác</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="156"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="154"/>
       <source>Add sketch box</source>
       <translation>Thêm hộp vẽ phác</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="194"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="192"/>
       <source>Add centered sketch box</source>
       <translation type="unfinished">Add centered sketch box</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="443"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="441"/>
       <source>Add rounded rectangle</source>
       <translation type="unfinished">Add rounded rectangle</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerLineSet.h" line="400"/>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="401"/>
       <source>Add line to sketch wire</source>
       <translation>Thêm đường thẳng vào đường vẽ phác</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerLineSet.h" line="420"/>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="421"/>
       <source>Add arc to sketch wire</source>
       <translation>Thêm cung tròn vào đường vẽ phác</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerArc.h" line="178"/>
-      <location filename="../../DrawSketchHandlerArc.h" line="427"/>
+      <location filename="../../DrawSketchHandlerArc.h" line="175"/>
+      <location filename="../../DrawSketchHandlerArc.h" line="424"/>
       <source>Add sketch arc</source>
       <translation type="unfinished">Add sketch arc</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerCircle.h" line="109"/>
-      <location filename="../../DrawSketchHandlerCircle.h" line="282"/>
+      <location filename="../../DrawSketchHandlerCircle.h" line="107"/>
+      <location filename="../../DrawSketchHandlerCircle.h" line="280"/>
       <source>Add sketch circle</source>
       <translation type="unfinished">Add sketch circle</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerEllipse.h" line="731"/>
+      <location filename="../../DrawSketchHandlerEllipse.h" line="732"/>
       <source>Add sketch ellipse</source>
       <translation type="unfinished">Add sketch ellipse</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerArcOfEllipse.h" line="264"/>
+      <location filename="../../DrawSketchHandlerArcOfEllipse.h" line="262"/>
       <source>Add sketch arc of ellipse</source>
       <translation type="unfinished">Add sketch arc of ellipse</translation>
     </message>
@@ -1939,171 +1952,176 @@ invalid constraints, degenerated geometry, etc.</translation>
       <translation type="unfinished">Add sketch arc of hyperbola</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerArcOfParabola.h" line="231"/>
+      <location filename="../../DrawSketchHandlerArcOfParabola.h" line="229"/>
       <source>Add sketch arc of Parabola</source>
       <translation type="unfinished">Add sketch arc of Parabola</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="104"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="105"/>
       <source>Add Pole circle</source>
       <translation type="unfinished">Add Pole circle</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerPoint.h" line="65"/>
+      <location filename="../../DrawSketchHandlerPoint.h" line="64"/>
       <source>Add sketch point</source>
       <translation type="unfinished">Add sketch point</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerFillet.h" line="149"/>
-      <location filename="../../DrawSketchHandlerFillet.h" line="227"/>
+      <location filename="../../DrawSketchHandlerFillet.h" line="150"/>
+      <location filename="../../DrawSketchHandlerFillet.h" line="228"/>
       <source>Create fillet</source>
       <translation>Tạo đường gờ</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerTrimming.h" line="132"/>
+      <location filename="../../DrawSketchHandlerTrimming.h" line="130"/>
       <source>Trim edge</source>
       <translation>Cắt rìa</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerExtend.h" line="245"/>
+      <location filename="../../DrawSketchHandlerExtend.h" line="243"/>
       <source>Extend edge</source>
       <translation>Mở rộng cạnh</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerSplitting.h" line="95"/>
+      <location filename="../../DrawSketchHandlerSplitting.h" line="133"/>
       <source>Split edge</source>
       <translation type="unfinished">Split edge</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerExternal.h" line="138"/>
+      <location filename="../../DrawSketchHandlerExternal.h" line="136"/>
       <source>Add external geometry</source>
       <translation type="unfinished">Add external geometry</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerCarbonCopy.h" line="133"/>
+      <location filename="../../DrawSketchHandlerCarbonCopy.h" line="131"/>
       <source>Add carbon copy</source>
       <translation type="unfinished">Add carbon copy</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerSlot.h" line="184"/>
+      <location filename="../../DrawSketchHandlerSlot.h" line="183"/>
       <source>Add slot</source>
       <translation type="unfinished">Add slot</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerPolygon.h" line="119"/>
+      <location filename="../../DrawSketchHandlerPolygon.h" line="117"/>
       <source>Add hexagon</source>
       <translation type="unfinished">Add hexagon</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="444"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="438"/>
       <source>Convert to NURBS</source>
       <translation type="unfinished">Convert to NURBS</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="518"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="512"/>
       <source>Increase spline degree</source>
       <translation>Tăng bậc của B-spline</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="593"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="587"/>
       <source>Decrease spline degree</source>
       <translation>Giảm bậc của B-spline</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="677"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="671"/>
       <source>Increase knot multiplicity</source>
       <translation>Tăng bội số nút</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="815"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="809"/>
       <source>Decrease knot multiplicity</source>
       <translation>Giảm bội số nút</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="1040"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="1034"/>
       <source>Insert knot</source>
       <translation type="unfinished">Insert knot</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="795"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="1287"/>
+      <source>Join Curves</source>
+      <translation type="unfinished">Join Curves</translation>
+    </message>
+    <message>
+      <location filename="../../CommandSketcherTools.cpp" line="822"/>
       <source>Exposing Internal Geometry</source>
       <translation type="unfinished">Exposing Internal Geometry</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1005"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1038"/>
       <source>Create symmetric geometry</source>
       <translation>Tạo hình đối xứng</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1164"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1195"/>
       <source>Copy/clone/move geometry</source>
       <translation>Chép/nhân bản/di chuyển hình</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1717"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1770"/>
       <source>Create copy of geometry</source>
       <translation>Tạo bản sao của hình</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1946"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2020"/>
       <source>Delete all geometry</source>
       <translation>Xóa tất cả các hình</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="2008"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2087"/>
       <source>Delete All Constraints</source>
       <translation>Xóa mọi ràng buộc</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="2133"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2215"/>
       <source>Remove Axes Alignment</source>
       <translation type="unfinished">Remove Axes Alignment</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherVirtualSpace.cpp" line="155"/>
+      <location filename="../../CommandSketcherVirtualSpace.cpp" line="151"/>
       <source>Toggle constraints to the other virtual space</source>
       <translation type="unfinished">Toggle constraints to the other virtual space</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherVirtualSpace.cpp" line="163"/>
-      <location filename="../../TaskSketcherConstraints.cpp" line="898"/>
-      <location filename="../../TaskSketcherConstraints.cpp" line="1225"/>
-      <location filename="../../TaskSketcherConstraints.cpp" line="1268"/>
+      <location filename="../../CommandSketcherVirtualSpace.cpp" line="159"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="1022"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="1133"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="1397"/>
       <source>Update constraint's virtual space</source>
       <translation>Cập nhật không gian ảo của ràng buộc</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandler.cpp" line="804"/>
+      <location filename="../../DrawSketchHandler.cpp" line="789"/>
       <source>Add auto constraints</source>
       <translation>Thêm các ràng buộc tự động</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="627"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="621"/>
       <source>Swap constraint names</source>
       <translation>Trao đổi tên các ràng buộc</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="1210"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="1118"/>
       <source>Rename sketch constraint</source>
       <translation>Đổi tên ràng buộc sketch</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="796"/>
+      <location filename="../../ViewProviderSketch.cpp" line="821"/>
       <source>Drag Point</source>
       <translation>Điểm kéo chuột</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="828"/>
+      <location filename="../../ViewProviderSketch.cpp" line="853"/>
       <source>Drag Curve</source>
       <translation type="unfinished">Drag Curve</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="880"/>
+      <location filename="../../ViewProviderSketch.cpp" line="905"/>
       <source>Drag Constraint</source>
       <translation>Ràng buộc kéo thả</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="1067"/>
+      <location filename="../../ViewProviderSketch.cpp" line="1094"/>
       <source>Modify sketch constraints</source>
       <translation>Sửa các ràng buộc bản phác họa</translation>
     </message>
@@ -2111,102 +2129,115 @@ invalid constraints, degenerated geometry, etc.</translation>
   <context>
     <name>CommandGroup</name>
     <message>
-      <location filename="../../Workbench.cpp" line="37"/>
+      <location filename="../../Workbench.cpp" line="31"/>
       <source>Sketcher</source>
       <translation type="unfinished">Sketcher</translation>
     </message>
   </context>
   <context>
+    <name>CriticalMessages</name>
+    <message>
+      <location filename="../../../App/SketchObject.cpp" line="8318"/>
+      <source>Sketch:</source>
+      <translation type="unfinished">Sketch:</translation>
+    </message>
+    <message>
+      <location filename="../../../App/SketchObject.cpp" line="8319"/>
+      <source>Parabolas were migrated. Migrated files won't open in previous versions of FreeCAD!!</source>
+      <translation type="unfinished">Parabolas were migrated. Migrated files won't open in previous versions of FreeCAD!!</translation>
+    </message>
+  </context>
+  <context>
     <name>Exceptions</name>
     <message>
-      <location filename="../../../App/SketchAnalysis.cpp" line="456"/>
+      <location filename="../../../App/SketchAnalysis.cpp" line="449"/>
       <source>Autoconstrain error: Unsolvable sketch while applying coincident constraints.</source>
       <translation type="unfinished">Autoconstrain error: Unsolvable sketch while applying coincident constraints.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchAnalysis.cpp" line="537"/>
+      <location filename="../../../App/SketchAnalysis.cpp" line="530"/>
       <source>Autoconstrain error: Unsolvable sketch while applying vertical/horizontal constraints.</source>
       <translation type="unfinished">Autoconstrain error: Unsolvable sketch while applying vertical/horizontal constraints.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchAnalysis.cpp" line="734"/>
+      <location filename="../../../App/SketchAnalysis.cpp" line="730"/>
       <source>Autoconstrain error: Unsolvable sketch while applying equality constraints.</source>
       <translation type="unfinished">Autoconstrain error: Unsolvable sketch while applying equality constraints.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchAnalysis.cpp" line="788"/>
+      <location filename="../../../App/SketchAnalysis.cpp" line="784"/>
       <source>Autoconstrain error: Unsolvable sketch without constraints.</source>
       <translation type="unfinished">Autoconstrain error: Unsolvable sketch without constraints.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchAnalysis.cpp" line="825"/>
+      <location filename="../../../App/SketchAnalysis.cpp" line="821"/>
       <source>Autoconstrain error: Unsolvable sketch after applying horizontal and vertical constraints.</source>
       <translation type="unfinished">Autoconstrain error: Unsolvable sketch after applying horizontal and vertical constraints.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchAnalysis.cpp" line="847"/>
+      <location filename="../../../App/SketchAnalysis.cpp" line="843"/>
       <source>Autoconstrain error: Unsolvable sketch after applying point-on-point constraints.</source>
       <translation type="unfinished">Autoconstrain error: Unsolvable sketch after applying point-on-point constraints.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchAnalysis.cpp" line="875"/>
+      <location filename="../../../App/SketchAnalysis.cpp" line="871"/>
       <source>Autoconstrain error: Unsolvable sketch after applying equality constraints.</source>
       <translation type="unfinished">Autoconstrain error: Unsolvable sketch after applying equality constraints.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="1979"/>
+      <location filename="../../../App/SketchObject.cpp" line="1984"/>
       <source>Unable to guess intersection of curves. Try adding a coincident constraint between the vertices of the curves you are intending to fillet.</source>
       <translation type="unfinished">Unable to guess intersection of curves. Try adding a coincident constraint between the vertices of the curves you are intending to fillet.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5712"/>
-      <location filename="../../../App/SketchObject.cpp" line="5886"/>
+      <location filename="../../../App/SketchObject.cpp" line="5856"/>
+      <location filename="../../../App/SketchObject.cpp" line="6030"/>
       <source>BSpline Geometry Index (GeoID) is out of bounds.</source>
       <translation type="unfinished">BSpline Geometry Index (GeoID) is out of bounds.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5715"/>
+      <location filename="../../../App/SketchObject.cpp" line="5859"/>
       <source>You are requesting no change in knot multiplicity.</source>
       <translation>Bạn đang yêu cầu không có sự thay đổi trong bội số nút.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5720"/>
-      <location filename="../../../App/SketchObject.cpp" line="5894"/>
+      <location filename="../../../App/SketchObject.cpp" line="5864"/>
+      <location filename="../../../App/SketchObject.cpp" line="6038"/>
       <source>The Geometry Index (GeoId) provided is not a B-spline curve.</source>
       <translation type="unfinished">The Geometry Index (GeoId) provided is not a B-spline curve.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5727"/>
+      <location filename="../../../App/SketchObject.cpp" line="5871"/>
       <source>The knot index is out of bounds. Note that in accordance with OCC notation, the first knot has index 1 and not zero.</source>
       <translation>Chỉ số nút là ngoài vùng biên giới. Lưu ý rằng theo ký hiệu OCC, nút đầu tiên có chỉ số là 1 và không bằng 0.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5734"/>
+      <location filename="../../../App/SketchObject.cpp" line="5878"/>
       <source>The multiplicity cannot be increased beyond the degree of the B-spline.</source>
       <translation type="unfinished">The multiplicity cannot be increased beyond the degree of the B-spline.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5737"/>
+      <location filename="../../../App/SketchObject.cpp" line="5881"/>
       <source>The multiplicity cannot be decreased beyond zero.</source>
       <translation>Bội số không thể được giảm quá số không.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5749"/>
+      <location filename="../../../App/SketchObject.cpp" line="5893"/>
       <source>OCC is unable to decrease the multiplicity within the maximum tolerance.</source>
       <translation>OCC không thể làm giảm bội số trong dung sai tối đa.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5889"/>
+      <location filename="../../../App/SketchObject.cpp" line="6033"/>
       <source>Knot cannot have zero multiplicity.</source>
       <translation type="unfinished">Knot cannot have zero multiplicity.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5903"/>
+      <location filename="../../../App/SketchObject.cpp" line="6047"/>
       <source>Knot multiplicity cannot be higher than the degree of the BSpline.</source>
       <translation type="unfinished">Knot multiplicity cannot be higher than the degree of the BSpline.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5906"/>
+      <location filename="../../../App/SketchObject.cpp" line="6050"/>
       <source>Knot cannot be inserted outside the BSpline parameter range.</source>
       <translation type="unfinished">Knot cannot be inserted outside the BSpline parameter range.</translation>
     </message>
@@ -2214,7 +2245,7 @@ invalid constraints, degenerated geometry, etc.</translation>
   <context>
     <name>Gui::TaskView::TaskSketcherCreateCommands</name>
     <message>
-      <location filename="../../TaskSketcherCreateCommands.cpp" line="41"/>
+      <location filename="../../TaskSketcherCreateCommands.cpp" line="36"/>
       <source>Appearance</source>
       <translation>Diện mạo</translation>
     </message>
@@ -2222,553 +2253,560 @@ invalid constraints, degenerated geometry, etc.</translation>
   <context>
     <name>QObject</name>
     <message>
+      <location filename="../../AppSketcherGui.cpp" line="129"/>
+      <location filename="../../AppSketcherGui.cpp" line="130"/>
+      <location filename="../../AppSketcherGui.cpp" line="131"/>
       <location filename="../../AppSketcherGui.cpp" line="132"/>
-      <location filename="../../AppSketcherGui.cpp" line="133"/>
-      <location filename="../../AppSketcherGui.cpp" line="134"/>
       <source>Sketcher</source>
       <translation type="unfinished">Sketcher</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="111"/>
+      <location filename="../../Command.cpp" line="116"/>
       <source>There are no modes that accept the selected set of subelements</source>
       <translation>Không có chế độ mà chấp nhận thiết lập được lựa chọn cho các phần tử phụ</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="114"/>
+      <location filename="../../Command.cpp" line="119"/>
       <source>Broken link to support subelements</source>
       <translation>Liên kết bị hỏng để hỗ trợ các phần tử phụ</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="117"/>
-      <location filename="../../Command.cpp" line="126"/>
+      <location filename="../../Command.cpp" line="122"/>
+      <location filename="../../Command.cpp" line="131"/>
       <source>Unexpected error</source>
       <translation>Lỗi không mong muốn</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="121"/>
+      <location filename="../../Command.cpp" line="126"/>
       <source>Face is non-planar</source>
       <translation>Bề mặt không phẳng</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="123"/>
+      <location filename="../../Command.cpp" line="128"/>
       <source>Selected shapes are of wrong form (e.g., a curved edge where a straight one is needed)</source>
       <translation>Các hình dạng được chọn có dạng sai (ví dụ: cạnh cong, nơi cần có hình dạng thẳng)</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="164"/>
+      <location filename="../../Command.cpp" line="169"/>
       <source>Sketch mapping</source>
       <translation>Sắp xếp bản phác họa</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="165"/>
+      <location filename="../../Command.cpp" line="170"/>
       <source>Can't map the sketch to selected object. %1.</source>
       <translation>Không thể sắp xếp bản phác họa đến đối tượng đã chọn. %1.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="172"/>
-      <location filename="../../Command.cpp" line="591"/>
+      <location filename="../../Command.cpp" line="177"/>
+      <location filename="../../Command.cpp" line="583"/>
       <source>Don't attach</source>
       <translation>Không đính kèm</translation>
     </message>
     <message>
-      <location filename="../../CommandAlterGeometry.cpp" line="144"/>
-      <location filename="../../CommandAlterGeometry.cpp" line="152"/>
-      <location filename="../../CommandConstraints.cpp" line="151"/>
-      <location filename="../../CommandConstraints.cpp" line="157"/>
-      <location filename="../../CommandConstraints.cpp" line="906"/>
-      <location filename="../../CommandConstraints.cpp" line="1144"/>
-      <location filename="../../CommandConstraints.cpp" line="1381"/>
-      <location filename="../../CommandConstraints.cpp" line="1404"/>
-      <location filename="../../CommandConstraints.cpp" line="1408"/>
-      <location filename="../../CommandConstraints.cpp" line="1605"/>
-      <location filename="../../CommandConstraints.cpp" line="1635"/>
-      <location filename="../../CommandConstraints.cpp" line="1639"/>
-      <location filename="../../CommandConstraints.cpp" line="1960"/>
-      <location filename="../../CommandConstraints.cpp" line="1971"/>
-      <location filename="../../CommandConstraints.cpp" line="1981"/>
-      <location filename="../../CommandConstraints.cpp" line="2126"/>
-      <location filename="../../CommandConstraints.cpp" line="2137"/>
-      <location filename="../../CommandConstraints.cpp" line="2235"/>
-      <location filename="../../CommandConstraints.cpp" line="2268"/>
-      <location filename="../../CommandConstraints.cpp" line="2360"/>
-      <location filename="../../CommandConstraints.cpp" line="2505"/>
-      <location filename="../../CommandConstraints.cpp" line="2545"/>
-      <location filename="../../CommandConstraints.cpp" line="2551"/>
-      <location filename="../../CommandConstraints.cpp" line="2573"/>
-      <location filename="../../CommandConstraints.cpp" line="2584"/>
-      <location filename="../../CommandConstraints.cpp" line="2632"/>
-      <location filename="../../CommandConstraints.cpp" line="2640"/>
-      <location filename="../../CommandConstraints.cpp" line="2657"/>
-      <location filename="../../CommandConstraints.cpp" line="2718"/>
-      <location filename="../../CommandConstraints.cpp" line="2729"/>
-      <location filename="../../CommandConstraints.cpp" line="2758"/>
-      <location filename="../../CommandConstraints.cpp" line="2808"/>
-      <location filename="../../CommandConstraints.cpp" line="2837"/>
-      <location filename="../../CommandConstraints.cpp" line="2866"/>
-      <location filename="../../CommandConstraints.cpp" line="2970"/>
-      <location filename="../../CommandConstraints.cpp" line="2981"/>
-      <location filename="../../CommandConstraints.cpp" line="3006"/>
-      <location filename="../../CommandConstraints.cpp" line="3056"/>
-      <location filename="../../CommandConstraints.cpp" line="3086"/>
-      <location filename="../../CommandConstraints.cpp" line="3115"/>
-      <location filename="../../CommandConstraints.cpp" line="3216"/>
-      <location filename="../../CommandConstraints.cpp" line="3229"/>
-      <location filename="../../CommandConstraints.cpp" line="3243"/>
-      <location filename="../../CommandConstraints.cpp" line="3259"/>
-      <location filename="../../CommandConstraints.cpp" line="3297"/>
-      <location filename="../../CommandConstraints.cpp" line="3384"/>
-      <location filename="../../CommandConstraints.cpp" line="3397"/>
-      <location filename="../../CommandConstraints.cpp" line="3427"/>
-      <location filename="../../CommandConstraints.cpp" line="3480"/>
-      <location filename="../../CommandConstraints.cpp" line="3517"/>
-      <location filename="../../CommandConstraints.cpp" line="3526"/>
-      <location filename="../../CommandConstraints.cpp" line="3532"/>
-      <location filename="../../CommandConstraints.cpp" line="3556"/>
-      <location filename="../../CommandConstraints.cpp" line="3565"/>
-      <location filename="../../CommandConstraints.cpp" line="3574"/>
-      <location filename="../../CommandConstraints.cpp" line="3702"/>
-      <location filename="../../CommandConstraints.cpp" line="3737"/>
-      <location filename="../../CommandConstraints.cpp" line="3746"/>
-      <location filename="../../CommandConstraints.cpp" line="3755"/>
-      <location filename="../../CommandConstraints.cpp" line="3912"/>
-      <location filename="../../CommandConstraints.cpp" line="4082"/>
-      <location filename="../../CommandConstraints.cpp" line="4095"/>
-      <location filename="../../CommandConstraints.cpp" line="4125"/>
-      <location filename="../../CommandConstraints.cpp" line="4177"/>
-      <location filename="../../CommandConstraints.cpp" line="4198"/>
-      <location filename="../../CommandConstraints.cpp" line="4207"/>
-      <location filename="../../CommandConstraints.cpp" line="4213"/>
-      <location filename="../../CommandConstraints.cpp" line="4237"/>
-      <location filename="../../CommandConstraints.cpp" line="4243"/>
-      <location filename="../../CommandConstraints.cpp" line="4399"/>
-      <location filename="../../CommandConstraints.cpp" line="4434"/>
-      <location filename="../../CommandConstraints.cpp" line="4440"/>
-      <location filename="../../CommandConstraints.cpp" line="4591"/>
-      <location filename="../../CommandConstraints.cpp" line="4633"/>
-      <location filename="../../CommandConstraints.cpp" line="4727"/>
-      <location filename="../../CommandConstraints.cpp" line="4738"/>
-      <location filename="../../CommandConstraints.cpp" line="4799"/>
-      <location filename="../../CommandConstraints.cpp" line="4805"/>
-      <location filename="../../CommandConstraints.cpp" line="4924"/>
-      <location filename="../../CommandConstraints.cpp" line="5027"/>
-      <location filename="../../CommandConstraints.cpp" line="5038"/>
-      <location filename="../../CommandConstraints.cpp" line="5080"/>
-      <location filename="../../CommandConstraints.cpp" line="5095"/>
-      <location filename="../../CommandConstraints.cpp" line="5201"/>
-      <location filename="../../CommandConstraints.cpp" line="5207"/>
-      <location filename="../../CommandConstraints.cpp" line="5301"/>
-      <location filename="../../CommandConstraints.cpp" line="5312"/>
-      <location filename="../../CommandConstraints.cpp" line="5367"/>
-      <location filename="../../CommandConstraints.cpp" line="5373"/>
-      <location filename="../../CommandConstraints.cpp" line="5512"/>
-      <location filename="../../CommandConstraints.cpp" line="5760"/>
-      <location filename="../../CommandConstraints.cpp" line="5772"/>
-      <location filename="../../CommandConstraints.cpp" line="5803"/>
+      <location filename="../../CommandSketcherVirtualSpace.cpp" line="111"/>
+      <location filename="../../CommandSketcherVirtualSpace.cpp" line="119"/>
+      <location filename="../../CommandSketcherVirtualSpace.cpp" line="142"/>
+      <location filename="../../CommandAlterGeometry.cpp" line="141"/>
+      <location filename="../../CommandAlterGeometry.cpp" line="149"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="464"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="535"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="613"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="664"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="720"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="802"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="843"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="1180"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="1281"/>
+      <location filename="../../CommandConstraints.cpp" line="147"/>
+      <location filename="../../CommandConstraints.cpp" line="153"/>
+      <location filename="../../CommandConstraints.cpp" line="912"/>
+      <location filename="../../CommandConstraints.cpp" line="1150"/>
+      <location filename="../../CommandConstraints.cpp" line="1387"/>
+      <location filename="../../CommandConstraints.cpp" line="1410"/>
+      <location filename="../../CommandConstraints.cpp" line="1414"/>
+      <location filename="../../CommandConstraints.cpp" line="1611"/>
+      <location filename="../../CommandConstraints.cpp" line="1641"/>
+      <location filename="../../CommandConstraints.cpp" line="1645"/>
+      <location filename="../../CommandConstraints.cpp" line="1988"/>
+      <location filename="../../CommandConstraints.cpp" line="1999"/>
+      <location filename="../../CommandConstraints.cpp" line="2019"/>
+      <location filename="../../CommandConstraints.cpp" line="2094"/>
+      <location filename="../../CommandConstraints.cpp" line="2180"/>
+      <location filename="../../CommandConstraints.cpp" line="2191"/>
+      <location filename="../../CommandConstraints.cpp" line="2289"/>
+      <location filename="../../CommandConstraints.cpp" line="2322"/>
+      <location filename="../../CommandConstraints.cpp" line="2413"/>
+      <location filename="../../CommandConstraints.cpp" line="2558"/>
+      <location filename="../../CommandConstraints.cpp" line="2597"/>
+      <location filename="../../CommandConstraints.cpp" line="2619"/>
+      <location filename="../../CommandConstraints.cpp" line="2630"/>
+      <location filename="../../CommandConstraints.cpp" line="2677"/>
+      <location filename="../../CommandConstraints.cpp" line="2694"/>
+      <location filename="../../CommandConstraints.cpp" line="2755"/>
+      <location filename="../../CommandConstraints.cpp" line="2766"/>
+      <location filename="../../CommandConstraints.cpp" line="2795"/>
+      <location filename="../../CommandConstraints.cpp" line="2845"/>
+      <location filename="../../CommandConstraints.cpp" line="2874"/>
+      <location filename="../../CommandConstraints.cpp" line="2903"/>
+      <location filename="../../CommandConstraints.cpp" line="3007"/>
+      <location filename="../../CommandConstraints.cpp" line="3018"/>
+      <location filename="../../CommandConstraints.cpp" line="3043"/>
+      <location filename="../../CommandConstraints.cpp" line="3093"/>
+      <location filename="../../CommandConstraints.cpp" line="3122"/>
+      <location filename="../../CommandConstraints.cpp" line="3151"/>
+      <location filename="../../CommandConstraints.cpp" line="3252"/>
+      <location filename="../../CommandConstraints.cpp" line="3265"/>
+      <location filename="../../CommandConstraints.cpp" line="3279"/>
+      <location filename="../../CommandConstraints.cpp" line="3295"/>
+      <location filename="../../CommandConstraints.cpp" line="3333"/>
+      <location filename="../../CommandConstraints.cpp" line="3420"/>
+      <location filename="../../CommandConstraints.cpp" line="3433"/>
+      <location filename="../../CommandConstraints.cpp" line="3463"/>
+      <location filename="../../CommandConstraints.cpp" line="3516"/>
+      <location filename="../../CommandConstraints.cpp" line="3553"/>
+      <location filename="../../CommandConstraints.cpp" line="3562"/>
+      <location filename="../../CommandConstraints.cpp" line="3568"/>
+      <location filename="../../CommandConstraints.cpp" line="3592"/>
+      <location filename="../../CommandConstraints.cpp" line="3601"/>
+      <location filename="../../CommandConstraints.cpp" line="3610"/>
+      <location filename="../../CommandConstraints.cpp" line="3738"/>
+      <location filename="../../CommandConstraints.cpp" line="3773"/>
+      <location filename="../../CommandConstraints.cpp" line="3782"/>
+      <location filename="../../CommandConstraints.cpp" line="3791"/>
+      <location filename="../../CommandConstraints.cpp" line="3948"/>
+      <location filename="../../CommandConstraints.cpp" line="4118"/>
+      <location filename="../../CommandConstraints.cpp" line="4131"/>
+      <location filename="../../CommandConstraints.cpp" line="4161"/>
+      <location filename="../../CommandConstraints.cpp" line="4222"/>
+      <location filename="../../CommandConstraints.cpp" line="4228"/>
+      <location filename="../../CommandConstraints.cpp" line="4253"/>
+      <location filename="../../CommandConstraints.cpp" line="4259"/>
+      <location filename="../../CommandConstraints.cpp" line="4269"/>
+      <location filename="../../CommandConstraints.cpp" line="4275"/>
+      <location filename="../../CommandConstraints.cpp" line="4299"/>
+      <location filename="../../CommandConstraints.cpp" line="4305"/>
+      <location filename="../../CommandConstraints.cpp" line="4461"/>
+      <location filename="../../CommandConstraints.cpp" line="4496"/>
+      <location filename="../../CommandConstraints.cpp" line="4502"/>
+      <location filename="../../CommandConstraints.cpp" line="4653"/>
+      <location filename="../../CommandConstraints.cpp" line="4695"/>
+      <location filename="../../CommandConstraints.cpp" line="4789"/>
+      <location filename="../../CommandConstraints.cpp" line="4800"/>
+      <location filename="../../CommandConstraints.cpp" line="4861"/>
+      <location filename="../../CommandConstraints.cpp" line="4867"/>
+      <location filename="../../CommandConstraints.cpp" line="4986"/>
+      <location filename="../../CommandConstraints.cpp" line="5089"/>
+      <location filename="../../CommandConstraints.cpp" line="5100"/>
+      <location filename="../../CommandConstraints.cpp" line="5142"/>
+      <location filename="../../CommandConstraints.cpp" line="5157"/>
+      <location filename="../../CommandConstraints.cpp" line="5263"/>
+      <location filename="../../CommandConstraints.cpp" line="5269"/>
+      <location filename="../../CommandConstraints.cpp" line="5363"/>
+      <location filename="../../CommandConstraints.cpp" line="5374"/>
+      <location filename="../../CommandConstraints.cpp" line="5429"/>
+      <location filename="../../CommandConstraints.cpp" line="5435"/>
+      <location filename="../../CommandConstraints.cpp" line="5574"/>
+      <location filename="../../CommandConstraints.cpp" line="5822"/>
+      <location filename="../../CommandConstraints.cpp" line="5834"/>
       <location filename="../../CommandConstraints.cpp" line="5865"/>
-      <location filename="../../CommandConstraints.cpp" line="5961"/>
-      <location filename="../../CommandConstraints.cpp" line="6017"/>
-      <location filename="../../CommandConstraints.cpp" line="6157"/>
-      <location filename="../../CommandConstraints.cpp" line="6274"/>
-      <location filename="../../CommandConstraints.cpp" line="6287"/>
-      <location filename="../../CommandConstraints.cpp" line="6303"/>
-      <location filename="../../CommandConstraints.cpp" line="6308"/>
-      <location filename="../../CommandConstraints.cpp" line="6327"/>
-      <location filename="../../CommandConstraints.cpp" line="6357"/>
-      <location filename="../../CommandConstraints.cpp" line="6372"/>
-      <location filename="../../CommandConstraints.cpp" line="6423"/>
-      <location filename="../../CommandConstraints.cpp" line="6505"/>
-      <location filename="../../CommandConstraints.cpp" line="6518"/>
-      <location filename="../../CommandConstraints.cpp" line="6543"/>
-      <location filename="../../CommandConstraints.cpp" line="6565"/>
-      <location filename="../../CommandConstraints.cpp" line="6595"/>
-      <location filename="../../CommandConstraints.cpp" line="6632"/>
-      <location filename="../../CommandConstraints.cpp" line="6654"/>
-      <location filename="../../CommandConstraints.cpp" line="6696"/>
-      <location filename="../../CommandConstraints.cpp" line="6712"/>
-      <location filename="../../CommandConstraints.cpp" line="6839"/>
-      <location filename="../../CommandConstraints.cpp" line="6845"/>
-      <location filename="../../CommandConstraints.cpp" line="6947"/>
-      <location filename="../../CommandConstraints.cpp" line="6960"/>
-      <location filename="../../CommandConstraints.cpp" line="6981"/>
-      <location filename="../../CommandConstraints.cpp" line="7004"/>
-      <location filename="../../CommandConstraints.cpp" line="7026"/>
-      <location filename="../../CommandConstraints.cpp" line="7034"/>
-      <location filename="../../CommandConstraints.cpp" line="7040"/>
-      <location filename="../../CommandConstraints.cpp" line="7196"/>
-      <location filename="../../CommandConstraints.cpp" line="7204"/>
-      <location filename="../../CommandConstraints.cpp" line="7212"/>
-      <location filename="../../CommandConstraints.cpp" line="7218"/>
-      <location filename="../../CommandConstraints.cpp" line="7367"/>
-      <location filename="../../CommandConstraints.cpp" line="7428"/>
-      <location filename="../../CommandConstraints.cpp" line="7436"/>
-      <location filename="../../CommandConstraints.cpp" line="7468"/>
-      <location filename="../../CommandConstraints.cpp" line="7541"/>
-      <location filename="../../CommandConstraints.cpp" line="7552"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="470"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="541"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="619"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="670"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="726"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="808"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="849"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="1186"/>
-      <location filename="../../CommandSketcherTools.cpp" line="96"/>
-      <location filename="../../CommandSketcherTools.cpp" line="743"/>
-      <location filename="../../CommandSketcherTools.cpp" line="855"/>
-      <location filename="../../CommandSketcherTools.cpp" line="863"/>
-      <location filename="../../CommandSketcherTools.cpp" line="968"/>
-      <location filename="../../CommandSketcherTools.cpp" line="977"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1240"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1249"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1308"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1799"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1808"/>
+      <location filename="../../CommandConstraints.cpp" line="5927"/>
+      <location filename="../../CommandConstraints.cpp" line="6023"/>
+      <location filename="../../CommandConstraints.cpp" line="6079"/>
+      <location filename="../../CommandConstraints.cpp" line="6219"/>
+      <location filename="../../CommandConstraints.cpp" line="6336"/>
+      <location filename="../../CommandConstraints.cpp" line="6349"/>
+      <location filename="../../CommandConstraints.cpp" line="6365"/>
+      <location filename="../../CommandConstraints.cpp" line="6370"/>
+      <location filename="../../CommandConstraints.cpp" line="6389"/>
+      <location filename="../../CommandConstraints.cpp" line="6419"/>
+      <location filename="../../CommandConstraints.cpp" line="6434"/>
+      <location filename="../../CommandConstraints.cpp" line="6485"/>
+      <location filename="../../CommandConstraints.cpp" line="6567"/>
+      <location filename="../../CommandConstraints.cpp" line="6580"/>
+      <location filename="../../CommandConstraints.cpp" line="6605"/>
+      <location filename="../../CommandConstraints.cpp" line="6627"/>
+      <location filename="../../CommandConstraints.cpp" line="6657"/>
+      <location filename="../../CommandConstraints.cpp" line="6694"/>
+      <location filename="../../CommandConstraints.cpp" line="6716"/>
+      <location filename="../../CommandConstraints.cpp" line="6758"/>
+      <location filename="../../CommandConstraints.cpp" line="6774"/>
+      <location filename="../../CommandConstraints.cpp" line="6901"/>
+      <location filename="../../CommandConstraints.cpp" line="6907"/>
+      <location filename="../../CommandConstraints.cpp" line="7009"/>
+      <location filename="../../CommandConstraints.cpp" line="7022"/>
+      <location filename="../../CommandConstraints.cpp" line="7043"/>
+      <location filename="../../CommandConstraints.cpp" line="7066"/>
+      <location filename="../../CommandConstraints.cpp" line="7088"/>
+      <location filename="../../CommandConstraints.cpp" line="7096"/>
+      <location filename="../../CommandConstraints.cpp" line="7102"/>
+      <location filename="../../CommandConstraints.cpp" line="7258"/>
+      <location filename="../../CommandConstraints.cpp" line="7266"/>
+      <location filename="../../CommandConstraints.cpp" line="7274"/>
+      <location filename="../../CommandConstraints.cpp" line="7280"/>
+      <location filename="../../CommandConstraints.cpp" line="7429"/>
+      <location filename="../../CommandConstraints.cpp" line="7490"/>
+      <location filename="../../CommandConstraints.cpp" line="7498"/>
+      <location filename="../../CommandConstraints.cpp" line="7530"/>
+      <location filename="../../CommandConstraints.cpp" line="7603"/>
+      <location filename="../../CommandConstraints.cpp" line="7614"/>
+      <location filename="../../CommandSketcherTools.cpp" line="92"/>
+      <location filename="../../CommandSketcherTools.cpp" line="770"/>
+      <location filename="../../CommandSketcherTools.cpp" line="884"/>
+      <location filename="../../CommandSketcherTools.cpp" line="893"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1000"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1010"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1266"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1275"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1336"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1861"/>
       <location filename="../../CommandSketcherTools.cpp" line="1870"/>
-      <location filename="../../CommandSketcherTools.cpp" line="2066"/>
-      <location filename="../../CommandSketcherTools.cpp" line="2075"/>
-      <location filename="../../CommandSketcherTools.cpp" line="2120"/>
-      <location filename="../../CommandSketcherVirtualSpace.cpp" line="115"/>
-      <location filename="../../CommandSketcherVirtualSpace.cpp" line="123"/>
-      <location filename="../../CommandSketcherVirtualSpace.cpp" line="146"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1934"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2146"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2155"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2201"/>
       <source>Wrong selection</source>
       <translation>Lựa chọn sai</translation>
     </message>
     <message>
-      <location filename="../../CommandAlterGeometry.cpp" line="145"/>
-      <location filename="../../CommandAlterGeometry.cpp" line="153"/>
+      <location filename="../../CommandAlterGeometry.cpp" line="142"/>
+      <location filename="../../CommandAlterGeometry.cpp" line="150"/>
       <source>Select edge(s) from the sketch.</source>
       <translation>Chọn cạnh (hoặc nhiều cạnh) từ bản phác họa.</translation>
     </message>
     <message>
-      <location filename="../../EditDatumDialog.cpp" line="80"/>
+      <location filename="../../EditDatumDialog.cpp" line="81"/>
       <source>Distance constraint</source>
       <translation>Giới hạn khoảng cách</translation>
     </message>
     <message>
-      <location filename="../../EditDatumDialog.cpp" line="81"/>
+      <location filename="../../EditDatumDialog.cpp" line="82"/>
       <source>Not allowed to edit the datum because the sketch contains conflicting constraints</source>
       <translation>Không được phép chỉnh sửa mốc tính toán bởi vì bản phác họa có chứa những liên kết ngược chiều nhau</translation>
     </message>
     <message>
-      <location filename="../../EditDatumDialog.cpp" line="219"/>
+      <location filename="../../EditDatumDialog.cpp" line="222"/>
       <source>Dimensional constraint</source>
       <translation>Khống chế kích thước</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="152"/>
+      <location filename="../../CommandConstraints.cpp" line="148"/>
       <source>Cannot add a constraint between two external geometries.</source>
       <translation>Không thể thêm một ràng buộc vào giữa hai hình bên ngoài.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="158"/>
+      <location filename="../../CommandConstraints.cpp" line="154"/>
       <source>Cannot add a constraint between two fixed geometries. Fixed geometries include external geometry, blocked geometry, and special points such as B-spline knot points.</source>
       <translation type="unfinished">Cannot add a constraint between two fixed geometries. Fixed geometries include external geometry, blocked geometry, and special points such as B-spline knot points.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="481"/>
+      <location filename="../../CommandConstraints.cpp" line="487"/>
       <source>Sketcher Constraint Substitution</source>
       <translation type="unfinished">Sketcher Constraint Substitution</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="487"/>
+      <location filename="../../CommandConstraints.cpp" line="493"/>
       <source>Keep notifying me of constraint substitutions</source>
       <translation type="unfinished">Keep notifying me of constraint substitutions</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="528"/>
-      <location filename="../../CommandConstraints.cpp" line="539"/>
-      <location filename="../../CommandConstraints.cpp" line="551"/>
+      <location filename="../../CommandConstraints.cpp" line="534"/>
+      <location filename="../../CommandConstraints.cpp" line="545"/>
+      <location filename="../../CommandConstraints.cpp" line="557"/>
       <source>Only sketch and its support are allowed to be selected.</source>
       <translation type="unfinished">Only sketch and its support are allowed to be selected.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="560"/>
+      <location filename="../../CommandConstraints.cpp" line="566"/>
       <source>One of the selected has to be on the sketch.</source>
       <translation type="unfinished">One of the selected has to be on the sketch.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="907"/>
-      <location filename="../../CommandConstraints.cpp" line="1145"/>
+      <location filename="../../CommandConstraints.cpp" line="913"/>
+      <location filename="../../CommandConstraints.cpp" line="1151"/>
       <source>Select an edge from the sketch.</source>
       <translation>Chọn một cạnh từ bản phác họa.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="932"/>
-      <location filename="../../CommandConstraints.cpp" line="946"/>
+      <location filename="../../CommandConstraints.cpp" line="938"/>
       <location filename="../../CommandConstraints.cpp" line="952"/>
-      <location filename="../../CommandConstraints.cpp" line="971"/>
-      <location filename="../../CommandConstraints.cpp" line="999"/>
-      <location filename="../../CommandConstraints.cpp" line="1027"/>
-      <location filename="../../CommandConstraints.cpp" line="1041"/>
+      <location filename="../../CommandConstraints.cpp" line="958"/>
+      <location filename="../../CommandConstraints.cpp" line="977"/>
+      <location filename="../../CommandConstraints.cpp" line="1005"/>
+      <location filename="../../CommandConstraints.cpp" line="1033"/>
       <location filename="../../CommandConstraints.cpp" line="1047"/>
-      <location filename="../../CommandConstraints.cpp" line="1170"/>
-      <location filename="../../CommandConstraints.cpp" line="1184"/>
+      <location filename="../../CommandConstraints.cpp" line="1053"/>
+      <location filename="../../CommandConstraints.cpp" line="1176"/>
       <location filename="../../CommandConstraints.cpp" line="1190"/>
-      <location filename="../../CommandConstraints.cpp" line="1208"/>
-      <location filename="../../CommandConstraints.cpp" line="1234"/>
-      <location filename="../../CommandConstraints.cpp" line="1263"/>
-      <location filename="../../CommandConstraints.cpp" line="1272"/>
-      <location filename="../../CommandConstraints.cpp" line="1283"/>
+      <location filename="../../CommandConstraints.cpp" line="1196"/>
+      <location filename="../../CommandConstraints.cpp" line="1214"/>
+      <location filename="../../CommandConstraints.cpp" line="1240"/>
+      <location filename="../../CommandConstraints.cpp" line="1269"/>
+      <location filename="../../CommandConstraints.cpp" line="1278"/>
+      <location filename="../../CommandConstraints.cpp" line="1289"/>
       <source>Impossible constraint</source>
       <translation>Ràng buộc không thích hợp</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="933"/>
-      <location filename="../../CommandConstraints.cpp" line="1028"/>
-      <location filename="../../CommandConstraints.cpp" line="1171"/>
-      <location filename="../../CommandConstraints.cpp" line="1264"/>
+      <location filename="../../CommandConstraints.cpp" line="939"/>
+      <location filename="../../CommandConstraints.cpp" line="1034"/>
+      <location filename="../../CommandConstraints.cpp" line="1177"/>
+      <location filename="../../CommandConstraints.cpp" line="1270"/>
       <source>The selected edge is not a line segment.</source>
       <translation type="unfinished">The selected edge is not a line segment.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="941"/>
-      <location filename="../../CommandConstraints.cpp" line="1036"/>
-      <location filename="../../CommandConstraints.cpp" line="1179"/>
-      <location filename="../../CommandConstraints.cpp" line="1277"/>
-      <location filename="../../CommandConstraints.cpp" line="1649"/>
-      <location filename="../../CommandConstraints.cpp" line="1697"/>
+      <location filename="../../CommandConstraints.cpp" line="947"/>
+      <location filename="../../CommandConstraints.cpp" line="1042"/>
+      <location filename="../../CommandConstraints.cpp" line="1185"/>
+      <location filename="../../CommandConstraints.cpp" line="1283"/>
+      <location filename="../../CommandConstraints.cpp" line="1655"/>
+      <location filename="../../CommandConstraints.cpp" line="1703"/>
       <source>Double constraint</source>
       <translation>Hạn chế kép</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="942"/>
-      <location filename="../../CommandConstraints.cpp" line="1037"/>
-      <location filename="../../CommandConstraints.cpp" line="1185"/>
-      <location filename="../../CommandConstraints.cpp" line="1273"/>
+      <location filename="../../CommandConstraints.cpp" line="948"/>
+      <location filename="../../CommandConstraints.cpp" line="1043"/>
+      <location filename="../../CommandConstraints.cpp" line="1191"/>
+      <location filename="../../CommandConstraints.cpp" line="1279"/>
       <source>The selected edge already has a horizontal constraint!</source>
       <translation>Cạnh đã chọn đã bị ràng buộc theo phương ngang!</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="947"/>
-      <location filename="../../CommandConstraints.cpp" line="1042"/>
-      <location filename="../../CommandConstraints.cpp" line="1180"/>
-      <location filename="../../CommandConstraints.cpp" line="1278"/>
+      <location filename="../../CommandConstraints.cpp" line="953"/>
+      <location filename="../../CommandConstraints.cpp" line="1048"/>
+      <location filename="../../CommandConstraints.cpp" line="1186"/>
+      <location filename="../../CommandConstraints.cpp" line="1284"/>
       <source>The selected edge already has a vertical constraint!</source>
       <translation>Cạnh đã chọn đã bị ràng buộc theo chiều đứng!</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="953"/>
-      <location filename="../../CommandConstraints.cpp" line="1048"/>
-      <location filename="../../CommandConstraints.cpp" line="1191"/>
-      <location filename="../../CommandConstraints.cpp" line="1284"/>
-      <location filename="../../CommandConstraints.cpp" line="1650"/>
-      <location filename="../../CommandConstraints.cpp" line="1698"/>
+      <location filename="../../CommandConstraints.cpp" line="959"/>
+      <location filename="../../CommandConstraints.cpp" line="1054"/>
+      <location filename="../../CommandConstraints.cpp" line="1197"/>
+      <location filename="../../CommandConstraints.cpp" line="1290"/>
+      <location filename="../../CommandConstraints.cpp" line="1656"/>
+      <location filename="../../CommandConstraints.cpp" line="1704"/>
       <source>The selected edge already has a Block constraint!</source>
       <translation>Cạnh đã chọn đã bị ràng buộc Khóa lại!</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="972"/>
+      <location filename="../../CommandConstraints.cpp" line="978"/>
       <source>The selected item(s) can't accept a horizontal constraint!</source>
       <translation>(Các) mục được chọn không thể chấp nhận một khống chế theo phương ngang!</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="1000"/>
-      <location filename="../../CommandConstraints.cpp" line="1235"/>
+      <location filename="../../CommandConstraints.cpp" line="1006"/>
+      <location filename="../../CommandConstraints.cpp" line="1241"/>
       <source>There are more than one fixed points selected. Select a maximum of one fixed point!</source>
       <translation type="unfinished">There are more than one fixed points selected. Select a maximum of one fixed point!</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="1209"/>
+      <location filename="../../CommandConstraints.cpp" line="1215"/>
       <source>The selected item(s) can't accept a vertical constraint!</source>
       <translation>(Các) mục được chọn không thể chấp nhận bị khống chế theo phương đứng!</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="1382"/>
-      <location filename="../../CommandConstraints.cpp" line="1606"/>
-      <location filename="../../CommandConstraints.cpp" line="2127"/>
+      <location filename="../../CommandConstraints.cpp" line="1388"/>
+      <location filename="../../CommandConstraints.cpp" line="1612"/>
+      <location filename="../../CommandConstraints.cpp" line="2181"/>
       <source>Select vertices from the sketch.</source>
       <translation>Chọn các đỉnh từ bản phác họa.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="1405"/>
+      <location filename="../../CommandConstraints.cpp" line="1411"/>
       <source>Select one vertex from the sketch other than the origin.</source>
       <translation>Chọn một đỉnh từ bản phác họa khác hơn là bản gốc.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="1409"/>
+      <location filename="../../CommandConstraints.cpp" line="1415"/>
       <source>Select only vertices from the sketch. The last selected vertex may be the origin.</source>
       <translation>Chỉ chọn những đỉnh từ bản phác họa. Đỉnh cuối cùng được chọn có thể là gốc tọa độ.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="1617"/>
+      <location filename="../../CommandConstraints.cpp" line="1623"/>
       <source>Wrong solver status</source>
       <translation>Tình trạng thiết bị giải bị lỗi</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="1618"/>
+      <location filename="../../CommandConstraints.cpp" line="1624"/>
       <source>A Block constraint cannot be added if the sketch is unsolved or there are redundant and conflicting constraints.</source>
       <translation type="unfinished">A Block constraint cannot be added if the sketch is unsolved or there are redundant and conflicting constraints.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="1636"/>
+      <location filename="../../CommandConstraints.cpp" line="1642"/>
       <source>Select one edge from the sketch.</source>
       <translation>Chọn một cạnh từ bản phác họa.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="1640"/>
+      <location filename="../../CommandConstraints.cpp" line="1646"/>
       <source>Select only edges from the sketch.</source>
       <translation>Chỉ chọn các cạnh từ bản phác họa.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="1668"/>
-      <location filename="../../CommandConstraints.cpp" line="1713"/>
-      <location filename="../../CommandConstraints.cpp" line="3456"/>
-      <location filename="../../CommandConstraints.cpp" line="3941"/>
-      <location filename="../../CommandConstraints.cpp" line="4154"/>
-      <location filename="../../CommandConstraints.cpp" line="4662"/>
-      <location filename="../../CommandConstraints.cpp" line="6909"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="842"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="836"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="1299"/>
+      <location filename="../../CommandConstraints.cpp" line="1674"/>
+      <location filename="../../CommandConstraints.cpp" line="1719"/>
+      <location filename="../../CommandConstraints.cpp" line="3492"/>
+      <location filename="../../CommandConstraints.cpp" line="3977"/>
+      <location filename="../../CommandConstraints.cpp" line="4190"/>
+      <location filename="../../CommandConstraints.cpp" line="4724"/>
+      <location filename="../../CommandConstraints.cpp" line="6971"/>
       <source>Error</source>
       <translation>Lỗi</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="1932"/>
+      <location filename="../../CommandConstraints.cpp" line="1938"/>
       <source>Endpoint to endpoint tangency was applied instead.</source>
       <translation>Thay vào đó, tiếp tiếp từ điểm cuối đến điểm cuối được áp dụng.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="1961"/>
+      <location filename="../../CommandConstraints.cpp" line="1989"/>
       <source>Select two or more points from the sketch.</source>
       <translation>Chọn hai hoặc nhiều điểm từ bản phác họa.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="1972"/>
-      <location filename="../../CommandConstraints.cpp" line="1982"/>
+      <location filename="../../CommandConstraints.cpp" line="2000"/>
       <source>Select two or more vertices from the sketch.</source>
       <translation type="unfinished">Select two or more vertices from the sketch.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2138"/>
-      <location filename="../../CommandConstraints.cpp" line="2269"/>
+      <location filename="../../CommandConstraints.cpp" line="2020"/>
+      <source>Select two or more vertices from the sketch for a coincident constraint, or two or more circles, ellipses, arcs or arcs of ellipse for a concentric constraint.</source>
+      <translation type="unfinished">Select two or more vertices from the sketch for a coincident constraint, or two or more circles, ellipses, arcs or arcs of ellipse for a concentric constraint.</translation>
+    </message>
+    <message>
+      <location filename="../../CommandConstraints.cpp" line="2095"/>
+      <source>Select two vertices from the sketch for a coincident constraint, or two circles, ellipses, arcs or arcs of ellipse for a concentric constraint.</source>
+      <translation type="unfinished">Select two vertices from the sketch for a coincident constraint, or two circles, ellipses, arcs or arcs of ellipse for a concentric constraint.</translation>
+    </message>
+    <message>
+      <location filename="../../CommandConstraints.cpp" line="2192"/>
+      <location filename="../../CommandConstraints.cpp" line="2323"/>
       <source>Select exactly one line or one point and one line or two points from the sketch.</source>
       <translation>Chọn chính xác một đường hoặc một điểm và một đường hoặc hai điểm từ bản phác họa.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2236"/>
+      <location filename="../../CommandConstraints.cpp" line="2290"/>
       <source>Cannot add a length constraint on an axis!</source>
       <translation>Không thể khống chế chiều dài trên một trục!</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2361"/>
+      <location filename="../../CommandConstraints.cpp" line="2414"/>
       <source>This constraint does not make sense for non-linear curves.</source>
       <translation type="unfinished">This constraint does not make sense for non-linear curves.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2478"/>
+      <location filename="../../CommandConstraints.cpp" line="2531"/>
       <source>Endpoint to edge tangency was applied instead.</source>
       <translation type="unfinished">Endpoint to edge tangency was applied instead.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2506"/>
-      <location filename="../../CommandConstraints.cpp" line="2719"/>
-      <location filename="../../CommandConstraints.cpp" line="2971"/>
-      <location filename="../../CommandConstraints.cpp" line="4728"/>
-      <location filename="../../CommandConstraints.cpp" line="5028"/>
-      <location filename="../../CommandConstraints.cpp" line="5302"/>
-      <location filename="../../CommandConstraints.cpp" line="5761"/>
+      <location filename="../../CommandConstraints.cpp" line="2559"/>
+      <location filename="../../CommandConstraints.cpp" line="2756"/>
+      <location filename="../../CommandConstraints.cpp" line="3008"/>
+      <location filename="../../CommandConstraints.cpp" line="4790"/>
+      <location filename="../../CommandConstraints.cpp" line="5090"/>
+      <location filename="../../CommandConstraints.cpp" line="5364"/>
+      <location filename="../../CommandConstraints.cpp" line="5823"/>
       <source>Select the right things from the sketch.</source>
       <translation>Chọn đúng những thứ từ bản phác họa.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2546"/>
-      <location filename="../../CommandConstraints.cpp" line="2633"/>
-      <source>Point on B-spline edge currently unsupported.</source>
-      <translation>Điểm trên rìa đường cong B-spline hiện tại không được chống đỡ.</translation>
-    </message>
-    <message>
-      <location filename="../../CommandConstraints.cpp" line="2552"/>
-      <location filename="../../CommandConstraints.cpp" line="2641"/>
-      <location filename="../../CommandConstraints.cpp" line="3428"/>
-      <location filename="../../CommandConstraints.cpp" line="3533"/>
-      <location filename="../../CommandConstraints.cpp" line="3575"/>
-      <location filename="../../CommandConstraints.cpp" line="3756"/>
-      <location filename="../../CommandConstraints.cpp" line="3913"/>
-      <location filename="../../CommandConstraints.cpp" line="4126"/>
-      <location filename="../../CommandConstraints.cpp" line="4214"/>
-      <location filename="../../CommandConstraints.cpp" line="4244"/>
-      <location filename="../../CommandConstraints.cpp" line="4441"/>
-      <location filename="../../CommandConstraints.cpp" line="4634"/>
-      <location filename="../../CommandConstraints.cpp" line="5081"/>
-      <location filename="../../CommandConstraints.cpp" line="5804"/>
+      <location filename="../../CommandConstraints.cpp" line="2598"/>
+      <location filename="../../CommandConstraints.cpp" line="2678"/>
+      <location filename="../../CommandConstraints.cpp" line="3464"/>
+      <location filename="../../CommandConstraints.cpp" line="3569"/>
+      <location filename="../../CommandConstraints.cpp" line="3611"/>
+      <location filename="../../CommandConstraints.cpp" line="3792"/>
+      <location filename="../../CommandConstraints.cpp" line="3949"/>
+      <location filename="../../CommandConstraints.cpp" line="4162"/>
+      <location filename="../../CommandConstraints.cpp" line="4276"/>
+      <location filename="../../CommandConstraints.cpp" line="4306"/>
+      <location filename="../../CommandConstraints.cpp" line="4503"/>
+      <location filename="../../CommandConstraints.cpp" line="4696"/>
+      <location filename="../../CommandConstraints.cpp" line="5143"/>
       <location filename="../../CommandConstraints.cpp" line="5866"/>
-      <location filename="../../CommandConstraints.cpp" line="6158"/>
-      <location filename="../../CommandConstraints.cpp" line="6846"/>
+      <location filename="../../CommandConstraints.cpp" line="5928"/>
+      <location filename="../../CommandConstraints.cpp" line="6220"/>
+      <location filename="../../CommandConstraints.cpp" line="6908"/>
       <source>Select an edge that is not a B-spline weight.</source>
       <translation type="unfinished">Select an edge that is not a B-spline weight.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2574"/>
+      <location filename="../../CommandConstraints.cpp" line="2620"/>
       <source>None of the selected points were constrained onto the respective curves, because they are parts of the same element, because they are both external geometry, or because the edge is not eligible.</source>
       <translation type="unfinished">None of the selected points were constrained onto the respective curves, because they are parts of the same element, because they are both external geometry, or because the edge is not eligible.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2585"/>
+      <location filename="../../CommandConstraints.cpp" line="2631"/>
       <source>Select either one point and several curves, or one curve and several points. You have selected %1 curves and %2 points.</source>
       <translation>Chọn một điểm và một số đường cong hoặc một đường cong và một vài điểm. Bạn đã chọn %1 đường cong và %2 điểm.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2658"/>
+      <location filename="../../CommandConstraints.cpp" line="2695"/>
       <source>None of the selected points were constrained onto the respective curves, either because they are parts of the same element, or because they are both external geometry.</source>
       <translation>Không có điểm nào trong số các điểm được chọn liên kết với các đường cong tương ứng, bởi vì chúng cùng thuộc một phần tử hoặc bởi vì họ đều là các hình bên ngoài.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2730"/>
-      <location filename="../../CommandConstraints.cpp" line="2838"/>
-      <location filename="../../CommandConstraints.cpp" line="2982"/>
-      <location filename="../../CommandConstraints.cpp" line="3087"/>
+      <location filename="../../CommandConstraints.cpp" line="2767"/>
+      <location filename="../../CommandConstraints.cpp" line="2875"/>
+      <location filename="../../CommandConstraints.cpp" line="3019"/>
+      <location filename="../../CommandConstraints.cpp" line="3123"/>
       <source>Select exactly one line or up to two points from the sketch.</source>
       <translation>Chọn chính xác một đường hoặc đến hai điểm từ bản phác họa.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2759"/>
+      <location filename="../../CommandConstraints.cpp" line="2796"/>
       <source>Cannot add a horizontal length constraint on an axis!</source>
       <translation>Không thể khống chế chiều dài theo phương ngang trên một trục!</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2809"/>
+      <location filename="../../CommandConstraints.cpp" line="2846"/>
       <source>Cannot add a fixed x-coordinate constraint on the origin point!</source>
       <translation type="unfinished">Cannot add a fixed x-coordinate constraint on the origin point!</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2867"/>
-      <location filename="../../CommandConstraints.cpp" line="3116"/>
+      <location filename="../../CommandConstraints.cpp" line="2904"/>
+      <location filename="../../CommandConstraints.cpp" line="3152"/>
       <source>This constraint only makes sense on a line segment or a pair of points.</source>
       <translation type="unfinished">This constraint only makes sense on a line segment or a pair of points.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3007"/>
+      <location filename="../../CommandConstraints.cpp" line="3044"/>
       <source>Cannot add a vertical length constraint on an axis!</source>
       <translation>Không thể khống chế chiều dài theo phương đứng trên một trục!</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3057"/>
+      <location filename="../../CommandConstraints.cpp" line="3094"/>
       <source>Cannot add a fixed y-coordinate constraint on the origin point!</source>
       <translation type="unfinished">Cannot add a fixed y-coordinate constraint on the origin point!</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3217"/>
+      <location filename="../../CommandConstraints.cpp" line="3253"/>
       <source>Select two or more lines from the sketch.</source>
       <translation>Chọn hai hoặc nhiều đường từ bản phác họa.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3230"/>
-      <location filename="../../CommandConstraints.cpp" line="6288"/>
+      <location filename="../../CommandConstraints.cpp" line="3266"/>
+      <location filename="../../CommandConstraints.cpp" line="6350"/>
       <source>Select at least two lines from the sketch.</source>
       <translation>Chọn ít nhất hai đường từ bản phác họa.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3244"/>
+      <location filename="../../CommandConstraints.cpp" line="3280"/>
       <source>Select a valid line.</source>
       <translation type="unfinished">Select a valid line.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3260"/>
-      <location filename="../../CommandConstraints.cpp" line="3298"/>
+      <location filename="../../CommandConstraints.cpp" line="3296"/>
+      <location filename="../../CommandConstraints.cpp" line="3334"/>
       <source>The selected edge is not a valid line.</source>
       <translation type="unfinished">The selected edge is not a valid line.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3362"/>
+      <location filename="../../CommandConstraints.cpp" line="3398"/>
       <source>There is a number of ways this constraint can be applied.
 
 Accepted combinations: two curves; an endpoint and a curve; two endpoints; two curves and a point.</source>
@@ -2778,55 +2816,55 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
 Các tổ hợp được chấp nhận: hai đường cong; điểm cuối và một đường cong; hai điểm cuối; hai đường cong và một điểm.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3382"/>
+      <location filename="../../CommandConstraints.cpp" line="3418"/>
       <source>Select some geometry from the sketch.</source>
       <comment>perpendicular constraint</comment>
       <translation>Chọn một hình từ bản phác họa.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3395"/>
+      <location filename="../../CommandConstraints.cpp" line="3431"/>
       <source>Wrong number of selected objects!</source>
       <comment>perpendicular constraint.</comment>
       <translation>Số đối tượng đã chọn bị sai!</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3472"/>
-      <location filename="../../CommandConstraints.cpp" line="4169"/>
+      <location filename="../../CommandConstraints.cpp" line="3508"/>
+      <location filename="../../CommandConstraints.cpp" line="4205"/>
       <source>With 3 objects, there must be 2 curves and 1 point.</source>
       <comment>tangent constraint</comment>
       <translation>Với 3 đối tượng, phải có 2 đường cong và 1 điểm.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3481"/>
-      <location filename="../../CommandConstraints.cpp" line="3518"/>
+      <location filename="../../CommandConstraints.cpp" line="3517"/>
+      <location filename="../../CommandConstraints.cpp" line="3554"/>
       <source>Cannot add a perpendicularity constraint at an unconnected point!</source>
       <translation>Không thể thêm một liên kết vuông góc ở điểm không được nối!</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3527"/>
-      <location filename="../../CommandConstraints.cpp" line="3566"/>
-      <location filename="../../CommandConstraints.cpp" line="3747"/>
+      <location filename="../../CommandConstraints.cpp" line="3563"/>
+      <location filename="../../CommandConstraints.cpp" line="3602"/>
+      <location filename="../../CommandConstraints.cpp" line="3783"/>
       <source>Perpendicular to B-spline edge currently unsupported.</source>
       <translation>Vuông góc với rìa đường cong B-spline hiện tại không được chống đỡ.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3557"/>
-      <location filename="../../CommandConstraints.cpp" line="3738"/>
+      <location filename="../../CommandConstraints.cpp" line="3593"/>
+      <location filename="../../CommandConstraints.cpp" line="3774"/>
       <source>One of the selected edges should be a line.</source>
       <translation>Một trong các cạnh được chọn nên là một đường thẳng.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4026"/>
+      <location filename="../../CommandConstraints.cpp" line="4062"/>
       <source>Endpoint to endpoint tangency was applied. The coincident constraint was deleted.</source>
       <translation>Tiếp tiếp từ điểm đầu này đến điểm đầu kia được áp dụng. Liên kết trùng khớp bị xóa.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4047"/>
+      <location filename="../../CommandConstraints.cpp" line="4083"/>
       <source>Endpoint to edge tangency was applied. The point on object constraint was deleted.</source>
       <translation type="unfinished">Endpoint to edge tangency was applied. The point on object constraint was deleted.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4061"/>
+      <location filename="../../CommandConstraints.cpp" line="4097"/>
       <source>There are a number of ways this constraint can be applied.
 
 Accepted combinations: two curves; an endpoint and a curve; two endpoints; two curves and a point.</source>
@@ -2836,376 +2874,414 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
 Các tổ hợp được chấp nhận: hai đường cong; một điểm cuối và một đường cong; hai điểm cuối; hai đường cong và một điểm.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4080"/>
+      <location filename="../../CommandConstraints.cpp" line="4116"/>
       <source>Select some geometry from the sketch.</source>
       <comment>tangent constraint</comment>
       <translation>Chọn một hình từ bản phác họa.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4093"/>
+      <location filename="../../CommandConstraints.cpp" line="4129"/>
       <source>Wrong number of selected objects!</source>
       <comment>tangent constraint</comment>
       <translation>Số đối tượng đã chọn bị sai!</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4178"/>
-      <location filename="../../CommandConstraints.cpp" line="4199"/>
-      <location filename="../../CommandConstraints.cpp" line="4592"/>
+      <location filename="../../CommandConstraints.cpp" line="4229"/>
+      <location filename="../../CommandConstraints.cpp" line="4260"/>
+      <location filename="../../CommandConstraints.cpp" line="4654"/>
       <source>Cannot add a tangency constraint at an unconnected point!</source>
       <translation>Không thể thêm một liên kết tiếp tuyến tại điểm không được nối!</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4208"/>
-      <location filename="../../CommandConstraints.cpp" line="4238"/>
-      <location filename="../../CommandConstraints.cpp" line="4435"/>
+      <location filename="../../CommandConstraints.cpp" line="4223"/>
+      <location filename="../../CommandConstraints.cpp" line="4254"/>
+      <source>Tangent constraint at B-spline knot is only supported with lines!</source>
+      <translation type="unfinished">Tangent constraint at B-spline knot is only supported with lines!</translation>
+    </message>
+    <message>
+      <location filename="../../CommandConstraints.cpp" line="1957"/>
+      <source>B-spline knot to endpoint tangency was applied instead.</source>
+      <translation type="unfinished">B-spline knot to endpoint tangency was applied instead.</translation>
+    </message>
+    <message>
+      <location filename="../../CommandConstraints.cpp" line="4270"/>
+      <location filename="../../CommandConstraints.cpp" line="4300"/>
+      <location filename="../../CommandConstraints.cpp" line="4497"/>
       <source>Tangency to B-spline edge currently unsupported.</source>
       <translation>Tiếp tuyến với đường cong B-spline hiện tại không được chống đỡ.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4739"/>
-      <location filename="../../CommandConstraints.cpp" line="4800"/>
-      <location filename="../../CommandConstraints.cpp" line="5039"/>
-      <location filename="../../CommandConstraints.cpp" line="5096"/>
-      <location filename="../../CommandConstraints.cpp" line="5313"/>
-      <location filename="../../CommandConstraints.cpp" line="5368"/>
+      <location filename="../../CommandConstraints.cpp" line="4801"/>
+      <location filename="../../CommandConstraints.cpp" line="4862"/>
+      <location filename="../../CommandConstraints.cpp" line="5101"/>
+      <location filename="../../CommandConstraints.cpp" line="5158"/>
+      <location filename="../../CommandConstraints.cpp" line="5375"/>
+      <location filename="../../CommandConstraints.cpp" line="5430"/>
       <source>Select one or more arcs or circles from the sketch.</source>
       <translation>Chọn một hoặc nhiều cung hoặc đường tròn từ bản phác họa.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4806"/>
-      <location filename="../../CommandConstraints.cpp" line="5374"/>
+      <location filename="../../CommandConstraints.cpp" line="4868"/>
+      <location filename="../../CommandConstraints.cpp" line="5436"/>
       <source>Select either only one or more B-Spline poles or only one or more arcs or circles from the sketch, but not mixed.</source>
       <translation type="unfinished">Select either only one or more B-Spline poles or only one or more arcs or circles from the sketch, but not mixed.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4925"/>
-      <location filename="../../CommandConstraints.cpp" line="5202"/>
-      <location filename="../../CommandConstraints.cpp" line="5513"/>
+      <location filename="../../CommandConstraints.cpp" line="4987"/>
+      <location filename="../../CommandConstraints.cpp" line="5264"/>
+      <location filename="../../CommandConstraints.cpp" line="5575"/>
       <source>Constraint only applies to arcs or circles.</source>
       <translation>Liên kết chỉ áp dụng cho các cung tròn hoặc đường tròn.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5208"/>
+      <location filename="../../CommandConstraints.cpp" line="5270"/>
       <source>Select an edge that is not a B-spline weight</source>
       <translation type="unfinished">Select an edge that is not a B-spline weight</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5773"/>
-      <location filename="../../CommandConstraints.cpp" line="6018"/>
+      <location filename="../../CommandConstraints.cpp" line="5835"/>
+      <location filename="../../CommandConstraints.cpp" line="6080"/>
       <source>Select one or two lines from the sketch. Or select two edges and a point.</source>
       <translation>Chọn một hoặc hai đường từ bản phác họa. Hoặc chọn hai cạnh và một điểm.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5929"/>
-      <location filename="../../CommandConstraints.cpp" line="6096"/>
+      <location filename="../../CommandConstraints.cpp" line="5991"/>
+      <location filename="../../CommandConstraints.cpp" line="6158"/>
       <source>Parallel lines</source>
       <translation>Các đường thẳng song song</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5930"/>
-      <location filename="../../CommandConstraints.cpp" line="6097"/>
+      <location filename="../../CommandConstraints.cpp" line="5992"/>
+      <location filename="../../CommandConstraints.cpp" line="6159"/>
       <source>An angle constraint cannot be set for two parallel lines.</source>
       <translation>Một liên kết góc không thể được tạo bởi hai đường thẳng song song.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5962"/>
+      <location filename="../../CommandConstraints.cpp" line="6024"/>
       <source>Cannot add an angle constraint on an axis!</source>
       <translation>Không thể thêm một liên kết góc trên một trục!</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6275"/>
+      <location filename="../../CommandConstraints.cpp" line="6337"/>
       <source>Select two edges from the sketch.</source>
       <translation>Chọn hai cạnh từ bản phác họa.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6304"/>
-      <location filename="../../CommandConstraints.cpp" line="7005"/>
+      <location filename="../../CommandConstraints.cpp" line="6366"/>
+      <location filename="../../CommandConstraints.cpp" line="7067"/>
       <source>Select two or more compatible edges.</source>
       <translation type="unfinished">Select two or more compatible edges.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6309"/>
+      <location filename="../../CommandConstraints.cpp" line="6371"/>
       <source>Sketch axes cannot be used in equality constraints.</source>
       <translation type="unfinished">Sketch axes cannot be used in equality constraints.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6328"/>
+      <location filename="../../CommandConstraints.cpp" line="6390"/>
       <source>Equality for B-spline edge currently unsupported.</source>
       <translation>Tính ngang bằng cho rìa đường cong B-pline hiện tại không được hỗ trợ.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6358"/>
-      <location filename="../../CommandConstraints.cpp" line="6373"/>
-      <location filename="../../CommandConstraints.cpp" line="6424"/>
+      <location filename="../../CommandConstraints.cpp" line="6420"/>
+      <location filename="../../CommandConstraints.cpp" line="6435"/>
+      <location filename="../../CommandConstraints.cpp" line="6486"/>
       <source>Select two or more edges of similar type.</source>
       <translation type="unfinished">Select two or more edges of similar type.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6506"/>
-      <location filename="../../CommandConstraints.cpp" line="6519"/>
-      <location filename="../../CommandConstraints.cpp" line="6566"/>
-      <location filename="../../CommandConstraints.cpp" line="6633"/>
-      <location filename="../../CommandConstraints.cpp" line="6713"/>
+      <location filename="../../CommandConstraints.cpp" line="6568"/>
+      <location filename="../../CommandConstraints.cpp" line="6581"/>
+      <location filename="../../CommandConstraints.cpp" line="6628"/>
+      <location filename="../../CommandConstraints.cpp" line="6695"/>
+      <location filename="../../CommandConstraints.cpp" line="6775"/>
       <source>Select two points and a symmetry line, two points and a symmetry point or a line and a symmetry point from the sketch.</source>
       <translation>Chọn hai điểm và một đường đối xứng, hai điểm và một điểm đối xứng hoặc một đường thẳng và một điểm đối xứng từ bản phác họa.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6544"/>
-      <location filename="../../CommandConstraints.cpp" line="6697"/>
+      <location filename="../../CommandConstraints.cpp" line="6606"/>
+      <location filename="../../CommandConstraints.cpp" line="6759"/>
       <source>Cannot add a symmetry constraint between a line and its end points.</source>
       <translation type="unfinished">Cannot add a symmetry constraint between a line and its end points.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6596"/>
-      <location filename="../../CommandConstraints.cpp" line="6655"/>
+      <location filename="../../CommandConstraints.cpp" line="6658"/>
+      <location filename="../../CommandConstraints.cpp" line="6717"/>
       <source>Cannot add a symmetry constraint between a line and its end points!</source>
       <translation>Không thể thêm một liên kết đối xứng giữa một đường và 2 điểm ở cuối 2 đầu đường thẳng ấy!</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6775"/>
+      <location filename="../../CommandConstraints.cpp" line="6837"/>
       <source>Select two endpoints of lines to act as rays, and an edge representing a boundary. The first selected point corresponds to index n1, second to n2, and datum value sets the ratio n2/n1.</source>
       <comment>Constraint_SnellsLaw</comment>
       <translation type="unfinished">Select two endpoints of lines to act as rays, and an edge representing a boundary. The first selected point corresponds to index n1, second to n2, and datum value sets the ratio n2/n1.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6791"/>
+      <location filename="../../CommandConstraints.cpp" line="6853"/>
       <source>Selected objects are not just geometry from one sketch.</source>
       <translation>Chọn các đối tượng không phải là các hình học chỉ từ một bản phác họa.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6801"/>
+      <location filename="../../CommandConstraints.cpp" line="6863"/>
       <source>Number of selected objects is not 3 (is %1).</source>
       <translation>Số các đối tượng đã chọn không phải là 3 (là %1).</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6823"/>
+      <location filename="../../CommandConstraints.cpp" line="6885"/>
       <source>Cannot create constraint with external geometry only.</source>
       <translation type="unfinished">Cannot create constraint with external geometry only.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6830"/>
+      <location filename="../../CommandConstraints.cpp" line="6892"/>
       <source>Incompatible geometry is selected.</source>
       <translation type="unfinished">Incompatible geometry is selected.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6840"/>
+      <location filename="../../CommandConstraints.cpp" line="6902"/>
       <source>SnellsLaw on B-spline edge is currently unsupported.</source>
       <translation type="unfinished">SnellsLaw on B-spline edge is currently unsupported.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6948"/>
-      <location filename="../../CommandConstraints.cpp" line="6961"/>
+      <location filename="../../CommandConstraints.cpp" line="7010"/>
+      <location filename="../../CommandConstraints.cpp" line="7023"/>
       <source>Select at least one ellipse and one edge from the sketch.</source>
       <translation>Chọn ít nhất một hình elip và cạnh từ bản phác họa.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6982"/>
+      <location filename="../../CommandConstraints.cpp" line="7044"/>
       <source>Sketch axes cannot be used in internal alignment constraint.</source>
       <translation type="unfinished">Sketch axes cannot be used in internal alignment constraint.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="7027"/>
+      <location filename="../../CommandConstraints.cpp" line="7089"/>
       <source>You cannot internally constrain an ellipse on another ellipse. Select only one ellipse.</source>
       <translation type="unfinished">You cannot internally constrain an ellipse on another ellipse. Select only one ellipse.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="7035"/>
-      <location filename="../../CommandConstraints.cpp" line="7213"/>
+      <location filename="../../CommandConstraints.cpp" line="7097"/>
+      <location filename="../../CommandConstraints.cpp" line="7275"/>
       <source>Maximum 2 points are supported.</source>
       <translation>Tối đa 2 điểm được hỗ trợ.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="7041"/>
-      <location filename="../../CommandConstraints.cpp" line="7219"/>
+      <location filename="../../CommandConstraints.cpp" line="7103"/>
+      <location filename="../../CommandConstraints.cpp" line="7281"/>
       <source>Maximum 2 lines are supported.</source>
       <translation>Tối đa 2 đường được hỗ trợ.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="7079"/>
-      <location filename="../../CommandConstraints.cpp" line="7257"/>
+      <location filename="../../CommandConstraints.cpp" line="7141"/>
+      <location filename="../../CommandConstraints.cpp" line="7319"/>
       <source>Nothing to constrain</source>
       <translation>Không có gì để ràng buộc</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="7080"/>
-      <location filename="../../CommandConstraints.cpp" line="7258"/>
+      <location filename="../../CommandConstraints.cpp" line="7142"/>
+      <location filename="../../CommandConstraints.cpp" line="7320"/>
       <source>Currently all internal geometrical elements of the ellipse are already exposed.</source>
       <translation type="unfinished">Currently all internal geometrical elements of the ellipse are already exposed.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="7170"/>
-      <location filename="../../CommandConstraints.cpp" line="7181"/>
-      <location filename="../../CommandConstraints.cpp" line="7348"/>
-      <location filename="../../CommandConstraints.cpp" line="7359"/>
+      <location filename="../../CommandConstraints.cpp" line="7232"/>
+      <location filename="../../CommandConstraints.cpp" line="7243"/>
+      <location filename="../../CommandConstraints.cpp" line="7410"/>
+      <location filename="../../CommandConstraints.cpp" line="7421"/>
       <source>Extra elements</source>
       <translation>Các phần tử bổ sung</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="7171"/>
-      <location filename="../../CommandConstraints.cpp" line="7182"/>
-      <location filename="../../CommandConstraints.cpp" line="7349"/>
+      <location filename="../../CommandConstraints.cpp" line="7233"/>
+      <location filename="../../CommandConstraints.cpp" line="7244"/>
+      <location filename="../../CommandConstraints.cpp" line="7411"/>
       <source>More elements than possible for the given ellipse were provided. These were ignored.</source>
       <translation>Có thể có nhiều phần tử hơn cho hình elip được cung cấp. Nhưng chúng bị bỏ qua.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="7197"/>
+      <location filename="../../CommandConstraints.cpp" line="7259"/>
       <source>You cannot internally constrain an arc of ellipse on another arc of ellipse. Select only one arc of ellipse.</source>
       <translation type="unfinished">You cannot internally constrain an arc of ellipse on another arc of ellipse. Select only one arc of ellipse.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="7205"/>
+      <location filename="../../CommandConstraints.cpp" line="7267"/>
       <source>You cannot internally constrain an ellipse on an arc of ellipse. Select only one ellipse or arc of ellipse.</source>
       <translation type="unfinished">You cannot internally constrain an ellipse on an arc of ellipse. Select only one ellipse or arc of ellipse.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="7360"/>
+      <location filename="../../CommandConstraints.cpp" line="7422"/>
       <source>More elements than possible for the given arc of ellipse were provided. These were ignored.</source>
       <translation>Có thể có nhiều phần tử hơn cho cung elip được cung cấp. Nhưng chúng đã bị bỏ qua.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="7368"/>
+      <location filename="../../CommandConstraints.cpp" line="7430"/>
       <source>Currently internal geometry is only supported for ellipse or arc of ellipse. The last selected element must be an ellipse or an arc of ellipse.</source>
       <translation>Hiện tại, các hình bên trong chỉ được hỗ trợ cho hình elip hoặc cung elip. Phần tử cuối cùng phải là một hình elip hoặc một cung elip.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="7429"/>
-      <location filename="../../CommandConstraints.cpp" line="7437"/>
-      <location filename="../../CommandConstraints.cpp" line="7469"/>
-      <location filename="../../CommandConstraints.cpp" line="7542"/>
-      <location filename="../../CommandConstraints.cpp" line="7553"/>
+      <location filename="../../CommandConstraints.cpp" line="7491"/>
+      <location filename="../../CommandConstraints.cpp" line="7499"/>
+      <location filename="../../CommandConstraints.cpp" line="7531"/>
+      <location filename="../../CommandConstraints.cpp" line="7604"/>
+      <location filename="../../CommandConstraints.cpp" line="7615"/>
       <source>Select constraints from the sketch.</source>
       <translation>Chọn các ràng buộc từ bản phác họa.</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherVirtualSpace.cpp" line="116"/>
-      <location filename="../../CommandSketcherVirtualSpace.cpp" line="124"/>
-      <location filename="../../CommandSketcherVirtualSpace.cpp" line="147"/>
+      <location filename="../../CommandSketcherVirtualSpace.cpp" line="112"/>
+      <location filename="../../CommandSketcherVirtualSpace.cpp" line="120"/>
+      <location filename="../../CommandSketcherVirtualSpace.cpp" line="143"/>
       <source>Select constraint(s) from the sketch.</source>
       <translation>Chọn các liên kết từ bản phác họa.</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="215"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="216"/>
       <source>B-Spline Degree</source>
       <translation type="unfinished">B-Spline Degree</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="216"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="217"/>
       <source>Define B-Spline Degree, between 1 and %1:</source>
       <translation type="unfinished">Define B-Spline Degree, between 1 and %1:</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="708"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="1058"/>
-      <location filename="../../DrawSketchHandlerFillet.h" line="238"/>
+      <location filename="../../DrawSketchHandlerFillet.h" line="239"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="702"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="1052"/>
       <source>CAD Kernel Error</source>
       <translation>Lỗi bộ phận nòng cốt của CAD</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="471"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="465"/>
       <source>None of the selected elements is an edge.</source>
       <translation>Không có phần tử nào được chọn là một cạnh.</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="542"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="620"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="536"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="614"/>
       <source>At least one of the selected objects was not a B-Spline and was ignored.</source>
       <translation>Ít nhất một trong số các đối tượng đã chọn không phải là một đường cong B-spline và đã bị bỏ qua.</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="671"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="809"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="665"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="803"/>
       <source>The selection comprises more than one item. Please select just one knot.</source>
       <translation>Việc lựa chọn này bao gồm nhiều hơn một mục. Vui lòng chọn chỉ một nút.</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="717"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="1066"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="711"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="1060"/>
       <source>Input Error</source>
       <translation>Lỗi nhập dữ liệu</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="727"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="850"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="721"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="844"/>
       <source>None of the selected elements is a knot of a B-spline</source>
       <translation>Không có phần tử nào được chọn là một nút của đường cong B-spline</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="1172"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="1166"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="1233"/>
       <source>Selection is empty</source>
       <translation type="unfinished">Selection is empty</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="1173"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="1167"/>
       <source>Nothing is selected. Please select a b-spline.</source>
       <translation type="unfinished">Nothing is selected. Please select a b-spline.</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="1187"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="1181"/>
       <source>Please select a b-spline curve to insert a knot (not a knot on it). If the curve is not a b-spline, please convert it into one first.</source>
       <translation type="unfinished">Please select a b-spline curve to insert a knot (not a knot on it). If the curve is not a b-spline, please convert it into one first.</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="97"/>
-      <location filename="../../CommandSketcherTools.cpp" line="744"/>
-      <location filename="../../CommandSketcherTools.cpp" line="856"/>
-      <location filename="../../CommandSketcherTools.cpp" line="864"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1241"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1250"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1800"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1809"/>
-      <location filename="../../CommandSketcherTools.cpp" line="2067"/>
-      <location filename="../../CommandSketcherTools.cpp" line="2076"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="1234"/>
+      <source>Nothing is selected. Please select end points of curves.</source>
+      <translation type="unfinished">Nothing is selected. Please select end points of curves.</translation>
+    </message>
+    <message>
+      <location filename="../../CommandSketcherBSpline.cpp" line="1260"/>
+      <source>Too many curves on point</source>
+      <translation type="unfinished">Too many curves on point</translation>
+    </message>
+    <message>
+      <location filename="../../CommandSketcherBSpline.cpp" line="1261"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="1269"/>
+      <source>Exactly two curve should end at the selected point to be able to join them.</source>
+      <translation type="unfinished">Exactly two curve should end at the selected point to be able to join them.</translation>
+    </message>
+    <message>
+      <location filename="../../CommandSketcherBSpline.cpp" line="1268"/>
+      <source>Too few curves on point</source>
+      <translation type="unfinished">Too few curves on point</translation>
+    </message>
+    <message>
+      <location filename="../../CommandSketcherBSpline.cpp" line="1282"/>
+      <source>Two end points, or coincident point should be selected.</source>
+      <translation type="unfinished">Two end points, or coincident point should be selected.</translation>
+    </message>
+    <message>
+      <location filename="../../CommandSketcherTools.cpp" line="93"/>
+      <location filename="../../CommandSketcherTools.cpp" line="771"/>
+      <location filename="../../CommandSketcherTools.cpp" line="885"/>
+      <location filename="../../CommandSketcherTools.cpp" line="894"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1267"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1276"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1862"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1871"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2147"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2156"/>
       <source>Select elements from a single sketch.</source>
       <translation>Chọn các phần tử từ bản phác họa đơn lẻ.</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="605"/>
+      <location filename="../../CommandSketcherTools.cpp" line="631"/>
       <source>No constraint selected</source>
       <translation>Không có liên kết nào được lựa chọn</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="606"/>
+      <location filename="../../CommandSketcherTools.cpp" line="632"/>
       <source>At least one constraint must be selected</source>
       <translation>Phải chọn ít nhất một liên kết</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="969"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1001"/>
       <source>A symmetric construction requires at least two geometric elements, the last geometric element being the reference for the symmetry construction.</source>
       <translation>Một vật đối xứng đòi hỏi phải có ít nhất hai phần tử hình học, phần tử hình học cuối cùng là tham chiếu cho việc xây dựng hình đối xứng.</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="978"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1011"/>
       <source>The last element must be a point or a line serving as reference for the symmetry construction.</source>
       <translation>Phần tử cuối cùng phải là một điểm hoặc một đường thẳng đóng vai trò như mốc tham chiếu cho việc xây dựng vật thể đối xứng.</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1309"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1871"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1337"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1935"/>
       <source>A copy requires at least one selected non-external geometric element</source>
       <translation>Một bản sao đòi hỏi ít nhất một phần tử hình học không ở bên ngoài đã chọn</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1934"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2006"/>
       <source>Delete All Geometry</source>
       <translation>Xóa tất cả các hình</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1935"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2007"/>
       <source>Are you really sure you want to delete all geometry and constraints?</source>
       <translation type="unfinished">Are you really sure you want to delete all geometry and constraints?</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1996"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2073"/>
       <source>Delete All Constraints</source>
       <translation>Xóa mọi ràng buộc</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1997"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2074"/>
       <source>Are you really sure you want to delete all the constraints?</source>
       <translation>Bạn có thực sự muốn xóa tất cả các ràng buộc?</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="2121"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2202"/>
       <source>Removal of axes alignment requires at least one selected non-external geometric element</source>
       <translation type="unfinished">Removal of axes alignment requires at least one selected non-external geometric element</translation>
     </message>
@@ -3213,306 +3289,238 @@ Các tổ hợp được chấp nhận: hai đường cong; một điểm cuối
   <context>
     <name>SketcherGui::CarbonCopySelection</name>
     <message>
-      <location filename="../../DrawSketchHandlerCarbonCopy.h" line="58"/>
+      <location filename="../../DrawSketchHandlerCarbonCopy.h" line="56"/>
       <source>Carbon copy would cause a circular dependency.</source>
       <translation>Bản sao carbon sẽ tạo ra một sự phụ thuộc vòng.</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerCarbonCopy.h" line="61"/>
+      <location filename="../../DrawSketchHandlerCarbonCopy.h" line="59"/>
       <source>This object is in another document.</source>
       <translation>Đối tượng này là trong một tài liệu khác.</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerCarbonCopy.h" line="64"/>
+      <location filename="../../DrawSketchHandlerCarbonCopy.h" line="62"/>
       <source>This object belongs to another body. Hold Ctrl to allow cross-references.</source>
       <translation type="unfinished">This object belongs to another body. Hold Ctrl to allow cross-references.</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerCarbonCopy.h" line="67"/>
+      <location filename="../../DrawSketchHandlerCarbonCopy.h" line="65"/>
       <source>This object belongs to another body and it contains external geometry. Cross-reference not allowed.</source>
       <translation type="unfinished">This object belongs to another body and it contains external geometry. Cross-reference not allowed.</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerCarbonCopy.h" line="70"/>
+      <location filename="../../DrawSketchHandlerCarbonCopy.h" line="68"/>
       <source>This object belongs to another part.</source>
       <translation>Đối tượng này thuộc về một phần khác.</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerCarbonCopy.h" line="73"/>
+      <location filename="../../DrawSketchHandlerCarbonCopy.h" line="71"/>
       <source>The selected sketch is not parallel to this sketch. Hold Ctrl+Alt to allow non-parallel sketches.</source>
       <translation type="unfinished">The selected sketch is not parallel to this sketch. Hold Ctrl+Alt to allow non-parallel sketches.</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerCarbonCopy.h" line="76"/>
+      <location filename="../../DrawSketchHandlerCarbonCopy.h" line="74"/>
       <source>The XY axes of the selected sketch do not have the same direction as this sketch. Hold Ctrl+Alt to disregard it.</source>
       <translation>Các trục XY của bản phác họa đã chọn không có cùng hướng như bản phác họa này. Nhấn giữ phím Ctrl+Alt để bỏ qua nó.</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerCarbonCopy.h" line="79"/>
+      <location filename="../../DrawSketchHandlerCarbonCopy.h" line="77"/>
       <source>The origin of the selected sketch is not aligned with the origin of this sketch. Hold Ctrl+Alt to disregard it.</source>
       <translation>Gốc tọa độ của bản phác họa không được căn chỉnh với gốc tọa độ của bản phác họa này. Nhấn giữ tổ hợp phím Ctrl+Alt để bỏ qua nó.</translation>
     </message>
   </context>
   <context>
-    <name>SketcherGui::ConstraintMultiFilterDialog</name>
+    <name>SketcherGui::ConstraintFilterList</name>
     <message>
-      <location filename="../../ConstraintMultiFilterDialog.ui" line="23"/>
-      <source>Multiple filter selection</source>
-      <translation type="unfinished">Multiple filter selection</translation>
-    </message>
-    <message>
-      <location filename="../../ConstraintMultiFilterDialog.ui" line="29"/>
-      <source>Check the filters to aggregate:</source>
-      <translation type="unfinished">Check the filters to aggregate:</translation>
-    </message>
-    <message>
-      <location filename="../../ConstraintMultiFilterDialog.ui" line="52"/>
+      <location filename="../../TaskSketcherConstraints.h" line="105"/>
       <source>All</source>
       <translation>Tất cả</translation>
     </message>
     <message>
-      <location filename="../../ConstraintMultiFilterDialog.ui" line="57"/>
+      <location filename="../../TaskSketcherConstraints.h" line="106"/>
       <source>Geometric</source>
       <translation type="unfinished">Geometric</translation>
     </message>
     <message>
-      <location filename="../../ConstraintMultiFilterDialog.ui" line="62"/>
-      <source>Datums</source>
-      <translation>Mốc tính toán</translation>
-    </message>
-    <message>
-      <location filename="../../ConstraintMultiFilterDialog.ui" line="67"/>
-      <source>Named</source>
-      <translation>Được đặt tên</translation>
-    </message>
-    <message>
-      <location filename="../../ConstraintMultiFilterDialog.ui" line="72"/>
-      <source>Reference</source>
-      <translation>Tham chiếu</translation>
-    </message>
-    <message>
-      <location filename="../../ConstraintMultiFilterDialog.ui" line="77"/>
+      <location filename="../../TaskSketcherConstraints.h" line="107"/>
       <source>Coincident</source>
       <translation type="unfinished">Coincident</translation>
     </message>
     <message>
-      <location filename="../../ConstraintMultiFilterDialog.ui" line="82"/>
+      <location filename="../../TaskSketcherConstraints.h" line="108"/>
       <source>Point on Object</source>
       <translation type="unfinished">Point on Object</translation>
     </message>
     <message>
-      <location filename="../../ConstraintMultiFilterDialog.ui" line="87"/>
+      <location filename="../../TaskSketcherConstraints.h" line="109"/>
       <source>Vertical</source>
       <translation>Nằm dọc</translation>
     </message>
     <message>
-      <location filename="../../ConstraintMultiFilterDialog.ui" line="92"/>
+      <location filename="../../TaskSketcherConstraints.h" line="110"/>
       <source>Horizontal</source>
       <translation>Nằm ngang</translation>
     </message>
     <message>
-      <location filename="../../ConstraintMultiFilterDialog.ui" line="97"/>
+      <location filename="../../TaskSketcherConstraints.h" line="111"/>
       <source>Parallel</source>
       <translation>Song song</translation>
     </message>
     <message>
-      <location filename="../../ConstraintMultiFilterDialog.ui" line="102"/>
+      <location filename="../../TaskSketcherConstraints.h" line="112"/>
       <source>Perpendicular</source>
       <translation>Vuông góc</translation>
     </message>
     <message>
-      <location filename="../../ConstraintMultiFilterDialog.ui" line="107"/>
+      <location filename="../../TaskSketcherConstraints.h" line="113"/>
       <source>Tangent</source>
       <translation>Đường tiếp tuyến</translation>
     </message>
     <message>
-      <location filename="../../ConstraintMultiFilterDialog.ui" line="112"/>
+      <location filename="../../TaskSketcherConstraints.h" line="114"/>
       <source>Equality</source>
       <translation type="unfinished">Equality</translation>
     </message>
     <message>
-      <location filename="../../ConstraintMultiFilterDialog.ui" line="117"/>
+      <location filename="../../TaskSketcherConstraints.h" line="115"/>
       <source>Symmetric</source>
       <translation>Đối xứng</translation>
     </message>
     <message>
-      <location filename="../../ConstraintMultiFilterDialog.ui" line="122"/>
+      <location filename="../../TaskSketcherConstraints.h" line="116"/>
       <source>Block</source>
       <translation>Khối</translation>
     </message>
     <message>
-      <location filename="../../ConstraintMultiFilterDialog.ui" line="127"/>
-      <source>Horizontal Distance</source>
-      <translation type="unfinished">Horizontal Distance</translation>
-    </message>
-    <message>
-      <location filename="../../ConstraintMultiFilterDialog.ui" line="132"/>
-      <source>Vertical Distance</source>
-      <translation type="unfinished">Vertical Distance</translation>
-    </message>
-    <message>
-      <location filename="../../ConstraintMultiFilterDialog.ui" line="137"/>
-      <source>Distance</source>
-      <translation type="unfinished">Distance</translation>
-    </message>
-    <message>
-      <location filename="../../ConstraintMultiFilterDialog.ui" line="142"/>
-      <source>Radius</source>
-      <translation>Bán kính</translation>
-    </message>
-    <message>
-      <location filename="../../ConstraintMultiFilterDialog.ui" line="147"/>
-      <source>Weight</source>
-      <translation type="unfinished">Weight</translation>
-    </message>
-    <message>
-      <location filename="../../ConstraintMultiFilterDialog.ui" line="152"/>
-      <source>Diameter</source>
-      <translation>Đường kính</translation>
-    </message>
-    <message>
-      <location filename="../../ConstraintMultiFilterDialog.ui" line="157"/>
-      <source>Angle</source>
-      <translation>Góc</translation>
-    </message>
-    <message>
-      <location filename="../../ConstraintMultiFilterDialog.ui" line="162"/>
-      <source>Snell's Law</source>
-      <translation type="unfinished">Snell's Law</translation>
-    </message>
-    <message>
-      <location filename="../../ConstraintMultiFilterDialog.ui" line="167"/>
+      <location filename="../../TaskSketcherConstraints.h" line="117"/>
       <source>Internal Alignment</source>
       <translation type="unfinished">Internal Alignment</translation>
     </message>
     <message>
-      <location filename="../../ConstraintMultiFilterDialog.ui" line="186"/>
-      <source>Shows all the constraints in the list</source>
-      <translation type="unfinished">Shows all the constraints in the list</translation>
+      <location filename="../../TaskSketcherConstraints.h" line="118"/>
+      <source>Datums</source>
+      <translation>Mốc tính toán</translation>
     </message>
     <message>
-      <location filename="../../ConstraintMultiFilterDialog.ui" line="189"/>
-      <source>Check All</source>
-      <translation type="unfinished">Check All</translation>
+      <location filename="../../TaskSketcherConstraints.h" line="119"/>
+      <source>Horizontal Distance</source>
+      <translation type="unfinished">Horizontal Distance</translation>
     </message>
     <message>
-      <location filename="../../ConstraintMultiFilterDialog.ui" line="202"/>
-      <source>Hides all the constraints in the list</source>
-      <translation type="unfinished">Hides all the constraints in the list</translation>
+      <location filename="../../TaskSketcherConstraints.h" line="120"/>
+      <source>Vertical Distance</source>
+      <translation type="unfinished">Vertical Distance</translation>
     </message>
     <message>
-      <location filename="../../ConstraintMultiFilterDialog.ui" line="205"/>
-      <source>Uncheck All</source>
-      <translation type="unfinished">Uncheck All</translation>
-    </message>
-  </context>
-  <context>
-    <name>SketcherGui::ConstraintSettingsDialog</name>
-    <message>
-      <location filename="../../ConstraintSettingsDialog.ui" line="23"/>
-      <source>Constraint widget settings</source>
-      <translation type="unfinished">Constraint widget settings</translation>
+      <location filename="../../TaskSketcherConstraints.h" line="121"/>
+      <source>Distance</source>
+      <translation type="unfinished">Distance</translation>
     </message>
     <message>
-      <location filename="../../ConstraintSettingsDialog.ui" line="35"/>
-      <source>List control</source>
-      <translation type="unfinished">List control</translation>
+      <location filename="../../TaskSketcherConstraints.h" line="122"/>
+      <source>Radius</source>
+      <translation>Bán kính</translation>
     </message>
     <message>
-      <location filename="../../ConstraintSettingsDialog.ui" line="47"/>
-      <source>Extended information will be added to the list</source>
-      <translation type="unfinished">Extended information will be added to the list</translation>
+      <location filename="../../TaskSketcherConstraints.h" line="123"/>
+      <source>Weight</source>
+      <translation type="unfinished">Weight</translation>
     </message>
     <message>
-      <location filename="../../ConstraintSettingsDialog.ui" line="50"/>
-      <source>Extended information</source>
-      <translation>Thông tin mở rộng</translation>
+      <location filename="../../TaskSketcherConstraints.h" line="124"/>
+      <source>Diameter</source>
+      <translation>Đường kính</translation>
     </message>
     <message>
-      <location filename="../../ConstraintSettingsDialog.ui" line="72"/>
-      <source>Internal alignments will be hidden</source>
-      <translation type="unfinished">Internal alignments will be hidden</translation>
+      <location filename="../../TaskSketcherConstraints.h" line="125"/>
+      <source>Angle</source>
+      <translation>Góc</translation>
     </message>
     <message>
-      <location filename="../../ConstraintSettingsDialog.ui" line="75"/>
-      <source>Hide internal alignment</source>
-      <translation type="unfinished">Hide internal alignment</translation>
+      <location filename="../../TaskSketcherConstraints.h" line="126"/>
+      <source>Snell's Law</source>
+      <translation type="unfinished">Snell's Law</translation>
     </message>
     <message>
-      <location filename="../../ConstraintSettingsDialog.ui" line="100"/>
-      <source>3D view control</source>
-      <translation type="unfinished">3D view control</translation>
+      <location filename="../../TaskSketcherConstraints.h" line="127"/>
+      <source>Named</source>
+      <translation>Được đặt tên</translation>
     </message>
     <message>
-      <location filename="../../ConstraintSettingsDialog.ui" line="112"/>
-      <source>Constraint visualisation tracks filter selection so that filtered out constraints are hidden</source>
-      <translation type="unfinished">Constraint visualisation tracks filter selection so that filtered out constraints are hidden</translation>
+      <location filename="../../TaskSketcherConstraints.h" line="128"/>
+      <source>Reference</source>
+      <translation>Tham chiếu</translation>
     </message>
     <message>
-      <location filename="../../ConstraintSettingsDialog.ui" line="115"/>
-      <source>Show only filtered constraints</source>
-      <translation type="unfinished">Show only filtered constraints</translation>
+      <location filename="../../TaskSketcherConstraints.h" line="129"/>
+      <source>Selected constraints</source>
+      <translation type="unfinished">Selected constraints</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherConstraints.h" line="130"/>
+      <source>Associated constraints</source>
+      <translation type="unfinished">Associated constraints</translation>
     </message>
   </context>
   <context>
     <name>SketcherGui::ConstraintView</name>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="494"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="488"/>
       <source>Change value</source>
       <translation>Đổi giá trị</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="498"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="492"/>
       <source>Toggle to/from reference</source>
       <translation>Chuyển đổi giữa chế độ tham chiếu và chế độ chung</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="501"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="495"/>
       <source>Deactivate</source>
       <translation>Hủy kích hoạt</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="501"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="495"/>
       <source>Activate</source>
       <translation>Kích hoạt</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="505"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="499"/>
       <source>Show constraints</source>
       <translation>Hiển thị các ràng buộc</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="507"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="501"/>
       <source>Hide constraints</source>
       <translation>Ẩn các ràng buộc</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="513"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="507"/>
       <source>Rename</source>
       <translation>Đổi tên</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="520"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="514"/>
       <source>Center sketch</source>
       <translation>Trung tâm bản phác họa</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="523"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="517"/>
       <source>Delete</source>
       <translation>Xóa</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="527"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="521"/>
       <source>Swap constraint names</source>
       <translation>Trao đổi tên các ràng buộc</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="618"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="612"/>
       <source>Unnamed constraint</source>
       <translation>Ràng buộc không tên</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="619"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="613"/>
       <source>Only the names of named constraints can be swapped.</source>
       <translation>Chỉ có tên của các ràng buộc được trao đổi.</translation>
     </message>
@@ -3520,82 +3528,155 @@ Các tổ hợp được chấp nhận: hai đường cong; một điểm cuối
   <context>
     <name>SketcherGui::EditDatumDialog</name>
     <message>
-      <location filename="../../EditDatumDialog.cpp" line="97"/>
+      <location filename="../../EditDatumDialog.cpp" line="98"/>
       <source>Insert angle</source>
       <translation>Chèn góc</translation>
     </message>
     <message>
-      <location filename="../../EditDatumDialog.cpp" line="99"/>
+      <location filename="../../EditDatumDialog.cpp" line="100"/>
       <source>Angle:</source>
       <translation>Góc:</translation>
     </message>
     <message>
-      <location filename="../../EditDatumDialog.cpp" line="103"/>
+      <location filename="../../EditDatumDialog.cpp" line="104"/>
       <source>Insert radius</source>
       <translation>Chèn bán kính</translation>
     </message>
     <message>
-      <location filename="../../EditDatumDialog.cpp" line="105"/>
+      <location filename="../../EditDatumDialog.cpp" line="106"/>
       <source>Radius:</source>
       <translation>Bán kính:</translation>
     </message>
     <message>
-      <location filename="../../EditDatumDialog.cpp" line="109"/>
+      <location filename="../../EditDatumDialog.cpp" line="110"/>
       <source>Insert diameter</source>
       <translation>Đường kính trong</translation>
     </message>
     <message>
-      <location filename="../../EditDatumDialog.cpp" line="111"/>
+      <location filename="../../EditDatumDialog.cpp" line="112"/>
       <source>Diameter:</source>
       <translation>Đường kính:</translation>
     </message>
     <message>
-      <location filename="../../EditDatumDialog.cpp" line="115"/>
+      <location filename="../../EditDatumDialog.cpp" line="116"/>
       <source>Insert weight</source>
       <translation>Thêm khối lượng</translation>
     </message>
     <message>
-      <location filename="../../EditDatumDialog.cpp" line="116"/>
+      <location filename="../../EditDatumDialog.cpp" line="117"/>
       <source>Weight:</source>
       <translation>Trọng lượng:</translation>
     </message>
     <message>
-      <location filename="../../EditDatumDialog.cpp" line="120"/>
+      <location filename="../../EditDatumDialog.cpp" line="121"/>
       <source>Refractive index ratio</source>
       <comment>Constraint_SnellsLaw</comment>
       <translation>Tỷ số chiết suất</translation>
     </message>
     <message>
-      <location filename="../../EditDatumDialog.cpp" line="121"/>
+      <location filename="../../EditDatumDialog.cpp" line="122"/>
       <source>Ratio n2/n1:</source>
       <comment>Constraint_SnellsLaw</comment>
       <translation>Tỷ số n2/n1:</translation>
     </message>
     <message>
-      <location filename="../../EditDatumDialog.cpp" line="126"/>
+      <location filename="../../EditDatumDialog.cpp" line="127"/>
       <source>Insert length</source>
       <translation>Chèn chiều dài</translation>
     </message>
     <message>
-      <location filename="../../EditDatumDialog.cpp" line="128"/>
+      <location filename="../../EditDatumDialog.cpp" line="129"/>
       <source>Length:</source>
       <translation type="unfinished">Length:</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6857"/>
+      <location filename="../../CommandConstraints.cpp" line="6919"/>
       <source>Refractive index ratio</source>
       <translation>Tỷ số chiết suất</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6858"/>
+      <location filename="../../CommandConstraints.cpp" line="6920"/>
       <source>Ratio n2/n1:</source>
       <translation>Tỷ số n2/n1:</translation>
     </message>
   </context>
   <context>
+    <name>SketcherGui::ElementFilterList</name>
+    <message>
+      <location filename="../../TaskSketcherElements.h" line="196"/>
+      <source>Normal</source>
+      <translation>Bình thường</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherElements.h" line="197"/>
+      <source>Construction</source>
+      <translation>Xây dựng</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherElements.h" line="198"/>
+      <source>Internal</source>
+      <translation type="unfinished">Internal</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherElements.h" line="199"/>
+      <source>External</source>
+      <translation>Bên ngoài</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherElements.h" line="200"/>
+      <source>All types</source>
+      <translation type="unfinished">All types</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherElements.h" line="201"/>
+      <source>Point</source>
+      <translation>Điểm</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherElements.h" line="202"/>
+      <source>Line</source>
+      <translation>Đường thẳng</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherElements.h" line="203"/>
+      <source>Circle</source>
+      <translation>Vòng tròn</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherElements.h" line="204"/>
+      <source>Ellipse</source>
+      <translation>Hình elíp</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherElements.h" line="205"/>
+      <source>Arc of circle</source>
+      <translation type="unfinished">Arc of circle</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherElements.h" line="206"/>
+      <source>Arc of ellipse</source>
+      <translation type="unfinished">Arc of ellipse</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherElements.h" line="207"/>
+      <source>Arc of hyperbola</source>
+      <translation type="unfinished">Arc of hyperbola</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherElements.h" line="208"/>
+      <source>Arc of parabola</source>
+      <translation type="unfinished">Arc of parabola</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherElements.h" line="209"/>
+      <source>B-Spline</source>
+      <translation type="unfinished">B-Spline</translation>
+    </message>
+  </context>
+  <context>
     <name>SketcherGui::ElementView</name>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="184"/>
+      <location filename="../../TaskSketcherElements.cpp" line="308"/>
       <source>Delete</source>
       <translation>Xóa</translation>
     </message>
@@ -3603,22 +3684,22 @@ Các tổ hợp được chấp nhận: hai đường cong; một điểm cuối
   <context>
     <name>SketcherGui::ExternalSelection</name>
     <message>
-      <location filename="../../DrawSketchHandlerExternal.h" line="52"/>
+      <location filename="../../DrawSketchHandlerExternal.h" line="50"/>
       <source>Linking this will cause circular dependency.</source>
       <translation>Liên kết đối tượng này sẽ gây ra sự phụ thuộc vòng.</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerExternal.h" line="55"/>
+      <location filename="../../DrawSketchHandlerExternal.h" line="53"/>
       <source>This object is in another document.</source>
       <translation>Đối tượng này là trong một tài liệu khác.</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerExternal.h" line="58"/>
+      <location filename="../../DrawSketchHandlerExternal.h" line="56"/>
       <source>This object belongs to another body, can't link.</source>
       <translation>Đối tượng này thuộc về phần thân khác, không thể liên kết.</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerExternal.h" line="61"/>
+      <location filename="../../DrawSketchHandlerExternal.h" line="59"/>
       <source>This object belongs to another part, can't link.</source>
       <translation>Đối tượng này thuộc về phần thân khác, không thể liên kết.</translation>
     </message>
@@ -3659,8 +3740,8 @@ Các tổ hợp được chấp nhận: hai đường cong; một điểm cuối
   <context>
     <name>SketcherGui::PropertyConstraintListItem</name>
     <message>
-      <location filename="../../PropertyConstraintListItem.cpp" line="131"/>
-      <location filename="../../PropertyConstraintListItem.cpp" line="184"/>
+      <location filename="../../PropertyConstraintListItem.cpp" line="129"/>
+      <location filename="../../PropertyConstraintListItem.cpp" line="182"/>
       <source>Unnamed</source>
       <translation>Không có tên</translation>
     </message>
@@ -3792,23 +3873,23 @@ reflected on copies</source>
   <context>
     <name>SketcherGui::SketcherGeneralWidget</name>
     <message>
-      <location filename="../../TaskSketcherGeneral.cpp" line="127"/>
-      <location filename="../../TaskSketcherGeneral.cpp" line="132"/>
-      <location filename="../../TaskSketcherGeneral.cpp" line="137"/>
+      <location filename="../../TaskSketcherGeneral.cpp" line="110"/>
+      <location filename="../../TaskSketcherGeneral.cpp" line="115"/>
+      <location filename="../../TaskSketcherGeneral.cpp" line="120"/>
       <source>Normal Geometry</source>
       <translation>Hình học thông thường</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherGeneral.cpp" line="127"/>
-      <location filename="../../TaskSketcherGeneral.cpp" line="132"/>
-      <location filename="../../TaskSketcherGeneral.cpp" line="137"/>
+      <location filename="../../TaskSketcherGeneral.cpp" line="110"/>
+      <location filename="../../TaskSketcherGeneral.cpp" line="115"/>
+      <location filename="../../TaskSketcherGeneral.cpp" line="120"/>
       <source>Construction Geometry</source>
       <translation>Xây dựng hình học</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherGeneral.cpp" line="127"/>
-      <location filename="../../TaskSketcherGeneral.cpp" line="132"/>
-      <location filename="../../TaskSketcherGeneral.cpp" line="137"/>
+      <location filename="../../TaskSketcherGeneral.cpp" line="110"/>
+      <location filename="../../TaskSketcherGeneral.cpp" line="115"/>
+      <location filename="../../TaskSketcherGeneral.cpp" line="120"/>
       <source>External Geometry</source>
       <translation>Hình học bên ngoài</translation>
     </message>
@@ -4188,16 +4269,6 @@ Supports all unit systems except 'US customary' and 'Building US/Euro'.</source>
 Supports all unit systems except 'US customary' and 'Building US/Euro'.</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="218"/>
-      <source>Grid line pattern</source>
-      <translation>Mẫu đường kẻ ô</translation>
-    </message>
-    <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="228"/>
-      <source>Line pattern used for grid lines.</source>
-      <translation type="unfinished">Line pattern used for grid lines.</translation>
-    </message>
-    <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="131"/>
       <source>Segments per geometry</source>
       <translation>Các phân đoạn trên một hình</translation>
@@ -4208,22 +4279,17 @@ Supports all unit systems except 'US customary' and 'Building US/Euro'.</transla
       <translation type="unfinished">The number of polygons used for geometry approximation.</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="257"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="237"/>
       <source>Cursor position coordinates will be displayed beside cursor while editing sketch.</source>
       <translation type="unfinished">Cursor position coordinates will be displayed beside cursor while editing sketch.</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="260"/>
-      <source>Show coodinates beside cursor while editing</source>
-      <translation type="unfinished">Show coodinates beside cursor while editing</translation>
-    </message>
-    <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="276"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="256"/>
       <source>A dialog will pop up to input a value for new dimensional constraints.</source>
       <translation type="unfinished">A dialog will pop up to input a value for new dimensional constraints.</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="279"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="259"/>
       <source>Ask for value after creating a dimensional constraint</source>
       <translation type="unfinished">Ask for value after creating a dimensional constraint</translation>
     </message>
@@ -4238,12 +4304,12 @@ Supports all unit systems except 'US customary' and 'Building US/Euro'.</transla
       <translation type="unfinished">Geometry creation "Continue Mode"</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="238"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="218"/>
       <source>The current constraint creation tool will remain active after creation.</source>
       <translation type="unfinished">The current constraint creation tool will remain active after creation.</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="241"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="221"/>
       <source>Constraint creation "Continue Mode"</source>
       <translation>Ràng buộc tạo "Chế độ tiếp tục"</translation>
     </message>
@@ -4281,106 +4347,111 @@ Defaults to: %N = %V
 %V - dimension value</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="295"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="240"/>
+      <source>Show coordinates beside cursor while editing</source>
+      <translation type="unfinished">Show coordinates beside cursor while editing</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettingsDisplay.ui" line="275"/>
       <source>Cursor coordinates will use the system decimals setting instead of the short form.</source>
       <translation type="unfinished">Cursor coordinates will use the system decimals setting instead of the short form.</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="298"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="278"/>
       <source>Use system decimals setting for cursor coordinates</source>
       <translation type="unfinished">Use system decimals setting for cursor coordinates</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="341"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="321"/>
       <source>Visibility automation</source>
       <translation>Khả năng hiển thị tự động hóa</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="347"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="327"/>
       <source>When opening a sketch, hide all features that depend on it.</source>
       <translation type="unfinished">When opening a sketch, hide all features that depend on it.</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="350"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="330"/>
       <source>Hide all objects that depend on the sketch</source>
       <translation>Ẩn tất cả các đối tượng phụ thuộc vào bản phác họa</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="366"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="346"/>
       <source>When opening a sketch, show sources for external geometry links.</source>
       <translation type="unfinished">When opening a sketch, show sources for external geometry links.</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="369"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="349"/>
       <source>Show objects used for external geometry</source>
       <translation>Hiển thị các đối tượng được sử dụng cho hình học bên ngoài</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="385"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="365"/>
       <source>When opening a sketch, show objects the sketch is attached to.</source>
       <translation type="unfinished">When opening a sketch, show objects the sketch is attached to.</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="388"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="368"/>
       <source>Show objects that the sketch is attached to</source>
       <translation type="unfinished">Show objects that the sketch is attached to</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="404"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="384"/>
       <source>When closing a sketch, move camera back to where it was before the sketch was opened.</source>
       <translation type="unfinished">When closing a sketch, move camera back to where it was before the sketch was opened.</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="407"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="387"/>
       <source>Restore camera position after editing</source>
       <translation>Khôi phục vị trí camera sau khi chỉnh sửa</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="423"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="403"/>
       <source>When entering edit mode, force orthographic view of camera.
 Works only when "Restore camera position after editing" is enabled.</source>
       <translation type="unfinished">When entering edit mode, force orthographic view of camera.
 Works only when "Restore camera position after editing" is enabled.</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="427"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="407"/>
       <source>Force orthographic camera when entering edit</source>
       <translation type="unfinished">Force orthographic camera when entering edit</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="443"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="423"/>
       <source>Open a sketch in Section View mode by default.
 Then objects are only visible behind the sketch plane.</source>
       <translation type="unfinished">Open a sketch in Section View mode by default.
 Then objects are only visible behind the sketch plane.</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="447"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="427"/>
       <source>Open sketch in Section View mode</source>
       <translation type="unfinished">Open sketch in Section View mode</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="469"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="449"/>
       <source>Note: these settings are defaults applied to new sketches. The behavior is remembered for each sketch individually as properties on the View tab.</source>
       <translation type="unfinished">Note: these settings are defaults applied to new sketches. The behavior is remembered for each sketch individually as properties on the View tab.</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="488"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="468"/>
       <source>Applies current visibility automation settings to all sketches in open documents.</source>
       <translation type="unfinished">Applies current visibility automation settings to all sketches in open documents.</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="491"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="471"/>
       <source>Apply to existing sketches</source>
       <translation>Áp dụng cho bản phác họa hiện tại</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.cpp" line="238"/>
+      <location filename="../../SketcherSettings.cpp" line="298"/>
       <source>Unexpected C++ exception</source>
       <translation>Ngoại lệ C ++ không xác định</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.cpp" line="241"/>
+      <location filename="../../SketcherSettings.cpp" line="301"/>
       <source>Sketcher</source>
       <translation type="unfinished">Sketcher</translation>
     </message>
@@ -4388,55 +4459,55 @@ Then objects are only visible behind the sketch plane.</translation>
   <context>
     <name>SketcherGui::SketcherValidation</name>
     <message>
-      <location filename="../../TaskSketcherValidation.cpp" line="142"/>
+      <location filename="../../TaskSketcherValidation.cpp" line="131"/>
       <source>No missing coincidences</source>
       <translation>Không có điểm trùng nhau nào bị thiếu</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherValidation.cpp" line="143"/>
+      <location filename="../../TaskSketcherValidation.cpp" line="132"/>
       <source>No missing coincidences found</source>
       <translation>Không tìm thấy điểm trùng nhau nào bị thiếu</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherValidation.cpp" line="148"/>
+      <location filename="../../TaskSketcherValidation.cpp" line="137"/>
       <source>Missing coincidences</source>
       <translation>Các điểm trùng nhau</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherValidation.cpp" line="149"/>
+      <location filename="../../TaskSketcherValidation.cpp" line="138"/>
       <source>%1 missing coincidences found</source>
       <translation>%1 điểm trùng nhau được tìm thấy</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherValidation.cpp" line="194"/>
+      <location filename="../../TaskSketcherValidation.cpp" line="183"/>
       <source>No invalid constraints</source>
       <translation>Không có ràng buộc không hợp lệ</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherValidation.cpp" line="195"/>
+      <location filename="../../TaskSketcherValidation.cpp" line="184"/>
       <source>No invalid constraints found</source>
       <translation>Không tìm thấy ràng không hợp lệ nào</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherValidation.cpp" line="199"/>
+      <location filename="../../TaskSketcherValidation.cpp" line="188"/>
       <source>Invalid constraints</source>
       <translation>Những ràng buộc không hợp lệ</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherValidation.cpp" line="200"/>
+      <location filename="../../TaskSketcherValidation.cpp" line="189"/>
       <source>Invalid constraints found</source>
       <translation>Những ràng buộc không hợp lệ được tìm thấy</translation>
     </message>
     <message>
+      <location filename="../../TaskSketcherValidation.cpp" line="226"/>
       <location filename="../../TaskSketcherValidation.cpp" line="237"/>
-      <location filename="../../TaskSketcherValidation.cpp" line="248"/>
-      <location filename="../../TaskSketcherValidation.cpp" line="255"/>
-      <location filename="../../TaskSketcherValidation.cpp" line="269"/>
+      <location filename="../../TaskSketcherValidation.cpp" line="244"/>
+      <location filename="../../TaskSketcherValidation.cpp" line="258"/>
       <source>Reversed external geometry</source>
       <translation>Hình học bên ngoài đảo ngược</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherValidation.cpp" line="238"/>
+      <location filename="../../TaskSketcherValidation.cpp" line="227"/>
       <source>%1 reversed external-geometry arcs were found. Their endpoints are encircled in 3d view.
 
 %2 constraints are linking to the endpoints. The constraints have been listed in Report view (menu View -&gt; Panels -&gt; Report view).
@@ -4449,7 +4520,7 @@ Click "Swap endpoints in constraints" button to reassign endpoints. Do this only
 Click "Swap endpoints in constraints" button to reassign endpoints. Do this only once to sketches created in FreeCAD older than v0.15</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherValidation.cpp" line="249"/>
+      <location filename="../../TaskSketcherValidation.cpp" line="238"/>
       <source>%1 reversed external-geometry arcs were found. Their endpoints are encircled in 3d view.
 
 However, no constraints linking to the endpoints were found.</source>
@@ -4458,64 +4529,64 @@ However, no constraints linking to the endpoints were found.</source>
 Tuy nhiên, không có tìm thấy ràng buộc nào liên kết với các điểm cuối.</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherValidation.cpp" line="256"/>
+      <location filename="../../TaskSketcherValidation.cpp" line="245"/>
       <source>No reversed external-geometry arcs were found.</source>
       <translation>Không tìm thấy cung hình học bên ngoài nào bị đảo ngược.</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherValidation.cpp" line="270"/>
+      <location filename="../../TaskSketcherValidation.cpp" line="259"/>
       <source>%1 changes were made to constraints linking to endpoints of reversed arcs.</source>
       <translation>%1 một số thay đổi đã được thực hiện để liên kết các ràng buộc với hai điểm cuối của các cung bị đảo ngược.</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherValidation.cpp" line="286"/>
-      <location filename="../../TaskSketcherValidation.cpp" line="303"/>
+      <location filename="../../TaskSketcherValidation.cpp" line="275"/>
+      <location filename="../../TaskSketcherValidation.cpp" line="292"/>
       <source>Constraint orientation locking</source>
       <translation>Khóa định hướng ràng buộc</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherValidation.cpp" line="287"/>
+      <location filename="../../TaskSketcherValidation.cpp" line="276"/>
       <source>Orientation locking was enabled and recomputed for %1 constraints. The constraints have been listed in Report view (menu View -&gt; Panels -&gt; Report view).</source>
       <translation>Khóa định hướng đã được bật và được tính toán cho các ràng buộc %1. Các ràng buộc đã được liệt kê trong chế độ xem Báo cáo (menu View -&gt; Views -&gt; Report view).</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherValidation.cpp" line="304"/>
+      <location filename="../../TaskSketcherValidation.cpp" line="293"/>
       <source>Orientation locking was disabled for %1 constraints. The constraints have been listed in Report view (menu View -&gt; Panels -&gt; Report view). Note that for all future constraints, the locking still defaults to ON.</source>
       <translation>Khóa định hướng đã bị vô hiệu hóa cho các ràng buộc %1. Các ràng buộc đã được liệt kê trong chế độ xem Báo cáo (menu View -&gt; Views -&gt; Report view). Lưu ý rằng đối với tất cả các ràng buộc trong tương lai, khóa vẫn sẽ để mặc định là BẬT.</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherValidation.cpp" line="319"/>
-      <location filename="../../TaskSketcherValidation.cpp" line="332"/>
+      <location filename="../../TaskSketcherValidation.cpp" line="308"/>
+      <location filename="../../TaskSketcherValidation.cpp" line="321"/>
       <source>Delete constraints to external geom.</source>
       <translation>Loại bỏ ràng buộc của các phần tử hình học bên ngoài.</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherValidation.cpp" line="320"/>
+      <location filename="../../TaskSketcherValidation.cpp" line="309"/>
       <source>You are about to delete ALL constraints that deal with external geometry. This is useful to rescue a sketch with broken/changed links to external geometry. Are you sure you want to delete the constraints?</source>
       <translation>Bạn sắp xóa TẤT CẢ các ràng buộc được gắn với hình học bên ngoài. Điều này rất hữu ích để khôi phục một bản phác họa với các liên kết bị hỏng / thay đổi thành hình học bên ngoài. Bạn có chắc chắn muốn xóa các ràng buộc không?</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherValidation.cpp" line="333"/>
+      <location filename="../../TaskSketcherValidation.cpp" line="322"/>
       <source>All constraints that deal with external geometry were deleted.</source>
       <translation>Tất cả các ràng buộc gắn với hình học bên ngoài đã bị xóa.</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherValidation.cpp" line="397"/>
+      <location filename="../../TaskSketcherValidation.cpp" line="386"/>
       <source>No degenerated geometry</source>
       <translation type="unfinished">No degenerated geometry</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherValidation.cpp" line="398"/>
+      <location filename="../../TaskSketcherValidation.cpp" line="387"/>
       <source>No degenerated geometry found</source>
       <translation type="unfinished">No degenerated geometry found</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherValidation.cpp" line="402"/>
+      <location filename="../../TaskSketcherValidation.cpp" line="391"/>
       <source>Degenerated geometry</source>
       <translation type="unfinished">Degenerated geometry</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherValidation.cpp" line="403"/>
+      <location filename="../../TaskSketcherValidation.cpp" line="392"/>
       <source>%1 degenerated geometry found</source>
       <translation type="unfinished">%1 degenerated geometry found</translation>
     </message>
@@ -4529,199 +4600,64 @@ Tuy nhiên, không có tìm thấy ràng buộc nào liên kết với các đi�
     </message>
     <message>
       <location filename="../../TaskSketcherConstraints.ui" line="40"/>
-      <source>Filter:</source>
-      <translation>Bộ lọc:</translation>
+      <source>Check to toggle filters</source>
+      <translation type="unfinished">Check to toggle filters</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.ui" line="57"/>
-      <source>All</source>
-      <translation>Tất cả</translation>
+      <location filename="../../TaskSketcherConstraints.ui" line="59"/>
+      <source>Click to show filters</source>
+      <translation type="unfinished">Click to show filters</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.ui" line="62"/>
-      <source>Geometric</source>
-      <translation type="unfinished">Geometric</translation>
-    </message>
-    <message>
-      <location filename="../../TaskSketcherConstraints.ui" line="67"/>
-      <source>Datums</source>
-      <translation>Mốc tính toán</translation>
-    </message>
-    <message>
-      <location filename="../../TaskSketcherConstraints.ui" line="72"/>
-      <source>Named</source>
-      <translation>Được đặt tên</translation>
-    </message>
-    <message>
-      <location filename="../../TaskSketcherConstraints.ui" line="77"/>
-      <source>Reference</source>
-      <translation>Tham chiếu</translation>
-    </message>
-    <message>
-      <location filename="../../TaskSketcherConstraints.ui" line="82"/>
-      <source>Coincident</source>
-      <translation type="unfinished">Coincident</translation>
+      <location filename="../../TaskSketcherConstraints.ui" line="65"/>
+      <source>Filters</source>
+      <translation type="unfinished">Filters</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstraints.ui" line="87"/>
-      <source>Point on Object</source>
-      <translation type="unfinished">Point on Object</translation>
-    </message>
-    <message>
-      <location filename="../../TaskSketcherConstraints.ui" line="92"/>
-      <source>Vertical</source>
-      <translation>Nằm dọc</translation>
-    </message>
-    <message>
-      <location filename="../../TaskSketcherConstraints.ui" line="97"/>
-      <source>Horizontal</source>
-      <translation>Nằm ngang</translation>
-    </message>
-    <message>
-      <location filename="../../TaskSketcherConstraints.ui" line="102"/>
-      <source>Parallel</source>
-      <translation>Song song</translation>
+      <source>Show/hide all listed constraints from 3D view. (same as ticking/unticking all listed constraints in list below)</source>
+      <translation type="unfinished">Show/hide all listed constraints from 3D view. (same as ticking/unticking all listed constraints in list below)</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstraints.ui" line="107"/>
-      <source>Perpendicular</source>
-      <translation>Vuông góc</translation>
-    </message>
-    <message>
-      <location filename="../../TaskSketcherConstraints.ui" line="112"/>
-      <source>Tangent</source>
-      <translation>Đường tiếp tuyến</translation>
-    </message>
-    <message>
-      <location filename="../../TaskSketcherConstraints.ui" line="117"/>
-      <source>Equality</source>
-      <translation type="unfinished">Equality</translation>
-    </message>
-    <message>
-      <location filename="../../TaskSketcherConstraints.ui" line="122"/>
-      <source>Symmetric</source>
-      <translation>Đối xứng</translation>
-    </message>
-    <message>
-      <location filename="../../TaskSketcherConstraints.ui" line="127"/>
-      <source>Block</source>
-      <translation>Khối</translation>
-    </message>
-    <message>
-      <location filename="../../TaskSketcherConstraints.ui" line="132"/>
-      <source>Horizontal Distance</source>
-      <translation type="unfinished">Horizontal Distance</translation>
-    </message>
-    <message>
-      <location filename="../../TaskSketcherConstraints.ui" line="137"/>
-      <source>Vertical Distance</source>
-      <translation type="unfinished">Vertical Distance</translation>
-    </message>
-    <message>
-      <location filename="../../TaskSketcherConstraints.ui" line="142"/>
-      <source>Distance</source>
-      <translation type="unfinished">Distance</translation>
-    </message>
-    <message>
-      <location filename="../../TaskSketcherConstraints.ui" line="147"/>
-      <source>Radius</source>
-      <translation>Bán kính</translation>
-    </message>
-    <message>
-      <location filename="../../TaskSketcherConstraints.ui" line="152"/>
-      <source>Weight</source>
-      <translation type="unfinished">Weight</translation>
-    </message>
-    <message>
-      <location filename="../../TaskSketcherConstraints.ui" line="157"/>
-      <source>Diameter</source>
-      <translation>Đường kính</translation>
-    </message>
-    <message>
-      <location filename="../../TaskSketcherConstraints.ui" line="162"/>
-      <source>Angle</source>
-      <translation>Góc</translation>
-    </message>
-    <message>
-      <location filename="../../TaskSketcherConstraints.ui" line="167"/>
-      <source>Snell's Law</source>
-      <translation type="unfinished">Snell's Law</translation>
-    </message>
-    <message>
-      <location filename="../../TaskSketcherConstraints.ui" line="172"/>
-      <source>Internal Alignment</source>
-      <translation type="unfinished">Internal Alignment</translation>
-    </message>
-    <message>
-      <location filename="../../TaskSketcherConstraints.ui" line="177"/>
-      <source>Multiple Filters</source>
-      <translation type="unfinished">Multiple Filters</translation>
-    </message>
-    <message>
-      <location filename="../../TaskSketcherConstraints.ui" line="182"/>
-      <source>Selection Filter</source>
-      <translation type="unfinished">Selection Filter</translation>
-    </message>
-    <message>
-      <location filename="../../TaskSketcherConstraints.ui" line="187"/>
-      <source>Associated Constraint Filter</source>
-      <translation type="unfinished">Associated Constraint Filter</translation>
-    </message>
-    <message>
-      <location filename="../../TaskSketcherConstraints.ui" line="207"/>
-      <source>Click to select multiple filters</source>
-      <translation type="unfinished">Click to select multiple filters</translation>
-    </message>
-    <message>
-      <location filename="../../TaskSketcherConstraints.ui" line="210"/>
-      <source>Select Multiple</source>
-      <translation type="unfinished">Select Multiple</translation>
-    </message>
-    <message>
-      <location filename="../../TaskSketcherConstraints.ui" line="223"/>
       <source>Settings</source>
       <translation type="unfinished">Settings</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.ui" line="247"/>
-      <source>Shows all the constraints in the list</source>
-      <translation type="unfinished">Shows all the constraints in the list</translation>
-    </message>
-    <message>
-      <location filename="../../TaskSketcherConstraints.ui" line="250"/>
-      <source>Show Listed</source>
-      <translation type="unfinished">Show Listed</translation>
-    </message>
-    <message>
-      <location filename="../../TaskSketcherConstraints.ui" line="263"/>
-      <source>Hides all the constraints in the list</source>
-      <translation type="unfinished">Hides all the constraints in the list</translation>
-    </message>
-    <message>
-      <location filename="../../TaskSketcherConstraints.ui" line="266"/>
-      <source>Hide Listed</source>
-      <translation type="unfinished">Hide Listed</translation>
-    </message>
-    <message>
-      <location filename="../../TaskSketcherConstraints.ui" line="279"/>
-      <source>Restricts 3D visibility to the listed elements</source>
-      <translation type="unfinished">Restricts 3D visibility to the listed elements</translation>
-    </message>
-    <message>
-      <location filename="../../TaskSketcherConstraints.ui" line="282"/>
-      <source>Restrict Visibility</source>
-      <translation type="unfinished">Restrict Visibility</translation>
-    </message>
-    <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="640"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="729"/>
       <source>Constraints</source>
       <translation type="unfinished">Constraints</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="920"/>
-      <location filename="../../TaskSketcherConstraints.cpp" line="1219"/>
-      <location filename="../../TaskSketcherConstraints.cpp" line="1235"/>
-      <location filename="../../TaskSketcherConstraints.cpp" line="1291"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="753"/>
+      <source>Auto constraints</source>
+      <translation>Ràng buộc tự động</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherConstraints.cpp" line="754"/>
+      <source>Auto remove redundants</source>
+      <translation type="unfinished">Auto remove redundants</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherConstraints.cpp" line="755"/>
+      <source>Show only filtered Constraints</source>
+      <translation type="unfinished">Show only filtered Constraints</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherConstraints.cpp" line="756"/>
+      <source>Extended information (in widget)</source>
+      <translation type="unfinished">Extended information (in widget)</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherConstraints.cpp" line="757"/>
+      <source>Hide internal alignment (in widget)</source>
+      <translation type="unfinished">Hide internal alignment (in widget)</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherConstraints.cpp" line="1044"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="1127"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="1143"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="1420"/>
       <source>Error</source>
       <translation>Lỗi</translation>
     </message>
@@ -4729,179 +4665,147 @@ Tuy nhiên, không có tìm thấy ràng buộc nào liên kết với các đi�
   <context>
     <name>SketcherGui::TaskSketcherElements</name>
     <message>
-      <location filename="../../TaskSketcherElements.ui" line="20"/>
+      <location filename="../../TaskSketcherElements.ui" line="26"/>
       <source>Form</source>
       <translation>Hình thức</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.ui" line="28"/>
-      <source>Type:</source>
-      <translation>Kiểu:</translation>
+      <location filename="../../TaskSketcherElements.ui" line="40"/>
+      <source>Check to toggle filters</source>
+      <translation type="unfinished">Check to toggle filters</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.ui" line="48"/>
-      <source>Edge</source>
-      <translation>Cạnh</translation>
+      <location filename="../../TaskSketcherElements.ui" line="59"/>
+      <source>Click to show filters</source>
+      <translation type="unfinished">Click to show filters</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.ui" line="53"/>
-      <source>Starting Point</source>
-      <translation>Điểm đầu</translation>
+      <location filename="../../TaskSketcherElements.ui" line="65"/>
+      <source>Filters</source>
+      <translation type="unfinished">Filters</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.ui" line="58"/>
-      <source>End Point</source>
-      <translation>Điểm cuối</translation>
+      <location filename="../../TaskSketcherElements.ui" line="81"/>
+      <source>Settings</source>
+      <translation type="unfinished">Settings</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.ui" line="63"/>
-      <source>Center Point</source>
-      <translation>Trung điểm</translation>
-    </message>
-    <message>
-      <location filename="../../TaskSketcherElements.ui" line="75"/>
-      <source>Mode:</source>
-      <translation>Chế độ:</translation>
-    </message>
-    <message>
-      <location filename="../../TaskSketcherElements.ui" line="95"/>
-      <source>All</source>
-      <translation>Tất cả</translation>
-    </message>
-    <message>
-      <location filename="../../TaskSketcherElements.ui" line="100"/>
-      <source>Normal</source>
-      <translation>Bình thường</translation>
-    </message>
-    <message>
-      <location filename="../../TaskSketcherElements.ui" line="105"/>
-      <location filename="../../TaskSketcherElements.cpp" line="758"/>
-      <location filename="../../TaskSketcherElements.cpp" line="762"/>
-      <location filename="../../TaskSketcherElements.cpp" line="766"/>
-      <location filename="../../TaskSketcherElements.cpp" line="770"/>
-      <location filename="../../TaskSketcherElements.cpp" line="774"/>
-      <location filename="../../TaskSketcherElements.cpp" line="778"/>
-      <location filename="../../TaskSketcherElements.cpp" line="782"/>
-      <location filename="../../TaskSketcherElements.cpp" line="786"/>
-      <location filename="../../TaskSketcherElements.cpp" line="790"/>
-      <location filename="../../TaskSketcherElements.cpp" line="794"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1100"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1104"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1108"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1112"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1116"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1120"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1124"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1128"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1132"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1136"/>
       <source>Construction</source>
       <translation>Xây dựng</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.ui" line="110"/>
-      <source>External</source>
-      <translation>Bên ngoài</translation>
-    </message>
-    <message>
-      <location filename="../../TaskSketcherElements.ui" line="139"/>
-      <source>Extended naming containing info about element mode</source>
-      <translation type="unfinished">Extended naming containing info about element mode</translation>
-    </message>
-    <message>
-      <location filename="../../TaskSketcherElements.ui" line="142"/>
-      <source>Extended naming</source>
-      <translation type="unfinished">Extended naming</translation>
-    </message>
-    <message>
-      <location filename="../../TaskSketcherElements.ui" line="152"/>
-      <source>Only the type 'Edge' will be available for the list</source>
-      <translation type="unfinished">Only the type 'Edge' will be available for the list</translation>
-    </message>
-    <message>
-      <location filename="../../TaskSketcherElements.ui" line="155"/>
-      <source>Auto-switch to Edge</source>
-      <translation>Tự động-chuyển sang Cạnh</translation>
-    </message>
-    <message>
-      <location filename="../../TaskSketcherElements.cpp" line="257"/>
+      <location filename="../../TaskSketcherElements.cpp" line="565"/>
       <source>Elements</source>
       <translation>Thành phần</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="278"/>
-      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&amp;quot;%1&amp;quot;: multiple selection&lt;/p&gt;&lt;p&gt;&amp;quot;%2&amp;quot;: switch to next valid type&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&amp;quot;%1&amp;quot;: nhiều lựa chọn&lt;/p&gt;&lt;p&gt;&amp;quot;%2&amp;quot;: chuyển sang kiểu hợp lệ tiếp theo&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
-    </message>
-    <message>
-      <location filename="../../TaskSketcherElements.cpp" line="757"/>
-      <location filename="../../TaskSketcherElements.cpp" line="759"/>
-      <location filename="../../TaskSketcherElements.cpp" line="864"/>
-      <location filename="../../TaskSketcherElements.cpp" line="865"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1099"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1101"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1179"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1180"/>
       <source>Point</source>
       <translation>Điểm</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="761"/>
-      <location filename="../../TaskSketcherElements.cpp" line="763"/>
-      <location filename="../../TaskSketcherElements.cpp" line="867"/>
-      <location filename="../../TaskSketcherElements.cpp" line="868"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1100"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1104"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1108"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1112"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1116"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1120"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1124"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1128"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1132"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1136"/>
+      <source>Internal</source>
+      <translation type="unfinished">Internal</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherElements.cpp" line="1103"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1105"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1182"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1183"/>
       <source>Line</source>
       <translation>Đường thẳng</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="765"/>
-      <location filename="../../TaskSketcherElements.cpp" line="767"/>
-      <location filename="../../TaskSketcherElements.cpp" line="870"/>
-      <location filename="../../TaskSketcherElements.cpp" line="871"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1107"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1109"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1185"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1186"/>
       <source>Arc</source>
       <translation>Vòng cung</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="769"/>
-      <location filename="../../TaskSketcherElements.cpp" line="771"/>
-      <location filename="../../TaskSketcherElements.cpp" line="873"/>
-      <location filename="../../TaskSketcherElements.cpp" line="874"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1111"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1113"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1188"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1189"/>
       <source>Circle</source>
       <translation>Vòng tròn</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="773"/>
-      <location filename="../../TaskSketcherElements.cpp" line="775"/>
-      <location filename="../../TaskSketcherElements.cpp" line="876"/>
-      <location filename="../../TaskSketcherElements.cpp" line="877"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1115"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1117"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1191"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1192"/>
       <source>Ellipse</source>
       <translation>Hình elíp</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="777"/>
-      <location filename="../../TaskSketcherElements.cpp" line="779"/>
-      <location filename="../../TaskSketcherElements.cpp" line="879"/>
-      <location filename="../../TaskSketcherElements.cpp" line="880"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1119"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1121"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1194"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1195"/>
       <source>Elliptical Arc</source>
       <translation>Cung elip</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="781"/>
-      <location filename="../../TaskSketcherElements.cpp" line="783"/>
-      <location filename="../../TaskSketcherElements.cpp" line="882"/>
-      <location filename="../../TaskSketcherElements.cpp" line="883"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1123"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1125"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1197"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1198"/>
       <source>Hyperbolic Arc</source>
       <translation>Cung Hyperbol</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="785"/>
-      <location filename="../../TaskSketcherElements.cpp" line="787"/>
-      <location filename="../../TaskSketcherElements.cpp" line="885"/>
-      <location filename="../../TaskSketcherElements.cpp" line="886"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1127"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1129"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1200"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1201"/>
       <source>Parabolic Arc</source>
       <translation>Cung parabol</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="789"/>
-      <location filename="../../TaskSketcherElements.cpp" line="791"/>
-      <location filename="../../TaskSketcherElements.cpp" line="888"/>
-      <location filename="../../TaskSketcherElements.cpp" line="889"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1131"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1133"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1203"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1204"/>
       <source>BSpline</source>
       <translation>Đường cong BSpline</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="793"/>
-      <location filename="../../TaskSketcherElements.cpp" line="795"/>
-      <location filename="../../TaskSketcherElements.cpp" line="891"/>
-      <location filename="../../TaskSketcherElements.cpp" line="892"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1135"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1137"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1206"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1207"/>
       <source>Other</source>
       <translation>Khác</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherElements.cpp" line="1248"/>
+      <source>Extended information</source>
+      <translation>Thông tin mở rộng</translation>
     </message>
   </context>
   <context>
@@ -4912,64 +4816,37 @@ Tuy nhiên, không có tìm thấy ràng buộc nào liên kết với các đi�
       <translation>Hình thức</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherGeneral.ui" line="25"/>
-      <source>A grid will be shown</source>
-      <translation>Một lưới sẽ hiện lên</translation>
-    </message>
-    <message>
-      <location filename="../../TaskSketcherGeneral.ui" line="28"/>
-      <source>Grid</source>
-      <translation>Lưới</translation>
-    </message>
-    <message>
-      <location filename="../../TaskSketcherGeneral.ui" line="44"/>
-      <source>Distance between two subsequent grid lines</source>
-      <translation type="unfinished">Distance between two subsequent grid lines</translation>
-    </message>
-    <message>
-      <location filename="../../TaskSketcherGeneral.ui" line="80"/>
-      <source>New points will snap to the nearest grid line.
-Points must be set closer than a fifth of the grid size to a grid line to snap.</source>
-      <translation type="unfinished">New points will snap to the nearest grid line.
-Points must be set closer than a fifth of the grid size to a grid line to snap.</translation>
-    </message>
-    <message>
-      <location filename="../../TaskSketcherGeneral.ui" line="84"/>
-      <source>Grid snap</source>
-      <translation>Chế độ bắt lưới</translation>
-    </message>
-    <message>
-      <location filename="../../TaskSketcherGeneral.ui" line="100"/>
+      <location filename="../../TaskSketcherGeneral.ui" line="23"/>
       <source>Sketcher proposes automatically sensible constraints.</source>
       <translation type="unfinished">Sketcher proposes automatically sensible constraints.</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherGeneral.ui" line="103"/>
+      <location filename="../../TaskSketcherGeneral.ui" line="26"/>
       <source>Auto constraints</source>
       <translation>Ràng buộc tự động</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherGeneral.ui" line="119"/>
+      <location filename="../../TaskSketcherGeneral.ui" line="42"/>
       <source>Sketcher tries not to propose redundant auto constraints</source>
       <translation type="unfinished">Sketcher tries not to propose redundant auto constraints</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherGeneral.ui" line="122"/>
+      <location filename="../../TaskSketcherGeneral.ui" line="45"/>
       <source>Avoid redundant auto constraints</source>
       <translation>Tránh những ràng buộc dư thừa tự động</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherGeneral.ui" line="138"/>
+      <location filename="../../TaskSketcherGeneral.ui" line="61"/>
       <source>Rendering order (global):</source>
       <translation type="unfinished">Rendering order (global):</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherGeneral.ui" line="157"/>
+      <location filename="../../TaskSketcherGeneral.ui" line="80"/>
       <source>To change, drag and drop a geometry type to top or bottom</source>
       <translation type="unfinished">To change, drag and drop a geometry type to top or bottom</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherGeneral.cpp" line="189"/>
+      <location filename="../../TaskSketcherGeneral.cpp" line="151"/>
       <source>Edit controls</source>
       <translation type="unfinished">Edit controls</translation>
     </message>
@@ -4977,7 +4854,7 @@ Points must be set closer than a fifth of the grid size to a grid line to snap.<
   <context>
     <name>SketcherGui::TaskSketcherMessages</name>
     <message>
-      <location filename="../../TaskSketcherMessages.cpp" line="45"/>
+      <location filename="../../TaskSketcherMessages.cpp" line="40"/>
       <source>Solver messages</source>
       <translation>Các thông báo của bộ giải</translation>
     </message>
@@ -4985,7 +4862,7 @@ Points must be set closer than a fifth of the grid size to a grid line to snap.<
   <context>
     <name>SketcherGui::TaskSketcherSolverAdvanced</name>
     <message>
-      <location filename="../../TaskSketcherSolverAdvanced.cpp" line="64"/>
+      <location filename="../../TaskSketcherSolverAdvanced.cpp" line="57"/>
       <source>Advanced solver control</source>
       <translation>Kiểm soát bộ giải tiên tiến</translation>
     </message>
@@ -5155,119 +5032,119 @@ This is done by analyzing the sketch geometries and constraints.</translation>
   <context>
     <name>SketcherGui::ViewProviderSketch</name>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="2746"/>
+      <location filename="../../ViewProviderSketch.cpp" line="2773"/>
       <source>Edit sketch</source>
       <translation type="unfinished">Edit sketch</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="2762"/>
+      <location filename="../../ViewProviderSketch.cpp" line="2809"/>
       <source>A dialog is already open in the task panel</source>
       <translation type="unfinished">A dialog is already open in the task panel</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="2763"/>
+      <location filename="../../ViewProviderSketch.cpp" line="2810"/>
       <source>Do you want to close this dialog?</source>
       <translation type="unfinished">Do you want to close this dialog?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="2777"/>
+      <location filename="../../ViewProviderSketch.cpp" line="2824"/>
       <source>Invalid sketch</source>
       <translation>Bản phác họa không hợp lệ</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="2778"/>
+      <location filename="../../ViewProviderSketch.cpp" line="2825"/>
       <source>Do you want to open the sketch validation tool?</source>
       <translation>Bạn có muốn mở công cụ xác thực bản phác họa?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="2779"/>
+      <location filename="../../ViewProviderSketch.cpp" line="2826"/>
       <source>The sketch is invalid and cannot be edited.</source>
       <translation>Bản phác họa không hợp lệ và không thể bị chỉnh sửa.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="2898"/>
+      <location filename="../../ViewProviderSketch.cpp" line="2955"/>
       <source>Please remove the following constraint:</source>
       <translation>Hãy loại bỏ những liên kết sau:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="2899"/>
+      <location filename="../../ViewProviderSketch.cpp" line="2956"/>
       <source>Please remove at least one of the following constraints:</source>
       <translation>Hãy loại bỏ ít nhất một trong những liên kết sau đây:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="2905"/>
+      <location filename="../../ViewProviderSketch.cpp" line="2962"/>
       <source>Please remove the following redundant constraint:</source>
       <translation>Hãy loại bỏ liên kết thừa sau đây:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="2906"/>
+      <location filename="../../ViewProviderSketch.cpp" line="2963"/>
       <source>Please remove the following redundant constraints:</source>
       <translation>Hãy loại bỏ các liên kết thừa sau đây:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="2912"/>
+      <location filename="../../ViewProviderSketch.cpp" line="2969"/>
       <source>The following constraint is partially redundant:</source>
       <translation type="unfinished">The following constraint is partially redundant:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="2913"/>
+      <location filename="../../ViewProviderSketch.cpp" line="2970"/>
       <source>The following constraints are partially redundant:</source>
       <translation type="unfinished">The following constraints are partially redundant:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="2919"/>
+      <location filename="../../ViewProviderSketch.cpp" line="2976"/>
       <source>Please remove the following malformed constraint:</source>
       <translation>Hãy loại bỏ ràng buộc sai dạng sau đây:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="2920"/>
+      <location filename="../../ViewProviderSketch.cpp" line="2977"/>
       <source>Please remove the following malformed constraints:</source>
       <translation>Hãy loại bỏ các ràng buộc sai dạng sau đây:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="2978"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3035"/>
       <source>Empty sketch</source>
       <translation>Bản phác họa trống</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="2982"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3039"/>
       <source>Over-constrained: </source>
       <translation type="unfinished">Over-constrained: </translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="2988"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3045"/>
       <source>Malformed constraints: </source>
       <translation type="unfinished">Malformed constraints: </translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="2994"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3051"/>
       <source>Redundant constraints:</source>
       <translation type="unfinished">Redundant constraints:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3000"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3057"/>
       <source>Partially redundant:</source>
       <translation type="unfinished">Partially redundant:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3006"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3063"/>
       <source>Solver failed to converge</source>
       <translation type="unfinished">Solver failed to converge</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3011"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3068"/>
       <source>Under constrained:</source>
       <translation type="unfinished">Under constrained:</translation>
     </message>
     <message numerus="yes">
-      <location filename="../../ViewProviderSketch.cpp" line="3013"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3070"/>
       <source>%n DoF(s)</source>
       <translation type="unfinished">
         <numerusform>%n DoF(s)</numerusform>
       </translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3016"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3073"/>
       <source>Fully constrained</source>
       <translation type="unfinished">Fully constrained</translation>
     </message>
@@ -5275,8 +5152,8 @@ This is done by analyzing the sketch geometries and constraints.</translation>
   <context>
     <name>Sketcher_BSplineComb</name>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="380"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="382"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="374"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="376"/>
       <source>Switches between showing and hiding the curvature comb for all B-splines</source>
       <translation>Chuyển giữa hiển thị và ẩn đỉnh đường cong cho tất cả các đường cong B-splines</translation>
     </message>
@@ -5284,8 +5161,8 @@ This is done by analyzing the sketch geometries and constraints.</translation>
   <context>
     <name>Sketcher_BSplineDecreaseKnotMultiplicity</name>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="976"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="978"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="970"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="972"/>
       <source>Decreases the multiplicity of the selected knot of a B-spline</source>
       <translation>Giảm bội số của nút đường cong B-spline đã chọn</translation>
     </message>
@@ -5293,8 +5170,8 @@ This is done by analyzing the sketch geometries and constraints.</translation>
   <context>
     <name>Sketcher_BSplineDegree</name>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="366"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="368"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="360"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="362"/>
       <source>Switches between showing and hiding the degree for all B-splines</source>
       <translation>Chuyển giữa chế độ hiển thị và ẩn bậc cho tất cả các đường cong B-splines</translation>
     </message>
@@ -5302,8 +5179,8 @@ This is done by analyzing the sketch geometries and constraints.</translation>
   <context>
     <name>Sketcher_BSplineIncreaseKnotMultiplicity</name>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="969"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="971"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="963"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="965"/>
       <source>Increases the multiplicity of the selected knot of a B-spline</source>
       <translation>Tăng bội số của nút đường cong B-spline đã chọn</translation>
     </message>
@@ -5311,8 +5188,8 @@ This is done by analyzing the sketch geometries and constraints.</translation>
   <context>
     <name>Sketcher_BSplineKnotMultiplicity</name>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="387"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="389"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="381"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="383"/>
       <source>Switches between showing and hiding the knot multiplicity for all B-splines</source>
       <translation>Chuyển đổi giữa chế độ hiển thị và ẩn bội số nút cho tất cả các đường cong B-splines</translation>
     </message>
@@ -5320,8 +5197,8 @@ This is done by analyzing the sketch geometries and constraints.</translation>
   <context>
     <name>Sketcher_BSplinePoleWeight</name>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="395"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="397"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="389"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="391"/>
       <source>Switches between showing and hiding the control point weight for all B-splines</source>
       <translation type="unfinished">Switches between showing and hiding the control point weight for all B-splines</translation>
     </message>
@@ -5329,8 +5206,8 @@ This is done by analyzing the sketch geometries and constraints.</translation>
   <context>
     <name>Sketcher_BSplinePolygon</name>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="373"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="375"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="367"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="369"/>
       <source>Switches between showing and hiding the control polygons for all B-splines</source>
       <translation>Chuyển giữa chế độ hiển thị và ẩn đa giác khống chế đường cong cho tất cả các đường cong B-splines</translation>
     </message>
@@ -5338,8 +5215,8 @@ This is done by analyzing the sketch geometries and constraints.</translation>
   <context>
     <name>Sketcher_Clone</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1568"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1569"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1611"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1614"/>
       <source>Creates a clone of the geometry taking as reference the last selected point</source>
       <translation>Tạo một bản sao của hình học lấy làm tham chiếu điểm cuối cùng đã chọn</translation>
     </message>
@@ -5347,17 +5224,17 @@ This is done by analyzing the sketch geometries and constraints.</translation>
   <context>
     <name>Sketcher_CompCopy</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1567"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1610"/>
       <source>Clone</source>
       <translation>Nhân bản</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1571"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1618"/>
       <source>Copy</source>
       <translation>Sao chép</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1575"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1626"/>
       <source>Move</source>
       <translation>Di chuyển</translation>
     </message>
@@ -5365,8 +5242,8 @@ This is done by analyzing the sketch geometries and constraints.</translation>
   <context>
     <name>Sketcher_ConstrainDiameter</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5686"/>
-      <location filename="../../CommandConstraints.cpp" line="5687"/>
+      <location filename="../../CommandConstraints.cpp" line="5748"/>
+      <location filename="../../CommandConstraints.cpp" line="5749"/>
       <source>Fix the diameter of a circle or an arc</source>
       <translation>Sửa đường kính của một cung hay đường tròn</translation>
     </message>
@@ -5374,7 +5251,7 @@ This is done by analyzing the sketch geometries and constraints.</translation>
   <context>
     <name>Sketcher_ConstrainRadiam</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5691"/>
+      <location filename="../../CommandConstraints.cpp" line="5753"/>
       <source>Fix the radius/diameter of a circle or an arc</source>
       <translation type="unfinished">Fix the radius/diameter of a circle or an arc</translation>
     </message>
@@ -5382,8 +5259,8 @@ This is done by analyzing the sketch geometries and constraints.</translation>
   <context>
     <name>Sketcher_ConstrainRadius</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5682"/>
-      <location filename="../../CommandConstraints.cpp" line="5683"/>
+      <location filename="../../CommandConstraints.cpp" line="5744"/>
+      <location filename="../../CommandConstraints.cpp" line="5745"/>
       <source>Fix the radius of a circle or an arc</source>
       <translation>Sửa bán kính của một đường tròn hoặc một cung tròn</translation>
     </message>
@@ -5391,7 +5268,7 @@ This is done by analyzing the sketch geometries and constraints.</translation>
   <context>
     <name>Sketcher_ConstraintRadiam</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5690"/>
+      <location filename="../../CommandConstraints.cpp" line="5752"/>
       <source>Fix the radius/diameter of a circle or an arc</source>
       <translation type="unfinished">Fix the radius/diameter of a circle or an arc</translation>
     </message>
@@ -5399,8 +5276,8 @@ This is done by analyzing the sketch geometries and constraints.</translation>
   <context>
     <name>Sketcher_Copy</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1572"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1573"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1619"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1622"/>
       <source>Creates a simple copy of the geometry taking as reference the last selected point</source>
       <translation>Tạo một bản sao của hình học lấy làm tham chiếu điểm cuối cùng đã chọn</translation>
     </message>
@@ -5408,8 +5285,8 @@ This is done by analyzing the sketch geometries and constraints.</translation>
   <context>
     <name>Sketcher_Create3PointArc</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="535"/>
-      <location filename="../../CommandCreateGeo.cpp" line="536"/>
+      <location filename="../../CommandCreateGeo.cpp" line="520"/>
+      <location filename="../../CommandCreateGeo.cpp" line="521"/>
       <source>Create an arc by its end points and a point along the arc</source>
       <translation>Tạo một cung tròn thông qua các điểm cuối và một điểm dọc theo cung tròn</translation>
     </message>
@@ -5417,8 +5294,8 @@ This is done by analyzing the sketch geometries and constraints.</translation>
   <context>
     <name>Sketcher_Create3PointCircle</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1172"/>
-      <location filename="../../CommandCreateGeo.cpp" line="1173"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1157"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1158"/>
       <source>Create a circle by 3 rim points</source>
       <translation>Tạo một đường tròn đi qua 3 điểm</translation>
     </message>
@@ -5426,8 +5303,8 @@ This is done by analyzing the sketch geometries and constraints.</translation>
   <context>
     <name>Sketcher_CreateArc</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="531"/>
-      <location filename="../../CommandCreateGeo.cpp" line="532"/>
+      <location filename="../../CommandCreateGeo.cpp" line="516"/>
+      <location filename="../../CommandCreateGeo.cpp" line="517"/>
       <source>Create an arc by its center and by its end points</source>
       <translation>Tạo một cung tròn với tâm của nó và các điểm kết thúc của nó</translation>
     </message>
@@ -5435,8 +5312,8 @@ This is done by analyzing the sketch geometries and constraints.</translation>
   <context>
     <name>Sketcher_CreateArcOfEllipse</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="857"/>
-      <location filename="../../CommandCreateGeo.cpp" line="858"/>
+      <location filename="../../CommandCreateGeo.cpp" line="842"/>
+      <location filename="../../CommandCreateGeo.cpp" line="843"/>
       <source>Create an arc of ellipse by its center, major radius, and endpoints</source>
       <translation type="unfinished">Create an arc of ellipse by its center, major radius, and endpoints</translation>
     </message>
@@ -5444,8 +5321,8 @@ This is done by analyzing the sketch geometries and constraints.</translation>
   <context>
     <name>Sketcher_CreateArcOfHyperbola</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="861"/>
-      <location filename="../../CommandCreateGeo.cpp" line="862"/>
+      <location filename="../../CommandCreateGeo.cpp" line="846"/>
+      <location filename="../../CommandCreateGeo.cpp" line="847"/>
       <source>Create an arc of hyperbola by its center, major radius, and endpoints</source>
       <translation type="unfinished">Create an arc of hyperbola by its center, major radius, and endpoints</translation>
     </message>
@@ -5453,8 +5330,8 @@ This is done by analyzing the sketch geometries and constraints.</translation>
   <context>
     <name>Sketcher_CreateArcOfParabola</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="865"/>
-      <location filename="../../CommandCreateGeo.cpp" line="866"/>
+      <location filename="../../CommandCreateGeo.cpp" line="850"/>
+      <location filename="../../CommandCreateGeo.cpp" line="851"/>
       <source>Create an arc of parabola by its focus, vertex, and endpoints</source>
       <translation type="unfinished">Create an arc of parabola by its focus, vertex, and endpoints</translation>
     </message>
@@ -5462,13 +5339,13 @@ This is done by analyzing the sketch geometries and constraints.</translation>
   <context>
     <name>Sketcher_CreateBSpline</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1035"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1020"/>
       <source>B-spline by control points</source>
       <translation>Đường cong B-spline tạo bởi các điểm khống chế</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1036"/>
-      <location filename="../../CommandCreateGeo.cpp" line="1037"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1021"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1022"/>
       <source>Create a B-spline by control points</source>
       <translation>Tạo một đường cong B-spline với các điểm khống chế</translation>
     </message>
@@ -5476,8 +5353,8 @@ This is done by analyzing the sketch geometries and constraints.</translation>
   <context>
     <name>Sketcher_CreateCircle</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1168"/>
-      <location filename="../../CommandCreateGeo.cpp" line="1169"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1153"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1154"/>
       <source>Create a circle by its center and by a rim point</source>
       <translation>Tạo một đường tròn với tâm và một điểm ở mép đường tròn</translation>
     </message>
@@ -5485,8 +5362,8 @@ This is done by analyzing the sketch geometries and constraints.</translation>
   <context>
     <name>Sketcher_CreateEllipseBy3Points</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="853"/>
-      <location filename="../../CommandCreateGeo.cpp" line="854"/>
+      <location filename="../../CommandCreateGeo.cpp" line="838"/>
+      <location filename="../../CommandCreateGeo.cpp" line="839"/>
       <source>Create a ellipse by periapsis, apoapsis, and minor radius</source>
       <translation>Tạo một hình ellipse với điểm gần nhất trong quỹ đạo, điểm xa nhất trong quỹ đạo và bán kính nhỏ</translation>
     </message>
@@ -5494,8 +5371,8 @@ This is done by analyzing the sketch geometries and constraints.</translation>
   <context>
     <name>Sketcher_CreateEllipseByCenter</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="849"/>
-      <location filename="../../CommandCreateGeo.cpp" line="850"/>
+      <location filename="../../CommandCreateGeo.cpp" line="834"/>
+      <location filename="../../CommandCreateGeo.cpp" line="835"/>
       <source>Create an ellipse by center, major radius and point</source>
       <translation>Tạo một hình e líp với tâm, bán kính lớn và điểm cuối của nó</translation>
     </message>
@@ -5503,8 +5380,8 @@ This is done by analyzing the sketch geometries and constraints.</translation>
   <context>
     <name>Sketcher_CreateFillet</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1358"/>
-      <location filename="../../CommandCreateGeo.cpp" line="1359"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1343"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1344"/>
       <source>Creates a radius between two lines</source>
       <translation type="unfinished">Creates a radius between two lines</translation>
     </message>
@@ -5512,8 +5389,8 @@ This is done by analyzing the sketch geometries and constraints.</translation>
   <context>
     <name>Sketcher_CreateHeptagon</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1905"/>
-      <location filename="../../CommandCreateGeo.cpp" line="1906"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1890"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1891"/>
       <source>Create a heptagon by its center and by one corner</source>
       <translation>Tạo một hình thất giác với tâm và một góc của nó</translation>
     </message>
@@ -5521,8 +5398,8 @@ This is done by analyzing the sketch geometries and constraints.</translation>
   <context>
     <name>Sketcher_CreateHexagon</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1901"/>
-      <location filename="../../CommandCreateGeo.cpp" line="1902"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1886"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1887"/>
       <source>Create a hexagon by its center and by one corner</source>
       <translation>Tạo một hình lục giác với tâm và một góc của nó</translation>
     </message>
@@ -5530,7 +5407,7 @@ This is done by analyzing the sketch geometries and constraints.</translation>
   <context>
     <name>Sketcher_CreateOblong</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="340"/>
+      <location filename="../../CommandCreateGeo.cpp" line="325"/>
       <source>Create a rounded rectangle</source>
       <translation type="unfinished">Create a rounded rectangle</translation>
     </message>
@@ -5538,14 +5415,14 @@ This is done by analyzing the sketch geometries and constraints.</translation>
   <context>
     <name>Sketcher_CreateOctagon</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1909"/>
-      <location filename="../../CommandCreateGeo.cpp" line="1910"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1894"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1895"/>
       <source>Create an octagon by its center and by one corner</source>
       <translation>Tạo một hình bát giác với tâm và một góc của nó</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1913"/>
-      <location filename="../../CommandCreateGeo.cpp" line="1914"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1898"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1899"/>
       <source>Create a regular polygon by its center and by one corner</source>
       <translation>Tạo một hình đa giác đều với tâm và một góc của nó</translation>
     </message>
@@ -5553,8 +5430,8 @@ This is done by analyzing the sketch geometries and constraints.</translation>
   <context>
     <name>Sketcher_CreatePentagon</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1897"/>
-      <location filename="../../CommandCreateGeo.cpp" line="1898"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1882"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1883"/>
       <source>Create a pentagon by its center and by one corner</source>
       <translation>Tạo một hình ngũ giác với tâm và một góc của nó</translation>
     </message>
@@ -5562,8 +5439,8 @@ This is done by analyzing the sketch geometries and constraints.</translation>
   <context>
     <name>Sketcher_CreatePointFillet</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1362"/>
-      <location filename="../../CommandCreateGeo.cpp" line="1363"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1347"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1348"/>
       <source>Fillet that preserves constraints and intersection point</source>
       <translation>Bo góc bảo tồn các ràng buộc và giao điểm</translation>
     </message>
@@ -5571,7 +5448,7 @@ This is done by analyzing the sketch geometries and constraints.</translation>
   <context>
     <name>Sketcher_CreateRectangle</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="332"/>
+      <location filename="../../CommandCreateGeo.cpp" line="317"/>
       <source>Create a rectangle</source>
       <translation type="unfinished">Create a rectangle</translation>
     </message>
@@ -5579,7 +5456,7 @@ This is done by analyzing the sketch geometries and constraints.</translation>
   <context>
     <name>Sketcher_CreateRectangle_Center</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="336"/>
+      <location filename="../../CommandCreateGeo.cpp" line="321"/>
       <source>Create a centered rectangle</source>
       <translation type="unfinished">Create a centered rectangle</translation>
     </message>
@@ -5587,8 +5464,8 @@ This is done by analyzing the sketch geometries and constraints.</translation>
   <context>
     <name>Sketcher_CreateSquare</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1893"/>
-      <location filename="../../CommandCreateGeo.cpp" line="1894"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1878"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1879"/>
       <source>Create a square by its center and by one corner</source>
       <translation>Tạo một hình vuông với tâm và một góc của nó</translation>
     </message>
@@ -5596,8 +5473,8 @@ This is done by analyzing the sketch geometries and constraints.</translation>
   <context>
     <name>Sketcher_CreateTriangle</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1889"/>
-      <location filename="../../CommandCreateGeo.cpp" line="1890"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1874"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1875"/>
       <source>Create an equilateral triangle by its center and by one corner</source>
       <translation>Tạo một hình tam giác đều với tâm và một góc của nó</translation>
     </message>
@@ -5605,13 +5482,13 @@ This is done by analyzing the sketch geometries and constraints.</translation>
   <context>
     <name>Sketcher_Create_Periodic_BSpline</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1039"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1024"/>
       <source>Periodic B-spline by control points</source>
       <translation>Đường cong B-spline tuần hoàn tạo bởi các điểm khống chế</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1040"/>
-      <location filename="../../CommandCreateGeo.cpp" line="1041"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1025"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1026"/>
       <source>Create a periodic B-spline by control points</source>
       <translation>Tạo đường cong B-spline tuần hoàn với các điểm khống chế</translation>
     </message>
@@ -5619,64 +5496,64 @@ This is done by analyzing the sketch geometries and constraints.</translation>
   <context>
     <name>Sketcher_MapSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="534"/>
+      <location filename="../../Command.cpp" line="526"/>
       <source>No sketch found</source>
       <translation>Không tìm thấy bản phác họa nào</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="535"/>
+      <location filename="../../Command.cpp" line="527"/>
       <source>The document doesn't have a sketch</source>
       <translation>Tài liệu không có bản phác họa nào</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="544"/>
+      <location filename="../../Command.cpp" line="536"/>
       <source>Select sketch</source>
       <translation>Chọn bản phác họa</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="545"/>
+      <location filename="../../Command.cpp" line="537"/>
       <source>Select a sketch from the list</source>
       <translation>Chọn một bản phác họa từ danh sách</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="599"/>
+      <location filename="../../Command.cpp" line="591"/>
       <source> (incompatible with selection)</source>
       <translation> (không tương thích với lựa chọn)</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="601"/>
+      <location filename="../../Command.cpp" line="593"/>
       <source> (current)</source>
       <translation> (hiện tại)</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="608"/>
+      <location filename="../../Command.cpp" line="600"/>
       <source> (suggested)</source>
       <translation> (được khuyến nghị)</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="614"/>
+      <location filename="../../Command.cpp" line="606"/>
       <source>Sketch attachment</source>
       <translation>Đính kèm bản phác họa</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="616"/>
+      <location filename="../../Command.cpp" line="608"/>
       <source>Current attachment mode is incompatible with the new selection.
 Select the method to attach this sketch to selected objects.</source>
       <translation type="unfinished">Current attachment mode is incompatible with the new selection.
 Select the method to attach this sketch to selected objects.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="620"/>
+      <location filename="../../Command.cpp" line="612"/>
       <source>Select the method to attach this sketch to selected objects.</source>
       <translation>Chọn phương pháp để đính kèm bản phác họa này vào các đối tượng đã chọn.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="659"/>
+      <location filename="../../Command.cpp" line="651"/>
       <source>Map sketch</source>
       <translation>Vẽ bản phác họa</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="660"/>
+      <location filename="../../Command.cpp" line="652"/>
       <source>Can't map a sketch to support:
 %1</source>
       <translation>Không thể vẽ phác họa để được hỗ trợ:
@@ -5686,8 +5563,8 @@ Select the method to attach this sketch to selected objects.</translation>
   <context>
     <name>Sketcher_Move</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1576"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1577"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1627"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1629"/>
       <source>Moves the geometry taking as reference the last selected point</source>
       <translation>Di chuyển hình học lấy làm tham chiếu điểm cuối cùng đã chọn</translation>
     </message>
@@ -5695,12 +5572,12 @@ Select the method to attach this sketch to selected objects.</translation>
   <context>
     <name>Sketcher_NewSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="180"/>
+      <location filename="../../Command.cpp" line="185"/>
       <source>Sketch attachment</source>
       <translation>Đính kèm bản phác họa</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="181"/>
+      <location filename="../../Command.cpp" line="186"/>
       <source>Select the method to attach this sketch to selected object</source>
       <translation>Chọn phương pháp để đính kèm bản phác họa này vào đối tượng đã chọn</translation>
     </message>
@@ -5708,12 +5585,12 @@ Select the method to attach this sketch to selected objects.</translation>
   <context>
     <name>Sketcher_ReorientSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="396"/>
+      <location filename="../../Command.cpp" line="388"/>
       <source>Sketch has support</source>
       <translation>Bản phác họa có hỗ trợ</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="397"/>
+      <location filename="../../Command.cpp" line="389"/>
       <source>Sketch with a support face cannot be reoriented.
 Do you want to detach it from the support?</source>
       <translation>Không thể chuyển hướng bản phác họa với mặt hỗ trợ. Bạn có muốn tách nó khỏi đối tượng hỗ trợ không?</translation>
@@ -6046,7 +5923,7 @@ Eigen Sparse QR algorithm is optimized for sparse matrices; usually faster</tran
   <context>
     <name>ViewProviderSketch</name>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="2962"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3019"/>
       <source>and %1 more</source>
       <translation type="unfinished">and %1 more</translation>
     </message>
@@ -6054,44 +5931,221 @@ Eigen Sparse QR algorithm is optimized for sparse matrices; usually faster</tran
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="../../Workbench.cpp" line="38"/>
+      <location filename="../../Workbench.cpp" line="32"/>
       <source>P&amp;rofiles</source>
       <translation type="unfinished">P&amp;rofiles</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="39"/>
+      <location filename="../../Workbench.cpp" line="33"/>
       <source>S&amp;ketch</source>
       <translation type="unfinished">S&amp;ketch</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="40"/>
+      <location filename="../../Workbench.cpp" line="34"/>
       <source>Sketcher</source>
       <translation type="unfinished">Sketcher</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="41"/>
+      <location filename="../../Workbench.cpp" line="35"/>
       <source>Sketcher geometries</source>
       <translation>Hình học bản phác họa</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="42"/>
+      <location filename="../../Workbench.cpp" line="36"/>
       <source>Sketcher constraints</source>
       <translation>Các ràng buộc bản phác thảo</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="43"/>
+      <location filename="../../Workbench.cpp" line="37"/>
       <source>Sketcher tools</source>
       <translation>Các công cụ bản phác họa</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="44"/>
+      <location filename="../../Workbench.cpp" line="38"/>
       <source>Sketcher B-spline tools</source>
       <translation type="unfinished">Sketcher B-spline tools</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="45"/>
+      <location filename="../../Workbench.cpp" line="39"/>
       <source>Sketcher virtual space</source>
       <translation>Không gian ảo Bản phác họa</translation>
+    </message>
+  </context>
+  <context>
+    <name>Sketcher_ProfilesHexagon1</name>
+    <message>
+      <location filename="../../../Profiles.py" line="53"/>
+      <source>Creates a hexagonal profile</source>
+      <translation type="unfinished">Creates a hexagonal profile</translation>
+    </message>
+    <message>
+      <location filename="../../../Profiles.py" line="58"/>
+      <source>Creates a hexagonal profile in the sketch</source>
+      <translation type="unfinished">Creates a hexagonal profile in the sketch</translation>
+    </message>
+  </context>
+  <context>
+    <name>SketcherGui::SketcherSettingsGrid</name>
+    <message>
+      <location filename="../../SketcherSettingsGrid.ui" line="14"/>
+      <location filename="../../SketcherSettingsGrid.ui" line="38"/>
+      <source>Grid</source>
+      <translation>Lưới</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettingsGrid.ui" line="20"/>
+      <source>Grid settings</source>
+      <translation type="unfinished">Grid settings</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettingsGrid.ui" line="35"/>
+      <source>A grid will be shown</source>
+      <translation>Một lưới sẽ hiện lên</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettingsGrid.ui" line="57"/>
+      <source>Automatically adapt grid spacing based on the viewer dimensions.</source>
+      <translation type="unfinished">Automatically adapt grid spacing based on the viewer dimensions.</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettingsGrid.ui" line="60"/>
+      <source>Grid Auto Spacing</source>
+      <translation type="unfinished">Grid Auto Spacing</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettingsGrid.ui" line="73"/>
+      <source>Grid spacing</source>
+      <translation>Khoảng cách lưới</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettingsGrid.ui" line="83"/>
+      <source>Distance between two subsequent grid lines.
+If 'Grid Auto Spacing' is enabled, will be used as base value.</source>
+      <translation type="unfinished">Distance between two subsequent grid lines.
+If 'Grid Auto Spacing' is enabled, will be used as base value.</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettingsGrid.ui" line="115"/>
+      <source>Pixel size threshold</source>
+      <translation type="unfinished">Pixel size threshold</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettingsGrid.ui" line="125"/>
+      <source>While using 'Grid Auto Spacing' this sets a threshold in pixel to the grid spacing.
+The grid spacing change if it becomes smaller than this number of pixel.</source>
+      <translation type="unfinished">While using 'Grid Auto Spacing' this sets a threshold in pixel to the grid spacing.
+The grid spacing change if it becomes smaller than this number of pixel.</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettingsGrid.ui" line="151"/>
+      <source>Grid display</source>
+      <translation type="unfinished">Grid display</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettingsGrid.ui" line="163"/>
+      <source>Subdivision lines</source>
+      <translation type="unfinished">Subdivision lines</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettingsGrid.ui" line="175"/>
+      <location filename="../../SketcherSettingsGrid.ui" line="313"/>
+      <source>Line pattern</source>
+      <translation>Mẫu đường</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettingsGrid.ui" line="185"/>
+      <source>Line pattern used for grid lines.</source>
+      <translation type="unfinished">Line pattern used for grid lines.</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettingsGrid.ui" line="195"/>
+      <location filename="../../SketcherSettingsGrid.ui" line="333"/>
+      <source>Line width</source>
+      <translation>Chiều rộng đường vẽ</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettingsGrid.ui" line="205"/>
+      <source>Distance between two subsequent grid lines</source>
+      <translation type="unfinished">Distance between two subsequent grid lines</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettingsGrid.ui" line="230"/>
+      <location filename="../../SketcherSettingsGrid.ui" line="365"/>
+      <source>Line color</source>
+      <translation>Màu đường vẽ</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettingsGrid.ui" line="269"/>
+      <source>Division lines</source>
+      <translation type="unfinished">Division lines</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettingsGrid.ui" line="281"/>
+      <source>Number of subdivisions per division</source>
+      <translation type="unfinished">Number of subdivisions per division</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettingsGrid.ui" line="291"/>
+      <source>Number of subdivisions of each grid division. Set to 1 to disable divisions.</source>
+      <translation type="unfinished">Number of subdivisions of each grid division. Set to 1 to disable divisions.</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettingsGrid.ui" line="323"/>
+      <source>Line pattern used for grid division.</source>
+      <translation type="unfinished">Line pattern used for grid division.</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettingsGrid.ui" line="343"/>
+      <source>Distance between two subsequent division lines</source>
+      <translation type="unfinished">Distance between two subsequent division lines</translation>
+    </message>
+  </context>
+  <context>
+    <name>GridSpaceAction</name>
+    <message>
+      <location filename="../../Command.cpp" line="1008"/>
+      <source>Grid Snap</source>
+      <translation type="unfinished">Grid Snap</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1009"/>
+      <source>New points will snap to the nearest grid line.
+Points must be set closer than a fifth of the grid spacing to a grid line to snap.</source>
+      <translation type="unfinished">New points will snap to the nearest grid line.
+Points must be set closer than a fifth of the grid spacing to a grid line to snap.</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1012"/>
+      <source>Grid Auto Spacing</source>
+      <translation type="unfinished">Grid Auto Spacing</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1013"/>
+      <source>Resize grid automatically depending on zoom.</source>
+      <translation type="unfinished">Resize grid automatically depending on zoom.</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1016"/>
+      <source>Spacing</source>
+      <translation type="unfinished">Spacing</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1017"/>
+      <source>Distance between two subsequent grid lines</source>
+      <translation type="unfinished">Distance between two subsequent grid lines</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdSketcherGrid</name>
+    <message>
+      <location filename="../../Command.cpp" line="1122"/>
+      <source>Activate Grid</source>
+      <translation type="unfinished">Activate Grid</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1123"/>
+      <source>Activate grid and grid settings</source>
+      <translation type="unfinished">Activate grid and grid settings</translation>
     </message>
   </context>
 </TS>

@@ -1,0 +1,17 @@
+{
+  "files.associations": {
+    "__config": "cpp",
+    "iosfwd": "cpp",
+    "vector": "cpp",
+    "tuple": "cpp"
+  },
+  "editor.formatOnType": true,
+  "cmake.preferredGenerators": ["Ninja", "NMake Makefiles"],
+  "cmake.cmakePath": "${workspaceFolder}/.conda/freecad/bin/cmake",
+  "cmake.configureSettings": {
+    "BUILD_WITH_CONDA:BOOL": "ON",
+    "BUILD_FEM_NETGEN:BOOL": "ON",
+    "FREECAD_USE_PYBIND11:BOOL": "ON",
+    "FREECAD_USE_EXTERNAL_SMESH:BOOL": "ON"
+  }
+}

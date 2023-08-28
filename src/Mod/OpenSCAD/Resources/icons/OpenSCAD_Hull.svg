@@ -142,7 +142,7 @@
         </dc:creator>
         <dc:title>OpenSCAD_Hull</dc:title>
         <dc:date>2013-10-30</dc:date>
-        <dc:relation>http://www.freecadweb.org/wiki/index.php?title=Artwork</dc:relation>
+        <dc:relation>http://www.freecad.org/wiki/index.php?title=Artwork</dc:relation>
         <dc:publisher>
           <cc:Agent>
             <dc:title>FreeCAD</dc:title>

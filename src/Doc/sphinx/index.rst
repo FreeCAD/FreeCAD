@@ -31,9 +31,8 @@ This is the complete python API reference of the FreeCAD application
    DraftWorkingPlane.rst
    Arch.rst
    Drawing.rst
-   RayTracing.rst
 
 * :ref:`genindex`
 * :ref:`modindex`
 * :ref:`search`
-* `FreeCAD homepage <http://www.freecadweb.org>`_
+* `FreeCAD homepage <http://www.freecad.org>`_

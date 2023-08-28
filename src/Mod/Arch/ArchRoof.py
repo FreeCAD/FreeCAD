@@ -52,7 +52,7 @@ else:
 
 __title__  = "FreeCAD Roof"
 __author__ = "Yorik van Havre", "Jonathan Wiedemann"
-__url__    = "https://www.freecadweb.org"
+__url__    = "https://www.freecad.org"
 
 
 def adjust_list_len (lst, newLn, val):
@@ -147,7 +147,7 @@ def face_from_points(ptLst):
 def makeRoof(baseobj=None,
              facenr=0,
              angles=[45.0], run=[250.0], idrel=[-1], thickness=[50.0], overhang=[100.0],
-             name="Roof"):
+             name=None):
     '''makeRoof(baseobj, [facenr], [angle], [name]): Makes a roof based on
     a closed wire or an object.
 
@@ -161,8 +161,8 @@ def makeRoof(baseobj=None,
     if not FreeCAD.ActiveDocument:
         FreeCAD.Console.PrintError("No active document. Aborting\n")
         return
-    obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython", name)
-    obj.Label = translate("Arch", name)
+    obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython", "Roof")
+    obj.Label = name if name else translate("Arch", "Roof")
     baseWire = None
     _Roof(obj)
     if FreeCAD.GuiUp:
@@ -897,11 +897,10 @@ class _ViewProviderRoof(ArchComponent.ViewProviderComponent):
         self.Object = vobj.Object
         return
 
-    def unsetEdit(self, vobj, mode):
-        FreeCADGui.Control.closeDialog()
-        return
-
     def setEdit(self, vobj, mode=0):
+        if mode != 0:
+            return None
+
         if vobj.Object.Base.Shape.Solids:
             taskd = ArchComponent.ComponentTaskPanel()
             taskd.obj = self.Object

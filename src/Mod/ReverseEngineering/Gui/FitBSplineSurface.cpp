@@ -20,34 +20,25 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-
 #ifndef _PreComp_
 # include <algorithm>
 # include <QMessageBox>
-# include <QTextStream>
 #endif
 
-#include "ui_FitBSplineSurface.h"
-#include "FitBSplineSurface.h"
-
-#include <Gui/Application.h>
-#include <Gui/BitmapFactory.h>
-#include <Gui/Command.h>
-#include <Gui/Document.h>
-#include <Gui/Selection.h>
-#include <Gui/ViewProvider.h>
-#include <Gui/WaitCursor.h>
-
-#include <Base/Interpreter.h>
-#include <Base/Converter.h>
-#include <Base/CoordinateSystem.h>
-#include <App/Application.h>
 #include <App/ComplexGeoData.h>
 #include <App/Document.h>
 #include <App/Placement.h>
+#include <Base/Converter.h>
+#include <Base/CoordinateSystem.h>
+#include <Gui/BitmapFactory.h>
+#include <Gui/Command.h>
+#include <Gui/Selection.h>
+#include <Gui/WaitCursor.h>
 #include <Mod/Mesh/App/Core/Approximation.h>
+
+#include "ui_FitBSplineSurface.h"
+#include "FitBSplineSurface.h"
 
 
 using namespace ReenGui;
@@ -57,12 +48,8 @@ class FitBSplineSurfaceWidget::Private
 public:
     Ui_FitBSplineSurface ui;
     App::DocumentObjectT obj;
-    Private()
-    {
-    }
-    ~Private()
-    {
-    }
+    Private() = default;
+    ~Private() = default;
 };
 
 /* TRANSLATOR ReenGui::FitBSplineSurfaceWidget */
@@ -72,6 +59,8 @@ FitBSplineSurfaceWidget::FitBSplineSurfaceWidget(const App::DocumentObjectT& obj
 {
     Q_UNUSED(parent);
     d->ui.setupUi(this);
+    connect(d->ui.makePlacement, &QPushButton::clicked,
+            this, &FitBSplineSurfaceWidget::onMakePlacementClicked);
     d->obj = obj;
     restoreSettings();
 }
@@ -112,7 +101,7 @@ void FitBSplineSurfaceWidget::saveSettings()
     d->ui.uvdir->onSave();
 }
 
-void FitBSplineSurfaceWidget::on_makePlacement_clicked()
+void FitBSplineSurfaceWidget::onMakePlacementClicked()
 {
     try {
         App::GeoFeature* geo = d->obj.getObjectAs<App::GeoFeature>();
@@ -151,8 +140,10 @@ void FitBSplineSurfaceWidget::on_makePlacement_clicked()
                             .arg(q3);
 
                     QString document = QString::fromStdString(d->obj.getDocumentPython());
-                    QString command = QString::fromLatin1("%1.addObject(\"App::Placement\", \"Placement\").Placement = %2")
-                        .arg(document, argument);
+                    QString command =
+                        QString::fromLatin1(
+                            R"(%1.addObject("App::Placement", "Placement").Placement = %2)"
+                        ).arg(document, argument);
 
                     Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Placement"));
                     Gui::Command::runCommand(Gui::Command::Doc, "from FreeCAD import Base");
@@ -259,10 +250,6 @@ TaskFitBSplineSurface::TaskFitBSplineSurface(const App::DocumentObjectT& obj)
         widget->windowTitle(), true, nullptr);
     taskbox->groupLayout()->addWidget(widget);
     Content.push_back(taskbox);
-}
-
-TaskFitBSplineSurface::~TaskFitBSplineSurface()
-{
 }
 
 void TaskFitBSplineSurface::open()

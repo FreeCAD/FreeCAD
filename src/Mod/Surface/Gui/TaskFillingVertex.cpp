@@ -31,6 +31,7 @@
 #include <Gui/Command.h>
 #include <Gui/Document.h>
 #include <Gui/SelectionObject.h>
+#include <Gui/Widgets.h>
 #include <Mod/Part/Gui/ViewProvider.h>
 
 #include "TaskFillingVertex.h"
@@ -110,6 +111,7 @@ FillingVertexPanel::FillingVertexPanel(ViewProviderFilling* vp, Surface::Filling
 {
     ui = new Ui_TaskFillingVertex();
     ui->setupUi(this);
+    setupConnections();
 
     selectionMode = None;
     this->vp = vp;
@@ -121,7 +123,7 @@ FillingVertexPanel::FillingVertexPanel(ViewProviderFilling* vp, Surface::Filling
     action->setShortcut(QString::fromLatin1("Del"));
     action->setShortcutContext(Qt::WidgetShortcut);
     ui->listFreeVertex->addAction(action);
-    connect(action, SIGNAL(triggered()), this, SLOT(onDeleteVertex()));
+    connect(action, &QAction::triggered, this, &FillingVertexPanel::onDeleteVertex);
     ui->listFreeVertex->setContextMenuPolicy(Qt::ActionsContextMenu);
 }
 
@@ -133,6 +135,21 @@ FillingVertexPanel::~FillingVertexPanel()
     // no need to delete child widgets, Qt does it all for us
     delete ui;
     Gui::Selection().rmvSelectionGate();
+}
+
+void FillingVertexPanel::setupConnections()
+{
+    connect(ui->buttonVertexAdd, &QToolButton::toggled,
+            this, &FillingVertexPanel::onButtonVertexAddToggled);
+    connect(ui->buttonVertexRemove, &QToolButton::toggled,
+            this, &FillingVertexPanel::onButtonVertexRemoveToggled);
+
+}
+
+void FillingVertexPanel::appendButtons(Gui::ButtonGroup* buttonGroup)
+{
+    buttonGroup->addButton(ui->buttonVertexAdd, int(SelectionMode::AppendVertex));
+    buttonGroup->addButton(ui->buttonVertexRemove, int(SelectionMode::RemoveVertex));
 }
 
 // stores object pointer, its old fill type and adjusts radio buttons according to it.
@@ -223,18 +240,28 @@ void FillingVertexPanel::slotDeletedObject(const Gui::ViewProviderDocumentObject
     }
 }
 
-void FillingVertexPanel::on_buttonVertexAdd_clicked()
+void FillingVertexPanel::onButtonVertexAddToggled(bool checked)
 {
-    // 'selectionMode' is passed by reference and changed when the filter is deleted
-    Gui::Selection().addSelectionGate(new VertexSelection(selectionMode, editedObject));
-    selectionMode = AppendVertex;
+    if (checked) {
+        // 'selectionMode' is passed by reference and changed when the filter is deleted
+        Gui::Selection().addSelectionGate(new VertexSelection(selectionMode, editedObject));
+        selectionMode = AppendVertex;
+    }
+    else if (selectionMode == AppendVertex) {
+        exitSelectionMode();
+    }
 }
 
-void FillingVertexPanel::on_buttonVertexRemove_clicked()
+void FillingVertexPanel::onButtonVertexRemoveToggled(bool checked)
 {
-    // 'selectionMode' is passed by reference and changed when the filter is deleted
-    Gui::Selection().addSelectionGate(new VertexSelection(selectionMode, editedObject));
-    selectionMode = RemoveVertex;
+    if (checked) {
+        // 'selectionMode' is passed by reference and changed when the filter is deleted
+        Gui::Selection().addSelectionGate(new VertexSelection(selectionMode, editedObject));
+        selectionMode = RemoveVertex;
+    }
+    else if (selectionMode == RemoveVertex) {
+        exitSelectionMode();
+    }
 }
 
 void FillingVertexPanel::onSelectionChanged(const Gui::SelectionChanges& msg)
@@ -303,7 +330,7 @@ void FillingVertexPanel::onSelectionChanged(const Gui::SelectionChanges& msg)
         }
 
         editedObject->recomputeFeature();
-        QTimer::singleShot(50, this, SLOT(clearSelection()));
+        QTimer::singleShot(50, this, &FillingVertexPanel::clearSelection);
     }
 }
 
@@ -341,6 +368,13 @@ void FillingVertexPanel::onDeleteVertex()
         this->vp->highlightReferences(ViewProviderFilling::Vertex,
             editedObject->Points.getSubListValues(), true);
     }
+}
+
+void FillingVertexPanel::exitSelectionMode()
+{
+    // 'selectionMode' is passed by reference to the filter and changed when the filter is deleted
+    Gui::Selection().clearSelection();
+    Gui::Selection().rmvSelectionGate();
 }
 
 }

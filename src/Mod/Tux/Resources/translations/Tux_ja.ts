@@ -81,15 +81,20 @@
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="335"/>
       <source>Turntable</source>
-      <translation>ターン テーブル</translation>
+      <translation>ターンテーブル</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="336"/>
+      <source>Free Turntable</source>
+      <translation>フリーターンテーブル</translation>
+    </message>
+    <message>
+      <location filename="../../NavigationIndicatorGui.py" line="337"/>
       <source>Trackball</source>
       <translation>トラックボール</translation>
     </message>
     <message>
-      <location filename="../../NavigationIndicatorGui.py" line="337"/>
+      <location filename="../../NavigationIndicatorGui.py" line="338"/>
       <source>Undefined</source>
       <translation>未定義</translation>
     </message>

@@ -21,7 +21,7 @@
 
 __title__ = "material cards utilities"
 __author__ = "Bernd Hahnebach"
-__url__ = "http://www.freecadweb.org"
+__url__ = "http://www.freecad.org"
 
 import os
 from os.path import join
@@ -35,7 +35,7 @@ unicode = str
 # TODO:
 # move material GUI preferences from FEM to an own preference tab in Material
 # move preference GUI code to material module
-# https://forum.freecadweb.org/viewtopic.php?f=10&t=35515
+# https://forum.freecad.org/viewtopic.php?f=10&t=35515
 
 
 # TODO:
@@ -59,7 +59,7 @@ icons = { card_path: icon_path, ... }
 a data model which uses a class and attributes as well as methods to access the attributes
 would makes sense, like some material library class
 this has been done already by eivind see
-https://forum.freecadweb.org/viewtopic.php?f=38&t=16714
+https://forum.freecad.org/viewtopic.php?f=38&t=16714
 '''
 
 
@@ -69,7 +69,7 @@ def get_material_resources(category='Solid'):
     resources = {}  # { resource_path: icon_path, ... }
 
     # TODO: move GUI preferences from FEM to a new side tab Material
-    # https://forum.freecadweb.org/viewtopic.php?f=10&t=35515
+    # https://forum.freecad.org/viewtopic.php?f=10&t=35515
     mat_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Material/Resources")
     use_built_in_materials = mat_prefs.GetBool("UseBuiltInMaterials", True)
     use_mat_from_config_dir = mat_prefs.GetBool("UseMaterialsFromConfigDir", True)
@@ -217,8 +217,8 @@ def get_material_template(withSpaces=False):
     # material properties
     # see the following resources in the FreeCAD wiki for more
     # information about the material specific properties:
-    # https://www.freecadweb.org/wiki/Material_data_model
-    # https://www.freecadweb.org/wiki/Material
+    # https://www.freecad.org/wiki/Material_data_model
+    # https://www.freecad.org/wiki/Material
 
     import yaml
     template_data = yaml.safe_load(
@@ -231,12 +231,14 @@ def get_material_template(withSpaces=False):
         new_template = []
         for group in template_data:
             new_group = {}
-            gg = list(group.keys())[0]  # group dict has only one key
+            gg = list(group)[0]  # group dict has only one key
             # iterating over a dict and changing it is not allowed
             # thus it is iterated over a list of the keys
             new_group[gg] = {}
-            for proper in list(group[gg].keys()):
+            for proper in list(group[gg]):
                 new_proper = re.sub(r"(\w)([A-Z]+)", r"\1 \2", proper)
+                # strip underscores of vectorial properties
+                new_proper = new_proper.replace("_", " ")
                 new_group[gg][new_proper] = group[gg][proper]
             new_template.append(new_group)
         template_data = new_template
@@ -254,7 +256,7 @@ def create_mat_tools_header():
     template_data = get_material_template()
     f = open(headers, "w")
     for group in template_data:
-        gg = list(group.keys())[0]  # group dict has only one key
+        gg = list(group)[0]  # group dict has only one key
         # do not write group UserDefined
         if gg != 'UserDefined':
             for prop_name in group[gg]:
@@ -280,7 +282,7 @@ def create_mat_template_card(write_group_section=True):
     f.write('; TEMPLATE\n')
     f.write('; (c) 2013-2015 Juergen Riegel (CC-BY 3.0)\n')
     f.write('; information about the content of such cards can be found on the wiki:\n')
-    f.write('; https://www.freecadweb.org/wiki/Material\n')
+    f.write('; https://www.freecad.org/wiki/Material\n')
     f.write(': this template card was created by FreeCAD ' + rev + '\n\n')
     f.write('; localized Name, Description and KindOfMaterial uses 2 letter codes\n')
     f.write('; defined in ISO-639-1, see https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes\n')
@@ -290,7 +292,7 @@ def create_mat_template_card(write_group_section=True):
     if write_group_section is False:
         f.write("\n[FCMat]\n")
     for group in template_data:
-        gg = list(group.keys())[0]  # group dict has only one key
+        gg = list(group)[0]  # group dict has only one key
         # do not write groups Meta and UserDefined
         if (gg != 'Meta') and (gg != 'UserDefined'):
             # only write group section if write group section parameter is set to True
@@ -333,7 +335,7 @@ def get_known_material_quantity_parameter():
     template_data = get_material_template()
     known_quantities = []
     for group in template_data:
-        gname = list(group.keys())[0]  # group dict has only one key
+        gname = list(group)[0]  # group dict has only one key
         for prop_name in group[gname]:
             prop_type = group[gname][prop_name]['Type']
             if prop_type == 'Quantity':
@@ -342,7 +344,7 @@ def get_known_material_quantity_parameter():
     return known_quantities
 
 
-# ***** debug known and not known material parameter *********************************************
+# ***** debug known and unknown material parameter *********************************************
 def get_and_output_all_carddata(cards):
     print('\n\n\nSTART--get_and_output_all_carddata\n--------------------')
     # get all registered material property keys
@@ -350,7 +352,7 @@ def get_and_output_all_carddata(cards):
     template_data = get_material_template()
     # print(template_data)
     for group in template_data:
-        gg = list(group.keys())[0]  # group dict has only one key
+        gg = list(group)[0]  # group dict has only one key
         for key in group[gg]:
             registed_cardkeys.append(key)
     registed_cardkeys = sorted(registed_cardkeys)
@@ -439,8 +441,11 @@ def write_cards_to_path(cards_path, cards_data, write_group_section=True, write_
 # ***** material parameter units *********************************************
 def check_parm_unit(param):
     # check if this parameter is known to FreeCAD unit system
+    # for properties with underscores (vectorial values), we must
+    # strip the part after the first underscore to obtain the bound unit
     from FreeCAD import Units
-    # FreeCAD.Console.PrintMessage('{}\n'.format(param))
+    if param.find("_") != -1:
+        param = param.split("_")[0]
     if hasattr(Units, param):
         return True
     else:
@@ -472,7 +477,7 @@ def check_value_unit(param, value):
                     return True
                 else:
                     FreeCAD.Console.PrintError(
-                        '{} Not known problem in unit conversion.\n'
+                        '{} Unknown problem in unit conversion.\n'
                         .format(some_text)
                     )
             except ValueError:
@@ -483,23 +488,23 @@ def check_value_unit(param, value):
                 )
             except Exception:
                 FreeCAD.Console.PrintError(
-                    '{} Not known problem.\n'
+                    '{} Unknown problem.\n'
                     .format(some_text)
                 )
         except ValueError:
             unitproblem = value.split()[-1]
             FreeCAD.Console.PrintError(
-                '{} Unit {} is not known by FreeCAD.\n'
+                '{} Unit {} is unknown to FreeCAD.\n'
                 .format(some_text, unitproblem)
             )
         except Exception:
             FreeCAD.Console.PrintError(
-                '{} Not known problem.\n'
+                '{} Unknown problem.\n'
                 .format(some_text)
             )
     else:
         FreeCAD.Console.PrintError(
-            'Parameter {} is not known to FreeCAD unit system.\n'
+            'Parameter {} is unknown to the FreeCAD unit system.\n'
             .format(param)
         )
     return False
@@ -536,7 +541,7 @@ def output_parm_unit_info(param):
 
     else:
         FreeCAD.Console.PrintMessage(
-            'Parameter {} is NOT known to FreeCAD unit system.'
+            'Parameter {} is Unknown to the FreeCAD unit system.'
             .format(param)
         )
 
@@ -584,26 +589,26 @@ def output_value_unit_info(param, value):
                 )
             except Exception:
                 FreeCAD.Console.PrintError(
-                    '{} Not known problem.\n'
+                    '{} Unknown problem.\n'
                     .format(some_text)
                 )
 
         except ValueError:
             unitproblem = value.split()[-1]
             FreeCAD.Console.PrintError(
-                '{} Unit {} is not known by FreeCAD.\n'
+                '{} Unit {} is unknown by FreeCAD.\n'
                 .format(some_text, unitproblem)
             )
 
         except Exception:
             FreeCAD.Console.PrintError(
-                '{} Not known problem.\n'
+                '{} Unknown problem.\n'
                 .format(some_text)
             )
 
     else:
         FreeCAD.Console.PrintMessage(
-            'Parameter {} is not known to FreeCAD unit system.'
+            'Parameter {} is unknown to the FreeCAD unit system.'
             .format(param)
         )
 
@@ -657,7 +662,7 @@ gettemplate()[2]['Mechanical']['FractureToughness']
 from materialtools.cardutils import get_material_template as gettemplate
 template_data=gettemplate()
 for group in template_data:
-    gname = list(group.keys())[0]  # group dict has only one key
+    gname = list(group)[0]  # group dict has only one key
     for prop_name in group[gname]:
         #prop_dict = group[gname][prop_name]
         #print(prop_dict)
@@ -753,7 +758,7 @@ mat = {
 from materialtools.cardutils import check_mat_units as checkunits
 checkunits(mat)
 
-# not known quantities, returns True too
+# unknown quantities, returns True too
 mat = {
     'Name': 'Concrete',
     'FractureToughness' : '1',

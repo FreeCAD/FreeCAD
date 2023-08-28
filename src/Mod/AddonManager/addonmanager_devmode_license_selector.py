@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
 # ***************************************************************************
 # *                                                                         *
 # *   Copyright (c) 2022 FreeCAD Project Association                        *
@@ -38,13 +39,17 @@ try:
         QRegularExpressionValidator,
     )
     from PySide.QtCore import QRegularExpression
+
     RegexWrapper = QRegularExpression
     RegexValidatorWrapper = QRegularExpressionValidator
 except ImportError:
+    QRegularExpressionValidator = None
+    QRegularExpression = None
     from PySide.QtGui import (
         QRegExpValidator,
     )
     from PySide.QtCore import QRegExp
+
     RegexWrapper = QRegExp
     RegexValidatorWrapper = QRegExpValidator
 
@@ -147,7 +152,7 @@ class LicenseSelector:
                 new_short_code = self.dialog.otherLineEdit.text()
             self.pref.SetString("devModeLastSelectedLicense", new_short_code)
             return new_short_code, new_license_path
-        return None, None
+        return None
 
     def set_license(self, short_code):
         """Set the currently-selected license."""

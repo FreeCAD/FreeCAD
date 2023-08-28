@@ -43,6 +43,7 @@ from draftutils.translate import translate
 from draftobjects.pointarray import PointArray
 
 if App.GuiUp:
+    from draftutils.todo import ToDo
     from draftviewproviders.view_array import ViewProviderDraftArray
     from draftviewproviders.view_draftlink import ViewProviderDraftLink
 
@@ -152,13 +153,12 @@ def make_point_array(base_object, point_object, extra=None, use_link=True):
         if use_link:
             ViewProviderDraftLink(new_obj.ViewObject)
         else:
+            new_obj.Proxy.execute(new_obj) # Updates Count which is required for correct DiffuseColor.
             ViewProviderDraftArray(new_obj.ViewObject)
             gui_utils.format_object(new_obj, new_obj.Base)
-
-            if hasattr(new_obj.Base.ViewObject, "DiffuseColor"):
-                if len(new_obj.Base.ViewObject.DiffuseColor) > 1:
-                    new_obj.ViewObject.Proxy.resetColors(new_obj.ViewObject)
-
+            new_obj.ViewObject.Proxy.resetColors(new_obj.ViewObject)
+            # Workaround to trigger update of DiffuseColor:
+            ToDo.delay(reapply_diffuse_color, new_obj.ViewObject)
         new_obj.Base.ViewObject.hide()
         gui_utils.select(new_obj)
 
@@ -170,5 +170,12 @@ def makePointArray(base, ptlst):
     utils.use_instead('make_point_array')
 
     return make_point_array(base, ptlst)
+
+
+def reapply_diffuse_color(vobj):
+    try:
+        vobj.DiffuseColor = vobj.DiffuseColor
+    except:
+        pass
 
 ## @}

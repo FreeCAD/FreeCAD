@@ -38,15 +38,13 @@
 
 using namespace Gui;
 
-Breakpoint::Breakpoint()
-{
-}
+Breakpoint::Breakpoint() = default;
 
 Breakpoint::Breakpoint(const Breakpoint& rBp)
 {
     setFilename(rBp.filename());
-    for (std::set<int>::const_iterator it = rBp._linenums.begin(); it != rBp._linenums.end(); ++it)
-        _linenums.insert(*it);
+    for (int it : rBp._linenums)
+        _linenums.insert(it);
 }
 
 Breakpoint& Breakpoint::operator= (const Breakpoint& rBp)
@@ -55,15 +53,12 @@ Breakpoint& Breakpoint::operator= (const Breakpoint& rBp)
         return *this;
     setFilename(rBp.filename());
     _linenums.clear();
-    for (std::set<int>::const_iterator it = rBp._linenums.begin(); it != rBp._linenums.end(); ++it)
-        _linenums.insert(*it);
+    for (int it : rBp._linenums)
+        _linenums.insert(it);
     return *this;
 }
 
-Breakpoint::~Breakpoint()
-{
-
-}
+Breakpoint::~Breakpoint() = default;
 
 void Breakpoint::setFilename(const QString& fn)
 {
@@ -88,10 +83,10 @@ bool Breakpoint::checkLine(int line)
 int Breakpoint::lineIndex(int ind)const
 {
     int i = 0;
-    for (std::set<int>::const_iterator it = _linenums.begin(); it != _linenums.end(); ++it)
+    for (int it : _linenums)
     {
         if (ind == i++)
-            return *it;
+            return it;
     }
     return -1;
 }
@@ -166,13 +161,9 @@ void PythonDebugStdout::init_type()
     add_varargs_method("flush",&PythonDebugStdout::flush,"flush the output");
 }
 
-PythonDebugStdout::PythonDebugStdout()
-{
-}
+PythonDebugStdout::PythonDebugStdout() = default;
 
-PythonDebugStdout::~PythonDebugStdout()
-{
-}
+PythonDebugStdout::~PythonDebugStdout() = default;
 
 Py::Object PythonDebugStdout::repr()
 {
@@ -218,13 +209,9 @@ void PythonDebugStderr::init_type()
     add_varargs_method("write",&PythonDebugStderr::write,"write to stderr");
 }
 
-PythonDebugStderr::PythonDebugStderr()
-{
-}
+PythonDebugStderr::PythonDebugStderr() = default;
 
-PythonDebugStderr::~PythonDebugStderr()
-{
-}
+PythonDebugStderr::~PythonDebugStderr() = default;
 
 Py::Object PythonDebugStderr::repr()
 {
@@ -267,13 +254,9 @@ void PythonDebugExcept::init_type()
     add_varargs_method("fc_excepthook",&PythonDebugExcept::excepthook,"Custom exception handler");
 }
 
-PythonDebugExcept::PythonDebugExcept()
-{
-}
+PythonDebugExcept::PythonDebugExcept() = default;
 
-PythonDebugExcept::~PythonDebugExcept()
-{
-}
+PythonDebugExcept::~PythonDebugExcept() = default;
 
 Py::Object PythonDebugExcept::repr()
 {
@@ -320,8 +303,8 @@ namespace Gui {
 class PythonDebuggerPy : public Py::PythonExtension<PythonDebuggerPy>
 {
 public:
-    PythonDebuggerPy(PythonDebugger* d) : dbg(d), depth(0) { }
-    ~PythonDebuggerPy() override {}
+    explicit PythonDebuggerPy(PythonDebugger* d) : dbg(d), depth(0) { }
+    ~PythonDebuggerPy() override = default;
     PythonDebugger* dbg;
     int depth;
 };
@@ -329,7 +312,7 @@ public:
 class RunningState
 {
 public:
-    RunningState(bool& s) : state(s)
+    explicit RunningState(bool& s) : state(s)
     { state = true; }
     ~RunningState()
     { state = false; }
@@ -338,24 +321,20 @@ private:
 };
 
 struct PythonDebuggerP {
-    PyObject* out_o;
-    PyObject* err_o;
-    PyObject* exc_o;
-    PyObject* out_n;
-    PyObject* err_n;
-    PyObject* exc_n;
+    PyObject* out_o{nullptr};
+    PyObject* err_o{nullptr};
+    PyObject* exc_o{nullptr};
+    PyObject* out_n{nullptr};
+    PyObject* err_n{nullptr};
+    PyObject* exc_n{nullptr};
     PythonDebugExcept* pypde;
-    bool init, trystop, running;
+    bool init{false}, trystop{false}, running{false};
     QEventLoop loop;
-    PyObject* pydbg;
+    PyObject* pydbg{nullptr};
     std::vector<Breakpoint> bps;
 
-    PythonDebuggerP(PythonDebugger* that) :
-        init(false), trystop(false), running(false)
+    explicit PythonDebuggerP(PythonDebugger* that)
     {
-        out_o = nullptr;
-        err_o = nullptr;
-        exc_o = nullptr;
         Base::PyGILStateLocker lock;
         out_n = new PythonDebugStdout();
         err_n = new PythonDebugStderr();
@@ -388,25 +367,25 @@ PythonDebugger::~PythonDebugger()
 
 Breakpoint PythonDebugger::getBreakpoint(const QString& fn) const
 {
-    for (std::vector<Breakpoint>::const_iterator it = d->bps.begin(); it != d->bps.end(); ++it) {
-        if (fn == it->filename()) {
-            return *it;
+    for (const Breakpoint& it : d->bps) {
+        if (fn == it.filename()) {
+            return it;
         }
     }
 
-    return Breakpoint();
+    return {};
 }
 
 bool PythonDebugger::toggleBreakpoint(int line, const QString& fn)
 {
-    for (std::vector<Breakpoint>::iterator it = d->bps.begin(); it != d->bps.end(); ++it) {
-        if (fn == it->filename()) {
-            if (it->checkLine(line)) {
-                it->removeLine(line);
+    for (Breakpoint& it : d->bps) {
+        if (fn == it.filename()) {
+            if (it.checkLine(line)) {
+                it.removeLine(line);
                 return false;
             }
             else {
-                it->addLine(line);
+                it.addLine(line);
                 return true;
             }
         }
@@ -574,7 +553,7 @@ static PyCodeObject* PyFrame_GetCode(PyFrameObject *frame)
 // http://www.koders.com/cpp/fidBA6CD8A0FE5F41F1464D74733D9A711DA257D20B.aspx?s=PyEval_SetTrace
 // http://code.google.com/p/idapython/source/browse/trunk/python.cpp
 // http://www.koders.com/cpp/fid191F7B13CF73133935A7A2E18B7BF43ACC6D1784.aspx?s=PyEval_SetTrace
-// http://stuff.mit.edu/afs/sipb/project/python/src/python2.2-2.2.2/Modules/_hotshot.c
+
 int PythonDebugger::tracer_callback(PyObject *obj, PyFrameObject *frame, int what, PyObject * /*arg*/)
 {
     auto self = static_cast<PythonDebuggerPy*>(obj);
@@ -582,10 +561,6 @@ int PythonDebugger::tracer_callback(PyObject *obj, PyFrameObject *frame, int wha
     if (dbg->d->trystop)
         PyErr_SetInterrupt();
     QCoreApplication::processEvents();
-    //int no;
-
-    //no = frame->f_tstate->recursion_depth;
-    //std::string funcname = PyString_AsString(frame->f_code->co_name);
     PyCodeObject* code = PyFrame_GetCode(frame);
     QString file = QString::fromUtf8(PyUnicode_AsUTF8(code->co_filename));
     Py_DECREF(code);
@@ -599,24 +574,17 @@ int PythonDebugger::tracer_callback(PyObject *obj, PyFrameObject *frame, int wha
         return 0;
     case PyTrace_LINE:
         {
-            //PyObject *str;
-            //str = PyObject_Str(frame->f_code->co_filename);
-            //no = frame->f_lineno;
             PyCodeObject* f_code = PyFrame_GetCode(frame);
             int f_lasti = PyFrame_GetLineNumber(frame);
             int line = PyCode_Addr2Line(f_code, f_lasti);
             Py_DECREF(f_code);
-            //if (str) {
-            //    Base::Console().Message("PROFILING: %s:%d\n", PyString_AsString(str), frame->f_lineno);
-            //    Py_DECREF(str);
-            //}
-    // For testing only
+
             if (!dbg->d->trystop) {
                 Breakpoint bp = dbg->getBreakpoint(file);
                 if (bp.checkLine(line)) {
                     dbg->showDebugMarker(file, line);
                     QEventLoop loop;
-                    QObject::connect(dbg, SIGNAL(signalNextStep()), &loop, SLOT(quit()));
+                    QObject::connect(dbg, &PythonDebugger::signalNextStep, &loop, &QEventLoop::quit);
                     loop.exec();
                     dbg->hideDebugMarker(file);
                 }

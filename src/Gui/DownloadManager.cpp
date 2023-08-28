@@ -70,7 +70,7 @@ DownloadManager::DownloadManager(QWidget *parent)
     ui->downloadsView->horizontalHeader()->setStretchLastSection(true);
     m_model = new DownloadModel(this);
     ui->downloadsView->setModel(m_model);
-    connect(ui->cleanupButton, SIGNAL(clicked()), this, SLOT(cleanup()));
+    connect(ui->cleanupButton, &QPushButton::clicked, this, &DownloadManager::cleanup);
     load();
 
     Gui::DockWindowManager* pDockMgr = Gui::DockWindowManager::instance();
@@ -114,13 +114,13 @@ QUrl DownloadManager::redirectUrl(const QUrl& url) const
     if (url.host() == QLatin1String("www.dropbox.com")) {
         QUrlQuery urlQuery(url);
         QList< QPair<QString, QString> > query = urlQuery.queryItems();
-        for (QList< QPair<QString, QString> >::iterator it = query.begin(); it != query.end(); ++it) {
-            if (it->first == QLatin1String("dl")) {
-                if (it->second == QLatin1String("0\r\n")) {
+        for (const auto & it : query) {
+            if (it.first == QLatin1String("dl")) {
+                if (it.second == QLatin1String("0\r\n")) {
                     urlQuery.removeQueryItem(QLatin1String("dl"));
                     urlQuery.addQueryItem(QLatin1String("dl"), QLatin1String("1\r\n"));
                 }
-                else if (it->second == QLatin1String("0")) {
+                else if (it.second == QLatin1String("0")) {
                     urlQuery.removeQueryItem(QLatin1String("dl"));
                     urlQuery.addQueryItem(QLatin1String("dl"), QLatin1String("1"));
                 }
@@ -167,7 +167,7 @@ void DownloadManager::handleUnsupportedContent(QNetworkReply *reply, bool reques
 
 void DownloadManager::addItem(DownloadItem *item)
 {
-    connect(item, SIGNAL(statusChanged()), this, SLOT(updateRow()));
+    connect(item, &DownloadItem::statusChanged, this, &DownloadManager::updateRow);
     int row = m_downloads.count();
     m_model->beginInsertRows(QModelIndex(), row, row);
     m_downloads.append(item);
@@ -310,11 +310,11 @@ DownloadModel::DownloadModel(DownloadManager *downloadManager, QObject *parent)
 QVariant DownloadModel::data(const QModelIndex &index, int role) const
 {
     if (index.row() < 0 || index.row() >= rowCount(index.parent()))
-        return QVariant();
+        return {};
     if (role == Qt::ToolTipRole)
         if (!m_downloadManager->m_downloads.at(index.row())->downloadedSuccessfully())
             return m_downloadManager->m_downloads.at(index.row())->downloadInfoLabel->text();
-    return QVariant();
+    return {};
 }
 
 int DownloadModel::rowCount(const QModelIndex &parent) const

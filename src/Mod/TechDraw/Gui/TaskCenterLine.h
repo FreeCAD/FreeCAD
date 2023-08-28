@@ -26,6 +26,7 @@
 #include <Gui/TaskView/TaskDialog.h>
 #include <Gui/TaskView/TaskView.h>
 #include <Mod/TechDraw/TechDrawGlobal.h>
+#include <Mod/TechDraw/App/CenterLine.h>
 #include <Mod/TechDraw/App/Cosmetic.h>
 
 
@@ -86,6 +87,10 @@ protected:
     QColor getCenterColor();
     Qt::PenStyle getCenterStyle();
     double getExtendBy();
+
+    int checkPathologicalEdges(int inMode);
+    int checkPathologicalVertices(int inMode);
+    void setUiOrientation(int orientation);
 
 private:
     std::unique_ptr<Ui_TaskCenterLine> ui;

@@ -1,9 +1,9 @@
 
 #include <QApplication>
 #include <QDialog>
-#include <QPushButton>
-#include <QLibrary>
 #include <QFileDialog>
+#include <QLibrary>
+#include <QPushButton>
 
 QLibrary* freecadPlugin = nullptr;
 

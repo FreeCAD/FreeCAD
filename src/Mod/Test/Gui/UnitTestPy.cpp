@@ -20,16 +20,13 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <QApplication>
 # include <QEventLoop>
 #endif
 
-#include <Base/PyObjectBase.h>
 #include <Base/Exception.h>
-#include <Base/Console.h>
 
 #include "UnitTestPy.h"
 #include "UnitTestImp.h"
@@ -63,13 +60,9 @@ void UnitTestDialogPy::init_type()
     add_varargs_method("clearUnitTests",&UnitTestDialogPy::clearUnitTests,"clearUnitTests");
 }
 
-UnitTestDialogPy::UnitTestDialogPy()
-{
-}
+UnitTestDialogPy::UnitTestDialogPy() = default;
 
-UnitTestDialogPy::~UnitTestDialogPy()
-{
-}
+UnitTestDialogPy::~UnitTestDialogPy() = default;
 
 Py::Object UnitTestDialogPy::repr()
 {

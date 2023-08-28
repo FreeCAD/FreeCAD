@@ -20,15 +20,15 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef DRAWINGGUI_VIEWPROVIDERPAGE_H
 #define DRAWINGGUI_VIEWPROVIDERPAGE_H
 
 #include <QPointer>
-#include <Gui/ViewProviderFeature.h>
+
 #include <Gui/ViewProviderDocumentObjectGroup.h>
 
 #include "DrawingView.h"
+
 
 namespace Drawing{
     class FeaturePage;

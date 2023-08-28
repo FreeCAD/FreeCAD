@@ -53,19 +53,25 @@ DlgUnitsCalculator::DlgUnitsCalculator( QWidget* parent, Qt::WindowFlags fl )
     ui->comboBoxScheme->addItem(QString::fromLatin1("Preference system"), static_cast<int>(-1));
     int num = static_cast<int>(Base::UnitSystem::NumUnitSystemTypes);
     for (int i=0; i<num; i++) {
-        QString item = qApp->translate("Gui::Dialog::DlgSettingsUnits", Base::UnitsApi::getDescription(static_cast<Base::UnitSystem>(i)));
+        QString item = Base::UnitsApi::getDescription(static_cast<Base::UnitSystem>(i));
         ui->comboBoxScheme->addItem(item, i);
     }
 
-    connect(ui->ValueInput, SIGNAL(valueChanged(Base::Quantity)), this, SLOT(valueChanged(Base::Quantity)));
-    connect(ui->ValueInput, SIGNAL(returnPressed()), this, SLOT(returnPressed()));
-    connect(ui->UnitInput, SIGNAL(textChanged(QString)), this, SLOT(textChanged(QString)));
-    connect(ui->UnitInput, SIGNAL(returnPressed()), this, SLOT(returnPressed()));
-
-    connect(ui->pushButton_Close, SIGNAL(clicked()), this, SLOT(accept()));
-    connect(ui->pushButton_Copy, SIGNAL(clicked()), this, SLOT(copy()));
-
-    connect(ui->ValueInput, SIGNAL(parseError(QString)), this, SLOT(parseError(QString)));
+    connect(ui->unitsBox, qOverload<int>(&QComboBox::activated),
+            this, &DlgUnitsCalculator::onUnitsBoxActivated);
+    connect(ui->comboBoxScheme, qOverload<int>(&QComboBox::activated),
+            this, &DlgUnitsCalculator::onComboBoxSchemeActivated);
+    connect(ui->spinBoxDecimals, qOverload<int>(&QSpinBox::valueChanged),
+            this, &DlgUnitsCalculator::onSpinBoxDecimalsValueChanged);
+    connect(ui->ValueInput, qOverload<const Base::Quantity&>(&InputField::valueChanged),
+            this, &DlgUnitsCalculator::valueChanged);
+    connect(ui->ValueInput, &InputField::returnPressed,
+            this, &DlgUnitsCalculator::returnPressed);
+    connect(ui->ValueInput, &InputField::parseError, this, &DlgUnitsCalculator::parseError);
+    connect(ui->UnitInput, &QLineEdit::textChanged, this, &DlgUnitsCalculator::textChanged);
+    connect(ui->UnitInput, &QLineEdit::returnPressed, this, &DlgUnitsCalculator::returnPressed);
+    connect(ui->pushButton_Close, &QPushButton::clicked, this, &DlgUnitsCalculator::accept);
+    connect(ui->pushButton_Copy, &QPushButton::clicked, this, &DlgUnitsCalculator::copy);
 
     ui->ValueInput->setParamGrpPath(QByteArray("User parameter:BaseApp/History/UnitsCalculator"));
     // set a default that also illustrates how the dialog works
@@ -77,6 +83,9 @@ DlgUnitsCalculator::DlgUnitsCalculator( QWidget* parent, Qt::WindowFlags fl )
           << Base::Unit::Angle
           << Base::Unit::Area
           << Base::Unit::Density
+          << Base::Unit::CurrentDensity
+          << Base::Unit::DissipationRate
+          << Base::Unit::DynamicViscosity
           << Base::Unit::ElectricalCapacitance
           << Base::Unit::ElectricalInductance
           << Base::Unit::ElectricalConductance
@@ -85,30 +94,38 @@ DlgUnitsCalculator::DlgUnitsCalculator( QWidget* parent, Qt::WindowFlags fl )
           << Base::Unit::ElectricCharge
           << Base::Unit::ElectricCurrent
           << Base::Unit::ElectricPotential
-          << Base::Unit::Frequency
           << Base::Unit::Force
-          << Base::Unit::Stiffness
+          << Base::Unit::Frequency
           << Base::Unit::HeatFlux
+          << Base::Unit::InverseArea
+          << Base::Unit::InverseLength
+          << Base::Unit::InverseVolume
+          << Base::Unit::KinematicViscosity
           << Base::Unit::Length
           << Base::Unit::LuminousIntensity
           << Base::Unit::Mass
           << Base::Unit::MagneticFieldStrength
           << Base::Unit::MagneticFlux
           << Base::Unit::MagneticFluxDensity
-          << Base::Unit::Pressure
+          << Base::Unit::Magnetization
           << Base::Unit::Power
+          << Base::Unit::Pressure
+          << Base::Unit::SpecificEnergy
           << Base::Unit::SpecificHeat
-          << Base::Unit::Stress
+          << Base::Unit::Stiffness
           << Base::Unit::Temperature
           << Base::Unit::ThermalConductivity
           << Base::Unit::ThermalExpansionCoefficient
           << Base::Unit::ThermalTransferCoefficient
           << Base::Unit::TimeSpan
+          << Base::Unit::VacuumPermittivity
           << Base::Unit::Velocity
           << Base::Unit::Volume
+          << Base::Unit::VolumeFlowRate
+          << Base::Unit::VolumetricThermalExpansionCoefficient
           << Base::Unit::Work;
-    for (QList<Base::Unit>::iterator it = units.begin(); it != units.end(); ++it) {
-        ui->unitsBox->addItem(it->getTypeString());
+    for (const Base::Unit& it : units) {
+        ui->unitsBox->addItem(it.getTypeString());
     }
 
     ui->quantitySpinBox->setValue(1.0);
@@ -117,9 +134,7 @@ DlgUnitsCalculator::DlgUnitsCalculator( QWidget* parent, Qt::WindowFlags fl )
 }
 
 /** Destroys the object and frees any allocated resources */
-DlgUnitsCalculator::~DlgUnitsCalculator()
-{
-}
+DlgUnitsCalculator::~DlgUnitsCalculator() = default;
 
 void DlgUnitsCalculator::accept()
 {
@@ -194,7 +209,7 @@ void DlgUnitsCalculator::returnPressed()
     }
 }
 
-void DlgUnitsCalculator::on_unitsBox_activated(int index)
+void DlgUnitsCalculator::onUnitsBoxActivated(int index)
 {
     // SI units use [m], not [mm] for lengths
     //
@@ -207,7 +222,7 @@ void DlgUnitsCalculator::on_unitsBox_activated(int index)
     ui->quantitySpinBox->setValue(Base::Quantity(value * std::pow(10.0, 3*(len-old)), unit));
 }
 
-void DlgUnitsCalculator::on_comboBoxScheme_activated(int index)
+void DlgUnitsCalculator::onComboBoxSchemeActivated(int index)
 {
     int item = ui->comboBoxScheme->itemData(index).toInt();
     if (item > 0)
@@ -216,7 +231,7 @@ void DlgUnitsCalculator::on_comboBoxScheme_activated(int index)
         ui->quantitySpinBox->clearSchema();
 }
 
-void DlgUnitsCalculator::on_spinBoxDecimals_valueChanged(int value)
+void DlgUnitsCalculator::onSpinBoxDecimalsValueChanged(int value)
 {
     ui->quantitySpinBox->setDecimals(value);
 }

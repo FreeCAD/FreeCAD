@@ -39,9 +39,7 @@ ViewProviderPad::ViewProviderPad()
     sPixmap = "Tree_PartDesign_Pad.svg";
 }
 
-ViewProviderPad::~ViewProviderPad()
-{
-}
+ViewProviderPad::~ViewProviderPad() = default;
 
 void ViewProviderPad::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
 {

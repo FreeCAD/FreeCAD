@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
 # ***************************************************************************
 # *                                                                         *
 # *   Copyright (c) 2022 FreeCAD Project Association                        *
@@ -35,18 +36,23 @@ try:
         QRegularExpressionValidator,
     )
     from PySide.QtCore import QRegularExpression
+
     RegexWrapper = QRegularExpression
     RegexValidatorWrapper = QRegularExpressionValidator
 except ImportError:
+    QRegularExpressionValidator = None
+    QRegularExpression = None
     from PySide.QtGui import (
         QRegExpValidator,
     )
     from PySide.QtCore import QRegExp
+
     RegexWrapper = QRegExp
     RegexValidatorWrapper = QRegExpValidator
 
 
-#pylint: disable=too-few-public-methods
+# pylint: disable=too-few-public-methods
+
 
 class NameValidator(QValidator):
     """Simple validator to exclude characters that are not valid in filenames."""
@@ -73,7 +79,7 @@ class PythonIdentifierValidator(QValidator):
     """Validates whether input is a valid Python identifier."""
 
     def validate(self, value: str, _: int):
-        """ The function that does the validation. """
+        """The function that does the validation."""
         if not value:
             return QValidator.Intermediate
 
@@ -130,7 +136,6 @@ class CalVerValidator(RegexValidatorWrapper):
         else:
             self.setRegExp(CalVerValidator.calver_re)
 
-
     @classmethod
     def check(cls, value: str) -> bool:
         """Returns true if value validates, and false if not"""
@@ -160,4 +165,4 @@ class VersionValidator(QValidator):
             return semver_result
         if calver_result[0] == QValidator.Intermediate:
             return calver_result
-        return (QValidator.Invalid, value, position)
+        return QValidator.Invalid, value, position

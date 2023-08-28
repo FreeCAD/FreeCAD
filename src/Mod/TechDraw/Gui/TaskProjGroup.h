@@ -49,7 +49,7 @@ class TaskProjGroup : public QWidget
 
 public:
     TaskProjGroup(TechDraw::DrawProjGroup* featView, bool mode);
-    ~TaskProjGroup() = default;
+    ~TaskProjGroup() override = default;
 
     virtual bool accept();
     virtual bool reject();

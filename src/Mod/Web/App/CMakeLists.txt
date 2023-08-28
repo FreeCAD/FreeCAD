@@ -23,9 +23,14 @@ SET(Web_SRCS
     Server.h
 )
 
+if(FREECAD_USE_PCH)
+    add_definitions(-D_PreComp_)
+    GET_MSVC_PRECOMPILED_SOURCE("PreCompiled.cpp" PCH_SRCS ${Web_SRCS})
+    ADD_MSVC_PRECOMPILED_HEADER(Web PreCompiled.h PreCompiled.cpp PCH_SRCS)
+endif(FREECAD_USE_PCH)
+
 add_library(Web SHARED ${Web_SRCS})
 target_link_libraries(Web ${Web_LIBS})
-
 
 SET_BIN_DIR(Web Web /Mod/Web)
 SET_PYTHON_PREFIX_SUFFIX(Web)

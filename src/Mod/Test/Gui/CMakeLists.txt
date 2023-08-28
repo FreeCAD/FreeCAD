@@ -24,7 +24,11 @@ SET(Dialogs_SRCS
 )
 SOURCE_GROUP("Dialogs" FILES ${Dialogs_SRCS})
 
-qt_add_resources(Resource_SRCS Resources/Test.qrc)
+set (Test_TR_QRC ${CMAKE_CURRENT_BINARY_DIR}/Resources/Test_translation.qrc)
+qt_find_and_add_translation(QM_SRCS "Resources/translations/*_*.ts"
+    ${CMAKE_CURRENT_BINARY_DIR}/Resources/translations)
+qt_create_resource_file(${Test_TR_QRC} ${QM_SRCS})
+qt_add_resources(Resource_SRCS Resources/Test.qrc ${Test_TR_QRC})
 
 SET(Resource_SRCS
     ${Resource_SRCS}
@@ -46,6 +50,12 @@ SET(TestGuiPy_SRCS
 SET(TestGuiIcon_SVG
     Resources/icons/TestWorkbench.svg
 )
+
+if(FREECAD_USE_PCH)
+    add_definitions(-D_PreComp_)
+    GET_MSVC_PRECOMPILED_SOURCE("PreCompiled.cpp" PCH_SRCS ${TestGui_SRCS})
+    ADD_MSVC_PRECOMPILED_HEADER(QtUnitGui PreCompiled.h PreCompiled.cpp PCH_SRCS)
+endif(FREECAD_USE_PCH)
 
 add_library(QtUnitGui SHARED ${TestGui_SRCS} ${TestGuiPy_SRCS} ${TestGuiIcon_SVG})
 

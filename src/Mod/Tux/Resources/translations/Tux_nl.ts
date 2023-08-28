@@ -66,7 +66,7 @@
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="332"/>
       <source>Orbit style</source>
-      <translation>Orbit stijl</translation>
+      <translation>Rotatiebaan stijl</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="333"/>
@@ -85,11 +85,16 @@
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="336"/>
+      <source>Free Turntable</source>
+      <translation>Vrije draaitafel</translation>
+    </message>
+    <message>
+      <location filename="../../NavigationIndicatorGui.py" line="337"/>
       <source>Trackball</source>
       <translation>Trackball</translation>
     </message>
     <message>
-      <location filename="../../NavigationIndicatorGui.py" line="337"/>
+      <location filename="../../NavigationIndicatorGui.py" line="338"/>
       <source>Undefined</source>
       <translation>niet gedefinieerd</translation>
     </message>

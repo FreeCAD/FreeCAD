@@ -30,7 +30,7 @@ from PySide.QtCore import QT_TRANSLATE_NOOP
 
 __title__ = "Path Custom Operation UI"
 __author__ = "sliptonic (Brad Collette)"
-__url__ = "http://www.freecadweb.org"
+__url__ = "http://www.freecad.org"
 __doc__ = "Custom operation page controller and command implementation."
 
 
@@ -70,7 +70,7 @@ Command = PathOpGui.SetupOperation(
     TaskPanelOpPage,
     "Path_Custom",
     QT_TRANSLATE_NOOP("Path_Custom", "Custom"),
-    QT_TRANSLATE_NOOP("Path_Custom", "Create custom gcode snippet"),
+    QT_TRANSLATE_NOOP("Path_Custom", "Create custom G-code snippet"),
     PathCustom.SetupProperties,
 )
 

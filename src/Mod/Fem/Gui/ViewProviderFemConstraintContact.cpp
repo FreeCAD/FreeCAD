@@ -50,9 +50,7 @@ ViewProviderFemConstraintContact::ViewProviderFemConstraintContact()
     ADD_PROPERTY(FaceColor, (0.2f, 0.3f, 0.2f));
 }
 
-ViewProviderFemConstraintContact::~ViewProviderFemConstraintContact()
-{
-}
+ViewProviderFemConstraintContact::~ViewProviderFemConstraintContact() = default;
 
 //FIXME setEdit needs a careful review
 bool ViewProviderFemConstraintContact::setEdit(int ModNum)
@@ -104,7 +102,7 @@ void ViewProviderFemConstraintContact::updateData(const App::Property* prop)
     float scaledheight = HEIGHT * pcConstraint->Scale.getValue();
     float scaledwidth = WIDTH * pcConstraint->Scale.getValue();
 
-    if (strcmp(prop->getName(),"Points") == 0) {
+    if (prop == &pcConstraint->Points) {
         const std::vector<Base::Vector3d>& points = pcConstraint->Points.getValues();
         const std::vector<Base::Vector3d>& normals = pcConstraint->Normals.getValues();
         if (points.size() != normals.size())
@@ -114,9 +112,9 @@ void ViewProviderFemConstraintContact::updateData(const App::Property* prop)
         // Points and Normals are always updated together
         Gui::coinRemoveAllChildren(pShapeSep);
 
-        for (std::vector<Base::Vector3d>::const_iterator p = points.begin(); p != points.end(); p++) {
+        for (const auto & point : points) {
             //Define base and normal directions
-            SbVec3f base(p->x, p->y, p->z);
+            SbVec3f base(point.x, point.y, point.z);
             SbVec3f dir(n->x, n->y, n->z);//normal
 
             ///Visual indication

@@ -59,16 +59,14 @@ using namespace Gui;
 GUIApplication::GUIApplication(int & argc, char ** argv)
     : GUIApplicationNativeEventAware(argc, argv)
 {
-    connect(this, SIGNAL(commitDataRequest(QSessionManager&)),
-            SLOT(commitData(QSessionManager&)), Qt::DirectConnection);
+    connect(this, &GUIApplication::commitDataRequest,
+            this, &GUIApplication::commitData, Qt::DirectConnection);
 #if QT_VERSION < QT_VERSION_CHECK(6,0,0)
     setFallbackSessionManagementEnabled(false);
 #endif
 }
 
-GUIApplication::~GUIApplication()
-{
-}
+GUIApplication::~GUIApplication() = default;
 
 bool GUIApplication::notify (QObject * receiver, QEvent * event)
 {
@@ -169,8 +167,6 @@ public:
     explicit Private(GUISingleApplication *q_ptr)
       : q_ptr(q_ptr)
       , timer(new QTimer(q_ptr))
-      , server(nullptr)
-      , running(false)
     {
         timer->setSingleShot(true);
         std::string exeName = App::Application::getExecutableName();
@@ -200,8 +196,8 @@ public:
     {
         // Start a QLocalServer to listen for connections
         server = new QLocalServer();
-        QObject::connect(server, SIGNAL(newConnection()),
-                         q_ptr, SLOT(receiveConnection()));
+        QObject::connect(server, &QLocalServer::newConnection,
+                         q_ptr, &GUISingleApplication::receiveConnection);
         // first attempt
         if (!server->listen(serverName)) {
             if (server->serverError() == QAbstractSocket::AddressInUseError) {
@@ -220,10 +216,10 @@ public:
 
     GUISingleApplication *q_ptr;
     QTimer *timer;
-    QLocalServer *server;
+    QLocalServer *server{nullptr};
     QString serverName;
     QList<QByteArray> messages;
-    bool running;
+    bool running{false};
 };
 
 GUISingleApplication::GUISingleApplication(int & argc, char ** argv)
@@ -231,12 +227,10 @@ GUISingleApplication::GUISingleApplication(int & argc, char ** argv)
       d_ptr(new Private(this))
 {
     d_ptr->setupConnection();
-    connect(d_ptr->timer, SIGNAL(timeout()), this, SLOT(processMessages()));
+    connect(d_ptr->timer, &QTimer::timeout, this, &GUISingleApplication::processMessages);
 }
 
-GUISingleApplication::~GUISingleApplication()
-{
-}
+GUISingleApplication::~GUISingleApplication() = default;
 
 bool GUISingleApplication::isRunning() const
 {
@@ -274,8 +268,8 @@ void GUISingleApplication::receiveConnection()
     if (!socket)
         return;
 
-    connect(socket, SIGNAL(disconnected()),
-            socket, SLOT(deleteLater()));
+    connect(socket, &QLocalSocket::disconnected,
+            socket, &QLocalSocket::deleteLater);
     if (socket->waitForReadyRead()) {
         QDataStream in(socket);
         if (!in.atEnd()) {

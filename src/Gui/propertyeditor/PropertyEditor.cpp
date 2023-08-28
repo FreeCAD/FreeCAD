@@ -75,7 +75,7 @@ PropertyEditor::PropertyEditor(QWidget *parent)
     setExpandsOnDoubleClick(true);
 
 #if QT_VERSION < QT_VERSION_CHECK(6,0,0)
-    QStyleOptionViewItem opt = viewOptions();
+    QStyleOptionViewItem opt = PropertyEditor::viewOptions();
 #else
     QStyleOptionViewItem opt;
     initViewItemOption(&opt);
@@ -85,14 +85,12 @@ PropertyEditor::PropertyEditor(QWidget *parent)
 
     this->setSelectionMode(QAbstractItemView::ExtendedSelection);
 
-    connect(this, SIGNAL(activated(const QModelIndex &)), this, SLOT(onItemActivated(const QModelIndex &)));
-    connect(this, SIGNAL(clicked(const QModelIndex &)), this, SLOT(onItemActivated(const QModelIndex &)));
-    connect(this, SIGNAL(expanded(const QModelIndex &)), this, SLOT(onItemExpanded(const QModelIndex &)));
-    connect(this, SIGNAL(collapsed(const QModelIndex &)), this, SLOT(onItemCollapsed(const QModelIndex &)));
-    connect(propertyModel, SIGNAL(rowsMoved(const QModelIndex &, int, int, const QModelIndex &, int)),
-            this, SLOT(onRowsMoved(const QModelIndex &, int, int, const QModelIndex &, int)));
-    connect(propertyModel, SIGNAL(rowsRemoved(const QModelIndex &, int, int)),
-            this, SLOT(onRowsRemoved(const QModelIndex &, int, int)));
+    connect(this, &QTreeView::activated, this, &PropertyEditor::onItemActivated);
+    connect(this, &QTreeView::clicked, this, &PropertyEditor::onItemActivated);
+    connect(this, &QTreeView::expanded, this, &PropertyEditor::onItemExpanded);
+    connect(this, &QTreeView::collapsed, this, &PropertyEditor::onItemCollapsed);
+    connect(propertyModel, &QAbstractItemModel::rowsMoved, this, &PropertyEditor::onRowsMoved);
+    connect(propertyModel, &QAbstractItemModel::rowsRemoved, this, &PropertyEditor::onRowsRemoved);
 }
 
 PropertyEditor::~PropertyEditor()

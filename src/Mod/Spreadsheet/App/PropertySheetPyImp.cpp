@@ -31,14 +31,14 @@
 using namespace Spreadsheet;
 
 // returns a string which represents the object e.g. when printed in python
-std::string PropertySheetPy::representation(void) const
+std::string PropertySheetPy::representation() const
 {
-    return std::string("<PropertySheet object>");
+    return {"<PropertySheet object>"};
 }
 
 PyObject *PropertySheetPy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // Python wrapper
 {
-    // create a new instance of PropertySheetPy and the Twin object 
+    // create a new instance of PropertySheetPy and the Twin object
     return new PropertySheetPy(new PropertySheet);
 }
 
@@ -60,5 +60,5 @@ PyObject *PropertySheetPy::getCustomAttributes(const char* /*attr*/) const
 
 int PropertySheetPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
 {
-    return 0; 
+    return 0;
 }

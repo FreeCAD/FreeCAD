@@ -22,29 +22,25 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <QFileInfo>
-# include <QIcon>
-# include <QImage>
 # include <sstream>
+
+# include <QFileInfo>
 #endif
 
-#include <CXX/Extensions.hxx>
-#include <CXX/Objects.hxx>
+#include <App/DocumentObjectPy.h>
+#include <Base/Exception.h>
+#include <Base/FileInfo.h>
+#include <Base/Stream.h>
+#include <Gui/BitmapFactory.h>
+#include <Gui/MainWindow.h>
 
-#include "DrawingView.h"
 #include <Mod/Drawing/App/FeaturePage.h>
 #include <Mod/Drawing/App/FeatureViewPart.h>
 #include <Mod/Drawing/App/ProjectionAlgos.h>
 #include <Mod/Part/App/PartFeature.h>
 
-#include <Base/Console.h>
-#include <Base/Exception.h>
-#include <Base/FileInfo.h>
-#include <Base/Stream.h>
-#include <App/Application.h>
-#include <App/DocumentObjectPy.h>
-#include <Gui/MainWindow.h>
-#include <Gui/BitmapFactory.h>
+#include "DrawingView.h"
+
 
 namespace DrawingGui {
 class Module : public Py::ExtensionModule<Module>
@@ -86,7 +82,7 @@ private:
         PyMem_Free(Name);
 
         Base::FileInfo file(EncodedName.c_str());
-        if (file.hasExtension("svg") || file.hasExtension("svgz")) {
+        if (file.hasExtension({"svg", "svgz"})) {
             QString fileName = QString::fromUtf8(EncodedName.c_str());
             // Displaying the image in a view
             DrawingView* view = new DrawingView(nullptr, Gui::getMainWindow());
@@ -114,7 +110,7 @@ private:
         PyMem_Free(Name);
 
         Base::FileInfo file(EncodedName.c_str());
-        if (file.hasExtension("svg") || file.hasExtension("svgz")) {
+        if (file.hasExtension({"svg", "svgz"})) {
             QString fileName = QString::fromUtf8(EncodedName.c_str());
             // Displaying the image in a view
             DrawingView* view = new DrawingView(nullptr, Gui::getMainWindow());

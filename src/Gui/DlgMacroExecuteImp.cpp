@@ -58,7 +58,7 @@ namespace Gui {
             : QTreeWidgetItem(widget),
             systemWide(systemwide){}
 
-            ~MacroItem() override{}
+            ~MacroItem() override = default;
 
             bool systemWide;
         };
@@ -81,6 +81,8 @@ DlgMacroExecuteImp::DlgMacroExecuteImp( QWidget* parent, Qt::WindowFlags fl )
     , ui(new Ui_DlgMacroExecute)
 {
     ui->setupUi(this);
+    setupConnections();
+
     // retrieve the macro path from parameter or use the user data as default
     {
         QSignalBlocker blocker(ui->fileChooser);
@@ -102,9 +104,32 @@ DlgMacroExecuteImp::DlgMacroExecuteImp( QWidget* parent, Qt::WindowFlags fl )
 /**
  *  Destroys the object and frees any allocated resources
  */
-DlgMacroExecuteImp::~DlgMacroExecuteImp()
+DlgMacroExecuteImp::~DlgMacroExecuteImp() = default;
+
+void DlgMacroExecuteImp::setupConnections()
 {
-    // no need to delete child widgets, Qt does it all for us
+    connect(ui->fileChooser, &FileChooser::fileNameChanged,
+            this, &DlgMacroExecuteImp::onFileChooserFileNameChanged);
+    connect(ui->createButton, &QPushButton::clicked,
+            this, &DlgMacroExecuteImp::onCreateButtonClicked);
+    connect(ui->deleteButton, &QPushButton::clicked,
+            this, &DlgMacroExecuteImp::onDeleteButtonClicked);
+    connect(ui->editButton, &QPushButton::clicked,
+            this, &DlgMacroExecuteImp::onEditButtonClicked);
+    connect(ui->renameButton, &QPushButton::clicked,
+            this, &DlgMacroExecuteImp::onRenameButtonClicked);
+    connect(ui->duplicateButton, &QPushButton::clicked,
+            this, &DlgMacroExecuteImp::onDuplicateButtonClicked);
+    connect(ui->toolbarButton, &QPushButton::clicked,
+            this, &DlgMacroExecuteImp::onToolbarButtonClicked);
+    connect(ui->addonsButton, &QPushButton::clicked,
+            this, &DlgMacroExecuteImp::onAddonsButtonClicked);
+    connect(ui->userMacroListBox, &QTreeWidget::currentItemChanged,
+            this, &DlgMacroExecuteImp::onUserMacroListBoxCurrentItemChanged);
+    connect(ui->systemMacroListBox, &QTreeWidget::currentItemChanged,
+            this, &DlgMacroExecuteImp::onSystemMacroListBoxCurrentItemChanged);
+    connect(ui->tabMacroWidget, &QTabWidget::currentChanged,
+            this, &DlgMacroExecuteImp::onTabMacroWidgetCurrentChanged);
 }
 
 /**
@@ -137,7 +162,7 @@ void DlgMacroExecuteImp::fillUpList()
 /**
  * Selects a macro file in the list view.
  */
-void DlgMacroExecuteImp::on_userMacroListBox_currentItemChanged(QTreeWidgetItem* item)
+void DlgMacroExecuteImp::onUserMacroListBoxCurrentItemChanged(QTreeWidgetItem* item)
 {
     if (item) {
         ui->LineEditMacroName->setText(item->text(0));
@@ -161,7 +186,7 @@ void DlgMacroExecuteImp::on_userMacroListBox_currentItemChanged(QTreeWidgetItem*
     }
 }
 
-void DlgMacroExecuteImp::on_systemMacroListBox_currentItemChanged(QTreeWidgetItem* item)
+void DlgMacroExecuteImp::onSystemMacroListBoxCurrentItemChanged(QTreeWidgetItem* item)
 {
     if (item) {
         ui->LineEditMacroName->setText(item->text(0));
@@ -185,7 +210,7 @@ void DlgMacroExecuteImp::on_systemMacroListBox_currentItemChanged(QTreeWidgetIte
     }
 }
 
-void DlgMacroExecuteImp::on_tabMacroWidget_currentChanged(int index)
+void DlgMacroExecuteImp::onTabMacroWidgetCurrentChanged(int index)
 {
     QTreeWidgetItem* item;
 
@@ -292,7 +317,7 @@ void DlgMacroExecuteImp::accept()
 /**
  * Specify the location of your macro files. The default location is FreeCAD's home path.
  */
-void DlgMacroExecuteImp::on_fileChooser_fileNameChanged(const QString& fn)
+void DlgMacroExecuteImp::onFileChooserFileNameChanged(const QString& fn)
 {
     if (!fn.isEmpty())
     {
@@ -307,7 +332,7 @@ void DlgMacroExecuteImp::on_fileChooser_fileNameChanged(const QString& fn)
 /**
  * Opens the macro file in an editor.
  */
-void DlgMacroExecuteImp::on_editButton_clicked()
+void DlgMacroExecuteImp::onEditButtonClicked()
 {
     QDir dir;
     QTreeWidgetItem* item = nullptr;
@@ -348,7 +373,7 @@ void DlgMacroExecuteImp::on_editButton_clicked()
 }
 
 /** Creates a new macro file. */
-void DlgMacroExecuteImp::on_createButton_clicked()
+void DlgMacroExecuteImp::onCreateButtonClicked()
 {
     // query file name
     bool replaceSpaces = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Macro")->GetBool("ReplaceSpaces", true);
@@ -400,7 +425,7 @@ void DlgMacroExecuteImp::on_createButton_clicked()
 }
 
 /** Deletes the selected macro file from your harddisc. */
-void DlgMacroExecuteImp::on_deleteButton_clicked()
+void DlgMacroExecuteImp::onDeleteButtonClicked()
 {
     QTreeWidgetItem* item = ui->userMacroListBox->currentItem();
     if (!item)
@@ -435,7 +460,7 @@ void DlgMacroExecuteImp::on_deleteButton_clicked()
  * toolbar dialog.
  */
 
-void DlgMacroExecuteImp::on_toolbarButton_clicked()
+void DlgMacroExecuteImp::onToolbarButtonClicked()
 {
     /**
      * advise user of what we are doing, offer chance to cancel
@@ -592,7 +617,6 @@ Note: your changes will be applied when you next switch workbenches\n"));
             workbenchBox->setCurrentIndex(globalIdx);
             QMetaObject::invokeMethod(setupToolbarPage, "on_workbenchBox_activated",
                 Qt::DirectConnection,
-                QGenericReturnArgument(),
                 Q_ARG(int, globalIdx));
         } else {
             Base::Console().Warning("Toolbar walkthrough: Unable to find Global workbench\n");
@@ -628,7 +652,6 @@ Note: your changes will be applied when you next switch workbenches\n"));
             categoryBox->setCurrentIndex(macrosIdx);
             QMetaObject::invokeMethod(setupToolbarPage, "on_categoryBox_activated",
                 Qt::DirectConnection,
-                QGenericReturnArgument(),
                 Q_ARG(int, macrosIdx));
         } else {
             Base::Console().Warning("Toolbar walkthrough: Unable to find Macros in categoryBox\n");
@@ -668,7 +691,7 @@ Note: your changes will be applied when you next switch workbenches\n"));
 /**
  * renames the selected macro
  */
-void DlgMacroExecuteImp::on_renameButton_clicked()
+void DlgMacroExecuteImp::onRenameButtonClicked()
 {
     QDir dir;
     QTreeWidgetItem* item = nullptr;
@@ -718,6 +741,7 @@ void DlgMacroExecuteImp::on_renameButton_clicked()
         }
     }
 }
+
 /**Duplicates selected macro
  * New file has same name as original but with "@" and 3-digit number appended
  * Begins with "@001" and increments until available name is found
@@ -725,7 +749,7 @@ void DlgMacroExecuteImp::on_renameButton_clicked()
  * "MyMacro@002.FCMacro.py" becomes "MyMacro@003.FCMacro.py" unless there is
  * no already existing "MyMacro@001.FCMacro.py"
  */
-void DlgMacroExecuteImp::on_duplicateButton_clicked()
+void DlgMacroExecuteImp::onDuplicateButtonClicked()
 {
     QDir dir;
     QTreeWidgetItem* item = nullptr;
@@ -854,7 +878,7 @@ void DlgMacroExecuteImp::on_duplicateButton_clicked()
  * convenience link button to open tools -> addon manager
  * from within macro dialog
  */
-void DlgMacroExecuteImp::on_addonsButton_clicked()
+void DlgMacroExecuteImp::onAddonsButtonClicked()
 {
     CommandManager& rMgr=Application::Instance->commandManager();
     rMgr.runCommandByName("Std_AddonMgr");

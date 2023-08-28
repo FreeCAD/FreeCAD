@@ -40,6 +40,7 @@
 #include <Gui/Control.h>
 #include <Gui/Document.h>
 #include <Gui/SelectionObject.h>
+#include <Gui/Widgets.h>
 #include <Mod/Part/Gui/ViewProvider.h>
 
 #include "TaskGeomFillSurface.h"
@@ -92,7 +93,7 @@ void ViewProviderGeomFillSurface::unsetEdit(int ModNum)
 {
     if (ModNum == ViewProvider::Default) {
         // when pressing ESC make sure to close the dialog
-        QTimer::singleShot(0, &Gui::Control(), SLOT(closeDialog()));
+        QTimer::singleShot(0, &Gui::Control(), &Gui::ControlSingleton::closeDialog);
     }
     else {
         PartGui::ViewProviderSpline::unsetEdit(ModNum);
@@ -191,20 +192,28 @@ GeomFillSurface::GeomFillSurface(ViewProviderGeomFillSurface* vp, Surface::GeomF
 {
     ui = new Ui_GeomFillSurface();
     ui->setupUi(this);
+    setupConnections();
+
     selectionMode = None;
     this->vp = vp;
     checkCommand = true;
     setEditedObject(obj);
 
+    // Set up button group
+    buttonGroup = new Gui::ButtonGroup(this);
+    buttonGroup->setExclusive(true);
+    buttonGroup->addButton(ui->buttonEdgeAdd, (int)SelectionMode::Append);
+    buttonGroup->addButton(ui->buttonEdgeRemove, (int)SelectionMode::Remove);
+
     // Create context menu
     QAction* remove = new QAction(tr("Remove"), this);
     remove->setShortcut(QString::fromLatin1("Del"));
     ui->listWidget->addAction(remove);
-    connect(remove, SIGNAL(triggered()), this, SLOT(onDeleteEdge()));
+    connect(remove, &QAction::triggered, this, &GeomFillSurface::onDeleteEdge);
 
     QAction* orientation = new QAction(tr("Flip orientation"), this);
     ui->listWidget->addAction(orientation);
-    connect(orientation, SIGNAL(triggered()), this, SLOT(onFlipOrientation()));
+    connect(orientation, &QAction::triggered, this, &GeomFillSurface::onFlipOrientation);
 
     ui->listWidget->setContextMenuPolicy(Qt::ActionsContextMenu);
 }
@@ -216,6 +225,22 @@ GeomFillSurface::~GeomFillSurface()
 {
     // no need to delete child widgets, Qt does it all for us
     delete ui;
+}
+
+void GeomFillSurface::setupConnections()
+{
+    connect(ui->fillType_stretch, &QRadioButton::clicked,
+            this, &GeomFillSurface::onFillTypeStretchClicked);
+    connect(ui->fillType_coons, &QRadioButton::clicked,
+            this, &GeomFillSurface::onFillTypeCoonsClicked);
+    connect(ui->fillType_curved, &QRadioButton::clicked,
+            this, &GeomFillSurface::onFillTypeCurvedClicked);
+    connect(ui->buttonEdgeAdd, &QToolButton::toggled,
+            this, &GeomFillSurface::onButtonEdgeAddToggled);
+    connect(ui->buttonEdgeRemove, &QToolButton::toggled,
+            this, &GeomFillSurface::onButtonEdgeRemoveToggled);
+    connect(ui->listWidget, &QListWidget::itemDoubleClicked,
+            this, &GeomFillSurface::onListWidgetItemDoubleClicked);
 }
 
 // stores object pointer, its old fill type and adjusts radio buttons according to it.
@@ -372,17 +397,17 @@ bool GeomFillSurface::reject()
     return true;
 }
 
-void GeomFillSurface::on_fillType_stretch_clicked()
+void GeomFillSurface::onFillTypeStretchClicked()
 {
     changeFillType(GeomFill_StretchStyle);
 }
 
-void GeomFillSurface::on_fillType_coons_clicked()
+void GeomFillSurface::onFillTypeCoonsClicked()
 {
     changeFillType(GeomFill_CoonsStyle);
 }
 
-void GeomFillSurface::on_fillType_curved_clicked()
+void GeomFillSurface::onFillTypeCurvedClicked()
 {
     changeFillType(GeomFill_CurvedStyle);
 }
@@ -400,16 +425,26 @@ void GeomFillSurface::changeFillType(GeomFill_FillingStyle fillType)
     }
 }
 
-void GeomFillSurface::on_buttonEdgeAdd_clicked()
+void GeomFillSurface::onButtonEdgeAddToggled(bool checked)
 {
-    selectionMode = Append;
-    Gui::Selection().addSelectionGate(new EdgeSelection(true, editedObject));
+    if (checked) {
+        selectionMode = Append;
+        Gui::Selection().addSelectionGate(new EdgeSelection(true, editedObject));
+    }
+    else if (selectionMode == Append) {
+        exitSelectionMode();
+    }
 }
 
-void GeomFillSurface::on_buttonEdgeRemove_clicked()
+void GeomFillSurface::onButtonEdgeRemoveToggled(bool checked)
 {
-    selectionMode = Remove;
-    Gui::Selection().addSelectionGate(new EdgeSelection(false, editedObject));
+    if (checked) {
+        selectionMode = Remove;
+        Gui::Selection().addSelectionGate(new EdgeSelection(false, editedObject));
+    }
+    else if (selectionMode == Remove) {
+        exitSelectionMode();
+    }
 }
 
 void GeomFillSurface::onSelectionChanged(const Gui::SelectionChanges& msg)
@@ -494,7 +529,7 @@ void GeomFillSurface::onSelectionChanged(const Gui::SelectionChanges& msg)
         }
 
         editedObject->recomputeFeature();
-        QTimer::singleShot(50, this, SLOT(clearSelection()));
+        QTimer::singleShot(50, this, &GeomFillSurface::clearSelection);
     }
 }
 
@@ -566,7 +601,7 @@ void GeomFillSurface::flipOrientation(QListWidgetItem* item)
     }
 }
 
-void GeomFillSurface::on_listWidget_itemDoubleClicked(QListWidgetItem* item)
+void GeomFillSurface::onListWidgetItemDoubleClicked(QListWidgetItem* item)
 {
     if (item) {
         flipOrientation(item);
@@ -581,6 +616,13 @@ void GeomFillSurface::onFlipOrientation()
     }
 }
 
+void GeomFillSurface::exitSelectionMode()
+{
+    selectionMode = None;
+    Gui::Selection().clearSelection();
+    Gui::Selection().rmvSelectionGate();
+}
+
 // ----------------------------------------------------------------------------
 
 TaskGeomFillSurface::TaskGeomFillSurface(ViewProviderGeomFillSurface* vp, Surface::GeomFillSurface* obj)
@@ -592,11 +634,6 @@ TaskGeomFillSurface::TaskGeomFillSurface(ViewProviderGeomFillSurface* vp, Surfac
         widget->windowTitle(), true, nullptr);
     taskbox->groupLayout()->addWidget(widget);
     Content.push_back(taskbox);
-}
-
-TaskGeomFillSurface::~TaskGeomFillSurface()
-{
-    // automatically deleted in the sub-class
 }
 
 void TaskGeomFillSurface::setEditedObject(Surface::GeomFillSurface* obj)

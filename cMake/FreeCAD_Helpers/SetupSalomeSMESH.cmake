@@ -4,7 +4,7 @@ macro(SetupSalomeSMESH)
     # Salome SMESH sources are under src/3rdParty now
     if(BUILD_SMESH)
         # set the internal smesh version:
-        # see src/3rdParty/salomonemesh/CMakeLists.txt and commit https://github.com/FreeCAD/FreeCAD/commit/666a3e5 and https://forum.freecadweb.org/viewtopic.php?f=10&t=30838
+        # see src/3rdParty/salomonemesh/CMakeLists.txt and commit https://github.com/FreeCAD/FreeCAD/commit/666a3e5 and https://forum.freecad.org/viewtopic.php?f=10&t=30838
         set(SMESH_VERSION_MAJOR 7)
         set(SMESH_VERSION_MINOR 7)
         set(SMESH_VERSION_PATCH 1)
@@ -138,7 +138,7 @@ macro(SetupSalomeSMESH)
         endif()
 
         set(SMESH_FOUND TRUE)
-        configure_file(SMESH_Version.h.cmake ${CMAKE_CURRENT_BINARY_DIR}/SMESH_Version.h)
+        configure_file(${CMAKE_SOURCE_DIR}/src/SMESH_Version.h.cmake ${CMAKE_CURRENT_BINARY_DIR}/SMESH_Version.h)
     endif(BUILD_SMESH)
 
 endmacro(SetupSalomeSMESH)

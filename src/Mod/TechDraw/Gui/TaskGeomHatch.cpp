@@ -50,7 +50,7 @@ TaskGeomHatch::TaskGeomHatch(TechDraw::DrawGeomHatch* inHatch, TechDrawGui::View
     m_createMode(mode)
 {
     ui->setupUi(this);
-    connect(ui->fcFile, SIGNAL(fileNameSelected( const QString & )), this, SLOT(onFileChanged(void)));
+    connect(ui->fcFile, &FileChooser::fileNameSelected, this, &TaskGeomHatch::onFileChanged);
 
     m_source = m_hatch->Source.getValue();
     getParameters();
@@ -70,23 +70,23 @@ void TaskGeomHatch::initUi()
     } else {
         Base::Console().Warning("Warning - Pattern name *%s* not found in current PAT File\n", m_name.c_str());
     }
-    connect(ui->cbName, SIGNAL(currentIndexChanged(int)), this, SLOT(onNameChanged()));
+    connect(ui->cbName, qOverload<int>(&QComboBox::currentIndexChanged), this, &TaskGeomHatch::onNameChanged);
 
     ui->sbScale->setValue(m_scale);
     ui->sbScale->setSingleStep(0.1);
-    connect(ui->sbScale, SIGNAL(valueChanged(double)), this, SLOT(onScaleChanged()));
+    connect(ui->sbScale, qOverload<double>(&QuantitySpinBox::valueChanged), this, &TaskGeomHatch::onScaleChanged);
     ui->sbWeight->setValue(m_weight);
     ui->sbWeight->setSingleStep(0.1);
-    connect(ui->sbWeight, SIGNAL(valueChanged(double)), this, SLOT(onLineWeightChanged()));
+    connect(ui->sbWeight, qOverload<double>(&QuantitySpinBox::valueChanged), this, &TaskGeomHatch::onLineWeightChanged);
     ui->ccColor->setColor(m_color.asValue<QColor>());
-    connect(ui->ccColor, SIGNAL(changed()), this, SLOT(onColorChanged()));
+    connect(ui->ccColor, &ColorButton::changed, this, &TaskGeomHatch::onColorChanged);
 
     ui->dsbRotation->setValue(m_rotation);
-    connect(ui->dsbRotation, SIGNAL(valueChanged(double)), this, SLOT(onRotationChanged()));
+    connect(ui->dsbRotation, qOverload<double>(&QDoubleSpinBox::valueChanged), this, &TaskGeomHatch::onRotationChanged);
     ui->dsbOffsetX->setValue(m_offset.x);
-    connect(ui->dsbOffsetX, SIGNAL(valueChanged(double)), this, SLOT(onOffsetChanged()));
+    connect(ui->dsbOffsetX, qOverload<double>(&QDoubleSpinBox::valueChanged), this, &TaskGeomHatch::onOffsetChanged);
     ui->dsbOffsetY->setValue(m_offset.y);
-    connect(ui->dsbOffsetY, SIGNAL(valueChanged(double)), this, SLOT(onOffsetChanged()));
+    connect(ui->dsbOffsetY, qOverload<double>(&QDoubleSpinBox::valueChanged), this, &TaskGeomHatch::onOffsetChanged);
 }
 
 void TaskGeomHatch::onFileChanged()

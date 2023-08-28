@@ -53,7 +53,7 @@ else(PYCXX_INCLUDE_DIR)
         endif(PyCXX_FIND_REQUIRED)
     endif(NOT PYCXX_INCLUDE_DIR)
 endif(PYCXX_INCLUDE_DIR)
-    
+
 # find the sources directory
 if(PYCXX_SOURCE_DIR)
     # source directory specified, they'd better be there

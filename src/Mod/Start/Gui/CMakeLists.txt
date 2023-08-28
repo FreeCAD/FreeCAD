@@ -16,7 +16,11 @@ set(StartGui_UIC_SRCS
     DlgStartPreferences.ui
 )
 
-qt_add_resources(Start_QRC_SRCS Resources/Start.qrc)
+set (Start_TR_QRC ${CMAKE_CURRENT_BINARY_DIR}/Resources/Start_translation.qrc)
+qt_find_and_add_translation(QM_SRCS "Resources/translations/*_*.ts"
+    ${CMAKE_CURRENT_BINARY_DIR}/Resources/translations)
+qt_create_resource_file(${Start_TR_QRC} ${QM_SRCS})
+qt_add_resources(Start_QRC_SRCS Resources/Start.qrc ${Start_TR_QRC})
 
 SET(StartGui_SRCS
     ${Start_QRC_SRCS}
@@ -35,6 +39,12 @@ SET(StartGui_SRCS
 SET(StartGuiIcon_SVG
     Resources/icons/StartWorkbench.svg
 )
+
+if(FREECAD_USE_PCH)
+    add_definitions(-D_PreComp_)
+    GET_MSVC_PRECOMPILED_SOURCE("PreCompiled.cpp" PCH_SRCS ${StartGui_SRCS})
+    ADD_MSVC_PRECOMPILED_HEADER(StartGui PreCompiled.h PreCompiled.cpp PCH_SRCS)
+endif(FREECAD_USE_PCH)
 
 add_library(StartGui SHARED ${StartGui_SRCS} ${StartGuiIcon_SVG})
 target_link_libraries(StartGui ${StartGui_LIBS})

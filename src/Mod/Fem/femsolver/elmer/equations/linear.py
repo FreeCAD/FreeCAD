@@ -24,7 +24,7 @@
 
 __title__ = "FreeCAD FEM solver Elmer equation object _Linear"
 __author__ = "Markus Hovorka, Uwe Stöhr"
-__url__ = "https://www.freecadweb.org"
+__url__ = "https://www.freecad.org"
 
 ## \addtogroup FEM
 #  @{
@@ -148,7 +148,7 @@ class Proxy(equation.Proxy):
         # we must set an expression because we don't have a UI, the user has to
         # view and edit the tolerance via the property editor and this does not
         # yet allow to view and edit small numbers in scientific notation
-        # forum thread: https://forum.freecadweb.org/viewtopic.php?p=613897#p613897
+        # forum thread: https://forum.freecad.org/viewtopic.php?p=613897#p613897
         obj.setExpression("LinearTolerance", "1e-10")
         obj.LinearSolverType = LINEAR_SOLVER
         obj.LinearSolverType = "Iterative"

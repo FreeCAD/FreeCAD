@@ -27,6 +27,9 @@
 
 #include <QByteArray>
 #include <QPixmap>
+#include <QSvgRenderer>
+
+#include <App/Material.h>
 
 #include <Mod/TechDraw/App/HatchLine.h>
 
@@ -128,13 +131,13 @@ protected:
     double dashRemain(const std::vector<double> dv, const double offset);
     double calcOffset(TechDraw::BaseGeomPtr g, TechDraw::LineSet ls);
     int projIndex;                              //index of face in Projection. -1 for SectionFace.
-    QGCustomRect *m_rect;
+    QGCustomRect* m_svgHatchArea;
 
     QByteArray m_svgXML;
     std::string m_svgCol;
     std::string m_fileSpec;   //for svg & bitmaps
 
-    QGCustomImage* m_image;
+    QGCustomImage* m_imageHatchArea;
 
     double m_fillScale;
     bool m_isHatched;
@@ -165,6 +168,8 @@ private:
 
     double m_hatchRotation;
     Base::Vector3d m_hatchOffset;
+
+    QSvgRenderer *m_sharedRender;
 
 };
 

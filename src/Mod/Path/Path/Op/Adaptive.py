@@ -839,7 +839,7 @@ def _get_working_edges(op, obj):
                         face = base.Shape.getElement(sub)
                         # get outline with wire_A method used in PocketShape, but it does not play nicely later
                         # wire_A = TechDraw.findShapeOutline(face, 1, FreeCAD.Vector(0.0, 0.0, 1.0))
-                        wire_B = face.Wires[0]
+                        wire_B = face.OuterWire
                         shape = Part.Face(wire_B)
                     else:
                         shape = base.Shape.getElement(sub)

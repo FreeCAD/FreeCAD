@@ -178,7 +178,7 @@
     <message>
       <location filename="../../Command.cpp" line="61"/>
       <source>Merge selected cells</source>
-      <translation type="unfinished">Merge selected cells</translation>
+      <translation>Συγχώνευση επιλεγμένων κελιών</translation>
     </message>
   </context>
   <context>
@@ -214,7 +214,7 @@
     <message>
       <location filename="../../Command.cpp" line="116"/>
       <source>Split previously merged cells</source>
-      <translation type="unfinished">Split previously merged cells</translation>
+      <translation>Διαίρεση προηγούμενων συγχωνευμένων κελιών</translation>
     </message>
   </context>
   <context>
@@ -232,7 +232,7 @@
     <message>
       <location filename="../../Command.cpp" line="598"/>
       <source>Set text in selected cells bold</source>
-      <translation type="unfinished">Set text in selected cells bold</translation>
+      <translation>Ορισμός κειμένου σε επιλεγμένα κελιά με έντονη γραφή</translation>
     </message>
   </context>
   <context>
@@ -250,7 +250,7 @@
     <message>
       <location filename="../../Command.cpp" line="672"/>
       <source>Set text in selected cells italic</source>
-      <translation type="unfinished">Set text in selected cells italic</translation>
+      <translation>Ορισμός κειμένου σε επιλεγμένα κελιά πλάγια γραφή</translation>
     </message>
   </context>
   <context>
@@ -268,15 +268,15 @@
     <message>
       <location filename="../../Command.cpp" line="746"/>
       <source>Underline text in selected cells</source>
-      <translation type="unfinished">Underline text in selected cells</translation>
+      <translation>Υπογράμμιση κειμένου σε επιλεγμένα κελιά</translation>
     </message>
   </context>
   <context>
     <name>ColorPickerPopup</name>
     <message>
-      <location filename="../../qtcolorpicker.cpp" line="915"/>
+      <location filename="../../qtcolorpicker.cpp" line="920"/>
       <source>Custom Color</source>
-      <translation type="unfinished">Custom Color</translation>
+      <translation>Προσαρμοσμένο χρώμα</translation>
     </message>
   </context>
   <context>
@@ -294,47 +294,47 @@
     <message>
       <location filename="../../Command.cpp" line="306"/>
       <source>Left-align cell</source>
-      <translation type="unfinished">Left-align cell</translation>
+      <translation>Αριστερή στοίχιση</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="358"/>
       <source>Center cell</source>
-      <translation type="unfinished">Center cell</translation>
+      <translation>Στοίχιση στο κέντρο</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="410"/>
       <source>Right-align cell</source>
-      <translation type="unfinished">Right-align cell</translation>
+      <translation>Δεξιά στοίχιση</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="462"/>
       <source>Top-align cell</source>
-      <translation type="unfinished">Top-align cell</translation>
+      <translation>Στοίχιση προς τα πάνω</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="514"/>
       <source>Bottom-align cell</source>
-      <translation type="unfinished">Bottom-align cell</translation>
+      <translation>Στοίχιση προς τα κάτω</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="566"/>
       <source>Vertically center cells</source>
-      <translation type="unfinished">Vertically center cells</translation>
+      <translation>Κατακόρυφη στοίχιση</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="635"/>
       <source>Set bold text</source>
-      <translation type="unfinished">Set bold text</translation>
+      <translation>Ορισμός έντονου κειμένου</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="709"/>
       <source>Set italic text</source>
-      <translation type="unfinished">Set italic text</translation>
+      <translation>Ορισμός πλάγιου κειμένου</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="783"/>
       <source>Set underline text</source>
-      <translation type="unfinished">Set underline text</translation>
+      <translation>Ορισμός υπογράμμισης κειμένου</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="894"/>
@@ -344,36 +344,36 @@
     <message>
       <location filename="../../PropertiesDialog.cpp" line="230"/>
       <source>Set cell properties</source>
-      <translation type="unfinished">Set cell properties</translation>
+      <translation>Ορισμός ιδιοτήτων κελιού</translation>
     </message>
     <message>
-      <location filename="../../SheetModel.cpp" line="468"/>
+      <location filename="../../SheetModel.cpp" line="512"/>
       <source>Edit cell</source>
-      <translation type="unfinished">Edit cell</translation>
+      <translation>Επεξεργασία κελιού</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="322"/>
-      <location filename="../../SheetTableView.cpp" line="354"/>
+      <location filename="../../SheetTableView.cpp" line="325"/>
+      <location filename="../../SheetTableView.cpp" line="357"/>
       <source>Insert rows</source>
       <translation>Εισαγωγή σειρών</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="373"/>
-      <location filename="../../SheetTableView.cpp" line="446"/>
+      <location filename="../../SheetTableView.cpp" line="376"/>
+      <location filename="../../SheetTableView.cpp" line="449"/>
       <source>Remove rows</source>
       <translation>Αφαίρεση σειρών</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="394"/>
-      <location filename="../../SheetTableView.cpp" line="427"/>
+      <location filename="../../SheetTableView.cpp" line="397"/>
+      <location filename="../../SheetTableView.cpp" line="430"/>
       <source>Insert columns</source>
       <translation>Εισαγωγή στηλών</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="615"/>
-      <location filename="../../SpreadsheetView.cpp" line="159"/>
+      <location filename="../../SheetTableView.cpp" line="632"/>
+      <location filename="../../SpreadsheetView.cpp" line="161"/>
       <source>Clear cell(s)</source>
-      <translation type="unfinished">Clear cell(s)</translation>
+      <translation>Καθαρισμός κελιού(ων)</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="132"/>
@@ -723,132 +723,137 @@ switch the design configuration. The property will be created if not exist.</tra
       <translation>Ορίζει το χρώμα υποβάθρου κελιών του Υπολογιστικού Φύλλου</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="735"/>
+      <location filename="../../SheetTableView.cpp" line="752"/>
       <source>Copy &amp; Paste failed</source>
       <translation type="unfinished">Copy &amp; Paste failed</translation>
     </message>
     <message>
-      <location filename="../../SpreadsheetView.cpp" line="426"/>
+      <location filename="../../SpreadsheetView.cpp" line="430"/>
       <source>Alias contains invalid characters!</source>
       <translation type="unfinished">Alias contains invalid characters!</translation>
     </message>
     <message>
-      <location filename="../../SpreadsheetView.cpp" line="432"/>
+      <location filename="../../SpreadsheetView.cpp" line="436"/>
       <source>Refer to cell by alias, for example
 Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
       <translation type="unfinished">Refer to cell by alias, for example
 Spreadsheet.my_alias_name instead of Spreadsheet.B1</translation>
     </message>
+    <message>
+      <location filename="../../AppSpreadsheetGui.cpp" line="121"/>
+      <source>Spreadsheet</source>
+      <translation>Υπολογιστικό Φύλλο</translation>
+    </message>
   </context>
   <context>
     <name>QtColorPicker</name>
     <message>
-      <location filename="../../qtcolorpicker.cpp" line="283"/>
-      <location filename="../../qtcolorpicker.cpp" line="410"/>
-      <location filename="../../qtcolorpicker.cpp" line="520"/>
+      <location filename="../../qtcolorpicker.cpp" line="286"/>
+      <location filename="../../qtcolorpicker.cpp" line="412"/>
+      <location filename="../../qtcolorpicker.cpp" line="522"/>
       <source>Black</source>
       <translation>Μαύρο</translation>
     </message>
     <message>
-      <location filename="../../qtcolorpicker.cpp" line="411"/>
-      <location filename="../../qtcolorpicker.cpp" line="521"/>
+      <location filename="../../qtcolorpicker.cpp" line="413"/>
+      <location filename="../../qtcolorpicker.cpp" line="523"/>
       <source>White</source>
       <translation>Λευκό</translation>
     </message>
     <message>
-      <location filename="../../qtcolorpicker.cpp" line="412"/>
-      <location filename="../../qtcolorpicker.cpp" line="522"/>
+      <location filename="../../qtcolorpicker.cpp" line="414"/>
+      <location filename="../../qtcolorpicker.cpp" line="524"/>
       <source>Red</source>
       <translation>Κόκκινο</translation>
     </message>
     <message>
-      <location filename="../../qtcolorpicker.cpp" line="413"/>
-      <location filename="../../qtcolorpicker.cpp" line="523"/>
+      <location filename="../../qtcolorpicker.cpp" line="415"/>
+      <location filename="../../qtcolorpicker.cpp" line="525"/>
       <source>Dark red</source>
       <translation>Σκούρο κόκκινο</translation>
     </message>
     <message>
-      <location filename="../../qtcolorpicker.cpp" line="414"/>
-      <location filename="../../qtcolorpicker.cpp" line="524"/>
+      <location filename="../../qtcolorpicker.cpp" line="416"/>
+      <location filename="../../qtcolorpicker.cpp" line="526"/>
       <source>Green</source>
       <translation>Πράσινο</translation>
     </message>
     <message>
-      <location filename="../../qtcolorpicker.cpp" line="415"/>
-      <location filename="../../qtcolorpicker.cpp" line="525"/>
+      <location filename="../../qtcolorpicker.cpp" line="417"/>
+      <location filename="../../qtcolorpicker.cpp" line="527"/>
       <source>Dark green</source>
       <translation>Σκούρο πράσινο</translation>
     </message>
     <message>
-      <location filename="../../qtcolorpicker.cpp" line="416"/>
-      <location filename="../../qtcolorpicker.cpp" line="526"/>
+      <location filename="../../qtcolorpicker.cpp" line="418"/>
+      <location filename="../../qtcolorpicker.cpp" line="528"/>
       <source>Blue</source>
       <translation>Μπλε</translation>
     </message>
     <message>
-      <location filename="../../qtcolorpicker.cpp" line="417"/>
-      <location filename="../../qtcolorpicker.cpp" line="527"/>
+      <location filename="../../qtcolorpicker.cpp" line="419"/>
+      <location filename="../../qtcolorpicker.cpp" line="529"/>
       <source>Dark blue</source>
       <translation>Σκούρο μπλε</translation>
     </message>
     <message>
-      <location filename="../../qtcolorpicker.cpp" line="418"/>
-      <location filename="../../qtcolorpicker.cpp" line="528"/>
+      <location filename="../../qtcolorpicker.cpp" line="420"/>
+      <location filename="../../qtcolorpicker.cpp" line="530"/>
       <source>Cyan</source>
       <translation>Κυανό</translation>
     </message>
     <message>
-      <location filename="../../qtcolorpicker.cpp" line="419"/>
-      <location filename="../../qtcolorpicker.cpp" line="529"/>
+      <location filename="../../qtcolorpicker.cpp" line="421"/>
+      <location filename="../../qtcolorpicker.cpp" line="531"/>
       <source>Dark cyan</source>
       <translation>Σκούρο κυανό</translation>
     </message>
     <message>
-      <location filename="../../qtcolorpicker.cpp" line="420"/>
-      <location filename="../../qtcolorpicker.cpp" line="530"/>
+      <location filename="../../qtcolorpicker.cpp" line="422"/>
+      <location filename="../../qtcolorpicker.cpp" line="532"/>
       <source>Magenta</source>
       <translation>Πορφυρό</translation>
     </message>
     <message>
-      <location filename="../../qtcolorpicker.cpp" line="421"/>
-      <location filename="../../qtcolorpicker.cpp" line="531"/>
+      <location filename="../../qtcolorpicker.cpp" line="423"/>
+      <location filename="../../qtcolorpicker.cpp" line="533"/>
       <source>Dark magenta</source>
       <translation>Σκούρο πορφυρό</translation>
     </message>
     <message>
-      <location filename="../../qtcolorpicker.cpp" line="422"/>
-      <location filename="../../qtcolorpicker.cpp" line="532"/>
+      <location filename="../../qtcolorpicker.cpp" line="424"/>
+      <location filename="../../qtcolorpicker.cpp" line="534"/>
       <source>Yellow</source>
       <translation>Κίτρινο</translation>
     </message>
     <message>
-      <location filename="../../qtcolorpicker.cpp" line="423"/>
-      <location filename="../../qtcolorpicker.cpp" line="533"/>
+      <location filename="../../qtcolorpicker.cpp" line="425"/>
+      <location filename="../../qtcolorpicker.cpp" line="535"/>
       <source>Dark yellow</source>
       <translation>Σκούρο κίτρινο</translation>
     </message>
     <message>
-      <location filename="../../qtcolorpicker.cpp" line="424"/>
-      <location filename="../../qtcolorpicker.cpp" line="534"/>
+      <location filename="../../qtcolorpicker.cpp" line="426"/>
+      <location filename="../../qtcolorpicker.cpp" line="536"/>
       <source>Gray</source>
       <translation>Γκρι</translation>
     </message>
     <message>
-      <location filename="../../qtcolorpicker.cpp" line="425"/>
-      <location filename="../../qtcolorpicker.cpp" line="535"/>
+      <location filename="../../qtcolorpicker.cpp" line="427"/>
+      <location filename="../../qtcolorpicker.cpp" line="537"/>
       <source>Dark gray</source>
       <translation>Σκούρο γκρι</translation>
     </message>
     <message>
-      <location filename="../../qtcolorpicker.cpp" line="426"/>
-      <location filename="../../qtcolorpicker.cpp" line="536"/>
+      <location filename="../../qtcolorpicker.cpp" line="428"/>
+      <location filename="../../qtcolorpicker.cpp" line="538"/>
       <source>Light gray</source>
       <translation>Ανοιχτό γκρι</translation>
     </message>
     <message>
-      <location filename="../../qtcolorpicker.cpp" line="448"/>
+      <location filename="../../qtcolorpicker.cpp" line="450"/>
       <source>Custom Color</source>
-      <translation type="unfinished">Custom Color</translation>
+      <translation>Προσαρμοσμένο χρώμα</translation>
     </message>
   </context>
   <context>
@@ -866,7 +871,7 @@ Spreadsheet.my_alias_name instead of Spreadsheet.B1</translation>
     <message>
       <location filename="../../Sheet.ui" line="39"/>
       <source>&amp;Alias:</source>
-      <translation type="unfinished">&amp;Alias:</translation>
+      <translation>&amp;Ψευδώνυμο:</translation>
     </message>
     <message>
       <location filename="../../Sheet.ui" line="52"/>
@@ -919,63 +924,71 @@ Do you want to continue?</translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="26"/>
+      <source>Display Settings</source>
+      <translation type="unfinished">Display Settings</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettings.ui" line="32"/>
+      <source>If checked, use the custom presentation to display cell string.</source>
+      <translation type="unfinished">If checked, use the custom presentation to display cell string.</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettings.ui" line="35"/>
+      <source>Show alias in cell with format</source>
+      <translation type="unfinished">Show alias in cell with format</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettings.ui" line="64"/>
+      <source>The format of the custom cell string presentation.
+Defaults to: %V = %A
+
+%A - alias name
+%V - cell value</source>
+      <translation type="unfinished">The format of the custom cell string presentation.
+Defaults to: %V = %A
+
+%A - alias name
+%V - cell value</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettings.ui" line="84"/>
       <source>Import/Export Settings</source>
       <translation type="unfinished">Import/Export Settings</translation>
     </message>
     <message>
-      <location filename="../../DlgSettings.ui" line="38"/>
+      <location filename="../../DlgSettings.ui" line="96"/>
       <source>Delimiter Character: </source>
       <translation type="unfinished">Delimiter Character: </translation>
     </message>
     <message>
-      <location filename="../../DlgSettings.ui" line="58"/>
+      <location filename="../../DlgSettings.ui" line="116"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Character to use as field delimiter.  Default is tab, but also commonly used are commas (,) and semicolons (;). Select from the list or enter your own in the field. Must be a single character or the words &lt;span style=" font-style:italic;"&gt;tab&lt;/span&gt;, &lt;span style=" font-style:italic;"&gt;comma&lt;/span&gt;, or &lt;span style=" font-style:italic;"&gt;semicolon&lt;/span&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
       <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Character to use as field delimiter.  Default is tab, but also commonly used are commas (,) and semicolons (;). Select from the list or enter your own in the field. Must be a single character or the words &lt;span style=" font-style:italic;"&gt;tab&lt;/span&gt;, &lt;span style=" font-style:italic;"&gt;comma&lt;/span&gt;, or &lt;span style=" font-style:italic;"&gt;semicolon&lt;/span&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-      <location filename="../../DlgSettings.ui" line="74"/>
+      <location filename="../../DlgSettings.ui" line="132"/>
       <source>tab</source>
       <translation type="unfinished">tab</translation>
     </message>
     <message>
-      <location filename="../../DlgSettings.ui" line="79"/>
-      <source>;</source>
-      <translation>·</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettings.ui" line="84"/>
-      <source>,</source>
-      <translation>,</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettings.ui" line="98"/>
+      <location filename="../../DlgSettings.ui" line="156"/>
       <source>Quote Character: </source>
       <translation type="unfinished">Quote Character: </translation>
     </message>
     <message>
-      <location filename="../../DlgSettings.ui" line="105"/>
+      <location filename="../../DlgSettings.ui" line="163"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Character used to delimit strings, typically is single quote (') or double quote (&amp;quot;). Must be a single character.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
       <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Character used to delimit strings, typically is single quote (') or double quote (&amp;quot;). Must be a single character.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-      <location filename="../../DlgSettings.ui" line="111"/>
-      <source>"</source>
-      <translation>"</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettings.ui" line="130"/>
+      <location filename="../../DlgSettings.ui" line="188"/>
       <source>Escape Character: </source>
       <translation type="unfinished">Escape Character: </translation>
     </message>
     <message>
-      <location filename="../../DlgSettings.ui" line="137"/>
+      <location filename="../../DlgSettings.ui" line="195"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Escape character, typically the backslash (\), used to indicate special unprintable characters, e.g. \t = tab. Must be a single character.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
       <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Escape character, typically the backslash (\), used to indicate special unprintable characters, e.g. \t = tab. Must be a single character.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettings.ui" line="140"/>
-      <source>\</source>
-      <translation type="unfinished">\</translation>
     </message>
   </context>
   <context>
@@ -989,14 +1002,6 @@ Do you want to continue?</translation>
       <location filename="../../DlgSheetConf.cpp" line="294"/>
       <source>Unsetup configuration table</source>
       <translation type="unfinished">Unsetup configuration table</translation>
-    </message>
-  </context>
-  <context>
-    <name>SpreadsheetGui::Module</name>
-    <message>
-      <location filename="../../AppSpreadsheetGui.cpp" line="79"/>
-      <source>Unnamed</source>
-      <translation>Ανώνυμο</translation>
     </message>
   </context>
   <context>
@@ -1067,61 +1072,61 @@ Do you want to continue?</translation>
     </message>
     <message>
       <location filename="../../SheetTableView.cpp" line="169"/>
-      <location filename="../../SheetTableView.cpp" line="596"/>
+      <location filename="../../SheetTableView.cpp" line="613"/>
       <source>Properties...</source>
       <translation>Ιδιότητες...</translation>
     </message>
     <message>
       <location filename="../../SheetTableView.cpp" line="181"/>
-      <location filename="../../SheetTableView.cpp" line="597"/>
+      <location filename="../../SheetTableView.cpp" line="614"/>
       <source>Recompute</source>
       <translation type="unfinished">Recompute</translation>
     </message>
     <message>
       <location filename="../../SheetTableView.cpp" line="185"/>
-      <location filename="../../SheetTableView.cpp" line="605"/>
+      <location filename="../../SheetTableView.cpp" line="622"/>
       <source>Bind...</source>
       <translation type="unfinished">Bind...</translation>
     </message>
     <message>
       <location filename="../../SheetTableView.cpp" line="189"/>
-      <location filename="../../SheetTableView.cpp" line="598"/>
+      <location filename="../../SheetTableView.cpp" line="615"/>
       <source>Configuration table...</source>
       <translation type="unfinished">Configuration table...</translation>
     </message>
     <message>
       <location filename="../../SheetTableView.cpp" line="197"/>
-      <location filename="../../SheetTableView.cpp" line="599"/>
+      <location filename="../../SheetTableView.cpp" line="616"/>
       <source>Merge cells</source>
       <translation>Συγχώνευση κελιών</translation>
     </message>
     <message>
       <location filename="../../SheetTableView.cpp" line="199"/>
-      <location filename="../../SheetTableView.cpp" line="600"/>
+      <location filename="../../SheetTableView.cpp" line="617"/>
       <source>Split cells</source>
       <translation type="unfinished">Split cells</translation>
     </message>
     <message>
       <location filename="../../SheetTableView.cpp" line="203"/>
-      <location filename="../../SheetTableView.cpp" line="603"/>
+      <location filename="../../SheetTableView.cpp" line="620"/>
       <source>Cut</source>
       <translation>Περικοπή</translation>
     </message>
     <message>
       <location filename="../../SheetTableView.cpp" line="205"/>
-      <location filename="../../SheetTableView.cpp" line="601"/>
+      <location filename="../../SheetTableView.cpp" line="618"/>
       <source>Copy</source>
       <translation>Αντιγραφή</translation>
     </message>
     <message>
       <location filename="../../SheetTableView.cpp" line="207"/>
-      <location filename="../../SheetTableView.cpp" line="602"/>
+      <location filename="../../SheetTableView.cpp" line="619"/>
       <source>Paste</source>
       <translation type="unfinished">Paste</translation>
     </message>
     <message>
       <location filename="../../SheetTableView.cpp" line="209"/>
-      <location filename="../../SheetTableView.cpp" line="604"/>
+      <location filename="../../SheetTableView.cpp" line="621"/>
       <source>Delete</source>
       <translation>Διαγραφή</translation>
     </message>
@@ -1129,12 +1134,12 @@ Do you want to continue?</translation>
   <context>
     <name>SpreadsheetGui::SheetView</name>
     <message>
-      <location filename="../../SpreadsheetView.cpp" line="254"/>
+      <location filename="../../SpreadsheetView.cpp" line="256"/>
       <source>Export PDF</source>
       <translation>Εξαγωγή σε PDF</translation>
     </message>
     <message>
-      <location filename="../../SpreadsheetView.cpp" line="255"/>
+      <location filename="../../SpreadsheetView.cpp" line="257"/>
       <source>PDF file</source>
       <translation>Αρχείο PDF</translation>
     </message>
@@ -1160,6 +1165,14 @@ Do you want to continue?</translation>
       <location filename="../../Workbench.cpp" line="53"/>
       <source>&amp;Styles</source>
       <translation type="unfinished">&amp;Styles</translation>
+    </message>
+  </context>
+  <context>
+    <name>Py</name>
+    <message>
+      <location filename="../../AppSpreadsheetGui.cpp" line="80"/>
+      <source>Unnamed</source>
+      <translation>Ανώνυμο</translation>
     </message>
   </context>
 </TS>

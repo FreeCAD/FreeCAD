@@ -66,8 +66,10 @@ TaskMultiTransformParameters::TaskMultiTransformParameters(ViewProviderTransform
     QMetaObject::connectSlotsByName(this);
     this->groupLayout()->addWidget(proxy);
 
-    connect(ui->buttonAddFeature, SIGNAL(toggled(bool)), this, SLOT(onButtonAddFeature(bool)));
-    connect(ui->buttonRemoveFeature, SIGNAL(toggled(bool)), this, SLOT(onButtonRemoveFeature(bool)));
+    connect(ui->buttonAddFeature, &QToolButton::toggled,
+            this, &TaskMultiTransformParameters::onButtonAddFeature);
+    connect(ui->buttonRemoveFeature, &QToolButton::toggled,
+            this, &TaskMultiTransformParameters::onButtonRemoveFeature);
 
     // Create context menu
     QAction* action = new QAction(tr("Remove"), this);
@@ -77,50 +79,51 @@ TaskMultiTransformParameters::TaskMultiTransformParameters(ViewProviderTransform
     action->setShortcutVisibleInContextMenu(true);
 #endif
     ui->listWidgetFeatures->addAction(action);
-    connect(action, SIGNAL(triggered()), this, SLOT(onFeatureDeleted()));
+    connect(action, &QAction::triggered,
+            this, &TaskMultiTransformParameters::onFeatureDeleted);
     ui->listWidgetFeatures->setContextMenuPolicy(Qt::ActionsContextMenu);
-    connect(ui->listWidgetFeatures->model(),
-        SIGNAL(rowsMoved(QModelIndex, int, int, QModelIndex, int)), this, SLOT(indexesMoved()));
+    connect(ui->listWidgetFeatures->model(), &QAbstractListModel::rowsMoved,
+            this, &TaskMultiTransformParameters::indexesMoved);
 
     // Create a context menu for the listview of transformation features
     action = new QAction(tr("Edit"), ui->listTransformFeatures);
-    action->connect(action, SIGNAL(triggered()),
-                    this, SLOT(onTransformEdit()));
+    action->connect(action, &QAction::triggered,
+                    this, &TaskMultiTransformParameters::onTransformEdit);
     ui->listTransformFeatures->addAction(action);
     action = new QAction(tr("Delete"), ui->listTransformFeatures);
-    action->connect(action, SIGNAL(triggered()),
-                    this, SLOT(onTransformDelete()));
+    action->connect(action, &QAction::triggered,
+                    this, &TaskMultiTransformParameters::onTransformDelete);
     ui->listTransformFeatures->addAction(action);
     action = new QAction(tr("Add mirrored transformation"), ui->listTransformFeatures);
-    action->connect(action, SIGNAL(triggered()),
-                    this, SLOT(onTransformAddMirrored()));
+    action->connect(action, &QAction::triggered,
+                    this, &TaskMultiTransformParameters::onTransformAddMirrored);
     ui->listTransformFeatures->addAction(action);
     action = new QAction(tr("Add linear pattern"), ui->listTransformFeatures);
-    action->connect(action, SIGNAL(triggered()),
-                    this, SLOT(onTransformAddLinearPattern()));
+    action->connect(action, &QAction::triggered,
+                    this, &TaskMultiTransformParameters::onTransformAddLinearPattern);
     ui->listTransformFeatures->addAction(action);
     action = new QAction(tr("Add polar pattern"), ui->listTransformFeatures);
-    action->connect(action, SIGNAL(triggered()),
-                    this, SLOT(onTransformAddPolarPattern()));
+    action->connect(action, &QAction::triggered,
+                    this, &TaskMultiTransformParameters::onTransformAddPolarPattern);
     ui->listTransformFeatures->addAction(action);
     action = new QAction(tr("Add scaled transformation"), ui->listTransformFeatures);
-    action->connect(action, SIGNAL(triggered()),
-                    this, SLOT(onTransformAddScaled()));
+    action->connect(action, &QAction::triggered,
+                    this, &TaskMultiTransformParameters::onTransformAddScaled);
     ui->listTransformFeatures->addAction(action);
     action = new QAction(tr("Move up"), ui->listTransformFeatures);
-    action->connect(action, SIGNAL(triggered()),
-                    this, SLOT(onMoveUp()));
+    action->connect(action, &QAction::triggered,
+                    this, &TaskMultiTransformParameters::onMoveUp);
     ui->listTransformFeatures->addAction(action);
     action = new QAction(tr("Move down"), ui->listTransformFeatures);
-    action->connect(action, SIGNAL(triggered()),
-                    this, SLOT(onMoveDown()));
+    action->connect(action, &QAction::triggered,
+                    this, &TaskMultiTransformParameters::onMoveDown);
     ui->listTransformFeatures->addAction(action);
     ui->listTransformFeatures->setContextMenuPolicy(Qt::ActionsContextMenu);
-    connect(ui->checkBoxUpdateView, SIGNAL(toggled(bool)),
-            this, SLOT(onUpdateView(bool)));
+    connect(ui->checkBoxUpdateView, &QCheckBox::toggled,
+            this, &TaskMultiTransformParameters::onUpdateView);
 
-    connect(ui->listTransformFeatures, SIGNAL(activated(QModelIndex)),
-            this, SLOT(onTransformActivated(QModelIndex)));
+    connect(ui->listTransformFeatures, &QListWidget::activated,
+            this, &TaskMultiTransformParameters::onTransformActivated);
 
     // Get the transformFeatures data
     PartDesign::MultiTransform* pcMultiTransform = static_cast<PartDesign::MultiTransform*>(TransformedView->getObject());
@@ -129,10 +132,10 @@ TaskMultiTransformParameters::TaskMultiTransformParameters(ViewProviderTransform
     // Fill data into dialog elements
     ui->listTransformFeatures->setEnabled(true);
     ui->listTransformFeatures->clear();
-    for (std::vector<App::DocumentObject*>::const_iterator i = transformFeatures.begin(); i != transformFeatures.end(); i++)
-    {
-        if (*i)
-            ui->listTransformFeatures->addItem(QString::fromUtf8((*i)->Label.getValue()));
+    for (auto it : transformFeatures) {
+        if (it) {
+            ui->listTransformFeatures->addItem(QString::fromUtf8(it->Label.getValue()));
+        }
     }
     if (!transformFeatures.empty()) {
         ui->listTransformFeatures->setCurrentRow(0, QItemSelectionModel::ClearAndSelect);
@@ -146,8 +149,7 @@ TaskMultiTransformParameters::TaskMultiTransformParameters(ViewProviderTransform
     std::vector<App::DocumentObject*> originals = pcMultiTransform->Originals.getValues();
 
     // Fill data into dialog elements
-    for (std::vector<App::DocumentObject*>::const_iterator i = originals.begin(); i != originals.end(); i++) {
-        const App::DocumentObject* obj = *i;
+    for (auto obj : originals) {
         if (obj) {
             QListWidgetItem* item = new QListWidgetItem();
             item->setText(QString::fromUtf8(obj->Label.getValue()));
@@ -270,8 +272,8 @@ void TaskMultiTransformParameters::onTransformEdit()
         return; // TODO: Show an error?
 
     subTask->setEnabledTransaction(isEnabledTransaction());
-    connect(ui->checkBoxUpdateView, SIGNAL(toggled(bool)),
-            subTask, SLOT(onUpdateView(bool)));
+    connect(ui->checkBoxUpdateView, &QCheckBox::toggled,
+            subTask, &TaskTransformedParameters::onUpdateView);
 }
 
 void TaskMultiTransformParameters::onTransformActivated(const QModelIndex& index)
@@ -492,7 +494,8 @@ void TaskMultiTransformParameters::onMoveDown()
     moveTransformFeature(+1);
 }
 
-void TaskMultiTransformParameters::onSubTaskButtonOK() {
+void TaskMultiTransformParameters::onSubTaskButtonOK()
+{
     closeSubTask();
 }
 
@@ -557,10 +560,10 @@ bool TaskDlgMultiTransformParameters::accept()
     std::vector<App::DocumentObject*> transformFeatures = mtParameter->getTransformFeatures();
     std::stringstream str;
     str << Gui::Command::getObjectCmd(vp->getObject()) << ".Transformations = [";
-    for (std::vector<App::DocumentObject*>::const_iterator it = transformFeatures.begin(); it != transformFeatures.end(); it++)
-    {
-        if (*it)
-            str << Gui::Command::getObjectCmd(*it) << ",";
+    for (auto it : transformFeatures) {
+        if (it) {
+            str << Gui::Command::getObjectCmd(it) << ",";
+        }
     }
     str << "]";
     Gui::Command::runCommand(Gui::Command::Doc,str.str().c_str());

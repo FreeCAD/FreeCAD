@@ -29,9 +29,9 @@
 using namespace Import;
 
 // returns a string which represents the object e.g. when printed in python
-std::string StepShapePy::representation(void) const
+std::string StepShapePy::representation() const
 {
-    return std::string("<StepShape object>");
+    return {"<StepShape object>"};
 }
 
 PyObject *StepShapePy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // Python wrapper

@@ -120,7 +120,7 @@ class Part21Parser:
         return self._schema_name
 
     def get_number_of_instances(self):
-        return len(list(self._instances_definition.keys()))
+        return len(self._instances_definition)
 
     def parse_file(self):
         init_time = time.time()
@@ -153,7 +153,7 @@ class Part21Parser:
                     self._schema_name = line.split("'")[1].split("'")[0].split(" ")[0].lower()
         fp.close()
         print('done in %fs.'%(time.time()-init_time))
-        print('schema: - %s entities %i'%(self._schema_name,len(list(self._instances_definition.keys()))))
+        print('schema: - %s entities %i'%(self._schema_name,len(self._instances_definition)))
 
 class EntityInstancesFactory(object):
     '''
@@ -183,7 +183,7 @@ class Part21Population(object):
     def create_entity_instances(self):
         """ Starts entity instances creation
         """
-        for number_of_ancestor in list(self._part21_loader._number_of_ancestors.keys()):
+        for number_of_ancestor in list(self._part21_loader._number_of_ancestors):
             for entity_definition_id in self._part21_loader._number_of_ancestors[number_of_ancestor]:
                 self.create_entity_instance(entity_definition_id)
 

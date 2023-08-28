@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>278</width>
-    <height>330</height>
+    <height>398</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -302,6 +302,19 @@
    <header>Gui/QuantitySpinBox.h</header>
   </customwidget>
  </customwidgets>
+ <tabstops>
+  <tabstop>axis</tabstop>
+  <tabstop>inputMode</tabstop>
+  <tabstop>pitch</tabstop>
+  <tabstop>height</tabstop>
+  <tabstop>turns</tabstop>
+  <tabstop>coneAngle</tabstop>
+  <tabstop>growth</tabstop>
+  <tabstop>checkBoxLeftHanded</tabstop>
+  <tabstop>checkBoxReversed</tabstop>
+  <tabstop>checkBoxOutside</tabstop>
+  <tabstop>checkBoxUpdateView</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>

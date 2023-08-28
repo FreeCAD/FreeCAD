@@ -59,6 +59,8 @@ DlgCustomActionsImp::DlgCustomActionsImp( QWidget* parent )
   , ui(new Ui_DlgCustomActions)
 {
     ui->setupUi(this);
+    setupConnections();
+
     // search for all macros
     std::string cMacroPath = App::GetApplication().
         GetParameterGroupByPath("User parameter:BaseApp/Preferences/Macro")
@@ -90,6 +92,20 @@ DlgCustomActionsImp::~DlgCustomActionsImp()
 {
     if (bChanged)
         MacroCommand::save();
+}
+
+void DlgCustomActionsImp::setupConnections()
+{
+    connect(ui->actionListWidget, &QTreeWidget::itemActivated,
+            this, &DlgCustomActionsImp::onActionListWidgetItemActivated);
+    connect(ui->buttonChoosePixmap, &QToolButton::clicked,
+            this, &DlgCustomActionsImp::onButtonChoosePixmapClicked);
+    connect(ui->buttonAddAction, &QPushButton::clicked,
+            this, &DlgCustomActionsImp::onButtonAddActionClicked);
+    connect(ui->buttonRemoveAction, &QPushButton::clicked,
+            this, &DlgCustomActionsImp::onButtonRemoveActionClicked);
+    connect(ui->buttonReplaceAction, &QPushButton::clicked,
+            this, &DlgCustomActionsImp::onButtonReplaceActionClicked);
 }
 
 bool DlgCustomActionsImp::event(QEvent* e)
@@ -159,7 +175,7 @@ void DlgCustomActionsImp::showActions()
     }
 }
 
-void DlgCustomActionsImp::on_actionListWidget_itemActivated(QTreeWidgetItem *item)
+void DlgCustomActionsImp::onActionListWidgetItemActivated(QTreeWidgetItem *item)
 {
     if (!item)
         return; // no valid item
@@ -210,7 +226,7 @@ void DlgCustomActionsImp::on_actionListWidget_itemActivated(QTreeWidgetItem *ite
     }
 }
 
-void DlgCustomActionsImp::on_buttonAddAction_clicked()
+void DlgCustomActionsImp::onButtonAddActionClicked()
 {
     if (ui->actionMacros-> currentText().isEmpty())
     {
@@ -277,7 +293,7 @@ void DlgCustomActionsImp::on_buttonAddAction_clicked()
     Q_EMIT addMacroAction(actionName);
 }
 
-void DlgCustomActionsImp::on_buttonReplaceAction_clicked()
+void DlgCustomActionsImp::onButtonReplaceActionClicked()
 {
     QTreeWidgetItem* item = ui->actionListWidget->currentItem();
     if (!item)
@@ -353,7 +369,7 @@ void DlgCustomActionsImp::on_buttonReplaceAction_clicked()
         item->setIcon(0, Gui::BitmapFactory().pixmap(macro->getPixmap()));
 }
 
-void DlgCustomActionsImp::on_buttonRemoveAction_clicked()
+void DlgCustomActionsImp::onButtonRemoveActionClicked()
 {
     // remove item from list view
     QTreeWidgetItem* item = ui->actionListWidget->currentItem();
@@ -386,10 +402,8 @@ IconDialog::IconDialog(QWidget* parent)
     ui->setupUi(this);
     ui->listWidget->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     // signals and slots connections
-    connect(ui->listWidget, SIGNAL(itemClicked (QListWidgetItem *)),
-            this, SLOT(accept()));
-    connect(ui->addButton, SIGNAL(clicked()),
-            this, SLOT(onAddIconPath()));
+    connect(ui->listWidget, &QListWidget::itemClicked, this, &IconDialog::accept);
+    connect(ui->addButton, &QPushButton::clicked, this, &IconDialog::onAddIconPath);
 
     QListWidgetItem* item;
     QStringList names = BitmapFactory().findIconFiles();
@@ -468,7 +482,7 @@ void IconDialog::onAddIconPath()
     }
 }
 
-void DlgCustomActionsImp::on_buttonChoosePixmap_clicked()
+void DlgCustomActionsImp::onButtonChoosePixmapClicked()
 {
     // create a dialog showing all pixmaps
     Gui::Dialog::IconDialog dlg(this);
@@ -503,10 +517,8 @@ IconFolders::IconFolders(const QStringList& paths, QWidget* parent)
     resize(600,400);
     auto buttonBox = new QDialogButtonBox(this);
     buttonBox->setStandardButtons(QDialogButtonBox::Ok | QDialogButtonBox::Cancel);
-    connect(buttonBox, SIGNAL(accepted()),
-            this, SLOT(accept()));
-    connect(buttonBox, SIGNAL(rejected()),
-            this, SLOT(reject()));
+    connect(buttonBox, &QDialogButtonBox::accepted, this, &IconFolders::accept);
+    connect(buttonBox, &QDialogButtonBox::rejected, this, &IconFolders::reject);
 
     gridLayout = new QGridLayout();
     auto mainLayout = new QGridLayout(this);
@@ -536,7 +548,7 @@ IconFolders::IconFolders(const QStringList& paths, QWidget* parent)
         }
 
         buttonMap.append(qMakePair(edit, removeButton));
-        connect(removeButton, SIGNAL(clicked()), this, SLOT(removeFolder()));
+        connect(removeButton, &QPushButton::clicked, this, &IconFolders::removeFolder);
     }
 
     textLabel = new QLabel(this);
@@ -547,14 +559,12 @@ IconFolders::IconFolders(const QStringList& paths, QWidget* parent)
     gridLayout->addWidget(textLabel, maxRow, 0, 1, 1);
     gridLayout->addWidget(addButton, maxRow, 1, 1, 1);
 
-    connect(addButton, SIGNAL(clicked()), this, SLOT(addFolder()));
+    connect(addButton, &QPushButton::clicked, this, &IconFolders::addFolder);
     if (numPaths >= this->maxLines)
         addButton->setDisabled(true);
 }
 
-IconFolders::~IconFolders()
-{
-}
+IconFolders::~IconFolders() = default;
 
 void IconFolders::addFolder()
 {

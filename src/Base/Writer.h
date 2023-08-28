@@ -29,6 +29,7 @@
 #include <sstream>
 #include <vector>
 #include <cassert>
+#include <memory>
 
 #ifdef _MSC_VER
 #include <zipios++/zipios-config.h>
@@ -72,6 +73,8 @@ public:
     void insertAsciiFile(const char* FileName);
     /// insert a binary file BASE64 coded as CDATA section in the XML file
     void insertBinFile(const char* FileName);
+    /// insert text string as CDATA
+    void insertText(const std::string &s);
 
     /** @name additional file writing */
     //@{
@@ -115,6 +118,23 @@ public:
 
     virtual std::ostream &Stream()=0;
 
+    /** Create an output stream for storing character content
+     * The input is assumed to be valid character with
+     * the current XML encoding, and will be enclosed inside
+     * CDATA section.  The stream will scan the input and
+     * properly escape any CDATA ending inside.
+     * @return Returns an output stream.
+     *
+     * You must call endCharStream() to end the current character stream.
+     */
+    std::ostream &beginCharStream();
+    /** End the current character output stream
+     * @return Returns the normal writer stream for convenience
+     */
+    std::ostream &endCharStream();
+    /// Return the current character output stream
+    std::ostream &charStream();
+
     /// name for underlying file saves
     std::string ObjectName;
 
@@ -129,15 +149,18 @@ protected:
     std::vector<std::string> Errors;
     std::set<std::string> Modes;
 
-    short indent;
-    char indBuf[1024];
+    short indent{0};
+    char indBuf[1024]{};
 
-    bool forceXML;
-    int fileVersion;
+    bool forceXML{false};
+    int fileVersion{1};
+
+public:
+    Writer(const Writer&) = delete;
+    Writer& operator=(const Writer&) = delete;
 
 private:
-    Writer(const Writer&);
-    Writer& operator=(const Writer&);
+    std::unique_ptr<std::ostream> CharStream;
 };
 
 

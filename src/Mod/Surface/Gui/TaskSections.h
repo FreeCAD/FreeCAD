@@ -34,6 +34,11 @@
 
 class QListWidgetItem;
 
+namespace Gui
+{
+class ButtonGroup;
+}
+
 namespace SurfaceGui
 {
 
@@ -69,6 +74,7 @@ protected:
 private:
     std::unique_ptr<Ui_Sections> ui;
     ViewProviderSections* vp;
+    Gui::ButtonGroup *buttonGroup;
 
 public:
     SectionsPanel(ViewProviderSections* vp, Surface::Sections* obj);
@@ -90,16 +96,18 @@ protected:
     /** Notifies when the object is about to be removed. */
     void slotDeletedObject(const Gui::ViewProviderDocumentObject& Obj) override;
 
-private Q_SLOTS:
-    void on_buttonEdgeAdd_clicked();
-    void on_buttonEdgeRemove_clicked();
+private:
+    void setupConnections();
+    void onButtonEdgeAddToggled(bool checked);
+    void onButtonEdgeRemoveToggled(bool checked);
     void onDeleteEdge();
     void clearSelection();
     void onIndexesMoved();
 
-private:
     void appendCurve(App::DocumentObject*, const std::string& subname);
     void removeCurve(App::DocumentObject*, const std::string& subname);
+
+    void exitSelectionMode();
 };
 
 class TaskSections : public Gui::TaskView::TaskDialog
@@ -108,7 +116,6 @@ class TaskSections : public Gui::TaskView::TaskDialog
 
 public:
     TaskSections(ViewProviderSections* vp, Surface::Sections* obj);
-    ~TaskSections() override;
     void setEditedObject(Surface::Sections* obj);
 
 public:

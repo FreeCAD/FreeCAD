@@ -28,7 +28,7 @@ from PySide.QtCore import QT_TRANSLATE_NOOP
 
 __title__ = "Setup Sheet for a Job."
 __author__ = "sliptonic (Brad Collette)"
-__url__ = "https://www.freecadweb.org"
+__url__ = "https://www.freecad.org"
 __doc__ = "A container for all default values and job specific configuration values."
 
 _RegisteredOps: dict = {}
@@ -74,14 +74,14 @@ class Template:
 def _traverseTemplateAttributes(attrs, codec):
     Path.Log.debug(attrs)
     coded = {}
-    for key, value in PathUtil.keyValueIter(attrs):
+    for key, value in attrs.items():
         if type(value) == dict:
             Path.Log.debug("%s is a dict" % key)
             coded[key] = _traverseTemplateAttributes(value, codec)
         elif type(value) == list:
             Path.Log.debug("%s is a list" % key)
             coded[key] = [_traverseTemplateAttributes(attr, codec) for attr in value]
-        elif PathUtil.isString(value):
+        elif isinstance(value, str):
             Path.Log.debug("%s is a string" % key)
             coded[key] = codec(value)
         else:
@@ -142,7 +142,7 @@ class SetupSheet:
             "OperationHeights",
             QT_TRANSLATE_NOOP(
                 "App::Property",
-                "The usage of this field depends on SafeHeightExpression - by default its value is added to StartDepth and used for SafeHeight of an operation.",
+                "The usage of this field depends on SafeHeightExpression - by default its value is added to the start depth and used for the safe height of an operation.",
             ),
         )
         obj.addProperty(
@@ -150,7 +150,7 @@ class SetupSheet:
             "SafeHeightExpression",
             "OperationHeights",
             QT_TRANSLATE_NOOP(
-                "App::Property", "Expression set for the SafeHeight of new operations."
+                "App::Property", "Expression for the safe height of new operations."
             ),
         )
         obj.addProperty(
@@ -159,7 +159,7 @@ class SetupSheet:
             "OperationHeights",
             QT_TRANSLATE_NOOP(
                 "App::Property",
-                "The usage of this field depends on ClearanceHeightExpression - by default is value is added to StartDepth and used for ClearanceHeight of an operation.",
+                "The usage of this field depends on ClearanceHeightExpression - by default is value is added to the start depth and used for the clearance height of an operation.",
             ),
         )
         obj.addProperty(
@@ -168,7 +168,7 @@ class SetupSheet:
             "OperationHeights",
             QT_TRANSLATE_NOOP(
                 "App::Property",
-                "Expression set for the ClearanceHeight of new operations.",
+                "Expression for the clearance height of new operations.",
             ),
         )
         obj.addProperty(
@@ -176,7 +176,7 @@ class SetupSheet:
             "StartDepthExpression",
             "OperationDepths",
             QT_TRANSLATE_NOOP(
-                "App::Property", "Expression used for StartDepth of new operations."
+                "App::Property", "Expression used for the start depth of new operations."
             ),
         )
         obj.addProperty(
@@ -184,7 +184,7 @@ class SetupSheet:
             "FinalDepthExpression",
             "OperationDepths",
             QT_TRANSLATE_NOOP(
-                "App::Property", "Expression used for FinalDepth of new operations."
+                "App::Property", "Expression used for the final depth of new operations."
             ),
         )
         obj.addProperty(
@@ -192,7 +192,7 @@ class SetupSheet:
             "StepDownExpression",
             "OperationDepths",
             QT_TRANSLATE_NOOP(
-                "App::Property", "Expression used for StepDown of new operations."
+                "App::Property", "Expression used for step down of new operations."
             ),
         )
 
@@ -276,7 +276,7 @@ class SetupSheet:
             if attrs.get(name) is not None:
                 setattr(self.obj, name, attrs[name])
 
-        for opName, op in PathUtil.keyValueIter(_RegisteredOps):
+        for opName, op in _RegisteredOps.items():
             opSetting = attrs.get(opName)
             if opSetting is not None:
                 prototype = op.prototype(opName)
@@ -358,19 +358,19 @@ class SetupSheet:
         # I prefer the question: "why do I get this error when I create ..." over "my cnc machine just
         # rammed it's tool head into the table ..." or even "I saved my file and now it's corrupt..."
         #
-        # https://forum.freecadweb.org/viewtopic.php?f=10&t=24839
-        # https://forum.freecadweb.org/viewtopic.php?f=10&t=24845
+        # https://forum.freecad.org/viewtopic.php?f=10&t=24839
+        # https://forum.freecad.org/viewtopic.php?f=10&t=24845
         return self.obj.Name
 
     def encodeAttributeString(self, attr):
         """encodeAttributeString(attr) ... return the encoded string of a template attribute."""
-        return PathUtil.toUnicode(
+        return str(
             attr.replace(self.expressionReference(), self.TemplateReference)
         )
 
     def decodeAttributeString(self, attr):
         """decodeAttributeString(attr) ... return the decoded string of a template attribute."""
-        return PathUtil.toUnicode(
+        return str(
             attr.replace(self.TemplateReference, self.expressionReference())
         )
 
@@ -385,7 +385,7 @@ class SetupSheet:
     def operationsWithSettings(self):
         """operationsWithSettings() ... returns a list of operations which currently have some settings defined."""
         ops = []
-        for name, value in PathUtil.keyValueIter(_RegisteredOps):
+        for name, value in _RegisteredOps.items():
             for prop in value.registeredPropertyNames(name):
                 if hasattr(self.obj, prop):
                     ops.append(name)

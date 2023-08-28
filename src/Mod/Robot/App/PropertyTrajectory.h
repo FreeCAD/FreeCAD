@@ -37,18 +37,18 @@ namespace Robot
  */
 class RobotExport PropertyTrajectory : public App::Property
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
     PropertyTrajectory();
-    ~PropertyTrajectory();
+    ~PropertyTrajectory() override;
 
     /** @name Getter/setter */
     //@{
     /// set the part shape
     void setValue(const Trajectory&);
     /// get the part shape
-    const Trajectory &getValue(void) const;
+    const Trajectory &getValue() const;
     //@}
 
  
@@ -60,18 +60,18 @@ public:
 
     /** @name Python interface */
     //@{
-    PyObject* getPyObject(void);
-    void setPyObject(PyObject *value);
+    PyObject* getPyObject() override;
+    void setPyObject(PyObject *value) override;
     //@}
 
     /** @name Save/restore */
     //@{
-    void Save (Base::Writer &writer) const;
-    void Restore(Base::XMLReader &reader);
+    void Save (Base::Writer &writer) const override;
+    void Restore(Base::XMLReader &reader) override;
 
-    App::Property *Copy(void) const;
-    void Paste(const App::Property &from);
-    unsigned int getMemSize (void) const;
+    App::Property *Copy() const override;
+    void Paste(const App::Property &from) override;
+    unsigned int getMemSize () const override;
     //@}
 
 private:

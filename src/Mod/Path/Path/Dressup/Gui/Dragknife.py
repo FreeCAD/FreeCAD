@@ -20,7 +20,6 @@
 # *                                                                         *
 # ***************************************************************************
 
-from __future__ import print_function
 import FreeCAD
 import Path
 import Path.Base.Gui.Util as PathGuiUtil
@@ -389,7 +388,7 @@ class ObjectDressup:
 
             queue = []
 
-            for curCommand in obj.Base.Path.Commands:
+            for curCommand in PathUtils.getPathWithPlacement(obj.Base).Commands:
                 replace = None
                 # don't worry about non-move commands, just add to output
                 if curCommand.Name not in movecommands + rapidcommands:

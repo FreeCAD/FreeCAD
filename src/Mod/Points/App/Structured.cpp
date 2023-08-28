@@ -70,10 +70,6 @@ Structured::Structured()
     //Height.setStatus(App::Property::ReadOnly, true);
 }
 
-Structured::~Structured()
-{
-}
-
 App::DocumentObjectExecReturn *Structured::execute()
 {
     std::size_t size = Height.getValue() * Width.getValue();

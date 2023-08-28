@@ -3,14 +3,17 @@
 
 #include <boost/version.hpp>
 
-#if BOOST_VERSION >= 107800
-
 // Workaround for boost >= 1.78
-#ifdef WIN32
-#include <Windows.h>
+#if BOOST_VERSION >= 107800
+# ifdef WIN32
+#  ifndef NOMINMAX
+#   define NOMINMAX
+#  endif
+#  include <Windows.h>
+#  undef BASETYPES
+# endif
 #endif
 
-#endif
 #include <boost/regex.hpp>
 
 #endif // #ifndef FREECAD_REGEX_HPP_WORKAROUND

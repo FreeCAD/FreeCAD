@@ -42,10 +42,6 @@ Feature::Feature()
     ADD_PROPERTY_TYPE(Mesh,(MeshObject()),0,App::Prop_Output,"The mesh kernel");
 }
 
-Feature::~Feature()
-{
-}
-
 App::DocumentObjectExecReturn *Feature::execute()
 {
     this->Mesh.touch();
@@ -69,10 +65,14 @@ void Feature::onChanged(const App::Property* prop)
     }
     // if the mesh data has changed check and adjust the transformation as well
     else if (prop == &this->Mesh) {
-        Base::Placement p;
-        p.fromMatrix(this->Mesh.getTransform());
-        if (p != this->Placement.getValue())
-            this->Placement.setValue(p);
+        try {
+            Base::Placement p;
+            p.fromMatrix(this->Mesh.getTransform());
+            if (p != this->Placement.getValue())
+                this->Placement.setValue(p);
+        }
+        catch (const Base::ValueError&) {
+        }
     }
 
     // Note: If the Mesh property has changed the property and this object are marked as 'touched'

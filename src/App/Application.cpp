@@ -94,6 +94,7 @@
 #include "FeaturePython.h"
 #include "GeoFeature.h"
 #include "GeoFeatureGroupExtension.h"
+#include "ImagePlane.h"
 #include "InventorObject.h"
 #include "Link.h"
 #include "LinkBaseExtensionPy.h"
@@ -106,12 +107,15 @@
 #include "Part.h"
 #include "PartPy.h"
 #include "Placement.h"
+#include "ProgramOptionsUtilities.h"
 #include "Property.h"
 #include "PropertyContainer.h"
 #include "PropertyExpressionEngine.h"
 #include "PropertyFile.h"
 #include "PropertyLinks.h"
 #include "PropertyPythonObject.h"
+#include "StringHasherPy.h"
+#include "StringIDPy.h"
 #include "TextDocument.h"
 #include "Transactions.h"
 #include "VRMLObject.h"
@@ -216,10 +220,20 @@ init_freecad_module(void)
     return PyModule_Create(&FreeCADModuleDef);
 }
 
+PyMODINIT_FUNC
+init_image_module()
+{
+    static struct PyModuleDef ImageModuleDef = {
+        PyModuleDef_HEAD_INIT,
+        "Image", "", -1,
+        nullptr,
+        nullptr, nullptr, nullptr, nullptr
+    };
+    return PyModule_Create(&ImageModuleDef);
+}
+
 Application::Application(std::map<std::string,std::string> &mConfig)
-  : _mConfig(mConfig), _pActiveDoc(nullptr), _isRestoring(false),_allowPartial(false)
-  , _isClosingAll(false), _objCount(-1), _activeTransactionID(0)
-  , _activeTransactionGuard(0), _activeTransactionTmpName(false)
+  : _mConfig(mConfig)
 {
     //_hApp = new ApplicationOCC;
     mpcPramManager["System parameter"] = _pcSysParamMngr;
@@ -252,6 +266,10 @@ void Application::setupPythonTypes()
         nullptr, nullptr, nullptr, nullptr
     };
     PyObject* pConsoleModule = PyModule_Create(&ConsoleModuleDef);
+
+    // fake Image module
+    PyObject* imageModule = init_image_module();
+    PyDict_SetItemString(modules, "Image", imageModule);
 
     // introducing additional classes
 
@@ -292,6 +310,9 @@ void Application::setupPythonTypes()
 
     Base::Interpreter().addType(&App::MaterialPy::Type, pAppModule, "Material");
     Base::Interpreter().addType(&App::MetadataPy::Type, pAppModule, "Metadata");
+
+    Base::Interpreter().addType(&App::StringHasherPy::Type, pAppModule, "StringHasher");
+    Base::Interpreter().addType(&App::StringIDPy::Type, pAppModule, "StringID");
 
     // Add document types
     Base::Interpreter().addType(&App::PropertyContainerPy::Type, pAppModule, "PropertyContainer");
@@ -347,7 +368,7 @@ void Application::setupPythonTypes()
 
 void Application::setupPythonException(PyObject* module)
 {
-    // Define cusom Python exception types
+    // Define custom Python exception types
     //
     Base::PyExc_FC_GeneralError = PyErr_NewException("Base.FreeCADError", PyExc_RuntimeError, nullptr);
     Py_INCREF(Base::PyExc_FC_GeneralError);
@@ -459,6 +480,7 @@ Document* Application::newDocument(const char * Name, const char * UserName, boo
     DocMap[name] = doc;
     _pActiveDoc = doc;
 
+    //NOLINTBEGIN
     // connect the signals to the application for the new document
     _pActiveDoc->signalBeforeChange.connect(std::bind(&App::Application::slotBeforeChangeDocument, this, sp::_1, sp::_2));
     _pActiveDoc->signalChanged.connect(std::bind(&App::Application::slotChangedDocument, this, sp::_1, sp::_2));
@@ -479,6 +501,7 @@ Document* Application::newDocument(const char * Name, const char * UserName, boo
     _pActiveDoc->signalStartSave.connect(std::bind(&App::Application::slotStartSaveDocument, this, sp::_1, sp::_2));
     _pActiveDoc->signalFinishSave.connect(std::bind(&App::Application::slotFinishSaveDocument, this, sp::_1, sp::_2));
     _pActiveDoc->signalChangePropertyEditor.connect(std::bind(&App::Application::slotChangePropertyEditor, this, sp::_1, sp::_2));
+    //NOLINTEND
 
     // make sure that the active document is set in case no GUI is up
     {
@@ -548,9 +571,11 @@ App::Document* Application::getDocument(const char *Name) const
 
 const char * Application::getDocumentName(const App::Document* doc) const
 {
-    for (std::map<std::string,Document*>::const_iterator it = DocMap.begin(); it != DocMap.end(); ++it)
-        if (it->second == doc)
-            return it->first.c_str();
+    for (const auto & it : DocMap) {
+        if (it.second == doc) {
+            return it.first.c_str();
+        }
+    }
 
     return nullptr;
 }
@@ -558,15 +583,15 @@ const char * Application::getDocumentName(const App::Document* doc) const
 std::vector<App::Document*> Application::getDocuments() const
 {
     std::vector<App::Document*> docs;
-    for (std::map<std::string,Document*>::const_iterator it = DocMap.begin(); it != DocMap.end(); ++it)
-        docs.push_back(it->second);
+    for (const auto & it : DocMap)
+        docs.push_back(it.second);
     return docs;
 }
 
 std::string Application::getUniqueDocumentName(const char *Name, bool tempDoc) const
 {
     if (!Name || *Name == '\0')
-        return std::string();
+        return {};
     std::string CleanName = Base::Tools::getIdentifier(Name);
 
     // name in use?
@@ -1223,7 +1248,7 @@ ParameterManager * Application::GetParameterSet(const char* sName) const
 }
 
 const std::map<std::string,Base::Reference<ParameterManager>> &
-Application::GetParameterSetList(void) const
+Application::GetParameterSetList() const
 {
     return mpcPramManager;
 }
@@ -1233,7 +1258,7 @@ void Application::AddParameterSet(const char* sName)
     auto it = mpcPramManager.find(sName);
     if ( it != mpcPramManager.end() )
         return;
-    mpcPramManager[sName] = new ParameterManager();
+    mpcPramManager[sName] = ParameterManager::Create();
 }
 
 void Application::RemoveParameterSet(const char* sName)
@@ -1309,15 +1334,15 @@ void Application::changeImportModule(const char* Type, const char* OldModuleName
 std::vector<std::string> Application::getImportModules(const char* Type) const
 {
     std::vector<std::string> modules;
-    for (std::vector<FileTypeItem>::const_iterator it = _mImportTypes.begin(); it != _mImportTypes.end(); ++it) {
-        const std::vector<std::string>& types = it->types;
-        for (std::vector<std::string>::const_iterator jt = types.begin(); jt != types.end(); ++jt) {
+    for (const auto & it : _mImportTypes) {
+        const std::vector<std::string>& types = it.types;
+        for (const auto & jt : types) {
 #ifdef __GNUC__
-            if (strcasecmp(Type,jt->c_str()) == 0)
+            if (strcasecmp(Type,jt.c_str()) == 0)
 #else
-            if (_stricmp(Type,jt->c_str()) == 0)
+            if (_stricmp(Type,jt.c_str()) == 0)
 #endif
-                modules.push_back(it->module);
+                modules.push_back(it.module);
         }
     }
 
@@ -1327,8 +1352,8 @@ std::vector<std::string> Application::getImportModules(const char* Type) const
 std::vector<std::string> Application::getImportModules() const
 {
     std::vector<std::string> modules;
-    for (std::vector<FileTypeItem>::const_iterator it = _mImportTypes.begin(); it != _mImportTypes.end(); ++it)
-        modules.push_back(it->module);
+    for (const auto & it : _mImportTypes)
+        modules.push_back(it.module);
     std::sort(modules.begin(), modules.end());
     modules.erase(std::unique(modules.begin(), modules.end()), modules.end());
     return modules;
@@ -1337,13 +1362,13 @@ std::vector<std::string> Application::getImportModules() const
 std::vector<std::string> Application::getImportTypes(const char* Module) const
 {
     std::vector<std::string> types;
-    for (std::vector<FileTypeItem>::const_iterator it = _mImportTypes.begin(); it != _mImportTypes.end(); ++it) {
+    for (const auto & it : _mImportTypes) {
 #ifdef __GNUC__
-        if (strcasecmp(Module,it->module.c_str()) == 0)
+        if (strcasecmp(Module,it.module.c_str()) == 0)
 #else
-        if (_stricmp(Module,it->module.c_str()) == 0)
+        if (_stricmp(Module,it.module.c_str()) == 0)
 #endif
-            types.insert(types.end(), it->types.begin(), it->types.end());
+            types.insert(types.end(), it.types.begin(), it.types.end());
     }
 
     return types;
@@ -1352,8 +1377,8 @@ std::vector<std::string> Application::getImportTypes(const char* Module) const
 std::vector<std::string> Application::getImportTypes() const
 {
     std::vector<std::string> types;
-    for (std::vector<FileTypeItem>::const_iterator it = _mImportTypes.begin(); it != _mImportTypes.end(); ++it) {
-        types.insert(types.end(), it->types.begin(), it->types.end());
+    for (const auto & it : _mImportTypes) {
+        types.insert(types.end(), it.types.begin(), it.types.end());
     }
 
     std::sort(types.begin(), types.end());
@@ -1365,15 +1390,15 @@ std::vector<std::string> Application::getImportTypes() const
 std::map<std::string, std::string> Application::getImportFilters(const char* Type) const
 {
     std::map<std::string, std::string> moduleFilter;
-    for (std::vector<FileTypeItem>::const_iterator it = _mImportTypes.begin(); it != _mImportTypes.end(); ++it) {
-        const std::vector<std::string>& types = it->types;
-        for (std::vector<std::string>::const_iterator jt = types.begin(); jt != types.end(); ++jt) {
+    for (const auto & it : _mImportTypes) {
+        const std::vector<std::string>& types = it.types;
+        for (const auto & jt : types) {
 #ifdef __GNUC__
-            if (strcasecmp(Type,jt->c_str()) == 0)
+            if (strcasecmp(Type,jt.c_str()) == 0)
 #else
-            if (_stricmp(Type,jt->c_str()) == 0)
+            if (_stricmp(Type,jt.c_str()) == 0)
 #endif
-                moduleFilter[it->filter] = it->module;
+                moduleFilter[it.filter] = it.module;
         }
     }
 
@@ -1383,8 +1408,8 @@ std::map<std::string, std::string> Application::getImportFilters(const char* Typ
 std::map<std::string, std::string> Application::getImportFilters() const
 {
     std::map<std::string, std::string> filter;
-    for (std::vector<FileTypeItem>::const_iterator it = _mImportTypes.begin(); it != _mImportTypes.end(); ++it) {
-        filter[it->filter] = it->module;
+    for (const auto & it : _mImportTypes) {
+        filter[it.filter] = it.module;
     }
 
     return filter;
@@ -1432,15 +1457,15 @@ void Application::changeExportModule(const char* Type, const char* OldModuleName
 std::vector<std::string> Application::getExportModules(const char* Type) const
 {
     std::vector<std::string> modules;
-    for (std::vector<FileTypeItem>::const_iterator it = _mExportTypes.begin(); it != _mExportTypes.end(); ++it) {
-        const std::vector<std::string>& types = it->types;
-        for (std::vector<std::string>::const_iterator jt = types.begin(); jt != types.end(); ++jt) {
+    for (const auto & it : _mExportTypes) {
+        const std::vector<std::string>& types = it.types;
+        for (const auto & jt : types) {
 #ifdef __GNUC__
-            if (strcasecmp(Type,jt->c_str()) == 0)
+            if (strcasecmp(Type,jt.c_str()) == 0)
 #else
-            if (_stricmp(Type,jt->c_str()) == 0)
+            if (_stricmp(Type,jt.c_str()) == 0)
 #endif
-                modules.push_back(it->module);
+                modules.push_back(it.module);
         }
     }
 
@@ -1450,8 +1475,8 @@ std::vector<std::string> Application::getExportModules(const char* Type) const
 std::vector<std::string> Application::getExportModules() const
 {
     std::vector<std::string> modules;
-    for (std::vector<FileTypeItem>::const_iterator it = _mExportTypes.begin(); it != _mExportTypes.end(); ++it)
-        modules.push_back(it->module);
+    for (const auto & it : _mExportTypes)
+        modules.push_back(it.module);
     std::sort(modules.begin(), modules.end());
     modules.erase(std::unique(modules.begin(), modules.end()), modules.end());
     return modules;
@@ -1460,13 +1485,13 @@ std::vector<std::string> Application::getExportModules() const
 std::vector<std::string> Application::getExportTypes(const char* Module) const
 {
     std::vector<std::string> types;
-    for (std::vector<FileTypeItem>::const_iterator it = _mExportTypes.begin(); it != _mExportTypes.end(); ++it) {
+    for (const auto & it : _mExportTypes) {
 #ifdef __GNUC__
-        if (strcasecmp(Module,it->module.c_str()) == 0)
+        if (strcasecmp(Module,it.module.c_str()) == 0)
 #else
-        if (_stricmp(Module,it->module.c_str()) == 0)
+        if (_stricmp(Module,it.module.c_str()) == 0)
 #endif
-            types.insert(types.end(), it->types.begin(), it->types.end());
+            types.insert(types.end(), it.types.begin(), it.types.end());
     }
 
     return types;
@@ -1475,8 +1500,8 @@ std::vector<std::string> Application::getExportTypes(const char* Module) const
 std::vector<std::string> Application::getExportTypes() const
 {
     std::vector<std::string> types;
-    for (std::vector<FileTypeItem>::const_iterator it = _mExportTypes.begin(); it != _mExportTypes.end(); ++it) {
-        types.insert(types.end(), it->types.begin(), it->types.end());
+    for (const FileTypeItem& it : _mExportTypes) {
+        types.insert(types.end(), it.types.begin(), it.types.end());
     }
 
     std::sort(types.begin(), types.end());
@@ -1488,15 +1513,15 @@ std::vector<std::string> Application::getExportTypes() const
 std::map<std::string, std::string> Application::getExportFilters(const char* Type) const
 {
     std::map<std::string, std::string> moduleFilter;
-    for (std::vector<FileTypeItem>::const_iterator it = _mExportTypes.begin(); it != _mExportTypes.end(); ++it) {
-        const std::vector<std::string>& types = it->types;
-        for (std::vector<std::string>::const_iterator jt = types.begin(); jt != types.end(); ++jt) {
+    for (const auto & it : _mExportTypes) {
+        const std::vector<std::string>& types = it.types;
+        for (const auto & jt : types) {
 #ifdef __GNUC__
-            if (strcasecmp(Type,jt->c_str()) == 0)
+            if (strcasecmp(Type,jt.c_str()) == 0)
 #else
-            if (_stricmp(Type,jt->c_str()) == 0)
+            if (_stricmp(Type,jt.c_str()) == 0)
 #endif
-                moduleFilter[it->filter] = it->module;
+                moduleFilter[it.filter] = it.module;
         }
     }
 
@@ -1506,8 +1531,8 @@ std::map<std::string, std::string> Application::getExportFilters(const char* Typ
 std::map<std::string, std::string> Application::getExportFilters() const
 {
     std::map<std::string, std::string> filter;
-    for (std::vector<FileTypeItem>::const_iterator it = _mExportTypes.begin(); it != _mExportTypes.end(); ++it) {
-        filter[it->filter] = it->module;
+    for (const FileTypeItem& it : _mExportTypes) {
+        filter[it.filter] = it.module;
     }
 
     return filter;
@@ -1652,12 +1677,12 @@ void Application::destruct()
 
     // now save all other parameter files
     auto& paramMgr = _pcSingleton->mpcPramManager;
-    for (auto it = paramMgr.begin(); it != paramMgr.end(); ++it) {
-        if ((it->second != _pcSysParamMngr) && (it->second != _pcUserParamMngr)) {
-            if (it->second->HasSerializer()) {
-                Base::Console().Log("Saving %s...\n", it->first.c_str());
-                it->second->SaveDocument();
-                Base::Console().Log("Saving %s...done\n", it->first.c_str());
+    for (auto it : paramMgr) {
+        if ((it.second != _pcSysParamMngr) && (it.second != _pcUserParamMngr)) {
+            if (it.second->HasSerializer()) {
+                Base::Console().Log("Saving %s...\n", it.first.c_str());
+                it.second->SaveDocument();
+                Base::Console().Log("Saving %s...done\n", it.first.c_str());
             }
         }
     }
@@ -1904,18 +1929,6 @@ void Application::initTypes()
     App::PropertyPrecision          ::init();
     App::PropertyQuantity           ::init();
     App::PropertyQuantityConstraint ::init();
-    App::PropertyAngle              ::init();
-    App::PropertyDistance           ::init();
-    App::PropertyLength             ::init();
-    App::PropertyArea               ::init();
-    App::PropertyVolume             ::init();
-    App::PropertyFrequency          ::init();
-    App::PropertySpeed              ::init();
-    App::PropertyAcceleration       ::init();
-    App::PropertyForce              ::init();
-    App::PropertyPressure           ::init();
-    App::PropertyElectricPotential  ::init();
-    App::PropertyVacuumPermittivity ::init();
     App::PropertyInteger            ::init();
     App::PropertyIntegerConstraint  ::init();
     App::PropertyPercent            ::init();
@@ -1973,6 +1986,61 @@ void Application::initTypes()
     App::PropertyPythonObject       ::init();
     App::PropertyExpressionContainer::init();
     App::PropertyExpressionEngine   ::init();
+    // all know unit properties
+    App::PropertyAcceleration               ::init();
+    App::PropertyAmountOfSubstance          ::init();
+    App::PropertyAngle                      ::init();
+    App::PropertyArea                       ::init();
+    App::PropertyCompressiveStrength        ::init();
+    App::PropertyCurrentDensity             ::init();
+    App::PropertyDensity                    ::init();
+    App::PropertyDissipationRate            ::init();
+    App::PropertyDistance                   ::init();
+    App::PropertyDynamicViscosity           ::init();
+    App::PropertyElectricalCapacitance      ::init();
+    App::PropertyElectricalConductance      ::init();
+    App::PropertyElectricalConductivity     ::init();
+    App::PropertyElectricalInductance       ::init();
+    App::PropertyElectricalResistance       ::init();
+    App::PropertyElectricCharge             ::init();
+    App::PropertyElectricCurrent            ::init();
+    App::PropertyElectricPotential          ::init();
+    App::PropertyFrequency                  ::init();
+    App::PropertyForce                      ::init();
+    App::PropertyHeatFlux                   ::init();
+    App::PropertyInverseArea                ::init();
+    App::PropertyInverseLength              ::init();
+    App::PropertyInverseVolume              ::init();
+    App::PropertyKinematicViscosity         ::init();
+    App::PropertyLength                     ::init();
+    App::PropertyLuminousIntensity          ::init();
+    App::PropertyMagneticFieldStrength      ::init();
+    App::PropertyMagneticFlux               ::init();
+    App::PropertyMagneticFluxDensity        ::init();
+    App::PropertyMagnetization              ::init();
+    App::PropertyMass                       ::init();
+    App::PropertyPressure                   ::init();
+    App::PropertyPower                      ::init();
+    App::PropertyShearModulus               ::init();
+    App::PropertySpecificEnergy             ::init();
+    App::PropertySpecificHeat               ::init();
+    App::PropertySpeed                      ::init();
+    App::PropertyStiffness                  ::init();
+    App::PropertyStress                     ::init();
+    App::PropertyTemperature                ::init();
+    App::PropertyThermalConductivity        ::init();
+    App::PropertyThermalExpansionCoefficient::init();
+    App::PropertyThermalTransferCoefficient ::init();
+    App::PropertyTime                       ::init();
+    App::PropertyUltimateTensileStrength    ::init();
+    App::PropertyVacuumPermittivity         ::init();
+    App::PropertyVelocity                   ::init();
+    App::PropertyVolume                     ::init();
+    App::PropertyVolumeFlowRate             ::init();
+    App::PropertyVolumetricThermalExpansionCoefficient::init();
+    App::PropertyWork                       ::init();
+    App::PropertyYieldStrength              ::init();
+    App::PropertyYoungsModulus              ::init();
 
     // Extension classes
     App::Extension                     ::init();
@@ -2010,12 +2078,13 @@ void Application::initTypes()
     App::DocumentObjectGroup       ::init();
     App::DocumentObjectGroupPython ::init();
     App::DocumentObjectFileIncluded::init();
+    Image::ImagePlane              ::init();
     App::InventorObject            ::init();
     App::VRMLObject                ::init();
     App::Annotation                ::init();
     App::AnnotationLabel           ::init();
     App::MeasureDistance           ::init();
-    App ::MaterialObject           ::init();
+    App::MaterialObject            ::init();
     App::MaterialObjectPython      ::init();
     App::TextDocument              ::init();
     App::Placement                 ::init();
@@ -2044,6 +2113,10 @@ void Application::initTypes()
     App::FunctionExpression        ::init();
     App::RangeExpression           ::init();
     App::PyObjectExpression        ::init();
+
+    // Topological naming classes
+    App::StringHasher              ::init();
+    App::StringID                  ::init();
 
     // register transaction type
     new App::TransactionProducer<TransactionDocumentObject>
@@ -2084,53 +2157,6 @@ void Application::initTypes()
 }
 
 namespace {
-pair<string, string> customSyntax(const string& s)
-{
-#if defined(FC_OS_MACOSX)
-    if (s.find("-psn_") == 0)
-        return make_pair(string("psn"), s.substr(5));
-#endif
-    if (s.find("-display") == 0)
-        return make_pair(string("display"), string("null"));
-    else if (s.find("-style") == 0)
-        return make_pair(string("style"), string("null"));
-    else if (s.find("-graphicssystem") == 0)
-        return make_pair(string("graphicssystem"), string("null"));
-    else if (s.find("-widgetcount") == 0)
-        return make_pair(string("widgetcount"), string(""));
-    else if (s.find("-geometry") == 0)
-        return make_pair(string("geometry"), string("null"));
-    else if (s.find("-font") == 0)
-        return make_pair(string("font"), string("null"));
-    else if (s.find("-fn") == 0)
-        return make_pair(string("fn"), string("null"));
-    else if (s.find("-background") == 0)
-        return make_pair(string("background"), string("null"));
-    else if (s.find("-bg") == 0)
-        return make_pair(string("bg"), string("null"));
-    else if (s.find("-foreground") == 0)
-        return make_pair(string("foreground"), string("null"));
-    else if (s.find("-fg") == 0)
-        return make_pair(string("fg"), string("null"));
-    else if (s.find("-button") == 0)
-        return make_pair(string("button"), string("null"));
-    else if (s.find("-btn") == 0)
-        return make_pair(string("btn"), string("null"));
-    else if (s.find("-name") == 0)
-        return make_pair(string("name"), string("null"));
-    else if (s.find("-title") == 0)
-        return make_pair(string("title"), string("null"));
-    else if (s.find("-visual") == 0)
-        return make_pair(string("visual"), string("null"));
-//  else if (s.find("-ncols") == 0)
-//    return make_pair(string("ncols"), boost::program_options::value<int>(1));
-//  else if (s.find("-cmap") == 0)
-//    return make_pair(string("cmap"), string("null"));
-    else if ('@' == s[0])
-        return std::make_pair(string("response-file"), s.substr(1));
-    else
-        return make_pair(string(), string());
-}
 
 void parseProgramOptions(int ac, char ** av, const string& exe, variables_map& vm)
 {
@@ -2250,7 +2276,7 @@ void parseProgramOptions(int ac, char ** av, const string& exe, variables_map& v
 
     try {
         store( boost::program_options::command_line_parser(args).
-               options(cmdline_options).positional(p).extra_parser(customSyntax).run(), vm);
+               options(cmdline_options).positional(p).extra_parser(Util::customSyntax).run(), vm);
 
         std::ifstream ifs("FreeCAD.cfg");
         if (ifs)
@@ -2271,7 +2297,7 @@ void parseProgramOptions(int ac, char ** av, const string& exe, variables_map& v
     if (vm.count("help")) {
         std::stringstream str;
         str << exe << endl << endl;
-        str << "For a detailed description see https://www.freecadweb.org/wiki/Start_up_and_Configuration" << endl<<endl;
+        str << "For a detailed description see https://www.freecad.org/wiki/Start_up_and_Configuration" << endl<<endl;
         str << "Usage: " << exe << " [options] File1 File2 ..." << endl << endl;
         str << visible << endl;
         throw Base::ProgramInformation(str.str());
@@ -2297,7 +2323,7 @@ void parseProgramOptions(int ac, char ** av, const string& exe, variables_map& v
         copy(tok.begin(), tok.end(), back_inserter(args));
         // Parse the file and store the options
         store( boost::program_options::command_line_parser(args).
-               options(cmdline_options).positional(p).extra_parser(customSyntax).run(), vm);
+               options(cmdline_options).positional(p).extra_parser(Util::customSyntax).run(), vm);
     }
 }
 
@@ -2336,29 +2362,29 @@ void processProgramOptions(const variables_map& vm, std::map<std::string,std::st
     if (vm.count("module-path")) {
         vector<string> Mods = vm["module-path"].as< vector<string> >();
         string temp;
-        for (vector<string>::const_iterator It = Mods.begin(); It != Mods.end(); ++It)
-            temp += *It + ";";
+        for (const auto & It : Mods)
+            temp += It + ";";
         temp.erase(temp.end()-1);
         mConfig["AdditionalModulePaths"] = temp;
     }
 
     if (vm.count("python-path")) {
         vector<string> Paths = vm["python-path"].as< vector<string> >();
-        for (vector<string>::const_iterator It = Paths.begin(); It != Paths.end(); ++It)
-            Base::Interpreter().addPythonPath(It->c_str());
+        for (const auto & It : Paths)
+            Base::Interpreter().addPythonPath(It.c_str());
     }
 
     if (vm.count("input-file")) {
         vector<string> files(vm["input-file"].as< vector<string> >());
         int OpenFileCount=0;
-        for (vector<string>::const_iterator It = files.begin(); It != files.end(); ++It) {
+        for (const auto & It : files) {
 
             //cout << "Input files are: "
             //     << vm["input-file"].as< vector<string> >() << "\n";
 
             std::ostringstream temp;
             temp << "OpenFile" << OpenFileCount;
-            mConfig[temp.str()] = *It;
+            mConfig[temp.str()] = It;
             OpenFileCount++;
         }
         std::ostringstream buffer;
@@ -2414,8 +2440,8 @@ void processProgramOptions(const variables_map& vm, std::map<std::string,std::st
 
     if (vm.count("dump-config")) {
         std::stringstream str;
-        for (std::map<std::string,std::string>::iterator it=mConfig.begin(); it != mConfig.end(); ++it) {
-            str << it->first << "=" << it->second << std::endl;
+        for (const auto & it : mConfig) {
+            str << it.first << "=" << it.second << std::endl;
         }
         throw Base::ProgramInformation(str.str());
     }
@@ -2463,6 +2489,7 @@ void Application::initConfig(int argc, char ** argv)
         App::Application::Config()["BuildVersionMajor"  ] = FCVersionMajor;
         App::Application::Config()["BuildVersionMinor"  ] = FCVersionMinor;
         App::Application::Config()["BuildVersionPoint"  ] = FCVersionPoint;
+        App::Application::Config()["BuildVersionSuffix" ] = FCVersionSuffix;
         App::Application::Config()["BuildRevision"      ] = FCRevision;
         App::Application::Config()["BuildRepositoryURL" ] = FCRepositoryURL;
         App::Application::Config()["BuildRevisionDate"  ] = FCRevisionDate;
@@ -2542,21 +2569,23 @@ void Application::initConfig(int argc, char ** argv)
         // Remove banner if FreeCAD is invoked via the -c command as regular
         // Python interpreter
         if (!(mConfig["Verbose"] == "Strict"))
-            Base::Console().Message("%s %s, Libs: %s.%s.%sR%s\n%s",
+            Base::Console().Message("%s %s, Libs: %s.%s.%s%sR%s\n%s",
                               mConfig["ExeName"].c_str(),
                               mConfig["ExeVersion"].c_str(),
                               mConfig["BuildVersionMajor"].c_str(),
                               mConfig["BuildVersionMinor"].c_str(),
                               mConfig["BuildVersionPoint"].c_str(),
+                              mConfig["BuildVersionSuffix"].c_str(),
                               mConfig["BuildRevision"].c_str(),
                               mConfig["CopyrightInfo"].c_str());
         else
-            Base::Console().Message("%s %s, Libs: %s.%s.%sR%s\n",
+            Base::Console().Message("%s %s, Libs: %s.%s.%s%sR%s\n",
                               mConfig["ExeName"].c_str(),
                               mConfig["ExeVersion"].c_str(),
                               mConfig["BuildVersionMajor"].c_str(),
                               mConfig["BuildVersionMinor"].c_str(),
                               mConfig["BuildVersionPoint"].c_str(),
+                              mConfig["BuildVersionSuffix"].c_str(),
                               mConfig["BuildRevision"].c_str());
     }
     LoadParameters();
@@ -2717,8 +2746,8 @@ std::list<std::string> Application::processFiles(const std::list<std::string>& f
 {
     std::list<std::string> processed;
     Base::Console().Log("Init: Processing command line files\n");
-    for (std::list<std::string>::const_iterator it = files.begin(); it != files.end(); ++it) {
-        Base::FileInfo file(*it);
+    for (const auto & it : files) {
+        Base::FileInfo file(it);
 
         Base::Console().Log("Init:     Processing file: %s\n",file.filePath().c_str());
 
@@ -2726,22 +2755,22 @@ std::list<std::string> Application::processFiles(const std::list<std::string>& f
             if (file.hasExtension("fcstd") || file.hasExtension("std")) {
                 // try to open
                 Application::_pcSingleton->openDocument(file.filePath().c_str());
-                processed.push_back(*it);
+                processed.push_back(it);
             }
             else if (file.hasExtension("fcscript") || file.hasExtension("fcmacro")) {
                 Base::Interpreter().runFile(file.filePath().c_str(), true);
-                processed.push_back(*it);
+                processed.push_back(it);
             }
             else if (file.hasExtension("py")) {
                 try {
                     Base::Interpreter().addPythonPath(file.dirPath().c_str());
                     Base::Interpreter().loadModule(file.fileNamePure().c_str());
-                    processed.push_back(*it);
+                    processed.push_back(it);
                 }
                 catch (const Base::PyException&) {
                     // if loading the module does not work, try just running the script (run in __main__)
                     Base::Interpreter().runFile(file.filePath().c_str(),true);
-                    processed.push_back(*it);
+                    processed.push_back(it);
                 }
             }
             else {
@@ -2755,7 +2784,7 @@ std::list<std::string> Application::processFiles(const std::list<std::string>& f
                     Base::Interpreter().runStringArg("import %s",mods.front().c_str());
                     Base::Interpreter().runStringArg("%s.open(u\"%s\")",mods.front().c_str(),
                             escapedstr.c_str());
-                    processed.push_back(*it);
+                    processed.push_back(it);
                     Base::Console().Log("Command line open: %s.open(u\"%s\")\n",mods.front().c_str(),escapedstr.c_str());
                 }
                 else if (file.exists()) {
@@ -2855,9 +2884,9 @@ void Application::logStatus()
         boost::posix_time::second_clock::local_time());
     Base::Console().Log("Time = %s\n", time_str.c_str());
 
-    for (std::map<std::string, std::string>::iterator It = mConfig.begin(); It != mConfig.end();
-         ++It)
-        Base::Console().Log("%s = %s\n", It->first.c_str(), It->second.c_str());
+    for (const auto & It : mConfig) {
+        Base::Console().Log("%s = %s\n", It.first.c_str(), It.second.c_str());
+    }
 }
 
 void Application::LoadParameters()
@@ -2870,10 +2899,10 @@ void Application::LoadParameters()
         mConfig["SystemParameter"] = mConfig["UserConfigPath"] + "system.cfg";
 
     // create standard parameter sets
-    _pcSysParamMngr = new ParameterManager();
+    _pcSysParamMngr = ParameterManager::Create();
     _pcSysParamMngr->SetSerializer(new ParameterSerializer(mConfig["SystemParameter"]));
 
-    _pcUserParamMngr = new ParameterManager();
+    _pcUserParamMngr = ParameterManager::Create();
     _pcUserParamMngr->SetSerializer(new ParameterSerializer(mConfig["UserParameter"]));
 
     try {
@@ -2933,7 +2962,7 @@ void Application::LoadParameters()
 
 #if defined(_MSC_VER)
 // fix weird error while linking boost (all versions of VC)
-// VS2010: https://forum.freecadweb.org/viewtopic.php?f=4&t=1886&p=12553&hilit=boost%3A%3Afilesystem%3A%3Aget#p12553
+// VS2010: https://forum.freecad.org/viewtopic.php?f=4&t=1886&p=12553&hilit=boost%3A%3Afilesystem%3A%3Aget#p12553
 namespace boost { namespace program_options { std::string arg="arg"; } }
 namespace boost { namespace program_options {
     const unsigned options_description::m_default_line_length = 80;
@@ -3129,11 +3158,11 @@ std::tuple<QString, QString, QString> getCustomPaths()
         userTemp = fi.absoluteFilePath();
     }
 
-    return std::tuple<QString, QString, QString>(userHome, userData, userTemp);
+    return {userHome, userData, userTemp};
 }
 
 /*!
- * \brief getCustomPaths
+ * \brief getStandardPaths
  * Returns a tuple of XDG-compliant standard paths names where to store config, data and cached files.
  * The method therefore reads the environment variables:
  * \list

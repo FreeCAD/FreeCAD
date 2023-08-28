@@ -35,11 +35,6 @@ import Path.Post.Utils as PostUtils
 import Path.Post.UtilsParse as PostUtilsParse
 import Path.Tool.Controller as PathToolController
 
-
-# to distinguish python built-in open function from the one declared below
-if open.__module__ in ["__builtin__", "io"]:
-    pythonopen = open
-
 #
 # This routine processes things in the following order:
 #
@@ -70,44 +65,39 @@ if open.__module__ in ["__builtin__", "io"]:
 def export_common(values, objectslist, filename):
     """Do the common parts of postprocessing the objects in objectslist to filename."""
     #
+    nl = "\n"
+
     for obj in objectslist:
         if not hasattr(obj, "Path"):
             print(
-                "The object "
-                + obj.Name
-                + " is not a path. Please select only path and Compounds."
+                f"The object {obj.Name} is not a path. Please select only path and Compounds."
             )
             return None
 
     # for obj in objectslist:
     #    print(obj.Name)
 
-    print("PostProcessor:  " + values["POSTPROCESSOR_FILE_NAME"] + " postprocessing...")
+    print(f'PostProcessor:  {values["POSTPROCESSOR_FILE_NAME"]} postprocessing...')
     gcode = ""
 
     # write header
     if values["OUTPUT_HEADER"]:
+        comment = PostUtilsParse.create_comment(values, "Exported by FreeCAD")
+        gcode += f"{PostUtilsParse.linenumber(values)}{comment}{nl}"
         comment = PostUtilsParse.create_comment(
-            "Exported by FreeCAD", values["COMMENT_SYMBOL"]
+            values, f'Post Processor: {values["POSTPROCESSOR_FILE_NAME"]}'
         )
-        gcode += PostUtilsParse.linenumber(values) + comment + "\n"
-        comment = PostUtilsParse.create_comment(
-            "Post Processor: " + values["POSTPROCESSOR_FILE_NAME"],
-            values["COMMENT_SYMBOL"],
-        )
-        gcode += PostUtilsParse.linenumber(values) + comment + "\n"
+        gcode += f"{PostUtilsParse.linenumber(values)}{comment}{nl}"
         if FreeCAD.ActiveDocument:
             cam_file = os.path.basename(FreeCAD.ActiveDocument.FileName)
         else:
             cam_file = "<None>"
+        comment = PostUtilsParse.create_comment(values, f"Cam File: {cam_file}")
+        gcode += f"{PostUtilsParse.linenumber(values)}{comment}{nl}"
         comment = PostUtilsParse.create_comment(
-            "Cam File: " + cam_file, values["COMMENT_SYMBOL"]
+            values, f"Output Time: {str(datetime.datetime.now())}"
         )
-        gcode += PostUtilsParse.linenumber(values) + comment + "\n"
-        comment = PostUtilsParse.create_comment(
-            "Output Time: " + str(datetime.datetime.now()), values["COMMENT_SYMBOL"]
-        )
-        gcode += PostUtilsParse.linenumber(values) + comment + "\n"
+        gcode += f"{PostUtilsParse.linenumber(values)}{comment}{nl}"
 
     # Check canned cycles for drilling
     if values["TRANSLATE_DRILL_CYCLES"]:
@@ -117,7 +107,7 @@ def export_common(values, objectslist, filename):
             values["SUPPRESS_COMMANDS"] += ["G99", "G98", "G80"]
 
     for line in values["SAFETYBLOCK"].splitlines(False):
-        gcode += PostUtilsParse.linenumber(values) + line + "\n"
+        gcode += f"{PostUtilsParse.linenumber(values)}{line}{nl}"
 
     # Write the preamble
     if values["OUTPUT_COMMENTS"]:
@@ -127,23 +117,20 @@ def export_common(values, objectslist, filename):
                     item.Proxy, PathToolController.ToolController
                 ):
                     comment = PostUtilsParse.create_comment(
-                        "T{}={}".format(item.ToolNumber, item.Name),
-                        values["COMMENT_SYMBOL"],
+                        values, f"T{item.ToolNumber}={item.Name}"
                     )
-                    gcode += PostUtilsParse.linenumber(values) + comment + "\n"
-        comment = PostUtilsParse.create_comment(
-            "Begin preamble", values["COMMENT_SYMBOL"]
-        )
-        gcode += PostUtilsParse.linenumber(values) + comment + "\n"
+                    gcode += f"{PostUtilsParse.linenumber(values)}{comment}{nl}"
+        comment = PostUtilsParse.create_comment(values, "Begin preamble")
+        gcode += f"{PostUtilsParse.linenumber(values)}{comment}{nl}"
     for line in values["PREAMBLE"].splitlines(False):
-        gcode += PostUtilsParse.linenumber(values) + line + "\n"
+        gcode += f"{PostUtilsParse.linenumber(values)}{line}{nl}"
     # verify if PREAMBLE or SAFETYBLOCK have changed MOTION_MODE or UNITS
     if "G90" in values["PREAMBLE"] or "G90" in values["SAFETYBLOCK"]:
         values["MOTION_MODE"] = "G90"
     elif "G91" in values["PREAMBLE"] or "G91" in values["SAFETYBLOCK"]:
         values["MOTION_MODE"] = "G91"
     else:
-        gcode += PostUtilsParse.linenumber(values) + values["MOTION_MODE"] + "\n"
+        gcode += f'{PostUtilsParse.linenumber(values)}{values["MOTION_MODE"]}{nl}'
     if "G21" in values["PREAMBLE"] or "G21" in values["SAFETYBLOCK"]:
         values["UNITS"] = "G21"
         values["UNIT_FORMAT"] = "mm"
@@ -153,62 +140,45 @@ def export_common(values, objectslist, filename):
         values["UNIT_FORMAT"] = "in"
         values["UNIT_SPEED_FORMAT"] = "in/min"
     else:
-        gcode += PostUtilsParse.linenumber(values) + values["UNITS"] + "\n"
+        gcode += f'{PostUtilsParse.linenumber(values)}{values["UNITS"]}{nl}'
 
     for obj in objectslist:
 
-        # Debug...
-        # print("\n" + "*"*70)
-        # dump(obj)
-        # print("*"*70 + "\n")
-
         # Skip inactive operations
-        if hasattr(obj, "Active"):
-            if not obj.Active:
-                continue
-        if hasattr(obj, "Base") and hasattr(obj.Base, "Active"):
-            if not obj.Base.Active:
-                continue
+        if hasattr(obj, "Active") and not obj.Active:
+            continue
+        if hasattr(obj, "Base") and hasattr(obj.Base, "Active") and not obj.Base.Active:
+            continue
 
         # do the pre_op
         if values["OUTPUT_BCNC"]:
-            comment = PostUtilsParse.create_comment(
-                "Block-name: " + obj.Label, values["COMMENT_SYMBOL"]
-            )
-            gcode += PostUtilsParse.linenumber(values) + comment + "\n"
-            comment = PostUtilsParse.create_comment(
-                "Block-expand: 0", values["COMMENT_SYMBOL"]
-            )
-            gcode += PostUtilsParse.linenumber(values) + comment + "\n"
-            comment = PostUtilsParse.create_comment(
-                "Block-enable: 1", values["COMMENT_SYMBOL"]
-            )
-            gcode += PostUtilsParse.linenumber(values) + comment + "\n"
+            comment = PostUtilsParse.create_comment(values, f"Block-name: {obj.Label}")
+            gcode += f"{PostUtilsParse.linenumber(values)}{comment}{nl}"
+            comment = PostUtilsParse.create_comment(values, "Block-expand: 0")
+            gcode += f"{PostUtilsParse.linenumber(values)}{comment}{nl}"
+            comment = PostUtilsParse.create_comment(values, "Block-enable: 1")
+            gcode += f"{PostUtilsParse.linenumber(values)}{comment}{nl}"
         if values["OUTPUT_COMMENTS"]:
             if values["SHOW_OPERATION_LABELS"]:
                 comment = PostUtilsParse.create_comment(
-                    "Begin operation: %s" % obj.Label, values["COMMENT_SYMBOL"]
+                    values, f"Begin operation: {obj.Label}"
                 )
             else:
-                comment = PostUtilsParse.create_comment(
-                    "Begin operation", values["COMMENT_SYMBOL"]
-                )
-            gcode += PostUtilsParse.linenumber(values) + comment + "\n"
+                comment = PostUtilsParse.create_comment(values, "Begin operation")
+            gcode += f"{PostUtilsParse.linenumber(values)}{comment}{nl}"
             if values["SHOW_MACHINE_UNITS"]:
                 comment = PostUtilsParse.create_comment(
-                    "Machine units: %s" % values["UNIT_SPEED_FORMAT"],
-                    values["COMMENT_SYMBOL"],
+                    values, f'Machine units: {values["UNIT_SPEED_FORMAT"]}'
                 )
-                gcode += PostUtilsParse.linenumber(values) + comment + "\n"
+                gcode += f"{PostUtilsParse.linenumber(values)}{comment}{nl}"
             if values["OUTPUT_MACHINE_NAME"]:
                 comment = PostUtilsParse.create_comment(
-                    "Machine: %s, %s"
-                    % (values["MACHINE_NAME"], values["UNIT_SPEED_FORMAT"]),
-                    values["COMMENT_SYMBOL"],
+                    values,
+                    f'Machine: {values["MACHINE_NAME"]}, {values["UNIT_SPEED_FORMAT"]}',
                 )
-                gcode += PostUtilsParse.linenumber(values) + comment + "\n"
+                gcode += f"{PostUtilsParse.linenumber(values)}{comment}{nl}"
         for line in values["PRE_OPERATION"].splitlines(False):
-            gcode += PostUtilsParse.linenumber(values) + line + "\n"
+            gcode += f"{PostUtilsParse.linenumber(values)}{line}{nl}"
 
         # get coolant mode
         coolantMode = "None"
@@ -224,70 +194,60 @@ def export_common(values, objectslist, filename):
 
         # turn coolant on if required
         if values["ENABLE_COOLANT"]:
-            if values["OUTPUT_COMMENTS"]:
-                if not coolantMode == "None":
-                    comment = PostUtilsParse.create_comment(
-                        "Coolant On:" + coolantMode, values["COMMENT_SYMBOL"]
-                    )
-                    gcode += PostUtilsParse.linenumber(values) + comment + "\n"
+            if values["OUTPUT_COMMENTS"] and coolantMode != "None":
+                comment = PostUtilsParse.create_comment(
+                    values, f"Coolant On: {coolantMode}"
+                )
+                gcode += f"{PostUtilsParse.linenumber(values)}{comment}{nl}"
             if coolantMode == "Flood":
-                gcode += PostUtilsParse.linenumber(values) + "M8" + "\n"
-            if coolantMode == "Mist":
-                gcode += PostUtilsParse.linenumber(values) + "M7" + "\n"
+                gcode += f"{PostUtilsParse.linenumber(values)}M8{nl}"
+            elif coolantMode == "Mist":
+                gcode += f"{PostUtilsParse.linenumber(values)}M7{nl}"
 
         # process the operation gcode
-        gcode += PostUtilsParse.parse(values, obj)
+        gcode += PostUtilsParse.parse_a_group(values, obj)
 
         # do the post_op
         if values["OUTPUT_COMMENTS"]:
             comment = PostUtilsParse.create_comment(
-                "%s operation: %s" % (values["FINISH_LABEL"], obj.Label),
-                values["COMMENT_SYMBOL"],
+                values, f'{values["FINISH_LABEL"]} operation: {obj.Label}'
             )
-            gcode += PostUtilsParse.linenumber(values) + comment + "\n"
+            gcode += f"{PostUtilsParse.linenumber(values)}{comment}{nl}"
         for line in values["POST_OPERATION"].splitlines(False):
-            gcode += PostUtilsParse.linenumber(values) + line + "\n"
+            gcode += f"{PostUtilsParse.linenumber(values)}{line}{nl}"
 
         # turn coolant off if required
-        if values["ENABLE_COOLANT"]:
-            if not coolantMode == "None":
-                if values["OUTPUT_COMMENTS"]:
-                    comment = PostUtilsParse.create_comment(
-                        "Coolant Off:" + coolantMode, values["COMMENT_SYMBOL"]
-                    )
-                    gcode += PostUtilsParse.linenumber(values) + comment + "\n"
-                gcode += PostUtilsParse.linenumber(values) + "M9" + "\n"
+        if values["ENABLE_COOLANT"] and coolantMode != "None":
+            if values["OUTPUT_COMMENTS"]:
+                comment = PostUtilsParse.create_comment(
+                    values, f"Coolant Off: {coolantMode}"
+                )
+                gcode += f"{PostUtilsParse.linenumber(values)}{comment}{nl}"
+            gcode += f"{PostUtilsParse.linenumber(values)}M9{nl}"
 
     if values["RETURN_TO"]:
-        gcode += PostUtilsParse.linenumber(values) + "G0 X%s Y%s Z%s\n" % tuple(
-            values["RETURN_TO"]
-        )
+        num_x = values["RETURN_TO"][0]
+        num_y = values["RETURN_TO"][1]
+        num_z = values["RETURN_TO"][2]
+        gcode += f"{PostUtilsParse.linenumber(values)}G0 X{num_x} Y{num_y} Z{num_z}{nl}"
 
     # do the post_amble
     if values["OUTPUT_BCNC"]:
-        comment = PostUtilsParse.create_comment(
-            "Block-name: post_amble", values["COMMENT_SYMBOL"]
-        )
-        gcode += PostUtilsParse.linenumber(values) + comment + "\n"
-        comment = PostUtilsParse.create_comment(
-            "Block-expand: 0", values["COMMENT_SYMBOL"]
-        )
-        gcode += PostUtilsParse.linenumber(values) + comment + "\n"
-        comment = PostUtilsParse.create_comment(
-            "Block-enable: 1", values["COMMENT_SYMBOL"]
-        )
-        gcode += PostUtilsParse.linenumber(values) + comment + "\n"
+        comment = PostUtilsParse.create_comment(values, "Block-name: post_amble")
+        gcode += f"{PostUtilsParse.linenumber(values)}{comment}{nl}"
+        comment = PostUtilsParse.create_comment(values, "Block-expand: 0")
+        gcode += f"{PostUtilsParse.linenumber(values)}{comment}{nl}"
+        comment = PostUtilsParse.create_comment(values, "Block-enable: 1")
+        gcode += f"{PostUtilsParse.linenumber(values)}{comment}{nl}"
     if values["OUTPUT_COMMENTS"]:
-        comment = PostUtilsParse.create_comment(
-            "Begin postamble", values["COMMENT_SYMBOL"]
-        )
-        gcode += PostUtilsParse.linenumber(values) + comment + "\n"
+        comment = PostUtilsParse.create_comment(values, "Begin postamble")
+        gcode += f"{PostUtilsParse.linenumber(values)}{comment}{nl}"
     for line in values["TOOLRETURN"].splitlines(False):
-        gcode += PostUtilsParse.linenumber(values) + line + "\n"
+        gcode += f"{PostUtilsParse.linenumber(values)}{line}{nl}"
     for line in values["SAFETYBLOCK"].splitlines(False):
-        gcode += PostUtilsParse.linenumber(values) + line + "\n"
+        gcode += f"{PostUtilsParse.linenumber(values)}{line}{nl}"
     for line in values["POSTAMBLE"].splitlines(False):
-        gcode += PostUtilsParse.linenumber(values) + line + "\n"
+        gcode += f"{PostUtilsParse.linenumber(values)}{line}{nl}"
 
     if FreeCAD.GuiUp and values["SHOW_EDITOR"]:
         final = gcode
@@ -305,8 +265,7 @@ def export_common(values, objectslist, filename):
     print("done postprocessing.")
 
     if not filename == "-":
-        gfile = pythonopen(filename, "w", newline=values["END_OF_LINE_CHARACTERS"])
-        gfile.write(final)
-        gfile.close()
+        with open(filename, "w", newline=values["END_OF_LINE_CHARACTERS"]) as gfile:
+            gfile.write(final)
 
     return final

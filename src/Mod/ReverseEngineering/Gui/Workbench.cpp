@@ -20,16 +20,13 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <qobject.h>
-#endif
-
-#include "Workbench.h"
 #include <Gui/MenuManager.h>
 #include <Gui/ToolBarManager.h>
+
+#include "Workbench.h"
+
 
 using namespace ReverseEngineeringGui;
 
@@ -40,13 +37,9 @@ using namespace ReverseEngineeringGui;
 /// @namespace ReverseEngineeringGui @class Workbench
 TYPESYSTEM_SOURCE(ReverseEngineeringGui::Workbench, Gui::StdWorkbench)
 
-Workbench::Workbench()
-{
-}
+Workbench::Workbench() = default;
 
-Workbench::~Workbench()
-{
-}
+Workbench::~Workbench() = default;
 
 Gui::MenuItem* Workbench::setupMenuBar() const
 {

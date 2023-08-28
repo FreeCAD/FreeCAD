@@ -25,7 +25,6 @@
 # *                                                                         *
 # ***************************************************************************
 
-from __future__ import print_function
 
 import Path.Post.UtilsArguments as PostUtilsArguments
 import Path.Post.UtilsExport as PostUtilsExport
@@ -80,7 +79,8 @@ def init_values(values):
     #
     values["OUTPUT_PATH_LABELS"] = True
     #
-    # Default to not outputting M6 tool changes (comment it) as grbl currently does not handle it
+    # Default to not outputting M6 tool changes (comment it) as grbl
+    # currently does not handle it
     #
     values["OUTPUT_TOOL_CHANGE"] = False
     #
@@ -177,7 +177,8 @@ def init_arguments(values, argument_defaults, arguments_visible):
         values, argument_defaults, arguments_visible
     )
     #
-    # Add any argument definitions that are not shared with all other postprocessors here.
+    # Add any argument definitions that are not shared with all other
+    # postprocessors here.
     #
     return parser
 

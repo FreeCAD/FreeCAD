@@ -37,7 +37,6 @@ import draftutils.utils as utils
 import draftfunctions.svgtext as svgtext
 
 from draftfunctions.svgshapes import get_proj, get_circle, get_path
-from draftutils.utils import param
 from draftutils.messages import _wrn, _err
 
 # Delay import of module until first use because it is heavy
@@ -51,14 +50,15 @@ DraftGeomUtils = lz.LazyLoader("DraftGeomUtils", globals(), "DraftGeomUtils")
 
 def get_line_style(line_style, scale):
     """Return a linestyle scaled by a factor."""
+    param = App.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
     style = None
 
     if line_style == "Dashed":
-        style = param.GetString("svgDashedLine", "0.09,0.05")
+        style = param.GetString("svgDashedLine", "2,2")
     elif line_style == "Dashdot":
-        style = param.GetString("svgDashdotLine", "0.09,0.05,0.02,0.05")
+        style = param.GetString("svgDashdotLine", "3,2,0.2,2")
     elif line_style == "Dotted":
-        style = param.GetString("svgDottedLine", "0.02,0.02")
+        style = param.GetString("svgDottedLine", "0.2,2")
     elif line_style:
         if "," in line_style:
             style = line_style
@@ -227,7 +227,7 @@ def _svg_shape(svg, obj, plane,
 
 
 def _svg_dimension(obj, plane, scale, linewidth, fontsize,
-                   stroke, pointratio, techdraw, rotation):
+                   stroke, tstroke, pointratio, techdraw, rotation):
     """Return the SVG representation of a linear dimension."""
     if not App.GuiUp:
         _wrn("'{}': SVG can only be generated "
@@ -280,7 +280,7 @@ def _svg_dimension(obj, plane, scale, linewidth, fontsize,
     if not nolines:
         svg += '<path '
 
-    if vobj.DisplayMode == "2D":
+    if vobj.DisplayMode == "World":
         tangle = angle
         if tangle > math.pi/2:
             tangle = tangle-math.pi
@@ -361,7 +361,7 @@ def _svg_dimension(obj, plane, scale, linewidth, fontsize,
 
     # drawing text
     svg += svgtext.get_text(plane, techdraw,
-                            stroke, fontsize, vobj.FontName,
+                            tstroke, fontsize, vobj.FontName,
                             tangle, tbase, prx.string)
 
     return svg
@@ -505,7 +505,7 @@ def get_svg(obj,
 
     elif utils.get_type(obj) in ["Dimension", "LinearDimension"]:
         svg = _svg_dimension(obj, plane, scale, linewidth, fontsize,
-                             stroke, pointratio, techdraw, rotation)
+                             stroke, tstroke, pointratio, techdraw, rotation)
 
     elif utils.get_type(obj) == "AngularDimension":
         if not App.GuiUp:
@@ -518,7 +518,7 @@ def get_svg(obj,
 
                     # drawing arc
                     fill = "none"
-                    if obj.ViewObject.DisplayMode == "2D":
+                    if obj.ViewObject.DisplayMode == "World":
                         svg += get_path(obj, plane,
                                         fill, pathdata, stroke, linewidth,
                                         lstyle, fill_opacity=None,
@@ -573,7 +573,7 @@ def get_svg(obj,
                                          angle2)
 
                     # drawing text
-                    if obj.ViewObject.DisplayMode == "2D":
+                    if obj.ViewObject.DisplayMode == "World":
                         _diff = (prx.circle.LastParameter
                                  - prx.circle.FirstParameter)
                         t = prx.circle.tangentAt(prx.circle.FirstParameter
@@ -597,7 +597,7 @@ def get_svg(obj,
                         tbase = get_proj(prx.tbase, plane)
 
                     svg += svgtext.get_text(plane, techdraw,
-                                            stroke, fontsize,
+                                            tstroke, fontsize,
                                             obj.ViewObject.FontName,
                                             tangle, tbase, prx.string)
 
@@ -637,13 +637,13 @@ def get_svg(obj,
 
         # print text
         if App.GuiUp:
-            fontname = obj.ViewObject.TextFont
+            fontname = obj.ViewObject.FontName
             position = get_proj(obj.Placement.Base, plane)
             rotation = obj.Placement.Rotation
             justification = obj.ViewObject.Justification
             text = obj.Text
             svg += svgtext.get_text(plane, techdraw,
-                                    stroke, fontsize, fontname,
+                                    tstroke, fontsize, fontname,
                                     rotation, position, text,
                                     linespacing, justification)
 
@@ -859,6 +859,7 @@ def get_svg(obj,
                                     pathname='%s_w%04d' % (obj.Name, i))
                     wiredEdges.extend(w.Edges)
             if len(wiredEdges) != len(obj.Shape.Edges):
+                fill = 'none' # Required if obj has a face. Edges processed here have no face.
                 for i, e in enumerate(obj.Shape.Edges):
                     if DraftGeomUtils.findEdge(e, wiredEdges) is None:
                         svg += get_path(obj, plane,

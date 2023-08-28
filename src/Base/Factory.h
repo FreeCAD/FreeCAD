@@ -49,8 +49,8 @@ public:
 
 
 /** Base class of all factories
-  * This class has the purpose to produce at runtime instances
-  * of classes not known at compile time. It holds a map of so called
+  * This class has the purpose to produce instances of classes at runtime
+  * that are unknown at compile time. It holds a map of so called
   * producers which are able to produce an instance of a special class.
   * Producer can be registered at runtime through e.g. application modules
   */

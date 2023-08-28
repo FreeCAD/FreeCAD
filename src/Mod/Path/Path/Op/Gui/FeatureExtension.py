@@ -36,7 +36,7 @@ Part = LazyLoader("Part", globals(), "Part")
 
 __title__ = "Path Feature Extensions UI"
 __author__ = "sliptonic (Brad Collette)"
-__url__ = "https://www.freecadweb.org"
+__url__ = "https://www.freecad.org"
 __doc__ = "Extensions feature page controller."
 
 
@@ -373,7 +373,7 @@ class TaskPanelExtensionPage(PathOpGui.TaskPanelPage):
                 "extensionEdges.values(): {}".format(extensionEdges.values())
             )
             for edgeList in Part.sortEdges(
-                list(extensionEdges.keys())
+                list(extensionEdges)
             ):  # Identify connected edges that form wires
                 self.edgeList = edgeList
                 if len(edgeList) == 1:
@@ -725,7 +725,7 @@ class TaskPanelExtensionPage(PathOpGui.TaskPanelPage):
         else:
             cacheLabel = base.Name + "_" + sub + "_None"
 
-        if cacheLabel in self.extensionsCache.keys():
+        if cacheLabel in self.extensionsCache:
             # Path.Log.debug("return _cachedExtension({})".format(cacheLabel))
             return self.extensionsCache[cacheLabel]
         else:

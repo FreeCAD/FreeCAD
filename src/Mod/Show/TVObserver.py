@@ -1,6 +1,5 @@
 #/***************************************************************************
-# *   Copyright (c) Victor Titov (DeepSOIC)                                 *
-# *                                           (vv.titov@gmail.com) 2019     *
+# *   Copyright (c) 2019 Victor Titov (DeepSOIC) <vv.titov@gmail.com>       *
 # *                                                                         *
 # *   This file is part of the FreeCAD CAx development system.              *
 # *                                                                         *
@@ -26,18 +25,18 @@ import FreeCAD
 class TVObserver(object):
     def __init__(self):
         FreeCAD.addDocumentObserver(self)
-    
+
     def stop(self):
         FreeCAD.removeDocumentObserver(self)
-    
+
     def slotStartSaveDocument(self, doc, filepath):
         from . import TVStack
         TVStack._slotStartSaveDocument(doc)
-    
+
     def slotFinishSaveDocument(self, doc, filepath):
         from . import TVStack
         TVStack._slotFinishSaveDocument(doc)
-        
+
     def slotDeletedDocument(self, doc):
         from . import TVStack
         TVStack._slotDeletedDocument(doc)

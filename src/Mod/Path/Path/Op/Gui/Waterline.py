@@ -32,7 +32,7 @@ import Path.Op.Waterline as PathWaterline
 
 __title__ = "Path Waterline Operation UI"
 __author__ = "sliptonic (Brad Collette), russ4262 (Russell Johnson)"
-__url__ = "http://www.freecadweb.org"
+__url__ = "http://www.freecad.org"
 __doc__ = "Waterline operation page controller and command implementation."
 
 translate = FreeCAD.Qt.translate
@@ -65,7 +65,7 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         return form
 
     def getFields(self, obj):
-        """getFields(obj) ... transfers values from UI to obj's proprties"""
+        """getFields(obj) ... transfers values from UI to obj's properties"""
         self.updateToolController(obj, self.form.toolController)
         self.updateCoolant(obj, self.form.coolantController)
 

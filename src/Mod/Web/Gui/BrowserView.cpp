@@ -126,9 +126,8 @@ UrlWidget::UrlWidget(BrowserView *view) :
     setText(QLatin1String("https://"));
     hide();
 }
-UrlWidget::~UrlWidget()
-{
-}
+
+UrlWidget::~UrlWidget() = default;
 
 void UrlWidget::keyPressEvent(QKeyEvent *keyEvt)
 {
@@ -201,9 +200,7 @@ BrowserViewPy::BrowserViewPy(BrowserView* view) : base(view)
 {
 }
 
-BrowserViewPy::~BrowserViewPy()
-{
-}
+BrowserViewPy::~BrowserViewPy() = default;
 
 BrowserView* BrowserViewPy::getBrowserViewPtr()
 {
@@ -358,16 +355,20 @@ void WebView::contextMenuEvent(QContextMenuEvent *event)
         // building a custom signal for external browser action
         QSignalMapper* signalMapper = new QSignalMapper (&menu);
         signalMapper->setProperty("url", QVariant(linkUrl));
-        connect(signalMapper, SIGNAL(mapped(int)),
-                this, SLOT(triggerContextMenuAction(int)));
 
         QAction* extAction = menu.addAction(tr("Open in External Browser"));
-        connect (extAction, SIGNAL(triggered()), signalMapper, SLOT(map()));
         signalMapper->setMapping(extAction, WebAction::OpenLink);
 
         QAction* newAction = menu.addAction(tr("Open in new window"));
-        connect (newAction, SIGNAL(triggered()), signalMapper, SLOT(map()));
         signalMapper->setMapping(newAction, WebAction::OpenLinkInNewWindow);
+
+#if QT_VERSION < QT_VERSION_CHECK(5,15,0)
+        connect(signalMapper, qOverload<int>(&QSignalMapper::mapped), this, &WebView::triggerContextMenuAction);
+#else
+        connect(signalMapper, &QSignalMapper::mappedInt, this, &WebView::triggerContextMenuAction);
+#endif
+        connect(extAction, &QAction::triggered, signalMapper, qOverload<>(&QSignalMapper::map));
+        connect(newAction, &QAction::triggered, signalMapper, qOverload<>(&QSignalMapper::map));
 
         menu.addAction(pageAction(QWebEnginePage::DownloadLinkToDisk));
         menu.addAction(pageAction(QWebEnginePage::CopyLinkToClipboard));
@@ -391,9 +392,12 @@ void WebView::contextMenuEvent(QContextMenuEvent *event)
                     QSignalMapper* signalMapper = new QSignalMapper (this);
                     signalMapper->setProperty("url", QVariant(linkUrl));
                     signalMapper->setMapping(ac, WebAction::ViewSource);
-                    connect(signalMapper, SIGNAL(mapped(int)),
-                            this, SLOT(triggerContextMenuAction(int)));
-                    connect (ac, SIGNAL(triggered()), signalMapper, SLOT(map()));
+#if QT_VERSION < QT_VERSION_CHECK(5,15,0)
+                    connect(signalMapper, qOverload<int>(&QSignalMapper::mapped), this, &WebView::triggerContextMenuAction);
+#else
+                    connect(signalMapper, &QSignalMapper::mappedInt, this, &WebView::triggerContextMenuAction);
+#endif
+                    connect(ac, &QAction::triggered, signalMapper, qOverload<>(&QSignalMapper::map));
                 }
             }
         }
@@ -511,27 +515,27 @@ BrowserView::BrowserView(QWidget* parent)
 
     connect(view->page()->profile(), &QWebEngineProfile::downloadRequested,
             this, &BrowserView::onDownloadRequested);
-    connect(view->page(), SIGNAL(iconChanged(const QIcon &)),
-            this, SLOT(setWindowIcon(const QIcon &)));
-    connect(view->page(), SIGNAL(linkHovered(const QString &)),
-            this, SLOT(onLinkHovered(const QString &)));
+    connect(view->page(), &QWebEnginePage::iconChanged,
+            this, &BrowserView::setWindowIcon);
+    connect(view->page(), &QWebEnginePage::linkHovered,
+            this, &BrowserView::onLinkHovered);
 #endif
-    connect(view, SIGNAL(viewSource(const QUrl&)),
-            this, SLOT(onViewSource(const QUrl&)));
-    connect(view, SIGNAL(loadStarted()),
-            this, SLOT(onLoadStarted()));
-    connect(view, SIGNAL(loadProgress(int)),
-            this, SLOT(onLoadProgress(int)));
-    connect(view, SIGNAL(loadFinished(bool)),
-            this, SLOT(onLoadFinished(bool)));
-    connect(view, SIGNAL(openLinkInExternalBrowser(const QUrl &)),
-            this, SLOT(onOpenLinkInExternalBrowser(const QUrl &)));
-    connect(view, SIGNAL(openLinkInNewWindow(const QUrl &)),
-            this, SLOT(onOpenLinkInNewWindow(const QUrl &)));
-    connect(view, SIGNAL(loadStarted()),
-            this, SLOT(onUpdateBrowserActions()));
-    connect(view, SIGNAL(loadFinished(bool)),
-            this, SLOT(onUpdateBrowserActions()));
+    connect(view, &WebView::viewSource,
+            this, &BrowserView::onViewSource);
+    connect(view, &WebView::loadStarted,
+            this, &BrowserView::onLoadStarted);
+    connect(view, &WebView::loadProgress,
+            this, &BrowserView::onLoadProgress);
+    connect(view, &WebView::loadFinished,
+            this, &BrowserView::onLoadFinished);
+    connect(view, &WebView::openLinkInExternalBrowser,
+            this, &BrowserView::onOpenLinkInExternalBrowser);
+    connect(view, &WebView::openLinkInNewWindow,
+            this, &BrowserView::onOpenLinkInNewWindow);
+    connect(view, &WebView::loadStarted,
+            this, &BrowserView::onUpdateBrowserActions);
+    connect(view, &WebView::loadFinished,
+            this, &BrowserView::onUpdateBrowserActions);
 }
 
 /** Destroys the object and frees any allocated resources */
@@ -595,7 +599,10 @@ void BrowserView::urlFilter(const QUrl & url)
                     }
                     // Gui::Command::doCommand(Gui::Command::Gui,"execfile('%s')",(const char*) fi.absoluteFilePath().	toLocal8Bit());
                     QString filename = Base::Tools::escapeEncodeFilename(fi.absoluteFilePath());
+                    // Set flag indicating that this load/restore has been initiated by the user (not by a macro)
+                    Gui::Application::Instance->setStatus(Gui::Application::UserInitiatedOpenDocument, true);
                     Gui::Command::doCommand(Gui::Command::Gui,"with open('%s') as file:\n\texec(file.read())",(const char*) filename.toUtf8());
+                    Gui::Application::Instance->setStatus(Gui::Application::UserInitiatedOpenDocument, false);
                 }
                 catch (const Base::Exception& e) {
                     QMessageBox::critical(this, tr("Error"), QString::fromUtf8(e.what()));

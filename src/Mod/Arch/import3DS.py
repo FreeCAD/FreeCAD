@@ -19,12 +19,11 @@
 #*                                                                         *
 #***************************************************************************
 
-from __future__ import print_function
 import os,FreeCAD,Mesh
 
 __title__  = "FreeCAD 3DS importer"
 __author__ = "Yorik van Havre"
-__url__    = "https://www.freecadweb.org"
+__url__    = "https://www.freecad.org"
 
 DEBUG = True
 
@@ -51,9 +50,9 @@ def open(filename):
     "called when freecad wants to open a file"
     if not check3DS():
         return
-    docname = (os.path.splitext(os.path.basename(filename))[0]).encode("utf8")
+    docname = os.path.splitext(os.path.basename(filename))[0]
     doc = FreeCAD.newDocument(docname)
-    doc.Label = decode(docname)
+    doc.Label = docname
     FreeCAD.ActiveDocument = doc
     read(filename)
     return doc
@@ -70,19 +69,6 @@ def insert(filename,docname):
     FreeCAD.ActiveDocument = doc
     read(filename)
     return doc
-
-
-def decode(name):
-    "decodes encoded strings"
-    try:
-        decodedName = (name.decode("utf8"))
-    except UnicodeDecodeError:
-        try:
-            decodedName = (name.decode("latin1"))
-        except UnicodeDecodeError:
-            FreeCAD.Console.PrintError(translate("Arch","Error: Couldn't determine character encoding"))
-            decodedName = name
-    return decodedName
 
 
 def read(filename):
@@ -107,4 +93,3 @@ def read(filename):
             obj.Placement = placement
         else:
             print("Skipping object without vertices array: ",d_nobj.obj)
-

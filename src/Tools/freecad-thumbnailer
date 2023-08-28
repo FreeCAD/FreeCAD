@@ -7,9 +7,9 @@ Installation:
   and must have execution rights
     "$ sudo chmod +x /usr/bin/freecad-thumbnailer"
 
-- If a FreeCAD project file doesn't include a thumbnail the file freecad.png is used.
+- If a FreeCAD project file doesn't include a thumbnail the file org.freecad.FreeCAD.png is used.
   Thus, the file src/Gui/Icons/freecad-icon-48.png must be installed.
-    "$ sudo cp freecad-icon-48.png /usr/share/icons/hicolor/48x48/apps/freecad.png"
+    "$ sudo cp freecad-icon-48.png /usr/share/icons/hicolor/48x48/apps/org.freecad.FreeCAD.png"
 
 - The application/x-extension-fcstd MIME type should be registered
     Check that a corresponding /usr/share/mime/packages/freecad.xml file exists
@@ -34,7 +34,7 @@ import sys
 import zipfile
 import getopt
 
-opt, par = getopt.getopt(sys.argv[1:], '-s:')
+opt, par = getopt.getopt(sys.argv[1:], "-s:")
 input_file = par[0]
 output_file = par[1]
 
@@ -54,7 +54,7 @@ try:
         image = zfile.read(image)
     else:
         # apps should have at least 48x48 icons
-        freecad = open("/usr/share/icons/hicolor/48x48/apps/freecad.png", "rb")
+        freecad = open("/usr/share/icons/hicolor/48x48/apps/org.freecad.FreeCAD.png", "rb")
         image = freecad.read()
 
     # Write icon to output_file

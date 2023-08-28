@@ -36,6 +36,7 @@
 #endif
 
 #include <Base/Interpreter.h>
+#include <App/Color.h>
 
 #include "PythonConsole.h"
 #include "PythonConsolePy.h"
@@ -468,7 +469,13 @@ PythonConsole::PythonConsole(QWidget *parent)
     d->_stderrPy = new PythonStderr(this);
     d->_stdinPy  = new PythonStdin (this);
     d->_stdin  = PySys_GetObject("stdin");
-    PySys_SetObject("stdin", d->_stdinPy);
+
+    // Don't override stdin when running FreeCAD as Python module
+    auto& cfg = App::Application::Config();
+    auto overrideStdIn = cfg.find("DontOverrideStdIn");
+    if (overrideStdIn == cfg.end()) {
+        PySys_SetObject("stdin", d->_stdinPy);
+    }
 
     const char* version  = PyUnicode_AsUTF8(PySys_GetObject("version"));
     const char* platform = PyUnicode_AsUTF8(PySys_GetObject("platform"));
@@ -528,7 +535,7 @@ void PythonConsole::OnChange(Base::Subject<const char*> &rCaller, const char* sR
         QMap<QString, QColor>::Iterator it = d->colormap.find(QString::fromLatin1(sReason));
         if (it != d->colormap.end()) {
             QColor color = it.value();
-            unsigned int col = (color.red() << 24) | (color.green() << 16) | (color.blue() << 8);
+            unsigned int col = App::Color::asPackedRGB<QColor>(color);
             auto value = static_cast<unsigned long>(col);
             value = rGrp.GetUnsigned(sReason, value);
             col = static_cast<unsigned int>(value);
@@ -852,7 +859,7 @@ void PythonConsole::runSource(const QString& line)
         if (check) {
             ret = QMessageBox::question(this, tr("System exit"),
                 tr("The application is still running.\nDo you want to exit without saving your data?"),
-                QMessageBox::Yes, QMessageBox::No|QMessageBox::Escape|QMessageBox::Default);
+                QMessageBox::Yes | QMessageBox::No, QMessageBox::No);
         }
         if (ret == QMessageBox::Yes) {
             PyErr_Clear();
@@ -880,8 +887,8 @@ void PythonConsole::runSource(const QString& line)
     PySys_SetObject("stdout", default_stdout);
     PySys_SetObject("stderr", default_stderr);
     d->interactive = false;
-    for (QStringList::Iterator it = d->statements.begin(); it != d->statements.end(); ++it) {
-        printStatement(*it);
+    for (const auto & it : d->statements) {
+        printStatement(it);
     }
     d->statements.clear();
 }
@@ -954,14 +961,13 @@ void PythonConsole::changeEvent(QEvent *e)
     if (e->type() == QEvent::ParentChange) {
         auto dw = qobject_cast<QDockWidget*>(this->parentWidget());
         if (dw) {
-            connect(dw, SIGNAL(visibilityChanged(bool)),
-                    this, SLOT(visibilityChanged(bool)));
+            connect(dw, &QDockWidget::visibilityChanged, this, &PythonConsole::visibilityChanged);
         }
     }
     else if (e->type() == QEvent::StyleChange) {
         QPalette pal = qApp->palette();
         QColor color = pal.windowText().color();
-        unsigned int text = (color.red() << 24) | (color.green() << 16) | (color.blue() << 8);
+        unsigned int text = App::Color::asPackedRGB<QColor>(color);
         auto value = static_cast<unsigned long>(text);
         // if this parameter is not already set use the style's window text color
         value = getWindowParameter()->GetUnsigned("Text", value);
@@ -986,7 +992,13 @@ void PythonConsole::mouseReleaseEvent( QMouseEvent *e )
         // Now we must amend the received event and pass forward. As e->setLocalPos() is only
         // available in Qt>=5.8, let's stop the original event propagation and generate a fake event
         // with corrected pointer position (inside the prompt line of the widget)
-        QMouseEvent newEv(e->type(), QPoint(newPos.x(),newPos.y()), e->button(), e->buttons(), e->modifiers());
+#if QT_VERSION < QT_VERSION_CHECK(6,4,0)
+        QMouseEvent newEv(e->type(), QPoint(newPos.x(),newPos.y()),
+                          e->button(), e->buttons(), e->modifiers());
+#else
+        QMouseEvent newEv(e->type(), QPoint(newPos.x(),newPos.y()), e->globalPosition(),
+                          e->button(), e->buttons(), e->modifiers());
+#endif
         e->accept();
         QCoreApplication::sendEvent(this->viewport(), &newEv);
         return;
@@ -1017,7 +1029,11 @@ void PythonConsole::dropEvent (QDropEvent * e)
     else {
         // always copy text when doing drag and drop
         if (mimeData->hasText()) {
+#if QT_VERSION < QT_VERSION_CHECK(6,0,0)
             QTextCursor cursor = this->cursorForPosition(e->pos());
+#else
+            QTextCursor cursor = this->cursorForPosition(e->position().toPoint());
+#endif
             QTextCursor inputLineBegin = this->inputBegin();
 
             if (!cursorBeyond( cursor, inputLineBegin )) {
@@ -1025,7 +1041,11 @@ void PythonConsole::dropEvent (QDropEvent * e)
 
                 QRect newPos = this->cursorRect();
 
+#if QT_VERSION < QT_VERSION_CHECK(6,0,0)
                 QDropEvent newEv(QPoint(newPos.x(), newPos.y()), Qt::CopyAction, mimeData, e->mouseButtons(), e->keyboardModifiers());
+#else
+                QDropEvent newEv(QPoint(newPos.x(), newPos.y()), Qt::CopyAction, mimeData, e->buttons(), e->modifiers());
+#endif
                 e->accept();
                 QPlainTextEdit::dropEvent(&newEv);
             }
@@ -1123,7 +1143,7 @@ void PythonConsole::insertFromMimeData (const QMimeData * source)
     // Some applications copy text into the clipboard with the formats
     // 'text/plain' and 'text/uri-list'. In case the url is not an existing
     // file we can handle it as normal text, then. See forum thread:
-    // https://forum.freecadweb.org/viewtopic.php?f=3&t=34618
+    // https://forum.freecad.org/viewtopic.php?f=3&t=34618
     if (source->hasText() && !existingFile) {
         runSourceFromMimeData(source->text());
     }
@@ -1304,16 +1324,17 @@ void PythonConsole::contextMenuEvent ( QContextMenuEvent * e )
     QAction *a;
     bool mayPasteHere = cursorBeyond( this->textCursor(), this->inputBegin() );
 
-    a = menu.addAction(tr("&Copy"), this, SLOT(copy()), QKeySequence(QString::fromLatin1("CTRL+C")));
+    a = menu.addAction(tr("&Copy"), this, &PythonConsole::copy);
+    a->setShortcut(QKeySequence(QString::fromLatin1("CTRL+C")));
     a->setEnabled(textCursor().hasSelection());
 
-    a = menu.addAction(tr("&Copy command"), this, SLOT(onCopyCommand()));
+    a = menu.addAction(tr("&Copy command"), this, &PythonConsole::onCopyCommand);
     a->setEnabled(textCursor().hasSelection());
 
-    a = menu.addAction(tr("&Copy history"), this, SLOT(onCopyHistory()));
+    a = menu.addAction(tr("&Copy history"), this, &PythonConsole::onCopyHistory);
     a->setEnabled(!d->history.isEmpty());
 
-    a = menu.addAction( tr("Save history as..."), this, SLOT(onSaveHistoryAs()));
+    a = menu.addAction( tr("Save history as..."), this, &PythonConsole::onSaveHistoryAs);
     a->setEnabled(!d->history.isEmpty());
 
     QAction* saveh = menu.addAction(tr("Save history"));
@@ -1323,18 +1344,20 @@ void PythonConsole::contextMenuEvent ( QContextMenuEvent * e )
 
     menu.addSeparator();
 
-    a = menu.addAction(tr("&Paste"), this, SLOT(paste()), QKeySequence(QString::fromLatin1("CTRL+V")));
+    a = menu.addAction(tr("&Paste"), this, &PythonConsole::paste);
+    a->setShortcut(QKeySequence(QString::fromLatin1("CTRL+V")));
     const QMimeData *md = QApplication::clipboard()->mimeData();
     a->setEnabled( mayPasteHere && md && canInsertFromMimeData(md));
 
-    a = menu.addAction(tr("Select All"), this, SLOT(selectAll()), QKeySequence(QString::fromLatin1("CTRL+A")));
+    a = menu.addAction(tr("Select All"), this, &PythonConsole::selectAll);
+    a->setShortcut(QKeySequence(QString::fromLatin1("CTRL+A")));
     a->setEnabled(!document()->isEmpty());
 
-    a = menu.addAction(tr("Clear console"), this, SLOT(onClearConsole()));
+    a = menu.addAction(tr("Clear console"), this, &PythonConsole::onClearConsole);
     a->setEnabled(!document()->isEmpty());
 
     menu.addSeparator();
-    menu.addAction( tr("Insert file name..."), this, SLOT(onInsertFileName()));
+    menu.addAction( tr("Insert file name..."), this, &PythonConsole::onInsertFileName);
     menu.addSeparator();
 
     QAction* wrap = menu.addAction(tr("Word wrap"));
@@ -1422,7 +1445,7 @@ QString PythonConsole::readline( )
     printPrompt(PythonConsole::Special);
     this->_sourceDrain = &inputBuffer;     //< enable source drain ...
     // ... and wait until we get notified about pendingSource
-    QObject::connect( this, SIGNAL(pendingSource()), &loop, SLOT(quit()) );
+    QObject::connect( this, &PythonConsole::pendingSource, &loop, &QEventLoop::quit);
     // application is about to quit
     if (loop.exec() != 0) {
         PyErr_SetInterrupt();
@@ -1491,9 +1514,7 @@ PythonConsoleHighlighter::PythonConsoleHighlighter(QObject* parent)
 {
 }
 
-PythonConsoleHighlighter::~PythonConsoleHighlighter()
-{
-}
+PythonConsoleHighlighter::~PythonConsoleHighlighter() = default;
 
 void PythonConsoleHighlighter::highlightBlock(const QString& text)
 {
@@ -1541,9 +1562,7 @@ ConsoleHistory::ConsoleHistory()
     _it = _history.cend();
 }
 
-ConsoleHistory::~ConsoleHistory()
-{
-}
+ConsoleHistory::~ConsoleHistory() = default;
 
 void ConsoleHistory::first()
 {

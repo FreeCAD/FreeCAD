@@ -79,7 +79,8 @@ void TaskCSysDragger::setupGui()
   auto tLabel = new QLabel(tr("Translation Increment:"), incrementsBox);
   gridLayout->addWidget(tLabel, 0, 0, Qt::AlignRight);
 
-  int spinBoxWidth = QApplication::fontMetrics().averageCharWidth() * 20;
+  QFontMetrics metrics(QApplication::font());
+  int spinBoxWidth = metrics.averageCharWidth() * 20;
   tSpinBox = new QuantitySpinBox(incrementsBox);
   tSpinBox->setMinimum(0.0);
   tSpinBox->setMaximum(std::numeric_limits<double>::max());
@@ -100,8 +101,8 @@ void TaskCSysDragger::setupGui()
   incrementsBox->groupLayout()->addLayout(gridLayout);
   Content.push_back(incrementsBox);
 
-  connect(tSpinBox, SIGNAL(valueChanged(double)), this, SLOT(onTIncrementSlot(double)));
-  connect(rSpinBox, SIGNAL(valueChanged(double)), this, SLOT(onRIncrementSlot(double)));
+  connect(tSpinBox, qOverload<double>(&QuantitySpinBox::valueChanged), this, &TaskCSysDragger::onTIncrementSlot);
+  connect(rSpinBox, qOverload<double>(&QuantitySpinBox::valueChanged), this, &TaskCSysDragger::onRIncrementSlot);
 }
 
 void TaskCSysDragger::onTIncrementSlot(double freshValue)

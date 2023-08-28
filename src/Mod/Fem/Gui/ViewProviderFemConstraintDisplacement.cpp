@@ -40,7 +40,8 @@
 
 using namespace FemGui;
 
-PROPERTY_SOURCE(FemGui::ViewProviderFemConstraintDisplacement, FemGui::ViewProviderFemConstraintOnBoundary)
+PROPERTY_SOURCE(FemGui::ViewProviderFemConstraintDisplacement,
+                FemGui::ViewProviderFemConstraintOnBoundary)
 
 ViewProviderFemConstraintDisplacement::ViewProviderFemConstraintDisplacement()
 {
@@ -48,11 +49,9 @@ ViewProviderFemConstraintDisplacement::ViewProviderFemConstraintDisplacement()
     ADD_PROPERTY(FaceColor, (0.2f, 0.3f, 0.2f));
 }
 
-ViewProviderFemConstraintDisplacement::~ViewProviderFemConstraintDisplacement()
-{
-}
+ViewProviderFemConstraintDisplacement::~ViewProviderFemConstraintDisplacement() = default;
 
-//FIXME setEdit needs a careful review
+// FIXME setEdit needs a careful review
 bool ViewProviderFemConstraintDisplacement::setEdit(int ModNum)
 {
     if (ModNum == ViewProvider::Default) {
@@ -91,14 +90,16 @@ bool ViewProviderFemConstraintDisplacement::setEdit(int ModNum)
 
 #define HEIGHT (4)
 #define WIDTH (0.3)
-//#define USE_MULTIPLE_COPY  //OvG: MULTICOPY fails to update scaled display on initial drawing - so disable
+//#define USE_MULTIPLE_COPY
+//OvG: MULTICOPY fails to update scaled display on initial drawing - so disable
 
 void ViewProviderFemConstraintDisplacement::updateData(const App::Property* prop)
 {
     // Gets called whenever a property of the attached object changes
     Fem::ConstraintDisplacement *pcConstraint =
         static_cast<Fem::ConstraintDisplacement *>(this->getObject());
-    float scaledwidth = WIDTH * pcConstraint->Scale.getValue(); //OvG: Calculate scaled values once only
+    // OvG: Calculate scaled values once only
+    float scaledwidth = WIDTH * pcConstraint->Scale.getValue();
     float scaledheight = HEIGHT * pcConstraint->Scale.getValue();
     bool xFree = pcConstraint->xFree.getValue();
     bool yFree = pcConstraint->yFree.getValue();
@@ -144,7 +145,7 @@ void ViewProviderFemConstraintDisplacement::updateData(const App::Property* prop
     }
 #endif
 
-    if (strcmp(prop->getName(),"Points") == 0) {
+    if (prop == &pcConstraint->Points) {
         const std::vector<Base::Vector3d>& points = pcConstraint->Points.getValues();
         const std::vector<Base::Vector3d>& normals = pcConstraint->Normals.getValues();
         if (points.size() != normals.size())
@@ -187,9 +188,8 @@ void ViewProviderFemConstraintDisplacement::updateData(const App::Property* prop
         Gui::coinRemoveAllChildren(pShapeSep);
 #endif
 
-        for (std::vector<Base::Vector3d>::const_iterator p = points.begin(); p != points.end();
-             p++) {
-            SbVec3f base(p->x, p->y, p->z);
+        for (const auto & point : points) {
+            SbVec3f base(point.x, point.y, point.z);
             SbVec3f dirx(1, 0, 0);                   //OvG: Make relevant to global axes
             SbVec3f diry(0, 1, 0);                   //OvG: Make relevant to global axes
             SbVec3f dirz(0, 0, 1);                   //OvG: Make relevant to global axes

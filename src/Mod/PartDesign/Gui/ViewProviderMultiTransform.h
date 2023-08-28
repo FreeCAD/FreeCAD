@@ -34,11 +34,11 @@ class PartDesignGuiExport ViewProviderMultiTransform : public ViewProviderTransf
     PROPERTY_HEADER_WITH_OVERRIDE(PartDesignGui::ViewProviderMultiTransform);
 public:
     ViewProviderMultiTransform() {
-        featureName = std::string("MultiTransform");
         menuName = tr("MultiTransform parameters");
         sPixmap = "PartDesign_MultiTransform.svg";
     }
 
+    const std::string & featureName() const override;
     std::vector<App::DocumentObject*> claimChildren() const override;
     void setupContextMenu(QMenu*, QObject*, const char*) override;
 

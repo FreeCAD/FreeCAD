@@ -20,14 +20,15 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef REEN_BSPLINEFITTING_H
 #define REEN_BSPLINEFITTING_H
 
 #if defined(HAVE_PCL_OPENNURBS)
-#include <Geom_BSplineSurface.hxx>
-#include <Base/Vector3D.h>
-#include <vector>
+# include <vector>
+
+# include <Base/Vector3D.h>
+# include <Geom_BSplineSurface.hxx>
+
 
 namespace Reen {
 

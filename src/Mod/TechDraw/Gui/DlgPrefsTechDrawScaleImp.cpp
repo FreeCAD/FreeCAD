@@ -39,8 +39,8 @@ DlgPrefsTechDrawScaleImp::DlgPrefsTechDrawScaleImp( QWidget* parent )
     ui->pdsbTemplateMark->setUnit(Base::Unit::Length);
     ui->pdsbTemplateMark->setMinimum(0);
 
-    connect(ui->cbViewScaleType, SIGNAL(currentIndexChanged(int)),
-        this, SLOT(onScaleTypeChanged(int)));
+    connect(ui->cbViewScaleType, qOverload<int>(&QComboBox::currentIndexChanged),
+            this, &DlgPrefsTechDrawScaleImp::onScaleTypeChanged);
 }
 
 DlgPrefsTechDrawScaleImp::~DlgPrefsTechDrawScaleImp()

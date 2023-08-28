@@ -20,8 +20,6 @@
 # ***************************************************************************
 """FreeCAD IFC importer - Multicore version"""
 
-from __future__ import print_function
-
 import sys
 import time
 import os

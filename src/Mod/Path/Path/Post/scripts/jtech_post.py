@@ -21,7 +21,6 @@
 # *                                                                         *
 # ***************************************************************************
 
-from __future__ import print_function
 import FreeCAD
 from FreeCAD import Units
 import Path
@@ -29,11 +28,12 @@ import argparse
 import datetime
 import shlex
 import Path.Post.Utils as PostUtils
+import PathScripts.PathUtils as PathUtils
 
 TOOLTIP = """
 This is a postprocessor file for the Path workbench. It is used to
-take a pseudo-gcode fragment outputted by a Path object, and output
-real GCode suitable for a jtech photonics laser. This postprocessor, once placed
+take a pseudo-G-code fragment outputted by a Path object, and output
+real G-code suitable for a jtech photonics laser. This postprocessor, once placed
 in the appropriate PathScripts folder, can be used directly from inside
 FreeCAD, via the GUI importer or via python scripts with:
 
@@ -308,7 +308,7 @@ def parse(pathobj):
         if not hasattr(pathobj, "Path"):
             return out
 
-        for c in pathobj.Path.Commands:
+        for c in PathUtils.getPathWithPlacement(pathobj).Commands:
 
             outstring = []
             command = c.Name

@@ -55,7 +55,7 @@ using namespace SpreadsheetGui;
 using namespace Spreadsheet;
 using namespace Gui;
 using namespace App;
-namespace bp = boost::placeholders;
+namespace sp = std::placeholders;
 
 /* TRANSLATOR SpreadsheetGui::SheetView */
 
@@ -80,28 +80,30 @@ SheetView::SheetView(Gui::Document *pcDocument, App::DocumentObject *docObj, QWi
     ui->cells->setSheet(sheet);
 
     // Connect signals
-    connect(ui->cells->selectionModel(), SIGNAL( currentChanged( QModelIndex, QModelIndex ) ),
-            this,        SLOT( currentChanged( QModelIndex, QModelIndex ) ) );
+    connect(ui->cells->selectionModel(), &QItemSelectionModel::currentChanged,
+            this, &SheetView::currentChanged);
 
-    connect(ui->cells->horizontalHeader(), SIGNAL(resizeFinished()),
-            this, SLOT(columnResizeFinished()));
-    connect(ui->cells->horizontalHeader(), SIGNAL(sectionResized ( int, int, int ) ),
-            this, SLOT(columnResized(int, int, int)));
+    connect(dynamic_cast<SheetViewHeader*>(ui->cells->horizontalHeader()), &SheetViewHeader::resizeFinished,
+            this, &SheetView::columnResizeFinished);
+    connect(ui->cells->horizontalHeader(), &QHeaderView::sectionResized,
+            this, &SheetView::columnResized);
 
-    connect(ui->cells->verticalHeader(), SIGNAL(resizeFinished()),
-            this, SLOT(rowResizeFinished()));
-    connect(ui->cells->verticalHeader(), SIGNAL(sectionResized ( int, int, int ) ),
-            this, SLOT(rowResized(int, int, int)));
+    connect(dynamic_cast<SheetViewHeader*>(ui->cells->verticalHeader()), &SheetViewHeader::resizeFinished,
+            this, &SheetView::rowResizeFinished);
+    connect(ui->cells->verticalHeader(), &QHeaderView::sectionResized,
+            this, &SheetView::rowResized);
 
     connect(delegate, &SpreadsheetDelegate::finishedWithKey, this, &SheetView::editingFinishedWithKey);
     connect(ui->cellContent, &ExpressionLineEdit::returnPressed, this, [this]() {confirmContentChanged(ui->cellContent->text()); });
-    connect(ui->cellAlias, &ExpressionLineEdit::returnPressed, this, [this]() {confirmAliasChanged(ui->cellAlias->text()); });
+    connect(ui->cellAlias, &ExpressionLineEdit::editingFinished, this, [this]() {confirmAliasChanged(ui->cellAlias->text()); });
     connect(ui->cellAlias, &LineEdit::textEdited, this, &SheetView::aliasChanged);
 
-    columnWidthChangedConnection = sheet->columnWidthChanged.connect(bind(&SheetView::resizeColumn, this, bp::_1, bp::_2));
-    rowHeightChangedConnection = sheet->rowHeightChanged.connect(bind(&SheetView::resizeRow, this, bp::_1, bp::_2));
+    //NOLINTBEGIN
+    columnWidthChangedConnection = sheet->columnWidthChanged.connect(std::bind(&SheetView::resizeColumn, this, sp::_1, sp::_2));
+    rowHeightChangedConnection = sheet->rowHeightChanged.connect(std::bind(&SheetView::resizeRow, this, sp::_1, sp::_2));
+    //NOLINTEND
 
-    connect( model, SIGNAL(dataChanged(const QModelIndex &, const QModelIndex &)), this, SLOT(modelUpdated(const QModelIndex &, const QModelIndex &)));
+    connect( model, &QAbstractItemModel::dataChanged, this, &SheetView::modelUpdated);
 
     QPalette palette = ui->cells->palette();
     palette.setColor(QPalette::Base, QColor(255, 255, 255));
@@ -231,8 +233,8 @@ void SheetView::printPreview()
     QPrinter printer(QPrinter::ScreenResolution);
     printer.setPageOrientation(QPageLayout::Landscape);
     QPrintPreviewDialog dlg(&printer, this);
-    connect(&dlg, SIGNAL(paintRequested (QPrinter *)),
-            this, SLOT(print(QPrinter *)));
+    connect(&dlg, &QPrintPreviewDialog::paintRequested,
+            this, qOverload<QPrinter*>(&SheetView::print));
     dlg.exec();
 }
 
@@ -255,6 +257,8 @@ void SheetView::printPdf()
         QString::fromLatin1("%1 (*.pdf)").arg(tr("PDF file")));
     if (!filename.isEmpty()) {
         QPrinter printer(QPrinter::ScreenResolution);
+        // setPdfVersion sets the printied PDF Version to comply with PDF/A-1b, more details under: https://www.kdab.com/creating-pdfa-documents-qt/
+        printer.setPdfVersion(QPagedPaintDevice::PdfVersion_A1b);
         printer.setPageOrientation(QPageLayout::Landscape);
         printer.setOutputFormat(QPrinter::PdfFormat);
         printer.setOutputFileName(filename);
@@ -546,9 +550,7 @@ SheetViewPy::SheetViewPy(SheetView *mdi)
 {
 }
 
-SheetViewPy::~SheetViewPy()
-{
-}
+SheetViewPy::~SheetViewPy() = default;
 
 Py::Object SheetViewPy::repr()
 {

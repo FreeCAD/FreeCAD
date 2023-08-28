@@ -35,7 +35,7 @@ namespace App {
 
 namespace Gui {
     struct Node_Block;
-
+    class SelectionFilterPy;
 
 /** Selection filter definition
  *  This class builds up a type/count tree out of a string
@@ -137,36 +137,6 @@ public:
 
 private:
     Py::Object gate;
-};
-
-/**
- * Python binding for SelectionFilter class.
- * \code
- * filter=Gui.Selection.Filter("SELECT Part::Feature SUBELEMENT Edge")
- * Gui.Selection.addSelectionGate(filter)
- * \endcode
- * @see SelectionFilter
- * @author Werner Mayer
- */
-class SelectionFilterPy : public Py::PythonExtension<SelectionFilterPy>
-{
-public:
-    SelectionFilter filter;
-
-public:
-    static void init_type();    // announce properties and methods
-
-    explicit SelectionFilterPy(const std::string&);
-    ~SelectionFilterPy() override;
-
-    Py::Object repr() override;
-    Py::Object match(const Py::Tuple&);
-    Py::Object result(const Py::Tuple&);
-    Py::Object test(const Py::Tuple&);
-    Py::Object setFilter(const Py::Tuple&);
-
-private:
-    static PyObject *PyMake(struct _typeobject *, PyObject *, PyObject *);
 };
 
 /**

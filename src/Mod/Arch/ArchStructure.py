@@ -50,7 +50,7 @@ else:
 
 __title__= "FreeCAD Structure"
 __author__ = "Yorik van Havre"
-__url__ = "https://www.freecadweb.org"
+__url__ = "https://www.freecad.org"
 
 
 #Reads preset profiles and categorizes them
@@ -61,9 +61,9 @@ for pre in Presets:
         Categories.append(pre[1])
 
 
-def makeStructure(baseobj=None,length=None,width=None,height=None,name="Structure"):
+def makeStructure(baseobj=None,length=None,width=None,height=None,name=None):
 
-    '''makeStructure([obj],[length],[width],[height],[swap]): creates a
+    '''makeStructure([baseobj],[length],[width],[height],[name]): creates a
     structure element based on the given profile object and the given
     extrusion height. If no base object is given, you can also specify
     length and width for a cubic object.'''
@@ -73,7 +73,6 @@ def makeStructure(baseobj=None,length=None,width=None,height=None,name="Structur
         return
     p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
     obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython","Structure")
-    obj.Label = translate("Arch","Structure")
     _Structure(obj)
     if FreeCAD.GuiUp:
         _ViewProviderStructure(obj.ViewObject)
@@ -118,18 +117,19 @@ def makeStructure(baseobj=None,length=None,width=None,height=None,name="Structur
                 obj.Length = h
 
     if not height and not length:
-        obj.IfcType = "Undefined"
+        obj.IfcType = "Building Element Proxy"
+        obj.Label = name if name else translate("Arch","Structure")
     elif obj.Length > obj.Height:
         obj.IfcType = "Beam"
-        obj.Label = translate("Arch","Beam")
+        obj.Label = name if name else translate("Arch","Beam")
     elif obj.Height > obj.Length:
         obj.IfcType = "Column"
-        obj.Label = translate("Arch","Column")
+        obj.Label = name if name else translate("Arch","Column")
     return obj
 
-def makeStructuralSystem(objects=[],axes=[],name="StructuralSystem"):
+def makeStructuralSystem(objects=[],axes=[],name=None):
 
-    '''makeStructuralSystem(objects,axes): makes a structural system
+    '''makeStructuralSystem([objects],[axes],[name]): makes a structural system
     based on the given objects and axes'''
 
     if not FreeCAD.ActiveDocument:
@@ -145,8 +145,8 @@ def makeStructuralSystem(objects=[],axes=[],name="StructuralSystem"):
     else:
         objects = [None]
     for o in objects:
-        obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython",name)
-        obj.Label = translate("Arch",name)
+        obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython","StructuralSystem")
+        obj.Label = name if name else translate("Arch","StructuralSystem")
         _StructuralSystem(obj)
         if FreeCAD.GuiUp:
             _ViewProviderStructuralSystem(obj.ViewObject)
@@ -194,7 +194,7 @@ class CommandStructuresFromSelection:
     def GetResources(self):
         return {'Pixmap': 'Arch_MultipleStructures',
                 'MenuText': QT_TRANSLATE_NOOP("Arch_StructuresFromSelection", "Multiple Structures"),
-                'ToolTip': QT_TRANSLATE_NOOP("Arch_StructuresFromSelection", "Create multiple Arch Structure objects from a selected base, using each selected edge as an extrusion path")}
+                'ToolTip': QT_TRANSLATE_NOOP("Arch_StructuresFromSelection", "Create multiple Arch Structures from a selected base, using each selected edge as an extrusion path")}
 
     def IsActive(self):
         return not FreeCAD.ActiveDocument is None
@@ -231,7 +231,7 @@ class CommandStructuralSystem:
     def GetResources(self):
         return {'Pixmap': 'Arch_StructuralSystem',
                 'MenuText': QT_TRANSLATE_NOOP("Arch_StructuralSystem", "Structural System"),
-                'ToolTip': QT_TRANSLATE_NOOP("Arch_StructuralSystem", "Create a structural system object from a selected structure and axis")}
+                'ToolTip': QT_TRANSLATE_NOOP("Arch_StructuralSystem", "Create a structural system from a selected structure and axis")}
 
     def IsActive(self):
         return not FreeCAD.ActiveDocument is None
@@ -269,7 +269,7 @@ class _CommandStructure:
         return {'Pixmap'  : 'Arch_Structure',
                 'MenuText': QT_TRANSLATE_NOOP("Arch_Structure","Structure"),
                 'Accel': "S, T",
-                'ToolTip': QT_TRANSLATE_NOOP("Arch_Structure","Creates a structure object from scratch or from a selected object (sketch, wire, face or solid)")}
+                'ToolTip': QT_TRANSLATE_NOOP("Arch_Structure","Creates a structure from scratch or from a selected object (sketch, wire, face or solid)")}
 
     def IsActive(self):
 
@@ -707,6 +707,17 @@ class _Structure(ArchComponent.Component):
         if not "FaceMaker" in pl:
             obj.addProperty("App::PropertyEnumeration","FaceMaker","Structure",QT_TRANSLATE_NOOP("App::Property","The facemaker type to use to build the profile of this object"))
             obj.FaceMaker = ["None","Simple","Cheese","Bullseye"]
+        if not "ArchSketchEdges" in pl:  # PropertyStringList
+            obj.addProperty("App::PropertyStringList","ArchSketchEdges","Structure",QT_TRANSLATE_NOOP("App::Property","Selected edges (or group of edges) of the base ArchSketch, to use in creating the shape of this Arch Structure (instead of using all the Base shape's edges by default).  Input are index numbers of edges or groups."))
+        else:
+            # test if the property was added but as IntegerList, then update;
+            type = obj.getTypeIdOfProperty('ArchSketchEdges')
+            if type == "App::PropertyIntegerList":
+                oldIntValue = obj.ArchSketchEdges
+                newStrValue = [str(x) for x in oldIntValue]
+                obj.removeProperty("ArchSketchEdges")
+                obj.addProperty("App::PropertyStringList","ArchSketchEdges","Structure",QT_TRANSLATE_NOOP("App::Property","Selected edges (or group of edges) of the base ArchSketch, to use in creating the shape of this Arch Structure (instead of using all the Base shape's edges by default).  Input are index numbers of edges or groups."))
+                obj.ArchSketchEdges = newStrValue
         self.Type = "Structure"
 
     def onDocumentRestored(self,obj):
@@ -723,10 +734,10 @@ class _Structure(ArchComponent.Component):
         if self.clone(obj):
             return
 
-        import Part, DraftGeomUtils
         base = None
         pl = obj.Placement
         extdata = self.getExtrusionData(obj)
+
         if extdata:
             sh = extdata[0]
             if not isinstance(sh,list):
@@ -827,15 +838,34 @@ class _Structure(ArchComponent.Component):
                         else:
                             baseface = obj.Base.Shape.copy()
                     elif obj.Base.Shape.Wires:
-                        if hasattr(obj,"FaceMaker"):
-                            if obj.FaceMaker != "None":
-                                try:
-                                    baseface = Part.makeFace(obj.Base.Shape.Wires,"Part::FaceMaker"+str(obj.FaceMaker))
-                                except Exception:
-                                    FreeCAD.Console.PrintError(translate("Arch","Facemaker returned an error")+"\n")
-                                    return None
+                        # ArchSketch feature :
+                        # Get base shape wires, and faceMaker, for Structure (slab. etc.) from Base Objects if they store and provide by getStructureBaseShapeWires()
+                        # (thickness, normal/extrusion, length, width, baseface maybe for later) of structure (slab etc.)
+                        structureBaseShapeWires = None
+                        baseShapeWires = None                   #baseSlabWires / baseSlabOpeningWires = None
+                        faceMaker = None
+                        if hasattr(obj.Base, 'Proxy'):
+                            if hasattr(obj.Base.Proxy, 'getStructureBaseShapeWires'):
+                                structureBaseShapeWires = obj.Base.Proxy.getStructureBaseShapeWires(obj.Base, archsketchEdges=obj.ArchSketchEdges)
+                                # provide selected edges, or groups, in obj.ArchSketchEdges for processing in getStructureBaseShapeWires() (getSortedClusters) as override
+                                # returned a {dict} ( or a [list] )
+                        # get slab wires; use original wires if structureBaseShapeWires() provided none
+                        if structureBaseShapeWires:  # would be false (none) if both base ArchSketch and obj do not have the edges stored / inputted by user
+                            # if structureBaseShapeWires is {dict}
+                            baseShapeWires = structureBaseShapeWires.get('slabWires')
+                            faceMaker = structureBaseShapeWires.get('faceMaker')
+                        if not baseShapeWires:
+                            baseShapeWires = obj.Base.Shape.Wires
+                        if faceMaker or (obj.FaceMaker != "None"):
+                            if not faceMaker:
+                                faceMaker = obj.FaceMaker
+                            try:
+                                baseface = Part.makeFace(baseShapeWires,"Part::FaceMaker"+str(faceMaker))
+                            except Exception:
+                                FreeCAD.Console.PrintError(translate("Arch","Facemaker returned an error")+"\n")
+                                # Not returning even Part.makeFace fails, fall back to 'non-Part.makeFace' method
                         if not baseface:
-                            for w in obj.Base.Shape.Wires:
+                            for w in baseShapeWires:
                                 if not w.isClosed():
                                     p0 = w.OrderedVertexes[0].Point
                                     p1 = w.OrderedVertexes[-1].Point
@@ -844,9 +874,11 @@ class _Structure(ArchComponent.Component):
                                         w.add(e)
                                 w.fix(0.1,0,1) # fixes self-intersecting wires
                                 f = Part.Face(w)
+                                # check if it is 1st face (f) created from w in baseShapeWires; if not, fuse()
                                 if baseface:
                                     baseface = baseface.fuse(f)
                                 else:
+                                    # TODO use Part.Shape() rather than shape.copy() ... ?
                                     baseface = f.copy()
         elif length and width and height:
             if (length > height) and (IfcType != "Slab"):
@@ -894,14 +926,14 @@ class _Structure(ArchComponent.Component):
                 if obj.Normal.Length:
                     normal = Vector(obj.Normal).normalize()
                 else:
-                    normal = baseface.Faces[0].normalAt(0, 0)
+                    normal = baseface.Faces[0].normalAt(0, 0)  ## TODO to use ArchSketch's 'normal' for consistency
             base = None
             placement = None
             inverse_placement = None
             if len(baseface.Faces) > 1:
                 base = []
                 placement = []
-                hint = baseface.Faces[0].normalAt(0, 0)
+                hint = baseface.Faces[0].normalAt(0, 0)  ## TODO anything to do ?
                 for f in baseface.Faces:
                     bf, pf = self.rebase(f, hint)
                     base.append(bf)
@@ -977,7 +1009,7 @@ class _Structure(ArchComponent.Component):
 
     def getNodeEdges(self,obj):
 
-        "returns a list of edges from stuctural nodes"
+        "returns a list of edges from structural nodes"
 
         edges = []
         if obj.Nodes:
@@ -1129,14 +1161,14 @@ class _ViewProviderStructure(ArchComponent.ViewProviderComponent):
             ArchComponent.ViewProviderComponent.onChanged(self,vobj,prop)
 
     def setEdit(self,vobj,mode):
+        if mode != 0:
+            return None
 
-        if mode == 0:
-            taskd = StructureTaskPanel(vobj.Object)
-            taskd.obj = self.Object
-            taskd.update()
-            FreeCADGui.Control.showDialog(taskd)
-            return True
-        return False
+        taskd = StructureTaskPanel(vobj.Object)
+        taskd.obj = self.Object
+        taskd.update()
+        FreeCADGui.Control.showDialog(taskd)
+        return True
 
 
 class StructureTaskPanel(ArchComponent.ComponentTaskPanel):

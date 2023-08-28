@@ -42,7 +42,7 @@ translate = FreeCAD.Qt.translate
 
 __title__ = "Path Profile Operation"
 __author__ = "sliptonic (Brad Collette)"
-__url__ = "http://www.freecadweb.org"
+__url__ = "http://www.freecad.org"
 __doc__ = (
     "Path Profile operation based on entire model, selected faces or selected edges."
 )
@@ -352,7 +352,10 @@ class ObjectProfile(PathAreaOp.ObjectOp):
         else:
             params["orientation"] = 1
 
-        if not obj.UseComp:
+        offset = obj.OffsetExtra.Value
+        if obj.UseComp:
+            offset = self.radius + obj.OffsetExtra.Value
+        if offset == 0.0:
             if direction == "CCW":
                 params["orientation"] = 1
             else:

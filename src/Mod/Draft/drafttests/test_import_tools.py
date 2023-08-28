@@ -51,12 +51,6 @@ class DraftImportTools(unittest.TestCase):
         imported = aux.import_test(module)
         self.assertTrue(imported, "Problem importing '{}'".format(module))
 
-    def test_import_gui_draftlayer(self):
-        """Import Draft Layer."""
-        module = "DraftLayer"
-        imported = aux.import_test(module)
-        self.assertTrue(imported, "Problem importing '{}'".format(module))
-
     def test_import_gui_draftplane(self):
         """Import Draft SelectPlane."""
         module = "draftguitools.gui_selectplane"

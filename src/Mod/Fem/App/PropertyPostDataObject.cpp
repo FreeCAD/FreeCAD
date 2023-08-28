@@ -56,13 +56,9 @@ using namespace Fem;
 
 TYPESYSTEM_SOURCE(Fem::PropertyPostDataObject , App::Property)
 
-PropertyPostDataObject::PropertyPostDataObject()
-{
-}
+PropertyPostDataObject::PropertyPostDataObject() = default;
 
-PropertyPostDataObject::~PropertyPostDataObject()
-{
-}
+PropertyPostDataObject::~PropertyPostDataObject() = default;
 
 void PropertyPostDataObject::scaleDataObject(vtkDataObject *dataObject, double s)
 {
@@ -70,8 +66,8 @@ void PropertyPostDataObject::scaleDataObject(vtkDataObject *dataObject, double s
         for (vtkIdType i = 0; i < points->GetNumberOfPoints(); i++) {
             double xyz[3];
             points->GetPoint(i, xyz);
-            for (int j = 0; j < 3; j++)
-                xyz[j] *= s;
+            for (double & j : xyz)
+                j *= s;
             points->SetPoint(i, xyz);
         }
     };
@@ -220,18 +216,29 @@ unsigned int PropertyPostDataObject::getMemSize() const
     return m_dataObject ? m_dataObject->GetActualMemorySize() : 0;
 }
 
-void PropertyPostDataObject::getPaths(std::vector<App::ObjectIdentifier> & /*paths*/) const
+void PropertyPostDataObject::getPaths(std::vector<App::ObjectIdentifier>& /*paths*/) const
 {
-//     paths.push_back(App::ObjectIdentifier(getContainer()) << App::ObjectIdentifier::Component::SimpleComponent(getName())
-//                     << App::ObjectIdentifier::Component::SimpleComponent(App::ObjectIdentifier::String("ShapeType")));
-//     paths.push_back(App::ObjectIdentifier(getContainer()) << App::ObjectIdentifier::Component::SimpleComponent(getName())
-//                     << App::ObjectIdentifier::Component::SimpleComponent(App::ObjectIdentifier::String("Orientation")));
-//     paths.push_back(App::ObjectIdentifier(getContainer()) << App::ObjectIdentifier::Component::SimpleComponent(getName())
-//                     << App::ObjectIdentifier::Component::SimpleComponent(App::ObjectIdentifier::String("Length")));
-//     paths.push_back(App::ObjectIdentifier(getContainer()) << App::ObjectIdentifier::Component::SimpleComponent(getName())
-//                     << App::ObjectIdentifier::Component::SimpleComponent(App::ObjectIdentifier::String("Area")));
-//     paths.push_back(App::ObjectIdentifier(getContainer()) << App::ObjectIdentifier::Component::SimpleComponent(getName())
-//                     << App::ObjectIdentifier::Component::SimpleComponent(App::ObjectIdentifier::String("Volume")));
+ /* paths.push_back(App::ObjectIdentifier(getContainer())
+                    << App::ObjectIdentifier::Component::SimpleComponent(getName())
+                    << App::ObjectIdentifier::Component::SimpleComponent(
+                           App::ObjectIdentifier::String("ShapeType")));
+    paths.push_back(App::ObjectIdentifier(getContainer())
+                    << App::ObjectIdentifier::Component::SimpleComponent(getName())
+                    << App::ObjectIdentifier::Component::SimpleComponent(
+                           App::ObjectIdentifier::String("Orientation")));
+    paths.push_back(App::ObjectIdentifier(getContainer())
+                    << App::ObjectIdentifier::Component::SimpleComponent(getName())
+                    << App::ObjectIdentifier::Component::SimpleComponent(
+                           App::ObjectIdentifier::String("Length")));
+    paths.push_back(App::ObjectIdentifier(getContainer())
+                    << App::ObjectIdentifier::Component::SimpleComponent(getName())
+                    << App::ObjectIdentifier::Component::SimpleComponent(
+                           App::ObjectIdentifier::String("Area")));
+    paths.push_back(App::ObjectIdentifier(getContainer())
+                    << App::ObjectIdentifier::Component::SimpleComponent(getName())
+                    << App::ObjectIdentifier::Component::SimpleComponent(
+                           App::ObjectIdentifier::String("Volume")));
+    */
 }
 
 void PropertyPostDataObject::Save(Base::Writer &writer) const
@@ -371,7 +378,8 @@ void PropertyPostDataObject::RestoreDocFile(Base::Reader &reader)
     if (ulSize > 0) {
         std::string extension = xml.extension();
 
-        //TODO: read in of composite data structures need to be coded, including replace of "GetOutputAsDataSet()"
+        // TODO: read in of composite data structures need to be coded,
+        // including replace of "GetOutputAsDataSet()"
         vtkSmartPointer<vtkXMLReader> xmlReader;
         if (extension == "vtp")
             xmlReader = vtkSmartPointer<vtkXMLPolyDataReader>::New();
@@ -399,7 +407,8 @@ void PropertyPostDataObject::RestoreDocFile(Base::Reader &reader)
                                       fi.filePath().c_str(), obj->Label.getValue());
             }
             else {
-                Base::Console().Warning("Loaded Dataset file '%s' seems to be empty\n", fi.filePath().c_str());
+                Base::Console().Warning("Loaded Dataset file '%s' seems to be empty\n",
+                                        fi.filePath().c_str());
             }
         }
         else {

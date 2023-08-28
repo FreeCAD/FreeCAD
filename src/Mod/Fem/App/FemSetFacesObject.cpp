@@ -33,13 +33,9 @@ using namespace App;
 PROPERTY_SOURCE(Fem::FemSetFacesObject, Fem::FemSetObject)
 
 
-FemSetFacesObject::FemSetFacesObject()
-{
-}
+FemSetFacesObject::FemSetFacesObject() = default;
 
-FemSetFacesObject::~FemSetFacesObject()
-{
-}
+FemSetFacesObject::~FemSetFacesObject() = default;
 
 short FemSetFacesObject::mustExecute() const
 {

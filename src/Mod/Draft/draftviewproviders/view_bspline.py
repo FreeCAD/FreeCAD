@@ -39,9 +39,6 @@ class ViewProviderBSpline(ViewProviderWire):
     def __init__(self, vobj):
         super(ViewProviderBSpline, self).__init__(vobj)
 
-    def setupContextMenu(self, vobj, menu):
-        return
-
 
 # Alias for compatibility with v0.18 and earlier
 _ViewProviderBSpline = ViewProviderBSpline

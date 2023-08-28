@@ -36,7 +36,7 @@ using namespace Fem;
 
 PROPERTY_SOURCE(Fem::ConstraintFluidBoundary, Fem::Constraint)
 
-// see forum topic: https://forum.freecadweb.org/viewtopic.php?&p=407901
+// see forum topic: https://forum.freecad.org/viewtopic.php?&p=407901
 
 // also defined in TaskFemConstraintFluidBoundary.cpp and FoamCaseBuilder/BasicBuilder.py, update simultaneously
 // the second (index 1) item is the default enum, as index 0 causes compiling error
@@ -61,7 +61,7 @@ static const char* ThermalBoundaryHelpTexts[] = {"fixed Temperature [K]", "no he
 
 ConstraintFluidBoundary::ConstraintFluidBoundary()
 {
-    /// momemtum boundary: pressure and velocity
+    /// momentum boundary: pressure and velocity
     ADD_PROPERTY_TYPE(BoundaryType,(1),"FluidBoundary",(App::PropertyType)(App::Prop_None),
                       "Basic boundary type like inlet, wall, outlet,etc");
     BoundaryType.setEnums(BoundaryTypes);

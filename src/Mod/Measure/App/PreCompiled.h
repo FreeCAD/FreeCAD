@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef __PRECOMPILED__
 #define __PRECOMPILED__
 
@@ -29,33 +28,28 @@
 #ifdef FC_OS_WIN32
 #define WIN32_LEAN_AND_MEAN
 #ifndef NOMINMAX
-#define NOMINMAX
+# define NOMINMAX
 #endif
 #endif
 
 #ifdef _PreComp_
 
 // standard
-#include <iostream>
 #include <sstream>
-#include <cstdio>
-#include <cassert>
-#include <string>
-#include <map>
-#include <vector>
-#include <set>
-#include <bitset>
 
-#include <Mod/Part/App/OpenCascadeAll.h>
-#include <BRep_Builder.hxx>
-#include <TopoDS_Compound.hxx>
-#include <GCPnts_AbscissaPoint.hxx>
+#include <BRep_Tool.hxx>
+#include <BRepAdaptor_Curve.hxx>
 #include <BRepExtrema_DistShapeShape.hxx>
-#include <GProp_GProps.hxx>
-#include <GeomAPI_ExtremaCurveCurve.hxx>
 #include <BRepGProp.hxx>
+#include <GCPnts_AbscissaPoint.hxx>
+#include <gp_Circ.hxx>
+#include <gp_Lin.hxx>
+#include <GProp_GProps.hxx>
+#include <TopoDS.hxx>
+#include <TopoDS_Shape.hxx>
 
 #elif defined(FC_OS_WIN32)
-#include <windows.h>
+# include <windows.h>
 #endif // _PreComp_
+
 #endif

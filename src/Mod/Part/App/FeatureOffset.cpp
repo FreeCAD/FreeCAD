@@ -52,10 +52,7 @@ Offset::Offset()
     Source.setScope(App::LinkScope::Global);
 }
 
-Offset::~Offset()
-{
-
-}
+Offset::~Offset() = default;
 
 short Offset::mustExecute() const
 {
@@ -76,7 +73,7 @@ short Offset::mustExecute() const
     return 0;
 }
 
-App::DocumentObjectExecReturn *Offset::execute(void)
+App::DocumentObjectExecReturn *Offset::execute()
 {
     App::DocumentObject* source = Source.getValue();
     if (!source)
@@ -108,10 +105,7 @@ Offset2D::Offset2D()
     this->Mode.setValue(1); //switch to Pipe mode by default, because skin mode does not function properly on closed profiles.
 }
 
-Offset2D::~Offset2D()
-{
-
-}
+Offset2D::~Offset2D() = default;
 
 short Offset2D::mustExecute() const
 {
@@ -130,7 +124,7 @@ short Offset2D::mustExecute() const
     return 0;
 }
 
-App::DocumentObjectExecReturn *Offset2D::execute(void)
+App::DocumentObjectExecReturn *Offset2D::execute()
 {
     App::DocumentObject* source = Source.getValue();
 

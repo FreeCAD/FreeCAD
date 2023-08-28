@@ -37,7 +37,7 @@ Part = LazyLoader("Part", globals(), "Part")
 
 __title__ = "Path Deburr Operation"
 __author__ = "sliptonic (Brad Collette), Schildkroet"
-__url__ = "http://www.freecadweb.org"
+__url__ = "http://www.freecad.org"
 __doc__ = "Deburr operation."
 
 
@@ -96,7 +96,7 @@ def toolDepthAndOffset(width, extraDepth, tool, printInfo):
 
     toolDepth = 0 if Path.Geom.isRoughly(tan, 0) else width / tan
     depth = toolDepth + extraDepth
-    extraOffset = -width if angle == 180 else (extraDepth / tan)
+    extraOffset = -width if angle == 180 else (extraDepth * tan)
     offset = toolOffset + extraOffset
 
     return (depth, offset, extraOffset, suppressInfo)
@@ -142,14 +142,14 @@ class ObjectDeburr(PathEngraveBase.ObjectOp):
             "App::PropertyEnumeration",
             "Direction",
             "Deburr",
-            QT_TRANSLATE_NOOP("App::Property", "Direction of Operation"),
+            QT_TRANSLATE_NOOP("App::Property", "Direction of operation"),
         )
         # obj.Direction = ["CW", "CCW"]
         obj.addProperty(
             "App::PropertyEnumeration",
             "Side",
             "Deburr",
-            QT_TRANSLATE_NOOP("App::Property", "Side of Operation"),
+            QT_TRANSLATE_NOOP("App::Property", "Side of operation"),
         )
         obj.Side = ["Outside", "Inside"]
         obj.setEditorMode("Side", 2)  # Hide property, it's calculated by op
@@ -158,7 +158,7 @@ class ObjectDeburr(PathEngraveBase.ObjectOp):
             "EntryPoint",
             "Deburr",
             QT_TRANSLATE_NOOP(
-                "App::Property", "Select the segment, there the operations starts"
+                "App::Property", "The segment where the operation starts"
             ),
         )
 

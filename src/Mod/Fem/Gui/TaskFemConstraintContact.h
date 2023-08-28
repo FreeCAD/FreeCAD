@@ -26,6 +26,7 @@
 #ifndef GUI_TASKVIEW_TaskFemConstraintContact_H
 #define GUI_TASKVIEW_TaskFemConstraintContact_H
 
+#include <memory>
 #include <QObject>
 
 #include "TaskFemConstraint.h"
@@ -40,7 +41,8 @@ class TaskFemConstraintContact : public TaskFemConstraint
     Q_OBJECT
 
 public:
-    explicit TaskFemConstraintContact(ViewProviderFemConstraintContact *ConstraintView,QWidget *parent = nullptr);
+    explicit TaskFemConstraintContact(ViewProviderFemConstraintContact* ConstraintView,
+                                      QWidget* parent = nullptr);
     ~TaskFemConstraintContact() override;
     const std::string getReferences() const override;
     double get_Slope()const;
@@ -60,8 +62,7 @@ protected:
 private:
     //void onSelectionChanged(const Gui::SelectionChanges& msg);
     void updateUI();
-    Ui_TaskFemConstraintContact* ui;
-
+    std::unique_ptr<Ui_TaskFemConstraintContact> ui;
 };
 
 class TaskDlgFemConstraintContact : public TaskDlgFemConstraint

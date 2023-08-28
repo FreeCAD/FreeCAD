@@ -51,7 +51,7 @@ template <class T>
 void SwapEndian(T& v)
 {
   T tmp = v;
-  int i;
+  int i = 0;
 
   for (i = 0; i < (int)sizeof (T); i++)
     *(((char*) &tmp) + i) = *(((char*) &v) + sizeof (T) - i - 1);

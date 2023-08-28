@@ -43,14 +43,14 @@ using namespace Gui;
 TaskFemConstraintPulley::TaskFemConstraintPulley(ViewProviderFemConstraintPulley* ConstraintView, QWidget* parent)
     : TaskFemConstraintGear(ConstraintView, parent, "FEM_ConstraintPulley")
 {
-    connect(ui->spinOtherDiameter, SIGNAL(valueChanged(double)),
-            this, SLOT(onOtherDiameterChanged(double)));
-    connect(ui->spinCenterDistance, SIGNAL(valueChanged(double)),
-            this, SLOT(onCenterDistanceChanged(double)));
-    connect(ui->checkIsDriven, SIGNAL(toggled(bool)),
-            this, SLOT(onCheckIsDriven(bool)));
-    connect(ui->spinTensionForce, SIGNAL(valueChanged(double)),
-            this, SLOT(onTensionForceChanged(double)));
+    connect(ui->spinOtherDiameter, qOverload<double>(&QDoubleSpinBox::valueChanged),
+            this, &TaskFemConstraintPulley::onOtherDiameterChanged);
+    connect(ui->spinCenterDistance, qOverload<double>(&QDoubleSpinBox::valueChanged),
+            this, &TaskFemConstraintPulley::onCenterDistanceChanged);
+    connect(ui->checkIsDriven, &QCheckBox::toggled,
+            this, &TaskFemConstraintPulley::onCheckIsDriven);
+    connect(ui->spinTensionForce, qOverload<double>(&QDoubleSpinBox::valueChanged),
+            this, &TaskFemConstraintPulley::onTensionForceChanged);
 
     // Temporarily prevent unnecessary feature recomputes
     ui->spinOtherDiameter->blockSignals(true);

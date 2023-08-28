@@ -50,11 +50,10 @@ void MultiTransform::positionBySupport()
 {
     PartDesign::Transformed::positionBySupport();
     std::vector<App::DocumentObject*> transFeatures = Transformations.getValues();
-    for (std::vector<App::DocumentObject*>::const_iterator f = transFeatures.begin();
-         f != transFeatures.end(); ++f) {
-        if (!((*f)->getTypeId().isDerivedFrom(PartDesign::Transformed::getClassTypeId())))
+    for (auto f : transFeatures) {
+        if (!(f->getTypeId().isDerivedFrom(PartDesign::Transformed::getClassTypeId())))
             throw Base::TypeError("Transformation features must be subclasses of Transformed");
-        PartDesign::Transformed* transFeature = static_cast<PartDesign::Transformed*>(*f);
+        PartDesign::Transformed* transFeature = static_cast<PartDesign::Transformed*>(f);
         transFeature->Placement.setValue(this->Placement.getValue());
 
         // To avoid that a linked transform feature stays touched after a recompute

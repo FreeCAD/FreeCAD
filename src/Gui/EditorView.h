@@ -40,6 +40,7 @@ QT_END_NAMESPACE
 namespace Gui {
 
 class EditorViewP;
+class TextEdit;
 
 /**
  * A special view class which sends the messages from the application to
@@ -59,7 +60,7 @@ public:
         BaseName
     };
 
-    EditorView(QPlainTextEdit* editor, QWidget* parent);
+    EditorView(TextEdit* editor, QWidget* parent);
     ~EditorView() override;
 
     QPlainTextEdit* getEditor() const;

@@ -143,7 +143,7 @@ class GroupExtensionPythonT : public ExtensionT {
 public:
     
     GroupExtensionPythonT() = default;
-    virtual ~GroupExtensionPythonT() = default;
+    ~GroupExtensionPythonT() override = default;
  
     //override the documentobjectextension functions to make them available in python 
     bool allowObject(DocumentObject* obj)  override {

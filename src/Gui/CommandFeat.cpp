@@ -76,9 +76,9 @@ StdCmdRandomColor::StdCmdRandomColor()
 {
     sGroup        = "File";
     sMenuText     = QT_TR_NOOP("Random color");
-    sToolTipText  = QT_TR_NOOP("Random color");
+    sToolTipText  = QT_TR_NOOP("Set each selected object to a randomly-selected color");
     sWhatsThis    = "Std_RandomColor";
-    sStatusTip    = QT_TR_NOOP("Random color");
+    sStatusTip    = QT_TR_NOOP("Set each selected object to a randomly-selected color");
     sPixmap       = "Std_RandomColor";
 }
 

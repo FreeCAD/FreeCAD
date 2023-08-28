@@ -40,7 +40,7 @@ TODO: Abstract the code that handles the preview and move the object specific
 __title__ = "FreeCAD Draft Edit Tool"
 __author__ = ("Yorik van Havre, Werner Mayer, Martin Burbaum, Ken Cline, "
               "Dmitry Chigrin, Carlo Pavan")
-__url__ = "https://www.freecadweb.org"
+__url__ = "https://www.freecad.org"
 
 ## \addtogroup draftguitools
 # @{
@@ -93,7 +93,7 @@ class DraftWireGuiTools(GuiTools):
             return
 
         # TODO: Make consistent operation with trackers and open wires
-        # See: https://forum.freecadweb.org/viewtopic.php?f=23&t=56661
+        # See: https://forum.freecad.org/viewtopic.php?f=23&t=56661
         #if obj.Closed:
         #    # DNC: project the new point to the plane of the face if present
         #    if hasattr(obj.Shape, "normalAt"):

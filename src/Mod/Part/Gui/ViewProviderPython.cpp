@@ -35,13 +35,9 @@ using namespace PartGui;
 
 PROPERTY_SOURCE(PartGui::ViewProviderCustom, PartGui::ViewProviderPart)
 
-ViewProviderCustom::ViewProviderCustom()
-{
-}
+ViewProviderCustom::ViewProviderCustom() = default;
 
-ViewProviderCustom::~ViewProviderCustom()
-{
-}
+ViewProviderCustom::~ViewProviderCustom() = default;
 
 void ViewProviderCustom::onChanged(const App::Property* prop)
 {

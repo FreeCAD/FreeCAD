@@ -57,19 +57,25 @@ class Point(DraftObject):
         obj.setPropertyStatus('Placement', 'Hidden')
 
     def execute(self, obj):
+        base = obj.Placement.Base
+        xyz_vec = App.Vector(obj.X.Value, obj.Y.Value, obj.Z.Value)
+
+        if self.props_changed_placement_only():
+            if base != xyz_vec:
+                obj.X = base.x
+                obj.Y = base.y
+                obj.Z = base.z
+            self.props_changed_clear()
+            return
+
         import Part
-        shape = Part.Vertex(App.Vector(0, 0, 0))
-        obj.Shape = shape
-        if obj.Placement.Base != App.Vector(obj.X, obj.Y, obj.Z):
-            obj.Placement.Base = App.Vector(obj.X, obj.Y, obj.Z)
+        obj.Shape = Part.Vertex(App.Vector(0, 0, 0))
+        if base != xyz_vec:
+            obj.Placement.Base = xyz_vec
+        self.props_changed_clear()
 
     def onChanged(self, obj, prop):
-        if prop == "Placement" \
-                and obj.Placement.Base != App.Vector(obj.X, obj.Y, obj.Z):
-            base = obj.Placement.Base
-            obj.X = base.x
-            obj.Y = base.y
-            obj.Z = base.z
+        self.props_changed_store(prop)
 
 
 # Alias for compatibility with v0.18 and earlier

@@ -61,7 +61,7 @@ public:
                  QString text = QString::fromLatin1("Attachment"), VisibilityFunction func = 0);
     ~TaskAttacher() override;
 
-    bool   getFlip(void) const;
+    bool   getFlip() const;
 
     /**
      * @brief getActiveMapMode returns either the default mode for selected
@@ -89,7 +89,7 @@ private Q_SLOTS:
     void onButtonRef2(const bool checked = true);
     void onButtonRef3(const bool checked = true);
     void onButtonRef4(const bool checked = true);
-    void onModeSelect(void);
+    void onModeSelect();
     void visibilityAutomation(bool opening_not_closing);
 
 protected:
@@ -168,11 +168,11 @@ public:
     /// is called by the framework if the dialog is rejected (Cancel)
     bool reject() override;
     /// is called by the framework if the user presses the help button
-    bool isAllowedAlterDocument(void) const override
+    bool isAllowedAlterDocument() const override
     { return false; }
 
     /// returns for Close and Help button
-    QDialogButtonBox::StandardButtons getStandardButtons(void) const override
+    QDialogButtonBox::StandardButtons getStandardButtons() const override
     { return QDialogButtonBox::Ok|QDialogButtonBox::Cancel; }
 
 protected:

@@ -151,8 +151,7 @@ std::vector<App::DocumentObject*> ViewProviderLeader::claimChildren() const
         return temp;
     }
     catch (...) {
-        std::vector<App::DocumentObject*> tmp;
-        return tmp;
+        return std::vector<App::DocumentObject*>();
     }
 }
 

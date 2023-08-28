@@ -59,7 +59,6 @@ class MeshExport Feature : public App::GeoFeature
 public:
     /// Constructor
     Feature();
-    ~Feature() override;
 
     /** @name Properties */
     //@{

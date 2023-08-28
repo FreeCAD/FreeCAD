@@ -82,13 +82,10 @@ float lineAttributes::getWidthValue()
     switch(EdgeWidth(width)) {
         case EdgeWidth::small:
             return 0.18f;
-            break;
         case EdgeWidth::middle:
             return 0.35f;
-            break;
         case EdgeWidth::thick:
             return 0.5f;
-            break;
         default:
             return 0.35f;
     }

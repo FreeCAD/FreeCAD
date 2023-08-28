@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>TechDrawGui::TaskSurfaceFinishSymbols</class>
+ <widget class="QWidget" name="TechDrawGui::TaskSurfaceFinishSymbols">
+  <property name="enabled">
+   <bool>true</bool>
+  </property>
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>274</width>
+    <height>162</height>
+   </rect>
+  </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Fixed" vsizetype="MinimumExpanding">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>250</width>
+    <height>0</height>
+   </size>
+  </property>
+  <property name="windowTitle">
+   <string>Hole /Shaft Fit ISO 286</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <layout class="QGridLayout" name="gridLayout">
+     <item row="0" column="0">
+      <widget class="QRadioButton" name="rbHoleBase">
+       <property name="text">
+        <string>shaft fit</string>
+       </property>
+       <property name="checked">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="QRadioButton" name="rbShaftBase">
+       <property name="text">
+        <string>hole fit</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QGridLayout" name="gridLayout_2">
+     <item row="0" column="2">
+      <widget class="QComboBox" name="cbField">
+       <property name="enabled">
+        <bool>true</bool>
+       </property>
+       <item>
+        <property name="text">
+         <string>c11</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>f7</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>h6</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>h7</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>h9</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>h9</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>h9</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>h6</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>h6</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>h6</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>h6</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>h6</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>k6</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>n6</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>r6</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>s6</string>
+        </property>
+       </item>
+      </widget>
+     </item>
+     <item row="0" column="3">
+      <widget class="QLabel" name="lbFitType">
+       <property name="text">
+        <string>loose fit</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="QLabel" name="lbBaseField">
+       <property name="text">
+        <string>             H11/</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+  </layout>
+ </widget>
+ <resources>
+  <include location="Resources/TechDraw.qrc"/>
+ </resources>
+ <connections/>
+</ui>

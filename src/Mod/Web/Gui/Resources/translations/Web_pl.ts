@@ -24,7 +24,7 @@
     <message>
       <location filename="../../Command.cpp" line="101"/>
       <source>Web</source>
-      <translation>Sieć</translation>
+      <translation>Witryna</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="102"/>
@@ -42,7 +42,7 @@
     <message>
       <location filename="../../Command.cpp" line="130"/>
       <source>Web</source>
-      <translation>Sieć</translation>
+      <translation>Witryna</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="131"/>
@@ -56,7 +56,7 @@
     <message>
       <location filename="../../Command.cpp" line="246"/>
       <source>Web</source>
-      <translation>Sieć</translation>
+      <translation>Witryna</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="247"/>
@@ -70,7 +70,7 @@
     <message>
       <location filename="../../Command.cpp" line="158"/>
       <source>Web</source>
-      <translation>Sieć</translation>
+      <translation>Witryna</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="159"/>
@@ -84,7 +84,7 @@
     <message>
       <location filename="../../Command.cpp" line="188"/>
       <source>Web</source>
-      <translation>Sieć</translation>
+      <translation>Witryna</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="189"/>
@@ -98,7 +98,7 @@
     <message>
       <location filename="../../Command.cpp" line="217"/>
       <source>Web</source>
-      <translation>Sieć</translation>
+      <translation>Witryna</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="218"/>
@@ -128,13 +128,13 @@
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../AppWebGui.cpp" line="85"/>
-      <location filename="../../BrowserView.cpp" line="786"/>
+      <location filename="../../AppWebGui.cpp" line="93"/>
+      <location filename="../../BrowserView.cpp" line="815"/>
       <source>Browser</source>
       <translation>Przeglądarka</translation>
     </message>
     <message>
-      <location filename="../../BrowserView.cpp" line="598"/>
+      <location filename="../../BrowserView.cpp" line="623"/>
       <source>File does not exist!</source>
       <translation>Plik nie istnieje!</translation>
     </message>
@@ -142,24 +142,24 @@
   <context>
     <name>WebGui::BrowserView</name>
     <message>
-      <location filename="../../BrowserView.cpp" line="586"/>
-      <location filename="../../BrowserView.cpp" line="591"/>
-      <location filename="../../BrowserView.cpp" line="594"/>
+      <location filename="../../BrowserView.cpp" line="611"/>
+      <location filename="../../BrowserView.cpp" line="616"/>
+      <location filename="../../BrowserView.cpp" line="619"/>
       <source>Error</source>
       <translation>Błąd</translation>
     </message>
     <message>
-      <location filename="../../BrowserView.cpp" line="591"/>
+      <location filename="../../BrowserView.cpp" line="616"/>
       <source>There were errors while loading the file. Some data might have been modified or not recovered at all. Look in the report view for more specific information about the objects involved.</source>
       <translation>Podczas wczytywania pliku wystąpiły błędy. Niektóre dane mogły zostać zmodyfikowane lub w ogóle nie zostały odtworzone. Zajrzyj do widoku raportu w celu uzyskania bardziej szczegółowych informacji na temat obiektów, których to dotyczy.</translation>
     </message>
     <message>
-      <location filename="../../BrowserView.cpp" line="594"/>
+      <location filename="../../BrowserView.cpp" line="619"/>
       <source>There were serious errors while loading the file. Some data might have been modified or not recovered at all. Saving the project will most likely result in loss of data.</source>
       <translation>Podczas ładowania pliku wystąpiły poważne błędy. Niektóre dane mogły zostać zmodyfikowane lub w ogóle nie zostały odzyskane. Zapisanie projektu najprawdopodobniej spowoduje utratę danych.</translation>
     </message>
     <message>
-      <location filename="../../BrowserView.cpp" line="754"/>
+      <location filename="../../BrowserView.cpp" line="783"/>
       <source>Loading %1...</source>
       <translation>Ładowanie %1...</translation>
     </message>
@@ -167,17 +167,17 @@
   <context>
     <name>WebGui::WebView</name>
     <message>
-      <location filename="../../BrowserView.cpp" line="353"/>
+      <location filename="../../BrowserView.cpp" line="362"/>
       <source>Open in External Browser</source>
       <translation>Otwórz w zewnętrznej przeglądarce</translation>
     </message>
     <message>
-      <location filename="../../BrowserView.cpp" line="357"/>
+      <location filename="../../BrowserView.cpp" line="365"/>
       <source>Open in new window</source>
       <translation>Otwórz w nowym oknie</translation>
     </message>
     <message>
-      <location filename="../../BrowserView.cpp" line="389"/>
+      <location filename="../../BrowserView.cpp" line="411"/>
       <source>View source</source>
       <translation>Pokaż źródło</translation>
     </message>
@@ -185,7 +185,7 @@
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="../../Workbench.cpp" line="37"/>
+      <location filename="../../Workbench.cpp" line="36"/>
       <source>Navigation</source>
       <translation>Nawigacja</translation>
     </message>

@@ -182,8 +182,6 @@ CGRP     '\,'[0-9][0-9][0-9]
 
 "Wb"       yylval = Quantity::Weber;               return UNIT; // Weber (kg*m^2/s^2/A)
 
-"Oe"       yylval = Quantity::Oersted;             return UNIT; // Oersted (A/m)
-
 "F"        yylval = Quantity::Farad;               return UNIT; // Farad (s^4*A^2/m^2/kg)
 "mF"       yylval = Quantity::MilliFarad;          return UNIT; // milli Farad
 "\xC2\xB5F"    yylval = Quantity::MicroFarad;      return UNIT; // micro Farad

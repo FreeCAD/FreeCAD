@@ -94,10 +94,16 @@ SET(Inventor_SRCS
 )
 SOURCE_GROUP("Inventor" FILES ${Inventor_SRCS})
 
-qt_add_resources(resource_SRCS Resources/Mesh.qrc)
+set (Mesh_TR_QRC ${CMAKE_CURRENT_BINARY_DIR}/Resources/Mesh_translation.qrc)
+qt_find_and_add_translation(QM_SRCS "Resources/translations/*_*.ts"
+    ${CMAKE_CURRENT_BINARY_DIR}/Resources/translations)
+qt_create_resource_file(${Mesh_TR_QRC} ${QM_SRCS})
+qt_add_resources(resource_SRCS Resources/Mesh.qrc ${Mesh_TR_QRC})
 
 SET(resource_SRCS
+    ${QM_SRCS}
     ${resource_SRCS}
+    ${Mesh_TR_QRC}
     Resources/Mesh.qrc
 )
 SOURCE_GROUP("resource" FILES ${resource_SRCS})
@@ -143,6 +149,12 @@ SET(MeshGui_SRCS
     Workbench.cpp
     Workbench.h
 )
+
+if(FREECAD_USE_PCH)
+    add_definitions(-D_PreComp_)
+    GET_MSVC_PRECOMPILED_SOURCE("PreCompiled.cpp" PCH_SRCS ${MeshGui_SRCS})
+    ADD_MSVC_PRECOMPILED_HEADER(MeshGui PreCompiled.h PreCompiled.cpp PCH_SRCS)
+endif(FREECAD_USE_PCH)
 
 SET(MeshGuiIcon_SVG
     Resources/icons/MeshWorkbench.svg

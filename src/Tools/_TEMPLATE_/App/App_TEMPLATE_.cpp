@@ -23,7 +23,7 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <Python.h>
+#include <Python.h>
 #endif
 
 #include <Base/Console.h>
@@ -34,16 +34,19 @@
 #include <CXX/Objects.hxx>
 
 
-namespace _TEMPLATE_ {
-class Module : public Py::ExtensionModule<Module>
+namespace _TEMPLATE_
+{
+class Module: public Py::ExtensionModule<Module>
 {
 public:
-    Module() : Py::ExtensionModule<Module>("_TEMPLATE_")
+    Module()
+        : Py::ExtensionModule<Module>("_TEMPLATE_")
     {
-        initialize("This module is the _TEMPLATE_ module."); // register with Python
+        initialize("This module is the _TEMPLATE_ module.");// register with Python
     }
 
-    virtual ~Module() {}
+    virtual ~Module()
+    {}
 
 private:
 };
@@ -54,7 +57,7 @@ PyObject* initModule()
 }
 
 
-} // namespace _TEMPLATE_
+}// namespace _TEMPLATE_
 
 
 /* Python entry */

@@ -161,6 +161,12 @@ public Q_SLOTS:
     void onActivated (QAction*);
     void onHovered   (QAction*);
 
+Q_SIGNALS:
+    /// When drop down menu is enabled, the signal is triggered just before hiding the menu
+    void aboutToHide(QMenu*);
+    /// When drop down menu is enabled, the signal is triggered just before showing the menu
+    void aboutToShow(QMenu*);
+
 private:
     QActionGroup* _group;
     bool _dropDown;
@@ -171,29 +177,18 @@ private:
 };
 
 // --------------------------------------------------------------------
-
-class WorkbenchGroup;
 class GuiExport WorkbenchComboBox : public QComboBox
 {
     Q_OBJECT
 
 public:
-    explicit WorkbenchComboBox(WorkbenchGroup* wb, QWidget* parent=nullptr);
+    explicit WorkbenchComboBox(QWidget* parent=nullptr);
     void showPopup() override;
 
 public Q_SLOTS:
-    void onActivated(int);
-    void onActivated(QAction*);
-
-protected Q_SLOTS:
-    void onWorkbenchActivated(const QString&);
-
-protected:
-    void actionEvent (QActionEvent*) override;
+    void refreshList(QList<QAction*>);
 
 private:
-    WorkbenchGroup* group;
-
     Q_DISABLE_COPY(WorkbenchComboBox)
 };
 
@@ -216,15 +211,14 @@ public:
     void refreshWorkbenchList();
 
     void slotActivateWorkbench(const char*);
-    void slotAddWorkbench(const char*);
-    void slotRemoveWorkbench(const char*);
 
-protected:
-    void customEvent(QEvent* event) override;
+Q_SIGNALS:
+    void workbenchListRefreshed(QList<QAction*>);
+
+protected Q_SLOTS:
+    void onWorkbenchActivated(const QString&);
 
 private:
-    void setWorkbenchData(int index, const QString& wb);
-
     Q_DISABLE_COPY(WorkbenchGroup)
 };
 

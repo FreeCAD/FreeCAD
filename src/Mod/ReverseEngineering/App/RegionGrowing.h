@@ -20,13 +20,14 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef REEN_REGIONGROWING_H
 #define REEN_REGIONGROWING_H
 
-#include <Base/Vector3D.h>
-#include <vector>
 #include <list>
+#include <vector>
+
+#include <Base/Vector3D.h>
+
 
 namespace Points {class PointKernel;}
 

@@ -23,7 +23,7 @@
 
 __title__ = "FreeCAD FEM mesh group document object"
 __author__ = "Bernd Hahnebach"
-__url__ = "https://www.freecadweb.org"
+__url__ = "https://www.freecad.org"
 
 ## @package mesh_group
 #  \ingroup FEM

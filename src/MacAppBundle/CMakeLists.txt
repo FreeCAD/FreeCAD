@@ -146,7 +146,7 @@ file(GLOB CONFIG_GCC "${HOMEBREW_PREFIX}/opt/gcc/lib/gcc/current")
 execute_process(
     COMMAND find -L /usr/local/Cellar/nglib -name MacOS
     OUTPUT_VARIABLE CONFIG_NGLIB)
-    
+
 install(CODE
     "message(STATUS \"Making bundle relocatable...\")
     # The top-level CMakeLists.txt should prevent multiple package manager

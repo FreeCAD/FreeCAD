@@ -58,7 +58,7 @@ public:
     this->windowsize = SbVec2s(event->size().width(),
                                event->size().height());
 
-    foreach(InputDevice * device, this->devices) {
+    Q_FOREACH(InputDevice * device, this->devices) {
       device->setWindowSize(this->windowsize);
     }
   }
@@ -66,12 +66,16 @@ public:
   void trackPointerPosition(QMouseEvent * event)
   {
     assert(this->windowsize[1] != -1);
+#if QT_VERSION < QT_VERSION_CHECK(6,0,0)
     this->globalmousepos = event->globalPos();
+#else
+    this->globalmousepos = event->globalPosition().toPoint();
+#endif
 
     SbVec2s mousepos(event->pos().x(), this->windowsize[1] - event->pos().y() - 1);
     // the following corrects for high-dpi displays (e.g. mac retina)
     mousepos *= quarterwidget->devicePixelRatio();
-    foreach(InputDevice * device, this->devices) {
+    Q_FOREACH(InputDevice * device, this->devices) {
       device->setMousePosition(mousepos);
     }
   }
@@ -158,7 +162,7 @@ EventFilter::eventFilter(QObject * obj, QEvent * qevent)
 
   // translate QEvent into SoEvent and see if it is handled by scene
   // graph
-  foreach(InputDevice * device, PRIVATE(this)->devices) {
+  Q_FOREACH(InputDevice * device, PRIVATE(this)->devices) {
     const SoEvent * soevent = device->translateEvent(qevent);
     if (soevent && PRIVATE(this)->quarterwidget->processSoEvent(soevent)) {
       return true;

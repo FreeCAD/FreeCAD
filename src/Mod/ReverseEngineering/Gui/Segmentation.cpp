@@ -20,37 +20,36 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-
 #ifndef _PreComp_
 # include <sstream>
+
 # include <BRep_Builder.hxx>
 # include <BRepBuilderAPI_MakePolygon.hxx>
-# include <GeomAPI_ProjectPointOnSurf.hxx>
 # include <Geom_Plane.hxx>
+# include <GeomAPI_ProjectPointOnSurf.hxx>
 # include <Standard_Failure.hxx>
 # include <TopoDS_Compound.hxx>
 # include <TopoDS_Wire.hxx>
 #endif
 
-#include "Segmentation.h"
-#include "ui_Segmentation.h"
-#include <Base/Console.h>
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/DocumentObjectGroup.h>
+#include <Base/Console.h>
 #include <Gui/WaitCursor.h>
-
 #include <Mod/Mesh/App/Core/Approximation.h>
 #include <Mod/Mesh/App/Core/Algorithm.h>
-#include <Mod/Mesh/App/Core/Segmentation.h>
 #include <Mod/Mesh/App/Core/Curvature.h>
+#include <Mod/Mesh/App/Core/Segmentation.h>
 #include <Mod/Mesh/App/Core/Smoothing.h>
-#include <Mod/Mesh/App/Mesh.h>
 #include <Mod/Mesh/App/MeshFeature.h>
-#include <Mod/Part/App/PartFeature.h>
 #include <Mod/Part/App/FaceMakerCheese.h>
+#include <Mod/Part/App/PartFeature.h>
+
+#include "Segmentation.h"
+#include "ui_Segmentation.h"
+
 
 using namespace ReverseEngineeringGui;
 
@@ -66,9 +65,7 @@ Segmentation::Segmentation(Mesh::Feature* mesh, QWidget* parent, Qt::WindowFlags
     ui->checkBoxSmooth->setChecked(false);
 }
 
-Segmentation::~Segmentation()
-{
-}
+Segmentation::~Segmentation() = default;
 
 void Segmentation::accept()
 {
@@ -105,13 +102,13 @@ void Segmentation::accept()
     finder.FindSegments(segm);
 
     std::vector<MeshCore::MeshSurfaceSegmentPtr> segmSurf;
-    for (std::vector<MeshCore::MeshSurfaceSegmentPtr>::iterator it = segm.begin(); it != segm.end(); ++it) {
-        const std::vector<MeshCore::MeshSegment>& data = (*it)->GetSegments();
+    for (const auto& it : segm) {
+        const std::vector<MeshCore::MeshSegment>& data = it->GetSegments();
 
         // For each planar segment compute a plane and use this then for a more accurate 2nd segmentation
-        if (strcmp((*it)->GetType(), "Plane") == 0) {
-            for (std::vector<MeshCore::MeshSegment>::const_iterator jt = data.begin(); jt != data.end(); ++jt) {
-                std::vector<MeshCore::PointIndex> indexes = kernel.GetFacetPoints(*jt);
+        if (strcmp(it->GetType(), "Plane") == 0) {
+            for (const auto& jt : data) {
+                std::vector<MeshCore::PointIndex> indexes = kernel.GetFacetPoints(jt);
                 MeshCore::PlaneFit fit;
                 fit.AddPoints(kernel.GetPoints(indexes));
                 if (fit.Fit() < FLOAT_MAX) {
@@ -141,17 +138,17 @@ void Segmentation::accept()
     std::vector<App::DocumentObject*> failures;
     algo.SetFacetFlag(MeshCore::MeshFacet::TMP0);
 
-    for (std::vector<MeshCore::MeshSurfaceSegmentPtr>::iterator it = segmSurf.begin(); it != segmSurf.end(); ++it) {
-        const std::vector<MeshCore::MeshSegment>& data = (*it)->GetSegments();
+    for (const auto& it : segmSurf) {
+        const std::vector<MeshCore::MeshSegment>& data = it->GetSegments();
         std::shared_ptr<MeshCore::MeshDistanceGenericSurfaceFitSegment> genSegm = std::dynamic_pointer_cast
-                <MeshCore::MeshDistanceGenericSurfaceFitSegment>(*it);
+                <MeshCore::MeshDistanceGenericSurfaceFitSegment>(it);
 
         bool isPlanar = (strcmp(genSegm->GetType(), "Plane") == 0);
-        for (std::vector<MeshCore::MeshSegment>::const_iterator jt = data.begin(); jt != data.end(); ++jt) {
+        for (const auto& jt : data) {
             // reset flag for facets of segment
-            algo.ResetFacetsFlag(*jt, MeshCore::MeshFacet::TMP0);
+            algo.ResetFacetsFlag(jt, MeshCore::MeshFacet::TMP0);
 
-            Mesh::MeshObject* segment = mesh->meshFromSegment(*jt);
+            Mesh::MeshObject* segment = mesh->meshFromSegment(jt);
             Mesh::Feature* feaSegm = static_cast<Mesh::Feature*>(group->addObject("Mesh::Feature", "Segment"));
             Mesh::MeshObject* feaMesh = feaSegm->Mesh.startEditing();
             feaMesh->swap(*segment);
@@ -159,12 +156,12 @@ void Segmentation::accept()
             delete segment;
 
             std::stringstream label;
-            label << feaSegm->Label.getValue() << " (" << (*it)->GetType() << ")";
+            label << feaSegm->Label.getValue() << " (" << it->GetType() << ")";
             feaSegm->Label.setValue(label.str());
 
             if (createCompound) {
                 std::list<std::vector<Base::Vector3f> > bounds;
-                algo.GetFacetBorders(*jt, bounds);
+                algo.GetFacetBorders(jt, bounds);
 
                 // Handle planar segments
                 if (isPlanar) {
@@ -175,10 +172,10 @@ void Segmentation::accept()
                     Handle(Geom_Plane) hPlane(new Geom_Plane(loc, dir));
 
                     std::vector<TopoDS_Wire> wires;
-                    for (auto bt = bounds.begin(); bt != bounds.end(); ++bt) {
+                    for (const auto & bound : bounds) {
                         // project the points onto the surface
                         std::vector<gp_Pnt> polygon;
-                        std::transform(bt->begin(), bt->end(), std::back_inserter(polygon), [&hPlane](const Base::Vector3f& v) {
+                        std::transform(bound.begin(), bound.end(), std::back_inserter(polygon), [&hPlane](const Base::Vector3f& v) {
                             gp_Pnt p(v.x, v.y, v.z);
                             return GeomAPI_ProjectPointOnSurf(p, hPlane).NearestPoint();
                         });
@@ -259,11 +256,6 @@ TaskSegmentation::TaskSegmentation(Mesh::Feature* mesh)
         QPixmap(), widget->windowTitle(), false, nullptr);
     taskbox->groupLayout()->addWidget(widget);
     Content.push_back(taskbox);
-}
-
-TaskSegmentation::~TaskSegmentation()
-{
-    // automatically deleted in the sub-class
 }
 
 bool TaskSegmentation::accept()

@@ -40,6 +40,7 @@ void loadPointsResource()
 {
     // add resources and reloads the translators
     Q_INIT_RESOURCE(Points);
+    Q_INIT_RESOURCE(Points_translation);
     Gui::Translator::instance()->refresh();
 }
 
@@ -51,10 +52,6 @@ public:
     {
         initialize("This module is the PointsGui module."); // register with Python
     }
-
-    ~Module() override {}
-
-private:
 };
 
 PyObject* initModule()

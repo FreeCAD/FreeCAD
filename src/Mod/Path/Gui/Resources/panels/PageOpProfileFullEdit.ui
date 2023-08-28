@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Form</string>
+   <string notr="true">Form</string>
   </property>
   <layout class="QGridLayout" name="gridLayout_4">
    <item row="0" column="0">
@@ -33,7 +33,7 @@
       <item row="0" column="1">
        <widget class="QComboBox" name="toolController">
         <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The tool and its settings to be used for this operation.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         <string>The tool and its settings to be used for this operation</string>
         </property>
        </widget>
       </item>
@@ -47,7 +47,7 @@
       <item row="1" column="1">
        <widget class="QComboBox" name="coolantController">
         <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The tool and its settings to be used for this operation.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         <string>The tool and its settings to be used for this operation</string>
         </property>
        </widget>
       </item>
@@ -67,7 +67,7 @@
       <item row="0" column="1">
        <widget class="QComboBox" name="cutSide">
         <property name="toolTip">
-         <string notr="true">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Specify if the profile should be performed inside or outside the base geometry features. This only matters if Use Compensation is checked (the default).&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         <string>Specify if the profile should be performed inside or outside the base geometry features. This only matters if Use Compensation is checked (the default)</string>
         </property>
         <item>
          <property name="text">
@@ -86,7 +86,7 @@
       <item row="1" column="1">
        <widget class="QComboBox" name="direction">
         <property name="toolTip">
-         <string notr="true">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The direction in which the profile is performed, clockwise or counter clockwise.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         <string>The direction in which the profile is performed, clockwise or counterclockwise</string>
         </property>
         <item>
          <property name="text">
@@ -111,7 +111,7 @@
          </sizepolicy>
         </property>
         <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The amount of extra material left by this operation in relation to the target shape.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         <string>The amount of extra material left by this operation in relation to the target shape</string>
         </property>
        </widget>
       </item>
@@ -124,7 +124,7 @@
       <item row="0" column="0">
        <widget class="QCheckBox" name="useStartPoint">
         <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Check if this operation should use a starting point.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         <string>Check if this operation should use a starting point</string>
         </property>
         <property name="text">
          <string>Use Start Point</string>
@@ -134,7 +134,7 @@
       <item row="0" column="1">
        <widget class="QCheckBox" name="processHoles">
         <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Check if this profile operation should also process holes in the base geometry.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Found holes are automatically offset on the opposite cut side and performed in the opposite direction as perimeters.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Note that this does not include cylindrical holes, the assumption being that they will get drilled.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         <string>Check if this profile operation should also process holes in the base geometry. Found holes are automatically offset on the opposite cut side and performed in the opposite direction as perimeters. Note that this does not include cylindrical holes, the assumption being that they will get drilled</string>
         </property>
         <property name="text">
          <string>Process Holes</string>
@@ -144,7 +144,7 @@
       <item row="1" column="0">
        <widget class="QCheckBox" name="useCompensation">
         <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If checked the profile operation is offset by the tool radius. The offset direction is determined by the Cut Side.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         <string>If checked the profile operation is offset by the tool radius. The offset direction is determined by the Cut Side</string>
         </property>
         <property name="text">
          <string>Use Compensation</string>
@@ -154,7 +154,7 @@
       <item row="1" column="1">
        <widget class="QCheckBox" name="processCircles">
         <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Check if you want this profile operation to also be applied to cylindrical holes, which normally get drilled.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;This can be useful if no drill of adequate size is available or the number of holes don't warrant a tool change.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Note that the cut side and direction is reversed in respect to the specified values.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         <string>Check if you want this profile operation to also be applied to cylindrical holes, which normally get drilled. This can be useful if no drill of adequate size is available or the number of holes don't warrant a tool change. Note that the cut side and direction is reversed in respect to the specified values</string>
         </property>
         <property name="text">
          <string>Process Circles</string>
@@ -164,7 +164,7 @@
       <item row="2" column="1">
        <widget class="QCheckBox" name="processPerimeter">
         <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Check if this profile operation should also process the outside perimeter of the base geometry shapes.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         <string>Check if this profile operation should also process the outside perimeter of the base geometry shapes</string>
         </property>
         <property name="text">
          <string>Process Perimeter</string>

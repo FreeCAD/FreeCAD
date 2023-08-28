@@ -149,10 +149,9 @@ void ViewProviderMeshOrientation::showDefects(const std::vector<Mesh::ElementInd
     MeshCore::MeshFacetIterator cF(rMesh);
     int i=0;
     int j=0;
-    for (std::vector<Mesh::ElementIndex>::const_iterator it = inds.begin(); it != inds.end(); ++it) {
-        cF.Set(*it);
-        for (int k=0; k<3; k++) {
-            Base::Vector3f cP = cF->_aclPoints[k];
+    for (Mesh::ElementIndex ind : inds) {
+        cF.Set(ind);
+        for (auto cP : cF->_aclPoints) {
             // move a bit in opposite normal direction to overlay the original faces
             cP -= 0.001f * cF->GetNormal();
             pcCoords->point.set1Value(i++,cP.x,cP.y,cP.z);
@@ -277,8 +276,8 @@ void ViewProviderMeshNonManifoldPoints::showDefects(const std::vector<Mesh::Elem
     pcCoords->point.setNum(inds.size());
     MeshCore::MeshPointIterator cP(rMesh);
     int i = 0;
-    for ( std::vector<Mesh::ElementIndex>::const_iterator it = inds.begin(); it != inds.end(); ++it ) {
-        cP.Set(*it);
+    for (Mesh::ElementIndex ind : inds) {
+        cP.Set(ind);
         pcCoords->point.set1Value(i++,cP->x,cP->y,cP->z);
     }
 
@@ -343,10 +342,9 @@ void ViewProviderMeshDuplicatedFaces::showDefects(const std::vector<Mesh::Elemen
     MeshCore::MeshFacetIterator cF(rMesh);
     int i=0;
     int j=0;
-    for (std::vector<Mesh::ElementIndex>::const_iterator it = inds.begin(); it != inds.end(); ++it) {
-        cF.Set(*it);
-        for (int k=0; k<3; k++) {
-            Base::Vector3f cP = cF->_aclPoints[k];
+    for (Mesh::ElementIndex ind : inds) {
+        cF.Set(ind);
+        for (auto cP : cF->_aclPoints) {
             // move a bit in normal direction to overlay the original faces
             cP += 0.001f * cF->GetNormal();
             pcCoords->point.set1Value(i++,cP.x,cP.y,cP.z);
@@ -406,8 +404,8 @@ void ViewProviderMeshDuplicatedPoints::showDefects(const std::vector<Mesh::Eleme
     pcCoords->point.setNum(inds.size());
     MeshCore::MeshPointIterator cP(rMesh);
     int i = 0;
-    for ( std::vector<Mesh::ElementIndex>::const_iterator it = inds.begin(); it != inds.end(); ++it ) {
-        cP.Set(*it);
+    for (Mesh::ElementIndex ind : inds) {
+        cP.Set(ind);
         pcCoords->point.set1Value(i++,cP->x,cP->y,cP->z);
     }
 
@@ -465,8 +463,8 @@ void ViewProviderMeshDegenerations::showDefects(const std::vector<Mesh::ElementI
     MeshCore::MeshFacetIterator cF(rMesh);
     int i=0;
     int j=0;
-    for (std::vector<Mesh::ElementIndex>::const_iterator it = inds.begin(); it != inds.end(); ++it) {
-        cF.Set(*it);
+    for (Mesh::ElementIndex ind : inds) {
+        cF.Set(ind);
         const MeshCore::MeshPoint& rE0 = cF->_aclPoints[0];
         const MeshCore::MeshPoint& rE1 = cF->_aclPoints[1];
         const MeshCore::MeshPoint& rE2 = cF->_aclPoints[2];
@@ -572,10 +570,9 @@ void ViewProviderMeshIndices::showDefects(const std::vector<Mesh::ElementIndex>&
         MeshCore::MeshFacetIterator cF(rMesh);
         int i=0;
         int j=0;
-        for (std::vector<Mesh::ElementIndex>::const_iterator it = inds.begin(); it != inds.end(); ++it) {
-            cF.Set(*it);
-            for (int k=0; k<3; k++) {
-                Base::Vector3f cP = cF->_aclPoints[k];
+        for (Mesh::ElementIndex ind : inds) {
+            cF.Set(ind);
+            for (auto cP : cF->_aclPoints) {
                 // move a bit in opposite normal direction to overlay the original faces
                 cP -= 0.001f * cF->GetNormal();
                 pcCoords->point.set1Value(i++,cP.x,cP.y,cP.z);
@@ -651,9 +648,9 @@ void ViewProviderMeshSelfIntersections::showDefects(const std::vector<Mesh::Elem
     pcCoords->point.setNum(2*lines.size());
     int i=0;
     int j=0;
-    for (std::vector<std::pair<Base::Vector3f, Base::Vector3f> >::const_iterator it = lines.begin(); it != lines.end(); ++it) {
-        pcCoords->point.set1Value(i++,it->first.x,it->first.y,it->first.z);
-        pcCoords->point.set1Value(i++,it->second.x,it->second.y,it->second.z);
+    for (const auto & line : lines) {
+        pcCoords->point.set1Value(i++,line.first.x,line.first.y,line.first.z);
+        pcCoords->point.set1Value(i++,line.second.x,line.second.y,line.second.z);
         pcLines->numVertices.set1Value(j++, 2);
     }
 
@@ -718,10 +715,9 @@ void ViewProviderMeshFolds::showDefects(const std::vector<Mesh::ElementIndex>& i
     MeshCore::MeshFacetIterator cF(rMesh);
     int i=0;
     int j=0;
-    for (std::vector<Mesh::ElementIndex>::const_iterator it = inds.begin(); it != inds.end(); ++it) {
-        cF.Set(*it);
-        for (int k=0; k<3; k++) {
-            Base::Vector3f cP = cF->_aclPoints[k];
+    for (Mesh::ElementIndex ind : inds) {
+        cF.Set(ind);
+        for (auto cP : cF->_aclPoints) {
             // move a bit in normal direction to overlay the original faces
             cP += 0.001f * cF->GetNormal();
             pcCoords->point.set1Value(i++,cP.x,cP.y,cP.z);

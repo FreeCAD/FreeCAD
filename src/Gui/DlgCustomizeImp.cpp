@@ -83,9 +83,9 @@ DlgCustomizeImp::DlgCustomizeImp(QWidget* parent, Qt::WindowFlags fl)
 
     // make sure that pages are ready to create
     GetWidgetFactorySupplier();
-    for (QList<QByteArray>::Iterator it = _pages.begin(); it!=_pages.end(); ++it)
+    for (const QByteArray& it : _pages)
     {
-        addPage(WidgetFactory().createWidget((*it).constData()));
+        addPage(WidgetFactory().createWidget(it.constData()));
     }
 
     customLayout->addWidget(tabWidget, 0, 0);
@@ -97,17 +97,14 @@ DlgCustomizeImp::DlgCustomizeImp(QWidget* parent, Qt::WindowFlags fl)
 
     // connections
     //
-    connect(buttonHelp,  SIGNAL (clicked()), getMainWindow(), SLOT (whatsThis()));
-    connect(buttonClose, SIGNAL (clicked()), this, SLOT (close()));
+    connect(buttonHelp,  &QPushButton::clicked, getMainWindow(), &MainWindow::whatsThis);
+    connect(buttonClose, &QPushButton::clicked, this, &QDialog::close);
 }
 
 /**
  *  Destroys the object and frees any allocated resources
  */
-DlgCustomizeImp::~DlgCustomizeImp()
-{
-    // no need to delete child widgets, Qt does it all for us
-}
+DlgCustomizeImp::~DlgCustomizeImp() = default;
 
 /**
  * Adds a customize page with its class name \a className.

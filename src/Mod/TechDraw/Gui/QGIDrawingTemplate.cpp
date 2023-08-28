@@ -86,7 +86,7 @@ void QGIDrawingTemplate::draw()
     // Draw Edges
     // iterate through all the geometries
     for(; it != geoms.end(); ++it) {
-        switch((*it)->geomType) {
+        switch((*it)->getGeomType()) {
           case TechDraw::GENERIC: {
 
             TechDraw::GenericPtr geom = std::static_pointer_cast<TechDraw::Generic>(*it);

@@ -26,6 +26,7 @@
 #ifndef GUI_TASKVIEW_TaskFemConstraintHeatflux_H
 #define GUI_TASKVIEW_TaskFemConstraintHeatflux_H
 
+#include <memory>
 #include <QObject>
 
 #include "TaskFemConstraintOnBoundary.h"
@@ -40,7 +41,8 @@ class TaskFemConstraintHeatflux : public TaskFemConstraintOnBoundary
     Q_OBJECT
 
 public:
-    explicit TaskFemConstraintHeatflux(ViewProviderFemConstraintHeatflux *ConstraintView,QWidget *parent = nullptr);
+    explicit TaskFemConstraintHeatflux(ViewProviderFemConstraintHeatflux* ConstraintView,
+                                       QWidget* parent = nullptr);
     ~TaskFemConstraintHeatflux() override;
     double getAmbientTemp() const;
     /*double getFaceTemp(void) const;*/
@@ -66,7 +68,7 @@ protected:
 
 private:
     void updateUI();
-    Ui_TaskFemConstraintHeatflux* ui;
+    std::unique_ptr<Ui_TaskFemConstraintHeatflux> ui;
 };
 
 class TaskDlgFemConstraintHeatflux : public TaskDlgFemConstraint

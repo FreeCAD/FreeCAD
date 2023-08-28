@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef MESHGUI_PRECOMPILED_H
 #define MESHGUI_PRECOMPILED_H
 
@@ -42,28 +41,18 @@
 #ifdef FC_USE_GTS
 #  include <gts.h>
 #endif
+
 // standard
-#include <cstdio>
-#include <cassert>
 #include <ios>
 
 // STL
 #include <algorithm>
-#include <bitset>
-#include <iostream>
-#include <fstream>
+#include <iomanip>
 #include <list>
 #include <map>
-#include <queue>
-#include <set>
 #include <sstream>
-#include <stack>
 #include <string>
 #include <vector>
-
-#ifdef FC_OS_WIN32
-# include <windows.h>
-#endif
 
 // Qt Toolkit
 #ifndef __QtAll__
@@ -73,12 +62,11 @@
 // Inventor
 #ifndef __InventorAll__
 # include <Gui/InventorAll.h>
-# include <Inventor/annex/ForeignFiles/SoSTLFileKit.h>
 #endif
 
 #elif defined(FC_OS_WIN32)
 #ifndef NOMINMAX
-#define NOMINMAX
+# define NOMINMAX
 #endif
 #include <Windows.h>
 #endif  //_PreComp_

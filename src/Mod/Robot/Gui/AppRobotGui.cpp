@@ -46,6 +46,7 @@ void loadRobotResource()
 {
     // add resources and reloads the translators
     Q_INIT_RESOURCE(Robot);
+    Q_INIT_RESOURCE(Robot_translation);
     Gui::Translator::instance()->refresh();
 }
 
@@ -57,8 +58,6 @@ public:
     {
         initialize("This module is the RobotGui module."); // register with Python
     }
-
-    ~Module() override {}
 
 private:
 };

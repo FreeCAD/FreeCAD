@@ -50,8 +50,8 @@ public:
 Q_SIGNALS:
     void finishedWithKey(int key, Qt::KeyboardModifiers modifiers);
 
-private Q_SLOTS:
-    void on_editorFinishedWithKey(int key, Qt::KeyboardModifiers modifiers);
+private:
+    void onEditorFinishedWithKey(int key, Qt::KeyboardModifiers modifiers);
 private:
     Spreadsheet::Sheet * sheet;
 };

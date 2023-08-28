@@ -29,9 +29,12 @@ TODO put examples here.
 
 __title__  = "FreeCAD Arch Component"
 __author__ = "Yorik van Havre"
-__url__    = "https://www.freecadweb.org"
+__url__    = "https://www.freecad.org"
 
-import FreeCAD,Draft,ArchCommands,ArchIFC
+import FreeCAD
+import ArchCommands
+import ArchIFC
+import Draft
 if FreeCAD.GuiUp:
     import FreeCADGui
     from PySide import QtGui,QtCore
@@ -165,7 +168,7 @@ class Component(ArchIFC.IfcProduct):
     structures. Its properties and behaviours are common to all Arch objects.
 
     You can learn more about Arch Components, and the purpose of Arch
-    Components here: https://wiki.freecadweb.org/Arch_Component
+    Components here: https://wiki.freecad.org/Arch_Component
 
     Parameters
     ----------
@@ -182,7 +185,7 @@ class Component(ArchIFC.IfcProduct):
         """Give the component its component specific properties, such as material.
 
         You can learn more about properties here:
-        https://wiki.freecadweb.org/property
+        https://wiki.freecad.org/property
         """
 
         ArchIFC.IfcProduct.setProperties(self, obj)
@@ -205,9 +208,9 @@ class Component(ArchIFC.IfcProduct):
         if not "Material" in pl:
             obj.addProperty("App::PropertyLink","Material","Component",QT_TRANSLATE_NOOP("App::Property","A material for this object"))
         if "BaseMaterial" in pl:
-                obj.Material = obj.BaseMaterial
-                obj.removeProperty("BaseMaterial")
-                FreeCAD.Console.PrintMessage("Upgrading "+obj.Label+" BaseMaterial property to Material\n")
+            obj.Material = obj.BaseMaterial
+            obj.removeProperty("BaseMaterial")
+            FreeCAD.Console.PrintMessage("Upgrading "+obj.Label+" BaseMaterial property to Material\n")
         if not "MoveBase" in pl:
             obj.addProperty("App::PropertyBool","MoveBase","Component",QT_TRANSLATE_NOOP("App::Property","Specifies if moving this object moves its base instead"))
             obj.MoveBase = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").GetBool("MoveBase",False)
@@ -314,28 +317,28 @@ class Component(ArchIFC.IfcProduct):
         if prop == "Placement":
             if hasattr(self,"oldPlacement"):
                 if self.oldPlacement:
-                    import DraftVecUtils
                     deltap = obj.Placement.Base.sub(self.oldPlacement.Base)
                     if deltap.Length == 0:
                         deltap = None
-                    v = FreeCAD.Vector(0,0,1)
-                    deltar = FreeCAD.Rotation(self.oldPlacement.Rotation.multVec(v),obj.Placement.Rotation.multVec(v))
-                    #print "Rotation",deltar.Axis,deltar.Angle
+                    deltar = obj.Placement.Rotation * self.oldPlacement.Rotation.inverted()
                     if deltar.Angle < 0.0001:
                         deltar = None
                     for child in self.getMovableChildren(obj):
-                        #print "moving ",child.Label
                         if deltar:
-                            #child.Placement.Rotation = child.Placement.Rotation.multiply(deltar) - not enough, child must also move
-                            # use shape methods to obtain a correct placement
-                            import Part,math
-                            shape = Part.Shape()
-                            shape.Placement = child.Placement
-                            #print("angle before rotation:",shape.Placement.Rotation.Angle)
-                            #print("rotation angle:",math.degrees(deltar.Angle))
-                            shape.rotate(DraftVecUtils.tup(self.oldPlacement.Base), DraftVecUtils.tup(deltar.Axis), math.degrees(deltar.Angle))
-                            #print("angle after rotation:",shape.Placement.Rotation.Angle)
-                            child.Placement = shape.Placement
+                            import math
+                            # Code for V1.0:
+                            # child.Placement.rotate(self.oldPlacement.Base,
+                                                   # deltar.Axis,
+                                                   # math.degrees(deltar.Angle),
+                                                   # comp=True)
+
+                            # Workaround solution for V0.20.3 backport:
+                            # See: https://forum.freecad.org/viewtopic.php?p=613196#p613196
+                            offset_rotation = FreeCAD.Placement(FreeCAD.Vector(0, 0, 0),
+                                                                FreeCAD.Rotation(deltar.Axis, math.degrees(deltar.Angle)),
+                                                                self.oldPlacement.Base)
+                            child.Placement = offset_rotation * child.Placement
+                            # End workaround solution.
                         if deltap:
                             child.Placement.move(deltap)
 
@@ -436,6 +439,7 @@ class Component(ArchIFC.IfcProduct):
             if obj.CloneOf:
                 if (Draft.getType(obj.CloneOf) == Draft.getType(obj)) or (Draft.getType(obj) in ["Component","BuildingPart"]):
                     pl = obj.Placement
+                    ## TODO use Part.Shape() instead?
                     obj.Shape = obj.CloneOf.Shape.copy()
                     obj.Placement = pl
                     for prop in ["Length","Width","Height","Thickness","Area","PerimeterLength","HorizontalArea","VerticalArea"]:
@@ -539,7 +543,7 @@ class Component(ArchIFC.IfcProduct):
 
             # the base is a Part Extrusion
             elif obj.Base.isDerivedFrom("Part::Extrusion"):
-                if obj.Base.Base:
+                if obj.Base.Base and len(obj.Base.Base.Shape.Wires) == 1:
                     base,placement = self.rebase(obj.Base.Base.Shape)
                     extrusion = FreeCAD.Vector(obj.Base.Dir).normalize()
                     if extrusion.Length == 0:
@@ -633,6 +637,7 @@ class Component(ArchIFC.IfcProduct):
 
         shapes = []
         for s in shape:
+            ## TODO use Part.Shape() instead?
             s = s.copy()
             s.translate(v.negative())
             s.rotate(FreeCAD.Vector(0, 0, 0),
@@ -711,7 +716,8 @@ class Component(ArchIFC.IfcProduct):
             The base shape, with the additions and subtractions performed.
         """
 
-        import Draft,Part
+        import Draft
+        import Part
         #print("Processing subshapes of ",obj.Label, " : ",obj.Additions)
 
         if placement:
@@ -738,14 +744,16 @@ class Component(ArchIFC.IfcProduct):
                     if js:
                         add = js.cut(base)
                         if placement:
-                            add.Placement = add.Placement.multiply(placement)
+                            # see https://forum.freecad.org/viewtopic.php?p=579754#p579754
+                            add.Placement = placement.multiply(add.Placement)
                         base = base.fuse(add)
-
                     elif hasattr(o,'Shape'):
                         if o.Shape and not o.Shape.isNull() and o.Shape.Solids:
+                            ## TODO use Part.Shape() instead?
                             s = o.Shape.copy()
                             if placement:
-                                s.Placement = s.Placement.multiply(placement)
+                                # see https://forum.freecad.org/viewtopic.php?p=579754#p579754
+                                s.Placement = placement.multiply(s.Placement)
                             if base:
                                 if base.Solids:
                                     try:
@@ -781,34 +789,38 @@ class Component(ArchIFC.IfcProduct):
                     subvolume = o.Proxy.getSubVolume(o)
                 elif hasattr(o,"Subvolume") and hasattr(o.Subvolume,"Shape"):
                     # Any other object with a Subvolume property
+                    ## TODO - Part.Shape() instead?
                     subvolume = o.Subvolume.Shape.copy()
                     if hasattr(o,"Placement"):
-                        subvolume.Placement = subvolume.Placement.multiply(o.Placement)
+                        # see https://forum.freecad.org/viewtopic.php?p=579754#p579754
+                        subvolume.Placement = o.Placement.multiply(subvolume.Placement)
 
                 if subvolume:
                     if base.Solids and subvolume.Solids:
                         if placement:
-                            subvolume.Placement = subvolume.Placement.multiply(placement)
+                            # see https://forum.freecad.org/viewtopic.php?p=579754#p579754
+                            subvolume.Placement = placement.multiply(subvolume.Placement)
                         if len(base.Solids) > 1:
                             base = Part.makeCompound([sol.cut(subvolume) for sol in base.Solids])
                         else:
                             base = base.cut(subvolume)
-
                 elif hasattr(o,'Shape'):
                     # no subvolume, we subtract the whole shape
                     if o.Shape:
                         if not o.Shape.isNull():
                             if o.Shape.Solids and base.Solids:
-                                    s = o.Shape.copy()
-                                    if placement:
-                                        s.Placement = s.Placement.multiply(placement)
-                                    try:
-                                        if len(base.Solids) > 1:
-                                            base = Part.makeCompound([sol.cut(s) for sol in base.Solids])
-                                        else:
-                                            base = base.cut(s)
-                                    except Part.OCCError:
-                                        print("Arch: unable to cut object ",o.Name, " from ", obj.Name)
+                                ## TODO use Part.Shape() instead?
+                                s = o.Shape.copy()
+                                if placement:
+                                    # see https://forum.freecad.org/viewtopic.php?p=579754#p579754
+                                    s.Placement = placement.multiply(s.Placement)
+                                try:
+                                    if len(base.Solids) > 1:
+                                        base = Part.makeCompound([sol.cut(s) for sol in base.Solids])
+                                    else:
+                                        base = base.cut(s)
+                                except Part.OCCError:
+                                    print("Arch: unable to cut object ",o.Name, " from ", obj.Name)
         return base
 
     def spread(self,obj,shape,placement=None):
@@ -849,6 +861,7 @@ class Component(ArchIFC.IfcProduct):
         if points:
             shps = []
             for p in points:
+                ## TODO use Part.Shape() instead?
                 sh = shape.copy()
                 sh.translate(p)
                 shps.append(sh)
@@ -977,7 +990,8 @@ class Component(ArchIFC.IfcProduct):
             obj.PerimeterLength = 0
             return
 
-        import TechDraw, Part
+        import Part
+        import TechDraw
         fmax = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").GetInt("MaxComputeAreas",20)
         if len(obj.Shape.Faces) > fmax:
             obj.VerticalArea = 0
@@ -1155,7 +1169,7 @@ class ViewProviderComponent:
         """Give the component view provider its component view provider specific properties.
 
         You can learn more about properties here:
-        https://wiki.freecadweb.org/property
+        https://wiki.freecad.org/property
         """
 
         if not "UseMaterialColor" in vobj.PropertiesList:
@@ -1190,10 +1204,10 @@ class ViewProviderComponent:
                                 if obj.ViewObject.ShapeColor != c:
                                     obj.ViewObject.ShapeColor = c
                     if 'Transparency' in obj.Material.Material:
-                            t = int(obj.Material.Material['Transparency'])
-                            if obj.ViewObject:
-                                if obj.ViewObject.Transparency != t:
-                                    obj.ViewObject.Transparency = t
+                        t = int(obj.Material.Material['Transparency'])
+                        if obj.ViewObject:
+                            if obj.ViewObject.Transparency != t:
+                                obj.ViewObject.Transparency = t
         elif prop == "Shape":
             if obj.Base:
                 if obj.Base.isDerivedFrom("Part::Compound"):
@@ -1449,53 +1463,28 @@ class ViewProviderComponent:
             return c
         return []
 
-    def setEdit(self,vobj,mode):
-        """Method called when the document requests the object to enter edit mode.
+    def setEdit(self, vobj, mode):
+        if mode != 0:
+            return None
 
-        Edit mode is entered when a user double clicks on an object in the tree
-        view, or when they use the menu option [Edit -> Toggle Edit Mode].
+        taskd = ComponentTaskPanel()
+        taskd.obj = self.Object
+        taskd.update()
+        FreeCADGui.Control.showDialog(taskd)
+        return True
 
-        Parameters
-        ----------
-        vobj: <Gui.ViewProviderDocumentObject>
-            The component's view provider object.
-        mode: int or str
-            The edit mode the document has requested. Set to 0 when requested via
-            a double click or [Edit -> Toggle Edit Mode].
-
-        Returns
-        -------
-        bool
-            If edit mode was entered.
-        """
-
-        if mode == 0:
-            taskd = ComponentTaskPanel()
-            taskd.obj = self.Object
-            taskd.update()
-            FreeCADGui.Control.showDialog(taskd)
-            return True
-        return False
-
-    def unsetEdit(self,vobj,mode):
-        """Method called when the document requests the object exit edit mode.
-
-        Returns
-        -------
-        False
-        """
+    def unsetEdit(self, vobj, mode):
+        if mode != 0:
+            return None
 
         FreeCADGui.Control.closeDialog()
-        return False
+        return True
 
-    def setupContextMenu(self,vobj,menu):
+    def setupContextMenu(self, vobj, menu):
         """Add the component specific options to the context menu.
 
         The context menu is the drop down menu that opens when the user right
         clicks on the component in the tree view.
-
-        Add a menu choice to call the Arch_ToggleSubs Gui command. See
-        ArchCommands._ToggleSubs
 
         Parameters
         ----------
@@ -1505,16 +1494,30 @@ class ViewProviderComponent:
             The context menu already assembled prior to this method being
             called.
         """
+        self.contextMenuAddEdit(menu)
+        self.contextMenuAddToggleSubcomponents(menu)
 
-        from PySide import QtCore,QtGui
-        action1 = QtGui.QAction(QtGui.QIcon(":/icons/Arch_ToggleSubs.svg"),translate("Arch","Toggle subcomponents"),menu)
-        QtCore.QObject.connect(action1,QtCore.SIGNAL("triggered()"),self.toggleSubcomponents)
-        menu.addAction(action1)
+    def contextMenuAddEdit(self, menu):
+        actionEdit = QtGui.QAction(translate("Arch", "Edit"),
+                                   menu)
+        QtCore.QObject.connect(actionEdit,
+                               QtCore.SIGNAL("triggered()"),
+                               self.edit)
+        menu.addAction(actionEdit)
+
+    def contextMenuAddToggleSubcomponents(self, menu):
+        actionToggleSubcomponents = QtGui.QAction(QtGui.QIcon(":/icons/Arch_ToggleSubs.svg"),
+                                                  translate("Arch", "Toggle subcomponents"),
+                                                  menu)
+        QtCore.QObject.connect(actionToggleSubcomponents,
+                               QtCore.SIGNAL("triggered()"),
+                               self.toggleSubcomponents)
+        menu.addAction(actionToggleSubcomponents)
+
+    def edit(self):
+        FreeCADGui.ActiveDocument.setEdit(self.Object, 0)
 
     def toggleSubcomponents(self):
-        """Simple wrapper to call Arch_ToggleSubs when the relevant context
-        menu choice is selected."""
-
         FreeCADGui.runCommand("Arch_ToggleSubs")
 
     def areDifferentColors(self,a,b):
@@ -1724,7 +1727,8 @@ class ComponentTaskPanel:
         else:
             import os
             # the BIM_Classification command needs to be added before it can be used
-            FreeCADGui.activateWorkbench("BIMWorkbench")
+            if not "BIM_Classification" in FreeCADGui.listCommands():
+                FreeCADGui.activateWorkbench("BIMWorkbench")
             self.classButton.setIcon(QtGui.QIcon(os.path.join(os.path.dirname(BimClassification.__file__),"icons","BIM_Classification.svg")))
 
         QtCore.QObject.connect(self.addButton, QtCore.SIGNAL("clicked()"), self.addElement)
@@ -1973,10 +1977,13 @@ class ComponentTaskPanel:
             return
         if not isinstance(self.obj.IfcProperties,dict):
             return
-        import Arch_rc, csv, os, ArchIFCSchema
+        import Arch_rc
+        import csv
+        import os
+        import ArchIFCSchema
 
         # get presets
-        self.ptypes = list(ArchIFCSchema.IfcTypes.keys())
+        self.ptypes = list(ArchIFCSchema.IfcTypes)
         self.plabels = [''.join(map(lambda x: x if x.islower() else " "+x, t[3:]))[1:] for t in self.ptypes]
         self.psetdefs = {}
         psetspath = os.path.join(FreeCAD.getResourceDir(),"Mod","Arch","Presets","pset_definitions.csv")

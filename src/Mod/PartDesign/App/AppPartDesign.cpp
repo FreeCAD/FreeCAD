@@ -63,7 +63,7 @@ extern PyObject* initModule();
 }
 
 /* Python entry */
-PyMOD_INIT_FUNC(PartDesign)
+PyMOD_INIT_FUNC(_PartDesign)
 {
     // load dependent module
     try {

@@ -23,14 +23,16 @@
 #ifndef DrawDimHelper_h_
 #define DrawDimHelper_h_
 
-#include <gp_Pnt.hxx>
-#include <TopoDS_Edge.hxx>
-
 #include <string>
 #include <vector>
 
+#include <gp_Pnt.hxx>
+#include <TopoDS_Edge.hxx>
+
 #include <Base/Vector3D.h>
 #include <Mod/TechDraw/TechDrawGlobal.h>
+
+#include "DimensionReferences.h"
 
 
 namespace TechDraw
@@ -45,6 +47,10 @@ class TechDrawExport DrawDimHelper {
     static void makeExtentDim(DrawViewPart* dvp,
                               std::vector<std::string> edgeNames,
                               int direction);
+    static void makeExtentDim3d(DrawViewPart* dvp,
+                                ReferenceVector references,
+                                int direction);
+
     static gp_Pnt findClosestPoint(std::vector<TopoDS_Edge> inEdges,
                                    TopoDS_Edge& boundary);
 
@@ -58,6 +64,9 @@ class TechDrawExport DrawDimHelper {
     static std::pair<Base::Vector3d, Base::Vector3d> minMax(DrawViewPart* dvp,
                                                             std::vector<std::string> edgeNames,
                                                             int direction);
+    static std::pair<Base::Vector3d, Base::Vector3d> minMax3d(DrawViewPart* dvp,
+                                                      ReferenceVector references,
+                                                       int direction);
 };
 
 } //end namespace TechDraw

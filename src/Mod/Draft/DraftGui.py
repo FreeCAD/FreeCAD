@@ -22,7 +22,7 @@
 
 __title__  = "FreeCAD Draft Workbench - GUI part"
 __author__ = "Yorik van Havre <yorik@uncreated.net>"
-__url__ = "https://www.freecadweb.org"
+__url__ = "https://www.freecad.org"
 
 ## @package DraftGui
 #  \ingroup DRAFT
@@ -48,7 +48,6 @@ import Draft
 import DraftVecUtils
 
 from draftutils.translate import translate
-from draftutils.utils import utf8_decode
 
 # in-command shortcut definitions: Shortcut / Translation / related UI control
 inCommandShortcuts = {
@@ -249,9 +248,6 @@ class DraftToolBar:
         self.sourceCmd = None
         self.cancel = None
         self.pointcallback = None
-        self.taskmode = 1  # Draft.getParam("UiMode",1)
-        # taskmode = 0 was used by draft toolbar that is now obsolete.
-        # print("taskmode: ",str(self.taskmode))
 
         # OBSOLETE BUT STILL USED BY SOME ADDONS AND MACROS
         self.paramcolor = Draft.getParam("color",255)>>8
@@ -294,52 +290,19 @@ class DraftToolBar:
             "angleValue":{"value":"avalue","unit":"Angle"}
         }
 
-        if self.taskmode:
-            # add only a dummy widget, since widgets are created on demand
-            self.baseWidget = DraftBaseWidget()
-            self.tray = QtGui.QToolBar(None)
-            self.tray.setObjectName("Draft tray")
-            self.tray.setWindowTitle("Draft tray")
-            self.toptray = self.tray
-            self.bottomtray = self.tray
-            self.setupTray()
-            self.setupStyle()
-            mw = FreeCADGui.getMainWindow()
-            mw.addToolBar(self.tray)
-            self.tray.setParent(mw)
-            self.tray.hide()
-
-        else: # self.taskmode == 0  Draft toolbar is obsolete and has been disabled (February 2020)
-            # create the draft Toolbar
-            self.draftWidget = QtGui.QDockWidget()
-            self.baseWidget = DraftDockWidget()
-            self.draftWidget.setObjectName("draftToolbar")
-            self.scroll = QtGui.QScrollArea()
-            self.scroll.setWidgetResizable(True)
-            self.scroll.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
-            self.scroll.setWidget(self.baseWidget)
-            self.draftWidget.setTitleBarWidget(self.scroll)
-            p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/General")
-            size = p.GetInt("ToolbarIconSize", 24)
-            if size < 24:
-                scale = 3.5
-            else:
-                scale = 2.5
-            self.scroll.setMinimumHeight(size * scale)
-            self.draftWidget.setWindowTitle(translate("draft", "Draft Command Bar"))
-            self.mw = FreeCADGui.getMainWindow()
-            self.mw.addDockWidget(QtCore.Qt.TopDockWidgetArea,self.draftWidget)
-            self.draftWidget.setVisible(False)
-            self.draftWidget.toggleViewAction().setVisible(False)
-            self.baseWidget.setObjectName("draftToolbar")
-            self.layout = QtGui.QHBoxLayout(self.baseWidget)
-            self.layout.setObjectName("layout")
-            self.toptray = self.layout
-            self.bottomtray = self.layout
-            self.setupToolBar()
-            self.setupTray()
-            self.setupStyle()
-            self.retranslateUi(self.baseWidget)
+        # add only a dummy widget, since widgets are created on demand
+        self.baseWidget = DraftBaseWidget()
+        self.tray = QtGui.QToolBar(None)
+        self.tray.setObjectName("Draft tray")
+        self.tray.setWindowTitle("Draft tray")
+        self.toptray = self.tray
+        self.bottomtray = self.tray
+        self.setupTray()
+        self.setupStyle()
+        mw = FreeCADGui.getMainWindow()
+        mw.addToolBar(self.tray)
+        self.tray.setParent(mw)
+        self.tray.hide()
 
 #---------------------------------------------------------------------------
 # General UI setup
@@ -447,15 +410,6 @@ class DraftToolBar:
         boldtxt.setBold(True)
         self.cmdlabel.setFont(boldtxt)
 
-        # subcommands for draft Edit, OBSOLETE
-
-        # self.addButton = self._pushbutton("addButton", self.layout, icon="Draft_AddPoint", width=22, checkable=True)
-        # self.delButton = self._pushbutton("delButton", self.layout, icon="Draft_DelPoint", width=22, checkable=True)
-        # self.sharpButton = self._pushbutton("sharpButton", self.layout, icon="Draft_BezSharpNode", width=22, checkable=True)
-        # self.tangentButton = self._pushbutton("tangentButton", self.layout, icon="Draft_BezTanNode", width=22, checkable=True)
-        # self.symmetricButton = self._pushbutton("symmetricButton", self.layout, icon="Draft_BezSymNode", width=22, checkable=True)
-        # self.arc3PtButton = self._pushbutton("arc3PtButton", self.layout, icon="Draft_Arc", width=22, checkable=True)
-
         # point
 
         xl = QtGui.QHBoxLayout()
@@ -506,24 +460,6 @@ class DraftToolBar:
         self.angleValue = self._inputfield("angleValue", al)
         self.angleValue.setText(FreeCAD.Units.Quantity(0,FreeCAD.Units.Angle).UserString)
 
-        # shapestring
-
-        self.labelSSize = self._label("labelSize", self.layout)
-        self.SSizeValue = self._inputfield("SSizeValue", self.layout)           #, width=60)
-        self.SSizeValue.setText(FreeCAD.Units.Quantity(1,FreeCAD.Units.Length).UserString)
-        self.labelSTrack = self._label("labelTracking", self.layout)
-        self.STrackValue = self._inputfield("STrackValue", self.layout)         #, width=60)
-        self.STrackValue.setText(FreeCAD.Units.Quantity(0,FreeCAD.Units.Length).UserString)
-        self.labelSString = self._label("labelString", self.layout)
-        self.SStringValue = self._lineedit("SStringValue", self.layout)
-        self.SStringValue.setText("")
-        self.labelFFile = self._label("labelFFile", self.layout)
-        self.FFileValue = self._lineedit("FFileValue", self.layout)
-        self.chooserButton = self._pushbutton("chooserButton", self.layout, width=26)
-        self.chooserButton.setText("...")
-        self.SSize = 1
-        self.STrack = 0
-
         # options
 
         fl = QtGui.QHBoxLayout()
@@ -565,15 +501,9 @@ class DraftToolBar:
         self.isSubelementMode = self._checkbox("isSubelementMode",self.layout,checked=False)
 
         # spacer
-        if not self.taskmode:
-            # self.taskmode == 0  Draft toolbar is obsolete and has been disabled (February 2020)
-            spacerItem = QtGui.QSpacerItem(40, 20, QtGui.QSizePolicy.Expanding,
-                                           QtGui.QSizePolicy.Minimum)
-        else:
-            spacerItem = QtGui.QSpacerItem(20, 40, QtGui.QSizePolicy.Minimum,
-                                           QtGui.QSizePolicy.Expanding)
+        spacerItem = QtGui.QSpacerItem(20, 40, QtGui.QSizePolicy.Minimum,
+                                       QtGui.QSizePolicy.Expanding)
         self.layout.addItem(spacerItem)
-
 
         QtCore.QObject.connect(self.xValue,QtCore.SIGNAL("valueChanged(double)"),self.changeXValue)
         QtCore.QObject.connect(self.yValue,QtCore.SIGNAL("valueChanged(double)"),self.changeYValue)
@@ -599,14 +529,6 @@ class DraftToolBar:
         QtCore.QObject.connect(self.textOkButton,QtCore.SIGNAL("clicked()"),self.sendText)
         QtCore.QObject.connect(self.zValue,QtCore.SIGNAL("returnPressed()"),self.setFocus)
 
-        # Draft Edit UI obsolete due to introduction of incommand context menu
-        # QtCore.QObject.connect(self.addButton,QtCore.SIGNAL("toggled(bool)"),self.setAddMode)
-        # QtCore.QObject.connect(self.delButton,QtCore.SIGNAL("toggled(bool)"),self.setDelMode)
-        # QtCore.QObject.connect(self.sharpButton,QtCore.SIGNAL("toggled(bool)"),self.setSharpMode)
-        # QtCore.QObject.connect(self.tangentButton,QtCore.SIGNAL("toggled(bool)"),self.setTangentMode)
-        # QtCore.QObject.connect(self.symmetricButton,QtCore.SIGNAL("toggled(bool)"),self.setSymmetricMode)
-        # QtCore.QObject.connect(self.arc3PtButton,QtCore.SIGNAL("toggled(bool)"),self.setArc3PtMode)
-
         QtCore.QObject.connect(self.finishButton,QtCore.SIGNAL("pressed()"),self.finish)
         QtCore.QObject.connect(self.closeButton,QtCore.SIGNAL("pressed()"),self.closeLine)
         QtCore.QObject.connect(self.wipeButton,QtCore.SIGNAL("pressed()"),self.wipeLine)
@@ -623,29 +545,6 @@ class DraftToolBar:
         QtCore.QObject.connect(self.hasFill,QtCore.SIGNAL("stateChanged(int)"),self.setFill)
         QtCore.QObject.connect(self.baseWidget,QtCore.SIGNAL("resized()"),self.relocate)
         QtCore.QObject.connect(self.baseWidget,QtCore.SIGNAL("retranslate()"),self.retranslateUi)
-        QtCore.QObject.connect(self.SSizeValue,QtCore.SIGNAL("valueChanged(double)"),self.changeSSizeValue)
-        QtCore.QObject.connect(self.SSizeValue,QtCore.SIGNAL("returnPressed()"),self.validateSNumeric)
-        QtCore.QObject.connect(self.STrackValue,QtCore.SIGNAL("valueChanged(double)"),self.changeSTrackValue)
-        QtCore.QObject.connect(self.STrackValue,QtCore.SIGNAL("returnPressed()"),self.validateSNumeric)
-        QtCore.QObject.connect(self.SStringValue,QtCore.SIGNAL("returnPressed()"),self.validateSString)
-        QtCore.QObject.connect(self.chooserButton,QtCore.SIGNAL("pressed()"),self.pickFile)
-        QtCore.QObject.connect(self.FFileValue,QtCore.SIGNAL("returnPressed()"),self.validateFile)
-
-
-        # following lines can cause a crash and are not needed anymore when using the task panel
-        # https://forum.freecadweb.org/viewtopic.php?f=3&t=6952
-        #QtCore.QObject.connect(self.FFileValue,QtCore.SIGNAL("escaped()"),self.escape)
-        #QtCore.QObject.connect(self.xValue,QtCore.SIGNAL("escaped()"),self.escape)
-        #QtCore.QObject.connect(self.yValue,QtCore.SIGNAL("escaped()"),self.escape)
-        #QtCore.QObject.connect(self.zValue,QtCore.SIGNAL("escaped()"),self.escape)
-        #QtCore.QObject.connect(self.radiusValue,QtCore.SIGNAL("escaped()"),self.escape)
-        #QtCore.QObject.connect(self.SSizeValue,QtCore.SIGNAL("escaped()"),self.escape)
-        #QtCore.QObject.connect(self.STrackValue,QtCore.SIGNAL("escaped()"),self.escape)
-        #QtCore.QObject.connect(self.SStringValue,QtCore.SIGNAL("escaped()"),self.escape)
-
-        # if Ui changed to have Size & Track visible at same time, use this
-        #QtCore.QObject.connect(self.SSizeValue,QtCore.SIGNAL("returnPressed()"),self.checkSSize)
-        #QtCore.QObject.connect(self.STrackValue,QtCore.SIGNAL("returnPressed()"),self.checkSTrack)
 
     def setupTray(self):
         """sets draft tray buttons up"""
@@ -665,20 +564,6 @@ class DraftToolBar:
         p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/General")
         bsize = p.GetInt("ToolbarIconSize",24)+2
 
-        # OBSOLETE - replaced by style button
-        #self.colorButton = self._pushbutton("colorButton",self.bottomtray, hide=False,square=True)
-        #self.colorPix = QtGui.QPixmap(16,16)
-        #self.colorPix.fill(self.color)
-        #self.colorButton.setIcon(QtGui.QIcon(self.colorPix))
-        #self.facecolorButton = self._pushbutton("facecolorButton",self.bottomtray, hide=False,square=True)
-        #self.facecolorPix = QtGui.QPixmap(16,16)
-        #self.facecolorPix.fill(QtGui.QColor(self.facecolor))
-        #self.facecolorButton.setIcon(QtGui.QIcon(self.facecolorPix))
-        #self.widthButton = self._spinbox("widthButton", self.bottomtray, val=self.linewidth,hide=False,size=(bsize * 2,bsize))
-        #self.widthButton.setSuffix("px")
-        #self.fontsizeButton = self._spinbox("fontsizeButton",self.bottomtray, val=self.fontsize,vmax=999, hide=False,double=True,size=(bsize * 4,bsize))
-        #self.applyButton = self._pushbutton("applyButton", self.toptray, hide=False, icon='Draft_Apply',square=True)
-
         self.styleButton = self._pushbutton(
             "stylebutton", self.toptray, icon='Draft_Apply', hide=False,
             width=120)
@@ -697,13 +582,6 @@ class DraftToolBar:
         QtCore.QObject.connect(self.styleButton,QtCore.SIGNAL("pressed()"),self.setstyle)
         QtCore.QObject.connect(self.constrButton,QtCore.SIGNAL("toggled(bool)"),self.toggleConstrMode)
         QtCore.QObject.connect(self.autoGroupButton,QtCore.SIGNAL("pressed()"),self.runAutoGroup)
-
-        # OBSOLETE - replaced by style button
-        #QtCore.QObject.connect(self.colorButton,QtCore.SIGNAL("pressed()"),self.getcol)
-        #QtCore.QObject.connect(self.facecolorButton,QtCore.SIGNAL("pressed()"),self.getfacecol)
-        #QtCore.QObject.connect(self.widthButton,QtCore.SIGNAL("valueChanged(int)"),self.setwidth)
-        #QtCore.QObject.connect(self.fontsizeButton,QtCore.SIGNAL("valueChanged(double)"),self.setfontsize)
-        #QtCore.QObject.connect(self.applyButton,QtCore.SIGNAL("pressed()"),self.apply)
 
         QtCore.QTimer.singleShot(2000,self.retranslateTray) # delay so translations get a chance to load
 
@@ -776,14 +654,6 @@ class DraftToolBar:
                      + " instead of the classic offset"))
         self.occOffset.setText(translate("draft", "&OCC-style offset"))
 
-        # OBSOLETE
-        # self.addButton.setToolTip(translate("draft", "Add points to the current object"))
-        # self.delButton.setToolTip(translate("draft", "Remove points from the current object"))
-        # self.sharpButton.setToolTip(translate("draft", "Make Bezier node sharp"))
-        # self.tangentButton.setToolTip(translate("draft", "Make Bezier node tangent"))
-        # self.symmetricButton.setToolTip(translate("draft", "Make Bezier node symmetric"))
-        # self.arc3PtButton.setToolTip(translate("draft", "Toggle radius and angles arc editing"))
-
         self.undoButton.setText(translate("draft", "&Undo")+" ("+inCommandShortcuts["Undo"][0]+")")
         self.undoButton.setToolTip(translate("draft", "Undo the last segment"))
         self.closeButton.setText(translate("draft", "Close")+" ("+inCommandShortcuts["Close"][0]+")")
@@ -801,14 +671,6 @@ class DraftToolBar:
         self.isCopy.setToolTip(translate("draft", "If checked, objects will be copied instead of moved. Preferences -> Draft -> Global copy mode to keep this mode in next commands"))
         self.isSubelementMode.setText(translate("draft", "Modify subelements")+" ("+inCommandShortcuts["SubelementMode"][0]+")")
         self.isSubelementMode.setToolTip(translate("draft", "If checked, subelements will be modified instead of entire objects"))
-        self.SStringValue.setToolTip(translate("draft", "Text string to draw"))
-        self.labelSString.setText(translate("draft", "String"))
-        self.SSizeValue.setToolTip(translate("draft", "Height of text"))
-        self.labelSSize.setText(translate("draft", "Height"))
-        self.STrackValue.setToolTip(translate("draft", "Intercharacter spacing"))
-        self.labelSTrack.setText(translate("draft", "Tracking"))
-        self.labelFFile.setText(translate("draft", "Full path to font file:"))
-        self.chooserButton.setToolTip(translate("draft", "Open a FileChooser for font file"))
         self.textOkButton.setText(translate("draft", "Create text"))
         self.textOkButton.setToolTip(translate("draft", "Press this button to create the text object, or finish your text with two blank lines"))
         self.retranslateTray(widget)
@@ -837,13 +699,6 @@ class DraftToolBar:
         self.constrButton.setToolTip(translate("draft", "Toggle construction mode"))
         self.autoGroupButton.setToolTip(translate("draft", "Autogroup off"))
 
-        # OBSOLETE - replaced by style button
-        #self.colorButton.setToolTip(translate("draft", "Current line color"))
-        #self.facecolorButton.setToolTip(translate("draft", "Current face color"))
-        #self.widthButton.setToolTip(translate("draft", "Current line width"))
-        #self.fontsizeButton.setToolTip(translate("draft", "Current font size"))
-        #self.applyButton.setToolTip(translate("draft", "Apply to selected objects"))
-
 
 #---------------------------------------------------------------------------
 # Interface modes
@@ -852,40 +707,14 @@ class DraftToolBar:
     def taskUi(self,title="Draft",extra=None,icon="Draft_Draft"):
         # reset InputField values
         self.reset_ui_values()
-        if self.taskmode:
-            self.isTaskOn = True
-            todo.delay(FreeCADGui.Control.closeDialog,None)
-            self.baseWidget = DraftBaseWidget()
-            self.layout = QtGui.QVBoxLayout(self.baseWidget)
-            self.setupToolBar(task=True)
-            self.retranslateUi(self.baseWidget)
-            self.panel = DraftTaskPanel(self.baseWidget,extra)
-            todo.delay(FreeCADGui.Control.showDialog,self.panel)
-        else: # self.taskmode == 0  Draft toolbar is obsolete and has been disabled (February 2020)
-            # create a dummy task to block the UI during the works
-            class dummy:
-                """an empty dialog"""
-                def __init__(self,extra=None):
-                    if extra:
-                        if isinstance(extra,list):
-                            self.form = extra
-                        else:
-                            self.form = [extra]
-                def getStandardButtons(self):
-                    return int(QtGui.QDialogButtonBox.Close)
-                def accept(self):
-                    FreeCADGui.ActiveDocument.resetEdit()
-                    return True
-                def reject(self):
-                    FreeCADGui.draftToolBar.isTaskOn = False
-                    FreeCADGui.draftToolBar.escape()
-                    FreeCADGui.ActiveDocument.resetEdit()
-                    return True
-                def isAllowedAlterDocument(self):
-                    return False
-            if FreeCADGui.Control.activeDialog():
-                FreeCADGui.Control.closeDialog()
-            todo.delay(FreeCADGui.Control.showDialog,dummy(extra))
+        self.isTaskOn = True
+        todo.delay(FreeCADGui.Control.closeDialog,None)
+        self.baseWidget = DraftBaseWidget()
+        self.layout = QtGui.QVBoxLayout(self.baseWidget)
+        self.setupToolBar(task=True)
+        self.retranslateUi(self.baseWidget)
+        self.panel = DraftTaskPanel(self.baseWidget,extra)
+        todo.delay(FreeCADGui.Control.showDialog,self.panel)
         self.setTitle(title,icon)
 
     def redraw(self):
@@ -1016,13 +845,13 @@ class DraftToolBar:
 
     def labelUi(self,title=translate("draft","Label"),callback=None):
         w = QtGui.QWidget()
-        w.setWindowTitle(translate("draft","Label type", utf8_decode=True))
+        w.setWindowTitle(translate("draft","Label type"))
         l = QtGui.QVBoxLayout(w)
         combo = QtGui.QComboBox()
         from draftobjects.label import get_label_types
         types = get_label_types()
         for s in types:
-            combo.addItem(s)
+            combo.addItem(translate("Draft", s), userData=s)
         combo.setCurrentIndex(types.index(Draft.getParam("labeltype","Custom")))
         l.addWidget(combo)
         QtCore.QObject.connect(combo,QtCore.SIGNAL("currentIndexChanged(int)"),callback)
@@ -1050,48 +879,8 @@ class DraftToolBar:
         self.sourceCmd = None
         self.pointcallback = None
         self.mask = None
-        if self.taskmode:
-            self.isTaskOn = False
-            self.baseWidget = QtGui.QWidget()
-        else: # self.taskmode == 0  Draft toolbar is obsolete and has been disabled (February 2020)
-            self.setTitle(translate("draft", "None"))
-            self.labelx.setText(translate("draft", "X"))
-            self.hideXYZ()
-            self.numFacesLabel.hide()
-            self.numFaces.hide()
-            self.hasFill.hide()
-            self.finishButton.hide()
-
-            # OBSOLETE
-            # self.addButton.hide()
-            # self.delButton.hide()
-            # self.sharpButton.hide()
-            # self.tangentButton.hide()
-            # self.symmetricButton.hide()
-            # self.arc3PtButton.hide()
-
-            self.undoButton.hide()
-            self.closeButton.hide()
-            self.wipeButton.hide()
-            self.orientWPButton.hide()
-            self.selectButton.hide()
-            self.labelRadius.hide()
-            self.radiusValue.hide()
-            self.isCopy.hide()
-            self.textValue.hide()
-            self.textOkButton.hide()
-            self.continueCmd.hide()
-            self.occOffset.hide()
-            self.labelSString.hide()
-            self.SStringValue.hide()
-            self.labelSSize.hide()
-            self.SSizeValue.hide()
-            self.labelSTrack.hide()
-            self.STrackValue.hide()
-            self.labelFFile.hide()
-            self.FFileValue.hide()
-            self.chooserButton.hide()
-
+        self.isTaskOn = False
+        self.baseWidget = QtGui.QWidget()
 
     def trimUi(self,title=translate("draft","Trimex")):
         self.taskUi(title, icon="Draft_Trimex")
@@ -1124,45 +913,6 @@ class DraftToolBar:
         # Change the checkbox label as the in-command shortcut cannot be used:
         self.continueCmd.setText(translate("draft", "Continue"))
 
-    def SSUi(self):
-        ''' set up ui for ShapeString text entry '''
-        self.hideXYZ()
-        self.labelSString.show()
-        self.SStringValue.show()
-        self.SStringValue.setText('')
-        todo.delay(self.SStringValue.setFocus,None)
-        self.continueCmd.hide()
-
-    def SSizeUi(self):
-        ''' set up ui for ShapeString size entry '''
-        self.labelSString.hide()
-        self.SStringValue.hide()
-        self.continueCmd.hide()
-        self.labelSSize.show()
-        self.SSizeValue.setText(FreeCAD.Units.Quantity(1,FreeCAD.Units.Length).UserString)
-        self.SSizeValue.show()
-        todo.delay(self.SSizeValue.setFocus,None)
-
-    def STrackUi(self):
-        ''' set up ui for ShapeString tracking entry '''
-        self.labelSSize.hide()
-        self.SSizeValue.hide()
-        self.labelSTrack.show()
-        self.STrackValue.setText(FreeCAD.Units.Quantity(0,FreeCAD.Units.Length).UserString)
-        self.STrackValue.show()
-        todo.delay(self.STrackValue.setFocus,None)
-
-    def SFileUi(self):
-        ''' set up UI for ShapeString font file selection '''
-        self.labelSTrack.hide()
-        self.STrackValue.hide()
-        if not self.FFileValue.text():
-            self.FFileValue.setText(Draft.getParam("FontFile",""))
-        self.labelFFile.show()
-        self.FFileValue.show()
-        self.chooserButton.show()
-        todo.delay(self.FFileValue.setFocus,None)
-
     def switchUi(self,store=True):
         if store:
             self.state = []
@@ -1184,17 +934,10 @@ class DraftToolBar:
                 self.state = None
 
     def setTitle(self,title,icon="Draft_Draft"):
-        if self.taskmode:
-            self.baseWidget.setWindowTitle(title)
-            self.baseWidget.setWindowIcon(QtGui.QIcon(":/icons/"+icon+".svg"))
-        else: # self.taskmode == 0  Draft toolbar is obsolete and has been disabled (February 2020)
-            self.cmdlabel.setText(title)
+        self.baseWidget.setWindowTitle(title)
+        self.baseWidget.setWindowIcon(QtGui.QIcon(":/icons/"+icon+".svg"))
 
     def selectUi(self,extra=None, on_close_call=None):
-        if not self.taskmode:
-             # self.taskmode == 0  Draft toolbar is obsolete and has been disabled (February 2020)
-            self.labelx.setText(translate("draft", "Pick Object"))
-            self.labelx.show()
         self.makeDumbTask(extra, on_close_call)
 
     def editUi(self):
@@ -1216,37 +959,24 @@ class DraftToolBar:
             self.isCopy.setChecked(p.GetBool("copymodeValue",False))
         self.continueCmd.show()
 
-    # def vertUi(self,addmode=True):
-    #     self.addButton.setChecked(addmode)
-    #     self.delButton.setChecked(not(addmode))
-
     def checkLocal(self):
         """checks if x,y,z coords must be displayed as local or global"""
         if not self.globalMode and self.relativeMode:
-            self.labelx.setText(translate("draft", "Local \u0394X"))
-            self.labely.setText(translate("draft", "Local \u0394Y"))
-            self.labelz.setText(translate("draft", "Local \u0394Z"))
+            self.labelx.setText(translate("draft", "Local {}").format("\u0394X"))  # \u0394 = ∆ (Greek delta)
+            self.labely.setText(translate("draft", "Local {}").format("\u0394Y"))
+            self.labelz.setText(translate("draft", "Local {}").format("\u0394Z"))
         elif not self.globalMode and not self.relativeMode:
-            self.labelx.setText(translate("draft", "Local X"))
-            self.labely.setText(translate("draft", "Local Y"))
-            self.labelz.setText(translate("draft", "Local Z"))
+            self.labelx.setText(translate("draft", "Local {}").format("X"))
+            self.labely.setText(translate("draft", "Local {}").format("Y"))
+            self.labelz.setText(translate("draft", "Local {}").format("Z"))
         elif self.globalMode and self.relativeMode:
-            self.labelx.setText(translate("draft", "Global \u0394X"))
-            self.labely.setText(translate("draft", "Global \u0394Y"))
-            self.labelz.setText(translate("draft", "Global \u0394Z"))
+            self.labelx.setText(translate("draft", "Global {}").format("\u0394X"))
+            self.labely.setText(translate("draft", "Global {}").format("\u0394Y"))
+            self.labelz.setText(translate("draft", "Global {}").format("\u0394Z"))
         else:
-            self.labelx.setText(translate("draft", "Global X"))
-            self.labely.setText(translate("draft", "Global Y"))
-            self.labelz.setText(translate("draft", "Global Z"))
-
-    # def setEditButtons(self,mode):
-    #     self.addButton.setEnabled(mode)
-    #     self.delButton.setEnabled(mode)
-
-    # def setBezEditButtons(self,mode):
-    #     self.sharpButton.setEnabled(mode)
-    #     self.tangentButton.setEnabled(mode)
-    #     self.symmetricButton.setEnabled(mode)
+            self.labelx.setText(translate("draft", "Global {}").format("X"))
+            self.labely.setText(translate("draft", "Global {}").format("Y"))
+            self.labelz.setText(translate("draft", "Global {}").format("Z"))
 
     def setNextFocus(self):
         def isThere(widget):
@@ -1254,7 +984,7 @@ class DraftToolBar:
                 return True
             else:
                 return False
-        if (not self.taskmode) or self.isTaskOn:
+        if self.isTaskOn:
             if isThere(self.xValue):
                 self.setFocus()
             elif isThere(self.yValue):
@@ -1306,82 +1036,14 @@ class DraftToolBar:
                 if self.callback:
                     self.callback()
                 return True
-        FreeCADGui.Control.closeDialog()
+        todo.delay(FreeCADGui.Control.closeDialog,None)
         panel = TaskPanel(extra, on_close_call)
-        FreeCADGui.Control.showDialog(panel)
+        todo.delay(FreeCADGui.Control.showDialog,panel)
 
 
 #---------------------------------------------------------------------------
 # Processing functions
 #---------------------------------------------------------------------------
-
-    def getcol(self):
-        """opens a color picker dialog"""
-        print("draft: warning: getcol() is obsolete")
-        return
-        oldColor = self.color
-        self.color=QtGui.QColorDialog.getColor(self.color)
-        if not QtGui.QColor.isValid(self.color): #user canceled
-            self.color = oldColor
-            return
-        self.colorPix.fill(self.color)
-        self.colorButton.setIcon(QtGui.QIcon(self.colorPix))
-        if Draft.getParam("saveonexit",False):
-            Draft.setParam("color",self.color.rgb()<<8)
-        r = float(self.color.red()/255.0)
-        g = float(self.color.green()/255.0)
-        b = float(self.color.blue()/255.0)
-        col = (r,g,b,0.0)
-        for i in FreeCADGui.Selection.getSelection():
-            if (i.TypeId == "App::Annotation"):
-                i.ViewObject.TextColor=col
-            else:
-                if "LineColor" in i.ViewObject.PropertiesList:
-                    i.ViewObject.LineColor = col
-                if "PointColor" in i.ViewObject.PropertiesList:
-                    i.ViewObject.PointColor = col
-
-    def getfacecol(self):
-        """opens a color picker dialog"""
-        print("draft: warning: getfacecol() is obsolete")
-        return
-        oldColor = self.facecolor
-        self.facecolor=QtGui.QColorDialog.getColor(self.facecolor)
-        if not QtGui.QColor.isValid(self.facecolor): #user canceled
-            self.facecolor = oldColor
-            return
-        self.facecolorPix.fill(self.facecolor)
-        self.facecolorButton.setIcon(QtGui.QIcon(self.facecolorPix))
-        if Draft.getParam("saveonexit",False):
-            FreeCAD.ParamGet("User parameter:BaseApp/Preferences/View")\
-            .SetUnsigned("DefaultShapeColor",self.facecolor.rgb()<<8)
-        r = float(self.facecolor.red()/255.0)
-        g = float(self.facecolor.green()/255.0)
-        b = float(self.facecolor.blue()/255.0)
-        col = (r,g,b,0.0)
-        for i in FreeCADGui.Selection.getSelection():
-            if "ShapeColor" in i.ViewObject.PropertiesList:
-                i.ViewObject.ShapeColor = col
-
-    def setwidth(self,val):
-        print("draft: warning: setwidth() is obsolete")
-        return
-        self.linewidth = float(val)
-        if Draft.getParam("saveonexit",False):
-            Draft.setParam("linewidth",int(val))
-        for i in FreeCADGui.Selection.getSelection():
-            if "LineWidth" in i.ViewObject.PropertiesList:
-                i.ViewObject.LineWidth = float(val)
-
-    def setfontsize(self,val):
-        print("draft: warning: setfontsize() is obsolete")
-        return
-        self.fontsize = float(val)
-        if Draft.getParam("saveonexit",False):
-            Draft.setParam("textheight",float(val))
-        for i in FreeCADGui.Selection.getSelection():
-            if "FontSize" in i.ViewObject.PropertiesList:
-                i.ViewObject.FontSize = float(val)
 
     def setContinue(self,val):
         if self.continueCmd.isVisible():
@@ -1390,12 +1052,6 @@ class DraftToolBar:
     def setFill(self,val):
         if self.hasFill.isVisible():
             self.fillmode = bool(val)
-
-    def apply(self):
-        print("draft: warning: apply() is obsolete")
-        return
-        for i in FreeCADGui.Selection.getSelection():
-            Draft.formatObject(i)
 
     def checkx(self):
         if self.yValue.isEnabled():
@@ -1444,101 +1100,24 @@ class DraftToolBar:
                     print("debug: DraftGui.validatePoint: AttributeError")
                 else:
                     num_vec = FreeCAD.Vector(numx, numy, numz)
-                    ref_vec = FreeCAD.Vector(0,0,0)
                     if self.pointcallback:
-                        self.pointcallback(num_vec, self.relativeMode)
+                        self.pointcallback(num_vec, self.globalMode, self.relativeMode)
                     else:
+                        ref_vec = FreeCAD.Vector(0, 0, 0)
                         if FreeCAD.DraftWorkingPlane and not self.globalMode:
                             num_vec = FreeCAD.DraftWorkingPlane.getGlobalRot(num_vec)
                             ref_vec = FreeCAD.DraftWorkingPlane.getGlobalCoords(ref_vec)
-                        if self.relativeMode:
-                            if self.sourceCmd.node:
-                                ref_vec = self.sourceCmd.node[-1]
+                        if self.relativeMode and self.sourceCmd.node:
+                            ref_vec = self.sourceCmd.node[-1]
 
                         numx, numy, numz = num_vec + ref_vec
-                        self.sourceCmd.numericInput(numx,numy,numz)
+                        self.sourceCmd.numericInput(numx, numy, numz)
 
-            elif (self.textValue.isVisible() or self.SStringValue.isVisible()
-                  or self.SSizeValue.isVisible() or self.STrackValue.isVisible()
-                  or self.FFileValue.isVisible()):
+            elif self.textValue.isVisible():
                 return False
             else:
                 FreeCADGui.ActiveDocument.resetEdit()
         return True
-
-    def validateSNumeric(self):
-        ''' send valid numeric parameters to ShapeString '''
-        if self.sourceCmd:
-            if (self.labelSSize.isVisible()):
-                try:
-                    SSize=float(self.SSize)
-                except ValueError:
-                    FreeCAD.Console.PrintMessage(translate("draft", "Invalid Size value. Using 200.0."))
-                    self.sourceCmd.numericSSize(200.0)
-                else:
-                    self.sourceCmd.numericSSize(SSize)
-            elif (self.labelSTrack.isVisible()):
-                try:
-                    track=int(self.STrack)
-                except ValueError:
-                    FreeCAD.Console.PrintMessage(translate("draft", "Invalid Tracking value. Using 0."))
-                    self.sourceCmd.numericSTrack(0)
-                else:
-                    self.sourceCmd.numericSTrack(track)
-
-    def validateSString(self):
-        ''' send a valid text string to ShapeString as unicode '''
-        if self.sourceCmd:
-            if (self.labelSString.isVisible()):
-                if self.SStringValue.text():
-                    #print("debug: D_G DraftToolBar.validateSString type(SStringValue.text): "  str(type(self.SStringValue.text)))
-                    #self.sourceCmd.validSString(str(self.SStringValue.text()))    # QString to QByteArray to PyString
-                    self.sourceCmd.validSString(self.SStringValue.text())    # PySide returns Unicode from QString
-                else:
-                    FreeCAD.Console.PrintMessage(translate("draft", "Please enter a text string."))
-
-
-    def pickFile(self):
-        ''' invoke a font file chooser dialog and send result to ShapeString to'''
-        if self.sourceCmd:
-            if (self.chooserButton.isVisible()):
-                try:
-                    dialogCaption = translate("draft", "Select a Font file")
-                    dialogDir = os.path.dirname(Draft.getParam("FontFile",)) # reasonable default?
-                    dialogFilter = "Fonts (*.ttf *.pfb *.otf);;All files (*.*)"
-                    fname = QtGui.QFileDialog.getOpenFileName(self.baseWidget,
-                                                              dialogCaption,
-                                                              dialogDir,
-                                                              dialogFilter)
-                    # fname = utf8_decode(fname[0])  # 1947: utf8_decode fails ('ascii' codec can't encode character)
-                                                    # when fname[0] contains accented chars
-                    fname = fname[0].encode('utf8') #TODO: this needs changing for Py3??
-                                                    # accented chars cause "UnicodeEncodeError" failure in DraftGui.todo without
-                                                    # .encode('utf8')
-
-                except Exception as e:
-                    FreeCAD.Console.PrintMessage("DraftGui.pickFile: unable to select a font file.")
-                    print(type(e))
-                    print(e.args)
-                else:
-                    if fname[0]:
-                        self.FFileValue.setText(fname)
-                        self.sourceCmd.validFFile(fname)
-                    else:
-                        FreeCAD.Console.PrintMessage("DraftGui.pickFile: no file selected.")   # can this happen?
-
-    def validateFile(self):
-        ''' check and send font file parameter to ShapeString as unicode'''
-        if self.sourceCmd:
-            if (self.labelFFile.isVisible()):
-                if self.FFileValue.text():
-                    # QString to PyString
-                    self.sourceCmd.validFFile(
-                        utf8_decode(self.FFileValue.text()))
-                else:
-                    FreeCAD.Console.PrintMessage(
-                        translate("draft", "Please enter a font file."))
-
 
     def finish(self, cont=None):
         """finish button action"""
@@ -1727,7 +1306,7 @@ class DraftToolBar:
 
     def displayPoint(self, point=None, last=None, plane=None, mask=None):
         """this function displays the passed coords in the x, y, and z widgets"""
-        if self.taskmode and (not self.isTaskOn):
+        if not self.isTaskOn:
             return
 
         if not plane:
@@ -1886,21 +1465,7 @@ class DraftToolBar:
             pass
 
     def isConstructionMode(self):
-        if self.tray or (not self.taskmode):
-            return self.constrButton.isChecked()
-        else:
-            return False
-
-    def drawPage(self):
-        self.sourceCmd.draw()
-
-    def changePage(self,index):
-        pagename = str(self.pageBox.itemText(index))
-        vobj = FreeCADGui.ActiveDocument.getObject(pagename)
-        if vobj:
-            self.scaleBox.setEditText(str(vobj.HintScale))
-            self.marginXValue.setValue(float(vobj.HintOffsetX))
-            self.marginYValue.setValue(float(vobj.HintOffsetY))
+        return self.tray is not None and self.constrButton.isChecked()
 
     def selectplane(self):
         FreeCADGui.runCommand("Draft_SelectPlane")
@@ -1958,45 +1523,6 @@ class DraftToolBar:
     def popupTriggered(self,action):
         self.sourceCmd.proceed(str(action.text()))
 
-    # def setAddMode(self,bool):
-    #     if self.addButton.isChecked():
-    #         self.delButton.setChecked(False)
-    #         self.symmetricButton.setChecked(False)
-    #         self.sharpButton.setChecked(False)
-    #         self.tangentButton.setChecked(False)
-
-    # def setDelMode(self,bool):
-    #     if self.delButton.isChecked():
-    #         self.addButton.setChecked(False)
-    #         self.symmetricButton.setChecked(False)
-    #         self.sharpButton.setChecked(False)
-    #         self.tangentButton.setChecked(False)
-
-    # def setSharpMode(self,bool):
-    #     if self.sharpButton.isChecked():
-    #         self.tangentButton.setChecked(False)
-    #         self.symmetricButton.setChecked(False)
-    #         self.addButton.setChecked(False)
-    #         self.delButton.setChecked(False)
-
-    # def setTangentMode(self,bool):
-    #     if self.tangentButton.isChecked():
-    #         self.sharpButton.setChecked(False)
-    #         self.symmetricButton.setChecked(False)
-    #         self.addButton.setChecked(False)
-    #         self.delButton.setChecked(False)
-
-    # def setSymmetricMode(self,bool):
-    #     if self.symmetricButton.isChecked():
-    #         self.sharpButton.setChecked(False)
-    #         self.tangentButton.setChecked(False)
-    #         self.addButton.setChecked(False)
-    #         self.delButton.setChecked(False)
-
-    # def setArc3PtMode(self,bool):
-    #     if self.arc3PtButton.isChecked():
-    #         self.arc3PtButton.setChecked(True)
-
     def setRadiusValue(self,val,unit=None):
         #print("DEBUG: setRadiusValue val: ", val, " unit: ", unit)
         if  not isinstance(val, (int, float)):       #??some code passes strings or ???
@@ -2035,16 +1561,6 @@ class DraftToolBar:
                                                                    QtGui.QIcon(':/icons/button_invalid.svg')))
                 self.autoGroupButton.setToolTip(translate("draft", "Autogroup off"))
                 self.autoGroupButton.setDown(False)
-
-    def show(self):
-        if not self.taskmode:
-            # self.taskmode == 0  Draft toolbar is obsolete and has been disabled (February 2020)
-            self.draftWidget.setVisible(True)
-
-    def hide(self):
-        if not self.taskmode:
-            # self.taskmode == 0  Draft toolbar is obsolete and has been disabled (February 2020)
-            self.draftWidget.setVisible(False)
 
     def getXPM(self,iconname,size=16):
         i = QtGui.QIcon(":/icons/"+iconname+".svg")
@@ -2098,12 +1614,6 @@ class DraftToolBar:
 
     def changeRadiusValue(self,d):
         self.radius = d
-
-    def changeSSizeValue(self,d):
-        self.SSize = d
-
-    def changeSTrackValue(self,d):
-        self.STrack = d
 
     def changeLengthValue(self,d):
         self.lvalue = d
@@ -2177,30 +1687,11 @@ class DraftToolBar:
                 self.commands = ["Draft_Move","Draft_Rotate",
                                  "Draft_Scale","Draft_Offset",
                                  "Draft_Trimex","Draft_Upgrade",
-                                 "Draft_Downgrade","Draft_Edit",
-                                 "Draft_Drawing"]
+                                 "Draft_Downgrade","Draft_Edit"]
                 self.title = "Modify objects"
             def shouldShow(self):
                 return (FreeCAD.ActiveDocument is not None) and (FreeCADGui.Selection.getSelection() != [])
 
-        # OBSOLETE
-        #class DraftTrayWatcher:
-        #    def __init__(self,traywidget):
-        #        self.form = traywidget
-        #        self.widgets = [self.form]
-        #    def shouldShow(self):
-        #        return True
-        #self.traywidget = QtGui.QWidget()
-        #self.tray = QtGui.QVBoxLayout(self.traywidget)
-        #self.tray.setObjectName("traylayout")
-        #self.toptray = QtGui.QHBoxLayout()
-        #self.bottomtray = QtGui.QHBoxLayout()
-        #self.tray.addLayout(self.toptray)
-        #self.tray.addLayout(self.bottomtray)
-        #self.setupTray()
-        #self.setupStyle()
-        #w = DraftTrayWatcher(self.traywidget)
-        #FreeCADGui.Control.addTaskWatcher([w,DraftCreateWatcher(),DraftModifyWatcher()])
         FreeCADGui.Control.addTaskWatcher([DraftCreateWatcher(),DraftModifyWatcher()])
 
     def changeEvent(self, event):
@@ -2209,26 +1700,18 @@ class DraftToolBar:
             self.ui.retranslateUi(self)
 
     def Activated(self):
-        if self.taskmode:
-            self.setWatchers()
-            if hasattr(self,"tray"):
-                self.tray.show()
-        else: # self.taskmode == 0  Draft toolbar is obsolete and has been disabled (February 2020)
-            self.draftWidget.setVisible(True)
-            self.draftWidget.toggleViewAction().setVisible(True)
+        self.setWatchers()
+        if hasattr(self,"tray"):
+            self.tray.show()
 
     def Deactivated(self):
         if (FreeCAD.activeDraftCommand is not None):
             self.continueMode = False
             FreeCAD.activeDraftCommand.finish()
-        if self.taskmode:
-            FreeCADGui.Control.clearTaskWatcher()
-            #self.tray = None
-            if hasattr(self,"tray"):
-                self.tray.hide()
-        else: # self.taskmode == 0  Draft toolbar is obsolete and has been disabled (February 2020)
-            self.draftWidget.setVisible(False)
-            self.draftWidget.toggleViewAction().setVisible(False)
+        FreeCADGui.Control.clearTaskWatcher()
+        #self.tray = None
+        if hasattr(self,"tray"):
+            self.tray.hide()
 
     def reset_ui_values(self):
         """Method to reset task panel values"""

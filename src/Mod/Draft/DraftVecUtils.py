@@ -42,7 +42,7 @@ import draftutils.messages as messages
 
 __title__ = "FreeCAD Draft Workbench - Vector library"
 __author__ = "Yorik van Havre, Werner Mayer, Martin Burbaum, Ken Cline"
-__url__ = "https://www.freecadweb.org"
+__url__ = "https://www.freecad.org"
 
 params = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
 
@@ -724,10 +724,11 @@ def rounded(v,d=None):
     return Vector(round(v.x, p), round(v.y, p), round(v.z, p))
 
 
-def getPlaneRotation(u, v, w=None):
+def getPlaneRotation(u, v, _ = None):
     """Return a rotation matrix defining the (u,v,w) coordinate system.
 
     The rotation matrix uses the elements from each vector.
+    `v` is adjusted to be perpendicular to `u`
     ::
             (u.x  v.x  w.x  0  )
         R = (u.y  v.y  w.y  0  )
@@ -739,25 +740,26 @@ def getPlaneRotation(u, v, w=None):
     u : Base::Vector3
         The first vector.
     v : Base::Vector3
-        The second vector.
-    w : Base::Vector3, optional
-        The third vector. It defaults to `None`, in which case
-        it is calculated as the cross product of `u` and `v`.
-        ::
-            w = u.cross(v)
+        Hint for the second vector.
+    _ : Ignored. For backwards compatibility
 
     Returns
     -------
     Base::Matrix4D
         The new rotation matrix defining a new coordinate system,
-        or `None` if `u`, or `v`, is `None`.
+        or `None` if `u` or `v` is `None` or
+        if `u` and `v` are parallel.
     """
     if (not u) or (not v):
         return None
-
-    if not w:
-        w = u.cross(v)
-    typecheck([(u, Vector), (v, Vector), (w, Vector)], "getPlaneRotation")
+    typecheck([(u, Vector), (v, Vector)], "getPlaneRotation")
+    u = Vector(u)
+    u.normalize()
+    w = u.cross(v)
+    if not w.Length:
+        return None
+    w.normalize()
+    v = w.cross(u)
 
     m = FreeCAD.Matrix(u.x, v.x, w.x, 0,
                        u.y, v.y, w.y, 0,

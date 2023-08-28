@@ -23,6 +23,7 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+# include <BRepAlgoAPI_Fuse.hxx>
 # include <BRep_Builder.hxx>
 # include <BRepFeat_MakePrism.hxx>
 # include <BRepPrimAPI_MakePrism.hxx>
@@ -48,9 +49,7 @@ App::PropertyQuantityConstraint::Constraints FeatureExtrude::signedLengthConstra
 double FeatureExtrude::maxAngle = 90 - Base::toDegrees<double>(Precision::Angular());
 App::PropertyAngle::Constraints FeatureExtrude::floatAngle = { -maxAngle, maxAngle, 1.0 };
 
-FeatureExtrude::FeatureExtrude()
-{
-}
+FeatureExtrude::FeatureExtrude() = default;
 
 short FeatureExtrude::mustExecute() const
 {
@@ -174,10 +173,10 @@ void FeatureExtrude::generatePrism(TopoDS_Shape& prism,
 
         // Without taper angle we create a prism because its shells are in every case no B-splines and can therefore
         // be use as support for further features like Pads, Lofts etc. B-spline shells can break certain features,
-        // see e.g. https://forum.freecadweb.org/viewtopic.php?p=560785#p560785
+        // see e.g. https://forum.freecad.org/viewtopic.php?p=560785#p560785
         // It is better not to use BRepFeat_MakePrism here even if we have a support because the
         // resulting shape creates problems with Pocket
-        BRepPrimAPI_MakePrism PrismMaker(from, Ltotal * gp_Vec(direction), 0, 1); // finite prism
+        BRepPrimAPI_MakePrism PrismMaker(from, Ltotal * gp_Vec(direction), Standard_False, Standard_True); // finite prism
         if (!PrismMaker.IsDone())
             throw Base::RuntimeError("ProfileBased: Length: Could not extrude the sketch!");
         prism = PrismMaker.Shape();
@@ -200,7 +199,7 @@ void FeatureExtrude::generatePrism(TopoDS_Shape& prism,
                                    PrismMode Mode,
                                    Standard_Boolean Modify)
 {
-    if (method == "UpToFirst" || method == "UpToFace" || method == "UpToLast") {
+    if (method == "UpToFirst" || method == "UpToFace") {
         BRepFeat_MakePrism PrismMaker;
         TopoDS_Shape base = baseshape;
         for (TopExp_Explorer xp(profileshape, TopAbs_FACE); xp.More(); xp.Next()) {
@@ -215,6 +214,29 @@ void FeatureExtrude::generatePrism(TopoDS_Shape& prism,
         }
 
         prism = base;
+    }
+    else if (method == "UpToLast") {
+        BRepFeat_MakePrism PrismMaker;
+        prism = baseshape;
+        for (TopExp_Explorer xp(profileshape, TopAbs_FACE); xp.More(); xp.Next()) {
+            PrismMaker.Init(baseshape, xp.Current(), supportface, direction, PrismMode::None, Modify);
+
+            //Each face needs 2 prisms because if uptoFace is intersected twice the first one ends too soon
+            for (int i=0; i<2; i++){
+                if (i==0){
+                    PrismMaker.Perform(uptoface);
+                }else{
+                    PrismMaker.Perform(uptoface, uptoface);
+                }
+
+                if (!PrismMaker.IsDone())
+                    throw Base::RuntimeError("ProfileBased: Up to face: Could not extrude the sketch!");
+                auto onePrism = PrismMaker.Shape();
+
+                BRepAlgoAPI_Fuse fuse(prism, onePrism);
+                prism = fuse.Shape();
+            }
+        }
     }
     else {
         std::stringstream str;
@@ -265,8 +287,8 @@ void FeatureExtrude::generateTaperedPrism(TopoDS_Shape& prism,
         TopoDS_Compound comp;
         BRep_Builder builder;
         builder.MakeCompound(comp);
-        for (std::list<TopoDS_Shape>::iterator it = drafts.begin(); it != drafts.end(); ++it)
-            builder.Add(comp, *it);
+        for (const auto & draft : drafts)
+            builder.Add(comp, draft);
         prism = comp;
     }
 }

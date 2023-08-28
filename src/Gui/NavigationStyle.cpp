@@ -85,11 +85,12 @@ class FCSphereSheetProjector : public SbSphereSheetProjector {
 public:
     enum OrbitStyle {
         Turntable,
-        Trackball
+        Trackball,
+        FreeTurntable
     };
 
     FCSphereSheetProjector(const SbSphere & sph, const SbBool orienttoeye = true)
-        : SbSphereSheetProjector(sph, orienttoeye), orbit(Trackball)
+        : SbSphereSheetProjector(sph, orienttoeye)
     {
     }
 
@@ -114,33 +115,46 @@ public:
         SbRotation rot = inherited::getRotation(point1, point2);
         if (orbit == Trackball)
             return rot;
-
-        // 0000333: Turntable camera rotation
-        SbVec3f axis;
-        float angle;
-        rot.getValue(axis, angle);
-        SbVec3f dif = point1 - point2;
-        if (fabs(dif[1]) > fabs(dif[0])) {
-            SbVec3f xaxis(1,0,0);
-            if (dif[1] < 0)
-                angle = -angle;
-            rot.setValue(xaxis, angle);
-        }
-        else {
-            SbVec3f zaxis(0,0,1);
-            this->worldToScreen.multDirMatrix(zaxis, zaxis);
-            if (zaxis[1] < 0) {
-                if (dif[0] < 0)
+        else if (orbit == Turntable) {
+            SbVec3f axis;
+            float angle;
+            rot.getValue(axis, angle);
+            SbVec3f dif = point1 - point2;
+            if (fabs(dif[1]) > fabs(dif[0])) {
+                SbVec3f xaxis(1,0,0);
+                if (dif[1] < 0)
                     angle = -angle;
+                rot.setValue(xaxis, angle);
             }
             else {
-                if (dif[0] > 0)
-                    angle = -angle;
+                SbVec3f zaxis(0,0,1);
+                this->worldToScreen.multDirMatrix(zaxis, zaxis);
+                if (zaxis[1] < 0) {
+                    if (dif[0] < 0)
+                        angle = -angle;
+                }
+                else {
+                    if (dif[0] > 0)
+                        angle = -angle;
+                }
+                rot.setValue(zaxis, angle);
             }
-            rot.setValue(zaxis, angle);
-        }
 
-        return rot;
+            return rot;
+        } else {
+            // Turntable without constraints
+            SbRotation zrot, xrot;
+            SbVec3f dif = point1 - point2;
+
+            SbVec3f zaxis(1,0,0);
+            zrot.setValue(zaxis, dif[1]);
+
+            SbVec3f xaxis(0,0,1);
+            this->worldToScreen.multDirMatrix(xaxis, xaxis);
+            xrot.setValue(xaxis, -dif[0]);
+
+            return zrot * xrot;
+        }
     }
 
     void setOrbitStyle(OrbitStyle style)
@@ -155,7 +169,7 @@ public:
 
 private:
     SbMatrix worldToScreen;
-    OrbitStyle orbit;
+    OrbitStyle orbit{Trackball};
 };
 
 NavigationStyleEvent::NavigationStyleEvent(const Base::Type& s)
@@ -163,9 +177,7 @@ NavigationStyleEvent::NavigationStyleEvent(const Base::Type& s)
 {
 }
 
-NavigationStyleEvent::~NavigationStyleEvent()
-{
-}
+NavigationStyleEvent::~NavigationStyleEvent() = default;
 
 const Base::Type& NavigationStyleEvent::style() const
 {
@@ -608,7 +620,10 @@ void NavigationStyle::reorientCamera(SoCamera * cam, const SbRotation & rot)
 
     // Set new orientation value by accumulating the new rotation.
     cam->orientation = rot * cam->orientation.getValue();
-
+    // Fix issue with near clipping in orthogonal view
+    if (cam->getTypeId().isDerivedFrom(SoOrthographicCamera::getClassTypeId())) {
+        cam->focalDistance = static_cast<SoOrthographicCamera*>(cam)->height;
+    }
     // Reposition camera so we are still pointing at the same old focal point.
     cam->orientation.getValue().multVec(SbVec3f(0, 0, -1), direction);
     cam->position = focalpoint - cam->focalDistance.getValue() * direction;
@@ -845,10 +860,9 @@ void NavigationStyle::doRotate(SoCamera * camera, float angle, const SbVec2f& po
 
 }
 
-SbVec3f NavigationStyle::getRotationCenter(SbBool* ok) const
+SbVec3f NavigationStyle::getRotationCenter(SbBool& found) const
 {
-    if (ok)
-        *ok = PRIVATE(this)->rotationCenterFound;
+    found = PRIVATE(this)->rotationCenterFound;
     return PRIVATE(this)->rotationCenter;
 }
 
@@ -862,7 +876,7 @@ SbVec3f NavigationStyle::getFocalPoint() const
 {
     SoCamera* cam = viewer->getSoRenderManager()->getCamera();
     if (!cam)
-        return SbVec3f(0,0,0);
+        return {0,0,0};
 
     // Find global coordinates of focal point.
     SbVec3f direction;
@@ -1015,6 +1029,11 @@ void NavigationStyle::saveCursorPosition(const SoEvent * const ev)
     this->globalPos.setValue(QCursor::pos().x(), QCursor::pos().y());
     this->localPos = ev->getPosition();
 
+    // mode is WindowCenter
+    if (!PRIVATE(this)->rotationCenterMode) {
+        setRotationCenter(getFocalPoint());
+    }
+
     //Option to get point on model (slow) or always on focal plane (fast)
     //
     // mode is ScenePointAtCursor to get exact point if possible
@@ -1061,8 +1080,9 @@ void NavigationStyle::saveCursorPosition(const SoEvent * const ev)
         if (!cam) // no camera
             return;
 
+        // Get the bounding box center of the physical object group
         SoGetBoundingBoxAction action(viewer->getSoRenderManager()->getViewportRegion());
-        action.apply(viewer->getSceneGraph());
+        action.apply(viewer->objectGroup);
         SbBox3f boundingBox = action.getBoundingBox();
         SbVec3f boundingBoxCenter = boundingBox.getCenter();
         setRotationCenter(boundingBoxCenter);
@@ -1083,16 +1103,16 @@ SbVec2f NavigationStyle::normalizePixelPos(SbVec2s pixpos)
 {
     const SbViewportRegion & vp = viewer->getSoRenderManager()->getViewportRegion();
     const SbVec2s size(vp.getViewportSizePixels());
-    return SbVec2f ((float) pixpos[0] / (float) std::max((int)(size[0] - 1), 1),
-                    (float) pixpos[1] / (float) std::max((int)(size[1] - 1), 1));
+    return {(float) pixpos[0] / (float) std::max((int)(size[0] - 1), 1),
+            (float) pixpos[1] / (float) std::max((int)(size[1] - 1), 1)};
 }
 
 SbVec2f NavigationStyle::normalizePixelPos(SbVec2f pixpos)
 {
     const SbViewportRegion & vp = viewer->getSoRenderManager()->getViewportRegion();
     const SbVec2s size(vp.getViewportSizePixels());
-    return SbVec2f ( pixpos[0] / (float) std::max((int)(size[0] - 1), 1),
-                     pixpos[1] / (float) std::max((int)(size[1] - 1), 1));
+    return {pixpos[0] / (float) std::max((int)(size[0] - 1), 1),
+            pixpos[1] / (float) std::max((int)(size[1] - 1), 1)};
 }
 
 void NavigationStyle::moveCursorPosition()
@@ -1395,12 +1415,14 @@ void NavigationStyle::setViewingMode(const ViewerMode newmode)
     case DRAGGING:
         // Set up initial projection point for the projector object when
         // first starting a drag operation.
+        viewer->showRotationCenter(true);
         this->spinprojector->project(this->lastmouseposition);
         this->interactiveCountInc();
         this->clearLog();
         break;
 
     case SPINNING:
+        viewer->showRotationCenter(true);
         this->interactiveCountInc();
         viewer->getSoRenderManager()->scheduleRedraw();
         break;
@@ -1425,6 +1447,8 @@ void NavigationStyle::setViewingMode(const ViewerMode newmode)
     switch (oldmode) {
     case SPINNING:
     case DRAGGING:
+        viewer->showRotationCenter(false);
+        [[fallthrough]];
     case PANNING:
     case ZOOMING:
     case BOXZOOM:

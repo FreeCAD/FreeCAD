@@ -68,10 +68,13 @@ class CommandPathSimpleCopy:
 
         FreeCAD.ActiveDocument.openTransaction("Simple Copy")
         FreeCADGui.doCommand(
-            "srcpath = FreeCADGui.Selection.getSelectionEx()[0].Object.Path\n"
+            "srcobj = FreeCADGui.Selection.getSelectionEx()[0].Object\n"
         )
 
         FreeCADGui.addModule("PathScripts.PathUtils")
+        FreeCADGui.doCommand(
+            "srcpath = PathScripts.PathUtils.getPathWithPlacement(srcobj)\n"
+        )
         FreeCADGui.addModule("Path.Op.Custom")
         FreeCADGui.doCommand(
             'obj = Path.Op.Custom.Create("' + selection[0].Name + '_SimpleCopy")'

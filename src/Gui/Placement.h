@@ -32,6 +32,9 @@
 
 class QSignalMapper;
 
+namespace App {
+class DocumentObject;
+}
 namespace Gui {
 class Document;
 
@@ -39,6 +42,44 @@ namespace Dialog {
 
 class Ui_Placement;
 class TaskPlacement;
+
+class GuiExport PlacementHandler : public QObject
+{
+    Q_OBJECT
+
+public:
+    PlacementHandler();
+    void openTransactionIfNeeded();
+    void setPropertyName(const std::string&);
+    const std::string& getPropertyName() const;
+    void appendDocument(const std::string&);
+    void activatedDocument(const std::string&);
+    void revertTransformation();
+    void applyPlacement(const Base::Placement& p, bool incremental);
+    void applyPlacement(const QString& p, bool incremental);
+
+private:
+    std::vector<App::DocumentObject*> getObjects(Gui::Document*) const;
+    std::vector<App::DocumentObject*> getSelectedObjects(Gui::Document*) const;
+    void revertTransformationOfViewProviders(Gui::Document*);
+    void tryRecompute(Gui::Document*);
+    void applyPlacement(Gui::Document*, App::DocumentObject*, const Base::Placement& p, bool incremental);
+    void applyPlacement(App::DocumentObject*, const QString& p, bool incremental);
+    QString getIncrementalPlacement(App::DocumentObject*, const QString&) const;
+    QString getSimplePlacement(App::DocumentObject*, const QString&) const;
+
+private Q_SLOTS:
+    void openTransaction();
+
+private:
+    std::string propertyName; // the name of the placement property
+    std::set<std::string> documents;
+    /** If false apply the placement directly to the transform nodes,
+     * otherwise change the placement property.
+     */
+    bool changeProperty;
+};
+
 class GuiExport Placement : public QDialog
 {
     Q_OBJECT
@@ -46,9 +87,11 @@ class GuiExport Placement : public QDialog
 public:
     explicit Placement(QWidget* parent = nullptr, Qt::WindowFlags fl = Qt::WindowFlags());
     ~Placement() override;
+    void open() override;
     void accept() override;
     void reject() override;
 
+    void setPropertyName(const std::string&);
     void setSelection(const std::vector<SelectionObject>&);
     void bindObject();
     Base::Vector3d getDirection() const;
@@ -57,13 +100,13 @@ public:
     void showDefaultButtons(bool);
 
 protected:
-    void open() override;
     void changeEvent(QEvent *e) override;
     void keyPressEvent(QKeyEvent*) override;
 
-private Q_SLOTS:
-    void openTransaction();
+public Q_SLOTS:
     void onApplyButtonClicked();
+
+private Q_SLOTS:
     void onApplyIncrementalPlacementToggled(bool);
     void onPlacementChanged(int);
     void onResetButtonClicked();
@@ -82,13 +125,17 @@ private:
     bool onApply();
     void setPlacementData(const Base::Placement&);
     Base::Placement getPlacementData() const;
+    Base::Rotation getRotationData() const;
+    Base::Vector3d getPositionData() const;
+    Base::Vector3d getAnglesData() const;
     Base::Vector3d getCenterData() const;
+    Base::Vector3d getCenterOfMass() const;
     QString getPlacementString() const;
-    void applyPlacement(const Base::Placement& p, bool incremental);
-    void applyPlacement(const QString& p, bool incremental);
-    void revertTransformation();
+    QString getPlacementFromEulerAngles() const;
+    QString getPlacementFromAxisWithAngle() const;
     void slotActiveDocument(const Gui::Document&);
     QWidget* getInvalidInput() const;
+    void showErrorMessage();
 
 Q_SIGNALS:
     void placementChanged(const QVariant &, bool, bool);
@@ -98,21 +145,14 @@ private:
     Ui_Placement* ui;
     QSignalMapper* signalMapper;
     Connection connectAct;
+    PlacementHandler handler;
     Base::Placement ref;
     Base::Vector3d cntOfMass;
-    std::string propertyName; // the name of the placement property
-    std::set<std::string> documents;
     /**
      * store these so we can reselect original object
      * after user selects points and clicks Selected point(s)
      */
     std::vector<SelectionObject> selectionObjects;
-    /** If false apply the placement directly to the transform nodes,
-     * otherwise change the placement property.
-     */
-    bool changeProperty;
-
-    friend class TaskPlacement;
 };
 
 class GuiExport DockablePlacement : public Placement

@@ -23,6 +23,9 @@
 #ifndef GUI_DOCKWND_TOOLBOX_H
 #define GUI_DOCKWND_TOOLBOX_H
 
+#include <QWidget>
+#include <FCGlobal.h>
+
 class QToolBox;
 
 namespace Gui
@@ -57,7 +60,7 @@ class GuiExport ToolBox : public QWidget
 
 public:
   ToolBox( QWidget *parent=nullptr );
-  virtual ~ToolBox();
+  ~ToolBox() override;
 
   int addItem ( QWidget * w, const QString & label );
   int addItem ( QWidget * item, const QIcon & iconSet, const QString & label );
@@ -90,7 +93,7 @@ public Q_SLOTS:
   void setCurrentWidget ( QWidget * item );
 
 protected:
-  void changeEvent(QEvent *e);
+  void changeEvent(QEvent *e) override;
 
 Q_SIGNALS:
   /** This signal is emitted when the current item changed.

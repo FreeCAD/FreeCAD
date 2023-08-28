@@ -45,7 +45,7 @@ else:
 __title__ = "FreeCAD Draft Workbench"
 __author__ = ("Yorik van Havre, Werner Mayer, Martin Burbaum, Ken Cline, "
               "Dmitry Chigrin, Daniel Falck")
-__url__ = "https://www.freecadweb.org"
+__url__ = "https://www.freecad.org"
 
 # ---------------------------------------------------------------------------
 # Utility functions
@@ -91,7 +91,9 @@ from draftutils.utils import (string_encode_coin,
                               svg_patterns,
                               svgpatterns,
                               get_rgb,
-                              getrgb)
+                              getrgb,
+                              argb_to_rgba,
+                              rgba_to_argb)
 
 from draftfunctions.svg import (get_svg,
                                 getSVG)
@@ -104,6 +106,7 @@ from draftutils.gui_utils import (get3DView,
                                   autogroup,
                                   removeHidden,
                                   remove_hidden,
+                                  get_diffuse_color,
                                   formatObject,
                                   format_object,
                                   getSelection,
@@ -216,11 +219,7 @@ from draftmake.make_circle import (make_circle,
 # arcs
 from draftmake.make_arc_3points import make_arc_3points
 
-# drawing: obsolete since Drawing was replaced by TechDraw
-from draftobjects.drawingview import (DrawingView,
-                                      _DrawingView)
-from draftmake.make_drawingview import (make_drawing_view,
-                                        makeDrawingView)
+
 
 # ellipse
 from draftobjects.ellipse import (Ellipse,

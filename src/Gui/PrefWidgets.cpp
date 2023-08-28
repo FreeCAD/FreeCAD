@@ -30,6 +30,7 @@
 
 #include <Base/Console.h>
 #include <Base/Tools.h>
+#include <App/Color.h>
 
 #include "PrefWidgets.h"
 
@@ -170,9 +171,7 @@ PrefSpinBox::PrefSpinBox ( QWidget * parent )
 {
 }
 
-PrefSpinBox::~PrefSpinBox()
-{
-}
+PrefSpinBox::~PrefSpinBox() = default;
 
 void PrefSpinBox::restorePreferences()
 {
@@ -204,9 +203,7 @@ PrefDoubleSpinBox::PrefDoubleSpinBox ( QWidget * parent )
 {
 }
 
-PrefDoubleSpinBox::~PrefDoubleSpinBox()
-{
-}
+PrefDoubleSpinBox::~PrefDoubleSpinBox() = default;
 
 void PrefDoubleSpinBox::restorePreferences()
 {
@@ -238,9 +235,7 @@ PrefLineEdit::PrefLineEdit ( QWidget * parent )
 {
 }
 
-PrefLineEdit::~PrefLineEdit()
-{
-}
+PrefLineEdit::~PrefLineEdit() = default;
 
 void PrefLineEdit::restorePreferences()
 {
@@ -273,9 +268,7 @@ PrefTextEdit::PrefTextEdit(QWidget* parent)
 {
 }
 
-PrefTextEdit::~PrefTextEdit()
-{
-}
+PrefTextEdit::~PrefTextEdit() = default;
 
 void PrefTextEdit::restorePreferences()
 {
@@ -309,9 +302,7 @@ PrefFileChooser::PrefFileChooser ( QWidget * parent )
 {
 }
 
-PrefFileChooser::~PrefFileChooser()
-{
-}
+PrefFileChooser::~PrefFileChooser() = default;
 
 void PrefFileChooser::restorePreferences()
 {
@@ -343,13 +334,11 @@ PrefComboBox::PrefComboBox ( QWidget * parent )
 {
 }
 
-PrefComboBox::~PrefComboBox()
-{
-}
+PrefComboBox::~PrefComboBox() = default;
 
-QVariant::Type PrefComboBox::getParamType() const
+QMetaType::Type PrefComboBox::getParamType() const
 {
-  return property("prefType").type();
+  return static_cast<QMetaType::Type>(property("prefType").userType());
 }
 
 void PrefComboBox::restorePreferences()
@@ -438,9 +427,7 @@ PrefCheckBox::PrefCheckBox ( QWidget * parent )
 {
 }
 
-PrefCheckBox::~PrefCheckBox()
-{
-}
+PrefCheckBox::~PrefCheckBox() = default;
 
 void PrefCheckBox::restorePreferences()
 {
@@ -472,9 +459,7 @@ PrefRadioButton::PrefRadioButton ( QWidget * parent )
 {
 }
 
-PrefRadioButton::~PrefRadioButton()
-{
-}
+PrefRadioButton::~PrefRadioButton() = default;
 
 void PrefRadioButton::restorePreferences()
 {
@@ -506,9 +491,7 @@ PrefSlider::PrefSlider ( QWidget * parent )
 {
 }
 
-PrefSlider::~PrefSlider()
-{
-}
+PrefSlider::~PrefSlider() = default;
 
 void PrefSlider::restorePreferences()
 {
@@ -540,14 +523,11 @@ PrefColorButton::PrefColorButton ( QWidget * parent )
 {
 }
 
-PrefColorButton::~PrefColorButton()
-{
-}
+PrefColorButton::~PrefColorButton() = default;
 
 void PrefColorButton::restorePreferences()
 {
-  if (getWindowParameter().isNull())
-  {
+  if (getWindowParameter().isNull()) {
     failedToRestore(objectName());
     return;
   }
@@ -555,20 +535,15 @@ void PrefColorButton::restorePreferences()
   if (!m_Restored)
     m_Default = color();
 
-  const QColor &col = m_Default;
-
-  unsigned int icol = (col.red() << 24) | (col.green() << 16) | (col.blue() << 8) | col.alpha();
+  unsigned int icol = App::Color::asPackedRGBA<QColor>(m_Default);
 
   unsigned long lcol = static_cast<unsigned long>(icol);
-  lcol = getWindowParameter()->GetUnsigned( entryName(), lcol );
+  lcol = getWindowParameter()->GetUnsigned(entryName(), lcol);
   icol = static_cast<unsigned int>(lcol);
-  int r = (icol >> 24)&0xff;
-  int g = (icol >> 16)&0xff;
-  int b = (icol >>  8)&0xff;
-  int a = (icol      )&0xff;
+  QColor value = App::Color::fromPackedRGBA<QColor>(icol);
   if (!this->allowTransparency())
-      a = 0xff;
-  setColor(QColor(r,g,b,a));
+    value.setAlpha(0xff);
+  setColor(value);
 }
 
 void PrefColorButton::savePreferences()
@@ -581,7 +556,7 @@ void PrefColorButton::savePreferences()
 
   QColor col = color();
   // (r,g,b,a) with a = 255 (opaque)
-  unsigned int icol = (col.red() << 24) | (col.green() << 16) | (col.blue() << 8) | col.alpha();
+  unsigned int icol = App::Color::asPackedRGBA<QColor>(col);
   unsigned long lcol = static_cast<unsigned long>(icol);
   getWindowParameter()->SetUnsigned( entryName(), lcol );
 }
@@ -593,9 +568,7 @@ PrefUnitSpinBox::PrefUnitSpinBox ( QWidget * parent )
 {
 }
 
-PrefUnitSpinBox::~PrefUnitSpinBox()
-{
-}
+PrefUnitSpinBox::~PrefUnitSpinBox() = default;
 
 void PrefUnitSpinBox::restorePreferences()
 {
@@ -691,9 +664,7 @@ PrefQuantitySpinBox::PrefQuantitySpinBox (QWidget * parent)
 {
 }
 
-PrefQuantitySpinBox::~PrefQuantitySpinBox()
-{
-}
+PrefQuantitySpinBox::~PrefQuantitySpinBox() = default;
 
 void PrefQuantitySpinBox::contextMenuEvent(QContextMenuEvent *event)
 {
@@ -708,9 +679,9 @@ void PrefQuantitySpinBox::contextMenuEvent(QContextMenuEvent *event)
 
     // data structure to remember actions for values
     QStringList history = d->history.asStringList();
-    for (QStringList::const_iterator it = history.cbegin();it != history.cend(); ++it) {
-        QAction* action = menu->addAction(*it);
-        action->setProperty("history_value", *it);
+    for (const auto & it : history) {
+        QAction* action = menu->addAction(it);
+        action->setProperty("history_value", it);
     }
 
     // add the save value portion of the menu
@@ -815,9 +786,7 @@ PrefFontBox::PrefFontBox ( QWidget * parent )
 {
 }
 
-PrefFontBox::~PrefFontBox()
-{
-}
+PrefFontBox::~PrefFontBox() = default;
 
 void PrefFontBox::restorePreferences()
 {

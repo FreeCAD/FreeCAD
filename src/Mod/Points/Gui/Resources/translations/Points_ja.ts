@@ -4,18 +4,18 @@
   <context>
     <name>CmdPointsConvert</name>
     <message>
-      <location filename="../../Command.cpp" line="190"/>
+      <location filename="../../Command.cpp" line="189"/>
       <source>Points</source>
       <translation>点群</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="191"/>
+      <location filename="../../Command.cpp" line="190"/>
       <source>Convert to points...</source>
       <translation>点に変換...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="192"/>
-      <location filename="../../Command.cpp" line="194"/>
+      <location filename="../../Command.cpp" line="191"/>
+      <location filename="../../Command.cpp" line="193"/>
       <source>Convert to points</source>
       <translation>点に変換</translation>
     </message>
@@ -23,18 +23,18 @@
   <context>
     <name>CmdPointsExport</name>
     <message>
-      <location filename="../../Command.cpp" line="113"/>
+      <location filename="../../Command.cpp" line="112"/>
       <source>Points</source>
       <translation>点群</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="114"/>
+      <location filename="../../Command.cpp" line="113"/>
       <source>Export points...</source>
       <translation>点群をエクスポート...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="115"/>
-      <location filename="../../Command.cpp" line="117"/>
+      <location filename="../../Command.cpp" line="114"/>
+      <location filename="../../Command.cpp" line="116"/>
       <source>Exports a point cloud</source>
       <translation>点群をエクスポート</translation>
     </message>
@@ -42,18 +42,18 @@
   <context>
     <name>CmdPointsImport</name>
     <message>
-      <location filename="../../Command.cpp" line="68"/>
+      <location filename="../../Command.cpp" line="67"/>
       <source>Points</source>
       <translation>点群</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="69"/>
+      <location filename="../../Command.cpp" line="68"/>
       <source>Import points...</source>
       <translation>点群をインポート...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="70"/>
-      <location filename="../../Command.cpp" line="72"/>
+      <location filename="../../Command.cpp" line="69"/>
+      <location filename="../../Command.cpp" line="71"/>
       <source>Imports a point cloud</source>
       <translation>点群をインポート</translation>
     </message>
@@ -61,18 +61,18 @@
   <context>
     <name>CmdPointsMerge</name>
     <message>
-      <location filename="../../Command.cpp" line="311"/>
+      <location filename="../../Command.cpp" line="310"/>
       <source>Points</source>
       <translation>点群</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="312"/>
+      <location filename="../../Command.cpp" line="311"/>
       <source>Merge point clouds</source>
       <translation>点群のマージ</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="313"/>
-      <location filename="../../Command.cpp" line="315"/>
+      <location filename="../../Command.cpp" line="312"/>
+      <location filename="../../Command.cpp" line="314"/>
       <source>Merge several point clouds into one</source>
       <translation>複数の点群をひとつにマージ</translation>
     </message>
@@ -80,18 +80,18 @@
   <context>
     <name>CmdPointsPolyCut</name>
     <message>
-      <location filename="../../Command.cpp" line="266"/>
+      <location filename="../../Command.cpp" line="265"/>
       <source>Points</source>
       <translation>点群</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="267"/>
+      <location filename="../../Command.cpp" line="266"/>
       <source>Cut point cloud</source>
       <translation>点群をカット</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="268"/>
-      <location filename="../../Command.cpp" line="270"/>
+      <location filename="../../Command.cpp" line="267"/>
+      <location filename="../../Command.cpp" line="269"/>
       <source>Cuts a point cloud with a picked polygon</source>
       <translation>点群をピックしたポリゴンでカット</translation>
     </message>
@@ -99,18 +99,18 @@
   <context>
     <name>CmdPointsStructure</name>
     <message>
-      <location filename="../../Command.cpp" line="354"/>
+      <location filename="../../Command.cpp" line="371"/>
       <source>Points</source>
       <translation>点群</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="355"/>
+      <location filename="../../Command.cpp" line="372"/>
       <source>Structured point cloud</source>
       <translation>構造化された点群</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="356"/>
-      <location filename="../../Command.cpp" line="358"/>
+      <location filename="../../Command.cpp" line="373"/>
+      <location filename="../../Command.cpp" line="375"/>
       <source>Convert points to structured point cloud</source>
       <translation>点を構造化された点群に変換</translation>
     </message>
@@ -118,18 +118,18 @@
   <context>
     <name>CmdPointsTransform</name>
     <message>
-      <location filename="../../Command.cpp" line="153"/>
+      <location filename="../../Command.cpp" line="152"/>
       <source>Points</source>
       <translation>点群</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="154"/>
+      <location filename="../../Command.cpp" line="153"/>
       <source>Transform Points</source>
       <translation>点群を変換</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="155"/>
-      <location filename="../../Command.cpp" line="157"/>
+      <location filename="../../Command.cpp" line="154"/>
+      <location filename="../../Command.cpp" line="156"/>
       <source>Test to transform a point cloud</source>
       <translation>点群を変換するためのテスト</translation>
     </message>
@@ -137,23 +137,23 @@
   <context>
     <name>Command</name>
     <message>
-      <location filename="../../Command.cpp" line="89"/>
+      <location filename="../../Command.cpp" line="88"/>
       <source>Import points</source>
       <translation>点群をインポート</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="169"/>
+      <location filename="../../Command.cpp" line="168"/>
       <source>Transform points</source>
       <translation>点群を変換</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="215"/>
+      <location filename="../../Command.cpp" line="214"/>
       <source>Convert to points</source>
       <translation>点に変換</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="467"/>
-      <location filename="../../ViewProvider.cpp" line="626"/>
+      <location filename="../../ViewProvider.cpp" line="456"/>
+      <location filename="../../ViewProvider.cpp" line="615"/>
       <source>Cut points</source>
       <translation>点群を切断</translation>
     </message>
@@ -209,16 +209,6 @@
       <location filename="../../DlgPointsRead.ui" line="146"/>
       <source>Number separator:</source>
       <translation>区切り文字：</translation>
-    </message>
-    <message>
-      <location filename="../../DlgPointsRead.ui" line="157"/>
-      <source>,</source>
-      <translation>,</translation>
-    </message>
-    <message>
-      <location filename="../../DlgPointsRead.ui" line="162"/>
-      <source>;</source>
-      <translation>;</translation>
     </message>
     <message>
       <location filename="../../DlgPointsRead.ui" line="167"/>
@@ -297,33 +287,28 @@
       <source>Number of previewed lines:</source>
       <translation>プレビューされている線の数:</translation>
     </message>
-    <message>
-      <location filename="../../DlgPointsRead.ui" line="348"/>
-      <source>100</source>
-      <translation>100</translation>
-    </message>
   </context>
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../Command.cpp" line="82"/>
-      <location filename="../../Command.cpp" line="130"/>
+      <location filename="../../Command.cpp" line="81"/>
+      <location filename="../../Command.cpp" line="129"/>
       <source>Point formats</source>
       <translation>点群の形式</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="82"/>
-      <location filename="../../Command.cpp" line="130"/>
+      <location filename="../../Command.cpp" line="81"/>
+      <location filename="../../Command.cpp" line="129"/>
       <source>All Files</source>
       <translation>すべてのファイル</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="209"/>
+      <location filename="../../Command.cpp" line="208"/>
       <source>Distance</source>
       <translation>距離</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="210"/>
+      <location filename="../../Command.cpp" line="209"/>
       <source>Enter maximum distance:</source>
       <translation>最大距離を入力:</translation>
     </message>
@@ -331,12 +316,12 @@
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="../../Workbench.cpp" line="37"/>
+      <location filename="../../Workbench.cpp" line="34"/>
       <source>Points tools</source>
       <translation>点ツール</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="38"/>
+      <location filename="../../Workbench.cpp" line="35"/>
       <source>&amp;Points</source>
       <translation>点群(&amp;P)</translation>
     </message>

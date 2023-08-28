@@ -170,7 +170,6 @@ class ShapeStringTaskPanelCmd(ShapeStringTaskPanel):
         y = App.Units.Quantity(self.form.sbY.text()).Value
         z = App.Units.Quantity(self.form.sbZ.text()).Value
         ssBase = App.Vector(x, y, z)
-        # this try block is almost identical to the one in DraftTools
         try:
             qr, sup, points, fil = self.sourceCmd.getStrings()
             Gui.addModule("Draft")
@@ -181,7 +180,8 @@ class ShapeStringTaskPanelCmd(ShapeStringTaskPanel):
                                    'plm.Rotation.Q=' + qr,
                                    'ss.Placement=plm',
                                    'ss.Support=' + sup,
-                                   'Draft.autogroup(ss)'])
+                                   'Draft.autogroup(ss)',
+                                   'FreeCAD.ActiveDocument.recompute()'])
         except Exception:
             _err("Draft_ShapeString: error delaying commit\n")
 

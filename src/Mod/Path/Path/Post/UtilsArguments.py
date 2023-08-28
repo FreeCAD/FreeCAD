@@ -34,13 +34,9 @@ import argparse
 import os
 import shlex
 
-import FreeCAD
-
 from FreeCAD import Units
 
-# to distinguish python built-in open function from the one declared below
-if open.__module__ in ["__builtin__", "io"]:
-    pythonopen = open
+import Path.Post.UtilsParse as PostUtilsParse
 
 
 def add_flag_type_arguments(
@@ -52,6 +48,7 @@ def add_flag_type_arguments(
     false_help,
     visible=True,
 ):
+    """Create an argument specification for an argument that is a flag."""
     if visible:
         if default_flag:
             true_help += " (default)"
@@ -105,13 +102,11 @@ def init_arguments_visible(arguments_visible):
 
 
 def init_shared_arguments(values, argument_defaults, arguments_visible):
-    """Initialize the shared arguments for postprocessors."""
+    """Initialize the arguments for postprocessors."""
     parser = argparse.ArgumentParser(
         prog=values["MACHINE_NAME"], usage=argparse.SUPPRESS, add_help=False
     )
-    shared = parser.add_argument_group(
-        "Arguments that are shared with all postprocessors"
-    )
+    shared = parser.add_argument_group("Arguments that are commonly used")
     add_flag_type_arguments(
         shared,
         argument_defaults["metric_inches"],
@@ -131,10 +126,7 @@ def init_shared_arguments(values, argument_defaults, arguments_visible):
         arguments_visible["axis-modal"],
     )
     if arguments_visible["axis-precision"]:
-        help_message = (
-            "Number of digits of precision for axis moves, default is "
-            + str(values["DEFAULT_AXIS_PRECISION"])
-        )
+        help_message = f'Number of digits of precision for axis moves, default is {str(values["DEFAULT_AXIS_PRECISION"])}'
     else:
         help_message = argparse.SUPPRESS
     shared.add_argument(
@@ -162,9 +154,7 @@ def init_shared_arguments(values, argument_defaults, arguments_visible):
         arguments_visible["comments"],
     )
     if arguments_visible["feed-precision"]:
-        help_message = "Number of digits of precision for feed rate, default is " + str(
-            values["DEFAULT_FEED_PRECISION"]
-        )
+        help_message = f'Number of digits of precision for feed rate, default is {str(values["DEFAULT_FEED_PRECISION"])}'
     else:
         help_message = argparse.SUPPRESS
     shared.add_argument(
@@ -219,35 +209,21 @@ def init_shared_arguments(values, argument_defaults, arguments_visible):
         arguments_visible["output_visible_arguments"],
     )
     if arguments_visible["postamble"]:
-        help_message = (
-            'Set commands to be issued after the last command, default is "'
-            + values["POSTAMBLE"]
-            + '"'
-        )
+        help_message = f'Set commands to be issued after the last command, default is "{values["POSTAMBLE"]}"'
     else:
         help_message = argparse.SUPPRESS
     shared.add_argument("--postamble", help=help_message)
     if arguments_visible["preamble"]:
-        help_message = (
-            'Set commands to be issued before the first command, default is "'
-            + values["PREAMBLE"]
-            + '"'
-        )
+        help_message = f'Set commands to be issued before the first command, default is "{values["PREAMBLE"]}"'
     else:
         help_message = argparse.SUPPRESS
     shared.add_argument("--preamble", help=help_message)
-    # The --precision argument is included for backwards compatibility with
-    # some postprocessors.  If both --axis-precision and --precision are provided,
-    # the --axis-precision value "wins".  If both --feed-precision and --precision
-    # are provided, the --feed-precision value "wins".
+    # The --precision argument is included for backwards compatibility with some
+    # postprocessors.  If both --axis-precision and --precision are provided, the
+    # --axis-precision value "wins".  If both --feed-precision and --precision are
+    # provided, the --feed-precision value "wins".
     if arguments_visible["precision"]:
-        help_message = (
-            "Number of digits of precision for both feed rate and axis moves, default is "
-            + str(values["DEFAULT_AXIS_PRECISION"])
-            + " for metric or "
-            + str(values["DEFAULT_INCH_AXIS_PRECISION"])
-            + " for inches"
-        )
+        help_message = f'Number of digits of precision for both feed rate and axis moves, default is {str(values["DEFAULT_AXIS_PRECISION"])} for metric or {str(values["DEFAULT_INCH_AXIS_PRECISION"])} for inches'
     else:
         help_message = argparse.SUPPRESS
     shared.add_argument(
@@ -293,8 +269,8 @@ def init_shared_arguments(values, argument_defaults, arguments_visible):
         argument_defaults["translate_drill"],
         "--translate_drill",
         "--no-translate_drill",
-        "Translate drill cycles G81, G82 & G83 into G0/G1 movements",
-        "Don't translate drill cycles G81, G82 & G83 into G0/G1 movements",
+        "Translate drill cycles G73, G81, G82 & G83 into G0/G1 movements",
+        "Don't translate drill cycles G73, G81, G82 & G83 into G0/G1 movements",
         arguments_visible["translate_drill"],
     )
     if arguments_visible["wait-for-spindle"]:
@@ -314,10 +290,10 @@ def init_shared_values(values):
     #
     values["AXIS_PRECISION"] = 3
     #
-    # How far to move up (in millimeters) in the Z axis when chipbreaking with a G73 command.
+    # How far to move up (in millimeters) in the Z axis when chipbreaking
+    # with a G73 command.
     #
-    values["CHIPBREAKING_AMOUNT"] = Units.Quantity(0.25, FreeCAD.Units.Length)
-
+    values["CHIPBREAKING_AMOUNT"] = Units.Quantity(0.25, Units.Length)
     #
     # If this is set to "", all spaces are removed from between commands and parameters.
     #
@@ -354,7 +330,7 @@ def init_shared_values(values):
     # If TRANSLATE_DRILL_CYCLES is True, these are the drill cycles
     # that get translated to G0 and G1 commands.
     #
-    values["DRILL_CYCLES_TO_TRANSLATE"] = ("G73", "G81", "G82", "G83")
+    values["DRILL_CYCLES_TO_TRANSLATE"] = ["G73", "G81", "G82", "G83"]
     #
     # The default value of drill retractations (CURRENT_Z).
     # The other possible value is G99.
@@ -439,8 +415,8 @@ def init_shared_values(values):
     #
     values["OUTPUT_COMMENTS"] = True
     #
-    # if False duplicate axis values are suppressed if they are the same as
-    # the previous line.
+    # if False duplicate axis values or feeds are suppressed
+    # if they are the same as the previous line.
     #
     values["OUTPUT_DOUBLES"] = True
     #
@@ -472,6 +448,12 @@ def init_shared_values(values):
     # any commands in the "TOOL_CHANGE" value.
     #
     values["OUTPUT_TOOL_CHANGE"] = True
+    #
+    # This dictionary/hash holds the functions that are used
+    # to process the G-code parameter values
+    #
+    values["PARAMETER_FUNCTIONS"] = {}
+    PostUtilsParse.init_parameter_functions(values["PARAMETER_FUNCTIONS"])
     #
     # This list controls the order of parameters in a line during output.
     #
@@ -602,20 +584,14 @@ def process_shared_arguments(values, parser, argstring, all_visible, filename):
         if args.output_all_arguments:
             argument_text = all_visible.format_help()
             if not filename == "-":
-                gfile = pythonopen(
-                    filename, "w", newline=values["END_OF_LINE_CHARACTERS"]
-                )
-                gfile.write(argument_text)
-                gfile.close()
+                with open(filename, "w", newline=values["END_OF_LINE_CHARACTERS"]) as f:
+                    f.write(argument_text)
             return (False, argument_text)
         if args.output_visible_arguments:
             argument_text = parser.format_help()
             if not filename == "-":
-                gfile = pythonopen(
-                    filename, "w", newline=values["END_OF_LINE_CHARACTERS"]
-                )
-                gfile.write(argument_text)
-                gfile.close()
+                with open(filename, "w", newline=values["END_OF_LINE_CHARACTERS"]) as f:
+                    f.write(argument_text)
             return (False, argument_text)
         # Default to metric unless an argument overrides it
         values["UNITS"] = "G21"
@@ -626,7 +602,7 @@ def process_shared_arguments(values, parser, argstring, all_visible, filename):
         if values["UNITS"] == "G21":
             values["UNIT_FORMAT"] = "mm"
             values["UNIT_SPEED_FORMAT"] = "mm/min"
-        if values["UNITS"] == "G20":
+        elif values["UNITS"] == "G20":
             values["UNIT_FORMAT"] = "in"
             values["UNIT_SPEED_FORMAT"] = "in/min"
         # The precision-related arguments need to be processed
@@ -651,7 +627,7 @@ def process_shared_arguments(values, parser, argstring, all_visible, filename):
         else:
             if values["UNITS"] == "G21":
                 values["FEED_PRECISION"] = values["DEFAULT_FEED_PRECISION"]
-            if values["UNITS"] == "G20":
+            elif values["UNITS"] == "G20":
                 values["FEED_PRECISION"] = values["DEFAULT_INCH_FEED_PRECISION"]
         if args.axis_modal:
             values["OUTPUT_DOUBLES"] = False
@@ -732,7 +708,7 @@ def process_shared_arguments(values, parser, argstring, all_visible, filename):
 #
 # G53 G00|G01 or G00|G01 G53  X Y Z
 #
-# G73, G74, G81 to G86, G89   (X Y Z) or (U V W) R Q L P F K $
+# G73, G74, G81 to G86, G89   "X Y Z" | "U V W" R Q L P F K $
 #
 # G76                         P Z I J R K Q H E L $
 #
@@ -782,8 +758,8 @@ def process_shared_arguments(values, parser, argstring, all_visible, filename):
 #
 # G10                       P D H R
 #
-# G65                       P L arguments (arguments are A-Z excluding G, L, N, O, and P)
-# G65                       "program.cnc" L arguments
+# G65                       P L args (args are A-Z excluding G, L, N, O, and P)
+# G65                       "program.cnc" L args
 #
 # G117, G118, G119          P X Y Z I J K P Q
 #

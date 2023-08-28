@@ -41,6 +41,7 @@
 #include <Gui/Control.h>
 #include <Gui/Document.h>
 #include <Gui/SelectionObject.h>
+#include <Gui/Widgets.h>
 #include <Mod/Part/Gui/ViewProvider.h>
 
 #include "TaskFilling.h"
@@ -255,9 +256,11 @@ private:
 // ----------------------------------------------------------------------------
 
 FillingPanel::FillingPanel(ViewProviderFilling* vp, Surface::Filling* obj)
+    : editedObject(obj)
 {
     ui = new Ui_TaskFilling();
     ui->setupUi(this);
+    setupConnections();
     ui->statusLabel->clear();
 
     selectionMode = None;
@@ -270,11 +273,10 @@ FillingPanel::FillingPanel(ViewProviderFilling* vp, Surface::Filling* obj)
     action->setShortcut(QString::fromLatin1("Del"));
     action->setShortcutContext(Qt::WidgetShortcut);
     ui->listBoundary->addAction(action);
-    connect(action, SIGNAL(triggered()), this, SLOT(onDeleteEdge()));
+    connect(action, &QAction::triggered, this, &FillingPanel::onDeleteEdge);
     ui->listBoundary->setContextMenuPolicy(Qt::ActionsContextMenu);
 
-    connect(ui->listBoundary->model(),
-        SIGNAL(rowsMoved(QModelIndex, int, int, QModelIndex, int)), this, SLOT(onIndexesMoved()));
+    connect(ui->listBoundary->model(), &QAbstractItemModel::rowsMoved, this, &FillingPanel::onIndexesMoved);
 }
 
 /*
@@ -284,6 +286,31 @@ FillingPanel::~FillingPanel()
 {
     // no need to delete child widgets, Qt does it all for us
     delete ui;
+}
+
+void FillingPanel::setupConnections()
+{
+    connect(ui->buttonInitFace, &QPushButton::clicked,
+            this, &FillingPanel::onButtonInitFaceClicked);
+    connect(ui->buttonEdgeAdd, &QToolButton::toggled,
+            this, &FillingPanel::onButtonEdgeAddToggled);
+    connect(ui->buttonEdgeRemove, &QToolButton::toggled,
+            this, &FillingPanel::onButtonEdgeRemoveToggled);
+    connect(ui->lineInitFaceName, &QLineEdit::textChanged,
+            this, &FillingPanel::onLineInitFaceNameTextChanged);
+    connect(ui->listBoundary, &QListWidget::itemDoubleClicked,
+            this, &FillingPanel::onListBoundaryItemDoubleClicked);
+    connect(ui->buttonAccept, &QPushButton::clicked,
+            this, &FillingPanel::onButtonAcceptClicked);
+    connect(ui->buttonIgnore, &QPushButton::clicked,
+            this, &FillingPanel::onButtonIgnoreClicked);
+}
+
+void FillingPanel::appendButtons(Gui::ButtonGroup* buttonGroup)
+{
+    buttonGroup->addButton(ui->buttonInitFace, int(SelectionMode::InitFace));
+    buttonGroup->addButton(ui->buttonEdgeAdd, int(SelectionMode::AppendEdge));
+    buttonGroup->addButton(ui->buttonEdgeRemove, int(SelectionMode::RemoveEdge));
 }
 
 // stores object pointer, its old fill type and adjusts radio buttons according to it.
@@ -382,7 +409,7 @@ void FillingPanel::open()
 
     // if the surface is not yet created then automatically start "AppendEdge" mode
     if (editedObject->Shape.getShape().isNull()) {
-        on_buttonEdgeAdd_clicked();
+        ui->buttonEdgeAdd->setChecked(true);
     }
 }
 
@@ -454,14 +481,16 @@ bool FillingPanel::accept()
 
 bool FillingPanel::reject()
 {
-    this->vp->highlightReferences(ViewProviderFilling::Edge,
-        editedObject->BoundaryEdges.getSubListValues(), false);
+    if (!editedObject.expired()) {
+        this->vp->highlightReferences(ViewProviderFilling::Edge,
+            editedObject->BoundaryEdges.getSubListValues(), false);
 
-    // unhighlight the referenced face
-    std::vector<App::PropertyLinkSubList::SubSet> links;
-    links.emplace_back(editedObject->InitialFace.getValue(),
-                                   editedObject->InitialFace.getSubValues());
-    this->vp->highlightReferences(ViewProviderFilling::Face, links, false);
+        // unhighlight the referenced face
+        std::vector<App::PropertyLinkSubList::SubSet> links;
+        links.emplace_back(editedObject->InitialFace.getValue(),
+                                       editedObject->InitialFace.getSubValues());
+        this->vp->highlightReferences(ViewProviderFilling::Face, links, false);
+    }
 
     selectionMode = None;
     Gui::Selection().rmvSelectionGate();
@@ -469,7 +498,7 @@ bool FillingPanel::reject()
     return true;
 }
 
-void FillingPanel::on_lineInitFaceName_textChanged(const QString& text)
+void FillingPanel::onLineInitFaceNameTextChanged(const QString& text)
 {
     if (text.isEmpty()) {
         checkOpenCommand();
@@ -485,28 +514,38 @@ void FillingPanel::on_lineInitFaceName_textChanged(const QString& text)
     }
 }
 
-void FillingPanel::on_buttonInitFace_clicked()
+void FillingPanel::onButtonInitFaceClicked()
 {
     // 'selectionMode' is passed by reference and changed when the filter is deleted
-    Gui::Selection().addSelectionGate(new ShapeSelection(selectionMode, editedObject));
+    Gui::Selection().addSelectionGate(new ShapeSelection(selectionMode, editedObject.get()));
     selectionMode = InitFace;
 }
 
-void FillingPanel::on_buttonEdgeAdd_clicked()
+void FillingPanel::onButtonEdgeAddToggled(bool checked)
 {
-    // 'selectionMode' is passed by reference and changed when the filter is deleted
-    Gui::Selection().addSelectionGate(new ShapeSelection(selectionMode, editedObject));
-    selectionMode = AppendEdge;
+    if (checked) {
+        // 'selectionMode' is passed by reference and changed when the filter is deleted
+        Gui::Selection().addSelectionGate(new ShapeSelection(selectionMode, editedObject.get()));
+        selectionMode = AppendEdge;
+    }
+    else if (selectionMode == AppendEdge) {
+        exitSelectionMode();
+    }
 }
 
-void FillingPanel::on_buttonEdgeRemove_clicked()
+void FillingPanel::onButtonEdgeRemoveToggled(bool checked)
 {
-    // 'selectionMode' is passed by reference and changed when the filter is deleted
-    Gui::Selection().addSelectionGate(new ShapeSelection(selectionMode, editedObject));
-    selectionMode = RemoveEdge;
+    if (checked) {
+        // 'selectionMode' is passed by reference and changed when the filter is deleted
+        Gui::Selection().addSelectionGate(new ShapeSelection(selectionMode, editedObject.get()));
+        selectionMode = RemoveEdge;
+    }
+    else if (selectionMode == RemoveEdge) {
+        exitSelectionMode();
+    }
 }
 
-void FillingPanel::on_listBoundary_itemDoubleClicked(QListWidgetItem* item)
+void FillingPanel::onListBoundaryItemDoubleClicked(QListWidgetItem* item)
 {
     Gui::Selection().clearSelection();
     Gui::Selection().rmvSelectionGate();
@@ -694,7 +733,7 @@ void FillingPanel::onSelectionChanged(const Gui::SelectionChanges& msg)
         }
 
         editedObject->recomputeFeature();
-        QTimer::singleShot(50, this, SLOT(clearSelection()));
+        QTimer::singleShot(50, this, &FillingPanel::clearSelection);
     }
 }
 
@@ -785,7 +824,7 @@ void FillingPanel::onIndexesMoved()
     editedObject->recomputeFeature();
 }
 
-void FillingPanel::on_buttonAccept_clicked()
+void FillingPanel::onButtonAcceptClicked()
 {
     QListWidgetItem* item = ui->listBoundary->currentItem();
     if (item) {
@@ -830,7 +869,7 @@ void FillingPanel::on_buttonAccept_clicked()
     editedObject->recomputeFeature();
 }
 
-void FillingPanel::on_buttonIgnore_clicked()
+void FillingPanel::onButtonIgnoreClicked()
 {
     modifyBoundary(false);
     ui->comboBoxFaces->clear();
@@ -852,12 +891,24 @@ void FillingPanel::modifyBoundary(bool on)
     ui->buttonIgnore->setEnabled(on);
 }
 
+void FillingPanel::exitSelectionMode()
+{
+    // 'selectionMode' is passed by reference to the filter and changed when the filter is deleted
+    Gui::Selection().clearSelection();
+    Gui::Selection().rmvSelectionGate();
+}
+
 // ----------------------------------------------------------------------------
 
 TaskFilling::TaskFilling(ViewProviderFilling* vp, Surface::Filling* obj)
 {
+    // Set up button group
+    buttonGroup = new Gui::ButtonGroup(this);
+    buttonGroup->setExclusive(true);
+
     // first task box
     widget1 = new FillingPanel(vp, obj);
+    widget1->appendButtons(buttonGroup);
     Gui::TaskView::TaskBox* taskbox1 = new Gui::TaskView::TaskBox(
         Gui::BitmapFactory().pixmap("Surface_Filling"),
         widget1->windowTitle(), true, nullptr);
@@ -866,6 +917,7 @@ TaskFilling::TaskFilling(ViewProviderFilling* vp, Surface::Filling* obj)
 
     // second task box
     widget2 = new FillingEdgePanel(vp, obj);
+    widget2->appendButtons(buttonGroup);
     Gui::TaskView::TaskBox* taskbox2 = new Gui::TaskView::TaskBox(
         QPixmap(), widget2->windowTitle(), true, nullptr);
     taskbox2->groupLayout()->addWidget(widget2);
@@ -874,16 +926,12 @@ TaskFilling::TaskFilling(ViewProviderFilling* vp, Surface::Filling* obj)
 
     // third task box
     widget3 = new FillingVertexPanel(vp, obj);
+    widget3->appendButtons(buttonGroup);
     Gui::TaskView::TaskBox* taskbox3 = new Gui::TaskView::TaskBox(
         QPixmap(), widget3->windowTitle(), true, nullptr);
     taskbox3->groupLayout()->addWidget(widget3);
     Content.push_back(taskbox3);
     taskbox3->hideGroupBox();
-}
-
-TaskFilling::~TaskFilling()
-{
-    // automatically deleted in the sub-class
 }
 
 void TaskFilling::setEditedObject(Surface::Filling* obj)

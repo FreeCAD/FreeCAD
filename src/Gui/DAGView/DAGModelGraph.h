@@ -82,12 +82,12 @@ namespace Gui
       std::shared_ptr<QGraphicsPixmapItem> icon; //!< icon
       std::shared_ptr<QGraphicsTextItem> text; //!< text
       boost::signals2::connection connChangeIcon;
-      int row; //!< row for this entry.
-      ColumnMask column; //!< column number containing the point.
-      int topoSortIndex;
-      VisibilityState lastVisibleState; //!< visibility test.
-      FeatureState lastFeatureState; //!< feature state test.
-      bool dagVisible; //!< should entry be visible in the DAG view.
+      int row = 0; //!< row for this entry.
+      ColumnMask column = 0; //!< column number containing the point.
+      int topoSortIndex = 0;
+      VisibilityState lastVisibleState = VisibilityState::None; //!< visibility test.
+      FeatureState lastFeatureState = FeatureState::None; //!< feature state test.
+      bool dagVisible = true; //!< should entry be visible in the DAG view.
     };
     /*! @brief boost data for each vertex.
      *
@@ -114,7 +114,7 @@ namespace Gui
         Terminate       //!< terminate a branch.
       };
       EdgeProperty();
-      BranchTag relation;
+      BranchTag relation = BranchTag::None;
       std::shared_ptr <QGraphicsPathItem> connector; //!< line representing link between nodes.
     };
     /*! @brief needed to create an internal index for graph edges. needed for setS.*/

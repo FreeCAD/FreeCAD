@@ -20,61 +20,28 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-
 #ifndef _PreComp_
 # include <sstream>
-# include <BRepAdaptor_Curve.hxx>
-# include <Geom_Circle.hxx>
-# include <gp_Circ.hxx>
-# include <gp_Elips.hxx>
+
+# include <BRepLib.hxx>
+# include <BRepMesh_IncrementalMesh.hxx>
+# include <gp_Ax2.hxx>
+# include <gp_Dir.hxx>
+# include <gp_Pnt.hxx>
+# include <HLRBRep_Algo.hxx>
+# include <HLRBRep_HLRToShape.hxx>
+# include <HLRAlgo_Projector.hxx>
+# include <TopExp_Explorer.hxx>
+# include <TopoDS.hxx>
+# include <TopoDS_Shape.hxx>
 #endif
 
-#include <Bnd_Box.hxx>
-#include <BRepBndLib.hxx>
-#include <BRepBuilderAPI_Transform.hxx>
-#include <HLRBRep_Algo.hxx>
-#include <TopoDS_Shape.hxx>
-#include <HLRTopoBRep_OutLiner.hxx>
-#include <HLRAlgo_Projector.hxx>
-#include <HLRBRep_ShapeBounds.hxx>
-#include <HLRBRep_HLRToShape.hxx>
-#include <gp_Ax2.hxx>
-#include <gp_Pnt.hxx>
-#include <gp_Dir.hxx>
-#include <gp_Vec.hxx>
-#include <Poly_Polygon3D.hxx>
-#include <Poly_Triangulation.hxx>
-#include <Poly_PolygonOnTriangulation.hxx>
-#include <TopoDS.hxx>
-#include <TopoDS_Face.hxx>
-#include <TopoDS_Edge.hxx>
-#include <TopoDS_Vertex.hxx>
-#include <TopExp.hxx>
-#include <TopExp_Explorer.hxx>
-#include <TopTools_IndexedMapOfShape.hxx>
-#include <TopTools_IndexedDataMapOfShapeListOfShape.hxx>
-#include <TopTools_ListOfShape.hxx>
-#include <TColgp_Array1OfPnt2d.hxx>
-#include <BRep_Tool.hxx>
-#include <BRepMesh_IncrementalMesh.hxx>
-#include <BRepLib.hxx>
-#include <BRepAdaptor_CompCurve.hxx>
-#include <Approx_Curve3d.hxx>
-#include <Geom_BSplineCurve.hxx>
-#include <Geom_BezierCurve.hxx>
-#include <GeomConvert_BSplineCurveToBezierCurve.hxx>
-#include <GeomConvert_BSplineCurveKnotSplitting.hxx>
-#include <Geom2d_BSplineCurve.hxx>
-
 #include <Base/Exception.h>
-#include <Base/FileInfo.h>
-#include <Base/Tools.h>
-#include <Mod/Part/App/PartFeature.h>
 
 #include "ProjectionAlgos.h"
 #include "DrawingExport.h"
+
 
 using namespace Drawing;
 using namespace std;
@@ -82,7 +49,6 @@ using namespace std;
 //===========================================================================
 // ProjectionAlgos
 //===========================================================================
-
 
 
 ProjectionAlgos::ProjectionAlgos(const TopoDS_Shape &Input, const Base::Vector3d &Dir)

@@ -20,7 +20,10 @@
 #*                                                                         *
 #***************************************************************************
 
-import FreeCAD,Draft,ArchCommands,ArchFloor
+import FreeCAD
+import ArchCommands
+import ArchFloor
+import Draft
 if FreeCAD.GuiUp:
     import FreeCADGui
     from PySide import QtCore
@@ -36,7 +39,7 @@ else:
 
 __title__  = "FreeCAD Building"
 __author__ = "Yorik van Havre"
-__url__    = "https://www.freecadweb.org"
+__url__    = "https://www.freecad.org"
 
 ## @package ArchBuilding
 #  \ingroup ARCH
@@ -187,21 +190,22 @@ BuildingTypes = ['Undefined',
 ]
 
 
-def makeBuilding(objectslist=None,baseobj=None,name="Building"):
+def makeBuilding(objectslist=None,name=None):
+    '''Obsolete, superseded by ArchBuildingPart.makeBuilding.
 
-    '''makeBuilding(objectslist): creates a building including the
+    makeBuilding([objectslist],[name]): creates a building including the
     objects from the given list.'''
 
     if not FreeCAD.ActiveDocument:
         FreeCAD.Console.PrintError("No active document. Aborting\n")
         return
     obj = FreeCAD.ActiveDocument.addObject("App::DocumentObjectGroupPython","Building")
+    obj.Label = name if name else translate("Arch","Building")
     _Building(obj)
     if FreeCAD.GuiUp:
         _ViewProviderBuilding(obj.ViewObject)
     if objectslist:
         obj.Group = objectslist
-    obj.Label = translate("Arch",name)
     return obj
 
 

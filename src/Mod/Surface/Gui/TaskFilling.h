@@ -23,14 +23,21 @@
 #ifndef SURFACEGUI_TASKFILLING_H
 #define SURFACEGUI_TASKFILLING_H
 
+#include <App/DocumentObserver.h>
 #include <Gui/DocumentObserver.h>
 #include <Gui/TaskView/TaskDialog.h>
 #include <Gui/TaskView/TaskView.h>
 #include <Mod/Part/Gui/ViewProviderSpline.h>
 #include <Mod/Surface/App/FeatureFilling.h>
+#include <Mod/Surface/Gui/SelectionMode.h>
 
 
 class QListWidgetItem;
+
+namespace Gui
+{
+class ButtonGroup;
+}
 
 namespace SurfaceGui
 {
@@ -61,9 +68,14 @@ class FillingPanel : public QWidget,
 
 protected:
     class ShapeSelection;
-    enum SelectionMode { None, InitFace, AppendEdge, RemoveEdge };
+    enum SelectionMode {
+        None = SurfaceGui::SelectionMode::None,
+        InitFace = SurfaceGui::SelectionMode::InitFace,
+        AppendEdge = SurfaceGui::SelectionMode::AppendEdge,
+        RemoveEdge = SurfaceGui::SelectionMode::RemoveEdge
+    };
     SelectionMode selectionMode;
-    Surface::Filling* editedObject;
+    App::WeakPtrT<Surface::Filling> editedObject;
     bool checkCommand;
 
 private:
@@ -79,6 +91,7 @@ public:
     bool accept();
     bool reject();
     void setEditedObject(Surface::Filling* obj);
+    void appendButtons(Gui::ButtonGroup *);
 
 protected:
     void changeEvent(QEvent *e) override;
@@ -91,17 +104,21 @@ protected:
     void slotDeletedObject(const Gui::ViewProviderDocumentObject& Obj) override;
     void modifyBoundary(bool);
 
-private Q_SLOTS:
-    void on_buttonInitFace_clicked();
-    void on_buttonEdgeAdd_clicked();
-    void on_buttonEdgeRemove_clicked();
-    void on_lineInitFaceName_textChanged(const QString&);
-    void on_listBoundary_itemDoubleClicked(QListWidgetItem*);
-    void on_buttonAccept_clicked();
-    void on_buttonIgnore_clicked();
+private:
+    void setupConnections();
+    void onButtonInitFaceClicked();
+    void onButtonEdgeAddToggled(bool checked);
+    void onButtonEdgeRemoveToggled(bool checked);
+    void onLineInitFaceNameTextChanged(const QString&);
+    void onListBoundaryItemDoubleClicked(QListWidgetItem*);
+    void onButtonAcceptClicked();
+    void onButtonIgnoreClicked();
     void onDeleteEdge();
     void onIndexesMoved();
     void clearSelection();
+
+private:
+    void exitSelectionMode();
 };
 
 class TaskFilling : public Gui::TaskView::TaskDialog
@@ -110,7 +127,6 @@ class TaskFilling : public Gui::TaskView::TaskDialog
 
 public:
     TaskFilling(ViewProviderFilling* vp, Surface::Filling* obj);
-    ~TaskFilling() override;
     void setEditedObject(Surface::Filling* obj);
 
 public:
@@ -123,6 +139,7 @@ public:
     { return QDialogButtonBox::Ok | QDialogButtonBox::Cancel; }
 
 private:
+    Gui::ButtonGroup* buttonGroup;
     FillingPanel* widget1;
     FillingEdgePanel* widget2;
     FillingVertexPanel* widget3;

@@ -76,7 +76,7 @@ int Handled::getRefCount() const
     return static_cast<int>(*_lRefCount);
 }
 
-const Handled& Handled::operator = (const Handled&)
+Handled& Handled::operator = (const Handled&)
 {
     // we must not assign _lRefCount
     return *this;

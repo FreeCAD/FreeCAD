@@ -44,8 +44,7 @@ TaskSelectLinkProperty::TaskSelectLinkProperty(const char *sFilter,App::Property
     proxy = new QWidget(this);
     ui = new Ui_TaskSelectLinkProperty();
     ui->setupUi(proxy);
-
-    QMetaObject::connectSlotsByName(this);
+    setupConnections();
 
     this->groupLayout()->addWidget(proxy);
     Gui::Selection().Attach(this);
@@ -84,6 +83,18 @@ TaskSelectLinkProperty::~TaskSelectLinkProperty()
     Gui::Selection().Detach(this);
 }
 
+void TaskSelectLinkProperty::setupConnections()
+{
+    connect(ui->Remove, &QToolButton::clicked,
+            this, &TaskSelectLinkProperty::onRemoveClicked);
+    connect(ui->Add, &QToolButton::clicked,
+            this, &TaskSelectLinkProperty::onAddClicked);
+    connect(ui->Invert, &QToolButton::clicked,
+            this, &TaskSelectLinkProperty::onInvertClicked);
+    connect(ui->Help, &QToolButton::clicked,
+            this, &TaskSelectLinkProperty::onHelpClicked);
+}
+
 void TaskSelectLinkProperty::changeEvent(QEvent *e)
 {
     TaskBox::changeEvent(e);
@@ -118,9 +129,9 @@ void TaskSelectLinkProperty::activate()
             std::string ObjName = StartObject->getNameInDocument();
             std::string DocName = StartObject->getDocument()->getName();
 
-            for (std::vector<std::string>::const_iterator it = StartValueBuffer.begin();it!=StartValueBuffer.end();++it)
+            for (const auto & it : StartValueBuffer)
             {
-                Gui::Selection().addSelection(DocName.c_str(),ObjName.c_str(),it->c_str());
+                Gui::Selection().addSelection(DocName.c_str(),ObjName.c_str(),it.c_str());
             }
         }
         
@@ -222,19 +233,19 @@ void TaskSelectLinkProperty::OnChange(Gui::SelectionSingleton::SubjectType &rCal
 }
 /// @endcond
 
-void TaskSelectLinkProperty::on_Remove_clicked(bool)
+void TaskSelectLinkProperty::onRemoveClicked(bool)
 {
 }
 
-void TaskSelectLinkProperty::on_Add_clicked(bool)
+void TaskSelectLinkProperty::onAddClicked(bool)
 {
 }
 
-void TaskSelectLinkProperty::on_Invert_clicked(bool)
+void TaskSelectLinkProperty::onInvertClicked(bool)
 {
 }
 
-void TaskSelectLinkProperty::on_Help_clicked(bool)
+void TaskSelectLinkProperty::onHelpClicked(bool)
 {
 }
 

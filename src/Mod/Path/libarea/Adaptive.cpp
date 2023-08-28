@@ -1451,7 +1451,7 @@ double Adaptive2d::CalcCutArea(Clipper &clip, const IntPoint &c1, const IntPoint
 					interPath->push_back(IntPoint(*p2));
 				}
 				else
-				{ // prev point inside, current point outside, find instersection
+				{ // prev point inside, current point outside, find intersection
 					if (Line2CircleIntersect(c2, toolRadiusScaled, *p1, *p2, inters))
 					{
 						if (inters.size() > 1)
@@ -3123,6 +3123,13 @@ void Adaptive2d::ProcessPolyNode(Paths boundPaths, Paths toolBoundPaths)
 			<< " iter_per_point:" << (double(total_iterations) / ((double(total_points) + 0.001)))
 			<< " total_exceeded:" << total_exceeded << " (" << 100 * double(total_exceeded) / double(total_points) << "%)"
 			<< endl;
+#else
+		(void)total_output_points;
+		(void)over_cut_count;
+		(void)total_exceeded;
+		(void)total_points;
+		(void)total_iterations;
+		(void)perf_total_len;
 #endif
 
 		// warn about invalid paths being detected

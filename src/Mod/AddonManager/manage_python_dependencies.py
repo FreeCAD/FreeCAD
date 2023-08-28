@@ -1,21 +1,23 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
 # ***************************************************************************
 # *                                                                         *
-# *   Copyright (c) 2022 FreeCAD Project Association                        *
+# *   Copyright (c) 2022-2023 FreeCAD Project Association                   *
 # *                                                                         *
-# *   This program is free software; you can redistribute it and/or         *
-# *   modify it under the terms of the GNU Lesser General Public            *
-# *   License as published by the Free Software Foundation; either          *
-# *   version 2.1 of the License, or (at your option) any later version.    *
+# *   This file is part of FreeCAD.                                         *
 # *                                                                         *
-# *   This program is distributed in the hope that it will be useful,       *
-# *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU     *
+# *   FreeCAD is free software: you can redistribute it and/or modify it    *
+# *   under the terms of the GNU Lesser General Public License as           *
+# *   published by the Free Software Foundation, either version 2.1 of the  *
+# *   License, or (at your option) any later version.                       *
+# *                                                                         *
+# *   FreeCAD is distributed in the hope that it will be useful, but        *
+# *   WITHOUT ANY WARRANTY; without even the implied warranty of            *
+# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU      *
 # *   Lesser General Public License for more details.                       *
 # *                                                                         *
 # *   You should have received a copy of the GNU Lesser General Public      *
-# *   License along with this library; if not, write to the Free Software   *
-# *   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA         *
-#  *  02110-1301  USA                                                       *
+# *   License along with FreeCAD. If not, see                               *
+# *   <https://www.gnu.org/licenses/>.                                      *
 # *                                                                         *
 # ***************************************************************************
 
@@ -94,39 +96,16 @@ def call_pip(args) -> List[str]:
         call_args.extend(args)
         proc = None
         try:
-            no_window_flag = 0
-            if hasattr(subprocess, "CREATE_NO_WINDOW"):
-                no_window_flag = subprocess.CREATE_NO_WINDOW  # Added in Python 3.7
-            proc = subprocess.run(
-                call_args,
-                stdout=subprocess.PIPE,
-                stderr=subprocess.PIPE,
-                check=True,
-                timeout=30,
-                creationflags=no_window_flag,
-            )
-            if proc.returncode != 0:
-                pip_failed = True
-        except subprocess.CalledProcessError as e:
-            pip_failed = True
-            print(e)
-        except subprocess.TimeoutExpired:
-            FreeCAD.Console.PrintWarning(
-                translate(
-                    "AddonsInstaller",
-                    "pip took longer than 30 seconds to return results, giving up on it",
-                )
-                + "\n"
-            )
-            FreeCAD.Console.PrintLog(" ".join(call_args))
+            proc = utils.run_interruptable_subprocess(call_args)
+        except subprocess.CalledProcessError:
             pip_failed = True
 
         result = []
         if not pip_failed:
-            data = proc.stdout.decode()
+            data = proc.stdout
             result = data.split("\n")
         elif proc:
-            raise PipFailed(proc.stderr.decode())
+            raise PipFailed(proc.stderr)
         else:
             raise PipFailed("pip timed out")
     else:

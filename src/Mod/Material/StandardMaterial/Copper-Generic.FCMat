@@ -1,7 +1,7 @@
 ; Copper Generic
 ; Uwe Stöhr
 ; information about the content of such cards can be found on the wiki:
-; https://www.freecadweb.org/wiki/Material
+; https://www.freecad.org/wiki/Material
 ; file created by FreeCAD 0.21.30044 (Git)
 
 [General]
@@ -22,5 +22,6 @@ SpecificHeat = 385.0 J/kg/K
 ThermalConductivity = 398.0 W/m/K
 ThermalExpansionCoefficient = 16.5 µm/m/K
 
-[Electrical]
-ElectricalConductivity = 588235.3 S/m
+[Electromagnetic]
+ElectricalConductivity = 59.59 MS/m
+RelativePermeability = 0.999994

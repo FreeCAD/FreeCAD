@@ -72,9 +72,14 @@ SET(Reen_SRCS
     PreCompiled.h
 )
 
+if(FREECAD_USE_PCH)
+    add_definitions(-D_PreComp_)
+    GET_MSVC_PRECOMPILED_SOURCE("PreCompiled.cpp" PCH_SRCS ${Reen_SRCS})
+    ADD_MSVC_PRECOMPILED_HEADER(ReverseEngineering PreCompiled.h PreCompiled.cpp PCH_SRCS)
+endif(FREECAD_USE_PCH)
+
 add_library(ReverseEngineering SHARED ${Reen_SRCS})
 target_link_libraries(ReverseEngineering ${Reen_LIBS})
-
 
 SET_BIN_DIR(ReverseEngineering ReverseEngineering /Mod/ReverseEngineering)
 SET_PYTHON_PREFIX_SUFFIX(ReverseEngineering)

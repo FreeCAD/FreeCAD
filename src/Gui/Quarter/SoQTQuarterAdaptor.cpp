@@ -754,7 +754,7 @@ SbVec2f SIM::Coin3D::Quarter::SoQTQuarterAdaptor::addFrametime(double starttime)
     this->frametime = (frametime*FPS_FACTOR) + this->frametime*(1.0-FPS_FACTOR);
 
     this->starttime = timeofday;
-    return SbVec2f(1000 * this->drawtime, 1.0f / this->frametime);
+    return {1000 * float(this->drawtime), 1.0F / float(this->frametime)};
 }
 
 #include "moc_SoQTQuarterAdaptor.cpp"

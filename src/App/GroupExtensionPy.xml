@@ -43,12 +43,12 @@
             <UserDocu>Remove multiple objects from the group. Expects a list and returns all objects that have been removed.</UserDocu>
         </Documentation>
     </Methode>
-	  <Methode Name="removeObjectsFromDocument">
-		  <Documentation>
-			  <UserDocu>Remove all child objects from the group and document</UserDocu>
-		  </Documentation>
-	  </Methode>
-	  <Methode Name="getObject">
+    <Methode Name="removeObjectsFromDocument">
+      <Documentation>
+        <UserDocu>Remove all child objects from the group and document</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="getObject">
       <Documentation>
         <UserDocu>Return the object with the given name</UserDocu>
       </Documentation>

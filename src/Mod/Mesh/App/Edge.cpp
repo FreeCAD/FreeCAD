@@ -31,9 +31,8 @@
 
 using namespace Mesh;
 
-Edge::Edge()
-  : Index(-1)
-  , Mesh(nullptr)
+Edge::Edge() //NOLINT
+  : Mesh(nullptr)
 {
     for (int i=0; i<2; i++) {
         PIndex[i] = MeshCore::POINT_INDEX_MAX;
@@ -52,9 +51,7 @@ Edge::Edge(const Edge& e)
     }
 }
 
-Edge::~Edge()
-{
-}
+Edge::~Edge() = default;
 
 void Edge::operator = (const Edge& e)
 {

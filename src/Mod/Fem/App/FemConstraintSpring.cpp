@@ -26,25 +26,31 @@
 #include "FemConstraintSpring.h"
 
 
+static const char* Stiffnesses[] = {"Normal Stiffness",
+                                    "Tangential Stiffness", nullptr};
+
 using namespace Fem;
 
 PROPERTY_SOURCE(Fem::ConstraintSpring, Fem::Constraint)
 
 ConstraintSpring::ConstraintSpring()
 {
-    ADD_PROPERTY(normalStiffness,(0.0));
-    ADD_PROPERTY(tangentialStiffness,(0.0));
-    ADD_PROPERTY_TYPE(Points,(Base::Vector3d()),"ConstraintSpring",
-        App::PropertyType(App::Prop_ReadOnly|App::Prop_Output),
+    ADD_PROPERTY(NormalStiffness, (0.0));
+    ADD_PROPERTY(TangentialStiffness, (0.0));
+    ADD_PROPERTY(ElmerStiffness, (1));
+    ADD_PROPERTY_TYPE(Points, (Base::Vector3d()), "ConstraintSpring",
+        App::PropertyType(App::Prop_ReadOnly | App::Prop_Output),
         "Points where arrows are drawn");
-    ADD_PROPERTY_TYPE(Normals,(Base::Vector3d()),"ConstraintSpring",
-        App::PropertyType(App::Prop_ReadOnly|App::Prop_Output),
+    ADD_PROPERTY_TYPE(Normals, (Base::Vector3d()), "ConstraintSpring",
+        App::PropertyType(App::Prop_ReadOnly | App::Prop_Output),
         "Normals where symbols are drawn");
+
+    ElmerStiffness.setEnums(Stiffnesses);
     Points.setValues(std::vector<Base::Vector3d>());
     Normals.setValues(std::vector<Base::Vector3d>());
 }
 
-App::DocumentObjectExecReturn *ConstraintSpring::execute()
+App::DocumentObjectExecReturn* ConstraintSpring::execute()
 {
     return Constraint::execute();
 }

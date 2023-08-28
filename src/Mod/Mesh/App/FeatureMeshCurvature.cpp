@@ -63,12 +63,12 @@ App::DocumentObjectExecReturn *Curvature::execute()
 
     std::vector<CurvatureInfo> values;
     values.reserve(curv.size());
-    for (std::vector<MeshCore::CurvatureInfo>::const_iterator it = curv.begin(); it != curv.end(); ++it) {
+    for (const auto & it : curv) {
         CurvatureInfo ci;
-        ci.cMaxCurvDir = it->cMaxCurvDir;
-        ci.cMinCurvDir = it->cMinCurvDir;
-        ci.fMaxCurvature = it->fMaxCurvature;
-        ci.fMinCurvature = it->fMinCurvature;
+        ci.cMaxCurvDir = it.cMaxCurvDir;
+        ci.cMinCurvDir = it.cMinCurvDir;
+        ci.fMaxCurvature = it.fMaxCurvature;
+        ci.fMinCurvature = it.fMinCurvature;
         values.push_back(ci);
     }
 

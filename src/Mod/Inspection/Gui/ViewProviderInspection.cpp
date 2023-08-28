@@ -68,7 +68,7 @@ App::PropertyFloatConstraint::Constraints ViewProviderInspection::floatRange = {
 
 PROPERTY_SOURCE(InspectionGui::ViewProviderInspection, Gui::ViewProviderDocumentObject)
 
-ViewProviderInspection::ViewProviderInspection() : search_radius(FLT_MAX)
+ViewProviderInspection::ViewProviderInspection()
 {
     ADD_PROPERTY_TYPE(OutsideGrayed,(false),"",(App::PropertyType) (App::Prop_Output|App::Prop_Hidden),"");
     ADD_PROPERTY_TYPE(PointSize,(1.0),"Display",(App::PropertyType) (App::Prop_None/*App::Prop_Hidden*/),"");
@@ -269,8 +269,8 @@ void ViewProviderInspection::setupNormals(const std::vector<Base::Vector3f>& nor
     SbVec3f* norm = normalNode->vector.startEditing();
 
     std::size_t i=0;
-    for (std::vector<Base::Vector3f>::const_iterator it = normals.begin(); it != normals.end(); ++it) {
-        norm[i++].setValue(it->x, it->y, it->z);
+    for (const auto& it : normals) {
+        norm[i++].setValue(it.x, it.y, it.z);
     }
 
     normalNode->vector.finishEditing();
@@ -445,7 +445,7 @@ class ViewProviderProxyObject : public QObject
 {
 public:
     explicit ViewProviderProxyObject(QWidget* w) : QObject(nullptr), widget(w) {}
-    ~ViewProviderProxyObject() override {}
+    ~ViewProviderProxyObject() override = default;
     void customEvent(QEvent *) override
     {
         if (!widget.isNull()) {
@@ -456,8 +456,8 @@ public:
                     QObject::tr("Do you want to remove all annotations?"),
                     QMessageBox::Yes,QMessageBox::No);
                 if (ret == QMessageBox::Yes) {
-                    for (QList<Gui::Flag*>::iterator it = flags.begin(); it != flags.end(); ++it)
-                        (*it)->deleteLater();
+                    for (auto it : flags)
+                        it->deleteLater();
                 }
             }
         }
@@ -537,7 +537,7 @@ void ViewProviderInspection::inspectCallback(void * ud, SoEventCallback * n)
             n->setHandled();
 
             // check if we have picked one a node of the view provider we are insterested in
-            Gui::ViewProvider* vp = view->getDocument()->getViewProviderByPathFromTail(point->getPath());
+            Gui::ViewProvider* vp = view->getViewProviderByPathFromTail(point->getPath());
             if (vp && vp->getTypeId().isDerivedFrom(ViewProviderInspection::getClassTypeId())) {
                 ViewProviderInspection* that = static_cast<ViewProviderInspection*>(vp);
                 QString info = that->inspectDistance(point);
@@ -557,7 +557,7 @@ void ViewProviderInspection::inspectCallback(void * ud, SoEventCallback * n)
                 const SoPickedPointList& pps = action.getPickedPointList();
                 for (int i=0; i<pps.getLength(); ++i) {
                     const SoPickedPoint * point = pps[i];
-                    vp = view->getDocument()->getViewProviderByPathFromTail(point->getPath());
+                    vp = view->getViewProviderByPathFromTail(point->getPath());
                     if (vp && vp->getTypeId().isDerivedFrom(ViewProviderInspection::getClassTypeId())) {
                         ViewProviderInspection* self = static_cast<ViewProviderInspection*>(vp);
                         QString info = self->inspectDistance(point);
@@ -682,13 +682,9 @@ PROPERTY_SOURCE(InspectionGui::ViewProviderInspectionGroup, Gui::ViewProviderDoc
 /**
  * Creates the view provider for an object group.
  */
-ViewProviderInspectionGroup::ViewProviderInspectionGroup()
-{
-}
+ViewProviderInspectionGroup::ViewProviderInspectionGroup() = default;
 
-ViewProviderInspectionGroup::~ViewProviderInspectionGroup()
-{
-}
+ViewProviderInspectionGroup::~ViewProviderInspectionGroup() = default;
 
 /**
  * Returns the pixmap for the opened list item.

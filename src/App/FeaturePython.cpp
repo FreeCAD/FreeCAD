@@ -38,7 +38,7 @@
 using namespace App;
 
 FeaturePythonImp::FeaturePythonImp(App::DocumentObject* o)
-    : object(o), has__object__(false)
+    : object(o)
 {
 }
 
@@ -224,6 +224,28 @@ void FeaturePythonImp::onDocumentRestored()
             Py::Tuple args(1);
             args.setItem(0, Py::Object(object->getPyObject(), true));
             Base::pyCall(py_onDocumentRestored.ptr(),args.ptr());
+        }
+    }
+    catch (Py::Exception&) {
+        Base::PyException e; // extract the Python error text
+        e.ReportException();
+    }
+}
+
+void FeaturePythonImp::unsetupObject()
+{
+    _FC_PY_CALL_CHECK(unsetupObject, return);
+
+    // Run the execute method of the proxy object.
+    Base::PyGILStateLocker lock;
+    try {
+        if (has__object__) {
+            Base::pyCall(py_unsetupObject.ptr());
+        }
+        else {
+            Py::Tuple args(1);
+            args.setItem(0, Py::Object(object->getPyObject(), true));
+            Base::pyCall(py_unsetupObject.ptr(), args.ptr());
         }
     }
     catch (Py::Exception&) {
@@ -458,7 +480,7 @@ std::string FeaturePythonImp::getViewProviderName()
         e.ReportException();
     }
 
-    return std::string();
+    return {};
 }
 
 FeaturePythonImp::ValueT

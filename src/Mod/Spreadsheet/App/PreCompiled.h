@@ -39,6 +39,7 @@
 // STL
 #include <algorithm>
 #include <deque>
+#include <iomanip>
 #include <map>
 #include <memory>
 #include <set>

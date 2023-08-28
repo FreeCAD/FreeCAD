@@ -21,8 +21,6 @@
 # *                                                                         *
 # ***************************************************************************
 
-from importlib import reload
-
 import FreeCAD
 
 import Path
@@ -90,15 +88,17 @@ class TestRefactoredTestPost(PathTestUtils.PathTestBase):
 
     def single_compare(self, path, expected, args, debug=False):
         """Perform a test with a single comparison."""
+        nl = "\n"
         self.docobj.Path = Path.Path(path)
         postables = [self.docobj]
         gcode = postprocessor.export(postables, "gcode.tmp", args)
         if debug:
-            print("--------\n" + gcode + "--------\n")
+            print(f"--------{nl}{gcode}--------{nl}")
         self.assertEqual(gcode, expected)
 
     def compare_third_line(self, path_string, expected, args, debug=False):
-        """Perform a test with a single comparison only to the third line of the output."""
+        """Perform a test with a single comparison to the third line of the output."""
+        nl = "\n"
         if path_string:
             self.docobj.Path = Path.Path([Path.Command(path_string)])
         else:
@@ -106,7 +106,7 @@ class TestRefactoredTestPost(PathTestUtils.PathTestBase):
         postables = [self.docobj]
         gcode = postprocessor.export(postables, "gcode.tmp", args)
         if debug:
-            print("--------\n" + gcode + "--------\n")
+            print(f"--------{nl}{gcode}--------{nl}")
         self.assertEqual(gcode.splitlines()[2], expected)
 
     #
@@ -190,7 +190,7 @@ G21
 
         Empty path.  Outputs all arguments.
         """
-        expected = """Arguments that are shared with all postprocessors:
+        expected = """Arguments that are commonly used:
   --metric              Convert output for Metric mode (G21) (default)
   --inches              Convert output for US imperial mode (G20)
   --axis-modal          Don't output axis values if they are the same as the
@@ -244,10 +244,10 @@ G21
   --tool_change         Insert M6 and any other tool change G-code for all
                         tool changes (default)
   --no-tool_change      Convert M6 to a comment for all tool changes
-  --translate_drill     Translate drill cycles G81, G82 & G83 into G0/G1
+  --translate_drill     Translate drill cycles G73, G81, G82 & G83 into G0/G1
                         movements
-  --no-translate_drill  Don't translate drill cycles G81, G82 & G83 into G0/G1
-                        movements (default)
+  --no-translate_drill  Don't translate drill cycles G73, G81, G82 & G83 into
+                        G0/G1 movements (default)
   --wait-for-spindle WAIT_FOR_SPINDLE
                         Time to wait (in seconds) after M3, M4 (default = 0.0)
 """
@@ -361,7 +361,9 @@ G21
 
     def test00160(self):
         """Test inches."""
+        #
         c = Path.Command("G0 X10 Y20 Z30 A10 B20 C30 U10 V20 W30")
+
         self.docobj.Path = Path.Path([c])
         postables = [self.docobj]
         args = "--inches"
@@ -885,9 +887,9 @@ G52 X0.0000 Y0.0000 Z0.0000 A0.0000 B0.0000 C0.0000 U0.0000 V0.0000 W0.0000
         """Test G59 command Generation."""
         self.compare_third_line("G59", "G59", "")
         #
-        # Some gcode interpreters us G59 P- to select additional
+        # Some gcode interpreters use G59 P- to select additional
         # work coordinate systems.  This is considered somewhat
-        # obsolete and is being replaces by G54.1 P- instead.
+        # obsolete and is being replaced by G54.1 P- instead.
         #
         self.compare_third_line("G59 P2.34567", "G59 P2", "")
 

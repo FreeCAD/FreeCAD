@@ -22,10 +22,13 @@
 # ***************************************************************************
 
 import FreeCADGui
+import FreeCAD
 import Path.Op.Adaptive as PathAdaptive
 import Path.Op.Gui.Base as PathOpGui
 import Path.Op.Gui.FeatureExtension as PathFeatureExtensionsGui
 from PySide import QtCore
+
+import Path.Base.Gui.Util as PathGuiUtil
 
 
 class TaskPanelOpPage(PathOpGui.TaskPanelPage):
@@ -40,14 +43,27 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         self.populateCombobox(form, enumTups, comboToPropertyMap)
         return form
 
+    def initPage(self, obj):
+        self.form.LiftDistance.setProperty(
+            "unit", obj.LiftDistance.getUserPreferred()[2]
+        )
+        self.form.HelixDiameterLimit.setProperty(
+            "unit", obj.HelixDiameterLimit.getUserPreferred()[2]
+        )
+        self.form.KeepToolDownRatio.setProperty(
+            "unit", obj.KeepToolDownRatio.getUserPreferred()[2]
+        )
+        self.form.StockToLeave.setProperty(
+            "unit", obj.StockToLeave.getUserPreferred()[2]
+        )
+
     def getSignalsForUpdate(self, obj):
         """getSignalsForUpdate(obj) ... return list of signals for updating obj"""
         signals = []
-        # signals.append(self.form.button.clicked)
         signals.append(self.form.Side.currentIndexChanged)
         signals.append(self.form.OperationType.currentIndexChanged)
         signals.append(self.form.ToolController.currentIndexChanged)
-        signals.append(self.form.StepOver.valueChanged)
+        signals.append(self.form.stepOverPercent.valueChanged)
         signals.append(self.form.Tolerance.valueChanged)
         signals.append(self.form.HelixAngle.valueChanged)
         signals.append(self.form.HelixConeAngle.valueChanged)
@@ -56,8 +72,6 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         signals.append(self.form.KeepToolDownRatio.valueChanged)
         signals.append(self.form.StockToLeave.valueChanged)
         signals.append(self.form.coolantController.currentIndexChanged)
-
-        # signals.append(self.form.ProcessHoles.stateChanged)
         signals.append(self.form.ForceInsideOut.stateChanged)
         signals.append(self.form.FinishingProfile.stateChanged)
         signals.append(self.form.useOutline.stateChanged)
@@ -67,19 +81,32 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
     def setFields(self, obj):
         self.selectInComboBox(obj.Side, self.form.Side)
         self.selectInComboBox(obj.OperationType, self.form.OperationType)
-        self.form.StepOver.setValue(obj.StepOver)
+        self.form.stepOverPercent.setValue(obj.StepOver)
         self.form.Tolerance.setValue(int(obj.Tolerance * 100))
-        self.form.HelixAngle.setValue(obj.HelixAngle)
-        self.form.HelixConeAngle.setValue(obj.HelixConeAngle)
-        self.form.HelixDiameterLimit.setValue(obj.HelixDiameterLimit)
-        self.form.LiftDistance.setValue(obj.LiftDistance)
+
+        self.form.HelixAngle.setText(
+            FreeCAD.Units.Quantity(obj.HelixAngle, FreeCAD.Units.Angle).UserString
+        )
+
+        self.form.HelixConeAngle.setText(
+            FreeCAD.Units.Quantity(obj.HelixConeAngle, FreeCAD.Units.Angle).UserString
+        )
+
+        self.form.HelixDiameterLimit.setProperty(
+            "rawValue", obj.HelixDiameterLimit.Value
+        )
+
+        self.form.LiftDistance.setProperty("rawValue", obj.LiftDistance.Value)
+
         if hasattr(obj, "KeepToolDownRatio"):
-            self.form.KeepToolDownRatio.setValue(obj.KeepToolDownRatio)
+            self.form.KeepToolDownRatio.setProperty(
+                "rawValue", obj.KeepToolDownRatio.Value
+            )
+            # self.form.KeepToolDownRatio.setValue(obj.KeepToolDownRatio)
 
         if hasattr(obj, "StockToLeave"):
-            self.form.StockToLeave.setValue(obj.StockToLeave)
+            self.form.StockToLeave.setProperty("rawValue", obj.StockToLeave.Value)
 
-        # self.form.ProcessHoles.setChecked(obj.ProcessHoles)
         self.form.ForceInsideOut.setChecked(obj.ForceInsideOut)
         self.form.FinishingProfile.setChecked(obj.FinishingProfile)
         self.form.useOutline.setChecked(obj.UseOutline)
@@ -98,18 +125,24 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         if obj.OperationType != str(self.form.OperationType.currentData()):
             obj.OperationType = str(self.form.OperationType.currentData())
 
-        obj.StepOver = self.form.StepOver.value()
+        if obj.StepOver != self.form.stepOverPercent.value():
+            obj.StepOver = self.form.stepOverPercent.value()
+
         obj.Tolerance = 1.0 * self.form.Tolerance.value() / 100.0
-        obj.HelixAngle = self.form.HelixAngle.value()
-        obj.HelixConeAngle = self.form.HelixConeAngle.value()
-        obj.HelixDiameterLimit = self.form.HelixDiameterLimit.value()
-        obj.LiftDistance = self.form.LiftDistance.value()
+        PathGuiUtil.updateInputField(obj, "HelixAngle", self.form.HelixAngle)
+        PathGuiUtil.updateInputField(obj, "HelixConeAngle", self.form.HelixConeAngle)
+        PathGuiUtil.updateInputField(
+            obj, "HelixDiameterLimit", self.form.HelixDiameterLimit
+        )
+        PathGuiUtil.updateInputField(obj, "LiftDistance", self.form.LiftDistance)
 
         if hasattr(obj, "KeepToolDownRatio"):
-            obj.KeepToolDownRatio = self.form.KeepToolDownRatio.value()
+            PathGuiUtil.updateInputField(
+                obj, "KeepToolDownRatio", self.form.KeepToolDownRatio
+            )
 
         if hasattr(obj, "StockToLeave"):
-            obj.StockToLeave = self.form.StockToLeave.value()
+            PathGuiUtil.updateInputField(obj, "StockToLeave", self.form.StockToLeave)
 
         obj.ForceInsideOut = self.form.ForceInsideOut.isChecked()
         obj.FinishingProfile = self.form.FinishingProfile.isChecked()

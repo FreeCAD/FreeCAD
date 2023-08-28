@@ -42,7 +42,7 @@ class TechDrawExport DrawViewClip: public TechDraw::DrawView
 public:
     /// Constructor
     DrawViewClip();
-    ~DrawViewClip() = default;
+    ~DrawViewClip() override = default;
 
     App::PropertyLength Width;
     App::PropertyLength Height;

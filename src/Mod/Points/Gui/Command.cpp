@@ -41,11 +41,13 @@
 #include <Gui/Selection.h>
 #include <Gui/View3DInventor.h>
 #include <Gui/View3DInventorViewer.h>
+#include <Gui/ViewProviderDocumentObject.h>
 #include <Gui/WaitCursor.h>
 
 #include "../App/PointsFeature.h"
 #include "../App/Structured.h"
 #include "../App/Properties.h"
+#include "../App/Tools.h"
 
 #include "DlgPointsReadImp.h"
 #include "ViewProvider.h"
@@ -121,7 +123,7 @@ void CmdPointsExport::activated(int iMsg)
 
     addModule(Command::App, "Points");
     std::vector<App::DocumentObject*> points = getSelection().getObjectsOfType(Points::Feature::getClassTypeId());
-    for (std::vector<App::DocumentObject*>::const_iterator it = points.begin(); it != points.end(); ++it) {
+    for (auto point : points) {
         QString fn = Gui::FileDialog::getSaveFileName(Gui::getMainWindow(),
           QString(), QString(), QString::fromLatin1("%1 (*.asc *.pcd *.ply);;%2 (*.*)")
           .arg(QObject::tr("Point formats"), QObject::tr("All Files")));
@@ -131,7 +133,7 @@ void CmdPointsExport::activated(int iMsg)
         if (!fn.isEmpty()) {
             fn = Base::Tools::escapeEncodeFilename(fn);
             doCommand(Command::Doc, "Points.export([App.ActiveDocument.%s], \"%s\")",
-                      (*it)->getNameInDocument(), fn.toUtf8().data());
+                      point->getNameInDocument(), fn.toUtf8().data());
         }
     }
 }
@@ -323,8 +325,8 @@ void CmdPointsMerge::activated(int iMsg)
     Points::PointKernel* kernel = pts->Points.startEditing();
 
     std::vector<App::DocumentObject*> docObj = Gui::Selection().getObjectsOfType(Points::Feature::getClassTypeId());
-    for (std::vector<App::DocumentObject*>::iterator it = docObj.begin(); it != docObj.end(); ++it) {
-        const Points::PointKernel& k = static_cast<Points::Feature*>(*it)->Points.getValue();
+    for (auto it : docObj) {
+        const Points::PointKernel& k = static_cast<Points::Feature*>(it)->Points.getValue();
         std::size_t numPts = kernel->size();
         kernel->resize(numPts + k.size());
         for (std::size_t i=0; i<k.size(); ++i) {
@@ -333,6 +335,24 @@ void CmdPointsMerge::activated(int iMsg)
     }
 
     pts->Points.finishEditing();
+
+    // Add properties
+    std::string displayMode = "Points";
+    if (Points::copyProperty<App::PropertyColorList>(pts, docObj, "Color")) {
+        displayMode = "Color";
+    }
+    if (Points::copyProperty<Points::PropertyNormalList>(pts, docObj, "Normal")) {
+        displayMode = "Shaded";
+    }
+    if (Points::copyProperty<Points::PropertyGreyValueList>(pts, docObj, "Intensity")) {
+        displayMode = "Intensity";
+    }
+
+    if (auto vp = dynamic_cast<Gui::ViewProviderDocumentObject*>
+            (Gui::Application::Instance->getViewProvider(pts))) {
+        vp->DisplayMode.setValue(displayMode.c_str());
+    }
+
     doc->commitTransaction();
     updateActive();
 }

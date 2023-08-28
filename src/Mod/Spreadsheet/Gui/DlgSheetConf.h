@@ -35,11 +35,11 @@ namespace SpreadsheetGui {
 class DlgSheetConf : public QDialog
 {
     Q_OBJECT
-    
+
 public:
     explicit DlgSheetConf(Spreadsheet::Sheet *sheet, App::Range range, QWidget *parent = nullptr);
     ~DlgSheetConf() override;
-    
+
     void accept() override;
 
     App::Property *prepare(App::CellAddress &from, App::CellAddress &to,

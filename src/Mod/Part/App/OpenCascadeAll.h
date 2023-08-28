@@ -107,15 +107,10 @@
 #include <BRepAdaptor_Surface.hxx>
 
 #include <BRepAlgo.hxx>
-#if OCC_VERSION_HEX < 0x070300
-# include <BRepAlgo_Fuse.hxx>
-#endif
 #include <BRepAlgo_NormalProjection.hxx>
 #include <BRepAlgoAPI_Common.hxx>
 #include <BRepAlgoAPI_Cut.hxx>
-#if OCC_VERSION_HEX >= 0x070300
 # include <BRepAlgoAPI_Defeaturing.hxx>
-#endif
 #include <BRepAlgoAPI_Fuse.hxx>
 #include <BRepAlgoAPI_Section.hxx>
 

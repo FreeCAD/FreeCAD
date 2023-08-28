@@ -84,14 +84,39 @@ static inline App::Color convertColor(const Quantity_ColorRGBA &c)
 #define OCAF_KEEP_PLACEMENT
 
 ImportOCAF::ImportOCAF(Handle(TDocStd_Document) h, App::Document* d, const std::string& name)
-    : pDoc(h), doc(d), merge(true), default_name(name)
+    : pDoc(h), doc(d), default_name(name)
 {
     aShapeTool = XCAFDoc_DocumentTool::ShapeTool (pDoc->Main());
     aColorTool = XCAFDoc_DocumentTool::ColorTool(pDoc->Main());
 }
 
-ImportOCAF::~ImportOCAF()
+ImportOCAF::~ImportOCAF() = default;
+
+void ImportOCAF::tryPlacementFromLoc(App::GeoFeature* part, const TopLoc_Location& part_loc)
 {
+    gp_Trsf trf;
+    Base::Matrix4D mtrx;
+    if (part_loc.IsIdentity()) {
+        trf = part_loc.Transformation();
+    }
+    else {
+        trf = TopLoc_Location(part_loc.FirstDatum()).Transformation();
+    }
+
+    Part::TopoShape::convertToMatrix(trf, mtrx);
+    tryPlacementFromMatrix(part, mtrx);
+}
+
+void ImportOCAF::tryPlacementFromMatrix(App::GeoFeature* part, const Base::Matrix4D& mat)
+{
+    try {
+        Base::Placement pl;
+        pl.fromMatrix(mat);
+        part->Placement.setValue(pl);
+    }
+    catch (const Base::ValueError& e) {
+        e.ReportException();
+    }
 }
 
 void ImportOCAF::loadShapes()
@@ -137,8 +162,8 @@ void ImportOCAF::loadShapes(const TDF_Label& label, const TopLoc_Location& loc,
         }
         else {
             bool ws=true;
-            for (std::string::iterator it = part_name.begin(); it != part_name.end(); ++it) {
-                if (*it != ' ') {
+            for (char it : part_name) {
+                if (it != ' ') {
                     ws = false;
                     break;
                 }
@@ -235,17 +260,7 @@ void ImportOCAF::loadShapes(const TDF_Label& label, const TopLoc_Location& loc,
                     // there local placement updated and relative to the STEP file content
                     // standard FreeCAD placement was absolute we are now moving to relative
 
-                    gp_Trsf trf;
-                    Base::Matrix4D mtrx;
-                    if (part_loc.IsIdentity())
-                        trf = part_loc.Transformation();
-                    else
-                        trf = TopLoc_Location(part_loc.FirstDatum()).Transformation();
-                    Part::TopoShape::convertToMatrix(trf, mtrx);
-                    Base::Placement pl;
-                    pl.fromMatrix(mtrx);
-                    pcPart->Placement.setValue(pl);
-
+                    tryPlacementFromLoc(pcPart, part_loc);
                     lValue.push_back(pcPart);
                 }
             }
@@ -332,20 +347,14 @@ void ImportOCAF::createShape(const TDF_Label& label, const TopLoc_Location& loc,
             if (!comp.IsNull() && (ctSolids||ctShells||ctEdges||ctVertices)) {
                 Part::Feature* part = static_cast<Part::Feature*>(doc->addObject("Part::Feature"));
                 // Let's allocate the relative placement of the Compound from the STEP file
-                gp_Trsf trf;
-                Base::Matrix4D mtrx;
-                if ( loc.IsIdentity() )
-                     trf = loc.Transformation();
-                else
-                     trf = TopLoc_Location(loc.FirstDatum()).Transformation();
-                Part::TopoShape::convertToMatrix(trf, mtrx);
-                Base::Placement pl;
-                pl.fromMatrix(mtrx);
-                part->Placement.setValue(pl);
-                if (!loc.IsIdentity())
+                tryPlacementFromLoc(part, loc);
+                if (!loc.IsIdentity()) {
                     part->Shape.setValue(comp.Moved(loc));
-                else
+                }
+                else {
                     part->Shape.setValue(comp);
+                }
+
                 part->Label.setValue(name);
                 lValue.push_back(part);
 
@@ -472,9 +481,7 @@ ImportXCAF::ImportXCAF(Handle(TDocStd_Document) h, App::Document* d, const std::
     hColors = XCAFDoc_DocumentTool::ColorTool(hdoc->Main());
 }
 
-ImportXCAF::~ImportXCAF()
-{
-}
+ImportXCAF::~ImportXCAF() = default;
 
 void ImportXCAF::loadShapes()
 {

@@ -263,7 +263,7 @@ class CommandPathDressupPathBoundary:
             "MenuText": QT_TRANSLATE_NOOP("Path_DressupPathBoundary", "Boundary"),
             "ToolTip": QT_TRANSLATE_NOOP(
                 "Path_DressupPathBoundary",
-                "Creates a Path Boundary Dress-up object from a selected path",
+                "Creates a Path Boundary Dress-up from a selected path",
             ),
         }
 

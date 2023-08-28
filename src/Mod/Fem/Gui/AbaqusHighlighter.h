@@ -36,10 +36,10 @@ class AbaqusHighlighter : public Gui::SyntaxHighlighter
 {
 public:
     explicit AbaqusHighlighter(QObject* parent);
-    virtual ~AbaqusHighlighter();
+    ~AbaqusHighlighter() override;
 
 protected:
-    void highlightBlock(const QString &text);
+    void highlightBlock(const QString &text) override;
 };
 
 } // namespace FemGui

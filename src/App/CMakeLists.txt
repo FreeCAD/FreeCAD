@@ -65,6 +65,7 @@ include_directories(
 set(FreeCADApp_LIBS
     FreeCADBase
     ${Boost_LIBRARIES}
+    fmt::fmt
 )
 
 include_directories(
@@ -89,6 +90,8 @@ generate_from_xml(GeoFeatureGroupExtensionPy)
 generate_from_xml(MetadataPy)
 generate_from_xml(OriginGroupExtensionPy)
 generate_from_xml(PartPy)
+generate_from_xml(StringHasherPy)
+generate_from_xml(StringIDPy)
 
 generate_from_xml(ComplexGeoDataPy)
 generate_from_xml(PropertyContainerPy)
@@ -114,6 +117,8 @@ SET(FreeCADApp_XML_SRCS
     PropertyContainerPy.xml
     ComplexGeoDataPy.xml
     MaterialPy.xml
+    StringHasherPy.xml
+    StringIDPy.xml
 )
 SOURCE_GROUP("XML" FILES ${FreeCADApp_XML_SRCS})
 
@@ -128,6 +133,7 @@ SET(Document_CPP_SRCS
     DocumentObjectExtensionPyImp.cpp
     ExtensionContainer.cpp
     ExtensionContainerPyImp.cpp
+    Graphviz.cpp
     GroupExtension.cpp
     GroupExtensionPyImp.cpp
     DocumentObjectFileIncluded.cpp
@@ -139,11 +145,13 @@ SET(Document_CPP_SRCS
     DocumentObserverPython.cpp
     DocumentPyImp.cpp
     Expression.cpp
+    ExpressionTokenizer.cpp
     FeaturePython.cpp
     FeatureTest.cpp
     GeoFeature.cpp
     GeoFeatureGroupExtensionPyImp.cpp
     GeoFeatureGroupExtension.cpp
+    ImagePlane.cpp
     OriginGroupExtensionPyImp.cpp
     OriginGroupExtension.cpp
     PartPyImp.cpp
@@ -163,6 +171,7 @@ SET(Document_CPP_SRCS
     TextDocument.cpp
     Link.cpp
     LinkBaseExtensionPyImp.cpp
+    License.h
 )
 
 SET(Document_HPP_SRCS
@@ -179,6 +188,7 @@ SET(Document_HPP_SRCS
     DocumentObserverPython.h
     Expression.h
     ExpressionParser.h
+    ExpressionTokenizer.h
     ExpressionVisitors.h
     FeatureCustom.h
     FeaturePython.h
@@ -187,6 +197,7 @@ SET(Document_HPP_SRCS
     FeatureTest.h
     GeoFeature.h
     GeoFeatureGroupExtension.h
+    ImagePlane.h
     OriginGroupExtension.h
     Part.h
     Origin.h
@@ -251,14 +262,23 @@ SET(FreeCADApp_CPP_SRCS
     ApplicationPy.cpp
     AutoTransaction.cpp
     Branding.cpp
+    Color.cpp
     ColorModel.cpp
     ComplexGeoData.cpp
     ComplexGeoDataPyImp.cpp
+    ElementMap.cpp
     Enumeration.cpp
+    IndexedName.cpp
+    MappedElement.cpp
+    MappedName.cpp
     Material.cpp
     MaterialPyImp.cpp
     Metadata.cpp
     MetadataPyImp.cpp
+    ElementNamingUtils.cpp
+    StringHasher.cpp
+    StringHasherPyImp.cpp
+    StringIDPyImp.cpp
 )
 
 SET(FreeCADApp_HPP_SRCS
@@ -267,11 +287,18 @@ SET(FreeCADApp_HPP_SRCS
     Application.h
     AutoTransaction.h
     Branding.h
+    Color.h
     ColorModel.h
     ComplexGeoData.h
+    ElementMap.h
     Enumeration.h
+    IndexedName.h
+    MappedName.h
+    MappedElement.h
     Material.h
     Metadata.h
+    ElementNamingUtils.h
+    StringHasher.h
 )
 
 SET(FreeCADApp_SRCS
@@ -290,7 +317,6 @@ if(FREECAD_USE_PCH)
 endif(FREECAD_USE_PCH)
 
 add_library(FreeCADApp SHARED ${FreeCADApp_SRCS})
-
 target_link_libraries(FreeCADApp ${FreeCADApp_LIBS})
 
 add_dependencies(FreeCADApp fc_version)

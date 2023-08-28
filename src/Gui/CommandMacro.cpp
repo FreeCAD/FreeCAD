@@ -238,9 +238,9 @@ StdCmdMacroStepOver::StdCmdMacroStepOver()
 {
     sGroup        = "Macro";
     sMenuText     = QT_TR_NOOP("Step over");
-    sToolTipText  = QT_TR_NOOP("Step over");
+    sToolTipText  = QT_TR_NOOP("Step to the next line in this file");
     sWhatsThis    = "Std_MacroStepOver";
-    sStatusTip    = QT_TR_NOOP("Step over");
+    sStatusTip    = QT_TR_NOOP("Step to the next line in this file");
     sPixmap       = nullptr;
     sAccel        = "F10";
     eType         = 0;
@@ -265,9 +265,9 @@ StdCmdMacroStepInto::StdCmdMacroStepInto()
 {
     sGroup        = "Macro";
     sMenuText     = QT_TR_NOOP("Step into");
-    sToolTipText  = QT_TR_NOOP("Step into");
+    sToolTipText  = QT_TR_NOOP("Step to the next line executed");
     //sWhatsThis    = "Std_MacroStepOver";
-    sStatusTip    = QT_TR_NOOP("Step into");
+    sStatusTip    = QT_TR_NOOP("Step to the next line executed");
     sPixmap       = nullptr;
     sAccel        = "F11";
     eType         = 0;
@@ -292,9 +292,9 @@ StdCmdToggleBreakpoint::StdCmdToggleBreakpoint()
 {
     sGroup        = "Macro";
     sMenuText     = QT_TR_NOOP("Toggle breakpoint");
-    sToolTipText  = QT_TR_NOOP("Toggle breakpoint");
+    sToolTipText  = QT_TR_NOOP("Add or remove a breakpoint at this position");
     sWhatsThis    = "Std_ToggleBreakpoint";
-    sStatusTip    = QT_TR_NOOP("Toggle breakpoint");
+    sStatusTip    = QT_TR_NOOP("Add or remove a breakpoint at this position");
     sPixmap       = nullptr;
     sAccel        = "F9";
     eType         = 0;

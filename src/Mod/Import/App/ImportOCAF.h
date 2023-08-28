@@ -67,13 +67,15 @@ private:
     void createShape(const TopoDS_Shape& label, const TopLoc_Location&, const std::string&, std::vector<App::DocumentObject*> &);
     void loadColors(Part::Feature* part, const TopoDS_Shape& aShape);
     virtual void applyColors(Part::Feature*, const std::vector<App::Color>&){}
+    static void tryPlacementFromLoc(App::GeoFeature*, const TopLoc_Location&);
+    static void tryPlacementFromMatrix(App::GeoFeature*, const Base::Matrix4D&);
 
 private:
     Handle(TDocStd_Document) pDoc;
     App::Document* doc;
     Handle(XCAFDoc_ShapeTool) aShapeTool;
     Handle(XCAFDoc_ColorTool) aColorTool;
-    bool merge;
+    bool merge{true};
     std::string default_name;
     std::set<int> myRefShapes;
     static const int HashUpper = INT_MAX;

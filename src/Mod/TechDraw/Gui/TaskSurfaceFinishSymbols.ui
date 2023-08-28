@@ -31,7 +31,7 @@
      <item row="1" column="1">
       <widget class="QPushButton" name="pbIcon05">
        <property name="toolTip">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Material removal prohibited, whole part&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        <string>Material removal prohibited, whole part</string>
        </property>
        <property name="text">
         <string/>
@@ -41,7 +41,7 @@
      <item row="1" column="0">
       <widget class="QPushButton" name="pbIcon04">
        <property name="toolTip">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Any method allowed, whole part&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        <string>Any method allowed, whole part</string>
        </property>
        <property name="text">
         <string/>
@@ -51,7 +51,7 @@
      <item row="1" column="2">
       <widget class="QPushButton" name="pbIcon06">
        <property name="toolTip">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Material removal required, whole part&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        <string>Material removal required, whole part</string>
        </property>
        <property name="text">
         <string/>
@@ -61,7 +61,7 @@
      <item row="0" column="2">
       <widget class="QPushButton" name="pbIcon03">
        <property name="toolTip">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Material removal required&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        <string>Material removal required</string>
        </property>
        <property name="text">
         <string/>
@@ -71,7 +71,7 @@
      <item row="0" column="1">
       <widget class="QPushButton" name="pbIcon02">
        <property name="toolTip">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Material removal prohibited&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        <string>Material removal prohibited</string>
        </property>
        <property name="text">
         <string/>
@@ -81,7 +81,7 @@
      <item row="0" column="0">
       <widget class="QPushButton" name="pbIcon01">
        <property name="toolTip">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Any method allowed&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        <string>Any method allowed</string>
        </property>
        <property name="text">
         <string/>
@@ -102,7 +102,7 @@
      <item row="0" column="1">
       <widget class="QLineEdit" name="leAngle">
        <property name="toolTip">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Rotation angle&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        <string>Rotation angle</string>
        </property>
        <property name="text">
         <string notr="true">0</string>
@@ -112,7 +112,7 @@
      <item row="1" column="0">
       <widget class="QRadioButton" name="rbISO">
        <property name="toolTip">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Use ISO standard&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        <string>Use ISO standard</string>
        </property>
        <property name="text">
         <string>ISO</string>
@@ -125,7 +125,7 @@
      <item row="1" column="1">
       <widget class="QRadioButton" name="rbASME">
        <property name="toolTip">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Use ASME standard&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        <string>Use ASME standard</string>
        </property>
        <property name="text">
         <string>ASME</string>

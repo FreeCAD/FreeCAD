@@ -293,9 +293,9 @@ void MeshFaceAddition::showMarker(SoPickedPoint* pp)
             if (!f.HasOpenEdge()) {
                 // check if a neighbour facet is at the border
                 bool ok=false;
-                for (int i=0; i<3; i++) {
-                    if (facets[f._aulNeighbours[i]].HasOpenEdge()) {
-                        f = facets[f._aulNeighbours[i]];
+                for (Mesh::FacetIndex nbIndex : f._aulNeighbours) {
+                    if (facets[nbIndex].HasOpenEdge()) {
+                        f = facets[nbIndex];
                         ok = true;
                         break;
                     }
@@ -380,13 +380,13 @@ void MeshFaceAddition::addFacetCallback(void * ud, SoEventCallback * n)
                 QAction* clr = menu.addAction(MeshFaceAddition::tr("Clear"));
                 QAction* act = menu.exec(QCursor::pos());
                 if (act == add) {
-                    QTimer::singleShot(300, that, SLOT(addFace()));
+                    QTimer::singleShot(300, that, &MeshFaceAddition::addFace);
                 }
                 else if (act == swp) {
-                    QTimer::singleShot(300, that, SLOT(flipNormal()));
+                    QTimer::singleShot(300, that, &MeshFaceAddition::flipNormal);
                 }
                 else if (act == clr) {
-                    QTimer::singleShot(300, that, SLOT(clearPoints()));
+                    QTimer::singleShot(300, that, &MeshFaceAddition::clearPoints);
                 }
             }
         }
@@ -395,7 +395,7 @@ void MeshFaceAddition::addFacetCallback(void * ud, SoEventCallback * n)
             QAction* fin = menu.addAction(MeshFaceAddition::tr("Finish"));
             QAction* act = menu.exec(QCursor::pos());
             if (act == fin) {
-                QTimer::singleShot(300, that, SLOT(finishEditing()));
+                QTimer::singleShot(300, that, &MeshFaceAddition::finishEditing);
             }
         }
     }
@@ -476,8 +476,10 @@ void MeshFillHole::startEditing(MeshGui::ViewProviderMesh* vp)
     //viewer->setRedirectToSceneGraph(true);
     viewer->addEventCallback(SoEvent::getClassTypeId(),
         MeshFillHole::fileHoleCallback, this);
+    //NOLINTBEGIN
     myConnection = App::GetApplication().signalChangedObject.connect(
         std::bind(&MeshFillHole::slotChangedObject, this, sp::_1, sp::_2));
+    //NOLINTEND
 
     Gui::coinRemoveAllChildren(myBoundariesRoot);
     myBoundariesRoot->addChild(viewer->getHeadlight());
@@ -575,11 +577,10 @@ void MeshFillHole::createPolygons()
     borders.sort(NofFacetsCompare());
 
     int32_t count=0;
-    for (std::list<std::vector<Mesh::PointIndex> >::iterator it =
-        borders.begin(); it != borders.end(); ++it) {
-        if (it->front() == it->back())
-            it->pop_back();
-        count += it->size();
+    for (auto & border : borders) {
+        if (border.front() == border.back())
+            border.pop_back();
+        count += border.size();
     }
 
     SoCoordinate3* coords = new SoCoordinate3();
@@ -588,16 +589,14 @@ void MeshFillHole::createPolygons()
 
     coords->point.setNum(count);
     int32_t index = 0;
-    for (std::list<std::vector<Mesh::PointIndex> >::iterator it =
-        borders.begin(); it != borders.end(); ++it) {
+    for (const auto & border : borders) {
         SoPolygon* polygon = new SoPolygon();
         polygon->startIndex = index;
-        polygon->numVertices = it->size();
+        polygon->numVertices = border.size();
         myBoundariesGroup->addChild(polygon);
-        myPolygons[polygon] = *it;
-        for (std::vector<Mesh::PointIndex>::iterator jt = it->begin();
-            jt != it->end(); ++jt) {
-            p_iter.Set(*jt);
+        myPolygons[polygon] = border;
+        for (Mesh::PointIndex jt : border) {
+            p_iter.Set(jt);
             coords->point.set1Value(index++,p_iter->x,p_iter->y,p_iter->z);
         }
     }
@@ -634,15 +633,15 @@ float MeshFillHole::findClosestPoint(const SbLine& ray, const TBoundary& polygon
 
     const MeshCore::MeshKernel & rMesh = myMesh->Mesh.getValue().getKernel();
     const MeshCore::MeshPointArray& pts = rMesh.GetPoints();
-    for (TBoundary::const_iterator it = polygon.begin(); it != polygon.end(); ++it) {
+    for (Mesh::PointIndex it : polygon) {
         SbVec3f vertex;
-        const Base::Vector3f& v = pts[*it];
+        const Base::Vector3f& v = pts[it];
         vertex.setValue(v.x,v.y,v.z);
         SbVec3f point = ray.getClosestPoint(vertex);
         float distance = (vertex-point).sqrLength();
         if (distance < minDist) {
             minDist = distance;
-            vertex_index = *it;
+            vertex_index = it;
             closestPoint = vertex;
         }
     }
@@ -717,7 +716,7 @@ void MeshFillHole::fileHoleCallback(void * ud, SoEventCallback * n)
                             self->myNumPoints = 2;
                             self->myVertex2 = vertex_index;
                             self->myPolygon = it->second;
-                            QTimer::singleShot(300, self, SLOT(closeBridge()));
+                            QTimer::singleShot(300, self, &MeshFillHole::closeBridge);
                         }
                     }
                 }
@@ -728,7 +727,7 @@ void MeshFillHole::fileHoleCallback(void * ud, SoEventCallback * n)
             QAction* fin = menu.addAction(MeshFillHole::tr("Finish"));
             QAction* act = menu.exec(QCursor::pos());
             if (act == fin) {
-                QTimer::singleShot(300, self, SLOT(finishEditing()));
+                QTimer::singleShot(300, self, &MeshFillHole::finishEditing);
             }
         }
     }

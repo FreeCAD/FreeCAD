@@ -36,7 +36,7 @@ Part = LazyLoader("Part", globals(), "Part")
 
 __title__ = "Tool bits."
 __author__ = "sliptonic (Brad Collette)"
-__url__ = "https://www.freecadweb.org"
+__url__ = "https://www.freecad.org"
 __doc__ = "Class to deal with and represent a tool bit."
 
 PropertyGroupShape = "Shape"

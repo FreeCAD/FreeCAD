@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg width="64px" height="64px" id="svg2860" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <defs id="defs2862">
+    <marker style="overflow:visible" id="Arrow2" refX="0" refY="0" orient="auto" markerWidth="4.583333" markerHeight="3.333333" viewBox="0 0 7.7 5.6" preserveAspectRatio="xMidYMid">
+      <path transform="scale(0.7)" d="M -2,-4 L 9,0 L -2,4 C 0,1.67 0,-1.66 -2,-4 Z" style="fill:context-stroke;fill-rule:evenodd;stroke:none" id="arrow2L" />
+    </marker>
+    <marker style="overflow:visible" id="Arrow2_Fnone_Sblack" refX="0" refY="0" orient="auto" markerWidth="8" markerHeight="4" viewBox="0 0 7.7 5.6" preserveAspectRatio="xMidYMid">
+      <path transform="scale(0.7)" d="M -2,-4 L 9,0 L -2,4 C 0,1.67 0,-1.66 -2,-4 Z" style="fill:black;fill-rule:evenodd;stroke:none" id="path299" />
+    </marker>
+    <linearGradient id="linearGradient3929">
+      <stop style="stop-color:#a40000;stop-opacity:1" offset="0" id="stop3931" />
+      <stop style="stop-color:#ef2929;stop-opacity:1" offset="1" id="stop3933" />
+    </linearGradient>
+    <radialGradient xlink:href="#linearGradient3377" id="radialGradient3703" gradientUnits="userSpaceOnUse" cx="135.38333" cy="97.369568" fx="135.38333" fy="97.369568" r="19.467436" gradientTransform="matrix(0.97435,0.2250379,-0.4623105,2.0016728,48.487554,-127.99883)" />
+    <linearGradient id="linearGradient3377">
+      <stop id="stop3379" offset="0" style="stop-color:#faff2b;stop-opacity:1" />
+      <stop id="stop3381" offset="1" style="stop-color:#ffaa00;stop-opacity:1" />
+    </linearGradient>
+    <radialGradient xlink:href="#linearGradient3377" id="radialGradient3705" gradientUnits="userSpaceOnUse" cx="148.88333" cy="81.869568" fx="148.88333" fy="81.869568" r="19.467436" gradientTransform="matrix(1.3852588,-0.05136783,0.03705629,0.9993132,-60.392403,7.7040438)" />
+    <radialGradient xlink:href="#linearGradient3377-4" id="radialGradient3703-8" gradientUnits="userSpaceOnUse" cx="135.38333" cy="97.369568" fx="135.38333" fy="97.369568" r="19.467436" gradientTransform="matrix(0.97435,0.2250379,-0.4623105,2.0016728,48.487554,-127.99883)" />
+    <linearGradient id="linearGradient3377-4">
+      <stop id="stop3379-3" offset="0" style="stop-color:#faff2b;stop-opacity:1" />
+      <stop id="stop3381-0" offset="1" style="stop-color:#ffaa00;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient xlink:href="#linearGradient3851-7-2" id="linearGradient3367" gradientUnits="userSpaceOnUse" gradientTransform="translate(-19.999999,-5.9999984)" spreadMethod="reflect" x1="-11" y1="26" x2="-18" y2="14" />
+    <linearGradient id="linearGradient3851-7-2">
+      <stop style="stop-color:#c4a000;stop-opacity:1" offset="0" id="stop3853-9-4" />
+      <stop style="stop-color:#fce94f;stop-opacity:1" offset="1" id="stop3855-8-4" />
+    </linearGradient>
+    <linearGradient xlink:href="#linearGradient3838-1" id="linearGradient3371" gradientUnits="userSpaceOnUse" x1="2802.9631" y1="538.36249" x2="2859.7263" y2="786.05646" />
+    <linearGradient id="linearGradient3838-1">
+      <stop style="stop-color:#34e0e2;stop-opacity:1" offset="0" id="stop3840-2" />
+      <stop style="stop-color:#06989a;stop-opacity:1" offset="1" id="stop3842-0" />
+    </linearGradient>
+    <linearGradient xlink:href="#linearGradient3859-3-8" id="linearGradient3369" gradientUnits="userSpaceOnUse" x1="32.557789" y1="32.917992" x2="26.30212" y2="12.206754" />
+    <linearGradient id="linearGradient3859-3-8">
+      <stop style="stop-color:#edd400;stop-opacity:1" offset="0" id="stop3861-1-7" />
+      <stop style="stop-color:#fce94f;stop-opacity:1" offset="1" id="stop3863-2-4" />
+    </linearGradient>
+    <linearGradient xlink:href="#linearGradient3929" id="linearGradient3935" x1="9.6000004" y1="60.799999" x2="4.8000002" y2="51.200001" gradientUnits="userSpaceOnUse" />
+    <marker style="overflow:visible" id="Arrow2-9" refX="0" refY="0" orient="auto" markerWidth="4.583333" markerHeight="3.3333333" viewBox="0 0 7.7 5.6" preserveAspectRatio="xMidYMid">
+      <path transform="scale(0.7)" d="M -2,-4 L 9,0 L -2,4 C 0,1.67 0,-1.66 -2,-4 Z" style="fill:context-stroke;fill-rule:evenodd;stroke:none" id="arrow2L-1" />
+    </marker>
+    <marker style="overflow:visible" id="Arrow2-9_Fnone_Sblack" refX="0" refY="0" orient="auto" markerWidth="8" markerHeight="4" viewBox="0 0 7.7 5.6" preserveAspectRatio="xMidYMid">
+      <path transform="scale(0.7)" d="M -2,-4 L 9,0 L -2,4 C 0,1.67 0,-1.66 -2,-4 Z" style="fill:black;fill-rule:evenodd;stroke:none" id="path302" />
+    </marker>
+    <marker style="overflow:visible" id="Arrow2-1" refX="0" refY="0" orient="auto" markerWidth="4.583333" markerHeight="3.333333" viewBox="0 0 7.7 5.6" preserveAspectRatio="xMidYMid">
+      <path transform="scale(0.7)" d="M -2,-4 L 9,0 L -2,4 C 0,1.67 0,-1.66 -2,-4 Z" style="fill:context-stroke;fill-rule:evenodd;stroke:none" id="arrow2L-8" />
+    </marker>
+    <marker style="overflow:visible" id="Arrow2-1_Fnone_Sblack" refX="0" refY="0" orient="auto" markerWidth="8" markerHeight="4" viewBox="0 0 7.7 5.6" preserveAspectRatio="xMidYMid">
+      <path transform="scale(0.7)" d="M -2,-4 L 9,0 L -2,4 C 0,1.67 0,-1.66 -2,-4 Z" style="fill:black;fill-rule:evenodd;stroke:none" id="path305" />
+    </marker>
+    <marker style="overflow:visible" id="Arrow2-9-1" refX="0" refY="0" orient="auto" markerWidth="4.583333" markerHeight="3.3333333" viewBox="0 0 7.7 5.6" preserveAspectRatio="xMidYMid">
+      <path transform="scale(0.7)" d="M -2,-4 L 9,0 L -2,4 C 0,1.67 0,-1.66 -2,-4 Z" style="fill:context-stroke;fill-rule:evenodd;stroke:none" id="arrow2L-1-1" />
+    </marker>
+    <marker style="overflow:visible" id="Arrow2-9-1_Fnone_Sblack" refX="0" refY="0" orient="auto" markerWidth="8" markerHeight="4" viewBox="0 0 7.7 5.6" preserveAspectRatio="xMidYMid">
+      <path transform="scale(0.7)" d="M -2,-4 L 9,0 L -2,4 C 0,1.67 0,-1.66 -2,-4 Z" style="fill:black;fill-rule:evenodd;stroke:none" id="path308" />
+    </marker>
+  </defs>
+  <metadata id="metadata2865">
+    <rdf:RDF>
+      <cc:Work rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:creator>
+          <cc:Agent>
+            <dc:title>[vdwalts]</dc:title>
+          </cc:Agent>
+        </dc:creator>
+        <dc:date>2016-08-01</dc:date>
+        <dc:relation>http://www.freecad.org/wiki/index.php?title=Artwork</dc:relation>
+        <dc:publisher>
+          <cc:Agent>
+            <dc:title>FreeCAD</dc:title>
+          </cc:Agent>
+        </dc:publisher>
+        <dc:identifier>FreeCAD/src/Mod/</dc:identifier>
+        <dc:rights>
+          <cc:Agent>
+            <dc:title>FreeCAD LGPL2+</dc:title>
+          </cc:Agent>
+        </dc:rights>
+        <cc:license>https://www.gnu.org/copyleft/lesser.html</cc:license>
+        <dc:contributor>
+          <cc:Agent>
+            <dc:title>[agryson] Alexander Gryson</dc:title>
+          </cc:Agent>
+        </dc:contributor>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g id="g2526" transform="matrix(1.1212306,0,0,1.2065378,-5.1041043,-4.481143)" style="stroke-width:0.85977">
+    <path style="stroke-width:0.85977;fill:none;stroke:black;stroke-linecap:butt;stroke-linejoin:miter;stroke-dasharray:none;stroke-opacity:1;marker-start:url(#Arrow2_Fnone_Sblack);marker-end:url(#Arrow2_Fnone_Sblack)" d="M 7.5590551,7.5590551 C 7.5590551,7.5590551 19.79465,13.835118 26.456693,15.11811 C 30.168024,15.832847 34.083945,15.832847 37.795276,15.11811 C 44.457319,13.835118 56.692913,7.5590551 56.692913,7.5590551" id="path8680" />
+    <path style="fill:none;stroke:black;stroke-width:0.85977;stroke-linecap:butt;stroke-linejoin:miter;stroke-dasharray:none;stroke-opacity:1;marker-start:url(#Arrow2-9_Fnone_Sblack);marker-end:url(#Arrow2-9_Fnone_Sblack)" d="M 7.5590551,18.897638 C 7.5590551,18.897638 19.79465,21.394173 26.456693,22.677165 C 30.168024,23.391902 34.083945,23.391902 37.795276,22.677165 C 42.240324,21.821127 49.16662,20.424841 53.28423,19.590329 C 55.337912,19.174111 56.692913,18.897638 56.692913,18.897638" id="path8680-0" />
+    <path style="fill:none;stroke:black;stroke-width:0.85977;stroke-linecap:butt;stroke-linejoin:miter;stroke-dasharray:none;stroke-opacity:1;marker-start:url(#Arrow2_Fnone_Sblack);marker-end:url(#Arrow2_Fnone_Sblack)" d="M 7.5590551,30.23622 L 46.394879,30.23622 L 56.692913,30.23622" id="path10367" />
+    <path style="stroke-width:0.85977;fill:none;stroke:black;stroke-linecap:butt;stroke-linejoin:miter;stroke-dasharray:none;stroke-opacity:1;marker-start:url(#Arrow2-1_Fnone_Sblack);marker-end:url(#Arrow2-1_Fnone_Sblack)" d="M 7.5590551,52.913386 C 7.5590551,52.913386 19.79465,46.637323 26.456693,45.354331 C 30.168024,44.639594 34.083945,44.639594 37.795276,45.354331 C 44.457319,46.637323 56.692913,52.913386 56.692913,52.913386" id="path8680-5" />
+    <path style="fill:none;stroke:black;stroke-width:0.85977;stroke-linecap:butt;stroke-linejoin:miter;stroke-dasharray:none;stroke-opacity:1;marker-start:url(#Arrow2-9-1_Fnone_Sblack);marker-end:url(#Arrow2-9-1_Fnone_Sblack)" d="M 7.5590548,41.574803 C 7.5590548,41.574803 19.79465,39.078268 26.456693,37.795276 C 30.168024,37.080539 34.083945,37.080539 37.795276,37.795276 C 44.457319,39.078268 56.692913,41.574803 56.692913,41.574803" id="path8680-0-1" />
+    <path style="fill:#a40000;fill-opacity:1;stroke:black;stroke-width:0.429885;stroke-linecap:butt;stroke-linejoin:miter;stroke-dasharray:none;stroke-opacity:1" d="M 26.456693,7.5590551 L 37.699397,8.7498528 V 52.437686 L 26.456693,52.913386 Z" id="path7856" />
+  </g>
+</svg>

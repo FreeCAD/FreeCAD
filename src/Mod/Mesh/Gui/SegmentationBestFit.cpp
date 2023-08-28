@@ -50,8 +50,8 @@ namespace MeshGui {
 class PlaneFitParameter : public FitParameter
 {
 public:
-    PlaneFitParameter() {}
-    ~PlaneFitParameter() override {}
+    PlaneFitParameter() = default;
+    ~PlaneFitParameter() override = default;
     std::vector<float> getParameter(FitParameter::Points pts) const override {
         std::vector<float> values;
         MeshCore::PlaneFit fit;
@@ -73,8 +73,8 @@ public:
 class CylinderFitParameter : public FitParameter
 {
 public:
-    CylinderFitParameter() {}
-    ~CylinderFitParameter() override {}
+    CylinderFitParameter() = default;
+    ~CylinderFitParameter() override = default;
     std::vector<float> getParameter(FitParameter::Points pts) const override {
         std::vector<float> values;
         MeshCore::CylinderFit fit;
@@ -128,8 +128,8 @@ public:
 class SphereFitParameter : public FitParameter
 {
 public:
-    SphereFitParameter() {}
-    ~SphereFitParameter() override {}
+    SphereFitParameter() = default;
+    ~SphereFitParameter() override = default;
     std::vector<float> getParameter(FitParameter::Points pts) const override {
         std::vector<float> values;
         MeshCore::SphereFit fit;
@@ -221,9 +221,12 @@ ParametersDialog::ParametersDialog(std::vector<float>& val, FitParameter* fitPar
         ++index;
     }
 
-    QObject::connect(buttonBox, SIGNAL(accepted()), this, SLOT(accept()));
-    QObject::connect(buttonBox, SIGNAL(rejected()), this, SLOT(reject()));
-    QMetaObject::connectSlotsByName(this);
+    connect(buttonBox, &QDialogButtonBox::accepted, this, &ParametersDialog::accept);
+    connect(buttonBox, &QDialogButtonBox::rejected, this, &ParametersDialog::reject);
+    connect(regionButton, &QPushButton::clicked, this, &ParametersDialog::onRegionClicked);
+    connect(singleButton, &QPushButton::clicked, this, &ParametersDialog::onSingleClicked);
+    connect(clearButton, &QPushButton::clicked, this, &ParametersDialog::onClearClicked);
+    connect(computeButton, &QPushButton::clicked, this, &ParametersDialog::onComputeClicked);
 
     Gui::SelectionObject obj(mesh);
     std::vector<Gui::SelectionObject> sel;
@@ -242,22 +245,22 @@ ParametersDialog::~ParametersDialog()
     delete fitParameter;
 }
 
-void ParametersDialog::on_region_clicked()
+void ParametersDialog::onRegionClicked()
 {
     meshSel.startSelection();
 }
 
-void ParametersDialog::on_single_clicked()
+void ParametersDialog::onSingleClicked()
 {
     meshSel.selectTriangle();
 }
 
-void ParametersDialog::on_clear_clicked()
+void ParametersDialog::onClearClicked()
 {
     meshSel.clearSelection();
 }
 
-void ParametersDialog::on_compute_clicked()
+void ParametersDialog::onComputeClicked()
 {
     const Mesh::MeshObject& kernel = myMesh->Mesh.getValue();
     if (kernel.hasSelectedFacets()) {
@@ -310,6 +313,8 @@ SegmentationBestFit::SegmentationBestFit(Mesh::Feature* mesh, QWidget* parent, Q
 {
     ui = new Ui_SegmentationBestFit;
     ui->setupUi(this);
+    setupConnections();
+
     ui->numPln->setRange(1, INT_MAX);
     ui->numPln->setValue(100);
     ui->numCyl->setRange(1, INT_MAX);
@@ -329,7 +334,17 @@ SegmentationBestFit::~SegmentationBestFit()
     delete ui;
 }
 
-void SegmentationBestFit::on_planeParameters_clicked()
+void SegmentationBestFit::setupConnections()
+{
+    connect(ui->planeParameters, &QPushButton::clicked,
+            this, &SegmentationBestFit::onPlaneParametersClicked);
+    connect(ui->cylinderParameters, &QPushButton::clicked,
+            this, &SegmentationBestFit::onCylinderParametersClicked);
+    connect(ui->sphereParameters, &QPushButton::clicked,
+            this, &SegmentationBestFit::onSphereParametersClicked);
+}
+
+void SegmentationBestFit::onPlaneParametersClicked()
 {
     ParameterList list;
     std::vector<float> p = planeParameter;
@@ -355,7 +370,7 @@ void SegmentationBestFit::on_planeParameters_clicked()
     dialog->show();
 }
 
-void SegmentationBestFit::on_cylinderParameters_clicked()
+void SegmentationBestFit::onCylinderParametersClicked()
 {
     ParameterList list;
     std::vector<float> p = cylinderParameter;
@@ -383,7 +398,7 @@ void SegmentationBestFit::on_cylinderParameters_clicked()
     dialog->show();
 }
 
-void SegmentationBestFit::on_sphereParameters_clicked()
+void SegmentationBestFit::onSphereParametersClicked()
 {
     ParameterList list;
     std::vector<float> p = sphereParameter;
@@ -470,10 +485,10 @@ void SegmentationBestFit::accept()
     std::string labelname = "Segments ";
     labelname += myMesh->Label.getValue();
     group->Label.setValue(labelname);
-    for (std::vector<MeshCore::MeshSurfaceSegmentPtr>::iterator it = segm.begin(); it != segm.end(); ++it) {
-        const std::vector<MeshCore::MeshSegment>& data = (*it)->GetSegments();
-        for (std::vector<MeshCore::MeshSegment>::const_iterator jt = data.begin(); jt != data.end(); ++jt) {
-            Mesh::MeshObject* segment = mesh->meshFromSegment(*jt);
+    for (const auto & it : segm) {
+        const std::vector<MeshCore::MeshSegment>& data = it->GetSegments();
+        for (const auto & jt : data) {
+            Mesh::MeshObject* segment = mesh->meshFromSegment(jt);
             Mesh::Feature* feaSegm = static_cast<Mesh::Feature*>(group->addObject("Mesh::Feature", "Segment"));
             Mesh::MeshObject* feaMesh = feaSegm->Mesh.startEditing();
             feaMesh->swap(*segment);
@@ -481,7 +496,7 @@ void SegmentationBestFit::accept()
             delete segment;
 
             std::stringstream label;
-            label << feaSegm->Label.getValue() << " (" << (*it)->GetType() << ")";
+            label << feaSegm->Label.getValue() << " (" << it->GetType() << ")";
             feaSegm->Label.setValue(label.str());
         }
     }
@@ -507,11 +522,6 @@ TaskSegmentationBestFit::TaskSegmentationBestFit(Mesh::Feature* mesh)
         QPixmap(), widget->windowTitle(), false, nullptr);
     taskbox->groupLayout()->addWidget(widget);
     Content.push_back(taskbox);
-}
-
-TaskSegmentationBestFit::~TaskSegmentationBestFit()
-{
-    // automatically deleted in the sub-class
 }
 
 bool TaskSegmentationBestFit::accept()

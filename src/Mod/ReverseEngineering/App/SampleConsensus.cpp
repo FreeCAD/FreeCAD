@@ -20,22 +20,25 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
+#ifndef _PreComp_
+# include <boost/math/special_functions/fpclassify.hpp>
+#endif
+
+#include <Base/Exception.h>
+#include <Mod/Points/App/Points.h>
 
 #include "SampleConsensus.h"
-#include <Mod/Points/App/Points.h>
-#include <Base/Exception.h>
-#include <boost/math/special_functions/fpclassify.hpp>
+
 
 #if defined(HAVE_PCL_SAMPLE_CONSENSUS)
-#include <pcl/point_types.h>
-#include <pcl/features/normal_3d.h>
-#include <pcl/sample_consensus/ransac.h>
-#include <pcl/sample_consensus/sac_model_plane.h>
-#include <pcl/sample_consensus/sac_model_sphere.h>
-#include <pcl/sample_consensus/sac_model_cylinder.h>
-#include <pcl/sample_consensus/sac_model_cone.h>
+# include <pcl/point_types.h>
+# include <pcl/features/normal_3d.h>
+# include <pcl/sample_consensus/ransac.h>
+# include <pcl/sample_consensus/sac_model_cone.h>
+# include <pcl/sample_consensus/sac_model_cylinder.h>
+# include <pcl/sample_consensus/sac_model_plane.h>
+# include <pcl/sample_consensus/sac_model_sphere.h>
 
 using namespace std;
 using namespace Reen;

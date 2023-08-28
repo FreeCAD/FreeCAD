@@ -264,7 +264,6 @@ bool Simplify::flipped(vec3f p, int i0, int i1,
                        std::vector<int> &deleted)
 {
     (void)i0; (void)v1;
-    int bordercount=0;
     for (int k=0;k<v0.tcount;++k)
     {
         Triangle &t=triangles[refs[v0.tstart+k].tid];
@@ -277,7 +276,6 @@ bool Simplify::flipped(vec3f p, int i0, int i1,
 
         if (id1==i1 || id2==i1) // delete ?
         {
-            bordercount++;
             deleted[k]=1;
             continue;
         }

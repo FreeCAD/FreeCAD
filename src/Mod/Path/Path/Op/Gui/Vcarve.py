@@ -32,7 +32,7 @@ from PySide import QtCore, QtGui
 
 __title__ = "Path Vcarve Operation UI"
 __author__ = "sliptonic (Brad Collette)"
-__url__ = "http://www.freecadweb.org"
+__url__ = "http://www.freecad.org"
 __doc__ = "Vcarve operation page controller and command implementation."
 
 
@@ -129,7 +129,7 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         return FreeCADGui.PySideUic.loadUi(":/panels/PageOpVcarveEdit.ui")
 
     def getFields(self, obj):
-        """getFields(obj) ... transfers values from UI to obj's proprties"""
+        """getFields(obj) ... transfers values from UI to obj's properties"""
         if obj.Discretize != self.form.discretize.value():
             obj.Discretize = self.form.discretize.value()
         if obj.Colinear != self.form.colinearFilter.value():

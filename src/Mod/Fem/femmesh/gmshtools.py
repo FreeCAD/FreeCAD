@@ -22,7 +22,7 @@
 
 __title__ = "Tools for the work with Gmsh mesher"
 __author__ = "Bernd Hahnebach"
-__url__ = "https://www.freecadweb.org"
+__url__ = "https://www.freecad.org"
 
 ## \addtogroup FEM
 #  @{
@@ -330,7 +330,7 @@ class GmshTools():
                     raise GmshError(error_message)
                 self.gmsh_bin = gmsh_path
             elif system() == "Darwin":
-                # https://forum.freecadweb.org/viewtopic.php?f=13&t=73041&p=642026#p642022
+                # https://forum.freecad.org/viewtopic.php?f=13&t=73041&p=642026#p642022
                 gmsh_path = "/Applications/Gmsh.app/Contents/MacOS/gmsh"
                 FreeCAD.ParamGet(
                     "User parameter:BaseApp/Preferences/Mod/Fem/Gmsh"
@@ -394,11 +394,11 @@ class GmshTools():
                     self.group_elements[ge] = new_group_elements[ge]
                 else:
                     Console.PrintError("  A group with this name exists already.\n")
-        else:
-            Console.PrintMessage("  No Group meshing for analysis.\n")
+        # else:
+        #    Console.PrintMessage("  No Group meshing for analysis.\n")
 
-        if self.group_elements:
-            Console.PrintMessage("  {}\n".format(self.group_elements))
+        # if self.group_elements:
+        #    Console.PrintMessage("  {}\n".format(self.group_elements))
 
     def get_gmsh_version(self):
         self.get_gmsh_command()
@@ -447,11 +447,11 @@ class GmshTools():
             # print("  No mesh regions.")
             pass
         else:
-            Console.PrintMessage("  Mesh regions, we need to get the elements.\n")
+            # Console.PrintMessage("  Mesh regions, we need to get the elements.\n")
             # by the use of MeshRegion object and a BooleanSplitCompound
             # there could be problems with node numbers see
-            # http://forum.freecadweb.org/viewtopic.php?f=18&t=18780&start=40#p149467
-            # http://forum.freecadweb.org/viewtopic.php?f=18&t=18780&p=149520#p149520
+            # http://forum.freecad.org/viewtopic.php?f=18&t=18780&start=40#p149467
+            # http://forum.freecad.org/viewtopic.php?f=18&t=18780&p=149520#p149520
             part = self.part_obj
             if (
                 self.mesh_obj.MeshRegionList and part.Shape.ShapeType == "Compound"
@@ -461,17 +461,7 @@ class GmshTools():
                     or femutils.is_of_type(part, "FeatureXOR")
                 )
             ):
-                error_message = (
-                    "  The mesh to shape is a boolean split tools Compound "
-                    "and the mesh has mesh region list. "
-                    "Gmsh could return unexpected meshes in such circumstances. "
-                    "It is strongly recommended to extract the shape to mesh "
-                    "from the Compound and use this one."
-                )
-                Console.PrintError(error_message + "\n")
-                # TODO: no gui popup because FreeCAD will be in a endless output loop
-                #       as long as the pop up is on --> maybe find a better solution for
-                #       either of both --> thus the pop up is in task panel
+                self.outputCompoundWarning
             for mr_obj in self.mesh_obj.MeshRegionList:
                 # print(mr_obj.Name)
                 # print(mr_obj.CharacteristicLength)
@@ -540,8 +530,8 @@ class GmshTools():
                 ele_shape = geomtools.get_element(self.part_obj, eleml)
                 ele_vertexes = geomtools.get_vertexes_by_element(self.part_obj.Shape, ele_shape)
                 self.ele_node_map[eleml] = ele_vertexes
-            Console.PrintMessage("  {}\n".format(self.ele_length_map))
-            Console.PrintMessage("  {}\n".format(self.ele_node_map))
+            # Console.PrintMessage("  {}\n".format(self.ele_length_map))
+            # Console.PrintMessage("  {}\n".format(self.ele_node_map))
 
     def get_boundary_layer_data(self):
         # mesh boundary layer
@@ -553,16 +543,11 @@ class GmshTools():
             # print("  No mesh boundary layer setting document object.")
             pass
         else:
-            Console.PrintMessage("  Mesh boundary layers, we need to get the elements.\n")
+            # Console.PrintMessage("  Mesh boundary layers, we need to get the elements.\n")
             if self.part_obj.Shape.ShapeType == "Compound":
-                # see http://forum.freecadweb.org/viewtopic.php?f=18&t=18780&start=40#p149467 and
-                # http://forum.freecadweb.org/viewtopic.php?f=18&t=18780&p=149520#p149520
-                err = (
-                    "Gmsh could return unexpected meshes for a boolean split tools Compound. "
-                    "It is strongly recommended to extract the shape to mesh "
-                    "from the Compound and use this one."
-                )
-                Console.PrintError(err + "\n")
+                # see http://forum.freecad.org/viewtopic.php?f=18&t=18780&start=40#p149467 and
+                # http://forum.freecad.org/viewtopic.php?f=18&t=18780&p=149520#p149520
+                self.outputCompoundWarning
             for mr_obj in self.mesh_obj.MeshBoundaryLayerList:
                 if mr_obj.MinimumThickness and Units.Quantity(mr_obj.MinimumThickness).Value > 0:
                     if mr_obj.References:
@@ -666,7 +651,7 @@ class GmshTools():
             # we use the element name of FreeCAD which starts
             # with 1 (example: "Face1"), same as Gmsh
             # for unit test we need them to have a fixed order
-            for group in sorted(self.group_elements.keys()):
+            for group in sorted(self.group_elements):
                 gdata = self.group_elements[group]
                 # print(gdata)
                 # geo.write("// " + group + "\n")
@@ -735,6 +720,7 @@ class GmshTools():
         self.part_obj.Shape.exportBrep(self.temp_file_geometry)
 
     def write_geo(self):
+        temp_dir = os.path.dirname(self.temp_file_geo)
         geo = open(self.temp_file_geo, "w")
         geo.write("// geo file for meshing with Gmsh meshing software created by FreeCAD\n")
         geo.write("\n")
@@ -747,7 +733,7 @@ class GmshTools():
 
         geo.write("// open brep geometry\n")
         # explicit use double quotes in geo file
-        geo.write('Merge "{}";\n'.format(self.temp_file_geometry))
+        geo.write('Merge "{}";\n'.format(os.path.relpath(self.temp_file_geometry, temp_dir)))
         geo.write("\n")
 
         # groups
@@ -869,7 +855,7 @@ class GmshTools():
 
         geo.write("// meshing\n")
         # remove duplicate vertices
-        # see https://forum.freecadweb.org/viewtopic.php?f=18&t=21571&start=20#p179443
+        # see https://forum.freecad.org/viewtopic.php?f=18&t=21571&start=20#p179443
         if hasattr(self.mesh_obj, "CoherenceMesh") and self.mesh_obj.CoherenceMesh is True:
             geo.write(
                 "Geometry.Tolerance = {}; // set geometrical "
@@ -884,7 +870,6 @@ class GmshTools():
 
         # save mesh
         geo.write("// save\n")
-        geo.write("Mesh.Format = 2;\n")  # unv
         if self.group_elements and self.group_nodes_export:
             geo.write("// For each group save not only the elements but the nodes too.;\n")
             geo.write("Mesh.SaveGroupsOfNodes = 1;\n")
@@ -895,7 +880,7 @@ class GmshTools():
         geo.write("// Ignore Physical definitions and save all elements;\n")
         geo.write("Mesh.SaveAll = 1;\n")
         # explicit use double quotes in geo file
-        geo.write('Save "{}";\n'.format(self.temp_file_mesh))
+        geo.write('Save "{}";\n'.format(os.path.relpath(self.temp_file_mesh, temp_dir)))
         geo.write("\n\n")
 
         # some useful information
@@ -941,7 +926,7 @@ class GmshTools():
 
         # workaround
         # filter useless gmsh warning in the regard of unknown element MSH type 15
-        # https://forum.freecadweb.org/viewtopic.php?f=18&t=33946
+        # https://forum.freecad.org/viewtopic.php?f=18&t=33946
         useless_warning = (
             "Warning : Unknown element type for UNV export "
             "(MSH type 15) - output file might be invalid"
@@ -959,6 +944,17 @@ class GmshTools():
             Console.PrintMessage("  New mesh was added to the mesh object.\n")
         else:
             Console.PrintError("No mesh was created.\n")
+
+    def outputCompoundWarning(self):
+        error_message = (
+            "The mesh to shape is a Boolean Split Tools compound "
+            "and the mesh has mesh region list.\n"
+            "Gmsh could return unexpected meshes in such circumstances.\n"
+            "If this is the case, use the part workbench and "
+            "apply a Compound Filter on the compound.\n"
+            "Use the Compound Filter as input for the mesh."
+        )
+        Console.PrintWarning(error_message + "\n")
 
 ##  @}
 

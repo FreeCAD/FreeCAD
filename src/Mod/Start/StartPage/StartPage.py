@@ -36,6 +36,13 @@ import urllib.parse
 from . import TranslationTexts
 from PySide import QtCore, QtGui
 
+try:
+    from addonmanager_macro import Macro as AM_Macro
+    has_am_macro = True
+except ImportError:
+    has_am_macro = False
+
+
 FreeCADGui.addLanguagePath(":/translations")
 FreeCADGui.updateLocale()
 
@@ -144,7 +151,7 @@ def getInfo(filename):
             # check for meta-file if it's really a FreeCAD document
             if files[0] == "Document.xml":
                 try:
-                    doc = str(zfile.read(files[0]))
+                    doc = zfile.read(files[0]).decode('utf-8')
                 except OSError as e:
                     print ("Fail to load corrupted FCStd file: '{0}' with this error: {1}".format(filename, str(e)))
                     return None
@@ -175,16 +182,31 @@ def getInfo(filename):
                         thumb.close()
                         iconbank[filename] = image
 
-        # use image itself as icon if it's an image file
-        if os.path.splitext(filename)[1].lower() in [".jpg",".jpeg",".png",".svg"]:
+        elif filename.lower().endswith(".fcmacro"):
+            # For FreeCAD macros, use the Macro Editor icon (but we have to have it in a file for
+            # the web view to load it)
+            image = os.path.join(tempfolder,"fcmacro_icon.svg")
+            if not os.path.exists(image):
+                f = QtCore.QFile(":/icons/MacroEditor.svg")
+                f.copy(image)
+            iconbank[filename] = image
+
+            if has_am_macro:
+                macro = AM_Macro(os.path.basename(filename))
+                macro.fill_details_from_file(filename)
+                author = macro.author
+
+        elif QtGui.QImageReader.imageFormat(filename):
+            # use image itself as icon if it's an image file
             image = filename
             iconbank[filename] = image
 
-        # use freedesktop thumbnail if available
-        fdthumb = getFreeDesktopThumbnail(filename)
-        if fdthumb:
-            image = fdthumb
-            iconbank[filename] = fdthumb
+        else:
+            # use freedesktop thumbnail if available
+            fdthumb = getFreeDesktopThumbnail(filename)
+            if fdthumb:
+                image = fdthumb
+                iconbank[filename] = fdthumb
 
         # retrieve default mime icon if needed
         if not image:
@@ -229,9 +251,42 @@ def getDefaultIcon():
 
 
 
+def build_new_file_card(template):
+
+    """builds an html <li> element representing a new file
+    quick start button"""
+
+    templates = {
+        "empty_file": [TranslationTexts.T_TEMPLATE_EMPTYFILE_NAME, TranslationTexts.T_TEMPLATE_EMPTYFILE_DESC],
+        "import_file": [TranslationTexts.T_TEMPLATE_IMPORTFILE_NAME, TranslationTexts.T_TEMPLATE_IMPORTFILE_DESC],
+        "parametric_part": [TranslationTexts.T_TEMPLATE_PARAMETRICPART_NAME, TranslationTexts.T_TEMPLATE_PARAMETRICPART_DESC],
+        # "csg_part": [TranslationTexts.T_TEMPLATE_CSGPART_NAME, TranslationTexts.T_TEMPLATE_CSGPART_DESC],
+        "2d_draft": [TranslationTexts.T_TEMPLATE_2DDRAFT_NAME, TranslationTexts.T_TEMPLATE_2DDRAFT_DESC],
+        "architecture": [TranslationTexts.T_TEMPLATE_ARCHITECTURE_NAME, TranslationTexts.T_TEMPLATE_ARCHITECTURE_DESC]
+    }
+
+    if template not in templates:
+        return
+
+    image = 'file:///'+os.path.join(os.path.join(FreeCAD.getResourceDir(), "Mod", "Start", "StartPage"), 'images/new_'+template+".png").replace('\\','/')
+
+    result = ""
+    result += '<li class="quickstart-button-card">'
+    result += '<a href="LoadNew.py?template='+urllib.parse.quote(template)+'">'
+    result += '<img src="'+image+'" alt="'+template+'">'
+    result += '<div class="caption">'
+    result += '<h3>'+templates[template][0]+'</h3>'
+    result += '<p>'+templates[template][1]+'</p>'
+    result += '</div>'
+    result += '</a>'
+    result += '</li>'
+    return result
+
+
+
 def buildCard(filename,method,arg=None):
 
-    """builds an html <li> element representing a file. 
+    """builds an html <li> element representing a file.
     method is a script + a keyword, for ex. url.py?key="""
 
     result = ""
@@ -249,7 +304,7 @@ def buildCard(filename,method,arg=None):
             if finfo[5]:
                 infostring += "\n\n" + finfo[5]
             if size:
-                result += '<li class="icon">'
+                result += '<li class="file-card">'
                 result += '<a href="'+method+urllib.parse.quote(arg)+'" title="'+infostring+'">'
                 result += '<img src="file:///'+image.replace('\\','/')+'" alt="'+basename+'">'
                 result += '<div class="caption">'
@@ -343,7 +398,7 @@ def handle():
     # get FreeCAD version
 
     v = FreeCAD.Version()
-    VERSIONSTRING = TranslationTexts.T_VERSION + " " + v[0] + "." + v[1] + " " + TranslationTexts.T_BUILD + " " + v[2]
+    VERSIONSTRING = TranslationTexts.T_VERSION + " " + v[0] + "." + v[1] + "." + v[2] +" " + TranslationTexts.T_BUILD + " " + v[3]
     HTML = HTML.replace("VERSIONSTRING",VERSIONSTRING)
 
     # translate texts
@@ -369,23 +424,25 @@ def handle():
         i.save(createimg)
         iconbank["createimg"] = createimg
 
+    # build SECTION_NEW_FILE
+
+    SECTION_NEW_FILE = "<h2>"+TranslationTexts.T_NEWFILE+"</h2>"
+    SECTION_NEW_FILE += "<ul>"
+    SECTION_NEW_FILE += build_new_file_card("empty_file")
+    SECTION_NEW_FILE += build_new_file_card("import_file")
+    SECTION_NEW_FILE += build_new_file_card("parametric_part")
+    # SECTION_NEW_FILE += build_new_file_card("csg_part")
+    SECTION_NEW_FILE += build_new_file_card("2d_draft")
+    SECTION_NEW_FILE += build_new_file_card("architecture")
+    SECTION_NEW_FILE += '</ul>'
+    HTML = HTML.replace("SECTION_NEW_FILE",SECTION_NEW_FILE)
+
     # build SECTION_RECENTFILES
 
     rf = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/RecentFiles")
     rfcount = rf.GetInt("RecentFiles",0)
     SECTION_RECENTFILES = "<h2>"+TranslationTexts.T_RECENTFILES+"</h2>"
     SECTION_RECENTFILES += "<ul>"
-    SECTION_RECENTFILES += '<li class="icon">'
-    SECTION_RECENTFILES += '<a href="LoadNew.py" title="'+TranslationTexts.T_CREATENEW+'">'
-    if FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Start").GetBool("NewFileGradient",False):
-        SECTION_RECENTFILES += '<img src="file:///'+iconbank["createimg"].replace('\\','/')+'" alt="'+TranslationTexts.T_CREATENEW+'">'
-    else:
-        SECTION_RECENTFILES += '<img src="file:///'+os.path.join(resources_dir, "images/new_file_thumbnail.svg").replace('\\','/')+'" alt="'+TranslationTexts.T_CREATENEW+'">'
-    SECTION_RECENTFILES += '<div class="caption">'
-    SECTION_RECENTFILES += '<h4>'+TranslationTexts.T_CREATENEW+'</h4>'
-    SECTION_RECENTFILES += '</div>'
-    SECTION_RECENTFILES += '</a>'
-    SECTION_RECENTFILES += '</li>'
     for i in range(rfcount):
         filename = rf.GetString("MRU%d" % (i))
         SECTION_RECENTFILES += buildCard(filename,method="LoadMRU.py?MRU=",arg=str(i))
@@ -432,11 +489,16 @@ def handle():
 
     # build IMAGE_SRC paths
 
+    HTML = HTML.replace("IMAGE_SRC_FREECAD",'file:///'+os.path.join(resources_dir, 'images/freecad.png').replace('\\','/'))
+    HTML = HTML.replace("IMAGE_SRC_ICON_DOCUMENTS",'file:///'+os.path.join(resources_dir, 'images/icon_documents.png').replace('\\','/'))
+    HTML = HTML.replace("IMAGE_SRC_ICON_HELP",'file:///'+os.path.join(resources_dir, 'images/icon_help.png').replace('\\','/'))
+    HTML = HTML.replace("IMAGE_SRC_ICON_ACTIVITY",'file:///'+os.path.join(resources_dir, 'images/icon_activity.png').replace('\\','/'))
+    HTML = HTML.replace("IMAGE_SRC_ICON_BLOG",'file:///'+os.path.join(resources_dir, 'images/icon_blog.png').replace('\\','/'))
     HTML = HTML.replace("IMAGE_SRC_USERHUB",'file:///'+os.path.join(resources_dir, 'images/userhub.png').replace('\\','/'))
     HTML = HTML.replace("IMAGE_SRC_POWERHUB",'file:///'+os.path.join(resources_dir, 'images/poweruserhub.png').replace('\\','/'))
     HTML = HTML.replace("IMAGE_SRC_DEVHUB",'file:///'+os.path.join(resources_dir, 'images/developerhub.png').replace('\\','/'))
     HTML = HTML.replace("IMAGE_SRC_MANUAL",'file:///'+os.path.join(resources_dir, 'images/manual.png').replace('\\','/'))
-    HTML = HTML.replace("IMAGE_SRC_SETTINGS",'file:///'+os.path.join(resources_dir, 'images/settings.png').replace('\\','/'))
+    HTML = HTML.replace("IMAGE_SRC_SETTINGS",'file:///'+os.path.join(resources_dir, 'images/icon_settings.png').replace('\\','/'))
     HTML = HTML.replace("IMAGE_SRC_INSTALLED",'file:///'+os.path.join(resources_dir, 'images/installed.png').replace('\\','/'))
 
     # build UL_WORKBENCHES
@@ -501,7 +563,7 @@ def handle():
             iconbank[wb] = img
         UL_WORKBENCHES += '<li>'
         UL_WORKBENCHES += '<img src="file:///'+img.replace('\\','/')+'" alt="'+wn+'">&nbsp;'
-        UL_WORKBENCHES += '<a href="https://www.freecadweb.org/wiki/'+wn+'_Workbench">'+wn.replace("Reverse_Engineering","ReverseEng")+'</a>'
+        UL_WORKBENCHES += '<a href="https://www.freecad.org/wiki/'+wn+'_Workbench">'+wn.replace("Reverse_Engineering","ReverseEng")+'</a>'
         UL_WORKBENCHES += '</li>'
     UL_WORKBENCHES += '</ul>'
     HTML = HTML.replace("UL_WORKBENCHES", UL_WORKBENCHES)
@@ -541,6 +603,7 @@ def handle():
     BOXCOLOR  = gethexcolor(p.GetUnsigned("BoxColor",3722305023))
     TEXTCOLOR = gethexcolor(p.GetUnsigned("PageTextColor",255))
     BGTCOLOR = gethexcolor(p.GetUnsigned("BackgroundTextColor",4294703103))
+    OVERFLOW = "" if p.GetBool("ShowScrollBars",True) else "body::-webkit-scrollbar {display: none;}"
     SHADOW = "#888888"
     if QtGui.QColor(BASECOLOR).valueF() < 0.5: # dark page - we need to make darker shadows
         SHADOW = "#000000"
@@ -557,6 +620,7 @@ def handle():
     HTML = HTML.replace("SHADOW",SHADOW)
     HTML = HTML.replace("FONTFAMILY",FONTFAMILY)
     HTML = HTML.replace("FONTSIZE",str(FONTSIZE)+"px")
+    HTML = HTML.replace("OVERFLOW",OVERFLOW)
 
     # enable web access if permitted
 
@@ -594,20 +658,21 @@ def exportTestFile():
 
 
 
-def postStart():
+def postStart(switch_wb = True):
 
     "executes needed operations after loading a file"
 
     param = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Start")
 
     # switch workbench
-    wb = param.GetString("AutoloadModule","")
-    if "$LastModule" == wb:
-        wb = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/General").GetString("LastModule","")
-    if wb:
-        # don't switch workbenches if we are not in Start anymore
-        if FreeCADGui.activeWorkbench() and (FreeCADGui.activeWorkbench().name() == "StartWorkbench"):
-            FreeCADGui.activateWorkbench(wb)
+    if switch_wb:
+        wb = param.GetString("AutoloadModule","")
+        if "$LastModule" == wb:
+            wb = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/General").GetString("LastModule","")
+        if wb:
+            # don't switch workbenches if we are not in Start anymore
+            if FreeCADGui.activeWorkbench() and (FreeCADGui.activeWorkbench().name() == "StartWorkbench"):
+                FreeCADGui.activateWorkbench(wb)
 
     # close start tab
     cl = param.GetBool("closeStart",False)

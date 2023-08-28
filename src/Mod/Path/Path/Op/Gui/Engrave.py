@@ -33,7 +33,7 @@ from PySide import QtCore, QtGui
 
 __title__ = "Path Engrave Operation UI"
 __author__ = "sliptonic (Brad Collette)"
-__url__ = "https://www.freecadweb.org"
+__url__ = "https://www.freecad.org"
 __doc__ = "Engrave operation page controller and command implementation."
 
 if False:
@@ -139,7 +139,7 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         return FreeCADGui.PySideUic.loadUi(":/panels/PageOpEngraveEdit.ui")
 
     def getFields(self, obj):
-        """getFields(obj) ... transfers values from UI to obj's proprties"""
+        """getFields(obj) ... transfers values from UI to obj's properties"""
         if obj.StartVertex != self.form.startVertex.value():
             obj.StartVertex = self.form.startVertex.value()
         self.updateToolController(obj, self.form.toolController)

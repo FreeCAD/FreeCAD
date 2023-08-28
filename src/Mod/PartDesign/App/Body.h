@@ -61,7 +61,7 @@ public:
 
     /**
      * Add the feature into the body at the current insert point.
-     * The insertion poin is the before next solid after the Tip feature
+     * The insertion point is the before next solid after the Tip feature
      */
     std::vector<App::DocumentObject*> addObject(App::DocumentObject*) override;
     std::vector< DocumentObject* > addObjects(std::vector< DocumentObject* > obj) override;

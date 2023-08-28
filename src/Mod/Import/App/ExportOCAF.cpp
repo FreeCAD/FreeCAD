@@ -70,7 +70,6 @@ using namespace Import;
 ExportOCAF::ExportOCAF(Handle(TDocStd_Document) h, bool explicitPlacement)
     : pDoc(h)
     , keepExplicitPlacement(explicitPlacement)
-    , filterBaseFeature(true)
 {
     aShapeTool = XCAFDoc_DocumentTool::ShapeTool(pDoc->Main());
     aColorTool = XCAFDoc_DocumentTool::ColorTool(pDoc->Main());
@@ -85,9 +84,7 @@ ExportOCAF::ExportOCAF(Handle(TDocStd_Document) h, bool explicitPlacement)
     }
 }
 
-ExportOCAF::~ExportOCAF()
-{
-}
+ExportOCAF::~ExportOCAF() = default;
 
 std::vector<App::DocumentObject*> ExportOCAF::filterPart(App::Part* part) const
 {
@@ -184,7 +181,7 @@ void ExportOCAF::createNode(App::Part* part, int& root_id,
 {
     TDF_Label shapeLabel = aShapeTool->NewShape();
     Handle(TDataStd_Name) N;
-    TDataStd_Name::Set(shapeLabel, TCollection_ExtendedString(part->Label.getValue(), 1));
+    TDataStd_Name::Set(shapeLabel, TCollection_ExtendedString(part->Label.getValue(), true));
 
     Base::Placement pl = part->Placement.getValue();
     Base::Rotation rot(pl.getRotation());
@@ -241,7 +238,7 @@ int ExportOCAF::saveShape(Part::Feature* part, const std::vector<App::Color>& co
     TDF_Label shapeLabel = aShapeTool->NewShape();
     aShapeTool->SetShape(shapeLabel, baseShape);
 
-    TDataStd_Name::Set(shapeLabel, TCollection_ExtendedString(part->Label.getValue(), 1));
+    TDataStd_Name::Set(shapeLabel, TCollection_ExtendedString(part->Label.getValue(), true));
 
 
 /*

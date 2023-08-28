@@ -23,17 +23,17 @@
 #ifndef GUI_TASKVIEW_TASKORTHOVIEWS_H
 #define GUI_TASKVIEW_TASKORTHOVIEWS_H
 
-#include <Gui/TaskView/TaskView.h>
-#include <Gui/TaskView/TaskDialog.h>
-#include <Base/BoundBox.h>
-
 #include <gp_Ax2.hxx>
 #include <vector>
+
+#include <QCheckBox>
+
 #include <boost_signals2.hpp>
 
+#include <Base/BoundBox.h>
+#include <Gui/TaskView/TaskDialog.h>
+#include <Gui/TaskView/TaskView.h>
 #include <Mod/Drawing/App/FeatureViewPart.h>
-
-
 
 
 namespace DrawingGui {

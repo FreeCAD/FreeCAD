@@ -110,6 +110,7 @@ from drafttests.test_dxf import DraftDXF as DraftTest06
 from drafttests.test_dwg import DraftDWG as DraftTest07
 # from drafttests.test_oca import DraftOCA as DraftTest08
 # from drafttests.test_airfoildat import DraftAirfoilDAT as DraftTest09
+from drafttests.test_array import DraftArray as DraftTest10
 
 # Use the modules so that code checkers don't complain (flake8)
 True if DraftTest01 else False
@@ -121,3 +122,4 @@ True if DraftTest06 else False
 True if DraftTest07 else False
 # True if DraftTest08 else False
 # True if DraftTest09 else False
+True if DraftTest10 else False

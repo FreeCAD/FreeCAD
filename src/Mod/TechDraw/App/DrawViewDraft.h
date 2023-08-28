@@ -42,7 +42,7 @@ class TechDrawExport DrawViewDraft : public TechDraw::DrawViewSymbol
 public:
     /// Constructor
     DrawViewDraft();
-    ~DrawViewDraft() = default;
+    ~DrawViewDraft() override = default;
 
     App::PropertyLink         Source;
     App::PropertyFloat        LineWidth;

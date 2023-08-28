@@ -64,7 +64,7 @@ protected:
 
 public:
   /// Destruction
-  virtual ~MeshGrid () { }
+  virtual ~MeshGrid () = default;
 
 public:
   /** Attaches the mesh kernel to this grid, an already attached mesh gets detached. The grid gets rebuilt
@@ -193,7 +193,7 @@ public:
   /// Construction
   MeshFacetGrid (const MeshKernel &rclM, float fGridLen);
   /// Destruction
-  ~MeshFacetGrid () override { }
+  ~MeshFacetGrid () override = default;
   //@}
 
   /** @name Search */
@@ -254,7 +254,7 @@ public:
   /// Construction
   MeshPointGrid (const MeshKernel &rclM, unsigned long ulX, unsigned long ulY, unsigned long ulZ);
   /// Destruction
-  ~MeshPointGrid () override {}
+  ~MeshPointGrid () override = default;
   //@}
 
   /** Finds all points that lie in the same grid as the point \a rclPoint. */
@@ -333,13 +333,13 @@ public:
 
 protected:
   const MeshGrid& _rclGrid; /**< The mesh kernel. */
-  unsigned long   _ulX;     /**< Number of grids in x. */
-  unsigned long   _ulY;     /**< Number of grids in y. */
-  unsigned long   _ulZ;     /**< Number of grids in z. */
+  unsigned long   _ulX{0};     /**< Number of grids in x. */
+  unsigned long   _ulY{0};     /**< Number of grids in y. */
+  unsigned long   _ulZ{0};     /**< Number of grids in z. */
   Base::Vector3f        _clPt;    /**< Base point of search ray. */
   Base::Vector3f        _clDir;   /**< Direction of search ray. */
-  bool            _bValidRay; /**< Search ray ok? */
-  float           _fMaxSearchArea;
+  bool            _bValidRay{false}; /**< Search ray ok? */
+  float           _fMaxSearchArea{FLOAT_MAX};
   /** Checks if a grid position is already visited by NextOnRay(). */
   struct GridElement
   {

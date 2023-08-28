@@ -29,6 +29,7 @@
 #include <Gui/TaskView/TaskDialog.h>
 #include <Gui/TaskView/TaskView.h>
 
+#include <Mod/Mesh/MeshGlobal.h>
 #include "MeshSelection.h"
 
 
@@ -47,7 +48,7 @@ public:
         std::vector<Base::Vector3f> points;
         std::vector<Base::Vector3f> normals;
     };
-    virtual ~FitParameter() {}
+    virtual ~FitParameter() = default;
     virtual std::vector<float> getParameter(Points) const = 0;
 };
 
@@ -64,11 +65,11 @@ public:
     void accept() override;
     void reject() override;
 
-private Q_SLOTS:
-    void on_region_clicked();
-    void on_single_clicked();
-    void on_clear_clicked();
-    void on_compute_clicked();
+private:
+    void onRegionClicked();
+    void onSingleClicked();
+    void onClearClicked();
+    void onComputeClicked();
 
 private:
     std::vector<float>& values;
@@ -91,10 +92,11 @@ public:
 protected:
     void changeEvent(QEvent *e) override;
 
-private Q_SLOTS:
-    void on_planeParameters_clicked();
-    void on_cylinderParameters_clicked();
-    void on_sphereParameters_clicked();
+private:
+    void setupConnections();
+    void onPlaneParametersClicked();
+    void onCylinderParametersClicked();
+    void onSphereParametersClicked();
 
 private:
     std::vector<float> planeParameter;
@@ -112,7 +114,6 @@ class TaskSegmentationBestFit : public Gui::TaskView::TaskDialog
 {
 public:
     explicit TaskSegmentationBestFit(Mesh::Feature* mesh);
-    ~TaskSegmentationBestFit() override;
 
 public:
     bool accept() override;

@@ -52,7 +52,7 @@ protected Q_SLOTS:
     void onCommandActivated(const QModelIndex &);
 
 protected:
-    bool eventFilter(QObject *, QEvent *ev);
+    bool eventFilter(QObject *, QEvent *ev) override;
 };
 
 } // namespace Gui

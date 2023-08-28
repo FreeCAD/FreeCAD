@@ -545,6 +545,9 @@ void CmdTechDrawAnnotation::activated(int iMsg)
     std::string FeatName = getUniqueObjectName("Annotation");
     openCommand(QT_TRANSLATE_NOOP("Command", "Create Annotation"));
     doCommand(Doc, "App.activeDocument().addObject('TechDraw::DrawViewAnnotation', '%s')", FeatName.c_str());
+    doCommand(Doc, "App.activeDocument().%s.translateLabel('DrawViewAnnotation', 'Annotation', '%s')",
+              FeatName.c_str(), FeatName.c_str());
+
     doCommand(Doc, "App.activeDocument().%s.addView(App.activeDocument().%s)", PageName.c_str(), FeatName.c_str());
     updateActive();
     commitCommand();
@@ -1071,7 +1074,6 @@ void execLine2Points(Gui::Command* cmd)
         return;
     }
 
-    double scale = baseFeat->getScale();
     std::vector<Base::Vector3d> points;
     std::vector<bool> is3d;
     //get the 2D points
@@ -1080,8 +1082,7 @@ void execLine2Points(Gui::Command* cmd)
             int idx = DrawUtil::getIndexFromName(v2d);
             TechDraw::VertexPtr v = baseFeat->getProjVertexByIndex(idx);
             if (v) {
-                Base::Vector3d p = DrawUtil::invertY(v->pnt);
-                points.push_back(p / scale);
+                points.push_back(v->point());
                 is3d.push_back(false);
             }
         }
@@ -1182,7 +1183,7 @@ void CmdTechDrawCosmeticEraser::activated(int iMsg)
             std::string geomType = TechDraw::DrawUtil::getGeomTypeFromName(s);
             if (geomType == "Edge") {
                 TechDraw::BaseGeomPtr bg = objFeat->getGeomByIndex(idx);
-                if (bg && bg->cosmetic) {
+                if (bg && bg->getCosmetic()) {
                     int source = bg->source();
                     std::string tag = bg->getCosmeticTag();
                     if (source == COSMETICEDGE) {
@@ -1199,7 +1200,7 @@ void CmdTechDrawCosmeticEraser::activated(int iMsg)
                 if (!tdv)
                     Base::Console().Message("CMD::eraser - geom: %d not found!\n", idx);
 
-                std::string delTag = tdv->cosmeticTag;
+                std::string delTag = tdv->getCosmeticTag();
                 if (delTag.empty())
                     Base::Console().Warning("Vertex%d is not cosmetic! Can not erase.\n", idx);
                 cv2Delete.push_back(delTag);

@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
 # ***************************************************************************
 # *                                                                         *
 # *   Copyright (c) 2022 FreeCAD Project Association                        *
@@ -76,8 +77,8 @@ class ConnectionCheckerGUI(QtCore.QObject):
     def cancel_network_check(self, _):
         """Cancel the check"""
         if not self.connection_checker.isFinished():
-            self.connection_checker.success.disconnect(self.launch)
-            self.connection_checker.failure.disconnect(self.network_connection_failed)
+            self.connection_checker.success.disconnect(self._check_succeeded)
+            self.connection_checker.failure.disconnect(self._network_connection_failed)
             self.connection_checker.requestInterruption()
             self.connection_checker.wait(500)
             self.connection_check_message.close()
@@ -94,7 +95,7 @@ class ConnectionCheckerGUI(QtCore.QObject):
                 None, translate("AddonsInstaller", "Connection failed"), message
             )
         else:
-            #pylint: disable=line-too-long
+            # pylint: disable=line-too-long
             QtWidgets.QMessageBox.critical(
                 None,
                 translate("AddonsInstaller", "Missing dependency"),

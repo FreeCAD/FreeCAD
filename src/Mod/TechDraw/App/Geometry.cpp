@@ -74,12 +74,18 @@
 #include <Base/Reader.h>
 #include <Base/Writer.h>
 
+#include <Mod/Part/App/Geometry.h>
+#include <Mod/Part/App/TopoShape.h>
+
 #include "Geometry.h"
+#include "GeometryObject.h"
 #include "DrawUtil.h"
 
 
 using namespace TechDraw;
+using namespace Part;
 using namespace std;
+using DU = DrawUtil;
 
 #if OCC_VERSION_HEX >= 0x070600
 using BRepAdaptor_HCurve = BRepAdaptor_Curve;
@@ -102,8 +108,6 @@ Wire::Wire(const TopoDS_Wire &w)
         BaseGeomPtr bg = BaseGeom::baseFactory(edge);
         if (bg) {
             geoms.push_back(bg);
-        } else {
-            Base::Console().Log("G::Wire - baseFactory returned null geom ptr\n");
         }
     }
 }
@@ -118,7 +122,7 @@ TopoDS_Wire Wire::toOccWire() const
 {
     BRepBuilderAPI_MakeWire mkWire;
     for (auto& g: geoms) {
-        TopoDS_Edge e = g->occEdge;
+        TopoDS_Edge e = g->getOCCEdge();
         mkWire.Add(e);
     }
     if (mkWire.IsDone())  {
@@ -189,7 +193,7 @@ BaseGeomPtr BaseGeom::copy()
 
     result->extractType = extractType;
     result->classOfEdge = classOfEdge;
-    result->hlrVisible = hlrVisible;
+    result->setHlrVisible( hlrVisible);
     result->reversed = reversed;
     result->ref3D = ref3D;
     result->cosmetic = cosmetic;
@@ -279,6 +283,7 @@ std::vector<Base::Vector3d> BaseGeom::findEndPoints()
     } else {
         //TODO: this should throw something
         Base::Console().Message("Geometry::findEndPoints - OCC edge not found\n");
+        throw Base::RuntimeError("no OCC edge in Geometry::findEndPoints");
     }
     return result;
 }
@@ -313,7 +318,7 @@ Base::Vector3d BaseGeom::getEndPoint()
 
 Base::Vector3d BaseGeom::getMidPoint()
 {
-    // Midpoint calculation - additional details here: https://forum.freecadweb.org/viewtopic.php?f=35&t=59582
+    // Midpoint calculation - additional details here: https://forum.freecad.org/viewtopic.php?f=35&t=59582
 
     BRepAdaptor_Curve curve(occEdge);
 
@@ -369,7 +374,7 @@ double BaseGeom::minDist(Base::Vector3d p)
 //!find point on me nearest to p
 Base::Vector3d BaseGeom::nearPoint(const BaseGeomPtr p)
 {
-    TopoDS_Edge pEdge = p->occEdge;
+    TopoDS_Edge pEdge = p->getOCCEdge();
     BRepExtrema_DistShapeShape extss(occEdge, pEdge);
     if (!extss.IsDone() || extss.NbSolution() == 0) {
         return Base::Vector3d(0.0, 0.0, 0.0);
@@ -415,6 +420,33 @@ bool BaseGeom::closed()
     return false;
 }
 
+// return a BaseGeom similar to this, but inverted with respect to Y axis
+BaseGeomPtr BaseGeom::inverted()
+{
+    Base::Console().Message("BG::inverted()\n");
+    TopoDS_Shape invertedShape = ShapeUtils::invertGeometry(occEdge);
+    TopoDS_Edge invertedEdge = TopoDS::Edge(invertedShape);
+    return baseFactory(invertedEdge);
+}
+
+//keep this in sync with enum GeomType
+std::string BaseGeom::geomTypeName()
+{
+    std::vector<std::string> typeNames {
+        "NotDefined",
+        "Circle",
+        "ArcOfCircle",
+        "Ellipse",
+        "ArcOfEllipse",
+        "Bezier",
+        "BSpline",
+        "Line",         //why was this ever called "Generic"?
+        "Unknown" } ;
+    if (geomType >= typeNames.size()) {
+        return "Unknown";
+    }
+    return typeNames.at(geomType);
+}
 
 //! Convert 1 OCC edge into 1 BaseGeom (static factory method)
 BaseGeomPtr BaseGeom::baseFactory(TopoDS_Edge edge)
@@ -523,15 +555,15 @@ std::vector<Base::Vector3d> BaseGeom::intersection(TechDraw::BaseGeomPtr geom2)
     # define isArcOrCircle 2
     // we check the type of the two objects
     int edge1(unknown), edge2(unknown);
-    if (this->geomType == TechDraw::CIRCLE ||
-        this->geomType == TechDraw::ARCOFCIRCLE)
+    if (this->getGeomType() == TechDraw::CIRCLE ||
+        this->getGeomType() == TechDraw::ARCOFCIRCLE)
         edge1 = isArcOrCircle;
-    else if (this->geomType == TechDraw::GENERIC)
+    else if (this->getGeomType() == TechDraw::GENERIC)
         edge1 = isGeneric;
-    if (geom2->geomType == TechDraw::CIRCLE ||
-        geom2->geomType == TechDraw::ARCOFCIRCLE)
+    if (geom2->getGeomType() == TechDraw::CIRCLE ||
+        geom2->getGeomType() == TechDraw::ARCOFCIRCLE)
         edge2 = isArcOrCircle;
-    else if (geom2->geomType == TechDraw::GENERIC)
+    else if (geom2->getGeomType() == TechDraw::GENERIC)
         edge2 = isGeneric;
     // we calculate the intersections
     std::vector<Base::Vector3d> interPoints;
@@ -676,6 +708,14 @@ void BaseGeom::intersectionCC(TechDraw::BaseGeomPtr geom1,
             interPoints.push_back(interPoint2);
         }
     }
+}
+
+TopoShape BaseGeom::asTopoShape(double scale)
+{
+//    Base::Console().Message("BG::asTopoShape(%.3f) - dump: %s\n", scale, dump().c_str());
+    TopoDS_Shape unscaledShape = ShapeUtils::scaleShape(getOCCEdge(), 1.0 / scale);
+    TopoDS_Edge unscaledEdge = TopoDS::Edge(unscaledShape);
+    return unscaledEdge;
 }
 
 Ellipse::Ellipse(const TopoDS_Edge &e)
@@ -1191,15 +1231,12 @@ BSpline::BSpline(const TopoDS_Edge &e)
     }
     else if (approx.HasResult()) { //result, but not within tolerance
         spline = approx.Curve();
-        Base::Console().Log("Geometry::BSpline - result not within tolerance\n");
     }
     else {
         f = c.FirstParameter();
         l = c.LastParameter();
         s = c.Value(f);
         ePt = c.Value(l);
-        Base::Console().Log("Error - Geometry::BSpline - no result- from:(%.3f, %.3f) to:(%.3f, %.3f) poles: %d\n",
-                                s.X(), s.Y(),ePt.X(),ePt.Y(),spline->NbPoles());
         TColgp_Array1OfPnt controlPoints(0, 1);
         controlPoints.SetValue(0, s);
         controlPoints.SetValue(1, ePt);
@@ -1212,9 +1249,6 @@ BSpline::BSpline(const TopoDS_Edge &e)
     for (Standard_Integer i = 1; i <= crt.NbArcs(); ++i) {
         BezierSegment tempSegment;
         Handle(Geom_BezierCurve) bezier = crt.Arc(i);
-        if (bezier->Degree() > 3) {
-            Base::Console().Log("Geometry::BSpline - converted curve degree > 3\n");
-        }
         tempSegment.poles = bezier->NbPoles();
         tempSegment.degree = bezier->Degree();
         for (int pole = 1; pole <= tempSegment.poles; ++pole) {
@@ -1233,235 +1267,20 @@ BSpline::BSpline(const TopoDS_Edge &e)
 // if len(first-last) == sum(len(pi - pi+1)) then it is a line
 bool BSpline::isLine()
 {
-    BRepAdaptor_Curve c(occEdge);
-
-    Handle(Geom_BSplineCurve) spline = c.BSpline();
-    double f = c.FirstParameter();
-    double l = c.LastParameter();
-    gp_Pnt s = c.Value(f);
-    gp_Pnt e = c.Value(l);
-
-    bool samePnt = s.IsEqual(e, FLT_EPSILON);
-    if (samePnt) {
-        return false;
-    }
-
-    Base::Vector3d vs = DrawUtil::toVector3d(s);
-    Base::Vector3d ve = DrawUtil::toVector3d(e);
-    double endLength = (vs - ve).Length();
-    int low = 0;
-    int high = spline->NbPoles() - 1;
-    TColgp_Array1OfPnt poles(low, high);
-    spline->Poles(poles);
-    double lenTotal = 0.0;
-    for (int i = 0; i < high; i++) {
-        gp_Pnt p1 = poles(i);
-        Base::Vector3d v1 = DrawUtil::toVector3d(p1);
-        gp_Pnt p2 = poles(i+1);
-        Base::Vector3d v2 = DrawUtil::toVector3d(p2);
-        lenTotal += (v2-v1).Length();
-    }
-
-    if (DrawUtil::fpCompare(lenTotal, endLength)) {
-        return true;
-    }
-    return false;
+    return GeometryUtils::isLine(occEdge);
 }
 
 //used by DVDim for approximate dims
 bool BSpline::isCircle()
 {
-    bool result = false;
-    double radius;
-    Base::Vector3d center;
-    bool isArc = false;
-    getCircleParms(result, radius, center, isArc);
-    return result;
-}
-
-//used by DVDim for approximate dims
-void BSpline::getCircleParms(bool& isCircle, double& radius, Base::Vector3d& center, bool& isArc)
-{
-    double curveLimit = 0.0001;
-    BRepAdaptor_Curve c(occEdge);
-    Handle(Geom_BSplineCurve) spline = c.BSpline();
-    double f, l;
-    f = c.FirstParameter();
-    l = c.LastParameter();
-    double parmRange = fabs(l - f);
-    int testCount = 6;
-    double parmStep = parmRange/testCount;
-    std::vector<double> curvatures;
-    std::vector<gp_Pnt> centers;
-    gp_Pnt curveCenter;
-    double sumCurvature = 0;
-    Base::Vector3d sumCenter, valueAt;
-    try {
-        GeomLProp_CLProps prop(spline, f, 3, Precision::Confusion());
-        curvatures.push_back(prop.Curvature());
-        sumCurvature += prop.Curvature();
-        prop.CentreOfCurvature(curveCenter);
-        centers.push_back(curveCenter);
-        sumCenter += Base::Vector3d(curveCenter.X(), curveCenter.Y(), curveCenter.Z());
-
-        for (int i = 1; i < (testCount - 1); i++) {
-            prop.SetParameter(parmStep * i);
-            curvatures.push_back(prop.Curvature());
-            sumCurvature += prop.Curvature();
-            prop.CentreOfCurvature(curveCenter);
-            centers.push_back(curveCenter);
-            sumCenter += Base::Vector3d(curveCenter.X(), curveCenter.Y(), curveCenter.Z());
-        }
-        prop.SetParameter(l);
-        curvatures.push_back(prop.Curvature());
-        sumCurvature += prop.Curvature();
-        prop.CentreOfCurvature(curveCenter);
-        centers.push_back(curveCenter);
-        sumCenter += Base::Vector3d(curveCenter.X(), curveCenter.Y(), curveCenter.Z());
-    }
-    catch (Standard_Failure&) {
-        Base::Console().Log("TechDraw - GEO::BSpline::getCircleParms - CLProps failed\n");
-        isCircle = false;
-        return;
-    }
-    Base::Vector3d avgCenter = sumCenter/testCount;
-    double errorCenter = 0;
-    for (auto& c: centers) {
-        errorCenter += (avgCenter - Base::Vector3d(c.X(), c.Y(), c.Z())).Length();
-    }
-    errorCenter = errorCenter/testCount;
-
-    double avgCurve = sumCurvature/testCount;
-    double errorCurve  = 0;
-    for (auto& cv: curvatures) {
-        errorCurve += fabs(avgCurve - cv);    //fabs???
-    }
-    errorCurve  = errorCurve/testCount;
-
-    isArc = !c.IsClosed();
-    isCircle = false;
-    if ( errorCurve < curveLimit ) {
-        isCircle = true;
-        radius = 1.0/avgCurve;
-        center = avgCenter;
-    }
+    return GeometryUtils::isCircle(occEdge);
 }
 
 // make a circular edge from BSpline
 TopoDS_Edge BSpline::asCircle(bool& arc)
 {
-    TopoDS_Edge result;
-    BRepAdaptor_Curve c(occEdge);
-
-    // find the two ends
-    Handle(Geom_Curve) curve = c.Curve().Curve();
-    double f = c.FirstParameter();
-    double l = c.LastParameter();
-    gp_Pnt s = c.Value(f);
-    gp_Pnt e = c.Value(l);
-
-    if (s.IsEqual(e, 0.001)) {    //more reliable
-        arc = false;
-    } else {
-        arc = true;
-    }
-//    arc  = !c.IsClosed();    //reliable?
-
-    Handle(Geom_BSplineCurve) spline = c.BSpline();
-
-    if (spline->NbPoles() < 5) {    //need 5 poles (s-p1-pm-p2-e) for algo
-        return result;              //how to do with fewer poles?
-    }
-
-    try {
-        // get three points on curve (non extreme poles)
-        int nb_poles = spline->NbPoles();
-        gp_Pnt p1 = spline->Pole(2);          //OCC numbering starts at 1!!
-        gp_Pnt p2 = spline->Pole(nb_poles-1);
-        gp_Pnt pm;
-        if (nb_poles == 5) {
-            pm = spline->Pole(3);   //5 poles => 2.5 => 2
-        } else {
-            pm = spline->Pole(nb_poles / 2);
-        }
-
-        // project three poles onto the curve
-        GeomAPI_ProjectPointOnCurve proj1;
-        GeomAPI_ProjectPointOnCurve proj2;
-        GeomAPI_ProjectPointOnCurve projm;
-        proj1.Init(p1, curve, f, l);
-        proj1.Perform(p1);
-        proj2.Init(p2, curve, f, l);
-        proj2.Perform(p2);
-        projm.Init(pm, curve, f, l);
-        projm.Perform(pm);
-        if ( (proj1.NbPoints() == 0) ||
-             (proj2.NbPoints() == 0) ||
-             (projm.NbPoints() == 0) ) {
-            return result;
-        }
-        gp_Pnt pc1, pc2, pcm;
-
-        // get projected points
-        pc1 = proj1.NearestPoint();
-        pc2 = proj2.NearestPoint();
-        pcm = projm.NearestPoint();
-
-        // make 2 circles and find their radii
-        gce_MakeCirc gce_circ1 = gce_MakeCirc(s, pc1, pcm);   //3 point circle
-        if (gce_circ1.Status() != gce_Done) {
-            return result;
-        }
-        gp_Circ circle1 = gce_circ1.Value();
-        double radius1 = circle1.Radius();
-        gp_Pnt center1 = circle1.Location();
-        Base::Vector3d vc1 = DrawUtil::toVector3d(center1);
-
-        gce_MakeCirc gce_circ2 = gce_MakeCirc(pcm, pc2, e);
-        if (gce_circ2.Status() != gce_Done) {
-            return result;
-        }
-        gp_Circ circle2 = gce_circ2.Value();
-        double radius2 = circle2.Radius();
-        gp_Pnt center2 = circle2.Location();
-        Base::Vector3d vc2 = DrawUtil::toVector3d(center2);
-
-        // compare radii & centers
-        double allowError = 0.001;           //mm^-3 good enough for printing
-        double radius;
-        Base::Vector3d center;
-        if ( (DrawUtil::fpCompare(radius2, radius1, allowError)) &&
-             (vc1.IsEqual(vc2, allowError)) ) {
-            if (arc) {
-                GC_MakeArcOfCircle makeArc(s, pcm, e);
-                Handle(Geom_TrimmedCurve) tCurve = makeArc.Value();
-                BRepBuilderAPI_MakeEdge newEdge(tCurve);
-                result = newEdge;
-            } else {
-                radius = (radius1 + radius2) / 2.0;
-                center = (vc1 + vc2) / 2.0;
-                gp_Pnt gCenter(center.x, center.y, center.z);
-                gp_Ax2 stdZ(gCenter, gp_Dir(0, 0, 1));
-                gp_Circ newCirc(stdZ, radius);
-                BRepBuilderAPI_MakeEdge newEdge(newCirc);
-                result = newEdge;
-            }
-        }
-    }
-    catch (const Standard_Failure& e) {
-        Base::Console().Log("Geom::asCircle - OCC error - %s - while approx spline as circle\n",
-                          e.GetMessageString());
-        TopoDS_Edge nullReturn;
-        result = nullReturn;
-    }
-    catch (...) {
-        Base::Console().Log("Geom::asCircle - unknown error occurred while approx spline as circle\n");
-        TopoDS_Edge nullReturn;
-        result = nullReturn;
-    }
-    return result;
+    return GeometryUtils::asCircle(occEdge, arc);
 }
-
 
 bool BSpline::intersectsArc(Base::Vector3d p1, Base::Vector3d p2)
 {
@@ -1491,9 +1310,6 @@ BezierSegment::BezierSegment(const TopoDS_Edge &e)
     Handle(Geom_BezierCurve) bez = c.Bezier();
     poles = bez->NbPoles();
     degree = bez->Degree();
-    if (poles > 4)  {
-        Base::Console().Log("Warning - BezierSegment has degree > 3: %d\n", degree);
-    }
     for (int i = 1; i <= poles; ++i) {
         gp_Pnt controlPoint = bez->Pole(i);
         pnts.emplace_back(controlPoint.X(), controlPoint.Y(), controlPoint.Z());
@@ -1510,28 +1326,28 @@ Vertex::Vertex()
     extractType = ExtractionType::Plain;       //obs?
     hlrVisible = false;
     ref3D = -1;                        //obs. never used.
-    isCenter = false;
+    m_center = false;
     BRepBuilderAPI_MakeVertex mkVert(gp_Pnt(0.0, 0.0, 0.0));
     occVertex = mkVert.Vertex();
     cosmetic = false;
     cosmeticLink = -1;
     cosmeticTag = std::string();
-    reference = false;
+    m_reference = false;
     createNewTag();
 }
 
 Vertex::Vertex(const Vertex* v)
 {
-    pnt = v->pnt;
+    pnt = v->point();
     extractType = v->extractType;       //obs?
     hlrVisible = v->hlrVisible;
     ref3D = v->ref3D;                  //obs. never used.
-    isCenter = v->isCenter;
+    m_center = v->m_center;
     occVertex = v->occVertex;
     cosmetic = v->cosmetic;
     cosmeticLink = v->cosmeticLink;
     cosmeticTag = v->cosmeticTag;
-    reference = false;
+    m_reference = false;
     createNewTag();
 }
 
@@ -1541,13 +1357,13 @@ Vertex::Vertex(double x, double y)
     extractType = ExtractionType::Plain;       //obs?
     hlrVisible = false;
     ref3D = -1;                        //obs. never used.
-    isCenter = false;
+    m_center = false;
     BRepBuilderAPI_MakeVertex mkVert(gp_Pnt(x, y, 0.0));
     occVertex = mkVert.Vertex();
     cosmetic = false;
     cosmeticLink = -1;
     cosmeticTag = std::string();
-    reference = false;
+    m_reference = false;
     createNewTag();
 }
 
@@ -1576,10 +1392,10 @@ void Vertex::Save(Base::Writer &writer) const
                  "\"/>" << endl;
 
     writer.Stream() << writer.ind() << "<Extract value=\"" <<  extractType << "\"/>" << endl;
-    const char v = hlrVisible?'1':'0';
+    const char v = hlrVisible ? '1':'0';
     writer.Stream() << writer.ind() << "<HLRVisible value=\"" <<  v << "\"/>" << endl;
     writer.Stream() << writer.ind() << "<Ref3D value=\"" <<  ref3D << "\"/>" << endl;
-    const char c = isCenter?'1':'0';
+    const char c = m_center ?'1':'0';
     writer.Stream() << writer.ind() << "<IsCenter value=\"" <<  c << "\"/>" << endl;
     const char c2 = cosmetic?'1':'0';
     writer.Stream() << writer.ind() << "<Cosmetic value=\"" <<  c2 << "\"/>" << endl;
@@ -1617,7 +1433,7 @@ void Vertex::Restore(Base::XMLReader &reader)
 
     //will restore read to eof looking for "Reference" in old docs??  YES!!
 //    reader.readElement("Reference");
-//    reference = (bool)reader.getAttributeAsInteger("value")==0?false:true;
+//    m_reference = (bool)reader.getAttributeAsInteger("value")==0?false:true;
 
     reader.readElement("VertexTag");
     std::string temp = reader.getAttribute("value");
@@ -1662,6 +1478,14 @@ void Vertex::dump(const char* title)
                             cosmeticTag.c_str());
 }
 
+TopoShape Vertex::asTopoShape(double scale)
+{
+    Base::Vector3d point = DU::toVector3d(BRep_Tool::Pnt(getOCCVertex()));
+    point = point / scale;
+    BRepBuilderAPI_MakeVertex mkVert(DU::togp_Pnt(point));
+    return TopoShape(mkVert.Vertex());
+}
+
 
 /*static*/
 BaseGeomPtrVector GeometryUtils::chainGeoms(BaseGeomPtrVector geoms)
@@ -1686,16 +1510,13 @@ BaseGeomPtrVector GeometryUtils::chainGeoms(BaseGeomPtrVector geoms)
             if (next.index) { //found an unused edge with vertex == atPoint
                 BaseGeomPtr nextEdge = geoms.at(next.index);
                 used[next.index] = true;
-                nextEdge->reversed = next.reversed;
+                nextEdge->setReversed(next.reversed);
                 result.push_back(nextEdge);
                 if (next.reversed) {
                     atPoint = nextEdge->getStartPoint();
                 } else {
                     atPoint = nextEdge->getEndPoint();
                 }
-            } else {
-                Base::Console().Log("Error - Geometry::chainGeoms - couldn't find next edge\n");
-                //TARFU
             }
         }
     }
@@ -1771,4 +1592,219 @@ TopoDS_Edge GeometryUtils::edgeFromCircleArc(TechDraw::AOCPtr c)
     return aMakeEdge.Edge();
 }
 
+//used by DVDim for approximate dims
+bool GeometryUtils::isCircle(TopoDS_Edge occEdge)
+{
+    double radius;
+    Base::Vector3d center;
+    bool isArc = false;
+    return GeometryUtils::getCircleParms(occEdge, radius, center, isArc);
+}
 
+//tries to interpret a BSpline edge as a circle. Used by DVDim for approximate dimensions.
+bool GeometryUtils::getCircleParms(TopoDS_Edge occEdge, double& radius, Base::Vector3d& center, bool& isArc)
+{
+    double curveLimit = EWTOLERANCE;
+    BRepAdaptor_Curve c(occEdge);
+    Handle(Geom_BSplineCurve) spline = c.BSpline();
+    double f, l;
+    f = c.FirstParameter();
+    l = c.LastParameter();
+    double parmRange = fabs(l - f);
+    int testCount = 6;
+    double parmStep = parmRange/testCount;
+    std::vector<double> curvatures;
+    std::vector<gp_Pnt> centers;
+    gp_Pnt curveCenter;
+    double sumCurvature = 0;
+    Base::Vector3d sumCenter, valueAt;
+    try {
+        GeomLProp_CLProps prop(spline, f, 3, Precision::Confusion());
+        curvatures.push_back(prop.Curvature());
+        sumCurvature += prop.Curvature();
+        prop.CentreOfCurvature(curveCenter);
+        centers.push_back(curveCenter);
+        sumCenter += DrawUtil::toVector3d(curveCenter);
+
+        for (int i = 1; i < (testCount - 1); i++) {
+            prop.SetParameter(parmStep * i);
+            curvatures.push_back(prop.Curvature());
+            sumCurvature += prop.Curvature();
+            prop.CentreOfCurvature(curveCenter);
+            centers.push_back(curveCenter);
+            sumCenter += DrawUtil::toVector3d(curveCenter);
+        }
+        prop.SetParameter(l);
+        curvatures.push_back(prop.Curvature());
+        sumCurvature += prop.Curvature();
+        prop.CentreOfCurvature(curveCenter);
+        centers.push_back(curveCenter);
+        sumCenter += DrawUtil::toVector3d(curveCenter);
+    }
+    catch (Standard_Failure&) {
+        Base::Console().Error("OCC error.  Could not interpret BSpline as Circle\n");
+        return false;
+    }
+    Base::Vector3d avgCenter = sumCenter/testCount;
+
+    double avgCurve = sumCurvature/testCount;
+    double errorCurve  = 0;
+    for (auto& cv: curvatures) {
+        errorCurve += fabs(avgCurve - cv);    //fabs???
+    }
+    errorCurve  = errorCurve/testCount;
+
+    isArc = !c.IsClosed();
+    bool isCircle(false);
+    if ( errorCurve < curveLimit ) {
+        isCircle = true;
+        radius = 1.0/avgCurve;
+        center = avgCenter;
+    }
+    return isCircle;
+}
+
+// make a circle or arc of circle Edge from BSpline Edge
+TopoDS_Edge GeometryUtils::asCircle(TopoDS_Edge occEdge, bool& arc)
+{
+    TopoDS_Edge result;
+    BRepAdaptor_Curve c(occEdge);
+
+    // find the two ends
+    Handle(Geom_Curve) curve = c.Curve().Curve();
+    double f = c.FirstParameter();
+    double l = c.LastParameter();
+    gp_Pnt s = c.Value(f);
+    gp_Pnt e = c.Value(l);
+
+    if (s.IsEqual(e, 0.001)) {    //more reliable
+        arc = false;
+    } else {
+        arc = true;
+    }
+    //    arc  = !c.IsClosed();    //reliable?
+
+    Handle(Geom_BSplineCurve) spline = c.BSpline();
+
+    if (spline->NbPoles() < 5) {    //need 5 poles (s-p1-pm-p2-e) for algo
+        return result;              //how to do with fewer poles?
+    }
+
+    try {
+        // get three points on curve (non extreme poles)
+        int nb_poles = spline->NbPoles();
+        gp_Pnt p1 = spline->Pole(2);          //OCC numbering starts at 1!!
+        gp_Pnt p2 = spline->Pole(nb_poles-1);
+        gp_Pnt pm;
+        if (nb_poles == 5) {
+            pm = spline->Pole(3);   //5 poles => 2.5 => 2
+        } else {
+            pm = spline->Pole(nb_poles / 2);
+        }
+
+        // project three poles onto the curve
+        GeomAPI_ProjectPointOnCurve proj1;
+        GeomAPI_ProjectPointOnCurve proj2;
+        GeomAPI_ProjectPointOnCurve projm;
+        proj1.Init(p1, curve, f, l);
+        proj1.Perform(p1);
+        proj2.Init(p2, curve, f, l);
+        proj2.Perform(p2);
+        projm.Init(pm, curve, f, l);
+        projm.Perform(pm);
+        if ( (proj1.NbPoints() == 0) ||
+            (proj2.NbPoints() == 0) ||
+            (projm.NbPoints() == 0) ) {
+            return result;
+        }
+        gp_Pnt pc1, pc2, pcm;
+
+        // get projected points
+        pc1 = proj1.NearestPoint();
+        pc2 = proj2.NearestPoint();
+        pcm = projm.NearestPoint();
+
+        // make 2 circles and find their radii
+        gce_MakeCirc gce_circ1 = gce_MakeCirc(s, pc1, pcm);   //3 point circle
+        if (gce_circ1.Status() != gce_Done) {
+            return result;
+        }
+        gp_Circ circle1 = gce_circ1.Value();
+        double radius1 = circle1.Radius();
+        gp_Pnt center1 = circle1.Location();
+        Base::Vector3d vc1 = DrawUtil::toVector3d(center1);
+
+        gce_MakeCirc gce_circ2 = gce_MakeCirc(pcm, pc2, e);
+        if (gce_circ2.Status() != gce_Done) {
+            return result;
+        }
+        gp_Circ circle2 = gce_circ2.Value();
+        double radius2 = circle2.Radius();
+        gp_Pnt center2 = circle2.Location();
+        Base::Vector3d vc2 = DrawUtil::toVector3d(center2);
+
+        // compare radii & centers
+        double allowError = 0.001;           //mm^-3 good enough for printing
+        double radius;
+        Base::Vector3d center;
+        if ( (DrawUtil::fpCompare(radius2, radius1, allowError)) &&
+            (vc1.IsEqual(vc2, allowError)) ) {
+            if (arc) {
+                GC_MakeArcOfCircle makeArc(s, pcm, e);
+                Handle(Geom_TrimmedCurve) tCurve = makeArc.Value();
+                BRepBuilderAPI_MakeEdge mkEdge(tCurve);
+                result = mkEdge.Edge();
+            } else {
+                radius = (radius1 + radius2) / 2.0;
+                center = (vc1 + vc2) / 2.0;
+                gp_Pnt gCenter(center.x, center.y, center.z);
+                gp_Ax2 stdZ(gCenter, gp_Dir(0, 0, 1));
+                gp_Circ newCirc(stdZ, radius);
+                BRepBuilderAPI_MakeEdge mkEdge(newCirc);
+                result = mkEdge.Edge();
+            }
+        }
+    }
+    catch (...) {
+        // return null shape to indicate that we could not make a circle from this bspline
+        return TopoDS_Edge();
+    }
+    return result;
+}
+
+bool GeometryUtils::isLine(TopoDS_Edge occEdge)
+{
+    BRepAdaptor_Curve c(occEdge);
+
+    Handle(Geom_BSplineCurve) spline = c.BSpline();
+    double f = c.FirstParameter();
+    double l = c.LastParameter();
+    gp_Pnt s = c.Value(f);
+    gp_Pnt e = c.Value(l);
+
+    bool samePnt = s.IsEqual(e, FLT_EPSILON);
+    if (samePnt) {
+        return false;
+    }
+
+    Base::Vector3d vs = DrawUtil::toVector3d(s);
+    Base::Vector3d ve = DrawUtil::toVector3d(e);
+    double endLength = (vs - ve).Length();
+    int low = 0;
+    int high = spline->NbPoles() - 1;
+    TColgp_Array1OfPnt poles(low, high);
+    spline->Poles(poles);
+    double lenTotal = 0.0;
+    for (int i = 0; i < high; i++) {
+        gp_Pnt p1 = poles(i);
+        Base::Vector3d v1 = DrawUtil::toVector3d(p1);
+        gp_Pnt p2 = poles(i+1);
+        Base::Vector3d v2 = DrawUtil::toVector3d(p2);
+        lenTotal += (v2-v1).Length();
+    }
+
+    if (DrawUtil::fpCompare(lenTotal, endLength)) {
+        return true;
+    }
+    return false;
+}

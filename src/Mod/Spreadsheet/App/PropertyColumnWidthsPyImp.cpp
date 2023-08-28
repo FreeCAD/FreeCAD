@@ -33,12 +33,12 @@ using namespace Spreadsheet;
 // returns a string which represents the object e.g. when printed in python
 std::string PropertyColumnWidthsPy::representation() const
 {
-    return std::string("<PropertyColumnWidths object>");
+    return {"<PropertyColumnWidths object>"};
 }
 
 PyObject *PropertyColumnWidthsPy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // Python wrapper
 {
-    // create a new instance of PropertyColumnWidthsPy and the Twin object 
+    // create a new instance of PropertyColumnWidthsPy and the Twin object
     return new PropertyColumnWidthsPy(new PropertyColumnWidths);
 }
 
@@ -55,5 +55,5 @@ PyObject *PropertyColumnWidthsPy::getCustomAttributes(const char* /*attr*/) cons
 
 int PropertyColumnWidthsPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
 {
-    return 0; 
+    return 0;
 }

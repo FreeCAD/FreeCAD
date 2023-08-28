@@ -43,22 +43,36 @@ QT_END_NAMESPACE
 namespace TechDrawGui
 {
 
+#define DECORNODRAG 0
+#define DECORDRAGSTARTED 1
+#define DECORDRAGGING 2
+
 class TechDrawGuiExport QGIDecoration : public QGraphicsItemGroup
 {
 public:
-    explicit QGIDecoration(void);
-    ~QGIDecoration() {}
+    explicit QGIDecoration();
+    ~QGIDecoration() override = default;
     enum {Type = QGraphicsItem::UserType + 173};
-    int type() const { return Type;}
+    int type() const override { return Type;}
 
-    virtual QRectF boundingRect() const;
-    virtual void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = nullptr );
+    QRectF boundingRect() const override;
+    void paint(QPainter * painter,
+               const QStyleOptionGraphicsItem * option,
+               QWidget * widget = nullptr ) override;
     virtual void draw();
+
+    // Mouse handling
+    void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
+    void mouseMoveEvent(QGraphicsSceneMouseEvent *event) override;
+    void mouseReleaseEvent(QGraphicsSceneMouseEvent *event) override;
+
+    virtual void onDragFinished();
+
     void setWidth(double w);
     double getWidth() { return m_width; }
     void setStyle(Qt::PenStyle s);
     void setColor(QColor c);
-    QColor getColor(void) { return m_colNormal; }
+    QColor getColor() { return m_colNormal; }
     void setFill(Qt::BrushStyle bs) { m_brushCurrent = bs; }
     void makeMark(double x, double y);
     void makeMark(Base::Vector3d v);
@@ -67,9 +81,9 @@ protected:
     void setPrettyNormal();
     void setPrettyPre();
     void setPrettySel();
-    virtual QColor prefNormalColor(void);
-    virtual QColor prefPreColor(void);
-    virtual QColor prefSelectColor(void);
+    virtual QColor prefNormalColor();
+    virtual QColor prefPreColor();
+    virtual QColor prefSelectColor();
     QPen m_pen;
     QBrush m_brush;
     QColor m_colCurrent;
@@ -77,6 +91,8 @@ protected:
     double m_width;
     Qt::PenStyle m_styleCurrent;
     Qt::BrushStyle m_brushCurrent;
+
+    int m_dragState;
 
 private:
 };

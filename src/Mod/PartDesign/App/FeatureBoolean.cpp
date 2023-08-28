@@ -75,7 +75,7 @@ App::DocumentObjectExecReturn *Boolean::execute()
     const Part::Feature* baseFeature = this->getBaseObject(/* silent = */ true);
 
     if (!baseFeature && type == "Cut") {
-        return new App::DocumentObjectExecReturn("Cannot do boolean cut without BaseFeature");
+        return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Cannot do boolean cut without BaseFeature"));
     }
 
     std::vector<App::DocumentObject*> tools = Group.getValues();
@@ -89,56 +89,56 @@ App::DocumentObjectExecReturn *Boolean::execute()
     else {
         auto feature = tools.back();
         if(!feature->isDerivedFrom(Part::Feature::getClassTypeId()))
-            return new App::DocumentObjectExecReturn("Cannot do boolean with anything but Part::Feature and its derivatives");
+            return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Cannot do boolean with anything but Part::Feature and its derivatives"));
 
         baseTopShape = static_cast<Part::Feature*>(feature)->Shape.getShape();
         tools.pop_back();
     }
 
     if (baseTopShape.getShape().IsNull())
-        return new App::DocumentObjectExecReturn("Cannot do boolean operation with invalid base shape");
+        return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Cannot do boolean operation with invalid base shape"));
 
     //get the body this boolean feature belongs to
     Part::BodyBase* baseBody = Part::BodyBase::findBodyOf(this);
 
     if(!baseBody)
-         return new App::DocumentObjectExecReturn("Cannot do boolean on feature which is not in a body");
+         return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Cannot do boolean on feature which is not in a body"));
 
     TopoDS_Shape result = baseTopShape.getShape();
 
     for (auto tool : tools)
     {
         if(!tool->isDerivedFrom(Part::Feature::getClassTypeId()))
-            return new App::DocumentObjectExecReturn("Cannot do boolean with anything but Part::Feature and its derivatives");
+            return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Cannot do boolean with anything but Part::Feature and its derivatives"));
 
         TopoDS_Shape shape = static_cast<Part::Feature*>(tool)->Shape.getValue();
         TopoDS_Shape boolOp;
 
         // Must not pass null shapes to the boolean operations
         if (result.IsNull())
-            return new App::DocumentObjectExecReturn("Base shape is null");
+            return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Base shape is null"));
 
         if (shape.IsNull())
-            return new App::DocumentObjectExecReturn("Tool shape is null");
+            return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Tool shape is null"));
 
         if (type == "Fuse") {
             BRepAlgoAPI_Fuse mkFuse(result, shape);
             if (!mkFuse.IsDone())
-                return new App::DocumentObjectExecReturn("Fusion of tools failed");
+                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Fusion of tools failed"));
             // we have to get the solids (fuse sometimes creates compounds)
             boolOp = this->getSolid(mkFuse.Shape());
             // lets check if the result is a solid
             if (boolOp.IsNull())
-                return new App::DocumentObjectExecReturn("Resulting shape is not a solid");
+                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Resulting shape is not a solid"));
         } else if (type == "Cut") {
             BRepAlgoAPI_Cut mkCut(result, shape);
             if (!mkCut.IsDone())
-                return new App::DocumentObjectExecReturn("Cut out failed");
+                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Cut out failed"));
             boolOp = mkCut.Shape();
         } else if (type == "Common") {
             BRepAlgoAPI_Common mkCommon(result, shape);
             if (!mkCommon.IsDone())
-                return new App::DocumentObjectExecReturn("Common operation failed");
+                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Common operation failed"));
             boolOp = mkCommon.Shape();
         }
 
@@ -149,7 +149,7 @@ App::DocumentObjectExecReturn *Boolean::execute()
 
     int solidCount = countSolids(result);
     if (solidCount > 1) {
-        return new App::DocumentObjectExecReturn("Boolean: Result has multiple solids. This is not supported at this time.");
+        return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Result has multiple solids: that is not currently supported."));
     }
 
     this->Shape.setValue(getSolid(result));

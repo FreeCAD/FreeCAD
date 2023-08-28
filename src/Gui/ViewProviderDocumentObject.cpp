@@ -58,8 +58,6 @@ using namespace Gui;
 PROPERTY_SOURCE(Gui::ViewProviderDocumentObject, Gui::ViewProvider)
 
 ViewProviderDocumentObject::ViewProviderDocumentObject()
-  : pcObject(nullptr)
-  , pcDocument(nullptr)
 {
     static const char *dogroup = "Display Options";
     static const char *sgroup = "Selection";
@@ -272,7 +270,9 @@ void ViewProviderDocumentObject::addDefaultAction(QMenu* menu, const QString& te
     QAction* act = menu->addAction(text);
     act->setData(QVariant((int)ViewProvider::Default));
     auto func = new Gui::ActionFunction(menu);
-    func->trigger(act, std::bind(&ViewProviderDocumentObject::startDefaultEditMode, this));
+    func->trigger(act, [this](){
+        this->startDefaultEditMode();
+    });
 }
 
 void ViewProviderDocumentObject::setModeSwitch() {
@@ -344,8 +344,8 @@ void ViewProviderDocumentObject::attach(App::DocumentObject *pcObj)
     // We must collect the const char* of the strings and give it to PropertyEnumeration,
     // but we are still responsible for them, i.e. the property class must not delete the literals.
     //for (auto it = aDisplayModesArray.begin(); it != aDisplayModesArray.end(); ++it) {
-    for (std::vector<std::string>::iterator it = aDisplayModesArray.begin(); it != aDisplayModesArray.end(); ++it) {
-        aDisplayEnumsArray.push_back( it->c_str() );
+    for (const auto & it : aDisplayModesArray) {
+        aDisplayEnumsArray.push_back( it.c_str() );
     }
     aDisplayEnumsArray.push_back(nullptr); // null termination
     DisplayMode.setEnums(&(aDisplayEnumsArray[0]));

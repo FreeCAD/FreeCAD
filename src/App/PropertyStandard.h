@@ -310,7 +310,7 @@ public:
     void setPyObject(PyObject *) override;
 
 protected:
-    const Constraints* _ConstStruct;
+    const Constraints* _ConstStruct{nullptr};
 };
 
 /** Percent property
@@ -613,7 +613,7 @@ public:
     void setPyObject(PyObject *) override;
 
 protected:
-    const Constraints* _ConstStruct;
+    const Constraints* _ConstStruct{nullptr};
 };
 
 
@@ -725,7 +725,7 @@ protected:
 };
 
 /** UUID properties
- * This property handles unique identifieers
+ * This property handles unique identifiers
  */
 class AppExport PropertyUUID: public Property
 {

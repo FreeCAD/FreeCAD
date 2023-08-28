@@ -36,7 +36,7 @@ class NumberExpression;
 
 namespace Gui {
 
-class GuiExport ExpressionSpinBox : public ExpressionBinding
+class GuiExport ExpressionSpinBox : public ExpressionWidget
 {
 public:
     explicit ExpressionSpinBox(QAbstractSpinBox*);
@@ -136,7 +136,7 @@ public:
     void paintEvent(QPaintEvent *event) override;
 
 Q_SIGNALS:
-    void valueChanged( uint value ); // clazy:exclude=overloaded-signal
+    void unsignedChanged( uint value );
 
 public Q_SLOTS:
     void setValue( uint value );

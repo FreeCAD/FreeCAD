@@ -26,10 +26,16 @@ set(DrawingGui_UIC_SRCS
     TaskOrthoViews.ui
 )
 
-qt_add_resources(DrawingGui_SRCS Resources/Drawing.qrc)
+set (Drawing_TR_QRC ${CMAKE_CURRENT_BINARY_DIR}/Resources/Drawing_translation.qrc)
+qt_find_and_add_translation(QM_SRCS "Resources/translations/*_*.ts"
+    ${CMAKE_CURRENT_BINARY_DIR}/Resources/translations)
+qt_create_resource_file(${Drawing_TR_QRC} ${QM_SRCS})
+qt_add_resources(DrawingGui_SRCS Resources/Drawing.qrc ${Drawing_TR_QRC})
 
 SET(DrawingGui_SRCS
     ${DrawingGui_SRCS}
+    ${QM_SRCS}
+    ${Drawing_TR_QRC}
     AppDrawingGui.cpp
     AppDrawingGuiPy.cpp
     Command.cpp
@@ -63,6 +69,18 @@ SET(DrawingGuiTaskDlgs_SRCS
     TaskOrthoViews.ui
 )
 SOURCE_GROUP("TaskDialogs" FILES ${DrawingGuiTaskDlgs_SRCS})
+
+SET(DrawingGuiComplete_SRCS
+    ${DrawingGui_SRCS}
+    ${DrawingGuiView_SRCS}
+    ${DrawingGuiViewProvider_SRCS}
+)
+
+if(FREECAD_USE_PCH)
+    add_definitions(-D_PreComp_)
+    GET_MSVC_PRECOMPILED_SOURCE("PreCompiled.cpp" PCH_SRCS ${DrawingGuiComplete_SRCS})
+    ADD_MSVC_PRECOMPILED_HEADER(DrawingGui PreCompiled.h PreCompiled.cpp PCH_SRCS)
+endif(FREECAD_USE_PCH)
 
 SET(DrawingGuiIcon_SVG
     Resources/icons/DrawingWorkbench.svg

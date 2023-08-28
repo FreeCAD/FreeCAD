@@ -38,13 +38,9 @@ using namespace Gui;
 
 TYPESYSTEM_SOURCE(Gui::TinkerCADNavigationStyle, Gui::UserNavigationStyle)
 
-TinkerCADNavigationStyle::TinkerCADNavigationStyle()
-{
-}
+TinkerCADNavigationStyle::TinkerCADNavigationStyle() = default;
 
-TinkerCADNavigationStyle::~TinkerCADNavigationStyle()
-{
-}
+TinkerCADNavigationStyle::~TinkerCADNavigationStyle() = default;
 
 const char* TinkerCADNavigationStyle::mouseButtons(ViewerMode mode)
 {

@@ -149,7 +149,7 @@ class ColorPickerButton : public QFrame
     Q_OBJECT
 
 public:
-    ColorPickerButton(QWidget *parent);
+    explicit ColorPickerButton(QWidget *parent);
 
 Q_SIGNALS:
     void clicked();
@@ -292,12 +292,11 @@ QtColorPicker::QtColorPicker(QWidget *parent,
 
     // Create color grid popup and connect to it.
     popup = new ColorPickerPopup(cols, withColorDialog, this);
-    connect(popup, SIGNAL(selected(const QColor &)),
-        SLOT(setCurrentColor(const QColor &)));
-    connect(popup, SIGNAL(hid()), SLOT(popupClosed()));
+    connect(popup, &ColorPickerPopup::selected, this, &QtColorPicker::setCurrentColor);
+    connect(popup, &ColorPickerPopup::hid, this, &QtColorPicker::popupClosed);
 
     // Connect this push button's pressed() signal.
-    connect(this, SIGNAL(toggled(bool)), SLOT(buttonPressed(bool)));
+    connect(this, &QtColorPicker::toggled, this, &QtColorPicker::buttonPressed);
 }
 
 /*!
@@ -360,8 +359,8 @@ void QtColorPicker::paintEvent(QPaintEvent *e)
 
         QPainter p(&pix);
 
-        int w = pix.width();			// width of cell in pixels
-        int h = pix.height();			// height of cell in pixels
+        int w = pix.width();            // width of cell in pixels
+        int h = pix.height();           // height of cell in pixels
         p.setPen(QPen(Qt::gray));
         p.setBrush(col);
         p.drawRect(2, 2, w - 5, h - 5);
@@ -559,13 +558,14 @@ ColorPickerPopup::ColorPickerPopup(int width, bool withColorDialog,
     cols = width;
 
     if (withColorDialog) {
-    moreButton = new ColorPickerButton(this);
-    moreButton->setFixedWidth(24);
-    moreButton->setFixedHeight(21);
-    moreButton->setFrameRect(QRect(2, 2, 20, 17));
-    connect(moreButton, SIGNAL(clicked()), SLOT(getColorFromDialog()));
-    } else {
-    moreButton = nullptr;
+        moreButton = new ColorPickerButton(this);
+        moreButton->setFixedWidth(24);
+        moreButton->setFixedHeight(21);
+        moreButton->setFrameRect(QRect(2, 2, 20, 17));
+        connect(moreButton, &ColorPickerButton::clicked, this, &ColorPickerPopup::getColorFromDialog);
+    }
+    else {
+        moreButton = nullptr;
     }
 
     eventLoop = nullptr;
@@ -629,10 +629,10 @@ void ColorPickerPopup::insertColor(const QColor &col, const QString &text, int i
     }
     item->setFocus();
 
-    connect(item, SIGNAL(selected()), SLOT(updateSelected()));
+    connect(item, &ColorPickerItem::selected, this, &ColorPickerPopup::updateSelected);
 
     if (index == -1)
-    index = items.count();
+        index = items.count();
 
     items.insert((unsigned int)index, item);
     regenerateGrid();
@@ -1025,8 +1025,8 @@ void ColorPickerItem::mousePressEvent(QMouseEvent *)
 void ColorPickerItem::paintEvent(QPaintEvent *)
 {
     QPainter p(this);
-    int w = width();			// width of cell in pixels
-    int h = height();			// height of cell in pixels
+    int w = width();            // width of cell in pixels
+    int h = height();           // height of cell in pixels
 
     p.setPen( QPen( Qt::gray, 0, Qt::SolidLine ) );
 

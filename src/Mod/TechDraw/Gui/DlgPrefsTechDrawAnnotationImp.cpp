@@ -48,8 +48,8 @@ DlgPrefsTechDrawAnnotationImp::DlgPrefsTechDrawAnnotationImp( QWidget* parent )
     ui->pdsbBalloonKink->setMinimum(0);
 
     // connect the LineGroup the update the tooltip if index changed
-    connect(ui->pcbLineGroup, SIGNAL(currentIndexChanged(int)),
-        this, SLOT(onLineGroupChanged(int)));
+    connect(ui->pcbLineGroup, qOverload<int>(&QComboBox::currentIndexChanged),
+            this, &DlgPrefsTechDrawAnnotationImp::onLineGroupChanged);
 }
 
 DlgPrefsTechDrawAnnotationImp::~DlgPrefsTechDrawAnnotationImp()

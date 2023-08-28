@@ -92,7 +92,7 @@ class OpenSCADWorkbench(Workbench):
             import OpenSCADUtils
 
             openscadfilename = OpenSCADUtils.searchforopenscadexe()
-            if openscadfilename:  # automatic search was succsessful
+            if openscadfilename:  # automatic search was successful
                 FreeCAD.addImportType("OpenSCAD Format (*.scad)", "importCSG")
                 param.SetString(
                     "openscadexecutable", openscadfilename
@@ -149,11 +149,11 @@ class OpenSCADWorkbench(Workbench):
                 )
 
         self.appendToolbar(
-            QT_TRANSLATE_NOOP("Workbench", "OpenSCADTools"), toolbarcommands
+            QT_TRANSLATE_NOOP("Workbench", "OpenSCAD Tools"), toolbarcommands
         )
         self.appendMenu("OpenSCAD", commands)
         self.appendToolbar(
-            QT_TRANSLATE_NOOP("Workbech", "OpenSCAD Part tools"), parttoolbarcommands
+            QT_TRANSLATE_NOOP("Workbench", "Frequently-used Part WB tools"), parttoolbarcommands
         )
         # self.appendMenu('OpenSCAD',["AddOpenSCADElement"])
         ###self.appendCommandbar("&Generic Tools",["ColorCodeShape"])

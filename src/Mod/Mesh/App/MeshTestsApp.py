@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
 #  Copyright (c) 2007 Jürgen Riegel <juergen.riegel@web.de>
@@ -228,7 +228,7 @@ class MeshSplitTestCases(unittest.TestCase):
         results = self.mesh.foraminate((0.0, 0.0, 0.0), (0,1,1))
         filtered_result = list(filter(FilterAngle(self.mesh, FreeCAD.Vector(0,1,1), math.pi/2).check_angle, results.keys()))
 
-        self.assertEqual(filtered_result, list(self.mesh.foraminate((0.0, 0.0, 0.0), (0,1,1), math.pi/2).keys()))
+        self.assertEqual(filtered_result, list(self.mesh.foraminate((0.0, 0.0, 0.0), (0,1,1), math.pi/2)))
 
     def testForaminatePlacement(self):
         pnt = Base.Vector(0.0, 0.0, 0.0)
@@ -246,7 +246,7 @@ class MeshSplitTestCases(unittest.TestCase):
         vec = plm.Rotation.multVec(vec)
         results2 = self.mesh.foraminate(pnt, vec)
         self.assertEqual(len(results2), 4)
-        self.assertEqual(list(results.keys()), list(results2.keys()))
+        self.assertEqual(list(results), list(results2))
 
 class MeshGeoTestCases(unittest.TestCase):
     def setUp(self):

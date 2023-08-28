@@ -29,11 +29,10 @@
 #include <App/Document.h>
 #include <Base/GeometryPyCXX.h>
 
-#include "Measurement.h"
-
 // inclusion of the generated files (generated out of SketchObjectSFPy.xml)
 #include "MeasurementPy.h"
 #include "MeasurementPy.cpp"
+
 
 using namespace Measure;
 

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2020 WandererFan <wandererfan@gmail.com                 *
+ *   Copyright (c) 2020 WandererFan <wandererfan@gmail.com>                *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -28,7 +28,6 @@
 
 #include "DrawViewDimension.h"
 
-
 class TopoDS_Shape;
 class gp_Ax2;
 
@@ -56,12 +55,7 @@ public:
 
     const char* getViewProviderName() const override {
         return "TechDrawGui::ViewProviderDimension"; }
-/*    virtual PyObject *getPyObject(void) override;*/
 
-    bool checkReferences2D() const override;
-    bool has2DReferences() const override;
-    pointPair getPointsTwoVerts() override;
-    std::vector<Base::Vector3d> get2DPoints() const;
     DrawViewPart* getViewPart() const override;
     int getRefType() const override;
 

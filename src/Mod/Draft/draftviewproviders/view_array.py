@@ -28,6 +28,7 @@
 ## \addtogroup draftviewproviders
 # @{
 from draftviewproviders.view_base import ViewProviderDraft
+from draftutils import gui_utils
 
 
 class ViewProviderDraftArray(ViewProviderDraft):
@@ -52,26 +53,22 @@ class ViewProviderDraftArray(ViewProviderDraft):
             return ":/icons/Draft_PathArray.svg"
 
     def resetColors(self, vobj):
-        colors = []
-        if vobj.Object.Base:
-            if vobj.Object.Base.isDerivedFrom("Part::Feature"):
-                if len(vobj.Object.Base.ViewObject.DiffuseColor) > 1:
-                    colors = vobj.Object.Base.ViewObject.DiffuseColor
-                else:
-                    c = vobj.Object.Base.ViewObject.ShapeColor
-                    c = (c[0],c[1],c[2],vobj.Object.Base.ViewObject.Transparency/100.0)
-                    colors += [c] * len(vobj.Object.Base.Shape.Faces)
-        if colors:
-            n = 1
-            if hasattr(vobj.Object,"ArrayType"):
-                if vobj.Object.ArrayType == "ortho":
-                    n = vobj.Object.NumberX * vobj.Object.NumberY * vobj.Object.NumberZ
-                else:
-                    n = vobj.Object.NumberPolar
-            elif hasattr(vobj.Object,"Count"):
-                n = vobj.Object.Count
-            colors = colors * n
-            vobj.DiffuseColor = colors
+        obj = vobj.Object
+        if obj.Base is not None:
+            colors = gui_utils.get_diffuse_color(obj.Base)
+            if colors:
+                n = 1
+                if hasattr(obj, "ArrayType"):
+                    if obj.ArrayType == "ortho":
+                        n = obj.NumberX * obj.NumberY * obj.NumberZ
+                    elif obj.ArrayType == "polar":
+                        n = obj.NumberPolar
+                    else: # "circular"
+                        n = obj.Count
+                elif hasattr(obj, "Count"):
+                    n = obj.Count
+                colors = colors * n
+                vobj.DiffuseColor = colors
 
 
 # Alias for compatibility with v0.18 and earlier

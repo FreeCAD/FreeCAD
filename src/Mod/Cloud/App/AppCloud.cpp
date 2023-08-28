@@ -1241,7 +1241,7 @@ bool Cloud::Module::cloudSave(const char *BucketName)
             mywriter.setMode("BinaryBrep");
         mywriter.Stream() << "<?xml version='1.0' encoding='utf-8'?>" << endl
                         << "<!--" << endl
-                        << " FreeCAD Document, see https://www.freecadweb.org for more information..." << endl
+                        << " FreeCAD Document, see https://www.freecad.org for more information..." << endl
                         << "-->" << endl;
         doc->Save(mywriter);
 

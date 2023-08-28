@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Eivind Kvedalen (eivind@kvedalen.name) 2015             *
+ *   Copyright (c) 2015 Eivind Kvedalen <eivind@kvedalen.name>             *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -35,8 +35,8 @@ namespace SpreadsheetGui {
 class SheetViewHeader : public QHeaderView {
     Q_OBJECT
 public:
-    SheetViewHeader(QTableView *owner, Qt::Orientation o) 
-        : QHeaderView(o),owner(owner) 
+    SheetViewHeader(QTableView *owner, Qt::Orientation o)
+        : QHeaderView(o),owner(owner)
     {
         setSectionsClickable(true);
     }
@@ -55,7 +55,7 @@ class SheetTableView : public QTableView
 public:
     explicit SheetTableView(QWidget *parent = nullptr);
     ~SheetTableView() override;
-    
+
     void edit(const QModelIndex &index);
     void setSheet(Spreadsheet::Sheet *_sheet);
     std::vector<App::Range> selectedRanges() const;

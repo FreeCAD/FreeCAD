@@ -27,6 +27,7 @@
 # include <cmath>
 # include <cstdlib>
 # include <sstream>
+# include <boost/regex.hpp>
 
 # include <APIHeaderSection_MakeHeader.hxx>
 # include <BinTools.hxx>
@@ -144,16 +145,11 @@
 # include <XSControl_TransferWriter.hxx>
 # include <XSControl_WorkSession.hxx>
 
-#if OCC_VERSION_HEX < 0x070300
-# include <BRepAlgo_Fuse.hxx>
-#endif
 
 # include <BOPAlgo_ArgumentAnalyzer.hxx>
 # include <BOPAlgo_ListOfCheckResult.hxx>
 
-#if OCC_VERSION_HEX >= 0x070300
 # include <BRepAlgoAPI_Defeaturing.hxx>
-#endif
 
 #if OCC_VERSION_HEX < 0x070600
 # include <BRepAdaptor_HCurve.hxx>
@@ -165,12 +161,15 @@
 #endif // _PreComp_
 
 #include <App/Material.h>
+#include <App/ElementNamingUtils.h>
 #include <Base/BoundBox.h>
 #include <Base/Builder3D.h>
 #include <Base/Console.h>
 #include <Base/Exception.h>
 #include <Base/Placement.h>
 #include <Base/Tools.h>
+#include <Base/Reader.h>
+#include <Base/Writer.h>
 
 #include "TopoShape.h"
 #include "BRepOffsetAPI_MakeOffsetFix.h"
@@ -272,20 +271,16 @@ TYPESYSTEM_SOURCE(Part::ShapeSegment , Data::Segment)
 
 std::string ShapeSegment::getName() const
 {
-    return std::string();
+    return {};
 }
 
 // ------------------------------------------------
 
 TYPESYSTEM_SOURCE(Part::TopoShape , Data::ComplexGeoData)
 
-TopoShape::TopoShape()
-{
-}
+TopoShape::TopoShape() = default;
 
-TopoShape::~TopoShape()
-{
-}
+TopoShape::~TopoShape() = default;
 
 TopoShape::TopoShape(const TopoDS_Shape& shape)
   : _Shape(shape)
@@ -296,6 +291,21 @@ TopoShape::TopoShape(const TopoShape& shape)
   : _Shape(shape._Shape)
 {
     Tag = shape.Tag;
+}
+
+std::pair<std::string, unsigned long> TopoShape::getElementTypeAndIndex(const char* Name)
+{
+    int index = 0;
+    std::string element;
+    boost::regex ex("^(Face|Edge|Vertex)([1-9][0-9]*)$");
+    boost::cmatch what;
+
+    if (Name && boost::regex_match(Name, what, ex)) {
+        element = what[1].str();
+        index = std::atoi(what[2].str().c_str());
+    }
+
+    return std::make_pair(element, index);
 }
 
 std::vector<const char*> TopoShape::getElementTypes() const
@@ -327,13 +337,13 @@ TopoDS_Shape TopoShape::getSubShape(TopAbs_ShapeEnum type, int index, bool silen
 {
     if(index <= 0) {
         if(silent)
-            return TopoDS_Shape();
+            return {};
         Standard_Failure::Raise("Unsupported sub-shape type");
     }
 
     if (this->_Shape.IsNull()) {
         if(silent)
-            return TopoDS_Shape();
+            return {};
         Standard_Failure::Raise("Cannot get sub-shape from empty shape");
     }
 
@@ -352,12 +362,12 @@ TopoDS_Shape TopoShape::getSubShape(TopAbs_ShapeEnum type, int index, bool silen
         }
     } catch(Standard_Failure &) {
         if(silent)
-            return TopoDS_Shape();
+            return {};
         throw;
     }
     if(!silent)
         Standard_Failure::Raise("Index out of bound");
-    return TopoDS_Shape();
+    return {};
 }
 
 unsigned long TopoShape::countSubShapes(const char* Type) const
@@ -475,7 +485,7 @@ TopAbs_ShapeEnum TopoShape::shapeType(const char *type, bool silent) {
         }
     }
     if(!silent) {
-        if(Data::ComplexGeoData::hasMissingElement(type))
+        if(Data::hasMissingElement(type))
             FC_THROWM(Base::CADKernelError,"missing shape element: " << (type?type:"?"));
         FC_THROWM(Base::CADKernelError,"invalid shape type: " << (type?type:"?"));
     }
@@ -695,14 +705,14 @@ void TopoShape::read(const char *FileName)
     if (!File.isReadable())
         throw Base::FileException("File to load not existing or not readable", FileName);
 
-    if (File.hasExtension("igs") || File.hasExtension("iges")) {
+    if (File.hasExtension({"igs", "iges"})) {
         // read iges file
         importIges(File.filePath().c_str());
     }
-    else if (File.hasExtension("stp") || File.hasExtension("step")) {
+    else if (File.hasExtension({"stp", "step"})) {
         importStep(File.filePath().c_str());
     }
-    else if (File.hasExtension("brp") || File.hasExtension("brep")) {
+    else if (File.hasExtension({"brp", "brep"})) {
         // read brep-file
         importBrep(File.filePath().c_str());
     }
@@ -885,14 +895,14 @@ void TopoShape::write(const char *FileName) const
 {
     Base::FileInfo File(FileName);
 
-    if (File.hasExtension("igs") || File.hasExtension("iges")) {
+    if (File.hasExtension({"igs", "iges"})) {
         // write iges file
         exportIges(File.filePath().c_str());
     }
-    else if (File.hasExtension("stp") || File.hasExtension("step")) {
+    else if (File.hasExtension({"stp", "step"})) {
         exportStep(File.filePath().c_str());
     }
-    else if (File.hasExtension("brp") || File.hasExtension("brep")) {
+    else if (File.hasExtension({"brp", "brep"})) {
         // read brep-file
         exportBrep(File.filePath().c_str());
     }
@@ -950,8 +960,8 @@ void TopoShape::exportStep(const char *filename) const
             throw Base::FileException("Error in transferring STEP");
 
         APIHeaderSection_MakeHeader makeHeader(aWriter.Model());
-        // https://forum.freecadweb.org/viewtopic.php?f=8&t=52967
-        //makeHeader.SetName(new TCollection_HAsciiString((Standard_CString)(encodeFilename(filename).c_str())));
+        // Don't set name because STEP doesn't support UTF-8
+        // https://forum.freecad.org/viewtopic.php?f=8&t=52967
         makeHeader.SetAuthorValue (1, new TCollection_HAsciiString("FreeCAD"));
         makeHeader.SetOrganizationValue (1, new TCollection_HAsciiString("FreeCAD"));
         makeHeader.SetOriginatingSystem(new TCollection_HAsciiString("FreeCAD"));
@@ -994,7 +1004,7 @@ void TopoShape::exportBrep(std::ostream& out) const
     SS.Write(this->_Shape, out);
 }
 
-void TopoShape::exportBinary(std::ostream& out)
+void TopoShape::exportBinary(std::ostream& out) const
 {
     // See BinTools_FormatVersion of OCCT 7.6
     enum {
@@ -1099,10 +1109,10 @@ void TopoShape::exportFaceSet(double dev, double ca,
             builder.addNode(material);
         }
 
-        builder.beginPoints();
-        builder.addPoints(vertices);
-        builder.endPoints();
-        builder.addIndexedFaceSet(indices);
+        Base::Coordinate3Item coords{vertices};
+        builder.addNode(coords);
+        Base::IndexedFaceSetItem faceSet{indices};
+        builder.addNode(faceSet);
         builder.endSeparator();
     }
     builder.endSeparator();
@@ -1142,7 +1152,7 @@ void TopoShape::exportLineSet(std::ostream& str) const
 
         Base::DrawStyle drawStyle;
         drawStyle.lineWidth = 2.0F;
-        builder.addLineSet(vertices, drawStyle, Base::ColorRGB{0, 0, 0});
+        builder.addNode(Base::MultiLineItem{vertices, drawStyle, Base::ColorRGB{0, 0, 0}});
     }
 
     builder.endSeparator();
@@ -1172,50 +1182,121 @@ Base::BoundBox3d TopoShape::getBoundBox() const
     return box;
 }
 
+namespace {
+bool getShapeProperties(const TopoDS_Shape& shape, GProp_GProps& prop)
+{
+    TopExp_Explorer xpSolid(shape, TopAbs_SOLID);
+    if (xpSolid.More()) {
+        BRepGProp::VolumeProperties(shape, prop);
+        return true;
+    }
+
+    TopExp_Explorer xpFace(shape, TopAbs_FACE);
+    if (xpFace.More()) {
+        BRepGProp::SurfaceProperties(shape, prop);
+        return true;
+    }
+
+    TopExp_Explorer xpEdge(shape, TopAbs_EDGE);
+    if (xpEdge.More()) {
+        BRepGProp::LinearProperties(shape, prop);
+        return true;
+    }
+
+    TopExp_Explorer xpVert(shape, TopAbs_VERTEX);
+    if (xpVert.More()) {
+        gp_Pnt pnts;
+        int count = 0;
+        for (; xpVert.More(); xpVert.Next()) {
+            count++;
+            gp_Pnt pnt = BRep_Tool::Pnt(TopoDS::Vertex(xpVert.Current()));
+            pnts.SetX(pnts.X() + pnt.X());
+            pnts.SetY(pnts.Y() + pnt.Y());
+            pnts.SetZ(pnts.Z() + pnt.Z());
+        }
+
+        pnts.SetX(pnts.X() / count);
+        pnts.SetY(pnts.Y() / count);
+        pnts.SetZ(pnts.Z() / count);
+        prop = GProp_GProps(pnts);
+
+        return true;
+    }
+
+    return false;
+}
+}
+
 bool TopoShape::getCenterOfGravity(Base::Vector3d& center) const
 {
     if (_Shape.IsNull())
         return false;
 
     // Computing of CentreOfMass
-    gp_Pnt pnt;
-
-    if (_Shape.ShapeType() == TopAbs_VERTEX) {
-        pnt = BRep_Tool::Pnt(TopoDS::Vertex(_Shape));
-    }
-    else {
-        GProp_GProps prop;
-        if (_Shape.ShapeType() == TopAbs_EDGE || _Shape.ShapeType() == TopAbs_WIRE) {
-            BRepGProp::LinearProperties(_Shape, prop);
+    GProp_GProps prop;
+    if (getShapeProperties(_Shape, prop)) {
+        if (prop.Mass() > Precision::Infinite()) {
+            return false;
         }
-        else if (_Shape.ShapeType() == TopAbs_FACE || _Shape.ShapeType() == TopAbs_SHELL) {
-            BRepGProp::SurfaceProperties(_Shape, prop);
+        gp_Pnt pnt = prop.CentreOfMass();
+        center.Set(pnt.X(), pnt.Y(), pnt.Z());
+        return true;
+    }
+
+    return false;
+}
+
+void TopoShape::Save (Base::Writer& writer) const
+{
+    if(!writer.isForceXML()) {
+        //See SaveDocFile(), RestoreDocFile()
+        // add a filename to the writer's list.  Each file on the list is eventually
+        // processed by SaveDocFile().
+        if (writer.getMode("BinaryBrep")) {
+            writer.Stream() << writer.ind() << "<TopoShape file=\""
+                            << writer.addFile("TopoShape.bin", this)
+                            << "\"/>" << std::endl;
         }
         else {
-            BRepGProp::VolumeProperties(_Shape, prop);
+            writer.Stream() << writer.ind() << "<TopoShape file=\""
+                            << writer.addFile("TopoShape.brp", this)
+                            << "\"/>" << std::endl;
         }
+    }}
 
-        pnt = prop.CentreOfMass();
+void TopoShape::Restore(Base::XMLReader& reader)
+{
+    reader.readElement("TopoShape");
+    std::string file (reader.getAttribute("file") );
+
+    if (!file.empty()) {
+        // add a filename to the writer's list.  Each file on the list is eventually
+        // processed by RestoreDocFile().
+        reader.addFile(file.c_str(),this);
     }
-
-    center.Set(pnt.X(), pnt.Y(), pnt.Z());
-    return true;
 }
 
-void TopoShape::Save (Base::Writer & ) const
+void TopoShape::SaveDocFile (Base::Writer& writer) const
 {
+    if (getShape().IsNull()) {
+        return;
+    }
+    //the writer has already opened a stream with the appropriate filename
+    if (writer.getMode("BinaryBrep")) {
+        exportBinary(writer.Stream());
+    } else {
+        exportBrep(writer.Stream());
+    }
 }
 
-void TopoShape::Restore(Base::XMLReader &)
+void TopoShape::RestoreDocFile(Base::Reader& reader)
 {
-}
-
-void TopoShape::SaveDocFile (Base::Writer &) const
-{
-}
-
-void TopoShape::RestoreDocFile(Base::Reader &)
-{
+    Base::FileInfo brep(reader.getFileName());
+    if (brep.hasExtension("bin")) {
+        importBinary(reader);
+    } else {
+        importBrep(reader);
+    }
 }
 
 unsigned int TopoShape_RefCountShapes(const TopoDS_Shape& aShape)
@@ -1468,12 +1549,12 @@ bool TopoShape::analyze(bool runBopCheck, std::ostream& str) const
             for (int i = 1; i <= compsOfShape.Extent();++i)
                 shapes.push_back(compsOfShape(i));
 
-            for (std::vector<TopoDS_Shape>::iterator xp = shapes.begin(); xp != shapes.end(); ++xp) {
-                if (!aChecker.IsValid(*xp)) {
-                    const Handle(BRepCheck_Result)& result = aChecker.Result(*xp);
+            for (const auto & shape : shapes) {
+                if (!aChecker.IsValid(shape)) {
+                    const Handle(BRepCheck_Result)& result = aChecker.Result(shape);
                     if (result.IsNull())
                         continue;
-                    const BRepCheck_ListOfStatus& status = result->StatusOnShape(*xp);
+                    const BRepCheck_ListOfStatus& status = result->StatusOnShape(shape);
 
                     BRepCheck_ListIteratorOfListOfStatus it(status);
                     while (it.More()) {
@@ -1703,23 +1784,18 @@ TopoDS_Shape TopoShape::cut(const std::vector<TopoDS_Shape>& shapes, Standard_Re
 {
     if (this->_Shape.IsNull())
         return this->_Shape;
-#if OCC_VERSION_HEX < 0x060900
-    (void)shapes;
-    (void)tolerance;
-    throw Base::RuntimeError("Multi cut is available only in OCC 6.9.0 and up.");
-#else
     BRepAlgoAPI_Cut mkCut;
     mkCut.SetRunParallel(true);
     TopTools_ListOfShape shapeArguments,shapeTools;
     shapeArguments.Append(this->_Shape);
-    for (std::vector<TopoDS_Shape>::const_iterator it = shapes.begin(); it != shapes.end(); ++it) {
-        if (it->IsNull())
+    for (const auto & shape : shapes) {
+        if (shape.IsNull())
             throw Base::ValueError("Tool shape is null");
         if (tolerance > 0.0)
             // workaround for http://dev.opencascade.org/index.php?q=node/1056#comment-520
-            shapeTools.Append(BRepBuilderAPI_Copy(*it).Shape());
+            shapeTools.Append(BRepBuilderAPI_Copy(shape).Shape());
         else
-            shapeTools.Append(*it);
+            shapeTools.Append(shape);
     }
 
     mkCut.SetArguments(shapeArguments);
@@ -1732,7 +1808,6 @@ TopoDS_Shape TopoShape::cut(const std::vector<TopoDS_Shape>& shapes, Standard_Re
 
     TopoDS_Shape resShape = mkCut.Shape();
     return makeShell(resShape);
-#endif
 }
 
 TopoDS_Shape TopoShape::common(TopoDS_Shape shape) const
@@ -1749,23 +1824,18 @@ TopoDS_Shape TopoShape::common(const std::vector<TopoDS_Shape>& shapes, Standard
 {
     if (this->_Shape.IsNull())
         return this->_Shape;
-#if OCC_VERSION_HEX < 0x060900
-    (void)shapes;
-    (void)tolerance;
-    throw Base::RuntimeError("Multi common is available only in OCC 6.9.0 and up.");
-#else
     BRepAlgoAPI_Common mkCommon;
     mkCommon.SetRunParallel(true);
     TopTools_ListOfShape shapeArguments,shapeTools;
     shapeArguments.Append(this->_Shape);
-    for (std::vector<TopoDS_Shape>::const_iterator it = shapes.begin(); it != shapes.end(); ++it) {
-        if (it->IsNull())
+    for (const auto & shape : shapes) {
+        if (shape.IsNull())
             throw Base::ValueError("Tool shape is null");
         if (tolerance > 0.0)
             // workaround for http://dev.opencascade.org/index.php?q=node/1056#comment-520
-            shapeTools.Append(BRepBuilderAPI_Copy(*it).Shape());
+            shapeTools.Append(BRepBuilderAPI_Copy(shape).Shape());
         else
-            shapeTools.Append(*it);
+            shapeTools.Append(shape);
     }
 
     mkCommon.SetArguments(shapeArguments);
@@ -1778,7 +1848,6 @@ TopoDS_Shape TopoShape::common(const std::vector<TopoDS_Shape>& shapes, Standard
 
     TopoDS_Shape resShape = mkCommon.Shape();
     return makeShell(resShape);
-#endif
 }
 
 TopoDS_Shape TopoShape::fuse(TopoDS_Shape shape) const
@@ -1795,37 +1864,19 @@ TopoDS_Shape TopoShape::fuse(const std::vector<TopoDS_Shape>& shapes, Standard_R
 {
     if (this->_Shape.IsNull())
         Standard_Failure::Raise("Base shape is null");
-#if OCC_VERSION_HEX <= 0x060800
-    if (tolerance > 0.0)
-        Standard_Failure::Raise("Fuzzy Booleans are not supported in this version of OCCT");
-    TopoDS_Shape resShape = this->_Shape;
-    if (resShape.IsNull())
-        throw Base::ValueError("Object shape is null");
-    for (std::vector<TopoDS_Shape>::const_iterator it = shapes.begin(); it != shapes.end(); ++it) {
-        if (it->IsNull())
-            throw NullShapeException("Input shape is null");
-        // Let's call algorithm computing a fuse operation:
-        BRepAlgoAPI_Fuse mkFuse(resShape, *it);
-        // Let's check if the fusion has been successful
-        if (!mkFuse.IsDone())
-            throw Base::RuntimeError("Fusion failed");
-        resShape = mkFuse.Shape();
-    }
-#else
+
     BRepAlgoAPI_Fuse mkFuse;
-# if OCC_VERSION_HEX >= 0x060900
     mkFuse.SetRunParallel(true);
-# endif
     TopTools_ListOfShape shapeArguments,shapeTools;
     shapeArguments.Append(this->_Shape);
-    for (std::vector<TopoDS_Shape>::const_iterator it = shapes.begin(); it != shapes.end(); ++it) {
-        if (it->IsNull())
+    for (const auto & shape : shapes) {
+        if (shape.IsNull())
             throw NullShapeException("Tool shape is null");
         if (tolerance > 0.0)
             // workaround for http://dev.opencascade.org/index.php?q=node/1056#comment-520
-            shapeTools.Append(BRepBuilderAPI_Copy(*it).Shape());
+            shapeTools.Append(BRepBuilderAPI_Copy(shape).Shape());
         else
-            shapeTools.Append(*it);
+            shapeTools.Append(shape);
     }
     mkFuse.SetArguments(shapeArguments);
     mkFuse.SetTools(shapeTools);
@@ -1836,7 +1887,6 @@ TopoDS_Shape TopoShape::fuse(const std::vector<TopoDS_Shape>& shapes, Standard_R
         throw Base::RuntimeError("Multi fuse failed");
 
     TopoDS_Shape resShape = mkFuse.Shape();
-#endif
     return makeShell(resShape);
 }
 
@@ -1846,12 +1896,8 @@ TopoDS_Shape TopoShape::oldFuse(TopoDS_Shape shape) const
         Standard_Failure::Raise("Base shape is null");
     if (shape.IsNull())
         Standard_Failure::Raise("Tool shape is null");
-#if OCC_VERSION_HEX < 0x070300
-    BRepAlgo_Fuse mkFuse(this->_Shape, shape);
-    return mkFuse.Shape();
-#else
+
     throw Standard_Failure("BRepAlgo_Fuse is deprecated since OCCT 7.3");
-#endif
 }
 
 TopoDS_Shape TopoShape::section(TopoDS_Shape shape, Standard_Boolean approximate) const
@@ -1860,16 +1906,11 @@ TopoDS_Shape TopoShape::section(TopoDS_Shape shape, Standard_Boolean approximate
         Standard_Failure::Raise("Base shape is null");
     if (shape.IsNull())
         Standard_Failure::Raise("Tool shape is null");
-#if OCC_VERSION_HEX < 0x060900
-    BRepAlgoAPI_Section mkSection(this->_Shape, shape);
-    (void)approximate;
-#else
     BRepAlgoAPI_Section mkSection;
     mkSection.Init1(this->_Shape);
     mkSection.Init2(shape);
     mkSection.Approximation(approximate);
     mkSection.Build();
-#endif
     if (!mkSection.IsDone())
         throw Base::RuntimeError("Section failed");
     return mkSection.Shape();
@@ -1881,25 +1922,20 @@ TopoDS_Shape TopoShape::section(const std::vector<TopoDS_Shape>& shapes,
 {
     if (this->_Shape.IsNull())
         Standard_Failure::Raise("Base shape is null");
-#if OCC_VERSION_HEX < 0x060900
-    (void)shapes;
-    (void)tolerance;
-    (void)approximate;
-    throw Base::RuntimeError("Multi section is available only in OCC 6.9.0 and up.");
-#else
+
     BRepAlgoAPI_Section mkSection;
     mkSection.SetRunParallel(true);
     mkSection.Approximation(approximate);
     TopTools_ListOfShape shapeArguments,shapeTools;
     shapeArguments.Append(this->_Shape);
-    for (std::vector<TopoDS_Shape>::const_iterator it = shapes.begin(); it != shapes.end(); ++it) {
-        if (it->IsNull())
+    for (const auto & shape : shapes) {
+        if (shape.IsNull())
             throw Base::ValueError("Tool shape is null");
         if (tolerance > 0.0)
             // workaround for http://dev.opencascade.org/index.php?q=node/1056#comment-520
-            shapeTools.Append(BRepBuilderAPI_Copy(*it).Shape());
+            shapeTools.Append(BRepBuilderAPI_Copy(shape).Shape());
         else
-            shapeTools.Append(*it);
+            shapeTools.Append(shape);
     }
 
     mkSection.SetArguments(shapeArguments);
@@ -1912,7 +1948,6 @@ TopoDS_Shape TopoShape::section(const std::vector<TopoDS_Shape>& shapes,
 
     TopoDS_Shape resShape = mkSection.Shape();
     return resShape;
-#endif
 }
 
 std::list<TopoDS_Wire> TopoShape::slice(const Base::Vector3d& dir, double d) const
@@ -1925,8 +1960,8 @@ TopoDS_Compound TopoShape::slices(const Base::Vector3d& dir, const std::vector<d
 {
     std::vector< std::list<TopoDS_Wire> > wire_list;
     CrossSection cs(dir.x, dir.y, dir.z, this->_Shape);
-    for (std::vector<double>::const_iterator jt = d.begin(); jt != d.end(); ++jt) {
-        wire_list.push_back(cs.slice(*jt));
+    for (double jt : d) {
+        wire_list.push_back(cs.slice(jt));
     }
 
     std::vector< std::list<TopoDS_Wire> >::const_iterator ft;
@@ -1936,9 +1971,9 @@ TopoDS_Compound TopoShape::slices(const Base::Vector3d& dir, const std::vector<d
 
     for (ft = wire_list.begin(); ft != wire_list.end(); ++ft) {
         const std::list<TopoDS_Wire>& w = *ft;
-        for (std::list<TopoDS_Wire>::const_iterator wt = w.begin(); wt != w.end(); ++wt) {
-            if (!wt->IsNull())
-                builder.Add(comp, *wt);
+        for (const auto & wt : w) {
+            if (!wt.IsNull())
+                builder.Add(comp, wt);
         }
     }
 
@@ -1950,12 +1985,7 @@ TopoDS_Shape TopoShape::generalFuse(const std::vector<TopoDS_Shape> &sOthers, St
 {
     if (this->_Shape.IsNull())
         Standard_Failure::Raise("Base shape is null");
-#if OCC_VERSION_HEX < 0x060900
-    (void)sOthers;
-    (void)tolerance;
-    (void)mapInOut;
-    throw Base::AttributeError("GFA is available only in OCC 6.9.0 and up.");
-#else
+
     BRepAlgoAPI_BuilderAlgo mkGFA;
     mkGFA.SetRunParallel(true);
     TopTools_ListOfShape GFAArguments;
@@ -1972,9 +2002,7 @@ TopoDS_Shape TopoShape::generalFuse(const std::vector<TopoDS_Shape> &sOthers, St
     mkGFA.SetArguments(GFAArguments);
     if (tolerance > 0.0)
         mkGFA.SetFuzzyValue(tolerance);
-#if OCC_VERSION_HEX >= 0x070000
     mkGFA.SetNonDestructive(Standard_True);
-#endif
     mkGFA.Build();
     if (!mkGFA.IsDone())
         throw BooleanException("MultiFusion failed");
@@ -1985,7 +2013,6 @@ TopoDS_Shape TopoShape::generalFuse(const std::vector<TopoDS_Shape> &sOthers, St
         }
     }
     return resShape;
-#endif
 }
 
 TopoDS_Shape TopoShape::makePipe(const TopoDS_Shape& profile) const
@@ -2038,43 +2065,6 @@ TopoDS_Shape TopoShape::makePipeShell(const TopTools_ListOfShape& profiles,
     return mkPipeShell.Shape();
 }
 
-#if 0
-TopoDS_Shape TopoShape::makeTube() const
-{
-    // http://opencascade.blogspot.com/2009/11/surface-modeling-part3.html
-    if (this->_Shape.IsNull())
-        Standard_Failure::Raise("Cannot sweep along empty spine");
-    if (this->_Shape.ShapeType() != TopAbs_EDGE)
-        Standard_Failure::Raise("Spine shape is not an edge");
-
-    const TopoDS_Edge& path_edge = TopoDS::Edge(this->_Shape);
-    BRepAdaptor_Curve path_adapt(path_edge);
-    double umin = path_adapt.FirstParameter();
-    double umax = path_adapt.LastParameter();
-    Handle(Geom_Curve) hPath = path_adapt.Curve().Curve();
-
-    // Apply placement of the shape to the curve
-    TopLoc_Location loc1 = path_edge.Location();
-    hPath = Handle(Geom_Curve)::DownCast(hPath->Transformed(loc1.Transformation()));
-
-    if (hPath.IsNull())
-        Standard_Failure::Raise("Invalid curve in path edge");
-
-    GeomFill_Pipe mkTube(hPath, radius);
-    mkTube.Perform(tol, Standard_False, GeomAbs_C1, BSplCLib::MaxDegree(), 1000);
-
-    const Handle(Geom_Surface)& surf = mkTube.Surface();
-    double u1,u2,v1,v2;
-    surf->Bounds(u1,u2,v1,v2);
-
-    BRepBuilderAPI_MakeFace mkBuilder(surf, umin, umax, v1, v2
-#if OCC_VERSION_HEX >= 0x060502
-      , Precision::Confusion()
-#endif
-    );
-    return mkBuilder.Face();
-}
-#else
 static Handle(Law_Function) CreateBsFunction (const Standard_Real theFirst, const Standard_Real theLast, const Standard_Real theRadius)
 {
     (void)theRadius;
@@ -2100,7 +2090,9 @@ TopoDS_Shape TopoShape::makeTube(double radius, double tol, int cont, int maxdeg
         Standard_Failure::Raise("Cannot sweep along empty spine");
 
 #if OCC_VERSION_HEX >= 0x070600
+
     Handle(Adaptor3d_Curve) myPath;
+
     if (this->_Shape.ShapeType() == TopAbs_EDGE) {
         const TopoDS_Edge& path_edge = TopoDS::Edge(this->_Shape);
         myPath = new BRepAdaptor_Curve(path_edge);
@@ -2113,14 +2105,7 @@ TopoDS_Shape TopoShape::makeTube(double radius, double tol, int cont, int maxdeg
         myPath = new BRepAdaptor_HCurve(path_adapt);
     }
 #endif
-    //else if (this->_Shape.ShapeType() == TopAbs_WIRE) {
-    //    const TopoDS_Wire& path_wire = TopoDS::Wire(this->_Shape);
-    //    BRepAdaptor_CompCurve path_adapt(path_wire);
-    //    myPath = new BRepAdaptor_HCompCurve(path_adapt);
-    //}
-    //else {
-    //    Standard_Failure::Raise("Spine shape is neither an edge nor a wire");
-    //}
+
     else {
         Standard_Failure::Raise("Spine shape is not an edge");
     }
@@ -2144,17 +2129,14 @@ TopoDS_Shape TopoShape::makeTube(double radius, double tol, int cont, int maxdeg
 
         Standard_Real u1,u2,v1,v2;
         mySurface->Bounds(u1,u2,v1,v2);
-        BRepBuilderAPI_MakeFace mkBuilder(mySurface, u1, u2, v1, v2
-#if OCC_VERSION_HEX >= 0x060502
-          , Precision::Confusion()
-#endif
+        BRepBuilderAPI_MakeFace mkBuilder(mySurface, u1, u2, v1, v2 , Precision::Confusion()
         );
         return mkBuilder.Shape();
     }
 
-    return TopoDS_Shape();
+    return {};
 }
-#endif
+
 
 TopoDS_Shape TopoShape::makeSweep(const TopoDS_Shape& profile, double tol, int fillMode) const
 {
@@ -2201,11 +2183,7 @@ TopoDS_Shape TopoShape::makeSweep(const TopoDS_Shape& profile, double tol, int f
     mkSweep.Perform(tol, Standard_False, GeomAbs_C1, BSplCLib::MaxDegree(), 1000);
 
     const Handle(Geom_Surface)& surf = mkSweep.Surface();
-    BRepBuilderAPI_MakeFace mkBuilder(surf, umin, umax, vmin, vmax
-#if OCC_VERSION_HEX >= 0x060502
-      , Precision::Confusion()
-#endif
-    );
+    BRepBuilderAPI_MakeFace mkBuilder(surf, umin, umax, vmin, vmax , Precision::Confusion());
     return mkBuilder.Face();
 }
 
@@ -2213,9 +2191,8 @@ TopoDS_Shape TopoShape::makeTorus(Standard_Real radius1, Standard_Real radius2,
                                   Standard_Real angle1, Standard_Real angle2,
                                   Standard_Real angle3, Standard_Boolean isSolid) const
 {
-    // https://forum.freecadweb.org/viewtopic.php?f=3&t=1445
-    // https://forum.freecadweb.org/viewtopic.php?f=3&t=52719
-#if 1
+    // https://forum.freecad.org/viewtopic.php?f=3&t=1445
+    // https://forum.freecad.org/viewtopic.php?f=3&t=52719
     // Build a torus
     gp_Circ circle;
     circle.SetRadius(radius2);
@@ -2240,15 +2217,6 @@ TopoDS_Shape TopoShape::makeTorus(Standard_Real radius1, Standard_Real radius2,
     BRepPrimAPI_MakeRevol mkRevol(mkFace.Face(), gp_Ax1(gp_Pnt(0,0,0), gp_Dir(0,0,1)),
         Base::toRadians<double>(angle3), Standard_True);
     return mkRevol.Shape();
-#else
-    (void)isSolid;
-    BRepPrimAPI_MakeTorus mkTorus(radius1,
-                                  radius2,
-                                  Base::toRadians<double>(angle1),
-                                  Base::toRadians<double>(angle2),
-                                  Base::toRadians<double>(angle3));
-    return mkTorus.Solid();
-#endif
 }
 
 TopoDS_Shape TopoShape::makeHelix(Standard_Real pitch, Standard_Real height,
@@ -2651,18 +2619,11 @@ TopoDS_Shape TopoShape::makeOffsetShape(double offset, double tol, bool intersec
         }
     }
 
-#if OCC_VERSION_HEX < 0x070200
-    BRepOffsetAPI_MakeOffsetShape mkOffset(inputShape, offset, tol, BRepOffset_Mode(offsetMode),
-        intersection ? Standard_True : Standard_False,
-        selfInter ? Standard_True : Standard_False,
-        GeomAbs_JoinType(join));
-#else
     BRepOffsetAPI_MakeOffsetShape mkOffset;
     mkOffset.PerformByJoin(inputShape, offset, tol, BRepOffset_Mode(offsetMode),
                            intersection ? Standard_True : Standard_False,
                            selfInter ? Standard_True : Standard_False,
                            GeomAbs_JoinType(join));
-#endif
 
     if (!mkOffset.IsDone())
         Standard_Failure::Raise("BRepOffsetAPI_MakeOffsetShape not done");
@@ -2763,10 +2724,6 @@ TopoDS_Shape TopoShape::makeOffset2D(double offset, short joinType, bool fill, b
 {
     if (_Shape.IsNull())
         throw Base::ValueError("makeOffset2D: input shape is null!");
-#if OCC_VERSION_HEX < 0x060900
-    if (allowOpenResult)
-        throw Base::AttributeError("openResult argument is not supported on OCC < 6.9.0.");
-#endif
 
     // OUTLINE OF MAKEOFFSET2D
     // * Prepare shapes to process
@@ -2906,7 +2863,7 @@ TopoDS_Shape TopoShape::makeOffset2D(double offset, short joinType, bool fill, b
                 throw Base::CADKernelError("makeOffset2D: result of offsetting is null!");
 
             //Copying shape to fix strange orientation behavior, OCC7.0.0. See bug #2699
-            // http://www.freecadweb.org/tracker/view.php?id=2699
+            // http://www.freecad.org/tracker/view.php?id=2699
             offsetShape = BRepBuilderAPI_Copy(offsetShape).Shape();
         }
         else {
@@ -3064,7 +3021,7 @@ TopoDS_Shape TopoShape::makeOffset2D(double offset, short joinType, bool fill, b
 
     //assemble output compound
     if (shapesToReturn.empty())
-        return TopoDS_Shape(); //failure
+        return {}; //failure
     if (shapesToReturn.size() > 1 || forceOutputCompound){
         TopoDS_Compound result;
         BRep_Builder builder;
@@ -3085,19 +3042,11 @@ TopoDS_Shape TopoShape::makeThickSolid(const TopTools_ListOfShape& remFace,
                                        double offset, double tol, bool intersection,
                                        bool selfInter, short offsetMode, short join) const
 {
-#if OCC_VERSION_HEX < 0x070200
-    BRepOffsetAPI_MakeThickSolid mkThick(this->_Shape, remFace, offset, tol, BRepOffset_Mode(offsetMode),
-        intersection ? Standard_True : Standard_False,
-        selfInter ? Standard_True : Standard_False,
-        GeomAbs_JoinType(join));
-#else
     BRepOffsetAPI_MakeThickSolid mkThick;
     mkThick.MakeThickSolidByJoin(this->_Shape, remFace, offset, tol, BRepOffset_Mode(offsetMode),
         intersection ? Standard_True : Standard_False,
         selfInter ? Standard_True : Standard_False,
         GeomAbs_JoinType(join));
-#endif
-
     return mkThick.Shape();
 }
 
@@ -3175,8 +3124,8 @@ TopoDS_Shape TopoShape::replaceShape(const std::vector< std::pair<TopoDS_Shape,T
 TopoDS_Shape TopoShape::removeShape(const std::vector<TopoDS_Shape>& s) const
 {
     BRepTools_ReShape reshape;
-    for (std::vector<TopoDS_Shape>::const_iterator it = s.begin(); it != s.end(); ++it)
-        reshape.Remove(*it);
+    for (const auto & it : s)
+        reshape.Remove(it);
     return reshape.Apply(this->_Shape, TopAbs_SHAPE);
 }
 
@@ -3430,8 +3379,7 @@ void TopoShape::getFacesFromDomains(const std::vector<Domain>& domains,
     Standard_Real x2, y2, z2;
     Standard_Real x3, y3, z3;
 
-    for (std::vector<Domain>::const_iterator it = domains.begin(); it != domains.end(); ++it) {
-        const Domain& domain = *it;
+    for (const auto & domain : domains) {
         for (std::vector<Facet>::const_iterator jt = domain.facets.begin(); jt != domain.facets.end(); ++jt) {
             x1 = domain.points[jt->I1].x;
             y1 = domain.points[jt->I1].y;
@@ -3494,8 +3442,8 @@ void TopoShape::getFacesFromDomains(const std::vector<Domain>& domains,
 
     std::vector<Base::Vector3d> meshPoints;
     meshPoints.resize(vertices.size());
-    for (std::set<MeshVertex>::iterator it = vertices.begin(); it != vertices.end(); ++it)
-        meshPoints[it->i] = it->toPoint();
+    for (const auto & vertex : vertices)
+        meshPoints[vertex.i] = vertex.toPoint();
     points.swap(meshPoints);
 }
 
@@ -3550,18 +3498,18 @@ void TopoShape::setFaces(const std::vector<Base::Vector3d> &Points,
         gp_XYZ p(v.x, v.y, v.z);
         return BRepBuilderAPI_MakeVertex(p);
     };
-    for (std::vector<Facet>::const_iterator it = Topo.begin(); it != Topo.end(); ++it) {
-        if (it->I1 < ctPoints) {
-            if (Vertexes[it->I1].IsNull())
-                Vertexes[it->I1] = CreateVertex(Points[it->I1]);
+    for (const auto& it : Topo) {
+        if (it.I1 < ctPoints) {
+            if (Vertexes[it.I1].IsNull())
+                Vertexes[it.I1] = CreateVertex(Points[it.I1]);
         }
-        if (it->I2 < ctPoints) {
-            if (Vertexes[it->I2].IsNull())
-                Vertexes[it->I2] = CreateVertex(Points[it->I2]);
+        if (it.I2 < ctPoints) {
+            if (Vertexes[it.I2].IsNull())
+                Vertexes[it.I2] = CreateVertex(Points[it.I2]);
         }
-        if (it->I3 < ctPoints) {
-            if (Vertexes[it->I3].IsNull())
-                Vertexes[it->I3] = CreateVertex(Points[it->I3]);
+        if (it.I3 < ctPoints) {
+            if (Vertexes[it.I3].IsNull())
+                Vertexes[it.I3] = CreateVertex(Points[it.I3]);
         }
     }
 
@@ -3587,18 +3535,18 @@ void TopoShape::setFaces(const std::vector<Base::Vector3d> &Points,
         auto key = std::make_pair(p1, p2);
         return Edges[key];
     };
-    for (std::vector<Facet>::const_iterator it = Topo.begin(); it != Topo.end(); ++it) {
-        CreateEdge(it->I1, it->I2);
-        CreateEdge(it->I2, it->I3);
-        CreateEdge(it->I3, it->I1);
+    for (const auto& it : Topo) {
+        CreateEdge(it.I1, it.I2);
+        CreateEdge(it.I2, it.I3);
+        CreateEdge(it.I3, it.I1);
     }
 
-    for (std::vector<Facet>::const_iterator it = Topo.begin(); it != Topo.end(); ++it) {
-        if (it->I1 >= ctPoints || it->I2 >= ctPoints || it->I3 >= ctPoints)
+    for (const auto& it : Topo) {
+        if (it.I1 >= ctPoints || it.I2 >= ctPoints || it.I3 >= ctPoints)
             continue;
-        x1 = Points[it->I1].x; y1 = Points[it->I1].y; z1 = Points[it->I1].z;
-        x2 = Points[it->I2].x; y2 = Points[it->I2].y; z2 = Points[it->I2].z;
-        x3 = Points[it->I3].x; y3 = Points[it->I3].y; z3 = Points[it->I3].z;
+        x1 = Points[it.I1].x; y1 = Points[it.I1].y; z1 = Points[it.I1].z;
+        x2 = Points[it.I2].x; y2 = Points[it.I2].y; z2 = Points[it.I2].z;
+        x3 = Points[it.I3].x; y3 = Points[it.I3].y; z3 = Points[it.I3].z;
 
         p1.SetCoord(x1,y1,z1);
         p2.SetCoord(x2,y2,z2);
@@ -3607,9 +3555,9 @@ void TopoShape::setFaces(const std::vector<Base::Vector3d> &Points,
         // Avoid very tiny edges as this may result into broken faces. The tolerance is Approximation
         // because Confusion might be too tight.
         if ((!(p1.IsEqual(p2, Precision::Approximation()))) && (!(p1.IsEqual(p3, Precision::Approximation())))) {
-            const TopoDS_Edge& e1 = GetEdge(it->I1, it->I2);
-            const TopoDS_Edge& e2 = GetEdge(it->I2, it->I3);
-            const TopoDS_Edge& e3 = GetEdge(it->I3, it->I1);
+            const TopoDS_Edge& e1 = GetEdge(it.I1, it.I2);
+            const TopoDS_Edge& e2 = GetEdge(it.I2, it.I3);
+            const TopoDS_Edge& e3 = GetEdge(it.I3, it.I1);
             if (e1.IsNull() || e2.IsNull() || e3.IsNull())
                 continue;
 
@@ -3855,15 +3803,11 @@ TopoDS_Shape TopoShape::defeaturing(const std::vector<TopoDS_Shape>& s) const
 {
     if (this->_Shape.IsNull())
         Standard_Failure::Raise("Base shape is null");
-#if OCC_VERSION_HEX < 0x070300
-    (void)s;
-    throw Base::RuntimeError("Defeaturing is available only in OCC 7.3.0 and up.");
-#else
     BRepAlgoAPI_Defeaturing defeat;
     defeat.SetRunParallel(true);
     defeat.SetShape(this->_Shape);
-    for (std::vector<TopoDS_Shape>::const_iterator it = s.begin(); it != s.end(); ++it)
-        defeat.AddFaceToRemove(*it);
+    for (const auto & it : s)
+        defeat.AddFaceToRemove(it);
     defeat.Build();
     if (!defeat.IsDone()) {
         // error treatment
@@ -3873,13 +3817,7 @@ TopoDS_Shape TopoShape::defeaturing(const std::vector<TopoDS_Shape>& s) const
         const char* cstr2 = resultstr.c_str();
         throw Base::RuntimeError(cstr2);
     }
-//     if (defeat.HasWarnings()) {
-//         // warnings treatment
-//         Standard_SStream aSStream;
-//         defeat.DumpWarnings(aSStream);
-//     }
     return defeat.Shape();
-#endif
 }
 
 /**

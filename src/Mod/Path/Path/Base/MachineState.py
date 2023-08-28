@@ -22,7 +22,7 @@
 
 __title__ = "Path Machine State"
 __author__ = "sliptonic (Brad Collette)"
-__url__ = "https://www.freecadweb.org"
+__url__ = "https://www.freecad.org"
 __doc__ = "Dataclass to implement a machinestate tracker"
 __contributors__ = ""
 

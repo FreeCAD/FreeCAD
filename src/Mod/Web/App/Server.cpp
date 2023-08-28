@@ -22,8 +22,8 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <stdexcept>
 # include <memory>
+# include <stdexcept>
 # include <QCoreApplication>
 # include <QTcpSocket>
 #endif
@@ -51,13 +51,9 @@ void Firewall::setInstance(Firewall* inst)
     }
 }
 
-Firewall::Firewall()
-{
-}
+Firewall::Firewall() = default;
 
-Firewall::~Firewall()
-{
-}
+Firewall::~Firewall() = default;
 
 bool Firewall::filter(const QByteArray&) const
 {
@@ -69,9 +65,7 @@ FirewallPython::FirewallPython(const Py::Object& o)
 {
 }
 
-FirewallPython::~FirewallPython()
-{
-}
+FirewallPython::~FirewallPython() = default;
 
 bool FirewallPython::filter(const QByteArray& msg) const
 {
@@ -96,9 +90,7 @@ ServerEvent::ServerEvent(QTcpSocket* sock, const QByteArray& msg)
 {
 }
 
-ServerEvent::~ServerEvent()
-{
-}
+ServerEvent::~ServerEvent() = default;
 
 QTcpSocket* ServerEvent::socket() const
 {
@@ -127,11 +119,11 @@ AppServer::AppServer( bool direct, QObject* parent)
 
 void AppServer::incomingConnection(qintptr socket)
 {
-    QTcpSocket* s = new QTcpSocket(this);
-    connect(s, SIGNAL(readyRead()), this, SLOT(readClient()));
-    connect(s, SIGNAL(disconnected()), this, SLOT(discardClient()));
-    s->setSocketDescriptor(socket);
-    addPendingConnection(s);
+    QTcpSocket* tcpSocket = new QTcpSocket(this);
+    connect(tcpSocket, &QTcpSocket::readyRead, this, &AppServer::readClient);
+    connect(tcpSocket, &QTcpSocket::disconnected, this, &AppServer::discardClient);
+    tcpSocket->setSocketDescriptor(socket);
+    addPendingConnection(tcpSocket);
 }
 
 void AppServer::readClient()

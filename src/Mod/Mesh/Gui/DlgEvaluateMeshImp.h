@@ -58,7 +58,7 @@ class CleanupHandler : public QObject
 public:
     CleanupHandler();
 
-public Q_SLOTS:
+private:
     void cleanup();
 };
 
@@ -85,45 +85,45 @@ private:
     /** The property of an observed object has changed */
     void slotChangedObject(const App::DocumentObject& Obj, const App::Property& Prop) override;
 
-protected Q_SLOTS:
-    void on_checkOrientationButton_clicked();
-    void on_analyzeOrientationButton_clicked();
-    void on_repairOrientationButton_clicked();
+    void setupConnections();
+    void onCheckOrientationButtonClicked();
+    void onAnalyzeOrientationButtonClicked();
+    void onRepairOrientationButtonClicked();
 
-    void on_checkDuplicatedFacesButton_clicked();
-    void on_analyzeDuplicatedFacesButton_clicked();
-    void on_repairDuplicatedFacesButton_clicked();
+    void onCheckDuplicatedFacesButtonClicked();
+    void onAnalyzeDuplicatedFacesButtonClicked();
+    void onRepairDuplicatedFacesButtonClicked();
 
-    void on_checkDuplicatedPointsButton_clicked();
-    void on_analyzeDuplicatedPointsButton_clicked();
-    void on_repairDuplicatedPointsButton_clicked();
+    void onCheckDuplicatedPointsButtonClicked();
+    void onAnalyzeDuplicatedPointsButtonClicked();
+    void onRepairDuplicatedPointsButtonClicked();
 
-    void on_checkNonmanifoldsButton_clicked();
-    void on_analyzeNonmanifoldsButton_clicked();
-    void on_repairNonmanifoldsButton_clicked();
+    void onCheckNonmanifoldsButtonClicked();
+    void onAnalyzeNonmanifoldsButtonClicked();
+    void onRepairNonmanifoldsButtonClicked();
 
-    void on_checkDegenerationButton_clicked();
-    void on_analyzeDegeneratedButton_clicked();
-    void on_repairDegeneratedButton_clicked();
+    void onCheckDegenerationButtonClicked();
+    void onAnalyzeDegeneratedButtonClicked();
+    void onRepairDegeneratedButtonClicked();
 
-    void on_checkIndicesButton_clicked();
-    void on_analyzeIndicesButton_clicked();
-    void on_repairIndicesButton_clicked();
+    void onCheckIndicesButtonClicked();
+    void onAnalyzeIndicesButtonClicked();
+    void onRepairIndicesButtonClicked();
 
-    void on_checkSelfIntersectionButton_clicked();
-    void on_analyzeSelfIntersectionButton_clicked();
-    void on_repairSelfIntersectionButton_clicked();
+    void onCheckSelfIntersectionButtonClicked();
+    void onAnalyzeSelfIntersectionButtonClicked();
+    void onRepairSelfIntersectionButtonClicked();
 
-    void on_checkFoldsButton_clicked();
-    void on_analyzeFoldsButton_clicked();
-    void on_repairFoldsButton_clicked();
+    void onCheckFoldsButtonClicked();
+    void onAnalyzeFoldsButtonClicked();
+    void onRepairFoldsButtonClicked();
 
-    void on_analyzeAllTogether_clicked();
-    void on_repairAllTogether_clicked();
+    void onAnalyzeAllTogetherClicked();
+    void onRepairAllTogetherClicked();
 
-    void on_refreshButton_clicked();
-    void on_meshNameButton_activated(int);
-    void on_buttonBox_clicked(QAbstractButton *);
+    void onRefreshButtonClicked();
+    void onMeshNameButtonActivated(int);
+    void onButtonBoxClicked(QAbstractButton *);
 
 protected:
     void refreshList();

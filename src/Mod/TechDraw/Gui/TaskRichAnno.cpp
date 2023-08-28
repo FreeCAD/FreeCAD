@@ -106,8 +106,8 @@ TaskRichAnno::TaskRichAnno(TechDrawGui::ViewProviderRichAnno* annoVP) :
                                             -m_annoFeat->Y.getValue(),
                                              0.0));
 
-    connect(ui->pbEditor, SIGNAL(clicked(bool)),
-                this, SLOT(onEditorClicked(bool)));
+    connect(ui->pbEditor, &QPushButton::clicked,
+            this, &TaskRichAnno::onEditorClicked);
 }
 
 //ctor for creation
@@ -141,8 +141,8 @@ TaskRichAnno::TaskRichAnno(TechDraw::DrawView* baseFeat,
 
     setUiPrimary();
 
-    connect(ui->pbEditor, SIGNAL(clicked(bool)),
-                this, SLOT(onEditorClicked(bool)));
+    connect(ui->pbEditor, &QPushButton::clicked,
+            this, &TaskRichAnno::onEditorClicked);
 }
 
 void TaskRichAnno::updateTask()
@@ -241,10 +241,10 @@ void TaskRichAnno::onEditorClicked(bool clicked)
     m_textDialog->setMinimumWidth (400);
     m_textDialog->setMinimumHeight(400);
 
-    connect(m_rte, SIGNAL(saveText(QString)),
-            this, SLOT(onSaveAndExit(QString)));
-    connect(m_rte, SIGNAL(editorFinished()),
-            this, SLOT(onEditorExit()));
+    connect(m_rte, &MRichTextEdit::saveText,
+            this, &TaskRichAnno::onSaveAndExit);
+    connect(m_rte, &MRichTextEdit::editorFinished,
+            this, &TaskRichAnno::onEditorExit);
 
     m_textDialog->show();
 }
@@ -280,7 +280,9 @@ App::Color TaskRichAnno::prefLineColor()
 void TaskRichAnno::createAnnoFeature()
 {
 //    Base::Console().Message("TRA::createAnnoFeature()");
-    std::string annoName = m_basePage->getDocument()->getUniqueObjectName("RichTextAnnotation");
+    const std::string objectName{QT_TR_NOOP("RichTextAnnotation")};
+    std::string annoName = m_basePage->getDocument()->getUniqueObjectName(objectName.c_str());
+    std::string generatedSuffix {annoName.substr(objectName.length())};
     std::string annoType = "TechDraw::DrawRichAnno";
 
     std::string PageName = m_basePage->getNameInDocument();
@@ -325,6 +327,9 @@ void TaskRichAnno::createAnnoFeature()
             annoVP->LineStyle.setValue(ui->cFrameStyle->currentIndex());
         }
     }
+
+    std::string translatedObjectName{tr(objectName.c_str()).toStdString()};
+    obj->Label.setValue(translatedObjectName + generatedSuffix);
 
     Gui::Command::commitCommand();
     Gui::Command::updateActive();
@@ -388,8 +393,6 @@ void TaskRichAnno::removeFeature()
         if (Gui::Command::hasPendingCommand()) {
             std::vector<std::string> undos = Gui::Application::Instance->activeDocument()->getUndoVector();
             Gui::Application::Instance->activeDocument()->undo(1);
-        } else {
-            Base::Console().Log("TaskRichAnno: Edit mode - NO command is active\n");
         }
     }
 }

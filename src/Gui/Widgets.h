@@ -572,7 +572,7 @@ private:
  * The ExpLineEdit class provides a lineedit that support expressing binding.
  * \author realthunder
  */
-class GuiExport ExpLineEdit : public QLineEdit, public ExpressionBinding
+class GuiExport ExpLineEdit : public QLineEdit, public ExpressionWidget
 {
     Q_OBJECT
 

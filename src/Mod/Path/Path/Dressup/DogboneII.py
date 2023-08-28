@@ -25,6 +25,7 @@ import FreeCAD
 import Path
 import Path.Base.Generator.dogboneII as dogboneII
 import Path.Base.Language as PathLanguage
+import PathScripts.PathUtils as PathUtils
 import math
 
 if False:
@@ -183,10 +184,10 @@ class BoneState(object):
         return self.bone.tip()
 
     def boneIDs(self):
-        return list(sorted(self.bones.keys()))
+        return sorted(self.bones)
 
     def zLevels(self):
-        return list(sorted([bone.position().z for bone in self.bones.values()]))
+        return sorted([bone.position().z for bone in self.bones.values()])
 
     def length(self):
         return self.bone.length
@@ -244,7 +245,7 @@ class Proxy(object):
             "Custom",
             "Dressup",
             QT_TRANSLATE_NOOP(
-                "App::Property", "Dressup length if Incision == Incision.Custom"
+                "App::Property", "Dressup length if incision is set to 'custom'"
             ),
         )
         obj.Custom = 0.0
@@ -294,7 +295,7 @@ class Proxy(object):
         dressingUpDogbone = hasattr(obj.Base, "BoneBlacklist")
         if obj.Base and obj.Base.Path and obj.Base.Path.Commands:
             for i, instr in enumerate(
-                PathLanguage.Maneuver.FromPath(obj.Base.Path).instr
+                PathLanguage.Maneuver.FromPath(PathUtils.getPathWithPlacement(obj.Base)).instr
             ):
                 # Path.Log.debug(f"instr: {instr}")
                 if instr.isMove():

@@ -33,7 +33,7 @@ from lazy_loader.lazy_loader import LazyLoader
 
 __title__ = "Path 3D Pocket Operation"
 __author__ = "Yorik van Havre <yorik@uncreated.net>"
-__url__ = "https://www.freecadweb.org"
+__url__ = "https://www.freecad.org"
 __doc__ = "Class and implementation of the 3D Pocket operation."
 __created__ = "2014"
 
@@ -135,6 +135,7 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
 
     def opOnDocumentRestored(self, obj):
         """opOnDocumentRestored(obj) ... adds the properties if they doesn't exist."""
+        super().opOnDocumentRestored(obj)
         self.initPocketOp(obj)
 
     def pocketInvertExtraOffset(self):
@@ -281,7 +282,7 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
         obj.AdaptivePocketFinish = False
         obj.ProcessStockArea = False
 
-    # methods for eliminating air milling with some pockets: adpative start and finish
+    # methods for eliminating air milling with some pockets: adaptive start and finish
     def calculateAdaptivePocket(self, obj, base, subObjTups):
         """calculateAdaptivePocket(obj, base, subObjTups)
         Orient multiple faces around common facial center of mass.

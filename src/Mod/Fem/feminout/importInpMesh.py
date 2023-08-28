@@ -24,7 +24,7 @@
 
 __title__ = "Mesh import for Abacus/CalculiX inp file format"
 __author__ = "Frantisek Loeffelmann, Bernd Hahnebach"
-__url__ = "https://www.freecadweb.org"
+__url__ = "https://www.freecad.org"
 __date__ = "04/08/2016"
 
 ## @package importInpMesh
@@ -38,12 +38,7 @@ from FreeCAD import Console
 
 
 # ********* generic FreeCAD import and export methods *********
-if open.__module__ == "__builtin__":
-    # because we'll redefine open below (Python2)
-    pyopen = open
-elif open.__module__ == "io":
-    # because we'll redefine open below (Python3)
-    pyopen = open
+pyopen = open
 
 
 def open(filename):

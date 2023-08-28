@@ -24,6 +24,7 @@
 
 #ifndef _PreComp_
 # include <sstream>
+# include <QCoreApplication>
 # include <Inventor/fields/SoMFString.h>
 # include <Inventor/nodes/SoBaseColor.h>
 # include <Inventor/nodes/SoCoordinate3.h>
@@ -49,7 +50,7 @@ SO_NODE_SOURCE(SoFCColorGradient)
 /*!
   Constructor.
 */
-SoFCColorGradient::SoFCColorGradient() : _bbox(5.0f, -4.0f, 5.5f, 4.0f), _precision(3)
+SoFCColorGradient::SoFCColorGradient() : _bbox(5.0f, -4.0f, 5.5f, 4.0f)
 {
     SO_NODE_CONSTRUCTOR(SoFCColorGradient);
     coords = new SoCoordinate3;
@@ -81,6 +82,11 @@ void SoFCColorGradient::initClass()
 void SoFCColorGradient::finish()
 {
     atexit_cleanup();
+}
+
+const char* SoFCColorGradient::getColorBarName() const
+{
+    return QT_TRANSLATE_NOOP("QObject", "Color Gradient");
 }
 
 void SoFCColorGradient::setMarkerLabel(const SoMFString& label)

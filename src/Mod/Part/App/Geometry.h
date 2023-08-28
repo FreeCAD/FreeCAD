@@ -99,14 +99,14 @@ public:
 
     std::vector<std::weak_ptr<const GeometryExtension>> getExtensions() const;
 
-    bool hasExtension(Base::Type type) const;
+    bool hasExtension(const Base::Type & type) const;
     bool hasExtension(const std::string & name) const;
-    std::weak_ptr<const GeometryExtension> getExtension(Base::Type type) const;
+    std::weak_ptr<const GeometryExtension> getExtension(const Base::Type & type) const;
     std::weak_ptr<const GeometryExtension> getExtension(const std::string & name) const;
-    std::weak_ptr<GeometryExtension> getExtension(Base::Type type);
+    std::weak_ptr<GeometryExtension> getExtension(const Base::Type & type);
     std::weak_ptr<GeometryExtension> getExtension(const std::string & name);
     void setExtension(std::unique_ptr<GeometryExtension> &&geo);
-    void deleteExtension(Base::Type type);
+    void deleteExtension(const Base::Type & type);
     void deleteExtension(const std::string & name);
 
     void mirror(const Base::Vector3d& point);
@@ -131,9 +131,9 @@ protected:
     boost::uuids::uuid tag;
     std::vector<std::shared_ptr<GeometryExtension>> extensions;
 
-private:
-    Geometry(const Geometry&);
-    Geometry& operator = (const Geometry&);
+public:
+    Geometry(const Geometry&) = delete;
+    Geometry& operator = (const Geometry&) = delete;
 };
 
 class PartExport GeomPoint : public Geometry
@@ -375,6 +375,7 @@ public:
 
     unsigned int getMemSize() const override = 0;
     PyObject *getPyObject() override = 0;
+    GeomBSplineCurve* toNurbs(double first, double last) const override;
 
     const Handle(Geom_Geometry)& handle() const override = 0;
 };
