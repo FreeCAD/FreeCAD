@@ -113,8 +113,6 @@ public:
     Py::Object hasAxisCross();
     Py::Object addDraggerCallback(const Py::Tuple&);
     Py::Object removeDraggerCallback(const Py::Tuple&);
-    Py::Object setActiveObject(const Py::Tuple&);
-    Py::Object getActiveObject(const Py::Tuple&);
     Py::Object getViewProvidersOfType(const Py::Tuple&);
     Py::Object redraw();
     Py::Object setName(const Py::Tuple&);
