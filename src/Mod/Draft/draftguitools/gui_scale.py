@@ -73,7 +73,7 @@ class Scale(gui_base_original.Modifier):
 
     def Activated(self):
         """Execute when the command is called."""
-        super(Scale, self).Activated(name="Scale")
+        super().Activated(name="Scale")
         if not self.ui:
             return
         self.ghosts = []
@@ -211,7 +211,7 @@ class Scale(gui_base_original.Modifier):
     def scale_with_clone(self):
         """Scale with clone."""
         if self.task.relative.isChecked():
-            self.delta = App.DraftWorkingPlane.getGlobalCoords(self.delta)
+            self.delta = self.wp.getGlobalCoords(self.delta)
 
         Gui.addModule("Draft")
 
@@ -325,7 +325,7 @@ class Scale(gui_base_original.Modifier):
     def scale_object(self):
         """Scale the object."""
         if self.task.relative.isChecked():
-            self.delta = App.DraftWorkingPlane.getGlobalCoords(self.delta)
+            self.delta =self.wp.getGlobalCoords(self.delta)
         goods = []
         bads = []
         for obj in self.selected_objects:
@@ -371,7 +371,7 @@ class Scale(gui_base_original.Modifier):
         """Scale the preview of the object."""
         delta = App.Vector(x, y, z)
         if rel:
-            delta = App.DraftWorkingPlane.getGlobalCoords(delta)
+            delta = self.wp.getGlobalCoords(delta)
         for ghost in self.ghosts:
             ghost.scale(delta)
         # calculate a correction factor depending on the scaling center
@@ -420,7 +420,7 @@ class Scale(gui_base_original.Modifier):
 
     def finish(self, cont=False):
         """Terminate the operation."""
-        super(Scale, self).finish()
+        super().finish()
         for ghost in self.ghosts:
             ghost.finalize()
 
