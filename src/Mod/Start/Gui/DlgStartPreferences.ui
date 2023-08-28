@@ -349,9 +349,9 @@ By using &quot;;;&quot; to separate paths, you can add several folders here</str
         </property>
         <property name="color">
          <color>
-          <red>255</red>
-          <green>251</green>
-          <blue>247</blue>
+          <red>95</red>
+          <green>95</green>
+          <blue>95</blue>
          </color>
         </property>
         <property name="prefEntry" stdset="0">

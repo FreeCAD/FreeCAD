@@ -602,7 +602,7 @@ def handle():
     BASECOLOR = gethexcolor(p.GetUnsigned("PageColor",4294967295))
     BOXCOLOR  = gethexcolor(p.GetUnsigned("BoxColor",3722305023))
     TEXTCOLOR = gethexcolor(p.GetUnsigned("PageTextColor",255))
-    BGTCOLOR = gethexcolor(p.GetUnsigned("BackgroundTextColor",4294703103))
+    BGTCOLOR = gethexcolor(p.GetUnsigned("BackgroundTextColor",1600086015))
     OVERFLOW = "" if p.GetBool("ShowScrollBars",True) else "body::-webkit-scrollbar {display: none;}"
     SHADOW = "#888888"
     if QtGui.QColor(BASECOLOR).valueF() < 0.5: # dark page - we need to make darker shadows
