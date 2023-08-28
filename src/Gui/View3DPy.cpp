@@ -1629,7 +1629,7 @@ void View3DInventorPy::eventCallback(void * ud, SoEventCallback * n)
         // Type
         dict.setItem("Type", Py::String(std::string(e->getTypeId().getName().getString())));
         // Time
-        dict.setItem("Time", Py::String(std::string(e->getTime().formatDate().getString())));
+        dict.setItem("Time", Py::String(std::string(e->getTime().formatDate("%Y-%m-%d %H:%M:%S").getString())));
         SbVec2s p = n->getEvent()->getPosition();
         Py::Tuple pos(2);
         pos.setItem(0, Py::Int(p[0]));
