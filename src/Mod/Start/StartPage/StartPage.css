@@ -150,6 +150,7 @@ ul.tabs li a.active:hover {
 }
 
 .footnote {
+    color: BGTCOLOR;
     text-align: center;
     display: block; /* footnote tips display */
     clear: both;
