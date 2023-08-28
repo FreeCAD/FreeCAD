@@ -138,6 +138,7 @@ DrawViewSection::DrawViewSection()
     static const char* sgroup = "Section";
     static const char* fgroup = "Cut Surface Format";
     static const char* ggroup = "Cut Operation";
+    static const char* agroup = "Appearance";
 
     // general section properties
     ADD_PROPERTY_TYPE(SectionSymbol,
@@ -227,6 +228,9 @@ DrawViewSection::DrawViewSection()
                       "Rotation of hatch pattern in degrees anti-clockwise");
     ADD_PROPERTY_TYPE(HatchOffset, (0.0, 0.0, 0.0), fgroup, App::Prop_None, "Hatch pattern offset");
 
+    ADD_PROPERTY_TYPE(SectionLineStretch, (1.0), agroup, App::Prop_None,
+                      "Adjusts the length of the section line.  1.0 is normal length.  1.1 would be 10% longer, 0.9 would be 10% shorter.");
+
     getParameters();
 
     std::string hatchFilter("Svg files (*.svg *.SVG);;All files (*)");
@@ -238,6 +242,8 @@ DrawViewSection::DrawViewSection()
     PatIncluded.setStatus(App::Property::ReadOnly, true);
     // SectionNormal is used instead to Direction
     Direction.setStatus(App::Property::ReadOnly, true);
+    SectionDirection.setStatus(App::Property::Hidden, true);
+    SectionDirection.setStatus(App::Property::ReadOnly, true);
 }
 
 DrawViewSection::~DrawViewSection()
@@ -320,6 +326,8 @@ void DrawViewSection::onChanged(const App::Property* prop)
         else {
             UsePreviousCut.setStatus(App::Property::ReadOnly, true);
         }
+    } else if (prop == &SectionLineStretch) {
+        BaseView.getValue()->touch();
     }
 
     DrawView::onChanged(prop);
@@ -937,7 +945,7 @@ std::pair<Base::Vector3d, Base::Vector3d> DrawViewSection::sectionLineEnds()
     Base::Vector3d sectionOrg = SectionOrigin.getValue() - getBaseDVP()->getOriginalCentroid();
     sectionOrg = getBaseDVP()->projectPoint(sectionOrg);// convert to base view
                                                         // CS
-    double halfSize = getBaseDVP()->getSizeAlongVector(sectionLineDir) / 2.0;
+    double halfSize = (getBaseDVP()->getSizeAlongVector(sectionLineDir) / 2.0) * SectionLineStretch.getValue();
     result.first = sectionOrg + sectionLineDir * halfSize;
     result.second = sectionOrg - sectionLineDir * halfSize;
 
