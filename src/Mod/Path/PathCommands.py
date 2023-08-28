@@ -42,7 +42,7 @@ if FreeCAD.GuiUp:
 
 __title__ = "FreeCAD Path Commands"
 __author__ = "sliptonic"
-__url__ = "https://www.freecadweb.org"
+__url__ = "https://www.freecad.org"
 
 
 class _CommandSelectLoop:
@@ -59,7 +59,7 @@ class _CommandSelectLoop:
             "MenuText": QT_TRANSLATE_NOOP("Path_SelectLoop", "Finish Selecting Loop"),
             "Accel": "P, L",
             "ToolTip": QT_TRANSLATE_NOOP(
-                "Path_SelectLoop", "Complete loop selection from two edges"
+                "Path_SelectLoop", "Complete the selection of edges that form a loop"
             ),
             "CmdType": "ForEdit",
         }

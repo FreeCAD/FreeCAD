@@ -34,7 +34,7 @@ from PySide import QtCore, QtGui
 
 __title__ = "Setup Sheet Editor"
 __author__ = "sliptonic (Brad Collette)"
-__url__ = "https://www.freecadweb.org"
+__url__ = "https://www.freecad.org"
 __doc__ = "Task panel editor for a SetupSheet"
 
 
@@ -224,7 +224,7 @@ class OpsDefaultEditor:
         self.ops = sorted(
             [
                 OpTaskPanel(self.obj, name, op)
-                for name, op in PathUtil.keyValueIter(PathSetupSheet._RegisteredOps)
+                for name, op in PathSetupSheet._RegisteredOps.items()
             ],
             key=lambda op: op.name,
         )

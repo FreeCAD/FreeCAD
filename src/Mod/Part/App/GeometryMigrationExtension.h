@@ -52,7 +52,7 @@ public:
             NumMigrationType        // Must be the last
     };
 
-    GeometryMigrationExtension();
+    GeometryMigrationExtension() = default;
     ~GeometryMigrationExtension() override = default;
 
     std::unique_ptr<Part::GeometryExtension> copy() const override;
@@ -75,7 +75,7 @@ private:
 private:
     using MigrationTypeFlagType = std::bitset<32>;
     MigrationTypeFlagType           GeometryMigrationFlags;
-    bool                            ConstructionState;
+    bool                            ConstructionState{false};
 
 };
 

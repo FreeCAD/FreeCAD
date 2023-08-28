@@ -55,8 +55,8 @@ bool SketcherGui::tryAutoRecompute(Sketcher::SketchObject* obj, bool& autoremove
     bool autoRecompute = hGrp->GetBool("AutoRecompute", false);
     bool autoRemoveRedundants = hGrp->GetBool("AutoRemoveRedundants", false);
 
-    // We need to make sure the solver has right redundancy information before trying to remove the redundants.
-    // for example if a non-driving constraint has been added.
+    // We need to make sure the solver has right redundancy information before trying to remove the
+    // redundants. for example if a non-driving constraint has been added.
     if (autoRemoveRedundants && autoRecompute)
         obj->solve();
 
@@ -144,6 +144,34 @@ void SketcherGui::getIdsFromName(const std::string& name, const Sketcher::Sketch
         int VtId = std::atoi(name.substr(6, 4000).c_str()) - 1;
         Obj->getGeoVertexIndex(VtId, GeoId, PosId);
     }
+}
+
+std::vector<int> SketcherGui::getGeoIdsOfEdgesFromNames(const Sketcher::SketchObject* Obj,
+                                                        const std::vector<std::string>& names)
+{
+    std::vector<int> geoids;
+
+    for (const auto& name : names) {
+        if (name.size() > 4 && name.substr(0, 4) == "Edge") {
+            geoids.push_back(std::atoi(name.substr(4, 4000).c_str()) - 1);
+        }
+        else if (name.size() > 12 && name.substr(0, 12) == "ExternalEdge") {
+            geoids.push_back(Sketcher::GeoEnum::RefExt + 1
+                             - std::atoi(name.substr(12, 4000).c_str()));
+        }
+        else if (name.size() > 6 && name.substr(0, 6) == "Vertex") {
+            int VtId = std::atoi(name.substr(6, 4000).c_str()) - 1;
+            int GeoId;
+            Sketcher::PointPos PosId;
+            Obj->getGeoVertexIndex(VtId, GeoId, PosId);
+            const Part::Geometry* geo = Obj->getGeometry(GeoId);
+            if (geo->getTypeId() == Part::GeomPoint::getClassTypeId()) {
+                geoids.push_back(GeoId);
+            }
+        }
+    }
+
+    return geoids;
 }
 
 bool SketcherGui::checkBothExternal(int GeoId1, int GeoId2)
@@ -234,16 +262,17 @@ bool SketcherGui::isBsplineKnotOrEndPoint(const Sketcher::SketchObject* Obj, int
 bool SketcherGui::IsPointAlreadyOnCurve(int GeoIdCurve, int GeoIdPoint,
                                         Sketcher::PointPos PosIdPoint, Sketcher::SketchObject* Obj)
 {
-    //This func is a "smartness" behind three-element tangent-, perp.- and angle-via-point.
-    //We want to find out, if the point supplied by user is already on
-    // both of the curves. If not, necessary point-on-object constraints
-    // are to be added automatically.
-    //Simple geometric test seems to be the best, because a point can be
-    // constrained to a curve in a number of ways (e.g. it is an endpoint of an
-    // arc, or is coincident to endpoint of an arc, or it is an endpoint of an
-    // ellipse's major diameter line). Testing all those possibilities is way
-    // too much trouble, IMO(DeepSOIC).
-    // One exception: check for knots on their B-splines, at least until point on B-spline is implemented. (Ajinkya)
+    // This func is a "smartness" behind three-element tangent-, perp.- and angle-via-point.
+    // We want to find out, if the point supplied by user is already on
+    //  both of the curves. If not, necessary point-on-object constraints
+    //  are to be added automatically.
+    // Simple geometric test seems to be the best, because a point can be
+    //  constrained to a curve in a number of ways (e.g. it is an endpoint of an
+    //  arc, or is coincident to endpoint of an arc, or it is an endpoint of an
+    //  ellipse's major diameter line). Testing all those possibilities is way
+    //  too much trouble, IMO(DeepSOIC).
+    //  One exception: check for knots on their B-splines, at least until point on B-spline is
+    //  implemented. (Ajinkya)
     if (isBsplineKnot(Obj, GeoIdPoint)) {
         const Part::Geometry* geoCurve = Obj->getGeometry(GeoIdCurve);
         if (geoCurve->getTypeId() == Part::GeomBSplineCurve::getClassTypeId()) {
@@ -301,6 +330,44 @@ double SketcherGui::GetPointAngle(const Base::Vector2d& p1, const Base::Vector2d
     return dY >= 0 ? atan2(dY, dX) : atan2(dY, dX) + 2 * M_PI;
 }
 
+// Set the two points on circles at minimal distance
+// in concentric case set points on relative X axis
+void SketcherGui::GetCirclesMinimalDistance(const Part::GeomCircle* circle1,
+                                            const Part::GeomCircle* circle2, Base::Vector3d& point1,
+                                            Base::Vector3d& point2)
+{
+    double radius1 = circle1->getRadius();
+    double radius2 = circle2->getRadius();
+
+    point1 = circle1->getCenter();
+    point2 = circle2->getCenter();
+
+    Base::Vector3d v = point2 - point1;
+    double length = v.Length();
+
+    if (length == 0) {// concentric case
+        point1.x += radius1;
+        point2.x += radius2;
+    }
+    else {
+        v = v.Normalize();
+        if (length <= std::max(radius1, radius2)) {// inner case
+            if (radius1 > radius2) {
+                point1 += v * radius1;
+                point2 += v * radius2;
+            }
+            else {
+                point1 += -v * radius1;
+                point2 += -v * radius2;
+            }
+        }
+        else {// outer case
+            point1 += v * radius1;
+            point2 += -v * radius2;
+        }
+    }
+}
+
 void SketcherGui::ActivateHandler(Gui::Document* doc, DrawSketchHandler* handler)
 {
     std::unique_ptr<DrawSketchHandler> ptr(handler);
@@ -315,16 +382,46 @@ void SketcherGui::ActivateHandler(Gui::Document* doc, DrawSketchHandler* handler
     }
 }
 
+bool SketcherGui::isSketchInEdit(Gui::Document* doc)
+{
+    if (doc) {
+        // checks if a Sketch Viewprovider is in Edit and is in no special mode
+        auto* vp = dynamic_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit());
+        return (vp != nullptr);
+    }
+    return false;
+}
+
 bool SketcherGui::isCommandActive(Gui::Document* doc, bool actsOnSelection)
+{
+    if (isSketchInEdit(doc)) {
+        auto mode =
+            static_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit())->getSketchMode();
+
+        if (mode == ViewProviderSketch::STATUS_NONE
+            || mode == ViewProviderSketch::STATUS_SKETCH_UseHandler) {
+
+            if (!actsOnSelection) {
+                return true;
+            }
+            else if (Gui::Selection().countObjectsOfType(Sketcher::SketchObject::getClassTypeId())
+                     > 0) {
+                return true;
+            }
+        }
+    }
+
+    return false;
+}
+
+bool SketcherGui::isSketcherBSplineActive(Gui::Document* doc, bool actsOnSelection)
 {
     if (doc) {
         // checks if a Sketch Viewprovider is in Edit and is in no special mode
         if (doc->getInEdit()
             && doc->getInEdit()->isDerivedFrom(SketcherGui::ViewProviderSketch::getClassTypeId())) {
-            auto mode =
-                static_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit())->getSketchMode();
-            if (mode == ViewProviderSketch::STATUS_NONE
-                || mode == ViewProviderSketch::STATUS_SKETCH_UseHandler) {
+            if (static_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit())->getSketchMode()
+                == ViewProviderSketch::STATUS_NONE) {
                 if (!actsOnSelection)
                     return true;
                 else if (Gui::Selection().countObjectsOfType(
@@ -334,18 +431,24 @@ bool SketcherGui::isCommandActive(Gui::Document* doc, bool actsOnSelection)
             }
         }
     }
-
     return false;
 }
 
-SketcherGui::ViewProviderSketch* SketcherGui::getSketchViewprovider(Gui::Document* doc)
+SketcherGui::ViewProviderSketch*
+SketcherGui::getInactiveHandlerEditModeSketchViewProvider(Gui::Document* doc)
 {
     if (doc) {
-        if (doc->getInEdit()
-            && doc->getInEdit()->isDerivedFrom(SketcherGui::ViewProviderSketch::getClassTypeId()))
-            return dynamic_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit());
+        return dynamic_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit());
     }
+
     return nullptr;
+}
+
+SketcherGui::ViewProviderSketch* SketcherGui::getInactiveHandlerEditModeSketchViewProvider()
+{
+    Gui::Document* doc = Gui::Application::Instance->activeDocument();
+
+    return getInactiveHandlerEditModeSketchViewProvider(doc);
 }
 
 void SketcherGui::removeRedundantHorizontalVertical(Sketcher::SketchObject* psketch,
@@ -359,44 +462,44 @@ void SketcherGui::removeRedundantHorizontalVertical(Sketcher::SketchObject* pske
         // we look for:
         // 1. Coincident to external on both endpoints
         // 2. Coincident in one endpoint to origin and pointonobject/tangent to an axis on the other
-        auto detectredundant = [psketch](std::vector<AutoConstraint>& sug,
-                                         bool& ext,
-                                         bool& orig,
-                                         bool& axis) {
-            ext = false;
-            orig = false;
-            axis = false;
+        auto detectredundant =
+            [psketch](std::vector<AutoConstraint>& sug, bool& ext, bool& orig, bool& axis) {
+                ext = false;
+                orig = false;
+                axis = false;
 
-            for (std::vector<AutoConstraint>::const_iterator it = sug.begin(); it != sug.end();
-                 ++it) {
-                if ((*it).Type == Sketcher::Coincident && !ext) {
-                    const std::map<int, Sketcher::PointPos> coincidents =
-                        psketch->getAllCoincidentPoints((*it).GeoId, (*it).PosId);
+                for (std::vector<AutoConstraint>::const_iterator it = sug.begin(); it != sug.end();
+                     ++it) {
+                    if ((*it).Type == Sketcher::Coincident && !ext) {
+                        const std::map<int, Sketcher::PointPos> coincidents =
+                            psketch->getAllCoincidentPoints((*it).GeoId, (*it).PosId);
 
-                    if (!coincidents.empty()) {
-                        // the keys are ordered, so if the first is negative, it is coincident with external
-                        ext = coincidents.begin()->first < 0;
+                        if (!coincidents.empty()) {
+                            // the keys are ordered, so if the first is negative, it is coincident
+                            // with external
+                            ext = coincidents.begin()->first < 0;
 
-                        std::map<int, Sketcher::PointPos>::const_iterator geoId1iterator;
+                            std::map<int, Sketcher::PointPos>::const_iterator geoId1iterator;
 
-                        geoId1iterator = coincidents.find(-1);
+                            geoId1iterator = coincidents.find(-1);
 
-                        if (geoId1iterator != coincidents.end()) {
-                            if ((*geoId1iterator).second == Sketcher::PointPos::start)
-                                orig = true;
+                            if (geoId1iterator != coincidents.end()) {
+                                if ((*geoId1iterator).second == Sketcher::PointPos::start)
+                                    orig = true;
+                            }
+                        }
+                        else {// it may be that there is no constraint at all, but there is external
+                              // geometry
+                            ext = (*it).GeoId < 0;
+                            orig = ((*it).GeoId == -1 && (*it).PosId == Sketcher::PointPos::start);
                         }
                     }
-                    else {// it may be that there is no constraint at all, but there is external geometry
-                        ext = (*it).GeoId < 0;
-                        orig = ((*it).GeoId == -1 && (*it).PosId == Sketcher::PointPos::start);
+                    else if ((*it).Type == Sketcher::PointOnObject && !axis) {
+                        axis = (((*it).GeoId == -1 && (*it).PosId == Sketcher::PointPos::none)
+                                || ((*it).GeoId == -2 && (*it).PosId == Sketcher::PointPos::none));
                     }
                 }
-                else if ((*it).Type == Sketcher::PointOnObject && !axis) {
-                    axis = (((*it).GeoId == -1 && (*it).PosId == Sketcher::PointPos::none)
-                            || ((*it).GeoId == -2 && (*it).PosId == Sketcher::PointPos::none));
-                }
-            }
-        };
+            };
 
         bool firstext = false, secondext = false, firstorig = false, secondorig = false,
              firstaxis = false, secondaxis = false;
@@ -463,7 +566,7 @@ void SketcherGui::ConstraintToAttachment(Sketcher::GeoElementId element,
 }
 
 
-//convenience functions for cursor display
+// convenience functions for cursor display
 bool SketcherGui::hideUnits()
 {
     Base::Reference<ParameterGrp> hGrp = App::GetApplication()
@@ -481,7 +584,7 @@ bool SketcherGui::showCursorCoords()
                                              .GetGroup("BaseApp")
                                              ->GetGroup("Preferences")
                                              ->GetGroup("Mod/Sketcher");
-    return hGrp->GetBool("ShowCursorCoords", true);//true for testing. set to false for prod.
+    return hGrp->GetBool("ShowCursorCoords", true);// true for testing. set to false for prod.
 }
 
 bool SketcherGui::useSystemDecimals()
@@ -494,12 +597,12 @@ bool SketcherGui::useSystemDecimals()
     return hGrp->GetBool("UseSystemDecimals", true);
 }
 
-//convert value to display format %0.[digits]f. Units are displayed if
-//preference "ShowUnits" is true, or if the unit schema in effect uses
-//multiple units (ex. Ft/In). Digits parameter is ignored for multi-unit
-//schemata
-//TODO:: if the user string is delivered in 1.23e45 format, this might not work
-//       correctly.
+// convert value to display format %0.[digits]f. Units are displayed if
+// preference "ShowUnits" is true, or if the unit schema in effect uses
+// multiple units (ex. Ft/In). Digits parameter is ignored for multi-unit
+// schemata
+// TODO:: if the user string is delivered in 1.23e45 format, this might not work
+//        correctly.
 std::string SketcherGui::lengthToDisplayFormat(double value, int digits)
 {
     Base::Quantity asQuantity;
@@ -507,28 +610,28 @@ std::string SketcherGui::lengthToDisplayFormat(double value, int digits)
     asQuantity.setUnit(Base::Unit::Length);
     QString qUserString = asQuantity.getUserString();
     if (Base::UnitsApi::isMultiUnitLength() || (!hideUnits() && useSystemDecimals())) {
-        //just return the user string
+        // just return the user string
         return Base::Tools::toStdString(qUserString);
     }
 
-    //find the unit of measure
+    // find the unit of measure
     double factor = 1.0;
     QString qUnitString;
     QString qtranslate = Base::UnitsApi::schemaTranslate(asQuantity, factor, qUnitString);
     QString unitPart = QString::fromUtf8(" ") + qUnitString;
 
-    //get the numeric part of the user string
+    // get the numeric part of the user string
     QRegularExpression rxNoUnits(
         QString::fromUtf8("(.*) \\D*$"));// text before space + any non digits at end of string
     QRegularExpressionMatch match = rxNoUnits.match(qUserString);
     if (!match.hasMatch()) {
-        //no units in userString?
+        // no units in userString?
         return Base::Tools::toStdString(qUserString);
     }
-    QString matched = match.captured(1);//matched is the numeric part of user string
+    QString matched = match.captured(1);// matched is the numeric part of user string
     int dpPos = matched.indexOf(QLocale().decimalPoint());
     if (dpPos < 0) {
-        //no decimal separator (ie an integer), return all the digits
+        // no decimal separator (ie an integer), return all the digits
         if (hideUnits()) {
             return Base::Tools::toStdString(matched);
         }
@@ -537,16 +640,16 @@ std::string SketcherGui::lengthToDisplayFormat(double value, int digits)
         }
     }
 
-    //real number
+    // real number
     if (useSystemDecimals() && hideUnits()) {
-        //return just the numeric part of the user string
+        // return just the numeric part of the user string
         return Base::Tools::toStdString(matched);
     }
 
-    //real number and not using system decimals
+    // real number and not using system decimals
     int requiredLength = dpPos + digits + 1;
     if (requiredLength > matched.size()) {
-        //just take the whole thing
+        // just take the whole thing
         requiredLength = matched.size();
     }
     QString numericPart = matched.left(requiredLength);
@@ -556,11 +659,11 @@ std::string SketcherGui::lengthToDisplayFormat(double value, int digits)
     return Base::Tools::toStdString(numericPart + unitPart);
 }
 
-//convert value to display format %0.[digits]f. Units are always displayed for
-//angles - 123.456° or 12°34'56". Digits parameter is ignored for multi-unit
-//schemata. Note small differences between this method and lengthToDisplyFormat
-//TODO:: if the user string is delivered in 1.23e45 format, this might not work
-//       correctly.
+// convert value to display format %0.[digits]f. Units are always displayed for
+// angles - 123.456° or 12°34'56". Digits parameter is ignored for multi-unit
+// schemata. Note small differences between this method and lengthToDisplyFormat
+// TODO:: if the user string is delivered in 1.23e45 format, this might not work
+//        correctly.
 std::string SketcherGui::angleToDisplayFormat(double value, int digits)
 {
     Base::Quantity asQuantity;
@@ -568,46 +671,47 @@ std::string SketcherGui::angleToDisplayFormat(double value, int digits)
     asQuantity.setUnit(Base::Unit::Angle);
     QString qUserString = asQuantity.getUserString();
     if (Base::UnitsApi::isMultiUnitAngle()) {
-        //just return the user string
-        //Coin SbString doesn't handle utf8 well, so we convert to ascii
-        QString schemeMinute = QString::fromUtf8("\xE2\x80\xB2");//prime symbol
-        QString schemeSecond = QString::fromUtf8("\xE2\x80\xB3");//double prime symbol
-        QString escapeMinute = QString::fromLatin1("\'");        //substitute ascii single quote
-        QString escapeSecond = QString::fromLatin1("\"");        //substitute ascii double quote
+        // just return the user string
+        // Coin SbString doesn't handle utf8 well, so we convert to ascii
+        QString schemeMinute = QString::fromUtf8("\xE2\x80\xB2");// prime symbol
+        QString schemeSecond = QString::fromUtf8("\xE2\x80\xB3");// double prime symbol
+        QString escapeMinute = QString::fromLatin1("\'");        // substitute ascii single quote
+        QString escapeSecond = QString::fromLatin1("\"");        // substitute ascii double quote
         QString displayString = qUserString.replace(schemeMinute, escapeMinute);
         displayString = displayString.replace(schemeSecond, escapeSecond);
         return Base::Tools::toStdString(displayString);
     }
 
-    //we always use use U+00B0 (°) as the unit of measure for angles in
-    //single unit schema.  Will need a change to support rads or grads.
-    QString qUnitString = QString::fromUtf8("°");
+    // we always use use U+00B0 (°) as the unit of measure for angles in
+    // single unit schema.  Will need a change to support rads or grads.
+    auto qUnitString = QString::fromUtf8("°");
+    auto decimalSep = QLocale().decimalPoint();
 
-    //get the numeric part of the user string
-    QRegularExpression rxNoUnits(
-        QString::fromUtf8("(\\d*\\.?\\d*)(\\D*)$"));// number + non digits at end of string
+    // get the numeric part of the user string
+    QRegularExpression rxNoUnits(QString::fromUtf8("(\\d*\\%1?\\d*)(\\D*)$")
+                                     .arg(decimalSep));// number + non digits at end of string
     QRegularExpressionMatch match = rxNoUnits.match(qUserString);
     if (!match.hasMatch()) {
-        //no units in userString?
+        // no units in userString?
         return Base::Tools::toStdString(qUserString);
     }
-    QString matched = match.captured(1);//matched is the numeric part of user string
-    int dpPos = matched.indexOf(QLocale().decimalPoint());
+    QString matched = match.captured(1);// matched is the numeric part of user string
+    int dpPos = matched.indexOf(decimalSep);
     if (dpPos < 0) {
-        //no decimal separator (ie an integer), return all the digits
+        // no decimal separator (ie an integer), return all the digits
         return Base::Tools::toStdString(matched + qUnitString);
     }
 
-    //real number
+    // real number
     if (useSystemDecimals()) {
-        //return just the numeric part of the user string + degree symbol
+        // return just the numeric part of the user string + degree symbol
         return Base::Tools::toStdString(matched + qUnitString);
     }
 
-    //real number and not using system decimals
+    // real number and not using system decimals
     int requiredLength = dpPos + digits + 1;
     if (requiredLength > matched.size()) {
-        //just take the whole thing
+        // just take the whole thing
         requiredLength = matched.size();
     }
     QString numericPart = matched.left(requiredLength);

@@ -58,41 +58,36 @@ public:
     enum {Type = QGraphicsItem::UserType + 233};
 
     explicit QGIRichAnno();
-    ~QGIRichAnno() = default;
+    ~QGIRichAnno() override = default;
 
     int type() const override { return Type;}
-    virtual void paint( QPainter * painter,
-                        const QStyleOptionGraphicsItem * option,
-                        QWidget * widget = nullptr ) override;
-    virtual QRectF boundingRect() const override;
+    void paint( QPainter * painter,
+                const QStyleOptionGraphicsItem * option,
+                QWidget * widget = nullptr ) override;
+    QRectF boundingRect() const override;
 
-    virtual void drawBorder() override;
-    virtual void updateView(bool update = false) override;
+    void drawBorder() override;
+    void updateView(bool update = false) override;
 
-    void setTextItem(void);
+    void setTextItem();
 
-    virtual TechDraw::DrawRichAnno* getFeature(void);
+    virtual TechDraw::DrawRichAnno* getFeature();
     QPen rectPen() const;
 
-    void setExporting(bool b) { m_isExporting = b; }
-    bool getExporting(void) { return m_isExporting; }
-
-
-public Q_SLOTS:
-/*    void textDragging(void);*/
-/*    void textDragFinished(void);*/
-/*    void hover(bool state);*/
-/*    void select(bool state);*/
+    void setExportingPdf(bool b) { m_isExportingPdf = b; }
+    bool getExportingPdf() { return m_isExportingPdf; }
+    void setExportingSvg(bool b) { m_isExportingSvg = b; }
+    bool getExportingSvg() { return m_isExportingSvg; }
 
 protected:
-    virtual void draw() override;
+    void draw() override;
     void setLineSpacing(int lineSpacing);
-    double prefPointSize(void);
     QFont prefFont(void);
 
-    virtual void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event) override;
+    void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event) override;
 
-    bool m_isExporting;
+    bool m_isExportingPdf;
+    bool m_isExportingSvg;
     QGCustomText* m_text;
     bool m_hasHover;
     QGCustomRect* m_rect;

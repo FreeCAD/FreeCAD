@@ -24,6 +24,8 @@
 #ifndef GUI_TOOLBOXMANAGER_H
 #define GUI_TOOLBOXMANAGER_H
 
+#include <FCGlobal.h>
+
 namespace Gui {
 
 class ToolBarItem;
@@ -55,7 +57,7 @@ protected:
     ~ToolBoxManager();
 
 private:
-    DockWnd::ToolBox* _toolBox;
+    DockWnd::ToolBox* _toolBox{nullptr};
     static ToolBoxManager* _instance;
 };
 

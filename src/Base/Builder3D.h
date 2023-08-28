@@ -26,6 +26,10 @@
 
 // Std. configurations
 
+#ifdef __GNUC__
+# include <cstdint>
+#endif
+
 #include <sstream>
 #include <vector>
 #include <Base/Tools3D.h>
@@ -609,8 +613,10 @@ public:
 private:
     void increaseIndent();
     void decreaseIndent();
-    InventorBuilder (const InventorBuilder&);
-    void operator = (const InventorBuilder&);
+
+public:
+    InventorBuilder (const InventorBuilder&) = delete;
+    void operator = (const InventorBuilder&) = delete;
 
 private:
     std::ostream& result;
@@ -646,7 +652,7 @@ class BaseExport Builder3D : public InventorBuilder
 {
 public:
     Builder3D();
-    virtual ~Builder3D();
+    ~Builder3D() override;
 
     /// clear the string buffer
     void clear();

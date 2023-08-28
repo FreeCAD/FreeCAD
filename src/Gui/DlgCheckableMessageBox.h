@@ -56,7 +56,7 @@ class GuiExport DlgCheckableMessageBox : public QDialog
     Q_PROPERTY(QDialogButtonBox::StandardButton defaultButton READ defaultButton WRITE setDefaultButton) // clazy:exclude=qproperty-without-notify
 public:
     explicit DlgCheckableMessageBox(QWidget *parent);
-    virtual ~DlgCheckableMessageBox();
+    ~DlgCheckableMessageBox() override;
 
     static QDialogButtonBox::StandardButton
         question(QWidget *parent,
@@ -74,8 +74,8 @@ public:
 
     void setPrefPath(const QString& path);
 
-    virtual void accept();
-    virtual void reject();
+    void accept() override;
+    void reject() override;
 
     bool isChecked() const;
     void setChecked(bool s);

@@ -23,14 +23,11 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-#include <boost/core/ignore_unused.hpp>
-#include <memory>
-#include <sstream>
+# include <boost/core/ignore_unused.hpp>
+# include <memory>
+# include <sstream>
 #endif
 
-#include "Metadata.h"
-
-#include <utility>
 #include <xercesc/framework/LocalFileFormatTarget.hpp>
 #include <xercesc/framework/LocalFileInputSource.hpp>
 #include <xercesc/framework/MemBufInputSource.hpp>
@@ -39,6 +36,9 @@
 #include "App/Application.h"
 #include "App/Expression.h"
 #include "Base/XMLTools.h"
+
+#include "Metadata.h"
+
 
 /*
 *** From GCC: ***
@@ -172,6 +172,11 @@ std::string Metadata::name() const
     return _name;
 }
 
+std::string Metadata::type() const
+{
+    return _type;
+}
+
 Meta::Version Metadata::version() const
 {
     return _version;
@@ -289,6 +294,11 @@ void Metadata::setName(const std::string& name)
         throw Base::RuntimeError("Name cannot contain any of: " + invalidCharacters);
     }
     _name = name;
+}
+
+void Metadata::setType(const std::string& type)
+{
+    _type = type;
 }
 
 void Metadata::setVersion(const Meta::Version& version)
@@ -726,6 +736,7 @@ bool Metadata::supportsCurrentFreeCAD() const
 void Metadata::appendToElement(DOMElement* root) const
 {
     appendSimpleXMLNode(root, "name", _name);
+    appendSimpleXMLNode(root, "type", _type);
     appendSimpleXMLNode(root, "description", _description);
     if (_version != Meta::Version()) {
         // Only append version if it's not 0.0.0
@@ -863,6 +874,9 @@ void Metadata::parseVersion1(const DOMNode* startNode)
 
         if (tagString == "name") {
             _name = StrXUTF8(element->getTextContent()).str;
+        }
+        else if (tagString == "type") {
+            _type = StrXUTF8(element->getTextContent()).str;
         }
         else if (tagString == "version") {
             _version = Meta::Version(StrXUTF8(element->getTextContent()).str);
@@ -1106,11 +1120,7 @@ bool App::Meta::Dependency::operator==(const Dependency& rhs) const
         && dependencyType == rhs.dependencyType;
 }
 
-Meta::Version::Version()
-    : major(0),
-      minor(0),
-      patch(0)
-{}
+Meta::Version::Version() = default;
 
 Meta::Version::Version(int major, int minor, int patch, std::string suffix)
     : major(major),
@@ -1120,9 +1130,6 @@ Meta::Version::Version(int major, int minor, int patch, std::string suffix)
 {}
 
 Meta::Version::Version(const std::string& versionString)
-    : major(0),
-      minor(0),
-      patch(0)
 {
     std::istringstream stream(versionString);
     char separator {'.'};

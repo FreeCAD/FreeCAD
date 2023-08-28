@@ -39,6 +39,7 @@ void loadDrawingResource()
 {
     // add resources and reloads the translators
     Q_INIT_RESOURCE(Drawing);
+    Q_INIT_RESOURCE(Drawing_translation);
     Gui::Translator::instance()->refresh();
 }
 

@@ -40,6 +40,7 @@
 #include <App/DocumentObjectPy.h>
 #include <Base/Console.h>
 #include <Base/Exception.h>
+#include <Base/PyWrapParseTupleAndKeywords.h>
 #include <Base/Vector3D.h>
 #include <Base/VectorPy.h>
 #include <Mod/Import/App/dxf/ImpExpDxf.h>
@@ -87,6 +88,7 @@ using Import::ImpExpDxfWrite;
 using TechDraw::ProjectionAlgos;
 
 using namespace std;
+using namespace Part;
 
 namespace TechDraw {
 
@@ -271,7 +273,7 @@ private:
         }
         else {
             for (auto& w : sortedWires) {
-                PyObject* wire = new TopoShapeWirePy(new TopoShape(w));
+                PyObject* wire = new TopoShapeWirePy(new Part::TopoShape(w));
                 result.append(Py::asObject(wire));
             }
         }
@@ -412,30 +414,30 @@ private:
                 obj = static_cast<App::DocumentObjectPy*>(viewObj)->getDocumentObjectPtr();
                 dvp = static_cast<TechDraw::DrawViewPart*>(obj);
                 TechDraw::GeometryObjectPtr gObj = dvp->getGeometryObject();
-                TopoDS_Shape shape = TechDraw::mirrorShape(gObj->getVisHard());
+                TopoDS_Shape shape = ShapeUtils::mirrorShape(gObj->getVisHard());
                 ss << dxfOut.exportEdges(shape);
-                shape = TechDraw::mirrorShape(gObj->getVisOutline());
+                shape = ShapeUtils::mirrorShape(gObj->getVisOutline());
                 ss << dxfOut.exportEdges(shape);
                 if (dvp->SmoothVisible.getValue()) {
-                    shape = TechDraw::mirrorShape(gObj->getVisSmooth());
+                    shape = ShapeUtils::mirrorShape(gObj->getVisSmooth());
                     ss << dxfOut.exportEdges(shape);
                 }
                 if (dvp->SeamVisible.getValue()) {
-                    shape = TechDraw::mirrorShape(gObj->getVisSeam());
+                    shape = ShapeUtils::mirrorShape(gObj->getVisSeam());
                     ss << dxfOut.exportEdges(shape);
                 }
                 if (dvp->HardHidden.getValue()) {
-                    shape = TechDraw::mirrorShape(gObj->getHidHard());
+                    shape = ShapeUtils::mirrorShape(gObj->getHidHard());
                     ss << dxfOut.exportEdges(shape);
-                    shape = TechDraw::mirrorShape(gObj->getHidOutline());
+                    shape = ShapeUtils::mirrorShape(gObj->getHidOutline());
                     ss << dxfOut.exportEdges(shape);
                 }
                 if (dvp->SmoothHidden.getValue()) {
-                    shape = TechDraw::mirrorShape(gObj->getHidSmooth());
+                    shape = ShapeUtils::mirrorShape(gObj->getHidSmooth());
                     ss << dxfOut.exportEdges(shape);
                 }
                 if (dvp->SeamHidden.getValue()) {
-                    shape = TechDraw::mirrorShape(gObj->getHidSeam());
+                    shape = ShapeUtils::mirrorShape(gObj->getHidSeam());
                     ss << dxfOut.exportEdges(shape);
                 }
                 // ss now contains all edges as Dxf
@@ -534,7 +536,7 @@ private:
         if(!dvp->hasGeometry())
             return;
         TechDraw::GeometryObjectPtr gObj = dvp->getGeometryObject();
-        TopoDS_Shape shape = TechDraw::mirrorShape(gObj->getVisHard());
+        TopoDS_Shape shape = ShapeUtils::mirrorShape(gObj->getVisHard());
         double offX = 0.0;
         double offY = 0.0;
         if (dvp->isDerivedFrom(TechDraw::DrawProjGroupItem::getClassTypeId())) {
@@ -556,40 +558,40 @@ private:
         BRepBuilderAPI_Transform mkTrf(shape, xLate);
         shape = mkTrf.Shape();
         writer.exportShape(shape);
-        shape = TechDraw::mirrorShape(gObj->getVisOutline());
+        shape = ShapeUtils::mirrorShape(gObj->getVisOutline());
         mkTrf.Perform(shape);
         shape = mkTrf.Shape();
         writer.exportShape(shape);
         if (dvp->SmoothVisible.getValue()) {
-            shape = TechDraw::mirrorShape(gObj->getVisSmooth());
+            shape = ShapeUtils::mirrorShape(gObj->getVisSmooth());
             mkTrf.Perform(shape);
             shape = mkTrf.Shape();
             writer.exportShape(shape);
         }
         if (dvp->SeamVisible.getValue()) {
-            shape = TechDraw::mirrorShape(gObj->getVisSeam());
+            shape = ShapeUtils::mirrorShape(gObj->getVisSeam());
             mkTrf.Perform(shape);
             shape = mkTrf.Shape();
             writer.exportShape(shape);
         }
         if (dvp->HardHidden.getValue()) {
-            shape = TechDraw::mirrorShape(gObj->getHidHard());
+            shape = ShapeUtils::mirrorShape(gObj->getHidHard());
             mkTrf.Perform(shape);
             shape = mkTrf.Shape();
             writer.exportShape(shape);
-            shape = TechDraw::mirrorShape(gObj->getHidOutline());
+            shape = ShapeUtils::mirrorShape(gObj->getHidOutline());
             mkTrf.Perform(shape);
             shape = mkTrf.Shape();
             writer.exportShape(shape);
         }
         if (dvp->SmoothHidden.getValue()) {
-            shape = TechDraw::mirrorShape(gObj->getHidSmooth());
+            shape = ShapeUtils::mirrorShape(gObj->getHidSmooth());
             mkTrf.Perform(shape);
             shape = mkTrf.Shape();
             writer.exportShape(shape);
         }
         if (dvp->SeamHidden.getValue()) {
-            shape = TechDraw::mirrorShape(gObj->getHidSeam());
+            shape = ShapeUtils::mirrorShape(gObj->getHidSeam());
             mkTrf.Perform(shape);
             shape = mkTrf.Shape();
             writer.exportShape(shape);
@@ -598,12 +600,12 @@ private:
         std::vector<TechDraw::BaseGeomPtr> geoms = dvp->getEdgeGeometry();
         std::vector<TopoDS_Edge> cosmeticEdges;
         for (auto& g : geoms) {
-            if (g->hlrVisible && g->cosmetic) {
-                cosmeticEdges.push_back(g->occEdge);
+            if (g->getHlrVisible() && g->getCosmetic()) {
+                cosmeticEdges.push_back(g->getOCCEdge());
             }
         }
         if (!cosmeticEdges.empty()) {
-            shape = TechDraw::mirrorShape(DrawUtil::vectorToCompound(cosmeticEdges));
+            shape = ShapeUtils::mirrorShape(DrawUtil::vectorToCompound(cosmeticEdges));
             mkTrf.Perform(shape);
             shape = mkTrf.Shape();
             writer.exportShape(shape);
@@ -812,13 +814,13 @@ private:
 
         TopoShapePy* pShape = static_cast<TopoShapePy*>(pcObjShape);
         if (!pShape) {
-            Base::Console().Error("TechDraw::findCentroid - input shape is null\n");
+            Base::Console().Error("ShapeUtils::findCentroid - input shape is null\n");
             return Py::None();
         }
 
         const TopoDS_Shape& shape = pShape->getTopoShapePtr()->getShape();
         Base::Vector3d dir = static_cast<Base::VectorPy*>(pcObjDir)->value();
-        Base::Vector3d centroid = TechDraw::findCentroidVec(shape, dir);
+        Base::Vector3d centroid = ShapeUtils::findCentroidVec(shape, dir);
         PyObject* result = nullptr;
         result = new Base::VectorPy(new Base::Vector3d(centroid));
         return Py::asObject(result);
@@ -1092,7 +1094,9 @@ private:
 
     Py::Object projectToSVG(const Py::Tuple& args, const Py::Dict& keys)
         {
-            static char* argNames[] = {"topoShape", "direction", "type", "tolerance", "vStyle", "v0Style", "v1Style", "hStyle", "h0Style", "h1Style", nullptr};
+            static const std::array<const char *, 11> argNames{"topoShape", "direction", "type", "tolerance", "vStyle",
+                                                               "v0Style", "v1Style", "hStyle", "h0Style", "h1Style",
+                                                               nullptr};
             PyObject *pcObjShape = nullptr;
             PyObject *pcObjDir = nullptr;
             const char *extractionTypePy = nullptr;
@@ -1113,7 +1117,7 @@ private:
 
             // Get the arguments
 
-            if (!PyArg_ParseTupleAndKeywords(
+            if (!Base::Wrapped_ParseTupleAndKeywords(
                     args.ptr(), keys.ptr(),
                     "O!|O!sfOOOOOO",
                     argNames,
@@ -1121,9 +1125,9 @@ private:
                     &(Base::VectorPy::Type), &pcObjDir,
                     &extractionTypePy, &tol,
                     &vStylePy, &v0StylePy, &v1StylePy,
-                    &hStylePy, &h0StylePy, &h1StylePy))
-
+                    &hStylePy, &h0StylePy, &h1StylePy)) {
                 throw Py::Exception();
+            }
 
             // Convert all arguments into the right format
 

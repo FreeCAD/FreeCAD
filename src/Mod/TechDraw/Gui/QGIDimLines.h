@@ -39,12 +39,12 @@ class TechDrawGuiExport QGIDimLines : public QGIPrimPath
 {
 public:
     explicit QGIDimLines();
-    ~QGIDimLines() {}
+    ~QGIDimLines() override = default;
 
     enum {Type = QGraphicsItem::UserType + 175};
     int type() const override { return Type;}
-    virtual QRectF boundingRect() const override;
-    virtual QPainterPath shape() const override;
+    QRectF boundingRect() const override;
+    QPainterPath shape() const override;
 
 public:
     void draw();
@@ -55,7 +55,7 @@ public:
 
 protected:
     //QVariant itemChange(GraphicsItemChange change, const QVariant &value);
-    double getEdgeFuzz(void) const;
+    double getEdgeFuzz() const;
 
 
 private:

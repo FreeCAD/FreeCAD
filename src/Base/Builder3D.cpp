@@ -918,9 +918,7 @@ InventorBuilder::InventorBuilder(std::ostream& output)
     result << "#Inventor V2.1 ascii \n\n";
 }
 
-InventorBuilder:: ~InventorBuilder()
-{
-}
+InventorBuilder:: ~InventorBuilder() = default;
 
 void InventorBuilder::increaseIndent()
 {
@@ -987,7 +985,7 @@ void Builder3D::saveToLog()
 {
     ILogger* obs = Base::Console().Get("StatusBar");
     if (obs){
-        obs->SendLog(result.str().c_str(), Base::LogStyle::Log);
+        obs->SendLog("Builder3D",result.str().c_str(), Base::LogStyle::Log, Base::IntendedRecipient::Developer, Base::ContentType::Untranslatable);
     }
 }
 

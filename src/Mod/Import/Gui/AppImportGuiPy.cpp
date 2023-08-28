@@ -98,6 +98,7 @@
 #include <App/Document.h>
 #include <App/DocumentObjectPy.h>
 #include <Base/Console.h>
+#include <Base/PyWrapParseTupleAndKeywords.h>
 #include <Gui/Application.h>
 #include <Gui/Command.h>
 #include <Gui/Document.h>
@@ -180,15 +181,12 @@ void OCAFBrowser::load(const TDF_Label& label, QTreeWidgetItem* item, const QStr
         item->setText(0, text);
     }
 
-#if 0
-    TDF_IDList localList = myList;
-#else
+
     TDF_IDList localList;
     TDF_AttributeIterator itr (label);
     for ( ; itr.More(); itr.Next()) {
         localList.Append(itr.Value()->ID());
     }
-#endif
 
     for (TDF_ListIteratorOfIDList it(localList); it.More(); it.Next()) {
         Handle(TDF_Attribute) attr;
@@ -260,15 +258,6 @@ void OCAFBrowser::load(const TDF_Label& label, QTreeWidgetItem* item, const QStr
         }
     }
 
-    //TDF_ChildIDIterator nodeIterator(label, XCAFDoc::ShapeRefGUID());
-    //for (; nodeIterator.More(); nodeIterator.Next()) {
-    //    Handle(TDataStd_TreeNode) node = Handle(TDataStd_TreeNode)::DownCast(nodeIterator.Value());
-    //    //if (node->HasFather())
-    //    //    ;
-    //    QTreeWidgetItem* child = new QTreeWidgetItem();
-    //    child->setText(0, QString::fromLatin1("TDataStd_TreeNode"));
-    //    item->addChild(child);
-    //}
 
     int i=1;
     for (TDF_ChildIterator it(label); it.More(); it.Next(),i++) {
@@ -295,12 +284,9 @@ private:
         if (!vp)
             return;
         if(colors.empty()) {
-            // vp->MapFaceColor.setValue(true);
-            // vp->MapLineColor.setValue(true);
-            // vp->updateColors(0,true);
             return;
         }
-        // vp->MapFaceColor.setValue(false);
+
         if(colors.size() == 1) {
             vp->ShapeColor.setValue(colors.front());
             vp->Transparency.setValue(100 * colors.front().a);
@@ -313,7 +299,6 @@ private:
         auto vp = dynamic_cast<PartGui::ViewProviderPartExt*>(Gui::Application::Instance->getViewProvider(part));
         if (!vp)
             return;
-        // vp->MapLineColor.setValue(false);
         if(colors.size() == 1)
             vp->LineColor.setValue(colors.front());
         else
@@ -344,7 +329,6 @@ private:
         if(!vp)
             return;
         (void)colors;
-        // vp->setElementColors(colors);
     }
 };
 
@@ -389,8 +373,6 @@ public:
         initialize("This module is the ImportGui module."); // register with Python
     }
 
-    ~Module() override {}
-
 private:
     Py::Object insert(const Py::Tuple& args, const Py::Dict &kwds)
     {
@@ -400,18 +382,20 @@ private:
         PyObject *merge = Py_None;
         PyObject *useLinkGroup = Py_None;
         int mode = -1;
-        static char* kwd_list[] = {"name","docName","importHidden","merge","useLinkGroup","mode",nullptr};
-        if (!PyArg_ParseTupleAndKeywords(args.ptr(), kwds.ptr(), "et|sO!O!O!i",
-                    kwd_list,"utf-8",&Name,&DocName,&PyBool_Type,&importHidden,&PyBool_Type,&merge,
-                    &PyBool_Type,&useLinkGroup,&mode))
+        static const std::array<const char *, 7> kwd_list{"name", "docName", "importHidden", "merge", "useLinkGroup",
+                                                          "mode", nullptr};
+        if (!Base::Wrapped_ParseTupleAndKeywords(args.ptr(), kwds.ptr(), "et|sO!O!O!i",
+                                                 kwd_list, "utf-8", &Name, &DocName, &PyBool_Type, &importHidden,
+                                                 &PyBool_Type, &merge,
+                                                 &PyBool_Type, &useLinkGroup, &mode)) {
             throw Py::Exception();
+        }
 
         std::string Utf8Name = std::string(Name);
         PyMem_Free(Name);
         std::string name8bit = Part::encodeFilename(Utf8Name);
 
         try {
-            //Base::Console().Log("Insert in Part with %s",Name);
             Base::FileInfo file(Utf8Name.c_str());
 
             App::Document *pcDoc = nullptr;
@@ -430,7 +414,7 @@ private:
             FC_TIME_INIT(t);
             FC_DURATION_DECL_INIT2(d1,d2);
 
-            if (file.hasExtension("stp") || file.hasExtension("step")) {
+            if (file.hasExtension({"stp", "step"})) {
 
                 if(mode<0)
                     mode = ocaf.getMode();
@@ -469,7 +453,7 @@ private:
                     pcDoc->recompute();
                 }
             }
-            else if (file.hasExtension("igs") || file.hasExtension("iges")) {
+            else if (file.hasExtension({"igs", "iges"})) {
                 Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
                     .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/Part")->GetGroup("IGES");
 
@@ -552,7 +536,7 @@ private:
         auto vp = Gui::Application::Instance->getViewProvider(obj);
         if(vp)
             return vp->getElementColors(subname);
-        return std::map<std::string,App::Color>();
+        return {};
     }
 
     Py::Object exportOptions(const Py::Tuple& args)
@@ -568,7 +552,7 @@ private:
         Py::Dict options;
         Base::FileInfo file(name8bit.c_str());
 
-        if (file.hasExtension("stp") || file.hasExtension("step")) {
+        if (file.hasExtension({"stp", "step"})) {
             PartGui::TaskExportStep dlg(Gui::getMainWindow());
             if (!dlg.showDialog() || dlg.exec()) {
                 auto stepSettings = dlg.getSettings();
@@ -589,15 +573,17 @@ private:
         PyObject *pyexportHidden = Py_None;
         PyObject *pylegacy = Py_None;
         PyObject *pykeepPlacement = Py_None;
-        static char* kwd_list[] = {"obj", "name", "options", "exportHidden", "legacy", "keepPlacement", nullptr};
-        if (!PyArg_ParseTupleAndKeywords(args.ptr(), kwds.ptr(), "Oet|O!O!O!O!",
-                                         kwd_list, &object,
-                                         "utf-8", &Name,
-                                         &PyDict_Type, &pyoptions,
-                                         &PyBool_Type, &pyexportHidden,
-                                         &PyBool_Type, &pylegacy,
-                                         &PyBool_Type, &pykeepPlacement))
+        static const std::array<const char *, 7> kwd_list{"obj", "name", "options", "exportHidden", "legacy",
+                                                          "keepPlacement", nullptr};
+        if (!Base::Wrapped_ParseTupleAndKeywords(args.ptr(), kwds.ptr(), "Oet|O!O!O!O!",
+                                                 kwd_list, &object,
+                                                 "utf-8", &Name,
+                                                 &PyDict_Type, &pyoptions,
+                                                 &PyBool_Type, &pyexportHidden,
+                                                 &PyBool_Type, &pylegacy,
+                                                 &PyBool_Type, &pykeepPlacement)) {
             throw Py::Exception();
+        }
 
         std::string Utf8Name = std::string(Name);
         PyMem_Free(Name);
@@ -666,14 +652,11 @@ private:
                 ocaf.getPartColors(hierarchical_part,FreeLabels,part_id,Colors);
                 ocaf.reallocateFreeShape(hierarchical_part,FreeLabels,part_id,Colors);
 
-#if OCC_VERSION_HEX >= 0x070200
-                // Update is not performed automatically anymore: https://tracker.dev.opencascade.org/view.php?id=28055
                 XCAFDoc_DocumentTool::ShapeTool(hDoc->Main())->UpdateAssemblies();
-#endif
             }
 
             Base::FileInfo file(Utf8Name.c_str());
-            if (file.hasExtension("stp") || file.hasExtension("step")) {
+            if (file.hasExtension({"stp", "step"})) {
                 ParameterGrp::handle hGrp_stp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Part/STEP");
                 std::string scheme = hGrp_stp->GetASCII("Scheme", Part::Interface::writeStepScheme());
                 std::list<std::string> supported = Part::supportedSTEPSchemes();
@@ -682,7 +665,6 @@ private:
 
                 STEPCAFControl_Writer writer;
                 Part::Interface::writeStepAssembly(Part::Interface::Assembly::On);
-                // writer.SetColorMode(Standard_False);
                 writer.Transfer(hDoc, STEPControl_AsIs);
 
                 // edit STEP header
@@ -691,8 +673,8 @@ private:
                 Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
                     .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/Part")->GetGroup("STEP");
 
-                // https://forum.freecadweb.org/viewtopic.php?f=8&t=52967
-                //makeHeader.SetName(new TCollection_HAsciiString((Standard_CString)Utf8Name.c_str()));
+                // Don't set name because STEP doesn't support UTF-8
+                // https://forum.freecad.org/viewtopic.php?f=8&t=52967
                 makeHeader.SetAuthorValue (1, new TCollection_HAsciiString(hGrp->GetASCII("Author", "Author").c_str()));
                 makeHeader.SetOrganizationValue (1, new TCollection_HAsciiString(hGrp->GetASCII("Company").c_str()));
                 makeHeader.SetOriginatingSystem(new TCollection_HAsciiString(App::Application::getExecutableName().c_str()));
@@ -703,7 +685,7 @@ private:
                     throw Py::Exception();
                 }
             }
-            else if (file.hasExtension("igs") || file.hasExtension("iges")) {
+            else if (file.hasExtension({"igs", "iges"})) {
                 IGESControl_Controller::Init();
                 IGESCAFControl_Writer writer;
                 IGESData_GlobalSection header = writer.Model()->GlobalSection();
@@ -718,7 +700,7 @@ private:
                     throw Py::Exception();
                 }
             }
-            else if (file.hasExtension("glb") || file.hasExtension("gltf")) {
+            else if (file.hasExtension({"glb", "gltf"})) {
 #if OCC_VERSION_HEX >= 0x070500
                 TColStd_IndexedDataMapOfStringString aMetadata;
                 RWGltf_CafWriter aWriter (name8bit.c_str(), file.hasExtension("glb"));
@@ -726,6 +708,9 @@ private:
                 // https://github.com/KhronosGroup/glTF/blob/master/specification/2.0/README.md#coordinate-system-and-units
                 aWriter.ChangeCoordinateSystemConverter().SetInputLengthUnit (0.001);
                 aWriter.ChangeCoordinateSystemConverter().SetInputCoordinateSystem (RWMesh_CoordinateSystem_Zup);
+#if OCC_VERSION_HEX >= 0x070700
+                aWriter.SetParallel(true);
+#endif
                 Standard_Boolean ret = aWriter.Perform (hDoc, aMetadata, Message_ProgressRange());
                 if (!ret) {
                     PyErr_Format(PyExc_IOError, "Cannot save to file '%s'", Utf8Name.c_str());
@@ -755,14 +740,13 @@ private:
             throw Py::Exception();
 
         try {
-            //Base::Console().Log("Insert in Part with %s",Name);
             Base::FileInfo file(Name);
 
             Handle(XCAFApp_Application) hApp = XCAFApp_Application::GetApplication();
             Handle(TDocStd_Document) hDoc;
             hApp->NewDocument(TCollection_ExtendedString("MDTV-CAF"), hDoc);
 
-            if (file.hasExtension("stp") || file.hasExtension("step")) {
+            if (file.hasExtension({"stp", "step"})) {
                 STEPCAFControl_Reader aReader;
                 aReader.SetColorMode(true);
                 aReader.SetNameMode(true);
@@ -783,7 +767,7 @@ private:
                 pi->EndScope();
 #endif
             }
-            else if (file.hasExtension("igs") || file.hasExtension("iges")) {
+            else if (file.hasExtension({"igs", "iges"})) {
                 Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
                     .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/Part")->GetGroup("IGES");
                 IGESControl_Controller::Init();

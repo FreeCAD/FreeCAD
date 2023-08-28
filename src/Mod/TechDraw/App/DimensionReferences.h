@@ -29,11 +29,19 @@
 #include <vector>
 
 #include <TopoDS_Shape.hxx>
+#include <TopoDS_Edge.hxx>
+#include <TopoDS_Vertex.hxx>
 
+#include <Mod/Part/App/TopoShape.h>
 
 namespace App
 {
 class DocumentObject;
+}
+
+namespace Part
+{
+class TopoShape;
 }
 
 namespace TechDraw
@@ -53,7 +61,7 @@ public:
     }
     ~ReferenceEntry() = default;
 
-    App::DocumentObject* getObject() const { return m_object; }
+    App::DocumentObject* getObject() const;
     void setObject(App::DocumentObject* docObj) { m_object = docObj; }
     std::string getSubName(bool longForm = false) const;
     void setSubName(std::string subName) { m_subName = subName; }
@@ -61,8 +69,13 @@ public:
     std::string geomType() const;
     bool isWholeObject() const;
 
+    Part::TopoShape asTopoShape() const;
+    Part::TopoShape asTopoShapeVertex(TopoDS_Vertex &vert) const;
+    Part::TopoShape asTopoShapeEdge(TopoDS_Edge& edge) const;
+
+    bool is3d() const;
+
 private:
-    bool is3d();
     App::DocumentObject* m_object;
     std::string m_subName;
 };

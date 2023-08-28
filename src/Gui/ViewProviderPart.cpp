@@ -55,8 +55,7 @@ ViewProviderPart::ViewProviderPart()
     aPixmap = "Geoassembly.svg";
 }
 
-ViewProviderPart::~ViewProviderPart()
-{ }
+ViewProviderPart::~ViewProviderPart() = default;
 
 /**
  * TODO
@@ -71,7 +70,9 @@ void ViewProviderPart::setupContextMenu(QMenu* menu, QObject* receiver, const ch
 {
     auto func = new Gui::ActionFunction(menu);
     QAction* act = menu->addAction(QObject::tr("Toggle active part"));
-    func->trigger(act, std::bind(&ViewProviderPart::doubleClicked, this));
+    func->trigger(act, [this](){
+        this->doubleClicked();
+    });
 
     ViewProviderDragger::setupContextMenu(menu, receiver, member);
 }

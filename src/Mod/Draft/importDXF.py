@@ -25,7 +25,7 @@
 
 __title__ = "FreeCAD Draft Workbench - DXF importer/exporter"
 __author__ = "Yorik van Havre <yorik@uncreated.net>"
-__url__ = "https://www.freecadweb.org"
+__url__ = "https://www.freecad.org"
 
 ## @package importDXF
 #  \ingroup DRAFT
@@ -48,13 +48,19 @@ texts, colors,layers (from groups)
 # scaling factor between autocad font sizes and coin font sizes
 # the minimum version of the dxfLibrary needed to run
 TEXTSCALING = 1.35
-CURRENTDXFLIB = 1.40
+CURRENTDXFLIB = 1.41
 
-import sys, os, math, re
-import six
+import sys
+import os
+import math
+import re
 import FreeCAD
-import Part, Draft, Mesh
-import DraftVecUtils, DraftGeomUtils, WorkingPlane
+import Part
+import Draft
+import Mesh
+import DraftVecUtils
+import DraftGeomUtils
+import WorkingPlane
 from Draft import _Dimension
 from FreeCAD import Vector
 from FreeCAD import Console as FCC
@@ -208,41 +214,10 @@ def prec():
     return Draft.getParam("precision", 6)
 
 
-def decodeName(name):
-    """Decode the encoded name into utf8 or latin1.
-
-    Parameters
-    ----------
-    name : str
-        The string to decode.
-
-    Returns
-    -------
-    str
-        The decoded string in utf8, latin1, or the original `name`
-        if the decoding was not needed, for example,
-        when using Python 3.
-    """
-    try:
-        decodedName = (name.decode("utf8"))
-    except UnicodeDecodeError:
-        try:
-            decodedName = (name.decode("latin1"))
-        except UnicodeDecodeError:
-            print("dxf: error: couldn't determine character encoding")
-            decodedName = name
-    except AttributeError:
-        # this is python3 (nothing to do)
-        decodedName = name
-    return decodedName
-
-
 def deformat(text):
     """Remove weird formats in texts and wipes UTF characters.
 
     It removes `{}`, html codes, \\(U...) characters,
-    and decodes the string as utf8 or latin1 if needed.
-    For Python 3 there is no decoding needed.
 
     Parameters
     ----------
@@ -261,25 +236,7 @@ def deformat(text):
     t = re.sub("\\\.*?;", "", t)
     # replace UTF codes by utf chars
     sts = re.split("\\\\(U\+....)", t)
-    ns = u""
-    for ss in sts:
-        # print(ss, type(ss))
-        if ss.startswith("U+"):
-            ucode = "0x" + ss[2:]
-            # In Python3 unichr doesn't exist anymore
-            ns += six.unichr(eval(ucode))
-        else:
-            try:
-                ns += ss.decode("utf8")
-            except UnicodeError:
-                try:
-                    ns += ss.decode("latin1")
-                except UnicodeError:
-                    print("unable to decode text: ", text)
-            except AttributeError:
-                # this is python3 (nothing to do)
-                ns += ss
-    t = ns
+    t = u"".join(sts)
     # replace degrees, diameters chars
     t = re.sub('%%d', u'°', t)
     t = re.sub('%%c', u'Ø', t)
@@ -333,17 +290,18 @@ def locateLayer(wantedLayer, color=None, drawstyle=None):
     """
     # layers is a global variable.
     # It should probably be passed as an argument.
-    wantedLayerName = decodeName(wantedLayer)
-    for l in layers:
-        if wantedLayerName == l.Label:
-            return l
+    if wantedLayer is None:
+        wantedLayer = '0'
+    for layer in layers:
+        if layer.Label == wantedLayer:
+            return layer
     if dxfUseDraftVisGroups:
         newLayer = Draft.make_layer(name=wantedLayer,
-                                    line_color=color,
-                                    draw_style=drawstyle)
+                                    line_color=(0.0,0.0,0.0) if not color else color,
+                                    draw_style="Solid" if not drawstyle else drawstyle)
     else:
         newLayer = doc.addObject("App::DocumentObjectGroup", wantedLayer)
-    newLayer.Label = wantedLayerName
+    newLayer.Label = wantedLayer
     layers.append(newLayer)
     return newLayer
 
@@ -410,7 +368,7 @@ def calcBulge(v1, bulge, v2):
     Returns
     -------
     Base::Vector3
-        The new point betwwen `v1` and `v2`.
+        The new point between `v1` and `v2`.
     """
     chord = v2.sub(v1)
     sagitta = (bulge * chord.Length)/2
@@ -1143,7 +1101,7 @@ def drawEllipse(ellipse, forceShape=False):
         x = majv.normalize()
         z = vec(ellipse.extrusion).normalize()
         y = z.cross(x)
-        m = DraftVecUtils.getPlaneRotation(x, y, z)
+        m = DraftVecUtils.getPlaneRotation(x, y)
         pl = FreeCAD.Placement(m)
         pl.move(c)
         if (dxfCreateDraft or dxfCreateSketch) and (not forceShape):
@@ -2037,16 +1995,6 @@ def addText(text, attrib=False):
         else:
             name = "Text"
         val = deformat(val)
-        # the following stores text as Latin1 in annotations, which
-        # displays ok in coin texts, but causes errors later on.
-        # better store as utf8 always.
-        # try:
-        #    val = val.decode("utf8").encode("Latin1")
-        # except Exception:
-        #    try:
-        #        val = val.encode("latin1")
-        #    except Exception:
-        #        pass
         newob = Draft.make_text(val.split("\n"))
         if hasattr(lay, "addObject"):
             lay.addObject(newob)
@@ -2769,7 +2717,7 @@ def open(filename):
         if dxfReader:
             docname = os.path.splitext(os.path.basename(filename))[0]
             doc = FreeCAD.newDocument(docname)
-            doc.Label = decodeName(docname)
+            doc.Label = docname
             processdxf(doc, filename)
             return doc
         else:
@@ -2777,11 +2725,11 @@ def open(filename):
     else:
         docname = os.path.splitext(os.path.basename(filename))[0]
         doc = FreeCAD.newDocument(docname)
-        doc.Label = decodeName(docname)
+        doc.Label = docname
         FreeCAD.setActiveDocument(doc.Name)
         import Import
         Import.readDXF(filename)
-        Draft.convertDraftTexts() # convert annotations to Draft texts
+        Draft.convert_draft_texts() # convert annotations to Draft texts
         doc.recompute()
 
 
@@ -2815,7 +2763,6 @@ def insert(filename, docname):
         if dxfReader:
             groupname = os.path.splitext(os.path.basename(filename))[0]
             importgroup = doc.addObject("App::DocumentObjectGroup", groupname)
-            importgroup.Label = decodeName(groupname)
             processdxf(doc, filename)
             for l in layers:
                 importgroup.addObject(l)
@@ -2824,7 +2771,7 @@ def insert(filename, docname):
     else:
         import Import
         Import.readDXF(filename)
-        Draft.convertDraftTexts() # convert annotations to Draft texts
+        Draft.convert_draft_texts() # convert annotations to Draft texts
         doc.recompute()
 
 def getShapes(filename):
@@ -3527,9 +3474,8 @@ def export(objectslist, filename, nospline=False, lwPoly=False):
         it will use its `getDXF()` method to provide the DXF information
         to write into `filename`.
 
-        If the list only contains a `'Drawing::FeaturePage'`
-        or a `'TechDraw::DrawPage'` object it will use `exportPage()`
-        to produce the DXF file.
+        If the list only contains a `'TechDraw::DrawPage'` object it will use
+        `exportPage()` to produce the DXF file.
 
     filename : str
         The path of the new DXF file.
@@ -3596,10 +3542,6 @@ def export(objectslist, filename, nospline=False, lwPoly=False):
                 f = pythonopen(filename, "w")
                 f.write(dxf)
                 f.close()
-
-        elif (len(exportList) == 1) and (exportList[0].isDerivedFrom("Drawing::FeaturePage")):
-            # page: special hack-export! (see below)
-            exportPage(exportList[0], filename)
 
         elif (len(exportList) == 1) and (exportList[0].isDerivedFrom("TechDraw::DrawPage")):
             # page: special hack-export! (see below)
@@ -3871,8 +3813,8 @@ def exportPage(page, filename):
 
     Parameters
     ----------
-    page : object derived from 'Drawing::FeaturePage' or 'TechDraw::DrawPage'
-        A Drawing or TechDraw page to export.
+    page : object derived from 'TechDraw::DrawPage'
+        A TechDraw page to export.
 
     filename : str
         The path of the new DXF file.
@@ -3950,9 +3892,8 @@ def getViewBlock(geom, view, blockcount):
         the `getDXF()` method of the `view`.
 
     view : page view
-        A Drawing or TechDraw view which may be of different types
+        A TechDraw view which may be of different types
         depending on the objects being projected:
-        ``'Drawing::FeatureViewPython'`,
         `'TechDraw::DrawViewDraft'`, or `'TechDraw::DrawViewArch'`.
 
     blockcount : int
@@ -3990,7 +3931,7 @@ def getViewBlock(geom, view, blockcount):
             block += "0\nENDBLK\n5\n_handle_\n100\nAcDbEntity\n8\n0\n100\nAcDbBlockEnd\n"
             insert += "0\nINSERT\n5\n_handle_\n8\n0\n6\nBYLAYER\n62\n256\n2\n"
             insert += view.Name + str(blockcount)
-            insert += "\n10\n" + str(view.X) + "\n20\n" + str(-view.Y)
+            insert += "\n10\n" + str(view.X) + "\n20\n" + str(view.Y)
             insert += "\n30\n0\n41\n" + str(view.Scale) + "\n42\n" + str(view.Scale) + "\n43\n" + str(view.Scale)
             insert += "\n50\n" + str(r) + "\n"
             blockcount += 1
@@ -4001,8 +3942,8 @@ def getViewBlock(geom, view, blockcount):
     return block, insert, blockcount
 
 
-def getViewDXF(view, blocks=True):
-    """Return a DXF fragment from a Drawing view.
+def getViewDXF(view):
+    """Return a DXF fragment from a TechDraw view.
 
     Depending on the type of page view, it will try
     obtaining `geom`, the DXF representation of `view`,
@@ -4010,12 +3951,7 @@ def getViewDXF(view, blocks=True):
     with `getViewBlock(geom, view, blockcount)`,
     starting with a `blockcount` of 1.
 
-    If `view` is a group (`'App::DocumentObjectGroup'`)
-    it will recursively call itself in a loop `getViewDXF(child)`,
-    where `child` is a view contained in `view.Group`,
-    until all children are processed.
-
-    If the `view` is `'Drawing::FeatureViewPart'`,
+    If the `view` is `'TechDraw::DrawViewPart'`,
     and if the global variable `dxfExportBlocks` exists, it will create
     the appropriate strings for `BLOCK` and `INSERT` sections,
     and increment the `blockcount`.
@@ -4025,14 +3961,10 @@ def getViewDXF(view, blocks=True):
     Parameters
     ----------
     view : App::DocumentObjectGroup or page view
-        A Drawing or TechDraw view which may be of different types
+        A TechDraw view which may be of different types
         depending on the objects being projected:
-        `'Drawing::FeatureViewPython'`,
         `'TechDraw::DrawViewDraft'`, `'TechDraw::DrawViewArch'`,
-        `'Drawing::FeatureViewPart'`, `'Drawing::FeatureViewAnnotation'`
-
-    blocks : bool, optional
-        It defaults to `True`. Not used?
+        `'TechDraw::DrawViewPart'`, `'TechDraw::DrawViewAnnotation'`
 
     Returns
     -------
@@ -4047,19 +3979,8 @@ def getViewDXF(view, blocks=True):
     insert = ""
     blockcount = 1
 
-    if view.isDerivedFrom("App::DocumentObjectGroup"):
-        for child in view.Group:
-            b, e = getViewDXF(child)
-            block += b
-            insert += e
-
-    elif view.isDerivedFrom("Drawing::FeatureViewPython"):
-        if hasattr(view.Proxy, "getDXF"):
-            geom = view.Proxy.getDXF(view)
-            block, insert, blockcount = getViewBlock(geom, view, blockcount)
-
-    elif view.isDerivedFrom("TechDraw::DrawViewDraft"):
-        geom = Draft.getDXF(view)
+    if view.isDerivedFrom("TechDraw::DrawViewDraft"):
+        geom = Draft.get_dxf(view)
         block, insert, blockcount = getViewBlock(geom, view, blockcount)
 
     elif view.isDerivedFrom("TechDraw::DrawViewArch"):
@@ -4067,77 +3988,41 @@ def getViewDXF(view, blocks=True):
         geom = ArchSectionPlane.getDXF(view)
         block, insert, blockcount = getViewBlock(geom, view, blockcount)
 
-    elif view.isDerivedFrom("Drawing::FeatureViewPart"):
-        r = view.Rotation
-        if r != 0:
-            r = -r  # fix rotation direction
+    elif view.isDerivedFrom("TechDraw::DrawViewPart"):
         import TechDraw
-        proj = TechDraw.projectToDXF(view.Source.Shape, view.Direction)
-        if dxfExportBlocks:
-            # change layer and set color and ltype to BYBLOCK (0)
-            proj = proj.replace("sheet_layer\n",
-                                "0\n6\nBYBLOCK\n62\n0\n5\n_handle_\n")
-            block = "0\nBLOCK\n5\n_handle_\n100\nAcDbEntity\n8\n0\n100\nAcDbBlockBegin\n2\n"
-            block += view.Name + str(blockcount)
-            block += "\n70\n0\n10\n0\n20\n0\n3\n" + view.Name + str(blockcount)
-            block += "\n1\n\n"
-            block += proj
-            block += "0\nENDBLK\n5\n_handle_\n100\nAcDbEntity\n8\n0\n100\nAcDbBlockEnd\n"
-            insert += "0\nINSERT\n5\n_handle_\n8\n0\n6\nBYLAYER\n62\n256\n2\n"
-            insert += view.Name + str(blockcount)
-            insert += "\n10\n" + str(view.X) + "\n20\n" + str(-view.Y)
-            insert += "\n30\n0\n41\n" + str(view.Scale)
-            insert += "\n42\n" + str(view.Scale) + "\n43\n" + str(view.Scale)
-            insert += "\n50\n" + str(r) + "\n"
-            blockcount += 1
-        else:
-            proj = proj.replace("sheet_layer\n", "0\n5\n_handle_\n")
-            insert += proj
+        for obj in view.Source:
+            proj = TechDraw.projectToDXF(obj.Shape, view.Direction)
+            if dxfExportBlocks:
+                # change layer and set color and ltype to BYBLOCK (0)
+                proj = proj.replace("sheet_layer\n",
+                                    "0\n6\nBYBLOCK\n62\n0\n5\n_handle_\n")
+                block += "0\nBLOCK\n5\n_handle_\n100\nAcDbEntity\n8\n0\n100\nAcDbBlockBegin\n2\n"
+                block += view.Name + str(blockcount)
+                block += "\n70\n0\n10\n0\n20\n0\n3\n" + view.Name + str(blockcount)
+                block += "\n1\n\n"
+                block += proj
+                block += "0\nENDBLK\n5\n_handle_\n100\nAcDbEntity\n8\n0\n100\nAcDbBlockEnd\n"
+                insert += "0\nINSERT\n5\n_handle_\n8\n0\n6\nBYLAYER\n62\n256\n2\n"
+                insert += view.Name + str(blockcount)
+                insert += "\n10\n" + str(view.X) + "\n20\n" + str(view.Y)
+                insert += "\n30\n0\n41\n" + str(view.Scale)
+                insert += "\n42\n" + str(view.Scale) + "\n43\n" + str(view.Scale)
+                insert += "\n50\n" + str(view.Rotation) + "\n"
+                blockcount += 1
+            else:
+                proj = proj.replace("sheet_layer\n", "0\n5\n_handle_\n")
+                insert += proj # view.Rotation is ignored
 
-    elif view.isDerivedFrom("Drawing::FeatureViewAnnotation"):
-        r = view.Rotation
-        if r != 0:
-            r = -r  # fix rotation direction
+    elif view.isDerivedFrom("TechDraw::DrawViewAnnotation"):
         insert = "0\nTEXT\n5\n_handle_\n8\n0\n100\nAcDbEntity\n100\nAcDbText\n5\n_handle_"
-        insert += "\n10\n" + str(view.X) + "\n20\n" + str(-view.Y)
+        insert += "\n10\n" + str(view.X) + "\n20\n" + str(view.Y)
         insert += "\n30\n0\n40\n" + str(view.Scale/2)
-        insert += "\n50\n" + str(r)
+        insert += "\n50\n" + str(view.Rotation)
         insert += "\n1\n" + view.Text[0] + "\n"
 
     else:
         print("Unable to get DXF representation from view: ", view.Label)
     return block, insert
-
-
-def exportPageLegacy(page, filename):
-    """Export a page created with Drawing or TechDraw workbenches. DEPRECATED.
-
-    It uses the `importSVG` module to import the SVG information of `page`
-    into a temporary document, then the objects of this document
-    are used with the exporter to produce the DXF file,
-    and the temporary document is closed.
-    ::
-        temp = importSVG.open(page.PageResult)
-        export(temp.Objects, filename, nospline=True, lwPoly=false)
-        App.closeDocument(temp.Name)
-
-    Parameters
-    ----------
-    page : object derived from 'Drawing::FeaturePage' or 'TechDraw::DrawPage'
-        A Drawing or TechDraw page to export.
-
-    filename : str
-        The path of the new DXF file.
-
-    See also
-    --------
-    exportPage, export, importSVG.open
-    """
-    import importSVG
-    tempdoc = importSVG.open(page.PageResult)
-    tempobj = tempdoc.Objects
-    export(tempobj, filename, nospline=True, lwPoly=False)
-    FreeCAD.closeDocument(tempdoc.Name)
 
 
 def readPreferences():

@@ -105,7 +105,7 @@ class PointArray(DraftLink):
 
     def execute(self, obj):
         """Run when the object is created or recomputed."""
-        if self.props_changed_placement_only() \
+        if self.props_changed_placement_only(obj) \
                 or not obj.Base \
                 or not obj.PointObject:
             self.props_changed_clear()

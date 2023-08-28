@@ -24,7 +24,7 @@
 
 __title__ = "Analysis Checks"
 __author__ = "Przemo Firszt, Bernd Hahnebach"
-__url__ = "https://www.freecadweb.org"
+__url__ = "https://www.freecad.org"
 
 ## \addtogroup FEM
 #  @{
@@ -64,7 +64,7 @@ def check_member_for_solver_calculix(analysis, solver, mesh, member):
         if solver.Proxy.Type == "Fem::SolverCcxTools" \
                 and solver.GeometricalNonlinearity != "nonlinear":
             # nonlinear geometry --> should be set
-            # https://forum.freecadweb.org/viewtopic.php?f=18&t=23101&p=180489#p180489
+            # https://forum.freecad.org/viewtopic.php?f=18&t=23101&p=180489#p180489
             message += (
                 "Solver CalculiX triggers nonlinear geometry for nonlinear material, "
                 "thus it should to be set too.\n"

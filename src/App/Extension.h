@@ -228,7 +228,7 @@ class AppExport Extension
 
 public:
 
-    Extension();
+    Extension() = default;
     virtual ~Extension();
 
     virtual void initExtension(App::ExtensionContainer* obj);
@@ -284,6 +284,11 @@ protected:
     //@}
 
     virtual void extensionOnChanged(const Property* p) {(void)(p);}
+
+    /// returns true if the property name change was handled by the extension.
+    virtual bool extensionHandleChangedPropertyName(Base::XMLReader &reader, const char * TypeName, const char *PropName);
+    /// returns true if the property type change was handled by the extension.
+    virtual bool extensionHandleChangedPropertyType(Base::XMLReader &reader, const char * TypeName, Property * prop);
 
     friend class App::ExtensionContainer;
 

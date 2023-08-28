@@ -73,8 +73,7 @@ double LineSet::getMaxY()
 
 bool LineSet::isDashed()
 {
-    bool result = m_hatchLine.isDashed();
-    return result;
+    return m_hatchLine.isDashed();
 }
 
 //! calculates the apparent start point (ie start of overlay line) for dashed lines
@@ -299,26 +298,24 @@ void PATLineSpec::dump(const char* title)
 //static class methods
 std::vector<PATLineSpec> PATLineSpec::getSpecsForPattern(std::string& parmFile, std::string& parmName)
 {
-    std::vector<PATLineSpec> result;
     std::vector<std::string> lineSpecs;
     Base::FileInfo fi(parmFile);
     Base::ifstream inFile;
-    inFile.open (fi, std::ifstream::in);
+    inFile.open(fi, std::ifstream::in);
     if(!inFile.is_open()) {
-        Base::Console().Message( "Cannot open input file.\n");
-        return result;
+        Base::Console().Message("Cannot open input file.\n");
+        return std::vector<PATLineSpec>();
     }
 
     //get all the definition lines for this pattern
     bool status = findPatternStart(inFile, parmName);
-    if (status) {
-        lineSpecs = loadPatternDef(inFile);
-    } else {
-        //this can come up when changing PAT file or pattern name
-        return result;
+    if (!status) { // This can come up when changing PAT file or pattern name
+        return std::vector<PATLineSpec>();
     }
+    lineSpecs = loadPatternDef(inFile);
 
     //decode definition lines into PATLineSpec objects
+    std::vector<PATLineSpec> result;
     for (auto& l: lineSpecs) {
         PATLineSpec hl(l);
         result.push_back(hl);
@@ -329,16 +326,15 @@ std::vector<PATLineSpec> PATLineSpec::getSpecsForPattern(std::string& parmFile, 
 bool  PATLineSpec::findPatternStart(std::ifstream& inFile, std::string& parmName)
 {
 //    Base::Console().Message("HL::findPatternStart() - parmName: %s\n", parmName.c_str());
-    bool result = false;
-    while ( inFile.good() ){
+    while (inFile.good() ){
          std::string line;
          std::getline(inFile, line);
          std::string nameTag = line.substr(0, 1);
          std::string patternName;
          std::size_t commaPos;
-         if ((nameTag == ";")  ||
-             (nameTag == " ")  ||
-             (line.empty()) )  {           //is cr/lf empty?
+         if (nameTag == ";" ||
+             nameTag == " " ||
+             line.empty()) {           //is cr/lf empty?
              continue;
          } else if (nameTag == "*") {
              commaPos = line.find(',',1);
@@ -349,12 +345,11 @@ bool  PATLineSpec::findPatternStart(std::ifstream& inFile, std::string& parmName
              }
              if (patternName == parmName) {
                  //this is our pattern
-                 result = true;
-                 break;
+                 return true;
              }
         }
     }  //endwhile
-    return result;
+    return false;
 }
 
 //get the definition lines for this pattern
@@ -414,18 +409,16 @@ double PATLineSpec::getSlope()
 
     //only dealing with angles -180:180 for now
     if (angle > 90.0) {
-         angle = -(180.0 - angle);
+        angle = -(180.0 - angle);
     } else if (angle < -90.0) {
         angle = (180 + angle);
     }
-    double slope = tan(angle * M_PI/180.0);
-    return slope;
+    return tan(angle * M_PI/180.0);
 }
 
 bool PATLineSpec::isDashed()
 {
-    bool result = !m_dashParms.empty();
-    return result;
+    return !m_dashParms.empty();
 }
 
 //! X component of distance between lines
@@ -470,8 +463,7 @@ DashSpec DashSpec::reversed()
 {
     std::vector<double> p = get();
     std::reverse(p.begin(), p.end());
-    DashSpec result(p);
-    return result;
+    return DashSpec(p);
 }
 
 void DashSpec::dump(const char* title)

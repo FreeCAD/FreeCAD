@@ -140,6 +140,8 @@ public:
     std::string getExportName(bool forced=false) const;
     /// Return the object full name of the form DocName#ObjName
     std::string getFullName() const override;
+    /// Return the object full label in the form DocName#ObjName
+    std::string getFullLabel() const;
     bool isAttachedToDocument() const override;
     const char* detachFromDocument() override;
     /// gets the document in which this Object is handled
@@ -381,6 +383,9 @@ public:
     ///Obtain top parents and subnames of this object using its InList
     std::vector<std::pair<App::DocumentObject*,std::string> > getParents(int depth=0) const;
 
+    /// Obtain the first parent group of this object
+    App::DocumentObject* getFirstParent() const;
+
     /** Return the linked object with optional transformation
      *
      * @param recurse: If false, return the immediate linked object, or else
@@ -621,20 +626,20 @@ private:
 protected: // attributes
     Py::SmartPtr PythonObject;
     /// pointer to the document this object belongs to
-    App::Document* _pDoc;
+    App::Document* _pDoc{nullptr};
 
     /// Old label; used for renaming expressions
     std::string oldLabel;
 
     // pointer to the document name string (for performance)
-    const std::string *pcNameInDocument;
+    const std::string *pcNameInDocument{nullptr};
 
 private:
     // accessed by App::Document to record and restore the correct view provider type
     std::string _pcViewProviderName;
 
     // unique identifier (among a document) of this object.
-    long _Id;
+    long _Id{0};
 
 private:
     // Back pointer to all the fathers in a DAG of the document

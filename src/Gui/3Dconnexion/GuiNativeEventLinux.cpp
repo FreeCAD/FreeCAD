@@ -60,29 +60,29 @@ void Gui::GuiNativeEvent::initSpaceball(QMainWindow *window)
 
 void Gui::GuiNativeEvent::pollSpacenav()
 {
-	spnav_event ev;
-	while(spnav_poll_event(&ev))
-	{
-		switch (ev.type)
-		{
-			case SPNAV_EVENT_MOTION:
-			{
-				motionDataArray[0] = -ev.motion.x;
-				motionDataArray[1] = -ev.motion.z;
-				motionDataArray[2] = -ev.motion.y;
-				motionDataArray[3] = -ev.motion.rx;
-				motionDataArray[4] = -ev.motion.rz;
-				motionDataArray[5] = -ev.motion.ry;
-				mainApp->postMotionEvent(motionDataArray);
-				break;
-			}
-			case SPNAV_EVENT_BUTTON:
-			{
-				mainApp->postButtonEvent(ev.button.bnum, ev.button.press);
-				break;
-			}
-		}
-	}
+    spnav_event ev;
+    while(spnav_poll_event(&ev))
+    {
+        switch (ev.type)
+        {
+            case SPNAV_EVENT_MOTION:
+            {
+                motionDataArray[0] = -ev.motion.x;
+                motionDataArray[1] = -ev.motion.z;
+                motionDataArray[2] = -ev.motion.y;
+                motionDataArray[3] = -ev.motion.rx;
+                motionDataArray[4] = -ev.motion.rz;
+                motionDataArray[5] = -ev.motion.ry;
+                mainApp->postMotionEvent(motionDataArray);
+                break;
+            }
+            case SPNAV_EVENT_BUTTON:
+            {
+                mainApp->postButtonEvent(ev.button.bnum, ev.button.press);
+                break;
+            }
+        }
+    }
 }
 
 #include "3Dconnexion/moc_GuiNativeEventLinux.cpp"

@@ -35,14 +35,9 @@ using namespace App;
 PROPERTY_SOURCE(Fem::FemSolverObject, App::DocumentObject)
 
 
-FemSolverObject::FemSolverObject()
-{
-    // Attributes are implemented in the FemSolverObjectPython
-}
+FemSolverObject::FemSolverObject() = default;
 
-FemSolverObject::~FemSolverObject()
-{
-}
+FemSolverObject::~FemSolverObject() = default;
 
 short FemSolverObject::mustExecute() const
 {

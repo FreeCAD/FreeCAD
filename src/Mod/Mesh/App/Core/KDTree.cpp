@@ -39,17 +39,13 @@ struct Point3d
    {
    }
 
-   Point3d(const Point3d& pnt) : p(pnt.p), i(pnt.i)
-   {
-   }
+   Point3d(const Point3d& pnt) = default;
 
    Point3d(Point3d&& pnt) : p(pnt.p), i(pnt.i)
    {
    }
 
-   ~Point3d()
-   {
-   }
+   ~Point3d() = default;
 
    inline value_type operator[](const int N) const
    {
@@ -66,16 +62,13 @@ struct Point3d
       return (this->p) != (other.p);
    }
 
-   inline void operator=(const Point3d& other)
-   {
-       this->p = other.p;
-       this->i = other.i;
-   }
+   inline Point3d& operator=(const Point3d& other) = default;
 
-   inline void operator=(Point3d&& other)
+   inline Point3d& operator=(Point3d&& other)
    {
        this->p = other.p;
        this->i = other.i;
+       return *this;
    }
 
    Base::Vector3f p;
@@ -97,16 +90,16 @@ MeshKDTree::MeshKDTree() : d(new Private)
 MeshKDTree::MeshKDTree(const std::vector<Base::Vector3f>& points) : d(new Private)
 {
     PointIndex index=0;
-    for (std::vector<Base::Vector3f>::const_iterator it = points.begin(); it != points.end(); ++it) {
-        d->kd_tree.insert(Point3d(*it, index++));
+    for (auto it : points) {
+        d->kd_tree.insert(Point3d(it, index++));
     }
 }
 
 MeshKDTree::MeshKDTree(const MeshPointArray& points) : d(new Private)
 {
     PointIndex index=0;
-    for (MeshPointArray::_TConstIterator it = points.begin(); it != points.end(); ++it) {
-        d->kd_tree.insert(Point3d(*it, index++));
+    for (const auto & it : points) {
+        d->kd_tree.insert(Point3d(it, index++));
     }
 }
 
@@ -115,7 +108,7 @@ MeshKDTree::~MeshKDTree()
     delete d;
 }
 
-void MeshKDTree::AddPoint(Base::Vector3f& point)
+void MeshKDTree::AddPoint(const Base::Vector3f& point)
 {
     PointIndex index=d->kd_tree.size();
     d->kd_tree.insert(Point3d(point, index));
@@ -124,16 +117,16 @@ void MeshKDTree::AddPoint(Base::Vector3f& point)
 void MeshKDTree::AddPoints(const std::vector<Base::Vector3f>& points)
 {
     PointIndex index=d->kd_tree.size();
-    for (std::vector<Base::Vector3f>::const_iterator it = points.begin(); it != points.end(); ++it) {
-        d->kd_tree.insert(Point3d(*it, index++));
+    for (auto it : points) {
+        d->kd_tree.insert(Point3d(it, index++));
     }
 }
 
 void MeshKDTree::AddPoints(const MeshPointArray& points)
 {
     PointIndex index=d->kd_tree.size();
-    for (MeshPointArray::_TConstIterator it = points.begin(); it != points.end(); ++it) {
-        d->kd_tree.insert(Point3d(*it, index++));
+    for (const auto & it : points) {
+        d->kd_tree.insert(Point3d(it, index++));
     }
 }
 
@@ -192,6 +185,6 @@ void MeshKDTree::FindInRange(const Base::Vector3f& p, float range, std::vector<P
     std::vector<Point3d> v;
     d->kd_tree.find_within_range(Point3d(p,0), range, std::back_inserter(v));
     indices.reserve(v.size());
-    for (std::vector<Point3d>::iterator it = v.begin(); it != v.end(); ++it)
-        indices.push_back(it->i);
+    for (const auto & it : v)
+        indices.push_back(it.i);
 }

@@ -34,6 +34,7 @@
 #include <Gui/ViewProvider.h>
 #include <Mod/TechDraw/App/DrawUtil.h>
 #include <Mod/TechDraw/App/DrawViewPart.h>
+#include <Mod/TechDraw/App/CenterLine.h>
 #include <Mod/TechDraw/App/Cosmetic.h>
 #include <Mod/TechDraw/App/Geometry.h>
 
@@ -82,7 +83,7 @@ void TaskLineDecor::initUi()
     }
     std::string temp = ss.str();
     if (!temp.empty()) {
-        temp.pop_back();
+        temp.resize(temp.length() - 2);
     }
     ui->le_Lines->setText(Base::Tools::fromStdString(temp));
 
@@ -99,14 +100,14 @@ void TaskLineDecor::getDefaults()
     m_style = LineFormat::getDefEdgeStyle();
     m_color = LineFormat::getDefEdgeColor();
     m_weight = LineFormat::getDefEdgeWidth();
-    m_visible = 1;
+    m_visible = true;
 
     //set defaults to format of 1st edge
     if (!m_edges.empty()) {
         int num = DrawUtil::getIndexFromName(m_edges.front());
         BaseGeomPtr bg = m_partFeat->getGeomByIndex(num);
         if (bg) {
-            if (bg->cosmetic) {
+            if (bg->getCosmetic()) {
                 if (bg->source() == 1) {
                     TechDraw::CosmeticEdge* ce = m_partFeat->getCosmeticEdgeBySelection(m_edges.front());
                     m_style = ce->m_format.m_style;
@@ -135,7 +136,7 @@ void TaskLineDecor::getDefaults()
                         m_weight = partVP->LineWidth.getValue();
                         m_style = Qt::SolidLine;                  // = 1
                         m_color = LineFormat::getDefEdgeColor();
-                        m_visible = 1;
+                        m_visible = true;
                     }
                 }
             }
@@ -178,7 +179,7 @@ void TaskLineDecor::applyDecorations()
         int num = DrawUtil::getIndexFromName(e);
         BaseGeomPtr bg = m_partFeat->getGeomByIndex(num);
         if (bg) {
-            if (bg->cosmetic) {
+            if (bg->getCosmetic()) {
                 if (bg->source() == 1) {
                     TechDraw::CosmeticEdge* ce = m_partFeat->getCosmeticEdgeBySelection(e);
                     ce->m_format.m_style = m_style;

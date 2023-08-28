@@ -35,7 +35,6 @@
 class SoGLCoordinateElement;
 class SoTextureCoordinateBundle;
 
-// #define RENDER_GLARRAYS
 
 namespace PartGui {
 

@@ -106,6 +106,9 @@ public:
 
     bool hasObject(App::DocumentObject* obj);
 
+    void translateLabel(std::string context, std::string baseName, std::string uniqueName);
+
+
 protected:
     void onBeforeChange(const App::Property* prop) override;
     void onChanged(const App::Property* prop) override;

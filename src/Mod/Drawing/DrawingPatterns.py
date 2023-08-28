@@ -139,7 +139,7 @@ def buildPattern(name,scale=5,thickness=1,color="#000000"):
     builds an SVG <pattern> fragment from a name and path data"""
     
     name,scale,thickness = decodeName(name,scale,thickness)
-    if not (name in Patterns.keys()):
+    if not (name in Patterns):
         return None
     pname = name + "_" + str(scale).replace(".","") + "_" + str(thickness).replace(".","")
     data = Patterns[name]
@@ -162,7 +162,7 @@ def buildTextureImage(name,scale=5,thickness=1,color="#000000",size=64):
     builds a 64x64 SVG image filled with the given texture"""
     
     name,scale,thickness = decodeName(name,scale,thickness)
-    if not (name in Patterns.keys()):
+    if not (name in Patterns):
         return None
     s = str(size)
     template = '''<svg xmlns="http://www.w3.org/2000/svg" version="1.1" 
@@ -183,7 +183,7 @@ def buildSwatch(name,scale=5,thickness=1,color="#000000",size=64):
     white background and a border, to serve as a sample"""
     
     name,scale,thickness = decodeName(name,scale,thickness)
-    if not (name in Patterns.keys()):
+    if not (name in Patterns):
         return None
     s = str(size)
     template = '''<svg xmlns="http://www.w3.org/2000/svg" version="1.1" 

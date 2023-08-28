@@ -84,9 +84,10 @@ protected:
     /** Notifies when the object is about to be removed. */
     void slotDeletedObject(const Gui::ViewProviderDocumentObject& Obj) override;
 
-private Q_SLOTS:
-    void on_buttonVertexAdd_toggled(bool checked);
-    void on_buttonVertexRemove_toggled(bool checked);
+private:
+    void setupConnections();
+    void onButtonVertexAddToggled(bool checked);
+    void onButtonVertexRemoveToggled(bool checked);
     void onDeleteVertex();
     void clearSelection();
 

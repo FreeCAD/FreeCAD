@@ -95,13 +95,14 @@ protected:
     void changeFillType(GeomFill_FillingStyle);
     void flipOrientation(QListWidgetItem*);
 
-private Q_SLOTS:
-    void on_fillType_stretch_clicked();
-    void on_fillType_coons_clicked();
-    void on_fillType_curved_clicked();
-    void on_buttonEdgeAdd_toggled(bool checked);
-    void on_buttonEdgeRemove_toggled(bool checked);
-    void on_listWidget_itemDoubleClicked(QListWidgetItem*);
+private:
+    void setupConnections();
+    void onFillTypeStretchClicked();
+    void onFillTypeCoonsClicked();
+    void onFillTypeCurvedClicked();
+    void onButtonEdgeAddToggled(bool checked);
+    void onButtonEdgeRemoveToggled(bool checked);
+    void onListWidgetItemDoubleClicked(QListWidgetItem*);
     void onDeleteEdge();
     void onFlipOrientation();
     void clearSelection();
@@ -116,7 +117,6 @@ class TaskGeomFillSurface : public Gui::TaskView::TaskDialog
 
 public:
     TaskGeomFillSurface(ViewProviderGeomFillSurface* vp, Surface::GeomFillSurface* obj);
-    ~TaskGeomFillSurface() override;
     void setEditedObject(Surface::GeomFillSurface* obj);
 
 public:

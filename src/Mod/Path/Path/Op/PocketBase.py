@@ -30,7 +30,7 @@ from PySide.QtCore import QT_TRANSLATE_NOOP
 
 __title__ = "Base Path Pocket Operation"
 __author__ = "sliptonic (Brad Collette)"
-__url__ = "https://www.freecadweb.org"
+__url__ = "https://www.freecad.org"
 __doc__ = "Base class and implementation for Path pocket operations."
 
 if False:
@@ -185,6 +185,25 @@ class ObjectPocket(PathAreaOp.ObjectOp):
                 "Last Stepover Radius.  If 0, 50% of cutter is used. Tuning this can be used to improve stepover for some shapes",
             ),
         )
+        obj.addProperty(
+            "App::PropertyBool",
+            "UseRestMachining",
+            "Pocket",
+            QT_TRANSLATE_NOOP(
+                "App::Property",
+                "Skips machining regions that have already been cleared by previous operations.",
+            ),
+        )
+        obj.addProperty(
+            "Part::PropertyPartShape",
+            "RestMachiningRegions",
+            "Pocket",
+            QT_TRANSLATE_NOOP(
+                "App::Property",
+                "The areas cleared by this operation, one area per height, stored as a compound part. Used internally for rest machining.",
+            ),
+        )
+        obj.setEditorMode("RestMachiningRegions", 2)  # hide
 
         for n in self.pocketPropertyEnumerations():
             setattr(obj, n[0], n[1])
@@ -246,6 +265,42 @@ class ObjectPocket(PathAreaOp.ObjectOp):
                 ),
             )
             obj.PocketLastStepOver = 0
+
+        if not hasattr(obj, "UseRestMachining"):
+            obj.addProperty(
+                "App::PropertyBool",
+                "UseRestMachining",
+                "Pocket",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "Skips machining regions that have already been cleared by previous operations.",
+                ),
+            )
+
+        if not hasattr(obj, "RestMachiningRegions"):
+            obj.addProperty(
+                "Part::PropertyPartShape",
+                "RestMachiningRegions",
+                "Pocket",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                "The areas cleared by this operation, one area per height, stored as a compound part. Used internally for rest machining.",
+                ),
+            )
+            obj.setEditorMode("RestMachiningRegions", 2)  # hide
+
+            obj.addProperty(
+                "App::PropertyBool",
+                "RestMachiningRegionsNeedRecompute",
+                "Pocket",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "Flag to indicate that the rest machining regions have never been computed, and must be recomputed before being used.",
+                ),
+            )
+            obj.setEditorMode("RestMachiningRegionsNeedRecompute", 2)  # hide
+            obj.RestMachiningRegionsNeedRecompute = True
+
         Path.Log.track()
 
     def areaOpPathParams(self, obj, isHole):
@@ -259,7 +314,7 @@ class ObjectPocket(PathAreaOp.ObjectOp):
         # 3DSort shouldn't be used without a valid start point. Can cause
         # tool crash without it.
         #
-        # ml: experimental feature, turning off for now (see https://forum.freecadweb.org/viewtopic.php?f=15&t=24422&start=30#p192458)
+        # ml: experimental feature, turning off for now (see https://forum.freecad.org/viewtopic.php?f=15&t=24422&start=30#p192458)
         # realthunder: I've fixed it with a new sorting algorithm, which I
         # tested fine, but of course need more test. Please let know if there is
         # any problem

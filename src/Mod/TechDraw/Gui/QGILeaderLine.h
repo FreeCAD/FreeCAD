@@ -62,7 +62,7 @@ public:
     };
 
     explicit QGILeaderLine();
-    ~QGILeaderLine() = default;
+    ~QGILeaderLine() override = default;
 
     int type() const override
     {

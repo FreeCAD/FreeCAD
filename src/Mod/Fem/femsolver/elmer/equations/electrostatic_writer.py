@@ -32,6 +32,7 @@ __url__ = "https://www.freecad.org"
 
 from .. import sifio
 
+
 class ESwriter:
 
     def __init__(self, writer, solver):
@@ -107,7 +108,7 @@ class ESwriter:
             self.write.constsdef["PermittivityOfVacuum"],
             "T^4*I^2/(L^3*M)"
         )
-        permittivity = round(permittivity, 20) # to get rid of numerical artifacts
+        permittivity = round(permittivity, 20)  # to get rid of numerical artifacts
         self.write.constant("Permittivity Of Vacuum", permittivity)
 
     def handleElectrostaticMaterial(self, bodies):

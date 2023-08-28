@@ -26,7 +26,7 @@ import numpy
 
 __title__ = "Drilling Path Generator"
 __author__ = "sliptonic (Brad Collette)"
-__url__ = "https://www.freecadweb.org"
+__url__ = "https://www.freecad.org"
 __doc__ = "Generates the drilling toolpath for a single spotshape"
 
 

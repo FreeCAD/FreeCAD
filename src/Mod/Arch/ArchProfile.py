@@ -21,7 +21,7 @@
 
 __title__  = "FreeCAD Profile"
 __author__ = "Yorik van Havre"
-__url__    = "https://www.freecadweb.org"
+__url__    = "https://www.freecad.org"
 
 ## @package ArchProfile
 #  \ingroup ARCH
@@ -30,10 +30,12 @@ __url__    = "https://www.freecadweb.org"
 #  This module provides tools to build base profiles
 #  for Arch Structure elements
 
-
-import FreeCAD, Draft, os
-from FreeCAD import Vector
 import csv
+import os
+
+import FreeCAD
+import Draft
+from FreeCAD import Vector
 
 if FreeCAD.GuiUp:
     import FreeCADGui
@@ -121,7 +123,7 @@ class Arch_Profile:
         return {'Pixmap'  : 'Arch_Profile',
                 'MenuText': QT_TRANSLATE_NOOP("Arch_Profile","Profile"),
                 'Accel': "P, F",
-                'ToolTip': QT_TRANSLATE_NOOP("Arch_Profile","Creates a profile object")}
+                'ToolTip': QT_TRANSLATE_NOOP("Arch_Profile","Creates a profile")}
 
     def IsActive(self):
 
@@ -514,7 +516,7 @@ class ProfileTaskPanel:
         elif isinstance(self.obj.Proxy,_ProfileT):
             self.type = "T"
         else:
-            self.type = "Undefined"
+            self.type = "Building Element Proxy"
         self.form = QtGui.QWidget()
         layout = QtGui.QVBoxLayout(self.form)
         self.comboCategory = QtGui.QComboBox(self.form)

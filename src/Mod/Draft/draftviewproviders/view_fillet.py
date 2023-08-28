@@ -39,5 +39,11 @@ class ViewProviderFillet(ViewProviderWire):
     def __init__(self, vobj):
         super(ViewProviderFillet, self).__init__(vobj)
 
+    def doubleClicked(self, vobj):
+        # See setEdit in ViewProviderDraft.
+        import FreeCADGui as Gui
+        Gui.runCommand("Std_TransformManip")
+        return True
+
 
 ## @}

@@ -44,8 +44,8 @@ private:
     void saveSettings();
     void changeEvent(QEvent *e) override;
 
-private Q_SLOTS:
-    void on_makePlacement_clicked();
+private:
+    void onMakePlacementClicked();
 
 private:
     class Private;
@@ -58,7 +58,6 @@ class TaskFitBSplineSurface : public Gui::TaskView::TaskDialog
 
 public:
     explicit TaskFitBSplineSurface(const App::DocumentObjectT&);
-    ~TaskFitBSplineSurface() override;
 
 public:
     void open() override;

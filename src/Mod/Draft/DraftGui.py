@@ -22,7 +22,7 @@
 
 __title__  = "FreeCAD Draft Workbench - GUI part"
 __author__ = "Yorik van Havre <yorik@uncreated.net>"
-__url__ = "https://www.freecadweb.org"
+__url__ = "https://www.freecad.org"
 
 ## @package DraftGui
 #  \ingroup DRAFT
@@ -48,7 +48,6 @@ import Draft
 import DraftVecUtils
 
 from draftutils.translate import translate
-from draftutils.utils import utf8_decode
 
 # in-command shortcut definitions: Shortcut / Translation / related UI control
 inCommandShortcuts = {
@@ -461,24 +460,6 @@ class DraftToolBar:
         self.angleValue = self._inputfield("angleValue", al)
         self.angleValue.setText(FreeCAD.Units.Quantity(0,FreeCAD.Units.Angle).UserString)
 
-        # shapestring
-
-        self.labelSSize = self._label("labelSize", self.layout)
-        self.SSizeValue = self._inputfield("SSizeValue", self.layout)           #, width=60)
-        self.SSizeValue.setText(FreeCAD.Units.Quantity(1,FreeCAD.Units.Length).UserString)
-        self.labelSTrack = self._label("labelTracking", self.layout)
-        self.STrackValue = self._inputfield("STrackValue", self.layout)         #, width=60)
-        self.STrackValue.setText(FreeCAD.Units.Quantity(0,FreeCAD.Units.Length).UserString)
-        self.labelSString = self._label("labelString", self.layout)
-        self.SStringValue = self._lineedit("SStringValue", self.layout)
-        self.SStringValue.setText("")
-        self.labelFFile = self._label("labelFFile", self.layout)
-        self.FFileValue = self._lineedit("FFileValue", self.layout)
-        self.chooserButton = self._pushbutton("chooserButton", self.layout, width=26)
-        self.chooserButton.setText("...")
-        self.SSize = 1
-        self.STrack = 0
-
         # options
 
         fl = QtGui.QHBoxLayout()
@@ -564,13 +545,6 @@ class DraftToolBar:
         QtCore.QObject.connect(self.hasFill,QtCore.SIGNAL("stateChanged(int)"),self.setFill)
         QtCore.QObject.connect(self.baseWidget,QtCore.SIGNAL("resized()"),self.relocate)
         QtCore.QObject.connect(self.baseWidget,QtCore.SIGNAL("retranslate()"),self.retranslateUi)
-        QtCore.QObject.connect(self.SSizeValue,QtCore.SIGNAL("valueChanged(double)"),self.changeSSizeValue)
-        QtCore.QObject.connect(self.SSizeValue,QtCore.SIGNAL("returnPressed()"),self.validateSNumeric)
-        QtCore.QObject.connect(self.STrackValue,QtCore.SIGNAL("valueChanged(double)"),self.changeSTrackValue)
-        QtCore.QObject.connect(self.STrackValue,QtCore.SIGNAL("returnPressed()"),self.validateSNumeric)
-        QtCore.QObject.connect(self.SStringValue,QtCore.SIGNAL("returnPressed()"),self.validateSString)
-        QtCore.QObject.connect(self.chooserButton,QtCore.SIGNAL("pressed()"),self.pickFile)
-        QtCore.QObject.connect(self.FFileValue,QtCore.SIGNAL("returnPressed()"),self.validateFile)
 
     def setupTray(self):
         """sets draft tray buttons up"""
@@ -697,14 +671,6 @@ class DraftToolBar:
         self.isCopy.setToolTip(translate("draft", "If checked, objects will be copied instead of moved. Preferences -> Draft -> Global copy mode to keep this mode in next commands"))
         self.isSubelementMode.setText(translate("draft", "Modify subelements")+" ("+inCommandShortcuts["SubelementMode"][0]+")")
         self.isSubelementMode.setToolTip(translate("draft", "If checked, subelements will be modified instead of entire objects"))
-        self.SStringValue.setToolTip(translate("draft", "Text string to draw"))
-        self.labelSString.setText(translate("draft", "String"))
-        self.SSizeValue.setToolTip(translate("draft", "Height of text"))
-        self.labelSSize.setText(translate("draft", "Height"))
-        self.STrackValue.setToolTip(translate("draft", "Intercharacter spacing"))
-        self.labelSTrack.setText(translate("draft", "Tracking"))
-        self.labelFFile.setText(translate("draft", "Full path to font file:"))
-        self.chooserButton.setToolTip(translate("draft", "Open a FileChooser for font file"))
         self.textOkButton.setText(translate("draft", "Create text"))
         self.textOkButton.setToolTip(translate("draft", "Press this button to create the text object, or finish your text with two blank lines"))
         self.retranslateTray(widget)
@@ -879,13 +845,13 @@ class DraftToolBar:
 
     def labelUi(self,title=translate("draft","Label"),callback=None):
         w = QtGui.QWidget()
-        w.setWindowTitle(translate("draft","Label type", utf8_decode=True))
+        w.setWindowTitle(translate("draft","Label type"))
         l = QtGui.QVBoxLayout(w)
         combo = QtGui.QComboBox()
         from draftobjects.label import get_label_types
         types = get_label_types()
         for s in types:
-            combo.addItem(s)
+            combo.addItem(translate("Draft", s), userData=s)
         combo.setCurrentIndex(types.index(Draft.getParam("labeltype","Custom")))
         l.addWidget(combo)
         QtCore.QObject.connect(combo,QtCore.SIGNAL("currentIndexChanged(int)"),callback)
@@ -996,21 +962,21 @@ class DraftToolBar:
     def checkLocal(self):
         """checks if x,y,z coords must be displayed as local or global"""
         if not self.globalMode and self.relativeMode:
-            self.labelx.setText(translate("draft", "Local \u0394X"))
-            self.labely.setText(translate("draft", "Local \u0394Y"))
-            self.labelz.setText(translate("draft", "Local \u0394Z"))
+            self.labelx.setText(translate("draft", "Local {}").format("\u0394X"))  # \u0394 = ∆ (Greek delta)
+            self.labely.setText(translate("draft", "Local {}").format("\u0394Y"))
+            self.labelz.setText(translate("draft", "Local {}").format("\u0394Z"))
         elif not self.globalMode and not self.relativeMode:
-            self.labelx.setText(translate("draft", "Local X"))
-            self.labely.setText(translate("draft", "Local Y"))
-            self.labelz.setText(translate("draft", "Local Z"))
+            self.labelx.setText(translate("draft", "Local {}").format("X"))
+            self.labely.setText(translate("draft", "Local {}").format("Y"))
+            self.labelz.setText(translate("draft", "Local {}").format("Z"))
         elif self.globalMode and self.relativeMode:
-            self.labelx.setText(translate("draft", "Global \u0394X"))
-            self.labely.setText(translate("draft", "Global \u0394Y"))
-            self.labelz.setText(translate("draft", "Global \u0394Z"))
+            self.labelx.setText(translate("draft", "Global {}").format("\u0394X"))
+            self.labely.setText(translate("draft", "Global {}").format("\u0394Y"))
+            self.labelz.setText(translate("draft", "Global {}").format("\u0394Z"))
         else:
-            self.labelx.setText(translate("draft", "Global X"))
-            self.labely.setText(translate("draft", "Global Y"))
-            self.labelz.setText(translate("draft", "Global Z"))
+            self.labelx.setText(translate("draft", "Global {}").format("X"))
+            self.labely.setText(translate("draft", "Global {}").format("Y"))
+            self.labelz.setText(translate("draft", "Global {}").format("Z"))
 
     def setNextFocus(self):
         def isThere(widget):
@@ -1070,9 +1036,9 @@ class DraftToolBar:
                 if self.callback:
                     self.callback()
                 return True
-        FreeCADGui.Control.closeDialog()
+        todo.delay(FreeCADGui.Control.closeDialog,None)
         panel = TaskPanel(extra, on_close_call)
-        FreeCADGui.Control.showDialog(panel)
+        todo.delay(FreeCADGui.Control.showDialog,panel)
 
 
 #---------------------------------------------------------------------------
@@ -1134,100 +1100,24 @@ class DraftToolBar:
                     print("debug: DraftGui.validatePoint: AttributeError")
                 else:
                     num_vec = FreeCAD.Vector(numx, numy, numz)
-                    ref_vec = FreeCAD.Vector(0,0,0)
                     if self.pointcallback:
-                        self.pointcallback(num_vec, self.relativeMode)
+                        self.pointcallback(num_vec, self.globalMode, self.relativeMode)
                     else:
+                        ref_vec = FreeCAD.Vector(0, 0, 0)
                         if FreeCAD.DraftWorkingPlane and not self.globalMode:
                             num_vec = FreeCAD.DraftWorkingPlane.getGlobalRot(num_vec)
                             ref_vec = FreeCAD.DraftWorkingPlane.getGlobalCoords(ref_vec)
-                        if self.relativeMode:
-                            if self.sourceCmd.node:
-                                ref_vec = self.sourceCmd.node[-1]
+                        if self.relativeMode and self.sourceCmd.node:
+                            ref_vec = self.sourceCmd.node[-1]
 
                         numx, numy, numz = num_vec + ref_vec
-                        self.sourceCmd.numericInput(numx,numy,numz)
+                        self.sourceCmd.numericInput(numx, numy, numz)
 
-            elif (self.textValue.isVisible() or self.SStringValue.isVisible()
-                  or self.SSizeValue.isVisible() or self.STrackValue.isVisible()
-                  or self.FFileValue.isVisible()):
+            elif self.textValue.isVisible():
                 return False
             else:
                 FreeCADGui.ActiveDocument.resetEdit()
         return True
-
-    def validateSNumeric(self):
-        ''' send valid numeric parameters to ShapeString '''
-        if self.sourceCmd:
-            if (self.labelSSize.isVisible()):
-                try:
-                    SSize=float(self.SSize)
-                except ValueError:
-                    FreeCAD.Console.PrintMessage(translate("draft", "Invalid Size value. Using 200.0."))
-                    self.sourceCmd.numericSSize(200.0)
-                else:
-                    self.sourceCmd.numericSSize(SSize)
-            elif (self.labelSTrack.isVisible()):
-                try:
-                    track=int(self.STrack)
-                except ValueError:
-                    FreeCAD.Console.PrintMessage(translate("draft", "Invalid Tracking value. Using 0."))
-                    self.sourceCmd.numericSTrack(0)
-                else:
-                    self.sourceCmd.numericSTrack(track)
-
-    def validateSString(self):
-        ''' send a valid text string to ShapeString as unicode '''
-        if self.sourceCmd:
-            if (self.labelSString.isVisible()):
-                if self.SStringValue.text():
-                    #print("debug: D_G DraftToolBar.validateSString type(SStringValue.text): "  str(type(self.SStringValue.text)))
-                    #self.sourceCmd.validSString(str(self.SStringValue.text()))    # QString to QByteArray to PyString
-                    self.sourceCmd.validSString(self.SStringValue.text())    # PySide returns Unicode from QString
-                else:
-                    FreeCAD.Console.PrintMessage(translate("draft", "Please enter a text string."))
-
-
-    def pickFile(self):
-        ''' invoke a font file chooser dialog and send result to ShapeString to'''
-        if self.sourceCmd:
-            if (self.chooserButton.isVisible()):
-                try:
-                    dialogCaption = translate("draft", "Select a Font file")
-                    dialogDir = os.path.dirname(Draft.getParam("FontFile",)) # reasonable default?
-                    dialogFilter = "Fonts (*.ttf *.pfb *.otf);;All files (*.*)"
-                    fname = QtGui.QFileDialog.getOpenFileName(self.baseWidget,
-                                                              dialogCaption,
-                                                              dialogDir,
-                                                              dialogFilter)
-                    # fname = utf8_decode(fname[0])  # 1947: utf8_decode fails ('ascii' codec can't encode character)
-                                                    # when fname[0] contains accented chars
-                    fname = fname[0].encode('utf8') #TODO: this needs changing for Py3??
-                                                    # accented chars cause "UnicodeEncodeError" failure in DraftGui.todo without
-                                                    # .encode('utf8')
-
-                except Exception as e:
-                    FreeCAD.Console.PrintMessage("DraftGui.pickFile: unable to select a font file.")
-                    print(type(e))
-                    print(e.args)
-                else:
-                    if fname[0]:
-                        self.FFileValue.setText(fname)
-                        self.sourceCmd.validFFile(fname)
-                    else:
-                        FreeCAD.Console.PrintMessage("DraftGui.pickFile: no file selected.")   # can this happen?
-
-    def validateFile(self):
-        ''' check and send font file parameter to ShapeString as unicode'''
-        if self.sourceCmd:
-            if (self.labelFFile.isVisible()):
-                if self.FFileValue.text():
-                    # QString to PyString
-                    self.sourceCmd.validFFile(
-                        utf8_decode(self.FFileValue.text()))
-                else:
-                    FreeCAD.Console.PrintMessage(
-                        translate("draft", "Please enter a font file."))
 
     def finish(self, cont=None):
         """finish button action"""
@@ -1577,17 +1467,6 @@ class DraftToolBar:
     def isConstructionMode(self):
         return self.tray is not None and self.constrButton.isChecked()
 
-    def drawPage(self):
-        self.sourceCmd.draw()
-
-    def changePage(self,index):
-        pagename = str(self.pageBox.itemText(index))
-        vobj = FreeCADGui.ActiveDocument.getObject(pagename)
-        if vobj:
-            self.scaleBox.setEditText(str(vobj.HintScale))
-            self.marginXValue.setValue(float(vobj.HintOffsetX))
-            self.marginYValue.setValue(float(vobj.HintOffsetY))
-
     def selectplane(self):
         FreeCADGui.runCommand("Draft_SelectPlane")
 
@@ -1736,12 +1615,6 @@ class DraftToolBar:
     def changeRadiusValue(self,d):
         self.radius = d
 
-    def changeSSizeValue(self,d):
-        self.SSize = d
-
-    def changeSTrackValue(self,d):
-        self.STrack = d
-
     def changeLengthValue(self,d):
         self.lvalue = d
         if not self.lengthValue.hasFocus():
@@ -1814,8 +1687,7 @@ class DraftToolBar:
                 self.commands = ["Draft_Move","Draft_Rotate",
                                  "Draft_Scale","Draft_Offset",
                                  "Draft_Trimex","Draft_Upgrade",
-                                 "Draft_Downgrade","Draft_Edit",
-                                 "Draft_Drawing"]
+                                 "Draft_Downgrade","Draft_Edit"]
                 self.title = "Modify objects"
             def shouldShow(self):
                 return (FreeCAD.ActiveDocument is not None) and (FreeCADGui.Selection.getSelection() != [])

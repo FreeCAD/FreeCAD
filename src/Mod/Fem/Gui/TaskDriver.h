@@ -62,7 +62,7 @@ protected:
 
 private:
     QWidget* proxy;
-    Ui_TaskDriver* ui;
+    std::unique_ptr<Ui_TaskDriver> ui;
 };
 
 } //namespace FemGui

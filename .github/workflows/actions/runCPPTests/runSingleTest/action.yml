@@ -1,0 +1,72 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+# ***************************************************************************
+# *                                                                         *
+# *   Copyright (c) 2023 0penBrain.                                         *
+# *   Copyright (c) 2023 FreeCAD Project Association                        *
+# *                                                                         *
+# *   This file is part of FreeCAD.                                         *
+# *                                                                         *
+# *   FreeCAD is free software: you can redistribute it and/or modify it    *
+# *   under the terms of the GNU Lesser General Public License as           *
+# *   published by the Free Software Foundation, either version 2.1 of the  *
+# *   License, or (at your option) any later version.                       *
+# *                                                                         *
+# *   FreeCAD is distributed in the hope that it will be useful, but        *
+# *   WITHOUT ANY WARRANTY; without even the implied warranty of            *
+# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU      *
+# *   Lesser General Public License for more details.                       *
+# *                                                                         *
+# *   You should have received a copy of the GNU Lesser General Public      *
+# *   License along with FreeCAD. If not, see                               *
+# *   <https://www.gnu.org/licenses/>.                                      *
+# *                                                                         *
+# ***************************************************************************
+
+name: runCPPTests
+description: "Run C++ tests, generate log and report"
+
+inputs:
+  testCommand:
+    description: "Test command to be run"
+    required: true
+  testLogFile:
+    description: "Path for the command-line output of the tests"
+    required: true
+  testName:
+    description: "A descriptive name for the test suite"
+    required: true
+outputs:
+  reportText:
+    description: "Report text"
+    value: ${{ steps.report.outputs.reportText }}
+
+runs:
+  using: "composite"
+  steps:
+    - name: Run C++ tests
+      shell: bash
+      run: stdbuf -oL -eL ${{ inputs.testCommand }} |& tee -a ${{ inputs.testLogFile }}
+    - name: Parse test results
+      if: always()
+      id: report
+      shell: bash
+      run:  |
+        result=$(sed -ne "/Global test environment tear-down/,/^$/{/^$/d;p}" ${{ inputs.testLogFile }})
+        if grep -qF "[  FAILED  ]" <<< $result
+        then
+          reportText="<details><summary>:fire: GTest C++ test suite '${{ inputs.testName }}' failed</summary>\n"
+        else
+          reportText="<details><summary>:heavy_check_mark: GTest C++ test suite '${{ inputs.testName }}' succeeded</summary>\n"
+        fi
+        reportText+="\n"
+        reportText+="Results\n"
+        reportText+="\n"
+        reportText+='```\n'
+        reportText+="$result\n"
+        reportText+='```\n'
+        reportText+="</details>\n"
+        reportText+="\n"
+        echo "reportText<<EOD" >> $GITHUB_OUTPUT
+        echo -e "$reportText" >> $GITHUB_OUTPUT
+        echo "EOD" >> $GITHUB_OUTPUT
+        echo -e "$reportText"

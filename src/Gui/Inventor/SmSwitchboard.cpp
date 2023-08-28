@@ -113,9 +113,7 @@ SmSwitchboard::SmSwitchboard(int numchildren)
 /*!
   Destructor.
 */
-SmSwitchboard::~SmSwitchboard() // virtual, protected
-{
-}
+SmSwitchboard::~SmSwitchboard() = default;// virtual, protected
 
 // Documented in superclass.
 void

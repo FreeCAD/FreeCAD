@@ -72,16 +72,6 @@ using namespace MeshCoreFit;
 CylinderFit::CylinderFit()
   : _vBase(0,0,0)
   , _vAxis(0,0,1)
-  , _dRadius(0)
-  , _numIter(0)
-  , _posConvLimit(0.0001)
-  , _dirConvLimit(0.000001)
-  , _vConvLimit(0.001)
-  , _maxIter(50)
-{
-}
-
-CylinderFit::~CylinderFit()
 {
 }
 
@@ -198,8 +188,7 @@ void CylinderFit::ProjectToCylinder()
     Base::Vector3f cBase(_vBase.x, _vBase.y, _vBase.z);
     Base::Vector3f cAxis(_vAxis.x, _vAxis.y, _vAxis.z);
 
-    for (std::list< Base::Vector3f >::iterator it = _vPoints.begin(); it != _vPoints.end(); ++it) {
-        Base::Vector3f& cPnt = *it;
+    for (auto & cPnt : _vPoints) {
         if (cPnt.DistanceToLine(cBase, cAxis) > 0) {
             Base::Vector3f proj;
             cBase.ProjectToPlane(cPnt, cAxis, proj);
@@ -291,7 +280,7 @@ float CylinderFit::Fit()
     {
         ++_numIter;
 
-        // Set up the quasi parameteric normal equations
+        // Set up the quasi parametric normal equations
         setupNormalEquationMatrices(solDir, residuals, atpa, atpl);
 
         // Solve the equations for the unknown corrections
@@ -448,7 +437,7 @@ void CylinderFit::setupNormalEquationMatrices(SolutionD solDir, const std::vecto
 	setLowerPart(atpa);
 }
 
-// Sets up contributions of given observation to the quasi parameteric
+// Sets up contributions of given observation to the quasi parametric
 // normal equation matrices. Assumes uncorrelated coordinates.
 // point ... point
 // residual ... residual for this point computed from previous iteration (zero for first iteration)

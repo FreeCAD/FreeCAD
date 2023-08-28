@@ -29,7 +29,11 @@ set(PartDesignGui_LIBS
     FreeCADGui
 )
 
-qt_add_resources(PartDesignGui_SRCS Resources/PartDesign.qrc)
+set (PartDesign_TR_QRC ${CMAKE_CURRENT_BINARY_DIR}/Resources/PartDesign_translation.qrc)
+qt_find_and_add_translation(QM_SRCS "Resources/translations/*_*.ts"
+    ${CMAKE_CURRENT_BINARY_DIR}/Resources/translations)
+qt_create_resource_file(${PartDesign_TR_QRC} ${QM_SRCS})
+qt_add_resources(PartDesignGui_SRCS Resources/PartDesign.qrc ${PartDesign_TR_QRC})
 
 set(PartDesignGui_UIC_SRCS
     TaskFeaturePick.ui

@@ -38,7 +38,7 @@ std::string DrawProjGroupItemPy::representation() const
 PyObject* DrawProjGroupItemPy::autoPosition(PyObject *args)
 {
     if (!PyArg_ParseTuple(args, "")) {
-    return nullptr;
+        return nullptr;
     }
 
     DrawProjGroupItem* item = getDrawProjGroupItemPtr();

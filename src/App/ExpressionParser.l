@@ -61,6 +61,7 @@ extern int column;
 %option noyywrap nounput
 
 /* UTF-8 unicode regular expressions. */
+/* http://www.unicode.org/reports/tr44/#General_Category_Values */
 
 Cc	([\x00-\x1f\x7f]|\xc2[\x80-\x9f])
 Cf	(\xc2\xad|\xd8[\x80-\x85\x9c]|\xdb\x9d|\xdc\x8f|\xe1(\xa0\x8e)|\xe2(\x80[\x8b-\x8f\xaa-\xae]|\x81[\xa0-\xa4\xa6-\xaf])|\xef(\xbb\xbf|\xbf[\xb9-\xbb])|\xf0(\x91(\x82\xbd))|\xf3(\xa0(\x80\x81)))
@@ -230,9 +231,9 @@ EXPO     [eE][-+]?[0-9]+
 "cd"                         COUNTCHARS; yylval.quantity.scaler  = Quantity::Candela;             yylval.quantity.unitStr = yytext; return UNIT; // Candela        (internal standard luminous intensity)
 
 "in"                         COUNTCHARS; yylval.quantity.scaler  = Quantity::Inch;                yylval.quantity.unitStr = yytext; return UNIT; // inch
-"\""                         COUNTCHARS; yylval.quantity.scaler  = Quantity::Inch;                yylval.quantity.unitStr = yytext; return UNIT; // inch
+"\""                         COUNTCHARS; yylval.quantity.scaler  = Quantity::Inch;                yylval.quantity.unitStr = yytext; return USUNIT; // inch
 "ft"                         COUNTCHARS; yylval.quantity.scaler  = Quantity::Foot;                yylval.quantity.unitStr = yytext; return UNIT; // foot
-"'"                          COUNTCHARS; yylval.quantity.scaler  = Quantity::Foot;                yylval.quantity.unitStr = yytext; return UNIT; // foot
+"'"                          COUNTCHARS; yylval.quantity.scaler  = Quantity::Foot;                yylval.quantity.unitStr = yytext; return USUNIT; // foot
 "thou"                       COUNTCHARS; yylval.quantity.scaler  = Quantity::Thou;                yylval.quantity.unitStr = yytext; return UNIT; // thou (in/1000)
 "mil"                        COUNTCHARS; yylval.quantity.scaler  = Quantity::Thou;                yylval.quantity.unitStr = yytext; return UNIT; // mil  (the thou in US)
 "yd"                         COUNTCHARS; yylval.quantity.scaler  = Quantity::Yard;                yylval.quantity.unitStr = yytext; return UNIT; // yard

@@ -119,6 +119,7 @@ FillingEdgePanel::FillingEdgePanel(ViewProviderFilling* vp, Surface::Filling* ob
 {
     ui = new Ui_TaskFillingEdge();
     ui->setupUi(this);
+    setupConnections();
 
     selectionMode = None;
     this->vp = vp;
@@ -142,6 +143,20 @@ FillingEdgePanel::~FillingEdgePanel()
     // no need to delete child widgets, Qt does it all for us
     delete ui;
     Gui::Selection().rmvSelectionGate();
+}
+
+void FillingEdgePanel::setupConnections()
+{
+    connect(ui->buttonUnboundEdgeAdd, &QToolButton::toggled,
+            this, &FillingEdgePanel::onButtonUnboundEdgeAddToggled);
+    connect(ui->buttonUnboundEdgeRemove, &QToolButton::toggled,
+            this, &FillingEdgePanel::onButtonUnboundEdgeRemoveToggled);
+    connect(ui->listUnbound, &QListWidget::itemDoubleClicked,
+            this, &FillingEdgePanel::onListUnboundItemDoubleClicked);
+    connect(ui->buttonUnboundAccept, &QPushButton::clicked,
+            this, &FillingEdgePanel::onButtonUnboundAcceptClicked);
+    connect(ui->buttonUnboundIgnore, &QPushButton::clicked,
+            this, &FillingEdgePanel::onButtonUnboundIgnoreClicked);
 }
 
 void FillingEdgePanel::appendButtons(Gui::ButtonGroup* buttonGroup)
@@ -293,7 +308,7 @@ bool FillingEdgePanel::reject()
     return true;
 }
 
-void FillingEdgePanel::on_buttonUnboundEdgeAdd_toggled(bool checked)
+void FillingEdgePanel::onButtonUnboundEdgeAddToggled(bool checked)
 {
     if (checked) {
         // 'selectionMode' is passed by reference and changed when the filter is deleted
@@ -305,7 +320,7 @@ void FillingEdgePanel::on_buttonUnboundEdgeAdd_toggled(bool checked)
     }
 }
 
-void FillingEdgePanel::on_buttonUnboundEdgeRemove_toggled(bool checked)
+void FillingEdgePanel::onButtonUnboundEdgeRemoveToggled(bool checked)
 {
     if (checked) {
         // 'selectionMode' is passed by reference and changed when the filter is deleted
@@ -317,7 +332,7 @@ void FillingEdgePanel::on_buttonUnboundEdgeRemove_toggled(bool checked)
     }
 }
 
-void FillingEdgePanel::on_listUnbound_itemDoubleClicked(QListWidgetItem* item)
+void FillingEdgePanel::onListUnboundItemDoubleClicked(QListWidgetItem* item)
 {
     Gui::Selection().clearSelection();
     Gui::Selection().rmvSelectionGate();
@@ -541,7 +556,7 @@ void FillingEdgePanel::onDeleteUnboundEdge()
     }
 }
 
-void FillingEdgePanel::on_buttonUnboundAccept_clicked()
+void FillingEdgePanel::onButtonUnboundAcceptClicked()
 {
     QListWidgetItem* item = ui->listUnbound->currentItem();
     if (item) {
@@ -586,7 +601,7 @@ void FillingEdgePanel::on_buttonUnboundAccept_clicked()
     editedObject->recomputeFeature();
 }
 
-void FillingEdgePanel::on_buttonUnboundIgnore_clicked()
+void FillingEdgePanel::onButtonUnboundIgnoreClicked()
 {
     modifyBoundary(false);
     ui->comboBoxUnboundFaces->clear();

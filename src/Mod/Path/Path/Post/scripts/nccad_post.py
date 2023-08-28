@@ -23,12 +23,13 @@
 """Postprocessor to output real GCode for Max Computer GmbH nccad9."""
 import FreeCAD
 import Path.Post.Utils as PostUtils
+import PathScripts.PathUtils as PathUtils
 import datetime
 
 
 TOOLTIP = """
 This is a postprocessor file for the Path workbench. It is used to take
-a pseudo-gcode fragment output by a Path object and output real GCode
+a pseudo-G-code fragment output by a Path object and output real G-code
 suitable for the Max Computer GmbH nccad9 Computer Numeric Control.
 
 Supported features:
@@ -89,7 +90,7 @@ def export(objectslist, filename, argstring):
     gcode = HEADER
 
     for obj in objectslist:
-        for command in obj.Path.Commands:
+        for command in PathUtils.getPathWithPlacement(obj).Commands:
             # Manipulate tool change commands
             if "M6" == command.Name:
                 gcode += TOOL_CHANGE.replace("TOOL", str(int(command.Parameters["T"])))

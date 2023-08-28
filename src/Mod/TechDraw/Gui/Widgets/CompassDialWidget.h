@@ -36,8 +36,8 @@ class CompassDialWidget : public QWidget
     Q_OBJECT
 
 public:
-    CompassDialWidget(QWidget* parent = 0);
-    ~CompassDialWidget() = default;
+    CompassDialWidget(QWidget* parent = nullptr);
+    ~CompassDialWidget() override = default;
 
     QSize sizeHint() const override;
     QSize minimumSizeHint() const override;

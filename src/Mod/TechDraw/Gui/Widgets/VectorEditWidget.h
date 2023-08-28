@@ -51,7 +51,7 @@ class VectorEditWidget : public QWidget
 
 public:
     VectorEditWidget(QWidget* parent = 0);
-    ~VectorEditWidget() = default;
+    ~VectorEditWidget() override = default;
 
     QSize minimumSizeHint() const override;
     bool eventFilter(QObject *target, QEvent *event) override;

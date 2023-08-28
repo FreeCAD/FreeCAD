@@ -47,10 +47,10 @@ class QUARTER_DLL_API DragDropHandler : public QObject {
   Q_OBJECT
 public:
   DragDropHandler(QuarterWidget * parent);
-  virtual ~DragDropHandler();
+  ~DragDropHandler() override;
 
 protected:
-  virtual bool eventFilter(QObject *, QEvent * event);
+  bool eventFilter(QObject *, QEvent * event) override;
 
 private:
   friend class DragDropHandlerP;

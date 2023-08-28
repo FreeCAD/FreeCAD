@@ -32,7 +32,7 @@
 
 
 // use a different name to CreateCommand()
-void CreateInspectionCommands(void);
+void CreateInspectionCommands();
 
 
 namespace InspectionGui {
@@ -43,8 +43,6 @@ public:
     {
         initialize("This module is the InspectionGui module."); // register with Python
     }
-
-    ~Module() override {}
 
 private:
 };

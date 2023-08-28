@@ -39,11 +39,13 @@ public:
     explicit TaskThicknessParameters(ViewProviderDressUp *DressUpView, QWidget *parent=nullptr);
     ~TaskThicknessParameters() override;
 
-    double getValue(void) const;
-    bool getReversed(void) const;
-    bool getIntersection(void) const;
-    int  getMode(void) const;
-    int  getJoinType(void) const;
+    void apply() override;
+
+    double getValue() const;
+    bool getReversed() const;
+    bool getIntersection() const;
+    int  getMode() const;
+    int  getJoinType() const;
 
 private Q_SLOTS:
     void onValueChanged(double angle);
@@ -51,10 +53,10 @@ private Q_SLOTS:
     void onJoinTypeChanged(int join);
     void onReversedChanged(bool reversed);
     void onIntersectionChanged(bool intersection);
-    void onRefDeleted(void) override;
+    void onRefDeleted() override;
 
 protected:
-    void clearButtons(const selectionModes notThis) override;
+    void setButtons(const selectionModes mode) override;
     bool event(QEvent *e) override;
     void changeEvent(QEvent *e) override;
     void onSelectionChanged(const Gui::SelectionChanges& msg) override;

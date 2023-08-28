@@ -43,7 +43,7 @@ class MeshSearchNeighbours
 {
 public:
   explicit MeshSearchNeighbours ( const MeshKernel &rclM, float fSampleDistance = 1.0f);
-  virtual ~MeshSearchNeighbours () {}
+  ~MeshSearchNeighbours () = default;
   /** Re-initilaizes internal structures. */
   void Reinit (float fSampleDistance);
   /** Collects all neighbour points from the facet (by index), the result are the points of the facets lying
@@ -78,7 +78,7 @@ protected:
   const MeshFacetArray &_rclFAry;
   const MeshPointArray &_rclPAry;
   MeshRefPointToFacets _clPt2Fa;
-  float _fMaxDistanceP2;   // square distance
+  float _fMaxDistanceP2{0};   // square distance
   Base::Vector3f _clCenter;         // center points of start facet
   std::set<PointIndex> _aclResult;        // result container (point indices)
   std::set<PointIndex> _aclOuter;         // next searching points
@@ -86,20 +86,19 @@ protected:
   std::vector<std::vector<Base::Vector3f> > _aclSampledFacets; // sample points from each facet
   float _fSampleDistance;  // distance between two sampled points
   Wm4::Sphere3<float> _akSphere;
-  bool _bTooFewPoints;
+  bool _bTooFewPoints{false};
 
-private:
-  MeshSearchNeighbours (const MeshSearchNeighbours&);
-  void operator = (const MeshSearchNeighbours&);
+public:
+  MeshSearchNeighbours (const MeshSearchNeighbours&) = delete;
+  void operator = (const MeshSearchNeighbours&) = delete;
 };
 
 inline bool MeshSearchNeighbours::CheckDistToFacet (const MeshFacet &rclF)
 {
   bool bFound = false;
 
-  for (int i = 0; i < 3; i++)
+  for (PointIndex ulPIdx : rclF._aulPoints)
   {
-    PointIndex ulPIdx = rclF._aulPoints[i];
     if (!_rclPAry[ulPIdx].IsFlag(MeshPoint::MARKED))
     {
       if (Base::DistanceP2(_clCenter, _rclPAry[ulPIdx]) < _fMaxDistanceP2)
@@ -176,7 +175,7 @@ class MeshNearestIndexToPlane
 public:
     using Index = typename T::Index;
     MeshNearestIndexToPlane(const MeshKernel& mesh, const Base::Vector3f& b, const Base::Vector3f& n)
-        : nearest_index(-1),nearest_dist(FLOAT_MAX), it(mesh), base(b), normal(n) {}
+        : nearest_index(-1), it(mesh), base(b), normal(n) {}
     void operator() (Index index)
     {
         float dist = (float)fabs(it(index).DistanceToPlane(base, normal));
@@ -187,7 +186,7 @@ public:
     }
 
     Index nearest_index;
-    float nearest_dist;
+    float nearest_dist{FLOAT_MAX};
 
 private:
     T it;

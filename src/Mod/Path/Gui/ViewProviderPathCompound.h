@@ -31,20 +31,20 @@ namespace PathGui
 
 class PathGuiExport ViewProviderPathCompound: public ViewProviderPath
 {
-    PROPERTY_HEADER(PathGui::ViewProviderPathCompound);
+    PROPERTY_HEADER_WITH_OVERRIDE(PathGui::ViewProviderPathCompound);
 
 public:
 
-    std::vector<App::DocumentObject*> claimChildren(void)const;
-    virtual bool canDragObjects() const;
-    virtual void dragObject(App::DocumentObject*);
-    virtual bool canDropObjects() const;
-    virtual void dropObject(App::DocumentObject*);
-    QIcon getIcon(void) const;
+    std::vector<App::DocumentObject*> claimChildren() const override;
+    bool canDragObjects() const override;
+    void dragObject(App::DocumentObject*) override;
+    bool canDropObjects() const override;
+    void dropObject(App::DocumentObject*) override;
+    QIcon getIcon() const override;
 
 protected:
-    virtual bool setEdit(int ModNum);
-    virtual void unsetEdit(int ModNum);
+    bool setEdit(int ModNum) override;
+    void unsetEdit(int ModNum) override;
 
 };
 

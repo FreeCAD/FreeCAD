@@ -150,9 +150,9 @@ class CommandPathFixture:
     def GetResources(self):
         return {
             "Pixmap": "Path_Datums",
-            "MenuText": QT_TRANSLATE_NOOP("PathFixture", "Fixture"),
+            "MenuText": QT_TRANSLATE_NOOP("Path_Fixture", "Fixture"),
             "ToolTip": QT_TRANSLATE_NOOP(
-                "PathFixture", "Creates a Fixture Offset object"
+                "Path_Fixture", "Creates a Fixture Offset"
             ),
         }
 

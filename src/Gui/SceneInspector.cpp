@@ -45,9 +45,7 @@ SceneModel::SceneModel(QObject* parent)
 {
 }
 
-SceneModel::~SceneModel()
-{
-}
+SceneModel::~SceneModel() = default;
 
 int SceneModel::columnCount (const QModelIndex & parent) const
 {
@@ -64,14 +62,14 @@ QVariant SceneModel::headerData (int section, Qt::Orientation orientation, int r
 {
     if (orientation == Qt::Horizontal) {
         if (role != Qt::DisplayRole)
-            return QVariant();
+            return {};
         if (section == 0)
             return tr("Inventor Tree");
         else if (section == 1)
             return tr("Name");
     }
 
-    return QVariant();
+    return {};
 }
 
 bool SceneModel::setHeaderData (int, Qt::Orientation, const QVariant &, int)
@@ -135,6 +133,8 @@ DlgInspector::DlgInspector(QWidget* parent, Qt::WindowFlags fl)
   : QDialog(parent, fl), ui(new Ui_SceneInspector())
 {
     ui->setupUi(this);
+    connect(ui->refreshButton, &QPushButton::clicked,
+            this, &DlgInspector::onRefreshButtonClicked);
     setWindowTitle(tr("Scene Inspector"));
 
     auto model = new SceneModel(this);
@@ -208,7 +208,7 @@ void DlgInspector::changeEvent(QEvent *e)
     QDialog::changeEvent(e);
 }
 
-void DlgInspector::on_refreshButton_clicked()
+void DlgInspector::onRefreshButtonClicked()
 {
     Gui::Document* doc = Application::Instance->activeDocument();
     if (doc) {

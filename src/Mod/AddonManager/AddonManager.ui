@@ -68,7 +68,7 @@
        <item>
         <widget class="QToolButton" name="buttonPauseUpdate">
          <property name="toolTip">
-          <string>Pause cache update</string>
+          <string>Stop the cache update</string>
          </property>
          <property name="text">
           <string/>

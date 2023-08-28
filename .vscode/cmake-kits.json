@@ -1,0 +1,18 @@
+[
+  {
+    "name": "FreeCAD Linux",
+    "compilers": {
+      "C": "${workspaceFolder}/.conda/freecad/bin/cc",
+      "CXX": "${workspaceFolder}/.conda/freecad/bin/c++"
+    },
+    "environmentSetupScript": "${workspaceFolder}/.vscode/env.sh"
+  },
+  {
+    "name": "FreeCAD macOS",
+    "compilers": {
+      "C": "${workspaceFolder}/.conda/freecad/bin/clang",
+      "CXX": "${workspaceFolder}/.conda/freecad/bin/clang++"
+    },
+    "environmentSetupScript": "${workspaceFolder}/.vscode/env.sh"
+  }
+]

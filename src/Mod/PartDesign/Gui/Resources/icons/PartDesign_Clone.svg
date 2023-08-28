@@ -539,7 +539,7 @@
           </cc:Agent>
         </dc:publisher>
         <dc:identifier>FreeCAD/src/Mod/Draft/Resources/icons/Draft_Clone.svg</dc:identifier>
-        <dc:relation>http://www.freecadweb.org/wiki/index.php?title=Artwork</dc:relation>
+        <dc:relation>http://www.freecad.org/wiki/index.php?title=Artwork</dc:relation>
         <dc:subject>
           <rdf:Bag>
             <rdf:li>square</rdf:li>

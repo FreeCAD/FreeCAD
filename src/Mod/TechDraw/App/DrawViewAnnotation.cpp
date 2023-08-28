@@ -56,8 +56,8 @@ DrawViewAnnotation::DrawViewAnnotation()
     ADD_PROPERTY_TYPE(TextColor, (Preferences::normalColor()), vgroup, App::Prop_None, "Text color");
     ADD_PROPERTY_TYPE(TextSize, (Preferences::labelFontSizeMM()),
                                  vgroup, App::Prop_None, "Text size");
-    ADD_PROPERTY_TYPE(MaxWidth, (-1.0), vgroup, App::Prop_None, "Maximum width of the annotation block.\n -1 means no maximum width.");
-    ADD_PROPERTY_TYPE(LineSpace, (80), vgroup, App::Prop_None, "Line spacing in %. 100 means the height of a line.");
+    ADD_PROPERTY_TYPE(MaxWidth, (-1.0), vgroup, App::Prop_None, "Maximum width of the annotation block (in mm).\n -1 means no maximum width.");
+    ADD_PROPERTY_TYPE(LineSpace, (100), vgroup, App::Prop_None, "Line spacing in %. 100 means single spaced,\n 200 would be double spaced.");
 
     TextStyle.setEnums(TextStyleEnums);
     ADD_PROPERTY_TYPE(TextStyle, ((long)0), vgroup, App::Prop_None, "Text style");
@@ -85,22 +85,26 @@ void DrawViewAnnotation::onChanged(const App::Property* prop)
 void DrawViewAnnotation::handleChangedPropertyType(Base::XMLReader &reader, const char *TypeName, App::Property *prop)
 // transforms properties that had been changed
 {
-	// also check for changed properties of the base class
-	DrawView::handleChangedPropertyType(reader, TypeName, prop);
+    // also check for changed properties of the base class
+    DrawView::handleChangedPropertyType(reader, TypeName, prop);
 
-	// property LineSpace had the App::PropertyInteger and was changed to App::PropertyPercent
-	if (prop == &LineSpace && strcmp(TypeName, "App::PropertyInteger") == 0) {
-		App::PropertyInteger LineSpaceProperty;
-		// restore the PropertyInteger to be able to set its value
-		LineSpaceProperty.Restore(reader);
-		LineSpace.setValue(LineSpaceProperty.getValue());
-	}
-	// property MaxWidth had the App::PropertyFloat and was changed to App::PropertyLength
-	else if (prop == &MaxWidth && strcmp(TypeName, "App::PropertyFloat") == 0) {
-		App::PropertyFloat MaxWidthProperty;
-		MaxWidthProperty.Restore(reader);
-		MaxWidth.setValue(MaxWidthProperty.getValue());
-	}
+    // property LineSpace had the App::PropertyInteger and was changed to App::PropertyPercent
+    // the above change does not allow lines to be spaced wider than single space, so the change has been
+    // reverted, but we have to handle existing files that have a PropertyPercent
+    if (prop == &LineSpace && strcmp(TypeName, "App::PropertyPercent") == 0) {
+        App::PropertyPercent LineSpaceProperty;
+        // restore the PropertyPercent to be able to set its value
+        LineSpaceProperty.Restore(reader);
+        LineSpace.setValue(LineSpaceProperty.getValue());
+    }
+    // property MaxWidth had the App::PropertyFloat and was changed to App::PropertyLength
+    // the above change did not consider that -1 is a magic value that indicates the line
+    // should not be broken.
+    else if (prop == &MaxWidth && strcmp(TypeName, "App::PropertyLength") == 0) {
+        App::PropertyFloat MaxWidthProperty;
+        MaxWidthProperty.Restore(reader);
+        MaxWidth.setValue(MaxWidthProperty.getValue());
+    }
 }
 
 QRectF DrawViewAnnotation::getRect() const

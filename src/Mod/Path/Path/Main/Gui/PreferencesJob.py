@@ -329,7 +329,7 @@ class JobPreferencesPage:
         )
 
     def getPostProcessor(self, name):
-        if not name in self.processor.keys():
+        if not name in self.processor:
             processor = PostProcessor.load(name)
             self.processor[name] = processor
             return processor

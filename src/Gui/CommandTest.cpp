@@ -75,11 +75,11 @@ void Std_TestQM::activated(int iMsg)
     if (!files.empty()) {
         Translator::instance()->activateLanguage("English");
         QList<QTranslator*> i18n = qApp->findChildren<QTranslator*>();
-        for (QList<QTranslator*>::Iterator it = i18n.begin(); it != i18n.end(); ++it)
-            qApp->removeTranslator(*it);
-        for (QStringList::Iterator it = files.begin(); it != files.end(); ++it) {
+        for (QTranslator* it : i18n)
+            qApp->removeTranslator(it);
+        for (const QString& it : files) {
             auto translator = new QTranslator(qApp);
-            if (translator->load(*it)) {
+            if (translator->load(it)) {
                 qApp->installTranslator(translator);
             }
             else {
@@ -567,9 +567,7 @@ public:
     explicit BarThread(unsigned long s) : steps(s)
     {
     }
-    ~BarThread() override
-    {
-    }
+    ~BarThread() override  = default;
     void run() override
     {
         QMutex mutex;
@@ -715,8 +713,8 @@ CmdTestConsoleOutput::CmdTestConsoleOutput()
 {
     sGroup      = "Standard-Test";
     sMenuText   = QT_TR_NOOP("Test console output");
-    sToolTipText= QT_TR_NOOP("Test console output");
-    sStatusTip  = QT_TR_NOOP("Test console output");
+    sToolTipText= QT_TR_NOOP("Run test cases to verify console messages");
+    sStatusTip  = QT_TR_NOOP("Run test cases to verify console messages");
 }
 
 namespace Gui {
@@ -724,11 +722,18 @@ class TestConsoleObserver : public Base::ILogger
 {
     QMutex mutex;
 public:
-    int matchMsg, matchWrn, matchErr, matchLog;
-    TestConsoleObserver() : matchMsg(0), matchWrn(0), matchErr(0), matchLog(0)
-    {
-    }
-    void SendLog(const std::string& msg, Base::LogStyle level) override{
+    int matchMsg{0};
+    int matchWrn{0};
+    int matchErr{0};
+    int matchLog{0};
+    int matchCritical{0};
+    TestConsoleObserver() = default;
+    void SendLog(const std::string& notifiername, const std::string& msg, Base::LogStyle level,
+                 Base::IntendedRecipient recipient, Base::ContentType content) override{
+
+        (void) notifiername;
+        (void) recipient;
+        (void) content;
 
         QMutexLocker ml(&mutex);
 
@@ -744,6 +749,11 @@ public:
                 break;
             case Base::LogStyle::Log:
                 matchLog += strcmp(msg.c_str(), "Write a log to the console output.\n");
+                break;
+            case Base::LogStyle::Critical:
+                matchMsg += strcmp(msg.c_str(), "Write a critical message to the console output.\n");
+                break;
+            default:
                 break;
         }
     }
@@ -789,6 +799,16 @@ public:
     }
 };
 
+class ConsoleCriticalTask : public QRunnable
+{
+public:
+    void run() override
+    {
+        for (int i=0; i<10; i++)
+            Base::Console().Critical("Write a critical message to the console output.\n");
+    }
+};
+
 }
 
 void CmdTestConsoleOutput::activated(int iMsg)
@@ -800,10 +820,11 @@ void CmdTestConsoleOutput::activated(int iMsg)
     QThreadPool::globalInstance()->start(new ConsoleWarningTask);
     QThreadPool::globalInstance()->start(new ConsoleErrorTask);
     QThreadPool::globalInstance()->start(new ConsoleLogTask);
+    QThreadPool::globalInstance()->start(new ConsoleCriticalTask);
     QThreadPool::globalInstance()->waitForDone();
     Base::Console().DetachObserver(&obs);
 
-    if (obs.matchMsg > 0 || obs.matchWrn > 0 || obs.matchErr > 0 || obs.matchLog > 0) {
+    if (obs.matchMsg > 0 || obs.matchWrn > 0 || obs.matchErr > 0 || obs.matchLog > 0 || obs.matchCritical > 0) {
         Base::Console().Error("Race condition in Console class\n");
     }
 }

@@ -62,7 +62,7 @@ public:
 
 public:
     StateHandlerTaskPipe() {selectionMode = SelectionModes::none;}
-    ~StateHandlerTaskPipe() {}
+    ~StateHandlerTaskPipe() = default;
 
     // only keeping getter because task boxes shouldn't need to change this
     // and task dialog is already friend

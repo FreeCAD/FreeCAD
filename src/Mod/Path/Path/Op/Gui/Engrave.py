@@ -33,7 +33,7 @@ from PySide import QtCore, QtGui
 
 __title__ = "Path Engrave Operation UI"
 __author__ = "sliptonic (Brad Collette)"
-__url__ = "https://www.freecadweb.org"
+__url__ = "https://www.freecad.org"
 __doc__ = "Engrave operation page controller and command implementation."
 
 if False:

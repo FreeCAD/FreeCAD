@@ -21,16 +21,17 @@
 
 import pathlib
 import FreeCAD, Part
+from PySide import QtCore
 from fcgear import involute
 from fcgear import fcgear
 
 if FreeCAD.GuiUp:
     import FreeCADGui
-    from PySide import QtCore, QtGui
+    from PySide import QtGui
 
 __title__="PartDesign InvoluteGearObject management"
 __author__ = "Juergen Riegel"
-__url__ = "http://www.freecadweb.org"
+__url__ = "http://www.freecad.org"
 
 
 def makeInvoluteGear(name):
@@ -91,37 +92,47 @@ class _InvoluteGear:
                 else:
                     setattr(obj, name, default)
 
+        # for details about the property's docstring translation,
+        # see https://tracker.freecad.org/view.php?id=2524
         ensure_property("App::PropertyInteger", "NumberOfTeeth",
-            doc="Number of gear teeth",
+            doc=QtCore.QT_TRANSLATE_NOOP("App::Property", "Number of gear teeth"),
             default=26)
         ensure_property("App::PropertyLength", "Modules",
-            doc="Modules of the gear",
+            doc=QtCore.QT_TRANSLATE_NOOP("App::Property", "Modules of the gear"),
             default="2.5 mm")
         ensure_property("App::PropertyAngle", "PressureAngle",
-            doc="Pressure angle of gear teeth",
+            doc=QtCore.QT_TRANSLATE_NOOP("App::Property", "Pressure angle of gear teeth"),
             default="20 deg")
         ensure_property("App::PropertyBool", "HighPrecision",
-            doc="True=2 curves with each 3 control points False=1 curve with 4 control points.",
+            doc=QtCore.QT_TRANSLATE_NOOP("App::Property",
+                "True=2 curves with each 3 control points False=1 curve with 4 control points."),
             default=True)
         ensure_property("App::PropertyBool", "ExternalGear",
-            doc="True=external Gear False=internal Gear",
+            doc=QtCore.QT_TRANSLATE_NOOP("App::Property", "True=external Gear False=internal Gear"),
             default=True)
         ensure_property("App::PropertyFloat", "AddendumCoefficient",
-            doc="The height of the tooth from the pitch circle up to its tip, normalized by the module.",
+            doc=QtCore.QT_TRANSLATE_NOOP("App::Property",
+                "The height of the tooth from the pitch circle up to its tip, normalized by the module."),
             default=lambda: 1.0 if obj.ExternalGear else 0.6)
         ensure_property("App::PropertyFloat","DedendumCoefficient",
-            doc="The height of the tooth from the pitch circle down to its root, normalized by the module.",
+            doc=QtCore.QT_TRANSLATE_NOOP("App::Property",
+                "The height of the tooth from the pitch circle down to its root, normalized by the module."),
             default=1.25)
         ensure_property("App::PropertyFloat","RootFilletCoefficient",
-            doc="The radius of the fillet at the root of the tooth, normalized by the module.",
+            doc=QtCore.QT_TRANSLATE_NOOP("App::Property",
+                "The radius of the fillet at the root of the tooth, normalized by the module."),
             default=lambda: 0.375 if is_restore else 0.38)
+        ensure_property("App::PropertyFloat","ProfileShiftCoefficient",
+            doc=QtCore.QT_TRANSLATE_NOOP("App::Property",
+                "The distance by which the reference profile is shifted outwards, normalized by the module."),
+            default=0.0)
 
     def execute(self,obj):
         w = fcgear.FCWireBuilder()
         generator_func = involute.CreateExternalGear if obj.ExternalGear else involute.CreateInternalGear
         generator_func(w, obj.Modules.Value, obj.NumberOfTeeth, obj.PressureAngle.Value,
             split=obj.HighPrecision, addCoeff=obj.AddendumCoefficient, dedCoeff=obj.DedendumCoefficient,
-            filletCoeff=obj.RootFilletCoefficient)
+            filletCoeff=obj.RootFilletCoefficient, shiftCoeff=obj.ProfileShiftCoefficient)
         gearw = Part.Wire([o.toShape() for o in w.wire])
         obj.Shape = gearw
         obj.positionBySupport()
@@ -166,6 +177,7 @@ class _InvoluteGearTaskPanel:
 
         self.form=FreeCADGui.PySideUic.loadUi(str(pathlib.Path(__file__).with_suffix(".ui")))
         self.form.setWindowIcon(QtGui.QIcon(":/icons/PartDesign_InternalExternalGear.svg"))
+        self.assignToolTipsFromPropertyDocs()
 
         def assignValue(property_name, fitView=False):
             """Returns a function that takes a single value and assigns it to the given property"""
@@ -191,12 +203,35 @@ class _InvoluteGearTaskPanel:
         self.form.doubleSpinBox_Addendum.valueChanged.connect(assignValue("AddendumCoefficient"))
         self.form.doubleSpinBox_Dedendum.valueChanged.connect(assignValue("DedendumCoefficient"))
         self.form.doubleSpinBox_RootFillet.valueChanged.connect(assignValue("RootFilletCoefficient"))
+        self.form.doubleSpinBox_ProfileShift.valueChanged.connect(assignValue("ProfileShiftCoefficient"))
 
         self.update()
 
         if mode == 0: # fresh created
             self.obj.Proxy.execute(self.obj)  # calculate once
             FreeCAD.Gui.SendMsgToActiveView("ViewFit")
+
+    def assignToolTipsFromPropertyDocs(self):
+        def assign(property_name, *widgets):
+            doc = self.obj.getDocumentationOfProperty(property_name)
+            translated_doc = QtGui.QApplication.translate("App::Property", doc)
+            for w in widgets:
+                w.setToolTip(translated_doc)
+
+        # we assign the tool tip to both, the label and the input field, for user convenience
+        assign("Modules", self.form.Quantity_Modules, self.form.label_Modules)
+        assign("PressureAngle", self.form.Quantity_PressureAngle, self.form.label_PressureAngle)
+        assign("NumberOfTeeth", self.form.spinBox_NumberOfTeeth, self.form.label_NumberOfTeeth)
+        assign("HighPrecision", self.form.comboBox_HighPrecision, self.form.label_HighPrecision)
+        assign("ExternalGear", self.form.comboBox_ExternalGear, self.form.label_ExternalGear)
+        assign("AddendumCoefficient", self.form.doubleSpinBox_Addendum, self.form.label_Addendum)
+        assign("DedendumCoefficient", self.form.doubleSpinBox_Dedendum, self.form.label_Dedendum)
+        assign("RootFilletCoefficient", self.form.doubleSpinBox_RootFillet, self.form.label_RootFillet)
+        assign("ProfileShiftCoefficient", self.form.doubleSpinBox_ProfileShift, self.form.label_ProfileShift)
+
+    def changeEvent(self, event):
+        if event == QtCore.QEvent.LanguageChange:
+            self.assignToolTipsFromPropertyDocs()
 
     def transferTo(self):
         "Transfer from the dialog to the object"
@@ -208,6 +243,7 @@ class _InvoluteGearTaskPanel:
         self.obj.AddendumCoefficient = self.form.doubleSpinBox_Addendum.value()
         self.obj.DedendumCoefficient = self.form.doubleSpinBox_Dedendum.value()
         self.obj.RootFilletCoefficient = self.form.doubleSpinBox_RootFillet.value()
+        self.obj.ProfileShiftCoefficient = self.form.doubleSpinBox_ProfileShift.value()
 
     def transferFrom(self):
         "Transfer from the object to the dialog"
@@ -219,6 +255,7 @@ class _InvoluteGearTaskPanel:
         self.form.doubleSpinBox_Addendum.setValue(self.obj.AddendumCoefficient)
         self.form.doubleSpinBox_Dedendum.setValue(self.obj.DedendumCoefficient)
         self.form.doubleSpinBox_RootFillet.setValue(self.obj.RootFilletCoefficient)
+        self.form.doubleSpinBox_ProfileShift.setValue(self.obj.ProfileShiftCoefficient)
 
     def getStandardButtons(self):
         return int(QtGui.QDialogButtonBox.Ok) | int(QtGui.QDialogButtonBox.Cancel)| int(QtGui.QDialogButtonBox.Apply)

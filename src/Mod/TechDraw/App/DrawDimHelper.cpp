@@ -82,7 +82,9 @@ void DrawDimHelper::makeExtentDim(DrawViewPart* dvp, std::vector<std::string> ed
     std::string dimName = doc->getUniqueObjectName("DimExtent");
     Base::Interpreter().runStringArg(
         "App.activeDocument().addObject('TechDraw::DrawViewDimExtent', '%s')", dimName.c_str());
-    Base::Interpreter().runStringArg(
+        Base::Interpreter().runStringArg(
+            "App.activeDocument().%s.translateLabel('DrawViewDimExtent', 'DimExtent', '%s')",
+              dimName.c_str(), dimName.c_str());    Base::Interpreter().runStringArg(
         "App.activeDocument().%s.Type = '%s'", dimName.c_str(), dimType.c_str());
     Base::Interpreter().runStringArg(
         "App.activeDocument().%s.DirExtent = %d", dimName.c_str(), dimNum);
@@ -135,7 +137,9 @@ void DrawDimHelper::makeExtentDim3d(DrawViewPart* dvp, ReferenceVector reference
     std::string dimName = doc->getUniqueObjectName("DimExtent");
     Base::Interpreter().runStringArg(
         "App.activeDocument().addObject('TechDraw::DrawViewDimExtent', '%s')", dimName.c_str());
-    Base::Interpreter().runStringArg(
+        Base::Interpreter().runStringArg(
+            "App.activeDocument().%s.translateLabel('DrawViewDimExtent', 'DimExtent', '%s')",
+              dimName.c_str(), dimName.c_str());    Base::Interpreter().runStringArg(
         "App.activeDocument().%s.Type = '%s'", dimName.c_str(), dimType.c_str());
     Base::Interpreter().runStringArg(
         "App.activeDocument().%s.DirExtent = %d", dimName.c_str(), dimNum);
@@ -195,7 +199,12 @@ DrawDimHelper::minMax(DrawViewPart* dvp, std::vector<std::string> edgeNames, int
         }
     }
     else {
-        edgeGeomList = dvp->getEdgeGeometry();//do the whole View
+        for (auto& edge : dvp->getEdgeGeometry()) {
+            if (!edge->getCosmetic()) {
+                // skip cosmetic edges
+                edgeGeomList.push_back(edge);
+            }
+        }
     }
 
     if (edgeGeomList.empty()) {
@@ -207,8 +216,8 @@ DrawDimHelper::minMax(DrawViewPart* dvp, std::vector<std::string> edgeNames, int
 
     std::vector<TopoDS_Edge> inEdges;
     for (auto& bg : edgeGeomList) {
-        inEdges.push_back(bg->occEdge);
-        BRepBndLib::Add(bg->occEdge, edgeBbx);
+        inEdges.push_back(bg->getOCCEdge());
+        BRepBndLib::Add(bg->getOCCEdge(), edgeBbx);
     }
 
     double minX, minY, minZ, maxX, maxY, maxZ;
@@ -323,8 +332,8 @@ DrawDimHelper::minMax3d(DrawViewPart* dvp, ReferenceVector references, int direc
 
     std::vector<TopoDS_Edge> inEdges;
     for (auto& bg : edges) {
-        inEdges.push_back(bg->occEdge);
-        BRepBndLib::Add(bg->occEdge, shapeBbx);
+        inEdges.push_back(bg->getOCCEdge());
+        BRepBndLib::Add(bg->getOCCEdge(), shapeBbx);
     }
 
     //from here on this is the same as 2d method
@@ -421,11 +430,16 @@ DrawDimHelper::makeDistDim(DrawViewPart* dvp, std::string dimType,
     if (extent) {
         Base::Interpreter().runStringArg(
             "App.activeDocument().addObject('TechDraw::DrawViewDimExtent', '%s')", dimName.c_str());
+        Base::Interpreter().runStringArg(
+            "App.activeDocument().%s.translateLabel('DrawViewDimExtent', 'DimExtent', '%s')",
+              dimName.c_str(), dimName.c_str());
     }
     else {
-
         Base::Interpreter().runStringArg(
             "App.activeDocument().addObject('TechDraw::DrawViewDimension', '%s')", dimName.c_str());
+        Base::Interpreter().runStringArg(
+            "App.activeDocument().%s.translateLabel('DrawViewDimimension', 'Dimension', '%s')",
+              dimName.c_str(), dimName.c_str());
     }
 
     Base::Interpreter().runStringArg(

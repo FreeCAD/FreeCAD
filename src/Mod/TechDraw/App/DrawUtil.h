@@ -56,7 +56,7 @@
 #define VECTORTOLERANCE (Precision::Confusion())
 
 #define SVG_NS_URI "http://www.w3.org/2000/svg"
-#define FREECAD_SVG_NS_URI "http://www.freecadweb.org/wiki/index.php?title=Svg_Namespace"
+#define FREECAD_SVG_NS_URI "http://www.freecad.org/wiki/index.php?title=Svg_Namespace"
 
 //some shapes are being passed in where edges that should be connected are in fact
 //separated by more than 2*Precision::Confusion (expected tolerance for 2 TopoDS_Vertex)
@@ -128,8 +128,9 @@ public:
     static bool vertexEqual(TopoDS_Vertex& v1, TopoDS_Vertex& v2);
     static bool vectorEqual(Base::Vector3d& v1, Base::Vector3d& v2);
 
-    static TopoDS_Shape vectorToCompound(std::vector<TopoDS_Edge> vecIn);
-    static TopoDS_Shape vectorToCompound(std::vector<TopoDS_Wire> vecIn);
+    static TopoDS_Shape vectorToCompound(std::vector<TopoDS_Edge> vecIn, bool invert = true);
+    static TopoDS_Shape vectorToCompound(std::vector<TopoDS_Wire> vecIn, bool invert = true);
+    static TopoDS_Shape shapeVectorToCompound(std::vector<TopoDS_Shape> vecIn, bool invert = true);
     static std::vector<TopoDS_Edge> shapeToVector(TopoDS_Shape shapeIn);
 
     static Base::Vector3d toR3(const gp_Ax2& fromSystem, const Base::Vector3d& fromPoint);
@@ -202,6 +203,7 @@ public:
     static bool isCrazy(TopoDS_Edge e);
     static Base::Vector3d getFaceCenter(TopoDS_Face f);
     static bool circulation(Base::Vector3d A, Base::Vector3d B, Base::Vector3d C);
+    static Base::Vector3d getTrianglePoint(Base::Vector3d p1, Base::Vector3d d, Base::Vector3d p2);
     static int countSubShapes(TopoDS_Shape shape, TopAbs_ShapeEnum subShape);
     static void encodeXmlSpecialChars(std::string& inoutText);
     static std::list<TopoDS_Edge> sort_Edges(double tol3d, std::list<TopoDS_Edge>& edges);
@@ -250,6 +252,9 @@ public:
                                                       const Base::BoundBox2d& rectangle,
                                                       std::vector<Base::Vector2d>& intersections);
     static void copyFile(std::string inSpec, std::string outSpec);
+
+    static std::string translateArbitrary(std::string context, std::string baseName, std::string uniqueName);
+
 
     //debugging routines
     static void dumpVertexes(const char* text, const TopoDS_Shape& s);

@@ -1,7 +1,7 @@
 ; AlMgSi1F31
 ; (c) 2014 M. Münch - GNU Lesser General Public License (LGPL)
 ; information about the content of such cards can be found on the wiki:
-; https://www.freecadweb.org/wiki/Material
+; https://www.freecad.org/wiki/Material
 ; file created by FreeCAD0.18.16022 (Git)
 
 [General]
@@ -23,4 +23,6 @@ YieldStrength = 260 MPa
 YoungsModulus = 70000 MPa
 
 [Thermal]
-ThermalExpansionCoefficient = 0.000023 m/m/K
+SpecificHeat = 896 J/kg/K
+ThermalConductivity = 160 W/m/K
+ThermalExpansionCoefficient = 23 µm/m/K

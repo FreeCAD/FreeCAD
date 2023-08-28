@@ -20,7 +20,11 @@
 #***************************************************************************
 # Modified Amritpal Singh <amrit3701@gmail.com> on 07-07-2017
 
-import FreeCAD,Draft,ArchComponent,DraftVecUtils,ArchCommands
+import FreeCAD
+import Draft
+import ArchComponent
+import DraftVecUtils
+import ArchCommands
 if FreeCAD.GuiUp:
     import FreeCADGui
     from draftutils.translate import translate
@@ -43,12 +47,12 @@ else:
 
 __title__  = "FreeCAD Rebar"
 __author__ = "Yorik van Havre"
-__url__    = "https://www.freecadweb.org"
+__url__    = "https://www.freecad.org"
 
 
-def makeRebar(baseobj=None,sketch=None,diameter=None,amount=1,offset=None,name="Rebar"):
+def makeRebar(baseobj=None,sketch=None,diameter=None,amount=1,offset=None,name=None):
 
-    """makeRebar([baseobj,sketch,diameter,amount,offset,name]): adds a Reinforcement Bar object
+    """makeRebar([baseobj],[sketch],[diameter],[amount],[offset],[name]): adds a Reinforcement Bar object
     to the given structural object, using the given sketch as profile."""
 
     if not FreeCAD.ActiveDocument:
@@ -56,7 +60,7 @@ def makeRebar(baseobj=None,sketch=None,diameter=None,amount=1,offset=None,name="
         return
     p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
     obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython","Rebar")
-    obj.Label = translate("Arch",name)
+    obj.Label = name if name else translate("Arch","Rebar")
     _Rebar(obj)
     if FreeCAD.GuiUp:
         _ViewProviderRebar(obj.ViewObject)
@@ -548,7 +552,8 @@ class _ViewProviderRebar(ArchComponent.ViewProviderComponent):
             if hasattr(obj.Proxy,"wires"):
                 if obj.Proxy.wires:
                     from pivy import coin
-                    import re,Part
+                    import Part
+                    import re
                     self.centerline = coin.SoSeparator()
                     comp = Part.makeCompound(obj.Proxy.wires)
                     pts = re.findall("point \[(.*?)\]",comp.writeInventor().replace("\n",""))

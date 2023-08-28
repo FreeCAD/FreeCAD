@@ -1,0 +1,453 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>SketcherGui::SketcherSettingsGrid</class>
+ <widget class="QWidget" name="SketcherGui::SketcherSettingsGrid">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>500</width>
+    <height>664</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Grid</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <widget class="QGroupBox" name="groupBox_1">
+     <property name="title">
+      <string>Grid settings</string>
+     </property>
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Expanding" vsizetype="Minimum">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <layout class="QGridLayout" name="QGridLayout_1">
+      <item row="0" column="0">
+       <widget class="Gui::PrefCheckBox" name="checkBoxShowGrid">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
+        <property name="toolTip">
+         <string>A grid will be shown</string>
+        </property>
+        <property name="text">
+         <string>Grid</string>
+        </property>
+        <property name="checked">
+         <bool>false</bool>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>ShowGrid</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Sketcher/General</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="Gui::PrefCheckBox" name="checkBoxGridAuto">
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+        <property name="toolTip">
+         <string>Automatically adapt grid spacing based on the viewer dimensions.</string>
+        </property>
+        <property name="text">
+         <string>Grid Auto Spacing</string>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>GridAuto</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Sketcher/General</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QLabel" name="label_gridSize">
+        <property name="text">
+         <string>Grid spacing</string>
+        </property>
+        <property name="buddy">
+         <cstring>gridSize</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="Gui::PrefQuantitySpinBox" name="gridSize">
+        <property name="toolTip">
+         <string>Distance between two subsequent grid lines.
+If 'Grid Auto Spacing' is enabled, will be used as base value.</string>
+        </property>
+        <property name="unit" stdset="0">
+         <string notr="true">mm</string>
+        </property>
+        <property name="minimum">
+         <double>0.001000000000000</double>
+        </property>
+        <property name="maximum">
+         <double>99999999.000000000000000</double>
+        </property>
+        <property name="singleStep">
+         <double>1.000000000000000</double>
+        </property>
+        <property name="value">
+         <double>10.000000000000000</double>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>GridSize</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Sketcher/General/GridSize</cstring>
+        </property>
+        <property name="decimals" stdset="0">
+         <number>3</number>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="0">
+       <widget class="QLabel" name="label_gridSizePixelThreshold">
+        <property name="text">
+         <string>Pixel size threshold</string>
+        </property>
+        <property name="buddy">
+         <cstring>gridNumberSubdivision</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="1">
+       <widget class="Gui::PrefSpinBox" name="gridSizePixelThreshold">
+        <property name="toolTip">
+         <string>While using 'Grid Auto Spacing' this sets a threshold in pixel to the grid spacing.
+The grid spacing change if it becomes smaller than this number of pixel.</string>
+        </property>
+        <property name="minimum">
+         <number>3</number>
+        </property>
+        <property name="maximum">
+         <number>10000</number>
+        </property>
+        <property name="value">
+         <number>15</number>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>GridSizePixelThreshold</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Sketcher/General</cstring>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="groupBox_2">
+     <property name="title">
+      <string>Grid display</string>
+     </property>
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Expanding" vsizetype="Minimum">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <layout class="QVBoxLayout" name="vLayout">
+      <item>
+       <widget class="QGroupBox" name="groupBox_3">
+        <property name="title">
+         <string>Minor grid lines</string>
+        </property>
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Expanding" vsizetype="Minimum">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <layout class="QGridLayout" name="QGridLayout_2">
+         <item row="0" column="0">
+          <widget class="QLabel" name="label_2">
+           <property name="text">
+            <string>Line pattern</string>
+           </property>
+           <property name="buddy">
+            <cstring>gridLinePattern</cstring>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="1">
+          <widget class="QComboBox" name="gridLinePattern">
+           <property name="toolTip">
+            <string>Line pattern used for grid lines.</string>
+           </property>
+           <property name="currentIndex">
+            <number>-1</number>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="0">
+          <widget class="QLabel" name="label_gridLineWidth">
+           <property name="text">
+            <string>Line width</string>
+           </property>
+           <property name="buddy">
+            <cstring>gridLineWidth</cstring>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="1">
+          <widget class="Gui::PrefSpinBox" name="gridLineWidth">
+           <property name="toolTip">
+            <string>Distance between two subsequent grid lines</string>
+           </property>
+           <property name="unit" stdset="0">
+            <string notr="true">mm</string>
+           </property>
+           <property name="minimum">
+            <number>1</number>
+           </property>
+           <property name="maximum">
+            <number>99</number>
+           </property>
+           <property name="value">
+            <number>1</number>
+           </property>
+           <property name="prefEntry" stdset="0">
+            <cstring>GridLineWidth</cstring>
+           </property>
+           <property name="prefPath" stdset="0">
+            <cstring>Mod/Sketcher/General</cstring>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="0">
+          <widget class="QLabel" name="label_gridLineColor">
+           <property name="text">
+            <string>Line color</string>
+           </property>
+           <property name="buddy">
+            <cstring>gridLineColor</cstring>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="1">
+          <widget class="Gui::PrefColorButton" name="gridLineColor">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+           <property name="color">
+            <color>
+             <red>178</red>
+             <green>178</green>
+             <blue>178</blue>
+            </color>
+           </property>
+           <property name="prefEntry" stdset="0">
+            <cstring>GridLineColor</cstring>
+           </property>
+           <property name="prefPath" stdset="0">
+            <cstring>Mod/Sketcher/General</cstring>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </item>
+      <item>
+       <widget class="QGroupBox" name="groupBox_4">
+        <property name="title">
+         <string>Major grid lines</string>
+        </property>
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Expanding" vsizetype="Minimum">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <layout class="QGridLayout" name="QGridLayout_3">
+         <item row="0" column="0">
+          <widget class="QLabel" name="label_gridNumberSubdivision">
+           <property name="text">
+            <string>Major grid line every:</string>
+           </property>
+           <property name="buddy">
+            <cstring>gridNumberSubdivision</cstring>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="1">
+          <widget class="Gui::PrefSpinBox" name="gridNumberSubdivision">
+           <property name="toolTip">
+            <string>Every N lines there will be a major line. Set to 1 to disable major lines.</string>
+           </property>
+           <property name="minimum">
+            <number>1</number>
+           </property>
+           <property name="maximum">
+            <number>10000</number>
+           </property>
+           <property name="value">
+            <number>10</number>
+           </property>
+           <property name="prefEntry" stdset="0">
+            <cstring>GridNumberSubdivision</cstring>
+           </property>
+           <property name="prefPath" stdset="0">
+            <cstring>Mod/Sketcher/General</cstring>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="0">
+          <widget class="QLabel" name="label_22">
+           <property name="text">
+            <string>Line pattern</string>
+           </property>
+           <property name="buddy">
+            <cstring>gridDivLinePattern</cstring>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="1">
+          <widget class="QComboBox" name="gridDivLinePattern">
+           <property name="toolTip">
+            <string>Line pattern used for grid division.</string>
+           </property>
+           <property name="currentIndex">
+            <number>-1</number>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="0">
+          <widget class="QLabel" name="label_gridDivLineWidth">
+           <property name="text">
+            <string>Line width</string>
+           </property>
+           <property name="buddy">
+            <cstring>gridDivLineWidth</cstring>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="1">
+          <widget class="Gui::PrefSpinBox" name="gridDivLineWidth">
+           <property name="toolTip">
+            <string>Distance between two subsequent division lines</string>
+           </property>
+           <property name="minimum">
+            <number>1</number>
+           </property>
+           <property name="maximum">
+            <number>99</number>
+           </property>
+           <property name="value">
+            <number>2</number>
+           </property>
+           <property name="prefEntry" stdset="0">
+            <cstring>GridDivLineWidth</cstring>
+           </property>
+           <property name="prefPath" stdset="0">
+            <cstring>Mod/Sketcher/General</cstring>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="0">
+          <widget class="QLabel" name="label_gridDivLineColor">
+           <property name="text">
+            <string>Line color</string>
+           </property>
+           <property name="buddy">
+            <cstring>gridDivLineColor</cstring>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="1">
+          <widget class="Gui::PrefColorButton" name="gridDivLineColor">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+           <property name="color">
+            <color>
+             <red>178</red>
+             <green>178</green>
+             <blue>178</blue>
+            </color>
+           </property>
+           <property name="prefEntry" stdset="0">
+            <cstring>GridDivLineColor</cstring>
+           </property>
+           <property name="prefPath" stdset="0">
+            <cstring>Mod/Sketcher/General</cstring>
+           </property>
+          </widget>
+         </item>
+         </layout>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <spacer name="verticalSpacer">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>40</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+  </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>Gui::PrefSpinBox</class>
+   <extends>QSpinBox</extends>
+   <header>Gui/PrefWidgets.h</header>
+  </customwidget>
+  <customwidget>
+   <class>Gui::PrefCheckBox</class>
+   <extends>QCheckBox</extends>
+   <header>Gui/PrefWidgets.h</header>
+  </customwidget>
+  <customwidget>
+   <class>Gui::PrefQuantitySpinBox</class>
+   <extends>Gui::QuantitySpinBox</extends>
+   <header>Gui/PrefWidgets.h</header>
+  </customwidget>
+  <customwidget>
+   <class>Gui::QuantitySpinBox</class>
+   <extends>QAbstractSpinBox</extends>
+   <header>Gui/QuantitySpinBox.h</header>
+  </customwidget>
+  <customwidget>
+   <class>Gui::PrefColorButton</class>
+   <extends>Gui::ColorButton</extends>
+   <header>Gui/PrefWidgets.h</header>
+  </customwidget>
+  <customwidget>
+   <class>Gui::ColorButton</class>
+   <extends>QPushButton</extends>
+   <header>Gui/Widgets.h</header>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>

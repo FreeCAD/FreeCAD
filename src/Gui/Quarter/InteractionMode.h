@@ -53,7 +53,7 @@ class QUARTER_DLL_API InteractionMode : public QObject {
   Q_OBJECT
 public:
   InteractionMode(QuarterWidget * quarterwidget);
-  virtual ~InteractionMode();
+  ~InteractionMode() override;
 
   void setEnabled(bool yes);
   bool enabled() const;
@@ -62,7 +62,7 @@ public:
   bool on() const;
 
 protected:
-  virtual bool eventFilter(QObject *, QEvent * event);
+  bool eventFilter(QObject *, QEvent * event) override;
 
 private:
   bool keyPressEvent(QKeyEvent * event);

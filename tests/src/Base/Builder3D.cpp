@@ -1,8 +1,9 @@
 #include "gtest/gtest.h"
 
-#include <QString>
 #include "Base/Builder3D.h"
+#include <QString>
 
-TEST(Builder, one){
-    QString ss{};
+TEST(Builder, one)
+{
+    QString ss {};
 }

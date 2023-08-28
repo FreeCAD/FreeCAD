@@ -48,9 +48,7 @@ Circle::Circle()
     Angle2.setConstraints(&angleRange);
 }
 
-Circle::~Circle()
-{
-}
+Circle::~Circle() = default;
 
 short Circle::mustExecute() const
 {
@@ -61,7 +59,7 @@ short Circle::mustExecute() const
     return Part::Primitive::mustExecute();
 }
 
-App::DocumentObjectExecReturn *Circle::execute(void)
+App::DocumentObjectExecReturn *Circle::execute()
 {
     gp_Circ circle;
     circle.SetRadius(this->Radius.getValue());

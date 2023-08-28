@@ -235,7 +235,7 @@ void GeoFeatureGroupExtension::extensionOnChanged(const Property* p) {
 std::vector< DocumentObject* > GeoFeatureGroupExtension::getScopedObjectsFromLinks(const DocumentObject* obj, LinkScope scope) {
 
     if(!obj)
-        return std::vector< DocumentObject* >();
+        return {};
 
     //we get all linked objects. We can't use outList() as this includes the links from expressions
     std::vector< App::DocumentObject* > result;
@@ -256,7 +256,7 @@ std::vector< DocumentObject* > GeoFeatureGroupExtension::getScopedObjectsFromLin
 std::vector< DocumentObject* > GeoFeatureGroupExtension::getScopedObjectsFromLink(App::Property* prop, LinkScope scope) {
 
     if(!prop)
-        return std::vector< DocumentObject* >();
+        return {};
 
     std::vector< App::DocumentObject* > result;
     auto link = Base::freecad_dynamic_cast<PropertyLinkBase>(prop);
@@ -321,7 +321,7 @@ void GeoFeatureGroupExtension::getCSInList(const DocumentObject* obj,
 std::vector< DocumentObject* > GeoFeatureGroupExtension::getCSRelevantLinks(const DocumentObject* obj) {
 
     if(!obj)
-        return std::vector< DocumentObject* >();
+        return {};
 
     //get all out links
     std::vector<DocumentObject*> vec;

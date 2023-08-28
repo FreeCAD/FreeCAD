@@ -30,7 +30,7 @@ types of objects it contains, helper for executing a simulation.
 
 __title__ = "FEM analysis tools"
 __author__ = "Markus Hovorka, Bernd Hahnebach"
-__url__ = "https://www.freecadweb.org"
+__url__ = "https://www.freecad.org"
 
 
 from . import femutils
@@ -51,7 +51,7 @@ def get_member(analysis, t):
      Inheritance of Fem types is not checked. If *obj* uses Fems typesystem the
      type is just checked for equality. If the type doesn't match
      ``obj.isDerivedFrom`` is called as usual. See
-     https://forum.freecadweb.org/viewtopic.php?f=10&t=32625
+     https://forum.freecad.org/viewtopic.php?f=10&t=32625
     """
     if analysis is None:
         raise ValueError("Analysis must not be None")
@@ -80,7 +80,7 @@ def get_single_member(analysis, t):
      Inheritance of Fem types is not checked. If *obj* uses Fems typesystem the
      type is just checked for equality. If the type doesn't match
      ``obj.isDerivedFrom`` is called as usual. See
-     https://forum.freecadweb.org/viewtopic.php?f=10&t=32625
+     https://forum.freecad.org/viewtopic.php?f=10&t=32625
     """
     objs = get_member(analysis, t)
     return objs[0] if objs else None
@@ -115,7 +115,7 @@ def get_several_member(analysis, t):
      Inheritance of Fem types is not checked. If *obj* uses Fems typesystem the
      type is just checked for equality. If the type doesn't match
      ``obj.isDerivedFrom`` is called as usual. See
-     https://forum.freecadweb.org/viewtopic.php?f=10&t=32625
+     https://forum.freecad.org/viewtopic.php?f=10&t=32625
     """
     # if no member is found, an empty list is returned
     objs = get_member(analysis, t)

@@ -71,13 +71,6 @@ public:
         IgnoreErrorOnRecompute = 12, // Don't report errors if the recompute failed
     };
 
-    enum class NotificationType {
-        Information,
-        Warning,
-        Error,
-        Critical,
-    };
-
     /** @name Properties */
     //@{
     /// holds the long name of the document (utf-8 coded)
@@ -98,10 +91,7 @@ public:
     PropertyString Id;
     /// unique identifier of the document
     PropertyUUID Uid;
-    /** License string
-      * Holds the short license string for the Item, e.g. CC-BY
-      * for the Creative Commons license suit.
-      */
+    /// Full name of the licence e.g. "Creative Commons Attribution". See https://spdx.org/licenses/
     App::PropertyString License;
     /// License description/contract URL
     App::PropertyString LicenseURL;
@@ -180,8 +170,6 @@ public:
     boost::signals2::signal<void (const App::Document&, const std::vector<App::DocumentObject*>&)> signalSkipRecompute;
     boost::signals2::signal<void (const App::DocumentObject&)> signalFinishRestoreObject;
     boost::signals2::signal<void (const App::Document&,const App::Property&)> signalChangePropertyEditor;
-    // signal user message
-    boost::signals2::signal<void (const App::DocumentObject&, const QString &, NotificationType)> signalUserMessage;
     //@}
     boost::signals2::signal<void (std::string)> signalLinkXsetValue;
 
@@ -520,7 +508,7 @@ public:
 
 protected:
     /// Construction
-    explicit Document(const char *name = "");
+    explicit Document(const char *documentName = "");
 
     void _removeObject(DocumentObject* pcObject);
     void _addObject(DocumentObject* pcObject, const char* pObjectName);

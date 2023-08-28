@@ -112,8 +112,9 @@ Base::BoundBox3d PointKernel::getBoundBox()const
         bnd.Add(lbb);
     });
 #else
-    for (const_point_iterator it = begin(); it != end(); ++it)
-        bnd.Add(*it);
+    for (const auto & it : *this) {
+        bnd.Add(it);
+    }
 #endif
     return bnd;
 }
@@ -135,11 +136,12 @@ unsigned int PointKernel::getMemSize () const
 PointKernel::size_type PointKernel::countValid() const
 {
     size_type num = 0;
-    for (const_point_iterator it = begin(); it != end(); ++it) {
-        if (!(boost::math::isnan(it->x) ||
-              boost::math::isnan(it->y) ||
-              boost::math::isnan(it->z)))
+    for (const auto & it : *this) {
+        if (!(boost::math::isnan(it.x) ||
+              boost::math::isnan(it.y) ||
+              boost::math::isnan(it.z))) {
             num++;
+        }
     }
     return num;
 }
@@ -148,14 +150,15 @@ std::vector<PointKernel::value_type> PointKernel::getValidPoints() const
 {
     std::vector<PointKernel::value_type> valid;
     valid.reserve(countValid());
-    for (const_point_iterator it = begin(); it != end(); ++it) {
-        if (!(boost::math::isnan(it->x) ||
-              boost::math::isnan(it->y) ||
-              boost::math::isnan(it->z)))
+    for (const auto & it : *this) {
+        if (!(boost::math::isnan(it.x) ||
+              boost::math::isnan(it.y) ||
+              boost::math::isnan(it.z))) {
             valid.emplace_back(
-                    static_cast<float_type>(it->x),
-                    static_cast<float_type>(it->y),
-                    static_cast<float_type>(it->z));
+                    static_cast<float_type>(it.x),
+                    static_cast<float_type>(it.y),
+                    static_cast<float_type>(it.z));
+        }
     }
     return valid;
 }
@@ -175,8 +178,8 @@ void PointKernel::SaveDocFile (Base::Writer &writer) const
     uint32_t uCt = (uint32_t)size();
     str << uCt;
     // store the data without transforming it
-    for (std::vector<value_type>::const_iterator it = _Points.begin(); it != _Points.end(); ++it) {
-        str << it->x << it->y << it->z;
+    for (const auto& pnt : _Points) {
+        str << pnt.x << pnt.y << pnt.z;
     }
 }
 
@@ -204,7 +207,9 @@ void PointKernel::RestoreDocFile(Base::Reader &reader)
     str >> uCt;
     _Points.resize(uCt);
     for (unsigned long i=0; i < uCt; i++) {
-        float x, y, z;
+        float x;
+        float y;
+        float z;
         str >> x >> y >> z;
         _Points[i].Set(x,y,z);
     }
@@ -224,8 +229,8 @@ void PointKernel::load(const char* file)
 void PointKernel::save(std::ostream& out) const
 {
     out << "# ASCII" << std::endl;
-    for (std::vector<value_type>::const_iterator it = _Points.begin(); it != _Points.end(); ++it) {
-        out << it->x << " " << it->y << " " << it->z << std::endl;
+    for (const auto& pnt : _Points) {
+        out << pnt.x << " " << pnt.y << " " << pnt.z << std::endl;
     }
 }
 
@@ -254,23 +259,13 @@ PointKernel::const_point_iterator::const_point_iterator
 }
 
 PointKernel::const_point_iterator::const_point_iterator
-(const PointKernel::const_point_iterator& fi)
-  : _kernel(fi._kernel), _point(fi._point), _p_it(fi._p_it)
-{
-}
+(const PointKernel::const_point_iterator& fi) = default;
 
-//PointKernel::const_point_iterator::~const_point_iterator()
-//{
-//}
+PointKernel::const_point_iterator::~const_point_iterator() = default;
 
 PointKernel::const_point_iterator&
-PointKernel::const_point_iterator::operator=(const PointKernel::const_point_iterator& pi)
-{
-    this->_kernel  = pi._kernel;
-    this->_point = pi._point;
-    this->_p_it  = pi._p_it;
-    return *this;
-}
+PointKernel::const_point_iterator::operator=
+(const PointKernel::const_point_iterator& pi) = default;
 
 void PointKernel::const_point_iterator::dereference()
 {

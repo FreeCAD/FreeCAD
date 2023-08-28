@@ -74,10 +74,11 @@ void DlgPrefsTechDrawDimensionsImp::loadSettings()
     //Quantity widgets do not use preset value since they are based on
     //QAbstractSpinBox
     double fontDefault = Preferences::dimFontSizeMM();
+    double arrowDefault = Preferences::dimArrowSize();
     ui->plsb_FontSize->setValue(fontDefault);
 //    double arrowDefault = 5.0;
 //    plsb_ArrowSize->setValue(arrowDefault);
-    ui->plsb_ArrowSize->setValue(fontDefault);
+    ui->plsb_ArrowSize->setValue(arrowDefault);
 
     ui->pcbStandardAndStyle->onRestore();
     ui->cbGlobalDecimals->onRestore();

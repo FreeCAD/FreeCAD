@@ -40,7 +40,7 @@
 
 
 using namespace Reen;
-namespace bp = boost::placeholders;
+namespace sp = std::placeholders;
 
 // SplineBasisfunction
 
@@ -82,9 +82,7 @@ SplineBasisfunction::SplineBasisfunction(TColStd_Array1OfReal& vKnots, int iOrde
     _iOrder = iOrder;
 }
 
-SplineBasisfunction::~SplineBasisfunction()
-{
-}
+SplineBasisfunction::~SplineBasisfunction() = default;
 
 void SplineBasisfunction::SetKnots(TColStd_Array1OfReal& vKnots, int iOrder)
 {
@@ -133,9 +131,7 @@ BSplineBasis::BSplineBasis(TColStd_Array1OfReal& vKnots, int iOrder)
 {
 }
 
-BSplineBasis::~BSplineBasis()
-{
-}
+BSplineBasis::~BSplineBasis() = default;
 
 int BSplineBasis::FindSpan(double fParam)
 {
@@ -559,8 +555,6 @@ ParameterCorrection::ParameterCorrection(unsigned usUOrder, unsigned usVOrder,
   , _usVOrder(usVOrder)
   , _usUCtrlpoints(usUCtrlpoints)
   , _usVCtrlpoints(usVCtrlpoints)
-  , _pvcPoints(nullptr)
-  , _pvcUVParam(nullptr)
   , _vCtrlPntsOfSurf(0,usUCtrlpoints-1,0,usVCtrlpoints-1)
   , _vUKnots(0,usUCtrlpoints-usUOrder+1)
   , _vVKnots(0,usVCtrlpoints-usVOrder+1)
@@ -654,14 +648,14 @@ bool ParameterCorrection::GetUVParameters(double fSizeFactor)
     _pvcUVParam->Init(gp_Pnt2d(0.0, 0.0));
     int ii=0;
     if (clBBox.MaxX - clBBox.MinX >= clBBox.MaxY - clBBox.MinY) {
-        for (std::vector<Base::Vector2d>::iterator It2=vcProjPts.begin(); It2!=vcProjPts.end(); ++It2) {
-            (*_pvcUVParam)(ii) = gp_Pnt2d((It2->x-tx)/fDeltaX, (It2->y-ty)/fDeltaY);
+        for (const auto & pt : vcProjPts) {
+            (*_pvcUVParam)(ii) = gp_Pnt2d((pt.x-tx)/fDeltaX, (pt.y-ty)/fDeltaY);
             ii++;
         }
     }
     else {
-        for (std::vector<Base::Vector2d>::iterator It2=vcProjPts.begin(); It2!=vcProjPts.end(); ++It2) {
-            (*_pvcUVParam)(ii) = gp_Pnt2d((It2->y-ty)/fDeltaY, (It2->x-tx)/fDeltaX);
+        for (const auto & pt : vcProjPts) {
+            (*_pvcUVParam)(ii) = gp_Pnt2d((pt.y-ty)/fDeltaY, (pt.x-tx)/fDeltaX);
             ii++;
         }
     }
@@ -1091,17 +1085,19 @@ bool BSplineParameterCorrection::SolveWithSmoothing(double fWeight)
     std::vector<int> columns(ulDim);
     std::generate(columns.begin(), columns.end(), Base::iotaGen<int>(0));
     ScalarProduct scalar(M);
+    //NOLINTBEGIN
     QFuture< std::vector<double> > future = QtConcurrent::mapped
-        (columns, boost::bind(&ScalarProduct::multiply, &scalar, bp::_1));
+        (columns, std::bind(&ScalarProduct::multiply, &scalar, sp::_1));
+    //NOLINTEND
     QFutureWatcher< std::vector<double> > watcher;
     watcher.setFuture(future);
     watcher.waitForFinished();
 
     math_Matrix MTM(0, ulDim-1, 0, ulDim-1);
     int rowIndex=0;
-    for (QFuture< std::vector<double> >::const_iterator it = future.begin(); it != future.end(); ++it) {
+    for (const auto & it : future) {
         int colIndex=0;
-        for (std::vector<double>::const_iterator jt = it->begin(); jt != it->end(); ++jt, colIndex++)
+        for (std::vector<double>::const_iterator jt = it.begin(); jt != it.end(); ++jt, colIndex++)
             MTM(rowIndex, colIndex) = *jt;
         rowIndex++;
     }

@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
 # ***************************************************************************
 # *                                                                         *
 # *   Copyright (c) 2022-2023 FreeCAD Project Association                   *
@@ -66,9 +67,9 @@ class DialogInteractor(QtCore.QObject):
         # doesn't set the title of a modal dialog:
         os = QtCore.QSysInfo.productType()  # Qt5 gives "osx", Qt6 gives "macos"
         if os in ["osx", "macos"] or (
-                hasattr(widget, "windowTitle")
-                and callable(widget.windowTitle)
-                and widget.windowTitle() == self.dialog_to_watch_for
+            hasattr(widget, "windowTitle")
+            and callable(widget.windowTitle)
+            and widget.windowTitle() == self.dialog_to_watch_for
         ):
             return True
         return False

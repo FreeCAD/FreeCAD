@@ -1,0 +1,146 @@
+# ***************************************************************************
+# *   Copyright (c) 2023 0penBrain                               *
+# *                                                                         *
+# *   This program is free software; you can redistribute it and/or modify  *
+# *   it under the terms of the GNU Lesser General Public License (LGPL)    *
+# *   as published by the Free Software Foundation; either version 2 of     *
+# *   the License, or (at your option) any later version.                   *
+# *   for detail see the LICENCE text file.                                 *
+# *                                                                         *
+# *   This program is distributed in the hope that it will be useful,       *
+# *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+# *   GNU Library General Public License for more details.                  *
+# *                                                                         *
+# *   You should have received a copy of the GNU Library General Public     *
+# *   License along with this program; if not, write to the Free Software   *
+# *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
+# *   USA                                                                   *
+# *                                                                         *
+# ***************************************************************************
+
+# This is a build and test workflow for CI of FreeCAD.
+# This workflow aims at building and testing FreeCAD on Windows using MSVC.
+
+name: Build Windows
+on:
+  workflow_call:
+    inputs:
+      artifactBasename:
+        type: string
+        required: true
+      allowedToFail:
+        default: false
+        type: boolean
+        required: false
+    outputs:
+      reportFile:
+        value: ${{ jobs.Build.outputs.reportFile }}
+
+jobs:
+  Build:
+    runs-on: windows-latest
+    continue-on-error: ${{ inputs.allowedToFail }}
+    env:
+      CCACHE_DIR: C:/FC/cache/
+      CCACHE_COMPILERCHECK: "%compiler%" # default:mtime
+      CCACHE_MAXSIZE: 1G
+      CCACHE_COMPRESS: true
+      CCACHE_COMPRESSLEVEL: 1
+      CCACHE_NOHASHDIR: true
+      CCACHE_DIRECT: true
+      #CCACHE_SLOPPINESS: "pch_defines,time_macros" # Can't get PCH to work on Windows
+      CCACHE_LOGFILE: C:/logs/ccache.log
+      ## Have to use C:\ because not enough space on workspace drive
+      builddir: C:/FC/build/
+      libpackdir: C:/FC/libpack/
+      ccachebindir: C:/FC/ccache/
+      logdir: C:/logs/
+      reportdir: C:/report/
+      reportfilename: ${{ inputs.artifactBasename }}-report.md
+    outputs:
+      reportFile: ${{ steps.Init.outputs.reportFile }}
+
+    steps:
+      - name: Checking out source code
+        uses: actions/checkout@v3
+      - name: Make needed directories, files and initializations
+        id: Init
+        run: |
+          mkdir ${{ env.CCACHE_DIR }}
+          mkdir ${{ env.ccachebindir }}
+          mkdir ${{ env.libpackdir }}
+          mkdir ${{ env.builddir }}
+          mkdir ${{ env.logdir }}
+          mkdir ${{ env.reportdir }}
+          echo "reportFile=${{ env.reportfilename }}" >> $GITHUB_OUTPUT
+      - name: Get Ccache
+        uses: ./.github/workflows/actions/windows/getCcache
+        with:
+          ccachebindir: ${{ env.ccachebindir }}
+      - name: Get Libpack
+        uses: ./.github/workflows/actions/windows/getLibpack
+        with:
+          libpackdir: ${{ env.libpackdir }}
+      - name: Restore compiler cache
+        uses: pat-s/always-upload-cache@v3
+        with:
+          path: ${{ env.CCACHE_DIR }}
+          key: FC-Windows-${{ github.ref }}-${{ github.run_id }}
+          restore-keys: |
+            FC-Windows-${{ github.ref }}-
+            FC-Windows-
+      - name: Print Ccache statistics before build, reset stats and print config
+        run: |
+          . $env:ccachebindir\ccache -s
+          . $env:ccachebindir\ccache -z
+          . $env:ccachebindir\ccache -p
+      - name: Append Libpack bin directory to Path
+        if: false # Disabled because not enough to set FREECAD_COPY_LIBPACK_BIN_TO_BUILD=OFF
+        run: |
+          echo "${{ env.libpackdir }}/bin" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
+      - name: Configuring CMake
+        run: >
+          cmake -B"${{ env.builddir }}" .
+          -DCMAKE_VS_NO_COMPILE_BATCHING=ON
+          -DCMAKE_BUILD_TYPE=Release
+          -DFREECAD_USE_PCH=OFF
+          -DFREECAD_RELEASE_PDB=OFF
+          -DFREECAD_LIBPACK_DIR="${{ env.libpackdir }}"
+          -DPYTHON_DEBUG_LIBRARY="${{ env.libpackdir }}bin/libs/python38_d.lib"
+          -DPYTHON_EXECUTABLE="${{ env.libpackdir }}bin/python.exe"
+          -DPYTHON_INCLUDE_DIR="${{ env.libpackdir }}bin/include"
+          -DPYTHON_LIBRARY="${{ env.libpackdir }}bin/libs/python38.lib"
+          -DXercesC_INCLUDE_DIR="${{ env.libpackdir }}include"
+          -DXercesC_LIBRARY_RELEASE="${{ env.libpackdir }}lib/xerces-c_3.lib"
+          -DXercesC_LIBRARY_DEBUG="${{ env.libpackdir }}lib/xerces-c_3D.lib"
+          -DFREECAD_COPY_DEPEND_DIRS_TO_BUILD=ON
+          -DFREECAD_COPY_LIBPACK_BIN_TO_BUILD=OFF
+          -DFREECAD_COPY_PLUGINS_BIN_TO_BUILD=ON
+      - name: Add msbuild to PATH
+        uses: microsoft/setup-msbuild@v1.3
+      - name: Compiling sources
+        run: |
+          cd $env:builddir
+          msbuild ALL_BUILD.vcxproj /m /p:Configuration=Release /p:TrackFileAccess=false /p:CLToolPath=${{ env.ccachebindir }}
+      - name: Print Ccache statistics after build
+        run: |
+          . $env:ccachebindir\ccache -s
+      - name: Move libpack bin folder to build folder # Shorter in time than copying with CMake FREECAD_COPY_LIBPACK_BIN_TO_BUILD
+        run: |
+          Move-Item -Force -Path ${{ env.libpackdir }}bin -Destination ${{ env.builddir }}
+      - name: C++ unit tests
+        if: false # Disabled because seems to not exist on Windows build
+        timeout-minutes: 1
+        run: |
+          . ${{ env.builddir }}\test\Tests_run --gtest_output=json:${{ env.reportdir }}gtest_results.json # 2>&1 | tee -filepath ${{ env.logdir }}\unitTests.log
+      - name: FreeCAD CLI tests
+        run: |
+          . ${{ env.builddir }}\bin\FreeCADCmd -t 0 # 2>&1 | tee -filepath ${{ env.logdir }}\integrationTests.log
+      - name: Upload logs
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: ${{ inputs.artifactBasename }}-Logs
+          path: |
+            ${{ env.logdir }}

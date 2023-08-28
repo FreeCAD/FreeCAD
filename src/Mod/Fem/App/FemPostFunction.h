@@ -24,6 +24,8 @@
 #define Fem_FemPostFunction_H
 
 #include <vtkBoundingBox.h>
+#include <vtkBox.h>
+#include <vtkCylinder.h>
 #include <vtkImplicitFunction.h>
 #include <vtkPlane.h>
 #include <vtkSmartPointer.h>
@@ -81,6 +83,60 @@ protected:
     void onChanged(const App::Property* prop) override;
 };
 
+// ---------------------------------------------------------------------------
+
+class FemExport FemPostBoxFunction : public FemPostFunction
+{
+    PROPERTY_HEADER_WITH_OVERRIDE(Fem::FemPostBoxFunction);
+
+public:
+
+    FemPostBoxFunction();
+    ~FemPostBoxFunction() override;
+
+    App::PropertyVectorDistance   Center;
+    App::PropertyDistance         Length;
+    App::PropertyDistance         Width;
+    App::PropertyDistance         Height;
+
+    const char* getViewProviderName() const override {
+        return "FemGui::ViewProviderFemPostBoxFunction";
+    }
+
+protected:
+    void onChanged(const App::Property* prop) override;
+    /// get called after a document has been fully restored
+    void onDocumentRestored() override;
+
+    vtkSmartPointer<vtkBox> m_box;
+};
+
+// ---------------------------------------------------------------------------
+
+class FemExport FemPostCylinderFunction : public FemPostFunction
+{
+    PROPERTY_HEADER_WITH_OVERRIDE(Fem::FemPostCylinderFunction);
+
+public:
+
+    FemPostCylinderFunction();
+    ~FemPostCylinderFunction() override;
+
+    App::PropertyVector           Axis;
+    App::PropertyVectorDistance   Center;
+    App::PropertyDistance         Radius;
+
+    const char* getViewProviderName() const override {
+        return "FemGui::ViewProviderFemPostCylinderFunction";
+    }
+
+protected:
+    void onChanged(const App::Property* prop) override;
+    /// get called after a document has been fully restored
+    void onDocumentRestored() override;
+
+    vtkSmartPointer<vtkCylinder> m_cylinder;
+};
 
 // ---------------------------------------------------------------------------
 

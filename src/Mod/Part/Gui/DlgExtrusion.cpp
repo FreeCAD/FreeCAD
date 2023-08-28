@@ -100,6 +100,8 @@ DlgExtrusion::DlgExtrusion(QWidget* parent, Qt::WindowFlags fl)
   : QDialog(parent, fl), ui(new Ui_DlgExtrusion), filter(nullptr)
 {
     ui->setupUi(this);
+    setupConnections();
+
     ui->statusLabel->clear();
     ui->dirX->setDecimals(Base::UnitsApi::getDecimals());
     ui->dirY->setDecimals(Base::UnitsApi::getDecimals());
@@ -116,7 +118,7 @@ DlgExtrusion::DlgExtrusion(QWidget* parent, Qt::WindowFlags fl)
     sel.applyFrom(Gui::Selection().getObjectsOfType(App::Link::getClassTypeId()));
     sel.applyFrom(Gui::Selection().getObjectsOfType(App::Part::getClassTypeId()));
 
-    this->on_DirMode_changed();
+    this->onDirModeChanged();
     ui->spinLenFwd->selectAll();
     // Make sure that the spin box has the focus to get key events
     // Calling setFocus() directly doesn't work because the spin box is not
@@ -139,6 +141,28 @@ DlgExtrusion::~DlgExtrusion()
     // no need to delete child widgets, Qt does it all for us
 }
 
+void DlgExtrusion::setupConnections()
+{
+    connect(ui->rbDirModeCustom, &QRadioButton::toggled,
+            this, &DlgExtrusion::onDirModeCustomToggled);
+    connect(ui->rbDirModeEdge, &QRadioButton::toggled,
+            this, &DlgExtrusion::onDirModeEdgeToggled);
+    connect(ui->rbDirModeNormal, &QRadioButton::toggled,
+            this, &DlgExtrusion::onDirModeNormalToggled);
+    connect(ui->btnSelectEdge, &QPushButton::clicked,
+            this, &DlgExtrusion::onSelectEdgeClicked);
+    connect(ui->btnX, &QPushButton::clicked,
+            this, &DlgExtrusion::onButtnoXClicked);
+    connect(ui->btnY, &QPushButton::clicked,
+            this, &DlgExtrusion::onButtonYClicked);
+    connect(ui->btnZ, &QPushButton::clicked,
+            this, &DlgExtrusion::onButtonZClicked);
+    connect(ui->chkSymmetric, &QCheckBox::toggled,
+            this, &DlgExtrusion::onCheckSymmetricToggled);
+    connect(ui->txtLink, &QLineEdit::textChanged,
+            this, &DlgExtrusion::onTextLinkTextChanged);
+}
+
 void DlgExtrusion::changeEvent(QEvent *e)
 {
     if (e->type() == QEvent::LanguageChange) {
@@ -154,25 +178,25 @@ void DlgExtrusion::keyPressEvent(QKeyEvent* ke)
     ke->ignore();
 }
 
-void DlgExtrusion::on_rbDirModeCustom_toggled(bool on)
+void DlgExtrusion::onDirModeCustomToggled(bool on)
 {
     if(on) //this check prevents dual fire of dirmode changed - on radio buttons, one will come on, and other will come off, causing two events.
-        this->on_DirMode_changed();
+        this->onDirModeChanged();
 }
 
-void DlgExtrusion::on_rbDirModeEdge_toggled(bool on)
+void DlgExtrusion::onDirModeEdgeToggled(bool on)
 {
     if(on)
-        this->on_DirMode_changed();
+        this->onDirModeChanged();
 }
 
-void DlgExtrusion::on_rbDirModeNormal_toggled(bool on)
+void DlgExtrusion::onDirModeNormalToggled(bool on)
 {
     if(on)
-        this->on_DirMode_changed();
+        this->onDirModeChanged();
 }
 
-void DlgExtrusion::on_btnSelectEdge_clicked()
+void DlgExtrusion::onSelectEdgeClicked()
 {
     if (!filter) {
         filter = new EdgeSelection();
@@ -214,7 +238,7 @@ void DlgExtrusion::on_btnSelectEdge_clicked()
     }
 }
 
-void DlgExtrusion::on_btnX_clicked()
+void DlgExtrusion::onButtnoXClicked()
 {
     Base::Vector3d axis(1.0, 0.0, 0.0);
     if ((getDir() - axis).Length() < 1e-7)
@@ -223,7 +247,7 @@ void DlgExtrusion::on_btnX_clicked()
     setDir(axis);
 }
 
-void DlgExtrusion::on_btnY_clicked()
+void DlgExtrusion::onButtonYClicked()
 {
     Base::Vector3d axis(0.0, 1.0, 0.0);
     if ((getDir() - axis).Length() < 1e-7)
@@ -232,7 +256,7 @@ void DlgExtrusion::on_btnY_clicked()
     setDir(axis);
 }
 
-void DlgExtrusion::on_btnZ_clicked()
+void DlgExtrusion::onButtonZClicked()
 {
     Base::Vector3d axis(0.0, 0.0, 1.0);
     if ((getDir() - axis).Length() < 1e-7)
@@ -241,17 +265,17 @@ void DlgExtrusion::on_btnZ_clicked()
     setDir(axis);
 }
 
-void DlgExtrusion::on_chkSymmetric_toggled(bool on)
+void DlgExtrusion::onCheckSymmetricToggled(bool on)
 {
     ui->spinLenRev->setEnabled(!on);
 }
 
-void DlgExtrusion::on_txtLink_textChanged(QString)
+void DlgExtrusion::onTextLinkTextChanged(QString)
 {
     this->fetchDir();
 }
 
-void DlgExtrusion::on_DirMode_changed()
+void DlgExtrusion::onDirModeChanged()
 {
     Part::Extrusion::eDirMode dirMode = this->getDirMode();
     ui->dirX->setEnabled(dirMode == Part::Extrusion::dmCustom);
@@ -358,8 +382,8 @@ void DlgExtrusion::findShapes()
 
     std::vector<App::DocumentObject*> objs = activeDoc->getObjectsOfType<App::DocumentObject>();
 
-    for (std::vector<App::DocumentObject*>::iterator it = objs.begin(); it!=objs.end(); ++it) {
-        Part::TopoShape topoShape = Part::Feature::getTopoShape(*it);
+    for (auto obj : objs) {
+        Part::TopoShape topoShape = Part::Feature::getTopoShape(obj);
         if (topoShape.isNull()) {
             continue;
         }
@@ -367,9 +391,9 @@ void DlgExtrusion::findShapes()
         if (shape.IsNull()) continue;
         if (canExtrude(shape)) {
             QTreeWidgetItem* item = new QTreeWidgetItem(ui->treeWidget);
-            item->setText(0, QString::fromUtf8((*it)->Label.getValue()));
-            item->setData(0, Qt::UserRole, QString::fromLatin1((*it)->getNameInDocument()));
-            Gui::ViewProvider* vp = activeGui->getViewProvider(*it);
+            item->setText(0, QString::fromUtf8(obj->Label.getValue()));
+            item->setData(0, Qt::UserRole, QString::fromLatin1(obj->getNameInDocument()));
+            Gui::ViewProvider* vp = activeGui->getViewProvider(obj);
             if (vp)
                 item->setIcon(0, vp->getIcon());
         }
@@ -419,7 +443,7 @@ void DlgExtrusion::apply()
             throw Base::AbortException();
 
         if (filter) //if still selecting edge - stop. This is important for visibility automation.
-            this->on_btnSelectEdge_clicked();
+            this->onSelectEdgeClicked();
 
         Gui::WaitCursor wc;
         App::Document* activeDoc = App::GetApplication().getDocument(this->document.c_str());
@@ -471,8 +495,10 @@ void DlgExtrusion::apply()
         throw;
     }
     catch (Base::Exception &err){
-        QMessageBox::critical(this, windowTitle(),
-            tr("Creating Extrusion failed.\n%1").arg(QString::fromUtf8(err.what())));
+        QMessageBox::critical(this,
+                              windowTitle(),
+                              tr("Creating Extrusion failed.\n%1")
+                                  .arg(QCoreApplication::translate("Exception", err.what())));
         return;
     }
     catch(...) {
@@ -485,7 +511,7 @@ void DlgExtrusion::apply()
 void DlgExtrusion::reject()
 {
     if (filter) //if still selecting edge - stop.
-        this->on_btnSelectEdge_clicked();
+        this->onSelectEdgeClicked();
 
     QDialog::reject();
 }
@@ -531,7 +557,7 @@ void DlgExtrusion::setDirMode(Part::Extrusion::eDirMode newMode)
     ui->rbDirModeCustom->blockSignals(false);
     ui->rbDirModeEdge->blockSignals(false);
     ui->rbDirModeNormal->blockSignals(false);
-    this->on_DirMode_changed();
+    this->onDirModeChanged();
 }
 
 void DlgExtrusion::getAxisLink(App::PropertyLinkSub& lnk) const
@@ -592,8 +618,8 @@ std::vector<App::DocumentObject*> DlgExtrusion::getShapesToExtrude() const
         throw Base::RuntimeError("Document lost");
 
     std::vector<App::DocumentObject*> objects;
-    for (int i = 0; i < items.size(); i++) {
-        App::DocumentObject* obj = doc->getObject(items[i]->data(0, Qt::UserRole).toString().toLatin1());
+    for (auto item : items) {
+        App::DocumentObject* obj = doc->getObject(item->data(0, Qt::UserRole).toString().toLatin1());
         if (!obj)
             throw Base::RuntimeError("Object not found");
         objects.push_back(obj);
@@ -619,11 +645,11 @@ bool DlgExtrusion::validate()
         Base::Vector3d dir, base;
         hasValidAxisLink = Part::Extrusion::fetchAxisLink(lnk, base, dir);
     } catch(Base::Exception &err) {
-        errmsg = QString::fromUtf8(err.what());
+        errmsg = QCoreApplication::translate("Exception", err.what());
     } catch(Standard_Failure &err) {
         errmsg = QString::fromLocal8Bit(err.GetMessageString());
     } catch(...) {
-        errmsg = QString::fromUtf8("Unknown error");
+        errmsg = tr("Unknown error");
     }
     if (this->getDirMode() == Part::Extrusion::dmEdge && !hasValidAxisLink){
         if (errmsg.length() > 0)
@@ -645,7 +671,7 @@ bool DlgExtrusion::validate()
             lnk.setValue(&this->getShapeToExtrude()); //simplified - check only for the first shape.
             Part::Extrusion::calculateShapeNormal(lnk);
         } catch(Base::Exception &err) {
-            errmsg = QString::fromUtf8(err.what());
+            errmsg = QCoreApplication::translate("Exception", err.what());
         } catch(Standard_Failure &err) {
             errmsg = QString::fromLocal8Bit(err.GetMessageString());
         } catch(...) {
@@ -733,11 +759,6 @@ TaskExtrusion::TaskExtrusion()
         widget->windowTitle(), true, nullptr);
     taskbox->groupLayout()->addWidget(widget);
     Content.push_back(taskbox);
-}
-
-TaskExtrusion::~TaskExtrusion()
-{
-    // automatically deleted in the sub-class
 }
 
 bool TaskExtrusion::accept()

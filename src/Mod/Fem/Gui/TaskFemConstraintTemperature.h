@@ -26,6 +26,7 @@
 #ifndef GUI_TASKVIEW_TaskFemConstraintTemperature_H
 #define GUI_TASKVIEW_TaskFemConstraintTemperature_H
 
+#include <memory>
 #include <QObject>
 
 #include <Gui/Selection.h>
@@ -46,13 +47,12 @@ public:
     explicit TaskFemConstraintTemperature(ViewProviderFemConstraintTemperature *ConstraintView,QWidget *parent = nullptr);
     ~TaskFemConstraintTemperature() override;
     const std::string getReferences() const override;
-    double get_temperature()const;
-    double get_cflux() const;
+    std::string get_temperature() const;
+    std::string get_cflux() const;
     std::string get_constraint_type() const;
 
 private Q_SLOTS:
     void onReferenceDeleted();
-    void onTempCfluxChanged(double val);
     void Temp();
     void Flux();
     void addToSelection() override;
@@ -65,8 +65,7 @@ protected:
 
 private:
     void updateUI();
-    Ui_TaskFemConstraintTemperature* ui;
-
+    std::unique_ptr<Ui_TaskFemConstraintTemperature> ui;
 };
 
 class TaskDlgFemConstraintTemperature : public TaskDlgFemConstraint

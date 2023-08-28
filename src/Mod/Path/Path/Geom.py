@@ -35,7 +35,7 @@ Part = LazyLoader("Part", globals(), "Part")
 
 __title__ = "Geom - geometry utilities for Path"
 __author__ = "sliptonic (Brad Collette)"
-__url__ = "https://www.freecadweb.org"
+__url__ = "https://www.freecad.org"
 __doc__ = "Functions to extract and convert between Path.Command and Part.Edge and utility functions to reason about them."
 
 Tolerance = 0.000001
@@ -676,7 +676,7 @@ def flipEdge(edge):
             poles, mults, knots, perio, degree, weights, ratio
         )
 
-        return Part.Edge(flipped)
+        return Part.Edge(flipped, ma + mi - edge.LastParameter, ma + mi - edge.FirstParameter)
     elif type(edge.Curve) == Part.OffsetCurve:
         return edge.reversed()
 

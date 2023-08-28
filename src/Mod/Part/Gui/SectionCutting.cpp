@@ -603,7 +603,7 @@ void SectionCut::startCutting(bool isInitial)
 
     // store color and transparency of first object
     App::Color cutColor;
-    int cutTransparency;
+    int cutTransparency {0};
     bool autoColor = true;
     bool autoTransparency = true;
     auto vpFirstObject = dynamic_cast<Gui::ViewProviderGeometryObject*>(
@@ -1962,8 +1962,9 @@ SbBox3f SectionCut::getViewBoundingBox()
     }
     Gui::View3DInventorViewer* viewer = view->getViewer();
     SoCamera* camera = viewer->getSoRenderManager()->getCamera();
-    if (!camera || !camera->isOfType(SoOrthographicCamera::getClassTypeId()))
+    if (!camera) {
         return Box; // return an empty box
+    }
     // get scene bounding box
     SoGetBoundingBoxAction action(viewer->getSoRenderManager()->getViewportRegion());
     action.apply(viewer->getSceneGraph());

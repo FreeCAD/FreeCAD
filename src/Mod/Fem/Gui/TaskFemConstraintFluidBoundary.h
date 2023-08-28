@@ -23,6 +23,7 @@
 #ifndef GUI_TASKVIEW_TaskFemConstraintFluidBoundary_H
 #define GUI_TASKVIEW_TaskFemConstraintFluidBoundary_H
 
+#include <memory>
 #include <QObject>
 
 #include <Mod/Fem/App/FemSolverObject.h>
@@ -48,7 +49,8 @@ class TaskFemConstraintFluidBoundary : public TaskFemConstraintOnBoundary
     Q_OBJECT
 
 public:
-    explicit TaskFemConstraintFluidBoundary(ViewProviderFemConstraintFluidBoundary *ConstraintView,QWidget *parent = nullptr);
+    explicit TaskFemConstraintFluidBoundary(ViewProviderFemConstraintFluidBoundary* ConstraintView,
+                                            QWidget* parent = nullptr);
     ~TaskFemConstraintFluidBoundary() override;
 
     const Fem::FemSolverObject* getFemSolver() const;
@@ -98,7 +100,7 @@ private:
     void updateUI();
 
 private:
-    Ui_TaskFemConstraintFluidBoundary* ui;
+    std::unique_ptr<Ui_TaskFemConstraintFluidBoundary> ui;
     int dimension;  // -1: unknown, 2 for 2D and 3 for 3D
     Fem::FemSolverObject* pcSolver;
     App::PropertyBool* pHeatTransferring;
@@ -111,13 +113,13 @@ class TaskDlgFemConstraintFluidBoundary : public TaskDlgFemConstraint
     Q_OBJECT
 
 public:
-    explicit TaskDlgFemConstraintFluidBoundary(ViewProviderFemConstraintFluidBoundary *ConstraintView);
+    explicit TaskDlgFemConstraintFluidBoundary(
+        ViewProviderFemConstraintFluidBoundary* ConstraintView);
 
     /// is called by the framework if the dialog is accepted (Ok)
     void open() override;
     bool accept() override;
     bool reject() override;
-
 };
 
 } //namespace FemGui

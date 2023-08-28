@@ -23,6 +23,7 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+# include <QActionGroup>
 # include <QApplication>
 # include <QByteArray>
 # include <QCheckBox>
@@ -67,6 +68,7 @@
 #include <Base/FileInfo.h>
 #include <Base/Interpreter.h>
 #include <Base/Stream.h>
+#include <Base/UnitsApi.h>
 #include <DAGView/DAGView.h>
 #include <TaskView/TaskView.h>
 
@@ -80,6 +82,7 @@
 #include "DownloadManager.h"
 #include "FileDialog.h"
 #include "MenuManager.h"
+#include "NotificationArea.h"
 #include "ProgressBar.h"
 #include "PropertyView.h"
 #include "PythonConsole.h"
@@ -102,6 +105,7 @@
 #include "View3DInventorViewer.h"
 #include "DlgObjectSelection.h"
 #include "Tools.h"
+#include <App/Color.h>
 
 FC_LOG_LEVEL_INIT("MainWindow",false,true,true)
 
@@ -132,8 +136,7 @@ public:
     CustomMessageEvent(int t, const QString& s, int timeout=0)
       : QEvent(QEvent::User), _type(t), msg(s), _timeout(timeout)
     { }
-    ~CustomMessageEvent() override
-    { }
+    ~CustomMessageEvent() override = default;
     int type() const
     { return _type; }
     const QString& message() const
@@ -146,11 +149,96 @@ private:
     int _timeout;
 };
 
+/**
+ * The DimensionWidget class is aiming at providing a widget used in the status bar that will:
+ *  - Allow application to display dimension information such as the viewportsize
+ *  - Provide a popup menu allowing user to change the used unit schema (and update if changed elsewhere)
+ */
+class DimensionWidget : public QPushButton, WindowParameter
+{
+    Q_OBJECT
+
+public:
+    explicit DimensionWidget(QWidget* parent): QPushButton(parent), WindowParameter("Units")
+    {
+        setFlat(true);
+        setText(qApp->translate("Gui::MainWindow", "Dimension"));
+        setMinimumWidth(120);
+
+        //create the action buttons
+        auto* menu = new QMenu(this);
+        auto* actionGrp = new QActionGroup(menu);
+        int num = static_cast<int>(Base::UnitSystem::NumUnitSystemTypes);
+        for (int i = 0; i < num; i++) {
+            QAction* action = menu->addAction(QStringLiteral("UnitSchema%1").arg(i));
+            actionGrp->addAction(action);
+            action->setCheckable(true);
+            action->setData(i);
+        }
+        QObject::connect(actionGrp, &QActionGroup::triggered, this, [this](QAction* action) {
+            int userSchema = action->data().toInt();
+            // Set and save the Unit System
+            Base::UnitsApi::setSchema(static_cast<Base::UnitSystem>(userSchema));
+            getWindowParameter()->SetInt("UserSchema", userSchema);
+            // Update the application to show the unit change
+            Gui::Application::Instance->onUpdate();
+        } );
+        setMenu(menu);
+        retranslateUi();
+        unitChanged();
+        getWindowParameter()->Attach(this);
+    }
+
+    ~DimensionWidget() override
+    {
+        getWindowParameter()->Detach(this);
+    }
+
+    void OnChange(Base::Subject<const char*> &rCaller, const char * sReason) override
+    {
+        Q_UNUSED(rCaller)
+        if (strcmp(sReason, "UserSchema") == 0) {
+            unitChanged();
+        }
+    }
+
+    void changeEvent(QEvent *event) override
+    {
+        if (event->type() == QEvent::LanguageChange) {
+            retranslateUi();
+        }
+        else {
+            QPushButton::changeEvent(event);
+        }
+    }
+
+private:
+    void unitChanged()
+    {
+        int userSchema = getWindowParameter()->GetInt("UserSchema", 0);
+        auto actions = menu()->actions();
+        if(Q_UNLIKELY(userSchema < 0 || userSchema >= actions.size())) {
+            userSchema = 0;
+        }
+        actions[userSchema]->setChecked(true);
+    }
+
+    void retranslateUi() {
+        auto actions = menu()->actions();
+        int maxSchema = static_cast<int>(Base::UnitSystem::NumUnitSystemTypes);
+        assert(actions.size() <= maxSchema);
+        for(int i = 0; i < maxSchema ; i++)
+        {
+            actions[i]->setText(Base::UnitsApi::getDescription(static_cast<Base::UnitSystem>(i)));
+        }
+    }
+};
+
 // -------------------------------------
 // Pimpl class
 struct MainWindowP
 {
-    QLabel* sizeLabel;
+    QPushButton* sizeLabel;
     QLabel* actionLabel;
     QTimer* actionTimer;
     QTimer* statusTimer;
@@ -250,7 +338,6 @@ protected:
 
 } // namespace Gui
 
-
 /* TRANSLATOR Gui::MainWindow */
 
 MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags f)
@@ -280,6 +367,7 @@ MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags f)
         tab->setTabsClosable(true);
         // The tabs might be very wide
         tab->setExpanding(false);
+        tab->setObjectName(QString::fromLatin1("mdiAreaTabBar"));
     }
     d->mdiArea->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
     d->mdiArea->setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded);
@@ -295,13 +383,24 @@ MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags f)
     d->status = new StatusBarObserver();
     d->actionLabel = new QLabel(statusBar());
     // d->actionLabel->setMinimumWidth(120);
-    d->sizeLabel = new QLabel(tr("Dimension"), statusBar());
-    d->sizeLabel->setMinimumWidth(120);
+
+    d->sizeLabel = new DimensionWidget(statusBar());
+
     statusBar()->addWidget(d->actionLabel, 1);
     QProgressBar* progressBar = Gui::SequencerBar::instance()->getProgressBar(statusBar());
     statusBar()->addPermanentWidget(progressBar, 0);
     statusBar()->addPermanentWidget(d->sizeLabel, 0);
 
+    auto hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/NotificationArea");
+
+    auto notificationAreaEnabled = hGrp->GetBool("NotificationAreaEnabled", true);
+
+    if(notificationAreaEnabled) {
+        NotificationArea* notificationArea = new NotificationArea(statusBar());
+        notificationArea->setObjectName(QString::fromLatin1("notificationArea"));
+        notificationArea->setStyleSheet(QStringLiteral("text-align:left;"));
+        statusBar()->addPermanentWidget(notificationArea);
+    }
     // clears the action label
     d->actionTimer = new QTimer( this );
     d->actionTimer->setObjectName(QString::fromLatin1("actionTimer"));
@@ -345,6 +444,7 @@ MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags f)
 
     // accept drops on the window, get handled in dropEvent, dragEnterEvent
     setAcceptDrops(true);
+
     statusBar()->showMessage(tr("Ready"), 2001);
 }
 
@@ -1068,6 +1168,13 @@ void MainWindow::onWindowActivated(QMdiSubWindow* w)
         return;
     auto view = dynamic_cast<MDIView*>(w->widget());
 
+    // set active the appropriate window (it needs not to be part of mdiIds, e.g. directly after creation)
+    if (view)
+    {
+        d->activeView = view;
+        Application::Instance->viewActivated(view);
+    }
+    
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
     bool saveWB = hGrp->GetBool("SaveWBbyTab", false);
     if (saveWB) {
@@ -1093,9 +1200,6 @@ void MainWindow::onWindowActivated(QMdiSubWindow* w)
     if ( !view /*|| !mdi->isActiveWindow()*/ )
         return; // either no MDIView or no valid object or no top-level window
 
-    // set active the appropriate window (it needs not to be part of mdiIds, e.g. directly after creation)
-    d->activeView = view;
-    Application::Instance->viewActivated(view);
     updateActions(true);
 }
 
@@ -1241,7 +1345,7 @@ void MainWindow::closeEvent (QCloseEvent * e)
         Q_EMIT  mainWindowClosed();
         d->activityTimer->stop();
 
-        // https://forum.freecadweb.org/viewtopic.php?f=8&t=67748
+        // https://forum.freecad.org/viewtopic.php?f=8&t=67748
         // When the session manager jumps in it can happen that the closeEvent()
         // function is triggered twice and for the second call the main window might be
         // invisible. In this case the window settings shouldn't be saved.
@@ -1346,6 +1450,9 @@ void MainWindow::delayedStartup()
         return;
     }
 
+    // TODO: Check for deprecated settings
+    Application::Instance->checkForDeprecatedSettings();
+
     // Create new document?
     ParameterGrp::handle hGrp = WindowParameter::getDefaultParameter()->GetGroup("Document");
     if (hGrp->GetBool("CreateNewDoc", false)) {
@@ -1389,7 +1496,7 @@ void MainWindow::updateActions(bool delay)
         // the whole application in a weird state
         if (d->activityTimer->thread() != QThread::currentThread()) {
             QMetaObject::invokeMethod(d->activityTimer, "start", Qt::QueuedConnection,
-                QGenericReturnArgument(), Q_ARG(int, 150));
+                Q_ARG(int, 150));
         }
         else {
             d->activityTimer->start(150);
@@ -1492,13 +1599,15 @@ void MainWindow::loadWindowSettings()
     }
     std::clog << "Main window restored" << std::endl;
 
-// make menus and tooltips usable in fullscreen under Windows, see issue #7563
-#if defined(Q_OS_WIN)
-    QWindowsWindowFunctions::setHasBorderInFullScreen(this->windowHandle(), true);
-#endif
-
     bool max = config.value(QString::fromLatin1("Maximized"), false).toBool();
     max ? showMaximized() : show();
+
+    // make menus and tooltips usable in fullscreen under Windows, see issue #7563
+#if defined(Q_OS_WIN)
+    if (QWindow* win = this->windowHandle()) {
+        QWindowsWindowFunctions::setHasBorderInFullScreen(win, true);
+    }
+#endif
 
     statusBar()->setVisible(config.value(QString::fromLatin1("StatusBar"), true).toBool());
     config.endGroup();
@@ -1581,6 +1690,59 @@ QPixmap MainWindow::aboutImage() const
     return about_image;
 }
 
+/**
+ * Displays a warning about this being a developer build. Designed for display in the Splashscreen.
+ * \param painter The painter to draw the warning into
+ * \param startPosition The painter-space coordinates to start the warning box at.
+ * \param maxSize The maximum extents for the box that is drawn. If the text exceeds this size it
+ * will be scaled down to fit.
+ * \note The text string is translatable, so its length is somewhat unpredictable. It is always
+ * displayed as two lines, regardless of the length of the text (e.g. no wrapping is done). Only the
+ * width is considered, the height simply follows from the font size.
+ */
+void MainWindow::renderDevBuildWarning(
+    QPainter &painter,
+    const QPoint startPosition,
+    const QSize maxSize)
+{
+    // Create a background box that fades out the artwork for better legibility
+    QColor fader (Qt::black);
+    constexpr float halfDensity (0.5);
+    fader.setAlphaF(halfDensity);
+    QBrush fillBrush(fader, Qt::BrushStyle::SolidPattern);
+    painter.setBrush(fillBrush);
+
+    // Construct the lines of text and figure out how much space they need
+    const auto devWarningLine1 = tr("WARNING: This is a development version.");
+    const auto devWarningLine2 = tr("Please do not use in a production environment.");
+    QFontMetrics fontMetrics(painter.font()); // Try to use the existing font
+    int padding = QtTools::horizontalAdvance(fontMetrics, QLatin1String("M")); // Arbitrary
+    int line1Width = QtTools::horizontalAdvance(fontMetrics, devWarningLine1);
+    int line2Width = QtTools::horizontalAdvance(fontMetrics, devWarningLine2);
+    int boxWidth = std::max(line1Width,line2Width) + 2 * padding;
+    int lineHeight = fontMetrics.lineSpacing();
+    if (boxWidth > maxSize.width()) {
+        // Especially if the text was translated, there is a chance that using the existing font
+        // will exceed the width of the Splashscreen graphic. Resize down so that it fits, no matter
+        // how long the text strings are.
+        float reductionFactor = static_cast<float>(maxSize.width()) / static_cast<float>(boxWidth);
+        int newFontSize = static_cast<int>(painter.font().pointSize() * reductionFactor);
+        padding *= reductionFactor;
+        QFont newFont = painter.font();
+        newFont.setPointSize(newFontSize);
+        painter.setFont(newFont);
+        lineHeight = painter.fontMetrics().lineSpacing();
+        boxWidth = maxSize.width();
+    }
+    constexpr float lineExpansionFactor(2.3);
+    int boxHeight = static_cast<int>(lineHeight*lineExpansionFactor);
+
+    // Draw the background rectangle and the text
+    painter.drawRect(startPosition.x(), startPosition.y(), boxWidth, boxHeight);
+    painter.drawText(startPosition.x()+padding, startPosition.y()+lineHeight, devWarningLine1);
+    painter.drawText(startPosition.x()+padding, startPosition.y()+2*lineHeight, devWarningLine2);
+}
+
 QPixmap MainWindow::splashImage() const
 {
     // search in the UserAppData dir as very first
@@ -1602,12 +1764,14 @@ QPixmap MainWindow::splashImage() const
     }
 
     // now try the icon paths
+    float pixelRatio (1.0);
     if (splash_image.isNull()) {
         if (qApp->devicePixelRatio() > 1.0) {
             // For HiDPI screens, we have a double-resolution version of the splash image
             splash_path += "2x";
             splash_image = Gui::BitmapFactory().pixmap(splash_path.c_str());
             splash_image.setDevicePixelRatio(2.0);
+            pixelRatio = 2.0;
         }
         else {
             splash_image = Gui::BitmapFactory().pixmap(splash_path.c_str());
@@ -1621,7 +1785,8 @@ QPixmap MainWindow::splashImage() const
         QString major   = QString::fromLatin1(App::Application::Config()["BuildVersionMajor"].c_str());
         QString minor   = QString::fromLatin1(App::Application::Config()["BuildVersionMinor"].c_str());
         QString point   = QString::fromLatin1(App::Application::Config()["BuildVersionPoint"].c_str());
-        QString version = QString::fromLatin1("%1.%2.%3").arg(major, minor, point);
+        QString suffix  = QString::fromLatin1(App::Application::Config()["BuildVersionSuffix"].c_str());
+        QString version = QString::fromLatin1("%1.%2.%3%4").arg(major, minor, point, suffix);
         QString position, fontFamily;
 
         std::map<std::string,std::string>::const_iterator te = App::Application::Config().find("SplashInfoExeName");
@@ -1649,11 +1814,14 @@ QPixmap MainWindow::splashImage() const
         fontExe.setPointSizeF(20.0);
         QFontMetrics metricExe(fontExe);
         int l = QtTools::horizontalAdvance(metricExe, title);
+        if (title == QLatin1String("FreeCAD")) {
+            l = 0.0; // "FreeCAD" text is already part of the splashscreen, version goes below it
+        }
         int w = splash_image.width();
         int h = splash_image.height();
 
         QFont fontVer = painter.font();
-        fontVer.setPointSizeF(12.0);
+        fontVer.setPointSizeF(14.0);
         QFontMetrics metricVer(fontVer);
         int v = QtTools::horizontalAdvance(metricVer, version);
 
@@ -1674,9 +1842,19 @@ QPixmap MainWindow::splashImage() const
         if (color.isValid()) {
             painter.setPen(color);
             painter.setFont(fontExe);
-            painter.drawText(x, y, title);
+            if (title != QLatin1String("FreeCAD")) {
+                // FreeCAD's Splashscreen already contains the EXE name, no need to draw it
+                painter.drawText(x, y, title);
+            }
             painter.setFont(fontVer);
             painter.drawText(x + (l + 5), y, version);
+            if (suffix == QLatin1String("dev")) {
+                const int lineHeight = metricVer.lineSpacing();
+                const int padding {10}; // Distance from the edge of the graphic's bounding box
+                QPoint startPosition(padding, y + lineHeight);
+                QSize maxSize(w/pixelRatio - 2*padding, lineHeight * 3);
+                MainWindow::renderDevBuildWarning(painter, startPosition, maxSize);
+            }
             painter.end();
         }
     }
@@ -2123,20 +2301,33 @@ void StatusBarObserver::OnChange(Base::Subject<const char*> &rCaller, const char
     auto format = QString::fromLatin1("#statusBar{color: %1}");
     if (strcmp(sReason, "colorText") == 0) {
         unsigned long col = rclGrp.GetUnsigned( sReason );
-        this->msg = format.arg(QColor((col >> 24) & 0xff,(col >> 16) & 0xff,(col >> 8) & 0xff).name());
+        this->msg = format.arg(App::Color::fromPackedRGB<QColor>(col).name());
     }
     else if (strcmp(sReason, "colorWarning") == 0) {
         unsigned long col = rclGrp.GetUnsigned( sReason );
-        this->wrn = format.arg(QColor((col >> 24) & 0xff,(col >> 16) & 0xff,(col >> 8) & 0xff).name());
+        this->wrn = format.arg(App::Color::fromPackedRGB<QColor>(col).name());
     }
     else if (strcmp(sReason, "colorError") == 0) {
         unsigned long col = rclGrp.GetUnsigned( sReason );
-        this->err = format.arg(QColor((col >> 24) & 0xff,(col >> 16) & 0xff,(col >> 8) & 0xff).name());
+        this->err = format.arg(App::Color::fromPackedRGB<QColor>(col).name());
+    }
+    else if (strcmp(sReason, "colorCritical") == 0) {
+        unsigned long col = rclGrp.GetUnsigned( sReason );
+        this->critical = format.arg(QColor((col >> 24) & 0xff,(col >> 16) & 0xff,(col >> 8) & 0xff).name());
     }
 }
 
-void StatusBarObserver::SendLog(const std::string& msg, Base::LogStyle level)
+void StatusBarObserver::SendLog(const std::string& notifiername, const std::string& msg, Base::LogStyle level,
+                                Base::IntendedRecipient recipient, Base::ContentType content)
 {
+    (void) notifiername;
+
+    // Do not log untranslated messages, or messages intended only to a developer to status bar
+    if( recipient == Base::IntendedRecipient::Developer ||
+        content == Base::ContentType::Untranslated ||
+        content == Base::ContentType::Untranslatable )
+        return;
+
     int messageType = -1;
     switch(level){
         case Base::LogStyle::Warning:
@@ -2150,6 +2341,11 @@ void StatusBarObserver::SendLog(const std::string& msg, Base::LogStyle level)
             break;
         case Base::LogStyle::Log:
             messageType = MainWindow::Log;
+            break;
+        case Base::LogStyle::Critical:
+            messageType = MainWindow::Critical;
+            break;
+        default:
             break;
     }
 
@@ -2174,3 +2370,4 @@ ActionStyleEvent::Style ActionStyleEvent::getType() const
 
 
 #include "moc_MainWindow.cpp"
+#include "MainWindow.moc"

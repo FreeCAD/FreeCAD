@@ -92,6 +92,12 @@ DrawViewBalloon::DrawViewBalloon()
                       "Distance from symbol to leader kink");
 
     SourceView.setScope(App::LinkScope::Global);
+    // hide the DrawView properties that don't apply to Dimensions
+    ScaleType.setStatus(App::Property::ReadOnly, true);
+    ScaleType.setStatus(App::Property::Hidden, true);
+    Scale.setStatus(App::Property::ReadOnly, true);
+    Scale.setStatus(App::Property::Hidden, true);
+    Rotation.setStatus(App::Property::ReadOnly, true);
     Rotation.setStatus(App::Property::Hidden, true);
     Caption.setStatus(App::Property::Hidden, true);
 }
@@ -244,8 +250,7 @@ Base::Vector3d DrawViewBalloon::getOriginOffset() const
     double ox = OriginX.getValue();
     double oy = OriginY.getValue();
     Base::Vector3d org(ox, oy, 0.0);
-    Base::Vector3d offset = pos - org;
-    return offset;
+    return Base::Vector3d(pos - org);
 }
 
 /*

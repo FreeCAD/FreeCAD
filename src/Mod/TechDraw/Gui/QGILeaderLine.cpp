@@ -451,16 +451,14 @@ QPainterPath QGILeaderLine::makeLeaderPath(std::vector<QPointF> qPoints)
 QPointF QGILeaderLine::getAttachFromFeature()
 {
     //    Base::Console().Message("QGILL::getAttachFromFeature()\n");
-    QPointF result;
     TechDraw::DrawLeaderLine* featLeader = getFeature();
-    if ((!featLeader)) {
+    if (!featLeader) {
         Base::Console().Message("QGIL::getAttachFromLeader - no feature\n");
-        return result;
+        return QPointF();
     }
     double x = Rez::guiX(featLeader->X.getValue());
     double y = -Rez::guiX(featLeader->Y.getValue());
-    result = QPointF(x, y);
-    return result;
+    return QPointF(x, y);
 }
 
 std::vector<QPointF> QGILeaderLine::getWayPointsFromFeature()
@@ -495,7 +493,6 @@ void QGILeaderLine::setArrows(std::vector<QPointF> pathPoints)
     if (featLeader->StartSymbol.getValue() != ArrowType::NONE) {
         m_arrow1->setStyle(featLeader->StartSymbol.getValue());
         m_arrow1->setWidth(getLineWidth());
-        //        TODO: variable size arrow heads
         m_arrow1->setSize(QGIArrow::getPrefArrowSize());
         m_arrow1->setDirMode(true);
         m_arrow1->setDirection(stdX);
@@ -518,6 +515,7 @@ void QGILeaderLine::setArrows(std::vector<QPointF> pathPoints)
     if (featLeader->EndSymbol.getValue() != ArrowType::NONE) {
         m_arrow2->setStyle(featLeader->EndSymbol.getValue());
         m_arrow2->setWidth(getLineWidth());
+        m_arrow2->setSize(QGIArrow::getPrefArrowSize());
         m_arrow2->setDirMode(true);
         m_arrow2->setDirection(-stdX);
         if (pathPoints.size() > 1) {

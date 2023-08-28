@@ -44,15 +44,9 @@ using namespace Gui;
 PROPERTY_SOURCE(Gui::ViewProviderExtern, Gui::ViewProvider)
 
 
-ViewProviderExtern::ViewProviderExtern()
-{
+ViewProviderExtern::ViewProviderExtern() = default;
 
-}
-
-ViewProviderExtern::~ViewProviderExtern()
-{
-
-}
+ViewProviderExtern::~ViewProviderExtern() = default;
 
 void ViewProviderExtern::setModeByString(const char* name, const char* ivFragment)
 {

@@ -48,7 +48,7 @@ namespace Base {
 class ParameterGrpObserver : public ParameterGrp::ObserverType
 {
 public:
-    ParameterGrpObserver(const Py::Object& obj)
+    explicit ParameterGrpObserver(const Py::Object& obj)
     {
         inst = obj;
     }
@@ -102,7 +102,7 @@ class ParameterGrpPy : public Py::PythonExtension<ParameterGrpPy>
 public:
     static void init_type();    // announce properties and methods
 
-    ParameterGrpPy(const Base::Reference<ParameterGrp> &rcParamGrp);
+    explicit ParameterGrpPy(const Base::Reference<ParameterGrp> &rcParamGrp);
     ~ParameterGrpPy() override;
 
     Py::Object repr() override;
@@ -247,8 +247,7 @@ ParameterGrpPy::ParameterGrpPy(const Base::Reference<ParameterGrp> &rcParamGrp)
 
 ParameterGrpPy::~ParameterGrpPy()
 {
-    for (ParameterGrpObserverList::iterator it = _observers.begin(); it != _observers.end(); ++it) {
-        ParameterGrpObserver* obs = *it;
+    for (ParameterGrpObserver* obs : _observers) {
         if (!obs->_target)
             _cParamGrp->Detach(obs);
         delete obs;
@@ -264,7 +263,7 @@ Py::Object ParameterGrpPy::repr()
 
 Py::Object ParameterGrpPy::importFrom(const Py::Tuple& args)
 {
-    char *pstr;
+    char *pstr = nullptr;
     if (!PyArg_ParseTuple(args.ptr(), "s", &pstr))
         throw Py::Exception();
 
@@ -274,7 +273,7 @@ Py::Object ParameterGrpPy::importFrom(const Py::Tuple& args)
 
 Py::Object ParameterGrpPy::insert(const Py::Tuple& args)
 {
-    char *pstr;
+    char *pstr = nullptr;
     if (!PyArg_ParseTuple(args.ptr(), "s", &pstr))
         throw Py::Exception();
 
@@ -284,7 +283,7 @@ Py::Object ParameterGrpPy::insert(const Py::Tuple& args)
 
 Py::Object ParameterGrpPy::exportTo(const Py::Tuple& args)
 {
-    char *pstr;
+    char *pstr = nullptr;
     if (!PyArg_ParseTuple(args.ptr(), "s", &pstr))
         throw Py::Exception();
 
@@ -294,7 +293,7 @@ Py::Object ParameterGrpPy::exportTo(const Py::Tuple& args)
 
 Py::Object ParameterGrpPy::getGroup(const Py::Tuple& args)
 {
-    char *pstr;
+    char *pstr = nullptr;
     if (!PyArg_ParseTuple(args.ptr(), "s", &pstr))
         throw Py::Exception();
 
@@ -378,8 +377,8 @@ Py::Object ParameterGrpPy::getGroups(const Py::Tuple& args)
 
 Py::Object ParameterGrpPy::setBool(const Py::Tuple& args)
 {
-    char *pstr;
-    int  Bool;
+    char *pstr = nullptr;
+    int  Bool = 0;
     if (!PyArg_ParseTuple(args.ptr(), "si", &pstr,&Bool))
         throw Py::Exception();
 
@@ -389,7 +388,7 @@ Py::Object ParameterGrpPy::setBool(const Py::Tuple& args)
 
 Py::Object ParameterGrpPy::getBool(const Py::Tuple& args)
 {
-    char *pstr;
+    char *pstr = nullptr;
     int  Bool=0;
     if (!PyArg_ParseTuple(args.ptr(), "s|i", &pstr,&Bool))
         throw Py::Exception();
@@ -414,8 +413,8 @@ Py::Object ParameterGrpPy::getBools(const Py::Tuple& args)
 
 Py::Object ParameterGrpPy::setInt(const Py::Tuple& args)
 {
-    char *pstr;
-    int  Int;
+    char *pstr = nullptr;
+    int  Int = 0;
     if (!PyArg_ParseTuple(args.ptr(), "si", &pstr,&Int))
         throw Py::Exception();
 
@@ -425,7 +424,7 @@ Py::Object ParameterGrpPy::setInt(const Py::Tuple& args)
 
 Py::Object ParameterGrpPy::getInt(const Py::Tuple& args)
 {
-    char *pstr;
+    char *pstr = nullptr;
     int  Int=0;
     if (!PyArg_ParseTuple(args.ptr(), "s|i", &pstr,&Int))
         throw Py::Exception();
@@ -449,8 +448,8 @@ Py::Object ParameterGrpPy::getInts(const Py::Tuple& args)
 
 Py::Object ParameterGrpPy::setUnsigned(const Py::Tuple& args)
 {
-    char *pstr;
-    unsigned int  UInt;
+    char *pstr = nullptr;
+    unsigned int  UInt = 0;
     if (!PyArg_ParseTuple(args.ptr(), "sI", &pstr,&UInt))
         throw Py::Exception();
 
@@ -460,7 +459,7 @@ Py::Object ParameterGrpPy::setUnsigned(const Py::Tuple& args)
 
 Py::Object ParameterGrpPy::getUnsigned(const Py::Tuple& args)
 {
-    char *pstr;
+    char *pstr = nullptr;
     unsigned int  UInt=0;
     if (!PyArg_ParseTuple(args.ptr(), "s|I", &pstr,&UInt))
         throw Py::Exception();
@@ -484,8 +483,8 @@ Py::Object ParameterGrpPy::getUnsigneds(const Py::Tuple& args)
 
 Py::Object ParameterGrpPy::setFloat(const Py::Tuple& args)
 {
-    char *pstr;
-    double  Float;
+    char *pstr = nullptr;
+    double  Float{};
     if (!PyArg_ParseTuple(args.ptr(), "sd", &pstr,&Float))
         throw Py::Exception();
 
@@ -495,7 +494,7 @@ Py::Object ParameterGrpPy::setFloat(const Py::Tuple& args)
 
 Py::Object ParameterGrpPy::getFloat(const Py::Tuple& args)
 {
-    char *pstr;
+    char *pstr = nullptr;
     double  Float=0.0;
     if (!PyArg_ParseTuple(args.ptr(), "s|d", &pstr,&Float))
         throw Py::Exception();
@@ -520,8 +519,8 @@ Py::Object ParameterGrpPy::getFloats(const Py::Tuple& args)
 
 Py::Object ParameterGrpPy::setString(const Py::Tuple& args)
 {
-    char *pstr;
-    char *  str;
+    char *pstr = nullptr;
+    char *  str = nullptr;
     if (!PyArg_ParseTuple(args.ptr(), "ss", &pstr,&str))
         throw Py::Exception();
 
@@ -531,7 +530,7 @@ Py::Object ParameterGrpPy::setString(const Py::Tuple& args)
 
 Py::Object ParameterGrpPy::getString(const Py::Tuple& args)
 {
-    char *pstr;
+    char *pstr = nullptr;
     char *  str="";
     if (!PyArg_ParseTuple(args.ptr(), "s|s", &pstr,&str))
         throw Py::Exception();
@@ -556,7 +555,7 @@ Py::Object ParameterGrpPy::getStrings(const Py::Tuple& args)
 
 Py::Object ParameterGrpPy::remInt(const Py::Tuple& args)
 {
-    char *pstr;
+    char *pstr = nullptr;
     if (!PyArg_ParseTuple(args.ptr(), "s", &pstr))
         throw Py::Exception();
 
@@ -566,7 +565,7 @@ Py::Object ParameterGrpPy::remInt(const Py::Tuple& args)
 
 Py::Object ParameterGrpPy::remUnsigned(const Py::Tuple& args)
 {
-    char *pstr;
+    char *pstr = nullptr;
     if (!PyArg_ParseTuple(args.ptr(), "s", &pstr))
         throw Py::Exception();
 
@@ -576,7 +575,7 @@ Py::Object ParameterGrpPy::remUnsigned(const Py::Tuple& args)
 
 Py::Object ParameterGrpPy::remBool(const Py::Tuple& args)
 {
-    char *pstr;
+    char *pstr = nullptr;
     if (!PyArg_ParseTuple(args.ptr(), "s", &pstr))
         throw Py::Exception();
 
@@ -586,7 +585,7 @@ Py::Object ParameterGrpPy::remBool(const Py::Tuple& args)
 
 Py::Object ParameterGrpPy::remGroup(const Py::Tuple& args)
 {
-    char *pstr;
+    char *pstr = nullptr;
     if (!PyArg_ParseTuple(args.ptr(), "s", &pstr))
         throw Py::Exception();
 
@@ -596,7 +595,7 @@ Py::Object ParameterGrpPy::remGroup(const Py::Tuple& args)
 
 Py::Object ParameterGrpPy::remFloat(const Py::Tuple& args)
 {
-    char *pstr;
+    char *pstr = nullptr;
     if (!PyArg_ParseTuple(args.ptr(), "s", &pstr))
         throw Py::Exception();
 
@@ -606,7 +605,7 @@ Py::Object ParameterGrpPy::remFloat(const Py::Tuple& args)
 
 Py::Object ParameterGrpPy::remString(const Py::Tuple& args)
 {
-    char *pstr;
+    char *pstr = nullptr;
     if (!PyArg_ParseTuple(args.ptr(), "s", &pstr))
         throw Py::Exception();
 
@@ -633,7 +632,7 @@ Py::Object ParameterGrpPy::isEmpty(const Py::Tuple& args)
 
 Py::Object ParameterGrpPy::hasGroup(const Py::Tuple& args)
 {
-    char *pstr;
+    char *pstr = nullptr;
     if (!PyArg_ParseTuple(args.ptr(), "s", &pstr))
         throw Py::Exception();
 
@@ -642,7 +641,7 @@ Py::Object ParameterGrpPy::hasGroup(const Py::Tuple& args)
 
 Py::Object ParameterGrpPy::attach(const Py::Tuple& args)
 {
-    PyObject* obj;
+    PyObject* obj = nullptr;
     if (!PyArg_ParseTuple(args.ptr(), "O", &obj))
         throw Py::Exception();
 
@@ -650,8 +649,8 @@ Py::Object ParameterGrpPy::attach(const Py::Tuple& args)
     if (!o.hasAttr(std::string("onChange")))
         throw Py::TypeError("Object has no onChange attribute");
 
-    for (ParameterGrpObserverList::iterator it = _observers.begin(); it != _observers.end(); ++it) {
-        if ((*it)->isEqual(o)) {
+    for (ParameterGrpObserver* it : _observers) {
+        if (it->isEqual(o)) {
             throw Py::RuntimeError("Object is already attached.");
         }
     }
@@ -665,7 +664,7 @@ Py::Object ParameterGrpPy::attach(const Py::Tuple& args)
 
 Py::Object ParameterGrpPy::attachManager(const Py::Tuple& args)
 {
-    PyObject* obj;
+    PyObject* obj = nullptr;
     if (!PyArg_ParseTuple(args.ptr(), "O", &obj))
         throw Py::Exception();
 
@@ -680,8 +679,8 @@ Py::Object ParameterGrpPy::attachManager(const Py::Tuple& args)
     if (!attr.isCallable())
         throw Py::TypeError("Object has no slotParamChanged callable attribute");
 
-    for (ParameterGrpObserverList::iterator it = _observers.begin(); it != _observers.end(); ++it) {
-        if ((*it)->isEqual(o)) {
+    for (ParameterGrpObserver* it : _observers) {
+        if (it->isEqual(o)) {
             throw Py::RuntimeError("Object is already attached.");
         }
     }
@@ -715,7 +714,7 @@ Py::Object ParameterGrpPy::attachManager(const Py::Tuple& args)
 
 Py::Object ParameterGrpPy::detach(const Py::Tuple& args)
 {
-    PyObject* obj;
+    PyObject* obj = nullptr;
     if (!PyArg_ParseTuple(args.ptr(), "O", &obj))
         throw Py::Exception();
 
@@ -738,7 +737,7 @@ Py::Object ParameterGrpPy::detach(const Py::Tuple& args)
 
 Py::Object ParameterGrpPy::notify(const Py::Tuple& args)
 {
-    char *pstr;
+    char *pstr = nullptr;
     if (!PyArg_ParseTuple(args.ptr(), "s", &pstr))
         throw Py::Exception();
 
@@ -766,51 +765,51 @@ Py::Object ParameterGrpPy::getContents(const Py::Tuple& args)
     Py::List list;
     // filling up Text nodes
     std::vector<std::pair<std::string,std::string> > mcTextMap = _cParamGrp->GetASCIIMap();
-    for (std::vector<std::pair<std::string,std::string> >::iterator It2=mcTextMap.begin();It2!=mcTextMap.end();++It2) {
+    for (const auto & it : mcTextMap) {
         Py::Tuple t2(3);
         t2.setItem(0,Py::String("String"));
-        t2.setItem(1,Py::String(It2->first.c_str()));
-        t2.setItem(2,Py::String(It2->second.c_str()));
+        t2.setItem(1,Py::String(it.first.c_str()));
+        t2.setItem(2,Py::String(it.second.c_str()));
         list.append(t2);
     }
 
     // filling up Int nodes
     std::vector<std::pair<std::string,long> > mcIntMap = _cParamGrp->GetIntMap();
-    for (std::vector<std::pair<std::string,long> >::iterator It3=mcIntMap.begin();It3!=mcIntMap.end();++It3) {
+    for (const auto & it : mcIntMap) {
         Py::Tuple t3(3);
         t3.setItem(0,Py::String("Integer"));
-        t3.setItem(1,Py::String(It3->first.c_str()));
-        t3.setItem(2,Py::Long(It3->second));
+        t3.setItem(1,Py::String(it.first.c_str()));
+        t3.setItem(2,Py::Long(it.second));
         list.append(t3);
     }
 
     // filling up Float nodes
     std::vector<std::pair<std::string,double> > mcFloatMap = _cParamGrp->GetFloatMap();
-    for (std::vector<std::pair<std::string,double> >::iterator It4=mcFloatMap.begin();It4!=mcFloatMap.end();++It4) {
+    for (const auto & it : mcFloatMap) {
         Py::Tuple t4(3);
         t4.setItem(0,Py::String("Float"));
-        t4.setItem(1,Py::String(It4->first.c_str()));
-        t4.setItem(2,Py::Float(It4->second));
+        t4.setItem(1,Py::String(it.first.c_str()));
+        t4.setItem(2,Py::Float(it.second));
         list.append(t4);
     }
 
     // filling up bool nodes
     std::vector<std::pair<std::string,bool> > mcBoolMap = _cParamGrp->GetBoolMap();
-    for (std::vector<std::pair<std::string,bool> >::iterator It5=mcBoolMap.begin();It5!=mcBoolMap.end();++It5) {
+    for (const auto & it : mcBoolMap) {
         Py::Tuple t5(3);
         t5.setItem(0,Py::String("Boolean"));
-        t5.setItem(1,Py::String(It5->first.c_str()));
-        t5.setItem(2,Py::Boolean(It5->second));
+        t5.setItem(1,Py::String(it.first.c_str()));
+        t5.setItem(2,Py::Boolean(it.second));
         list.append(t5);
     }
 
     // filling up UInt nodes
     std::vector<std::pair<std::string,unsigned long> > mcUIntMap = _cParamGrp->GetUnsignedMap();
-    for (std::vector<std::pair<std::string,unsigned long> >::iterator It6=mcUIntMap.begin();It6!=mcUIntMap.end();++It6) {
+    for (const auto & it : mcUIntMap) {
         Py::Tuple t6(3);
         t6.setItem(0,Py::String("Unsigned Long"));
-        t6.setItem(1,Py::String(It6->first.c_str()));
-        t6.setItem(2,Py::Long(It6->second));
+        t6.setItem(1,Py::String(it.first.c_str()));
+        t6.setItem(2,Py::Long(it.second));
         list.append(t6);
     }
 

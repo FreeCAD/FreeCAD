@@ -72,7 +72,7 @@ std::vector<App::DocumentObject*> ViewProviderGeoFeatureGroupExtension::extensio
         auto objs = ext->Group.getValues();
         return objs;
     }
-    return std::vector<App::DocumentObject*>();
+    return {};
 }
 
 std::vector<App::DocumentObject*> ViewProviderGeoFeatureGroupExtension::extensionClaimChildren() const {

@@ -24,6 +24,7 @@
 #ifndef GUI_TASKVIEW_TaskFemConstraintForce_H
 #define GUI_TASKVIEW_TaskFemConstraintForce_H
 
+#include <memory>
 #include <QObject>
 
 #include "TaskFemConstraintOnBoundary.h"
@@ -48,7 +49,8 @@ class TaskFemConstraintForce : public TaskFemConstraintOnBoundary
     Q_OBJECT
 
 public:
-    explicit TaskFemConstraintForce(ViewProviderFemConstraintForce *ConstraintView,QWidget *parent = nullptr);
+    explicit TaskFemConstraintForce(ViewProviderFemConstraintForce* ConstraintView,
+                                    QWidget* parent = nullptr);
     ~TaskFemConstraintForce() override;
     double getForce() const;
     const std::string getReferences() const override;
@@ -70,11 +72,12 @@ protected:
     void clearButtons(const SelectionChangeModes notThis) override;
 
 private:
-    std::pair<App::DocumentObject*, std::string> getDirection(const std::vector<Gui::SelectionObject>&) const;
+    std::pair<App::DocumentObject*, std::string>
+    getDirection(const std::vector<Gui::SelectionObject>&) const;
     void updateUI();
 
 private:
-    Ui_TaskFemConstraintForce* ui;
+    std::unique_ptr<Ui_TaskFemConstraintForce> ui;
 };
 
 /// simulation dialog for the TaskView
@@ -89,7 +92,6 @@ public:
     void open() override;
     bool accept() override;
     bool reject() override;
-
 };
 
 } //namespace FemGui

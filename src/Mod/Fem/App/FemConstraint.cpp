@@ -79,9 +79,7 @@ Constraint::Constraint()
     References.setScope(App::LinkScope::Global);
 }
 
-Constraint::~Constraint()
-{
-}
+Constraint::~Constraint() = default;
 
 App::DocumentObjectExecReturn *Constraint::execute()
 {

@@ -59,7 +59,9 @@ private Q_SLOTS:
     void onUpdateViewTimer();
     void onDirectionChanged(int num);
     void onCheckReverse(const bool on);
+    void onModeChanged(const int mode);
     void onLength(const double l);
+    void onOffset(const double o);
     void onOccurrences(const uint n);
     void onUpdateView(bool) override;
     void onFeatureDeleted() override;
@@ -72,13 +74,16 @@ protected:
     void clearButtons() override;
     void getDirection(App::DocumentObject*& obj, std::vector<std::string>& sub) const;
     bool getReverse() const;
+    int getMode() const;
     double getLength() const;
+    double getOffset() const;
     unsigned getOccurrences() const;
 
 private:
     void connectSignals();
     void setupUI();
     void updateUI();
+    void adaptVisibilityToMode();
     void kickUpdateViewTimer() const;
 
 private:
@@ -96,7 +101,7 @@ class TaskDlgLinearPatternParameters : public TaskDlgTransformedParameters
 
 public:
     explicit TaskDlgLinearPatternParameters(ViewProviderLinearPattern *LinearPatternView);
-    ~TaskDlgLinearPatternParameters() override {}
+    ~TaskDlgLinearPatternParameters() override = default;
 };
 
 } //namespace PartDesignGui

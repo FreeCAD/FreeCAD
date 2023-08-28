@@ -48,22 +48,21 @@ int DrawParametricTemplatePy::setCustomAttributes(const char* attr, PyObject* ob
 {
     // search in PropertyList
     App::Property *prop = getDrawParametricTemplatePtr()->getPropertyByName(attr);
-    if (prop) {
-        // Read-only attributes must not be set over its Python interface
-        short Type =  getDrawParametricTemplatePtr()->getPropertyType(prop);
-        if (Type & App::Prop_ReadOnly) {
-            std::stringstream s;
-            s << "Object attribute '" << attr << "' is read-only";
-            throw Py::AttributeError(s.str());
-        }
-
-        prop->setPyObject(obj);
-        return 1;
+    if (!prop) {
+        return 0;
     }
 
-    return 0;
-}
+    // Read-only attributes must not be set over its Python interface
+    short Type =  getDrawParametricTemplatePtr()->getPropertyType(prop);
+    if (Type & App::Prop_ReadOnly) {
+        std::stringstream s;
+        s << "Object attribute '" << attr << "' is read-only";
+        throw Py::AttributeError(s.str());
+    }
 
+    prop->setPyObject(obj);
+    return 1;
+}
 
 PyObject* DrawParametricTemplatePy::drawLine(PyObject *args)
 {
@@ -77,7 +76,6 @@ PyObject* DrawParametricTemplatePy::drawLine(PyObject *args)
     getDrawParametricTemplatePtr()->drawLine(x1, y1, x2, y2);
 
     Py_Return;
-
 }
 
 Py::Long DrawParametricTemplatePy::getGeometryCount(void) const

@@ -56,7 +56,7 @@ Tessellation::Tessellation(QWidget* parent)
 {
     ui->setupUi(this);
     gmsh = new Mesh2ShapeGmsh(this);
-    connect(gmsh, &Mesh2ShapeGmsh::processed, this, &Tessellation::gmshProcessed);
+    setupConnections();
 
     ui->stackedWidget->addTab(gmsh, tr("Gmsh"));
 
@@ -77,7 +77,7 @@ Tessellation::Tessellation(QWidget* parent)
     ui->spinMaximumEdgeLength->setRange(0, INT_MAX);
 
     ui->comboFineness->setCurrentIndex(2);
-    on_comboFineness_currentIndexChanged(2);
+    onComboFinenessCurrentIndexChanged(2);
 
 #if !defined (HAVE_MEFISTO)
     ui->stackedWidget->setTabEnabled(Mefisto, false);
@@ -96,8 +96,19 @@ Tessellation::Tessellation(QWidget* parent)
     }
 }
 
-Tessellation::~Tessellation()
+Tessellation::~Tessellation() = default;
+
+void Tessellation::setupConnections()
 {
+    connect(gmsh, &Mesh2ShapeGmsh::processed, this, &Tessellation::gmshProcessed);
+    connect(ui->estimateMaximumEdgeLength, &QPushButton::clicked,
+            this, &Tessellation::onEstimateMaximumEdgeLengthClicked);
+    connect(ui->comboFineness, qOverload<int>(&QComboBox::currentIndexChanged),
+            this, &Tessellation::onComboFinenessCurrentIndexChanged);
+    connect(ui->checkSecondOrder, &QCheckBox::toggled,
+            this, &Tessellation::onCheckSecondOrderToggled);
+    connect(ui->checkQuadDominated, &QCheckBox::toggled,
+            this, &Tessellation::onCheckQuadDominatedToggled);
 }
 
 void Tessellation::meshingMethod(int id)
@@ -105,7 +116,7 @@ void Tessellation::meshingMethod(int id)
     ui->stackedWidget->setCurrentIndex(id);
 }
 
-void Tessellation::on_comboFineness_currentIndexChanged(int index)
+void Tessellation::onComboFinenessCurrentIndexChanged(int index)
 {
     if (index == 5) {
         ui->doubleGrading->setEnabled(true);
@@ -119,27 +130,27 @@ void Tessellation::on_comboFineness_currentIndexChanged(int index)
     }
 
     switch (index) {
-    case 0: // Very coarse
+    case VeryCoarse:
         ui->doubleGrading->setValue(0.7);
         ui->spinEdgeElements->setValue(0.3);
         ui->spinCurvatureElements->setValue(1.0);
         break;
-    case 1: // Coarse
+    case Coarse:
         ui->doubleGrading->setValue(0.5);
         ui->spinEdgeElements->setValue(0.5);
         ui->spinCurvatureElements->setValue(1.5);
         break;
-    case 2: // Moderate
+    case Moderate:
         ui->doubleGrading->setValue(0.3);
         ui->spinEdgeElements->setValue(1.0);
         ui->spinCurvatureElements->setValue(2.0);
         break;
-    case 3: // Fine
+    case Fine:
         ui->doubleGrading->setValue(0.2);
         ui->spinEdgeElements->setValue(2.0);
         ui->spinCurvatureElements->setValue(3.0);
         break;
-    case 4: // Very fine
+    case VeryFine:
         ui->doubleGrading->setValue(0.1);
         ui->spinEdgeElements->setValue(3.0);
         ui->spinCurvatureElements->setValue(5.0);
@@ -149,13 +160,13 @@ void Tessellation::on_comboFineness_currentIndexChanged(int index)
     }
 }
 
-void Tessellation::on_checkSecondOrder_toggled(bool on)
+void Tessellation::onCheckSecondOrderToggled(bool on)
 {
     if (on)
         ui->checkQuadDominated->setChecked(false);
 }
 
-void Tessellation::on_checkQuadDominated_toggled(bool on)
+void Tessellation::onCheckQuadDominatedToggled(bool on)
 {
     if (on)
         ui->checkSecondOrder->setChecked(false);
@@ -178,7 +189,7 @@ void Tessellation::changeEvent(QEvent *e)
     QWidget::changeEvent(e);
 }
 
-void Tessellation::on_estimateMaximumEdgeLength_clicked()
+void Tessellation::onEstimateMaximumEdgeLengthClicked()
 {
     App::Document* activeDoc = App::GetApplication().getActiveDocument();
     if (!activeDoc) {
@@ -489,9 +500,7 @@ Mesh2ShapeGmsh::Mesh2ShapeGmsh(QWidget* parent, Qt::WindowFlags fl)
     d->geoFile = App::Application::getTempFileName() + "mesh.geo";
 }
 
-Mesh2ShapeGmsh::~Mesh2ShapeGmsh()
-{
-}
+Mesh2ShapeGmsh::~Mesh2ShapeGmsh() = default;
 
 void Mesh2ShapeGmsh::process(App::Document* doc, const std::list<App::SubObjectT>& objs)
 {
@@ -609,11 +618,6 @@ TaskTessellation::TaskTessellation()
         widget->windowTitle(), true, nullptr);
     taskbox->groupLayout()->addWidget(widget);
     Content.push_back(taskbox);
-}
-
-TaskTessellation::~TaskTessellation()
-{
-    // automatically deleted in the sub-class
 }
 
 void TaskTessellation::open()

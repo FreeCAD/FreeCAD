@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
 # ***************************************************************************
 # *                                                                         *
 # *   Copyright (c) 2022-2023 FreeCAD Project Association                   *
@@ -30,13 +31,14 @@ import codecs
 import shutil
 from html import unescape
 from typing import Dict, Tuple, List, Union, Optional
-
-import FreeCAD
-import NetworkManager
+import urllib.parse
 
 from addonmanager_macro_parser import MacroParser
+import addonmanager_utilities as utils
 
-translate = FreeCAD.Qt.translate
+import addonmanager_freecad_interface as fci
+
+translate = fci.translate
 
 
 #  @package AddonManager_macro
@@ -47,10 +49,11 @@ translate = FreeCAD.Qt.translate
 
 
 class Macro:
-    """This class provides a unified way to handle macros coming from different sources"""
+    """This class provides a unified way to handle macros coming from different
+    sources"""
 
     # Use a stored class variable for this so that we can override it during testing
-    network_manager = None
+    blocking_get = None
 
     # pylint: disable=too-many-instance-attributes
     def __init__(self, name):
@@ -72,31 +75,29 @@ class Macro:
         self.xpm = ""  # Possible alternate icon data
         self.other_files = []
         self.parsed = False
+        self._console = fci.Console
+        if Macro.blocking_get is None:
+            Macro.blocking_get = utils.blocking_get
 
     def __eq__(self, other):
         return self.filename == other.filename
 
     @classmethod
     def from_cache(cls, cache_dict: Dict):
-        """Use data from the cache dictionary to create a new macro, returning a reference
-        to it."""
+        """Use data from the cache dictionary to create a new macro, returning a
+        reference to it."""
         instance = Macro(cache_dict["name"])
         for key, value in cache_dict.items():
             instance.__dict__[key] = value
         return instance
 
     def to_cache(self) -> Dict:
-        """For cache purposes this entire class is dumped directly"""
-
-        return self.__dict__
-
-    @classmethod
-    def _get_network_manager(cls):
-        if cls.network_manager is None:
-            # Make sure we're initialized:
-            NetworkManager.InitializeNetworkManager()
-            cls.network_manager = NetworkManager.AM_NETWORK_MANAGER
-        return cls.network_manager
+        """For cache purposes all public members of the class are returned"""
+        cache_dict = {}
+        for key, value in self.__dict__.items():
+            if key[0] != "_":
+                cache_dict[key] = value
+        return cache_dict
 
     @property
     def filename(self):
@@ -106,16 +107,17 @@ class Macro:
         return (self.name + ".FCMacro").replace(" ", "_")
 
     def is_installed(self):
-        """Returns True if this macro is currently installed (that is, if it exists in the
-        user macro directory), or False if it is not. Both the exact filename, as well as
-        the filename prefixed with "Macro", are considered an installation of this macro.
+        """Returns True if this macro is currently installed (that is, if it exists
+        in the user macro directory), or False if it is not. Both the exact filename,
+        as well as the filename prefixed with "Macro", are considered an installation
+        of this macro.
         """
         if self.on_git and not self.src_filename:
             return False
         return os.path.exists(
-            os.path.join(FreeCAD.getUserMacroDir(True), self.filename)
+            os.path.join(fci.DataPaths().macro_dir, self.filename)
         ) or os.path.exists(
-            os.path.join(FreeCAD.getUserMacroDir(True), "Macro_" + self.filename)
+            os.path.join(fci.DataPaths().macro_dir, "Macro_" + self.filename)
         )
 
     def fill_details_from_file(self, filename: str) -> None:
@@ -125,21 +127,23 @@ class Macro:
             self.fill_details_from_code(self.code)
 
     def fill_details_from_code(self, code: str) -> None:
+        """Read the passed-in code and parse it for known metadata elements"""
         parser = MacroParser(self.name, code)
         for key, value in parser.parse_results.items():
             if value:
                 self.__dict__[key] = value
+        self.clean_icon()
         self.parsed = True
 
     def fill_details_from_wiki(self, url):
-        """For a given URL, download its data and attempt to get the macro's metadata out of
-        it. If the macro's code is hosted elsewhere, as specified by a "rawcodeurl" found on
-        the wiki page, that code is downloaded and used as the source."""
+        """For a given URL, download its data and attempt to get the macro's metadata
+        out of it. If the macro's code is hosted elsewhere, as specified by a
+        "rawcodeurl" found on the wiki page, that code is downloaded and used as the
+        source."""
         code = ""
-        nm = Macro._get_network_manager()
-        p = nm.blocking_get(url)
+        p = Macro.blocking_get(url)
         if not p:
-            FreeCAD.Console.PrintWarning(
+            self._console.PrintWarning(
                 translate(
                     "AddonsInstaller",
                     "Unable to open macro wiki page at {}",
@@ -147,7 +151,7 @@ class Macro:
                 + "\n"
             )
             return
-        p = p.data().decode("utf8")
+        p = p.decode("utf8")
         # check if the macro page has its code hosted elsewhere, download if
         # needed
         if "rawcodeurl" in p:
@@ -155,7 +159,7 @@ class Macro:
         if not code:
             code = self._read_code_from_wiki(p)
         if not code:
-            FreeCAD.Console.PrintWarning(
+            self._console.PrintWarning(
                 translate("AddonsInstaller", "Unable to fetch the code of this macro.")
                 + "\n"
             )
@@ -168,7 +172,7 @@ class Macro:
         if desc:
             desc = desc[0]
         else:
-            FreeCAD.Console.PrintWarning(
+            self._console.PrintWarning(
                 translate(
                     "AddonsInstaller",
                     "Unable to retrieve a description from the wiki for macro {}",
@@ -186,7 +190,7 @@ class Macro:
         self.fill_details_from_code(self.code)
         if not self.icon and not self.xpm:
             self.parse_wiki_page_for_icon(p)
-            self.clean_icon()
+        self.clean_icon()
 
         if not self.author:
             self.author = self.parse_desc("Author: ")
@@ -194,15 +198,14 @@ class Macro:
             self.date = self.parse_desc("Last modified: ")
 
     def _fetch_raw_code(self, page_data) -> Optional[str]:
-        """Fetch code from the rawcodeurl specified on the wiki page."""
+        """Fetch code from the raw code URL specified on the wiki page."""
         code = None
         self.raw_code_url = re.findall('rawcodeurl.*?href="(http.*?)">', page_data)
         if self.raw_code_url:
             self.raw_code_url = self.raw_code_url[0]
-            nm = Macro._get_network_manager()
-            u2 = nm.blocking_get(self.raw_code_url)
+            u2 = Macro.blocking_get(self.raw_code_url)
             if not u2:
-                FreeCAD.Console.PrintWarning(
+                self._console.PrintWarning(
                     translate(
                         "AddonsInstaller",
                         "Unable to open macro code URL {}",
@@ -210,10 +213,11 @@ class Macro:
                     + "\n"
                 )
                 return None
-            code = u2.data().decode("utf8")
+            code = u2.decode("utf8")
         return code
 
-    def _read_code_from_wiki(self, p: str) -> Optional[str]:
+    @staticmethod
+    def _read_code_from_wiki(p: str) -> Optional[str]:
         code = re.findall(r"<pre>(.*?)</pre>", p.replace("\n", "--endl--"))
         if code:
             # take the biggest code block
@@ -228,33 +232,31 @@ class Macro:
         """Downloads the macro's icon from whatever source is specified and stores a local
         copy, potentially updating the internal icon location to that local storage."""
         if self.icon.startswith("http://") or self.icon.startswith("https://"):
-            FreeCAD.Console.PrintLog(
-                f"Attempting to fetch macro icon from {self.icon}\n"
-            )
-            nm = Macro._get_network_manager()
-            p = nm.blocking_get(self.icon)
+            self._console.PrintLog(f"Attempting to fetch macro icon from {self.icon}\n")
+            parsed_url = urllib.parse.urlparse(self.icon)
+            p = Macro.blocking_get(self.icon)
             if p:
-                cache_path = FreeCAD.getUserCachePath()
+                cache_path = fci.DataPaths().cache_dir
                 am_path = os.path.join(cache_path, "AddonManager", "MacroIcons")
                 os.makedirs(am_path, exist_ok=True)
-                _, _, filename = self.icon.rpartition("/")
+                _, _, filename = parsed_url.path.rpartition("/")
                 base, _, extension = filename.rpartition(".")
                 if base.lower().startswith("file:"):
-                    # pylint: disable=line-too-long
-                    FreeCAD.Console.PrintMessage(
-                        f"Cannot use specified icon for {self.name}, {self.icon} is not a direct download link\n"
+                    self._console.PrintMessage(
+                        f"Cannot use specified icon for {self.name}, {self.icon} "
+                        "is not a direct download link\n"
                     )
                     self.icon = ""
                 else:
                     constructed_name = os.path.join(am_path, base + "." + extension)
                     with open(constructed_name, "wb") as f:
-                        f.write(p.data())
+                        f.write(p)
                     self.icon_source = self.icon
                     self.icon = constructed_name
             else:
-                # pylint: disable=line-too-long
-                FreeCAD.Console.PrintLog(
-                    f"MACRO DEVELOPER WARNING: failed to download icon from {self.icon} for macro {self.name}\n"
+                self._console.PrintLog(
+                    f"MACRO DEVELOPER WARNING: failed to download icon from {self.icon}"
+                    f" for macro {self.name}\n"
                 )
                 self.icon = ""
 
@@ -298,7 +300,7 @@ class Macro:
         if warnings or not success > 0:
             return False, warnings
 
-        FreeCAD.Console.PrintLog(f"Macro {self.name} was installed successfully.\n")
+        self._console.PrintLog(f"Macro {self.name} was installed successfully.\n")
         return True, []
 
     def _copy_icon_data(self, macro_dir, warnings):
@@ -356,14 +358,13 @@ class Macro:
             # If the file does not exist, see if we have a raw code URL to fetch from
             if self.raw_code_url:
                 fetch_url = self.raw_code_url.rsplit("/", 1)[0] + "/" + other_file
-                FreeCAD.Console.PrintLog(f"Attempting to fetch {fetch_url}...\n")
-                nm = Macro._get_network_manager()
-                p = nm.blocking_get(fetch_url)
+                self._console.PrintLog(f"Attempting to fetch {fetch_url}...\n")
+                p = Macro.blocking_get(fetch_url)
                 if p:
                     with open(dst_file, "wb") as f:
                         f.write(p)
                 else:
-                    FreeCAD.Console.PrintWarning(
+                    self._console.PrintWarning(
                         translate(
                             "AddonsInstaller",
                             "Unable to fetch macro-specified file {} from {}",
@@ -374,19 +375,21 @@ class Macro:
                 warnings.append(
                     translate(
                         "AddonsInstaller",
-                        "Could not locate macro-specified file {} (should have been at {})",
+                        "Could not locate macro-specified file {} (expected at {})",
                     ).format(other_file, src_file)
                 )
 
     def parse_wiki_page_for_icon(self, page_data: str) -> None:
-        """Attempt to find a url for the icon in the wiki page. Sets self.icon if found."""
+        """Attempt to find a url for the icon in the wiki page. Sets self.icon if
+        found."""
 
         # Method 1: the text "toolbar icon" appears on the page, and provides a direct
         # link to an icon
 
         # pylint: disable=line-too-long
         # Try to get an icon from the wiki page itself:
-        # <a rel="nofollow" class="external text" href="https://www.freecadweb.org/wiki/images/f/f5/Macro_3D_Parametric_Curve.png">ToolBar Icon</a>
+        # <a rel="nofollow" class="external text"
+        # href="https://wiki.freecad.org/images/f/f5/blah.png">ToolBar Icon</a>
         icon_regex = re.compile(r'.*href="(.*?)">ToolBar Icon', re.IGNORECASE)
         wiki_icon = ""
         if "ToolBar Icon" in page_data:
@@ -406,13 +409,12 @@ class Macro:
         icon_regex = re.compile(r'.*img.*?src="(.*?)"', re.IGNORECASE)
         if wiki_icon.startswith("http"):
             # It's a File: wiki link. We can load THAT page and get the image from it...
-            FreeCAD.Console.PrintLog(
+            self._console.PrintLog(
                 f"Found a File: link for macro {self.name} -- {wiki_icon}\n"
             )
-            nm = Macro._get_network_manager()
-            p = nm.blocking_get(wiki_icon)
+            p = Macro.blocking_get(wiki_icon)
             if p:
-                p = p.data().decode("utf8")
+                p = p.decode("utf8")
                 f = io.StringIO(p)
                 lines = f.readlines()
                 trigger = False
@@ -421,14 +423,15 @@ class Macro:
                         match = icon_regex.match(line)
                         if match:
                             wiki_icon = match.group(1)
-                            self.icon = "https://www.freecadweb.org/wiki" + wiki_icon
+                            self.icon = "https://wiki.freecad.org/" + wiki_icon
                             return
                     elif "fullImageLink" in line:
                         trigger = True
 
             #    <div class="fullImageLink" id="file">
             #        <a href="/images/a/a2/Bevel.svg">
-            #            <img alt="File:Bevel.svg" src="/images/a/a2/Bevel.svg" width="64" height="64"/>
+            #            <img alt="File:Bevel.svg" src="/images/a/a2/Bevel.svg"
+            #            width="64" height="64"/>
             #        </a>
 
 

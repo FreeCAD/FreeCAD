@@ -61,6 +61,7 @@ include_directories(
 )
 list(APPEND FreeCADBase_LIBS ${QtCore_LIBRARIES})
 
+list(APPEND FreeCADBase_LIBS fmt::fmt)
 
 if (BUILD_DYNAMIC_LINK_PYTHON)
     list(APPEND FreeCADBase_LIBS ${PYTHON_LIBRARIES})
@@ -151,6 +152,17 @@ endif ()
 
 SOURCE_GROUP("pycxx" FILES ${PYCXX_SOURCES})
 
+set (FreeCADBase_TR_QRC ${CMAKE_CURRENT_BINARY_DIR}/Resources/Base_translation.qrc)
+qt_find_and_add_translation(QM_SRCS "Resources/translations/Base_*.ts"
+        ${CMAKE_CURRENT_BINARY_DIR}/Resources/translations)
+qt_create_resource_file_prefix(${FreeCADBase_TR_QRC} ${QM_SRCS})
+set(FreeCADBase_RES_SRCS
+        Resources/translation.qrc
+        ${FreeCADBase_TR_QRC}
+        )
+
+qt_add_resources(FreeCADBase_QRC_SRCS ${FreeCADBase_RES_SRCS})
+
 SET(FreeCADBase_XML_SRCS
     AxisPy.xml
     BaseClassPy.xml
@@ -222,8 +234,6 @@ SET(FreeCADBase_CPP_SRCS
     FileInfo.cpp
     FileTemplate.cpp
     FutureWatcherProgress.cpp
-    gzstream.cpp
-    gzstream.h
     GeometryPyCXX.cpp
     Handle.cpp
     InputSource.cpp
@@ -232,6 +242,7 @@ SET(FreeCADBase_CPP_SRCS
     MatrixPyImp.cpp
     MemDebug.cpp
     Mutex.cpp
+    Observer.cpp
     Parameter.xsd
     Parameter.cpp
     ParameterPy.cpp
@@ -243,6 +254,7 @@ SET(FreeCADBase_CPP_SRCS
     ProgressIndicatorPy.cpp
     PyExport.cpp
     PyObjectBase.cpp
+    PythonTypeExt.cpp
     QtTools.cpp
     Reader.cpp
     Rotation.cpp
@@ -293,8 +305,6 @@ SET(FreeCADBase_HPP_SRCS
     FileInfo.h
     FileTemplate.h
     FutureWatcherProgress.h
-    fdstream.hpp
-    gzstream.h
     GeometryPyCXX.h
     Handle.h
     InputSource.h
@@ -310,6 +320,8 @@ SET(FreeCADBase_HPP_SRCS
     ProgressIndicatorPy.h
     PyExport.h
     PyObjectBase.h
+    PyWrapParseTupleAndKeywords.h
+    PythonTypeExt.h
     QtTools.h
     Reader.h
     Rotation.h

@@ -55,12 +55,6 @@
          <verstretch>0</verstretch>
         </sizepolicy>
        </property>
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
        <property name="text">
         <string>Add</string>
        </property>
@@ -71,12 +65,6 @@
      </item>
      <item>
       <widget class="QToolButton" name="btnRemove">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
        <property name="sizePolicy">
         <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
          <horstretch>0</horstretch>
@@ -126,12 +114,15 @@
           </widget>
          </item>
          <item>
-          <widget class="QSpinBox" name="sp_X">
+          <widget class="Gui::QuantitySpinBox" name="sp_X">
+           <property name="unit" stdset="0">
+            <string notr="true">deg</string>
+           </property>
            <property name="minimum">
-            <number>-360</number>
+            <double>-360.000000000000000</double>
            </property>
            <property name="maximum">
-            <number>360</number>
+            <double>360.000000000000000</double>
            </property>
           </widget>
          </item>
@@ -147,12 +138,15 @@
           </widget>
          </item>
          <item>
-          <widget class="QSpinBox" name="sp_Y">
+          <widget class="Gui::QuantitySpinBox" name="sp_Y">
+           <property name="unit" stdset="0">
+            <string notr="true">deg</string>
+           </property>
            <property name="minimum">
-            <number>-360</number>
+            <double>-360.000000000000000</double>
            </property>
            <property name="maximum">
-            <number>360</number>
+            <double>360.000000000000000</double>
            </property>
           </widget>
          </item>
@@ -168,12 +162,15 @@
           </widget>
          </item>
          <item>
-          <widget class="QSpinBox" name="sp_Z">
+          <widget class="Gui::QuantitySpinBox" name="sp_Z">
+           <property name="unit" stdset="0">
+            <string notr="true">deg</string>
+           </property>
            <property name="minimum">
-            <number>-360</number>
+            <double>-360.000000000000000</double>
            </property>
            <property name="maximum">
-            <number>360</number>
+            <double>360.000000000000000</double>
            </property>
           </widget>
          </item>
@@ -219,6 +216,13 @@
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>Gui::QuantitySpinBox</class>
+   <extends>QWidget</extends>
+   <header>Gui/QuantitySpinBox.h</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>

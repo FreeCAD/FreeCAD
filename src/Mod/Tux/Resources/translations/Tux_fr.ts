@@ -6,7 +6,7 @@
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="67"/>
       <source>Select</source>
-      <translation>Sélectionner</translation>
+      <translation>Sélectionnez</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="68"/>
@@ -61,7 +61,7 @@
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="331"/>
       <source>Settings</source>
-      <translation>Réglages</translation>
+      <translation>Paramètres</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="332"/>
@@ -81,7 +81,7 @@
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="335"/>
       <source>Turntable</source>
-      <translation>Table tournante</translation>
+      <translation>Vue en rotation</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="336"/>

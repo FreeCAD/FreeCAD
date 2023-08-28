@@ -47,9 +47,7 @@ ViewProviderFemConstraintSpring::ViewProviderFemConstraintSpring()
     ADD_PROPERTY(FaceColor, (0.0f, 0.2f, 0.8f));
 }
 
-ViewProviderFemConstraintSpring::~ViewProviderFemConstraintSpring()
-{
-}
+ViewProviderFemConstraintSpring::~ViewProviderFemConstraintSpring() = default;
 
 //FIXME setEdit needs a careful review
 bool ViewProviderFemConstraintSpring::setEdit(int ModNum)
@@ -110,7 +108,7 @@ void ViewProviderFemConstraintSpring::updateData(const App::Property* prop)
     }
 #endif
 
-    if (strcmp(prop->getName(),"Points") == 0) {
+    if (prop == &pcConstraint->Points) {
         const std::vector<Base::Vector3d>& points = pcConstraint->Points.getValues();
         const std::vector<Base::Vector3d>& normals = pcConstraint->Normals.getValues();
         if (points.size() != normals.size()) {
@@ -128,8 +126,8 @@ void ViewProviderFemConstraintSpring::updateData(const App::Property* prop)
         Gui::coinRemoveAllChildren(pShapeSep);
 #endif
 
-        for (std::vector<Base::Vector3d>::const_iterator p = points.begin(); p != points.end(); p++) {
-            SbVec3f base(p->x, p->y, p->z);
+        for (const auto & point : points) {
+            SbVec3f base(point.x, point.y, point.z);
             SbVec3f dir(n->x, n->y, n->z);
             SbRotation rot(SbVec3f(0, -1.0, 0), dir);
 #ifdef USE_MULTIPLE_COPY

@@ -45,7 +45,7 @@ else:
 __title__ = "FreeCAD Draft Workbench"
 __author__ = ("Yorik van Havre, Werner Mayer, Martin Burbaum, Ken Cline, "
               "Dmitry Chigrin, Daniel Falck")
-__url__ = "https://www.freecadweb.org"
+__url__ = "https://www.freecad.org"
 
 # ---------------------------------------------------------------------------
 # Utility functions
@@ -219,11 +219,7 @@ from draftmake.make_circle import (make_circle,
 # arcs
 from draftmake.make_arc_3points import make_arc_3points
 
-# drawing: obsolete since Drawing was replaced by TechDraw
-from draftobjects.drawingview import (DrawingView,
-                                      _DrawingView)
-from draftmake.make_drawingview import (make_drawing_view,
-                                        makeDrawingView)
+
 
 # ellipse
 from draftobjects.ellipse import (Ellipse,

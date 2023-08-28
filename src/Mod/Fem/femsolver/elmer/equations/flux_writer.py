@@ -33,6 +33,7 @@ __url__ = "https://www.freecad.org"
 from .. import sifio
 from . import flux
 
+
 class Fluxwriter:
 
     def __init__(self, writer, solver):

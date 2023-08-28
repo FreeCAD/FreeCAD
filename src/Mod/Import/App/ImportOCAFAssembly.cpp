@@ -91,21 +91,6 @@ std::string ImportOCAFAssembly::getName(const TDF_Label& label)
         part_name = str;
         delete [] str;
         return part_name;
-
-        //if (part_name.empty()) {
-        //    return "";
-        //}
-        //else {
-        //    bool ws=true;
-        //    for (std::string::iterator it = part_name.begin(); it != part_name.end(); ++it) {
-        //        if (*it != ' ') {
-        //            ws = false;
-        //            break;
-        //        }
-        //    }
-        //    if (ws)
-        //        part_name = defaultname;
-        //}
     }
 
     return "";
@@ -255,15 +240,6 @@ void ImportOCAFAssembly::createShape(const TopoDS_Shape& aShape, const TopLoc_Lo
         std::vector<App::Color> colors;
         colors.push_back(color);
         applyColors(part, colors);
-#if 0//TODO
-        Gui::ViewProvider* vp = Gui::Application::Instance->getViewProvider(part);
-        if (vp && vp->isDerivedFrom(PartGui::ViewProviderPart::getClassTypeId())) {
-            color.r = aColor.Red();
-            color.g = aColor.Green();
-            color.b = aColor.Blue();
-            static_cast<PartGui::ViewProviderPart*>(vp)->ShapeColor.setValue(color);
-        }
-#endif
     }
 
     TopTools_IndexedMapOfShape faces;

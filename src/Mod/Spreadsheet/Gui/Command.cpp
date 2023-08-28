@@ -615,8 +615,8 @@ void CmdSpreadsheetStyleBold::activated(int iMsg)
             if (!selection.empty()) {
                 bool allBold = true;
 
-                for (QModelIndexList::const_iterator it = selection.cbegin(); it != selection.cend(); ++it) {
-                    const Cell * cell = sheet->getCell(CellAddress((*it).row(), (*it).column()));
+                for (const auto& it : selection) {
+                    const Cell * cell = sheet->getCell(CellAddress(it.row(), it.column()));
 
                     if (cell) {
                         std::set<std::string> style;
@@ -689,8 +689,8 @@ void CmdSpreadsheetStyleItalic::activated(int iMsg)
             if (!selection.empty()) {
                 bool allItalic = true;
 
-                for (QModelIndexList::const_iterator it = selection.cbegin(); it != selection.cend(); ++it) {
-                    const Cell * cell = sheet->getCell(CellAddress((*it).row(), (*it).column()));
+                for (const auto& it : selection) {
+                    const Cell * cell = sheet->getCell(CellAddress(it.row(), it.column()));
 
                     if (cell) {
                         std::set<std::string> style;
@@ -763,8 +763,8 @@ void CmdSpreadsheetStyleUnderline::activated(int iMsg)
             if (!selection.empty()) {
                 bool allUnderline = true;
 
-                for (QModelIndexList::const_iterator it = selection.cbegin(); it != selection.cend(); ++it) {
-                    const Cell * cell = sheet->getCell(CellAddress((*it).row(), (*it).column()));
+                for (const auto& it : selection) {
+                    const Cell * cell = sheet->getCell(CellAddress(it.row(), it.column()));
 
                     if (cell) {
                         std::set<std::string> style;
@@ -905,7 +905,7 @@ bool CmdCreateSpreadsheet::isActive()
 
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-void CreateSpreadsheetCommands(void)
+void CreateSpreadsheetCommands()
 {
     Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
 

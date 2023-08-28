@@ -64,11 +64,6 @@ class PathWorkbench(Workbench):
 
         translate = FreeCAD.Qt.translate
 
-        FreeCADGui.addPreferencePage(PathPreferencesPathJob.JobPreferencesPage, "Path")
-        FreeCADGui.addPreferencePage(
-            PathPreferencesPathDressup.DressupPreferencesPage, "Path"
-        )
-
         # load the builtin modules
         import Path
         import PathScripts
@@ -89,10 +84,15 @@ class PathWorkbench(Workbench):
         import subprocess
         from packaging.version import Version, parse
 
+        FreeCADGui.addPreferencePage(PathPreferencesPathJob.JobPreferencesPage, QT_TRANSLATE_NOOP("QObject", "Path"))
+        FreeCADGui.addPreferencePage(
+            PathPreferencesPathDressup.DressupPreferencesPage, QT_TRANSLATE_NOOP("QObject", "Path")
+        )
+
         Path.GuiInit.Startup()
 
         # build commands list
-        projcmdlist = ["Path_Job", "Path_Post"]
+        projcmdlist = ["Path_Job", "Path_Post", "Path_Sanity"]
         toolcmdlist = [
             "Path_Inspect",
             "Path_Simulator",
@@ -146,7 +146,6 @@ class PathWorkbench(Workbench):
 
         threedcmdgroup = threedopcmdlist
         if Path.Preferences.experimentalFeaturesEnabled():
-            projcmdlist.append("Path_Sanity")
             prepcmdlist.append("Path_Shape")
             extracmdlist.extend(["Path_Area", "Path_Area_Workplane"])
             specialcmdlist.append("Path_ThreadMilling")
@@ -264,7 +263,7 @@ class PathWorkbench(Workbench):
         from Path.Preferences import preferences
 
         FreeCADGui.addPreferencePage(
-            PathPreferencesAdvanced.AdvancedPreferencesPage, "Path"
+            PathPreferencesAdvanced.AdvancedPreferencesPage, QT_TRANSLATE_NOOP("QObject", "Path")
         )
         Log("Loading Path workbench... done\n")
 
@@ -279,7 +278,7 @@ class PathWorkbench(Workbench):
 
                 msg = translate(
                     "Path",
-                    "The currently selected unit schema: \n     '{}'\n Does not use 'minutes' for velocity values. \n \nCNC machines require feed rate to be expressed in \nunit/minute. To ensure correct gcode: \nSelect a minute-based schema in preferences.\nFor example:\n    'Metric, Small Parts & CNC'\n    'US Customary'\n    'Imperial Decimal'",
+                    "The currently selected unit schema: \n     '{}'\n Does not use 'minutes' for velocity values. \n \nCNC machines require feed rate to be expressed in \nunit/minute. To ensure correct G-code: \nSelect a minute-based schema in preferences.\nFor example:\n    'Metric, Small Parts & CNC'\n    'US Customary'\n    'Imperial Decimal'",
                 ).format(current_schema)
                 header = translate("Path", "Warning")
                 msgbox = QtGui.QMessageBox(QtGui.QMessageBox.Warning, header, msg)

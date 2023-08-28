@@ -13,4 +13,4 @@ if they are very generic then they are more appropriate to be included
 in the modules in `draftutils/`.
 
 For more information see the thread:
-[[Discussion] Splitting Draft tools into their own modules](https://forum.freecadweb.org/viewtopic.php?f=23&t=38593&start=10#p341298)
+[[Discussion] Splitting Draft tools into their own modules](https://forum.freecad.org/viewtopic.php?f=23&t=38593&start=10#p341298)

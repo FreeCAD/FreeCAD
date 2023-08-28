@@ -748,9 +748,9 @@ bool MeshFacetGrid::Verify() const
   {
     std::vector<ElementIndex> aulElements;
     it.GetElements( aulElements );
-    for ( std::vector<ElementIndex>::iterator itF = aulElements.begin(); itF != aulElements.end(); ++itF )
+    for (ElementIndex element : aulElements)
     {
-      cF.Set( *itF );
+      cF.Set( element );
       if (!cF->IntersectBoundingBox(it.GetBoundBox()))
         return false; // no intersection between facet although the facet is in grid
     }
@@ -906,14 +906,14 @@ unsigned long MeshFacetGrid::SearchNearestFromPoint (const Base::Vector3f &rclPt
 
   Inside(clBB, aulFacets, rclPt, fMaxSearchArea, true);
 
-  for (std::vector<ElementIndex>::const_iterator pI = aulFacets.begin(); pI != aulFacets.end(); ++pI)
+  for (ElementIndex facet : aulFacets)
   {
     float fDist;
 
-    if (clFTool.Distance(rclPt, *pI, fMinDist, fDist))
+    if (clFTool.Distance(rclPt, facet, fMinDist, fDist))
     {
       fMinDist   = fDist;
-      ulFacetInd = *pI;
+      ulFacetInd = facet;
     }
   }
 
@@ -1006,13 +1006,13 @@ void MeshFacetGrid::SearchNearestFacetInGrid(unsigned long ulX, unsigned long ul
                                              ElementIndex &rulFacetInd) const
 {
   const std::set<ElementIndex> &rclSet = _aulGrid[ulX][ulY][ulZ];
-  for (std::set<ElementIndex>::const_iterator pI = rclSet.begin(); pI != rclSet.end(); ++pI)
+  for (ElementIndex pI : rclSet)
   {
-    float fDist = _pclMesh->GetFacet(*pI).DistanceToPoint(rclPt);
+    float fDist = _pclMesh->GetFacet(pI).DistanceToPoint(rclPt);
     if (fDist < rfMinDist)
     {
       rfMinDist   = fDist;
-      rulFacetInd = *pI;
+      rulFacetInd = pI;
     }
   }
 }
@@ -1090,9 +1090,9 @@ bool MeshPointGrid::Verify() const
   {
     std::vector<ElementIndex> aulElements;
     it.GetElements( aulElements );
-    for ( std::vector<ElementIndex>::iterator itP = aulElements.begin(); itP != aulElements.end(); ++itP )
+    for (ElementIndex element : aulElements)
     {
-      cP.Set( *itP );
+      cP.Set( element );
       if (!it.GetBoundBox().IsInBox(*cP))
         return false; // point doesn't lie inside the grid element
     }
@@ -1142,12 +1142,9 @@ unsigned long MeshPointGrid::FindElements (const Base::Vector3f &rclPoint, std::
 // ----------------------------------------------------------------
 
 MeshGridIterator::MeshGridIterator (const MeshGrid &rclG)
-: _rclGrid(rclG),
-  _ulX(0), _ulY(0), _ulZ(0),
-  _clPt(0.0f, 0.0f, 0.0f), _clDir(0.0f, 0.0f, 0.0f),
-  _bValidRay(false),
-  _fMaxSearchArea (FLOAT_MAX)
-
+  : _rclGrid(rclG)
+  , _clPt(0.0f, 0.0f, 0.0f)
+  , _clDir(0.0f, 0.0f, 0.0f)
 {
 }
 

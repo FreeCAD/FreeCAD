@@ -209,7 +209,7 @@
     <message>
       <location filename="../../CommandTrajectory.cpp" line="146"/>
       <source>Insert in trajectory</source>
-      <translation>Вставить текущее положение робота в траекторию</translation>
+      <translation>Вставить в траекторию</translation>
     </message>
     <message>
       <location filename="../../CommandTrajectory.cpp" line="147"/>
@@ -246,7 +246,7 @@
     <message>
       <location filename="../../CommandTrajectory.cpp" line="211"/>
       <source>Set the default orientation for subsequent commands for waypoint creation</source>
-      <translation>Задать ориентацию по умолчанию для последующих команд для создания путевых точек</translation>
+      <translation>Задать ориентацию по умолчанию для последующих команд для создания маршрутной точки</translation>
     </message>
   </context>
   <context>
@@ -356,17 +356,17 @@
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../CommandInsertRobot.cpp" line="229"/>
-      <location filename="../../CommandTrajectory.cpp" line="104"/>
-      <location filename="../../CommandTrajectory.cpp" line="160"/>
-      <location filename="../../CommandTrajectory.cpp" line="177"/>
-      <location filename="../../CommandTrajectory.cpp" line="406"/>
       <location filename="../../Command.cpp" line="71"/>
       <location filename="../../Command.cpp" line="120"/>
       <location filename="../../Command.cpp" line="220"/>
       <location filename="../../Command.cpp" line="249"/>
       <location filename="../../CommandExport.cpp" line="61"/>
       <location filename="../../CommandExport.cpp" line="123"/>
+      <location filename="../../CommandInsertRobot.cpp" line="229"/>
+      <location filename="../../CommandTrajectory.cpp" line="104"/>
+      <location filename="../../CommandTrajectory.cpp" line="160"/>
+      <location filename="../../CommandTrajectory.cpp" line="177"/>
+      <location filename="../../CommandTrajectory.cpp" line="406"/>
       <source>Wrong selection</source>
       <translation>Неверный выбор</translation>
     </message>
@@ -381,11 +381,11 @@
       <translation>Выберите одного робота</translation>
     </message>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="105"/>
       <location filename="../../Command.cpp" line="221"/>
       <location filename="../../Command.cpp" line="250"/>
       <location filename="../../CommandExport.cpp" line="62"/>
       <location filename="../../CommandExport.cpp" line="124"/>
+      <location filename="../../CommandTrajectory.cpp" line="105"/>
       <source>Select one Robot and one Trajectory object.</source>
       <translation>Выберите робота и траекторию движения.</translation>
     </message>
@@ -481,7 +481,7 @@
     <message>
       <location filename="../../Workbench.cpp" line="79"/>
       <source>No robot files installed</source>
-      <translation>Файлы роботов не установлены</translation>
+      <translation>Нет установленных файлов робота</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="80"/>
@@ -910,7 +910,7 @@
       <location filename="../../TaskTrajectoryDressUpParameter.ui" line="55"/>
       <location filename="../../TaskTrajectoryDressUpParameter.ui" line="92"/>
       <source>Use</source>
-      <translation>Использовать</translation>
+      <translation>Используйте</translation>
     </message>
     <message>
       <location filename="../../TaskTrajectoryDressUpParameter.ui" line="66"/>
@@ -925,12 +925,12 @@
     <message>
       <location filename="../../TaskTrajectoryDressUpParameter.ui" line="107"/>
       <source>Continues</source>
-      <translation>Продолжить</translation>
+      <translation>Продолжается</translation>
     </message>
     <message>
       <location filename="../../TaskTrajectoryDressUpParameter.ui" line="112"/>
       <source>Discontinues</source>
-      <translation>Прекращено</translation>
+      <translation>Прекращает</translation>
     </message>
     <message>
       <location filename="../../TaskTrajectoryDressUpParameter.ui" line="127"/>

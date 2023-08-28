@@ -69,16 +69,7 @@ void CleanupHandler::cleanup()
 class DlgEvaluateMeshImp::Private
 {
 public:
-    Private()
-        : meshFeature(nullptr)
-        , view(nullptr)
-        , enableFoldsCheck(false)
-        , checkNonManfoldPoints(false)
-        , strictlyDegenerated(true)
-        , epsilonDegenerated(0.0f)
-    {
-    }
-    ~Private()
+    Private() : view(nullptr)
     {
     }
 
@@ -91,15 +82,15 @@ public:
         ui.repairFoldsButton->setVisible(on);
     }
 
-    Ui_DlgEvaluateMesh ui;
+    Ui_DlgEvaluateMesh ui{};
     std::map<std::string, ViewProviderMeshDefects*> vp;
-    Mesh::Feature* meshFeature;
+    Mesh::Feature* meshFeature{nullptr};
     QPointer<Gui::View3DInventor> view;
     std::vector<Mesh::FacetIndex> self_intersections;
-    bool enableFoldsCheck;
-    bool checkNonManfoldPoints;
-    bool strictlyDegenerated;
-    float epsilonDegenerated;
+    bool enableFoldsCheck{false};
+    bool checkNonManfoldPoints{false};
+    bool strictlyDegenerated{true};
+    float epsilonDegenerated{0.0f};
 };
 
 /* TRANSLATOR MeshGui::DlgEvaluateMeshImp */
@@ -112,6 +103,8 @@ DlgEvaluateMeshImp::DlgEvaluateMeshImp(QWidget* parent, Qt::WindowFlags fl)
   : QDialog(parent, fl), d(new Private())
 {
     d->ui.setupUi(this);
+    setupConnections();
+
     d->ui.line->setFrameShape(QFrame::HLine);
     d->ui.line->setFrameShadow(QFrame::Sunken);
     d->ui.line_2->setFrameShape(QFrame::HLine);
@@ -129,9 +122,6 @@ DlgEvaluateMeshImp::DlgEvaluateMeshImp(QWidget* parent, Qt::WindowFlags fl)
     d->ui.line_8->setFrameShape(QFrame::HLine);
     d->ui.line_8->setFrameShadow(QFrame::Sunken);
 
-    connect(d->ui.buttonBox, &QDialogButtonBox::helpRequested,
-            Gui::getMainWindow(), &Gui::MainWindow::whatsThis);
-
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath
             ("User parameter:BaseApp/Preferences/Mod/Mesh/Evaluation");
     d->checkNonManfoldPoints = hGrp->GetBool("CheckNonManifoldPoints", false);
@@ -148,7 +138,7 @@ DlgEvaluateMeshImp::DlgEvaluateMeshImp(QWidget* parent, Qt::WindowFlags fl)
     button->setText(tr("Settings..."));
 
     // try to attach to the active document
-    this->on_refreshButton_clicked();
+    this->onRefreshButtonClicked();
 }
 
 /**
@@ -157,10 +147,10 @@ DlgEvaluateMeshImp::DlgEvaluateMeshImp(QWidget* parent, Qt::WindowFlags fl)
 DlgEvaluateMeshImp::~DlgEvaluateMeshImp()
 {
     // no need to delete child widgets, Qt does it all for us
-    for (std::map<std::string, ViewProviderMeshDefects*>::iterator it = d->vp.begin(); it != d->vp.end(); ++it) {
+    for (const auto& it : d->vp) {
         if (d->view)
-            d->view->getViewer()->removeViewProvider(it->second);
-        delete it->second;
+            d->view->getViewer()->removeViewProvider(it.second);
+        delete it.second;
     }
 
     try {
@@ -175,6 +165,79 @@ DlgEvaluateMeshImp::~DlgEvaluateMeshImp()
 
     d->vp.clear();
     delete d;
+}
+
+void DlgEvaluateMeshImp::setupConnections()
+{
+    connect(d->ui.checkOrientationButton, &QCheckBox::clicked,
+            this, &DlgEvaluateMeshImp::onCheckOrientationButtonClicked);
+    connect(d->ui.analyzeOrientationButton, &QPushButton::clicked,
+            this, &DlgEvaluateMeshImp::onAnalyzeOrientationButtonClicked);
+    connect(d->ui.repairOrientationButton, &QPushButton::clicked,
+            this, &DlgEvaluateMeshImp::onRepairOrientationButtonClicked);
+
+    connect(d->ui.checkDuplicatedFacesButton, &QCheckBox::clicked,
+            this, &DlgEvaluateMeshImp::onCheckDuplicatedFacesButtonClicked);
+    connect(d->ui.analyzeDuplicatedFacesButton, &QPushButton::clicked,
+            this, &DlgEvaluateMeshImp::onAnalyzeDuplicatedFacesButtonClicked);
+    connect(d->ui.repairDuplicatedFacesButton, &QPushButton::clicked,
+            this, &DlgEvaluateMeshImp::onRepairDuplicatedFacesButtonClicked);
+
+    connect(d->ui.checkDuplicatedPointsButton, &QCheckBox::clicked,
+            this, &DlgEvaluateMeshImp::onCheckDuplicatedPointsButtonClicked);
+    connect(d->ui.analyzeDuplicatedPointsButton, &QPushButton::clicked,
+            this, &DlgEvaluateMeshImp::onAnalyzeDuplicatedPointsButtonClicked);
+    connect(d->ui.repairDuplicatedPointsButton, &QPushButton::clicked,
+            this, &DlgEvaluateMeshImp::onRepairDuplicatedPointsButtonClicked);
+
+    connect(d->ui.checkNonmanifoldsButton, &QCheckBox::clicked,
+            this, &DlgEvaluateMeshImp::onCheckNonmanifoldsButtonClicked);
+    connect(d->ui.analyzeNonmanifoldsButton, &QPushButton::clicked,
+            this, &DlgEvaluateMeshImp::onAnalyzeNonmanifoldsButtonClicked);
+    connect(d->ui.repairNonmanifoldsButton, &QPushButton::clicked,
+            this, &DlgEvaluateMeshImp::onRepairNonmanifoldsButtonClicked);
+
+    connect(d->ui.checkDegenerationButton, &QCheckBox::clicked,
+            this, &DlgEvaluateMeshImp::onCheckDegenerationButtonClicked);
+    connect(d->ui.analyzeDegeneratedButton, &QPushButton::clicked,
+            this, &DlgEvaluateMeshImp::onAnalyzeDegeneratedButtonClicked);
+    connect(d->ui.repairDegeneratedButton, &QPushButton::clicked,
+            this, &DlgEvaluateMeshImp::onRepairDegeneratedButtonClicked);
+
+    connect(d->ui.checkIndicesButton, &QCheckBox::clicked,
+            this, &DlgEvaluateMeshImp::onCheckIndicesButtonClicked);
+    connect(d->ui.analyzeIndicesButton, &QPushButton::clicked,
+            this, &DlgEvaluateMeshImp::onAnalyzeIndicesButtonClicked);
+    connect(d->ui.repairIndicesButton, &QPushButton::clicked,
+            this, &DlgEvaluateMeshImp::onRepairIndicesButtonClicked);
+
+    connect(d->ui.checkSelfIntersectionButton, &QCheckBox::clicked,
+            this, &DlgEvaluateMeshImp::onCheckSelfIntersectionButtonClicked);
+    connect(d->ui.analyzeSelfIntersectionButton, &QPushButton::clicked,
+            this, &DlgEvaluateMeshImp::onAnalyzeSelfIntersectionButtonClicked);
+    connect(d->ui.repairSelfIntersectionButton, &QPushButton::clicked,
+            this, &DlgEvaluateMeshImp::onRepairSelfIntersectionButtonClicked);
+
+    connect(d->ui.checkFoldsButton, &QCheckBox::clicked,
+            this, &DlgEvaluateMeshImp::onCheckFoldsButtonClicked);
+    connect(d->ui.analyzeFoldsButton, &QPushButton::clicked,
+            this, &DlgEvaluateMeshImp::onAnalyzeFoldsButtonClicked);
+    connect(d->ui.repairFoldsButton, &QPushButton::clicked,
+            this, &DlgEvaluateMeshImp::onRepairFoldsButtonClicked);
+
+    connect(d->ui.analyzeAllTogether, &QPushButton::clicked,
+            this, &DlgEvaluateMeshImp::onAnalyzeAllTogetherClicked);
+    connect(d->ui.repairAllTogether, &QPushButton::clicked,
+            this, &DlgEvaluateMeshImp::onRepairAllTogetherClicked);
+
+    connect(d->ui.refreshButton, &QPushButton::clicked,
+            this, &DlgEvaluateMeshImp::onRefreshButtonClicked);
+    connect(d->ui.meshNameButton, qOverload<int>(&QComboBox::activated),
+            this, &DlgEvaluateMeshImp::onMeshNameButtonActivated);
+    connect(d->ui.buttonBox, &QDialogButtonBox::clicked,
+            this, &DlgEvaluateMeshImp::onButtonBoxClicked);
+    connect(d->ui.buttonBox, &QDialogButtonBox::helpRequested,
+            Gui::getMainWindow(), &Gui::MainWindow::whatsThis);
 }
 
 void DlgEvaluateMeshImp::changeEvent(QEvent *e)
@@ -242,8 +305,8 @@ void DlgEvaluateMeshImp::slotDeletedDocument(const App::Document& Doc)
 {
     if (&Doc == getDocument()) {
         // the view is already destroyed
-        for (std::map<std::string, ViewProviderMeshDefects*>::iterator it = d->vp.begin(); it != d->vp.end(); ++it) {
-            delete it->second;
+        for (const auto& it : d->vp) {
+            delete it.second;
         }
 
         d->vp.clear();
@@ -251,7 +314,7 @@ void DlgEvaluateMeshImp::slotDeletedDocument(const App::Document& Doc)
         // try to attach to the active document
         this->detachDocument();
         d->view = nullptr;
-        on_refreshButton_clicked();
+        onRefreshButtonClicked();
     }
 }
 
@@ -268,7 +331,7 @@ void DlgEvaluateMeshImp::setMesh(Mesh::Feature* m)
     for (int i=1; i<ct; i++) {
         if (d->ui.meshNameButton->itemData(i).toString() == objName) {
             d->ui.meshNameButton->setCurrentIndex(i);
-            on_meshNameButton_activated(i);
+            onMeshNameButtonActivated(i);
             break;
         }
     }
@@ -301,23 +364,23 @@ void DlgEvaluateMeshImp::removeViewProvider(const char* name)
 
 void DlgEvaluateMeshImp::removeViewProviders()
 {
-    for (std::map<std::string, ViewProviderMeshDefects*>::iterator it = d->vp.begin(); it != d->vp.end(); ++it) {
+    for (const auto& it : d->vp) {
         if (d->view)
-            d->view->getViewer()->removeViewProvider(it->second);
-        delete it->second;
+            d->view->getViewer()->removeViewProvider(it.second);
+        delete it.second;
     }
     d->vp.clear();
 }
 
-void DlgEvaluateMeshImp::on_meshNameButton_activated(int i)
+void DlgEvaluateMeshImp::onMeshNameButtonActivated(int i)
 {
     QString item = d->ui.meshNameButton->itemData(i).toString();
 
     d->meshFeature = nullptr;
     std::vector<App::DocumentObject*> objs = getDocument()->getObjectsOfType(Mesh::Feature::getClassTypeId());
-    for (std::vector<App::DocumentObject*>::iterator it = objs.begin(); it != objs.end(); ++it) {
-        if (item == QLatin1String((*it)->getNameInDocument())) {
-            d->meshFeature = (Mesh::Feature*)(*it);
+    for (auto obj : objs) {
+        if (item == QLatin1String(obj->getNameInDocument())) {
+            d->meshFeature = static_cast<Mesh::Feature*>(obj);
             break;
         }
     }
@@ -335,16 +398,16 @@ void DlgEvaluateMeshImp::refreshList()
     QVector<QPair<QString, QString> > items;
     if (this->getDocument()) {
         std::vector<App::DocumentObject*> objs = this->getDocument()->getObjectsOfType(Mesh::Feature::getClassTypeId());
-        for (std::vector<App::DocumentObject*>::iterator it = objs.begin(); it != objs.end(); ++it) {
-            items.push_back(qMakePair(QString::fromUtf8((*it)->Label.getValue()),
-                                      QString::fromLatin1((*it)->getNameInDocument())));
+        for (auto obj : objs) {
+            items.push_back(qMakePair(QString::fromUtf8(obj->Label.getValue()),
+                                      QString::fromLatin1(obj->getNameInDocument())));
         }
     }
 
     d->ui.meshNameButton->clear();
     d->ui.meshNameButton->addItem(tr("No selection"));
-    for (QVector<QPair<QString, QString> >::iterator it = items.begin(); it != items.end(); ++it)
-        d->ui.meshNameButton->addItem(it->first, it->second);
+    for (const auto & item : items)
+        d->ui.meshNameButton->addItem(item.first, item.second);
     d->ui.meshNameButton->setDisabled(items.empty());
     cleanInformation();
 }
@@ -361,10 +424,12 @@ void DlgEvaluateMeshImp::showInformation()
     d->ui.analyzeFoldsButton->setEnabled(true);
     d->ui.analyzeAllTogether->setEnabled(true);
 
-    const MeshKernel& rMesh = d->meshFeature->Mesh.getValue().getKernel();
-    d->ui.textLabel4->setText(QString::fromLatin1("%1").arg(rMesh.CountFacets()));
-    d->ui.textLabel5->setText(QString::fromLatin1("%1").arg(rMesh.CountEdges()));
-    d->ui.textLabel6->setText(QString::fromLatin1("%1").arg(rMesh.CountPoints()));
+    if (d->meshFeature) {
+        const MeshKernel& rMesh = d->meshFeature->Mesh.getValue().getKernel();
+        d->ui.textLabel4->setText(QString::fromLatin1("%1").arg(rMesh.CountFacets()));
+        d->ui.textLabel5->setText(QString::fromLatin1("%1").arg(rMesh.CountEdges()));
+        d->ui.textLabel6->setText(QString::fromLatin1("%1").arg(rMesh.CountPoints()));
+    }
 }
 
 void DlgEvaluateMeshImp::cleanInformation()
@@ -400,7 +465,7 @@ void DlgEvaluateMeshImp::cleanInformation()
     d->ui.repairAllTogether->setDisabled(true);
 }
 
-void DlgEvaluateMeshImp::on_refreshButton_clicked()
+void DlgEvaluateMeshImp::onRefreshButtonClicked()
 {
     // Connect to application and active document
     Gui::Document* gui = Gui::Application::Instance->activeDocument();
@@ -418,7 +483,7 @@ void DlgEvaluateMeshImp::on_refreshButton_clicked()
     refreshList();
 }
 
-void DlgEvaluateMeshImp::on_checkOrientationButton_clicked()
+void DlgEvaluateMeshImp::onCheckOrientationButtonClicked()
 {
     std::map<std::string, ViewProviderMeshDefects*>::iterator it = d->vp.find("MeshGui::ViewProviderMeshOrientation");
     if (it != d->vp.end()) {
@@ -429,7 +494,7 @@ void DlgEvaluateMeshImp::on_checkOrientationButton_clicked()
     }
 }
 
-void DlgEvaluateMeshImp::on_analyzeOrientationButton_clicked()
+void DlgEvaluateMeshImp::onAnalyzeOrientationButtonClicked()
 {
     if (d->meshFeature) {
         d->ui.analyzeOrientationButton->setEnabled(false);
@@ -439,20 +504,7 @@ void DlgEvaluateMeshImp::on_analyzeOrientationButton_clicked()
         const MeshKernel& rMesh = d->meshFeature->Mesh.getValue().getKernel();
         MeshEvalOrientation eval(rMesh);
         std::vector<MeshCore::FacetIndex> inds = eval.GetIndices();
-#if 0
-        if (inds.empty() && !eval.Evaluate()) {
-            d->ui.checkOrientationButton->setText(tr("Flipped normals found"));
-            MeshEvalFoldOversOnSurface f_eval(rMesh);
-            if (!f_eval.Evaluate()) {
-                qApp->restoreOverrideCursor();
-                QMessageBox::warning(this, tr("Orientation"),
-                    tr("Check failed due to folds on the surface.\n"
-                    "Please run the command to repair folds first"));
-                qApp->setOverrideCursor(Qt::WaitCursor);
-            }
-        }
-        else
-#endif
+
         if (inds.empty()) {
             d->ui.checkOrientationButton->setText( tr("No flipped normals") );
             d->ui.checkOrientationButton->setChecked(false);
@@ -472,7 +524,7 @@ void DlgEvaluateMeshImp::on_analyzeOrientationButton_clicked()
     }
 }
 
-void DlgEvaluateMeshImp::on_repairOrientationButton_clicked()
+void DlgEvaluateMeshImp::onRepairOrientationButtonClicked()
 {
     if (d->meshFeature) {
         const char* docName = App::GetApplication().getDocumentName(d->meshFeature->getDocument());
@@ -497,7 +549,7 @@ void DlgEvaluateMeshImp::on_repairOrientationButton_clicked()
     }
 }
 
-void DlgEvaluateMeshImp::on_checkNonmanifoldsButton_clicked()
+void DlgEvaluateMeshImp::onCheckNonmanifoldsButtonClicked()
 {
     // non-manifold edges
     std::map<std::string, ViewProviderMeshDefects*>::iterator it;
@@ -519,7 +571,7 @@ void DlgEvaluateMeshImp::on_checkNonmanifoldsButton_clicked()
     }
 }
 
-void DlgEvaluateMeshImp::on_analyzeNonmanifoldsButton_clicked()
+void DlgEvaluateMeshImp::onAnalyzeNonmanifoldsButtonClicked()
 {
     if (d->meshFeature) {
         d->ui.analyzeNonmanifoldsButton->setEnabled(false);
@@ -575,7 +627,7 @@ void DlgEvaluateMeshImp::on_analyzeNonmanifoldsButton_clicked()
     }
 }
 
-void DlgEvaluateMeshImp::on_repairNonmanifoldsButton_clicked()
+void DlgEvaluateMeshImp::onRepairNonmanifoldsButtonClicked()
 {
     if (d->meshFeature) {
         const char* docName = App::GetApplication().getDocumentName(d->meshFeature->getDocument());
@@ -610,7 +662,7 @@ void DlgEvaluateMeshImp::on_repairNonmanifoldsButton_clicked()
     }
 }
 
-void DlgEvaluateMeshImp::on_checkIndicesButton_clicked()
+void DlgEvaluateMeshImp::onCheckIndicesButtonClicked()
 {
     std::map<std::string, ViewProviderMeshDefects*>::iterator it = d->vp.find("MeshGui::ViewProviderMeshIndices");
     if (it != d->vp.end()) {
@@ -621,7 +673,7 @@ void DlgEvaluateMeshImp::on_checkIndicesButton_clicked()
     }
 }
 
-void DlgEvaluateMeshImp::on_analyzeIndicesButton_clicked()
+void DlgEvaluateMeshImp::onAnalyzeIndicesButtonClicked()
 {
     if (d->meshFeature) {
         d->ui.analyzeIndicesButton->setEnabled(false);
@@ -674,7 +726,7 @@ void DlgEvaluateMeshImp::on_analyzeIndicesButton_clicked()
     }
 }
 
-void DlgEvaluateMeshImp::on_repairIndicesButton_clicked()
+void DlgEvaluateMeshImp::onRepairIndicesButtonClicked()
 {
     if (d->meshFeature) {
         const char* docName = App::GetApplication().getDocumentName(d->meshFeature->getDocument());
@@ -699,7 +751,7 @@ void DlgEvaluateMeshImp::on_repairIndicesButton_clicked()
     }
 }
 
-void DlgEvaluateMeshImp::on_checkDegenerationButton_clicked()
+void DlgEvaluateMeshImp::onCheckDegenerationButtonClicked()
 {
     std::map<std::string, ViewProviderMeshDefects*>::iterator it = d->vp.find("MeshGui::ViewProviderMeshDegenerations");
     if (it != d->vp.end()) {
@@ -710,7 +762,7 @@ void DlgEvaluateMeshImp::on_checkDegenerationButton_clicked()
     }
 }
 
-void DlgEvaluateMeshImp::on_analyzeDegeneratedButton_clicked()
+void DlgEvaluateMeshImp::onAnalyzeDegeneratedButtonClicked()
 {
     if (d->meshFeature) {
         d->ui.analyzeDegeneratedButton->setEnabled(false);
@@ -740,7 +792,7 @@ void DlgEvaluateMeshImp::on_analyzeDegeneratedButton_clicked()
     }
 }
 
-void DlgEvaluateMeshImp::on_repairDegeneratedButton_clicked()
+void DlgEvaluateMeshImp::onRepairDegeneratedButtonClicked()
 {
     if (d->meshFeature) {
         const char* docName = App::GetApplication().getDocumentName(d->meshFeature->getDocument());
@@ -765,7 +817,7 @@ void DlgEvaluateMeshImp::on_repairDegeneratedButton_clicked()
     }
 }
 
-void DlgEvaluateMeshImp::on_checkDuplicatedFacesButton_clicked()
+void DlgEvaluateMeshImp::onCheckDuplicatedFacesButtonClicked()
 {
     std::map<std::string, ViewProviderMeshDefects*>::iterator it = d->vp.find("MeshGui::ViewProviderMeshDuplicatedFaces");
     if (it != d->vp.end()) {
@@ -776,7 +828,7 @@ void DlgEvaluateMeshImp::on_checkDuplicatedFacesButton_clicked()
     }
 }
 
-void DlgEvaluateMeshImp::on_analyzeDuplicatedFacesButton_clicked()
+void DlgEvaluateMeshImp::onAnalyzeDuplicatedFacesButtonClicked()
 {
     if (d->meshFeature) {
         d->ui.analyzeDuplicatedFacesButton->setEnabled(false);
@@ -807,7 +859,7 @@ void DlgEvaluateMeshImp::on_analyzeDuplicatedFacesButton_clicked()
     }
 }
 
-void DlgEvaluateMeshImp::on_repairDuplicatedFacesButton_clicked()
+void DlgEvaluateMeshImp::onRepairDuplicatedFacesButtonClicked()
 {
     if (d->meshFeature) {
         const char* docName = App::GetApplication().getDocumentName(d->meshFeature->getDocument());
@@ -832,7 +884,7 @@ void DlgEvaluateMeshImp::on_repairDuplicatedFacesButton_clicked()
     }
 }
 
-void DlgEvaluateMeshImp::on_checkDuplicatedPointsButton_clicked()
+void DlgEvaluateMeshImp::onCheckDuplicatedPointsButtonClicked()
 {
     std::map<std::string, ViewProviderMeshDefects*>::iterator it = d->vp.find("MeshGui::ViewProviderMeshDuplicatedPoints");
     if (it != d->vp.end()) {
@@ -843,7 +895,7 @@ void DlgEvaluateMeshImp::on_checkDuplicatedPointsButton_clicked()
     }
 }
 
-void DlgEvaluateMeshImp::on_analyzeDuplicatedPointsButton_clicked()
+void DlgEvaluateMeshImp::onAnalyzeDuplicatedPointsButtonClicked()
 {
     if (d->meshFeature) {
         d->ui.analyzeDuplicatedPointsButton->setEnabled(false);
@@ -872,7 +924,7 @@ void DlgEvaluateMeshImp::on_analyzeDuplicatedPointsButton_clicked()
     }
 }
 
-void DlgEvaluateMeshImp::on_repairDuplicatedPointsButton_clicked()
+void DlgEvaluateMeshImp::onRepairDuplicatedPointsButtonClicked()
 {
     if (d->meshFeature) {
         const char* docName = App::GetApplication().getDocumentName(d->meshFeature->getDocument());
@@ -897,7 +949,7 @@ void DlgEvaluateMeshImp::on_repairDuplicatedPointsButton_clicked()
     }
 }
 
-void DlgEvaluateMeshImp::on_checkSelfIntersectionButton_clicked()
+void DlgEvaluateMeshImp::onCheckSelfIntersectionButtonClicked()
 {
     std::map<std::string, ViewProviderMeshDefects*>::iterator it = d->vp.find("MeshGui::ViewProviderMeshSelfIntersections");
     if (it != d->vp.end()) {
@@ -908,7 +960,7 @@ void DlgEvaluateMeshImp::on_checkSelfIntersectionButton_clicked()
     }
 }
 
-void DlgEvaluateMeshImp::on_analyzeSelfIntersectionButton_clicked()
+void DlgEvaluateMeshImp::onAnalyzeSelfIntersectionButtonClicked()
 {
     if (d->meshFeature) {
         d->ui.analyzeSelfIntersectionButton->setEnabled(false);
@@ -954,30 +1006,16 @@ void DlgEvaluateMeshImp::on_analyzeSelfIntersectionButton_clicked()
     }
 }
 
-void DlgEvaluateMeshImp::on_repairSelfIntersectionButton_clicked()
+void DlgEvaluateMeshImp::onRepairSelfIntersectionButtonClicked()
 {
     if (d->meshFeature) {
         const char* docName = App::GetApplication().getDocumentName(d->meshFeature->getDocument());
-#if 0
-        const char* objName = d->meshFeature->getNameInDocument();
-#endif
         Gui::Document* doc = Gui::Application::Instance->getDocument(docName);
         doc->openCommand(QT_TRANSLATE_NOOP("Command", "Fix self-intersections"));
-#if 0
-        try {
-            Gui::Application::Instance->runCommand(
-                true, "App.getDocument(\"%s\").getObject(\"%s\").fixSelfIntersections()"
-                    , docName, objName);
-        }
-        catch (const Base::Exception& e) {
-            QMessageBox::warning(this, tr("Self-intersections"), QString::fromLatin1(e.what()));
-        }
-#else
+
         Mesh::MeshObject* mesh = d->meshFeature->Mesh.startEditing();
         mesh->removeSelfIntersections(d->self_intersections);
         d->meshFeature->Mesh.finishEditing();
-#endif
-
         doc->commitCommand();
         doc->getDocument()->recompute();
 
@@ -987,7 +1025,7 @@ void DlgEvaluateMeshImp::on_repairSelfIntersectionButton_clicked()
     }
 }
 
-void DlgEvaluateMeshImp::on_checkFoldsButton_clicked()
+void DlgEvaluateMeshImp::onCheckFoldsButtonClicked()
 {
     std::map<std::string, ViewProviderMeshDefects*>::iterator it = d->vp.find("MeshGui::ViewProviderMeshFolds");
     if (it != d->vp.end()) {
@@ -998,7 +1036,7 @@ void DlgEvaluateMeshImp::on_checkFoldsButton_clicked()
     }
 }
 
-void DlgEvaluateMeshImp::on_analyzeFoldsButton_clicked()
+void DlgEvaluateMeshImp::onAnalyzeFoldsButtonClicked()
 {
     if (d->meshFeature) {
         d->ui.analyzeFoldsButton->setEnabled(false);
@@ -1042,7 +1080,7 @@ void DlgEvaluateMeshImp::on_analyzeFoldsButton_clicked()
     }
 }
 
-void DlgEvaluateMeshImp::on_repairFoldsButton_clicked()
+void DlgEvaluateMeshImp::onRepairFoldsButtonClicked()
 {
     if (d->meshFeature) {
         const char* docName = App::GetApplication().getDocumentName(d->meshFeature->getDocument());
@@ -1069,20 +1107,21 @@ void DlgEvaluateMeshImp::on_repairFoldsButton_clicked()
     }
 }
 
-void DlgEvaluateMeshImp::on_analyzeAllTogether_clicked()
+void DlgEvaluateMeshImp::onAnalyzeAllTogetherClicked()
 {
-    on_analyzeOrientationButton_clicked();
-    on_analyzeDuplicatedFacesButton_clicked();
-    on_analyzeDuplicatedPointsButton_clicked();
-    on_analyzeNonmanifoldsButton_clicked();
-    on_analyzeDegeneratedButton_clicked();
-    on_analyzeIndicesButton_clicked();
-    on_analyzeSelfIntersectionButton_clicked();
-    if (d->enableFoldsCheck)
-        on_analyzeFoldsButton_clicked();
+    onAnalyzeOrientationButtonClicked();
+    onAnalyzeDuplicatedFacesButtonClicked();
+    onAnalyzeDuplicatedPointsButtonClicked();
+    onAnalyzeNonmanifoldsButtonClicked();
+    onAnalyzeDegeneratedButtonClicked();
+    onAnalyzeIndicesButtonClicked();
+    onAnalyzeSelfIntersectionButtonClicked();
+    if (d->enableFoldsCheck) {
+        onAnalyzeFoldsButtonClicked();
+    }
 }
 
-void DlgEvaluateMeshImp::on_repairAllTogether_clicked()
+void DlgEvaluateMeshImp::onRepairAllTogetherClicked()
 {
     if (d->meshFeature) {
         Gui::WaitCursor wc;
@@ -1199,7 +1238,7 @@ void DlgEvaluateMeshImp::on_repairAllTogether_clicked()
     }
 }
 
-void DlgEvaluateMeshImp::on_buttonBox_clicked(QAbstractButton* button)
+void DlgEvaluateMeshImp::onButtonBoxClicked(QAbstractButton* button)
 {
     QDialogButtonBox::StandardButton type = d->ui.buttonBox->standardButton(button);
     if (type == QDialogButtonBox::Open) {
@@ -1283,7 +1322,6 @@ DockEvaluateMeshImp::DockEvaluateMeshImp( QWidget* parent, Qt::WindowFlags fl )
     // use Qt macro for preparing for translation stuff (but not translating yet)
     QDockWidget* dw = pDockMgr->addDockWindow("Evaluate & Repair Mesh",
         scrollArea, Qt::RightDockWidgetArea);
-    //dw->setAttribute(Qt::WA_DeleteOnClose);
     dw->setFeatures(QDockWidget::DockWidgetMovable|QDockWidget::DockWidgetFloatable);
     dw->show();
 }
@@ -1315,7 +1353,7 @@ void DockEvaluateMeshImp::closeEvent(QCloseEvent*)
  */
 QSize DockEvaluateMeshImp::sizeHint () const
 {
-    return QSize(371, 579);
+    return {371, 579};
 }
 
 #include "moc_DlgEvaluateMeshImp.cpp"

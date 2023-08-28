@@ -25,6 +25,7 @@
 
 #include <string>
 
+#include <Base/Parameter.h>
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
 
@@ -44,10 +45,13 @@ class TechDrawExport Preferences
 {
 
 public:
+    static Base::Reference<ParameterGrp> getPreferenceGroup(const char* Name);
+
     static std::string labelFont();
     static QString labelFontQString();
     static double labelFontSizeMM();
     static double dimFontSizeMM();
+    static double dimArrowSize();
 
     static App::Color normalColor();
     static App::Color selectColor();
@@ -71,6 +75,7 @@ public:
     static std::string lineGroupFile();
 
     static const double DefaultFontSizeInMM;
+    static const double DefaultArrowSize;
 
     static std::string formatSpec();
     static int altDecimals();
@@ -94,7 +99,14 @@ public:
     static App::Color lightTextColor();
     static App::Color lightenColor(App::Color orig);
     static App::Color getAccessibleColor(App::Color orig);
+
+    static bool autoCorrectDimRefs();
+    static int scrubCount();
+
+    static double svgHatchFactor();
+    static bool SectionUsePreviousCut();
 };
+
 
 }//end namespace TechDraw
 #endif

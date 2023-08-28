@@ -35,7 +35,6 @@
         <file>icons/Draft_Downgrade.svg</file>
         <file>icons/Draft_Draft.svg</file>
         <file>icons/Draft_Draft2Sketch.svg</file>
-        <file>icons/Draft_Drawing.svg</file>
         <file>icons/Draft_Edit.svg</file>
         <file>icons/Draft_Ellipse.svg</file>
         <file>icons/Draft_Facebinder.svg</file>
@@ -49,6 +48,7 @@
         <file>icons/Draft_Join.svg</file>
         <file>icons/Draft_Label.svg</file>
         <file>icons/Draft_Layer.svg</file>
+        <file>icons/Draft_LayerManager.svg</file>
         <file>icons/Draft_Line.svg</file>
         <file>icons/Draft_LinkArray.svg</file>
         <file>icons/Draft_Lock.svg</file>
@@ -191,5 +191,6 @@
         <file>ui/dialog_AnnotationStyleEditor.ui</file>
         <file>ui/TaskPanel_SetStyle.ui</file>
         <file>ui/dialogHatch.ui</file>
+        <file>ui/dialogLayers.ui</file>
     </qresource>
 </RCC>

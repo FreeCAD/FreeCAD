@@ -36,7 +36,7 @@ using spMat = Eigen::SparseMatrix<double>;
 struct NurbsBase2D
 {
     //
-    NurbsBase2D(){}
+    NurbsBase2D() = default;
     NurbsBase2D(Eigen::VectorXd u_knots, Eigen::VectorXd v_knots,
               Eigen::VectorXd weights,
               int degree_u=3, int degree_v=3);
@@ -81,7 +81,7 @@ struct NurbsBase2D
 
 struct NurbsBase1D
 {
-    NurbsBase1D(){}
+    NurbsBase1D() = default;
     NurbsBase1D(Eigen::VectorXd u_knots, Eigen::VectorXd weights, int degree_u=3);
     int degree_u;
     Eigen::VectorXd u_knots;

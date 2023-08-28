@@ -24,6 +24,7 @@
 #ifndef GUI_TASKVIEW_TaskFemConstraintSpring_H
 #define GUI_TASKVIEW_TaskFemConstraintSpring_H
 
+#include <memory>
 #include <QObject>
 
 #include "TaskFemConstraintOnBoundary.h"
@@ -38,11 +39,13 @@ class TaskFemConstraintSpring : public TaskFemConstraintOnBoundary
     Q_OBJECT
 
 public:
-    explicit TaskFemConstraintSpring(ViewProviderFemConstraintSpring *ConstraintView,QWidget *parent = nullptr);
+    explicit TaskFemConstraintSpring(ViewProviderFemConstraintSpring* ConstraintView,
+                                     QWidget* parent = nullptr);
     ~TaskFemConstraintSpring() override;
     const std::string getReferences() const override;
-    double get_normalStiffness()const;
-    double get_tangentialStiffness()const;
+    std::string get_normalStiffness() const;
+    std::string get_tangentialStiffness() const;
+    std::string getElmerStiffness() const;
 
 private Q_SLOTS:
     void onReferenceDeleted();
@@ -56,8 +59,7 @@ protected:
 
 private:
     void updateUI();
-    Ui_TaskFemConstraintSpring* ui;
-
+    std::unique_ptr<Ui_TaskFemConstraintSpring> ui;
 };
 
 class TaskDlgFemConstraintSpring : public TaskDlgFemConstraint

@@ -27,6 +27,7 @@
 #include <App/DocumentObject.h>
 #include <App/FeaturePython.h>
 #include <App/PropertyLinks.h>
+#include <App/PropertyUnits.h>
 #include <Base/Vector3D.h>
 #include <Mod/Fem/FemGlobal.h>
 
@@ -224,7 +225,7 @@ protected:
             Base::Vector3d& base, Base::Vector3d& axis) const;
 
     /**
-     * @brief Calculate point of cylidrical face where to render widget.
+     * @brief Calculate point of cylindrical face where to render widget.
      *
      * @note
      *  This method is very specific and doesn't require access to member

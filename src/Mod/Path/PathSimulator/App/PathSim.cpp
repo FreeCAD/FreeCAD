@@ -32,27 +32,21 @@ TYPESYSTEM_SOURCE(PathSimulator::PathSim , Base::BaseClass);
 
 PathSim::PathSim()
 {
-	m_stock = nullptr;
-	m_tool = nullptr;
 }
 
 PathSim::~PathSim()
 {
-	if (m_stock)
-	    delete m_stock;
-	if (m_tool)
-		delete m_tool;
 }
 
 void PathSim::BeginSimulation(Part::TopoShape * stock, float resolution)
 {
 	Base::BoundBox3d bbox = stock->getBoundBox();
-	m_stock = new cStock(bbox.MinX, bbox.MinY, bbox.MinZ, bbox.LengthX(), bbox.LengthY(), bbox.LengthZ(), resolution);
+	m_stock = std::make_unique<cStock>(bbox.MinX, bbox.MinY, bbox.MinZ, bbox.LengthX(), bbox.LengthY(), bbox.LengthZ(), resolution);
 }
 
 void PathSim::SetToolShape(const TopoDS_Shape& toolShape, float resolution)
 {
-	m_tool = new cSimTool(toolShape, resolution);
+	m_tool = std::make_unique<cSimTool>(toolShape, resolution);
 }
 
 Base::Placement * PathSim::ApplyCommand(Base::Placement * pos, Command * cmd)

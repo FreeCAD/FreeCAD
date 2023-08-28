@@ -47,10 +47,11 @@ public:
     bool accept();
     bool reject();
 
-private Q_SLOTS:
-    void on_colorButton_changed();
-    void on_defaultButton_clicked();
-    void on_boxSelection_toggled(bool checked);
+private:
+    void setupConnections();
+    void onColorButtonChanged();
+    void onDefaultButtonClicked();
+    void onBoxSelectionToggled(bool checked);
 
 protected:
     void onSelectionChanged(const Gui::SelectionChanges& msg) override;

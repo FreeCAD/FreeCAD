@@ -102,24 +102,24 @@ protected:
     App::PropertyLinkSub* propReferenceAxis;
     void getReferenceAxis(App::DocumentObject*& obj, std::vector<std::string>& sub) const;
 
-    double getOffset(void) const;
-    bool   getAlongSketchNormal(void) const;
-    bool   getCustom(void) const;
-    std::string getReferenceAxis(void) const;
-    double getXDirection(void) const;
-    double getYDirection(void) const;
-    double getZDirection(void) const;
-    bool   getReversed(void) const;
-    bool   getMidplane(void) const;
-    int    getMode(void) const;
-    QString getFaceName(void) const;
+    double getOffset() const;
+    bool   getAlongSketchNormal() const;
+    bool   getCustom() const;
+    std::string getReferenceAxis() const;
+    double getXDirection() const;
+    double getYDirection() const;
+    double getZDirection() const;
+    bool   getReversed() const;
+    bool   getMidplane() const;
+    int    getMode() const;
+    QString getFaceName() const;
     void onSelectionChanged(const Gui::SelectionChanges& msg) override;
     virtual void translateModeList(int index);
     virtual void updateUI(int index);
-    void updateDirectionEdits(void);
+    void updateDirectionEdits();
     void setDirectionMode(int index);
-    void handleLineFaceNameClick(void);
-    void handleLineFaceNameNo(void);
+    void handleLineFaceNameClick();
+    void handleLineFaceNameNo();
 
 private:
     void tryRecomputeFeature();

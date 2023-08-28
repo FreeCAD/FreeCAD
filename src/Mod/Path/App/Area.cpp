@@ -188,7 +188,7 @@ Area::Area(const Area& other, bool deep_copy)
     if (!deep_copy || !other.isBuilt())
         return;
     if (other.myArea)
-        myArea.reset(new CArea(*other.myArea));
+        myArea = std::make_unique<CArea>(*other.myArea);
     myShapePlane = other.myShapePlane;
     myShape = other.myShape;
     myShapeDone = other.myShapeDone;
@@ -329,7 +329,7 @@ static std::vector<gp_Pnt> discretize(const TopoDS_Edge& edge, double deflection
     ret.push_back(curve.Value(reversed ? elast : efirst));
 
     // NOTE: QuasiUniformDeflection has trouble with some B-Spline, see
-    // https://forum.freecadweb.org/viewtopic.php?f=15&t=42628
+    // https://forum.freecad.org/viewtopic.php?f=15&t=42628
     //
     // GCPnts_QuasiUniformDeflection discretizer(curve, deflection, first, last);
     //
@@ -494,6 +494,79 @@ void Area::add(const TopoDS_Shape& shape, short op) {
     if (op != OperationCompound && myShapes.empty())
         op = OperationUnion;
     myShapes.emplace_back(op, shape);
+}
+
+std::shared_ptr<Area> Area::getClearedArea(double tipDiameter, double diameter) {
+    build();
+#define AREA_MY(_param) myParams.PARAM_FNAME(_param)
+    PARAM_ENUM_CONVERT(AREA_MY, PARAM_FNAME, PARAM_ENUM_EXCEPT, AREA_PARAMS_OFFSET_CONF);
+    PARAM_ENUM_CONVERT(AREA_MY, PARAM_FNAME, PARAM_ENUM_EXCEPT, AREA_PARAMS_CLIPPER_FILL);
+
+    // Do not fit arcs after these offsets; it introduces unnecessary approximation error, and all off
+    // those arcs will be converted back to segments again for clipper differencing in getRestArea anyway
+    CAreaConfig conf(myParams, /*no_fit_arcs*/ true);
+
+    const double roundPrecision = myParams.Accuracy;
+    const double buffer = 2 * roundPrecision;
+
+    // A = myArea
+    // prevCenters = offset(A, -rTip)
+    const double rTip = tipDiameter / 2.;
+    CArea prevCenter(*myArea);
+    prevCenter.OffsetWithClipper(-rTip, JoinType, EndType, myParams.MiterLimit, roundPrecision);
+
+    // prevCleared = offset(prevCenter, r).
+    CArea prevCleared(prevCenter);
+    prevCleared.OffsetWithClipper(diameter / 2. + buffer, JoinType, EndType, myParams.MiterLimit, roundPrecision);
+
+    std::shared_ptr<Area> clearedArea = make_shared<Area>(*this);
+    clearedArea->myArea.reset(new CArea(prevCleared));
+
+    return clearedArea;
+}
+
+std::shared_ptr<Area> Area::getRestArea(std::vector<std::shared_ptr<Area>> clearedAreas, double diameter) {
+    build();
+    PARAM_ENUM_CONVERT(AREA_MY, PARAM_FNAME, PARAM_ENUM_EXCEPT, AREA_PARAMS_OFFSET_CONF);
+    PARAM_ENUM_CONVERT(AREA_MY, PARAM_FNAME, PARAM_ENUM_EXCEPT, AREA_PARAMS_CLIPPER_FILL);
+
+    const double roundPrecision = myParams.Accuracy;
+    const double buffer = 2 * roundPrecision;
+
+    // transform all clearedAreas into our workplane
+    Area clearedAreasInPlane(&myParams);
+    clearedAreasInPlane.myArea.reset(new CArea());
+    for (std::shared_ptr<Area> clearedArea : clearedAreas) {
+      gp_Trsf trsf = clearedArea->myTrsf;
+      trsf.Invert();
+      trsf.SetTranslationPart(gp_Vec{trsf.TranslationPart().X(), trsf.TranslationPart().Y(), -myTrsf.TranslationPart().Z()}); // discard z-height of cleared workplane, set to myWorkPlane's height
+      TopoDS_Shape clearedShape = Area::toShape(*clearedArea->myArea, false, &trsf);
+      Area::addShape(*(clearedAreasInPlane.myArea), clearedShape, &myTrsf, .01 /*default value*/,
+          &myWorkPlane);
+    }
+
+    // remaining = A - prevCleared
+    CArea remaining(*myArea);
+    remaining.Clip(toClipperOp(Area::OperationDifference), &*(clearedAreasInPlane.myArea), SubjectFill, ClipFill);
+
+    // rest = intersect(A, offset(remaining, dTool))
+    CArea restCArea(remaining);
+    restCArea.OffsetWithClipper(diameter + buffer, JoinType, EndType, myParams.MiterLimit, roundPrecision);
+    restCArea.Clip(toClipperOp(Area::OperationIntersection), &*myArea, SubjectFill, ClipFill);
+
+    gp_Trsf trsf(myTrsf.Inverted());
+    TopoDS_Shape restShape = Area::toShape(restCArea, false, &trsf);
+    std::shared_ptr<Area> restArea = make_shared<Area>(&myParams);
+    restArea->add(restShape, OperationCompound);
+
+    return restArea;
+}
+
+TopoDS_Shape Area::toTopoShape()
+{
+    build();
+    gp_Trsf trsf = myTrsf.Inverted();
+    return toShape(*myArea, false, &trsf);
 }
 
 
@@ -1624,7 +1697,6 @@ void Area::build() {
     if (myShapes.empty())
         throw Base::ValueError("no shape added");
 
-#define AREA_MY(_param) myParams.PARAM_FNAME(_param)
     PARAM_ENUM_CONVERT(AREA_MY, PARAM_FNAME, PARAM_ENUM_EXCEPT, AREA_PARAMS_CLIPPER_FILL);
 
     if (myHaveSolid && myParams.SectionCount) {
@@ -1637,8 +1709,8 @@ void Area::build() {
     getPlane(&trsf);
 
     try {
-        myArea.reset(new CArea());
-        myAreaOpen.reset(new CArea());
+        myArea = std::make_unique<CArea>();
+        myAreaOpen = std::make_unique<CArea>();
 
         CAreaConfig conf(myParams);
         CArea areaClip;
@@ -2203,7 +2275,7 @@ TopoDS_Shape Area::toShape(const CCurve& _c, const gp_Trsf* trsf, int reorient) 
             double r = center.Distance(pt);
             double r2 = center.Distance(pnext);
             bool fix_arc = fabs(r - r2) > Precision::Confusion();
-            while (1) {
+            while (true) {
                 if (fix_arc) {
                     double d = pt.Distance(pnext);
                     double rr = r * r;

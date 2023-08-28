@@ -31,6 +31,8 @@
 
 #define FC_XLINK_VALUE_INDEX 5
 
+class QTreeWidgetItem;
+
 namespace Gui { namespace Dialog {
 
 class Ui_DlgPropertyLink;
@@ -39,7 +41,7 @@ class DlgPropertyLink : public QDialog, public Gui::SelectionObserver
     Q_OBJECT
 
 public:
-    DlgPropertyLink(QWidget* parent = nullptr);
+    explicit DlgPropertyLink(QWidget* parent = nullptr);
     ~DlgPropertyLink() override;
 
     void accept() override;
@@ -74,10 +76,10 @@ protected:
 
     void onSelectionChanged(const Gui::SelectionChanges& msg) override;
 
-private Q_SLOTS:
-    void on_checkObjectType_toggled(bool);
-    void on_typeTree_itemSelectionChanged();
-    void on_searchBox_textChanged(const QString&);
+private:
+    void onObjectTypeToggled(bool);
+    void onTypeTreeItemSelectionChanged();
+    void onSearchBoxTextChanged(const QString&);
     void onItemExpanded(QTreeWidgetItem * item);
     void onItemSelectionChanged();
     void onItemEntered(QTreeWidgetItem *item);

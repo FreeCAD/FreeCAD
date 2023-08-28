@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
 # ***************************************************************************
 # *                                                                         *
 # *   Copyright (c) 2022-2023 FreeCAD Project Association                   *
@@ -44,7 +45,9 @@ class TestWorkersStartup(unittest.TestCase):
 
     MODULE = "test_workers_startup"  # file name without extension
 
-    @unittest.skipUnless(run_slow_tests, "This integration test is slow and uses the network")
+    @unittest.skipUnless(
+        run_slow_tests, "This integration test is slow and uses the network"
+    )
     def setUp(self):
         """Set up the test"""
         self.test_dir = os.path.join(

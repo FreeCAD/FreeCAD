@@ -49,7 +49,7 @@
         </size>
        </property>
        <property name="toolTip">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Add existing Tool Bit to this library.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        <string>Add existing Tool Bit to this library.</string>
        </property>
        <property name="text">
         <string>Add Existing</string>
@@ -69,7 +69,7 @@
         </size>
        </property>
        <property name="toolTip">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Delete selected Tool Bit(s) from the library.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        <string>Delete selected Tool Bit(s) from the library.</string>
        </property>
        <property name="text">
         <string>Remove</string>
@@ -96,7 +96,7 @@
            </size>
           </property>
           <property name="toolTip">
-           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Select a working path for the tool library editor.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           <string>Select a working path for the tool library editor.</string>
           </property>
           <property name="text">
            <string/>
@@ -116,7 +116,7 @@
            </size>
           </property>
           <property name="toolTip">
-           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Add New Tool Table&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           <string>Add New Tool Table</string>
           </property>
           <property name="text">
            <string/>
@@ -136,7 +136,7 @@
         <item>
          <widget class="QPushButton" name="libraryExport">
           <property name="toolTip">
-           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Save the selected library with a new name or export to another format&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           <string>Save the selected library with a new name or export to another format</string>
           </property>
           <property name="text">
            <string/>
@@ -187,7 +187,7 @@
          <bool>true</bool>
         </property>
         <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Table of Tool Bits of the library.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         <string>Table of Tool Bits of the library.</string>
         </property>
         <property name="frameShape">
          <enum>QFrame::Box</enum>
@@ -266,7 +266,7 @@
         </size>
        </property>
        <property name="toolTip">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Save the current Library&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        <string>Save the current Library</string>
        </property>
        <property name="text">
         <string>Close</string>

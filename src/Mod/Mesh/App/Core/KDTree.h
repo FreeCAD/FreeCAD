@@ -37,7 +37,7 @@ public:
     explicit MeshKDTree(const MeshPointArray& points);
     ~MeshKDTree();
 
-    void AddPoint(Base::Vector3f& point);
+    void AddPoint(const Base::Vector3f& point);
     void AddPoints(const std::vector<Base::Vector3f>& points);
     void AddPoints(const MeshPointArray& points);
 
@@ -55,8 +55,9 @@ private:
     class Private;
     Private* d;
 
-    MeshKDTree(const MeshKDTree&);
-    void operator= (const MeshKDTree&);
+public:
+    MeshKDTree(const MeshKDTree&) = delete;
+    void operator= (const MeshKDTree&) = delete;
 };
 
 } // namespace MeshCore

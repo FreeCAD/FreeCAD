@@ -57,6 +57,9 @@ void DlgPrefsTechDrawAdvancedImp::saveSettings()
     ui->sbMaxTiles->onSave();
     ui->sbMaxPat->onSave();
     ui->cbReportProgress->onSave();
+    ui->cbAutoCorrectRefs->onSave();
+    ui->cbNewFaceFinder->onSave();
+    ui->sbScrubCount->onSave();
 }
 
 void DlgPrefsTechDrawAdvancedImp::loadSettings()
@@ -74,6 +77,9 @@ void DlgPrefsTechDrawAdvancedImp::loadSettings()
     ui->sbMaxTiles->onRestore();
     ui->sbMaxPat->onRestore();
     ui->cbReportProgress->onRestore();
+    ui->cbAutoCorrectRefs->onRestore();
+    ui->cbNewFaceFinder->onRestore();
+    ui->sbScrubCount->onRestore();
 }
 
 /**

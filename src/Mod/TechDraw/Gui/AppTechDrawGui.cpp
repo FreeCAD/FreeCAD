@@ -80,18 +80,18 @@ void loadTechDrawResource()
 {
     // add resources and reloads the translators
     Q_INIT_RESOURCE(TechDraw);
+    Q_INIT_RESOURCE(TechDraw_translation);
     Gui::Translator::instance()->refresh();
 
     // add fonts
     std::string fontDir = App::Application::getResourceDir() + "Mod/TechDraw/Resources/fonts/";
-    QFontDatabase fontDB;
 
     std::vector<std::string> fontsAll(
         {"osifont-lgpl3fe.ttf", "osifont-italic.ttf", "Y14.5-2018.ttf", "Y14.5-FreeCAD.ttf"});
 
     for (auto& font : fontsAll) {
         QString fontFile = Base::Tools::fromStdString(fontDir + font);
-        int rc = fontDB.addApplicationFont(fontFile);
+        int rc = QFontDatabase::addApplicationFont(fontFile);
         if (rc < 0) {
             Base::Console().Warning(
                 "TechDraw failed to load font file: %d from: %s\n", rc, qPrintable(fontFile));
@@ -168,13 +168,13 @@ PyMOD_INIT_FUNC(TechDrawGui)
     TechDrawGui::ViewProviderCosmeticExtension::init();
 
     // register preferences pages
-    new Gui::PrefPageProducer<TechDrawGui::DlgPrefsTechDrawGeneralImp>("TechDraw");   //General
-    new Gui::PrefPageProducer<TechDrawGui::DlgPrefsTechDrawScaleImp>("TechDraw");     //Scale
-    new Gui::PrefPageProducer<TechDrawGui::DlgPrefsTechDrawDimensionsImp>("TechDraw");//Dimensions
-    new Gui::PrefPageProducer<TechDrawGui::DlgPrefsTechDrawAnnotationImp>("TechDraw");//Annotation
-    new Gui::PrefPageProducer<TechDrawGui::DlgPrefsTechDrawColorsImp>("TechDraw");    //Colors
-    new Gui::PrefPageProducer<TechDrawGui::DlgPrefsTechDrawHLRImp>("TechDraw");       //HLR
-    new Gui::PrefPageProducer<TechDrawGui::DlgPrefsTechDrawAdvancedImp>("TechDraw");  //Advanced
+    new Gui::PrefPageProducer<TechDrawGui::DlgPrefsTechDrawGeneralImp>(QT_TRANSLATE_NOOP("QObject", "TechDraw"));   //General
+    new Gui::PrefPageProducer<TechDrawGui::DlgPrefsTechDrawScaleImp>(QT_TRANSLATE_NOOP("QObject", "TechDraw"));     //Scale
+    new Gui::PrefPageProducer<TechDrawGui::DlgPrefsTechDrawDimensionsImp>(QT_TRANSLATE_NOOP("QObject", "TechDraw"));//Dimensions
+    new Gui::PrefPageProducer<TechDrawGui::DlgPrefsTechDrawAnnotationImp>(QT_TRANSLATE_NOOP("QObject", "TechDraw"));//Annotation
+    new Gui::PrefPageProducer<TechDrawGui::DlgPrefsTechDrawColorsImp>(QT_TRANSLATE_NOOP("QObject", "TechDraw"));    //Colors
+    new Gui::PrefPageProducer<TechDrawGui::DlgPrefsTechDrawHLRImp>(QT_TRANSLATE_NOOP("QObject", "TechDraw"));       //HLR
+    new Gui::PrefPageProducer<TechDrawGui::DlgPrefsTechDrawAdvancedImp>(QT_TRANSLATE_NOOP("QObject", "TechDraw"));  //Advanced
 
     // add resources and reloads the translators
     loadTechDrawResource();

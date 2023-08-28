@@ -1,9 +1,8 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
 # basic test script for TechDraw Py functions migrated from Drawing
 
-from __future__ import print_function
 
 import FreeCAD
 import Part

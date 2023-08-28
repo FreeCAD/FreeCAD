@@ -25,7 +25,6 @@
 # *   and modifications (c) luvtofish (luvtofish@gmail.com) 2022            *
 # ***************************************************************************
 
-from __future__ import print_function
 import FreeCAD
 from FreeCAD import Units
 import Path
@@ -33,11 +32,12 @@ import argparse
 import datetime
 import shlex
 import Path.Post.Utils as PostUtils
+import PathScripts.PathUtils as PathUtils
 
 TOOLTIP = """
 This is a post processor file for the FreeCAD Path workbench. It is used to
-take a pseudo-gcode fragment outputted by a Path object, and output
-real GCode suitable for Dynapath Delta 40,50, & 60 Controls. It has been written
+take a pseudo-G-code fragment outputted by a Path object, and output
+real G-code suitable for Dynapath Delta 40,50, & 60 Controls. It has been written
 and tested on FreeCAD Path workbench bundled with FreeCAD v21.
 This post processor, once placed in the appropriate PathScripts folder, can be
 used directly from inside FreeCAD, via the GUI importer or via python scripts with:
@@ -421,7 +421,7 @@ def parse(pathobj):
         if not hasattr(pathobj, "Path"):
             return out
 
-        for c in pathobj.Path.Commands:
+        for c in PathUtils.getPathWithPlacement(pathobj).Commands:
             outstring = []
             command = c.Name
             # Convert G54-G59 Fixture offsets to E01-E06 for Dynapath Delta Control

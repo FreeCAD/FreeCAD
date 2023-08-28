@@ -2,6 +2,7 @@
 
 #include "App/Branding.h"
 
-TEST(Branding, one){
+TEST(Branding, one)
+{
     QString ss {};
 }

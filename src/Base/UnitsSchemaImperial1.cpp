@@ -37,23 +37,6 @@
 
 using namespace Base;
 
-//void UnitsSchemaImperial1::setSchemaUnits(void){
-//    // here you could change the constances used by the parser (defined in Quantity.cpp)
-//    Quantity::Inch =  Quantity (25.4          ,Unit(1));
-//    Quantity::Foot =  Quantity (304.8         ,Unit(1));
-//    Quantity::Thou =  Quantity (0.0254        ,Unit(1));
-//    Quantity::Yard =  Quantity (914.4         ,Unit(1));
-//    Quantity::Mile =  Quantity (1609344.0     ,Unit(1));
-//}
-//
-//void UnitsSchemaImperial1::resetSchemaUnits(void){
-//    // set units to US customary / Imperial units
-//    Quantity::Inch =  Quantity (25.4          ,Unit(1));
-//    Quantity::Foot =  Quantity (304.8         ,Unit(1));
-//    Quantity::Thou =  Quantity (0.0254        ,Unit(1));
-//    Quantity::Yard =  Quantity (914.4         ,Unit(1));
-//    Quantity::Mile =  Quantity (1609344.0     ,Unit(1));
-//}
 
 QString UnitsSchemaImperial1::schemaTranslate(const Quantity &quant, double &factor, QString &unitString)
 {
@@ -218,18 +201,18 @@ QString UnitsSchemaImperialBuilding::schemaTranslate(const Quantity &quant, doub
         double totalInches = std::abs(quant.getValue())/factor;
 
         // minimum denominator (8 for 1/8, 16 for 1/16, etc)
-        int       minden;
+        int       minden{};
 
         // Outputs
-        int       feet;    // whole feet
-        int       inches;  // whole inches
-        int       num,den; // numerator and denominator of fractional val
+        int       feet{};      // whole feet
+        int       inches{};    // whole inches
+        int       num{},den{}; // numerator and denominator of fractional val
         std::stringstream output; // output stream
 
         // Intermediate values
-        int       ntot;    // total fractional units
-        int       a,b,d;   // used to compute greatest common denominator
-        int       tmp;     // temporary variable for GCD
+        int       ntot{};        // total fractional units
+        int       a{},b{},d{};   // used to compute greatest common denominator
+        int       tmp{};         // temporary variable for GCD
 
         // Get the current user specified minimum denominator
         minden = quant.getFormat().getDenominator();
@@ -274,35 +257,32 @@ QString UnitsSchemaImperialBuilding::schemaTranslate(const Quantity &quant, doub
 
         // Process into string. Start with negative sign if quantity is less
         // than zero
+        char plusOrMinus;
         if( quant.getValue() < 0 )
+        {
             output << "-";
+            plusOrMinus = '-';
+        }
+        else plusOrMinus = '+';
 
+        bool trailingNumber = false;
         // Print feet if we have any
         if( feet!=0 )
         {
             output << feet << "'";
-
-            // if there is to be trailing numbers, add space
-            if( inches!=0 || num!=0 )
-            {
-                output << " ";
-            }
+            trailingNumber = true;
         }
-
-        // Three cases:
-        //   1. Whole inches, no fraction
-        //   2. Whole inches, fraction
-        //   3. Fraction only
-        if( inches>0 && num==0 ) // case 1.
+        // Print whole inches if we have any
+        if( inches!=0 )
         {
+            if (trailingNumber) output << " ";
             output << inches << "\"";
+            trailingNumber = true;
         }
-        else if( inches>0 && num!=0 ) // case 2
+        // Print fractional inches if we have any
+        if( num!=0 )
         {
-            output << inches << "+" << num << "/" << den << "\"";
-        }
-        else if( inches==0 && num!=0 ) // case 3
-        {
+            if (trailingNumber) output << " " << plusOrMinus << " ";
             output << num << "/" << den << "\"";
         }
 
@@ -384,8 +364,6 @@ QString UnitsSchemaImperialCivil::schemaTranslate(const Base::Quantity& quant, d
         double wholeMinutes = std::floor(rawMinutes);
         double sumSeconds = totalDegrees * 3600.0;          //quant as seconds
         double rawSeconds = sumSeconds - (wholeDegrees * 3600.0) - (wholeMinutes * 60);
-//        double wholeSeconds = std::floor(rawSeconds);
-//        double remainSeconds = rawSeconds - wholeSeconds;
 
         int outDeg = static_cast<int>(wholeDegrees);
         int outMin = static_cast<int>(wholeMinutes);

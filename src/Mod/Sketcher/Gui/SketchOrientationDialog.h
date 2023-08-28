@@ -29,10 +29,11 @@
 #include <Mod/Sketcher/SketcherGlobal.h>
 
 
-namespace SketcherGui {
+namespace SketcherGui
+{
 
 class Ui_SketchOrientationDialog;
-class SketcherGuiExport SketchOrientationDialog : public QDialog
+class SketcherGuiExport SketchOrientationDialog: public QDialog
 {
     Q_OBJECT
 
@@ -41,7 +42,7 @@ public:
     ~SketchOrientationDialog() override;
 
     Base::Placement Pos;
-    int             DirType;
+    int DirType;
 
     void accept() override;
 
@@ -52,6 +53,6 @@ private:
     std::unique_ptr<Ui_SketchOrientationDialog> ui;
 };
 
-}
+}// namespace SketcherGui
 
-#endif // SKETCHERGUI_SketchOrientationDialog_H
+#endif// SKETCHERGUI_SketchOrientationDialog_H

@@ -52,6 +52,12 @@ class ViewProviderPoint(ViewProviderDraft):
     def getIcon(self):
         return ":/icons/Draft_Dot.svg"
 
+    def doubleClicked(self, vobj):
+        # See setEdit in ViewProviderDraft.
+        import FreeCADGui as Gui
+        Gui.runCommand("Std_TransformManip")
+        return True
+
 
 # Alias for compatibility with v0.18 and earlier
 _ViewProviderPoint = ViewProviderPoint

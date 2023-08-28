@@ -68,17 +68,14 @@ using namespace std;
 // helpers
 bool getConstraintPrerequisits(Fem::FemAnalysis** Analysis)
 {
-    Fem::FemAnalysis* ActiveAnalysis =
-        FemGui::ActiveAnalysisObserver::instance()->getActiveObject();
-    if (!ActiveAnalysis
-        || !ActiveAnalysis->getTypeId().isDerivedFrom(Fem::FemAnalysis::getClassTypeId())) {
+    if (!FemGui::ActiveAnalysisObserver::instance()->hasActiveObject()) {
         QMessageBox::warning(Gui::getMainWindow(),
                              QObject::tr("No active Analysis"),
                              QObject::tr("You need to create or activate a Analysis"));
         return true;
     }
 
-    *Analysis = static_cast<Fem::FemAnalysis*>(ActiveAnalysis);
+    *Analysis = FemGui::ActiveAnalysisObserver::instance()->getActiveObject();
 
     // return with no error
     return false;
@@ -167,115 +164,6 @@ bool CmdFemAddPart::isActive(void)
 }
 */
 
-//================================================================================================
-// analysis
-/* done in Python
-DEF_STD_CMD_A(CmdFemCreateAnalysis)
-
-CmdFemCreateAnalysis::CmdFemCreateAnalysis()
-  : Command("FEM_CreateAnalysis")
-{
-    sAppModule      = "Fem";
-    sGroup          = QT_TR_NOOP("Fem");
-    sMenuText       = QT_TR_NOOP("Create a FEM analysis");
-    sToolTipText    = QT_TR_NOOP("Create a FEM analysis");
-    sWhatsThis      = "FEM_CreateAnalysis";
-    sStatusTip      = sToolTipText;
-    sPixmap         = "FEM_Analysis";
-}
-
-void CmdFemCreateAnalysis::activated(int)
-{
-#ifndef FCWithNetgen
-    QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-            QObject::tr("Your FreeCAD is built without NETGEN support. Meshing will not work...."));
-    return;
-#endif
-
-    std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx();
-
-    if (selection.size() != 1) {
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-            QObject::tr("Select an edge, face, or body. Only one body is allowed."));
-        return;
-    }
-
-    if (!selection[0].isObjectTypeOf(Part::Feature::getClassTypeId())){
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong object type"),
-            QObject::tr("Fillet works only on parts"));
-        return;
-    }
-
-    Part::Feature *base = static_cast<Part::Feature*>(selection[0].getObject());
-
-    std::string AnalysisName = getUniqueObjectName("FemAnalysis");
-
-    std::string MeshName = getUniqueObjectName((std::string(base->getNameInDocument()) +"_Mesh").c_str());
-
-
-    openCommand(QT_TRANSLATE_NOOP("Command", "Create FEM analysis"));
-    doCommand(Doc,"App.activeDocument().addObject('Fem::FemAnalysis','%s')",AnalysisName.c_str());
-    doCommand(Doc,"App.activeDocument().addObject('Fem::FemMeshShapeNetgenObject','%s')",MeshName.c_str());
-    doCommand(Doc,"App.activeDocument().ActiveObject.Shape = App.activeDocument().%s",base->getNameInDocument());
-    doCommand(Doc,"App.activeDocument().%s.addObject(App.activeDocument().%s)",AnalysisName.c_str(),MeshName.c_str());
-    addModule(Gui,"FemGui");
-    doCommand(Gui,"FemGui.setActiveAnalysis(App.activeDocument().%s)",AnalysisName.c_str());
-    commitCommand();
-
-    updateActive();
-}
-
-bool CmdFemCreateAnalysis::isActive(void)
-{
-    return !FemGui::ActiveAnalysisObserver::instance()->hasActiveObject();
-}
-*/
-
-//================================================================================================
-// solver
-/* done in Python
-DEF_STD_CMD_A(CmdFemCreateSolver)
-
-CmdFemCreateSolver::CmdFemCreateSolver()
-  : Command("FEM_CreateSolver")
-{
-    sAppModule      = "Fem";
-    sGroup          = QT_TR_NOOP("Fem");
-    sMenuText       = QT_TR_NOOP("Add a solver to the analysis");
-    sToolTipText    = QT_TR_NOOP("Add a solver to the Analysis");
-    sWhatsThis      = "FEM_CreateSolver";
-    sStatusTip      = sToolTipText;
-    sPixmap         = "FEM_SolverStandard";
-}
-
-void CmdFemCreateSolver::activated(int)
-{
-#ifndef FCWithNetgen
-    QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-            QObject::tr("Your FreeCAD is built without NETGEN support. Meshing will not work...."));
-    return;
-#endif
-
-    Fem::FemAnalysis        *Analysis;
-
-    if(getConstraintPrerequisits(&Analysis))
-        return;
-
-    std::string FeatName = getUniqueObjectName("Solver");
-
-    openCommand(QT_TRANSLATE_NOOP("Command", "Create solver for FEM or CFD analysis"));
-    doCommand(Doc,"App.activeDocument().addObject(\"Fem::FemSolverObject\",\"%s\")",FeatName.c_str());
-    doCommand(Doc,"App.activeDocument().%s.addObject(App.activeDocument().%s)",Analysis->getNameInDocument(),FeatName.c_str());
-    updateActive();
-
-    doCommand(Gui,"Gui.activeDocument().setEdit('%s')",FeatName.c_str());
-}
-
-bool CmdFemCreateSolver::isActive(void)
-{
-    return hasActiveDocument();
-}
-*/
 
 //================================================================================================
 //================================================================================================
@@ -854,10 +742,10 @@ void CmdFemConstraintSpring::activated(int)
     doCommand(
         Doc, "App.activeDocument().addObject(\"Fem::ConstraintSpring\",\"%s\")", FeatName.c_str());
     doCommand(Doc,
-              "App.activeDocument().%s.normalStiffness = 1.0",
+              "App.activeDocument().%s.NormalStiffness = 1.0",
               FeatName.c_str());//OvG: set default not equal to 0
     doCommand(Doc,
-              "App.activeDocument().%s.tangentialStiffness = 0.0",
+              "App.activeDocument().%s.TangentialStiffness = 0.0",
               FeatName.c_str());//OvG: set default to False
     doCommand(
         Doc, "App.activeDocument().%s.Scale = 1", FeatName.c_str());//OvG: set initial scale to 1
@@ -1062,8 +950,8 @@ void DefineNodesCallback(void* ud, SoEventCallback* n)
     SbViewVolume vv = cam->getViewVolume();
     Gui::ViewVolumeProjection proj(vv);
     Base::Polygon2d polygon;
-    for (std::vector<SbVec2f>::const_iterator it = clPoly.begin(); it != clPoly.end(); ++it)
-        polygon.Add(Base::Vector2d((*it)[0], (*it)[1]));
+    for (auto it : clPoly)
+        polygon.Add(Base::Vector2d(it[0], it[1]));
 
 
     std::vector<App::DocumentObject*> docObj =
@@ -1238,7 +1126,7 @@ bool CmdFemCreateNodesSet::isActive()
 
 
 //===========================================================================
-// FEM_CompEmConstraints (dropdown toolbar button for Electromagnetic constraints)
+// FEM_CompEmConstraints (dropdown toolbar button for electromagnetic constraints)
 //===========================================================================
 
 DEF_STD_CMD_ACL(CmdFemCompEmConstraints)
@@ -1248,7 +1136,7 @@ CmdFemCompEmConstraints::CmdFemCompEmConstraints()
 {
     sAppModule = "Fem";
     sGroup = QT_TR_NOOP("Fem");
-    sMenuText = QT_TR_NOOP("Electromagnetic constraints...");
+    sMenuText = QT_TR_NOOP("Electromagnetic constraints");
     sToolTipText = QT_TR_NOOP("Electromagnetic constraints");
     sWhatsThis = "";
     sStatusTip = sToolTipText;
@@ -1350,35 +1238,29 @@ void CmdFemCompEmConstraints::languageChange()
 bool CmdFemCompEmConstraints::isActive()
 {
     // only if there is an active analysis
-    Fem::FemAnalysis* ActiveAnalysis =
-        FemGui::ActiveAnalysisObserver::instance()->getActiveObject();
-    if (!ActiveAnalysis
-        || !ActiveAnalysis->getTypeId().isDerivedFrom(Fem::FemAnalysis::getClassTypeId()))
-        return false;
-
-    return true;
+    return FemGui::ActiveAnalysisObserver::instance()->hasActiveObject();
 }
 
 
 //===========================================================================
-// FEM_CompEmEquations (dropdown toolbar button for Electromagnetic equations)
+// FEM_CompEmEquations (dropdown toolbar button for electromagnetic equations)
 //===========================================================================
 
-DEF_STD_CMD_ACL(CmdFEMCompEmEquations)
+DEF_STD_CMD_ACL(CmdFemCompEmEquations)
 
-CmdFEMCompEmEquations::CmdFEMCompEmEquations()
+CmdFemCompEmEquations::CmdFemCompEmEquations()
     : Command("FEM_CompEmEquations")
 {
     sAppModule = "Fem";
     sGroup = QT_TR_NOOP("Fem");
-    sMenuText = QT_TR_NOOP("Electromagnetic Equations");
+    sMenuText = QT_TR_NOOP("Electromagnetic equations");
     sToolTipText = QT_TR_NOOP(
         "Electromagnetic equations for the Elmer solver");
     sWhatsThis = "FEM_CompEmEquations";
     sStatusTip = sToolTipText;
 }
 
-void CmdFEMCompEmEquations::activated(int iMsg)
+void CmdFemCompEmEquations::activated(int iMsg)
 {
     Gui::CommandManager& rcCmdMgr = Gui::Application::Instance->commandManager();
     if (iMsg == 0)
@@ -1401,7 +1283,7 @@ void CmdFEMCompEmEquations::activated(int iMsg)
     pcAction->setIcon(a[iMsg]->icon());
 }
 
-Gui::Action* CmdFEMCompEmEquations::createAction()
+Gui::Action* CmdFemCompEmEquations::createAction()
 {
     Gui::ActionGroup* pcAction = new Gui::ActionGroup(this, Gui::getMainWindow());
     pcAction->setDropDownMenu(true);
@@ -1426,7 +1308,7 @@ Gui::Action* CmdFEMCompEmEquations::createAction()
     return pcAction;
 }
 
-void CmdFEMCompEmEquations::languageChange()
+void CmdFemCompEmEquations::languageChange()
 {
     Command::languageChange();
 
@@ -1485,17 +1367,15 @@ void CmdFEMCompEmEquations::languageChange()
     }
 }
 
-bool CmdFEMCompEmEquations::isActive()
+bool CmdFemCompEmEquations::isActive()
 {
     // only if there is an active analysis
-    Fem::FemAnalysis* ActiveAnalysis =
-        FemGui::ActiveAnalysisObserver::instance()->getActiveObject();
-    if (!ActiveAnalysis
-        || !ActiveAnalysis->getTypeId().isDerivedFrom(Fem::FemAnalysis::getClassTypeId()))
+    if (!FemGui::ActiveAnalysisObserver::instance()->hasActiveObject())
         return false;
 
     // only activate if a single Elmer object is selected
-    auto results = getSelection().getSelectionEx(nullptr, App::DocumentObject::getClassTypeId(), Gui::ResolveMode::FollowLink); //.getObjectsOfType<femsolver.elmer.solver.Proxy>();
+    auto results = getSelection().getSelectionEx(
+        nullptr, App::DocumentObject::getClassTypeId(), Gui::ResolveMode::FollowLink);
     if (results.size() == 1) {
         auto object = results.begin()->getObject();
         // FIXME: this is not unique since the Ccx solver object has the same type
@@ -1505,6 +1385,119 @@ bool CmdFEMCompEmEquations::isActive()
     }
     return false;
 }
+
+
+//===========================================================================
+// FEM_CompMechEquations (dropdown toolbar button for mechanical equations)
+//===========================================================================
+
+DEF_STD_CMD_ACL(CmdFemCompMechEquations)
+
+CmdFemCompMechEquations::CmdFemCompMechEquations()
+    : Command("FEM_CompMechEquations")
+{
+    sAppModule = "Fem";
+    sGroup = QT_TR_NOOP("Fem");
+    sMenuText = QT_TR_NOOP("Mechanical equations");
+    sToolTipText = QT_TR_NOOP("Mechanical equations for the Elmer solver");
+    sWhatsThis = "FEM_CompMechEquations";
+    sStatusTip = sToolTipText;
+}
+
+void CmdFemCompMechEquations::activated(int iMsg)
+{
+    Gui::CommandManager& rcCmdMgr = Gui::Application::Instance->commandManager();
+    if (iMsg == 0)
+        rcCmdMgr.runCommandByName("FEM_EquationElasticity");
+    else if (iMsg == 1)
+        rcCmdMgr.runCommandByName("FEM_EquationDeformation");
+    else
+        return;
+
+    // Since the default icon is reset when enabling/disabling the command we have
+    // to explicitly set the icon of the used command.
+    Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(_pcAction);
+    QList<QAction*> a = pcAction->actions();
+
+    assert(iMsg < a.size());
+    pcAction->setIcon(a[iMsg]->icon());
+}
+
+Gui::Action* CmdFemCompMechEquations::createAction()
+{
+    Gui::ActionGroup* pcAction = new Gui::ActionGroup(this, Gui::getMainWindow());
+    pcAction->setDropDownMenu(true);
+    applyCommandData(this->className(), pcAction);
+
+    QAction* cmd0 = pcAction->addAction(QString());
+    cmd0->setIcon(Gui::BitmapFactory().iconFromTheme("FEM_EquationElasticity"));
+    QAction* cmd1 = pcAction->addAction(QString());
+    cmd1->setIcon(Gui::BitmapFactory().iconFromTheme("FEM_EquationDeformation"));
+
+    _pcAction = pcAction;
+    languageChange();
+
+    pcAction->setIcon(cmd0->icon());
+    int defaultId = 0;
+    pcAction->setProperty("defaultAction", QVariant(defaultId));
+
+    return pcAction;
+}
+
+void CmdFemCompMechEquations::languageChange()
+{
+    Command::languageChange();
+
+    if (!_pcAction)
+        return;
+
+    Gui::CommandManager& rcCmdMgr = Gui::Application::Instance->commandManager();
+
+    Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(_pcAction);
+    QList<QAction*> a = pcAction->actions();
+
+    Gui::Command* EquationElasticity = rcCmdMgr.getCommandByName("FEM_EquationElasticity");
+    if (EquationElasticity) {
+        QAction* cmd1 = a[0];
+        cmd1->setText(QApplication::translate("FEM_EquationElasticity",
+                                              EquationElasticity->getMenuText()));
+        cmd1->setToolTip(QApplication::translate("FEM_EquationElasticity",
+                                                 EquationElasticity->getToolTipText()));
+        cmd1->setStatusTip(QApplication::translate("FEM_EquationElasticity",
+                                                   EquationElasticity->getStatusTip()));
+    }
+
+    Gui::Command* EquationDeformation = rcCmdMgr.getCommandByName("FEM_EquationDeformation");
+    if (EquationDeformation) {
+        QAction* cmd0 = a[1];
+        cmd0->setText(
+            QApplication::translate("FEM_EquationDeformation", EquationDeformation->getMenuText()));
+        cmd0->setToolTip(QApplication::translate("FEM_EquationDeformation",
+                                                 EquationDeformation->getToolTipText()));
+        cmd0->setStatusTip(QApplication::translate("FEM_EquationDeformation",
+                                                   EquationDeformation->getStatusTip()));
+    }
+}
+
+bool CmdFemCompMechEquations::isActive()
+{
+    // only if there is an active analysis
+    if (!FemGui::ActiveAnalysisObserver::instance()->hasActiveObject())
+        return false;
+
+    // only activate if a single Elmer object is selected
+    auto results = getSelection().getSelectionEx(
+        nullptr, App::DocumentObject::getClassTypeId(), Gui::ResolveMode::FollowLink);
+    if (results.size() == 1) {
+        auto object = results.begin()->getObject();
+        // FIXME: this is not unique since the Ccx solver object has the same type
+        std::string Type = "Fem::FemSolverObjectPython";
+        if (Type.compare(object->getTypeId().getName()) == 0)
+            return true;
+    }
+    return false;
+}
+
 
 //================================================================================================
 //================================================================================================
@@ -1706,7 +1699,7 @@ CmdFemPostClipFilter::CmdFemPostClipFilter()
     sGroup = QT_TR_NOOP("Fem");
     sMenuText = QT_TR_NOOP("Region clip filter");
     sToolTipText =
-        QT_TR_NOOP("Define/create a clip filter which uses functions to define the cliped region");
+        QT_TR_NOOP("Define/create a clip filter which uses functions to define the clipped region");
     sWhatsThis = "FEM_PostFilterClipRegion";
     sStatusTip = sToolTipText;
     sPixmap = "FEM_PostFilterClipRegion";
@@ -2019,7 +2012,7 @@ bool CmdFemPostWarpVectorFilter::isActive()
         return false;
     // only activate if a result is either a post pipeline or a possible other filter
     if (getSelection().getObjectsOfType<Fem::FemPostPipeline>().size() == 1)
-        return true; 
+        return true;
     else if (getSelection().getObjectsOfType<Fem::FemPostClipFilter>().size() == 1)
         return true;
     else if (getSelection().getObjectsOfType<Fem::FemPostCutFilter>().size() == 1)
@@ -2102,6 +2095,10 @@ void CmdFemPostFunctions::activated(int iMsg)
         name = "Plane";
     else if (iMsg == 1)
         name = "Sphere";
+    else if (iMsg == 2)
+        name = "Cylinder";
+    else if (iMsg == 3)
+        name = "Box";
     else
         return;
 
@@ -2149,14 +2146,15 @@ void CmdFemPostFunctions::activated(int iMsg)
         double center[3];
         box.GetCenter(center);
 
-        if (iMsg == 0)
+        if (iMsg == 0) { // Plane
             doCommand(Doc,
                       "App.ActiveDocument.%s.Origin = App.Vector(%f, %f, %f)",
                       FeatName.c_str(),
                       center[0],
                       center[1],
                       center[2]);
-        else if (iMsg == 1) {
+        }
+        else if (iMsg == 1) { // Sphere
             doCommand(Doc,
                       "App.ActiveDocument.%s.Center = App.Vector(%f, %f, %f)",
                       FeatName.c_str(),
@@ -2168,7 +2166,39 @@ void CmdFemPostFunctions::activated(int iMsg)
                       FeatName.c_str(),
                       box.GetDiagonalLength() / 2);
         }
-
+        else if (iMsg == 2) { // Cylinder
+            doCommand(Doc,
+                      "App.ActiveDocument.%s.Center = App.Vector(%f, %f, %f)",
+                      FeatName.c_str(),
+                      center[0],
+                      center[1] + box.GetLength(1) / 2,
+                      center[2]);
+            doCommand(Doc,
+                      "App.ActiveDocument.%s.Radius = %f",
+                      FeatName.c_str(),
+                      box.GetDiagonalLength() / 3.6); // make cylinder a bit higher than the box
+        }
+        else if (iMsg == 3) { // Box
+            doCommand(Doc,
+                      "App.ActiveDocument.%s.Center = App.Vector(%f, %f, %f)",
+                      FeatName.c_str(),
+                      center[0] + box.GetLength(0) / 2,
+                      center[1] + box.GetLength(1) / 2,
+                      center[2]);
+            doCommand(Doc,
+                      "App.ActiveDocument.%s.Length = %f",
+                      FeatName.c_str(),
+                      box.GetLength(0));
+            doCommand(Doc,
+                      "App.ActiveDocument.%s.Width = %f",
+                      FeatName.c_str(),
+                      box.GetLength(1));
+            doCommand(Doc,
+                      "App.ActiveDocument.%s.Height = %f",
+                      FeatName.c_str(),
+                      // purposely a bit higher to avoid rendering artifacts at the box border
+                      1.1 * box.GetLength(2));
+        }
 
         this->updateActive();
         //most of the times functions are added inside of a filter, make sure this still works
@@ -2202,6 +2232,12 @@ Gui::Action* CmdFemPostFunctions::createAction()
     QAction* cmd1 = pcAction->addAction(QString());
     cmd1->setIcon(Gui::BitmapFactory().iconFromTheme("fem-post-geo-sphere"));
 
+    QAction* cmd2 = pcAction->addAction(QString());
+    cmd2->setIcon(Gui::BitmapFactory().iconFromTheme("fem-post-geo-cylinder"));
+
+    QAction* cmd3 = pcAction->addAction(QString());
+    cmd3->setIcon(Gui::BitmapFactory().iconFromTheme("fem-post-geo-box"));
+
     _pcAction = pcAction;
     languageChange();
 
@@ -2233,6 +2269,17 @@ void CmdFemPostFunctions::languageChange()
         "FEM_PostCreateFunctions", "Create a sphere function, defined by its center and radius"));
     cmd->setStatusTip(cmd->toolTip());
 
+    cmd = a[2];
+    cmd->setText(QApplication::translate("CmdFemPostFunctions", "Cylinder"));
+    cmd->setToolTip(QApplication::translate(
+        "FEM_PostCreateFunctions", "Create a cylinder function, defined by its center, axis and radius"));
+    cmd->setStatusTip(cmd->toolTip());
+
+    cmd = a[3];
+    cmd->setText(QApplication::translate("CmdFemPostFunctions", "Box"));
+    cmd->setToolTip(QApplication::translate(
+        "FEM_PostCreateFunctions", "Create a box function, defined by its center, length, width and height"));
+    cmd->setStatusTip(cmd->toolTip());
 }
 
 bool CmdFemPostFunctions::isActive()
@@ -2317,12 +2364,11 @@ void CmdFemPostPipelineFromResult::activated(int)
     const std::vector<App::DocumentObject*> obj =
         app->getObjectsOfType(App::DocumentObject::getClassTypeId());
 
-    for (std::vector<App::DocumentObject*>::const_iterator it = obj.begin(); it != obj.end();
-         ++it) {
+    for (auto it : obj) {
         doCommand(Gui,
                   "Gui.getDocument(\"%s\").getObject(\"%s\").Visibility=False",
                   app->getName(),
-                  (*it)->getNameInDocument());
+                  it->getNameInDocument());
     }
 
     // we need single result object to attach the pipeline to
@@ -2412,13 +2458,14 @@ void CreateFemCommands()
     rcCmdMgr.addCommand(new CmdFemConstraintTransform());
     rcCmdMgr.addCommand(new CmdFemConstraintSpring());
     rcCmdMgr.addCommand(new CmdFemCompEmConstraints());
+    rcCmdMgr.addCommand(new CmdFemCompMechEquations());
 
     // mesh
     rcCmdMgr.addCommand(new CmdFemCreateNodesSet());
     rcCmdMgr.addCommand(new CmdFemDefineNodesSet());
 
     // equations
-    rcCmdMgr.addCommand(new CmdFEMCompEmEquations());
+    rcCmdMgr.addCommand(new CmdFemCompEmEquations());
 
     // vtk post processing
 #ifdef FC_USE_VTK
@@ -2432,6 +2479,6 @@ void CreateFemCommands()
     rcCmdMgr.addCommand(new CmdFemPostFunctions);
     rcCmdMgr.addCommand(new CmdFemPostPipelineFromResult);
     rcCmdMgr.addCommand(new CmdFemPostScalarClipFilter);
-    rcCmdMgr.addCommand(new CmdFemPostWarpVectorFilter);  
+    rcCmdMgr.addCommand(new CmdFemPostWarpVectorFilter);
 #endif
 }

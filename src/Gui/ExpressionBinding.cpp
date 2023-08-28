@@ -45,19 +45,11 @@ FC_LOG_LEVEL_INIT("Expression",true,true)
 
 using namespace Gui;
 using namespace App;
-namespace bp = boost::placeholders;
+namespace sp = std::placeholders;
 
-ExpressionBinding::ExpressionBinding()
-    : iconLabel(nullptr)
-    , iconHeight(-1)
-    , m_autoApply(false)
-{
-}
+ExpressionBinding::ExpressionBinding() = default;
 
-
-ExpressionBinding::~ExpressionBinding()
-{
-}
+ExpressionBinding::~ExpressionBinding() = default;
 
 bool ExpressionBinding::isBound() const
 {
@@ -113,9 +105,11 @@ void ExpressionBinding::bind(const App::ObjectIdentifier &_path)
     //connect to be informed about changes
     DocumentObject * docObj = path.getDocumentObject();
     if (docObj) {
-        expressionchanged = docObj->ExpressionEngine.expressionChanged.connect(boost::bind(&ExpressionBinding::expressionChange, this, bp::_1));
+        //NOLINTBEGIN
+        expressionchanged = docObj->ExpressionEngine.expressionChanged.connect(std::bind(&ExpressionBinding::expressionChange, this, sp::_1));
         App::Document* doc = docObj->getDocument();
-        objectdeleted = doc->signalDeletedObject.connect(boost::bind(&ExpressionBinding::objectDeleted, this, bp::_1));
+        objectdeleted = doc->signalDeletedObject.connect(std::bind(&ExpressionBinding::objectDeleted, this, sp::_1));
+        //NOLINTEND
     }
 }
 
@@ -160,7 +154,7 @@ std::string ExpressionBinding::getExpressionString(bool no_throw) const
         else
             throw;
     }
-    return std::string();
+    return {};
 }
 
 std::string ExpressionBinding::getEscapedExpressionString() const
@@ -188,22 +182,6 @@ bool ExpressionBinding::assignToProperty(const std::string & propName, double va
 
     Gui::Command::doCommand(Gui::Command::Doc, "%s = %f", propName.c_str(), value);
     return true;
-}
-
-QPixmap ExpressionBinding::getIcon(const char* name, const QSize& size) const
-{
-    QString key = QString::fromLatin1("%1_%2x%3")
-        .arg(QString::fromLatin1(name))
-        .arg(size.width())
-        .arg(size.height());
-    QPixmap icon;
-    if (QPixmapCache::find(key, &icon))
-        return icon;
-
-    icon = BitmapFactory().pixmapFromSvg(name, size);
-    if (!icon.isNull())
-        QPixmapCache::insert(key, icon);
-    return icon;
 }
 
 bool ExpressionBinding::apply(const std::string & propName)
@@ -294,7 +272,27 @@ void ExpressionBinding::objectDeleted(const App::DocumentObject& obj)
     }
 }
 
-void ExpressionBinding::makeLabel(QLineEdit* le)
+// ----------------------------------------------------------------------------
+
+ExpressionWidget::ExpressionWidget() = default;
+
+QPixmap ExpressionWidget::getIcon(const char* name, const QSize& size) const
+{
+    QString key = QString::fromLatin1("%1_%2x%3")
+        .arg(QString::fromLatin1(name))
+        .arg(size.width())
+        .arg(size.height());
+    QPixmap icon;
+    if (QPixmapCache::find(key, &icon))
+        return icon;
+
+    icon = BitmapFactory().pixmapFromSvg(name, size);
+    if (!icon.isNull())
+        QPixmapCache::insert(key, icon);
+    return icon;
+}
+
+void ExpressionWidget::makeLabel(QLineEdit* le)
 {
     defaultPalette = le->palette();
 

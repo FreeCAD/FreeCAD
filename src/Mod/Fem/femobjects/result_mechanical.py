@@ -24,7 +24,7 @@
 
 __title__ = "FreeCAD FEM result mechanical document object"
 __author__ = "Qingfeng Xia, Bernd Hahnebach"
-__url__ = "https://www.freecadweb.org"
+__url__ = "https://www.freecad.org"
 
 ## @package result_mechanical
 #  \ingroup FEM
@@ -70,7 +70,7 @@ class ResultMechanical(base_fempythonobject.BaseFemPythonObject):
 
         # node results
         # set read only or hide a property:
-        # https://forum.freecadweb.org/viewtopic.php?f=18&t=13460&start=10#p108072
+        # https://forum.freecad.org/viewtopic.php?f=18&t=13460&start=10#p108072
         # do not show up in propertyEditor of comboView
         obj.addProperty(
             "App::PropertyVectorList",
@@ -115,7 +115,7 @@ class ResultMechanical(base_fempythonobject.BaseFemPythonObject):
             True
         )
         # these three principal vectors are used only if there is a reinforced mat obj
-        # https://forum.freecadweb.org/viewtopic.php?f=18&t=33106&p=416006#p416006
+        # https://forum.freecad.org/viewtopic.php?f=18&t=33106&p=416006#p416006
         obj.addProperty(
             "App::PropertyVectorList",
             "PS1Vector",

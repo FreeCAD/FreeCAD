@@ -22,19 +22,21 @@ import importlib
 import sys
 from PySide2 import QtGui
 
+
 def init_gui():
     try:
         FreeCADGui.setupWithoutGUI()
     except Exception as e:
         pass
 
-def make_snapshot(input_file, output_file, size = 48):
+
+def make_snapshot(input_file, output_file, size=48):
     from pivy import coin
 
     ext = os.path.splitext(input_file)[1][1:]
     mod = FreeCAD.getImportType(ext)
     if len(mod) == 0:
-        print ("Cannot load file {}".format(input_file))
+        print("Cannot load file {}".format(input_file))
         return
 
     # use the first listed module
@@ -43,7 +45,7 @@ def make_snapshot(input_file, output_file, size = 48):
 
     doc = FreeCAD.ActiveDocument
     if doc is None:
-        print ("No active document")
+        print("No active document")
         return
 
     init_gui()
@@ -64,9 +66,9 @@ def make_snapshot(input_file, output_file, size = 48):
     height = size
     viewport = coin.SbViewportRegion(width, height)
     cam.orientation.setValue(axo)
-    cam.viewAll(root,viewport)
+    cam.viewAll(root, viewport)
     off = FreeCADGui.SoQtOffscreenRenderer(width, height)
-    off.setBackgroundColor(1,1,1)
+    off.setBackgroundColor(1, 1, 1)
     root.ref()
 
     # A QGuiApplication is needed to create an OpenGL context

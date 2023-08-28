@@ -38,9 +38,7 @@ const int PropertyColumnWidths::defaultHeaderWidth = 50;
 
 TYPESYSTEM_SOURCE(Spreadsheet::PropertyColumnWidths , App::Property)
 
-PropertyColumnWidths::PropertyColumnWidths()
-{
-}
+PropertyColumnWidths::PropertyColumnWidths() = default;
 
 PropertyColumnWidths::PropertyColumnWidths(const PropertyColumnWidths &other)
   : Property(), std::map<int, int>(other)

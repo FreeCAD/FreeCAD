@@ -61,6 +61,8 @@ DlgParameterImp::DlgParameterImp( QWidget* parent,  Qt::WindowFlags fl )
   , ui(new Ui_DlgParameter)
 {
     ui->setupUi(this);
+    setupConnections();
+
     ui->checkSort->setVisible(false); // for testing
 
     QStringList groupLabels;
@@ -129,14 +131,28 @@ DlgParameterImp::~DlgParameterImp()
     delete ui;
 }
 
-void DlgParameterImp::on_buttonFind_clicked()
+void DlgParameterImp::setupConnections()
+{
+    connect(ui->buttonFind, &QPushButton::clicked,
+            this, &DlgParameterImp::onButtonFindClicked);
+    connect(ui->findGroupLE, &QLineEdit::textChanged,
+            this, &DlgParameterImp::onFindGroupTtextChanged);
+    connect(ui->buttonSaveToDisk, &QPushButton::clicked,
+            this, &DlgParameterImp::onButtonSaveToDiskClicked);
+    connect(ui->closeButton, &QPushButton::clicked,
+            this, &DlgParameterImp::onCloseButtonClicked);
+    connect(ui->checkSort, &QCheckBox::toggled,
+            this, &DlgParameterImp::onCheckSortToggled);
+}
+
+void DlgParameterImp::onButtonFindClicked()
 {
     if (finder.isNull())
         finder = new DlgParameterFind(this);
     finder->show();
 }
 
-void DlgParameterImp::on_findGroupLE_textChanged(const QString &SearchStr)
+void DlgParameterImp::onFindGroupTtextChanged(const QString &SearchStr)
 {
     // search for group tree items and highlight found results
 
@@ -223,7 +239,7 @@ void DlgParameterImp::changeEvent(QEvent *e)
     }
 }
 
-void DlgParameterImp::on_checkSort_toggled(bool on)
+void DlgParameterImp::onCheckSortToggled(bool on)
 {
     paramGroup->setSortingEnabled(on);
     paramGroup->sortByColumn(0, Qt::AscendingOrder);
@@ -234,7 +250,7 @@ void DlgParameterImp::on_checkSort_toggled(bool on)
     paramValue->header()->setProperty("showSortIndicator", QVariant(on));
 }
 
-void DlgParameterImp::on_closeButton_clicked()
+void DlgParameterImp::onCloseButtonClicked()
 {
     close();
 }
@@ -414,7 +430,7 @@ void DlgParameterImp::onChangeParameterSet(int itemPos)
         paramGroup->setCurrentItem(paramGroup->topLevelItem(0));
 }
 
-void DlgParameterImp::on_buttonSaveToDisk_clicked()
+void DlgParameterImp::onButtonSaveToDiskClicked()
 {
     int index = ui->parameterSet->currentIndex();
     ParameterManager* parmgr = App::GetApplication().GetParameterSet(ui->parameterSet->itemData(index).toByteArray());
@@ -463,9 +479,7 @@ ParameterGroup::ParameterGroup( QWidget * parent )
     menuEdit->setDefaultAction(expandAct);
 }
 
-ParameterGroup::~ParameterGroup()
-{
-}
+ParameterGroup::~ParameterGroup() = default;
 
 void ParameterGroup::contextMenuEvent ( QContextMenuEvent* event )
 {
@@ -664,9 +678,7 @@ ParameterValue::ParameterValue( QWidget * parent )
             this, qOverload<QTreeWidgetItem*, int>(&ParameterValue::onChangeSelectedItem));
 }
 
-ParameterValue::~ParameterValue()
-{
-}
+ParameterValue::~ParameterValue() = default;
 
 void ParameterValue::setCurrentGroup( const Base::Reference<ParameterGrp>& hGrp )
 {
@@ -1004,9 +1016,7 @@ ParameterValueItem::ParameterValueItem ( QTreeWidget* parent, const Base::Refere
     setFlags(flags() | Qt::ItemIsEditable);
 }
 
-ParameterValueItem::~ParameterValueItem()
-{
-}
+ParameterValueItem::~ParameterValueItem() = default;
 
 void ParameterValueItem::setData ( int column, int role, const QVariant & value )
 {
@@ -1036,9 +1046,7 @@ ParameterText::ParameterText ( QTreeWidget * parent, QString label, const char* 
     setText(2, QString::fromUtf8(value));
 }
 
-ParameterText::~ParameterText()
-{
-}
+ParameterText::~ParameterText() = default;
 
 void ParameterText::changeValue()
 {
@@ -1080,9 +1088,7 @@ ParameterInt::ParameterInt ( QTreeWidget * parent, QString label, long value, co
     setText(2, QString::fromLatin1("%1").arg(value));
 }
 
-ParameterInt::~ParameterInt()
-{
-}
+ParameterInt::~ParameterInt() = default;
 
 void ParameterInt::changeValue()
 {
@@ -1124,9 +1130,7 @@ ParameterUInt::ParameterUInt ( QTreeWidget * parent, QString label, unsigned lon
     setText(2, QString::fromLatin1("%1").arg(value));
 }
 
-ParameterUInt::~ParameterUInt()
-{
-}
+ParameterUInt::~ParameterUInt() = default;
 
 void ParameterUInt::changeValue()
 {
@@ -1177,9 +1181,7 @@ ParameterFloat::ParameterFloat ( QTreeWidget * parent, QString label, double val
     setText(2, QString::fromLatin1("%1").arg(value));
 }
 
-ParameterFloat::~ParameterFloat()
-{
-}
+ParameterFloat::~ParameterFloat() = default;
 
 void ParameterFloat::changeValue()
 {
@@ -1221,9 +1223,7 @@ ParameterBool::ParameterBool ( QTreeWidget * parent, QString label, bool value, 
     setText(2, QString::fromLatin1((value ? "true" : "false")));
 }
 
-ParameterBool::~ParameterBool()
-{
-}
+ParameterBool::~ParameterBool() = default;
 
 void ParameterBool::changeValue()
 {

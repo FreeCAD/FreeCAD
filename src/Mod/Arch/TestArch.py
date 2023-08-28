@@ -613,7 +613,6 @@ class ArchTest(unittest.TestCase):
     def testSection(self):
         App.Console.PrintLog ('Checking Arch Section...\n')
         s = Arch.makeSectionPlane([])
-        #v = Arch.makeSectionView(s) # obsolete, uses the Drawing module
         self.failUnless(s,"Arch Section failed")
 
     def testSpace(self):
@@ -679,7 +678,7 @@ class ArchTest(unittest.TestCase):
     def testRemove(self):
         App.Console.PrintLog ('Checking Arch Remove...\n')
         l=Draft.makeLine(App.Vector(0,0,0),App.Vector(2,0,0))
-        w = Arch.makeWall(l,width=0.2,height=2)
+        w = Arch.makeWall(l,width=0.2,height=2,align="Right")
         sb = Part.makeBox(1,1,1)
         b = App.ActiveDocument.addObject('Part::Feature','Box')
         b.Shape = sb

@@ -26,7 +26,9 @@
 #define EXPRESSION_PARSER_H
 
 #include "Expression.h"
+#include <Base/Matrix.h>
 #include <Base/Quantity.h>
+#include <Base/Vector3D.h>
 
 namespace App {
 
@@ -244,47 +246,81 @@ public:
         NONE,
 
         // Normal functions taking one or two arguments
+        ABS,
         ACOS,
         ASIN,
         ATAN,
-        ABS,
-        EXP,
-        LOG,
-        LOG10,
-        SIN,
-        SINH,
-        TAN,
-        TANH,
-        SQRT,
+        ATAN2,
+        CATH,
+        CBRT,
+        CEIL,
         COS,
         COSH,
-        ATAN2,
+        EXP,
+        FLOOR,
+        HYPOT,
+        LOG,
+        LOG10,
         MOD,
         POW,
         ROUND,
+        SIN,
+        SINH,
+        SQRT,
+        TAN,
+        TANH,
         TRUNC,
-        CEIL,
-        FLOOR,
-        HYPOT,
-        CATH,
-        LIST,
-        TUPLE,
-        MSCALE, // matrix scale by vector
+
+        // Vector
+        VANGLE,
+        VCROSS,
+        VDOT,
+        VLINEDIST,
+        VLINESEGDIST,
+        VLINEPROJ,
+        VNORMALIZE,
+        VPLANEDIST,
+        VPLANEPROJ,
+        VSCALE,
+        VSCALEX,
+        VSCALEY,
+        VSCALEZ,
+
+        // Matrix
         MINVERT, // invert matrix/placement/rotation
-        CREATE, // create new object of a given type
+        MROTATE, // Rotate matrix/placement/rotation around axis, by rotation object, or by euler angles.
+        MROTATEX, // Rotate matrix/placement/rotation around x-axis.
+        MROTATEY, // Rotate matrix/placement/rotation around y-axis.
+        MROTATEZ, // Rotate matrix/placement/rotation around z-axis.
+        MSCALE, // matrix scale by vector
+        MTRANSLATE, // Translate matrix/placement.
+
+        // Object creation
+        CREATE, // Create new object of a given type.
+        LIST, // Create Python list.
+        MATRIX, // Create matrix object.
+        PLACEMENT, // Create placement object.
+        ROTATION, // Create rotation object.
+        ROTATIONX, // Create x-axis rotation object.
+        ROTATIONY, // Create y-axis rotation object.
+        ROTATIONZ, // Create z-axis rotation object.
         STR, // stringify
+        TRANSLATIONM, // Create translation matrix object.
+        TUPLE, // Create Python tuple.
+        VECTOR, // Create vector object.
+
         HIDDENREF, // hidden reference that has no dependency check
         HREF, // deprecated alias of HIDDENREF
 
         // Aggregates
         AGGREGATES,
 
-        SUM,
         AVERAGE,
-        STDDEV,
         COUNT,
-        MIN,
         MAX,
+        MIN,
+        STDDEV,
+        SUM,
 
         // Last one
         LAST,
@@ -306,6 +342,15 @@ public:
 
 protected:
     static Py::Object evalAggregate(const Expression *owner, int type, const std::vector<Expression*> &args);
+    static Base::Vector3d evaluateSecondVectorArgument(const Expression *expression, const std::vector<Expression*> &arguments);
+    static double extractLengthValueArgument(const Expression *expression, const std::vector<Expression*> &arguments, int argumentIndex);
+    static Base::Vector3d extractVectorArgument(const Expression *expression, const std::vector<Expression*> &arguments, int argumentIndex);
+    static void initialiseObject(const Py::Object *object, const std::vector<Expression*> &arguments, const unsigned long offset = 0);
+    static Py::Object transformFirstArgument(
+        const Expression *expression,
+        const std::vector<Expression*> &arguments,
+        const Base::Matrix4D *transformationMatrix);
+    static Py::Object translationMatrix(double x, double y, double z);
     Py::Object _getPyValue() const override;
     Expression * _copy() const override;
     void _visit(ExpressionVisitor & v) override;
@@ -477,12 +522,12 @@ public:
     Base::Quantity scaler;
     std::string unitStr;
   } quantity;
-  Expression::Component *component;
-  Expression * expr;
+  Expression::Component *component{nullptr};
+  Expression * expr{nullptr};
   ObjectIdentifier path;
   std::deque<ObjectIdentifier::Component> components;
-  long long int ivalue;
-  double fvalue;
+  long long int ivalue{0};
+  double fvalue{0};
   struct {
     const char *name = "";
     double fvalue = 0;
@@ -492,8 +537,7 @@ public:
   std::string string;
   std::pair<FunctionExpression::Function,std::string> func;
   ObjectIdentifier::String string_or_identifier;
-  semantic_type() : component(nullptr), expr(nullptr), ivalue(0), fvalue(0)
-                  , func({FunctionExpression::NONE, std::string()}) {}
+  semantic_type() : func({FunctionExpression::NONE, std::string()}) {}
 };
 
 #define YYSTYPE semantic_type

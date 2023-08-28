@@ -22,7 +22,7 @@
 
 __title__ = "Surface unit tests"
 __author__ = "Werner Mayer"
-__url__ = "https://www.freecadweb.org"
+__url__ = "https://www.freecad.org"
 
 import sys
 import unittest

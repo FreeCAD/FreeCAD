@@ -22,13 +22,12 @@
 
 import FreeCAD
 import Path
-import Path.Base.Util as PathUtil
 import PathGui
 import importlib
 
 __title__ = "Path Icon ViewProvider"
 __author__ = "sliptonic (Brad Collette)"
-__url__ = "https://www.freecadweb.org"
+__url__ = "https://www.freecad.org"
 __doc__ = "ViewProvider who's main and only task is to assign an icon."
 
 translate = FreeCAD.Qt.translate
@@ -109,7 +108,7 @@ def Attach(vobj, name):
 
     Path.Log.track(vobj.Object.Label, name)
     global _factory
-    for key, value in PathUtil.keyValueIter(_factory):
+    for key, value in _factory.items():
         if key == name:
             return value(vobj, name)
     Path.Log.track(vobj.Object.Label, name, "PathIconViewProvider")

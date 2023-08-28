@@ -34,13 +34,13 @@ class TechDrawGuiExport QGIEdge : public QGIPrimPath
 {
 public:
     explicit QGIEdge(int index);
-    ~QGIEdge() {}
+    ~QGIEdge() override = default;
 
     enum {Type = QGraphicsItem::UserType + 103};
 
     int type() const override { return Type;}
-    virtual QRectF boundingRect() const override;
-    virtual QPainterPath shape() const override;
+    QRectF boundingRect() const override;
+    QPainterPath shape() const override;
 
     int getProjIndex() const { return projIndex; }
 
@@ -49,7 +49,7 @@ public:
     bool getHiddenEdge() { return(isHiddenEdge); }
     void setSmoothEdge(bool b) { isSmoothEdge = b; }
     bool getSmoothEdge() { return(isSmoothEdge); }
-    virtual void setPrettyNormal() override;
+    void setPrettyNormal() override;
 
     double getEdgeFuzz(void) const;
 

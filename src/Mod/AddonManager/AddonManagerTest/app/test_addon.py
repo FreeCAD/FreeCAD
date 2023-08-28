@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
 # ***************************************************************************
 # *                                                                         *
 # *   Copyright (c) 2022-2023 FreeCAD Project Association                   *
@@ -19,26 +20,24 @@
 # *   <https://www.gnu.org/licenses/>.                                      *
 # *                                                                         *
 # ***************************************************************************
-
+import tempfile
 import unittest
 import os
-import FreeCAD
+import sys
+
+sys.path.append("../../")
 
 from Addon import Addon, INTERNAL_WORKBENCHES
 from addonmanager_macro import Macro
 
 
 class TestAddon(unittest.TestCase):
-
     MODULE = "test_addon"  # file name without extension
 
     def setUp(self):
-        self.test_dir = os.path.join(
-            FreeCAD.getHomePath(), "Mod", "AddonManager", "AddonManagerTest", "data"
-        )
+        self.test_dir = os.path.join(os.path.dirname(__file__), "..", "data")
 
     def test_display_name(self):
-
         # Case 1: No display name set elsewhere: name == display_name
         addon = Addon(
             "FreeCAD",
@@ -53,51 +52,6 @@ class TestAddon(unittest.TestCase):
         addon.load_metadata_file(os.path.join(self.test_dir, "good_package.xml"))
         self.assertEqual(addon.name, "FreeCAD")
         self.assertEqual(addon.display_name, "Test Workbench")
-
-    def test_metadata_loading(self):
-        addon = Addon(
-            "FreeCAD",
-            "https://github.com/FreeCAD/FreeCAD",
-            Addon.Status.NOT_INSTALLED,
-            "master",
-        )
-        addon.load_metadata_file(os.path.join(self.test_dir, "good_package.xml"))
-
-        # Generic tests:
-        self.assertIsNotNone(addon.metadata)
-        self.assertEqual(addon.metadata.Version, "1.0.1")
-        self.assertEqual(
-            addon.metadata.Description, "A package.xml file for unit testing."
-        )
-
-        maintainer_list = addon.metadata.Maintainer
-        self.assertEqual(len(maintainer_list), 1, "Wrong number of maintainers found")
-        self.assertEqual(maintainer_list[0]["name"], "FreeCAD Developer")
-        self.assertEqual(maintainer_list[0]["email"], "developer@freecad.org")
-
-        license_list = addon.metadata.License
-        self.assertEqual(len(license_list), 1, "Wrong number of licenses found")
-        self.assertEqual(license_list[0]["name"], "LGPLv2.1")
-        self.assertEqual(license_list[0]["file"], "LICENSE")
-
-        url_list = addon.metadata.Urls
-        self.assertEqual(len(url_list), 2, "Wrong number of urls found")
-        self.assertEqual(url_list[0]["type"], "repository")
-        self.assertEqual(
-            url_list[0]["location"], "https://github.com/chennes/FreeCAD-Package"
-        )
-        self.assertEqual(url_list[0]["branch"], "main")
-        self.assertEqual(url_list[1]["type"], "readme")
-        self.assertEqual(
-            url_list[1]["location"],
-            "https://github.com/chennes/FreeCAD-Package/blob/main/README.md",
-        )
-
-        contents = addon.metadata.Content
-        self.assertEqual(len(contents), 1, "Wrong number of content catetories found")
-        self.assertEqual(
-            len(contents["workbench"]), 1, "Wrong number of workbenches found"
-        )
 
     def test_git_url_cleanup(self):
         base_url = "https://github.com/FreeCAD/FreeCAD"
@@ -123,10 +77,9 @@ class TestAddon(unittest.TestCase):
         expected_tags.add("TagA")
         expected_tags.add("TagB")
         expected_tags.add("TagC")
-        self.assertEqual(tags, expected_tags)
+        self.assertEqual(expected_tags, tags)
 
     def test_contains_functions(self):
-
         # Test package.xml combinations:
 
         # Workbenches
@@ -220,7 +173,8 @@ class TestAddon(unittest.TestCase):
         self.assertEqual(addon.repo_type, Addon.Kind.MACRO)
         self.assertEqual(addon.name, "DoNothing")
         self.assertEqual(
-            addon.macro.comment, "Do absolutely nothing. For Addon Manager integration tests."
+            addon.macro.comment,
+            "Do absolutely nothing. For Addon Manager integration tests.",
         )
         self.assertEqual(addon.url, "https://github.com/FreeCAD/FreeCAD")
         self.assertEqual(addon.macro.version, "1.0")
@@ -243,7 +197,6 @@ class TestAddon(unittest.TestCase):
         self.assertTrue(addon.__dict__, second_addon.__dict__)
 
     def test_dependency_resolution(self):
-
         addonA = Addon(
             "AddonA",
             "https://github.com/FreeCAD/FakeAddonA",
@@ -345,3 +298,114 @@ class TestAddon(unittest.TestCase):
             "TagC" in addon.tags,
             "Found 'TagA' in tags, it should have been excluded by version requirement",
         )
+
+    def test_try_find_wbname_in_files_empty_dir(self):
+        with tempfile.TemporaryDirectory() as mod_dir:
+            # Arrange
+            test_addon = Addon("test")
+            test_addon.mod_directory = mod_dir
+            os.mkdir(os.path.join(mod_dir, test_addon.name))
+
+            # Act
+            wb_name = test_addon.try_find_wbname_in_files()
+
+            # Assert
+            self.assertEqual(wb_name, "")
+
+    def test_try_find_wbname_in_files_non_python_ignored(self):
+        with tempfile.TemporaryDirectory() as mod_dir:
+            # Arrange
+            test_addon = Addon("test")
+            test_addon.mod_directory = mod_dir
+            base_path = os.path.join(mod_dir, test_addon.name)
+            os.mkdir(base_path)
+            file_path = os.path.join(base_path, "test.txt")
+            with open(file_path, "w", encoding="utf-8") as f:
+                f.write("Gui.addWorkbench(TestWorkbench())")
+
+            # Act
+            wb_name = test_addon.try_find_wbname_in_files()
+
+            # Assert
+            self.assertEqual(wb_name, "")
+
+    def test_try_find_wbname_in_files_simple(self):
+        with tempfile.TemporaryDirectory() as mod_dir:
+            # Arrange
+            test_addon = Addon("test")
+            test_addon.mod_directory = mod_dir
+            base_path = os.path.join(mod_dir, test_addon.name)
+            os.mkdir(base_path)
+            file_path = os.path.join(base_path, "test.py")
+            with open(file_path, "w", encoding="utf-8") as f:
+                f.write("Gui.addWorkbench(TestWorkbench())")
+
+            # Act
+            wb_name = test_addon.try_find_wbname_in_files()
+
+            # Assert
+            self.assertEqual(wb_name, "TestWorkbench")
+
+    def test_try_find_wbname_in_files_subdir(self):
+        with tempfile.TemporaryDirectory() as mod_dir:
+            # Arrange
+            test_addon = Addon("test")
+            test_addon.mod_directory = mod_dir
+            base_path = os.path.join(mod_dir, test_addon.name)
+            os.mkdir(base_path)
+            subdir = os.path.join(base_path, "subdirectory")
+            os.mkdir(subdir)
+            file_path = os.path.join(subdir, "test.py")
+            with open(file_path, "w", encoding="utf-8") as f:
+                f.write("Gui.addWorkbench(TestWorkbench())")
+
+            # Act
+            wb_name = test_addon.try_find_wbname_in_files()
+
+            # Assert
+            self.assertEqual(wb_name, "TestWorkbench")
+
+    def test_try_find_wbname_in_files_variable_used(self):
+        with tempfile.TemporaryDirectory() as mod_dir:
+            # Arrange
+            test_addon = Addon("test")
+            test_addon.mod_directory = mod_dir
+            base_path = os.path.join(mod_dir, test_addon.name)
+            os.mkdir(base_path)
+            file_path = os.path.join(base_path, "test.py")
+            with open(file_path, "w", encoding="utf-8") as f:
+                f.write("Gui.addWorkbench(wb)")
+
+            # Act
+            wb_name = test_addon.try_find_wbname_in_files()
+
+            # Assert
+            self.assertEqual(wb_name, "")
+
+    def test_try_find_wbname_in_files_variants(self):
+        variants = [
+            "Gui.addWorkbench(TestWorkbench())",
+            "Gui.addWorkbench (TestWorkbench())",
+            "Gui.addWorkbench( TestWorkbench() )",
+            "Gui.addWorkbench(TestWorkbench( ))",
+            "Gui.addWorkbench( TestWorkbench( ) )",
+            "Gui.addWorkbench( TestWorkbench ( ) )",
+            "Gui.addWorkbench ( TestWorkbench ( ) )",
+        ]
+        for variant in variants:
+            with self.subTest(variant=variant):
+                with tempfile.TemporaryDirectory() as mod_dir:
+                    # Arrange
+                    test_addon = Addon("test")
+                    test_addon.mod_directory = mod_dir
+                    base_path = os.path.join(mod_dir, test_addon.name)
+                    os.mkdir(base_path)
+                    file_path = os.path.join(base_path, "test.py")
+                    with open(file_path, "w", encoding="utf-8") as f:
+                        f.write(variant)
+
+                    # Act
+                    wb_name = test_addon.try_find_wbname_in_files()
+
+                    # Assert
+                    self.assertEqual(wb_name, "TestWorkbench")

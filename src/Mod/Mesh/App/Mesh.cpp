@@ -56,14 +56,12 @@
 
 using namespace Mesh;
 
-float MeshObject::Epsilon = 1.0e-5f;
+const float MeshObject::Epsilon = 1.0e-5F;
 
 TYPESYSTEM_SOURCE(Mesh::MeshObject, Data::ComplexGeoData)
 TYPESYSTEM_SOURCE(Mesh::MeshSegment, Data::Segment)
 
-MeshObject::MeshObject()
-{
-}
+MeshObject::MeshObject() = default;
 
 MeshObject::MeshObject(const MeshCore::MeshKernel& Kernel)
   : _kernel(Kernel)
@@ -84,9 +82,7 @@ MeshObject::MeshObject(const MeshObject& mesh)
     copySegments(mesh);
 }
 
-MeshObject::~MeshObject()
-{
-}
+MeshObject::~MeshObject() = default;
 
 std::vector<const char*> MeshObject::getElementTypes() const
 {
@@ -119,7 +115,7 @@ Data::Segment* MeshObject::getSubElement(const char* Type, unsigned long n) cons
         MeshSegment* segm = new MeshSegment();
         segm->mesh = new MeshObject(*this);
         const Segment& faces = getSegment(n);
-        segm->segment.reset(new Segment(static_cast<MeshObject*>(segm->mesh), faces.getIndices(), false));
+        segm->segment = std::make_unique<Segment>(static_cast<MeshObject*>(segm->mesh), faces.getIndices(), false);
         return segm;
     }
 
@@ -169,7 +165,7 @@ Base::BoundBox3d MeshObject::getBoundBox()const
     Base::BoundBox3d Bnd2;
     if (Bnd.IsValid()) {
         for (int i =0 ;i<=7;i++)
-            Bnd2.Add(transformPointToOutside(Bnd.CalcPoint(i)));
+            Bnd2.Add(transformPointToOutside(Bnd.CalcPoint(Base::BoundBox3f::CORNER(i))));
     }
 
     return Bnd2;
@@ -374,11 +370,11 @@ void MeshObject::save(const char* file, MeshCore::MeshIO::Format f,
     // go through the segment list and put them to the exporter when
     // the "save" flag is set
     std::vector<MeshCore::Group> groups;
-    for (std::size_t index = 0; index < this->_segments.size(); index++) {
-        if (this->_segments[index].isSaved()) {
+    for (const auto & segment : this->_segments) {
+        if (segment.isSaved()) {
             MeshCore::Group g;
-            g.indices = this->_segments[index].getIndices();
-            g.name = this->_segments[index].getName();
+            g.indices = segment.getIndices();
+            g.name = segment.getName();
             groups.push_back(g);
         }
     }
@@ -403,11 +399,11 @@ void MeshObject::save(std::ostream& str, MeshCore::MeshIO::Format f,
     // go through the segment list and put them to the exporter when
     // the "save" flag is set
     std::vector<MeshCore::Group> groups;
-    for (std::size_t index = 0; index < this->_segments.size(); index++) {
-        if (this->_segments[index].isSaved()) {
+    for (const auto & segment : this->_segments) {
+        if (segment.isSaved()) {
             MeshCore::Group g;
-            g.indices = this->_segments[index].getIndices();
-            g.name = this->_segments[index].getName();
+            g.indices = segment.getIndices();
+            g.name = segment.getName();
             groups.push_back(g);
         }
     }
@@ -476,28 +472,6 @@ void MeshObject::swapKernel(MeshCore::MeshKernel& kernel,
             this->_segments[index].setName(g[index]);
         }
     }
-
-#if 0
-#ifndef FC_DEBUG
-    try {
-        MeshCore::MeshEvalNeighbourhood nb(_kernel);
-        if (!nb.Evaluate()) {
-            Base::Console().Warning("Errors in neighbourhood of mesh found...");
-            _kernel.RebuildNeighbours();
-            Base::Console().Warning("fixed\n");
-        }
-
-        MeshCore::MeshEvalTopology eval(_kernel);
-        if (!eval.Evaluate()) {
-            Base::Console().Warning("The mesh data structure has some defects\n");
-        }
-    }
-    catch (const Base::MemoryException&) {
-        // ignore memory exceptions and continue
-        Base::Console().Log("Check for defects in mesh data structure failed\n");
-    }
-#endif
-#endif
 }
 
 void MeshObject::save(std::ostream& out) const
@@ -588,18 +562,18 @@ void MeshObject::addFacets(const std::vector<Data::ComplexGeoData::Facet> &facet
 {
     std::vector<MeshCore::MeshFacet> facet_v;
     facet_v.reserve(facets.size());
-    for (std::vector<Data::ComplexGeoData::Facet>::const_iterator it = facets.begin(); it != facets.end(); ++it) {
+    for (auto facet : facets) {
         MeshCore::MeshFacet f;
-        f._aulPoints[0] = it->I1;
-        f._aulPoints[1] = it->I2;
-        f._aulPoints[2] = it->I3;
+        f._aulPoints[0] = facet.I1;
+        f._aulPoints[1] = facet.I2;
+        f._aulPoints[2] = facet.I3;
         facet_v.push_back(f);
     }
 
     std::vector<Base::Vector3f> point_v;
     point_v.reserve(points.size());
-    for (std::vector<Base::Vector3d>::const_iterator it = points.begin(); it != points.end(); ++it) {
-        Base::Vector3f p((float)it->x,(float)it->y,(float)it->z);
+    for (const auto & point : points) {
+        Base::Vector3f p((float)point.x,(float)point.y,(float)point.z);
         point_v.push_back(p);
     }
 
@@ -616,18 +590,18 @@ void MeshObject::setFacets(const std::vector<Data::ComplexGeoData::Facet> &facet
 {
     MeshCore::MeshFacetArray facet_v;
     facet_v.reserve(facets.size());
-    for (std::vector<Data::ComplexGeoData::Facet>::const_iterator it = facets.begin(); it != facets.end(); ++it) {
+    for (auto facet : facets) {
         MeshCore::MeshFacet f;
-        f._aulPoints[0] = it->I1;
-        f._aulPoints[1] = it->I2;
-        f._aulPoints[2] = it->I3;
+        f._aulPoints[0] = facet.I1;
+        f._aulPoints[1] = facet.I2;
+        f._aulPoints[2] = facet.I3;
         facet_v.push_back(f);
     }
 
     MeshCore::MeshPointArray point_v;
     point_v.reserve(points.size());
-    for (std::vector<Base::Vector3d>::const_iterator it = points.begin(); it != points.end(); ++it) {
-        Base::Vector3f p((float)it->x,(float)it->y,(float)it->z);
+    for (const auto & point : points) {
+        Base::Vector3f p((float)point.x,(float)point.y,(float)point.z);
         point_v.push_back(p);
     }
 
@@ -668,36 +642,32 @@ void MeshObject::deletedFacets(const std::vector<FacetIndex>& remFacets)
         return; // nothing to do
     // set an array with the original indices and mark the removed as MeshCore::FACET_INDEX_MAX
     std::vector<FacetIndex> f_indices(_kernel.CountFacets()+remFacets.size());
-    for (std::vector<FacetIndex>::const_iterator it = remFacets.begin();
-        it != remFacets.end(); ++it) {
-        f_indices[*it] = MeshCore::FACET_INDEX_MAX;
+    for (FacetIndex remFacet : remFacets) {
+        f_indices[remFacet] = MeshCore::FACET_INDEX_MAX;
     }
 
     FacetIndex index = 0;
-    for (std::vector<FacetIndex>::iterator it = f_indices.begin();
-        it != f_indices.end(); ++it) {
-            if (*it == 0)
-                *it = index++;
+    for (FacetIndex& it : f_indices) {
+        if (it == 0)
+            it = index++;
     }
 
     // the array serves now as LUT to set the new indices in the segments
-    for (std::vector<Segment>::iterator it = this->_segments.begin();
-        it != this->_segments.end(); ++it) {
-            std::vector<FacetIndex> segm = it->_indices;
-            for (std::vector<FacetIndex>::iterator jt = segm.begin();
-                jt != segm.end(); ++jt) {
-                    *jt = f_indices[*jt];
-            }
+    for (auto & segment : this->_segments) {
+        std::vector<FacetIndex> segm = segment._indices;
+        for (FacetIndex & jt : segm) {
+            jt = f_indices[jt];
+        }
 
-            // remove the invalid indices
-            std::sort(segm.begin(), segm.end());
-            std::vector<FacetIndex>::iterator ft = std::find_if
-                (segm.begin(), segm.end(), [](FacetIndex v) {
-                    return v == MeshCore::FACET_INDEX_MAX;
-                });
-            if (ft != segm.end())
-                segm.erase(ft, segm.end());
-            it->_indices = segm;
+        // remove the invalid indices
+        std::sort(segm.begin(), segm.end());
+        std::vector<FacetIndex>::iterator ft = std::find_if
+            (segm.begin(), segm.end(), [](FacetIndex v) {
+                return v == MeshCore::FACET_INDEX_MAX;
+            });
+        if (ft != segm.end())
+            segm.erase(ft, segm.end());
+        segment._indices = segm;
     }
 }
 
@@ -852,11 +822,10 @@ void MeshObject::updateMesh() const
     MeshCore::MeshAlgorithm alg(_kernel);
     alg.ResetFacetFlag(MeshCore::MeshFacet::SEGMENT);
     alg.ResetPointFlag(MeshCore::MeshPoint::SEGMENT);
-    for (std::vector<Segment>::const_iterator it = this->_segments.begin();
-        it != this->_segments.end(); ++it) {
+    for (const auto & segment : this->_segments) {
             std::vector<PointIndex> points;
-            points = _kernel.GetFacetPoints(it->getIndices());
-            alg.SetFacetsFlag(it->getIndices(), MeshCore::MeshFacet::SEGMENT);
+            points = _kernel.GetFacetPoints(segment.getIndices());
+            alg.SetFacetsFlag(segment.getIndices(), MeshCore::MeshFacet::SEGMENT);
             alg.SetPointsFlag(points, MeshCore::MeshPoint::SEGMENT);
     }
 }
@@ -891,14 +860,14 @@ unsigned long MeshObject::getPointDegree(const std::vector<FacetIndex>& indices,
     const MeshCore::MeshFacetArray& faces = _kernel.GetFacets();
     std::vector<PointIndex> pointDeg(_kernel.CountPoints());
 
-    for (MeshCore::MeshFacetArray::_TConstIterator it = faces.begin(); it != faces.end(); ++it) {
-        pointDeg[it->_aulPoints[0]]++;
-        pointDeg[it->_aulPoints[1]]++;
-        pointDeg[it->_aulPoints[2]]++;
+    for (const auto & face : faces) {
+        pointDeg[face._aulPoints[0]]++;
+        pointDeg[face._aulPoints[1]]++;
+        pointDeg[face._aulPoints[2]]++;
     }
 
-    for (std::vector<PointIndex>::const_iterator it = indices.begin(); it != indices.end(); ++it) {
-        const MeshCore::MeshFacet& face = faces[*it];
+    for (FacetIndex it : indices) {
+        const MeshCore::MeshFacet& face = faces[it];
         pointDeg[face._aulPoints[0]]--;
         pointDeg[face._aulPoints[1]]--;
         pointDeg[face._aulPoints[2]]--;
@@ -977,8 +946,8 @@ void MeshObject::offsetSpecial2(float fSize)
         if (fliped.empty())
             break;
 
-        for( std::set<FacetIndex>::iterator It= fliped.begin();It!=fliped.end();++It)
-            alg.CollapseFacet(*It);
+        for(FacetIndex It : fliped)
+            alg.CollapseFacet(It);
         fliped.clear();
     }
 
@@ -1093,9 +1062,9 @@ void MeshObject::crossSections(const std::vector<MeshObject::TPlane>& planes, st
 
     MeshCore::MeshFacetGrid grid(kernel);
     MeshCore::MeshAlgorithm algo(kernel);
-    for (std::vector<MeshObject::TPlane>::const_iterator it = planes.begin(); it != planes.end(); ++it) {
+    for (const auto & plane : planes) {
         MeshObject::TPolylines polylines;
-        algo.CutWithPlane(it->first, it->second, grid, polylines, fMinEps, bConnectPolygons);
+        algo.CutWithPlane(plane.first, plane.second, grid, polylines, fMinEps, bConnectPolygons);
         sections.push_back(polylines);
     }
 }
@@ -1361,10 +1330,10 @@ void MeshObject::splitEdges()
 
     MeshCore::MeshFacetIterator cIter(_kernel);
     MeshCore::MeshTopoAlgorithm topalg(_kernel);
-    for (std::vector<std::pair<FacetIndex, FacetIndex> >::iterator it = adjacentFacet.begin(); it != adjacentFacet.end(); ++it) {
-        cIter.Set(it->first);
+    for (const auto & it : adjacentFacet) {
+        cIter.Set(it.first);
         Base::Vector3f mid = 0.5f*(cIter->_aclPoints[0]+cIter->_aclPoints[2]);
-        topalg.SplitEdge(it->first, it->second, mid);
+        topalg.SplitEdge(it.first, it.second, mid);
     }
 
     // clear the segments because we don't know how the new
@@ -1414,8 +1383,8 @@ void MeshObject::collapseFacet(FacetIndex facet)
 void MeshObject::collapseFacets(const std::vector<FacetIndex>& facets)
 {
     MeshCore::MeshTopoAlgorithm alg(_kernel);
-    for (std::vector<FacetIndex>::const_iterator it = facets.begin(); it != facets.end(); ++it) {
-        alg.CollapseFacet(*it);
+    for (FacetIndex it : facets) {
+        alg.CollapseFacet(it);
     }
 
     deletedFacets(facets);
@@ -1913,28 +1882,29 @@ MeshObject* MeshObject::createCube(float length, float width, float height, floa
 
 MeshObject* MeshObject::createCube(const Base::BoundBox3d& bbox)
 {
+    using Corner = Base::BoundBox3d::CORNER;
     std::vector<MeshCore::MeshGeomFacet> facets;
-    auto createFacet = [&bbox](int i, int j, int k) {
+    auto createFacet = [&bbox](Corner p1, Corner p2, Corner p3) {
         MeshCore::MeshGeomFacet facet;
-        facet._aclPoints[0] = Base::convertTo<Base::Vector3f>(bbox.CalcPoint(i));
-        facet._aclPoints[1] = Base::convertTo<Base::Vector3f>(bbox.CalcPoint(j));
-        facet._aclPoints[2] = Base::convertTo<Base::Vector3f>(bbox.CalcPoint(k));
+        facet._aclPoints[0] = Base::convertTo<Base::Vector3f>(bbox.CalcPoint(p1));
+        facet._aclPoints[1] = Base::convertTo<Base::Vector3f>(bbox.CalcPoint(p2));
+        facet._aclPoints[2] = Base::convertTo<Base::Vector3f>(bbox.CalcPoint(p3));
         facet.CalcNormal();
         return facet;
     };
 
-    facets.push_back(createFacet(0, 1, 2));
-    facets.push_back(createFacet(0, 2, 3));
-    facets.push_back(createFacet(0, 5, 1));
-    facets.push_back(createFacet(0, 4, 5));
-    facets.push_back(createFacet(0, 3, 7));
-    facets.push_back(createFacet(0, 7, 4));
-    facets.push_back(createFacet(4, 6, 5));
-    facets.push_back(createFacet(4, 7, 6));
-    facets.push_back(createFacet(1, 6, 2));
-    facets.push_back(createFacet(1, 5, 6));
-    facets.push_back(createFacet(2, 7, 3));
-    facets.push_back(createFacet(2, 6, 7));
+    facets.push_back(createFacet(Corner::TLB, Corner::TLF, Corner::TRF));
+    facets.push_back(createFacet(Corner::TLB, Corner::TRF, Corner::TRB));
+    facets.push_back(createFacet(Corner::TLB, Corner::BLF, Corner::TLF));
+    facets.push_back(createFacet(Corner::TLB, Corner::BLB, Corner::BLF));
+    facets.push_back(createFacet(Corner::TLB, Corner::TRB, Corner::BRB));
+    facets.push_back(createFacet(Corner::TLB, Corner::BRB, Corner::BLB));
+    facets.push_back(createFacet(Corner::BLB, Corner::BRF, Corner::BLF));
+    facets.push_back(createFacet(Corner::BLB, Corner::BRB, Corner::BRF));
+    facets.push_back(createFacet(Corner::TLF, Corner::BRF, Corner::TRF));
+    facets.push_back(createFacet(Corner::TLF, Corner::BLF, Corner::BRF));
+    facets.push_back(createFacet(Corner::TRF, Corner::BRB, Corner::TRB));
+    facets.push_back(createFacet(Corner::TRF, Corner::BRF, Corner::BRB));
 
     Base::EmptySequencer seq;
     std::unique_ptr<MeshObject> mesh(new MeshObject);
@@ -1954,8 +1924,8 @@ void MeshObject::addSegment(const Segment& s)
 void MeshObject::addSegment(const std::vector<FacetIndex>& inds)
 {
     unsigned long maxIndex = _kernel.CountFacets();
-    for (std::vector<FacetIndex>::const_iterator it = inds.begin(); it != inds.end(); ++it) {
-        if (*it >= maxIndex)
+    for (FacetIndex it : inds) {
+        if (it >= maxIndex)
             throw Base::IndexError("Index out of range");
     }
 
@@ -1978,8 +1948,8 @@ MeshObject* MeshObject::meshFromSegment(const std::vector<FacetIndex>& indices) 
     facets.reserve(indices.size());
     const MeshCore::MeshPointArray& kernel_p = _kernel.GetPoints();
     const MeshCore::MeshFacetArray& kernel_f = _kernel.GetFacets();
-    for (std::vector<FacetIndex>::const_iterator it = indices.begin(); it != indices.end(); ++it) {
-        facets.push_back(kernel_f[*it]);
+    for (FacetIndex it : indices) {
+        facets.push_back(kernel_f[it]);
     }
 
     MeshCore::MeshKernel kernel;
@@ -1999,7 +1969,6 @@ std::vector<Segment> MeshObject::getSegmentsOfType(MeshObject::GeometryType type
     std::shared_ptr<MeshCore::MeshDistanceSurfaceSegment> surf;
     switch (type) {
     case PLANE:
-        //surf.reset(new MeshCore::MeshDistancePlanarSegment(this->_kernel, minFacets, dev));
         surf.reset(new MeshCore::MeshDistanceGenericSurfaceFitSegment(new MeshCore::PlaneSurfaceFit,
                    this->_kernel, minFacets, dev));
     break;
@@ -2021,8 +1990,8 @@ std::vector<Segment> MeshObject::getSegmentsOfType(MeshObject::GeometryType type
         finder.FindSegments(surfaces);
 
         const std::vector<MeshCore::MeshSegment>& data = surf->GetSegments();
-        for (std::vector<MeshCore::MeshSegment>::const_iterator it = data.begin(); it != data.end(); ++it) {
-            segm.emplace_back(this, *it, false);
+        for (const auto & it : data) {
+            segm.emplace_back(this, it, false);
         }
     }
 
@@ -2039,22 +2008,13 @@ MeshObject::const_point_iterator::const_point_iterator(const MeshObject* mesh, P
     this->_point.Mesh = _mesh;
 }
 
-MeshObject::const_point_iterator::const_point_iterator(const MeshObject::const_point_iterator& fi)
-  : _mesh(fi._mesh), _point(fi._point), _p_it(fi._p_it)
-{
-}
+MeshObject::const_point_iterator::const_point_iterator
+(const MeshObject::const_point_iterator& fi) = default;
 
-MeshObject::const_point_iterator::~const_point_iterator()
-{
-}
+MeshObject::const_point_iterator::~const_point_iterator() = default;
 
-MeshObject::const_point_iterator& MeshObject::const_point_iterator::operator=(const MeshObject::const_point_iterator& pi)
-{
-    this->_mesh  = pi._mesh;
-    this->_point = pi._point;
-    this->_p_it  = pi._p_it;
-    return *this;
-}
+MeshObject::const_point_iterator& MeshObject::const_point_iterator::operator=
+(const MeshObject::const_point_iterator& pi) = default;
 
 void MeshObject::const_point_iterator::dereference()
 {
@@ -2108,22 +2068,13 @@ MeshObject::const_facet_iterator::const_facet_iterator(const MeshObject* mesh, F
     this->_facet.Mesh = _mesh;
 }
 
-MeshObject::const_facet_iterator::const_facet_iterator(const MeshObject::const_facet_iterator& fi)
-  : _mesh(fi._mesh), _facet(fi._facet), _f_it(fi._f_it)
-{
-}
+MeshObject::const_facet_iterator::const_facet_iterator
+(const MeshObject::const_facet_iterator& fi) = default;
 
-MeshObject::const_facet_iterator::~const_facet_iterator()
-{
-}
+MeshObject::const_facet_iterator::~const_facet_iterator() = default;
 
-MeshObject::const_facet_iterator& MeshObject::const_facet_iterator::operator=(const MeshObject::const_facet_iterator& fi)
-{
-    this->_mesh  = fi._mesh;
-    this->_facet = fi._facet;
-    this->_f_it  = fi._f_it;
-    return *this;
-}
+MeshObject::const_facet_iterator& MeshObject::const_facet_iterator::operator=
+(const MeshObject::const_facet_iterator& fi) = default;
 
 void MeshObject::const_facet_iterator::dereference()
 {

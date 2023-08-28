@@ -36,7 +36,7 @@ else:
 
 __title__ = "Arch Material Management"
 __author__ = "Yorik van Havre"
-__url__ = "http://www.freecadweb.org"
+__url__ = "http://www.freecad.org"
 
 ## @package ArchMaterial
 #  \ingroup ARCH
@@ -45,14 +45,14 @@ __url__ = "http://www.freecadweb.org"
 #  This module provides tools to add materials to
 #  Arch objects
 
-def makeMaterial(name="Material",color=None,transparency=None):
+def makeMaterial(name=None,color=None,transparency=None):
 
-    '''makeMaterial(name): makes an Material object'''
+    '''makeMaterial([name],[color],[transparency]): makes an Material object'''
     if not FreeCAD.ActiveDocument:
         FreeCAD.Console.PrintError("No active document. Aborting\n")
         return
     obj = FreeCAD.ActiveDocument.addObject("App::MaterialObjectPython","Material")
-    obj.Label = name
+    obj.Label = name if name else translate("Arch","Material")
     _ArchMaterial(obj)
     if FreeCAD.GuiUp:
         _ViewProviderArchMaterial(obj.ViewObject)
@@ -80,11 +80,11 @@ def getMaterialContainer():
     return obj
 
 
-def makeMultiMaterial(name="MultiMaterial"):
+def makeMultiMaterial(name=None):
 
-    '''makeMultiMaterial(name): makes an Material object'''
+    '''makeMultiMaterial([name]): makes an MultiMaterial object'''
     obj = FreeCAD.ActiveDocument.addObject("App::FeaturePython","MultiMaterial")
-    obj.Label = name
+    obj.Label = name if name else translate("Arch","MultiMaterial")
     _ArchMultiMaterial(obj)
     if FreeCAD.GuiUp:
         _ViewProviderArchMultiMaterial(obj.ViewObject)
@@ -699,7 +699,7 @@ class _ArchMaterialTaskPanel:
                 if e.upper() == ".FCMAT":
                     self.cards[b] = p + os.sep + f
         if self.cards:
-            for k in sorted(self.cards.keys()):
+            for k in sorted(self.cards):
                 self.form.comboBox_MaterialsInDir.addItem(k)
 
     def fillExistingCombo(self):

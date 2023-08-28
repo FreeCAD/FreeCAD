@@ -68,13 +68,14 @@ public:
 public Q_SLOTS:
     void onSelectedFilter( const QString& );
 
-protected Q_SLOTS:
-    void on_buttonRatioScreen_clicked();
-    void on_buttonRatio4x3_clicked();
-    void on_buttonRatio16x9_clicked();
-    void on_buttonRatio1x1_clicked();
-    void on_standardSizeBox_activated(int);
-    void on_comboMethod_activated(int);
+protected:
+    void setupConnections();
+    void onButtonRatioScreenClicked();
+    void onButtonRatio4x3Clicked();
+    void onButtonRatio16x9Clicked();
+    void onButtonRatio1x1Clicked();
+    void onStandardSizeBoxActivated(int);
+    void onComboMethodActivated(int);
 
 protected:
     // helper to force an aspect ratio

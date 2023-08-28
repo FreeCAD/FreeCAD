@@ -26,8 +26,8 @@
 #include <string>
 #include <vector>
 
-#include <boost_signals2.hpp>
 #include <boost/unordered/unordered_map.hpp>
+#include <boost_signals2.hpp>
 
 #include <App/Property.h>
 #include <Mod/Part/App/Geometry.h>
@@ -35,7 +35,8 @@
 #include "Constraint.h"
 
 
-namespace Base {
+namespace Base
+{
 class Writer;
 }
 
@@ -43,7 +44,7 @@ namespace Sketcher
 {
 class Constraint;
 
-class SketcherExport PropertyConstraintList : public App::PropertyLists
+class SketcherExport PropertyConstraintList: public App::PropertyLists
 {
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
@@ -63,7 +64,8 @@ public:
     void setSize(int newSize) override;
     int getSize() const override;
 
-    const char* getEditorName() const override {
+    const char* getEditorName() const override
+    {
         return "SketcherGui::PropertyConstraintListItem";
     }
 
@@ -98,67 +100,76 @@ public:
      \note If the geometry is invalid then the index operator
            returns null. This must be checked by the caller.
     */
-    const Constraint *operator[] (const int idx) const {
+    const Constraint* operator[](const int idx) const
+    {
         return (invalidGeometry || invalidIndices) ? nullptr : _lValueList[idx];
     }
 
-    const std::vector<Constraint*> &getValues() const {
+    const std::vector<Constraint*>& getValues() const
+    {
         return (invalidGeometry || invalidIndices) ? _emptyValueList : _lValueList;
     }
-    const std::vector<Constraint*> &getValuesForce() const {//to suppress check for invalid geometry, to be used for sketch repairing.
-        return  _lValueList;
+
+    // to suppress check for invalid geometry, to be used for sketch repairing.
+    const std::vector<Constraint*>& getValuesForce() const
+    {
+        return _lValueList;
     }
 
-    PyObject *getPyObject() override;
-    void setPyObject(PyObject *) override;
+    PyObject* getPyObject() override;
+    void setPyObject(PyObject*) override;
 
-    void Save(Base::Writer &writer) const override;
-    void Restore(Base::XMLReader &reader) override;
+    void Save(Base::Writer& writer) const override;
+    void Restore(Base::XMLReader& reader) override;
 
-    Property *Copy() const override;
-    void Paste(const App::Property &from) override;
+    Property* Copy() const override;
+    void Paste(const App::Property& from) override;
 
     unsigned int getMemSize() const override;
 
-    void acceptGeometry(const std::vector<Part::Geometry *> &GeoList);
-    bool checkGeometry(const std::vector<Part::Geometry *> &GeoList);
-    bool scanGeometry(const std::vector<Part::Geometry *> &GeoList) const;
+    void acceptGeometry(const std::vector<Part::Geometry*>& GeoList);
+    bool checkGeometry(const std::vector<Part::Geometry*>& GeoList);
+    bool scanGeometry(const std::vector<Part::Geometry*>& GeoList) const;
 
     bool checkConstraintIndices(int geomax, int geomin);
 
     /// Return status of geometry for better error reporting
-    bool hasInvalidGeometry() const { return invalidGeometry; }
+    bool hasInvalidGeometry() const
+    {
+        return invalidGeometry;
+    }
 
 
-    const Constraint *getConstraint(const App::ObjectIdentifier &path) const;
-    void setPathValue(const App::ObjectIdentifier & path, const boost::any & value) override;
-    const boost::any getPathValue(const App::ObjectIdentifier & path) const override;
-    App::ObjectIdentifier canonicalPath(const App::ObjectIdentifier & p) const override;
-    void getPaths(std::vector<App::ObjectIdentifier> & paths) const override;
+    const Constraint* getConstraint(const App::ObjectIdentifier& path) const;
+    void setPathValue(const App::ObjectIdentifier& path, const boost::any& value) override;
+    const boost::any getPathValue(const App::ObjectIdentifier& path) const override;
+    App::ObjectIdentifier canonicalPath(const App::ObjectIdentifier& p) const override;
+    void getPaths(std::vector<App::ObjectIdentifier>& paths) const override;
 
-    bool getPyPathValue(const App::ObjectIdentifier &path, Py::Object &res) const override;
+    bool getPyPathValue(const App::ObjectIdentifier& path, Py::Object& res) const override;
 
-    using ConstraintInfo = std::pair<int, const Constraint*> ;
+    using ConstraintInfo = std::pair<int, const Constraint*>;
 
-    boost::signals2::signal<void (const std::map<App::ObjectIdentifier, App::ObjectIdentifier> &)> signalConstraintsRenamed;
-    boost::signals2::signal<void (const std::set<App::ObjectIdentifier> &)> signalConstraintsRemoved;
+    boost::signals2::signal<void(const std::map<App::ObjectIdentifier, App::ObjectIdentifier>&)>
+        signalConstraintsRenamed;
+    boost::signals2::signal<void(const std::set<App::ObjectIdentifier>&)> signalConstraintsRemoved;
 
-    static std::string getConstraintName(const std::string &name, int i);
+    static std::string getConstraintName(const std::string& name, int i);
 
     static std::string getConstraintName(int i);
 
-    static int getIndexFromConstraintName(const std::string & name);
+    static int getIndexFromConstraintName(const std::string& name);
 
-    static bool validConstraintName(const std::string &name);
+    static bool validConstraintName(const std::string& name);
 
     App::ObjectIdentifier createPath(int ConstrNbr) const;
 
 private:
     App::ObjectIdentifier makeArrayPath(int idx);
-    App::ObjectIdentifier makeSimplePath(const Constraint *c);
-    App::ObjectIdentifier makePath(int idx, const Constraint *c);
+    App::ObjectIdentifier makeSimplePath(const Constraint* c);
+    App::ObjectIdentifier makePath(int idx, const Constraint* c);
 
-    std::vector<Constraint *> _lValueList;
+    std::vector<Constraint*> _lValueList;
     boost::unordered_map<boost::uuids::uuid, std::size_t> valueMap;
 
     std::vector<unsigned int> validGeometryKeys;
@@ -167,12 +178,12 @@ private:
     bool invalidIndices;
 
     void applyValues(std::vector<Constraint*>&&);
-    void applyValidGeometryKeys(const std::vector<unsigned int> &keys);
+    void applyValidGeometryKeys(const std::vector<unsigned int>& keys);
 
-    static std::vector<Constraint *> _emptyValueList;
+    static std::vector<Constraint*> _emptyValueList;
 };
 
-} // namespace Sketcher
+}// namespace Sketcher
 
 
-#endif // APP_PropertyConstraintList_H
+#endif// APP_PropertyConstraintList_H

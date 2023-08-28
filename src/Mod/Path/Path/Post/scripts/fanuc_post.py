@@ -21,7 +21,7 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************/
-from __future__ import print_function
+
 import FreeCAD
 from FreeCAD import Units
 import Path
@@ -30,11 +30,12 @@ import datetime
 import shlex
 import os.path
 import Path.Post.Utils as PostUtils
+import PathScripts.PathUtils as PathUtils
 
 TOOLTIP = """
 This is a postprocessor file for the Path workbench. It is used to
-take a pseudo-gcode fragment outputted by a Path object, and output
-real GCode suitable should be suitable for most Fanuc controllers.
+take a pseudo-G-code fragment outputted by a Path object, and output
+real G-code suitable should be suitable for most Fanuc controllers.
 It has only been tested on a 21i-MB controller on a 3 axis mill.
 This postprocessor, once placed in the appropriate PathScripts folder,
 can be used directly from inside FreeCAD, via the GUI importer or via
@@ -410,14 +411,15 @@ def parse(pathobj):
                         "Tool Controller Vertical Rapid Values are unset" + "\n"
                     )
 
-        for index, c in enumerate(pathobj.Path.Commands):
+        commands = PathUtils.getPathWithPlacement(pathobj).Commands
+        for index, c in enumerate(commands):
 
             outstring = []
             command = c.Name
-            if index + 1 == len(pathobj.Path.Commands):
+            if index + 1 == len(commands):
                 nextcommand = ""
             else:
-                nextcommand = pathobj.Path.Commands[index + 1].Name
+                nextcommand = commands[index + 1].Name
 
             if adaptiveOp and c.Name in ["G0", "G00"]:
                 if opHorizRapid and opVertRapid:

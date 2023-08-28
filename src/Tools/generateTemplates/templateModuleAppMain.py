@@ -1,16 +1,17 @@
 #! python
 # -*- coding: utf-8 -*-
-# (c) 2006 Juergen Riegel 
+# (c) 2006 Juergen Riegel
 
 from . import template
 import generateBase.generateModel_Module
 import generateBase.generateTools
 
-class TemplateModuleAppMain (template.ModelTemplate):
+
+class TemplateModuleAppMain(template.ModelTemplate):
     def Generate(self):
-        file = open(self.path + "/App" + self.module.Name + ".cpp",'w')
-        generateBase.generateTools.replace(self.Template,locals(),file)
-        #file.write( generateBase.generateTools.replace(self.Template,locals()))
+        file = open(self.path + "/App" + self.module.Name + ".cpp", "w")
+        generateBase.generateTools.replace(self.Template, locals(), file)
+        # file.write( generateBase.generateTools.replace(self.Template,locals()))
 
     Template = """
 /***************************************************************************

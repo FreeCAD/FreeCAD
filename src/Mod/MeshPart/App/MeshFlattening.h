@@ -55,7 +55,7 @@ std::vector<ColMat<double, 3>> getBoundaries(ColMat<double, 3> vertices, ColMat<
 class FaceUnwrapper{
 	nurbs::NurbsBase2D nu;
 public:
-	FaceUnwrapper(){}
+    FaceUnwrapper() = default;
 	FaceUnwrapper(const TopoDS_Face & face);
         FaceUnwrapper(ColMat<double, 3> xyz_nodes, ColMat<long, 3> tris);
 	void findFlatNodes(int steps, double val);

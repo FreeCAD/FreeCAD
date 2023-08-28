@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>263</width>
-    <height>240</height>
+    <height>254</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -15,36 +15,18 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
-    <layout class="QHBoxLayout" name="horizontalLayout">
-     <item>
-      <widget class="QToolButton" name="buttonRefAdd">
-       <property name="toolTip">
-        <string>Click button to enter selection mode,
+    <widget class="QToolButton" name="buttonRefSel">
+     <property name="toolTip">
+      <string>Click button to enter selection mode,
 click again to end selection</string>
-       </property>
-       <property name="text">
-        <string>Add</string>
-       </property>
-       <property name="checkable">
-        <bool>true</bool>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QToolButton" name="buttonRefRemove">
-       <property name="toolTip">
-        <string>Click button to enter selection mode,
-click again to end selection</string>
-       </property>
-       <property name="text">
-        <string>Remove</string>
-       </property>
-       <property name="checkable">
-        <bool>true</bool>
-       </property>
-      </widget>
-     </item>
-    </layout>
+     </property>
+     <property name="text">
+      <string>Select</string>
+     </property>
+     <property name="checkable">
+      <bool>true</bool>
+     </property>
+    </widget>
    </item>
    <item>
     <widget class="QListWidget" name="listWidgetReferences">
@@ -231,6 +213,16 @@ click again to end selection</string>
    <header>Gui/QuantitySpinBox.h</header>
   </customwidget>
  </customwidgets>
+ <tabstops>
+  <tabstop>buttonRefSel</tabstop>
+  <tabstop>listWidgetReferences</tabstop>
+  <tabstop>chamferType</tabstop>
+  <tabstop>flipDirection</tabstop>
+  <tabstop>chamferSize</tabstop>
+  <tabstop>checkBoxUseAllEdges</tabstop>
+  <tabstop>chamferSize2</tabstop>
+  <tabstop>chamferAngle</tabstop>
+ </tabstops>
  <resources/>
  <connections>
   <connection>

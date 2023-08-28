@@ -25,11 +25,11 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <thread>
+# include <QThread>
 # include <QMessageBox>
 #endif
 
-#include <Gui/Application.h>
+#include <App/Application.h>
 
 #include "DlgSettingsFemCcxImp.h"
 #include "ui_DlgSettingsFemCcx.h"
@@ -46,19 +46,14 @@ DlgSettingsFemCcxImp::DlgSettingsFemCcxImp(QWidget* parent)
     ui->dsb_ccx_analysis_time->setMaximum(FLOAT_MAX);
     ui->dsb_ccx_initial_time_step->setMaximum(FLOAT_MAX);
     // determine number of CPU cores
-    auto processor_count = std::thread::hardware_concurrency();
-    // hardware check might fail and then returns 0
-    if (processor_count > 0)
-        ui->sb_ccx_numcpu->setMaximum(processor_count);
+    int processor_count = QThread::idealThreadCount();
+    ui->sb_ccx_numcpu->setMaximum(processor_count);
 
     connect(ui->fc_ccx_binary_path, &Gui::PrefFileChooser::fileNameChanged,
             this, &DlgSettingsFemCcxImp::onfileNameChanged);
 }
 
-DlgSettingsFemCcxImp::~DlgSettingsFemCcxImp()
-{
-    // no need to delete child widgets, Qt does it all for us
-}
+DlgSettingsFemCcxImp::~DlgSettingsFemCcxImp() = default;
 
 void DlgSettingsFemCcxImp::saveSettings()
 {

@@ -235,7 +235,7 @@ void Gui::PreferencePackManager::FindPreferencePacksInPackage(const fs::path &mo
         try {
             App::Metadata metadata(packageMetadataFile);
             auto content = metadata.content();
-            auto basename = mod.leaf().string();
+            auto basename = mod.filename().string();
             if (mod == modDirectory)
                 basename = "##USER_SAVED##";
             else if (mod == resourcePath)

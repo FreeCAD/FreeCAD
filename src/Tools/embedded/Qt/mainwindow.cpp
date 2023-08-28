@@ -1,11 +1,11 @@
 
 #include <Python.h>
-#include <string>
-#include <sstream>
 #include <QtGui>
 #include <QtWidgets>
+#include <sstream>
+#include <string>
 #if defined(Q_WS_X11)
-# include <QX11EmbedContainer>
+#include <QX11EmbedContainer>
 #endif
 
 #include "mainwindow.h"
@@ -67,7 +67,7 @@ void MainWindow::loadFreeCAD()
 {
     QString path = QFileDialog::getExistingDirectory(this, "FreeCAD module path");
     if (!path.isEmpty()) {
-        path.replace('\\','/');
+        path.replace('\\', '/');
         PyObject* main = PyImport_AddModule("__main__");
         PyObject* dict = PyModule_GetDict(main);
         std::stringstream cmd;
@@ -100,8 +100,7 @@ void MainWindow::newDocument()
 {
     PyObject* main = PyImport_AddModule("__main__");
     PyObject* dict = PyModule_GetDict(main);
-    const char* cmd =
-        "FreeCAD.newDocument()\n";
+    const char* cmd = "FreeCAD.newDocument()\n";
 
     PyObject* result = PyRun_String(cmd, Py_file_input, dict, dict);
     if (result) {
@@ -151,8 +150,8 @@ void MainWindow::embedWindow()
         QWidget* mw = nullptr;
         for (auto it : qApp->topLevelWidgets()) {
             if (it->inherits("Gui::MainWindow")) {
-              mw = it;
-              break;
+                mw = it;
+                break;
             }
         }
         if (mw) {
@@ -177,6 +176,5 @@ void MainWindow::embedWindow()
 
 void MainWindow::about()
 {
-   QMessageBox::about(this, tr("About"),
-            tr("Demonstrates remote control of FreeCAD"));
+    QMessageBox::about(this, tr("About"), tr("Demonstrates remote control of FreeCAD"));
 }

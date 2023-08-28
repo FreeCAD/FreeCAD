@@ -37,13 +37,9 @@ using namespace Gui;
 
 std::map<Base::Type, Base::Type> ViewProviderBuilder::_prop_to_view;
 
-ViewProviderBuilder::ViewProviderBuilder()
-{
-}
+ViewProviderBuilder::ViewProviderBuilder() = default;
 
-ViewProviderBuilder::~ViewProviderBuilder()
-{
-}
+ViewProviderBuilder::~ViewProviderBuilder() = default;
 
 void ViewProviderBuilder::add(const Base::Type& prop, const Base::Type& view)
 {
@@ -94,13 +90,9 @@ Gui::SoFCSelection* ViewProviderBuilder::createSelection()
 
 // --------------------------------------
 
-ViewProviderColorBuilder::ViewProviderColorBuilder()
-{
-}
+ViewProviderColorBuilder::ViewProviderColorBuilder() = default;
 
-ViewProviderColorBuilder::~ViewProviderColorBuilder()
-{
-}
+ViewProviderColorBuilder::~ViewProviderColorBuilder() = default;
 
 void ViewProviderColorBuilder::buildNodes(const App::Property* prop, std::vector<SoNode*>& node) const
 {

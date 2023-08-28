@@ -28,6 +28,7 @@
 #include "GeoFeatureGroupExtension.h"
 #include "OriginFeature.h"
 
+#include "QCoreApplication"
 
 namespace App
 {
@@ -37,6 +38,7 @@ namespace App
 class AppExport Origin : public App::DocumentObject
 {
     PROPERTY_HEADER_WITH_OVERRIDE(App::Origin);
+    Q_DECLARE_TR_FUNCTIONS(App::Origin)
 
 public:
     /// Constructor
@@ -55,28 +57,28 @@ public:
     ///@{
     // returns X axis
     App::Line *getX () const {
-        return getAxis ("X_Axis");
+        return getAxis (AxisRoles[0]);
     }
     // returns Y axis
     App::Line *getY () const {
-        return getAxis ("Y_Axis");
+        return getAxis (AxisRoles[1]);
     }
     // returns Z axis
     App::Line *getZ () const {
-        return getAxis ("Z_Axis");
+        return getAxis (AxisRoles[2]);
     }
 
     // returns XY plane
     App::Plane *getXY () const {
-        return getPlane ("XY_Plane");
+        return getPlane (PlaneRoles[0]);
     }
     // returns XZ plane
     App::Plane *getXZ () const {
-        return getPlane ("XZ_Plane");
+        return getPlane (PlaneRoles[1]);
     }
     // returns YZ plane
     App::Plane *getYZ () const {
-        return getPlane ("YZ_Plane");
+        return getPlane (PlaneRoles[2]);
     }
 
     /// Returns all axis objects to iterate on them
@@ -115,9 +117,9 @@ public:
     short mustExecute() const override;
 
     /// Axis types
-    static const char* AxisRoles[3];
+    static constexpr char* AxisRoles[3] = {"X_Axis", "Y_Axis", "Z_Axis"};
     /// Baseplane types
-    static const char* PlaneRoles[3];
+    static constexpr char* PlaneRoles[3] = {"XY_Plane", "XZ_Plane", "YZ_Plane"};
 
     // Axis links
     PropertyLinkList OriginFeatures;

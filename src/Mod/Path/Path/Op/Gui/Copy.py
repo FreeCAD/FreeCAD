@@ -63,6 +63,8 @@ class ObjectPathCopy:
                 obj.ToolController = obj.Base.ToolController
             if obj.Base.Path:
                 obj.Path = obj.Base.Path.copy()
+            if obj.Base.Placement:
+                obj.Placement = obj.Base.Placement
 
 
 class ViewProviderPathCopy:

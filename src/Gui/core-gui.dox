@@ -6,7 +6,7 @@
 /** \namespace Gui
     \brief The FreeCAD Graphical interface layer
 
-    This namespace includes the grafical interface of FreeCAD like:
+    This namespace includes the graphical interface of FreeCAD such as:
     - The main window
     - 3D View
     - Tree

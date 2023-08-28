@@ -77,6 +77,7 @@ DlgCustomKeyboardImp::DlgCustomKeyboardImp( QWidget* parent  )
   , firstShow(true)
 {
     ui->setupUi(this);
+    setupConnections();
 
     // Force create actions for all commands with shortcut to register with ShortcutManager
     for (auto cmd : Application::Instance->commandManager().getAllCommands()) {
@@ -101,7 +102,7 @@ DlgCustomKeyboardImp::DlgCustomKeyboardImp( QWidget* parent  )
 
     ui->shortcutTimeout->onRestore();
     QTimer *timer = new QTimer(this);
-    QObject::connect(ui->shortcutTimeout, QOverload<int>::of(&QSpinBox::valueChanged), timer, [=](int) {
+    QObject::connect(ui->shortcutTimeout, qOverload<int>(&QSpinBox::valueChanged), timer, [=](int) {
         timer->start(100);
     });
     QObject::connect(timer, &QTimer::timeout, [=]() {
@@ -110,8 +111,24 @@ DlgCustomKeyboardImp::DlgCustomKeyboardImp( QWidget* parent  )
 }
 
 /** Destroys the object and frees any allocated resources */
-DlgCustomKeyboardImp::~DlgCustomKeyboardImp()
+DlgCustomKeyboardImp::~DlgCustomKeyboardImp() = default;
+
+void DlgCustomKeyboardImp::setupConnections()
 {
+    connect(ui->categoryBox, qOverload<int>(&QComboBox::activated),
+            this, &DlgCustomKeyboardImp::onCategoryBoxActivated);
+    connect(ui->commandTreeWidget, &QTreeWidget::currentItemChanged,
+            this, &DlgCustomKeyboardImp::onCommandTreeWidgetCurrentItemChanged);
+    connect(ui->buttonAssign, &QPushButton::clicked,
+            this, &DlgCustomKeyboardImp::onButtonAssignClicked);
+    connect(ui->buttonClear, &QPushButton::clicked,
+            this, &DlgCustomKeyboardImp::onButtonClearClicked);
+    connect(ui->buttonReset, &QPushButton::clicked,
+            this, &DlgCustomKeyboardImp::onButtonResetClicked);
+    connect(ui->buttonResetAll, &QPushButton::clicked,
+            this, &DlgCustomKeyboardImp::onButtonResetAllClicked);
+    connect(ui->editShortcut, &AccelLineEdit::textChanged,
+            this, &DlgCustomKeyboardImp::onEditShortcutTextChanged);
 }
 
 void DlgCustomKeyboardImp::initCommandCompleter(QLineEdit *edit,
@@ -220,7 +237,7 @@ DlgCustomKeyboardImp::initCommandList(QTreeWidget *commandTreeWidget,
         timer->start(100);
     });
 
-    QObject::connect(combo, QOverload<int>::of(&QComboBox::activated), timer, [timer]() {
+    QObject::connect(combo, qOverload<int>(&QComboBox::activated), timer, [timer]() {
         timer->start(100);
     });
 
@@ -329,8 +346,7 @@ void DlgCustomKeyboardImp::populatePriorityList(QTreeWidget *priorityList,
 
     auto actionList = ShortcutManager::instance()->getActionsByShortcut(sc);
     QTreeWidgetItem *currentItem = nullptr;
-    for (size_t i=0; i<actionList.size(); ++i) {
-        const auto &info = actionList[i];
+    for (const auto &info : actionList) {
         if (!info.second)
             continue;
         QTreeWidgetItem* item = new QTreeWidgetItem(priorityList);
@@ -378,10 +394,10 @@ void DlgCustomKeyboardImp::populateCommandGroups(QComboBox *combo)
     }
     groupMap.push_back(std::make_pair(QLatin1String("All"), tr("All")));
 
-    for (GroupMap::iterator it = groupMap.begin(); it != groupMap.end(); ++it) {
-        if (combo->findData(it->first) < 0) {
-            combo->addItem(it->second);
-            combo->setItemData(combo->count()-1, QVariant(it->first), Qt::UserRole);
+    for (const auto & it : groupMap) {
+        if (combo->findData(it.first) < 0) {
+            combo->addItem(it.second);
+            combo->setItemData(combo->count()-1, QVariant(it.first), Qt::UserRole);
         }
     }
 }
@@ -398,7 +414,7 @@ void DlgCustomKeyboardImp::showEvent(QShowEvent* e)
 }
 
 /** Shows the description for the corresponding command */
-void DlgCustomKeyboardImp::on_commandTreeWidget_currentItemChanged(QTreeWidgetItem* item)
+void DlgCustomKeyboardImp::onCommandTreeWidgetCurrentItemChanged(QTreeWidgetItem* item)
 {
     if (!item)
         return;
@@ -424,7 +440,7 @@ void DlgCustomKeyboardImp::on_commandTreeWidget_currentItemChanged(QTreeWidgetIt
 }
 
 /** Shows all commands of this category */
-void DlgCustomKeyboardImp::on_categoryBox_activated(int)
+void DlgCustomKeyboardImp::onCategoryBoxActivated(int)
 {
     ui->buttonAssign->setEnabled(false);
     ui->buttonReset->setEnabled(false);
@@ -459,19 +475,19 @@ void DlgCustomKeyboardImp::setShortcutOfCurrentAction(const QString& accelText)
 }
 
 /** Assigns a new accelerator to the selected command. */
-void DlgCustomKeyboardImp::on_buttonAssign_clicked()
+void DlgCustomKeyboardImp::onButtonAssignClicked()
 {
     setShortcutOfCurrentAction(ui->editShortcut->text());
 }
 
 /** Clears the accelerator of the selected command. */
-void DlgCustomKeyboardImp::on_buttonClear_clicked()
+void DlgCustomKeyboardImp::onButtonClearClicked()
 {
     setShortcutOfCurrentAction(QString());
 }
 
 /** Resets the accelerator of the selected command to the default. */
-void DlgCustomKeyboardImp::on_buttonReset_clicked()
+void DlgCustomKeyboardImp::onButtonResetClicked()
 {
     QTreeWidgetItem* item = ui->commandTreeWidget->currentItem();
     if (!item)
@@ -487,14 +503,14 @@ void DlgCustomKeyboardImp::on_buttonReset_clicked()
 }
 
 /** Resets the accelerator of all commands to the default. */
-void DlgCustomKeyboardImp::on_buttonResetAll_clicked()
+void DlgCustomKeyboardImp::onButtonResetAllClicked()
 {
     ShortcutManager::instance()->resetAll();
     ui->buttonReset->setEnabled(false);
 }
 
 /** Checks for an already occupied shortcut. */
-void DlgCustomKeyboardImp::on_editShortcut_textChanged(const QString& )
+void DlgCustomKeyboardImp::onEditShortcutTextChanged(const QString& )
 {
     QTreeWidgetItem* item = ui->commandTreeWidget->currentItem();
     if (item) {

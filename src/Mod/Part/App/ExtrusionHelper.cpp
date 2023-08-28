@@ -48,9 +48,7 @@
 
 using namespace Part;
 
-ExtrusionHelper::ExtrusionHelper()
-{
-}
+ExtrusionHelper::ExtrusionHelper() = default;
 
 void ExtrusionHelper::makeDraft(const TopoDS_Shape& shape,
                                 const gp_Dir& direction,
@@ -284,8 +282,8 @@ void ExtrusionHelper::makeDraft(const TopoDS_Shape& shape,
             }
             else
                 // we already have the results
-                for (auto it = shells.begin(); it != shells.end(); ++it)
-                    drafts.push_back(*it);
+                for (const auto & shell : shells)
+                    drafts.push_back(shell);
         }
         else { // no solid
             BRepBuilderAPI_Sewing sewer;
@@ -362,7 +360,7 @@ void ExtrusionHelper::checkInnerWires(std::vector<bool>& isInnerWire, const gp_D
         }
         if (saveIsInnerWireIterator == *isInnerWireIterator)
             // nothing was changed and we can remove it from the list to be checked
-            // but we cannot do this before the foor loop was fully run
+            // but we cannot do this before the for loop was fully run
             toDisable[outer] = true;
         ++isInnerWireIterator;
         ++toCheckIterator;

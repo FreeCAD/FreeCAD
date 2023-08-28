@@ -52,9 +52,7 @@ CoordinateSystem::CoordinateSystem()
     Shape.setValue(builder.Shape());
 }
 
-CoordinateSystem::~CoordinateSystem()
-{
-}
+CoordinateSystem::~CoordinateSystem() = default;
 
 Base::Vector3d CoordinateSystem::getXAxis()
 {

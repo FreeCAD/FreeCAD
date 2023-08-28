@@ -21,7 +21,13 @@
 
 "The FreeCAD Arch Vector Rendering Module"
 
-import FreeCAD,math,Part,ArchCommands,DraftVecUtils,DraftGeomUtils
+import math
+
+import FreeCAD
+import ArchCommands
+import DraftVecUtils
+import DraftGeomUtils
+import Part
 
 ## @package ArchVRM
 #  \ingroup ARCH
@@ -648,4 +654,3 @@ class Renderer:
             svg += '"/>\n'
         svg += '</g>\n'
         return svg
-

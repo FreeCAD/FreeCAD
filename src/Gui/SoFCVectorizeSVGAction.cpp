@@ -137,9 +137,7 @@ public:
 
 // ----------------------------------------------------------------
 
-SoSVGVectorOutput::SoSVGVectorOutput()
-{
-}
+SoSVGVectorOutput::SoSVGVectorOutput() = default;
 
 SoSVGVectorOutput::~SoSVGVectorOutput()
 {
@@ -378,10 +376,7 @@ void SoFCVectorizeSVGAction::initClass()
     SO_ACTION_INIT_CLASS(SoFCVectorizeSVGAction, SoVectorizeAction);
 }
 
-SoFCVectorizeSVGAction::SoFCVectorizeSVGAction() :
-    m_backgroundState(true),
-    m_lineWidth(1.0),
-    m_usemm(false)
+SoFCVectorizeSVGAction::SoFCVectorizeSVGAction()
 {
     SO_ACTION_CONSTRUCTOR(SoFCVectorizeSVGAction);
     this->setOutput(new SoSVGVectorOutput);
@@ -402,11 +397,11 @@ SoFCVectorizeSVGAction::getSVGOutput() const
 void SoFCVectorizeSVGAction::printHeader() const
 {
     std::ostream& str = this->getSVGOutput()->getFileStream();
-    str << "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>" << std::endl;
-    str << "<!-- Created with FreeCAD (http://www.freecadweb.org) -->" << std::endl;
+    str << R"(<?xml version="1.0" encoding="UTF-8" standalone="no"?>)" << std::endl;
+    str << "<!-- Created with FreeCAD (http://www.freecad.org) -->" << std::endl;
     str << "<svg xmlns=\"http://www.w3.org/2000/svg\"" << std::endl;
-    str << "     xmlns:xlink=\"http://www.w3.org/1999/xlink\" xmlns:ev=\"http://www.w3.org/2001/xml-events\"" << std::endl;
-    str << "     version=\"1.1\" baseProfile=\"full\""  << std::endl;
+    str << R"(     xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:ev="http://www.w3.org/2001/xml-events")" << std::endl;
+    str << R"(     version="1.1" baseProfile="full")"  << std::endl;
 
     SbVec2f size = getPageSize();
     if (this->getOrientation() == LANDSCAPE) {

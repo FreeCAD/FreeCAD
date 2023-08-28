@@ -79,7 +79,7 @@
 #include "TaskDimension.h"
 
 
-namespace bp = boost::placeholders;
+namespace sp = std::placeholders;
 
 static bool _MeasureInfoInited;
 
@@ -94,7 +94,9 @@ struct MeasureInfo {
     {
         if(!_MeasureInfoInited) {
             _MeasureInfoInited = true;
-            App::GetApplication().signalDeleteDocument.connect(boost::bind(slotDeleteDocument, bp::_1));
+            //NOLINTBEGIN
+            App::GetApplication().signalDeleteDocument.connect(std::bind(slotDeleteDocument, sp::_1));
+            //NOLINTEND
         }
     }
 };
@@ -415,10 +417,7 @@ PartGui::DimensionLinear::DimensionLinear()
     SO_NODE_ADD_FIELD(dColor, (1.0, 0.0, 0.0));//dimension color.
 }
 
-PartGui::DimensionLinear::~DimensionLinear()
-{
-
-}
+PartGui::DimensionLinear::~DimensionLinear() = default;
 
 SbBool PartGui::DimensionLinear::affectsState() const
 {
@@ -558,6 +557,9 @@ PartGui::TaskMeasureLinear::~TaskMeasureLinear()
 
 void PartGui::TaskMeasureLinear::onSelectionChanged(const Gui::SelectionChanges& msg)
 {
+  if (msg.pSubName[0] == '\0')
+    return; // ignore whole objects selected in the model tree, e.g. when toggling the visibility of an object
+
   if (buttonSelectedIndex == 0)
   {
     if (msg.Type == Gui::SelectionChanges::AddSelection)
@@ -1174,10 +1176,7 @@ PartGui::DimensionAngular::DimensionAngular()
                                0.0, 0.0, 0.0, 1.0));
 }
 
-PartGui::DimensionAngular::~DimensionAngular()
-{
-
-}
+PartGui::DimensionAngular::~DimensionAngular() = default;
 
 SbBool PartGui::DimensionAngular::affectsState() const
 {
@@ -1555,6 +1554,9 @@ PartGui::TaskMeasureAngular::~TaskMeasureAngular()
 
 void PartGui::TaskMeasureAngular::onSelectionChanged(const Gui::SelectionChanges& msg)
 {
+  if (msg.pSubName[0] == '\0')
+    return; // ignore whole objects selected in the model tree, e.g. when toggling the visibility of an object
+
   TopoDS_Shape shape;
   Base::Matrix4D mat;
   if (!getShapeFromStrings(shape, std::string(msg.pDocName),
@@ -1703,13 +1705,13 @@ PartGui::VectorAdapter PartGui::TaskMeasureAngular::buildAdapter(const PartGui::
     {
       TopoDS_Shape edgeShape;
       if (!getShapeFromStrings(edgeShape, current.documentName, current.objectName, current.subObjectName,&mat))
-        return VectorAdapter();
+        return {};
       TopoDS_Edge edge = TopoDS::Edge(edgeShape);
       // make edge orientation so that end of edge closest to pick is head of vector.
       TopoDS_Vertex firstVertex = TopExp::FirstVertex(edge, Standard_True);
       TopoDS_Vertex lastVertex = TopExp::LastVertex(edge, Standard_True);
       if (firstVertex.IsNull() || lastVertex.IsNull())
-        return VectorAdapter();
+        return {};
       gp_Vec firstPoint = PartGui::convert(firstVertex);
       gp_Vec lastPoint = PartGui::convert(lastVertex);
       Base::Vector3d v(current.x,current.y,current.z);
@@ -1730,7 +1732,7 @@ PartGui::VectorAdapter PartGui::TaskMeasureAngular::buildAdapter(const PartGui::
     {
       TopoDS_Shape faceShape;
       if (!getShapeFromStrings(faceShape, current.documentName, current.objectName, current.subObjectName,&mat))
-        return VectorAdapter();
+        return {};
 
       TopoDS_Face face = TopoDS::Face(faceShape);
       Base::Vector3d v(current.x,current.y,current.z);
@@ -1746,9 +1748,9 @@ PartGui::VectorAdapter PartGui::TaskMeasureAngular::buildAdapter(const PartGui::
   assert(current2.shapeType == DimSelections::Vertex);
   TopoDS_Shape vertexShape1, vertexShape2;
   if(!getShapeFromStrings(vertexShape1, current1.documentName, current1.objectName, current1.subObjectName))
-    return VectorAdapter();
+    return {};
   if(!getShapeFromStrings(vertexShape2, current2.documentName, current2.objectName, current2.subObjectName))
-    return VectorAdapter();
+    return {};
 
   TopoDS_Vertex vertex1 = TopoDS::Vertex(vertexShape1);
   TopoDS_Vertex vertex2 = TopoDS::Vertex(vertexShape2);
@@ -1804,7 +1806,7 @@ void PartGui::TaskMeasureAngular::setUpGui()
   controlTaskBox->groupLayout()->addLayout(controlLayout);
   QObject::connect(control->resetButton, &QPushButton::clicked, this, &TaskMeasureAngular::resetDialogSlot);
 
-  this->setButtonPosition(TaskDialog::South);
+  this->setButtonPosition(TaskDialog::North);
   Content.push_back(selectionTaskBox);
   Content.push_back(controlTaskBox);
 

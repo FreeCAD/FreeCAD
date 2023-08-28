@@ -37,6 +37,7 @@ See https://en.wikipedia.org/wiki/B%C3%A9zier_curve
 # @{
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
+import FreeCAD as App
 import FreeCADGui as Gui
 import draftutils.utils as utils
 import draftutils.todo as todo
@@ -70,7 +71,8 @@ class BezCurve(gui_lines.Line):
         Activate the specific Bézier curve tracker.
         """
         super(BezCurve, self).Activated(name="BezCurve",
-                                        icon="Draft_BezCurve")
+                                        icon="Draft_BezCurve",
+                                        task_title=translate("draft","Bézier curve"))
         if self.doc:
             self.bezcurvetrack = trackers.bezcurveTracker()
 
@@ -228,11 +230,19 @@ Gui.addCommand('Draft_BezCurve', BezCurve())
 
 
 class CubicBezCurve(gui_lines.Line):
-    """Gui command for the 3rd degree Bézier Curve tool."""
+    """Gui command for the 3rd degree Bézier Curve tool.
+
+    The EnableSelection parameter has an impact on SoMouseButtonEvents. If the
+    mouse is over a highlighted object and EnableSelection is `True` the mouse
+    up event is not detected. When this command is activated EnableSelection is
+    therefore temporarily set to `False`.
+    See: https://github.com/FreeCAD/FreeCAD/issues/6452
+    """
 
     def __init__(self):
         super(CubicBezCurve, self).__init__(wiremode=True)
         self.degree = 3
+        self.old_EnableSelection = True
 
     def GetResources(self):
         """Set icon, menu and tooltip."""
@@ -247,8 +257,13 @@ class CubicBezCurve(gui_lines.Line):
 
         Activate the specific BezCurve tracker.
         """
+        param = App.ParamGet("User parameter:BaseApp/Preferences/View")
+        self.old_EnableSelection = param.GetBool("EnableSelection", True)
+        param.SetBool("EnableSelection", False)
+
         super(CubicBezCurve, self).Activated(name="CubicBezCurve",
-                                             icon="Draft_CubicBezCurve")
+                                             icon="Draft_CubicBezCurve",
+                                             task_title=translate("draft","Cubic Bézier curve"))
         if self.doc:
             self.bezcurvetrack = trackers.bezcurveTracker()
 
@@ -417,6 +432,9 @@ class CubicBezCurve(gui_lines.Line):
         closed: bool, optional
             Close the curve if `True`.
         """
+        param = App.ParamGet("User parameter:BaseApp/Preferences/View")
+        param.SetBool("EnableSelection", self.old_EnableSelection)
+
         if self.ui:
             if hasattr(self, "bezcurvetrack"):
                 self.bezcurvetrack.finalize()

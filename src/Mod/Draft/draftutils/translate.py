@@ -34,7 +34,6 @@ using the QtCore module.
 # @{
 import PySide.QtCore as QtCore
 import PySide.QtGui as QtGui
-import six
 
 Qtranslate = QtCore.QCoreApplication.translate
 
@@ -44,7 +43,7 @@ except AttributeError:
     _encoding = None
 
 
-def translate(context, text, utf8_decode=False):
+def translate(context, text, comment=None):
     r"""Translate the text using the Qt translate function.
 
     It wraps around `QtGui.QApplication.translate`,
@@ -62,54 +61,25 @@ def translate(context, text, utf8_decode=False):
     text: str
         Text that will be translated. It could be a single word,
         a full sentence, paragraph, or multiple paragraphs with new lines.
-        Usually the last endline character '\\n'
+        Usually the last endline character '\n'
         that finishes the string doesn't need to be included
         for translation.
-
-    utf8_decode: bool
-        It defaults to `False`.
-        This must be set to `True` to indicate that the `text`
-        is an `'utf8'` encoded string, so it should be returned as such.
-        This option is ignored when using Python 3
-        as with Python 3 all strings are `'utf8'` by default.
 
     Returns
     -------
     str
         A unicode string returned by `QtGui.QApplication.translate`.
 
-        If `utf8_decode` is `True`, the resulting string will be encoded
-        in `'utf8'`, and a `bytes` object will be returned.
-        ::
-            Qtranslate = QtGui.QApplication.translate
-            return Qtranslate(context, text, None).encode("utf8")
-
     Unicode strings
     ---------------
-    Whether it is Qt4 or Qt5, the `translate` function
-    always returns a unicode string.
-    The difference is how it handles the input.
-
-    Reference: https://pyside.github.io/docs/pyside/PySide/QtCore/
-
-    In Qt4 the translate function has a 4th parameter to define the encoding
-    of the input string.
-
-    >>> QtCore.QCoreApplication.translate(context, text, None, UnicodeUT8)
-    >>> QtGui.QApplication.translate(context, text, None, UnicodeUT8)
-
     Reference: https://doc.qt.io/qtforpython/PySide2/QtCore
 
-    In Qt5 the strings are always assumed unicode, so the 4th parameter
-    is for a different use, and it is not used.
+    In Qt5 the strings are always assumed unicode
 
     >>> QtCore.QCoreApplication.translate(context, text, None)
     >>> QtGui.QApplication.translate(context, text, None)
     """
-    # Python 3 and Qt5
-    # The text is a utf8 string, and since it is Qt5
-    # the translate function doesn't use the 4th parameter
-    return Qtranslate(context, text, None)
+    return Qtranslate(context, text, comment)
 
 
 # Original code no longer used. It is listed here for reference

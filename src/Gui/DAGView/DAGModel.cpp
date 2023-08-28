@@ -55,7 +55,7 @@
 
 using namespace Gui;
 using namespace DAG;
-namespace bp = boost::placeholders;
+namespace sp = std::placeholders;
 
 LineEdit::LineEdit(QWidget* parentIn): QLineEdit(parentIn)
 {
@@ -137,11 +137,13 @@ Model::Model(QObject *parentIn, const Gui::Document &documentIn) : QGraphicsScen
   connect(this->editingFinishedAction, &QAction::triggered,
           this, &Model::editingFinishedSlot);
 
-  connectNewObject = documentIn.signalNewObject.connect(boost::bind(&Model::slotNewObject, this, bp::_1));
-  connectDelObject = documentIn.signalDeletedObject.connect(boost::bind(&Model::slotDeleteObject, this, bp::_1));
-  connectChgObject = documentIn.signalChangedObject.connect(boost::bind(&Model::slotChangeObject, this, bp::_1, bp::_2));
-  connectEdtObject = documentIn.signalInEdit.connect(boost::bind(&Model::slotInEdit, this, bp::_1));
-  connectResObject = documentIn.signalResetEdit.connect(boost::bind(&Model::slotResetEdit, this, bp::_1));
+  //NOLINTBEGIN
+  connectNewObject = documentIn.signalNewObject.connect(std::bind(&Model::slotNewObject, this, sp::_1));
+  connectDelObject = documentIn.signalDeletedObject.connect(std::bind(&Model::slotDeleteObject, this, sp::_1));
+  connectChgObject = documentIn.signalChangedObject.connect(std::bind(&Model::slotChangeObject, this, sp::_1, sp::_2));
+  connectEdtObject = documentIn.signalInEdit.connect(std::bind(&Model::slotInEdit, this, sp::_1));
+  connectResObject = documentIn.signalResetEdit.connect(std::bind(&Model::slotResetEdit, this, sp::_1));
+  //NOLINTEND
 
   for (auto obj : documentIn.getDocument()->getObjects()) {
     auto vpd = Base::freecad_dynamic_cast<Gui::ViewProviderDocumentObject>(documentIn.getViewProvider(obj));
@@ -248,9 +250,11 @@ void Model::slotNewObject(const ViewProviderDocumentObject &VPDObjectIn)
   icon->setPixmap(VPDObjectIn.getIcon().pixmap(iconSize, iconSize));
   (*theGraph)[virginVertex].stateIcon->setPixmap(passPixmap);
   (*theGraph)[virginVertex].text->setFont(this->font());
+  //NOLINTBEGIN
   (*theGraph)[virginVertex].connChangeIcon =
       const_cast<Gui::ViewProviderDocumentObject&>(VPDObjectIn).signalChangeIcon.connect(
-          boost::bind(&Model::slotChangeIcon, this, boost::cref(VPDObjectIn), icon));
+          std::bind(&Model::slotChangeIcon, this, boost::cref(VPDObjectIn), icon));
+  //NOLINTEND
 
   graphDirty = true;
   lastAddedVertex = Graph::null_vertex();
@@ -929,9 +933,9 @@ void Model::mousePressEvent(QGraphicsSceneMouseEvent* event)
     QPointF currentPickPoint = event->scenePos();
     QGraphicsLineItem intersectionLine(QLineF(lastPick, currentPickPoint));
     QList<QGraphicsItem *>selection = collidingItems(&intersectionLine);
-    for (auto currentItem = selection.begin(); currentItem != selection.end(); ++currentItem)
+    for (auto currentItem : selection)
     {
-      auto rect = dynamic_cast<RectItem *>(*currentItem);
+      auto rect = dynamic_cast<RectItem *>(currentItem);
       if (!rect) continue;
       const GraphLinkRecord &selectionRecord = findRecord(rect, *graphLink);
       Gui::Selection().addSelection(selectionRecord.DObject->getDocument()->getName(),

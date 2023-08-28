@@ -74,9 +74,7 @@ CommandIconView::CommandIconView ( QWidget * parent )
 /**
  * Destroys the icon view and deletes all items.
  */
-CommandIconView::~CommandIconView ()
-{
-}
+CommandIconView::~CommandIconView () = default;
 
 /**
  * Stores the name of the selected commands for drag and drop.
@@ -207,9 +205,7 @@ ActionSelector::ActionSelector(QWidget* parent)
     setButtonsEnabled();
 }
 
-ActionSelector::~ActionSelector()
-{
-}
+ActionSelector::~ActionSelector() = default;
 
 void ActionSelector::setSelectedLabel(const QString& label)
 {
@@ -566,10 +562,7 @@ CheckListDialog::CheckListDialog( QWidget* parent, Qt::WindowFlags fl )
 /**
  *  Destroys the object and frees any allocated resources
  */
-CheckListDialog::~CheckListDialog()
-{
-    // no need to delete child widgets, Qt does it all for us
-}
+CheckListDialog::~CheckListDialog() = default;
 
 /**
  * Sets the items to the dialog's list view. By default all items are checkable..
@@ -625,23 +618,12 @@ struct ColorButtonP
 {
     QColor old, col;
     QPointer<QColorDialog> cd;
-    bool allowChange;
-    bool autoChange;
-    bool drawFrame;
-    bool allowTransparency;
-    bool modal;
-    bool dirty;
-
-    ColorButtonP()
-        : cd(nullptr)
-        , allowChange(true)
-        , autoChange(false)
-        , drawFrame(true)
-        , allowTransparency(false)
-        , modal(true)
-        , dirty(true)
-    {
-    }
+    bool allowChange{true};
+    bool autoChange{false};
+    bool drawFrame{true};
+    bool allowTransparency{false};
+    bool modal{true};
+    bool dirty{true};
 };
 }
 
@@ -804,6 +786,7 @@ void ColorButton::showModeless()
         if (DialogOptions::dontUseNativeColorDialog())
             dlg->setOptions(QColorDialog::DontUseNativeDialog);
         dlg->setOption(QColorDialog::ColorDialogOption::ShowAlphaChannel, d->allowTransparency);
+        dlg->setCurrentColor(d->old);
         connect(dlg, &QColorDialog::rejected, this, &ColorButton::onRejected);
         connect(dlg, &QColorDialog::currentColorChanged, this, &ColorButton::onColorChosen);
         d->cd = dlg;
@@ -884,9 +867,7 @@ UrlLabel::UrlLabel(QWidget* parent, Qt::WindowFlags f)
         setStyleSheet(QStringLiteral("Gui--UrlLabel {color: #0000FF;text-decoration: underline;}"));
 }
 
-UrlLabel::~UrlLabel()
-{
-}
+UrlLabel::~UrlLabel() = default;
 
 void Gui::UrlLabel::setLaunchExternal(bool l)
 {
@@ -1020,7 +1001,7 @@ void StatefulLabel::setState(QString state)
 
     if (auto entry = _availableStates.find(state); entry != _availableStates.end()) {
         // Order of precedence: first, check if the user has set this in their preferences:
-        if (!entry->second.preferenceString.empty()) {            
+        if (!entry->second.preferenceString.empty()) {
             // First, try to see if it's just stored a color (as an unsigned int):
             auto availableColorPrefs = _parameterGroup->GetUnsignedMap();
             std::string lookingForGroup = entry->second.preferenceString;
@@ -1029,7 +1010,7 @@ void StatefulLabel::setState(QString state)
                 if (unsignedEntry.first == entry->second.preferenceString) {
                     // Convert the stored Uint into usable color data:
                     unsigned int col = unsignedEntry.second;
-                    QColor qcolor((col >> 24) & 0xff, (col >> 16) & 0xff, (col >> 8) & 0xff);
+                    QColor qcolor(App::Color::fromPackedRGB<QColor>(col));
                     this->setStyleSheet(QString::fromUtf8("Gui--StatefulLabel{ color : rgba(%1,%2,%3,%4) ;}").arg(qcolor.red()).arg(qcolor.green()).arg(qcolor.blue()).arg(qcolor.alpha()));
                     _styleCache[state] = this->styleSheet();
                     return;
@@ -1097,9 +1078,7 @@ LabelButton::LabelButton (QWidget * parent)
     connect(button, &QPushButton::clicked, this, &LabelButton::buttonClicked);
 }
 
-LabelButton::~LabelButton()
-{
-}
+LabelButton::~LabelButton() = default;
 
 void LabelButton::resizeEvent(QResizeEvent* e)
 {
@@ -1153,9 +1132,7 @@ ToolTip::ToolTip() : installed(false), hidden(true)
 {
 }
 
-ToolTip::~ToolTip()
-{
-}
+ToolTip::~ToolTip() = default;
 
 void ToolTip::installEventFilter()
 {
@@ -1240,9 +1217,7 @@ StatusWidget::StatusWidget(QWidget* parent)
     gridLayout->addWidget(label, 0, 0, 1, 1);
 }
 
-StatusWidget::~StatusWidget()
-{
-}
+StatusWidget::~StatusWidget() = default;
 
 void StatusWidget::setStatusText(const QString& s)
 {
@@ -1262,7 +1237,7 @@ void StatusWidget::showText(int ms)
 
 QSize StatusWidget::sizeHint () const
 {
-    return QSize(250,100);
+    return {250,100};
 }
 
 void StatusWidget::showEvent(QShowEvent* event)
@@ -1284,7 +1259,7 @@ public:
     }
 
     QSize sizeHint() const override {
-        return QSize(codeEditor->lineNumberAreaWidth(), 0);
+        return {codeEditor->lineNumberAreaWidth(), 0};
     }
 
 protected:
@@ -1465,9 +1440,7 @@ LabelEditor::LabelEditor (QWidget * parent)
     setFocusProxy(lineEdit);
 }
 
-LabelEditor::~LabelEditor()
-{
-}
+LabelEditor::~LabelEditor() = default;
 
 void LabelEditor::resizeEvent(QResizeEvent* e)
 {
@@ -1596,7 +1569,7 @@ void ExpLineEdit::setExpression(std::shared_ptr<Expression> expr)
         QPalette p(palette());
         p.setColor(QPalette::Active, QPalette::Text, Qt::red);
         setPalette(p);
-        iconLabel->setToolTip(QString::fromLatin1(e.what()));
+        iconLabel->setToolTip(tr("An error occurred -- see Report View for information"));
     }
 }
 
@@ -1663,7 +1636,7 @@ void ExpLineEdit::resizeEvent(QResizeEvent * event)
         QPalette p(palette());
         p.setColor(QPalette::Active, QPalette::Text, Qt::red);
         setPalette(p);
-        iconLabel->setToolTip(QString::fromLatin1(e.what()));
+        iconLabel->setToolTip(tr("An error occurred -- see Report View for information"));
     }
 }
 

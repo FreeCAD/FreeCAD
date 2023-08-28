@@ -149,7 +149,8 @@ class PathBoundary:
         ):
             return None
 
-        if len(self.baseOp.Path.Commands) == 0:
+        path = PathUtils.getPathWithPlacement(self.baseOp)
+        if len(path.Commands) == 0:
             Path.Log.warning("No Path Commands for %s" % self.baseOp.Label)
             return []
 
@@ -164,13 +165,13 @@ class PathBoundary:
         )
         self.strG0ZclearanceHeight = Path.Command("G0", {"Z": self.clearanceHeight})
 
-        cmd = self.baseOp.Path.Commands[0]
+        cmd = path.Commands[0]
         pos = cmd.Placement.Base  # bogus m/c position to create first edge
         bogusX = True
         bogusY = True
         commands = [cmd]
         lastExit = None
-        for cmd in self.baseOp.Path.Commands[1:]:
+        for cmd in path.Commands[1:]:
             if cmd.Name in Path.Geom.CmdMoveAll:
                 if bogusX:
                     bogusX = "X" not in cmd.Parameters

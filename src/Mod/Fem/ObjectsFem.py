@@ -23,7 +23,7 @@
 
 __title__ = "Objects FEM"
 __author__ = "Bernd Hahnebach"
-__url__ = "https://www.freecadweb.org"
+__url__ = "https://www.freecad.org"
 
 ## \addtogroup FEM
 #  @{
@@ -420,7 +420,7 @@ def makeElementGeometry1D(
     element_geometry1D.ElementGeometry1D(obj)
     sec_types = element_geometry1D.ElementGeometry1D.known_beam_types
     if sectiontype not in sec_types:
-        FreeCAD.Console.PrintError("Section type is not known. Set to " + sec_types[0] + " \n")
+        FreeCAD.Console.PrintError("Section type is unknown. Set to " + sec_types[0] + " \n")
         obj.SectionType = sec_types[0]
     else:
         obj.SectionType = sectiontype
@@ -742,12 +742,31 @@ def makePostVtkResult(
 ):
     """makePostVtkResult(document, base_result, [name]):
     creates a FEM post processing result object (vtk based) to hold FEM results"""
-    obj = doc.addObject("Fem::FemPostPipeline", name)
+    Pipeline_Name = "Pipeline_" + name
+    obj = doc.addObject("Fem::FemPostPipeline", Pipeline_Name)
     obj.load(base_result)
+    if FreeCAD.GuiUp:
+        obj.ViewObject.SelectionStyle = "BoundBox"
+        # to assure the user sees something, set the default to Surface
+        obj.ViewObject.DisplayMode = "Surface"
     return obj
 
 
 # ********* solver objects ***********************************************************************
+def makeEquationDeformation(
+    doc,
+    base_solver=None,
+    name="Deformation"
+):
+    """makeEquationDeformation(document, [base_solver], [name]):
+    creates a FEM deformation (nonlinear elasticity) equation for a solver"""
+    from femsolver.elmer.equations import deformation
+    obj = deformation.create(doc, name)
+    if base_solver:
+        base_solver.addObject(obj)
+    return obj
+
+
 def makeEquationElasticity(
     doc,
     base_solver=None,

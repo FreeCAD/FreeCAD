@@ -474,7 +474,10 @@ class TestOutputNameSubstitution(unittest.TestCase):
         outlist = PathPost.buildPostList(self.job)
         subpart, objs = outlist[0]
         filename = PathPost.resolveFileName(self.job, subpart, 0)
-        self.assertEqual(filename, f"{self.macro}outfile.nc")
+        self.assertEqual(
+            os.path.normpath(filename),
+            os.path.normpath(f"{self.macro}outfile.nc")
+        )
 
     def test040(self):
         # unused substitution strings should be ignored

@@ -19,11 +19,14 @@ SET(AddonManager_SRCS
     addonmanager_devmode_predictor.py
     addonmanager_devmode_validators.py
     addonmanager_firstrun.py
+    addonmanager_freecad_interface.py
     addonmanager_git.py
     addonmanager_installer.py
     addonmanager_installer_gui.py
     addonmanager_macro.py
     addonmanager_macro_parser.py
+    addonmanager_metadata.py
+    addonmanager_pyside_interface.py
     addonmanager_update_all_gui.py
     addonmanager_uninstaller.py
     addonmanager_uninstaller_gui.py
@@ -83,10 +86,12 @@ SET(AddonManagerTestsApp_SRCS
     AddonManagerTest/app/mocks.py
     AddonManagerTest/app/test_addon.py
     AddonManagerTest/app/test_dependency_installer.py
+    AddonManagerTest/app/test_freecad_interface.py
     AddonManagerTest/app/test_git.py
     AddonManagerTest/app/test_installer.py
     AddonManagerTest/app/test_macro.py
     AddonManagerTest/app/test_macro_parser.py
+    AddonManagerTest/app/test_metadata.py
     AddonManagerTest/app/test_utilities.py
     AddonManagerTest/app/test_uninstaller.py
 )

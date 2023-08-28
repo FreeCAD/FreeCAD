@@ -23,7 +23,7 @@
 
 __title__ = "FreeCAD FEM solver equation base object"
 __author__ = "Markus Hovorka"
-__url__ = "https://www.freecadweb.org"
+__url__ = "https://www.freecad.org"
 
 ## \addtogroup FEM
 #  @{
@@ -67,6 +67,16 @@ class BaseViewProxy(object):
 
     def setDisplayMode(self, mode):
         return mode
+
+
+class DeformationProxy(BaseProxy):
+    pass
+
+
+class DeformationViewProxy(BaseViewProxy):
+
+    def getIcon(self):
+        return ":/icons/FEM_EquationDeformation.svg"
 
 
 class ElasticityProxy(BaseProxy):

@@ -37,7 +37,7 @@ class MeshExport MeshInfo
 {
 public:
   explicit MeshInfo (const MeshKernel &rclM);
-  virtual ~MeshInfo () {}
+  virtual ~MeshInfo () = default;
   /**
    * Writes general information about the mesh structure into the stream.
    */
@@ -81,8 +81,8 @@ protected:
 protected:
   const MeshKernel &_rclMesh;   // const reference to mesh data structure
 
-private:
-  MeshInfo();         // not accessible default constructor
+public:
+  MeshInfo() = delete;         // not accessible default constructor
 };
 
 

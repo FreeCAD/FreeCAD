@@ -35,9 +35,9 @@
 # include <QTransform>
 #endif
 
-#include <App/Application.h>
 #include <Base/Console.h>
 #include <Mod/TechDraw/App/DrawUtil.h>
+#include <Mod/TechDraw/App/Preferences.h>
 
 #include "PreferencesGui.h"
 #include "QGTracker.h"
@@ -47,6 +47,7 @@
 #include "ZVALUE.h"
 
 
+using namespace TechDraw;
 using namespace TechDrawGui;
 
 QGTracker::QGTracker(QGSPage* inScene, TrackerMode m):
@@ -474,20 +475,14 @@ void QGTracker::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
 
 QColor QGTracker::getTrackerColor()
 {
-    QColor result;
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp")->
-                                                    GetGroup("Preferences")->GetGroup("Mod/TechDraw/Tracker");
-    App::Color trackColor = App::Color((uint32_t) hGrp->GetUnsigned("TrackerColor", 0xFF000000));
-    result = PreferencesGui::getAccessibleQColor(trackColor.asValue<QColor>());
-    return result;
+    App::Color trackColor = App::Color((uint32_t) Preferences::getPreferenceGroup("Tracker")->GetUnsigned("TrackerColor", 0xFF000000));
+    return PreferencesGui::getAccessibleQColor(trackColor.asValue<QColor>());
 }
 
 double QGTracker::getTrackerWeight()
 {
     double result = 1.0;
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp")->
-                                                    GetGroup("Preferences")->GetGroup("Mod/TechDraw/Tracker");
-    result = hGrp->GetFloat("TrackerWeight", 4.0);
+    result = Preferences::getPreferenceGroup("Tracker")->GetFloat("TrackerWeight", 4.0);
 
     return result;
 }

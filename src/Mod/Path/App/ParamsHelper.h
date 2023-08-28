@@ -48,7 +48,7 @@
  * Extensive use of macros has one noticeable disadvantage, though. If some thing
  * goes wrong, the compiler error message is kind of cryptic. If so, first
  * double check your macro definition of the parameter is correctly, not missing
- * or having extra parathesis or comma.  Then, you can use the CMake
+ * or having extra parenthesis or comma.  Then, you can use the CMake
  * intermediate file target to get the preprocessor output for checking. For
  * example, for a file located at \c src/Mod/Path/App/Area.cpp,
  * \code{.sh}
@@ -89,7 +89,7 @@
  *     (a,b,c ...)
  * \endcode
  *
- * This is why the parameter definition requires a double parathesis, as shown
+ * This is why the parameter definition requires a double parenthesis, as shown
  * in the following section.
  *
  * \section Library Overview
@@ -427,8 +427,8 @@
  *
  * This macro is used by #PARAM_ENUM_CONVERT to convert each parameter, but
  * you can use it directly for a single parameter. Check #PARAM_NUM_CONVERT
- * for more detail. Make sure the outer parathesis of \c _param is stripped,
- * i.e. not double but single parathesis
+ * for more detail. Make sure the outer parenthesis of \c _param is stripped,
+ * i.e. not double but single parenthesis
  */
 #define PARAM_ENUM_CONVERT_SINGLE(_src,_dst,_default,_param) \
         PARAM_FENUM_TYPE(_param) _dst(_param);\

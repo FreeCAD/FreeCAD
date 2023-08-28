@@ -120,31 +120,23 @@ void QGIView::onSourceChange(TechDraw::DrawView* newParent)
 void QGIView::isVisible(bool state)
 {
     auto feat = getViewObject();
-    if (feat) {
-        auto vp = QGIView::getViewProvider(feat);
-        if (vp) {
-            Gui::ViewProviderDocumentObject* vpdo = dynamic_cast<Gui::ViewProviderDocumentObject*>(vp);
-            if (vpdo) {
-                vpdo->Visibility.setValue(state);
-            }
-        }
-    }
+    if (!feat) return;
+    auto vp = QGIView::getViewProvider(feat);
+    if (!vp) return;
+    Gui::ViewProviderDocumentObject* vpdo = dynamic_cast<Gui::ViewProviderDocumentObject*>(vp);
+    if (!vpdo) return;
+    vpdo->Visibility.setValue(state);
 }
 
 bool QGIView::isVisible()
 {
-    bool result = false;
     auto feat = getViewObject();
-    if (feat) {
-        auto vp = QGIView::getViewProvider(feat);
-        if (vp) {
-            Gui::ViewProviderDocumentObject* vpdo = dynamic_cast<Gui::ViewProviderDocumentObject*>(vp);
-            if (vpdo) {
-                result = vpdo->Visibility.getValue();
-            }
-        }
-    }
-    return result;
+    if (!feat) return false;
+    auto vp = QGIView::getViewProvider(feat);
+    if (!vp) return false;
+    Gui::ViewProviderDocumentObject* vpdo = dynamic_cast<Gui::ViewProviderDocumentObject*>(vp);
+    if (!vpdo) return false;
+    return vpdo->Visibility.getValue();
 }
 
 //Set selection state for this and it's children
@@ -233,15 +225,13 @@ void QGIView::mouseReleaseEvent(QGraphicsSceneMouseEvent * event)
     //TODO: this should be done in itemChange - item position has changed
 //    Base::Console().Message("QGIV::mouseReleaseEvent() - %s\n", getViewName());
 //    if(scene() && this == scene()->mouseGrabberItem()) {
-    if (m_dragState == DRAGGING) {
-        if(!m_locked) {
-            if (!isInnerView()) {
-                double tempX = x(),
-                       tempY = getY();
-                getViewObject()->setPosition(Rez::appX(tempX), Rez::appX(tempY));
-            } else {
-                getViewObject()->setPosition(Rez::appX(x()), Rez::appX(getYInClip(y())));
-            }
+    if (m_dragState == DRAGGING && !m_locked) {
+        if (!isInnerView()) {
+            double tempX = x(),
+                   tempY = getY();
+            getViewObject()->setPosition(Rez::appX(tempX), Rez::appX(tempY));
+        } else {
+            getViewObject()->setPosition(Rez::appX(x()), Rez::appX(getYInClip(y())));
         }
     }
     m_dragState = NODRAG;
@@ -286,8 +276,8 @@ void QGIView::setPosition(qreal xPos, qreal yPos)
     } else {
         newY = getYInClip(yPos);
     }
-    if ( (TechDraw::DrawUtil::fpCompare(newX, oldX)) &&
-         (TechDraw::DrawUtil::fpCompare(newY, oldY)) ) {
+    if (TechDraw::DrawUtil::fpCompare(newX, oldX) &&
+        TechDraw::DrawUtil::fpCompare(newY, oldY)) {
         return;
     } else {
         setPos(newX, newY);
@@ -306,15 +296,11 @@ QGIViewClip* QGIView::getClipGroup()
         return nullptr;
     }
 
-    QGIViewClip* result = nullptr;
     auto parentClip( dynamic_cast<QGCustomClip*>( parentItem() ) );
-    if (parentClip) {
-        auto parentView( dynamic_cast<QGIViewClip*>( parentClip->parentItem() ) );
-        if (parentView) {
-            result = parentView;
-        }
-    }
-    return result;
+    if (!parentClip) return nullptr;
+
+    auto parentView( dynamic_cast<QGIViewClip*>( parentClip->parentItem() ) );
+    return parentView;
 }
 
 void QGIView::updateView(bool forceUpdate)
@@ -356,12 +342,11 @@ void QGIView::rotateView()
 
 double QGIView::getScale()
 {
-    double result = 1.0;
     TechDraw::DrawView* feat = getViewObject();
-    if (feat) {
-        result = feat->getScale();
+    if (!feat) {
+        return 1.0;
     }
-    return result;
+    return feat->getScale();
 }
 const char * QGIView::getViewName() const
 {
@@ -472,7 +457,7 @@ void QGIView::drawBorder()
     m_font.setPixelSize(fontSize);
     m_label->setFont(m_font);
 
-    QString labelStr = QString::fromUtf8(getViewObject()->Label.getValue());
+    QString labelStr = QString::fromStdString( getViewObject()->Label.getValue() );
     m_label->setPlainText(labelStr);
     QRectF labelArea = m_label->boundingRect();                //m_label coords
     double labelWidth = m_label->boundingRect().width();
@@ -536,6 +521,7 @@ void QGIView::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, Q
 QRectF QGIView::customChildrenBoundingRect() const
 {
     QList<QGraphicsItem*> children = childItems();
+    // exceptions not to be included in determining the frame rectangle
     int dimItemType = QGraphicsItem::UserType + 106;  // TODO: Get magic number from include by name
     int borderItemType = QGraphicsItem::UserType + 136;  // TODO: Magic number warning
     int labelItemType = QGraphicsItem::UserType + 135;  // TODO: Magic number warning
@@ -545,23 +531,24 @@ QRectF QGIView::customChildrenBoundingRect() const
     int editablePathItemType = QGraphicsItem::UserType + 301;  // TODO: Magic number warning
     int movableTextItemType = QGraphicsItem::UserType + 300;
     int weldingSymbolItemType = QGraphicsItem::UserType + 340;
+    int centerMarkItemType = QGraphicsItem::UserType + 171;
     QRectF result;
-    for (QList<QGraphicsItem*>::iterator it = children.begin(); it != children.end(); ++it) {
-        if (!(*it)->isVisible()) {
+    for (auto& child : children) {
+        if (!child->isVisible()) {
             continue;
         }
-        if ( ((*it)->type() != dimItemType) &&
-             ((*it)->type() != leaderItemType) &&
-             ((*it)->type() != textLeaderItemType) &&
-             ((*it)->type() != editablePathItemType) &&
-             ((*it)->type() != movableTextItemType) &&
-             ((*it)->type() != borderItemType) &&
-             ((*it)->type() != labelItemType)  &&
-             ((*it)->type() != weldingSymbolItemType)  &&
-             ((*it)->type() != captionItemType) ) {
-            QRectF childRect = mapFromItem(*it, (*it)->boundingRect()).boundingRect();
+        if ( (child->type() != dimItemType) &&
+             (child->type() != leaderItemType) &&
+             (child->type() != textLeaderItemType) &&
+             (child->type() != editablePathItemType) &&
+             (child->type() != movableTextItemType) &&
+             (child->type() != borderItemType) &&
+             (child->type() != labelItemType)  &&
+             (child->type() != weldingSymbolItemType)  &&
+             (child->type() != captionItemType)  &&
+             (child->type() != centerMarkItemType)) {
+            QRectF childRect = mapFromItem(child, child->boundingRect()).boundingRect();
             result = result.united(childRect);
-            //result = result.united((*it)->boundingRect());
         }
     }
     return result;
@@ -579,8 +566,8 @@ QGIView* QGIView::getQGIVByName(std::string name)
     for (; it != qgItems.end(); it++) {
         QGIView* qv = dynamic_cast<QGIView*>((*it));
         if (qv) {
-            const char* qvName = qv->getViewName();
-            if(name.compare(qvName) == 0) {
+            std::string qvName = qv->getViewNameAsString();
+            if (name == qvName) {
                 return (qv);
             }
         }
@@ -658,20 +645,18 @@ void QGIView::removeChild(QGIView* child)
 bool QGIView::getFrameState()
 {
 //    Base::Console().Message("QGIV::getFrameState() - %s\n", getViewName());
-    bool result = true;
     TechDraw::DrawView* dv = getViewObject();
-    if (dv) {
-        TechDraw::DrawPage* page = dv->findParentPage();
-        if (page) {
-            Gui::Document* activeGui = Gui::Application::Instance->getDocument(page->getDocument());
-            Gui::ViewProvider* vp = activeGui->getViewProvider(page);
-            ViewProviderPage* vpp = dynamic_cast<ViewProviderPage*>(vp);
-            if (vpp) {
-                result = vpp->getFrameState();
-            }
-        }
-    }
-    return result;
+    if (!dv) return true;
+
+    TechDraw::DrawPage* page = dv->findParentPage();
+    if (!page) return true;
+
+    Gui::Document* activeGui = Gui::Application::Instance->getDocument(page->getDocument());
+    Gui::ViewProvider* vp = activeGui->getViewProvider(page);
+    ViewProviderPage* vpp = dynamic_cast<ViewProviderPage*>(vp);
+    if (!vpp) return true;
+
+    return vpp->getFrameState();
 }
 
 void QGIView::hideFrame()
@@ -722,9 +707,8 @@ QColor QGIView::getSelectColor()
 
 Base::Reference<ParameterGrp> QGIView::getParmGroupCol()
 {
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
-                                        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Colors");
-    return hGrp;
+    return App::GetApplication().GetUserParameter()
+           .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Colors");
 }
 
 //convert input font size in mm to scene units

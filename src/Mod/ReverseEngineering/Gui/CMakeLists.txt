@@ -22,7 +22,11 @@ set(ReenGui_LIBS
     MeshGui
 )
 
-qt_add_resources(ReenGui_QRC_SRCS Resources/ReverseEngineering.qrc)
+set (ReverseEngineering_TR_QRC ${CMAKE_CURRENT_BINARY_DIR}/Resources/ReverseEngineering_translation.qrc)
+qt_find_and_add_translation(QM_SRCS "Resources/translations/*_*.ts"
+    ${CMAKE_CURRENT_BINARY_DIR}/Resources/translations)
+qt_create_resource_file(${ReverseEngineering_TR_QRC} ${QM_SRCS})
+qt_add_resources(ReenGui_QRC_SRCS Resources/ReverseEngineering.qrc ${ReverseEngineering_TR_QRC})
 
 set(Dialogs_UIC_SRCS
     FitBSplineSurface.ui

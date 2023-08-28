@@ -23,7 +23,7 @@
 
 # material template for reading and writing FreeCAD material cards
 # information about FreeCAD material module and material cards can be found here:
-# http://www.freecadweb.org/wiki/index.php?title=Material
+# http://www.freecad.org/wiki/index.php?title=Material
 
 
 # localized Name, Description and KindOfMaterial uses 2 letter codes

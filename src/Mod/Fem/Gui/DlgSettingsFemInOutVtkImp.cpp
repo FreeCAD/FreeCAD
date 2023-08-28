@@ -33,7 +33,8 @@
 using namespace FemGui;
 
 DlgSettingsFemInOutVtkImp::DlgSettingsFemInOutVtkImp(QWidget* parent)
-    : PreferencePage(parent), ui(new Ui_DlgSettingsFemInOutVtk)
+    : PreferencePage(parent),
+      ui(new Ui_DlgSettingsFemInOutVtk)
 {
     ui->setupUi(this);
 }
@@ -41,11 +42,7 @@ DlgSettingsFemInOutVtkImp::DlgSettingsFemInOutVtkImp(QWidget* parent)
 /*
  *  Destroys the object and frees any allocated resources
  */
-DlgSettingsFemInOutVtkImp::~DlgSettingsFemInOutVtkImp()
-{
-    // no need to delete child widgets, Qt does it all for us
-    delete ui;
-}
+DlgSettingsFemInOutVtkImp::~DlgSettingsFemInOutVtkImp() = default;
 
 void DlgSettingsFemInOutVtkImp::saveSettings()
 {

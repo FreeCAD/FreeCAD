@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
 # ***************************************************************************
 # *                                                                         *
 # *   Copyright (c) 2022 FreeCAD Project Association                        *
@@ -43,7 +44,6 @@ class TestInstallerGui(unittest.TestCase):
         self.addon_to_install = MockAddon()
         self.installer_gui = AddonInstallerGUI(self.addon_to_install)
         self.finalized_thread = False
-
 
     def tearDown(self):
         pass

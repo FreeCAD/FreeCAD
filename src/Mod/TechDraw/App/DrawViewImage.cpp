@@ -57,7 +57,7 @@ DrawViewImage::DrawViewImage()
     Scale.setStatus(App::Property::Hidden, false);
     Scale.setStatus(App::Property::ReadOnly, false);
 
-    std::string imgFilter("Image files (*.jpg *.jpeg *.png);;All files (*)");
+    std::string imgFilter("Image files (*.jpg *.jpeg *.png *.bmp);;All files (*)");
     ImageFile.setFilter(imgFilter);
 }
 

@@ -28,7 +28,7 @@ parameter.
 
 This array was developed in order to build a `twisted bridge` object.
 
-See https://forum.freecadweb.org/viewtopic.php?f=23&t=49617
+See https://forum.freecad.org/viewtopic.php?f=23&t=49617
 
 A `twisted bridge` would consist of three parts:
  1. The ribcage composed of a twisted array generated from a frame
@@ -130,7 +130,7 @@ class PathTwistedArray(DraftLink):
 
     def execute(self, obj):
         """Execute when the object is created or recomputed."""
-        if self.props_changed_placement_only() \
+        if self.props_changed_placement_only(obj) \
                 or not obj.Base \
                 or not obj.PathObject:
             self.props_changed_clear()

@@ -68,10 +68,8 @@ App::DocumentObjectExecReturn *FeatureViewAnnotation::execute(void)
             << " font-size=\"" << Scale.getValue() << "\"" << endl
             << " fill=\"#" << hr.str() << hg.str() << hb.str() << "\">" << endl;
 
-    int index=0;
     for (vector<string>::const_iterator it = Text.getValues().begin(); it != Text.getValues().end(); ++it) {
         result << "<tspan x=\"0\" dy=\"1em\">" << it->c_str() << "</tspan>" << endl;
-        index++;
     }
 
     result << "</text>" << endl << "</g>" << endl;

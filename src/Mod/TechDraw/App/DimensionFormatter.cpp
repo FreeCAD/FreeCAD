@@ -22,6 +22,7 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+# include <QLocale>
 # include <QRegularExpression>
 #endif
 
@@ -50,14 +51,15 @@ bool DimensionFormatter::isMultiValueSchema() const
     return false;
 }
 
+// Todo: make this enum
 //partial = 0 return the unaltered user string from the Units subsystem
 //partial = 1 return value formatted according to the format spec and preferences for
 //            useAltDecimals and showUnits
 //partial = 2 return only the unit of measure
-std::string DimensionFormatter::formatValue(qreal value,
-                                            QString qFormatSpec,
-                                            int partial,
-                                            bool isDim)
+std::string DimensionFormatter::formatValue(const qreal value,
+                                            const QString& qFormatSpec,
+                                            const int partial,
+                                            const bool isDim) const
 {
 //    Base::Console().Message("DF::formatValue() - %s isRestoring: %d\n",
 //                            m_dimension->getNameInDocument(), m_dimension->isRestoring());
@@ -189,7 +191,7 @@ std::string DimensionFormatter::formatValue(qreal value,
     return formattedValueString;
 }
 
-std::string DimensionFormatter::getFormattedToleranceValue(int partial)
+std::string DimensionFormatter::getFormattedToleranceValue(const int partial) const
 {
     QString FormatSpec = QString::fromUtf8(m_dimension->FormatSpecOverTolerance.getStrValue().data());
     QString ToleranceString;
@@ -206,7 +208,7 @@ std::string DimensionFormatter::getFormattedToleranceValue(int partial)
 }
 
 //get over and under tolerances
-std::pair<std::string, std::string> DimensionFormatter::getFormattedToleranceValues(int partial)
+std::pair<std::string, std::string> DimensionFormatter::getFormattedToleranceValues(const int partial) const
 {
     QString underFormatSpec = QString::fromUtf8(m_dimension->FormatSpecUnderTolerance.getStrValue().data());
     QString overFormatSpec = QString::fromUtf8(m_dimension->FormatSpecOverTolerance.getStrValue().data());
@@ -250,7 +252,7 @@ std::pair<std::string, std::string> DimensionFormatter::getFormattedToleranceVal
 }
 
 //partial = 2 unit only
-std::string DimensionFormatter::getFormattedDimensionValue(int partial)
+std::string DimensionFormatter::getFormattedDimensionValue(const int partial) const
 {
     QString qFormatSpec = QString::fromUtf8(m_dimension->FormatSpec.getStrValue().data());
 
@@ -307,7 +309,7 @@ std::string DimensionFormatter::getFormattedDimensionValue(int partial)
 
 // format the value using the formatSpec. Also, handle the non-standard format-
 // specifier '%w', which has the following rules: works as %f, but no trailing zeros
-QString DimensionFormatter::formatValueToSpec(double value, QString formatSpecifier)
+QString DimensionFormatter::formatValueToSpec(const double value, const QString& formatSpecifier) const
 {
     QString formattedValue;
     if (formatSpecifier.contains(QRegularExpression(QStringLiteral("%.*[wW]")))) {
@@ -320,13 +322,27 @@ QString DimensionFormatter::formatValueToSpec(double value, QString formatSpecif
         formattedValue.replace(QRegularExpression(QStringLiteral("([0-9][0-9]*\\.[0-9]*[1-9])00*$")), QStringLiteral("\\1"));
         formattedValue.replace(QRegularExpression(QStringLiteral("([0-9][0-9]*)\\.0*$")), QStringLiteral("\\1"));
     } else {
-        formattedValue = QString::asprintf(Base::Tools::toStdString(formatSpecifier).c_str(), value);
+        if (isNumericFormat(formatSpecifier)) {
+            formattedValue = QString::asprintf(Base::Tools::toStdString(formatSpecifier).c_str(), value);
+        }
     }
 
     return formattedValue;
 }
 
-QStringList DimensionFormatter::getPrefixSuffixSpec(QString fSpec)
+bool DimensionFormatter::isNumericFormat(const QString& formatSpecifier) const
+{
+    QRegularExpression rxFormat(QStringLiteral("%[+-]?[0-9]*\\.*[0-9]*[aefgwAEFGW]")); //printf double format spec
+    QRegularExpressionMatch rxMatch;
+    int pos = formatSpecifier.indexOf(rxFormat, 0, &rxMatch);
+    if (pos != -1)  {
+        return true;
+    }
+    return false;
+}
+
+//TODO: similar code here and above
+QStringList DimensionFormatter::getPrefixSuffixSpec(const QString& fSpec) const
 {
     QStringList result;
     //find the %x.y tag in FormatSpec
@@ -389,7 +405,7 @@ std::string DimensionFormatter::getDefaultFormatSpec(bool isToleranceFormat) con
 }
 
 //true if value is too small to display using formatSpec
-bool DimensionFormatter::isTooSmall(double value, QString formatSpec)
+bool DimensionFormatter::isTooSmall(const double value, const QString& formatSpec) const
 {
     if (TechDraw::DrawUtil::fpCompare(value, 0.0)) {
         //zero values always fit, so it isn't too small

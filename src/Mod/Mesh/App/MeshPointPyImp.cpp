@@ -93,7 +93,7 @@ Py::Long MeshPointPy::getIndex() const
 
 Py::Boolean MeshPointPy::getBound() const
 {
-    return Py::Boolean(getMeshPointPtr()->Index != UINT_MAX);
+    return {getMeshPointPtr()->Index != UINT_MAX};
 }
 
 Py::Object MeshPointPy::getNormal() const

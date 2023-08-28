@@ -20,7 +20,6 @@
 # *                                                                         *
 # ***************************************************************************
 
-from __future__ import print_function
 
 import FreeCAD
 import Path
@@ -36,7 +35,7 @@ Part = LazyLoader("Part", globals(), "Part")
 
 __title__ = "Path Mill Face Operation"
 __author__ = "sliptonic (Brad Collette)"
-__url__ = "https://www.freecadweb.org"
+__url__ = "https://www.freecad.org"
 __doc__ = "Class and implementation of Mill Facing operation."
 __contributors__ = "russ4262 (Russell Johnson)"
 

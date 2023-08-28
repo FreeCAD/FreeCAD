@@ -37,15 +37,15 @@ class TechDrawGuiExport QGICenterLine : public QGIDecoration
 {
 public:
     explicit QGICenterLine();
-    ~QGICenterLine() {}
+    ~QGICenterLine() override = default;
 
     enum {Type = QGraphicsItem::UserType + 174};
-    int type() const { return Type;}
+    int type() const override { return Type;}
 
-    virtual void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = nullptr );
+    void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = nullptr ) override;
 
     void setBounds(double x1, double y1, double x2, double y2);
-    virtual void draw();
+    void draw() override;
 
     void setIntersection(bool isIntersecting);
 

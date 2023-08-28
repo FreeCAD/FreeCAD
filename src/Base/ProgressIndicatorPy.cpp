@@ -43,6 +43,21 @@ void ProgressIndicatorPy::init_type()
     add_varargs_method("stop",&ProgressIndicatorPy::stop,"stop()");
 }
 
+Py::PythonType& ProgressIndicatorPy::behaviors()
+{
+    return Py::PythonExtension<ProgressIndicatorPy>::behaviors();
+}
+
+PyTypeObject* ProgressIndicatorPy::type_object()
+{
+    return Py::PythonExtension<ProgressIndicatorPy>::type_object();
+}
+
+bool ProgressIndicatorPy::check(PyObject* p)
+{
+    return Py::PythonExtension<ProgressIndicatorPy>::check(p);
+}
+
 PyObject *ProgressIndicatorPy::PyMake(struct _typeobject *, PyObject *, PyObject *)
 {
     return new ProgressIndicatorPy();
@@ -55,17 +70,18 @@ ProgressIndicatorPy::~ProgressIndicatorPy() = default;
 Py::Object ProgressIndicatorPy::repr()
 {
     std::string s = "Base.ProgressIndicator";
-    return Py::String(s);
+    return Py::String(s); // NOLINT
 }
 
 Py::Object ProgressIndicatorPy::start(const Py::Tuple& args)
 {
-    char* text;
-    unsigned int steps;
+    char* text = nullptr;
+    unsigned int steps = 0;
     if (!PyArg_ParseTuple(args.ptr(), "sI",&text,&steps))
         throw Py::Exception();
-    if (!_seq.get())
-        _seq.reset(new SequencerLauncher(text,steps));
+    if (!_seq.get()) {
+        _seq = std::make_unique<SequencerLauncher>(text,steps);
+    }
     return Py::None();
 }
 

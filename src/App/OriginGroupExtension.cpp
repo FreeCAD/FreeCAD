@@ -129,10 +129,17 @@ App::DocumentObjectExecReturn *OriginGroupExtension::extensionExecute() {
     return GeoFeatureGroupExtension::extensionExecute ();
 }
 
+App::DocumentObject *OriginGroupExtension::getLocalizedOrigin(App::Document *doc) {
+    App::DocumentObject *originObject = doc->addObject ( "App::Origin", "Origin" );
+    QByteArray byteArray = tr("Origin").toUtf8();
+    originObject->Label.setValue(byteArray.constData());
+    return originObject;
+}
+
 void OriginGroupExtension::onExtendedSetupObject () {
     App::Document *doc = getExtendedObject()->getDocument ();
 
-    App::DocumentObject *originObj = doc->addObject ( "App::Origin", "Origin" );
+    App::DocumentObject *originObj = getLocalizedOrigin(doc);
 
     assert ( originObj && originObj->isDerivedFrom ( App::Origin::getClassTypeId () ) );
     Origin.setValue (originObj);
@@ -160,10 +167,11 @@ void OriginGroupExtension::extensionOnChanged(const Property* p) {
                    && owner->getDocument()->testStatus(Document::Importing)) {
             for (auto o : origin->getInList()) {
                 if(o != owner && o->hasExtension(App::OriginGroupExtension::getExtensionClassTypeId())) {
+                    App::Document *document = owner->getDocument();
                     // Temporarily reset 'Restoring' status to allow document to auto label new objects
                     Base::ObjectStatusLocker<Document::Status, Document> guard(
-                            Document::Restoring, owner->getDocument(), false);
-                    Origin.setValue(owner->getDocument()->addObject("App::Origin", "Origin"));
+                            Document::Restoring, document, false);
+                    Origin.setValue(getLocalizedOrigin(document));
                     FC_WARN("Reset origin in " << owner->getFullName());
                     return;
                 }

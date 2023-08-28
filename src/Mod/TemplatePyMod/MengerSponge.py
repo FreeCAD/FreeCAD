@@ -2,7 +2,7 @@
 # (c) 2012 Werner Mayer LGPL
 
 # The script is based on the work of daxmick at
-# http://forum.freecadweb.org/viewtopic.php?f=3&t=2307
+# http://forum.freecad.org/viewtopic.php?f=3&t=2307
 
 import threading
 import Mesh

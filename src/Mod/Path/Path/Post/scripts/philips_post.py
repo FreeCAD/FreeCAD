@@ -28,6 +28,7 @@ import FreeCAD
 import argparse
 import time
 import Path.Post.Utils as PostUtils
+import PathScripts.PathUtils as PathUtils
 import math
 
 TOOLTIP = """Post processor for Maho M 600E mill
@@ -416,7 +417,7 @@ def export(objectslist, filename, argstring):
     for obj in objectslist:
         if hasattr(obj, "Comment"):
             gcode += linenumberify("(" + obj.Comment + ")")
-        for c in obj.Path.Commands:
+        for c in PathUtils.getPathWithPlacement(obj).Commands:
             outstring = []
             command = c.Name
             if command != "G0":

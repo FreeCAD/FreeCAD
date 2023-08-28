@@ -39,13 +39,9 @@ using namespace WebGui;
 /// @namespace WebGui @class Workbench
 TYPESYSTEM_SOURCE(WebGui::Workbench, Gui::StdWorkbench)
 
-Workbench::Workbench()
-{
-}
+Workbench::Workbench() = default;
 
-Workbench::~Workbench()
-{
-}
+Workbench::~Workbench() = default;
 
 void Workbench::setupContextMenu(const char* recipient,Gui::MenuItem* item) const
 {
@@ -228,17 +224,6 @@ Gui::MenuItem* Workbench::setupMenuBar() const
 //        << "Drawing_NewA3Landscape"
 //        << "Drawing_NewView"
 //        << "Drawing_ExportPage"
-//    ;
-//
-//    // Raytracing ****************************************************************************************************
-//
-//    Gui::MenuItem* raytracing = new Gui::MenuItem(menuBar);
-//
-//    raytracing->setCommand("&Raytracing");
-//    *raytracing
-//        << "Raytracing_WriteView"
-//        << "Raytracing_WriteCamera"
-//        << "Raytracing_WritePart";
 //    ;
 //
 //    // Drafting ****************************************************************************************************

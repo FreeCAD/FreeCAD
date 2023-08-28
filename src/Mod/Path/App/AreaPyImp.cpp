@@ -22,6 +22,7 @@
 
 #include "PreCompiled.h"
 
+#include <Base/PyWrapParseTupleAndKeywords.h>
 #include <Mod/Part/App/OCCError.h>
 #include <Mod/Part/App/TopoShapePy.h>
 
@@ -31,10 +32,11 @@
 
 
 static PyObject * areaAbort(PyObject *, PyObject *args, PyObject *kwd) {
-    static char *kwlist[] = {"aborting", nullptr};
+    static const std::array<const char *, 2> kwlist{"aborting", nullptr};
     PyObject *pObj = Py_True;
-    if (!PyArg_ParseTupleAndKeywords(args,kwd,"|O!",kwlist,&PyBool_Type,&pObj))
+    if (!Base::Wrapped_ParseTupleAndKeywords(args,kwd,"|O!",kwlist,&PyBool_Type,&pObj)) {
         return nullptr;
+    }
 
     Area::abort(Base::asBoolean(pObj));
 
@@ -43,7 +45,7 @@ static PyObject * areaAbort(PyObject *, PyObject *args, PyObject *kwd) {
 
 static PyObject * areaSetParams(PyObject *, PyObject *args, PyObject *kwd) {
 
-    static char *kwlist[] = {PARAM_FIELD_STRINGS(NAME,AREA_PARAMS_STATIC_CONF),nullptr};
+    static const std::array<const char *, 43> kwlist {PARAM_FIELD_STRINGS(NAME,AREA_PARAMS_STATIC_CONF),nullptr};
 
     if(args && PySequence_Size(args)>0)
         PyErr_SetString(PyExc_ValueError,"Non-keyword argument is not supported");
@@ -60,7 +62,7 @@ static PyObject * areaSetParams(PyObject *, PyObject *args, PyObject *kwd) {
     PARAM_FOREACH(AREA_SET,AREA_PARAMS_STATIC_CONF)
 
     //Parse arguments to overwrite CONF variables
-    if (!PyArg_ParseTupleAndKeywords(args, kwd,
+    if (!Base::Wrapped_ParseTupleAndKeywords(args, kwd,
                 "|" PARAM_PY_KWDS(AREA_PARAMS_STATIC_CONF), kwlist,
                 PARAM_REF(PARAM_FNAME,AREA_PARAMS_STATIC_CONF)))
         return nullptr;
@@ -90,8 +92,8 @@ static PyObject* areaGetParams(PyObject *, PyObject *args) {
 
 static PyObject * areaGetParamsDesc(PyObject *, PyObject *args, PyObject *kwd) {
     PyObject *pcObj = Py_False;
-    static char *kwlist[] = {"as_string", nullptr};
-    if (!PyArg_ParseTupleAndKeywords(args, kwd, "|O!",kwlist,&PyBool_Type,&pcObj))
+    static const std::array<const char *, 2> kwlist {"as_string", nullptr};
+    if (!Base::Wrapped_ParseTupleAndKeywords(args, kwd, "|O!",kwlist,&PyBool_Type,&pcObj))
         return nullptr;
 
     if (Base::asBoolean(pcObj))
@@ -144,6 +146,22 @@ static const PyMethodDef areaOverrides[] = {
         "If not specified, the current SectionCount, and SectionOffset of this Area is used.\n"
         "\n* plane (None): optional shape to specify a section plane. If not give, the current workplane\n"
         "of this Area is used if section mode is 'Workplane'.",
+    },
+    {
+        "getClearedArea",nullptr,0,
+        "getClearedArea(tipDiameter, diameter):\n"
+        "Gets the area cleared when a tool maximally clears this area. This method assumes a tool tip diameter 'tipDiameter' traces the full area, and that (perhaps at a different height on the tool) this clears a different region with tool diameter 'diameter'.\n",
+    },
+    {
+        "getRestArea",nullptr,0,
+        "getRestArea(clearedAreas, diameter):\n"
+        "Rest machining: gets the area left to be machined, assuming some of this area has already been cleared previous tool paths.\n"
+        "clearedAreas: the regions already cleared.\n"
+        "diameter: the tool diameter that finishes clearing this area.\n",
+    },
+    {
+        "toTopoShape",nullptr,0,
+        "toTopoShape():\n"
     },
     {
         "setDefaultParams",reinterpret_cast<PyCFunction>(reinterpret_cast<void (*) ()>(areaSetParams)), METH_VARARGS|METH_KEYWORDS|METH_STATIC,
@@ -234,8 +252,8 @@ PyObject* AreaPy::getShape(PyObject *args, PyObject *keywds)
 {
     PyObject *pcObj = Py_False;
     short index=-1;
-    static char *kwlist[] = {"index","rebuild", nullptr};
-    if (!PyArg_ParseTupleAndKeywords(args, keywds,"|hO!",kwlist,&index,&PyBool_Type,&pcObj))
+    static const std::array<const char *, 3> kwlist{"index", "rebuild", nullptr};
+    if (!Base::Wrapped_ParseTupleAndKeywords(args, keywds,"|hO!",kwlist,&index,&PyBool_Type,&pcObj))
         return nullptr;
 
     PY_TRY {
@@ -253,9 +271,9 @@ PyObject* AreaPy::add(PyObject *args, PyObject *keywds)
     //Strangely, PyArg_ParseTupleAndKeywords requires all arguments to be keyword based,
     //even non-optional ones? That doesn't make sense in python. Seems only in python 3
     //they added '$' to address that issue.
-    static char *kwlist[] = {"shape",PARAM_FIELD_STRINGS(ARG,AREA_PARAMS_OPCODE), nullptr};
+    static const std::array<const char *, 3> kwlist {"shape",PARAM_FIELD_STRINGS(ARG,AREA_PARAMS_OPCODE), nullptr};
 
-    if (!PyArg_ParseTupleAndKeywords(args, keywds,
+    if (!Base::Wrapped_ParseTupleAndKeywords(args, keywds,
                 "O|" PARAM_PY_KWDS(AREA_PARAMS_OPCODE),
                 kwlist,&pcObj,PARAM_REF(PARAM_FARG,AREA_PARAMS_OPCODE)))
         return nullptr;
@@ -292,7 +310,7 @@ PyObject* AreaPy::add(PyObject *args, PyObject *keywds)
 PyObject* AreaPy::makeOffset(PyObject *args, PyObject *keywds)
 {
     //Generate a keyword string defined in the ARG field of OFFSET parameter list
-    static char *kwlist[] = {"index",PARAM_FIELD_STRINGS(ARG,AREA_PARAMS_OFFSET), nullptr};
+    static const std::array<const char *, 6> kwlist {"index",PARAM_FIELD_STRINGS(ARG,AREA_PARAMS_OFFSET), nullptr};
     short index = -1;
 
     //Declare variables defined in the ARG field of the OFFSET parameter list with
@@ -300,7 +318,7 @@ PyObject* AreaPy::makeOffset(PyObject *args, PyObject *keywds)
     PARAM_PY_DECLARE_INIT(PARAM_FARG,AREA_PARAMS_OFFSET)
 
     //Parse arguments to overwrite the defaults
-    if (!PyArg_ParseTupleAndKeywords(args, keywds,
+    if (!Base::Wrapped_ParseTupleAndKeywords(args, keywds,
                 "|h" PARAM_PY_KWDS(AREA_PARAMS_OFFSET), kwlist,
                 &index,PARAM_REF(PARAM_FARG,AREA_PARAMS_OFFSET)))
         return nullptr;
@@ -315,17 +333,18 @@ PyObject* AreaPy::makeOffset(PyObject *args, PyObject *keywds)
 
 PyObject* AreaPy::makePocket(PyObject *args, PyObject *keywds)
 {
-    static char *kwlist[] = {"index",PARAM_FIELD_STRINGS(ARG,AREA_PARAMS_POCKET), nullptr};
+    static const std::array<const char *, 11> kwlist {"index",PARAM_FIELD_STRINGS(ARG,AREA_PARAMS_POCKET), nullptr};
     short index = -1;
 
     PARAM_PY_DECLARE_INIT(PARAM_FARG,AREA_PARAMS_POCKET)
     //Override pocket mode default
     mode = Area::PocketModeZigZagOffset;
 
-    if (!PyArg_ParseTupleAndKeywords(args, keywds,
+    if (!Base::Wrapped_ParseTupleAndKeywords(args, keywds,
                 "|h" PARAM_PY_KWDS(AREA_PARAMS_POCKET), kwlist,
-                &index,PARAM_REF(PARAM_FARG,AREA_PARAMS_POCKET)))
+                &index,PARAM_REF(PARAM_FARG,AREA_PARAMS_POCKET))) {
         return nullptr;
+    }
 
     PY_TRY {
         TopoDS_Shape resultShape = getAreaPtr()->makePocket(index,
@@ -336,18 +355,19 @@ PyObject* AreaPy::makePocket(PyObject *args, PyObject *keywds)
 
 PyObject* AreaPy::makeSections(PyObject *args, PyObject *keywds)
 {
-    static char *kwlist[] = {PARAM_FIELD_STRINGS(ARG,AREA_PARAMS_SECTION_EXTRA),
+    static const std::array<const char *, 5> kwlist {PARAM_FIELD_STRINGS(ARG,AREA_PARAMS_SECTION_EXTRA),
                             "heights", "plane", nullptr};
     PyObject *heights = nullptr;
     PyObject *plane = nullptr;
 
     PARAM_PY_DECLARE_INIT(PARAM_FARG,AREA_PARAMS_SECTION_EXTRA)
 
-    if (!PyArg_ParseTupleAndKeywords(args, keywds,
+    if (!Base::Wrapped_ParseTupleAndKeywords(args, keywds,
                 "|" PARAM_PY_KWDS(AREA_PARAMS_SECTION_EXTRA) "OO!", kwlist,
                 PARAM_REF(PARAM_FARG,AREA_PARAMS_SECTION_EXTRA),
-                &heights, &(Part::TopoShapePy::Type), &plane))
+                &heights, &(Part::TopoShapePy::Type), &plane)) {
         return nullptr;
+    }
 
     PY_TRY {
         std::vector<double> h;
@@ -383,6 +403,55 @@ PyObject* AreaPy::makeSections(PyObject *args, PyObject *keywds)
     } PY_CATCH_OCC
 }
 
+PyObject* AreaPy::getClearedArea(PyObject *args, PyObject *keywds)
+{
+    PY_TRY {
+        double tipDiameter, diameter;
+        if (!PyArg_ParseTuple(args, "dd", &tipDiameter, &diameter))
+            return nullptr;
+        std::shared_ptr<Area> clearedArea = getAreaPtr()->getClearedArea(tipDiameter, diameter);
+        auto pyClearedArea = Py::asObject(new AreaPy(new Area(*clearedArea, true)));
+        return Py::new_reference_to(pyClearedArea);
+    } PY_CATCH_OCC
+}
+
+PyObject* AreaPy::getRestArea(PyObject *args, PyObject *keywds)
+{
+    PY_TRY {
+        PyObject *pyClearedAreas;
+        std::vector<std::shared_ptr<Area>> clearedAreas;
+        double diameter;
+        if (!PyArg_ParseTuple(args, "Od", &pyClearedAreas, &diameter))
+            return nullptr;
+        if (pyClearedAreas && PyObject_TypeCheck(pyClearedAreas, &PyList_Type)) {
+            Py::Sequence clearedAreasSeq(pyClearedAreas);
+            clearedAreas.reserve(clearedAreasSeq.size());
+            for (Py::Sequence::iterator it = clearedAreasSeq.begin(); it != clearedAreasSeq.end(); ++it) {
+                PyObject *item = (*it).ptr();
+                if (!PyObject_TypeCheck(item, &(AreaPy::Type))) {
+                    PyErr_SetString(PyExc_TypeError, "cleared areas must only contain AreaPy type");
+                    return nullptr;
+                }
+                clearedAreas.push_back(std::make_shared<Area>(*static_cast<AreaPy*>(item)->getAreaPtr(), true));
+            }
+        } else {
+            PyErr_SetString(PyExc_TypeError, "clearedAreas must be of type list of AreaPy");
+            return nullptr;
+        }
+
+        std::shared_ptr<Area> restArea = getAreaPtr()->getRestArea(clearedAreas, diameter);
+        auto pyRestArea = Py::asObject(new AreaPy(new Area(*restArea, true)));
+        return Py::new_reference_to(pyRestArea);
+    } PY_CATCH_OCC
+}
+
+PyObject* AreaPy::toTopoShape(PyObject *args, PyObject *keywds)
+{
+    PY_TRY {
+      return Py::new_reference_to(Part::shape2pyshape(getAreaPtr()->toTopoShape()));
+    } PY_CATCH_OCC
+}
+
 PyObject* AreaPy::setDefaultParams(PyObject *, PyObject *)
 {
     return nullptr;
@@ -390,7 +459,7 @@ PyObject* AreaPy::setDefaultParams(PyObject *, PyObject *)
 
 PyObject* AreaPy::setParams(PyObject *args, PyObject *keywds)
 {
-    static char *kwlist[] = {PARAM_FIELD_STRINGS(NAME,AREA_PARAMS_CONF),nullptr};
+    static const std::array<const char *, 43> kwlist {PARAM_FIELD_STRINGS(NAME,AREA_PARAMS_CONF),nullptr};
 
     //Declare variables defined in the NAME field of the CONF parameter list
     PARAM_PY_DECLARE(PARAM_FNAME,AREA_PARAMS_CONF);
@@ -401,7 +470,7 @@ PyObject* AreaPy::setParams(PyObject *args, PyObject *keywds)
     PARAM_FOREACH(AREA_SET,AREA_PARAMS_CONF)
 
     //Parse arguments to overwrite CONF variables
-    if (!PyArg_ParseTupleAndKeywords(args, keywds,
+    if (!Base::Wrapped_ParseTupleAndKeywords(args, keywds,
                 "|" PARAM_PY_KWDS(AREA_PARAMS_CONF), kwlist,
                 PARAM_REF(PARAM_FNAME,AREA_PARAMS_CONF)))
         return nullptr;

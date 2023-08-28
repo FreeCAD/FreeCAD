@@ -60,7 +60,7 @@ ContextMenu::ContextMenu(QuarterWidget * quarterwidget)
   QActionGroup * stereomodegroup = nullptr;
   QActionGroup * transparencytypegroup = nullptr;
 
-  foreach (QAction * action, quarterwidget->renderModeActions()) {
+  Q_FOREACH (QAction * action, quarterwidget->renderModeActions()) {
     if (!rendermodegroup) {
       rendermodegroup = action->actionGroup();
     } else {
@@ -73,7 +73,7 @@ ContextMenu::ContextMenu(QuarterWidget * quarterwidget)
     rendermenu->addAction(action);
   }
 
-  foreach (QAction * action, quarterwidget->stereoModeActions()) {
+  Q_FOREACH (QAction * action, quarterwidget->stereoModeActions()) {
     if (!stereomodegroup) {
       stereomodegroup = action->actionGroup();
     } else {
@@ -86,7 +86,7 @@ ContextMenu::ContextMenu(QuarterWidget * quarterwidget)
     stereomenu->addAction(action);
   }
 
-  foreach (QAction * action, quarterwidget->transparencyTypeActions()) {
+  Q_FOREACH (QAction * action, quarterwidget->transparencyTypeActions()) {
     if (!transparencytypegroup) {
       transparencytypegroup = action->actionGroup();
     } else {

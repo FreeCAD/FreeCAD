@@ -48,14 +48,12 @@ void WorkbenchManager::destruct()
     _instance = nullptr;
 }
 
-WorkbenchManager::WorkbenchManager() : _activeWorkbench(nullptr)
-{
-}
+WorkbenchManager::WorkbenchManager() = default;
 
 WorkbenchManager::~WorkbenchManager()
 {
-    for (std::map<std::string, Workbench*>::iterator it = _workbenches.begin(); it != _workbenches.end(); ++it) {
-        Workbench* wb = it->second;
+    for (auto & it : _workbenches) {
+        Workbench* wb = it.second;
         delete wb;
     }
 
@@ -132,7 +130,7 @@ Workbench* WorkbenchManager::active() const
 std::list<std::string> WorkbenchManager::workbenches() const
 {
     std::list<std::string> wb;
-    for (std::map<std::string, Workbench*>::const_iterator it = _workbenches.begin(); it != _workbenches.end(); ++it)
-        wb.push_back(it->first);
+    for (const auto & it : _workbenches)
+        wb.push_back(it.first);
     return wb;
 }

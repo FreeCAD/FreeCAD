@@ -58,7 +58,7 @@ void CmdVisualInspection::activated(int)
     dlg.exec();
 }
 
-bool CmdVisualInspection::isActive(void)
+bool CmdVisualInspection::isActive()
 {
     return App::GetApplication().getActiveDocument();
 }
@@ -95,7 +95,7 @@ void CmdInspectElement::activated(int)
      }
 }
 
-bool CmdInspectElement::isActive(void)
+bool CmdInspectElement::isActive()
 {
     App::Document* doc = App::GetApplication().getActiveDocument();
     if (!doc || doc->countObjectsOfType(Inspection::Feature::getClassTypeId()) == 0)
@@ -110,7 +110,7 @@ bool CmdInspectElement::isActive(void)
     return false;
 }
 
-void CreateInspectionCommands(void)
+void CreateInspectionCommands()
 {
     Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
     rcCmdMgr.addCommand(new CmdVisualInspection());

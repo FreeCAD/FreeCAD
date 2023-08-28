@@ -64,7 +64,7 @@ public:
     SheetView(Gui::Document* pcDocument, App::DocumentObject* docObj, QWidget* parent);
     ~SheetView() override;
 
-    const char *getName(void) const override {return "SheetView";}
+    const char *getName() const override {return "SheetView";}
 
     bool onMsg(const char* pMsg,const char** ppReturn) override;
     bool onHasMsg(const char* pMsg) const override;
@@ -96,7 +96,7 @@ public:
 
     void deleteSelection();
 
-    PyObject *getPyObject(void) override;
+    PyObject *getPyObject() override;
 
     void deleteSelf() override;
 

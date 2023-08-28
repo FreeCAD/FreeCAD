@@ -32,7 +32,6 @@
 #include <QTextStream>
 #endif
 
-#include <App/Application.h>
 #include <App/Document.h>
 #include <Base/Console.h>
 #include <Base/Parameter.h>
@@ -60,6 +59,7 @@
 #include <Mod/TechDraw/App/DrawViewSpreadsheet.h>
 #include <Mod/TechDraw/App/DrawViewSymbol.h>
 #include <Mod/TechDraw/App/DrawWeldSymbol.h>
+#include <Mod/TechDraw/App/Preferences.h>
 
 #include "MDIViewPage.h"
 #include "QGIDrawingTemplate.h"
@@ -529,6 +529,9 @@ void QGSPage::createBalloon(QPointF origin, DrawView* parent)
     Command::doCommand(Command::Doc,
                        "App.activeDocument().addObject('TechDraw::DrawViewBalloon', '%s')",
                        featName.c_str());
+    Command::doCommand(Command::Doc, "App.activeDocument().%s.translateLabel('DrawViewBalloon', 'Balloon', '%s')",
+              featName.c_str(), featName.c_str());
+
     TechDraw::DrawViewBalloon* balloon = dynamic_cast<TechDraw::DrawViewBalloon*>(
         getDrawPage()->getDocument()->getObject(featName.c_str()));
     if (!balloon) {
@@ -537,7 +540,6 @@ void QGSPage::createBalloon(QPointF origin, DrawView* parent)
     Command::doCommand(Command::Doc,
                        "App.activeDocument().%s.SourceView = (App.activeDocument().%s)",
                        featName.c_str(), parent->getNameInDocument());
-
     QGIView* qgParent = getQGIVByName(parent->getNameInDocument());
     //convert from scene coords to qgParent coords and unscale
     QPointF parentOrigin = qgParent->mapFromScene(origin) / parent->getScale();
@@ -1051,7 +1053,7 @@ void QGSPage::redraw1View(TechDraw::DrawView* dView)
     }
 }
 
-void QGSPage::setExporting(bool enable)
+void QGSPage::setExportingPdf(bool enable)
 {
     QList<QGraphicsItem*> sceneItems = items();
     std::vector<QGIViewPart*> dvps;
@@ -1063,11 +1065,24 @@ void QGSPage::setExporting(bool enable)
             dvps.push_back(qgiPart);
         }
         if (qgiRTA) {
-            qgiRTA->setExporting(enable);
+            qgiRTA->setExportingPdf(enable);
         }
     }
     for (auto& v : dvps) {
         v->draw();
+    }
+}
+
+// RichTextAnno needs to know when it is rendering an Svg as the font size
+// is handled differently in Svg compared to the screen or Pdf.
+void QGSPage::setExportingSvg(bool enable)
+{
+    QList<QGraphicsItem*> sceneItems = items();
+    for (auto& qgi : sceneItems) {
+        QGIRichAnno* qgiRTA = dynamic_cast<QGIRichAnno*>(qgi);
+        if (qgiRTA) {
+            qgiRTA->setExportingSvg(enable);
+        }
     }
 }
 
@@ -1106,7 +1121,7 @@ void QGSPage::saveSvg(QString filename)
     bool saveState = m_vpPage->getFrameState();
     m_vpPage->setFrameState(false);
     m_vpPage->setTemplateMarkers(false);
-    setExporting(true);
+    setExportingSvg(true);
 
     // Here we temporarily hide the page template, because Qt would otherwise convert the SVG template
     // texts into series of paths, making the later document edits practically unfeasible.
@@ -1119,7 +1134,6 @@ void QGSPage::saveSvg(QString filename)
     }
 
     refreshViews();
-    //    viewport()->repaint();
 
     double width = Rez::guiX(page->getPageWidth());
     double height = Rez::guiX(page->getPageHeight());
@@ -1135,13 +1149,12 @@ void QGSPage::saveSvg(QString filename)
 
     m_vpPage->setFrameState(saveState);
     m_vpPage->setTemplateMarkers(saveState);
-    setExporting(false);
+    setExportingSvg(false);
     if (templateVisible && svgTemplate) {
         svgTemplate->show();
     }
 
     refreshViews();
-    //    viewport()->repaint();
 
     temporaryFile.close();
     postProcessXml(temporaryFile, filename, pageName);
@@ -1202,39 +1215,37 @@ void QGSPage::postProcessXml(QTemporaryFile& temporaryFile, QString fileName, QS
     if (svgTemplate) {
         DrawSVGTemplate* drawTemplate = svgTemplate->getSVGTemplate();
         if (drawTemplate) {
-            QFile templateResultFile(QString::fromUtf8(drawTemplate->PageResult.getValue()));
-            if (templateResultFile.open(QIODevice::ReadOnly)) {
-                QDomDocument templateResultDoc(QString::fromUtf8("SvgDoc"));
-                if (templateResultDoc.setContent(&templateResultFile)) {
-                    QDomElement templateDocElem = templateResultDoc.documentElement();
+            QString templateSvg = drawTemplate->processTemplate();
+            QDomDocument templateResultDoc(QString::fromUtf8("SvgDoc"));
+            if (templateResultDoc.setContent(templateSvg)) {
+                QDomElement templateDocElem = templateResultDoc.documentElement();
 
-                    // Insert the template into a new group with id set to template name
-                    QDomElement templateGroup = exportDoc.createElement(QString::fromUtf8("g"));
-                    Base::FileInfo fi(drawTemplate->Template.getValue());
-                    templateGroup.setAttribute(QString::fromUtf8("id"),
-                                               QString::fromUtf8(fi.fileName().c_str()));
-                    templateGroup.setAttribute(QString::fromUtf8("style"),
-                                               QString::fromUtf8("stroke: none;"));
+                // Insert the template into a new group with id set to template name
+                QDomElement templateGroup = exportDoc.createElement(QString::fromUtf8("g"));
+                Base::FileInfo fi(drawTemplate->PageResult.getValue());
+                templateGroup.setAttribute(QString::fromUtf8("id"),
+                                           QString::fromUtf8(fi.fileName().c_str()));
+                templateGroup.setAttribute(QString::fromUtf8("style"),
+                                           QString::fromUtf8("stroke: none;"));
 
-                    // Scale the template group correctly
+                // Scale the template group correctly
 #if QT_VERSION < QT_VERSION_CHECK(5, 14, 0)
-                    templateGroup.setAttribute(
-                        QString::fromUtf8("transform"),
-                        QString().sprintf("scale(%f, %f)", Rez::guiX(1.0), Rez::guiX(1.0)));
+                templateGroup.setAttribute(
+                    QString::fromUtf8("transform"),
+                    QString().sprintf("scale(%f, %f)", Rez::guiX(1.0), Rez::guiX(1.0)));
 #else
-                    templateGroup.setAttribute(QString::fromUtf8("transform"),
-                                               QString::fromLatin1("scale(%1, %2)")
-                                                   .arg(Rez::guiX(1.0), 0, 'f')
-                                                   .arg(Rez::guiX(1.0), 0, 'f'));
+                templateGroup.setAttribute(QString::fromUtf8("transform"),
+                                           QString::fromLatin1("scale(%1, %2)")
+                                               .arg(Rez::guiX(1.0), 0, 'f')
+                                               .arg(Rez::guiX(1.0), 0, 'f'));
 #endif
 
-                    // Finally, transfer all template document child nodes under the template group
-                    while (!templateDocElem.firstChild().isNull()) {
-                        templateGroup.appendChild(templateDocElem.firstChild());
-                    }
-
-                    rootGroup.appendChild(templateGroup);
+                // Finally, transfer all template document child nodes under the template group
+                while (!templateDocElem.firstChild().isNull()) {
+                    templateGroup.appendChild(templateDocElem.firstChild());
                 }
+
+                rootGroup.appendChild(templateGroup);
             }
         }
     }
@@ -1259,7 +1270,9 @@ void QGSPage::postProcessXml(QTemporaryFile& temporaryFile, QString fileName, QS
 
     QTextStream stream(&outFile);
     stream.setGenerateByteOrderMark(false);
+#if QT_VERSION < QT_VERSION_CHECK(6,0,0)
     stream.setCodec("UTF-8");
+#endif
 
     stream << exportDoc.toByteArray();
     outFile.close();
@@ -1269,13 +1282,8 @@ TechDraw::DrawPage* QGSPage::getDrawPage() { return m_vpPage->getDrawPage(); }
 
 QColor QGSPage::getBackgroundColor()
 {
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication()
-                                             .GetUserParameter()
-                                             .GetGroup("BaseApp")
-                                             ->GetGroup("Preferences")
-                                             ->GetGroup("Mod/TechDraw/Colors");
     App::Color fcColor;
-    fcColor.setPackedValue(hGrp->GetUnsigned("Background", 0x70707000));
+    fcColor.setPackedValue(Preferences::getPreferenceGroup("Colors")->GetUnsigned("Background", 0x70707000));
     return fcColor.asValue<QColor>();
 }
 

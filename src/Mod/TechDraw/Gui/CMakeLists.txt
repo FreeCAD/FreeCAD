@@ -1,5 +1,6 @@
 if(MSVC)
     add_definitions(-DHAVE_ATANH -DHAVE_ASINH -DHAVE_ACOSH)
+    add_compile_options(/utf-8)
 else(MSVC)
     add_definitions(-DHAVE_LIMITS_H -DHAVE_CONFIG_H)
 endif(MSVC)
@@ -30,9 +31,6 @@ if(FREECAD_QT_MAJOR_VERSION EQUAL 5)
     include_directories(
         ${QtXmlPatterns_INCLUDE_DIRS}
     )
-else()
-    # This is deprecated as of Qt 5.13, and removed in Qt 6
-    message(WARNING "TechDraw relies on the now-removed Qt XMLPatterns package, and must be refactored to compile against Qt6.")
 endif()
 
 # The XML files
@@ -46,7 +44,11 @@ set(TechDrawGui_LIBS
     FreeCADGui
 )
 
-qt_add_resources(TechDrawGui_SRCS Resources/TechDraw.qrc)
+set (TechDraw_TR_QRC ${CMAKE_CURRENT_BINARY_DIR}/Resources/TechDraw_translation.qrc)
+qt_find_and_add_translation(QM_SRCS "Resources/translations/*_*.ts"
+    ${CMAKE_CURRENT_BINARY_DIR}/Resources/translations)
+qt_create_resource_file(${TechDraw_TR_QRC} ${QM_SRCS})
+qt_add_resources(TechDrawGui_SRCS Resources/TechDraw.qrc ${TechDraw_TR_QRC})
 
 set(TechDrawGui_UIC_SRCS
     DlgStringListEditor.ui
@@ -332,6 +334,8 @@ SET(TechDrawGuiView_SRCS
     ZVALUE.h
     QGIGhostHighlight.cpp
     QGIGhostHighlight.h
+    PathBuilder.cpp
+    PathBuilder.h
 )
 
 SET(TechDrawGuiNav_SRCS

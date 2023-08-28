@@ -84,13 +84,11 @@ protected:
     Base::Vector3d getDirection() const;
     void changeEvent(QEvent *e) override;
 
-public Q_SLOTS:
-    void on_applyButton_clicked();
-
-private Q_SLOTS:
-    void onTransformChanged(int);
+public:
+    void onApplyButtonClicked();
 
 private:
+    void onTransformChanged(int);
     Base::Placement getPlacementData() const;
 
 private:

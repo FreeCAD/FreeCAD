@@ -48,12 +48,8 @@ class FitBSplineSurfaceWidget::Private
 public:
     Ui_FitBSplineSurface ui;
     App::DocumentObjectT obj;
-    Private()
-    {
-    }
-    ~Private()
-    {
-    }
+    Private() = default;
+    ~Private() = default;
 };
 
 /* TRANSLATOR ReenGui::FitBSplineSurfaceWidget */
@@ -63,6 +59,8 @@ FitBSplineSurfaceWidget::FitBSplineSurfaceWidget(const App::DocumentObjectT& obj
 {
     Q_UNUSED(parent);
     d->ui.setupUi(this);
+    connect(d->ui.makePlacement, &QPushButton::clicked,
+            this, &FitBSplineSurfaceWidget::onMakePlacementClicked);
     d->obj = obj;
     restoreSettings();
 }
@@ -103,7 +101,7 @@ void FitBSplineSurfaceWidget::saveSettings()
     d->ui.uvdir->onSave();
 }
 
-void FitBSplineSurfaceWidget::on_makePlacement_clicked()
+void FitBSplineSurfaceWidget::onMakePlacementClicked()
 {
     try {
         App::GeoFeature* geo = d->obj.getObjectAs<App::GeoFeature>();
@@ -142,8 +140,10 @@ void FitBSplineSurfaceWidget::on_makePlacement_clicked()
                             .arg(q3);
 
                     QString document = QString::fromStdString(d->obj.getDocumentPython());
-                    QString command = QString::fromLatin1("%1.addObject(\"App::Placement\", \"Placement\").Placement = %2")
-                        .arg(document, argument);
+                    QString command =
+                        QString::fromLatin1(
+                            R"(%1.addObject("App::Placement", "Placement").Placement = %2)"
+                        ).arg(document, argument);
 
                     Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Placement"));
                     Gui::Command::runCommand(Gui::Command::Doc, "from FreeCAD import Base");
@@ -250,10 +250,6 @@ TaskFitBSplineSurface::TaskFitBSplineSurface(const App::DocumentObjectT& obj)
         widget->windowTitle(), true, nullptr);
     taskbox->groupLayout()->addWidget(widget);
     Content.push_back(taskbox);
-}
-
-TaskFitBSplineSurface::~TaskFitBSplineSurface()
-{
 }
 
 void TaskFitBSplineSurface::open()

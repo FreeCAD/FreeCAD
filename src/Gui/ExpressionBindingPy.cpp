@@ -32,41 +32,55 @@
 
 using namespace Gui;
 
-void ExpressionBindingPy::init_type()
-{
-    behaviors().name("ExpressionBinding");
-    behaviors().doc("Python interface class for ExpressionBinding");
-    // you must have overwritten the virtual functions
-    behaviors().supportRepr();
-    behaviors().supportGetattr();
-    behaviors().supportSetattr();
-    behaviors().set_tp_new(PyMake);
-    behaviors().readyType();
-
-    add_varargs_method("bind", &ExpressionBindingPy::bind, "Bind with an expression");
-    add_varargs_method("isBound", &ExpressionBindingPy::isBound, "Check if already bound with an expression");
-    add_varargs_method("apply", &ExpressionBindingPy::apply, "apply");
-    add_varargs_method("hasExpression", &ExpressionBindingPy::hasExpression, "hasExpression");
-    add_varargs_method("autoApply", &ExpressionBindingPy::autoApply, "autoApply");
-    add_varargs_method("setAutoApply", &ExpressionBindingPy::setAutoApply, "setAutoApply");
-}
-
-PyObject *ExpressionBindingPy::PyMake(struct _typeobject *, PyObject * args, PyObject *)
+ExpressionBindingPy::ExpressionBindingPy(Py::PythonClassInstance* self, Py::Tuple& args, Py::Dict& kwds)
+  : Py::PythonClass<ExpressionBindingPy>::PythonClass(self, args, kwds)
 {
     PyObject* pyObj;
-    if (!PyArg_ParseTuple(args, "O", &pyObj))
-        return nullptr;
+    if (!PyArg_ParseTuple(args.ptr(), "O", &pyObj)) {
+        throw Py::Exception();
+    }
 
-    ExpressionBinding* expr = nullptr;
     PythonWrapper wrap;
     wrap.loadWidgetsModule();
 
     QWidget* obj = dynamic_cast<QWidget*>(wrap.toQObject(Py::Object(pyObj)));
+    expr = asBinding(obj);
+
+    if (!expr) {
+        throw Py::Exception(PyExc_TypeError, "Wrong type");
+    }
+}
+
+ExpressionBindingPy::~ExpressionBindingPy() = default;
+
+ExpressionBinding* ExpressionBindingPy::asBinding(QWidget* obj)
+{
+    ExpressionBinding* expr = nullptr;
     if (obj) {
         do {
             auto qsb = qobject_cast<QuantitySpinBox*>(obj);
             if (qsb) {
                 expr = qsb;
+                break;
+            }
+            auto usp = qobject_cast<UIntSpinBox*>(obj);
+            if (usp) {
+                expr = usp;
+                break;
+            }
+            auto isp = qobject_cast<IntSpinBox*>(obj);
+            if (isp) {
+                expr = isp;
+                break;
+            }
+            auto dsp = qobject_cast<DoubleSpinBox*>(obj);
+            if (dsp) {
+                expr = dsp;
+                break;
+            }
+            auto exp = qobject_cast<ExpLineEdit*>(obj);
+            if (exp) {
+                expr = exp;
                 break;
             }
             auto inp = qobject_cast<InputField*>(obj);
@@ -78,21 +92,7 @@ PyObject *ExpressionBindingPy::PyMake(struct _typeobject *, PyObject * args, PyO
         while (false);
     }
 
-    if (!expr) {
-        PyErr_SetString(PyExc_TypeError, "Wrong type");
-        return nullptr;
-    }
-
-    return new ExpressionBindingPy(expr);
-}
-
-ExpressionBindingPy::ExpressionBindingPy(ExpressionBinding* expr)
-  : expr(expr)
-{
-}
-
-ExpressionBindingPy::~ExpressionBindingPy()
-{
+    return expr;
 }
 
 Py::Object ExpressionBindingPy::repr()
@@ -106,8 +106,9 @@ Py::Object ExpressionBindingPy::bind(const Py::Tuple& args)
 {
     PyObject* py;
     const char* str;
-    if (!PyArg_ParseTuple(args.ptr(), "O!s", &App::DocumentObjectPy::Type, &py, &str))
+    if (!PyArg_ParseTuple(args.ptr(), "O!s", &App::DocumentObjectPy::Type, &py, &str)) {
         throw Py::Exception();
+    }
 
     try {
         App::DocumentObject* obj = static_cast<App::DocumentObjectPy*>(py)->getDocumentObjectPtr();
@@ -127,44 +128,65 @@ Py::Object ExpressionBindingPy::bind(const Py::Tuple& args)
         throw Py::RuntimeError("Cannot bind to object");
     }
 }
+PYCXX_VARARGS_METHOD_DECL(ExpressionBindingPy, bind)
 
-Py::Object ExpressionBindingPy::isBound(const Py::Tuple& args)
+Py::Object ExpressionBindingPy::isBound()
 {
-    if (!PyArg_ParseTuple(args.ptr(), ""))
-        throw Py::Exception();
     return Py::Boolean(expr->isBound());
 }
+PYCXX_NOARGS_METHOD_DECL(ExpressionBindingPy, isBound)
 
 Py::Object ExpressionBindingPy::apply(const Py::Tuple& args)
 {
     const char* str;
-    if (!PyArg_ParseTuple(args.ptr(), "s", &str))
+    if (!PyArg_ParseTuple(args.ptr(), "s", &str)) {
         throw Py::Exception();
+    }
 
     return Py::Boolean(expr->apply(str));
 }
+PYCXX_VARARGS_METHOD_DECL(ExpressionBindingPy, apply)
 
-Py::Object ExpressionBindingPy::hasExpression(const Py::Tuple& args)
+Py::Object ExpressionBindingPy::hasExpression()
 {
-    if (!PyArg_ParseTuple(args.ptr(), ""))
-        throw Py::Exception();
     return Py::Boolean(expr->hasExpression());
 }
+PYCXX_NOARGS_METHOD_DECL(ExpressionBindingPy, hasExpression)
 
-Py::Object ExpressionBindingPy::autoApply(const Py::Tuple& args)
+Py::Object ExpressionBindingPy::autoApply()
 {
-    if (!PyArg_ParseTuple(args.ptr(), ""))
-        throw Py::Exception();
     return Py::Boolean(expr->autoApply());
 }
+PYCXX_NOARGS_METHOD_DECL(ExpressionBindingPy, autoApply)
 
 Py::Object ExpressionBindingPy::setAutoApply(const Py::Tuple& args)
 {
     PyObject* b;
-    if (!PyArg_ParseTuple(args.ptr(), "O!", &PyBool_Type, &b))
+    if (!PyArg_ParseTuple(args.ptr(), "O!", &PyBool_Type, &b)) {
         throw Py::Exception();
+    }
 
     bool value = Base::asBoolean(b);
     expr->setAutoApply(value);
     return Py::None();
+}
+PYCXX_VARARGS_METHOD_DECL(ExpressionBindingPy, setAutoApply)
+
+void ExpressionBindingPy::init_type()
+{
+    behaviors().name("Gui.ExpressionBinding");
+    behaviors().doc("Python interface class for ExpressionBinding");
+    // you must have overwritten the virtual functions
+    behaviors().supportRepr();
+    behaviors().supportGetattro();
+    behaviors().supportSetattro();
+
+    PYCXX_ADD_VARARGS_METHOD(bind, bind, "Bind with an expression");
+    PYCXX_ADD_NOARGS_METHOD(isBound, isBound, "Check if already bound with an expression");
+    PYCXX_ADD_VARARGS_METHOD(apply, apply, "apply");
+    PYCXX_ADD_NOARGS_METHOD(hasExpression, hasExpression, "hasExpression");
+    PYCXX_ADD_NOARGS_METHOD(autoApply, autoApply, "autoApply");
+    PYCXX_ADD_VARARGS_METHOD(setAutoApply, setAutoApply, "setAutoApply");
+
+    behaviors().readyType();
 }

@@ -23,6 +23,7 @@
 #include "PreCompiled.h"
 
 #include "SketchGeometryExtensionPy.h"
+
 #include "SketchGeometryExtensionPy.cpp"
 
 
@@ -34,7 +35,7 @@ std::string SketchGeometryExtensionPy::representation() const
     std::stringstream str;
     str << "<SketchGeometryExtension (";
 
-    if(!getSketchGeometryExtensionPtr()->getName().empty())
+    if (!getSketchGeometryExtensionPtr()->getName().empty())
         str << "\'" << getSketchGeometryExtensionPtr()->getName() << "\', ";
 
     str << "\"";
@@ -43,7 +44,8 @@ std::string SketchGeometryExtensionPy::representation() const
     return str.str();
 }
 
-PyObject *SketchGeometryExtensionPy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // Python wrapper
+// Python wrapper
+PyObject* SketchGeometryExtensionPy::PyMake(struct _typeobject*, PyObject*, PyObject*)
 {
     // create a new instance of PointPy and the Twin object
     return new SketchGeometryExtensionPy(new SketchGeometryExtension);
@@ -66,10 +68,10 @@ int SketchGeometryExtensionPy::PyInit(PyObject* args, PyObject* /*kwd*/)
     }
 
 
-
-    PyErr_SetString(PyExc_TypeError, "SketchGeometryExtension constructor accepts:\n"
-        "-- empty parameter list\n"
-        "-- int\n");
+    PyErr_SetString(PyExc_TypeError,
+                    "SketchGeometryExtension constructor accepts:\n"
+                    "-- empty parameter list\n"
+                    "-- int\n");
     return -1;
 }
 
@@ -87,12 +89,13 @@ Py::String SketchGeometryExtensionPy::getInternalType() const
 {
     int internaltypeindex = (int)this->getSketchGeometryExtensionPtr()->getInternalType();
 
-    if(internaltypeindex >= InternalType::NumInternalGeometryType)
+    if (internaltypeindex >= InternalType::NumInternalGeometryType)
         throw Py::NotImplementedError("String name of enum not implemented");
 
-    std::string typestr = this->getSketchGeometryExtensionPtr()->internaltype2str[internaltypeindex];
+    std::string typestr =
+        this->getSketchGeometryExtensionPtr()->internaltype2str[internaltypeindex];
 
-     return Py::String(typestr);
+    return Py::String(typestr);
 }
 
 void SketchGeometryExtensionPy::setInternalType(Py::String arg)
@@ -100,7 +103,7 @@ void SketchGeometryExtensionPy::setInternalType(Py::String arg)
     std::string argstr = arg;
     InternalType::InternalType type;
 
-    if(SketchGeometryExtension::getInternalTypeFromName(argstr, type)) {
+    if (SketchGeometryExtension::getInternalTypeFromName(argstr, type)) {
         this->getSketchGeometryExtensionPtr()->setInternalType(type);
         return;
     }
@@ -120,7 +123,8 @@ void SketchGeometryExtensionPy::setBlocked(Py::Boolean arg)
 
 Py::Boolean SketchGeometryExtensionPy::getConstruction() const
 {
-     return Py::Boolean(getSketchGeometryExtensionPtr()->testGeometryMode(GeometryMode::Construction));
+    return Py::Boolean(
+        getSketchGeometryExtensionPtr()->testGeometryMode(GeometryMode::Construction));
 }
 
 void SketchGeometryExtensionPy::setConstruction(Py::Boolean arg)
@@ -128,15 +132,16 @@ void SketchGeometryExtensionPy::setConstruction(Py::Boolean arg)
     getSketchGeometryExtensionPtr()->setGeometryMode(GeometryMode::Construction, arg);
 }
 
-PyObject* SketchGeometryExtensionPy::testGeometryMode(PyObject *args)
+PyObject* SketchGeometryExtensionPy::testGeometryMode(PyObject* args)
 {
     char* flag;
-    if (PyArg_ParseTuple(args, "s",&flag)) {
+    if (PyArg_ParseTuple(args, "s", &flag)) {
 
         GeometryMode::GeometryMode mode;
 
-        if(getSketchGeometryExtensionPtr()->getGeometryModeFromName(flag, mode))
-            return new_reference_to(Py::Boolean(getSketchGeometryExtensionPtr()->testGeometryMode(mode)));
+        if (getSketchGeometryExtensionPtr()->getGeometryModeFromName(flag, mode))
+            return new_reference_to(
+                Py::Boolean(getSketchGeometryExtensionPtr()->testGeometryMode(mode)));
 
         PyErr_SetString(PyExc_TypeError, "Flag string does not exist.");
         return nullptr;
@@ -146,15 +151,15 @@ PyObject* SketchGeometryExtensionPy::testGeometryMode(PyObject *args)
     return nullptr;
 }
 
-PyObject* SketchGeometryExtensionPy::setGeometryMode(PyObject *args)
+PyObject* SketchGeometryExtensionPy::setGeometryMode(PyObject* args)
 {
-    char * flag;
-    PyObject * bflag = Py_True;
+    char* flag;
+    PyObject* bflag = Py_True;
     if (PyArg_ParseTuple(args, "s|O!", &flag, &PyBool_Type, &bflag)) {
 
         GeometryMode::GeometryMode mode;
 
-        if(getSketchGeometryExtensionPtr()->getGeometryModeFromName(flag, mode)) {
+        if (getSketchGeometryExtensionPtr()->getGeometryModeFromName(flag, mode)) {
             getSketchGeometryExtensionPtr()->setGeometryMode(mode, Base::asBoolean(bflag));
             Py_Return;
         }
@@ -177,7 +182,7 @@ void SketchGeometryExtensionPy::setGeometryLayerId(Py::Long Id)
     this->getSketchGeometryExtensionPtr()->setGeometryLayerId(long(Id));
 }
 
-PyObject *SketchGeometryExtensionPy::getCustomAttributes(const char* /*attr*/) const
+PyObject* SketchGeometryExtensionPy::getCustomAttributes(const char* /*attr*/) const
 {
     return nullptr;
 }
@@ -186,4 +191,3 @@ int SketchGeometryExtensionPy::setCustomAttributes(const char* /*attr*/, PyObjec
 {
     return 0;
 }
-

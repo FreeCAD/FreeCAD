@@ -134,15 +134,15 @@ class BezCurve(DraftObject):
         import Part
         plm = fp.Placement
         if fp.Points:
-            startpoint=fp.Points[0]
+            startpoint = fp.Points[0]
             edges = []
             for segpoles in self._segpoleslst(fp):
-#                if len(segpoles) == fp.Degree # would skip additional poles
-                 c = Part.BezierCurve() #last segment may have lower degree
-                 c.increase(len(segpoles))
-                 c.setPoles([startpoint]+segpoles)
-                 edges.append(Part.Edge(c))
-                 startpoint = segpoles[-1]
+#               if len(segpoles) == fp.Degree # would skip additional poles
+                c = Part.BezierCurve() #last segment may have lower degree
+                c.increase(len(segpoles))
+                c.setPoles([startpoint]+segpoles)
+                edges.append(Part.Edge(c))
+                startpoint = segpoles[-1]
             w = Part.Wire(edges)
             if fp.Closed and w.isClosed():
                 try:

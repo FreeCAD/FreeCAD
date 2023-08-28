@@ -132,7 +132,7 @@
           </cc:Agent>
         </dc:publisher>
         <dc:identifier>FreeCAD/src/Mod/Part/Gui/Resources/icons/Part_ProjectionOnSurface.svg</dc:identifier>
-        <dc:relation>http://www.freecadweb.org/wiki/index.php?title=Artwork</dc:relation>
+        <dc:relation>http://www.freecad.org/wiki/index.php?title=Artwork</dc:relation>
         <dc:subject>
           <rdf:Bag>
             <rdf:li>Cube</rdf:li>

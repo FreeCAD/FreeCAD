@@ -25,6 +25,7 @@
 
 #include <Base/GeometryPyCXX.h>
 #include <Base/Tools.h>
+#include <Base/PyWrapParseTupleAndKeywords.h>
 
 // inclusion of the generated files (generated out of RotationPy.xml)
 #include "RotationPy.h"
@@ -62,7 +63,7 @@ PyObject *RotationPy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // P
 // constructor method
 int RotationPy::PyInit(PyObject* args, PyObject* kwds)
 {
-    PyObject* o;
+    PyObject* o{};
     if (PyArg_ParseTuple(args, "")) {
         return 0;
     }
@@ -75,44 +76,50 @@ int RotationPy::PyInit(PyObject* args, PyObject* kwds)
     }
 
     PyErr_Clear();
-    double angle;
-    static char *kw_deg[] = {"Axis", "Degree", nullptr};
-    if (PyArg_ParseTupleAndKeywords(args, kwds, "O!d", kw_deg, &(Base::VectorPy::Type), &o, &angle)) {
+    double angle{};
+    static const std::array<const char *, 3> kw_deg {"Axis", "Degree", nullptr};
+    if (Base::Wrapped_ParseTupleAndKeywords(args, kwds, "O!d", kw_deg, &(Base::VectorPy::Type), &o, &angle)) {
         // NOTE: The last parameter defines the rotation angle in degree.
         getRotationPtr()->setValue(static_cast<Base::VectorPy*>(o)->value(), Base::toRadians<double>(angle));
         return 0;
     }
 
     PyErr_Clear();
-    static char *kw_rad[] = {"Axis", "Radian", nullptr};
-    if (PyArg_ParseTupleAndKeywords(args, kwds, "O!d", kw_rad, &(Base::VectorPy::Type), &o, &angle)) {
+    static const std::array<const char *, 3> kw_rad {"Axis", "Radian", nullptr};
+    if (Base::Wrapped_ParseTupleAndKeywords(args, kwds, "O!d", kw_rad, &(Base::VectorPy::Type), &o, &angle)) {
         getRotationPtr()->setValue(static_cast<Base::VectorPy*>(o)->value(), angle);
         return 0;
     }
 
     PyErr_Clear();
     if (PyArg_ParseTuple(args, "O!", &(Base::MatrixPy::Type), &o)) {
-      getRotationPtr()->setValue(static_cast<Base::MatrixPy*>(o)->value());
-      return 0;
+        try {
+            getRotationPtr()->setValue(static_cast<Base::MatrixPy*>(o)->value());
+            return 0;
+        }
+        catch (const Base::Exception& e) {
+            PyErr_SetString(e.getPyExceptionType(), e.what());
+            return -1;
+        }
     }
 
     PyErr_Clear();
-    double q0, q1, q2, q3;
+    double q0{}, q1{}, q2{}, q3{};
     if (PyArg_ParseTuple(args, "dddd", &q0, &q1, &q2, &q3)) {
         getRotationPtr()->setValue(q0, q1, q2, q3);
         return 0;
     }
 
     PyErr_Clear();
-    double y, p, r;
+    double y{}, p{}, r{};
     if (PyArg_ParseTuple(args, "ddd", &y, &p, &r)) {
         getRotationPtr()->setYawPitchRoll(y, p, r);
         return 0;
     }
 
     PyErr_Clear();
-    const char *seq;
-    double a, b, c;
+    const char *seq{};
+    double a{}, b{}, c{};
     if (PyArg_ParseTuple(args, "sddd", &seq, &a, &b, &c)) {
         PY_TRY {
             getRotationPtr()->setEulerAngles(
@@ -134,12 +141,18 @@ int RotationPy::PyInit(PyObject* args, PyObject* kwds)
       &a31, &a32, &a33, &a34,
       &a41, &a42, &a43, &a44))
     {
-      Matrix4D mtx(a11, a12, a13, a14,
-        a21, a22, a23, a24,
-        a31, a32, a33, a34,
-        a41, a42, a43, a44);
-      getRotationPtr()->setValue(mtx);
-      return 0;
+        try {
+            Matrix4D mtx(a11, a12, a13, a14,
+                         a21, a22, a23, a24,
+                         a31, a32, a33, a34,
+                         a41, a42, a43, a44);
+            getRotationPtr()->setValue(mtx);
+            return 0;
+        }
+        catch (const Base::Exception& e) {
+            PyErr_SetString(e.getPyExceptionType(), e.what());
+            return -1;
+        }
     }
 
     // try read a 3x3 matrix
@@ -149,17 +162,22 @@ int RotationPy::PyInit(PyObject* args, PyObject* kwds)
       &a21, &a22, &a23,
       &a31, &a32, &a33))
     {
-      Matrix4D mtx(a11, a12, a13, a14,
-        a21, a22, a23, a24,
-        a31, a32, a33, a34,
-        a41, a42, a43, a44);
-      getRotationPtr()->setValue(mtx);
-      return 0;
+        try {
+            Matrix4D mtx(a11, a12, a13, a14,
+                         a21, a22, a23, a24,
+                         a31, a32, a33, a34,
+                         a41, a42, a43, a44);
+            getRotationPtr()->setValue(mtx);
+            return 0;
+        }
+        catch (const Base::Exception& e) {
+            PyErr_SetString(e.getPyExceptionType(), e.what());
+            return -1;
+        }
     }
 
-
     PyErr_Clear();
-    PyObject *v1, *v2;
+    PyObject *v1{}, *v2{};
     if (PyArg_ParseTuple(args, "O!O!", &(Base::VectorPy::Type), &v1,
                                        &(Base::VectorPy::Type), &v2)) {
         Py::Vector from(v1, false);
@@ -169,7 +187,7 @@ int RotationPy::PyInit(PyObject* args, PyObject* kwds)
     }
 
     PyErr_Clear();
-    PyObject *v3;
+    PyObject *v3{};
     const char *priority = nullptr;
     if (PyArg_ParseTuple(args, "O!O!O!|s", &(Base::VectorPy::Type), &v1,
                                            &(Base::VectorPy::Type), &v2,
@@ -258,7 +276,7 @@ PyObject* RotationPy::inverted(PyObject * args)
 
 PyObject* RotationPy::multiply(PyObject * args)
 {
-    PyObject *rot;
+    PyObject *rot{};
     if (!PyArg_ParseTuple(args, "O!", &(RotationPy::Type), &rot))
         return nullptr;
     Rotation mult = (*getRotationPtr()) * (*static_cast<RotationPy*>(rot)->getRotationPtr());
@@ -267,7 +285,7 @@ PyObject* RotationPy::multiply(PyObject * args)
 
 PyObject* RotationPy::multVec(PyObject * args)
 {
-    PyObject *obj;
+    PyObject *obj{};
     if (!PyArg_ParseTuple(args, "O!", &(VectorPy::Type), &obj))
         return nullptr;
     Base::Vector3d vec(static_cast<VectorPy*>(obj)->value());
@@ -277,8 +295,8 @@ PyObject* RotationPy::multVec(PyObject * args)
 
 PyObject* RotationPy::slerp(PyObject * args)
 {
-    PyObject *rot;
-    double t;
+    PyObject *rot{};
+    double t{};
     if (!PyArg_ParseTuple(args, "O!d", &(RotationPy::Type), &rot, &t))
         return nullptr;
     Rotation *rot0 = this->getRotationPtr();
@@ -289,7 +307,7 @@ PyObject* RotationPy::slerp(PyObject * args)
 
 PyObject* RotationPy::setYawPitchRoll(PyObject * args)
 {
-    double A,B,C;
+    double A{},B{},C{};
     if (!PyArg_ParseTuple(args, "ddd", &A, &B, &C))
         return nullptr;
     this->getRotationPtr()->setYawPitchRoll(A,B,C);
@@ -300,7 +318,7 @@ PyObject* RotationPy::getYawPitchRoll(PyObject * args)
 {
     if (!PyArg_ParseTuple(args, ""))
         return nullptr;
-    double A,B,C;
+    double A{},B{},C{};
     this->getRotationPtr()->getYawPitchRoll(A,B,C);
 
     Py::Tuple tuple(3);
@@ -312,8 +330,8 @@ PyObject* RotationPy::getYawPitchRoll(PyObject * args)
 
 PyObject* RotationPy::setEulerAngles(PyObject * args)
 {
-    const char *seq;
-    double A,B,C;
+    const char *seq{};
+    double A{},B{},C{};
     if (!PyArg_ParseTuple(args, "sddd", &seq, &A, &B, &C))
         return nullptr;
 
@@ -341,7 +359,7 @@ PyObject* RotationPy::toEulerAngles(PyObject * args)
     }
 
     PY_TRY {
-        double A,B,C;
+        double A{},B{},C{};
         this->getRotationPtr()->getEulerAngles(
                 Rotation::eulerSequenceFromName(seq),A,B,C);
 
@@ -365,7 +383,7 @@ PyObject* RotationPy::toMatrix(PyObject * args)
 
 PyObject* RotationPy::isSame(PyObject *args)
 {
-    PyObject *rot;
+    PyObject *rot{};
     double tol = 0.0;
     if (!PyArg_ParseTuple(args, "O!|d", &(RotationPy::Type), &rot, &tol))
         return nullptr;
@@ -395,7 +413,7 @@ PyObject* RotationPy::isNull(PyObject *args)
 
 Py::Tuple RotationPy::getQ() const
 {
-    double q0, q1, q2, q3;
+    double q0{}, q1{}, q2{}, q3{};
     this->getRotationPtr()->getValue(q0,q1,q2,q3);
 
     Py::Tuple tuple(4);
@@ -417,21 +435,21 @@ void RotationPy::setQ(Py::Tuple arg)
 
 Py::Object RotationPy::getRawAxis() const
 {
-    Base::Vector3d axis; double angle;
+    Base::Vector3d axis; double angle{};
     this->getRotationPtr()->getRawValue(axis, angle);
-    return Py::Vector(axis);
+    return Py::Vector(axis); // NOLINT
 }
 
 Py::Object RotationPy::getAxis() const
 {
-    Base::Vector3d axis; double angle;
+    Base::Vector3d axis; double angle{};
     this->getRotationPtr()->getValue(axis, angle);
-    return Py::Vector(axis);
+    return Py::Vector(axis); // NOLINT
 }
 
 void RotationPy::setAxis(Py::Object arg)
 {
-    Base::Vector3d axis; double angle;
+    Base::Vector3d axis; double angle{};
     this->getRotationPtr()->getValue(axis, angle);
     axis = Py::Vector(arg).toVector();
     this->getRotationPtr()->setValue(axis, angle);
@@ -439,14 +457,14 @@ void RotationPy::setAxis(Py::Object arg)
 
 Py::Float RotationPy::getAngle() const
 {
-    Base::Vector3d axis; double angle;
+    Base::Vector3d axis; double angle{};
     this->getRotationPtr()->getValue(axis, angle);
     return Py::Float(angle);
 }
 
 void RotationPy::setAngle(Py::Float arg)
 {
-    Base::Vector3d axis; double angle;
+    Base::Vector3d axis; double angle{};
     this->getRotationPtr()->getRawValue(axis, angle);
     angle = static_cast<double>(arg);
     this->getRotationPtr()->setValue(axis, angle);
@@ -460,21 +478,22 @@ PyObject *RotationPy::getCustomAttributes(const char* attr) const
         return new MatrixPy(mat);
     }
     else if (strcmp(attr, "Yaw") == 0) {
-        double A,B,C;
+        double A{},B{},C{};
         this->getRotationPtr()->getYawPitchRoll(A,B,C);
         return PyFloat_FromDouble(A);
     }
     else if (strcmp(attr, "Pitch") == 0) {
-        double A,B,C;
+        double A{},B{},C{};
         this->getRotationPtr()->getYawPitchRoll(A,B,C);
         return PyFloat_FromDouble(B);
     }
     else if (strcmp(attr, "Roll") == 0) {
-        double A,B,C;
+        double A{},B{},C{};
         this->getRotationPtr()->getYawPitchRoll(A,B,C);
         return PyFloat_FromDouble(C);
     }
     else if (strcmp(attr, "toEuler") == 0) {
+        // NOLINTNEXTLINE(cppcoreguidelines-pro-type-const-cast)
         Py::Object self(const_cast<RotationPy*>(this), false);
         return Py::new_reference_to(self.getAttr("getYawPitchRoll"));
     }
@@ -485,8 +504,14 @@ int RotationPy::setCustomAttributes(const char* attr, PyObject* obj)
 {
     if (strcmp(attr, "Matrix") == 0) {
         if (PyObject_TypeCheck(obj, &(MatrixPy::Type))) {
-            this->getRotationPtr()->setValue(*static_cast<MatrixPy*>(obj)->getMatrixPtr());
-            return 1;
+            try {
+                this->getRotationPtr()->setValue(*static_cast<MatrixPy*>(obj)->getMatrixPtr());
+                return 1;
+            }
+            catch (const Base::Exception& e) {
+                PyErr_SetString(e.getPyExceptionType(), e.what());
+                return -1;
+            }
         }
     }
     else if (strcmp(attr, "Axes") == 0) {
@@ -505,7 +530,7 @@ int RotationPy::setCustomAttributes(const char* attr, PyObject* obj)
     else if (strcmp(attr, "Yaw") == 0) {
         if (PyNumber_Check(obj)) {
             double V = PyFloat_AsDouble(obj);
-            double A,B,C;
+            double A{},B{},C{};
             this->getRotationPtr()->getYawPitchRoll(A,B,C);
             this->getRotationPtr()->setYawPitchRoll(V,B,C);
             return 1;
@@ -514,7 +539,7 @@ int RotationPy::setCustomAttributes(const char* attr, PyObject* obj)
     else if (strcmp(attr, "Pitch") == 0) {
         if (PyNumber_Check(obj)) {
             double V = PyFloat_AsDouble(obj);
-            double A,B,C;
+            double A{},B{},C{};
             this->getRotationPtr()->getYawPitchRoll(A,B,C);
             this->getRotationPtr()->setYawPitchRoll(A,V,C);
             return 1;
@@ -523,7 +548,7 @@ int RotationPy::setCustomAttributes(const char* attr, PyObject* obj)
     else if (strcmp(attr, "Roll") == 0) {
         if (PyNumber_Check(obj)) {
             double V = PyFloat_AsDouble(obj);
-            double A,B,C;
+            double A{},B{},C{};
             this->getRotationPtr()->getYawPitchRoll(A,B,C);
             this->getRotationPtr()->setYawPitchRoll(A,B,V);
             return 1;
@@ -579,7 +604,7 @@ PyObject * RotationPy::number_power_handler (PyObject* self, PyObject* other, Py
     long b = Py::Int(other);
 
     Vector3d axis;
-    double rfAngle;
+    double rfAngle{};
 
     a.getRawValue(axis, rfAngle);
     rfAngle *= b;

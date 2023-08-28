@@ -43,7 +43,7 @@ public:
     //short mustExecute();
 
     /// returns the type name of the view provider
-    const char* getViewProviderName(void) const override = 0;
+    const char* getViewProviderName() const override = 0;
 
     /// Return a shape including Placement representing the datum feature
     virtual TopoDS_Shape getShape() const;

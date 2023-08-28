@@ -32,11 +32,11 @@
 
 #include "PropertyConstraintListItem.h"
 #include "SketcherSettings.h"
-#include "SoDatumLabel.h"
 #include "SoZoomTranslation.h"
 #include "ViewProviderPython.h"
 #include "ViewProviderSketch.h"
 #include "ViewProviderSketchGeometryExtension.h"
+#include "ViewProviderSketchGeometryExtensionPy.h"
 #include "Workbench.h"
 
 
@@ -47,25 +47,30 @@ void CreateSketcherCommandsConstraints();
 void CreateSketcherCommandsConstraintAccel();
 void CreateSketcherCommandsAlterGeo();
 void CreateSketcherCommandsBSpline();
+void CreateSketcherCommandsOverlay();
 void CreateSketcherCommandsVirtualSpace();
 
 void loadSketcherResource()
 {
     // add resources and reloads the translators
     Q_INIT_RESOURCE(Sketcher);
+    Q_INIT_RESOURCE(Sketcher_translation);
     Gui::Translator::instance()->refresh();
 }
 
-namespace SketcherGui {
-class Module : public Py::ExtensionModule<Module>
+namespace SketcherGui
+{
+class Module: public Py::ExtensionModule<Module>
 {
 public:
-    Module() : Py::ExtensionModule<Module>("SketcherGui")
+    Module()
+        : Py::ExtensionModule<Module>("SketcherGui")
     {
-        initialize("This module is the SketcherGui module."); // register with Python
+        initialize("This module is the SketcherGui module.");// register with Python
     }
 
-    ~Module() override {}
+    ~Module() override
+    {}
 
 private:
 };
@@ -75,7 +80,7 @@ PyObject* initModule()
     return Base::Interpreter().addModule(new Module);
 }
 
-} // namespace SketcherGui
+}// namespace SketcherGui
 
 /* Python entry */
 PyMOD_INIT_FUNC(SketcherGui)
@@ -88,22 +93,23 @@ PyMOD_INIT_FUNC(SketcherGui)
         Base::Interpreter().runString("import PartGui");
         Base::Interpreter().runString("import Sketcher");
     }
-    catch(const Base::Exception& e) {
+    catch (const Base::Exception& e) {
         PyErr_SetString(PyExc_ImportError, e.what());
         PyMOD_Return(nullptr);
     }
 
-    PyObject* mod = SketcherGui::initModule();
+    PyObject* sketcherGuiModule = SketcherGui::initModule();
     Base::Console().Log("Loading GUI of Sketcher module... done\n");
 
     Gui::BitmapFactory().addPath(QString::fromLatin1(":/icons/constraints"));
     Gui::BitmapFactory().addPath(QString::fromLatin1(":/icons/elements"));
     Gui::BitmapFactory().addPath(QString::fromLatin1(":/icons/general"));
     Gui::BitmapFactory().addPath(QString::fromLatin1(":/icons/geometry"));
-  //Gui::BitmapFactory().addPath(QString::fromLatin1(":/icons/obsolete"));
+    // Gui::BitmapFactory().addPath(QString::fromLatin1(":/icons/obsolete"));
     Gui::BitmapFactory().addPath(QString::fromLatin1(":/icons/pointers"));
     Gui::BitmapFactory().addPath(QString::fromLatin1(":/icons/splines"));
     Gui::BitmapFactory().addPath(QString::fromLatin1(":/icons/tools"));
+    Gui::BitmapFactory().addPath(QString::fromLatin1(":/icons/overlay"));
 
     // instantiating the commands
     CreateSketcherCommands();
@@ -112,26 +118,36 @@ PyMOD_INIT_FUNC(SketcherGui)
     CreateSketcherCommandsAlterGeo();
     CreateSketcherCommandsConstraintAccel();
     CreateSketcherCommandsBSpline();
+    CreateSketcherCommandsOverlay();
     CreateSketcherCommandsVirtualSpace();
 
     SketcherGui::Workbench::init();
 
+    // Add Types to module
+    Base::Interpreter().addType(&SketcherGui::ViewProviderSketchGeometryExtensionPy ::Type,
+                                sketcherGuiModule,
+                                "ViewProviderSketchGeometryExtension");
+
     // init objects
-    SketcherGui::ViewProviderSketch         		  ::init();
-    SketcherGui::ViewProviderPython         		  ::init();
-    SketcherGui::ViewProviderCustom         		  ::init();
-    SketcherGui::ViewProviderCustomPython   		  ::init();
-    SketcherGui::SoDatumLabel               		  ::initClass();
-    SketcherGui::SoZoomTranslation          		  ::initClass();
-    SketcherGui::PropertyConstraintListItem 		  ::init();
-    SketcherGui::ViewProviderSketchGeometryExtension  ::init();
+    SketcherGui::ViewProviderSketch ::init();
+    SketcherGui::ViewProviderPython ::init();
+    SketcherGui::ViewProviderCustom ::init();
+    SketcherGui::ViewProviderCustomPython ::init();
+    SketcherGui::SoZoomTranslation ::initClass();
+    SketcherGui::PropertyConstraintListItem ::init();
+    SketcherGui::ViewProviderSketchGeometryExtension ::init();
 
-    (void)new Gui::PrefPageProducer<SketcherGui::SketcherSettings>        ( QT_TRANSLATE_NOOP("QObject","Sketcher") );
-    (void)new Gui::PrefPageProducer<SketcherGui::SketcherSettingsDisplay> ( QT_TRANSLATE_NOOP("QObject","Sketcher") );
-    (void)new Gui::PrefPageProducer<SketcherGui::SketcherSettingsColors>  ( QT_TRANSLATE_NOOP("QObject","Sketcher") );
+    (void)new Gui::PrefPageProducer<SketcherGui::SketcherSettings>(
+        QT_TRANSLATE_NOOP("QObject", "Sketcher"));
+    (void)new Gui::PrefPageProducer<SketcherGui::SketcherSettingsGrid>(
+        QT_TRANSLATE_NOOP("QObject", "Sketcher"));
+    (void)new Gui::PrefPageProducer<SketcherGui::SketcherSettingsDisplay>(
+        QT_TRANSLATE_NOOP("QObject", "Sketcher"));
+    (void)new Gui::PrefPageProducer<SketcherGui::SketcherSettingsColors>(
+        QT_TRANSLATE_NOOP("QObject", "Sketcher"));
 
-     // add resources and reloads the translators
+    // add resources and reloads the translators
     loadSketcherResource();
 
-    PyMOD_Return(mod);
+    PyMOD_Return(sketcherGuiModule);
 }

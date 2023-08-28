@@ -14,47 +14,5 @@
         <file>icons/Robot_TrajectoryCompound.svg</file>
         <file>icons/Robot_TrajectoryDressUp.svg</file>
         <file>icons/RobotWorkbench.svg</file>
-        <file>translations/Robot_af.qm</file>
-        <file>translations/Robot_de.qm</file>
-        <file>translations/Robot_fi.qm</file>
-        <file>translations/Robot_fr.qm</file>
-        <file>translations/Robot_hr.qm</file>
-        <file>translations/Robot_it.qm</file>
-        <file>translations/Robot_nl.qm</file>
-        <file>translations/Robot_no.qm</file>
-        <file>translations/Robot_pl.qm</file>
-        <file>translations/Robot_ru.qm</file>
-        <file>translations/Robot_uk.qm</file>
-        <file>translations/Robot_tr.qm</file>
-        <file>translations/Robot_sv-SE.qm</file>
-        <file>translations/Robot_zh-TW.qm</file>
-        <file>translations/Robot_pt-BR.qm</file>
-        <file>translations/Robot_cs.qm</file>
-        <file>translations/Robot_sk.qm</file>
-        <file>translations/Robot_es-ES.qm</file>
-        <file>translations/Robot_zh-CN.qm</file>
-        <file>translations/Robot_ja.qm</file>
-        <file>translations/Robot_ro.qm</file>
-        <file>translations/Robot_hu.qm</file>
-        <file>translations/Robot_pt-PT.qm</file>
-        <file>translations/Robot_sr.qm</file>
-        <file>translations/Robot_el.qm</file>
-        <file>translations/Robot_sl.qm</file>
-        <file>translations/Robot_eu.qm</file>
-        <file>translations/Robot_ca.qm</file>
-        <file>translations/Robot_gl.qm</file>
-        <file>translations/Robot_kab.qm</file>
-        <file>translations/Robot_ko.qm</file>
-        <file>translations/Robot_fil.qm</file>
-        <file>translations/Robot_id.qm</file>
-        <file>translations/Robot_lt.qm</file>
-        <file>translations/Robot_val-ES.qm</file>
-        <file>translations/Robot_ar.qm</file>
-        <file>translations/Robot_vi.qm</file>
-        <file>translations/Robot_es-AR.qm</file>
-        <file>translations/Robot_bg.qm</file>
-        <file>translations/Robot_ka.qm</file>
-        <file>translations/Robot_sr-CS.qm</file>
-        <file>translations/Robot_be.qm</file>
     </qresource>
 </RCC> 

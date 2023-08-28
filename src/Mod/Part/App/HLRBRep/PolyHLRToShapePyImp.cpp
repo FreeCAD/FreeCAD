@@ -54,7 +54,7 @@ int PolyHLRToShapePy::PyInit(PyObject* args, PyObject* /*kwds*/)
 // returns a string which represents the object e.g. when printed in python
 std::string PolyHLRToShapePy::representation() const
 {
-    return std::string("<HLRBRep_PolyHLRToShape object>");
+    return {"<HLRBRep_PolyHLRToShape object>"};
 }
 
 PyObject* PolyHLRToShapePy::update(PyObject *args)

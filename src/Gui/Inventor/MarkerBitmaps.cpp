@@ -559,9 +559,9 @@ int MarkerBitmaps::getMarkerIndex(const std::string& name, int px)
 std::list<int> MarkerBitmaps::getSupportedSizes(const std::string& name)
 {
     std::list<int> sizes;
-    for (std::map<Marker, int>::iterator it = markerIndex.begin(); it != markerIndex.end(); ++it) {
-        if (it->first.first == name)
-            sizes.push_back(it->first.second);
+    for (const auto & it : markerIndex) {
+        if (it.first.first == name)
+            sizes.push_back(it.first.second);
     }
     return sizes;
 }

@@ -50,7 +50,7 @@ unicode = str
 
 __title__  = "FreeCAD Arch BuildingPart"
 __author__ = "Yorik van Havre"
-__url__    = "https://www.freecadweb.org"
+__url__    = "https://www.freecad.org"
 
 
 BuildingTypes = ['Undefined',
@@ -195,19 +195,16 @@ BuildingTypes = ['Undefined',
 ]
 
 
-def makeBuildingPart(objectslist=None,baseobj=None,name="BuildingPart"):
+def makeBuildingPart(objectslist=None,baseobj=None,name=None):
 
-    '''makeBuildingPart(objectslist): creates a buildingPart including the
+    '''makeBuildingPart([objectslist],[name]): creates a buildingPart including the
     objects from the given list.'''
 
     obj = FreeCAD.ActiveDocument.addObject("App::GeometryPython","BuildingPart")
     #obj = FreeCAD.ActiveDocument.addObject("App::FeaturePython","BuildingPart")
-    obj.Label = translate("Arch","BuildingPart")
+    obj.Label = name if name else translate("Arch","BuildingPart")
     BuildingPart(obj)
-    # if no IfcType is set it will be the first in the available
-    # Annotation in IFC2x3 and Actuator in IFC4, both is certainly wrong
-    # use Undefined ATM
-    obj.IfcType = "Undefined"
+    obj.IfcType = "Building Element Part"
     if FreeCAD.GuiUp:
         ViewProviderBuildingPart(obj.ViewObject)
     if objectslist:
@@ -215,22 +212,22 @@ def makeBuildingPart(objectslist=None,baseobj=None,name="BuildingPart"):
     return obj
 
 
-def makeFloor(objectslist=None,baseobj=None,name="Floor"):
+def makeFloor(objectslist=None,baseobj=None,name=None):
 
     """overwrites ArchFloor.makeFloor"""
 
     obj = makeBuildingPart(objectslist)
-    obj.Label = name
+    obj.Label = name if name else translate("Arch","Floor")
     obj.IfcType = "Building Storey"
     return obj
 
 
-def makeBuilding(objectslist=None,baseobj=None,name="Building"):
+def makeBuilding(objectslist=None,baseobj=None,name=None):
 
     """overwrites ArchBuilding.makeBuilding"""
 
     obj = makeBuildingPart(objectslist)
-    obj.Label = name
+    obj.Label = name if name else translate("Arch","Building")
     obj.IfcType = "Building"
     obj.addProperty("App::PropertyEnumeration","BuildingType","Building",QT_TRANSLATE_NOOP("App::Property","The type of this building"))
     obj.BuildingType = BuildingTypes
@@ -289,7 +286,7 @@ class CommandBuildingPart:
         return {'Pixmap'  : 'Arch_BuildingPart',
                 'MenuText': QT_TRANSLATE_NOOP("Arch_BuildingPart","BuildingPart"),
                 'Accel': "B, P",
-                'ToolTip': QT_TRANSLATE_NOOP("Arch_BuildingPart","Creates a BuildingPart object including selected objects")}
+                'ToolTip': QT_TRANSLATE_NOOP("Arch_BuildingPart","Creates a BuildingPart including selected objects")}
 
     def IsActive(self):
 
@@ -401,7 +398,8 @@ class BuildingPart(ArchIFC.IfcProduct):
                             if deltar:
                                 #child.Placement.Rotation = child.Placement.Rotation.multiply(deltar) - not enough, child must also move
                                 # use shape methods to obtain a correct placement
-                                import Part,math
+                                import Part
+                                import math
                                 shape = Part.Shape()
                                 shape.Placement = child.Placement
                                 #print("angle before rotation:",shape.Placement.Rotation.Angle)

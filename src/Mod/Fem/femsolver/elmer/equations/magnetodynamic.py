@@ -23,7 +23,7 @@
 
 __title__ = "FreeCAD FEM solver Elmer equation object Magnetodynamic"
 __author__ = "Uwe Stöhr"
-__url__ = "https://www.freecadweb.org"
+__url__ = "https://www.freecad.org"
 #
 ## \addtogroup FEM
 #  @{
@@ -31,6 +31,7 @@ __url__ = "https://www.freecadweb.org"
 from femtools import femutils
 from . import nonlinear
 from ... import equationbase
+
 
 def create(doc, name="Magnetodynamic"):
     return femutils.createObject(

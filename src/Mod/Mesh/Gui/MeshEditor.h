@@ -105,12 +105,12 @@ private:
 class MeshGuiExport MeshHoleFiller
 {
 public:
-    MeshHoleFiller()
-    {
-    }
-    virtual ~MeshHoleFiller()
-    {
-    }
+    MeshHoleFiller() = default;
+    virtual ~MeshHoleFiller() = default;
+    MeshHoleFiller(const MeshHoleFiller&) = delete;
+    MeshHoleFiller(MeshHoleFiller&&) = delete;
+    MeshHoleFiller& operator = (const MeshHoleFiller&) = delete;
+    MeshHoleFiller& operator = (MeshHoleFiller&&) = delete;
     virtual bool fillHoles(Mesh::MeshObject&, const std::list<std::vector<Mesh::PointIndex> >&,
                            Mesh::PointIndex, Mesh::PointIndex)
     {

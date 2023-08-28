@@ -17,7 +17,12 @@ set(WebGui_LIBS
 
 include_directories(${QtWebEngineWidgets_INCLUDE_DIRS})
 list(APPEND WebGui_LIBS ${QtWebEngineWidgets_LIBRARIES})
-qt_add_resources(Web_QRC_SRCS Resources/Web.qrc)
+
+set (Web_TR_QRC ${CMAKE_CURRENT_BINARY_DIR}/Resources/Web_translation.qrc)
+qt_find_and_add_translation(QM_SRCS "Resources/translations/*_*.ts"
+    ${CMAKE_CURRENT_BINARY_DIR}/Resources/translations)
+qt_create_resource_file(${Web_TR_QRC} ${QM_SRCS})
+qt_add_resources(Web_QRC_SRCS Resources/Web.qrc ${Web_TR_QRC})
 
 SET(WebGui_SRCS
     ${Web_QRC_SRCS}

@@ -31,13 +31,13 @@ namespace RobotGui
 
 class RobotGuiExport ViewProviderEdge2TracObject : public ViewProviderTrajectory
 {
-    PROPERTY_HEADER(RobotGui::ViewProviderEdge2TracObject);
+    PROPERTY_HEADER_WITH_OVERRIDE(RobotGui::ViewProviderEdge2TracObject);
 
 public:
-    virtual bool doubleClicked(void);
+    bool doubleClicked()  override;
 protected:
-    virtual bool setEdit(int ModNum);
-    virtual void unsetEdit(int ModNum);
+    bool setEdit(int ModNum)  override;
+    void unsetEdit(int ModNum)  override;
 
 };
 

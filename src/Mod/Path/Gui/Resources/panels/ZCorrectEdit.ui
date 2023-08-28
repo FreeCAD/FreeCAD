@@ -51,7 +51,7 @@
           <item row="0" column="1">
            <widget class="QLineEdit" name="ProbePointFileName">
             <property name="toolTip">
-             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enter the filename containing the probe data&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+             <string>Enter the filename containing the probe data</string>
             </property>
             <property name="text">
              <string/>

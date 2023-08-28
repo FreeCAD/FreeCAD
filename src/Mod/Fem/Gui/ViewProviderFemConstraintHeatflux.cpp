@@ -51,9 +51,7 @@ ViewProviderFemConstraintHeatflux::ViewProviderFemConstraintHeatflux()
     ADD_PROPERTY(FaceColor, (0.2f, 0.3f, 0.2f));
 }
 
-ViewProviderFemConstraintHeatflux::~ViewProviderFemConstraintHeatflux()
-{
-}
+ViewProviderFemConstraintHeatflux::~ViewProviderFemConstraintHeatflux() = default;
 
 //FIXME setEdit needs a careful review
 bool ViewProviderFemConstraintHeatflux::setEdit(int ModNum)
@@ -105,7 +103,7 @@ void ViewProviderFemConstraintHeatflux::updateData(const App::Property* prop)
     // //float facetemp = pcConstraint->FaceTemp.getValue();
     //float filmcoef = pcConstraint->FilmCoef.getValue();
 
-    if (strcmp(prop->getName(),"Points") == 0) {
+    if (prop == &pcConstraint->Points) {
         const std::vector<Base::Vector3d>& points = pcConstraint->Points.getValues();
         const std::vector<Base::Vector3d>& normals = pcConstraint->Normals.getValues();
         if (points.size() != normals.size())
@@ -115,9 +113,9 @@ void ViewProviderFemConstraintHeatflux::updateData(const App::Property* prop)
         // Note: Points and Normals are always updated together
         Gui::coinRemoveAllChildren(pShapeSep);
 
-        for (std::vector<Base::Vector3d>::const_iterator p = points.begin(); p != points.end(); p++) {
+        for (const auto & point : points) {
             //Define base and normal directions
-            SbVec3f base(p->x, p->y, p->z);
+            SbVec3f base(point.x, point.y, point.z);
             SbVec3f dir(n->x, n->y, n->z);//normal
 
             ///Temperature indication

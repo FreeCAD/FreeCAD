@@ -98,7 +98,7 @@ public:
      */
     int setCurrentLink(const App::PropertyLinkSub &lnk);
 
-    QComboBox& combo(void) const {assert(_combo); return *_combo;}
+    QComboBox& combo() const {assert(_combo); return *_combo;}
 
     ~ComboLinks() {_combo = nullptr; clear();}
 private:
@@ -129,7 +129,7 @@ public:
     ~TaskTransformedParameters() override;
 
     /// Returns the originals property of associated top feeature object
-    const std::vector<App::DocumentObject*> & getOriginals(void) const;
+    const std::vector<App::DocumentObject*> & getOriginals() const;
 
     /// Get the TransformedFeature object associated with this task
     // Either through the ViewProvider or the currently active subFeature of the parentTask
@@ -177,7 +177,7 @@ protected Q_SLOTS:
     virtual void onSubTaskButtonOK() {}
     void onButtonAddFeature(const bool checked);
     void onButtonRemoveFeature(const bool checked);
-    virtual void onFeatureDeleted(void)=0;
+    virtual void onFeatureDeleted() = 0;
     void indexesMoved();
 
 protected:
@@ -242,7 +242,7 @@ class TaskDlgTransformedParameters : public PartDesignGui::TaskDlgFeatureParamet
 
 public:
     explicit TaskDlgTransformedParameters(ViewProviderTransformed *TransformedView);
-    ~TaskDlgTransformedParameters() override {}
+    ~TaskDlgTransformedParameters() override = default;
 
     ViewProviderTransformed* getTransformedView() const
     { return static_cast<ViewProviderTransformed*>(vp); }

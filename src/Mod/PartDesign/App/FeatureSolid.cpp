@@ -31,9 +31,7 @@ namespace PartDesign {
 
 PROPERTY_SOURCE(PartDesign::Solid,PartDesign::Feature)
 
-Solid::Solid()
-{
-}
+Solid::Solid() = default;
 
 
 

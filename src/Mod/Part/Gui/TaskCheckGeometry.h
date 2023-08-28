@@ -152,23 +152,23 @@ public:
         {return false;}
     bool needsFullSpace() const override {return true;}
 
-private Q_SLOTS:
-    void on_runBOPCheckBox_toggled(bool isOn);
-    void on_runSingleThreadedCheckBox_toggled(bool isOn);
-    void on_logErrorsCheckBox_toggled(bool isOn);
-    void on_expandShapeContentCheckBox_toggled(bool isOn);
-    void on_advancedShapeContentCheckBox_toggled(bool isOn);
-    void on_autoRunCheckBox_toggled(bool isOn);
-    void on_argumentTypeModeCheckBox_toggled(bool isOn);
-    void on_selfInterModeCheckBox_toggled(bool isOn);
-    void on_smallEdgeModeCheckBox_toggled(bool isOn);
-    void on_rebuildFaceModeCheckBox_toggled(bool isOn);
-    void on_continuityModeCheckBox_toggled(bool isOn);
-    void on_tangentModeCheckBox_toggled(bool isOn);
-    void on_mergeVertexModeCheckBox_toggled(bool isOn);
-    void on_mergeEdgeModeCheckBox_toggled(bool isOn);
-    void on_curveOnSurfaceModeCheckBox_toggled(bool isOn);
-    void on_clicked(QAbstractButton* btn);
+private:
+    void onRunBOPCheckBoxToggled(bool isOn);
+    void onRunSingleThreadedCheckBoxToggled(bool isOn);
+    void onLogErrorsCheckBoxToggled(bool isOn);
+    void onExpandShapeContentCheckBoxToggled(bool isOn);
+    void onAdvancedShapeContentCheckBoxToggled(bool isOn);
+    void onAutoRunCheckBoxToggled(bool isOn);
+    void onArgumentTypeModeCheckBoxToggled(bool isOn);
+    void onSelfInterModeCheckBoxToggled(bool isOn);
+    void onSmallEdgeModeCheckBoxToggled(bool isOn);
+    void onRebuildFaceModeCheckBoxToggled(bool isOn);
+    void onContinuityModeCheckBoxToggled(bool isOn);
+    void onTangentModeCheckBoxToggled(bool isOn);
+    void onMergeVertexModeCheckBoxToggled(bool isOn);
+    void onMergeEdgeModeCheckBoxToggled(bool isOn);
+    void onCurveOnSurfaceModeCheckBoxToggled(bool isOn);
+    void onClicked(QAbstractButton* btn);
 
 private:
     TaskCheckGeometryResults* widget;

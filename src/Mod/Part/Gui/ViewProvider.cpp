@@ -39,13 +39,9 @@ using namespace PartGui;
 PROPERTY_SOURCE(PartGui::ViewProviderPart, PartGui::ViewProviderPartExt)
 
 
-ViewProviderPart::ViewProviderPart()
-{
-}
+ViewProviderPart::ViewProviderPart() = default;
 
-ViewProviderPart::~ViewProviderPart()
-{
-}
+ViewProviderPart::~ViewProviderPart() = default;
 
 bool ViewProviderPart::doubleClicked()
 {

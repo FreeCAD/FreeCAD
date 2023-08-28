@@ -36,7 +36,7 @@ class NumberExpression;
 
 namespace Gui {
 
-class GuiExport ExpressionSpinBox : public ExpressionBinding
+class GuiExport ExpressionSpinBox : public ExpressionWidget
 {
 public:
     explicit ExpressionSpinBox(QAbstractSpinBox*);

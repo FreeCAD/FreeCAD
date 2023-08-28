@@ -42,12 +42,17 @@
 # include <Standard_Version.hxx>
 # include <STEPCAFControl_Reader.hxx>
 # include <STEPCAFControl_Writer.hxx>
+# include <TColStd_IndexedDataMapOfStringString.hxx>
 # include <TDocStd_Document.hxx>
 # include <Transfer_TransientProcess.hxx>
 # include <XCAFApp_Application.hxx>
 # include <XCAFDoc_DocumentTool.hxx>
 # include <XSControl_TransferReader.hxx>
 # include <XSControl_WorkSession.hxx>
+# if OCC_VERSION_HEX >= 0x070500
+#  include <Message_ProgressRange.hxx>
+#  include <RWGltf_CafWriter.hxx>
+# endif
 # if defined(__clang__)
 #  pragma clang diagnostic pop
 # endif
@@ -57,6 +62,7 @@
 #include <App/Document.h>
 #include <App/DocumentObjectPy.h>
 #include <Base/Console.h>
+#include <Base/PyWrapParseTupleAndKeywords.h>
 #include "dxf/ImpExpDxf.h"
 #include <Mod/Part/App/encodeFilename.h>
 #include <Mod/Part/App/ImportIges.h>
@@ -75,8 +81,8 @@ namespace Import {
 class ImportOCAFExt : public Import::ImportOCAF2
 {
 public:
-    ImportOCAFExt(Handle(TDocStd_Document) h, App::Document* d, const std::string& name)
-        : ImportOCAF2(h, d, name)
+    ImportOCAFExt(Handle(TDocStd_Document) hStdDoc, App::Document* doc, const std::string& name)
+        : ImportOCAF2(hStdDoc, doc, name)
     {
     }
 
@@ -99,14 +105,11 @@ public:
         add_keyword_method("insert",&Module::importer,
             "insert(string,string) -- Insert the file into the given document."
         );
-//        add_varargs_method("openAssembly",&Module::importAssembly,
-//            "openAssembly(string) -- Open the assembly file and create a new document."
-//        );
         add_keyword_method("export",&Module::exporter,
             "export(list,string) -- Export a list of objects into a single file."
         );
          add_varargs_method("readDXF",&Module::readDXF,
-            "readDXF(filename,[document,ignore_errors]): Imports a DXF file into the given document. ignore_errors is True by default."
+            "readDXF(filename,[document,ignore_errors,option_source]): Imports a DXF file into the given document. ignore_errors is True by default."
         );
         add_varargs_method("writeDXFShape",&Module::writeDXFShape,
             "writeDXFShape([shape],filename [version,usePolyline,optionSource]): Exports Shape(s) to a DXF file."
@@ -117,7 +120,7 @@ public:
        initialize("This module is the Import module."); // register with Python       
     }
 
-    ~Module() override {}
+    ~Module() override = default;
 
 private:
     Py::Object importer(const Py::Tuple& args, const Py::Dict &kwds)
@@ -128,18 +131,20 @@ private:
         PyObject *merge = Py_None;
         PyObject *useLinkGroup = Py_None;
         int mode = -1;
-        static char* kwd_list[] = {"name", "docName","importHidden","merge","useLinkGroup","mode",nullptr};
-        if (!PyArg_ParseTupleAndKeywords(args.ptr(), kwds.ptr(), "et|sO!O!O!i",
-                    kwd_list,"utf-8",&Name,&DocName,&PyBool_Type,&importHidden,&PyBool_Type,&merge,
-                    &PyBool_Type,&useLinkGroup,&mode))
+        static const std::array<const char *, 7> kwd_list {"name", "docName", "importHidden", "merge",
+                                                           "useLinkGroup", "mode", nullptr};
+        if (!Base::Wrapped_ParseTupleAndKeywords(args.ptr(), kwds.ptr(), "et|sO!O!O!i",
+                                                 kwd_list, "utf-8", &Name, &DocName, &PyBool_Type, &importHidden,
+                                                 &PyBool_Type, &merge,
+                                                 &PyBool_Type, &useLinkGroup, &mode)) {
             throw Py::Exception();
+        }
 
         std::string Utf8Name = std::string(Name);
         PyMem_Free(Name);
         std::string name8bit = Part::encodeFilename(Utf8Name);
 
         try {
-            //Base::Console().Log("Insert in Part with %s",Name);
             Base::FileInfo file(Utf8Name.c_str());
 
             App::Document *pcDoc = nullptr;
@@ -154,7 +159,7 @@ private:
             Handle(TDocStd_Document) hDoc;
             hApp->NewDocument(TCollection_ExtendedString("MDTV-CAF"), hDoc);
 
-            if (file.hasExtension("stp") || file.hasExtension("step")) {
+            if (file.hasExtension({"stp", "step"})) {
                 try {
                     STEPCAFControl_Reader aReader;
                     aReader.SetColorMode(true);
@@ -183,7 +188,7 @@ private:
                     pcDoc->recompute();
                 }
             }
-            else if (file.hasExtension("igs") || file.hasExtension("iges")) {
+            else if (file.hasExtension({"igs", "iges"})) {
                 Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
                     .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/Part")->GetGroup("IGES");
 
@@ -226,7 +231,6 @@ private:
                 throw Py::Exception(PyExc_IOError, "no supported file format");
             }
 
-#if 1
             ImportOCAFExt ocaf(hDoc, pcDoc, file.fileNamePure());
             ocaf.setImportOptions(ImportOCAFExt::customImportOptions());
             if (merge != Py_None)
@@ -238,14 +242,7 @@ private:
             if (mode >= 0)
                 ocaf.setMode(mode);
             ocaf.loadShapes();
-#elif 1
-            Import::ImportOCAFCmd ocaf(hDoc, pcDoc, file.fileNamePure());
-            ocaf.loadShapes();
-#else
-            Import::ImportXCAF xcaf(hDoc, pcDoc, file.fileNamePure());
-            xcaf.loadShapes();
-            pcDoc->recompute();
-#endif
+
             hApp->Close(hDoc);
 
             if (!ocaf.partColors.empty()) {
@@ -281,11 +278,14 @@ private:
         PyObject *exportHidden = Py_None;
         PyObject *legacy = Py_None;
         PyObject *keepPlacement = Py_None;
-        static char* kwd_list[] = {"obj", "name", "exportHidden", "legacy", "keepPlacement",nullptr};
-        if (!PyArg_ParseTupleAndKeywords(args.ptr(), kwds.ptr(), "Oet|O!O!O!",
-                    kwd_list,&object,"utf-8",&Name,&PyBool_Type,&exportHidden,&PyBool_Type,&legacy,
-                    &PyBool_Type,&keepPlacement))
+        static const std::array<const char *, 6> kwd_list{"obj", "name", "exportHidden", "legacy", "keepPlacement",
+                                                          nullptr};
+        if (!Base::Wrapped_ParseTupleAndKeywords(args.ptr(), kwds.ptr(), "Oet|O!O!O!",
+                                                 kwd_list, &object, "utf-8", &Name, &PyBool_Type, &exportHidden,
+                                                 &PyBool_Type, &legacy,
+                                                 &PyBool_Type, &keepPlacement)) {
             throw Py::Exception();
+        }
 
         std::string Utf8Name = std::string(Name);
         PyMem_Free(Name);
@@ -321,7 +321,6 @@ private:
                 ocaf.exportObjects(objs);
             }
             else {
-                //bool keepExplicitPlacement = objs.size() > 1;
                 bool keepExplicitPlacement = Standard_True;
                 ExportOCAF ocaf(hDoc, keepExplicitPlacement);
                 // That stuff is exporting a list of selected objects into FreeCAD Tree
@@ -335,26 +334,22 @@ private:
                 std::vector <TDF_Label> FreeLabels;
                 std::vector <int> part_id;
                 ocaf.getFreeLabels(hierarchical_label,FreeLabels, part_id);
-#if OCC_VERSION_HEX >= 0x070200
                 // Update is not performed automatically anymore: https://tracker.dev.opencascade.org/view.php?id=28055
                 XCAFDoc_DocumentTool::ShapeTool(hDoc->Main())->UpdateAssemblies();
-#endif
             }
 
             Base::FileInfo file(Utf8Name.c_str());
-            if (file.hasExtension("stp") || file.hasExtension("step")) {
-                //Interface_Static::SetCVal("write.step.schema", "AP214IS");
+            if (file.hasExtension({"stp", "step"})) {
                 STEPCAFControl_Writer writer;
                 Part::Interface::writeStepAssembly(Part::Interface::Assembly::On);
-                // writer.SetColorMode(Standard_False);
                 writer.Transfer(hDoc, STEPControl_AsIs);
 
                 APIHeaderSection_MakeHeader makeHeader(writer.ChangeWriter().Model());
                 Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
                     .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/Part")->GetGroup("STEP");
 
-                // https://forum.freecadweb.org/viewtopic.php?f=8&t=52967
-                //makeHeader.SetName(new TCollection_HAsciiString((Standard_CString)Utf8Name.c_str()));
+                // Don't set name because STEP doesn't support UTF-8
+                // https://forum.freecad.org/viewtopic.php?f=8&t=52967
                 makeHeader.SetAuthorValue (1, new TCollection_HAsciiString(hGrp->GetASCII("Author", "Author").c_str()));
                 makeHeader.SetOrganizationValue (1, new TCollection_HAsciiString(hGrp->GetASCII("Company").c_str()));
                 makeHeader.SetOriginatingSystem(new TCollection_HAsciiString(App::Application::getExecutableName().c_str()));
@@ -365,7 +360,7 @@ private:
                     throw Py::Exception();
                 }
             }
-            else if (file.hasExtension("igs") || file.hasExtension("iges")) {
+            else if (file.hasExtension({"igs", "iges"})) {
                 IGESControl_Controller::Init();
                 IGESCAFControl_Writer writer;
                 IGESData_GlobalSection header = writer.Model()->GlobalSection();
@@ -379,6 +374,26 @@ private:
                     PyErr_Format(PyExc_IOError, "Cannot open file '%s'", Utf8Name.c_str());
                     throw Py::Exception();
                 }
+            }
+            else if (file.hasExtension({"glb", "gltf"})) {
+#if OCC_VERSION_HEX >= 0x070500
+                TColStd_IndexedDataMapOfStringString aMetadata;
+                RWGltf_CafWriter aWriter (name8bit.c_str(), file.hasExtension("glb"));
+                aWriter.SetTransformationFormat (RWGltf_WriterTrsfFormat_Compact);
+                // https://github.com/KhronosGroup/glTF/blob/master/specification/2.0/README.md#coordinate-system-and-units
+                aWriter.ChangeCoordinateSystemConverter().SetInputLengthUnit (0.001);
+                aWriter.ChangeCoordinateSystemConverter().SetInputCoordinateSystem (RWMesh_CoordinateSystem_Zup);
+#if OCC_VERSION_HEX >= 0x070700
+                aWriter.SetParallel(true);
+#endif
+                Standard_Boolean ret = aWriter.Perform (hDoc, aMetadata, Message_ProgressRange());
+                if (!ret) {
+                    PyErr_Format(PyExc_IOError, "Cannot save to file '%s'", Utf8Name.c_str());
+                    throw Py::Exception();
+                }
+#else
+                throw Py::RuntimeError("gITF support requires OCCT 7.5.0 or later");
+#endif
             }
 
             hApp->Close(hDoc);
@@ -399,7 +414,7 @@ private:
         char* Name;
         const char* DocName=nullptr;
         const char* optionSource = nullptr;
-        std::string defaultOptions = "User parameter:BaseApp/Preferences/Mod/Import";
+        std::string defaultOptions = "User parameter:BaseApp/Preferences/Mod/Draft";
         bool IgnoreErrors=true;
         if (!PyArg_ParseTuple(args.ptr(), "et|sbs","utf-8",&Name,&DocName,&IgnoreErrors,&optionSource))
             throw Py::Exception();
@@ -665,111 +680,7 @@ private:
         throw Py::TypeError("expected ([DocObject],path");
     }
 };
-/*
-static PyObject * importAssembly(PyObject *self, PyObject *args)
-{
-    char* Name;
-    PyObject* TargetObjectPy=0;
-    if (!PyArg_ParseTuple(args, "et|O!","utf-8",&Name,&(App::DocumentObjectPy::Type),&TargetObjectPy))
-        return 0;
-    std::string Utf8Name = std::string(Name);
-    PyMem_Free(Name);
-    std::string name8bit = Part::encodeFilename(Utf8Name);
 
-    PY_TRY {
-        //Base::Console().Log("Insert in Part with %s",Name);
-        Base::FileInfo file(name8bit);
-
-        App::DocumentObject* target = nullptr;
-
-        if(TargetObjectPy)
-            target = static_cast<App::DocumentObjectPy*>(TargetObjectPy)->getDocumentObjectPtr();
-       
-
-        App::Document *pcDoc = 0;
-
-        pcDoc = App::GetApplication().getActiveDocument();
-
-        if (!pcDoc) 
-            pcDoc = App::GetApplication().newDocument("ImportedAssembly");
-        
-
-        Handle(XCAFApp_Application) hApp = XCAFApp_Application::GetApplication();
-        Handle(TDocStd_Document) hDoc;
-        hApp->NewDocument(TCollection_ExtendedString("MDTV-CAF"), hDoc);
-
-        if (file.hasExtension("stp") || file.hasExtension("step")) {
-            try {
-                STEPCAFControl_Reader aReader;
-                aReader.SetColorMode(true);
-                aReader.SetNameMode(true);
-                aReader.SetLayerMode(true);
-                if (aReader.ReadFile((Standard_CString)(name8bit.c_str())) != IFSelect_RetDone) {
-                    PyErr_SetString(PyExc_IOError, "cannot read STEP file");
-                    return 0;
-                }
-
-                Handle(Message_ProgressIndicator) pi = new Part::ProgressIndicator(100);
-                aReader.Reader().WS()->MapReader()->SetProgress(pi);
-                pi->NewScope(100, "Reading STEP file...");
-                pi->Show();
-                aReader.Transfer(hDoc);
-                pi->EndScope();
-            }
-            catch (OSD_Exception& e) {
-                Base::Console().Error("%s\n", e.GetMessageString());
-                Base::Console().Message("Try to load STEP file without colors...\n");
-
-                Part::ImportStepParts(pcDoc,Name);
-                pcDoc->recompute();
-            }
-        }
-        else if (file.hasExtension("igs") || file.hasExtension("iges")) {
-            try {
-                IGESControl_Controller::Init();
-                Interface_Static::SetIVal("read.surfacecurve.mode",3);
-                IGESCAFControl_Reader aReader;
-                aReader.SetColorMode(true);
-                aReader.SetNameMode(true);
-                aReader.SetLayerMode(true);
-                if (aReader.ReadFile((Standard_CString)(name8bit.c_str())) != IFSelect_RetDone) {
-                    PyErr_SetString(PyExc_IOError, "cannot read IGES file");
-                    return 0;
-                }
-
-                Handle(Message_ProgressIndicator) pi = new Part::ProgressIndicator(100);
-                aReader.WS()->MapReader()->SetProgress(pi);
-                pi->NewScope(100, "Reading IGES file...");
-                pi->Show();
-                aReader.Transfer(hDoc);
-                pi->EndScope();
-            }
-            catch (OSD_Exception& e) {
-                Base::Console().Error("%s\n", e.GetMessageString());
-                Base::Console().Message("Try to load IGES file without colors...\n");
-
-                Part::ImportIgesParts(pcDoc,Name);
-                pcDoc->recompute();
-            }
-        }
-        else {
-            PyErr_SetString(PyExc_RuntimeError, "no supported file format");
-            return 0;
-        }
-
-        Import::ImportOCAFAssembly ocaf(hDoc, pcDoc, file.fileNamePure(),target);
-        ocaf.loadAssembly();
-        pcDoc->recompute();
-
-    }
-    catch (Standard_Failure& e) {
-        PyErr_SetString(PyExc_RuntimeError, e.GetMessageString());
-        return 0;
-    }
-    PY_CATCH
-
-    Py_Return;
-}*/
 
 PyObject* initModule()
 {

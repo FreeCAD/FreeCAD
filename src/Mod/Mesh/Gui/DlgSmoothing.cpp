@@ -48,12 +48,15 @@ DlgSmoothing::DlgSmoothing(QWidget* parent)
     bg = new QButtonGroup(this);
     bg->addButton(ui->radioButtonTaubin, 0);
     bg->addButton(ui->radioButtonLaplace, 1);
+
+    connect(ui->checkBoxSelection, &QCheckBox::toggled,
+            this, &DlgSmoothing::onCheckBoxSelectionToggled);
 #if QT_VERSION < QT_VERSION_CHECK(5,15,0)
     connect(bg, qOverload<int>(&QButtonGroup::buttonClicked),
-            this, &DlgSmoothing::method_clicked);
+            this, &DlgSmoothing::methodClicked);
 #else
-    connect(bg, &QButtonGroup::idClicked,
-            this, &DlgSmoothing::method_clicked);
+    connect(bg, qOverload<int>(&QButtonGroup::idClicked),
+            this, &DlgSmoothing::methodClicked);
 #endif
 
     ui->labelLambda->setText(QString::fromUtf8("\xce\xbb"));
@@ -70,7 +73,7 @@ DlgSmoothing::~DlgSmoothing()
     delete ui;
 }
 
-void DlgSmoothing::method_clicked(int id)
+void DlgSmoothing::methodClicked(int id)
 {
     if (bg->button(id) == ui->radioButtonTaubin) {
         ui->labelMu->setEnabled(true);
@@ -111,7 +114,7 @@ bool DlgSmoothing::smoothSelection() const
     return ui->checkBoxSelection->isChecked();
 }
 
-void DlgSmoothing::on_checkBoxSelection_toggled(bool on)
+void DlgSmoothing::onCheckBoxSelectionToggled(bool on)
 {
     Q_EMIT toggledSelection(on);
 }
@@ -129,17 +132,15 @@ SmoothingDialog::SmoothingDialog(QWidget* parent, Qt::WindowFlags fl)
     buttonBox->setStandardButtons(QDialogButtonBox::Cancel|QDialogButtonBox::Ok);
 
     connect(buttonBox, &QDialogButtonBox::accepted,
-            this, &SmoothingDialog::accept);
+            this, &QDialog::accept);
     connect(buttonBox, &QDialogButtonBox::rejected,
-            this, &SmoothingDialog::reject);
+            this, &QDialog::reject);
 
     hboxLayout->addWidget(widget);
     hboxLayout->addWidget(buttonBox);
 }
 
-SmoothingDialog::~SmoothingDialog()
-{
-}
+SmoothingDialog::~SmoothingDialog() = default;
 
 // ---------------------------------------
 
@@ -162,12 +163,7 @@ TaskSmoothing::TaskSmoothing()
     Content.push_back(tasksel);
 
     connect(widget, &DlgSmoothing::toggledSelection,
-            tasksel, &Gui::TaskView::TaskBox::setVisible);
-}
-
-TaskSmoothing::~TaskSmoothing()
-{
-    // automatically deleted in the sub-class
+            tasksel, &QWidget::setVisible);
 }
 
 bool TaskSmoothing::accept()
@@ -180,8 +176,8 @@ bool TaskSmoothing::accept()
     Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Mesh Smoothing"));
 
     bool hasSelection = false;
-    for (std::vector<App::DocumentObject*>::const_iterator it = meshes.begin(); it != meshes.end(); ++it) {
-        Mesh::Feature* mesh = static_cast<Mesh::Feature*>(*it);
+    for (auto it : meshes) {
+        Mesh::Feature* mesh = static_cast<Mesh::Feature*>(it);
         std::vector<Mesh::FacetIndex> selection;
         if (widget->smoothSelection()) {
             // clear the selection before editing the mesh to avoid

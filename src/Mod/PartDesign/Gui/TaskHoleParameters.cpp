@@ -37,7 +37,7 @@
 
 using namespace PartDesignGui;
 using namespace Gui;
-namespace bp = boost::placeholders;
+namespace sp = std::placeholders;
 
 /* TRANSLATOR PartDesignGui::TaskHoleParameters */
 
@@ -250,15 +250,15 @@ TaskHoleParameters::TaskHoleParameters(ViewProviderHole* HoleView, QWidget* pare
     ui->ThreadDepth->bind(pcHole->ThreadDepth);
     ui->CustomThreadClearance->bind(pcHole->CustomThreadClearance);
 
+    //NOLINTBEGIN
     connectPropChanged = App::GetApplication().signalChangePropertyEditor.connect(
-            boost::bind(&TaskHoleParameters::changedObject, this, bp::_1, bp::_2));
+            std::bind(&TaskHoleParameters::changedObject, this, sp::_1, sp::_2));
+    //NOLINTEND
 
     this->groupLayout()->addWidget(proxy);
 }
 
-TaskHoleParameters::~TaskHoleParameters()
-{
-}
+TaskHoleParameters::~TaskHoleParameters() = default;
 
 void TaskHoleParameters::threadedChanged()
 {
@@ -456,7 +456,7 @@ void TaskHoleParameters::holeCutDepthChanged(double value)
 
         // store current depth
         double DepthDifference = value - pcHole->HoleCutDepth.getValue();
-        // new diameter is the old one + 2*tan(angle/2)*DepthDifference
+        // new diameter is the old one + 2 * tan(angle / 2) * DepthDifference
         double newDiameter = pcHole->HoleCutDiameter.getValue()
             + 2 * tan(Base::toRadians(pcHole->HoleCutCountersinkAngle.getValue() / 2)) * DepthDifference;
         // only apply if the result is not smaller than the hole diameter
@@ -1187,10 +1187,7 @@ TaskDlgHoleParameters::TaskDlgHoleParameters(ViewProviderHole* HoleView)
     Content.push_back(parameter);
 }
 
-TaskDlgHoleParameters::~TaskDlgHoleParameters()
-{
-
-}
+TaskDlgHoleParameters::~TaskDlgHoleParameters() = default;
 
 #include "moc_TaskHoleParameters.cpp"
 

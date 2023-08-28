@@ -40,8 +40,13 @@ public:
 
     void flush() {buffer.str("");buffer.clear();}
 
-    void SendLog(const std::string& msg, Base::LogStyle level) override{
+    void SendLog(const std::string& notifiername, const std::string& msg, Base::LogStyle level,
+                 Base::IntendedRecipient recipient, Base::ContentType content) override{
+        (void) notifiername;
         (void) msg;
+        (void) recipient;
+        (void) content;
+
         switch(level){
             case Base::LogStyle::Warning:
                 buffer << "WRN";
@@ -55,6 +60,11 @@ public:
             case Base::LogStyle::Log:
                 buffer << "LOG";
                 break;
+            case Base::LogStyle::Critical:
+                buffer << "CMS";
+                break;
+            default:
+                break;
         }
     }
 
@@ -65,44 +75,45 @@ public:
         Base::Console().Message("MSG");
         Base::Console().Warning("WRN");
         Base::Console().Error("ERR");
+        Base::Console().Critical("CMS");
         if (buffer.str() != expectedResult)
             throw Py::RuntimeError("ILoggerTest: " + buffer.str() + " different from " + expectedResult);
     }
 
     void runTest()
     {
-        runSingleTest("Print all message types", "LOGMSGWRNERR");
+        runSingleTest("Print all message types", "LOGMSGWRNERRCMS");
         {
             Base::ILoggerBlocker blocker("ILoggerBlockerTest");
             runSingleTest("All types blocked", "");
         }
-        runSingleTest("Print all", "LOGMSGWRNERR");
+        runSingleTest("Print all", "LOGMSGWRNERRCMS");
         {
             Base::ILoggerBlocker blocker("ILoggerBlockerTest", Base::ConsoleSingleton::MsgType_Err | Base::ConsoleSingleton::MsgType_Wrn);
-            runSingleTest("Error & Warning blocked", "LOGMSG");
+            runSingleTest("Error & Warning blocked", "LOGMSGCMS");
         }
-        runSingleTest("Print all", "LOGMSGWRNERR");
+        runSingleTest("Print all", "LOGMSGWRNERRCMS");
         {
             Base::ILoggerBlocker blocker("ILoggerBlockerTest", Base::ConsoleSingleton::MsgType_Log | Base::ConsoleSingleton::MsgType_Txt);
-            runSingleTest("Log & Message blocked", "WRNERR");
+            runSingleTest("Log & Message blocked", "WRNERRCMS");
         }
-        runSingleTest("Print all", "LOGMSGWRNERR");
+        runSingleTest("Print all", "LOGMSGWRNERRCMS");
         {
             Base::ILoggerBlocker blocker("ILoggerBlockerTest", Base::ConsoleSingleton::MsgType_Err);
-            runSingleTest("Nested : Error blocked", "LOGMSGWRN");
+            runSingleTest("Nested : Error blocked", "LOGMSGWRNCMS");
             {
                 Base::ILoggerBlocker blocker2("ILoggerBlockerTest", Base::ConsoleSingleton::MsgType_Err | Base::ConsoleSingleton::MsgType_Wrn);
-                runSingleTest("Nested : Warning blocked + Error (from nesting) + Error (redundancy)", "LOGMSG");
+                runSingleTest("Nested : Warning blocked + Error (from nesting) + Error (redundancy)", "LOGMSGCMS");
             }
-            runSingleTest("Nested : Error still blocked", "LOGMSGWRN");
+            runSingleTest("Nested : Error still blocked", "LOGMSGWRNCMS");
         }
-        runSingleTest("Print all", "LOGMSGWRNERR");
+        runSingleTest("Print all", "LOGMSGWRNERRCMS");
         {
             Base::ILoggerBlocker blocker("ILoggerBlockerTest");
             Base::Console().SetEnabledMsgType("ILoggerBlockerTest", Base::ConsoleSingleton::MsgType_Log, true);
             runSingleTest("Log is enabled but a warning is triggered in debug mode", "LOG");
         }
-        runSingleTest("Print all", "LOGMSGWRNERR");
+        runSingleTest("Print all", "LOGMSGWRNERRCMS");
     }
 
 private:
@@ -125,8 +136,6 @@ public:
         add_varargs_method("testILoggerBlocker",&Module::testILoggerBlocker,"testILoggerBlocker");
         initialize("This module is the QtUnitGui module"); // register with Python
     }
-
-    ~Module() override {}
 
 private:
     Py::Object new_UnitTest(const Py::Tuple& args)
@@ -191,6 +200,7 @@ void loadTestResource()
 {
     // add resources and reloads the translators
     Q_INIT_RESOURCE(Test);
+    Q_INIT_RESOURCE(Test_translation);
     Gui::Translator::instance()->refresh();
 }
 

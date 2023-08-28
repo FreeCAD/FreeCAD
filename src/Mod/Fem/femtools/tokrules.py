@@ -23,7 +23,7 @@
 
 __title__ = "FEM Utilities"
 __author__ = "Werner Mayer"
-__url__ = "https://www.freecadweb.org"
+__url__ = "https://www.freecad.org"
 
 tokens = (
     'NAME',

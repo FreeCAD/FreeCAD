@@ -448,7 +448,7 @@ protected:
     MeshPointArray   _aclPointArray; /**< Holds the array of geometric points. */
     MeshFacetArray   _aclFacetArray; /**< Holds the array of facets. */
     mutable Base::BoundBox3f _clBoundBox;    /**< The current calculated bounding box. */
-    bool            _bValid; /**< Current state of validality. */
+    bool            _bValid{true}; /**< Current state of validality. */
 
     // friends
     friend class MeshPointIterator;

@@ -51,7 +51,7 @@ class TechDrawGuiExport TaskActiveView : public QWidget
 
 public:
     TaskActiveView(TechDraw::DrawPage* pageFeat);
-    ~TaskActiveView();
+    ~TaskActiveView() override;
 
 public Q_SLOTS:
 
@@ -64,7 +64,7 @@ public:
     void enableTaskButtons(bool b);
 
 protected:
-    void changeEvent(QEvent *e);
+    void changeEvent(QEvent *e) override;
 
     void blockButtons(bool b);
     void setUiPrimary(void);

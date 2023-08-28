@@ -24,7 +24,6 @@
 #ifndef _PreComp_
 # include <QApplication>
 # include <QElapsedTimer>
-# include <QGenericReturnArgument>
 # include <QKeyEvent>
 # include <QMessageBox>
 # include <QMetaObject>
@@ -143,7 +142,7 @@ void SequencerBar::startStep()
     if (thr != currentThread) {
         d->guiThread = false;
         QMetaObject::invokeMethod(d->bar, "setRangeEx", Qt::QueuedConnection,
-            QGenericReturnArgument(), Q_ARG(int, 0), Q_ARG(int, (int)nTotalSteps));
+            Q_ARG(int, 0), Q_ARG(int, (int)nTotalSteps));
         d->progressTime.start();
         d->checkAbortTime.start();
         d->measureTime.start();
@@ -247,7 +246,7 @@ void SequencerBar::setValue(int step)
             d->progressTime.restart();
             if (thr != currentThread) {
                 QMetaObject::invokeMethod(d->bar, "setValueEx", Qt::/*Blocking*/QueuedConnection,
-                    QGenericReturnArgument(), Q_ARG(int,d->bar->value()+1));
+                    Q_ARG(int,d->bar->value()+1));
             }
             else {
                 d->bar->setValueEx(d->bar->value()+1);
@@ -262,7 +261,7 @@ void SequencerBar::setValue(int step)
             d->progressTime.restart();
             if (thr != currentThread) {
                 QMetaObject::invokeMethod(d->bar, "setValueEx", Qt::/*Blocking*/QueuedConnection,
-                QGenericReturnArgument(), Q_ARG(int,step));
+                Q_ARG(int,step));
                 if (d->bar->isVisible())
                     showRemainingTime();
             }
@@ -301,7 +300,6 @@ void SequencerBar::showRemainingTime()
             if (thr != currentThread) {
                 QMetaObject::invokeMethod(getMainWindow(), "showMessage",
                     Qt::/*Blocking*/QueuedConnection,
-                    QGenericReturnArgument(),
                     Q_ARG(QString,status));
             }
             else {
@@ -320,11 +318,9 @@ void SequencerBar::resetData()
         QMetaObject::invokeMethod(d->bar, "aboutToHide", Qt::QueuedConnection);
         QMetaObject::invokeMethod(getMainWindow(), "showMessage",
             Qt::/*Blocking*/QueuedConnection,
-            QGenericReturnArgument(),
             Q_ARG(QString,QString()));
         QMetaObject::invokeMethod(getMainWindow(), "setPaneText",
             Qt::/*Blocking*/QueuedConnection,
-            QGenericReturnArgument(),
             Q_ARG(int,1),
             Q_ARG(QString,QString()));
         d->bar->leaveControlEvents(d->guiThread);
@@ -363,7 +359,6 @@ void SequencerBar::setText (const char* pszTxt)
     if (thr != currentThread) {
         QMetaObject::invokeMethod(getMainWindow(), "showMessage",
             Qt::/*Blocking*/QueuedConnection,
-            QGenericReturnArgument(),
             Q_ARG(QString,d->text));
     }
     else {

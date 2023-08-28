@@ -112,6 +112,7 @@ def get_draft_utility_commands_menu():
             "Draft_ApplyStyle",
             "Separator",
             "Draft_Layer",
+            "Draft_LayerManager",
             "Draft_AddNamedGroup",
             "Draft_AddToGroup",
             "Draft_SelectGroup",
@@ -130,7 +131,7 @@ def get_draft_utility_commands_menu():
 
 def get_draft_utility_commands_toolbar():
     """Return the utility commands list for the toolbar."""
-    return ["Draft_Layer",
+    return ["Draft_LayerManager",
             "Draft_AddNamedGroup",
             "Draft_AddToGroup",
             "Draft_SelectGroup",

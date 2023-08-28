@@ -24,6 +24,7 @@
 #define GUI_INVENTOR_SODRAWINGGRID_H
 
 #include <Inventor/nodes/SoShape.h>
+#include <FCGlobal.h>
 
 namespace Gui { namespace Inventor {
 
@@ -37,17 +38,17 @@ public:
     SoDrawingGrid();
 
 public:
-    virtual void GLRender(SoGLRenderAction *action);
-    virtual void GLRenderBelowPath(SoGLRenderAction *action);
-    virtual void GLRenderInPath(SoGLRenderAction *action);
-    virtual void GLRenderOffPath(SoGLRenderAction *action);
-    virtual void computeBBox(SoAction *action, SbBox3f &box, SbVec3f &center);
-    virtual void generatePrimitives(SoAction *action);
+    void GLRender(SoGLRenderAction *action) override;
+    void GLRenderBelowPath(SoGLRenderAction *action) override;
+    void GLRenderInPath(SoGLRenderAction *action) override;
+    void GLRenderOffPath(SoGLRenderAction *action) override;
+    void computeBBox(SoAction *action, SbBox3f &box, SbVec3f &center) override;
+    void generatePrimitives(SoAction *action) override;
 
 private:
     void renderGrid(SoGLRenderAction *action);
     // Force using the reference count mechanism.
-    virtual ~SoDrawingGrid() {}
+    ~SoDrawingGrid() override = default;
 };
 
 } // namespace Inventor

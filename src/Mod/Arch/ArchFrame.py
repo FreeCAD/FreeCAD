@@ -19,7 +19,10 @@
 #*                                                                         *
 #***************************************************************************
 
-import FreeCAD,Draft,ArchComponent,DraftVecUtils
+import FreeCAD
+import ArchComponent
+import Draft
+import DraftVecUtils
 if FreeCAD.GuiUp:
     import FreeCADGui
     from draftutils.translate import translate
@@ -42,10 +45,10 @@ else:
 
 __title__  = "FreeCAD Arch Frame"
 __author__ = "Yorik van Havre"
-__url__    = "https://www.freecadweb.org"
+__url__    = "https://www.freecad.org"
 
 
-def makeFrame(baseobj,profile,name=translate("Arch","Frame")):
+def makeFrame(baseobj,profile,name=None):
 
     """makeFrame(baseobj,profile,[name]): creates a frame object from a base sketch (or any other object
     containing wires) and a profile object (an extrudable 2D object containing faces or closed wires)"""
@@ -54,7 +57,7 @@ def makeFrame(baseobj,profile,name=translate("Arch","Frame")):
         FreeCAD.Console.PrintError("No active document. Aborting\n")
         return
     obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython","Frame")
-    obj.Label = translate("Arch",name)
+    obj.Label = name if name else translate("Arch","Frame")
     _Frame(obj)
     if FreeCAD.GuiUp:
         _ViewProviderFrame(obj.ViewObject)
@@ -162,7 +165,9 @@ class _Frame(ArchComponent.Component):
                 for w in obj.Profile.Shape.Wires:
                     if not w.isClosed():
                         return
-            import DraftGeomUtils, Part, math
+            import math
+            import DraftGeomUtils
+            import Part
             baseprofile = obj.Profile.Shape.copy()
             if hasattr(obj,"ProfilePlacement"):
                 if not obj.ProfilePlacement.isNull():

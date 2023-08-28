@@ -263,7 +263,7 @@
         </dc:creator>
         <dc:title>arrow-left</dc:title>
         <dc:date>2016-11-24</dc:date>
-        <dc:relation>http://www.freecadweb.org/wiki/index.php?title=Artwork</dc:relation>
+        <dc:relation>http://www.freecad.org/wiki/index.php?title=Artwork</dc:relation>
         <dc:publisher>
           <cc:Agent>
             <dc:title>FreeCAD</dc:title>

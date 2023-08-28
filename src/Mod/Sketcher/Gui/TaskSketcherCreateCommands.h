@@ -27,38 +27,40 @@
 #include <Gui/TaskView/TaskView.h>
 
 
-namespace App {
+namespace App
+{
 class Property;
 }
 
-namespace Gui {
+namespace Gui
+{
 class ViewProvider;
-namespace TaskView {
+namespace TaskView
+{
 
 
-
-class TaskSketcherCreateCommands : public TaskBox, public Gui::SelectionSingleton::ObserverType
+class TaskSketcherCreateCommands: public TaskBox, public Gui::SelectionSingleton::ObserverType
 {
     Q_OBJECT
 
 public:
-    explicit TaskSketcherCreateCommands(QWidget *parent = nullptr);
+    explicit TaskSketcherCreateCommands(QWidget* parent = nullptr);
     ~TaskSketcherCreateCommands() override;
     /// Observer message from the Selection
-    void OnChange(Gui::SelectionSingleton::SubjectType &rCaller,
+    void OnChange(Gui::SelectionSingleton::SubjectType& rCaller,
                   Gui::SelectionSingleton::MessageType Reason) override;
 
 private Q_SLOTS:
- 
+
 protected:
-    void changeEvent(QEvent *e) override;
+    void changeEvent(QEvent* e) override;
 
 
 private:
-    //QWidget* proxy;
+    // QWidget* proxy;
 };
 
-} //namespace TaskView
-} //namespace Gui
+}// namespace TaskView
+}// namespace Gui
 
-#endif // GUI_TASKVIEW_TASKAPPERANCE_H
+#endif// GUI_TASKVIEW_TASKAPPERANCE_H

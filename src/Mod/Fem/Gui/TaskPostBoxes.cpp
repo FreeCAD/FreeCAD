@@ -241,8 +241,7 @@ TaskPostBox::TaskPostBox(Gui::ViewProviderDocumentObject* view, const QPixmap& i
       m_view(view)
 {}
 
-TaskPostBox::~TaskPostBox()
-{}
+TaskPostBox::~TaskPostBox() = default;
 
 bool TaskPostBox::autoApply()
 {
@@ -268,14 +267,14 @@ void TaskPostBox::updateEnumerationList(App::PropertyEnumeration& prop, QComboBo
 {
     QStringList list;
     std::vector<std::string> vec = prop.getEnumVector();
-    for (std::vector<std::string>::iterator it = vec.begin(); it != vec.end(); ++it) {
-        list.push_back(QString::fromStdString(*it));
+    for (auto it : vec) {
+        list.push_back(QString::fromStdString(it));
     }
 
     int index = prop.getValue();
     // be aware the QComboxBox might be connected to the Property,
     // thus clearing the box will set back the property enumeration index too.
-    // https://forum.freecadweb.org/viewtopic.php?f=10&t=30944
+    // https://forum.freecad.org/viewtopic.php?f=10&t=30944
     box->clear();
     box->insertItems(0, list);
     box->setCurrentIndex(index);
@@ -291,16 +290,15 @@ TaskDlgPost::TaskDlgPost(Gui::ViewProviderDocumentObject* view)
     assert(view);
 }
 
-TaskDlgPost::~TaskDlgPost()
-{}
+TaskDlgPost::~TaskDlgPost() = default;
 
 QDialogButtonBox::StandardButtons TaskDlgPost::getStandardButtons() const
 {
 
     //check if we only have gui task boxes
     bool guionly = true;
-    for (std::vector<TaskPostBox*>::const_iterator it = m_boxes.begin(); it != m_boxes.end(); ++it)
-        guionly = guionly && (*it)->isGuiTaskOnly();
+    for (auto it : m_boxes)
+        guionly = guionly && it->isGuiTaskOnly();
 
     if (!guionly)
         return QDialogButtonBox::Apply | QDialogButtonBox::Ok | QDialogButtonBox::Cancel;
@@ -403,7 +401,7 @@ TaskPostDisplay::TaskPostDisplay(Gui::ViewProviderDocumentObject* view, QWidget*
     // we need a separate container widget to add all controls to
     proxy = new QWidget(this);
     ui->setupUi(proxy);
-    QMetaObject::connectSlotsByName(this);
+    setupConnections();
 
     this->groupLayout()->addWidget(proxy);
 
@@ -413,7 +411,7 @@ TaskPostDisplay::TaskPostDisplay(Gui::ViewProviderDocumentObject* view, QWidget*
     updateEnumerationList(getTypedView<ViewProviderFemPostObject>()->Field, ui->Field);
     updateEnumerationList(getTypedView<ViewProviderFemPostObject>()->VectorMode, ui->VectorMode);
 
-    // get Tranparency from ViewProvider
+    // get Transparency from ViewProvider
     int trans = getTypedView<ViewProviderFemPostObject>()->Transparency.getValue();
     Base::Console().Log("Transparency %i: \n", trans);
     // sync the trancparency slider
@@ -421,33 +419,44 @@ TaskPostDisplay::TaskPostDisplay(Gui::ViewProviderDocumentObject* view, QWidget*
     ui->Transparency->setToolTip(QString::number(trans) + QString::fromLatin1(" %"));
 }
 
-TaskPostDisplay::~TaskPostDisplay()
-{}
+TaskPostDisplay::~TaskPostDisplay() = default;
+
+void TaskPostDisplay::setupConnections()
+{
+    connect(ui->Representation, qOverload<int>(&QComboBox::activated),
+            this, &TaskPostDisplay::onRepresentationActivated);
+    connect(ui->Field, qOverload<int>(&QComboBox::activated),
+            this, &TaskPostDisplay::onFieldActivated);
+    connect(ui->VectorMode, qOverload<int>(&QComboBox::activated),
+            this, &TaskPostDisplay::onVectorModeActivated);
+    connect(ui->Transparency, &QSlider::valueChanged,
+            this, &TaskPostDisplay::onTransparencyValueChanged);
+}
 
 void TaskPostDisplay::slotAddedFunction()
 {
     updateEnumerationList(getTypedView<ViewProviderFemPostObject>()->Field, ui->Field);
 }
 
-void TaskPostDisplay::on_Representation_activated(int i)
+void TaskPostDisplay::onRepresentationActivated(int i)
 {
     getTypedView<ViewProviderFemPostObject>()->DisplayMode.setValue(i);
     updateEnumerationList(getTypedView<ViewProviderFemPostObject>()->Field, ui->Field);
     updateEnumerationList(getTypedView<ViewProviderFemPostObject>()->VectorMode, ui->VectorMode);
 }
 
-void TaskPostDisplay::on_Field_activated(int i)
+void TaskPostDisplay::onFieldActivated(int i)
 {
     getTypedView<ViewProviderFemPostObject>()->Field.setValue(i);
     updateEnumerationList(getTypedView<ViewProviderFemPostObject>()->VectorMode, ui->VectorMode);
 }
 
-void TaskPostDisplay::on_VectorMode_activated(int i)
+void TaskPostDisplay::onVectorModeActivated(int i)
 {
     getTypedView<ViewProviderFemPostObject>()->VectorMode.setValue(i);
 }
 
-void TaskPostDisplay::on_Transparency_valueChanged(int i) {
+void TaskPostDisplay::onTransparencyValueChanged(int i) {
 
     getTypedView<ViewProviderFemPostObject>()->Transparency.setValue(i);
     ui->Transparency->setToolTip(QString::number(i) + QString::fromLatin1(" %"));
@@ -474,8 +483,7 @@ TaskPostFunction::TaskPostFunction(ViewProviderDocumentObject* view, QWidget* pa
     this->groupLayout()->addWidget(w);
 }
 
-TaskPostFunction::~TaskPostFunction()
-{}
+TaskPostFunction::~TaskPostFunction() = default;
 
 void TaskPostFunction::applyPythonCode()
 {
@@ -501,7 +509,7 @@ TaskPostDataAlongLine::TaskPostDataAlongLine(ViewProviderDocumentObject* view, Q
     proxy = new QWidget(this);
     ui->setupUi(proxy);
 
-    QMetaObject::connectSlotsByName(this);
+    setupConnectionsStep1();
     this->groupLayout()->addWidget(proxy);
 
     QSize size = ui->point1X->sizeForText(QStringLiteral("000000000000"));
@@ -546,6 +554,43 @@ TaskPostDataAlongLine::TaskPostDataAlongLine(ViewProviderDocumentObject* view, Q
     int res = static_cast<Fem::FemPostDataAlongLineFilter*>(getObject())->Resolution.getValue();
     ui->resolution->setValue(res);
 
+    setupConnectionsStep2();
+
+    //update all fields
+    updateEnumerationList(getTypedView<ViewProviderFemPostObject>()->DisplayMode,
+                          ui->Representation);
+    updateEnumerationList(getTypedView<ViewProviderFemPostObject>()->Field, ui->Field);
+    updateEnumerationList(getTypedView<ViewProviderFemPostObject>()->VectorMode, ui->VectorMode);
+}
+
+TaskPostDataAlongLine::~TaskPostDataAlongLine() = default;
+
+void TaskPostDataAlongLine::setupConnectionsStep1()
+{
+    connect(ui->SelectPoints,
+            &QPushButton::clicked,
+            this,
+            &TaskPostDataAlongLine::onSelectPointsClicked);
+    connect(ui->CreatePlot,
+            &QPushButton::clicked,
+            this,
+            &TaskPostDataAlongLine::onCreatePlotClicked);
+    connect(ui->Representation,
+            qOverload<int>(&QComboBox::activated),
+            this,
+            &TaskPostDataAlongLine::onRepresentationActivated);
+    connect(ui->Field,
+            qOverload<int>(&QComboBox::activated),
+            this,
+            &TaskPostDataAlongLine::onFieldActivated);
+    connect(ui->VectorMode,
+            qOverload<int>(&QComboBox::activated),
+            this,
+            &TaskPostDataAlongLine::onVectorModeActivated);
+}
+
+void TaskPostDataAlongLine::setupConnectionsStep2()
+{
     connect(ui->point1X,
             qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
             this,
@@ -574,16 +619,7 @@ TaskPostDataAlongLine::TaskPostDataAlongLine(ViewProviderDocumentObject* view, Q
             qOverload<int>(&QSpinBox::valueChanged),
             this,
             &TaskPostDataAlongLine::resolutionChanged);
-
-    //update all fields
-    updateEnumerationList(getTypedView<ViewProviderFemPostObject>()->DisplayMode,
-                          ui->Representation);
-    updateEnumerationList(getTypedView<ViewProviderFemPostObject>()->Field, ui->Field);
-    updateEnumerationList(getTypedView<ViewProviderFemPostObject>()->VectorMode, ui->VectorMode);
 }
-
-TaskPostDataAlongLine::~TaskPostDataAlongLine()
-{}
 
 void TaskPostDataAlongLine::applyPythonCode()
 {}
@@ -610,7 +646,7 @@ static const char* cursor_triangle[] = {"32 32 3 1",
                                         "          + ++++++++ +          ",
                                         "         ++  ++  ++  ++         "};
 
-void TaskPostDataAlongLine::on_SelectPoints_clicked()
+void TaskPostDataAlongLine::onSelectPointsClicked()
 {
     Gui::Command::doCommand(Gui::Command::Doc, ObjectVisible().c_str());
     Gui::Document* doc = Gui::Application::Instance->getDocument(getDocument());
@@ -642,7 +678,7 @@ std::string TaskPostDataAlongLine::ObjectVisible()
                  apart.ViewObject.Visibility = True\n";
 }
 
-void TaskPostDataAlongLine::on_CreatePlot_clicked()
+void TaskPostDataAlongLine::onCreatePlotClicked()
 {
     App::DocumentObjectT objT(getObject());
     std::string ObjName = objT.getObjectPython();
@@ -776,14 +812,14 @@ void TaskPostDataAlongLine::pointCallback(void* ud, SoEventCallback* n)
     }
 }
 
-void TaskPostDataAlongLine::on_Representation_activated(int i)
+void TaskPostDataAlongLine::onRepresentationActivated(int i)
 {
     getTypedView<ViewProviderFemPostObject>()->DisplayMode.setValue(i);
     updateEnumerationList(getTypedView<ViewProviderFemPostObject>()->Field, ui->Field);
     updateEnumerationList(getTypedView<ViewProviderFemPostObject>()->VectorMode, ui->VectorMode);
 }
 
-void TaskPostDataAlongLine::on_Field_activated(int i)
+void TaskPostDataAlongLine::onFieldActivated(int i)
 {
     getTypedView<ViewProviderFemPostObject>()->Field.setValue(i);
     std::string FieldName = ui->Field->currentText().toStdString();
@@ -791,7 +827,7 @@ void TaskPostDataAlongLine::on_Field_activated(int i)
     updateEnumerationList(getTypedView<ViewProviderFemPostObject>()->VectorMode, ui->VectorMode);
 }
 
-void TaskPostDataAlongLine::on_VectorMode_activated(int i)
+void TaskPostDataAlongLine::onVectorModeActivated(int i)
 {
     getTypedView<ViewProviderFemPostObject>()->VectorMode.setValue(i);
 }
@@ -832,8 +868,8 @@ TaskPostDataAtPoint::TaskPostDataAtPoint(ViewProviderDocumentObject* view, QWidg
     //we load the views widget
     proxy = new QWidget(this);
     ui->setupUi(proxy);
+    setupConnections();
 
-    QMetaObject::connectSlotsByName(this);
     this->groupLayout()->addWidget(proxy);
 
     QSize size = ui->centerX->sizeForText(QStringLiteral("000000000000"));
@@ -892,6 +928,18 @@ TaskPostDataAtPoint::~TaskPostDataAtPoint()
         doc->recompute();
 }
 
+void TaskPostDataAtPoint::setupConnections()
+{
+    connect(ui->SelectPoint,
+            &QPushButton::clicked,
+            this,
+            &TaskPostDataAtPoint::onSelectPointClicked);
+    connect(ui->Field,
+            qOverload<int>(&QComboBox::activated),
+            this,
+            &TaskPostDataAtPoint::onFieldActivated);
+}
+
 void TaskPostDataAtPoint::applyPythonCode()
 {}
 
@@ -917,7 +965,7 @@ static const char* cursor_star[] = {"32 17 3 1",
                                     "          + ++++++++ +          ",
                                     "         ++  ++  ++  ++         "};
 
-void TaskPostDataAtPoint::on_SelectPoint_clicked()
+void TaskPostDataAtPoint::onSelectPointClicked()
 {
     Gui::Command::doCommand(Gui::Command::Doc, ObjectVisible().c_str());
     Gui::Document* doc = Gui::Application::Instance->getDocument(getDocument());
@@ -982,7 +1030,7 @@ void TaskPostDataAtPoint::centerChanged(double)
         getObject()->recomputeFeature();
         // show the data dialog by calling on_Field_activated with the field that is currently set
         auto currentField = getTypedView<ViewProviderFemPostObject>()->Field.getValue();
-        on_Field_activated(currentField);
+        onFieldActivated(currentField);
     }
     catch (const Base::Exception& e) {
         e.ReportException();
@@ -1025,7 +1073,7 @@ void TaskPostDataAtPoint::pointCallback(void* ud, SoEventCallback* n)
     }
 }
 
-void TaskPostDataAtPoint::on_Field_activated(int i)
+void TaskPostDataAtPoint::onFieldActivated(int i)
 {
     getTypedView<ViewProviderFemPostObject>()->Field.setValue(i);
     std::string FieldName = ui->Field->currentText().toStdString();
@@ -1190,7 +1238,7 @@ TaskPostClip::TaskPostClip(ViewProviderDocumentObject* view, App::PropertyLink* 
     //we load the views widget
     proxy = new QWidget(this);
     ui->setupUi(proxy);
-    QMetaObject::connectSlotsByName(this);
+    setupConnections();
     this->groupLayout()->addWidget(proxy);
 
     //the layout for the container widget
@@ -1214,8 +1262,27 @@ TaskPostClip::TaskPostClip(ViewProviderDocumentObject* view, App::PropertyLink* 
         static_cast<Fem::FemPostClipFilter*>(getObject())->InsideOut.getValue());
 }
 
-TaskPostClip::~TaskPostClip()
-{}
+TaskPostClip::~TaskPostClip() = default;
+
+void TaskPostClip::setupConnections()
+{
+    connect(ui->CreateButton,
+            &QToolButton::triggered,
+            this,
+            &TaskPostClip::onCreateButtonTriggered);
+    connect(ui->FunctionBox,
+            qOverload<int>(&QComboBox::currentIndexChanged),
+            this,
+            &TaskPostClip::onFunctionBoxCurrentIndexChanged);
+    connect(ui->InsideOut,
+            &QCheckBox::toggled,
+            this,
+            &TaskPostClip::onInsideOutToggled);
+    connect(ui->CutCells,
+            &QCheckBox::toggled,
+            this,
+            &TaskPostClip::onCutCellsToggled);
+}
 
 void TaskPostClip::applyPythonCode()
 {}
@@ -1248,7 +1315,7 @@ void TaskPostClip::collectImplicitFunctions()
     }
 }
 
-void TaskPostClip::on_CreateButton_triggered(QAction*)
+void TaskPostClip::onCreateButtonTriggered(QAction*)
 {
     int numFuncs = ui->FunctionBox->count();
     int currentItem = ui->FunctionBox->currentIndex();
@@ -1267,7 +1334,7 @@ void TaskPostClip::on_CreateButton_triggered(QAction*)
     recompute();
 }
 
-void TaskPostClip::on_FunctionBox_currentIndexChanged(int idx)
+void TaskPostClip::onFunctionBoxCurrentIndexChanged(int idx)
 {
     //set the correct property
     std::vector<Fem::FemPostPipeline*> pipelines;
@@ -1306,13 +1373,13 @@ void TaskPostClip::on_FunctionBox_currentIndexChanged(int idx)
     recompute();
 }
 
-void TaskPostClip::on_CutCells_toggled(bool val)
+void TaskPostClip::onCutCellsToggled(bool val)
 {
     static_cast<Fem::FemPostClipFilter*>(getObject())->CutCells.setValue(val);
     recompute();
 }
 
-void TaskPostClip::on_InsideOut_toggled(bool val)
+void TaskPostClip::onInsideOutToggled(bool val)
 {
     static_cast<Fem::FemPostClipFilter*>(getObject())->InsideOut.setValue(val);
     recompute();
@@ -1363,8 +1430,7 @@ TaskPostContours::TaskPostContours(ViewProviderDocumentObject* view, QWidget* pa
     connect(ui->noColorCB, &QCheckBox::toggled, this, &TaskPostContours::onNoColorChanged);
 }
 
-TaskPostContours::~TaskPostContours()
-{}
+TaskPostContours::~TaskPostContours() = default;
 
 void TaskPostContours::applyPythonCode()
 {}
@@ -1381,7 +1447,7 @@ void TaskPostContours::updateFields()
     else {
         getTypedView<ViewProviderFemPostObject>()->Field.setValue("None");
     }
-    
+
 }
 
 void TaskPostContours::onFieldsChanged(int idx)
@@ -1465,7 +1531,7 @@ TaskPostCut::TaskPostCut(ViewProviderDocumentObject* view, App::PropertyLink* fu
     //we load the views widget
     proxy = new QWidget(this);
     ui->setupUi(proxy);
-    QMetaObject::connectSlotsByName(this);
+    setupConnections();
     this->groupLayout()->addWidget(proxy);
 
     //the layout for the container widget
@@ -1483,8 +1549,19 @@ TaskPostCut::TaskPostCut(ViewProviderDocumentObject* view, App::PropertyLink* fu
     ui->CreateButton->setPopupMode(QToolButton::InstantPopup);
 }
 
-TaskPostCut::~TaskPostCut()
-{}
+TaskPostCut::~TaskPostCut() = default;
+
+void TaskPostCut::setupConnections()
+{
+    connect(ui->CreateButton,
+            &QToolButton::triggered,
+            this,
+            &TaskPostCut::onCreateButtonTriggered);
+    connect(ui->FunctionBox,
+            qOverload<int>(&QComboBox::currentIndexChanged),
+            this,
+            &TaskPostCut::onFunctionBoxCurrentIndexChanged);
+}
 
 void TaskPostCut::applyPythonCode()
 {}
@@ -1518,7 +1595,7 @@ void TaskPostCut::collectImplicitFunctions()
     }
 }
 
-void TaskPostCut::on_CreateButton_triggered(QAction*)
+void TaskPostCut::onCreateButtonTriggered(QAction*)
 {
     int numFuncs = ui->FunctionBox->count();
     int currentItem = ui->FunctionBox->currentIndex();
@@ -1537,7 +1614,7 @@ void TaskPostCut::on_CreateButton_triggered(QAction*)
     recompute();
 }
 
-void TaskPostCut::on_FunctionBox_currentIndexChanged(int idx)
+void TaskPostCut::onFunctionBoxCurrentIndexChanged(int idx)
 {
     //set the correct property
     std::vector<Fem::FemPostPipeline*> pipelines;
@@ -1590,7 +1667,7 @@ TaskPostScalarClip::TaskPostScalarClip(ViewProviderDocumentObject* view, QWidget
     //we load the views widget
     proxy = new QWidget(this);
     ui->setupUi(proxy);
-    QMetaObject::connectSlotsByName(this);
+    setupConnections();
     this->groupLayout()->addWidget(proxy);
 
     //load the default values
@@ -1622,13 +1699,32 @@ TaskPostScalarClip::TaskPostScalarClip(ViewProviderDocumentObject* view, QWidget
         "init: scalar_factor, slider_value: %f, %i: \n", scalar_factor, slider_value);
 }
 
-TaskPostScalarClip::~TaskPostScalarClip()
-{}
+TaskPostScalarClip::~TaskPostScalarClip() = default;
+
+void TaskPostScalarClip::setupConnections()
+{
+    connect(ui->Slider,
+            &QSlider::valueChanged,
+            this,
+            &TaskPostScalarClip::onSliderValueChanged);
+    connect(ui->Value,
+            qOverload<double>(&QDoubleSpinBox::valueChanged),
+            this,
+            &TaskPostScalarClip::onValueValueChanged);
+    connect(ui->Scalar,
+            qOverload<int>(&QComboBox::currentIndexChanged),
+            this,
+            &TaskPostScalarClip::onScalarCurrentIndexChanged);
+    connect(ui->InsideOut,
+            &QCheckBox::toggled,
+            this,
+            &TaskPostScalarClip::onInsideOutToggled);
+}
 
 void TaskPostScalarClip::applyPythonCode()
 {}
 
-void TaskPostScalarClip::on_Scalar_currentIndexChanged(int idx)
+void TaskPostScalarClip::onScalarCurrentIndexChanged(int idx)
 {
     static_cast<Fem::FemPostScalarClipFilter*>(getObject())->Scalars.setValue(idx);
     recompute();
@@ -1655,7 +1751,7 @@ void TaskPostScalarClip::on_Scalar_currentIndexChanged(int idx)
     ui->Slider->blockSignals(false);
 }
 
-void TaskPostScalarClip::on_Slider_valueChanged(int v)
+void TaskPostScalarClip::onSliderValueChanged(int v)
 {
     App::PropertyFloatConstraint& value =
         static_cast<Fem::FemPostScalarClipFilter*>(getObject())->Value;
@@ -1671,7 +1767,7 @@ void TaskPostScalarClip::on_Slider_valueChanged(int v)
     ui->Value->blockSignals(false);
 }
 
-void TaskPostScalarClip::on_Value_valueChanged(double v)
+void TaskPostScalarClip::onValueValueChanged(double v)
 {
     App::PropertyFloatConstraint& value =
         static_cast<Fem::FemPostScalarClipFilter*>(getObject())->Value;
@@ -1687,7 +1783,7 @@ void TaskPostScalarClip::on_Value_valueChanged(double v)
     ui->Slider->blockSignals(false);
 }
 
-void TaskPostScalarClip::on_InsideOut_toggled(bool val)
+void TaskPostScalarClip::onInsideOutToggled(bool val)
 {
     static_cast<Fem::FemPostScalarClipFilter*>(getObject())->InsideOut.setValue(val);
     recompute();
@@ -1706,7 +1802,7 @@ TaskPostWarpVector::TaskPostWarpVector(ViewProviderDocumentObject* view, QWidget
     // we load the views widget
     proxy = new QWidget(this);
     ui->setupUi(proxy);
-    QMetaObject::connectSlotsByName(this);
+    setupConnections();
     this->groupLayout()->addWidget(proxy);
 
     // load the default values for warp display
@@ -1744,13 +1840,36 @@ TaskPostWarpVector::TaskPostWarpVector(ViewProviderDocumentObject* view, QWidget
     Base::Console().Log("init: warp_factor, slider_value: %f, %i: \n", warp_factor, slider_value);
 }
 
-TaskPostWarpVector::~TaskPostWarpVector()
-{}
+TaskPostWarpVector::~TaskPostWarpVector() = default;
+
+void TaskPostWarpVector::setupConnections()
+{
+    connect(ui->Slider,
+            &QSlider::valueChanged,
+            this,
+            &TaskPostWarpVector::onSliderValueChanged);
+    connect(ui->Value,
+            qOverload<double>(&QDoubleSpinBox::valueChanged),
+            this,
+            &TaskPostWarpVector::onValueValueChanged);
+    connect(ui->Max,
+            qOverload<double>(&QDoubleSpinBox::valueChanged),
+            this,
+            &TaskPostWarpVector::onMaxValueChanged);
+    connect(ui->Min,
+            qOverload<double>(&QDoubleSpinBox::valueChanged),
+            this,
+            &TaskPostWarpVector::onMinValueChanged);
+    connect(ui->Vector,
+            qOverload<int>(&QComboBox::currentIndexChanged),
+            this,
+            &TaskPostWarpVector::onVectorCurrentIndexChanged);
+}
 
 void TaskPostWarpVector::applyPythonCode()
 {}
 
-void TaskPostWarpVector::on_Vector_currentIndexChanged(int idx)
+void TaskPostWarpVector::onVectorCurrentIndexChanged(int idx)
 {
     // combobox to choose the result to warp
 
@@ -1758,7 +1877,7 @@ void TaskPostWarpVector::on_Vector_currentIndexChanged(int idx)
     recompute();
 }
 
-void TaskPostWarpVector::on_Slider_valueChanged(int slider_value)
+void TaskPostWarpVector::onSliderValueChanged(int slider_value)
 {
     // slider changed, change warp factor and sync spinbox
 
@@ -1779,7 +1898,7 @@ void TaskPostWarpVector::on_Slider_valueChanged(int slider_value)
     Base::Console().Log("Change: warp_factor, slider_value: %f, %i: \n", warp_factor, slider_value);
 }
 
-void TaskPostWarpVector::on_Value_valueChanged(double warp_factor)
+void TaskPostWarpVector::onValueValueChanged(double warp_factor)
 {
     // spinbox changed, change warp factor and sync slider
 
@@ -1798,7 +1917,7 @@ void TaskPostWarpVector::on_Value_valueChanged(double warp_factor)
     Base::Console().Log("Change: warp_factor, slider_value: %f, %i: \n", warp_factor, slider_value);
 }
 
-void TaskPostWarpVector::on_Max_valueChanged(double)
+void TaskPostWarpVector::onMaxValueChanged(double)
 {
     // TODO max should be greater than min, see a few lines later on problem on input characters
     ui->Slider->blockSignals(true);
@@ -1836,7 +1955,7 @@ void TaskPostWarpVector::on_Max_valueChanged(double)
     */
 }
 
-void TaskPostWarpVector::on_Min_valueChanged(double)
+void TaskPostWarpVector::onMinValueChanged(double)
 {
     // TODO min should be smaller than max
     // TODO if warp factor is smaller than min, warp factor should be min, don't forget to sync

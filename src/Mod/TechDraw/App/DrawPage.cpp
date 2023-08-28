@@ -41,6 +41,7 @@
 #include "DrawViewDimension.h"
 #include "DrawViewPart.h"
 #include "Preferences.h"
+#include "DrawUtil.h"
 
 
 using namespace TechDraw;
@@ -75,12 +76,7 @@ DrawPage::DrawPage(void)
     ProjectionType.setEnums(ProjectionTypeEnums);
     ADD_PROPERTY(ProjectionType, ((long)Preferences::projectionAngle()));
 
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication()
-                                             .GetUserParameter()
-                                             .GetGroup("BaseApp")
-                                             ->GetGroup("Preferences")
-                                             ->GetGroup("Mod/TechDraw/General");
-    double defScale = hGrp->GetFloat("DefaultScale", 1.0);
+    double defScale = Preferences::getPreferenceGroup("General")->GetFloat("DefaultScale", 1.0);
     ADD_PROPERTY_TYPE(Scale, (defScale), group, (App::PropertyType)(App::Prop_None),
                       "Scale factor for this Page");
 
@@ -99,7 +95,7 @@ void DrawPage::onBeforeChange(const App::Property* prop)
 
 void DrawPage::onChanged(const App::Property* prop)
 {
-    if ((prop == &KeepUpdated) && KeepUpdated.getValue()) {
+    if (prop == &KeepUpdated && KeepUpdated.getValue()) {
         if (!isRestoring() && !isUnsetting()) {
             //would be nice if this message was displayed immediately instead of after the recomputeFeature
             Base::Console().Message("Rebuilding Views for: %s/%s\n", getNameInDocument(),
@@ -152,12 +148,14 @@ App::DocumentObjectExecReturn* DrawPage::execute(void) { return App::DocumentObj
 // this is now irrelevant, b/c DP::execute doesn't do anything.
 short DrawPage::mustExecute() const
 {
-    short result = 0;
     if (!isRestoring()) {
-        result = (Views.isTouched() || Scale.isTouched() || ProjectionType.isTouched()
-                  || Template.isTouched());
-        if (result) {
-            return result;
+        if (
+            Views.isTouched() ||
+            Scale.isTouched() ||
+            ProjectionType.isTouched() ||
+            Template.isTouched()
+        ) {
+            return true;
         }
     }
     return App::DocumentObject::mustExecute();
@@ -190,8 +188,7 @@ bool DrawPage::hasValidTemplate() const
 
 double DrawPage::getPageWidth() const
 {
-    App::DocumentObject* obj = nullptr;
-    obj = Template.getValue();
+    App::DocumentObject* obj = Template.getValue();
 
     if (obj && obj->isDerivedFrom(TechDraw::DrawTemplate::getClassTypeId())) {
         TechDraw::DrawTemplate* templ = static_cast<TechDraw::DrawTemplate*>(obj);
@@ -203,14 +200,11 @@ double DrawPage::getPageWidth() const
 
 double DrawPage::getPageHeight() const
 {
-    App::DocumentObject* obj = nullptr;
-    obj = Template.getValue();
+    App::DocumentObject* obj = Template.getValue();
 
-    if (obj) {
-        if (obj->isDerivedFrom(TechDraw::DrawTemplate::getClassTypeId())) {
-            TechDraw::DrawTemplate* templ = static_cast<TechDraw::DrawTemplate*>(obj);
-            return templ->getHeight();
-        }
+    if (obj && obj->isDerivedFrom(TechDraw::DrawTemplate::getClassTypeId())) {
+        TechDraw::DrawTemplate* templ = static_cast<TechDraw::DrawTemplate*>(obj);
+        return templ->getHeight();
     }
 
     throw Base::RuntimeError("Template not set for Page");
@@ -222,12 +216,9 @@ const char* DrawPage::getPageOrientation() const
     App::DocumentObject* obj;
     obj = Template.getValue();
 
-    if (obj) {
-        if (obj->isDerivedFrom(TechDraw::DrawTemplate::getClassTypeId())) {
-            TechDraw::DrawTemplate* templ = static_cast<TechDraw::DrawTemplate*>(obj);
-
-            return templ->Orientation.getValueAsString();
-        }
+    if (obj && obj->isDerivedFrom(TechDraw::DrawTemplate::getClassTypeId())) {
+        TechDraw::DrawTemplate* templ = static_cast<TechDraw::DrawTemplate*>(obj);
+        return templ->Orientation.getValueAsString();
     }
     throw Base::RuntimeError("Template not set for Page");
 }
@@ -235,15 +226,11 @@ const char* DrawPage::getPageOrientation() const
 //orientation as 0(Portrait) or 1(Landscape)
 int DrawPage::getOrientation() const
 {
-    App::DocumentObject* obj;
-    obj = Template.getValue();
+    App::DocumentObject* obj = Template.getValue();
 
-    if (obj) {
-        if (obj->isDerivedFrom(TechDraw::DrawTemplate::getClassTypeId())) {
-            TechDraw::DrawTemplate* templ = static_cast<TechDraw::DrawTemplate*>(obj);
-
-            return templ->Orientation.getValue();
-        }
+    if (obj && obj->isDerivedFrom(TechDraw::DrawTemplate::getClassTypeId())) {
+        TechDraw::DrawTemplate* templ = static_cast<TechDraw::DrawTemplate*>(obj);
+        return templ->Orientation.getValue();
     }
     throw Base::RuntimeError("Template not set for Page");
 }
@@ -448,14 +435,13 @@ void DrawPage::handleChangedPropertyType(Base::XMLReader& reader, const char* Ty
 
 bool DrawPage::canUpdate() const
 {
-    bool result = false;
     if (GlobalUpdateDrawings() && KeepUpdated.getValue()) {
-        result = true;
+        return true;
     }
     else if (!GlobalUpdateDrawings() && AllowPageOverride() && KeepUpdated.getValue()) {
-        result = true;
+        return true;
     }
-    return result;
+    return false;
 }
 
 //true if object belongs to this page
@@ -474,25 +460,20 @@ bool DrawPage::hasObject(App::DocumentObject* obj)
 //allow/prevent drawing updates for all Pages
 bool DrawPage::GlobalUpdateDrawings(void)
 {
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication()
-                                             .GetUserParameter()
-                                             .GetGroup("BaseApp")
-                                             ->GetGroup("Preferences")
-                                             ->GetGroup("Mod/TechDraw/General");
-    bool result = hGrp->GetBool("GlobalUpdateDrawings", true);
-    return result;
+    return Preferences::getPreferenceGroup("General")->GetBool("GlobalUpdateDrawings", true);
 }
 
 //allow/prevent a single page to update despite GlobalUpdateDrawings setting
 bool DrawPage::AllowPageOverride(void)
 {
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication()
-                                             .GetUserParameter()
-                                             .GetGroup("BaseApp")
-                                             ->GetGroup("Preferences")
-                                             ->GetGroup("Mod/TechDraw/General");
-    bool result = hGrp->GetBool("AllowPageOverride", true);
-    return result;
+    return Preferences::getPreferenceGroup("General")->GetBool("AllowPageOverride", true);
+}
+
+//! get a translated label string from the context (ex TaskActiveView), the base name (ex ActiveView) and
+//! the unique name within the document (ex ActiveView001), and use it to update the Label property.
+void DrawPage::translateLabel(std::string context, std::string baseName, std::string uniqueName)
+{
+    Label.setValue(DrawUtil::translateArbitrary(context, baseName, uniqueName));
 }
 
 

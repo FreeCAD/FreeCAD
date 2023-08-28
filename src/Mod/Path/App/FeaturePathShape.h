@@ -37,12 +37,12 @@ namespace Path
 
 class PathExport FeatureShape : public Path::Feature
 {
-    PROPERTY_HEADER(Path::FeatureShape);
+    PROPERTY_HEADER_WITH_OVERRIDE(Path::FeatureShape);
 
 public:
     /// Constructor
     FeatureShape();
-    virtual ~FeatureShape();
+    ~FeatureShape() override;
 
     // Part::PropertyPartShape Shape;
     App::PropertyLinkList Sources;
@@ -52,17 +52,17 @@ public:
 
     //@{
     /// recalculate the feature
-    virtual App::DocumentObjectExecReturn *execute();
+    App::DocumentObjectExecReturn *execute() override;
     //@}
 
     /// returns the type name of the ViewProvider
-    virtual const char* getViewProviderName() const {
+    const char* getViewProviderName() const override {
         return "PathGui::ViewProviderPathShape";
     }
 
 protected:
     /// get called by the container when a property has changed
-    //virtual void onChanged (const App::Property* prop);
+    //void onChanged (const App::Property* prop) override;
 
 };
 

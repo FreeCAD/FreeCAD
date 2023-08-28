@@ -48,6 +48,7 @@
 #include <zipios++/gzipoutputstream.h>
 
 #include "SoFCDB.h"
+#include "Camera.h"
 #include "Flag.h"
 #include "GestureNavigationStyle.h"
 #include "NavigationStyle.h"
@@ -68,7 +69,7 @@
 #include "SoMouseWheelEvent.h"
 #include "SoNavigationDragger.h"
 #include "SoTextLabel.h"
-#include "View3DPy.h"
+#include "SoDatumLabel.h"
 #include "Inventor/MarkerBitmaps.h"
 #include "Inventor/SmSwitchboard.h"
 #include "Inventor/SoAutoZoomTranslation.h"
@@ -124,6 +125,7 @@ void Gui::SoFCDB::init()
     SoVRMLAction                    ::initClass();
     SoSkipBoundingGroup             ::initClass();
     SoTextLabel                     ::initClass();
+    SoDatumLabel                    ::initClass();
     SoColorBarLabel                 ::initClass();
     SoStringLabel                   ::initClass();
     SoFrameLabel                    ::initClass();
@@ -590,7 +592,7 @@ void Gui::SoFCDB::writeX3D(SoVRMLGroup* node, bool exportViewpoints, std::ostrea
                 << "\" centerOfRotation=\"" << cnt[0] << " " << cnt[1] << " " << cnt[2]
                 << "\" position=\"" << pos[0] << " " << pos[1] << " " << pos[2]
                 << "\" orientation=\"" << axis[0] << " " << axis[1] << " " << axis[2] << " " << angle
-                << "\" description=\"camera\" fieldOfView=\"0.9\">"
+                << R"(" description="camera" fieldOfView="0.9">)"
                 << "</Viewpoint>\n";
         };
 
@@ -657,14 +659,14 @@ bool Gui::SoFCDB::writeToFile(SoNode* node, const char* filename, bool binary)
     Base::FileInfo fi(filename);
 
     // Write VRML V2.0
-    if (fi.hasExtension("wrl") || fi.hasExtension("vrml") || fi.hasExtension("wrz")) {
+    if (fi.hasExtension({"wrl", "vrml", "wrz"})) {
         // If 'wrz' is set then force compression
         if (fi.hasExtension("wrz"))
             binary = true;
 
         ret = SoFCDB::writeToVRML(node, filename, binary);
     }
-    else if (fi.hasExtension("x3d") || fi.hasExtension("x3dz")) {
+    else if (fi.hasExtension({"x3d", "x3dz"})) {
         // If 'x3dz' is set then force compression
         if (fi.hasExtension("x3dz"))
             binary = true;

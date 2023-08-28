@@ -35,39 +35,10 @@ using namespace Base;
 
 
 template <typename float_type>
-Line3<float_type>::Line3(const Line3<float_type>& line)
-  : p1(line.p1)
-  , p2(line.p2)
-{
-}
-
-template <typename float_type>
-Line3<float_type>::Line3(Line3<float_type>&& line)
-{
-    *this = std::move(line);
-}
-
-template <typename float_type>
 Line3<float_type>::Line3(const Vector3<float_type>& p1, const Vector3<float_type>& p2)
   : p1(p1)
   , p2(p2)
 {
-}
-
-template <typename float_type>
-Line3<float_type>& Line3<float_type>::operator= (const Line3<float_type>& line)
-{
-    p1 = line.p1;
-    p2 = line.p2;
-    return *this;
-}
-
-template <typename float_type>
-Line3<float_type>& Line3<float_type>::operator= (Line3<float_type>&& line)
-{
-    p1 = std::move(line.p1);
-    p2 = std::move(line.p2);
-    return *this;
 }
 
 template <typename float_type>

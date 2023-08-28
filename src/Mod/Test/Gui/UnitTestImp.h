@@ -65,11 +65,12 @@ protected:
     ~UnitTestDialog() override;
     void setProgressColor(const QColor& col);
 
-public Q_SLOTS:
-    void on_treeViewFailure_itemDoubleClicked (QTreeWidgetItem * item, int column);
-    void on_helpButton_clicked();
-    void on_aboutButton_clicked();
-    void on_startButton_clicked();
+private:
+    void onTreeViewFailureItemDoubleClicked (QTreeWidgetItem * item, int column);
+    void onHelpButtonClicked();
+    void onAboutButtonClicked();
+    void onStartButtonClicked();
+    void setupConnections();
 
 private:
     std::unique_ptr<Ui_UnitTest> ui;

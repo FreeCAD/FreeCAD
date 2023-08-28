@@ -53,8 +53,8 @@ protected:
     void changeEvent(QEvent *e) override;
     void setup();
 
-private Q_SLOTS:
-    void on_startButton_clicked();
+private:
+    void onStartButtonClicked();
 
 private:
     Ui_TaskCurveOnMesh* ui;
@@ -68,7 +68,6 @@ class TaskCurveOnMesh : public Gui::TaskView::TaskDialog
 
 public:
     explicit TaskCurveOnMesh(Gui::View3DInventor* view);
-    ~TaskCurveOnMesh() override;
 
 public:
     bool reject() override;

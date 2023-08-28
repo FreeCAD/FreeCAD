@@ -34,22 +34,34 @@ static const char* TransformTypes[] = {"Cylindrical","Rectangular", nullptr};
 
 ConstraintTransform::ConstraintTransform()
 {
-    ADD_PROPERTY(X_rot,(0.0)); //numeric value, 0.0
-    ADD_PROPERTY(Y_rot,(0.0));
-    ADD_PROPERTY(Z_rot,(0.0));
-    ADD_PROPERTY_TYPE(TransformType,(1),"ConstraintTransform",(App::PropertyType)(App::Prop_None),
+    ADD_PROPERTY(X_rot, (0.0));
+    ADD_PROPERTY(Y_rot, (0.0));
+    ADD_PROPERTY(Z_rot, (0.0));
+    ADD_PROPERTY_TYPE(TransformType, (1), "ConstraintTransform",
+                      (App::PropertyType)(App::Prop_None),
                       "Type of transform, rectangular or cylindrical");
     TransformType.setEnums(TransformTypes);
-    ADD_PROPERTY_TYPE(RefDispl,(nullptr,nullptr),"ConstraintTransform",(App::PropertyType)(App::Prop_None),"Elements where the constraint is applied");
-    ADD_PROPERTY_TYPE(NameDispl,(nullptr),"ConstraintTransform",(App::PropertyType)(App::Prop_None),"Elements where the constraint is applied");
-    ADD_PROPERTY_TYPE(BasePoint,(Base::Vector3d(0,0,0)),"ConstraintTransform",App::PropertyType(App::Prop_ReadOnly|App::Prop_Output),
+    ADD_PROPERTY_TYPE(RefDispl, (nullptr, nullptr),
+                      "ConstraintTransform", (App::PropertyType)(App::Prop_None),
+                      "Elements where the constraint is applied");
+    // RefDispl must get a global scope, see
+    // https://forum.freecad.org/viewtopic.php?p=671402#p671402
+    RefDispl.setScope(App::LinkScope::Global);
+    ADD_PROPERTY_TYPE(NameDispl, (nullptr), "ConstraintTransform",
+                      (App::PropertyType)(App::Prop_None),
+                      "Elements where the constraint is applied");
+    ADD_PROPERTY_TYPE(BasePoint, (Base::Vector3d(0, 0, 0)), "ConstraintTransform",
+                      App::PropertyType(App::Prop_ReadOnly | App::Prop_Output),
                       "Base point of cylindrical surface");
-    ADD_PROPERTY_TYPE(Axis,(Base::Vector3d(0,1,0)),"ConstraintTransform",App::PropertyType(App::Prop_ReadOnly|App::Prop_Output),
+    ADD_PROPERTY_TYPE(Axis, (Base::Vector3d(0, 1, 0)), "ConstraintTransform",
+                      App::PropertyType(App::Prop_ReadOnly | App::Prop_Output),
                       "Axis of cylindrical surface");
-    ADD_PROPERTY_TYPE(Points,(Base::Vector3d()),"ConstraintTransform",App::PropertyType(App::Prop_ReadOnly|App::Prop_Output),
+    ADD_PROPERTY_TYPE(Points, (Base::Vector3d()), "ConstraintTransform",
+                      App::PropertyType(App::Prop_ReadOnly | App::Prop_Output),
                       "Points where symbols are drawn");
-    ADD_PROPERTY_TYPE(Normals,(Base::Vector3d()),"ConstraintTransform",App::PropertyType(App::Prop_ReadOnly|App::Prop_Output),
-                                                                             "Normals where symbols are drawn");
+    ADD_PROPERTY_TYPE(Normals, (Base::Vector3d()), "ConstraintTransform",
+                      App::PropertyType(App::Prop_ReadOnly | App::Prop_Output),
+                      "Normals where symbols are drawn");
     Points.setValues(std::vector<Base::Vector3d>());
     Normals.setValues(std::vector<Base::Vector3d>());
 }
@@ -62,6 +74,27 @@ App::DocumentObjectExecReturn *ConstraintTransform::execute()
 const char* ConstraintTransform::getViewProviderName() const
 {
         return "FemGui::ViewProviderFemConstraintTransform";
+}
+
+void ConstraintTransform::handleChangedPropertyType(Base::XMLReader& reader,
+                                                       const char* TypeName, App::Property* prop)
+{
+        // properties _rot had App::PropertyFloat and were changed to App::PropertyAngle
+        if (prop == &X_rot && strcmp(TypeName, "App::PropertyFloat") == 0) {
+            App::PropertyFloat X_rotProperty;
+            X_rotProperty.Restore(reader);
+            X_rot.setValue(X_rotProperty.getValue());
+        }
+        else if (prop == &Y_rot && strcmp(TypeName, "App::PropertyFloat") == 0) {
+            App::PropertyFloat Y_rotProperty;
+            Y_rotProperty.Restore(reader);
+            Y_rot.setValue(Y_rotProperty.getValue());
+        }
+        else if (prop == &Z_rot && strcmp(TypeName, "App::PropertyFloat") == 0) {
+            App::PropertyFloat Z_rotProperty;
+            Z_rotProperty.Restore(reader);
+            Z_rot.setValue(Z_rotProperty.getValue());
+        }
 }
 
 void ConstraintTransform::onChanged(const App::Property* prop)

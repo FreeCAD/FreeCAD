@@ -43,11 +43,6 @@ TaskDlgTrajectoryDressUp::TaskDlgTrajectoryDressUp(Robot::TrajectoryDressUpObjec
     Content.push_back(param);
 }
 
-TaskDlgTrajectoryDressUp::~TaskDlgTrajectoryDressUp()
-{
-
-}
-
 //==== calls from the TaskView ===============================================================
 
 

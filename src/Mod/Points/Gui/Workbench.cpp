@@ -38,13 +38,9 @@ using namespace PointsGui;
 /// @namespace PointsGui @class Workbench
 TYPESYSTEM_SOURCE(PointsGui::Workbench, Gui::StdWorkbench)
 
-Workbench::Workbench()
-{
-}
+Workbench::Workbench() = default;
 
-Workbench::~Workbench()
-{
-}
+Workbench::~Workbench() = default;
 
 Gui::ToolBarItem* Workbench::setupToolBars() const
 {

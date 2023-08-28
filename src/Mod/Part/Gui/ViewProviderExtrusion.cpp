@@ -36,9 +36,7 @@ ViewProviderExtrusion::ViewProviderExtrusion()
     sPixmap = "Part_Extrude.svg";
 }
 
-ViewProviderExtrusion::~ViewProviderExtrusion()
-{
-}
+ViewProviderExtrusion::~ViewProviderExtrusion() = default;
 
 std::vector<App::DocumentObject*> ViewProviderExtrusion::claimChildren()const
 {

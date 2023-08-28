@@ -35,7 +35,7 @@ Part = LazyLoader("Part", globals(), "Part")
 
 __title__ = "Path Pocket Shape Operation UI"
 __author__ = "sliptonic (Brad Collette)"
-__url__ = "https://www.freecadweb.org"
+__url__ = "https://www.freecad.org"
 __doc__ = "Pocket Shape operation page controller and command implementation."
 
 if False:
@@ -52,7 +52,7 @@ class TaskPanelOpPage(PathPocketBaseGui.TaskPanelOpPage):
 
     def pocketFeatures(self):
         """pocketFeatures() ... return FeaturePocket (see PathPocketBaseGui)"""
-        return PathPocketBaseGui.FeaturePocket | PathPocketBaseGui.FeatureOutline
+        return PathPocketBaseGui.FeaturePocket | PathPocketBaseGui.FeatureOutline | PathPocketBaseGui.FeatureRestMachining
 
     def taskPanelBaseLocationPage(self, obj, features):
         if not hasattr(self, "extensionsPanel"):

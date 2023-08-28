@@ -60,13 +60,9 @@ void UnitTestDialogPy::init_type()
     add_varargs_method("clearUnitTests",&UnitTestDialogPy::clearUnitTests,"clearUnitTests");
 }
 
-UnitTestDialogPy::UnitTestDialogPy()
-{
-}
+UnitTestDialogPy::UnitTestDialogPy() = default;
 
-UnitTestDialogPy::~UnitTestDialogPy()
-{
-}
+UnitTestDialogPy::~UnitTestDialogPy() = default;
 
 Py::Object UnitTestDialogPy::repr()
 {

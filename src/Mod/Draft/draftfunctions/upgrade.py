@@ -273,8 +273,8 @@ def upgrade(objects, delete=False, force=None):
         if not checked:
             coplanarity = DraftGeomUtils.is_coplanar(faces, 1e-3)
         if not coplanarity:
-             _err(translate("draft","Faces must be coplanar to be refined"))
-             return None
+            _err(translate("draft","Faces must be coplanar to be refined"))
+            return None
 
         # fuse faces
         fuse_face = faces.pop(0)

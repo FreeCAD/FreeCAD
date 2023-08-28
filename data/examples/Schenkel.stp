@@ -1,5 +1,12 @@
 ISO-10303-21;
 HEADER;
+/* Schenkel.stp
+ * Copyright (C) 2011, Juergen Riegel
+ *
+ * This work is licensed under the [Creative Commons CC-BY-SA 4.0 License](https://creativecommons.org/licenses/by-sa/4.0/legalcode)
+ *
+ */
+
 FILE_DESCRIPTION(('CATIA V5 STEP Exchange'),'2;1');
 
 FILE_NAME('C:\\temp\\Schenkel.stp','2004-12-07T12:35:22+00:00',('none'),('none'),'CATIA Version 5 Release 14 (IN-10)','CATIA V5 STEP AP203','none');

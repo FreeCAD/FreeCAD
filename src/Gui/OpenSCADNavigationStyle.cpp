@@ -38,13 +38,9 @@ using namespace Gui;
 
 TYPESYSTEM_SOURCE(Gui::OpenSCADNavigationStyle, Gui::UserNavigationStyle)
 
-OpenSCADNavigationStyle::OpenSCADNavigationStyle()
-{
-}
+OpenSCADNavigationStyle::OpenSCADNavigationStyle() = default;
 
-OpenSCADNavigationStyle::~OpenSCADNavigationStyle()
-{
-}
+OpenSCADNavigationStyle::~OpenSCADNavigationStyle() = default;
 
 const char* OpenSCADNavigationStyle::mouseButtons(ViewerMode mode)
 {

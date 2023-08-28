@@ -10,6 +10,7 @@
 #   define NOMINMAX
 #  endif
 #  include <Windows.h>
+#  undef BASETYPES
 # endif
 #endif
 

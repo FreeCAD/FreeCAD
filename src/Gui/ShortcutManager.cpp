@@ -344,7 +344,7 @@ std::vector<std::pair<QByteArray, QAction*>> ShortcutManager::getActionsByShortc
 {
     const auto &index = actionMap.get<1>();
     std::vector<std::pair<QByteArray, QAction*>> res;
-    std::multimap<int, const ActionData*, std::greater<int>> map;
+    std::multimap<int, const ActionData*, std::greater<>> map;
     for (auto it = index.lower_bound(ActionKey(shortcut)); it != index.end(); ++it) {
         if (it->key.shortcut != shortcut)
             break;

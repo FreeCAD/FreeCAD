@@ -98,9 +98,7 @@ TrajectorySimulate::TrajectorySimulate(Robot::RobotObject *pcRobotObject,Robot::
     setTo();
 }
 
-TrajectorySimulate::~TrajectorySimulate()
-{
-}
+TrajectorySimulate::~TrajectorySimulate() = default;
 
 void TrajectorySimulate::setTo()
 {

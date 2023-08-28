@@ -49,7 +49,7 @@ public:
     void unbound();
     void operator = (const Edge& f);
 
-    int Index;
+    int Index{-1};
     MeshCore::PointIndex PIndex[2];
     MeshCore::FacetIndex NIndex[2];
     Base::Reference<const MeshObject> Mesh;

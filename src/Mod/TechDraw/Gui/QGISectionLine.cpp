@@ -414,8 +414,7 @@ QPointF QGISectionLine::getArrowPosition(Base::Vector3d arrowDir, QPointF refPoi
     double offsetLength = m_extLen + Rez::guiX(QGIArrow::getPrefArrowSize());
     QPointF offsetVec = offsetLength * qArrowDir;
 
-    QPointF arrowPos = refPoint + offsetVec;
-    return arrowPos;
+    return QPointF(refPoint + offsetVec);
 }
 
 void QGISectionLine::setFont(QFont f, double fsize)
@@ -487,10 +486,7 @@ Qt::PenStyle QGISectionLine::getSectionStyle()
 //ASME("traditional") vs ISO("reference arrow method") arrows
 int QGISectionLine::getPrefSectionStandard()
 {
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().
-                                         GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Standards");
-    int format = hGrp->GetInt("SectionLineStandard", ISOSTANDARD);
-    return format;
+    return Preferences::getPreferenceGroup("Standards")->GetInt("SectionLineStandard", ISOSTANDARD);
 }
 
 

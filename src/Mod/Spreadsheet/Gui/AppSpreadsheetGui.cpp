@@ -42,12 +42,13 @@
 #include "Workbench.h"
 
  // use a different name to CreateCommand()
-void CreateSpreadsheetCommands(void);
+void CreateSpreadsheetCommands();
 
 void loadSpreadsheetResource()
 {
     // add resources and reloads the translators
     Q_INIT_RESOURCE(Spreadsheet);
+    Q_INIT_RESOURCE(Spreadsheet_translation);
     Gui::Translator::instance()->refresh();
 }
 
@@ -61,8 +62,6 @@ namespace SpreadsheetGui {
             );
             initialize("This module is the SpreadsheetGui module."); // register with Python
         }
-
-        ~Module() override {}
 
     private:
         Py::Object open(const Py::Tuple& args)
@@ -117,7 +116,7 @@ PyMOD_INIT_FUNC(SpreadsheetGui)
     SpreadsheetGui::SheetViewPy::init_type();
 
     // register preference page
-    new Gui::PrefPageProducer<SpreadsheetGui::DlgSettingsImp> ("Spreadsheet");
+    new Gui::PrefPageProducer<SpreadsheetGui::DlgSettingsImp> (QT_TRANSLATE_NOOP("QObject","Spreadsheet"));
 
     // add resources and reloads the translators
     loadSpreadsheetResource();

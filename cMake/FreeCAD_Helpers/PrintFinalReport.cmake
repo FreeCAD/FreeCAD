@@ -76,7 +76,7 @@ macro(PrintFinalReport)
     value(CMAKE_CXX_STANDARD)
     value(CMAKE_CXX_FLAGS)
     value(CMAKE_BUILD_TYPE)
-    value(BUILD_TEST)
+    value(ENABLE_DEVELOPER_TESTS)
     value(FREECAD_USE_FREETYPE)
     value(FREECAD_USE_EXTERNAL_SMESH)
     value(BUILD_SMESH)
@@ -99,7 +99,7 @@ macro(PrintFinalReport)
     value(FREECAD_LIBPACK_USE)
 
     section_end()
-    
+
     ################ Libraries ##################
 
     section_begin(Libraries)
@@ -139,6 +139,7 @@ macro(PrintFinalReport)
     conditional(QtUiTools BUILD_GUI "not needed" ${QtUiTools_VERSION})
     conditional(QtWidgets BUILD_GUI "not needed" ${QtWidgets_VERSION})
     simple(QtXml ${QtXml_VERSION})
+    conditional(QtTest ENABLE_DEVELOPER_TESTS "not needed" ${QtTest_VERSION})
     if (BUILD_GUI)
         conditional(QtWebEngineWidgets BUILD_WEB "not needed (BUILD_WEB is OFF)" ${QtWebEngineWidgets_VERSION})
         conditional(DesignerPlugin BUILD_DESIGNER_PLUGIN
@@ -148,8 +149,8 @@ macro(PrintFinalReport)
     else()
         simple(QtWebKitWidgets "not needed")
     endif()
-    conditional(Shiboken Shiboken_FOUND "not found" "${SHIBOKEN_VERSION} Base: [${SHIBOKEN_BASEDIR}]")
-    conditional(PySide PySide_FOUND "not found" "${PYSIDE_VERSION} [${PYSIDE_INCLUDE_DIR}]")
+    conditional(Shiboken Shiboken${SHIBOKEN_MAJOR_VERSION}_FOUND "not found" "${Shiboken_VERSION} [${SHIBOKEN_INCLUDE_DIR}]")
+    conditional(PySide PySide${PYSIDE_MAJOR_VERSION}_FOUND "not found" "${PySide_VERSION} [${PYSIDE_INCLUDE_DIR}]")
     conditional(PySideTools PYSIDE_TOOLS_FOUND
                 "not found"
                 "v: ${PySideTools_VERSION}  uic: [${PYSIDE_UIC_EXECUTABLE}]  rcc: [${PYSIDE_RCC_EXECUTABLE}]"
@@ -177,7 +178,8 @@ macro(PrintFinalReport)
     endif()
     conditional(Doxygen DOXYGEN_FOUND "not found" "${DOXYGEN_VERSION} Language: ${DOXYGEN_LANGUAGE}")
     conditional(Coin3D_DOC COIN3D_DOC_FOUND "not found" ${COIN3D_DOC_PATH})
-    conditional(PYCXX ${PYCXX_FOUND} "not found" "${PYCXX_VERSION} Incl: ${PYCXX_INCLUDE_DIR} Src:${PYCXX_SOURCE_DIR}")
+    conditional(PYCXX PYCXX_FOUND "not found" "${PYCXX_VERSION} Incl: ${PYCXX_INCLUDE_DIR} Src:${PYCXX_SOURCE_DIR}")
+    conditional(fmt fmt_FOUND "Sources downloaded to ${fmt_SOURCE_DIR}" "${fmt_VERSION}")
 
     section_end()
 

@@ -22,7 +22,7 @@
 
 __title__ = "FreeCAD material card importer"
 __author__ = "Juergen Riegel"
-__url__ = "https://www.freecadweb.org"
+__url__ = "https://www.freecad.org"
 
 
 import os
@@ -121,7 +121,7 @@ def read(filename):
         # print(type(content))
         # print(content)
     except Exception:
-        # https://forum.freecadweb.org/viewtopic.php?f=18&t=56912#p489721
+        # https://forum.freecad.org/viewtopic.php?f=18&t=56912#p489721
         # older FreeCAD do not write utf-8 for special character on windows
         # I have seen "ISO-8859-15" or "windows-1252"
         # explicit utf-8 writing, https://github.com/FreeCAD/FreeCAD/commit/9a564dd906f
@@ -190,7 +190,7 @@ def write(filename, dictionary, write_group_section=True):
     user = {}
     template_data = get_material_template()
     for group in template_data:
-        groupName = list(group.keys())[0]  # group dict has only one key
+        groupName = list(group)[0]  # group dict has only one key
         contents.append({"keyname": groupName})
         if groupName == "Meta":
             header = contents[-1]
@@ -202,7 +202,7 @@ def write(filename, dictionary, write_group_section=True):
         found = False
         for group in contents:
             if not found:
-                if k in group.keys():
+                if k in group:
                     group[k] = i
                     found = True
         if not found:
@@ -211,7 +211,7 @@ def write(filename, dictionary, write_group_section=True):
     for group in contents:
         # iterating over a dict and changing it is not allowed
         # thus it is iterated over a list of the keys
-        for k in list(group.keys()):
+        for k in list(group):
             if group[k] == '':
                 del group[k]
 
@@ -244,7 +244,7 @@ def write(filename, dictionary, write_group_section=True):
     # f.write("; " + header["AuthorAndLicense"] + "\n")
     f.write("; " + header.get("AuthorAndLicense", "no author") + "\n")
     f.write("; information about the content of such cards can be found on the wiki:\n")
-    f.write("; https://www.freecadweb.org/wiki/Material\n")
+    f.write("; https://www.freecad.org/wiki/Material\n")
     f.write("; file created by FreeCAD " + rev + "\n")
     # write sections
     # write standard FCMat section if write group section parameter is set to False

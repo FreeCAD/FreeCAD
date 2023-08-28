@@ -44,21 +44,21 @@
       <item row="0" column="1">
        <widget class="Gui::InputField" name="ifWidth">
         <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Width of the resulting holding tag.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         <string>Width of the resulting holding tag.</string>
         </property>
        </widget>
       </item>
       <item row="1" column="1">
        <widget class="Gui::InputField" name="ifHeight">
         <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Height of holding tag.&lt;/p&gt;&lt;p&gt;Note that resulting tag might be smaller if the tag's width and angle result in a triangular shape.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         <string>Height of holding tag. Note that resulting tag might be smaller if the tag's width and angle result in a triangular shape.</string>
         </property>
        </widget>
       </item>
       <item row="2" column="1">
        <widget class="QDoubleSpinBox" name="dsbAngle">
         <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Plunge angle for ascent and descent of holding tag.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         <string>Plunge angle for ascent and descent of holding tag.</string>
         </property>
         <property name="minimum">
          <double>5.000000000000000</double>
@@ -84,7 +84,7 @@
       <item row="3" column="1">
        <widget class="Gui::InputField" name="ifRadius">
         <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Radius of the fillet at the top.&lt;/p&gt;&lt;p&gt;If the radius is too big for the tag shape it gets reduced to the maximum possible radius - resulting in a spherical shape.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         <string>Radius of the fillet at the top. If the radius is too big for the tag shape it gets reduced to the maximum possible radius - resulting in a spherical shape.</string>
         </property>
        </widget>
       </item>
@@ -94,7 +94,7 @@
    <item row="1" column="0">
     <widget class="QListWidget" name="lwTags">
      <property name="toolTip">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;List of current tags. Edit coordinates by double click or Edit button.&lt;/p&gt;&lt;p&gt;Tags are automatically disabled if they overlap with the previous tag, or don't lie on the base wire.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      <string>List of current tags. Edit coordinates by double click or Edit button. Tags are automatically disabled if they overlap with the previous tag, or don't lie on the base wire.</string>
      </property>
     </widget>
    </item>

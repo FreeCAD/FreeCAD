@@ -70,6 +70,7 @@
 #include <Base/FileInfo.h>
 #include <Base/GeometryPyCXX.h>
 #include <Base/MatrixPy.h>
+#include <Base/PyWrapParseTupleAndKeywords.h>
 #include <Base/Rotation.h>
 #include <Base/Stream.h>
 #include <Base/Vector3D.h>
@@ -281,14 +282,15 @@ PyObject*  TopoShapePy::read(PyObject *args)
 
 PyObject* TopoShapePy::writeInventor(PyObject * args, PyObject * keywds)
 {
-    static char *kwlist[] = {"Mode", "Deviation", "Angle", "FaceColors", nullptr};
+    static const std::array<const char *, 5> kwlist{"Mode", "Deviation", "Angle", "FaceColors", nullptr};
 
-    double dev=0.3, angle=0.4;
-    int mode=2;
-    PyObject* pylist=nullptr;
-    if (!PyArg_ParseTupleAndKeywords(args, keywds, "|iddO", kwlist,
-                                     &mode,&dev,&angle,&pylist))
+    double dev = 0.3, angle = 0.4;
+    int mode = 2;
+    PyObject *pylist = nullptr;
+    if (!Base::Wrapped_ParseTupleAndKeywords(args, keywds, "|iddO", kwlist,
+                                             &mode, &dev, &angle, &pylist)) {
         return nullptr;
+    }
 
     std::vector<App::Color> faceColors;
     if (pylist) {
@@ -309,8 +311,6 @@ PyObject* TopoShapePy::writeInventor(PyObject * args, PyObject * keywds)
         getTopoShapePtr()->exportFaceSet(dev, angle, faceColors, result);
         getTopoShapePtr()->exportLineSet(result);
     }
-    // NOTE: Cleaning the triangulation may cause problems on some algorithms like BOP
-    //BRepTools::Clean(getTopoShapePtr()->getShape()); // remove triangulation
     return Py::new_reference_to(Py::String(result.str()));
 }
 
@@ -1005,8 +1005,8 @@ PyObject*  TopoShapePy::slice(PyObject *args)
         Base::Vector3d vec = Py::Vector(dir, false).toVector();
         std::list<TopoDS_Wire> slice = this->getTopoShapePtr()->slice(vec, d);
         Py::List wire;
-        for (std::list<TopoDS_Wire>::iterator it = slice.begin(); it != slice.end(); ++it) {
-            wire.append(Py::asObject(new TopoShapeWirePy(new TopoShape(*it))));
+        for (const auto & it : slice) {
+            wire.append(Py::asObject(new TopoShapeWirePy(new TopoShape(it))));
         }
 
         return Py::new_reference_to(wire);
@@ -1266,9 +1266,9 @@ static const std::map<PyTypeObject*, TopAbs_ShapeEnum> mapTypeShape(
 // Returns TopAbs_SHAPE if pyType is not a subclass of any of the TopoShape*Py.
 static TopAbs_ShapeEnum ShapeTypeFromPyType(PyTypeObject* pyType)
 {
-    for (auto it = vecTypeShape.begin(); it != vecTypeShape.end(); ++it) {
-        if (PyType_IsSubtype(pyType, it->first))
-            return it->second;
+    for (const auto & it : vecTypeShape) {
+        if (PyType_IsSubtype(pyType, it.first))
+            return it.second;
     }
     return TopAbs_SHAPE;
 }
@@ -1395,14 +1395,16 @@ PyObject*  TopoShapePy::transformShape(PyObject *args)
 
 PyObject* TopoShapePy::transformed(PyObject *args, PyObject *keywds)
 {
-    static char *kwlist[] = {"matrix", "copy", "checkScale", "op", nullptr};
-    PyObject* pymat;
-    PyObject* copy = Py_False;
-    PyObject* checkScale = Py_False;
+    static const std::array<const char *, 5> kwlist{"matrix", "copy", "checkScale", "op", nullptr};
+    PyObject *pymat;
+    PyObject *copy = Py_False;
+    PyObject *checkScale = Py_False;
     const char *op = nullptr;
-    if (!PyArg_ParseTupleAndKeywords(args, keywds, "O!|O!O!s", kwlist,
-                &Base::MatrixPy::Type, &pymat, &PyBool_Type, &copy, &PyBool_Type, &checkScale, &op))
+    if (!Base::Wrapped_ParseTupleAndKeywords(args, keywds, "O!|O!O!s", kwlist,
+                                             &Base::MatrixPy::Type, &pymat, &PyBool_Type, &copy, &PyBool_Type,
+                                             &checkScale, &op)) {
         return nullptr;
+    }
 
     Base::Matrix4D mat = static_cast<Base::MatrixPy*>(pymat)->value();
     (void)op;
@@ -1633,11 +1635,7 @@ PyObject* TopoShapePy::makeChamfer(PyObject *args)
                     if (edge.ShapeType() == TopAbs_EDGE) {
                         //Add edge to fillet algorithm
                         const TopoDS_Face& face = TopoDS::Face(mapEdgeFace.FindFromKey(edge).First());
-#if OCC_VERSION_HEX > 0x070300
                         mkChamfer.Add(radius, radius, TopoDS::Edge(edge), face);
-#else
-                        mkChamfer.Add(radius, TopoDS::Edge(edge), face);
-#endif
                     }
                 }
             }
@@ -1688,15 +1686,18 @@ PyObject* TopoShapePy::makeThickness(PyObject *args)
 
 PyObject* TopoShapePy::makeOffsetShape(PyObject *args, PyObject *keywds)
 {
-    static char *kwlist[] = {"offset", "tolerance", "inter", "self_inter", "offsetMode", "join", "fill", nullptr};
+    static const std::array<const char *, 8> kwlist{"offset", "tolerance", "inter", "self_inter", "offsetMode", "join",
+                                                    "fill", nullptr};
     double offset, tolerance;
-    PyObject* inter = Py_False;
-    PyObject* self_inter = Py_False;
-    PyObject* fill = Py_False;
+    PyObject *inter = Py_False;
+    PyObject *self_inter = Py_False;
+    PyObject *fill = Py_False;
     short offsetMode = 0, join = 0;
-    if (!PyArg_ParseTupleAndKeywords(args, keywds, "dd|O!O!hhO!", kwlist, &offset, &tolerance,
-        &(PyBool_Type), &inter, &(PyBool_Type), &self_inter, &offsetMode, &join, &(PyBool_Type), &fill))
+    if (!Base::Wrapped_ParseTupleAndKeywords(args, keywds, "dd|O!O!hhO!", kwlist, &offset, &tolerance,
+                                            &(PyBool_Type), &inter, &(PyBool_Type), &self_inter, &offsetMode, &join,
+                                            &(PyBool_Type), &fill)) {
         return nullptr;
+    }
 
     try {
         TopoDS_Shape shape = this->getTopoShapePtr()->makeOffsetShape(offset, tolerance,
@@ -1713,15 +1714,17 @@ PyObject* TopoShapePy::makeOffsetShape(PyObject *args, PyObject *keywds)
 
 PyObject* TopoShapePy::makeOffset2D(PyObject *args, PyObject *keywds)
 {
-    static char *kwlist[] = {"offset", "join", "fill", "openResult", "intersection", nullptr};
+    static const std::array<const char *, 6> kwlist {"offset", "join", "fill", "openResult", "intersection", nullptr};
     double offset;
     PyObject* fill = Py_False;
     PyObject* openResult = Py_False;
     PyObject* inter = Py_False;
     short join = 0;
-    if (!PyArg_ParseTupleAndKeywords(args, keywds, "d|hO!O!O!", kwlist,  &offset, &join,
-        &(PyBool_Type), &fill, &(PyBool_Type), &openResult, &(PyBool_Type), &inter))
+    if (!Base::Wrapped_ParseTupleAndKeywords(args, keywds, "d|hO!O!O!", kwlist, &offset, &join,
+                                             &(PyBool_Type), &fill, &(PyBool_Type), &openResult, &(PyBool_Type),
+                                             &inter)) {
         return nullptr;
+    }
 
     try {
         TopoDS_Shape resultShape = this->getTopoShapePtr()->makeOffset2D(offset, join,
@@ -1944,17 +1947,15 @@ PyObject* TopoShapePy::tessellate(PyObject *args)
         getTopoShapePtr()->getFaces(Points, Facets,tolerance);
         Py::Tuple tuple(2);
         Py::List vertex;
-        for (std::vector<Base::Vector3d>::const_iterator it = Points.begin();
-            it != Points.end(); ++it)
-            vertex.append(Py::asObject(new Base::VectorPy(*it)));
+        for (const auto & Point : Points)
+            vertex.append(Py::asObject(new Base::VectorPy(Point)));
         tuple.setItem(0, vertex);
         Py::List facet;
-        for (std::vector<Data::ComplexGeoData::Facet>::const_iterator
-            it = Facets.begin(); it != Facets.end(); ++it) {
+        for (const auto& it : Facets) {
             Py::Tuple f(3);
-            f.setItem(0,Py::Long((long)it->I1));
-            f.setItem(1,Py::Long((long)it->I2));
-            f.setItem(2,Py::Long((long)it->I3));
+            f.setItem(0,Py::Long((long)it.I1));
+            f.setItem(1,Py::Long((long)it.I2));
+            f.setItem(2,Py::Long((long)it.I3));
             facet.append(f);
         }
         tuple.setItem(1, facet);
@@ -2055,7 +2056,8 @@ Part.show(reflect)
  */
 PyObject* TopoShapePy::reflectLines(PyObject *args, PyObject *kwds)
 {
-    static char *kwlist[] = {"ViewDir", "ViewPos", "UpDir", "EdgeType", "Visible", "OnShape", nullptr};
+    static const std::array<const char *, 7> kwlist{"ViewDir", "ViewPos", "UpDir", "EdgeType", "Visible", "OnShape",
+                                                    nullptr};
 
     char* type="OutLine";
     PyObject* vis = Py_True;
@@ -2063,10 +2065,12 @@ PyObject* TopoShapePy::reflectLines(PyObject *args, PyObject *kwds)
     PyObject* pPos = nullptr;
     PyObject* pUp = nullptr;
     PyObject *pView;
-    if (!PyArg_ParseTupleAndKeywords(args, kwds, "O!|O!O!sO!O!", kwlist,
-        &Base::VectorPy::Type, &pView, &Base::VectorPy::Type, &pPos, &Base::VectorPy::Type,
-        &pUp, &type, &PyBool_Type, &vis, &PyBool_Type, &in3d))
+    if (!Base::Wrapped_ParseTupleAndKeywords(args, kwds, "O!|O!O!sO!O!", kwlist,
+                                             &Base::VectorPy::Type, &pView, &Base::VectorPy::Type, &pPos,
+                                             &Base::VectorPy::Type,
+                                             &pUp, &type, &PyBool_Type, &vis, &PyBool_Type, &in3d)) {
         return nullptr;
+    }
 
     try {
         HLRBRep_TypeOfResultingEdge t;
@@ -2596,7 +2600,7 @@ PyObject* TopoShapePy::distToShape(PyObject *args)
                     break;
                 default:
                     Base::Console().Message("distToShape: supportType1 is unknown: %d \n",
-                                            supportType1);
+                                            static_cast<int>(supportType1));
                     suppType1 = Py::String("Unknown");
                     suppIndex1 = -1;
                     param1 = Py::None();
@@ -2631,7 +2635,7 @@ PyObject* TopoShapePy::distToShape(PyObject *args)
                     break;
                 default:
                     Base::Console().Message("distToShape: supportType2 is unknown: %d \n",
-                                            supportType2);
+                                            static_cast<int>(supportType2));
                     suppType2 = Py::String("Unknown");
                     suppIndex2 = -1;
                     param2 = Py::None();
@@ -2671,7 +2675,6 @@ PyObject* TopoShapePy::optimalBoundingBox(PyObject *args)
         return nullptr;
 
     try {
-#if OCC_VERSION_HEX >= 0x070200
         TopoDS_Shape shape = this->getTopoShapePtr()->getShape();
         Bnd_Box bounds;
         BRepBndLib::AddOptimal(shape, bounds,
@@ -2691,9 +2694,6 @@ PyObject* TopoShapePy::optimalBoundingBox(PyObject *args)
 
         Py::BoundingBox pybox(box);
         return Py::new_reference_to(pybox);
-#else
-        throw Py::RuntimeError("Need OCCT 7.2.0 or higher");
-#endif
     }
     catch (const Standard_Failure& e) {
         throw Py::RuntimeError(e.GetMessageString());
@@ -2727,53 +2727,6 @@ PyObject* TopoShapePy::defeaturing(PyObject *args)
     }
 }
 
-// End of Methods, Start of Attributes
-
-#if 0 // see ComplexGeoDataPy::Matrix which does the same
-Py::Object TopoShapePy::getLocation(void) const
-{
-    const TopLoc_Location& loc = getTopoShapePtr()->getShape().Location();
-    gp_Trsf trf = (gp_Trsf)loc;
-    Base::Matrix4D mat;
-    mat[0][0] = trf.Value(1,1);
-    mat[0][1] = trf.Value(1,2);
-    mat[0][2] = trf.Value(1,3);
-    mat[0][3] = trf.Value(1,4);
-
-    mat[1][0] = trf.Value(2,1);
-    mat[1][1] = trf.Value(2,2);
-    mat[1][2] = trf.Value(2,3);
-    mat[1][3] = trf.Value(2,4);
-
-    mat[2][0] = trf.Value(3,1);
-    mat[2][1] = trf.Value(3,2);
-    mat[2][2] = trf.Value(3,3);
-    mat[2][3] = trf.Value(3,4);
-    return Py::asObject(new Base::MatrixPy(mat));
-}
-
-void TopoShapePy::setLocation(Py::Object o)
-{
-    PyObject* p = o.ptr();
-    if (PyObject_TypeCheck(p, &(Base::MatrixPy::Type))) {
-        Base::Matrix4D mat = static_cast<Base::MatrixPy*>(p)->value();
-        Base::Rotation rot(mat);
-        Base::Vector3d axis;
-        double angle;
-        rot.getValue(axis, angle);
-        gp_Trsf trf;
-        trf.SetRotation(gp_Ax1(gp_Pnt(), gp_Dir(axis.x, axis.y, axis.z)), angle);
-        trf.SetTranslationPart(gp_Vec(mat[0][3],mat[1][3],mat[2][3]));
-        TopLoc_Location loc(trf);
-        getTopoShapePtr()->getShape().Location(loc);
-    }
-    else {
-        std::string error = std::string("type must be 'Matrix', not ");
-        error += p->ob_type->tp_name;
-        throw Py::TypeError(error);
-    }
-}
-#endif
 
 Py::String TopoShapePy::getShapeType() const
 {

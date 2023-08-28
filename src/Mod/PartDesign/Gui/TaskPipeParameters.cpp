@@ -20,12 +20,10 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
 # include <QAction>
-# include <QGenericReturnArgument>
 # include <QMessageBox>
 # include <QMetaObject>
 #endif
@@ -51,6 +49,7 @@
 #include "TaskFeaturePick.h"
 #include "TaskSketchBasedParameters.h"
 #include "Utils.h"
+
 
 Q_DECLARE_METATYPE(App::PropertyLinkSubList::SubSet)
 
@@ -122,8 +121,8 @@ TaskPipeParameters::TaskPipeParameters(ViewProviderPipe *PipeView, bool /*newObj
     }
     // the spine edges
     std::vector<std::string> strings = pipe->Spine.getSubValues();
-    for (std::vector<std::string>::const_iterator it = strings.begin(); it != strings.end(); ++it) {
-        QString label = QString::fromStdString(*it);
+    for (const auto & string : strings) {
+        QString label = QString::fromStdString(string);
         QListWidgetItem* item = new QListWidgetItem();
         item->setText(label);
         item->setData(Qt::UserRole, QByteArray(label.toUtf8()));
@@ -165,9 +164,7 @@ TaskPipeParameters::~TaskPipeParameters()
 }
 
 void TaskPipeParameters::updateUI()
-{
-
-}
+{}
 
 void TaskPipeParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
 {
@@ -258,8 +255,8 @@ void TaskPipeParameters::removeFromListWidget(QListWidget* widget, QString items
 {
     QList<QListWidgetItem*> items = widget->findItems(itemstr, Qt::MatchExactly);
     if (!items.empty()) {
-        for (QList<QListWidgetItem*>::const_iterator i = items.cbegin(); i != items.cend(); i++) {
-            QListWidgetItem* it = widget->takeItem(widget->row(*i));
+        for (auto item : items) {
+            QListWidgetItem* it = widget->takeItem(widget->row(item));
             delete it;
         }
     }
@@ -482,7 +479,6 @@ bool TaskPipeParameters::accept()
             }
 
             std::vector<App::PropertyLinkSubList::SubSet> subSets;
-            int index = 0;
             for (auto &subSet : pcPipe->Sections.getSubListValues()) {
                 if (!pcActiveBody->hasObject(subSet.first) &&
                     !pcActiveBody->getOrigin()->hasObject(subSet.first)) {
@@ -495,8 +491,6 @@ bool TaskPipeParameters::accept()
                 else {
                     subSets.push_back(subSet);
                 }
-
-                index++;
             }
 
             pcPipe->Sections.setSubListValues(subSets);
@@ -523,7 +517,7 @@ bool TaskPipeParameters::accept()
         }
     }
     catch (const Base::Exception& e) {
-        QMessageBox::warning(this, tr("Input error"), QString::fromUtf8(e.what()));
+        QMessageBox::warning(this, tr("Input error"), QApplication::translate("Exception", e.what()));
         return false;
     }
 
@@ -583,8 +577,8 @@ TaskPipeOrientation::TaskPipeOrientation(ViewProviderPipe* PipeView, bool /*newO
         ui->profileBaseEdit->setText(QString::fromUtf8(pipe->AuxillerySpine.getValue()->Label.getValue()));
 
     std::vector<std::string> strings = pipe->AuxillerySpine.getSubValues();
-    for (std::vector<std::string>::const_iterator it = strings.begin(); it != strings.end(); ++it) {
-        QString label = QString::fromStdString(*it);
+    for (const auto & string : strings) {
+        QString label = QString::fromStdString(string);
         QListWidgetItem* item = new QListWidgetItem();
         item->setText(label);
         item->setData(Qt::UserRole, QByteArray(label.toUtf8()));
@@ -596,7 +590,7 @@ TaskPipeOrientation::TaskPipeOrientation(ViewProviderPipe* PipeView, bool /*newO
 
     // should be called after panel has become visible
     QMetaObject::invokeMethod(this, "updateUI", Qt::QueuedConnection,
-        QGenericReturnArgument(), Q_ARG(int,pipe->Mode.getValue()));
+        Q_ARG(int,pipe->Mode.getValue()));
     this->blockSelection(false);
 }
 
@@ -757,8 +751,8 @@ void TaskPipeOrientation::removeFromListWidget(QListWidget* widget, QString name
 {
     QList<QListWidgetItem*> items = widget->findItems(name, Qt::MatchExactly);
     if (!items.empty()) {
-        for (QList<QListWidgetItem*>::const_iterator i = items.cbegin(); i != items.cend(); i++) {
-            QListWidgetItem* it = widget->takeItem(widget->row(*i));
+        for (auto item : items) {
+            QListWidgetItem* it = widget->takeItem(widget->row(item));
             delete it;
         }
     }
@@ -851,7 +845,7 @@ TaskPipeScaling::TaskPipeScaling(ViewProviderPipe* PipeView, bool /*newObj*/, QW
 
     // should be called after panel has become visible
     QMetaObject::invokeMethod(this, "updateUI", Qt::QueuedConnection,
-        QGenericReturnArgument(), Q_ARG(int,pipe->Transformation.getValue()));
+        Q_ARG(int,pipe->Transformation.getValue()));
     this->blockSelection(false);
 }
 
@@ -986,8 +980,8 @@ void TaskPipeScaling::removeFromListWidget(QListWidget* widget, QString name)
 {
     QList<QListWidgetItem*> items = widget->findItems(name, Qt::MatchExactly);
     if (!items.empty()) {
-        for (QList<QListWidgetItem*>::const_iterator i = items.cbegin(); i != items.cend(); i++) {
-            QListWidgetItem* it = widget->takeItem(widget->row(*i));
+        for (auto item : items) {
+            QListWidgetItem* it = widget->takeItem(widget->row(item));
             delete it;
         }
     }

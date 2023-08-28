@@ -36,7 +36,8 @@ from .. import writer as general_writer
 from femtools import femutils
 from . import elasticity
 
-class Elasticitywriter:
+
+class ElasticityWriter:
 
     def __init__(self, writer, solver):
         self.write = writer
@@ -323,21 +324,37 @@ class Elasticitywriter:
         for obj in self.write.getMember("Fem::ConstraintDisplacement"):
             if obj.References:
                 for name in obj.References[0][1]:
+                    if obj.useFlowSurfaceForce:
+                        self.write.boundary(name, "FSI BC", obj.useFlowSurfaceForce)
+                        # if useFlowSurfaceForce no displacements must be output
+                        continue
                     if not obj.xFree:
-                        self.write.boundary(
-                            name, "Displacement 1", obj.xDisplacement * 0.001)
-                    elif obj.xFix:
-                        self.write.boundary(name, "Displacement 1", 0.0)
+                        if not obj.hasXFormula:
+                            displacement = float(obj.xDisplacement.getValueAs("m"))
+                        else:
+                            displacement = obj.xDisplacementFormula
+                        self.write.boundary(name, "Displacement 1", displacement)
                     if not obj.yFree:
-                        self.write.boundary(
-                            name, "Displacement 2", obj.yDisplacement * 0.001)
-                    elif obj.yFix:
-                        self.write.boundary(name, "Displacement 2", 0.0)
+                        if not obj.hasYFormula:
+                            displacement = float(obj.yDisplacement.getValueAs("m"))
+                        else:
+                            displacement = obj.yDisplacementFormula
+                        self.write.boundary(name, "Displacement 2", displacement)
                     if not obj.zFree:
-                        self.write.boundary(
-                            name, "Displacement 3", obj.zDisplacement * 0.001)
-                    elif obj.zFix:
-                        self.write.boundary(name, "Displacement 3", 0.0)
+                        if not obj.hasZFormula:
+                            displacement = float(obj.zDisplacement.getValueAs("m"))
+                        else:
+                            displacement = obj.zDisplacementFormula
+                        self.write.boundary(name, "Displacement 3", displacement)
+                self.write.handled(obj)
+        for obj in self.write.getMember("Fem::ConstraintSpring"):
+            if obj.References:
+                for name in obj.References[0][1]:
+                    if obj.ElmerStiffness == "Normal Stiffness":
+                        spring = float(obj.NormalStiffness.getValueAs("N/m"))
+                    else:
+                        spring = float(obj.TangentialStiffness.getValueAs("N/m"))
+                    self.write.boundary(name, "Spring", spring)
                 self.write.handled(obj)
 
     def handleElasticityInitial(self, bodies):
@@ -386,7 +403,7 @@ class Elasticitywriter:
         # temperature
         tempObj = self.write.getSingleMember("Fem::ConstraintInitialTemperature")
         if tempObj is not None:
-            refTemp = self.write.getFromUi(tempObj.initialTemperature, "K", "O")
+            refTemp = float(tempObj.initialTemperature.getValueAs("K"))
             for name in bodies:
                 self.write.material(name, "Reference Temperature", refTemp)
         # get the material data for all bodies

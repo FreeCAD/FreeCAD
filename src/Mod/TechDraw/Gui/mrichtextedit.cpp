@@ -23,7 +23,7 @@
 
 /********************************
  * includes changes by wandererfan@gmail.com
- * for FreeCAD project https://www.freecadweb.org/
+ * for FreeCAD project https://www.freecad.org/
  ********************************/
 
 #include "PreCompiled.h"
@@ -201,8 +201,7 @@ MRichTextEdit::MRichTextEdit(QWidget *parent, QString textIn) : QWidget(parent) 
 
     // font size
 
-    QFontDatabase db;
-    const auto sizes = db.standardSizes();
+    const auto sizes = QFontDatabase::standardSizes();
     for(int size: sizes) {
         f_fontsize->addItem(QString::number(size));
     }
@@ -430,7 +429,11 @@ void MRichTextEdit::textStyle(int index) {
         }
     if (index == ParagraphMonospace) {
         fmt = cursor.charFormat();
+#if QT_VERSION < QT_VERSION_CHECK(5,13,0)
         fmt.setFontFamily(QString::fromUtf8("Monospace"));
+#else
+        fmt.setFontFamilies(QStringList() << QString::fromUtf8("Monospace"));
+#endif
         fmt.setFontStyleHint(QFont::Monospace);
         fmt.setFontFixedPitch(true);
         }
@@ -738,7 +741,6 @@ void MRichTextEdit::onSelectionChanged()
 bool MRichTextEdit::hasMultipleSizes()
 {
 //    qDebug() << "MRTE::hasMultipleSizes()";
-    bool result = false;
     QTextCursor cursor = f_textedit->textCursor();
     if (cursor.hasSelection()) {
         int begin = cursor.selectionStart();
@@ -758,10 +760,10 @@ bool MRichTextEdit::hasMultipleSizes()
             }
         }
         if (countMap.size() > 1) {
-            result = true;
+            return true;
         }
     }
-    return result;
+    return false;
 }
 
 void MRichTextEdit::setDefFontSize(int fontSize)
@@ -793,15 +795,13 @@ int MRichTextEdit::getDefFontSizeNum()
 //    double mmToPts = 2.83;  //theoretical value
     double mmToPts = 2.00;  //practical value. seems to be reasonable for common fonts.
 
-    int ptsSize = round(fontSize * mmToPts);
-    return ptsSize;
+    return round(fontSize * mmToPts);
 }
 
 QString MRichTextEdit::getDefFontSize()
 {
 //    Base::Console().Message("MRTE::getDefFontSize()\n");
-    QString result = QString::number(getDefFontSizeNum());
-    return result;
+    return QString::number(getDefFontSizeNum());
 }
 
 //not used.

@@ -126,6 +126,7 @@
 #include "OCCError.h"
 #include "PrismExtension.h"
 #include "PropertyGeometryList.h"
+#include "PropertyTopoShapeList.h"
 
 #include <BRepFeat/MakePrismPy.h>
 
@@ -396,6 +397,7 @@ PyMOD_INIT_FUNC(Part)
     Part::PropertyGeometryList  ::init();
     Part::PropertyShapeHistory  ::init();
     Part::PropertyFilletEdges   ::init();
+    Part::PropertyTopoShapeList ::init();
 
     Part::FaceMaker             ::init();
     Part::FaceMakerPublic       ::init();

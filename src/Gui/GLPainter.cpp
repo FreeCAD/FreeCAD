@@ -34,11 +34,6 @@ using namespace Gui;
 TYPESYSTEM_SOURCE_ABSTRACT(Gui::GLGraphicsItem, Base::BaseClass)
 
 GLPainter::GLPainter()
-  : viewer(nullptr)
-  , width(0)
-  , height(0)
-  , logicOp(false)
-  , lineStipple(false)
 {
     depthrange[0] = 0;
     depthrange[1] = 0;
@@ -234,9 +229,7 @@ Rubberband::Rubberband() : viewer(nullptr)
     rgb_a = 1.0f;
 }
 
-Rubberband::~Rubberband()
-{
-}
+Rubberband::~Rubberband() = default;
 
 void Rubberband::setWorking(bool on)
 {
@@ -340,9 +333,7 @@ Polyline::Polyline() : viewer(nullptr)
     rgb_a = 1.0f;
 }
 
-Polyline::~Polyline()
-{
-}
+Polyline::~Polyline() = default;
 
 void Polyline::setWorking(bool on)
 {
@@ -429,8 +420,8 @@ void Polyline::paintGL()
     if (closed && !stippled) {
         glBegin(GL_LINE_LOOP);
 
-        for (std::vector<QPoint>::iterator it = _cNodeVector.begin(); it != _cNodeVector.end(); ++it) {
-            glVertex2i(it->x(), it->y());
+        for (const QPoint& it : _cNodeVector) {
+            glVertex2i(it.x(), it.y());
         }
 
         glEnd();
@@ -439,10 +430,10 @@ void Polyline::paintGL()
         glBegin(GL_LINES);
 
         QPoint start = _cNodeVector.front();
-        for (std::vector<QPoint>::iterator it = _cNodeVector.begin(); it != _cNodeVector.end(); ++it) {
+        for (const QPoint& it : _cNodeVector) {
             glVertex2i(start.x(), start.y());
-            start = *it;
-            glVertex2i(it->x(), it->y());
+            start = it;
+            glVertex2i(it.x(), it.y());
         }
 
         glEnd();

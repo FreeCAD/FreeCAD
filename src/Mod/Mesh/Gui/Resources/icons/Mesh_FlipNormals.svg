@@ -249,7 +249,7 @@
             <rdf:li>arrow</rdf:li>
           </rdf:Bag>
         </dc:subject>
-        <dc:relation>http://www.freecadweb.org/wiki/index.php?title=Artwork</dc:relation>
+        <dc:relation>http://www.freecad.org/wiki/index.php?title=Artwork</dc:relation>
         <dc:identifier>FreeCAD/src/Mod/Mesh/Gui/Resources/icons/Mesh_Flip_Normals.svg</dc:identifier>
         <dc:publisher>
           <cc:Agent>

@@ -396,7 +396,7 @@ class Array(DraftLink):
 
     def execute(self, obj):
         """Execute when the object is created or recomputed."""
-        if self.props_changed_placement_only() \
+        if self.props_changed_placement_only(obj) \
                 or not obj.Base:
             self.props_changed_clear()
             return

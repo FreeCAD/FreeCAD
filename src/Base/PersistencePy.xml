@@ -12,7 +12,8 @@
     <Documentation>
       <Author Licence="LGPL" Name="Juergen Riegel" EMail="FreeCAD@juergen-riegel.net" />
       <DeveloperDocu>This is the Persistence class</DeveloperDocu>
-      <UserDocu>Base.Persistence class.\n
+      <UserDocu>Base.Persistence class.
+
 Class to dump and restore the content of an object.</UserDocu>
     </Documentation>
     <Attribute Name="Content" ReadOnly="true">
@@ -29,18 +30,24 @@ Class to dump and restore the content of an object.</UserDocu>
     </Attribute>
     <Methode Name="dumpContent" Keyword="true" Const="true">
             <Documentation>
-                <UserDocu>dumpContent(Compression=3) -> bytearray\n
+                <UserDocu>dumpContent(Compression=3) -> bytearray
+
 Dumps the content of the object, both the XML representation and the additional
-data files required, into a byte representation.\n
-Compression : int\n    Set the data compression level in the range [0,9]. Set to 0 for no compression.</UserDocu>
+data files required, into a byte representation.
+
+Compression : int
+    Set the data compression level in the range [0,9]. Set to 0 for no compression.</UserDocu>
             </Documentation>
     </Methode>
     <Methode Name="restoreContent">
             <Documentation>
-                <UserDocu>restoreContent(obj) -> None\n
+                <UserDocu>restoreContent(obj) -> None
+
 Restore the content of the object from a byte representation as stored by `dumpContent`.
-It could be restored from any Python object implementing the buffer protocol.\n
-obj : buffer\n    Object with buffer protocol support.</UserDocu>
+It could be restored from any Python object implementing the buffer protocol.
+
+obj : buffer
+    Object with buffer protocol support.</UserDocu>
             </Documentation>
     </Methode>
   </PythonExport>

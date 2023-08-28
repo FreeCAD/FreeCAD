@@ -792,7 +792,7 @@
         </dc:contributor>
         <dc:title>Points_Export_Point_cloud</dc:title>
         <dc:date>2014-01-26</dc:date>
-        <dc:relation>http://www.freecadweb.org/wiki/index.php?title=Artwork</dc:relation>
+        <dc:relation>http://www.freecad.org/wiki/index.php?title=Artwork</dc:relation>
         <dc:publisher>
           <cc:Agent>
             <dc:title>FreeCAD</dc:title>

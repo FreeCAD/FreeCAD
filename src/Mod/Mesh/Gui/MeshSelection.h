@@ -86,11 +86,14 @@ private:
     static void pickFaceCallback(void * ud, SoEventCallback * n);
 
 private:
-    bool onlyPointToUserTriangles, onlyVisibleTriangles;
-    bool addToSelection, addComponent, removeComponent;
-    SoEventCallbackCB *activeCB;
-    SoEventCallbackCB *selectionCB;
-    Gui::View3DInventorViewer* ivViewer;
+    bool onlyPointToUserTriangles{false};
+    bool onlyVisibleTriangles{false};
+    bool addToSelection{false};
+    bool addComponent{false};
+    bool removeComponent{false};
+    SoEventCallbackCB *activeCB{nullptr};
+    SoEventCallbackCB *selectionCB{nullptr};
+    Gui::View3DInventorViewer* ivViewer{nullptr};
     mutable std::vector<Gui::SelectionObject> meshObjects;
 
     static unsigned char cross_bitmap[];

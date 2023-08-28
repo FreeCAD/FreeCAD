@@ -31,7 +31,7 @@
 
 
 using namespace App;
-namespace bp = boost::placeholders;
+namespace sp = std::placeholders;
 
 EXTENSION_PROPERTY_SOURCE(App::GroupExtension, App::DocumentObjectExtension)
 
@@ -268,9 +268,9 @@ std::vector<DocumentObject*> GroupExtension::getObjectsOfType(const Base::Type& 
 {
     std::vector<DocumentObject*> type;
     const std::vector<DocumentObject*>& grp = Group.getValues();
-    for (std::vector<DocumentObject*>::const_iterator it = grp.begin(); it != grp.end(); ++it) {
-        if ( (*it)->getTypeId().isDerivedFrom(typeId))
-            type.push_back(*it);
+    for (auto it : grp) {
+        if (it->getTypeId().isDerivedFrom(typeId))
+            type.push_back(it);
     }
 
     return type;
@@ -280,8 +280,8 @@ int GroupExtension::countObjectsOfType(const Base::Type& typeId) const
 {
     int type=0;
     const std::vector<DocumentObject*>& grp = Group.getValues();
-    for (std::vector<DocumentObject*>::const_iterator it = grp.begin(); it != grp.end(); ++it) {
-        if ( (*it)->getTypeId().isDerivedFrom(typeId))
+    for (auto it : grp) {
+        if ( it->getTypeId().isDerivedFrom(typeId))
             type++;
     }
 
@@ -352,8 +352,10 @@ void GroupExtension::extensionOnChanged(const Property* p) {
         _Conns.clear();
         for(auto obj : Group.getValue()) {
             if(obj && obj->getNameInDocument()) {
-                _Conns[obj] = obj->signalChanged.connect(boost::bind(
-                            &GroupExtension::slotChildChanged,this,bp::_1, bp::_2));
+                //NOLINTBEGIN
+                _Conns[obj] = obj->signalChanged.connect(std::bind(
+                            &GroupExtension::slotChildChanged,this,sp::_1, sp::_2));
+                //NOLINTEND
             }
         }
     }

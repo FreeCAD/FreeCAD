@@ -23,7 +23,7 @@
 
 __title__ = "Objects FEM unit tests"
 __author__ = "Bernd Hahnebach"
-__url__ = "https://www.freecadweb.org"
+__url__ = "https://www.freecad.org"
 
 import sys
 import unittest
@@ -82,16 +82,16 @@ class TestObjectCreate(unittest.TestCase):
             count_defmake = testtools.get_defmake_count(False)
         # TODO if the children are added to the analysis, they show up twice on Tree
         # thus they are not added to the analysis group ATM
-        # https://forum.freecadweb.org/viewtopic.php?t=25283
+        # https://forum.freecad.org/viewtopic.php?t=25283
         # thus they should not be counted
-        # solver children: equations --> 8
+        # solver children: equations --> 9
         # gmsh mesh children: group, region, boundary layer --> 3
-        # resule children: mesh result --> 1
+        # result children: mesh result --> 1
         # post pipeline children: region, scalar, cut, wrap --> 5
         # analysis itself is not in analysis group --> 1
-        # thus: -18
+        # thus: -19
 
-        self.assertEqual(len(doc.Analysis.Group), count_defmake - 18)
+        self.assertEqual(len(doc.Analysis.Group), count_defmake - 19)
         self.assertEqual(len(doc.Objects), count_defmake)
 
         fcc_print("doc objects count: {}, method: {}".format(
@@ -347,6 +347,10 @@ class TestObjectType(unittest.TestCase):
             type_of_obj(ObjectsFem.makeSolverZ88(doc))
         )
         self.assertEqual(
+            "Fem::EquationElmerDeformation",
+            type_of_obj(ObjectsFem.makeEquationDeformation(doc, solverelmer))
+        )
+        self.assertEqual(
             "Fem::EquationElmerElasticity",
             type_of_obj(ObjectsFem.makeEquationElasticity(doc, solverelmer))
         )
@@ -590,6 +594,10 @@ class TestObjectType(unittest.TestCase):
             "Fem::SolverZ88"
         ))
         self.assertTrue(is_of_type(
+            ObjectsFem.makeEquationDeformation(doc, solverelmer),
+            "Fem::EquationElmerDeformation"
+        ))
+        self.assertTrue(is_of_type(
             ObjectsFem.makeEquationElasticity(doc, solverelmer),
             "Fem::EquationElmerElasticity"
         ))
@@ -634,7 +642,7 @@ class TestObjectType(unittest.TestCase):
         self
     ):
         # try to add all possible True types from inheritance chain see
-        # https://forum.freecadweb.org/viewtopic.php?f=10&t=32625
+        # https://forum.freecad.org/viewtopic.php?f=10&t=32625
         doc = self.document
 
         from femtools.femutils import is_derived_from
@@ -1371,6 +1379,21 @@ class TestObjectType(unittest.TestCase):
             "Fem::SolverZ88"
         ))
 
+        # EquationElmerDeformation
+        equation_deformation = ObjectsFem.makeEquationDeformation(doc, solver_elmer)
+        self.assertTrue(is_derived_from(
+            equation_deformation,
+            "App::DocumentObject"
+        ))
+        self.assertTrue(is_derived_from(
+            equation_deformation,
+            "App::FeaturePython"
+        ))
+        self.assertTrue(is_derived_from(
+            equation_deformation,
+            "Fem::EquationElmerDeformation"
+        ))
+
         # EquationElmerElasticity
         equation_elasticity = ObjectsFem.makeEquationElasticity(doc, solver_elmer)
         self.assertTrue(is_derived_from(
@@ -1745,6 +1768,12 @@ class TestObjectType(unittest.TestCase):
             ).isDerivedFrom("Fem::FemSolverObjectPython")
         )
         self.assertTrue(
+            ObjectsFem.makeEquationDeformation(
+                doc,
+                solverelmer
+            ).isDerivedFrom("App::FeaturePython")
+        )
+        self.assertTrue(
             ObjectsFem.makeEquationElasticity(
                 doc,
                 solverelmer
@@ -1868,6 +1897,7 @@ def create_all_fem_objects_doc(
     analysis.addObject(ObjectsFem.makeSolverMystran(doc))
     analysis.addObject(ObjectsFem.makeSolverZ88(doc))
 
+    ObjectsFem.makeEquationDeformation(doc, sol)
     ObjectsFem.makeEquationElasticity(doc, sol)
     ObjectsFem.makeEquationElectricforce(doc, sol)
     ObjectsFem.makeEquationElectrostatic(doc, sol)

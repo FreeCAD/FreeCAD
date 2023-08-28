@@ -38,6 +38,8 @@ CurveOnMeshWidget::CurveOnMeshWidget(Gui::View3DInventor* view, QWidget* parent)
     , myView(view)
 {
     ui->setupUi(this);
+    connect(ui->startButton, &QPushButton::clicked,
+            this, &CurveOnMeshWidget::onStartButtonClicked);
     this->setup();
 }
 
@@ -74,7 +76,7 @@ void CurveOnMeshWidget::changeEvent(QEvent *e)
     }
 }
 
-void CurveOnMeshWidget::on_startButton_clicked()
+void CurveOnMeshWidget::onStartButtonClicked()
 {
     int cont = ui->continuity->itemData(ui->continuity->currentIndex()).toInt();
     myCurveHandler->enableApproximation(ui->groupBox_2->isChecked());
@@ -100,11 +102,6 @@ TaskCurveOnMesh::TaskCurveOnMesh(Gui::View3DInventor* view)
         widget->windowTitle(), true, nullptr);
     taskbox->groupLayout()->addWidget(widget);
     Content.push_back(taskbox);
-}
-
-TaskCurveOnMesh::~TaskCurveOnMesh()
-{
-    // automatically deleted in the sub-class
 }
 
 bool TaskCurveOnMesh::reject()

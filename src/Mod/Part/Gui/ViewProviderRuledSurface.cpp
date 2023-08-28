@@ -42,10 +42,7 @@ ViewProviderRuledSurface::ViewProviderRuledSurface()
   sPixmap = "Part_RuledSurface.svg";
 }
 
-ViewProviderRuledSurface::~ViewProviderRuledSurface()
-{
-
-}
+ViewProviderRuledSurface::~ViewProviderRuledSurface() = default;
 
 std::vector<App::DocumentObject*> ViewProviderRuledSurface::claimChildren() const
 {

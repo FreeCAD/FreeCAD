@@ -60,47 +60,5 @@
         <file>icons/PartDesignWorkbench.svg</file>
         <file>icons/Tree_PartDesign_Pad.svg</file>
         <file>icons/Tree_PartDesign_Revolution.svg</file>
-        <file>translations/PartDesign_af.qm</file>
-        <file>translations/PartDesign_ar.qm</file>
-        <file>translations/PartDesign_ca.qm</file>
-        <file>translations/PartDesign_cs.qm</file>
-        <file>translations/PartDesign_de.qm</file>
-        <file>translations/PartDesign_el.qm</file>
-        <file>translations/PartDesign_es-ES.qm</file>
-        <file>translations/PartDesign_eu.qm</file>
-        <file>translations/PartDesign_fi.qm</file>
-        <file>translations/PartDesign_fil.qm</file>
-        <file>translations/PartDesign_fr.qm</file>
-        <file>translations/PartDesign_gl.qm</file>
-        <file>translations/PartDesign_hr.qm</file>
-        <file>translations/PartDesign_hu.qm</file>
-        <file>translations/PartDesign_id.qm</file>
-        <file>translations/PartDesign_it.qm</file>
-        <file>translations/PartDesign_ja.qm</file>
-        <file>translations/PartDesign_kab.qm</file>
-        <file>translations/PartDesign_ko.qm</file>
-        <file>translations/PartDesign_lt.qm</file>
-        <file>translations/PartDesign_nl.qm</file>
-        <file>translations/PartDesign_no.qm</file>
-        <file>translations/PartDesign_pl.qm</file>
-        <file>translations/PartDesign_pt-BR.qm</file>
-        <file>translations/PartDesign_pt-PT.qm</file>
-        <file>translations/PartDesign_ro.qm</file>
-        <file>translations/PartDesign_ru.qm</file>
-        <file>translations/PartDesign_sk.qm</file>
-        <file>translations/PartDesign_sl.qm</file>
-        <file>translations/PartDesign_sr.qm</file>
-        <file>translations/PartDesign_sv-SE.qm</file>
-        <file>translations/PartDesign_tr.qm</file>
-        <file>translations/PartDesign_uk.qm</file>
-        <file>translations/PartDesign_val-ES.qm</file>
-        <file>translations/PartDesign_vi.qm</file>
-        <file>translations/PartDesign_zh-CN.qm</file>
-        <file>translations/PartDesign_zh-TW.qm</file>
-        <file>translations/PartDesign_es-AR.qm</file>
-        <file>translations/PartDesign_bg.qm</file>
-        <file>translations/PartDesign_ka.qm</file>
-        <file>translations/PartDesign_sr-CS.qm</file>
-        <file>translations/PartDesign_be.qm</file>
     </qresource>
 </RCC>

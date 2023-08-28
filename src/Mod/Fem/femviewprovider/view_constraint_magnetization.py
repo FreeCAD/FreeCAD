@@ -23,7 +23,7 @@
 
 __title__ = "FreeCAD FEM constraint magnetization ViewProvider for the document object"
 __author__ = "Uwe Stöhr"
-__url__ = "https://www.freecadweb.org"
+__url__ = "https://www.freecad.org"
 
 ## @package view_constraint_magnetization
 #  \ingroup FEM

@@ -22,7 +22,7 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <QKeyEvent>
+#include <QKeyEvent>
 #endif
 
 #include "ShortcutListener.h"
@@ -32,27 +32,26 @@
 using namespace SketcherGui;
 
 // ******************** ViewProvider attorney *********************************************//
-inline void ViewProviderSketchShortcutListenerAttorney::deleteSelected(ViewProviderSketch & vp)
+inline void ViewProviderSketchShortcutListenerAttorney::deleteSelected(ViewProviderSketch& vp)
 {
     vp.deleteSelected();
 };
 
 // ******************** ShortcutListener *********************************************//
-ShortcutListener::ShortcutListener(ViewProviderSketch * vp)
+ShortcutListener::ShortcutListener(ViewProviderSketch* vp)
 {
     pViewProvider = vp;
 }
 
 ShortcutListener::~ShortcutListener()
-{
-}
+{}
 
-bool ShortcutListener::eventFilter(QObject *obj, QEvent *event) {
+bool ShortcutListener::eventFilter(QObject* obj, QEvent* event)
+{
     if (event->type() == QEvent::ShortcutOverride) {
-        QKeyEvent * kevent = static_cast<QKeyEvent*>(event);
-        if (kevent->modifiers() == Qt::NoModifier ||
-            kevent->modifiers() == Qt::ShiftModifier ||
-            kevent->modifiers() == Qt::KeypadModifier) {
+        QKeyEvent* kevent = static_cast<QKeyEvent*>(event);
+        if (kevent->modifiers() == Qt::NoModifier || kevent->modifiers() == Qt::ShiftModifier
+            || kevent->modifiers() == Qt::KeypadModifier) {
             switch (kevent->key()) {
                 case Qt::Key_Delete:
                     kevent->accept();

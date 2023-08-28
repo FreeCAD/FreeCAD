@@ -573,6 +573,29 @@ class DraftModification(unittest.TestCase):
         self.assertTrue(obj.hasExtension("Part::AttachExtension"),
                         "'{}' failed".format(operation))
 
+    def test_attached_clone_behavior(self):
+        """Check if an attached clone behaves correctly.
+
+        Test for https://github.com/FreeCAD/FreeCAD/issues/8771.
+        """
+        operation = "Check attached Draft Clone behavior"
+        _msg("  Test '{}'".format(operation))
+
+        box1 = App.ActiveDocument.addObject("Part::Box")
+        box1.Length = 10
+        box2 = App.ActiveDocument.addObject("Part::Box")
+        App.ActiveDocument.recompute()
+
+        obj = Draft.make_clone(box1)
+        obj.MapMode = "ObjectXY"
+        obj.Support = [(box2, ("",))]
+        App.ActiveDocument.recompute()
+
+        box1.Length = 1
+        App.ActiveDocument.recompute()
+
+        self.assertTrue(obj.Shape.BoundBox.XLength == 1, "'{}' failed".format(operation))
+
     def test_draft_to_techdraw(self):
         """Create a solid, and then a DraftView on a TechDraw page."""
         operation = "TechDraw DraftView (relies on Draft code)"

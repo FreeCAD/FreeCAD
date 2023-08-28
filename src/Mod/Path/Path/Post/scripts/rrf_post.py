@@ -34,6 +34,7 @@ from FreeCAD import Units
 import Path
 import Path.Base.Util as PathUtil
 import Path.Post.Utils as PostUtils
+import PathScripts.PathUtils as PathUtils
 
 Revised = "2021-10-21"  # Revision date for this file.
 
@@ -533,7 +534,7 @@ def parse(pathobj):
         if OUTPUT_COMMENTS and OUTPUT_PATH:
             out += linenumber() + "(Path: " + pathobj.Label + ")\n"
 
-        for c in pathobj.Path.Commands:
+        for c in PathUtils.getPathWithPlacement(pathobj).Commands:
             outlist = []
             command = c.Name
             outlist.append(command)

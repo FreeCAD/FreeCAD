@@ -43,7 +43,7 @@ class Block(DraftObject):
         obj.addProperty("App::PropertyLinkList","Components", "Draft", _tip)
 
     def execute(self, obj):
-        if self.props_changed_placement_only():
+        if self.props_changed_placement_only(obj):
             obj.positionBySupport()
             self.props_changed_clear()
             return

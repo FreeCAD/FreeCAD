@@ -44,12 +44,13 @@ public:
     void setViewProviders(const std::vector<Gui::ViewProvider*>&);
     QColor diffuseColor() const;
 
-public Q_SLOTS:
-    void on_ambientColor_changed();
-    void on_diffuseColor_changed();
-    void on_emissiveColor_changed();
-    void on_specularColor_changed();
-    void on_shininess_valueChanged(int);
+private:
+    void setupConnections();
+    void onAmbientColorChanged();
+    void onDiffuseColorChanged();
+    void onEmissiveColorChanged();
+    void onSpecularColorChanged();
+    void onShininessValueChanged(int);
 
 private:
     std::unique_ptr<Ui_DlgMaterialProperties> ui;

@@ -72,9 +72,7 @@ public:
       q_ptr(q)
     {
     }
-    ~QuantitySpinBoxPrivate()
-    {
-    }
+    ~QuantitySpinBoxPrivate() = default;
 
     QString stripped(const QString &t, int *pos) const
     {
@@ -163,42 +161,66 @@ public:
         double value = min;
         bool ok = false;
 
-        QChar space = QLatin1Char(' '), period = QLatin1Char ('.'), plus = QLatin1Char('+'), minus = QLatin1Char('-'), division = QLatin1Char('/'), multiply = QLatin1Char('*'), exp = QLatin1Char('^'), par = QLatin1Char('(');
+        QChar plus = QLatin1Char('+'), minus = QLatin1Char('-');
 
         if (locale.negativeSign() != minus)
             copy.replace(locale.negativeSign(), minus);
         if (locale.positiveSign() != plus)
             copy.replace(locale.positiveSign(), plus);
 
+        QString reverseUnitStr = unitStr;
+        std::reverse(reverseUnitStr.begin(), reverseUnitStr.end());
+
         //Prep for expression parser
-        unsigned int length = copy.length(), shift;
-        bool noUnit = false;
-        for (unsigned int pos=0; pos < length; pos++) {
-            QChar num = copy[pos];
-            if (num == division || num == multiply || num == exp || num == par){
-                break; // Stop if anything odd happens
-            }
-            else if (num.isNumber()) {
-                noUnit = true;
-            }
-            else if (num != space && num != period && num != plus && num != minus) {
-                noUnit = false;
+        //This regex matches chunks between +,-,$,^ accounting for matching parenthesis.
+        QRegularExpression chunkRe(QString::fromUtf8("(?<=^|[\\+\\-])((\\((?>[^()]|(?2))*\\))|[^\\+\\-\n])*(?=$|[\\+\\-])"));
+        QRegularExpressionMatchIterator expressionChunk = chunkRe.globalMatch(copy);
+        unsigned int lengthOffset = 0;
+        while (expressionChunk.hasNext()) {
+            QRegularExpressionMatch matchChunk = expressionChunk.next();
+            QString origionalChunk = matchChunk.captured(0);
+            QString copyChunk = origionalChunk;
+            std::reverse(copyChunk.begin(), copyChunk.end());
+
+            //Reused regex patterns
+            static const std::string regexUnits = "sAV|VC|lim|nim|im|hpm|[mf]?bl|°|ged|dar|nog|″|′|rroT[uµm]?|K[uµm]?|A[mkM]?|F[pnuµm]?|C|S[uµmkM]?|zH[kMGT]?|H[nuµm]?|mhO[kM]?|J[mk]?|Ve[kM]?|V[mk]?|hWk|sW|lack?|N[mkM]?|g[uµmk]?|lm?|(?<=\\b|[^a-zA-Z])m[nuµmcdk]?|uoht|ni|\"|'|dy|dc|bW|T|t|zo|ts|twc|Wk?|aP[kMG]?|is[pk]|h|G|M|tfc|tfqs|tf|s";
+            static const std::string regexUnitlessFunctions = "soca|nisa|2nata|nata|hsoc|hnis|hnat|soc|nat|nis|pxe|gol|01gol";
+            static const std::string regexConstants = "e|ip|lomm|lom";
+            static const std::string regexNumber = "\\d+\\s*\\.?\\s*\\d*|\\.\\s*\\d+";
+
+            // If expression does not contain /*() or ^, this regex will not find anything
+            if (copy.contains(QLatin1Char('/')) || copy.contains(QLatin1Char('*')) || copy.contains(QLatin1Char('(')) || copy.contains(QLatin1Char(')')) || copy.contains(QLatin1Char('^'))){
+                //Find units and replace 1/2mm -> 1/2*(1mm), 1^2mm -> 1^2*(1mm)
+                QRegularExpression fixUnits(QString::fromStdString("("+regexUnits+")(\\s*\\)|(?:\\*|(?:\\)(?:(?:\\s*(?:"+regexConstants+"|\\)(?:[^()]|(?R))*\\((?:"+regexUnitlessFunctions+")|"+regexNumber+"))|(?R))*\\(|(?:\\s*(?:"+regexConstants+"|\\)(?:[^()]|(?R))*\\((?:"+regexUnitlessFunctions+")|"+regexNumber+"))))+(?:[\\/\\^]|(.*$))(?!("+regexUnits+")))"));
+                QRegularExpressionMatch fixUnitsMatch = fixUnits.match(copyChunk);
+
+                //3rd capture group being filled indicates regex bailed out; no match.
+                if (fixUnitsMatch.lastCapturedIndex() == 2 || (fixUnitsMatch.lastCapturedIndex() == 3 && fixUnitsMatch.captured(3).isEmpty())){
+                    QString matchUnits = fixUnitsMatch.captured(1);
+                    QString matchNumbers = fixUnitsMatch.captured(2);
+                    copyChunk.replace(matchUnits+matchNumbers, QString::fromUtf8(")")+matchUnits+QString::fromUtf8("1(*")+matchNumbers);
+                }
             }
 
-            if (noUnit
-                && (num == plus ||                       // 1+  -> 1mm+
-                    num == minus ||                      // 1-  -> 1mm-
-                    (pos == length - 1 && (pos += 1)))) {// 1EOL-> 1mmEOL
-                copy.insert(pos, unitStr);
-                pos += shift = unitStr.length();
-                length += shift;
-                noUnit = false;
+            //Add default units to string if none are present
+            if (!copyChunk.contains(reverseUnitStr)){ // Fast check
+                QRegularExpression unitsRe(QString::fromStdString("(?<=\\b|[^a-zA-Z])("+regexUnits+")(?=\\b|[^a-zA-Z])|°|″|′|\"|'|\\p{L}\\.\\p{L}|\\[\\p{L}"));
+
+                QRegularExpressionMatch match = unitsRe.match(copyChunk);
+                if (!match.hasMatch() && !copyChunk.isEmpty()) //If no units are found, use default units
+                    copyChunk.prepend(QString::fromUtf8(")")+reverseUnitStr+QString::fromUtf8("1(*")); // Add units to the end of chunk *(1unit)
             }
+
+            std::reverse(copyChunk.begin(), copyChunk.end());
+
+            copy.replace(matchChunk.capturedStart() + lengthOffset,
+                    matchChunk.capturedEnd() - matchChunk.capturedStart(), copyChunk);
+            lengthOffset += copyChunk.length() - origionalChunk.length();
         }
 
         ok = parseString(copy, res, value, path);
 
-        // If result has not unit: add default unit
+        // If result does not have unit: add default unit
         if (res.getUnit().isEmpty()){
             res.setUnit(unit);
         }
@@ -265,14 +287,12 @@ QuantitySpinBox::QuantitySpinBox(QWidget *parent)
 #ifndef Q_OS_MAC
     lineEdit()->setTextMargins(0, 2, 0, 2);
 #else
-    // https://forum.freecadweb.org/viewtopic.php?f=8&t=50615
+    // https://forum.freecad.org/viewtopic.php?f=8&t=50615
     lineEdit()->setTextMargins(0, 2, 0, 0);
 #endif
 }
 
-QuantitySpinBox::~QuantitySpinBox()
-{
-}
+QuantitySpinBox::~QuantitySpinBox() = default;
 
 void QuantitySpinBox::bind(const App::ObjectIdentifier &_path)
 {
@@ -290,7 +310,7 @@ QString QuantitySpinBox::boundToName() const
         std::string path = getPath().toString();
         return QString::fromStdString(path);
     }
-    return QString();
+    return {};
 }
 
 /**
@@ -353,7 +373,7 @@ QString Gui::QuantitySpinBox::expressionText() const
     catch (const Base::Exception& e) {
         qDebug() << e.what();
     }
-    return QString();
+    return {};
 }
 
 void QuantitySpinBox::evaluateExpression()

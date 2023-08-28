@@ -35,16 +35,14 @@
 using namespace Part;
 
 Edgecluster::Edgecluster(const std::vector<TopoDS_Edge>& unsorted_edges)
-        :m_unsortededges(unsorted_edges),m_done(false)
+        :m_unsortededges(unsorted_edges)
 {
     m_edges.clear();
     m_vertices.clear();
     m_final_cluster.clear();
 }
 
-Edgecluster::~Edgecluster()
-{
-}
+Edgecluster::~Edgecluster() = default;
 
 tEdgeClusterVector Edgecluster::GetClusters()
 {
@@ -58,19 +56,12 @@ void Edgecluster::Perform()
         return;
 
     //adds all the vertices to a map, and store the associated edges
-    Standard_Integer nbEdges = 0;
-    Standard_Integer nbNonEdges = 0;
     std::vector<TopoDS_Edge>::iterator aVectorIt;
     for (aVectorIt = m_unsortededges.begin();aVectorIt != m_unsortededges.end();++aVectorIt)
     {
         if (IsValidEdge(*aVectorIt))
         {
             Perform(*aVectorIt);
-            nbEdges++;
-        }
-        else
-        {
-            nbNonEdges++;
         }
     }
 

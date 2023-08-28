@@ -1,24 +1,26 @@
-/***************************************************************************
- *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
- *                                                                         *
- *   This file is part of the FreeCAD CAx development system.              *
- *                                                                         *
- *   This library is free software; you can redistribute it and/or         *
- *   modify it under the terms of the GNU Library General Public           *
- *   License as published by the Free Software Foundation; either          *
- *   version 2 of the License, or (at your option) any later version.      *
- *                                                                         *
- *   This library  is distributed in the hope that it will be useful,      *
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
- *   GNU Library General Public License for more details.                  *
- *                                                                         *
- *   You should have received a copy of the GNU Library General Public     *
- *   License along with this library; see the file COPYING.LIB. If not,    *
- *   write to the Free Software Foundation, Inc., 59 Temple Place,         *
- *   Suite 330, Boston, MA  02111-1307, USA                                *
- *                                                                         *
- ***************************************************************************/
+ // SPDX-License-Identifier: LGPL-2.1-or-later
+
+  /****************************************************************************
+   *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>               *
+   *   Copyright (c) 2023 FreeCAD Project Association                         *
+   *                                                                          *
+   *   This file is part of FreeCAD.                                          *
+   *                                                                          *
+   *   FreeCAD is free software: you can redistribute it and/or modify it     *
+   *   under the terms of the GNU Lesser General Public License as            *
+   *   published by the Free Software Foundation, either version 2.1 of the   *
+   *   License, or (at your option) any later version.                        *
+   *                                                                          *
+   *   FreeCAD is distributed in the hope that it will be useful, but         *
+   *   WITHOUT ANY WARRANTY; without even the implied warranty of             *
+   *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU       *
+   *   Lesser General Public License for more details.                        *
+   *                                                                          *
+   *   You should have received a copy of the GNU Lesser General Public       *
+   *   License along with FreeCAD. If not, see                                *
+   *   <https://www.gnu.org/licenses/>.                                       *
+   *                                                                          *
+   ***************************************************************************/
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
@@ -54,7 +56,7 @@
 using Base::Console;
 using Base::Sequencer;
 using namespace Gui;
-namespace bp = boost::placeholders;
+namespace sp = std::placeholders;
 
 
 //===========================================================================
@@ -92,7 +94,7 @@ void StdCmdWorkbench::activated(int i)
         QString msg(QLatin1String(e.what()));
         // ignore '<type 'exceptions.*Error'>' prefixes
         QRegularExpression rx;
-        rx.setPattern(QLatin1String("^\\s*<type 'exceptions.\\w*'>:\\s*"));
+        rx.setPattern(QLatin1String(R"(^\s*<type 'exceptions.\w*'>:\s*)"));
         auto match = rx.match(msg);
         if (match.hasMatch())
             msg = msg.mid(match.capturedLength());
@@ -132,7 +134,7 @@ StdCmdRecentFiles::StdCmdRecentFiles()
   :Command("Std_RecentFiles")
 {
     sGroup        = "File";
-    sMenuText     = QT_TR_NOOP("Recent files");
+    sMenuText     = QT_TR_NOOP("Open Recent");
     sToolTipText  = QT_TR_NOOP("Recent file list");
     sWhatsThis    = "Std_RecentFiles";
     sStatusTip    = QT_TR_NOOP("Recent file list");
@@ -177,6 +179,7 @@ StdCmdRecentMacros::StdCmdRecentMacros()
     sToolTipText  = QT_TR_NOOP("Recent macro list");
     sWhatsThis    = "Std_RecentMacros";
     sStatusTip    = QT_TR_NOOP("Recent macro list");
+    sPixmap       = "Std_RecentMacros";
     eType         = NoTransaction;
 }
 
@@ -369,8 +372,19 @@ Action * StdCmdDlgPreferences::createAction()
 void StdCmdDlgPreferences::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
+
+    static QString groupName{};
+    static int index{};
+
     Gui::Dialog::DlgPreferencesImp cDlg(getMainWindow());
-    cDlg.exec();
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences");
+    if (hGrp->GetBool("RestoreGroupPage", true)) {
+        cDlg.activateGroupPage(groupName, index);
+    }
+
+    if (cDlg.exec()) {
+        cDlg.activeGroupPage(groupName, index);
+    }
 }
 
 //===========================================================================
@@ -841,7 +855,7 @@ class StdCmdUserEditMode : public Gui::Command
 {
 public:
     StdCmdUserEditMode();
-    ~StdCmdUserEditMode() override{}
+    ~StdCmdUserEditMode() override = default;
     void languageChange() override;
     const char* className() const override {return "StdCmdUserEditMode";}
     void updateIcon(int mode);
@@ -862,7 +876,9 @@ StdCmdUserEditMode::StdCmdUserEditMode()
     sPixmap       = "Std_UserEditModeDefault";
     eType         = ForEdit;
 
-    this->getGuiApplication()->signalUserEditModeChanged.connect(boost::bind(&StdCmdUserEditMode::updateIcon, this, bp::_1));
+    this->getGuiApplication()->signalUserEditModeChanged.connect([this](int mode) {
+        this->updateIcon(mode);
+    });
 }
 
 Gui::Action * StdCmdUserEditMode::createAction()
@@ -874,11 +890,12 @@ Gui::Action * StdCmdUserEditMode::createAction()
 
     for (auto const &uem : Gui::Application::Instance->listUserEditModes()) {
         QAction* act = pcAction->addAction(QString());
-        auto modeName = QString::fromStdString(uem.second);
+        auto modeName = QString::fromStdString(uem.second.first);
         act->setCheckable(true);
         act->setIcon(BitmapFactory().iconFromTheme(qPrintable(QString::fromLatin1("Std_UserEditMode")+modeName)));
         act->setObjectName(QString::fromLatin1("Std_UserEditMode")+modeName);
         act->setWhatsThis(QString::fromLatin1(getWhatsThis()));
+        act->setToolTip(QString::fromStdString(uem.second.second));
 
         if (uem.first == 0) {
             pcAction->setIcon(act->icon());
@@ -906,11 +923,11 @@ void StdCmdUserEditMode::languageChange()
     QList<QAction*> a = pcAction->actions();
 
     for (int i = 0 ; i < a.count() ; i++) {
-        auto modeName = QString::fromStdString(Gui::Application::Instance->getUserEditModeName(i));
+        auto modeName = Gui::Application::Instance->getUserEditModeUIStrings(i);
         a[i]->setText(QCoreApplication::translate(
-        "EditMode", qPrintable(modeName)));
+        "EditMode", modeName.first.c_str()));
         a[i]->setToolTip(QCoreApplication::translate(
-        "EditMode", qPrintable(modeName+QString::fromLatin1(" mode"))));
+        "EditMode", modeName.second.c_str()));
     }
 }
 

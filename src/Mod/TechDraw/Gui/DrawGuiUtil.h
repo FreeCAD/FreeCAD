@@ -71,6 +71,8 @@ class TechDrawGuiExport DrawGuiUtil {
                                                                        std::string faceName);
     static void loadArrowBox(QComboBox* qcb);
 
+    static double roundToDigits(double original, int digits);
+
 
 };
 

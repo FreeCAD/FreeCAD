@@ -242,7 +242,7 @@ class JobCreate:
         selectTemplate = Path.Preferences.defaultJobTemplate()
         index = 0
         self.dialog.jobTemplate.addItem("<none>", "")
-        for name in sorted(template.keys()):
+        for name in sorted(template):
             if template[name] == selectTemplate:
                 index = self.dialog.jobTemplate.count()
             self.dialog.jobTemplate.addItem(name, template[name])

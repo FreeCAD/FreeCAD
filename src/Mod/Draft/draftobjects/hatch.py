@@ -77,7 +77,7 @@ class Hatch(DraftObject):
 
     def execute(self,obj):
 
-        if self.props_changed_placement_only() \
+        if self.props_changed_placement_only(obj) \
                 or not obj.Base \
                 or not obj.File \
                 or not obj.Pattern \

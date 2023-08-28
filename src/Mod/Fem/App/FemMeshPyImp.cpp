@@ -811,8 +811,8 @@ PyObject* FemMeshPy::getNodesBySolid(PyObject *args)
         }
         Py::List ret;
         std::set<int> resultSet = getFemMeshPtr()->getNodesBySolid(fc);
-        for (std::set<int>::const_iterator it = resultSet.begin();it!=resultSet.end();++it)
-            ret.append(Py::Long(*it));
+        for (int it : resultSet)
+            ret.append(Py::Long(it));
 
         return Py::new_reference_to(ret);
 
@@ -838,8 +838,8 @@ PyObject* FemMeshPy::getNodesByFace(PyObject *args)
         }
         Py::List ret;
         std::set<int> resultSet = getFemMeshPtr()->getNodesByFace(fc);
-        for (std::set<int>::const_iterator it = resultSet.begin();it!=resultSet.end();++it)
-            ret.append(Py::Long(*it));
+        for (int it : resultSet)
+            ret.append(Py::Long(it));
 
         return Py::new_reference_to(ret);
 
@@ -865,8 +865,8 @@ PyObject* FemMeshPy::getNodesByEdge(PyObject *args)
         }
         Py::List ret;
         std::set<int> resultSet = getFemMeshPtr()->getNodesByEdge(fc);
-        for (std::set<int>::const_iterator it = resultSet.begin();it!=resultSet.end();++it)
-            ret.append(Py::Long(*it));
+        for (int it : resultSet)
+            ret.append(Py::Long(it));
 
         return Py::new_reference_to(ret);
 
@@ -892,8 +892,8 @@ PyObject* FemMeshPy::getNodesByVertex(PyObject *args)
         }
         Py::List ret;
         std::set<int> resultSet = getFemMeshPtr()->getNodesByVertex(fc);
-        for (std::set<int>::const_iterator it = resultSet.begin();it!=resultSet.end();++it)
-            ret.append(Py::Long(*it));
+        for (int it : resultSet)
+            ret.append(Py::Long(it));
 
         return Py::new_reference_to(ret);
 
@@ -925,6 +925,45 @@ PyObject* FemMeshPy::getElementNodes(PyObject *args)
     }
 }
 
+using pairStrElemType = std::pair<std::string, SMDSAbs_ElementType>;
+
+const std::vector<pairStrElemType> vecTypeName = {
+    {"All", SMDSAbs_All},
+    {"Node", SMDSAbs_Node},
+    {"Edge", SMDSAbs_Edge},
+    {"Face", SMDSAbs_Face},
+    {"Volume", SMDSAbs_Volume},
+    {"0DElement", SMDSAbs_0DElement},
+    {"Ball", SMDSAbs_Ball},
+};
+
+PyObject* FemMeshPy::getNodeElements(PyObject* args)
+{
+    int id;
+    const char* typeStr = "All";
+    if (!PyArg_ParseTuple(args, "i|s", &id, &typeStr))
+        return nullptr;
+
+    auto it = std::find_if(vecTypeName.begin(), vecTypeName.end(), [=](const pairStrElemType& x) {
+        return x.first == typeStr;
+    });
+
+    if (it == vecTypeName.end()) {
+        PyErr_SetString(PyExc_ValueError, "Invalid element type");
+        return nullptr;
+    }
+
+    SMDSAbs_ElementType elemType = it->second;
+    std::list<int> elemList = getFemMeshPtr()->getNodeElements(id, elemType);
+    Py::Tuple result(elemList.size());
+    int index = 0;
+    for (int it : elemList) {
+        result.setItem(index++, Py::Long(it));
+    }
+
+    return Py::new_reference_to(result);
+}
+
 PyObject* FemMeshPy::getGroupName(PyObject *args)
 {
     int id;
@@ -950,19 +989,15 @@ PyObject* FemMeshPy::getGroupElementType(PyObject *args)
         PyErr_SetString(PyExc_ValueError, "No group for given id");
         return nullptr;
     }
-    SMDSAbs_ElementType aElementType = group->GetGroupDS()->GetType();
-    const char* typeString = "";
-    switch(aElementType) {
-        case SMDSAbs_All            : typeString = "All"; break;
-        case SMDSAbs_Node           : typeString = "Node"; break;
-        case SMDSAbs_Edge           : typeString = "Edge"; break;
-        case SMDSAbs_Face           : typeString = "Face"; break;
-        case SMDSAbs_Volume         : typeString = "Volume"; break;
-        case SMDSAbs_0DElement      : typeString = "0DElement"; break;
-        case SMDSAbs_Ball           : typeString = "Ball"; break;
-        default                     : typeString = "Unknown"; break;
-    }
-    return PyUnicode_FromString(typeString);
+
+    SMDSAbs_ElementType elemType = group->GetGroupDS()->GetType();
+    auto it = std::find_if(vecTypeName.begin(), vecTypeName.end(), [=](const pairStrElemType& x) {
+        return x.second == elemType;
+    });
+
+    const char* typeStr = it != vecTypeName.end() ? it->first.c_str() : "Unknown";
+
+    return PyUnicode_FromString(typeStr);
 }
 
 PyObject* FemMeshPy::getGroupElements(PyObject *args)
@@ -986,8 +1021,8 @@ PyObject* FemMeshPy::getGroupElements(PyObject *args)
 
     Py::Tuple tuple(ids.size());
     int index = 0;
-    for (std::set<int>::iterator it = ids.begin(); it != ids.end(); ++it) {
-        tuple.setItem(index++, Py::Long(*it));
+    for (int it : ids) {
+        tuple.setItem(index++, Py::Long(it));
     }
 
     return Py::new_reference_to(tuple);
@@ -1057,8 +1092,8 @@ PyObject* FemMeshPy::addGroupElements(PyObject *args)
 
     // Downcast Py_ssize_t to int to be compatible with SMESH functions
     std::set<int> int_ids;
-    for (std::set<Py_ssize_t>::iterator it = ids.begin(); it != ids.end(); ++it)
-        int_ids.insert(Py_SAFE_DOWNCAST(*it, Py_ssize_t, int));
+    for (Py_ssize_t it : ids)
+        int_ids.insert(Py_SAFE_DOWNCAST(it, Py_ssize_t, int));
 
     try
     {
@@ -1088,56 +1123,42 @@ PyObject* FemMeshPy::getElementType(PyObject *args)
         return nullptr;
 
     // An element ...
-    SMDSAbs_ElementType aElementType = getFemMeshPtr()->getSMesh()->GetElementType(id, true);
+    SMDSAbs_ElementType elemType = getFemMeshPtr()->getSMesh()->GetElementType(id, true);
     // ... or a node
-    if (aElementType == SMDSAbs_All)
-        aElementType = getFemMeshPtr()->getSMesh()->GetElementType(id, false);
+    if (elemType == SMDSAbs_All)
+        elemType = getFemMeshPtr()->getSMesh()->GetElementType(id, false);
 
-    const char* typeString = "";
-    switch(aElementType) {
-    case SMDSAbs_Node           : typeString = "Node"; break;
-    case SMDSAbs_Edge           : typeString = "Edge"; break;
-    case SMDSAbs_Face           : typeString = "Face"; break;
-    case SMDSAbs_Volume         : typeString = "Volume"; break;
-    case SMDSAbs_0DElement      : typeString = "0DElement"; break;
-    case SMDSAbs_Ball           : typeString = "Ball"; break;
-    default: {
+    auto it = std::find_if(vecTypeName.begin()+1, vecTypeName.end(), [=](const pairStrElemType& x) {
+        return x.second == elemType;
+    });
+
+    const char* typeStr = it != vecTypeName.end() ? it->first.c_str() : nullptr;
+    if (!typeStr) {
         PyErr_SetString(PyExc_ValueError, "No node or element for given id");
         return nullptr;
     }
-    }
 
-    return PyUnicode_FromString(typeString);
+    return PyUnicode_FromString(typeStr);
 }
 
 PyObject* FemMeshPy::getIdByElementType(PyObject *args)
 {
-    char* str;
-    if (!PyArg_ParseTuple(args, "s", &str))
+    const char* typeStr;
+    if (!PyArg_ParseTuple(args, "s", &typeStr))
         return nullptr;
 
-    SMDSAbs_ElementType aElementType = SMDSAbs_All;
-    if (strcmp(str, "Node") == 0) {
-        aElementType = SMDSAbs_Node;
-    }
-    else if (strcmp(str, "Edge") == 0) {
-        aElementType = SMDSAbs_Edge;
-    }
-    else if (strcmp(str, "Face") == 0) {
-        aElementType = SMDSAbs_Face;
-    }
-    else if (strcmp(str, "Volume") == 0) {
-        aElementType = SMDSAbs_Volume;
-    }
-    else if (strcmp(str, "0DElement") == 0) {
-        aElementType = SMDSAbs_0DElement;
-    }
-    else if (strcmp(str, "Ball") == 0) {
-        aElementType = SMDSAbs_Ball;
+    auto it = std::find_if(vecTypeName.begin(), vecTypeName.end(), [=](const pairStrElemType& x) {
+        return x.first == typeStr;
+    });
+
+    if (it == vecTypeName.end()) {
+        PyErr_SetString(PyExc_ValueError, "Invalid element type");
+        return nullptr;
     }
 
+    SMDSAbs_ElementType elemType = it->second;
     std::set<int> ids;
-    SMDS_ElemIteratorPtr aElemIter = getFemMeshPtr()->getSMesh()->GetMeshDS()->elementsIterator(aElementType);
+    SMDS_ElemIteratorPtr aElemIter = getFemMeshPtr()->getSMesh()->GetMeshDS()->elementsIterator(elemType);
     while (aElemIter->more()) {
         const SMDS_MeshElement* aElem = aElemIter->next();
         ids.insert(aElem->GetID());
@@ -1145,8 +1166,8 @@ PyObject* FemMeshPy::getIdByElementType(PyObject *args)
 
     Py::Tuple tuple(ids.size());
     int index = 0;
-    for (std::set<int>::iterator it = ids.begin(); it != ids.end(); ++it) {
-        tuple.setItem(index++, Py::Long(*it));
+    for (int it : ids) {
+        tuple.setItem(index++, Py::Long(it));
     }
 
     return Py::new_reference_to(tuple);
@@ -1193,8 +1214,8 @@ Py::Tuple FemMeshPy::getEdges() const
 
     Py::Tuple tuple(ids.size());
     int index = 0;
-    for (std::set<int>::iterator it = ids.begin(); it != ids.end(); ++it) {
-        tuple.setItem(index++, Py::Long(*it));
+    for (int it : ids) {
+        tuple.setItem(index++, Py::Long(it));
     }
 
     return tuple;
@@ -1205,8 +1226,8 @@ Py::Tuple FemMeshPy::getEdgesOnly() const
     std::set<int> resultSet = getFemMeshPtr()->getEdgesOnly();
     Py::Tuple tuple(resultSet.size());
     int index = 0;
-    for (std::set<int>::iterator it = resultSet.begin(); it != resultSet.end(); ++it) {
-        tuple.setItem(index++, Py::Long(*it));
+    for (int it : resultSet) {
+        tuple.setItem(index++, Py::Long(it));
     }
 
     return tuple;
@@ -1228,8 +1249,8 @@ Py::Tuple FemMeshPy::getFaces() const
 
     Py::Tuple tuple(ids.size());
     int index = 0;
-    for (std::set<int>::iterator it = ids.begin(); it != ids.end(); ++it) {
-        tuple.setItem(index++, Py::Long(*it));
+    for (int it : ids) {
+        tuple.setItem(index++, Py::Long(it));
     }
 
     return tuple;
@@ -1240,8 +1261,8 @@ Py::Tuple FemMeshPy::getFacesOnly() const
     std::set<int> resultSet = getFemMeshPtr()->getFacesOnly();
     Py::Tuple tuple(resultSet.size());
     int index = 0;
-    for (std::set<int>::iterator it = resultSet.begin(); it != resultSet.end(); ++it) {
-        tuple.setItem(index++, Py::Long(*it));
+    for (int it : resultSet) {
+        tuple.setItem(index++, Py::Long(it));
     }
 
     return tuple;
@@ -1278,8 +1299,8 @@ Py::Tuple FemMeshPy::getVolumes() const
 
     Py::Tuple tuple(ids.size());
     int index = 0;
-    for (std::set<int>::iterator it = ids.begin(); it != ids.end(); ++it) {
-        tuple.setItem(index++, Py::Long(*it));
+    for (int it : ids) {
+        tuple.setItem(index++, Py::Long(it));
     }
 
     return tuple;
@@ -1331,8 +1352,8 @@ Py::Tuple FemMeshPy::getGroups() const
 
     Py::Tuple tuple(groupIDs.size());
     int index = 0;
-    for (std::list<int>::iterator it = groupIDs.begin(); it != groupIDs.end(); ++it) {
-        tuple.setItem(index++, Py::Long(*it));
+    for (int it : groupIDs) {
+        tuple.setItem(index++, Py::Long(it));
     }
 
     return tuple;

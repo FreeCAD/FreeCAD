@@ -102,7 +102,7 @@ public:
     bool getPyPathValue(const ObjectIdentifier &path, Py::Object &res) const override;
 
     virtual Base::Unit getUnit() const {
-        return Base::Unit();
+        return {};
     }
 
     bool isSame(const Property &other) const override {

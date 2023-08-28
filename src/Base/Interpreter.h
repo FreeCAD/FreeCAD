@@ -93,7 +93,7 @@ public:
     /// constructor does the whole job
     PyException();
     PyException(const Py::Object &obj);
-    ~PyException() throw() override;
+    ~PyException() noexcept override;
 
     void raiseException();
 
@@ -139,7 +139,7 @@ class BaseExport SystemExitException : public Exception
 {
 public:
     SystemExitException();
-    ~SystemExitException() throw() override = default;
+    ~SystemExitException() noexcept override = default;
     long getExitCode() const { return _exitCode;}
 
 protected:

@@ -1,21 +1,23 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
 # ***************************************************************************
-# *   Copyright (c) 2023 0penBrain                               *
 # *                                                                         *
-# *   This program is free software; you can redistribute it and/or modify  *
-# *   it under the terms of the GNU Lesser General Public License (LGPL)    *
-# *   as published by the Free Software Foundation; either version 2 of     *
-# *   the License, or (at your option) any later version.                   *
-# *   for detail see the LICENCE text file.                                 *
+# *   Copyright (c) 2023 0penBrain.                                         *
 # *                                                                         *
-# *   This program is distributed in the hope that it will be useful,       *
-# *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-# *   GNU Library General Public License for more details.                  *
+# *   This file is part of FreeCAD.                                         *
 # *                                                                         *
-# *   You should have received a copy of the GNU Library General Public     *
-# *   License along with this program; if not, write to the Free Software   *
-# *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
-# *   USA                                                                   *
+# *   FreeCAD is free software: you can redistribute it and/or modify it    *
+# *   under the terms of the GNU Lesser General Public License as           *
+# *   published by the Free Software Foundation, either version 2.1 of the  *
+# *   License, or (at your option) any later version.                       *
+# *                                                                         *
+# *   FreeCAD is distributed in the hope that it will be useful, but        *
+# *   WITHOUT ANY WARRANTY; without even the implied warranty of            *
+# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU      *
+# *   Lesser General Public License for more details.                       *
+# *                                                                         *
+# *   You should have received a copy of the GNU Lesser General Public      *
+# *   License along with FreeCAD. If not, see                               *
+# *   <https://www.gnu.org/licenses/>.                                      *
 # *                                                                         *
 # ***************************************************************************
 
@@ -39,7 +41,7 @@ on:
         type: string
         required: true
       checkLineendings:
-        default: true
+        default: false
         type: boolean
         required: false
       lineendingsFailSilent:
@@ -91,10 +93,10 @@ on:
         type: boolean
         required: false
       pylintDisable:
-        default: disable=C0302
+        default: C0302,C0303 # Trailing whitespaces (C0303) are already checked
         type: string
         required: false
-      pylintFailtSilent:
+      pylintFailSilent:
         default: true
         type: boolean
         required: false
@@ -204,8 +206,10 @@ jobs:
           mkdir -p ${{ env.fixesdir }}
           mkdir -p ${{ env.reportdir }}
           echo "reportFile=${{ env.reportfilename }}" >> $GITHUB_OUTPUT
+    # Run generic lints
       - name: Check for non Unix line ending
         if: inputs.checkLineendings && always()
+        continue-on-error: ${{ inputs.lineendingsFailSilent }}
         run: |
           lineendings=0
           for file in ${{ inputs.changedFiles }}
@@ -213,7 +217,8 @@ jobs:
             # Check for DOS or MAC line endings
             if [[ $(file -b $file) =~ "with CR" ]]
             then
-              echo "::warning file=$file::File has non Unix line endings" | tee -a ${{ env.logdir }}lineendings.log
+              echo "::warning file=$file,title=$file::File has non Unix line endings"
+              echo "$file has non Unix line endings" >> ${{ env.logdir }}lineendings.log
               ((lineendings=lineendings+1))
             fi
           done
@@ -232,21 +237,17 @@ jobs:
           fi
           echo "" >> ${{env.reportdir}}${{ env.reportfilename }}
           # Exit the step with appropriate code
-          if [ $lineendings -gt 0 ] && [ ${{ inputs.lineendingsFailSilent }} != true ]
-          then
-            exit 1
-          else
-            exit 0
-          fi
+          [ $lineendings -eq 0 ]
       - name: Check for trailing whitespaces
         if: inputs.checkWhitespace && always()
+        continue-on-error: ${{ inputs.whitespaceFailSilent }}
         run: |
           whitespaceErrors=0
           exclude="*[.md]"
           for file in ${{ inputs.changedFiles }}
           do
             # Check for trailing whitespaces
-            grep -nIHE --exclude="$exclude" " $" $file | sed 's/$/<-- trailing whitespace/' >> ${{ env.logdir }}whitespace.log || true
+            grep -nIHE --exclude="$exclude" " $" $file | sed -e "s/$/<-- trailing whitespace/" >> ${{ env.logdir }}whitespace.log || true
           done
           # Write the Log to the console with the Problem Matchers
           if [ -f ${{ env.logdir }}whitespace.log ]
@@ -271,21 +272,17 @@ jobs:
           fi
           echo "" >> ${{env.reportdir}}${{ env.reportfilename }}
           # Exit the step with appropriate code
-          if [ $whitespaceErrors -gt 0 ] && [ ${{ inputs.whitespaceFailSilent }} != true ]
-          then
-            exit 1
-          else
-            exit 0
-          fi
+          [ $whitespaceErrors -eq 0 ]
       - name: Check for Tab usage
         if: inputs.checkTabs && always()
+        continue-on-error: ${{ inputs.tabsFailSilent }}
         run: |
           tabErrors=0
           exclude="*[.md]"
           # Check for Tab usage
           for file in ${{ steps.changed-files.outputs.all_changed_files }}
           do
-            grep -nIHE --exclude="$exclude" $'\t' $file | sed 's/$/ <-- contains tab/' >> ${{ env.logdir }}tab.log || true
+            grep -nIHE --exclude="$exclude" $'\t' $file | sed -e "s/$/ <-- contains tab/" >> ${{ env.logdir }}tab.log || true
           done
           # Write the Log to the console with the Problem Matchers
           if [ -f ${{ env.logdir }}tab.log ]
@@ -309,94 +306,12 @@ jobs:
           fi
           echo "" >> ${{env.reportdir}}${{ env.reportfilename }}
           # Exit the step with appropriate code
-          if [ $tabErrors -gt 0 ] && [ ${{ inputs.tabsFailSilent }} != true ]
-          then
-            exit 1
-          else
-            exit 0
-          fi
-      - name: Check old Qt string-based connections (https://wiki.qt.io/New_Signal_Slot_Syntax)
-        if: inputs.checkQtConnections && inputs.changedCppFiles != '' && always()
-        run: |
-          qtconnectionSyntax=0
-          exclude="*[.md,.log,.ts,.git]"
-          # Check all files for QT string-based connections
-          for file in ${{ inputs.changedFiles }} #TODO does this makes sense in Python files ?
-          do
-            grep -nIHE --exclude="$exclude" $' SIGNAL| SLOT' $file | sed 's/$/ <--Consider using Functor-Based Connections/' >> ${{ env.logdir }}qtConnections.log || true #TODO seems to trigger false positives
-          done
-          # Write the Log to the console with the Problem Matchers
-          if [ -f ${{ env.logdir }}qtConnections.log ]; then
-            echo "::add-matcher::${{ runner.workspace }}/FreeCAD/.github/problemMatcher/grepMatcherWarning.json"
-            cat ${{ env.logdir }}qtConnections.log
-            echo "::remove-matcher owner=grepMatcher-warning::"
-            qtconnectionSyntax=$(wc -l < ${{ env.logdir }}qtConnections.log)
-          fi
-          echo "Found $qtconnectionSyntax QT string-based connections"
-          # Write the report
-          if [ $qtconnectionSyntax -gt 0 ]; then
-            echo "<details><summary>:information_source: Found $qtconnectionSyntax QT string-based connections :arrow_right: consider using QT functor-Based Connections</summary>" >> ${{env.reportdir}}${{ env.reportfilename }}
-            echo "" >> ${{env.reportdir}}${{ env.reportfilename }}
-            # documentation link
-            echo "For more information see: https://wiki.qt.io/New_Signal_Slot_Syntax or https://github.com/FreeCAD/FreeCAD/issues/6166" >> ${{env.reportdir}}${{ env.reportfilename }}
-            echo '```' >> ${{env.reportdir}}${{ env.reportfilename }}
-            cat ${{ env.logdir }}qtConnections.log >> ${{env.reportdir}}${{ env.reportfilename }}
-            echo '```' >> ${{env.reportdir}}${{ env.reportfilename }}
-            echo "</details>" >> ${{env.reportdir}}${{ env.reportfilename }}
-          else
-            echo ":heavy_check_mark: No string-based connections found  " >> ${{env.reportdir}}${{ env.reportfilename }}
-          fi
-          echo "" >> ${{env.reportdir}}${{ env.reportfilename }}
-          # Exit the step with appropriate code
-          if [ $qtconnectionSyntax -gt 0 ] && [ ${{ inputs.qtConnectionsFailSilent }} != true ]
-          then
-            exit 1
-          else
-            exit 0
-          fi
-      - name: Cpplint
-        if: inputs.checkCpplint && inputs.changedCppFiles != '' && always()
-        run: |
-          cpplintErrors=0
-          pip install cpplint
-          # Run cpplint
-          for file in ${{ inputs.changedCppFiles }}
-          do
-            cpplint --filter=${{ inputs.cpplintFilters }} --linelength=${{ inputs.cpplintLineLength }} $file &>> ${{ env.logdir }}cpplint.log || true
-          done
-          # If cpplint has run successfully, write the Log to the console with the Problem Matchers
-          if [ ${{ env.logdir }}cpplint.log ]
-          then
-            echo "::add-matcher::${{ runner.workspace }}/FreeCAD/.github/problemMatcher/cpplint.json"
-            cat ${{ env.logdir }}cpplint.log
-            echo "::remove-matcher owner=cpplint::"
-            cpplintErrors=$(grep -nIHE "\[[0-9]\]$" ${{ env.logdir }}cpplint.log | wc -l ) || true
-          fi
-          echo "Found $cpplintErrors cpplint errors"
-          # Write the report
-          if [ $cpplintErrors -gt 0 ]
-          then
-            echo "<details><summary>:warning: CppLint found $cpplintErrors errors / warnings</summary>" >> ${{env.reportdir}}${{ env.reportfilename }}
-          else
-            echo "<details><summary>:heavy_check_mark: No cpplint errors found </summary>  " >> ${{env.reportdir}}${{ env.reportfilename }}
-          fi
-          echo "" >> ${{env.reportdir}}${{ env.reportfilename }}
-          echo '```' >> ${{env.reportdir}}${{ env.reportfilename }}
-          cat ${{ env.logdir }}cpplint.log >> ${{env.reportdir}}${{ env.reportfilename }}
-          echo '```' >> ${{env.reportdir}}${{ env.reportfilename }}
-          echo "</details>" >> ${{env.reportdir}}${{ env.reportfilename }}
-          echo "" >> ${{env.reportdir}}${{ env.reportfilename }}
-          # Exit the step with appropriate code
-          if [ $cpplintErrors -gt 0 ] && [ ${{ inputs.cpplintFailSilent }} != true ]
-          then
-            exit 1
-          else
-            exit 0
-          fi
+          [ $tabErrors -eq 0 ]
+    # Run Python lints
       - name: Pylint
         if: inputs.checkPylint && inputs.changedPythonFiles != '' && always()
+        continue-on-error: ${{ inputs.pylintFailSilent }}
         run: |
-          set +e
           pylintErrors=0
           pylintWarnings=0
           pylintRefactorings=0
@@ -405,8 +320,10 @@ jobs:
           # List enabled pylint checks
           pylint --list-msgs-enabled > ${{ env.logdir }}pylint-enabled-checks.log
           # Run pylint on all python files
+          set +e
           pylint --disable=${{ inputs.pylintDisable }} ${{ inputs.changedPythonFiles }} > ${{ env.logdir }}pylint.log
           exitCode=$?
+          set -e
           # If pylint has run successfully, write the Log to the console with the Problem Matchers
           if [ -f ${{ env.logdir }}pylint.log ]
           then
@@ -452,22 +369,18 @@ jobs:
           echo "</details>" >> ${{env.reportdir}}${{ env.reportfilename }}
           echo "" >> ${{env.reportdir}}${{ env.reportfilename }}
           # Exit the step with appropriate code
-          if [ $pylintErrors -gt 0 ] && [ ${{ inputs.pylintFailSilent }} != true ]
-          then
-            exit $exitCode
-          else
-            echo "Pylint exited with code $exitCode, but we are ignoring it"
-            exit 0
-          fi
+          [ $pylintErrors -eq 0 ]
       - name: Black (Python)
         if: inputs.checkBlack && inputs.changedPythonFiles != '' && always()
+        continue-on-error: ${{ inputs.blackFailSilent }}
         run: |
-          set +e
           blackReformats=0
           blackFails=0
           pip install black
+          set +e
           black --check ${{ inputs.changedPythonFiles }} &> ${{ env.logdir }}black.log
           exitCode=$?
+          set -e
           # If black has run successfully, write the Log to the console with the Problem Matchers
           if [ -f ${{ env.logdir }}black.log ]
           then
@@ -492,15 +405,153 @@ jobs:
           echo "</details>" >> ${{env.reportdir}}${{ env.reportfilename }}
           echo "" >> ${{env.reportdir}}${{ env.reportfilename }}
           # Exit the step with appropriate code
-          if [ $exitCode -gt 0 ] && [ ${{ inputs.blackFailSilent }} != true ]
-          then
-            exit $exitCode
-          else
-            echo "Black exited with code $exitCode, but we are ignoring it"
-            exit 0
+          [ $exitCode -eq 0 ]
+    # Run C++ lints
+      - name: Install FreeCAD dependencies
+        if: inputs.changedCppFiles != '' && always()
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends               \
+                            doxygen                                     \
+                            graphviz                                    \
+                            imagemagick                                 \
+                            libboost-date-time-dev                      \
+                            libboost-dev                                \
+                            libboost-filesystem-dev                     \
+                            libboost-graph-dev                          \
+                            libboost-iostreams-dev                      \
+                            libboost-program-options-dev                \
+                            libboost-python-dev                         \
+                            libboost-regex-dev                          \
+                            libboost-serialization-dev                  \
+                            libboost-thread-dev                         \
+                            libcoin-dev                                 \
+                            libeigen3-dev                               \
+                            libgts-bin                                  \
+                            libgts-dev                                  \
+                            libkdtree++-dev                             \
+                            libmedc-dev                                 \
+                            libocct-data-exchange-dev                   \
+                            libocct-ocaf-dev                            \
+                            libocct-visualization-dev                   \
+                            libopencv-dev                               \
+                            libproj-dev                                 \
+                            libpyside2-dev                              \
+                            libqt5opengl5-dev                           \
+                            libqt5svg5-dev                              \
+                            libqt5x11extras5-dev                        \
+                            libqt5xmlpatterns5-dev                      \
+                            libshiboken2-dev                            \
+                            libspnav-dev                                \
+                            libvtk7-dev                                 \
+                            libx11-dev                                  \
+                            libxerces-c-dev                             \
+                            libzipios++-dev                             \
+                            netgen                                      \
+                            netgen-headers                              \
+                            occt-draw                                   \
+                            pyqt5-dev-tools                             \
+                            pyside2-tools                               \
+                            python3-dev                                 \
+                            python3-git                                 \
+                            python3-markdown                            \
+                            python3-matplotlib                          \
+                            python3-packaging                           \
+                            python3-pivy                                \
+                            python3-ply                                 \
+                            python3-pyside2.qtcore                      \
+                            python3-pyside2.qtgui                       \
+                            python3-pyside2.qtnetwork                   \
+                            python3-pyside2.qtsvg                       \
+                            python3-pyside2.qtwebengine                 \
+                            python3-pyside2.qtwebenginecore             \
+                            python3-pyside2.qtwebenginewidgets          \
+                            python3-pyside2.qtwebchannel                \
+                            python3-pyside2.qtwidgets                   \
+                            qtbase5-dev                                 \
+                            qttools5-dev                                \
+                            qtwebengine5-dev                            \
+                            shiboken2                                   \
+                            swig                                        \
+                            ccache                                      \
+                            xvfb
+      - name: Run CMake # This is needed for Clang tools to work correctly
+        if: inputs.changedCppFiles != '' && always()
+        run: |
+          mkdir build && cmake -S ./ -B ./build/ -D CMAKE_EXPORT_COMPILE_COMMANDS:BOOL=TRUE
+      - name: Check old Qt string-based connections (https://wiki.qt.io/New_Signal_Slot_Syntax)
+        if: inputs.checkQtConnections && inputs.changedCppFiles != '' && always()
+        continue-on-error: ${{ inputs.qtConnectionsFailSilent }}
+        run: |
+          qtconnectionSyntax=0
+          exclude="*[.md,.log,.ts,.git]"
+          # Check all files for QT string-based connections
+          for file in ${{ inputs.changedFiles }} #TODO does this makes sense in Python files ?
+          do
+            grep -nIHE --exclude="$exclude" $' SIGNAL| SLOT' $file | sed -e "s/$/ <--Consider using Functor-Based Connections/" >> ${{ env.logdir }}qtConnections.log || true #TODO seems to trigger false positives
+          done
+          # Write the Log to the console with the Problem Matchers
+          if [ -f ${{ env.logdir }}qtConnections.log ]; then
+            echo "::add-matcher::${{ runner.workspace }}/FreeCAD/.github/problemMatcher/grepMatcherWarning.json"
+            cat ${{ env.logdir }}qtConnections.log
+            echo "::remove-matcher owner=grepMatcher-warning::"
+            qtconnectionSyntax=$(wc -l < ${{ env.logdir }}qtConnections.log)
           fi
+          echo "Found $qtconnectionSyntax QT string-based connections"
+          # Write the report
+          if [ $qtconnectionSyntax -gt 0 ]; then
+            echo "<details><summary>:information_source: Found $qtconnectionSyntax QT string-based connections :arrow_right: consider using QT functor-Based Connections</summary>" >> ${{env.reportdir}}${{ env.reportfilename }}
+            echo "" >> ${{env.reportdir}}${{ env.reportfilename }}
+            # documentation link
+            echo "For more information see: https://wiki.qt.io/New_Signal_Slot_Syntax or https://github.com/FreeCAD/FreeCAD/issues/6166" >> ${{env.reportdir}}${{ env.reportfilename }}
+            echo '```' >> ${{env.reportdir}}${{ env.reportfilename }}
+            cat ${{ env.logdir }}qtConnections.log >> ${{env.reportdir}}${{ env.reportfilename }}
+            echo '```' >> ${{env.reportdir}}${{ env.reportfilename }}
+            echo "</details>" >> ${{env.reportdir}}${{ env.reportfilename }}
+          else
+            echo ":heavy_check_mark: No string-based connections found  " >> ${{env.reportdir}}${{ env.reportfilename }}
+          fi
+          echo "" >> ${{env.reportdir}}${{ env.reportfilename }}
+          # Exit the step with appropriate code
+          [ $qtconnectionSyntax -eq 0 ]
+      - name: Cpplint
+        if: inputs.checkCpplint && inputs.changedCppFiles != '' && always()
+        continue-on-error: ${{ inputs.cpplintFailSilent }}
+        run: |
+          cpplintErrors=0
+          pip install cpplint
+          # Run cpplint
+          for file in ${{ inputs.changedCppFiles }}
+          do
+            cpplint --filter=${{ inputs.cpplintFilters }} --linelength=${{ inputs.cpplintLineLength }} $file &>> ${{ env.logdir }}cpplint.log || true
+          done
+          # If cpplint has run successfully, write the Log to the console with the Problem Matchers
+          if [ ${{ env.logdir }}cpplint.log ]
+          then
+            echo "::add-matcher::${{ runner.workspace }}/FreeCAD/.github/problemMatcher/cpplint.json"
+            cat ${{ env.logdir }}cpplint.log
+            echo "::remove-matcher owner=cpplint::"
+            cpplintErrors=$(grep -nIHE "\[[0-9]\]$" ${{ env.logdir }}cpplint.log | wc -l ) || true
+          fi
+          echo "Found $cpplintErrors cpplint errors"
+          # Write the report
+          if [ $cpplintErrors -gt 0 ]
+          then
+            echo "<details><summary>:warning: CppLint found $cpplintErrors errors / warnings</summary>" >> ${{env.reportdir}}${{ env.reportfilename }}
+          else
+            echo "<details><summary>:heavy_check_mark: No cpplint errors found </summary>  " >> ${{env.reportdir}}${{ env.reportfilename }}
+          fi
+          echo "" >> ${{env.reportdir}}${{ env.reportfilename }}
+          echo '```' >> ${{env.reportdir}}${{ env.reportfilename }}
+          cat ${{ env.logdir }}cpplint.log >> ${{env.reportdir}}${{ env.reportfilename }}
+          echo '```' >> ${{env.reportdir}}${{ env.reportfilename }}
+          echo "</details>" >> ${{env.reportdir}}${{ env.reportfilename }}
+          echo "" >> ${{env.reportdir}}${{ env.reportfilename }}
+          # Exit the step with appropriate code
+          [ $cpplintErrors -eq 0 ]
       - name: Clang-format
         if: inputs.checkClangFormat && inputs.changedCppFiles != '' && always()
+        continue-on-error: ${{ inputs.clangFormatFailSilent }}
         run: |
           clangFormatErrors=0
           # Run clang-format on all cpp files
@@ -528,19 +579,17 @@ jobs:
           echo "</details>" >> ${{env.reportdir}}${{ env.reportfilename }}
           echo "" >> ${{env.reportdir}}${{ env.reportfilename }}
           # Exit the step with appropriate code
-          if [ $clangFormatErrors -gt 0 ] && [ ${{ inputs.clangFormatFailSilent }} != true ]
-          then
-            exit 1
-          else
-            exit 0
-          fi
+          [ $clangFormatErrors -eq 0 ]
       - name: Codespell
         if: inputs.checkSpelling && always()
+        continue-on-error: ${{ inputs.codespellFailSilent }}
         run: |
           pip install codespell
           wget https://raw.githubusercontent.com/codespell-project/codespell/master/codespell_lib/data/dictionary.txt
           #wget https://raw.githubusercontent.com/codespell-project/codespell/master/codespell_lib/data/dictionary_rare.txt
-          misspellings=$( codespell --quiet-level 3 --summary --count --ignore-words ${{ inputs.listIgnoredMisspelling }} --skip ${{ inputs.spellingIgnore }} -D dictionary.txt ${{ inputs.changedFiles }} >& ${{ env.logdir }}codespell.log ) || true
+          set +e
+          misspellings=$( { codespell --quiet-level 3 --summary --count --ignore-words ${{ inputs.listIgnoredMisspelling }} --skip ${{ inputs.spellingIgnore }} -D dictionary.txt ${{ inputs.changedFiles }} > ${{ env.logdir }}codespell.log ; } 2>&1 )
+          set -e
           # If codespell has run successfully, write the Log to the console with the Problem Matchers
           if [ -f ${{ env.logdir }}codespell.log ]
           then
@@ -564,15 +613,11 @@ jobs:
           echo "</details>" >> ${{env.reportdir}}${{ env.reportfilename }}
           echo "" >> ${{env.reportdir}}${{ env.reportfilename }}
           # Exit the step with appropriate code
-          if [ $misspellings -gt 0 ] && [ ${{ inputs.codespellFailSilent }} != true ]; then
-            exit 1
-          else
-            exit 0
-          fi
+          [ $misspellings -eq 0 ]
       - name: Clang-tidy
         if: inputs.checkClangTidy && inputs.changedCppFiles != '' && always()
+        continue-on-error: ${{ inputs.clangTidyFailSilent }}
         run: |
-          set +e
           clangTidyErrors=0
           clangTidyWarnings=0
           clangTidyNotes=0
@@ -580,8 +625,10 @@ jobs:
           #TODO: check where this "clang-tidy.yaml" goes ; shall this be put in the fixes ?
           clang-tidy --quiet --format-style=${{ inputs.clangStyle }} --export-fixes=clang-tidy.yaml -checks=${{ inputs.clangTidyChecks }} -p build/ --explain-config &>> ${{ env.logdir }}clang-tidy-enabled-checks.log
           # Run clang-tidy on all cpp files
+          set +e
           clang-tidy --quiet --format-style=${{ inputs.clangStyle }} --export-fixes=clang-tidy.yaml -checks=${{ inputs.clangTidyChecks }} -p build/ ${{ inputs.changedCppFiles }} &>> ${{ env.logdir }}clang-tidy.log
           exitCode=$?
+          set -e
           # If clang-tidy has run successfully, write the Log to the console with the Problem Matchers
           if [ -f ${{ env.logdir }}clang-tidy.log ]
           then
@@ -621,15 +668,10 @@ jobs:
           echo "</details>" >> ${{env.reportdir}}${{ env.reportfilename }}
           echo "" >> ${{env.reportdir}}${{ env.reportfilename }}
           # Exit the step with appropriate code
-          if [ $clangTidyErrors -gt 0 ] && [ ${{ inputs.clangTidyFailSilent }} != true ]
-          then
-            exit $exitCode
-          else
-            echo "Clang-tidy exited with code $exitCode, but we are ignoring it"
-            exit 0
-          fi
+          [ $clangTidyErrors -eq 0 ]
       - name: Clazy
         if: inputs.checkClazy && inputs.changedCppFiles != '' && always()
+        continue-on-error: ${{ inputs.clazyFailSilent }}
         run: |
           clazyErrors=0
           clazyWarnings=0
@@ -670,14 +712,10 @@ jobs:
           echo "</details>" >> ${{env.reportdir}}${{ env.reportfilename }}
           echo "" >> ${{env.reportdir}}${{ env.reportfilename }}
           # Exit the step with appropriate code
-          if [ "$clazyErrors" -gt 0 ] && [ ${{ inputs.clazyFailSilent }} != true ]
-          then
-            exit 1
-          else
-            exit 0
-          fi
+          [ $clazyErrors -eq 0 ]
       - name: Clazy-QT6
         if: inputs.checkClazyQT6 && inputs.changedCppFiles != '' && github.ref == inputs.QT6Branch && always()
+        continue-on-error: ${{ inputs.clazyQT6FailSilent }}
         run: |
           clazyQT6Errors=0
           clazyQT6Warnings=0
@@ -717,11 +755,7 @@ jobs:
           echo "</details>" >> ${{env.reportdir}}${{ env.reportfilename }}
           echo "" >> ${{env.reportdir}}${{ env.reportfilename }}
           # Exit the step with appropriate code
-          if [ "$clazyQT6Errors" -gt 0 ] && [ ${{ inputs.clazyQT6FailSilent }} != true ]; then
-            exit 1
-          else
-            exit 0
-          fi
+          [ $clazyQT6Errors -eq 0 ]
       - name: Upload logs and fixes
         if: always()
         uses: actions/upload-artifact@v3

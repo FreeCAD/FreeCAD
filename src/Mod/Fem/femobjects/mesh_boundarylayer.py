@@ -23,7 +23,7 @@
 
 __title__ = "FreeCAD FEM mesh boundary layer document object"
 __author__ = "Bernd Hahnebach, Qingfeng Xia"
-__url__ = "https://www.freecadweb.org"
+__url__ = "https://www.freecad.org"
 
 ## @package mesh_boundarylayer
 #  \ingroup FEM

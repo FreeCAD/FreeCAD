@@ -63,7 +63,7 @@ public:
                        App::DocumentObject* profileObject,
                        std::vector<std::string> profileSubs);
     TaskComplexSection(TechDraw::DrawComplexSection* complexSection);
-    ~TaskComplexSection() = default;
+    ~TaskComplexSection() override = default;
 
     virtual bool accept();
     virtual bool reject();

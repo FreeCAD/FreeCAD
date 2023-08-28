@@ -28,6 +28,7 @@
 #include <Mod/Fem/FemGlobal.h>
 
 #include <vtkAppendPolyData.h>
+#include <vtkDataObject.h>
 #include <vtkExtractEdges.h>
 #include <vtkGeometryFilter.h>
 #include <vtkOutlineCornerFilter.h>
@@ -150,6 +151,7 @@ protected:
     vtkSmartPointer<vtkVertexGlyphFilter>       m_points, m_pointsSurface;
 
 private:
+    void filterArtifacts(vtkDataSet* data);
     void updateProperties();
     void update3D();
     void WritePointData(vtkPoints *points, vtkDataArray *normals,
@@ -159,7 +161,7 @@ private:
     void addAbsoluteField(vtkDataSet* dset, std::string FieldName);
 
     App::Enumeration m_coloringEnum, m_vectorEnum;
-    bool m_blockPropertyChanges;
+    bool m_blockPropertyChanges{false};
 };
 
 } //namespace FemGui

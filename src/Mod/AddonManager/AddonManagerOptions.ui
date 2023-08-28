@@ -273,7 +273,7 @@ installed addons will be checked for available updates
      <item row="0" column="0">
       <widget class="QLabel" name="fclabel">
        <property name="text">
-        <string>Python executable (optional):</string>
+        <string>Path to Python executable (optional):</string>
        </property>
       </widget>
      </item>
@@ -305,7 +305,7 @@ installed addons will be checked for available updates
      <item row="1" column="0">
       <widget class="QLabel" name="label_3">
        <property name="text">
-        <string>git executable (optional):</string>
+        <string>Path to git executable (optional):</string>
        </property>
       </widget>
      </item>

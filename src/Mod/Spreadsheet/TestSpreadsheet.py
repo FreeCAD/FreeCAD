@@ -22,6 +22,7 @@
 import os
 import sys
 import math
+from math import sqrt
 import unittest
 import FreeCAD
 import Part
@@ -45,7 +46,6 @@ class SpreadsheetCases(unittest.TestCase):
 
     def testAggregates(self):
         """ Test all aggregate functions """
-        sheet = self.doc.addObject('Spreadsheet::Sheet','Spreadsheet')
         sheet = self.doc.addObject('Spreadsheet::Sheet','Spreadsheet')
         sheet.set('B13',  '4')
         sheet.set('B14',  '5')
@@ -165,7 +165,6 @@ class SpreadsheetCases(unittest.TestCase):
 
     def testFunctions(self):
         """ Test all built-in simple functions """
-        doc = FreeCAD.newDocument()
         sheet = self.doc.addObject('Spreadsheet::Sheet','Spreadsheet')
         sheet.set('A1',  '=cos(60)')   # Cos
         sheet.set('B1',  '=cos(60deg)')
@@ -366,7 +365,6 @@ class SpreadsheetCases(unittest.TestCase):
         self.assertMostlyEqual(sheet.B27, l)
         self.assertTrue(sheet.C27.startswith(u'ERR: Units must be equal'))
         self.assertMostlyEqual(sheet.D27, Units.Quantity("3 mm"))
-        FreeCAD.closeDocument(doc.Name)
 
     def testRelationalOperators(self):
         """ Test relational operators """
@@ -894,7 +892,7 @@ class SpreadsheetCases(unittest.TestCase):
         pla = FreeCAD.Placement(vec,rot)
         ipla = pla.inverse()
 
-        sheet.set('A1', '=create(<<vector>>, 2, 1, 2)')
+        sheet.set('A1', '=vector(2, 1, 2)')
 
         # different ways of calling mscale()
         sheet.set('B1', '=mscale(create(<<matrix>>), A1)')
@@ -907,10 +905,10 @@ class SpreadsheetCases(unittest.TestCase):
         sheet.set('D2', '=A2^0')
         sheet.set('E2', '=A2^1')
         sheet.set('F2', '=A2^2')
-        sheet.set('G2', '=create(<<matrix>>, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)')
+        sheet.set('G2', '=matrix(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)')
         sheet.set('H2', '=G2^-1')
 
-        sheet.set('A3', '=create(<<rotation>>, create(<<vector>>, 0, 1, 0), 45)')
+        sheet.set('A3', '=rotation(vector(0, 1, 0), 45)')
 
         # test rotation power operation
         sheet.set('B3', '=A3^-2')
@@ -919,7 +917,7 @@ class SpreadsheetCases(unittest.TestCase):
         sheet.set('E3', '=A3^1')
         sheet.set('F3', '=A3^2')
 
-        sheet.set('A4', '=create(<<placement>>, A1, A3)')
+        sheet.set('A4', '=placement(A1, A3)')
 
         # test placement power operation
         sheet.set('B4', '=A4^-2')
@@ -943,6 +941,20 @@ class SpreadsheetCases(unittest.TestCase):
         sheet.set('D6', '=minvert(D4*D2) * minvert(D3) * D5')
         sheet.set('E6', '=(E2 * E3)^-1 * E4^-1 * E5')
         sheet.set('F6', '=(F3*F4*F2)^-1 * F5')
+
+        # Rotate and translate.
+        sheet.set('A7', '=placement(vector(1; 2; 3), vector(1; 0; 0); 0)')
+        sheet.set('B7', '=mrotate(A7; vector(1; 0; 0); 90)')
+        sheet.set('C7', '=mrotatex(A7; 90)')
+        sheet.set('D7', '=mrotatey(A7; 90)')
+        sheet.set('E7', '=mrotatez(A7; 90)')
+        sheet.set('F7', '=mtranslate(A7; vector(1; 2; 3))')
+        sheet.set('G7', '=mtranslate(A7; 1; 2; 3)')
+
+        # Compatibility with old syntax.
+        sheet.set('A8', '=create(<<vector>>, 2, 1, 2)')
+        sheet.set('B8', '=create(<<rotation>>, create(<<vector>>, 0, 1, 0), 45)')
+        sheet.set('C8', '=create(<<placement>>, A8, B8)')
 
         self.doc.recompute()
 
@@ -1014,6 +1026,18 @@ class SpreadsheetCases(unittest.TestCase):
         self.assertLess(sheet.E6.distanceToPoint(vec),tol)
         self.assertLess(sheet.F6.distanceToPoint(vec),tol)
 
+        self.assertTrue(sheet.A7.Base.isEqual(FreeCAD.Vector(1, 2, 3), tol))
+        self.assertTrue(sheet.B7.Base.isEqual(FreeCAD.Vector(1, -3, 2), tol))
+        self.assertTrue(sheet.C7.Base.isEqual(FreeCAD.Vector(1, -3, 2), tol))
+        self.assertTrue(sheet.D7.Base.isEqual(FreeCAD.Vector(3, 2.0, -1), tol))
+        self.assertTrue(sheet.E7.Base.isEqual(FreeCAD.Vector(-2, 1, 3.0), tol))
+        self.assertTrue(sheet.F7.Base.isEqual(FreeCAD.Vector(2, 4, 6), tol))
+        self.assertTrue(sheet.G7.Base.isEqual(FreeCAD.Vector(2, 4, 6), tol))
+
+        self.assertEqual(sheet.A8, vec)
+        self.assertEqual(sheet.B8, rot)
+        self.assertEqual(sheet.C8, pla)
+
     def testIssue3128(self):
         """ Regression test for issue 3128; mod should work with arbitrary units for both arguments """
         sheet = self.doc.addObject('Spreadsheet::Sheet','Spreadsheet')
@@ -1059,7 +1083,7 @@ class SpreadsheetCases(unittest.TestCase):
         self.doc.recompute()
         sheet.set('A3', '')
         sheet.set('A3', 'A1')
-        self.assertEqual(sheet.getContents('A3'), 'A1')
+        self.assertEqual(sheet.getContents('A3'), '\'A1')
 
     def testInsertRowsAlias(self):
         """ Regression test for issue 4429; insert rows to sheet with aliases"""
@@ -1144,7 +1168,7 @@ class SpreadsheetCases(unittest.TestCase):
         sheet.setAlias('C3','test')
 
     def testCrossLinkEmptyPropertyName(self):
-        # https://forum.freecadweb.org/viewtopic.php?f=3&t=58603
+        # https://forum.freecad.org/viewtopic.php?f=3&t=58603
         base = FreeCAD.newDocument("base")
         sheet = base.addObject('Spreadsheet::Sheet','Spreadsheet')
         sheet.setAlias('A1', 'x')
@@ -1185,7 +1209,7 @@ class SpreadsheetCases(unittest.TestCase):
         FreeCAD.closeDocument(base.Name)
 
     def testExpressionWithAlias(self):
-        # https://forum.freecadweb.org/viewtopic.php?p=564502#p564502
+        # https://forum.freecad.org/viewtopic.php?p=564502#p564502
         ss1 = self.doc.addObject("Spreadsheet::Sheet", "Input")
         ss1.setAlias('A1', 'one')
         ss1.setAlias('A2', 'two')
@@ -1415,6 +1439,77 @@ class SpreadsheetCases(unittest.TestCase):
         sheet = self.doc.addObject('Spreadsheet::Sheet','Spreadsheet')
         sheet.setAlias('A1', 'aliasOfEmptyCell')
         self.assertEqual(sheet.getCellFromAlias("aliasOfEmptyCell"),"A1")
+
+    def testParensAroundCondition(self):
+        """ Parens around a condition should be accepted """
+        sheet = self.doc.addObject('Spreadsheet::Sheet','Spreadsheet')
+
+        sheet.set('A1', '=(1 == 1) ? 1 : 0')
+        self.doc.recompute()
+        self.assertEqual(sheet.getContents('A1'), '=1 == 1 ? 1 : 0')
+        self.assertEqual(sheet.A1, 1)
+
+    def testIssue6395(self):
+        """ Testing strings are correctly saved and restored"""
+        sheet = self.doc.addObject('Spreadsheet::Sheet','Spreadsheet')
+        sheet.set('A1', '\'36C') # Use a string that may be parsed as a quantity
+        self.doc.recompute()
+
+        self.doc.saveAs(self.TempPath + os.sep + 'string.fcstd')
+        FreeCAD.closeDocument(self.doc.Name)
+
+        self.doc = FreeCAD.openDocument(self.TempPath + os.sep + 'string.fcstd')
+
+        sheet = self.doc.getObject('Spreadsheet')
+        self.assertEqual(sheet.getContents('A1'), '\'36C')
+        self.assertEqual(sheet.get('A1'), '36C')
+
+    def testVectorFunctions(self):
+        sheet = self.doc.addObject('Spreadsheet::Sheet','Spreadsheet')
+
+        sheet.set('A1', '=vcross(vector(1; 2; 3); vector(1; 5; 7))')
+
+        sheet.set('B1', '=vdot(vector(1; 2; 3); vector(4; -5; 6))')
+
+        sheet.set('C1', '=vangle(vector(1; 0; 0); vector(0; 1; 0))')
+
+        sheet.set('D1', '=vnormalize(vector(1; 0; 0))')
+        sheet.set('D2', '=vnormalize(vector(1; 1; 1))')
+
+        sheet.set('E1', '=vscale(vector(1; 2; 3); 2; 3; 4)')
+        sheet.set('E2', '=vscalex(vector(1; 2; 3); -2)')
+        sheet.set('E3', '=vscaley(vector(1; 2; 3); -2)')
+        sheet.set('E4', '=vscalez(vector(1; 2; 3); -2)')
+
+        sheet.set('F1', '=vlinedist(vector(1; 2; 3); vector(2; 3; 4); vector(3; 4; 5))')
+        sheet.set('F2', '=vlinesegdist(vector(1; 2; 3); vector(2; 3; 4); vector(3; 4; 5))')
+        sheet.set('F3', '=vlineproj(vector(1; 2; 3); vector(2; 3; 4); vector(3; 4; 5))')
+        sheet.set('F4', '=vplanedist(vector(1; 2; 3); vector(2; 3; 4); vector(3; 4; 5))')
+        sheet.set('F5', '=vplaneproj(vector(1; 2; 3); vector(2; 3; 4); vector(3; 4; 5))')
+
+        self.doc.recompute()
+
+        tolerance = 1e-10
+
+        self.assertEqual(sheet.A1, FreeCAD.Vector(-1, -4, 3))
+
+        self.assertEqual(sheet.B1, 12)
+
+        self.assertEqual(sheet.C1, 90)
+
+        self.assertEqual(sheet.D1, FreeCAD.Vector(1, 0, 0))
+        self.assertLess(sheet.D2.distanceToPoint(FreeCAD.Vector(1/sqrt(3), 1/sqrt(3), 1/sqrt(3))), tolerance)
+
+        self.assertEqual(sheet.E1, FreeCAD.Vector(2, 6, 12))
+        self.assertEqual(sheet.E2, FreeCAD.Vector(-2, 2, 3))
+        self.assertEqual(sheet.E3, FreeCAD.Vector(1, -4, 3))
+        self.assertEqual(sheet.E4, FreeCAD.Vector(1, 2, -6))
+
+        self.assertLess(abs(sheet.F1.Value - 0.3464), 0.0001)
+        self.assertEqual(sheet.F2, FreeCAD.Vector(1, 1, 1))
+        self.assertLess(sheet.F3.distanceToPoint(FreeCAD.Vector(0.28, 0.04, -0.2)), tolerance)
+        self.assertLess(abs(sheet.F4.Value - -1.6971), 0.0001)
+        self.assertEqual(sheet.F5, FreeCAD.Vector(1.72, 2.96, 4.2))
 
     def tearDown(self):
         #closing doc

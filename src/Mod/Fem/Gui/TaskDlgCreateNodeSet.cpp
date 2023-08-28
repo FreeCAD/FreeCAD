@@ -50,10 +50,7 @@ TaskDlgCreateNodeSet::TaskDlgCreateNodeSet(Fem::FemSetNodesObject* obj)
     Content.push_back(param);
 }
 
-TaskDlgCreateNodeSet::~TaskDlgCreateNodeSet()
-{
-
-}
+TaskDlgCreateNodeSet::~TaskDlgCreateNodeSet() = default;
 
 //==== calls from the TaskView ===============================================================
 

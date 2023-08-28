@@ -56,13 +56,9 @@ using namespace RobotGui;
 /// @namespace RobotGui @class Workbench
 TYPESYSTEM_SOURCE(RobotGui::Workbench, Gui::StdWorkbench)
 
-Workbench::Workbench()
-{
-}
+Workbench::Workbench() = default;
 
-Workbench::~Workbench()
-{
-}
+Workbench::~Workbench() = default;
 
 void Workbench::activated()
 {

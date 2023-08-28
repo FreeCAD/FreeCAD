@@ -81,12 +81,12 @@
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="335"/>
       <source>Turntable</source>
-      <translation>ターン テーブル</translation>
+      <translation>ターンテーブル</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="336"/>
       <source>Free Turntable</source>
-      <translation type="unfinished">Free Turntable</translation>
+      <translation>フリーターンテーブル</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="337"/>

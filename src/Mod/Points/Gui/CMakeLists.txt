@@ -25,7 +25,11 @@ SET(Dialogs_SRCS
 )
 SOURCE_GROUP("Dialogs" FILES ${Dialogs_SRCS})
 
-qt_add_resources(Resource_SRCS Resources/Points.qrc)
+set (Points_TR_QRC ${CMAKE_CURRENT_BINARY_DIR}/Resources/Points_translation.qrc)
+qt_find_and_add_translation(QM_SRCS "Resources/translations/*_*.ts"
+    ${CMAKE_CURRENT_BINARY_DIR}/Resources/translations)
+qt_create_resource_file(${Points_TR_QRC} ${QM_SRCS})
+qt_add_resources(Resource_SRCS Resources/Points.qrc ${Points_TR_QRC})
 
 SET(Resource_SRCS
     ${Resource_SRCS}

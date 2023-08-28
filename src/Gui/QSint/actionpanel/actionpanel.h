@@ -89,7 +89,7 @@ public:
       */
     void setScheme(ActionPanelScheme *scheme);
 
-    virtual QSize minimumSizeHint() const;
+    QSize minimumSizeHint() const override;
 
 protected:
     //virtual void paintEvent ( QPaintEvent * event );

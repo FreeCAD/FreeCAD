@@ -1,0 +1,78 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+# ***************************************************************************
+# *                                                                         *
+# *   Copyright (c) 2023 0penBrain.                                         *
+# *                                                                         *
+# *   This file is part of FreeCAD.                                         *
+# *                                                                         *
+# *   FreeCAD is free software: you can redistribute it and/or modify it    *
+# *   under the terms of the GNU Lesser General Public License as           *
+# *   published by the Free Software Foundation, either version 2.1 of the  *
+# *   License, or (at your option) any later version.                       *
+# *                                                                         *
+# *   FreeCAD is distributed in the hope that it will be useful, but        *
+# *   WITHOUT ANY WARRANTY; without even the implied warranty of            *
+# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU      *
+# *   Lesser General Public License for more details.                       *
+# *                                                                         *
+# *   You should have received a copy of the GNU Lesser General Public      *
+# *   License along with FreeCAD. If not, see                               *
+# *   <https://www.gnu.org/licenses/>.                                      *
+# *                                                                         *
+# ***************************************************************************
+
+# This action aims at speeding up CI and reduce dependency to external resources
+# by creating a cache of Ccache needed binaries then using it for CI runs rather
+# than downloading every time.
+#
+# If it needs to be updated to another version, the process it to change
+# 'downloadpath' and 'version' inputs below then delete the existing cache
+# from Github interface so a new one is generated using new values.
+
+name: getCcache
+description: "Windows: tries to get a cached version of Ccache and create one if fails"
+
+inputs:
+  ccachebindir:
+    description: "Directory where ccache binaries shall be stored"
+    required: true
+# Below inputs shall generally not be provided as they won't be used if a cached version exists
+# They are mainly used because Github do not support adding env variables in a composite action
+  ccachedownloadpath:
+    description: "Path where to download ccache"
+    required: false
+    default: https://github.com/ccache/ccache/releases/download/v4.8.2/
+  ccacheversion:
+    description: "Ccache version to be downloaded"
+    required: false
+    default: ccache-4.8.2-windows-x86_64
+
+runs:
+  using: "composite"
+  steps:
+    - name: Create destination directory
+      shell: bash
+      run: |
+        mkdir -p ${{ inputs.ccachebindir }}
+    - name: Get cached version
+      uses: actions/cache/restore@v3
+      id: getCached
+      with:
+        path: ${{ inputs.ccachebindir }}
+        key: ccacheforwin
+    - name: Download ccache
+      shell: bash
+      if: steps.getCached.outputs.cache-hit != 'true'
+      run: |
+        curl -L -o ccache.zip ${{ inputs.ccachedownloadpath }}${{ inputs.ccacheversion }}.zip
+        7z x ccache.zip -o"ccachetemp" -r -y
+        cp -a ccachetemp/${{ inputs.ccacheversion }}/ccache.exe ${{ inputs.ccachebindir }}
+        cp -a ccachetemp/${{ inputs.ccacheversion }}/ccache.exe ${{ inputs.ccachebindir }}/cl.exe
+        rm ccache.zip
+        rm -rf ccachetemp
+    - name: Save version to cache
+      if: steps.getCached.outputs.cache-hit != 'true'
+      uses: actions/cache/save@v3
+      with:
+        path: ${{ inputs.ccachebindir }}
+        key: ${{ steps.getCached.outputs.cache-primary-key }}

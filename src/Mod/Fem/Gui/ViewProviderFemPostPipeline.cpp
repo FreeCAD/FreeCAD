@@ -48,9 +48,7 @@ ViewProviderFemPostPipeline::ViewProviderFemPostPipeline()
     sPixmap = "FEM_PostPipelineFromResult";
 }
 
-ViewProviderFemPostPipeline::~ViewProviderFemPostPipeline()
-{
-}
+ViewProviderFemPostPipeline::~ViewProviderFemPostPipeline() = default;
 
 std::vector< App::DocumentObject* > ViewProviderFemPostPipeline::claimChildren() const {
 
@@ -72,8 +70,8 @@ std::vector< App::DocumentObject* > ViewProviderFemPostPipeline::claimChildren3D
 
 void ViewProviderFemPostPipeline::updateData(const App::Property* prop) {
     FemGui::ViewProviderFemPostObject::updateData(prop);
-
-    if (strcmp(prop->getName(), "Function") == 0)
+    Fem::FemPostPipeline* pipeline = static_cast<Fem::FemPostPipeline*>(getObject());
+    if (prop == &pipeline->Functions)
         updateFunctionSize();
 }
 
@@ -133,7 +131,6 @@ void ViewProviderFemPostPipeline::onSelectionChanged(const Gui::SelectionChanges
 
 void ViewProviderFemPostPipeline::updateColorBars()
 {
-
     // take all visible childs and update its shape coloring
     auto children = claimChildren();
     for (auto& child : children) {
@@ -207,7 +204,7 @@ void ViewProviderFemPostPipeline::scaleField(vtkDataSet* dset, vtkDataArray* pda
     }
 }
 
-PyObject *ViewProviderFemPostPipeline::getPyObject(void)
+PyObject *ViewProviderFemPostPipeline::getPyObject()
 {
     if (PythonObject.is(Py::_None())) {
         // ref counter is set to 1

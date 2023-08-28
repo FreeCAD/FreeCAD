@@ -57,6 +57,7 @@ def make_path_array(base_object, path_object, count=4,
                     tan_vector=App.Vector(1, 0, 0),
                     force_vertical=False,
                     vertical_vector=App.Vector(0, 0, 1),
+                    start_offset=0.0, end_offset=0.0,
                     use_link=True):
     """Make a Draft PathArray object.
 
@@ -139,6 +140,14 @@ def make_path_array(base_object, path_object, count=4,
         It defaults to `App.Vector(0, 0, 1)` or the +Z axis.
         It will force this vector to be the vertical direction
         when `force_vertical` is `True`.
+
+    start_offset: float, optional
+        It defaults to 0.0.
+        It is the length from the start of the path to the first copy.
+
+    end_offset: float, optional
+        It defaults to 0.0.
+        It is the length from the end of the path to the last copy.
 
     use_link: bool, optional
         It defaults to `True`, in which case the copies are `App::Link`
@@ -266,6 +275,24 @@ def make_path_array(base_object, path_object, count=4,
         _err(translate("draft","Wrong input: must be a vector."))
         return None
 
+    _msg("start_offset: {}".format(start_offset))
+    try:
+        utils.type_check([(start_offset, (int, float))],
+                         name=_name)
+    except TypeError:
+        _err(translate("draft","Wrong input: must be a number."))
+        return None
+    start_offset = float(start_offset)
+
+    _msg("end_offset: {}".format(end_offset))
+    try:
+        utils.type_check([(end_offset, (int, float))],
+                         name=_name)
+    except TypeError:
+        _err(translate("draft","Wrong input: must be a number."))
+        return None
+    end_offset = float(end_offset)
+
     use_link = bool(use_link)
     _msg("use_link: {}".format(use_link))
 
@@ -288,6 +315,8 @@ def make_path_array(base_object, path_object, count=4,
     new_obj.TangentVector = tan_vector
     new_obj.ForceVertical = force_vertical
     new_obj.VerticalVector = vertical_vector
+    new_obj.StartOffset = start_offset
+    new_obj.EndOffset = end_offset
 
     if App.GuiUp:
         if use_link:

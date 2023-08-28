@@ -26,8 +26,7 @@ End
 Simulation 
   Coordinate Mapping(3) = Integer 1 2 3
   Coordinate Scaling = Real 0.001
-  Coordinate System = String "Cartesian 3D"
-  Output Intervals = Integer 1
+  Coordinate System = String "Cartesian"
   Simulation Type = String "Steady State"
   Steady State Max Iterations = Integer 1
   Steady State Min Iterations = Integer 0
@@ -57,9 +56,10 @@ Solver 2
   Coordinate Scaling Revert = Logical True
   Equation = String "ResultOutput"
   Exec Solver = String "After simulation"
-  Output File Name = File "case"
+  Output File Name = File "FreeCAD"
   Procedure = File "ResultOutputSolve" "ResultOutputSolver"
   Vtu Format = Logical True
+  Vtu Time Collection = Logical True
 End
 
 Boundary Condition 1

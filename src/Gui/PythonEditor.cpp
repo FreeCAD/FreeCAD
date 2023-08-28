@@ -43,15 +43,14 @@ using namespace Gui;
 namespace Gui {
 struct PythonEditorP
 {
-    int   debugLine;
+    int   debugLine{-1};
     QRect debugRect;
     QPixmap breakpoint;
     QPixmap debugMarker;
     QString filename;
     PythonDebugger* debugger;
     PythonEditorP()
-        : debugLine(-1),
-          breakpoint(BitmapFactory().iconFromTheme("breakpoint").pixmap(16,16)),
+        : breakpoint(BitmapFactory().iconFromTheme("breakpoint").pixmap(16,16)),
           debugMarker(BitmapFactory().iconFromTheme("debug-marker").pixmap(16,16))
     {
         debugger = Application::Instance->macroManager()->debugger();
@@ -71,7 +70,7 @@ PythonEditor::PythonEditor(QWidget* parent)
     d = new PythonEditorP();
     this->setSyntaxHighlighter(new PythonSyntaxHighlighter(this));
 
-    // set acelerators
+    // set accelerators
     auto comment = new QShortcut(this);
     comment->setKey(QKeySequence(QString::fromLatin1("ALT+C")));
 
@@ -150,8 +149,10 @@ void PythonEditor::contextMenuEvent ( QContextMenuEvent * e )
     QMenu* menu = createStandardContextMenu();
     if (!isReadOnly()) {
         menu->addSeparator();
-        menu->addAction( tr("Comment"), this, &PythonEditor::onComment, QKeySequence(QString::fromLatin1("ALT+C")));
-        menu->addAction( tr("Uncomment"), this, &PythonEditor::onUncomment, QKeySequence(QString::fromLatin1("ALT+U")));
+        QAction* comment = menu->addAction( tr("Comment"), this, &PythonEditor::onComment);
+        comment->setShortcut(QKeySequence(QString::fromLatin1("ALT+C")));
+        QAction* uncomment = menu->addAction( tr("Uncomment"), this, &PythonEditor::onUncomment);
+        uncomment->setShortcut(QKeySequence(QString::fromLatin1("ALT+U")));
     }
 
     menu->exec(e->globalPos());
