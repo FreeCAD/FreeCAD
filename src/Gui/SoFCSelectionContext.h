@@ -45,7 +45,7 @@ struct GuiExport SoFCSelectionContextBase {
     using MergeFunc = int (int status,
                            SoFCSelectionContextBasePtr &output,
                            SoFCSelectionContextBasePtr input,
-                           SoFCSelectionRoot *node);
+                           SoNode *node);
 };
 
 struct SoFCSelectionContext;
