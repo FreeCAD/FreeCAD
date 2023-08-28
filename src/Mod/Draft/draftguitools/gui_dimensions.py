@@ -90,13 +90,13 @@ class Dimension(gui_base_original.Creator):
         if self.cont:
             self.finish()
         elif self.selected_app_measure():
-            super(Dimension, self).Activated(name="Dimension")
+            super().Activated(name="Dimension")
             self.dimtrack = trackers.dimTracker()
             self.arctrack = trackers.arcTracker()
             self.create_with_app_measure()
             self.finish()
         else:
-            super(Dimension, self).Activated(name="Dimension")
+            super().Activated(name="Dimension")
             if self.ui:
                 self.ui.pointUi(title=translate("draft", "Dimension"), icon="Draft_Dimension")
                 self.ui.continueCmd.show()
@@ -176,7 +176,7 @@ class Dimension(gui_base_original.Creator):
         """Terminate the operation."""
         self.cont = None
         self.dir = None
-        super(Dimension, self).finish()
+        super().finish()
         if self.ui:
             self.dimtrack.finalize()
             self.arctrack.finalize()
@@ -184,7 +184,7 @@ class Dimension(gui_base_original.Creator):
     def angle_dimension_normal(self, edge1, edge2):
         rot = App.Rotation(DraftGeomUtils.vec(edge1),
                            DraftGeomUtils.vec(edge2),
-                           App.DraftWorkingPlane.getNormal(),
+                           self.wp.axis,
                            "XYZ")
         norm = rot.multVec(App.Vector(0, 0, 1))
         vnorm = gui_utils.get_3d_view().getViewDirection()
@@ -280,9 +280,8 @@ class Dimension(gui_base_original.Creator):
         _cmd += ')'
         _cmd_list = ['_dim_ = ' + _cmd]
 
-        plane = App.DraftWorkingPlane
-        dir_u = DraftVecUtils.toString(plane.u)
-        dir_v = DraftVecUtils.toString(plane.v)
+        dir_u = DraftVecUtils.toString(self.wp.u)
+        dir_v = DraftVecUtils.toString(self.wp.v)
         if direction == "X":
             _cmd_list += ['_dim_.Direction = ' + dir_u]
         elif direction == "Y":
@@ -581,28 +580,27 @@ class Dimension(gui_base_original.Creator):
         by projecting on the working plane.
         """
         if not self.proj_point1 or not self.proj_point2:
-            plane = App.DraftWorkingPlane
-            self.proj_point1 = plane.projectPoint(self.node[0])
-            self.proj_point2 = plane.projectPoint(self.node[1])
-            proj_u= plane.u.dot(self.proj_point2 - self.proj_point1)
-            proj_v= plane.v.dot(self.proj_point2 - self.proj_point1)
+            self.proj_point1 = self.wp.projectPoint(self.node[0])
+            self.proj_point2 = self.wp.projectPoint(self.node[1])
+            proj_u= self.wp.u.dot(self.proj_point2 - self.proj_point1)
+            proj_v= self.wp.v.dot(self.proj_point2 - self.proj_point1)
             active_view = Gui.ActiveDocument.ActiveView
             cursor = active_view.getCursorPos()
             cursor_point = active_view.getPoint(cursor)
-            self.point = plane.projectPoint(cursor_point)
+            self.point = self.wp.projectPoint(cursor_point)
             if not self.force:
                 ref_point = self.point - (self.proj_point2 + self.proj_point1)*1/2
-                ref_angle = abs(ref_point.getAngle(plane.u))
+                ref_angle = abs(ref_point.getAngle(self.wp.u))
                 if (ref_angle > math.pi/4) and (ref_angle <= 0.75*math.pi):
                     self.force = 2
                 else:
                     self.force = 1
             if self.force == 1:
                 self.node[0] = self.proj_point1
-                self.node[1] = self.proj_point1 + plane.v*proj_v
+                self.node[1] = self.proj_point1 + self.wp.v*proj_v
             elif self.force == 2:
                 self.node[0] = self.proj_point1
-                self.node[1] = self.proj_point1 + plane.u*proj_u
+                self.node[1] = self.proj_point1 + self.wp.u*proj_u
 
 
 Gui.addCommand('Draft_Dimension', Dimension())

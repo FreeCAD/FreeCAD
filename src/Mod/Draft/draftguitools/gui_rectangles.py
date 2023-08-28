@@ -56,7 +56,7 @@ class Rectangle(gui_base_original.Creator):
 
     def Activated(self):
         """Execute when the command is called."""
-        super(Rectangle, self).Activated(name="Rectangle")
+        super().Activated(name="Rectangle")
         if self.ui:
             self.refpoint = None
             self.ui.pointUi(title=translate("draft", "Rectangle"), icon="Draft_Rectangle")
@@ -77,7 +77,7 @@ class Rectangle(gui_base_original.Creator):
             Restart (continue) the command if `True`, or if `None` and
             `ui.continueMode` is `True`.
         """
-        super(Rectangle, self).finish()
+        super().finish()
         if self.ui:
             if hasattr(self, "fillstate"):
                 self.ui.hasFill.setChecked(self.fillstate)
@@ -89,17 +89,16 @@ class Rectangle(gui_base_original.Creator):
 
     def createObject(self):
         """Create the final object in the current document."""
-        plane = App.DraftWorkingPlane
         p1 = self.node[0]
         p3 = self.node[-1]
         diagonal = p3.sub(p1)
-        p2 = p1.add(DraftVecUtils.project(diagonal, plane.v))
-        p4 = p1.add(DraftVecUtils.project(diagonal, plane.u))
+        p2 = p1.add(DraftVecUtils.project(diagonal, self.wp.v))
+        p4 = p1.add(DraftVecUtils.project(diagonal, self.wp.u))
         length = p4.sub(p1).Length
-        if abs(DraftVecUtils.angle(p4.sub(p1), plane.u, plane.axis)) > 1:
+        if abs(DraftVecUtils.angle(p4.sub(p1), self.wp.u, self.wp.axis)) > 1:
             length = -length
         height = p2.sub(p1).Length
-        if abs(DraftVecUtils.angle(p2.sub(p1), plane.v, plane.axis)) > 1:
+        if abs(DraftVecUtils.angle(p2.sub(p1), self.wp.v, self.wp.axis)) > 1:
             height = -height
         try:
             # The command to run is built as a series of text strings
