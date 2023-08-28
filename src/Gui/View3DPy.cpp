@@ -202,8 +202,6 @@ void View3DInventorPy::init_type()
         "Remove the DraggerCalback function from the coin node\n"
         "Possibles types :\n"
         "'addFinishCallback','addStartCallback','addMotionCallback','addValueChangedCallback'\n");
-    add_varargs_method("setActiveObject", &View3DInventorPy::setActiveObject, "setActiveObject(name,object,subname=None)\nadd or set a new active object");
-    add_varargs_method("getActiveObject", &View3DInventorPy::getActiveObject, "getActiveObject(name,resolve=True)\nreturns the active object for the given type");
     add_varargs_method("getViewProvidersOfType", &View3DInventorPy::getViewProvidersOfType, "getViewProvidersOfType(name)\nreturns a list of view providers for the given type");
     add_noargs_method("redraw", &View3DInventorPy::redraw, "redraw(): renders the scene on screen (useful for animations)");
     add_varargs_method("setName",&View3DInventorPy::setName,"setName(str): sets a name to this viewer\nThe name sets the widget's windowTitle and appears on the viewer tab");
@@ -2388,50 +2386,6 @@ Py::Object View3DInventorPy::removeDraggerCallback(const Py::Tuple& args)
     catch (const Py::Exception&) {
         throw;
     }
-}
-
-Py::Object View3DInventorPy::setActiveObject(const Py::Tuple& args)
-{
-    PyObject* docObject = Py_None;
-    char* name;
-    char *subname = nullptr;
-    if (!PyArg_ParseTuple(args.ptr(), "s|Os", &name, &docObject, &subname))
-        throw Py::Exception();
-
-    try {
-        Base::PyTypeCheck(&docObject, &App::DocumentObjectPy::Type,
-            "Expect the second argument to be a document object or None");
-        App::DocumentObject* obj = docObject ?
-            static_cast<App::DocumentObjectPy*>(docObject)->getDocumentObjectPtr() : nullptr;
-        getView3DIventorPtr()->setActiveObject(obj, name, subname);
-
-        return Py::None();
-    }
-    catch (const Base::Exception& e) {
-        throw Py::Exception(e.getPyExceptionType(), e.what());
-    }
-}
-
-Py::Object View3DInventorPy::getActiveObject(const Py::Tuple& args)
-{
-    char* name;
-    PyObject *resolve = Py_True;
-    if (!PyArg_ParseTuple(args.ptr(), "s|O!", &name, &PyBool_Type, &resolve))
-                throw Py::Exception();
-
-    App::DocumentObject *parent = nullptr;
-    std::string subname;
-    App::DocumentObject* obj = getView3DIventorPtr()->getActiveObject<App::DocumentObject*>(name,&parent,&subname);
-    if (!obj)
-        return Py::None();
-
-    if (Base::asBoolean(resolve))
-        return Py::asObject(obj->getPyObject());
-
-    return Py::TupleN(
-            Py::asObject(obj->getPyObject()),
-            Py::asObject(parent->getPyObject()),
-            Py::String(subname.c_str()));
 }
 
 Py::Object View3DInventorPy::getViewProvidersOfType(const Py::Tuple& args)
