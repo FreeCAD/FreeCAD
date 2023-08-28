@@ -26,6 +26,7 @@
 
 import sys
 import os
+import shutil
 import tempfile
 import time
 import zipfile
@@ -329,10 +330,18 @@ def handle():
     import Start
     if hasattr(Start,"iconbank"):
         iconbank = Start.iconbank
-    if hasattr(Start,"tempfolder"):
+    if hasattr(Start,"tempfolder") and os.path.exists(Start.tempfolder):
         tempfolder = Start.tempfolder
     else:
         tempfolder = tempfile.mkdtemp(prefix="FreeCADStartThumbnails")
+
+    # purge old tempfolders
+
+    for entry in os.scandir(tempfile.gettempdir()):
+        if entry.is_dir():
+            if entry.name.startswith("FreeCADStartThumbnails"):
+                if entry.path != tempfolder:
+                    shutil.rmtree(entry.path)
 
     # build the html page skeleton
 
