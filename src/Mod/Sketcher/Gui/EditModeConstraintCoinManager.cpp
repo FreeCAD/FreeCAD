@@ -72,9 +72,12 @@ using namespace Sketcher;
 //**************************** EditModeConstraintCoinManager class ******************************
 
 EditModeConstraintCoinManager::EditModeConstraintCoinManager(
-    ViewProviderSketch& vp, DrawingParameters& drawingParams,
-    GeometryLayerParameters& geometryLayerParams, ConstraintParameters& constraintParams,
-    EditModeScenegraphNodes& editModeScenegraph, CoinMapping& coinMap)
+    ViewProviderSketch& vp,
+    DrawingParameters& drawingParams,
+    GeometryLayerParameters& geometryLayerParams,
+    ConstraintParameters& constraintParams,
+    EditModeScenegraphNodes& editModeScenegraph,
+    CoinMapping& coinMap)
     : viewProvider(vp)
     , drawingParameters(drawingParams)
     , geometryLayerParameters(geometryLayerParams)
@@ -99,9 +102,10 @@ void EditModeConstraintCoinManager::updateVirtualSpace()
 
         SbBool* sws = editModeScenegraphNodes.constrGroup->enable.startEditing();
 
-        for (size_t i = 0; i < constrlist.size(); i++)
+        for (size_t i = 0; i < constrlist.size(); i++) {
             sws[i] = !(constrlist[i]->isInVirtualSpace
                        != isshownvirtualspace);// XOR of constraint mode and VP mode
+        }
 
 
         editModeScenegraphNodes.constrGroup->enable.finishEditing();
@@ -128,8 +132,9 @@ void EditModeConstraintCoinManager::processConstraints(const GeoListFacade& geol
     // reset point if the constraint type has changed
 Restart:
     // check if a new constraint arrived
-    if (constrlist.size() != vConstrType.size())
+    if (constrlist.size() != vConstrType.size()) {
         rebuildConstraintNodes(geolistfacade);
+    }
 
     assert(int(constrlist.size()) == editModeScenegraphNodes.constrGroup->getNumChildren());
     assert(int(vConstrType.size()) == editModeScenegraphNodes.constrGroup->getNumChildren());
@@ -316,18 +321,21 @@ Restart:
                                 angleplus = (startangle + endangle) / 2;
                                 midpos = aop->getFocus();
                             }
-                            else
+                            else {
                                 break;
+                            }
 
                             if (geo->getTypeId() == Part::GeomEllipse::getClassTypeId()
                                 || geo->getTypeId() == Part::GeomArcOfEllipse::getClassTypeId()
                                 || geo->getTypeId() == Part::GeomArcOfHyperbola::getClassTypeId()) {
 
                                 Base::Vector3d majDir, minDir, rvec;
-                                majDir = Base::Vector3d(
-                                    cos(angle), sin(angle), 0);// direction of major axis of ellipse
-                                minDir = Base::Vector3d(
-                                    -majDir.y, majDir.x, 0);// direction of minor axis of ellipse
+                                majDir = Base::Vector3d(cos(angle),
+                                                        sin(angle),
+                                                        0);// direction of major axis of ellipse
+                                minDir = Base::Vector3d(-majDir.y,
+                                                        majDir.x,
+                                                        0);// direction of minor axis of ellipse
                                 rvec =
                                     (ra * cos(angleplus)) * majDir + (rb * sin(angleplus)) * minDir;
                                 midpos += rvec;
@@ -413,12 +421,10 @@ Restart:
                     // get the geometry
                     const Part::Geometry* geo1 = geolistfacade.getGeometryFromGeoId(Constr->First);
                     const Part::Geometry* geo2 = geolistfacade.getGeometryFromGeoId(Constr->Second);
-
                     Base::Vector3d midpos1, dir1, norm1;
                     Base::Vector3d midpos2, dir2, norm2;
                     bool twoIcons = false;// a very local flag. It's set to true to indicate that
                                           // the second dir+norm are valid and should be used
-
 
                     if (Constr->Third != GeoEnum::GeoUndef ||// perpty via point
                         Constr->FirstPos
@@ -430,16 +436,19 @@ Restart:
                         do {// dummy loop to use break =) Maybe goto?
                             ptGeoId = Constr->First;
                             ptPosId = Constr->FirstPos;
-                            if (ptPosId != Sketcher::PointPos::none)
+                            if (ptPosId != Sketcher::PointPos::none) {
                                 break;
+                            }
                             ptGeoId = Constr->Second;
                             ptPosId = Constr->SecondPos;
-                            if (ptPosId != Sketcher::PointPos::none)
+                            if (ptPosId != Sketcher::PointPos::none) {
                                 break;
+                            }
                             ptGeoId = Constr->Third;
                             ptPosId = Constr->ThirdPos;
-                            if (ptPosId != Sketcher::PointPos::none)
+                            if (ptPosId != Sketcher::PointPos::none) {
                                 break;
+                            }
                             assert(0);// no point found!
                         } while (false);
 
@@ -483,8 +492,9 @@ Restart:
                             dir1 = Base::Vector3d(-norm1.y, norm1.x, 0);
                             midpos1 = circle->getCenter() + circle->getRadius() * norm1;
                         }
-                        else
+                        else {
                             break;
+                        }
 
                         if (geo2->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
                             const Part::GeomLineSegment* lineSeg2 =
@@ -511,8 +521,9 @@ Restart:
                             dir2 = Base::Vector3d(-norm2.y, norm2.x, 0);
                             midpos2 = circle->getCenter() + circle->getRadius() * norm2;
                         }
-                        else
+                        else {
                             break;
+                        }
                         twoIcons = true;
                     }
 
@@ -629,8 +640,9 @@ Restart:
                                 angle1plus = (startangle + endangle) / 2;
                                 midpos1 = aop->getFocus();
                             }
-                            else
+                            else {
                                 break;
+                            }
 
                             if (geo2->getTypeId() == Part::GeomCircle::getClassTypeId()) {
                                 const Part::GeomCircle* circle =
@@ -696,8 +708,9 @@ Restart:
                                 angle2plus = (startangle + endangle) / 2;
                                 midpos2 = aop->getFocus();
                             }
-                            else
+                            else {
                                 break;
+                            }
 
                             if (geo1->getTypeId() == Part::GeomEllipse::getClassTypeId()
                                 || geo1->getTypeId() == Part::GeomArcOfEllipse::getClassTypeId()
@@ -708,8 +721,9 @@ Restart:
                                 majDir = Base::Vector3d(cos(angle1),
                                                         sin(angle1),
                                                         0);// direction of major axis of ellipse
-                                minDir = Base::Vector3d(
-                                    -majDir.y, majDir.x, 0);// direction of minor axis of ellipse
+                                minDir = Base::Vector3d(-majDir.y,
+                                                        majDir.x,
+                                                        0);// direction of minor axis of ellipse
                                 rvec = (r1a * cos(angle1plus)) * majDir
                                     + (r1b * sin(angle1plus)) * minDir;
                                 midpos1 += rvec;
@@ -736,8 +750,9 @@ Restart:
                                 majDir = Base::Vector3d(cos(angle2),
                                                         sin(angle2),
                                                         0);// direction of major axis of ellipse
-                                minDir = Base::Vector3d(
-                                    -majDir.y, majDir.x, 0);// direction of minor axis of ellipse
+                                minDir = Base::Vector3d(-majDir.y,
+                                                        majDir.x,
+                                                        0);// direction of minor axis of ellipse
                                 rvec = (r2a * cos(angle2plus)) * majDir
                                     + (r2b * sin(angle2plus)) * minDir;
                                 midpos2 += rvec;
@@ -751,8 +766,9 @@ Restart:
                                 midpos2 += r2a * norm2;
                             }
                         }
-                        else// Parallel can only apply to a GeomLineSegment
+                        else {// Parallel can only apply to a GeomLineSegment
                             break;
+                        }
                     }
                     else {
                         const Part::GeomLineSegment* lineSeg1 =
@@ -809,15 +825,13 @@ Restart:
                 case DistanceX:
                 case DistanceY: {
                     assert(Constr->First >= -extGeoCount && Constr->First < intGeoCount);
-
                     Base::Vector3d pnt1(0., 0., 0.), pnt2(0., 0., 0.);
+                    const Part::Geometry* geo = geolistfacade.getGeometryFromGeoId(Constr->Second);
                     if (Constr->SecondPos != Sketcher::PointPos::none) {// point to point distance
                         pnt1 = geolistfacade.getPoint(Constr->First, Constr->FirstPos);
                         pnt2 = geolistfacade.getPoint(Constr->Second, Constr->SecondPos);
                     }
                     else if (Constr->Second != GeoEnum::GeoUndef) {
-                        const Part::Geometry* geo =
-                            geolistfacade.getGeometryFromGeoId(Constr->Second);
                         if (geo->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
                             const Part::GeomLineSegment* lineSeg =
                                 static_cast<const Part::GeomLineSegment*>(geo);
@@ -860,9 +874,18 @@ Restart:
                                 auto circleSeg2 = static_cast<const Part::GeomCircle*>(geo);
                                 GetCirclesMinimalDistance(circleSeg1, circleSeg2, pnt1, pnt2);
                             }
+                            else if (Constr->FirstPos
+                                     != Sketcher::PointPos::none) {// point to circle distance
+                                auto circleSeg2 = static_cast<const Part::GeomCircle*>(geo);
+                                pnt1 = geolistfacade.getPoint(Constr->First, Constr->FirstPos);
+                                Base::Vector3d v = pnt1 - circleSeg2->getCenter();
+                                v = v.Normalize();
+                                pnt2 = circleSeg2->getCenter() + circleSeg2->getRadius() * v;
+                            }
                         }
-                        else
+                        else {
                             break;
+                        }
                     }
                     else if (Constr->FirstPos != Sketcher::PointPos::none) {
                         pnt2 = geolistfacade.getPoint(Constr->First, Constr->FirstPos);
@@ -877,11 +900,13 @@ Restart:
                             pnt1 = lineSeg->getStartPoint();
                             pnt2 = lineSeg->getEndPoint();
                         }
-                        else
+                        else {
                             break;
+                        }
                     }
-                    else
+                    else {
                         break;
+                    }
 
                     SoDatumLabel* asciiText = static_cast<SoDatumLabel*>(
                         sep->getChild(static_cast<int>(ConstraintNodePosition::DatumLabelIndex)));
@@ -890,12 +915,15 @@ Restart:
                     asciiText->string =
                         SbString(getPresentationString(Constr).toUtf8().constData());
 
-                    if (Constr->Type == Distance)
+                    if (Constr->Type == Distance) {
                         asciiText->datumtype = SoDatumLabel::DISTANCE;
-                    else if (Constr->Type == DistanceX)
+                    }
+                    else if (Constr->Type == DistanceX) {
                         asciiText->datumtype = SoDatumLabel::DISTANCEX;
-                    else if (Constr->Type == DistanceY)
+                    }
+                    else if (Constr->Type == DistanceY) {
                         asciiText->datumtype = SoDatumLabel::DISTANCEY;
+                    }
 
                     // Assign the Datum Points
                     asciiText->pnts.setNum(2);
@@ -933,16 +961,19 @@ Restart:
                         do {// dummy loop to use break =) Maybe goto?
                             ptGeoId = Constr->First;
                             ptPosId = Constr->FirstPos;
-                            if (ptPosId != Sketcher::PointPos::none)
+                            if (ptPosId != Sketcher::PointPos::none) {
                                 break;
+                            }
                             ptGeoId = Constr->Second;
                             ptPosId = Constr->SecondPos;
-                            if (ptPosId != Sketcher::PointPos::none)
+                            if (ptPosId != Sketcher::PointPos::none) {
                                 break;
+                            }
                             ptGeoId = Constr->Third;
                             ptPosId = Constr->ThirdPos;
-                            if (ptPosId != Sketcher::PointPos::none)
+                            if (ptPosId != Sketcher::PointPos::none) {
                                 break;
+                            }
                             assert(0);// no point found!
                         } while (false);
 
@@ -957,7 +988,11 @@ Restart:
                         dir.RotateZ(-M_PI / 2.0);
 
                         relPos = seekConstraintPosition(
-                            pos, norm, dir, 2.5, editModeScenegraphNodes.constrGroup->getChild(i));
+                            pos,
+                            norm,
+                            dir,
+                            2.5,
+                            editModeScenegraphNodes.constrGroup->getChild(i));
 
                         auto translation = static_cast<SoZoomTranslation*>(sep->getChild(
                             static_cast<int>(ConstraintNodePosition::FirstTranslationIndex)));
@@ -1167,8 +1202,9 @@ Restart:
                             const Part::Geometry* geo2 =
                                 geolistfacade.getGeometryFromGeoId(Constr->Second);
                             if (geo1->getTypeId() != Part::GeomLineSegment::getClassTypeId()
-                                || geo2->getTypeId() != Part::GeomLineSegment::getClassTypeId())
+                                || geo2->getTypeId() != Part::GeomLineSegment::getClassTypeId()) {
                                 break;
+                            }
                             const Part::GeomLineSegment* lineSeg1 =
                                 static_cast<const Part::GeomLineSegment*>(geo1);
                             const Part::GeomLineSegment* lineSeg2 =
@@ -1269,8 +1305,9 @@ Restart:
                             break;
                         }
                     }
-                    else
+                    else {
                         break;
+                    }
 
                     SoDatumLabel* asciiText = static_cast<SoDatumLabel*>(
                         sep->getChild(static_cast<int>(ConstraintNodePosition::DatumLabelIndex)));
@@ -1323,11 +1360,13 @@ Restart:
                             pnt1 = center - radius * Base::Vector3d(cos(angle), sin(angle), 0.);
                             pnt2 = center + radius * Base::Vector3d(cos(angle), sin(angle), 0.);
                         }
-                        else
+                        else {
                             break;
+                        }
                     }
-                    else
+                    else {
                         break;
+                    }
 
                     SbVec3f p1(pnt1.x, pnt1.y, zConstrH);
                     SbVec3f p2(pnt2.x, pnt2.y, zConstrH);
@@ -1390,11 +1429,13 @@ Restart:
                             pnt1 = circle->getCenter();
                             pnt2 = pnt1 + radius * Base::Vector3d(cos(angle), sin(angle), 0.);
                         }
-                        else
+                        else {
                             break;
+                        }
                     }
-                    else
+                    else {
                         break;
+                    }
 
                     SbVec3f p1(pnt1.x, pnt1.y, zConstrH);
                     SbVec3f p2(pnt2.x, pnt2.y, zConstrH);
@@ -1403,12 +1444,14 @@ Restart:
                         sep->getChild(static_cast<int>(ConstraintNodePosition::DatumLabelIndex)));
 
                     // Get display string with units hidden if so requested
-                    if (Constr->Type == Weight)
+                    if (Constr->Type == Weight) {
                         asciiText->string =
                             SbString(QString::number(Constr->getValue()).toStdString().c_str());
-                    else
+                    }
+                    else {
                         asciiText->string =
                             SbString(getPresentationString(Constr).toUtf8().constData());
+                    }
 
                     asciiText->datumtype = SoDatumLabel::RADIUS;
                     asciiText->param1 = Constr->LabelDistance;
@@ -1430,8 +1473,9 @@ Restart:
             }
         }
         catch (Base::Exception& e) {
-            Base::Console().DeveloperError(
-                "EditModeConstraintCoinManager", "Exception during draw: %s\n", e.what());
+            Base::Console().DeveloperError("EditModeConstraintCoinManager",
+                                           "Exception during draw: %s\n",
+                                           e.what());
             e.ReportException();
         }
         catch (...) {
@@ -1483,19 +1527,22 @@ Base::Vector3d EditModeConstraintCoinManager::seekConstraintPosition(const Base:
             SoNode* tailFather2 = path->getNode(length - 3);
 
             // checking if a constraint is the same as the one selected
-            if (tailFather1 == constraint || tailFather2 == constraint)
+            if (tailFather1 == constraint || tailFather2 == constraint) {
                 isConstraintAtPosition = false;
+            }
         }
         else {
             isConstraintAtPosition = false;
         }
 
         multiplier *= -1;// search in both sides
-        if (multiplier >= 0)
+        if (multiplier >= 0) {
             multiplier++;// Increment the multiplier
+        }
     }
-    if (multiplier == 10)
+    if (multiplier == 10) {
         relPos = norm * 0.5f;// no free position found
+    }
     return relPos * step;
 }
 
@@ -1532,8 +1579,9 @@ void EditModeConstraintCoinManager::updateConstraintColor(
         // It may happen that color updates are triggered by programmatic selection changes before a
         // command final update. Then constraints may have been changed and the color will be
         // updated as part
-        if (type != vConstrType[i])
+        if (type != vConstrType[i]) {
             break;
+        }
 
         bool hasDatumLabel = (type == Sketcher::Angle || type == Sketcher::Radius
                               || type == Sketcher::Diameter || type == Sketcher::Weight
@@ -1695,7 +1743,8 @@ void EditModeConstraintCoinManager::rebuildConstraintNodes(const GeoListFacade& 
 }
 
 void EditModeConstraintCoinManager::rebuildConstraintNodes(
-    const GeoListFacade& geolistfacade, const std::vector<Sketcher::Constraint*> constrlist,
+    const GeoListFacade& geolistfacade,
+    const std::vector<Sketcher::Constraint*> constrlist,
     SbVec3f norm)
 {
 
@@ -1868,8 +1917,9 @@ QString EditModeConstraintCoinManager::getPresentationString(const Constraint* c
     double factor;           // unit scaling factor, currently not used
     Base::UnitSystem unitSys;// current unit system
 
-    if (!constraint->isActive)
+    if (!constraint->isActive) {
         return QString::fromLatin1(" ");
+    }
 
     // Get the current name parameter string of the constraint
     nameStr = QString::fromStdString(constraint->Name);
@@ -1963,8 +2013,9 @@ std::set<int> EditModeConstraintCoinManager::detectPreselectionConstr(const SoPi
     // Get the constraints' tail
     SoNode* tailFather2 = path->getNode(path->getLength() - 3);
 
-    if (tailFather2 != editModeScenegraphNodes.constrGroup)
+    if (tailFather2 != editModeScenegraphNodes.constrGroup) {
         return constrIndices;
+    }
 
 
     SoNode* tail = path->getTail();
@@ -2053,7 +2104,8 @@ std::set<int> EditModeConstraintCoinManager::detectPreselectionConstr(const SoPi
                         SbVec3f constrPos = absPos + scaleFactor * trans;
 
                         SbVec2f iconCoords = ViewProviderSketchCoinAttorney::getScreenCoordinates(
-                            viewProvider, SbVec2f(constrPos[0], constrPos[1]));
+                            viewProvider,
+                            SbVec2f(constrPos[0], constrPos[1]));
 
                         // cursorPos is SbVec2s in screen coordinates coming from SoEvent in
                         // mousemove
@@ -2116,10 +2168,12 @@ SbVec3s EditModeConstraintCoinManager::getDisplayedSize(const SoImage* iconPtr) 
 {
     SbVec3s iconSize = iconPtr->image.getValue().getSize();
 
-    if (iconPtr->width.getValue() != -1)
+    if (iconPtr->width.getValue() != -1) {
         iconSize[0] = iconPtr->width.getValue();
-    if (iconPtr->height.getValue() != -1)
+    }
+    if (iconPtr->height.getValue() != -1) {
         iconSize[1] = iconPtr->height.getValue();
+    }
     return iconSize;
 }
 
@@ -2148,11 +2202,13 @@ void EditModeConstraintCoinManager::drawConstraintIcons(const GeoListFacade& geo
         bool multipleIcons = false;
 
         QString icoType = iconTypeFromConstraint(constraint);
-        if (icoType.isEmpty())
+        if (icoType.isEmpty()) {
             continue;
+        }
 
-        if (constraint->Type != vConstrType[constrId])
+        if (constraint->Type != vConstrType[constrId]) {
             break;
+        }
 
         switch (constraint->Type) {
 
@@ -2178,8 +2234,9 @@ void EditModeConstraintCoinManager::drawConstraintIcons(const GeoListFacade& geo
             case Perpendicular:
                 // second icon is available only when there is no common point
                 if (constraint->FirstPos == Sketcher::PointPos::none
-                    && constraint->Third == GeoEnum::GeoUndef)
+                    && constraint->Third == GeoEnum::GeoUndef) {
                     multipleIcons = true;
+                }
                 break;
             case Equal:
                 multipleIcons = true;
@@ -2207,10 +2264,12 @@ void EditModeConstraintCoinManager::drawConstraintIcons(const GeoListFacade& geo
         SoTranslation* translationPtr = static_cast<SoTranslation*>(
             sep->getChild(static_cast<int>(ConstraintNodePosition::FirstTranslationIndex)));
 
-        if (dynamic_cast<SoZoomTranslation*>(translationPtr))
+        if (dynamic_cast<SoZoomTranslation*>(translationPtr)) {
             absPos = static_cast<SoZoomTranslation*>(translationPtr)->abPos.getValue();
-        else
+        }
+        else {
             absPos = translationPtr->translation.getValue();
+        }
 
         SoImage* coinIconPtr = dynamic_cast<SoImage*>(
             sep->getChild(static_cast<int>(ConstraintNodePosition::FirstIconIndex)));
@@ -2243,10 +2302,12 @@ void EditModeConstraintCoinManager::drawConstraintIcons(const GeoListFacade& geo
         }
 
         if (multipleIcons) {
-            if (constraint->Name.empty())
+            if (constraint->Name.empty()) {
                 thisIcon.label = QString::number(constrId + 1);
-            else
+            }
+            else {
                 thisIcon.label = QString::fromUtf8(constraint->Name.c_str());
+            }
             iconQueue.push_back(thisIcon);
 
             // Note that the second translation is meant to be applied after the first.
@@ -2256,11 +2317,13 @@ void EditModeConstraintCoinManager::drawConstraintIcons(const GeoListFacade& geo
             if (numChildren > static_cast<int>(ConstraintNodePosition::SecondConstraintIdIndex)) {
                 translationPtr = static_cast<SoTranslation*>(sep->getChild(
                     static_cast<int>(ConstraintNodePosition::SecondTranslationIndex)));
-                if (dynamic_cast<SoZoomTranslation*>(translationPtr))
+                if (dynamic_cast<SoZoomTranslation*>(translationPtr)) {
                     thisIcon.position +=
                         static_cast<SoZoomTranslation*>(translationPtr)->abPos.getValue();
-                else
+                }
+                else {
                     thisIcon.position += translationPtr->translation.getValue();
+                }
 
                 thisIcon.destination = dynamic_cast<SoImage*>(
                     sep->getChild(static_cast<int>(ConstraintNodePosition::SecondIconIndex)));
@@ -2269,10 +2332,12 @@ void EditModeConstraintCoinManager::drawConstraintIcons(const GeoListFacade& geo
             }
         }
         else {
-            if (constraint->Name.empty())
+            if (constraint->Name.empty()) {
                 thisIcon.label = QString();
-            else
+            }
+            else {
                 thisIcon.label = QString::fromUtf8(constraint->Name.c_str());
+            }
         }
 
         iconQueue.push_back(thisIcon);
@@ -2322,19 +2387,23 @@ void EditModeConstraintCoinManager::combineConstraintIcons(IconQueue iconQueue)
                     }
 
                     if (addedToGroup) {
-                        if (i == iconQueue.end())
+                        if (i == iconQueue.end()) {
                             // We just got the last icon out of iconQueue
                             break;
-                        else
+                        }
+                        else {
                             // Start looking through the iconQueue again, in case
                             // we have an icon that's now close enough to thisGroup
                             i = iconQueue.begin();
+                        }
                     }
-                    else
+                    else {
                         ++i;
+                    }
                 }
-                else// if !visible we skip it
+                else {// if !visible we skip it
                     i++;
+                }
             }
         }
 
@@ -2387,8 +2456,9 @@ void EditModeConstraintCoinManager::drawMergedConstraintIcons(IconQueue iconQueu
 
         maxColorPriority = constrColorPriority(i->constraintId);
 
-        if (idString.length())
+        if (idString.length()) {
             idString.append(QString::fromLatin1(","));
+        }
         idString.append(QString::number(i->constraintId));
 
         i = iconQueue.erase(i);
@@ -2468,8 +2538,9 @@ void EditModeConstraintCoinManager::drawMergedConstraintIcons(IconQueue iconQueu
             if (bb == boundingBoxesVec.begin()) {
                 // The first bounding box is for the icon at left, so assign
                 // all IDs for that type of constraint to the icon.
-                for (std::vector<int>::iterator j = ids.begin(); j != ids.end(); ++j)
+                for (std::vector<int>::iterator j = ids.begin(); j != ids.end(); ++j) {
                     nextIds.insert(*j);
+                }
             }
             else {
                 nextIds.insert(*(id++));
@@ -2489,11 +2560,13 @@ void EditModeConstraintCoinManager::drawMergedConstraintIcons(IconQueue iconQueu
 
 /// Note: labels, labelColors, and boundingBoxes are all
 /// assumed to be the same length.
-QImage EditModeConstraintCoinManager::renderConstrIcon(const QString& type, const QColor& iconColor,
+QImage EditModeConstraintCoinManager::renderConstrIcon(const QString& type,
+                                                       const QColor& iconColor,
                                                        const QStringList& labels,
                                                        const QList<QColor>& labelColors,
                                                        double iconRotation,
-                                                       std::vector<QRect>* boundingBoxes, int* vPad)
+                                                       std::vector<QRect>* boundingBoxes,
+                                                       int* vPad)
 {
     // Constants to help create constraint icons
     QString joinStr = QString::fromLatin1(", ");
@@ -2520,8 +2593,9 @@ QImage EditModeConstraintCoinManager::renderConstrIcon(const QString& type, cons
     // See Qt docs on qRect::bottom() for explanation of the +1
     int pxBelowBase = qfm.boundingRect(labels.join(joinStr)).bottom() + 1;
 
-    if (vPad)
+    if (vPad) {
         *vPad = pxBelowBase;
+    }
 
     QTransform rotation;
     rotation.rotate(iconRotation);
@@ -2530,8 +2604,9 @@ QImage EditModeConstraintCoinManager::renderConstrIcon(const QString& type, cons
     QImage image = roticon.copy(0, 0, roticon.width() + labelWidth, roticon.height() + pxBelowBase);
 
     // Make a bounding box for the icon
-    if (boundingBoxes)
+    if (boundingBoxes) {
         boundingBoxes->push_back(QRect(0, 0, roticon.width(), roticon.height()));
+    }
 
     // Render the Icons
     QPainter qp(&image);
@@ -2556,10 +2631,12 @@ QImage EditModeConstraintCoinManager::renderConstrIcon(const QString& type, cons
 
             qp.setPen(*colorItr);
 
-            if (labelItr + 1 == labels.end())// if this is the last label
+            if (labelItr + 1 == labels.end()) {// if this is the last label
                 labelStr = *labelItr;
-            else
+            }
+            else {
                 labelStr = *labelItr + joinStr;
+            }
 
             // Note: text can sometimes draw to the left of the starting
             //       position, eg italic fonts.  Check QFontMetrics
@@ -2585,8 +2662,11 @@ void EditModeConstraintCoinManager::drawTypicalConstraintIcon(const constrIconQu
 {
     QColor color = constrColor(i.constraintId);
 
-    QImage image = renderConstrIcon(
-        i.type, color, QStringList(i.label), QList<QColor>() << color, i.iconRotation);
+    QImage image = renderConstrIcon(i.type,
+                                    color,
+                                    QStringList(i.label),
+                                    QList<QColor>() << color,
+                                    i.iconRotation);
 
     i.infoPtr->string.setValue(QString::number(i.constraintId).toLatin1().data());
     sendConstraintIconToCoin(image, i.destination);
@@ -2651,32 +2731,41 @@ void EditModeConstraintCoinManager::clearCoinImage(SoImage* soImagePtr)
 QColor EditModeConstraintCoinManager::constrColor(int constraintId)
 {
     auto toQColor = [](auto sbcolor) -> QColor {
-        return QColor(
-            (int)(sbcolor[0] * 255.0f), (int)(sbcolor[1] * 255.0f), (int)(sbcolor[2] * 255.0f));
+        return QColor((int)(sbcolor[0] * 255.0f),
+                      (int)(sbcolor[1] * 255.0f),
+                      (int)(sbcolor[2] * 255.0f));
     };
 
     const auto constraints = ViewProviderSketchCoinAttorney::getConstraints(viewProvider);
 
-    if (ViewProviderSketchCoinAttorney::isConstraintPreselected(viewProvider, constraintId))
+    if (ViewProviderSketchCoinAttorney::isConstraintPreselected(viewProvider, constraintId)) {
         return toQColor(drawingParameters.PreselectColor);
-    else if (ViewProviderSketchCoinAttorney::isConstraintSelected(viewProvider, constraintId))
+    }
+    else if (ViewProviderSketchCoinAttorney::isConstraintSelected(viewProvider, constraintId)) {
         return toQColor(drawingParameters.SelectColor);
-    else if (!constraints[constraintId]->isActive)
+    }
+    else if (!constraints[constraintId]->isActive) {
         return toQColor(drawingParameters.DeactivatedConstrDimColor);
-    else if (!constraints[constraintId]->isDriving)
+    }
+    else if (!constraints[constraintId]->isDriving) {
         return toQColor(drawingParameters.NonDrivingConstrDimColor);
-    else
+    }
+    else {
         return toQColor(drawingParameters.ConstrIcoColor);
+    }
 }
 
 int EditModeConstraintCoinManager::constrColorPriority(int constraintId)
 {
-    if (ViewProviderSketchCoinAttorney::isConstraintPreselected(viewProvider, constraintId))
+    if (ViewProviderSketchCoinAttorney::isConstraintPreselected(viewProvider, constraintId)) {
         return 3;
-    else if (ViewProviderSketchCoinAttorney::isConstraintSelected(viewProvider, constraintId))
+    }
+    else if (ViewProviderSketchCoinAttorney::isConstraintSelected(viewProvider, constraintId)) {
         return 2;
-    else
+    }
+    else {
         return 1;
+    }
 }
 
 SoSeparator* EditModeConstraintCoinManager::getConstraintIdSeparator(int i)
