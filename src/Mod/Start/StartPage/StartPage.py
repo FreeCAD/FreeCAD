@@ -390,6 +390,16 @@ def handle():
                         ALTCSS = f.read()
                         HTML = HTML.replace("<!--QSS-->","<style type=\"text/css\">"+ALTCSS+"</style>")
 
+    # handle file thumbnail icons visiblity and size
+
+    if not FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Start").GetBool("ShowFileThumbnailIcons",True):
+        HTML = HTML.replace("display: block; /* thumb icons display */","display: none; /* thumb icons display */")
+        HTML = HTML.replace("THUMBCARDSIZE","75px")
+
+    thumb_icons_size = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Start").GetInt("FileThumbnailIconsSize", 128)
+    HTML = HTML.replace("THUMBSIZE",str(thumb_icons_size)+"px")
+    HTML = HTML.replace("THUMBCARDSIZE",str(thumb_icons_size + 75)+"px")
+
     # turn tips off if needed
 
     if not FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Start").GetBool("ShowTips",True):
@@ -602,7 +612,7 @@ def handle():
     BASECOLOR = gethexcolor(p.GetUnsigned("PageColor",4294967295))
     BOXCOLOR  = gethexcolor(p.GetUnsigned("BoxColor",3722305023))
     TEXTCOLOR = gethexcolor(p.GetUnsigned("PageTextColor",255))
-    BGTCOLOR = gethexcolor(p.GetUnsigned("BackgroundTextColor",4294703103))
+    BGTCOLOR = gethexcolor(p.GetUnsigned("BackgroundTextColor",1600086015))
     OVERFLOW = "" if p.GetBool("ShowScrollBars",True) else "body::-webkit-scrollbar {display: none;}"
     SHADOW = "#888888"
     if QtGui.QColor(BASECOLOR).valueF() < 0.5: # dark page - we need to make darker shadows
