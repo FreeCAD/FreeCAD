@@ -504,10 +504,8 @@ void Rotation::scaleAngle(const double scaleFactor)
 Rotation Rotation::slerp(const Rotation & q0, const Rotation & q1, double t)
 {
     // Taken from <http://www.euclideanspace.com/maths/algebra/realNormedAlgebra/quaternions/slerp/>
-    // q = [q0*sin((1-t)*theta)+q1*sin(t*theta)]/sin(theta), 0<=t<=1
     if (t<0.0) t=0.0;
     else if (t>1.0) t=1.0;
-    //return q0;
 
     double scale0 = 1.0 - t;
     double scale1 = t;
@@ -701,11 +699,6 @@ void Rotation::setYawPitchRoll(double y, double p, double r)
     double s2 = sin(p/2.0);
     double c3 = cos(r/2.0);
     double s3 = sin(r/2.0);
-
-    // quat[0] = c1*c2*s3 - s1*s2*c3;
-    // quat[1] = c1*s2*c3 + s1*c2*s3;
-    // quat[2] = s1*c2*c3 - c1*s2*s3;
-    // quat[3] = c1*c2*c3 + s1*s2*s3;
 
     this->setValue (
       c1*c2*s3 - s1*s2*c3,

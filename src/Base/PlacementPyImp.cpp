@@ -417,7 +417,6 @@ PyObject * PlacementPy::number_power_handler (PyObject* self, PyObject* other, P
 
     double pw_v{};
     if (!PyArg_ParseTuple(tup.ptr(), "d", &pw_v)){
-        //PyErr_SetString(PyExc_NotImplementedError, "Wrong exponent type (expect float).");
         return nullptr;
     }
     if (!PyObject_TypeCheck(self, &(PlacementPy::Type))
