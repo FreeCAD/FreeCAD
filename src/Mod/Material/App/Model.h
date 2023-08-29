@@ -66,6 +66,7 @@ public:
     explicit ModelProperty(const QString& name, const QString& type,
                            const QString& units, const QString& url,
                            const QString& description);
+    explicit ModelProperty(const ModelProperty& other);
     virtual ~ModelProperty();
 
     const QString getName() const {  return _name; }

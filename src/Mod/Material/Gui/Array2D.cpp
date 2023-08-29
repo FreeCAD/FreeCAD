@@ -78,7 +78,7 @@ void Array2D::setupDefault()
 
     try
     {
-        auto column1 = _property->getColumn(0);
+        Materials::MaterialProperty &column1 = _property->getColumn(0);
         QString label =
             QString::fromStdString("Default ") + column1.getName();
         ui->labelDefault->setText(label);
@@ -102,8 +102,10 @@ void Array2D::setupDefault()
 void Array2D::setHeaders(QStandardItemModel *model)
 {
     QStringList headers;
-    for (auto column : _property->getColumns())
-        headers.append(column.getName());
+    auto columns = _property->getColumns();
+    for (auto column = columns.begin(); column != columns.end(); column++) {
+        headers.append(column->getName());
+    }
     model->setHorizontalHeaderLabels(headers);
 }
 
@@ -118,7 +120,7 @@ void Array2D::setColumnDelegates(QTableView *table)
 {
     int length = _property->columns();
     for (int i = 0; i < length; i++) {
-        auto column = _property->getColumn(i);
+        Materials::MaterialProperty &column = _property->getColumn(i);
         table->setItemDelegateForColumn(i, new ArrayDelegate(column.getType(), column.getUnits(), this));
     }
 }

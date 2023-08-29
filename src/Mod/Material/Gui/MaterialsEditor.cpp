@@ -148,7 +148,8 @@ void MaterialsEditor::addFavorite(const QString &uuid)
     // Ensure it is a material. New, unsaved materials will not be
     try
     {
-        auto material = _materialManager.getMaterial(uuid);
+        const Materials::Material &material = _materialManager.getMaterial(uuid);
+        Q_UNUSED(material)
     }
     catch(const Materials::MaterialNotFound&)
     {
@@ -233,7 +234,8 @@ void MaterialsEditor::addRecent(const QString& uuid)
     // Ensure it is a material. New, unsaved materials will not be
     try
     {
-        auto material = _materialManager.getMaterial(uuid);
+        const Materials::Material &material = _materialManager.getMaterial(uuid);
+        Q_UNUSED(material)
     }
     catch(const Materials::MaterialNotFound&)
     {
@@ -394,7 +396,7 @@ void MaterialsEditor::addMaterials(QStandardItem &parent, const QString &top, co
             card->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemIsDragEnabled
                         | Qt::ItemIsDropEnabled);
             try {
-                auto material = getMaterialManager().getMaterialByPath(QString::fromStdString(mod.path().string()));
+                const Materials::Material &material = getMaterialManager().getMaterialByPath(QString::fromStdString(mod.path().string()));
                 card->setData(QVariant(material.getUUID()), Qt::UserRole);
             } catch (Materials::ModelNotFound &e) {
                 Base::Console().Log("Model not found error\n");
@@ -756,7 +758,7 @@ void MaterialsEditor::updateMaterialProperties()
                     QList<QStandardItem*> items;
 
                     QString key = itp->first;
-                    Materials::ModelProperty modelProperty = itp->second;
+                    Materials::ModelProperty modelProperty = static_cast<Materials::ModelProperty>(itp->second);
                     auto propertyItem = new QStandardItem(key);
                     propertyItem->setToolTip(modelProperty.getDescription());
                     items.append(propertyItem);

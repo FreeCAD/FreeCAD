@@ -92,7 +92,7 @@ void Array3D::setupDefault()
 
     try
     {
-        auto column1 = _property->getColumn(0);
+        Materials::MaterialProperty &column1 = _property->getColumn(0);
         QString label =
             QString::fromStdString("Default ") + column1.getName();
         ui->labelDefault->setText(label);
@@ -120,7 +120,7 @@ void Array3D::defaultValueChanged(const Base::Quantity &value)
 
 void Array3D::setDepthColumnDelegate(QTableView *table)
 {
-    auto column = _property->getColumn(0);
+    Materials::MaterialProperty &column = _property->getColumn(0);
     table->setItemDelegateForColumn(0, new ArrayDelegate(column.getType(), column.getUnits(), this));
 }
 
@@ -154,7 +154,7 @@ void Array3D::setColumnDelegates(QTableView *table)
 {
     int length = _property->columns();
     for (int i = 0; i < length; i++) {
-        auto column = _property->getColumn(i);
+        Materials::MaterialProperty &column = _property->getColumn(i);
         table->setItemDelegateForColumn(i, new ArrayDelegate(column.getType(), column.getUnits(), this));
     }
 }

@@ -269,7 +269,7 @@ void MaterialLoader::dereference(Material *material)
         for (auto itp = properties.begin(); itp != properties.end(); itp++)
         {
             auto name = itp->first;
-            auto property = itp->second;
+            auto property = static_cast<const MaterialProperty>(itp->second);
 
             if (material->getPhysicalProperty(name).isNull()) {
                 material->getPhysicalProperty(name).setValue(property.getValue());
@@ -280,7 +280,7 @@ void MaterialLoader::dereference(Material *material)
         for (auto itp = properties.begin(); itp != properties.end(); itp++)
         {
             auto name = itp->first;
-            auto property = itp->second;
+            auto property = static_cast<const MaterialProperty>(itp->second);
 
             if (material->getAppearanceProperty(name).isNull()) {
                 material->getAppearanceProperty(name).setValue(property.getValue());

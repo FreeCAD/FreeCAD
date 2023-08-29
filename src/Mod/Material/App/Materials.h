@@ -42,6 +42,7 @@ class MaterialsExport MaterialProperty : public ModelProperty
 public:
     MaterialProperty();
     explicit MaterialProperty(const ModelProperty &property);
+    explicit MaterialProperty(const MaterialProperty& property);
     virtual ~MaterialProperty();
 
     MaterialValue::ValueType getType(void) const { return _valuePtr->getType(); }
@@ -103,6 +104,7 @@ public:
                       const QString& uuid, const QString& name);
     explicit Material(const MaterialLibrary &library, const QDir& directory,
                       const QString& uuid, const QString& name);
+    explicit Material(const Material& other);
     virtual ~Material();
 
     const MaterialLibrary &getLibrary() const { return _library; }

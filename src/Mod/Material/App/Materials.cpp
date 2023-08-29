@@ -50,8 +50,9 @@ MaterialProperty::MaterialProperty(const ModelProperty &property) :
     ModelProperty(property), _valuePtr(nullptr)
 {
     setType(getPropertyType());
-    for (auto it : property.getColumns()) {
-        MaterialProperty prop(it);
+    auto columns = property.getColumns();
+    for (std::vector<ModelProperty>::const_iterator it = columns.begin(); it != columns.end(); it++) {
+        MaterialProperty prop(*it);
         addColumn(prop);
     }
 
@@ -63,6 +64,19 @@ MaterialProperty::MaterialProperty(const ModelProperty &property) :
     {
         reinterpret_cast<Material3DArray *>(_valuePtr)->setDefault(getColumnNull(0));
     }
+}
+
+MaterialProperty::MaterialProperty(const MaterialProperty& other) :
+    ModelProperty(other)
+{
+    _modelUUID = other._modelUUID;
+    if (other._valuePtr != nullptr)
+        _valuePtr = new MaterialValue(*(other._valuePtr));
+    else
+        _valuePtr = nullptr;
+
+    for (auto it = other._columns.begin(); it != other._columns.end(); it++)
+        _columns.push_back(*it);
 }
 
 MaterialProperty::~MaterialProperty()
@@ -346,6 +360,32 @@ Material::Material(const MaterialLibrary &library, const QDir& directory,
     _library(library), _directory(directory), _uuid(uuid), _name(name), _dereferenced(false)
 {}
 
+Material::Material(const Material& other) :
+    _library(other._library),
+    _directory(other._directory),
+    _uuid(other._uuid),
+    _name(other._name),
+    _authorAndLicense(other._authorAndLicense),
+    _parentUuid(other._parentUuid),
+    _description(other._description),
+    _url(other._url),
+    _reference(other._reference),
+    _dereferenced(other._dereferenced)
+{
+    for (auto it = other._tags.begin(); it != other._tags.end(); it++)
+        _tags.push_back(*it);
+    for (auto it = other._physicalUuids.begin(); it != other._physicalUuids.end(); it++)
+        _physicalUuids.push_back(*it);
+    for (auto it = other._appearanceUuids.begin(); it != other._appearanceUuids.end(); it++)
+        _appearanceUuids.push_back(*it);
+    for (auto it = other._allUuids.begin(); it != other._allUuids.end(); it++)
+        _allUuids.push_back(*it);
+    for (auto it = other._physical.begin(); it != other._physical.end(); it++)
+        _physical[it->first] = MaterialProperty(it->second);
+    for (auto it = other._appearance.begin(); it != other._appearance.end(); it++)
+        _appearance[it->first] = MaterialProperty(it->second);
+}
+
 /*
  *  Destroys the object and frees any allocated resources
  */
@@ -389,7 +429,7 @@ void Material::addPhysical(const QString &uuid)
         for (auto it = model.begin(); it != model.end(); it++)
         {
             QString propertyName = it->first;
-            ModelProperty property = it->second;
+            ModelProperty property = static_cast<ModelProperty>(it->second);
 
             try
             {
@@ -423,7 +463,7 @@ void Material::addAppearance(const QString &uuid)
         for (auto it = model.begin(); it != model.end(); it++)
         {
             QString propertyName = it->first;
-            ModelProperty property = it->second;
+            ModelProperty property = static_cast<ModelProperty>(it->second);
 
             _appearance[propertyName] = MaterialProperty(property);
         }
@@ -653,17 +693,17 @@ bool Material::isAppearanceModelComplete(const QString& uuid) const
 
 void Material::saveGeneral(QTextStream &stream) const
 {
-    stream << "General:" << endl;
-    stream << "  UUID: \"" << _uuid << "\"" << endl;
-    stream << "  Name: \"" << _name << "\"" << endl;
+    stream << "General:\n";
+    stream << "  UUID: \"" << _uuid << "\"\n";
+    stream << "  Name: \"" << _name << "\"\n";
     if (!_authorAndLicense.isEmpty())
-        stream << "  AuthorAndLicense: \"" << _authorAndLicense << "\"" << endl;
+        stream << "  AuthorAndLicense: \"" << _authorAndLicense << "\"\n";
     if (!_description.isEmpty())
-        stream << "  Description: \"" << _description << "\"" << endl;
+        stream << "  Description: \"" << _description << "\"\n";
     if (!_url.isEmpty())
-        stream << "  SourceURL: \"" << _url << "\"" << endl;
+        stream << "  SourceURL: \"" << _url << "\"\n";
     if (!_reference.isEmpty())
-        stream << "  ReferenceSource: \"" << _reference << "\"" << endl;
+        stream << "  ReferenceSource: \"" << _reference << "\"\n";
 }
 
 void Material::saveInherits(QTextStream &stream) const
@@ -672,9 +712,9 @@ void Material::saveInherits(QTextStream &stream) const
     {
         MaterialManager manager;
 
-        stream << "Inherits:" << endl;
-        stream << "  " << manager.getMaterial(_parentUuid).getName() << ":" << endl;
-        stream << "    UUID: \"" << _parentUuid << "\"" << endl;
+        stream << "Inherits:\n";
+        stream << "  " << manager.getMaterial(_parentUuid).getName() << ":\n";
+        stream << "    UUID: \"" << _parentUuid << "\"\n";
     }
 }
 
@@ -684,19 +724,19 @@ void Material::saveModels(QTextStream &stream) const
     {
         ModelManager *modelManager = ModelManager::getManager();
 
-        stream << "Models:" << endl;
+        stream << "Models:\n";
         for (auto itm = _physicalUuids.begin(); itm != _physicalUuids.end(); itm++)
         {
             auto model = modelManager->getModel(*itm);
-            stream << "  " << model.getName() << ":" << endl;
-            stream << "    UUID: \"" << model.getUUID() << "\"" << endl;
+            stream << "  " << model.getName() << ":\n";
+            stream << "    UUID: \"" << model.getUUID() << "\"\n";
             for (auto itp = model.begin(); itp != model.end(); itp++)
             {
                 QString propertyName = itp->first;
                 const MaterialProperty& property = getPhysicalProperty(propertyName);
 
                 if (!property.isNull())
-                    stream << "    " << propertyName << ": \"" << getPhysicalValueString(propertyName) << "\"" << endl;
+                    stream << "    " << propertyName << ": \"" << getPhysicalValueString(propertyName) << "\"\n";
             }
         }
     }
@@ -708,19 +748,19 @@ void Material::saveAppearanceModels(QTextStream &stream) const
     {
         ModelManager *modelManager = ModelManager::getManager();
 
-        stream << "AppearanceModels:" << endl;
+        stream << "AppearanceModels:\n";
         for (auto itm = _appearanceUuids.begin(); itm != _appearanceUuids.end(); itm++)
         {
             auto model = modelManager->getModel(*itm);
-            stream << "  " << model.getName() << ":" << endl;
-            stream << "    UUID: \"" << model.getUUID() << "\"" << endl;
+            stream << "  " << model.getName() << ":\n";
+            stream << "    UUID: \"" << model.getUUID() << "\"\n";
             for (auto itp = model.begin(); itp != model.end(); itp++)
             {
                 QString propertyName = itp->first;
                 const MaterialProperty& property = getAppearanceProperty(propertyName);
 
                 if (!property.isNull())
-                    stream << "    " << propertyName << ": \"" << getAppearanceValueString(propertyName) << "\"" << endl;
+                    stream << "    " << propertyName << ": \"" << getAppearanceValueString(propertyName) << "\"\n";
             }
         }
     }
@@ -733,7 +773,7 @@ void Material::save(QTextStream &stream, bool saveAsCopy)
     // Create a new UUID
     _uuid = QUuid::createUuid().toString(QUuid::WithoutBraces);
 
-    stream << "# File created by FreeCAD" << endl;
+    stream << "# File created by FreeCAD\n";
     saveGeneral(stream);
     saveInherits(stream);
     saveModels(stream);

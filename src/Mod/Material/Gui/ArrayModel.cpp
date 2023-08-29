@@ -115,7 +115,7 @@ QVariant Array2DModel::headerData(int section, Qt::Orientation orientation,
     {
         if (orientation == Qt::Horizontal)
         {
-            auto column = _property->getColumn(section);
+            Materials::MaterialProperty &column = _property->getColumn(section);
             return QVariant(column.getName());
         } else if (orientation == Qt::Vertical) {
             // Vertical header
@@ -259,7 +259,7 @@ QVariant Array3DDepthModel::headerData(int section, Qt::Orientation orientation,
     {
         if (orientation == Qt::Horizontal)
         {
-            auto column = _property->getColumn(section);
+            Materials::MaterialProperty &column = _property->getColumn(section);
             return QVariant(column.getName());
         } else if (orientation == Qt::Vertical) {
             // Vertical header
@@ -415,7 +415,7 @@ QVariant Array3DModel::headerData(int section, Qt::Orientation orientation,
     {
         if (orientation == Qt::Horizontal)
         {
-            auto column = _property->getColumn(section + 1);
+            Materials::MaterialProperty &column = _property->getColumn(section + 1);
             return QVariant(column.getName());
         } else if (orientation == Qt::Vertical) {
             // Vertical header

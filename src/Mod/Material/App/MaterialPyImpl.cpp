@@ -356,17 +356,17 @@ static PyObject *_pyObjectFromVariant(const QVariant &value) {
 
     if (value.userType() == QMetaType::type("Base::Quantity"))
         return new Base::QuantityPy(new Base::Quantity(value.value<Base::Quantity>()));
-    else if (value.type() == QMetaType::Double)
+    else if (value.userType() == QMetaType::Double)
         return PyFloat_FromDouble(value.toDouble());
-    else if (value.type() == QMetaType::Float)
+    else if (value.userType() == QMetaType::Float)
         return PyFloat_FromDouble(value.toFloat());
-    else if (value.type() == QMetaType::Int)
+    else if (value.userType() == QMetaType::Int)
         return PyLong_FromLong(value.toInt());
-    else if (value.type() == QMetaType::Long)
+    else if (value.userType() == QMetaType::Long)
         return PyLong_FromLong(value.toInt());
-    else if (value.type() == QMetaType::Bool)
+    else if (value.userType() == QMetaType::Bool)
         return value.toBool() ? Py_True : Py_False;
-    else if (value.type() == QMetaType::QString)
+    else if (value.userType() == QMetaType::QString)
         return PyUnicode_FromString(value.toString().toStdString().c_str());
 
     throw UnknownValueType();

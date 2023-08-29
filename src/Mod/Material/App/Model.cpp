@@ -57,6 +57,18 @@ ModelProperty::ModelProperty(const QString& name, const QString& type,
 
 }
 
+ModelProperty::ModelProperty(const ModelProperty& other) :
+    _name(other._name),
+    _propertyType(other._propertyType),
+    _units(other._units),
+    _url(other._url),
+    _description(other._description),
+    _inheritance(other._inheritance)
+{
+    for (auto it = other._columns.begin(); it != other._columns.end(); it++)
+        _columns.push_back(*it);
+}
+
 ModelProperty::~ModelProperty()
 {
 

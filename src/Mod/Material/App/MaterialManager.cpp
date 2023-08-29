@@ -48,7 +48,8 @@ MaterialManager::MaterialManager()
     if (_materialMap == nullptr) {
         // Load the models first
         ModelManager *manager = ModelManager::getManager();
-
+        Q_UNUSED(manager)
+        
         _materialMap = new std::map<QString, Material*>();
 
         if (_materialPathMap == nullptr)
