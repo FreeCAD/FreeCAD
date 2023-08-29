@@ -6,52 +6,52 @@
     <message>
       <location filename="../../UnitsApi.cpp" line="68"/>
       <source>Standard (mm, kg, s, degree)</source>
-      <translation type="unfinished">Standard (mm, kg, s, degree)</translation>
+      <translation>Estandarra (mm, kg, s, gradu)</translation>
     </message>
     <message>
       <location filename="../../UnitsApi.cpp" line="70"/>
       <source>MKS (m, kg, s, degree)</source>
-      <translation type="unfinished">MKS (m, kg, s, degree)</translation>
+      <translation>MKS (m, kg, s, gradu)</translation>
     </message>
     <message>
       <location filename="../../UnitsApi.cpp" line="72"/>
       <source>US customary (in, lb)</source>
-      <translation type="unfinished">US customary (in, lb)</translation>
+      <translation>AEBko pertsonalizatua (in, lb)</translation>
     </message>
     <message>
       <location filename="../../UnitsApi.cpp" line="74"/>
       <source>Imperial decimal (in, lb)</source>
-      <translation type="unfinished">Imperial decimal (in, lb)</translation>
+      <translation>Dezimal inperiala (in, lb)</translation>
     </message>
     <message>
       <location filename="../../UnitsApi.cpp" line="76"/>
       <source>Building Euro (cm, m², m³)</source>
-      <translation type="unfinished">Building Euro (cm, m², m³)</translation>
+      <translation>Europar neurriak (cm, m², m³)</translation>
     </message>
     <message>
       <location filename="../../UnitsApi.cpp" line="78"/>
       <source>Building US (ft-in, sqft, cft)</source>
-      <translation type="unfinished">Building US (ft-in, sqft, cft)</translation>
+      <translation>AEBetako neurriak (ft-in, sqft, cft)</translation>
     </message>
     <message>
       <location filename="../../UnitsApi.cpp" line="80"/>
       <source>Metric small parts &amp; CNC(mm, mm/min)</source>
-      <translation type="unfinished">Metric small parts &amp; CNC(mm, mm/min)</translation>
+      <translation>Zati txiki metrikoak &amp; CNC (mm, mm/min)</translation>
     </message>
     <message>
       <location filename="../../UnitsApi.cpp" line="82"/>
       <source>Imperial for Civil Eng (ft, ft/sec)</source>
-      <translation type="unfinished">Imperial for Civil Eng (ft, ft/sec)</translation>
+      <translation>Inperiala ingeniaritza zibilerako (ft, ft/sec)</translation>
     </message>
     <message>
       <location filename="../../UnitsApi.cpp" line="84"/>
       <source>FEM (mm, N, s)</source>
-      <translation type="unfinished">FEM (mm, N, s)</translation>
+      <translation>FEM (mm, N, s)</translation>
     </message>
     <message>
       <location filename="../../UnitsApi.cpp" line="86"/>
       <source>Unknown schema</source>
-      <translation type="unfinished">Unknown schema</translation>
+      <translation>Eskema ezezaguna</translation>
     </message>
   </context>
 </TS>

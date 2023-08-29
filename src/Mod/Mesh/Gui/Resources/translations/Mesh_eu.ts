@@ -4,18 +4,18 @@
   <context>
     <name>CmdMeshAddFacet</name>
     <message>
-      <location filename="../../Command.cpp" line="655"/>
+      <location filename="../../Command.cpp" line="656"/>
       <source>Mesh</source>
       <translation>Amarauna</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="656"/>
+      <location filename="../../Command.cpp" line="657"/>
       <source>Add triangle</source>
       <translation>Gehitu triangelua</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="657"/>
-      <location filename="../../Command.cpp" line="659"/>
+      <location filename="../../Command.cpp" line="658"/>
+      <location filename="../../Command.cpp" line="660"/>
       <source>Add triangle manually to a mesh</source>
       <translation>Gehitu triangelua eskuz amaraun bati</translation>
     </message>
@@ -23,18 +23,18 @@
   <context>
     <name>CmdMeshBoundingBox</name>
     <message>
-      <location filename="../../Command.cpp" line="1335"/>
+      <location filename="../../Command.cpp" line="1336"/>
       <source>Mesh</source>
       <translation>Amarauna</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1336"/>
+      <location filename="../../Command.cpp" line="1337"/>
       <source>Boundings info...</source>
       <translation>Mugen informazioa...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1337"/>
-      <location filename="../../Command.cpp" line="1339"/>
+      <location filename="../../Command.cpp" line="1338"/>
+      <location filename="../../Command.cpp" line="1340"/>
       <source>Shows the boundings of the selected mesh</source>
       <translation>Erakutsi hautatutako amaraunaren mugak</translation>
     </message>
@@ -42,18 +42,18 @@
   <context>
     <name>CmdMeshBuildRegularSolid</name>
     <message>
-      <location filename="../../Command.cpp" line="1377"/>
+      <location filename="../../Command.cpp" line="1378"/>
       <source>Mesh</source>
       <translation>Amarauna</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1378"/>
+      <location filename="../../Command.cpp" line="1379"/>
       <source>Regular solid...</source>
       <translation>Solido erregularra...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1379"/>
-      <location filename="../../Command.cpp" line="1381"/>
+      <location filename="../../Command.cpp" line="1380"/>
+      <location filename="../../Command.cpp" line="1382"/>
       <source>Builds a regular solid</source>
       <translation>Solido erregular bat eraikitzen du</translation>
     </message>
@@ -61,18 +61,18 @@
   <context>
     <name>CmdMeshCrossSections</name>
     <message>
-      <location filename="../../Command.cpp" line="882"/>
+      <location filename="../../Command.cpp" line="883"/>
       <source>Mesh</source>
       <translation>Amarauna</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="883"/>
+      <location filename="../../Command.cpp" line="884"/>
       <source>Cross-sections...</source>
       <translation>Zeharkako sekzioak...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="884"/>
       <location filename="../../Command.cpp" line="885"/>
+      <location filename="../../Command.cpp" line="886"/>
       <source>Cross-sections</source>
       <translation>Zeharkako sekzioak</translation>
     </message>
@@ -80,19 +80,19 @@
   <context>
     <name>CmdMeshDecimating</name>
     <message>
-      <location filename="../../Command.cpp" line="1236"/>
+      <location filename="../../Command.cpp" line="1237"/>
       <source>Mesh</source>
       <translation>Amarauna</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1237"/>
+      <location filename="../../Command.cpp" line="1238"/>
       <source>Decimation...</source>
       <translation>Bakantzea...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1238"/>
       <location filename="../../Command.cpp" line="1239"/>
       <location filename="../../Command.cpp" line="1240"/>
+      <location filename="../../Command.cpp" line="1241"/>
       <source>Decimates a mesh</source>
       <translation>Amaraun bat bakantzen du</translation>
     </message>
@@ -113,18 +113,18 @@
   <context>
     <name>CmdMeshEvaluateFacet</name>
     <message>
-      <location filename="../../Command.cpp" line="1005"/>
+      <location filename="../../Command.cpp" line="1006"/>
       <source>Mesh</source>
       <translation>Amarauna</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1006"/>
+      <location filename="../../Command.cpp" line="1007"/>
       <source>Face info</source>
       <translation>Aurpegi-informazioa</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1007"/>
-      <location filename="../../Command.cpp" line="1009"/>
+      <location filename="../../Command.cpp" line="1008"/>
+      <location filename="../../Command.cpp" line="1010"/>
       <source>Information about face</source>
       <translation>Aurpegiari buruzko informazioa</translation>
     </message>
@@ -132,18 +132,18 @@
   <context>
     <name>CmdMeshEvaluateSolid</name>
     <message>
-      <location filename="../../Command.cpp" line="1170"/>
+      <location filename="../../Command.cpp" line="1171"/>
       <source>Mesh</source>
       <translation>Amarauna</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1171"/>
+      <location filename="../../Command.cpp" line="1172"/>
       <source>Check solid mesh</source>
       <translation>Egiaztatu amaraun solidoa</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1172"/>
-      <location filename="../../Command.cpp" line="1174"/>
+      <location filename="../../Command.cpp" line="1173"/>
+      <location filename="../../Command.cpp" line="1175"/>
       <source>Checks whether the mesh is a solid</source>
       <translation>Amaraun bat solidoa den egiaztatzen du</translation>
     </message>
@@ -151,18 +151,18 @@
   <context>
     <name>CmdMeshEvaluation</name>
     <message>
-      <location filename="../../Command.cpp" line="962"/>
+      <location filename="../../Command.cpp" line="963"/>
       <source>Mesh</source>
       <translation>Amarauna</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="964"/>
+      <location filename="../../Command.cpp" line="965"/>
       <source>Evaluate and repair mesh...</source>
       <translation>Ebaluatu eta konpondu amarauna...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="965"/>
-      <location filename="../../Command.cpp" line="967"/>
+      <location filename="../../Command.cpp" line="966"/>
+      <location filename="../../Command.cpp" line="968"/>
       <source>Opens a dialog to analyze and repair a mesh</source>
       <translation>Elkarrizketa-koadro bat irekitzen du amaraun bat analizatu eta konpontzeko</translation>
     </message>
@@ -189,18 +189,18 @@
   <context>
     <name>CmdMeshFillInteractiveHole</name>
     <message>
-      <location filename="../../Command.cpp" line="1447"/>
+      <location filename="../../Command.cpp" line="1448"/>
       <source>Mesh</source>
       <translation>Amarauna</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1448"/>
+      <location filename="../../Command.cpp" line="1449"/>
       <source>Close hole</source>
       <translation>Itxi zuloa</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1449"/>
-      <location filename="../../Command.cpp" line="1451"/>
+      <location filename="../../Command.cpp" line="1450"/>
+      <location filename="../../Command.cpp" line="1452"/>
       <source>Close holes interactively</source>
       <translation>Zuloak interaktiboki ixten ditu</translation>
     </message>
@@ -208,18 +208,18 @@
   <context>
     <name>CmdMeshFillupHoles</name>
     <message>
-      <location filename="../../Command.cpp" line="1408"/>
+      <location filename="../../Command.cpp" line="1409"/>
       <source>Mesh</source>
       <translation>Amarauna</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1409"/>
+      <location filename="../../Command.cpp" line="1410"/>
       <source>Fill holes...</source>
       <translation>Bete zuloak...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1410"/>
-      <location filename="../../Command.cpp" line="1412"/>
+      <location filename="../../Command.cpp" line="1411"/>
+      <location filename="../../Command.cpp" line="1413"/>
       <source>Fill holes of the mesh</source>
       <translation>Bete amaraunaren zuloak</translation>
     </message>
@@ -227,18 +227,18 @@
   <context>
     <name>CmdMeshFlipNormals</name>
     <message>
-      <location filename="../../Command.cpp" line="1301"/>
+      <location filename="../../Command.cpp" line="1302"/>
       <source>Mesh</source>
       <translation>Amarauna</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1302"/>
+      <location filename="../../Command.cpp" line="1303"/>
       <source>Flip normals</source>
       <translation>Irauli normalak</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1303"/>
-      <location filename="../../Command.cpp" line="1305"/>
+      <location filename="../../Command.cpp" line="1304"/>
+      <location filename="../../Command.cpp" line="1306"/>
       <source>Flips the normals of the mesh</source>
       <translation>Amaraunaren normalak iraultzen ditu</translation>
     </message>
@@ -283,18 +283,18 @@
   <context>
     <name>CmdMeshHarmonizeNormals</name>
     <message>
-      <location filename="../../Command.cpp" line="1267"/>
+      <location filename="../../Command.cpp" line="1268"/>
       <source>Mesh</source>
       <translation>Amarauna</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1268"/>
+      <location filename="../../Command.cpp" line="1269"/>
       <source>Harmonize normals</source>
       <translation>Harmonizatu normalak</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1269"/>
-      <location filename="../../Command.cpp" line="1271"/>
+      <location filename="../../Command.cpp" line="1270"/>
+      <location filename="../../Command.cpp" line="1272"/>
       <source>Harmonizes the normals of the mesh</source>
       <translation>Amarauneko normalak harmonizatzen ditu</translation>
     </message>
@@ -334,17 +334,17 @@
   <context>
     <name>CmdMeshMerge</name>
     <message>
-      <location filename="../../Command.cpp" line="1561"/>
+      <location filename="../../Command.cpp" line="1562"/>
       <source>Mesh</source>
       <translation>Amarauna</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1562"/>
+      <location filename="../../Command.cpp" line="1563"/>
       <source>Merge</source>
       <translation>Fusionatu</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1563"/>
+      <location filename="../../Command.cpp" line="1564"/>
       <source>Merges selected meshes into one</source>
       <translation>Hautatutako amaraunak fusionatzen ditu bakarra sortuz</translation>
     </message>
@@ -352,18 +352,18 @@
   <context>
     <name>CmdMeshPolyCut</name>
     <message>
-      <location filename="../../Command.cpp" line="702"/>
+      <location filename="../../Command.cpp" line="703"/>
       <source>Mesh</source>
       <translation>Amarauna</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="703"/>
+      <location filename="../../Command.cpp" line="704"/>
       <source>Cut mesh</source>
       <translation>Moztu amarauna</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="704"/>
-      <location filename="../../Command.cpp" line="706"/>
+      <location filename="../../Command.cpp" line="705"/>
+      <location filename="../../Command.cpp" line="707"/>
       <source>Cuts a mesh with a picked polygon</source>
       <translation>Amaraun bat mozten du hautatutako poligono batekin</translation>
     </message>
@@ -371,18 +371,18 @@
   <context>
     <name>CmdMeshPolySegm</name>
     <message>
-      <location filename="../../Command.cpp" line="600"/>
+      <location filename="../../Command.cpp" line="601"/>
       <source>Mesh</source>
       <translation>Amarauna</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="601"/>
+      <location filename="../../Command.cpp" line="602"/>
       <source>Make segment</source>
       <translation>Sortu segmentua</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="602"/>
-      <location filename="../../Command.cpp" line="604"/>
+      <location filename="../../Command.cpp" line="603"/>
+      <location filename="../../Command.cpp" line="605"/>
       <source>Creates a mesh segment</source>
       <translation>Amaraun segmentu bat sortzen du</translation>
     </message>
@@ -390,18 +390,18 @@
   <context>
     <name>CmdMeshPolySplit</name>
     <message>
-      <location filename="../../Command.cpp" line="908"/>
+      <location filename="../../Command.cpp" line="909"/>
       <source>Mesh</source>
       <translation>Amarauna</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="909"/>
+      <location filename="../../Command.cpp" line="910"/>
       <source>Split mesh</source>
       <translation>Zatitu amarauna</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="910"/>
-      <location filename="../../Command.cpp" line="912"/>
+      <location filename="../../Command.cpp" line="911"/>
+      <location filename="../../Command.cpp" line="913"/>
       <source>Splits a mesh into two meshes</source>
       <translation>Amaraun bat bitan zatitzen du</translation>
     </message>
@@ -409,18 +409,18 @@
   <context>
     <name>CmdMeshPolyTrim</name>
     <message>
-      <location filename="../../Command.cpp" line="763"/>
+      <location filename="../../Command.cpp" line="764"/>
       <source>Mesh</source>
       <translation>Amarauna</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="764"/>
+      <location filename="../../Command.cpp" line="765"/>
       <source>Trim mesh</source>
       <translation>Muxarratu amarauna</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="765"/>
-      <location filename="../../Command.cpp" line="767"/>
+      <location filename="../../Command.cpp" line="766"/>
+      <location filename="../../Command.cpp" line="768"/>
       <source>Trims a mesh with a picked polygon</source>
       <translation>Amarauna muxarratzen du aukeratutako poligono batekin</translation>
     </message>
@@ -428,18 +428,18 @@
   <context>
     <name>CmdMeshRemeshGmsh</name>
     <message>
-      <location filename="../../Command.cpp" line="1093"/>
+      <location filename="../../Command.cpp" line="1094"/>
       <source>Mesh</source>
       <translation>Amarauna</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1094"/>
+      <location filename="../../Command.cpp" line="1095"/>
       <source>Refinement...</source>
       <translation>Fintzea...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1095"/>
       <location filename="../../Command.cpp" line="1096"/>
+      <location filename="../../Command.cpp" line="1097"/>
       <source>Refine existing mesh</source>
       <translation>Findu lehendik dagoen amarauna</translation>
     </message>
@@ -447,18 +447,18 @@
   <context>
     <name>CmdMeshRemoveCompByHand</name>
     <message>
-      <location filename="../../Command.cpp" line="1126"/>
+      <location filename="../../Command.cpp" line="1127"/>
       <source>Mesh</source>
       <translation>Amarauna</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1127"/>
+      <location filename="../../Command.cpp" line="1128"/>
       <source>Remove components by hand...</source>
       <translation>Kendu osagaiak eskuz...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1128"/>
-      <location filename="../../Command.cpp" line="1130"/>
+      <location filename="../../Command.cpp" line="1129"/>
+      <location filename="../../Command.cpp" line="1131"/>
       <source>Mark a component to remove it from the mesh</source>
       <translation>Markatu osagai bat, hura amaraunetik kentzeko</translation>
     </message>
@@ -466,18 +466,18 @@
   <context>
     <name>CmdMeshRemoveComponents</name>
     <message>
-      <location filename="../../Command.cpp" line="1048"/>
+      <location filename="../../Command.cpp" line="1049"/>
       <source>Mesh</source>
       <translation>Amarauna</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1049"/>
+      <location filename="../../Command.cpp" line="1050"/>
       <source>Remove components...</source>
       <translation>Kendu osagaiak...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1050"/>
-      <location filename="../../Command.cpp" line="1052"/>
+      <location filename="../../Command.cpp" line="1051"/>
+      <location filename="../../Command.cpp" line="1053"/>
       <source>Remove topologic independent components from the mesh</source>
       <translation>Kendu topologikoki independenteak diren osagaiak amaraunetik</translation>
     </message>
@@ -485,17 +485,17 @@
   <context>
     <name>CmdMeshScale</name>
     <message>
-      <location filename="../../Command.cpp" line="1650"/>
+      <location filename="../../Command.cpp" line="1651"/>
       <source>Mesh</source>
       <translation>Amarauna</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1651"/>
+      <location filename="../../Command.cpp" line="1652"/>
       <source>Scale...</source>
       <translation>Eskala...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1652"/>
+      <location filename="../../Command.cpp" line="1653"/>
       <source>Scale selected meshes</source>
       <translation>Eskalatu hautatutako amaraunak</translation>
     </message>
@@ -503,18 +503,18 @@
   <context>
     <name>CmdMeshSectionByPlane</name>
     <message>
-      <location filename="../../Command.cpp" line="853"/>
+      <location filename="../../Command.cpp" line="854"/>
       <source>Mesh</source>
       <translation>Amarauna</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="854"/>
+      <location filename="../../Command.cpp" line="855"/>
       <source>Create section from mesh and plane</source>
       <translation>Sortu sekzioa amaraunetik eta planotik</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="855"/>
       <location filename="../../Command.cpp" line="856"/>
+      <location filename="../../Command.cpp" line="857"/>
       <source>Section from mesh and plane</source>
       <translation>Sekzioa amaraunetik eta planotik</translation>
     </message>
@@ -522,18 +522,18 @@
   <context>
     <name>CmdMeshSegmentation</name>
     <message>
-      <location filename="../../Command.cpp" line="1489"/>
+      <location filename="../../Command.cpp" line="1490"/>
       <source>Mesh</source>
       <translation>Amarauna</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1490"/>
+      <location filename="../../Command.cpp" line="1491"/>
       <source>Create mesh segments...</source>
       <translation>Sortu amaraun segmentuak...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1491"/>
-      <location filename="../../Command.cpp" line="1493"/>
+      <location filename="../../Command.cpp" line="1492"/>
+      <location filename="../../Command.cpp" line="1494"/>
       <source>Create mesh segments</source>
       <translation>Sortu amaraun segmentuak</translation>
     </message>
@@ -541,18 +541,18 @@
   <context>
     <name>CmdMeshSegmentationBestFit</name>
     <message>
-      <location filename="../../Command.cpp" line="1525"/>
+      <location filename="../../Command.cpp" line="1526"/>
       <source>Mesh</source>
       <translation>Amarauna</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1526"/>
+      <location filename="../../Command.cpp" line="1527"/>
       <source>Create mesh segments from best-fit surfaces...</source>
       <translation>Sortu amaraun segmentuak ondoen doitzen diren azaleretatik...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1527"/>
-      <location filename="../../Command.cpp" line="1529"/>
+      <location filename="../../Command.cpp" line="1528"/>
+      <location filename="../../Command.cpp" line="1530"/>
       <source>Create mesh segments from best-fit surfaces</source>
       <translation>Sortu amaraun segmentuak ondoen doitzen diren azaleretatik</translation>
     </message>
@@ -560,18 +560,18 @@
   <context>
     <name>CmdMeshSmoothing</name>
     <message>
-      <location filename="../../Command.cpp" line="1208"/>
+      <location filename="../../Command.cpp" line="1209"/>
       <source>Mesh</source>
       <translation>Amarauna</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1209"/>
+      <location filename="../../Command.cpp" line="1210"/>
       <source>Smooth...</source>
       <translation>Leundu...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1210"/>
-      <location filename="../../Command.cpp" line="1212"/>
+      <location filename="../../Command.cpp" line="1211"/>
+      <location filename="../../Command.cpp" line="1213"/>
       <source>Smooth the selected meshes</source>
       <translation>Leundu hautatutako amaraunak</translation>
     </message>
@@ -579,17 +579,17 @@
   <context>
     <name>CmdMeshSplitComponents</name>
     <message>
-      <location filename="../../Command.cpp" line="1604"/>
+      <location filename="../../Command.cpp" line="1605"/>
       <source>Mesh</source>
       <translation>Amarauna</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1605"/>
+      <location filename="../../Command.cpp" line="1606"/>
       <source>Split by components</source>
       <translation>Zatitu osagaien arabera</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1606"/>
+      <location filename="../../Command.cpp" line="1607"/>
       <source>Split selected mesh into its components</source>
       <translation>Zatitu amaraun hautatua bere osagaietan</translation>
     </message>
@@ -597,18 +597,18 @@
   <context>
     <name>CmdMeshTrimByPlane</name>
     <message>
-      <location filename="../../Command.cpp" line="824"/>
+      <location filename="../../Command.cpp" line="825"/>
       <source>Mesh</source>
       <translation>Amarauna</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="825"/>
+      <location filename="../../Command.cpp" line="826"/>
       <source>Trim mesh with a plane</source>
       <translation>Muxarratu amarauna plano batekin</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="826"/>
       <location filename="../../Command.cpp" line="827"/>
+      <location filename="../../Command.cpp" line="828"/>
       <source>Trims a mesh with a plane</source>
       <translation>Amaraun bat muxarratzen du plano batekin</translation>
     </message>
@@ -648,18 +648,18 @@
   <context>
     <name>CmdMeshVertexCurvatureInfo</name>
     <message>
-      <location filename="../../Command.cpp" line="554"/>
+      <location filename="../../Command.cpp" line="555"/>
       <source>Mesh</source>
       <translation>Amarauna</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="555"/>
+      <location filename="../../Command.cpp" line="556"/>
       <source>Curvature info</source>
       <translation>Kurbaduraren informazioa</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="556"/>
-      <location filename="../../Command.cpp" line="558"/>
+      <location filename="../../Command.cpp" line="557"/>
+      <location filename="../../Command.cpp" line="559"/>
       <source>Information about curvature</source>
       <translation>Kurbadurari buruzko informazioa</translation>
     </message>
@@ -692,87 +692,87 @@
       <translation>Amaraunaren erpinen kurbadura</translation>
     </message>
     <message>
-      <location filename="../../DlgSmoothing.cpp" line="183"/>
+      <location filename="../../DlgSmoothing.cpp" line="176"/>
       <source>Mesh Smoothing</source>
       <translation>Amaraunaren leuntzea</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1278"/>
+      <location filename="../../Command.cpp" line="1279"/>
       <source>Harmonize mesh normals</source>
       <translation>Harmonizatu amaraun-normalak</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1312"/>
+      <location filename="../../Command.cpp" line="1313"/>
       <source>Flip mesh normals</source>
       <translation>Irauli amaraunaren normalak</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1424"/>
+      <location filename="../../Command.cpp" line="1425"/>
       <source>Fill up holes</source>
       <translation>Bete zuloak</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1575"/>
+      <location filename="../../Command.cpp" line="1576"/>
       <source>Mesh merge</source>
       <translation>Amaraunen fusioa</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1618"/>
+      <location filename="../../Command.cpp" line="1619"/>
       <source>Mesh split</source>
       <translation>Amaraunaren zatiketa</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1670"/>
+      <location filename="../../Command.cpp" line="1671"/>
       <source>Mesh scale</source>
       <translation>Amaraunaren eskala</translation>
     </message>
     <message>
-      <location filename="../../DlgDecimating.cpp" line="153"/>
+      <location filename="../../DlgDecimating.cpp" line="146"/>
       <source>Mesh Decimating</source>
       <translation>Amaraunaren bakantzea</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="540"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="533"/>
       <source>Harmonize normals</source>
       <translation>Harmonizatu normalak</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="643"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="636"/>
       <source>Remove non-manifolds</source>
       <translation>Kendu anizkoitzak ez direnak</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="742"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="735"/>
       <source>Fix indices</source>
       <translation>Finkatu indizeak</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="808"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="801"/>
       <source>Remove degenerated faces</source>
       <translation>Kendu aurpegi degeneratuak</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="875"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="868"/>
       <source>Remove duplicated faces</source>
       <translation>Kendu aurpegi bikoiztuak</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="940"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="933"/>
       <source>Remove duplicated points</source>
       <translation>Kendu puntu bikoiztuak</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="1021"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="1014"/>
       <source>Fix self-intersections</source>
       <translation>Konpondu autoebakidurak</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="1097"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="1090"/>
       <source>Remove folds</source>
       <translation>Kendu karpetak</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="1138"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="1131"/>
       <source>Repair mesh</source>
       <translation>Konpondu amarauna</translation>
     </message>
@@ -782,34 +782,34 @@
       <translation>Ezabatu hautapena</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="922"/>
-      <location filename="../../ViewProvider.cpp" line="977"/>
+      <location filename="../../ViewProvider.cpp" line="915"/>
+      <location filename="../../ViewProvider.cpp" line="970"/>
       <source>Cut</source>
       <translation>Moztu</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="931"/>
-      <location filename="../../ViewProvider.cpp" line="1040"/>
+      <location filename="../../ViewProvider.cpp" line="924"/>
+      <location filename="../../ViewProvider.cpp" line="1033"/>
       <source>Trim</source>
       <translation>Muxarratu</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1119"/>
+      <location filename="../../ViewProvider.cpp" line="1112"/>
       <source>Split</source>
       <translation>Zatitu</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1183"/>
+      <location filename="../../ViewProvider.cpp" line="1176"/>
       <source>Segment</source>
       <translation>Segmentua</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1729"/>
+      <location filename="../../ViewProvider.cpp" line="1722"/>
       <source>Delete</source>
       <translation>Ezabatu</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1836"/>
+      <location filename="../../ViewProvider.cpp" line="1829"/>
       <source>Fill hole</source>
       <translation>Bete zuloa</translation>
     </message>
@@ -838,7 +838,7 @@
     </message>
     <message>
       <location filename="../../DlgDecimating.ui" line="66"/>
-      <location filename="../../DlgDecimating.cpp" line="96"/>
+      <location filename="../../DlgDecimating.cpp" line="94"/>
       <source>Absolute number</source>
       <translation>Zenbaki absolutua</translation>
     </message>
@@ -848,7 +848,7 @@
       <translation>Tolerantzia</translation>
     </message>
     <message>
-      <location filename="../../DlgDecimating.cpp" line="90"/>
+      <location filename="../../DlgDecimating.cpp" line="88"/>
       <source>Absolute number (Maximum: %1)</source>
       <translation>Zenbaki absolutua (maximoa: %1)</translation>
     </message>
@@ -980,166 +980,166 @@
   <context>
     <name>MeshGui::DlgEvaluateMeshImp</name>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="147"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="138"/>
       <source>Settings...</source>
       <translation>Ezarpenak...</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="256"/>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="417"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="247"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="408"/>
       <source>No selection</source>
       <translation>Hautapenik ez</translation>
     </message>
     <message>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="437"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="438"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="439"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="440"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="441"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="442"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="443"/>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="444"/>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="445"/>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="446"/>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="447"/>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="448"/>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="449"/>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="450"/>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="451"/>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="452"/>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="453"/>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="454"/>
       <source>No information</source>
       <translation>Informaziorik ez</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="547"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="540"/>
       <source>Orientation</source>
       <translation>Orientazioa</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="516"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="509"/>
       <source>No flipped normals</source>
       <translation>Iraulitako normalik ez</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="522"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="515"/>
       <source>%1 flipped normals</source>
       <translation>Iraulitako %1 normal</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="602"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="595"/>
       <source>No non-manifolds</source>
       <translation>Ez dago anizkoitza ez denik</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="609"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="602"/>
       <source>%1 non-manifolds</source>
       <translation>Anizkoitzak ez diren %1</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="656"/>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="659"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="649"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="652"/>
       <source>Non-manifolds</source>
       <translation>Ez anizkoitzak</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="659"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="652"/>
       <source>Cannot remove non-manifolds</source>
       <translation>Ezin dira kendu anizkoitzak ez direnak</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="697"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="690"/>
       <source>Invalid face indices</source>
       <translation>Aurpegi-indize baliogabeak</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="704"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="697"/>
       <source>Invalid point indices</source>
       <translation>Puntu-indize baliogabeak</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="711"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="704"/>
       <source>Multiple point indices</source>
       <translation>Puntu-indize anitzak</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="718"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="711"/>
       <source>Invalid neighbour indices</source>
       <translation>Auzoko indize baliogabeak</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="725"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="718"/>
       <source>No invalid indices</source>
       <translation>Ez dago baliogabeko indizerik</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="749"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="742"/>
       <source>Indices</source>
       <translation>Indizeak</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="784"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="777"/>
       <source>No degenerations</source>
       <translation>Ez dago degeneraziorik</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="790"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="783"/>
       <source>%1 degenerated faces</source>
       <translation>Degeneratutako %1 aurpegi</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="815"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="808"/>
       <source>Degenerations</source>
       <translation>Degenerazioak</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="850"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="843"/>
       <source>No duplicated faces</source>
       <translation>Ez dago aurpegi bikoizturik</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="856"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="849"/>
       <source>%1 duplicated faces</source>
       <translation>%1 aurpegi bikoiztu</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="882"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="875"/>
       <source>Duplicated faces</source>
       <translation>Aurpegi bikoiztuak</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="916"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="909"/>
       <source>No duplicated points</source>
       <translation>Ez dago puntu bikoizturik</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="922"/>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="947"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="915"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="940"/>
       <source>Duplicated points</source>
       <translation>Puntu bikoiztuak</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="988"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="981"/>
       <source>No self-intersections</source>
       <translation>Autoebakidurarik ez</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="994"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="987"/>
       <source>Self-intersections</source>
       <translation>Autoebakidurak</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="1062"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="1055"/>
       <source>No folds on surface</source>
       <translation>Tolesturarik ez gainazalean</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="1078"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="1071"/>
       <source>%1 folds on surface</source>
       <translation>%1 tolestura gainazalean</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="1104"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="1097"/>
       <source>Folds</source>
       <translation>Tolesturak</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="1237"/>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="1240"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="1230"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="1233"/>
       <source>Mesh repair</source>
       <translation>Amaraunaren konponketa</translation>
     </message>
@@ -1291,14 +1291,14 @@
   <context>
     <name>MeshGui::DlgRegularSolidImp</name>
     <message>
-      <location filename="../../DlgRegularSolidImp.cpp" line="126"/>
-      <location filename="../../DlgRegularSolidImp.cpp" line="211"/>
-      <location filename="../../DlgRegularSolidImp.cpp" line="219"/>
+      <location filename="../../DlgRegularSolidImp.cpp" line="123"/>
+      <location filename="../../DlgRegularSolidImp.cpp" line="208"/>
+      <location filename="../../DlgRegularSolidImp.cpp" line="216"/>
       <source>Create %1</source>
       <translation>Sortu %1</translation>
     </message>
     <message>
-      <location filename="../../DlgRegularSolidImp.cpp" line="126"/>
+      <location filename="../../DlgRegularSolidImp.cpp" line="123"/>
       <source>No active document</source>
       <translation>Ez dago dokumentu aktiborik</translation>
     </message>
@@ -1613,7 +1613,7 @@ itxura leunagoa ematen du.
   <context>
     <name>MeshGui::MeshFillHole</name>
     <message>
-      <location filename="../../MeshEditor.cpp" line="730"/>
+      <location filename="../../MeshEditor.cpp" line="727"/>
       <source>Finish</source>
       <translation>Amaitu</translation>
     </message>
@@ -1990,13 +1990,13 @@ itxura leunagoa ematen du.
     <name>MeshGui::TaskRemoveComponents</name>
     <message>
       <location filename="../../RemoveComponents.cpp" line="203"/>
-      <location filename="../../RemoveComponents.cpp" line="260"/>
+      <location filename="../../RemoveComponents.cpp" line="253"/>
       <source>Delete</source>
       <translation>Ezabatu</translation>
     </message>
     <message>
       <location filename="../../RemoveComponents.cpp" line="204"/>
-      <location filename="../../RemoveComponents.cpp" line="261"/>
+      <location filename="../../RemoveComponents.cpp" line="254"/>
       <source>Invert</source>
       <translation>Alderantzikatu</translation>
     </message>
@@ -2004,38 +2004,38 @@ itxura leunagoa ematen du.
   <context>
     <name>MeshInfoWatcher</name>
     <message>
-      <location filename="../../Workbench.cpp" line="72"/>
+      <location filename="../../Workbench.cpp" line="66"/>
       <source>Number of points:</source>
       <translation>Puntu kopurua:</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="75"/>
+      <location filename="../../Workbench.cpp" line="69"/>
       <source>Number of facets:</source>
       <translation>Alderdi kopurua:</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="81"/>
+      <location filename="../../Workbench.cpp" line="75"/>
       <source>Minimum bound:</source>
       <translation>Muga minimoa:</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="84"/>
+      <location filename="../../Workbench.cpp" line="78"/>
       <source>Maximum bound:</source>
       <translation>Muga maximoa:</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="90"/>
+      <location filename="../../Workbench.cpp" line="84"/>
       <source>Mesh info box</source>
       <translation>Amaraun-informazioaren koadroa</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="104"/>
+      <location filename="../../Workbench.cpp" line="98"/>
       <source>Mesh info</source>
       <translation>Amaraun-informazioa</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="126"/>
-      <location filename="../../Workbench.cpp" line="128"/>
+      <location filename="../../Workbench.cpp" line="120"/>
+      <location filename="../../Workbench.cpp" line="122"/>
       <source>X: %1	Y: %2	Z: %3</source>
       <translation>X: %1	Y: %2	Z: %3</translation>
     </message>
@@ -2043,7 +2043,7 @@ itxura leunagoa ematen du.
   <context>
     <name>Mesh_BoundingBox</name>
     <message>
-      <location filename="../../Command.cpp" line="1353"/>
+      <location filename="../../Command.cpp" line="1354"/>
       <source>Boundings of %1:</source>
       <translation>%1 elementuaren mugak:</translation>
     </message>
@@ -2080,7 +2080,7 @@ Jo http://www.openscad.org/index.html helbidera hura instalatzeko.</translation>
   <context>
     <name>QDockWidget</name>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="1283"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="1276"/>
       <source>Evaluate &amp; Repair Mesh</source>
       <translation>Ebaluatu eta konpondu amarauna</translation>
     </message>
@@ -2088,12 +2088,12 @@ Jo http://www.openscad.org/index.html helbidera hura instalatzeko.</translation>
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../AppMeshGui.cpp" line="159"/>
+      <location filename="../../AppMeshGui.cpp" line="157"/>
       <source>Display</source>
       <translation>Bistaratzea</translation>
     </message>
     <message>
-      <location filename="../../AppMeshGui.cpp" line="160"/>
+      <location filename="../../AppMeshGui.cpp" line="158"/>
       <source>Import-Export</source>
       <translation>Inportatu-Esportatu</translation>
     </message>
@@ -2231,42 +2231,42 @@ Jo http://www.openscad.org/index.html helbidera hura instalatzeko.</translation>
       <translation>Sartu tolerantzia amaraun-geometriarako:</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1185"/>
+      <location filename="../../Command.cpp" line="1186"/>
       <source>The mesh '%1' is not a solid.</source>
       <translation>%1' amarauna ez da solido bat.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1188"/>
+      <location filename="../../Command.cpp" line="1189"/>
       <source>The mesh '%1' is a solid.</source>
       <translation>%1' amarauna solido bat da.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1190"/>
+      <location filename="../../Command.cpp" line="1191"/>
       <source>Solid Mesh</source>
       <translation>Amaraun solidoa</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1358"/>
+      <location filename="../../Command.cpp" line="1359"/>
       <source>Boundings</source>
       <translation>Mugak</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1420"/>
+      <location filename="../../Command.cpp" line="1421"/>
       <source>Fill holes</source>
       <translation>Bete zuloak</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1421"/>
+      <location filename="../../Command.cpp" line="1422"/>
       <source>Fill holes with maximum number of edges:</source>
       <translation>Bete zuloak ertz kopuru maximoarekin:</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1665"/>
+      <location filename="../../Command.cpp" line="1666"/>
       <source>Scaling</source>
       <translation>Eskalatzea</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1666"/>
+      <location filename="../../Command.cpp" line="1667"/>
       <source>Enter scaling factor:</source>
       <translation>Sartu eskalatze-faktorea:</translation>
     </message>
@@ -2276,53 +2276,53 @@ Jo http://www.openscad.org/index.html helbidera hura instalatzeko.</translation>
       <translation>[Puntuak: %1, ertzak: %2, aurpegiak: %3]</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="776"/>
+      <location filename="../../ViewProvider.cpp" line="772"/>
       <source>Display components</source>
       <translation>Erakutsi osagaiak</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="784"/>
+      <location filename="../../ViewProvider.cpp" line="780"/>
       <source>Display segments</source>
       <translation>Bistaratu segmentuak</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="792"/>
+      <location filename="../../ViewProvider.cpp" line="788"/>
       <source>Display colors</source>
       <translation>Bistaratu koloreak</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1580"/>
-      <location filename="../../ViewProviderCurvature.cpp" line="498"/>
+      <location filename="../../ViewProvider.cpp" line="1573"/>
+      <location filename="../../ViewProviderCurvature.cpp" line="495"/>
       <source>Leave info mode</source>
       <translation>Utzi informazio modua</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1639"/>
+      <location filename="../../ViewProvider.cpp" line="1632"/>
       <source>Index: %1</source>
       <translation>Indizea: %1</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1662"/>
+      <location filename="../../ViewProvider.cpp" line="1655"/>
       <source>Leave hole-filling mode</source>
       <translation>Utzi zuloak betetzeko modua</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1708"/>
+      <location filename="../../ViewProvider.cpp" line="1701"/>
       <source>Leave removal mode</source>
       <translation>Utzi kentze modua</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1709"/>
+      <location filename="../../ViewProvider.cpp" line="1702"/>
       <source>Delete selected faces</source>
       <translation>Ezabatu hautatutako aurpegiak</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1710"/>
+      <location filename="../../ViewProvider.cpp" line="1703"/>
       <source>Clear selected faces</source>
       <translation>Garbitu hautatutako aurpegiak</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderCurvature.cpp" line="495"/>
+      <location filename="../../ViewProviderCurvature.cpp" line="492"/>
       <source>Annotation</source>
       <translation>Oharpena</translation>
     </message>

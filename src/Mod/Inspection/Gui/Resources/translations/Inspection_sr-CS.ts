@@ -41,7 +41,7 @@
   <context>
     <name>Command</name>
     <message>
-      <location filename="../../VisualInspection.cpp" line="230"/>
+      <location filename="../../VisualInspection.cpp" line="228"/>
       <source>Visual Inspection</source>
       <translation>Vizuelni pregled</translation>
     </message>
