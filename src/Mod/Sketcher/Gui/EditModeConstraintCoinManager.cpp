@@ -826,12 +826,13 @@ Restart:
                 case DistanceY: {
                     assert(Constr->First >= -extGeoCount && Constr->First < intGeoCount);
                     Base::Vector3d pnt1(0., 0., 0.), pnt2(0., 0., 0.);
-                    const Part::Geometry* geo = geolistfacade.getGeometryFromGeoId(Constr->Second);
                     if (Constr->SecondPos != Sketcher::PointPos::none) {// point to point distance
                         pnt1 = geolistfacade.getPoint(Constr->First, Constr->FirstPos);
                         pnt2 = geolistfacade.getPoint(Constr->Second, Constr->SecondPos);
                     }
                     else if (Constr->Second != GeoEnum::GeoUndef) {
+                        const Part::Geometry* geo =
+                            geolistfacade.getGeometryFromGeoId(Constr->Second);
                         if (geo->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
                             const Part::GeomLineSegment* lineSeg =
                                 static_cast<const Part::GeomLineSegment*>(geo);
