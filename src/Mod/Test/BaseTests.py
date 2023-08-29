@@ -638,9 +638,9 @@ class MatrixTestCase(unittest.TestCase):
         self.mat.setCol(0, FreeCAD.Vector(1, 0, 0))
         self.mat.setRow(0, FreeCAD.Vector(1, 0, 0))
 
-    def testTrace(self):
+    def testDiagonal(self):
         self.mat.scale(2.0, 2.0, 2.0)
-        self.assertEqual(self.mat.trace(), FreeCAD.Vector(2.0, 2.0, 2.0))
+        self.assertEqual(self.mat.diagonal(), FreeCAD.Vector(2.0, 2.0, 2.0))
 
     def testNumberProtocol(self):
         with self.assertRaises(NotImplementedError):
