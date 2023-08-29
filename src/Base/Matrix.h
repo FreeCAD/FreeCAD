@@ -107,14 +107,18 @@ public:
     inline Vector3d getRow(unsigned short usNdx) const;
     /// Get vector of column
     inline Vector3d getCol(unsigned short usNdx) const;
-    /// Get vector of trace
-    inline Vector3d trace() const;
+    /// Get vector of diagonal
+    inline Vector3d diagonal() const;
+    /// Get trace of the 3x3 matrix
+    inline double trace3() const;
+    /// Get trace of the 4x4 matrix
+    inline double trace() const;
     /// Set row to vector
     inline void setRow(unsigned short usNdx, const Vector3d&);
     /// Set column to vector
     inline void setCol(unsigned short usNdx, const Vector3d&);
-    /// Set trace to vector
-    inline void setTrace(const Vector3d&);
+    /// Set diagonal to vector
+    inline void setDiagonal(const Vector3d&);
     /// Compute the determinant of the matrix
     double determinant() const;
     /// Compute the determinant of the 3x3 sub-matrix
@@ -423,9 +427,19 @@ inline Vector3d Matrix4D::getCol(unsigned short usNdx) const
     return Vector3d(dMtrx4D[0][usNdx], dMtrx4D[1][usNdx], dMtrx4D[2][usNdx]);
 }
 
-inline Vector3d Matrix4D::trace() const
+inline Vector3d Matrix4D::diagonal() const
 {
     return Vector3d(dMtrx4D[0][0], dMtrx4D[1][1], dMtrx4D[2][2]);
+}
+
+inline double Matrix4D::trace3() const
+{
+    return dMtrx4D[0][0] + dMtrx4D[1][1] + dMtrx4D[2][2];
+}
+
+inline double Matrix4D::trace() const
+{
+    return dMtrx4D[0][0] + dMtrx4D[1][1] + dMtrx4D[2][2] + dMtrx4D[3][3];
 }
 
 inline void Matrix4D::setRow(unsigned short usNdx, const Vector3d& vec)
@@ -442,7 +456,7 @@ inline void Matrix4D::setCol(unsigned short usNdx, const Vector3d& vec)
     dMtrx4D[2][usNdx] = vec.z;
 }
 
-inline void Matrix4D::setTrace(const Vector3d& vec)
+inline void Matrix4D::setDiagonal(const Vector3d& vec)
 {
     dMtrx4D[0][0] = vec.x;
     dMtrx4D[1][1] = vec.y;

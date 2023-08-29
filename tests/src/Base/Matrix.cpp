@@ -1,7 +1,8 @@
 #include "gtest/gtest.h"
 #include <Base/Matrix.h>
+#include <Base/Rotation.h>
 
-// NOLINTBEGIN(cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)
+// NOLINTBEGIN(cppcoreguidelines-*,readability-magic-numbers)
 // clang-format off
 TEST(Matrix, TestShearing)
 {
@@ -87,12 +88,12 @@ TEST(Matrix, TestNonUniformScaleLeftTwo)
     EXPECT_EQ(mat.hasScale(), Base::ScaleType::Uniform);
 }
 
-TEST(Matrix, TestTrace)
+TEST(Matrix, TestDiagonal)
 {
     Base::Matrix4D mat;
     mat.scale(2.0, 2.0, 2.0);
-    Base::Vector3d trace = mat.trace();
-    EXPECT_EQ(trace.x + trace.y + trace.z, 6.0);
+    Base::Vector3d diag = mat.diagonal();
+    EXPECT_EQ(diag.x + diag.y + diag.z, 6.0);
 }
 
 TEST(Matrix, TestColRow)
@@ -264,4 +265,4 @@ TEST(Matrix, TestSubAssign)
     EXPECT_EQ(mat1, mat4);
 }
 // clang-format on
-// NOLINTEND(cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)
+// NOLINTEND(cppcoreguidelines-*,readability-magic-numbers)
