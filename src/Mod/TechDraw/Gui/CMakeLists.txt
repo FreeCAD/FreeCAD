@@ -239,6 +239,8 @@ SET(TechDrawGui_SRCS
 SET(TechDrawGuiView_SRCS
     MDIViewPage.cpp
     MDIViewPage.h
+    PagePrinter.cpp
+    PagePrinter.h
     QGVPage.cpp
     QGVPage.h
     QGSPage.cpp
