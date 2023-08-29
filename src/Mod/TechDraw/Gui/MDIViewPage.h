@@ -47,7 +47,7 @@ class DrawView;
 
 namespace TechDrawGui
 {
-
+class PagePrinter;
 class ViewProviderPage;
 class QGVPage;
 class QGSPage;
@@ -86,17 +86,6 @@ public:
                          App::Document* doc);
     static void printAllPdf(QPrinter* printer,
                             App::Document* doc);
-    static void printBannerPage(QPrinter* printer, QPainter& painter,
-                                QPageLayout& pageLayout,
-                                App::Document* doc,
-                                std::vector<App::DocumentObject*>& docObjs);
-    static void renderPage(ViewProviderPage* vpp,
-                           QPainter& painter,
-                           QRectF& sourceRect,
-                           QRect& targetRect);
-    static void setPageLayout(QPageLayout& pageLayout,
-                              TechDraw::DrawPage* dPage,
-                              double& width, double& height);
 
     void saveSVG(std::string fileName);
     void saveDXF(std::string fileName);
@@ -163,9 +152,7 @@ private:
     QList<QGraphicsItem*> m_qgSceneSelected;        //items in selection order
 
     void getPaperAttributes();
-    QPageLayout::Orientation m_orientation;
-    QPageSize::PageSizeId m_paperSize;
-    double m_pagewidth, m_pageheight;
+    PagePrinter* m_pagePrinter;
 
 };
 
