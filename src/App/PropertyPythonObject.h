@@ -60,6 +60,7 @@ public:
     void Save (Base::Writer &writer) const override;
     /** Use Python's pickle module to restore the object */
     void Restore(Base::XMLReader &reader) override;
+    void Restore(Base::DocumentReader &reader,XERCES_CPP_NAMESPACE_QUALIFIER DOMElement *ContainerDOM) override;
     void SaveDocFile (Base::Writer &writer) const override;
     void RestoreDocFile(Base::Reader &reader) override;
 
@@ -73,6 +74,7 @@ public:
 private:
     void saveObject(Base::Writer &writer) const;
     void restoreObject(Base::XMLReader &reader);
+    void restoreObject(Base::DocumentReader &reader,XERCES_CPP_NAMESPACE_QUALIFIER DOMElement *ContainerDOM);
     std::string encodeValue(const std::string& str) const;
     std::string decodeValue(const std::string& str) const;
     void loadPickle(const std::string& str);

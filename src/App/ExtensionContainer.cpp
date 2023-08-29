@@ -418,9 +418,9 @@ void ExtensionContainer::readExtension(Base::DocumentReader &reader,XERCES_CPP_N
 	            throw Base::TypeError(str.str());
 	        }
 	        ext->initExtension(this);
-	        if( strcmp(ext->getExtensionTypeId().getName(), type_cstr) == 0 )
-	        	ext->extensionRestore(reader);
 	    }
+	    if (ext && strcmp(ext->getExtensionTypeId().getName(), type_cstr) == 0)
+	    	ext->extensionRestore(reader);
 	}
 	catch (const Base::XMLParseException&) {
 	    throw; // re-throw

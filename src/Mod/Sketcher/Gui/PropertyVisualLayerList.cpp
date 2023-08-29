@@ -26,6 +26,7 @@
 #include <Base/Interpreter.h>
 #include <Base/Reader.h>
 #include <Base/Writer.h>
+#include <Base/DocumentReader.h>
 
 #include "PropertyVisualLayerList.h"
 
@@ -89,6 +90,35 @@ void PropertyVisualLayerList::Restore(Base::XMLReader& reader)
     reader.readEndElement("VisualLayerList");
 
     setValues(std::move(layers));
+}
+
+void PropertyVisualLayerList::Restore(Base::DocumentReader &reader, XERCES_CPP_NAMESPACE_QUALIFIER DOMElement *containerEl)
+{
+	auto Prop_VisualLayerListDOM = reader.FindElementByField(containerEl,"Property","name","VisualLayerList");
+	if(Prop_VisualLayerListDOM){
+		auto VisualLayerListDOM = reader.FindElement(Prop_VisualLayerListDOM,"VisualLayerList");
+		const char* count_cstr = reader.GetAttribute(VisualLayerListDOM,"count");
+		if(count_cstr){
+			int count = reader.ContentToInt( count_cstr );
+			std::vector<VisualLayer> layers;
+			layers.reserve(count);
+			
+			auto prev_VisualLayerDOM = reader.FindElement(VisualLayerListDOM,"VisualLayer");
+			VisualLayer visualLayer;
+			visualLayer.Restore(reader,prev_VisualLayerDOM);
+			layers.push_back(std::move(visualLayer));
+			for (int i = 1; i < count; i++) {
+				auto VisualLayerDOM_i = reader.FindNextElement(prev_VisualLayerDOM,"VisualLayer");
+				VisualLayer visualLayer;
+				visualLayer.Restore(reader,VisualLayerDOM_i);
+				layers.push_back(std::move(visualLayer));
+				prev_VisualLayerDOM = VisualLayerDOM_i;
+			}
+			
+			setValues(std::move(layers));
+		}
+		
+	}
 }
 
 Property* PropertyVisualLayerList::Copy() const

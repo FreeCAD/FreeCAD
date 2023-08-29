@@ -34,10 +34,10 @@
 #endif
 #include <zipios++/zipinputstream.h>
 
-#ifndef _PreComp_
-#   include <xercesc/dom/DOM.hpp>
-#   include <xercesc/parsers/XercesDOMParser.hpp>
-#endif
+//#ifndef _PreComp_
+//#   include <xercesc/dom/DOM.hpp>
+//#   include <xercesc/parsers/XercesDOMParser.hpp>
+//#endif
 
 #ifdef _MSC_VER
 # define strdup _strdup
@@ -146,6 +146,24 @@ XERCES_CPP_NAMESPACE_QUALIFIER DOMElement *DocumentReader::FindElement(const cha
             	return static_cast<DOMElement*>(clChild);
             }
         }
+    }
+    return nullptr;
+}
+
+XERCES_CPP_NAMESPACE_QUALIFIER DOMElement *DocumentReader::FindElementByField(
+	XERCES_CPP_NAMESPACE_QUALIFIER DOMElement* Start,
+	const char* TypeEl,const char* field_name,const char* field_value) const
+{
+	if(!TypeEl || !field_name ||!field_value)
+		return nullptr;
+	for (DOMNode *clChild = Start; clChild != nullptr;  clChild = clChild->getNextSibling()) {
+		//auto cast = static_cast<DOMElement*>(clChild);
+    	const char* attr = GetAttribute( static_cast<DOMElement*>(clChild), field_name );
+		if(attr){
+			if( !strcmp( attr, field_value ) ){
+				return static_cast<DOMElement*>(clChild);;
+			}
+		}
     }
     return nullptr;
 }

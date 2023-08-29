@@ -32,6 +32,11 @@
 //#include "FileInfo.h"//remplaced:
 #include <FCGlobal.h>
 
+#ifndef _PreComp_
+#   include <xercesc/dom/DOM.hpp>
+#   include <xercesc/parsers/XercesDOMParser.hpp>
+#endif
+
 namespace zipios {
 class ZipInputStream;
 }
@@ -62,6 +67,10 @@ public:
     XERCES_CPP_NAMESPACE_QUALIFIER DOMElement *GetRootElement() const;
     XERCES_CPP_NAMESPACE_QUALIFIER DOMElement *FindElement(XERCES_CPP_NAMESPACE_QUALIFIER DOMElement* Start, const char* Type) const;
     XERCES_CPP_NAMESPACE_QUALIFIER DOMElement *FindElement(const char* Type) const;
+    
+    XERCES_CPP_NAMESPACE_QUALIFIER DOMElement *FindElementByField(XERCES_CPP_NAMESPACE_QUALIFIER DOMElement* Start,
+    const char* TypeEl,const char* field_name, const char* field_value) const;
+    
     XERCES_CPP_NAMESPACE_QUALIFIER DOMElement *FindNextElement(XERCES_CPP_NAMESPACE_QUALIFIER DOMNode *Prev, const char* Type) const;
     
     static long ContentToASCII(const char* Content);

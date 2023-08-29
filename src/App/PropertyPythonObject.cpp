@@ -30,7 +30,12 @@
 #include <Base/Console.h>
 #include <Base/Interpreter.h>
 #include <Base/Reader.h>
+#include <Base/DocumentReader.h>
 #include <Base/Writer.h>
+
+//#ifndef _PreComp_
+//# include <xercesc/dom/DOM.hpp>
+//#endif
 
 #include "PropertyPythonObject.h"
 #include "DocumentObject.h"
@@ -264,6 +269,37 @@ void PropertyPythonObject::restoreObject(Base::XMLReader &reader)
     }
 }
 
+void PropertyPythonObject::restoreObject(Base::DocumentReader &reader,XERCES_CPP_NAMESPACE_QUALIFIER DOMElement *ContainerDOM)
+{
+	Base::PyGILStateLocker lock;
+    try {
+        PropertyContainer* parent = this->getContainer();
+        const char* object_cstr = reader.GetAttribute(ContainerDOM,"object");
+        if (object_cstr) {
+            if (strcmp(object_cstr,"yes") == 0) {
+                Py::Object obj = Py::asObject(parent->getPyObject());
+                this->object.setAttr("__object__", obj);
+            }
+        }
+        const char* vobject_cstr = reader.GetAttribute(ContainerDOM,"vobject");
+        if (vobject_cstr) {
+            if (strcmp(vobject_cstr,"yes") == 0) {
+                Py::Object obj = Py::asObject(parent->getPyObject());
+                this->object.setAttr("__vobject__", obj);
+            }
+        }
+    }
+    catch (Py::Exception& e) {
+        e.clear();
+    }
+    catch (const Base::Exception& e) {
+        Base::Console().Error("%s\n",e.what());
+    }
+    catch (...) {
+        Base::Console().Error("Critical error in PropertyPythonObject::restoreObject\n");
+    }
+}
+
 void PropertyPythonObject::Save (Base::Writer &writer) const
 {
     //if (writer.isForceXML()) {
@@ -379,6 +415,88 @@ void PropertyPythonObject::Restore(Base::XMLReader &reader)
         restoreObject(reader);
         hasSetValue();
     }
+}
+
+void PropertyPythonObject::Restore(Base::DocumentReader &reader,XERCES_CPP_NAMESPACE_QUALIFIER DOMElement *ContainerDOM)
+{
+	auto PythonDOM = reader.FindElement(ContainerDOM,"Python");
+	if(PythonDOM){
+		const char* file_cstr = reader.GetAttribute(PythonDOM,"file");
+		if (file_cstr){
+		    reader.addFile(file_cstr,this);
+		}else{
+			bool load_json=false;
+		    bool load_pickle=false;
+		    bool load_failed=false;
+		    const char* value_cstr = reader.GetAttribute(PythonDOM,"value");
+		    const char* encoded_cstr = reader.GetAttribute(PythonDOM,"encoded");
+		    std::string buffer = value_cstr;
+		    if (encoded_cstr && strcmp(encoded_cstr,"yes") == 0) {
+		        buffer = Base::base64_decode(buffer);
+		    }else {
+		        buffer = decodeValue(buffer);
+		    }
+		    Base::PyGILStateLocker lock;
+		    try {
+		        boost::regex pickle(R"(^\(i(\w+)\n(\w+)\n)");
+		        boost::match_results<std::string::const_iterator> what;
+		        std::string::const_iterator start, end;
+		        start = buffer.begin();
+		        end = buffer.end();
+		        
+		        const char* module_cstr = reader.GetAttribute(PythonDOM,"module");
+		        const char* class_cstr = reader.GetAttribute(PythonDOM,"class");
+		        const char* json_cstr = reader.GetAttribute(PythonDOM,"json");
+		        if (module_cstr && class_cstr) {		        	
+		            Py::Module mod(PyImport_ImportModule(module_cstr),true);
+		            if (mod.isNull())
+		                throw Py::Exception();
+		            PyObject* cls = mod.getAttr(class_cstr).ptr();
+		            if (!cls) {
+		                std::stringstream s;
+		                s << "Module " << module_cstr
+		                  << " has no class " << class_cstr;
+		                throw Py::AttributeError(s.str());
+		            }
+		            if (PyType_Check(cls)) {
+		                this->object = PyType_GenericAlloc((PyTypeObject*)cls, 0);
+		            }
+		            else {
+		                throw Py::TypeError("neither class nor type object");
+		            }
+		            load_json = true;
+		        }
+		        else if (boost::regex_search(start, end, what, pickle)) {
+		            std::string name = std::string(what[1].first, what[1].second);
+		            std::string type = std::string(what[2].first, what[2].second);
+		            Py::Module mod(PyImport_ImportModule(name.c_str()),true);
+		            if (mod.isNull())
+		                throw Py::Exception();
+		            this->object = PyObject_CallObject(mod.getAttr(type).ptr(), nullptr);
+		            load_pickle = true;
+		            buffer = std::string(what[2].second, end);
+		        }
+		        else if (json_cstr) {
+		            load_json = true;
+		        }
+		    }
+		    catch (Py::Exception&) {
+		        Base::PyException e; // extract the Python error text
+		        e.ReportException();
+		        this->object = Py::None();
+		        load_failed = true;
+		    }
+		    aboutToSetValue();
+		    if (load_json)
+		        this->fromString(buffer);
+		    else if (load_pickle)
+		        this->loadPickle(buffer);
+		    else if (!load_failed)
+		        Base::Console().Warning("PropertyPythonObject::Restore: unsupported serialisation: %s\n", buffer.c_str());
+		    restoreObject(reader,PythonDOM);
+		    hasSetValue();
+		}
+	}
 }
 
 void PropertyPythonObject::SaveDocFile (Base::Writer &writer) const
