@@ -23,7 +23,6 @@
     <name>CompactView</name>
     <message>
       <location filename="../../compact_view.py" line="77"/>
-      <location filename="../../compact_view.ui" line="20"/>
       <source>Form</source>
       <translation>Form</translation>
     </message>
@@ -422,7 +421,6 @@ Soll der Addon-Manager sie automatisch installieren? &quot;Ignorieren&quot; wäh
     <name>ExpandedView</name>
     <message>
       <location filename="../../expanded_view.py" line="116"/>
-      <location filename="../../expanded_view.ui" line="20"/>
       <source>Form</source>
       <translation>Form</translation>
     </message>
@@ -476,7 +474,6 @@ Soll der Addon-Manager sie automatisch installieren? &quot;Ignorieren&quot; wäh
   <context>
     <name>Form</name>
     <message>
-      <location filename="../../developer_mode_licenses_table.ui" line="14"/>
       <location filename="../../developer_mode_people_table.ui" line="14"/>
       <source>Form</source>
       <translation>Form</translation>
@@ -701,11 +698,6 @@ installed addons will be checked for available updates
   </context>
   <context>
     <name>PackageDetails</name>
-    <message>
-      <location filename="../../package_details.ui" line="14"/>
-      <source>Form</source>
-      <translation>Form</translation>
-    </message>
     <message>
       <location filename="../../package_details.ui" line="49"/>
       <source>Uninstalls a selected macro or workbench</source>
@@ -1583,7 +1575,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../addonmanager_connection_checker.py" line="105"/>
       <source>Could not import QtNetwork -- see Report View for details. Addon Manager unavailable.</source>
-      <translation>QtNetwork konnte nicht importiert werden - siehe Ausgabefenster für Details. Der Addon Manager ist nicht verfügbar.</translation>
+      <translation>QtNetwork konnte nicht importiert werden - Einzelheiten finden sich im Ausgabefenster. Der Addon-Manager ist nicht verfügbar.</translation>
     </message>
     <message>
       <location filename="../../addonmanager_devmode_license_selector.py" line="114"/>
@@ -1936,7 +1928,7 @@ installed addons will be checked for available updates
       <location filename="../../addonmanager_devmode.py" line="690"/>
       <source>Failed to install Vermin -- check Report View for details.</source>
       <comment>&apos;Vermin&apos; is the name of a Python package, do not translate</comment>
-      <translation>Fehler bei der Installation von Vermin -- Überprüfen Sie den Fehlerbericht für Details.</translation>
+      <translation>Vermin konnte nicht installiert werden -- Einzelheiten finden sich im Ausgabefenster.</translation>
     </message>
     <message>
       <location filename="../../addonmanager_devmode.py" line="705"/>

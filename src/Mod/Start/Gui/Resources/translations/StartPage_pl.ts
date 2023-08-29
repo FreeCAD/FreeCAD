@@ -423,7 +423,7 @@ Używając ";;" do rozdzielenia ścieżek, możesz dodać tutaj kilka folderów<
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="62"/>
       <source>Below is a list of available extra workbenches that can be added to your FreeCAD installation. Browse and install them from menu Tools -&gt; Addons manager. You can learn more about any of them by clicking the links below.</source>
-      <translation>Poniżej znajduje się lista dodatkowych środowisk pracy, które mogą być dodane do Twojej instalacji programu FreeCAD. Przeglądaj i instaluj je z menu Narzędzia-&gt; Menedżer dodatków. Dowiesz się więcej o każdym z nich klikając na linki poniżej.</translation>
+      <translation>Poniżej znajduje się lista dodatkowych środowisk pracy, które mogą być dodane do Twojej instalacji programu FreeCAD. Przeglądaj i instaluj je z menu Narzędzia-&gt; Menedżer dodatków. Dowiesz się więcej o każdym z nich, klikając na linki poniżej.</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="63"/>

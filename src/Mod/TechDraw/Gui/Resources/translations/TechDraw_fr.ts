@@ -4152,7 +4152,7 @@ it has a tile weld that would become broken.</source>
     <message>
       <location filename="../../TaskSectionView.cpp" line="148"/>
       <source>No direction set</source>
-      <translation type="unfinished">No direction set</translation>
+      <translation>Aucune direction définie</translation>
     </message>
   </context>
   <context>
@@ -6231,7 +6231,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskComplexSection.cpp" line="172"/>
       <source>No direction set</source>
-      <translation type="unfinished">No direction set</translation>
+      <translation>Aucune direction définie</translation>
     </message>
     <message>
       <location filename="../../TaskComplexSection.cpp" line="687"/>

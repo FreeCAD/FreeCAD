@@ -479,12 +479,12 @@
       <translation>Izmjene</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="79"/>
+      <location filename="../../Workbench.cpp" line="75"/>
       <source>No robot files installed</source>
       <translation>Nema instaliranih robot datoteka</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="80"/>
+      <location filename="../../Workbench.cpp" line="76"/>
       <source>Please visit %1 and copy the files to %2</source>
       <translation>Molimo posjetite %1 i kopirajte datoteke u %2</translation>
     </message>
@@ -558,11 +558,6 @@
   <context>
     <name>RobotGui::TaskRobot6Axis</name>
     <message>
-      <location filename="../../TaskRobot6Axis.ui" line="14"/>
-      <source>Form</source>
-      <translation>Obrazac</translation>
-    </message>
-    <message>
       <location filename="../../TaskRobot6Axis.ui" line="22"/>
       <source>A1</source>
       <translation>A1</translation>
@@ -627,11 +622,6 @@
   <context>
     <name>RobotGui::TaskTrajectory</name>
     <message>
-      <location filename="../../TaskTrajectory.ui" line="20"/>
-      <source>Form</source>
-      <translation>Oblik</translation>
-    </message>
-    <message>
       <location filename="../../TaskTrajectory.ui" line="58"/>
       <source>|&lt;</source>
       <translation>|&lt;</translation>
@@ -689,7 +679,7 @@
     <message>
       <location filename="../../TaskTrajectory.ui" line="317"/>
       <source>Type</source>
-      <translation>Tip</translation>
+      <translation>Vrsta</translation>
     </message>
     <message>
       <location filename="../../TaskTrajectory.ui" line="322"/>
@@ -728,11 +718,6 @@
   <context>
     <name>TaskEdge2TracParameter</name>
     <message>
-      <location filename="../../TaskEdge2TracParameter.ui" line="14"/>
-      <source>Form</source>
-      <translation>Oblik</translation>
-    </message>
-    <message>
       <location filename="../../TaskEdge2TracParameter.ui" line="29"/>
       <source>Hide / Show</source>
       <translation>Sakrij / prikaži</translation>
@@ -760,11 +745,6 @@
   </context>
   <context>
     <name>TaskRobotControl</name>
-    <message>
-      <location filename="../../TaskRobotControl.ui" line="14"/>
-      <source>Form</source>
-      <translation>Oblik</translation>
-    </message>
     <message>
       <location filename="../../TaskRobotControl.ui" line="37"/>
       <source>X+</source>
@@ -879,11 +859,6 @@
   <context>
     <name>TaskRobotMessages</name>
     <message>
-      <location filename="../../TaskRobotMessages.ui" line="14"/>
-      <source>Form</source>
-      <translation>Oblik</translation>
-    </message>
-    <message>
       <location filename="../../TaskRobotMessages.ui" line="20"/>
       <source>clear</source>
       <translation>jasno</translation>
@@ -891,11 +866,6 @@
   </context>
   <context>
     <name>TaskTrajectoryDressUpParameter</name>
-    <message>
-      <location filename="../../TaskTrajectoryDressUpParameter.ui" line="14"/>
-      <source>Form</source>
-      <translation>Obrazac</translation>
-    </message>
     <message>
       <location filename="../../TaskTrajectoryDressUpParameter.ui" line="20"/>
       <source>Speed &amp; Acceleration:</source>

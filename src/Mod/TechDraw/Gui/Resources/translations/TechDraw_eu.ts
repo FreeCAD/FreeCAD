@@ -3998,7 +3998,7 @@ hautsi daitekeen lauza-soldadura bat duelako.</translation>
     <message>
       <location filename="../../TaskSectionView.cpp" line="148"/>
       <source>No direction set</source>
-      <translation type="unfinished">No direction set</translation>
+      <translation>Ez da norabiderik ezarri</translation>
     </message>
   </context>
   <context>
@@ -6086,7 +6086,7 @@ Jarraitu nahi duzu?</translation>
     <message>
       <location filename="../../TaskComplexSection.cpp" line="172"/>
       <source>No direction set</source>
-      <translation type="unfinished">No direction set</translation>
+      <translation>Ez da norabiderik ezarri</translation>
     </message>
     <message>
       <location filename="../../TaskComplexSection.cpp" line="687"/>
