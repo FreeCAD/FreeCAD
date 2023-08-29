@@ -42,7 +42,6 @@ import FreeCADGui as Gui
 import Draft_rc
 import DraftGeomUtils
 import DraftVecUtils
-import WorkingPlane
 import draftguitools.gui_base_original as gui_base_original
 import draftguitools.gui_trackers as trackers
 import draftguitools.gui_tool_utils as gui_tool_utils
