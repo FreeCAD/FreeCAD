@@ -430,6 +430,39 @@ private:
     ~ParameterManager() override;
 };
 
+XERCES_CPP_NAMESPACE_USE
+
+class DOMTreeErrorReporter : public ErrorHandler
+{
+public:
+    // -----------------------------------------------------------------------
+    //  Constructors and Destructor
+    // -----------------------------------------------------------------------
+	DOMTreeErrorReporter();
+    ~DOMTreeErrorReporter() override = default;
+    // -----------------------------------------------------------------------
+    //  Implementation of the error handler interface
+    // -----------------------------------------------------------------------
+    void warning(const SAXParseException& toCatch) override;
+    void error(const SAXParseException& toCatch) override;
+    void fatalError(const SAXParseException& toCatch) override;
+    void resetErrors() override;
+    // -----------------------------------------------------------------------
+    //  Getter methods
+    // -----------------------------------------------------------------------
+    bool getSawErrors() const;
+private:
+	// -----------------------------------------------------------------------
+    //  Private data members
+    //
+    //  fSawErrors
+    //      This is set if we get any errors, and is queryable via a getter
+    //      method. Its used by the main code to suppress output if there are
+    //      errors.
+    // -----------------------------------------------------------------------
+	bool fSawErrors;
+};
+
 
 /** python wrapper function
 */

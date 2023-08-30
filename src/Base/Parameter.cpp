@@ -64,23 +64,14 @@ using namespace Base;
 //**************************************************************************
 //**************************************************************************
 // private classes declaration:
-// - DOMTreeErrorReporter
 // - StrX
 // - DOMPrintFilter
 // - DOMPrintErrorHandler
 // - XStr
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-
-class DOMTreeErrorReporter : public ErrorHandler
-{
-public:
-    // -----------------------------------------------------------------------
-    //  Constructors and Destructor
-    // -----------------------------------------------------------------------
-    DOMTreeErrorReporter() :
-            fSawErrors(false) {
-    }
+DOMTreeErrorReporter::DOMTreeErrorReporter():
+	fSawErrors(false) {
+}
 
 void DOMTreeErrorReporter::warning(const SAXParseException&)
 {
