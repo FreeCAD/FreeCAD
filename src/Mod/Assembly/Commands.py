@@ -105,7 +105,7 @@ class CommandInsertLink:
         tooltip += "<p>Press shift to add several links while clicking on the view."
 
         return {
-            "Pixmap": "Assembly_InsertLink.svg",
+            "Pixmap": "Assembly_InsertLink",
             "MenuText": QT_TRANSLATE_NOOP("Assembly_InsertLink", "Insert Link"),
             "Accel": "I",
             "ToolTip": QT_TRANSLATE_NOOP("Assembly_InsertLink", tooltip),
