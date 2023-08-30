@@ -158,18 +158,15 @@ double FeatureBlendCurve::RelativeToRealParameters(double relativeValue, double 
 void FeatureBlendCurve::onChanged(const App::Property *prop)
 {
     if (prop == &StartContinuity) {
-        auto changedStartProp = dynamic_cast<const App::PropertyInteger *>(prop);
-
-        if (changedStartProp->getValue() > (maxDegree - 2 - EndContinuity.getValue())) {
-
-            StartContinuity.setValue(maxDegree - 2 - EndContinuity.getValue());
+        long maxValue = maxDegree - 2 - EndContinuity.getValue();
+        if (StartContinuity.getValue() > maxValue) {
+            StartContinuity.setValue(maxValue);
         }
     }
     else if (prop == &EndContinuity) {
-        auto changedEndProp = dynamic_cast<const App::PropertyInteger *>(prop);
-
-        if (changedEndProp->getValue() > (maxDegree - 2 - StartContinuity.getValue())) {
-            EndContinuity.setValue(maxDegree - 2 - StartContinuity.getValue());
+        long maxValue = maxDegree - 2 - StartContinuity.getValue();
+        if (EndContinuity.getValue() > maxValue) {
+            EndContinuity.setValue(maxValue);
         }
     }
     if (prop == &StartContinuity || prop == &StartParameter || prop == &StartSize || prop == &EndContinuity || prop == &EndParameter || prop == &EndSize) {
