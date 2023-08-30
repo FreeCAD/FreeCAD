@@ -244,10 +244,11 @@ def get_qcad_converter():
     elif platform.system() == "Linux":
         # /home/$USER/opt/qcad-3.28.1-trial-linux-qt5.14-x86_64/dwg2dwg
         path = os.path.expandvars("/home/$USER/opt")
-        for sub in os.listdir(path):
-            if "qcad" in sub:
-                path = path + "/" + sub + "/" + "dwg2dwg"
-                break
+        if os.path.exists(path) and os.path.isdir(path):
+            for sub in os.listdir(path):
+                if "qcad" in sub:
+                    path = path + "/" + sub + "/" + "dwg2dwg"
+                    break
     else: # for macOS
         path = "/Applications/QCAD.app/Contents/Resources/dwg2dwg"
 
