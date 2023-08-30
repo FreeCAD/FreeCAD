@@ -44,12 +44,12 @@ public:
     App::PropertyLinkSub StartEdge;
     App::PropertyFloatConstraint StartParameter;
     App::PropertyIntegerConstraint StartContinuity;
-    App::PropertyFloat StartSize;
+    App::PropertyFloatConstraint StartSize;
 
     App::PropertyLinkSub EndEdge;
     App::PropertyFloatConstraint EndParameter;
     App::PropertyIntegerConstraint EndContinuity;
-    App::PropertyFloat EndSize;
+    App::PropertyFloatConstraint EndSize;
 
     Standard_Integer maxDegree;
 

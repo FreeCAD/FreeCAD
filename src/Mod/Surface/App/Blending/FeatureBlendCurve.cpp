@@ -39,10 +39,9 @@
 
 using namespace Surface;
 
-const App::PropertyFloatConstraint::Constraints StartParameterConstraint = {0.0, 1.0, 0.05};
-const App::PropertyFloatConstraint::Constraints EndParameterConstraint = {0.0, 1.0, 0.05};
-const App::PropertyIntegerConstraint::Constraints StartContinuityConstraint = {0, 25, 1};
-const App::PropertyIntegerConstraint::Constraints EndContinuityConstraint = {0, 25, 1};
+const App::PropertyFloatConstraint::Constraints ParameterConstraint = {0.0, 1.0, 0.05};
+const App::PropertyIntegerConstraint::Constraints ContinuityConstraint = {0, 25, 1};
+const App::PropertyFloatConstraint::Constraints SizeConstraint = {-100.0, 100.0, 0.1};
 
 PROPERTY_SOURCE(Surface::FeatureBlendCurve, Part::Spline)
 
@@ -50,17 +49,20 @@ FeatureBlendCurve::FeatureBlendCurve()
 {
     ADD_PROPERTY_TYPE(StartEdge, (nullptr), "FirstEdge", App::Prop_None, "Edge support of the start point");
     ADD_PROPERTY_TYPE(StartContinuity, (2), "FirstEdge", App::Prop_None, "Geometric continuity at start point");
-    StartContinuity.setConstraints(&StartContinuityConstraint);
+    StartContinuity.setConstraints(&ContinuityConstraint);
     ADD_PROPERTY_TYPE(StartParameter, (0.0f), "FirstEdge", App::Prop_None, "Parameter of start point along edge");
-    StartParameter.setConstraints(&StartParameterConstraint);
+    StartParameter.setConstraints(&ParameterConstraint);
     ADD_PROPERTY_TYPE(StartSize, (1.0f), "FirstEdge", App::Prop_None, "Size of derivatives at start point");
+    StartSize.setConstraints(&SizeConstraint);
 
     ADD_PROPERTY_TYPE(EndEdge, (nullptr), "SecondEdge", App::Prop_None, "Edge support of the end point");
     ADD_PROPERTY_TYPE(EndContinuity, (2), "SecondEdge", App::Prop_None, "Geometric continuity at end point");
-    EndContinuity.setConstraints(&EndContinuityConstraint);
+    EndContinuity.setConstraints(&ContinuityConstraint);
     ADD_PROPERTY_TYPE(EndParameter, (0.0f), "SecondEdge", App::Prop_None, "Parameter of end point along edge");
-    EndParameter.setConstraints(&EndParameterConstraint);
+    EndParameter.setConstraints(&ParameterConstraint);
     ADD_PROPERTY_TYPE(EndSize, (1.0f), "SecondEdge", App::Prop_None, "Size of derivatives at end point");
+    EndSize.setConstraints(&SizeConstraint);
+
     Handle(Geom_BezierCurve) maxDegreeCurve;
     maxDegree = maxDegreeCurve->MaxDegree();
 }
