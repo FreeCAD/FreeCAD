@@ -28,6 +28,10 @@
 # runs when the gui is up
 
 
+def QT_TRANSLATE_NOOP(_1, txt):
+    return txt
+
+
 class TechDrawWorkbench(Workbench):
     "Technical Drawing workbench object"
 
@@ -60,7 +64,7 @@ class TechDrawWorkbench(Workbench):
 Gui.addWorkbench(TechDrawWorkbench())
 
 # Append the export handler
-FreeCAD.addExportType("Technical Drawing (*.svg *.dxf *.pdf)", "TechDrawGui")
+FreeCAD.addExportType(QT_TRANSLATE_NOOP("FileFormat", "Technical Drawing (*.svg *.dxf *.pdf)"), "TechDrawGui")
 
 FreeCAD.__unit_test__ += ["TestTechDrawGui"]
 

@@ -21,5 +21,10 @@
 
 import FreeCAD
 
+
+def QT_TRANSLATE_NOOP(_1, txt):
+    return txt
+
+
 # import for the FreeCAD Material card
-FreeCAD.addImportType("FreeCAD Material Card (*.FCMat)", "importFCMat")
+FreeCAD.addImportType(QT_TRANSLATE_NOOP("FileFormat", "FreeCAD Material Card (*.FCMat)"), "importFCMat")

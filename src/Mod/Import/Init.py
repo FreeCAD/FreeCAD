@@ -25,12 +25,15 @@
 #***************************************************************************/
 
 
+def QT_TRANSLATE_NOOP(_1, txt):
+    return txt
+
 
 # Append the open handler
 #FreeCAD.addImportType("STEP 214 (*.step *.stp)","ImportGui")
 #FreeCAD.addExportType("STEP 214 (*.step *.stp)","ImportGui")
 #FreeCAD.addExportType("IGES files (*.iges *.igs)","ImportGui")
-FreeCAD.addImportType("PLMXML files (*.plmxml)","PlmXmlParser")
-FreeCAD.addImportType("STEPZ Zip File Type (*.stpZ *.stpz)","stepZ")
-FreeCAD.addExportType("STEPZ zip File Type (*.stpZ *.stpz)","stepZ")
+FreeCAD.addImportType(QT_TRANSLATE_NOOP("FileFormat", "PLMXML files (*.plmxml)"),"PlmXmlParser")
+FreeCAD.addImportType(QT_TRANSLATE_NOOP("FileFormat", "STEPZ Zip File Type (*.stpZ *.stpz)"),"stepZ")
+FreeCAD.addExportType(QT_TRANSLATE_NOOP("FileFormat", "STEPZ zip File Type (*.stpZ *.stpz)"),"stepZ")
 FreeCAD.addExportType("glTF (*.gltf *.glb)","ImportGui")

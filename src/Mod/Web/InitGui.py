@@ -26,6 +26,9 @@
 # This is the second one of three init scripts, the third one
 # runs when the gui is up
 
+def QT_TRANSLATE_NOOP(_1, txt):
+    return txt
+
 
 class WebWorkbench ( Workbench ):
     "Web workbench object"
@@ -44,6 +47,6 @@ class WebWorkbench ( Workbench ):
 Gui.addWorkbench(WebWorkbench())
 
 # Append the open handler
-FreeCAD.addImportType("Web Page (*.html *.xhtml)", "WebGui")
+FreeCAD.addImportType(QT_TRANSLATE_NOOP("FileFormat", "Web Page (*.html *.xhtml)"), "WebGui")
 
 FreeCAD.__unit_test__ += [ "TestWebGui" ]

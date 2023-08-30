@@ -25,6 +25,11 @@ __author__ = "Sebastian Hoogen <github@sebastianhoogen.de>"
 
 import FreeCAD, Part
 
+
+def QT_TRANSLATE_NOOP(_1, txt):
+    return txt
+
+
 if open.__module__ == '__builtin__':
         pythonopen = open
 
@@ -850,4 +855,4 @@ def export(exportList,filename):
         exporter.export_objects(exportList)
 
 if 'tcl' not in FreeCAD.getExportType():
-    FreeCAD.addExportType("DRAWEXE script (*.tcl)","exportDRAWEXE")
+    FreeCAD.addExportType(QT_TRANSLATE_NOOP("FileFormat", "DRAWEXE script (*.tcl)"),"exportDRAWEXE")

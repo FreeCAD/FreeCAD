@@ -25,6 +25,9 @@
 
 # FreeCAD init script of the Spreadsheet module
 
+def QT_TRANSLATE_NOOP(_1, txt):
+    return txt
+
 
 # Get the Parameter Group of this module
 ParGrp = App.ParamGet("System parameter:Modules").GetGroup("Spreadsheet")
@@ -35,7 +38,7 @@ ParGrp.SetString("WorkBenchName",    "Spreadsheet")
 ParGrp.SetString("WorkBenchModule",  "SpreadsheetWorkbench.py")
 
 # add Import/Export types
-App.addImportType("Excel spreadsheet (*.xlsx)","importXLSX")
+App.addImportType(QT_TRANSLATE_NOOP("FileFormat", "Excel spreadsheet (*.xlsx)"),"importXLSX")
 
 App.__unit_test__ += [ "TestSpreadsheet" ]
 

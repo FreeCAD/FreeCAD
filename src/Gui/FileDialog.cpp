@@ -872,7 +872,13 @@ SelectModule::SelectModule (const QString& type, const SelectModule::Dict& types
             module = module.left(match.capturedStart());
         }
 
-        button->setText(QString::fromLatin1("%1 (%2)").arg(filter, module));
+        // Filter should be in the FileFormat context
+        auto filterText = QCoreApplication::translate("FileFormat", filter.toStdString().c_str());
+
+        // Provider is often a Workbench, so try to translate it
+        auto providerText = QCoreApplication::translate("Workbench", module.toStdString().c_str());
+
+        button->setText(QString::fromLatin1("%1 (%2)").arg(filterText, providerText));
         button->setObjectName(it.value());
         gridLayout1->addWidget(button, index, 0, 1, 1);
         group->addButton(button, index);

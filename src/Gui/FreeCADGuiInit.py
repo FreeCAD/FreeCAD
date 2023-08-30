@@ -304,7 +304,11 @@ FreeCAD.addExportType("X3D Extensible 3D (*.x3d *.x3dz)","FreeCADGui")
 FreeCAD.addExportType("WebGL/X3D (*.xhtml)","FreeCADGui")
 #FreeCAD.addExportType("IDTF (for 3D PDF) (*.idtf)","FreeCADGui")
 #FreeCAD.addExportType("3D View (*.svg)","FreeCADGui")
-FreeCAD.addExportType("Portable Document Format (*.pdf)","FreeCADGui")
+
+def QT_TRANSLATE_NOOP(_, txt):
+    return txt
+
+FreeCAD.addExportType(QT_TRANSLATE_NOOP("FileFormat", "Portable Document Format (*.pdf)"), "FreeCADGui")
 
 del InitApplications
 del NoneWorkbench

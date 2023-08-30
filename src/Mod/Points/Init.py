@@ -23,6 +23,11 @@
 
 # FreeCAD init script of the Points module
 
+
+def QT_TRANSLATE_NOOP(_1, txt):
+    return txt
+
+
 # Append the open handler
-FreeCAD.addImportType("Point formats (*.asc *.pcd *.ply *.e57)","Points")
-FreeCAD.addExportType("Point formats (*.asc *.pcd *.ply)","Points")
+FreeCAD.addImportType(QT_TRANSLATE_NOOP("FileFormat", "Point formats (*.asc *.pcd *.ply *.e57)"),"Points")
+FreeCAD.addExportType(QT_TRANSLATE_NOOP("FileFormat", "Point formats (*.asc *.pcd *.ply)"),"Points")

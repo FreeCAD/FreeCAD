@@ -24,5 +24,10 @@
 # FreeCAD init script of the Sandbox module
 
 import FreeCAD
-FreeCAD.addExportType("DRAWEXE script (*.tcl)","exportDRAWEXE")
 
+
+def QT_TRANSLATE_NOOP(_1, txt):
+    return txt
+
+
+FreeCAD.addExportType(QT_TRANSLATE_NOOP("FileFormat", "DRAWEXE script (*.tcl)"),"exportDRAWEXE")

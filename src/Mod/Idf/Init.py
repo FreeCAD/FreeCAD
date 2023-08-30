@@ -27,6 +27,11 @@
 # This is the second one of three init scripts, the third one
 # runs when the gui is up
 
+
+def QT_TRANSLATE_NOOP(_1, txt):
+    return txt
+
+
 # two options for IDF added by Milos Koutny (12-Feb-2010)
-FreeCAD.addImportType("IDF emn file File Type (*.emn)","Idf")
+FreeCAD.addImportType(QT_TRANSLATE_NOOP("FileFormat", "IDF emn file File Type (*.emn)"),"Idf")
 #FreeCAD.addImportType("IDF emp File Type (*.emp)","Import_Emp")
