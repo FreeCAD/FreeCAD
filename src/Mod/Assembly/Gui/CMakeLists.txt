@@ -1,7 +1,14 @@
+include_directories(
+    ${CMAKE_BINARY_DIR}
+    ${CMAKE_CURRENT_BINARY_DIR}
+)
 
 set(AssemblyGui_LIBS
     FreeCADGui
 )
+
+PYSIDE_WRAP_RC(Assembly_QRC_SRCS Resources/Assembly.qrc)
+
 set (Assembly_TR_QRC ${CMAKE_CURRENT_BINARY_DIR}/Resources/Assembly_translation.qrc)
 qt_find_and_add_translation(QM_SRCS "Resources/translations/*_*.ts"
     ${CMAKE_CURRENT_BINARY_DIR}/Resources/translations)
@@ -12,7 +19,7 @@ SOURCE_GROUP("Resources" FILES ${AssemblyResource_SRCS})
 
 
 SET(AssemblyGui_SRCS_Module
-    Resources/Assembly.qrc
+    ${Assembly_QRC_SRCS}
 )
 
 SOURCE_GROUP("Module" FILES ${AssemblyGui_SRCS_Module})
