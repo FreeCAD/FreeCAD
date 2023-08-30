@@ -1147,7 +1147,7 @@ public:
 class DrawSketchHandlerDimension : public DrawSketchHandler
 {
 public:
-    DrawSketchHandlerDimension()
+    DrawSketchHandlerDimension(std::vector<std::string>& SubNames)
         : specialConstraint(SpecialConstraint::None)
         , availableConstraint(AvailableConstraint::FIRST)
         , previousOnSketchPos(Base::Vector2d(0.f, 0.f))
@@ -1155,6 +1155,7 @@ public:
         , selLine({})
         , selCircleArc({})
         , selEllipseAndCo({})
+        , initialSelection(SubNames)
         , numberOfConstraintsCreated(0)
     {
     }
@@ -1179,8 +1180,6 @@ public:
 
     void activated() override
     {
-        Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Dimension"));
-
         Obj = sketchgui->getSketchObject();
 
         // Constrain icon size in px
@@ -1207,6 +1206,8 @@ public:
             hotY *= pixelRatio;
         }
         setCursor(cursorPixmap, hotX, hotY, false);
+
+        handleInitialSelection();
     }
 
     void deactivated() override
@@ -1277,7 +1278,6 @@ public:
     bool releaseButton(Base::Vector2d onSketchPos) override
     {
         Q_UNUSED(onSketchPos);
-
         availableConstraint = AvailableConstraint::FIRST;
         SelIdPair selIdPair;
         selIdPair.GeoId = GeoEnum::GeoUndef;
@@ -1363,9 +1363,50 @@ protected:
     std::vector<SelIdPair> selCircleArc;
     std::vector<SelIdPair> selEllipseAndCo;
 
+    std::vector<std::string> initialSelection;
+
     int numberOfConstraintsCreated;
 
     Sketcher::SketchObject* Obj;
+
+    void handleInitialSelection()
+    {
+        if (initialSelection.size() == 0) {
+            return;
+        }
+
+        availableConstraint = AvailableConstraint::FIRST;
+
+        // Add the selected elements to their corresponding selection vectors
+        for (auto& selElement : initialSelection) {
+            SelIdPair selIdPair;
+            getIdsFromName(selElement, Obj, selIdPair.GeoId, selIdPair.PosId);
+
+            Base::Type newselGeoType = Base::Type::badType();
+            if (isEdge(selIdPair.GeoId, selIdPair.PosId)) {
+                const Part::Geometry* geo = Obj->getGeometry(selIdPair.GeoId);
+                newselGeoType = geo->getTypeId();
+            }
+            else if (isVertex(selIdPair.GeoId, selIdPair.PosId)) {
+                newselGeoType = Part::GeomPoint::getClassTypeId();
+            }
+
+            std::vector<SelIdPair>& selVector = getSelectionVector(newselGeoType);
+
+            //add the geometry to its type vector. Temporarily if not selAllowed
+            selVector.push_back(selIdPair);
+        }
+
+        // See if the selection is valid
+        bool selAllowed = makeAppropriateConstraint(Base::Vector2d(0.,0.));
+
+        if (!selAllowed) {
+            selPoints.clear();
+            selLine.clear();
+            selCircleArc.clear();
+            selEllipseAndCo.clear();
+        }
+    }
 
     void finalizeCommand()
     {
@@ -2325,8 +2366,17 @@ CmdSketcherDimension::CmdSketcherDimension()
 void CmdSketcherDimension::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerDimension());
-    getSelection().clearSelection();
+
+    // get the selection
+    std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx();
+    std::vector<std::string> SubNames = {};
+
+    // only one sketch with its subelements are allowed to be selected
+    if (selection.size() == 1 && selection[0].isObjectTypeOf(Sketcher::SketchObject::getClassTypeId())) {
+        SubNames = selection[0].getSubNames();
+    }
+
+    ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerDimension(SubNames));
 }
 
 void CmdSketcherDimension::updateAction(int mode)
