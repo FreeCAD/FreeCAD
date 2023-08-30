@@ -41,6 +41,8 @@ class Sketch;
 class SketchObject;
 }  // namespace Sketcher
 
+namespace Gui { class View3DInventorViewer; }
+
 namespace SketcherGui
 {
 
@@ -246,6 +248,8 @@ protected:
 
     void signalToolChanged() const;
 
+    Gui::View3DInventorViewer* getViewer();
+
 private:
     void setSvgCursor(const QString& svgName,
                       int x,
@@ -260,7 +264,6 @@ private:
     void setCrosshairCursor(const QString& svgName);
     void setCrosshairCursor(const char* svgName);
 
-    Gui::View3DInventorViewer* getViewer();
 
 protected:
     /**

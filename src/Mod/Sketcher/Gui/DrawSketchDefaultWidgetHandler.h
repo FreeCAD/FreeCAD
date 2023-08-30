@@ -29,6 +29,7 @@
 #include "SketcherToolDefaultWidget.h"
 
 #include <Base/Tools.h>
+#include <Gui/SoDatumLabel.h>
 
 #include <QApplication>
 
@@ -112,6 +113,10 @@ private:
 };
 
 template< int... sizes> // Initial sizes for each mode
+class OnViewParameters : public WidgetInitialValues<sizes...> {
+};
+
+template< int... sizes> // Initial sizes for each mode
 class WidgetParameters : public WidgetInitialValues<sizes...> {
 };
 
@@ -127,6 +132,7 @@ template< typename HandlerT,          // The geometry tool for which the templat
           typename SelectModeT,         // The state machine defining the states that the handle iterates
           int PEditCurveSize,           // The initial size of the EditCurve
           int PAutoConstraintSize,      // The initial size of the AutoConstraint
+          typename OnViewParametersT, // The number of parameter spinboxes in the 3D view
           typename WidgetParametersT, // The number of parameter spinboxes in the default widget
           typename WidgetCheckboxesT, // The number of checkboxes in the default widget
           typename WidgetComboboxesT, // The number of comboboxes in the default widget
@@ -139,6 +145,7 @@ class DrawSketchDefaultWidgetHandler: public DrawSketchDefaultHandler<HandlerT, 
 
 private:
     class ToolWidgetManager {
+        int nOnViewParameter = OnViewParametersT::defaultMethodSize();
         int nParameter = WidgetParametersT::defaultMethodSize();
         int nCheckbox = WidgetCheckboxesT::defaultMethodSize();
         int nCombobox = WidgetComboboxesT::defaultMethodSize();
@@ -159,18 +166,42 @@ private:
         Base::Vector2d prevCursorPosition;
         Base::Vector2d lastWidgetEnforcedPosition;
 
+        enum WLabel {
+            First,
+            Second,
+            Third,
+            Fourth,
+            Fifth,
+            Sixth,
+            Seventh,
+            Eighth,
+            Ninth,
+            Tenth,
+            nLabels // Must Always be the last one
+        };
         using WParameter = SketcherToolDefaultWidget::Parameter;
         using WCheckbox  = SketcherToolDefaultWidget::Checkbox;
         using WCombobox = SketcherToolDefaultWidget::Combobox;
         using SelectMode = SelectModeT;
 
+        std::vector<Gui::EditableDatumLabel*> onViewParameters;
+
     public:
-        ToolWidgetManager(DrawSketchDefaultWidgetHandler * dshandler):handler(dshandler), dHandler(static_cast<HandlerT *>(dshandler)){}
+        bool firstMoveInit = false;
+
+    public:
+        ToolWidgetManager(DrawSketchDefaultWidgetHandler * dshandler) :
+              handler(dshandler)
+            , dHandler(static_cast<HandlerT *>(dshandler)) {}
 
         ~ToolWidgetManager(){
             connectionParameterValueChanged.disconnect();
             connectionCheckboxCheckedChanged.disconnect();
             connectionComboboxSelectionChanged.disconnect();
+
+            for (auto* label : onViewParameters) {
+                delete label;
+            }
         }
 
         /** @name functions NOT intended for specialisation */
@@ -194,11 +225,35 @@ private:
             boost::signals2::shared_connection_block checkbox_block(connectionCheckboxCheckedChanged);
             boost::signals2::shared_connection_block combobox_block(connectionComboboxSelectionChanged);
 
+            initNLabels(nOnViewParameter);
             toolWidget->initNParameters(nParameter);
             toolWidget->initNCheckboxes(nCheckbox);
             toolWidget->initNComboboxes(nCombobox);
 
             configureToolWidget();
+
+            firstMoveInit = false;
+        }
+
+        void initNLabels(int n)
+        {
+            Gui::View3DInventorViewer* viewer = handler->getViewer();
+            Base::Placement placement = handler->sketchgui->getSketchObject()->Placement.getValue();
+
+            for (auto* label : onViewParameters) {
+                delete label;
+            }
+            onViewParameters.clear();
+
+            for (int i = 0; i < n; i++) {
+                auto* label = new Gui::EditableDatumLabel(viewer, placement, SbColor(0.8f, 0.8f, 0.8f), /*autoDistance = */ true);
+                QObject::connect(label, &Gui::EditableDatumLabel::valueChanged,
+                    [=](double value) {
+                    labelValueChanged(i, value);
+                    label->setColor(SbColor(1.0f, 0.149f, 0.0f));
+                });
+                onViewParameters.push_back(label);
+            }
         }
 
         void enforceWidgetParameters(Base::Vector2d &onSketchPos)
@@ -210,11 +265,15 @@ private:
             lastWidgetEnforcedPosition = onSketchPos; // store enforced cursor position.
         }
 
-        /** boost slot triggering when a parameter has changed in the widget
+        /** slot triggering when a on view parameter has changed
          * It is intended to remote control the DrawSketchDefaultWidgetHandler
          */
-        void parameterValueChanged(int parameterindex, double value)
+        void labelValueChanged(int labelindex, double value)
         {
+            if (labelindex + 1 < onViewParameters.size()) {
+                onViewParameters[labelindex + 1]->setFocusToSpinbox();
+            }
+
             // -> A machine does not forward to a next state when adapting the parameter (though it may forward to
             //    a next state if all the parameters are fulfiled, see doChangeDrawSketchHandlerMode). This ensures
             //    that the geometry has been defined (either by mouse clicking or by widget). Autoconstraints on point
@@ -222,11 +281,23 @@ private:
             //
             // -> A machine goes back to a previous state if a parameter of a previous state is modified. This ensures
             //    that appropriate autoconstraints are picked.
-            if(isParameterOfPreviousMode(parameterindex)) {
+            if(isParameterOfPreviousMode(labelindex)) {
                 // change to previous state
-                handler->setState(getState(parameterindex));
+                handler->setState(getState(labelindex));
             }
 
+            enforceWidgetParametersOnPreviousCursorPosition();
+
+            adaptDrawingToLabelChange(labelindex, value);
+
+            finishWidgetChanged();
+        }
+
+        /** boost slot triggering when a parameter has changed in the widget
+         * It is intended to remote control the DrawSketchDefaultWidgetHandler
+         */
+        void parameterValueChanged(int parameterindex, double value)
+        {
             enforceWidgetParametersOnPreviousCursorPosition();
 
             adaptDrawingToParameterChange(parameterindex, value);
@@ -266,6 +337,9 @@ private:
 
         /** @name functions which MUST be specialised */
         //@{
+        /// Change DSH to reflect a value entered in the view
+        void adaptDrawingToLabelChange(int labelindex, double value) {Q_UNUSED(labelindex);Q_UNUSED(value);}
+
         /// Change DSH to reflect a value entered in the widget
         void adaptDrawingToParameterChange(int parameterindex, double value) {Q_UNUSED(parameterindex);Q_UNUSED(value);}
 
@@ -327,6 +401,9 @@ private:
                 toolWidget->setParameterLabel(WParameter::Sixth, QApplication::translate("ToolWidgetManager_p6", "y of 3rd point"));
             }
         }
+
+        /// Function triggered before the first mouse move, to be used to initialize the on view labels.
+        void beforeFirstMouseMove(Base::Vector2d onSketchPos) {Q_UNUSED(onSketchPos);}
 
         /** Change DSH to reflect the SelectMode it should be in based on values entered in the widget
         *
@@ -543,6 +620,7 @@ private:
         */
         void onConstructionMethodChanged() {
 
+            nOnViewParameter = OnViewParametersT::size(handler->constructionMethod());
             nParameter = WidgetParametersT::size(handler->constructionMethod());
             nCheckbox = WidgetCheckboxesT::size(handler->constructionMethod());
             nCombobox = WidgetComboboxesT::size(handler->constructionMethod());
@@ -836,6 +914,7 @@ private:
                 if (modevalue < static_cast<int>(parametersmap.size())) {
                     auto mode = static_cast<T>(modevalue);
 
+                    nOnViewParameter = OnViewParametersT::constructionMethodParameters[modevalue];
                     nParameter = WidgetParametersT::constructionMethodParameters[modevalue];
                     nCheckbox = WidgetCheckboxesT::constructionMethodParameters[modevalue];
                     nCombobox = WidgetComboboxesT::constructionMethodParameters[modevalue];
@@ -949,13 +1028,17 @@ private:
 public:
     DrawSketchDefaultWidgetHandler(ConstructionMethodT constructionmethod = static_cast<ConstructionMethodT>(0)):
          DSDefaultHandler(constructionmethod)
-        ,toolWidgetManager(this) {}
+        , toolWidgetManager(this) {}
     virtual ~DrawSketchDefaultWidgetHandler() = default;
 
     /** @name functions NOT intended for specialisation */
     //@{
     virtual void mouseMove(Base::Vector2d onSketchPos) override
     {
+        if (!toolWidgetManager.firstMoveInit) {
+            toolWidgetManager.firstMoveInit = true;
+            toolWidgetManager.beforeFirstMouseMove(onSketchPos);
+        }
         toolWidgetManager.enforceWidgetParameters(onSketchPos);
         toolWidgetManager.adaptWidgetParameters(onSketchPos);
         updateDataAndDrawToPosition (onSketchPos);
