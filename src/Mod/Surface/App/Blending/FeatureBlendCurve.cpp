@@ -48,19 +48,19 @@ PROPERTY_SOURCE(Surface::FeatureBlendCurve, Part::Spline)
 
 FeatureBlendCurve::FeatureBlendCurve()
 {
-    ADD_PROPERTY_TYPE(StartEdge, (nullptr), "FirstEdge", App::Prop_None, "");
-    ADD_PROPERTY_TYPE(StartContinuity, (2), "FirstEdge", App::Prop_None, "");
+    ADD_PROPERTY_TYPE(StartEdge, (nullptr), "FirstEdge", App::Prop_None, "Edge support of the start point");
+    ADD_PROPERTY_TYPE(StartContinuity, (2), "FirstEdge", App::Prop_None, "Geometric continuity at start point");
     StartContinuity.setConstraints(&StartContinuityConstraint);
-    ADD_PROPERTY_TYPE(StartParameter, (0.0f), "FirstEdge", App::Prop_None, "");
+    ADD_PROPERTY_TYPE(StartParameter, (0.0f), "FirstEdge", App::Prop_None, "Parameter of start point along edge");
     StartParameter.setConstraints(&StartParameterConstraint);
-    ADD_PROPERTY_TYPE(StartSize, (1.0f), "FirstEdge", App::Prop_None, "");
+    ADD_PROPERTY_TYPE(StartSize, (1.0f), "FirstEdge", App::Prop_None, "Size of derivatives at start point");
 
-    ADD_PROPERTY_TYPE(EndEdge, (nullptr), "SecondEdge", App::Prop_None, "");
-    ADD_PROPERTY_TYPE(EndContinuity, (2), "SecondEdge", App::Prop_None, "");
+    ADD_PROPERTY_TYPE(EndEdge, (nullptr), "SecondEdge", App::Prop_None, "Edge support of the end point");
+    ADD_PROPERTY_TYPE(EndContinuity, (2), "SecondEdge", App::Prop_None, "Geometric continuity at end point");
     EndContinuity.setConstraints(&EndContinuityConstraint);
-    ADD_PROPERTY_TYPE(EndParameter, (0.0f), "SecondEdge", App::Prop_None, "");
+    ADD_PROPERTY_TYPE(EndParameter, (0.0f), "SecondEdge", App::Prop_None, "Parameter of end point along edge");
     EndParameter.setConstraints(&EndParameterConstraint);
-    ADD_PROPERTY_TYPE(EndSize, (1.0f), "SecondEdge", App::Prop_None, "");
+    ADD_PROPERTY_TYPE(EndSize, (1.0f), "SecondEdge", App::Prop_None, "Size of derivatives at end point");
     Handle(Geom_BezierCurve) maxDegreeCurve;
     maxDegree = maxDegreeCurve->MaxDegree();
 }
