@@ -2,7 +2,7 @@
     <qresource>
         <file>icons/Assembly_InsertLink.svg</file>
         <file>icons/preferences-assembly.svg</file>
-        <file>panels/dummy.ui</file>
+        <file>panels/TaskAssemblyInsertLink.ui</file>
         <file>preferences/Assembly.ui</file>
     </qresource>
 </RCC>
