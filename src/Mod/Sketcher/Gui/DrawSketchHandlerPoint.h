@@ -40,7 +40,8 @@ using DrawSketchHandlerPointBase = DrawSketchDefaultWidgetHandler<  DrawSketchHa
     StateMachines::OneSeekEnd,
     /*PEditCurveSize =*/ 0,
     /*PAutoConstraintSize =*/ 1,
-    /*WidgetParametersT =*/WidgetParameters<2>,
+    /*OnViewParametersT =*/OnViewParameters<2>,
+    /*WidgetParametersT =*/WidgetParameters<0>,
     /*WidgetCheckboxesT =*/WidgetCheckboxes<0>,
     /*WidgetComboboxesT =*/WidgetComboboxes<0>>;
 
@@ -109,10 +110,10 @@ private:
     Base::Vector2d editPoint;
 };
 
-template <> auto DrawSketchHandlerPointBase::ToolWidgetManager::getState(int parameterindex) const {
-    switch (parameterindex) {
-    case WParameter::First:
-    case WParameter::Second:
+template <> auto DrawSketchHandlerPointBase::ToolWidgetManager::getState(int labelindex) const {
+    switch (labelindex) {
+    case WLabel::First:
+    case WLabel::Second:
         return SelectMode::SeekFirst;
         break;
     default:
@@ -120,31 +121,43 @@ template <> auto DrawSketchHandlerPointBase::ToolWidgetManager::getState(int par
     }
 }
 
-template <> void DrawSketchHandlerPointBase::ToolWidgetManager::configureToolWidget() {
-    toolWidget->setParameterLabel(WParameter::First, QApplication::translate("TaskSketcherTool_p1_point", "x of point"));
-    toolWidget->setParameterLabel(WParameter::Second, QApplication::translate("TaskSketcherTool_p2_point", "y of point"));
+template <> void DrawSketchHandlerPointBase::ToolWidgetManager::beforeFirstMouseMove(Base::Vector2d onSketchPos) {
+    onViewParameters[WLabel::First]->activate();
+    onViewParameters[WLabel::Second]->activate();
+    onViewParameters[WLabel::First]->setLabelType(Gui::SoDatumLabel::DISTANCEX);
+    onViewParameters[WLabel::Second]->setLabelType(Gui::SoDatumLabel::DISTANCEY);
+    bool sameSign = onSketchPos.x * onSketchPos.y > 0.;
+    onViewParameters[WLabel::First]->setLabelAutoDistanceReverse(!sameSign);
+    onViewParameters[WLabel::Second]->setLabelAutoDistanceReverse(sameSign);
+    onViewParameters[WLabel::First]->setPoints(Base::Vector3d(0., 0., 0.), Base::Vector3d(onSketchPos.x, onSketchPos.y, 0.));
+    onViewParameters[WLabel::Second]->setPoints(Base::Vector3d(0., 0., 0.), Base::Vector3d(onSketchPos.x, onSketchPos.y, 0.));
+
+    onViewParameters[WLabel::Second]->startEdit(onSketchPos.y);
+    onViewParameters[WLabel::First]->startEdit(onSketchPos.x);
 }
 
-template <> void DrawSketchHandlerPointBase::ToolWidgetManager::adaptDrawingToParameterChange(int parameterindex, double value) {
-    switch (parameterindex) {
-    case WParameter::First:
+template <> void DrawSketchHandlerPointBase::ToolWidgetManager::adaptDrawingToLabelChange(int labelindex, double value) {
+    switch (labelindex) {
+    case WLabel::First:
         dHandler->editPoint.x = value;
         break;
-    case WParameter::Second:
+    case WLabel::Second:
         dHandler->editPoint.y = value;
         break;
     }
+    onViewParameters[WLabel::First]->setPoints(Base::Vector3d(0., 0., 0.), Base::Vector3d(dHandler->editPoint.x, dHandler->editPoint.y, 0.));
+    onViewParameters[WLabel::Second]->setPoints(Base::Vector3d(0., 0., 0.), Base::Vector3d(dHandler->editPoint.x, dHandler->editPoint.y, 0.));
 }
 
 template <> void DrawSketchHandlerPointBase::ToolWidgetManager::doEnforceWidgetParameters(Base::Vector2d& onSketchPos) {
     switch (handler->state()) {
     case SelectMode::SeekFirst:
     {
-        if (toolWidget->isParameterSet(WParameter::First))
-            onSketchPos.x = toolWidget->getParameter(WParameter::First);
+        if (onViewParameters[WLabel::First]->isSet)
+            onSketchPos.x = onViewParameters[WLabel::First]->getValue();
 
-        if (toolWidget->isParameterSet(WParameter::Second))
-            onSketchPos.y = toolWidget->getParameter(WParameter::Second);
+        if (onViewParameters[WLabel::Second]->isSet)
+            onSketchPos.y = onViewParameters[WLabel::Second]->getValue();
     }
     break;
     default:
@@ -156,11 +169,19 @@ template <> void DrawSketchHandlerPointBase::ToolWidgetManager::adaptWidgetParam
     switch (handler->state()) {
     case SelectMode::SeekFirst:
     {
-        if (!toolWidget->isParameterSet(WParameter::First))
-            toolWidget->updateVisualValue(WParameter::First, onSketchPos.x);
+        if (!onViewParameters[WLabel::First]->isSet) {
+            onViewParameters[WLabel::First]->setSpinboxValue(onSketchPos.x);
+        }
 
-        if (!toolWidget->isParameterSet(WParameter::Second))
-            toolWidget->updateVisualValue(WParameter::Second, onSketchPos.y);
+        if (!onViewParameters[WLabel::Second]->isSet) {
+            onViewParameters[WLabel::Second]->setSpinboxValue(onSketchPos.y);
+        }
+
+        bool sameSign = onSketchPos.x * onSketchPos.y > 0.;
+        onViewParameters[WLabel::First]->setLabelAutoDistanceReverse(!sameSign);
+        onViewParameters[WLabel::Second]->setLabelAutoDistanceReverse(sameSign);
+        onViewParameters[WLabel::First]->setPoints(Base::Vector3d(0., 0., 0.), Base::Vector3d(onSketchPos.x, onSketchPos.y, 0.));
+        onViewParameters[WLabel::Second]->setPoints(Base::Vector3d(0., 0., 0.), Base::Vector3d(onSketchPos.x, onSketchPos.y, 0.));
     }
     break;
     default:
@@ -172,8 +193,8 @@ template <> void DrawSketchHandlerPointBase::ToolWidgetManager::doChangeDrawSket
     switch (handler->state()) {
     case SelectMode::SeekFirst:
     {
-        if (toolWidget->isParameterSet(WParameter::First) &&
-            toolWidget->isParameterSet(WParameter::Second)) {
+        if (onViewParameters[WLabel::First]->isSet &&
+            onViewParameters[WLabel::Second]->isSet) {
 
             handler->updateDataAndDrawToPosition(prevCursorPosition); // draw curve to cursor with suggested constraints
 
@@ -188,14 +209,26 @@ template <> void DrawSketchHandlerPointBase::ToolWidgetManager::doChangeDrawSket
 
 }
 
+template <> void DrawSketchHandlerPointBase::ToolWidgetManager::onHandlerModeChanged() {
+    switch (handler->state()) {
+    case SelectMode::SeekFirst:
+    {
+        //Do nothing.
+    }
+    break;
+    default:
+        break;
+    }
+}
+
 template <> void DrawSketchHandlerPointBase::ToolWidgetManager::addConstraints() {
     int firstCurve = handler->getHighestCurveIndex();
 
-    auto x0 = toolWidget->getParameter(WParameter::First);
-    auto y0 = toolWidget->getParameter(WParameter::Second);
+    auto x0 = onViewParameters[WLabel::First]->getValue();
+    auto y0 = onViewParameters[WLabel::Second]->getValue();
 
-    auto x0set = toolWidget->isParameterSet(WParameter::First);
-    auto y0set = toolWidget->isParameterSet(WParameter::Second);
+    auto x0set = onViewParameters[WLabel::First]->isSet;
+    auto y0set = onViewParameters[WLabel::Second]->isSet;
 
     using namespace Sketcher;
 
