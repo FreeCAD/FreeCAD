@@ -44,15 +44,16 @@ class TechDrawExport CosmeticVertex: public Base::Persistence, public TechDraw::
 public:
     CosmeticVertex();
     CosmeticVertex(const CosmeticVertex* cv);
-    CosmeticVertex(Base::Vector3d loc);
+    CosmeticVertex(const Base::Vector3d& loc);
     ~CosmeticVertex() override = default;
 
-    void move(Base::Vector3d newPos);
-    void moveRelative(Base::Vector3d movement);
+    void move(const Base::Vector3d& newPos);
+    void moveRelative(const Base::Vector3d& movement);
 
     std::string toString() const;
     void dump(const char* title) override;
-    Base::Vector3d scaled(double factor);
+    Base::Vector3d scaled(const double factor);
+    Base::Vector3d rotatedAndScaled(const double scale, const double rotDegrees);
 
     static bool restoreCosmetic();
 

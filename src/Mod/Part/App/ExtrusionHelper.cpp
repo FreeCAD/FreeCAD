@@ -48,9 +48,7 @@
 
 using namespace Part;
 
-ExtrusionHelper::ExtrusionHelper()
-{
-}
+ExtrusionHelper::ExtrusionHelper() = default;
 
 void ExtrusionHelper::makeDraft(const TopoDS_Shape& shape,
                                 const gp_Dir& direction,
@@ -284,8 +282,8 @@ void ExtrusionHelper::makeDraft(const TopoDS_Shape& shape,
             }
             else
                 // we already have the results
-                for (auto it = shells.begin(); it != shells.end(); ++it)
-                    drafts.push_back(*it);
+                for (const auto & shell : shells)
+                    drafts.push_back(shell);
         }
         else { // no solid
             BRepBuilderAPI_Sewing sewer;

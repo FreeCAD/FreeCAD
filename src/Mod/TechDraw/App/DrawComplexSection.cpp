@@ -121,6 +121,7 @@
 #include "DrawComplexSection.h"
 #include "DrawUtil.h"
 #include "GeometryObject.h"
+#include "ShapeUtils.h"
 
 using namespace TechDraw;
 using namespace std;
@@ -145,32 +146,6 @@ DrawComplexSection::DrawComplexSection()
     ProjectionStrategy.setEnums(ProjectionStrategyEnums);
     ADD_PROPERTY_TYPE(ProjectionStrategy, ((long)0), fgroup, App::Prop_None,
                       "Make a single cut, or use the profile in pieces");
-}
-
-TopoDS_Shape DrawComplexSection::getShapeToCut()
-{
-    //    Base::Console().Message("DCS::getShapeToCut()\n");
-    App::DocumentObject* base = BaseView.getValue();
-    TopoDS_Shape shapeToCut;
-    if (base && base == this) {
-        shapeToCut = getSourceShape();
-        if (FuseBeforeCut.getValue()) {
-            shapeToCut = getSourceShapeFused();
-        }
-        return shapeToCut;
-    }
-    if (!base
-        || !base->getTypeId().isDerivedFrom(
-            TechDraw::DrawViewPart::getClassTypeId())) {//is second clause necessary?
-        //Complex section is based on 3d objects, need to get our own shapes since we can't ask a dvp
-        shapeToCut = getSourceShape();
-        if (FuseBeforeCut.getValue()) {
-            shapeToCut = getSourceShapeFused();
-        }
-        return shapeToCut;
-    }
-    //complex section is based on a DVP, so get the shape the normal way
-    return DrawViewSection::getShapeToCut();
 }
 
 TopoDS_Shape DrawComplexSection::makeCuttingTool(double dMax)
@@ -282,12 +257,11 @@ TopoDS_Shape DrawComplexSection::prepareShape(const TopoDS_Shape& cutShape, doub
         return TopoDS_Shape();
     }
 
-    TopoDS_Shape centeredShape = TechDraw::centerShapeXY(m_alignResult, getProjectionCS());
-    //    m_preparedShape = scaleShape(m_alignResult, getScale());
-    m_preparedShape = scaleShape(centeredShape, getScale());
+    TopoDS_Shape centeredShape = ShapeUtils::centerShapeXY(m_alignResult, getProjectionCS());
+    m_preparedShape = ShapeUtils::scaleShape(centeredShape, getScale());
     if (!DrawUtil::fpCompare(Rotation.getValue(), 0.0)) {
         m_preparedShape =
-            TechDraw::rotateShape(m_preparedShape, getProjectionCS(), Rotation.getValue());
+            ShapeUtils::rotateShape(m_preparedShape, getProjectionCS(), Rotation.getValue());
     }
 
     return m_preparedShape;
@@ -420,7 +394,7 @@ void DrawComplexSection::makeAlignedPieces(const TopoDS_Shape& rawShape)
 
         //move intersection shape to the origin
         gp_Trsf xPieceCenter;
-        xPieceCenter.SetTranslation(gp_Vec(findCentroid(intersect).XYZ()) * -1.0);
+        xPieceCenter.SetTranslation(gp_Vec(ShapeUtils::findCentroid(intersect).XYZ()) * -1.0);
         BRepBuilderAPI_Transform mkTransXLate(intersect, xPieceCenter, true);
         TopoDS_Shape pieceCentered = mkTransXLate.Shape();
 
@@ -462,7 +436,7 @@ void DrawComplexSection::makeAlignedPieces(const TopoDS_Shape& rawShape)
         //with the paper plane
         //yVector is movement of cut face to paperPlane (XZ)
         gp_Vec yVector(gp::OY().Direction().XYZ() * pieceYSize / 2.0);//move "back"
-        gp_Vec netDisplacement = -1.0 * gp_Vec(findCentroid(pieceAligned).XYZ()) + yVector;
+        gp_Vec netDisplacement = -1.0 * gp_Vec(ShapeUtils::findCentroid(pieceAligned).XYZ()) + yVector;
         //if we are going to space along X, we need to bring the pieces back into alignment
         //with the XY plane.  If we are stacking the pieces along Z, we don't want a vertical adjustment.
         gp_Vec xyDisplacement =
@@ -524,7 +498,7 @@ void DrawComplexSection::makeAlignedPieces(const TopoDS_Shape& rawShape)
 
     //center the compound along SectionCS XDirection
     Base::Vector3d centerVector = DU::toVector3d(gMovementVector) * distanceToMove / -2.0;
-    TopoDS_Shape centeredCompound = moveShape(comp, centerVector);
+    TopoDS_Shape centeredCompound = ShapeUtils::moveShape(comp, centerVector);
     if (debugSection()) {
         BRepTools::Write(centeredCompound, "DCSmap40CenteredCompound.brep");//debug
     }
@@ -822,8 +796,8 @@ TopoDS_Wire DrawComplexSection::makeSectionLineWire()
     if (baseDvp) {
         Base::Vector3d centroid = baseDvp->getCurrentCentroid();
         TopoDS_Shape sTrans =
-            TechDraw::moveShape(Part::Feature::getShape(toolObj), centroid * -1.0);
-        TopoDS_Shape sScaled = TechDraw::scaleShape(sTrans, baseDvp->getScale());
+            ShapeUtils::ShapeUtils::moveShape(Part::Feature::getShape(toolObj), centroid * -1.0);
+        TopoDS_Shape sScaled = ShapeUtils::scaleShape(sTrans, baseDvp->getScale());
         //we don't mirror the scaled shape here as it will be mirrored by the projection
 
         if (sScaled.ShapeType() == TopAbs_WIRE) {

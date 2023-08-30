@@ -855,7 +855,7 @@ class StdCmdUserEditMode : public Gui::Command
 {
 public:
     StdCmdUserEditMode();
-    ~StdCmdUserEditMode() override{}
+    ~StdCmdUserEditMode() override = default;
     void languageChange() override;
     const char* className() const override {return "StdCmdUserEditMode";}
     void updateIcon(int mode);

@@ -1681,10 +1681,6 @@ class StdCmdExpression : public Gui::Command
 {
 public:
     StdCmdExpression() : Command("Std_Expressions")
-                       , pcActionCopyAll(nullptr)
-                       , pcActionCopySel(nullptr)
-                       , pcActionCopyActive(nullptr)
-                       , pcActionPaste(nullptr)
     {
         sGroup        = "Edit";
         sMenuText     = QT_TR_NOOP("Expression actions");
@@ -1887,10 +1883,10 @@ protected:
         return true;
     }
 
-    QAction *pcActionCopyAll;
-    QAction *pcActionCopySel;
-    QAction *pcActionCopyActive;
-    QAction *pcActionPaste;
+    QAction *pcActionCopyAll{nullptr};
+    QAction *pcActionCopySel{nullptr};
+    QAction *pcActionCopyActive{nullptr};
+    QAction *pcActionPaste{nullptr};
 };
 
 namespace Gui {

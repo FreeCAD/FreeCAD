@@ -48,9 +48,7 @@ DlgSettingsReportView::DlgSettingsReportView( QWidget* parent )
 /**
  *  Destroys the object and frees any allocated resources
  */
-DlgSettingsReportView::~DlgSettingsReportView()
-{
-}
+DlgSettingsReportView::~DlgSettingsReportView() = default;
 
 void DlgSettingsReportView::saveSettings()
 {

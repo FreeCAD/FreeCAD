@@ -50,19 +50,21 @@ DlgStartPreferencesImp::DlgStartPreferencesImp( QWidget* parent )
     // sorted by their menu text
     QStringList work = Gui::Application::Instance->workbenches();
     QMap<QString, QString> menuText;
-    for (QStringList::Iterator it = work.begin(); it != work.end(); ++it) {
-        QString text = Gui::Application::Instance->workbenchMenuText(*it);
-        menuText[text] = *it;
+    for (const auto& it : work) {
+        QString text = Gui::Application::Instance->workbenchMenuText(it);
+        menuText[text] = it;
     }
 
     {   // add special workbench to selection
         QPixmap px = Gui::Application::Instance->workbenchIcon(QString::fromLatin1("NoneWorkbench"));
         QString key = QString::fromLatin1("<last>");
         QString value = QString::fromLatin1("$LastModule");
-        if (px.isNull())
+        if (px.isNull()) {
             ui->AutoloadModuleCombo->addItem(key, QVariant(value));
-        else
+        }
+        else {
             ui->AutoloadModuleCombo->addItem(px, key, QVariant(value));
+        }
     }
 
     for (QMap<QString, QString>::Iterator it = menuText.begin(); it != menuText.end(); ++it) {
@@ -78,10 +80,7 @@ DlgStartPreferencesImp::DlgStartPreferencesImp( QWidget* parent )
 /**
  *  Destroys the object and frees any allocated resources
  */
-DlgStartPreferencesImp::~DlgStartPreferencesImp()
-{
-    // no need to delete child widgets, Qt does it all for us
-}
+DlgStartPreferencesImp::~DlgStartPreferencesImp() = default;
 
 void DlgStartPreferencesImp::saveSettings()
 {
@@ -110,9 +109,10 @@ void DlgStartPreferencesImp::saveSettings()
     ui->checkBox_5->onSave();
     ui->checkBox_6->onSave();
     ui->checkBox_7->onSave();
-    ui->checkBox_8->onSave();
     ui->lineEdit->onSave();
     ui->spinBox->onSave();
+    ui->showFileThumbnailIconsCheckBox->onSave();
+    ui->fileThumbnailIconSizeSpinBox->onSave();
 }
 
 void DlgStartPreferencesImp::loadSettings()
@@ -142,21 +142,22 @@ void DlgStartPreferencesImp::loadSettings()
     ui->checkBox_5->onRestore();
     ui->checkBox_6->onRestore();
     ui->checkBox_7->onRestore();
-    ui->checkBox_8->onRestore();
     ui->lineEdit->onRestore();
     ui->spinBox->onRestore();
+    ui->showFileThumbnailIconsCheckBox->onRestore();
+    ui->fileThumbnailIconSizeSpinBox->onRestore();
 }
 
 /**
  * Sets the strings of the subwidgets using the current language.
  */
-void DlgStartPreferencesImp::changeEvent(QEvent *e)
+void DlgStartPreferencesImp::changeEvent(QEvent *ev)
 {
-    if (e->type() == QEvent::LanguageChange) {
+    if (ev->type() == QEvent::LanguageChange) {
         ui->retranslateUi(this);
     }
     else {
-        QWidget::changeEvent(e);
+        Gui::Dialog::PreferencePage::changeEvent(ev);
     }
 }
 

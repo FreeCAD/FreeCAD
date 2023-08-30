@@ -54,9 +54,7 @@ public:
     {
     }
 
-    ~SingleSelectionItem () override
-    {
-    }
+    ~SingleSelectionItem () override = default;
 
     SingleSelectionItem* getCompetitiveItem() const
     {
@@ -115,21 +113,21 @@ VisualInspection::VisualInspection(QWidget* parent, Qt::WindowFlags fl)
     Base::Type point = Base::Type::fromName("Points::Feature");
     Base::Type mesh  = Base::Type::fromName("Mesh::Feature");
     Base::Type shape = Base::Type::fromName("Part::Feature");
-    for (std::vector<App::DocumentObject*>::iterator it = obj.begin(); it != obj.end(); ++it) {
-        if ((*it)->getTypeId().isDerivedFrom(point) ||
-            (*it)->getTypeId().isDerivedFrom(mesh)  ||
-            (*it)->getTypeId().isDerivedFrom(shape)) {
-            Gui::ViewProvider* view = gui->getViewProvider(*it);
+    for (auto it : obj) {
+        if (it->getTypeId().isDerivedFrom(point) ||
+            it->getTypeId().isDerivedFrom(mesh)  ||
+            it->getTypeId().isDerivedFrom(shape)) {
+            Gui::ViewProvider* view = gui->getViewProvider(it);
             QIcon px = view->getIcon();
             SingleSelectionItem* item1 = new SingleSelectionItem(ui->treeWidgetActual);
-            item1->setText(0, QString::fromUtf8((*it)->Label.getValue()));
-            item1->setData(0, Qt::UserRole, QString::fromLatin1((*it)->getNameInDocument()));
+            item1->setText(0, QString::fromUtf8(it->Label.getValue()));
+            item1->setData(0, Qt::UserRole, QString::fromLatin1(it->getNameInDocument()));
             item1->setCheckState(0, Qt::Unchecked);
             item1->setIcon(0, px);
 
             SingleSelectionItem* item2 = new SingleSelectionItem(ui->treeWidgetNominal);
-            item2->setText(0, QString::fromUtf8((*it)->Label.getValue()));
-            item2->setData(0, Qt::UserRole, QString::fromLatin1((*it)->getNameInDocument()));
+            item2->setText(0, QString::fromUtf8(it->Label.getValue()));
+            item2->setData(0, Qt::UserRole, QString::fromLatin1(it->getNameInDocument()));
             item2->setCheckState(0, Qt::Unchecked);
             item2->setIcon(0, px);
 
@@ -245,9 +243,9 @@ void VisualInspection::accept()
                     "App_activeDocument___activeObject___Nominals=list()\n"
                     "App.ActiveDocument.ActiveObject.SearchRadius=%.3f\n"
                     "App.ActiveDocument.ActiveObject.Thickness=%.3f\n", (const char*)actualName.toLatin1(), searchRadius, thickness);
-                for (QStringList::Iterator it = nominalNames.begin(); it != nominalNames.end(); ++it) {
+                for (const auto& it : nominalNames) {
                     Gui::Command::doCommand(Gui::Command::App,
-                        "App_activeDocument___activeObject___Nominals.append(App.ActiveDocument.%s)\n", (const char*)(*it).toLatin1());
+                        "App_activeDocument___activeObject___Nominals.append(App.ActiveDocument.%s)\n", (const char*)it.toLatin1());
                 }
                 Gui::Command::doCommand(Gui::Command::App,
                     "App.ActiveDocument.ActiveObject.Nominals=App_activeDocument___activeObject___Nominals\n"

@@ -50,8 +50,8 @@ namespace MeshGui {
 class PlaneFitParameter : public FitParameter
 {
 public:
-    PlaneFitParameter() {}
-    ~PlaneFitParameter() override {}
+    PlaneFitParameter() = default;
+    ~PlaneFitParameter() override = default;
     std::vector<float> getParameter(FitParameter::Points pts) const override {
         std::vector<float> values;
         MeshCore::PlaneFit fit;
@@ -73,8 +73,8 @@ public:
 class CylinderFitParameter : public FitParameter
 {
 public:
-    CylinderFitParameter() {}
-    ~CylinderFitParameter() override {}
+    CylinderFitParameter() = default;
+    ~CylinderFitParameter() override = default;
     std::vector<float> getParameter(FitParameter::Points pts) const override {
         std::vector<float> values;
         MeshCore::CylinderFit fit;
@@ -128,8 +128,8 @@ public:
 class SphereFitParameter : public FitParameter
 {
 public:
-    SphereFitParameter() {}
-    ~SphereFitParameter() override {}
+    SphereFitParameter() = default;
+    ~SphereFitParameter() override = default;
     std::vector<float> getParameter(FitParameter::Points pts) const override {
         std::vector<float> values;
         MeshCore::SphereFit fit;
@@ -485,10 +485,10 @@ void SegmentationBestFit::accept()
     std::string labelname = "Segments ";
     labelname += myMesh->Label.getValue();
     group->Label.setValue(labelname);
-    for (std::vector<MeshCore::MeshSurfaceSegmentPtr>::iterator it = segm.begin(); it != segm.end(); ++it) {
-        const std::vector<MeshCore::MeshSegment>& data = (*it)->GetSegments();
-        for (std::vector<MeshCore::MeshSegment>::const_iterator jt = data.begin(); jt != data.end(); ++jt) {
-            Mesh::MeshObject* segment = mesh->meshFromSegment(*jt);
+    for (const auto & it : segm) {
+        const std::vector<MeshCore::MeshSegment>& data = it->GetSegments();
+        for (const auto & jt : data) {
+            Mesh::MeshObject* segment = mesh->meshFromSegment(jt);
             Mesh::Feature* feaSegm = static_cast<Mesh::Feature*>(group->addObject("Mesh::Feature", "Segment"));
             Mesh::MeshObject* feaMesh = feaSegm->Mesh.startEditing();
             feaMesh->swap(*segment);
@@ -496,7 +496,7 @@ void SegmentationBestFit::accept()
             delete segment;
 
             std::stringstream label;
-            label << feaSegm->Label.getValue() << " (" << (*it)->GetType() << ")";
+            label << feaSegm->Label.getValue() << " (" << it->GetType() << ")";
             feaSegm->Label.setValue(label.str());
         }
     }
@@ -522,11 +522,6 @@ TaskSegmentationBestFit::TaskSegmentationBestFit(Mesh::Feature* mesh)
         QPixmap(), widget->windowTitle(), false, nullptr);
     taskbox->groupLayout()->addWidget(widget);
     Content.push_back(taskbox);
-}
-
-TaskSegmentationBestFit::~TaskSegmentationBestFit()
-{
-    // automatically deleted in the sub-class
 }
 
 bool TaskSegmentationBestFit::accept()

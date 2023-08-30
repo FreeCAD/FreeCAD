@@ -41,7 +41,7 @@ std::string TypePy::representation() const
 
 PyObject* TypePy::fromName (PyObject *args)
 {
-    const char *name;
+    const char *name{};
     if (!PyArg_ParseTuple(args, "s", &name))
         return nullptr;
 
@@ -51,7 +51,7 @@ PyObject* TypePy::fromName (PyObject *args)
 
 PyObject* TypePy::fromKey (PyObject *args)
 {
-    unsigned int index;
+    unsigned int index{};
     if (!PyArg_ParseTuple(args, "I", &index))
         return nullptr;
 
@@ -100,14 +100,14 @@ PyObject*  TypePy::isDerivedFrom(PyObject *args)
     Base::Type type;
 
     do {
-        const char *name;
+        const char *name{};
         if (PyArg_ParseTuple(args, "s", &name)) {
             type = Base::Type::fromName(name);
             break;
         }
 
         PyErr_Clear();
-        PyObject* t;
+        PyObject* t{};
         if (PyArg_ParseTuple(args, "O!", &TypePy::Type, &t)) {
             type = *static_cast<TypePy*>(t)->getBaseTypePtr();
             break;
@@ -127,14 +127,14 @@ PyObject*  TypePy::getAllDerivedFrom(PyObject *args)
     Base::Type type;
 
     do {
-        const char *name;
+        const char *name{};
         if (PyArg_ParseTuple(args, "s", &name)) {
             type = Base::Type::fromName(name);
             break;
         }
 
         PyErr_Clear();
-        PyObject* t;
+        PyObject* t{};
         if (PyArg_ParseTuple(args, "O!", &TypePy::Type, &t)) {
             type = *static_cast<TypePy*>(t)->getBaseTypePtr();
             break;
@@ -148,8 +148,8 @@ PyObject*  TypePy::getAllDerivedFrom(PyObject *args)
     std::vector<Base::Type> ary;
     Base::Type::getAllDerivedFrom(type, ary);
     Py::List res;
-    for (std::vector<Base::Type>::iterator it = ary.begin(); it != ary.end(); ++it) {
-        res.append(Py::asObject(new TypePy(new Base::Type(*it))));
+    for (const auto & it : ary) {
+        res.append(Py::asObject(new TypePy(new Base::Type(it))));
     }
     return Py::new_reference_to(res);
 }
@@ -163,8 +163,8 @@ PyObject*  TypePy::getAllDerived(PyObject *args)
     std::vector<Base::Type> ary;
     Base::Type::getAllDerivedFrom(type, ary);
     Py::List res;
-    for (std::vector<Base::Type>::iterator it = ary.begin(); it != ary.end(); ++it) {
-        res.append(Py::asObject(new TypePy(new Base::Type(*it))));
+    for (const auto & it : ary) {
+        res.append(Py::asObject(new TypePy(new Base::Type(it))));
     }
     return Py::new_reference_to(res);
 }
@@ -224,8 +224,8 @@ PyObject* TypePy::createInstance (PyObject *args)
 
 PyObject* TypePy::createInstanceByName (PyObject *args)
 {
-    const char* name;
-    PyObject* load = Py_False;
+    const char* name{};
+    PyObject* load = Py_False; //NOLINT
     if (!PyArg_ParseTuple(args, "s|O!", &name, &PyBool_Type, &load))
         return nullptr;
 
@@ -245,7 +245,7 @@ PyObject* TypePy::createInstanceByName (PyObject *args)
 
 Py::String TypePy::getName() const
 {
-    return Py::String(std::string(getBaseTypePtr()->getName()));
+    return {std::string(getBaseTypePtr()->getName())};
 }
 
 Py::Long TypePy::getKey() const
@@ -263,7 +263,7 @@ Py::String TypePy::getModule() const
     else
         module.clear();
 
-    return Py::String(module);
+    return {module};
 }
 
 PyObject *TypePy::getCustomAttributes(const char* /*attr*/) const

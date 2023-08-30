@@ -23,7 +23,7 @@ Example:
   m = Mesh.Mesh()
   ... # Manipulate the mesh
   d = FreeCAD.activeDocument() # Get a reference to the actie document
-  f = d.addObject(\"Mesh::Feature\", \"Mesh\") # Create a mesh feature
+  f = d.addObject("Mesh::Feature", "Mesh") # Create a mesh feature
   f.Mesh = m # Assign the mesh object to the internal property
   d.recompute()</UserDocu>
 		</Documentation>

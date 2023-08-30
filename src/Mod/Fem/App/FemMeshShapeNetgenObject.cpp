@@ -62,9 +62,7 @@ FemMeshShapeNetgenObject::FemMeshShapeNetgenObject()
 
 }
 
-FemMeshShapeNetgenObject::~FemMeshShapeNetgenObject()
-{
-}
+FemMeshShapeNetgenObject::~FemMeshShapeNetgenObject() = default;
 
 App::DocumentObjectExecReturn *FemMeshShapeNetgenObject::execute()
 {

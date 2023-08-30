@@ -401,9 +401,9 @@ Rotation Rotation::operator*(const Rotation & q) const
 Rotation& Rotation::multRight(const Base::Rotation& q)
 {
     // Taken from <http://de.wikipedia.org/wiki/Quaternionen>
-    double x0, y0, z0, w0;
+    double x0{}, y0{}, z0{}, w0{};
     this->getValue(x0, y0, z0, w0);
-    double x1, y1, z1, w1;
+    double x1{}, y1{}, z1{}, w1{};
     q.getValue(x1, y1, z1, w1);
 
     this->setValue(w0*x1 + x0*w1 + y0*z1 - z0*y1,
@@ -422,9 +422,9 @@ Rotation& Rotation::multRight(const Base::Rotation& q)
 Rotation& Rotation::multLeft(const Base::Rotation& q)
 {
     // Taken from <http://de.wikipedia.org/wiki/Quaternionen>
-    double x0, y0, z0, w0;
+    double x0{}, y0{}, z0{}, w0{};
     q.getValue(x0, y0, z0, w0);
-    double x1, y1, z1, w1;
+    double x1{}, y1{}, z1{}, w1{};
     this->getValue(x1, y1, z1, w1);
 
     this->setValue(w0*x1 + x0*w1 + y0*z1 - z0*y1,
@@ -496,7 +496,7 @@ Vector3f Rotation::multVec(const Vector3f & src) const
 void Rotation::scaleAngle(const double scaleFactor)
 {
     Vector3d axis;
-    double fAngle;
+    double fAngle{};
     this->getValue(axis, fAngle);
     this->setValue(axis, fAngle * scaleFactor);
 }
@@ -504,10 +504,8 @@ void Rotation::scaleAngle(const double scaleFactor)
 Rotation Rotation::slerp(const Rotation & q0, const Rotation & q1, double t)
 {
     // Taken from <http://www.euclideanspace.com/maths/algebra/realNormedAlgebra/quaternions/slerp/>
-    // q = [q0*sin((1-t)*theta)+q1*sin(t*theta)]/sin(theta), 0<=t<=1
     if (t<0.0) t=0.0;
     else if (t>1.0) t=1.0;
-    //return q0;
 
     double scale0 = 1.0 - t;
     double scale1 = t;
@@ -535,12 +533,12 @@ Rotation Rotation::slerp(const Rotation & q0, const Rotation & q1, double t)
     double y = scale0 * q0.quat[1] + scale1 * q1.quat[1];
     double z = scale0 * q0.quat[2] + scale1 * q1.quat[2];
     double w = scale0 * q0.quat[3] + scale1 * q1.quat[3];
-    return Rotation(x, y, z, w);
+    return {x, y, z, w};
 }
 
 Rotation Rotation::identity()
 {
-    return Rotation(0.0, 0.0, 0.0, 1.0);
+    return {0.0, 0.0, 0.0, 1.0};
 }
 
 Rotation Rotation::makeRotationByAxes(Vector3d xdir, Vector3d ydir, Vector3d zdir, const char* priorityOrder)
@@ -574,7 +572,7 @@ Rotation Rotation::makeRotationByAxes(Vector3d xdir, Vector3d ydir, Vector3d zdi
 
 
     auto dropPriority = [&order](int index){
-        int tmp;
+        int tmp{};
         if (index == 0){
             tmp = order[0];
             order[0] = order[1];
@@ -684,7 +682,7 @@ Rotation Rotation::makeRotationByAxes(Vector3d xdir, Vector3d ydir, Vector3d zdi
         m[2][i] = finaldirs[i].z;
     }
 
-    return Rotation(m);
+    return {m};
 }
 
 void Rotation::setYawPitchRoll(double y, double p, double r)
@@ -701,11 +699,6 @@ void Rotation::setYawPitchRoll(double y, double p, double r)
     double s2 = sin(p/2.0);
     double c3 = cos(r/2.0);
     double s3 = sin(r/2.0);
-
-    // quat[0] = c1*c2*s3 - s1*s2*c3;
-    // quat[1] = c1*s2*c3 + s1*c2*s3;
-    // quat[2] = s1*c2*c3 - c1*s2*s3;
-    // quat[3] = c1*c2*c3 + s1*s2*s3;
 
     this->setValue (
       c1*c2*s3 - s1*s2*c3,
@@ -842,18 +835,17 @@ struct EulerSequence_Parameters
 
 EulerSequence_Parameters translateEulerSequence (const Rotation::EulerSequence theSeq)
 {
-    using Params = EulerSequence_Parameters;
     const bool F = false;
     const bool T = true;
 
     switch (theSeq)
     {
-    case Rotation::Extrinsic_XYZ: return Params (1, F, F, T);
-    case Rotation::Extrinsic_XZY: return Params (1, T, F, T);
-    case Rotation::Extrinsic_YZX: return Params (2, F, F, T);
-    case Rotation::Extrinsic_YXZ: return Params (2, T, F, T);
-    case Rotation::Extrinsic_ZXY: return Params (3, F, F, T);
-    case Rotation::Extrinsic_ZYX: return Params (3, T, F, T);
+    case Rotation::Extrinsic_XYZ: return {1, F, F, T};
+    case Rotation::Extrinsic_XZY: return {1, T, F, T};
+    case Rotation::Extrinsic_YZX: return {2, F, F, T};
+    case Rotation::Extrinsic_YXZ: return {2, T, F, T};
+    case Rotation::Extrinsic_ZXY: return {3, F, F, T};
+    case Rotation::Extrinsic_ZYX: return {3, T, F, T};
 
     // Conversion of intrinsic angles is made by the same code as for extrinsic,
     // using equivalence rule: intrinsic rotation is equivalent to extrinsic
@@ -861,30 +853,30 @@ EulerSequence_Parameters translateEulerSequence (const Rotation::EulerSequence t
     // Swapping of angles (Alpha <-> Gamma) is done inside conversion procedure;
     // sequence of axes is inverted by setting appropriate parameters here.
     // Note that proper Euler angles (last block below) are symmetric for sequence of axes.
-    case Rotation::Intrinsic_XYZ: return Params (3, T, F, F);
-    case Rotation::Intrinsic_XZY: return Params (2, F, F, F);
-    case Rotation::Intrinsic_YZX: return Params (1, T, F, F);
-    case Rotation::Intrinsic_YXZ: return Params (3, F, F, F);
-    case Rotation::Intrinsic_ZXY: return Params (2, T, F, F);
-    case Rotation::Intrinsic_ZYX: return Params (1, F, F, F);
+    case Rotation::Intrinsic_XYZ: return {3, T, F, F};
+    case Rotation::Intrinsic_XZY: return {2, F, F, F};
+    case Rotation::Intrinsic_YZX: return {1, T, F, F};
+    case Rotation::Intrinsic_YXZ: return {3, F, F, F};
+    case Rotation::Intrinsic_ZXY: return {2, T, F, F};
+    case Rotation::Intrinsic_ZYX: return {1, F, F, F};
 
-    case Rotation::Extrinsic_XYX: return Params (1, F, T, T);
-    case Rotation::Extrinsic_XZX: return Params (1, T, T, T);
-    case Rotation::Extrinsic_YZY: return Params (2, F, T, T);
-    case Rotation::Extrinsic_YXY: return Params (2, T, T, T);
-    case Rotation::Extrinsic_ZXZ: return Params (3, F, T, T);
-    case Rotation::Extrinsic_ZYZ: return Params (3, T, T, T);
+    case Rotation::Extrinsic_XYX: return {1, F, T, T};
+    case Rotation::Extrinsic_XZX: return {1, T, T, T};
+    case Rotation::Extrinsic_YZY: return {2, F, T, T};
+    case Rotation::Extrinsic_YXY: return {2, T, T, T};
+    case Rotation::Extrinsic_ZXZ: return {3, F, T, T};
+    case Rotation::Extrinsic_ZYZ: return {3, T, T, T};
 
-    case Rotation::Intrinsic_XYX: return Params (1, F, T, F);
-    case Rotation::Intrinsic_XZX: return Params (1, T, T, F);
-    case Rotation::Intrinsic_YZY: return Params (2, F, T, F);
-    case Rotation::Intrinsic_YXY: return Params (2, T, T, F);
-    case Rotation::Intrinsic_ZXZ: return Params (3, F, T, F);
-    case Rotation::Intrinsic_ZYZ: return Params (3, T, T, F);
+    case Rotation::Intrinsic_XYX: return {1, F, T, F};
+    case Rotation::Intrinsic_XZX: return {1, T, T, F};
+    case Rotation::Intrinsic_YZY: return {2, F, T, F};
+    case Rotation::Intrinsic_YXY: return {2, T, T, F};
+    case Rotation::Intrinsic_ZXZ: return {3, F, T, F};
+    case Rotation::Intrinsic_ZYZ: return {3, T, T, F};
 
     default:
-    case Rotation::EulerAngles : return Params (3, F, T, F); // = Intrinsic_ZXZ
-    case Rotation::YawPitchRoll: return Params (1, F, F, F); // = Intrinsic_ZYX
+    case Rotation::EulerAngles : return {3, F, T, F}; // = Intrinsic_ZXZ
+    case Rotation::YawPitchRoll: return {1, F, F, F}; // = Intrinsic_ZYX
     };
 }
 

@@ -153,10 +153,11 @@ public:
     int unrefNoDelete() const;
 
     int getRefCount() const;
-    const Handled& operator = (const Handled&);
+    Handled& operator = (const Handled&);
 
-private:
-    Handled(const Handled&);
+    Handled(const Handled&) = delete;
+    Handled(Handled&&) = delete;
+    Handled& operator = (Handled&&) = delete;
 
 private:
     QAtomicInt* _lRefCount;

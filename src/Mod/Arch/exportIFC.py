@@ -514,7 +514,7 @@ def export(exportList, filename, colors=None, preferences=None):
                 if preferences["DEBUG"]: print("Warning! Axis system object '{}' only contains one set of axis but at least two are needed for a IfcGrid to be added to IFC.".format(obj.Label))
             continue
 
-        if ifctype not in ArchIFCSchema.IfcProducts.keys():
+        if ifctype not in ArchIFCSchema.IfcProducts:
             ifctype = "IfcBuildingElementProxy"
 
         # getting the representation
@@ -1017,7 +1017,7 @@ def export(exportList, filename, colors=None, preferences=None):
             for c in objs:
                 if not (c.Name in treated):
                     if c.Name != building.Name: # get_group_contents + addgroups will include the building itself
-                        if c.Name in products.keys():
+                        if c.Name in products:
                             if Draft.getType(c) in ["Floor","BuildingPart","Space"]:
                                 childfloors.append(products[c.Name])
                                 treated.append(c.Name)
@@ -1056,7 +1056,7 @@ def export(exportList, filename, colors=None, preferences=None):
         childbuildings = []
         for c in objs:
             if c.Name != site.Name: # get_group_contents + addgroups will include the building itself
-                if c.Name in products.keys():
+                if c.Name in products:
                     if not (c.Name in treated):
                         if Draft.getType(c) == "Building":
                             childbuildings.append(products[c.Name])
@@ -1427,7 +1427,7 @@ def export(exportList, filename, colors=None, preferences=None):
             if okay:
                 sortedgroups.append([g,groups[g]])
         for g in sortedgroups:
-            if g[0] in groups.keys():
+            if g[0] in groups:
                 del groups[g[0]]
     #print("sorted groups:",sortedgroups)
     containers = {}
@@ -1435,9 +1435,9 @@ def export(exportList, filename, colors=None, preferences=None):
         if g[1]:
             children = []
             for o in g[1]:
-                if o in products.keys():
+                if o in products:
                     children.append(products[o])
-                elif o in annos.keys():
+                elif o in annos:
                     children.append(annos[o])
                     swallowed.append(annos[o])
             if children:
@@ -1705,7 +1705,7 @@ def getIfcTypeFromObj(obj):
     else:
         ifctype = dtype
 
-    if ifctype in translationtable.keys():
+    if ifctype in translationtable:
         ifctype = translationtable[ifctype]
     if not ifctype.startswith("Ifc"):
         ifctype = "Ifc" + ifctype
@@ -2383,7 +2383,7 @@ def getBrepFlag(obj,preferences):
     if preferences['FORCE_BREP']:
         return True
     if hasattr(obj,"IfcData"):
-        if "FlagForceBrep" in obj.IfcData.keys():
+        if "FlagForceBrep" in obj.IfcData:
             if obj.IfcData["FlagForceBrep"] == "True":
                 brepflag = True
     return brepflag
@@ -2414,7 +2414,7 @@ def createProduct(ifcfile,obj,ifctype,uid,history,name,description,placement,rep
         kwargs = exportIfcAttributes(obj, kwargs, preferences['SCALE_FACTOR'])
     # in some cases object have wrong ifctypes, thus set it
     # https://forum.freecad.org/viewtopic.php?f=39&t=50085
-    if ifctype not in ArchIFCSchema.IfcProducts.keys():
+    if ifctype not in ArchIFCSchema.IfcProducts:
         # print("Wrong IfcType: IfcBuildingElementProxy is used. {}".format(ifctype))
         ifctype = "IfcBuildingElementProxy"
     # print("createProduct: {}".format(ifctype))
@@ -2429,7 +2429,7 @@ def getUID(obj,preferences):
     global uids
     uid = None
     if hasattr(obj,"IfcData"):
-        if "IfcUID" in obj.IfcData.keys():
+        if "IfcUID" in obj.IfcData:
             uid = str(obj.IfcData["IfcUID"])
             if uid in uids:
                 # this UID  has already been used in another object

@@ -587,11 +587,6 @@ void QGIViewBalloon::drawBalloon(bool dragged)
     if (!refObj) {
         return;
     }
-    //    if (!refObj->hasGeometry()) {// nothing to draw yet (restoring)
-    //        balloonLabel->hide();
-    //        hide();
-    //        return;
-    //    }
 
     auto vp = static_cast<ViewProviderBalloon*>(getViewProvider(getViewObject()));
     if (!vp) {
@@ -745,15 +740,16 @@ void QGIViewBalloon::drawBalloon(bool dragged)
 
     offsetLR = (lblCenter.x < arrowTipX) ? offsetLR : -offsetLR;
 
+    // avoid starting the line inside the balloon
+    dLineStart.y = lblCenter.y + offsetUD;
+    dLineStart.x = lblCenter.x + offsetLR;
+
     if (DrawUtil::fpCompare(kinkLength, 0.0)
         && strcmp(balloonType,
                   "Line")) {//if no kink, then dLine start sb on line from center to arrow
-        dLineStart = lblCenter;
         kinkPoint = dLineStart;
     }
     else {
-        dLineStart.y = lblCenter.y + offsetUD;
-        dLineStart.x = lblCenter.x + offsetLR;
         kinkLength = (lblCenter.x < arrowTipX) ? kinkLength : -kinkLength;
         kinkPoint.y = dLineStart.y;
         kinkPoint.x = dLineStart.x + kinkLength;

@@ -23,7 +23,6 @@
     <name>CompactView</name>
     <message>
       <location filename="../../compact_view.py" line="77"/>
-      <location filename="../../compact_view.ui" line="20"/>
       <source>Form</source>
       <translation>Inprimakia</translation>
     </message>
@@ -422,7 +421,6 @@ Gehigarrien kudeatzaileak automatikoki instalatu ditzan nahi al duzu? Aukeratu &
     <name>ExpandedView</name>
     <message>
       <location filename="../../expanded_view.py" line="116"/>
-      <location filename="../../expanded_view.ui" line="20"/>
       <source>Form</source>
       <translation>Inprimakia</translation>
     </message>
@@ -476,7 +474,6 @@ Gehigarrien kudeatzaileak automatikoki instalatu ditzan nahi al duzu? Aukeratu &
   <context>
     <name>Form</name>
     <message>
-      <location filename="../../developer_mode_licenses_table.ui" line="14"/>
       <location filename="../../developer_mode_people_table.ui" line="14"/>
       <source>Form</source>
       <translation>Inprimakia</translation>
@@ -703,11 +700,6 @@ denean gehigarrien eguneraketarik dagoen begiratuko da
   </context>
   <context>
     <name>PackageDetails</name>
-    <message>
-      <location filename="../../package_details.ui" line="14"/>
-      <source>Form</source>
-      <translation>Inprimakia</translation>
-    </message>
     <message>
       <location filename="../../package_details.ui" line="49"/>
       <source>Uninstalls a selected macro or workbench</source>
@@ -1269,18 +1261,18 @@ denean gehigarrien eguneraketarik dagoen begiratuko da
       <translation>Makroaren exekuzioak huts egin du. Begiratu kontsola xehetasun gehiagorako.</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_devmode_people_table.py" line="88"/>
       <location filename="../../addonmanager_devmode.py" line="116"/>
-      <location filename="../../package_list.py" line="398"/>
+      <location filename="../../addonmanager_devmode_people_table.py" line="88"/>
       <location filename="../../addonmanager_devmode_person_editor.py" line="47"/>
+      <location filename="../../package_list.py" line="398"/>
       <source>Maintainer</source>
       <translation>Mantentzailea</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_devmode_people_table.py" line="89"/>
       <location filename="../../addonmanager_devmode.py" line="117"/>
-      <location filename="../../package_list.py" line="435"/>
+      <location filename="../../addonmanager_devmode_people_table.py" line="89"/>
       <location filename="../../addonmanager_devmode_person_editor.py" line="50"/>
+      <location filename="../../package_list.py" line="435"/>
       <source>Author</source>
       <translation>Egilea</translation>
     </message>
@@ -1496,8 +1488,8 @@ denean gehigarrien eguneraketarik dagoen begiratuko da
       <translation>QtWebEngine Python loturak ez daude instalatuta -- ordezko README bistaratzea erabiliko da.</translation>
     </message>
     <message>
-      <location filename="../../package_details.py" line="682"/>
       <location filename="../../addonmanager_installer_gui.py" line="476"/>
+      <location filename="../../package_details.py" line="682"/>
       <location filename="../../AddonManagerTest/gui/test_installer_gui.py" line="54"/>
       <source>Success</source>
       <translation>Eginda</translation>
@@ -1629,9 +1621,9 @@ denean gehigarrien eguneraketarik dagoen begiratuko da
       <translation>Hautatu ikono-fitxategi bat eduki-elementu honetarako</translation>
     </message>
     <message>
+      <location filename="../../addonmanager_devmode.py" line="732"/>
       <location filename="../../addonmanager_devmode_add_content.py" line="293"/>
       <location filename="../../addonmanager_devmode_add_content.py" line="332"/>
-      <location filename="../../addonmanager_devmode.py" line="732"/>
       <source>{} is not a subdirectory of {}</source>
       <translation>{} ez da {} direktorioaren azpidirektorio bat</translation>
     </message>

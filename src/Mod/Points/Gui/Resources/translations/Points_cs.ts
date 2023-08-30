@@ -305,7 +305,7 @@
     <message>
       <location filename="../../Command.cpp" line="208"/>
       <source>Distance</source>
-      <translation type="unfinished">Distance</translation>
+      <translation>Vzdálenost</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="209"/>

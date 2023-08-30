@@ -138,7 +138,7 @@ Part::TopoShape ReferenceEntry::asTopoShapeEdge(TopoDS_Edge &edge) const
     if (!is3d()) {
         // 2d reference - projected and scaled. scale might have changed, so we need to unscale
         auto dvp = static_cast<TechDraw::DrawViewPart*>(getObject());
-        TopoDS_Shape unscaledShape = TechDraw::scaleShape(edge, 1.0 / dvp->getScale());
+        TopoDS_Shape unscaledShape = ShapeUtils::scaleShape(edge, 1.0 / dvp->getScale());
         unscaledEdge = TopoDS::Edge(unscaledShape);
     }
     return { unscaledEdge };

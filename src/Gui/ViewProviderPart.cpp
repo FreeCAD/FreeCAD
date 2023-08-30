@@ -55,8 +55,7 @@ ViewProviderPart::ViewProviderPart()
     aPixmap = "Geoassembly.svg";
 }
 
-ViewProviderPart::~ViewProviderPart()
-{ }
+ViewProviderPart::~ViewProviderPart() = default;
 
 /**
  * TODO

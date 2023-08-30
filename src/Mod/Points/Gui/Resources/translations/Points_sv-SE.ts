@@ -300,7 +300,7 @@
       <location filename="../../Command.cpp" line="81"/>
       <location filename="../../Command.cpp" line="129"/>
       <source>All Files</source>
-      <translation>Alla Filer</translation>
+      <translation>Alla filer</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="208"/>

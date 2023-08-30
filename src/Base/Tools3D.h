@@ -58,13 +58,13 @@ public:
 
     Line3() = default;
     ~Line3() = default;
-    Line3(const Line3& line);
-    Line3(Line3&& line);
+    Line3(const Line3& line) = default;
+    Line3(Line3&& line) = default;
     Line3(const Vector3<float_type>& p1, const Vector3<float_type>& p2);
 
     // operators
-    Line3& operator= (const Line3& line);
-    Line3& operator= (Line3&& line);
+    Line3& operator= (const Line3& line) = default;
+    Line3& operator= (Line3&& line) = default;
     bool operator== (const Line3& line) const;
 
     // methods
@@ -111,8 +111,10 @@ public:
     Polygon3() = default;
     ~Polygon3() = default;
     Polygon3(const Polygon3<float_type>& poly) = default;
+    Polygon3(Polygon3<float_type>&& poly) = default;
 
     Polygon3& operator = (const Polygon3<float_type>& poly) = default;
+    Polygon3& operator = (Polygon3<float_type>&& poly) = default;
 
     size_t GetSize() const;
     void Add (const Vector3<float_type>& p);

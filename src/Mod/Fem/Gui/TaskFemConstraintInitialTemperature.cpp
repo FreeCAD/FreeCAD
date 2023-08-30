@@ -65,8 +65,7 @@ TaskFemConstraintInitialTemperature::TaskFemConstraintInitialTemperature(
     ui->if_temperature->bind(pcConstraint->initialTemperature);
 }
 
-TaskFemConstraintInitialTemperature::~TaskFemConstraintInitialTemperature()
-{}
+TaskFemConstraintInitialTemperature::~TaskFemConstraintInitialTemperature() = default;
 
 std::string TaskFemConstraintInitialTemperature::get_temperature() const
 {

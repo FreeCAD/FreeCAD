@@ -42,7 +42,6 @@ class RobotGuiExport TaskDlgSimulate : public Gui::TaskView::TaskDialog
 
 public:
     TaskDlgSimulate(Robot::RobotObject *pcRobotObject,Robot::TrajectoryObject *pcTrajectoryObject);
-    ~TaskDlgSimulate() override;
 
 public:
     /// is called the TaskView when the dialog is opened

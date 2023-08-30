@@ -232,7 +232,7 @@ void ActionBox::addWidget(QWidget * w, QLayout * l)
 
 QSize ActionBox::minimumSizeHint() const
 {
-    return QSize(150,65);
+    return {150,65};
 }
 
 

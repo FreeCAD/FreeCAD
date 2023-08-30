@@ -56,9 +56,9 @@ namespace PartGui {
     {
     public:
         enum Type {VERTEX, EDGE, FACE, ALL};
-        Type mode;
+        Type mode{ALL};
         ShapeSelection()
-            : Gui::SelectionFilterGate(nullPointer()), mode(ALL)
+            : Gui::SelectionFilterGate(nullPointer())
         {
         }
         void setMode(Type mode)
@@ -98,9 +98,7 @@ public:
         Gui::Command::runCommand(Gui::Command::App, "from FreeCAD import Base");
         Gui::Command::runCommand(Gui::Command::App, "import Part");
     }
-    ~Private()
-    {
-    }
+    ~Private() = default;
 };
 
 /* TRANSLATOR PartGui::ShapeBuilderWidget */
@@ -427,25 +425,23 @@ void ShapeBuilderWidget::createShellFromFace()
     }
 
     std::vector<Gui::SelectionObject> sel = faceFilter.Result[0];
-    std::vector<Gui::SelectionObject>::iterator it;
-    std::vector<std::string>::const_iterator jt;
 
     QString list;
     QTextStream str(&list);
     if (d->ui.checkFaces->isChecked()) {
-        std::set<App::DocumentObject*> obj;
-        for (it=sel.begin();it!=sel.end();++it)
-            obj.insert(it->getObject());
+        std::set<const App::DocumentObject*> obj;
+        for (const auto& it : sel)
+            obj.insert(it.getObject());
         str << "[]";
-        for (std::set<App::DocumentObject*>::iterator it = obj.begin(); it != obj.end(); ++it) {
-            str << "+ App.ActiveDocument." << (*it)->getNameInDocument() << ".Shape.Faces";
+        for (auto it : obj) {
+            str << "+ App.ActiveDocument." << it->getNameInDocument() << ".Shape.Faces";
         }
     }
     else {
         str << "[";
-        for (it=sel.begin();it!=sel.end();++it) {
-            for (jt=it->getSubNames().begin();jt!=it->getSubNames().end();++jt) {
-                str << "App.ActiveDocument." << it->getFeatName() << ".Shape." << jt->c_str() << ", ";
+        for (const auto& it : sel) {
+            for (const auto& jt : it.getSubNames()) {
+                str << "App.ActiveDocument." << it.getFeatName() << ".Shape." << jt.c_str() << ", ";
             }
         }
         str << "]";
@@ -610,9 +606,7 @@ TaskShapeBuilder::TaskShapeBuilder()
     Content.push_back(taskbox);
 }
 
-TaskShapeBuilder::~TaskShapeBuilder()
-{
-}
+TaskShapeBuilder::~TaskShapeBuilder() = default;
 
 void TaskShapeBuilder::open()
 {

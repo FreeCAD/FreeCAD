@@ -409,8 +409,8 @@ App::DocumentObjectExecReturn *Sweep::execute()
         try {
             if (!subedge.empty()) {
                 BRepBuilderAPI_MakeWire mkWire;
-                for (std::vector<std::string>::const_iterator it = subedge.begin(); it != subedge.end(); ++it) {
-                    TopoDS_Shape subshape = Feature::getTopoShape(spine, it->c_str(), true /*need element*/).getShape();
+                for (const auto & it : subedge) {
+                    TopoDS_Shape subshape = Feature::getTopoShape(spine, it.c_str(), true /*need element*/).getShape();
                     mkWire.Add(TopoDS::Edge(subshape));
                 }
                 path = mkWire.Wire();
@@ -635,8 +635,8 @@ App::DocumentObjectExecReturn *Thickness::execute()
 
     TopTools_ListOfShape closingFaces;
     const std::vector<std::string>& subStrings = Faces.getSubValues();
-    for (std::vector<std::string>::const_iterator it = subStrings.begin(); it != subStrings.end(); ++it) {
-        TopoDS_Face face = TopoDS::Face(shape.getSubShape(it->c_str()));
+    for (const auto & it : subStrings) {
+        TopoDS_Face face = TopoDS::Face(shape.getSubShape(it.c_str()));
         closingFaces.Append(face);
     }
 

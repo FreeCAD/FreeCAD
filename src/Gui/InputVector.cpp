@@ -79,13 +79,11 @@ LocationWidget::LocationWidget (QWidget * parent)
     retranslateUi();
 }
 
-LocationWidget::~LocationWidget()
-{
-}
+LocationWidget::~LocationWidget() = default;
 
 QSize LocationWidget::sizeHint() const
 {
-    return QSize(150,100);
+    return {150,100};
 }
 
 void LocationWidget::changeEvent(QEvent* e)
@@ -227,9 +225,7 @@ LocationDialog::LocationDialog(QWidget* parent, Qt::WindowFlags fl)
 {
 }
 
-LocationDialog::~LocationDialog()
-{
-}
+LocationDialog::~LocationDialog() = default;
 
 Base::Vector3d LocationDialog::getUserDirection(bool* ok) const
 {
@@ -260,10 +256,7 @@ void LocationDialog::onDirectionActivated(int index)
 
 // -----------------------------------------------------------
 
-LocationDialogUiImp::~LocationDialogUiImp()
-{
-    // no need to delete child widgets, Qt does it all for us
-}
+LocationDialogUiImp::~LocationDialogUiImp() = default;
 
 Base::Vector3d LocationDialogUiImp::getDirection() const
 {

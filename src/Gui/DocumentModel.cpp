@@ -82,7 +82,7 @@ namespace Gui {
         virtual QVariant data(int role) const
         {
             Q_UNUSED(role);
-            return QVariant();
+            return {};
         }
         virtual bool setData (const QVariant & value, int role)
         {
@@ -103,8 +103,8 @@ namespace Gui {
         { qDeleteAll(childItems); childItems.clear(); }
 
     protected:
-        DocumentModelIndex() : parentItem(nullptr) {}
-        DocumentModelIndex *parentItem;
+        DocumentModelIndex() = default;
+        DocumentModelIndex *parentItem{nullptr};
         QList<DocumentModelIndex*> childItems;
     };
 
@@ -116,7 +116,7 @@ namespace Gui {
         TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
     public:
-        ApplicationIndex(){}
+        ApplicationIndex() = default;
         int findChild(const Gui::Document& d) const;
         Qt::ItemFlags flags() const override;
         QVariant data(int role) const override;
@@ -199,7 +199,7 @@ namespace Gui {
         else if (role == Qt::DisplayRole) {
             return DocumentModel::tr("Application");
         }
-        return QVariant();
+        return {};
     }
 
     // ------------------------------------------------------------------------
@@ -271,7 +271,7 @@ namespace Gui {
             return static_cast<QVariant>(font);
         }
 
-        return QVariant();
+        return {};
     }
 
     // ------------------------------------------------------------------------
@@ -326,7 +326,7 @@ namespace Gui {
             return static_cast<QVariant>(font);
         }
 
-        return QVariant();
+        return {};
     }
 
     // ------------------------------------------------------------------------
@@ -489,7 +489,7 @@ void DocumentModel::slotChangeObject(const Gui::ViewProviderDocumentObject& obj,
             auto doc_index = static_cast<DocumentIndex*>(d->rootItem->child(row));
             QList<ViewProviderIndex*> views;
             doc_index->findViewProviders(obj, views);
-            for (const auto & view : views) {
+            for (const auto & view : qAsConst(views)) {
                 DocumentModelIndex* parentitem = view->parent();
                 QModelIndex parent = createIndex(0,0,parentitem);
                 int row = view->row();
@@ -523,7 +523,7 @@ void DocumentModel::slotChangeObject(const Gui::ViewProviderDocumentObject& obj,
             // get all occurrences of the view provider in the tree structure
             QList<ViewProviderIndex*> obj_index;
             doc_index->findViewProviders(obj, obj_index);
-            for (const auto & it : obj_index) {
+            for (const auto & it : qAsConst(obj_index)) {
                 QModelIndex parent = createIndex(it->row(),0,it);
                 int count_obj = it->childCount();
                 beginRemoveRows(parent, 0, count_obj);
@@ -608,7 +608,7 @@ int DocumentModel::columnCount (const QModelIndex & /*parent*/) const
 QVariant DocumentModel::data (const QModelIndex & index, int role) const
 {
     if (!index.isValid())
-        return QVariant();
+        return {};
     return static_cast<DocumentModelIndex*>(index.internalPointer())->data(role);
 }
 
@@ -625,7 +625,7 @@ Qt::ItemFlags DocumentModel::flags(const QModelIndex &index) const
     //    return Qt::ItemIsEnabled;
     //return QAbstractItemModel::flags(index);
     if (!index.isValid())
-        return Qt::ItemFlags();
+        return {};
     return static_cast<DocumentModelIndex*>(index.internalPointer())->flags();
 }
 
@@ -637,14 +637,14 @@ QModelIndex DocumentModel::index (int row, int column, const QModelIndex & paren
     else
         item = static_cast<DocumentModelIndex*>(parent.internalPointer())->child(row);
     if (!item)
-        return QModelIndex();
+        return {};
     return createIndex(row, column, item);
 }
 
 QModelIndex DocumentModel::parent (const QModelIndex & index) const
 {
     if (!index.isValid() || index.internalPointer() == d->rootItem)
-        return QModelIndex();
+        return {};
     DocumentModelIndex* item = nullptr;
     item = static_cast<DocumentModelIndex*>(index.internalPointer());
     DocumentModelIndex* parent = item->parent();
@@ -665,11 +665,11 @@ QVariant DocumentModel::headerData (int section, Qt::Orientation orientation, in
     Q_UNUSED(section);
     if (orientation == Qt::Horizontal) {
         if (role != Qt::DisplayRole)
-            return QVariant();
+            return {};
         return tr("Labels & Attributes");
     }
 
-    return QVariant();
+    return {};
 }
 
 bool DocumentModel::setHeaderData (int, Qt::Orientation, const QVariant &, int)

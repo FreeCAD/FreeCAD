@@ -37,9 +37,7 @@
 using namespace Gui;
 
 
-MenuItem::MenuItem()
-{
-}
+MenuItem::MenuItem() = default;
 
 MenuItem::MenuItem(MenuItem* item)
 {
@@ -197,13 +195,9 @@ void MenuManager::destruct()
     _instance = nullptr;
 }
 
-MenuManager::MenuManager()
-{
-}
+MenuManager::MenuManager() = default;
 
-MenuManager::~MenuManager()
-{
-}
+MenuManager::~MenuManager() = default;
 
 void MenuManager::setup(MenuItem* menuItems) const
 {

@@ -129,7 +129,7 @@ public:
 private:
     ViewProviderDocumentObject* object;
     App::PropertyPythonObject &Proxy;
-    bool has__object__;
+    bool has__object__{false};
 
 #define FC_PY_VIEW_OBJECT \
     FC_PY_ELEMENT(getIcon) \
@@ -199,7 +199,7 @@ class ViewProviderPythonFeatureT : public ViewProviderT
 
 public:
     /// constructor.
-    ViewProviderPythonFeatureT() : _attached(false) {
+    ViewProviderPythonFeatureT() {
         ADD_PROPERTY(Proxy,(Py::Object()));
         imp = new ViewProviderPythonFeatureImp(this,Proxy);
     }
@@ -619,7 +619,7 @@ private:
     App::PropertyPythonObject Proxy;
     mutable std::string defaultMode;
     std::string viewerMode;
-    bool _attached;
+    bool _attached{false};
 };
 
 // Special Feature-Python classes

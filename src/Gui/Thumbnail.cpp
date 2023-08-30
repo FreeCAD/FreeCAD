@@ -42,13 +42,11 @@
 
 using namespace Gui;
 
-Thumbnail::Thumbnail(int s) : viewer(nullptr), size(s)
+Thumbnail::Thumbnail(int s) : size(s)
 {
 }
 
-Thumbnail::~Thumbnail()
-{
-}
+Thumbnail::~Thumbnail() = default;
 
 void Thumbnail::setViewer(View3DInventorViewer* v)
 {

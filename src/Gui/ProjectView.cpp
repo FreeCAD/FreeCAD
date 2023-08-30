@@ -38,8 +38,6 @@ ProjectWidget::ProjectWidget(QWidget* parent)
     setModel(fileModel);
 }
 
-ProjectWidget::~ProjectWidget()
-{
-}
+ProjectWidget::~ProjectWidget() = default;
 
 #include "moc_ProjectView.cpp"

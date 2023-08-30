@@ -191,12 +191,16 @@ void CmdTechDrawGeometricHatch::activated(int iMsg)
     std::string PageName = page->getNameInDocument();
 
     std::string FeatName = getUniqueObjectName("GeomHatch");
-    std::stringstream featLabel;
-    featLabel << FeatName << "FX" << TechDraw::DrawUtil::getIndexFromName(subNames.at(0));
+
+    // TODO: the structured label for GeomHatch (and Hatch) should be retired.
+//    std::stringstream featLabel;
+//    featLabel << FeatName << "FX" << TechDraw::DrawUtil::getIndexFromName(subNames.at(0));
 
     openCommand(QT_TRANSLATE_NOOP("Command", "Create GeomHatch"));
     doCommand(Doc, "App.activeDocument().addObject('TechDraw::DrawGeomHatch', '%s')", FeatName.c_str());
-    doCommand(Doc, "App.activeDocument().%s.Label = '%s'", FeatName.c_str(), featLabel.str().c_str());
+//    doCommand(Doc, "App.activeDocument().%s.Label = '%s'", FeatName.c_str(), featLabel.str().c_str());
+    doCommand(Doc, "App.activeDocument().%s.translateLabel('DrawGeomHatch', 'GeomHatch', '%s')",
+              FeatName.c_str(), FeatName.c_str());
 
     auto geomhatch( static_cast<TechDraw::DrawGeomHatch *>(getDocument()->getObject(FeatName.c_str())) );
     geomhatch->Source.setValue(objFeat, subNames);
@@ -264,6 +268,8 @@ void CmdTechDrawImage::activated(int iMsg)
     fileName = Base::Tools::escapeEncodeFilename(fileName);
     openCommand(QT_TRANSLATE_NOOP("Command", "Create Image"));
     doCommand(Doc, "App.activeDocument().addObject('TechDraw::DrawViewImage', '%s')", FeatName.c_str());
+    doCommand(Doc, "App.activeDocument().%s.translateLabel('DrawViewImage', 'Image', '%s')",
+              FeatName.c_str(), FeatName.c_str());
     doCommand(Doc, "App.activeDocument().%s.ImageFile = '%s'", FeatName.c_str(), fileName.toUtf8().constData());
     doCommand(Doc, "App.activeDocument().%s.addView(App.activeDocument().%s)", PageName.c_str(), FeatName.c_str());
     updateActive();

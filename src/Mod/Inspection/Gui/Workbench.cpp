@@ -33,13 +33,9 @@ using namespace InspectionGui;
 /// @namespace InspectionGui @class Workbench
 TYPESYSTEM_SOURCE(InspectionGui::Workbench, Gui::StdWorkbench)
 
-Workbench::Workbench()
-{
-}
+Workbench::Workbench() = default;
 
-Workbench::~Workbench()
-{
-}
+Workbench::~Workbench() = default;
 
 Gui::MenuItem* Workbench::setupMenuBar() const
 {

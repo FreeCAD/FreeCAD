@@ -172,7 +172,7 @@ ImportOCAFOptions::ImportOCAFOptions()
 }
 
 ImportOCAF2::ImportOCAF2(Handle(TDocStd_Document) h, App::Document* d, const std::string& name)
-    : pDoc(h), pDocument(d), default_name(name), sequencer(nullptr)
+    : pDoc(h), pDocument(d), default_name(name)
 {
     aShapeTool = XCAFDoc_DocumentTool::ShapeTool (pDoc->Main());
     aColorTool = XCAFDoc_DocumentTool::ColorTool(pDoc->Main());
@@ -185,9 +185,7 @@ ImportOCAF2::ImportOCAF2(Handle(TDocStd_Document) h, App::Document* d, const std
     setUseLinkGroup(options.useLinkGroup);
 }
 
-ImportOCAF2::~ImportOCAF2()
-{
-}
+ImportOCAF2::~ImportOCAF2() = default;
 
 ImportOCAFOptions ImportOCAF2::customImportOptions()
 {
@@ -991,7 +989,7 @@ TDF_Label ExportOCAF2::findComponent(const char *subname, TDF_Label label, TDF_L
         Handle(XCAFDoc_GraphNode) ret;
         if(labels.Length() && (FindSHUO(labels,ret) || aShapeTool->SetSHUO(labels,ret)))
             return ret->Label();
-        return TDF_Label();
+        return {};
     }
     TDF_LabelSequence components;
     TDF_Label ref;
@@ -1018,7 +1016,7 @@ TDF_Label ExportOCAF2::findComponent(const char *subname, TDF_Label label, TDF_L
             }
         }
     }
-    return TDF_Label();
+    return {};
 }
 
 void ExportOCAF2::setupObject(TDF_Label label, App::DocumentObject *obj,
@@ -1191,7 +1189,7 @@ TDF_Label ExportOCAF2::exportObject(App::DocumentObject* parentObj,
     if(!obj || shape.isNull()) {
         if (obj)
             FC_WARN(obj->getFullName() << " has null shape");
-        return TDF_Label();
+        return {};
     }
 
     //sub may contain more than one hierarchy, e.g. Assembly container may use

@@ -224,16 +224,6 @@ public:
     //@}
 
 
-    /** @name methods for Blob handling (not implemented yet) */
-    //@{
-    /// set a blob value
-    void  SetBlob(const char* Name, void *pValue, long lLength);
-    /// read blob values or give default
-    void GetBlob(const char* Name, void * pBuf, long lMaxLength, void* pPreset=nullptr) const;
-    /// remove a blob value from this group
-    void RemoveBlob(const char* Name);
-    //@}
-
 
 
     /** @name methods for String handling */
@@ -416,17 +406,16 @@ public:
     /// Saves an XML document by calling the serializer's save method.
     void  SaveDocument() const;
     //@}
-    
-protected:
-	bool          gDoNamespaces         ;
+
+private:
+
+    XERCES_CPP_NAMESPACE_QUALIFIER DOMDocument   *_pDocument{nullptr};
+    ParameterSerializer * paramSerializer{nullptr};
+
+    bool          gDoNamespaces         ;
     bool          gDoSchema             ;
     bool          gSchemaFullChecking   ;
     bool          gDoCreate             ;
-    XERCES_CPP_NAMESPACE_QUALIFIER DOMDocument   *_pDocument;
-private:
-	ParameterManager();
-    ~ParameterManager() override;
-    ParameterSerializer * paramSerializer;
 
 
     const XMLCh*  gOutputEncoding       ;
@@ -437,39 +426,8 @@ private:
     bool          gUseFilter            ;
     bool          gFormatPrettyPrint    ;
 
-};
-
-XERCES_CPP_NAMESPACE_USE
-
-class DOMTreeErrorReporter : public ErrorHandler
-{
-public:
-    // -----------------------------------------------------------------------
-    //  Constructors and Destructor
-    // -----------------------------------------------------------------------
-	DOMTreeErrorReporter();
-    ~DOMTreeErrorReporter() override = default;
-    // -----------------------------------------------------------------------
-    //  Implementation of the error handler interface
-    // -----------------------------------------------------------------------
-    void warning(const SAXParseException& toCatch) override;
-    void error(const SAXParseException& toCatch) override;
-    void fatalError(const SAXParseException& toCatch) override;
-    void resetErrors() override;
-    // -----------------------------------------------------------------------
-    //  Getter methods
-    // -----------------------------------------------------------------------
-    bool getSawErrors() const;
-private:
-	// -----------------------------------------------------------------------
-    //  Private data members
-    //
-    //  fSawErrors
-    //      This is set if we get any errors, and is queryable via a getter
-    //      method. Its used by the main code to suppress output if there are
-    //      errors.
-    // -----------------------------------------------------------------------
-	bool fSawErrors;
+    ParameterManager();
+    ~ParameterManager() override;
 };
 
 

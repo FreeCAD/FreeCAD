@@ -254,9 +254,7 @@ void SplashScreen::drawContents ( QPainter * painter )
 
 AboutDialogFactory* AboutDialogFactory::factory = nullptr;
 
-AboutDialogFactory::~AboutDialogFactory()
-{
-}
+AboutDialogFactory::~AboutDialogFactory() = default;
 
 QDialog *AboutDialogFactory::create(QWidget *parent) const
 {
@@ -733,9 +731,9 @@ void AboutDialog::showLibraryInformation()
     QTextStream out(&html);
     out << "<html><head/><body style=\" font-size:8.25pt; font-weight:400; font-style:normal;\">"
         << "<p>" << msg << "<br/></p>\n<ul>\n";
-    for (QList<LibraryInfo>::iterator it = libInfo.begin(); it != libInfo.end(); ++it) {
-        out << "<li><p>" << it->name << " " << it->version << "</p>"
-               "<p><a href=\"" << it->href << "\">" << it->url
+    for (const auto & it : libInfo) {
+        out << "<li><p>" << it.name << " " << it.version << "</p>"
+               "<p><a href=\"" << it.href << "\">" << it.url
             << "</a><br/></p></li>\n";
     }
     out << "</ul>\n</body>\n</html>";
@@ -901,9 +899,7 @@ LicenseView::LicenseView(QWidget* parent)
     setCentralWidget(browser);
 }
 
-LicenseView::~LicenseView()
-{
-}
+LicenseView::~LicenseView() = default;
 
 void LicenseView::setSource(const QUrl& url)
 {

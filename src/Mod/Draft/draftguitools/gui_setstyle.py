@@ -106,12 +106,13 @@ class Draft_SetStyle_TaskPanel:
         presets = [self.form.comboPresets.itemText(0)]
         self.form.comboPresets.clear()
         pdict = self.load()
-        presets.extend(pdict.keys())
+        pdict_keys = list(pdict)
+        presets.extend(pdict_keys)
         self.form.comboPresets.addItems(presets)
         current = self.getValues()
-        for name,preset in pdict.items():
+        for name, preset in pdict.items():
             if all(item in current.items() for item in preset.items()): #if preset == current:
-                self.form.comboPresets.setCurrentIndex(1+(list(pdict.keys()).index(name)))
+                self.form.comboPresets.setCurrentIndex(1 + (pdict_keys.index(name)))
                 break
 
     def getPrefColor(self,group,prop,default):
@@ -273,7 +274,7 @@ class Draft_SetStyle_TaskPanel:
 
         if index > 0:
             pdict = self.load()
-            if self.form.comboPresets.itemText(index) in pdict.keys():
+            if self.form.comboPresets.itemText(index) in pdict:
                 preset = pdict[self.form.comboPresets.itemText(index)]
                 self.setValues(preset)
 
@@ -287,7 +288,7 @@ class Draft_SetStyle_TaskPanel:
             name = reply[0]
             pdict = self.load()
             if pdict:
-                if name in pdict.keys():
+                if name in pdict:
                     reply = QtGui.QMessageBox.question(None,
                                                        translate("Draft","Warning"),
                                                        translate("Draft","Name exists. Overwrite?"),

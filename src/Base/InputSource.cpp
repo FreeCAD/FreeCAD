@@ -104,9 +104,9 @@ struct StdInputStream::TextCodec
 
 StdInputStream::StdInputStream( std::istream& Stream, XERCES_CPP_NAMESPACE_QUALIFIER MemoryManager* const manager )
   : stream(Stream)
-  , fMemoryManager(manager)
   , codec(new TextCodec)
 {
+    (void)manager;
 }
 
 

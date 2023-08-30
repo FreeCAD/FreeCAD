@@ -52,17 +52,13 @@ public:
     using difference_type = std::vector<value_type>::difference_type;
     using size_type = std::vector<value_type>::size_type;
 
-    PointKernel()
-    {
-    }
+    PointKernel() = default;
     explicit PointKernel(size_type size)
     {
         resize(size);
     }
     PointKernel(const PointKernel&);
-    ~PointKernel() override
-    {
-    }
+    ~PointKernel() override = default;
 
     void operator = (const PointKernel&);
 
@@ -153,7 +149,7 @@ public:
 
         const_point_iterator(const PointKernel*, std::vector<kernel_type>::const_iterator index);
         const_point_iterator(const const_point_iterator& pi);
-        //~const_point_iterator();
+        ~const_point_iterator();
 
         const_point_iterator& operator=(const const_point_iterator& fi);
         const value_type& operator*();
@@ -182,9 +178,9 @@ public:
     /** @name Iterator */
     //@{
     const_point_iterator begin() const
-    { return const_point_iterator(this, _Points.begin()); }
+    { return {this, _Points.begin()}; }
     const_point_iterator end() const
-    { return const_point_iterator(this, _Points.end()); }
+    { return {this, _Points.end()}; }
     const_reverse_iterator rbegin() const
     { return const_reverse_iterator(end()); }
     const_reverse_iterator rend() const

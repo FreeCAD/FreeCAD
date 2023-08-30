@@ -161,7 +161,7 @@ private:
     void addAbsoluteField(vtkDataSet* dset, std::string FieldName);
 
     App::Enumeration m_coloringEnum, m_vectorEnum;
-    bool m_blockPropertyChanges;
+    bool m_blockPropertyChanges{false};
 };
 
 } //namespace FemGui

@@ -228,9 +228,7 @@ Command::Command(const char* name)
     bCanLog     = true;
 }
 
-Command::~Command()
-{
-}
+Command::~Command() = default;
 
 void Command::setShortcut(const QString &shortcut)
 {
@@ -579,7 +577,7 @@ std::string Command::getObjectCmd(const char *Name, const App::Document *doc,
 {
     if(!doc) doc = App::GetApplication().getActiveDocument();
     if(!doc || !Name)
-        return std::string("None");
+        return {"None"};
     std::ostringstream str;
     if(prefix)
         str << prefix;
@@ -594,7 +592,7 @@ std::string Command::getObjectCmd(const App::DocumentObject *obj,
         const char *prefix, const char *postfix, bool gui)
 {
     if(!obj || !obj->getNameInDocument())
-        return std::string("None");
+        return {"None"};
     return getObjectCmd(obj->getNameInDocument(), obj->getDocument(), prefix, postfix,gui);
 }
 
@@ -1118,9 +1116,7 @@ MacroCommand::MacroCommand(const char* name, bool system)
     sScriptName = nullptr;
 }
 
-MacroCommand::~MacroCommand()
-{
-}
+MacroCommand::~MacroCommand() = default;
 
 void MacroCommand::activated(int iMsg)
 {
@@ -1787,9 +1783,7 @@ void PythonGroupCommand::onActionInit() const
 // CommandManager
 //===========================================================================
 
-CommandManager::CommandManager()
-{
-}
+CommandManager::CommandManager() = default;
 
 CommandManager::~CommandManager()
 {

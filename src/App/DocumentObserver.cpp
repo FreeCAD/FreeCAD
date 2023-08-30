@@ -259,10 +259,7 @@ Property *DocumentObjectT::getProperty() const {
 
 SubObjectT::SubObjectT() = default;
 
-SubObjectT::SubObjectT(const SubObjectT &other)
-    :DocumentObjectT(other), subname(other.subname)
-{
-}
+SubObjectT::SubObjectT(const SubObjectT &) = default;
 
 SubObjectT::SubObjectT(SubObjectT &&other)
     :DocumentObjectT(std::move(other)), subname(std::move(other.subname))
@@ -364,7 +361,7 @@ std::string SubObjectT::getNewElementName() const {
     std::pair<std::string, std::string> element;
     auto obj = getObject();
     if(!obj)
-        return std::string();
+        return {};
     GeoFeature::resolveElement(obj,subname.c_str(),element);
     return std::move(element.first);
 }
@@ -373,7 +370,7 @@ std::string SubObjectT::getOldElementName(int *index) const {
     std::pair<std::string, std::string> element;
     auto obj = getObject();
     if(!obj)
-        return std::string();
+        return {};
     GeoFeature::resolveElement(obj,subname.c_str(),element);
     if(!index)
         return std::move(element.second);
@@ -598,7 +595,7 @@ App::Document* DocumentWeakPtrT::operator->() const noexcept
 
 class DocumentObjectWeakPtrT::Private {
 public:
-    explicit Private(App::DocumentObject* obj) : object(obj), indocument(false) {
+    explicit Private(App::DocumentObject* obj) : object(obj) {
         set(obj);
     }
     void deletedDocument(const App::Document& doc) {
@@ -645,7 +642,7 @@ public:
     }
 
     App::DocumentObject* object;
-    bool indocument;
+    bool indocument{false};
     using Connection = boost::signals2::scoped_connection;
     Connection connectApplicationDeletedDocument;
     Connection connectDocumentCreatedObject;

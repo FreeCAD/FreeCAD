@@ -48,6 +48,7 @@ namespace TechDrawGui
 class QGIFace;
 class QGIEdge;
 class QGIHighlight;
+class PathBuilder;
 
 class TechDrawGuiExport QGIViewPart : public QGIView
 {
@@ -69,10 +70,18 @@ public:
     void updateView(bool update = false) override;
     void tidy();
     QRectF boundingRect() const override;
+
+    virtual void drawAllFaces();
+    virtual void drawAllEdges();
+    virtual void drawAllVertexes();
+
+    bool showThisEdge(TechDraw::BaseGeomPtr geom);
+
     virtual void drawAllSectionLines();
     virtual void drawSectionLine(TechDraw::DrawViewSection* s, bool b);
     virtual void drawComplexSectionLine(TechDraw::DrawViewSection* viewSection, bool b);
     virtual void drawCenterLines(bool b);
+    virtual void drawAllHighlights();
     virtual void drawHighlight(TechDraw::DrawViewDetail* viewDetail, bool b);
     virtual void drawMatting();
     bool showSection;
@@ -123,6 +132,7 @@ protected:
 
 private:
     QList<QGraphicsItem*> deleteItems;
+    PathBuilder* m_pathBuilder;
 };
 
 } // namespace

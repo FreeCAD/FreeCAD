@@ -43,8 +43,6 @@ class Importer
 {
 public:
     explicit Importer(App::Document*);
-    ~Importer() = default;
-
     void load(const std::string& fileName);
 
 private:

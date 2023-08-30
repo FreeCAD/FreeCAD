@@ -66,7 +66,7 @@ private:
     const MeshKernel& _kernel;
     const Material* _material;
     Base::Matrix4D _transform;
-    bool apply_transform;
+    bool apply_transform{false};
     std::vector<Group> _groups;
 };
 

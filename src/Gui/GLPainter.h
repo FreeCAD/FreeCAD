@@ -75,12 +75,12 @@ public:
     //@}
 
 private:
-    QtGLWidget* viewer;
+    QtGLWidget* viewer{nullptr};
     GLfloat depthrange[2];
     GLdouble projectionmatrix[16];
-    GLint width, height;
-    bool logicOp;
-    bool lineStipple;
+    GLint width{0}, height{0};
+    bool logicOp{false};
+    bool lineStipple{false};
 };
 
 class GuiExport GLGraphicsItem : public Base::BaseClass
@@ -88,12 +88,8 @@ class GuiExport GLGraphicsItem : public Base::BaseClass
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
-    GLGraphicsItem()
-    {
-    }
-    ~GLGraphicsItem() override
-    {
-    }
+    GLGraphicsItem() = default;
+    ~GLGraphicsItem() override  = default;
     virtual void paintGL() = 0;
 };
 

@@ -41,7 +41,7 @@
   <context>
     <name>Command</name>
     <message>
-      <location filename="../../VisualInspection.cpp" line="230"/>
+      <location filename="../../VisualInspection.cpp" line="228"/>
       <source>Visual Inspection</source>
       <translation>Kontrola wzrokowa</translation>
     </message>
@@ -106,7 +106,7 @@
     <message>
       <location filename="../../ViewProviderInspection.cpp" line="508"/>
       <source>Annotation</source>
-      <translation>Adnotacja</translation>
+      <translation>Opisy</translation>
     </message>
     <message>
       <location filename="../../ViewProviderInspection.cpp" line="511"/>

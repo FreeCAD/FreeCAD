@@ -24,6 +24,7 @@
 
 #include <Base/GeometryPyCXX.h>
 #include <Base/MatrixPy.h>
+#include <Base/PyWrapParseTupleAndKeywords.h>
 
 #include "DocumentObject.h"
 #include "Document.h"
@@ -55,12 +56,12 @@ Py::String DocumentObjectPy::getName() const
     if (!internal) {
         throw Py::RuntimeError(std::string("This object is currently not part of a document"));
     }
-    return Py::String(std::string(internal));
+    return {std::string(internal)};
 }
 
 Py::String DocumentObjectPy::getFullName() const
 {
-    return Py::String(getDocumentObjectPtr()->getFullName());
+    return {getDocumentObjectPtr()->getFullName()};
 }
 
 Py::Object DocumentObjectPy::getDocument() const
@@ -114,11 +115,11 @@ PyObject*  DocumentObjectPy::supportedProperties(PyObject *args)
     std::vector<Base::Type> ary;
     Base::Type::getAllDerivedFrom(App::Property::getClassTypeId(), ary);
     Py::List res;
-    for (std::vector<Base::Type>::iterator it = ary.begin(); it != ary.end(); ++it) {
-        Base::BaseClass *data = static_cast<Base::BaseClass*>(it->createInstance());
+    for (auto & it : ary) {
+        Base::BaseClass *data = static_cast<Base::BaseClass*>(it.createInstance());
         if (data) {
             delete data;
-            res.append(Py::String(it->getName()));
+            res.append(Py::String(it.getName()));
         }
     }
     return Py::new_reference_to(res);
@@ -253,8 +254,8 @@ Py::List DocumentObjectPy::getInList() const
     Py::List ret;
     std::vector<DocumentObject*> list = getDocumentObjectPtr()->getInList();
 
-    for (std::vector<DocumentObject*>::iterator It=list.begin();It!=list.end();++It)
-        ret.append(Py::Object((*It)->getPyObject(), true));
+    for (auto It : list)
+        ret.append(Py::Object(It->getPyObject(), true));
 
     return ret;
 }
@@ -265,8 +266,8 @@ Py::List DocumentObjectPy::getInListRecursive() const
     try {
         std::vector<DocumentObject*> list = getDocumentObjectPtr()->getInListRecursive();
 
-        for (std::vector<DocumentObject*>::iterator It = list.begin(); It != list.end(); ++It)
-            ret.append(Py::Object((*It)->getPyObject(), true));
+        for (auto It : list)
+            ret.append(Py::Object(It->getPyObject(), true));
     }
     catch (const Base::Exception& e) {
         throw Py::IndexError(e.what());
@@ -279,8 +280,8 @@ Py::List DocumentObjectPy::getOutList() const
     Py::List ret;
     std::vector<DocumentObject*> list = getDocumentObjectPtr()->getOutList();
 
-    for (std::vector<DocumentObject*>::iterator It=list.begin();It!=list.end();++It)
-        ret.append(Py::Object((*It)->getPyObject(), true));
+    for (auto It : list)
+        ret.append(Py::Object(It->getPyObject(), true));
 
     return ret;
 }
@@ -292,8 +293,8 @@ Py::List DocumentObjectPy::getOutListRecursive() const
         std::vector<DocumentObject*> list = getDocumentObjectPtr()->getOutListRecursive();
 
         // create the python list for the output
-        for (std::vector<DocumentObject*>::iterator It = list.begin(); It != list.end(); ++It)
-            ret.append(Py::Object((*It)->getPyObject(), true));
+        for (auto It : list)
+            ret.append(Py::Object(It->getPyObject(), true));
     }
     catch (const Base::Exception& e) {
         throw Py::IndexError(e.what());
@@ -432,12 +433,13 @@ PyObject* DocumentObjectPy::getSubObject(PyObject *args, PyObject *keywds)
     PyObject *doTransform = Py_True;
     short depth = 0;
 
-    static char *kwlist[] = {"subname", "retType", "matrix", "transform", "depth", nullptr};
-    if (!PyArg_ParseTupleAndKeywords(args, keywds, "O|hO!O!h", kwlist,
-                                     &obj, &retType, &Base::MatrixPy::Type, &pyMat, &PyBool_Type, &doTransform, &depth))
+    static const std::array<const char *, 6> kwlist {"subname", "retType", "matrix", "transform", "depth", nullptr};
+    if (!Base::Wrapped_ParseTupleAndKeywords(args, keywds, "O|hO!O!h", kwlist, &obj, &retType, &Base::MatrixPy::Type,
+                                             &pyMat, &PyBool_Type, &doTransform, &depth)) {
         return nullptr;
+    }
 
-    if (retType < 0 || retType > 6) {
+    if (retType < 0 || static_cast<size_t> (retType) > kwlist.size()) {
         PyErr_SetString(PyExc_ValueError, "invalid retType, can only be integer 0~6");
         return nullptr;
     }
@@ -471,11 +473,11 @@ PyObject* DocumentObjectPy::getSubObject(PyObject *args, PyObject *keywds)
     bool transform = Base::asBoolean(doTransform);
 
     struct SubInfo {
-        App::DocumentObject *sobj;
+        App::DocumentObject *sobj{nullptr};
         Py::Object obj;
         Py::Object pyObj;
         Base::Matrix4D mat;
-        explicit SubInfo(const Base::Matrix4D &mat) : sobj(nullptr), mat(mat){}
+        explicit SubInfo(const Base::Matrix4D &mat) : mat(mat){}
     };
 
     Base::Matrix4D mat;
@@ -576,10 +578,11 @@ PyObject*  DocumentObjectPy::getLinkedObject(PyObject *args, PyObject *keywds)
     PyObject *pyMat = Py_None;
     PyObject *transform = Py_True;
     short depth = 0;
-    static char *kwlist[] = {"recursive","matrix","transform","depth", nullptr};
-    if (!PyArg_ParseTupleAndKeywords(args, keywds, "|O!OO!h", kwlist,
-                &PyBool_Type,&recursive,&pyMat,&PyBool_Type,&transform,&depth))
+    static const std::array<const char *, 5> kwlist {"recursive","matrix","transform","depth", nullptr};
+    if (!Base::Wrapped_ParseTupleAndKeywords(args, keywds, "|O!OO!h", kwlist,
+                                             &PyBool_Type, &recursive, &pyMat, &PyBool_Type, &transform, &depth)) {
         return nullptr;
+    }
 
     PY_TRY {
         Base::PyTypeCheck(&pyMat, &Base::MatrixPy::Type, "expect argument 'matrix' to be of type Base.Matrix");
@@ -694,7 +697,7 @@ PyObject*  DocumentObjectPy::getParent(PyObject *args)
 Py::Boolean DocumentObjectPy::getMustExecute() const
 {
     try {
-        return Py::Boolean(getDocumentObjectPtr()->mustExecute()?true:false);
+        return {getDocumentObjectPtr()->mustExecute() ? true : false};
     }
     catch (const Base::Exception& e) {
         throw Py::RuntimeError(e.what());
@@ -741,7 +744,7 @@ Py::Int DocumentObjectPy::getID() const {
 }
 
 Py::Boolean DocumentObjectPy::getRemoving() const {
-    return Py::Boolean(getDocumentObjectPtr()->testStatus(ObjectStatus::Remove));
+    return {getDocumentObjectPtr()->testStatus(ObjectStatus::Remove)};
 }
 
 PyObject *DocumentObjectPy::resolve(PyObject *args)
@@ -813,11 +816,11 @@ PyObject *DocumentObjectPy::adjustRelativeLinks(PyObject *args) {
 }
 
 Py::String DocumentObjectPy::getOldLabel() const {
-    return Py::String(getDocumentObjectPtr()->getOldLabel());
+    return {getDocumentObjectPtr()->getOldLabel()};
 }
 
 Py::Boolean DocumentObjectPy::getNoTouch() const {
-    return Py::Boolean(getDocumentObjectPtr()->testStatus(ObjectStatus::NoTouch));
+    return {getDocumentObjectPtr()->testStatus(ObjectStatus::NoTouch)};
 }
 
 void DocumentObjectPy::setNoTouch(Py::Boolean value) {

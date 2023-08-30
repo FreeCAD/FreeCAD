@@ -58,11 +58,7 @@ using namespace Base;
 
 TYPESYSTEM_SOURCE(Robot::Trajectory , Base::Persistence)
 
-Trajectory::Trajectory()
-:pcTrajectory(nullptr)
-{
-
-}
+Trajectory::Trajectory() = default;
 
 Trajectory::Trajectory(const Trajectory& Trac)
 :vpcWaypoints(Trac.vpcWaypoints.size()),pcTrajectory(nullptr)
@@ -72,8 +68,8 @@ Trajectory::Trajectory(const Trajectory& Trac)
 
 Trajectory::~Trajectory()
 {
-    for(std::vector<Waypoint*>::iterator it = vpcWaypoints.begin();it!=vpcWaypoints.end();++it)
-        delete ( *it );
+    for(auto it : vpcWaypoints)
+        delete it;
     delete pcTrajectory;
 }
 
@@ -82,8 +78,8 @@ Trajectory &Trajectory::operator=(const Trajectory& Trac)
     if (this == &Trac)
         return *this;
 
-    for(std::vector<Waypoint*>::iterator it = vpcWaypoints.begin();it!=vpcWaypoints.end();++it)
-        delete ( *it );
+    for(auto it : vpcWaypoints)
+        delete it;
     vpcWaypoints.clear();
     vpcWaypoints.resize(Trac.vpcWaypoints.size());
 
@@ -119,10 +115,9 @@ double Trajectory::getDuration(int n) const
 
 Placement Trajectory::getPosition(double time)const
 {
-    if(pcTrajectory)
+    if (pcTrajectory)
         return Placement(toPlacement(pcTrajectory->Pos(time)));
-    else
-        return Placement();
+    return {};
 }
 
 double Trajectory::getVelocity(double time)const
@@ -236,18 +231,18 @@ void Trajectory::generateTrajectory()
 std::string Trajectory::getUniqueWaypointName(const char *Name) const
 {
     if (!Name || *Name == '\0')
-        return std::string();
+        return {};
 
     // check for first character whether it's a digit
     std::string CleanName = Name;
     if (!CleanName.empty() && CleanName[0] >= 48 && CleanName[0] <= 57)
         CleanName[0] = '_';
     // strip illegal chars
-    for (std::string::iterator it = CleanName.begin(); it != CleanName.end(); ++it) {
-        if (!((*it>=48 && *it<=57) ||  // number
-             (*it>=65 && *it<=90)  ||  // uppercase letter
-             (*it>=97 && *it<=122)))   // lowercase letter
-             *it = '_'; // it's neither number nor letter
+    for (char & it : CleanName) {
+        if (!((it>=48 && it<=57) ||  // number
+             (it>=65 && it<=90)  ||  // uppercase letter
+             (it>=97 && it<=122)))   // lowercase letter
+             it = '_'; // it's neither number nor letter
     }
 
     // name in use?

@@ -66,9 +66,7 @@ GUIApplication::GUIApplication(int & argc, char ** argv)
 #endif
 }
 
-GUIApplication::~GUIApplication()
-{
-}
+GUIApplication::~GUIApplication() = default;
 
 bool GUIApplication::notify (QObject * receiver, QEvent * event)
 {
@@ -169,8 +167,6 @@ public:
     explicit Private(GUISingleApplication *q_ptr)
       : q_ptr(q_ptr)
       , timer(new QTimer(q_ptr))
-      , server(nullptr)
-      , running(false)
     {
         timer->setSingleShot(true);
         std::string exeName = App::Application::getExecutableName();
@@ -220,10 +216,10 @@ public:
 
     GUISingleApplication *q_ptr;
     QTimer *timer;
-    QLocalServer *server;
+    QLocalServer *server{nullptr};
     QString serverName;
     QList<QByteArray> messages;
-    bool running;
+    bool running{false};
 };
 
 GUISingleApplication::GUISingleApplication(int & argc, char ** argv)
@@ -234,9 +230,7 @@ GUISingleApplication::GUISingleApplication(int & argc, char ** argv)
     connect(d_ptr->timer, &QTimer::timeout, this, &GUISingleApplication::processMessages);
 }
 
-GUISingleApplication::~GUISingleApplication()
-{
-}
+GUISingleApplication::~GUISingleApplication() = default;
 
 bool GUISingleApplication::isRunning() const
 {

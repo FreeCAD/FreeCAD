@@ -26,6 +26,7 @@
 // inclusion of the generated files (generated out of MaterialPy.xml)
 #include "MaterialPy.h"
 #include "MaterialPy.cpp"
+#include <Base/PyWrapParseTupleAndKeywords.h>
 
 using namespace App;
 
@@ -44,11 +45,13 @@ int MaterialPy::PyInit(PyObject* args, PyObject* kwds)
     PyObject* emissive = nullptr;
     PyObject* shininess = nullptr;
     PyObject* transparency = nullptr;
-    static char* kwds_colors[] = { "DiffuseColor", "AmbientColor", "SpecularColor", "EmissiveColor", "Shininess", "Transparency", nullptr };
+    static const std::array<const char *, 7> kwds_colors{"DiffuseColor", "AmbientColor", "SpecularColor",
+                                                         "EmissiveColor", "Shininess", "Transparency", nullptr};
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwds, "|OOOOOO", kwds_colors,
-        &diffuse, &ambient, &specular, &emissive, &shininess, &transparency))
+    if (!Base::Wrapped_ParseTupleAndKeywords(args, kwds, "|OOOOOO", kwds_colors,
+        &diffuse, &ambient, &specular, &emissive, &shininess, &transparency)) {
         return -1;
+    }
 
     if (diffuse) {
         setDiffuseColor(Py::Tuple(diffuse));
@@ -80,7 +83,7 @@ int MaterialPy::PyInit(PyObject* args, PyObject* kwds)
 // returns a string which represents the object e.g. when printed in python
 std::string MaterialPy::representation() const
 {
-    return std::string("<Material object>");
+    return {"<Material object>"};
 }
 
 PyObject* MaterialPy::set(PyObject * args)

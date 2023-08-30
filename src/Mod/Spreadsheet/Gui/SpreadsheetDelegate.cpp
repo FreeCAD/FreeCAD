@@ -94,7 +94,7 @@ QSize SpreadsheetDelegate::sizeHint(const QStyleOptionViewItem & option, const Q
 {
     Q_UNUSED(option);
     Q_UNUSED(index);
-    return QSize();
+    return {};
 }
 
 static inline void drawBorder(QPainter *painter, const QStyleOptionViewItem &option,

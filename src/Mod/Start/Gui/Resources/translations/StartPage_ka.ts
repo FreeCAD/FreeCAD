@@ -246,7 +246,7 @@ By using ";;" to separate paths, you can add several folders here</source>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="627"/>
       <source>Options</source>
-      <translation>პარამეტრები</translation>
+      <translation>მორგება</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="633"/>

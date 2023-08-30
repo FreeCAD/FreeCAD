@@ -313,7 +313,7 @@ Usando ";;" per separare i percorsi, puoi aggiungere diverse cartelle qui</trans
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="42"/>
       <source>Recent files</source>
-      <translation>File recenti</translation>
+      <translation type="unfinished">Recent files</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="43"/>

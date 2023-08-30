@@ -887,8 +887,8 @@ void PythonConsole::runSource(const QString& line)
     PySys_SetObject("stdout", default_stdout);
     PySys_SetObject("stderr", default_stderr);
     d->interactive = false;
-    for (QStringList::Iterator it = d->statements.begin(); it != d->statements.end(); ++it) {
-        printStatement(*it);
+    for (const auto & it : d->statements) {
+        printStatement(it);
     }
     d->statements.clear();
 }
@@ -1514,9 +1514,7 @@ PythonConsoleHighlighter::PythonConsoleHighlighter(QObject* parent)
 {
 }
 
-PythonConsoleHighlighter::~PythonConsoleHighlighter()
-{
-}
+PythonConsoleHighlighter::~PythonConsoleHighlighter() = default;
 
 void PythonConsoleHighlighter::highlightBlock(const QString& text)
 {
@@ -1564,9 +1562,7 @@ ConsoleHistory::ConsoleHistory()
     _it = _history.cend();
 }
 
-ConsoleHistory::~ConsoleHistory()
-{
-}
+ConsoleHistory::~ConsoleHistory() = default;
 
 void ConsoleHistory::first()
 {

@@ -77,9 +77,7 @@ Waypoint::Waypoint()
 {
 }
 
-Waypoint::~Waypoint()
-{
-}
+Waypoint::~Waypoint() = default;
 
 unsigned int Waypoint::getMemSize () const
 {

@@ -23,7 +23,6 @@
     <name>CompactView</name>
     <message>
       <location filename="../../compact_view.py" line="77"/>
-      <location filename="../../compact_view.ui" line="20"/>
       <source>Form</source>
       <translation>Forme</translation>
     </message>
@@ -209,7 +208,7 @@ Voulez-vous que le gestionnaire des extensions les installe automatiquement ? Ch
     <message>
       <location filename="../../developer_mode.ui" line="173"/>
       <source>Repository URL</source>
-      <translation>URL du dépôt</translation>
+      <translation>URL du répertoire</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="204"/>
@@ -322,17 +321,17 @@ Voulez-vous que le gestionnaire des extensions les installe automatiquement ? Ch
     <message>
       <location filename="../../developer_mode_tags.ui" line="14"/>
       <source>Edit Tags</source>
-      <translation>Modifier les attaches</translation>
+      <translation>Modifier les mots-clés</translation>
     </message>
     <message>
       <location filename="../../developer_mode_tags.ui" line="20"/>
       <source>Comma-separated list of tags describing this item:</source>
-      <translation>Liste des attaches séparées par des virgules décrivant cet élément :</translation>
+      <translation>Liste des mots-clés séparés par des virgules décrivant cet élément :</translation>
     </message>
     <message>
       <location filename="../../developer_mode_tags.ui" line="35"/>
       <source>HINT: Common tags include &quot;Assembly&quot;, &quot;FEM&quot;, &quot;Mesh&quot;, &quot;NURBS&quot;, etc.</source>
-      <translation>ASTUCE : les attaches communes incluent &quot;Assemblage&quot;, &quot;FEM&quot;, &quot;Maillage&quot;, &quot;NURBS&quot;, etc.</translation>
+      <translation>ASTUCE : les mots-clés les plus courants incluent &quot;Assembly&quot;, &quot;FEM&quot;, &quot;Mesh&quot;, &quot;NURBS&quot;, etc.</translation>
     </message>
     <message>
       <location filename="../../first_run.ui" line="17"/>
@@ -422,7 +421,6 @@ Voulez-vous que le gestionnaire des extensions les installe automatiquement ? Ch
     <name>ExpandedView</name>
     <message>
       <location filename="../../expanded_view.py" line="116"/>
-      <location filename="../../expanded_view.ui" line="20"/>
       <source>Form</source>
       <translation>Forme</translation>
     </message>
@@ -448,7 +446,7 @@ Voulez-vous que le gestionnaire des extensions les installe automatiquement ? Ch
       <location filename="../../expanded_view.py" line="122"/>
       <location filename="../../expanded_view.ui" line="121"/>
       <source>(tags)</source>
-      <translation>(attaches)</translation>
+      <translation>(mots-clés)</translation>
     </message>
     <message>
       <location filename="../../expanded_view.py" line="125"/>
@@ -476,7 +474,6 @@ Voulez-vous que le gestionnaire des extensions les installe automatiquement ? Ch
   <context>
     <name>Form</name>
     <message>
-      <location filename="../../developer_mode_licenses_table.ui" line="14"/>
       <location filename="../../developer_mode_people_table.ui" line="14"/>
       <source>Form</source>
       <translation>Forme</translation>
@@ -527,7 +524,7 @@ Voulez-vous que le gestionnaire des extensions les installe automatiquement ? Ch
     <message>
       <location filename="../../developer_mode_advanced_freecad_versions.ui" line="20"/>
       <source>Upcoming versions of the FreeCAD Addon Manager will support developers&apos; setting a specific branch or tag for use with a specific version of FreeCAD (e.g. setting a specific tag as the last version of your Addon to support v0.19, etc.)</source>
-      <translation>Les prochaines versions du gestionnaire des extensions de FreeCAD permettront aux développeurs de définir une branche ou une balise spécifique à utiliser avec une version spécifique de FreeCAD (par exemple, définir une balise spécifique comme la dernière version de votre extension pour supporter la v0.19, etc.)</translation>
+      <translation>Les prochaines versions du gestionnaire des extensions de FreeCAD permettront aux développeurs de définir une branche ou un mot-clé spécifique à utiliser avec une version donnée de FreeCAD (par exemple, définir un mot-clé spécifique comme la dernière version de son extension pour supporter la v0.19, etc.)</translation>
     </message>
     <message>
       <location filename="../../developer_mode_advanced_freecad_versions.ui" line="43"/>
@@ -704,11 +701,6 @@ les mises à jour disponibles seront vérifiées pour les extensions installées
   <context>
     <name>PackageDetails</name>
     <message>
-      <location filename="../../package_details.ui" line="14"/>
-      <source>Form</source>
-      <translation>Forme</translation>
-    </message>
-    <message>
       <location filename="../../package_details.ui" line="49"/>
       <source>Uninstalls a selected macro or workbench</source>
       <translation>Désinstalle une macro ou un atelier sélectionné</translation>
@@ -792,7 +784,7 @@ les mises à jour disponibles seront vérifiées pour les extensions installées
     <message>
       <location filename="../../developer_mode_select_from_list.ui" line="20"/>
       <source>TextLabel</source>
-      <translation>TextLabel</translation>
+      <translation>Étiquette de texte</translation>
     </message>
   </context>
   <context>
@@ -833,7 +825,7 @@ les mises à jour disponibles seront vérifiées pour les extensions installées
     <message>
       <location filename="../../developer_mode_add_content.ui" line="43"/>
       <source>Workbench</source>
-      <translation>Ateliers</translation>
+      <translation>Atelier</translation>
     </message>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="51"/>
@@ -1027,7 +1019,7 @@ les mises à jour disponibles seront vérifiées pour les extensions installées
     <message>
       <location filename="../../developer_mode_people.ui" line="29"/>
       <source>Name:</source>
-      <translation>Nom:</translation>
+      <translation>Nom :</translation>
     </message>
     <message>
       <location filename="../../developer_mode_people.ui" line="39"/>
@@ -1269,18 +1261,18 @@ les mises à jour disponibles seront vérifiées pour les extensions installées
       <translation>L'exécution de la macro a échoué. Voir la console pour les détails de l'échec.</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_devmode_people_table.py" line="88"/>
       <location filename="../../addonmanager_devmode.py" line="116"/>
-      <location filename="../../package_list.py" line="398"/>
+      <location filename="../../addonmanager_devmode_people_table.py" line="88"/>
       <location filename="../../addonmanager_devmode_person_editor.py" line="47"/>
+      <location filename="../../package_list.py" line="398"/>
       <source>Maintainer</source>
       <translation>Mainteneur</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_devmode_people_table.py" line="89"/>
       <location filename="../../addonmanager_devmode.py" line="117"/>
-      <location filename="../../package_list.py" line="435"/>
+      <location filename="../../addonmanager_devmode_people_table.py" line="89"/>
       <location filename="../../addonmanager_devmode_person_editor.py" line="50"/>
+      <location filename="../../package_list.py" line="435"/>
       <source>Author</source>
       <translation>Auteur</translation>
     </message>
@@ -1496,8 +1488,8 @@ les mises à jour disponibles seront vérifiées pour les extensions installées
       <translation>Les bindings Python de QtWebEngine ne sont pas installés -- utilisation de l'affichage README de remplacement.</translation>
     </message>
     <message>
-      <location filename="../../package_details.py" line="682"/>
       <location filename="../../addonmanager_installer_gui.py" line="476"/>
+      <location filename="../../package_details.py" line="682"/>
       <location filename="../../AddonManagerTest/gui/test_installer_gui.py" line="54"/>
       <source>Success</source>
       <translation>Opération réussie</translation>
@@ -1626,19 +1618,19 @@ les mises à jour disponibles seront vérifiées pour les extensions installées
     <message>
       <location filename="../../addonmanager_devmode_add_content.py" line="279"/>
       <source>Select an icon file for this content item</source>
-      <translation>Sélectionner un fichier d'icône pour cet élément de contenu</translation>
+      <translation>Sélectionner un fichier d'icône pour cet élément de contenu.</translation>
     </message>
     <message>
+      <location filename="../../addonmanager_devmode.py" line="732"/>
       <location filename="../../addonmanager_devmode_add_content.py" line="293"/>
       <location filename="../../addonmanager_devmode_add_content.py" line="332"/>
-      <location filename="../../addonmanager_devmode.py" line="732"/>
       <source>{} is not a subdirectory of {}</source>
       <translation>{} n'est pas un sous-répertoire de {}</translation>
     </message>
     <message>
       <location filename="../../addonmanager_devmode_add_content.py" line="311"/>
       <source>Select the subdirectory for this content item</source>
-      <translation>Sélectionner le sous-répertoire pour cet élément de contenu</translation>
+      <translation>Sélectionner le sous-répertoire pour cet élément de contenu.</translation>
     </message>
     <message>
       <location filename="../../addonmanager_devmode_add_content.py" line="452"/>
@@ -1648,7 +1640,7 @@ les mises à jour disponibles seront vérifiées pour les extensions installées
     <message>
       <location filename="../../addonmanager_devmode_add_content.py" line="453"/>
       <source>Workbench</source>
-      <translation>Ateliers</translation>
+      <translation>Atelier</translation>
     </message>
     <message>
       <location filename="../../addonmanager_devmode_add_content.py" line="454"/>
@@ -1840,7 +1832,7 @@ les mises à jour disponibles seront vérifiées pour les extensions installées
       <location filename="../../install_to_toolbar.py" line="247"/>
       <source>Run</source>
       <comment>Indicates a macro that can be &apos;run&apos;</comment>
-      <translation>Lancer</translation>
+      <translation>Exécuter</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers_utility.py" line="61"/>
@@ -1984,7 +1976,7 @@ les mises à jour disponibles seront vérifiées pour les extensions installées
     <message>
       <location filename="../../package_list.py" line="408"/>
       <source>Tags</source>
-      <translation>Attaches</translation>
+      <translation>Mots-clés</translation>
     </message>
     <message>
       <location filename="../../package_list.py" line="428"/>
@@ -2069,7 +2061,7 @@ les mises à jour disponibles seront vérifiées pour les extensions installées
     <message>
       <location filename="../../package_list.py" line="818"/>
       <source>Any</source>
-      <translation>Quelconque</translation>
+      <translation>N’importe le quel</translation>
     </message>
     <message>
       <location filename="../../package_list.py" line="826"/>
@@ -2118,7 +2110,7 @@ les mises à jour disponibles seront vérifiées pour les extensions installées
       <location filename="../../change_branch.py" line="179"/>
       <source>Tag</source>
       <comment>git terminology</comment>
-      <translation>Attache</translation>
+      <translation>Mot-clé</translation>
     </message>
     <message>
       <location filename="../../change_branch.py" line="262"/>
@@ -2136,7 +2128,7 @@ les mises à jour disponibles seront vérifiées pour les extensions installées
       <location filename="../../change_branch.py" line="272"/>
       <source>Tracking</source>
       <comment>Table header for git remote tracking branch name name</comment>
-      <translation>Crénage</translation>
+      <translation>Suivi</translation>
     </message>
     <message>
       <location filename="../../change_branch.py" line="278"/>

@@ -86,12 +86,12 @@ inline std::ostream& blanksN(std::ostream& os, int n)
 
 inline manipulator<int> tabs(int n)
 {
-    return manipulator<int>(&tabsN, n);
+    return {&tabsN, n};
 }
 
 inline manipulator<int> blanks(int n)
 {
-    return manipulator<int>(&blanksN, n);
+    return {&blanksN, n};
 }
 
 // ----------------------------------------------------------------------------
@@ -263,7 +263,7 @@ struct BaseExport Tools
      */
     static inline std::string toStdString(const QString& s) {
         QByteArray tmp = s.toUtf8();
-        return std::string(tmp.constData(), static_cast<size_t>(tmp.size()));
+        return {tmp.constData(), static_cast<size_t>(tmp.size())};
     }
 
     /**

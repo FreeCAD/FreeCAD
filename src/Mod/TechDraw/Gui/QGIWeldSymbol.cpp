@@ -58,6 +58,9 @@ QGIWeldSymbol::QGIWeldSymbol(QGILeaderLine* myParent) :
     m_arrowFeat(nullptr),
     m_otherFeat(nullptr),
     m_qgLead(myParent),
+    m_tailText(nullptr),
+    m_fieldFlag(nullptr),
+    m_allAround(nullptr),
     m_blockDraw(false)
 {
     setFiltersChildEvents(true);    //qt5
@@ -503,16 +506,24 @@ QRectF QGIWeldSymbol::customBoundingRect() const
 {
     QRectF result;
 
-    QRectF childRect = mapFromItem(m_tailText, m_tailText->boundingRect()).boundingRect();
-    result = result.united(childRect);
-    childRect = mapFromItem(m_fieldFlag, m_fieldFlag->boundingRect()).boundingRect();
-    result = result.united(childRect);
-    childRect = mapFromItem(m_allAround, m_allAround->boundingRect()).boundingRect();
-    result = result.united(childRect);
+    if (m_tailText) {
+        QRectF childRect = mapFromItem(m_tailText, m_tailText->boundingRect()).boundingRect();
+        result = result.united(childRect);
+    }
+
+    if (m_fieldFlag) {
+        QRectF childRect = mapFromItem(m_fieldFlag, m_fieldFlag->boundingRect()).boundingRect();
+        result = result.united(childRect);
+    }
+
+    if (m_allAround) {
+        QRectF childRect = mapFromItem(m_allAround, m_allAround->boundingRect()).boundingRect();
+        result = result.united(childRect);
+    }
 
     std::vector<QGITile*> qgTiles = getQGITiles();
     for (auto& t: qgTiles) {
-        childRect = mapFromItem(t, t->boundingRect()).boundingRect();
+        QRectF childRect = mapFromItem(t, t->boundingRect()).boundingRect();
         result = result.united(childRect);
     }
     return result;

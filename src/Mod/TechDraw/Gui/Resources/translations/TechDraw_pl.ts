@@ -452,13 +452,13 @@
       <location filename="../../CommandExtensionDims.cpp" line="902"/>
       <location filename="../../CommandExtensionDims.cpp" line="1156"/>
       <source>Cascade Horizontal Dimensions</source>
-      <translation>Wymiar poziomy kaskadowo</translation>
+      <translation>Wymiary poziome kaskadowo</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="903"/>
       <location filename="../../CommandExtensionDims.cpp" line="1157"/>
       <source>Evenly space horizontal dimensions:&lt;br&gt;- Specify the cascade spacing (optional)&lt;br&gt;- Select two or more horizontal dimensions&lt;br&gt;- The first dimension defines the position&lt;br&gt;- Click this tool</source>
-      <translation>Równomierne rozmieszczenie wymiarów poziomych:&lt;br&gt;- Określ odstęp kaskadowy (opcjonalnie)&lt;br&gt;- Wybierz dwa lub więcej wymiarów poziomych&lt;br&gt;- Pierwszy wymiar definiuje położenie&lt;br&gt;- Kliknij to narzędzie</translation>
+      <translation>Równomiernie rozłożone wymiary poziome:&lt;br&gt;- Określ odstęp kaskadowy (opcjonalnie)&lt;br&gt;- Wybierz dwa lub więcej wymiarów poziomych&lt;br&gt;- Pierwszy wymiar definiuje położenie&lt;br&gt;- Kliknij to narzędzie</translation>
     </message>
   </context>
   <context>
@@ -567,12 +567,12 @@
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="261"/>
       <source>Add Circle Centerlines</source>
-      <translation>Dodaj oś otworu</translation>
+      <translation>Dodaj osie okręgu</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="262"/>
       <source>Add centerlines to circles and arcs:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select one or more circles or arcs&lt;br&gt;- Click this tool</source>
-      <translation>Dodaj linie środkowe do okręgów i łuków:&lt;br&gt;- Podaj atrybuty linii (opcjonalne)&lt;br&gt;- Wybierz jeden lub więcej okręgów lub łuków&lt;br&gt;- Kliknij to narzędzie</translation>
+      <translation>Dodaj osie do okręgów i łuków:&lt;br&gt;- Podaj atrybuty linii (opcjonalne)&lt;br&gt;- Wybierz jeden lub więcej okręgów lub łuków&lt;br&gt;- Kliknij to narzędzie</translation>
     </message>
   </context>
   <context>
@@ -624,15 +624,13 @@
       <location filename="../../CommandExtensionDims.cpp" line="1234"/>
       <location filename="../../CommandExtensionDims.cpp" line="1501"/>
       <source>Create Horizontal Chain Dimensions</source>
-      <translation>Seria wymiarów poziomo</translation>
+      <translation>Utwórz poziome wymiary łańcuchowe</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1235"/>
       <location filename="../../CommandExtensionDims.cpp" line="1502"/>
       <source>Create a sequence of aligned horizontal dimensions:&lt;br&gt;- Select three or more vertexes&lt;br&gt;- Click this tool</source>
-      <translation>Tworzy sekwencję wyrównanych wymiarów poziomych:
- - Wybierz trzy lub więcej wierzchołków
- - Kliknij to narzędzie</translation>
+      <translation>Utwórz sekwencję wyrównanych wymiarów poziomych:&lt;br&gt;- Wybierz trzy lub więcej wierzchołków&lt;br&gt;- Kliknij to narzędzie</translation>
     </message>
   </context>
   <context>
@@ -652,7 +650,7 @@
       <location filename="../../CommandExtensionDims.cpp" line="1948"/>
       <location filename="../../CommandExtensionDims.cpp" line="2117"/>
       <source>Create a horizontal size and angle dimension for a chamfer:&lt;br&gt;- Select two vertexes&lt;br&gt;- Click this tool</source>
-      <translation>Utwórz poziomy wymiar rozmiaru i kąta dla fazy:&lt;br&gt;- Wybierz dwa wierzchołki&lt;br&gt;- Kliknij to narzędzie</translation>
+      <translation>Utwórz poziomy wymiar rozmiaru i kąta dla sfazowania:&lt;br&gt;- Wybierz dwa wierzchołki&lt;br&gt;- Kliknij to narzędzie</translation>
     </message>
   </context>
   <context>
@@ -666,7 +664,7 @@
       <location filename="../../CommandExtensionDims.cpp" line="1580"/>
       <location filename="../../CommandExtensionDims.cpp" line="1864"/>
       <source>Create Horizontal Coordinate Dimensions</source>
-      <translation>Seria wymiarów kaskadowych poziomo</translation>
+      <translation>Utwórz serię wymiarów kaskadowych poziomo</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1581"/>
@@ -939,9 +937,7 @@
       <location filename="../../CommandExtensionPack.cpp" line="1605"/>
       <location filename="../../CommandExtensionPack.cpp" line="1743"/>
       <source>Extend a cosmetic line or centerline at both ends:&lt;br&gt;- Specify the delta distance (optional)&lt;br&gt;- Select a single line&lt;br&gt;- Click this tool</source>
-      <translation>Wydłuża linię kosmetyczną lub linię środkową na obu końcach:
- - Określ długość przyrostu (opcjonalnie)
- - Wybierz pojedynczą linię&lt;br&gt;- Kliknij to narzędzie</translation>
+      <translation>Rozszerz linię kosmetyczną lub linię środkową na obu końcach:&lt;br&gt;- Określ długość przyrostu (opcjonalnie)&lt;br&gt;- Wybierz pojedynczą linię&lt;br&gt;- Kliknij to narzędzie</translation>
     </message>
   </context>
   <context>
@@ -1001,9 +997,7 @@
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="463"/>
       <source>Increase the number of decimal places of the dimension text:&lt;br&gt;- Select one or more dimensions&lt;br&gt;- Click this tool</source>
-      <translation>Zwiększ liczbę cyfr po przecinku tekstu wymiaru:
-- Wybierz jeden lub więcej wymiarów
-- Kliknij to narzędzie</translation>
+      <translation>Zwiększ liczbę cyfr po przecinku tekstu wymiaru:&lt;br&gt;- Wybierz jeden lub więcej wymiarów&lt;br&gt;- Kliknij to narzędzie</translation>
     </message>
   </context>
   <context>
@@ -1096,16 +1090,13 @@
       <location filename="../../CommandExtensionPack.cpp" line="1232"/>
       <location filename="../../CommandExtensionPack.cpp" line="1370"/>
       <source>Add Cosmetic Parallel Line</source>
-      <translation>Dodaj pomocniczą linię równoległą</translation>
+      <translation>Dodaj kosmetyczną linię równoległą</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1233"/>
       <location filename="../../CommandExtensionPack.cpp" line="1372"/>
       <source>Add a cosmetic line parallel to another line through a vertex:&lt;br&gt;- Select a line&lt;br&gt;- Select a vertex&lt;br&gt;- Click this tool</source>
-      <translation>Dodaje geometrię pomocniczą linii równoległej do innej poprzez wierzchołek:
- - Wybierz linię
- - Wybierz wierzchołek
- - Kliknij to narzędzie</translation>
+      <translation>Dodaj kosmetyczną linię równoległą do innej poprzez wierzchołek:&lt;br&gt;- Wybierz linię&lt;br&gt;- Wybierz wierzchołek&lt;br&gt;- Kliknij to narzędzie</translation>
     </message>
   </context>
   <context>
@@ -1393,7 +1384,7 @@
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="574"/>
       <source>Add Cosmetic Thread Hole Side View</source>
-      <translation>Geometria pomocnicza dla otworu gwintowanego, widok z boku</translation>
+      <translation>Dodaj gwint kosmetyczny otworu, widok z boku</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="575"/>
@@ -1662,7 +1653,7 @@
     <message>
       <location filename="../../Command.cpp" line="1641"/>
       <source>Project shape...</source>
-      <translation>Rzutowanie kształtów ...</translation>
+      <translation>Rzutuj kształt...</translation>
     </message>
   </context>
   <context>
@@ -2048,8 +2039,8 @@
       <translation>Utwórz widok arkusza kalkulacyjnego</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="728"/>
       <location filename="../../Command.cpp" line="1620"/>
+      <location filename="../../MDIViewPage.cpp" line="734"/>
       <source>Save page to dxf</source>
       <translation>Zapisz stronę do pliku dxf</translation>
     </message>
@@ -2170,12 +2161,12 @@
       <translation>Utwórz widok przekroju</translation>
     </message>
     <message>
-      <location filename="../../TaskComplexSection.cpp" line="559"/>
+      <location filename="../../TaskComplexSection.cpp" line="557"/>
       <source>Create ComplexSection</source>
       <translation>Utwórz przekrój złożony</translation>
     </message>
     <message>
-      <location filename="../../TaskComplexSection.cpp" line="642"/>
+      <location filename="../../TaskComplexSection.cpp" line="640"/>
       <location filename="../../TaskSectionView.cpp" line="561"/>
       <source>Edit SectionView</source>
       <translation>Edytuj widok przekroju</translation>
@@ -2298,7 +2289,7 @@
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="97"/>
       <source>TechDraw Hole Circle</source>
-      <translation>TechDraw Okrąg z otworami</translation>
+      <translation>Rysunek Techniczny Okrąg otworu</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="117"/>
@@ -2535,7 +2526,7 @@
     <message>
       <location filename="../../mrichtextedit.ui" line="171"/>
       <source>Copy</source>
-      <translation>Kopiuj</translation>
+      <translation>Skopiuj</translation>
     </message>
     <message>
       <location filename="../../mrichtextedit.ui" line="191"/>
@@ -2651,7 +2642,7 @@
     <message>
       <location filename="../../mrichtextedit.cpp" line="100"/>
       <source>Standard</source>
-      <translation>Standardowy</translation>
+      <translation>Standard</translation>
     </message>
     <message>
       <location filename="../../mrichtextedit.cpp" line="101"/>
@@ -2722,16 +2713,6 @@
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="316"/>
-      <location filename="../../CommandAnnotate.cpp" line="415"/>
-      <location filename="../../CommandAnnotate.cpp" line="1152"/>
-      <location filename="../../CommandAnnotate.cpp" line="1160"/>
-      <location filename="../../CommandAnnotate.cpp" line="1207"/>
-      <location filename="../../CommandAnnotate.cpp" line="1349"/>
-      <location filename="../../CommandAnnotate.cpp" line="1356"/>
-      <location filename="../../CommandAnnotate.cpp" line="1420"/>
-      <location filename="../../CommandCreateDims.cpp" line="1277"/>
-      <location filename="../../CommandCreateDims.cpp" line="1286"/>
       <location filename="../../Command.cpp" line="375"/>
       <location filename="../../Command.cpp" line="601"/>
       <location filename="../../Command.cpp" line="718"/>
@@ -2749,6 +2730,16 @@
       <location filename="../../Command.cpp" line="1439"/>
       <location filename="../../Command.cpp" line="1445"/>
       <location filename="../../Command.cpp" line="1488"/>
+      <location filename="../../CommandAnnotate.cpp" line="316"/>
+      <location filename="../../CommandAnnotate.cpp" line="415"/>
+      <location filename="../../CommandAnnotate.cpp" line="1152"/>
+      <location filename="../../CommandAnnotate.cpp" line="1160"/>
+      <location filename="../../CommandAnnotate.cpp" line="1207"/>
+      <location filename="../../CommandAnnotate.cpp" line="1349"/>
+      <location filename="../../CommandAnnotate.cpp" line="1356"/>
+      <location filename="../../CommandAnnotate.cpp" line="1420"/>
+      <location filename="../../CommandCreateDims.cpp" line="1277"/>
+      <location filename="../../CommandCreateDims.cpp" line="1286"/>
       <source>Wrong selection</source>
       <translation>Nieprawidłowy wybór</translation>
     </message>
@@ -2780,9 +2771,10 @@
       <translation>Nie znaleziono obiektu profilu w zaznaczeniu</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="344"/>
-      <location filename="../../CommandDecorate.cpp" line="351"/>
-      <location filename="../../CommandDecorate.cpp" line="358"/>
+      <location filename="../../Command.cpp" line="951"/>
+      <location filename="../../Command.cpp" line="958"/>
+      <location filename="../../Command.cpp" line="966"/>
+      <location filename="../../Command.cpp" line="978"/>
       <location filename="../../CommandCreateDims.cpp" line="166"/>
       <location filename="../../CommandCreateDims.cpp" line="292"/>
       <location filename="../../CommandCreateDims.cpp" line="418"/>
@@ -2794,33 +2786,33 @@
       <location filename="../../CommandCreateDims.cpp" line="1437"/>
       <location filename="../../CommandCreateDims.cpp" line="1445"/>
       <location filename="../../CommandCreateDims.cpp" line="1454"/>
-      <location filename="../../Command.cpp" line="951"/>
-      <location filename="../../Command.cpp" line="958"/>
-      <location filename="../../Command.cpp" line="966"/>
-      <location filename="../../Command.cpp" line="978"/>
+      <location filename="../../CommandDecorate.cpp" line="344"/>
+      <location filename="../../CommandDecorate.cpp" line="351"/>
+      <location filename="../../CommandDecorate.cpp" line="358"/>
       <location filename="../../CommandExtensionPack.cpp" line="1808"/>
       <source>Incorrect selection</source>
       <translation>Nieprawidłowy wybór</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1438"/>
       <location filename="../../Command.cpp" line="952"/>
+      <location filename="../../CommandCreateDims.cpp" line="1438"/>
       <source>Select an object first</source>
       <translation>Najpierw wybierz obiekt</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1446"/>
       <location filename="../../Command.cpp" line="959"/>
+      <location filename="../../CommandCreateDims.cpp" line="1446"/>
       <source>Too many objects selected</source>
       <translation>Wybrano zbyt wiele obiektów</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1455"/>
       <location filename="../../Command.cpp" line="967"/>
+      <location filename="../../CommandCreateDims.cpp" line="1455"/>
       <source>Create a page first.</source>
       <translation>Najpierw stwórz stronę.</translation>
     </message>
     <message>
+      <location filename="../../Command.cpp" line="979"/>
       <location filename="../../CommandCreateDims.cpp" line="167"/>
       <location filename="../../CommandCreateDims.cpp" line="293"/>
       <location filename="../../CommandCreateDims.cpp" line="419"/>
@@ -2829,7 +2821,6 @@
       <location filename="../../CommandCreateDims.cpp" line="714"/>
       <location filename="../../CommandCreateDims.cpp" line="810"/>
       <location filename="../../CommandCreateDims.cpp" line="1085"/>
-      <location filename="../../Command.cpp" line="979"/>
       <source>No View of a Part in selection.</source>
       <translation>Brak widoku części w wyborze.</translation>
     </message>
@@ -2941,8 +2932,6 @@
       <translation>Wybrana krawędź to krzywa złożona. Promień będzie przybliżony. Kontynuować?</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="365"/>
-      <location filename="../../CommandDecorate.cpp" line="371"/>
       <location filename="../../CommandCreateDims.cpp" line="187"/>
       <location filename="../../CommandCreateDims.cpp" line="202"/>
       <location filename="../../CommandCreateDims.cpp" line="313"/>
@@ -2962,10 +2951,12 @@
       <location filename="../../CommandCreateDims.cpp" line="1112"/>
       <location filename="../../CommandCreateDims.cpp" line="1126"/>
       <location filename="../../CommandCreateDims.cpp" line="1218"/>
+      <location filename="../../CommandDecorate.cpp" line="365"/>
+      <location filename="../../CommandDecorate.cpp" line="371"/>
+      <location filename="../../TaskDimension.cpp" line="400"/>
       <location filename="../../TaskDimRepair.cpp" line="126"/>
       <location filename="../../TaskDimRepair.cpp" line="138"/>
       <location filename="../../TaskDimRepair.cpp" line="149"/>
-      <location filename="../../TaskDimension.cpp" line="400"/>
       <source>Incorrect Selection</source>
       <translation>Niepoprawny wybór</translation>
     </message>
@@ -3093,6 +3084,9 @@
       <translation>Wybierz dwa obiekty punktów i jeden widok. (2)</translation>
     </message>
     <message>
+      <location filename="../../Command.cpp" line="479"/>
+      <location filename="../../Command.cpp" line="572"/>
+      <location filename="../../Command.cpp" line="634"/>
       <location filename="../../CommandAnnotate.cpp" line="104"/>
       <location filename="../../CommandAnnotate.cpp" line="165"/>
       <location filename="../../CommandAnnotate.cpp" line="217"/>
@@ -3118,11 +3112,6 @@
       <location filename="../../CommandCreateDims.cpp" line="966"/>
       <location filename="../../CommandCreateDims.cpp" line="1064"/>
       <location filename="../../CommandCreateDims.cpp" line="1177"/>
-      <location filename="../../CommandStack.cpp" line="75"/>
-      <location filename="../../CommandStack.cpp" line="191"/>
-      <location filename="../../CommandStack.cpp" line="251"/>
-      <location filename="../../CommandStack.cpp" line="311"/>
-      <location filename="../../CommandStack.cpp" line="371"/>
       <location filename="../../CommandExtensionDims.cpp" line="266"/>
       <location filename="../../CommandExtensionDims.cpp" line="475"/>
       <location filename="../../CommandExtensionDims.cpp" line="767"/>
@@ -3130,18 +3119,23 @@
       <location filename="../../CommandExtensionDims.cpp" line="1440"/>
       <location filename="../../CommandExtensionDims.cpp" line="1803"/>
       <location filename="../../CommandExtensionDims.cpp" line="2062"/>
-      <location filename="../../Command.cpp" line="479"/>
-      <location filename="../../Command.cpp" line="572"/>
-      <location filename="../../Command.cpp" line="634"/>
       <location filename="../../CommandExtensionPack.cpp" line="274"/>
       <location filename="../../CommandExtensionPack.cpp" line="588"/>
       <location filename="../../CommandExtensionPack.cpp" line="1079"/>
       <location filename="../../CommandExtensionPack.cpp" line="1315"/>
       <location filename="../../CommandExtensionPack.cpp" line="1688"/>
+      <location filename="../../CommandStack.cpp" line="75"/>
+      <location filename="../../CommandStack.cpp" line="191"/>
+      <location filename="../../CommandStack.cpp" line="251"/>
+      <location filename="../../CommandStack.cpp" line="311"/>
+      <location filename="../../CommandStack.cpp" line="371"/>
       <source>Task In Progress</source>
       <translation>Zadanie w toku</translation>
     </message>
     <message>
+      <location filename="../../Command.cpp" line="480"/>
+      <location filename="../../Command.cpp" line="573"/>
+      <location filename="../../Command.cpp" line="635"/>
       <location filename="../../CommandAnnotate.cpp" line="105"/>
       <location filename="../../CommandAnnotate.cpp" line="166"/>
       <location filename="../../CommandAnnotate.cpp" line="218"/>
@@ -3167,11 +3161,6 @@
       <location filename="../../CommandCreateDims.cpp" line="967"/>
       <location filename="../../CommandCreateDims.cpp" line="1065"/>
       <location filename="../../CommandCreateDims.cpp" line="1178"/>
-      <location filename="../../CommandStack.cpp" line="76"/>
-      <location filename="../../CommandStack.cpp" line="192"/>
-      <location filename="../../CommandStack.cpp" line="252"/>
-      <location filename="../../CommandStack.cpp" line="312"/>
-      <location filename="../../CommandStack.cpp" line="372"/>
       <location filename="../../CommandExtensionDims.cpp" line="267"/>
       <location filename="../../CommandExtensionDims.cpp" line="476"/>
       <location filename="../../CommandExtensionDims.cpp" line="768"/>
@@ -3179,14 +3168,16 @@
       <location filename="../../CommandExtensionDims.cpp" line="1441"/>
       <location filename="../../CommandExtensionDims.cpp" line="1804"/>
       <location filename="../../CommandExtensionDims.cpp" line="2063"/>
-      <location filename="../../Command.cpp" line="480"/>
-      <location filename="../../Command.cpp" line="573"/>
-      <location filename="../../Command.cpp" line="635"/>
       <location filename="../../CommandExtensionPack.cpp" line="275"/>
       <location filename="../../CommandExtensionPack.cpp" line="589"/>
       <location filename="../../CommandExtensionPack.cpp" line="1080"/>
       <location filename="../../CommandExtensionPack.cpp" line="1316"/>
       <location filename="../../CommandExtensionPack.cpp" line="1689"/>
+      <location filename="../../CommandStack.cpp" line="76"/>
+      <location filename="../../CommandStack.cpp" line="192"/>
+      <location filename="../../CommandStack.cpp" line="252"/>
+      <location filename="../../CommandStack.cpp" line="312"/>
+      <location filename="../../CommandStack.cpp" line="372"/>
       <source>Close active task dialog and try again.</source>
       <translation>Zamknij okno aktywnego zadania i spróbuj ponownie.</translation>
     </message>
@@ -3404,50 +3395,50 @@
       <translation>Brak rysunków w dokumencie.</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="280"/>
+      <location filename="../../MDIViewPage.cpp" line="282"/>
       <source>PDF (*.pdf)</source>
       <translation>PDF (*.pdf)</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="281"/>
-      <location filename="../../MDIViewPage.cpp" line="687"/>
+      <location filename="../../MDIViewPage.cpp" line="283"/>
+      <location filename="../../MDIViewPage.cpp" line="693"/>
       <source>All Files (*.*)</source>
       <translation>Wszystkie pliki (*.*)</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="283"/>
+      <location filename="../../MDIViewPage.cpp" line="285"/>
       <source>Export Page As PDF</source>
       <translation>Wyeksportuj stronę do formatu PDF</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="578"/>
+      <location filename="../../MDIViewPage.cpp" line="584"/>
       <source>Document Name: </source>
       <translation>Nazwa dokumentu: </translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="686"/>
+      <location filename="../../MDIViewPage.cpp" line="692"/>
       <source>SVG (*.svg)</source>
       <translation>SVG(*.svg)</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="689"/>
+      <location filename="../../MDIViewPage.cpp" line="695"/>
       <source>Export page as SVG</source>
       <translation>Eksportuj stronę do formatu SVG</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderPage.cpp" line="212"/>
-      <location filename="../../ViewProviderTemplate.cpp" line="201"/>
+      <location filename="../../ViewProviderPage.cpp" line="214"/>
       <location filename="../../ViewProviderProjGroup.cpp" line="161"/>
+      <location filename="../../ViewProviderTemplate.cpp" line="201"/>
       <source>Are you sure you want to continue?</source>
       <translation>Czy na pewno chcesz kontynuować?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderPage.cpp" line="233"/>
+      <location filename="../../ViewProviderPage.cpp" line="235"/>
       <source>Show drawing</source>
       <translation>Pokaż rysunek</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderPage.cpp" line="235"/>
+      <location filename="../../ViewProviderPage.cpp" line="237"/>
       <source>Toggle KeepUpdated</source>
       <translation>Włącz / wyłącz automatyczną aktualizację</translation>
     </message>
@@ -3472,9 +3463,9 @@
       <translation>Kreator tekstu sformatowanego</translation>
     </message>
     <message>
+      <location filename="../../QGIRichAnno.cpp" line="323"/>
       <location filename="../../TaskRichAnno.cpp" line="102"/>
       <location filename="../../TaskRichAnno.cpp" line="240"/>
-      <location filename="../../QGIRichAnno.cpp" line="278"/>
       <source>Rich text editor</source>
       <translation>Edytor tekstu sformatowanego</translation>
     </message>
@@ -3539,24 +3530,24 @@
       <translation>Nowy przekrój złożony</translation>
     </message>
     <message>
-      <location filename="../../TaskComplexSection.cpp" line="179"/>
+      <location filename="../../TaskComplexSection.cpp" line="177"/>
       <source>Edit Complex Section</source>
       <translation>Edytuj przekrój złożony</translation>
     </message>
     <message>
-      <location filename="../../TaskComplexSection.cpp" line="217"/>
+      <location filename="../../TaskComplexSection.cpp" line="215"/>
       <location filename="../../TaskSectionView.cpp" line="226"/>
       <source>Current View Direction</source>
       <translation>Aktualny kierunek widoku</translation>
     </message>
     <message>
-      <location filename="../../TaskComplexSection.cpp" line="218"/>
+      <location filename="../../TaskComplexSection.cpp" line="216"/>
       <location filename="../../TaskSectionView.cpp" line="227"/>
       <source>The view direction in BaseView coordinates</source>
       <translation>Kierunek widoku określony współrzędnymi Widoku podstawowego</translation>
     </message>
     <message>
-      <location filename="../../TaskComplexSection.cpp" line="690"/>
+      <location filename="../../TaskComplexSection.cpp" line="688"/>
       <location filename="../../TaskSectionView.cpp" line="608"/>
       <source>Operation Failed</source>
       <translation>Operacja nie powiodła się</translation>
@@ -3592,8 +3583,8 @@
       <translation>Edytuj widok szczegółu</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderDimension.cpp" line="123"/>
       <location filename="../../ViewProviderBalloon.cpp" line="88"/>
+      <location filename="../../ViewProviderDimension.cpp" line="123"/>
       <source>Edit %1</source>
       <translation>Edytuj %1</translation>
     </message>
@@ -3869,19 +3860,19 @@ zawiera symbol spoiny który zostałby uszkodzony.</translation>
       <translation>Nie można usunąć tego widoku, ponieważ ma on co najmniej jeden obiekt zależny, który zostałby uszkodzony.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderViewPart.cpp" line="322"/>
+      <location filename="../../ViewProviderLeader.cpp" line="226"/>
+      <location filename="../../ViewProviderPage.cpp" line="217"/>
+      <location filename="../../ViewProviderProjGroup.cpp" line="148"/>
+      <location filename="../../ViewProviderProjGroup.cpp" line="164"/>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="148"/>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="157"/>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="165"/>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="173"/>
-      <location filename="../../ViewProviderLeader.cpp" line="226"/>
-      <location filename="../../ViewProviderWeld.cpp" line="145"/>
-      <location filename="../../ViewProviderPage.cpp" line="215"/>
       <location filename="../../ViewProviderTemplate.cpp" line="205"/>
-      <location filename="../../ViewProviderProjGroup.cpp" line="148"/>
-      <location filename="../../ViewProviderProjGroup.cpp" line="164"/>
+      <location filename="../../ViewProviderViewPart.cpp" line="322"/>
+      <location filename="../../ViewProviderWeld.cpp" line="145"/>
       <source>Object dependencies</source>
-      <translation>Zależności obiektów</translation>
+      <translation>Zależności obiektu</translation>
     </message>
     <message>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="145"/>
@@ -3904,7 +3895,7 @@ zawiera symbol spoiny który zostałby uszkodzony.</translation>
       <translation>Nie możesz usunąć tego widoku, ponieważ ma on linię odniesienia, która zostałaby uszkodzona.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderPage.cpp" line="206"/>
+      <location filename="../../ViewProviderPage.cpp" line="208"/>
       <source>The page is not empty, therefore the
 following referencing objects might be lost:</source>
       <translation>Strona nie jest pusta, więc
@@ -3996,14 +3987,6 @@ ma on punkową/czołową spoinę, która zostałaby uszkodzona.</translation>
     </message>
   </context>
   <context>
-    <name>TaskComplexSection</name>
-    <message>
-      <location filename="../../TaskComplexSection.cpp" line="173"/>
-      <source>No direction set</source>
-      <translation>Nie ustawiono kierunku</translation>
-    </message>
-  </context>
-  <context>
     <name>TaskMoveView</name>
     <message>
       <location filename="../../TaskMoveView.ui" line="14"/>
@@ -4029,7 +4012,7 @@ ma on punkową/czołową spoinę, która zostałaby uszkodzona.</translation>
   <context>
     <name>TaskPojGroup</name>
     <message>
-      <location filename="../../TaskComplexSection.cpp" line="487"/>
+      <location filename="../../TaskComplexSection.cpp" line="485"/>
       <location filename="../../TaskSectionView.cpp" line="428"/>
       <source> updates pending</source>
       <translation> oczekujące aktualizacje</translation>
@@ -4473,28 +4456,28 @@ podczas kreskowania powierzchni wzorem PAT</translation>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="430"/>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="683"/>
       <source>Dash</source>
-      <translation>Kreska</translation>
+      <translation>Przerywana</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="261"/>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="439"/>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="692"/>
       <source>Dot</source>
-      <translation>Kropka</translation>
+      <translation>Kropkowana</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="270"/>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="448"/>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="701"/>
       <source>DashDot</source>
-      <translation>Kreska kropka</translation>
+      <translation>Przerywana-kropkowana</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="279"/>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="457"/>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="710"/>
       <source>DashDotDot</source>
-      <translation>Kreska kropka kropka</translation>
+      <translation>Przerywana-podwójnie kropkowana</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="727"/>
@@ -4595,7 +4578,7 @@ podczas kreskowania powierzchni wzorem PAT</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="574"/>
       <source>None</source>
-      <translation>Brak</translation>
+      <translation>Żaden</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="583"/>
@@ -5234,12 +5217,12 @@ dla grup projektowych</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="455"/>
       <source>Continuous</source>
-      <translation>Ciągła</translation>
+      <translation>Ciągły</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="464"/>
       <source>Dashed</source>
-      <translation>Kreskowana</translation>
+      <translation>Przerywana</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="493"/>
@@ -5502,7 +5485,7 @@ Szybkie, ale wynikiem jest kolekcja krótkich linii prostych.</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawScale.ui" line="143"/>
       <source>Auto</source>
-      <translation>Automatycznie</translation>
+      <translation>Automatyczny</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawScale.ui" line="148"/>
@@ -5603,52 +5586,52 @@ Szybkie, ale wynikiem jest kolekcja krótkich linii prostych.</translation>
       <translation>Drukuj wszystkie strony</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="391"/>
+      <location filename="../../MDIViewPage.cpp" line="395"/>
       <source>Different orientation</source>
       <translation>Odmienna orientacja</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="392"/>
+      <location filename="../../MDIViewPage.cpp" line="396"/>
       <source>The printer uses a different orientation  than the drawing.
 Do you want to continue?</source>
       <translation>Drukarka używa inną orientacje strony niż rysunek. Czy chcesz kontynuować?</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="401"/>
+      <location filename="../../MDIViewPage.cpp" line="405"/>
       <source>Different paper size</source>
       <translation>Odmienny rozmiar papieru</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="402"/>
+      <location filename="../../MDIViewPage.cpp" line="406"/>
       <source>The printer uses a different paper size than the drawing.
 Do you want to continue?</source>
       <translation>Drukarka używa innego rozmiaru papieru niż rysunek.
 Czy chcesz kontynuować?</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="415"/>
+      <location filename="../../MDIViewPage.cpp" line="419"/>
       <source>Opening file failed</source>
       <translation>Otwarcie pliku nie powiodło się</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="416"/>
+      <location filename="../../MDIViewPage.cpp" line="420"/>
       <source>Can not open file %1 for writing.</source>
       <translation>Nie można  otworzyć pliku %1 do zapisu.</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="713"/>
+      <location filename="../../MDIViewPage.cpp" line="719"/>
       <source>Save DXF file</source>
       <translation>Zapisz plik DXF</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="714"/>
+      <location filename="../../MDIViewPage.cpp" line="720"/>
       <source>DXF (*.dxf)</source>
       <translation>DXF (*.dxf)</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="1222"/>
+      <location filename="../../MDIViewPage.cpp" line="1228"/>
       <source>Selected:</source>
-      <translation>Zaznaczone:</translation>
+      <translation>Wybrane:</translation>
     </message>
   </context>
   <context>
@@ -5729,7 +5712,7 @@ Czy chcesz kontynuować?</translation>
     <message>
       <location filename="../../TaskBalloon.ui" line="115"/>
       <source>None</source>
-      <translation>Brak</translation>
+      <translation>Żadne</translation>
     </message>
     <message>
       <location filename="../../TaskBalloon.ui" line="124"/>
@@ -5958,22 +5941,22 @@ Czy chcesz kontynuować?</translation>
     <message>
       <location filename="../../TaskCenterLine.ui" line="324"/>
       <source>Dash</source>
-      <translation>Kreska</translation>
+      <translation>Przerywana</translation>
     </message>
     <message>
       <location filename="../../TaskCenterLine.ui" line="333"/>
       <source>Dot</source>
-      <translation>Kropka</translation>
+      <translation>Kropkowana</translation>
     </message>
     <message>
       <location filename="../../TaskCenterLine.ui" line="342"/>
       <source>DashDot</source>
-      <translation>Kreska kropka</translation>
+      <translation>Przerywana-kropkowana</translation>
     </message>
     <message>
       <location filename="../../TaskCenterLine.ui" line="351"/>
       <source>DashDotDot</source>
-      <translation>Kreska kropka kropka</translation>
+      <translation>Przerywana-podwójnie kropkowana</translation>
     </message>
   </context>
   <context>
@@ -6012,7 +5995,7 @@ Czy chcesz kontynuować?</translation>
     <message>
       <location filename="../../TaskComplexSection.ui" line="105"/>
       <source>Scale Page/Auto/Custom</source>
-      <translation>Skala strony / automatyczna / niestandardowa</translation>
+      <translation>Skaluj stronę/Auto/Niestandardowe</translation>
     </message>
     <message>
       <location filename="../../TaskComplexSection.ui" line="109"/>
@@ -6022,12 +6005,12 @@ Czy chcesz kontynuować?</translation>
     <message>
       <location filename="../../TaskComplexSection.ui" line="114"/>
       <source>Automatic</source>
-      <translation>Automatyczna</translation>
+      <translation>Automatycznie</translation>
     </message>
     <message>
       <location filename="../../TaskComplexSection.ui" line="119"/>
       <source>Custom</source>
-      <translation>Użytkownika</translation>
+      <translation>Niestandardowe</translation>
     </message>
     <message>
       <location filename="../../TaskComplexSection.ui" line="127"/>
@@ -6068,7 +6051,7 @@ Czy chcesz kontynuować?</translation>
     <message>
       <location filename="../../TaskComplexSection.ui" line="217"/>
       <source>Identifier for this section</source>
-      <translation>Identyfikator sekcji</translation>
+      <translation>Identyfikator dla tej sekcji</translation>
     </message>
     <message>
       <location filename="../../TaskComplexSection.ui" line="224"/>
@@ -6126,7 +6109,12 @@ Czy chcesz kontynuować?</translation>
       <translation>Aktualizuj teraz</translation>
     </message>
     <message>
-      <location filename="../../TaskComplexSection.cpp" line="689"/>
+      <location filename="../../TaskComplexSection.cpp" line="172"/>
+      <source>No direction set</source>
+      <translation>Nie ustawiono kierunku</translation>
+    </message>
+    <message>
+      <location filename="../../TaskComplexSection.cpp" line="687"/>
       <source>Can not continue. Object * %1 or %2 not found.</source>
       <translation>Nie można kontynuować. Obiekt * %1 lub %2 nie został znaleziony.</translation>
     </message>
@@ -6319,7 +6307,7 @@ Czy chcesz kontynuować?</translation>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="176"/>
       <source>Symmetry</source>
-      <translation>Odbicie lustrzane</translation>
+      <translation>Symetria</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="188"/>
@@ -6639,7 +6627,7 @@ Niestandardowa: stosuje się współczynnik skalowania podany przez użytkownika
     <message>
       <location filename="../../TaskDetail.ui" line="221"/>
       <source>Automatic</source>
-      <translation>Automatyczna</translation>
+      <translation>Automatycznie</translation>
     </message>
     <message>
       <location filename="../../TaskDetail.ui" line="226"/>
@@ -7161,7 +7149,7 @@ Możesz wybrać kolejne punkty, aby uzyskać odcinki linii.</translation>
     <message>
       <location filename="../../TaskLeaderLine.ui" line="305"/>
       <source>Dot</source>
-      <translation>Kropka</translation>
+      <translation>Kropkowana</translation>
     </message>
     <message>
       <location filename="../../TaskLeaderLine.ui" line="314"/>
@@ -7259,22 +7247,22 @@ Możesz wybrać kolejne punkty, aby uzyskać odcinki linii.</translation>
     <message>
       <location filename="../../TaskLineDecor.ui" line="110"/>
       <source>Dash</source>
-      <translation>Kreska</translation>
+      <translation>Przerywana</translation>
     </message>
     <message>
       <location filename="../../TaskLineDecor.ui" line="115"/>
       <source>Dot</source>
-      <translation>Kropka</translation>
+      <translation>Kropkowana</translation>
     </message>
     <message>
       <location filename="../../TaskLineDecor.ui" line="120"/>
       <source>DashDot</source>
-      <translation>Kreska kropka</translation>
+      <translation>Przerywana-kropkowana</translation>
     </message>
     <message>
       <location filename="../../TaskLineDecor.ui" line="125"/>
       <source>DashDotDot</source>
-      <translation>Kreska kropka kropka</translation>
+      <translation>Przerywana-podwójnie kropkowana</translation>
     </message>
     <message>
       <location filename="../../TaskLineDecor.ui" line="133"/>
@@ -7299,12 +7287,12 @@ Możesz wybrać kolejne punkty, aby uzyskać odcinki linii.</translation>
     <message>
       <location filename="../../TaskLineDecor.ui" line="191"/>
       <source>False</source>
-      <translation>Nie</translation>
+      <translation>Fałsz</translation>
     </message>
     <message>
       <location filename="../../TaskLineDecor.ui" line="196"/>
       <source>True</source>
-      <translation>Tak</translation>
+      <translation>Prawda</translation>
     </message>
   </context>
   <context>
@@ -7365,7 +7353,7 @@ Możesz wybrać kolejne punkty, aby uzyskać odcinki linii.</translation>
     <message>
       <location filename="../../TaskProjGroup.ui" line="34"/>
       <source>Projection</source>
-      <translation>Rzutowanie</translation>
+      <translation>Rzut</translation>
     </message>
     <message>
       <location filename="../../TaskProjGroup.ui" line="41"/>
@@ -7375,12 +7363,12 @@ Możesz wybrać kolejne punkty, aby uzyskać odcinki linii.</translation>
     <message>
       <location filename="../../TaskProjGroup.ui" line="45"/>
       <source>First Angle</source>
-      <translation>Kąt pierwszy</translation>
+      <translation>Pierwszy kąt</translation>
     </message>
     <message>
       <location filename="../../TaskProjGroup.ui" line="50"/>
       <source>Third Angle</source>
-      <translation>Kąt trzeci</translation>
+      <translation>Trzeci kąt</translation>
     </message>
     <message>
       <location filename="../../TaskProjGroup.ui" line="55"/>
@@ -7556,7 +7544,7 @@ przy użyciu podanego odstępu X/Y</translation>
     <message>
       <location filename="../../TaskProjection.ui" line="14"/>
       <source>Project shapes</source>
-      <translation>Rzutowanie kształtów</translation>
+      <translation>Rzutuj kształty</translation>
     </message>
     <message>
       <location filename="../../TaskProjection.ui" line="22"/>
@@ -7616,7 +7604,7 @@ przy użyciu podanego odstępu X/Y</translation>
     <message>
       <location filename="../../TaskProjection.cpp" line="65"/>
       <source>There is currently no active document to complete the operation</source>
-      <translation>Obecnie nie ma aktywnego dokumentu do zakończenia operacji</translation>
+      <translation>Aktualnie nie ma aktywnego dokumentu aby dokończyć operację</translation>
     </message>
     <message>
       <location filename="../../TaskProjection.cpp" line="70"/>
@@ -7626,7 +7614,7 @@ przy użyciu podanego odstępu X/Y</translation>
     <message>
       <location filename="../../TaskProjection.cpp" line="71"/>
       <source>There is currently no active view to complete the operation</source>
-      <translation>Obecnie nie ma aktywnego widoku do zakończenia operacji</translation>
+      <translation>Aktualnie nie ma aktywnego widoku aby dokończyć operację</translation>
     </message>
   </context>
   <context>
@@ -7732,22 +7720,22 @@ przy użyciu podanego odstępu X/Y</translation>
     <message>
       <location filename="../../TaskRichAnno.ui" line="215"/>
       <source>Dash</source>
-      <translation>Kreska</translation>
+      <translation>Przerywana</translation>
     </message>
     <message>
       <location filename="../../TaskRichAnno.ui" line="220"/>
       <source>Dot</source>
-      <translation>Kropka</translation>
+      <translation>Kropkowana</translation>
     </message>
     <message>
       <location filename="../../TaskRichAnno.ui" line="225"/>
       <source>DashDot</source>
-      <translation>Kreska kropka</translation>
+      <translation>Przerywana-kropkowana</translation>
     </message>
     <message>
       <location filename="../../TaskRichAnno.ui" line="230"/>
       <source>DashDotDot</source>
-      <translation>Kreska kropka kropka</translation>
+      <translation>Przerywana-podwójnie kropkowana</translation>
     </message>
     <message>
       <location filename="../../TaskRichAnno.cpp" line="181"/>
@@ -7785,7 +7773,7 @@ przy użyciu podanego odstępu X/Y</translation>
     <message>
       <location filename="../../TaskSectionView.ui" line="94"/>
       <source>Scale Page/Auto/Custom</source>
-      <translation>Skala strony / automatyczna / niestandardowa</translation>
+      <translation>Skaluj stronę/Auto/Niestandardowe</translation>
     </message>
     <message>
       <location filename="../../TaskSectionView.ui" line="98"/>
@@ -7795,7 +7783,7 @@ przy użyciu podanego odstępu X/Y</translation>
     <message>
       <location filename="../../TaskSectionView.ui" line="103"/>
       <source>Automatic</source>
-      <translation>Automatyczna</translation>
+      <translation>Automatycznie</translation>
     </message>
     <message>
       <location filename="../../TaskSectionView.ui" line="108"/>
@@ -7923,7 +7911,7 @@ przy użyciu podanego odstępu X/Y</translation>
     <message>
       <location filename="../../TaskSelectLineAttributes.ui" line="57"/>
       <source>Dashed</source>
-      <translation>Kreskowana</translation>
+      <translation>Przerywana</translation>
     </message>
     <message>
       <location filename="../../TaskSelectLineAttributes.ui" line="70"/>
@@ -7933,12 +7921,12 @@ przy użyciu podanego odstępu X/Y</translation>
     <message>
       <location filename="../../TaskSelectLineAttributes.ui" line="83"/>
       <source>Dashdot</source>
-      <translation>Kreska - kropka</translation>
+      <translation>Przerywana-kropkowana</translation>
     </message>
     <message>
       <location filename="../../TaskSelectLineAttributes.ui" line="103"/>
       <source>Line width:</source>
-      <translation>Szerokość linii:</translation>
+      <translation>Szerekość linii:</translation>
     </message>
     <message>
       <location filename="../../TaskSelectLineAttributes.ui" line="110"/>
@@ -8264,7 +8252,7 @@ przy użyciu podanego odstępu X/Y</translation>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1023"/>
       <source>Insert Horizontal Extent Dimension</source>
-      <translation>Wystawia całkowity wymiar zakresu poziomego</translation>
+      <translation>Wstaw wymiar rozpiętości poziomej</translation>
     </message>
   </context>
   <context>
@@ -8328,7 +8316,7 @@ przy użyciu podanego odstępu X/Y</translation>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1027"/>
       <source>Insert Vertical Extent Dimension</source>
-      <translation>Wystawia całkowity wymiar zakresu pionowego</translation>
+      <translation>Wstaw wymiar rozpiętości pionowej</translation>
     </message>
   </context>
   <context>
@@ -8742,7 +8730,7 @@ przy użyciu podanego odstępu X/Y</translation>
     <message>
       <location filename="../../../App/ArrowPropEnum.cpp" line="39"/>
       <source>None</source>
-      <translation>Brak</translation>
+      <translation>Żaden</translation>
     </message>
   </context>
   <context>
@@ -8750,32 +8738,32 @@ przy użyciu podanego odstępu X/Y</translation>
     <message>
       <location filename="../../../App/DrawProjGroupItem.cpp" line="44"/>
       <source>Front</source>
-      <translation>Od przodu</translation>
+      <translation>Przód</translation>
     </message>
     <message>
       <location filename="../../../App/DrawProjGroupItem.cpp" line="45"/>
       <source>Left</source>
-      <translation>Od lewej</translation>
+      <translation>Lewo</translation>
     </message>
     <message>
       <location filename="../../../App/DrawProjGroupItem.cpp" line="46"/>
       <source>Right</source>
-      <translation>Od prawej</translation>
+      <translation>Prawo</translation>
     </message>
     <message>
       <location filename="../../../App/DrawProjGroupItem.cpp" line="47"/>
       <source>Rear</source>
-      <translation>Od tył</translation>
+      <translation>Tył</translation>
     </message>
     <message>
       <location filename="../../../App/DrawProjGroupItem.cpp" line="48"/>
       <source>Top</source>
-      <translation>Od góry</translation>
+      <translation>Góra</translation>
     </message>
     <message>
       <location filename="../../../App/DrawProjGroupItem.cpp" line="49"/>
       <source>Bottom</source>
-      <translation>Od dołu</translation>
+      <translation>Dół</translation>
     </message>
     <message>
       <location filename="../../../App/DrawProjGroupItem.cpp" line="50"/>
@@ -8801,14 +8789,14 @@ przy użyciu podanego odstępu X/Y</translation>
   <context>
     <name>TaskBalloon</name>
     <message>
-      <location filename="../../ViewProviderBalloon.cpp" line="181"/>
+      <location filename="../../ViewProviderBalloon.cpp" line="183"/>
       <source>You cannot delete this balloon now because
 there is an open task dialog.</source>
       <translation>Nie możesz teraz usunąć tego dymka, ponieważ
 jest otwarte okno dialogowe zadania.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderBalloon.cpp" line="184"/>
+      <location filename="../../ViewProviderBalloon.cpp" line="186"/>
       <source>Can Not Delete</source>
       <translation>Nie można usunąć</translation>
     </message>

@@ -20,7 +20,8 @@
         </Methode>
         <Methode Name="setParams" Keyword="true">
             <Documentation>
-                <UserDocu>setParams(key=value...): Convenient function to configure this feature.\n
+                <UserDocu>setParams(key=value...): Convenient function to configure this feature.
+
 Same usage as Path.Area.setParams(). This function stores the parameters in the properties.</UserDocu>
             </Documentation>
         </Methode>

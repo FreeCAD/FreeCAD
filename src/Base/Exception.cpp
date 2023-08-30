@@ -45,16 +45,7 @@ Exception::Exception()
   _sErrMsg = "FreeCAD Exception";
 }
 
-Exception::Exception(const Exception &inst)
-  : BaseClass(inst)
-  , _sErrMsg(inst._sErrMsg)
-  , _file(inst._file)
-  , _line(inst._line)
-  , _function(inst._function)
-  , _isTranslatable(inst._isTranslatable)
-  , _isReported(inst._isReported)
-{
-}
+Exception::Exception(const Exception &inst) = default;
 
 Exception::Exception(const char * sMessage)
   : _sErrMsg(sMessage)
@@ -89,7 +80,7 @@ const char* Exception::what() const noexcept
 void Exception::ReportException () const
 {
     if (!_isReported) {
-        const char *msg;
+        const char *msg{};
         if (_sErrMsg.empty())
             msg = typeid(*this).name();
         else
@@ -282,13 +273,6 @@ FileException::FileException()
     _sErrMsgAndFileName = _sErrMsg;
 }
 
-FileException::FileException(const FileException &inst)
-  : Exception(inst._sErrMsg.c_str())
-  , file(inst.file)
-  , _sErrMsgAndFileName(inst._sErrMsgAndFileName.c_str())
-{
-}
-
 void FileException::setFileName(const char * sFileName)
 {
     file.setFile(sFileName);
@@ -320,7 +304,7 @@ const char* FileException::what() const noexcept
 void FileException::ReportException () const
 {
     if (!_isReported) {
-        const char *msg;
+        const char *msg{};
         if (_sErrMsgAndFileName.empty())
             msg = typeid(*this).name();
         else

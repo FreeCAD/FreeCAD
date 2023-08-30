@@ -42,10 +42,6 @@ Feature::Feature()
     ADD_PROPERTY_TYPE(Mesh,(MeshObject()),0,App::Prop_Output,"The mesh kernel");
 }
 
-Feature::~Feature()
-{
-}
-
 App::DocumentObjectExecReturn *Feature::execute()
 {
     this->Mesh.touch();

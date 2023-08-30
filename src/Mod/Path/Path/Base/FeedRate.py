@@ -51,17 +51,17 @@ def setFeedRate(commandlist, ToolController):
     def _isVertical(currentposition, command):
         x = (
             command.Parameters["X"]
-            if "X" in command.Parameters.keys()
+            if "X" in command.Parameters
             else currentposition.x
         )
         y = (
             command.Parameters["Y"]
-            if "Y" in command.Parameters.keys()
+            if "Y" in command.Parameters
             else currentposition.y
         )
         z = (
             command.Parameters["Z"]
-            if "Z" in command.Parameters.keys()
+            if "Z" in command.Parameters
             else currentposition.z
         )
         endpoint = FreeCAD.Vector(x, y, z)

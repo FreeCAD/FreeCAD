@@ -23,7 +23,6 @@
     <name>CompactView</name>
     <message>
       <location filename="../../compact_view.py" line="77"/>
-      <location filename="../../compact_view.ui" line="20"/>
       <source>Form</source>
       <translation>Form</translation>
     </message>
@@ -422,7 +421,6 @@ Soll der Addon-Manager sie automatisch installieren? &quot;Ignorieren&quot; wäh
     <name>ExpandedView</name>
     <message>
       <location filename="../../expanded_view.py" line="116"/>
-      <location filename="../../expanded_view.ui" line="20"/>
       <source>Form</source>
       <translation>Form</translation>
     </message>
@@ -470,13 +468,12 @@ Soll der Addon-Manager sie automatisch installieren? &quot;Ignorieren&quot; wäh
     <message>
       <location filename="../../expanded_view.ui" line="186"/>
       <source>UpdateAvailable</source>
-      <translation>Update verfügbar</translation>
+      <translation>Aktualisierung verfügbar</translation>
     </message>
   </context>
   <context>
     <name>Form</name>
     <message>
-      <location filename="../../developer_mode_licenses_table.ui" line="14"/>
       <location filename="../../developer_mode_people_table.ui" line="14"/>
       <source>Form</source>
       <translation>Form</translation>
@@ -702,11 +699,6 @@ installed addons will be checked for available updates
   <context>
     <name>PackageDetails</name>
     <message>
-      <location filename="../../package_details.ui" line="14"/>
-      <source>Form</source>
-      <translation>Form</translation>
-    </message>
-    <message>
       <location filename="../../package_details.ui" line="49"/>
       <source>Uninstalls a selected macro or workbench</source>
       <translation>Deinstalliert ein ausgewähltes Makro oder einen Arbeitsbereich</translation>
@@ -724,7 +716,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../package_details.ui" line="66"/>
       <source>Update</source>
-      <translation>Aktualisieren</translation>
+      <translation>Aktualisierung</translation>
     </message>
     <message>
       <location filename="../../package_details.ui" line="73"/>
@@ -1151,7 +1143,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../toolbar_button.ui" line="20"/>
       <source>Add a toolbar button for this macro?</source>
-      <translation>Eine Werkzeugleistenschaltfläche für dieses Makro hinzufügen?</translation>
+      <translation>Eine Symbolleistenschaltfläche für dieses Makro hinzufügen?</translation>
     </message>
     <message>
       <location filename="../../toolbar_button.ui" line="32"/>
@@ -1267,18 +1259,18 @@ installed addons will be checked for available updates
       <translation>Ausführen des Makros schlug fehl. Siehe Konsole für Fehlerdetails.</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_devmode_people_table.py" line="88"/>
       <location filename="../../addonmanager_devmode.py" line="116"/>
-      <location filename="../../package_list.py" line="398"/>
+      <location filename="../../addonmanager_devmode_people_table.py" line="88"/>
       <location filename="../../addonmanager_devmode_person_editor.py" line="47"/>
+      <location filename="../../package_list.py" line="398"/>
       <source>Maintainer</source>
-      <translation>Maintainer</translation>
+      <translation>Betreuer</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_devmode_people_table.py" line="89"/>
       <location filename="../../addonmanager_devmode.py" line="117"/>
-      <location filename="../../package_list.py" line="435"/>
+      <location filename="../../addonmanager_devmode_people_table.py" line="89"/>
       <location filename="../../addonmanager_devmode_person_editor.py" line="50"/>
+      <location filename="../../package_list.py" line="435"/>
       <source>Author</source>
       <translation>Autor</translation>
     </message>
@@ -1301,7 +1293,7 @@ installed addons will be checked for available updates
       <location filename="../../manage_python_dependencies.py" line="253"/>
       <location filename="../../package_details.py" line="918"/>
       <source>Update</source>
-      <translation>Aktualisieren</translation>
+      <translation>Aktualisierung</translation>
     </message>
     <message>
       <location filename="../../manage_python_dependencies.py" line="355"/>
@@ -1494,8 +1486,8 @@ installed addons will be checked for available updates
       <translation>QtWebEngine Python Bindings nicht installiert -- verwendet Fallback LIESMICH Anzeige.</translation>
     </message>
     <message>
-      <location filename="../../package_details.py" line="682"/>
       <location filename="../../addonmanager_installer_gui.py" line="476"/>
+      <location filename="../../package_details.py" line="682"/>
       <location filename="../../AddonManagerTest/gui/test_installer_gui.py" line="54"/>
       <source>Success</source>
       <translation>Erfolgreich</translation>
@@ -1583,7 +1575,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../addonmanager_connection_checker.py" line="105"/>
       <source>Could not import QtNetwork -- see Report View for details. Addon Manager unavailable.</source>
-      <translation>QtNetwork konnte nicht importiert werden - siehe Ausgabefenster für Details. Der Addon Manager ist nicht verfügbar.</translation>
+      <translation>QtNetwork konnte nicht importiert werden - Einzelheiten finden sich im Ausgabefenster. Der Addon-Manager ist nicht verfügbar.</translation>
     </message>
     <message>
       <location filename="../../addonmanager_devmode_license_selector.py" line="114"/>
@@ -1627,9 +1619,9 @@ installed addons will be checked for available updates
       <translation>Wählen Sie eine Symboldatei für dieses Inhaltselement</translation>
     </message>
     <message>
+      <location filename="../../addonmanager_devmode.py" line="732"/>
       <location filename="../../addonmanager_devmode_add_content.py" line="293"/>
       <location filename="../../addonmanager_devmode_add_content.py" line="332"/>
-      <location filename="../../addonmanager_devmode.py" line="732"/>
       <source>{} is not a subdirectory of {}</source>
       <translation>{} ist kein Unterverzeichnis von {}</translation>
     </message>
@@ -1838,7 +1830,7 @@ installed addons will be checked for available updates
       <location filename="../../install_to_toolbar.py" line="247"/>
       <source>Run</source>
       <comment>Indicates a macro that can be &apos;run&apos;</comment>
-      <translation>laufen</translation>
+      <translation>Ausführen</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers_utility.py" line="61"/>
@@ -1936,7 +1928,7 @@ installed addons will be checked for available updates
       <location filename="../../addonmanager_devmode.py" line="690"/>
       <source>Failed to install Vermin -- check Report View for details.</source>
       <comment>&apos;Vermin&apos; is the name of a Python package, do not translate</comment>
-      <translation>Fehler bei der Installation von Vermin -- Überprüfen Sie den Fehlerbericht für Details.</translation>
+      <translation>Vermin konnte nicht installiert werden -- Einzelheiten finden sich im Ausgabefenster.</translation>
     </message>
     <message>
       <location filename="../../addonmanager_devmode.py" line="705"/>
@@ -2042,7 +2034,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../package_list.py" line="800"/>
       <source>All</source>
-      <translation>Alles</translation>
+      <translation>Alle</translation>
     </message>
     <message>
       <location filename="../../package_list.py" line="803"/>

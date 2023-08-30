@@ -23,6 +23,7 @@
 #include "PreCompiled.h"
 
 #include <Base/PlacementPy.h>
+#include <Base/PyWrapParseTupleAndKeywords.h>
 #include <Base/UnitsApi.h>
 
 // inclusion of the generated files (generated out of WaypointPy.xml)
@@ -85,12 +86,14 @@ int WaypointPy::PyInit(PyObject* args, PyObject* kwd)
     int tool = 0;
     int base = 0;
 
-    static char* kwlist[] = { "Pos", "type","name", "vel", "cont", "tool", "base", "acc" ,nullptr };
+    static const std::array<const char *, 9> kwlist{"Pos", "type", "name", "vel", "cont", "tool", "base", "acc",
+                                                    nullptr};
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwd, "O!|ssOiiiO", kwlist,
-        &(Base::PlacementPy::Type), &pos, // the placement object
-        &type, &name, &vel, &cont, &tool, &base, &acc))
+    if (!Base::Wrapped_ParseTupleAndKeywords(args, kwd, "O!|ssOiiiO", kwlist,
+                                             &(Base::PlacementPy::Type), &pos, // the placement object
+                                             &type, &name, &vel, &cont, &tool, &base, &acc)) {
         return -1;
+    }
 
     Base::Placement TempPos = *static_cast<Base::PlacementPy*>(pos)->getPlacementPtr();
     getWaypointPtr()->EndPos = TempPos;
@@ -148,7 +151,7 @@ void  WaypointPy::setVelocity(Py::Float arg)
 
 Py::String WaypointPy::getName() const
 {
-    return Py::String(getWaypointPtr()->Name.c_str());
+    return {getWaypointPtr()->Name};
 }
 
 void WaypointPy::setName(Py::String arg)
@@ -202,7 +205,7 @@ void WaypointPy::setPos(Py::Object arg)
 
 Py::Boolean WaypointPy::getCont() const
 {
-    return Py::Boolean(getWaypointPtr()->Cont);
+    return {getWaypointPtr()->Cont};
 }
 
 void WaypointPy::setCont(Py::Boolean arg)

@@ -51,9 +51,7 @@ DlgCustomizeSpNavSettings::DlgCustomizeSpNavSettings(QWidget *parent) :
     initialize();
 }
 
-DlgCustomizeSpNavSettings::~DlgCustomizeSpNavSettings()
-{
-}
+DlgCustomizeSpNavSettings::~DlgCustomizeSpNavSettings() = default;
 
 void DlgCustomizeSpNavSettings::setupConnections()
 {

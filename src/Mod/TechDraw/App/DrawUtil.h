@@ -130,6 +130,7 @@ public:
 
     static TopoDS_Shape vectorToCompound(std::vector<TopoDS_Edge> vecIn, bool invert = true);
     static TopoDS_Shape vectorToCompound(std::vector<TopoDS_Wire> vecIn, bool invert = true);
+    static TopoDS_Shape shapeVectorToCompound(std::vector<TopoDS_Shape> vecIn, bool invert = true);
     static std::vector<TopoDS_Edge> shapeToVector(TopoDS_Shape shapeIn);
 
     static Base::Vector3d toR3(const gp_Ax2& fromSystem, const Base::Vector3d& fromPoint);
@@ -251,6 +252,9 @@ public:
                                                       const Base::BoundBox2d& rectangle,
                                                       std::vector<Base::Vector2d>& intersections);
     static void copyFile(std::string inSpec, std::string outSpec);
+
+    static std::string translateArbitrary(std::string context, std::string baseName, std::string uniqueName);
+
 
     //debugging routines
     static void dumpVertexes(const char* text, const TopoDS_Shape& s);

@@ -74,7 +74,7 @@ void cleanupSWIG_T(const char* TypeName)
     if (!swig_type)
         return;
 
-    PyObject *module, *dict;
+    PyObject *module{}, *dict{};
     PyObject *modules = PyImport_GetModuleDict();
     module = PyDict_GetItemString(modules, "__builtin__");
     if (module && PyModule_Check(module)) {
@@ -87,8 +87,8 @@ void cleanupSWIG_T(const char* TypeName)
         PyObject* dict = PyModule_GetDict(module);
         if (!dict) return;
 
-        Py_ssize_t pos;
-        PyObject *key, *value;
+        Py_ssize_t pos{};
+        PyObject *key{}, *value{};
         pos = 0;
         while (PyDict_Next(dict, &pos, &key, &value)) {
             if (value != Py_None && PyUnicode_Check(key)) {

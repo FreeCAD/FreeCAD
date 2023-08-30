@@ -313,7 +313,7 @@ Yolları ayırmak için ";;" (çift noktalı virgül) kullanarak birden fazla di
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="42"/>
       <source>Recent files</source>
-      <translation>Son dosyalar</translation>
+      <translation type="unfinished">Recent files</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="43"/>

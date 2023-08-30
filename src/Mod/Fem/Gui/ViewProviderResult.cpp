@@ -34,10 +34,7 @@ ViewProviderResult::ViewProviderResult()
     sPixmap = "FEM_ResultShow";
 }
 
-ViewProviderResult::~ViewProviderResult()
-{
-
-}
+ViewProviderResult::~ViewProviderResult() = default;
 
 
 // Python feature -----------------------------------------------------------------------

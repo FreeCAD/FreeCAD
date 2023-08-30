@@ -76,8 +76,8 @@ Translate::~Translate() = default;
 
 Py::Object Translate::translate(const Py::Tuple& args)
 {
-    char *context;
-    char *source;
+    char *context = nullptr;
+    char *source = nullptr;
     char *disambiguation = nullptr;
     int n=-1;
     if (!PyArg_ParseTuple(args.ptr(), "ss|zi", &context, &source, &disambiguation, &n))
@@ -89,8 +89,8 @@ Py::Object Translate::translate(const Py::Tuple& args)
 
 Py::Object Translate::translateNoop(const Py::Tuple& args)
 {
-    PyObject* arg1;
-    PyObject* arg2;
+    PyObject* arg1 = nullptr;
+    PyObject* arg2 = nullptr;
     if (!PyArg_ParseTuple(args.ptr(), "OO", &arg1, &arg2))
         throw Py::Exception();
     return Py::Object(arg2);
@@ -98,9 +98,9 @@ Py::Object Translate::translateNoop(const Py::Tuple& args)
 
 Py::Object Translate::translateNoop3(const Py::Tuple& args)
 {
-    PyObject* arg1;
-    PyObject* arg2;
-    PyObject* arg3;
+    PyObject* arg1 = nullptr;
+    PyObject* arg2 = nullptr;
+    PyObject* arg3 = nullptr;
     if (!PyArg_ParseTuple(args.ptr(), "OOO", &arg1, &arg2, &arg3))
         throw Py::Exception();
     return Py::Object(arg2);
@@ -108,7 +108,7 @@ Py::Object Translate::translateNoop3(const Py::Tuple& args)
 
 Py::Object Translate::trNoop(const Py::Tuple& args)
 {
-    PyObject* arg1;
+    PyObject* arg1 = nullptr;
     if (!PyArg_ParseTuple(args.ptr(), "O", &arg1))
         throw Py::Exception();
     return Py::Object(arg1);
@@ -116,7 +116,7 @@ Py::Object Translate::trNoop(const Py::Tuple& args)
 
 Py::Object Translate::installTranslator(const Py::Tuple& args)
 {
-    char* Name;
+    char* Name = nullptr;
     if (!PyArg_ParseTuple(args.ptr(), "et","utf-8",&Name))
         throw Py::Exception();
     QString filename = QString::fromUtf8(Name);
@@ -132,7 +132,7 @@ Py::Object Translate::installTranslator(const Py::Tuple& args)
         ok = true;
     }
 
-    return Py::Boolean(ok);
+    return Py::Boolean(ok); // NOLINT
 }
 
 Py::Object Translate::removeTranslators(const Py::Tuple& args)
@@ -145,5 +145,5 @@ Py::Object Translate::removeTranslators(const Py::Tuple& args)
     }
 
     translators.clear();
-    return Py::Boolean(ok);
+    return Py::Boolean(ok); // NOLINT
 }

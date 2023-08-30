@@ -45,10 +45,7 @@ DlgSettingsFemZ88Imp::DlgSettingsFemZ88Imp(QWidget* parent)
             this, &DlgSettingsFemZ88Imp::onfileNameChanged);
 }
 
-DlgSettingsFemZ88Imp::~DlgSettingsFemZ88Imp()
-{
-    // no need to delete child widgets, Qt does it all for us
-}
+DlgSettingsFemZ88Imp::~DlgSettingsFemZ88Imp() = default;
 
 void DlgSettingsFemZ88Imp::saveSettings()
 {

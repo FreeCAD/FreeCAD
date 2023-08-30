@@ -38,7 +38,6 @@ class RobotExport Edge2TracObject : public TrajectoryObject
 public:
     /// Constructor
     Edge2TracObject();
-    ~Edge2TracObject() override;
 
     App::PropertyLinkSub         Source;
     App::PropertyFloatConstraint SegValue;

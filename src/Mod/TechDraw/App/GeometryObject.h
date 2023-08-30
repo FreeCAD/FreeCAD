@@ -23,6 +23,10 @@
 #ifndef TECHDRAW_GEOMETRYOBJECT_H
 #define TECHDRAW_GEOMETRYOBJECT_H
 
+//! a class to the projection of shapes, removal/identifying hidden lines and
+//  converting the output for OCC HLR into the BaseGeom intermediate representation.
+
+
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
 #include <memory>
@@ -37,6 +41,7 @@
 #include <Base/Vector3D.h>
 
 #include "Geometry.h"
+#include "ShapeUtils.h"
 
 
 namespace TechDraw
@@ -54,46 +59,6 @@ class BaseGeom;
 class Vector;
 class Face;
 class Vertex;
-
-//! scales & mirrors a shape about a center
-
-TopoDS_Shape TechDrawExport mirrorShapeVec(
-    const TopoDS_Shape& input, const Base::Vector3d& inputCenter = Base::Vector3d(0.0, 0.0, 0.0),
-    double scale = 1.0);
-
-TopoDS_Shape TechDrawExport mirrorShape(const TopoDS_Shape& input,
-                                        const gp_Pnt& inputCenter = gp_Pnt(0.0, 0.0, 0.0),
-                                        double scale = 1.0);
-
-TopoDS_Shape TechDrawExport scaleShape(const TopoDS_Shape& input, double scale);
-TopoDS_Shape TechDrawExport rotateShape(const TopoDS_Shape& input, const gp_Ax2& viewAxis,
-                                        double rotAngle);
-TopoDS_Shape TechDrawExport moveShape(const TopoDS_Shape& input, const Base::Vector3d& motion);
-TopoDS_Shape TechDrawExport moveShapeRestricted(const TopoDS_Shape& input,
-                                                const Base::Vector3d& motion, bool allowX = true,
-                                                bool allowY = true, bool allowZ = true);
-TopoDS_Shape TechDrawExport moveShapeRestricted(const TopoDS_Shape& input,
-                                                const Base::Vector3d& motion,
-                                                const Base::Vector3d& mask);
-TopoDS_Shape TechDrawExport moveShapeRestricted(const TopoDS_Shape& input, const gp_Vec& motion,
-                                                const gp_Vec& mask);
-TopoDS_Shape TechDrawExport centerShapeXY(const TopoDS_Shape& inShape, const gp_Ax2& coordSys);
-
-//! Returns the centroid of shape, as viewed according to direction
-gp_Pnt TechDrawExport findCentroid(const TopoDS_Shape& shape);
-gp_Pnt TechDrawExport findCentroid(const TopoDS_Shape& shape, const Base::Vector3d& direction);
-gp_Pnt TechDrawExport findCentroid(const TopoDS_Shape& shape, const gp_Ax2& viewAxis);
-Base::Vector3d TechDrawExport findCentroidVec(const TopoDS_Shape& shape,
-                                              const Base::Vector3d& direction);
-Base::Vector3d TechDrawExport findCentroidVec(const TopoDS_Shape& shape, const gp_Ax2& cs);
-gp_Pnt TechDrawExport findCentroidXY(const TopoDS_Shape& shape, const gp_Ax2& coordSys);
-
-gp_Ax2 TechDrawExport getViewAxis(const Base::Vector3d origin, const Base::Vector3d& direction,
-                                  const bool flip = true);
-gp_Ax2 TechDrawExport getViewAxis(const Base::Vector3d origin, const Base::Vector3d& direction,
-                                  const Base::Vector3d& xAxis, const bool flip = true);
-gp_Ax2 TechDrawExport legacyViewAxis1(const Base::Vector3d origin, const Base::Vector3d& direction,
-                                      const bool flip = true);
 
 class TechDrawExport GeometryObject
 {
@@ -136,9 +101,6 @@ public:
 
 
     void pruneVertexGeom(Base::Vector3d center, double radius);
-
-    //dupl mirrorShape???
-    static TopoDS_Shape invertGeometry(const TopoDS_Shape s);
 
     TopoDS_Shape getVisHard() { return visHard; }
     TopoDS_Shape getVisOutline() { return visOutline; }
@@ -210,3 +172,4 @@ using GeometryObjectPtr = std::shared_ptr<GeometryObject>;
 }//namespace TechDraw
 
 #endif
+

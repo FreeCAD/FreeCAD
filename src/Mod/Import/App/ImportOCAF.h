@@ -75,7 +75,7 @@ private:
     App::Document* doc;
     Handle(XCAFDoc_ShapeTool) aShapeTool;
     Handle(XCAFDoc_ColorTool) aColorTool;
-    bool merge;
+    bool merge{true};
     std::string default_name;
     std::set<int> myRefShapes;
     static const int HashUpper = INT_MAX;

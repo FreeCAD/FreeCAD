@@ -114,6 +114,7 @@ public:
 public:
     NavigationStyle();
     ~NavigationStyle() override;
+    NavigationStyle(const NavigationStyle&) = delete;
 
     NavigationStyle& operator = (const NavigationStyle& ns);
     void setViewer(View3DInventorViewer*);
@@ -231,7 +232,7 @@ protected:
         SbTime * time;
     } log;
 
-    View3DInventorViewer* viewer;
+    View3DInventorViewer* viewer{nullptr};
     ViewerMode currentmode;
     SoMouseButtonEvent mouseDownConsumedEvent;
     SbVec2f lastmouseposition;
@@ -250,7 +251,7 @@ protected:
 
     /** @name Mouse model */
     //@{
-    AbstractMouseSelection* mouseSelection;
+    AbstractMouseSelection* mouseSelection{nullptr};
     std::vector<SbVec2s> pcPolygon;
     SelectionRole selectedRole;
     //@}
@@ -265,7 +266,6 @@ protected:
     //@}
 
 private:
-    NavigationStyle(const NavigationStyle&);
     struct NavigationStyleP* pimpl;
     friend struct NavigationStyleP;
 };
@@ -283,8 +283,8 @@ class GuiExport UserNavigationStyle : public NavigationStyle {
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
-    UserNavigationStyle(){}
-    ~UserNavigationStyle() override{}
+    UserNavigationStyle() = default;
+    ~UserNavigationStyle() override = default;
     virtual const char* mouseButtons(ViewerMode) = 0;
     virtual std::string userFriendlyName() const;
     static std::map<Base::Type, std::string> getUserFriendlyNames();
@@ -319,7 +319,7 @@ protected:
     SbBool processSoEvent(const SoEvent * const ev) override;
 
 private:
-    SbBool lockButton1;
+    SbBool lockButton1{false};
 };
 
 class GuiExport RevitNavigationStyle : public UserNavigationStyle {
@@ -336,7 +336,7 @@ protected:
     SbBool processSoEvent(const SoEvent * const ev) override;
 
 private:
-    SbBool lockButton1;
+    SbBool lockButton1{false};
 };
 
 class GuiExport BlenderNavigationStyle : public UserNavigationStyle {
@@ -353,7 +353,7 @@ protected:
     SbBool processSoEvent(const SoEvent * const ev) override;
 
 private:
-    SbBool lockButton1;
+    SbBool lockButton1{false};
 };
 
 class GuiExport MayaGestureNavigationStyle : public UserNavigationStyle {

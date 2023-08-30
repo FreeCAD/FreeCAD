@@ -48,18 +48,6 @@ PROPERTY_SOURCE(PartGui::ViewProviderPartReference, Gui::ViewProviderGeometryObj
 // Construction/Destruction
 
 ViewProviderPartReference::ViewProviderPartReference()
-  : EdgeRoot(nullptr)
-  , FaceRoot(nullptr)
-  , VertexRoot(nullptr)
-  , pcLineMaterial(nullptr)
-  , pcPointMaterial(nullptr)
-  , pcLineStyle(nullptr)
-  , pcPointStyle(nullptr)
-  , pcControlPoints(nullptr)
-  , pShapeHints(nullptr)
-  , meshDeviation(0.01f)
-  , noPerVertexNormals(true)
-  , qualityNormals(false)
 {
     App::Material mat;
     mat.ambientColor.set(0.2f,0.2f,0.2f);

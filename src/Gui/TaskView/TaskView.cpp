@@ -62,9 +62,7 @@ TaskWidget::TaskWidget( QWidget *parent)
 
 }
 
-TaskWidget::~TaskWidget()
-{
-}
+TaskWidget::~TaskWidget() = default;
 
 //**************************************************************************
 //**************************************************************************
@@ -86,9 +84,7 @@ TaskGroup::TaskGroup(const QPixmap & icon, const QString & headerText, QWidget *
 {
 }
 
-TaskGroup::~TaskGroup()
-{
-}
+TaskGroup::~TaskGroup() = default;
 
 void TaskGroup::actionEvent (QActionEvent* e)
 {
@@ -154,12 +150,10 @@ QSize TaskBox::minimumSizeHint() const
     // respect the layout's minimum size.
     QSize s1 = QSint::ActionGroup::minimumSizeHint();
     QSize s2 = QWidget::minimumSizeHint();
-    return QSize(qMax(s1.width(), s2.width()), qMax(s1.height(), s2.height()));
+    return {qMax(s1.width(), s2.width()), qMax(s1.height(), s2.height())};
 }
 
-TaskBox::~TaskBox()
-{
-}
+TaskBox::~TaskBox() = default;
 
 void TaskBox::showEvent(QShowEvent*)
 {
@@ -247,9 +241,7 @@ TaskPanel::TaskPanel(QWidget *parent)
 {
 }
 
-TaskPanel::~TaskPanel()
-{
-}
+TaskPanel::~TaskPanel() = default;
 
 QSize TaskPanel::minimumSizeHint() const
 {
@@ -263,7 +255,7 @@ QSize TaskPanel::minimumSizeHint() const
     // respect the layout's minimum size.
     QSize s1 = QSint::ActionPanel::minimumSizeHint();
     QSize s2 = QWidget::minimumSizeHint();
-    return QSize(qMax(s1.width(), s2.width()), qMax(s1.height(), s2.height()));
+    return {qMax(s1.width(), s2.width()), qMax(s1.height(), s2.height())};
 }
 
 
@@ -604,8 +596,8 @@ void TaskView::updateWatcher()
 void TaskView::addTaskWatcher(const std::vector<TaskWatcher*> &Watcher)
 {
     // remove and delete the old set of TaskWatcher
-    for (std::vector<TaskWatcher*>::iterator it=ActiveWatcher.begin();it!=ActiveWatcher.end();++it)
-        delete *it;
+    for (TaskWatcher* tw : ActiveWatcher)
+        delete tw;
 
     ActiveWatcher = Watcher;
     addTaskWatcher();
@@ -622,10 +614,10 @@ void TaskView::clearTaskWatcher()
 void TaskView::addTaskWatcher()
 {
     // add all widgets for all watcher to the task view
-    for (std::vector<TaskWatcher*>::iterator it=ActiveWatcher.begin();it!=ActiveWatcher.end();++it){
-        std::vector<QWidget*> &cont = (*it)->getWatcherContent();
-        for (std::vector<QWidget*>::iterator it2=cont.begin();it2!=cont.end();++it2){
-            taskPanel->addWidget(*it2);
+    for (TaskWatcher* tw : ActiveWatcher) {
+        std::vector<QWidget*> &cont = tw->getWatcherContent();
+        for (QWidget* w : cont) {
+            taskPanel->addWidget(w);
         }
     }
 
@@ -668,11 +660,11 @@ void TaskView::removeTaskWatcher()
     }
 
     // remove all widgets
-    for (std::vector<TaskWatcher*>::iterator it=ActiveWatcher.begin();it!=ActiveWatcher.end();++it) {
-        std::vector<QWidget*> &cont = (*it)->getWatcherContent();
-        for (std::vector<QWidget*>::iterator it2=cont.begin();it2!=cont.end();++it2) {
-            (*it2)->hide();
-            taskPanel->removeWidget(*it2);
+    for (TaskWatcher* tw : ActiveWatcher) {
+        std::vector<QWidget*> &cont = tw->getWatcherContent();
+        for (QWidget* w : cont) {
+            w->hide();
+            taskPanel->removeWidget(w);
         }
     }
 

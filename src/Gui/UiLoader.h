@@ -91,7 +91,7 @@ class PySideUicModule : public Py::ExtensionModule<PySideUicModule>
 
 public:
     PySideUicModule();
-    ~PySideUicModule() override {}
+    ~PySideUicModule() override = default;
 
 private:
     Py::Object loadUiType(const Py::Tuple& args);

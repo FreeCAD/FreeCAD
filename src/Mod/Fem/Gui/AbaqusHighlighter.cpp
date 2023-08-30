@@ -39,9 +39,7 @@ AbaqusHighlighter::AbaqusHighlighter(QObject* parent)
 }
 
 /** Destroys this object. */
-AbaqusHighlighter::~AbaqusHighlighter()
-{
-}
+AbaqusHighlighter::~AbaqusHighlighter() = default;
 
 void AbaqusHighlighter::highlightBlock(const QString& text)
 {

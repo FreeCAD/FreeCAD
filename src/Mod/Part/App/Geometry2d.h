@@ -66,9 +66,9 @@ public:
 protected:
     Geometry2d();
 
-private:
-    Geometry2d(const Geometry2d&);
-    Geometry2d& operator = (const Geometry2d&);
+public:
+    Geometry2d(const Geometry2d&) = delete;
+    Geometry2d& operator = (const Geometry2d&) = delete;
 };
 
 class PartExport Geom2dPoint : public Geometry2d

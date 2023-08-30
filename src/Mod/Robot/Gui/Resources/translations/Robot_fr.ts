@@ -356,17 +356,17 @@
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../CommandInsertRobot.cpp" line="229"/>
-      <location filename="../../CommandTrajectory.cpp" line="104"/>
-      <location filename="../../CommandTrajectory.cpp" line="160"/>
-      <location filename="../../CommandTrajectory.cpp" line="177"/>
-      <location filename="../../CommandTrajectory.cpp" line="406"/>
       <location filename="../../Command.cpp" line="71"/>
       <location filename="../../Command.cpp" line="120"/>
       <location filename="../../Command.cpp" line="220"/>
       <location filename="../../Command.cpp" line="249"/>
       <location filename="../../CommandExport.cpp" line="61"/>
       <location filename="../../CommandExport.cpp" line="123"/>
+      <location filename="../../CommandInsertRobot.cpp" line="229"/>
+      <location filename="../../CommandTrajectory.cpp" line="104"/>
+      <location filename="../../CommandTrajectory.cpp" line="160"/>
+      <location filename="../../CommandTrajectory.cpp" line="177"/>
+      <location filename="../../CommandTrajectory.cpp" line="406"/>
       <source>Wrong selection</source>
       <translation>Mauvaise sélection</translation>
     </message>
@@ -381,11 +381,11 @@
       <translation>Sélectionnez un robot</translation>
     </message>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="105"/>
       <location filename="../../Command.cpp" line="221"/>
       <location filename="../../Command.cpp" line="250"/>
       <location filename="../../CommandExport.cpp" line="62"/>
       <location filename="../../CommandExport.cpp" line="124"/>
+      <location filename="../../CommandTrajectory.cpp" line="105"/>
       <source>Select one Robot and one Trajectory object.</source>
       <translation>Sélectionnez un robot et une trajectoire.</translation>
     </message>
@@ -480,12 +480,12 @@ pour utiliser cette commande. Consultez la documentation pour plus de détails.<
       <translation>Modifier</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="79"/>
+      <location filename="../../Workbench.cpp" line="75"/>
       <source>No robot files installed</source>
       <translation>Aucun fichier de robot installé</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="80"/>
+      <location filename="../../Workbench.cpp" line="76"/>
       <source>Please visit %1 and copy the files to %2</source>
       <translation>Visitez %1 et copiez les fichiers vers %2</translation>
     </message>
@@ -559,11 +559,6 @@ pour utiliser cette commande. Consultez la documentation pour plus de détails.<
   <context>
     <name>RobotGui::TaskRobot6Axis</name>
     <message>
-      <location filename="../../TaskRobot6Axis.ui" line="14"/>
-      <source>Form</source>
-      <translation>Formulaire</translation>
-    </message>
-    <message>
       <location filename="../../TaskRobot6Axis.ui" line="22"/>
       <source>A1</source>
       <translation>A1</translation>
@@ -627,11 +622,6 @@ pour utiliser cette commande. Consultez la documentation pour plus de détails.<
   </context>
   <context>
     <name>RobotGui::TaskTrajectory</name>
-    <message>
-      <location filename="../../TaskTrajectory.ui" line="20"/>
-      <source>Form</source>
-      <translation>Formulaire</translation>
-    </message>
     <message>
       <location filename="../../TaskTrajectory.ui" line="58"/>
       <source>|&lt;</source>
@@ -729,11 +719,6 @@ pour utiliser cette commande. Consultez la documentation pour plus de détails.<
   <context>
     <name>TaskEdge2TracParameter</name>
     <message>
-      <location filename="../../TaskEdge2TracParameter.ui" line="14"/>
-      <source>Form</source>
-      <translation>Forme</translation>
-    </message>
-    <message>
       <location filename="../../TaskEdge2TracParameter.ui" line="29"/>
       <source>Hide / Show</source>
       <translation>Afficher / Masquer</translation>
@@ -761,11 +746,6 @@ pour utiliser cette commande. Consultez la documentation pour plus de détails.<
   </context>
   <context>
     <name>TaskRobotControl</name>
-    <message>
-      <location filename="../../TaskRobotControl.ui" line="14"/>
-      <source>Form</source>
-      <translation>Forme</translation>
-    </message>
     <message>
       <location filename="../../TaskRobotControl.ui" line="37"/>
       <source>X+</source>
@@ -880,11 +860,6 @@ pour utiliser cette commande. Consultez la documentation pour plus de détails.<
   <context>
     <name>TaskRobotMessages</name>
     <message>
-      <location filename="../../TaskRobotMessages.ui" line="14"/>
-      <source>Form</source>
-      <translation>Forme</translation>
-    </message>
-    <message>
       <location filename="../../TaskRobotMessages.ui" line="20"/>
       <source>clear</source>
       <translation>Effacer</translation>
@@ -892,11 +867,6 @@ pour utiliser cette commande. Consultez la documentation pour plus de détails.<
   </context>
   <context>
     <name>TaskTrajectoryDressUpParameter</name>
-    <message>
-      <location filename="../../TaskTrajectoryDressUpParameter.ui" line="14"/>
-      <source>Form</source>
-      <translation>Forme</translation>
-    </message>
     <message>
       <location filename="../../TaskTrajectoryDressUpParameter.ui" line="20"/>
       <source>Speed &amp; Acceleration:</source>

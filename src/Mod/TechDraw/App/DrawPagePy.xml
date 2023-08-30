@@ -28,6 +28,13 @@
         <UserDocu>getAllViews() - returns a list of all the views on page including Views inside Collections</UserDocu>
       </Documentation>
     </Methode>
+    <Methode Name="translateLabel">
+      <Documentation>
+        <UserDocu>translateLabel(translationContext, objectBaseName, objectUniqueName).
+         No return value.  Replace the current label with a translated version where possible.
+        </UserDocu>
+      </Documentation>
+    </Methode>
     <Attribute Name="PageWidth" ReadOnly="true">
       <Documentation>
         <UserDocu>Returns the width of this page</UserDocu>

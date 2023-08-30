@@ -41,6 +41,7 @@
 #include "DrawViewDimension.h"
 #include "DrawViewPart.h"
 #include "Preferences.h"
+#include "DrawUtil.h"
 
 
 using namespace TechDraw;
@@ -466,6 +467,13 @@ bool DrawPage::GlobalUpdateDrawings(void)
 bool DrawPage::AllowPageOverride(void)
 {
     return Preferences::getPreferenceGroup("General")->GetBool("AllowPageOverride", true);
+}
+
+//! get a translated label string from the context (ex TaskActiveView), the base name (ex ActiveView) and
+//! the unique name within the document (ex ActiveView001), and use it to update the Label property.
+void DrawPage::translateLabel(std::string context, std::string baseName, std::string uniqueName)
+{
+    Label.setValue(DrawUtil::translateArbitrary(context, baseName, uniqueName));
 }
 
 

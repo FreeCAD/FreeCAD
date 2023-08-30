@@ -128,38 +128,38 @@ void CmdMeshPartTrimByPlane::activated(int)
 
     openCommand(QT_TRANSLATE_NOOP("Command", "Trim with plane"));
     std::vector<App::DocumentObject*> docObj = Gui::Selection().getObjectsOfType(Mesh::Feature::getClassTypeId());
-    for (std::vector<App::DocumentObject*>::iterator it = docObj.begin(); it != docObj.end(); ++it) {
+    for (auto it : docObj) {
         Base::Vector3d normal(0,0,1);
         plnPlacement.getRotation().multVec(normal, normal);
         Base::Vector3d base = plnPlacement.getPosition();
 
-        Mesh::MeshObject* mesh = static_cast<Mesh::Feature*>(*it)->Mesh.startEditing();
+        Mesh::MeshObject* mesh = static_cast<Mesh::Feature*>(it)->Mesh.startEditing();
 
         Base::Vector3f plnBase = Base::convertTo<Base::Vector3f>(base);
         Base::Vector3f plnNormal = Base::convertTo<Base::Vector3f>(normal);
 
         if (role == Gui::SelectionRole::Inner) {
             mesh->trimByPlane(plnBase, plnNormal);
-            static_cast<Mesh::Feature*>(*it)->Mesh.finishEditing();
+            static_cast<Mesh::Feature*>(it)->Mesh.finishEditing();
         }
         else if (role == Gui::SelectionRole::Outer) {
             mesh->trimByPlane(plnBase, -plnNormal);
-            static_cast<Mesh::Feature*>(*it)->Mesh.finishEditing();
+            static_cast<Mesh::Feature*>(it)->Mesh.finishEditing();
         }
         else if (role == Gui::SelectionRole::Split) {
             Mesh::MeshObject copy(*mesh);
             mesh->trimByPlane(plnBase, plnNormal);
-            static_cast<Mesh::Feature*>(*it)->Mesh.finishEditing();
+            static_cast<Mesh::Feature*>(it)->Mesh.finishEditing();
 
             copy.trimByPlane(plnBase, -plnNormal);
-            App::Document* doc = (*it)->getDocument();
+            App::Document* doc = it->getDocument();
             Mesh::Feature* fea = static_cast<Mesh::Feature*>(doc->addObject("Mesh::Feature"));
-            fea->Label.setValue((*it)->Label.getValue());
+            fea->Label.setValue(it->Label.getValue());
             Mesh::MeshObject* feamesh = fea->Mesh.startEditing();
             feamesh->swap(copy);
             fea->Mesh.finishEditing();
         }
-        (*it)->purgeTouched();
+        it->purgeTouched();
     }
     commitCommand();
 }
@@ -217,8 +217,8 @@ void CmdMeshPartSection::activated(int)
     Py::Callable makeWire(partModule.getAttr("makePolygon"));
     Py::Module appModule(PyImport_ImportModule("FreeCAD"), true);
     Py::Callable addObject(appModule.getAttr("ActiveDocument").getAttr("addObject"));
-    for (std::vector<App::DocumentObject*>::iterator it = docObj.begin(); it != docObj.end(); ++it) {
-        const Mesh::MeshObject* mesh = static_cast<Mesh::Feature*>(*it)->Mesh.getValuePtr();
+    for (auto it : docObj) {
+        const Mesh::MeshObject* mesh = static_cast<Mesh::Feature*>(it)->Mesh.getValuePtr();
         std::vector<Mesh::MeshObject::TPolylines> polylines;
         mesh->crossSections(sections, polylines);
 
@@ -282,8 +282,8 @@ void CmdMeshPartCrossSections::activated(int iMsg)
         std::vector<App::DocumentObject*> obj = Gui::Selection().getObjectsOfType
             (Mesh::Feature::getClassTypeId());
         Base::BoundBox3d bbox;
-        for (std::vector<App::DocumentObject*>::iterator it = obj.begin(); it != obj.end(); ++it) {
-            bbox.Add(static_cast<Mesh::Feature*>(*it)->Mesh.getBoundingBox());
+        for (auto it : obj) {
+            bbox.Add(static_cast<Mesh::Feature*>(it)->Mesh.getBoundingBox());
         }
         dlg = new MeshPartGui::TaskCrossSections(bbox);
     }

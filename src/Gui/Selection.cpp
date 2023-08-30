@@ -38,6 +38,7 @@
 #include <Base/Interpreter.h>
 #include <Base/Tools.h>
 #include <Base/UnitsApi.h>
+#include <Base/PyWrapParseTupleAndKeywords.h>
 
 #include "Selection.h"
 #include "SelectionObject.h"
@@ -47,6 +48,7 @@
 #include "MainWindow.h"
 #include "MDIView.h"
 #include "SelectionFilter.h"
+#include "SelectionFilterPy.h"
 #include "SelectionObserverPython.h"
 #include "Tree.h"
 #include "ViewProviderDocumentObject.h"
@@ -517,7 +519,7 @@ std::vector<App::DocumentObject*> SelectionSingleton::getObjectsOfType(const cha
 {
     Base::Type typeId = Base::Type::fromName(typeName);
     if (typeId == Base::Type::badType())
-        return std::vector<App::DocumentObject*>();
+        return {};
     return getObjectsOfType(typeId, pDocName, resolve);
 }
 
@@ -1150,8 +1152,7 @@ bool SelectionSingleton::addSelection(const SelectionObject& obj, bool clearPres
     }
     else if (!subNames.empty()) {
         bool ok = true;
-        for (std::size_t i=0; i<subNames.size(); i++) {
-            const std::string& name = subNames[i];
+        for (const std::string& name : subNames) {
             ok &= addSelection(obj.getDocName(), obj.getFeatName(), name.c_str());
         }
         return ok;
@@ -1608,7 +1609,6 @@ void SelectionSingleton::slotDeletedObject(const App::DocumentObject& Obj)
  */
 SelectionSingleton::SelectionSingleton()
     :CurrentPreselection(SelectionChanges::ClrSelection)
-    ,_needPickedList(false)
 {
     hx = 0;
     hy = 0;
@@ -1625,9 +1625,7 @@ SelectionSingleton::SelectionSingleton()
  * A destructor.
  * A more elaborate description of the destructor.
  */
-SelectionSingleton::~SelectionSingleton()
-{
-}
+SelectionSingleton::~SelectionSingleton() = default;
 
 SelectionSingleton* SelectionSingleton::_pcSingleton = nullptr;
 
@@ -2105,9 +2103,9 @@ PyObject *SelectionSingleton::sSetPreselection(PyObject * /*self*/, PyObject *ar
     char* subname = nullptr;
     float x = 0, y = 0, z = 0;
     int type = 1;
-    static char *kwlist[] = {"obj","subname","x","y","z","tp",nullptr};
-    if (PyArg_ParseTupleAndKeywords(args, kwd, "O!|sfffi", kwlist,
-                &(App::DocumentObjectPy::Type),&object,&subname,&x,&y,&z,&type)) {
+    static const std::array<const char *, 7> kwlist{"obj", "subname", "x", "y", "z", "tp", nullptr};
+    if (Base::Wrapped_ParseTupleAndKeywords(args, kwd, "O!|sfffi", kwlist, &(App::DocumentObjectPy::Type), &object,
+                                            &subname, &x, &y, &z, &type)) {
         auto docObjPy = static_cast<App::DocumentObjectPy*>(object);
         App::DocumentObject* docObj = docObjPy->getDocumentObjectPtr();
         if (!docObj || !docObj->getNameInDocument()) {
@@ -2305,7 +2303,7 @@ PyObject *SelectionSingleton::sAddSelectionGate(PyObject * /*self*/, PyObject *a
     if (PyArg_ParseTuple(args, "O!|i",SelectionFilterPy::type_object(),&filterPy,resolve)) {
         PY_TRY {
             Selection().addSelectionGate(new SelectionFilterGatePython(
-                        static_cast<SelectionFilterPy*>(filterPy)), toEnum(resolve));
+                        SelectionFilterPy::cast(filterPy)), toEnum(resolve));
             Py_Return;
         }
         PY_CATCH;

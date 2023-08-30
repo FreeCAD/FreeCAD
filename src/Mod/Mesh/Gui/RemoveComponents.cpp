@@ -211,9 +211,7 @@ RemoveComponentsDialog::RemoveComponentsDialog(QWidget* parent, Qt::WindowFlags 
     hboxLayout->addWidget(buttonBox);
 }
 
-RemoveComponentsDialog::~RemoveComponentsDialog()
-{
-}
+RemoveComponentsDialog::~RemoveComponentsDialog() = default;
 
 void RemoveComponentsDialog::reject()
 {
@@ -247,11 +245,6 @@ TaskRemoveComponents::TaskRemoveComponents()
         QPixmap(), widget->windowTitle(), false, nullptr);
     taskbox->groupLayout()->addWidget(widget);
     Content.push_back(taskbox);
-}
-
-TaskRemoveComponents::~TaskRemoveComponents()
-{
-    // automatically deleted in the sub-class
 }
 
 void TaskRemoveComponents::modifyStandardButtons(QDialogButtonBox* box)

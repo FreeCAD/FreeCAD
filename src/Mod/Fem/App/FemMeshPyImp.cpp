@@ -811,8 +811,8 @@ PyObject* FemMeshPy::getNodesBySolid(PyObject *args)
         }
         Py::List ret;
         std::set<int> resultSet = getFemMeshPtr()->getNodesBySolid(fc);
-        for (std::set<int>::const_iterator it = resultSet.begin();it!=resultSet.end();++it)
-            ret.append(Py::Long(*it));
+        for (int it : resultSet)
+            ret.append(Py::Long(it));
 
         return Py::new_reference_to(ret);
 
@@ -838,8 +838,8 @@ PyObject* FemMeshPy::getNodesByFace(PyObject *args)
         }
         Py::List ret;
         std::set<int> resultSet = getFemMeshPtr()->getNodesByFace(fc);
-        for (std::set<int>::const_iterator it = resultSet.begin();it!=resultSet.end();++it)
-            ret.append(Py::Long(*it));
+        for (int it : resultSet)
+            ret.append(Py::Long(it));
 
         return Py::new_reference_to(ret);
 
@@ -865,8 +865,8 @@ PyObject* FemMeshPy::getNodesByEdge(PyObject *args)
         }
         Py::List ret;
         std::set<int> resultSet = getFemMeshPtr()->getNodesByEdge(fc);
-        for (std::set<int>::const_iterator it = resultSet.begin();it!=resultSet.end();++it)
-            ret.append(Py::Long(*it));
+        for (int it : resultSet)
+            ret.append(Py::Long(it));
 
         return Py::new_reference_to(ret);
 
@@ -892,8 +892,8 @@ PyObject* FemMeshPy::getNodesByVertex(PyObject *args)
         }
         Py::List ret;
         std::set<int> resultSet = getFemMeshPtr()->getNodesByVertex(fc);
-        for (std::set<int>::const_iterator it = resultSet.begin();it!=resultSet.end();++it)
-            ret.append(Py::Long(*it));
+        for (int it : resultSet)
+            ret.append(Py::Long(it));
 
         return Py::new_reference_to(ret);
 
@@ -957,8 +957,8 @@ PyObject* FemMeshPy::getNodeElements(PyObject* args)
     std::list<int> elemList = getFemMeshPtr()->getNodeElements(id, elemType);
     Py::Tuple result(elemList.size());
     int index = 0;
-    for (std::list<int>::iterator it = elemList.begin(); it != elemList.end(); ++it) {
-        result.setItem(index++, Py::Long(*it));
+    for (int it : elemList) {
+        result.setItem(index++, Py::Long(it));
     }
 
     return Py::new_reference_to(result);
@@ -1021,8 +1021,8 @@ PyObject* FemMeshPy::getGroupElements(PyObject *args)
 
     Py::Tuple tuple(ids.size());
     int index = 0;
-    for (std::set<int>::iterator it = ids.begin(); it != ids.end(); ++it) {
-        tuple.setItem(index++, Py::Long(*it));
+    for (int it : ids) {
+        tuple.setItem(index++, Py::Long(it));
     }
 
     return Py::new_reference_to(tuple);
@@ -1092,8 +1092,8 @@ PyObject* FemMeshPy::addGroupElements(PyObject *args)
 
     // Downcast Py_ssize_t to int to be compatible with SMESH functions
     std::set<int> int_ids;
-    for (std::set<Py_ssize_t>::iterator it = ids.begin(); it != ids.end(); ++it)
-        int_ids.insert(Py_SAFE_DOWNCAST(*it, Py_ssize_t, int));
+    for (Py_ssize_t it : ids)
+        int_ids.insert(Py_SAFE_DOWNCAST(it, Py_ssize_t, int));
 
     try
     {
@@ -1166,8 +1166,8 @@ PyObject* FemMeshPy::getIdByElementType(PyObject *args)
 
     Py::Tuple tuple(ids.size());
     int index = 0;
-    for (std::set<int>::iterator it = ids.begin(); it != ids.end(); ++it) {
-        tuple.setItem(index++, Py::Long(*it));
+    for (int it : ids) {
+        tuple.setItem(index++, Py::Long(it));
     }
 
     return Py::new_reference_to(tuple);
@@ -1214,8 +1214,8 @@ Py::Tuple FemMeshPy::getEdges() const
 
     Py::Tuple tuple(ids.size());
     int index = 0;
-    for (std::set<int>::iterator it = ids.begin(); it != ids.end(); ++it) {
-        tuple.setItem(index++, Py::Long(*it));
+    for (int it : ids) {
+        tuple.setItem(index++, Py::Long(it));
     }
 
     return tuple;
@@ -1226,8 +1226,8 @@ Py::Tuple FemMeshPy::getEdgesOnly() const
     std::set<int> resultSet = getFemMeshPtr()->getEdgesOnly();
     Py::Tuple tuple(resultSet.size());
     int index = 0;
-    for (std::set<int>::iterator it = resultSet.begin(); it != resultSet.end(); ++it) {
-        tuple.setItem(index++, Py::Long(*it));
+    for (int it : resultSet) {
+        tuple.setItem(index++, Py::Long(it));
     }
 
     return tuple;
@@ -1249,8 +1249,8 @@ Py::Tuple FemMeshPy::getFaces() const
 
     Py::Tuple tuple(ids.size());
     int index = 0;
-    for (std::set<int>::iterator it = ids.begin(); it != ids.end(); ++it) {
-        tuple.setItem(index++, Py::Long(*it));
+    for (int it : ids) {
+        tuple.setItem(index++, Py::Long(it));
     }
 
     return tuple;
@@ -1261,8 +1261,8 @@ Py::Tuple FemMeshPy::getFacesOnly() const
     std::set<int> resultSet = getFemMeshPtr()->getFacesOnly();
     Py::Tuple tuple(resultSet.size());
     int index = 0;
-    for (std::set<int>::iterator it = resultSet.begin(); it != resultSet.end(); ++it) {
-        tuple.setItem(index++, Py::Long(*it));
+    for (int it : resultSet) {
+        tuple.setItem(index++, Py::Long(it));
     }
 
     return tuple;
@@ -1299,8 +1299,8 @@ Py::Tuple FemMeshPy::getVolumes() const
 
     Py::Tuple tuple(ids.size());
     int index = 0;
-    for (std::set<int>::iterator it = ids.begin(); it != ids.end(); ++it) {
-        tuple.setItem(index++, Py::Long(*it));
+    for (int it : ids) {
+        tuple.setItem(index++, Py::Long(it));
     }
 
     return tuple;
@@ -1352,8 +1352,8 @@ Py::Tuple FemMeshPy::getGroups() const
 
     Py::Tuple tuple(groupIDs.size());
     int index = 0;
-    for (std::list<int>::iterator it = groupIDs.begin(); it != groupIDs.end(); ++it) {
-        tuple.setItem(index++, Py::Long(*it));
+    for (int it : groupIDs) {
+        tuple.setItem(index++, Py::Long(it));
     }
 
     return tuple;

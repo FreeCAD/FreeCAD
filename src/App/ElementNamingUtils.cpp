@@ -12,7 +12,7 @@ const char *Data::isMappedElement(const char *name) {
 
 std::string Data::newElementName(const char *name) {
     if(!name)
-        return std::string();
+        return {};
     const char *dot = strrchr(name,'.');
     if(!dot || dot==name)
         return name;
@@ -30,7 +30,7 @@ std::string Data::newElementName(const char *name) {
 
 std::string Data::oldElementName(const char *name) {
     if(!name)
-        return std::string();
+        return {};
     const char *dot = strrchr(name,'.');
     if(!dot || dot==name)
         return name;
@@ -48,7 +48,7 @@ std::string Data::oldElementName(const char *name) {
 
 std::string Data::noElementName(const char *name) {
     if(!name)
-        return std::string();
+        return {};
     auto element = findElementName(name);
     if(element)
         return std::string(name,element-name);

@@ -613,8 +613,10 @@ public:
 private:
     void increaseIndent();
     void decreaseIndent();
-    InventorBuilder (const InventorBuilder&);
-    void operator = (const InventorBuilder&);
+
+public:
+    InventorBuilder (const InventorBuilder&) = delete;
+    void operator = (const InventorBuilder&) = delete;
 
 private:
     std::ostream& result;

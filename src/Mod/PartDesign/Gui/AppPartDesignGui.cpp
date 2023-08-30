@@ -85,8 +85,6 @@ public:
         initialize("This module is the PartDesignGui module."); // register with Python
     }
 
-    ~Module() override {}
-
 private:
 };
 

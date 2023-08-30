@@ -140,9 +140,7 @@ SmoothingDialog::SmoothingDialog(QWidget* parent, Qt::WindowFlags fl)
     hboxLayout->addWidget(buttonBox);
 }
 
-SmoothingDialog::~SmoothingDialog()
-{
-}
+SmoothingDialog::~SmoothingDialog() = default;
 
 // ---------------------------------------
 
@@ -168,11 +166,6 @@ TaskSmoothing::TaskSmoothing()
             tasksel, &QWidget::setVisible);
 }
 
-TaskSmoothing::~TaskSmoothing()
-{
-    // automatically deleted in the sub-class
-}
-
 bool TaskSmoothing::accept()
 {
     std::vector<App::DocumentObject*> meshes = selection->getObjects();
@@ -183,8 +176,8 @@ bool TaskSmoothing::accept()
     Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Mesh Smoothing"));
 
     bool hasSelection = false;
-    for (std::vector<App::DocumentObject*>::const_iterator it = meshes.begin(); it != meshes.end(); ++it) {
-        Mesh::Feature* mesh = static_cast<Mesh::Feature*>(*it);
+    for (auto it : meshes) {
+        Mesh::Feature* mesh = static_cast<Mesh::Feature*>(it);
         std::vector<Mesh::FacetIndex> selection;
         if (widget->smoothSelection()) {
             // clear the selection before editing the mesh to avoid

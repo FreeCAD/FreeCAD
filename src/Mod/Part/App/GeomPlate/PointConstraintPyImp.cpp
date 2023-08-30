@@ -27,6 +27,7 @@
 #endif
 
 #include <Base/VectorPy.h>
+#include <Base/PyWrapParseTupleAndKeywords.h>
 
 #include "GeomPlate/PointConstraintPy.h"
 #include "GeomPlate/PointConstraintPy.cpp"
@@ -47,10 +48,11 @@ int PointConstraintPy::PyInit(PyObject* args, PyObject* kwds)
     int order = 0;
     double tolDist = 0.0001;
 
-    static char* keywords[] = {"Point", "Order", "TolDist", nullptr};
-    if (!PyArg_ParseTupleAndKeywords(args, kwds, "O!|id", keywords,
-                                     &(Base::VectorPy::Type), &pt, &order, &tolDist))
+    static const std::array<const char *, 4> keywords {"Point", "Order", "TolDist", nullptr};
+    if (!Base::Wrapped_ParseTupleAndKeywords(args, kwds, "O!|id", keywords, &(Base::VectorPy::Type), &pt, &order,
+                                             &tolDist)) {
         return -1;
+    }
 
     try {
         std::unique_ptr<GeomPlate_PointConstraint> ptr;
@@ -70,7 +72,7 @@ int PointConstraintPy::PyInit(PyObject* args, PyObject* kwds)
 // returns a string which represents the object e.g. when printed in python
 std::string PointConstraintPy::representation() const
 {
-    return std::string("<GeomPlate_PointConstraint object>");
+    return {"<GeomPlate_PointConstraint object>"};
 }
 
 PyObject* PointConstraintPy::setOrder(PyObject *args)

@@ -976,8 +976,8 @@ def createFromProperties(propsets,ifcfile,parametrics):
     if appset:
         oname = None
         otype = None
-        if "FreeCADType" in appset.keys():
-            if "FreeCADName" in appset.keys():
+        if "FreeCADType" in appset:
+            if "FreeCADName" in appset:
                 obj = FreeCAD.ActiveDocument.addObject(appset["FreeCADType"],appset["FreeCADName"])
                 if "FreeCADAppObject" in appset:
                     mod,cla = appset["FreeCADAppObject"].split(".")

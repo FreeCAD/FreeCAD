@@ -54,9 +54,7 @@ ViewProviderPlacement::ViewProviderPlacement()
     OnTopWhenSelected.setValue(1);
 }
 
-ViewProviderPlacement::~ViewProviderPlacement()
-{
-}
+ViewProviderPlacement::~ViewProviderPlacement() = default;
 
 void ViewProviderPlacement::onChanged(const App::Property* prop)
 {

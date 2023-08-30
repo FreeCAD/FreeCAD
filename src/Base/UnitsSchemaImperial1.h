@@ -41,7 +41,7 @@ public:
     //virtual void setSchemaUnits(void);
     //virtual void resetSchemaUnits(void);
     QString schemaTranslate(const Base::Quantity& quant, double &factor, QString &unitString) override;
-    std::string getBasicLengthUnit() const override { return std::string("in"); }
+    std::string getBasicLengthUnit() const override { return {"in"}; }
 };
 
 /** The schema class for the imperial unit system
@@ -54,7 +54,7 @@ public:
     //virtual void setSchemaUnits(void);
     //virtual void resetSchemaUnits(void);
     QString schemaTranslate(const Base::Quantity& quant, double &factor, QString &unitString) override;
-    std::string getBasicLengthUnit() const override { return std::string("in"); }
+    std::string getBasicLengthUnit() const override { return {"in"}; }
 };
 
 /** The schema class for the imperial unit system
@@ -67,7 +67,7 @@ public:
     //virtual void setSchemaUnits(void);
     //virtual void resetSchemaUnits(void);
     QString schemaTranslate(const Base::Quantity& quant, double &factor, QString &unitString) override;
-    std::string getBasicLengthUnit() const override { return std::string("ft"); }
+    std::string getBasicLengthUnit() const override { return {"ft"}; }
 
     //return true if this schema uses multiple units for length (ex. Ft/In)
     bool isMultiUnitLength() const override {return true;}
@@ -84,7 +84,7 @@ public:
     //virtual void setSchemaUnits(void);
     //virtual void resetSchemaUnits(void);
     QString schemaTranslate(const Base::Quantity& quant, double &factor, QString &unitString) override;
-    std::string getBasicLengthUnit() const override { return std::string("ft"); }
+    std::string getBasicLengthUnit() const override { return {"ft"}; }
 
     //return true if this schema uses multiple units for angles (ex. DMS)
     bool isMultiUnitAngle() const override {return true;}

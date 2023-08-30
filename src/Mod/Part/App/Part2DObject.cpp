@@ -99,7 +99,7 @@ Base::Axis Part2DObject::getAxis(int axId) const
     else if (axId == N_Axis) {
         return Base::Axis(Base::Vector3d(0,0,0), Base::Vector3d(0,0,1));
     }
-    return Base::Axis();
+    return {};
 }
 
 bool Part2DObject::seekTrimPoints(const std::vector<Geometry *> &geomlist,

@@ -48,9 +48,7 @@ DlgDecimating::DlgDecimating(QWidget* parent, Qt::WindowFlags fl)
     onCheckAbsoluteNumberToggled(false);
 }
 
-DlgDecimating::~DlgDecimating()
-{
-}
+DlgDecimating::~DlgDecimating() = default;
 
 bool DlgDecimating::isAbsoluteNumber() const
 {
@@ -136,11 +134,6 @@ TaskDecimating::TaskDecimating()
     }
 }
 
-TaskDecimating::~TaskDecimating()
-{
-    // automatically deleted in the sub-class
-}
-
 bool TaskDecimating::accept()
 {
     std::vector<Mesh::Feature*> meshes = Gui::Selection().getObjectsOfType<Mesh::Feature>();
@@ -159,8 +152,7 @@ bool TaskDecimating::accept()
     if (absolute) {
         targetSize = widget->targetNumberOfTriangles();
     }
-    for (std::vector<Mesh::Feature*>::const_iterator it = meshes.begin(); it != meshes.end(); ++it) {
-        Mesh::Feature* mesh = *it;
+    for (auto mesh : meshes) {
         Mesh::MeshObject* mm = mesh->Mesh.startEditing();
         if (absolute) {
             mm->decimate(targetSize);

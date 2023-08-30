@@ -45,8 +45,7 @@ FemPostFilter::FemPostFilter()
     ADD_PROPERTY(Input,(nullptr));
 }
 
-FemPostFilter::~FemPostFilter()
-{}
+FemPostFilter::~FemPostFilter() = default;
 
 void FemPostFilter::addFilterPipeline(const FemPostFilter::FilterPipeline& p, std::string name)
 {
@@ -101,10 +100,9 @@ vtkDataObject* FemPostFilter::getInputData()
         //get the pipeline and use the pipelinedata
         std::vector<App::DocumentObject*> objs =
             getDocument()->getObjectsOfType(FemPostPipeline::getClassTypeId());
-        for (std::vector<App::DocumentObject*>::iterator it = objs.begin(); it != objs.end();
-             ++it) {
-            if (static_cast<FemPostPipeline*>(*it)->holdsPostObject(this))
-                return static_cast<FemPostObject*>(*it)->Data.getValue();
+        for (auto it : objs) {
+            if (static_cast<FemPostPipeline*>(it)->holdsPostObject(this))
+                return static_cast<FemPostObject*>(it)->Data.getValue();
         }
     }
 
@@ -176,8 +174,7 @@ FemPostDataAlongLineFilter::FemPostDataAlongLineFilter()
     setActiveFilterPipeline("DataAlongLine");
 }
 
-FemPostDataAlongLineFilter::~FemPostDataAlongLineFilter()
-{}
+FemPostDataAlongLineFilter::~FemPostDataAlongLineFilter() = default;
 
 DocumentObjectExecReturn* FemPostDataAlongLineFilter::execute()
 {
@@ -326,8 +323,7 @@ FemPostDataAtPointFilter::FemPostDataAtPointFilter()
     setActiveFilterPipeline("DataAtPoint");
 }
 
-FemPostDataAtPointFilter::~FemPostDataAtPointFilter()
-{}
+FemPostDataAtPointFilter::~FemPostDataAtPointFilter() = default;
 
 DocumentObjectExecReturn* FemPostDataAtPointFilter::execute()
 {
@@ -422,8 +418,7 @@ FemPostClipFilter::FemPostClipFilter()
     setActiveFilterPipeline("extract");
 }
 
-FemPostClipFilter::~FemPostClipFilter()
-{}
+FemPostClipFilter::~FemPostClipFilter() = default;
 
 void FemPostClipFilter::onChanged(const Property* prop)
 {
@@ -498,8 +493,7 @@ FemPostContoursFilter::FemPostContoursFilter()
     setActiveFilterPipeline("contours");
 }
 
-FemPostContoursFilter::~FemPostContoursFilter()
-{}
+FemPostContoursFilter::~FemPostContoursFilter() = default;
 
 DocumentObjectExecReturn* FemPostContoursFilter::execute()
 {
@@ -745,8 +739,7 @@ FemPostCutFilter::FemPostCutFilter()
     setActiveFilterPipeline("cut");
 }
 
-FemPostCutFilter::~FemPostCutFilter()
-{}
+FemPostCutFilter::~FemPostCutFilter() = default;
 
 void FemPostCutFilter::onChanged(const Property* prop)
 {
@@ -799,9 +792,7 @@ FemPostScalarClipFilter::FemPostScalarClipFilter() : FemPostFilter() {
     setActiveFilterPipeline("clip");
 }
 
-FemPostScalarClipFilter::~FemPostScalarClipFilter() {
-
-}
+FemPostScalarClipFilter::~FemPostScalarClipFilter() = default;
 
 DocumentObjectExecReturn* FemPostScalarClipFilter::execute()
 {
@@ -907,8 +898,7 @@ FemPostWarpVectorFilter::FemPostWarpVectorFilter() : FemPostFilter()
     setActiveFilterPipeline("warp");
 }
 
-FemPostWarpVectorFilter::~FemPostWarpVectorFilter()
-{}
+FemPostWarpVectorFilter::~FemPostWarpVectorFilter() = default;
 
 DocumentObjectExecReturn* FemPostWarpVectorFilter::execute()
 {

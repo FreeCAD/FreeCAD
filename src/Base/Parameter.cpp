@@ -54,9 +54,6 @@
 
 FC_LOG_LEVEL_INIT("Parameter", true, true)
 
-//#ifdef XERCES_HAS_CPP_NAMESPACE
-//  using namespace xercesc;
-//#endif
 
 XERCES_CPP_NAMESPACE_USE
 using namespace Base;
@@ -75,9 +72,15 @@ using namespace Base;
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 
-DOMTreeErrorReporter::DOMTreeErrorReporter():
-	fSawErrors(false) {
-}
+class DOMTreeErrorReporter : public ErrorHandler
+{
+public:
+    // -----------------------------------------------------------------------
+    //  Constructors and Destructor
+    // -----------------------------------------------------------------------
+    DOMTreeErrorReporter() :
+            fSawErrors(false) {
+    }
 
 void DOMTreeErrorReporter::warning(const SAXParseException&)
 {
@@ -119,7 +122,7 @@ class DOMPrintFilter : public DOMLSSerializerFilter
 public:
 
     /** @name Constructors */
-    DOMPrintFilter(ShowType whatToShow = DOMNodeFilter::SHOW_ALL);
+    explicit DOMPrintFilter(ShowType whatToShow = DOMNodeFilter::SHOW_ALL);
     //@{
 
     /** @name Destructors */
@@ -134,10 +137,9 @@ public:
         return fWhatToShow;
     }
 
-private:
     // unimplemented copy ctor and assignment operator
     DOMPrintFilter(const DOMPrintFilter&) = delete;
-    DOMPrintFilter & operator = (const DOMPrintFilter&);
+    DOMPrintFilter & operator = (const DOMPrintFilter&) = delete;
 
    ShowType fWhatToShow;
 };
@@ -152,10 +154,9 @@ public:
     bool handleError(const DOMError& domError) override;
     void resetErrors() {}
 
-private :
     /* Unimplemented constructors and operators */
-    DOMPrintErrorHandler(const DOMErrorHandler&);
-    void operator=(const DOMErrorHandler&);
+    explicit DOMPrintErrorHandler(const DOMErrorHandler&) = delete;
+    void operator=(const DOMErrorHandler&) = delete;
 
 };
 //**************************************************************************
@@ -393,7 +394,7 @@ Base::Reference<ParameterGrp> ParameterGrp::_GetGroup(const char* Name)
         return rParamGrp;
     }
 
-    DOMElement *pcTemp;
+    DOMElement *pcTemp{};
 
     // search if Group node already there
     pcTemp = FindElement(_pGroupNode,"FCParamGroup",Name);
@@ -913,17 +914,6 @@ std::vector<std::pair<std::string,double> > ParameterGrp::GetFloatMap(const char
     return vrValues;
 }
 
-void  ParameterGrp::SetBlob(const char* /*Name*/, void* /*pValue*/, long /*lLength*/)
-{
-    // not implemented so far
-    assert(0);
-}
-
-void ParameterGrp::GetBlob(const char* /*Name*/, void* /*pBuf*/, long /*lMaxLength*/, void* /*pPreset*/) const
-{
-    // not implemented so far
-    assert(0);
-}
 
 void  ParameterGrp::SetASCII(const char* Name, const char *sValue)
 {
@@ -975,16 +965,14 @@ std::string ParameterGrp::GetASCII(const char* Name, const char * pPreset) const
     // if not return preset
     if (!pcElem) {
         if (!pPreset)
-            return std::string("");
-        else
-            return std::string(pPreset);
+            return {};
+        return {pPreset};
     }
     // if yes check the value and return
     DOMNode *pcElem2 = pcElem->getFirstChild();
     if (pcElem2)
-        return std::string(StrXUTF8(pcElem2->getNodeValue()).c_str());
-    else
-        return std::string("");
+        return {StrXUTF8(pcElem2->getNodeValue()).c_str()};
+    return {};
 }
 
 std::vector<std::string> ParameterGrp::GetASCIIs(const char * sFilter) const
@@ -1080,18 +1068,6 @@ void ParameterGrp::RemoveBool(const char* Name)
     Notify(Name);
 }
 
-void ParameterGrp::RemoveBlob(const char* /*Name*/)
-{
-    /* not implemented yet
-    // check if Element in group
-    DOMElement *pcElem = FindElement(_pGroupNode,"FCGrp",Name);
-    // if not return
-    if(!pcElem)
-        return;
-    else
-        _pGroupNode->removeChild(pcElem);
-    */
-}
 
 void ParameterGrp::RemoveFloat(const char* Name)
 {
@@ -1368,28 +1344,28 @@ void ParameterGrp::NotifyAll()
 {
     // get all ints and notify
     std::vector<std::pair<std::string,long> > IntMap = GetIntMap();
-    for (std::vector<std::pair<std::string,long> >::iterator It1= IntMap.begin(); It1 != IntMap.end(); ++It1)
-        Notify(It1->first.c_str());
+    for (const auto & it : IntMap)
+        Notify(it.first.c_str());
 
     // get all booleans and notify
     std::vector<std::pair<std::string,bool> > BoolMap = GetBoolMap();
-    for (std::vector<std::pair<std::string,bool> >::iterator It2= BoolMap.begin(); It2 != BoolMap.end(); ++It2)
-        Notify(It2->first.c_str());
+    for (const auto & it : BoolMap)
+        Notify(it.first.c_str());
 
     // get all Floats and notify
     std::vector<std::pair<std::string,double> > FloatMap  = GetFloatMap();
-    for (std::vector<std::pair<std::string,double> >::iterator It3= FloatMap.begin(); It3 != FloatMap.end(); ++It3)
-        Notify(It3->first.c_str());
+    for (const auto & it : FloatMap)
+        Notify(it.first.c_str());
 
     // get all strings and notify
     std::vector<std::pair<std::string,std::string> > StringMap = GetASCIIMap();
-    for (std::vector<std::pair<std::string,std::string> >::iterator It4= StringMap.begin(); It4 != StringMap.end(); ++It4)
-        Notify(It4->first.c_str());
+    for (const auto & it : StringMap)
+        Notify(it.first.c_str());
 
     // get all uints and notify
     std::vector<std::pair<std::string,unsigned long> > UIntMap = GetUnsignedMap();
-    for (std::vector<std::pair<std::string,unsigned long> >::iterator It5= UIntMap.begin(); It5 != UIntMap.end(); ++It5)
-        Notify(It5->first.c_str());
+    for (const auto & it : UIntMap)
+        Notify(it.first.c_str());
 }
 
 void ParameterGrp::_Reset()
@@ -1438,7 +1414,6 @@ static XercesDOMParser::ValSchemes    gValScheme       = XercesDOMParser::Val_Au
 /** Default construction
   */
 ParameterManager::ParameterManager()
-  : ParameterGrp(), _pDocument(nullptr), paramSerializer(nullptr)
 {
     _Manager = this;
 
@@ -1512,7 +1487,7 @@ ParameterManager::~ParameterManager()
 
 Base::Reference<ParameterManager> ParameterManager::Create()
 {
-    return Base::Reference<ParameterManager>(new ParameterManager());
+    return {new ParameterManager()};
 }
 
 void ParameterManager::Init()

@@ -45,10 +45,7 @@ using namespace Gui;
 
 TYPESYSTEM_SOURCE(Gui::AxisOrigin,Base::BaseClass)
 
-AxisOrigin::AxisOrigin()
-    :size(6),pSize(4),dist(2),scale(1),lineSize(2),pointSize(4)
-{
-}
+AxisOrigin::AxisOrigin() = default;
 
 SoGroup *AxisOrigin::getNode() {
     if(node)

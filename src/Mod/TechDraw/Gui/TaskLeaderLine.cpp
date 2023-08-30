@@ -335,7 +335,8 @@ void TaskLeaderLine::onLineStyleChanged()
 void TaskLeaderLine::createLeaderFeature(std::vector<Base::Vector3d> converted)
 {
 //    Base::Console().Message("TTL::createLeaderFeature()\n");
-    m_leaderName = m_basePage->getDocument()->getUniqueObjectName("LeaderLine");
+    const std::string objectName{"LeaderLine"};
+    std::string m_leaderName = m_basePage->getDocument()->getUniqueObjectName(objectName.c_str());
     m_leaderType = "TechDraw::DrawLeaderLine";
 
     std::string PageName = m_basePage->getNameInDocument();
@@ -343,6 +344,9 @@ void TaskLeaderLine::createLeaderFeature(std::vector<Base::Vector3d> converted)
     Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Create Leader"));
     Command::doCommand(Command::Doc, "App.activeDocument().addObject('%s', '%s')",
                        m_leaderType.c_str(), m_leaderName.c_str());
+    Command::doCommand(Command::Doc, "App.activeDocument().%s.translateLabel('DrawLeaderLine', 'LeaderLine', '%s')",
+              m_leaderName.c_str(), m_leaderName.c_str());
+
     Command::doCommand(Command::Doc, "App.activeDocument().%s.addView(App.activeDocument().%s)",
                        PageName.c_str(), m_leaderName.c_str());
     if (m_baseFeat) {

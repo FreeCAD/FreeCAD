@@ -47,9 +47,7 @@ ViewProviderFemConstraintPressure::ViewProviderFemConstraintPressure()
     ADD_PROPERTY(FaceColor, (0.0f, 0.2f, 0.8f));
 }
 
-ViewProviderFemConstraintPressure::~ViewProviderFemConstraintPressure()
-{
-}
+ViewProviderFemConstraintPressure::~ViewProviderFemConstraintPressure() = default;
 
 //FIXME setEdit needs a careful review
 bool ViewProviderFemConstraintPressure::setEdit(int ModNum)
@@ -128,8 +126,8 @@ void ViewProviderFemConstraintPressure::updateData(const App::Property* prop)
         Gui::coinRemoveAllChildren(pShapeSep);
 #endif
 
-        for (std::vector<Base::Vector3d>::const_iterator p = points.begin(); p != points.end(); p++) {
-            SbVec3f base(p->x, p->y, p->z);
+        for (const auto & point : points) {
+            SbVec3f base(point.x, point.y, point.z);
             SbVec3f dir(n->x, n->y, n->z);
             double rev;
             if (pcConstraint->Reversed.getValue()) {

@@ -78,8 +78,6 @@ public:
         initialize("This module is the WebGui module."); // register with Python
     }
 
-    ~Module() override {}
-
 private:
     Py::Object openBrowser(const Py::Tuple& args)
     {

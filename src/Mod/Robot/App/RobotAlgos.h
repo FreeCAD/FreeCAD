@@ -25,6 +25,8 @@
 
 #include <Base/Placement.h>
 #include <Base/Vector3D.h>
+#include <Mod/Robot/RobotGlobal.h>
+#include "kdl_cp/frames_io.hpp"
 
 
 namespace Robot

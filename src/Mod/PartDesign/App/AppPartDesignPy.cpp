@@ -40,8 +40,6 @@ public:
         initialize("This module is the PartDesign module."); // register with Python
     }
 
-    ~Module() override {}
-
 private:
     Py::Object makeFilletArc(const Py::Tuple& args)
     {

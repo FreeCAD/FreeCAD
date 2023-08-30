@@ -658,7 +658,7 @@ PyObject* DrawViewPartPy::getEdgeByIndex(PyObject *args)
         return nullptr;
     }
 
-    TopoDS_Shape temp = TechDraw::mirrorShapeVec(geom->getOCCEdge(),
+    TopoDS_Shape temp = ShapeUtils::mirrorShapeVec(geom->getOCCEdge(),
                                       Base::Vector3d(0.0, 0.0, 0.0),
                                       1.0 / dvp->getScale());
 
@@ -712,7 +712,7 @@ PyObject* DrawViewPartPy::getEdgeBySelection(PyObject *args)
         return nullptr;
     }
 
-    TopoDS_Shape temp = TechDraw::mirrorShapeVec(geom->getOCCEdge(),
+    TopoDS_Shape temp = ShapeUtils::mirrorShapeVec(geom->getOCCEdge(),
                                       Base::Vector3d(0.0, 0.0, 0.0),
                                       1.0 / dvp->getScale());
 

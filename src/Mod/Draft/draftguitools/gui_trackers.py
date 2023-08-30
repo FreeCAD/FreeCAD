@@ -1267,7 +1267,6 @@ class boxTracker(Tracker):
 
     def update(self, line=None, normal=None):
         """Update the tracker."""
-        import WorkingPlane
         import DraftGeomUtils
         if not normal:
             normal = FreeCAD.DraftWorkingPlane.axis
@@ -1283,16 +1282,18 @@ class boxTracker(Tracker):
             bp = self.baseline.Shape.Edges[0].Vertexes[0].Point
         else:
             return
-        right = lvec.cross(normal)
         self.cube.width.setValue(lvec.Length)
-        p = WorkingPlane.getPlacementFromPoints([bp,
-                                                 bp.add(lvec),
-                                                 bp.add(right)])
-        if p:
-            self.trans.rotation.setValue(p.Rotation.Q)
         bp = bp.add(lvec.multiply(0.5))
         bp = bp.add(DraftVecUtils.scaleTo(normal, self.cube.depth.getValue()/2.0))
         self.pos(bp)
+        tol = 1e-6
+        if lvec.Length > tol and normal.Length > tol:
+            lvec.normalize()
+            normal.normalize()
+            if not lvec.isEqual(normal, tol) \
+                    and not lvec.isEqual(normal.negative(), tol):
+                rot = FreeCAD.Rotation(lvec, FreeCAD.Vector(), normal, "XZY")
+                self.trans.rotation.setValue(rot.Q)
 
     def setRotation(self, rot):
         """Set the rotation."""

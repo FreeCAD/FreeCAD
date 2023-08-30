@@ -34,7 +34,7 @@ using namespace KDL;
 //===========================================================================
 
 Simulation::Simulation(const Robot::Trajectory &Trac,Robot::Robot6Axis &Rob)
-:Pos(0.0),Trac(Trac),Rob(Rob)
+:Trac(Trac),Rob(Rob)
 {
     // simulate a trajectory with only one waypoint make no sense!
     assert(Trac.getSize() > 1);
@@ -51,9 +51,7 @@ Simulation::Simulation(const Robot::Trajectory &Trac,Robot::Robot6Axis &Rob)
 
 }
 
-Simulation::~Simulation()
-{
-}
+Simulation::~Simulation() = default;
 
 void Simulation::step(double tick)
 {

@@ -73,15 +73,15 @@ App::DocumentObjectExecReturn *Sewing::execute()
         BRepBuilderAPI_Sewing builder(atol,opt1,opt2,opt3,opt4);
 
         std::vector<App::PropertyLinkSubList::SubSet> subset = ShapeList.getSubListValues();
-        for(std::vector<App::PropertyLinkSubList::SubSet>::iterator it = subset.begin(); it != subset.end(); ++it) {
+        for(const auto& it : subset) {
             // the subset has the documentobject and the element name which belongs to it,
             // in our case for example the cube object and the "Edge1" string
-            if (it->first->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
+            if (it.first->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
                 //we get the shape of the document object which resemble the whole box
-                Part::TopoShape ts = static_cast<Part::Feature*>(it->first)->Shape.getShape();
+                Part::TopoShape ts = static_cast<Part::Feature*>(it.first)->Shape.getShape();
 
                 //we want only the subshape which is linked
-                for (const auto& jt: it->second) {
+                for (const auto& jt : it.second) {
                     TopoDS_Shape sub = ts.getSubShape(jt.c_str());
                     builder.Add(sub);
                 }

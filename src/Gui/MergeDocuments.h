@@ -27,6 +27,7 @@
 #include <Base/Persistence.h>
 #include <map>
 #include <vector>
+#include <boost/signals2.hpp>
 
 namespace zipios {
 class ZipInputStream;
@@ -53,7 +54,7 @@ public:
     void RestoreDocFile(Base::Reader & r) override;
 
 private:
-    zipios::ZipInputStream* stream;
+    zipios::ZipInputStream* stream{nullptr};
     App::Document* appdoc;
     Gui::Document* document;
     std::vector<App::DocumentObject*> objects;

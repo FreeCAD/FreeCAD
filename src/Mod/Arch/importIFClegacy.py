@@ -1017,7 +1017,7 @@ def export(exportList,filename):
         # getting the "Force BREP" flag
         brepflag = False
         if hasattr(obj,"IfcAttributes"):
-            if "FlagForceBrep" in obj.IfcAttributes.keys():
+            if "FlagForceBrep" in obj.IfcAttributes:
                 if obj.IfcAttributes["FlagForceBrep"] == "True":
                     brepflag = True
 

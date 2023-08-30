@@ -79,7 +79,7 @@ public:
       */
     explicit ActionLabel(QAction *action, QWidget *parent = nullptr);
 
-    ~ActionLabel() override {}
+    ~ActionLabel() override = default;
 
     QSize sizeHint() const override;
     QSize minimumSizeHint() const override;

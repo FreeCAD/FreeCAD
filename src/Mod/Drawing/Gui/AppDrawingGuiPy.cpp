@@ -110,7 +110,7 @@ private:
         PyMem_Free(Name);
 
         Base::FileInfo file(EncodedName.c_str());
-        if (file.hasExtension({"svg", "svgz"}) {
+        if (file.hasExtension({"svg", "svgz"})) {
             QString fileName = QString::fromUtf8(EncodedName.c_str());
             // Displaying the image in a view
             DrawingView* view = new DrawingView(nullptr, Gui::getMainWindow());

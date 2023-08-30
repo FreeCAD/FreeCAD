@@ -136,7 +136,7 @@ Py::Long FacetPy::getIndex() const
 
 Py::Boolean FacetPy::getBound() const
 {
-    return Py::Boolean(getFacetPtr()->isBound());
+    return {getFacetPtr()->isBound()};
 }
 
 Py::Object FacetPy::getNormal() const

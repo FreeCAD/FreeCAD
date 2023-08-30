@@ -58,8 +58,6 @@ public:
         initialize("This module is the FemGui module."); // register with Python
     }
 
-    ~Module() override {}
-
 private:
     Py::Object invoke_method_varargs(void* method_def, const Py::Tuple& args) override
     {
@@ -118,9 +116,9 @@ private:
         fi.setFile(fileName);
         QString ext = fi.completeSuffix().toLower();
         QList<Gui::EditorView*> views = Gui::getMainWindow()->findChildren<Gui::EditorView*>();
-        for (QList<Gui::EditorView*>::Iterator it = views.begin(); it != views.end(); ++it) {
-            if ((*it)->fileName() == fileName) {
-                (*it)->setFocus();
+        for (auto view : views) {
+            if (view->fileName() == fileName) {
+                view->setFocus();
                 return Py::None();
             }
         }

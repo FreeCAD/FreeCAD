@@ -14,46 +14,58 @@
     <Documentation>
       <Author Licence="LGPL" Name="Juergen Riegel" EMail="FreeCAD@juergen-riegel.net" />
       <DeveloperDocu>This is the CoordinateSystem export class</DeveloperDocu>
-      <UserDocu>Base.CoordinateSystem class.\n
-An orthonormal right-handed coordinate system in 3D space.\n
+      <UserDocu>Base.CoordinateSystem class.
+
+An orthonormal right-handed coordinate system in 3D space.
+
 CoordinateSystem()
 Empty constructor.</UserDocu>
     </Documentation>
     <Methode Name="setAxes">
       <Documentation>
-        <UserDocu>setAxes(axis, xDir) -> None\n
+        <UserDocu>setAxes(axis, xDir) -> None
+
 Set axis or Z-direction, and X-direction.
 The X-direction is determined from the orthonormal compononent of `xDir`
-with respect to `axis` direction.\n
+with respect to `axis` direction.
+
 axis : Base.Axis, Base.Vector
 xDir : Base.Vector</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="displacement" Const="true">
       <Documentation>
-        <UserDocu>displacement(coordSystem2) -> Base.Placement\n
-Computes the placement from this to the passed coordinate system `coordSystem2`.\n
+        <UserDocu>displacement(coordSystem2) -> Base.Placement
+
+Computes the placement from this to the passed coordinate system `coordSystem2`.
+
 coordSystem2 : Base.CoordinateSystem</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="transformTo">
       <Documentation>
-        <UserDocu>transformTo(vector) -> Base.Vector\n
-Computes the coordinates of the point in coordinates of this coordinate system.\n
+        <UserDocu>transformTo(vector) -> Base.Vector
+
+Computes the coordinates of the point in coordinates of this coordinate system.
+
 vector : Base.Vector</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="transform">
       <Documentation>
-        <UserDocu>transform(trans) -> None\n
-Applies a transformation on this coordinate system.\n
+        <UserDocu>transform(trans) -> None
+
+Applies a transformation on this coordinate system.
+
 trans : Base.Rotation, Base.Placement</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="setPlacement">
       <Documentation>
-        <UserDocu>setPlacment(placement) -> None\n
-Set placement to the coordinate system.\n
+        <UserDocu>setPlacment(placement) -> None
+
+Set placement to the coordinate system.
+
 placement : Base.Placement</UserDocu>
       </Documentation>
     </Methode>

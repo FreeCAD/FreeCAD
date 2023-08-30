@@ -80,6 +80,7 @@
 #include <Base/FileInfo.h>
 #include <Base/GeometryPyCXX.h>
 #include <Base/Interpreter.h>
+#include <Base/PyWrapParseTupleAndKeywords.h>
 #include <Base/VectorPy.h>
 
 #include "BSplineSurfacePy.h"
@@ -170,7 +171,7 @@ PartExport std::list<TopoDS_Edge> sort_Edges(double tol3d, std::list<TopoDS_Edge
     }
 
     if (edge_points.empty())
-        return std::list<TopoDS_Edge>();
+        return {};
 
     std::list<TopoDS_Edge> sorted;
     gp_Pnt first, last;
@@ -247,8 +248,6 @@ public:
     {
         initialize("This is a module working with the BRepFeat package."); // register with Python
     }
-
-    ~BRepFeatModule() override {}
 };
 
 class BRepOffsetAPIModule : public Py::ExtensionModule<BRepOffsetAPIModule>
@@ -258,8 +257,6 @@ public:
     {
         initialize("This is a module working with the BRepOffsetAPI package."); // register with Python
     }
-
-    ~BRepOffsetAPIModule() override {}
 };
 
 class Geom2dModule : public Py::ExtensionModule<Geom2dModule>
@@ -269,8 +266,6 @@ public:
     {
         initialize("This is a module working with 2d geometries."); // register with Python
     }
-
-    ~Geom2dModule() override {}
 };
 
 class GeomPlateModule : public Py::ExtensionModule<GeomPlateModule>
@@ -280,8 +275,6 @@ public:
     {
         initialize("This is a module working with the GeomPlate framework."); // register with Python
     }
-
-    ~GeomPlateModule() override {}
 };
 
 class HLRBRepModule : public Py::ExtensionModule<HLRBRepModule>
@@ -291,8 +284,6 @@ public:
     {
         initialize("This is a module working with the HLRBRep framework."); // register with Python
     }
-
-    ~HLRBRepModule() override {}
 };
 
 class ShapeFixModule : public Py::ExtensionModule<ShapeFixModule>
@@ -320,8 +311,6 @@ public:
         );
         initialize("This is a module working with the ShapeFix framework."); // register with Python
     }
-
-    ~ShapeFixModule() override {}
 
 private:
     Py::Object sameParameter(const Py::Tuple& args)
@@ -390,8 +379,6 @@ public:
     {
         initialize("This is a module working with the ShapeUpgrade framework."); // register with Python
     }
-
-    ~ShapeUpgradeModule() override {}
 };
 
 class ChFi2dModule : public Py::ExtensionModule<ChFi2dModule>
@@ -401,8 +388,6 @@ public:
     {
         initialize("This is a module working with the ChFi2d framework."); // register with Python
     }
-
-    ~ChFi2dModule() override {}
 };
 
 class Module : public Py::ExtensionModule<Module>
@@ -648,8 +633,6 @@ public:
         PyModule_AddObject(m_module, "ShapeUpgrade", shapeUpgrade.module().ptr());
         PyModule_AddObject(m_module, "ChFi2d", chFi2d.module().ptr());
     }
-
-    ~Module() override {}
 
 private:
     Py::Object invoke_method_keyword( void *method_def,
@@ -2124,10 +2107,10 @@ private:
         tEdgeClusterVector aclusteroutput = acluster.GetClusters();
 
         Py::List root_list;
-        for (tEdgeClusterVector::iterator it=aclusteroutput.begin(); it != aclusteroutput.end();++it) {
+        for (const auto & it : aclusteroutput) {
             Py::List add_list;
-            for (tEdgeVector::iterator it1=(*it).begin();it1 != (*it).end();++it1) {
-                add_list.append(Py::Object(new TopoShapeEdgePy(new TopoShape(*it1)),true));
+            for (const auto& it1 : it) {
+                add_list.append(Py::Object(new TopoShapeEdgePy(new TopoShape(it1)),true));
             }
             root_list.append(add_list);
         }
@@ -2160,8 +2143,8 @@ private:
 
         std::list<TopoDS_Edge> sorted = sort_Edges(Precision::Confusion(), edges);
         Py::List sorted_list;
-        for (std::list<TopoDS_Edge>::iterator it = sorted.begin(); it != sorted.end(); ++it) {
-            sorted_list.append(Py::Object(new TopoShapeEdgePy(new TopoShape(*it)),true));
+        for (const auto & it : sorted) {
+            sorted_list.append(Py::Object(new TopoShapeEdgePy(new TopoShape(it)),true));
         }
 
         return sorted_list;
@@ -2195,8 +2178,8 @@ private:
         while(!edges.empty()) {
             std::list<TopoDS_Edge> sorted = sort_Edges(tol3d, edges);
             Py::List sorted_list;
-            for (std::list<TopoDS_Edge>::iterator it = sorted.begin(); it != sorted.end(); ++it) {
-                sorted_list.append(Py::Object(new TopoShapeEdgePy(new TopoShape(*it)),true));
+            for (const auto & it : sorted) {
+                sorted_list.append(Py::Object(new TopoShapeEdgePy(new TopoShape(it)),true));
             }
             root_list.append(sorted_list);
         }
@@ -2247,13 +2230,16 @@ private:
         PyObject *noElementMap = Py_False;
         PyObject *refine = Py_False;
         short retType = 0;
-        static char* kwd_list[] = {"obj", "subname", "mat",
-            "needSubElement","transform","retType","noElementMap","refine",nullptr};
-        if (!PyArg_ParseTupleAndKeywords(args.ptr(), kwds.ptr(), "O!|sO!O!O!hO!O!", kwd_list,
-                &App::DocumentObjectPy::Type, &pObj, &subname, &Base::MatrixPy::Type, &pyMat,
-                &PyBool_Type,&needSubElement,&PyBool_Type,&transform,&retType,
-                &PyBool_Type,&noElementMap,&PyBool_Type,&refine))
+        static const std::array<const char *, 9> kwd_list{"obj", "subname", "mat",
+                                                          "needSubElement", "transform", "retType", "noElementMap",
+                                                          "refine", nullptr};
+        if (!Base::Wrapped_ParseTupleAndKeywords(args.ptr(), kwds.ptr(), "O!|sO!O!O!hO!O!", kwd_list,
+                                                 &App::DocumentObjectPy::Type, &pObj, &subname, &Base::MatrixPy::Type,
+                                                 &pyMat,
+                                                 &PyBool_Type, &needSubElement, &PyBool_Type, &transform, &retType,
+                                                 &PyBool_Type, &noElementMap, &PyBool_Type, &refine)) {
             throw Py::Exception();
+        }
 
         App::DocumentObject *obj =
             static_cast<App::DocumentObjectPy*>(pObj)->getDocumentObjectPtr();

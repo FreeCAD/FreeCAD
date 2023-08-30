@@ -44,7 +44,6 @@ TaskAnalysisInfo::TaskAnalysisInfo(Fem::FemAnalysis* pcObject, QWidget* parent)
     this->groupLayout()->addWidget(proxy);
 }
 
-TaskAnalysisInfo::~TaskAnalysisInfo()
-{}
+TaskAnalysisInfo::~TaskAnalysisInfo() = default;
 
 #include "moc_TaskAnalysisInfo.cpp"

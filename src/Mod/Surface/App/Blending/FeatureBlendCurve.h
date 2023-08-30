@@ -63,7 +63,7 @@ public:
 private:
     BlendPoint GetBlendPoint(App::PropertyLinkSub &link, App::PropertyFloatConstraint &param, App::PropertyIntegerConstraint &Continuity);
     double RelativeToRealParameters(double, double, double);
-    bool lockOnChangeMutex;
+    bool lockOnChangeMutex{false};
 
 protected:
     void onChanged(const App::Property *prop) override;

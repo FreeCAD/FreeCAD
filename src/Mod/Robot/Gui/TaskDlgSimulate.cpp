@@ -49,11 +49,6 @@ TaskDlgSimulate::TaskDlgSimulate(Robot::RobotObject *pcRobotObject,Robot::Trajec
     Content.push_back(msg);
 }
 
-TaskDlgSimulate::~TaskDlgSimulate()
-{
-
-}
-
 //==== calls from the TaskView ===============================================================
 
 

@@ -72,9 +72,7 @@ SoFCBackgroundGradient::SoFCBackgroundGradient()
 /*!
   Destructor.
 */
-SoFCBackgroundGradient::~SoFCBackgroundGradient()
-{
-}
+SoFCBackgroundGradient::~SoFCBackgroundGradient() = default;
 
 // doc from parent
 void SoFCBackgroundGradient::initClass()

@@ -950,8 +950,8 @@ void DefineNodesCallback(void* ud, SoEventCallback* n)
     SbViewVolume vv = cam->getViewVolume();
     Gui::ViewVolumeProjection proj(vv);
     Base::Polygon2d polygon;
-    for (std::vector<SbVec2f>::const_iterator it = clPoly.begin(); it != clPoly.end(); ++it)
-        polygon.Add(Base::Vector2d((*it)[0], (*it)[1]));
+    for (auto it : clPoly)
+        polygon.Add(Base::Vector2d(it[0], it[1]));
 
 
     std::vector<App::DocumentObject*> docObj =
@@ -2364,12 +2364,11 @@ void CmdFemPostPipelineFromResult::activated(int)
     const std::vector<App::DocumentObject*> obj =
         app->getObjectsOfType(App::DocumentObject::getClassTypeId());
 
-    for (std::vector<App::DocumentObject*>::const_iterator it = obj.begin(); it != obj.end();
-         ++it) {
+    for (auto it : obj) {
         doCommand(Gui,
                   "Gui.getDocument(\"%s\").getObject(\"%s\").Visibility=False",
                   app->getName(),
-                  (*it)->getNameInDocument());
+                  it->getNameInDocument());
     }
 
     // we need single result object to attach the pipeline to

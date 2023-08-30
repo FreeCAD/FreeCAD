@@ -37,8 +37,8 @@ using namespace Base;
 
 Factory::~Factory ()
 {
-  for (std::map<const std::string, AbstractProducer*>::iterator pI = _mpcProducers.begin(); pI != _mpcProducers.end(); ++pI)
-    delete pI->second;
+  for (auto & it : _mpcProducers)
+    delete it.second;
 }
 
 void* Factory::Produce (const char *sClassName) const
@@ -66,9 +66,9 @@ std::list<std::string> Factory::CanProduce() const
 {
   std::list<std::string> lObjects;
 
-  for (std::map<const std::string, AbstractProducer*>::const_iterator pI = _mpcProducers.begin(); pI != _mpcProducers.end(); ++pI)
+  for (const auto & it : _mpcProducers)
   {
-    lObjects.push_back(pI->first);
+    lObjects.push_back(it.first);
   }
 
   return lObjects;

@@ -699,7 +699,7 @@ class _ArchMaterialTaskPanel:
                 if e.upper() == ".FCMAT":
                     self.cards[b] = p + os.sep + f
         if self.cards:
-            for k in sorted(self.cards.keys()):
+            for k in sorted(self.cards):
                 self.form.comboBox_MaterialsInDir.addItem(k)
 
     def fillExistingCombo(self):

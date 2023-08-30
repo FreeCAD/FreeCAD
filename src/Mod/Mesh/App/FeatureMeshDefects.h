@@ -42,7 +42,6 @@ class MeshExport FixDefects : public Mesh::Feature
 public:
   /// Constructor
   FixDefects();
-  ~FixDefects() override;
 
   /** @name Properties */
   //@{
@@ -72,7 +71,6 @@ class MeshExport HarmonizeNormals : public Mesh::FixDefects
 public:
   /// Constructor
   HarmonizeNormals();
-  ~HarmonizeNormals() override;
 
   /** @name methods override Feature */
   //@{
@@ -92,7 +90,6 @@ class MeshExport FlipNormals : public Mesh::FixDefects
 public:
   /// Constructor
   FlipNormals();
-  ~FlipNormals() override;
 
   /** @name methods override Feature */
   //@{
@@ -112,7 +109,6 @@ class MeshExport FixNonManifolds : public Mesh::FixDefects
 public:
   /// Constructor
   FixNonManifolds();
-  ~FixNonManifolds() override;
 
   /** @name methods override Feature */
   //@{
@@ -132,7 +128,6 @@ class MeshExport FixDuplicatedFaces : public Mesh::FixDefects
 public:
   /// Constructor
   FixDuplicatedFaces();
-  ~FixDuplicatedFaces() override;
 
   /** @name methods override Feature */
   //@{
@@ -152,7 +147,6 @@ class MeshExport FixDuplicatedPoints : public Mesh::FixDefects
 public:
   /// Constructor
   FixDuplicatedPoints();
-  ~FixDuplicatedPoints() override;
 
   /** @name methods override Feature */
   //@{
@@ -172,7 +166,6 @@ class MeshExport FixDegenerations : public Mesh::FixDefects
 public:
   /// Constructor
   FixDegenerations();
-  ~FixDegenerations() override;
 
   /** @name methods override Feature */
   //@{
@@ -192,7 +185,6 @@ class MeshExport FixDeformations : public Mesh::FixDefects
 public:
   /// Constructor
   FixDeformations();
-  ~FixDeformations() override;
 
   /** @name Properties */
   //@{
@@ -216,7 +208,6 @@ class MeshExport FixIndices : public Mesh::FixDefects
 public:
   /// Constructor
   FixIndices();
-  ~FixIndices() override;
 
   /** @name methods override Feature */
   //@{
@@ -236,7 +227,6 @@ class MeshExport FillHoles : public Mesh::FixDefects
 public:
   /// Constructor
   FillHoles();
-  ~FillHoles() override;
   App::PropertyInteger FillupHolesOfLength;
   App::PropertyFloat MaxArea;
 
@@ -258,7 +248,6 @@ class MeshExport RemoveComponents : public Mesh::FixDefects
 public:
   /// Constructor
   RemoveComponents();
-  ~RemoveComponents() override;
   App::PropertyInteger RemoveCompOfSize;
 
   /** @name methods override Feature */

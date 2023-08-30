@@ -258,7 +258,7 @@ QString Unit::getString() const
     std::stringstream ret;
 
     if (isEmpty())
-        return QString();
+        return {};
 
     if (Sig.Length                  > 0 ||
         Sig.Mass                    > 0 ||
@@ -551,7 +551,7 @@ QString Unit::getTypeString() const
     if (*this == Unit::YoungsModulus)
         return QString::fromLatin1("YoungsModulus");
 
-    return QString();
+    return {};
 }
 
 // SI base units

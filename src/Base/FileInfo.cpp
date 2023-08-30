@@ -248,7 +248,7 @@ std::string FileInfo::fileName() const
 
 std::string FileInfo::dirPath() const
 {
-    std::size_t last_pos;
+    std::size_t last_pos{};
     std::string retval;
     last_pos = FileName.find_last_of('/');
     if (last_pos != std::string::npos) {
@@ -295,7 +295,7 @@ std::string FileInfo::extension() const
 {
     std::string::size_type pos = FileName.find_last_of('.');
     if (pos == std::string::npos)
-        return std::string();
+        return {};
     return FileName.substr(pos+1);
 }
 
@@ -303,7 +303,7 @@ std::string FileInfo::completeExtension() const
 {
     std::string::size_type pos = FileName.find_first_of('.');
     if (pos == std::string::npos)
-        return std::string();
+        return {};
     return FileName.substr(pos+1);
 }
 
@@ -411,7 +411,7 @@ bool FileInfo::isDir() const
         return ((st.st_mode & _S_IFDIR) != 0);
 
 #elif defined (FC_OS_LINUX) || defined(FC_OS_CYGWIN) || defined(FC_OS_MACOSX) || defined(FC_OS_BSD)
-        struct stat st;
+        struct stat st{};
         if (stat(FileName.c_str(), &st) != 0) {
             return false;
         }
@@ -447,7 +447,7 @@ TimeInfo FileInfo::lastModified() const
         }
 
 #elif defined (FC_OS_LINUX) || defined(FC_OS_CYGWIN) || defined(FC_OS_MACOSX) || defined(FC_OS_BSD)
-        struct stat st;
+        struct stat st{};
         if (stat(FileName.c_str(), &st) == 0) {
             ti.setTime_t(st.st_mtime);
         }
@@ -470,7 +470,7 @@ TimeInfo FileInfo::lastRead() const
         }
 
 #elif defined (FC_OS_LINUX) || defined(FC_OS_CYGWIN) || defined(FC_OS_MACOSX) || defined(FC_OS_BSD)
-        struct stat st;
+        struct stat st{};
         if (stat(FileName.c_str(), &st) == 0) {
             ti.setTime_t(st.st_atime);
         }
@@ -494,7 +494,7 @@ bool FileInfo::deleteFile() const
 
 bool FileInfo::renameFile(const char* NewName)
 {
-    bool res;
+    bool res{};
 #if defined (FC_OS_WIN32)
     std::wstring oldname = toStdWString();
     std::wstring newname = ConvertToWideString(NewName);
@@ -580,19 +580,19 @@ bool FileInfo::deleteDirectoryRecursive() const
         return false;
     std::vector<Base::FileInfo> List = getDirectoryContent();
 
-    for (std::vector<Base::FileInfo>::iterator It = List.begin();It!=List.end();++It) {
-        if (It->isDir()) {
+    for (Base::FileInfo& fi : List) {
+        if (fi.isDir()) {
             // At least on Linux, directory needs execute permission to be
             // deleted. We don't really need to set permission for directory
             // anyway, since FC code does not touch directory permission.
             //
             // It->setPermissions(FileInfo::ReadWrite);
 
-            It->deleteDirectoryRecursive();
+            fi.deleteDirectoryRecursive();
         }
-        else if (It->isFile()) {
-            It->setPermissions(FileInfo::ReadWrite);
-            It->deleteFile();
+        else if (fi.isFile()) {
+            fi.setPermissions(FileInfo::ReadWrite);
+            fi.deleteFile();
         }
         else {
             throw Base::FileException("FileInfo::deleteDirectoryRecursive(): Unknown object Type in directory!");

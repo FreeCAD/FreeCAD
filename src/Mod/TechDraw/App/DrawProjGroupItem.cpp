@@ -227,7 +227,7 @@ gp_Ax2 DrawProjGroupItem::getViewAxis(const Base::Vector3d& pt,
     catch (Standard_Failure& e4) {
         Base::Console().Message("PROBLEM - DPGI (%s) failed to create viewAxis: %s **\n",
                                 getNameInDocument(), e4.GetMessageString());
-        return TechDraw::getViewAxis(pt, axis, false);
+        return ShapeUtils::getViewAxis(pt, axis, false);
     }
 
     return viewAxis;

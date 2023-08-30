@@ -848,12 +848,12 @@ IndexedName ElementMap::find(const MappedName& name, ElementIDRefs* sids) const
 MappedName ElementMap::find(const IndexedName& idx, ElementIDRefs* sids) const
 {
     if (!idx) {
-        return MappedName();
+        return {};
     }
 
     auto iter = this->indexedNames.find(idx.getType());
     if (iter == this->indexedNames.end()) {
-        return MappedName();
+        return {};
     }
 
     auto& indices = iter->second;

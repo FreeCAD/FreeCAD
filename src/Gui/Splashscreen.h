@@ -57,7 +57,7 @@ class Ui_AboutApplication;
 class GuiExport AboutDialogFactory
 {
 public:
-    AboutDialogFactory() {}
+    AboutDialogFactory() = default;
     virtual ~AboutDialogFactory();
 
     virtual QDialog *create(QWidget *parent) const;

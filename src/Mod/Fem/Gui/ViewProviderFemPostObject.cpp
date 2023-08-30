@@ -118,6 +118,8 @@ private:
     }
 
     ~FemPostObjectSelectionObserver() = default;
+
+public:
     FemPostObjectSelectionObserver(const FemPostObjectSelectionObserver&) = delete;
     FemPostObjectSelectionObserver& operator= (const FemPostObjectSelectionObserver&) = delete;
 
@@ -133,7 +135,7 @@ private:
 
 PROPERTY_SOURCE(FemGui::ViewProviderFemPostObject, Gui::ViewProviderDocumentObject)
 
-ViewProviderFemPostObject::ViewProviderFemPostObject() : m_blockPropertyChanges(false)
+ViewProviderFemPostObject::ViewProviderFemPostObject()
 {
     //initialize the properties
     ADD_PROPERTY_TYPE(Field,
@@ -871,11 +873,11 @@ void ViewProviderFemPostObject::hide()
     std::vector<App::DocumentObject *> ObjectsList = doc->getObjects();
     App::DocumentObject *firstVisiblePostObject = nullptr;
     // step through the objects
-    for (auto it = ObjectsList.begin(); it != ObjectsList.end(); ++it) {
-        if ((*it)->getTypeId().isDerivedFrom(Fem::FemPostObject::getClassTypeId())) {
-            if (!firstVisiblePostObject && (*it)->Visibility.getValue()
-                && !(*it)->isDerivedFrom(Fem::FemPostDataAtPointFilter::getClassTypeId())) {
-                firstVisiblePostObject = *it;
+    for (auto it : ObjectsList) {
+        if (it->getTypeId().isDerivedFrom(Fem::FemPostObject::getClassTypeId())) {
+            if (!firstVisiblePostObject && it->Visibility.getValue()
+                && !it->isDerivedFrom(Fem::FemPostDataAtPointFilter::getClassTypeId())) {
+                firstVisiblePostObject = it;
                 break;
             }
         }

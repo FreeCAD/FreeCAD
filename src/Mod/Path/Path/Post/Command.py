@@ -438,7 +438,7 @@ class DlgSelectPostProcessor:
         self.dialog.lwPostProcessor.itemEntered.connect(self.updateTooltip)
 
     def updateTooltip(self, item):
-        if item.text() in self.tooltips.keys():
+        if item.text() in self.tooltips:
             tooltip = self.tooltips[item.text()]
         else:
             processor = PostProcessor.load(item.text())

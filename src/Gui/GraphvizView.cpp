@@ -153,12 +153,11 @@ class GraphvizGraphicsView final : public QGraphicsView
     void mouseReleaseEvent(QMouseEvent *event) override;
 
   private:
-    bool   isPanning;
+    bool   isPanning{false};
     QPoint panStart;
 };
 
-GraphvizGraphicsView::GraphvizGraphicsView(QGraphicsScene* scene, QWidget* parent) : QGraphicsView(scene, parent),
-                                                                     isPanning(false)
+GraphvizGraphicsView::GraphvizGraphicsView(QGraphicsScene* scene, QWidget* parent) : QGraphicsView(scene, parent)
 {
 }
 
@@ -415,7 +414,7 @@ QByteArray GraphvizView::exportGraph(const QString& format)
     dotProc.setEnvironment(QProcess::systemEnvironment());
     dotProc.start(exe, args);
     if (!dotProc.waitForStarted()) {
-        return QByteArray();
+        return {};
     }
 
     ParameterGrp::handle depGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/DependencyGraph");
@@ -423,12 +422,12 @@ QByteArray GraphvizView::exportGraph(const QString& format)
         flatProc.setEnvironment(QProcess::systemEnvironment());
         flatProc.start(unflatten, flatArgs);
         if (!flatProc.waitForStarted()) {
-            return QByteArray();
+            return {};
         }
         flatProc.write(graphCode.c_str(), graphCode.size());
         flatProc.closeWriteChannel();
         if (!flatProc.waitForFinished())
-            return QByteArray();
+            return {};
 
         dotProc.write(flatProc.readAll());
     }
@@ -437,7 +436,7 @@ QByteArray GraphvizView::exportGraph(const QString& format)
 
     dotProc.closeWriteChannel();
     if (!dotProc.waitForFinished())
-        return QByteArray();
+        return {};
 
     return dotProc.readAll();
 }
@@ -455,16 +454,16 @@ bool GraphvizView::onMsg(const char* pMsg,const char**)
       //formatMap << qMakePair(tr("VRML format (*.vrml)"), QString::fromLatin1("vrml"));
 
         QStringList filter;
-        for (QList< QPair<QString, QString> >::iterator it = formatMap.begin(); it != formatMap.end(); ++it)
-            filter << it->first;
+        for (const auto & it : formatMap)
+            filter << it.first;
 
         QString selectedFilter;
         QString fn = Gui::FileDialog::getSaveFileName(this, tr("Export graph"), QString(), filter.join(QLatin1String(";;")), &selectedFilter);
         if (!fn.isEmpty()) {
             QString format;
-            for (QList< QPair<QString, QString> >::iterator it = formatMap.begin(); it != formatMap.end(); ++it) {
-                if (selectedFilter == it->first) {
-                    format = it->second;
+            for (const auto & it : formatMap) {
+                if (selectedFilter == it.first) {
+                    format = it.second;
                     break;
                 }
             }

@@ -122,9 +122,7 @@ TaskLoftParameters::TaskLoftParameters(ViewProviderLoft *LoftView, bool /*newObj
     updateUI();
 }
 
-TaskLoftParameters::~TaskLoftParameters()
-{
-}
+TaskLoftParameters::~TaskLoftParameters() = default;
 
 void TaskLoftParameters::updateUI()
 {
@@ -226,8 +224,8 @@ void TaskLoftParameters::removeFromListWidget(QListWidget* widget, QString name)
 
     QList<QListWidgetItem*> items = widget->findItems(name, Qt::MatchExactly);
     if (!items.empty()) {
-        for (QList<QListWidgetItem*>::const_iterator it = items.cbegin(); it != items.cend(); ++it) {
-            QListWidgetItem* item = widget->takeItem(widget->row(*it));
+        for (auto it : items) {
+            QListWidgetItem* item = widget->takeItem(widget->row(it));
             delete item;
         }
     }
@@ -373,9 +371,7 @@ TaskDlgLoftParameters::TaskDlgLoftParameters(ViewProviderLoft *LoftView,bool new
     Content.push_back(parameter);
 }
 
-TaskDlgLoftParameters::~TaskDlgLoftParameters()
-{
-}
+TaskDlgLoftParameters::~TaskDlgLoftParameters() = default;
 
 bool TaskDlgLoftParameters::accept()
 {

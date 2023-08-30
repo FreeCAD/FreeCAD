@@ -80,7 +80,7 @@ def Startup():
 
         from PathScripts import PathUtilsGui
 
-        from packaging.version import Version, parse
+        from packaging.version import Version, parse, InvalidVersion
 
         # If camotics is installed and current enough, import the GUI
         try:
@@ -95,7 +95,7 @@ def Startup():
             v = parse(r.decode("utf-8"))
             if v >= Version("1.2.2"):
                 from Path.Main.Gui import Camotics
-        except (FileNotFoundError, ModuleNotFoundError):
+        except (FileNotFoundError, ModuleNotFoundError, InvalidVersion):
             pass
 
         Processed = True

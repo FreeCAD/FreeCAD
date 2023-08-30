@@ -441,7 +441,7 @@ class XschemaElement:
         self.cleanName = mapName(self.unmappedCleanName)
         SaxElementDict[self.cleanName] = self
         self.replace_attributeGroup_names()
-        if "maxOccurs" in self.attrs.keys():
+        if "maxOccurs" in self.attrs:
             maxOccurs = self.attrs["maxOccurs"]
             if maxOccurs == "unbounded":
                 maxOccurs = 99999
@@ -462,7 +462,7 @@ class XschemaElement:
         if self.type == "NoneType" and self.name:
             self.type = self.name
         # Is it a mixed-content element definition?
-        if "mixed" in self.attrs.keys():
+        if "mixed" in self.attrs:
             mixed = self.attrs["mixed"].strip()
             if mixed == "1" or mixed.lower() == "true":
                 self.mixed = 1
@@ -662,7 +662,7 @@ class XschemaHandler(handler.ContentHandler):
             element = XschemaElement(attrs)
             if len(self.stack) == 1:
                 element.setTopLevel(1)
-            if "substitutionGroup" in attrs.keys() and "name" in attrs.keys():
+            if "substitutionGroup" in attrs and "name" in attrs:
                 substituteName = attrs["name"]
                 headName = attrs["substitutionGroup"]
                 if headName not in SubstitutionGroups:
@@ -686,18 +686,18 @@ class XschemaHandler(handler.ContentHandler):
             self.inChoice = 1
         elif name == AttributeType:
             self.inAttribute = 1
-            if "name" in attrs.keys():
+            if "name" in attrs:
                 name = attrs["name"]
             # fix-attribute-ref
-            elif "ref" in attrs.keys():
+            elif "ref" in attrs:
                 name = strip_namespace(attrs["ref"])
             else:
                 name = "no_attribute_name"
-            if "type" in attrs.keys():
+            if "type" in attrs:
                 data_type = attrs["type"]
             else:
                 data_type = StringType[0]
-            if "use" in attrs.keys():
+            if "use" in attrs:
                 use = attrs["use"]
             else:
                 use = "optional"
@@ -713,7 +713,7 @@ class XschemaHandler(handler.ContentHandler):
             self.inAttributeGroup = 1
             # If it has attribute 'name', then it's a definition.
             #   Prepare to save it as an attributeGroup.
-            if "name" in attrs.keys():
+            if "name" in attrs:
                 name = strip_namespace(attrs["name"])
                 attributeGroup = XschemaAttributeGroup(name)
                 element = XschemaElement(attrs)
@@ -723,12 +723,12 @@ class XschemaHandler(handler.ContentHandler):
                 self.stack.append(element)
             # If it has attribute 'ref', add it to the list of
             #   attributeGroups for this element/complexType.
-            if "ref" in attrs.keys():
+            if "ref" in attrs:
                 self.stack[-1].attributeGroupNameList.append(attrs["ref"])
         elif name == ComplexContentType:
             pass
         elif name == ExtensionType:
-            if "base" in attrs.keys() and len(self.stack) > 0:
+            if "base" in attrs and len(self.stack) > 0:
                 extensionBase = attrs["base"]
                 if (
                     extensionBase in StringType

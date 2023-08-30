@@ -49,9 +49,7 @@ ViewProviderFemConstraintDisplacement::ViewProviderFemConstraintDisplacement()
     ADD_PROPERTY(FaceColor, (0.2f, 0.3f, 0.2f));
 }
 
-ViewProviderFemConstraintDisplacement::~ViewProviderFemConstraintDisplacement()
-{
-}
+ViewProviderFemConstraintDisplacement::~ViewProviderFemConstraintDisplacement() = default;
 
 // FIXME setEdit needs a careful review
 bool ViewProviderFemConstraintDisplacement::setEdit(int ModNum)
@@ -190,9 +188,8 @@ void ViewProviderFemConstraintDisplacement::updateData(const App::Property* prop
         Gui::coinRemoveAllChildren(pShapeSep);
 #endif
 
-        for (std::vector<Base::Vector3d>::const_iterator p = points.begin(); p != points.end();
-             p++) {
-            SbVec3f base(p->x, p->y, p->z);
+        for (const auto & point : points) {
+            SbVec3f base(point.x, point.y, point.z);
             SbVec3f dirx(1, 0, 0);                   //OvG: Make relevant to global axes
             SbVec3f diry(0, 1, 0);                   //OvG: Make relevant to global axes
             SbVec3f dirz(0, 0, 1);                   //OvG: Make relevant to global axes

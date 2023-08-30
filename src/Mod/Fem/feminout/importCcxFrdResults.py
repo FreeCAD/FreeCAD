@@ -716,7 +716,7 @@ def read_frd_result(
 
             """
             print("---- End of Section --> Mode_Results may be changed ----")
-            for key in sorted(mode_results.keys()):
+            for key in sorted(mode_results):
                 if key is "number" or key is "time":
                     print(key + " --> " + str(mode_results[key]))
                 else:
@@ -735,7 +735,7 @@ def read_frd_result(
             """
             print("\n\n----Append mode_results to results")
             print(line)
-            for key in sorted(mode_results.keys()):
+            for key in sorted(mode_results):
                 if key is "number" or key is "time":
                     print(key + " --> " + str(mode_results[key]))
                 else:

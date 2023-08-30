@@ -48,12 +48,8 @@ class FitBSplineSurfaceWidget::Private
 public:
     Ui_FitBSplineSurface ui;
     App::DocumentObjectT obj;
-    Private()
-    {
-    }
-    ~Private()
-    {
-    }
+    Private() = default;
+    ~Private() = default;
 };
 
 /* TRANSLATOR ReenGui::FitBSplineSurfaceWidget */
@@ -254,10 +250,6 @@ TaskFitBSplineSurface::TaskFitBSplineSurface(const App::DocumentObjectT& obj)
         widget->windowTitle(), true, nullptr);
     taskbox->groupLayout()->addWidget(widget);
     Content.push_back(taskbox);
-}
-
-TaskFitBSplineSurface::~TaskFitBSplineSurface()
-{
 }
 
 void TaskFitBSplineSurface::open()

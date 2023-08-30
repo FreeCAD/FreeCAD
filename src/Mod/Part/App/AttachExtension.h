@@ -49,7 +49,7 @@ public:
    explicit AttachEngineException(const char * sMessage);
    explicit AttachEngineException(const std::string& sMessage);
    /// Destruction
-   ~AttachEngineException() noexcept override {}
+   ~AttachEngineException() noexcept override = default;
 };
 
 /**
@@ -125,7 +125,7 @@ public:
     void updateAttacherVals();
 
 private:
-    Attacher::AttachEngine* _attacher;
+    Attacher::AttachEngine* _attacher = nullptr;
     mutable int _active = -1;
 };
 

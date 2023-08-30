@@ -41,7 +41,6 @@ class PointsExport Structured : public Feature
 public:
     /// Constructor
     Structured();
-    ~Structured() override;
 
     App::PropertyInteger Width; /**< The width of the structured cloud. */
     App::PropertyInteger Height; /**< The height of the structured cloud. */

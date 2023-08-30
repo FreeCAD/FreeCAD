@@ -6,7 +6,7 @@
     <message>
       <location filename="../../Command.cpp" line="74"/>
       <source>Inspection</source>
-      <translation>მომრგვალებული მართკუთხედი</translation>
+      <translation>კონტროლი</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="75"/>
@@ -24,7 +24,7 @@
     <message>
       <location filename="../../Command.cpp" line="48"/>
       <source>Inspection</source>
-      <translation>მომრგვალებული მართკუთხედი</translation>
+      <translation>კონტროლი</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="49"/>
@@ -41,7 +41,7 @@
   <context>
     <name>Command</name>
     <message>
-      <location filename="../../VisualInspection.cpp" line="230"/>
+      <location filename="../../VisualInspection.cpp" line="228"/>
       <source>Visual Inspection</source>
       <translation>ვიზუალური შემოწმება</translation>
     </message>
@@ -51,7 +51,7 @@
     <message>
       <location filename="../../VisualInspection.ui" line="14"/>
       <source>Visual Inspection</source>
-      <translation>ვიზუალური შემოწმება</translation>
+      <translation>ვიზუალის კონტროლი</translation>
     </message>
     <message>
       <location filename="../../VisualInspection.ui" line="23"/>
@@ -106,7 +106,7 @@
     <message>
       <location filename="../../ViewProviderInspection.cpp" line="508"/>
       <source>Annotation</source>
-      <translation>შენიშვნა</translation>
+      <translation>ანოტაცია</translation>
     </message>
     <message>
       <location filename="../../ViewProviderInspection.cpp" line="511"/>

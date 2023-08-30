@@ -313,7 +313,7 @@ Mediante el uso de ";;" para separar rutas, puede agregar varias carpetas aquí<
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="42"/>
       <source>Recent files</source>
-      <translation>Archivos recientes</translation>
+      <translation type="unfinished">Recent files</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="43"/>

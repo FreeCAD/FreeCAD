@@ -106,8 +106,8 @@ App::DocumentObjectExecReturn *Fillet::execute()
     try {
         BRepFilletAPI_MakeFillet mkFillet(baseShape.getShape());
 
-        for (std::vector<std::string>::const_iterator it=SubNames.begin(); it != SubNames.end(); ++it) {
-            TopoDS_Edge edge = TopoDS::Edge(baseShape.getSubShape(it->c_str()));
+        for (const auto & it : SubNames) {
+            TopoDS_Edge edge = TopoDS::Edge(baseShape.getSubShape(it.c_str()));
             mkFillet.Add(radius, edge);
         }
 

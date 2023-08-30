@@ -419,8 +419,8 @@ void PropertyEnumeration::Save(Base::Writer &writer) const
         std::vector<std::string> items = getEnumVector();
         writer.Stream() << writer.ind() << "<CustomEnumList count=\"" <<  items.size() <<"\">" << endl;
         writer.incInd();
-        for(std::vector<std::string>::iterator it = items.begin(); it != items.end(); ++it) {
-            std::string val = encodeAttribute(*it);
+        for(auto & item : items) {
+            std::string val = encodeAttribute(item);
             writer.Stream() << writer.ind() << "<Enum value=\"" <<  val <<"\"/>" << endl;
         }
         writer.decInd();
@@ -679,12 +679,7 @@ TYPESYSTEM_SOURCE(App::PropertyIntegerConstraint, App::PropertyInteger)
 // Construction/Destruction
 
 
-PropertyIntegerConstraint::PropertyIntegerConstraint()
-  : _ConstStruct(nullptr)
-{
-
-}
-
+PropertyIntegerConstraint::PropertyIntegerConstraint() = default;
 
 PropertyIntegerConstraint::~PropertyIntegerConstraint()
 {
@@ -947,8 +942,8 @@ void PropertyIntegerSet::setValues(const std::set<long>& values)
 PyObject *PropertyIntegerSet::getPyObject()
 {
     PyObject* set = PySet_New(nullptr);
-    for(std::set<long>::const_iterator it=_lValueSet.begin();it!=_lValueSet.end();++it)
-        PySet_Add(set,PyLong_FromLong(*it));
+    for(long it : _lValueSet)
+        PySet_Add(set,PyLong_FromLong(it));
     return set;
 }
 
@@ -985,8 +980,8 @@ void PropertyIntegerSet::Save (Base::Writer &writer) const
 {
     writer.Stream() << writer.ind() << "<IntegerSet count=\"" <<  _lValueSet.size() <<"\">" << endl;
     writer.incInd();
-    for(std::set<long>::const_iterator it=_lValueSet.begin();it!=_lValueSet.end();++it)
-        writer.Stream() << writer.ind() << "<I v=\"" <<  *it <<"\"/>" << endl; ;
+    for(long it : _lValueSet)
+        writer.Stream() << writer.ind() << "<I v=\"" <<  it <<"\"/>" << endl; ;
     writer.decInd();
     writer.Stream() << writer.ind() << "</IntegerSet>" << endl ;
 }
@@ -1196,11 +1191,7 @@ TYPESYSTEM_SOURCE(App::PropertyFloatConstraint, App::PropertyFloat)
 // Construction/Destruction
 
 
-PropertyFloatConstraint::PropertyFloatConstraint()
-  : _ConstStruct(nullptr)
-{
-
-}
+PropertyFloatConstraint::PropertyFloatConstraint() = default;
 
 PropertyFloatConstraint::~PropertyFloatConstraint()
 {
@@ -1418,13 +1409,13 @@ void PropertyFloatList::SaveDocFile (Base::Writer &writer) const
     uint32_t uCt = (uint32_t)getSize();
     str << uCt;
     if (!isSinglePrecision()) {
-        for (std::vector<double>::const_iterator it = _lValueList.begin(); it != _lValueList.end(); ++it) {
-            str << *it;
+        for (double it : _lValueList) {
+            str << it;
         }
     }
     else {
-        for (std::vector<double>::const_iterator it = _lValueList.begin(); it != _lValueList.end(); ++it) {
-            float v = (float)*it;
+        for (double it : _lValueList) {
+            float v = static_cast<float>(it);
             str << v;
         }
     }
@@ -1437,15 +1428,15 @@ void PropertyFloatList::RestoreDocFile(Base::Reader &reader)
     str >> uCt;
     std::vector<double> values(uCt);
     if (!isSinglePrecision()) {
-        for (std::vector<double>::iterator it = values.begin(); it != values.end(); ++it) {
-            str >> *it;
+        for (double & it : values) {
+            str >> it;
         }
     }
     else {
-        for (std::vector<double>::iterator it = values.begin(); it != values.end(); ++it) {
+        for (double & it : values) {
             float val;
             str >> val;
-            (*it) = val;
+            it = val;
         }
     }
     setValues(values);
@@ -2113,9 +2104,9 @@ void PropertyMap::setPyObject(PyObject *value)
 unsigned int PropertyMap::getMemSize () const
 {
     size_t size=0;
-    for (std::map<std::string,std::string>::const_iterator it = _lValueList.begin();it!= _lValueList.end(); ++it) {
-        size += it->second.size();
-        size += it->first.size();
+    for (const auto & it : _lValueList) {
+        size += it.second.size();
+        size += it.first.size();
     }
     return size;
 }
@@ -2124,9 +2115,9 @@ void PropertyMap::Save (Base::Writer &writer) const
 {
     writer.Stream() << writer.ind() << "<Map count=\"" <<  getSize() <<"\">" << endl;
     writer.incInd();
-    for (std::map<std::string,std::string>::const_iterator it = _lValueList.begin();it!= _lValueList.end(); ++it) {
-        writer.Stream() << writer.ind() << "<Item key=\"" <<  encodeAttribute(it->first)
-                                        << "\" value=\"" <<  encodeAttribute(it->second) <<"\"/>" << endl;
+    for (const auto & it : _lValueList) {
+        writer.Stream() << writer.ind() << "<Item key=\"" <<  encodeAttribute(it.first)
+                                        << "\" value=\"" <<  encodeAttribute(it.second) <<"\"/>" << endl;
     }
 
     writer.decInd();
@@ -2666,8 +2657,8 @@ void PropertyColorList::SaveDocFile (Base::Writer &writer) const
     Base::OutputStream str(writer.Stream());
     uint32_t uCt = (uint32_t)getSize();
     str << uCt;
-    for (std::vector<App::Color>::const_iterator it = _lValueList.begin(); it != _lValueList.end(); ++it) {
-        str << it->getPackedValue();
+    for (auto it : _lValueList) {
+        str << it.getPackedValue();
     }
 }
 
@@ -2678,9 +2669,9 @@ void PropertyColorList::RestoreDocFile(Base::Reader &reader)
     str >> uCt;
     std::vector<Color> values(uCt);
     uint32_t value; // must be 32 bit long
-    for (std::vector<App::Color>::iterator it = values.begin(); it != values.end(); ++it) {
+    for (auto & it : values) {
         str >> value;
-        it->setPackedValue(value);
+        it.setPackedValue(value);
     }
     setValues(values);
 }
@@ -2937,13 +2928,13 @@ void PropertyMaterialList::SaveDocFile(Base::Writer &writer) const
     Base::OutputStream str(writer.Stream());
     uint32_t uCt = (uint32_t)getSize();
     str << uCt;
-    for (std::vector<App::Material>::const_iterator it = _lValueList.begin(); it != _lValueList.end(); ++it) {
-        str << it->ambientColor.getPackedValue();
-        str << it->diffuseColor.getPackedValue();
-        str << it->specularColor.getPackedValue();
-        str << it->emissiveColor.getPackedValue();
-        str << it->shininess;
-        str << it->transparency;
+    for (const auto & it : _lValueList) {
+        str << it.ambientColor.getPackedValue();
+        str << it.diffuseColor.getPackedValue();
+        str << it.specularColor.getPackedValue();
+        str << it.emissiveColor.getPackedValue();
+        str << it.shininess;
+        str << it.transparency;
     }
 }
 
@@ -2955,19 +2946,19 @@ void PropertyMaterialList::RestoreDocFile(Base::Reader &reader)
     std::vector<Material> values(uCt);
     uint32_t value; // must be 32 bit long
     float valueF;
-    for (std::vector<App::Material>::iterator it = values.begin(); it != values.end(); ++it) {
+    for (auto & it : values) {
         str >> value;
-        it->ambientColor.setPackedValue(value);
+        it.ambientColor.setPackedValue(value);
         str >> value;
-        it->diffuseColor.setPackedValue(value);
+        it.diffuseColor.setPackedValue(value);
         str >> value;
-        it->specularColor.setPackedValue(value);
+        it.specularColor.setPackedValue(value);
         str >> value;
-        it->emissiveColor.setPackedValue(value);
+        it.emissiveColor.setPackedValue(value);
         str >> valueF;
-        it->shininess = valueF;
+        it.shininess = valueF;
         str >> valueF;
-        it->transparency = valueF;
+        it.transparency = valueF;
     }
     setValues(values);
 }

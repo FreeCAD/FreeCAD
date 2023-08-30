@@ -55,13 +55,7 @@ using namespace MeshGui;
 /// @namespace MeshGui @class Workbench
 TYPESYSTEM_SOURCE(MeshGui::Workbench, Gui::StdWorkbench)
 
-Workbench::Workbench()
-{
-}
-
-Workbench::~Workbench()
-{
-}
+Workbench::Workbench() = default;
 
 class MeshInfoWatcher : public Gui::TaskView::TaskWatcher, public Gui::SelectionObserver
 {
@@ -114,10 +108,10 @@ public:
         Base::BoundBox3d bbox;
         unsigned long countPoints=0, countFacets=0;
         std::vector<Mesh::Feature*> mesh = Gui::Selection().getObjectsOfType<Mesh::Feature>();
-        for (std::vector<Mesh::Feature*>::iterator it = mesh.begin(); it != mesh.end(); ++it) {
-            countPoints += (*it)->Mesh.getValue().countPoints();
-            countFacets += (*it)->Mesh.getValue().countFacets();
-            bbox.Add((*it)->Mesh.getBoundingBox());
+        for (auto it : mesh) {
+            countPoints += it->Mesh.getValue().countPoints();
+            countFacets += it->Mesh.getValue().countFacets();
+            bbox.Add(it->Mesh.getBoundingBox());
         }
 
         if (countPoints > 0) {

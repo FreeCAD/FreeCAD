@@ -139,6 +139,7 @@ macro(PrintFinalReport)
     conditional(QtUiTools BUILD_GUI "not needed" ${QtUiTools_VERSION})
     conditional(QtWidgets BUILD_GUI "not needed" ${QtWidgets_VERSION})
     simple(QtXml ${QtXml_VERSION})
+    conditional(QtTest ENABLE_DEVELOPER_TESTS "not needed" ${QtTest_VERSION})
     if (BUILD_GUI)
         conditional(QtWebEngineWidgets BUILD_WEB "not needed (BUILD_WEB is OFF)" ${QtWebEngineWidgets_VERSION})
         conditional(DesignerPlugin BUILD_DESIGNER_PLUGIN

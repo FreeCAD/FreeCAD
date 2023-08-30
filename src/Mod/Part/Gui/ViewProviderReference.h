@@ -86,21 +86,21 @@ protected:
     //bool loadParameter();
 
     // nodes for the data representation
-    SoGroup  *EdgeRoot;
-    SoGroup  *FaceRoot;
-    SoGroup  *VertexRoot;
-    SoMaterial   *pcLineMaterial;
-    SoMaterial   *pcPointMaterial;
-    SoDrawStyle  *pcLineStyle;
-    SoDrawStyle  *pcPointStyle;
-    SoSwitch     *pcControlPoints;
-    SoShapeHints *pShapeHints;
+    SoGroup  *EdgeRoot{nullptr};
+    SoGroup  *FaceRoot{nullptr};
+    SoGroup  *VertexRoot{nullptr};
+    SoMaterial   *pcLineMaterial{nullptr};
+    SoMaterial   *pcPointMaterial{nullptr};
+    SoDrawStyle  *pcLineStyle{nullptr};
+    SoDrawStyle  *pcPointStyle{nullptr};
+    SoSwitch     *pcControlPoints{nullptr};
+    SoShapeHints *pShapeHints{nullptr};
 
 private:
     // settings stuff
-    float meshDeviation;
-    bool noPerVertexNormals;
-    bool qualityNormals;
+    float meshDeviation{0.01F};
+    bool noPerVertexNormals{true};
+    bool qualityNormals{false};
     static App::PropertyFloatConstraint::Constraints floatRange;
     static const char* LightingEnums[];
 };

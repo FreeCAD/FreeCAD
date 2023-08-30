@@ -37,9 +37,7 @@ DlgSettingsPythonConsole::DlgSettingsPythonConsole(QWidget* parent)
     ui->setupUi(this);
 }
 
-DlgSettingsPythonConsole::~DlgSettingsPythonConsole()
-{
-}
+DlgSettingsPythonConsole::~DlgSettingsPythonConsole() = default;
 
 void DlgSettingsPythonConsole::saveSettings()
 {

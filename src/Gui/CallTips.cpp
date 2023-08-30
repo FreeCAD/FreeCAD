@@ -120,9 +120,7 @@ CallTipsList::CallTipsList(QPlainTextEdit* parent)
     compKeys.append(Qt::Key_BraceRight);
 }
 
-CallTipsList::~CallTipsList()
-{
-}
+CallTipsList::~CallTipsList() = default;
 
 void CallTipsList::keyboardSearch(const QString& wordPrefix)
 {

@@ -414,6 +414,26 @@ bool SketcherGui::isCommandActive(Gui::Document* doc, bool actsOnSelection)
     return false;
 }
 
+bool SketcherGui::isSketcherBSplineActive(Gui::Document* doc, bool actsOnSelection)
+{
+    if (doc) {
+        // checks if a Sketch Viewprovider is in Edit and is in no special mode
+        if (doc->getInEdit()
+            && doc->getInEdit()->isDerivedFrom(SketcherGui::ViewProviderSketch::getClassTypeId())) {
+            if (static_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit())->getSketchMode()
+                == ViewProviderSketch::STATUS_NONE) {
+                if (!actsOnSelection)
+                    return true;
+                else if (Gui::Selection().countObjectsOfType(
+                             Sketcher::SketchObject::getClassTypeId())
+                         > 0)
+                    return true;
+            }
+        }
+    }
+    return false;
+}
+
 SketcherGui::ViewProviderSketch*
 SketcherGui::getInactiveHandlerEditModeSketchViewProvider(Gui::Document* doc)
 {

@@ -44,8 +44,6 @@ public:
         initialize("This module is the InspectionGui module."); // register with Python
     }
 
-    ~Module() override {}
-
 private:
 };
 

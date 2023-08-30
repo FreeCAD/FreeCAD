@@ -33,7 +33,7 @@ using namespace Part;
 // returns a string which represents the object e.g. when printed in python
 std::string AttachExtensionPy::representation() const
 {
-    return std::string("<Part::AttachableObject>");
+    return {"<Part::AttachableObject>"};
 }
 
 PyObject* AttachExtensionPy::positionBySupport(PyObject *args)

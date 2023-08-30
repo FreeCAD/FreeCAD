@@ -51,10 +51,7 @@
 
 using namespace MeshCore;
 
-Approximation::Approximation()
-  : _bIsFitted(false), _fLastResult(FLOAT_MAX)
-{
-}
+Approximation::Approximation() = default;
 
 Approximation::~Approximation()
 {
@@ -104,8 +101,8 @@ Base::Vector3f Approximation::GetGravity() const
 {
     Base::Vector3f clGravity;
     if (!_vPoints.empty()) {
-        for (std::list<Base::Vector3f>::const_iterator it = _vPoints.begin(); it!=_vPoints.end(); ++it)
-            clGravity += *it;
+        for (const auto& vPoint : _vPoints)
+            clGravity += vPoint;
         clGravity *= 1.0f / float(_vPoints.size());
     }
     return clGravity;
@@ -142,10 +139,6 @@ PlaneFit::PlaneFit()
 {
 }
 
-PlaneFit::~PlaneFit()
-{
-}
-
 float PlaneFit::Fit()
 {
     _bIsFitted = true;
@@ -155,11 +148,11 @@ float PlaneFit::Fit()
     double sxx,sxy,sxz,syy,syz,szz,mx,my,mz;
     sxx=sxy=sxz=syy=syz=szz=mx=my=mz=0.0;
 
-    for (std::list<Base::Vector3f>::iterator it = _vPoints.begin(); it!=_vPoints.end(); ++it) {
-        sxx += double(it->x * it->x); sxy += double(it->x * it->y);
-        sxz += double(it->x * it->z); syy += double(it->y * it->y);
-        syz += double(it->y * it->z); szz += double(it->z * it->z);
-        mx  += double(it->x); my += double(it->y); mz += double(it->z);
+    for (const auto & vPoint : _vPoints) {
+        sxx += double(vPoint.x * vPoint.x); sxy += double(vPoint.x * vPoint.y);
+        sxz += double(vPoint.x * vPoint.z); syy += double(vPoint.y * vPoint.y);
+        syz += double(vPoint.y * vPoint.z); szz += double(vPoint.z * vPoint.z);
+        mx  += double(vPoint.x); my += double(vPoint.y); mz += double(vPoint.z);
     }
 
     size_t nSize = _vPoints.size();
@@ -377,8 +370,7 @@ void PlaneFit::ProjectToPlane ()
     Base::Vector3f cGravity(GetGravity());
     Base::Vector3f cNormal (GetNormal ());
 
-    for (std::list< Base::Vector3f >::iterator it = _vPoints.begin(); it != _vPoints.end(); ++it) {
-        Base::Vector3f& cPnt = *it;
+    for (auto & cPnt : _vPoints) {
         float fD = (cPnt - cGravity) * cNormal;
         cPnt = cPnt - fD * cNormal;
     }
@@ -412,10 +404,10 @@ std::vector<Base::Vector3f> PlaneFit::GetLocalPoints() const
       //Base::Vector3d ez = Base::convertTo<Base::Vector3d>(this->_vDirW);
 
         localPoints.insert(localPoints.begin(), _vPoints.begin(), _vPoints.end());
-        for (std::vector<Base::Vector3f>::iterator it = localPoints.begin(); it != localPoints.end(); ++it) {
-            Base::Vector3d clPoint = Base::convertTo<Base::Vector3d>(*it);
+        for (auto & localPoint : localPoints) {
+            Base::Vector3d clPoint = Base::convertTo<Base::Vector3d>(localPoint);
             clPoint.TransformToCoordinateSystem(bs, ex, ey);
-            it->Set(static_cast<float>(clPoint.x), static_cast<float>(clPoint.y), static_cast<float>(clPoint.z));
+            localPoint.Set(static_cast<float>(clPoint.x), static_cast<float>(clPoint.y), static_cast<float>(clPoint.z));
         }
     }
 
@@ -572,18 +564,8 @@ void QuadraticFit::CalcZValues( double x, double y, double &dZ1, double &dZ2 ) c
 // -------------------------------------------------------------------------------
 
 SurfaceFit::SurfaceFit()
-   : PlaneFit()
+    : _fCoeff{}
 {
-    _fCoeff[0] = 0.0;
-    _fCoeff[1] = 0.0;
-    _fCoeff[2] = 0.0;
-    _fCoeff[3] = 0.0;
-    _fCoeff[4] = 0.0;
-    _fCoeff[5] = 0.0;
-    _fCoeff[6] = 0.0;
-    _fCoeff[7] = 0.0;
-    _fCoeff[8] = 0.0;
-    _fCoeff[9] = 0.0;
 }
 
 float SurfaceFit::Fit()
@@ -774,9 +756,9 @@ double SurfaceFit::PolynomFit()
     // Get S(P) = sum[(P*Vi)^2 - 2*(P*Vi)*zi + zi^2]
     double sigma = 0;
     FunctionContainer clFuncCont(_fCoeff);
-    for (std::vector<Base::Vector3d>::const_iterator it = transform.begin(); it != transform.end(); ++it) {
-        double u = it->x;
-        double v = it->y;
+    for (const auto & it : transform) {
+        double u = it.x;
+        double v = it.y;
         double z = clFuncCont.F(u, v, 0.0);
         sigma += z*z;
     }
@@ -1034,12 +1016,6 @@ struct LMCylinderFunctor
 CylinderFit::CylinderFit()
   : _vBase(0,0,0)
   , _vAxis(0,0,1)
-  , _fRadius(0)
-  , _initialGuess(false)
-{
-}
-
-CylinderFit::~CylinderFit()
 {
 }
 
@@ -1082,10 +1058,10 @@ Base::Vector3f CylinderFit::GetInitialAxisFromNormals(const std::vector<Base::Ve
     double sxx,sxy,sxz,syy,syz,szz;
     sxx = sxy = sxz = syy = syz = szz = 0.0;
 
-    for (std::vector<Base::Vector3f>::const_iterator it = n.begin(); it != n.end(); ++it) {
-        sxx += double(it->x * it->x); sxy += double(it->x * it->y);
-        sxz += double(it->x * it->z); syy += double(it->y * it->y);
-        syz += double(it->y * it->z); szz += double(it->z * it->z);
+    for (auto it : n) {
+        sxx += double(it.x * it.x); sxy += double(it.x * it.y);
+        sxz += double(it.x * it.z); syy += double(it.y * it.y);
+        syz += double(it.y * it.z); szz += double(it.z * it.z);
     }
 
     Eigen::Matrix3d covMat = Eigen::Matrix3d::Zero();
@@ -1272,8 +1248,7 @@ void CylinderFit::ProjectToCylinder()
     Base::Vector3f cBase(GetBase());
     Base::Vector3f cAxis(GetAxis());
 
-    for (std::list< Base::Vector3f >::iterator it = _vPoints.begin(); it != _vPoints.end(); ++it) {
-        Base::Vector3f& cPnt = *it;
+    for (auto & cPnt : _vPoints) {
         if (cPnt.DistanceToLine(cBase, cAxis) > 0) {
             Base::Vector3f proj;
             cBase.ProjectToPlane(cPnt, cAxis, proj);
@@ -1306,13 +1281,7 @@ void CylinderFit::ProjectToCylinder()
 
 SphereFit::SphereFit()
   : _vCenter(0,0,0)
-  , _fRadius(0)
 {
-}
-
-SphereFit::~SphereFit()
-{
-
 }
 
 float SphereFit::GetRadius() const
@@ -1408,9 +1377,7 @@ float SphereFit::GetStdDeviation() const
 
 void SphereFit::ProjectToSphere()
 {
-    for (std::list< Base::Vector3f >::iterator it = _vPoints.begin(); it != _vPoints.end(); ++it) {
-        Base::Vector3f& cPnt = *it;
-
+    for (auto & cPnt : _vPoints) {
         // Compute unit vector from sphere centre to point.
         // Because this vector is orthogonal to the sphere's surface at the
         // intersection point we can easily compute the projection point on the
@@ -1434,12 +1401,7 @@ void SphereFit::ProjectToSphere()
 // -------------------------------------------------------------------------------
 
 PolynomialFit::PolynomialFit()
-{
-    for (int i=0; i<9; i++)
-        _fCoeff[i] = 0.0f;
-}
-
-PolynomialFit::~PolynomialFit()
+    : _fCoeff{}
 {
 }
 

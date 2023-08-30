@@ -159,8 +159,7 @@ public:
     }
 
     // Auto generated code (Tools/params_utils.py:217)
-    ~TreeParamsP() override {
-    }
+    ~TreeParamsP() override = default;
 
     // Auto generated code (Tools/params_utils.py:222)
     void OnChange(Base::Subject<const char*> &, const char* sReason) override {

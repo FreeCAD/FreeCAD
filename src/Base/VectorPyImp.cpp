@@ -63,7 +63,7 @@ PyObject *VectorPy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // Pyt
 int VectorPy::PyInit(PyObject* args, PyObject* /*kwd*/)
 {
     double  x=0.0,y=0.0,z=0.0;
-    PyObject *object;
+    PyObject *object = nullptr;
     VectorPy::PointerType ptr = getVectorPtr();
     if (PyArg_ParseTuple(args, "|ddd", &x,&y,&z)) {
         ptr->Set(x,y,z);
@@ -240,7 +240,7 @@ PyObject * VectorPy::mapping_subscript(PyObject *self, PyObject *item)
         return sequence_item(self, i);
     }
     else if (PySlice_Check(item)) {
-        Py_ssize_t start, stop, step, slicelength, cur, i;
+        Py_ssize_t start = 0, stop = 0, step = 0, slicelength = 0, cur = 0, i = 0;
         PyObject* slice = item;
 
         if (PySlice_GetIndicesEx(slice,
@@ -283,7 +283,7 @@ PyObject * VectorPy::mapping_subscript(PyObject *self, PyObject *item)
 
 PyObject*  VectorPy::add(PyObject *args)
 {
-    PyObject *obj;
+    PyObject *obj = nullptr;
     if (!PyArg_ParseTuple(args, "O!", &(VectorPy::Type), &obj))
         return nullptr;
 
@@ -298,7 +298,7 @@ PyObject*  VectorPy::add(PyObject *args)
 
 PyObject*  VectorPy::sub(PyObject *args)
 {
-    PyObject *obj;
+    PyObject *obj = nullptr;
     if (!PyArg_ParseTuple(args, "O!", &(VectorPy::Type), &obj))
         return nullptr;
 
@@ -335,12 +335,12 @@ PyObject* VectorPy::richCompare(PyObject *v, PyObject *w, int op)
             return nullptr;
         }
         else if (op == Py_EQ) {
-            res = (v1 == v2) ? Py_True : Py_False;
+            res = (v1 == v2) ? Py_True : Py_False; //NOLINT
             Py_INCREF(res);
             return res;
         }
         else {
-            res = (v1 != v2) ? Py_True : Py_False;
+            res = (v1 != v2) ? Py_True : Py_False; //NOLINT
             Py_INCREF(res);
             return res;
         }
@@ -354,7 +354,7 @@ PyObject* VectorPy::richCompare(PyObject *v, PyObject *w, int op)
 
 PyObject*  VectorPy::isEqual(PyObject *args)
 {
-    PyObject *obj;
+    PyObject *obj = nullptr;
     double tolerance=0;
     if (!PyArg_ParseTuple(args, "O!d", &(VectorPy::Type), &obj, &tolerance))
         return nullptr;
@@ -370,7 +370,7 @@ PyObject*  VectorPy::isEqual(PyObject *args)
 
 PyObject*  VectorPy::scale(PyObject *args)
 {
-    double factorX, factorY, factorZ;
+    double factorX = 0.0, factorY = 0.0, factorZ = 0.0;
     if (!PyArg_ParseTuple(args, "ddd", &factorX, &factorY, &factorZ))
         return nullptr;
     VectorPy::PointerType ptr = getVectorPtr();
@@ -381,7 +381,7 @@ PyObject*  VectorPy::scale(PyObject *args)
 
 PyObject*  VectorPy::multiply(PyObject *args)
 {
-    double factor;
+    double factor = 0.0;
     if (!PyArg_ParseTuple(args, "d", &factor))
         return nullptr;
     VectorPy::PointerType ptr = getVectorPtr();
@@ -392,7 +392,7 @@ PyObject*  VectorPy::multiply(PyObject *args)
 
 PyObject*  VectorPy::dot(PyObject *args)
 {
-    PyObject *obj;
+    PyObject *obj = nullptr;
     if (!PyArg_ParseTuple(args, "O!", &(VectorPy::Type), &obj))
         return nullptr;
 
@@ -407,7 +407,7 @@ PyObject*  VectorPy::dot(PyObject *args)
 
 PyObject*  VectorPy::cross(PyObject *args)
 {
-    PyObject *obj;
+    PyObject *obj = nullptr;
     if (!PyArg_ParseTuple(args, "O!", &(VectorPy::Type), &obj))
         return nullptr;
 
@@ -422,7 +422,7 @@ PyObject*  VectorPy::cross(PyObject *args)
 
 PyObject*  VectorPy::isOnLineSegment(PyObject *args)
 {
-    PyObject *start, *end;
+    PyObject *start = nullptr, *end = nullptr;
     if (!PyArg_ParseTuple(args, "OO",&start, &end))
         return nullptr;
     if (!PyObject_TypeCheck(start, &(VectorPy::Type))) {
@@ -448,7 +448,7 @@ PyObject*  VectorPy::isOnLineSegment(PyObject *args)
 
 PyObject*  VectorPy::getAngle(PyObject *args)
 {
-    PyObject *obj;
+    PyObject *obj = nullptr;
     if (!PyArg_ParseTuple(args, "O!", &(VectorPy::Type), &obj))
         return nullptr;
 
@@ -478,7 +478,7 @@ PyObject*  VectorPy::normalize(PyObject *args)
 
 PyObject*  VectorPy::projectToLine(PyObject *args)
 {
-    PyObject *base, *line;
+    PyObject *base = nullptr, *line = nullptr;
     if (!PyArg_ParseTuple(args, "OO",&base, &line))
         return nullptr;
     if (!PyObject_TypeCheck(base, &(VectorPy::Type))) {
@@ -504,7 +504,7 @@ PyObject*  VectorPy::projectToLine(PyObject *args)
 
 PyObject*  VectorPy::projectToPlane(PyObject *args)
 {
-    PyObject *base, *line;
+    PyObject *base = nullptr, *line = nullptr;
     if (!PyArg_ParseTuple(args, "OO",&base, &line))
         return nullptr;
     if (!PyObject_TypeCheck(base, &(VectorPy::Type))) {
@@ -530,7 +530,7 @@ PyObject*  VectorPy::projectToPlane(PyObject *args)
 
 PyObject*  VectorPy::distanceToPoint(PyObject *args)
 {
-    PyObject *pnt;
+    PyObject *pnt = nullptr;
     if (!PyArg_ParseTuple(args, "O!",&(VectorPy::Type),&pnt))
         return nullptr;
 
@@ -544,7 +544,7 @@ PyObject*  VectorPy::distanceToPoint(PyObject *args)
 
 PyObject*  VectorPy::distanceToLine(PyObject *args)
 {
-    PyObject *base, *line;
+    PyObject *base = nullptr, *line = nullptr;
     if (!PyArg_ParseTuple(args, "OO",&base, &line))
         return nullptr;
     if (!PyObject_TypeCheck(base, &(VectorPy::Type))) {
@@ -569,7 +569,7 @@ PyObject*  VectorPy::distanceToLine(PyObject *args)
 
 PyObject*  VectorPy::distanceToLineSegment(PyObject *args)
 {
-    PyObject *base, *line;
+    PyObject *base = nullptr, *line = nullptr;
     if (!PyArg_ParseTuple(args, "OO",&base, &line))
         return nullptr;
     if (!PyObject_TypeCheck(base, &(VectorPy::Type))) {
@@ -594,7 +594,7 @@ PyObject*  VectorPy::distanceToLineSegment(PyObject *args)
 
 PyObject*  VectorPy::distanceToPlane(PyObject *args)
 {
-    PyObject *base, *line;
+    PyObject *base = nullptr, *line = nullptr;
     if (!PyArg_ParseTuple(args, "OO",&base, &line))
         return nullptr;
     if (!PyObject_TypeCheck(base, &(VectorPy::Type))) {

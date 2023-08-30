@@ -138,7 +138,7 @@ def read(filename):
                         if tnode is not None:
                             mnode = tnode.find(bt+"instance_material")
                             if mnode is not None:
-                                if "target" in mnode.keys():
+                                if "target" in mnode:
                                     mname = mnode.get("target").strip("#")
                                     for m in col.materials:
                                         if m.id == mname:

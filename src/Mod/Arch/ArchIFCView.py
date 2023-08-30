@@ -152,7 +152,7 @@ class IfcContextUI:
         """
         data = ArchIFC.IfcRoot.getObjIfcComplexAttribute(self, self.object, "RepresentationContexts")
         for lineEdit in self.lineEditObjects:
-            if lineEdit.objectName() in data.keys():
+            if lineEdit.objectName() in data:
                 lineEdit.setText(data[lineEdit.objectName()])
 
     def createFormEntry(self, name, label):

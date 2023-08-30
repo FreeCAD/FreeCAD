@@ -132,10 +132,10 @@ TaskMultiTransformParameters::TaskMultiTransformParameters(ViewProviderTransform
     // Fill data into dialog elements
     ui->listTransformFeatures->setEnabled(true);
     ui->listTransformFeatures->clear();
-    for (std::vector<App::DocumentObject*>::const_iterator i = transformFeatures.begin(); i != transformFeatures.end(); i++)
-    {
-        if (*i)
-            ui->listTransformFeatures->addItem(QString::fromUtf8((*i)->Label.getValue()));
+    for (auto it : transformFeatures) {
+        if (it) {
+            ui->listTransformFeatures->addItem(QString::fromUtf8(it->Label.getValue()));
+        }
     }
     if (!transformFeatures.empty()) {
         ui->listTransformFeatures->setCurrentRow(0, QItemSelectionModel::ClearAndSelect);
@@ -149,8 +149,7 @@ TaskMultiTransformParameters::TaskMultiTransformParameters(ViewProviderTransform
     std::vector<App::DocumentObject*> originals = pcMultiTransform->Originals.getValues();
 
     // Fill data into dialog elements
-    for (std::vector<App::DocumentObject*>::const_iterator i = originals.begin(); i != originals.end(); i++) {
-        const App::DocumentObject* obj = *i;
+    for (auto obj : originals) {
         if (obj) {
             QListWidgetItem* item = new QListWidgetItem();
             item->setText(QString::fromUtf8(obj->Label.getValue()));
@@ -561,10 +560,10 @@ bool TaskDlgMultiTransformParameters::accept()
     std::vector<App::DocumentObject*> transformFeatures = mtParameter->getTransformFeatures();
     std::stringstream str;
     str << Gui::Command::getObjectCmd(vp->getObject()) << ".Transformations = [";
-    for (std::vector<App::DocumentObject*>::const_iterator it = transformFeatures.begin(); it != transformFeatures.end(); it++)
-    {
-        if (*it)
-            str << Gui::Command::getObjectCmd(*it) << ",";
+    for (auto it : transformFeatures) {
+        if (it) {
+            str << Gui::Command::getObjectCmd(it) << ",";
+        }
     }
     str << "]";
     Gui::Command::runCommand(Gui::Command::Doc,str.str().c_str());

@@ -49,10 +49,7 @@ ViewProviderFemMeshShapeNetgen::ViewProviderFemMeshShapeNetgen()
     sPixmap = "FEM_MeshNetgenFromShape";
 }
 
-ViewProviderFemMeshShapeNetgen::~ViewProviderFemMeshShapeNetgen()
-{
-
-}
+ViewProviderFemMeshShapeNetgen::~ViewProviderFemMeshShapeNetgen() = default;
 
 void ViewProviderFemMeshShapeNetgen::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
 {

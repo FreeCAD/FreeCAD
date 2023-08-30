@@ -474,11 +474,11 @@ App::DocumentObject* DrawProjGroup::addProjection(const char* viewProjType)
         if (view) {//coverity CID 151722
             // the label must be set before the view is added
             view->Label.setValue(viewProjType);
+            // somewhere deep in DocumentObject, duplicate Labels have a numeric suffix applied,
+            // so we need to wait until that happens before building the translated label
+            view->translateLabel("DrawProjGroupItem", viewProjType, view->Label.getValue());
             addView(view);//from DrawViewCollection
             view->Source.setValues(Source.getValues());
-            //            std::vector<DocumentObject*> xLinks;
-            //            XSource.getLinks(xLinks);
-            //            view->XSource.setValues(xLinks);
             view->XSource.setValues(XSource.getValues());
 
             // the Scale is already set by DrawView

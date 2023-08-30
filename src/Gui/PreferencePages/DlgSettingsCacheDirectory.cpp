@@ -74,9 +74,7 @@ DlgSettingsCacheDirectory::DlgSettingsCacheDirectory(QWidget* parent)
     connect(ui->openButton, &QPushButton::clicked, this, &DlgSettingsCacheDirectory::openDirectory);
 }
 
-DlgSettingsCacheDirectory::~DlgSettingsCacheDirectory()
-{
-}
+DlgSettingsCacheDirectory::~DlgSettingsCacheDirectory() = default;
 
 void DlgSettingsCacheDirectory::saveSettings()
 {

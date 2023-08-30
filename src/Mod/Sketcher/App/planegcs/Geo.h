@@ -45,6 +45,8 @@ public:
     }
     double* x;
     double* y;
+    int PushOwnParams(VEC_pD& pvec);
+    void ReconstructOnNewPvec(VEC_pD& pvec, int& cnt);
 };
 
 using VEC_P = std::vector<Point>;
@@ -132,8 +134,10 @@ public:
     }
     DeriVector2 linCombi(double m1, const DeriVector2& v2, double m2) const
     {// linear combination of two vectors
-        return DeriVector2(
-            x * m1 + v2.x * m2, y * m1 + v2.y * m2, dx * m1 + v2.dx * m2, dy * m1 + v2.dy * m2);
+        return DeriVector2(x * m1 + v2.x * m2,
+                           y * m1 + v2.y * m2,
+                           dx * m1 + v2.dx * m2,
+                           dy * m1 + v2.dy * m2);
     }
 };
 
@@ -236,7 +240,10 @@ class MajorRadiusConic: public Curve
 public:
     ~MajorRadiusConic() override
     {}
-    virtual double getRadMaj(const DeriVector2& center, const DeriVector2& f1, double b, double db,
+    virtual double getRadMaj(const DeriVector2& center,
+                             const DeriVector2& f1,
+                             double b,
+                             double db,
                              double& ret_dRadMaj) const = 0;
     virtual double getRadMaj(double* derivparam, double& ret_dRadMaj) const = 0;
     virtual double getRadMaj() const = 0;
@@ -255,7 +262,10 @@ public:
     Point center;
     Point focus1;
     double* radmin;
-    double getRadMaj(const DeriVector2& center, const DeriVector2& f1, double b, double db,
+    double getRadMaj(const DeriVector2& center,
+                     const DeriVector2& f1,
+                     double b,
+                     double db,
                      double& ret_dRadMaj) const override;
     double getRadMaj(double* derivparam, double& ret_dRadMaj) const override;
     double getRadMaj() const override;
@@ -302,7 +312,10 @@ public:
     Point center;
     Point focus1;
     double* radmin;
-    double getRadMaj(const DeriVector2& center, const DeriVector2& f1, double b, double db,
+    double getRadMaj(const DeriVector2& center,
+                     const DeriVector2& f1,
+                     double b,
+                     double db,
                      double& ret_dRadMaj) const override;
     double getRadMaj(double* derivparam, double& ret_dRadMaj) const override;
     double getRadMaj() const override;

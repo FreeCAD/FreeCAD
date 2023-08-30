@@ -124,9 +124,7 @@ Reader::Reader()
     height = 0;
 }
 
-Reader::~Reader()
-{
-}
+Reader::~Reader() = default;
 
 void Reader::clear()
 {
@@ -192,13 +190,7 @@ int Reader::getHeight() const
 
 // ----------------------------------------------------------------------------
 
-AscReader::AscReader()
-{
-}
-
-AscReader::~AscReader()
-{
-}
+AscReader::AscReader() = default;
 
 void AscReader::read(const std::string& filename)
 {
@@ -216,7 +208,6 @@ public:
     virtual double toDouble(Base::InputStream&) const = 0;
     virtual int getSizeOf() const = 0;
 
-private:
     Converter(const Converter&) = delete;
     Converter(Converter&&) = delete;
     Converter& operator= (const Converter&) = delete;
@@ -253,8 +244,7 @@ public:
         _end = data.size();
         _cur = 0;
     }
-    ~DataStreambuf() override {
-    }
+    ~DataStreambuf() override = default;
 
 protected:
     int_type uflow() override {
@@ -307,7 +297,7 @@ protected:
         return seekoff(pos, std::ios_base::beg);
     }
 
-private:
+public:
     DataStreambuf(const DataStreambuf&) = delete;
     DataStreambuf(DataStreambuf&&) = delete;
     DataStreambuf& operator=(const DataStreambuf&) = delete;
@@ -504,13 +494,7 @@ lzfDecompress (const void *const in_data,  unsigned int in_len,
 }
 }
 
-PlyReader::PlyReader()
-{
-}
-
-PlyReader::~PlyReader()
-{
-}
+PlyReader::PlyReader() = default;
 
 void PlyReader::read(const std::string& filename)
 {
@@ -762,30 +746,30 @@ std::size_t PlyReader::readHeader(std::istream& in,
                 number.push_back(list[1]);
             }
 
-            for (std::list<std::string>::iterator it = number.begin(); it != number.end(); ++it) {
+            for (const auto & it : number) {
                 int size = 0;
-                if (*it == "char" || *it == "int8") {
+                if (it == "char" || it == "int8") {
                     size = 1;
                 }
-                else if (*it == "uchar" || *it == "uint8") {
+                else if (it == "uchar" || it == "uint8") {
                     size = 1;
                 }
-                else if (*it == "short" || *it == "int16") {
+                else if (it == "short" || it == "int16") {
                     size = 2;
                 }
-                else if (*it == "ushort" || *it == "uint16") {
+                else if (it == "ushort" || it == "uint16") {
                     size = 2;
                 }
-                else if (*it == "int" || *it == "int32") {
+                else if (it == "int" || it == "int32") {
                     size = 4;
                 }
-                else if (*it == "uint" || *it == "uint32") {
+                else if (it == "uint" || it == "uint32") {
                     size = 4;
                 }
-                else if (*it == "float" || *it == "float32") {
+                else if (it == "float" || it == "float32") {
                     size = 4;
                 }
-                else if (*it == "double" || *it == "float64") {
+                else if (it == "double" || it == "float64") {
                     size = 8;
                 }
                 else {
@@ -796,7 +780,7 @@ std::size_t PlyReader::readHeader(std::istream& in,
                 if (element == "vertex") {
                     // store the property name and type
                     fields.push_back(name);
-                    types.push_back(*it);
+                    types.push_back(it);
                     sizes.push_back(size);
                 }
                 else if (!count_props.empty()) {
@@ -949,13 +933,7 @@ void PlyReader::readBinary(bool swapByteOrder,
 
 // ----------------------------------------------------------------------------
 
-PcdReader::PcdReader()
-{
-}
-
-PcdReader::~PcdReader()
-{
-}
+PcdReader::PcdReader() = default;
 
 void PcdReader::read(const std::string& filename)
 {
@@ -1748,14 +1726,10 @@ private:
 };
 }
 
-E57Reader::E57Reader(const bool& Color, const bool& State, const float& Distance)
-{
-    useColor = Color;
-    checkState = State;
-    minDistance = Distance;
-}
-
-E57Reader::~E57Reader()
+E57Reader::E57Reader(bool Color,  bool State, double Distance)
+    : useColor{Color}
+    , checkState{State}
+    , minDistance{Distance}
 {
 }
 
@@ -1785,9 +1759,7 @@ Writer::Writer(const PointKernel& p) : points(p)
     height = 1;
 }
 
-Writer::~Writer()
-{
-}
+Writer::~Writer() = default;
 
 void Writer::setIntensities(const std::vector<float>& i)
 {
@@ -1825,10 +1797,6 @@ AscWriter::AscWriter(const PointKernel& p) : Writer(p)
 {
 }
 
-AscWriter::~AscWriter()
-{
-}
-
 void AscWriter::write(const std::string& filename)
 {
     if (placement.isIdentity()) {
@@ -1844,10 +1812,6 @@ void AscWriter::write(const std::string& filename)
 // ----------------------------------------------------------------------------
 
 PlyWriter::PlyWriter(const PointKernel& p) : Writer(p)
-{
-}
-
-PlyWriter::~PlyWriter()
 {
 }
 
@@ -1981,8 +1945,8 @@ void PlyWriter::write(const std::string& filename)
     out << "element vertex " << numValid << std::endl;
 
     // the properties
-    for (std::list<std::string>::iterator it = properties.begin(); it != properties.end(); ++it)
-        out << "property " << *it << std::endl;
+    for (const auto & prop : properties)
+        out << "property " << prop << std::endl;
     out << "end_header" << std::endl;
 
     for (std::size_t r=0; r<numPoints; r++) {
@@ -2003,10 +1967,6 @@ void PlyWriter::write(const std::string& filename)
 // ----------------------------------------------------------------------------
 
 PcdWriter::PcdWriter(const PointKernel& p) : Writer(p)
-{
-}
-
-PcdWriter::~PcdWriter()
 {
 }
 
@@ -2129,8 +2089,8 @@ void PcdWriter::write(const std::string& filename)
 
     // the fields
     out << "FIELDS";
-    for (std::list<std::string>::iterator it = fields.begin(); it != fields.end(); ++it)
-        out << " " << *it;
+    for (const auto & field : fields)
+        out << " " << field;
     out << std::endl;
 
     // the sizes
@@ -2141,8 +2101,8 @@ void PcdWriter::write(const std::string& filename)
 
     // the types
     out << "TYPE";
-    for (std::list<std::string>::iterator it = types.begin(); it != types.end(); ++it)
-        out << " " << *it;
+    for (const auto & type : types)
+        out << " " << type;
     out << std::endl;
 
     // the count

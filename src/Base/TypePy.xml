@@ -17,7 +17,8 @@ namespace Base {
     <Documentation>
       <Author Licence="LGPL" Name="Juergen Riegel" EMail="FreeCAD@juergen-riegel.net" />
       <DeveloperDocu>This is the Type class</DeveloperDocu>
-      <UserDocu>Base.BaseType class.\n
+      <UserDocu>Base.BaseType class.
+
 This class is not intended to create instances of itself, but to get information
 from the different types and create instances of them.
 Regarding instantiation, this is possible in cases that inherit from the
@@ -25,74 +26,91 @@ Base::BaseClass class and are not abstract classes.</UserDocu>
     </Documentation>
     <Methode Name="fromName" Static="true">
       <Documentation>
-        <UserDocu>fromName(name) -> Base.BaseType\n
-Returns a type object by name.\n
+        <UserDocu>fromName(name) -> Base.BaseType
+
+Returns a type object by name.
+
 name : str</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="fromKey" Static="true">
       <Documentation>
-        <UserDocu>fromKey(key) -> Base.BaseType\n
-Returns a type id object by key.\n
+        <UserDocu>fromKey(key) -> Base.BaseType
+
+Returns a type id object by key.
+
 key : int</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="getNumTypes" Static="true">
       <Documentation>
-        <UserDocu>getNumTypes() -> int\n
+        <UserDocu>getNumTypes() -> int
+
 Returns the number of type ids created so far.</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="getBadType" Static="true">
       <Documentation>
-        <UserDocu>getBadType() -> Base.BaseType\n
+        <UserDocu>getBadType() -> Base.BaseType
+
 Returns an invalid type id.</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="getAllDerivedFrom" Static="true">
       <Documentation>
-        <UserDocu>getAllDerivedFrom(type) -> list\n
-Returns all descendants from the given type id.\n
+        <UserDocu>getAllDerivedFrom(type) -> list
+
+Returns all descendants from the given type id.
+
 type : str, Base.BaseType</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="getParent" Const="true">
       <Documentation>
-        <UserDocu>getParent() -> Base.BaseType\n
+        <UserDocu>getParent() -> Base.BaseType
+
 Returns the parent type id.</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="isBad" Const="true">
       <Documentation>
-        <UserDocu>isBad() -> bool\n
+        <UserDocu>isBad() -> bool
+
 Checks if the type id is invalid.</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="isDerivedFrom" Const="true">
       <Documentation>
-        <UserDocu>isDerivedFrom(type) -> bool\n
-Returns true if given type id is a father of this type id.\n
+        <UserDocu>isDerivedFrom(type) -> bool
+
+Returns true if given type id is a father of this type id.
+
 type : str, Base.BaseType</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="getAllDerived" Const="true">
       <Documentation>
-        <UserDocu>getAllDerived() -> list\n
+        <UserDocu>getAllDerived() -> list
+
 Returns all descendants from this type id.</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="createInstance">
       <Documentation>
-        <UserDocu>createInstance() -> object\n
+        <UserDocu>createInstance() -> object
+
 Creates an instance of this type id.</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="createInstanceByName" Static="true">
       <Documentation>
-        <UserDocu>createInstanceByName(name, load=False) -> object\n
-Creates an instance of the named type id.\n
+        <UserDocu>createInstanceByName(name, load=False) -> object
+
+Creates an instance of the named type id.
+
 name : str
-load : bool\n    Load named type id module.</UserDocu>
+load : bool
+    Load named type id module.</UserDocu>
       </Documentation>
     </Methode>
     <Attribute Name="Name" ReadOnly="true">

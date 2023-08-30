@@ -93,10 +93,7 @@ TaskDlgRelocation::TaskDlgRelocation()
 {
 }
 
-TaskDlgRelocation::~TaskDlgRelocation()
-{
-
-}
+TaskDlgRelocation::~TaskDlgRelocation() = default;
 
 //==== calls from the TaskView ===============================================================
 

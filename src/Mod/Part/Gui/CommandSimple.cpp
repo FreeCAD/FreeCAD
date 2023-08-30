@@ -435,9 +435,9 @@ void CmdPartDefeaturing::activated(int iMsg)
 
             std::string faces;
             std::vector<std::string> subnames = it->getSubNames();
-            for (std::vector<std::string>::iterator sub = subnames.begin(); sub != subnames.end(); ++sub) {
+            for (const auto & subname : subnames) {
                 faces.append("sh.");
-                faces.append(*sub);
+                faces.append(subname);
                 faces.append(",");
             }
 
@@ -465,10 +465,10 @@ bool CmdPartDefeaturing::isActive()
 {
     Base::Type partid = Base::Type::fromName("Part::Feature");
     std::vector<Gui::SelectionObject> objs = Gui::Selection().getSelectionEx(nullptr, partid);
-    for (std::vector<Gui::SelectionObject>::iterator it = objs.begin(); it != objs.end(); ++it) {
-        std::vector<std::string> subnames = it->getSubNames();
-        for (std::vector<std::string>::iterator sub = subnames.begin(); sub != subnames.end(); ++sub) {
-            if (sub->substr(0,4) == "Face") {
+    for (const auto & obj : objs) {
+        std::vector<std::string> subnames = obj.getSubNames();
+        for (const auto & subname : subnames) {
+            if (subname.substr(0,4) == "Face") {
                 return true;
             }
         }

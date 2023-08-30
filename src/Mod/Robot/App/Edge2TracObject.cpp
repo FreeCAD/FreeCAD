@@ -53,10 +53,6 @@ Edge2TracObject::Edge2TracObject()
     NbrOfCluster = 0;
 }
 
-Edge2TracObject::~Edge2TracObject()
-{
-}
-
 App::DocumentObjectExecReturn *Edge2TracObject::execute()
 {
     App::DocumentObject* link = Source.getValue();
@@ -75,8 +71,8 @@ App::DocumentObjectExecReturn *Edge2TracObject::execute()
     std::vector<TopoDS_Edge> edges;
 
     // run through the edge name and get the real objects from the TopoShape
-    for (std::vector<std::string>::const_iterator it= SubVals.begin();it!=SubVals.end();++it) {
-         TopoDS_Edge edge = TopoDS::Edge(TopShape.getSubShape(it->c_str()));
+    for (const auto & SubVal : SubVals) {
+         TopoDS_Edge edge = TopoDS::Edge(TopShape.getSubShape(SubVal.c_str()));
          edges.push_back(edge);
     }
 
@@ -90,20 +86,20 @@ App::DocumentObjectExecReturn *Edge2TracObject::execute()
     // set the number of cluster and edges 
     NbrOfCluster = aclusteroutput.size();
     NbrOfEdges = 0;
-    for(std::vector<std::vector<TopoDS_Edge> >::const_iterator it=aclusteroutput.begin();it!=aclusteroutput.end();++it)
-        NbrOfEdges += it->size();
+    for(const auto & it : aclusteroutput)
+        NbrOfEdges += it.size();
 
     // trajectory to fill
     Robot::Trajectory trac;
     bool first = true;
 
     // cycle through the cluster
-    for(std::vector<std::vector<TopoDS_Edge> >::const_iterator it=aclusteroutput.begin();it!=aclusteroutput.end();++it)
+    for(const auto & it : aclusteroutput)
     {
         // cycle through the edges of the cluster
-        for(std::vector<TopoDS_Edge>::const_iterator it2=it->begin();it2!=it->end();++it2)
+        for(const auto& it2 : it)
         {
-            BRepAdaptor_Curve adapt(*it2);
+            BRepAdaptor_Curve adapt(it2);
             
             switch(adapt.GetType())
             {
@@ -125,7 +121,7 @@ App::DocumentObjectExecReturn *Edge2TracObject::execute()
                 }
 
                 // if reverse orintation, switch the points
-                if ( it2->Orientation() == TopAbs_REVERSED )
+                if ( it2.Orientation() == TopAbs_REVERSED )
                 {
                      //switch the points and orientation
                      gp_Pnt tmpP = P1;
@@ -154,7 +150,7 @@ App::DocumentObjectExecReturn *Edge2TracObject::execute()
                 Standard_Real end = adapt.LastParameter();
                 Standard_Real stp = ParLength / NbrSegments;
 				bool reversed = false;
-                if (it2->Orientation() == TopAbs_REVERSED) {
+                if (it2.Orientation() == TopAbs_REVERSED) {
                     std::swap(beg, end);
                     stp = - stp;
 					reversed = true;
@@ -205,7 +201,7 @@ App::DocumentObjectExecReturn *Edge2TracObject::execute()
                 Standard_Real NbrSegments = Round(Length / SegValue.getValue());
                 Standard_Real SegLength   = ParLength / NbrSegments;
 				
-				if ( it2->Orientation() == TopAbs_REVERSED )
+                if ( it2.Orientation() == TopAbs_REVERSED )
 				{
 					//Beginning and End switch
 					double i = adapt.LastParameter();
@@ -252,9 +248,6 @@ App::DocumentObjectExecReturn *Edge2TracObject::execute()
             default:
                 throw Base::TypeError("Unknown Edge type in Robot::Edge2TracObject::execute()");
             }
-           
-
-
         }
     }
 
@@ -271,6 +264,5 @@ App::DocumentObjectExecReturn *Edge2TracObject::execute()
 
 void Edge2TracObject::onChanged(const Property* prop)
 {
- 
     App::GeoFeature::onChanged(prop);
 }

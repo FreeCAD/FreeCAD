@@ -44,9 +44,9 @@ class MeshExport MeshFacetVisitor
 {
 public:
     /// Construction
-    MeshFacetVisitor() { }
+    MeshFacetVisitor() = default;
     /// Denstruction
-    virtual ~MeshFacetVisitor() { }
+    virtual ~MeshFacetVisitor() = default;
     /** Needs to be implemented in sub-classes.
      * \a rclFacet is the currently visited facet with the index \a ulFInd, \a rclFrom
      * is the last visited facet and \a ulLevel indicates the ring number around the start facet.
@@ -79,7 +79,7 @@ class MeshExport MeshSearchNeighbourFacetsVisitor : public MeshFacetVisitor
 {
 public:
     MeshSearchNeighbourFacetsVisitor (const MeshKernel &rclMesh, float fRadius, FacetIndex ulStartFacetIdx);
-    ~MeshSearchNeighbourFacetsVisitor () override {}
+    ~MeshSearchNeighbourFacetsVisitor () override = default;
     /** Checks the facet if it lies inside the search radius. */
     inline bool Visit (const MeshFacet &rclFacet, const MeshFacet &rclFrom, FacetIndex ulFInd, unsigned long ulLevel) override;
     /** Resets the VISIT flag of already visited facets. */
@@ -89,8 +89,8 @@ protected:
     const MeshKernel& _rclMeshBase; /**< The mesh kernel. */
     Base::Vector3f    _clCenter; /**< Center. */
     float  _fRadius; /**< Search radius. */
-    unsigned long _ulCurrentLevel;
-    bool _bFacetsFoundInCurrentLevel;
+    unsigned long _ulCurrentLevel{0};
+    bool _bFacetsFoundInCurrentLevel{false};
     std::vector<FacetIndex>  _vecFacets; /**< Found facets. */
 };
 
@@ -105,8 +105,8 @@ inline bool MeshSearchNeighbourFacetsVisitor::Visit (const MeshFacet &rclFacet, 
         _bFacetsFoundInCurrentLevel = false;
     }
 
-    for (int i = 0; i < 3; i++) {
-        if (Base::Distance(_clCenter, _rclMeshBase.GetPoint(rclFacet._aulPoints[i])) < _fRadius) {
+    for (PointIndex ptIndex : rclFacet._aulPoints) {
+        if (Base::Distance(_clCenter, _rclMeshBase.GetPoint(ptIndex)) < _fRadius) {
             _vecFacets.push_back(ulFInd);
             _bFacetsFoundInCurrentLevel = true;
             return true;
@@ -175,9 +175,9 @@ class MeshExport MeshPointVisitor
 {
 public:
     /// Construction
-    MeshPointVisitor() { }
+    MeshPointVisitor() = default;
     /// Denstruction
-    virtual ~MeshPointVisitor() { }
+    virtual ~MeshPointVisitor() = default;
     /** Needs to be implemented in sub-classes.
      * \a rclPoint is the currently visited point with the index \a ulPInd, \a rclFrom
      * is the last visited point  and \a ulLevel indicates the ring number around the start point.

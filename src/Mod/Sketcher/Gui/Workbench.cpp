@@ -87,16 +87,16 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     bsplines->setCommand("Sketcher B-spline tools");
     addSketcherWorkbenchBSplines(*bsplines);
 
-    Gui::MenuItem* virtualspace = new Gui::MenuItem();
-    virtualspace->setCommand("Sketcher virtual space");
-    addSketcherWorkbenchVirtualSpace(*virtualspace);
+    Gui::MenuItem* visual = new Gui::MenuItem();
+    visual->setCommand("Sketcher visual");
+    addSketcherWorkbenchVisual(*visual);
 
     Gui::MenuItem* sketch = new Gui::MenuItem;
     root->insertItem(item, sketch);
     sketch->setCommand("S&ketch");
     addSketcherWorkbenchSketchActions(*sketch);
     addSketcherWorkbenchSketchEditModeActions(*sketch);
-    *sketch << geom << cons << consaccel << bsplines << virtualspace;
+    *sketch << geom << cons << consaccel << bsplines << visual;
 
     return root;
 }
@@ -134,10 +134,10 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
     bspline->setCommand("Sketcher B-spline tools");
     addSketcherWorkbenchBSplines(*bspline);
 
-    Gui::ToolBarItem* virtualspace =
+    Gui::ToolBarItem* visual =
         new Gui::ToolBarItem(root, Gui::ToolBarItem::DefaultVisibility::Unavailable);
-    virtualspace->setCommand("Sketcher virtual space");
-    addSketcherWorkbenchVirtualSpace(*virtualspace);
+    visual->setCommand("Sketcher visual");
+    addSketcherWorkbenchVisual(*visual);
 
     Gui::ToolBarItem* edittools =
         new Gui::ToolBarItem(root, Gui::ToolBarItem::DefaultVisibility::Unavailable);
@@ -164,7 +164,7 @@ inline const QStringList editModeToolbarNames()
                         QString::fromLatin1("Sketcher constraints"),
                         QString::fromLatin1("Sketcher tools"),
                         QString::fromLatin1("Sketcher B-spline tools"),
-                        QString::fromLatin1("Sketcher virtual space"),
+                        QString::fromLatin1("Sketcher visual"),
                         QString::fromLatin1("Sketcher edit tools")};
 }
 
@@ -408,6 +408,7 @@ inline void SketcherAddWorkbenchConstraints<Gui::MenuItem>(Gui::MenuItem& cons)
          << "Sketcher_ConstrainSymmetric"
          << "Sketcher_ConstrainBlock"
          << "Separator"
+         << "Sketcher_Dimension"
          << "Sketcher_ConstrainLock"
          << "Sketcher_ConstrainDistanceX"
          << "Sketcher_ConstrainDistanceY"
@@ -425,6 +426,9 @@ inline void SketcherAddWorkbenchConstraints<Gui::MenuItem>(Gui::MenuItem& cons)
 template<>
 inline void SketcherAddWorkbenchConstraints<Gui::ToolBarItem>(Gui::ToolBarItem& cons)
 {
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/Mod/Sketcher/dimensioning");
+
     cons << "Sketcher_ConstrainCoincident"
          << "Sketcher_ConstrainPointOnObject"
          << "Sketcher_ConstrainVertical"
@@ -435,15 +439,20 @@ inline void SketcherAddWorkbenchConstraints<Gui::ToolBarItem>(Gui::ToolBarItem& 
          << "Sketcher_ConstrainEqual"
          << "Sketcher_ConstrainSymmetric"
          << "Sketcher_ConstrainBlock"
-         << "Separator"
-         << "Sketcher_ConstrainLock"
-         << "Sketcher_ConstrainDistanceX"
-         << "Sketcher_ConstrainDistanceY"
-         << "Sketcher_ConstrainDistance"
-         << "Sketcher_CompConstrainRadDia"
-         << "Sketcher_ConstrainAngle"
-         // << "Sketcher_ConstrainSnellsLaw" // Rarely used, show only in menu
-         << "Separator"
+         << "Separator";
+    if (hGrp->GetBool("SingleDimensioningTool", true)) {
+        cons << "Sketcher_Dimension";
+    }
+    if (hGrp->GetBool("SeparatedDimensioningTools", false)) {
+        cons << "Sketcher_ConstrainLock"
+            << "Sketcher_ConstrainDistanceX"
+            << "Sketcher_ConstrainDistanceY"
+            << "Sketcher_ConstrainDistance"
+            << "Sketcher_CompConstrainRadDia"
+            << "Sketcher_ConstrainAngle";
+        // << "Sketcher_ConstrainSnellsLaw" // Rarely used, show only in menu
+    }
+    cons << "Separator"
          << "Sketcher_ToggleDrivingConstraint"
          << "Sketcher_ToggleActiveConstraint";
 }
@@ -500,12 +509,7 @@ inline void SketcherAddWorkbenchBSplines(T& bspline);
 template<>
 inline void SketcherAddWorkbenchBSplines<Gui::MenuItem>(Gui::MenuItem& bspline)
 {
-    bspline << "Sketcher_BSplineDegree"
-            << "Sketcher_BSplinePolygon"
-            << "Sketcher_BSplineComb"
-            << "Sketcher_BSplineKnotMultiplicity"
-            << "Sketcher_BSplinePoleWeight"
-            << "Sketcher_BSplineConvertToNURBS"
+    bspline << "Sketcher_BSplineConvertToNURBS"
             << "Sketcher_BSplineIncreaseDegree"
             << "Sketcher_BSplineDecreaseDegree"
             << "Sketcher_BSplineIncreaseKnotMultiplicity"
@@ -517,8 +521,7 @@ inline void SketcherAddWorkbenchBSplines<Gui::MenuItem>(Gui::MenuItem& bspline)
 template<>
 inline void SketcherAddWorkbenchBSplines<Gui::ToolBarItem>(Gui::ToolBarItem& bspline)
 {
-    bspline << "Sketcher_CompBSplineShowHideGeometryInformation"
-            << "Sketcher_BSplineConvertToNURBS"
+    bspline << "Sketcher_BSplineConvertToNURBS"
             << "Sketcher_BSplineIncreaseDegree"
             << "Sketcher_BSplineDecreaseDegree"
             << "Sketcher_CompModifyKnotMultiplicity"
@@ -527,18 +530,22 @@ inline void SketcherAddWorkbenchBSplines<Gui::ToolBarItem>(Gui::ToolBarItem& bsp
 }
 
 template<typename T>
-inline void SketcherAddWorkbenchVirtualSpace(T& virtualspace);
+inline void SketcherAddWorkbenchVisual(T& visual);
 
 template<>
-inline void SketcherAddWorkbenchVirtualSpace<Gui::MenuItem>(Gui::MenuItem& virtualspace)
+inline void SketcherAddWorkbenchVisual<Gui::MenuItem>(Gui::MenuItem& visual)
 {
-    virtualspace << "Sketcher_SwitchVirtualSpace";
+    visual << "Sketcher_SwitchVirtualSpace"
+           << "Sketcher_CompBSplineShowHideGeometryInformation"
+           << "Sketcher_ArcOverlay";
 }
 
 template<>
-inline void SketcherAddWorkbenchVirtualSpace<Gui::ToolBarItem>(Gui::ToolBarItem& virtualspace)
+inline void SketcherAddWorkbenchVisual<Gui::ToolBarItem>(Gui::ToolBarItem& visual)
 {
-    virtualspace << "Sketcher_SwitchVirtualSpace";
+    visual << "Sketcher_SwitchVirtualSpace"
+           << "Sketcher_CompBSplineShowHideGeometryInformation"
+           << "Sketcher_ArcOverlay";
 }
 
 template<typename T>
@@ -582,9 +589,9 @@ void addSketcherWorkbenchBSplines(Gui::MenuItem& bspline)
     SketcherAddWorkbenchBSplines(bspline);
 }
 
-void addSketcherWorkbenchVirtualSpace(Gui::MenuItem& virtualspace)
+void addSketcherWorkbenchVisual(Gui::MenuItem& visual)
 {
-    SketcherAddWorkbenchVirtualSpace(virtualspace);
+    SketcherAddWorkbenchVisual(visual);
 }
 
 void addSketcherWorkbenchSketchActions(Gui::ToolBarItem& sketch)
@@ -617,9 +624,9 @@ void addSketcherWorkbenchBSplines(Gui::ToolBarItem& bspline)
     SketcherAddWorkbenchBSplines(bspline);
 }
 
-void addSketcherWorkbenchVirtualSpace(Gui::ToolBarItem& virtualspace)
+void addSketcherWorkbenchVisual(Gui::ToolBarItem& visual)
 {
-    SketcherAddWorkbenchVirtualSpace(virtualspace);
+    SketcherAddWorkbenchVisual(visual);
 }
 
 void addSketcherWorkbenchEditTools(Gui::ToolBarItem& edittools)

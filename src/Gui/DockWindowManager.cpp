@@ -37,13 +37,9 @@
 
 using namespace Gui;
 
-DockWindowItems::DockWindowItems()
-{
-}
+DockWindowItems::DockWindowItems() = default;
 
-DockWindowItems::~DockWindowItems()
-{
-}
+DockWindowItems::~DockWindowItems() = default;
 
 void DockWindowItems::addDockWidget(const char* name, Qt::DockWidgetArea pos, bool visibility, bool tabbed)
 {

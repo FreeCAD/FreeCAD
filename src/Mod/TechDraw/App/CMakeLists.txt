@@ -182,6 +182,8 @@ SET(Geometry_SRCS
     Geometry.h
     GeometryObject.cpp
     GeometryObject.h
+    ShapeUtils.cpp
+    ShapeUtils.h
     CenterLine.cpp
     CenterLine.h
     Cosmetic.cpp

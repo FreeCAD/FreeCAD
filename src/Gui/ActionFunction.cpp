@@ -50,9 +50,7 @@ ActionFunction::ActionFunction(QObject* parent)
 {
 }
 
-ActionFunction::~ActionFunction()
-{
-}
+ActionFunction::~ActionFunction() = default;
 
 void ActionFunction::trigger(QAction* action, std::function<void()> func)
 {
@@ -135,9 +133,7 @@ TimerFunction::TimerFunction(QObject* parent)
     d_ptr->autoDelete = false;
 }
 
-TimerFunction::~TimerFunction()
-{
-}
+TimerFunction::~TimerFunction() = default;
 
 void TimerFunction::setFunction(std::function<void()> func)
 {
