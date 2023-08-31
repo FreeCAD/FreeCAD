@@ -1730,10 +1730,11 @@ protected:
     }
     void makeCts_1Line1Circle(bool& selAllowed, Base::Vector2d onSketchPos)
     {
-        //Distance.
-        if (availableConstraint == AvailableConstraint::FIRST) {
+        //Distance. For now only circles not arcs!
+        const Part::Geometry* geom = Obj->getGeometry(selCircleArc[0].GeoId);
+        if (availableConstraint == AvailableConstraint::FIRST && geom->getTypeId() == Part::GeomCircle::getClassTypeId()) {
             restartCommand(QT_TRANSLATE_NOOP("Command", "Add length constraint"));
-            createDistanceConstrain(selCircleArc[0].GeoId, selCircleArc[0].PosId, selLine[0].GeoId, selLine[0].PosId, onSketchPos);
+            createDistanceConstrain(selCircleArc[0].GeoId, selCircleArc[0].PosId, selLine[0].GeoId, selLine[0].PosId, onSketchPos); //Line second parameter
             selAllowed = true;
             availableConstraint = AvailableConstraint::RESET;
         }
@@ -1767,9 +1768,17 @@ protected:
     void makeCts_2Circle(bool& selAllowed, Base::Vector2d onSketchPos)
     {
         //Distance, radial distance, equality
+        //Distance: For now only circles not arcs!
+        const Part::Geometry* geom = Obj->getGeometry(selCircleArc[0].GeoId);
+        const Part::Geometry* geom2 = Obj->getGeometry(selCircleArc[1].GeoId);
         if (availableConstraint == AvailableConstraint::FIRST) {
-            restartCommand(QT_TRANSLATE_NOOP("Command", "Add length constraint"));
-            createDistanceConstrain(selCircleArc[0].GeoId, selCircleArc[0].PosId, selCircleArc[1].GeoId, selCircleArc[1].PosId, onSketchPos);
+            if (geom->getTypeId() == Part::GeomCircle::getClassTypeId() && geom2->getTypeId() == Part::GeomCircle::getClassTypeId()) {
+                restartCommand(QT_TRANSLATE_NOOP("Command", "Add length constraint"));
+                createDistanceConstrain(selCircleArc[0].GeoId, selCircleArc[0].PosId, selCircleArc[1].GeoId, selCircleArc[1].PosId, onSketchPos);
+            }
+            else {
+                availableConstraint = AvailableConstraint::THIRD;
+            }
             selAllowed = true;
         }
         if (availableConstraint == AvailableConstraint::SECOND) {
