@@ -133,31 +133,13 @@ class TaskAssemblyInsertLink(QtCore.QObject):
         self.view = view
         self.doc = App.ActiveDocument
 
-        self.form = QtWidgets.QWidget()
-        self.form.setWindowTitle("Insert link")
-        self.layout = QtWidgets.QVBoxLayout(self.form)
-
-        # Define the individual widgets
-        self.filterPartList = QtGui.QLineEdit(self.form)
-        self.filterPartList.setPlaceholderText("Search parts...")
-        self.partList = QtGui.QListWidget(self.form)
-        self.openFileButton = QtGui.QPushButton('Open file', self.form)
-
-        self.layout.addWidget(self.filterPartList)
-        self.layout.addWidget(self.partList)
-
-        self.buttonsLayout = QtGui.QHBoxLayout()
-        self.buttonsLayout.addWidget(QtGui.QLabel("Don't find your part? "))
-        self.buttonsLayout.addWidget(self.openFileButton)
-        self.layout.addLayout(self.buttonsLayout)
-
-        self.form.setLayout(self.layout)
+        self.form = Gui.PySideUic.loadUi(":/panels/TaskAssemblyInsertLink.ui")
         self.form.installEventFilter(self)
 
         # Actions
-        self.openFileButton.clicked.connect(self.openFile)
-        self.partList.itemClicked.connect(self.onItemClicked)
-        self.filterPartList.textChanged.connect(self.onFilterChange)
+        self.form.openFileButton.clicked.connect(self.openFile)
+        self.form.partList.itemClicked.connect(self.onItemClicked)
+        self.form.filterPartList.textChanged.connect(self.onFilterChange)
 
         self.allParts = []
         self.partsDoc = []
@@ -205,17 +187,17 @@ class TaskAssemblyInsertLink(QtCore.QObject):
                     self.allParts.append(obj)
                     self.partsDoc.append(doc)
                     
-        self.partList.clear()
+        self.form.partList.clear()
         for part in self.allParts:
             newItem = QtGui.QListWidgetItem()
             newItem.setText( part.Document.Name +"#"+ labelName(part) )
             newItem.setIcon(part.ViewObject.Icon)
-            self.partList.addItem(newItem)
+            self.form.partList.addItem(newItem)
 
     def onFilterChange(self):
-        filterStr = self.filterPartList.text().strip()
-        for x in range(self.partList.count()):
-            item = self.partList.item(x)
+        filterStr = self.form.filterPartList.text().strip()
+        for x in range(self.form.partList.count()):
+            item = self.form.partList.item(x)
             # check the items's text match the filter ignoring the case
             matchStr =  re.search(filterStr, item.text(), flags=re.IGNORECASE)
             if filterStr and not matchStr:
@@ -250,7 +232,7 @@ class TaskAssemblyInsertLink(QtCore.QObject):
         return
 
     def onItemClicked(self, item):
-        for selected in self.partList.selectedIndexes():
+        for selected in self.form.partList.selectedIndexes():
             selectedPart = self.allParts[selected.row()]
         if not selectedPart:
             return
