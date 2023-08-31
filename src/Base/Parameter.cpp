@@ -33,7 +33,6 @@
 #   include <xercesc/framework/MemBufFormatTarget.hpp>
 #   include <xercesc/framework/MemBufInputSource.hpp>
 #   include <xercesc/parsers/XercesDOMParser.hpp>
-#   include <xercesc/sax/ErrorHandler.hpp>
 #   include <xercesc/sax/SAXParseException.hpp>
 #   include <sstream>
 #   include <string>

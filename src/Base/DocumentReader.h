@@ -28,7 +28,7 @@
 #include <memory>
 #include <string>
 #include <vector>
-#include <xercesc/util/XercesDefs.hpp>
+//#include <xercesc/util/XercesDefs.hpp>
 //#include "FileInfo.h"//remplaced:
 #include <FCGlobal.h>
 

@@ -57,6 +57,14 @@ using PyObject = struct _object;
 #include "Handle.h"
 #include "Observer.h"
 
+
+
+#ifndef _PreComp_
+//#   include <xercesc/sax/SAXParseException.hpp>
+#   include <xercesc/sax/ErrorHandler.hpp>
+#endif
+
+
 #ifdef _MSC_VER
 #	pragma warning( disable : 4251 )
 #	pragma warning( disable : 4503 )
@@ -64,11 +72,6 @@ using PyObject = struct _object;
 #	pragma warning( disable : 4290 )  // not implemented throw specification
 #	pragma warning( disable : 4275 )
 #endif
-
-#ifndef _PreComp_
-#   include <xercesc/sax/ErrorHandler.hpp>
-#endif
-
 
 XERCES_CPP_NAMESPACE_BEGIN
 class DOMNode;
@@ -439,7 +442,6 @@ public:
     //  Constructors and Destructor
     // -----------------------------------------------------------------------
 	DOMTreeErrorReporter();
-    ~DOMTreeErrorReporter() override = default;
     // -----------------------------------------------------------------------
     //  Implementation of the error handler interface
     // -----------------------------------------------------------------------
