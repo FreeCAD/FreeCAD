@@ -2297,6 +2297,7 @@ CmdSketcherDimension::CmdSketcherDimension()
 void CmdSketcherDimension::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
+    App::AutoTransaction::setEnable(false);
 
     // get the selection
     std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx();
