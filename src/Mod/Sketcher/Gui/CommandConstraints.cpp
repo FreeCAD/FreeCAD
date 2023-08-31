@@ -1054,7 +1054,7 @@ public:
     bool has4MorePoints()        const { return s_pts >= 4 && s_lns == 0 && s_cir == 0 && s_ell == 0; }
     bool has2Points1Line()       const { return s_pts == 2 && s_lns == 1 && s_cir == 0 && s_ell == 0; }
     bool has3MorePoints1Line()   const { return s_pts >= 3 && s_lns == 1 && s_cir == 0 && s_ell == 0; }
-    bool has1MorePoint1Circle()  const { return s_pts >= 1 && s_lns == 0 && s_cir == 1 && s_ell == 0; }
+    bool has1Point1Circle()      const { return s_pts == 1 && s_lns == 0 && s_cir == 1 && s_ell == 0; }
     bool has1MorePoint1Ellipse() const { return s_pts >= 1 && s_lns == 0 && s_cir == 0 && s_ell == 1; }
 
     bool has1Line()              const { return s_pts == 0 && s_lns == 1 && s_cir == 0 && s_ell == 0; }
@@ -1390,7 +1390,7 @@ protected:
             else if (selection.has4MorePoints()) { makeCts_4MorePoint(selAllowed, selection.s_pts); }
             else if (selection.has2Points1Line()) { makeCts_2Point1Line(selAllowed, onSketchPos, selection.s_pts); }
             else if (selection.has3MorePoints1Line()) { makeCts_3MorePoint1Line(selAllowed, onSketchPos, selection.s_pts); }
-            else if (selection.has1MorePoint1Circle()) { makeCts_1MorePoint1Circle(selAllowed); }
+            else if (selection.has1Point1Circle()) { makeCts_1Point1Circle(selAllowed, onSketchPos); }
             else if (selection.has1MorePoint1Ellipse()) { makeCts_1MorePoint1Ellipse(selAllowed); }
         }
         else if (selection.hasLines()) {
@@ -1453,7 +1453,7 @@ protected:
         //distance, Symmetry
         if (availableConstraint == AvailableConstraint::FIRST) {
             restartCommand(QT_TRANSLATE_NOOP("Command", "Add point to line Distance constraint"));
-            createDistanceConstrain(selPoints[0].GeoId, selPoints[0].PosId, selLine[0].GeoId, selLine[0].PosId, onSketchPos); // line to be on second parameter
+            createDistanceConstrain(selPoints[0].GeoId, selPoints[0].PosId, selLine[0].GeoId, selLine[0].PosId, onSketchPos); // point to be on first parameter
             selAllowed = true;
         }
         if (availableConstraint == AvailableConstraint::SECOND) {
@@ -1530,12 +1530,15 @@ protected:
             availableConstraint = AvailableConstraint::RESET;
         }
     }
-    void makeCts_1MorePoint1Circle(bool& selAllowed)
+    void makeCts_1Point1Circle(bool& selAllowed, Base::Vector2d onSketchPos)
     {
-        //distance between 1 point and circle/arc not supported yet.
-        if (availableConstraint == AvailableConstraint::FIRST) {
-            //nothing yet
-            //availableConstraint = AvailableConstraint::RESET;
+        //Distance. For now only circles not arcs!
+        const Part::Geometry* geom = Obj->getGeometry(selCircleArc[0].GeoId);
+        if (availableConstraint == AvailableConstraint::FIRST && geom->getTypeId() == Part::GeomCircle::getClassTypeId()) {
+            restartCommand(QT_TRANSLATE_NOOP("Command", "Add length constraint"));
+            createDistanceConstrain(selPoints[0].GeoId, selPoints[0].PosId, selCircleArc[0].GeoId, selCircleArc[0].PosId, onSketchPos);
+            selAllowed = true;
+            availableConstraint = AvailableConstraint::RESET;
         }
     }
     void makeCts_1MorePoint1Ellipse(bool& selAllowed)
@@ -1620,7 +1623,7 @@ protected:
         //Distance.
         if (availableConstraint == AvailableConstraint::FIRST) {
             restartCommand(QT_TRANSLATE_NOOP("Command", "Add length constraint"));
-            createDistanceConstrain(selCircleArc[0].GeoId, selCircleArc[0].PosId, selLine[0].GeoId, selLine[0].PosId, onSketchPos); // line to be on second parameter
+            createDistanceConstrain(selCircleArc[0].GeoId, selCircleArc[0].PosId, selLine[0].GeoId, selLine[0].PosId, onSketchPos);
             selAllowed = true;
             availableConstraint = AvailableConstraint::RESET;
         }
@@ -1724,29 +1727,34 @@ protected:
     }
 
     void createDistanceConstrain(int GeoId1, Sketcher::PointPos PosId1, int GeoId2, Sketcher::PointPos PosId2, Base::Vector2d onSketchPos) {
-        //We make sure that if there's a line, it is GeoId2.
+        // If there's a point, it must be GeoId1. We could add a swap to make sure but as it's hardcoded it's not necessary.
+
         if (GeoId1 == GeoId2 || (PosId1 != Sketcher::PointPos::none && PosId2 != Sketcher::PointPos::none)) {
             specialConstraint = SpecialConstraint::LineOr2PointsDistance;
         }
 
         bool arebothpointsorsegmentsfixed = isPointOrSegmentFixed(Obj, GeoId1) && isPointOrSegmentFixed(Obj, GeoId2);
 
-        if (PosId1 != Sketcher::PointPos::none && PosId2 == Sketcher::PointPos::none) { // Point-line case (and point-circle in the future)
+        if (PosId1 != Sketcher::PointPos::none && PosId2 == Sketcher::PointPos::none) { // Point-line case and point-circle
             Base::Vector3d pnt = Obj->getPoint(GeoId1, PosId1);
+            double ActDist = 0.;
             const Part::Geometry* geom = Obj->getGeometry(GeoId2);
             if (geom->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
                 const Part::GeomLineSegment* lineSeg = static_cast<const Part::GeomLineSegment*>(geom);
                 Base::Vector3d pnt1 = lineSeg->getStartPoint();
                 Base::Vector3d pnt2 = lineSeg->getEndPoint();
                 Base::Vector3d d = pnt2 - pnt1;
-                double ActDist = std::abs(-pnt.x * d.y + pnt.y * d.x + pnt1.x * pnt2.y - pnt2.x * pnt1.y) / d.Length();
-
-                Gui::cmdAppObjectArgs(Obj, "addConstraint(Sketcher.Constraint('Distance',%d,%d,%d,%f)) ",
-                    GeoId1, static_cast<int>(PosId1), GeoId2, ActDist);
+                ActDist = std::abs(-pnt.x * d.y + pnt.y * d.x + pnt1.x * pnt2.y - pnt2.x * pnt1.y) / d.Length();
             }
-            //else if (geom->getTypeId() == Part::GeomCircle::getClassTypeId()) {
-            //    const Part::GeomCircle* circle = static_cast<const Part::GeomCircle*>(geom);
-            //}
+            else if (geom->getTypeId() == Part::GeomCircle::getClassTypeId()) {
+                const Part::GeomCircle* circle = static_cast<const Part::GeomCircle*>(geom);
+                Base::Vector3d ct = circle->getCenter();
+                Base::Vector3d di = ct - pnt;
+                ActDist = std::abs(di.Length() - circle->getRadius());
+            }
+
+            Gui::cmdAppObjectArgs(Obj, "addConstraint(Sketcher.Constraint('Distance',%d,%d,%d,%f)) ",
+                GeoId1, static_cast<int>(PosId1), GeoId2, ActDist);
         }
         else if (PosId1 == Sketcher::PointPos::none && PosId2 == Sketcher::PointPos::none) { // Circle - line, circle - circle cases
             const Part::Geometry* geo1 = Obj->getGeometry(GeoId1);
