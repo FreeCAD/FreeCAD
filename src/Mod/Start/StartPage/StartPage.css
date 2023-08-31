@@ -44,6 +44,10 @@ h2 {
     padding-top: 5px;
 }
 
+img, a {
+    -webkit-user-drag: none;
+}
+
 .hidden {
     display: none !important;
 }
@@ -113,7 +117,7 @@ ul.tabs {
     position: absolute;
     top: 2em;
     left: 50%;
-    transform: translateX(-50%);
+    transform: translateX(calc(-50% - 1em));
 }
 
 ul.tabs li {
@@ -130,7 +134,6 @@ ul.tabs li a {
     text-decoration: none;
     outline: 0;
     font-size: 1.3em;
-    transition: 100ms;
 }
 
 ul.tabs li a img {
@@ -186,10 +189,15 @@ ul.icons {
     width: 130px;
     height: THUMBCARDSIZE;
     background: BOXCOLOR;
+    border: solid 2px BOXCOLOR;
     border-radius: 8px;
     margin: 10px;
     word-wrap: break-word;
     text-align: center;
+}
+
+.file-card:hover {
+    border-color: LINKCOLOR;
 }
 
 .file-card h4 {
@@ -233,9 +241,14 @@ a .caption:visited {
     width: 18em;
     height: 5em;
     background: BOXCOLOR;
+    border: solid 2px BOXCOLOR;
     border-radius: 8px;
     margin: 10px;
     word-wrap: break-word;
+}
+
+.quickstart-button-card:hover {
+    border-color: LINKCOLOR;
 }
 
 .quickstart-button-card a {
