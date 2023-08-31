@@ -89,6 +89,7 @@ class CommandCreateAssembly:
         App.setActiveTransaction("Create assembly")
         assembly = App.ActiveDocument.addObject("App::Part","Assembly")
         assembly.Type = "Assembly"
+        Gui.ActiveDocument.ActiveView.setActiveObject('part', assembly)
         App.closeActiveTransaction()
 
 
