@@ -1031,6 +1031,75 @@ void CmdSketcherConstraint::activated(int /*iMsg*/)
     getSelection().clearSelection();
 }
 
+// Comp for dimension tools =============================================
+
+class CmdSketcherCompDimensionTools : public Gui::GroupCommand
+{
+public:
+    CmdSketcherCompDimensionTools()
+        : GroupCommand("Sketcher_CompDimensionTools")
+    {
+        sAppModule = "Sketcher";
+        sGroup = "Sketcher";
+        sMenuText = QT_TR_NOOP("Dimension");
+        sToolTipText = QT_TR_NOOP("Dimension tools.");
+        sWhatsThis = "Sketcher_CompDimensionTools";
+        sStatusTip = sToolTipText;
+        eType = ForEdit;
+
+        setCheckable(false);
+
+        addCommand("Sketcher_Dimension");
+        addCommand(); //separator
+        addCommand("Sketcher_ConstrainLock");
+        addCommand("Sketcher_ConstrainDistanceX");
+        addCommand("Sketcher_ConstrainDistanceY");
+        addCommand("Sketcher_ConstrainDistance");
+        addCommand("Sketcher_ConstrainDiameter");
+        addCommand("Sketcher_ConstrainRadius");
+        addCommand("Sketcher_ConstrainAngle");
+        addCommand("Sketcher_ConstrainSnellsLaw");
+    }
+
+    void updateAction(int mode) override
+    {
+        Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(getAction());
+        if (!pcAction) {
+            return;
+        }
+
+        QList<QAction*> al = pcAction->actions();
+        int index = pcAction->property("defaultAction").toInt();
+        switch (mode) {
+        case Reference:
+            al[0]->setIcon(Gui::BitmapFactory().iconFromTheme("Constraint_Dimension_Driven"));
+            //al[1] is the separator
+            al[2]->setIcon(Gui::BitmapFactory().iconFromTheme("Constraint_Lock_Driven"));
+            al[3]->setIcon(Gui::BitmapFactory().iconFromTheme("Constraint_HorizontalDistance_Driven"));
+            al[4]->setIcon(Gui::BitmapFactory().iconFromTheme("Constraint_VerticalDistance_Driven"));
+            al[5]->setIcon(Gui::BitmapFactory().iconFromTheme("Constraint_Length_Driven"));
+            al[6]->setIcon(Gui::BitmapFactory().iconFromTheme("Constraint_Diameter_Driven"));
+            al[7]->setIcon(Gui::BitmapFactory().iconFromTheme("Constraint_Radius_Driven"));
+            al[8]->setIcon(Gui::BitmapFactory().iconFromTheme("Constraint_InternalAngle_Driven"));
+            getAction()->setIcon(al[index]->icon());
+            break;
+        case Driving:
+            al[0]->setIcon(Gui::BitmapFactory().iconFromTheme("Constraint_Dimension"));
+            //al[1] is the separator
+            al[2]->setIcon(Gui::BitmapFactory().iconFromTheme("Constraint_Lock"));
+            al[3]->setIcon(Gui::BitmapFactory().iconFromTheme("Constraint_HorizontalDistance"));
+            al[4]->setIcon(Gui::BitmapFactory().iconFromTheme("Constraint_VerticalDistance"));
+            al[5]->setIcon(Gui::BitmapFactory().iconFromTheme("Constraint_Length"));
+            al[6]->setIcon(Gui::BitmapFactory().iconFromTheme("Constraint_Diameter"));
+            al[7]->setIcon(Gui::BitmapFactory().iconFromTheme("Constraint_Radius"));
+            al[8]->setIcon(Gui::BitmapFactory().iconFromTheme("Constraint_InternalAngle"));
+            getAction()->setIcon(al[index]->icon());
+            break;
+        }
+    }
+
+    const char* className() const override { return "CmdSketcherCompDimensionTools"; }
+};
 
 // Dimension tool =======================================================
 
@@ -9928,6 +9997,7 @@ CmdSketcherToggleDrivingConstraint::CmdSketcherToggleDrivingConstraint()
     rcCmdMgr.addCommandMode("ToggleDrivingConstraint", "Sketcher_ConstrainAngle");
     rcCmdMgr.addCommandMode("ToggleDrivingConstraint", "Sketcher_CompConstrainRadDia");
     rcCmdMgr.addCommandMode("ToggleDrivingConstraint", "Sketcher_Dimension");
+    rcCmdMgr.addCommandMode("ToggleDrivingConstraint", "Sketcher_CompDimensionTools");
     // rcCmdMgr.addCommandMode("ToggleDrivingConstraint", "Sketcher_ConstrainSnellsLaw");
 }
 
@@ -10161,4 +10231,5 @@ void CreateSketcherCommandsConstraints()
     rcCmdMgr.addCommand(new CmdSketcherConstrainSnellsLaw());
     rcCmdMgr.addCommand(new CmdSketcherToggleDrivingConstraint());
     rcCmdMgr.addCommand(new CmdSketcherToggleActiveConstraint());
+    rcCmdMgr.addCommand(new CmdSketcherCompDimensionTools());
 }
