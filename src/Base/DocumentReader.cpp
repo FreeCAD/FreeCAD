@@ -34,10 +34,12 @@
 #endif
 #include <zipios++/zipinputstream.h>
 
-//#ifndef _PreComp_
+#ifndef _PreComp_
 //#   include <xercesc/dom/DOM.hpp>
-//#   include <xercesc/parsers/XercesDOMParser.hpp>
-//#endif
+#   include <xercesc/parsers/XercesDOMParser.hpp>
+#	include <xercesc/dom/DOMException.hpp>
+#	include <xercesc/dom/DOMElement.hpp>
+#endif
 
 #ifdef _MSC_VER
 # define strdup _strdup
@@ -182,7 +184,7 @@ XERCES_CPP_NAMESPACE_QUALIFIER DOMElement *DocumentReader::FindElement(XERCES_CP
     return nullptr;
 }
 
-XERCES_CPP_NAMESPACE_QUALIFIER DOMElement *DocumentReader::FindNextElement(XERCES_CPP_NAMESPACE_QUALIFIER DOMNode *Prev, const char* Type) const
+XERCES_CPP_NAMESPACE_QUALIFIER DOMElement *DocumentReader::FindNextElement(XERCES_CPP_NAMESPACE_QUALIFIER DOMElement *Prev, const char* Type) const
 {
 	if (!Prev || !Type)
         return nullptr;
