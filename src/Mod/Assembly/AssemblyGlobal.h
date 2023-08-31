@@ -27,22 +27,22 @@
 #define ASSEMBLY_GLOBAL_H
 
 
- // Assembly
+// Assembly
 #ifndef AssemblyExport
 #ifdef Assembly_EXPORTS
-#       define AssemblyExport   FREECAD_DECL_EXPORT
+#define AssemblyExport FREECAD_DECL_EXPORT
 #else
-#       define AssemblyExport   FREECAD_DECL_IMPORT
+#define AssemblyExport FREECAD_DECL_IMPORT
 #endif
 #endif
 
 // AssemblyGui
 #ifndef AssemblyGuiExport
 #ifdef AssemblyGui_EXPORTS
-#  define AssemblyGuiExport   FREECAD_DECL_EXPORT
+#define AssemblyGuiExport FREECAD_DECL_EXPORT
 #else
-#  define AssemblyGuiExport   FREECAD_DECL_IMPORT
+#define AssemblyGuiExport FREECAD_DECL_IMPORT
 #endif
 #endif
 
-#endif //ASSEMBLY_GLOBAL_H
+#endif// ASSEMBLY_GLOBAL_H
