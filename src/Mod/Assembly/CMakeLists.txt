@@ -9,6 +9,7 @@ set(Assembly_Scripts
     Commands.py
     TestAssemblyWorkbench.py
     Preferences.py
+    AssemblyImport.py
 )
 
 if(BUILD_GUI)
