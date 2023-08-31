@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
-#/****************************************************************************
+# /****************************************************************************
 #                                                                           *
 #    Copyright (c) 2023 Ondsel <development@ondsel.com>                     *
 #                                                                           *
@@ -24,8 +24,10 @@
 import FreeCAD
 import FreeCADGui
 
+
 def preferences():
     return FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Assembly")
+
 
 class PreferencesPage:
     def __init__(self, parent=None):

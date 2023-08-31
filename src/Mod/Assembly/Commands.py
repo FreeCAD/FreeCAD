@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
-#/****************************************************************************
+# /****************************************************************************
 #                                                                           *
 #    Copyright (c) 2023 Ondsel <development@ondsel.com>                     *
 #                                                                           *
@@ -36,39 +36,42 @@ __title__ = "Assembly Commands"
 __author__ = "Ondsel"
 __url__ = "https://www.freecad.org"
 
+
 def activeAssembly():
     doc = Gui.ActiveDocument
 
-    if (doc is None or doc.ActiveView is None):
+    if doc is None or doc.ActiveView is None:
         return None
 
-    active_part = doc.ActiveView.getActiveObject('part')
+    active_part = doc.ActiveView.getActiveObject("part")
 
-    if (active_part is not None and active_part.Type == "Assembly"):
+    if active_part is not None and active_part.Type == "Assembly":
         return active_part
 
     return None
 
+
 def isDocTemporary(doc):
-    #Guard against older versions of FreeCad which don't have the Temporary attribute
+    # Guard against older versions of FreeCad which don't have the Temporary attribute
     try:
         docTemporary = doc.Temporary
     except AttributeError:
         docTemporary = False
     return docTemporary
 
+
 def labelName(obj):
     if obj:
         if obj.Name == obj.Label:
             txt = obj.Label
         else:
-            txt = obj.Label +' ('+obj.Name+')'
+            txt = obj.Label + " (" + obj.Name + ")"
         return txt
     else:
         return None
 
-class CommandCreateAssembly:
 
+class CommandCreateAssembly:
     def __init__(self):
         pass
 
@@ -78,7 +81,8 @@ class CommandCreateAssembly:
             "MenuText": QT_TRANSLATE_NOOP("Assembly_CreateAssembly", "Create Assembly"),
             "Accel": "A",
             "ToolTip": QT_TRANSLATE_NOOP(
-                "Assembly_CreateAssembly", "Create an assembly object in the current document."
+                "Assembly_CreateAssembly",
+                "Create an assembly object in the current document.",
             ),
             "CmdType": "ForEdit",
         }
@@ -88,20 +92,21 @@ class CommandCreateAssembly:
 
     def Activated(self):
         App.setActiveTransaction("Create assembly")
-        assembly = App.ActiveDocument.addObject("App::Part","Assembly")
+        assembly = App.ActiveDocument.addObject("App::Part", "Assembly")
         assembly.Type = "Assembly"
-        Gui.ActiveDocument.ActiveView.setActiveObject('part', assembly)
+        Gui.ActiveDocument.ActiveView.setActiveObject("part", assembly)
         App.closeActiveTransaction()
 
 
 class CommandInsertLink:
-
     def __init__(self):
         pass
 
     def GetResources(self):
-        tooltip  = "<p>Insert a Link into the assembly. "
-        tooltip += "This will create dynamic links to parts/bodies/primitives/assemblies, "
+        tooltip = "<p>Insert a Link into the assembly. "
+        tooltip += (
+            "This will create dynamic links to parts/bodies/primitives/assemblies, "
+        )
         tooltip += "which can be in this document or in another document "
         tooltip += "that is <b>open in the current session</b></p>"
         tooltip += "<p>Press shift to add several links while clicking on the view."
@@ -151,7 +156,7 @@ class TaskAssemblyInsertLink(QtCore.QObject):
 
         self.buildPartList()
 
-        App.setActiveTransaction('Insert Link')
+        App.setActiveTransaction("Insert Link")
 
     def accept(self):
         App.closeActiveTransaction()
@@ -188,11 +193,11 @@ class TaskAssemblyInsertLink(QtCore.QObject):
                 if obj.getParentGeoFeatureGroup() is None:
                     self.allParts.append(obj)
                     self.partsDoc.append(doc)
-                    
+
         self.form.partList.clear()
         for part in self.allParts:
             newItem = QtGui.QListWidgetItem()
-            newItem.setText( part.Document.Name +"#"+ labelName(part) )
+            newItem.setText(part.Document.Name + "#" + labelName(part))
             newItem.setIcon(part.ViewObject.Icon)
             self.form.partList.addItem(newItem)
 
@@ -201,7 +206,7 @@ class TaskAssemblyInsertLink(QtCore.QObject):
         for x in range(self.form.partList.count()):
             item = self.form.partList.item(x)
             # check the items's text match the filter ignoring the case
-            matchStr =  re.search(filterStr, item.text(), flags=re.IGNORECASE)
+            matchStr = re.search(filterStr, item.text(), flags=re.IGNORECASE)
             if filterStr and not matchStr:
                 item.setHidden(True)
             else:
@@ -211,10 +216,14 @@ class TaskAssemblyInsertLink(QtCore.QObject):
         filename = None
         importDoc = None
         importDocIsOpen = False
-        dialog = QtGui.QFileDialog( QtGui.QApplication.activeWindow(),
-                                    "Select FreeCAD document to import part from" )
+        dialog = QtGui.QFileDialog(
+            QtGui.QApplication.activeWindow(),
+            "Select FreeCAD document to import part from",
+        )
 
-        dialog.setNameFilter("Supported Formats *.FCStd *.fcstd (*.FCStd *.fcstd);;All files (*.*)")
+        dialog.setNameFilter(
+            "Supported Formats *.FCStd *.fcstd (*.FCStd *.fcstd);;All files (*.*)"
+        )
         if dialog.exec_():
             filename = str(dialog.selectedFiles()[0])
             # look only for filenames, not paths, as there are problems on WIN10 (Address-translation??)
@@ -227,7 +236,7 @@ class TaskAssemblyInsertLink(QtCore.QObject):
                     break
             # if not, open it
             if not importDocIsOpen:
-                if filename.lower().endswith('.fcstd'):
+                if filename.lower().endswith(".fcstd"):
                     App.openDocument(filename)
                     App.setActiveDocument(self.doc.Name)
                     self.buildPartList()
@@ -243,11 +252,13 @@ class TaskAssemblyInsertLink(QtCore.QObject):
             self.endMove()
 
         # check that the current document had been saved or that it's the same document as that of the selected part
-        if not self.doc.FileName != '' and not self.doc == selectedPart.Document:
-            print('The current document must be saved before inserting an external part')
+        if not self.doc.FileName != "" and not self.doc == selectedPart.Document:
+            print(
+                "The current document must be saved before inserting an external part"
+            )
             return
 
-        self.createdLink = self.assembly.newObject('App::Link', selectedPart.Name)
+        self.createdLink = self.assembly.newObject("App::Link", selectedPart.Name)
         self.createdLink.LinkedObject = selectedPart
         self.createdLink.Placement.Base = self.getTranslationVec(selectedPart)
         self.createdLink.recompute()
@@ -256,40 +267,50 @@ class TaskAssemblyInsertLink(QtCore.QObject):
 
         # highlight the link
         Gui.Selection.clearSelection()
-        Gui.Selection.addSelection(self.doc.Name, self.assembly.Name, self.createdLink.Name + '.')
+        Gui.Selection.addSelection(
+            self.doc.Name, self.assembly.Name, self.createdLink.Name + "."
+        )
 
         # Start moving the part if user brings mouse on view
         self.initMove()
 
     def initMove(self):
-        self.callbackMove = self.view.addEventCallback("SoLocation2Event",self.moveMouse)
-        self.callbackClick = self.view.addEventCallback("SoMouseButtonEvent",self.clickMouse)
-        self.callbackKey = self.view.addEventCallback("SoKeyboardEvent",self.KeyboardEvent)
+        self.callbackMove = self.view.addEventCallback(
+            "SoLocation2Event", self.moveMouse
+        )
+        self.callbackClick = self.view.addEventCallback(
+            "SoMouseButtonEvent", self.clickMouse
+        )
+        self.callbackKey = self.view.addEventCallback(
+            "SoKeyboardEvent", self.KeyboardEvent
+        )
         self.partMoving = True
 
         # Selection filter to avoid selecting the part while it's moving
-        #filter = Gui.Selection.Filter('SELECT ???')
-        #Gui.Selection.addSelectionGate(filter)
+        # filter = Gui.Selection.Filter('SELECT ???')
+        # Gui.Selection.addSelectionGate(filter)
 
     def endMove(self):
-        self.view.removeEventCallback("SoLocation2Event",self.callbackMove)
-        self.view.removeEventCallback("SoMouseButtonEvent",self.callbackClick)
-        self.view.removeEventCallback("SoKeyboardEvent",self.callbackKey)
+        self.view.removeEventCallback("SoLocation2Event", self.callbackMove)
+        self.view.removeEventCallback("SoMouseButtonEvent", self.callbackClick)
+        self.view.removeEventCallback("SoKeyboardEvent", self.callbackKey)
         self.partMoving = False
         self.doc.recompute()
-        #Gui.Selection.removeSelectionGate()
+        # Gui.Selection.removeSelectionGate()
 
     def moveMouse(self, info):
-        newPos = self.view.getPoint(*info['Position'])
+        newPos = self.view.getPoint(*info["Position"])
         self.createdLink.Placement.Base = newPos
 
     def clickMouse(self, info):
-        if info['Button'] == 'BUTTON1' and info['State'] == 'DOWN':
-            if info['ShiftDown']:
+        if info["Button"] == "BUTTON1" and info["State"] == "DOWN":
+            if info["ShiftDown"]:
                 # Create a new link and moves this one now
                 currentPos = self.createdLink.Placement.Base
                 selectedPart = self.createdLink.LinkedObject
-                self.createdLink = self.assembly.newObject('App::Link', selectedPart.Name)
+                self.createdLink = self.assembly.newObject(
+                    "App::Link", selectedPart.Name
+                )
                 self.createdLink.LinkedObject = selectedPart
                 self.createdLink.Placement.Base = currentPos
             else:
@@ -297,7 +318,7 @@ class TaskAssemblyInsertLink(QtCore.QObject):
 
     # 3D view keyboard handler
     def KeyboardEvent(self, info):
-        if info['State'] == 'UP' and info['Key'] == 'ESCAPE':
+        if info["State"] == "UP" and info["Key"] == "ESCAPE":
             self.endMove()
             self.doc.removeObject(self.createdLink.Name)
 
@@ -317,7 +338,6 @@ class TaskAssemblyInsertLink(QtCore.QObject):
         else:
             self.translation += 10
         return App.Vector(self.translation, self.translation, self.translation)
-
 
 
 if App.GuiUp:

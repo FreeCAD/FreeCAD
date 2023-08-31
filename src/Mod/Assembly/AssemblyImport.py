@@ -21,11 +21,12 @@
 #                                                                           *
 # ***************************************************************************/
 
-import TestApp
 
-from AssemblyTests.TestCore import TestCore
+def open(filename):
+    doc = App.activeDocument()
+    # here you do all what is needed with filename, read, classify data, create corresponding FreeCAD objects
+    doc.recompute()
 
 
-# dummy usage to get flake8 and lgtm quiet
-False if TestCore.__name__ else True
-False if TestApp.__name__ else True
+def insert(filename, docname):
+    print("Inserting file: " + filename + " into document: " + docname)

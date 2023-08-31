@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
-#/****************************************************************************
+# /****************************************************************************
 #                                                                           *
 #    Copyright (c) 2023 Ondsel <development@ondsel.com>                     *
 #                                                                           *
@@ -22,6 +22,7 @@
 # ***************************************************************************/
 
 import Assembly_rc
+
 
 class AssemblyCommandGroup:
     def __init__(self, cmdlist, menu, tooltip=None):
@@ -50,7 +51,8 @@ class AssemblyWorkbench(Workbench):
     def __init__(self):
         print("Loading Assembly workbench...")
         self.__class__.Icon = (
-            FreeCAD.getResourceDir() + "Mod/Assembly/Resources/icons/AssemblyWorkbench.svg"
+            FreeCAD.getResourceDir()
+            + "Mod/Assembly/Resources/icons/AssemblyWorkbench.svg"
         )
         self.__class__.MenuText = "Assembly"
         self.__class__.ToolTip = "Assembly workbench"
@@ -59,7 +61,6 @@ class AssemblyWorkbench(Workbench):
         print("Initializing Assembly workbench...")
         global AssemblyCommandGroup
 
-
         translate = FreeCAD.Qt.translate
 
         # load the builtin modules
@@ -67,12 +68,15 @@ class AssemblyWorkbench(Workbench):
         from PySide.QtCore import QT_TRANSLATE_NOOP
         import Commands
         from Preferences import PreferencesPage
+
         # from Preferences import preferences
 
         FreeCADGui.addLanguagePath(":/translations")
         FreeCADGui.addIconPath(":/icons")
 
-        FreeCADGui.addPreferencePage(PreferencesPage, QT_TRANSLATE_NOOP("QObject", "Assembly"))
+        FreeCADGui.addPreferencePage(
+            PreferencesPage, QT_TRANSLATE_NOOP("QObject", "Assembly")
+        )
 
         # build commands list
         cmdlist = ["Assembly_CreateAssembly", "Assembly_InsertLink"]
@@ -81,10 +85,8 @@ class AssemblyWorkbench(Workbench):
 
         self.appendMenu(
             [QT_TRANSLATE_NOOP("Workbench", "&Assembly")],
-            cmdlist
-            + ["Separator"],
+            cmdlist + ["Separator"],
         )
-
 
         print("Assembly workbench loaded")
 
@@ -100,5 +102,3 @@ class AssemblyWorkbench(Workbench):
 
 
 Gui.addWorkbench(AssemblyWorkbench())
-
-# FreeCAD.addImportType()

@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
-#/****************************************************************************
+# /****************************************************************************
 #                                                                           *
 #    Copyright (c) 2023 Ondsel <development@ondsel.com>                     *
 #                                                                           *
@@ -25,6 +25,7 @@ import FreeCAD
 import Part
 import unittest
 
+
 class TestCore(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
@@ -37,7 +38,6 @@ class TestCore(unittest.TestCase):
         is able to call static methods within this same class.
         """
         pass
-
 
     @classmethod
     def tearDownClass(cls):
@@ -61,7 +61,6 @@ class TestCore(unittest.TestCase):
         self.doc = FreeCAD.ActiveDocument
         self.con = FreeCAD.Console
 
-
     def tearDown(self):
         """tearDown()...
         This method is called after each test() method. Add cleanup instructions here.
@@ -73,4 +72,3 @@ class TestCore(unittest.TestCase):
         pass
 
         self.assertTrue(True)
-
