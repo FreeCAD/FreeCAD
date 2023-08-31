@@ -27,7 +27,7 @@ SET(StartPage_ImageResources
     images/new_file_thumbnail.svg
     images/icon_settings.png
     images/new_empty_file.png
-    images/new_import_file.png
+    images/new_open_file.png
     images/new_parametric_part.png
     images/new_csg_part.png
     images/new_2d_draft.png

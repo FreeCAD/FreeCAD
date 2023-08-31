@@ -258,7 +258,7 @@ def build_new_file_card(template):
 
     templates = {
         "empty_file": [TranslationTexts.T_TEMPLATE_EMPTYFILE_NAME, TranslationTexts.T_TEMPLATE_EMPTYFILE_DESC],
-        "import_file": [TranslationTexts.T_TEMPLATE_IMPORTFILE_NAME, TranslationTexts.T_TEMPLATE_IMPORTFILE_DESC],
+        "open_file": [TranslationTexts.T_TEMPLATE_OPENFILE_NAME, TranslationTexts.T_TEMPLATE_OPENFILE_DESC],
         "parametric_part": [TranslationTexts.T_TEMPLATE_PARAMETRICPART_NAME, TranslationTexts.T_TEMPLATE_PARAMETRICPART_DESC],
         # "csg_part": [TranslationTexts.T_TEMPLATE_CSGPART_NAME, TranslationTexts.T_TEMPLATE_CSGPART_DESC],
         "2d_draft": [TranslationTexts.T_TEMPLATE_2DDRAFT_NAME, TranslationTexts.T_TEMPLATE_2DDRAFT_DESC],
@@ -266,7 +266,7 @@ def build_new_file_card(template):
     }
 
     if template not in templates:
-        return
+        return ""
 
     image = 'file:///'+os.path.join(os.path.join(FreeCAD.getResourceDir(), "Mod", "Start", "StartPage"), 'images/new_'+template+".png").replace('\\','/')
 
@@ -439,7 +439,7 @@ def handle():
     SECTION_NEW_FILE = "<h2>"+TranslationTexts.T_NEWFILE+"</h2>"
     SECTION_NEW_FILE += "<ul>"
     SECTION_NEW_FILE += build_new_file_card("empty_file")
-    SECTION_NEW_FILE += build_new_file_card("import_file")
+    SECTION_NEW_FILE += build_new_file_card("open_file")
     SECTION_NEW_FILE += build_new_file_card("parametric_part")
     # SECTION_NEW_FILE += build_new_file_card("csg_part")
     SECTION_NEW_FILE += build_new_file_card("2d_draft")
