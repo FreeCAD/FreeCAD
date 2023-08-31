@@ -51,8 +51,7 @@ class AssemblyWorkbench(Workbench):
     def __init__(self):
         print("Loading Assembly workbench...")
         self.__class__.Icon = (
-            FreeCAD.getResourceDir()
-            + "Mod/Assembly/Resources/icons/AssemblyWorkbench.svg"
+            FreeCAD.getResourceDir() + "Mod/Assembly/Resources/icons/AssemblyWorkbench.svg"
         )
         self.__class__.MenuText = "Assembly"
         self.__class__.ToolTip = "Assembly workbench"
@@ -74,9 +73,7 @@ class AssemblyWorkbench(Workbench):
         FreeCADGui.addLanguagePath(":/translations")
         FreeCADGui.addIconPath(":/icons")
 
-        FreeCADGui.addPreferencePage(
-            PreferencesPage, QT_TRANSLATE_NOOP("QObject", "Assembly")
-        )
+        FreeCADGui.addPreferencePage(PreferencesPage, QT_TRANSLATE_NOOP("QObject", "Assembly"))
 
         # build commands list
         cmdlist = ["Assembly_CreateAssembly", "Assembly_InsertLink"]

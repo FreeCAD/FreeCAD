@@ -104,9 +104,7 @@ class CommandInsertLink:
 
     def GetResources(self):
         tooltip = "<p>Insert a Link into the assembly. "
-        tooltip += (
-            "This will create dynamic links to parts/bodies/primitives/assemblies, "
-        )
+        tooltip += "This will create dynamic links to parts/bodies/primitives/assemblies, "
         tooltip += "which can be in this document or in another document "
         tooltip += "that is <b>open in the current session</b></p>"
         tooltip += "<p>Press shift to add several links while clicking on the view."
@@ -221,9 +219,7 @@ class TaskAssemblyInsertLink(QtCore.QObject):
             "Select FreeCAD document to import part from",
         )
 
-        dialog.setNameFilter(
-            "Supported Formats *.FCStd *.fcstd (*.FCStd *.fcstd);;All files (*.*)"
-        )
+        dialog.setNameFilter("Supported Formats *.FCStd *.fcstd (*.FCStd *.fcstd);;All files (*.*)")
         if dialog.exec_():
             filename = str(dialog.selectedFiles()[0])
             # look only for filenames, not paths, as there are problems on WIN10 (Address-translation??)
@@ -253,9 +249,7 @@ class TaskAssemblyInsertLink(QtCore.QObject):
 
         # check that the current document had been saved or that it's the same document as that of the selected part
         if not self.doc.FileName != "" and not self.doc == selectedPart.Document:
-            print(
-                "The current document must be saved before inserting an external part"
-            )
+            print("The current document must be saved before inserting an external part")
             return
 
         self.createdLink = self.assembly.newObject("App::Link", selectedPart.Name)
@@ -267,23 +261,15 @@ class TaskAssemblyInsertLink(QtCore.QObject):
 
         # highlight the link
         Gui.Selection.clearSelection()
-        Gui.Selection.addSelection(
-            self.doc.Name, self.assembly.Name, self.createdLink.Name + "."
-        )
+        Gui.Selection.addSelection(self.doc.Name, self.assembly.Name, self.createdLink.Name + ".")
 
         # Start moving the part if user brings mouse on view
         self.initMove()
 
     def initMove(self):
-        self.callbackMove = self.view.addEventCallback(
-            "SoLocation2Event", self.moveMouse
-        )
-        self.callbackClick = self.view.addEventCallback(
-            "SoMouseButtonEvent", self.clickMouse
-        )
-        self.callbackKey = self.view.addEventCallback(
-            "SoKeyboardEvent", self.KeyboardEvent
-        )
+        self.callbackMove = self.view.addEventCallback("SoLocation2Event", self.moveMouse)
+        self.callbackClick = self.view.addEventCallback("SoMouseButtonEvent", self.clickMouse)
+        self.callbackKey = self.view.addEventCallback("SoKeyboardEvent", self.KeyboardEvent)
         self.partMoving = True
 
         # Selection filter to avoid selecting the part while it's moving
@@ -308,9 +294,7 @@ class TaskAssemblyInsertLink(QtCore.QObject):
                 # Create a new link and moves this one now
                 currentPos = self.createdLink.Placement.Base
                 selectedPart = self.createdLink.LinkedObject
-                self.createdLink = self.assembly.newObject(
-                    "App::Link", selectedPart.Name
-                )
+                self.createdLink = self.assembly.newObject("App::Link", selectedPart.Name)
                 self.createdLink.LinkedObject = selectedPart
                 self.createdLink.Placement.Base = currentPos
             else:
