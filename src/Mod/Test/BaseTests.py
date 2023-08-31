@@ -266,20 +266,20 @@ class AlgebraTestCase(unittest.TestCase):
         self.assertNotEqual(m2, m4 * m3, "Wrong multiplication order")
 
     def testRotationFromMatrix(self):
-        rot = FreeCAD.Rotation(45,30,0)
+        rot = FreeCAD.Rotation(45, 30, 0)
         m_r = rot.toMatrix()
-        m_r.move(5,6,7)
+        m_r.move(5, 6, 7)
         m_s = FreeCAD.Matrix()
-        m_s.scale(1,1,3)
-        m_s.move(7,3,2)
-        target_rot = FreeCAD.Rotation(45,60,0)
+        m_s.scale(1, 1, 3)
+        m_s.move(7, 3, 2)
+        target_rot = FreeCAD.Rotation(45, 60, 0)
         err = "Non uniform scale has wrong affect non orthogonal rotation"
         self.assertTrue(FreeCAD.Rotation(m_s * m_r).isSame(target_rot, 1e-12), err)
         err = "Right multiplication with non uniform scale must not affect rotation"
-        self.assertTrue(FreeCAD.Rotation(m_r * m_s).isSame(rot,1e-12), err)
+        self.assertTrue(FreeCAD.Rotation(m_r * m_s).isSame(rot, 1e-12), err)
         m_r.scale(-2)
         err = "Uniform scale must not affect rotation"
-        self.assertTrue(FreeCAD.Rotation(m_r).isSame(rot,1e-12), err)
+        self.assertTrue(FreeCAD.Rotation(m_r).isSame(rot, 1e-12), err)
 
     def testRotation(self):
         r = FreeCAD.Rotation(1, 0, 0, 0)  # 180 deg around (1,0,0)

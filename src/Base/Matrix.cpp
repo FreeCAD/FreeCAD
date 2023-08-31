@@ -899,69 +899,93 @@ ScaleType Matrix4D::hasScale(double tol) const
     return ScaleType::NoScaling;
 }
 
-std::array<Matrix4D, 4> Matrix4D::decompose() const{
+std::array<Matrix4D, 4> Matrix4D::decompose() const {
     // decompose the matrix to shear, scale, rotation and move
     // so that matrix = move * rotation * scale * shear
     // return an array of matrices
-    std::array<Matrix4D, 4> SZRT = {
-        Matrix4D(*this), Matrix4D(), Matrix4D(), Matrix4D()
+    Matrix4D moveMatrix;
+    Matrix4D rotationMatrix;
+    Matrix4D scaleMatrix;
+    Matrix4D residualMatrix(*this);
+    // extract transform
+    moveMatrix.move(residualMatrix.getCol(3));
+    residualMatrix.setCol(3, Vector3d());
+    // find and extract rotation
+    int prim_dir = -1;
+    std::array<Vector3d, 3> dirs = {
+        Vector3d(1., 0., 0.),Vector3d(0., 1., 0.),Vector3d(0., 0., 1.)
     };
-    SZRT[3].move(SZRT[0].getCol(3));
-    SZRT[0].setCol(3, Vector3d());
-    // find rotation
-    Vector3d xDir = SZRT[0].getCol(0);
-    if (xDir.IsNull()) xDir = Vector3d(1.,0.,0.);
-    Vector3d yDir = SZRT[0].getCol(1);
-    if (yDir.IsNull()) yDir = Vector3d(0.,1.,0.);
-    Vector3d zDir = xDir.Cross(yDir);
-    // check for parallel directions
-    if (zDir.IsNull()) {
-        zDir = SZRT[0].getCol(2);
-        if (zDir.IsNull()) zDir = Vector3d(0.,0.,1.);
-        yDir = zDir.Cross(xDir);
-        if (yDir.IsNull()) {
-            zDir = xDir.Cross(xDir.y ? Vector3d(1.,0.,0.) : Vector3d(0.,1.,0.));
-            yDir = zDir.Cross(xDir);
+    int i;
+    for (i = 0; i < 3; i++) {
+        if (residualMatrix.getCol(i).IsNull()) {
+            continue;
         }
-    } else {
-        yDir = zDir.Cross(xDir);
+        if (prim_dir < 0) {
+            dirs[i] = residualMatrix.getCol(i);
+            dirs[i].Normalize();
+            prim_dir = i;
+            continue;
+        } else {   
+            Vector3d cross = dirs[prim_dir].Cross(residualMatrix.getCol(i));
+            if (cross.IsNull()) {
+                continue;
+            }
+            cross.Normalize();
+            int last_dir = 3-i-prim_dir;
+            if (i - prim_dir == 1) {
+                dirs[last_dir] = cross;
+                dirs[i] = cross.Cross(dirs[prim_dir]);
+            } else {
+                dirs[last_dir] = -cross;
+                dirs[i] = dirs[prim_dir].Cross(-cross);
+            }
+            prim_dir = -2; // done
+            break;
+        }
     }
-    xDir.Normalize();
-    yDir.Normalize();
-    zDir.Normalize();
-    
-    SZRT[2].setCol(0, xDir);
-    SZRT[2].setCol(1, yDir);
-    SZRT[2].setCol(2, zDir);
-    SZRT[2].inverse();
-    SZRT[0] = SZRT[2] * SZRT[0];
+    if (prim_dir >= 0) {
+        // handle case with only one valid direction
+        Vector3d cross = dirs[prim_dir].Cross(Vector3d(0., 0., 1.));
+        if (cross.IsNull()) {
+            cross = dirs[prim_dir].Cross(Vector3d(0., 1., 0.));
+        }
+        dirs[(prim_dir+1)%3] = cross;
+        dirs[(prim_dir+2)%3] = dirs[prim_dir].Cross(cross);
+    }
+    rotationMatrix.setCol(0, dirs[0]);
+    rotationMatrix.setCol(1, dirs[1]);
+    rotationMatrix.setCol(2, dirs[2]);
+    rotationMatrix.inverseGauss();
+    residualMatrix = rotationMatrix * residualMatrix;
     // To keep signs of the scale factors equal
-    if (SZRT[0].determinant() < 0) {
-        SZRT[2].rotZ(D_PI);
-        SZRT[0].rotZ(D_PI);
+    if (residualMatrix.determinant() < 0) {
+        rotationMatrix.rotZ(D_PI);
+        residualMatrix.rotZ(D_PI);
     }
-    SZRT[2].inverse();
+    rotationMatrix.inverseGauss();
     // extract scale
-    double xScale = SZRT[0].dMtrx4D[0][0];
-    double yScale = SZRT[0].dMtrx4D[1][1];
-    double zScale = SZRT[0].dMtrx4D[2][2];
-    SZRT[1].dMtrx4D[0][0] = xScale;
-    SZRT[1].dMtrx4D[1][1] = yScale;
-    SZRT[1].dMtrx4D[2][2] = zScale;
+    double xScale = residualMatrix.dMtrx4D[0][0];
+    double yScale = residualMatrix.dMtrx4D[1][1];
+    double zScale = residualMatrix.dMtrx4D[2][2];
+    scaleMatrix.dMtrx4D[0][0] = xScale;
+    scaleMatrix.dMtrx4D[1][1] = yScale;
+    scaleMatrix.dMtrx4D[2][2] = zScale;
     // The remaining shear
-    SZRT[0].scale(xScale ? 1.0 / xScale : 1.0, yScale ? 1.0 / yScale : 1.0, zScale ? 1.0 / zScale : 1.0);
+    residualMatrix.scale(xScale ? 1.0 / xScale : 1.0, yScale ? 1.0 / yScale : 1.0, zScale ? 1.0 / zScale : 1.0);
     // Restore trace in shear matrix
-    SZRT[0].setTrace(Vector3d(1.0, 1.0, 1.0));
+    residualMatrix.setDiagonal(Vector3d(1.0, 1.0, 1.0));
     // Remove values close to zero
-    for (int i = 0; i < 3; i++) {
-        if (std::abs(SZRT[1].dMtrx4D[i][i]) < 1e-15)
-            SZRT[1].dMtrx4D[i][i] = 0.0;
+    for (i = 0; i < 3; i++) {
+        if (std::abs(scaleMatrix.dMtrx4D[i][i]) < 1e-15)
+            scaleMatrix.dMtrx4D[i][i] = 0.0;
         for (int j = 0; j < 3; j++) {
-            if (std::abs(SZRT[0].dMtrx4D[i][j]) < 1e-15)
-                SZRT[0].dMtrx4D[i][j] = 0.0;
-            if (std::abs(SZRT[2].dMtrx4D[i][j]) < 1e-15)
-                SZRT[2].dMtrx4D[i][j] = 0.0;
+            if (std::abs(residualMatrix.dMtrx4D[i][j]) < 1e-15)
+                residualMatrix.dMtrx4D[i][j] = 0.0;
+            if (std::abs(rotationMatrix.dMtrx4D[i][j]) < 1e-15)
+                rotationMatrix.dMtrx4D[i][j] = 0.0;
         }
     }
-    return SZRT;
+    return  std::array<Matrix4D, 4>{
+        residualMatrix, scaleMatrix, rotationMatrix, moveMatrix
+    };
 }
