@@ -54,4 +54,9 @@ ADD_CUSTOM_TARGET(AssemblyTests ALL
 fc_copy_sources(AssemblyScripts "${CMAKE_BINARY_DIR}/Mod/Assembly" ${all_files})
 fc_copy_sources(AssemblyTests "${CMAKE_BINARY_DIR}/Mod/Assembly" ${test_files})
 
-
+INSTALL(
+    FILES
+        ${AssemblyTests_SRCS}
+    DESTINATION
+        Mod/Assembly/AssemblyTests
+)
