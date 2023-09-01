@@ -517,16 +517,15 @@ PyObject* SketchObjectPy::carbonCopy(PyObject* args)
         PyErr_SetString(PyExc_ValueError, str.str().c_str());
         return nullptr;
     }
-    // check if this type of external geometry is allowed
-    if (!skObj->isExternalAllowed(Obj->getDocument(), Obj)
-        && (Obj->getTypeId() != Sketcher::SketchObject::getClassTypeId())) {
+
+    bool xinv = false, yinv = false;
+    if (!skObj->isCarbonCopyAllowed(Obj->getDocument(), Obj, xinv, yinv)) {
         std::stringstream str;
         str << ObjectName << " is not allowed for a carbon copy operation in this sketch";
         PyErr_SetString(PyExc_ValueError, str.str().c_str());
         return nullptr;
     }
 
-    // add the external
     if (skObj->carbonCopy(Obj, Base::asBoolean(construction)) < 0) {
         std::stringstream str;
         str << "Not able to add the requested geometry";
@@ -565,7 +564,7 @@ PyObject* SketchObjectPy::addExternal(PyObject* args)
     // add the external
     if (skObj->addExternal(Obj, SubName) < 0) {
         std::stringstream str;
-        str << "Not able to add external shape element";
+        str << "Not able to add external shape element " << SubName;
         PyErr_SetString(PyExc_ValueError, str.str().c_str());
         return nullptr;
     }
