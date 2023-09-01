@@ -1006,6 +1006,36 @@ GroupCommand::GroupCommand(const char *name)
     :Command(name)
 {}
 
+bool GroupCommand::isCheckable() const
+{
+    return checkable;
+}
+
+void GroupCommand::setCheckable(bool on)
+{
+    checkable = on;
+}
+
+bool GroupCommand::isExclusive() const
+{
+    return exclusive;
+}
+
+void GroupCommand::setExclusive(bool on)
+{
+    exclusive = on;
+}
+
+bool GroupCommand::hasDropDownMenu() const
+{
+    return dropDownMenu;
+}
+
+void GroupCommand::setDropDownMenu(bool on)
+{
+    dropDownMenu = on;
+}
+
 int GroupCommand::addCommand(Command *cmd, bool reg) {
     cmds.emplace_back(cmd,cmds.size());
     if(cmd && reg)
@@ -1030,9 +1060,9 @@ Command *GroupCommand::getCommand(int idx) const
 Action * GroupCommand::createAction() {
     auto* pcAction = new ActionGroup(this, getMainWindow());
     pcAction->setMenuRole(QAction::NoRole);
-    pcAction->setDropDownMenu(true);
-    pcAction->setExclusive(false);
-    pcAction->setCheckable(true);
+    pcAction->setDropDownMenu(hasDropDownMenu());
+    pcAction->setExclusive(isExclusive());
+    pcAction->setCheckable(isCheckable());
     pcAction->setWhatsThis(QString::fromLatin1(sWhatsThis));
 
     for(auto &v : cmds) {
