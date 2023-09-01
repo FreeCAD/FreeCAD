@@ -1182,6 +1182,8 @@ public:
 
     void activated() override
     {
+        Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Dimension"));
+
         Obj = sketchgui->getSketchObject();
 
         // Constrain icon size in px
