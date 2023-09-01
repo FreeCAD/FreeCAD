@@ -546,7 +546,5 @@ Quantity Quantity::parse(const QString &string)
     // free the scan buffer
     QuantityParser::yy_delete_buffer (my_string_buffer);
 
-    //if (QuantResult == Quantity(DOUBLE_MIN))
-    //    throw Base::ParserError("Unknown error in Quantity expression");
     return QuantResult;
 }

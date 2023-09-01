@@ -47,12 +47,14 @@ public:
     EditDatumDialog(Sketcher::SketchObject* pcSketch, int ConstrNbr);
     ~EditDatumDialog() override;
 
-    void exec(bool atCursor = true);
+    int exec(bool atCursor = true);
+    bool isSuccess();
 
 private:
     Sketcher::SketchObject* sketch;
     Sketcher::Constraint* Constr;
     int ConstrNbr;
+    bool success;
     std::unique_ptr<Ui_InsertDatum> ui_ins_datum;
 
 private Q_SLOTS:

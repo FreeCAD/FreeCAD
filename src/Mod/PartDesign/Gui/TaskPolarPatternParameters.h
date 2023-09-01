@@ -58,8 +58,10 @@ public:
 private Q_SLOTS:
     void onUpdateViewTimer();
     void onAxisChanged(int num);
+    void onModeChanged(const int mode);
     void onCheckReverse(const bool on);
     void onAngle(const double a);
+    void onOffset(const double a);
     void onOccurrences(const uint n);
     void onUpdateView(bool) override;
     void onFeatureDeleted() override;
@@ -82,6 +84,7 @@ private:
     void setupUI();
     void updateUI();
     void kickUpdateViewTimer() const;
+    void adaptVisibilityToMode();
 
 private:
     std::unique_ptr<Ui_TaskPolarPatternParameters> ui;

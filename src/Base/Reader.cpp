@@ -66,13 +66,6 @@ Base::XMLReader::XMLReader(const char* FileName, std::istream& str)
 
     // create the parser
     parser = XMLReaderFactory::createXMLReader();
-    //parser->setFeature(XMLUni::fgSAX2CoreNameSpaces, false);
-    //parser->setFeature(XMLUni::fgXercesSchema, false);
-    //parser->setFeature(XMLUni::fgXercesSchemaFullChecking, false);
-    //parser->setFeature(XMLUni::fgXercesIdentityConstraintChecking, false);
-    //parser->setFeature(XMLUni::fgSAX2CoreNameSpacePrefixes, false);
-    //parser->setFeature(XMLUni::fgSAX2CoreValidation, true);
-    //parser->setFeature(XMLUni::fgXercesDynamic, true);
 
     parser->setContentHandler(this);
     parser->setLexicalHandler(this);
@@ -190,42 +183,22 @@ bool Base::XMLReader::read()
         parser->parseNext(token);
     }
     catch (const XMLException& toCatch) {
-#if 0
-        char* message = XMLString::transcode(toCatch.getMessage());
-        cerr << "Exception message is: \n"
-             << message << "\n";
-        XMLString::release(&message);
-        return false;
-#else
+
         char* message = XMLString::transcode(toCatch.getMessage());
         std::string what = message;
         XMLString::release(&message);
         throw Base::XMLBaseException(what);
-#endif
     }
     catch (const SAXParseException& toCatch) {
-#if 0
-        char* message = XMLString::transcode(toCatch.getMessage());
-        cerr << "Exception message is: \n"
-             << message << "\n";
-        XMLString::release(&message);
-        return false;
-#else
+
         char* message = XMLString::transcode(toCatch.getMessage());
         std::string what = message;
         XMLString::release(&message);
         throw Base::XMLParseException(what);
-#endif
     }
     catch (...) {
-#if 0
-        cerr << "Unexpected Exception \n" ;
-        return false;
-#else
         throw Base::XMLBaseException("Unexpected XML exception");
-#endif
     }
-
     return true;
 }
 

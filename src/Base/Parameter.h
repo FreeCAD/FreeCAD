@@ -220,16 +220,6 @@ public:
     //@}
 
 
-    /** @name methods for Blob handling (not implemented yet) */
-    //@{
-    /// set a blob value
-    void  SetBlob(const char* Name, void *pValue, long lLength);
-    /// read blob values or give default
-    void GetBlob(const char* Name, void * pBuf, long lMaxLength, void* pPreset=nullptr) const;
-    /// remove a blob value from this group
-    void RemoveBlob(const char* Name);
-    //@}
-
 
 
     /** @name methods for String handling */

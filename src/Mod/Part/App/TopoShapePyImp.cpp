@@ -70,6 +70,7 @@
 #include <Base/FileInfo.h>
 #include <Base/GeometryPyCXX.h>
 #include <Base/MatrixPy.h>
+#include <Base/PyWrapParseTupleAndKeywords.h>
 #include <Base/Rotation.h>
 #include <Base/Stream.h>
 #include <Base/Vector3D.h>
@@ -281,14 +282,15 @@ PyObject*  TopoShapePy::read(PyObject *args)
 
 PyObject* TopoShapePy::writeInventor(PyObject * args, PyObject * keywds)
 {
-    static char *kwlist[] = {"Mode", "Deviation", "Angle", "FaceColors", nullptr};
+    static const std::array<const char *, 5> kwlist{"Mode", "Deviation", "Angle", "FaceColors", nullptr};
 
-    double dev=0.3, angle=0.4;
-    int mode=2;
-    PyObject* pylist=nullptr;
-    if (!PyArg_ParseTupleAndKeywords(args, keywds, "|iddO", kwlist,
-                                     &mode,&dev,&angle,&pylist))
+    double dev = 0.3, angle = 0.4;
+    int mode = 2;
+    PyObject *pylist = nullptr;
+    if (!Base::Wrapped_ParseTupleAndKeywords(args, keywds, "|iddO", kwlist,
+                                             &mode, &dev, &angle, &pylist)) {
         return nullptr;
+    }
 
     std::vector<App::Color> faceColors;
     if (pylist) {
@@ -1393,14 +1395,16 @@ PyObject*  TopoShapePy::transformShape(PyObject *args)
 
 PyObject* TopoShapePy::transformed(PyObject *args, PyObject *keywds)
 {
-    static char *kwlist[] = {"matrix", "copy", "checkScale", "op", nullptr};
-    PyObject* pymat;
-    PyObject* copy = Py_False;
-    PyObject* checkScale = Py_False;
+    static const std::array<const char *, 5> kwlist{"matrix", "copy", "checkScale", "op", nullptr};
+    PyObject *pymat;
+    PyObject *copy = Py_False;
+    PyObject *checkScale = Py_False;
     const char *op = nullptr;
-    if (!PyArg_ParseTupleAndKeywords(args, keywds, "O!|O!O!s", kwlist,
-                &Base::MatrixPy::Type, &pymat, &PyBool_Type, &copy, &PyBool_Type, &checkScale, &op))
+    if (!Base::Wrapped_ParseTupleAndKeywords(args, keywds, "O!|O!O!s", kwlist,
+                                             &Base::MatrixPy::Type, &pymat, &PyBool_Type, &copy, &PyBool_Type,
+                                             &checkScale, &op)) {
         return nullptr;
+    }
 
     Base::Matrix4D mat = static_cast<Base::MatrixPy*>(pymat)->value();
     (void)op;
@@ -1682,15 +1686,18 @@ PyObject* TopoShapePy::makeThickness(PyObject *args)
 
 PyObject* TopoShapePy::makeOffsetShape(PyObject *args, PyObject *keywds)
 {
-    static char *kwlist[] = {"offset", "tolerance", "inter", "self_inter", "offsetMode", "join", "fill", nullptr};
+    static const std::array<const char *, 8> kwlist{"offset", "tolerance", "inter", "self_inter", "offsetMode", "join",
+                                                    "fill", nullptr};
     double offset, tolerance;
-    PyObject* inter = Py_False;
-    PyObject* self_inter = Py_False;
-    PyObject* fill = Py_False;
+    PyObject *inter = Py_False;
+    PyObject *self_inter = Py_False;
+    PyObject *fill = Py_False;
     short offsetMode = 0, join = 0;
-    if (!PyArg_ParseTupleAndKeywords(args, keywds, "dd|O!O!hhO!", kwlist, &offset, &tolerance,
-        &(PyBool_Type), &inter, &(PyBool_Type), &self_inter, &offsetMode, &join, &(PyBool_Type), &fill))
+    if (!Base::Wrapped_ParseTupleAndKeywords(args, keywds, "dd|O!O!hhO!", kwlist, &offset, &tolerance,
+                                            &(PyBool_Type), &inter, &(PyBool_Type), &self_inter, &offsetMode, &join,
+                                            &(PyBool_Type), &fill)) {
         return nullptr;
+    }
 
     try {
         TopoDS_Shape shape = this->getTopoShapePtr()->makeOffsetShape(offset, tolerance,
@@ -1707,15 +1714,17 @@ PyObject* TopoShapePy::makeOffsetShape(PyObject *args, PyObject *keywds)
 
 PyObject* TopoShapePy::makeOffset2D(PyObject *args, PyObject *keywds)
 {
-    static char *kwlist[] = {"offset", "join", "fill", "openResult", "intersection", nullptr};
+    static const std::array<const char *, 6> kwlist {"offset", "join", "fill", "openResult", "intersection", nullptr};
     double offset;
     PyObject* fill = Py_False;
     PyObject* openResult = Py_False;
     PyObject* inter = Py_False;
     short join = 0;
-    if (!PyArg_ParseTupleAndKeywords(args, keywds, "d|hO!O!O!", kwlist,  &offset, &join,
-        &(PyBool_Type), &fill, &(PyBool_Type), &openResult, &(PyBool_Type), &inter))
+    if (!Base::Wrapped_ParseTupleAndKeywords(args, keywds, "d|hO!O!O!", kwlist, &offset, &join,
+                                             &(PyBool_Type), &fill, &(PyBool_Type), &openResult, &(PyBool_Type),
+                                             &inter)) {
         return nullptr;
+    }
 
     try {
         TopoDS_Shape resultShape = this->getTopoShapePtr()->makeOffset2D(offset, join,
@@ -2047,7 +2056,8 @@ Part.show(reflect)
  */
 PyObject* TopoShapePy::reflectLines(PyObject *args, PyObject *kwds)
 {
-    static char *kwlist[] = {"ViewDir", "ViewPos", "UpDir", "EdgeType", "Visible", "OnShape", nullptr};
+    static const std::array<const char *, 7> kwlist{"ViewDir", "ViewPos", "UpDir", "EdgeType", "Visible", "OnShape",
+                                                    nullptr};
 
     char* type="OutLine";
     PyObject* vis = Py_True;
@@ -2055,10 +2065,12 @@ PyObject* TopoShapePy::reflectLines(PyObject *args, PyObject *kwds)
     PyObject* pPos = nullptr;
     PyObject* pUp = nullptr;
     PyObject *pView;
-    if (!PyArg_ParseTupleAndKeywords(args, kwds, "O!|O!O!sO!O!", kwlist,
-        &Base::VectorPy::Type, &pView, &Base::VectorPy::Type, &pPos, &Base::VectorPy::Type,
-        &pUp, &type, &PyBool_Type, &vis, &PyBool_Type, &in3d))
+    if (!Base::Wrapped_ParseTupleAndKeywords(args, kwds, "O!|O!O!sO!O!", kwlist,
+                                             &Base::VectorPy::Type, &pView, &Base::VectorPy::Type, &pPos,
+                                             &Base::VectorPy::Type,
+                                             &pUp, &type, &PyBool_Type, &vis, &PyBool_Type, &in3d)) {
         return nullptr;
+    }
 
     try {
         HLRBRep_TypeOfResultingEdge t;

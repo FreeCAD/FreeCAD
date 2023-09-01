@@ -253,7 +253,8 @@ def getDefaultIcon():
 
 def build_new_file_card(template):
 
-    "builds an html <li> element representing a new file template"
+    """builds an html <li> element representing a new file
+    quick start button"""
 
     templates = {
         "empty_file": [TranslationTexts.T_TEMPLATE_EMPTYFILE_NAME, TranslationTexts.T_TEMPLATE_EMPTYFILE_DESC],
@@ -270,7 +271,7 @@ def build_new_file_card(template):
     image = 'file:///'+os.path.join(os.path.join(FreeCAD.getResourceDir(), "Mod", "Start", "StartPage"), 'images/new_'+template+".png").replace('\\','/')
 
     result = ""
-    result += '<li class="icon-new-template">'
+    result += '<li class="quickstart-button-card">'
     result += '<a href="LoadNew.py?template='+urllib.parse.quote(template)+'">'
     result += '<img src="'+image+'" alt="'+template+'">'
     result += '<div class="caption">'
@@ -303,7 +304,7 @@ def buildCard(filename,method,arg=None):
             if finfo[5]:
                 infostring += "\n\n" + finfo[5]
             if size:
-                result += '<li class="icon">'
+                result += '<li class="file-card">'
                 result += '<a href="'+method+urllib.parse.quote(arg)+'" title="'+infostring+'">'
                 result += '<img src="file:///'+image.replace('\\','/')+'" alt="'+basename+'">'
                 result += '<div class="caption">'
@@ -388,6 +389,16 @@ def handle():
                     with open(path, 'r') as f:
                         ALTCSS = f.read()
                         HTML = HTML.replace("<!--QSS-->","<style type=\"text/css\">"+ALTCSS+"</style>")
+
+    # handle file thumbnail icons visibility and size
+
+    if not FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Start").GetBool("ShowFileThumbnailIcons",True):
+        HTML = HTML.replace("display: block; /* thumb icons display */","display: none; /* thumb icons display */")
+        HTML = HTML.replace("THUMBCARDSIZE","75px")
+
+    thumb_icons_size = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Start").GetInt("FileThumbnailIconsSize", 128)
+    HTML = HTML.replace("THUMBSIZE",str(thumb_icons_size)+"px")
+    HTML = HTML.replace("THUMBCARDSIZE",str(thumb_icons_size + 75)+"px")
 
     # turn tips off if needed
 
@@ -488,11 +499,16 @@ def handle():
 
     # build IMAGE_SRC paths
 
+    HTML = HTML.replace("IMAGE_SRC_FREECAD",'file:///'+os.path.join(resources_dir, 'images/freecad.png').replace('\\','/'))
+    HTML = HTML.replace("IMAGE_SRC_ICON_DOCUMENTS",'file:///'+os.path.join(resources_dir, 'images/icon_documents.png').replace('\\','/'))
+    HTML = HTML.replace("IMAGE_SRC_ICON_HELP",'file:///'+os.path.join(resources_dir, 'images/icon_help.png').replace('\\','/'))
+    HTML = HTML.replace("IMAGE_SRC_ICON_ACTIVITY",'file:///'+os.path.join(resources_dir, 'images/icon_activity.png').replace('\\','/'))
+    HTML = HTML.replace("IMAGE_SRC_ICON_BLOG",'file:///'+os.path.join(resources_dir, 'images/icon_blog.png').replace('\\','/'))
     HTML = HTML.replace("IMAGE_SRC_USERHUB",'file:///'+os.path.join(resources_dir, 'images/userhub.png').replace('\\','/'))
     HTML = HTML.replace("IMAGE_SRC_POWERHUB",'file:///'+os.path.join(resources_dir, 'images/poweruserhub.png').replace('\\','/'))
     HTML = HTML.replace("IMAGE_SRC_DEVHUB",'file:///'+os.path.join(resources_dir, 'images/developerhub.png').replace('\\','/'))
     HTML = HTML.replace("IMAGE_SRC_MANUAL",'file:///'+os.path.join(resources_dir, 'images/manual.png').replace('\\','/'))
-    HTML = HTML.replace("IMAGE_SRC_SETTINGS",'file:///'+os.path.join(resources_dir, 'images/settings.png').replace('\\','/'))
+    HTML = HTML.replace("IMAGE_SRC_SETTINGS",'file:///'+os.path.join(resources_dir, 'images/icon_settings.png').replace('\\','/'))
     HTML = HTML.replace("IMAGE_SRC_INSTALLED",'file:///'+os.path.join(resources_dir, 'images/installed.png').replace('\\','/'))
 
     # build UL_WORKBENCHES
@@ -596,7 +612,7 @@ def handle():
     BASECOLOR = gethexcolor(p.GetUnsigned("PageColor",4294967295))
     BOXCOLOR  = gethexcolor(p.GetUnsigned("BoxColor",3722305023))
     TEXTCOLOR = gethexcolor(p.GetUnsigned("PageTextColor",255))
-    BGTCOLOR = gethexcolor(p.GetUnsigned("BackgroundTextColor",4294703103))
+    BGTCOLOR = gethexcolor(p.GetUnsigned("BackgroundTextColor",1600086015))
     OVERFLOW = "" if p.GetBool("ShowScrollBars",True) else "body::-webkit-scrollbar {display: none;}"
     SHADOW = "#888888"
     if QtGui.QColor(BASECOLOR).valueF() < 0.5: # dark page - we need to make darker shadows

@@ -24,6 +24,7 @@
 
 #include <Base/GeometryPyCXX.h>
 #include <Base/MatrixPy.h>
+#include <Base/PyWrapParseTupleAndKeywords.h>
 
 #include "DocumentObject.h"
 #include "Document.h"
@@ -432,12 +433,13 @@ PyObject* DocumentObjectPy::getSubObject(PyObject *args, PyObject *keywds)
     PyObject *doTransform = Py_True;
     short depth = 0;
 
-    static char *kwlist[] = {"subname", "retType", "matrix", "transform", "depth", nullptr};
-    if (!PyArg_ParseTupleAndKeywords(args, keywds, "O|hO!O!h", kwlist,
-                                     &obj, &retType, &Base::MatrixPy::Type, &pyMat, &PyBool_Type, &doTransform, &depth))
+    static const std::array<const char *, 6> kwlist {"subname", "retType", "matrix", "transform", "depth", nullptr};
+    if (!Base::Wrapped_ParseTupleAndKeywords(args, keywds, "O|hO!O!h", kwlist, &obj, &retType, &Base::MatrixPy::Type,
+                                             &pyMat, &PyBool_Type, &doTransform, &depth)) {
         return nullptr;
+    }
 
-    if (retType < 0 || retType > 6) {
+    if (retType < 0 || static_cast<size_t> (retType) > kwlist.size()) {
         PyErr_SetString(PyExc_ValueError, "invalid retType, can only be integer 0~6");
         return nullptr;
     }
@@ -576,10 +578,11 @@ PyObject*  DocumentObjectPy::getLinkedObject(PyObject *args, PyObject *keywds)
     PyObject *pyMat = Py_None;
     PyObject *transform = Py_True;
     short depth = 0;
-    static char *kwlist[] = {"recursive","matrix","transform","depth", nullptr};
-    if (!PyArg_ParseTupleAndKeywords(args, keywds, "|O!OO!h", kwlist,
-                &PyBool_Type,&recursive,&pyMat,&PyBool_Type,&transform,&depth))
+    static const std::array<const char *, 5> kwlist {"recursive","matrix","transform","depth", nullptr};
+    if (!Base::Wrapped_ParseTupleAndKeywords(args, keywds, "|O!OO!h", kwlist,
+                                             &PyBool_Type, &recursive, &pyMat, &PyBool_Type, &transform, &depth)) {
         return nullptr;
+    }
 
     PY_TRY {
         Base::PyTypeCheck(&pyMat, &Base::MatrixPy::Type, "expect argument 'matrix' to be of type Base.Matrix");

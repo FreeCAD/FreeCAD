@@ -429,7 +429,7 @@ void TaskExtrudeParameters::setCheckboxes(Modes mode, Type type)
     bool isMidplaneEnabled = false;
     bool isMidplaneVisible = false;
     bool isReversedEnabled = false;
-    bool isFaceEditEnabled = false;
+    bool isFaceEditVisible = false;
     bool isTaperEditVisible = false;
     bool isTaperEdit2Visible = false;
 
@@ -461,7 +461,7 @@ void TaskExtrudeParameters::setCheckboxes(Modes mode, Type type)
     else if (mode == Modes::ToFace) {
         isOffsetEditVisible = true;
         isReversedEnabled = true;
-        isFaceEditEnabled = true;
+        isFaceEditVisible = true;
         QMetaObject::invokeMethod(ui->lineFaceName, "setFocus", Qt::QueuedConnection);
         // Go into reference selection mode if no face has been selected yet
         if (ui->lineFaceName->property("FeatureName").isNull())
@@ -501,9 +501,9 @@ void TaskExtrudeParameters::setCheckboxes(Modes mode, Type type)
 
     ui->checkBoxReversed->setEnabled(isReversedEnabled);
 
-    ui->buttonFace->setEnabled(isFaceEditEnabled);
-    ui->lineFaceName->setEnabled(isFaceEditEnabled);
-    if (!isFaceEditEnabled) {
+    ui->buttonFace->setVisible(isFaceEditVisible);
+    ui->lineFaceName->setVisible(isFaceEditVisible);
+    if (!isFaceEditVisible) {
         ui->buttonFace->setChecked(false);
     }
 }

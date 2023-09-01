@@ -164,7 +164,7 @@ inline const QStringList editModeToolbarNames()
                         QString::fromLatin1("Sketcher constraints"),
                         QString::fromLatin1("Sketcher tools"),
                         QString::fromLatin1("Sketcher B-spline tools"),
-                        QString::fromLatin1("Sketcher virtual space"),
+                        QString::fromLatin1("Sketcher visual"),
                         QString::fromLatin1("Sketcher edit tools")};
 }
 
@@ -408,6 +408,7 @@ inline void SketcherAddWorkbenchConstraints<Gui::MenuItem>(Gui::MenuItem& cons)
          << "Sketcher_ConstrainSymmetric"
          << "Sketcher_ConstrainBlock"
          << "Separator"
+         << "Sketcher_Dimension"
          << "Sketcher_ConstrainLock"
          << "Sketcher_ConstrainDistanceX"
          << "Sketcher_ConstrainDistanceY"
@@ -425,6 +426,9 @@ inline void SketcherAddWorkbenchConstraints<Gui::MenuItem>(Gui::MenuItem& cons)
 template<>
 inline void SketcherAddWorkbenchConstraints<Gui::ToolBarItem>(Gui::ToolBarItem& cons)
 {
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/Mod/Sketcher/dimensioning");
+
     cons << "Sketcher_ConstrainCoincident"
          << "Sketcher_ConstrainPointOnObject"
          << "Sketcher_ConstrainVertical"
@@ -435,15 +439,20 @@ inline void SketcherAddWorkbenchConstraints<Gui::ToolBarItem>(Gui::ToolBarItem& 
          << "Sketcher_ConstrainEqual"
          << "Sketcher_ConstrainSymmetric"
          << "Sketcher_ConstrainBlock"
-         << "Separator"
-         << "Sketcher_ConstrainLock"
-         << "Sketcher_ConstrainDistanceX"
-         << "Sketcher_ConstrainDistanceY"
-         << "Sketcher_ConstrainDistance"
-         << "Sketcher_CompConstrainRadDia"
-         << "Sketcher_ConstrainAngle"
-         // << "Sketcher_ConstrainSnellsLaw" // Rarely used, show only in menu
-         << "Separator"
+         << "Separator";
+    if (hGrp->GetBool("SingleDimensioningTool", true)) {
+        cons << "Sketcher_Dimension";
+    }
+    if (hGrp->GetBool("SeparatedDimensioningTools", false)) {
+        cons << "Sketcher_ConstrainLock"
+            << "Sketcher_ConstrainDistanceX"
+            << "Sketcher_ConstrainDistanceY"
+            << "Sketcher_ConstrainDistance"
+            << "Sketcher_CompConstrainRadDia"
+            << "Sketcher_ConstrainAngle";
+        // << "Sketcher_ConstrainSnellsLaw" // Rarely used, show only in menu
+    }
+    cons << "Separator"
          << "Sketcher_ToggleDrivingConstraint"
          << "Sketcher_ToggleActiveConstraint";
 }

@@ -1640,6 +1640,12 @@ void ViewProviderSketch::moveConstraint(int constNum, const Base::Vector2d& toPo
                     const Part::GeomCircle* circleSeg1 = static_cast<const Part::GeomCircle*>(geo1);
                     const Part::GeomCircle* circleSeg2 = static_cast<const Part::GeomCircle*>(geo);
                     GetCirclesMinimalDistance(circleSeg1, circleSeg2, p1, p2);
+                } else if (Constr->FirstPos != Sketcher::PointPos::none) { //point to circle distance
+                    auto circleSeg2 = static_cast<const Part::GeomCircle*>(geo);
+                    p1 = getSolvedSketch().getPoint(Constr->First, Constr->FirstPos);
+                    Base::Vector3d v = p1 - circleSeg2->getCenter();
+                    v = v.Normalize();
+                    p2 = circleSeg2->getCenter() + circleSeg2->getRadius() * v;
                 }
             }
             else

@@ -1325,7 +1325,7 @@ unsigned int TopoShape::getMemSize () const
             if (shape.IsNull())
                 continue;
 
-            // add the size of the underlying geomtric data
+            // add the size of the underlying geometric data
             Handle(TopoDS_TShape) tshape = shape.TShape();
             memsize += tshape->DynamicType()->Size();
 

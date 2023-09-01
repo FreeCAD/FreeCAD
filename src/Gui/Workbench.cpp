@@ -791,10 +791,10 @@ ToolBarItem* StdWorkbench::setupToolBars() const
     auto view = new ToolBarItem( root );
     view->setCommand("View");
     *view << "Std_ViewFitAll" << "Std_ViewFitSelection" << "Std_DrawStyle" << "Std_SelBoundingBox"
-          << "Separator" << "Std_SelBack" << "Std_SelForward" << "Std_LinkSelectActions"
-          << "Separator" << "Std_TreeViewActions" << "Std_ViewIsometric" << "Separator" << "Std_ViewFront"
-          << "Std_ViewTop" << "Std_ViewRight" << "Separator" << "Std_ViewRear" << "Std_ViewBottom"
-          << "Std_ViewLeft"  << "Std_SelectFilter" << "Separator" << "Std_MeasureDistance" ;
+          << "Separator" << "Std_SelectFilter" << "Std_SelBack" << "Std_SelForward"
+          << "Std_LinkSelectActions"<< "Separator" << "Std_TreeViewActions" << "Std_ViewIsometric"
+          << "Std_ViewFront"<< "Std_ViewTop" << "Std_ViewRight" << "Separator" << "Std_ViewRear"
+          << "Separator" << "Std_ViewBottom"<< "Std_ViewLeft"  << "Separator" << "Std_MeasureDistance";
 
     // Structure
     auto structure = new ToolBarItem( root );

@@ -32,6 +32,7 @@
 #endif
 
 #include <Base/GeometryPyCXX.h>
+#include <Base/PyWrapParseTupleAndKeywords.h>
 #include <Base/VectorPy.h>
 
 #include "BRepOffsetAPI_MakePipeShellPy.h"
@@ -182,11 +183,9 @@ PyObject* BRepOffsetAPI_MakePipeShellPy::setAuxiliarySpine(PyObject *args)
 PyObject* BRepOffsetAPI_MakePipeShellPy::add(PyObject *args, PyObject *kwds)
 {
     PyObject *prof, *curv=Py_False, *keep=Py_False;
-    static char* keywords_pro[] = {"Profile","WithContact","WithCorrection",nullptr};
-    if (PyArg_ParseTupleAndKeywords(args,kwds, "O!|O!O!", keywords_pro
-                                        ,&Part::TopoShapePy::Type,&prof
-                                        ,&PyBool_Type,&curv
-                                        ,&PyBool_Type,&keep)) {
+    static const std::array<const char *, 4> keywords_pro{"Profile", "WithContact", "WithCorrection", nullptr};
+    if (Base::Wrapped_ParseTupleAndKeywords(args, kwds, "O!|O!O!", keywords_pro, &Part::TopoShapePy::Type, &prof,
+                                            &PyBool_Type, &curv, &PyBool_Type, &keep)) {
         try {
             const TopoDS_Shape& s = static_cast<Part::TopoShapePy*>(prof)->getTopoShapePtr()->getShape();
             this->getBRepOffsetAPI_MakePipeShellPtr()->Add(s, Base::asBoolean(curv), Base::asBoolean(keep));
@@ -200,12 +199,11 @@ PyObject* BRepOffsetAPI_MakePipeShellPy::add(PyObject *args, PyObject *kwds)
 
     PyErr_Clear();
     PyObject *loc;
-    static char* keywords_loc[] = {"Profile","Location","WithContact","WithCorrection",nullptr};
-    if (PyArg_ParseTupleAndKeywords(args,kwds, "O!O!|O!O!", keywords_loc
-                                        ,&Part::TopoShapePy::Type,&prof
-                                        ,&Part::TopoShapeVertexPy::Type,&loc
-                                        ,&PyBool_Type,&curv
-                                        ,&PyBool_Type,&keep)) {
+    static const std::array<const char *, 5> keywords_loc{"Profile", "Location", "WithContact", "WithCorrection",
+                                                          nullptr};
+    if (Base::Wrapped_ParseTupleAndKeywords(args, kwds, "O!O!|O!O!", keywords_loc, &Part::TopoShapePy::Type, &prof,
+                                            &Part::TopoShapeVertexPy::Type, &loc, &PyBool_Type, &curv, &PyBool_Type,
+                                            &keep)) {
         try {
             const TopoDS_Shape& s = static_cast<Part::TopoShapePy*>(prof)->getTopoShapePtr()->getShape();
             const TopoDS_Vertex& v = TopoDS::Vertex(static_cast<Part::TopoShapePy*>(loc)->getTopoShapePtr()->getShape());

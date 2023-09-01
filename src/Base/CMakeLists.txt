@@ -320,6 +320,7 @@ SET(FreeCADBase_HPP_SRCS
     ProgressIndicatorPy.h
     PyExport.h
     PyObjectBase.h
+    PyWrapParseTupleAndKeywords.h
     PythonTypeExt.h
     QtTools.h
     Reader.h

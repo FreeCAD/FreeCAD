@@ -12,22 +12,46 @@
 </head>
 
 <body onload="load()">
-    <div class="container">
-        <div class="title">
+    <div id="main-container">
+        <div id="title-bar">
+            <ul id="tabs" class="tabs">
+                <li>
+                    <a id="htab1" class="active" onClick="toggle('tab1')" href="#">
+                        <img src="IMAGE_SRC_ICON_DOCUMENTS" alt="documents">
+                        T_DOCUMENTS
+                    </a>
+                </li>
+                <li>
+                    <a id="htab2" onClick="toggle('tab2')" href="#">
+                        <img src="IMAGE_SRC_ICON_HELP" alt="help">
+                        T_HELP
+                    </a>
+                </li>
+                <li>
+                    <a id="htab3" onClick="toggle('tab3')" href="#">
+                        <img src="IMAGE_SRC_ICON_ACTIVITY" alt="activity">
+                        T_ACTIVITY
+                    </a>
+                </li>
+                <li>
+                    <a href="https://blog.freecad.org/" title="T_BLOG_TOOLTIP">
+                        <img src="IMAGE_SRC_ICON_BLOG" alt="blog">
+                        T_BLOG
+                    </a>
+                </li>
+            </ul>
             <div class="version">
                 VERSIONSTRING
                 <a title="T_VTOOLTIP" href="OpenSettings.py">
                     <img class="settingsicon" src="IMAGE_SRC_SETTINGS" alt="T_VTOOLTIP">
                 </a>
             </div>
+            <div style="flex-grow: 1"></div>
+            <div class="welcome">
+                <img src="IMAGE_SRC_FREECAD" alt="freecad">
+                <p>T_WELCOME</p>
+            </div>
         </div>
-        <ul id="tabs" class="tabs">
-            <li><a id="htab1" class="active" onClick="toggle('tab1')" href="#">T_DOCUMENTS</a></li>
-            <li><a id="htab2" onClick="toggle('tab2')" href="#">T_HELP</a></li>
-            <li><a id="htab3" onClick="toggle('tab3')" href="#">T_ACTIVITY</a></li>
-            <li><a href="https://blog.freecad.org/" title="Link to the
-FreeCAD blog">BLOG</a></li>
-        </ul>
         <div id="tab1" class="panel">
 
             <div class="thumbnails">
@@ -60,77 +84,77 @@ FreeCAD blog">BLOG</a></li>
 
         </div>
         <div id="tab2" class="panel hidden">
+            <div id="help-tab-wrapper">
+                <div class="docbox">
 
-            <div class="docbox">
+                    <h2>T_GENERALDOCUMENTATION</h2>
 
-                <h2>T_GENERALDOCUMENTATION</h2>
+                    <h3>
+                        <img src="IMAGE_SRC_USERHUB" alt="T_USERHUB" />
+                        <a href="https://www.freecad.org/wiki/User_hub">T_USERHUB</a>
+                    </h3>
+                    <p>T_DESCR_USERHUB</p>
 
-                <h3>
-                    <img src="IMAGE_SRC_USERHUB" alt="T_USERHUB" />
-                    <a href="https://www.freecad.org/wiki/User_hub">T_USERHUB</a>
-                </h3>
-                <p>T_DESCR_USERHUB</p>
+                    <h3>
+                        <img src="IMAGE_SRC_POWERHUB" alt="T_POWERHUB" />
+                        <a href="https://www.freecad.org/wiki/Power_users_hub">T_POWERHUB</a>
+                    </h3>
+                    <p>T_DESCR_POWERHUB</p>
 
-                <h3>
-                    <img src="IMAGE_SRC_POWERHUB" alt="T_POWERHUB" />
-                    <a href="https://www.freecad.org/wiki/Power_users_hub">T_POWERHUB</a>
-                </h3>
-                <p>T_DESCR_POWERHUB</p>
+                    <h3>
+                        <img src="IMAGE_SRC_DEVHUB" alt="T_DEVHUB" />
+                        <a href="https://www.freecad.org/wiki/Developer_hub">T_DEVHUB</a>
+                    </h3>
+                    <p>T_DESCR_DEVHUB</p>
 
-                <h3>
-                    <img src="IMAGE_SRC_DEVHUB" alt="T_DEVHUB" />
-                    <a href="https://www.freecad.org/wiki/Developer_hub">T_DEVHUB</a>
-                </h3>
-                <p>T_DESCR_DEVHUB</p>
+                    <h3>
+                        <img src="IMAGE_SRC_MANUAL" alt="T_MANUAL" />
+                        <a href="https://www.freecad.org/wiki/Manual:Introduction">T_MANUAL</a>
+                    </h3>
+                    <p>T_DESCR_MANUAL</p>
 
-                <h3>
-                    <img src="IMAGE_SRC_MANUAL" alt="T_MANUAL" />
-                    <a href="https://www.freecad.org/wiki/Manual:Introduction">T_MANUAL</a>
-                </h3>
-                <p>T_DESCR_MANUAL</p>
+                </div>
 
+                <div class="docbox">
+
+                    <h2>T_WBHELP</h2>
+
+                    <p>T_DESCR_WBHELP</p>
+
+                    UL_WORKBENCHES
+
+                </div>
+
+                <div class="docbox">
+
+                    <h2>T_COMMUNITYHELP</h2>
+
+                    <p>T_DESCR_COMMUNITYHELP1</p>
+
+                    <p>T_DESCR_COMMUNITYHELP2</p>
+
+                    <p>T_DESCR_COMMUNITYHELP3</p>
+
+                </div>
+
+                <div class="docbox">
+
+                    <h2>T_ADDONS</h2>
+
+                    <p>T_DESCR_ADDONS</p>
+
+                    <div id="addons">T_OFFLINEPLACEHOLDER</div>
+
+                </div>
             </div>
 
-            <div class="docbox">
+                <div class="footnote">
+                    <b>T_TIP</b>: T_OFFLINEHELP
+                </div>
 
-                <h2>T_WBHELP</h2>
-
-                <p>T_DESCR_WBHELP</p>
-
-                UL_WORKBENCHES
-
-            </div>
-
-            <div class="docbox">
-
-                <h2>T_COMMUNITYHELP</h2>
-
-                <p>T_DESCR_COMMUNITYHELP1</p>
-
-                <p>T_DESCR_COMMUNITYHELP2</p>
-
-                <p>T_DESCR_COMMUNITYHELP3</p>
-
-            </div>
-
-            <div class="docbox">
-
-                <h2>T_ADDONS</h2>
-
-                <p>T_DESCR_ADDONS</p>
-
-                <div id="addons">T_OFFLINEPLACEHOLDER</div>
-
-            </div>
-
-            <div class="footnote">
-                <b>T_TIP</b>: T_OFFLINEHELP
-            </div>
-
-            <div class="footnote">
-                <b>T_TIP</b>: T_EXTERNALLINKS
-            </div>
-
+                <div class="footnote">
+                    <b>T_TIP</b>: T_EXTERNALLINKS
+                </div>
         </div>
 
         <div id="tab3" class="panel tab3 hidden">
