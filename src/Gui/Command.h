@@ -652,6 +652,12 @@ public:
 
     Command *getCommand(int idx) const;
 protected:
+    bool isCheckable() const;
+    void setCheckable(bool);
+    bool isExclusive() const;
+    void setExclusive(bool);
+    bool hasDropDownMenu() const;
+    void setDropDownMenu(bool);
     void activated(int iMsg) override;
     Gui::Action * createAction() override;
     void languageChange() override;
@@ -659,6 +665,9 @@ protected:
     void setup(Action *);
 
 protected:
+    bool checkable = true;
+    bool exclusive = false;
+    bool dropDownMenu = true;
     std::vector<std::pair<Command*,size_t> > cmds;
 };
 
