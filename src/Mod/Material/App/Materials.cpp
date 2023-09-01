@@ -350,14 +350,14 @@ Material::Material() :
 
 Material::Material(const MaterialLibrary &library, const QString& directory,
             const QString& uuid, const QString& name) :
-    _library(library), _uuid(uuid), _name(name), _dereferenced(false)
+    _library(library), _uuid(uuid), _name(name), _dereferenced(false), _editState(ModelEdit_None)
 {
     setDirectory(directory);
 }
 
 Material::Material(const MaterialLibrary &library, const QDir& directory,
             const QString& uuid, const QString& name) :
-    _library(library), _directory(directory), _uuid(uuid), _name(name), _dereferenced(false)
+    _library(library), _directory(directory), _uuid(uuid), _name(name), _dereferenced(false), _editState(ModelEdit_None)
 {}
 
 Material::Material(const Material& other) :
@@ -370,7 +370,8 @@ Material::Material(const Material& other) :
     _description(other._description),
     _url(other._url),
     _reference(other._reference),
-    _dereferenced(other._dereferenced)
+    _dereferenced(other._dereferenced),
+    _editState(other._editState)
 {
     for (auto it = other._tags.begin(); it != other._tags.end(); it++)
         _tags.push_back(*it);
@@ -413,6 +414,19 @@ void Material::addModel(const QString &uuid)
     }
 }
 
+void Material::setEditState(ModelEdit newState)
+{
+    if (newState == ModelEdit_Extend)
+    {
+        if (_editState != ModelEdit_Alter)
+            _editState = newState;
+    }
+    else if (newState == ModelEdit_Alter)
+    {
+        _editState = newState;
+    }
+}
+
 void Material::addPhysical(const QString &uuid)
 {
     if (hasPhysicalModel(uuid))
@@ -425,6 +439,7 @@ void Material::addPhysical(const QString &uuid)
 
         _physicalUuids.push_back(uuid);
         addModel(uuid);
+        setEditStateExtend();
 
         for (auto it = model.begin(); it != model.end(); it++)
         {
@@ -459,6 +474,7 @@ void Material::addAppearance(const QString &uuid)
 
         _appearanceUuids.push_back(uuid);
         addModel(uuid);
+        setEditStateExtend();
 
         for (auto it = model.begin(); it != model.end(); it++)
         {
@@ -471,29 +487,58 @@ void Material::addAppearance(const QString &uuid)
     }
 }
 
+void Material::setPhysicalEditState(const QString &name)
+{
+    if (getPhysicalProperty(name).isNull())
+        setEditStateExtend();
+    else
+        setEditStateAlter();
+
+    Base::Console().Log("Material::setPhysicalEditState(%s) -> %d\n",
+                        name.toStdString().c_str(),
+                        _editState);
+}
+
+void Material::setAppearanceEditState(const QString &name)
+{
+    if (getAppearanceProperty(name).isNull())
+        setEditStateExtend();
+    else
+        setEditStateAlter();
+}
 
 void Material::setPhysicalValue(const QString& name, const QString &value)
 {
+    setPhysicalEditState(name);
+
     _physical[name].setValue(value); // may not be a string type
 }
 
 void Material::setPhysicalValue(const QString& name, int value)
 {
+    setPhysicalEditState(name);
+
     _physical[name].setInt(value);
 }
 
 void Material::setPhysicalValue(const QString& name, double value)
 {
+    setPhysicalEditState(name);
+
     _physical[name].setFloat(value);
 }
 
 void Material::setPhysicalValue(const QString& name, const Base::Quantity value)
 {
+    setPhysicalEditState(name);
+
     _physical[name].setQuantity(value);
 }
 
 void Material::setAppearanceValue(const QString& name, const QString &value)
 {
+    setAppearanceEditState(name);
+
     _appearance[name].setValue(value); // may not be a string type
 }
 
@@ -817,5 +862,3 @@ Material& Material::operator=(const Material& other)
 
     return *this;
 }
-
-#include "moc_Materials.cpp"

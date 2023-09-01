@@ -99,6 +99,12 @@ class MaterialsExport Material : public Base::BaseClass
     TYPESYSTEM_HEADER();
 
 public:
+    enum ModelEdit {
+        ModelEdit_None,     // No change
+        ModelEdit_Alter,    // Existing values are changed
+        ModelEdit_Extend    // New values added
+    };
+
     Material();
     explicit Material(const MaterialLibrary &library, const QString& directory,
                       const QString& uuid, const QString& name);
@@ -118,6 +124,7 @@ public:
     const QString getDescription() const { return _description; }
     const QString getURL() const { return _url; }
     const QString getReference() const { return _reference; }
+    ModelEdit getEditState() const { return _editState; }
     const std::list<QString> &getTags() const { return _tags; }
     const std::vector<QString> *getPhysicalModels() const { return &_physicalUuids; }
     const std::vector<QString> *getAppearanceModels() const { return &_appearanceUuids; }
@@ -132,6 +139,12 @@ public:
     void setDescription(const QString& description) { _description = description; }
     void setURL(const QString& url) { _url = url; }
     void setReference(const QString& reference) { _reference = reference; }
+    void setEditState(ModelEdit newState);
+    void setEditStateAlter() { setEditState(ModelEdit_Alter); }
+    void setEditStateExtend() { setEditState(ModelEdit_Extend); }
+    void setPhysicalEditState(const QString& name);
+    void setAppearanceEditState(const QString& name);
+    void resetEditState() { _editState = ModelEdit_None; }
     void addTag(const QString& tag) { Q_UNUSED(tag); }
     void removeTag(const QString& tag) { Q_UNUSED(tag); }
     void addPhysical(const QString& uuid);
@@ -201,6 +214,7 @@ private:
     std::map<QString, MaterialProperty> _physical;
     std::map<QString, MaterialProperty> _appearance;
     bool _dereferenced;
+    ModelEdit _editState;
 };
 
 } // namespace Materials

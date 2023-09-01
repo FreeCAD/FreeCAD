@@ -301,13 +301,22 @@ void MaterialDelegate::setEditorData(QWidget* editor, const QModelIndex& index) 
         QStyledItemDelegate::setEditorData(editor, index);
     }
 
-    Q_EMIT const_cast<MaterialDelegate *>(this)->propertyChange(propertyName, item->text());
+    // Q_EMIT const_cast<MaterialDelegate *>(this)->propertyChange(propertyName, item->text());
 }
 
 void MaterialDelegate::setModelData(QWidget* editor, QAbstractItemModel* model,
                       const QModelIndex& index) const
 {
-        QStyledItemDelegate::setModelData(editor, model, index);
+    QStyledItemDelegate::setModelData(editor, model, index);
+
+    QStandardItem *item = static_cast<const QStandardItemModel *>(model)->itemFromIndex(index);
+    auto group = item->parent();
+    if (!group)
+        return;
+
+    int row = index.row();
+    QString propertyName = group->child(row, 0)->text();
+    Q_EMIT const_cast<MaterialDelegate *>(this)->propertyChange(propertyName, item->text());
 }
 
 QWidget* MaterialDelegate::createEditor(

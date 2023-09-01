@@ -807,9 +807,10 @@ void MaterialsEditor::onSelectMaterial(const QItemSelection& selected, const QIt
 {
     Q_UNUSED(deselected);
 
-    if (_edited)
+    if (_material.getEditState() != Materials::Material::ModelEdit_None)
     {
         // Prompt the user to save or discard changes
+        Base::Console().Log("*** Material edited!!!\n");
     }
 
     QStandardItemModel *model = static_cast<QStandardItemModel *>(ui->treeMaterials->model());
@@ -817,6 +818,7 @@ void MaterialsEditor::onSelectMaterial(const QItemSelection& selected, const QIt
     for (auto it = indexes.begin(); it != indexes.end(); it++)
     {
         QStandardItem* item = model->itemFromIndex(*it);
+        
         Base::Console().Log("%s\n", item->text().toStdString().c_str());
         if (item) {
             QString uuid = item->data(Qt::UserRole).toString();
@@ -831,7 +833,8 @@ void MaterialsEditor::onSelectMaterial(const QItemSelection& selected, const QIt
             }
 
             updateMaterial();
-            _edited = false;
+            _material.resetEditState();
+            // _edited = false;
         }
     }
 }
