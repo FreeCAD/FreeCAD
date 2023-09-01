@@ -39,10 +39,10 @@ class PointsExport PointsAlgos
 public:
     /** Load a point cloud
      */
-    static void Load(PointKernel&, const char *FileName);
+    static void Load(PointKernel&, const char* FileName);
     /** Load a point cloud
      */
-    static void LoadAscii(PointKernel&, const char *FileName);
+    static void LoadAscii(PointKernel&, const char* FileName);
 };
 
 class Reader
@@ -73,51 +73,61 @@ protected:
     int width, height;
 };
 
-class AscReader : public Reader
+class AscReader: public Reader
 {
 public:
     AscReader();
     void read(const std::string& filename) override;
 };
 
-class PlyReader : public Reader
+class PlyReader: public Reader
 {
 public:
     PlyReader();
     void read(const std::string& filename) override;
 
 private:
-    std::size_t readHeader(std::istream&, std::string& format, std::size_t& offset,
-        std::vector<std::string>& fields, std::vector<std::string>& types,
-        std::vector<int>& sizes);
+    std::size_t readHeader(std::istream&,
+                           std::string& format,
+                           std::size_t& offset,
+                           std::vector<std::string>& fields,
+                           std::vector<std::string>& types,
+                           std::vector<int>& sizes);
     void readAscii(std::istream&, std::size_t offset, Eigen::MatrixXd& data);
-    void readBinary(bool swapByteOrder, std::istream&, std::size_t offset,
-        const std::vector<std::string>& types,
-        const std::vector<int>& sizes,
-        Eigen::MatrixXd& data);
+    void readBinary(bool swapByteOrder,
+                    std::istream&,
+                    std::size_t offset,
+                    const std::vector<std::string>& types,
+                    const std::vector<int>& sizes,
+                    Eigen::MatrixXd& data);
 };
 
-class PcdReader : public Reader
+class PcdReader: public Reader
 {
 public:
     PcdReader();
     void read(const std::string& filename) override;
 
 private:
-    std::size_t readHeader(std::istream&, std::string& format, std::vector<std::string>& fields,
-        std::vector<std::string>& types, std::vector<int>& sizes);
+    std::size_t readHeader(std::istream&,
+                           std::string& format,
+                           std::vector<std::string>& fields,
+                           std::vector<std::string>& types,
+                           std::vector<int>& sizes);
     void readAscii(std::istream&, Eigen::MatrixXd& data);
-    void readBinary(bool transpose, std::istream&,
-        const std::vector<std::string>& types,
-        const std::vector<int>& sizes,
-        Eigen::MatrixXd& data);
+    void readBinary(bool transpose,
+                    std::istream&,
+                    const std::vector<std::string>& types,
+                    const std::vector<int>& sizes,
+                    Eigen::MatrixXd& data);
 };
 
-class E57Reader : public Reader
+class E57Reader: public Reader
 {
 public:
     E57Reader(bool Color, bool State, double Distance);
     void read(const std::string& filename) override;
+
 protected:
     bool useColor, checkState;
     double minDistance;
@@ -146,28 +156,28 @@ protected:
     Base::Placement placement;
 };
 
-class AscWriter : public Writer
+class AscWriter: public Writer
 {
 public:
     explicit AscWriter(const PointKernel&);
     void write(const std::string& filename) override;
 };
 
-class PlyWriter : public Writer
+class PlyWriter: public Writer
 {
 public:
     explicit PlyWriter(const PointKernel&);
     void write(const std::string& filename) override;
 };
 
-class PcdWriter : public Writer
+class PcdWriter: public Writer
 {
 public:
     explicit PcdWriter(const PointKernel&);
     void write(const std::string& filename) override;
 };
 
-} // namespace Points
+}// namespace Points
 
 
 #endif

@@ -24,10 +24,11 @@
 #ifndef POINTS_TOOLS_H
 #define POINTS_TOOLS_H
 
-#include <algorithm>
 #include <App/DocumentObject.h>
+#include <algorithm>
 
-namespace Points {
+namespace Points
+{
 
 template<typename PropertyT>
 bool copyProperty(App::DocumentObject* target,
@@ -39,13 +40,12 @@ bool copyProperty(App::DocumentObject* target,
             return dynamic_cast<PropertyT*>(obj->getPropertyByName(propertyName)) != nullptr;
         })) {
 
-        auto target_prop = dynamic_cast<PropertyT*>
-            (target->addDynamicProperty(PropertyT::getClassTypeId().getName(), propertyName));
+        auto target_prop = dynamic_cast<PropertyT*>(
+            target->addDynamicProperty(PropertyT::getClassTypeId().getName(), propertyName));
         if (target_prop) {
             auto values = target_prop->getValues();
             for (auto it : source) {
-                auto source_prop = dynamic_cast<PropertyT*>
-                    (it->getPropertyByName(propertyName));
+                auto source_prop = dynamic_cast<PropertyT*>(it->getPropertyByName(propertyName));
                 if (source_prop) {
                     auto source_values = source_prop->getValues();
                     values.insert(values.end(), source_values.begin(), source_values.end());
@@ -60,6 +60,6 @@ bool copyProperty(App::DocumentObject* target,
     return false;
 }
 
-}
+}// namespace Points
 
-#endif // POINTS_TOOLS_H
+#endif// POINTS_TOOLS_H
