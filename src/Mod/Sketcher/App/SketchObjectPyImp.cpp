@@ -504,7 +504,7 @@ PyObject* SketchObjectPy::carbonCopy(PyObject* args)
 {
     char* ObjectName;
     PyObject* construction = Py_True;
-    if (!PyArg_ParseTuple(args, "s|O!:Give an object", &ObjectName, &PyBool_Type, &construction)) {
+    if (!PyArg_ParseTuple(args, "s|O!", &ObjectName, &PyBool_Type, &construction)) {
         return nullptr;
     }
 
@@ -541,7 +541,7 @@ PyObject* SketchObjectPy::addExternal(PyObject* args)
 {
     char* ObjectName;
     char* SubName;
-    if (!PyArg_ParseTuple(args, "ss:Give an object and subelement name", &ObjectName, &SubName)) {
+    if (!PyArg_ParseTuple(args, "ss", &ObjectName, &SubName)) {
         return nullptr;
     }
 
