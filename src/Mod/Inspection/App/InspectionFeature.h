@@ -26,22 +26,32 @@
 #include <App/DocumentObject.h>
 #include <App/DocumentObjectGroup.h>
 
-#include <Mod/Points/App/Points.h>
 #include <Mod/Inspection/InspectionGlobal.h>
+#include <Mod/Points/App/Points.h>
 
 
 class TopoDS_Shape;
 class BRepExtrema_DistShapeShape;
 class gp_Pnt;
 
-namespace MeshCore {
+namespace MeshCore
+{
 class MeshKernel;
 class MeshGrid;
-}
+}// namespace MeshCore
 
-namespace Mesh   { class MeshObject; }
-namespace Points { class PointsGrid; }
-namespace Part   { class TopoShape;  }
+namespace Mesh
+{
+class MeshObject;
+}
+namespace Points
+{
+class PointsGrid;
+}
+namespace Part
+{
+class TopoShape;
+}
 
 namespace Inspection
 {
@@ -57,7 +67,7 @@ public:
     virtual Base::Vector3f getPoint(unsigned long) const = 0;
 };
 
-class InspectionExport InspectActualMesh : public InspectActualGeometry
+class InspectionExport InspectActualMesh: public InspectActualGeometry
 {
 public:
     explicit InspectActualMesh(const Mesh::MeshObject& rMesh);
@@ -71,7 +81,7 @@ private:
     Base::Matrix4D _clTrf;
 };
 
-class InspectionExport InspectActualPoints : public InspectActualGeometry
+class InspectionExport InspectActualPoints: public InspectActualGeometry
 {
 public:
     explicit InspectActualPoints(const Points::PointKernel&);
@@ -82,7 +92,7 @@ private:
     const Points::PointKernel& _rKernel;
 };
 
-class InspectionExport InspectActualShape : public InspectActualGeometry
+class InspectionExport InspectActualShape: public InspectActualGeometry
 {
 public:
     explicit InspectActualShape(const Part::TopoShape&);
@@ -106,7 +116,7 @@ public:
     virtual float getDistance(const Base::Vector3f&) const = 0;
 };
 
-class InspectionExport InspectNominalMesh : public InspectNominalGeometry
+class InspectionExport InspectNominalMesh: public InspectNominalGeometry
 {
 public:
     InspectNominalMesh(const Mesh::MeshObject& rMesh, float offset);
@@ -121,7 +131,7 @@ private:
     Base::Matrix4D _clTrf;
 };
 
-class InspectionExport InspectNominalFastMesh : public InspectNominalGeometry
+class InspectionExport InspectNominalFastMesh: public InspectNominalGeometry
 {
 public:
     InspectNominalFastMesh(const Mesh::MeshObject& rMesh, float offset);
@@ -137,7 +147,7 @@ protected:
     Base::Matrix4D _clTrf;
 };
 
-class InspectionExport InspectNominalPoints : public InspectNominalGeometry
+class InspectionExport InspectNominalPoints: public InspectNominalGeometry
 {
 public:
     InspectNominalPoints(const Points::PointKernel&, float offset);
@@ -149,7 +159,7 @@ private:
     Points::PointsGrid* _pGrid;
 };
 
-class InspectionExport InspectNominalShape : public InspectNominalGeometry
+class InspectionExport InspectNominalShape: public InspectNominalGeometry
 {
 public:
     InspectNominalShape(const TopoDS_Shape&, float offset);
@@ -163,7 +173,7 @@ private:
 private:
     BRepExtrema_DistShapeShape* distss;
     const TopoDS_Shape& _rShape;
-    bool isSolid{false};
+    bool isSolid {false};
 };
 
 class InspectionExport PropertyDistanceList: public App::PropertyLists
@@ -171,46 +181,54 @@ class InspectionExport PropertyDistanceList: public App::PropertyLists
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
-
     /**
      * A constructor.
      * A more elaborate description of the constructor.
      */
     PropertyDistanceList();
-    
+
     /**
      * A destructor.
      * A more elaborate description of the destructor.
      */
     ~PropertyDistanceList() override;
-    
+
     void setSize(int newSize) override;
     int getSize() const override;
 
-    /** Sets the property 
+    /** Sets the property
      */
     void setValue(float);
-    
+
     /// index operator
-    float operator[] (const int idx) const {return _lValueList.operator[] (idx);} 
-    
-    void set1Value (const int idx, float value){_lValueList.operator[] (idx) = value;}
-    void setValues (const std::vector<float>& values);
-    
-    const std::vector<float> &getValues() const{return _lValueList;}
-    
-    PyObject *getPyObject() override;
-    void setPyObject(PyObject *) override;
-    
-    void Save (Base::Writer &writer) const override;
-    void Restore(Base::XMLReader &reader) override;
-    
-    void SaveDocFile (Base::Writer &writer) const override;
-    void RestoreDocFile(Base::Reader &reader) override;
-    
-    Property *Copy() const override;
-    void Paste(const Property &from) override;
-    unsigned int getMemSize () const override;
+    float operator[](const int idx) const
+    {
+        return _lValueList.operator[](idx);
+    }
+
+    void set1Value(const int idx, float value)
+    {
+        _lValueList.operator[](idx) = value;
+    }
+    void setValues(const std::vector<float>& values);
+
+    const std::vector<float>& getValues() const
+    {
+        return _lValueList;
+    }
+
+    PyObject* getPyObject() override;
+    void setPyObject(PyObject*) override;
+
+    void Save(Base::Writer& writer) const override;
+    void Restore(Base::XMLReader& reader) override;
+
+    void SaveDocFile(Base::Writer& writer) const override;
+    void RestoreDocFile(Base::Reader& reader) override;
+
+    Property* Copy() const override;
+    void Paste(const Property& from) override;
+    unsigned int getMemSize() const override;
 
 private:
     std::vector<float> _lValueList;
@@ -221,7 +239,7 @@ private:
 /** The inspection feature.
  * \author Werner Mayer
  */
-class InspectionExport Feature : public App::DocumentObject
+class InspectionExport Feature: public App::DocumentObject
 {
     PROPERTY_HEADER_WITH_OVERRIDE(Inspection::Feature);
 
@@ -232,11 +250,11 @@ public:
 
     /** @name Properties */
     //@{
-    App::PropertyFloat     SearchRadius;
-    App::PropertyFloat     Thickness;
-    App::PropertyLink      Actual;
-    App::PropertyLinkList  Nominals;
-    PropertyDistanceList   Distances;
+    App::PropertyFloat SearchRadius;
+    App::PropertyFloat Thickness;
+    App::PropertyLink Actual;
+    App::PropertyLinkList Nominals;
+    PropertyDistanceList Distances;
     //@}
 
     /** @name Actions */
@@ -248,10 +266,12 @@ public:
 
     /// returns the type name of the ViewProvider
     const char* getViewProviderName() const override
-    { return "InspectionGui::ViewProviderInspection"; }
+    {
+        return "InspectionGui::ViewProviderInspection";
+    }
 };
 
-class InspectionExport Group : public App::DocumentObjectGroup
+class InspectionExport Group: public App::DocumentObjectGroup
 {
     PROPERTY_HEADER_WITH_OVERRIDE(Inspection::Group);
 
@@ -262,10 +282,12 @@ public:
 
     /// returns the type name of the ViewProvider
     const char* getViewProviderName() const override
-    { return "InspectionGui::ViewProviderInspectionGroup"; }
+    {
+        return "InspectionGui::ViewProviderInspectionGroup";
+    }
 };
 
-} //namespace Inspection
+}// namespace Inspection
 
 
-#endif // INSPECTION_FEATURE_H
+#endif// INSPECTION_FEATURE_H
