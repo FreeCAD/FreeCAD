@@ -1540,7 +1540,7 @@ protected:
     }
     void makeCts_1MorePoint1Ellipse(bool& selAllowed)
     {
-        //distance between 1 point and elipse/arc of... not supported yet.
+        //distance between 1 point and ellipse/arc of... not supported yet.
         if (availableConstraint == AvailableConstraint::FIRST) {
             //nothing yet
             //availableConstraint = AvailableConstraint::RESET;

@@ -44,12 +44,12 @@ public:
     App::PropertyLinkSub StartEdge;
     App::PropertyFloatConstraint StartParameter;
     App::PropertyIntegerConstraint StartContinuity;
-    App::PropertyFloat StartSize;
+    App::PropertyFloatConstraint StartSize;
 
     App::PropertyLinkSub EndEdge;
     App::PropertyFloatConstraint EndParameter;
     App::PropertyIntegerConstraint EndContinuity;
-    App::PropertyFloat EndSize;
+    App::PropertyFloatConstraint EndSize;
 
     Standard_Integer maxDegree;
 
@@ -63,7 +63,6 @@ public:
 private:
     BlendPoint GetBlendPoint(App::PropertyLinkSub &link, App::PropertyFloatConstraint &param, App::PropertyIntegerConstraint &Continuity);
     double RelativeToRealParameters(double, double, double);
-    bool lockOnChangeMutex{false};
 
 protected:
     void onChanged(const App::Property *prop) override;
