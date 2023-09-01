@@ -53,7 +53,7 @@ ${LangFileString} FinishPageRun "Launch FreeCAD"
 
 ${LangFileString} UnNotInRegistryLabel "Unable to find FreeCAD in the registry.$\r$\n\
 					Shortcuts on the desktop and in the Start Menu will not be removed."
-${LangFileString} UnInstallRunning "You must close FreeCAD at first!"
+${LangFileString} UnInstallRunning "You must close FreeCAD first!"
 ${LangFileString} UnNotAdminLabel "You must have administrator privileges to uninstall FreeCAD!"
 ${LangFileString} UnReallyRemoveLabel "Are you sure you want to completely remove FreeCAD and all of its components?"
 ${LangFileString} UnFreeCADPreferencesTitle 'FreeCAD$\'s user preferences'
