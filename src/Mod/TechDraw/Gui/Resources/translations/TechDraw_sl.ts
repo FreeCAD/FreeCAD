@@ -3998,7 +3998,7 @@ vsebuje zvarni znaki, ki bi postal okvarjen.</translation>
     <message>
       <location filename="../../TaskSectionView.cpp" line="148"/>
       <source>No direction set</source>
-      <translation type="unfinished">No direction set</translation>
+      <translation>Smer ni določena</translation>
     </message>
   </context>
   <context>
@@ -6084,7 +6084,7 @@ Ali želite nadaljevati?</translation>
     <message>
       <location filename="../../TaskComplexSection.cpp" line="172"/>
       <source>No direction set</source>
-      <translation type="unfinished">No direction set</translation>
+      <translation>Smer ni določena</translation>
     </message>
     <message>
       <location filename="../../TaskComplexSection.cpp" line="687"/>
@@ -6118,7 +6118,7 @@ Ali želite nadaljevati?</translation>
     <message>
       <location filename="../../TaskCosVertex.ui" line="98"/>
       <source>Position</source>
-      <translation type="unfinished">Position</translation>
+      <translation>Položaj</translation>
     </message>
     <message>
       <location filename="../../TaskCosVertex.ui" line="106"/>
@@ -6270,7 +6270,7 @@ Ali želite nadaljevati?</translation>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="156"/>
       <source>Position</source>
-      <translation type="unfinished">Position</translation>
+      <translation>Položaj</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="166"/>

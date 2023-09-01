@@ -228,22 +228,22 @@
       <translation>Triangulation anzeigen</translation>
     </message>
     <message>
-      <location filename="../../FitBSplineSurface.cpp" line="152"/>
+      <location filename="../../FitBSplineSurface.cpp" line="148"/>
       <source>Placement</source>
       <translation>Positionierung</translation>
     </message>
     <message>
-      <location filename="../../FitBSplineSurface.cpp" line="224"/>
+      <location filename="../../FitBSplineSurface.cpp" line="220"/>
       <source>Fit B-Spline</source>
       <translation>B-Spline einpassen</translation>
     </message>
     <message>
-      <location filename="../../Poisson.cpp" line="91"/>
+      <location filename="../../Poisson.cpp" line="87"/>
       <source>Poisson reconstruction</source>
       <translation>Poisson-Rekonstruktion</translation>
     </message>
     <message>
-      <location filename="../../SegmentationManual.cpp" line="257"/>
+      <location filename="../../SegmentationManual.cpp" line="255"/>
       <source>Segmentation</source>
       <translation>Segmentierung</translation>
     </message>
@@ -331,18 +331,18 @@
   <context>
     <name>ReenGui::FitBSplineSurfaceWidget</name>
     <message>
-      <location filename="../../FitBSplineSurface.cpp" line="163"/>
-      <location filename="../../FitBSplineSurface.cpp" line="231"/>
+      <location filename="../../FitBSplineSurface.cpp" line="159"/>
+      <location filename="../../FitBSplineSurface.cpp" line="227"/>
       <source>Input error</source>
       <translation>Eingabefehler</translation>
     </message>
     <message>
-      <location filename="../../FitBSplineSurface.cpp" line="203"/>
+      <location filename="../../FitBSplineSurface.cpp" line="199"/>
       <source>Wrong selection</source>
       <translation>Falsche Auswahl</translation>
     </message>
     <message>
-      <location filename="../../FitBSplineSurface.cpp" line="204"/>
+      <location filename="../../FitBSplineSurface.cpp" line="200"/>
       <source>Please select a single placement object to get local orientation.</source>
       <translation>Bitte ein einzelnes Placement-Objekt zur lokalen Orientierung wählen.</translation>
     </message>
@@ -375,7 +375,7 @@
       <translation>Samples pro Knoten</translation>
     </message>
     <message>
-      <location filename="../../Poisson.cpp" line="98"/>
+      <location filename="../../Poisson.cpp" line="94"/>
       <source>Input error</source>
       <translation>Eingabefehler</translation>
     </message>
@@ -567,7 +567,7 @@
   <context>
     <name>ReverseEngineeringGui::TaskSegmentationManual</name>
     <message>
-      <location filename="../../SegmentationManual.cpp" line="333"/>
+      <location filename="../../SegmentationManual.cpp" line="326"/>
       <source>Create</source>
       <translation>Erstellen</translation>
     </message>
@@ -577,7 +577,7 @@
     <message>
       <location filename="../../Workbench.cpp" line="34"/>
       <source>Reverse Engineering</source>
-      <translation>Reverse-Engineering</translation>
+      <translation>Rückführung</translation>
     </message>
   </context>
 </TS>

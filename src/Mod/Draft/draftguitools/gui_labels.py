@@ -66,7 +66,7 @@ class Label(gui_base_original.Creator):
 
     def Activated(self):
         """Execute when the command is called."""
-        super(Label, self).Activated(name="Label")
+        super().Activated(name="Label")
         self.ghost = None
         self.labeltype = utils.getParam("labeltype", "Custom")
         self.sel = Gui.Selection.getSelectionEx()
@@ -90,7 +90,7 @@ class Label(gui_base_original.Creator):
         """Finish the command."""
         if self.ghost:
             self.ghost.finalize()
-        super(Label, self).finish()
+        super().finish()
 
     def create(self):
         """Create the actual object."""
@@ -99,14 +99,9 @@ class Label(gui_base_original.Creator):
             basepoint = self.node[2]
             v = self.node[2].sub(self.node[1])
             dist = v.Length
-            if hasattr(App, "DraftWorkingPlane"):
-                h = App.DraftWorkingPlane.u
-                n = App.DraftWorkingPlane.axis
-                r = App.DraftWorkingPlane.getRotation().Rotation
-            else:
-                h = App.Vector(1, 0, 0)
-                n = App.Vector(0, 0, 1)
-                r = App.Rotation()
+            h = self.wp.u
+            n = self.wp.axis
+            r = self.wp.getRotation().Rotation
 
             if abs(DraftVecUtils.angle(v, h, n)) <= math.pi/4:
                 direction = "Horizontal"

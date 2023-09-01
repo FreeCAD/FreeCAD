@@ -106,18 +106,6 @@ bool BoundBox2d::Intersect(const Line2d &rclLine) const
 
 bool BoundBox2d::Intersect(const BoundBox2d &rclBB) const
 {
-//// compare bb2-points to this
-//if (Contains (Vector2d (rclBB.fMinX, rclBB.fMinY))) return true;
-//if (Contains (Vector2d (rclBB.fMaxX, rclBB.fMinY))) return true;
-//if (Contains (Vector2d (rclBB.fMaxX, rclBB.fMaxY))) return true;
-//if (Contains (Vector2d (rclBB.fMinX, rclBB.fMaxY))) return true;
-//
-//// compare this-points to bb2
-//if (rclBB.Contains (Vector2d (fMinX, fMinY))) return true;
-//if (rclBB.Contains (Vector2d (fMaxX, fMinY))) return true;
-//if (rclBB.Contains (Vector2d (fMaxX, fMaxY))) return true;
-//if (rclBB.Contains (Vector2d (fMinX, fMaxY))) return true;
-
   if (MinX       < rclBB.MaxX  &&
       rclBB.MinX < MaxX        &&
       MinY       < rclBB.MaxY  &&

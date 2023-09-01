@@ -1106,12 +1106,12 @@ SoFCSelectionContextBasePtr SoFCSelectionRoot::getNodeContext(
     if(stack.empty())
         return def;
 
-    SoFCSelectionRoot *front = stack.front();
+    auto front = dynamic_cast<SoFCSelectionRoot *>(stack.front());
+    if (front == nullptr) {
+        return SoFCSelectionContextBasePtr();
+    }
 
-    // NOTE: _node is not necessary of type SoFCSelectionRoot, but it is safe
-    // here since we only use it as searching key, although it is probably not
-    // a best practice.
-    stack.front() = static_cast<SoFCSelectionRoot*>(node);
+    stack.front() = node;
 
     auto it = front->contextMap.find(stack);
     stack.front() = front;
@@ -1124,13 +1124,18 @@ SoFCSelectionContextBasePtr
 SoFCSelectionRoot::getNodeContext2(Stack &stack, SoNode *node, SoFCSelectionContextBase::MergeFunc *merge)
 {
     SoFCSelectionContextBasePtr ret;
-    if(stack.empty() || stack.back()->contextMap2.empty())
+    if (stack.empty()) {
         return ret;
+    }
+
+    auto *back = dynamic_cast<SoFCSelectionRoot*>(stack.back());
+    if (back == nullptr || back->contextMap2.empty()) {
+        return ret;
+    }
 
     int status = 0;
-    auto *back = stack.back();
     auto &map = back->contextMap2;
-    stack.back() = static_cast<SoFCSelectionRoot*>(node);
+    stack.back() = node;
     for(stack.offset=0;stack.offset<stack.size();++stack.offset) {
         auto it = map.find(stack);
         SoFCSelectionContextBasePtr ctx;
@@ -1149,6 +1154,7 @@ std::pair<bool,SoFCSelectionContextBasePtr*> SoFCSelectionRoot::findActionContex
         SoAction *action, SoNode *_node, bool create, bool erase)
 {
     std::pair<bool,SoFCSelectionContextBasePtr*> res(false,0);
+
     if(action->isOfType(SoSelectionElementAction::getClassTypeId()))
         res.first = static_cast<SoSelectionElementAction*>(action)->isSecondary();
 
@@ -1158,36 +1164,38 @@ std::pair<bool,SoFCSelectionContextBasePtr*> SoFCSelectionRoot::findActionContex
 
     auto &stack = it->second;
 
-    auto node = static_cast<SoFCSelectionRoot*>(_node);
-
     if(res.first) {
-        auto back = stack.back();
-        stack.back() = node;
-        if(create)
-            res.second = &back->contextMap2[stack];
-        else {
-            auto it = back->contextMap2.find(stack);
-            if(it!=back->contextMap2.end()) {
-                res.second = &it->second;
-                if(erase)
-                    back->contextMap2.erase(it);
+        auto back = dynamic_cast<SoFCSelectionRoot*>(stack.back());
+        if (back != nullptr) {
+            stack.back() = _node;
+            if(create)
+                res.second = &back->contextMap2[stack];
+            else {
+                auto it = back->contextMap2.find(stack);
+                if(it!=back->contextMap2.end()) {
+                    res.second = &it->second;
+                    if(erase)
+                        back->contextMap2.erase(it);
+                }
             }
+            stack.back() = back;
         }
-        stack.back() = back;
     }else{
-        auto front = stack.front();
-        stack.front() = node;
-        if(create)
-            res.second = &front->contextMap[stack];
-        else {
-            auto it = front->contextMap.find(stack);
-            if(it!=front->contextMap.end()) {
-                res.second = &it->second;
-                if(erase)
-                    front->contextMap.erase(it);
+        auto front = dynamic_cast<SoFCSelectionRoot*>(stack.front());
+        if (front != nullptr) {
+            stack.front() = _node;
+            if(create)
+                res.second = &front->contextMap[stack];
+            else {
+                auto it = front->contextMap.find(stack);
+                if(it!=front->contextMap.end()) {
+                    res.second = &it->second;
+                    if(erase)
+                        front->contextMap.erase(it);
+                }
             }
+            stack.front() = front;
         }
-        stack.front() = front;
     }
     return res;
 }
@@ -1642,7 +1650,7 @@ bool SoFCSelectionRoot::doActionPrivate(Stack &stack, SoAction *action) {
 }
 
 int SoFCSelectionRoot::SelContext::merge(int status, SoFCSelectionContextBasePtr &output,
-        SoFCSelectionContextBasePtr input, SoFCSelectionRoot *)
+        SoFCSelectionContextBasePtr input, SoNode *)
 {
     auto ctx = std::dynamic_pointer_cast<SelContext>(input);
     if(ctx && ctx->hideAll) {
@@ -1735,8 +1743,9 @@ void SoFCPathAnnotation::GLRenderBelowPath(SoGLRenderAction * action)
                 for(int i=0,count=path->getLength();i<count;++i) {
                     if(!path->getNode(i)->isOfType(SoFCSelectionRoot::getClassTypeId()))
                         continue;
-                    auto node = static_cast<SoFCSelectionRoot*>(path->getNode(i));
-                    if(node->selectionStyle.getValue()==SoFCSelectionRoot::Box) {
+                    auto node = dynamic_cast<SoFCSelectionRoot*>(path->getNode(i));
+                    if (node != nullptr
+                        && node->selectionStyle.getValue() == SoFCSelectionRoot::Box) {
                         bbox = true;
                         break;
                     }

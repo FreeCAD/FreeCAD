@@ -68,7 +68,7 @@ class Arc(gui_base_original.Creator):
 
     def Activated(self):
         """Execute when the command is called."""
-        super(Arc, self).Activated(name=self.featureName)
+        super().Activated(name=self.featureName)
         if self.ui:
             self.step = 0
             self.center = None
@@ -96,7 +96,7 @@ class Arc(gui_base_original.Creator):
             Restart (continue) the command if `True`, or if `None` and
             `ui.continueMode` is `True`.
         """
-        super(Arc, self).finish()
+        super().finish()
         if self.ui:
             self.linetrack.finalize()
             self.arctrack.finalize()
@@ -142,7 +142,6 @@ class Arc(gui_base_original.Creator):
             from the 3D view.
         """
         import DraftGeomUtils
-        plane = App.DraftWorkingPlane
 
         if arg["Type"] == "SoKeyboardEvent":
             if arg["Key"] == "ESCAPE":
@@ -152,7 +151,7 @@ class Arc(gui_base_original.Creator):
             # this is to make sure radius is what you see on screen
             if self.center and DraftVecUtils.dist(self.point, self.center) > 0:
                 viewdelta = DraftVecUtils.project(self.point.sub(self.center),
-                                                  plane.axis)
+                                                  self.wp.axis)
                 if not DraftVecUtils.isNull(viewdelta):
                     self.point = self.point.add(viewdelta.negative())
             if self.step == 0:  # choose center
@@ -210,7 +209,7 @@ class Arc(gui_base_original.Creator):
             elif (self.step == 2):  # choose first angle
                 currentrad = DraftVecUtils.dist(self.point, self.center)
                 if currentrad != 0:
-                    angle = DraftVecUtils.angle(plane.u, self.point.sub(self.center), plane.axis)
+                    angle = DraftVecUtils.angle(self.wp.u, self.point.sub(self.center), self.wp.axis)
                 else:
                     angle = 0
                 self.linetrack.p2(DraftVecUtils.scaleTo(self.point.sub(self.center), self.rad).add(self.center))
@@ -220,7 +219,7 @@ class Arc(gui_base_original.Creator):
                 # choose second angle
                 currentrad = DraftVecUtils.dist(self.point, self.center)
                 if currentrad != 0:
-                    angle = DraftVecUtils.angle(plane.u, self.point.sub(self.center), plane.axis)
+                    angle = DraftVecUtils.angle(self.wp.u, self.point.sub(self.center), self.wp.axis)
                 else:
                     angle = 0
                 self.linetrack.p2(DraftVecUtils.scaleTo(self.point.sub(self.center), self.rad).add(self.center))
@@ -417,7 +416,6 @@ class Arc(gui_base_original.Creator):
         when a valid radius has been entered in the input field.
         """
         import DraftGeomUtils
-        plane = App.DraftWorkingPlane
 
         if self.step == 1:
             self.rad = rad
@@ -455,11 +453,11 @@ class Arc(gui_base_original.Creator):
             self.ui.labelRadius.setText(translate("draft", "Aperture angle"))
             self.ui.radiusValue.setToolTip(translate("draft", "Aperture angle"))
             self.firstangle = math.radians(rad)
-            if DraftVecUtils.equals(plane.axis, App.Vector(1, 0, 0)):
+            if DraftVecUtils.equals(self.wp.axis, App.Vector(1, 0, 0)):
                 u = App.Vector(0, self.rad, 0)
             else:
-                u = DraftVecUtils.scaleTo(App.Vector(1, 0, 0).cross(plane.axis), self.rad)
-            urotated = DraftVecUtils.rotate(u, math.radians(rad), plane.axis)
+                u = DraftVecUtils.scaleTo(App.Vector(1, 0, 0).cross(self.wp.axis), self.rad)
+            urotated = DraftVecUtils.rotate(u, math.radians(rad), self.wp.axis)
             self.arctrack.setStartAngle(self.firstangle)
             self.step = 3
             self.ui.radiusValue.setText("")
@@ -479,7 +477,7 @@ class Arc_3Points(gui_base.GuiCommandSimplest):
     """GuiCommand for the Draft_Arc_3Points tool."""
 
     def __init__(self):
-        super(Arc_3Points, self).__init__(name="Arc by 3 points")
+        super().__init__(name="Arc by 3 points")
 
     def GetResources(self):
         """Set icon, menu and tooltip."""
@@ -490,7 +488,7 @@ class Arc_3Points(gui_base.GuiCommandSimplest):
 
     def Activated(self):
         """Execute when the command is called."""
-        super(Arc_3Points, self).Activated()
+        super().Activated()
 
         # Reset the values
         self.points = []

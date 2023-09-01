@@ -170,7 +170,7 @@ Este comando só funciona com um objeto do tipo "malha".</translation>
       <translation>Conecte as arestas se a distância for menor que</translation>
     </message>
     <message>
-      <location filename="../../CrossSections.cpp" line="368"/>
+      <location filename="../../CrossSections.cpp" line="367"/>
       <source>Failure</source>
       <translation>Falha</translation>
     </message>
@@ -178,32 +178,32 @@ Este comando só funciona com um objeto do tipo "malha".</translation>
   <context>
     <name>MeshPartGui::CurveOnMeshHandler</name>
     <message>
-      <location filename="../../CurveOnMesh.cpp" line="364"/>
+      <location filename="../../CurveOnMesh.cpp" line="357"/>
       <source>Create</source>
       <translation>Criar</translation>
     </message>
     <message>
-      <location filename="../../CurveOnMesh.cpp" line="366"/>
+      <location filename="../../CurveOnMesh.cpp" line="359"/>
       <source>Close wire</source>
       <translation>Fechar aresta</translation>
     </message>
     <message>
-      <location filename="../../CurveOnMesh.cpp" line="368"/>
+      <location filename="../../CurveOnMesh.cpp" line="361"/>
       <source>Clear</source>
       <translation>Limpar</translation>
     </message>
     <message>
-      <location filename="../../CurveOnMesh.cpp" line="369"/>
+      <location filename="../../CurveOnMesh.cpp" line="362"/>
       <source>Cancel</source>
       <translation>Cancelar</translation>
     </message>
     <message>
-      <location filename="../../CurveOnMesh.cpp" line="615"/>
+      <location filename="../../CurveOnMesh.cpp" line="608"/>
       <source>Wrong mesh picked</source>
       <translation>Malha errada escolhida</translation>
     </message>
     <message>
-      <location filename="../../CurveOnMesh.cpp" line="655"/>
+      <location filename="../../CurveOnMesh.cpp" line="648"/>
       <source>No point was picked</source>
       <translation>Nenhum ponto foi escolhido</translation>
     </message>
@@ -491,27 +491,27 @@ Um valor na amplitude de 0.2-10.</translation>
       <translation>Gmsh</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.cpp" line="225"/>
-      <location filename="../../Tessellation.cpp" line="231"/>
+      <location filename="../../Tessellation.cpp" line="223"/>
+      <location filename="../../Tessellation.cpp" line="229"/>
       <source>No active document</source>
       <translation>Nenhum documento ativo</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.cpp" line="259"/>
+      <location filename="../../Tessellation.cpp" line="257"/>
       <source>You have selected a body without tip.
 Either set the tip of the body or select a different shape, please.</source>
       <translation>Você selecionou um corpo sem ponta.
 Por favor, defina a ponta do corpo ou selecione uma forma diferente.</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.cpp" line="263"/>
+      <location filename="../../Tessellation.cpp" line="261"/>
       <source>You have selected a shape without faces.
 Select a different shape, please.</source>
       <translation>Você selecionou uma forma sem faces.
 Por favor, selecione uma forma diferente.</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.cpp" line="267"/>
+      <location filename="../../Tessellation.cpp" line="265"/>
       <source>Select a shape for meshing, first.</source>
       <translation>Selecione primeiro uma forma para malhagem.</translation>
     </message>

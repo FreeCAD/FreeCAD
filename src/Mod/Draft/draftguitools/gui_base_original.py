@@ -104,10 +104,6 @@ class DraftTool:
             That is, first we run `Draft_SubelementHighlight`
             then we can use `Draft_Move` while setting `is_subtool` to `True`.
         """
-        self.doc = App.ActiveDocument
-        if not self.doc:
-            return
-
         if App.activeDraftCommand and not is_subtool:
             App.activeDraftCommand.finish()
         App.activeDraftCommand = self
@@ -121,6 +117,7 @@ class DraftTool:
         self.call = None
         self.commitList = []
         self.constrain = None
+        self.doc = App.ActiveDocument
         self.extendedCopy = False
         self.featureName = name
         self.node = []
@@ -131,8 +128,8 @@ class DraftTool:
         self.ui = Gui.draftToolBar
         self.ui.sourceCmd = self
         self.view = gui_utils.get_3d_view()
-
-        App.DraftWorkingPlane.setup()
+        self.wp = App.DraftWorkingPlane
+        self.wp.setup()
 
         self.planetrack = None
         if utils.get_param("showPlaneTracker", False):
@@ -169,7 +166,7 @@ class DraftTool:
             self.ui.sourceCmd = None
         if self.planetrack:
             self.planetrack.finalize()
-        App.DraftWorkingPlane.restore()
+        self.wp.restore()
         if hasattr(Gui, "Snapper"):
             Gui.Snapper.off()
         if self.call:
@@ -221,7 +218,7 @@ class DraftTool:
               of the current tool
         """
         # Current plane rotation as a string
-        p = App.DraftWorkingPlane.getRotation()
+        p = self.wp.getRotation()
         qr = p.Rotation.Q
         qr = "({0}, {1}, {2}, {3})".format(qr[0], qr[1], qr[2], qr[3])
 
@@ -268,9 +265,8 @@ class Creator(DraftTool):
             It is the `featureName` of the object, to know what is being run.
         """
         super().Activated(name)
-        # call DraftWorkingPlane.save to sync with
-        # DraftWorkingPlane.restore called in finish method
-        App.DraftWorkingPlane.save()
+        # call self.wp.save to sync with self.wp.restore called in finish method
+        self.wp.save()
         self.support = gui_tool_utils.get_support()
 
 
@@ -290,7 +286,6 @@ class Modifier(DraftTool):
 
     def Activated(self, name="None", is_subtool=False):
         super().Activated(name, is_subtool)
-        # call DraftWorkingPlane.save to sync with
-        # DraftWorkingPlane.restore called in finish method
-        App.DraftWorkingPlane.save()
+        # call self.wp.save to sync with self.wp.restore called in finish method
+        self.wp.save()
 ## @}

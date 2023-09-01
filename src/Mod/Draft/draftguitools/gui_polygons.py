@@ -59,7 +59,7 @@ class Polygon(gui_base_original.Creator):
 
     def Activated(self):
         """Execute when the command is called."""
-        super(Polygon, self).Activated(name="Polygon")
+        super().Activated(name="Polygon")
         if self.ui:
             self.step = 0
             self.center = None
@@ -86,7 +86,7 @@ class Polygon(gui_base_original.Creator):
             Restart (continue) the command if `True`, or if `None` and
             `ui.continueMode` is `True`.
         """
-        super(Polygon, self).finish(self)
+        super().finish(self)
         if self.ui:
             self.arctrack.finalize()
             self.doc.recompute()
@@ -115,7 +115,7 @@ class Polygon(gui_base_original.Creator):
             # this is to make sure radius is what you see on screen
             if self.center and DraftVecUtils.dist(self.point, self.center) > 0:
                 viewdelta = DraftVecUtils.project(self.point.sub(self.center),
-                                                  App.DraftWorkingPlane.axis)
+                                                  self.wp.axis)
                 if not DraftVecUtils.isNull(viewdelta):
                     self.point = self.point.add(viewdelta.negative())
             if self.step == 0:  # choose center

@@ -111,6 +111,8 @@ void DlgStartPreferencesImp::saveSettings()
     ui->checkBox_7->onSave();
     ui->lineEdit->onSave();
     ui->spinBox->onSave();
+    ui->showFileThumbnailIconsCheckBox->onSave();
+    ui->fileThumbnailIconSizeSpinBox->onSave();
 }
 
 void DlgStartPreferencesImp::loadSettings()
@@ -142,6 +144,8 @@ void DlgStartPreferencesImp::loadSettings()
     ui->checkBox_7->onRestore();
     ui->lineEdit->onRestore();
     ui->spinBox->onRestore();
+    ui->showFileThumbnailIconsCheckBox->onRestore();
+    ui->fileThumbnailIconSizeSpinBox->onRestore();
 }
 
 /**

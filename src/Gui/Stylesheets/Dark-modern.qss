@@ -1185,12 +1185,12 @@ QPushButton:checked:selected {
 }
 
 QPushButton:hover {
-  background-color: @ThemeAccentColor1;
+  background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 @ThemeAccentColor1, stop:1 @ThemeAccentColor3);
   color: White;
 }
 
 QPushButton:pressed {
-  background-color: @ThemeAccentColor1;
+  background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 @ThemeAccentColor1, stop:1 @ThemeAccentColor3);
 }
 
 QPushButton:selected {
@@ -1475,7 +1475,7 @@ QComboBox::drop-down {
   border-left: 1px solid #696968;
 }
 QComboBox::drop-down:hover {
-  background-color: @ThemeAccentColor1;
+  background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 @ThemeAccentColor1, stop:1 @ThemeAccentColor3);
 }
 
 QComboBox::down-arrow {
@@ -1535,7 +1535,7 @@ padding: 0px;
 }
 
 QSint--ActionGroup QFrame[class="header"]:hover {
-background-color: @ThemeAccentColor1;
+background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 @ThemeAccentColor1, stop:1 @ThemeAccentColor3);
 }
 
 QSint--ActionGroup QToolButton[class="header"] {
@@ -1637,8 +1637,8 @@ QSint--ActionGroup QFrame[class="content"] QToolButton {
 }
 
 QSint--ActionGroup QFrame[class="content"] QToolButton:hover{
-  background: @ThemeAccentColor1;
-  border: 1px solid @ThemeAccentColor1;
+  background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 @ThemeAccentColor1, stop:1 @ThemeAccentColor3);
+
 }
 QSint--ActionGroup QFrame[class="content"] QToolButton:focus {
   border: 1px solid @ThemeAccentColor2;
@@ -1651,8 +1651,8 @@ QSint--ActionGroup QFrame[class="content"] QToolButton:disabled:checked {
 }
 
 QSint--ActionGroup QFrame[class="content"] QToolButton:pressed {
-  background: @ThemeAccentColor1;
-  border: 1px solid @ThemeAccentColor1;
+  background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 @ThemeAccentColor1, stop:1 @ThemeAccentColor3);
+
 }
 
 /* QSlider ----------------------------------------------------------------

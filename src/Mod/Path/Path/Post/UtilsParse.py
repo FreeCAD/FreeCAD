@@ -256,6 +256,44 @@ def format_outstring(values, strTable):
     return s
 
 
+def init_parameter_functions(parameter_functions):
+    """Initialize a list of parameter functions.
+
+    These functions are called in the PostUtilsParse.parse_a_path
+    function to return the appropriate parameter value.
+    """
+    default_parameter_functions = {
+        "A": default_axis_parameter,
+        "B": default_axis_parameter,
+        "C": default_axis_parameter,
+        "D": default_D_parameter,
+        "E": default_length_parameter,
+        "F": default_F_parameter,
+        # "G" is reserved for G-code commands
+        "H": default_int_parameter,
+        "I": default_length_parameter,
+        "J": default_length_parameter,
+        "K": default_length_parameter,
+        "L": default_int_parameter,
+        # "M" is reserved for M-code commands
+        # "N" is reserved for the line numbers
+        # "O" is reserved for the line numbers for subroutines
+        "P": default_P_parameter,
+        "Q": default_Q_parameter,
+        "R": default_length_parameter,
+        "S": default_S_parameter,
+        "T": default_int_parameter,
+        "U": default_axis_parameter,
+        "V": default_axis_parameter,
+        "W": default_axis_parameter,
+        "X": default_axis_parameter,
+        "Y": default_axis_parameter,
+        "Z": default_axis_parameter,
+        # "$" is used by LinuxCNC (and others?) to designate which spindle
+    }
+    parameter_functions.update(default_parameter_functions)
+
+
 def linenumber(values, space=None):
     """Output the next line number if appropriate."""
     if values["OUTPUT_LINE_NUMBERS"]:
@@ -265,41 +303,6 @@ def linenumber(values, space=None):
         values["line_number"] += values["LINE_INCREMENT"]
         return f"N{line_num}{space}"
     return ""
-
-
-#
-# These functions are called in the parse_a_path function
-# to return the appropriate parameter value.
-#
-parameter_functions = {
-    "A": default_axis_parameter,
-    "B": default_axis_parameter,
-    "C": default_axis_parameter,
-    "D": default_D_parameter,
-    "E": default_length_parameter,
-    "F": default_F_parameter,
-    # "G" is reserved for G-code commands
-    "H": default_int_parameter,
-    "I": default_length_parameter,
-    "J": default_length_parameter,
-    "K": default_length_parameter,
-    "L": default_int_parameter,
-    # "M" is reserved for M-code commands
-    # "N" is reserved for the beginning of line numbers
-    # "O" is reserved for the beginning of line numbers for subroutines
-    "P": default_P_parameter,
-    "Q": default_Q_parameter,
-    "R": default_length_parameter,
-    "S": default_S_parameter,
-    "T": default_int_parameter,
-    "U": default_axis_parameter,
-    "V": default_axis_parameter,
-    "W": default_axis_parameter,
-    "X": default_axis_parameter,
-    "Y": default_axis_parameter,
-    "Z": default_axis_parameter,
-    # "$" is used by LinuxCNC (and others?) to designate which spindle
-}
 
 
 def parse_a_group(values, pathobj):
@@ -366,6 +369,7 @@ def parse_a_path(values, pathobj):
                 continue
             if values["COMMENT_SYMBOL"] != "(" and len(command) > 2:
                 command = create_comment(values, command[1:-1])
+
         if (
             values["OUTPUT_ADAPTIVE"]
             and adaptiveOp
@@ -385,7 +389,7 @@ def parse_a_path(values, pathobj):
         # Now add the remaining parameters in order
         for parameter in values["PARAMETER_ORDER"]:
             if parameter in c.Parameters:
-                parameter_value = parameter_functions[parameter](
+                parameter_value = values["PARAMETER_FUNCTIONS"][parameter](
                     values, command, parameter, c.Parameters[parameter], currLocation
                 )
                 if parameter_value:

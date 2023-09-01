@@ -47,6 +47,7 @@
 #include <Base/GeometryPyCXX.h>
 #include <Base/Interpreter.h>
 #include <Base/PlacementPy.h>
+#include <Base/PyWrapParseTupleAndKeywords.h>
 #include <Base/RotationPy.h>
 #include <Base/VectorPy.h>
 
@@ -201,8 +202,6 @@ void View3DInventorPy::init_type()
         "Remove the DraggerCalback function from the coin node\n"
         "Possibles types :\n"
         "'addFinishCallback','addStartCallback','addMotionCallback','addValueChangedCallback'\n");
-    add_varargs_method("setActiveObject", &View3DInventorPy::setActiveObject, "setActiveObject(name,object,subname=None)\nadd or set a new active object");
-    add_varargs_method("getActiveObject", &View3DInventorPy::getActiveObject, "getActiveObject(name,resolve=True)\nreturns the active object for the given type");
     add_varargs_method("getViewProvidersOfType", &View3DInventorPy::getViewProvidersOfType, "getViewProvidersOfType(name)\nreturns a list of view providers for the given type");
     add_noargs_method("redraw", &View3DInventorPy::redraw, "redraw(): renders the scene on screen (useful for animations)");
     add_varargs_method("setName",&View3DInventorPy::setName,"setName(str): sets a name to this viewer\nThe name sets the widget's windowTitle and appears on the viewer tab");
@@ -368,11 +367,12 @@ Py::Object View3DInventorPy::fitAll(const Py::Tuple& args)
 
 Py::Object View3DInventorPy::boxZoom(const Py::Tuple& args, const Py::Dict& kwds)
 {
-    static char* kwds_box[] = {"XMin", "YMin", "XMax", "YMax", nullptr};
+    static const std::array<const char *, 5> kwds_box{"XMin", "YMin", "XMax", "YMax", nullptr};
     short xmin, ymin, xmax, ymax;
-    if (!PyArg_ParseTupleAndKeywords(args.ptr(), kwds.ptr(), "hhhh", kwds_box,
-                                     &xmin, &ymin, &xmax, &ymax))
+    if (!Base::Wrapped_ParseTupleAndKeywords(args.ptr(), kwds.ptr(), "hhhh", kwds_box,
+                                            &xmin, &ymin, &xmax, &ymax)) {
         throw Py::Exception();
+    }
 
     SbBox2s box(xmin, ymin, xmax, ymax);
     getView3DIventorPtr()->getViewer()->boxZoom(box);
@@ -1627,7 +1627,7 @@ void View3DInventorPy::eventCallback(void * ud, SoEventCallback * n)
         // Type
         dict.setItem("Type", Py::String(std::string(e->getTypeId().getName().getString())));
         // Time
-        dict.setItem("Time", Py::String(std::string(e->getTime().formatDate().getString())));
+        dict.setItem("Time", Py::String(std::string(e->getTime().formatDate("%Y-%m-%d %H:%M:%S").getString())));
         SbVec2s p = n->getEvent()->getPosition();
         Py::Tuple pos(2);
         pos.setItem(0, Py::Int(p[0]));
@@ -2388,50 +2388,6 @@ Py::Object View3DInventorPy::removeDraggerCallback(const Py::Tuple& args)
     }
 }
 
-Py::Object View3DInventorPy::setActiveObject(const Py::Tuple& args)
-{
-    PyObject* docObject = Py_None;
-    char* name;
-    char *subname = nullptr;
-    if (!PyArg_ParseTuple(args.ptr(), "s|Os", &name, &docObject, &subname))
-        throw Py::Exception();
-
-    try {
-        Base::PyTypeCheck(&docObject, &App::DocumentObjectPy::Type,
-            "Expect the second argument to be a document object or None");
-        App::DocumentObject* obj = docObject ?
-            static_cast<App::DocumentObjectPy*>(docObject)->getDocumentObjectPtr() : nullptr;
-        getView3DIventorPtr()->setActiveObject(obj, name, subname);
-
-        return Py::None();
-    }
-    catch (const Base::Exception& e) {
-        throw Py::Exception(e.getPyExceptionType(), e.what());
-    }
-}
-
-Py::Object View3DInventorPy::getActiveObject(const Py::Tuple& args)
-{
-    char* name;
-    PyObject *resolve = Py_True;
-    if (!PyArg_ParseTuple(args.ptr(), "s|O!", &name, &PyBool_Type, &resolve))
-                throw Py::Exception();
-
-    App::DocumentObject *parent = nullptr;
-    std::string subname;
-    App::DocumentObject* obj = getView3DIventorPtr()->getActiveObject<App::DocumentObject*>(name,&parent,&subname);
-    if (!obj)
-        return Py::None();
-
-    if (Base::asBoolean(resolve))
-        return Py::asObject(obj->getPyObject());
-
-    return Py::TupleN(
-            Py::asObject(obj->getPyObject()),
-            Py::asObject(parent->getPyObject()),
-            Py::String(subname.c_str()));
-}
-
 Py::Object View3DInventorPy::getViewProvidersOfType(const Py::Tuple& args)
 {
     char* name;
@@ -2476,15 +2432,16 @@ Py::Object View3DInventorPy::setName(const Py::Tuple& args)
 
 Py::Object View3DInventorPy::toggleClippingPlane(const Py::Tuple& args, const Py::Dict& kwds)
 {
-    static char* keywords[] = {"toggle", "beforeEditing", "noManip", "pla", nullptr};
+    static const std::array<const char *, 5> keywords {"toggle", "beforeEditing", "noManip", "pla", nullptr};
     int toggle = -1;
     PyObject *beforeEditing = Py_False;
     PyObject *noManip = Py_True;
     PyObject *pyPla = Py_None;
-    if (!PyArg_ParseTupleAndKeywords(args.ptr(), kwds.ptr(), "|iO!O!O!", keywords,
+    if (!Base::Wrapped_ParseTupleAndKeywords(args.ptr(), kwds.ptr(), "|iO!O!O!", keywords,
                     &toggle, &PyBool_Type, &beforeEditing, &PyBool_Type, &noManip,
-                    &Base::PlacementPy::Type, &pyPla))
+                    &Base::PlacementPy::Type, &pyPla)) {
         throw Py::Exception();
+    }
 
     Base::Placement pla;
     if(pyPla!=Py_None)
