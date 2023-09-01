@@ -44,7 +44,7 @@ This command only works with a 'mesh' object.</source>
     <message>
       <location filename="../../Command.cpp" line="58"/>
       <source>Mesh</source>
-      <translation>Сітка</translation>
+      <translation>Сітка(Меш)</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="59"/>
@@ -62,7 +62,7 @@ This command only works with a 'mesh' object.</source>
     <message>
       <location filename="../../Command.cpp" line="185"/>
       <source>Mesh</source>
-      <translation>Сітка</translation>
+      <translation>Сітка(Меш)</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="186"/>
@@ -170,7 +170,7 @@ This command only works with a 'mesh' object.</source>
       <translation type="unfinished">Connect edges if distance less than</translation>
     </message>
     <message>
-      <location filename="../../CrossSections.cpp" line="368"/>
+      <location filename="../../CrossSections.cpp" line="367"/>
       <source>Failure</source>
       <translation>Помилка</translation>
     </message>
@@ -178,32 +178,32 @@ This command only works with a 'mesh' object.</source>
   <context>
     <name>MeshPartGui::CurveOnMeshHandler</name>
     <message>
-      <location filename="../../CurveOnMesh.cpp" line="364"/>
+      <location filename="../../CurveOnMesh.cpp" line="357"/>
       <source>Create</source>
       <translation>Створити</translation>
     </message>
     <message>
-      <location filename="../../CurveOnMesh.cpp" line="366"/>
+      <location filename="../../CurveOnMesh.cpp" line="359"/>
       <source>Close wire</source>
       <translation>Замкнути сітку</translation>
     </message>
     <message>
-      <location filename="../../CurveOnMesh.cpp" line="368"/>
+      <location filename="../../CurveOnMesh.cpp" line="361"/>
       <source>Clear</source>
       <translation>Очистити</translation>
     </message>
     <message>
-      <location filename="../../CurveOnMesh.cpp" line="369"/>
+      <location filename="../../CurveOnMesh.cpp" line="362"/>
       <source>Cancel</source>
       <translation>Скасувати</translation>
     </message>
     <message>
-      <location filename="../../CurveOnMesh.cpp" line="615"/>
+      <location filename="../../CurveOnMesh.cpp" line="608"/>
       <source>Wrong mesh picked</source>
       <translation>Обрана хибна сітка</translation>
     </message>
     <message>
-      <location filename="../../CurveOnMesh.cpp" line="655"/>
+      <location filename="../../CurveOnMesh.cpp" line="648"/>
       <source>No point was picked</source>
       <translation>Жодної точки не вибрано</translation>
     </message>
@@ -490,27 +490,27 @@ A value in the range of 0.2-10.</translation>
       <translation type="unfinished">Gmsh</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.cpp" line="225"/>
-      <location filename="../../Tessellation.cpp" line="231"/>
+      <location filename="../../Tessellation.cpp" line="223"/>
+      <location filename="../../Tessellation.cpp" line="229"/>
       <source>No active document</source>
       <translation>Немає активного документу</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.cpp" line="259"/>
+      <location filename="../../Tessellation.cpp" line="257"/>
       <source>You have selected a body without tip.
 Either set the tip of the body or select a different shape, please.</source>
       <translation type="unfinished">You have selected a body without tip.
 Either set the tip of the body or select a different shape, please.</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.cpp" line="263"/>
+      <location filename="../../Tessellation.cpp" line="261"/>
       <source>You have selected a shape without faces.
 Select a different shape, please.</source>
       <translation type="unfinished">You have selected a shape without faces.
 Select a different shape, please.</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.cpp" line="267"/>
+      <location filename="../../Tessellation.cpp" line="265"/>
       <source>Select a shape for meshing, first.</source>
       <translation>Спочатку оберіть форму для злиття.</translation>
     </message>

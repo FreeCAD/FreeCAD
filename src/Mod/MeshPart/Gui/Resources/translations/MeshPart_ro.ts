@@ -170,7 +170,7 @@ Această comandă funcționează doar cu un obiect 'plasă'.</translation>
       <translation>Conectează marginile dacă distanța este mai mică de</translation>
     </message>
     <message>
-      <location filename="../../CrossSections.cpp" line="368"/>
+      <location filename="../../CrossSections.cpp" line="367"/>
       <source>Failure</source>
       <translation>Eșec</translation>
     </message>
@@ -178,32 +178,32 @@ Această comandă funcționează doar cu un obiect 'plasă'.</translation>
   <context>
     <name>MeshPartGui::CurveOnMeshHandler</name>
     <message>
-      <location filename="../../CurveOnMesh.cpp" line="364"/>
+      <location filename="../../CurveOnMesh.cpp" line="357"/>
       <source>Create</source>
       <translation>Creează</translation>
     </message>
     <message>
-      <location filename="../../CurveOnMesh.cpp" line="366"/>
+      <location filename="../../CurveOnMesh.cpp" line="359"/>
       <source>Close wire</source>
       <translation>Fir închis</translation>
     </message>
     <message>
-      <location filename="../../CurveOnMesh.cpp" line="368"/>
+      <location filename="../../CurveOnMesh.cpp" line="361"/>
       <source>Clear</source>
       <translation>Șterge</translation>
     </message>
     <message>
-      <location filename="../../CurveOnMesh.cpp" line="369"/>
+      <location filename="../../CurveOnMesh.cpp" line="362"/>
       <source>Cancel</source>
       <translation>Renunţă</translation>
     </message>
     <message>
-      <location filename="../../CurveOnMesh.cpp" line="615"/>
+      <location filename="../../CurveOnMesh.cpp" line="608"/>
       <source>Wrong mesh picked</source>
       <translation>Ochiurilor de plasă greşit alese</translation>
     </message>
     <message>
-      <location filename="../../CurveOnMesh.cpp" line="655"/>
+      <location filename="../../CurveOnMesh.cpp" line="648"/>
       <source>No point was picked</source>
       <translation>Nu a fost ales nici un punct</translation>
     </message>
@@ -491,27 +491,27 @@ O valoare în intervalul 0.2-10.</translation>
       <translation>Zgură</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.cpp" line="225"/>
-      <location filename="../../Tessellation.cpp" line="231"/>
+      <location filename="../../Tessellation.cpp" line="223"/>
+      <location filename="../../Tessellation.cpp" line="229"/>
       <source>No active document</source>
       <translation>Nici un document activ</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.cpp" line="259"/>
+      <location filename="../../Tessellation.cpp" line="257"/>
       <source>You have selected a body without tip.
 Either set the tip of the body or select a different shape, please.</source>
       <translation>Ai selectat un corp fără sfaturi.
 Te rog setează vârful corpului sau selectează o altă formă.</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.cpp" line="263"/>
+      <location filename="../../Tessellation.cpp" line="261"/>
       <source>You have selected a shape without faces.
 Select a different shape, please.</source>
       <translation>Ați selectat o formă fără fețe.
 Selectați o altă formă, vă rog.</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.cpp" line="267"/>
+      <location filename="../../Tessellation.cpp" line="265"/>
       <source>Select a shape for meshing, first.</source>
       <translation>Selectati mai intai o forma pentru crearea retelei.</translation>
     </message>

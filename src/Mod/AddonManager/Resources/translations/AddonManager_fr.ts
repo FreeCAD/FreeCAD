@@ -23,7 +23,6 @@
     <name>CompactView</name>
     <message>
       <location filename="../../compact_view.py" line="77"/>
-      <location filename="../../compact_view.ui" line="20"/>
       <source>Form</source>
       <translation>Forme</translation>
     </message>
@@ -322,17 +321,17 @@ Voulez-vous que le gestionnaire des extensions les installe automatiquement ? Ch
     <message>
       <location filename="../../developer_mode_tags.ui" line="14"/>
       <source>Edit Tags</source>
-      <translation>Modifier les attaches</translation>
+      <translation>Modifier les mots-clés</translation>
     </message>
     <message>
       <location filename="../../developer_mode_tags.ui" line="20"/>
       <source>Comma-separated list of tags describing this item:</source>
-      <translation>Liste des attaches séparées par des virgules décrivant cet élément :</translation>
+      <translation>Liste des mots-clés séparés par des virgules décrivant cet élément :</translation>
     </message>
     <message>
       <location filename="../../developer_mode_tags.ui" line="35"/>
       <source>HINT: Common tags include &quot;Assembly&quot;, &quot;FEM&quot;, &quot;Mesh&quot;, &quot;NURBS&quot;, etc.</source>
-      <translation>ASTUCE : les attaches communes incluent &quot;Assemblage&quot;, &quot;FEM&quot;, &quot;Maillage&quot;, &quot;NURBS&quot;, etc.</translation>
+      <translation>ASTUCE : les mots-clés les plus courants incluent &quot;Assembly&quot;, &quot;FEM&quot;, &quot;Mesh&quot;, &quot;NURBS&quot;, etc.</translation>
     </message>
     <message>
       <location filename="../../first_run.ui" line="17"/>
@@ -422,7 +421,6 @@ Voulez-vous que le gestionnaire des extensions les installe automatiquement ? Ch
     <name>ExpandedView</name>
     <message>
       <location filename="../../expanded_view.py" line="116"/>
-      <location filename="../../expanded_view.ui" line="20"/>
       <source>Form</source>
       <translation>Forme</translation>
     </message>
@@ -448,7 +446,7 @@ Voulez-vous que le gestionnaire des extensions les installe automatiquement ? Ch
       <location filename="../../expanded_view.py" line="122"/>
       <location filename="../../expanded_view.ui" line="121"/>
       <source>(tags)</source>
-      <translation>(attaches)</translation>
+      <translation>(mots-clés)</translation>
     </message>
     <message>
       <location filename="../../expanded_view.py" line="125"/>
@@ -476,7 +474,6 @@ Voulez-vous que le gestionnaire des extensions les installe automatiquement ? Ch
   <context>
     <name>Form</name>
     <message>
-      <location filename="../../developer_mode_licenses_table.ui" line="14"/>
       <location filename="../../developer_mode_people_table.ui" line="14"/>
       <source>Form</source>
       <translation>Forme</translation>
@@ -527,7 +524,7 @@ Voulez-vous que le gestionnaire des extensions les installe automatiquement ? Ch
     <message>
       <location filename="../../developer_mode_advanced_freecad_versions.ui" line="20"/>
       <source>Upcoming versions of the FreeCAD Addon Manager will support developers&apos; setting a specific branch or tag for use with a specific version of FreeCAD (e.g. setting a specific tag as the last version of your Addon to support v0.19, etc.)</source>
-      <translation>Les prochaines versions du gestionnaire des extensions de FreeCAD permettront aux développeurs de définir une branche ou une balise spécifique à utiliser avec une version spécifique de FreeCAD (par exemple, définir une balise spécifique comme la dernière version de votre extension pour supporter la v0.19, etc.)</translation>
+      <translation>Les prochaines versions du gestionnaire des extensions de FreeCAD permettront aux développeurs de définir une branche ou un mot-clé spécifique à utiliser avec une version donnée de FreeCAD (par exemple, définir un mot-clé spécifique comme la dernière version de son extension pour supporter la v0.19, etc.)</translation>
     </message>
     <message>
       <location filename="../../developer_mode_advanced_freecad_versions.ui" line="43"/>
@@ -703,11 +700,6 @@ les mises à jour disponibles seront vérifiées pour les extensions installées
   </context>
   <context>
     <name>PackageDetails</name>
-    <message>
-      <location filename="../../package_details.ui" line="14"/>
-      <source>Form</source>
-      <translation>Forme</translation>
-    </message>
     <message>
       <location filename="../../package_details.ui" line="49"/>
       <source>Uninstalls a selected macro or workbench</source>
@@ -1626,7 +1618,7 @@ les mises à jour disponibles seront vérifiées pour les extensions installées
     <message>
       <location filename="../../addonmanager_devmode_add_content.py" line="279"/>
       <source>Select an icon file for this content item</source>
-      <translation>Sélectionner un fichier d'icône pour cet élément de contenu</translation>
+      <translation>Sélectionner un fichier d'icône pour cet élément de contenu.</translation>
     </message>
     <message>
       <location filename="../../addonmanager_devmode.py" line="732"/>
@@ -1638,7 +1630,7 @@ les mises à jour disponibles seront vérifiées pour les extensions installées
     <message>
       <location filename="../../addonmanager_devmode_add_content.py" line="311"/>
       <source>Select the subdirectory for this content item</source>
-      <translation>Sélectionner le sous-répertoire pour cet élément de contenu</translation>
+      <translation>Sélectionner le sous-répertoire pour cet élément de contenu.</translation>
     </message>
     <message>
       <location filename="../../addonmanager_devmode_add_content.py" line="452"/>

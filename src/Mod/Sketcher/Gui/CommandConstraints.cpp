@@ -1031,6 +1031,75 @@ void CmdSketcherConstraint::activated(int /*iMsg*/)
     getSelection().clearSelection();
 }
 
+// Comp for dimension tools =============================================
+
+class CmdSketcherCompDimensionTools : public Gui::GroupCommand
+{
+public:
+    CmdSketcherCompDimensionTools()
+        : GroupCommand("Sketcher_CompDimensionTools")
+    {
+        sAppModule = "Sketcher";
+        sGroup = "Sketcher";
+        sMenuText = QT_TR_NOOP("Dimension");
+        sToolTipText = QT_TR_NOOP("Dimension tools.");
+        sWhatsThis = "Sketcher_CompDimensionTools";
+        sStatusTip = sToolTipText;
+        eType = ForEdit;
+
+        setCheckable(false);
+
+        addCommand("Sketcher_Dimension");
+        addCommand(); //separator
+        addCommand("Sketcher_ConstrainLock");
+        addCommand("Sketcher_ConstrainDistanceX");
+        addCommand("Sketcher_ConstrainDistanceY");
+        addCommand("Sketcher_ConstrainDistance");
+        addCommand("Sketcher_ConstrainDiameter");
+        addCommand("Sketcher_ConstrainRadius");
+        addCommand("Sketcher_ConstrainAngle");
+        addCommand("Sketcher_ConstrainSnellsLaw");
+    }
+
+    void updateAction(int mode) override
+    {
+        Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(getAction());
+        if (!pcAction) {
+            return;
+        }
+
+        QList<QAction*> al = pcAction->actions();
+        int index = pcAction->property("defaultAction").toInt();
+        switch (mode) {
+        case Reference:
+            al[0]->setIcon(Gui::BitmapFactory().iconFromTheme("Constraint_Dimension_Driven"));
+            //al[1] is the separator
+            al[2]->setIcon(Gui::BitmapFactory().iconFromTheme("Constraint_Lock_Driven"));
+            al[3]->setIcon(Gui::BitmapFactory().iconFromTheme("Constraint_HorizontalDistance_Driven"));
+            al[4]->setIcon(Gui::BitmapFactory().iconFromTheme("Constraint_VerticalDistance_Driven"));
+            al[5]->setIcon(Gui::BitmapFactory().iconFromTheme("Constraint_Length_Driven"));
+            al[6]->setIcon(Gui::BitmapFactory().iconFromTheme("Constraint_Diameter_Driven"));
+            al[7]->setIcon(Gui::BitmapFactory().iconFromTheme("Constraint_Radius_Driven"));
+            al[8]->setIcon(Gui::BitmapFactory().iconFromTheme("Constraint_InternalAngle_Driven"));
+            getAction()->setIcon(al[index]->icon());
+            break;
+        case Driving:
+            al[0]->setIcon(Gui::BitmapFactory().iconFromTheme("Constraint_Dimension"));
+            //al[1] is the separator
+            al[2]->setIcon(Gui::BitmapFactory().iconFromTheme("Constraint_Lock"));
+            al[3]->setIcon(Gui::BitmapFactory().iconFromTheme("Constraint_HorizontalDistance"));
+            al[4]->setIcon(Gui::BitmapFactory().iconFromTheme("Constraint_VerticalDistance"));
+            al[5]->setIcon(Gui::BitmapFactory().iconFromTheme("Constraint_Length"));
+            al[6]->setIcon(Gui::BitmapFactory().iconFromTheme("Constraint_Diameter"));
+            al[7]->setIcon(Gui::BitmapFactory().iconFromTheme("Constraint_Radius"));
+            al[8]->setIcon(Gui::BitmapFactory().iconFromTheme("Constraint_InternalAngle"));
+            getAction()->setIcon(al[index]->icon());
+            break;
+        }
+    }
+
+    const char* className() const override { return "CmdSketcherCompDimensionTools"; }
+};
 
 // Dimension tool =======================================================
 
@@ -1054,7 +1123,7 @@ public:
     bool has4MorePoints()        const { return s_pts >= 4 && s_lns == 0 && s_cir == 0 && s_ell == 0; }
     bool has2Points1Line()       const { return s_pts == 2 && s_lns == 1 && s_cir == 0 && s_ell == 0; }
     bool has3MorePoints1Line()   const { return s_pts >= 3 && s_lns == 1 && s_cir == 0 && s_ell == 0; }
-    bool has1MorePoint1Circle()  const { return s_pts >= 1 && s_lns == 0 && s_cir == 1 && s_ell == 0; }
+    bool has1Point1Circle()      const { return s_pts == 1 && s_lns == 0 && s_cir == 1 && s_ell == 0; }
     bool has1MorePoint1Ellipse() const { return s_pts >= 1 && s_lns == 0 && s_cir == 0 && s_ell == 1; }
 
     bool has1Line()              const { return s_pts == 0 && s_lns == 1 && s_cir == 0 && s_ell == 0; }
@@ -1078,7 +1147,7 @@ public:
 class DrawSketchHandlerDimension : public DrawSketchHandler
 {
 public:
-    DrawSketchHandlerDimension()
+    DrawSketchHandlerDimension(std::vector<std::string>& SubNames)
         : specialConstraint(SpecialConstraint::None)
         , availableConstraint(AvailableConstraint::FIRST)
         , previousOnSketchPos(Base::Vector2d(0.f, 0.f))
@@ -1086,6 +1155,7 @@ public:
         , selLine({})
         , selCircleArc({})
         , selEllipseAndCo({})
+        , initialSelection(SubNames)
         , numberOfConstraintsCreated(0)
     {
     }
@@ -1110,8 +1180,6 @@ public:
 
     void activated() override
     {
-        Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Dimension"));
-
         Obj = sketchgui->getSketchObject();
 
         // Constrain icon size in px
@@ -1138,6 +1206,8 @@ public:
             hotY *= pixelRatio;
         }
         setCursor(cursorPixmap, hotX, hotY, false);
+
+        handleInitialSelection();
     }
 
     void deactivated() override
@@ -1208,7 +1278,6 @@ public:
     bool releaseButton(Base::Vector2d onSketchPos) override
     {
         Q_UNUSED(onSketchPos);
-
         availableConstraint = AvailableConstraint::FIRST;
         SelIdPair selIdPair;
         selIdPair.GeoId = GeoEnum::GeoUndef;
@@ -1294,9 +1363,50 @@ protected:
     std::vector<SelIdPair> selCircleArc;
     std::vector<SelIdPair> selEllipseAndCo;
 
+    std::vector<std::string> initialSelection;
+
     int numberOfConstraintsCreated;
 
     Sketcher::SketchObject* Obj;
+
+    void handleInitialSelection()
+    {
+        if (initialSelection.size() == 0) {
+            return;
+        }
+
+        availableConstraint = AvailableConstraint::FIRST;
+
+        // Add the selected elements to their corresponding selection vectors
+        for (auto& selElement : initialSelection) {
+            SelIdPair selIdPair;
+            getIdsFromName(selElement, Obj, selIdPair.GeoId, selIdPair.PosId);
+
+            Base::Type newselGeoType = Base::Type::badType();
+            if (isEdge(selIdPair.GeoId, selIdPair.PosId)) {
+                const Part::Geometry* geo = Obj->getGeometry(selIdPair.GeoId);
+                newselGeoType = geo->getTypeId();
+            }
+            else if (isVertex(selIdPair.GeoId, selIdPair.PosId)) {
+                newselGeoType = Part::GeomPoint::getClassTypeId();
+            }
+
+            std::vector<SelIdPair>& selVector = getSelectionVector(newselGeoType);
+
+            //add the geometry to its type vector. Temporarily if not selAllowed
+            selVector.push_back(selIdPair);
+        }
+
+        // See if the selection is valid
+        bool selAllowed = makeAppropriateConstraint(Base::Vector2d(0.,0.));
+
+        if (!selAllowed) {
+            selPoints.clear();
+            selLine.clear();
+            selCircleArc.clear();
+            selEllipseAndCo.clear();
+        }
+    }
 
     void finalizeCommand()
     {
@@ -1390,7 +1500,7 @@ protected:
             else if (selection.has4MorePoints()) { makeCts_4MorePoint(selAllowed, selection.s_pts); }
             else if (selection.has2Points1Line()) { makeCts_2Point1Line(selAllowed, onSketchPos, selection.s_pts); }
             else if (selection.has3MorePoints1Line()) { makeCts_3MorePoint1Line(selAllowed, onSketchPos, selection.s_pts); }
-            else if (selection.has1MorePoint1Circle()) { makeCts_1MorePoint1Circle(selAllowed); }
+            else if (selection.has1Point1Circle()) { makeCts_1Point1Circle(selAllowed, onSketchPos); }
             else if (selection.has1MorePoint1Ellipse()) { makeCts_1MorePoint1Ellipse(selAllowed); }
         }
         else if (selection.hasLines()) {
@@ -1453,7 +1563,7 @@ protected:
         //distance, Symmetry
         if (availableConstraint == AvailableConstraint::FIRST) {
             restartCommand(QT_TRANSLATE_NOOP("Command", "Add point to line Distance constraint"));
-            createDistanceConstrain(selPoints[0].GeoId, selPoints[0].PosId, selLine[0].GeoId, selLine[0].PosId, onSketchPos); // line to be on second parameter
+            createDistanceConstrain(selPoints[0].GeoId, selPoints[0].PosId, selLine[0].GeoId, selLine[0].PosId, onSketchPos); // point to be on first parameter
             selAllowed = true;
         }
         if (availableConstraint == AvailableConstraint::SECOND) {
@@ -1530,17 +1640,20 @@ protected:
             availableConstraint = AvailableConstraint::RESET;
         }
     }
-    void makeCts_1MorePoint1Circle(bool& selAllowed)
+    void makeCts_1Point1Circle(bool& selAllowed, Base::Vector2d onSketchPos)
     {
-        //distance between 1 point and circle/arc not supported yet.
-        if (availableConstraint == AvailableConstraint::FIRST) {
-            //nothing yet
-            //availableConstraint = AvailableConstraint::RESET;
+        //Distance. For now only circles not arcs!
+        const Part::Geometry* geom = Obj->getGeometry(selCircleArc[0].GeoId);
+        if (availableConstraint == AvailableConstraint::FIRST && geom->getTypeId() == Part::GeomCircle::getClassTypeId()) {
+            restartCommand(QT_TRANSLATE_NOOP("Command", "Add length constraint"));
+            createDistanceConstrain(selPoints[0].GeoId, selPoints[0].PosId, selCircleArc[0].GeoId, selCircleArc[0].PosId, onSketchPos);
+            selAllowed = true;
+            availableConstraint = AvailableConstraint::RESET;
         }
     }
     void makeCts_1MorePoint1Ellipse(bool& selAllowed)
     {
-        //distance between 1 point and elipse/arc of... not supported yet.
+        //distance between 1 point and ellipse/arc of... not supported yet.
         if (availableConstraint == AvailableConstraint::FIRST) {
             //nothing yet
             //availableConstraint = AvailableConstraint::RESET;
@@ -1617,10 +1730,11 @@ protected:
     }
     void makeCts_1Line1Circle(bool& selAllowed, Base::Vector2d onSketchPos)
     {
-        //Distance.
-        if (availableConstraint == AvailableConstraint::FIRST) {
+        //Distance. For now only circles not arcs!
+        const Part::Geometry* geom = Obj->getGeometry(selCircleArc[0].GeoId);
+        if (availableConstraint == AvailableConstraint::FIRST && geom->getTypeId() == Part::GeomCircle::getClassTypeId()) {
             restartCommand(QT_TRANSLATE_NOOP("Command", "Add length constraint"));
-            createDistanceConstrain(selCircleArc[0].GeoId, selCircleArc[0].PosId, selLine[0].GeoId, selLine[0].PosId, onSketchPos); // line to be on second parameter
+            createDistanceConstrain(selCircleArc[0].GeoId, selCircleArc[0].PosId, selLine[0].GeoId, selLine[0].PosId, onSketchPos); //Line second parameter
             selAllowed = true;
             availableConstraint = AvailableConstraint::RESET;
         }
@@ -1654,9 +1768,17 @@ protected:
     void makeCts_2Circle(bool& selAllowed, Base::Vector2d onSketchPos)
     {
         //Distance, radial distance, equality
+        //Distance: For now only circles not arcs!
+        const Part::Geometry* geom = Obj->getGeometry(selCircleArc[0].GeoId);
+        const Part::Geometry* geom2 = Obj->getGeometry(selCircleArc[1].GeoId);
         if (availableConstraint == AvailableConstraint::FIRST) {
-            restartCommand(QT_TRANSLATE_NOOP("Command", "Add length constraint"));
-            createDistanceConstrain(selCircleArc[0].GeoId, selCircleArc[0].PosId, selCircleArc[1].GeoId, selCircleArc[1].PosId, onSketchPos);
+            if (geom->getTypeId() == Part::GeomCircle::getClassTypeId() && geom2->getTypeId() == Part::GeomCircle::getClassTypeId()) {
+                restartCommand(QT_TRANSLATE_NOOP("Command", "Add length constraint"));
+                createDistanceConstrain(selCircleArc[0].GeoId, selCircleArc[0].PosId, selCircleArc[1].GeoId, selCircleArc[1].PosId, onSketchPos);
+            }
+            else {
+                availableConstraint = AvailableConstraint::THIRD;
+            }
             selAllowed = true;
         }
         if (availableConstraint == AvailableConstraint::SECOND) {
@@ -1724,29 +1846,34 @@ protected:
     }
 
     void createDistanceConstrain(int GeoId1, Sketcher::PointPos PosId1, int GeoId2, Sketcher::PointPos PosId2, Base::Vector2d onSketchPos) {
-        //We make sure that if there's a line, it is GeoId2.
+        // If there's a point, it must be GeoId1. We could add a swap to make sure but as it's hardcoded it's not necessary.
+
         if (GeoId1 == GeoId2 || (PosId1 != Sketcher::PointPos::none && PosId2 != Sketcher::PointPos::none)) {
             specialConstraint = SpecialConstraint::LineOr2PointsDistance;
         }
 
         bool arebothpointsorsegmentsfixed = isPointOrSegmentFixed(Obj, GeoId1) && isPointOrSegmentFixed(Obj, GeoId2);
 
-        if (PosId1 != Sketcher::PointPos::none && PosId2 == Sketcher::PointPos::none) { // Point-line case (and point-circle in the future)
+        if (PosId1 != Sketcher::PointPos::none && PosId2 == Sketcher::PointPos::none) { // Point-line case and point-circle
             Base::Vector3d pnt = Obj->getPoint(GeoId1, PosId1);
+            double ActDist = 0.;
             const Part::Geometry* geom = Obj->getGeometry(GeoId2);
             if (geom->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
                 const Part::GeomLineSegment* lineSeg = static_cast<const Part::GeomLineSegment*>(geom);
                 Base::Vector3d pnt1 = lineSeg->getStartPoint();
                 Base::Vector3d pnt2 = lineSeg->getEndPoint();
                 Base::Vector3d d = pnt2 - pnt1;
-                double ActDist = std::abs(-pnt.x * d.y + pnt.y * d.x + pnt1.x * pnt2.y - pnt2.x * pnt1.y) / d.Length();
-
-                Gui::cmdAppObjectArgs(Obj, "addConstraint(Sketcher.Constraint('Distance',%d,%d,%d,%f)) ",
-                    GeoId1, static_cast<int>(PosId1), GeoId2, ActDist);
+                ActDist = std::abs(-pnt.x * d.y + pnt.y * d.x + pnt1.x * pnt2.y - pnt2.x * pnt1.y) / d.Length();
             }
-            //else if (geom->getTypeId() == Part::GeomCircle::getClassTypeId()) {
-            //    const Part::GeomCircle* circle = static_cast<const Part::GeomCircle*>(geom);
-            //}
+            else if (geom->getTypeId() == Part::GeomCircle::getClassTypeId()) {
+                const Part::GeomCircle* circle = static_cast<const Part::GeomCircle*>(geom);
+                Base::Vector3d ct = circle->getCenter();
+                Base::Vector3d di = ct - pnt;
+                ActDist = std::abs(di.Length() - circle->getRadius());
+            }
+
+            Gui::cmdAppObjectArgs(Obj, "addConstraint(Sketcher.Constraint('Distance',%d,%d,%d,%f)) ",
+                GeoId1, static_cast<int>(PosId1), GeoId2, ActDist);
         }
         else if (PosId1 == Sketcher::PointPos::none && PosId2 == Sketcher::PointPos::none) { // Circle - line, circle - circle cases
             const Part::Geometry* geo1 = Obj->getGeometry(GeoId1);
@@ -2256,8 +2383,18 @@ CmdSketcherDimension::CmdSketcherDimension()
 void CmdSketcherDimension::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerDimension());
-    getSelection().clearSelection();
+    App::AutoTransaction::setEnable(false);
+
+    // get the selection
+    std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx();
+    std::vector<std::string> SubNames = {};
+
+    // only one sketch with its subelements are allowed to be selected
+    if (selection.size() == 1 && selection[0].isObjectTypeOf(Sketcher::SketchObject::getClassTypeId())) {
+        SubNames = selection[0].getSubNames();
+    }
+
+    ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerDimension(SubNames));
 }
 
 void CmdSketcherDimension::updateAction(int mode)
@@ -9928,6 +10065,7 @@ CmdSketcherToggleDrivingConstraint::CmdSketcherToggleDrivingConstraint()
     rcCmdMgr.addCommandMode("ToggleDrivingConstraint", "Sketcher_ConstrainAngle");
     rcCmdMgr.addCommandMode("ToggleDrivingConstraint", "Sketcher_CompConstrainRadDia");
     rcCmdMgr.addCommandMode("ToggleDrivingConstraint", "Sketcher_Dimension");
+    rcCmdMgr.addCommandMode("ToggleDrivingConstraint", "Sketcher_CompDimensionTools");
     // rcCmdMgr.addCommandMode("ToggleDrivingConstraint", "Sketcher_ConstrainSnellsLaw");
 }
 
@@ -10161,4 +10299,5 @@ void CreateSketcherCommandsConstraints()
     rcCmdMgr.addCommand(new CmdSketcherConstrainSnellsLaw());
     rcCmdMgr.addCommand(new CmdSketcherToggleDrivingConstraint());
     rcCmdMgr.addCommand(new CmdSketcherToggleActiveConstraint());
+    rcCmdMgr.addCommand(new CmdSketcherCompDimensionTools());
 }

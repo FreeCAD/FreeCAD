@@ -24,7 +24,7 @@
     <message>
       <location filename="../../Command.cpp" line="305"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Mesh</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="306"/>
@@ -44,7 +44,7 @@ Deze opdracht werkt alleen met een 'maaswerk' object.</translation>
     <message>
       <location filename="../../Command.cpp" line="58"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Mesh</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="59"/>
@@ -170,7 +170,7 @@ Deze opdracht werkt alleen met een 'maaswerk' object.</translation>
       <translation>Verbind de randen als afstand kleiner is dan</translation>
     </message>
     <message>
-      <location filename="../../CrossSections.cpp" line="368"/>
+      <location filename="../../CrossSections.cpp" line="367"/>
       <source>Failure</source>
       <translation>Mislukt</translation>
     </message>
@@ -178,32 +178,32 @@ Deze opdracht werkt alleen met een 'maaswerk' object.</translation>
   <context>
     <name>MeshPartGui::CurveOnMeshHandler</name>
     <message>
-      <location filename="../../CurveOnMesh.cpp" line="364"/>
+      <location filename="../../CurveOnMesh.cpp" line="357"/>
       <source>Create</source>
       <translation>Aanmaken</translation>
     </message>
     <message>
-      <location filename="../../CurveOnMesh.cpp" line="366"/>
+      <location filename="../../CurveOnMesh.cpp" line="359"/>
       <source>Close wire</source>
       <translation>Sluit draad</translation>
     </message>
     <message>
-      <location filename="../../CurveOnMesh.cpp" line="368"/>
+      <location filename="../../CurveOnMesh.cpp" line="361"/>
       <source>Clear</source>
       <translation>Wissen</translation>
     </message>
     <message>
-      <location filename="../../CurveOnMesh.cpp" line="369"/>
+      <location filename="../../CurveOnMesh.cpp" line="362"/>
       <source>Cancel</source>
       <translation>Annuleren</translation>
     </message>
     <message>
-      <location filename="../../CurveOnMesh.cpp" line="615"/>
+      <location filename="../../CurveOnMesh.cpp" line="608"/>
       <source>Wrong mesh picked</source>
       <translation>Verkeerde gaas gepakt</translation>
     </message>
     <message>
-      <location filename="../../CurveOnMesh.cpp" line="655"/>
+      <location filename="../../CurveOnMesh.cpp" line="648"/>
       <source>No point was picked</source>
       <translation>Geen punt was geselecteerd</translation>
     </message>
@@ -491,27 +491,27 @@ Een waarde tussen 0,2 en 10.</translation>
       <translation>Gmsh</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.cpp" line="225"/>
-      <location filename="../../Tessellation.cpp" line="231"/>
+      <location filename="../../Tessellation.cpp" line="223"/>
+      <location filename="../../Tessellation.cpp" line="229"/>
       <source>No active document</source>
       <translation>Geen actief document</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.cpp" line="259"/>
+      <location filename="../../Tessellation.cpp" line="257"/>
       <source>You have selected a body without tip.
 Either set the tip of the body or select a different shape, please.</source>
       <translation>Je hebt een vast lichaam geselecteerd zonder tip.
 Stel de punt van het vaste lichaam in of selecteer een andere vorm, alstublieft.</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.cpp" line="263"/>
+      <location filename="../../Tessellation.cpp" line="261"/>
       <source>You have selected a shape without faces.
 Select a different shape, please.</source>
       <translation>Je hebt een vorm zonder vlakken geselecteerd.
 Selecteer een andere vorm alstublieft.</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.cpp" line="267"/>
+      <location filename="../../Tessellation.cpp" line="265"/>
       <source>Select a shape for meshing, first.</source>
       <translation>Selecteer voor de meshing eerst een vorm.</translation>
     </message>

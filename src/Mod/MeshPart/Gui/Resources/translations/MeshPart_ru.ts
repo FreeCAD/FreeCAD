@@ -44,7 +44,7 @@ This command only works with a 'mesh' object.</source>
     <message>
       <location filename="../../Command.cpp" line="58"/>
       <source>Mesh</source>
-      <translation>Сетка</translation>
+      <translation>Полигональная сетка</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="59"/>
@@ -62,7 +62,7 @@ This command only works with a 'mesh' object.</source>
     <message>
       <location filename="../../Command.cpp" line="185"/>
       <source>Mesh</source>
-      <translation>Сетка</translation>
+      <translation>Сеть</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="186"/>
@@ -80,7 +80,7 @@ This command only works with a 'mesh' object.</source>
     <message>
       <location filename="../../Command.cpp" line="83"/>
       <source>Mesh</source>
-      <translation>Полигональная сетка</translation>
+      <translation>Сеть</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="84"/>
@@ -170,7 +170,7 @@ This command only works with a 'mesh' object.</source>
       <translation>Подключите рёбра, если расстояние меньше, чем</translation>
     </message>
     <message>
-      <location filename="../../CrossSections.cpp" line="368"/>
+      <location filename="../../CrossSections.cpp" line="367"/>
       <source>Failure</source>
       <translation>Сбой</translation>
     </message>
@@ -178,32 +178,32 @@ This command only works with a 'mesh' object.</source>
   <context>
     <name>MeshPartGui::CurveOnMeshHandler</name>
     <message>
-      <location filename="../../CurveOnMesh.cpp" line="364"/>
+      <location filename="../../CurveOnMesh.cpp" line="357"/>
       <source>Create</source>
       <translation>Создать</translation>
     </message>
     <message>
-      <location filename="../../CurveOnMesh.cpp" line="366"/>
+      <location filename="../../CurveOnMesh.cpp" line="359"/>
       <source>Close wire</source>
       <translation>Замкнуть ломаную</translation>
     </message>
     <message>
-      <location filename="../../CurveOnMesh.cpp" line="368"/>
+      <location filename="../../CurveOnMesh.cpp" line="361"/>
       <source>Clear</source>
       <translation>Очистить</translation>
     </message>
     <message>
-      <location filename="../../CurveOnMesh.cpp" line="369"/>
+      <location filename="../../CurveOnMesh.cpp" line="362"/>
       <source>Cancel</source>
       <translation>Отмена</translation>
     </message>
     <message>
-      <location filename="../../CurveOnMesh.cpp" line="615"/>
+      <location filename="../../CurveOnMesh.cpp" line="608"/>
       <source>Wrong mesh picked</source>
       <translation>Выбрана неправильная полигональная сетка</translation>
     </message>
     <message>
-      <location filename="../../CurveOnMesh.cpp" line="655"/>
+      <location filename="../../CurveOnMesh.cpp" line="648"/>
       <source>No point was picked</source>
       <translation>Не выбрано ни одной точки</translation>
     </message>
@@ -491,27 +491,27 @@ A value in the range of 0.2-10.</source>
       <translation>Gmsh</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.cpp" line="225"/>
-      <location filename="../../Tessellation.cpp" line="231"/>
+      <location filename="../../Tessellation.cpp" line="223"/>
+      <location filename="../../Tessellation.cpp" line="229"/>
       <source>No active document</source>
       <translation>Нет активного документа</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.cpp" line="259"/>
+      <location filename="../../Tessellation.cpp" line="257"/>
       <source>You have selected a body without tip.
 Either set the tip of the body or select a different shape, please.</source>
       <translation>Вы выбрали тело без наконечника.
 Пожалуйста, либо установите наконечник, либо выберите другую форму.</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.cpp" line="263"/>
+      <location filename="../../Tessellation.cpp" line="261"/>
       <source>You have selected a shape without faces.
 Select a different shape, please.</source>
       <translation>Вы выбрали форму без граней.
 Выберите другую форму, пожалуйста.</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.cpp" line="267"/>
+      <location filename="../../Tessellation.cpp" line="265"/>
       <source>Select a shape for meshing, first.</source>
       <translation>Сначала выберите фигуру для создания полигональной сетки.</translation>
     </message>

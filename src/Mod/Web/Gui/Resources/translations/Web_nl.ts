@@ -128,13 +128,13 @@
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../AppWebGui.cpp" line="93"/>
-      <location filename="../../BrowserView.cpp" line="815"/>
+      <location filename="../../AppWebGui.cpp" line="91"/>
+      <location filename="../../BrowserView.cpp" line="812"/>
       <source>Browser</source>
       <translation>Browser</translation>
     </message>
     <message>
-      <location filename="../../BrowserView.cpp" line="623"/>
+      <location filename="../../BrowserView.cpp" line="620"/>
       <source>File does not exist!</source>
       <translation>Bestand bestaat niet!</translation>
     </message>
@@ -142,24 +142,24 @@
   <context>
     <name>WebGui::BrowserView</name>
     <message>
-      <location filename="../../BrowserView.cpp" line="611"/>
+      <location filename="../../BrowserView.cpp" line="608"/>
+      <location filename="../../BrowserView.cpp" line="613"/>
       <location filename="../../BrowserView.cpp" line="616"/>
-      <location filename="../../BrowserView.cpp" line="619"/>
       <source>Error</source>
       <translation>Fout</translation>
     </message>
     <message>
-      <location filename="../../BrowserView.cpp" line="616"/>
+      <location filename="../../BrowserView.cpp" line="613"/>
       <source>There were errors while loading the file. Some data might have been modified or not recovered at all. Look in the report view for more specific information about the objects involved.</source>
       <translation>Er zijn fouten opgetreden tijdens het laden van het bestand. Sommige gegevens zijn misschien gewijzigd of helemaal hersteld. Kijk in de rapportweergave voor meer specifieke informatie over de objecten die hierbij zijn betrokken.</translation>
     </message>
     <message>
-      <location filename="../../BrowserView.cpp" line="619"/>
+      <location filename="../../BrowserView.cpp" line="616"/>
       <source>There were serious errors while loading the file. Some data might have been modified or not recovered at all. Saving the project will most likely result in loss of data.</source>
       <translation>Er zijn ernstige fouten opgetreden tijdens het laden van het bestand. Sommige gegevens zijn mogelijk gewijzigd of helemaal niet hersteld. Het opslaan van het project zal waarschijnlijk leiden tot data-verlies.</translation>
     </message>
     <message>
-      <location filename="../../BrowserView.cpp" line="783"/>
+      <location filename="../../BrowserView.cpp" line="780"/>
       <source>Loading %1...</source>
       <translation>Laden %1...</translation>
     </message>
@@ -167,17 +167,17 @@
   <context>
     <name>WebGui::WebView</name>
     <message>
-      <location filename="../../BrowserView.cpp" line="362"/>
+      <location filename="../../BrowserView.cpp" line="359"/>
       <source>Open in External Browser</source>
       <translation>Open in externe Browser</translation>
     </message>
     <message>
-      <location filename="../../BrowserView.cpp" line="365"/>
+      <location filename="../../BrowserView.cpp" line="362"/>
       <source>Open in new window</source>
       <translation>In nieuw venster openen</translation>
     </message>
     <message>
-      <location filename="../../BrowserView.cpp" line="411"/>
+      <location filename="../../BrowserView.cpp" line="408"/>
       <source>View source</source>
       <translation>Bron weergeven</translation>
     </message>

@@ -1,3 +1,10 @@
+/*
+ * !!! WARNING !!!
+ * DO NOT change lines that have comment labels right beside them
+ * these lines are marked with "don't change this line"
+ * they get replaced by StartPage.py according to the preferences
+*/
+
 /* --- MAIN --- */
 
 html {
@@ -150,8 +157,10 @@ ul.tabs li a.active:hover {
 }
 
 .footnote {
-    text-align: center;
+    /* don't change this line */
     display: block; /* footnote tips display */
+    color: BGTCOLOR;
+    text-align: center;
     clear: both;
     padding-top: 10px;
 }
@@ -173,23 +182,26 @@ ul.icons {
 .file-card {
     list-style: none;
     display: inline;
-    padding: 10px 0px 15px 10px;
-    width: 138px;
-    height: 200px;
+    padding: 10px;
+    width: 130px;
+    height: THUMBCARDSIZE;
     background: BOXCOLOR;
     border-radius: 8px;
     margin: 10px;
     word-wrap: break-word;
+    text-align: center;
 }
 
 .file-card h4 {
-    margin: 3px 0;
-    max-width: 90%;
+    margin: 5px 0;
 }
 
 .file-card img {
-    width: 128px;
-    height: 128px;
+    /* don't change this line */
+    display: block; /* thumb icons display */
+    margin: auto;
+    width: THUMBSIZE;
+    height: THUMBSIZE;
     border-radius: 4px;
 }
 
@@ -238,8 +250,8 @@ a .caption:visited {
 }
 
 .quickstart-button-card img {
-    width: 64px;
-    height: 64px;
+    width: 60px;
+    height: 60px;
     margin-right: 10px;
 }
 
@@ -248,8 +260,8 @@ a .caption:visited {
 }
 
 .notes {
-    display: none; /* notes display */
     /* don't change this line */
+    display: none; /* notes display */
     width: 100%;
 }
 
@@ -343,8 +355,8 @@ ul.addonslist {
 }
 
 .forum {
-    display: none; /* forum display */
     /* don't change this line */
+    display: none; /* forum display */
 }
 
 .forum pre {

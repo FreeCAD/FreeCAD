@@ -23,7 +23,6 @@
     <name>CompactView</name>
     <message>
       <location filename="../../compact_view.py" line="77"/>
-      <location filename="../../compact_view.ui" line="20"/>
       <source>Form</source>
       <translation>Oblika</translation>
     </message>
@@ -422,7 +421,6 @@ Ali želite, da jih upravljalinik dodatkov namesti samodejno? Izberite &quot;Pre
     <name>ExpandedView</name>
     <message>
       <location filename="../../expanded_view.py" line="116"/>
-      <location filename="../../expanded_view.ui" line="20"/>
       <source>Form</source>
       <translation>Oblika</translation>
     </message>
@@ -476,7 +474,6 @@ Ali želite, da jih upravljalinik dodatkov namesti samodejno? Izberite &quot;Pre
   <context>
     <name>Form</name>
     <message>
-      <location filename="../../developer_mode_licenses_table.ui" line="14"/>
       <location filename="../../developer_mode_people_table.ui" line="14"/>
       <source>Form</source>
       <translation>Oblika</translation>
@@ -703,11 +700,6 @@ preveril razpoložljivost posodobitev za nameščene dodatke
   </context>
   <context>
     <name>PackageDetails</name>
-    <message>
-      <location filename="../../package_details.ui" line="14"/>
-      <source>Form</source>
-      <translation>Oblika</translation>
-    </message>
     <message>
       <location filename="../../package_details.ui" line="49"/>
       <source>Uninstalls a selected macro or workbench</source>

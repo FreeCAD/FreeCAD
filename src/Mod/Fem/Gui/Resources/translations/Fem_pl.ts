@@ -694,7 +694,7 @@
       <translation>Utwórz ciąg z wyniku</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderFemPostFunction.cpp" line="281"/>
+      <location filename="../../ViewProviderFemPostFunction.cpp" line="277"/>
       <source>Edit Mirror</source>
       <translation>Edytuj odbicie lustrzane</translation>
     </message>
@@ -1016,12 +1016,12 @@
       <translation>Dolna granica częstotliwości</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcxImp.cpp" line="143"/>
+      <location filename="../../DlgSettingsFemCcxImp.cpp" line="140"/>
       <source>File does not exist</source>
       <translation>Plik nie istnieje</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcxImp.cpp" line="144"/>
+      <location filename="../../DlgSettingsFemCcxImp.cpp" line="141"/>
       <source>The specified executable 
 '%1'
  does not exist!
@@ -1118,12 +1118,12 @@ zostaną połączone, aby uczynić granice objętości niewidocznymi.</translati
       <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Uwaga:&lt;/span&gt; Zaleca się korzystanie z parzystej liczby rdzeni by skorzystać na symetrii siatki (używanie 8 rdzeni może być szybsze niż 9).&lt;br/&gt;&lt;span style=" font-weight:600;"&gt;Ponadto:&lt;/span&gt; W ekstremalnych przypadkach ElmerSolver może nie osiągać zbieżności jeśli liczba rdzeni jest zbyt wysoka.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemElmerImp.cpp" line="102"/>
+      <location filename="../../DlgSettingsFemElmerImp.cpp" line="99"/>
       <source>File does not exist</source>
       <translation>Plik nie istnieje</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemElmerImp.cpp" line="103"/>
+      <location filename="../../DlgSettingsFemElmerImp.cpp" line="100"/>
       <source>The specified executable 
 '%1'
  does not exist!
@@ -1134,20 +1134,20 @@ Specify another file please.</source>
 Wybierz inny plik.</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemElmerImp.cpp" line="118"/>
-      <location filename="../../DlgSettingsFemElmerImp.cpp" line="128"/>
+      <location filename="../../DlgSettingsFemElmerImp.cpp" line="115"/>
+      <location filename="../../DlgSettingsFemElmerImp.cpp" line="125"/>
       <source>FEM Elmer: Not suitable for multithreading</source>
       <translation>FEM Elmer: Nie nadaje się do pracy wielowątkowej</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemElmerImp.cpp" line="119"/>
+      <location filename="../../DlgSettingsFemElmerImp.cpp" line="116"/>
       <source>Wrong Elmer setting: You use more than one CPU core.
 Therefore an executable with the suffix '_mpi.exe' is required.</source>
       <translation>Nieprawidłowe ustawienie Elmera: Używasz więcej niż jednego rdzenia procesora.
 Dlatego wymagany jest plik wykonywalny z przyrostkiem "_mpi.exe".</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemElmerImp.cpp" line="129"/>
+      <location filename="../../DlgSettingsFemElmerImp.cpp" line="126"/>
       <source>Wrong Elmer setting: You use more than one CPU core.
 Therefore an executable with the suffix '_mpi' is required.</source>
       <translation>Nieprawidłowe ustawienie Elmera: Używasz więcej niż jednego rdzenia procesora.
@@ -1379,12 +1379,12 @@ tworzeniu nowej analizy</translation>
       <translation>Pozostaw to pole puste, aby użyć domyślnego pliku binarnego Gmsh</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemGmshImp.cpp" line="79"/>
+      <location filename="../../DlgSettingsFemGmshImp.cpp" line="76"/>
       <source>File does not exist</source>
       <translation>Plik nie istnieje</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemGmshImp.cpp" line="80"/>
+      <location filename="../../DlgSettingsFemGmshImp.cpp" line="77"/>
       <source>The specified executable 
 '%1'
  does not exist!
@@ -1569,12 +1569,12 @@ Jeśli ta opcja nie jest zaznaczone, będą posortowane według nazw.</translati
       <translation>Zapisz komentarze do pliku wejściowego</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemMystranImp.cpp" line="81"/>
+      <location filename="../../DlgSettingsFemMystranImp.cpp" line="78"/>
       <source>File does not exist</source>
       <translation>Plik nie istnieje</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemMystranImp.cpp" line="82"/>
+      <location filename="../../DlgSettingsFemMystranImp.cpp" line="79"/>
       <source>The specified executable 
 '%1'
  does not exist!
@@ -1681,12 +1681,12 @@ iteracyjnego solvera, gdy pojawi się komunikat o błędzie,
 że należy zwiększyć wartość parametru "MAXKOI".</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemZ88Imp.cpp" line="104"/>
+      <location filename="../../DlgSettingsFemZ88Imp.cpp" line="101"/>
       <source>File does not exist</source>
       <translation>Plik nie istnieje</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemZ88Imp.cpp" line="105"/>
+      <location filename="../../DlgSettingsFemZ88Imp.cpp" line="102"/>
       <source>The specified z88r executable 
 '%1'
  does not exist!
@@ -1697,18 +1697,18 @@ Specify another file please.</source>
 Wybierz inny plik.</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemZ88Imp.cpp" line="116"/>
-      <location filename="../../DlgSettingsFemZ88Imp.cpp" line="122"/>
+      <location filename="../../DlgSettingsFemZ88Imp.cpp" line="113"/>
+      <location filename="../../DlgSettingsFemZ88Imp.cpp" line="119"/>
       <source>Wrong file</source>
       <translation>Niewłaściwy plik</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemZ88Imp.cpp" line="117"/>
+      <location filename="../../DlgSettingsFemZ88Imp.cpp" line="114"/>
       <source>You must specify the path to the z88r.exe!</source>
       <translation>Musisz określić ścieżkę do pliku solvera z88r.exe!</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemZ88Imp.cpp" line="123"/>
+      <location filename="../../DlgSettingsFemZ88Imp.cpp" line="120"/>
       <source>You must specify the path to the z88r!</source>
       <translation>Musisz określić ścieżkę do solvera z88r!</translation>
     </message>
@@ -1718,7 +1718,7 @@ Wybierz inny plik.</translation>
     <message>
       <location filename="../../TaskAnalysisInfo.cpp" line="35"/>
       <source>Nodes set</source>
-      <translation>Zestaw węzłów</translation>
+      <translation>Zbiór węzłów</translation>
     </message>
   </context>
   <context>
@@ -1746,7 +1746,7 @@ Wybierz inny plik.</translation>
   <context>
     <name>FemGui::TaskDlgFemConstraintBearing</name>
     <message>
-      <location filename="../../TaskFemConstraintBearing.cpp" line="361"/>
+      <location filename="../../TaskFemConstraintBearing.cpp" line="360"/>
       <source>Input error</source>
       <translation>Błąd danych wejściowych</translation>
     </message>
@@ -1754,7 +1754,7 @@ Wybierz inny plik.</translation>
   <context>
     <name>FemGui::TaskDlgFemConstraintContact</name>
     <message>
-      <location filename="../../TaskFemConstraintContact.cpp" line="492"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="491"/>
       <source>Input error</source>
       <translation>Błąd danych wejściowych</translation>
     </message>
@@ -1762,7 +1762,7 @@ Wybierz inny plik.</translation>
   <context>
     <name>FemGui::TaskDlgFemConstraintDisplacement</name>
     <message>
-      <location filename="../../TaskFemConstraintDisplacement.cpp" line="714"/>
+      <location filename="../../TaskFemConstraintDisplacement.cpp" line="713"/>
       <source>Input error</source>
       <translation>Błąd danych wejściowych</translation>
     </message>
@@ -1770,7 +1770,7 @@ Wybierz inny plik.</translation>
   <context>
     <name>FemGui::TaskDlgFemConstraintFluidBoundary</name>
     <message>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="1070"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="1069"/>
       <source>Input error</source>
       <translation>Błąd danych wejściowych</translation>
     </message>
@@ -1778,13 +1778,13 @@ Wybierz inny plik.</translation>
   <context>
     <name>FemGui::TaskDlgFemConstraintForce</name>
     <message>
-      <location filename="../../TaskFemConstraintForce.cpp" line="460"/>
-      <location filename="../../TaskFemConstraintForce.cpp" line="499"/>
+      <location filename="../../TaskFemConstraintForce.cpp" line="459"/>
+      <location filename="../../TaskFemConstraintForce.cpp" line="498"/>
       <source>Input error</source>
       <translation>Błąd danych wejściowych</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintForce.cpp" line="460"/>
+      <location filename="../../TaskFemConstraintForce.cpp" line="459"/>
       <source>Please specify a force greater than 0</source>
       <translation>Proszę określić siłę większą od 0</translation>
     </message>
@@ -1800,7 +1800,7 @@ Wybierz inny plik.</translation>
   <context>
     <name>FemGui::TaskDlgFemConstraintHeatflux</name>
     <message>
-      <location filename="../../TaskFemConstraintHeatflux.cpp" line="462"/>
+      <location filename="../../TaskFemConstraintHeatflux.cpp" line="461"/>
       <source>Input error</source>
       <translation>Błąd danych wejściowych</translation>
     </message>
@@ -1808,8 +1808,8 @@ Wybierz inny plik.</translation>
   <context>
     <name>FemGui::TaskDlgFemConstraintInitialTemperature</name>
     <message>
-      <location filename="../../TaskFemConstraintInitialTemperature.cpp" line="129"/>
-      <location filename="../../TaskFemConstraintInitialTemperature.cpp" line="141"/>
+      <location filename="../../TaskFemConstraintInitialTemperature.cpp" line="128"/>
+      <location filename="../../TaskFemConstraintInitialTemperature.cpp" line="140"/>
       <source>Input error</source>
       <translation>Błąd danych wejściowych</translation>
     </message>
@@ -1817,7 +1817,7 @@ Wybierz inny plik.</translation>
   <context>
     <name>FemGui::TaskDlgFemConstraintPressure</name>
     <message>
-      <location filename="../../TaskFemConstraintPressure.cpp" line="330"/>
+      <location filename="../../TaskFemConstraintPressure.cpp" line="329"/>
       <source>Input error</source>
       <translation>Błąd danych wejściowych</translation>
     </message>
@@ -1833,7 +1833,7 @@ Wybierz inny plik.</translation>
   <context>
     <name>FemGui::TaskDlgFemConstraintSpring</name>
     <message>
-      <location filename="../../TaskFemConstraintSpring.cpp" line="345"/>
+      <location filename="../../TaskFemConstraintSpring.cpp" line="344"/>
       <source>Input error</source>
       <translation>Błąd danych wejściowych</translation>
     </message>
@@ -1841,7 +1841,7 @@ Wybierz inny plik.</translation>
   <context>
     <name>FemGui::TaskDlgFemConstraintTemperature</name>
     <message>
-      <location filename="../../TaskFemConstraintTemperature.cpp" line="375"/>
+      <location filename="../../TaskFemConstraintTemperature.cpp" line="374"/>
       <source>Input error</source>
       <translation>Błąd danych wejściowych</translation>
     </message>
@@ -1849,7 +1849,7 @@ Wybierz inny plik.</translation>
   <context>
     <name>FemGui::TaskDlgFemConstraintTransform</name>
     <message>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="596"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="595"/>
       <source>Input error</source>
       <translation>Błąd danych wejściowych</translation>
     </message>
@@ -1857,12 +1857,12 @@ Wybierz inny plik.</translation>
   <context>
     <name>FemGui::TaskDlgMeshShapeNetgen</name>
     <message>
-      <location filename="../../TaskDlgMeshShapeNetgen.cpp" line="72"/>
+      <location filename="../../TaskDlgMeshShapeNetgen.cpp" line="69"/>
       <source>Edit FEM mesh</source>
       <translation>Edycja siatki MES</translation>
     </message>
     <message>
-      <location filename="../../TaskDlgMeshShapeNetgen.cpp" line="103"/>
+      <location filename="../../TaskDlgMeshShapeNetgen.cpp" line="100"/>
       <source>Meshing failure</source>
       <translation>Niepowodzenie tworzenia siatki</translation>
     </message>
@@ -1870,7 +1870,7 @@ Wybierz inny plik.</translation>
   <context>
     <name>FemGui::TaskDlgPost</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="364"/>
+      <location filename="../../TaskPostBoxes.cpp" line="362"/>
       <source>Input error</source>
       <translation>Błąd danych wejściowych</translation>
     </message>
@@ -1880,7 +1880,7 @@ Wybierz inny plik.</translation>
     <message>
       <location filename="../../TaskDriver.cpp" line="35"/>
       <source>Nodes set</source>
-      <translation>Zbiór węzłów</translation>
+      <translation>Zestaw węzłów</translation>
     </message>
   </context>
   <context>
@@ -1949,24 +1949,24 @@ Wybierz inny plik.</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintContact.cpp" line="102"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="149"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="155"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="160"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="171"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="179"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="186"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="222"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="232"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="279"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="285"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="290"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="301"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="308"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="315"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="351"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="361"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="148"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="154"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="159"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="170"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="178"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="185"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="221"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="231"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="278"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="284"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="289"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="300"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="307"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="314"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="350"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="360"/>
       <source>Selection error</source>
-      <translation>Błąd selekcji</translation>
+      <translation>Błąd zaznaczenia</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintContact.cpp" line="102"/>
@@ -1974,46 +1974,46 @@ Wybierz inny plik.</translation>
       <translation>Tylko jedna powierzchnia w obiekcie! - przeniesione do powierzchni głównej</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintContact.cpp" line="150"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="280"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="149"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="279"/>
       <source>Only one master face and one slave face for a contact constraint!</source>
       <translation>Tylko jedna powierzchnia główna i jedna powierzchnia drugorzędna dla kontaktu!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintContact.cpp" line="155"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="222"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="285"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="351"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="154"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="221"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="284"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="350"/>
       <source>Nothing selected!</source>
       <translation>Nic nie wybrano!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintContact.cpp" line="160"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="179"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="159"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="178"/>
       <source>Only one slave face for a contact constraint!</source>
       <translation>Tylko jedna powierzchnia drugorzędna dla kontaktu!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintContact.cpp" line="171"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="232"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="301"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="361"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="170"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="231"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="300"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="360"/>
       <source>Selected object is not a part!</source>
       <translation>Wybrany obiekt nie jest częścią!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintContact.cpp" line="186"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="315"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="185"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="314"/>
       <source>Only faces can be picked</source>
-      <translation>Można wybrać tylko powierzchnie</translation>
+      <translation>Można wybrać tylko ściany</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintContact.cpp" line="290"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="289"/>
       <source>Only one master for a contact constraint!</source>
       <translation>Tylko jedna powierzchnia główna dla kontaktu!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintContact.cpp" line="308"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="307"/>
       <source>Only one master face for a contact constraint!</source>
       <translation>Tylko jedna powierzchnia główna dla kontaktu!</translation>
     </message>
@@ -2021,28 +2021,28 @@ Wybierz inny plik.</translation>
   <context>
     <name>FemGui::TaskFemConstraintDisplacement</name>
     <message>
-      <location filename="../../TaskFemConstraintDisplacement.cpp" line="303"/>
-      <location filename="../../TaskFemConstraintDisplacement.cpp" line="313"/>
-      <location filename="../../TaskFemConstraintDisplacement.cpp" line="348"/>
-      <location filename="../../TaskFemConstraintDisplacement.cpp" line="371"/>
-      <location filename="../../TaskFemConstraintDisplacement.cpp" line="381"/>
+      <location filename="../../TaskFemConstraintDisplacement.cpp" line="302"/>
+      <location filename="../../TaskFemConstraintDisplacement.cpp" line="312"/>
+      <location filename="../../TaskFemConstraintDisplacement.cpp" line="347"/>
+      <location filename="../../TaskFemConstraintDisplacement.cpp" line="370"/>
+      <location filename="../../TaskFemConstraintDisplacement.cpp" line="380"/>
       <source>Selection error</source>
-      <translation>Błąd zaznaczenia</translation>
+      <translation>Błąd wyboru</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintDisplacement.cpp" line="303"/>
-      <location filename="../../TaskFemConstraintDisplacement.cpp" line="371"/>
+      <location filename="../../TaskFemConstraintDisplacement.cpp" line="302"/>
+      <location filename="../../TaskFemConstraintDisplacement.cpp" line="370"/>
       <source>Nothing selected!</source>
       <translation>Nic nie wybrano!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintDisplacement.cpp" line="313"/>
-      <location filename="../../TaskFemConstraintDisplacement.cpp" line="381"/>
+      <location filename="../../TaskFemConstraintDisplacement.cpp" line="312"/>
+      <location filename="../../TaskFemConstraintDisplacement.cpp" line="380"/>
       <source>Selected object is not a part!</source>
       <translation>Wybrany obiekt nie jest częścią!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintDisplacement.cpp" line="346"/>
+      <location filename="../../TaskFemConstraintDisplacement.cpp" line="345"/>
       <source>Only one type of selection (vertex,face or edge) per constraint allowed!</source>
       <translation>Dozwolony jest tylko jeden typ wyboru (wierzchołek, powierzchnia lub krawędź) na wiązanie!</translation>
     </message>
@@ -2050,28 +2050,28 @@ Wybierz inny plik.</translation>
   <context>
     <name>FemGui::TaskFemConstraintFixed</name>
     <message>
-      <location filename="../../TaskFemConstraintFixed.cpp" line="108"/>
-      <location filename="../../TaskFemConstraintFixed.cpp" line="118"/>
-      <location filename="../../TaskFemConstraintFixed.cpp" line="154"/>
-      <location filename="../../TaskFemConstraintFixed.cpp" line="177"/>
-      <location filename="../../TaskFemConstraintFixed.cpp" line="187"/>
+      <location filename="../../TaskFemConstraintFixed.cpp" line="107"/>
+      <location filename="../../TaskFemConstraintFixed.cpp" line="117"/>
+      <location filename="../../TaskFemConstraintFixed.cpp" line="153"/>
+      <location filename="../../TaskFemConstraintFixed.cpp" line="176"/>
+      <location filename="../../TaskFemConstraintFixed.cpp" line="186"/>
       <source>Selection error</source>
       <translation>Błąd wyboru</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintFixed.cpp" line="108"/>
-      <location filename="../../TaskFemConstraintFixed.cpp" line="177"/>
+      <location filename="../../TaskFemConstraintFixed.cpp" line="107"/>
+      <location filename="../../TaskFemConstraintFixed.cpp" line="176"/>
       <source>Nothing selected!</source>
       <translation>Nic nie wybrano!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintFixed.cpp" line="118"/>
-      <location filename="../../TaskFemConstraintFixed.cpp" line="187"/>
+      <location filename="../../TaskFemConstraintFixed.cpp" line="117"/>
+      <location filename="../../TaskFemConstraintFixed.cpp" line="186"/>
       <source>Selected object is not a part!</source>
       <translation>Wybrany obiekt nie jest częścią!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintFixed.cpp" line="152"/>
+      <location filename="../../TaskFemConstraintFixed.cpp" line="151"/>
       <source>Only one type of selection (vertex,face or edge) per constraint allowed!</source>
       <translation>Dozwolony jest tylko jeden typ wyboru (wierzchołek, powierzchnia lub krawędź) na wiązanie!</translation>
     </message>
@@ -2179,28 +2179,28 @@ Wybierz inny plik.</translation>
       <translation>Tylko powierzchnie dla części 3D i krawędzie dla 2D mogą być wybrane</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="785"/>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="795"/>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="831"/>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="854"/>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="864"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="784"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="794"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="830"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="853"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="863"/>
       <source>Selection error</source>
       <translation>Błąd wyboru</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="785"/>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="854"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="784"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="853"/>
       <source>Nothing selected!</source>
       <translation>Nic nie wybrano!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="795"/>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="864"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="794"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="863"/>
       <source>Selected object is not a part!</source>
       <translation>Wybrany obiekt nie jest częścią!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="829"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="828"/>
       <source>Only one type of selection (vertex,face or edge) per constraint allowed!</source>
       <translation>Dozwolony jest tylko jeden typ wyboru (wierzchołek, powierzchnia lub krawędź) na wiązanie!</translation>
     </message>
@@ -2237,7 +2237,7 @@ Wybierz inny plik.</translation>
       <location filename="../../TaskFemConstraintForce.cpp" line="325"/>
       <location filename="../../TaskFemConstraintForce.cpp" line="341"/>
       <source>Wrong selection</source>
-      <translation>Nieprawidłowy wybór</translation>
+      <translation>Niewłaściwy wybór</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintForce.cpp" line="325"/>
@@ -2252,12 +2252,12 @@ Wybierz inny plik.</translation>
       <location filename="../../TaskFemConstraintGear.cpp" line="141"/>
       <location filename="../../TaskFemConstraintGear.cpp" line="146"/>
       <source>Selection error</source>
-      <translation>Błąd wyboru</translation>
+      <translation>Błąd w zaznaczeniu</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintGear.cpp" line="135"/>
       <source>Only planar faces can be picked</source>
-      <translation>Mogą być użyte tylko powierzchnie płaskie</translation>
+      <translation>Wybrać można tylko płaskie ściany</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintGear.cpp" line="141"/>
@@ -2273,30 +2273,30 @@ Wybierz inny plik.</translation>
   <context>
     <name>FemGui::TaskFemConstraintHeatflux</name>
     <message>
-      <location filename="../../TaskFemConstraintHeatflux.cpp" line="209"/>
-      <location filename="../../TaskFemConstraintHeatflux.cpp" line="219"/>
-      <location filename="../../TaskFemConstraintHeatflux.cpp" line="229"/>
-      <location filename="../../TaskFemConstraintHeatflux.cpp" line="273"/>
-      <location filename="../../TaskFemConstraintHeatflux.cpp" line="284"/>
-      <location filename="../../TaskFemConstraintHeatflux.cpp" line="294"/>
+      <location filename="../../TaskFemConstraintHeatflux.cpp" line="208"/>
+      <location filename="../../TaskFemConstraintHeatflux.cpp" line="218"/>
+      <location filename="../../TaskFemConstraintHeatflux.cpp" line="228"/>
+      <location filename="../../TaskFemConstraintHeatflux.cpp" line="272"/>
+      <location filename="../../TaskFemConstraintHeatflux.cpp" line="283"/>
+      <location filename="../../TaskFemConstraintHeatflux.cpp" line="293"/>
       <source>Selection error</source>
-      <translation>Błąd w zaznaczeniu</translation>
+      <translation>Błąd wyboru</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintHeatflux.cpp" line="209"/>
-      <location filename="../../TaskFemConstraintHeatflux.cpp" line="273"/>
+      <location filename="../../TaskFemConstraintHeatflux.cpp" line="208"/>
+      <location filename="../../TaskFemConstraintHeatflux.cpp" line="272"/>
       <source>Nothing selected!</source>
       <translation>Nic nie wybrano!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintHeatflux.cpp" line="219"/>
-      <location filename="../../TaskFemConstraintHeatflux.cpp" line="284"/>
+      <location filename="../../TaskFemConstraintHeatflux.cpp" line="218"/>
+      <location filename="../../TaskFemConstraintHeatflux.cpp" line="283"/>
       <source>Selected object is not a part!</source>
       <translation>Wybrany obiekt nie jest częścią!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintHeatflux.cpp" line="229"/>
-      <location filename="../../TaskFemConstraintHeatflux.cpp" line="294"/>
+      <location filename="../../TaskFemConstraintHeatflux.cpp" line="228"/>
+      <location filename="../../TaskFemConstraintHeatflux.cpp" line="293"/>
       <source>Selection must only consist of faces!</source>
       <translation>Wybór musi składać się tylko z powierzchni!</translation>
     </message>
@@ -2304,71 +2304,71 @@ Wybierz inny plik.</translation>
   <context>
     <name>FemGui::TaskFemConstraintPlaneRotation</name>
     <message>
-      <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="116"/>
-      <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="125"/>
-      <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="136"/>
-      <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="147"/>
-      <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="155"/>
-      <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="185"/>
-      <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="202"/>
-      <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="212"/>
+      <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="115"/>
+      <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="124"/>
+      <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="135"/>
+      <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="146"/>
+      <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="154"/>
+      <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="184"/>
+      <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="201"/>
+      <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="211"/>
       <source>Selection error</source>
       <translation>Błąd wyboru</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="117"/>
-      <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="186"/>
+      <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="116"/>
+      <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="185"/>
       <source>Only one face can be selected for a plane rotation constraint!</source>
       <translation>Tylko jedna powierzchnia może być wybrana do wiązania utrzymującego węzły na płaskiej powierzchni (MPC Plane)!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="125"/>
-      <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="202"/>
+      <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="124"/>
+      <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="201"/>
       <source>Nothing selected!</source>
       <translation>Nic nie wybrano!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="136"/>
-      <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="212"/>
+      <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="135"/>
+      <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="211"/>
       <source>Selected object is not a part!</source>
       <translation>Wybrany obiekt nie jest częścią!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="147"/>
+      <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="146"/>
       <source>Only faces can be picked</source>
       <translation>Można wybrać tylko ściany</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="155"/>
+      <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="154"/>
       <source>Only planar faces can be picked</source>
-      <translation>Wybrać można tylko płaskie ściany</translation>
+      <translation>Mogą być użyte tylko powierzchnie płaskie</translation>
     </message>
   </context>
   <context>
     <name>FemGui::TaskFemConstraintPressure</name>
     <message>
-      <location filename="../../TaskFemConstraintPressure.cpp" line="125"/>
-      <location filename="../../TaskFemConstraintPressure.cpp" line="135"/>
-      <location filename="../../TaskFemConstraintPressure.cpp" line="144"/>
-      <location filename="../../TaskFemConstraintPressure.cpp" line="180"/>
-      <location filename="../../TaskFemConstraintPressure.cpp" line="190"/>
+      <location filename="../../TaskFemConstraintPressure.cpp" line="124"/>
+      <location filename="../../TaskFemConstraintPressure.cpp" line="134"/>
+      <location filename="../../TaskFemConstraintPressure.cpp" line="143"/>
+      <location filename="../../TaskFemConstraintPressure.cpp" line="179"/>
+      <location filename="../../TaskFemConstraintPressure.cpp" line="189"/>
       <source>Selection error</source>
       <translation>Błąd wyboru</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintPressure.cpp" line="125"/>
-      <location filename="../../TaskFemConstraintPressure.cpp" line="180"/>
+      <location filename="../../TaskFemConstraintPressure.cpp" line="124"/>
+      <location filename="../../TaskFemConstraintPressure.cpp" line="179"/>
       <source>Nothing selected!</source>
       <translation>Nic nie wybrano!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintPressure.cpp" line="135"/>
-      <location filename="../../TaskFemConstraintPressure.cpp" line="190"/>
+      <location filename="../../TaskFemConstraintPressure.cpp" line="134"/>
+      <location filename="../../TaskFemConstraintPressure.cpp" line="189"/>
       <source>Selected object is not a part!</source>
       <translation>Wybrany obiekt nie jest częścią!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintPressure.cpp" line="144"/>
+      <location filename="../../TaskFemConstraintPressure.cpp" line="143"/>
       <source>Only faces can be picked</source>
       <translation>Można wybrać tylko ściany</translation>
     </message>
@@ -2389,28 +2389,28 @@ Wybierz inny plik.</translation>
   <context>
     <name>FemGui::TaskFemConstraintSpring</name>
     <message>
-      <location filename="../../TaskFemConstraintSpring.cpp" line="132"/>
-      <location filename="../../TaskFemConstraintSpring.cpp" line="142"/>
-      <location filename="../../TaskFemConstraintSpring.cpp" line="151"/>
-      <location filename="../../TaskFemConstraintSpring.cpp" line="187"/>
-      <location filename="../../TaskFemConstraintSpring.cpp" line="197"/>
+      <location filename="../../TaskFemConstraintSpring.cpp" line="131"/>
+      <location filename="../../TaskFemConstraintSpring.cpp" line="141"/>
+      <location filename="../../TaskFemConstraintSpring.cpp" line="150"/>
+      <location filename="../../TaskFemConstraintSpring.cpp" line="186"/>
+      <location filename="../../TaskFemConstraintSpring.cpp" line="196"/>
       <source>Selection error</source>
       <translation>Błąd wyboru</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintSpring.cpp" line="132"/>
-      <location filename="../../TaskFemConstraintSpring.cpp" line="187"/>
+      <location filename="../../TaskFemConstraintSpring.cpp" line="131"/>
+      <location filename="../../TaskFemConstraintSpring.cpp" line="186"/>
       <source>Nothing selected!</source>
       <translation>Nic nie wybrano!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintSpring.cpp" line="142"/>
-      <location filename="../../TaskFemConstraintSpring.cpp" line="197"/>
+      <location filename="../../TaskFemConstraintSpring.cpp" line="141"/>
+      <location filename="../../TaskFemConstraintSpring.cpp" line="196"/>
       <source>Selected object is not a part!</source>
       <translation>Wybrany obiekt nie jest częścią!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintSpring.cpp" line="151"/>
+      <location filename="../../TaskFemConstraintSpring.cpp" line="150"/>
       <source>Only faces can be picked</source>
       <translation>Można wybrać tylko ściany</translation>
     </message>
@@ -2418,22 +2418,22 @@ Wybierz inny plik.</translation>
   <context>
     <name>FemGui::TaskFemConstraintTemperature</name>
     <message>
-      <location filename="../../TaskFemConstraintTemperature.cpp" line="151"/>
-      <location filename="../../TaskFemConstraintTemperature.cpp" line="161"/>
-      <location filename="../../TaskFemConstraintTemperature.cpp" line="202"/>
-      <location filename="../../TaskFemConstraintTemperature.cpp" line="212"/>
+      <location filename="../../TaskFemConstraintTemperature.cpp" line="150"/>
+      <location filename="../../TaskFemConstraintTemperature.cpp" line="160"/>
+      <location filename="../../TaskFemConstraintTemperature.cpp" line="201"/>
+      <location filename="../../TaskFemConstraintTemperature.cpp" line="211"/>
       <source>Selection error</source>
       <translation>Błąd wyboru</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintTemperature.cpp" line="151"/>
-      <location filename="../../TaskFemConstraintTemperature.cpp" line="202"/>
+      <location filename="../../TaskFemConstraintTemperature.cpp" line="150"/>
+      <location filename="../../TaskFemConstraintTemperature.cpp" line="201"/>
       <source>Nothing selected!</source>
       <translation>Nic nie wybrano!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintTemperature.cpp" line="161"/>
-      <location filename="../../TaskFemConstraintTemperature.cpp" line="212"/>
+      <location filename="../../TaskFemConstraintTemperature.cpp" line="160"/>
+      <location filename="../../TaskFemConstraintTemperature.cpp" line="211"/>
       <source>Selected object is not a part!</source>
       <translation>Wybrany obiekt nie jest częścią!</translation>
     </message>
@@ -2451,54 +2451,54 @@ Wybierz inny plik.</translation>
       <translation>Przekształcalne powierzchnie uległy zmianie. Dodaj tylko przekształcalne powierzchnie i usuń te nieprzekształcalne!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="268"/>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="274"/>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="281"/>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="295"/>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="302"/>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="309"/>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="319"/>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="360"/>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="411"/>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="421"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="267"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="273"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="280"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="294"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="301"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="308"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="318"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="359"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="410"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="420"/>
       <source>Selection error</source>
-      <translation>Błąd wyboru</translation>
+      <translation>Błąd selekcji</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="268"/>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="411"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="267"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="410"/>
       <source>Nothing selected!</source>
       <translation>Nic nie wybrano!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="274"/>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="281"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="273"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="280"/>
       <source>Only one face for rectangular transform constraint!</source>
       <translation>Tylko jedna powierzchnia do wiązania przekształcenia prostokątnego!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="295"/>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="421"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="294"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="420"/>
       <source>Selected object is not a part!</source>
       <translation>Wybrany obiekt nie jest częścią!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="302"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="301"/>
       <source>Only one face for transform constraint!</source>
       <translation>Tylko jedna powierzchnia do wiązania przekształcenia!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="309"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="308"/>
       <source>Only faces can be picked</source>
-      <translation>Można wybrać tylko ściany</translation>
+      <translation>Można wybrać tylko powierzchnie</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="320"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="319"/>
       <source>Only cylindrical faces can be picked</source>
       <translation>Mogą być użyte tylko powierzchnie cylindryczne</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="361"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="360"/>
       <source>Only transformable faces can be selected! Apply displacement constraint to surface first then apply constraint to surface</source>
       <translation>Tylko przekształcalne powierzchnie mogą być wybrane! Dodaj najpierw definicję przemieszczeń a następnie wiązanie do powierzchni</translation>
     </message>
@@ -2514,7 +2514,7 @@ Wybierz inny plik.</translation>
   <context>
     <name>FemGui::TaskPostClip</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="1236"/>
+      <location filename="../../TaskPostBoxes.cpp" line="1229"/>
       <source>Clip region, choose implicit function</source>
       <translation>Przytnij obszar, wybierz funkcję niejawną</translation>
     </message>
@@ -2522,7 +2522,7 @@ Wybierz inny plik.</translation>
   <context>
     <name>FemGui::TaskPostCut</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="1531"/>
+      <location filename="../../TaskPostBoxes.cpp" line="1522"/>
       <source>Function cut, choose implicit function</source>
       <translation>Funkcja cięcia, wybierz funkcję niejawną</translation>
     </message>
@@ -2530,12 +2530,12 @@ Wybierz inny plik.</translation>
   <context>
     <name>FemGui::TaskPostDataAlongLine</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="509"/>
+      <location filename="../../TaskPostBoxes.cpp" line="503"/>
       <source>Data along a line options</source>
       <translation>Opcje danych wzdłuż linii</translation>
     </message>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="844"/>
+      <location filename="../../TaskPostBoxes.cpp" line="837"/>
       <source>Length</source>
       <comment>X-Axis plot label</comment>
       <translation>Długość</translation>
@@ -2544,12 +2544,12 @@ Wybierz inny plik.</translation>
   <context>
     <name>FemGui::TaskPostDataAtPoint</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="870"/>
+      <location filename="../../TaskPostBoxes.cpp" line="863"/>
       <source>Data at point options</source>
       <translation>Opcje danych w punkcie</translation>
     </message>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="1210"/>
+      <location filename="../../TaskPostBoxes.cpp" line="1203"/>
       <source>%1 at (%2; %3; %4) is: %5 %6</source>
       <translation>%1 w (%2; %3; %4) to: %5 %6</translation>
     </message>
@@ -2557,7 +2557,7 @@ Wybierz inny plik.</translation>
   <context>
     <name>FemGui::TaskPostDisplay</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="399"/>
+      <location filename="../../TaskPostBoxes.cpp" line="397"/>
       <source>Result display options</source>
       <translation>Opcje wyświetlania wyników</translation>
     </message>
@@ -2565,7 +2565,7 @@ Wybierz inny plik.</translation>
   <context>
     <name>FemGui::TaskPostFunction</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="479"/>
+      <location filename="../../TaskPostBoxes.cpp" line="474"/>
       <source>Implicit function</source>
       <translation>Funkcja niejawna</translation>
     </message>
@@ -2573,7 +2573,7 @@ Wybierz inny plik.</translation>
   <context>
     <name>FemGui::TaskPostScalarClip</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="1672"/>
+      <location filename="../../TaskPostBoxes.cpp" line="1662"/>
       <source>Scalar clip options</source>
       <translation>Opcje przycinania skalarnego</translation>
     </message>
@@ -2581,7 +2581,7 @@ Wybierz inny plik.</translation>
   <context>
     <name>FemGui::TaskPostWarpVector</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="1807"/>
+      <location filename="../../TaskPostBoxes.cpp" line="1796"/>
       <source>Warp options</source>
       <translation>Opcje wizualizacji deformacji</translation>
     </message>
@@ -2597,7 +2597,7 @@ Wybierz inny plik.</translation>
   <context>
     <name>FemGui::ViewProviderFemAnalysis</name>
     <message>
-      <location filename="../../ViewProviderAnalysis.cpp" line="163"/>
+      <location filename="../../ViewProviderAnalysis.cpp" line="161"/>
       <source>Activate analysis</source>
       <translation>Aktywowanie analizy</translation>
     </message>
@@ -2605,12 +2605,12 @@ Wybierz inny plik.</translation>
   <context>
     <name>FemGui::ViewProviderFemMeshShapeNetgen</name>
     <message>
-      <location filename="../../ViewProviderFemMeshShapeNetgen.cpp" line="73"/>
+      <location filename="../../ViewProviderFemMeshShapeNetgen.cpp" line="70"/>
       <source>Meshing failure</source>
       <translation>Niepowodzenie tworzenia siatki</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderFemMeshShapeNetgen.cpp" line="74"/>
+      <location filename="../../ViewProviderFemMeshShapeNetgen.cpp" line="71"/>
       <source>The FEM module is built without NETGEN support. Meshing will not work!!!</source>
       <translation>Moduł MES został skompilowany bez wsparcia generatora NETGEN. Tworzenie siatki nie będzie działać!!!</translation>
     </message>
@@ -3549,11 +3549,6 @@ Uwaga: w 2D tylko ustawienie dla x jest możliwe,
   <context>
     <name>PlaneWidget</name>
     <message>
-      <location filename="../../PlaneWidget.ui" line="14"/>
-      <source>Form</source>
-      <translation>Formularz</translation>
-    </message>
-    <message>
       <location filename="../../PlaneWidget.ui" line="22"/>
       <source>x</source>
       <translation>x</translation>
@@ -3607,36 +3602,36 @@ Uwaga: w 2D tylko ustawienie dla x jest możliwe,
       <translation>Edytuj wiązanie</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderFemConstraintBearing.cpp" line="71"/>
-      <location filename="../../ViewProviderFemConstraintFixed.cpp" line="71"/>
-      <location filename="../../ViewProviderFemConstraintFluidBoundary.cpp" line="72"/>
-      <location filename="../../ViewProviderFemConstraintForce.cpp" line="72"/>
-      <location filename="../../ViewProviderFemConstraintGear.cpp" line="73"/>
-      <location filename="../../ViewProviderFemConstraintPulley.cpp" line="70"/>
-      <location filename="../../ViewProviderFemPostFunction.cpp" line="320"/>
+      <location filename="../../ViewProviderFemConstraintBearing.cpp" line="69"/>
+      <location filename="../../ViewProviderFemConstraintFixed.cpp" line="69"/>
+      <location filename="../../ViewProviderFemConstraintFluidBoundary.cpp" line="70"/>
+      <location filename="../../ViewProviderFemConstraintForce.cpp" line="70"/>
+      <location filename="../../ViewProviderFemConstraintGear.cpp" line="71"/>
+      <location filename="../../ViewProviderFemConstraintPulley.cpp" line="68"/>
+      <location filename="../../ViewProviderFemPostFunction.cpp" line="316"/>
       <location filename="../../ViewProviderFemPostObject.cpp" line="811"/>
       <source>A dialog is already open in the task panel</source>
       <translation>Okienko dialogowe jest już otwarte w panelu zadań</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderFemConstraintBearing.cpp" line="72"/>
-      <location filename="../../ViewProviderFemConstraintFixed.cpp" line="72"/>
-      <location filename="../../ViewProviderFemConstraintFluidBoundary.cpp" line="73"/>
-      <location filename="../../ViewProviderFemConstraintForce.cpp" line="73"/>
-      <location filename="../../ViewProviderFemConstraintGear.cpp" line="74"/>
-      <location filename="../../ViewProviderFemConstraintPulley.cpp" line="71"/>
-      <location filename="../../ViewProviderFemPostFunction.cpp" line="321"/>
+      <location filename="../../ViewProviderFemConstraintBearing.cpp" line="70"/>
+      <location filename="../../ViewProviderFemConstraintFixed.cpp" line="70"/>
+      <location filename="../../ViewProviderFemConstraintFluidBoundary.cpp" line="71"/>
+      <location filename="../../ViewProviderFemConstraintForce.cpp" line="71"/>
+      <location filename="../../ViewProviderFemConstraintGear.cpp" line="72"/>
+      <location filename="../../ViewProviderFemConstraintPulley.cpp" line="69"/>
+      <location filename="../../ViewProviderFemPostFunction.cpp" line="317"/>
       <location filename="../../ViewProviderFemPostObject.cpp" line="812"/>
       <source>Do you want to close this dialog?</source>
       <translation>Czy chcesz zamknąć to okno?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderFemMeshShapeNetgen.cpp" line="59"/>
+      <location filename="../../ViewProviderFemMeshShapeNetgen.cpp" line="56"/>
       <source>Meshing</source>
       <translation>Tworzenie siatki</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintForce.cpp" line="438"/>
+      <location filename="../../TaskFemConstraintForce.cpp" line="437"/>
       <source>Constraint force</source>
       <translation>Zdefiniuj siłę</translation>
     </message>
@@ -3658,42 +3653,42 @@ Uwaga: w 2D tylko ustawienie dla x jest możliwe,
       <translation>Import-Eksport</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintContact.cpp" line="458"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="457"/>
       <source>Constraint Contact</source>
       <translation>Zdefiniuj kontakt</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintDisplacement.cpp" line="613"/>
+      <location filename="../../TaskFemConstraintDisplacement.cpp" line="612"/>
       <source>Constraint displacement</source>
       <translation>Zdefiniuj przemieszczenie</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintFixed.cpp" line="279"/>
+      <location filename="../../TaskFemConstraintFixed.cpp" line="278"/>
       <source>Constraint fixed</source>
       <translation>Zdefiniuj przytwierdzenie</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="961"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="960"/>
       <source>Constraint fluid boundary</source>
       <translation>Zdefiniuj przepływ graniczny</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintHeatflux.cpp" line="425"/>
+      <location filename="../../TaskFemConstraintHeatflux.cpp" line="424"/>
       <source>Constraint heat flux</source>
       <translation>Obciążenie strumieniem ciepła</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintInitialTemperature.cpp" line="99"/>
+      <location filename="../../TaskFemConstraintInitialTemperature.cpp" line="98"/>
       <source>Constraint initial temperature</source>
       <translation>Zdefiniuj temperaturę początkową</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="297"/>
+      <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="296"/>
       <source>Constraint planerotation</source>
       <translation>Wiązanie utrzymujące węzły na płaskiej powierzchni (MPC Plane)</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintPressure.cpp" line="296"/>
+      <location filename="../../TaskFemConstraintPressure.cpp" line="295"/>
       <source>Constraint pressure</source>
       <translation>Zdefiniuj obciążenie ciśnieniem</translation>
     </message>
@@ -3703,22 +3698,22 @@ Uwaga: w 2D tylko ustawienie dla x jest możliwe,
       <translation>Zdefiniuj koło pasowe</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintSpring.cpp" line="305"/>
+      <location filename="../../TaskFemConstraintSpring.cpp" line="304"/>
       <source>Constraint spring</source>
       <translation>Wiązanie sprężyny</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintTemperature.cpp" line="334"/>
+      <location filename="../../TaskFemConstraintTemperature.cpp" line="333"/>
       <source>Constraint temperature</source>
       <translation>Zdefiniuj temperaturę</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="564"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="563"/>
       <source>Constraint transform</source>
       <translation>Zdefiniuj odkształcenie</translation>
     </message>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="346"/>
+      <location filename="../../TaskPostBoxes.cpp" line="344"/>
       <source>Edit post processing object</source>
       <translation>Edytuj obiekt otrzymanych wyników</translation>
     </message>
@@ -3758,7 +3753,7 @@ Uwaga: w 2D tylko ustawienie dla x jest możliwe,
       <translation>Grupy</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAnalysis.cpp" line="310"/>
+      <location filename="../../ViewProviderAnalysis.cpp" line="308"/>
       <source>Are you sure you want to continue?</source>
       <translation>Czy na pewno chcesz kontynuować?</translation>
     </message>
@@ -3778,7 +3773,7 @@ Uwaga: w 2D tylko ustawienie dla x jest możliwe,
     <message>
       <location filename="../ui/ResultShow.ui" line="34"/>
       <source>None</source>
-      <translation>Żadne</translation>
+      <translation>Brak</translation>
     </message>
     <message>
       <location filename="../ui/ResultShow.ui" line="50"/>
@@ -4068,11 +4063,6 @@ Aby uzyskać możliwe zmienne, zobacz pole opisu poniżej.</translation>
   <context>
     <name>SphereWidget</name>
     <message>
-      <location filename="../../SphereWidget.ui" line="14"/>
-      <source>Form</source>
-      <translation>Formularz</translation>
-    </message>
-    <message>
       <location filename="../../SphereWidget.ui" line="22"/>
       <source>x</source>
       <translation>x</translation>
@@ -4101,18 +4091,13 @@ Aby uzyskać możliwe zmienne, zobacz pole opisu poniżej.</translation>
   <context>
     <name>Std_Delete</name>
     <message>
-      <location filename="../../ViewProviderAnalysis.cpp" line="313"/>
+      <location filename="../../ViewProviderAnalysis.cpp" line="311"/>
       <source>Object dependencies</source>
       <translation>Zależności obiektu</translation>
     </message>
   </context>
   <context>
     <name>TaskAnalysisInfo</name>
-    <message>
-      <location filename="../../TaskAnalysisInfo.ui" line="20"/>
-      <source>Form</source>
-      <translation>Formularz</translation>
-    </message>
     <message>
       <location filename="../../TaskAnalysisInfo.ui" line="32"/>
       <source>Meshes:</source>
@@ -4126,11 +4111,6 @@ Aby uzyskać możliwe zmienne, zobacz pole opisu poniżej.</translation>
   </context>
   <context>
     <name>TaskCreateNodeSet</name>
-    <message>
-      <location filename="../../TaskCreateNodeSet.ui" line="20"/>
-      <source>Form</source>
-      <translation>Formularz</translation>
-    </message>
     <message>
       <location filename="../../TaskCreateNodeSet.ui" line="27"/>
       <source>Volume</source>
@@ -4183,20 +4163,7 @@ Aby uzyskać możliwe zmienne, zobacz pole opisu poniżej.</translation>
     </message>
   </context>
   <context>
-    <name>TaskDriver</name>
-    <message>
-      <location filename="../../TaskDriver.ui" line="20"/>
-      <source>Form</source>
-      <translation>Formularz</translation>
-    </message>
-  </context>
-  <context>
     <name>TaskFemConstraint</name>
-    <message>
-      <location filename="../../TaskFemConstraint.ui" line="14"/>
-      <source>Form</source>
-      <translation>Formularz</translation>
-    </message>
     <message>
       <location filename="../../TaskFemConstraint.ui" line="23"/>
       <source>Add reference</source>
@@ -4245,11 +4212,6 @@ Aby uzyskać możliwe zmienne, zobacz pole opisu poniżej.</translation>
   </context>
   <context>
     <name>TaskFemConstraintBearing</name>
-    <message>
-      <location filename="../../TaskFemConstraintBearing.ui" line="14"/>
-      <source>Form</source>
-      <translation>Formularz</translation>
-    </message>
     <message>
       <location filename="../../TaskFemConstraintBearing.ui" line="20"/>
       <source>Add reference</source>
@@ -4308,7 +4270,7 @@ Aby uzyskać możliwe zmienne, zobacz pole opisu poniżej.</translation>
     <message>
       <location filename="../../TaskFemConstraintBearing.ui" line="205"/>
       <source>Location</source>
-      <translation>Położenie</translation>
+      <translation>Umiejscowienie</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintBearing.ui" line="219"/>
@@ -4318,11 +4280,6 @@ Aby uzyskać możliwe zmienne, zobacz pole opisu poniżej.</translation>
   </context>
   <context>
     <name>TaskFemConstraintContact</name>
-    <message>
-      <location filename="../../TaskFemConstraintContact.ui" line="14"/>
-      <source>Form</source>
-      <translation>Formularz</translation>
-    </message>
     <message>
       <location filename="../../TaskFemConstraintContact.ui" line="20"/>
       <source>Select master face, click Add or Remove</source>
@@ -4464,11 +4421,6 @@ generowanej przez przepływ
   <context>
     <name>TaskFemConstraintFixed</name>
     <message>
-      <location filename="../../TaskFemConstraintFixed.ui" line="14"/>
-      <source>Form</source>
-      <translation>Formularz</translation>
-    </message>
-    <message>
       <location filename="../../TaskFemConstraintFixed.ui" line="20"/>
       <source>Select multiple face(s), click Add or Remove</source>
       <translation>Wybierz wiele ścian, kliknij przycisk Dodaj lub Usuń</translation>
@@ -4486,11 +4438,6 @@ generowanej przez przepływ
   </context>
   <context>
     <name>TaskFemConstraintFluidBoundary</name>
-    <message>
-      <location filename="../../TaskFemConstraintFluidBoundary.ui" line="14"/>
-      <source>Form</source>
-      <translation>Formularz</translation>
-    </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.ui" line="28"/>
       <source>Boundary </source>
@@ -4722,11 +4669,6 @@ normal vector of the face is used as direction</source>
   <context>
     <name>TaskFemConstraintPlaneRotation</name>
     <message>
-      <location filename="../../TaskFemConstraintPlaneRotation.ui" line="14"/>
-      <source>Form</source>
-      <translation>Formularz</translation>
-    </message>
-    <message>
       <location filename="../../TaskFemConstraintPlaneRotation.ui" line="20"/>
       <source>Select a single face, click Add or Remove</source>
       <translation>Wybierz pojedynczą powierzchnię, kliknij Dodaj lub Usuń</translation>
@@ -4744,11 +4686,6 @@ normal vector of the face is used as direction</source>
   </context>
   <context>
     <name>TaskFemConstraintPressure</name>
-    <message>
-      <location filename="../../TaskFemConstraintPressure.ui" line="14"/>
-      <source>Form</source>
-      <translation>Formularz</translation>
-    </message>
     <message>
       <location filename="../../TaskFemConstraintPressure.ui" line="20"/>
       <source>Select multiple face(s), click Add or Remove</source>
@@ -4782,11 +4719,6 @@ normal vector of the face is used as direction</source>
   </context>
   <context>
     <name>TaskFemConstraintSpring</name>
-    <message>
-      <location filename="../../TaskFemConstraintSpring.ui" line="14"/>
-      <source>Form</source>
-      <translation>Formularz</translation>
-    </message>
     <message>
       <location filename="../../TaskFemConstraintSpring.ui" line="20"/>
       <source>Select multiple face(s), click Add or Remove</source>
@@ -4828,11 +4760,6 @@ użyta przez solver Elmer</translation>
   <context>
     <name>TaskFemConstraintTemperature</name>
     <message>
-      <location filename="../../TaskFemConstraintTemperature.ui" line="14"/>
-      <source>Form</source>
-      <translation>Formularz</translation>
-    </message>
-    <message>
       <location filename="../../TaskFemConstraintTemperature.ui" line="20"/>
       <source>Select multiple face(s), click Add or Remove</source>
       <translation>Wybierz wiele ścian, kliknij przycisk Dodaj lub Usuń</translation>
@@ -4861,11 +4788,6 @@ użyta przez solver Elmer</translation>
   </context>
   <context>
     <name>TaskFemConstraintTransform</name>
-    <message>
-      <location filename="../../TaskFemConstraintTransform.ui" line="14"/>
-      <source>Form</source>
-      <translation>Formularz</translation>
-    </message>
     <message>
       <location filename="../../TaskFemConstraintTransform.ui" line="22"/>
       <source>Rectangular transform</source>
@@ -4914,20 +4836,7 @@ użyta przez solver Elmer</translation>
     </message>
   </context>
   <context>
-    <name>TaskObjectName</name>
-    <message>
-      <location filename="../../TaskObjectName.ui" line="14"/>
-      <source>Form</source>
-      <translation>Formularz</translation>
-    </message>
-  </context>
-  <context>
     <name>TaskPostClip</name>
-    <message>
-      <location filename="../../TaskPostClip.ui" line="20"/>
-      <source>Form</source>
-      <translation>Formularz</translation>
-    </message>
     <message>
       <location filename="../../TaskPostClip.ui" line="31"/>
       <source>Create</source>
@@ -4947,11 +4856,6 @@ użyta przez solver Elmer</translation>
   <context>
     <name>TaskPostCut</name>
     <message>
-      <location filename="../../TaskPostCut.ui" line="20"/>
-      <source>Form</source>
-      <translation>Formularz</translation>
-    </message>
-    <message>
       <location filename="../../TaskPostCut.ui" line="31"/>
       <source>Create</source>
       <translation>Utwórz</translation>
@@ -4959,11 +4863,6 @@ użyta przez solver Elmer</translation>
   </context>
   <context>
     <name>TaskPostDataAlongLine</name>
-    <message>
-      <location filename="../../TaskPostDataAlongLine.ui" line="14"/>
-      <source>Form</source>
-      <translation>Formularz</translation>
-    </message>
     <message>
       <location filename="../../TaskPostDataAlongLine.ui" line="20"/>
       <source>Coordinates</source>
@@ -5066,11 +4965,6 @@ użyta przez solver Elmer</translation>
   <context>
     <name>TaskPostDisplay</name>
     <message>
-      <location filename="../../TaskPostDisplay.ui" line="14"/>
-      <source>Form</source>
-      <translation>Formularz</translation>
-    </message>
-    <message>
       <location filename="../../TaskPostDisplay.ui" line="28"/>
       <source>Mode</source>
       <translation>Tryb</translation>
@@ -5148,11 +5042,6 @@ użyta przez solver Elmer</translation>
   <context>
     <name>TaskPostScalarClip</name>
     <message>
-      <location filename="../../TaskPostScalarClip.ui" line="14"/>
-      <source>Form</source>
-      <translation>Formularz</translation>
-    </message>
-    <message>
       <location filename="../../TaskPostScalarClip.ui" line="28"/>
       <source>Scalar</source>
       <translation>Skalar</translation>
@@ -5201,11 +5090,6 @@ użyta przez solver Elmer</translation>
   <context>
     <name>TaskPostWarpVector</name>
     <message>
-      <location filename="../../TaskPostWarpVector.ui" line="14"/>
-      <source>Form</source>
-      <translation>Formularz</translation>
-    </message>
-    <message>
       <location filename="../../TaskPostWarpVector.ui" line="28"/>
       <source>Vector</source>
       <translation>Wektor</translation>
@@ -5233,11 +5117,6 @@ użyta przez solver Elmer</translation>
   </context>
   <context>
     <name>TaskTetParameter</name>
-    <message>
-      <location filename="../../TaskTetParameter.ui" line="20"/>
-      <source>Form</source>
-      <translation>Formularz</translation>
-    </message>
     <message>
       <location filename="../../TaskTetParameter.ui" line="28"/>
       <source>Max. Size:</source>
@@ -6109,7 +5988,7 @@ sprężystość (naprężenia)</translation>
       <location filename="../../../femsolver/solver_taskpanel.py" line="311"/>
       <location filename="../../../femsolver/solver_taskpanel.py" line="315"/>
       <source>Edit</source>
-      <translation>Edytuj</translation>
+      <translation>Edycja</translation>
     </message>
     <message>
       <location filename="../../../femsolver/solver_taskpanel.py" line="248"/>
@@ -6380,11 +6259,6 @@ sił magnetodynamicznych 2D</translation>
   <context>
     <name>TaskPostContours</name>
     <message>
-      <location filename="../../TaskPostContours.ui" line="14"/>
-      <source>Form</source>
-      <translation>Formularz</translation>
-    </message>
-    <message>
       <location filename="../../TaskPostContours.ui" line="25"/>
       <source>Vector:</source>
       <translation>Wektor:</translation>
@@ -6444,7 +6318,7 @@ sił magnetodynamicznych 2D</translation>
   <context>
     <name>FemGui::TaskPostContours</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="1401"/>
+      <location filename="../../TaskPostBoxes.cpp" line="1393"/>
       <source>Contours filter options</source>
       <translation>Wybierz opcje filtra</translation>
     </message>
@@ -6532,7 +6406,7 @@ deformacji (sprężystość nieliniowa)</translation>
     <message>
       <location filename="../../CylinderWidget.ui" line="58"/>
       <source>Center</source>
-      <translation>Środek</translation>
+      <translation>Wyśrodkowane</translation>
     </message>
     <message>
       <location filename="../../CylinderWidget.ui" line="110"/>

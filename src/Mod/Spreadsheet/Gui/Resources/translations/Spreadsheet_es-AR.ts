@@ -16,7 +16,7 @@
     <message>
       <location filename="../../Command.cpp" line="883"/>
       <source>Create a new spreadsheet</source>
-      <translation>Crear una nueva hoja de cálculo</translation>
+      <translation>Crea una nueva hoja de cálculo</translation>
     </message>
   </context>
   <context>
@@ -142,7 +142,7 @@
     <message>
       <location filename="../../Command.cpp" line="225"/>
       <source>Export spreadsheet to CSV file</source>
-      <translation>Exportar hoja de cálculo como archivo CSV</translation>
+      <translation>Exporta la hoja de cálculo como archivo CSV</translation>
     </message>
   </context>
   <context>
@@ -160,7 +160,7 @@
     <message>
       <location filename="../../Command.cpp" line="175"/>
       <source>Import CSV file into spreadsheet</source>
-      <translation>Importar archivo CSV en la hoja de cálculo</translation>
+      <translation>Importa un archivo CSV en la hoja de cálculo</translation>
     </message>
   </context>
   <context>
@@ -178,7 +178,7 @@
     <message>
       <location filename="../../Command.cpp" line="61"/>
       <source>Merge selected cells</source>
-      <translation>Combinar celdas seleccionadas</translation>
+      <translation>Combina las celdas seleccionadas</translation>
     </message>
   </context>
   <context>
@@ -196,7 +196,7 @@
     <message>
       <location filename="../../Command.cpp" line="819"/>
       <source>Set alias for selected cell</source>
-      <translation>Establecer alias para la celda selecionada</translation>
+      <translation>Establece un alias para la celda seleccionada</translation>
     </message>
   </context>
   <context>
@@ -214,7 +214,7 @@
     <message>
       <location filename="../../Command.cpp" line="116"/>
       <source>Split previously merged cells</source>
-      <translation>Dividir celdas previamente combinadas</translation>
+      <translation>Divide las celdas previamente combinadas</translation>
     </message>
   </context>
   <context>
@@ -232,7 +232,7 @@
     <message>
       <location filename="../../Command.cpp" line="598"/>
       <source>Set text in selected cells bold</source>
-      <translation>Establecer texto en negrita en las celdas seleccionadas</translation>
+      <translation>Establece texto en negrita en las celdas seleccionadas</translation>
     </message>
   </context>
   <context>
@@ -250,7 +250,7 @@
     <message>
       <location filename="../../Command.cpp" line="672"/>
       <source>Set text in selected cells italic</source>
-      <translation>Establecer texto en cursiva en las celdas seleccionadas</translation>
+      <translation>Establece texto en cursiva en las celdas seleccionadas</translation>
     </message>
   </context>
   <context>
@@ -268,7 +268,7 @@
     <message>
       <location filename="../../Command.cpp" line="746"/>
       <source>Underline text in selected cells</source>
-      <translation>Texto subrayado en las celdas seleccionadas</translation>
+      <translation>Subraya el texto en las celdas seleccionadas</translation>
     </message>
   </context>
   <context>
@@ -347,41 +347,41 @@
       <translation>Definir propiedades de celda</translation>
     </message>
     <message>
-      <location filename="../../SheetModel.cpp" line="512"/>
+      <location filename="../../SheetModel.cpp" line="510"/>
       <source>Edit cell</source>
       <translation>Editar celda</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="325"/>
-      <location filename="../../SheetTableView.cpp" line="357"/>
+      <location filename="../../SheetTableView.cpp" line="326"/>
+      <location filename="../../SheetTableView.cpp" line="358"/>
       <source>Insert rows</source>
       <translation>Insertar filas</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="376"/>
-      <location filename="../../SheetTableView.cpp" line="449"/>
+      <location filename="../../SheetTableView.cpp" line="378"/>
+      <location filename="../../SheetTableView.cpp" line="453"/>
       <source>Remove rows</source>
       <translation>Eliminar filas</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="397"/>
-      <location filename="../../SheetTableView.cpp" line="430"/>
+      <location filename="../../SheetTableView.cpp" line="400"/>
+      <location filename="../../SheetTableView.cpp" line="433"/>
       <source>Insert columns</source>
       <translation>Insertar columnas</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="632"/>
+      <location filename="../../SheetTableView.cpp" line="634"/>
       <location filename="../../SpreadsheetView.cpp" line="161"/>
       <source>Clear cell(s)</source>
       <translation>Limpiar celda(s)</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="132"/>
+      <location filename="../../Workbench.cpp" line="130"/>
       <source>Set foreground color</source>
       <translation>Establecer color de primer plano</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="159"/>
+      <location filename="../../Workbench.cpp" line="157"/>
       <source>Set background color</source>
       <translation>Establecer color de fondo</translation>
     </message>
@@ -391,7 +391,7 @@
     <message>
       <location filename="../../DlgBindSheet.ui" line="14"/>
       <source>Bind Spreadsheet Cells</source>
-      <translation>Enlazar celdas de hoja de cálculo</translation>
+      <translation>Vincular celdas de hoja de cálculo</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="69"/>
@@ -406,17 +406,17 @@
     <message>
       <location filename="../../DlgBindSheet.ui" line="22"/>
       <source>First cell in range</source>
-      <translation>Celda inicial en rango</translation>
+      <translation>Primer celda del rango</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="29"/>
       <source>Last cell in range</source>
-      <translation>Celda final en rango</translation>
+      <translation>Última celda del rango</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="36"/>
       <source>Bind cells:</source>
-      <translation>Enlazar celdas:</translation>
+      <translation>Vincular celdas:</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="49"/>
@@ -433,7 +433,7 @@
       <source>Start cell address to bind to.
 Type '=' if you want to use an expression.
 The expression must evaluate to a string of some cell address.</source>
-      <translation>Dirección de celda inicial a enlazar. 
+      <translation>Dirección de celda inicial a vincular. 
 Escriba '=' si desea utilizar una expresión.
 La expresión debe evaluar a una cadena de alguna dirección de celda.</translation>
     </message>
@@ -442,14 +442,14 @@ La expresión debe evaluar a una cadena de alguna dirección de celda.</translat
       <source>End cell address to bind to.
 Type '=' if you want to use an expression.
 The expression must evaluate to a string of some cell address.</source>
-      <translation>Dirección de celda final a enlazar.
+      <translation>Dirección de celda final a vincular.
 Escriba '=' si desea utilizar una expresión.
 La expresión debe evaluar a una cadena de alguna dirección de celda.</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="110"/>
       <source>Which spread sheet to bind to</source>
-      <translation>Seleccione la hoja de cálculo a la que enlazar</translation>
+      <translation>A qué hoja de cálculo vincular</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="126"/>
@@ -458,17 +458,17 @@ be hidden to the dependency checking.
 Useful to avoid cyclic dependencies, but use with caution!</source>
       <translation>La dependencia con la hoja de cálculo referenciada
 se ocultará de la verificación de dependencias.
-Es util para evitar dependencias cíclicas pero ¡úselo con precaución!</translation>
+Es útil para evitar dependencias cíclicas pero ¡úselo con precaución!</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="131"/>
       <source>Hide dependency of binding</source>
-      <translation>Ocultar dependencia del enlace</translation>
+      <translation>Ocultar dependencia del vínculo</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="140"/>
       <source>Unbind</source>
-      <translation>Desenlazar</translation>
+      <translation>Desvincular</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="147"/>
@@ -486,7 +486,7 @@ Es util para evitar dependencias cíclicas pero ¡úselo con precaución!</trans
     <message>
       <location filename="../../DlgSheetConf.ui" line="14"/>
       <source>Setup Configuration Table</source>
-      <translation>Configurar tabla de configuración</translation>
+      <translation>Ajustes de tabla de configuración</translation>
     </message>
     <message>
       <location filename="../../DlgSheetConf.ui" line="20"/>
@@ -507,7 +507,7 @@ by that property.
       <translation>Dirección de celda inicial.
 
 Se asume que la primera columna del rango contiene una lista de nombres de configuración,
-que se utilizará para generar una lista de cadenas y enlazar a la propiedad
+que se utilizará para generar una lista de cadenas y vincular a la propiedad
 dada para que el usuario cambie dinámicamente la configuración.
 
 La primera fila del rango estará vinculada a cualquier fila seleccionada (indirectamente)
@@ -528,7 +528,7 @@ by that property.
       <translation>Dirección de celda final.
 
 Se asume que la primera columna del rango contiene una lista de nombres de configuración,
-que se utilizará para generar una lista de cadenas y enlazar a la propiedad
+que se utilizará para generar una lista de cadenas y vincular a la propiedad
 dada para que el usuario cambie dinámicamente la configuración.
 
 La primera fila del rango estará vinculada a cualquier fila seleccionada (indirectamente)
@@ -555,7 +555,7 @@ la configuración de diseño. La propiedad se creará si no existe.</translation
     <message>
       <location filename="../../DlgSheetConf.ui" line="79"/>
       <source>Optional property group name.</source>
-      <translation>Nombre de grupo de propiedades opcional.</translation>
+      <translation>Nombre opcional del grupo de propiedades.</translation>
     </message>
     <message>
       <location filename="../../DlgSheetConf.ui" line="88"/>
@@ -701,29 +701,29 @@ la configuración de diseño. La propiedad se creará si no existe.</translation
       <translation>Mostrar hoja de cálculo</translation>
     </message>
     <message>
+      <location filename="../../Workbench.cpp" line="89"/>
       <location filename="../../Workbench.cpp" line="91"/>
-      <location filename="../../Workbench.cpp" line="93"/>
       <source>Set cell(s) foreground color</source>
       <translation>Color de celda(s) primer plano</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="92"/>
+      <location filename="../../Workbench.cpp" line="90"/>
       <source>Sets the Spreadsheet cell(s) foreground color</source>
       <translation>Establece el color de frente de las celda(s) de la hoja de cálculo</translation>
     </message>
     <message>
+      <location filename="../../Workbench.cpp" line="104"/>
       <location filename="../../Workbench.cpp" line="106"/>
-      <location filename="../../Workbench.cpp" line="108"/>
       <source>Set cell(s) background color</source>
       <translation>Establecer color de fondo de celda(s)</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="107"/>
+      <location filename="../../Workbench.cpp" line="105"/>
       <source>Sets the Spreadsheet cell(s) background color</source>
       <translation>Establece el color de fondo de celda(s) de la hoja de cálculo</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="752"/>
+      <location filename="../../SheetTableView.cpp" line="754"/>
       <source>Copy &amp; Paste failed</source>
       <translation>Copiar &amp; Pegar ha fallado</translation>
     </message>
@@ -741,7 +741,7 @@ Spreadsheet.mi_nombre_de_alias en lugar de Spreadsheet.B1
 </translation>
     </message>
     <message>
-      <location filename="../../AppSpreadsheetGui.cpp" line="121"/>
+      <location filename="../../AppSpreadsheetGui.cpp" line="119"/>
       <source>Spreadsheet</source>
       <translation>Hoja de cálculo</translation>
     </message>
@@ -860,11 +860,6 @@ Spreadsheet.mi_nombre_de_alias en lugar de Spreadsheet.B1
   <context>
     <name>Sheet</name>
     <message>
-      <location filename="../../Sheet.ui" line="14"/>
-      <source>Form</source>
-      <translation>Forma</translation>
-    </message>
-    <message>
       <location filename="../../Sheet.ui" line="22"/>
       <source>&amp;Content:</source>
       <translation>&amp;Contenido:</translation>
@@ -888,21 +883,21 @@ Spreadsheet.mi_nombre_de_alias en lugar de Spreadsheet.B1
     <message>
       <location filename="../../DlgBindSheet.cpp" line="197"/>
       <source>Bind cells</source>
-      <translation>Enlazar celdas</translation>
+      <translation>Vincular celdas</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.cpp" line="198"/>
       <source>Source and target cell count mismatch. Partial binding may still work.
 
 Do you want to continue?</source>
-      <translation>El recuento de celdas de origen y destino no coincide. Puede que el enlace parcial funcione.
+      <translation>El recuento de celdas de origen y destino no coincide. La vinculación parcial puede seguir funcionando.
 
 ¿Desea continuar?</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.cpp" line="225"/>
       <source>Bind Spreadsheet Cells</source>
-      <translation>Enlazar celdas de hoja de cálculo</translation>
+      <translation>Vincular celdas de hoja de cálculo</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.cpp" line="225"/>
@@ -914,7 +909,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../DlgBindSheet.cpp" line="243"/>
       <source>Unbind cells</source>
-      <translation>Desenlazar celdas</translation>
+      <translation>Desvincular celdas</translation>
     </message>
   </context>
   <context>
@@ -927,7 +922,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../DlgSettings.ui" line="26"/>
       <source>Display Settings</source>
-      <translation>Mostrar Ajustes</translation>
+      <translation>Mostrar ajustes</translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="32"/>
@@ -947,9 +942,9 @@ Defaults to: %V = %A
 %A - alias name
 %V - cell value</source>
       <translation>El formato de la presentación de la cadena de celda personalizada.
-Por defecto: %V = %A
+Por defecto a: %V = %A
 
-%A - nombre del alias
+%A - alias nombre
 %V - valor de celda</translation>
     </message>
     <message>
@@ -1074,61 +1069,61 @@ Por defecto: %V = %A
     </message>
     <message>
       <location filename="../../SheetTableView.cpp" line="169"/>
-      <location filename="../../SheetTableView.cpp" line="613"/>
+      <location filename="../../SheetTableView.cpp" line="615"/>
       <source>Properties...</source>
       <translation>Propiedades...</translation>
     </message>
     <message>
       <location filename="../../SheetTableView.cpp" line="181"/>
-      <location filename="../../SheetTableView.cpp" line="614"/>
+      <location filename="../../SheetTableView.cpp" line="616"/>
       <source>Recompute</source>
       <translation>Recalcular</translation>
     </message>
     <message>
       <location filename="../../SheetTableView.cpp" line="185"/>
-      <location filename="../../SheetTableView.cpp" line="622"/>
+      <location filename="../../SheetTableView.cpp" line="624"/>
       <source>Bind...</source>
-      <translation>Enlazar...</translation>
+      <translation>Vincular...</translation>
     </message>
     <message>
       <location filename="../../SheetTableView.cpp" line="189"/>
-      <location filename="../../SheetTableView.cpp" line="615"/>
+      <location filename="../../SheetTableView.cpp" line="617"/>
       <source>Configuration table...</source>
       <translation>Tabla de configuración...</translation>
     </message>
     <message>
       <location filename="../../SheetTableView.cpp" line="197"/>
-      <location filename="../../SheetTableView.cpp" line="616"/>
+      <location filename="../../SheetTableView.cpp" line="618"/>
       <source>Merge cells</source>
       <translation>Combinar celdas</translation>
     </message>
     <message>
       <location filename="../../SheetTableView.cpp" line="199"/>
-      <location filename="../../SheetTableView.cpp" line="617"/>
+      <location filename="../../SheetTableView.cpp" line="619"/>
       <source>Split cells</source>
       <translation>Dividir celdas</translation>
     </message>
     <message>
       <location filename="../../SheetTableView.cpp" line="203"/>
-      <location filename="../../SheetTableView.cpp" line="620"/>
+      <location filename="../../SheetTableView.cpp" line="622"/>
       <source>Cut</source>
       <translation>Cortar</translation>
     </message>
     <message>
       <location filename="../../SheetTableView.cpp" line="205"/>
-      <location filename="../../SheetTableView.cpp" line="618"/>
+      <location filename="../../SheetTableView.cpp" line="620"/>
       <source>Copy</source>
       <translation>Copiar</translation>
     </message>
     <message>
       <location filename="../../SheetTableView.cpp" line="207"/>
-      <location filename="../../SheetTableView.cpp" line="619"/>
+      <location filename="../../SheetTableView.cpp" line="621"/>
       <source>Paste</source>
       <translation>Pegar</translation>
     </message>
     <message>
       <location filename="../../SheetTableView.cpp" line="209"/>
-      <location filename="../../SheetTableView.cpp" line="621"/>
+      <location filename="../../SheetTableView.cpp" line="623"/>
       <source>Delete</source>
       <translation>Eliminar</translation>
     </message>
@@ -1156,7 +1151,7 @@ Por defecto: %V = %A
     <message>
       <location filename="../../Workbench.cpp" line="51"/>
       <source>&amp;Spreadsheet</source>
-      <translation>&amp;Spreadsheet</translation>
+      <translation>&amp;Hoja de cálculo</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="52"/>
@@ -1166,13 +1161,13 @@ Por defecto: %V = %A
     <message>
       <location filename="../../Workbench.cpp" line="53"/>
       <source>&amp;Styles</source>
-      <translation>E&amp;stilos</translation>
+      <translation>&amp;Estilos</translation>
     </message>
   </context>
   <context>
     <name>Py</name>
     <message>
-      <location filename="../../AppSpreadsheetGui.cpp" line="80"/>
+      <location filename="../../AppSpreadsheetGui.cpp" line="78"/>
       <source>Unnamed</source>
       <translation>Sin nombre</translation>
     </message>
