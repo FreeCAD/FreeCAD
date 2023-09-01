@@ -24,7 +24,7 @@
 #define _CurveProjector_h_
 
 #ifdef FC_USE_GTS
-# include <gts.h>
+#include <gts.h>
 #endif
 
 #include <TopoDS_Edge.hxx>
@@ -38,10 +38,10 @@ namespace MeshCore
 class MeshKernel;
 class MeshGeomFacet;
 class MeshFacetGrid;
-}
+}// namespace MeshCore
 
-using MeshCore::MeshKernel;
 using MeshCore::MeshGeomFacet;
+using MeshCore::MeshKernel;
 
 namespace MeshPart
 {
@@ -51,35 +51,39 @@ namespace MeshPart
 class MeshPartExport CurveProjector
 {
 public:
-  CurveProjector(const TopoDS_Shape &aShape, const MeshKernel &pMesh);
-  virtual ~CurveProjector() = default;
+    CurveProjector(const TopoDS_Shape& aShape, const MeshKernel& pMesh);
+    virtual ~CurveProjector() = default;
 
-  struct FaceSplitEdge
-  {
-    MeshCore::FacetIndex ulFaceIndex;
-    Base::Vector3f p1,p2;
-  };
+    struct FaceSplitEdge
+    {
+        MeshCore::FacetIndex ulFaceIndex;
+        Base::Vector3f p1, p2;
+    };
 
-  template<class T>
-    struct TopoDSLess {
-    bool operator()(const T& x, const T& y) const {
-      return x.HashCode(INT_MAX-1) < y.HashCode(INT_MAX-1);
+    template<class T>
+    struct TopoDSLess
+    {
+        bool operator()(const T& x, const T& y) const
+        {
+            return x.HashCode(INT_MAX - 1) < y.HashCode(INT_MAX - 1);
+        }
+    };
+
+    using result_type = std::map<TopoDS_Edge, std::vector<FaceSplitEdge>, TopoDSLess<TopoDS_Edge>>;
+
+
+    result_type& result()
+    {
+        return mvEdgeSplitPoints;
     }
-  };
 
-  using result_type = std::map<TopoDS_Edge, std::vector<FaceSplitEdge>,TopoDSLess<TopoDS_Edge> >;
-
-
-  result_type &result() {return  mvEdgeSplitPoints;}
-
-  void writeIntersectionPointsToFile(const char *name="export_pts.asc");
+    void writeIntersectionPointsToFile(const char* name = "export_pts.asc");
 
 protected:
-  virtual void Do()=0;
-  const TopoDS_Shape &_Shape;
-  const MeshKernel &_Mesh;
-  result_type mvEdgeSplitPoints;
-
+    virtual void Do() = 0;
+    const TopoDS_Shape& _Shape;
+    const MeshKernel& _Mesh;
+    result_type mvEdgeSplitPoints;
 };
 
 
@@ -88,20 +92,20 @@ protected:
 class MeshPartExport CurveProjectorShape: public CurveProjector
 {
 public:
-  CurveProjectorShape(const TopoDS_Shape &aShape, const MeshKernel &pMesh);
-  ~CurveProjectorShape() override = default;
+    CurveProjectorShape(const TopoDS_Shape& aShape, const MeshKernel& pMesh);
+    ~CurveProjectorShape() override = default;
 
-  void projectCurve(const TopoDS_Edge& aEdge,
-                    std::vector<FaceSplitEdge> &vSplitEdges);
+    void projectCurve(const TopoDS_Edge& aEdge, std::vector<FaceSplitEdge>& vSplitEdges);
 
-  bool findStartPoint(const MeshKernel &MeshK,const Base::Vector3f &Pnt,Base::Vector3f &Rslt,MeshCore::FacetIndex &FaceIndex);
-
+    bool findStartPoint(const MeshKernel& MeshK,
+                        const Base::Vector3f& Pnt,
+                        Base::Vector3f& Rslt,
+                        MeshCore::FacetIndex& FaceIndex);
 
 
 protected:
-  void Do() override;
+    void Do() override;
 };
-
 
 
 /** Project by projecting a sampled curve to the mesh
@@ -109,23 +113,27 @@ protected:
 class MeshPartExport CurveProjectorSimple: public CurveProjector
 {
 public:
-  CurveProjectorSimple(const TopoDS_Shape &aShape, const MeshKernel &pMesh);
-  ~CurveProjectorSimple() override = default;
+    CurveProjectorSimple(const TopoDS_Shape& aShape, const MeshKernel& pMesh);
+    ~CurveProjectorSimple() override = default;
 
-  /// helper to discredicice a Edge...
-  void GetSampledCurves( const TopoDS_Edge& aEdge, std::vector<Base::Vector3f>& rclPoints, unsigned long ulNbOfPoints = 30);
+    /// helper to discredicice a Edge...
+    void GetSampledCurves(const TopoDS_Edge& aEdge,
+                          std::vector<Base::Vector3f>& rclPoints,
+                          unsigned long ulNbOfPoints = 30);
 
 
-  void projectCurve(const TopoDS_Edge& aEdge,
-                    const std::vector<Base::Vector3f> &rclPoints,
-                    std::vector<FaceSplitEdge> &vSplitEdges);
+    void projectCurve(const TopoDS_Edge& aEdge,
+                      const std::vector<Base::Vector3f>& rclPoints,
+                      std::vector<FaceSplitEdge>& vSplitEdges);
 
-  bool findStartPoint(const MeshKernel &MeshK,const Base::Vector3f &Pnt,Base::Vector3f &Rslt,MeshCore::FacetIndex &FaceIndex);
-
+    bool findStartPoint(const MeshKernel& MeshK,
+                        const Base::Vector3f& Pnt,
+                        Base::Vector3f& Rslt,
+                        MeshCore::FacetIndex& FaceIndex);
 
 
 protected:
-  void Do() override;
+    void Do() override;
 };
 
 /** Project by projecting a sampled curve to the mesh
@@ -133,22 +141,25 @@ protected:
 class MeshPartExport CurveProjectorWithToolMesh: public CurveProjector
 {
 public:
-  struct LineSeg {
-    Base::Vector3f p;
-    Base::Vector3f n;
-  };
+    struct LineSeg
+    {
+        Base::Vector3f p;
+        Base::Vector3f n;
+    };
 
-  CurveProjectorWithToolMesh(const TopoDS_Shape &aShape, const MeshKernel &pMesh,MeshKernel &rToolMesh);
-  ~CurveProjectorWithToolMesh() override = default;
+    CurveProjectorWithToolMesh(const TopoDS_Shape& aShape,
+                               const MeshKernel& pMesh,
+                               MeshKernel& rToolMesh);
+    ~CurveProjectorWithToolMesh() override = default;
 
 
-  void makeToolMesh(const TopoDS_Edge& aEdge,std::vector<MeshGeomFacet> &cVAry );
+    void makeToolMesh(const TopoDS_Edge& aEdge, std::vector<MeshGeomFacet>& cVAry);
 
 
-  MeshKernel &ToolMesh;
+    MeshKernel& ToolMesh;
 
 protected:
-  void Do() override;
+    void Do() override;
 };
 
 /**
@@ -162,7 +173,7 @@ public:
     struct SplitEdge
     {
         MeshCore::PointIndex uE0, uE1; /**< start and endpoint of an edge */
-        Base::Vector3f cPt; /**< Point on edge (\a uE0, \a uE1) */
+        Base::Vector3f cPt;            /**< Point on edge (\a uE0, \a uE1) */
     };
     struct Edge
     {
@@ -184,49 +195,66 @@ public:
      * @param dir
      * @param parameters
      */
-    void findSectionParameters(const TopoDS_Edge& edge, const Base::Vector3f& dir, std::set<double>& parameters) const;
-    void discretize(const TopoDS_Edge& aEdge, std::vector<Base::Vector3f>& polyline, std::size_t minPoints=2) const;
+    void findSectionParameters(const TopoDS_Edge& edge,
+                               const Base::Vector3f& dir,
+                               std::set<double>& parameters) const;
+    void discretize(const TopoDS_Edge& aEdge,
+                    std::vector<Base::Vector3f>& polyline,
+                    std::size_t minPoints = 2) const;
     /**
-     * Searches all edges that intersect with the projected curve \a aShape. Therefore \a aShape must
-     * contain shapes of type TopoDS_Edge, other shape types are ignored. A possible solution is
-     * taken if the distance between the curve point and the projected point is <= \a fMaxDist.
+     * Searches all edges that intersect with the projected curve \a aShape. Therefore \a aShape
+     * must contain shapes of type TopoDS_Edge, other shape types are ignored. A possible solution
+     * is taken if the distance between the curve point and the projected point is <= \a fMaxDist.
      */
-    void projectToMesh (const TopoDS_Shape &aShape, float fMaxDist, std::vector<PolyLine>& rPolyLines) const;
+    void projectToMesh(const TopoDS_Shape& aShape,
+                       float fMaxDist,
+                       std::vector<PolyLine>& rPolyLines) const;
     /**
      * @brief projectOnMesh
-     * Projects the given points onto the mesh along a given direction. The points can can be projected
-     * will be saved to \a pointsOut
+     * Projects the given points onto the mesh along a given direction. The points can can be
+     * projected will be saved to \a pointsOut
      * @brief projectOnMesh
      * @param pointsIn
      * @param dir
      * @param tolerance
      * @param pointsOut
      */
-    void projectOnMesh(const std::vector<Base::Vector3f>& pointsIn, const Base::Vector3f& dir,
-                       float tolerance, std::vector<Base::Vector3f>& pointsOut) const;
+    void projectOnMesh(const std::vector<Base::Vector3f>& pointsIn,
+                       const Base::Vector3f& dir,
+                       float tolerance,
+                       std::vector<Base::Vector3f>& pointsOut) const;
     /**
      * Project all edges of the shape onto the mesh using parallel projection.
      */
-    void projectParallelToMesh (const TopoDS_Shape &aShape, const Base::Vector3f& dir, std::vector<PolyLine>& rPolyLines) const;
+    void projectParallelToMesh(const TopoDS_Shape& aShape,
+                               const Base::Vector3f& dir,
+                               std::vector<PolyLine>& rPolyLines) const;
     /**
      * Project all polylines onto the mesh using parallel projection.
      */
-    void projectParallelToMesh (const std::vector<PolyLine>& aEdges, const Base::Vector3f& dir, std::vector<PolyLine>& rPolyLines) const;
+    void projectParallelToMesh(const std::vector<PolyLine>& aEdges,
+                               const Base::Vector3f& dir,
+                               std::vector<PolyLine>& rPolyLines) const;
     /**
-     * Cuts the mesh at the curve defined by \a aShape. This method call @ref projectToMesh() to get the
-     * split the facet at the found points. @see projectToMesh() for more details.
+     * Cuts the mesh at the curve defined by \a aShape. This method call @ref projectToMesh() to get
+     * the split the facet at the found points. @see projectToMesh() for more details.
      */
-    void splitMeshByShape (const TopoDS_Shape &aShape, float fMaxDist) const;
+    void splitMeshByShape(const TopoDS_Shape& aShape, float fMaxDist) const;
 
 protected:
-    void projectEdgeToEdge(const TopoDS_Edge &aCurve, float fMaxDist, const MeshCore::MeshFacetGrid& rGrid,
+    void projectEdgeToEdge(const TopoDS_Edge& aCurve,
+                           float fMaxDist,
+                           const MeshCore::MeshFacetGrid& rGrid,
                            std::vector<SplitEdge>& rSplitEdges) const;
-    bool findIntersection(const Edge&, const Edge&, const Base::Vector3f& dir, Base::Vector3f& res) const;
+    bool findIntersection(const Edge&,
+                          const Edge&,
+                          const Base::Vector3f& dir,
+                          Base::Vector3f& res) const;
 
 private:
     const MeshKernel& _rcMesh;
 };
 
-} // namespace MeshPart
+}// namespace MeshPart
 
 #endif
