@@ -251,6 +251,3 @@ const QVariant Material3DArray::getValue(int row, int column)
     return getValue(getDefault().getValue().toString(), row, column);
 
 }
-
-
-#include "moc_MaterialValue.cpp"

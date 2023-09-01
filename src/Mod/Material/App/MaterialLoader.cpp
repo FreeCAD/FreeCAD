@@ -420,6 +420,3 @@ std::list<QString>* MaterialLoader::getMaterialFolders(const MaterialLibrary &li
 
     return pathList;
 }
-
-
-#include "moc_MaterialLoader.cpp"

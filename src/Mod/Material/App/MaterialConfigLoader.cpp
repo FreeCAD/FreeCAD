@@ -379,6 +379,3 @@ Material *MaterialConfigLoader::getMaterialFromPath(const MaterialLibrary &libra
 
     return finalModel;
 }
-
-
-#include "moc_MaterialConfigLoader.cpp"

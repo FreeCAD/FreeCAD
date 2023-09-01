@@ -209,5 +209,3 @@ std::list<QString>* MaterialManager::getMaterialFolders(const MaterialLibrary &l
 {
     return MaterialLoader::getMaterialFolders(library);
 }
-
-#include "moc_MaterialManager.cpp"

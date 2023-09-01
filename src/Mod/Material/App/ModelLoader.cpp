@@ -388,6 +388,3 @@ std::list<ModelLibrary *> *ModelLoader::getModelLibraries()
 
     return _libraryList;
 }
-
-
-#include "moc_ModelLoader.cpp"

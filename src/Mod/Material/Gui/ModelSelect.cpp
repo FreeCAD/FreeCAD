@@ -544,10 +544,6 @@ void ModelSelect::accept()
 void ModelSelect::reject()
 {
     QDialog::reject();
-    // auto dw = qobject_cast<QDockWidget*>(parent());
-    // if (dw) {
-    //     dw->deleteLater();
-    // }
 }
 
 #include "moc_ModelSelect.cpp"

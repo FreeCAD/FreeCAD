@@ -115,5 +115,3 @@ ModelProperty& Model::operator[] (const QString& key)
         throw PropertyNotFound();
     }
 }
-
-#include "moc_Model.cpp"

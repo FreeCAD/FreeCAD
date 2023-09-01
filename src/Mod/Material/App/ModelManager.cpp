@@ -176,6 +176,3 @@ std::map<QString, ModelTreeNode*>* ModelManager::getModelTree(const ModelLibrary
 
     return modelTree;
 }
-
-
-#include "moc_ModelManager.cpp"
