@@ -59,10 +59,7 @@ Measurement::Measurement()
     References3D.setScope(App::LinkScope::Global);
 }
 
-Measurement::~Measurement()
-{
-
-}
+Measurement::~Measurement() = default;
 
 void Measurement::clear()
 {

@@ -457,9 +457,7 @@ TaskFaceColors::TaskFaceColors(ViewProviderPartExt* vp)
     Content.push_back(taskbox);
 }
 
-TaskFaceColors::~TaskFaceColors()
-{
-}
+TaskFaceColors::~TaskFaceColors() = default;
 
 void TaskFaceColors::open()
 {

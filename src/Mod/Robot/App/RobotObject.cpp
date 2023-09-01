@@ -37,7 +37,6 @@ PROPERTY_SOURCE(Robot::RobotObject, App::GeoFeature)
 
 
 RobotObject::RobotObject()
-:block(false)
 {
     ADD_PROPERTY_TYPE(RobotVrmlFile     ,(nullptr),"Robot definition"    ,Prop_None,"Included file with the VRML representation of the robot");
     ADD_PROPERTY_TYPE(RobotKinematicFile,(nullptr),"Robot definition",Prop_None,"Included file with kinematic definition of the robot Axis");
@@ -58,10 +57,6 @@ RobotObject::RobotObject()
     //ADD_PROPERTY_TYPE(Position,(Base::Placement()),"Robot definition",Prop_None,"Position of the robot in the simulation");
     ADD_PROPERTY_TYPE(Home ,(0),"Robot kinematic",Prop_None,"Axis position for home");
 
-}
-
-RobotObject::~RobotObject()
-{
 }
 
 short RobotObject::mustExecute() const

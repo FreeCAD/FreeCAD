@@ -1176,12 +1176,12 @@ QPushButton:checked:selected {
 }
 
 QPushButton:hover {
-  background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 @ThemeAccentColor1, stop:1 @ThemeAccentColor2);
+  background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 @ThemeAccentColor1, stop:1 @ThemeAccentColor3);
   color: White;
 }
 
 QPushButton:pressed {
-  background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 @ThemeAccentColor2, stop:1 @ThemeAccentColor1);
+  background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 @ThemeAccentColor1, stop:1 @ThemeAccentColor3);
 }
 
 QPushButton:selected {
@@ -1465,7 +1465,7 @@ QComboBox::drop-down {
   border-left: 1px solid transparent;
 }
 QComboBox::drop-down:hover {
-  background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 @ThemeAccentColor1, stop:1 @ThemeAccentColor2);
+  background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 @ThemeAccentColor1, stop:1 @ThemeAccentColor3);
 }
 
 QComboBox::down-arrow {
@@ -1525,7 +1525,7 @@ padding: 0px;
 }
 
 QSint--ActionGroup QFrame[class="header"]:hover {
-background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 @ThemeAccentColor1, stop:1 @ThemeAccentColor2);
+background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 @ThemeAccentColor1, stop:1 @ThemeAccentColor3);
 }
 
 QSint--ActionGroup QToolButton[class="header"] {
@@ -1627,7 +1627,7 @@ QSint--ActionGroup QFrame[class="content"] QToolButton {
 }
 
 QSint--ActionGroup QFrame[class="content"] QToolButton:hover{
-  background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 @ThemeAccentColor1, stop:1 @ThemeAccentColor2);
+  background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 @ThemeAccentColor1, stop:1 @ThemeAccentColor3);
 
 }
 QSint--ActionGroup QFrame[class="content"] QToolButton:focus {
@@ -1641,7 +1641,7 @@ QSint--ActionGroup QFrame[class="content"] QToolButton:disabled:checked {
 }
 
 QSint--ActionGroup QFrame[class="content"] QToolButton:pressed {
-  background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 @ThemeAccentColor1, stop:1 @ThemeAccentColor2);
+  background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 @ThemeAccentColor1, stop:1 @ThemeAccentColor3);
 
 }
 
@@ -1796,11 +1796,6 @@ QTabWidget::pane {
 
 QTabWidget::pane:selected {
   background-color: @ThemeAccentColor1;
-  border: 1px solid #346792;
-}
-
-QTabWidget::pane:selected {
-  background-color: #557bb6;
   border: 1px solid #346792;
 }
 
@@ -2494,7 +2489,7 @@ QSplitter::handle:vertical {
 }
 QSplitter::handle:vertical:hover {
   background-image: url(qss:images_dark-light/splitter_horizontal_light.svg);
-  background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1,stop:0.2 transparent,stop:0.5 #2053c0, stop:0.8 transparent);
+  background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1,stop:0.2 transparent,stop:0.5 @ThemeAccentColor1, stop:0.8 transparent);
   background-position: center center;
   background-repeat: none;
   }
@@ -2503,7 +2498,7 @@ QSplitter::handle:vertical:hover {
   background-image: url(qss:images_dark-light/splitter_horizontal_light.svg);
   background-position: center center;
   background-repeat: none;
-  background-color: qlineargradient(x1:0, y1:0, x2:1, y2:0,stop:0.2 transparent,stop:0.5 #2053c0, stop:0.8 transparent);
+  background-color: qlineargradient(x1:0, y1:0, x2:1, y2:0,stop:0.2 transparent,stop:0.5 @ThemeAccentColor1, stop:0.8 transparent);
 }
 
 /* QDateEdit, QDateTimeEdit -----------------------------------------------

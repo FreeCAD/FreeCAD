@@ -284,7 +284,7 @@ Gui::Document* DocumentWeakPtrT::operator->() const noexcept
 
 class ViewProviderWeakPtrT::Private {
 public:
-    Private(ViewProviderDocumentObject* obj) : object(obj), indocument(false) {
+    Private(ViewProviderDocumentObject* obj) : object(obj) {
         set(obj);
     }
     void deletedDocument(const Gui::Document& doc) {
@@ -338,7 +338,7 @@ public:
     }
 
     Gui::ViewProviderDocumentObject* object;
-    bool indocument;
+    bool indocument{false};
     using Connection = boost::signals2::scoped_connection;
     Connection connectApplicationDeletedDocument;
     Connection connectDocumentCreatedObject;

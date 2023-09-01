@@ -48,16 +48,10 @@ using namespace PartGui;
 class ThicknessWidget::Private
 {
 public:
-    Ui_TaskOffset ui;
+    Ui_TaskOffset ui{};
     QString text;
     std::string selection;
-    Part::Thickness* thickness;
-    Private() : thickness(nullptr)
-    {
-    }
-    ~Private()
-    {
-    }
+    Part::Thickness* thickness{nullptr};
 
     class FaceSelection : public Gui::SelectionFilterGate
     {
@@ -307,10 +301,6 @@ TaskThickness::TaskThickness(Part::Thickness* offset)
         widget->windowTitle(), true, nullptr);
     taskbox->groupLayout()->addWidget(widget);
     Content.push_back(taskbox);
-}
-
-TaskThickness::~TaskThickness()
-{
 }
 
 Part::Thickness* TaskThickness::getObject() const

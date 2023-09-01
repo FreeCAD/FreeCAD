@@ -61,9 +61,7 @@ const float MeshObject::Epsilon = 1.0e-5F;
 TYPESYSTEM_SOURCE(Mesh::MeshObject, Data::ComplexGeoData)
 TYPESYSTEM_SOURCE(Mesh::MeshSegment, Data::Segment)
 
-MeshObject::MeshObject()
-{
-}
+MeshObject::MeshObject() = default;
 
 MeshObject::MeshObject(const MeshCore::MeshKernel& Kernel)
   : _kernel(Kernel)
@@ -84,9 +82,7 @@ MeshObject::MeshObject(const MeshObject& mesh)
     copySegments(mesh);
 }
 
-MeshObject::~MeshObject()
-{
-}
+MeshObject::~MeshObject() = default;
 
 std::vector<const char*> MeshObject::getElementTypes() const
 {
@@ -169,7 +165,7 @@ Base::BoundBox3d MeshObject::getBoundBox()const
     Base::BoundBox3d Bnd2;
     if (Bnd.IsValid()) {
         for (int i =0 ;i<=7;i++)
-            Bnd2.Add(transformPointToOutside(Bnd.CalcPoint(i)));
+            Bnd2.Add(transformPointToOutside(Bnd.CalcPoint(Base::BoundBox3f::CORNER(i))));
     }
 
     return Bnd2;
@@ -1886,28 +1882,29 @@ MeshObject* MeshObject::createCube(float length, float width, float height, floa
 
 MeshObject* MeshObject::createCube(const Base::BoundBox3d& bbox)
 {
+    using Corner = Base::BoundBox3d::CORNER;
     std::vector<MeshCore::MeshGeomFacet> facets;
-    auto createFacet = [&bbox](int i, int j, int k) {
+    auto createFacet = [&bbox](Corner p1, Corner p2, Corner p3) {
         MeshCore::MeshGeomFacet facet;
-        facet._aclPoints[0] = Base::convertTo<Base::Vector3f>(bbox.CalcPoint(i));
-        facet._aclPoints[1] = Base::convertTo<Base::Vector3f>(bbox.CalcPoint(j));
-        facet._aclPoints[2] = Base::convertTo<Base::Vector3f>(bbox.CalcPoint(k));
+        facet._aclPoints[0] = Base::convertTo<Base::Vector3f>(bbox.CalcPoint(p1));
+        facet._aclPoints[1] = Base::convertTo<Base::Vector3f>(bbox.CalcPoint(p2));
+        facet._aclPoints[2] = Base::convertTo<Base::Vector3f>(bbox.CalcPoint(p3));
         facet.CalcNormal();
         return facet;
     };
 
-    facets.push_back(createFacet(0, 1, 2));
-    facets.push_back(createFacet(0, 2, 3));
-    facets.push_back(createFacet(0, 5, 1));
-    facets.push_back(createFacet(0, 4, 5));
-    facets.push_back(createFacet(0, 3, 7));
-    facets.push_back(createFacet(0, 7, 4));
-    facets.push_back(createFacet(4, 6, 5));
-    facets.push_back(createFacet(4, 7, 6));
-    facets.push_back(createFacet(1, 6, 2));
-    facets.push_back(createFacet(1, 5, 6));
-    facets.push_back(createFacet(2, 7, 3));
-    facets.push_back(createFacet(2, 6, 7));
+    facets.push_back(createFacet(Corner::TLB, Corner::TLF, Corner::TRF));
+    facets.push_back(createFacet(Corner::TLB, Corner::TRF, Corner::TRB));
+    facets.push_back(createFacet(Corner::TLB, Corner::BLF, Corner::TLF));
+    facets.push_back(createFacet(Corner::TLB, Corner::BLB, Corner::BLF));
+    facets.push_back(createFacet(Corner::TLB, Corner::TRB, Corner::BRB));
+    facets.push_back(createFacet(Corner::TLB, Corner::BRB, Corner::BLB));
+    facets.push_back(createFacet(Corner::BLB, Corner::BRF, Corner::BLF));
+    facets.push_back(createFacet(Corner::BLB, Corner::BRB, Corner::BRF));
+    facets.push_back(createFacet(Corner::TLF, Corner::BRF, Corner::TRF));
+    facets.push_back(createFacet(Corner::TLF, Corner::BLF, Corner::BRF));
+    facets.push_back(createFacet(Corner::TRF, Corner::BRB, Corner::TRB));
+    facets.push_back(createFacet(Corner::TRF, Corner::BRF, Corner::BRB));
 
     Base::EmptySequencer seq;
     std::unique_ptr<MeshObject> mesh(new MeshObject);
@@ -2011,22 +2008,13 @@ MeshObject::const_point_iterator::const_point_iterator(const MeshObject* mesh, P
     this->_point.Mesh = _mesh;
 }
 
-MeshObject::const_point_iterator::const_point_iterator(const MeshObject::const_point_iterator& fi)
-  : _mesh(fi._mesh), _point(fi._point), _p_it(fi._p_it)
-{
-}
+MeshObject::const_point_iterator::const_point_iterator
+(const MeshObject::const_point_iterator& fi) = default;
 
-MeshObject::const_point_iterator::~const_point_iterator()
-{
-}
+MeshObject::const_point_iterator::~const_point_iterator() = default;
 
-MeshObject::const_point_iterator& MeshObject::const_point_iterator::operator=(const MeshObject::const_point_iterator& pi)
-{
-    this->_mesh  = pi._mesh;
-    this->_point = pi._point;
-    this->_p_it  = pi._p_it;
-    return *this;
-}
+MeshObject::const_point_iterator& MeshObject::const_point_iterator::operator=
+(const MeshObject::const_point_iterator& pi) = default;
 
 void MeshObject::const_point_iterator::dereference()
 {
@@ -2080,22 +2068,13 @@ MeshObject::const_facet_iterator::const_facet_iterator(const MeshObject* mesh, F
     this->_facet.Mesh = _mesh;
 }
 
-MeshObject::const_facet_iterator::const_facet_iterator(const MeshObject::const_facet_iterator& fi)
-  : _mesh(fi._mesh), _facet(fi._facet), _f_it(fi._f_it)
-{
-}
+MeshObject::const_facet_iterator::const_facet_iterator
+(const MeshObject::const_facet_iterator& fi) = default;
 
-MeshObject::const_facet_iterator::~const_facet_iterator()
-{
-}
+MeshObject::const_facet_iterator::~const_facet_iterator() = default;
 
-MeshObject::const_facet_iterator& MeshObject::const_facet_iterator::operator=(const MeshObject::const_facet_iterator& fi)
-{
-    this->_mesh  = fi._mesh;
-    this->_facet = fi._facet;
-    this->_f_it  = fi._f_it;
-    return *this;
-}
+MeshObject::const_facet_iterator& MeshObject::const_facet_iterator::operator=
+(const MeshObject::const_facet_iterator& fi) = default;
 
 void MeshObject::const_facet_iterator::dereference()
 {

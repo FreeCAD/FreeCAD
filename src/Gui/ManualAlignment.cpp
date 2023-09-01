@@ -471,13 +471,12 @@ class ManualAlignment::Private {
 public:
     SoSeparator * picksepLeft;
     SoSeparator * picksepRight;
-    SoNodeSensor* sensorCam1;
-    SoNodeSensor* sensorCam2;
+    SoNodeSensor* sensorCam1{nullptr};
+    SoNodeSensor* sensorCam2{nullptr};
     SbRotation rot_cam1, rot_cam2;
     SbVec3f pos_cam1, pos_cam2;
 
     Private()
-      : sensorCam1(nullptr), sensorCam2(nullptr)
     {
         // left view
         picksepLeft = new SoSeparator;

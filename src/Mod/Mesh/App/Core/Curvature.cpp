@@ -64,8 +64,6 @@ MeshCurvature::MeshCurvature(const MeshKernel& kernel, const std::vector<FacetIn
 
 void MeshCurvature::ComputePerFace(bool parallel)
 {
-    Base::Vector3f rkDir0, rkDir1, rkPnt;
-    Base::Vector3f rkNormal;
     myCurvature.clear();
     MeshRefPointToFacets search(myKernel);
     FacetCurvature face(myKernel, search, myRadius, myMinPoints);

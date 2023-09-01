@@ -169,11 +169,7 @@ const char* AttachEngine::eRefTypeStrings[]= {
 
 TYPESYSTEM_SOURCE_ABSTRACT(Attacher::AttachEngine, Base::BaseClass)
 
-AttachEngine::AttachEngine()
- : mapMode(mmDeactivated), mapReverse(false), attachParameter(0.0),
-   surfU(0.0), surfV(0.0)
-{
-}
+AttachEngine::AttachEngine() = default;
 
 void AttachEngine::setUp(const App::PropertyLinkSubList &references,
                          eMapMode mapMode, bool mapReverse,

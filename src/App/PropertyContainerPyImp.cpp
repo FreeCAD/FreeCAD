@@ -30,6 +30,7 @@
 #include "PropertyContainer.h"
 #include "Property.h"
 #include "DocumentObject.h"
+#include <Base/PyWrapParseTupleAndKeywords.h>
 
 #include <boost/iostreams/device/array.hpp>
 #include <boost/iostreams/stream.hpp>
@@ -466,10 +467,11 @@ PyObject* PropertyContainerPy::dumpPropertyContent(PyObject *args, PyObject *kwd
 {
     int compression = 3;
     const char* property;
-    static char* kwds_def[] = {"Property", "Compression", nullptr};
+    static const std::array<const char *, 3> kwds_def {"Property", "Compression", nullptr};
     PyErr_Clear();
-    if (!PyArg_ParseTupleAndKeywords(args, kwds, "s|i", kwds_def, &property, &compression))
+    if (!Base::Wrapped_ParseTupleAndKeywords(args, kwds, "s|i", kwds_def, &property, &compression)) {
         return nullptr;
+    }
 
     Property* prop = getPropertyContainerPtr()->getPropertyByName(property);
     if (!prop) {

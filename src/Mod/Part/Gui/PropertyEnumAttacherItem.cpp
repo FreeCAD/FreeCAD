@@ -40,9 +40,7 @@ using namespace PartGui;
 
 PROPERTYITEM_SOURCE(PartGui::PropertyEnumAttacherItem)
 
-PropertyEnumAttacherItem::PropertyEnumAttacherItem()
-{
-}
+PropertyEnumAttacherItem::PropertyEnumAttacherItem() = default;
 
 QWidget* PropertyEnumAttacherItem::createEditor(QWidget* parent, const QObject* receiver, const char* method) const
 {

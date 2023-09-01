@@ -52,11 +52,6 @@ TaskDlgEdge2Trac::TaskDlgEdge2Trac(Robot::Edge2TracObject *obj)
     Content.push_back(select);
 }
 
-TaskDlgEdge2Trac::~TaskDlgEdge2Trac()
-{
-
-}
-
 //==== calls from the TaskView ===============================================================
 
 

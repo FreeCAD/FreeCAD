@@ -511,8 +511,7 @@ enum class ContentType {
 class BaseExport ILogger
 {
 public:
-    ILogger()
-    :bErr(true), bMsg(true), bLog(true), bWrn(true), bCritical(true), bNotification(false){}
+    ILogger() = default;
     virtual ~ILogger() = 0;
 
     /** Used to send a Log message at the given level.
@@ -562,7 +561,12 @@ public:
     }
 
     virtual const char *Name(){return nullptr;}
-    bool bErr, bMsg, bLog, bWrn, bCritical, bNotification;
+    bool bErr{true};
+    bool bMsg{true};
+    bool bLog{true};
+    bool bWrn{true};
+    bool bCritical{true};
+    bool bNotification{false};
 };
 
 
@@ -810,9 +814,9 @@ protected:
     static PyObject *sPyGetStatus               (PyObject *self,PyObject *args);
     static PyObject *sPyGetObservers            (PyObject *self,PyObject *args);
 
-    bool _bVerbose;
-    bool _bCanRefresh;
-    ConnectionMode connectionMode;
+    bool _bVerbose{true};
+    bool _bCanRefresh{true};
+    ConnectionMode connectionMode{Direct};
 
     // Singleton!
     ConsoleSingleton();

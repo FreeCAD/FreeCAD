@@ -38,7 +38,7 @@ std::string BaseClassPy::representation() const
 
 PyObject*  BaseClassPy::isDerivedFrom(PyObject *args)
 {
-    char *name;
+    char *name{};
     if (!PyArg_ParseTuple(args, "s", &name))
         return nullptr;
 

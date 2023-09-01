@@ -47,10 +47,7 @@ TYPESYSTEM_SOURCE(Part::PropertyGeometryList, App::PropertyLists)
 // Construction/Destruction
 
 
-PropertyGeometryList::PropertyGeometryList()
-{
-
-}
+PropertyGeometryList::PropertyGeometryList() = default;
 
 PropertyGeometryList::~PropertyGeometryList()
 {

@@ -80,7 +80,7 @@ const char* Exception::what() const noexcept
 void Exception::ReportException () const
 {
     if (!_isReported) {
-        const char *msg;
+        const char *msg{};
         if (_sErrMsg.empty())
             msg = typeid(*this).name();
         else
@@ -304,7 +304,7 @@ const char* FileException::what() const noexcept
 void FileException::ReportException () const
 {
     if (!_isReported) {
-        const char *msg;
+        const char *msg{};
         if (_sErrMsgAndFileName.empty())
             msg = typeid(*this).name();
         else

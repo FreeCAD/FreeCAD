@@ -46,11 +46,11 @@ THESE COLOURS WERE USED AS TEMP SCRATCHPAD FOR DESIGNING. PLEASE DISREGARD!
         white
 
     SELECTION (darker to lighter)
-        #557BB6
+         @ThemeAccentColor1
         #696969
         #3874f2
-        #557BB6 = main selection color
-        #557BB6 = used to build QSpinBox up and down buttons, it's used as color in the middle
+         @ThemeAccentColor1 = main selection color
+         @ThemeAccentColor1 = used to build QSpinBox up and down buttons, it's used as color in the middle
         #adc5ed
         #cbd8e6
 */
@@ -137,7 +137,7 @@ QToolBox::tab
 
 QToolBox::tab:hover
 {
-    background-color: #557BB6;
+    background-color:  @ThemeAccentColor1;
     border: 1px solid #6492d7;
         border-radius: 1px
 }
@@ -176,7 +176,7 @@ QMenuBar::item:pressed,
 QMenu::item:selected,
 QMenu::item:pressed {
     color: #ffffff;
-    background-color: #557BB6;
+    background-color:  @ThemeAccentColor1;
 }
 
 QMenu::right-arrow {
@@ -201,8 +201,8 @@ QMenu::icon {
 }
 
 QMenu::icon:checked { /* appearance of a 'checked' icon */
-    background: #557BB6;
-    border: 2px #557BB6;
+    background:  @ThemeAccentColor1;
+    border: 2px  @ThemeAccentColor1;
     position: absolute;
     border-radius: 2px;
 }
@@ -234,7 +234,7 @@ QMenu QToolButton:pressed,
 QMenu QPushButton:selected,
 QMenu QToolButton:selected {
     color: white;
-    background-color: #557bb6; /* same as QMenu::item:selected and QMenu::item:pressed */
+    background-color:  @ThemeAccentColor1; /* same as QMenu::item:selected and QMenu::item:pressed */
 }
 
 QMenu QRadioButton:disabled,
@@ -371,13 +371,13 @@ QDockWidget::float-button {
 
 QDockWidget::close-button:hover,
 QDockWidget::float-button:hover {
-    background-color: #557bb6;
+    background-color:  @ThemeAccentColor1;
 }
 
 QDockWidget::close-button:pressed,
 QDockWidget::float-button:pressed {
-    background-color: #42608d;
-    border: 2px solid #76acfd
+    background-color:  @ThemeAccentColor2;
+    border: 2px solid  @ThemeAccentColor3;
 }
 
 /* fix for Python Console (probably there is a smarter way to arrive to it) */
@@ -402,7 +402,7 @@ QProgressBar:horizontal {
 }
 QProgressBar::chunk,
 QProgressBar::chunk:horizontal {
-    background-color: #557BB6;
+    background-color:  @ThemeAccentColor1;
     border-radius: 1px;
 }
 
@@ -433,7 +433,7 @@ QScrollBar::handle:horizontal {
 
 QScrollBar::handle:vertical:hover,
 QScrollBar::handle:horizontal:hover {
-    background-color: #557BB6;
+    background-color:  @ThemeAccentColor1;
 }
 
 QScrollBar::handle:horizontal {
@@ -463,13 +463,13 @@ QScrollBar::add-line:horizontal {
 QScrollBar::sub-line:horizontal:hover,
 QScrollBar::sub-line:horizontal:on {
     border-image: url(qss:images_dark-light/left_arrow_lighter.svg);
-    background-color: #557BB6;
+    background-color:  @ThemeAccentColor1;
 }
 
 QScrollBar::add-line:horizontal:hover,
 QScrollBar::add-line:horizontal:on {
     border-image: url(qss:images_dark-light/right_arrow_lighter.svg);
-    background-color: #557BB6;
+    background-color:  @ThemeAccentColor1;
 }
 
 QScrollBar::up-arrow:horizontal,
@@ -515,13 +515,13 @@ QScrollBar::add-line:vertical {
 QScrollBar::sub-line:vertical:hover,
 QScrollBar::sub-line:vertical:on {
     border-image: url(qss:images_dark-light/up_arrow_lighter.svg);
-    background-color: #557BB6;
+    background-color:  @ThemeAccentColor1;
 }
 
 QScrollBar::add-line:vertical:hover,
 QScrollBar::add-line:vertical:on {
     border-image: url(qss:images_dark-light/down_arrow_lighter.svg);
-    background-color: #557BB6;
+    background-color:  @ThemeAccentColor1;
 }
 
 QScrollBar::up-arrow:vertical,
@@ -621,23 +621,23 @@ QTabBar::tab:selected {
 }
 
 QTabBar::tab:top:selected {
-    border-top: 4px solid #557BB6; /* selection color */
+    border-top: 4px solid  @ThemeAccentColor1; /* selection color */
     border-bottom-color: #333333; /* same as tab content background color */
     border-radius: 2px;
 }
 
 QTabBar::tab:bottom:selected {
-    border-bottom: 4px solid #557BB6; /* selection color */
+    border-bottom: 4px solid  @ThemeAccentColor1; /* selection color */
     border-top-color: #333333; /* same as tab content background color */
 }
 
 QTabBar::tab:right:selected {
-    border-left: 4px solid #557BB6; /* selection color */
+    border-left: 4px solid  @ThemeAccentColor1; /* selection color */
     border-right-color: #333333; /* same as tab content background color */
 }
 
 QTabBar::tab:left:selected {
-    border-right: 4px solid #557BB6; /* selection color */
+    border-right: 4px solid  @ThemeAccentColor1; /* selection color */
     border-left-color: #333333; /* same as tab content background color */
 }
 
@@ -647,7 +647,7 @@ QTabBar::tab:!selected {
 
 QTabBar::tab:!selected:hover {
     color: rgba(255,255,255,180);
-    background-color: #557BB6; /* Hack for Undocked inactive tabs - can also change to #696969 */ /* was rgba(255,255,255,20) */
+    background-color:  @ThemeAccentColor1; /* Hack for Undocked inactive tabs - can also change to #696969 */ /* was rgba(255,255,255,20) */
 }
 
 QTabBar::tab:first:selected {
@@ -684,12 +684,12 @@ QDialog#Gui__Dialog__DlgPreferences > QListView::item {
 }
 
 QDialog#Gui__Dialog__DlgPreferences > QListView::item:hover { /* Preference left icons*/
-    background-color: #557BB6;
+    background-color:  @ThemeAccentColor1;
 }
 
 QDialog#Gui__Dialog__DlgPreferences > QListView::item:selected { /* Preference left icons*/
     color: white;
-    background-color: #557BB6;
+    background-color:  @ThemeAccentColor1;
 }
 
 
@@ -801,7 +801,7 @@ QTableView {
     alternate-background-color: #333333; /* related with QListView background  */
     border: 1px solid #333333;
     selection-color: #ffffff;
-    selection-background-color: #557BB6; /* should be similar to QListView::item selected background-color */
+    selection-background-color:  @ThemeAccentColor1; /* should be similar to QListView::item selected background-color */
     show-decoration-selected: 1; /* make the selection span the entire width of the view */
     border-radius: 1px;
 }
@@ -814,7 +814,7 @@ QTreeView::item:hover  {
 QListView::item:selected,
 QTreeView::item:selected  {
     color: #ffffff; /* should be similar to QListView selection-color */
-    background-color: #557BB6; /* should be similar to QListView selection-background-color */
+    background-color:  @ThemeAccentColor1; /* should be similar to QListView selection-background-color */
     show-decoration-selected: 1; /* make the selection span the entire width of the view */
 }
 
@@ -1092,7 +1092,7 @@ QPlainTextEdit,
 QPlainTextEdit:focus {
     background-color: #3c3c3c; /* Python Console */
     selection-color: #f5f5f5;
-    selection-background-color: #557BB6;
+    selection-background-color:  @ThemeAccentColor1;
     border: 6px solid #333333;
     border-radius: 0px;
     margin: 0px;
@@ -1136,7 +1136,7 @@ QSint--ActionGroup QFrame[class="header"] {
 }
 
 QSint--ActionGroup QFrame[class="header"]:hover {
-    background-color: #557BB6;
+    background-color:  @ThemeAccentColor1;
 }
 
 QSint--ActionGroup QToolButton[class="header"] {
@@ -1242,7 +1242,7 @@ QToolBar > Gui--WorkbenchComboBox  {
 QToolBar > Gui--WorkbenchComboBox:!editable {
     color: #f5f5f5;
     font-weight: bold;
-    background-color: #557bb6;  /* workbench disabled color */
+    background-color:  @ThemeAccentColor1;  /* workbench disabled color */
 }
 
 QComboBox,
@@ -1257,7 +1257,7 @@ QDateTimeEdit {
     color: #f5f5f5;
     background-color: #494949;  /* lineedits and drop-downs */
     selection-color: #ffffff;
-    selection-background-color: #557bb6;
+    selection-background-color:  @ThemeAccentColor1;
     border: 0px solid #2a2a2a;
     border-radius: 1px;
     min-width: 50px; /* it ensures the default value is correctly displayed */
@@ -1305,7 +1305,7 @@ QDateTimeEdit:focus {
     color: #f5f5f5;
     border-color: #333333;
     border: 1px;
-    border-right-color: #557BB6; /* same as up/down or drop-down button color */
+    border-right-color:  @ThemeAccentColor1; /* same as up/down or drop-down button color */
     background-color: #494949;
 }
 
@@ -1500,14 +1500,14 @@ QComboBox::down-arrow:disabled {
 /* ComboBox menu */
 QComboBox {
     selection-color: #f5f5f5;
-    selection-background-color: #557BB6;
+    selection-background-color:  @ThemeAccentColor1;
 }
 
 QComboBox QAbstractItemView {
     color: #bebebe; /* same as regular QComboBox color */
     background-color: transparent; /* was transparent */
     selection-color: #f5f5f5;
-    selection-background-color: #557BB6;
+    selection-background-color:  @ThemeAccentColor1;
     border-width: 5px 0px 5px 0px;
     border-style: solid;
     border-color: transparent;
@@ -1531,7 +1531,7 @@ QPushButton {
 QPushButton:hover,
 QPushButton:focus {
     color: #ffffff;
-    background-color: #557bb6;
+    background-color:  @ThemeAccentColor1;
     border: 1px solid #f5f5f5;
 }
 
@@ -1544,13 +1544,13 @@ QPushButton:disabled:checked {
 
 QPushButton:pressed {
     color: #ffffff;
-    background-color: #48699a;
+    background-color: #@ThemeAccentColor2;
     border: 1px solid #3c3c3c;
 }
 
 QPushButton:checked {
-    background-color: #557BB6;
-    border: 1px solid #557BB6;
+    background-color:  @ThemeAccentColor1;
+    border: 1px solid  @ThemeAccentColor1;
 }
 
 /* Inspect Widgets Addon */
@@ -1564,15 +1564,15 @@ QDockWidget#InspectWidgets QPushButton {
 
 QDockWidget#InspectWidgets QPushButton:hover {
     color: #ffffff;
-    background-color: #557bb6;
+    background-color:  @ThemeAccentColor1;
     border: 1px solid #f5f5f5;
     border-bottom: 1px solid #f5f5f5;
 }
 
 QDockWidget#InspectWidgets QPushButton:checked,
 QDockWidget#InspectWidgets QPushButton:pressed {
-    background-color: #557bb6;
-    border: 1px solid #557bb6;
+    background-color:  @ThemeAccentColor1;
+    border: 1px solid  @ThemeAccentColor1;
 }
 
 /* CAD Navigation Style */
@@ -1580,7 +1580,7 @@ QMenu::item#NavigationIndicator {
     image: url(qss:images_dark-light/NavigationBlender_light.svg);
 }
 QPushButton#NavigationIndicator {
-    background-color: #557bb6;
+    background-color:  @ThemeAccentColor1;
     padding: 2px;
     margin: 0px;
     border: 1px solid #333333;
@@ -1596,8 +1596,8 @@ QPushButton:hover#NavigationIndicator {
 
 QPushButton:pressed#NavigationIndicator {
     color: #ffffff;
-    background-color: #557bb6;
-    border: 1px solid #557bb6;
+    background-color:  @ThemeAccentColor1;
+    border: 1px solid  @ThemeAccentColor1;
 }
 
 /* BIM Views Manager */
@@ -1616,12 +1616,12 @@ QWidget#Form QPushButton {
 
 QWidget#Form QPushButton:hover {
     border: 1px solid #f5f5f5;
-    background-color: #557BB6;
+    background-color:  @ThemeAccentColor1;
 }
 
 QWidget#Form QPushButton:pressed {
-    border: 1px solid #557bb6;
-    background-color: #557BB6;
+    border: 1px solid  @ThemeAccentColor1;
+    background-color:  @ThemeAccentColor1;
 }
 
 /* Addon Manager */
@@ -1635,7 +1635,7 @@ QDialog#Dialog QPushButton {
 QDialog#Dialog QPushButton:hover {
     color: #ffffff;
     border: 1px solid #3c3c3c;
-    background-color: #48699a;
+    background-color: #@ThemeAccentColor2;
 }
 
 QPushButton#buttonUninstall {
@@ -1678,12 +1678,12 @@ Gui--ColorButton:disabled {
 
 Gui--ColorButton:hover,
 Gui--ColorButton:focus {
-    border-color: #557BB6;
-    background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 #557BB6, stop:1 #557BB6);
+    border-color:  @ThemeAccentColor1;
+    background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0  @ThemeAccentColor1, stop:1  @ThemeAccentColor1);
 }
 
 Gui--ColorButton:pressed {
-    background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 #557BB6, stop:1 #557BB6);
+    background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0  @ThemeAccentColor1, stop:1  @ThemeAccentColor1);
 
 }
 
@@ -1726,7 +1726,7 @@ QFileDialog#QFileDialog QToolButton {
 QFileDialog#QFileDialog QToolButton:hover,
 QFileDialog#QFileDialog QToolButton:focus {
     color: #ffffff;
-    background-color: #557bb6;
+    background-color:  @ThemeAccentColor1;
     border: 1px solid #f5f5f5;
 }
 
@@ -1749,7 +1749,7 @@ QDialog QToolButton {
 QDialog QToolButton:hover,
 QDialog QToolButton:focus {
     color: #ffffff;
-    background-color: #557bb6;
+    background-color:  @ThemeAccentColor1;
     border: 1px solid #f5f5f5;
 }
 
@@ -1762,7 +1762,7 @@ QDialog QToolButton:disabled:checked {
 
 QDialog QToolButton:pressed {
     color: #ffffff;
-    background-color: #48699a;
+    background-color: #@ThemeAccentColor2;
     border: 1px solid #3c3c3c;
 }
 
@@ -1787,7 +1787,7 @@ QSint--ActionGroup QFrame[class="content"] QToolButton:hover,
 QSint--ActionGroup QFrame[class="content"] QToolButton:focus {
     color: white;
     border-color: solid #f5f5f5;
-    background-color: #557BB6;
+    background-color:  @ThemeAccentColor1;
 }
 
 QSint--ActionGroup QFrame[class="content"] QToolButton:disabled,
@@ -1798,7 +1798,7 @@ QSint--ActionGroup QFrame[class="content"] QToolButton:disabled:checked {
 }
 
 QSint--ActionGroup QFrame[class="content"] QToolButton:pressed {
-    background-color: #557BB6;
+    background-color:  @ThemeAccentColor1;
 }
 
 /* QToolButtons with a menu found in Sketcher task panel*/
@@ -1852,7 +1852,7 @@ QRadioButton::indicator:unchecked{
 }
 
 QRadioButton::indicator:checked {
-    background-color: #557BB6; /* QCheckBox has the same color */
+    background-color:  @ThemeAccentColor1; /* QCheckBox has the same color */
     border: 1px solid #2a2a2a; /* QCheckBox has the same color */
     image:url(qss:images_dark-light/radiobutton_light.svg);
 }
@@ -1925,7 +1925,7 @@ QGroupBox::indicator:checked:pressed {
 
 QCheckBox::indicator:checked,
 QGroupBox::indicator:checked {
-    background-color: #557BB6; /* QRadioButton has the same color */
+    background-color:  @ThemeAccentColor1; /* QRadioButton has the same color */
     border: 1px solid #2a2a2a; /* QRadioButton has the same color */
     image:url(qss:images_dark-light/checkbox_light.svg);
 }
@@ -2077,13 +2077,13 @@ QSlider::handle:vertical:hover,
 QSlider::handle:horizontal:pressed,
 QSlider::handle:vertical:pressed {
     border-color: #adc5ed;
-    background-color: #557BB6;
+    background-color:  @ThemeAccentColor1;
 }
 
 QSlider::handle:horizontal:disabled,
 QSlider::handle:vertical:disabled {
     border-color: #2a2a2a;
-    background-color: #557BB6;
+    background-color:  @ThemeAccentColor1;
 }
 
 
@@ -2126,7 +2126,7 @@ QToolBar > QPushButton {
 
 QToolBar > QPushButton:checked {
     border: 1px solid #3c3c3c;
-    background-color: #557BB6;
+    background-color:  @ThemeAccentColor1;
 }
 
 /* Hack to avoid QPushButton text partially hidden under menu-indicator */
@@ -2148,18 +2148,18 @@ QToolBar > QPushButton:checked:hover {
 
 QToolBar > QPushButton:!checked:hover {
     color: #ffffff;
-    background-color: #557BB6;
+    background-color:  @ThemeAccentColor1;
     border: 1px solid #f5f5f5;
 }
 
 QToolBar > QPushButton:checked:pressed {
-    border: 1px solid #557bb6;
-    background-color: solid #557BB6;
+    border: 1px solid  @ThemeAccentColor1;
+    background-color: solid  @ThemeAccentColor1;
 }
 
 QToolBar > QPushButton:!checked:pressed {
-    border: 1px solid #557bb6;
-    background-color: #557BB6;
+    border: 1px solid  @ThemeAccentColor1;
+    background-color:  @ThemeAccentColor1;
 }
 
 QToolBar > QPushButton:checked:disabled,
@@ -2176,13 +2176,13 @@ QToolBar > QToolButton {
 }
 
 QToolBar > QToolButton:hover {
-    background-color: #557BB6;
+    background-color:  @ThemeAccentColor1;
     border: 1px solid #f5f5f5;
 }
 
 QToolBar > QToolButton:pressed {
-    background-color: #557BB6;
-    border: 1px solid #557bb6;
+    background-color:  @ThemeAccentColor1;
+    border: 1px solid  @ThemeAccentColor1;
 }
 
 /* ToolBar menu buttons (buttons with drop-down menu) */
@@ -2206,26 +2206,26 @@ QToolBar > QToolButton#qt_toolbutton_menubutton::menu-button:hover {
     border-top: 1px solid #f5f5f5;
     border-bottom: 1px solid #f5f5f5;
     border-right: 1px solid #f5f5f5;
-    background-color: #557BB6;
+    background-color:  @ThemeAccentColor1;
 }
 
 QToolBar > QToolButton#qt_toolbutton_menubutton:pressed,
 QToolBar > QToolButton#qt_toolbutton_menubutton:open {
-    background-color: #557BB6;
-    border: 1px solid #557BB6;
+    background-color:  @ThemeAccentColor1;
+    border: 1px solid  @ThemeAccentColor1;
 }
 
 QToolBar > QToolButton#qt_toolbutton_menubutton:hover {
-    background-color: #557BB6;
+    background-color:  @ThemeAccentColor1;
     border: 1px solid #f5f5f5;
 }
 
 QToolBar > QToolButton#qt_toolbutton_menubutton::menu-button:pressed,
 QToolBar > QToolButton#qt_toolbutton_menubutton::menu-button:open {
-    border-top: 1px solid #557bb6;
-    border-bottom: 1px solid #557bb6;
-    border-right: 1px solid #557bb6;
-    background-color: #557BB6;
+    border-top: 1px solid  @ThemeAccentColor1;
+    border-bottom: 1px solid  @ThemeAccentColor1;
+    border-right: 1px solid  @ThemeAccentColor1;
+    background-color:  @ThemeAccentColor1;
 }
 
 QToolBar > QToolButton::menu-arrow {
@@ -2247,13 +2247,13 @@ QToolBar > QToolButton::menu-arrow:open {
 
 /* when QToolButton is checked: */
 QToolBar > QToolButton:checked {
-    border: 1px solid #557BB6;
-    background-color: #557BB6; /* transparency for #557BB6 color */
+    border: 1px solid  @ThemeAccentColor1;
+    background-color:  @ThemeAccentColor1; /* transparency for  @ThemeAccentColor1 color */
 }
 
 QToolBar > QToolButton:checked:hover {
-    border: 1px solid #557BB6;
-    background-color: #557BB6; /* transparency for #557BB6 color */
+    border: 1px solid  @ThemeAccentColor1;
+    background-color:  @ThemeAccentColor1; /* transparency for  @ThemeAccentColor1 color */
 }
 
 /*The "show more" button  (it can also be stylable with "QToolBarExtension" */
@@ -2288,7 +2288,7 @@ QMdiArea > QWidget > QMdiSubWindow > SpreadsheetGui--SheetView > QWidget > Sprea
 QTableView {
     gridline-color: #a8a8a8;
     selection-color: #ffffff;
-    selection-background-color: #557bb6; /* Default Spreadsheet cell selection background color */
+    selection-background-color:  @ThemeAccentColor1; /* Default Spreadsheet cell selection background color */
 }
 
 QTableView::item:disabled  {
@@ -2298,8 +2298,8 @@ QTableView::item:disabled  {
 QTableView::item:selected  {
     color: #ffffff;
     border-color: #cecece; /* same as focused background color */
-    border-bottom-color: #557BB6; /* same as focused border color */
-    background-color: #557BB6; /* cell background color */
+    border-bottom-color:  @ThemeAccentColor1; /* same as focused border color */
+    background-color:  @ThemeAccentColor1; /* cell background color */
 }
 
 /* fix for elements inside the cells */
@@ -2371,7 +2371,7 @@ QTableView > QWidget > QDateEdit:focus,
 QTableView > QWidget > QDateTimeEdit:focus {
     color: #000000;
     selection-color: #f5f5f5;
-    selection-background-color: #557BB6;
+    selection-background-color:  @ThemeAccentColor1;
     border-color: #3c3c3c;
     background-color: #cecece;
 }

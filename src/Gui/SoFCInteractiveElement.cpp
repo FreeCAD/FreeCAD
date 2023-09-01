@@ -180,7 +180,7 @@ SO_NODE_SOURCE(SoGLWidgetNode)
 /*!
   Constructor.
 */
-SoGLWidgetNode::SoGLWidgetNode() : window(nullptr)
+SoGLWidgetNode::SoGLWidgetNode()
 {
     SO_NODE_CONSTRUCTOR(SoGLWidgetNode);
 }

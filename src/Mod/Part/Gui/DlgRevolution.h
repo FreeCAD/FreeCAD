@@ -89,7 +89,6 @@ class TaskRevolution : public Gui::TaskView::TaskDialog
 
 public:
     TaskRevolution();
-    ~TaskRevolution() override;
 
 public:
     bool accept() override;

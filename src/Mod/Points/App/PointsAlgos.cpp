@@ -124,9 +124,7 @@ Reader::Reader()
     height = 0;
 }
 
-Reader::~Reader()
-{
-}
+Reader::~Reader() = default;
 
 void Reader::clear()
 {
@@ -192,13 +190,7 @@ int Reader::getHeight() const
 
 // ----------------------------------------------------------------------------
 
-AscReader::AscReader()
-{
-}
-
-AscReader::~AscReader()
-{
-}
+AscReader::AscReader() = default;
 
 void AscReader::read(const std::string& filename)
 {
@@ -252,8 +244,7 @@ public:
         _end = data.size();
         _cur = 0;
     }
-    ~DataStreambuf() override {
-    }
+    ~DataStreambuf() override = default;
 
 protected:
     int_type uflow() override {
@@ -503,13 +494,7 @@ lzfDecompress (const void *const in_data,  unsigned int in_len,
 }
 }
 
-PlyReader::PlyReader()
-{
-}
-
-PlyReader::~PlyReader()
-{
-}
+PlyReader::PlyReader() = default;
 
 void PlyReader::read(const std::string& filename)
 {
@@ -948,13 +933,7 @@ void PlyReader::readBinary(bool swapByteOrder,
 
 // ----------------------------------------------------------------------------
 
-PcdReader::PcdReader()
-{
-}
-
-PcdReader::~PcdReader()
-{
-}
+PcdReader::PcdReader() = default;
 
 void PcdReader::read(const std::string& filename)
 {
@@ -1747,14 +1726,10 @@ private:
 };
 }
 
-E57Reader::E57Reader(const bool& Color, const bool& State, const float& Distance)
-{
-    useColor = Color;
-    checkState = State;
-    minDistance = Distance;
-}
-
-E57Reader::~E57Reader()
+E57Reader::E57Reader(bool Color,  bool State, double Distance)
+    : useColor{Color}
+    , checkState{State}
+    , minDistance{Distance}
 {
 }
 
@@ -1784,9 +1759,7 @@ Writer::Writer(const PointKernel& p) : points(p)
     height = 1;
 }
 
-Writer::~Writer()
-{
-}
+Writer::~Writer() = default;
 
 void Writer::setIntensities(const std::vector<float>& i)
 {
@@ -1824,10 +1797,6 @@ AscWriter::AscWriter(const PointKernel& p) : Writer(p)
 {
 }
 
-AscWriter::~AscWriter()
-{
-}
-
 void AscWriter::write(const std::string& filename)
 {
     if (placement.isIdentity()) {
@@ -1843,10 +1812,6 @@ void AscWriter::write(const std::string& filename)
 // ----------------------------------------------------------------------------
 
 PlyWriter::PlyWriter(const PointKernel& p) : Writer(p)
-{
-}
-
-PlyWriter::~PlyWriter()
 {
 }
 
@@ -2002,10 +1967,6 @@ void PlyWriter::write(const std::string& filename)
 // ----------------------------------------------------------------------------
 
 PcdWriter::PcdWriter(const PointKernel& p) : Writer(p)
-{
-}
-
-PcdWriter::~PcdWriter()
 {
 }
 

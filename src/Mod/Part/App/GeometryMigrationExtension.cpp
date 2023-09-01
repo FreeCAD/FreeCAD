@@ -32,11 +32,6 @@ using namespace Part;
 //---------- Geometry Extension
 TYPESYSTEM_SOURCE(Part::GeometryMigrationExtension,Part::GeometryExtension)
 
-GeometryMigrationExtension::GeometryMigrationExtension():ConstructionState(false)
-{
-
-}
-
 void GeometryMigrationExtension::copyAttributes(Part::GeometryExtension * cpy) const
 {
     Part::GeometryExtension::copyAttributes(cpy);

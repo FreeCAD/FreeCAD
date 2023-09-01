@@ -39,12 +39,7 @@ ViewProviderTorusParametric::ViewProviderTorusParametric()
   sPixmap = "Part_Torus_Parametric";
 }
 
-ViewProviderTorusParametric::~ViewProviderTorusParametric()
-{
-
-}
-
-
+ViewProviderTorusParametric::~ViewProviderTorusParametric() = default;
 
 // **********************************************************************************
 

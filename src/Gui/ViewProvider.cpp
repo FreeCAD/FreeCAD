@@ -88,12 +88,7 @@ void coinRemoveAllChildren(SoGroup *group) {
 PROPERTY_SOURCE_ABSTRACT(Gui::ViewProvider, App::TransactionalObject)
 
 ViewProvider::ViewProvider()
-    : pcAnnotation(nullptr)
-    , pyViewObject(nullptr)
-    , overrideMode("As Is")
-    , _iActualMode(-1)
-    , _iEditMode(-1)
-    , viewOverrideMode(-1)
+    : overrideMode("As Is")
 {
     setStatus(UpdateData, true);
 

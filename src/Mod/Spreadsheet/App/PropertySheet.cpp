@@ -253,7 +253,6 @@ Cell * PropertySheet::createCell(CellAddress address)
 
 PropertySheet::PropertySheet(Sheet *_owner)
     : owner(_owner)
-    , updateCount(0)
 {
 }
 

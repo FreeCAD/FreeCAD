@@ -91,6 +91,11 @@
         <file>sel-forward.svg</file>
         <file>sel-instance.svg</file>
         <file>sel-bbox.svg</file>
+        <file>vertex-selection.svg</file>
+        <file>edge-selection.svg</file>
+        <file>face-selection.svg</file>
+        <file>clear-selection.svg</file>
+        <file>selection-filter.svg</file>
         <file>help-browser.svg</file>
         <file>preferences-system.svg</file>
         <file>process-stop.svg</file>

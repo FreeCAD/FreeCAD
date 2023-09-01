@@ -39,11 +39,7 @@ DlgPointsReadImp::DlgPointsReadImp(const char *FileName, QWidget* parent,  Qt::W
 /*
  *  Destroys the object and frees any allocated resources
  */
-DlgPointsReadImp::~DlgPointsReadImp()
-{
-    // no need to delete child widgets, Qt does it all for us
-}
-
+DlgPointsReadImp::~DlgPointsReadImp() = default;
 
 
 #include "moc_DlgPointsReadImp.cpp"

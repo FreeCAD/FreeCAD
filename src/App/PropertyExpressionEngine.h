@@ -192,7 +192,7 @@ private:
     void slotChangedProperty(const App::DocumentObject &obj, const App::Property &prop);
     void updateHiddenReference(const std::string &key);
 
-    bool running; /**< Boolean used to avoid loops */
+    bool running = false; /**< Boolean used to avoid loops */
     bool restoring = false;
 
     ExpressionMap expressions; /**< Stored expressions */

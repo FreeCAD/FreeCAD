@@ -577,11 +577,6 @@ TaskRevolution::TaskRevolution()
     Content.push_back(taskbox);
 }
 
-TaskRevolution::~TaskRevolution()
-{
-    // automatically deleted in the sub-class
-}
-
 bool TaskRevolution::accept()
 {
     widget->accept();

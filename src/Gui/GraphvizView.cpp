@@ -153,12 +153,11 @@ class GraphvizGraphicsView final : public QGraphicsView
     void mouseReleaseEvent(QMouseEvent *event) override;
 
   private:
-    bool   isPanning;
+    bool   isPanning{false};
     QPoint panStart;
 };
 
-GraphvizGraphicsView::GraphvizGraphicsView(QGraphicsScene* scene, QWidget* parent) : QGraphicsView(scene, parent),
-                                                                     isPanning(false)
+GraphvizGraphicsView::GraphvizGraphicsView(QGraphicsScene* scene, QWidget* parent) : QGraphicsView(scene, parent)
 {
 }
 

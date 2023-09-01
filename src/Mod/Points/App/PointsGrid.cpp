@@ -720,11 +720,7 @@ unsigned long PointsGrid::FindElements (const Base::Vector3d &rclPoint, std::set
 
 PointsGridIterator::PointsGridIterator (const PointsGrid &rclG)
 : _rclGrid(rclG),
-  _ulX(0), _ulY(0), _ulZ(0),
-  _clPt(0.0f, 0.0f, 0.0f), _clDir(0.0f, 0.0f, 0.0f),
-  _bValidRay(false),
-  _fMaxSearchArea (FLOAT_MAX)
-
+  _clPt(0.0f, 0.0f, 0.0f), _clDir(0.0f, 0.0f, 0.0f)
 {
 }
 

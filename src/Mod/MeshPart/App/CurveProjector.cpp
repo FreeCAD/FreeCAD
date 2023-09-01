@@ -672,10 +672,6 @@ MeshProjection::MeshProjection(const MeshKernel& rMesh)
 {
 }
 
-MeshProjection::~MeshProjection()
-{
-}
-
 void MeshProjection::discretize(const TopoDS_Edge& aEdge, std::vector<Base::Vector3f>& polyline, std::size_t minPoints) const
 {
     BRepAdaptor_Curve clCurve(aEdge);

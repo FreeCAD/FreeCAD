@@ -323,7 +323,7 @@ En utilisant ";;" pour séparer les chemins, vous pouvez ajouter plusieurs dossi
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="44"/>
       <source>Adjust the number of recent files to be shown here in menu Edit -&gt; Preferences -&gt; General -&gt; Size of recent file list</source>
-      <translation>Définissez le nombre de fichiers récents à montrer ici à partir du menu Édition → Préférences → Général → Taille de la liste des fichiers récents.</translation>
+      <translation>définissez le nombre de fichiers récemment ouverts à montrer ici à partir du menu Édition → Préférences → Général → Taille de la liste des fichiers récents.</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="45"/>
@@ -448,7 +448,7 @@ En utilisant ";;" pour séparer les chemins, vous pouvez ajouter plusieurs dossi
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="68"/>
       <source>You can configure a custom folder to display here in menu Edit -&gt; Preferences -&gt; Start -&gt; Show additional folder</source>
-      <translation>Vous pouvez configurer un dossier personnalisé à afficher ici dans le menu Modifier -&gt; Préférences -&gt; Début -&gt; Afficher un dossier supplémentaire</translation>
+      <translation>Vous pouvez configurer un dossier personnalisé à afficher ici à partir du menu Édition → Préférences → Start → Afficher un dossier supplémentaire</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="69"/>

@@ -39,13 +39,9 @@ using namespace PartDesignGui;
 
 PROPERTY_SOURCE(PartDesignGui::ViewProviderPipe,PartDesignGui::ViewProvider)
 
-ViewProviderPipe::ViewProviderPipe()
-{
-}
+ViewProviderPipe::ViewProviderPipe() = default;
 
-ViewProviderPipe::~ViewProviderPipe()
-{
-}
+ViewProviderPipe::~ViewProviderPipe() = default;
 
 std::vector<App::DocumentObject*> ViewProviderPipe::claimChildren()const
 {

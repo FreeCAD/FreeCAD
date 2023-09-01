@@ -140,9 +140,7 @@ SmoothingDialog::SmoothingDialog(QWidget* parent, Qt::WindowFlags fl)
     hboxLayout->addWidget(buttonBox);
 }
 
-SmoothingDialog::~SmoothingDialog()
-{
-}
+SmoothingDialog::~SmoothingDialog() = default;
 
 // ---------------------------------------
 
@@ -166,11 +164,6 @@ TaskSmoothing::TaskSmoothing()
 
     connect(widget, &DlgSmoothing::toggledSelection,
             tasksel, &QWidget::setVisible);
-}
-
-TaskSmoothing::~TaskSmoothing()
-{
-    // automatically deleted in the sub-class
 }
 
 bool TaskSmoothing::accept()

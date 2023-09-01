@@ -613,11 +613,6 @@ TaskCrossSections::TaskCrossSections(const Base::BoundBox3d& bb)
     Content.push_back(taskbox);
 }
 
-TaskCrossSections::~TaskCrossSections()
-{
-    // automatically deleted in the sub-class
-}
-
 bool TaskCrossSections::accept()
 {
     widget->accept();

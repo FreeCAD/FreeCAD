@@ -79,9 +79,7 @@ Feature::Feature()
     ADD_PROPERTY(Shape, (TopoDS_Shape()));
 }
 
-Feature::~Feature()
-{
-}
+Feature::~Feature() = default;
 
 short Feature::mustExecute() const
 {

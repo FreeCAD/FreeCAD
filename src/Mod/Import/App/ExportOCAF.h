@@ -92,7 +92,7 @@ private:
     Handle(XCAFDoc_ColorTool) aColorTool;
     TDF_Label rootLabel;
     bool keepExplicitPlacement;
-    bool filterBaseFeature;
+    bool filterBaseFeature{true};
 };
 
 class ImportExport ExportOCAFCmd : public ExportOCAF

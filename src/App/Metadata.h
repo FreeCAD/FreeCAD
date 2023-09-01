@@ -107,8 +107,8 @@ struct AppExport Version {
     explicit Version(const std::string& semanticString);
 
     int major{};
-    int minor;
-    int patch;
+    int minor{};
+    int patch{};
     std::string suffix;
 
     std::string str() const;

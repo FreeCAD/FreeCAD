@@ -51,13 +51,9 @@ void Firewall::setInstance(Firewall* inst)
     }
 }
 
-Firewall::Firewall()
-{
-}
+Firewall::Firewall() = default;
 
-Firewall::~Firewall()
-{
-}
+Firewall::~Firewall() = default;
 
 bool Firewall::filter(const QByteArray&) const
 {
@@ -69,9 +65,7 @@ FirewallPython::FirewallPython(const Py::Object& o)
 {
 }
 
-FirewallPython::~FirewallPython()
-{
-}
+FirewallPython::~FirewallPython() = default;
 
 bool FirewallPython::filter(const QByteArray& msg) const
 {
@@ -96,9 +90,7 @@ ServerEvent::ServerEvent(QTcpSocket* sock, const QByteArray& msg)
 {
 }
 
-ServerEvent::~ServerEvent()
-{
-}
+ServerEvent::~ServerEvent() = default;
 
 QTcpSocket* ServerEvent::socket() const
 {

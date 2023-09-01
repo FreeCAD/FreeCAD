@@ -187,7 +187,7 @@ private:
     std::unordered_map<TDF_Label, std::string, LabelHasher> myNames;
     std::unordered_map<App::DocumentObject*, App::PropertyPlacement*> myCollapsedObjects;
 
-    Base::SequencerLauncher *sequencer;
+    Base::SequencerLauncher *sequencer{nullptr};
 };
 
 struct ImportExport ExportOCAFOptions

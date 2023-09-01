@@ -62,6 +62,7 @@
 #include <App/Document.h>
 #include <App/DocumentObjectPy.h>
 #include <Base/Console.h>
+#include <Base/PyWrapParseTupleAndKeywords.h>
 #include "dxf/ImpExpDxf.h"
 #include <Mod/Part/App/encodeFilename.h>
 #include <Mod/Part/App/ImportIges.h>
@@ -130,11 +131,14 @@ private:
         PyObject *merge = Py_None;
         PyObject *useLinkGroup = Py_None;
         int mode = -1;
-        static char* kwd_list[] = {"name", "docName","importHidden","merge","useLinkGroup","mode",nullptr};
-        if (!PyArg_ParseTupleAndKeywords(args.ptr(), kwds.ptr(), "et|sO!O!O!i",
-                    kwd_list,"utf-8",&Name,&DocName,&PyBool_Type,&importHidden,&PyBool_Type,&merge,
-                    &PyBool_Type,&useLinkGroup,&mode))
+        static const std::array<const char *, 7> kwd_list {"name", "docName", "importHidden", "merge",
+                                                           "useLinkGroup", "mode", nullptr};
+        if (!Base::Wrapped_ParseTupleAndKeywords(args.ptr(), kwds.ptr(), "et|sO!O!O!i",
+                                                 kwd_list, "utf-8", &Name, &DocName, &PyBool_Type, &importHidden,
+                                                 &PyBool_Type, &merge,
+                                                 &PyBool_Type, &useLinkGroup, &mode)) {
             throw Py::Exception();
+        }
 
         std::string Utf8Name = std::string(Name);
         PyMem_Free(Name);
@@ -274,11 +278,14 @@ private:
         PyObject *exportHidden = Py_None;
         PyObject *legacy = Py_None;
         PyObject *keepPlacement = Py_None;
-        static char* kwd_list[] = {"obj", "name", "exportHidden", "legacy", "keepPlacement",nullptr};
-        if (!PyArg_ParseTupleAndKeywords(args.ptr(), kwds.ptr(), "Oet|O!O!O!",
-                    kwd_list,&object,"utf-8",&Name,&PyBool_Type,&exportHidden,&PyBool_Type,&legacy,
-                    &PyBool_Type,&keepPlacement))
+        static const std::array<const char *, 6> kwd_list{"obj", "name", "exportHidden", "legacy", "keepPlacement",
+                                                          nullptr};
+        if (!Base::Wrapped_ParseTupleAndKeywords(args.ptr(), kwds.ptr(), "Oet|O!O!O!",
+                                                 kwd_list, &object, "utf-8", &Name, &PyBool_Type, &exportHidden,
+                                                 &PyBool_Type, &legacy,
+                                                 &PyBool_Type, &keepPlacement)) {
             throw Py::Exception();
+        }
 
         std::string Utf8Name = std::string(Name);
         PyMem_Free(Name);

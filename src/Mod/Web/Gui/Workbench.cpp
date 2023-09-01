@@ -39,13 +39,9 @@ using namespace WebGui;
 /// @namespace WebGui @class Workbench
 TYPESYSTEM_SOURCE(WebGui::Workbench, Gui::StdWorkbench)
 
-Workbench::Workbench()
-{
-}
+Workbench::Workbench() = default;
 
-Workbench::~Workbench()
-{
-}
+Workbench::~Workbench() = default;
 
 void Workbench::setupContextMenu(const char* recipient,Gui::MenuItem* item) const
 {

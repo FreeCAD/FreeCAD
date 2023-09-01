@@ -106,7 +106,6 @@ class TaskExtrusion : public Gui::TaskView::TaskDialog
 
 public:
     TaskExtrusion();
-    ~TaskExtrusion() override;
 
 public:
     bool accept() override;

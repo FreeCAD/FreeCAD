@@ -40,7 +40,6 @@ class RobotExport TrajectoryObject : public App::GeoFeature
 public:
     /// Constructor
     TrajectoryObject();
-    ~TrajectoryObject() override;
 
     /// returns the type name of the ViewProvider
     const char* getViewProviderName() const override {

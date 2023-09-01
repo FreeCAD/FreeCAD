@@ -165,11 +165,12 @@ QVariant FilletRadiusModel::data(const QModelIndex& index, int role) const
 namespace PartGui {
     class EdgeFaceSelection : public Gui::SelectionFilterGate
     {
-        bool allowEdge;
+        bool allowEdge{true};
         App::DocumentObject*& object;
     public:
         explicit EdgeFaceSelection(App::DocumentObject*& obj)
-            : Gui::SelectionFilterGate(nullPointer()), allowEdge(true), object(obj)
+            : Gui::SelectionFilterGate(nullPointer())
+            , object(obj)
         {
         }
         void selectEdges()
@@ -1010,9 +1011,7 @@ FilletEdgesDialog::FilletEdgesDialog(DlgFilletEdges::FilletType type, Part::Fill
     hboxLayout->addWidget(buttonBox);
 }
 
-FilletEdgesDialog::~FilletEdgesDialog()
-{
-}
+FilletEdgesDialog::~FilletEdgesDialog() = default;
 
 void FilletEdgesDialog::accept()
 {
@@ -1072,9 +1071,7 @@ DlgChamferEdges::DlgChamferEdges(Part::FilletBase* chamfer, QWidget* parent, Qt:
 /*
  *  Destroys the object and frees any allocated resources
  */
-DlgChamferEdges::~DlgChamferEdges()
-{
-}
+DlgChamferEdges::~DlgChamferEdges() = default;
 
 const char* DlgChamferEdges::getFilletType() const
 {

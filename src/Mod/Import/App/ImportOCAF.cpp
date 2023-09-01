@@ -84,15 +84,13 @@ static inline App::Color convertColor(const Quantity_ColorRGBA &c)
 #define OCAF_KEEP_PLACEMENT
 
 ImportOCAF::ImportOCAF(Handle(TDocStd_Document) h, App::Document* d, const std::string& name)
-    : pDoc(h), doc(d), merge(true), default_name(name)
+    : pDoc(h), doc(d), default_name(name)
 {
     aShapeTool = XCAFDoc_DocumentTool::ShapeTool (pDoc->Main());
     aColorTool = XCAFDoc_DocumentTool::ColorTool(pDoc->Main());
 }
 
-ImportOCAF::~ImportOCAF()
-{
-}
+ImportOCAF::~ImportOCAF() = default;
 
 void ImportOCAF::tryPlacementFromLoc(App::GeoFeature* part, const TopLoc_Location& part_loc)
 {
@@ -483,9 +481,7 @@ ImportXCAF::ImportXCAF(Handle(TDocStd_Document) h, App::Document* d, const std::
     hColors = XCAFDoc_DocumentTool::ColorTool(hdoc->Main());
 }
 
-ImportXCAF::~ImportXCAF()
-{
-}
+ImportXCAF::~ImportXCAF() = default;
 
 void ImportXCAF::loadShapes()
 {

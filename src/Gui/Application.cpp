@@ -66,6 +66,7 @@
 #include "CommandPy.h"
 #include "Control.h"
 #include "PreferencePages/DlgSettingsCacheDirectory.h"
+#include "DlgCheckableMessageBox.h"
 #include "DocumentPy.h"
 #include "DocumentRecovery.h"
 #include "EditorView.h"
@@ -170,11 +171,7 @@ public:
 // Pimpl class
 struct ApplicationP
 {
-    explicit ApplicationP(bool GUIenabled) :
-    activeDocument(nullptr),
-    editDocument(nullptr),
-    isClosing(false),
-    startingUp(true)
+    explicit ApplicationP(bool GUIenabled)
     {
         // create the macro manager
         if (GUIenabled)
@@ -195,14 +192,14 @@ struct ApplicationP
     /// list of all handled documents
     std::map<const App::Document*, Gui::Document*> documents;
     /// Active document
-    Gui::Document*   activeDocument;
-    Gui::Document*  editDocument;
+    Gui::Document*   activeDocument{nullptr};
+    Gui::Document*  editDocument{nullptr};
     MacroManager*  macroMngr;
     PreferencePackManager* prefPackManager;
     /// List of all registered views
     std::list<Gui::BaseView*> passive;
-    bool isClosing;
-    bool startingUp;
+    bool isClosing{false};
+    bool startingUp{true};
     /// Handles all commands
     CommandManager commandManager;
     ViewProviderMap viewproviderMap;
@@ -2196,6 +2193,25 @@ void Application::runApplication()
 
             int major = context.format().majorVersion();
             int minor = context.format().minorVersion();
+
+#ifdef NDEBUG
+            // In release mode, issue a warning to users that their version of OpenGL is
+            // potentially going to cause problems
+            if (major < 2) {
+                auto message =
+                    QObject::tr("This system is running OpenGL %1.%2. "
+                                "FreeCAD requires OpenGL 2.0 or above. "
+                                "Please upgrade your graphics driver and/or card as required.")
+                        .arg(major)
+                        .arg(minor)
+                    + QStringLiteral("\n");
+                Base::Console().Warning(message.toStdString().c_str());
+                Dialog::DlgCheckableMessageBox::showMessage(
+                    Gui::GUISingleApplication::applicationName() + QStringLiteral(" - ")
+                        + QObject::tr("Invalid OpenGL Version"),
+                    message);
+            }
+#endif
             const char* glVersion = reinterpret_cast<const char*>(glGetString(GL_VERSION));
             Base::Console().Log("OpenGL version is: %d.%d (%s)\n", major, minor, glVersion);
         }

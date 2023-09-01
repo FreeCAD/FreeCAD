@@ -298,7 +298,7 @@ private:
 
     std::map<const App::DocumentObject*, boost::signals2::scoped_connection> depConnections;
 
-    int updateCount;
+    int updateCount = 0;
     bool restoring = false;
 };
 

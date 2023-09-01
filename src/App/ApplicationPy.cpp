@@ -29,6 +29,7 @@
 #include <Base/FileInfo.h>
 #include <Base/Interpreter.h>
 #include <Base/Parameter.h>
+#include <Base/PyWrapParseTupleAndKeywords.h>
 #include <Base/Sequencer.h>
 
 #include "Application.h"
@@ -210,12 +211,22 @@ PyObject* Application::sLoadFile(PyObject * /*self*/, PyObject *args)
             }
         }
 
+        // path could contain characters that need escaping, such as quote signs
+        // therefore use its representation in the Python code string
+        PyObject *pathObj = PyUnicode_FromString(path);
+        PyObject *pathReprObj = PyObject_Repr(pathObj);
+        const char *pathRepr = PyUnicode_AsUTF8(pathReprObj);
+
         std::stringstream str;
         str << "import " << module << std::endl;
         if (fi.hasExtension("FCStd"))
-            str << module << ".openDocument('" << path << "')" << std::endl;
+            str << module << ".openDocument(" << pathRepr << ")" << std::endl;
         else
-            str << module << ".insert('" << path << "','" << doc << "')" << std::endl;
+            str << module << ".insert(" << pathRepr << ",'" << doc << "')" << std::endl;
+
+        Py_DECREF(pathObj);
+        Py_DECREF(pathReprObj);
+
         Base::Interpreter().runString(str.str().c_str());
         Py_Return;
     }
@@ -240,10 +251,11 @@ PyObject* Application::sOpenDocument(PyObject * /*self*/, PyObject *args, PyObje
 {
     char* Name;
     PyObject *hidden = Py_False;
-    static char *kwlist[] = {"name", "hidden", nullptr};
-    if (!PyArg_ParseTupleAndKeywords(args, kwd, "et|O!", kwlist,
-                "utf-8", &Name, &PyBool_Type, &hidden))
+    static const std::array<const char *, 3> kwlist {"name", "hidden", nullptr};
+    if (!Base::Wrapped_ParseTupleAndKeywords(args, kwd, "et|O!", kwlist,
+                "utf-8", &Name, &PyBool_Type, &hidden)) {
         return nullptr;
+    }
     std::string EncodedName = std::string(Name);
     PyMem_Free(Name);
     try {
@@ -267,10 +279,11 @@ PyObject* Application::sNewDocument(PyObject * /*self*/, PyObject *args, PyObjec
     char *usrName = nullptr;
     PyObject *hidden = Py_False;
     PyObject *temp = Py_False;
-    static char *kwlist[] = {"name", "label", "hidden", "temp", nullptr};
-    if (!PyArg_ParseTupleAndKeywords(args, kwd, "|etetO!O!", kwlist,
-                "utf-8", &docName, "utf-8", &usrName, &PyBool_Type, &hidden, &PyBool_Type, &temp))
+    static const std::array<const char *, 5> kwlist {"name", "label", "hidden", "temp", nullptr};
+    if (!Base::Wrapped_ParseTupleAndKeywords(args, kwd, "|etetO!O!", kwlist,
+                "utf-8", &docName, "utf-8", &usrName, &PyBool_Type, &hidden, &PyBool_Type, &temp)) {
         return nullptr;
+    }
 
     PY_TRY {
         App::Document* doc = GetApplication().newDocument(docName, usrName, !Base::asBoolean(hidden), Base::asBoolean(temp));

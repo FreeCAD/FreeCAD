@@ -76,9 +76,7 @@ TaskShapeBinder::TaskShapeBinder(ViewProviderShapeBinder* view, bool newObj, QWi
     updateUI();
 }
 
-TaskShapeBinder::~TaskShapeBinder()
-{
-}
+TaskShapeBinder::~TaskShapeBinder() = default;
 
 void TaskShapeBinder::updateUI()
 {
@@ -391,10 +389,7 @@ TaskDlgShapeBinder::TaskDlgShapeBinder(ViewProviderShapeBinder* view, bool newOb
     Content.push_back(parameter);
 }
 
-TaskDlgShapeBinder::~TaskDlgShapeBinder()
-{
-
-}
+TaskDlgShapeBinder::~TaskDlgShapeBinder() = default;
 
 bool TaskDlgShapeBinder::accept()
 {

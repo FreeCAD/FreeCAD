@@ -104,11 +104,6 @@ TaskCurveOnMesh::TaskCurveOnMesh(Gui::View3DInventor* view)
     Content.push_back(taskbox);
 }
 
-TaskCurveOnMesh::~TaskCurveOnMesh()
-{
-    // automatically deleted in the sub-class
-}
-
 bool TaskCurveOnMesh::reject()
 {
     widget->reject();

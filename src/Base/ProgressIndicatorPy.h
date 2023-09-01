@@ -30,7 +30,7 @@
 
 namespace Base
 {
-
+// NOLINTNEXTLINE
 class BaseExport ProgressIndicatorPy : public Py::PythonExtension<ProgressIndicatorPy>
 {
 public:

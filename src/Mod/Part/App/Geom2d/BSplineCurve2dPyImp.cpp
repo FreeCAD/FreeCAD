@@ -38,6 +38,7 @@
 #endif
 
 #include <Base/GeometryPyCXX.h>
+#include <Base/PyWrapParseTupleAndKeywords.h>
 
 #include "Geom2d/BSplineCurve2dPy.h"
 #include "Geom2d/BSplineCurve2dPy.cpp"
@@ -737,15 +738,17 @@ PyObject* BSplineCurve2dPy::approximate(PyObject *args, PyObject *kwds)
     double weight2 = 0;
     double weight3 = 0;
 
-    static char* kwds_interp[] = {"Points", "DegMax", "Continuity", "Tolerance", "DegMin", "ParamType", "Parameters",
-                                  "LengthWeight", "CurvatureWeight", "TorsionWeight", nullptr};
+    static const std::array<const char *, 11> kwds_interp{"Points", "DegMax", "Continuity", "Tolerance", "DegMin",
+                                                          "ParamType", "Parameters", "LengthWeight", "CurvatureWeight",
+                                                          "TorsionWeight", nullptr};
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwds, "O|isdisOddd",kwds_interp,
-                                     &obj, &degMax,
-                                     &continuity, &tol3d, &degMin,
-                                     &parType, &par,
-                                     &weight1, &weight2, &weight3))
+    if (Base::Wrapped_ParseTupleAndKeywords(args, kwds, "O|isdisOddd",kwds_interp,
+                                            &obj, &degMax,
+                                            &continuity, &tol3d, &degMin,
+                                            &parType, &par,
+                                            &weight1, &weight2, &weight3)) {
         return nullptr;
+    }
 
     try {
         Py::Sequence list(obj);
@@ -850,8 +853,8 @@ PyObject* BSplineCurve2dPy::getCardinalSplineTangents(PyObject *args, PyObject *
     PyObject* tgs;
     double parameter;
 
-    static char* kwds_interp1[] = {"Points", "Parameter", nullptr};
-    if (PyArg_ParseTupleAndKeywords(args, kwds, "Od",kwds_interp1, &pts, &parameter)) {
+    static const std::array<const char *, 3> kwds_interp1 {"Points", "Parameter", nullptr};
+    if (Base::Wrapped_ParseTupleAndKeywords(args, kwds, "Od", kwds_interp1, &pts, &parameter)) {
         Py::Sequence list(pts);
         std::vector<gp_Pnt2d> interpPoints;
         interpPoints.reserve(list.size());
@@ -872,8 +875,8 @@ PyObject* BSplineCurve2dPy::getCardinalSplineTangents(PyObject *args, PyObject *
     }
 
     PyErr_Clear();
-    static char* kwds_interp2[] = {"Points", "Parameters", nullptr};
-    if (PyArg_ParseTupleAndKeywords(args, kwds, "OO",kwds_interp2, &pts, &tgs)) {
+    static const std::array<const char *, 3> kwds_interp2 {"Points", "Parameters", nullptr};
+    if (Base::Wrapped_ParseTupleAndKeywords(args, kwds, "OO", kwds_interp2, &pts, &tgs)) {
         Py::Sequence list(pts);
         std::vector<gp_Pnt2d> interpPoints;
         interpPoints.reserve(list.size());
@@ -913,15 +916,17 @@ PyObject* BSplineCurve2dPy::interpolate(PyObject *args, PyObject *kwds)
     PyObject* t1 = nullptr; PyObject* t2 = nullptr;
     PyObject* ts = nullptr; PyObject* fl = nullptr;
 
-    static char* kwds_interp[] = {"Points", "PeriodicFlag", "Tolerance", "InitialTangent", "FinalTangent",
-                                  "Tangents", "TangentFlags", "Parameters", nullptr};
+    static const std::array<const char *, 9> kwds_interp{"Points", "PeriodicFlag", "Tolerance", "InitialTangent",
+                                                         "FinalTangent", "Tangents", "TangentFlags", "Parameters",
+                                                         nullptr};
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwds, "O|O!dO!O!OOO",kwds_interp,
-                                     &obj, &PyBool_Type, &periodic, &tol3d,
-                                     Base::Vector2dPy::type_object(), &t1,
-                                     Base::Vector2dPy::type_object(), &t2,
-                                     &ts, &fl, &par))
+    if (Base::Wrapped_ParseTupleAndKeywords(args, kwds, "O|O!dO!O!OOO",kwds_interp,
+                                            &obj, &PyBool_Type, &periodic, &tol3d,
+                                            Base::Vector2dPy::type_object(), &t1,
+                                            Base::Vector2dPy::type_object(), &t2,
+                                            &ts, &fl, &par)) {
         return nullptr;
+    }
 
     try {
         Py::Sequence list(obj);
@@ -1085,7 +1090,8 @@ PyObject* BSplineCurve2dPy::buildFromPoles(PyObject *args)
 
 PyObject* BSplineCurve2dPy::buildFromPolesMultsKnots(PyObject *args, PyObject *keywds)
 {
-    static char *kwlist[] = {"poles", "mults", "knots", "periodic", "degree", "weights", nullptr};
+    static const std::array<const char *, 7> kwlist{"poles", "mults", "knots", "periodic", "degree", "weights",
+                                                    nullptr};
     PyObject* periodic = Py_False;
     PyObject* poles = Py_None;
     PyObject* mults = Py_None;
@@ -1095,11 +1101,12 @@ PyObject* BSplineCurve2dPy::buildFromPolesMultsKnots(PyObject *args, PyObject *k
     int number_of_poles = 0;
     int number_of_knots = 0;
     int sum_of_mults = 0;
-    if (!PyArg_ParseTupleAndKeywords(args, keywds, "O|OOO!iO", kwlist,
+    if (!Base::Wrapped_ParseTupleAndKeywords(args, keywds, "O|OOO!iO", kwlist,
         &poles, &mults, &knots,
         &PyBool_Type, &periodic,
-        &degree, &weights))
+        &degree, &weights)) {
         return nullptr;
+    }
     try {
         // poles have to be present
         Py::Sequence list(poles);

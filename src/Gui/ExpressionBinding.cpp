@@ -47,11 +47,7 @@ using namespace Gui;
 using namespace App;
 namespace sp = std::placeholders;
 
-ExpressionBinding::ExpressionBinding()
-    : m_autoApply(false)
-{
-}
-
+ExpressionBinding::ExpressionBinding() = default;
 
 ExpressionBinding::~ExpressionBinding() = default;
 
@@ -278,12 +274,7 @@ void ExpressionBinding::objectDeleted(const App::DocumentObject& obj)
 
 // ----------------------------------------------------------------------------
 
-ExpressionWidget::ExpressionWidget()
-    : iconLabel(nullptr)
-    , iconHeight(-1)
-{
-
-}
+ExpressionWidget::ExpressionWidget() = default;
 
 QPixmap ExpressionWidget::getIcon(const char* name, const QSize& size) const
 {

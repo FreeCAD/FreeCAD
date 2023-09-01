@@ -550,9 +550,7 @@ SheetViewPy::SheetViewPy(SheetView *mdi)
 {
 }
 
-SheetViewPy::~SheetViewPy()
-{
-}
+SheetViewPy::~SheetViewPy() = default;
 
 Py::Object SheetViewPy::repr()
 {

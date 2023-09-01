@@ -4034,7 +4034,7 @@ ima pločicu spajanja koja bi se pokidala.
     <message>
       <location filename="../../TaskSectionView.cpp" line="148"/>
       <source>No direction set</source>
-      <translation type="unfinished">No direction set</translation>
+      <translation>Nije postavljen smjer</translation>
     </message>
   </context>
   <context>
@@ -6170,7 +6170,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskComplexSection.cpp" line="172"/>
       <source>No direction set</source>
-      <translation type="unfinished">No direction set</translation>
+      <translation>Nije postavljen smjer</translation>
     </message>
     <message>
       <location filename="../../TaskComplexSection.cpp" line="687"/>

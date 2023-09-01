@@ -122,9 +122,7 @@ TaskLoftParameters::TaskLoftParameters(ViewProviderLoft *LoftView, bool /*newObj
     updateUI();
 }
 
-TaskLoftParameters::~TaskLoftParameters()
-{
-}
+TaskLoftParameters::~TaskLoftParameters() = default;
 
 void TaskLoftParameters::updateUI()
 {
@@ -373,9 +371,7 @@ TaskDlgLoftParameters::TaskDlgLoftParameters(ViewProviderLoft *LoftView,bool new
     Content.push_back(parameter);
 }
 
-TaskDlgLoftParameters::~TaskDlgLoftParameters()
-{
-}
+TaskDlgLoftParameters::~TaskDlgLoftParameters() = default;
 
 bool TaskDlgLoftParameters::accept()
 {

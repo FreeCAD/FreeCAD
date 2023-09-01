@@ -54,9 +54,9 @@ public:
     // apply the start axis angles and set to time 0. Restores the exact start position
     void reset();
 
-	double Pos;
-	double Axis[6];
-	double startAxis[6];
+    double Pos{0.0};
+    double Axis[6]{};
+    double startAxis[6]{};
 
     Trajectory Trac;
     Robot6Axis &Rob;

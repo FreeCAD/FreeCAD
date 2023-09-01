@@ -33,9 +33,7 @@ using namespace Part;
 
 TYPESYSTEM_SOURCE_ABSTRACT(Part::GeometryExtension,Base::BaseClass)
 
-GeometryExtension::GeometryExtension()
-{
-}
+GeometryExtension::GeometryExtension() = default;
 
 PyObject* GeometryExtension::copyPyObject() const
 {

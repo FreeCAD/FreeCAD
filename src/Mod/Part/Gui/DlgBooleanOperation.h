@@ -73,7 +73,6 @@ class TaskBooleanOperation : public Gui::TaskView::TaskDialog
 
 public:
     TaskBooleanOperation();
-    ~TaskBooleanOperation() override;
 
 public:
     void clicked(int) override;

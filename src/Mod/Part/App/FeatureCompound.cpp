@@ -42,9 +42,7 @@ Compound::Compound()
     Links.setSize(0);
 }
 
-Compound::~Compound()
-{
-}
+Compound::~Compound() = default;
 
 short Compound::mustExecute() const
 {

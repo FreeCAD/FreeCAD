@@ -126,9 +126,8 @@ UrlWidget::UrlWidget(BrowserView *view) :
     setText(QLatin1String("https://"));
     hide();
 }
-UrlWidget::~UrlWidget()
-{
-}
+
+UrlWidget::~UrlWidget() = default;
 
 void UrlWidget::keyPressEvent(QKeyEvent *keyEvt)
 {
@@ -201,9 +200,7 @@ BrowserViewPy::BrowserViewPy(BrowserView* view) : base(view)
 {
 }
 
-BrowserViewPy::~BrowserViewPy()
-{
-}
+BrowserViewPy::~BrowserViewPy() = default;
 
 BrowserView* BrowserViewPy::getBrowserViewPtr()
 {

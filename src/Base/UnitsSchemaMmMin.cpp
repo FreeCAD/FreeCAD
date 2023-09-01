@@ -43,7 +43,6 @@ QString UnitsSchemaMmMin::schemaTranslate(const Quantity &quant, double &factor,
     }
     else if (unit == Unit::Angle) {
         unitString = QString::fromUtf8("\xC2\xB0");
-        //unitString = QString::fromUtf8(u8"\u00B0"); //C++11 - Not supported by VS2013
         factor = 1.0;
     }
     else if (unit == Unit::Velocity) {

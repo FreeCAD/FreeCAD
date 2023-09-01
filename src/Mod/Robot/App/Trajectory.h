@@ -77,7 +77,7 @@ protected:
 
     std::vector<Waypoint*> vpcWaypoints;
 
-    KDL::Trajectory_Composite *pcTrajectory;
+    KDL::Trajectory_Composite *pcTrajectory{nullptr};
 };
 
 } //namespace Part

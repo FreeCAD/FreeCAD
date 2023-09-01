@@ -261,10 +261,7 @@ TaskDlgThicknessParameters::TaskDlgThicknessParameters(ViewProviderThickness *Dr
     Content.push_back(parameter);
 }
 
-TaskDlgThicknessParameters::~TaskDlgThicknessParameters()
-{
-
-}
+TaskDlgThicknessParameters::~TaskDlgThicknessParameters() = default;
 
 //==== calls from the TaskView ===============================================================
 

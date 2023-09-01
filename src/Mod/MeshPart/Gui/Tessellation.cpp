@@ -96,9 +96,7 @@ Tessellation::Tessellation(QWidget* parent)
     }
 }
 
-Tessellation::~Tessellation()
-{
-}
+Tessellation::~Tessellation() = default;
 
 void Tessellation::setupConnections()
 {
@@ -502,9 +500,7 @@ Mesh2ShapeGmsh::Mesh2ShapeGmsh(QWidget* parent, Qt::WindowFlags fl)
     d->geoFile = App::Application::getTempFileName() + "mesh.geo";
 }
 
-Mesh2ShapeGmsh::~Mesh2ShapeGmsh()
-{
-}
+Mesh2ShapeGmsh::~Mesh2ShapeGmsh() = default;
 
 void Mesh2ShapeGmsh::process(App::Document* doc, const std::list<App::SubObjectT>& objs)
 {
@@ -622,11 +618,6 @@ TaskTessellation::TaskTessellation()
         widget->windowTitle(), true, nullptr);
     taskbox->groupLayout()->addWidget(widget);
     Content.push_back(taskbox);
-}
-
-TaskTessellation::~TaskTessellation()
-{
-    // automatically deleted in the sub-class
 }
 
 void TaskTessellation::open()

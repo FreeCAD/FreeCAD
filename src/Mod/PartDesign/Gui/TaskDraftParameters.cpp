@@ -296,10 +296,7 @@ TaskDlgDraftParameters::TaskDlgDraftParameters(ViewProviderDraft *DressUpView)
     Content.push_back(parameter);
 }
 
-TaskDlgDraftParameters::~TaskDlgDraftParameters()
-{
-
-}
+TaskDlgDraftParameters::~TaskDlgDraftParameters() = default;
 
 //==== calls from the TaskView ===============================================================
 

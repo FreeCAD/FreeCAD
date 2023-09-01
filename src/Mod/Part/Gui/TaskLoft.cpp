@@ -56,12 +56,8 @@ class LoftWidget::Private
 public:
     Ui_TaskLoft ui;
     std::string document;
-    Private()
-    {
-    }
-    ~Private()
-    {
-    }
+    Private() = default;
+    ~Private() = default;
 };
 
 /* TRANSLATOR PartGui::LoftWidget */
@@ -259,9 +255,7 @@ TaskLoft::TaskLoft()
     Content.push_back(taskbox);
 }
 
-TaskLoft::~TaskLoft()
-{
-}
+TaskLoft::~TaskLoft() = default;
 
 void TaskLoft::open()
 {

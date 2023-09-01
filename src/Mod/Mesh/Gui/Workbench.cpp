@@ -55,13 +55,7 @@ using namespace MeshGui;
 /// @namespace MeshGui @class Workbench
 TYPESYSTEM_SOURCE(MeshGui::Workbench, Gui::StdWorkbench)
 
-Workbench::Workbench()
-{
-}
-
-Workbench::~Workbench()
-{
-}
+Workbench::Workbench() = default;
 
 class MeshInfoWatcher : public Gui::TaskView::TaskWatcher, public Gui::SelectionObserver
 {

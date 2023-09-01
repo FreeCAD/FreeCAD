@@ -284,9 +284,7 @@ void TaskBooleanParameters::onBodyDeleted()
     }
 }
 
-TaskBooleanParameters::~TaskBooleanParameters()
-{
-}
+TaskBooleanParameters::~TaskBooleanParameters() = default;
 
 void TaskBooleanParameters::changeEvent(QEvent *e)
 {
@@ -321,10 +319,7 @@ TaskDlgBooleanParameters::TaskDlgBooleanParameters(ViewProviderBoolean *BooleanV
     Content.push_back(parameter);
 }
 
-TaskDlgBooleanParameters::~TaskDlgBooleanParameters()
-{
-
-}
+TaskDlgBooleanParameters::~TaskDlgBooleanParameters() = default;
 
 //==== calls from the TaskView ===============================================================
 

@@ -236,13 +236,15 @@ protected:
     virtual void resetData();
 
 protected:
-    size_t nProgress; /**< Stores the current amount of progress.*/
-    size_t nTotalSteps; /**< Stores the total number of steps */
+    //NOLINTBEGIN
+    size_t nProgress{0}; /**< Stores the current amount of progress.*/
+    size_t nTotalSteps{0}; /**< Stores the total number of steps */
+    //NOLINTEND
 
 private:
-    bool _bLocked; /**< Lock/unlock sequencer. */
-    bool _bCanceled; /**< Is set to true if the last pending operation was canceled */
-    int _nLastPercentage; /**< Progress in percent. */
+    bool _bLocked{false}; /**< Lock/unlock sequencer. */
+    bool _bCanceled{false}; /**< Is set to true if the last pending operation was canceled */
+    int _nLastPercentage{-1}; /**< Progress in percent. */
 };
 
 /** This special sequencer might be useful if you want to suppress any indication

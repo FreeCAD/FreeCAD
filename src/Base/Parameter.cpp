@@ -54,9 +54,6 @@
 
 FC_LOG_LEVEL_INIT("Parameter", true, true)
 
-//#ifdef XERCES_HAS_CPP_NAMESPACE
-//  using namespace xercesc;
-//#endif
 
 XERCES_CPP_NAMESPACE_USE
 using namespace Base;
@@ -81,9 +78,7 @@ public:
     // -----------------------------------------------------------------------
     //  Constructors and Destructor
     // -----------------------------------------------------------------------
-    DOMTreeErrorReporter() :
-            fSawErrors(false) {
-    }
+    DOMTreeErrorReporter() = default;
 
     ~DOMTreeErrorReporter() override = default;
 
@@ -109,7 +104,7 @@ public:
     //      method. Its used by the main code to suppress output if there are
     //      errors.
     // -----------------------------------------------------------------------
-    bool    fSawErrors;
+    bool    fSawErrors{false};
 };
 
 
@@ -398,7 +393,7 @@ Base::Reference<ParameterGrp> ParameterGrp::_GetGroup(const char* Name)
         return rParamGrp;
     }
 
-    DOMElement *pcTemp;
+    DOMElement *pcTemp{};
 
     // search if Group node already there
     pcTemp = FindElement(_pGroupNode,"FCParamGroup",Name);
@@ -918,17 +913,6 @@ std::vector<std::pair<std::string,double> > ParameterGrp::GetFloatMap(const char
     return vrValues;
 }
 
-void  ParameterGrp::SetBlob(const char* /*Name*/, void* /*pValue*/, long /*lLength*/)
-{
-    // not implemented so far
-    assert(0);
-}
-
-void ParameterGrp::GetBlob(const char* /*Name*/, void* /*pBuf*/, long /*lMaxLength*/, void* /*pPreset*/) const
-{
-    // not implemented so far
-    assert(0);
-}
 
 void  ParameterGrp::SetASCII(const char* Name, const char *sValue)
 {
@@ -1083,18 +1067,6 @@ void ParameterGrp::RemoveBool(const char* Name)
     Notify(Name);
 }
 
-void ParameterGrp::RemoveBlob(const char* /*Name*/)
-{
-    /* not implemented yet
-    // check if Element in group
-    DOMElement *pcElem = FindElement(_pGroupNode,"FCGrp",Name);
-    // if not return
-    if(!pcElem)
-        return;
-    else
-        _pGroupNode->removeChild(pcElem);
-    */
-}
 
 void ParameterGrp::RemoveFloat(const char* Name)
 {
@@ -1441,7 +1413,6 @@ static XercesDOMParser::ValSchemes    gValScheme       = XercesDOMParser::Val_Au
 /** Default construction
   */
 ParameterManager::ParameterManager()
-  : ParameterGrp(), _pDocument(nullptr), paramSerializer(nullptr)
 {
     _Manager = this;
 

@@ -79,10 +79,7 @@ ViewProviderShapeBinder::ViewProviderShapeBinder()
     LineWidth.setValue(1);
 }
 
-ViewProviderShapeBinder::~ViewProviderShapeBinder()
-{
-
-}
+ViewProviderShapeBinder::~ViewProviderShapeBinder() = default;
 
 bool ViewProviderShapeBinder::setEdit(int ModNum) {
     // TODO Share code with other view providers (2015-09-11, Fat-Zer)

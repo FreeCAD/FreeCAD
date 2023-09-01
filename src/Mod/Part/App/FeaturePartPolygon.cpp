@@ -39,9 +39,7 @@ Part::Polygon::Polygon()
     ADD_PROPERTY(Close,(false));
 }
 
-Part::Polygon::~Polygon()
-{
-}
+Part::Polygon::~Polygon() = default;
 
 short Part::Polygon::mustExecute() const
 {

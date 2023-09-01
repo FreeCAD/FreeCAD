@@ -51,15 +51,7 @@ TYPESYSTEM_SOURCE(Points::PropertyGreyValueList, App::PropertyLists)
 TYPESYSTEM_SOURCE(Points::PropertyNormalList, App::PropertyLists)
 TYPESYSTEM_SOURCE(Points::PropertyCurvatureList , App::PropertyLists)
 
-PropertyGreyValueList::PropertyGreyValueList()
-{
-
-}
-
-PropertyGreyValueList::~PropertyGreyValueList()
-{
-
-}
+PropertyGreyValueList::PropertyGreyValueList() = default;
 
 void PropertyGreyValueList::setSize(int newSize)
 {
@@ -221,15 +213,7 @@ void PropertyGreyValueList::removeIndices( const std::vector<unsigned long>& uIn
     setValues(remainValue);
 }
 
-PropertyNormalList::PropertyNormalList()
-{
-
-}
-
-PropertyNormalList::~PropertyNormalList()
-{
-
-}
+PropertyNormalList::PropertyNormalList() = default;
 
 void PropertyNormalList::setSize(int newSize)
 {
@@ -433,15 +417,7 @@ void PropertyNormalList::removeIndices( const std::vector<unsigned long>& uIndic
     setValues(remainValue);
 }
 
-PropertyCurvatureList::PropertyCurvatureList()
-{
-
-}
-
-PropertyCurvatureList::~PropertyCurvatureList()
-{
-
-}
+PropertyCurvatureList::PropertyCurvatureList() = default;
 
 void PropertyCurvatureList::setValue(const CurvatureInfo& lValue)
 {

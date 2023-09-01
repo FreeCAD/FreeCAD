@@ -70,13 +70,13 @@ ProgressIndicatorPy::~ProgressIndicatorPy() = default;
 Py::Object ProgressIndicatorPy::repr()
 {
     std::string s = "Base.ProgressIndicator";
-    return Py::String(s);
+    return Py::String(s); // NOLINT
 }
 
 Py::Object ProgressIndicatorPy::start(const Py::Tuple& args)
 {
-    char* text;
-    unsigned int steps;
+    char* text = nullptr;
+    unsigned int steps = 0;
     if (!PyArg_ParseTuple(args.ptr(), "sI",&text,&steps))
         throw Py::Exception();
     if (!_seq.get()) {

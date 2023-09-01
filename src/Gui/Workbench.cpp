@@ -584,8 +584,10 @@ void StdWorkbench::setupContextMenu(const char* recipient, MenuItem* item) const
         measure->setCommand("Measure");
         *measure << "View_Measure_Toggle_All" << "View_Measure_Clear_All";
 
-        *item << "Std_ViewFitAll" << "Std_ViewFitSelection" << "Std_DrawStyle" << StdViews << measure
-              << "Separator" << "Std_ViewDockUndockFullscreen";
+
+        *item << "Std_ViewFitAll" << "Std_ViewFitSelection" << "Std_DrawStyle" 
+              << StdViews << measure << "Std_SelectFilter" << "Separator"
+              << "Std_ViewDockUndockFullscreen";
 
         if (Gui::Selection().countObjectsOfType(App::DocumentObject::getClassTypeId()) > 0) {
             *item << "Separator" << "Std_SetAppearance" << "Std_ToggleVisibility"
@@ -789,10 +791,10 @@ ToolBarItem* StdWorkbench::setupToolBars() const
     auto view = new ToolBarItem( root );
     view->setCommand("View");
     *view << "Std_ViewFitAll" << "Std_ViewFitSelection" << "Std_DrawStyle" << "Std_SelBoundingBox"
-          << "Separator" << "Std_SelBack" << "Std_SelForward" << "Std_LinkSelectActions"
-          << "Separator" << "Std_TreeViewActions" << "Std_ViewIsometric" << "Separator" << "Std_ViewFront"
-          << "Std_ViewTop" << "Std_ViewRight" << "Separator" << "Std_ViewRear" << "Std_ViewBottom"
-          << "Std_ViewLeft" << "Separator" << "Std_MeasureDistance" ;
+          << "Separator" << "Std_SelectFilter" << "Std_SelBack" << "Std_SelForward"
+          << "Std_LinkSelectActions"<< "Separator" << "Std_TreeViewActions" << "Std_ViewIsometric"
+          << "Std_ViewFront"<< "Std_ViewTop" << "Std_ViewRight" << "Separator" << "Std_ViewRear"
+          << "Separator" << "Std_ViewBottom"<< "Std_ViewLeft"  << "Separator" << "Std_MeasureDistance";
 
     // Structure
     auto structure = new ToolBarItem( root );
@@ -816,7 +818,8 @@ ToolBarItem* StdWorkbench::setupCommandBars() const
     view->setCommand("Standard views");
     *view << "Std_ViewFitAll" << "Std_ViewFitSelection" << "Std_ViewIsometric" << "Separator"
           << "Std_ViewFront" << "Std_ViewRight" << "Std_ViewTop" << "Separator"
-          << "Std_ViewRear" << "Std_ViewLeft" << "Std_ViewBottom";
+          << "Std_ViewRear" << "Std_ViewLeft" << "Std_ViewBottom" << "Std_SelectFilter";
+
     // Special Ops
     auto macro = new ToolBarItem( root );
     macro->setCommand("Special Ops");
@@ -1018,10 +1021,7 @@ ToolBarItem* TestWorkbench::setupCommandBars() const
 
 TYPESYSTEM_SOURCE_ABSTRACT(Gui::PythonBaseWorkbench, Gui::Workbench)
 
-PythonBaseWorkbench::PythonBaseWorkbench()
-  : _menuBar(nullptr), _contextMenu(nullptr), _toolBar(nullptr), _commandBar(nullptr), _workbenchPy(nullptr)
-{
-}
+PythonBaseWorkbench::PythonBaseWorkbench() = default;
 
 PythonBaseWorkbench::~PythonBaseWorkbench()
 {

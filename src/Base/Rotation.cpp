@@ -401,9 +401,9 @@ Rotation Rotation::operator*(const Rotation & q) const
 Rotation& Rotation::multRight(const Base::Rotation& q)
 {
     // Taken from <http://de.wikipedia.org/wiki/Quaternionen>
-    double x0, y0, z0, w0;
+    double x0{}, y0{}, z0{}, w0{};
     this->getValue(x0, y0, z0, w0);
-    double x1, y1, z1, w1;
+    double x1{}, y1{}, z1{}, w1{};
     q.getValue(x1, y1, z1, w1);
 
     this->setValue(w0*x1 + x0*w1 + y0*z1 - z0*y1,
@@ -422,9 +422,9 @@ Rotation& Rotation::multRight(const Base::Rotation& q)
 Rotation& Rotation::multLeft(const Base::Rotation& q)
 {
     // Taken from <http://de.wikipedia.org/wiki/Quaternionen>
-    double x0, y0, z0, w0;
+    double x0{}, y0{}, z0{}, w0{};
     q.getValue(x0, y0, z0, w0);
-    double x1, y1, z1, w1;
+    double x1{}, y1{}, z1{}, w1{};
     this->getValue(x1, y1, z1, w1);
 
     this->setValue(w0*x1 + x0*w1 + y0*z1 - z0*y1,
@@ -496,7 +496,7 @@ Vector3f Rotation::multVec(const Vector3f & src) const
 void Rotation::scaleAngle(const double scaleFactor)
 {
     Vector3d axis;
-    double fAngle;
+    double fAngle{};
     this->getValue(axis, fAngle);
     this->setValue(axis, fAngle * scaleFactor);
 }
@@ -504,10 +504,8 @@ void Rotation::scaleAngle(const double scaleFactor)
 Rotation Rotation::slerp(const Rotation & q0, const Rotation & q1, double t)
 {
     // Taken from <http://www.euclideanspace.com/maths/algebra/realNormedAlgebra/quaternions/slerp/>
-    // q = [q0*sin((1-t)*theta)+q1*sin(t*theta)]/sin(theta), 0<=t<=1
     if (t<0.0) t=0.0;
     else if (t>1.0) t=1.0;
-    //return q0;
 
     double scale0 = 1.0 - t;
     double scale1 = t;
@@ -574,7 +572,7 @@ Rotation Rotation::makeRotationByAxes(Vector3d xdir, Vector3d ydir, Vector3d zdi
 
 
     auto dropPriority = [&order](int index){
-        int tmp;
+        int tmp{};
         if (index == 0){
             tmp = order[0];
             order[0] = order[1];
@@ -701,11 +699,6 @@ void Rotation::setYawPitchRoll(double y, double p, double r)
     double s2 = sin(p/2.0);
     double c3 = cos(r/2.0);
     double s3 = sin(r/2.0);
-
-    // quat[0] = c1*c2*s3 - s1*s2*c3;
-    // quat[1] = c1*s2*c3 + s1*c2*s3;
-    // quat[2] = s1*c2*c3 - c1*s2*s3;
-    // quat[3] = c1*c2*c3 + s1*s2*s3;
 
     this->setValue (
       c1*c2*s3 - s1*s2*c3,

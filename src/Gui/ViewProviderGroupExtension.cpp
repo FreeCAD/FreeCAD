@@ -43,7 +43,7 @@ using namespace Gui;
 
 EXTENSION_PROPERTY_SOURCE(Gui::ViewProviderGroupExtension, Gui::ViewProviderExtension)
 
-ViewProviderGroupExtension::ViewProviderGroupExtension()  : guard(false)
+ViewProviderGroupExtension::ViewProviderGroupExtension()
 {
     initExtensionType(ViewProviderGroupExtension::getExtensionClassTypeId());
 }

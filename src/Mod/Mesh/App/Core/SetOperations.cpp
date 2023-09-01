@@ -54,10 +54,6 @@ SetOperations::SetOperations (const MeshKernel &cutMesh1, const MeshKernel &cutM
 {
 }
 
-SetOperations::~SetOperations ()
-{
-}
-
 void SetOperations::Do ()
 {
  _minDistanceToPoint = 0.000001f;
@@ -495,8 +491,7 @@ SetOperations::CollectFacetVisitor::CollectFacetVisitor (const MeshKernel& mesh,
   , _edges(edges)
   , _side(side)
   , _mult(mult)
-  , _addFacets(-1)
-  ,_builder(builder)
+  , _builder(builder)
 {
 }
 

@@ -65,9 +65,7 @@ Segmentation::Segmentation(Mesh::Feature* mesh, QWidget* parent, Qt::WindowFlags
     ui->checkBoxSmooth->setChecked(false);
 }
 
-Segmentation::~Segmentation()
-{
-}
+Segmentation::~Segmentation() = default;
 
 void Segmentation::accept()
 {
@@ -258,11 +256,6 @@ TaskSegmentation::TaskSegmentation(Mesh::Feature* mesh)
         QPixmap(), widget->windowTitle(), false, nullptr);
     taskbox->groupLayout()->addWidget(widget);
     Content.push_back(taskbox);
-}
-
-TaskSegmentation::~TaskSegmentation()
-{
-    // automatically deleted in the sub-class
 }
 
 bool TaskSegmentation::accept()

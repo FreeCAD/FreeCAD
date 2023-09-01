@@ -618,23 +618,12 @@ struct ColorButtonP
 {
     QColor old, col;
     QPointer<QColorDialog> cd;
-    bool allowChange;
-    bool autoChange;
-    bool drawFrame;
-    bool allowTransparency;
-    bool modal;
-    bool dirty;
-
-    ColorButtonP()
-        : cd(nullptr)
-        , allowChange(true)
-        , autoChange(false)
-        , drawFrame(true)
-        , allowTransparency(false)
-        , modal(true)
-        , dirty(true)
-    {
-    }
+    bool allowChange{true};
+    bool autoChange{false};
+    bool drawFrame{true};
+    bool allowTransparency{false};
+    bool modal{true};
+    bool dirty{true};
 };
 }
 

@@ -42,7 +42,7 @@
 
 using namespace Gui;
 
-Thumbnail::Thumbnail(int s) : viewer(nullptr), size(s)
+Thumbnail::Thumbnail(int s) : size(s)
 {
 }
 

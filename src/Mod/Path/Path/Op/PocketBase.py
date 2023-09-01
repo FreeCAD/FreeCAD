@@ -185,6 +185,25 @@ class ObjectPocket(PathAreaOp.ObjectOp):
                 "Last Stepover Radius.  If 0, 50% of cutter is used. Tuning this can be used to improve stepover for some shapes",
             ),
         )
+        obj.addProperty(
+            "App::PropertyBool",
+            "UseRestMachining",
+            "Pocket",
+            QT_TRANSLATE_NOOP(
+                "App::Property",
+                "Skips machining regions that have already been cleared by previous operations.",
+            ),
+        )
+        obj.addProperty(
+            "Part::PropertyPartShape",
+            "RestMachiningRegions",
+            "Pocket",
+            QT_TRANSLATE_NOOP(
+                "App::Property",
+                "The areas cleared by this operation, one area per height, stored as a compound part. Used internally for rest machining.",
+            ),
+        )
+        obj.setEditorMode("RestMachiningRegions", 2)  # hide
 
         for n in self.pocketPropertyEnumerations():
             setattr(obj, n[0], n[1])
@@ -246,6 +265,42 @@ class ObjectPocket(PathAreaOp.ObjectOp):
                 ),
             )
             obj.PocketLastStepOver = 0
+
+        if not hasattr(obj, "UseRestMachining"):
+            obj.addProperty(
+                "App::PropertyBool",
+                "UseRestMachining",
+                "Pocket",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "Skips machining regions that have already been cleared by previous operations.",
+                ),
+            )
+
+        if not hasattr(obj, "RestMachiningRegions"):
+            obj.addProperty(
+                "Part::PropertyPartShape",
+                "RestMachiningRegions",
+                "Pocket",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                "The areas cleared by this operation, one area per height, stored as a compound part. Used internally for rest machining.",
+                ),
+            )
+            obj.setEditorMode("RestMachiningRegions", 2)  # hide
+
+            obj.addProperty(
+                "App::PropertyBool",
+                "RestMachiningRegionsNeedRecompute",
+                "Pocket",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "Flag to indicate that the rest machining regions have never been computed, and must be recomputed before being used.",
+                ),
+            )
+            obj.setEditorMode("RestMachiningRegionsNeedRecompute", 2)  # hide
+            obj.RestMachiningRegionsNeedRecompute = True
+
         Path.Log.track()
 
     def areaOpPathParams(self, obj, isHole):

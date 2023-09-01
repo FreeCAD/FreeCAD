@@ -95,7 +95,7 @@ protected:
     virtual void draw() {}
 
 protected:
-    Gui::View3DInventorViewer* _pcView3D;
+    Gui::View3DInventorViewer* _pcView3D{nullptr};
     QCursor m_cPrevCursor;
     int  m_iXold, m_iYold;
     int  m_iXnew, m_iYnew;

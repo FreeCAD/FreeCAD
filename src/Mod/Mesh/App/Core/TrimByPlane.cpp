@@ -37,10 +37,6 @@ MeshTrimByPlane::MeshTrimByPlane(MeshKernel &rclM)
 {
 }
 
-MeshTrimByPlane::~MeshTrimByPlane()
-{
-}
-
 void MeshTrimByPlane::CheckFacets(const MeshFacetGrid& rclGrid, const Base::Vector3f& base, const Base::Vector3f& normal,
                                   std::vector<FacetIndex> &trimFacets, std::vector<FacetIndex>& removeFacets) const
 {
@@ -55,7 +51,7 @@ void MeshTrimByPlane::CheckFacets(const MeshFacetGrid& rclGrid, const Base::Vect
             // save all elements in checkElements
             clGridIter.GetElements(checkElements);
         }
-        else if (clBBox3d.CalcPoint(0).DistanceToPlane(base, normal) > 0.0f) {
+        else if (clBBox3d.CalcPoint(Base::BoundBox3f::TLB).DistanceToPlane(base, normal) > 0.0f) {
             // save all elements in removeFacets
             clGridIter.GetElements(removeFacets);
         }

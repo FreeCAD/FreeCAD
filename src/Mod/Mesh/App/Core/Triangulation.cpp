@@ -275,13 +275,7 @@ void AbstractPolygonTriangulator::Done()
 
 // -------------------------------------------------------------
 
-EarClippingTriangulator::EarClippingTriangulator()
-{
-}
-
-EarClippingTriangulator::~EarClippingTriangulator()
-{
-}
+EarClippingTriangulator::EarClippingTriangulator() = default;
 
 bool EarClippingTriangulator::Triangulate()
 {
@@ -466,13 +460,7 @@ bool EarClippingTriangulator::Triangulate::Process(const std::vector<Base::Vecto
 
 // -------------------------------------------------------------
 
-QuasiDelaunayTriangulator::QuasiDelaunayTriangulator()
-{
-}
-
-QuasiDelaunayTriangulator::~QuasiDelaunayTriangulator()
-{
-}
+QuasiDelaunayTriangulator::QuasiDelaunayTriangulator() = default;
 
 bool QuasiDelaunayTriangulator::Triangulate()
 {
@@ -627,13 +615,7 @@ struct Vertex2d_EqualTo
 }
 }
 
-DelaunayTriangulator::DelaunayTriangulator()
-{
-}
-
-DelaunayTriangulator::~DelaunayTriangulator()
-{
-}
+DelaunayTriangulator::DelaunayTriangulator() = default;
 
 bool DelaunayTriangulator::Triangulate()
 {
@@ -699,13 +681,7 @@ bool DelaunayTriangulator::Triangulate()
 
 // -------------------------------------------------------------
 
-FlatTriangulator::FlatTriangulator()
-{
-}
-
-FlatTriangulator::~FlatTriangulator()
-{
-}
+FlatTriangulator::FlatTriangulator() = default;
 
 bool FlatTriangulator::Triangulate()
 {
@@ -745,10 +721,6 @@ ConstraintDelaunayTriangulator::ConstraintDelaunayTriangulator(float area)
 {
     // silent warning: -Wunused-private-field
     (void)fMaxArea;
-}
-
-ConstraintDelaunayTriangulator::~ConstraintDelaunayTriangulator()
-{
 }
 
 bool ConstraintDelaunayTriangulator::Triangulate()

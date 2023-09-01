@@ -163,7 +163,7 @@ private:
 private:
     BRepExtrema_DistShapeShape* distss;
     const TopoDS_Shape& _rShape;
-    bool isSolid;
+    bool isSolid{false};
 };
 
 class InspectionExport PropertyDistanceList: public App::PropertyLists

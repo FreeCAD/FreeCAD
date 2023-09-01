@@ -226,9 +226,7 @@ ViewProviderFillet::ViewProviderFillet()
     sPixmap = "Part_Fillet";
 }
 
-ViewProviderFillet::~ViewProviderFillet()
-{
-}
+ViewProviderFillet::~ViewProviderFillet() = default;
 
 void ViewProviderFillet::updateData(const App::Property* prop)
 {
@@ -338,9 +336,7 @@ ViewProviderChamfer::ViewProviderChamfer()
     sPixmap = "Part_Chamfer";
 }
 
-ViewProviderChamfer::~ViewProviderChamfer()
-{
-}
+ViewProviderChamfer::~ViewProviderChamfer() = default;
 
 void ViewProviderChamfer::updateData(const App::Property* prop)
 {
@@ -450,9 +446,7 @@ ViewProviderRevolution::ViewProviderRevolution()
     sPixmap = "Part_Revolve";
 }
 
-ViewProviderRevolution::~ViewProviderRevolution()
-{
-}
+ViewProviderRevolution::~ViewProviderRevolution() = default;
 
 std::vector<App::DocumentObject*> ViewProviderRevolution::claimChildren() const
 {
@@ -481,9 +475,7 @@ ViewProviderLoft::ViewProviderLoft()
     sPixmap = "Part_Loft";
 }
 
-ViewProviderLoft::~ViewProviderLoft()
-{
-}
+ViewProviderLoft::~ViewProviderLoft() = default;
 
 std::vector<App::DocumentObject*> ViewProviderLoft::claimChildren() const
 {
@@ -504,9 +496,7 @@ ViewProviderSweep::ViewProviderSweep()
     sPixmap = "Part_Sweep";
 }
 
-ViewProviderSweep::~ViewProviderSweep()
-{
-}
+ViewProviderSweep::~ViewProviderSweep() = default;
 
 std::vector<App::DocumentObject*> ViewProviderSweep::claimChildren() const
 {
@@ -531,9 +521,7 @@ ViewProviderOffset::ViewProviderOffset()
     sPixmap = "Part_Offset";
 }
 
-ViewProviderOffset::~ViewProviderOffset()
-{
-}
+ViewProviderOffset::~ViewProviderOffset() = default;
 
 void ViewProviderOffset::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
 {
@@ -615,9 +603,7 @@ ViewProviderThickness::ViewProviderThickness()
     sPixmap = "Part_Thickness";
 }
 
-ViewProviderThickness::~ViewProviderThickness()
-{
-}
+ViewProviderThickness::~ViewProviderThickness() = default;
 
 void ViewProviderThickness::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
 {
@@ -694,9 +680,7 @@ ViewProviderRefine::ViewProviderRefine()
     sPixmap = "Part_Refine_Shape";
 }
 
-ViewProviderRefine::~ViewProviderRefine()
-{
-}
+ViewProviderRefine::~ViewProviderRefine() = default;
 
 // ---------------------------------------
 
@@ -708,6 +692,4 @@ ViewProviderReverse::ViewProviderReverse()
     //sPixmap = "Part_Reverse_Shape";
 }
 
-ViewProviderReverse::~ViewProviderReverse()
-{
-}
+ViewProviderReverse::~ViewProviderReverse() = default;

@@ -41,10 +41,7 @@ ActiveAnalysisObserver* ActiveAnalysisObserver::instance()
     return inst;
 }
 
-ActiveAnalysisObserver::ActiveAnalysisObserver()
-    : activeObject(nullptr), activeView(nullptr), activeDocument(nullptr)
-{
-}
+ActiveAnalysisObserver::ActiveAnalysisObserver() = default;
 
 ActiveAnalysisObserver::~ActiveAnalysisObserver() = default;
 

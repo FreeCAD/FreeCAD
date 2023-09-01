@@ -41,7 +41,6 @@ class RobotGuiExport TaskDlgTrajectoryDressUp : public Gui::TaskView::TaskDialog
 
 public:
     explicit TaskDlgTrajectoryDressUp(Robot::TrajectoryDressUpObject *);
-    ~TaskDlgTrajectoryDressUp() override;
 
 public:
     /// is called the TaskView when the dialog is opened

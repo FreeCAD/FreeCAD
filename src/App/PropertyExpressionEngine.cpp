@@ -87,8 +87,7 @@ TYPESYSTEM_SOURCE(App::PropertyExpressionEngine , App::PropertyExpressionContain
  */
 
 PropertyExpressionEngine::PropertyExpressionEngine()
-    : running(false)
-    , validator(0)
+    : validator(0)
 {
 }
 

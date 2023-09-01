@@ -104,7 +104,9 @@ public:
     static int scrubCount();
 
     static double svgHatchFactor();
+    static bool SectionUsePreviousCut();
 };
+
 
 }//end namespace TechDraw
 #endif

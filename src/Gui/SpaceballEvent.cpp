@@ -31,16 +31,15 @@ int MotionEvent::MotionEventType = -1;
 int ButtonEvent::ButtonEventType = -1;
 
 #if QT_VERSION < QT_VERSION_CHECK(6,0,0)
-EventBase::EventBase(QEvent::Type event) : QInputEvent(static_cast<QEvent::Type>(event)), handled(false)
+EventBase::EventBase(QEvent::Type event) : QInputEvent(static_cast<QEvent::Type>(event))
 #else
-EventBase::EventBase(QEvent::Type event) : QInputEvent(static_cast<QEvent::Type>(event), QPointingDevice::primaryPointingDevice()), handled(false)
+EventBase::EventBase(QEvent::Type event) : QInputEvent(static_cast<QEvent::Type>(event), QPointingDevice::primaryPointingDevice())
 #endif
 {
 
 }
 
-MotionEvent::MotionEvent() : EventBase(static_cast<QEvent::Type>(MotionEventType)),
-    xTrans(0), yTrans(0), zTrans(0), xRot(0), yRot(0), zRot(0)
+MotionEvent::MotionEvent() : EventBase(static_cast<QEvent::Type>(MotionEventType))
 {
 }
 

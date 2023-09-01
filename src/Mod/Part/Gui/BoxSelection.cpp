@@ -57,9 +57,7 @@ public:
         : Gui::SelectionFilterGate()
     {
     }
-    ~FaceSelectionGate() override
-    {
-    }
+    ~FaceSelectionGate() override = default;
     bool allow(App::Document*, App::DocumentObject*, const char*sSubName) override
     {
         if (!sSubName || sSubName[0] == '\0')
@@ -69,17 +67,9 @@ public:
     }
 };
 
-BoxSelection::BoxSelection()
-    : autodelete(false)
-    , shapeEnum(TopAbs_SHAPE)
-{
+BoxSelection::BoxSelection() = default;
 
-}
-
-BoxSelection::~BoxSelection()
-{
-
-}
+BoxSelection::~BoxSelection() = default;
 
 void BoxSelection::setAutoDelete(bool on)
 {

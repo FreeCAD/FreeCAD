@@ -607,7 +607,7 @@ private:
     mutable std::map<std::string,Document*> DocFileMap;
     std::map<std::string,Base::Reference<ParameterManager>> mpcPramManager;
     std::map<std::string,std::string> &_mConfig;
-    App::Document* _pActiveDoc;
+    App::Document* _pActiveDoc{nullptr};
 
     std::deque<std::string> _pendingDocs;
     std::deque<std::string> _pendingDocsReopen;
@@ -617,19 +617,19 @@ private:
     // missing object
     std::map<std::string,std::set<std::string> > _docReloadAttempts;
 
-    bool _isRestoring;
-    bool _allowPartial;
-    bool _isClosingAll;
+    bool _isRestoring{false};
+    bool _allowPartial{false};
+    bool _isClosingAll{false};
 
     // for estimate max link depth
-    int _objCount;
+    int _objCount{-1};
 
     friend class AutoTransaction;
 
     std::string _activeTransactionName;
-    int _activeTransactionID;
-    int _activeTransactionGuard;
-    bool _activeTransactionTmpName;
+    int _activeTransactionID{0};
+    int _activeTransactionGuard{0};
+    bool _activeTransactionTmpName{false};
 
     static Base::ConsoleObserverStd  *_pConsoleObserverStd;
     static Base::ConsoleObserverFile *_pConsoleObserverFile;

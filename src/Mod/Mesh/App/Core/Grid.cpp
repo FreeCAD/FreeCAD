@@ -1142,12 +1142,9 @@ unsigned long MeshPointGrid::FindElements (const Base::Vector3f &rclPoint, std::
 // ----------------------------------------------------------------
 
 MeshGridIterator::MeshGridIterator (const MeshGrid &rclG)
-: _rclGrid(rclG),
-  _ulX(0), _ulY(0), _ulZ(0),
-  _clPt(0.0f, 0.0f, 0.0f), _clDir(0.0f, 0.0f, 0.0f),
-  _bValidRay(false),
-  _fMaxSearchArea (FLOAT_MAX)
-
+  : _rclGrid(rclG)
+  , _clPt(0.0f, 0.0f, 0.0f)
+  , _clDir(0.0f, 0.0f, 0.0f)
 {
 }
 

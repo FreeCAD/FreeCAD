@@ -27,6 +27,7 @@
 # include <cmath>
 # include <cstdlib>
 # include <sstream>
+# include <boost/regex.hpp>
 
 # include <APIHeaderSection_MakeHeader.hxx>
 # include <BinTools.hxx>
@@ -277,13 +278,9 @@ std::string ShapeSegment::getName() const
 
 TYPESYSTEM_SOURCE(Part::TopoShape , Data::ComplexGeoData)
 
-TopoShape::TopoShape()
-{
-}
+TopoShape::TopoShape() = default;
 
-TopoShape::~TopoShape()
-{
-}
+TopoShape::~TopoShape() = default;
 
 TopoShape::TopoShape(const TopoDS_Shape& shape)
   : _Shape(shape)
@@ -294,6 +291,21 @@ TopoShape::TopoShape(const TopoShape& shape)
   : _Shape(shape._Shape)
 {
     Tag = shape.Tag;
+}
+
+std::pair<std::string, unsigned long> TopoShape::getElementTypeAndIndex(const char* Name)
+{
+    int index = 0;
+    std::string element;
+    boost::regex ex("^(Face|Edge|Vertex)([1-9][0-9]*)$");
+    boost::cmatch what;
+
+    if (Name && boost::regex_match(Name, what, ex)) {
+        element = what[1].str();
+        index = std::atoi(what[2].str().c_str());
+    }
+
+    return std::make_pair(element, index);
 }
 
 std::vector<const char*> TopoShape::getElementTypes() const
@@ -1313,7 +1325,7 @@ unsigned int TopoShape::getMemSize () const
             if (shape.IsNull())
                 continue;
 
-            // add the size of the underlying geomtric data
+            // add the size of the underlying geometric data
             Handle(TopoDS_TShape) tshape = shape.TShape();
             memsize += tshape->DynamicType()->Size();
 

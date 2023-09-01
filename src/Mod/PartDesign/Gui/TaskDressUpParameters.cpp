@@ -411,10 +411,7 @@ TaskDlgDressUpParameters::TaskDlgDressUpParameters(ViewProviderDressUp *DressUpV
     assert(DressUpView);
 }
 
-TaskDlgDressUpParameters::~TaskDlgDressUpParameters()
-{
-
-}
+TaskDlgDressUpParameters::~TaskDlgDressUpParameters() = default;
 
 //==== calls from the TaskView ===============================================================
 

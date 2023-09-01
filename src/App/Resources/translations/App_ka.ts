@@ -4,7 +4,7 @@
   <context>
     <name>LinkParams</name>
     <message>
-      <location filename="../../Link.cpp" line="119"/>
+      <location filename="../../Link.cpp" line="118"/>
       <source>Stores the last user choice of whether to apply CopyOnChange setup to all links
 that reference the same configurable object</source>
       <translation>დაიმახსოვრე ბოლო მომხმარებლის არჩევანი, გადატარდება თუ არა CopyOnChange ყველა ბმულზე, რომელიც იგივე მორგებად ობიექტზეა მიმართული</translation>
@@ -13,7 +13,7 @@ that reference the same configurable object</source>
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../Application.cpp" line="446"/>
+      <location filename="../../Application.cpp" line="444"/>
       <source>Unnamed</source>
       <translation>უსახელო</translation>
     </message>

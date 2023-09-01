@@ -40,9 +40,7 @@ ViewProviderPocket::ViewProviderPocket()
     sPixmap = "PartDesign_Pocket.svg";
 }
 
-ViewProviderPocket::~ViewProviderPocket()
-{
-}
+ViewProviderPocket::~ViewProviderPocket() = default;
 
 
 void ViewProviderPocket::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)

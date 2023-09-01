@@ -48,9 +48,7 @@
 
 using namespace Part;
 
-ExtrusionHelper::ExtrusionHelper()
-{
-}
+ExtrusionHelper::ExtrusionHelper() = default;
 
 void ExtrusionHelper::makeDraft(const TopoDS_Shape& shape,
                                 const gp_Dir& direction,

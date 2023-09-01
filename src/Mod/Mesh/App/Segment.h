@@ -42,13 +42,16 @@ class MeshExport Segment
 public:
     Segment(const MeshObject*, bool mod);
     Segment(const MeshObject*, const std::vector<FacetIndex>& inds, bool mod);
+    ~Segment() = default;
     void addIndices(const std::vector<FacetIndex>& inds);
     void removeIndices(const std::vector<FacetIndex>& inds);
     const std::vector<FacetIndex>& getIndices() const;
     bool isEmpty() const { return _indices.empty(); }
 
     Segment(const Segment&);
-    const Segment& operator = (const Segment&);
+    Segment(Segment&&);
+    Segment& operator = (const Segment&);
+    Segment& operator = (Segment&&);
     bool operator == (const Segment&) const;
 
     void setName(const std::string& n) { _name = n; }
@@ -77,9 +80,11 @@ public:
     public:
         const_facet_iterator(const Segment*, std::vector<FacetIndex>::const_iterator);
         const_facet_iterator(const const_facet_iterator& fi);
+        const_facet_iterator(const_facet_iterator&& fi);
         ~const_facet_iterator();
 
         const_facet_iterator& operator=(const const_facet_iterator& fi);
+        const_facet_iterator& operator=(const_facet_iterator&& fi);
         const Facet& operator*() const;
         const Facet* operator->() const;
         bool operator==(const const_facet_iterator& fi) const;

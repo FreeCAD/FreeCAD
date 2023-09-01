@@ -188,7 +188,7 @@ void Matrix4D::scale (const Vector3d& rclVct)
 void Matrix4D::rotX (double fAngle)
 {
     Matrix4D clMat;
-    double fsin, fcos;
+    double fsin{}, fcos{};
 
     fsin = sin (fAngle);
     fcos = cos (fAngle);
@@ -201,7 +201,7 @@ void Matrix4D::rotX (double fAngle)
 void Matrix4D::rotY (double fAngle)
 {
     Matrix4D clMat;
-    double fsin, fcos;
+    double fsin{}, fcos{};
 
     fsin = sin (fAngle);
     fcos = cos (fAngle);
@@ -214,7 +214,7 @@ void Matrix4D::rotY (double fAngle)
 void Matrix4D::rotZ (double fAngle)
 {
     Matrix4D clMat;
-    double fsin, fcos;
+    double fsin{}, fcos{};
 
     fsin = sin (fAngle);
     fcos = cos (fAngle);
@@ -229,8 +229,8 @@ void Matrix4D::rotLine(const Vector3d& rclVct, double fAngle)
     // **** algorithm was taken from a math book
     Matrix4D  clMA, clMB, clMC, clMRot;
     Vector3d  clRotAxis(rclVct);
-    short iz, is;
-    double fcos, fsin;
+    short iz{}, is{};
+    double fcos{}, fsin{};
 
     // set all entries to "0"
     for (iz = 0; iz < 4; iz++) {
@@ -383,7 +383,7 @@ bool Matrix4D::toAxisAngle (Vector3d& rclBase, Vector3d& rclDir, double& rfAngle
     else
     {
       // angle is PI
-      double fHalfInverse;
+      double fHalfInverse{};
       if ( dMtrx4D[0][0] >= dMtrx4D[1][1] )
       {
         // r00 >= r11
@@ -472,7 +472,7 @@ void Matrix4D::transform (const Vector3d& rclVct, const Matrix4D& rclMtrx)
 void Matrix4D::inverse ()
 {
   Matrix4D clInvTrlMat, clInvRotMat;
-  short  iz, is;
+  short  iz{}, is{};
 
   /**** Herausnehmen und Inversion der TranslationsMatrix
   aus der TransformationMatrix                      ****/
@@ -494,10 +494,10 @@ using Matrix = double *;
 void Matrix_gauss(Matrix a, Matrix b)
 {
   int ipiv[4], indxr[4], indxc[4];
-  int i,j,k,l,ll;
+  int i{},j{},k{},l{},ll{};
   int irow=0, icol=0;
-  double big, pivinv;
-  double dum;
+  double big{}, pivinv{};
+  double dum{};
   for (j = 0; j < 4; j++)
     ipiv[j] = 0;
   for (i = 0; i < 4; i++) {
@@ -587,38 +587,38 @@ void Matrix4D::inverseGauss ()
 
 void Matrix4D::getMatrix  (double dMtrx[16]) const
 {
-  short iz, is;
-
-  for (iz = 0; iz < 4; iz++)
-    for (is = 0; is < 4; is++)
-      dMtrx[ 4*iz + is ] = dMtrx4D[iz][is];
+    for (short iz = 0; iz < 4; iz++) {
+        for (short is = 0; is < 4; is++) {
+            dMtrx[ 4*iz + is ] = dMtrx4D[iz][is];
+        }
+    }
 }
 
 void Matrix4D::setMatrix  (const double dMtrx[16])
 {
-  short iz, is;
-
-  for (iz = 0; iz < 4; iz++)
-    for (is = 0; is < 4; is++)
-      dMtrx4D[iz][is] = dMtrx[ 4*iz + is ];
+    for (short iz = 0; iz < 4; iz++) {
+        for (short is = 0; is < 4; is++) {
+            dMtrx4D[iz][is] = dMtrx[ 4*iz + is ];
+        }
+    }
 }
 
 void Matrix4D::getGLMatrix (double dMtrx[16]) const
 {
-  short iz, is;
-
-  for (iz = 0; iz < 4; iz++)
-    for (is = 0; is < 4; is++)
-      dMtrx[ iz + 4*is ] = dMtrx4D[iz][is];
+    for (short iz = 0; iz < 4; iz++) {
+        for (short is = 0; is < 4; is++) {
+            dMtrx[ iz + 4*is ] = dMtrx4D[iz][is];
+        }
+    }
 }
 
 void Matrix4D::setGLMatrix (const double dMtrx[16])
 {
-  short iz, is;
-
-  for (iz = 0; iz < 4; iz++)
-    for (is = 0; is < 4; is++)
-      dMtrx4D[iz][is] = dMtrx[ iz + 4*is ];
+    for (short iz = 0; iz < 4; iz++) {
+        for (short is = 0; is < 4; is++) {
+            dMtrx4D[iz][is] = dMtrx[ iz + 4*is ];
+        }
+    }
 }
 
 unsigned long Matrix4D::getMemSpace ()
@@ -637,15 +637,15 @@ void Matrix4D::Print () const
 
 void Matrix4D::transpose ()
 {
-  double  dNew[4][4];
+    double  dNew[4][4];
 
-  for (int i = 0; i < 4; i++)
-  {
-    for (int j = 0; j < 4; j++)
-      dNew[j][i] = dMtrx4D[i][j];
-  }
+    for (int i = 0; i < 4; i++) {
+        for (int j = 0; j < 4; j++) {
+            dNew[j][i] = dMtrx4D[i][j];
+        }
+    }
 
-  memcpy(dMtrx4D, dNew, sizeof(dMtrx4D));
+    memcpy(dMtrx4D, dNew, sizeof(dMtrx4D));
 }
 
 

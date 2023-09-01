@@ -47,14 +47,9 @@ TYPESYSTEM_SOURCE(Part::PropertyTopoShapeList, App::PropertyLists)
 //**************************************************************************
 // Construction/Destruction
 
-PropertyTopoShapeList::PropertyTopoShapeList()
-{
+PropertyTopoShapeList::PropertyTopoShapeList() = default;
 
-}
-
-PropertyTopoShapeList::~PropertyTopoShapeList()
-{
-}
+PropertyTopoShapeList::~PropertyTopoShapeList() = default;
 
 void PropertyTopoShapeList::setSize(int newSize)
 {

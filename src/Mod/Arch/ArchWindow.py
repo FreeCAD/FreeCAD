@@ -274,14 +274,15 @@ class _CommandWindow:
         point = point.add(FreeCAD.Vector(0,0,self.Sill))
         FreeCAD.ActiveDocument.openTransaction(translate("Arch","Create Window"))
 
-        FreeCADGui.doCommand("import math, FreeCAD, Arch, WorkingPlane")
+        FreeCADGui.doCommand("import math, FreeCAD, Arch, DraftGeomUtils")
+        FreeCADGui.doCommand("wp = FreeCAD.DraftWorkingPlane")
 
         if self.baseFace is not None:
-            FreeCADGui.doCommand("pl = WorkingPlane.getPlacementFromFace(FreeCAD.ActiveDocument." + self.baseFace[0].Name + ".Shape.Faces[" + str(self.baseFace[1]) + "])")
+            FreeCADGui.doCommand("face = FreeCAD.ActiveDocument." + self.baseFace[0].Name + ".Shape.Faces[" + str(self.baseFace[1]) + "]")
+            FreeCADGui.doCommand("pl = DraftGeomUtils.placement_from_face(face, vec_z = wp.axis)")
         else:
-            FreeCADGui.doCommand("m = FreeCAD.Matrix()")
-            FreeCADGui.doCommand("m.rotateX(math.pi/2)")
-            FreeCADGui.doCommand("pl = FreeCAD.Placement(m)")
+            FreeCADGui.doCommand("pl = FreeCAD.Placement()")
+            FreeCADGui.doCommand("pl.Rotation = FreeCAD.Rotation(wp.u, wp.axis, -wp.v, 'XZY')")
 
         FreeCADGui.doCommand("pl.Base = FreeCAD.Vector(" + str(point.x) + ", " + str(point.y) + ", " + str(point.z) + ")")
 
@@ -340,23 +341,25 @@ class _CommandWindow:
 
         delta = FreeCAD.Vector(self.Width/2,self.Thickness/2,self.Height/2)
         delta = delta.add(FreeCAD.Vector(0,0,self.Sill))
-        rot = FreeCAD.Rotation()
+
+        wp = FreeCAD.DraftWorkingPlane
+        if self.baseFace is None:
+            rot = FreeCAD.Rotation(wp.u,wp.v,-wp.axis,"XZY")
+            self.tracker.setRotation(rot)
         if info:
             if "Face" in info['Component']:
-                import WorkingPlane
+                import DraftGeomUtils
                 o = FreeCAD.ActiveDocument.getObject(info['Object'])
                 self.baseFace = [o,int(info['Component'][4:])-1]
                 #print("switching to ",o.Label," face ",self.baseFace[1])
                 f = o.Shape.Faces[self.baseFace[1]]
-                p = WorkingPlane.getPlacementFromFace(f,rotated=True)
-                if p:
-                    rot = p.Rotation
-                    self.tracker.setRotation(rot)
+                p = DraftGeomUtils.placement_from_face(f,vec_z=wp.axis,rotated=True)
+                rot = p.Rotation
+                self.tracker.setRotation(rot)
         r = self.tracker.trans.rotation.getValue().getValue()
         if r != (0,0,0,1):
             delta = FreeCAD.Rotation(r[0],r[1],r[2],r[3]).multVec(FreeCAD.Vector(delta.x,-delta.y,-delta.z))
         self.tracker.pos(point.add(delta))
-        #self.tracker.setRotation(rot)
 
     def taskbox(self):
 

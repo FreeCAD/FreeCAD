@@ -42,9 +42,7 @@
 using namespace MeshCore;
 
 
-MeshOrientationVisitor::MeshOrientationVisitor() : _nonuniformOrientation(false)
-{
-}
+MeshOrientationVisitor::MeshOrientationVisitor() = default;
 
 bool MeshOrientationVisitor::Visit (const MeshFacet &rclFacet, const MeshFacet &rclFrom,
                                     FacetIndex ulFInd, unsigned long ulLevel)
@@ -120,10 +118,6 @@ bool MeshSameOrientationCollector::Visit (const MeshFacet &rclFacet, const MeshF
 
 MeshEvalOrientation::MeshEvalOrientation (const MeshKernel& rclM)
   : MeshEvaluation( rclM )
-{
-}
-
-MeshEvalOrientation::~MeshEvalOrientation()
 {
 }
 
@@ -267,10 +261,6 @@ MeshFixOrientation::MeshFixOrientation (MeshKernel& rclM)
 {
 }
 
-MeshFixOrientation::~MeshFixOrientation()
-{
-}
-
 bool MeshFixOrientation::Fixup ()
 {
     MeshTopoAlgorithm(_rclMesh).HarmonizeNormals();
@@ -281,10 +271,6 @@ bool MeshFixOrientation::Fixup ()
 
 MeshEvalSolid::MeshEvalSolid (const MeshKernel& rclM)
   :MeshEvaluation( rclM )
-{
-}
-
-MeshEvalSolid::~MeshEvalSolid()
 {
 }
 

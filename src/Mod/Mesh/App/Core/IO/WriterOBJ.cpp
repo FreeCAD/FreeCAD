@@ -50,7 +50,6 @@ struct WriterOBJ::Color_Less
 WriterOBJ::WriterOBJ(const MeshKernel& kernel, const Material* material)
   : _kernel(kernel)
   , _material(material)
-  , apply_transform(false)
 {
 }
 

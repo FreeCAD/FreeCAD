@@ -42,9 +42,7 @@ ViewProviderCompound::ViewProviderCompound()
     sPixmap = "Part_Compound.svg";
 }
 
-ViewProviderCompound::~ViewProviderCompound()
-{
-}
+ViewProviderCompound::~ViewProviderCompound() = default;
 
 std::vector<App::DocumentObject*> ViewProviderCompound::claimChildren() const
 {

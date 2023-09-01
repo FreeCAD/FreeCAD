@@ -3094,11 +3094,6 @@ bool MeshOutput::SaveVRML (std::ostream &rstrOut) const
 MeshCleanup::MeshCleanup(MeshPointArray& p, MeshFacetArray& f)
   : pointArray(p)
   , facetArray(f)
-  , materialArray(nullptr)
-{
-}
-
-MeshCleanup::~MeshCleanup()
 {
 }
 
@@ -3226,10 +3221,6 @@ MeshPointFacetAdjacency::MeshPointFacetAdjacency(std::size_t p, MeshFacetArray& 
   , facets(f)
 {
     Build();
-}
-
-MeshPointFacetAdjacency::~MeshPointFacetAdjacency()
-{
 }
 
 void MeshPointFacetAdjacency::Build()

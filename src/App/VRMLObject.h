@@ -38,7 +38,6 @@ class AppExport VRMLObject : public GeoFeature
 public:
     /// Constructor
     VRMLObject();
-    ~VRMLObject() override;
 
     /// returns the type name of the ViewProvider
     const char* getViewProviderName() const override {
@@ -54,9 +53,11 @@ public:
     void SaveDocFile (Base::Writer &writer) const override;
     void RestoreDocFile(Base::Reader &reader) override;
 
+    //NOLINTBEGIN
     PropertyFileIncluded VrmlFile;
     PropertyStringList Urls;
     PropertyStringList Resources;
+    //NOLINTEND
 
 protected:
     void onChanged(const App::Property*) override;
@@ -66,7 +67,7 @@ protected:
 
 private:
     mutable std::string vrmlPath;
-    mutable int index;
+    mutable int index{0};
 };
 
 } //namespace App

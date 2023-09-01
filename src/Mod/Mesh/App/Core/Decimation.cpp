@@ -34,10 +34,6 @@ MeshSimplify::MeshSimplify(MeshKernel& mesh)
 {
 }
 
-MeshSimplify::~MeshSimplify()
-{
-}
-
 void MeshSimplify::simplify(float tolerance, float reduction)
 {
     Simplify alg;

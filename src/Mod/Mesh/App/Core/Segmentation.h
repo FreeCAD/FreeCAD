@@ -44,7 +44,7 @@ class MeshExport MeshSurfaceSegment
 public:
     explicit MeshSurfaceSegment(unsigned long minFacets)
         : minFacets(minFacets) {}
-    virtual ~MeshSurfaceSegment() {}
+    virtual ~MeshSurfaceSegment() = default;
     virtual bool TestFacet (const MeshFacet &rclFacet) const = 0;
     virtual const char* GetType() const = 0;
     virtual void Initialize(FacetIndex);
@@ -92,8 +92,8 @@ protected:
 class MeshExport AbstractSurfaceFit
 {
 public:
-    AbstractSurfaceFit(){}
-    virtual ~AbstractSurfaceFit(){}
+    AbstractSurfaceFit() = default;
+    virtual ~AbstractSurfaceFit() = default;
     virtual const char* GetType() const = 0;
     virtual void Initialize(const MeshGeomFacet&) = 0;
     virtual bool TestTriangle(const MeshGeomFacet&) const = 0;
@@ -257,7 +257,6 @@ class MeshExport MeshSurfaceVisitor : public MeshFacetVisitor
 {
 public:
     MeshSurfaceVisitor (MeshSurfaceSegment& segm, std::vector<FacetIndex> &indices);
-    ~MeshSurfaceVisitor () override;
     bool AllowVisit (const MeshFacet& face, const MeshFacet&,
                      FacetIndex, unsigned long, unsigned short neighbourIndex) override;
     bool Visit (const MeshFacet & face, const MeshFacet &,

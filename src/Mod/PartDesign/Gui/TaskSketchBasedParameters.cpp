@@ -246,10 +246,7 @@ TaskDlgSketchBasedParameters::TaskDlgSketchBasedParameters(PartDesignGui::ViewPr
 {
 }
 
-TaskDlgSketchBasedParameters::~TaskDlgSketchBasedParameters()
-{
-
-}
+TaskDlgSketchBasedParameters::~TaskDlgSketchBasedParameters() = default;
 
 //==== calls from the TaskView ===============================================================
 

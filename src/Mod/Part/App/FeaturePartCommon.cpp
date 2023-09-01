@@ -42,9 +42,7 @@ using namespace Part;
 PROPERTY_SOURCE(Part::Common, Part::Boolean)
 
 
-Common::Common()
-{
-}
+Common::Common() = default;
 
 BRepAlgoAPI_BooleanOperation* Common::makeOperation(const TopoDS_Shape& base, const TopoDS_Shape& tool) const
 {

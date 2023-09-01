@@ -56,10 +56,7 @@ DlgSettings3DViewPart::DlgSettings3DViewPart(QWidget* parent)
 /**
  *  Destroys the object and frees any allocated resources
  */
-DlgSettings3DViewPart::~DlgSettings3DViewPart()
-{
-    // no need to delete child widgets, Qt does it all for us
-}
+DlgSettings3DViewPart::~DlgSettings3DViewPart() = default;
 
 void DlgSettings3DViewPart::onMaxDeviationValueChanged(double v)
 {

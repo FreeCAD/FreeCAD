@@ -54,9 +54,7 @@ ViewProviderBoolean::ViewProviderBoolean()
     Display.setEnums(DisplayEnum);
 }
 
-ViewProviderBoolean::~ViewProviderBoolean()
-{
-}
+ViewProviderBoolean::~ViewProviderBoolean() = default;
 
 
 void ViewProviderBoolean::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)

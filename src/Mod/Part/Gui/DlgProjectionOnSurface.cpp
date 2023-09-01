@@ -70,7 +70,7 @@ public:
   {
     canSelect = false;
   }
-  ~EdgeSelection() override {}
+  ~EdgeSelection() override = default;
 
   bool allow(App::Document* /*pDoc*/, App::DocumentObject* iPObj, const char* sSubName) override
   {
@@ -104,7 +104,7 @@ public:
   {
     canSelect = false;
   }
-  ~FaceSelection() override {}
+  ~FaceSelection() override = default;
 
   bool allow(App::Document* /*pDoc*/, App::DocumentObject* iPObj, const char* sSubName) override
   {
@@ -1105,11 +1105,6 @@ TaskProjectionOnSurface::TaskProjectionOnSurface()
     widget->windowTitle(), true, nullptr);
   taskbox->groupLayout()->addWidget(widget);
   Content.push_back(taskbox);
-}
-
-TaskProjectionOnSurface::~TaskProjectionOnSurface()
-{
-  // automatically deleted in the sub-class
 }
 
 bool TaskProjectionOnSurface::accept()

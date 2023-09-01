@@ -35,8 +35,8 @@
 
 #include <Base/Vector3D.h>
 
-//! a class to contain useful shape manipulations. these methods were orginally in
-//  GeometryObject.
+//! a class to contain useful shape manipulations. these methods were originally
+//  in GeometryObject.
 
 namespace TechDraw
 {

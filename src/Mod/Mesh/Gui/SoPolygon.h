@@ -49,7 +49,7 @@ public:
     SoSFBool  render;
 
 protected:
-    ~SoPolygon() override {}
+    ~SoPolygon() override = default;
     void GLRender(SoGLRenderAction *action) override;
     void computeBBox(SoAction *action, SbBox3f &box, SbVec3f &center) override;
     void rayPick (SoRayPickAction *action) override;

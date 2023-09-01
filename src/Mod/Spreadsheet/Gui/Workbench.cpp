@@ -63,9 +63,7 @@ Workbench::Workbench()
 {
 }
 
-Workbench::~Workbench()
-{
-}
+Workbench::~Workbench() = default;
 
 void Workbench::activated()
 {

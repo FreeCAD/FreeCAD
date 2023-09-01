@@ -57,7 +57,8 @@ namespace sp = std::placeholders;
 
 ViewProviderPythonFeatureImp::ViewProviderPythonFeatureImp(
         ViewProviderDocumentObject* vp, App::PropertyPythonObject &proxy)
-  : object(vp), Proxy(proxy), has__object__(false)
+  : object(vp)
+  , Proxy(proxy)
 {
 }
 

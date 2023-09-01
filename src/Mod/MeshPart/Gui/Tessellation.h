@@ -120,7 +120,6 @@ class TaskTessellation : public Gui::TaskView::TaskDialog
 
 public:
     TaskTessellation();
-    ~TaskTessellation() override;
 
 public:
     void open() override;

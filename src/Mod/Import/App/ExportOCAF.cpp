@@ -70,7 +70,6 @@ using namespace Import;
 ExportOCAF::ExportOCAF(Handle(TDocStd_Document) h, bool explicitPlacement)
     : pDoc(h)
     , keepExplicitPlacement(explicitPlacement)
-    , filterBaseFeature(true)
 {
     aShapeTool = XCAFDoc_DocumentTool::ShapeTool(pDoc->Main());
     aColorTool = XCAFDoc_DocumentTool::ColorTool(pDoc->Main());
@@ -85,9 +84,7 @@ ExportOCAF::ExportOCAF(Handle(TDocStd_Document) h, bool explicitPlacement)
     }
 }
 
-ExportOCAF::~ExportOCAF()
-{
-}
+ExportOCAF::~ExportOCAF() = default;
 
 std::vector<App::DocumentObject*> ExportOCAF::filterPart(App::Part* part) const
 {

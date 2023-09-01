@@ -53,7 +53,7 @@ class FemGuiExport FunctionWidget : public QWidget
 {
     Q_OBJECT
 public:
-    FunctionWidget() : m_block(false), m_view(nullptr), m_object(nullptr) {}
+    FunctionWidget() = default;
     ~FunctionWidget() override = default;
 
     virtual void applyPythonCode() = 0;
@@ -70,9 +70,9 @@ protected:
     virtual void onChange(const App::Property& p) = 0;
 
 private:
-    bool                                        m_block;
-    ViewProviderFemPostFunction*                m_view;
-    Fem::FemPostFunction*                       m_object;
+    bool                                        m_block{false};
+    ViewProviderFemPostFunction*                m_view{nullptr};
+    Fem::FemPostFunction*                       m_object{nullptr};
     boost::signals2::scoped_connection          m_connection;
 };
 

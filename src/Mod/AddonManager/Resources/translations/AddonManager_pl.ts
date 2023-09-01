@@ -23,7 +23,6 @@
     <name>CompactView</name>
     <message>
       <location filename="../../compact_view.py" line="77"/>
-      <location filename="../../compact_view.ui" line="20"/>
       <source>Form</source>
       <translation>Formularz</translation>
     </message>
@@ -194,7 +193,7 @@ Czy chcesz, aby Menadżer dodatków zainstalował je automatycznie? Wybierz "Zig
       <location filename="../../developer_mode.ui" line="139"/>
       <location filename="../../developer_mode.ui" line="225"/>
       <source>Displayed in the Addon Manager&apos;s list of Addons. Should not include the word &quot;FreeCAD&quot;, and must be a valid directory name on all support operating systems.</source>
-      <translation>Wyświetlane w Menedżerze Dodatków&apos;s lista dodatków. Nie powinno zawierać słowa &quot;FreeCAD&quot;i musi być prawidłową nazwą katalogu we wszystkich wspieranych systemach operacyjnych.</translation>
+      <translation>Wyświetlany na liście dodatków Menedżera dodatków. Nie powinien zawierać słowa "FreeCAD". i musi być prawidłową nazwą katalogu we wszystkich obsługiwanych systemach operacyjnych.</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="153"/>
@@ -302,7 +301,7 @@ Czy chcesz, aby Menadżer dodatków zainstalował je automatycznie? Wybierz "Zig
     <message>
       <location filename="../../AddonManager.ui" line="133"/>
       <source>Python dependencies...</source>
-      <translation>Zależności Python ...</translation>
+      <translation>Zależności środowiska Python ...</translation>
     </message>
     <message>
       <location filename="../../AddonManager.ui" line="140"/>
@@ -327,7 +326,7 @@ Czy chcesz, aby Menadżer dodatków zainstalował je automatycznie? Wybierz "Zig
     <message>
       <location filename="../../developer_mode_tags.ui" line="20"/>
       <source>Comma-separated list of tags describing this item:</source>
-      <translation>Oddzielona przecinkami lista tagów opisujących ten element:</translation>
+      <translation>Oddzielona przecinkami lista znaczników opisujących ten element:</translation>
     </message>
     <message>
       <location filename="../../developer_mode_tags.ui" line="35"/>
@@ -400,7 +399,7 @@ Czy chcesz, aby Menadżer dodatków zainstalował je automatycznie? Wybierz "Zig
     <message>
       <location filename="../../developer_mode_edit_dependency.ui" line="42"/>
       <source>Package name, if &quot;Other...&quot;</source>
-      <translation>Nazwa pakietu, jeśli &quot;Inne ...&quot;</translation>
+      <translation>Nazwa pakietu, jeśli "Inne ..."</translation>
     </message>
     <message>
       <location filename="../../developer_mode_edit_dependency.ui" line="54"/>
@@ -422,7 +421,6 @@ Czy chcesz, aby Menadżer dodatków zainstalował je automatycznie? Wybierz "Zig
     <name>ExpandedView</name>
     <message>
       <location filename="../../expanded_view.py" line="116"/>
-      <location filename="../../expanded_view.ui" line="20"/>
       <source>Form</source>
       <translation>Formularz</translation>
     </message>
@@ -476,7 +474,6 @@ Czy chcesz, aby Menadżer dodatków zainstalował je automatycznie? Wybierz "Zig
   <context>
     <name>Form</name>
     <message>
-      <location filename="../../developer_mode_licenses_table.ui" line="14"/>
       <location filename="../../developer_mode_people_table.ui" line="14"/>
       <source>Form</source>
       <translation>Formularz</translation>
@@ -704,11 +701,6 @@ zainstalowane dodatki zostaną sprawdzone pod kątem dostępnych aktualizacji
   <context>
     <name>PackageDetails</name>
     <message>
-      <location filename="../../package_details.ui" line="14"/>
-      <source>Form</source>
-      <translation>Formularz</translation>
-    </message>
-    <message>
       <location filename="../../package_details.ui" line="49"/>
       <source>Uninstalls a selected macro or workbench</source>
       <translation>Odinstalowuje wybrane makrodefinicje lub środowiska pracy</translation>
@@ -749,7 +741,7 @@ zainstalowane dodatki zostaną sprawdzone pod kątem dostępnych aktualizacji
     <message>
       <location filename="../../PythonDependencyUpdateDialog.ui" line="20"/>
       <source>The following Python packages have been installed locally by the Addon Manager to satisfy Addon dependencies. Installation location:</source>
-      <translation>Następujące pakiety Pythona zostały zainstalowane lokalnie przez Menedżera Dodatków w celu zaspokojenia zależności dodatku. Lokalizacja instalacji:</translation>
+      <translation>Następujące pakiety środowiska Python zostały zainstalowane lokalnie przez menedżera dodatków w celu spełnienia zależności dodatków. Lokalizacja plików instalacji:</translation>
     </message>
     <message>
       <location filename="../../PythonDependencyUpdateDialog.ui" line="59"/>
@@ -769,12 +761,12 @@ zainstalowane dodatki zostaną sprawdzone pod kątem dostępnych aktualizacji
     <message>
       <location filename="../../PythonDependencyUpdateDialog.ui" line="74"/>
       <source>Used by</source>
-      <translation>Używane przez</translation>
+      <translation>Używany przez</translation>
     </message>
     <message>
       <location filename="../../PythonDependencyUpdateDialog.ui" line="87"/>
       <source>An asterisk (*) in the &quot;Used by&quot; column indicates an optional dependency. Note that Used by only records direct imports in the Addon. Other Python packages that those packages depend upon may have been installed as well.</source>
-      <translation>Gwiazdka (*) w kolumnie &quot;Używane przez&quot; wskazuje zależność opcjonalną. Zauważ, że Używane przez zapisuje tylko bezpośredni import w dodatku. Inne pakiety Pythona, od których te pakiety zależą, mogły również zostać zainstalowane.</translation>
+      <translation>Gwiazdka (*) w kolumnie "Używane przez" wskazuje zależność opcjonalną. Zauważ, że kolumna "Używane przez" zapisuje tylko bezpośredni import w dodatku. Inne pakiety środowiska Python, od których te pakiety zależą, mogły również zostać zainstalowane.</translation>
     </message>
     <message>
       <location filename="../../PythonDependencyUpdateDialog.ui" line="99"/>
@@ -920,7 +912,7 @@ zainstalowane dodatki zostaną sprawdzone pod kątem dostępnych aktualizacji
     <message>
       <location filename="../../developer_mode_add_content.ui" line="264"/>
       <source>Displayed in the Addon Manager&apos;s list of Addons. Should not include the word &quot;FreeCAD&quot;.</source>
-      <translation>Wyświetlane w Menedżerze Dodatków&apos;s lista dodatków. Nie powinno zawierać słowa &quot;FreeCAD&quot;.</translation>
+      <translation>Wyświetlany na liście dodatków Menedżera dodatków. Nie powinien zawierać słowa "FreeCAD".</translation>
     </message>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="278"/>
@@ -950,7 +942,7 @@ zainstalowane dodatki zostaną sprawdzone pod kątem dostępnych aktualizacji
     <message>
       <location filename="../../developer_mode_add_content.ui" line="330"/>
       <source>Any fields left blank are inherited from the top-level Addon metadata, so technically they are all optional. For Addons with multiple content items, each item should provide a unique Display Name and Description.</source>
-      <translation>Każde pole pozostawione puste jest dziedziczone z metadanych dodatku najwyższego poziomu, więc technicznie wszystkie są opcjonalne. Dla dodatków z wieloma elementami zawartości, każda pozycja powinna zawierać unikalną nazwę wyświetlaną i opis.</translation>
+      <translation>Wszelkie pola pozostawione puste są dziedziczone z metadanych dodatku najwyższego poziomu, więc technicznie wszystkie są opcjonalne. W przypadku dodatków z wieloma elementami zawartości każdy element powinien mieć unikalną nazwę wyświetlaną i opis.</translation>
     </message>
   </context>
   <context>
@@ -1406,7 +1398,7 @@ zainstalowane dodatki zostaną sprawdzone pod kątem dostępnych aktualizacji
     <message>
       <location filename="../../package_details.py" line="210"/>
       <source>On branch {}, update available to version</source>
-      <translation>W gałęzi {}, aktualizacja dostępna do wersji</translation>
+      <translation>W gałęzi {} aktualizacja dostępna do wersji</translation>
     </message>
     <message>
       <location filename="../../package_details.py" line="219"/>
@@ -1492,7 +1484,7 @@ zainstalowane dodatki zostaną sprawdzone pod kątem dostępnych aktualizacji
     <message>
       <location filename="../../package_details.py" line="949"/>
       <source>QtWebEngine Python bindings not installed -- using fallback README display.</source>
-      <translation>Nie zainstalowano powiązań Pythona z QtWebEngine — przy użyciu awaryjnego ekranu README.</translation>
+      <translation>Nie zainstalowano powiązań QtWebEngine Python — użyto awaryjnego wyświetlenia README.</translation>
     </message>
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="476"/>
@@ -1688,7 +1680,7 @@ zainstalowane dodatki zostaną sprawdzone pod kątem dostępnych aktualizacji
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="153"/>
       <source>This addon requires Python packages that are not installed, and cannot be installed automatically. To use this workbench you must install the following Python packages manually:</source>
-      <translation>Ten dodatek wymaga pakietów Python, które nie są zainstalowane i nie mogą być zainstalowane automatycznie. Aby użyć tego środowiska pracy, musisz zainstalować samodzielnie następujące pakiety Python:</translation>
+      <translation>Ten dodatek wymaga pakietów Python, które nie są zainstalowane i nie mogą być zainstalowane automatycznie. Aby użyć tego środowiska pracy, musisz zainstalować samodzielnie następujące pakiety środowiska Python:</translation>
     </message>
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="159"/>
@@ -1994,7 +1986,7 @@ zainstalowane dodatki zostaną sprawdzone pod kątem dostępnych aktualizacji
       <location filename="../../package_list.py" line="451"/>
       <location filename="../../package_list.py" line="511"/>
       <source>Up-to-date</source>
-      <translation>Aktualne</translation>
+      <translation>Aktualny</translation>
     </message>
     <message>
       <location filename="../../package_list.py" line="453"/>
@@ -2028,7 +2020,7 @@ zainstalowane dodatki zostaną sprawdzone pod kątem dostępnych aktualizacji
     <message>
       <location filename="../../package_list.py" line="490"/>
       <source>Installed on</source>
-      <translation>Zainstalowane w</translation>
+      <translation>Data instalacji</translation>
     </message>
     <message>
       <location filename="../../package_list.py" line="501"/>

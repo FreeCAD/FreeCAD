@@ -79,8 +79,6 @@ public:
         initialize("This module is the Web module."); // register with Python
     }
 
-    ~Module() override {}
-
 private:
     Py::Object startServer(const Py::Tuple& args)
     {

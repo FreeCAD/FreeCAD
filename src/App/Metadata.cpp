@@ -1120,11 +1120,7 @@ bool App::Meta::Dependency::operator==(const Dependency& rhs) const
         && dependencyType == rhs.dependencyType;
 }
 
-Meta::Version::Version()
-    : major(0),
-      minor(0),
-      patch(0)
-{}
+Meta::Version::Version() = default;
 
 Meta::Version::Version(int major, int minor, int patch, std::string suffix)
     : major(major),
@@ -1134,9 +1130,6 @@ Meta::Version::Version(int major, int minor, int patch, std::string suffix)
 {}
 
 Meta::Version::Version(const std::string& versionString)
-    : major(0),
-      minor(0),
-      patch(0)
 {
     std::istringstream stream(versionString);
     char separator {'.'};

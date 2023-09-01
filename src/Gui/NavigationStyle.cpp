@@ -90,7 +90,7 @@ public:
     };
 
     FCSphereSheetProjector(const SbSphere & sph, const SbBool orienttoeye = true)
-        : SbSphereSheetProjector(sph, orienttoeye), orbit(Trackball)
+        : SbSphereSheetProjector(sph, orienttoeye)
     {
     }
 
@@ -169,7 +169,7 @@ public:
 
 private:
     SbMatrix worldToScreen;
-    OrbitStyle orbit;
+    OrbitStyle orbit{Trackball};
 };
 
 NavigationStyleEvent::NavigationStyleEvent(const Base::Type& s)

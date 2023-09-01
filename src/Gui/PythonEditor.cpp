@@ -43,15 +43,14 @@ using namespace Gui;
 namespace Gui {
 struct PythonEditorP
 {
-    int   debugLine;
+    int   debugLine{-1};
     QRect debugRect;
     QPixmap breakpoint;
     QPixmap debugMarker;
     QString filename;
     PythonDebugger* debugger;
     PythonEditorP()
-        : debugLine(-1),
-          breakpoint(BitmapFactory().iconFromTheme("breakpoint").pixmap(16,16)),
+        : breakpoint(BitmapFactory().iconFromTheme("breakpoint").pixmap(16,16)),
           debugMarker(BitmapFactory().iconFromTheme("debug-marker").pixmap(16,16))
     {
         debugger = Application::Instance->macroManager()->debugger();

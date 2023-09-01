@@ -103,8 +103,8 @@ namespace Gui {
         { qDeleteAll(childItems); childItems.clear(); }
 
     protected:
-        DocumentModelIndex() : parentItem(nullptr) {}
-        DocumentModelIndex *parentItem;
+        DocumentModelIndex() = default;
+        DocumentModelIndex *parentItem{nullptr};
         QList<DocumentModelIndex*> childItems;
     };
 

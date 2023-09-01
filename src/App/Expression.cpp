@@ -967,7 +967,7 @@ std::map<App::ObjectIdentifier,bool> Expression::getIdentifiers()  const {
 class AdjustLinksExpressionVisitor : public ExpressionVisitor {
 public:
     explicit AdjustLinksExpressionVisitor(const std::set<App::DocumentObject*> &inList)
-        :inList(inList),res(false)
+        :inList(inList)
     {}
 
     void visit(Expression &e) override {
@@ -976,7 +976,7 @@ public:
     }
 
     const std::set<App::DocumentObject*> &inList;
-    bool res;
+    bool res{false};
 };
 
 bool Expression::adjustLinks(const std::set<App::DocumentObject*> &inList) {
@@ -1871,7 +1871,7 @@ bool FunctionExpression::isTouched() const
 
 class Collector {
 public:
-    Collector() : first(true) { }
+    Collector() = default;
     virtual ~Collector() = default;
     virtual void collect(Quantity value) {
         if (first)
@@ -1881,7 +1881,7 @@ public:
         return q;
     }
 protected:
-    bool first;
+    bool first{true};
     Quantity q;
 };
 
@@ -1899,7 +1899,7 @@ public:
 
 class AverageCollector : public Collector {
 public:
-    AverageCollector() : Collector(), n(0) { }
+    AverageCollector() : Collector() { }
 
     void collect(Quantity value) override {
         Collector::collect(value);
@@ -1911,12 +1911,12 @@ public:
     Quantity getQuantity() const override { return q/(double)n; }
 
 private:
-    unsigned int n;
+    unsigned int n{0};
 };
 
 class StdDevCollector : public Collector {
 public:
-    StdDevCollector() : Collector(), n(0) { }
+    StdDevCollector() : Collector() { }
 
     void collect(Quantity value) override {
         Collector::collect(value);
@@ -1941,14 +1941,14 @@ public:
     }
 
 private:
-    unsigned int n;
+    unsigned int n{0};
     Quantity mean;
     Quantity M2;
 };
 
 class CountCollector : public Collector {
 public:
-    CountCollector() : Collector(), n(0) { }
+    CountCollector() : Collector() { }
 
     void collect(Quantity value) override {
         Collector::collect(value);
@@ -1959,7 +1959,7 @@ public:
     Quantity getQuantity() const override { return Quantity(n); }
 
 private:
-    unsigned int n;
+    unsigned int n{0};
 };
 
 class MinCollector : public Collector {
