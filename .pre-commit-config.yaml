@@ -8,6 +8,7 @@ files: |
         src/Tools|
         tests/src|
         src/Mod/Assembly|
+        src/Mod/Points|
         src/Mod/Sketcher
     )
 exclude: |
