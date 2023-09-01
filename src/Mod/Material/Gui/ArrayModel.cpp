@@ -496,5 +496,3 @@ bool Array3DModel::removeColumns(int column, int count, const QModelIndex& paren
 
     return false;
 }
-
-#include "moc_ArrayModel.cpp"

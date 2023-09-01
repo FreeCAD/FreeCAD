@@ -180,6 +180,7 @@ macro(PrintFinalReport)
     conditional(Coin3D_DOC COIN3D_DOC_FOUND "not found" ${COIN3D_DOC_PATH})
     conditional(PYCXX PYCXX_FOUND "not found" "${PYCXX_VERSION} Incl: ${PYCXX_INCLUDE_DIR} Src:${PYCXX_SOURCE_DIR}")
     conditional(fmt fmt_FOUND "Sources downloaded to ${fmt_SOURCE_DIR}" "${fmt_VERSION}")
+    conditional(yaml-cpp BUILD_MATERIAL "not needed" "${yaml-cpp_VERSION}")
 
     section_end()
 

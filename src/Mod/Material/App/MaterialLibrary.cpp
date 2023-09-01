@@ -115,5 +115,3 @@ MaterialExternalLibrary::~MaterialExternalLibrary()
 {
     // delete directory;
 }
-
-#include "moc_Materials.cpp"

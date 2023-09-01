@@ -58,4 +58,8 @@ if(FREECAD_USE_FREETYPE)
     set(FREETYPE_INCLUDE_DIR_freetype2 ${FREECAD_LIBPACK_DIR}/include/freetype2)
 endif(FREECAD_USE_FREETYPE)
 
+if(BUILD_MATERIAL)
+    set(yaml-cpp_DIR ${FREECAD_LIBPACK_DIR}/lib/cmake/yaml-cpp CACHE PATH "")
+endif()
+
 link_directories(${FREECAD_LIBPACK_DIR}/lib)
