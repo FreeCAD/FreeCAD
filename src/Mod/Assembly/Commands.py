@@ -21,7 +21,7 @@
 #                                                                           *
 # ***************************************************************************/
 
-import os, re
+import os
 import FreeCAD as App
 
 from PySide.QtCore import QT_TRANSLATE_NOOP
@@ -60,17 +60,6 @@ def isDocTemporary(doc):
     return docTemporary
 
 
-def labelName(obj):
-    if obj:
-        if obj.Name == obj.Label:
-            txt = obj.Label
-        else:
-            txt = obj.Label + " (" + obj.Name + ")"
-        return txt
-    else:
-        return None
-
-
 class CommandCreateAssembly:
     def __init__(self):
         pass
@@ -104,9 +93,9 @@ class CommandInsertLink:
 
     def GetResources(self):
         tooltip = "<p>Insert a Link into the assembly. "
-        tooltip += "This will create dynamic links to parts/bodies/primitives/assemblies, "
-        tooltip += "which can be in this document or in another document "
-        tooltip += "that is <b>open in the current session</b></p>"
+        tooltip += "This will create dynamic links to parts/bodies/primitives/assemblies."
+        tooltip += "To insert external objects, make sure that the file "
+        tooltip += "is <b>open in the current session</b></p>"
         tooltip += "<p>Press shift to add several links while clicking on the view."
 
         return {
@@ -142,7 +131,7 @@ class TaskAssemblyInsertLink(QtCore.QObject):
         self.form.installEventFilter(self)
 
         # Actions
-        self.form.openFileButton.clicked.connect(self.openFile)
+        self.form.openFileButton.clicked.connect(self.openFiles)
         self.form.partList.itemClicked.connect(self.onItemClicked)
         self.form.filterPartList.textChanged.connect(self.onFilterChange)
 
@@ -195,48 +184,39 @@ class TaskAssemblyInsertLink(QtCore.QObject):
         self.form.partList.clear()
         for part in self.allParts:
             newItem = QtGui.QListWidgetItem()
-            newItem.setText(part.Document.Name + "#" + labelName(part))
+            newItem.setText(part.Document.Name + " - " + part.Name)
             newItem.setIcon(part.ViewObject.Icon)
             self.form.partList.addItem(newItem)
 
     def onFilterChange(self):
-        filterStr = self.form.filterPartList.text().strip()
-        for x in range(self.form.partList.count()):
-            item = self.form.partList.item(x)
-            # check the items's text match the filter ignoring the case
-            matchStr = re.search(filterStr, item.text(), flags=re.IGNORECASE)
-            if filterStr and not matchStr:
-                item.setHidden(True)
-            else:
-                item.setHidden(False)
+        filter_str = self.form.filterPartList.text().strip().lower()
 
-    def openFile(self):
-        filename = None
-        importDoc = None
-        importDocIsOpen = False
-        dialog = QtGui.QFileDialog(
-            QtGui.QApplication.activeWindow(),
-            "Select FreeCAD document to import part from",
+        for i in range(self.form.partList.count()):
+            item = self.form.partList.item(i)
+            item_text = item.text().lower()
+
+            # Check if the item's text contains the filter string
+            is_visible = filter_str in item_text if filter_str else True
+
+            item.setHidden(not is_visible)
+
+    def openFiles(self):
+        selected_files, _ = QtGui.QFileDialog.getOpenFileNames(
+            None,
+            "Select FreeCAD documents to import parts from",
+            "",
+            "Supported Formats (*.FCStd *.fcstd);;All files (*)"
         )
 
-        dialog.setNameFilter("Supported Formats *.FCStd *.fcstd (*.FCStd *.fcstd);;All files (*.*)")
-        if dialog.exec_():
-            filename = str(dialog.selectedFiles()[0])
-            # look only for filenames, not paths, as there are problems on WIN10 (Address-translation??)
-            requestedFile = os.path.split(filename)[1]
-            # see whether the file is already open
-            for d in App.listDocuments().values():
-                recentFile = os.path.split(d.FileName)[1]
-                if requestedFile == recentFile:
-                    importDocIsOpen = True
-                    break
-            # if not, open it
-            if not importDocIsOpen:
+        for filename in selected_files:
+            requested_file = os.path.split(filename)[1]
+            import_doc_is_open = any(requested_file == os.path.split(doc.FileName)[1] for doc in App.listDocuments().values())
+
+            if not import_doc_is_open:
                 if filename.lower().endswith(".fcstd"):
                     App.openDocument(filename)
                     App.setActiveDocument(self.doc.Name)
                     self.buildPartList()
-        return
 
     def onItemClicked(self, item):
         for selected in self.form.partList.selectedIndexes():
