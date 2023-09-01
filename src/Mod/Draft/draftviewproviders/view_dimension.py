@@ -572,9 +572,18 @@ class ViewProviderLinearDimension(ViewProviderDimensionBase):
         # Special representation if we use 'Building US' scheme
         u_params = App.ParamGet("User parameter:BaseApp/Preferences/Units")
         if u_params.GetInt("UserSchema", 0) == 5:
-            s = App.Units.Quantity(length, App.Units.Length).UserString
-            self.string = s.replace("' ", "'- ")  # feet
-            self.string = s.replace("+", " ")
+            self.string = App.Units.Quantity(length, App.Units.Length).UserString
+            if self.string.count('"') > 1:
+                # multiple inch tokens
+                self.string = self.string.replace('"',"",self.string.count('"')-1)
+            d_params = App.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
+            sep = d_params.GetString("FeetSeparator","")
+            if sep:
+                # use a custom separator
+                self.string = self.string.replace("' ", "'" + sep + " ")
+            self.string = self.string.replace("+", " ")
+            self.string = self.string.replace("   ", " ")
+            self.string = self.string.replace("  ", " ")
         elif hasattr(vobj, "Decimals"):
             self.string = units.display_external(length,
                                                  vobj.Decimals,
