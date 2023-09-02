@@ -30,7 +30,7 @@
 
 using namespace ReverseEngineeringGui;
 
-#if 0 // needed for Qt's lupdate utility
+#if 0// needed for Qt's lupdate utility
     qApp->translate("Workbench", "Reverse Engineering");
 #endif
 
@@ -49,13 +49,13 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     root->insertItem(item, reen);
     reen->setCommand("&Reverse Engineering");
 
-    Gui::MenuItem *reconstruct = new Gui::MenuItem();
+    Gui::MenuItem* reconstruct = new Gui::MenuItem();
     reconstruct->setCommand("Surface reconstruction");
     *reconstruct << "Reen_PoissonReconstruction"
                  << "Reen_ViewTriangulation";
     *reen << reconstruct;
 
-    Gui::MenuItem *segm = new Gui::MenuItem();
+    Gui::MenuItem* segm = new Gui::MenuItem();
     segm->setCommand("Segmentation");
     *segm << "Mesh_RemeshGmsh"
           << "Mesh_VertexCurvature"
@@ -67,7 +67,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
           << "Reen_MeshBoundary";
     *reen << segm;
 
-    Gui::MenuItem *approx = new Gui::MenuItem();
+    Gui::MenuItem* approx = new Gui::MenuItem();
     approx->setCommand("Approximation");
     *approx << "Reen_ApproxPlane"
             << "Reen_ApproxCylinder"
@@ -75,7 +75,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
             << "Reen_ApproxPolynomial"
             << "Separator"
             << "Reen_ApproxSurface";
-    *reen   << approx;
+    *reen << approx;
 
     return root;
 }
@@ -86,7 +86,7 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
     Gui::ToolBarItem* part = new Gui::ToolBarItem(root);
     part->setCommand("Reverse Engineering");
     *part << "Reen_ApproxSurface";
-     return root;
+    return root;
 }
 
 Gui::ToolBarItem* Workbench::setupCommandBars() const
@@ -95,4 +95,3 @@ Gui::ToolBarItem* Workbench::setupCommandBars() const
     Gui::ToolBarItem* root = new Gui::ToolBarItem;
     return root;
 }
-
