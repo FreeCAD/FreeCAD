@@ -342,7 +342,7 @@ class Arc(gui_base_original.Creator):
             end = math.degrees(self.firstangle + self.angle)
             if end < sta:
                 sta, end = end, sta
-            sta = sat % 360
+            sta = sta % 360
             end = end % 360
 
             try:
