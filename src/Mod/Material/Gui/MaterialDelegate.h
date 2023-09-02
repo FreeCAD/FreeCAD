@@ -28,49 +28,60 @@
 #include <QDialog>
 #include <QDir>
 #include <QStandardItem>
-#include <QTreeView>
 #include <QStyledItemDelegate>
 #include <QSvgWidget>
+#include <QTreeView>
 
-#include <Mod/Material/App/Materials.h>
 #include <Mod/Material/App/MaterialManager.h>
+#include <Mod/Material/App/Materials.h>
 #include <Mod/Material/App/ModelManager.h>
 
 namespace fs = boost::filesystem;
 
-namespace MatGui {
+namespace MatGui
+{
 
-class MaterialDelegate : public QStyledItemDelegate
+class MaterialDelegate: public QStyledItemDelegate
 {
     Q_OBJECT
 public:
-    explicit MaterialDelegate(QObject* parent=nullptr);
-    QWidget* createEditor(QWidget *parent,
-            const QStyleOptionViewItem &, const QModelIndex &index) const override;
-    QSize sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const override;
-    void paint(QPainter* painter, const QStyleOptionViewItem& option,
-            const QModelIndex& index) const override;
+    explicit MaterialDelegate(QObject* parent = nullptr);
+    virtual ~MaterialDelegate() = default;
+
+    QWidget* createEditor(QWidget* parent,
+                          const QStyleOptionViewItem&,
+                          const QModelIndex& index) const override;
+    QSize sizeHint(const QStyleOptionViewItem& option, const QModelIndex& index) const override;
+    void paint(QPainter* painter,
+               const QStyleOptionViewItem& option,
+               const QModelIndex& index) const override;
     void setEditorData(QWidget* editor, const QModelIndex& index) const override;
-    void setModelData(QWidget* editor, QAbstractItemModel* model,
+    void setModelData(QWidget* editor,
+                      QAbstractItemModel* model,
                       const QModelIndex& index) const override;
 
 protected:
-    bool editorEvent(QEvent* event, QAbstractItemModel* model, const QStyleOptionViewItem& option,
+    bool editorEvent(QEvent* event,
+                     QAbstractItemModel* model,
+                     const QStyleOptionViewItem& option,
                      const QModelIndex& index) override;
 
 Q_SIGNALS:
     /** Emits this signal when a property has changed */
-    void propertyChange(const QString &property, const QString value);
+    void propertyChange(const QString& property, const QString value);
 
 private:
-    QWidget* createWidget(QWidget* parent, const QString& propertyName, const QString& propertyType,
-                          const QString& propertyValue, const QString &propertyUnits) const;
+    QWidget* createWidget(QWidget* parent,
+                          const QString& propertyName,
+                          const QString& propertyType,
+                          const QString& propertyValue,
+                          const QString& propertyUnits) const;
     QRgb parseColor(const QString& color) const;
-    void showColorModal(QStandardItem *item);
-    void showArray2DModal(const QString &propertyName, QStandardItem* item);
-    void showArray3DModal(const QString &propertyName, QStandardItem* item);
+    void showColorModal(QStandardItem* item);
+    void showArray2DModal(const QString& propertyName, QStandardItem* item);
+    void showArray3DModal(const QString& propertyName, QStandardItem* item);
 };
 
-} // namespace MatGui
+}// namespace MatGui
 
-#endif // MATGUI_MATERIALDELEGATE_H
+#endif// MATGUI_MATERIALDELEGATE_H

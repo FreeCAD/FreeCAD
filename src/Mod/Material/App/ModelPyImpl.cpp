@@ -23,14 +23,14 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <boost/uuid/uuid_io.hpp>
+#include <boost/uuid/uuid_io.hpp>
 #endif
 
-#include "ModelPy.h"
-#include "ModelPy.cpp"
-#include "ModelPropertyPy.h"
 #include "Model.h"
+#include "ModelPropertyPy.h"
+#include "ModelPy.h"
 
+#include "ModelPy.cpp"
 
 using namespace Materials;
 
@@ -47,7 +47,7 @@ std::string ModelPy::representation() const
     str << ptr->getLibrary().getName().toStdString();
     str << "), Library Root=(";
     str << ptr->getLibrary().getDirectoryPath().toStdString();
-     str << "), Library Icon=(";
+    str << "), Library Icon=(";
     str << ptr->getLibrary().getIconPath().toStdString();
     str << "), Relative Path=(";
     str << ptr->getRelativePath().toStdString();
@@ -60,14 +60,15 @@ std::string ModelPy::representation() const
     str << "), Description=(";
     str << ptr->getDescription().toStdString();
     str << "), Inherits=[";
-    const std::vector<QString> &inherited = getModelPtr()->getInheritance();
-    for (auto it = inherited.begin(); it != inherited.end(); it++)
-    {
+    const std::vector<QString>& inherited = getModelPtr()->getInheritance();
+    for (auto it = inherited.begin(); it != inherited.end(); it++) {
         QString uuid = *it;
-        if (it != inherited.begin())
+        if (it != inherited.begin()) {
             str << "), UUID=(";
-        else
+        }
+        else {
             str << "UUID=(";
+        }
         str << uuid.toStdString() << ")";
     }
     str << "]]";
@@ -75,7 +76,7 @@ std::string ModelPy::representation() const
     return str.str();
 }
 
-PyObject *ModelPy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // Python wrapper
+PyObject* ModelPy::PyMake(struct _typeobject*, PyObject*, PyObject*)// Python wrapper
 {
     // never create such objects with the constructor
     return new ModelPy(new Model());
@@ -139,11 +140,10 @@ Py::String ModelPy::getDOI() const
 
 Py::List ModelPy::getInherited() const
 {
-    const std::vector<QString> &inherited = getModelPtr()->getInheritance();
+    const std::vector<QString>& inherited = getModelPtr()->getInheritance();
     Py::List list;
 
-    for (auto it = inherited.begin(); it != inherited.end(); it++)
-    {
+    for (auto it = inherited.begin(); it != inherited.end(); it++) {
         QString uuid = *it;
 
         list.append(Py::String(uuid.toStdString()));
@@ -157,19 +157,18 @@ Py::Dict ModelPy::getProperties() const
     // std::map<std::string, Model*> *models = getModelPtr()->getModels();
     Py::Dict dict;
 
-    for (auto it = getModelPtr()->begin(); it != getModelPtr()->end(); it++)
-    {
+    for (auto it = getModelPtr()->begin(); it != getModelPtr()->end(); it++) {
         QString key = it->first;
-        ModelProperty &modelProperty = it->second;
+        ModelProperty& modelProperty = it->second;
 
-        PyObject *modelPropertyPy = new ModelPropertyPy(new ModelProperty(modelProperty));
+        PyObject* modelPropertyPy = new ModelPropertyPy(new ModelProperty(modelProperty));
         dict.setItem(Py::String(key.toStdString()), Py::Object(modelPropertyPy, true));
     }
 
     return dict;
 }
 
-PyObject *ModelPy::getCustomAttributes(const char* /*attr*/) const
+PyObject* ModelPy::getCustomAttributes(const char* /*attr*/) const
 {
     return nullptr;
 }

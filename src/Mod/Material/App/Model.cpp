@@ -24,60 +24,58 @@
 #ifndef _PreComp_
 #endif
 
-#include <string>
 #include "Exceptions.h"
 #include "Model.h"
+#include <string>
 
 
 using namespace Materials;
 
 TYPESYSTEM_SOURCE(Materials::ModelLibrary, Base::BaseClass)
 
-ModelLibrary::ModelLibrary(const QString &libraryName, const QDir &dir, const QString &icon):
-    _name(libraryName), _directory(dir), _iconPath(icon)
+ModelLibrary::ModelLibrary(const QString& libraryName, const QDir& dir, const QString& icon)
+    : _name(libraryName)
+    , _directory(dir)
+    , _iconPath(icon)
 {}
 ModelLibrary::ModelLibrary()
-{}
-
-ModelLibrary::~ModelLibrary()
 {}
 
 TYPESYSTEM_SOURCE(Materials::ModelProperty, Base::BaseClass)
 
 ModelProperty::ModelProperty()
+{}
+
+ModelProperty::ModelProperty(const QString& name,
+                             const QString& type,
+                             const QString& units,
+                             const QString& url,
+                             const QString& description)
+    : _name(name)
+    , _propertyType(type)
+    , _units(units)
+    , _url(url)
+    , _description(description)
+{}
+
+ModelProperty::ModelProperty(const ModelProperty& other)
+    : _name(other._name)
+    , _propertyType(other._propertyType)
+    , _units(other._units)
+    , _url(other._url)
+    , _description(other._description)
+    , _inheritance(other._inheritance)
 {
-
-}
-
-ModelProperty::ModelProperty(const QString& name, const QString& type,
-                        const QString& units, const QString& url,
-                        const QString& description):
-    _name(name), _propertyType(type), _units(units), _url(url), _description(description)
-{
-
-}
-
-ModelProperty::ModelProperty(const ModelProperty& other) :
-    _name(other._name),
-    _propertyType(other._propertyType),
-    _units(other._units),
-    _url(other._url),
-    _description(other._description),
-    _inheritance(other._inheritance)
-{
-    for (auto it = other._columns.begin(); it != other._columns.end(); it++)
+    for (auto it = other._columns.begin(); it != other._columns.end(); it++) {
         _columns.push_back(*it);
-}
-
-ModelProperty::~ModelProperty()
-{
-
+    }
 }
 
 ModelProperty& ModelProperty::operator=(const ModelProperty& other)
 {
-    if (this == &other)
+    if (this == &other) {
         return *this;
+    }
 
     _name = other._name;
     _propertyType = other._propertyType;
@@ -86,8 +84,9 @@ ModelProperty& ModelProperty::operator=(const ModelProperty& other)
     _description = other._description;
     _inheritance = other._inheritance;
     _columns.clear();
-    for (auto it = other._columns.begin(); it != other._columns.end(); it++)
+    for (auto it = other._columns.begin(); it != other._columns.end(); it++) {
         _columns.push_back(*it);
+    }
 
     return *this;
 }
@@ -97,21 +96,30 @@ TYPESYSTEM_SOURCE(Materials::Model, Base::BaseClass)
 Model::Model()
 {}
 
-Model::Model(const ModelLibrary &library, ModelType type, const QString &name, const QDir &directory,
-        const QString &uuid, const QString& description, const QString& url,
-        const QString& doi):
-    _library(library), _type(type), _name(name), _directory(directory), _uuid(uuid), _description(description),
-    _url(url), _doi(doi)
+Model::Model(const ModelLibrary& library,
+             ModelType type,
+             const QString& name,
+             const QDir& directory,
+             const QString& uuid,
+             const QString& description,
+             const QString& url,
+             const QString& doi)
+    : _library(library)
+    , _type(type)
+    , _name(name)
+    , _directory(directory)
+    , _uuid(uuid)
+    , _description(description)
+    , _url(url)
+    , _doi(doi)
 {}
 
-Model::~Model()
-{}
-
-ModelProperty& Model::operator[] (const QString& key)
+ModelProperty& Model::operator[](const QString& key)
 {
     try {
         return _properties.at(key);
-    } catch (std::out_of_range const&) {
+    }
+    catch (std::out_of_range const&) {
         throw PropertyNotFound();
     }
 }

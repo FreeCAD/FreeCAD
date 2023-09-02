@@ -23,44 +23,65 @@
 #ifndef MATERIAL_FOLDERTREE_H
 #define MATERIAL_FOLDERTREE_H
 
-namespace Materials {
+#include <QString>
+#include <map>
 
-template <class T>
+namespace Materials
+{
+
+template<class T>
 class FolderTreeNode
 {
 public:
-    enum NodeType {
+    enum NodeType
+    {
         DataNode,
         FolderNode
     };
 
-    FolderTreeNode() : _folder(nullptr) {}
-    virtual ~FolderTreeNode() {}
+    FolderTreeNode()
+    {}
+    virtual ~FolderTreeNode() = default;
 
-    NodeType getType(void) const { return _type; }
-    void setType(NodeType type) { _type = type; }
+    NodeType getType(void) const
+    {
+        return _type;
+    }
+    void setType(NodeType type)
+    {
+        _type = type;
+    }
 
-    const std::map<QString, FolderTreeNode<T>*> *getFolder(void) const { return _folder; }
-    std::map<QString, FolderTreeNode<T>*> *getFolder(void) { return _folder; }
-    const T *getData(void) const { return _data; }
+    const std::map<QString, FolderTreeNode<T>*>* getFolder(void) const
+    {
+        return _folder;
+    }
+    std::map<QString, FolderTreeNode<T>*>* getFolder(void)
+    {
+        return _folder;
+    }
+    const T* getData(void) const
+    {
+        return _data;
+    }
 
-    void setFolder(std::map<QString, FolderTreeNode<T>*> *folder)
+    void setFolder(std::map<QString, FolderTreeNode<T>*>* folder)
     {
         setType(FolderNode);
         _folder = folder;
     }
-    void setData(const T *data)
+    void setData(const T* data)
     {
         setType(DataNode);
         _data = data;
     }
 
 private:
-    NodeType    _type;
-    std::map<QString, FolderTreeNode<T> *> *_folder;
-    const T *_data;
+    NodeType _type;
+    std::map<QString, FolderTreeNode<T>*>* _folder;
+    const T* _data;
 };
 
-} // namespace Materials
+}// namespace Materials
 
-#endif // MATERIAL_FOLDERTREE_H
+#endif// MATERIAL_FOLDERTREE_H

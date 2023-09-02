@@ -26,41 +26,37 @@
 // #include <boost/filesystem.hpp>
 
 #include <QDialog>
-// #include <QDir>
 #include <QStandardItem>
-// #include <QTreeView>
-// #include <QStyledItemDelegate>
-// #include <QSvgWidget>
 
-// #include <Mod/Material/App/Materials.h>
 #include <Mod/Material/App/MaterialManager.h>
-// #include <Mod/Material/App/ModelManager.h>
 
-// namespace fs = boost::filesystem;
-
-namespace MatGui {
+namespace MatGui
+{
 
 class Ui_MaterialSave;
 
-class MaterialSave : public QDialog
+class MaterialSave: public QDialog
 {
     Q_OBJECT
 
 public:
-    explicit MaterialSave(Materials::Material *material, QWidget* parent = nullptr);
+    explicit MaterialSave(Materials::Material* material, QWidget* parent = nullptr);
     ~MaterialSave() override;
 
     void setLibraries();
     void createModelTree();
     void addExpanded(QTreeView* tree, QStandardItem* parent, QStandardItem* child);
     void addExpanded(QTreeView* tree, QStandardItemModel* parent, QStandardItem* child);
-    void addMaterials(QStandardItem &parent, const std::map<QString, Materials::MaterialTreeNode*>* modelTree,
-        const QIcon &folderIcon, const QIcon &icon);
+    void addMaterials(QStandardItem& parent,
+                      const std::map<QString, Materials::MaterialTreeNode*>* modelTree,
+                      const QIcon& folderIcon,
+                      const QIcon& icon);
     void showSelectedTree();
 
     void onSelectModel(const QItemSelection& selected, const QItemSelection& deselected);
-    void currentTextChanged(const QString &value);
+    void currentTextChanged(const QString& value);
     void onNewFolder(bool checked);
+    void onFilename(const QString& text);
     void onOk(bool checked);
     void onCancel(bool checked);
     void accept() override;
@@ -75,9 +71,9 @@ private:
     QString _libraryName;
     QString _filename;
 
-    QString getPath(const QStandardItem *item) const;
+    QString getPath(const QStandardItem* item) const;
 };
 
-} // namespace MatGui
+}// namespace MatGui
 
-#endif // MATGUI_MATERIALSAVE_H
+#endif// MATGUI_MATERIALSAVE_H

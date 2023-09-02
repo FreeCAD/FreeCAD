@@ -30,36 +30,58 @@
 
 #include "Model.h"
 
-namespace Materials {
+namespace Materials
+{
 
 class Material;
 
-class MaterialsExport MaterialLibrary : public Base::BaseClass
+class MaterialsExport MaterialLibrary: public Base::BaseClass
 {
     TYPESYSTEM_HEADER();
 
 public:
     MaterialLibrary();
-    explicit MaterialLibrary(const QString &libraryName, const QDir &dir, const QString &icon, bool readOnly = true);
-    virtual ~MaterialLibrary();
+    explicit MaterialLibrary(const QString& libraryName,
+                             const QDir& dir,
+                             const QString& icon,
+                             bool readOnly = true);
+    virtual ~MaterialLibrary() = default;
 
-    const QString getName() const { return _name; }
-    const QDir getDirectory() const { return _directory; }
-    const QString getDirectoryPath() const { return _directory.absolutePath(); }
-    const QString getIconPath() const { return _iconPath; }
+    const QString getName() const
+    {
+        return _name;
+    }
+    const QDir getDirectory() const
+    {
+        return _directory;
+    }
+    const QString getDirectoryPath() const
+    {
+        return _directory.absolutePath();
+    }
+    const QString getIconPath() const
+    {
+        return _iconPath;
+    }
     bool operator==(const MaterialLibrary& library) const
     {
         return (_name == library._name) && (_directory == library._directory);
     }
-    bool operator!=(const MaterialLibrary& library) const { return !operator==(library); }
+    bool operator!=(const MaterialLibrary& library) const
+    {
+        return !operator==(library);
+    }
 
     void createPath(const QString& path);
     void saveMaterial(Material& material, const QString& path, bool saveAsCopy);
 
-    bool isReadOnly() const { return _readOnly; }
+    bool isReadOnly() const
+    {
+        return _readOnly;
+    }
 
 protected:
-    QString getFilePath(const QString &path) const;
+    QString getFilePath(const QString& path) const;
 
     QString _name;
     QDir _directory;
@@ -67,19 +89,22 @@ protected:
     bool _readOnly;
 };
 
-class MaterialsExport MaterialExternalLibrary : public MaterialLibrary
+class MaterialsExport MaterialExternalLibrary: public MaterialLibrary
 {
     TYPESYSTEM_HEADER();
 
 public:
     MaterialExternalLibrary();
-    explicit MaterialExternalLibrary(const QString &libraryName, const QDir &dir, const QString &icon, bool readOnly = true);
+    explicit MaterialExternalLibrary(const QString& libraryName,
+                                     const QDir& dir,
+                                     const QString& icon,
+                                     bool readOnly = true);
     virtual ~MaterialExternalLibrary();
 };
 
-} // namespace Materials
+}// namespace Materials
 
 Q_DECLARE_METATYPE(Materials::MaterialLibrary)
 Q_DECLARE_METATYPE(Materials::MaterialExternalLibrary)
 
-#endif // MATERIAL_MATERIALLIBRARY_H
+#endif// MATERIAL_MATERIALLIBRARY_H

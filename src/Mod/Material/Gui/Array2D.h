@@ -23,43 +23,46 @@
 #ifndef MATGUI_ARRAY2D_H
 #define MATGUI_ARRAY2D_H
 
+#include <QAbstractTableModel>
 #include <QDialog>
 #include <QStandardItem>
 #include <QTableView>
-#include <QAbstractTableModel>
 
-#include <Mod/Material/App/Model.h>
 #include "ArrayModel.h"
+#include <Mod/Material/App/Model.h>
 
-namespace MatGui {
+namespace MatGui
+{
 
 class Ui_Array2D;
 
-class Array2D : public QDialog
+class Array2D: public QDialog
 {
     Q_OBJECT
 
 public:
-    explicit Array2D(const QString &propertyName, Materials::Material *material, QWidget* parent = nullptr);
-    ~Array2D() override;
+    explicit Array2D(const QString& propertyName,
+                     Materials::Material* material,
+                     QWidget* parent = nullptr);
+    ~Array2D() override = default;
 
-    void defaultValueChanged(const Base::Quantity &value);
+    void defaultValueChanged(const Base::Quantity& value);
 
     void accept() override;
     void reject() override;
 
 private:
     std::unique_ptr<Ui_Array2D> ui;
-    Materials::MaterialProperty *_property;
-    Materials::Material2DArray *_value;
+    Materials::MaterialProperty* _property;
+    Materials::Material2DArray* _value;
 
     void setupDefault();
-    void setHeaders(QStandardItemModel *model);
-    void setColumnWidths(QTableView *table);
-    void setColumnDelegates(QTableView *table);
+    void setHeaders(QStandardItemModel* model);
+    void setColumnWidths(QTableView* table);
+    void setColumnDelegates(QTableView* table);
     void setupArray();
 };
 
-} // namespace MatGui
+}// namespace MatGui
 
-#endif // MATGUI_ARRAY2D_H
+#endif// MATGUI_ARRAY2D_H

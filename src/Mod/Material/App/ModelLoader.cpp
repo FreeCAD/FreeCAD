@@ -22,6 +22,7 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+#include <QString>
 #endif
 
 #include <App/Application.h>
@@ -29,7 +30,6 @@
 
 #include <QDirIterator>
 #include <QFileInfo>
-#include <QString>
 
 #include "Model.h"
 #include "ModelLoader.h"
@@ -38,38 +38,41 @@
 
 using namespace Materials;
 
-ModelEntry::ModelEntry(const ModelLibrary &library, const QString &baseName, const QString &modelName, const QDir &dir,
-        const QString &modelUuid, const YAML::Node &modelData):
-    _library(library), _base(baseName), _name(modelName), _directory(dir), _uuid(modelUuid), _model(modelData), _dereferenced(false)
+ModelEntry::ModelEntry(const ModelLibrary& library,
+                       const QString& baseName,
+                       const QString& modelName,
+                       const QDir& dir,
+                       const QString& modelUuid,
+                       const YAML::Node& modelData)
+    : _library(library)
+    , _base(baseName)
+    , _name(modelName)
+    , _directory(dir)
+    , _uuid(modelUuid)
+    , _model(modelData)
+    , _dereferenced(false)
 {}
 
-ModelEntry::~ModelEntry()
-{}
+std::map<QString, ModelEntry*>* ModelLoader::_modelEntryMap = nullptr;
 
-std::map<QString, ModelEntry*> *ModelLoader::_modelEntryMap = nullptr;
-
-ModelLoader::ModelLoader(std::map<QString, Model*> *modelMap, std::list<ModelLibrary*> *libraryList) :
-    _modelMap(modelMap), _libraryList(libraryList)
+ModelLoader::ModelLoader(std::map<QString, Model*>* modelMap, std::list<ModelLibrary*>* libraryList)
+    : _modelMap(modelMap)
+    , _libraryList(libraryList)
 {
     loadLibraries();
 }
 
-/*
- *  Destroys the object and frees any allocated resources
- */
-ModelLoader::~ModelLoader()
-{}
-
-void ModelLoader::addLibrary(ModelLibrary *model)
+void ModelLoader::addLibrary(ModelLibrary* model)
 {
     _libraryList->push_back(model);
 }
 
-const QString ModelLoader::getUUIDFromPath(const QString &path)
+const QString ModelLoader::getUUIDFromPath(const QString& path)
 {
     QFile file(path);
-    if (!file.exists())
+    if (!file.exists()) {
         throw ModelNotFound();
+    }
 
     try {
         YAML::Node yamlroot = YAML::LoadFile(path.toStdString());
@@ -80,16 +83,18 @@ const QString ModelLoader::getUUIDFromPath(const QString &path)
 
         const QString uuid = QString::fromStdString(yamlroot[base]["UUID"].as<std::string>());
         return uuid;
-    } catch (YAML::Exception &ex) {
+    }
+    catch (YAML::Exception& ex) {
         throw ModelNotFound();
     }
 }
 
-ModelEntry *ModelLoader::getModelFromPath(const ModelLibrary &library, const QString &path) const
+ModelEntry* ModelLoader::getModelFromPath(const ModelLibrary& library, const QString& path) const
 {
     QFile file(path);
-    if (!file.exists())
+    if (!file.exists()) {
         throw ModelNotFound();
+    }
 
     YAML::Node yamlroot;
     std::string base = "Model";
@@ -103,18 +108,23 @@ ModelEntry *ModelLoader::getModelFromPath(const ModelLibrary &library, const QSt
 
         uuid = yamlroot[base]["UUID"].as<std::string>();
         name = yamlroot[base]["Name"].as<std::string>();
-    } catch (YAML::Exception const &) {
+    }
+    catch (YAML::Exception const&) {
         throw InvalidModel();
     }
 
     QDir modelDir(path);
-    ModelEntry *model = new ModelEntry(library, QString::fromStdString(base), QString::fromStdString(name),
-            modelDir, QString::fromStdString(uuid), yamlroot);
+    ModelEntry* model = new ModelEntry(library,
+                                       QString::fromStdString(base),
+                                       QString::fromStdString(name),
+                                       modelDir,
+                                       QString::fromStdString(uuid),
+                                       yamlroot);
 
     return model;
 }
 
-void ModelLoader::showYaml(const YAML::Node &yaml) const
+void ModelLoader::showYaml(const YAML::Node& yaml) const
 {
     std::stringstream out;
 
@@ -123,8 +133,10 @@ void ModelLoader::showYaml(const YAML::Node &yaml) const
     Base::Console().Log("%s\n", logData.c_str());
 }
 
-void ModelLoader::dereference(const QString &uuid, ModelEntry *parent, const ModelEntry *child,
-    std::map<std::pair<QString, QString>, QString> *inheritances)
+void ModelLoader::dereference(const QString& uuid,
+                              ModelEntry* parent,
+                              const ModelEntry* child,
+                              std::map<std::pair<QString, QString>, QString>* inheritances)
 {
     auto parentPtr = parent->getModelPtr();
     auto parentBase = parent->getBase().toStdString();
@@ -141,7 +153,7 @@ void ModelLoader::dereference(const QString &uuid, ModelEntry *parent, const Mod
 
     auto parentProperties = (*parentPtr)[parentBase];
     auto childProperties = childYaml[childBase];
-    for(auto it = childProperties.begin(); it != childProperties.end(); it++) {
+    for (auto it = childProperties.begin(); it != childProperties.end(); it++) {
         std::string name = it->first.as<std::string>();
         if (exclude.count(QString::fromStdString(name)) == 0) {
             // showYaml(it->second);
@@ -157,26 +169,29 @@ void ModelLoader::dereference(const QString &uuid, ModelEntry *parent, const Mod
 }
 
 
-void ModelLoader::dereference(ModelEntry *model, std::map<std::pair<QString, QString>, QString> *inheritances)
+void ModelLoader::dereference(ModelEntry* model,
+                              std::map<std::pair<QString, QString>, QString>* inheritances)
 {
     // Avoid recursion
-    if (model->getDereferenced())
+    if (model->getDereferenced()) {
         return;
+    }
 
     auto yamlModel = model->getModel();
     auto base = model->getBase().toStdString();
     if (yamlModel[base]["Inherits"]) {
         auto inherits = yamlModel[base]["Inherits"];
-        for(auto it = inherits.begin(); it != inherits.end(); it++) {
+        for (auto it = inherits.begin(); it != inherits.end(); it++) {
             QString nodeName = QString::fromStdString((*it)["UUID"].as<std::string>());
 
             // This requires that all models have already been loaded undereferenced
             try {
-                const ModelEntry *child = (*_modelEntryMap)[nodeName];
+                const ModelEntry* child = (*_modelEntryMap)[nodeName];
                 dereference(model->getUUID(), model, child, inheritances);
             }
             catch (const std::out_of_range& oor) {
-                Base::Console().Log("Unable to find '%s' in model map\n", nodeName.toStdString().c_str());
+                Base::Console().Log("Unable to find '%s' in model map\n",
+                                    nodeName.toStdString().c_str());
             }
         }
     }
@@ -184,14 +199,18 @@ void ModelLoader::dereference(ModelEntry *model, std::map<std::pair<QString, QSt
     model->markDereferenced();
 }
 
-QString ModelLoader::yamlValue(const YAML::Node &node, const std::string &key, const std::string &defaultValue)
+QString ModelLoader::yamlValue(const YAML::Node& node,
+                               const std::string& key,
+                               const std::string& defaultValue)
 {
-    if (node[key])
+    if (node[key]) {
         return QString::fromStdString(node[key].as<std::string>());
+    }
     return QString::fromStdString(defaultValue);
 }
 
-void ModelLoader::addToTree(ModelEntry *model, std::map<std::pair<QString, QString>, QString> *inheritances)
+void ModelLoader::addToTree(ModelEntry* model,
+                            std::map<std::pair<QString, QString>, QString>* inheritances)
 {
     std::set<QString> exclude;
     exclude.insert(QString::fromStdString("Name"));
@@ -214,14 +233,15 @@ void ModelLoader::addToTree(ModelEntry *model, std::map<std::pair<QString, QStri
     QString url = yamlValue(yamlModel[base], "URL", "");
     QString doi = yamlValue(yamlModel[base], "DOI", "");
 
-    Model::ModelType type = (base == "Model") ? Model::ModelType_Physical : Model::ModelType_Appearance;
+    Model::ModelType type =
+        (base == "Model") ? Model::ModelType_Physical : Model::ModelType_Appearance;
 
-    Model *finalModel = new Model(library, type, name, directory, uuid, description, url, doi);
+    Model* finalModel = new Model(library, type, name, directory, uuid, description, url, doi);
 
     // Add inheritance list
     if (yamlModel[base]["Inherits"]) {
         auto inherits = yamlModel[base]["Inherits"];
-        for(auto it = inherits.begin(); it != inherits.end(); it++) {
+        for (auto it = inherits.begin(); it != inherits.end(); it++) {
             QString nodeName = QString::fromStdString((*it)["UUID"].as<std::string>());
 
             finalModel->addInheritance(nodeName);
@@ -230,7 +250,7 @@ void ModelLoader::addToTree(ModelEntry *model, std::map<std::pair<QString, QStri
 
     // Add property list
     auto yamlProperties = yamlModel[base];
-    for(auto it = yamlProperties.begin(); it != yamlProperties.end(); it++) {
+    for (auto it = yamlProperties.begin(); it != yamlProperties.end(); it++) {
         std::string propName = it->first.as<std::string>();
         if (exclude.count(QString::fromStdString(propName)) == 0) {
             // showYaml(it->second);
@@ -241,17 +261,18 @@ void ModelLoader::addToTree(ModelEntry *model, std::map<std::pair<QString, QStri
             auto propDescription = yamlValue(yamlProp, "Description", "");
             // auto inherits = yamlValue(yamlProp, "Inherits", "");
 
-            ModelProperty property(QString::fromStdString(propName), propType,
-                           propUnits, propURL,
-                           propDescription);
+            ModelProperty property(QString::fromStdString(propName),
+                                   propType,
+                                   propUnits,
+                                   propURL,
+                                   propDescription);
 
-            if (propType == QString::fromStdString("2DArray") || propType == QString::fromStdString("3DArray"))
-            {
+            if (propType == QString::fromStdString("2DArray")
+                || propType == QString::fromStdString("3DArray")) {
                 Base::Console().Log("Reading columns\n");
                 // Read the columns
                 auto cols = yamlProp["Columns"];
-                for (auto col : cols)
-                {
+                for (auto col : cols) {
                     std::string colName = col.first.as<std::string>();
                     Base::Console().Log("\tColumns '%s'\n", colName.c_str());
 
@@ -260,17 +281,20 @@ void ModelLoader::addToTree(ModelEntry *model, std::map<std::pair<QString, QStri
                     auto colPropUnits = yamlValue(colProp, "Units", "");
                     auto colPropURL = yamlValue(colProp, "URL", "");
                     auto colPropDescription = yamlValue(colProp, "Description", "");
-                    ModelProperty colProperty(QString::fromStdString(colName), colPropType,
-                                colPropUnits, colPropURL,
-                                colPropDescription);
+                    ModelProperty colProperty(QString::fromStdString(colName),
+                                              colPropType,
+                                              colPropUnits,
+                                              colPropURL,
+                                              colPropDescription);
 
                     property.addColumn(colProperty);
                 }
             }
 
             auto key = std::pair<QString, QString>(uuid, QString::fromStdString(propName));
-            if (inheritances->count(key) > 0)
+            if (inheritances->count(key) > 0) {
                 property.setInheritance((*inheritances)[key]);
+            }
 
             finalModel->addProperty(property);
         }
@@ -279,10 +303,11 @@ void ModelLoader::addToTree(ModelEntry *model, std::map<std::pair<QString, QStri
     (*_modelMap)[uuid] = finalModel;
 }
 
-void ModelLoader::loadLibrary(const ModelLibrary &library)
+void ModelLoader::loadLibrary(const ModelLibrary& library)
 {
-    if (_modelEntryMap == nullptr)
+    if (_modelEntryMap == nullptr) {
         _modelEntryMap = new std::map<QString, ModelEntry*>();
+    }
 
     QDirIterator it(library.getDirectory(), QDirIterator::Subdirectories);
     while (it.hasNext()) {
@@ -296,7 +321,8 @@ void ModelLoader::loadLibrary(const ModelLibrary &library)
                     auto model = getModelFromPath(library, file.canonicalFilePath());
                     (*_modelEntryMap)[model->getUUID()] = model;
                     // showYaml(model->getModel());
-                } catch (InvalidModel const&) {
+                }
+                catch (InvalidModel const&) {
                     Base::Console().Log("Invalid model '%s'\n", pathname.toStdString().c_str());
                 }
             }
@@ -325,28 +351,29 @@ void ModelLoader::loadLibraries(void)
     }
 }
 
-std::list<ModelLibrary *> *ModelLoader::getModelLibraries()
+std::list<ModelLibrary*>* ModelLoader::getModelLibraries()
 {
-    auto param =
-        App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Material/Resources");
+    auto param = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/Mod/Material/Resources");
     bool useBuiltInMaterials = param->GetBool("UseBuiltInMaterials", true);
     bool useMatFromModules = param->GetBool("UseMaterialsFromWorkbenches", true);
     bool useMatFromConfigDir = param->GetBool("UseMaterialsFromConfigDir", true);
     bool useMatFromCustomDir = param->GetBool("UseMaterialsFromCustomDir", true);
 
-    if (useBuiltInMaterials)
-    {
-        QString resourceDir = QString::fromStdString(App::Application::getResourceDir() + "/Mod/Material/Resources/Models");
+    if (useBuiltInMaterials) {
+        QString resourceDir = QString::fromStdString(App::Application::getResourceDir()
+                                                     + "/Mod/Material/Resources/Models");
         QDir materialDir(resourceDir);
-        auto libData = new ModelLibrary(QString::fromStdString("System"), materialDir, QString::fromStdString(":/icons/freecad.svg"));
+        auto libData = new ModelLibrary(QString::fromStdString("System"),
+                                        materialDir,
+                                        QString::fromStdString(":/icons/freecad.svg"));
         _libraryList->push_back(libData);
     }
 
-    if (useMatFromModules)
-    {
+    if (useMatFromModules) {
         auto moduleParam = App::GetApplication().GetParameterGroupByPath(
             "User parameter:BaseApp/Preferences/Mod/Material/Resources/Modules");
-        for (auto &group : moduleParam->GetGroups()) {
+        for (auto& group : moduleParam->GetGroups()) {
             // auto module = moduleParam->GetGroup(group->GetGroupName());
             auto moduleName = QString::fromStdString(group->GetGroupName());
             auto modelDir = QString::fromStdString(group->GetASCII("ModuleModelDir", ""));
@@ -362,9 +389,9 @@ std::list<ModelLibrary *> *ModelLoader::getModelLibraries()
         }
     }
 
-    if (useMatFromConfigDir)
-    {
-        QString resourceDir = QString::fromStdString(App::Application::getUserAppDataDir() + "/Models");
+    if (useMatFromConfigDir) {
+        QString resourceDir =
+            QString::fromStdString(App::Application::getUserAppDataDir() + "/Models");
         QDir materialDir(resourceDir);
         auto libData = new ModelLibrary(QString::fromStdString("User"),
                                         materialDir,
@@ -374,8 +401,7 @@ std::list<ModelLibrary *> *ModelLoader::getModelLibraries()
         }
     }
 
-    if (useMatFromCustomDir)
-    {
+    if (useMatFromCustomDir) {
         QString resourceDir = QString::fromStdString(param->GetASCII("CustomMaterialsDir", ""));
         QDir materialDir(resourceDir);
         auto libData = new ModelLibrary(QString::fromStdString("Custom"),

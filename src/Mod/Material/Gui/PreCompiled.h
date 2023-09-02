@@ -29,17 +29,17 @@
 
 // point at which warnings of overly long specifiers disabled (needed for VC6)
 #ifdef _MSC_VER
-# pragma warning( disable : 4251 )
-# pragma warning( disable : 4503 )
-# pragma warning( disable : 4786 )  // specifier longer then 255 chars
-# pragma warning( disable : 4273 )
+#pragma warning(disable : 4251)
+#pragma warning(disable : 4503)
+#pragma warning(disable : 4786)// specifier longer then 255 chars
+#pragma warning(disable : 4273)
 #endif
 
 #ifdef FC_OS_WIN32
-# ifndef NOMINMAX
-#  define NOMINMAX
-# endif
-# include <windows.h>
+#ifndef NOMINMAX
+#define NOMINMAX
+#endif
+#include <windows.h>
 #endif
 
 #ifdef _PreComp_
@@ -59,19 +59,19 @@
 // #include <Mod/Part/App/OpenCascadeAll.h>
 
 // Boost
-#include <boost/regex.hpp>
 #include <boost/algorithm/string/predicate.hpp>
+#include <boost/regex.hpp>
 
 // Qt Toolkit
 #ifndef __QtAll__
-# include <Gui/QtAll.h>
+#include <Gui/QtAll.h>
 #endif
 
-// Inventor includes OpenGL
-#ifndef __InventorAll__
-# include <Gui/InventorAll.h>
-#endif
+// // Inventor includes OpenGL
+// #ifndef __InventorAll__
+// # include <Gui/InventorAll.h>
+// #endif
 
-#endif  //_PreComp_
+#endif//_PreComp_
 
-#endif // MATGUI_PRECOMPILED_H
+#endif// MATGUI_PRECOMPILED_H

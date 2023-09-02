@@ -27,19 +27,22 @@
 #include <QStandardItem>
 #include <QTableView>
 
-namespace MatGui {
+namespace MatGui
+{
 
 class Ui_Array3D;
 
-class Array3D : public QDialog
+class Array3D: public QDialog
 {
     Q_OBJECT
 
 public:
-    explicit Array3D(const QString &propertyName, Materials::Material *material, QWidget* parent = nullptr);
-    ~Array3D() override;
+    explicit Array3D(const QString& propertyName,
+                     Materials::Material* material,
+                     QWidget* parent = nullptr);
+    ~Array3D() override = default;
 
-    void defaultValueChanged(const Base::Quantity &value);
+    void defaultValueChanged(const Base::Quantity& value);
     bool onSplitter(QEvent* e);
 
     void onOk(bool checked);
@@ -47,18 +50,18 @@ public:
 
 private:
     std::unique_ptr<Ui_Array3D> ui;
-    Materials::MaterialProperty *_property;
-    Materials::Material3DArray *_value;
+    Materials::MaterialProperty* _property;
+    Materials::Material3DArray* _value;
 
     void setupDefault();
-    void setDepthColumnWidth(QTableView *table);
-    void setDepthColumnDelegate(QTableView *table);
+    void setDepthColumnWidth(QTableView* table);
+    void setDepthColumnDelegate(QTableView* table);
     void setupDepthArray();
     void setColumnWidths(QTableView* table);
     void setColumnDelegates(QTableView* table);
     void setupArray();
 };
 
-} // namespace MatGui
+}// namespace MatGui
 
-#endif // MATGUI_ARRAY3D_H
+#endif// MATGUI_ARRAY3D_H

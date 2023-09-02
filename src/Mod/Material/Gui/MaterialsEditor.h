@@ -28,29 +28,30 @@
 #include <QDialog>
 #include <QDir>
 #include <QStandardItem>
-#include <QTreeView>
 #include <QStyledItemDelegate>
 #include <QSvgWidget>
+#include <QTreeView>
 
-#include <Mod/Material/App/Materials.h>
 #include <Mod/Material/App/MaterialManager.h>
+#include <Mod/Material/App/Materials.h>
 #include <Mod/Material/App/ModelManager.h>
 
 namespace fs = boost::filesystem;
 
-namespace MatGui {
+namespace MatGui
+{
 
 class Ui_MaterialsEditor;
 
-class MaterialsEditor : public QDialog
+class MaterialsEditor: public QDialog
 {
     Q_OBJECT
 
 public:
     explicit MaterialsEditor(QWidget* parent = nullptr);
-    ~MaterialsEditor() override;
+    ~MaterialsEditor() override = default;
 
-    void propertyChange(const QString &property, const QString value);
+    void propertyChange(const QString& property, const QString value);
     void onFavourite(bool checked);
     void onURL(bool checked);
     void onPhysicalAdd(bool checked);
@@ -61,13 +62,23 @@ public:
     void accept() override;
     void reject() override;
 
-    Materials::MaterialManager &getMaterialManager() { return _materialManager; }
-    Materials::ModelManager &getModelManager() { return *Materials::ModelManager::getManager(); }
+    Materials::MaterialManager& getMaterialManager()
+    {
+        return _materialManager;
+    }
+    Materials::ModelManager& getModelManager()
+    {
+        return *Materials::ModelManager::getManager();
+    }
 
     void updateMaterialAppearance();
     void updateMaterialProperties();
     void updateMaterial();
     void onSelectMaterial(const QItemSelection& selected, const QItemSelection& deselected);
+
+protected:
+    int confirmSave(QWidget* parent);
+    void saveMaterial();
 
 private:
     std::unique_ptr<Ui_MaterialsEditor> ui;
@@ -92,22 +103,28 @@ private:
     bool isRecent(const QString& uuid) const;
 
     void updatePreview() const;
-    QString getColorHash(const QString& colorString, int colorRange=255) const;
+    QString getColorHash(const QString& colorString, int colorRange = 255) const;
 
     void addExpanded(QTreeView* tree, QStandardItem* parent, QStandardItem* child);
     void addExpanded(QTreeView* tree, QStandardItemModel* parent, QStandardItem* child);
     void addRecents(QStandardItem* parent);
-    void addFavorites(QStandardItem *parent);
+    void addFavorites(QStandardItem* parent);
     void createPreviews();
     void createAppearanceTree();
     void createPhysicalTree();
     void createMaterialTree();
     void fillMaterialTree();
     void refreshMaterialTree();
-    void addMaterials(QStandardItem &parent, const QString &top, const QString &folder, const QIcon &icon);
-    bool isMaterial(const fs::path &p) const { return Materials::MaterialManager::isMaterial(p); }
+    void addMaterials(QStandardItem& parent,
+                      const QString& top,
+                      const QString& folder,
+                      const QIcon& icon);
+    bool isMaterial(const fs::path& p) const
+    {
+        return Materials::MaterialManager::isMaterial(p);
+    }
 };
 
-} // namespace MatGui
+}// namespace MatGui
 
-#endif // MATGUI_MATERIALSEDITOR_H
+#endif// MATGUI_MATERIALSEDITOR_H

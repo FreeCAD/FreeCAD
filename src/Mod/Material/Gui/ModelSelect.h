@@ -35,23 +35,29 @@
 
 namespace fs = boost::filesystem;
 
-namespace MatGui {
+namespace MatGui
+{
 
 class Ui_ModelSelect;
 
-class ModelSelect : public QDialog
+class ModelSelect: public QDialog
 {
     Q_OBJECT
 
 public:
-    explicit ModelSelect(QWidget* parent = nullptr, Materials::ModelManager::ModelFilter filter=Materials::ModelManager::ModelFilter_None);
+    explicit ModelSelect(
+        QWidget* parent = nullptr,
+        Materials::ModelManager::ModelFilter filter = Materials::ModelManager::ModelFilter_None);
     ~ModelSelect() override;
 
     void onURL(bool checked);
     void onDOI(bool checked);
     void onFavourite(bool checked);
     void onSelectModel(const QItemSelection& selected, const QItemSelection& deselected);
-    const QString &selectedModel() const { return _selected; }
+    const QString& selectedModel() const
+    {
+        return _selected;
+    }
     void accept() override;
     void reject() override;
 
@@ -68,10 +74,11 @@ private:
     bool isRecent(const QString& uuid) const;
 
     void addExpanded(QTreeView* tree, QStandardItem* parent, QStandardItem* child);
-    void addExpanded(QTreeView *tree, QStandardItemModel *parent, QStandardItem *child);
+    void addExpanded(QTreeView* tree, QStandardItemModel* parent, QStandardItem* child);
     void addRecents(QStandardItem* parent);
-    void addFavorites(QStandardItem *parent);
-    void addModels(QStandardItem& parent, const std::map<QString, Materials::ModelTreeNode*>* modelTree,
+    void addFavorites(QStandardItem* parent);
+    void addModels(QStandardItem& parent,
+                   const std::map<QString, Materials::ModelTreeNode*>* modelTree,
                    const QIcon& icon);
     void updateMaterialModel(const QString& uuid);
     void clearMaterialModel(void);
@@ -79,11 +86,14 @@ private:
     void refreshModelTree();
     void fillTree();
 
-    void setHeaders(QStandardItemModel *model);
-    void setColumnWidths(QTableView *table);
+    void setHeaders(QStandardItemModel* model);
+    void setColumnWidths(QTableView* table);
     void updateModelProperties(const Materials::Model& model);
     void createModelProperties();
-    Materials::ModelManager &getModelManager() { return *Materials::ModelManager::getManager(); }
+    Materials::ModelManager& getModelManager()
+    {
+        return *Materials::ModelManager::getManager();
+    }
 
     Materials::ModelManager::ModelFilter _filter;
     std::unique_ptr<Ui_ModelSelect> ui;
@@ -93,6 +103,6 @@ private:
     int _recentMax;
 };
 
-} // namespace MatGui
+}// namespace MatGui
 
-#endif // MATGUI_MODELSELECT_H
+#endif// MATGUI_MODELSELECT_H

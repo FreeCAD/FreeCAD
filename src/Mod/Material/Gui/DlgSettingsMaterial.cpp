@@ -37,11 +37,6 @@ DlgSettingsMaterial::DlgSettingsMaterial(QWidget* parent)
     ui->setupUi(this);
 }
 
-DlgSettingsMaterial::~DlgSettingsMaterial()
-{
-    // no need to delete child widgets, Qt does it all for us
-}
-
 void DlgSettingsMaterial::saveSettings()
 {
     ui->cb_use_built_in_materials->onSave();

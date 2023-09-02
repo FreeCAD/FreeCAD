@@ -24,51 +24,58 @@
 #define MATERIAL_MATERIALCONFIGLOADER_H
 
 #include <QDir>
-#include <QString>
 #include <QSettings>
+#include <QString>
 
 #include "Materials.h"
 
-namespace Materials {
+namespace Materials
+{
 
 class MaterialConfigLoader
 {
 public:
     MaterialConfigLoader();
-    virtual ~MaterialConfigLoader();
+    virtual ~MaterialConfigLoader() = default;
 
 
     static bool isConfigStyle(const QString& path);
-    static Material *getMaterialFromPath(const MaterialLibrary &library, const QString &path);
+    static Material* getMaterialFromPath(const MaterialLibrary& library, const QString& path);
 
 private:
-    static QString value(const QSettings &fcmat, const std::string &name, const std::string &defaultValue)
+    static QString
+    value(const QSettings& fcmat, const std::string& name, const std::string& defaultValue)
     {
-        return fcmat.value(QString::fromStdString(name), QString::fromStdString(defaultValue)).toString();
+        return fcmat.value(QString::fromStdString(name), QString::fromStdString(defaultValue))
+            .toString();
     }
 
-    static void setPhysicalValue(Material *finalModel, const std::string &name, const QString &value)
+    static void
+    setPhysicalValue(Material* finalModel, const std::string& name, const QString& value)
     {
-        if (value.length() > 0)
+        if (value.length() > 0) {
             finalModel->setPhysicalValue(QString::fromStdString(name), value);
+        }
     }
-    static void setAppearanceValue(Material *finalModel, const std::string &name, const QString &value)
+    static void
+    setAppearanceValue(Material* finalModel, const std::string& name, const QString& value)
     {
-        if (value.length() > 0)
+        if (value.length() > 0) {
             finalModel->setAppearanceValue(QString::fromStdString(name), value);
+        }
     }
 
     static QString getAuthorAndLicense(const QString& path);
-    static void addMechanical(const QSettings &fcmat, Material *finalModel);
-    static void addFluid(const QSettings &fcmat, Material *finalModel);
-    static void addThermal(const QSettings &fcmat, Material *finalModel);
-    static void addElectromagnetic(const QSettings &fcmat, Material *finalModel);
-    static void addArchitectural(const QSettings &fcmat, Material *finalModel);
-    static void addCosts(const QSettings &fcmat, Material *finalModel);
-    static void addRendering(const QSettings &fcmat, Material *finalModel);
-    static void addVectorRendering(const QSettings &fcmat, Material *finalModel);
+    static void addMechanical(const QSettings& fcmat, Material* finalModel);
+    static void addFluid(const QSettings& fcmat, Material* finalModel);
+    static void addThermal(const QSettings& fcmat, Material* finalModel);
+    static void addElectromagnetic(const QSettings& fcmat, Material* finalModel);
+    static void addArchitectural(const QSettings& fcmat, Material* finalModel);
+    static void addCosts(const QSettings& fcmat, Material* finalModel);
+    static void addRendering(const QSettings& fcmat, Material* finalModel);
+    static void addVectorRendering(const QSettings& fcmat, Material* finalModel);
 };
 
-} // namespace Materials
+}// namespace Materials
 
-#endif // MATERIAL_MATERIALCONFIGLOADER_H
+#endif// MATERIAL_MATERIALCONFIGLOADER_H
