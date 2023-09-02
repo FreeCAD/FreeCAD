@@ -244,8 +244,9 @@ void OnLoadFreeCAD(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
     std::string path = OnFileOpen(hWnd, message, wParam, lParam);
     if (!path.empty()) {
         for (std::string::iterator it = path.begin(); it != path.end(); ++it) {
-            if (*it == '\\')
+            if (*it == '\\') {
                 *it = '/';
+            }
         }
         PyObject* main = PyImport_AddModule("__main__");
         PyObject* dict = PyModule_GetDict(main);
