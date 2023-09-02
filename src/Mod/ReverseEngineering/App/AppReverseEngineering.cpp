@@ -22,8 +22,8 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <Geom_BSplineSurface.hxx>
-# include <TColgp_Array1OfPnt.hxx>
+#include <Geom_BSplineSurface.hxx>
+#include <TColgp_Array1OfPnt.hxx>
 #endif
 
 #include <Base/Console.h>
@@ -31,13 +31,13 @@
 #include <Base/GeometryPyCXX.h>
 #include <Base/Interpreter.h>
 #include <Base/PyWrapParseTupleAndKeywords.h>
-#include <Mod/Part/App/BSplineSurfacePy.h>
 #include <Mod/Mesh/App/MeshPy.h>
+#include <Mod/Part/App/BSplineSurfacePy.h>
 #include <Mod/Points/App/PointsPy.h>
 #if defined(HAVE_PCL_FILTERS)
-# include <pcl/filters/passthrough.h>
-# include <pcl/filters/voxel_grid.h>
-# include <pcl/point_types.h>
+#include <pcl/filters/passthrough.h>
+#include <pcl/filters/voxel_grid.h>
+#include <pcl/point_types.h>
 #endif
 
 #include "ApproxSurface.h"
@@ -47,7 +47,7 @@
 #include "Segmentation.h"
 #include "SurfaceTriangulation.h"
 
-
+// clang-format off
 /*
 Dependency of pcl components:
 common: none
@@ -855,3 +855,4 @@ PyMOD_INIT_FUNC(ReverseEngineering)
     Base::Console().Log("Loading ReverseEngineering module... done\n");
     PyMOD_Return(mod);
 }
+// clang-format on
