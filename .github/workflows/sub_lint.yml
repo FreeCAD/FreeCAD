@@ -446,6 +446,7 @@ jobs:
                             libvtk7-dev                                 \
                             libx11-dev                                  \
                             libxerces-c-dev                             \
+                            libyaml-cpp-dev                             \
                             libzipios++-dev                             \
                             netgen                                      \
                             netgen-headers                              \

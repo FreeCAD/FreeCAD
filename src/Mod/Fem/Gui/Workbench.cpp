@@ -326,7 +326,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
         << thermal
         << "Separator"
 //        << nosolver
-        << "Separator"
+//        << "Separator"
         << constants;
 
     Gui::MenuItem* mesh = new Gui::MenuItem;

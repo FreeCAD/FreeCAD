@@ -23,28 +23,31 @@
 #ifndef POINTSGUI_DLGREADPOINTS_H
 #define POINTSGUI_DLGREADPOINTS_H
 
-#include <memory>
 #include <QDialog>
+#include <memory>
 
 
-namespace PointsGui {
+namespace PointsGui
+{
 class Ui_DlgPointsRead;
 
 /** The points read dialog
  */
-class DlgPointsReadImp : public QDialog
+class DlgPointsReadImp: public QDialog
 {
-  Q_OBJECT
+    Q_OBJECT
 
 public:
-  explicit DlgPointsReadImp(const char *FileName, QWidget* parent = nullptr, Qt::WindowFlags fl = Qt::WindowFlags() );
-  ~DlgPointsReadImp() override;
+    explicit DlgPointsReadImp(const char* FileName,
+                              QWidget* parent = nullptr,
+                              Qt::WindowFlags fl = Qt::WindowFlags());
+    ~DlgPointsReadImp() override;
 
 private:
-  std::unique_ptr<Ui_DlgPointsRead> ui;
-  std::string _FileName;
+    std::unique_ptr<Ui_DlgPointsRead> ui;
+    std::string _FileName;
 };
 
-} // namespace PointsGui
+}// namespace PointsGui
 
-#endif // POINTSGUI_DLGREADPOINTS_H
+#endif// POINTSGUI_DLGREADPOINTS_H

@@ -29,15 +29,16 @@
 class QTreeWidgetItem;
 class QPushButton;
 
-namespace InspectionGui {
+namespace InspectionGui
+{
 class Ui_VisualInspection;
-class VisualInspection : public QDialog
+class VisualInspection: public QDialog
 {
     Q_OBJECT
 
 public:
     explicit VisualInspection(QWidget* parent = nullptr, Qt::WindowFlags fl = Qt::WindowFlags());
-  ~ VisualInspection() override;
+    ~VisualInspection() override;
 
     void accept() override;
 
@@ -51,6 +52,6 @@ private:
     QPushButton* buttonOk;
 };
 
-} // namespace InspectionGui
+}// namespace InspectionGui
 
-#endif // INSPECTIONGUI_VISUALINSPECTION_H
+#endif// INSPECTIONGUI_VISUALINSPECTION_H

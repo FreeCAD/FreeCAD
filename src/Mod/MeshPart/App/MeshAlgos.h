@@ -24,7 +24,7 @@
 #define _MeshAlgos_h_
 
 #ifdef FC_USE_GTS
-# include <gts.h>
+#include <gts.h>
 #endif
 
 #include <vector>
@@ -50,61 +50,72 @@ namespace MeshPart
 class MeshPartExport MeshAlgos
 {
 public:
-  /** Calculate per Vertex normals and adds the Normal property bag
-  */
-  static void offset(MeshCore::MeshKernel* Mesh, float fSize);
-  static void offsetSpecial2(MeshCore::MeshKernel* Mesh, float fSize);
-  static void offsetSpecial(MeshCore::MeshKernel* Mesh, float fSize, float zmax, float zmin);
+    /** Calculate per Vertex normals and adds the Normal property bag
+     */
+    static void offset(MeshCore::MeshKernel* Mesh, float fSize);
+    static void offsetSpecial2(MeshCore::MeshKernel* Mesh, float fSize);
+    static void offsetSpecial(MeshCore::MeshKernel* Mesh, float fSize, float zmax, float zmin);
 
-  /** Coarsen the mesh
-  */
-  static void coarsen(MeshCore::MeshKernel* Mesh, float f);
+    /** Coarsen the mesh
+     */
+    static void coarsen(MeshCore::MeshKernel* Mesh, float f);
 
-  /** makes a boolean add
-   * The int Type stears the boolean oberation: 0=add;1=intersection;2=diff
-  */
-  static MeshCore::MeshKernel* boolean(MeshCore::MeshKernel* Mesh1, MeshCore::MeshKernel* Mesh2, MeshCore::MeshKernel* pResult, int Type=0);
+    /** makes a boolean add
+     * The int Type stears the boolean oberation: 0=add;1=intersection;2=diff
+     */
+    static MeshCore::MeshKernel* boolean(MeshCore::MeshKernel* Mesh1,
+                                         MeshCore::MeshKernel* Mesh2,
+                                         MeshCore::MeshKernel* pResult,
+                                         int Type = 0);
 
 #ifdef FC_USE_GTS
 
-  /** Creates a GTS Surface from a MeshKernel
-  */
-  static GtsSurface* createGTSSurface(MeshCore::MeshKernel* Mesh);
+    /** Creates a GTS Surface from a MeshKernel
+     */
+    static GtsSurface* createGTSSurface(MeshCore::MeshKernel* Mesh);
 
-  /** Creates a GTS Surface from a MeshKernel
-  */
+    /** Creates a GTS Surface from a MeshKernel
+     */
 
-  static void fillMeshFromGTSSurface(MeshCore::MeshKernel* pMesh, GtsSurface* pSurface);
+    static void fillMeshFromGTSSurface(MeshCore::MeshKernel* pMesh, GtsSurface* pSurface);
 #endif
 
-  static void cutByShape(const TopoDS_Shape &aShape,const MeshCore::MeshKernel* pMesh,MeshCore::MeshKernel* pToolMesh);
+    static void cutByShape(const TopoDS_Shape& aShape,
+                           const MeshCore::MeshKernel* pMesh,
+                           MeshCore::MeshKernel* pToolMesh);
 
-  /// helper to discredicice a Edge...
-  static void GetSampledCurves( const TopoDS_Edge& aEdge, std::vector<Base::Vector3f>& rclPoints, unsigned long ulNbOfPoints = 30);
+    /// helper to discredicice a Edge...
+    static void GetSampledCurves(const TopoDS_Edge& aEdge,
+                                 std::vector<Base::Vector3f>& rclPoints,
+                                 unsigned long ulNbOfPoints = 30);
 
-  /// creates a mesh loft on base of a curve and an up vector
-  static void LoftOnCurve(MeshCore::MeshKernel &ResultMesh,const TopoDS_Shape &Shape, const std::vector<Base::Vector3f> &poly,
-                          const Base::Vector3f & up = Base::Vector3f(0,0,1),  float MaxSize = 0.1);
+    /// creates a mesh loft on base of a curve and an up vector
+    static void LoftOnCurve(MeshCore::MeshKernel& ResultMesh,
+                            const TopoDS_Shape& Shape,
+                            const std::vector<Base::Vector3f>& poly,
+                            const Base::Vector3f& up = Base::Vector3f(0, 0, 1),
+                            float MaxSize = 0.1);
 
-  /*
-  struct FaceSplitEdge
-  {
-    unsigned long ulFaceIndex;
-    Base::Vector3f p1,p2;
-  };
+    /*
+    struct FaceSplitEdge
+    {
+      unsigned long ulFaceIndex;
+      Base::Vector3f p1,p2;
+    };
 
-  static void projectCurve( MeshWithProperty* pMesh,
-                                       const TopoDS_Edge& aEdge,
-                                       const std::vector<Base::Vector3f> &rclPoints,
-                                       std::vector<FaceSplitEdge> &vSplitEdges);
-*/
-  static void cutByCurve(MeshCore::MeshKernel* pMesh,const std::vector<CurveProjector::FaceSplitEdge> &vSplitEdges);
-/*
-  static bool projectPointToMesh(MeshKernel &MeshK,const Base::Vector3f &Pnt,Base::Vector3f &Rslt,unsigned long &FaceIndex);
-*/
-
+    static void projectCurve( MeshWithProperty* pMesh,
+                                         const TopoDS_Edge& aEdge,
+                                         const std::vector<Base::Vector3f> &rclPoints,
+                                         std::vector<FaceSplitEdge> &vSplitEdges);
+  */
+    static void cutByCurve(MeshCore::MeshKernel* pMesh,
+                           const std::vector<CurveProjector::FaceSplitEdge>& vSplitEdges);
+    /*
+      static bool projectPointToMesh(MeshKernel &MeshK,const Base::Vector3f &Pnt,Base::Vector3f
+      &Rslt,unsigned long &FaceIndex);
+    */
 };
 
-} // namespace MeshPart
+}// namespace MeshPart
 
 #endif
