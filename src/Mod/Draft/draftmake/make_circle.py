@@ -113,9 +113,8 @@ def make_circle(radius, placement=None, face=None, startangle=None, endangle=Non
     else:
         obj.Radius = radius
         if (startangle is not None) and (endangle is not None):
-            if startangle == -0: startangle = 0
-            obj.FirstAngle = startangle
-            obj.LastAngle = endangle
+            obj.FirstAngle = startangle % 360
+            obj.LastAngle = endangle % 360
 
     obj.Support = support
 
