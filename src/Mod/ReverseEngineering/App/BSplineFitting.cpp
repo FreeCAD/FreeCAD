@@ -23,13 +23,13 @@
 #include "PreCompiled.h"
 #if defined(HAVE_PCL_OPENNURBS)
 #ifndef _PreComp_
-# include <map>
+#include <map>
 
-# include <Geom_BSplineSurface.hxx>
-# include <TColgp_Array2OfPnt.hxx>
-# include <TColStd_Array1OfInteger.hxx>
-# include <TColStd_Array1OfReal.hxx>
-# include <TColStd_Array2OfReal.hxx>
+#include <Geom_BSplineSurface.hxx>
+#include <TColStd_Array1OfInteger.hxx>
+#include <TColStd_Array1OfReal.hxx>
+#include <TColStd_Array2OfReal.hxx>
+#include <TColgp_Array2OfPnt.hxx>
 #endif
 
 #include <Mod/Points/App/PointsPy.h>
@@ -37,28 +37,27 @@
 #include "BSplineFitting.h"
 
 #include <pcl/pcl_config.h>
-#if PCL_VERSION_COMPARE(>=,1,7,0)
-# include <pcl/point_cloud.h>
-# include <pcl/point_types.h>
-# include <pcl/io/pcd_io.h>
-# include <pcl/surface/on_nurbs/fitting_surface_tdm.h>
-# include <pcl/surface/on_nurbs/fitting_curve_2d_asdm.h>
+#if PCL_VERSION_COMPARE(>=, 1, 7, 0)
+#include <pcl/io/pcd_io.h>
+#include <pcl/point_cloud.h>
+#include <pcl/point_types.h>
+#include <pcl/surface/on_nurbs/fitting_curve_2d_asdm.h>
+#include <pcl/surface/on_nurbs/fitting_surface_tdm.h>
 #endif
 
 using namespace Reen;
 
 
 BSplineFitting::BSplineFitting(const std::vector<Base::Vector3f>& pts)
-  : myPoints(pts)
-  , myIterations(10)
-  , myOrder(3)
-  , myRefinement(4)
-  , myInteriorSmoothness(0.2)
-  , myInteriorWeight(1.0)
-  , myBoundarySmoothness(0.2)
-  , myBoundaryWeight(0.0)
-{
-}
+    : myPoints(pts)
+    , myIterations(10)
+    , myOrder(3)
+    , myRefinement(4)
+    , myInteriorSmoothness(0.2)
+    , myInteriorWeight(1.0)
+    , myBoundarySmoothness(0.2)
+    , myBoundaryWeight(0.0)
+{}
 
 void BSplineFitting::setIterations(unsigned value)
 {
@@ -97,11 +96,13 @@ void BSplineFitting::setBoundaryWeight(double value)
 
 Handle(Geom_BSplineSurface) BSplineFitting::perform()
 {
-#if PCL_VERSION_COMPARE(>=,1,7,0)
+#if PCL_VERSION_COMPARE(>=, 1, 7, 0)
     pcl::on_nurbs::NurbsDataSurface data;
-    for (std::vector<Base::Vector3f>::const_iterator it = myPoints.begin(); it != myPoints.end(); ++it) {
-        if (!pcl_isnan (it->x) && !pcl_isnan (it->y) && !pcl_isnan (it->z))
-            data.interior.push_back (Eigen::Vector3d (it->x, it->y, it->z));
+    for (std::vector<Base::Vector3f>::const_iterator it = myPoints.begin(); it != myPoints.end();
+         ++it) {
+        if (!pcl_isnan(it->x) && !pcl_isnan(it->y) && !pcl_isnan(it->z)) {
+            data.interior.push_back(Eigen::Vector3d(it->x, it->y, it->z));
+        }
     }
 
 
@@ -115,8 +116,8 @@ Handle(Geom_BSplineSurface) BSplineFitting::perform()
     params.boundary_weight = myBoundaryWeight;
 
     // initialize
-    ON_NurbsSurface nurbs = pcl::on_nurbs::FittingSurface::initNurbsPCABoundingBox (myOrder, &data);
-    pcl::on_nurbs::FittingSurface fit (&data, nurbs);
+    ON_NurbsSurface nurbs = pcl::on_nurbs::FittingSurface::initNurbsPCABoundingBox(myOrder, &data);
+    pcl::on_nurbs::FittingSurface fit(&data, nurbs);
     //  fit.setQuiet (false); // enable/disable debug output
 
     // surface refinement
@@ -179,61 +180,74 @@ Handle(Geom_BSplineSurface) BSplineFitting::perform()
     TColgp_Array2OfPnt poles(1, numUPoles, 1, numVPoles);
     TColStd_Array2OfReal weights(1, numUPoles, 1, numVPoles);
 
-    for (int i=0; i<numUPoles; i++) {
-        for (int j=0; j<numVPoles; j++) {
+    for (int i = 0; i < numUPoles; i++) {
+        for (int j = 0; j < numVPoles; j++) {
             ON_3dPoint cv;
             fit.m_nurbs.GetCV(i, j, cv);
-            poles.SetValue(i+1, j+1, gp_Pnt(cv.x,cv.y,cv.z));
+            poles.SetValue(i + 1, j + 1, gp_Pnt(cv.x, cv.y, cv.z));
 
             Standard_Real weight = fit.m_nurbs.Weight(i, j);
-            weights.SetValue(i+1, j+1, weight);
+            weights.SetValue(i + 1, j + 1, weight);
         }
     }
 
-    uKnots[fit.m_nurbs.SuperfluousKnot(0,0)] = 1;
-    uKnots[fit.m_nurbs.SuperfluousKnot(0,1)] = 1;
-    for (int i=0; i<numUKnots; i++) {
+    uKnots[fit.m_nurbs.SuperfluousKnot(0, 0)] = 1;
+    uKnots[fit.m_nurbs.SuperfluousKnot(0, 1)] = 1;
+    for (int i = 0; i < numUKnots; i++) {
         Standard_Real value = fit.m_nurbs.Knot(0, i);
         std::map<Standard_Real, int>::iterator it = uKnots.find(value);
-        if (it == uKnots.end())
+        if (it == uKnots.end()) {
             uKnots[value] = 1;
-        else
+        }
+        else {
             it->second++;
+        }
     }
 
-    vKnots[fit.m_nurbs.SuperfluousKnot(1,0)] = 1;
-    vKnots[fit.m_nurbs.SuperfluousKnot(1,1)] = 1;
-    for (int i=0; i<numVKnots; i++) {
+    vKnots[fit.m_nurbs.SuperfluousKnot(1, 0)] = 1;
+    vKnots[fit.m_nurbs.SuperfluousKnot(1, 1)] = 1;
+    for (int i = 0; i < numVKnots; i++) {
         Standard_Real value = fit.m_nurbs.Knot(1, i);
         std::map<Standard_Real, int>::iterator it = vKnots.find(value);
-        if (it == vKnots.end())
+        if (it == vKnots.end()) {
             vKnots[value] = 1;
-        else
+        }
+        else {
             it->second++;
+        }
     }
 
-    TColStd_Array1OfReal uKnotArray(1,uKnots.size());
-    TColStd_Array1OfInteger uMultArray(1,uKnots.size());
+    TColStd_Array1OfReal uKnotArray(1, uKnots.size());
+    TColStd_Array1OfInteger uMultArray(1, uKnots.size());
     int index = 1;
-    for (std::map<Standard_Real, int>::iterator it = uKnots.begin(); it != uKnots.end(); ++it, index++) {
+    for (std::map<Standard_Real, int>::iterator it = uKnots.begin(); it != uKnots.end();
+         ++it, index++) {
         uKnotArray.SetValue(index, it->first);
         uMultArray.SetValue(index, it->second);
     }
 
-    TColStd_Array1OfReal vKnotArray(1,vKnots.size());
-    TColStd_Array1OfInteger vMultArray(1,vKnots.size());
+    TColStd_Array1OfReal vKnotArray(1, vKnots.size());
+    TColStd_Array1OfInteger vMultArray(1, vKnots.size());
     index = 1;
-    for (std::map<Standard_Real, int>::iterator it = vKnots.begin(); it != vKnots.end(); ++it, index++) {
+    for (std::map<Standard_Real, int>::iterator it = vKnots.begin(); it != vKnots.end();
+         ++it, index++) {
         vKnotArray.SetValue(index, it->first);
         vMultArray.SetValue(index, it->second);
     }
 
-    Handle(Geom_BSplineSurface) spline = new Geom_BSplineSurface(poles,weights,
-        uKnotArray, vKnotArray, uMultArray, vMultArray, uDegree, vDegree,
-        uPeriodic, vPeriodic);
+    Handle(Geom_BSplineSurface) spline = new Geom_BSplineSurface(poles,
+                                                                 weights,
+                                                                 uKnotArray,
+                                                                 vKnotArray,
+                                                                 uMultArray,
+                                                                 vMultArray,
+                                                                 uDegree,
+                                                                 vDegree,
+                                                                 uPeriodic,
+                                                                 vPeriodic);
     return spline;
 #else
     return Handle(Geom_BSplineSurface)();
 #endif
 }
-#endif // HAVE_PCL_OPENNURBS
+#endif// HAVE_PCL_OPENNURBS
