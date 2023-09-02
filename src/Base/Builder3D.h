@@ -613,6 +613,7 @@ public:
 private:
     void increaseIndent();
     void decreaseIndent();
+    void ensureFirstLineWriten();
 
 public:
     InventorBuilder (const InventorBuilder&) = delete;
@@ -621,6 +622,7 @@ public:
 private:
     std::ostream& result;
     Indentation indent;
+    bool firstLineWritten;
 };
 
 /** A Builder class for 3D representations on App level

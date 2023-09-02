@@ -915,7 +915,13 @@ void TransformItem::write(InventorOutput& out) const
 InventorBuilder::InventorBuilder(std::ostream& output)
   : result(output)
 {
-    result << "#Inventor V2.1 ascii \n\n";
+    /* We must not access variable "output" here in the constructor!
+     * When this constructor is called from the constructor of the
+     * derived class Builder3D::Builder3D() then output is a reference
+     * to Builder3D's member variable which is not yet valid because
+     * this base class is constructed before the derived class.
+    */
+    firstLineWritten = false;
 }
 
 InventorBuilder:: ~InventorBuilder() = default;
@@ -930,14 +936,24 @@ void InventorBuilder::decreaseIndent()
     indent.decreaseIndent();
 }
 
+void InventorBuilder::ensureFirstLineWriten()
+{
+    if (!firstLineWritten) {
+        result << "#Inventor V2.1 ascii \n\n";
+        firstLineWritten = true;
+    }
+}
+
 void InventorBuilder::addNode(const NodeItem& node)
 {
+    ensureFirstLineWriten();
     InventorOutput out(result, indent);
     node.write(out);
 }
 
 void InventorBuilder::beginSeparator()
 {
+    ensureFirstLineWriten();
     result << indent << "Separator { \n";
     increaseIndent();
 }
