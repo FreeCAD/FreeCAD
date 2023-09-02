@@ -84,9 +84,7 @@ class FirstRunDialog:
             if warning_dialog.exec() == QtWidgets.QDialog.Accepted:
                 self.readWarning = True
                 self.pref.SetBool("readWarning2022", True)
-                self.pref.SetBool(
-                    "AutoCheck", warning_dialog.checkBoxAutoCheck.isChecked()
-                )
+                self.pref.SetBool("AutoCheck", warning_dialog.checkBoxAutoCheck.isChecked())
                 self.pref.SetBool(
                     "DownloadMacros",
                     warning_dialog.checkBoxDownloadMacroMetadata.isChecked(),

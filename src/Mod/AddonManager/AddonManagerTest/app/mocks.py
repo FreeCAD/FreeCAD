@@ -148,9 +148,7 @@ class MockMacro:
             with open(os.path.join(location, self.icon), "wb") as f:
                 f.write(b"Fake icon data - nothing to see here\n")
         if self.xpm:
-            with open(
-                os.path.join(location, "MockMacro_icon.xpm"), "w", encoding="utf-8"
-            ) as f:
+            with open(os.path.join(location, "MockMacro_icon.xpm"), "w", encoding="utf-8") as f:
                 f.write(self.xpm)
         for name in self.other_files:
             if "/" in name:
@@ -233,12 +231,8 @@ class MockGitManager:
         self.current_branch_response = "main"
         self.get_remote_response = "No remote set"
         self.get_branches_response = ["main"]
-        self.get_last_committers_response = {
-            "John Doe": {"email": "jdoe@freecad.org", "count": 1}
-        }
-        self.get_last_authors_response = {
-            "Jane Doe": {"email": "jdoe@freecad.org", "count": 1}
-        }
+        self.get_last_committers_response = {"John Doe": {"email": "jdoe@freecad.org", "count": 1}}
+        self.get_last_authors_response = {"Jane Doe": {"email": "jdoe@freecad.org", "count": 1}}
         self.should_fail = False
         self.fail_once = False  # Switch back to success after the simulated failure
 
@@ -252,9 +246,7 @@ class MockGitManager:
         self.called_methods.append("clone")
         self._check_for_failure()
 
-    def async_clone(
-        self, _remote, _local_path, _progress_monitor, _args: List[str] = None
-    ):
+    def async_clone(self, _remote, _local_path, _progress_monitor, _args: List[str] = None):
         self.called_methods.append("async_clone")
         self._check_for_failure()
 
