@@ -175,14 +175,17 @@ private:
         void OnChange(Base::Subject<const char*>& rCaller, const char* sReason) override;
 
     private:
-        void updateBoolProperty(const std::string& string, App::Property* property,
-                                bool defaultvalue);
+        void
+        updateBoolProperty(const std::string& string, App::Property* property, bool defaultvalue);
         void updateGridSize(const std::string& string, App::Property* property);
 
         // Only for colors outside of edit mode, edit mode colors are handled by
         // EditModeCoinManager.
-        void updateColorProperty(const std::string& string, App::Property* property, float r,
-                                 float g, float b);
+        void updateColorProperty(const std::string& string,
+                                 App::Property* property,
+                                 float r,
+                                 float g,
+                                 float b);
 
         void updateEscapeKeyBehaviour(const std::string& string, App::Property* property);
 
@@ -624,9 +627,12 @@ public:
     /// is called when the Provider is in edit and a key event ocours. Only ESC ends edit.
     bool keyPressed(bool pressed, int key) override;
     /// is called when the Provider is in edit and the mouse is clicked
-    bool mouseButtonPressed(int Button, bool pressed, const SbVec2s& cursorPos,
+    bool mouseButtonPressed(int Button,
+                            bool pressed,
+                            const SbVec2s& cursorPos,
                             const Gui::View3DInventorViewer* viewer) override;
-    bool mouseWheelEvent(int delta, const SbVec2s& cursorPos,
+    bool mouseWheelEvent(int delta,
+                         const SbVec2s& cursorPos,
                          const Gui::View3DInventorViewer* viewer) override;
     //@}
 
@@ -639,8 +645,8 @@ public:
     /// signals if the constraints list has changed
     boost::signals2::signal<void()> signalConstraintsChanged;
     /// signals if the sketch has been set up
-    boost::signals2::signal<void(const QString& state, const QString& msg, const QString& url,
-                                 const QString& linkText)>
+    boost::signals2::signal<
+        void(const QString& state, const QString& msg, const QString& url, const QString& linkText)>
         signalSetUp;
     /// signals if the elements list has changed
     boost::signals2::signal<void()> signalElementsChanged;
@@ -679,7 +685,8 @@ protected:
 
     /// Auxiliary function to generate messages about conflicting, redundant and malformed
     /// constraints
-    static QString appendConstraintMsg(const QString& singularmsg, const QString& pluralmsg,
+    static QString appendConstraintMsg(const QString& singularmsg,
+                                       const QString& pluralmsg,
                                        const std::vector<int>& vector);
     //@}
 
@@ -699,13 +706,14 @@ protected:
 private:
     /// function to handle OCCT BSpline weight calculation singularities and representation
     void scaleBSplinePoleCirclesAndUpdateSolverAndSketchObjectGeometry(
-        GeoListFacade& geolist, bool geometrywithmemoryallocation);
+        GeoListFacade& geolist,
+        bool geometrywithmemoryallocation);
 
     /** @name geometry and coordinates auxiliary functions */
     //@{
     /// give the coordinates of a line on the sketch plane in sketcher (2D) coordinates
-    void getCoordsOnSketchPlane(const SbVec3f& point, const SbVec3f& normal, double& u,
-                                double& v) const;
+    void
+    getCoordsOnSketchPlane(const SbVec3f& point, const SbVec3f& normal, double& u, double& v) const;
 
     /// give projecting line of position
     void getProjectingLine(const SbVec2s&, const Gui::View3DInventorViewer* viewer, SbLine&) const;
@@ -728,7 +736,8 @@ private:
     /** @name Selection functions */
     //@{
     /// box selection method
-    void doBoxSelection(const SbVec2s& startPos, const SbVec2s& endPos,
+    void doBoxSelection(const SbVec2s& startPos,
+                        const SbVec2s& endPos,
                         const Gui::View3DInventorViewer* viewer);
 
     void addSelectPoint(int SelectPoint);

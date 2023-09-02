@@ -54,8 +54,9 @@ QVariant PropertyConstraintListItem::toString(const QVariant& prop) const
     QTextStream out(&str);
     out << "[";
     for (QList<Base::Quantity>::const_iterator it = value.begin(); it != value.end(); ++it) {
-        if (it != value.begin())
+        if (it != value.begin()) {
             out << ";";
+        }
         out << it->getUserString();
     }
     out << "]";
@@ -146,8 +147,9 @@ void PropertyConstraintListItem::assignProperty(const App::Property* prop)
     // Hint: When renaming a constraint that was unnamed before then it can happen that
     // a constraint appears twice in the property editor, one time in this group and a
     // second time inside the Unnamed group
-    if (!prop->getTypeId().isDerivedFrom(Sketcher::PropertyConstraintList::getClassTypeId()))
+    if (!prop->getTypeId().isDerivedFrom(Sketcher::PropertyConstraintList::getClassTypeId())) {
         return;
+    }
 
     const Sketcher::PropertyConstraintList* list =
         static_cast<const Sketcher::PropertyConstraintList*>(prop);
@@ -199,8 +201,9 @@ void PropertyConstraintListItem::assignProperty(const App::Property* prop)
             }
             else {
                 // search inside this item
-                if (namedIndex < numNamed)
+                if (namedIndex < numNamed) {
                     child = dynamic_cast<PropertyUnitItem*>(this->child(namedIndex));
+                }
 
                 if (!child) {
                     child = static_cast<PropertyUnitItem*>(PropertyUnitItem::create());
@@ -344,8 +347,9 @@ bool PropertyConstraintListItem::event(QEvent* ev)
                     QString internalName = QString::fromLatin1("Constraint%1").arg(id + 1);
                     if (internalName == propName) {
                         double datum = quant.getValue();
-                        if ((*it)->Type == Sketcher::Angle)
+                        if ((*it)->Type == Sketcher::Angle) {
                             datum = Base::toRadians<double>(datum);
+                        }
                         std::unique_ptr<Sketcher::Constraint> copy((*it)->clone());
                         copy->setValue(datum);
                         item->set1Value(id, copy.get());
@@ -365,7 +369,8 @@ void PropertyConstraintListItem::setValue(const QVariant& value)
     Q_UNUSED(value);
 }
 
-QWidget* PropertyConstraintListItem::createEditor(QWidget* parent, const QObject* receiver,
+QWidget* PropertyConstraintListItem::createEditor(QWidget* parent,
+                                                  const QObject* receiver,
                                                   const char* method) const
 {
     Q_UNUSED(receiver);

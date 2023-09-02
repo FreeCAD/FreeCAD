@@ -227,18 +227,24 @@ void CmdSketcherCompBSplineShowHideGeometryInformation::activated(int iMsg)
     Gui::CommandManager& rcCmdMgr = Gui::Application::Instance->commandManager();
     Gui::Command* cmd;
 
-    if (iMsg == 0)
+    if (iMsg == 0) {
         cmd = rcCmdMgr.getCommandByName("Sketcher_BSplineDegree");
-    else if (iMsg == 1)
+    }
+    else if (iMsg == 1) {
         cmd = rcCmdMgr.getCommandByName("Sketcher_BSplinePolygon");
-    else if (iMsg == 2)
+    }
+    else if (iMsg == 2) {
         cmd = rcCmdMgr.getCommandByName("Sketcher_BSplineComb");
-    else if (iMsg == 3)
+    }
+    else if (iMsg == 3) {
         cmd = rcCmdMgr.getCommandByName("Sketcher_BSplineKnotMultiplicity");
-    else if (iMsg == 4)
+    }
+    else if (iMsg == 4) {
         cmd = rcCmdMgr.getCommandByName("Sketcher_BSplinePoleWeight");
-    else
+    }
+    else {
         return;
+    }
 
     cmd->invoke(0);
 
@@ -284,8 +290,9 @@ void CmdSketcherCompBSplineShowHideGeometryInformation::languageChange()
 {
     Command::languageChange();
 
-    if (!_pcAction)
+    if (!_pcAction) {
         return;
+    }
     Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(_pcAction);
     QList<QAction*> a = pcAction->actions();
 

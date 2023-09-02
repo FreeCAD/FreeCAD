@@ -154,8 +154,9 @@ public:
                 atan2(onSketchPos.y - CenterPoint.y, onSketchPos.x - CenterPoint.x) - startAngle;
             double angle2 = angle1 + (angle1 < 0. ? 2 : -2) * M_PI;
             arcAngle = abs(angle1 - arcAngle) < abs(angle2 - arcAngle) ? angle1 : angle2;
-            if (arcAngle > 0)
+            if (arcAngle > 0) {
                 endAngle = startAngle + arcAngle;
+            }
             else {
                 endAngle = startAngle;
                 startAngle += arcAngle;
@@ -401,8 +402,10 @@ public:
                 }
 
                 drawEdit(EditCurve);
-                if (seekAutoConstraint(
-                        sugConstr3, onSketchPos, Base::Vector2d(0.0, 0.0), AutoConstraint::CURVE)) {
+                if (seekAutoConstraint(sugConstr3,
+                                       onSketchPos,
+                                       Base::Vector2d(0.0, 0.0),
+                                       AutoConstraint::CURVE)) {
                     renderSuggestConstraintsCursor(sugConstr3);
                     return;
                 }

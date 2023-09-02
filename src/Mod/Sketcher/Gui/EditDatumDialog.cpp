@@ -147,8 +147,10 @@ int EditDatumDialog::exec(bool atCursor)
 
         ui_ins_datum->cbDriving->setChecked(!Constr->isDriving);
 
-        connect(
-            ui_ins_datum->cbDriving, &QCheckBox::toggled, this, &EditDatumDialog::drivingToggled);
+        connect(ui_ins_datum->cbDriving,
+                &QCheckBox::toggled,
+                this,
+                &EditDatumDialog::drivingToggled);
         connect(ui_ins_datum->labelEdit,
                 qOverload<const Base::Quantity&>(&Gui::QuantitySpinBox::valueChanged),
                 this,
@@ -198,22 +200,26 @@ void EditDatumDialog::accepted()
             }*/
 
             if (!ui_ins_datum->cbDriving->isChecked()) {
-                if (ui_ins_datum->labelEdit->hasExpression())
+                if (ui_ins_datum->labelEdit->hasExpression()) {
                     ui_ins_datum->labelEdit->apply();
-                else
+                }
+                else {
                     Gui::cmdAppObjectArgs(sketch,
                                           "setDatum(%i,App.Units.Quantity('%f %s'))",
                                           ConstrNbr,
                                           newDatum,
                                           (const char*)newQuant.getUnit().getString().toUtf8());
+                }
             }
 
             QString constraintName = ui_ins_datum->name->text().trimmed();
             if (Base::Tools::toStdString(constraintName) != sketch->Constraints[ConstrNbr]->Name) {
                 std::string escapedstr =
                     Base::Tools::escapedUnicodeFromUtf8(constraintName.toUtf8().constData());
-                Gui::cmdAppObjectArgs(
-                    sketch, "renameConstraint(%d, u'%s')", ConstrNbr, escapedstr.c_str());
+                Gui::cmdAppObjectArgs(sketch,
+                                      "renameConstraint(%d, u'%s')",
+                                      ConstrNbr,
+                                      escapedstr.c_str());
             }
 
             Gui::Command::commitCommand();
@@ -239,14 +245,16 @@ void EditDatumDialog::accepted()
             success = true;
         }
         catch (const Base::Exception& e) {
-            Gui::NotifyUserError(
-                sketch, QT_TRANSLATE_NOOP("Notifications", "Value Error"), e.what());
+            Gui::NotifyUserError(sketch,
+                                 QT_TRANSLATE_NOOP("Notifications", "Value Error"),
+                                 e.what());
 
             Gui::Command::abortCommand();
 
-            if (sketch->noRecomputes)// if setdatum failed, it is highly likely that solver
-                                     // information is invalid.
+            if (sketch->noRecomputes) {// if setdatum failed, it is highly likely that solver
+                                       // information is invalid.
                 sketch->solve();
+            }
         }
     }
 }
@@ -268,8 +276,9 @@ void EditDatumDialog::drivingToggled(bool state)
         ui_ins_datum->labelEdit->setToLastUsedValue();
     }
     sketch->setDriving(ConstrNbr, !state);
-    if (!sketch->noRecomputes)// if noRecomputes, solve() is already done by setDriving()
+    if (!sketch->noRecomputes) {// if noRecomputes, solve() is already done by setDriving()
         sketch->solve();
+    }
 }
 
 void EditDatumDialog::datumChanged()
