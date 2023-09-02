@@ -78,8 +78,10 @@ public:
             }
 
             drawEdit(EditCurve);
-            if (seekAutoConstraint(
-                    sugConstr2, onSketchPos, Base::Vector2d(0.f, 0.f), AutoConstraint::CURVE)) {
+            if (seekAutoConstraint(sugConstr2,
+                                   onSketchPos,
+                                   Base::Vector2d(0.f, 0.f),
+                                   AutoConstraint::CURVE)) {
                 renderSuggestConstraintsCursor(sugConstr2);
                 return;
             }
@@ -260,8 +262,9 @@ public:
 
             bool isOriginalArcCCW = true;
 
-            if (arcAngle > 0)
+            if (arcAngle > 0) {
                 endAngle = startAngle + arcAngle;
+            }
             else {
                 endAngle = startAngle;
                 startAngle += arcAngle;
@@ -320,8 +323,9 @@ public:
 
                 currentgeoid++;
 
-                Gui::cmdAppObjectArgs(
-                    sketchgui->getObject(), "exposeInternalGeometry(%d)", currentgeoid);
+                Gui::cmdAppObjectArgs(sketchgui->getObject(),
+                                      "exposeInternalGeometry(%d)",
+                                      currentgeoid);
             }
             catch (const Base::Exception&) {
                 Gui::NotifyError(

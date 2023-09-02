@@ -153,7 +153,8 @@ public:
     ///
     /// It applies coincidents - vertical/horizontal constraints and equality constraints.
     int autoconstraint(double precision = Precision::Confusion() * 1000,
-                       double angleprecision = M_PI / 8, bool includeconstruction = true);
+                       double angleprecision = M_PI / 8,
+                       bool includeconstruction = true);
 
     // helper functions, which may be used by more complex methods, and/or called directly by user
     // space (python) methods

@@ -367,8 +367,9 @@ bool SnapManager::snapToArcMiddle(Base::Vector3d& pointToOverride, const Part::G
 
     double u, v;
     arc->getRange(u, v, true);
-    if (v < u)
+    if (v < u) {
         v += 2 * M_PI;
+    }
     double angle = v - u;
     int revert = angle < M_PI ? 1 : -1;
 

@@ -41,21 +41,21 @@ using namespace Base;
 TYPESYSTEM_SOURCE(Sketcher::Constraint, Base::Persistence)
 
 Constraint::Constraint()
-    : Value(0.0),
-      Type(None),
-      AlignmentType(Undef),
-      First(GeoEnum::GeoUndef),
-      FirstPos(PointPos::none),
-      Second(GeoEnum::GeoUndef),
-      SecondPos(PointPos::none),
-      Third(GeoEnum::GeoUndef),
-      ThirdPos(PointPos::none),
-      LabelDistance(10.f),
-      LabelPosition(0.f),
-      isDriving(true),
-      InternalAlignmentIndex(-1),
-      isInVirtualSpace(false),
-      isActive(true)
+    : Value(0.0)
+    , Type(None)
+    , AlignmentType(Undef)
+    , First(GeoEnum::GeoUndef)
+    , FirstPos(PointPos::none)
+    , Second(GeoEnum::GeoUndef)
+    , SecondPos(PointPos::none)
+    , Third(GeoEnum::GeoUndef)
+    , ThirdPos(PointPos::none)
+    , LabelDistance(10.f)
+    , LabelPosition(0.f)
+    , isDriving(true)
+    , InternalAlignmentIndex(-1)
+    , isInVirtualSpace(false)
+    , isActive(true)
 {
     // Initialize a random number generator, to avoid Valgrind false positives.
     static boost::mt19937 ran;
@@ -147,9 +147,10 @@ void Constraint::Save(Writer& writer) const
     writer.Stream() << writer.ind() << "<Constrain "
                     << "Name=\"" << encodeName << "\" "
                     << "Type=\"" << (int)Type << "\" ";
-    if (this->Type == InternalAlignment)
+    if (this->Type == InternalAlignment) {
         writer.Stream() << "InternalAlignmentType=\"" << (int)AlignmentType << "\" "
                         << "InternalAlignmentIndex=\"" << InternalAlignmentIndex << "\" ";
+    }
     writer.Stream() << "Value=\"" << Value << "\" "
                     << "First=\"" << First << "\" "
                     << "FirstPos=\"" << (int)FirstPos << "\" "
@@ -181,8 +182,9 @@ void Constraint::Restore(XMLReader& reader)
         AlignmentType = static_cast<InternalAlignmentType>(
             reader.getAttributeAsInteger("InternalAlignmentType"));
 
-        if (reader.hasAttribute("InternalAlignmentIndex"))
+        if (reader.hasAttribute("InternalAlignmentIndex")) {
             InternalAlignmentIndex = reader.getAttributeAsInteger("InternalAlignmentIndex");
+        }
     }
     else {
         AlignmentType = Undef;
@@ -195,20 +197,25 @@ void Constraint::Restore(XMLReader& reader)
     }
 
     // Read the distance a constraint label has been moved
-    if (reader.hasAttribute("LabelDistance"))
+    if (reader.hasAttribute("LabelDistance")) {
         LabelDistance = (float)reader.getAttributeAsFloat("LabelDistance");
+    }
 
-    if (reader.hasAttribute("LabelPosition"))
+    if (reader.hasAttribute("LabelPosition")) {
         LabelPosition = (float)reader.getAttributeAsFloat("LabelPosition");
+    }
 
-    if (reader.hasAttribute("IsDriving"))
+    if (reader.hasAttribute("IsDriving")) {
         isDriving = reader.getAttributeAsInteger("IsDriving") ? true : false;
+    }
 
-    if (reader.hasAttribute("IsInVirtualSpace"))
+    if (reader.hasAttribute("IsInVirtualSpace")) {
         isInVirtualSpace = reader.getAttributeAsInteger("IsInVirtualSpace") ? true : false;
+    }
 
-    if (reader.hasAttribute("IsActive"))
+    if (reader.hasAttribute("IsActive")) {
         isActive = reader.getAttributeAsInteger("IsActive") ? true : false;
+    }
 }
 
 void Constraint::substituteIndex(int fromGeoId, int toGeoId)

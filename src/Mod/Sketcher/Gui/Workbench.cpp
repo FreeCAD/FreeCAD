@@ -441,7 +441,7 @@ inline void SketcherAddWorkbenchConstraints<Gui::ToolBarItem>(Gui::ToolBarItem& 
          << "Sketcher_ConstrainBlock"
          << "Separator";
     if (hGrp->GetBool("SingleDimensioningTool", true)) {
-        if (! hGrp->GetBool("SeparatedDimensioningTools", false)) {
+        if (!hGrp->GetBool("SeparatedDimensioningTools", false)) {
             cons << "Sketcher_CompDimensionTools";
         }
         else {
@@ -450,11 +450,11 @@ inline void SketcherAddWorkbenchConstraints<Gui::ToolBarItem>(Gui::ToolBarItem& 
     }
     if (hGrp->GetBool("SeparatedDimensioningTools", false)) {
         cons << "Sketcher_ConstrainLock"
-            << "Sketcher_ConstrainDistanceX"
-            << "Sketcher_ConstrainDistanceY"
-            << "Sketcher_ConstrainDistance"
-            << "Sketcher_CompConstrainRadDia"
-            << "Sketcher_ConstrainAngle";
+             << "Sketcher_ConstrainDistanceX"
+             << "Sketcher_ConstrainDistanceY"
+             << "Sketcher_ConstrainDistance"
+             << "Sketcher_CompConstrainRadDia"
+             << "Sketcher_ConstrainAngle";
         // << "Sketcher_ConstrainSnellsLaw" // Rarely used, show only in menu
     }
     cons << "Separator"

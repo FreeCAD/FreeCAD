@@ -39,34 +39,36 @@ using namespace Sketcher;
 // Vector is moved
 template<typename T>
 GeoListModel<T>::GeoListModel(std::vector<T>&& geometrylist, int intgeocount, bool ownerT)
-    : geomlist(std::move(geometrylist)),
-      intGeoCount(intgeocount),
-      OwnerT(ownerT),
-      indexInit(false)
+    : geomlist(std::move(geometrylist))
+    , intGeoCount(intgeocount)
+    , OwnerT(ownerT)
+    , indexInit(false)
 {}
 
 // Vector is shallow copied (copy constructed)
 template<typename T>
 GeoListModel<T>::GeoListModel(const std::vector<T>& geometrylist,
                               int intgeocount)
-    : geomlist(geometrylist),// copy constructed here
-      intGeoCount(intgeocount),
-      OwnerT(false),
-      indexInit(false)
+    : geomlist(geometrylist)
+    ,// copy constructed here
+    intGeoCount(intgeocount)
+    , OwnerT(false)
+    , indexInit(false)
 {}
 
 template<typename T>
 GeoListModel<T>::~GeoListModel()
 {
     if (OwnerT) {
-        for (auto& g : geomlist)
+        for (auto& g : geomlist) {
             delete g;
+        }
     }
 }
 
 template<typename T>
-GeoListModel<T> GeoListModel<T>::getGeoListModel(std::vector<T>&& geometrylist, int intgeocount,
-                                                 bool ownerT)
+GeoListModel<T>
+GeoListModel<T>::getGeoListModel(std::vector<T>&& geometrylist, int intgeocount, bool ownerT)
 {
     return GeoListModel(std::move(geometrylist), intgeocount, ownerT);
 }
@@ -84,10 +86,12 @@ int GeoListModel<T>::getGeoIdFromGeomListIndex(int index) const
 {
     assert(index < int(geomlist.size()));
 
-    if (index < intGeoCount)
+    if (index < intGeoCount) {
         return index;
-    else
+    }
+    else {
         return (index - geomlist.size());
+    }
 }
 
 template<typename T>
@@ -95,16 +99,20 @@ const Part::Geometry* GeoListModel<T>::getGeometryFromGeoId(const std::vector<T>
                                                             int geoId)
 {
     if constexpr (std::is_same<T, GeometryPtr>()) {
-        if (geoId >= 0)
+        if (geoId >= 0) {
             return geometrylist[geoId];
-        else
+        }
+        else {
             return geometrylist[geometrylist.size() + geoId];
+        }
     }
     else if constexpr (std::is_same<T, GeometryFacadeUniquePtr>()) {
-        if (geoId >= 0)
+        if (geoId >= 0) {
             return geometrylist[geoId]->getGeometry();
-        else
+        }
+        else {
             return geometrylist[geometrylist.size() + geoId]->getGeometry();
+        }
     }
 }
 
@@ -113,16 +121,20 @@ const Sketcher::GeometryFacade*
 GeoListModel<T>::getGeometryFacadeFromGeoId(const std::vector<T>& geometrylist, int geoId)
 {
     if constexpr (std::is_same<T, GeometryPtr>()) {
-        if (geoId >= 0)
+        if (geoId >= 0) {
             return GeometryFacade::getFacade(geometrylist[geoId]).release();
-        else
+        }
+        else {
             return GeometryFacade::getFacade(geometrylist[geometrylist.size() + geoId]).release();
+        }
     }
     else if constexpr (std::is_same<T, GeometryFacadeUniquePtr>()) {
-        if (geoId >= 0)
+        if (geoId >= 0) {
             return geometrylist[geoId].get();
-        else
+        }
+        else {
             return geometrylist[geometrylist.size() + geoId].get();
+        }
     }
 }
 
@@ -161,68 +173,87 @@ Base::Vector3d GeoListModel<T>::getPoint(const Part::Geometry* geo, Sketcher::Po
 
     if (geo->getTypeId() == Part::GeomPoint::getClassTypeId()) {
         const Part::GeomPoint* p = static_cast<const Part::GeomPoint*>(geo);
-        if (pos == PointPos::start || pos == PointPos::mid || pos == PointPos::end)
+        if (pos == PointPos::start || pos == PointPos::mid || pos == PointPos::end) {
             return p->getPoint();
+        }
     }
     else if (geo->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
         const Part::GeomLineSegment* lineSeg = static_cast<const Part::GeomLineSegment*>(geo);
-        if (pos == PointPos::start)
+        if (pos == PointPos::start) {
             return lineSeg->getStartPoint();
-        else if (pos == PointPos::end)
+        }
+        else if (pos == PointPos::end) {
             return lineSeg->getEndPoint();
+        }
     }
     else if (geo->getTypeId() == Part::GeomCircle::getClassTypeId()) {
         const Part::GeomCircle* circle = static_cast<const Part::GeomCircle*>(geo);
-        if (pos == PointPos::mid)
+        if (pos == PointPos::mid) {
             return circle->getCenter();
+        }
     }
     else if (geo->getTypeId() == Part::GeomEllipse::getClassTypeId()) {
         const Part::GeomEllipse* ellipse = static_cast<const Part::GeomEllipse*>(geo);
-        if (pos == PointPos::mid)
+        if (pos == PointPos::mid) {
             return ellipse->getCenter();
+        }
     }
     else if (geo->getTypeId() == Part::GeomArcOfCircle::getClassTypeId()) {
         const Part::GeomArcOfCircle* aoc = static_cast<const Part::GeomArcOfCircle*>(geo);
-        if (pos == PointPos::start)
+        if (pos == PointPos::start) {
             return aoc->getStartPoint(/*emulateCCW=*/true);
-        else if (pos == PointPos::end)
+        }
+        else if (pos == PointPos::end) {
             return aoc->getEndPoint(/*emulateCCW=*/true);
-        else if (pos == PointPos::mid)
+        }
+        else if (pos == PointPos::mid) {
             return aoc->getCenter();
+        }
     }
     else if (geo->getTypeId() == Part::GeomArcOfEllipse::getClassTypeId()) {
         const Part::GeomArcOfEllipse* aoc = static_cast<const Part::GeomArcOfEllipse*>(geo);
-        if (pos == PointPos::start)
+        if (pos == PointPos::start) {
             return aoc->getStartPoint(/*emulateCCW=*/true);
-        else if (pos == PointPos::end)
+        }
+        else if (pos == PointPos::end) {
             return aoc->getEndPoint(/*emulateCCW=*/true);
-        else if (pos == PointPos::mid)
+        }
+        else if (pos == PointPos::mid) {
             return aoc->getCenter();
+        }
     }
     else if (geo->getTypeId() == Part::GeomArcOfHyperbola::getClassTypeId()) {
         const Part::GeomArcOfHyperbola* aoh = static_cast<const Part::GeomArcOfHyperbola*>(geo);
-        if (pos == PointPos::start)
+        if (pos == PointPos::start) {
             return aoh->getStartPoint();
-        else if (pos == PointPos::end)
+        }
+        else if (pos == PointPos::end) {
             return aoh->getEndPoint();
-        else if (pos == PointPos::mid)
+        }
+        else if (pos == PointPos::mid) {
             return aoh->getCenter();
+        }
     }
     else if (geo->getTypeId() == Part::GeomArcOfParabola::getClassTypeId()) {
         const Part::GeomArcOfParabola* aop = static_cast<const Part::GeomArcOfParabola*>(geo);
-        if (pos == PointPos::start)
+        if (pos == PointPos::start) {
             return aop->getStartPoint();
-        else if (pos == PointPos::end)
+        }
+        else if (pos == PointPos::end) {
             return aop->getEndPoint();
-        else if (pos == PointPos::mid)
+        }
+        else if (pos == PointPos::mid) {
             return aop->getCenter();
+        }
     }
     else if (geo->getTypeId() == Part::GeomBSplineCurve::getClassTypeId()) {
         const Part::GeomBSplineCurve* bsp = static_cast<const Part::GeomBSplineCurve*>(geo);
-        if (pos == PointPos::start)
+        if (pos == PointPos::start) {
             return bsp->getStartPoint();
-        else if (pos == PointPos::end)
+        }
+        else if (pos == PointPos::end) {
             return bsp->getEndPoint();
+        }
     }
 
     return Base::Vector3d();
@@ -244,19 +275,24 @@ void GeoListModel<T>::rebuildVertexIndex() const
                                       std::forward_as_tuple(pointId++));
     };
 
-    if (geomlist.size() <= 2)
+    if (geomlist.size() <= 2) {
         return;
+    }
     for (auto it = geomlist.begin(); it != geomlist.end(); ++it, geoId++) {
 
         Base::Type type;
 
-        if constexpr (std::is_same<T, Part::Geometry*>::value)
+        if constexpr (std::is_same<T, Part::Geometry*>::value) {
             type = (*it)->getTypeId();
-        else if constexpr (std::is_same<T, std::unique_ptr<const Sketcher::GeometryFacade>>::value)
+        }
+        else if constexpr (std::is_same<T,
+                                        std::unique_ptr<const Sketcher::GeometryFacade>>::value) {
             type = (*it)->getGeometry()->getTypeId();
+        }
 
-        if (geoId > getInternalCount())
+        if (geoId > getInternalCount()) {
             geoId = -getExternalCount();
+        }
 
         if (type == Part::GeomPoint::getClassTypeId()) {
             addGeoElement(geoId, PointPos::start);
@@ -286,8 +322,9 @@ void GeoListModel<T>::rebuildVertexIndex() const
 template<typename T>
 Sketcher::GeoElementId GeoListModel<T>::getGeoElementIdFromVertexId(int vertexId)
 {
-    if (!indexInit)// lazy initialised
+    if (!indexInit) {// lazy initialised
         rebuildVertexIndex();
+    }
 
     return VertexId2GeoElementId[vertexId];
 }
@@ -295,14 +332,16 @@ Sketcher::GeoElementId GeoListModel<T>::getGeoElementIdFromVertexId(int vertexId
 template<typename T>
 int GeoListModel<T>::getVertexIdFromGeoElementId(const Sketcher::GeoElementId& geoelementId) const
 {
-    if (!indexInit)// lazy initialised
+    if (!indexInit) {// lazy initialised
         rebuildVertexIndex();
+    }
 
     auto found =
         std::find(VertexId2GeoElementId.begin(), VertexId2GeoElementId.end(), geoelementId);
 
-    if (found != VertexId2GeoElementId.end())
+    if (found != VertexId2GeoElementId.end()) {
         return std::distance(found, VertexId2GeoElementId.begin());
+    }
 
     THROWM(Base::IndexError, "GeoElementId not indexed");
 }
@@ -314,11 +353,13 @@ namespace Sketcher
 // Template specialisations
 template<>
 GeoListModel<GeometryFacadeUniquePtr>::GeoListModel(
-    std::vector<GeometryFacadeUniquePtr>&& geometrylist, int intgeocount, bool ownerT)
-    : geomlist(std::move(geometrylist)),
-      intGeoCount(intgeocount),
-      OwnerT(false),
-      indexInit(false)
+    std::vector<GeometryFacadeUniquePtr>&& geometrylist,
+    int intgeocount,
+    bool ownerT)
+    : geomlist(std::move(geometrylist))
+    , intGeoCount(intgeocount)
+    , OwnerT(false)
+    , indexInit(false)
 {
     // GeometryFacades hold the responsibility for releasing the resources.
     //
@@ -335,10 +376,11 @@ GeoListModel<GeometryFacadeUniquePtr>::GeoListModel(
 
 template<>
 GeoListModel<GeometryFacadeUniquePtr>::GeoListModel(
-    const std::vector<GeometryFacadeUniquePtr>& geometrylist, int intgeocount)
-    : intGeoCount(intgeocount),
-      OwnerT(false),
-      indexInit(false)
+    const std::vector<GeometryFacadeUniquePtr>& geometrylist,
+    int intgeocount)
+    : intGeoCount(intgeocount)
+    , OwnerT(false)
+    , indexInit(false)
 {
     // GeometryFacades are movable, but not copiable, so they need to be reconstructed (shallow copy
     // of vector) Under the Single Responsibility Principle, these will not take over a
@@ -383,7 +425,9 @@ template SketcherExport Base::Vector3d
 GeoListModel<GeometryFacadeUniquePtr>::getPoint(const GeoElementId&) const;
 template SketcherExport GeoListModel<GeometryFacadeUniquePtr>
 GeoListModel<GeometryFacadeUniquePtr>::getGeoListModel(
-    std::vector<GeometryFacadeUniquePtr>&& geometrylist, int intgeocount, bool ownerT);
+    std::vector<GeometryFacadeUniquePtr>&& geometrylist,
+    int intgeocount,
+    bool ownerT);
 #endif
 
 
@@ -394,8 +438,9 @@ GeoListFacade Sketcher::getGeoListFacade(const GeoList& geolist)
     std::vector<std::unique_ptr<const GeometryFacade>> facade;
     facade.reserve(geolist.geomlist.size());
 
-    for (auto geo : geolist.geomlist)
+    for (auto geo : geolist.geomlist) {
         facade.push_back(GeometryFacade::getFacade(geo));
+    }
 
     auto geolistfacade =
         GeoListFacade::getGeoListModel(std::move(facade), geolist.getInternalCount());

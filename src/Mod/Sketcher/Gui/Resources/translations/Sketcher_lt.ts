@@ -3094,7 +3094,7 @@ Priimtini deriniai: dvi kreivės; galinis taškas ir kreivė; du galiniai taška
     <message>
       <location filename="../../CommandConstraints.cpp" line="7398"/>
       <source>Currently internal geometry is only supported for ellipse or arc of ellipse. The last selected element must be an ellipse or an arc of ellipse.</source>
-      <translation>Vidinė geometrija yra naudojama tik elipsėms ir elipsių lankams. Elipsė ar elipsės lankas turi būti pasirinkti 
+      <translation>Vidinė geometrija yra naudojama tik elipsėms ir elipsių lankams. Elipsė ar elipsės lankas turi būti pasirinkti
  žymėjimo pabaigoje.</translation>
     </message>
     <message>

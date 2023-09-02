@@ -111,19 +111,41 @@ constexpr decltype(auto) buildBitset(Args... args)
 /// FilterValue, which other FilterValues are comprised therein. It defines the dependencies between
 /// filters.
 constexpr std::array<FilterValueBitset, FilterValueLength> filterAggregates {
-    buildBitset(FilterValue::All, FilterValue::Geometric, FilterValue::Horizontal,
-                FilterValue::Vertical, FilterValue::Coincident, FilterValue::PointOnObject,
-                FilterValue::Parallel, FilterValue::Perpendicular, FilterValue::Tangent,
-                FilterValue::Equality, FilterValue::Symmetric, FilterValue::Block,
-                FilterValue::Datums, FilterValue::Distance, FilterValue::HorizontalDistance,
-                FilterValue::VerticalDistance, FilterValue::Radius, FilterValue::Weight,
-                FilterValue::Diameter, FilterValue::Angle, FilterValue::SnellsLaw,
-                FilterValue::Named, FilterValue::NonDriving,
+    buildBitset(FilterValue::All,
+                FilterValue::Geometric,
+                FilterValue::Horizontal,
+                FilterValue::Vertical,
+                FilterValue::Coincident,
+                FilterValue::PointOnObject,
+                FilterValue::Parallel,
+                FilterValue::Perpendicular,
+                FilterValue::Tangent,
+                FilterValue::Equality,
+                FilterValue::Symmetric,
+                FilterValue::Block,
+                FilterValue::Datums,
+                FilterValue::Distance,
+                FilterValue::HorizontalDistance,
+                FilterValue::VerticalDistance,
+                FilterValue::Radius,
+                FilterValue::Weight,
+                FilterValue::Diameter,
+                FilterValue::Angle,
+                FilterValue::SnellsLaw,
+                FilterValue::Named,
+                FilterValue::NonDriving,
                 FilterValue::InternalAlignment),// All = All other groups are covered (0)
-    buildBitset(FilterValue::Geometric, FilterValue::Horizontal, FilterValue::Vertical,
-                FilterValue::Coincident, FilterValue::PointOnObject, FilterValue::Parallel,
-                FilterValue::Perpendicular, FilterValue::Tangent, FilterValue::Equality,
-                FilterValue::Symmetric, FilterValue::Block,
+    buildBitset(FilterValue::Geometric,
+                FilterValue::Horizontal,
+                FilterValue::Vertical,
+                FilterValue::Coincident,
+                FilterValue::PointOnObject,
+                FilterValue::Parallel,
+                FilterValue::Perpendicular,
+                FilterValue::Tangent,
+                FilterValue::Equality,
+                FilterValue::Symmetric,
+                FilterValue::Block,
                 FilterValue::InternalAlignment),// Geometric = All others not being datums (1)
 
     buildBitset(FilterValue::Coincident),       // Coincident = Just this (2)
@@ -138,9 +160,14 @@ constexpr std::array<FilterValueBitset, FilterValueLength> filterAggregates {
     buildBitset(FilterValue::Block),            // Block = Just this (11)
     buildBitset(FilterValue::InternalAlignment),// InternalAlignment = Just this (12)
 
-    buildBitset(FilterValue::Datums, FilterValue::Distance, FilterValue::HorizontalDistance,
-                FilterValue::VerticalDistance, FilterValue::Radius, FilterValue::Weight,
-                FilterValue::Diameter, FilterValue::Angle,
+    buildBitset(FilterValue::Datums,
+                FilterValue::Distance,
+                FilterValue::HorizontalDistance,
+                FilterValue::VerticalDistance,
+                FilterValue::Radius,
+                FilterValue::Weight,
+                FilterValue::Diameter,
+                FilterValue::Angle,
                 FilterValue::SnellsLaw),// Datum = all others not being geometric (13)
 
     buildBitset(FilterValue::HorizontalDistance),// HorizontalDistance = Just this (14)
