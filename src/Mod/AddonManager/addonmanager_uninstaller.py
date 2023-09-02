@@ -163,17 +163,13 @@ class AddonUninstaller(QObject):
             lines = f.readlines()
             for line in lines:
                 stripped = line.strip()
-                if (
-                    len(stripped) > 0
-                    and stripped[0] != "#"
-                    and os.path.exists(stripped)
-                ):
+                if len(stripped) > 0 and stripped[0] != "#" and os.path.exists(stripped):
                     try:
                         os.unlink(stripped)
                         fci.Console.PrintMessage(
-                            translate(
-                                "AddonsInstaller", "Removed extra installed file {}"
-                            ).format(stripped)
+                            translate("AddonsInstaller", "Removed extra installed file {}").format(
+                                stripped
+                            )
                             + "\n"
                         )
                     except FileNotFoundError:
@@ -266,9 +262,7 @@ class MacroUninstaller(QObject):
         if self.addon_to_remove.macro.icon:
             files_to_remove.append(self.addon_to_remove.macro.icon)
         if self.addon_to_remove.macro.xpm:
-            files_to_remove.append(
-                self.addon_to_remove.macro.name.replace(" ", "_") + "_icon.xpm"
-            )
+            files_to_remove.append(self.addon_to_remove.macro.name.replace(" ", "_") + "_icon.xpm")
         for f in self.addon_to_remove.macro.other_files:
             files_to_remove.append(f)
         return files_to_remove

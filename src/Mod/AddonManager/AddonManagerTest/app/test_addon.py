@@ -89,9 +89,7 @@ class TestAddon(unittest.TestCase):
             Addon.Status.NOT_INSTALLED,
             "master",
         )
-        addon_with_workbench.load_metadata_file(
-            os.path.join(self.test_dir, "workbench_only.xml")
-        )
+        addon_with_workbench.load_metadata_file(os.path.join(self.test_dir, "workbench_only.xml"))
         self.assertTrue(addon_with_workbench.contains_workbench())
         self.assertFalse(addon_with_workbench.contains_macro())
         self.assertFalse(addon_with_workbench.contains_preference_pack())
@@ -103,9 +101,7 @@ class TestAddon(unittest.TestCase):
             Addon.Status.NOT_INSTALLED,
             "master",
         )
-        addon_with_macro.load_metadata_file(
-            os.path.join(self.test_dir, "macro_only.xml")
-        )
+        addon_with_macro.load_metadata_file(os.path.join(self.test_dir, "macro_only.xml"))
         self.assertFalse(addon_with_macro.contains_workbench())
         self.assertTrue(addon_with_macro.contains_macro())
         self.assertFalse(addon_with_macro.contains_preference_pack())
@@ -117,9 +113,7 @@ class TestAddon(unittest.TestCase):
             Addon.Status.NOT_INSTALLED,
             "master",
         )
-        addon_with_prefpack.load_metadata_file(
-            os.path.join(self.test_dir, "prefpack_only.xml")
-        )
+        addon_with_prefpack.load_metadata_file(os.path.join(self.test_dir, "prefpack_only.xml"))
         self.assertFalse(addon_with_prefpack.contains_workbench())
         self.assertFalse(addon_with_prefpack.contains_macro())
         self.assertTrue(addon_with_prefpack.contains_preference_pack())
@@ -131,9 +125,7 @@ class TestAddon(unittest.TestCase):
             Addon.Status.NOT_INSTALLED,
             "master",
         )
-        addon_with_all.load_metadata_file(
-            os.path.join(self.test_dir, "combination.xml")
-        )
+        addon_with_all.load_metadata_file(os.path.join(self.test_dir, "combination.xml"))
         self.assertTrue(addon_with_all.contains_workbench())
         self.assertTrue(addon_with_all.contains_macro())
         self.assertTrue(addon_with_all.contains_preference_pack())
@@ -263,9 +255,7 @@ class TestAddon(unittest.TestCase):
             Addon.Status.NOT_INSTALLED,
             "master",
         )
-        addon.load_metadata_file(
-            os.path.join(self.test_dir, "depends_on_all_workbenches.xml")
-        )
+        addon.load_metadata_file(os.path.join(self.test_dir, "depends_on_all_workbenches.xml"))
         deps = Addon.Dependencies()
         addon.walk_dependency_tree({}, deps)
         self.assertEqual(len(deps.internal_workbenches), len(INTERNAL_WORKBENCHES))
@@ -277,9 +267,7 @@ class TestAddon(unittest.TestCase):
             Addon.Status.NOT_INSTALLED,
             "master",
         )
-        addon.load_metadata_file(
-            os.path.join(self.test_dir, "test_version_detection.xml")
-        )
+        addon.load_metadata_file(os.path.join(self.test_dir, "test_version_detection.xml"))
 
         self.assertEqual(
             len(addon.tags),
