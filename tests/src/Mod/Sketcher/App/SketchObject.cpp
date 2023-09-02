@@ -27,7 +27,8 @@ protected:
         _docName = App::GetApplication().getUniqueDocumentName("test");
         auto _doc = App::GetApplication().newDocument(_docName.c_str(), "testUser");
         // TODO: Do we add a body first, or is just adding sketch sufficient for this test?
-        _sketchobj = static_cast<Sketcher::SketchObject*>(_doc->addObject("Sketcher::SketchObject"));
+        _sketchobj =
+            static_cast<Sketcher::SketchObject*>(_doc->addObject("Sketcher::SketchObject"));
     }
 
     void TearDown() override
@@ -44,10 +45,15 @@ private:
     // TODO: use shared_ptr or something else here?
     Sketcher::SketchObject* _sketchobj;
     std::string _docName;
-    std::vector<const char*> allowedTypes {"Vertex", "Edge", "ExternalEdge", "H_Axis", "V_Axis", "RootPoint"};
+    std::vector<const char*> allowedTypes {"Vertex",
+                                           "Edge",
+                                           "ExternalEdge",
+                                           "H_Axis",
+                                           "V_Axis",
+                                           "RootPoint"};
 };
 
-TEST_F(SketchObjectTest, createSketchObject) // NOLINT
+TEST_F(SketchObjectTest, createSketchObject)// NOLINT
 {
     // Arrange
 
