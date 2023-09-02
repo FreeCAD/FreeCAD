@@ -67,18 +67,10 @@ class ChangeBranchDialog(QtWidgets.QWidget):
             if ref == current_ref:
                 index = self.item_filter.mapFromSource(self.item_model.index(row, 0))
                 selection_model.select(index, QtCore.QItemSelectionModel.ClearAndSelect)
-                selection_model.select(
-                    index.siblingAtColumn(1), QtCore.QItemSelectionModel.Select
-                )
-                selection_model.select(
-                    index.siblingAtColumn(2), QtCore.QItemSelectionModel.Select
-                )
-                selection_model.select(
-                    index.siblingAtColumn(3), QtCore.QItemSelectionModel.Select
-                )
-                selection_model.select(
-                    index.siblingAtColumn(4), QtCore.QItemSelectionModel.Select
-                )
+                selection_model.select(index.siblingAtColumn(1), QtCore.QItemSelectionModel.Select)
+                selection_model.select(index.siblingAtColumn(2), QtCore.QItemSelectionModel.Select)
+                selection_model.select(index.siblingAtColumn(3), QtCore.QItemSelectionModel.Select)
+                selection_model.select(index.siblingAtColumn(4), QtCore.QItemSelectionModel.Select)
                 break
             row += 1
 
@@ -260,9 +252,7 @@ class ChangeBranchDialogModel(QtCore.QAbstractTableModel):
                 "Table header for git ref type (e.g. either Tag or Branch)",
             )
         elif section == 1:
-            return translate(
-                "AddonsInstaller", "Local name", "Table header for git ref name"
-            )
+            return translate("AddonsInstaller", "Local name", "Table header for git ref name")
         elif section == 2:
             return translate(
                 "AddonsInstaller",

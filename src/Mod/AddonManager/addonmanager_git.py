@@ -107,9 +107,7 @@ class GitManager:
                 + "...\n"
             )
             remote = self.get_remote(local_path)
-            with open(
-                os.path.join(local_path, "ADDON_DISABLED"), "w", encoding="utf-8"
-            ) as f:
+            with open(os.path.join(local_path, "ADDON_DISABLED"), "w", encoding="utf-8") as f:
                 f.write(
                     "This is a backup of an addon that failed to update cleanly so "
                     "was re-cloned. It was disabled by the Addon Manager's git update "
@@ -185,9 +183,7 @@ class GitManager:
             # branch = self._synchronous_call_git(["branch", "--show-current"]).strip()
 
             # This is more universal (albeit more opaque to the reader):
-            branch = self._synchronous_call_git(
-                ["rev-parse", "--abbrev-ref", "HEAD"]
-            ).strip()
+            branch = self._synchronous_call_git(["rev-parse", "--abbrev-ref", "HEAD"]).strip()
         except GitFailed as e:
             os.chdir(old_dir)
             raise e
@@ -213,9 +209,9 @@ class GitManager:
             self.clone(remote, local_path)
         except GitFailed as e:
             fci.Console.PrintError(
-                translate(
-                    "AddonsInstaller", "Failed to clone {} into {} using git"
-                ).format(remote, local_path)
+                translate("AddonsInstaller", "Failed to clone {} into {} using git").format(
+                    remote, local_path
+                )
             )
             os.chdir(original_cwd)
             raise e
@@ -242,9 +238,7 @@ class GitManager:
                 if len(segments) == 3:
                     result = segments[1]
                     break
-                fci.Console.PrintWarning(
-                    "Error parsing the results from git remote -v show:\n"
-                )
+                fci.Console.PrintWarning("Error parsing the results from git remote -v show:\n")
                 fci.Console.PrintWarning(line + "\n")
         os.chdir(old_dir)
         return result
@@ -254,9 +248,7 @@ class GitManager:
         old_dir = os.getcwd()
         os.chdir(local_path)
         try:
-            stdout = self._synchronous_call_git(
-                ["branch", "-a", "--format=%(refname:lstrip=2)"]
-            )
+            stdout = self._synchronous_call_git(["branch", "-a", "--format=%(refname:lstrip=2)"])
         except GitFailed as e:
             os.chdir(old_dir)
             raise e
@@ -273,12 +265,8 @@ class GitManager:
         """
         old_dir = os.getcwd()
         os.chdir(local_path)
-        authors = self._synchronous_call_git(["log", f"-{n}", "--format=%cN"]).split(
-            "\n"
-        )
-        emails = self._synchronous_call_git(["log", f"-{n}", "--format=%cE"]).split(
-            "\n"
-        )
+        authors = self._synchronous_call_git(["log", f"-{n}", "--format=%cN"]).split("\n")
+        emails = self._synchronous_call_git(["log", f"-{n}", "--format=%cE"]).split("\n")
         os.chdir(old_dir)
 
         result_dict = {}

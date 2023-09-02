@@ -76,9 +76,7 @@ class UpdateMetadataCacheWorker(QtCore.QThread):
         NetworkManager.AM_NETWORK_MANAGER.completed.connect(self.download_completed)
         self.requests_completed = 0
         self.total_requests = 0
-        self.store = os.path.join(
-            FreeCAD.getUserCachePath(), "AddonManager", "PackageMetadata"
-        )
+        self.store = os.path.join(FreeCAD.getUserCachePath(), "AddonManager", "PackageMetadata")
         FreeCAD.Console.PrintLog(f"Storing Addon Manager cache data in {self.store}\n")
         self.updated_repos = set()
 
@@ -122,9 +120,7 @@ class UpdateMetadataCacheWorker(QtCore.QThread):
 
         while self.requests:
             if current_thread.isInterruptionRequested():
-                NetworkManager.AM_NETWORK_MANAGER.completed.disconnect(
-                    self.download_completed
-                )
+                NetworkManager.AM_NETWORK_MANAGER.completed.disconnect(self.download_completed)
                 for request in self.requests:
                     NetworkManager.AM_NETWORK_MANAGER.abort(request)
                 return
@@ -137,9 +133,7 @@ class UpdateMetadataCacheWorker(QtCore.QThread):
         for repo in self.updated_repos:
             self.package_updated.emit(repo)
 
-    def download_completed(
-        self, index: int, code: int, data: QtCore.QByteArray
-    ) -> None:
+    def download_completed(self, index: int, code: int, data: QtCore.QByteArray) -> None:
         """Callback for handling a completed metadata file download."""
         if index in self.requests:
             self.requests_completed += 1
@@ -151,9 +145,7 @@ class UpdateMetadataCacheWorker(QtCore.QThread):
                     self.process_package_xml(request[0], data)
                 elif request[1] == UpdateMetadataCacheWorker.RequestType.METADATA_TXT:
                     self.process_metadata_txt(request[0], data)
-                elif (
-                    request[1] == UpdateMetadataCacheWorker.RequestType.REQUIREMENTS_TXT
-                ):
+                elif request[1] == UpdateMetadataCacheWorker.RequestType.REQUIREMENTS_TXT:
                     self.process_requirements_txt(request[0], data)
                 elif request[1] == UpdateMetadataCacheWorker.RequestType.ICON:
                     self.process_icon(request[0], data)
@@ -171,9 +163,7 @@ class UpdateMetadataCacheWorker(QtCore.QThread):
         repo.set_metadata(metadata)
         FreeCAD.Console.PrintLog(f"Downloaded package.xml for {repo.name}\n")
         self.status_message.emit(
-            translate("AddonsInstaller", "Downloaded package.xml for {}").format(
-                repo.name
-            )
+            translate("AddonsInstaller", "Downloaded package.xml for {}").format(repo.name)
         )
 
         # Grab a new copy of the icon as well: we couldn't enqueue this earlier because
@@ -220,9 +210,7 @@ class UpdateMetadataCacheWorker(QtCore.QThread):
     def process_metadata_txt(self, repo: Addon, data: QtCore.QByteArray):
         """Process the metadata.txt metadata file"""
         self.status_message.emit(
-            translate("AddonsInstaller", "Downloaded metadata.txt for {}").format(
-                repo.display_name
-            )
+            translate("AddonsInstaller", "Downloaded metadata.txt for {}").format(repo.display_name)
         )
 
         f = self._decode_data(data.data(), repo.name, "metadata.txt")
@@ -283,9 +271,7 @@ class UpdateMetadataCacheWorker(QtCore.QThread):
     def process_icon(self, repo: Addon, data: QtCore.QByteArray):
         """Convert icon data into a valid icon file and store it"""
         self.status_message.emit(
-            translate("AddonsInstaller", "Downloaded icon for {}").format(
-                repo.display_name
-            )
+            translate("AddonsInstaller", "Downloaded icon for {}").format(repo.display_name)
         )
         cache_file = repo.get_cached_icon_filename()
         with open(cache_file, "wb") as icon_file:
