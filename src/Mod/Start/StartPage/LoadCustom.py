@@ -41,13 +41,23 @@ if cfolders:
     mod = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Start").GetString(
         "DefaultImport" + ext, ""
     )
-    if (
-        ext.lower() in ("fcstd", "stp", "step", "iges", "igs")
-    ):
+    if ext.lower() in ("fcstd", "stp", "step", "iges", "igs"):
         FreeCAD.loadFile(os.path.join(cfolder, f), mod)
-    elif (
-        ext.lower() in ("bmp", "cur", "gif", "ico", "pbm", "pgm", "png", "jpg",
-                        "jpeg", "ppm", "svg", "svgz", "xbm", "xpm")
+    elif ext.lower() in (
+        "bmp",
+        "cur",
+        "gif",
+        "ico",
+        "pbm",
+        "pgm",
+        "png",
+        "jpg",
+        "jpeg",
+        "ppm",
+        "svg",
+        "svgz",
+        "xbm",
+        "xpm",
     ):
         FreeCAD.newDocument()
         FreeCADGui.insert(os.path.join(cfolder, f), FreeCAD.activeDocument().Name)
@@ -57,4 +67,5 @@ if cfolders:
     FreeCADGui.activeDocument().sendMsgToViews("ViewFit")
 
     from StartPage import StartPage
+
     StartPage.postStart()
