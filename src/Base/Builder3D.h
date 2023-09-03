@@ -604,7 +604,6 @@ public:
      * \brief Closes the last added separator node.
      */
     void endSeparator();
-    /** @name Appearance handling */
 
 private:
     void increaseIndent();
@@ -642,11 +641,11 @@ private:
  *  \endcode
  * \see Base::ConsoleSingleton
  */
-class BaseExport Builder3D : public InventorBuilder
+class BaseExport Builder3D
 {
 public:
     Builder3D();
-    virtual ~Builder3D();
+    ~Builder3D();
 
     /// clear the string buffer
     void clear();
@@ -659,9 +658,24 @@ public:
     void saveToFile(const char* FileName);
     //@}
 
+    /*!
+     * \brief addNode
+     * Writes the content of the added node to the output stream.
+     */
+    void addNode(const NodeItem&);
+    /*!
+     * \brief Sets a separator node.
+     */
+    void beginSeparator();
+    /*!
+     * \brief Closes the last added separator node.
+     */
+    void endSeparator();
+
 private:
     /// the result string
     std::stringstream result;
+    InventorBuilder builder;
 };
 
 /**
