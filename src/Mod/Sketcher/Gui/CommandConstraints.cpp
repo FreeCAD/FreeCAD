@@ -1057,10 +1057,10 @@ public:
         addCommand("Sketcher_ConstrainDistanceX");
         addCommand("Sketcher_ConstrainDistanceY");
         addCommand("Sketcher_ConstrainDistance");
-        addCommand("Sketcher_ConstrainDiameter");
         addCommand("Sketcher_ConstrainRadius");
+        addCommand("Sketcher_ConstrainDiameter");
+        addCommand("Sketcher_ConstrainRadiam");
         addCommand("Sketcher_ConstrainAngle");
-        addCommand("Sketcher_ConstrainSnellsLaw");
     }
 
     void updateAction(int mode) override
@@ -1080,9 +1080,10 @@ public:
             al[3]->setIcon(Gui::BitmapFactory().iconFromTheme("Constraint_HorizontalDistance_Driven"));
             al[4]->setIcon(Gui::BitmapFactory().iconFromTheme("Constraint_VerticalDistance_Driven"));
             al[5]->setIcon(Gui::BitmapFactory().iconFromTheme("Constraint_Length_Driven"));
-            al[6]->setIcon(Gui::BitmapFactory().iconFromTheme("Constraint_Diameter_Driven"));
-            al[7]->setIcon(Gui::BitmapFactory().iconFromTheme("Constraint_Radius_Driven"));
-            al[8]->setIcon(Gui::BitmapFactory().iconFromTheme("Constraint_InternalAngle_Driven"));
+            al[6]->setIcon(Gui::BitmapFactory().iconFromTheme("Constraint_Radius_Driven"));
+            al[7]->setIcon(Gui::BitmapFactory().iconFromTheme("Constraint_Diameter_Driven"));
+            al[8]->setIcon(Gui::BitmapFactory().iconFromTheme("Constraint_Radiam_Driven"));
+            al[9]->setIcon(Gui::BitmapFactory().iconFromTheme("Constraint_InternalAngle_Driven"));
             getAction()->setIcon(al[index]->icon());
             break;
         case Driving:
@@ -1092,9 +1093,10 @@ public:
             al[3]->setIcon(Gui::BitmapFactory().iconFromTheme("Constraint_HorizontalDistance"));
             al[4]->setIcon(Gui::BitmapFactory().iconFromTheme("Constraint_VerticalDistance"));
             al[5]->setIcon(Gui::BitmapFactory().iconFromTheme("Constraint_Length"));
-            al[6]->setIcon(Gui::BitmapFactory().iconFromTheme("Constraint_Diameter"));
-            al[7]->setIcon(Gui::BitmapFactory().iconFromTheme("Constraint_Radius"));
-            al[8]->setIcon(Gui::BitmapFactory().iconFromTheme("Constraint_InternalAngle"));
+            al[6]->setIcon(Gui::BitmapFactory().iconFromTheme("Constraint_Radius"));
+            al[7]->setIcon(Gui::BitmapFactory().iconFromTheme("Constraint_Diameter"));
+            al[8]->setIcon(Gui::BitmapFactory().iconFromTheme("Constraint_Radiam"));
+            al[9]->setIcon(Gui::BitmapFactory().iconFromTheme("Constraint_InternalAngle"));
             getAction()->setIcon(al[index]->icon());
             break;
         }
@@ -7334,9 +7336,8 @@ CmdSketcherConstrainRadius::CmdSketcherConstrainRadius()
 {
     sAppModule = "Sketcher";
     sGroup = "Sketcher";
-    sMenuText = QT_TR_NOOP("Constrain radius or weight");
-    sToolTipText = QT_TR_NOOP(
-        "Fix the radius of a circle or an arc or fix the weight of a pole of a B-Spline");
+    sMenuText = QT_TR_NOOP("Constrain radius");
+    sToolTipText = QT_TR_NOOP("Fix the radius of a circle or an arc");
     sWhatsThis = "Sketcher_ConstrainRadius";
     sStatusTip = sToolTipText;
     sPixmap = "Constraint_Radius";
@@ -8526,7 +8527,7 @@ void CmdSketcherCompConstrainRadDia::languageChange()
     QAction* arc3 = a[2];
     arc3->setText(QApplication::translate("CmdSketcherCompConstrainRadDia",
                                           "Constrain auto radius/diameter"));
-    arc3->setToolTip(QApplication::translate("Sketcher_ConstraintRadiam",
+    arc3->setToolTip(QApplication::translate("Sketcher_ConstrainRadiam",
                                              "Fix the radius/diameter of a circle or an arc"));
     arc3->setStatusTip(QApplication::translate("Sketcher_ConstrainRadiam",
                                                "Fix the radius/diameter of a circle or an arc"));
