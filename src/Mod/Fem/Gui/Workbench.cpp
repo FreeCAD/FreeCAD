@@ -46,22 +46,20 @@ using namespace FemGui;
     qApp->translate("Workbench", "&Materials");
     qApp->translate("Workbench", "Element Geometry");
     qApp->translate("Workbench", "&Element Geometry");
-    qApp->translate("Workbench", "Electrostatic Constraints");
-    qApp->translate("Workbench", "&Electrostatic Constraints");
-    qApp->translate("Workbench", "Electromagnetic Constraints");
-    qApp->translate("Workbench", "&Electromagnetic Constraints");
-    qApp->translate("Workbench", "Fluid Constraints");
-    qApp->translate("Workbench", "&Fluid Constraints");
-    qApp->translate("Workbench", "Electromagnetic Constraints");
-    qApp->translate("Workbench", "&Electromagnetic Constraints");
-    qApp->translate("Workbench", "Geometrical Constraints");
-    qApp->translate("Workbench", "&Geometrical Constraints");
-    qApp->translate("Workbench", "Mechanical Constraints");
-    qApp->translate("Workbench", "&Mechanical Constraints");
-    qApp->translate("Workbench", "Thermal Constraints");
-    qApp->translate("Workbench", "&Thermal Constraints");
-    qApp->translate("Workbench", "Constraints without solver");
-    qApp->translate("Workbench", "&Constraints without solver");
+    qApp->translate("Workbench", "Electrostatic boundary conditions");
+    qApp->translate("Workbench", "&Electrostatic boundary conditions");
+    qApp->translate("Workbench", "Fluid boundary conditions");
+    qApp->translate("Workbench", "&Fluid boundary conditions");
+    qApp->translate("Workbench", "Electromagnetic boundary conditions");
+    qApp->translate("Workbench", "&Electromagnetic boundary conditions");
+    qApp->translate("Workbench", "Geometrical analysis features");
+    qApp->translate("Workbench", "&Geometrical analysis features");
+    qApp->translate("Workbench", "Mechanical boundary conditions and loads");
+    qApp->translate("Workbench", "&Mechanical boundary conditions and loads");
+    qApp->translate("Workbench", "Thermal boundary conditions and loads");
+    qApp->translate("Workbench", "&Thermal boundary conditions and loads");
+    qApp->translate("Workbench", "Analysis features without solver");
+    qApp->translate("Workbench", "&Analysis features without solver");
     qApp->translate("Workbench", "Overwrite Constants");
     qApp->translate("Workbench", "&Overwrite Constants");
     //
@@ -117,12 +115,12 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
         << "FEM_ElementFluid1D";
 
     Gui::ToolBarItem* electromag = new Gui::ToolBarItem(root);
-    electromag->setCommand("Electromagnetic Constraints");
+    electromag->setCommand("Electromagnetic boundary conditions");
     *electromag
         << "FEM_CompEmConstraints";
 
     Gui::ToolBarItem* fluid = new Gui::ToolBarItem(root);
-    fluid->setCommand("Fluid Constraints");
+    fluid->setCommand("Fluid boundary conditions");
     *fluid
         << "FEM_ConstraintInitialFlowVelocity"
         << "FEM_ConstraintInitialPressure"
@@ -130,14 +128,14 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
         << "FEM_ConstraintFlowVelocity";
 
     Gui::ToolBarItem* geom = new Gui::ToolBarItem(root);
-    geom->setCommand("Geometrical Constraints");
+    geom->setCommand("Geometrical analysis features");
     *geom
         << "FEM_ConstraintPlaneRotation"
         << "FEM_ConstraintSectionPrint"
         << "FEM_ConstraintTransform";
 
     Gui::ToolBarItem* mech = new Gui::ToolBarItem(root);
-    mech->setCommand("Mechanical Constraints");
+    mech->setCommand("Mechanical boundary conditions and loads");
     *mech
         << "FEM_ConstraintFixed"
         << "FEM_ConstraintDisplacement"
@@ -151,7 +149,7 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
         << "FEM_ConstraintSelfWeight";
 
     Gui::ToolBarItem* thermal = new Gui::ToolBarItem(root);
-    thermal->setCommand("Thermal Constraints");
+    thermal->setCommand("Thermal boundary conditions and loads");
     *thermal
         << "FEM_ConstraintInitialTemperature"
         << "Separator"
@@ -253,14 +251,14 @@ Gui::MenuItem* Workbench::setupMenuBar() const
         << "FEM_ElementFluid1D";
 
     Gui::MenuItem* elec = new Gui::MenuItem;
-    elec->setCommand("&Electromagnetic Constraints");
+    elec->setCommand("&Electromagnetic boundary conditions");
     *elec
         << "FEM_ConstraintElectrostaticPotential"
         << "FEM_ConstraintCurrentDensity"
         << "FEM_ConstraintMagnetization";
 
     Gui::MenuItem* fluid = new Gui::MenuItem;
-    fluid->setCommand("&Fluid Constraints");
+    fluid->setCommand("&Fluid boundary conditions");
     *fluid
         << "FEM_ConstraintInitialFlowVelocity"
         << "FEM_ConstraintInitialPressure"
@@ -268,14 +266,14 @@ Gui::MenuItem* Workbench::setupMenuBar() const
         << "FEM_ConstraintFlowVelocity";
 
     Gui::MenuItem* geom = new Gui::MenuItem;
-    geom->setCommand("&Geometrical Constraints");
+    geom->setCommand("&Geometrical analysis features");
     *geom
         << "FEM_ConstraintPlaneRotation"
         << "FEM_ConstraintSectionPrint"
         << "FEM_ConstraintTransform";
 
     Gui::MenuItem* mech = new Gui::MenuItem;
-    mech->setCommand("&Mechanical Constraints");
+    mech->setCommand("&Mechanical boundary conditions and loads");
     *mech
         << "FEM_ConstraintFixed"
         << "FEM_ConstraintDisplacement"
@@ -289,7 +287,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
         << "FEM_ConstraintSelfWeight";
 
     Gui::MenuItem* thermal = new Gui::MenuItem;
-    thermal->setCommand("&Thermal Constraints");
+    thermal->setCommand("&Thermal boundary conditions and loads");
     *thermal
         << "FEM_ConstraintInitialTemperature"
         << "Separator"
@@ -298,7 +296,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
         << "FEM_ConstraintBodyHeatSource";
 
 //    Gui::MenuItem* nosolver = new Gui::MenuItem;
-//    nosolver->setCommand("&Constraints without solver");
+//    nosolver->setCommand("&Analysis features without solver");
 //    *nosolver
 //        << "FEM_ConstraintFluidBoundary"
 //        << "Separator"
