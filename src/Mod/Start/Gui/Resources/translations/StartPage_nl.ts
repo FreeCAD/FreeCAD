@@ -313,7 +313,7 @@ Door ";" te gebruiken kan je ook meerdere mappen toevoegen</translation>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="42"/>
       <source>Recent files</source>
-      <translation type="unfinished">Recent files</translation>
+      <translation>Recente bestanden</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="43"/>
@@ -398,17 +398,17 @@ Door ";" te gebruiken kan je ook meerdere mappen toevoegen</translation>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="59"/>
       <source>If it is the first time you are posting on the forum, be sure to &lt;a href="https://forum.freecad.org/viewtopic.php?f=3&amp;t=2264"&gt;read the guidelines&lt;/a&gt; first!</source>
-      <translation type="unfinished">If it is the first time you are posting on the forum, be sure to &lt;a href="https://forum.freecad.org/viewtopic.php?f=3&amp;t=2264"&gt;read the guidelines&lt;/a&gt; first!</translation>
+      <translation>Als het de eerste keer is dat je iets op het forum plaatst, zorg er dan voor dat je &lt;a href="https://forum.freecad.org/viewtopic.php?f=3&amp;t=2264"&gt;de richtlijnen&lt;/a&gt; eerst leest!</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="60"/>
       <source>FreeCAD also maintains a public &lt;a href="https://www.freecad.org/tracker"&gt;bug tracker&lt;/a&gt; where anybody can submit bugs and propose new features. To avoid causing extra work and give the best chances to see your bug solved, make sure you read the &lt;a href="https://forum.freecad.org/viewtopic.php?f=3&amp;t=5236"&gt;bug submission guide&lt;/a&gt; before posting.</source>
-      <translation type="unfinished">FreeCAD also maintains a public &lt;a href="https://www.freecad.org/tracker"&gt;bug tracker&lt;/a&gt; where anybody can submit bugs and propose new features. To avoid causing extra work and give the best chances to see your bug solved, make sure you read the &lt;a href="https://forum.freecad.org/viewtopic.php?f=3&amp;t=5236"&gt;bug submission guide&lt;/a&gt; before posting.</translation>
+      <translation>FreeCAD onderhoudt ook een openbare &lt;a href="https://www.freecad.org/tracker"&gt;bug tracker&lt;/a&gt; waar iedereen bugs kan indienen en nieuwe functies kan voorstellen. Om extra werk te voorkomen, en voor de beste kansen om je bug opgelost te krijgen, zorg ervoor dat je de &lt;a href="https://forum.freecad.org/viewtopic.php?f=3&amp;t=5236"&gt;bug indiening gids&lt;/a&gt; leest, voordat je iets post.</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="66"/>
       <source>Below are the latest changes added to the &lt;a href="http://github.com/FreeCAD/FreeCAD/"&gt;FreeCAD source code&lt;/a&gt;. These changes might not reflect yet in the FreeCAD version that you are currently running. Check the &lt;a href="https://www.freecad.org/wiki/Downloads"&gt;available options&lt;/a&gt; if you wish to obtain a development version.</source>
-      <translation type="unfinished">Below are the latest changes added to the &lt;a href="http://github.com/FreeCAD/FreeCAD/"&gt;FreeCAD source code&lt;/a&gt;. These changes might not reflect yet in the FreeCAD version that you are currently running. Check the &lt;a href="https://www.freecad.org/wiki/Downloads"&gt;available options&lt;/a&gt; if you wish to obtain a development version.</translation>
+      <translation>In de lijst hieronder staan de laatste toegevoegde wijzigingen aan de &lt;a href="http://github.com/FreeCAD/FreeCAD/"&gt;FreeCAD broncode&lt;/a&gt;. Deze wijzigingen zijn mogelijk nog niet doorgevoerd in je huidige versie van FreeCAD. Kijk bij de &lt;a href="https://www.freecad.org/wiki/Downloads"&gt;beschikbare opties&lt;/a&gt; in het geval je met een (andere) ontwikkelversie wil werken.</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="74"/>

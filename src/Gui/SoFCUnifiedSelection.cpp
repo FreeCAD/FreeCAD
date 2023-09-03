@@ -1124,9 +1124,14 @@ SoFCSelectionContextBasePtr
 SoFCSelectionRoot::getNodeContext2(Stack &stack, SoNode *node, SoFCSelectionContextBase::MergeFunc *merge)
 {
     SoFCSelectionContextBasePtr ret;
-    auto *back = dynamic_cast<SoFCSelectionRoot*>(stack.back());
-    if(stack.empty() || back == nullptr || back->contextMap2.empty())
+    if (stack.empty()) {
         return ret;
+    }
+
+    auto *back = dynamic_cast<SoFCSelectionRoot*>(stack.back());
+    if (back == nullptr || back->contextMap2.empty()) {
+        return ret;
+    }
 
     int status = 0;
     auto &map = back->contextMap2;

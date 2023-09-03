@@ -1,5 +1,5 @@
 name: Report a Problem
-description: File an problem report
+description: Have you found something that does not work well, is too hard to do or is missing altogether? Please create a Problem Report.
 title: "[Problem] "
 labels: ["needs triage"]
 body:
@@ -11,6 +11,14 @@ body:
       options:
       - label: I have searched the existing issues
         required: true
+  - type: textarea
+    id: description
+    attributes:
+      label: Problem description
+      description: Describe the problem and how it impacts user experience, workflow, maintainability or speed of the code. If the problem appears to be a bug with the current functionality, provide as test case or recipe that reproduces the error.
+      placeholder: Description of the problem
+    validations:
+      required: true
   - type: textarea
     id: full_version
     attributes:
@@ -41,14 +49,6 @@ body:
         - Spreadsheet
         - Techdraw
         - Other (specify in description)
-  - type: textarea
-    id: description
-    attributes:
-      label: Problem description
-      description: Describe the problem and how it impacts user experience, workflow, maintainability or speed of the code. If the problem appears to be a bug with the current functionality, provide as test case or recipe that reproduces the error.
-      placeholder: Description of the problem
-    validations:
-      required: true
   - type: textarea
     id: anything_else
     attributes:

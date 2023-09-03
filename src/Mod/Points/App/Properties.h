@@ -38,7 +38,7 @@ namespace Points
 
 /** Greyvalue property.
  */
-class PointsExport PropertyGreyValue : public App::PropertyFloat
+class PointsExport PropertyGreyValue: public App::PropertyFloat
 {
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
@@ -52,44 +52,47 @@ class PointsExport PropertyGreyValueList: public App::PropertyLists
 
 public:
     PropertyGreyValueList();
-    
+
     void setSize(int newSize) override;
     int getSize() const override;
 
-    /** Sets the property 
+    /** Sets the property
      */
     void setValue(float);
-    
+
     /// index operator
-    float operator[] (const int idx) const {
+    float operator[](const int idx) const
+    {
         return _lValueList[idx];
     }
 
-    void set1Value (const int idx, float value) {
+    void set1Value(const int idx, float value)
+    {
         _lValueList[idx] = value;
     }
-    void setValues (const std::vector<float>& values);
-    
-    const std::vector<float> &getValues() const {
+    void setValues(const std::vector<float>& values);
+
+    const std::vector<float>& getValues() const
+    {
         return _lValueList;
     }
 
-    PyObject *getPyObject() override;
-    void setPyObject(PyObject *) override;
-    
-    void Save (Base::Writer &writer) const override;
-    void Restore(Base::XMLReader &reader) override;
-    
-    void SaveDocFile (Base::Writer &writer) const override;
-    void RestoreDocFile(Base::Reader &reader) override;
-    
-    App::Property *Copy() const override;
-    void Paste(const App::Property &from) override;
-    unsigned int getMemSize () const override;
+    PyObject* getPyObject() override;
+    void setPyObject(PyObject*) override;
+
+    void Save(Base::Writer& writer) const override;
+    void Restore(Base::XMLReader& reader) override;
+
+    void SaveDocFile(Base::Writer& writer) const override;
+    void RestoreDocFile(Base::Reader& reader) override;
+
+    App::Property* Copy() const override;
+    void Paste(const App::Property& from) override;
+    unsigned int getMemSize() const override;
 
     /** @name Modify */
     //@{
-    void removeIndices( const std::vector<unsigned long>& );
+    void removeIndices(const std::vector<unsigned long>&);
     //@}
 
 private:
@@ -109,38 +112,41 @@ public:
     void setValue(const Base::Vector3f&);
     void setValue(float x, float y, float z);
 
-    const Base::Vector3f& operator[] (const int idx) const {
+    const Base::Vector3f& operator[](const int idx) const
+    {
         return _lValueList[idx];
     }
 
-    void set1Value (const int idx, const Base::Vector3f& value) {
+    void set1Value(const int idx, const Base::Vector3f& value)
+    {
         _lValueList[idx] = value;
     }
 
-    void setValues (const std::vector<Base::Vector3f>& values);
+    void setValues(const std::vector<Base::Vector3f>& values);
 
-    const std::vector<Base::Vector3f> &getValues() const {
+    const std::vector<Base::Vector3f>& getValues() const
+    {
         return _lValueList;
     }
 
-    PyObject *getPyObject() override;
-    void setPyObject(PyObject *) override;
+    PyObject* getPyObject() override;
+    void setPyObject(PyObject*) override;
 
-    void Save (Base::Writer &writer) const override;
-    void Restore(Base::XMLReader &reader) override;
+    void Save(Base::Writer& writer) const override;
+    void Restore(Base::XMLReader& reader) override;
 
-    void SaveDocFile (Base::Writer &writer) const override;
-    void RestoreDocFile(Base::Reader &reader) override;
+    void SaveDocFile(Base::Writer& writer) const override;
+    void RestoreDocFile(Base::Reader& reader) override;
 
-    App::Property *Copy() const override;
-    void Paste(const App::Property &from) override;
+    App::Property* Copy() const override;
+    void Paste(const App::Property& from) override;
 
-    unsigned int getMemSize () const override;
+    unsigned int getMemSize() const override;
 
     /** @name Modify */
     //@{
-    void transformGeometry(const Base::Matrix4D &rclMat);
-    void removeIndices( const std::vector<unsigned long>& );
+    void transformGeometry(const Base::Matrix4D& rclMat);
+    void removeIndices(const std::vector<unsigned long>&);
     //@}
 
 private:
@@ -161,70 +167,76 @@ class PointsExport PropertyCurvatureList: public App::PropertyLists
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
-    enum { 
-        MeanCurvature  = 0,  /**< Mean curvature */
-        GaussCurvature = 1,  /**< Gaussian curvature */
-        MaxCurvature   = 2,  /**< Maximum curvature */ 
-        MinCurvature   = 3,  /**< Minimum curvature */
-        AbsCurvature   = 4   /**< Absolute curvature */
+    enum
+    {
+        MeanCurvature = 0,  /**< Mean curvature */
+        GaussCurvature = 1, /**< Gaussian curvature */
+        MaxCurvature = 2,   /**< Maximum curvature */
+        MinCurvature = 3,   /**< Minimum curvature */
+        AbsCurvature = 4    /**< Absolute curvature */
     };
 
 public:
     PropertyCurvatureList();
 
-    void setSize(int newSize) override {
+    void setSize(int newSize) override
+    {
         _lValueList.resize(newSize);
     }
-    int getSize() const override {
+    int getSize() const override
+    {
         return _lValueList.size();
     }
     void setValue(const CurvatureInfo&);
     void setValues(const std::vector<CurvatureInfo>&);
-    std::vector<float> getCurvature( int tMode) const;
+    std::vector<float> getCurvature(int tMode) const;
 
     /// index operator
-    const CurvatureInfo& operator[] (const int idx) const {
+    const CurvatureInfo& operator[](const int idx) const
+    {
         return _lValueList[idx];
     }
-    void  set1Value (const int idx, const CurvatureInfo& value) {
+    void set1Value(const int idx, const CurvatureInfo& value)
+    {
         _lValueList[idx] = value;
     }
-    const std::vector<CurvatureInfo> &getValues() const {
+    const std::vector<CurvatureInfo>& getValues() const
+    {
         return _lValueList;
     }
 
-    PyObject *getPyObject() override;
-    void setPyObject(PyObject *) override;
+    PyObject* getPyObject() override;
+    void setPyObject(PyObject*) override;
 
     /** @name Save/restore */
     //@{
-    void Save (Base::Writer &writer) const override;
-    void Restore(Base::XMLReader &reader) override;
+    void Save(Base::Writer& writer) const override;
+    void Restore(Base::XMLReader& reader) override;
 
-    void SaveDocFile (Base::Writer &writer) const override;
-    void RestoreDocFile(Base::Reader &reader) override;
+    void SaveDocFile(Base::Writer& writer) const override;
+    void RestoreDocFile(Base::Reader& reader) override;
     //@}
 
     /** @name Undo/Redo */
     //@{
     /// returns a new copy of the property (mainly for Undo/Redo and transactions)
-    App::Property *Copy() const override;
+    App::Property* Copy() const override;
     /// paste the value from the property (mainly for Undo/Redo and transactions)
-    void Paste(const App::Property &from) override;
-    unsigned int getMemSize () const override;
+    void Paste(const App::Property& from) override;
+    unsigned int getMemSize() const override;
     //@}
 
     /** @name Modify */
     //@{
-    void transformGeometry(const Base::Matrix4D &rclMat);
-    void removeIndices( const std::vector<unsigned long>& );
+    void transformGeometry(const Base::Matrix4D& rclMat);
+    void removeIndices(const std::vector<unsigned long>&);
     //@}
 
 private:
     std::vector<CurvatureInfo> _lValueList;
 };
 
-} // namespace Points
+}// namespace Points
 
 
-#endif // POINTS_POINTPROPERTIES_H 
+#endif// POINTS_POINTPROPERTIES_H

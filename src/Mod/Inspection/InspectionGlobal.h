@@ -29,19 +29,19 @@
 // Inspection
 #ifndef InspectionExport
 #ifdef Inspection_EXPORTS
-#  define InspectionExport      FREECAD_DECL_EXPORT
+#define InspectionExport FREECAD_DECL_EXPORT
 #else
-#  define InspectionExport      FREECAD_DECL_IMPORT
+#define InspectionExport FREECAD_DECL_IMPORT
 #endif
 #endif
 
 // InspectionGui
 #ifndef InspectionGuiExport
 #ifdef InspectionGui_EXPORTS
-#  define InspectionGuiExport   FREECAD_DECL_EXPORT
+#define InspectionGuiExport FREECAD_DECL_EXPORT
 #else
-#  define InspectionGuiExport   FREECAD_DECL_IMPORT
+#define InspectionGuiExport FREECAD_DECL_IMPORT
 #endif
 #endif
 
-#endif //INSPECTION_GLOBAL_H
+#endif// INSPECTION_GLOBAL_H

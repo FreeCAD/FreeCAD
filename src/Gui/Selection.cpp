@@ -2303,7 +2303,7 @@ PyObject *SelectionSingleton::sAddSelectionGate(PyObject * /*self*/, PyObject *a
     if (PyArg_ParseTuple(args, "O!|i",SelectionFilterPy::type_object(),&filterPy,resolve)) {
         PY_TRY {
             Selection().addSelectionGate(new SelectionFilterGatePython(
-                        static_cast<SelectionFilterPy*>(filterPy)), toEnum(resolve));
+                        SelectionFilterPy::cast(filterPy)), toEnum(resolve));
             Py_Return;
         }
         PY_CATCH;

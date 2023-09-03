@@ -27,9 +27,10 @@
 #include <Gui/TaskView/TaskView.h>
 
 
-namespace ReenGui {
+namespace ReenGui
+{
 
-class PoissonWidget : public QWidget
+class PoissonWidget: public QWidget
 {
     Q_OBJECT
 
@@ -40,14 +41,14 @@ public:
     bool accept();
 
 private:
-    void changeEvent(QEvent *e) override;
+    void changeEvent(QEvent* e) override;
 
 private:
     class Private;
     Private* d;
 };
 
-class TaskPoisson : public Gui::TaskView::TaskDialog
+class TaskPoisson: public Gui::TaskView::TaskDialog
 {
     Q_OBJECT
 
@@ -60,13 +61,15 @@ public:
     bool accept() override;
 
     QDialogButtonBox::StandardButtons getStandardButtons() const override
-    { return QDialogButtonBox::Ok|QDialogButtonBox::Cancel; }
+    {
+        return QDialogButtonBox::Ok | QDialogButtonBox::Cancel;
+    }
 
 private:
     PoissonWidget* widget;
     Gui::TaskView::TaskBox* taskbox;
 };
 
-} //namespace ReenGui
+}// namespace ReenGui
 
-#endif // REENGUI_POISSON_H
+#endif// REENGUI_POISSON_H

@@ -313,7 +313,7 @@ A ";;" útvonalak külön-külön történő használatával több mappát is ho
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="42"/>
       <source>Recent files</source>
-      <translation type="unfinished">Recent files</translation>
+      <translation>Legutóbbi fájlok</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="43"/>

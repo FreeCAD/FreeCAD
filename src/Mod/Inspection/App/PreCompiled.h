@@ -19,17 +19,17 @@
  *   Suite 330, Boston, MA  02111-1307, USA                                *
  *                                                                         *
  ***************************************************************************/
- 
+
 #ifndef APP_PRECOMPILED_H
 #define APP_PRECOMPILED_H
 
 #include <FCConfig.h>
 
 #ifdef _MSC_VER
-# pragma warning(disable : 4005)
-# pragma warning(disable : 4251)
-# pragma warning(disable : 4503)
-# pragma warning(disable : 4786)// specifier longer then 255 chars
+#pragma warning(disable : 4005)
+#pragma warning(disable : 4251)
+#pragma warning(disable : 4503)
+#pragma warning(disable : 4786)// specifier longer then 255 chars
 #endif
 
 #ifdef _PreComp_
@@ -38,13 +38,13 @@
 #include <numeric>
 
 // OCC
-#include <BRepExtrema_DistShapeShape.hxx>
 #include <BRepBuilderAPI_MakeVertex.hxx>
 #include <BRepClass3d_SolidClassifier.hxx>
+#include <BRepExtrema_DistShapeShape.hxx>
 #include <BRepGProp_Face.hxx>
-#include <gp_Pnt.hxx>
 #include <TopExp.hxx>
 #include <TopoDS.hxx>
+#include <gp_Pnt.hxx>
 
 // boost
 #include <boost/core/ignore_unused.hpp>
@@ -55,7 +55,6 @@
 #include <QFutureWatcher>
 #include <QtConcurrentMap>
 
-#endif //_PreComp_
+#endif//_PreComp_
 
 #endif
-

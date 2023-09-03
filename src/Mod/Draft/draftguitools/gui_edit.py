@@ -750,7 +750,7 @@ class Edit(gui_base_original.Modifier):
         """
         if (hasattr(obj, 'obj_gui_tools') or
             (hasattr(obj, 'Proxy') and hasattr(obj.Proxy, 'obj_gui_tools')) or
-            (utils.get_type(obj) in self.gui_tools_repository) ):
+            (utils.get_type(obj) in self.gui_tools_repository.keys()) ):
             return True
         else:
             return False

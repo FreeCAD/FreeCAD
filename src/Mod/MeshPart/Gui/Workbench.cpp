@@ -22,7 +22,7 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <qobject.h>
+#include <qobject.h>
 #endif
 
 #include <Gui/ToolBarManager.h>
@@ -32,7 +32,7 @@
 
 using namespace MeshPartGui;
 
-#if 0 // needed for Qt's lupdate utility
+#if 0// needed for Qt's lupdate utility
     qApp->translate("Workbench", "MeshPart");
 #endif
 
@@ -49,7 +49,7 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
     Gui::ToolBarItem* part = new Gui::ToolBarItem(root);
     part->setCommand("MeshPart");
     *part << "MeshPart_Mesher";
-     return root;
+    return root;
 }
 
 Gui::ToolBarItem* Workbench::setupCommandBars() const
@@ -58,4 +58,3 @@ Gui::ToolBarItem* Workbench::setupCommandBars() const
     Gui::ToolBarItem* root = new Gui::ToolBarItem;
     return root;
 }
-

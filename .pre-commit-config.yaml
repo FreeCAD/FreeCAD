@@ -7,7 +7,14 @@ files: |
         src/Mod/AddonManager|
         src/Tools|
         tests/src|
-        src/Mod/Sketcher
+        src/Mod/Assembly|
+        src/Mod/Inspection|
+        src/Mod/MeshPart|
+        src/Mod/Points|
+        src/Mod/ReverseEngineering|
+        src/Mod/Sketcher|
+        src/Mod/Start|
+        src/Mod/Web
     )
 exclude: |
     (?x)^(

@@ -29,19 +29,19 @@
 // Points
 #ifndef PointsExport
 #ifdef Points_EXPORTS
-#  define PointsExport      FREECAD_DECL_EXPORT
+#define PointsExport FREECAD_DECL_EXPORT
 #else
-#  define PointsExport      FREECAD_DECL_IMPORT
+#define PointsExport FREECAD_DECL_IMPORT
 #endif
 #endif
 
 // PointsGui
 #ifndef PointsGuiExport
 #ifdef PointsGui_EXPORTS
-#  define PointsGuiExport   FREECAD_DECL_EXPORT
+#define PointsGuiExport FREECAD_DECL_EXPORT
 #else
-#  define PointsGuiExport   FREECAD_DECL_IMPORT
+#define PointsGuiExport FREECAD_DECL_IMPORT
 #endif
 #endif
 
-#endif //POINTS_GLOBAL_H
+#endif// POINTS_GLOBAL_H

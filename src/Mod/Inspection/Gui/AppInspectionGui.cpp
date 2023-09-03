@@ -35,13 +35,15 @@
 void CreateInspectionCommands();
 
 
-namespace InspectionGui {
-class Module : public Py::ExtensionModule<Module>
+namespace InspectionGui
+{
+class Module: public Py::ExtensionModule<Module>
 {
 public:
-    Module() : Py::ExtensionModule<Module>("InspectionGui")
+    Module()
+        : Py::ExtensionModule<Module>("InspectionGui")
     {
-        initialize("This module is the InspectionGui module."); // register with Python
+        initialize("This module is the InspectionGui module.");// register with Python
     }
 
 private:
@@ -52,7 +54,7 @@ PyObject* initModule()
     return Base::Interpreter().addModule(new Module);
 }
 
-} // namespace InspectionGui
+}// namespace InspectionGui
 
 
 /* Python entry */
@@ -64,10 +66,12 @@ PyMOD_INIT_FUNC(InspectionGui)
     }
 
     // instantiating the commands
+    // clang-format off
     CreateInspectionCommands();
     InspectionGui::ViewProviderInspection       ::init();
     InspectionGui::ViewProviderInspectionGroup  ::init();
     InspectionGui::Workbench                    ::init();
+    // clang-format on
 
     // ADD YOUR CODE HERE
     //

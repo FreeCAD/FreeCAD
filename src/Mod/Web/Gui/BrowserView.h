@@ -26,12 +26,13 @@
 #include <QLineEdit>
 #include <QPointer>
 #if defined(QTWEBENGINE)
-# include <QWebEngineView>
-namespace WebGui {
- class WebEngineUrlRequestInterceptor;
+#include <QWebEngineView>
+namespace WebGui
+{
+class WebEngineUrlRequestInterceptor;
 }
 #elif defined(QTWEBKIT)
-# include <QWebView>
+#include <QWebView>
 #endif
 
 #include <Gui/MDIView.h>
@@ -42,24 +43,25 @@ class QNetworkReply;
 class QNetworkRequest;
 class QUrl;
 
-namespace WebGui {
+namespace WebGui
+{
 class UrlWidget;
 
 #ifdef QTWEBENGINE
-class WebGuiExport WebView : public QWebEngineView
+class WebGuiExport WebView: public QWebEngineView
 #else
-class WebGuiExport WebView : public QWebView
+class WebGuiExport WebView: public QWebView
 #endif
 {
     Q_OBJECT
 
 public:
-    explicit WebView(QWidget *parent = nullptr);
+    explicit WebView(QWidget* parent = nullptr);
 
 protected:
-    void mousePressEvent(QMouseEvent *event) override;
-    void wheelEvent(QWheelEvent *event) override;
-    void contextMenuEvent(QContextMenuEvent *event) override;
+    void mousePressEvent(QMouseEvent* event) override;
+    void wheelEvent(QWheelEvent* event) override;
+    void contextMenuEvent(QContextMenuEvent* event) override;
 
 private Q_SLOTS:
     void triggerContextMenuAction(int);
@@ -74,8 +76,7 @@ Q_SIGNALS:
  * A special view class which sends the messages from the application to
  * the editor and embeds it in a window.
  */
-class WebGuiExport BrowserView : public Gui::MDIView,
-                                 public Gui::WindowParameter
+class WebGuiExport BrowserView: public Gui::MDIView, public Gui::WindowParameter
 {
     Q_OBJECT
 
@@ -86,24 +87,27 @@ public:
     ~BrowserView() override;
 
     void load(const char* URL);
-    void load(const QUrl & url);
-    void setHtml(const QString& HtmlCode,const QUrl & BaseUrl);
+    void load(const QUrl& url);
+    void setHtml(const QString& HtmlCode, const QUrl& BaseUrl);
     void stop();
     QUrl url() const;
 
-    void OnChange(Base::Subject<const char*> &rCaller,const char* rcReason) override;
+    void OnChange(Base::Subject<const char*>& rCaller, const char* rcReason) override;
 
-    const char *getName() const override {return "BrowserView";}
-    PyObject *getPyObject() override;
+    const char* getName() const override
+    {
+        return "BrowserView";
+    }
+    PyObject* getPyObject() override;
 
-    bool onMsg(const char* pMsg,const char** ppReturn) override;
+    bool onMsg(const char* pMsg, const char** ppReturn) override;
     bool onHasMsg(const char* pMsg) const override;
 
-    bool canClose () override;
+    bool canClose() override;
 
 #ifdef QTWEBENGINE
 public Q_SLOTS:
-    void setWindowIcon(const QIcon &icon);
+    void setWindowIcon(const QIcon& icon);
 #endif
 
 protected Q_SLOTS:
@@ -111,12 +115,12 @@ protected Q_SLOTS:
     void onLoadProgress(int);
     void onLoadFinished(bool);
     bool chckHostAllowed(const QString& host);
-    void urlFilter(const QUrl &url);
+    void urlFilter(const QUrl& url);
 #ifdef QTWEBENGINE
-#if QT_VERSION < QT_VERSION_CHECK(6,0,0)
-    void onDownloadRequested(QWebEngineDownloadItem *request);
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
+    void onDownloadRequested(QWebEngineDownloadItem* request);
 #else
-    void onDownloadRequested(QWebEngineDownloadRequest *request);
+    void onDownloadRequested(QWebEngineDownloadRequest* request);
 #endif
     void onLinkHovered(const QString& url);
 #else
@@ -124,7 +128,7 @@ protected Q_SLOTS:
     void onUnsupportedContent(QNetworkReply* reply);
     void onLinkHovered(const QString& link, const QString& title, const QString& textContent);
 #endif
-    void onViewSource(const QUrl &url);
+    void onViewSource(const QUrl& url);
     void onOpenLinkInExternalBrowser(const QUrl& url);
     void onOpenLinkInNewWindow(const QUrl&);
     void onUpdateBrowserActions();
@@ -132,27 +136,29 @@ protected Q_SLOTS:
 private:
     QPointer<WebView> view;
     bool isLoading;
-    UrlWidget *urlWgt;
+    UrlWidget* urlWgt;
 #ifdef QTWEBENGINE
-    WebEngineUrlRequestInterceptor *interceptLinks;
+    WebEngineUrlRequestInterceptor* interceptLinks;
 #else
     float textSizeMultiplier;
 #endif
 };
 
 // the URL ardressbar lineedit
-class UrlWidget : public QLineEdit
+class UrlWidget: public QLineEdit
 {
     Q_OBJECT
-    BrowserView *m_view;
+    BrowserView* m_view;
+
 public:
-    explicit UrlWidget(BrowserView *view);
+    explicit UrlWidget(BrowserView* view);
     ~UrlWidget() override;
     void display();
+
 protected:
-    void keyPressEvent(QKeyEvent *keyEvt) override;
+    void keyPressEvent(QKeyEvent* keyEvt) override;
 };
 
-} // namespace WebGui
+}// namespace WebGui
 
-#endif // WEBGUI_BROWSERVIEW_H
+#endif// WEBGUI_BROWSERVIEW_H
