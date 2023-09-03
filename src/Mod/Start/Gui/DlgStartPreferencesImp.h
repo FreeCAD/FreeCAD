@@ -23,29 +23,48 @@
 #ifndef STARTGUI_DLGSTARTPREFERENCESIMP_H
 #define STARTGUI_DLGSTARTPREFERENCESIMP_H
 
-#include <memory>
 #include <Gui/PropertyPage.h>
+#include <memory>
 
 
 class Ui_DlgStartPreferences;
-namespace StartGui {
-    class DlgStartPreferencesImp : public Gui::Dialog::PreferencePage
-    {
-        Q_OBJECT
+class Ui_DlgStartPreferencesAdvanced;
+namespace StartGui
+{
+class DlgStartPreferencesImp: public Gui::Dialog::PreferencePage
+{
+    Q_OBJECT
 
-    public:
-        explicit DlgStartPreferencesImp( QWidget* parent = nullptr );
-        ~DlgStartPreferencesImp() override;
+public:
+    explicit DlgStartPreferencesImp(QWidget* parent = nullptr);
+    ~DlgStartPreferencesImp() override;
 
-    protected:
-        void saveSettings() override;
-        void loadSettings() override;
-        void changeEvent(QEvent *e) override;
+protected:
+    void saveSettings() override;
+    void loadSettings() override;
+    void changeEvent(QEvent* e) override;
 
-    private:
-        std::unique_ptr<Ui_DlgStartPreferences> ui;
-    };
+private:
+    std::unique_ptr<Ui_DlgStartPreferences> ui;
+};
 
-} // namespace StartGui
+class DlgStartPreferencesAdvancedImp: public Gui::Dialog::PreferencePage
+{
+    Q_OBJECT
 
-#endif // STARTGUI_DLGSTARTPREFERENCESIMP_H
+public:
+    explicit DlgStartPreferencesAdvancedImp(QWidget* parent = nullptr);
+    ~DlgStartPreferencesAdvancedImp() override;
+
+protected:
+    void saveSettings() override;
+    void loadSettings() override;
+    void changeEvent(QEvent* e) override;
+
+private:
+    std::unique_ptr<Ui_DlgStartPreferencesAdvanced> ui;
+};
+
+}// namespace StartGui
+
+#endif// STARTGUI_DLGSTARTPREFERENCESIMP_H

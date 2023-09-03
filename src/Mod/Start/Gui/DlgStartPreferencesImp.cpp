@@ -26,6 +26,7 @@
 
 #include "DlgStartPreferencesImp.h"
 #include "ui_DlgStartPreferences.h"
+#include "ui_DlgStartPreferencesAdvanced.h"
 
 
 using namespace StartGui;
@@ -33,9 +34,9 @@ using namespace StartGui;
 /**
  *  Constructs a DlgStartPreferencesImp which is a child of 'parent'
  */
-DlgStartPreferencesImp::DlgStartPreferencesImp( QWidget* parent )
-  : PreferencePage( parent )
-  , ui(new Ui_DlgStartPreferences)
+DlgStartPreferencesImp::DlgStartPreferencesImp(QWidget* parent)
+    : PreferencePage(parent)
+    , ui(new Ui_DlgStartPreferences)
 {
     ui->setupUi(this);
 
@@ -55,8 +56,10 @@ DlgStartPreferencesImp::DlgStartPreferencesImp( QWidget* parent )
         menuText[text] = it;
     }
 
-    {   // add special workbench to selection
-        QPixmap px = Gui::Application::Instance->workbenchIcon(QString::fromLatin1("NoneWorkbench"));
+    // add special workbench to selection
+    {
+        QPixmap px =
+            Gui::Application::Instance->workbenchIcon(QString::fromLatin1("NoneWorkbench"));
         QString key = QString::fromLatin1("<last>");
         QString value = QString::fromLatin1("$LastModule");
         if (px.isNull()) {
@@ -69,12 +72,13 @@ DlgStartPreferencesImp::DlgStartPreferencesImp( QWidget* parent )
 
     for (QMap<QString, QString>::Iterator it = menuText.begin(); it != menuText.end(); ++it) {
         QPixmap px = Gui::Application::Instance->workbenchIcon(it.value());
-        if (px.isNull())
+        if (px.isNull()) {
             ui->AutoloadModuleCombo->addItem(it.key(), QVariant(it.value()));
-        else
+        }
+        else {
             ui->AutoloadModuleCombo->addItem(px, it.key(), QVariant(it.value()));
+        }
     }
-
 }
 
 /**
@@ -87,8 +91,9 @@ void DlgStartPreferencesImp::saveSettings()
     int index = ui->AutoloadModuleCombo->currentIndex();
     QVariant data = ui->AutoloadModuleCombo->itemData(index);
     QString startWbName = data.toString();
-    App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Start")->
-                          SetASCII("AutoloadModule", startWbName.toLatin1());
+    App::GetApplication()
+        .GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Start")
+        ->SetASCII("AutoloadModule", startWbName.toLatin1());
     ui->colorButton_1->onSave();
     ui->colorButton_2->onSave();
     ui->colorButton_3->onSave();
@@ -96,7 +101,6 @@ void DlgStartPreferencesImp::saveSettings()
     ui->colorButton_5->onSave();
     ui->colorButton_6->onSave();
     ui->colorButton_7->onSave();
-    ui->fileChooser_1->onSave();
     ui->fileChooser_2->onSave();
     ui->fileChooser_3->onSave();
     ui->radioButton_1->onSave();
@@ -118,8 +122,9 @@ void DlgStartPreferencesImp::saveSettings()
 void DlgStartPreferencesImp::loadSettings()
 {
     std::string start = App::Application::Config()["StartWorkbench"];
-    start = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Start")->
-                                  GetASCII("AutoloadModule", start.c_str());
+    start = App::GetApplication()
+                .GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Start")
+                ->GetASCII("AutoloadModule", start.c_str());
     QString startWbName = QLatin1String(start.c_str());
     ui->AutoloadModuleCombo->setCurrentIndex(ui->AutoloadModuleCombo->findData(startWbName));
     ui->colorButton_1->onRestore();
@@ -129,7 +134,6 @@ void DlgStartPreferencesImp::loadSettings()
     ui->colorButton_5->onRestore();
     ui->colorButton_6->onRestore();
     ui->colorButton_7->onRestore();
-    ui->fileChooser_1->onRestore();
     ui->fileChooser_2->onRestore();
     ui->fileChooser_3->onRestore();
     ui->radioButton_1->onRestore();
@@ -151,7 +155,48 @@ void DlgStartPreferencesImp::loadSettings()
 /**
  * Sets the strings of the subwidgets using the current language.
  */
-void DlgStartPreferencesImp::changeEvent(QEvent *ev)
+void DlgStartPreferencesImp::changeEvent(QEvent* ev)
+{
+    if (ev->type() == QEvent::LanguageChange) {
+        ui->retranslateUi(this);
+    }
+    else {
+        Gui::Dialog::PreferencePage::changeEvent(ev);
+    }
+}
+
+
+/**
+ *  Constructs a DlgStartPreferencesAdvancedImp which is a child of 'parent'
+ */
+DlgStartPreferencesAdvancedImp::DlgStartPreferencesAdvancedImp(QWidget* parent)
+    : PreferencePage(parent)
+    , ui(new Ui_DlgStartPreferencesAdvanced)
+{
+    ui->setupUi(this);
+}
+
+/**
+ *  Destroys the object and frees any allocated resources
+ */
+DlgStartPreferencesAdvancedImp::~DlgStartPreferencesAdvancedImp() = default;
+
+void DlgStartPreferencesAdvancedImp::saveSettings()
+{
+    ui->templateFileChooser->onSave();
+    ui->customCSSTextEdit->onSave();
+}
+
+void DlgStartPreferencesAdvancedImp::loadSettings()
+{
+    ui->templateFileChooser->onRestore();
+    ui->customCSSTextEdit->onRestore();
+}
+
+/**
+ * Sets the strings of the subwidgets using the current language.
+ */
+void DlgStartPreferencesAdvancedImp::changeEvent(QEvent* ev)
 {
     if (ev->type() == QEvent::LanguageChange) {
         ui->retranslateUi(this);

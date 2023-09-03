@@ -11,31 +11,9 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Start page options</string>
+   <string>General</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
-   <item>
-    <widget class="QGroupBox" name="groupBox_2">
-     <property name="title">
-      <string>Start page template</string>
-     </property>
-     <layout class="QVBoxLayout" name="verticalLayout_2">
-      <item>
-       <widget class="Gui::PrefFileChooser" name="fileChooser_1" native="true">
-        <property name="toolTip">
-         <string>An optional HTML template that will be used instead of the default start page.</string>
-        </property>
-        <property name="prefEntry" stdset="0">
-         <cstring>Template</cstring>
-        </property>
-        <property name="prefPath" stdset="0">
-         <cstring>Mod/Start</cstring>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </widget>
-   </item>
    <item>
     <widget class="QGroupBox" name="groupBox_3">
      <property name="title">

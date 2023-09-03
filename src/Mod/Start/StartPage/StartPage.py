@@ -352,7 +352,8 @@ def handle():
     with open(css_filename, 'r') as f:
         CSS = f.read()
     HTML = HTML.replace("JS",JS)
-    HTML = HTML.replace("CSS",CSS)
+    HTML = HTML.replace("DEFAULT_CSS",CSS)
+    HTML = HTML.replace("CUSTOM_CSS",FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Start").GetString("CustomCSS","").replace("\n",""))
 
     # set the language
 
