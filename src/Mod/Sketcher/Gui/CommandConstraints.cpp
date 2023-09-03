@@ -4370,7 +4370,7 @@ void CmdSketcherConstrainDistance::activated(int iMsg)
             radius1 = arcSeg1->getRadius();
             center1 = arcSeg1->getCenter();
         }
-        if (isArcOfCircle(*geom2))) {
+        if (isArcOfCircle(*geom2)) {
             auto arcSeg2 = static_cast<const Part::GeomArcOfCircle*>(geom2);
             radius2 = arcSeg2->getRadius();
             center2 = arcSeg2->getCenter();
