@@ -26,8 +26,8 @@
 #include <Base/Interpreter.h>
 #include <Base/PyObjectBase.h>
 #include <Gui/Application.h>
-#include <Gui/WidgetFactory.h>
 #include <Gui/Language/Translator.h>
+#include <Gui/WidgetFactory.h>
 
 #include "DlgStartPreferencesImp.h"
 #include "Workbench.h"
@@ -44,13 +44,15 @@ void loadStartResource()
     Gui::Translator::instance()->refresh();
 }
 
-namespace StartGui {
-class Module : public Py::ExtensionModule<Module>
+namespace StartGui
+{
+class Module: public Py::ExtensionModule<Module>
 {
 public:
-    Module() : Py::ExtensionModule<Module>("StartGui")
+    Module()
+        : Py::ExtensionModule<Module>("StartGui")
     {
-        initialize("This module is the StartGui module."); // register with Python
+        initialize("This module is the StartGui module.");// register with Python
     }
 
 private:
@@ -61,7 +63,7 @@ PyObject* initModule()
     return Base::Interpreter().addModule(new Module);
 }
 
-} // namespace StartGui
+}// namespace StartGui
 
 
 /* Python entry */
@@ -76,7 +78,7 @@ PyMOD_INIT_FUNC(StartGui)
     try {
         Base::Interpreter().runString("import WebGui");
     }
-    catch(const Base::Exception& e) {
+    catch (const Base::Exception& e) {
         PyErr_SetString(PyExc_ImportError, e.what());
         PyMOD_Return(nullptr);
     }
@@ -97,14 +99,16 @@ PyMOD_INIT_FUNC(StartGui)
     PyObject* mod = StartGui::initModule();
     Base::Console().Log("Loading GUI of Start module... done\n");
 
+    // clang-format off
     // register preferences pages
-    new Gui::PrefPageProducer<StartGui::DlgStartPreferencesImp> (QT_TRANSLATE_NOOP("QObject", "Start"));
+    new Gui::PrefPageProducer<StartGui::DlgStartPreferencesImp>(QT_TRANSLATE_NOOP("QObject", "Start"));
+    // clang-format on
 
     // instantiating the commands
     CreateStartCommands();
     StartGui::Workbench::init();
 
-     // add resources and reloads the translators
+    // add resources and reloads the translators
     loadStartResource();
     PyMOD_Return(mod);
 }
