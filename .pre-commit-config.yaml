@@ -14,6 +14,7 @@ files: |
         src/Mod/ReverseEngineering|
         src/Mod/Sketcher|
         src/Mod/Start|
+        src/Mod/Test|
         src/Mod/Web
     )
 exclude: |
