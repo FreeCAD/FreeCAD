@@ -112,7 +112,6 @@ void DlgStartPreferencesImp::saveSettings()
     ui->showForumCheckBox->onSave();
     ui->useStyleSheetCheckBox->onSave();
     ui->showTipsCheckBox->onSave();
-    ui->showScrollbarsCheckBox->onSave();
     ui->fontLineEdit->onSave();
     ui->fontSizeSpinBox->onSave();
     ui->showFileThumbnailIconsCheckBox->onSave();
@@ -145,7 +144,6 @@ void DlgStartPreferencesImp::loadSettings()
     ui->showForumCheckBox->onRestore();
     ui->useStyleSheetCheckBox->onRestore();
     ui->showTipsCheckBox->onRestore();
-    ui->showScrollbarsCheckBox->onRestore();
     ui->fontLineEdit->onRestore();
     ui->fontSizeSpinBox->onRestore();
     ui->showFileThumbnailIconsCheckBox->onRestore();
