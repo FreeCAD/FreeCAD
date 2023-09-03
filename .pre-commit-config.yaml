@@ -13,7 +13,8 @@ files: |
         src/Mod/Points|
         src/Mod/ReverseEngineering|
         src/Mod/Sketcher|
-        src/Mod/Start
+        src/Mod/Start|
+        src/Mod/Web
     )
 exclude: |
     (?x)^(
