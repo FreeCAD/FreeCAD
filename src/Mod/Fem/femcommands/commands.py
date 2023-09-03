@@ -152,7 +152,7 @@ class _ClippingPlaneRemoveAll(CommandManager):
         )
         self.tooltip = Qt.QT_TRANSLATE_NOOP(
             "FEM_ClippingPlaneRemoveAll",
-            "Remove all clipping planes"
+            "Removes all clipping planes"
         )
         self.is_active = "with_document"
 
@@ -193,11 +193,11 @@ class _ConstraintBodyHeatSource(CommandManager):
         self.pixmap = "FEM_ConstraintBodyHeatSource"
         self.menutext = Qt.QT_TRANSLATE_NOOP(
             "FEM_ConstraintBodyHeatSource",
-            "Constraint body heat source"
+            "Body heat source"
         )
         self.tooltip = Qt.QT_TRANSLATE_NOOP(
             "FEM_ConstraintBodyHeatSource",
-            "Creates a FEM constraint body heat source"
+            "Creates a body heat source"
         )
         self.is_active = "with_analysis"
         self.do_activated = "add_obj_on_gui_set_edit"
@@ -210,11 +210,11 @@ class _ConstraintCentrif(CommandManager):
         super(_ConstraintCentrif, self).__init__()
         self.menutext = Qt.QT_TRANSLATE_NOOP(
             "FEM_ConstraintCentrif",
-            "Constraint centrif"
+            "Centrifigual load"
         )
         self.tooltip = Qt.QT_TRANSLATE_NOOP(
             "FEM_ConstraintCentrif",
-            "Creates a FEM constraint centrif"
+            "Creates a centrifugal load"
         )
         self.is_active = "with_analysis"
         self.do_activated = "add_obj_on_gui_set_edit"
@@ -228,11 +228,11 @@ class _ConstraintCurrentDensity(CommandManager):
         self.pixmap = "FEM_ConstraintCurrentDensity"
         self.menutext = Qt.QT_TRANSLATE_NOOP(
             "FEM_ConstraintCurrentDensity",
-            "Constraint current density"
+            "Current density boundary condition"
         )
         self.tooltip = Qt.QT_TRANSLATE_NOOP(
             "FEM_ConstraintCurrentDensity",
-            "Creates a FEM constraint current density"
+            "Creates a current density boundary condition"
         )
         self.is_active = "with_analysis"
         self.do_activated = "add_obj_on_gui_set_edit"
@@ -245,11 +245,11 @@ class _ConstraintElectrostaticPotential(CommandManager):
         super(_ConstraintElectrostaticPotential, self).__init__()
         self.menutext = Qt.QT_TRANSLATE_NOOP(
             "FEM_ConstraintElectrostaticPotential",
-            "Constraint electrostatic potential"
+            "Electrostatic potential boundary condition"
         )
         self.tooltip = Qt.QT_TRANSLATE_NOOP(
             "FEM_ConstraintElectrostaticPotential",
-            "Creates a FEM constraint electrostatic potential"
+            "Creates an electrostatic potential boundary condition"
         )
         self.is_active = "with_analysis"
         self.do_activated = "add_obj_on_gui_set_edit"
@@ -262,11 +262,11 @@ class _ConstraintFlowVelocity(CommandManager):
         super(_ConstraintFlowVelocity, self).__init__()
         self.menutext = Qt.QT_TRANSLATE_NOOP(
             "FEM_ConstraintFlowVelocity",
-            "Constraint flow velocity"
+            "Flow velocity boundary condition"
         )
         self.tooltip = Qt.QT_TRANSLATE_NOOP(
             "FEM_ConstraintFlowVelocity",
-            "Creates a FEM constraint flow velocity"
+            "Creates a flow velocity boundary condition"
         )
         self.is_active = "with_analysis"
         self.do_activated = "add_obj_on_gui_set_edit"
@@ -279,11 +279,11 @@ class _ConstraintInitialFlowVelocity(CommandManager):
         super(_ConstraintInitialFlowVelocity, self).__init__()
         self.menutext = Qt.QT_TRANSLATE_NOOP(
             "FEM_ConstraintInitialFlowVelocity",
-            "Constraint initial flow velocity"
+            "Initial flow velocity condition"
         )
         self.tooltip = Qt.QT_TRANSLATE_NOOP(
             "FEM_ConstraintInitialFlowVelocity",
-            "Creates a FEM constraint initial flow velocity"
+            "Creates initial flow velocity condition"
         )
         self.is_active = "with_analysis"
         self.do_activated = "add_obj_on_gui_set_edit"
@@ -296,11 +296,11 @@ class _ConstraintInitialPressure(CommandManager):
         super(_ConstraintInitialPressure, self).__init__()
         self.menutext = Qt.QT_TRANSLATE_NOOP(
             "FEM_ConstraintInitialPressure",
-            "Constraint initial pressure"
+            "Initial pressure condition"
         )
         self.tooltip = Qt.QT_TRANSLATE_NOOP(
             "FEM_ConstraintInitialPressure",
-            "Creates a FEM constraint initial pressure"
+            "Creates an initial pressure condition"
         )
         self.is_active = "with_analysis"
         self.do_activated = "add_obj_on_gui_set_edit"
@@ -313,11 +313,11 @@ class _ConstraintMagnetization(CommandManager):
         super(_ConstraintMagnetization, self).__init__()
         self.menutext = Qt.QT_TRANSLATE_NOOP(
             "FEM_ConstraintMagnetization",
-            "Constraint magnetization"
+            "Magnetization boundary condition"
         )
         self.tooltip = Qt.QT_TRANSLATE_NOOP(
             "FEM_ConstraintMagnetization",
-            "Creates a FEM constraint magnetization"
+            "Creates a magnetization boundary condition"
         )
         self.is_active = "with_analysis"
         self.do_activated = "add_obj_on_gui_set_edit"
@@ -330,11 +330,11 @@ class _ConstraintSectionPrint(CommandManager):
         super(_ConstraintSectionPrint, self).__init__()
         self.menutext = Qt.QT_TRANSLATE_NOOP(
             "FEM_ConstraintSectionPrint",
-            "Constraint sectionprint"
+            "Section print feature"
         )
         self.tooltip = Qt.QT_TRANSLATE_NOOP(
             "FEM_ConstraintSectionPrint",
-            "Creates a FEM constraint sectionprint"
+            "Creates a section print feature"
         )
         self.is_active = "with_analysis"
         self.do_activated = "add_obj_on_gui_set_edit"
@@ -347,11 +347,11 @@ class _ConstraintSelfWeight(CommandManager):
         super(_ConstraintSelfWeight, self).__init__()
         self.menutext = Qt.QT_TRANSLATE_NOOP(
             "FEM_ConstraintSelfWeight",
-            "Constraint self weight"
+            "Gravity load"
         )
         self.tooltip = Qt.QT_TRANSLATE_NOOP(
             "FEM_ConstraintSelfWeight",
-            "Creates a FEM constraint self weight"
+            "Creates a gravity load"
         )
         self.is_active = "with_analysis"
         self.do_activated = "add_obj_on_gui_noset_edit"
@@ -364,11 +364,11 @@ class _ConstraintTie(CommandManager):
         super(_ConstraintTie, self).__init__()
         self.menutext = Qt.QT_TRANSLATE_NOOP(
             "FEM_ConstraintTie",
-            "Constraint tie"
+            "Tie constraint"
         )
         self.tooltip = Qt.QT_TRANSLATE_NOOP(
             "FEM_ConstraintTie",
-            "Creates a FEM constraint tie"
+            "Creates a tie constraint"
         )
         self.is_active = "with_analysis"
         self.do_activated = "add_obj_on_gui_set_edit"
@@ -607,7 +607,7 @@ class _Examples(CommandManager):
         )
         self.tooltip = Qt.QT_TRANSLATE_NOOP(
             "FEM_Examples",
-            "Open FEM examples"
+            "Opens the FEM examples"
         )
         self.is_active = "always"
 
@@ -771,7 +771,7 @@ class _FEMMesh2Mesh(CommandManager):
         )
         self.tooltip = Qt.QT_TRANSLATE_NOOP(
             "FEM_FEMMesh2Mesh",
-            "Convert the surface of a FEM mesh to a mesh"
+            "Converts the surface of a FEM mesh to a mesh"
         )
         self.is_active = "with_femmesh_andor_res"
 
@@ -836,7 +836,7 @@ class _MeshClear(CommandManager):
         )
         self.tooltip = Qt.QT_TRANSLATE_NOOP(
             "FEM_MeshClear",
-            "Clear the Mesh of a FEM mesh object"
+            "Clears the Mesh of a FEM mesh object"
         )
         self.is_active = "with_femmesh"
 
@@ -862,7 +862,7 @@ class _MeshDisplayInfo(CommandManager):
         )
         self.tooltip = Qt.QT_TRANSLATE_NOOP(
             "FEM_MeshDisplayInfo",
-            "Display FEM mesh info"
+            "Displays FEM mesh information"
         )
         self.is_active = "with_femmesh"
 
@@ -892,7 +892,7 @@ class _MeshGmshFromShape(CommandManager):
         )
         self.tooltip = Qt.QT_TRANSLATE_NOOP(
             "FEM_MeshGmshFromShape",
-            "Create a FEM mesh from a shape by Gmsh mesher"
+            "Creates a FEM mesh from a shape by Gmsh mesher"
         )
         self.is_active = "with_part_feature"
 
@@ -955,7 +955,7 @@ class _MeshNetgenFromShape(CommandManager):
         )
         self.tooltip = Qt.QT_TRANSLATE_NOOP(
             "FEM_MeshNetgenFromShape",
-            "Create a FEM mesh from a solid or face shape by Netgen internal mesher"
+            "Creates a FEM mesh from a solid or face shape by Netgen internal mesher"
         )
         self.is_active = "with_part_feature"
 
