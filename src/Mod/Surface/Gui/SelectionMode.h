@@ -38,6 +38,6 @@ enum SelectionMode
     RemoveVertexConstraint = 7,
 };
 
-} //namespace SurfaceGui
+}// namespace SurfaceGui
 
-#endif // SURFACEGUI_SELECTIONMODE_H
+#endif// SURFACEGUI_SELECTIONMODE_H

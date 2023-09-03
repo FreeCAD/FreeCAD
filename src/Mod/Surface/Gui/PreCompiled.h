@@ -39,15 +39,15 @@
 
 // OpenCasCade
 #include <BRepAdaptor_Curve.hxx>
-#include <GeomAbs_Shape.hxx>
 #include <GeomAPI_ProjectPointOnCurve.hxx>
+#include <GeomAbs_Shape.hxx>
 #include <TopExp.hxx>
-#include <TopoDS_Edge.hxx>
-#include <TopoDS_Shape.hxx>
 #include <TopTools_IndexedDataMapOfShapeListOfShape.hxx>
 #include <TopTools_IndexedMapOfShape.hxx>
 #include <TopTools_ListIteratorOfListOfShape.hxx>
+#include <TopoDS_Edge.hxx>
+#include <TopoDS_Shape.hxx>
 
-#endif  //_PreComp_
+#endif//_PreComp_
 
-#endif // GUI_PRECOMPILED_H
+#endif// GUI_PRECOMPILED_H

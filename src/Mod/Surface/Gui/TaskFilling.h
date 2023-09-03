@@ -46,13 +46,18 @@ class FillingVertexPanel;
 class FillingEdgePanel;
 class Ui_TaskFilling;
 
-class ViewProviderFilling : public PartGui::ViewProviderSpline
+class ViewProviderFilling: public PartGui::ViewProviderSpline
 {
     PROPERTY_HEADER_WITH_OVERRIDE(SurfaceGui::ViewProviderFilling);
     using References = std::vector<App::PropertyLinkSubList::SubSet>;
 
 public:
-    enum ShapeType {Vertex, Edge, Face};
+    enum ShapeType
+    {
+        Vertex,
+        Edge,
+        Face
+    };
     void setupContextMenu(QMenu*, QObject*, const char*) override;
     bool setEdit(int ModNum) override;
     void unsetEdit(int ModNum) override;
@@ -60,15 +65,14 @@ public:
     void highlightReferences(ShapeType type, const References& refs, bool on);
 };
 
-class FillingPanel : public QWidget,
-                     public Gui::SelectionObserver,
-                     public Gui::DocumentObserver
+class FillingPanel: public QWidget, public Gui::SelectionObserver, public Gui::DocumentObserver
 {
     Q_OBJECT
 
 protected:
     class ShapeSelection;
-    enum SelectionMode {
+    enum SelectionMode
+    {
         None = SurfaceGui::SelectionMode::None,
         InitFace = SurfaceGui::SelectionMode::InitFace,
         AppendEdge = SurfaceGui::SelectionMode::AppendEdge,
@@ -91,10 +95,10 @@ public:
     bool accept();
     bool reject();
     void setEditedObject(Surface::Filling* obj);
-    void appendButtons(Gui::ButtonGroup *);
+    void appendButtons(Gui::ButtonGroup*);
 
 protected:
-    void changeEvent(QEvent *e) override;
+    void changeEvent(QEvent* e) override;
     void onSelectionChanged(const Gui::SelectionChanges& msg) override;
     /** Notifies on undo */
     void slotUndoDocument(const Gui::Document& Doc) override;
@@ -121,7 +125,7 @@ private:
     void exitSelectionMode();
 };
 
-class TaskFilling : public Gui::TaskView::TaskDialog
+class TaskFilling: public Gui::TaskView::TaskDialog
 {
     Q_OBJECT
 
@@ -136,7 +140,9 @@ public:
     bool reject() override;
 
     QDialogButtonBox::StandardButtons getStandardButtons() const override
-    { return QDialogButtonBox::Ok | QDialogButtonBox::Cancel; }
+    {
+        return QDialogButtonBox::Ok | QDialogButtonBox::Cancel;
+    }
 
 private:
     Gui::ButtonGroup* buttonGroup;
@@ -145,6 +151,6 @@ private:
     FillingVertexPanel* widget3;
 };
 
-} //namespace SurfaceGui
+}// namespace SurfaceGui
 
-#endif // SURFACEGUI_TASKFILLING_H
+#endif// SURFACEGUI_TASKFILLING_H

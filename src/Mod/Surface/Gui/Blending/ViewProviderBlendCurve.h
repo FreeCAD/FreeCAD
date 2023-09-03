@@ -36,6 +36,6 @@ public:
     QIcon getIcon() const override;
 };
 
-}//namespace SurfaceGui
+}// namespace SurfaceGui
 
 #endif// SURFACEGUI_VIEWPROVIDEREXTEND_H
