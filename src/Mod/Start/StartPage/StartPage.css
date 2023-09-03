@@ -58,7 +58,6 @@ img, a {
     margin: 20px;
     background: BASECOLOR;
     border-radius: 15px;
-    overflow: overlay;
 }
 
 #title-bar {
