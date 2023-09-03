@@ -50,11 +50,14 @@
         <property name="wordWrap">
          <bool>true</bool>
         </property>
+        <property name="openExternalLinks">
+         <bool>true</bool>
+        </property>
        </widget>
       </item>
       <item>
-       <widget class="Gui::PrefTextEdit" name="customCSSTextEdit">
-        <property name="acceptRichText">
+       <widget class="Gui::PrefTextEdit" name="customCSSTextEdit" native="true">
+        <property name="acceptRichText" stdset="0">
          <bool>false</bool>
         </property>
         <property name="prefEntry" stdset="0">

@@ -59,6 +59,7 @@ img, a {
     margin: 20px;
     background: BASECOLOR;
     border-radius: 15px;
+    overflow: overlay;
 }
 
 #title-bar {
@@ -77,7 +78,7 @@ img, a {
     display: flex;
     align-items: center;
     color: TEXTCOLOR;
-    font-size: 1.3em;
+    font-size: 1.4em;
     margin-left: 25px;
     font-weight: bold;
 }
@@ -196,10 +197,6 @@ ul.icons {
     text-align: center;
 }
 
-.file-card:hover {
-    border-color: LINKCOLOR;
-}
-
 .file-card h4 {
     margin: 5px 0;
 }
@@ -245,10 +242,6 @@ a .caption:visited {
     border-radius: 8px;
     margin: 10px;
     word-wrap: break-word;
-}
-
-.quickstart-button-card:hover {
-    border-color: LINKCOLOR;
 }
 
 .quickstart-button-card a {
