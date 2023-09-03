@@ -1698,24 +1698,67 @@ void ViewProviderSketch::moveConstraint(int constNum, const Base::Vector2d& toPo
         }
         else if (Constr->Second != GeoEnum::GeoUndef) {
             p1 = getSolvedSketch().getPoint(Constr->First, Constr->FirstPos);
-            const Part::Geometry *geo = GeoList::getGeometryFromGeoId (geomlist, Constr->Second);
             const Part::Geometry *geo1 = GeoList::getGeometryFromGeoId (geomlist, Constr->First);
-            if (geo->is<Part::GeomLineSegment>()) { // point to line distance
-                auto *lineSeg = static_cast<const Part::GeomLineSegment *>(geo);
-                Base::Vector3d l2p1 = lineSeg->getStartPoint();
-                Base::Vector3d l2p2 = lineSeg->getEndPoint();
-                // calculate the projection of p1 onto line2
-                p2.ProjectToLine(p1-l2p1, l2p2-l2p1);
-                p2 += p1;
-            } else if (geo->is<Part::GeomCircle>() // circle to circle distance
-                   || geo->is<Part::GeomArcOfCircle>()) {
-                if (geo1->is<Part::GeomCircle>()
-                || geo1->is<Part::GeomArcOfCircle>()) {
-                    GetCirclesMinimalDistance(geo1, geo, p1, p2);
+            const Part::Geometry *geo2 = GeoList::getGeometryFromGeoId (geomlist, Constr->Second);
+            if (isLineSegment(*geo2)) {
+                if (isCircle(*geo1) || isArcOfCircle(*geo1)){
+                    std::swap(geo1, geo2); // see below
+                }
+                else {
+                    // point to line distance
+                    auto lineSeg = static_cast<const Part::GeomLineSegment *>(geo2);
+                    Base::Vector3d l2p1 = lineSeg->getStartPoint();
+                    Base::Vector3d l2p2 = lineSeg->getEndPoint();
+                    // calculate the projection of p1 onto line2
+                    p2.ProjectToLine(p1-l2p1, l2p2-l2p1);
+                    p2 += p1;
                 }
             }
-            else
-                return;
+            if (isCircle(*geo2) || isArcOfCircle(*geo2)) {
+                if (Constr->FirstPos != Sketcher::PointPos::none){ // circular to point distance
+                    Base::Vector3d ct;
+                    double rad = 0.0;
+                    if (isCircle(*geo2)){
+                        auto circleSeg2 = static_cast<const Part::GeomCircle*>(geo2);
+                        ct = circleSeg2->getCenter();
+                        rad = circleSeg2->getRadius();
+                    }
+                    else {
+                        auto circleSeg2 = static_cast<const Part::GeomArcOfCircle*>(geo2);
+                        ct = circleSeg2->getCenter();
+                        rad = circleSeg2->getRadius();
+                    }
+                    Base::Vector3d v = p1 - ct;
+                    v = v.Normalize();
+                    p2 = ct + rad * v;
+                }
+                else if (isCircle(*geo1) || isArcOfCircle(*geo1)) { // circular to circular distance
+                    GetCirclesMinimalDistance(geo1, geo2, p1, p2);
+                }
+                else if (isLineSegment(*geo1)){ // circular to line distance
+                    auto lineSeg = static_cast<const Part::GeomLineSegment*>(geo1);
+                    Base::Vector3d l2p1 = lineSeg->getStartPoint();
+                    Base::Vector3d l2p2 = lineSeg->getEndPoint();
+
+                    Base::Vector3d ct;
+                    double rad;
+                    if (isCircle(*geo2)){
+                        auto circleSeg = static_cast<const Part::GeomCircle*>(geo2);
+                        ct = circleSeg->getCenter();
+                        rad = circleSeg->getRadius();
+                    }
+                    else {
+                        auto circleSeg = static_cast<const Part::GeomArcOfCircle*>(geo2);
+                        ct = circleSeg->getCenter();
+                        rad = circleSeg->getRadius();
+                    }
+                    p1.ProjectToLine(ct - l2p1, l2p2 - l2p1);// project on the line translated to origin
+                    Base::Vector3d v = p1;
+                    p1 += ct;
+                    v.Normalize();
+                    p2 = ct + v * rad;
+                }
+            }
         }
         else if (Constr->FirstPos != Sketcher::PointPos::none) {
             p2 = getSolvedSketch().getPoint(Constr->First, Constr->FirstPos);
