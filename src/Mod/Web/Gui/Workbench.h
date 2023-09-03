@@ -26,21 +26,22 @@
 
 #include <Gui/Workbench.h>
 
-namespace WebGui {
+namespace WebGui
+{
 
 /**
  * @author Werner Mayer
  */
-class Workbench : public Gui::StdWorkbench
+class Workbench: public Gui::StdWorkbench
 {
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
-  Workbench();
-  ~Workbench() override;
+    Workbench();
+    ~Workbench() override;
 
     /** Defines the standard context menu. */
-  void setupContextMenu(const char* recipient,Gui::MenuItem*) const override;
+    void setupContextMenu(const char* recipient, Gui::MenuItem*) const override;
 
 protected:
     /** Defines the standard menus. */
@@ -53,7 +54,7 @@ protected:
     Gui::DockWindowItems* setupDockWindows() const override;
 
 
-}; // namespace WebGui
+};// namespace WebGui
 
-}
-#endif // WEB_WORKBENCH_H
+}// namespace WebGui
+#endif// WEB_WORKBENCH_H

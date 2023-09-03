@@ -29,19 +29,19 @@
 // Web
 #ifndef WebExport
 #ifdef Web_EXPORTS
-#  define WebExport      FREECAD_DECL_EXPORT
+#define WebExport FREECAD_DECL_EXPORT
 #else
-#  define WebExport      FREECAD_DECL_IMPORT
+#define WebExport FREECAD_DECL_IMPORT
 #endif
 #endif
 
 // WebGui
 #ifndef WebGuiExport
 #ifdef WebGui_EXPORTS
-#  define WebGuiExport   FREECAD_DECL_EXPORT
+#define WebGuiExport FREECAD_DECL_EXPORT
 #else
-#  define WebGuiExport   FREECAD_DECL_IMPORT
+#define WebGuiExport FREECAD_DECL_IMPORT
 #endif
 #endif
 
-#endif //WEB_GLOBAL_H
+#endif// WEB_GLOBAL_H

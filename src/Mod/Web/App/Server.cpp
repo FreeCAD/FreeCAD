@@ -22,10 +22,10 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <memory>
-# include <stdexcept>
-# include <QCoreApplication>
-# include <QTcpSocket>
+#include <QCoreApplication>
+#include <QTcpSocket>
+#include <memory>
+#include <stdexcept>
 #endif
 
 #include <Base/Exception.h>
@@ -61,9 +61,8 @@ bool Firewall::filter(const QByteArray&) const
 }
 
 FirewallPython::FirewallPython(const Py::Object& o)
-  : obj(o)
-{
-}
+    : obj(o)
+{}
 
 FirewallPython::~FirewallPython() = default;
 
@@ -86,9 +85,10 @@ bool FirewallPython::filter(const QByteArray& msg) const
 // ----------------------------------------------------------------------------
 
 ServerEvent::ServerEvent(QTcpSocket* sock, const QByteArray& msg)
-  : QEvent(QEvent::User), sock(sock), text(msg)
-{
-}
+    : QEvent(QEvent::User)
+    , sock(sock)
+    , text(msg)
+{}
 
 ServerEvent::~ServerEvent() = default;
 
@@ -104,9 +104,9 @@ const QByteArray& ServerEvent::request() const
 
 // ----------------------------------------------------------------------------
 
-AppServer::AppServer( bool direct, QObject* parent)
-  : QTcpServer(parent)
-  , direct(direct)
+AppServer::AppServer(bool direct, QObject* parent)
+    : QTcpServer(parent)
+    , direct(direct)
 {
     PyObject* mod = PyImport_ImportModule("__main__");
     if (mod) {
@@ -139,10 +139,10 @@ void AppServer::readClient()
             QCoreApplication::postEvent(this, event.release());
         }
     }
-//    if (socket->state() == QTcpSocket::UnconnectedState) {
-//        //mark the socket for deletion but do not destroy immediately
-//        socket->deleteLater();
-//    }
+    //    if (socket->state() == QTcpSocket::UnconnectedState) {
+    //        //mark the socket for deletion but do not destroy immediately
+    //        socket->deleteLater();
+    //    }
 }
 
 void AppServer::discardClient()
@@ -159,8 +159,9 @@ void AppServer::customEvent(QEvent* e)
 
     std::string str = handleRequest(msg);
     socket->write(str.c_str());
-    if (direct)
+    if (direct) {
         socket->waitForBytesWritten();
+    }
     socket->close();
 }
 
@@ -188,7 +189,7 @@ std::string AppServer::getRequest(const std::string& str) const
         Py::Object attr = module.getAttr(std::string("GET"));
         return attr.as_string();
     }
-    catch (Py::Exception &e) {
+    catch (Py::Exception& e) {
         e.clear();
         return str;
     }
@@ -200,23 +201,25 @@ std::string AppServer::runPython(const QByteArray& msg)
 
     try {
         Firewall* fw = Firewall::getInstance();
-        if (!fw || fw->filter(msg))
+        if (!fw || fw->filter(msg)) {
             str = Base::Interpreter().runString(msg);
-        else
+        }
+        else {
             str = "Command blocked";
+        }
     }
-    catch (Base::PyException &e) {
+    catch (Base::PyException& e) {
         str = e.what();
         str += "\n\n";
         str += e.getStackTrace();
     }
-    catch (Base::SystemExitException &) {
+    catch (Base::SystemExitException&) {
         throw;
     }
-    catch (Base::Exception &e) {
+    catch (Base::Exception& e) {
         str = e.what();
     }
-    catch (std::exception &e) {
+    catch (std::exception& e) {
         str = e.what();
     }
     catch (...) {

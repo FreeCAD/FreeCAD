@@ -22,8 +22,8 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <QNetworkCookie>
-# include <QTextStream>
+#include <QNetworkCookie>
+#include <QTextStream>
 #endif
 
 #include <App/Application.h>
@@ -51,8 +51,9 @@ FcCookieJar::FcCookieJar(QObject* parent)
     connect(&m_timer, &QTimer::timeout, this, &FcCookieJar::saveToDisk);
     Base::FileInfo cookiefile(App::Application::getUserAppDataDir() + "cookies");
     m_file.setFileName(QString::fromUtf8(cookiefile.filePath().c_str()));
-    if (allCookies().isEmpty())
+    if (allCookies().isEmpty()) {
         loadFromDisk();
+    }
 }
 
 FcCookieJar::~FcCookieJar()
@@ -64,8 +65,9 @@ FcCookieJar::~FcCookieJar()
 bool FcCookieJar::setCookiesFromUrl(const QList<QNetworkCookie>& cookieList, const QUrl& url)
 {
     bool status = QNetworkCookieJar::setCookiesFromUrl(cookieList, url);
-    if (status)
+    if (status) {
         scheduleSaveToDisk();
+    }
     return status;
 }
 
@@ -83,8 +85,9 @@ void FcCookieJar::extractRawCookies()
     m_rawCookies.clear();
 
     for (const auto& it : cookies) {
-        if (!it.isSessionCookie())
+        if (!it.isSessionCookie()) {
             m_rawCookies.append(it.toRawForm());
+        }
     }
 }
 
@@ -98,24 +101,30 @@ void FcCookieJar::saveToDisk()
             out << it + "\n";
         }
         m_file.close();
-    } else
+    }
+    else {
         qWarning("IO error handling cookiejar file");
+    }
 }
 
 void FcCookieJar::loadFromDisk()
 {
-    if (!m_file.exists())
+    if (!m_file.exists()) {
         return;
+    }
 
     QList<QNetworkCookie> cookies;
 
     if (m_file.open(QIODevice::ReadOnly | QIODevice::Text)) {
         QTextStream in(&m_file);
-        while (!in.atEnd())
+        while (!in.atEnd()) {
             cookies.append(QNetworkCookie::parseCookies(in.readLine().toUtf8()));
+        }
         m_file.close();
-    } else
+    }
+    else {
         qWarning("IO error handling cookiejar file");
+    }
 
     setAllCookies(cookies);
 }

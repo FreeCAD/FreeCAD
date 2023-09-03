@@ -22,7 +22,7 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <sstream>
+#include <sstream>
 #endif
 
 #include <Base/Console.h>
@@ -58,34 +58,37 @@ client(ip, port, b"import FreeCAD\nFreeCAD.newDocument()")
 
 */
 
-namespace Web {
-class Module : public Py::ExtensionModule<Module>
+namespace Web
+{
+class Module: public Py::ExtensionModule<Module>
 {
 public:
-    Module() : Py::ExtensionModule<Module>("Web")
+    Module()
+        : Py::ExtensionModule<Module>("Web")
     {
-        add_varargs_method("startServer",&Module::startServer,
-            "startServer(address=127.0.0.1,port=0) -- Start a server."
-        );
-        add_varargs_method("waitForConnection", &Module::waitForConnection,
-            "waitForConnection(address=127.0.0.1,port=0,timeout=0)\n"
-            "Start a server, wait for connection and close server.\n"
-            "Its use is disadvised in a the GUI version, since it will\n"
-            "stop responding until the function returns."
-        );
-        add_varargs_method("registerServerFirewall", &Module::registerServerFirewall,
-            "registerServerFirewall(callable(string)) -- Register a firewall."
-        );
-        initialize("This module is the Web module."); // register with Python
+        add_varargs_method("startServer",
+                           &Module::startServer,
+                           "startServer(address=127.0.0.1,port=0) -- Start a server.");
+        add_varargs_method("waitForConnection",
+                           &Module::waitForConnection,
+                           "waitForConnection(address=127.0.0.1,port=0,timeout=0)\n"
+                           "Start a server, wait for connection and close server.\n"
+                           "Its use is disadvised in a the GUI version, since it will\n"
+                           "stop responding until the function returns.");
+        add_varargs_method("registerServerFirewall",
+                           &Module::registerServerFirewall,
+                           "registerServerFirewall(callable(string)) -- Register a firewall.");
+        initialize("This module is the Web module.");// register with Python
     }
 
 private:
     Py::Object startServer(const Py::Tuple& args)
     {
         const char* addr = "127.0.0.1";
-        int port=0;
-        if (!PyArg_ParseTuple(args.ptr(), "|si", &addr, &port))
+        int port = 0;
+        if (!PyArg_ParseTuple(args.ptr(), "|si", &addr, &port)) {
             throw Py::Exception();
+        }
         if (port > USHRT_MAX) {
             throw Py::OverflowError("port number is greater than maximum");
         }
@@ -115,8 +118,9 @@ private:
         const char* addr = "127.0.0.1";
         int port = 0;
         int timeout = 0;
-        if (!PyArg_ParseTuple(args.ptr(), "|sii",&addr,&port, &timeout))
+        if (!PyArg_ParseTuple(args.ptr(), "|sii", &addr, &port, &timeout)) {
             throw Py::Exception();
+        }
         if (port > USHRT_MAX) {
             throw Py::OverflowError("port number is greater than maximum");
         }
@@ -150,14 +154,17 @@ private:
     Py::Object registerServerFirewall(const Py::Tuple& args)
     {
         PyObject* obj;
-        if (!PyArg_ParseTuple(args.ptr(), "O",&obj))
+        if (!PyArg_ParseTuple(args.ptr(), "O", &obj)) {
             throw Py::Exception();
+        }
 
         Py::Object pyobj(obj);
-        if (pyobj.isNone())
+        if (pyobj.isNone()) {
             Web::Firewall::setInstance(nullptr);
-        else
+        }
+        else {
             Web::Firewall::setInstance(new Web::FirewallPython(pyobj));
+        }
 
         return Py::None();
     }
@@ -168,11 +175,12 @@ PyObject* initModule()
     return Base::Interpreter().addModule(new Module);
 }
 
-} // namespace Web
+}// namespace Web
 
 
 /* Python entry */
-PyMOD_INIT_FUNC(Web) {
+PyMOD_INIT_FUNC(Web)
+{
 
     // ADD YOUR CODE HERE
     //
