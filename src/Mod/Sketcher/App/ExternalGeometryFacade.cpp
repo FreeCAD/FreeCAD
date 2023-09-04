@@ -36,45 +36,53 @@ using namespace Sketcher;
 TYPESYSTEM_SOURCE(Sketcher::ExternalGeometryFacade, Base::BaseClass)
 
 ExternalGeometryFacade::ExternalGeometryFacade()
-    : Geo(nullptr),
-      SketchGeoExtension(nullptr),
-      ExternalGeoExtension(nullptr)
+    : Geo(nullptr)
+    , SketchGeoExtension(nullptr)
+    , ExternalGeoExtension(nullptr)
 {}
 
 ExternalGeometryFacade::ExternalGeometryFacade(const Part::Geometry* geometry)
     : Geo(geometry)
 {
-    if (geometry)
+    if (geometry) {
         initExtensions();
-    else
+    }
+    else {
         THROWM(Base::ValueError, "ExternalGeometryFacade initialized with Geometry null pointer");
+    }
 }
 
 std::unique_ptr<ExternalGeometryFacade> ExternalGeometryFacade::getFacade(Part::Geometry* geometry)
 {
-    if (geometry)
+    if (geometry) {
         return std::unique_ptr<ExternalGeometryFacade>(new ExternalGeometryFacade(geometry));
-    else
+    }
+    else {
         return std::unique_ptr<ExternalGeometryFacade>(nullptr);
+    }
 }
 
 std::unique_ptr<const ExternalGeometryFacade>
 ExternalGeometryFacade::getFacade(const Part::Geometry* geometry)
 {
-    if (geometry)
+    if (geometry) {
         return std::unique_ptr<const ExternalGeometryFacade>(new ExternalGeometryFacade(geometry));
-    else
+    }
+    else {
         return std::unique_ptr<const ExternalGeometryFacade>(nullptr);
+    }
 }
 
 void ExternalGeometryFacade::setGeometry(Part::Geometry* geometry)
 {
     Geo = geometry;
 
-    if (geometry)
+    if (geometry) {
         initExtensions();
-    else
+    }
+    else {
         THROWM(Base::ValueError, "ExternalGeometryFacade initialized with Geometry null pointer");
+    }
 }
 
 void ExternalGeometryFacade::initExtensions()
@@ -105,13 +113,15 @@ void ExternalGeometryFacade::initExtensions()
 
 void ExternalGeometryFacade::initExtensions() const
 {
-    if (!Geo->hasExtension(SketchGeometryExtension::getClassTypeId()))
+    if (!Geo->hasExtension(SketchGeometryExtension::getClassTypeId())) {
         THROWM(Base::ValueError,
                "ExternalGeometryFacade for const::Geometry without SketchGeometryExtension");
+    }
 
-    if (!Geo->hasExtension(ExternalGeometryExtension::getClassTypeId()))
+    if (!Geo->hasExtension(ExternalGeometryExtension::getClassTypeId())) {
         THROWM(Base::ValueError,
                "ExternalGeometryFacade for const::Geometry without ExternalGeometryExtension");
+    }
 
     auto ext = std::static_pointer_cast<const SketchGeometryExtension>(
         Geo->getExtension(SketchGeometryExtension::getClassTypeId()).lock());

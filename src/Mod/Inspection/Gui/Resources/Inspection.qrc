@@ -1,5 +1,5 @@
 <RCC>
-    <qresource> 
+    <qresource>
         <file>icons/inspect_pipette.svg</file>
         <file>icons/InspectionWorkbench.svg</file>
         <file>translations/Inspection_fr.qm</file>
@@ -36,4 +36,4 @@
         <file>translations/Inspection_ko.qm</file>
         <file>translations/Inspection_id.qm</file>
     </qresource>
-</RCC> 
+</RCC>

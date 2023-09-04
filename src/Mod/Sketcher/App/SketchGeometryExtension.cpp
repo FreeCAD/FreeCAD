@@ -43,15 +43,15 @@ TYPESYSTEM_SOURCE(Sketcher::SketchGeometryExtension, Part::GeometryPersistenceEx
 std::atomic<long> SketchGeometryExtension::_GeometryID;
 
 SketchGeometryExtension::SketchGeometryExtension()
-    : Id(++SketchGeometryExtension::_GeometryID),
-      InternalGeometryType(InternalType::None),
-      GeometryLayer(0)
+    : Id(++SketchGeometryExtension::_GeometryID)
+    , InternalGeometryType(InternalType::None)
+    , GeometryLayer(0)
 {}
 
 SketchGeometryExtension::SketchGeometryExtension(long cid)
-    : Id(cid),
-      InternalGeometryType(InternalType::None),
-      GeometryLayer(0)
+    : Id(cid)
+    , InternalGeometryType(InternalType::None)
+    , GeometryLayer(0)
 {}
 
 void SketchGeometryExtension::copyAttributes(Part::GeometryExtension* cpy) const
@@ -68,16 +68,18 @@ void SketchGeometryExtension::restoreAttributes(Base::XMLReader& reader)
 {
     Part::GeometryPersistenceExtension::restoreAttributes(reader);
 
-    if (reader.hasAttribute("id"))
+    if (reader.hasAttribute("id")) {
         Id = reader.getAttributeAsInteger("id");
+    }
 
     InternalGeometryType = static_cast<InternalType::InternalType>(
         reader.getAttributeAsInteger("internalGeometryType"));
 
     GeometryModeFlags = GeometryModeFlagType(reader.getAttribute("geometryModeFlags"));
 
-    if (reader.hasAttribute("geometryLayer"))
+    if (reader.hasAttribute("geometryLayer")) {
         GeometryLayer = reader.getAttributeAsInteger("geometryLayer");
+    }
 }
 
 void SketchGeometryExtension::saveAttributes(Base::Writer& writer) const

@@ -81,10 +81,12 @@ public:
             dx = onSketchPos.x - StartPos.x;
             dy = onSketchPos.y - StartPos.y;
 
-            if (QApplication::keyboardModifiers() == Qt::ControlModifier)
+            if (QApplication::keyboardModifiers() == Qt::ControlModifier) {
                 SnapMode = SNAP_MODE_Straight;
-            else
+            }
+            else {
                 SnapMode = SNAP_MODE_Free;
+            }
 
             double a = 0;
             double rev = 0;
@@ -92,16 +94,18 @@ public:
                 r = fabs(dx) / 4;
                 rev = Base::sgn(dx);
                 SnapDir = SNAP_DIR_Horz;
-                if (SnapMode == SNAP_MODE_Straight)
+                if (SnapMode == SNAP_MODE_Straight) {
                     dy = 0;
+                }
             }
             else {
                 r = fabs(dy) / 4;
                 a = 8;
                 rev = Base::sgn(dy);
                 SnapDir = SNAP_DIR_Vert;
-                if (SnapMode == SNAP_MODE_Straight)
+                if (SnapMode == SNAP_MODE_Straight) {
                     dx = 0;
+                }
             }
 
             // draw the arcs with each 16 segments
@@ -116,8 +120,9 @@ public:
                 // onSketchPos
                 if (!(dx == 0 || dy == 0)) {
                     double rotAngle = atan(dy / dx);
-                    if (a > 0)
+                    if (a > 0) {
                         rotAngle = -atan(dx / dy);
+                    }
                     double rxRot = rx * cos(rotAngle) - ry * sin(rotAngle);
                     double ryRot = rx * sin(rotAngle) + ry * cos(rotAngle);
                     rx = rxRot;
@@ -195,11 +200,13 @@ public:
             try {
                 Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add slot"));
 
-                AutoConstraint lastCons = {
-                    Sketcher::None, Sketcher::GeoEnum::GeoUndef, Sketcher::PointPos::none};
+                AutoConstraint lastCons = {Sketcher::None,
+                                           Sketcher::GeoEnum::GeoUndef,
+                                           Sketcher::PointPos::none};
 
-                if (!sugConstr2.empty())
+                if (!sugConstr2.empty()) {
                     lastCons = sugConstr2.back();
+                }
 
                 ostringstream snapCon = ostringstream("");
                 if (SnapMode == SNAP_MODE_Straight) {
@@ -215,15 +222,17 @@ public:
                     // If horizontal/vertical already applied because of snap, do not duplicate with
                     // Autocontraint
                     if (lastCons.Type == Sketcher::Horizontal
-                        || lastCons.Type == Sketcher::Vertical)
+                        || lastCons.Type == Sketcher::Vertical) {
                         sugConstr2.pop_back();
+                    }
                 }
                 else {
                     // If horizontal/vertical Autoconstraint suggested, applied it on first line
                     // (rather than last arc)
                     if (lastCons.Type == Sketcher::Horizontal
-                        || lastCons.Type == Sketcher::Vertical)
+                        || lastCons.Type == Sketcher::Vertical) {
                         sugConstr2.back().GeoId = firstCurve + 2;
+                    }
                 }
 
                 Gui::Command::doCommand(
@@ -286,15 +295,17 @@ public:
 
                 // add auto constraints at the center of the first arc
                 if (!sugConstr1.empty()) {
-                    createAutoConstraints(
-                        sugConstr1, getHighestCurveIndex() - 3, Sketcher::PointPos::mid);
+                    createAutoConstraints(sugConstr1,
+                                          getHighestCurveIndex() - 3,
+                                          Sketcher::PointPos::mid);
                     sugConstr1.clear();
                 }
 
                 // add auto constraints at the center of the second arc
                 if (!sugConstr2.empty()) {
-                    createAutoConstraints(
-                        sugConstr2, getHighestCurveIndex() - 2, Sketcher::PointPos::mid);
+                    createAutoConstraints(sugConstr2,
+                                          getHighestCurveIndex() - 2,
+                                          Sketcher::PointPos::mid);
                     sugConstr2.clear();
                 }
 

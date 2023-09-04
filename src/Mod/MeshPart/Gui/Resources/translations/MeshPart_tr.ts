@@ -35,7 +35,7 @@
       <location filename="../../Command.cpp" line="307"/>
       <source>Creates an approximated curve on top of a mesh.
 This command only works with a 'mesh' object.</source>
-      <translation>Bir metal örgünün üstünde yaklaşık bir eğri oluşturur. 
+      <translation>Bir metal örgünün üstünde yaklaşık bir eğri oluşturur.
 Bu komut yalnızca bir 'metal örgü' nesnesiyle çalışır.</translation>
     </message>
   </context>
@@ -220,7 +220,7 @@ Bu komut yalnızca bir 'metal örgü' nesnesiyle çalışır.</translation>
       <source>Press 'Start', then pick points on the mesh; when enough points have been set, right-click and choose 'Create'. Repeat this process to create more splines. Close this task panel to complete the operation.
 
 This command only works with a 'mesh' object, not a regular face or surface. To convert an object to a mesh use the tools of the Mesh Workbench.</source>
-      <translation>"Başlat"a basın, ardından metal örgü üzerindeki noktaları seçin; Yeterli nokta ayarlandığında, sağ tıklayın ve 'Oluştur'u seçin. Daha fazla spline oluşturmak için bu işlemi tekrarlayın. İşlemi tamamlamak için bu görev panelini kapatın. 
+      <translation>"Başlat"a basın, ardından metal örgü üzerindeki noktaları seçin; Yeterli nokta ayarlandığında, sağ tıklayın ve 'Oluştur'u seçin. Daha fazla spline oluşturmak için bu işlemi tekrarlayın. İşlemi tamamlamak için bu görev panelini kapatın.
 
 Bu komut, normal bir yüz veya yüzeyle değil, yalnızca 'metal örgü' nesnesiyle çalışır. Bir nesneyi metal örgüye dönüştürmek için Metal Örgü Çalışma Tezgahının araçlarını kullanın.</translation>
     </message>
@@ -338,7 +338,7 @@ Surface deviation multiplied by the length of the current mesh segment (edge)</s
       <source>Mesh segments will be grouped according to the color of the object faces.
 These groups will be exported for mesh output formats supporting
 this feature (e.g. the format OBJ).</source>
-      <translation>Metal örgü bölümleri, nesne yüzlerinin rengine göre gruplandırılacaktır. 
+      <translation>Metal örgü bölümleri, nesne yüzlerinin rengine göre gruplandırılacaktır.
 Bu gruplar, bu özelliği destekleyen metal örgü çıktı biçimleri için dışa aktarılacaktır (ör. OBJ biçimi).</translation>
     </message>
     <message>
@@ -427,7 +427,7 @@ En küçük değer 0'dır.</translation>
       <location filename="../../Tessellation.ui" line="279"/>
       <source>If this parameter is smaller, the mesh becomes finer.
 A value in the range of 0.1-1.</source>
-      <translation>Bu parametre daha küçükse, metal örgü daha ince hale gelir. 
+      <translation>Bu parametre daha küçükse, metal örgü daha ince hale gelir.
 0.1-1 aralığında bir değer.</translation>
     </message>
     <message>

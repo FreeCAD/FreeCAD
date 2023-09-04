@@ -450,20 +450,21 @@ struct CoinMapping
             auto indexit =
                 std::find(PointIdToVertexId[l].begin(), PointIdToVertexId[l].end(), vertexId);
 
-            if (indexit != PointIdToVertexId[l].end())
+            if (indexit != PointIdToVertexId[l].end()) {
                 return MultiFieldId(std::distance(PointIdToVertexId[l].begin(), indexit), l);
+            }
         }
 
         return MultiFieldId::Invalid;
     }
 
     //* These map a MF index (second index) within a coin layer (first index) for points or curves
-    //to a GeoId */
+    // to a GeoId */
     std::vector<std::vector<int>> CurvIdToGeoId; // conversion of SoLineSet index to GeoId
     std::vector<std::vector<int>> PointIdToGeoId;// conversion of SoCoordinate3 index to GeoId
 
     //* This maps an MF index (second index) of a point within a coin layer (first index) to a
-    //global VertexId */
+    // global VertexId */
     std::vector<std::vector<int>> PointIdToVertexId;
 
     /// This maps GeoElementId index {GeoId, PointPos} to a {coin layer and MF index} of a curve or

@@ -62,8 +62,9 @@ public:
     {
         if (Mode == STATUS_SEEK_First) {
             setPositionText(onSketchPos);
-            if (seekAutoConstraint(
-                    sugConstr1, onSketchPos, Base::Vector2d(0.f, 0.f))) {// TODO: ellipse prio 1
+            if (seekAutoConstraint(sugConstr1,
+                                   onSketchPos,
+                                   Base::Vector2d(0.f, 0.f))) {// TODO: ellipse prio 1
                 renderSuggestConstraintsCursor(sugConstr1);
                 return;
             }
@@ -91,8 +92,10 @@ public:
             }
 
             drawEdit(EditCurve);
-            if (seekAutoConstraint(
-                    sugConstr2, onSketchPos, onSketchPos - centerPoint, AutoConstraint::CURVE)) {
+            if (seekAutoConstraint(sugConstr2,
+                                   onSketchPos,
+                                   onSketchPos - centerPoint,
+                                   AutoConstraint::CURVE)) {
                 renderSuggestConstraintsCursor(sugConstr2);
                 return;
             }
@@ -177,8 +180,10 @@ public:
                 std::string aString = lengthToDisplayFormat(a, 1);
                 std::string bString = lengthToDisplayFormat(b, 1);
                 std::string angleString = angleToDisplayFormat(arcAngle * 180.0 / M_PI, 1);
-                text.sprintf(
-                    " (R%s, R%s, %s)", aString.c_str(), bString.c_str(), angleString.c_str());
+                text.sprintf(" (R%s, R%s, %s)",
+                             aString.c_str(),
+                             bString.c_str(),
+                             angleString.c_str());
                 setPositionText(onSketchPos, text);
             }
 
@@ -252,8 +257,9 @@ public:
 
             bool isOriginalArcCCW = true;
 
-            if (arcAngle > 0)
+            if (arcAngle > 0) {
                 endAngle = startAngle + arcAngle;
+            }
             else {
                 endAngle = startAngle;
                 startAngle += arcAngle;
@@ -312,8 +318,9 @@ public:
 
                 currentgeoid++;
 
-                Gui::cmdAppObjectArgs(
-                    sketchgui->getObject(), "exposeInternalGeometry(%d)", currentgeoid);
+                Gui::cmdAppObjectArgs(sketchgui->getObject(),
+                                      "exposeInternalGeometry(%d)",
+                                      currentgeoid);
             }
             catch (const Base::Exception&) {
                 Gui::NotifyError(

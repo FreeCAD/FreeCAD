@@ -57,14 +57,17 @@ bool SketcherGui::tryAutoRecompute(Sketcher::SketchObject* obj, bool& autoremove
 
     // We need to make sure the solver has right redundancy information before trying to remove the
     // redundants. for example if a non-driving constraint has been added.
-    if (autoRemoveRedundants && autoRecompute)
+    if (autoRemoveRedundants && autoRecompute) {
         obj->solve();
+    }
 
-    if (autoRemoveRedundants)
+    if (autoRemoveRedundants) {
         obj->autoRemoveRedundants();
+    }
 
-    if (autoRecompute)
+    if (autoRecompute) {
         Gui::Command::updateActive();
+    }
 
     autoremoveredundants = autoRemoveRedundants;
 
@@ -98,8 +101,9 @@ std::string SketcherGui::getStrippedPythonExceptionString(const Base::Exception&
     if (msg.length() > 26 && msg.substr(0, 26) == "FreeCAD exception thrown (") {
         return msg.substr(26, msg.length() - 27);
     }
-    else
+    else {
         return msg;
+    }
 }
 
 bool SketcherGui::ReleaseHandler(Gui::Document* doc)
@@ -121,8 +125,10 @@ bool SketcherGui::ReleaseHandler(Gui::Document* doc)
     return false;
 }
 
-void SketcherGui::getIdsFromName(const std::string& name, const Sketcher::SketchObject* Obj,
-                                 int& GeoId, PointPos& PosId)
+void SketcherGui::getIdsFromName(const std::string& name,
+                                 const Sketcher::SketchObject* Obj,
+                                 int& GeoId,
+                                 PointPos& PosId)
 {
     GeoId = GeoEnum::GeoUndef;
     PosId = Sketcher::PointPos::none;
@@ -134,12 +140,15 @@ void SketcherGui::getIdsFromName(const std::string& name, const Sketcher::Sketch
         GeoId = Sketcher::GeoEnum::RtPnt;
         PosId = Sketcher::PointPos::start;
     }
-    else if (name.size() == 6 && name.substr(0, 6) == "H_Axis")
+    else if (name.size() == 6 && name.substr(0, 6) == "H_Axis") {
         GeoId = Sketcher::GeoEnum::HAxis;
-    else if (name.size() == 6 && name.substr(0, 6) == "V_Axis")
+    }
+    else if (name.size() == 6 && name.substr(0, 6) == "V_Axis") {
         GeoId = Sketcher::GeoEnum::VAxis;
-    else if (name.size() > 12 && name.substr(0, 12) == "ExternalEdge")
+    }
+    else if (name.size() > 12 && name.substr(0, 12) == "ExternalEdge") {
         GeoId = Sketcher::GeoEnum::RefExt + 1 - std::atoi(name.substr(12, 4000).c_str());
+    }
     else if (name.size() > 6 && name.substr(0, 6) == "Vertex") {
         int VtId = std::atoi(name.substr(6, 4000).c_str()) - 1;
         Obj->getGeoVertexIndex(VtId, GeoId, PosId);
@@ -176,65 +185,80 @@ std::vector<int> SketcherGui::getGeoIdsOfEdgesFromNames(const Sketcher::SketchOb
 
 bool SketcherGui::checkBothExternal(int GeoId1, int GeoId2)
 {
-    if (GeoId1 == GeoEnum::GeoUndef || GeoId2 == GeoEnum::GeoUndef)
+    if (GeoId1 == GeoEnum::GeoUndef || GeoId2 == GeoEnum::GeoUndef) {
         return false;
-    else
+    }
+    else {
         return (GeoId1 < 0 && GeoId2 < 0);
+    }
 }
 
 bool SketcherGui::isPointOrSegmentFixed(const Sketcher::SketchObject* Obj, int GeoId)
 {
     const std::vector<Sketcher::Constraint*>& vals = Obj->Constraints.getValues();
 
-    if (GeoId == GeoEnum::GeoUndef)
+    if (GeoId == GeoEnum::GeoUndef) {
         return false;
-    else
+    }
+    else {
         return checkConstraint(vals, Sketcher::Block, GeoId, Sketcher::PointPos::none)
             || GeoId <= Sketcher::GeoEnum::RtPnt;
+    }
 }
 
-bool SketcherGui::areBothPointsOrSegmentsFixed(const Sketcher::SketchObject* Obj, int GeoId1,
+bool SketcherGui::areBothPointsOrSegmentsFixed(const Sketcher::SketchObject* Obj,
+                                               int GeoId1,
                                                int GeoId2)
 {
     const std::vector<Sketcher::Constraint*>& vals = Obj->Constraints.getValues();
 
-    if (GeoId1 == GeoEnum::GeoUndef || GeoId2 == GeoEnum::GeoUndef)
+    if (GeoId1 == GeoEnum::GeoUndef || GeoId2 == GeoEnum::GeoUndef) {
         return false;
-    else
+    }
+    else {
         return ((checkConstraint(vals, Sketcher::Block, GeoId1, Sketcher::PointPos::none)
                  || GeoId1 <= Sketcher::GeoEnum::RtPnt)
                 && (checkConstraint(vals, Sketcher::Block, GeoId2, Sketcher::PointPos::none)
                     || GeoId2 <= Sketcher::GeoEnum::RtPnt));
+    }
 }
 
-bool SketcherGui::areAllPointsOrSegmentsFixed(const Sketcher::SketchObject* Obj, int GeoId1,
-                                              int GeoId2, int GeoId3)
+bool SketcherGui::areAllPointsOrSegmentsFixed(const Sketcher::SketchObject* Obj,
+                                              int GeoId1,
+                                              int GeoId2,
+                                              int GeoId3)
 {
     const std::vector<Sketcher::Constraint*>& vals = Obj->Constraints.getValues();
 
-    if (GeoId1 == GeoEnum::GeoUndef || GeoId2 == GeoEnum::GeoUndef || GeoId3 == GeoEnum::GeoUndef)
+    if (GeoId1 == GeoEnum::GeoUndef || GeoId2 == GeoEnum::GeoUndef || GeoId3 == GeoEnum::GeoUndef) {
         return false;
-    else
+    }
+    else {
         return ((checkConstraint(vals, Sketcher::Block, GeoId1, Sketcher::PointPos::none)
                  || GeoId1 <= Sketcher::GeoEnum::RtPnt)
                 && (checkConstraint(vals, Sketcher::Block, GeoId2, Sketcher::PointPos::none)
                     || GeoId2 <= Sketcher::GeoEnum::RtPnt)
                 && (checkConstraint(vals, Sketcher::Block, GeoId3, Sketcher::PointPos::none)
                     || GeoId3 <= Sketcher::GeoEnum::RtPnt));
+    }
 }
 
 bool SketcherGui::isSimpleVertex(const Sketcher::SketchObject* Obj, int GeoId, PointPos PosId)
 {
     if (PosId == Sketcher::PointPos::start
-        && (GeoId == Sketcher::GeoEnum::HAxis || GeoId == Sketcher::GeoEnum::VAxis))
+        && (GeoId == Sketcher::GeoEnum::HAxis || GeoId == Sketcher::GeoEnum::VAxis)) {
         return true;
+    }
     const Part::Geometry* geo = Obj->getGeometry(GeoId);
-    if (geo->getTypeId() == Part::GeomPoint::getClassTypeId())
+    if (geo->getTypeId() == Part::GeomPoint::getClassTypeId()) {
         return true;
-    else if (PosId == Sketcher::PointPos::mid)
+    }
+    else if (PosId == Sketcher::PointPos::mid) {
         return true;
-    else
+    }
+    else {
         return false;
+    }
 }
 
 bool SketcherGui::isBsplineKnot(const Sketcher::SketchObject* Obj, int GeoId)
@@ -243,24 +267,29 @@ bool SketcherGui::isBsplineKnot(const Sketcher::SketchObject* Obj, int GeoId)
     return (gf && gf->getInternalType() == Sketcher::InternalType::BSplineKnotPoint);
 }
 
-bool SketcherGui::isBsplineKnotOrEndPoint(const Sketcher::SketchObject* Obj, int GeoId,
+bool SketcherGui::isBsplineKnotOrEndPoint(const Sketcher::SketchObject* Obj,
+                                          int GeoId,
                                           Sketcher::PointPos PosId)
 {
     // check first using geometry facade
-    if (isBsplineKnot(Obj, GeoId))
+    if (isBsplineKnot(Obj, GeoId)) {
         return true;
+    }
 
     const Part::Geometry* geo = Obj->getGeometry(GeoId);
     // end points of B-Splines are also knots
     if (geo->getTypeId() == Part::GeomBSplineCurve::getClassTypeId()
-        && (PosId == Sketcher::PointPos::start || PosId == Sketcher::PointPos::end))
+        && (PosId == Sketcher::PointPos::start || PosId == Sketcher::PointPos::end)) {
         return true;
+    }
 
     return false;
 }
 
-bool SketcherGui::IsPointAlreadyOnCurve(int GeoIdCurve, int GeoIdPoint,
-                                        Sketcher::PointPos PosIdPoint, Sketcher::SketchObject* Obj)
+bool SketcherGui::IsPointAlreadyOnCurve(int GeoIdCurve,
+                                        int GeoIdPoint,
+                                        Sketcher::PointPos PosIdPoint,
+                                        Sketcher::SketchObject* Obj)
 {
     // This func is a "smartness" behind three-element tangent-, perp.- and angle-via-point.
     // We want to find out, if the point supplied by user is already on
@@ -279,8 +308,9 @@ bool SketcherGui::IsPointAlreadyOnCurve(int GeoIdCurve, int GeoIdPoint,
             const std::vector<Constraint*>& constraints = Obj->Constraints.getValues();
             for (const auto& constraint : constraints) {
                 if (constraint->Type == Sketcher::ConstraintType::InternalAlignment
-                    && constraint->First == GeoIdPoint && constraint->Second == GeoIdCurve)
+                    && constraint->First == GeoIdPoint && constraint->Second == GeoIdCurve) {
                     return true;
+                }
             }
         }
     }
@@ -293,8 +323,9 @@ bool SketcherGui::isBsplinePole(const Part::Geometry* geo)
 {
     auto gf = GeometryFacade::getFacade(geo);
 
-    if (gf)
+    if (gf) {
         return gf->getInternalType() == InternalType::BSplineControlPoint;
+    }
 
     THROWM(Base::ValueError, "Null geometry in isBsplinePole - please report")
 }
@@ -308,7 +339,9 @@ bool SketcherGui::isBsplinePole(const Sketcher::SketchObject* Obj, int GeoId)
 }
 
 bool SketcherGui::checkConstraint(const std::vector<Sketcher::Constraint*>& vals,
-                                  ConstraintType type, int geoid, PointPos pos)
+                                  ConstraintType type,
+                                  int geoid,
+                                  PointPos pos)
 {
     for (std::vector<Sketcher::Constraint*>::const_iterator itc = vals.begin(); itc != vals.end();
          ++itc) {
@@ -333,7 +366,8 @@ double SketcherGui::GetPointAngle(const Base::Vector2d& p1, const Base::Vector2d
 // Set the two points on circles at minimal distance
 // in concentric case set points on relative X axis
 void SketcherGui::GetCirclesMinimalDistance(const Part::GeomCircle* circle1,
-                                            const Part::GeomCircle* circle2, Base::Vector3d& point1,
+                                            const Part::GeomCircle* circle2,
+                                            Base::Vector3d& point1,
                                             Base::Vector3d& point2)
 {
     double radius1 = circle1->getRadius();
@@ -422,12 +456,14 @@ bool SketcherGui::isSketcherBSplineActive(Gui::Document* doc, bool actsOnSelecti
             && doc->getInEdit()->isDerivedFrom(SketcherGui::ViewProviderSketch::getClassTypeId())) {
             if (static_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit())->getSketchMode()
                 == ViewProviderSketch::STATUS_NONE) {
-                if (!actsOnSelection)
+                if (!actsOnSelection) {
                     return true;
+                }
                 else if (Gui::Selection().countObjectsOfType(
                              Sketcher::SketchObject::getClassTypeId())
-                         > 0)
+                         > 0) {
                     return true;
+                }
             }
         }
     }
@@ -484,8 +520,9 @@ void SketcherGui::removeRedundantHorizontalVertical(Sketcher::SketchObject* pske
                             geoId1iterator = coincidents.find(-1);
 
                             if (geoId1iterator != coincidents.end()) {
-                                if ((*geoId1iterator).second == Sketcher::PointPos::start)
+                                if ((*geoId1iterator).second == Sketcher::PointPos::start) {
                                     orig = true;
+                                }
                             }
                         }
                         else {// it may be that there is no constraint at all, but there is external
@@ -526,7 +563,8 @@ void SketcherGui::removeRedundantHorizontalVertical(Sketcher::SketchObject* pske
 }
 
 void SketcherGui::ConstraintToAttachment(Sketcher::GeoElementId element,
-                                         Sketcher::GeoElementId attachment, double distance,
+                                         Sketcher::GeoElementId attachment,
+                                         double distance,
                                          App::DocumentObject* obj)
 {
     if (distance == 0.) {

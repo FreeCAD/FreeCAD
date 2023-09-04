@@ -58,12 +58,14 @@ bool isSketcherVirtualSpaceActive(Gui::Document* doc, bool actsOnSelection)
             && doc->getInEdit()->isDerivedFrom(SketcherGui::ViewProviderSketch::getClassTypeId())) {
             if (static_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit())->getSketchMode()
                 == ViewProviderSketch::STATUS_NONE) {
-                if (!actsOnSelection)
+                if (!actsOnSelection) {
                     return true;
+                }
                 else if (Gui::Selection().countObjectsOfType(
                              Sketcher::SketchObject::getClassTypeId())
-                         > 0)
+                         > 0) {
                     return true;
+                }
             }
         }
     }
@@ -133,8 +135,9 @@ void CmdSketcherSwitchVirtualSpace::activated(int iMsg)
         for (std::vector<std::string>::const_iterator it = SubNames.begin(); it != SubNames.end();
              ++it) {
             // see if we have constraints, if we do it is not a mode change, but a toggle.
-            if (it->size() > 10 && it->substr(0, 10) == "Constraint")
+            if (it->size() > 10 && it->substr(0, 10) == "Constraint") {
                 modeChange = false;
+            }
         }
     }
 
@@ -182,10 +185,12 @@ void CmdSketcherSwitchVirtualSpace::activated(int iMsg)
             }
         }
 
-        if (successful > 0)
+        if (successful > 0) {
             commitCommand();
-        else
+        }
+        else {
             abortCommand();
+        }
 
         // recomputer and clear the selection (convenience)
         tryAutoRecompute(Obj);
