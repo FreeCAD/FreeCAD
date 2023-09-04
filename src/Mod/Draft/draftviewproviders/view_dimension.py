@@ -577,10 +577,9 @@ class ViewProviderLinearDimension(ViewProviderDimensionBase):
                 # multiple inch tokens
                 self.string = self.string.replace('"',"",self.string.count('"')-1)
             d_params = App.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
-            sep = d_params.GetString("FeetSeparator","")
-            if sep:
-                # use a custom separator
-                self.string = self.string.replace("' ", "'" + sep + " ")
+            sep = d_params.GetString("FeetSeparator"," ")
+            # use a custom separator
+            self.string = self.string.replace("' ", "'" + sep)
             self.string = self.string.replace("+", " ")
             self.string = self.string.replace("   ", " ")
             self.string = self.string.replace("  ", " ")
