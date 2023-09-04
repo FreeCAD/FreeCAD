@@ -27,11 +27,9 @@
 import os
 import functools
 import tempfile
-import hashlib
 import threading
 import json
-import re  # Needed for py 3.6 and earlier, can remove later, search for "re."
-from datetime import date, timedelta
+from datetime import date
 from typing import Dict
 
 from PySide import QtGui, QtCore, QtWidgets
@@ -59,6 +57,7 @@ from Addon import Addon
 from manage_python_dependencies import (
     PythonPackageManager,
 )
+from addonmanager_cache import local_cache_needs_update
 from addonmanager_devmode import DeveloperMode
 from addonmanager_firstrun import FirstRunDialog
 from addonmanager_connection_checker import ConnectionCheckerGUI
@@ -179,7 +178,7 @@ class CommandAddonManager:
         self.packages_with_updates = set()
         self.startup_sequence = []
         self.cleanup_workers()
-        self.determine_cache_update_status()
+        self.update_cache = local_cache_needs_update()
 
         # restore window geometry from stored state
         pref = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Addons")
@@ -294,79 +293,6 @@ class CommandAddonManager:
                                 ).format(worker)
                                 + "\n"
                             )
-
-    def determine_cache_update_status(self) -> None:
-        """Determine whether we need to update the cache, based on user preference, and previous
-        cache update status. Sets self.update_cache to either True or False."""
-
-        # Figure out our cache update frequency: there is a combo box in the preferences dialog
-        # with three options: never, daily, and weekly. Check that first, but allow it to be
-        # overridden by a more specific DaysBetweenUpdates selection, if the user has provided it.
-        # For that parameter we use:
-        # -1: Only manual updates (default)
-        #  0: Update every launch
-        # >0: Update every n days
-        pref = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Addons")
-        self.update_cache = False
-        update_frequency = pref.GetInt("UpdateFrequencyComboEntry", 0)
-        if update_frequency == 0:
-            days_between_updates = -1
-        elif update_frequency == 1:
-            days_between_updates = 1
-        elif update_frequency == 2:
-            days_between_updates = 7
-        days_between_updates = pref.GetInt("DaysBetweenUpdates", days_between_updates)
-        last_cache_update_string = pref.GetString("LastCacheUpdate", "never")
-        cache_path = FreeCAD.getUserCachePath()
-        am_path = os.path.join(cache_path, "AddonManager")
-        if last_cache_update_string == "never":
-            self.update_cache = True
-        elif days_between_updates > 0:
-            if hasattr(date, "fromisoformat"):
-                last_cache_update = date.fromisoformat(last_cache_update_string)
-            else:
-                # Python 3.6 and earlier don't have date.fromisoformat
-                date_re = re.compile("([0-9]{4})-?(1[0-2]|0[1-9])-?(3[01]|0[1-9]|[12][0-9])")
-                matches = date_re.match(last_cache_update_string)
-                last_cache_update = date(
-                    int(matches.group(1)), int(matches.group(2)), int(matches.group(3))
-                )
-            delta_update = timedelta(days=days_between_updates)
-            if date.today() >= last_cache_update + delta_update:
-                self.update_cache = True
-        elif days_between_updates == 0:
-            self.update_cache = True
-        elif not os.path.isdir(am_path):
-            self.update_cache = True
-        stopfile = utils.get_cache_file_name("CACHE_UPDATE_INTERRUPTED")
-        if os.path.exists(stopfile):
-            self.update_cache = True
-            os.remove(stopfile)
-            FreeCAD.Console.PrintMessage(
-                translate(
-                    "AddonsInstaller",
-                    "Previous cache process was interrupted, restarting...\n",
-                )
-            )
-
-        # See if the user has changed the custom repos list since our last re-cache:
-        stored_hash = pref.GetString("CustomRepoHash", "")
-        custom_repos = pref.GetString("CustomRepositories", "")
-        if custom_repos:
-            hasher = hashlib.sha1()
-            hasher.update(custom_repos.encode("utf-8"))
-            new_hash = hasher.hexdigest()
-        else:
-            new_hash = ""
-        if new_hash != stored_hash:
-            stored_hash = pref.SetString("CustomRepoHash", new_hash)
-            self.update_cache = True
-            FreeCAD.Console.PrintMessage(
-                translate(
-                    "AddonsInstaller",
-                    "Custom repo list changed, forcing recache...\n",
-                )
-            )
 
     def reject(self) -> None:
         """called when the window has been closed"""
