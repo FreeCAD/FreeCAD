@@ -20,6 +20,7 @@ files: |
     )
 exclude: |
     (?x)^(
+        src/Tools/generateBase/generateModel_Module.py|
         .*vcproj.*|
         .*vcxproj.*
     )
