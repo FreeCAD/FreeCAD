@@ -35,7 +35,7 @@ class GitFailed(RuntimeError):
 
 
 class MockConsole:
-    """Mock for the FreeCAD.Console -- does NOT print anything out, just logs it."""
+    """Spy for the FreeCAD.Console -- does NOT print anything out, just logs it."""
 
     def __init__(self):
         self.log = []
@@ -400,4 +400,64 @@ class MockThread:
             and self.interrupt_check_counter >= self.interrupt_after_n_calls
         ):
             return True
+        return False
+
+
+class MockPref:
+    def __init__(self):
+        self.prefs = {}
+        self.pref_set_counter = {}
+        self.pref_get_counter = {}
+
+    def set_prefs(self, pref_dict: dict) -> None:
+        self.prefs = pref_dict
+
+    def GetInt(self, key: str, default: int) -> int:
+        return self.Get(key, default)
+
+    def GetString(self, key: str, default: str) -> str:
+        return self.Get(key, default)
+
+    def GetBool(self, key: str, default: bool) -> bool:
+        return self.Get(key, default)
+
+    def Get(self, key: str, default):
+        if key not in self.pref_set_counter:
+            self.pref_get_counter[key] = 1
+        else:
+            self.pref_get_counter[key] += 1
+        if key in self.prefs:
+            return self.prefs[key]
+        raise ValueError(f"Expected key not in mock preferences: {key}")
+
+    def SetInt(self, key: str, value: int) -> None:
+        return self.Set(key, value)
+
+    def SetString(self, key: str, value: str) -> None:
+        return self.Set(key, value)
+
+    def SetBool(self, key: str, value: bool) -> None:
+        return self.Set(key, value)
+
+    def Set(self, key: str, value):
+        if key not in self.pref_set_counter:
+            self.pref_set_counter[key] = 1
+        else:
+            self.pref_set_counter[key] += 1
+        self.prefs[key] = value
+
+
+class MockExists:
+    def __init__(self, files: List[str] = None):
+        """Returns True for all files in files, and False for all others"""
+        self.files = files
+        self.files_checked = []
+
+    def exists(self, check_file: str):
+        self.files_checked.append(check_file)
+        if not self.files:
+            return False
+        for file in self.files:
+            if check_file.endswith(file):
+                return True
         return False
