@@ -122,6 +122,9 @@ public:
 
     TechDraw::DrawView* getBalloonParent() { return m_balloonParent; }
 
+    void zoomIn();
+    void zoomOut();
+
 public Q_SLOTS:
     void setHighQualityAntialiasing(bool highQualityAntialiasing);
 
