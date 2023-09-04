@@ -266,9 +266,9 @@ def build_new_file_card(template):
             TranslationTexts.T_TEMPLATE_EMPTYFILE_NAME,
             TranslationTexts.T_TEMPLATE_EMPTYFILE_DESC,
         ],
-        "import_file": [
-            TranslationTexts.T_TEMPLATE_IMPORTFILE_NAME,
-            TranslationTexts.T_TEMPLATE_IMPORTFILE_DESC,
+        "open_file": [
+            TranslationTexts.T_TEMPLATE_OPENFILE_NAME,
+            TranslationTexts.T_TEMPLATE_OPENFILE_DESC,
         ],
         "parametric_part": [
             TranslationTexts.T_TEMPLATE_PARAMETRICPART_NAME,
@@ -286,7 +286,7 @@ def build_new_file_card(template):
     }
 
     if template not in templates:
-        return
+        return ""
 
     image = "file:///" + os.path.join(
         os.path.join(FreeCAD.getResourceDir(), "Mod", "Start", "StartPage"),
@@ -378,7 +378,13 @@ def handle():
     with open(css_filename, "r") as f:
         CSS = f.read()
     HTML = HTML.replace("JS", JS)
-    HTML = HTML.replace("CSS", CSS)
+    HTML = HTML.replace("DEFAULT_CSS", CSS)
+    HTML = HTML.replace(
+        "CUSTOM_CSS",
+        FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Start")
+        .GetString("CustomCSS", "")
+        .replace("\n", ""),
+    )
 
     # set the language
 
@@ -496,7 +502,7 @@ def handle():
     SECTION_NEW_FILE = "<h2>" + TranslationTexts.T_NEWFILE + "</h2>"
     SECTION_NEW_FILE += "<ul>"
     SECTION_NEW_FILE += build_new_file_card("empty_file")
-    SECTION_NEW_FILE += build_new_file_card("import_file")
+    SECTION_NEW_FILE += build_new_file_card("open_file")
     SECTION_NEW_FILE += build_new_file_card("parametric_part")
     # SECTION_NEW_FILE += build_new_file_card("csg_part")
     SECTION_NEW_FILE += build_new_file_card("2d_draft")
@@ -731,9 +737,6 @@ def handle():
     BOXCOLOR = gethexcolor(p.GetUnsigned("BoxColor", 3722305023))
     TEXTCOLOR = gethexcolor(p.GetUnsigned("PageTextColor", 255))
     BGTCOLOR = gethexcolor(p.GetUnsigned("BackgroundTextColor", 1600086015))
-    OVERFLOW = (
-        "" if p.GetBool("ShowScrollBars", True) else "body::-webkit-scrollbar {display: none;}"
-    )
     SHADOW = "#888888"
     if QtGui.QColor(BASECOLOR).valueF() < 0.5:  # dark page - we need to make darker shadows
         SHADOW = "#000000"
@@ -750,7 +753,6 @@ def handle():
     HTML = HTML.replace("SHADOW", SHADOW)
     HTML = HTML.replace("FONTFAMILY", FONTFAMILY)
     HTML = HTML.replace("FONTSIZE", str(FONTSIZE) + "px")
-    HTML = HTML.replace("OVERFLOW", OVERFLOW)
 
     # enable web access if permitted
 

@@ -28,6 +28,7 @@
 
 
 class Ui_DlgStartPreferences;
+class Ui_DlgStartPreferencesAdvanced;
 namespace StartGui
 {
 class DlgStartPreferencesImp: public Gui::Dialog::PreferencePage
@@ -45,6 +46,23 @@ protected:
 
 private:
     std::unique_ptr<Ui_DlgStartPreferences> ui;
+};
+
+class DlgStartPreferencesAdvancedImp: public Gui::Dialog::PreferencePage
+{
+    Q_OBJECT
+
+public:
+    explicit DlgStartPreferencesAdvancedImp(QWidget* parent = nullptr);
+    ~DlgStartPreferencesAdvancedImp() override;
+
+protected:
+    void saveSettings() override;
+    void loadSettings() override;
+    void changeEvent(QEvent* e) override;
+
+private:
+    std::unique_ptr<Ui_DlgStartPreferencesAdvanced> ui;
 };
 
 }// namespace StartGui

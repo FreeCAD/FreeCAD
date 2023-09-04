@@ -26,6 +26,7 @@
 
 #include "DlgStartPreferencesImp.h"
 #include "ui_DlgStartPreferences.h"
+#include "ui_DlgStartPreferencesAdvanced.h"
 
 
 using namespace StartGui;
@@ -90,28 +91,26 @@ void DlgStartPreferencesImp::saveSettings()
     App::GetApplication()
         .GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Start")
         ->SetASCII("AutoloadModule", startWbName.toLatin1());
-    ui->colorButton_1->onSave();
-    ui->colorButton_2->onSave();
-    ui->colorButton_3->onSave();
-    ui->colorButton_4->onSave();
-    ui->colorButton_5->onSave();
-    ui->colorButton_6->onSave();
+    ui->backgroundColorButton->onSave();
+    ui->backgroundTextColorButton->onSave();
+    ui->pageBackgroundColorButton->onSave();
+    ui->pageTextColorButton->onSave();
+    ui->boxBackgroundColorButton->onSave();
+    ui->linkColorButton->onSave();
     ui->colorButton_7->onSave();
-    ui->fileChooser_1->onSave();
-    ui->fileChooser_2->onSave();
-    ui->fileChooser_3->onSave();
+    ui->backgroundImageFileChooser->onSave();
+    ui->showAdditionalFolderFileChooser->onSave();
     ui->radioButton_1->onSave();
     ui->radioButton_2->onSave();
-    ui->checkBox->onSave();
-    ui->checkBox_1->onSave();
-    ui->checkBox_2->onSave();
-    ui->checkBox_3->onSave();
-    ui->checkBox_4->onSave();
-    ui->checkBox_5->onSave();
-    ui->checkBox_6->onSave();
-    ui->checkBox_7->onSave();
-    ui->lineEdit->onSave();
-    ui->spinBox->onSave();
+    ui->showNotepadCheckBox->onSave();
+    ui->showExamplesCheckBox->onSave();
+    ui->closeStartCheckBox->onSave();
+    ui->closeAndSwitchCheckBox->onSave();
+    ui->showForumCheckBox->onSave();
+    ui->useStyleSheetCheckBox->onSave();
+    ui->showTipsCheckBox->onSave();
+    ui->fontLineEdit->onSave();
+    ui->fontSizeSpinBox->onSave();
     ui->showFileThumbnailIconsCheckBox->onSave();
     ui->fileThumbnailIconSizeSpinBox->onSave();
 }
@@ -124,28 +123,26 @@ void DlgStartPreferencesImp::loadSettings()
                 ->GetASCII("AutoloadModule", start.c_str());
     QString startWbName = QLatin1String(start.c_str());
     ui->AutoloadModuleCombo->setCurrentIndex(ui->AutoloadModuleCombo->findData(startWbName));
-    ui->colorButton_1->onRestore();
-    ui->colorButton_2->onRestore();
-    ui->colorButton_3->onRestore();
-    ui->colorButton_4->onRestore();
-    ui->colorButton_5->onRestore();
-    ui->colorButton_6->onRestore();
+    ui->backgroundColorButton->onRestore();
+    ui->backgroundTextColorButton->onRestore();
+    ui->pageBackgroundColorButton->onRestore();
+    ui->pageTextColorButton->onRestore();
+    ui->boxBackgroundColorButton->onRestore();
+    ui->linkColorButton->onRestore();
     ui->colorButton_7->onRestore();
-    ui->fileChooser_1->onRestore();
-    ui->fileChooser_2->onRestore();
-    ui->fileChooser_3->onRestore();
+    ui->backgroundImageFileChooser->onRestore();
+    ui->showAdditionalFolderFileChooser->onRestore();
     ui->radioButton_1->onRestore();
     ui->radioButton_2->onRestore();
-    ui->checkBox->onRestore();
-    ui->checkBox_1->onRestore();
-    ui->checkBox_2->onRestore();
-    ui->checkBox_3->onRestore();
-    ui->checkBox_4->onRestore();
-    ui->checkBox_5->onRestore();
-    ui->checkBox_6->onRestore();
-    ui->checkBox_7->onRestore();
-    ui->lineEdit->onRestore();
-    ui->spinBox->onRestore();
+    ui->showNotepadCheckBox->onRestore();
+    ui->showExamplesCheckBox->onRestore();
+    ui->closeStartCheckBox->onRestore();
+    ui->closeAndSwitchCheckBox->onRestore();
+    ui->showForumCheckBox->onRestore();
+    ui->useStyleSheetCheckBox->onRestore();
+    ui->showTipsCheckBox->onRestore();
+    ui->fontLineEdit->onRestore();
+    ui->fontSizeSpinBox->onRestore();
     ui->showFileThumbnailIconsCheckBox->onRestore();
     ui->fileThumbnailIconSizeSpinBox->onRestore();
 }
@@ -154,6 +151,47 @@ void DlgStartPreferencesImp::loadSettings()
  * Sets the strings of the subwidgets using the current language.
  */
 void DlgStartPreferencesImp::changeEvent(QEvent* ev)
+{
+    if (ev->type() == QEvent::LanguageChange) {
+        ui->retranslateUi(this);
+    }
+    else {
+        Gui::Dialog::PreferencePage::changeEvent(ev);
+    }
+}
+
+
+/**
+ *  Constructs a DlgStartPreferencesAdvancedImp which is a child of 'parent'
+ */
+DlgStartPreferencesAdvancedImp::DlgStartPreferencesAdvancedImp(QWidget* parent)
+    : PreferencePage(parent)
+    , ui(new Ui_DlgStartPreferencesAdvanced)
+{
+    ui->setupUi(this);
+}
+
+/**
+ *  Destroys the object and frees any allocated resources
+ */
+DlgStartPreferencesAdvancedImp::~DlgStartPreferencesAdvancedImp() = default;
+
+void DlgStartPreferencesAdvancedImp::saveSettings()
+{
+    ui->templateFileChooser->onSave();
+    ui->customCSSTextEdit->onSave();
+}
+
+void DlgStartPreferencesAdvancedImp::loadSettings()
+{
+    ui->templateFileChooser->onRestore();
+    ui->customCSSTextEdit->onRestore();
+}
+
+/**
+ * Sets the strings of the subwidgets using the current language.
+ */
+void DlgStartPreferencesAdvancedImp::changeEvent(QEvent* ev)
 {
     if (ev->type() == QEvent::LanguageChange) {
         ui->retranslateUi(this);

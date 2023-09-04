@@ -101,7 +101,8 @@ PyMOD_INIT_FUNC(StartGui)
 
     // clang-format off
     // register preferences pages
-    new Gui::PrefPageProducer<StartGui::DlgStartPreferencesImp>(QT_TRANSLATE_NOOP("QObject", "Start"));
+    new Gui::PrefPageProducer<StartGui::DlgStartPreferencesImp> (QT_TRANSLATE_NOOP("QObject", "Start"));
+    new Gui::PrefPageProducer<StartGui::DlgStartPreferencesAdvancedImp> (QT_TRANSLATE_NOOP("QObject", "Start"));
     // clang-format on
 
     // instantiating the commands

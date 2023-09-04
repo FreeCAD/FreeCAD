@@ -29,10 +29,12 @@ template_name = str(template)
 if template_name == "empty_file":
     FreeCADGui.runCommand("Std_New")
     StartPage.postStart()
-elif template_name == "import_file":
-    FreeCADGui.runCommand("Std_New")
-    StartPage.postStart()
-    FreeCADGui.runCommand("Std_Import")
+elif template_name == "open_file":
+    previous_doc = FreeCADGui.ActiveDocument
+    FreeCADGui.runCommand("Std_Open")
+    # workaround to not run postStart() if user cancels the Open dialog
+    if FreeCADGui.ActiveDocument != previous_doc:
+        StartPage.postStart()
 elif template_name == "parametric_part":
     FreeCADGui.runCommand("Std_New")
     FreeCADGui.activateWorkbench("PartDesignWorkbench")
