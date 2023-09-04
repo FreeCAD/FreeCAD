@@ -205,12 +205,15 @@ class TaskAssemblyInsertLink(QtCore.QObject):
             None,
             "Select FreeCAD documents to import parts from",
             "",
-            "Supported Formats (*.FCStd *.fcstd);;All files (*)"
+            "Supported Formats (*.FCStd *.fcstd);;All files (*)",
         )
 
         for filename in selected_files:
             requested_file = os.path.split(filename)[1]
-            import_doc_is_open = any(requested_file == os.path.split(doc.FileName)[1] for doc in App.listDocuments().values())
+            import_doc_is_open = any(
+                requested_file == os.path.split(doc.FileName)[1]
+                for doc in App.listDocuments().values()
+            )
 
             if not import_doc_is_open:
                 if filename.lower().endswith(".fcstd"):
