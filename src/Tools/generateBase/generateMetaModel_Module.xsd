@@ -16,6 +16,15 @@
 										<xs:element ref="Parameter" minOccurs="0" maxOccurs="unbounded"/>
 									</xs:sequence>
 									<xs:attribute name="Name" type="xs:string" use="required"/>
+									<xs:attribute name="TextSignature" type="xs:string" use="optional">
+                                        <xs:annotation>
+                                            <xs:documentation>
+                                                Specifies the __text__signature__ for the method.
+                                                This is similar to Argument Clinic's @text_signature,
+                                                see https://docs.python.org/3/howto/clinic.html#how-to-override-the-generated-signature
+                                            </xs:documentation>
+                                        </xs:annotation>
+                                    </xs:attribute>
 									<xs:attribute name="Const" type="xs:boolean" use="optional"/>
 									<xs:attribute name="Keyword" type="xs:boolean" use="optional" default="false"/>
 									<xs:attribute name="Class" type="xs:boolean" use="optional" default="false"/>

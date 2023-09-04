@@ -399,6 +399,9 @@ PyMethodDef @self.export.Name@::Methods[] = {
         reinterpret_cast<PyCFunction>( staticCallback_@i.Name@ ),
         METH_VARARGS,
 -
++ if i.TextSignature:
+        "@escapeString(i.Name + i.TextSignature, indent=8)@\\n--\\n\\n"
+-
         "@escapeString(i.Documentation.UserDocu, indent=8)@"
     },
 -

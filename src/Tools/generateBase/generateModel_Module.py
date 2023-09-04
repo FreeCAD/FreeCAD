@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 #
-# Generated Fri Mar 31 16:59:53 2023 by generateDS.py.
+# Generated Tue Sep  5 00:13:06 2023 by generateDS.py.
 # Update it with: python generateDS.py -o generateModel_Module.py generateMetaModel_Module.xsd
 #
 # WARNING! All changes made in this file will be lost!
@@ -580,8 +580,9 @@ class PythonExport:
 
 class Methode:
     subclass = None
-    def __init__(self, Name='', Const=0, Keyword=0, Class=0, Static=0, Documentation=None, Parameter=None):
+    def __init__(self, Name='', TextSignature='', Const=0, Keyword=0, Class=0, Static=0, Documentation=None, Parameter=None):
         self.Name = Name
+        self.TextSignature = TextSignature
         self.Const = Const
         self.Keyword = Keyword
         self.Class = Class
@@ -605,6 +606,8 @@ class Methode:
     def insertParameter(self, index, value): self.Parameter[index] = value
     def getName(self): return self.Name
     def setName(self, Name): self.Name = Name
+    def getTextsignature(self): return self.TextSignature
+    def setTextsignature(self, TextSignature): self.TextSignature = TextSignature
     def getConst(self): return self.Const
     def setConst(self, Const): self.Const = Const
     def getKeyword(self): return self.Keyword
@@ -623,6 +626,8 @@ class Methode:
         outfile.write('</%s>\n' % name_)
     def exportAttributes(self, outfile, level, name_='Methode'):
         outfile.write(' Name="%s"' % (self.getName(), ))
+        if self.getTextsignature() is not None:
+            outfile.write(' TextSignature="%s"' % (self.getTextsignature(), ))
         if self.getConst() is not None:
             outfile.write(' Const="%s"' % (self.getConst(), ))
         if self.getKeyword() is not None:
@@ -643,6 +648,8 @@ class Methode:
     def exportLiteralAttributes(self, outfile, level, name_):
         showIndent(outfile, level)
         outfile.write('Name = "%s",\n' % (self.getName(),))
+        showIndent(outfile, level)
+        outfile.write('TextSignature = "%s",\n' % (self.getTextsignature(),))
         showIndent(outfile, level)
         outfile.write('Const = "%s",\n' % (self.getConst(),))
         showIndent(outfile, level)
@@ -679,6 +686,8 @@ class Methode:
     def buildAttributes(self, attrs):
         if attrs.get('Name'):
             self.Name = attrs.get('Name').value
+        if attrs.get('TextSignature'):
+            self.TextSignature = attrs.get('TextSignature').value
         if attrs.get('Const'):
             if attrs.get('Const').value in ('true', '1'):
                 self.Const = 1
@@ -2007,6 +2016,9 @@ class SaxGeneratemodelHandler(handler.ContentHandler):
             val = attrs.get('Name', None)
             if val is not None:
                 obj.setName(val)
+            val = attrs.get('TextSignature', None)
+            if val is not None:
+                obj.setTextsignature(val)
             val = attrs.get('Const', None)
             if val is not None:
                 if val in ('true', '1'):
