@@ -68,4 +68,3 @@ INSTALL(FILES ${StartPage_PythonResources}
 INSTALL(FILES ${StartPage_ImageResources}
     DESTINATION ${CMAKE_INSTALL_DATADIR}/Mod/Start/StartPage/images
 )
-

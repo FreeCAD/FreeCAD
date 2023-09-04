@@ -2,7 +2,8 @@ var allowDownloads = 0;
 var showForum = 0;
 var wblist = [];
 
-function toggle(tab) {
+function toggle(tab)
+{
 
     // switch to the given tab ID ("tab1", "tab2", etc...)
 
@@ -18,46 +19,53 @@ function toggle(tab) {
 }
 
 
-function load() {
+function load()
+{
 
     // run at startup
 
     if (localStorage["notepad"]) {
-        document.getElementById("notepad").value = localStorage["notepad"]; // Load notepad from local storage
+        document.getElementById("notepad").value =
+            localStorage["notepad"];// Load notepad from local storage
     }
-    document.getElementById("notepad").addEventListener("input", function () {
-        localStorage.setItem("notepad", document.getElementById("notepad").value); // Save notepad on type
+    document.getElementById("notepad").addEventListener("input", function() {
+        localStorage.setItem("notepad",
+                             document.getElementById("notepad").value);// Save notepad on type
     }, false);
 
     if (allowDownloads == 1) {
         // load latest commits
         var ddiv = document.getElementById("commits");
         ddiv.innerHTML = "Connecting...";
-        var tobj = new JSONscriptRequest('https://api.github.com/repos/FreeCAD/FreeCAD/commits?callback=printCommits');
-        tobj.buildScriptTag(); // Build the script tag
-        tobj.addScriptTag(); // Execute (add) the script tag
+        var tobj = new JSONscriptRequest(
+            'https://api.github.com/repos/FreeCAD/FreeCAD/commits?callback=printCommits');
+        tobj.buildScriptTag();// Build the script tag
+        tobj.addScriptTag();  // Execute (add) the script tag
         ddiv.innerHTML = "Downloading latest news...";
         // load addons list
         ddiv = document.getElementById("addons");
         ddiv.innerHTML = "Connecting...";
-        var tobj = new JSONscriptRequest('https://api.github.com/repos/FreeCAD/FreeCAD-addons/contents?callback=printAddons');
-        tobj.buildScriptTag(); // Build the script tag
-        tobj.addScriptTag(); // Execute (add) the script tag
+        var tobj = new JSONscriptRequest(
+            'https://api.github.com/repos/FreeCAD/FreeCAD-addons/contents?callback=printAddons');
+        tobj.buildScriptTag();// Build the script tag
+        tobj.addScriptTag();  // Execute (add) the script tag
         ddiv.innerHTML = "Downloading addons list...";
         if (showForum == 1) {
             // load forum recent posts
             ddiv = document.getElementById("forum");
             ddiv.innerHTML = "Connecting...";
-            var tobj = new JSONscriptRequest('https://www.freecad.org/xml-to-json.php?callback=printForum&url=https://forum.freecad.org/feed.php');
-            tobj.buildScriptTag(); // Build the script tag
-            tobj.addScriptTag(); // Execute (add) the script tag
+            var tobj = new JSONscriptRequest(
+                'https://www.freecad.org/xml-to-json.php?callback=printForum&url=https://forum.freecad.org/feed.php');
+            tobj.buildScriptTag();// Build the script tag
+            tobj.addScriptTag();  // Execute (add) the script tag
             ddiv.innerHTML = "Downloading addons list...";
         }
     }
 }
 
 
-function printCommits(data) {
+function printCommits(data)
+{
 
     // json callback for git commits
 
@@ -65,14 +73,23 @@ function printCommits(data) {
     ddiv.innerHTML = "Received";
     var html = ['<ul>'];
     for (var i = 0; i < 25; i++) {
-        html.push('<li><a href="', data.data[i].html_url, '">', data.data[i].commit.message, '</a> ', data.data[i].commit.committer.date.split("T")[0], ' - ', data.data[i].commit.author.name, '</li>');
+        html.push('<li><a href="',
+                  data.data[i].html_url,
+                  '">',
+                  data.data[i].commit.message,
+                  '</a> ',
+                  data.data[i].commit.committer.date.split("T")[0],
+                  ' - ',
+                  data.data[i].commit.author.name,
+                  '</li>');
     }
     html.push('</ul>');
     ddiv.innerHTML = html.join('');
 }
 
 
-function printAddons(data) {
+function printAddons(data)
+{
 
     // json callback for addons list
 
@@ -83,9 +100,18 @@ function printAddons(data) {
     for (var i = 0; i < data.data.length; i++) {
         if ((data.data[i].name[0] != ".") && (blacklist.indexOf(data.data[i].name) < 0)) {
             if (wblist.indexOf(data.data[i].name.toLowerCase()) == -1) {
-                html.push('<li><a href="', data.data[i].html_url, '">', data.data[i].name, '</a></li>');
-            } else {
-                html.push('<li><a href="', data.data[i].html_url, '">', data.data[i].name, '</a>&nbsp;<img src="IMAGE_SRC_INSTALLED"></li>');
+                html.push('<li><a href="',
+                          data.data[i].html_url,
+                          '">',
+                          data.data[i].name,
+                          '</a></li>');
+            }
+            else {
+                html.push('<li><a href="',
+                          data.data[i].html_url,
+                          '">',
+                          data.data[i].name,
+                          '</a>&nbsp;<img src="IMAGE_SRC_INSTALLED"></li>');
             }
         }
     }
@@ -94,7 +120,8 @@ function printAddons(data) {
 }
 
 
-function printForum(data) {
+function printForum(data)
+{
 
     // json callback for forum posts
 
@@ -103,7 +130,13 @@ function printForum(data) {
     var html = ['<ul>'];
     for (var i = 0; i < 25; i++) {
         if (i < data.feed.entry.length) {
-            html.push('<li><big><a href="', data.feed.entry[i].link.href, '">', data.feed.entry[i].title.$, '</a></big><br/><p>', data.feed.entry[i].content.$, '</p></li>');
+            html.push('<li><big><a href="',
+                      data.feed.entry[i].link.href,
+                      '">',
+                      data.feed.entry[i].title.$,
+                      '</a></big><br/><p>',
+                      data.feed.entry[i].content.$,
+                      '</p></li>');
         }
     }
     html.push('</ul>');
@@ -114,7 +147,8 @@ function printForum(data) {
 // below are JSON helper functions
 
 
-function JSONscriptRequest(fullUrl) {
+function JSONscriptRequest(fullUrl)
+{
 
     // REST request path
     this.fullUrl = fullUrl;
@@ -129,8 +163,8 @@ function JSONscriptRequest(fullUrl) {
 JSONscriptRequest.scriptCounter = 1;
 
 
-JSONscriptRequest.prototype.buildScriptTag = function () {
-
+JSONscriptRequest.prototype.buildScriptTag =
+    function() {
     // Create the script tag
     this.scriptObj = document.createElement("script");
     // Add script object attributes
@@ -141,12 +175,13 @@ JSONscriptRequest.prototype.buildScriptTag = function () {
 }
 
 
-JSONscriptRequest.prototype.removeScriptTag = function () {
+    JSONscriptRequest.prototype.removeScriptTag =
+        function() {
     // Destroy the script tag
     this.headLoc.removeChild(this.scriptObj);
 }
 
-JSONscriptRequest.prototype.addScriptTag = function () {
+        JSONscriptRequest.prototype.addScriptTag = function() {
     // Create the script tag
     this.headLoc.appendChild(this.scriptObj);
 }
