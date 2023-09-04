@@ -73,3 +73,28 @@ ec899d75c6abf45d7ee4dd91ea0f8141a9818446
 233a337ca5d693e4773fecf1de14325752afd658
 9271b6d433578f65df9b469131ece4e4bdbb19aa
 2637527e3a4e132506e8c074b752721d66ae146a
+7681c62468d7b6f4d8af6758324b9ec983340b97 # Test: apply clang format
+4919fa18ff7f9a4cdfdd7896d768c2342e5f9f37 # Surface: apply clang format
+791fe029341aa1dda42376620d52c67ecaca7eea # Sketcher: Reformat to current clang-format standard
+0a8292a850b98d2e66e08e235dfb81b6e7285df1 # Web: apply clang format
+1a960286a4a549a6454155481ce51cad88a51745 # Tests: Reformat to current clang-format standard
+c1825036a6dfd44576da6157bde9fa2fab724d55 # Tools: Reformat to current clang-format standard
+17bf44ec9a5fd7a8f1c7bf0d3c24d63b6c808dbd # Start: apply clang format
+89579cff6e8834e296d5efe6292f019fadedce53 # Addon Manager: Reformat with new Black line length
+c989a8506ecc26e3172c0d18ce4d0f710b5c7d92 # RE: apply clang format
+c6bc17ffc13aee4d38d2938800ef5002fc874fc3 # RE: apply clang format
+6fb2bcafe85eb6bb0c625f37f233b0b09e093963 # MeshPart: apply clang format
+c2bda2f75684ed8bb64813d4a92a5a595181f556 # MeshPart: apply clang format
+ea116dc0332ccfc5797f248b04492a16f421b787 # Inspection: apply clang format
+8d24f0c021a04f19f5463a52e3be1af60fb892f1 # Points: apply clang-formatting
+e3de4f217c4f028523adcb5cb566f4d6a7957abe # minor reformat: break lines, one per item
+d57d14321b408beef7b115331e2cfa7215f59b8a # Web: Final application of pre-commit
+efd11e590d28d72e350b72f02f3f599ef4f704f4 # Test: Final application of pre-commit
+217674de04533afb81da0968483dd5a6c4d88667 # Surface: Final application of pre-commit
+70e046bbd5a7214b5d5ae8f12da5aed502dc89ab # Start: Final application of pre-commit
+db24eeec535f1f43fb3d5b63d24c5171af637880 # RE: Final application of pre-commit
+714cb0a309e243cfb035b046dd8cc543ac514cd2 # Points: Final application of pre-commit
+7593f0c112198a0cf033a0bcf8d55db4e0a0e3f5 # MeshPart: Final application of pre-commit
+b8f8b232cb0882d171cb299e6f6279a516cdd6eb # Inspection: Final application of pre-commit
+c5c2ea3498f402c0c89916c46ddb071e22756622 # Assembly: Final application of pre-commit
+592c992b863549fde52741fd8830418168387695 # Assembly: Apply pre-commit to Assembly files
