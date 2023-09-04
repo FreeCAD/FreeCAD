@@ -203,6 +203,14 @@ bool MDIViewPage::onMsg(const char* pMsg, const char**)
         Gui::Command::updateActive();
         return true;
     }
+    else if (strcmp("ZoomIn", pMsg) == 0) {
+        zoomIn();
+        return true;
+    }
+    else if (strcmp("ZoomOut", pMsg) == 0) {
+        zoomOut();
+        return true;
+    }
 
     return false;
 }
@@ -236,10 +244,28 @@ bool MDIViewPage::onHasMsg(const char* pMsg) const
     else if (strcmp("PrintAll", pMsg) == 0) {
         return true;
     }
+    else if (strcmp("ZoomIn", pMsg) == 0) {
+        return true;
+    }
+    else if (strcmp("ZoomOut", pMsg) == 0) {
+        return true;
+    }
     return false;
 }
 
-//called by ViewProvider when Page feature Label changes
+// handle a zoomIn message from the menu
+void MDIViewPage::zoomIn()
+{
+    m_vpPage->getQGVPage()->zoomIn();
+}
+
+// handle a zoomOut message from the menu
+void MDIViewPage::zoomOut()
+{
+    m_vpPage->getQGVPage()->zoomOut();
+}
+
+// called by ViewProvider when Page feature Label changes
 void MDIViewPage::setTabText(std::string tabText)
 {
     if (!isPassive() && !tabText.empty()) {

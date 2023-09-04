@@ -64,7 +64,6 @@ public:
 
     void addChildrenToPage();
 
-
     /// Observer message from the Tree Selection mechanism
     void onSelectionChanged(const Gui::SelectionChanges& msg) override;
     void preSelectionChanged(const QPoint &pos);
@@ -99,9 +98,12 @@ public:
                               TechDraw::DrawPage* dPage,
                               double& width, double& height);
 
-    void saveSVG(std::string file);
-    void saveDXF(std::string file);
-    void savePDF(std::string file);
+    void saveSVG(std::string fileName);
+    void saveDXF(std::string fileName);
+    void savePDF(std::string fileName);
+
+    void zoomIn();
+    void zoomOut();
 
     void setDocumentObject(const std::string&);
     void setDocumentName(const std::string&);
