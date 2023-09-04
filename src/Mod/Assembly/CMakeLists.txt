@@ -6,7 +6,8 @@ endif(BUILD_GUI)
 
 set(Assembly_Scripts
     Init.py
-    Commands.py
+    CommandCreateAssembly.py
+    CommandInsertLink.py
     TestAssemblyWorkbench.py
     Preferences.py
     AssemblyImport.py

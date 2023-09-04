@@ -32,7 +32,7 @@ if App.GuiUp:
 
 # translate = App.Qt.translate
 
-__title__ = "Assembly Commands"
+__title__ = "Assembly Command Insert Link"
 __author__ = "Ondsel"
 __url__ = "https://www.freecad.org"
 
@@ -58,33 +58,6 @@ def isDocTemporary(doc):
     except AttributeError:
         docTemporary = False
     return docTemporary
-
-
-class CommandCreateAssembly:
-    def __init__(self):
-        pass
-
-    def GetResources(self):
-        return {
-            "Pixmap": "Geoassembly",
-            "MenuText": QT_TRANSLATE_NOOP("Assembly_CreateAssembly", "Create Assembly"),
-            "Accel": "A",
-            "ToolTip": QT_TRANSLATE_NOOP(
-                "Assembly_CreateAssembly",
-                "Create an assembly object in the current document.",
-            ),
-            "CmdType": "ForEdit",
-        }
-
-    def IsActive(self):
-        return App.ActiveDocument is not None
-
-    def Activated(self):
-        App.setActiveTransaction("Create assembly")
-        assembly = App.ActiveDocument.addObject("App::Part", "Assembly")
-        assembly.Type = "Assembly"
-        Gui.ActiveDocument.ActiveView.setActiveObject("part", assembly)
-        App.closeActiveTransaction()
 
 
 class CommandInsertLink:
@@ -308,5 +281,4 @@ class TaskAssemblyInsertLink(QtCore.QObject):
 
 
 if App.GuiUp:
-    Gui.addCommand("Assembly_CreateAssembly", CommandCreateAssembly())
     Gui.addCommand("Assembly_InsertLink", CommandInsertLink())

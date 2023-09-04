@@ -65,7 +65,7 @@ class AssemblyWorkbench(Workbench):
         # load the builtin modules
         from PySide import QtCore, QtGui
         from PySide.QtCore import QT_TRANSLATE_NOOP
-        import Commands
+        import CommandCreateAssembly, CommandInsertLink
         from Preferences import PreferencesPage
 
         # from Preferences import preferences
