@@ -250,8 +250,16 @@ class Shape2DView(DraftObject):
                         for k, v in shtypes.items():
                             v1 = v.pop()
                             if v:
-                                v1 = v1.multiFuse(v)
-                                v1 = v1.removeSplitter()
+                                try:
+                                    v1 = v1.multiFuse(v)
+                                except (RuntimeError, Part.OCCError):
+                                    # multifuse can fail
+                                    for v2 in v:
+                                        v1 = v1.fuse(v2)
+                                try:
+                                    v1 = v1.removeSplitter()
+                                except (RuntimeError, Part.OCCError):
+                                    pass
                             if v1.Solids:
                                 shapes.extend(v1.Solids)
                             else:
