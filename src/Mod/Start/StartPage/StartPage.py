@@ -425,7 +425,7 @@ def handle():
                             "<!--QSS-->", '<style type="text/css">' + ALTCSS + "</style>"
                         )
                 else:
-                    with codecs.open(path, encoding='utf-8') as f:
+                    with codecs.open(path, encoding="utf-8") as f:
                         ALTCSS = f.read()
                         HTML = HTML.replace(
                             "<!--QSS-->", '<style type="text/css">' + ALTCSS + "</style>"
