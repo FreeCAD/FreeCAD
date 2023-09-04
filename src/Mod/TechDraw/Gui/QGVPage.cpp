@@ -561,6 +561,16 @@ void QGVPage::setPanCursor() { activateCursor(panCursor); }
 
 void QGVPage::setZoomCursor() { activateCursor(zoomCursor); }
 
+void QGVPage::zoomIn()
+{
+    m_navStyle->zoomIn();
+}
+
+void QGVPage::zoomOut()
+{
+    m_navStyle->zoomOut();
+}
+
 void QGVPage::drawForeground(QPainter* painter, const QRectF& rect)
 {
     Q_UNUSED(rect);
