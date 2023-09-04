@@ -11,6 +11,7 @@ set(Assembly_Scripts
     TestAssemblyWorkbench.py
     Preferences.py
     AssemblyImport.py
+    UtilsAssembly.py
 )
 
 if(BUILD_GUI)
