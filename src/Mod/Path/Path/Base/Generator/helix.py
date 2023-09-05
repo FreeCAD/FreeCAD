@@ -71,6 +71,9 @@ def generate(
         )
     )
 
+    # inner_radius contains not a radius but the value from Extra Offset, which is the distance between the hole radius as designed and the hole radius to be cut.
+    # hole_radius contains the designed hole radius - inner_radius.
+
     if type(hole_radius) not in [float, int]:
         raise TypeError("Invalid type for hole radius")
 
@@ -82,13 +85,6 @@ def generate(
 
     if type(tool_diameter) not in [float, int]:
         raise TypeError("tool_diameter must be a float")
-
-    if inner_radius > 0 and hole_radius - inner_radius < tool_diameter:
-        raise ValueError(
-            "hole_radius - inner_radius = {0} is < tool diameter of {1}".format(
-                hole_radius - inner_radius, tool_diameter
-            )
-        )
 
     if not hole_radius * 2 > tool_diameter:
         raise ValueError(
