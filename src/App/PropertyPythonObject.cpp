@@ -87,7 +87,6 @@ std::string PropertyPythonObject::toString() const
             throw Py::Exception();
         Py::Callable method(pickle.getAttr(std::string("dumps")));
         Py::Object dump;
-#if PY_VERSION_HEX < 0x03b0000
         if (this->object.hasAttr("__getstate__")) {
             Py::Tuple args;
             Py::Callable state(this->object.getAttr("__getstate__"));
@@ -99,9 +98,6 @@ std::string PropertyPythonObject::toString() const
         else {
             dump = this->object;
         }
-#else
-        dump = this->object;
-#endif
 
         Py::Tuple args(1);
         args.setItem(0, dump);
