@@ -24,13 +24,14 @@
 #define REEN_BSPLINEFITTING_H
 
 #if defined(HAVE_PCL_OPENNURBS)
-# include <vector>
+#include <vector>
 
-# include <Base/Vector3D.h>
-# include <Geom_BSplineSurface.hxx>
+#include <Base/Vector3D.h>
+#include <Geom_BSplineSurface.hxx>
 
 
-namespace Reen {
+namespace Reen
+{
 
 class BSplineFitting
 {
@@ -57,8 +58,8 @@ private:
     double myBoundaryWeight;
 };
 
-}
+}// namespace Reen
 
-#endif // HAVE_PCL_OPENNURBS
+#endif// HAVE_PCL_OPENNURBS
 
-#endif // REEN_BSPLINEFITTING_H
+#endif// REEN_BSPLINEFITTING_H

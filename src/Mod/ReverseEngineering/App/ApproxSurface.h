@@ -23,30 +23,33 @@
 #ifndef REEN_APPROXSURFACE_H
 #define REEN_APPROXSURFACE_H
 
-#include <TColgp_Array1OfPnt.hxx>
-#include <TColgp_Array2OfPnt.hxx>
-#include <TColgp_Array1OfPnt2d.hxx>
+#include <Geom_BSplineSurface.hxx>
 #include <TColStd_Array1OfInteger.hxx>
 #include <TColStd_Array1OfReal.hxx>
-#include <Geom_BSplineSurface.hxx>
+#include <TColgp_Array1OfPnt.hxx>
+#include <TColgp_Array1OfPnt2d.hxx>
+#include <TColgp_Array2OfPnt.hxx>
 #include <math_Matrix.hxx>
 
 #include <Base/Vector3D.h>
 #include <Mod/ReverseEngineering/ReverseEngineeringGlobal.h>
 
 
-namespace Base {
+namespace Base
+{
 class SequencerLauncher;
 }
 
 // TODO: Replace OCC stuff with ublas & co
 
-namespace Reen {
+namespace Reen
+{
 
 class ReenExport SplineBasisfunction
 {
 public:
-    enum ValueT {
+    enum ValueT
+    {
         Zero = 0,
         Full,
         Other
@@ -62,7 +65,7 @@ public:
      * @param vKnots Knot vector
      * @param iOrder Order (degree + 1) of the basic polynomial
      */
-    explicit SplineBasisfunction(TColStd_Array1OfReal& vKnots, int iOrder=1);
+    explicit SplineBasisfunction(TColStd_Array1OfReal& vKnots, int iOrder = 1);
 
     /**
      * Constructor
@@ -73,7 +76,10 @@ public:
      * and the sum of the values in @a vMults has to be identical to @a iSize.
      * @param iOrder Order (degree + 1) of the basic polynomial
      */
-    SplineBasisfunction(TColStd_Array1OfReal& vKnots, TColStd_Array1OfInteger& vMults, int iSize, int iOrder=1);
+    SplineBasisfunction(TColStd_Array1OfReal& vKnots,
+                        TColStd_Array1OfInteger& vMults,
+                        int iSize,
+                        int iOrder = 1);
 
     virtual ~SplineBasisfunction();
 
@@ -86,7 +92,7 @@ public:
      * @param fParam Parameter value
      * @return ValueT
      */
-    virtual ValueT LocalSupport(int iIndex, double fParam)=0;
+    virtual ValueT LocalSupport(int iIndex, double fParam) = 0;
     /**
      * Calculates the function value Nik(t) at the point fParam
      * (from: Piegl/Tiller 96 The NURBS-Book)
@@ -95,7 +101,7 @@ public:
      * @param fParam Parameter value
      * @return Function value Nik(t)
      */
-    virtual double BasisFunction(int iIndex, double fParam)=0;
+    virtual double BasisFunction(int iIndex, double fParam) = 0;
     /**
      * Calculates the function values of the first iMaxDer derivatives on the
      * fParam position (from: Piegl/Tiller 96 The NURBS-Book)
@@ -107,28 +113,31 @@ public:
      *
      * The list must be sufficiently long for iMaxDer+1 elements.
      */
-    virtual void DerivativesOfBasisFunction(int iIndex, int iMaxDer, double fParam,
-                                            TColStd_Array1OfReal& Derivat)=0;
+    virtual void DerivativesOfBasisFunction(int iIndex,
+                                            int iMaxDer,
+                                            double fParam,
+                                            TColStd_Array1OfReal& Derivat) = 0;
 
     /**
      * Calculates the kth derivative at the point fParam
      */
-    virtual double DerivativeOfBasisFunction(int iIndex, int k, double fParam)=0;
+    virtual double DerivativeOfBasisFunction(int iIndex, int k, double fParam) = 0;
 
     /**
      * Sets the knot vector and the order. The size of the knot vector has to be exactly as
      * large as defined in the constructor.
      */
-    virtual void SetKnots(TColStd_Array1OfReal& vKnots, int iOrder=1);
+    virtual void SetKnots(TColStd_Array1OfReal& vKnots, int iOrder = 1);
 
     /**
      * Sets the knot vector and the order. The knot vector in the form of (Value, Multiplicity)
      * is passed on. Internally, this is converted into a knot vector in the form of (value, 1).
      * The size of this new vector has to be exactly as big as specified in the constructor.
      */
-    virtual void SetKnots(TColStd_Array1OfReal& vKnots, TColStd_Array1OfInteger& vMults, int iOrder=1);
+    virtual void
+    SetKnots(TColStd_Array1OfReal& vKnots, TColStd_Array1OfInteger& vMults, int iOrder = 1);
 
-protected: //Member
+protected:// Member
     // Knot vector
     TColStd_Array1OfReal _vKnotVector;
 
@@ -136,10 +145,9 @@ protected: //Member
     int _iOrder;
 };
 
-class ReenExport BSplineBasis : public SplineBasisfunction
+class ReenExport BSplineBasis: public SplineBasisfunction
 {
 public:
-
     /**
      * Constructor
      * @param iSize Length of the knot vector
@@ -151,7 +159,7 @@ public:
      * @param vKnots Knot vector
      * @param iOrder Order (degree + 1) of the basic polynomial
      */
-    explicit BSplineBasis(TColStd_Array1OfReal& vKnots, int iOrder=1);
+    explicit BSplineBasis(TColStd_Array1OfReal& vKnots, int iOrder = 1);
 
     /**
      * Constructor
@@ -162,7 +170,10 @@ public:
      * sum of the values in @a vMults has to be identical to @a iSize.
      * @param iOrder Order (degree + 1) of the basic polynomial
      */
-    BSplineBasis(TColStd_Array1OfReal& vKnots, TColStd_Array1OfInteger& vMults, int iSize, int iOrder=1);
+    BSplineBasis(TColStd_Array1OfReal& vKnots,
+                 TColStd_Array1OfInteger& vMults,
+                 int iSize,
+                 int iOrder = 1);
 
     /**
      * Specifies the knot index for the parameter value (from: Piegl/Tiller 96 The NURBS-Book)
@@ -173,7 +184,7 @@ public:
 
     /**
      * Calculates the function values of the basic functions that do not vanish at fParam.
-     * It must be ensured that the list for d (= degree of the B-spline) 
+     * It must be ensured that the list for d (= degree of the B-spline)
      * elements (0, ..., d-1) is sufficient (from: Piegl/Tiller 96 The NURBS-Book)
      * @param fParam Parameter
      * @param vFuncVals List of function values
@@ -211,8 +222,10 @@ public:
      * The list must be sufficiently long for iMaxDer+1 elements.
      * @return List of function values
      */
-    void DerivativesOfBasisFunction(int iIndex, int iMaxDer, double fParam,
-                                            TColStd_Array1OfReal& Derivat) override;
+    void DerivativesOfBasisFunction(int iIndex,
+                                    int iMaxDer,
+                                    double fParam,
+                                    TColStd_Array1OfReal& Derivat) override;
 
     /**
      * Calculates the kth derivative at the point fParam
@@ -229,14 +242,14 @@ public:
     /**
      * Destructor
      */
-    ~ BSplineBasis() override;
+    ~BSplineBasis() override;
 
 protected:
-
     /**
      * Calculates the roots of the Legendre-Polynomials and the corresponding weights
      */
-    virtual void GenerateRootsAndWeights(TColStd_Array1OfReal& vAbscissas, TColStd_Array1OfReal& vWeights);
+    virtual void GenerateRootsAndWeights(TColStd_Array1OfReal& vAbscissas,
+                                         TColStd_Array1OfReal& vWeights);
 
     /**
      * Calculates the limits of integration (Indexes of the knots)
@@ -255,10 +268,11 @@ class ReenExport ParameterCorrection
 
 public:
     // Constructor
-    explicit ParameterCorrection(unsigned usUOrder=4,               //Order in u-direction (order = degree + 1)
-                        unsigned usVOrder=4,               //Order in v-direction
-                        unsigned usUCtrlpoints=6,          //Qty. of the control points in the u-direction
-                        unsigned usVCtrlpoints=6);         //Qty. of the control points in the v-direction
+    explicit ParameterCorrection(
+        unsigned usUOrder = 4,      // Order in u-direction (order = degree + 1)
+        unsigned usVOrder = 4,      // Order in v-direction
+        unsigned usUCtrlpoints = 6, // Qty. of the control points in the u-direction
+        unsigned usVCtrlpoints = 6);// Qty. of the control points in the v-direction
 
     virtual ~ParameterCorrection()
     {
@@ -285,7 +299,7 @@ protected:
      * The bounding box is calculated from these points, then the u/v parameters for
      * the points are calculated.
      */
-    virtual bool DoInitialParameterCorrection(double fSizeFactor=0.0f);
+    virtual bool DoInitialParameterCorrection(double fSizeFactor = 0.0f);
 
     /**
      * Calculates the (u, v) values of the points
@@ -295,31 +309,31 @@ protected:
     /**
      * Carries out a parameter correction.
      */
-    virtual void DoParameterCorrection(int iIter)=0;
+    virtual void DoParameterCorrection(int iIter) = 0;
 
     /**
      * Solves system of equations
      */
-    virtual bool SolveWithoutSmoothing()=0;
+    virtual bool SolveWithoutSmoothing() = 0;
 
     /**
      * Solve a regular system of equations
      */
-    virtual bool SolveWithSmoothing(double fWeight)=0;
+    virtual bool SolveWithSmoothing(double fWeight) = 0;
 
 public:
     /**
      * Calculates a B-spline surface from the given points
      */
     virtual Handle(Geom_BSplineSurface) CreateSurface(const TColgp_Array1OfPnt& points,
-                                                     int iIter,
-                                                     bool bParaCor,
-                                                     double fSizeFactor=0.0f);
+                                                      int iIter,
+                                                      bool bParaCor,
+                                                      double fSizeFactor = 0.0f);
     /**
      * Setting the u/v directions
      * The third parameter specifies whether the directions should actually be used.
      */
-    virtual void SetUV(const Base::Vector3d& clU, const Base::Vector3d& clV, bool bUseDir=true);
+    virtual void SetUV(const Base::Vector3d& clU, const Base::Vector3d& clV, bool bUseDir = true);
 
     /**
      * Returns the u/v/w directions
@@ -334,26 +348,26 @@ public:
     /**
      * Use smoothing-terms
      */
-    virtual void EnableSmoothing(bool bSmooth=true, double fSmoothInfl=1.0f);
+    virtual void EnableSmoothing(bool bSmooth = true, double fSmoothInfl = 1.0f);
 
 protected:
-    bool                    _bGetUVDir;             //! Determines whether u/v direction is given
-    bool                    _bSmoothing;            //! Use smoothing
-    double                  _fSmoothInfluence;      //! Influence of smoothing
-    unsigned                _usUOrder;              //! Order in u-direction
-    unsigned                _usVOrder;              //! Order in v-direction
-    unsigned                _usUCtrlpoints;         //! Number of control points in the u-direction
-    unsigned                _usVCtrlpoints;         //! Number of control points in the v-direction
-    Base::Vector3d          _clU;                   //! u-direction
-    Base::Vector3d          _clV;                   //! v-direction
-    Base::Vector3d          _clW;                   //! w-direction (perpendicular to u & v directions)
-    TColgp_Array1OfPnt*     _pvcPoints{nullptr};    //! Raw data point list
-    TColgp_Array1OfPnt2d*   _pvcUVParam{nullptr};   //! Parameter value for the points in the list
-    TColgp_Array2OfPnt      _vCtrlPntsOfSurf;       //! Array of control points
-    TColStd_Array1OfReal    _vUKnots;               //! Knot vector of the B-spline surface in the u-direction
-    TColStd_Array1OfReal    _vVKnots;               //! Knot vector of the B-spline surface in the v-direction
-    TColStd_Array1OfInteger _vUMults;               //! Multiplicity of the knots in the knot vector
-    TColStd_Array1OfInteger _vVMults;               //! Multiplicity of the knots in the knot vector
+    bool _bGetUVDir;                            //! Determines whether u/v direction is given
+    bool _bSmoothing;                           //! Use smoothing
+    double _fSmoothInfluence;                   //! Influence of smoothing
+    unsigned _usUOrder;                         //! Order in u-direction
+    unsigned _usVOrder;                         //! Order in v-direction
+    unsigned _usUCtrlpoints;                    //! Number of control points in the u-direction
+    unsigned _usVCtrlpoints;                    //! Number of control points in the v-direction
+    Base::Vector3d _clU;                        //! u-direction
+    Base::Vector3d _clV;                        //! v-direction
+    Base::Vector3d _clW;                        //! w-direction (perpendicular to u & v directions)
+    TColgp_Array1OfPnt* _pvcPoints {nullptr};   //! Raw data point list
+    TColgp_Array1OfPnt2d* _pvcUVParam {nullptr};//! Parameter value for the points in the list
+    TColgp_Array2OfPnt _vCtrlPntsOfSurf;        //! Array of control points
+    TColStd_Array1OfReal _vUKnots;   //! Knot vector of the B-spline surface in the u-direction
+    TColStd_Array1OfReal _vVKnots;   //! Knot vector of the B-spline surface in the v-direction
+    TColStd_Array1OfInteger _vUMults;//! Multiplicity of the knots in the knot vector
+    TColStd_Array1OfInteger _vVMults;//! Multiplicity of the knots in the knot vector
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
@@ -366,14 +380,15 @@ protected:
  * can be generated.
  */
 
-class ReenExport BSplineParameterCorrection : public ParameterCorrection
+class ReenExport BSplineParameterCorrection: public ParameterCorrection
 {
 public:
     // Constructor
-    explicit BSplineParameterCorrection(unsigned usUOrder=4,               //Order in u-direction (order = degree + 1)
-                               unsigned usVOrder=4,               //Order in the v-direction
-                               unsigned usUCtrlpoints=6,          //Qty. of the control points in u-direction
-                               unsigned usVCtrlpoints=6);         //Qty. of the control points in v-direction
+    explicit BSplineParameterCorrection(
+        unsigned usUOrder = 4,      // Order in u-direction (order = degree + 1)
+        unsigned usVOrder = 4,      // Order in the v-direction
+        unsigned usUCtrlpoints = 6, // Qty. of the control points in u-direction
+        unsigned usVCtrlpoints = 6);// Qty. of the control points in v-direction
 
     ~BSplineParameterCorrection() override = default;
 
@@ -443,13 +458,13 @@ public:
     /**
      * Use smoothing-terms
      */
-    void EnableSmoothing(bool bSmooth=true, double fSmoothInfl=1.0f) override;
+    void EnableSmoothing(bool bSmooth = true, double fSmoothInfl = 1.0f) override;
 
     /**
      * Use smoothing-terms
      */
-    virtual void EnableSmoothing(bool bSmooth, double fSmoothInfl,
-                                 double fFirst, double fSec,  double fThird);
+    virtual void
+    EnableSmoothing(bool bSmooth, double fSmoothInfl, double fFirst, double fSec, double fThird);
 
 protected:
     /**
@@ -476,14 +491,14 @@ protected:
     virtual void CalcThirdSmoothMatrix(Base::SequencerLauncher&);
 
 protected:
-    BSplineBasis           _clUSpline;        //! B-spline basic function in the u-direction
-    BSplineBasis           _clVSpline;        //! B-spline basic function in the v-direction
-    math_Matrix            _clSmoothMatrix;   //! Matrix of smoothing functionals
-    math_Matrix            _clFirstMatrix;    //! Matrix of the 1st smoothing functionals
-    math_Matrix            _clSecondMatrix;   //! Matrix of the 2nd smoothing functionals
-    math_Matrix            _clThirdMatrix;    //! Matrix of the 3rd smoothing functionals
+    BSplineBasis _clUSpline;    //! B-spline basic function in the u-direction
+    BSplineBasis _clVSpline;    //! B-spline basic function in the v-direction
+    math_Matrix _clSmoothMatrix;//! Matrix of smoothing functionals
+    math_Matrix _clFirstMatrix; //! Matrix of the 1st smoothing functionals
+    math_Matrix _clSecondMatrix;//! Matrix of the 2nd smoothing functionals
+    math_Matrix _clThirdMatrix; //! Matrix of the 3rd smoothing functionals
 };
 
-} // namespace Reen
+}// namespace Reen
 
-#endif // REEN_APPROXSURFACE_H
+#endif// REEN_APPROXSURFACE_H

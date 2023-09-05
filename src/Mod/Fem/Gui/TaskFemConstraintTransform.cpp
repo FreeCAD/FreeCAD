@@ -159,7 +159,7 @@ TaskFemConstraintTransform::TaskFemConstraintTransform(
 
     if ((p == 0) && (!Objects.empty())) {
         QMessageBox::warning(this,
-                             tr("Constraint update error"),
+                             tr("Analysis feature update error"),
                              tr("The transformable faces have changed. Please add only the "
                                 "transformable faces and remove non-transformable faces!"));
         return;
@@ -270,14 +270,14 @@ void TaskFemConstraintTransform::addToSelection()
 
     if (rows == 1) {
         QMessageBox::warning(
-            this, tr("Selection error"), tr("Only one face for rectangular transform constraint!"));
+            this, tr("Selection error"), tr("Only one face for rectangular local coordinate system!"));
         Gui::Selection().clearSelection();
         return;
     }
 
     if ((rows == 0) && (selection.size() >= 2)) {
         QMessageBox::warning(
-            this, tr("Selection error"), tr("Only one face for rectangular transform constraint!"));
+            this, tr("Selection error"), tr("Only one face for rectangular local coordinate system!"));
         Gui::Selection().clearSelection();
         return;
     }
@@ -298,7 +298,7 @@ void TaskFemConstraintTransform::addToSelection()
         App::DocumentObject* obj = it.getObject();
         if (subNames.size() != 1) {
             QMessageBox::warning(
-                this, tr("Selection error"), tr("Only one face for transform constraint!"));
+                this, tr("Selection error"), tr("Only one face for local coordinate system!"));
             Gui::Selection().clearSelection();
             return;
         }
@@ -357,8 +357,8 @@ void TaskFemConstraintTransform::addToSelection()
                     QMessageBox::warning(
                         this,
                         tr("Selection error"),
-                        tr("Only transformable faces can be selected! Apply displacement "
-                           "constraint to surface first then apply constraint to surface"));
+                        tr("Only transformable faces can be selected! Apply displacement boundary "
+                           "condition to surface first then apply local coordinate system to surface"));
                     Gui::Selection().clearSelection();
                     return;
                 }
@@ -560,7 +560,7 @@ void TaskDlgFemConstraintTransform::open()
 {
     // a transaction is already open at creation time of the panel
     if (!Gui::Command::hasPendingCommand()) {
-        QString msg = QObject::tr("Constraint transform");
+        QString msg = QObject::tr("Local coordinate system");
         Gui::Command::openCommand((const char*)msg.toUtf8());
         ConstraintView->setVisible(true);
         Gui::Command::doCommand(

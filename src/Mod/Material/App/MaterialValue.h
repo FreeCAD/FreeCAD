@@ -25,12 +25,14 @@
 
 #include <QVariant>
 
-namespace Materials {
+namespace Materials
+{
 
 class MaterialsExport MaterialValue
 {
 public:
-    enum ValueType {
+    enum ValueType
+    {
         None = 0,
         String = 1,
         Boolean = 2,
@@ -48,45 +50,78 @@ public:
     };
     MaterialValue();
     explicit MaterialValue(ValueType type);
-    virtual ~MaterialValue();
+    virtual ~MaterialValue() = default;
 
-    ValueType getType() { return _valueType; }
+    ValueType getType()
+    {
+        return _valueType;
+    }
 
-    const QVariant getValue(void) const { return _value; }
-    bool isNull() const { return _value.isNull(); }
-    virtual const QVariant getValueAt(const QVariant &value) const { Q_UNUSED(value); return _value; }
-    void setValue (const QVariant &value) { _value = value; }
+    const QVariant getValue(void) const
+    {
+        return _value;
+    }
+    bool isNull() const
+    {
+        return _value.isNull();
+    }
+    virtual const QVariant getValueAt(const QVariant& value) const
+    {
+        Q_UNUSED(value);
+        return _value;
+    }
+    void setValue(const QVariant& value)
+    {
+        _value = value;
+    }
 
 protected:
     ValueType _valueType;
     QVariant _value;
 
-    void setType(ValueType type) { _valueType = type; }
+    void setType(ValueType type)
+    {
+        _valueType = type;
+    }
 };
 
-class MaterialsExport Material2DArray : public MaterialValue
+class MaterialsExport Material2DArray: public MaterialValue
 {
 public:
     Material2DArray();
-    ~Material2DArray() override;
+    ~Material2DArray() override = default;
 
-    void setDefault(MaterialValue value) { _value = value.getValue(); _defaultSet = true; }
-    void setDefault(const QVariant &value) { _value = value; _defaultSet = true; }
+    void setDefault(MaterialValue value)
+    {
+        _value = value.getValue();
+        _defaultSet = true;
+    }
+    void setDefault(const QVariant& value)
+    {
+        _value = value;
+        _defaultSet = true;
+    }
     MaterialValue getDefault() const;
-    bool defaultSet() const { return _defaultSet; }
+    bool defaultSet() const
+    {
+        return _defaultSet;
+    }
 
-    const std::vector<QVariant> *getRow(int row) const;
-    std::vector<QVariant> *getRow(int row);
-    int rows() const { return _rows.size(); }
-    void addRow(std::vector<QVariant> *row);
-    void insertRow(int index, std::vector<QVariant> *row);
+    const std::vector<QVariant>* getRow(int row) const;
+    std::vector<QVariant>* getRow(int row);
+    int rows() const
+    {
+        return _rows.size();
+    }
+    void addRow(std::vector<QVariant>* row);
+    void insertRow(int index, std::vector<QVariant>* row);
     void deleteRow(int row);
 
-    void setValue(int row, int column,  const QVariant &value);
+    void setValue(int row, int column, const QVariant& value);
     const QVariant getValue(int row, int column);
 
 protected:
-    std::vector<std::vector<QVariant> *> _rows;
+    std::vector<std::vector<QVariant>*> _rows;
     bool _defaultSet;
 
 private:
@@ -94,42 +129,59 @@ private:
     void dump() const;
 };
 
-class MaterialsExport Material3DArray : public MaterialValue
+class MaterialsExport Material3DArray: public MaterialValue
 {
 public:
     Material3DArray();
-    ~Material3DArray() override;
+    ~Material3DArray() override = default;
 
-    void setDefault(MaterialValue value) { _value = value.getValue(); _defaultSet = true; }
-    void setDefault(const QVariant &value) { _value = value; _defaultSet = true; }
+    void setDefault(MaterialValue value)
+    {
+        _value = value.getValue();
+        _defaultSet = true;
+    }
+    void setDefault(const QVariant& value)
+    {
+        _value = value;
+        _defaultSet = true;
+    }
     MaterialValue getDefault() const;
-    bool defaultSet() const { return _defaultSet; }
+    bool defaultSet() const
+    {
+        return _defaultSet;
+    }
 
-    const std::vector<std::vector<QVariant> *> &getTable(const QVariant &depth) const;
-    const std::vector<QVariant> &getRow(const QVariant &depth, int row) const;
-    const std::vector<QVariant> &getRow(int row) const;
-    std::vector<QVariant> &getRow(const QVariant &depth, int row);
-    std::vector<QVariant> &getRow(int row);
-    void addRow(const QVariant &depth, std::vector<QVariant> *row);
-    void deleteRow(const QVariant &depth, int row);
+    const std::vector<std::vector<QVariant>*>& getTable(const QVariant& depth) const;
+    const std::vector<QVariant>& getRow(const QVariant& depth, int row) const;
+    const std::vector<QVariant>& getRow(int row) const;
+    std::vector<QVariant>& getRow(const QVariant& depth, int row);
+    std::vector<QVariant>& getRow(int row);
+    void addRow(const QVariant& depth, std::vector<QVariant>* row);
+    void deleteRow(const QVariant& depth, int row);
     void deleteRows(int depth);
-    int depth() const { return _rowMap.size(); }
-    int rows(const QVariant &depth) const { return getTable(depth).size(); }
+    int depth() const
+    {
+        return _rowMap.size();
+    }
+    int rows(const QVariant& depth) const
+    {
+        return getTable(depth).size();
+    }
 
-    void setValue(const QVariant &depth, int row, int column,  const QVariant &value);
-    void setValue(int row, int column,  const QVariant &value);
-    const QVariant getValue(const QVariant &depth, int row, int column);
+    void setValue(const QVariant& depth, int row, int column, const QVariant& value);
+    void setValue(int row, int column, const QVariant& value);
+    const QVariant getValue(const QVariant& depth, int row, int column);
     const QVariant getValue(int row, int column);
 
 protected:
-    std::map<QVariant, std::vector<std::vector<QVariant> *>> _rowMap;
+    std::map<QVariant, std::vector<std::vector<QVariant>*>> _rowMap;
     bool _defaultSet;
 };
 
-} // namespace Materials
+}// namespace Materials
 
 Q_DECLARE_METATYPE(Materials::MaterialValue)
 Q_DECLARE_METATYPE(Materials::Material2DArray)
 Q_DECLARE_METATYPE(Materials::Material3DArray)
 
-#endif // MATERIAL_MATERIALVALUE_H
+#endif// MATERIAL_MATERIALVALUE_H

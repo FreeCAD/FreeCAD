@@ -23,37 +23,41 @@
 #ifndef MATGUI_ARRAYMODEL_H
 #define MATGUI_ARRAYMODEL_H
 
+#include <QAbstractTableModel>
 #include <QDialog>
 #include <QStandardItem>
 #include <QTableView>
-#include <QAbstractTableModel>
 
+#include <Mod/Material/App/Materials.h>
 #include <Mod/Material/App/Model.h>
 
-namespace MatGui {
+namespace MatGui
+{
 
-class AbstractArrayModel : public QAbstractTableModel
+class AbstractArrayModel: public QAbstractTableModel
 {
 public:
-    explicit AbstractArrayModel(QObject *parent = nullptr);
-    ~AbstractArrayModel() override;
+    explicit AbstractArrayModel(QObject* parent = nullptr);
+    ~AbstractArrayModel() override = default;
 
     virtual bool newRow(const QModelIndex& index) const = 0;
 };
 
-class Array2DModel : public AbstractArrayModel
+class Array2DModel: public AbstractArrayModel
 {
 public:
-    explicit Array2DModel(Materials::MaterialProperty *property = nullptr, Materials::Material2DArray *value = nullptr, QObject *parent = nullptr);
-    ~Array2DModel() override;
+    explicit Array2DModel(Materials::MaterialProperty* property = nullptr,
+                          Materials::Material2DArray* value = nullptr,
+                          QObject* parent = nullptr);
+    ~Array2DModel() override = default;
 
     // Overridden virtual functions
     int rowCount(const QModelIndex& parent = QModelIndex()) const override;
     bool newRow(const QModelIndex& index) const override;
     int columnCount(const QModelIndex& parent = QModelIndex()) const override;
-    QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
-    QVariant headerData(int section, Qt::Orientation orientation,
-                        int role = Qt::DisplayRole) const override;
+    QVariant data(const QModelIndex& index, int role = Qt::DisplayRole) const override;
+    QVariant
+    headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const override;
     bool setData(const QModelIndex& index, const QVariant& value, int role = Qt::EditRole) override;
     Qt::ItemFlags flags(const QModelIndex& index) const override;
 
@@ -62,25 +66,31 @@ public:
     bool removeRows(int row, int count, const QModelIndex& parent = QModelIndex()) override;
     bool insertColumns(int column, int count, const QModelIndex& parent = QModelIndex()) override;
     bool removeColumns(int column, int count, const QModelIndex& parent = QModelIndex()) override;
-private:
-    Materials::MaterialProperty *_property;
-    Materials::Material2DArray *_value;
 
+private:
+    Materials::MaterialProperty* _property;
+    Materials::Material2DArray* _value;
 };
 
-class Array3DDepthModel : public AbstractArrayModel
+class Array3DDepthModel: public AbstractArrayModel
 {
 public:
-    explicit Array3DDepthModel(Materials::MaterialProperty *property = nullptr, Materials::Material3DArray *value = nullptr, QObject *parent = nullptr);
-    ~Array3DDepthModel() override;
+    explicit Array3DDepthModel(Materials::MaterialProperty* property = nullptr,
+                               Materials::Material3DArray* value = nullptr,
+                               QObject* parent = nullptr);
+    ~Array3DDepthModel() override = default;
 
     // Overridden virtual functions
     int rowCount(const QModelIndex& parent = QModelIndex()) const override;
     bool newRow(const QModelIndex& index) const override;
-    int columnCount(const QModelIndex& parent = QModelIndex()) const override { Q_UNUSED(parent) return 1; }
-    QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
-    QVariant headerData(int section, Qt::Orientation orientation,
-                        int role = Qt::DisplayRole) const override;
+    int columnCount(const QModelIndex& parent = QModelIndex()) const override
+    {
+        Q_UNUSED(parent)
+        return 1;
+    }
+    QVariant data(const QModelIndex& index, int role = Qt::DisplayRole) const override;
+    QVariant
+    headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const override;
     bool setData(const QModelIndex& index, const QVariant& value, int role = Qt::EditRole) override;
     Qt::ItemFlags flags(const QModelIndex& index) const override;
 
@@ -89,25 +99,27 @@ public:
     bool removeRows(int row, int count, const QModelIndex& parent = QModelIndex()) override;
     bool insertColumns(int column, int count, const QModelIndex& parent = QModelIndex()) override;
     bool removeColumns(int column, int count, const QModelIndex& parent = QModelIndex()) override;
-private:
-    Materials::MaterialProperty *_property;
-    Materials::Material3DArray *_value;
 
+private:
+    Materials::MaterialProperty* _property;
+    Materials::Material3DArray* _value;
 };
 
-class Array3DModel : public AbstractArrayModel
+class Array3DModel: public AbstractArrayModel
 {
 public:
-    explicit Array3DModel(Materials::MaterialProperty *property = nullptr, Materials::Material3DArray *value = nullptr, QObject *parent = nullptr);
-    ~Array3DModel() override;
+    explicit Array3DModel(Materials::MaterialProperty* property = nullptr,
+                          Materials::Material3DArray* value = nullptr,
+                          QObject* parent = nullptr);
+    ~Array3DModel() override = default;
 
     // Overridden virtual functions
     int rowCount(const QModelIndex& parent = QModelIndex()) const override;
     bool newRow(const QModelIndex& index) const override;
     int columnCount(const QModelIndex& parent = QModelIndex()) const override;
-    QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
-    QVariant headerData(int section, Qt::Orientation orientation,
-                        int role = Qt::DisplayRole) const override;
+    QVariant data(const QModelIndex& index, int role = Qt::DisplayRole) const override;
+    QVariant
+    headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const override;
     bool setData(const QModelIndex& index, const QVariant& value, int role = Qt::EditRole) override;
     Qt::ItemFlags flags(const QModelIndex& index) const override;
 
@@ -116,12 +128,12 @@ public:
     bool removeRows(int row, int count, const QModelIndex& parent = QModelIndex()) override;
     bool insertColumns(int column, int count, const QModelIndex& parent = QModelIndex()) override;
     bool removeColumns(int column, int count, const QModelIndex& parent = QModelIndex()) override;
-private:
-    Materials::MaterialProperty *_property;
-    Materials::Material3DArray *_value;
 
+private:
+    Materials::MaterialProperty* _property;
+    Materials::Material3DArray* _value;
 };
 
-} // namespace MatGui
+}// namespace MatGui
 
-#endif // MATGUI_ARRAYMODEL_H
+#endif// MATGUI_ARRAYMODEL_H

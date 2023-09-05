@@ -31,8 +31,8 @@
 #include <qvalidator.h>
 
 RegExpDialog::RegExpDialog(QWidget* parent)
-    : QDialog(parent),
-      ui(new Ui_RegExpDialog())
+    : QDialog(parent)
+    , ui(new Ui_RegExpDialog())
 {
     ui->setupUi(this);
     rxhilighter = new RegExpSyntaxHighlighter(ui->textEdit1);
@@ -43,14 +43,20 @@ RegExpDialog::RegExpDialog(QWidget* parent)
     connect(ui->lineEditRegExp, &QLineEdit::textChanged, this, &RegExpDialog::performRegExp);
     connect(ui->caseInsensitiveOption, &QCheckBox::toggled, this, &RegExpDialog::performRegExp);
     connect(ui->invertedGreedinessOption, &QCheckBox::toggled, this, &RegExpDialog::performRegExp);
-    connect(
-        ui->dotMatchesEverythingOption, &QCheckBox::toggled, this, &RegExpDialog::performRegExp);
+    connect(ui->dotMatchesEverythingOption,
+            &QCheckBox::toggled,
+            this,
+            &RegExpDialog::performRegExp);
     connect(ui->multilineOption, &QCheckBox::toggled, this, &RegExpDialog::performRegExp);
-    connect(
-        ui->extendedPatternSyntaxOption, &QCheckBox::toggled, this, &RegExpDialog::performRegExp);
+    connect(ui->extendedPatternSyntaxOption,
+            &QCheckBox::toggled,
+            this,
+            &RegExpDialog::performRegExp);
     connect(ui->dontCaptureOption, &QCheckBox::toggled, this, &RegExpDialog::performRegExp);
-    connect(
-        ui->useUnicodePropertiesOption, &QCheckBox::toggled, this, &RegExpDialog::performRegExp);
+    connect(ui->useUnicodePropertiesOption,
+            &QCheckBox::toggled,
+            this,
+            &RegExpDialog::performRegExp);
 }
 
 RegExpDialog::~RegExpDialog()
@@ -130,8 +136,9 @@ void RegExpSyntaxHighlighter::highlightBlock(const QString& text)
     regFormat.setFontWeight(QFont::Normal);
     setFormat(0, text.length(), regFormat);
 
-    if (regexp.pattern().isEmpty())
+    if (regexp.pattern().isEmpty()) {
         return;// empty regular expression
+    }
 
     int pos = 0;
     int last = -1;
@@ -140,8 +147,9 @@ void RegExpSyntaxHighlighter::highlightBlock(const QString& text)
 
     QRegularExpressionMatch match;
     while ((pos = text.indexOf(regexp, pos, &match)) != -1) {
-        if (last == pos)
+        if (last == pos) {
             break;
+        }
         QString sub = text.mid(pos, match.capturedLength());
         if (!sub.isEmpty()) {
             setFormat(pos, sub.length(), regFormat);

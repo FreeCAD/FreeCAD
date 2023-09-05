@@ -28,32 +28,38 @@
 #include <QDialog>
 #include <QDir>
 #include <QStandardItem>
-#include <QTreeView>
 #include <QStyledItemDelegate>
 #include <QSvgWidget>
+#include <QTreeView>
 
-#include <Mod/Material/App/Materials.h>
 #include <Mod/Material/App/MaterialManager.h>
+#include <Mod/Material/App/Materials.h>
 #include <Mod/Material/App/ModelManager.h>
 
 namespace fs = boost::filesystem;
 
-namespace MatGui {
+namespace MatGui
+{
 
-class ArrayDelegate : public QStyledItemDelegate
+class ArrayDelegate: public QStyledItemDelegate
 {
     Q_OBJECT
 public:
     explicit ArrayDelegate(
         Materials::MaterialValue::ValueType type = Materials::MaterialValue::None,
-        QString units = QString(), QObject* parent = nullptr);
-    void paint(QPainter* painter, const QStyleOptionViewItem& option,
+        QString units = QString(),
+        QObject* parent = nullptr);
+    virtual ~ArrayDelegate() = default;
+
+    void paint(QPainter* painter,
+               const QStyleOptionViewItem& option,
                const QModelIndex& index) const override;
-    QWidget* createEditor(QWidget *parent,
-            const QStyleOptionViewItem &, const QModelIndex &index) const override;
+    QWidget* createEditor(QWidget* parent,
+                          const QStyleOptionViewItem&,
+                          const QModelIndex& index) const override;
     void setEditorData(QWidget* editor, const QModelIndex& index) const override;
 
-// Q_SIGNALS:
+    // Q_SIGNALS:
     /** Emits this signal when a property has changed */
     // void propertyChange(const QString &property, const QString value);
 
@@ -61,9 +67,9 @@ private:
     Materials::MaterialValue::ValueType _type;
     QString _units;
 
-    QWidget* createWidget(QWidget* parent, const QVariant &item) const;
+    QWidget* createWidget(QWidget* parent, const QVariant& item) const;
 };
 
-} // namespace MatGui
+}// namespace MatGui
 
-#endif // MATGUI_ArrayDelegate_H
+#endif// MATGUI_ArrayDelegate_H

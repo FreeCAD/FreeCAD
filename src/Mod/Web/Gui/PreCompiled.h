@@ -51,6 +51,6 @@
 #include <QTextStream>
 #include <QUrl>
 
-#endif //_PreComp_
+#endif//_PreComp_
 
-#endif // WEBGUI_PRECOMPILED_H
+#endif// WEBGUI_PRECOMPILED_H

@@ -48,7 +48,8 @@ std::string ExternalGeometryFacadePy::representation() const
     return str.str();
 }
 
-PyObject* ExternalGeometryFacadePy::PyMake(struct _typeobject*, PyObject*,
+PyObject* ExternalGeometryFacadePy::PyMake(struct _typeobject*,
+                                           PyObject*,
                                            PyObject*)// Python wrapper
 {
     // create a new instance of PointPy and the Twin object
@@ -150,8 +151,9 @@ Py::String ExternalGeometryFacadePy::getInternalType() const
 {
     int internaltypeindex = (int)this->getExternalGeometryFacadePtr()->getInternalType();
 
-    if (internaltypeindex >= InternalType::NumInternalGeometryType)
+    if (internaltypeindex >= InternalType::NumInternalGeometryType) {
         throw Py::NotImplementedError("String name of enum not implemented");
+    }
 
     std::string typestr = SketchGeometryExtension::internaltype2str[internaltypeindex];
 
@@ -192,8 +194,12 @@ PyObject* ExternalGeometryFacadePy::mirror(PyObject* args)
 
     PyErr_Clear();
     PyObject* axis;
-    if (PyArg_ParseTuple(
-            args, "O!O!", &(Base::VectorPy::Type), &o, &(Base::VectorPy::Type), &axis)) {
+    if (PyArg_ParseTuple(args,
+                         "O!O!",
+                         &(Base::VectorPy::Type),
+                         &o,
+                         &(Base::VectorPy::Type),
+                         &axis)) {
         Base::Vector3d pnt = static_cast<Base::VectorPy*>(o)->value();
         Base::Vector3d dir = static_cast<Base::VectorPy*>(axis)->value();
         getExternalGeometryFacadePtr()->mirror(pnt, dir);
@@ -208,8 +214,9 @@ PyObject* ExternalGeometryFacadePy::mirror(PyObject* args)
 PyObject* ExternalGeometryFacadePy::rotate(PyObject* args)
 {
     PyObject* o;
-    if (!PyArg_ParseTuple(args, "O!", &(Base::PlacementPy::Type), &o))
+    if (!PyArg_ParseTuple(args, "O!", &(Base::PlacementPy::Type), &o)) {
         return nullptr;
+    }
 
     Base::Placement* plm = static_cast<Base::PlacementPy*>(o)->getPlacementPtr();
     getExternalGeometryFacadePtr()->rotate(*plm);
@@ -241,8 +248,9 @@ PyObject* ExternalGeometryFacadePy::scale(PyObject* args)
 PyObject* ExternalGeometryFacadePy::transform(PyObject* args)
 {
     PyObject* o;
-    if (!PyArg_ParseTuple(args, "O!", &(Base::MatrixPy::Type), &o))
+    if (!PyArg_ParseTuple(args, "O!", &(Base::MatrixPy::Type), &o)) {
         return nullptr;
+    }
     Base::Matrix4D mat = static_cast<Base::MatrixPy*>(o)->value();
     getExternalGeometryFacadePtr()->transform(mat);
     Py_Return;
@@ -502,8 +510,9 @@ Py::Boolean ExternalGeometryFacadePy::getConstruction() const
 
 void ExternalGeometryFacadePy::setConstruction(Py::Boolean arg)
 {
-    if (getExternalGeometryFacadePtr()->getTypeId() != Part::GeomPoint::getClassTypeId())
+    if (getExternalGeometryFacadePtr()->getTypeId() != Part::GeomPoint::getClassTypeId()) {
         getExternalGeometryFacadePtr()->setConstruction(arg);
+    }
 }
 
 Py::Long ExternalGeometryFacadePy::getGeometryLayerId() const

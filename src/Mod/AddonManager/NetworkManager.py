@@ -105,9 +105,7 @@ if HAVE_QTNETWORK:
     class QueueItem:
         """A container for information about an item in the network queue."""
 
-        def __init__(
-            self, index: int, request: QtNetwork.QNetworkRequest, track_progress: bool
-        ):
+        def __init__(self, index: int, request: QtNetwork.QNetworkRequest, track_progress: bool):
             self.index = index
             self.request = request
             self.original_url = request.url()
@@ -126,9 +124,7 @@ if HAVE_QTNETWORK:
 
         # Connect to progress_made and progress_complete for large amounts of data, which get buffered into a temp file
         # That temp file should be deleted when your code is done with it
-        progress_made = QtCore.Signal(
-            int, int, int
-        )  # Index, bytes read, total bytes (may be None)
+        progress_made = QtCore.Signal(int, int, int)  # Index, bytes read, total bytes (may be None)
 
         progress_complete = QtCore.Signal(
             int, int, os.PathLike
@@ -153,18 +149,14 @@ if HAVE_QTNETWORK:
 
             # Make sure we exit nicely on quit
             if QtCore.QCoreApplication.instance() is not None:
-                QtCore.QCoreApplication.instance().aboutToQuit.connect(
-                    self.__aboutToQuit
-                )
+                QtCore.QCoreApplication.instance().aboutToQuit.connect(self.__aboutToQuit)
 
             # Create the QNAM on this thread:
             self.QNAM = QtNetwork.QNetworkAccessManager()
             self.QNAM.proxyAuthenticationRequired.connect(self.__authenticate_proxy)
             self.QNAM.authenticationRequired.connect(self.__authenticate_resource)
 
-            qnam_cache = QtCore.QStandardPaths.writableLocation(
-                QtCore.QStandardPaths.CacheLocation
-            )
+            qnam_cache = QtCore.QStandardPaths.writableLocation(QtCore.QStandardPaths.CacheLocation)
             os.makedirs(qnam_cache, exist_ok=True)
             self.diskCache = QtNetwork.QNetworkDiskCache()
             self.diskCache.setCacheDirectory(qnam_cache)
@@ -206,9 +198,7 @@ if HAVE_QTNETWORK:
                 )
                 proxy = QtNetwork.QNetworkProxyFactory.systemProxyForQuery(query)
                 if proxy and proxy[0]:
-                    self.QNAM.setProxy(
-                        proxy[0]
-                    )  # This may still be QNetworkProxy.NoProxy
+                    self.QNAM.setProxy(proxy[0])  # This may still be QNetworkProxy.NoProxy
             elif userProxyCheck:
                 host, _, port_string = proxy_string.rpartition(":")
                 try:
@@ -223,9 +213,7 @@ if HAVE_QTNETWORK:
                     )
                     port = 0
                 # For now assume an HttpProxy, but eventually this should be a parameter
-                proxy = QtNetwork.QNetworkProxy(
-                    QtNetwork.QNetworkProxy.HttpProxy, host, port
-                )
+                proxy = QtNetwork.QNetworkProxy(QtNetwork.QNetworkProxy.HttpProxy, host, port)
                 self.QNAM.setProxy(proxy)
 
         def _setup_proxy_freecad(self):
@@ -314,9 +302,7 @@ if HAVE_QTNETWORK:
             except queue.Empty:
                 pass
 
-        def __launch_request(
-            self, index: int, request: QtNetwork.QNetworkRequest
-        ) -> None:
+        def __launch_request(self, index: int, request: QtNetwork.QNetworkRequest) -> None:
             """Given a network request, ask the QNetworkAccessManager to begin processing it."""
             reply = self.QNAM.get(request)
             self.replies[index] = reply
@@ -338,9 +324,7 @@ if HAVE_QTNETWORK:
             current_index = next(self.counting_iterator)  # A thread-safe counter
             # Use a queue because we can only put things on the QNAM from the main event loop thread
             self.queue.put(
-                QueueItem(
-                    current_index, self.__create_get_request(url), track_progress=False
-                )
+                QueueItem(current_index, self.__create_get_request(url), track_progress=False)
             )
             self.__request_queued.emit()
             return current_index
@@ -356,9 +340,7 @@ if HAVE_QTNETWORK:
             current_index = next(self.counting_iterator)  # A thread-safe counter
             # Use a queue because we can only put things on the QNAM from the main event loop thread
             self.queue.put(
-                QueueItem(
-                    current_index, self.__create_get_request(url), track_progress=True
-                )
+                QueueItem(current_index, self.__create_get_request(url), track_progress=True)
             )
             self.__request_queued.emit()
             return current_index
@@ -371,9 +353,7 @@ if HAVE_QTNETWORK:
                 self.synchronous_complete[current_index] = False
 
             self.queue.put(
-                QueueItem(
-                    current_index, self.__create_get_request(url), track_progress=False
-                )
+                QueueItem(current_index, self.__create_get_request(url), track_progress=False)
             )
             self.__request_queued.emit()
             while True:
@@ -415,9 +395,7 @@ if HAVE_QTNETWORK:
                 QtNetwork.QNetworkRequest.RedirectPolicyAttribute,
                 QtNetwork.QNetworkRequest.UserVerifiedRedirectPolicy,
             )
-            request.setAttribute(
-                QtNetwork.QNetworkRequest.CacheSaveControlAttribute, True
-            )
+            request.setAttribute(QtNetwork.QNetworkRequest.CacheSaveControlAttribute, True)
             request.setAttribute(
                 QtNetwork.QNetworkRequest.CacheLoadControlAttribute,
                 QtNetwork.QNetworkRequest.PreferNetwork,
@@ -457,9 +435,7 @@ if HAVE_QTNETWORK:
                 )
                 proxy_authentication.setWindowFlag(QtCore.Qt.WindowStaysOnTopHint, True)
                 # Show the right labels, etc.
-                proxy_authentication.labelProxyAddress.setText(
-                    f"{reply.hostName()}:{reply.port()}"
-                )
+                proxy_authentication.labelProxyAddress.setText(f"{reply.hostName()}:{reply.port()}")
                 if authenticator.realm():
                     proxy_authentication.labelProxyRealm.setText(authenticator.realm())
                 else:
@@ -468,9 +444,7 @@ if HAVE_QTNETWORK:
                 result = proxy_authentication.exec()
                 if result == QtWidgets.QDialogButtonBox.Ok:
                     authenticator.setUser(proxy_authentication.lineEditUsername.text())
-                    authenticator.setPassword(
-                        proxy_authentication.lineEditPassword.text()
-                    )
+                    authenticator.setPassword(proxy_authentication.lineEditPassword.text())
             else:
                 username = input("Proxy username: ")
                 import getpass
@@ -502,8 +476,7 @@ if HAVE_QTNETWORK:
             """Called when an SSL error occurs: prints the error information."""
             if HAVE_FREECAD:
                 FreeCAD.Console.PrintWarning(
-                    translate("AddonsInstaller", "Error with encrypted connection")
-                    + "\n:"
+                    translate("AddonsInstaller", "Error with encrypted connection") + "\n:"
                 )
                 FreeCAD.Console.PrintWarning(reply)
                 for error in errors:
@@ -549,9 +522,7 @@ if HAVE_QTNETWORK:
                 f.write(buffer.data())
             except OSError as e:
                 if HAVE_FREECAD:
-                    FreeCAD.Console.PrintError(
-                        f"Network Manager internal error: {str(e)}"
-                    )
+                    FreeCAD.Console.PrintError(f"Network Manager internal error: {str(e)}")
                 else:
                     print(f"Network Manager internal error: {str(e)}")
 
@@ -560,15 +531,10 @@ if HAVE_QTNETWORK:
             any notifications have been called."""
             reply = self.sender()
             if not reply:
-                print(
-                    "Network Manager Error: __reply_finished not called by a Qt signal"
-                )
+                print("Network Manager Error: __reply_finished not called by a Qt signal")
                 return
 
-            if (
-                reply.error()
-                == QtNetwork.QNetworkReply.NetworkError.OperationCanceledError
-            ):
+            if reply.error() == QtNetwork.QNetworkReply.NetworkError.OperationCanceledError:
                 # Silently do nothing
                 return
 
@@ -581,9 +547,7 @@ if HAVE_QTNETWORK:
                 print(f"Lost net request for {reply.url()}")
                 return
 
-            response_code = reply.attribute(
-                QtNetwork.QNetworkRequest.HttpStatusCodeAttribute
-            )
+            response_code = reply.attribute(QtNetwork.QNetworkRequest.HttpStatusCodeAttribute)
             self.queue.task_done()
             if reply.error() == QtNetwork.QNetworkReply.NetworkError.NoError:
                 if index in self.monitored_connections:
@@ -611,9 +575,7 @@ else:  # HAVE_QTNETWORK is false:
         completed = QtCore.Signal(
             int, int, bytes
         )  # Emitted as soon as the request is made, with a connection failed error
-        progress_made = QtCore.Signal(
-            int, int, int
-        )  # Never emitted, no progress is made here
+        progress_made = QtCore.Signal(int, int, int)  # Never emitted, no progress is made here
         progress_complete = QtCore.Signal(
             int, int, os.PathLike
         )  # Emitted as soon as the request is made, with a connection failed error
@@ -675,9 +637,7 @@ if __name__ == "__main__":
         """Attached to the completion signal, prints diagnostic information about the network access"""
         global count
         if code == 200:
-            print(
-                f"For request {index+1}, response was {data.size()} bytes.", flush=True
-            )
+            print(f"For request {index+1}, response was {data.size()} bytes.", flush=True)
         else:
             print(
                 f"For request {index+1}, request failed with HTTP result code {code}",

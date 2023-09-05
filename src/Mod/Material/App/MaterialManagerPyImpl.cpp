@@ -23,14 +23,16 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <boost/uuid/uuid_io.hpp>
+#include <boost/uuid/uuid_io.hpp>
 #endif
 
-#include "MaterialManagerPy.h"
-#include "MaterialManagerPy.cpp"
+#include "Exceptions.h"
 #include "MaterialManager.h"
+#include "MaterialManagerPy.h"
 #include "MaterialPy.h"
 #include "Materials.h"
+
+#include "MaterialManagerPy.cpp"
 
 using namespace Materials;
 
@@ -43,7 +45,7 @@ std::string MaterialManagerPy::representation() const
     return str.str();
 }
 
-PyObject *MaterialManagerPy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // Python wrapper
+PyObject* MaterialManagerPy::PyMake(struct _typeobject*, PyObject*, PyObject*)// Python wrapper
 {
     // never create such objects with the constructor
     return new MaterialManagerPy(new MaterialManager());
@@ -55,46 +57,62 @@ int MaterialManagerPy::PyInit(PyObject* /*args*/, PyObject* /*kwd*/)
     return 0;
 }
 
-PyObject* MaterialManagerPy::getMaterial(PyObject *args)
+PyObject* MaterialManagerPy::getMaterial(PyObject* args)
 {
-    char *uuid;
-    if (!PyArg_ParseTuple(args, "s", &uuid))
+    char* uuid;
+    if (!PyArg_ParseTuple(args, "s", &uuid)) {
         return nullptr;
-
-    const Material &material = getMaterialManagerPtr()->getMaterial(QString::fromStdString(uuid));
-    return new MaterialPy(new Material(material));
-}
-
-PyObject* MaterialManagerPy::getMaterialByPath(PyObject *args)
-{
-    char *path;
-    char *lib="";
-    if (!PyArg_ParseTuple(args, "s|s", &path, &lib))
-        return nullptr;
-
-    std::string libPath(lib);
-    if (libPath.length() > 0)
-    {
-        const Material &material = getMaterialManagerPtr()->getMaterialByPath(QString::fromStdString(path), QString::fromStdString(libPath));
-        return new MaterialPy(new Material(material));
     }
 
-    const Material &material = getMaterialManagerPtr()->getMaterialByPath(QString::fromStdString(path));
-    return new MaterialPy(new Material(material));
+    try {
+        const Material& material =
+            getMaterialManagerPtr()->getMaterial(QString::fromStdString(uuid));
+        return new MaterialPy(new Material(material));
+    }
+    catch (const MaterialNotFound&) {
+        PyErr_SetString(PyExc_LookupError, "Material not found");
+        return nullptr;
+    }
+}
+
+PyObject* MaterialManagerPy::getMaterialByPath(PyObject* args)
+{
+    char* path;
+    char* lib = "";
+    if (!PyArg_ParseTuple(args, "ss", &lib, &path)) {
+        return nullptr;
+    }
+
+    MaterialLibrary* library = nullptr;
+    try {
+        library = getMaterialManagerPtr()->getLibrary(QString::fromStdString(lib));
+    }
+    catch (const LibraryNotFound&) {
+        PyErr_SetString(PyExc_LookupError, "Library not found");
+        return nullptr;
+    }
+
+    try {
+        const Material& material = library->getMaterialByPath(QString::fromStdString(path));
+        return new MaterialPy(new Material(material));
+    }
+    catch (const MaterialNotFound&) {
+        PyErr_SetString(PyExc_LookupError, "Material not found");
+        return nullptr;
+    }
 }
 
 Py::List MaterialManagerPy::getMaterialLibraries() const
 {
-    std::list<MaterialLibrary*> *libraries = getMaterialManagerPtr()->getMaterialLibraries();
+    std::list<MaterialLibrary*>* libraries = getMaterialManagerPtr()->getMaterialLibraries();
     Py::List list;
 
-    for (auto it = libraries->begin(); it != libraries->end(); it++)
-    {
-        MaterialLibrary *lib = *it;
+    for (auto it = libraries->begin(); it != libraries->end(); it++) {
+        MaterialLibrary* lib = *it;
         Py::Tuple libTuple(3);
-        libTuple.setItem(0,Py::String(lib->getName().toStdString()));
-        libTuple.setItem(1,Py::String(lib->getDirectoryPath().toStdString()));
-        libTuple.setItem(2,Py::String(lib->getIconPath().toStdString()));
+        libTuple.setItem(0, Py::String(lib->getName().toStdString()));
+        libTuple.setItem(1, Py::String(lib->getDirectoryPath().toStdString()));
+        libTuple.setItem(2, Py::String(lib->getIconPath().toStdString()));
 
         list.append(libTuple);
     }
@@ -104,22 +122,21 @@ Py::List MaterialManagerPy::getMaterialLibraries() const
 
 Py::Dict MaterialManagerPy::getMaterials() const
 {
-    std::map<QString, Material*> *Materials = getMaterialManagerPtr()->getMaterials();
+    std::map<QString, Material*>* Materials = getMaterialManagerPtr()->getMaterials();
     Py::Dict dict;
 
-    for (auto it = Materials->begin(); it != Materials->end(); it++)
-    {
+    for (auto it = Materials->begin(); it != Materials->end(); it++) {
         QString key = it->first;
-        Material *material = it->second;
+        Material* material = it->second;
 
-        PyObject *materialPy = new MaterialPy(new Material(*material));
-        dict.setItem(Py::String(key.toStdString()), Py::Object(materialPy,true));
+        PyObject* materialPy = new MaterialPy(new Material(*material));
+        dict.setItem(Py::String(key.toStdString()), Py::Object(materialPy, true));
     }
 
     return dict;
 }
 
-PyObject *MaterialManagerPy::getCustomAttributes(const char* /*attr*/) const
+PyObject* MaterialManagerPy::getCustomAttributes(const char* /*attr*/) const
 {
     return nullptr;
 }
@@ -129,23 +146,22 @@ int MaterialManagerPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj
     return 0;
 }
 
-PyObject* MaterialManagerPy::materialsWithModel(PyObject *args)
+PyObject* MaterialManagerPy::materialsWithModel(PyObject* args)
 {
-    char *uuid;
-    if (!PyArg_ParseTuple(args, "s", &uuid))
+    char* uuid;
+    if (!PyArg_ParseTuple(args, "s", &uuid)) {
         return nullptr;
+    }
 
-    std::map<QString, Material*> *Materials = getMaterialManagerPtr()->getMaterials();
-    PyObject *dict = PyDict_New();
+    std::map<QString, Material*>* Materials = getMaterialManagerPtr()->getMaterials();
+    PyObject* dict = PyDict_New();
 
-    for (auto it = Materials->begin(); it != Materials->end(); it++)
-    {
+    for (auto it = Materials->begin(); it != Materials->end(); it++) {
         QString key = it->first;
-        Material *material = it->second;
+        Material* material = it->second;
 
-        if (material->hasModel(QString::fromStdString(uuid)))
-        {
-            PyObject *materialPy = new MaterialPy(new Material(*material));
+        if (material->hasModel(QString::fromStdString(uuid))) {
+            PyObject* materialPy = new MaterialPy(new Material(*material));
             PyDict_SetItem(dict, PyUnicode_FromString(key.toStdString().c_str()), materialPy);
         }
     }
@@ -153,23 +169,22 @@ PyObject* MaterialManagerPy::materialsWithModel(PyObject *args)
     return dict;
 }
 
-PyObject* MaterialManagerPy::materialsWithModelComplete(PyObject *args)
+PyObject* MaterialManagerPy::materialsWithModelComplete(PyObject* args)
 {
-    char *uuid;
-    if (!PyArg_ParseTuple(args, "s", &uuid))
+    char* uuid;
+    if (!PyArg_ParseTuple(args, "s", &uuid)) {
         return nullptr;
+    }
 
-    std::map<QString, Material*> *Materials = getMaterialManagerPtr()->getMaterials();
-    PyObject *dict = PyDict_New();
+    std::map<QString, Material*>* Materials = getMaterialManagerPtr()->getMaterials();
+    PyObject* dict = PyDict_New();
 
-    for (auto it = Materials->begin(); it != Materials->end(); it++)
-    {
+    for (auto it = Materials->begin(); it != Materials->end(); it++) {
         QString key = it->first;
-        Material *material = it->second;
+        Material* material = it->second;
 
-        if (material->isModelComplete(QString::fromStdString(uuid)))
-        {
-            PyObject *materialPy = new MaterialPy(new Material(*material));
+        if (material->isModelComplete(QString::fromStdString(uuid))) {
+            PyObject* materialPy = new MaterialPy(new Material(*material));
             PyDict_SetItem(dict, PyUnicode_FromString(key.toStdString().c_str()), materialPy);
         }
     }

@@ -11,7 +11,12 @@ files: |
         src/Mod/Inspection|
         src/Mod/MeshPart|
         src/Mod/Points|
-        src/Mod/Sketcher
+        src/Mod/ReverseEngineering|
+        src/Mod/Sketcher|
+        src/Mod/Surface|
+        src/Mod/Start|
+        src/Mod/Test|
+        src/Mod/Web
     )
 exclude: |
     (?x)^(

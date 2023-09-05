@@ -250,8 +250,9 @@ public:
 
                 currentgeoid++;
 
-                Gui::cmdAppObjectArgs(
-                    sketchgui->getObject(), "exposeInternalGeometry(%d)", currentgeoid);
+                Gui::cmdAppObjectArgs(sketchgui->getObject(),
+                                      "exposeInternalGeometry(%d)",
+                                      currentgeoid);
             }
             catch (const Base::Exception&) {
                 Gui::NotifyError(

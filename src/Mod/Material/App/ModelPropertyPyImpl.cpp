@@ -23,13 +23,13 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <boost/uuid/uuid_io.hpp>
+#include <boost/uuid/uuid_io.hpp>
 #endif
 
-#include "ModelPropertyPy.h"
-#include "ModelPropertyPy.cpp"
 #include "Model.h"
+#include "ModelPropertyPy.h"
 
+#include "ModelPropertyPy.cpp"
 
 using namespace Materials;
 
@@ -53,7 +53,7 @@ std::string ModelPropertyPy::representation() const
     return str.str();
 }
 
-PyObject *ModelPropertyPy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // Python wrapper
+PyObject* ModelPropertyPy::PyMake(struct _typeobject*, PyObject*, PyObject*)// Python wrapper
 {
     // never create such objects with the constructor
     return new ModelPropertyPy(new ModelProperty());
@@ -90,7 +90,7 @@ Py::String ModelPropertyPy::getDescription() const
     return Py::String(getModelPropertyPtr()->getDescription().toStdString());
 }
 
-PyObject *ModelPropertyPy::getCustomAttributes(const char* /*attr*/) const
+PyObject* ModelPropertyPy::getCustomAttributes(const char* /*attr*/) const
 {
     return nullptr;
 }

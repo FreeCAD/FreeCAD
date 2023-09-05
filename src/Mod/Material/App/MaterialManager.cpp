@@ -27,149 +27,143 @@
 #include <App/Application.h>
 
 #include "Exceptions.h"
-#include "ModelManager.h"
-#include "MaterialManager.h"
 #include "MaterialLoader.h"
+#include "MaterialManager.h"
+#include "ModelManager.h"
 
 
 using namespace Materials;
 
 /* TRANSLATOR Material::Materials */
 
-std::list<MaterialLibrary*> *MaterialManager::_libraryList = nullptr;
-std::map<QString, Material*> *MaterialManager::_materialMap = nullptr;
-std::map<QString, Material*> *MaterialManager::_materialPathMap = nullptr;
+std::list<MaterialLibrary*>* MaterialManager::_libraryList = nullptr;
+std::map<QString, Material*>* MaterialManager::_materialMap = nullptr;
 
 TYPESYSTEM_SOURCE(Materials::MaterialManager, Base::BaseClass)
 
 MaterialManager::MaterialManager()
 {
     // TODO: Add a mutex or similar
+    initLibraries();
+}
+
+void MaterialManager::initLibraries()
+{
     if (_materialMap == nullptr) {
         // Load the models first
-        ModelManager *manager = ModelManager::getManager();
+        ModelManager* manager = ModelManager::getManager();
         Q_UNUSED(manager)
-        
+
         _materialMap = new std::map<QString, Material*>();
 
-        if (_materialPathMap == nullptr)
-            _materialPathMap = new std::map<QString, Material*>();
-        if (_libraryList == nullptr)
+        if (_libraryList == nullptr) {
             _libraryList = new std::list<MaterialLibrary*>();
+        }
 
         // Load the libraries
-        MaterialLoader loader(_materialMap, _materialPathMap, _libraryList);
+        MaterialLoader loader(_materialMap, _libraryList);
     }
 }
 
-/*
- *  Destroys the object and frees any allocated resources
- */
-MaterialManager::~MaterialManager()
+void MaterialManager::saveMaterial(MaterialLibrary* library,
+                                   Material& material,
+                                   const QString& path,
+                                   bool saveAsCopy)
 {
+    Material* newMaterial = library->saveMaterial(material, path, saveAsCopy);
+
+    try {
+        Material* old = _materialMap->at(newMaterial->getUUID());
+        if (old) {
+            delete old;
+        }
+    }
+    catch (const std::out_of_range&) {
+    }
+
+    (*_materialMap)[material.getUUID()] = newMaterial;
 }
 
-void MaterialManager::saveMaterial(MaterialLibrary* library, Material& material, const QString& path, bool saveAsCopy)
+bool MaterialManager::isMaterial(const fs::path& p)
 {
-    library->saveMaterial(material, path, saveAsCopy);
-
-    (*_materialMap)[material.getUUID()] = &material;
-    (*_materialPathMap)[path] = &material;
-}
-
-bool MaterialManager::isMaterial(const fs::path &p)
-{
-    if (!fs::is_regular_file(p))
+    if (!fs::is_regular_file(p)) {
         return false;
+    }
     // check file extension
-    if (p.extension() == ".FCMat")
+    if (p.extension() == ".FCMat") {
         return true;
+    }
     return false;
 }
 
-const Material &MaterialManager::getMaterial(const QString &uuid) const
+const Material& MaterialManager::getMaterial(const QString& uuid) const
 {
     try {
         return *(_materialMap->at(uuid));
-    } catch (std::out_of_range &e) {
+    }
+    catch (std::out_of_range& e) {
         throw MaterialNotFound();
     }
 }
 
-std::list<MaterialLibrary *> *MaterialManager::getMaterialLibraries()
+MaterialLibrary* MaterialManager::getLibrary(const QString& name) const
 {
-    if (_libraryList == nullptr)
-    {
-        if (_materialMap == nullptr)
+    for (auto library : *_libraryList) {
+        if (library->getName() == name) {
+            return library;
+        }
+    }
+
+    throw LibraryNotFound();
+}
+
+std::list<MaterialLibrary*>* MaterialManager::getMaterialLibraries()
+{
+    if (_libraryList == nullptr) {
+        if (_materialMap == nullptr) {
             _materialMap = new std::map<QString, Material*>();
-        if (_materialPathMap == nullptr)
-            _materialPathMap = new std::map<QString, Material*>();
+        }
         _libraryList = new std::list<MaterialLibrary*>();
 
         // Load the libraries
-        MaterialLoader loader(_materialMap, _materialPathMap, _libraryList);
+        MaterialLoader loader(_materialMap, _libraryList);
     }
     return _libraryList;
 }
 
-const Material &MaterialManager::getMaterialByPath(const QString &path) const
+std::map<QString, MaterialTreeNode*>*
+MaterialManager::getMaterialTree(const MaterialLibrary& library)
 {
-    const QString &uuid = getUUIDFromPath(path);
-    return getMaterial(uuid);
-}
+    std::map<QString, MaterialTreeNode*>* materialTree = new std::map<QString, MaterialTreeNode*>();
 
-const QString MaterialManager::getUUIDFromPath(const QString &path) const
-{
-    QDir dirPath(path);
-    QString normalized = dirPath.absolutePath();
-    try {
-        Material* material = _materialPathMap->at(normalized);
-        return material->getUUID();
-    } catch (std::out_of_range &e) {
-        throw MaterialNotFound();
-    }
-}
-
-const Material &MaterialManager::getMaterialByPath(const QString &path, const QString &libraryPath) const
-{
-    QDir materialDir(QDir::cleanPath(libraryPath + QString::fromStdString("/") + path));
-    QString absPath = materialDir.absolutePath();
-    return getMaterialByPath(absPath);
-}
-
-std::map<QString, MaterialTreeNode*>* MaterialManager::getMaterialTree(const MaterialLibrary &library)
-{
-    std::map<QString, MaterialTreeNode*> *materialTree = new std::map<QString, MaterialTreeNode*>();
-
-    for (auto it = _materialMap->begin(); it != _materialMap->end(); it++)
-    {
+    for (auto it = _materialMap->begin(); it != _materialMap->end(); it++) {
         auto filename = it->first;
         auto material = it->second;
 
-        if (material->getLibrary() == library)
-        {
-            fs::path path = material->getRelativePath().toStdString();
+        if (material->getLibrary() == library) {
+            fs::path path = material->getDirectory().toStdString();
 
             // Start at the root
-            std::map<QString, MaterialTreeNode*> *node = materialTree;
-            for (auto itp = path.begin(); itp != path.end(); itp++)
-            {
-                if (QString::fromStdString(itp->string()).endsWith(QString::fromStdString(".FCMat"))) {
-                    MaterialTreeNode *child = new MaterialTreeNode();
+            std::map<QString, MaterialTreeNode*>* node = materialTree;
+            for (auto itp = path.begin(); itp != path.end(); itp++) {
+                if (QString::fromStdString(itp->string())
+                        .endsWith(QString::fromStdString(".FCMat"))) {
+                    MaterialTreeNode* child = new MaterialTreeNode();
                     child->setData(material);
                     (*node)[QString::fromStdString(itp->string())] = child;
-                } else {
+                }
+                else {
                     // Add the folder only if it's not already there
                     QString folderName = QString::fromStdString(itp->string());
-                    std::map<QString, MaterialTreeNode*> *mapPtr;
-                    if (node->count(folderName) == 0)
-                    {
+                    std::map<QString, MaterialTreeNode*>* mapPtr;
+                    if (node->count(folderName) == 0) {
                         mapPtr = new std::map<QString, MaterialTreeNode*>();
-                        MaterialTreeNode *child = new MaterialTreeNode();
+                        MaterialTreeNode* child = new MaterialTreeNode();
                         child->setFolder(mapPtr);
                         (*node)[folderName] = child;
                         node = mapPtr;
-                    } else {
+                    }
+                    else {
                         node = (*node)[folderName]->getFolder();
                     }
                 }
@@ -177,25 +171,24 @@ std::map<QString, MaterialTreeNode*>* MaterialManager::getMaterialTree(const Mat
         }
     }
 
-    std::list<QString> *folderList = getMaterialFolders(library);
-    for (auto folder : *folderList)
-    {
+    std::list<QString>* folderList = getMaterialFolders(library);
+    for (auto folder : *folderList) {
         fs::path path = folder.toStdString();
 
         // Start at the root
-        std::map<QString, MaterialTreeNode*> *node = materialTree;
-        for (auto itp = path.begin(); itp != path.end(); itp++)
-        {
+        std::map<QString, MaterialTreeNode*>* node = materialTree;
+        for (auto itp = path.begin(); itp != path.end(); itp++) {
             // Add the folder only if it's not already there
             QString folderName = QString::fromStdString(itp->string());
-            if (node->count(folderName) == 0)
-            {
-                std::map<QString, MaterialTreeNode*> *mapPtr = new std::map<QString, MaterialTreeNode*>();
-                MaterialTreeNode *child = new MaterialTreeNode();
+            if (node->count(folderName) == 0) {
+                std::map<QString, MaterialTreeNode*>* mapPtr =
+                    new std::map<QString, MaterialTreeNode*>();
+                MaterialTreeNode* child = new MaterialTreeNode();
                 child->setFolder(mapPtr);
                 (*node)[folderName] = child;
                 node = mapPtr;
-            } else {
+            }
+            else {
                 node = (*node)[folderName]->getFolder();
             }
         }
@@ -205,7 +198,7 @@ std::map<QString, MaterialTreeNode*>* MaterialManager::getMaterialTree(const Mat
     return materialTree;
 }
 
-std::list<QString>* MaterialManager::getMaterialFolders(const MaterialLibrary &library)
+std::list<QString>* MaterialManager::getMaterialFolders(const MaterialLibrary& library)
 {
     return MaterialLoader::getMaterialFolders(library);
 }

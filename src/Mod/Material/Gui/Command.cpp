@@ -29,9 +29,9 @@
 #include <Gui/Command.h>
 #include <Gui/MainWindow.h>
 
+#include "MaterialSave.h"
 #include "MaterialsEditor.h"
 #include "ModelSelect.h"
-#include "MaterialSave.h"
 
 
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -42,15 +42,15 @@
 DEF_STD_CMD_A(CmdMaterialsEdit)
 
 CmdMaterialsEdit::CmdMaterialsEdit()
-  :Command("Materials_Edit")
+    : Command("Materials_Edit")
 {
-    sAppModule    = "Material";
-    sGroup        = QT_TR_NOOP("Material");
-    sMenuText     = QT_TR_NOOP("Edit...");
-    sToolTipText  = QT_TR_NOOP("Edit material properties");
-    sWhatsThis    = "Materials_Edit";
-    sStatusTip    = sToolTipText;
-    sPixmap       = "Materials_Edit";
+    sAppModule = "Material";
+    sGroup = QT_TR_NOOP("Material");
+    sMenuText = QT_TR_NOOP("Edit...");
+    sToolTipText = QT_TR_NOOP("Edit material properties");
+    sWhatsThis = "Materials_Edit";
+    sStatusTip = sToolTipText;
+    sPixmap = "Materials_Edit";
 }
 
 void CmdMaterialsEdit::activated(int iMsg)
@@ -60,8 +60,9 @@ void CmdMaterialsEdit::activated(int iMsg)
     Base::Console().Log("Materials_Edit\n");
 
     static QPointer<QDialog> dlg = nullptr;
-    if (!dlg)
+    if (!dlg) {
         dlg = new MatGui::MaterialsEditor(Gui::getMainWindow());
+    }
     dlg->setAttribute(Qt::WA_DeleteOnClose);
     dlg->show();
 }
@@ -76,7 +77,7 @@ bool CmdMaterialsEdit::isActive()
 
 void CreateMaterialCommands()
 {
-    Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
+    Gui::CommandManager& rcCmdMgr = Gui::Application::Instance->commandManager();
 
     rcCmdMgr.addCommand(new CmdMaterialsEdit());
 }

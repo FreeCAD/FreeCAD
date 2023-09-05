@@ -343,7 +343,7 @@ void TaskFemConstraintDisplacement::addToSelection()
             for (const auto & SubElement : SubElements) {
                 if (SubElement.find(searchStr) == std::string::npos) {
                     QString msg = tr(
-                        "Only one type of selection (vertex,face or edge) per constraint allowed!");
+                        "Only one type of selection (vertex,face or edge) per analysis feature allowed!");
                     QMessageBox::warning(this, tr("Selection error"), msg);
                     addMe = false;
                     break;
@@ -609,7 +609,7 @@ void TaskDlgFemConstraintDisplacement::open()
 {
     // a transaction is already open at creation time of the panel
     if (!Gui::Command::hasPendingCommand()) {
-        QString msg = QObject::tr("Constraint displacement");
+        QString msg = QObject::tr("Displacement boundary condition");
         Gui::Command::openCommand((const char*)msg.toUtf8());
         ConstraintView->setVisible(true);
         Gui::Command::doCommand(

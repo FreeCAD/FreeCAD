@@ -22,7 +22,7 @@
     </Methode>
     <Methode Name="getMaterialByPath">
       <Documentation>
-        <UserDocu>Get a material object by specifying its path</UserDocu>
+        <UserDocu>Get a material object by specifying its path and library name</UserDocu>
       </Documentation>
     </Methode>
     <Attribute Name="MaterialLibraries" ReadOnly="true">

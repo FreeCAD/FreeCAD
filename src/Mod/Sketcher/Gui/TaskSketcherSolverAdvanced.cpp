@@ -54,7 +54,9 @@ using namespace SketcherGui;
 using namespace Gui::TaskView;
 
 TaskSketcherSolverAdvanced::TaskSketcherSolverAdvanced(ViewProviderSketch* sketchView)
-    : TaskBox(Gui::BitmapFactory().pixmap("document-new"), tr("Advanced solver control"), true,
+    : TaskBox(Gui::BitmapFactory().pixmap("document-new"),
+              tr("Advanced solver control"),
+              true,
               nullptr)
     , sketchView(sketchView)
     , ui(new Ui_TaskSketcherSolverAdvanced)
@@ -177,10 +179,12 @@ void TaskSketcherSolverAdvanced::updateDefaultMethodParameters()
     int currentindex = ui->comboBoxDefaultSolver->currentIndex();
     int redundantcurrentindex = ui->comboBoxRedundantDefaultSolver->currentIndex();
 
-    if (redundantcurrentindex == 2 || currentindex == 2)
+    if (redundantcurrentindex == 2 || currentindex == 2) {
         ui->comboBoxDogLegGaussStep->setEnabled(true);
-    else
+    }
+    else {
         ui->comboBoxDogLegGaussStep->setEnabled(false);
+    }
 
     switch (currentindex) {
         case 0:// BFGS
@@ -276,10 +280,12 @@ void TaskSketcherSolverAdvanced::updateRedundantMethodParameters()
     int currentindex = ui->comboBoxDefaultSolver->currentIndex();
     int redundantcurrentindex = ui->comboBoxRedundantDefaultSolver->currentIndex();
 
-    if (redundantcurrentindex == 2 || currentindex == 2)
+    if (redundantcurrentindex == 2 || currentindex == 2) {
         ui->comboBoxDogLegGaussStep->setEnabled(true);
-    else
+    }
+    else {
         ui->comboBoxDogLegGaussStep->setEnabled(false);
+    }
 
     switch (redundantcurrentindex) {
         case 0:// BFGS

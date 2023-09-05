@@ -25,45 +25,53 @@
 
 #include <boost/filesystem.hpp>
 
-#include "Materials.h"
 #include "FolderTree.h"
+#include "Materials.h"
 
 namespace fs = boost::filesystem;
 
-namespace Materials {
+namespace Materials
+{
 
 typedef FolderTreeNode<Material> MaterialTreeNode;
 
-class MaterialsExport MaterialManager : public Base::BaseClass
+class MaterialsExport MaterialManager: public Base::BaseClass
 {
     TYPESYSTEM_HEADER();
 
 public:
     MaterialManager();
-    virtual ~MaterialManager();
+    virtual ~MaterialManager() = default;
 
-    std::map<QString, Material *> *getMaterials() { return _materialMap; }
+    static void initLibraries();
+
+    std::map<QString, Material*>* getMaterials()
+    {
+        return _materialMap;
+    }
     const Material& getMaterial(const QString& uuid) const;
-    const Material &getMaterialByPath(const QString &path) const;
-    const Material &getMaterialByPath(const QString &path, const QString &libraryPath) const;
+    MaterialLibrary* getLibrary(const QString& name) const;
 
     // Library management
     static std::list<MaterialLibrary*>* getMaterialLibraries();
-    std::map<QString, MaterialTreeNode*>* getMaterialTree(const MaterialLibrary &library);
-    std::list<QString>* getMaterialFolders(const MaterialLibrary &library);
-    void createPath(MaterialLibrary* library, const QString& path) { library->createPath(path); }
-    void saveMaterial(MaterialLibrary* library, Material& material, const QString& path, bool saveAsCopy = true);
+    std::map<QString, MaterialTreeNode*>* getMaterialTree(const MaterialLibrary& library);
+    std::list<QString>* getMaterialFolders(const MaterialLibrary& library);
+    void createPath(MaterialLibrary* library, const QString& path)
+    {
+        library->createPath(path);
+    }
+    void saveMaterial(MaterialLibrary* library,
+                      Material& material,
+                      const QString& path,
+                      bool saveAsCopy = true);
 
-    static bool isMaterial(const fs::path &p);
+    static bool isMaterial(const fs::path& p);
 
 private:
-    const QString getUUIDFromPath(const QString& path) const;
-
-    static std::list<MaterialLibrary *> *_libraryList;
-    static std::map<QString, Material *> *_materialMap;
-    static std::map<QString, Material *> *_materialPathMap;
+    static std::list<MaterialLibrary*>* _libraryList;
+    static std::map<QString, Material*>* _materialMap;
 };
 
-} // namespace Materials
+}// namespace Materials
 
-#endif // MATERIAL_MATERIALMANAGER_H
+#endif// MATERIAL_MATERIALMANAGER_H

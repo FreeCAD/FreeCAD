@@ -116,9 +116,7 @@ class TestAddonInstaller(unittest.TestCase):
                 os.path.join(self.test_data_dir, "good_package.xml"),
                 os.path.join(addon_dir, "package.xml"),
             )
-            good_metadata = MetadataReader.from_file(
-                os.path.join(addon_dir, "package.xml")
-            )
+            good_metadata = MetadataReader.from_file(os.path.join(addon_dir, "package.xml"))
             installer._update_metadata()
             self.assertEqual(self.real_addon.installed_version, good_metadata.version)
 
@@ -133,34 +131,24 @@ class TestAddonInstaller(unittest.TestCase):
             installer.installation_path = temp_dir
             installer._finalize_zip_installation(test_simple_repo)
             expected_location = os.path.join(temp_dir, non_gh_mock.name, "README")
-            self.assertTrue(
-                os.path.isfile(expected_location), "Non-GitHub zip extraction failed"
-            )
+            self.assertTrue(os.path.isfile(expected_location), "Non-GitHub zip extraction failed")
 
     def test_finalize_zip_installation_github(self):
         with tempfile.TemporaryDirectory() as temp_dir:
-            test_github_style_repo = os.path.join(
-                self.test_data_dir, "test_github_style_repo.zip"
-            )
+            test_github_style_repo = os.path.join(self.test_data_dir, "test_github_style_repo.zip")
             self.mock_addon.url = test_github_style_repo
             self.mock_addon.branch = "master"
             installer = AddonInstaller(self.mock_addon, [])
             installer.installation_path = temp_dir
             installer._finalize_zip_installation(test_github_style_repo)
             expected_location = os.path.join(temp_dir, self.mock_addon.name, "README")
-            self.assertTrue(
-                os.path.isfile(expected_location), "GitHub zip extraction failed"
-            )
+            self.assertTrue(os.path.isfile(expected_location), "GitHub zip extraction failed")
 
     def test_code_in_branch_subdirectory_true(self):
         """When there is a subdirectory with the branch name in it, find it"""
         installer = AddonInstaller(self.mock_addon, [])
         with tempfile.TemporaryDirectory() as temp_dir:
-            os.mkdir(
-                os.path.join(
-                    temp_dir, f"{self.mock_addon.name}-{self.mock_addon.branch}"
-                )
-            )
+            os.mkdir(os.path.join(temp_dir, f"{self.mock_addon.name}-{self.mock_addon.branch}"))
             result = installer._code_in_branch_subdirectory(temp_dir)
             self.assertTrue(result, "Failed to find ZIP subdirectory")
 
@@ -176,30 +164,20 @@ class TestAddonInstaller(unittest.TestCase):
         """When there are multiple subdirectories, never find a branch subdirectory"""
         installer = AddonInstaller(self.mock_addon, [])
         with tempfile.TemporaryDirectory() as temp_dir:
-            os.mkdir(
-                os.path.join(
-                    temp_dir, f"{self.mock_addon.name}-{self.mock_addon.branch}"
-                )
-            )
+            os.mkdir(os.path.join(temp_dir, f"{self.mock_addon.name}-{self.mock_addon.branch}"))
             os.mkdir(os.path.join(temp_dir, "AnotherSubdir"))
             result = installer._code_in_branch_subdirectory(temp_dir)
-            self.assertFalse(
-                result, "Found ZIP subdirectory when there were multiple subdirs"
-            )
+            self.assertFalse(result, "Found ZIP subdirectory when there were multiple subdirs")
 
     def test_move_code_out_of_subdirectory(self):
         """All files are moved out and the subdirectory is deleted"""
         installer = AddonInstaller(self.mock_addon, [])
         with tempfile.TemporaryDirectory() as temp_dir:
-            subdir = os.path.join(
-                temp_dir, f"{self.mock_addon.name}-{self.mock_addon.branch}"
-            )
+            subdir = os.path.join(temp_dir, f"{self.mock_addon.name}-{self.mock_addon.branch}")
             os.mkdir(subdir)
             with open(os.path.join(subdir, "README.txt"), "w", encoding="utf-8") as f:
                 f.write("# Test file for unit testing")
-            with open(
-                os.path.join(subdir, "AnotherFile.txt"), "w", encoding="utf-8"
-            ) as f:
+            with open(os.path.join(subdir, "AnotherFile.txt"), "w", encoding="utf-8") as f:
                 f.write("# Test file for unit testing")
             installer._move_code_out_of_subdirectory(temp_dir)
             self.assertTrue(os.path.isfile(os.path.join(temp_dir, "README.txt")))
@@ -260,23 +238,15 @@ class TestAddonInstaller(unittest.TestCase):
 
         with tempfile.TemporaryDirectory() as temp_dir:
             installer = AddonInstaller(self.mock_addon, [])
-            method = installer._determine_install_method(
-                temp_dir, InstallationMethod.COPY
-            )
+            method = installer._determine_install_method(temp_dir, InstallationMethod.COPY)
             self.assertEqual(method, InstallationMethod.COPY)
             git_manager = initialize_git()
             if git_manager:
-                method = installer._determine_install_method(
-                    temp_dir, InstallationMethod.GIT
-                )
+                method = installer._determine_install_method(temp_dir, InstallationMethod.GIT)
                 self.assertEqual(method, InstallationMethod.GIT)
-            method = installer._determine_install_method(
-                temp_dir, InstallationMethod.ZIP
-            )
+            method = installer._determine_install_method(temp_dir, InstallationMethod.ZIP)
             self.assertIsNone(method)
-            method = installer._determine_install_method(
-                temp_dir, InstallationMethod.ANY
-            )
+            method = installer._determine_install_method(temp_dir, InstallationMethod.ANY)
             self.assertEqual(method, InstallationMethod.COPY)
 
     def test_determine_install_method_file_url(self):
@@ -285,23 +255,15 @@ class TestAddonInstaller(unittest.TestCase):
         with tempfile.TemporaryDirectory() as temp_dir:
             installer = AddonInstaller(self.mock_addon, [])
             temp_dir = "file://" + temp_dir.replace(os.path.sep, "/")
-            method = installer._determine_install_method(
-                temp_dir, InstallationMethod.COPY
-            )
+            method = installer._determine_install_method(temp_dir, InstallationMethod.COPY)
             self.assertEqual(method, InstallationMethod.COPY)
             git_manager = initialize_git()
             if git_manager:
-                method = installer._determine_install_method(
-                    temp_dir, InstallationMethod.GIT
-                )
+                method = installer._determine_install_method(temp_dir, InstallationMethod.GIT)
                 self.assertEqual(method, InstallationMethod.GIT)
-            method = installer._determine_install_method(
-                temp_dir, InstallationMethod.ZIP
-            )
+            method = installer._determine_install_method(temp_dir, InstallationMethod.ZIP)
             self.assertIsNone(method)
-            method = installer._determine_install_method(
-                temp_dir, InstallationMethod.ANY
-            )
+            method = installer._determine_install_method(temp_dir, InstallationMethod.ANY)
             self.assertEqual(method, InstallationMethod.COPY)
 
     def test_determine_install_method_local_zip(self):
@@ -310,21 +272,13 @@ class TestAddonInstaller(unittest.TestCase):
         with tempfile.TemporaryDirectory() as temp_dir:
             installer = AddonInstaller(self.mock_addon, [])
             temp_file = os.path.join(temp_dir, "dummy.zip")
-            method = installer._determine_install_method(
-                temp_file, InstallationMethod.COPY
-            )
+            method = installer._determine_install_method(temp_file, InstallationMethod.COPY)
             self.assertEqual(method, InstallationMethod.ZIP)
-            method = installer._determine_install_method(
-                temp_file, InstallationMethod.GIT
-            )
+            method = installer._determine_install_method(temp_file, InstallationMethod.GIT)
             self.assertIsNone(method)
-            method = installer._determine_install_method(
-                temp_file, InstallationMethod.ZIP
-            )
+            method = installer._determine_install_method(temp_file, InstallationMethod.ZIP)
             self.assertEqual(method, InstallationMethod.ZIP)
-            method = installer._determine_install_method(
-                temp_file, InstallationMethod.ANY
-            )
+            method = installer._determine_install_method(temp_file, InstallationMethod.ANY)
             self.assertEqual(method, InstallationMethod.ZIP)
 
     def test_determine_install_method_remote_zip(self):
@@ -351,12 +305,8 @@ class TestAddonInstaller(unittest.TestCase):
 
         for site in ["github.org", "gitlab.org", "framagit.org", "salsa.debian.org"]:
             with self.subTest(site=site):
-                temp_file = (
-                    f"https://{site}/dummy/dummy"  # Doesn't have to actually exist!
-                )
-                method = installer._determine_install_method(
-                    temp_file, InstallationMethod.COPY
-                )
+                temp_file = f"https://{site}/dummy/dummy"  # Doesn't have to actually exist!
+                method = installer._determine_install_method(temp_file, InstallationMethod.COPY)
                 self.assertIsNone(method, f"Allowed copying from {site} URL")
 
     def test_determine_install_method_https_known_sites_git(self):
@@ -367,12 +317,8 @@ class TestAddonInstaller(unittest.TestCase):
 
         for site in ["github.org", "gitlab.org", "framagit.org", "salsa.debian.org"]:
             with self.subTest(site=site):
-                temp_file = (
-                    f"https://{site}/dummy/dummy"  # Doesn't have to actually exist!
-                )
-                method = installer._determine_install_method(
-                    temp_file, InstallationMethod.GIT
-                )
+                temp_file = f"https://{site}/dummy/dummy"  # Doesn't have to actually exist!
+                method = installer._determine_install_method(temp_file, InstallationMethod.GIT)
                 self.assertEqual(
                     method,
                     InstallationMethod.GIT,
@@ -387,12 +333,8 @@ class TestAddonInstaller(unittest.TestCase):
 
         for site in ["github.org", "gitlab.org", "framagit.org", "salsa.debian.org"]:
             with self.subTest(site=site):
-                temp_file = (
-                    f"https://{site}/dummy/dummy"  # Doesn't have to actually exist!
-                )
-                method = installer._determine_install_method(
-                    temp_file, InstallationMethod.ZIP
-                )
+                temp_file = f"https://{site}/dummy/dummy"  # Doesn't have to actually exist!
+                method = installer._determine_install_method(temp_file, InstallationMethod.ZIP)
                 self.assertEqual(
                     method,
                     InstallationMethod.ZIP,
@@ -407,12 +349,8 @@ class TestAddonInstaller(unittest.TestCase):
 
         for site in ["github.org", "gitlab.org", "framagit.org", "salsa.debian.org"]:
             with self.subTest(site=site):
-                temp_file = (
-                    f"https://{site}/dummy/dummy"  # Doesn't have to actually exist!
-                )
-                method = installer._determine_install_method(
-                    temp_file, InstallationMethod.ANY
-                )
+                temp_file = f"https://{site}/dummy/dummy"  # Doesn't have to actually exist!
+                method = installer._determine_install_method(temp_file, InstallationMethod.ANY)
                 self.assertEqual(
                     method,
                     InstallationMethod.GIT,
@@ -427,12 +365,8 @@ class TestAddonInstaller(unittest.TestCase):
 
         for site in ["github.org", "gitlab.org", "framagit.org", "salsa.debian.org"]:
             with self.subTest(site=site):
-                temp_file = (
-                    f"https://{site}/dummy/dummy"  # Doesn't have to actually exist!
-                )
-                method = installer._determine_install_method(
-                    temp_file, InstallationMethod.ANY
-                )
+                temp_file = f"https://{site}/dummy/dummy"  # Doesn't have to actually exist!
+                method = installer._determine_install_method(temp_file, InstallationMethod.ANY)
                 self.assertEqual(
                     method,
                     InstallationMethod.ZIP,
@@ -442,9 +376,7 @@ class TestAddonInstaller(unittest.TestCase):
     def test_fcmacro_copying(self):
         with tempfile.TemporaryDirectory() as temp_dir:
             mock_addon = MockAddon()
-            mock_addon.url = os.path.join(
-                self.test_data_dir, "test_addon_with_fcmacro.zip"
-            )
+            mock_addon.url = os.path.join(self.test_data_dir, "test_addon_with_fcmacro.zip")
             installer = AddonInstaller(mock_addon, [])
             installer.installation_path = temp_dir
             installer.macro_installation_path = os.path.join(temp_dir, "Macros")
@@ -475,6 +407,4 @@ class TestMacroInstaller(unittest.TestCase):
             installer.installation_path = temp_dir
             installation_succeeded = installer.run()
             self.assertTrue(installation_succeeded)
-            self.assertTrue(
-                os.path.exists(os.path.join(temp_dir, self.mock.macro.filename))
-            )
+            self.assertTrue(os.path.exists(os.path.join(temp_dir, self.mock.macro.filename)))

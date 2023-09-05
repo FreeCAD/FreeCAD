@@ -47,6 +47,9 @@ def make_circle(radius, placement=None, face=None, startangle=None, endangle=Non
 
     Creates a circle object with given parameters.
 
+    If startangle and endangle are provided and not equal, the object will show
+    an arc instead of a full cirle.
+
     Parameters
     ----------
     radius : the radius of the circle.
@@ -58,14 +61,14 @@ def make_circle(radius, placement=None, face=None, startangle=None, endangle=Non
         If face is False, the circle is shown as a wireframe,
         otherwise as a face.
 
-    startangle : start angle of the arc (in degrees)
+    startangle : start angle of the circle (in degrees)
+        Recalculated if not in the -360 to 360 range.
 
-    endangle : end angle of the arc (in degrees)
-        if startangle and endangle are equal, a circle is created,
-        if they are different an arc is created
+    endangle : end angle of the circle (in degrees)
+        Recalculated if not in the -360 to 360 range.
 
     edge : edge.Curve must be a 'Part.Circle'
-        the circle is created from the given edge
+        The circle is created from the given edge.
 
     support :
         TODO: Describe
@@ -113,9 +116,8 @@ def make_circle(radius, placement=None, face=None, startangle=None, endangle=Non
     else:
         obj.Radius = radius
         if (startangle is not None) and (endangle is not None):
-            if startangle == -0: startangle = 0
-            obj.FirstAngle = startangle
-            obj.LastAngle = endangle
+            obj.FirstAngle = math.copysign(abs(startangle) % 360, startangle)
+            obj.LastAngle = math.copysign(abs(endangle) % 360, endangle)
 
     obj.Support = support
 

@@ -44,9 +44,10 @@ namespace SurfaceGui
 
 class Ui_GeomFillSurface;
 
-class ViewProviderGeomFillSurface : public PartGui::ViewProviderSpline
+class ViewProviderGeomFillSurface: public PartGui::ViewProviderSpline
 {
     PROPERTY_HEADER_WITH_OVERRIDE(SurfaceGui::ViewProviderGeomFillSurface);
+
 public:
     void setupContextMenu(QMenu*, QObject*, const char*) override;
     bool setEdit(int ModNum) override;
@@ -55,15 +56,18 @@ public:
     void highlightReferences(bool on);
 };
 
-class GeomFillSurface : public QWidget,
-                        public Gui::SelectionObserver,
-                        public Gui::DocumentObserver
+class GeomFillSurface: public QWidget, public Gui::SelectionObserver, public Gui::DocumentObserver
 {
     Q_OBJECT
 
 protected:
     class EdgeSelection;
-    enum SelectionMode { None, Append, Remove };
+    enum SelectionMode
+    {
+        None,
+        Append,
+        Remove
+    };
     SelectionMode selectionMode;
     Surface::GeomFillSurface* editedObject;
     bool checkCommand;
@@ -71,7 +75,7 @@ protected:
 private:
     Ui_GeomFillSurface* ui;
     ViewProviderGeomFillSurface* vp;
-    Gui::ButtonGroup *buttonGroup;
+    Gui::ButtonGroup* buttonGroup;
 
 public:
     GeomFillSurface(ViewProviderGeomFillSurface* vp, Surface::GeomFillSurface* obj);
@@ -84,7 +88,7 @@ public:
     void setEditedObject(Surface::GeomFillSurface* obj);
 
 protected:
-    void changeEvent(QEvent *e) override;
+    void changeEvent(QEvent* e) override;
     void onSelectionChanged(const Gui::SelectionChanges& msg) override;
     /** Notifies on undo */
     void slotUndoDocument(const Gui::Document& Doc) override;
@@ -111,7 +115,7 @@ private:
     void exitSelectionMode();
 };
 
-class TaskGeomFillSurface : public Gui::TaskView::TaskDialog
+class TaskGeomFillSurface: public Gui::TaskView::TaskDialog
 {
     Q_OBJECT
 
@@ -125,13 +129,15 @@ public:
     bool reject() override;
 
     QDialogButtonBox::StandardButtons getStandardButtons() const override
-    { return QDialogButtonBox::Ok | QDialogButtonBox::Cancel; }
+    {
+        return QDialogButtonBox::Ok | QDialogButtonBox::Cancel;
+    }
 
 private:
     GeomFillSurface* widget;
     Gui::TaskView::TaskBox* taskbox;
 };
 
-} //namespace SurfaceGui
+}// namespace SurfaceGui
 
-#endif // SURFACEGUI_TASKGEOMFILLSURFACE_H
+#endif// SURFACEGUI_TASKGEOMFILLSURFACE_H

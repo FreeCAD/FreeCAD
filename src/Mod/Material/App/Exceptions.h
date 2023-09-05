@@ -23,76 +23,121 @@
 #ifndef MATERIAL_EXCEPTIONS_H
 #define MATERIAL_EXCEPTIONS_H
 
-#include <Base/Exception.h>
 #include <Base/BaseClass.h>
+#include <Base/Exception.h>
 
-namespace Materials {
+namespace Materials
+{
 
 
-class ModelNotFound : public Base::Exception
+class ModelNotFound: public Base::Exception
 {
 public:
-    ModelNotFound(){}
-    explicit ModelNotFound(char* msg){this->setMessage(msg);}
-    ~ModelNotFound() throw() override {}
+    ModelNotFound()
+    {}
+    explicit ModelNotFound(char* msg)
+    {
+        this->setMessage(msg);
+    }
+    ~ModelNotFound() throw() override = default;
 };
 
-class MaterialNotFound : public Base::Exception
+class MaterialNotFound: public Base::Exception
 {
 public:
-    MaterialNotFound(){}
-    explicit MaterialNotFound(char* msg){this->setMessage(msg);}
-    ~MaterialNotFound() throw() override {}
+    MaterialNotFound()
+    {}
+    explicit MaterialNotFound(char* msg)
+    {
+        this->setMessage(msg);
+    }
+    ~MaterialNotFound() throw() override = default;
 };
 
-class PropertyNotFound : public Base::Exception
+class PropertyNotFound: public Base::Exception
 {
 public:
-    PropertyNotFound(){}
-    explicit PropertyNotFound(char* msg){this->setMessage(msg);}
-    ~PropertyNotFound() throw() override {}
+    PropertyNotFound()
+    {}
+    explicit PropertyNotFound(char* msg)
+    {
+        this->setMessage(msg);
+    }
+    ~PropertyNotFound() throw() override = default;
 };
 
-class InvalidModel : public Base::Exception
+class LibraryNotFound: public Base::Exception
 {
 public:
-    InvalidModel(){}
-    explicit InvalidModel(char* msg){this->setMessage(msg);}
-    ~InvalidModel() throw() override {}
+    LibraryNotFound()
+    {}
+    explicit LibraryNotFound(char* msg)
+    {
+        this->setMessage(msg);
+    }
+    ~LibraryNotFound() throw() override = default;
 };
 
-class InvalidRow : public Base::Exception
+class InvalidModel: public Base::Exception
 {
 public:
-    InvalidRow(){}
-    explicit InvalidRow(char* msg){this->setMessage(msg);}
-    ~InvalidRow() throw() override {}
+    InvalidModel()
+    {}
+    explicit InvalidModel(char* msg)
+    {
+        this->setMessage(msg);
+    }
+    ~InvalidModel() throw() override = default;
 };
 
-class InvalidColumn : public Base::Exception
+class InvalidRow: public Base::Exception
 {
 public:
-    InvalidColumn(){}
-    explicit InvalidColumn(char* msg){this->setMessage(msg);}
-    ~InvalidColumn() throw() override {}
+    InvalidRow()
+    {}
+    explicit InvalidRow(char* msg)
+    {
+        this->setMessage(msg);
+    }
+    ~InvalidRow() throw() override = default;
 };
 
-class InvalidIndex : public Base::Exception
+class InvalidColumn: public Base::Exception
 {
 public:
-    InvalidIndex(){}
-    explicit InvalidIndex(char* msg){this->setMessage(msg);}
-    ~InvalidIndex() throw() override {}
+    InvalidColumn()
+    {}
+    explicit InvalidColumn(char* msg)
+    {
+        this->setMessage(msg);
+    }
+    ~InvalidColumn() throw() override = default;
 };
 
-class UnknownValueType : public Base::Exception
+class InvalidIndex: public Base::Exception
 {
 public:
-    UnknownValueType(){}
-    explicit UnknownValueType(char* msg){this->setMessage(msg);}
-    ~UnknownValueType() throw() override {}
+    InvalidIndex()
+    {}
+    explicit InvalidIndex(char* msg)
+    {
+        this->setMessage(msg);
+    }
+    ~InvalidIndex() throw() override = default;
 };
 
-} // namespace Materials
+class UnknownValueType: public Base::Exception
+{
+public:
+    UnknownValueType()
+    {}
+    explicit UnknownValueType(char* msg)
+    {
+        this->setMessage(msg);
+    }
+    ~UnknownValueType() throw() override = default;
+};
 
-#endif // MATERIAL_EXCEPTIONS_H
+}// namespace Materials
+
+#endif// MATERIAL_EXCEPTIONS_H

@@ -125,8 +125,10 @@ public:
         if (method == PERIAPSIS_APOAPSIS_B) {
             if (mode == STATUS_SEEK_PERIAPSIS) {
                 setPositionText(onSketchPos);
-                if (seekAutoConstraint(
-                        sugConstr1, onSketchPos, Base::Vector2d(0.f, 0.f), AutoConstraint::CURVE)) {
+                if (seekAutoConstraint(sugConstr1,
+                                       onSketchPos,
+                                       Base::Vector2d(0.f, 0.f),
+                                       AutoConstraint::CURVE)) {
                     renderSuggestConstraintsCursor(sugConstr1);
                     return;
                 }
@@ -147,8 +149,10 @@ public:
                 drawEdit(editCurve);
                 // Suggestions for ellipse and curves are disabled because many tangent constraints
                 // need an intermediate point or line.
-                if (seekAutoConstraint(
-                        sugConstr2, onSketchPos, Base::Vector2d(0.f, 0.f), AutoConstraint::CURVE)) {
+                if (seekAutoConstraint(sugConstr2,
+                                       onSketchPos,
+                                       Base::Vector2d(0.f, 0.f),
+                                       AutoConstraint::CURVE)) {
                     renderSuggestConstraintsCursor(sugConstr2);
                     return;
                 }
@@ -167,8 +171,10 @@ public:
                 }
 
                 drawEdit(editCurve);
-                if (seekAutoConstraint(
-                        sugConstr3, onSketchPos, Base::Vector2d(0.f, 0.f), AutoConstraint::CURVE)) {
+                if (seekAutoConstraint(sugConstr3,
+                                       onSketchPos,
+                                       Base::Vector2d(0.f, 0.f),
+                                       AutoConstraint::CURVE)) {
                     renderSuggestConstraintsCursor(sugConstr3);
                     return;
                 }
@@ -177,8 +183,9 @@ public:
         else {// method is CENTER_PERIAPSIS_B
             if (mode == STATUS_SEEK_CENTROID) {
                 setPositionText(onSketchPos);
-                if (seekAutoConstraint(
-                        sugConstr1, onSketchPos, Base::Vector2d(0.f, 0.f))) {// TODO: ellipse prio 1
+                if (seekAutoConstraint(sugConstr1,
+                                       onSketchPos,
+                                       Base::Vector2d(0.f, 0.f))) {// TODO: ellipse prio 1
                     renderSuggestConstraintsCursor(sugConstr1);
                     return;
                 }
@@ -197,8 +204,10 @@ public:
                 }
 
                 drawEdit(editCurve);
-                if (seekAutoConstraint(
-                        sugConstr2, onSketchPos, onSketchPos - centroid, AutoConstraint::CURVE)) {
+                if (seekAutoConstraint(sugConstr2,
+                                       onSketchPos,
+                                       onSketchPos - centroid,
+                                       AutoConstraint::CURVE)) {
                     renderSuggestConstraintsCursor(sugConstr2);
                     return;
                 }
@@ -217,8 +226,10 @@ public:
                 }
 
                 drawEdit(editCurve);
-                if (seekAutoConstraint(
-                        sugConstr3, onSketchPos, onSketchPos - centroid, AutoConstraint::CURVE)) {
+                if (seekAutoConstraint(sugConstr3,
+                                       onSketchPos,
+                                       onSketchPos - centroid,
+                                       AutoConstraint::CURVE)) {
                     renderSuggestConstraintsCursor(sugConstr3);
                     return;
                 }
@@ -416,7 +427,8 @@ private:
                 // decompose cursor with a projection, then length of w_2 will give us b
                 Base::Vector2d w_1 = cursor;
                 w_1.ProjectToLine(
-                    cursor, (periapsis - apoapsis));// projection of cursor line onto apse line
+                    cursor,
+                    (periapsis - apoapsis));// projection of cursor line onto apse line
                 Base::Vector2d w_2 = (cursor - w_1);
                 b = w_2.Length();
 
@@ -791,8 +803,9 @@ private:
 
             currentgeoid++;
 
-            Gui::cmdAppObjectArgs(
-                sketchgui->getObject(), "exposeInternalGeometry(%d)", currentgeoid);
+            Gui::cmdAppObjectArgs(sketchgui->getObject(),
+                                  "exposeInternalGeometry(%d)",
+                                  currentgeoid);
         }
         catch (const Base::Exception&) {
             Gui::NotifyError(sketchgui,

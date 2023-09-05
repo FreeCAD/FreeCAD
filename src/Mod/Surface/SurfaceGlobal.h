@@ -29,19 +29,19 @@
 // Surface
 #ifndef SurfaceExport
 #ifdef Surface_EXPORTS
-#  define SurfaceExport      FREECAD_DECL_EXPORT
+#define SurfaceExport FREECAD_DECL_EXPORT
 #else
-#  define SurfaceExport      FREECAD_DECL_IMPORT
+#define SurfaceExport FREECAD_DECL_IMPORT
 #endif
 #endif
 
 // SurfaceGui
 #ifndef SurfaceGuiExport
 #ifdef SurfaceGui_EXPORTS
-#  define SurfaceGuiExport   FREECAD_DECL_EXPORT
+#define SurfaceGuiExport FREECAD_DECL_EXPORT
 #else
-#  define SurfaceGuiExport   FREECAD_DECL_IMPORT
+#define SurfaceGuiExport FREECAD_DECL_IMPORT
 #endif
 #endif
 
-#endif //SURFACE_GLOBAL_H
+#endif// SURFACE_GLOBAL_H

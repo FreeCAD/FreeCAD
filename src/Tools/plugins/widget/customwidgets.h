@@ -117,8 +117,9 @@ struct QuantityFormat
     }
     static inline NumberFormat toFormat(char c, bool* ok = 0)
     {
-        if (ok)
+        if (ok) {
             *ok = true;
+        }
         switch (c) {
             case 'f':
                 return Fixed;
@@ -127,8 +128,9 @@ struct QuantityFormat
             case 'g':
                 return Default;
             default:
-                if (ok)
+                if (ok) {
                     *ok = false;
+                }
                 return Default;
         }
     }

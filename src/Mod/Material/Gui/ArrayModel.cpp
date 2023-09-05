@@ -22,15 +22,17 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <QMessageBox>
+#include <QMessageBox>
 #endif
 
 #include <QMetaType>
-#include <Gui/MetaTypes.h>
-#include <Gui/MainWindow.h>
 
-#include <Mod/Material/App/Materials.h>
+#include <Gui/MainWindow.h>
+#include <Gui/MetaTypes.h>
+
 #include <Mod/Material/App/Exceptions.h>
+#include <Mod/Material/App/Materials.h>
+
 #include "ArrayModel.h"
 
 
@@ -38,31 +40,28 @@ using namespace MatGui;
 
 /* TRANSLATOR MatGui::ArrayModel */
 
-AbstractArrayModel::AbstractArrayModel(QObject *parent) :
-    QAbstractTableModel(parent)
-{}
-
-AbstractArrayModel::~AbstractArrayModel()
+AbstractArrayModel::AbstractArrayModel(QObject* parent)
+    : QAbstractTableModel(parent)
 {}
 
 //===
 
 
-Array2DModel::Array2DModel(Materials::MaterialProperty *property, Materials::Material2DArray *value, QObject *parent) :
-    AbstractArrayModel(parent),
-    _property(property),
-    _value(value)
-{}
-
-Array2DModel::~Array2DModel()
+Array2DModel::Array2DModel(Materials::MaterialProperty* property,
+                           Materials::Material2DArray* value,
+                           QObject* parent)
+    : AbstractArrayModel(parent)
+    , _property(property)
+    , _value(value)
 {}
 
 int Array2DModel::rowCount(const QModelIndex& parent) const
 {
-    if (parent.isValid())
-        return 0; // No children
+    if (parent.isValid()) {
+        return 0;// No children
+    }
 
-    return _value->rows() + 1; // Will always have 1 empty row
+    return _value->rows() + 1;// Will always have 1 empty row
 }
 
 bool Array2DModel::newRow(const QModelIndex& index) const
@@ -77,29 +76,23 @@ int Array2DModel::columnCount(const QModelIndex& parent) const
     return _property->columns();
 }
 
-QVariant Array2DModel::data(const QModelIndex &index, int role) const
+QVariant Array2DModel::data(const QModelIndex& index, int role) const
 {
-    if (role == Qt::DisplayRole)
-    {
-        try
-        {
+    if (role == Qt::DisplayRole) {
+        try {
             return _value->getValue(index.row(), index.column());
         }
-        catch(const Materials::InvalidIndex &)
-        {
+        catch (const Materials::InvalidIndex&) {
         }
 
-        try
-        {
+        try {
             auto column = _property->getColumnType(index.column());
-            if (column == Materials::MaterialValue::Quantity)
-            {
+            if (column == Materials::MaterialValue::Quantity) {
                 Base::Quantity q = Base::Quantity(0, _property->getColumnUnits(index.column()));
                 return QVariant::fromValue(q);
             }
         }
-        catch(const Materials::InvalidColumn &)
-        {
+        catch (const Materials::InvalidColumn&) {
         }
 
         return QString();
@@ -108,19 +101,18 @@ QVariant Array2DModel::data(const QModelIndex &index, int role) const
     return QVariant();
 }
 
-QVariant Array2DModel::headerData(int section, Qt::Orientation orientation,
-                    int role) const
+QVariant Array2DModel::headerData(int section, Qt::Orientation orientation, int role) const
 {
-    if (role == Qt::DisplayRole)
-    {
-        if (orientation == Qt::Horizontal)
-        {
-            Materials::MaterialProperty &column = _property->getColumn(section);
+    if (role == Qt::DisplayRole) {
+        if (orientation == Qt::Horizontal) {
+            Materials::MaterialProperty& column = _property->getColumn(section);
             return QVariant(column.getName());
-        } else if (orientation == Qt::Vertical) {
+        }
+        else if (orientation == Qt::Vertical) {
             // Vertical header
-            if (section == (rowCount() - 1))
+            if (section == (rowCount() - 1)) {
                 return QVariant(QString::fromStdString("*"));
+            }
             return QVariant(section + 1);
         }
     }
@@ -132,8 +124,7 @@ bool Array2DModel::setData(const QModelIndex& index, const QVariant& value, int 
 {
     Q_UNUSED(role);
 
-    if (index.row() == _value->rows())
-    {
+    if (index.row() == _value->rows()) {
         insertRows(index.row(), 1);
     }
     _value->setValue(index.row(), index.column(), value);
@@ -154,11 +145,9 @@ bool Array2DModel::insertRows(int row, int count, const QModelIndex& parent)
     beginInsertRows(parent, row, row + count - 1);
 
     int columns = columnCount();
-    for (int i = 0; i < count; i++)
-    {
+    for (int i = 0; i < count; i++) {
         std::vector<QVariant>* rowPtr = new std::vector<QVariant>();
-        for (int j = 0; j < columns; j++)
-        {
+        for (int j = 0; j < columns; j++) {
             rowPtr->push_back(_property->getColumnNull(j));
         }
 
@@ -199,21 +188,21 @@ bool Array2DModel::removeColumns(int column, int count, const QModelIndex& paren
 
 //===
 
-Array3DDepthModel::Array3DDepthModel(Materials::MaterialProperty *property, Materials::Material3DArray *value, QObject *parent) :
-    AbstractArrayModel(parent),
-    _property(property),
-    _value(value)
-{}
-
-Array3DDepthModel::~Array3DDepthModel()
+Array3DDepthModel::Array3DDepthModel(Materials::MaterialProperty* property,
+                                     Materials::Material3DArray* value,
+                                     QObject* parent)
+    : AbstractArrayModel(parent)
+    , _property(property)
+    , _value(value)
 {}
 
 int Array3DDepthModel::rowCount(const QModelIndex& parent) const
 {
-    if (parent.isValid())
-        return 0; // No children
+    if (parent.isValid()) {
+        return 0;// No children
+    }
 
-    return _value->depth() + 1; // Will always have 1 empty row
+    return _value->depth() + 1;// Will always have 1 empty row
 }
 
 bool Array3DDepthModel::newRow(const QModelIndex& index) const
@@ -221,29 +210,23 @@ bool Array3DDepthModel::newRow(const QModelIndex& index) const
     return (index.row() == _value->depth());
 }
 
-QVariant Array3DDepthModel::data(const QModelIndex &index, int role) const
+QVariant Array3DDepthModel::data(const QModelIndex& index, int role) const
 {
-    if (role == Qt::DisplayRole)
-    {
-        try
-        {
+    if (role == Qt::DisplayRole) {
+        try {
             return _value->getValue(index.row(), index.column());
         }
-        catch(const Materials::InvalidIndex &)
-        {
+        catch (const Materials::InvalidIndex&) {
         }
 
-        try
-        {
+        try {
             auto column = _property->getColumnType(index.column());
-            if (column == Materials::MaterialValue::Quantity)
-            {
+            if (column == Materials::MaterialValue::Quantity) {
                 Base::Quantity q = Base::Quantity(0, _property->getColumnUnits(index.column()));
                 return QVariant::fromValue(q);
             }
         }
-        catch(const Materials::InvalidColumn &)
-        {
+        catch (const Materials::InvalidColumn&) {
         }
 
         return QString();
@@ -252,19 +235,18 @@ QVariant Array3DDepthModel::data(const QModelIndex &index, int role) const
     return QVariant();
 }
 
-QVariant Array3DDepthModel::headerData(int section, Qt::Orientation orientation,
-                    int role) const
+QVariant Array3DDepthModel::headerData(int section, Qt::Orientation orientation, int role) const
 {
-    if (role == Qt::DisplayRole)
-    {
-        if (orientation == Qt::Horizontal)
-        {
-            Materials::MaterialProperty &column = _property->getColumn(section);
+    if (role == Qt::DisplayRole) {
+        if (orientation == Qt::Horizontal) {
+            Materials::MaterialProperty& column = _property->getColumn(section);
             return QVariant(column.getName());
-        } else if (orientation == Qt::Vertical) {
+        }
+        else if (orientation == Qt::Vertical) {
             // Vertical header
-            if (section == (rowCount() - 1))
+            if (section == (rowCount() - 1)) {
                 return QVariant(QString::fromStdString("*"));
+            }
             return QVariant(section + 1);
         }
     }
@@ -276,8 +258,7 @@ bool Array3DDepthModel::setData(const QModelIndex& index, const QVariant& value,
 {
     Q_UNUSED(role);
 
-    if (index.row() == _value->depth())
-    {
+    if (index.row() == _value->depth()) {
         insertRows(index.row(), 1);
     }
     _value->setValue(index.row(), index.column(), value);
@@ -298,11 +279,9 @@ bool Array3DDepthModel::insertRows(int row, int count, const QModelIndex& parent
     beginInsertRows(parent, row, row + count - 1);
 
     int columns = columnCount();
-    for (int i = 0; i < count; i++)
-    {
+    for (int i = 0; i < count; i++) {
         std::vector<QVariant>* rowPtr = new std::vector<QVariant>();
-        for (int j = 0; j < columns; j++)
-        {
+        for (int j = 0; j < columns; j++) {
             rowPtr->push_back(_property->getColumnNull(j));
         }
 
@@ -343,21 +322,21 @@ bool Array3DDepthModel::removeColumns(int column, int count, const QModelIndex& 
 
 //===
 
-Array3DModel::Array3DModel(Materials::MaterialProperty *property, Materials::Material3DArray *value, QObject *parent) :
-    AbstractArrayModel(parent),
-    _property(property),
-    _value(value)
-{}
-
-Array3DModel::~Array3DModel()
+Array3DModel::Array3DModel(Materials::MaterialProperty* property,
+                           Materials::Material3DArray* value,
+                           QObject* parent)
+    : AbstractArrayModel(parent)
+    , _property(property)
+    , _value(value)
 {}
 
 int Array3DModel::rowCount(const QModelIndex& parent) const
 {
-    if (parent.isValid())
-        return 0; // No children
+    if (parent.isValid()) {
+        return 0;// No children
+    }
 
-    return _value->depth() + 1; // Will always have 1 empty row
+    return _value->depth() + 1;// Will always have 1 empty row
 }
 
 int Array3DModel::columnCount(const QModelIndex& parent) const
@@ -372,34 +351,27 @@ bool Array3DModel::newRow(const QModelIndex& index) const
     return (index.row() == _value->depth());
 }
 
-QVariant Array3DModel::data(const QModelIndex &index, int role) const
+QVariant Array3DModel::data(const QModelIndex& index, int role) const
 {
-    if (role == Qt::DisplayRole)
-    {
+    if (role == Qt::DisplayRole) {
         Base::Console().Error("Row %d, column %d\n", index.row(), index.column());
-        try
-        {
+        try {
             return _value->getValue(index.row(), index.column() + 1);
         }
-        catch(const Materials::InvalidIndex &)
-        {
+        catch (const Materials::InvalidIndex&) {
         }
-        catch(const std::exception &e)
-        {
+        catch (const std::exception& e) {
             Base::Console().Error("The error message is: %s\n", e.what());
         }
 
-        try
-        {
+        try {
             auto column = _property->getColumnType(index.column() + 1);
-            if (column == Materials::MaterialValue::Quantity)
-            {
+            if (column == Materials::MaterialValue::Quantity) {
                 Base::Quantity q = Base::Quantity(0, _property->getColumnUnits(index.column() - 1));
                 return QVariant::fromValue(q);
             }
         }
-        catch(const Materials::InvalidColumn &)
-        {
+        catch (const Materials::InvalidColumn&) {
         }
 
         return QString();
@@ -408,19 +380,18 @@ QVariant Array3DModel::data(const QModelIndex &index, int role) const
     return QVariant();
 }
 
-QVariant Array3DModel::headerData(int section, Qt::Orientation orientation,
-                    int role) const
+QVariant Array3DModel::headerData(int section, Qt::Orientation orientation, int role) const
 {
-    if (role == Qt::DisplayRole)
-    {
-        if (orientation == Qt::Horizontal)
-        {
-            Materials::MaterialProperty &column = _property->getColumn(section + 1);
+    if (role == Qt::DisplayRole) {
+        if (orientation == Qt::Horizontal) {
+            Materials::MaterialProperty& column = _property->getColumn(section + 1);
             return QVariant(column.getName());
-        } else if (orientation == Qt::Vertical) {
+        }
+        else if (orientation == Qt::Vertical) {
             // Vertical header
-            if (section == (rowCount() - 1))
+            if (section == (rowCount() - 1)) {
                 return QVariant(QString::fromStdString("*"));
+            }
             return QVariant(section + 1);
         }
     }
@@ -432,8 +403,7 @@ bool Array3DModel::setData(const QModelIndex& index, const QVariant& value, int 
 {
     Q_UNUSED(role);
 
-    if (index.row() == _value->depth())
-    {
+    if (index.row() == _value->depth()) {
         insertRows(index.row(), 1);
     }
     _value->setValue(index.row(), index.column(), value);
@@ -454,11 +424,9 @@ bool Array3DModel::insertRows(int row, int count, const QModelIndex& parent)
     beginInsertRows(parent, row, row + count - 1);
 
     int columns = columnCount();
-    for (int i = 0; i < count; i++)
-    {
+    for (int i = 0; i < count; i++) {
         std::vector<QVariant>* rowPtr = new std::vector<QVariant>();
-        for (int j = 0; j < columns; j++)
-        {
+        for (int j = 0; j < columns; j++) {
             rowPtr->push_back(_property->getColumnNull(j));
         }
 

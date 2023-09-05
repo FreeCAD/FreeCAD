@@ -199,8 +199,9 @@ void CmdSketcherToggleConstruction::activated(int iMsg)
 
                 if (geo && geo->getTypeId() == Part::GeomPoint::getClassTypeId()) {
                     // issue the actual commands to toggle
-                    Gui::cmdAppObjectArgs(
-                        selection[0].getObject(), "toggleConstruction(%d) ", geoId);
+                    Gui::cmdAppObjectArgs(selection[0].getObject(),
+                                          "toggleConstruction(%d) ",
+                                          geoId);
                 }
             }
         }
