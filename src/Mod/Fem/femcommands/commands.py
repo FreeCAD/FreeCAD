@@ -210,7 +210,7 @@ class _ConstraintCentrif(CommandManager):
         super(_ConstraintCentrif, self).__init__()
         self.menutext = Qt.QT_TRANSLATE_NOOP(
             "FEM_ConstraintCentrif",
-            "Centrifigual load"
+            "Centrifugal load"
         )
         self.tooltip = Qt.QT_TRANSLATE_NOOP(
             "FEM_ConstraintCentrif",
