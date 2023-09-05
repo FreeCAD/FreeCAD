@@ -43,7 +43,7 @@ SOURCE_GROUP("Moc" FILES ${SandboxGui_MOC_SRCS})
 if(BUILD_QT5)
     qt5_add_resources(Resource_SRCS Resources/Sandbox.qrc)
 else()
-    qt4_add_resources(Resource_SRCS Resources/Sandbox.qrc)
+    qt6_add_resources(Resource_SRCS Resources/Sandbox.qrc)
 endif()
 SET(Resource_SRCS
     ${Resource_SRCS}
