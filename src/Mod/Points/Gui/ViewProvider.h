@@ -39,24 +39,28 @@ class SoCoordinate3;
 class SoNormal;
 class SoEventCallback;
 
-namespace App {
-    class PropertyColorList;
+namespace App
+{
+class PropertyColorList;
 }
 
-namespace Gui {
-    class SoFCSelection;
+namespace Gui
+{
+class SoFCSelection;
 }
 
-namespace Points {
-    class PropertyGreyValueList;
-    class PropertyNormalList;
-    class PointKernel;
-    class Feature;
-}
+namespace Points
+{
+class PropertyGreyValueList;
+class PropertyNormalList;
+class PointKernel;
+class Feature;
+}// namespace Points
 
-namespace PointsGui {
+namespace PointsGui
+{
 
-class ViewProviderPointsBuilder : public Gui::ViewProviderBuilder
+class ViewProviderPointsBuilder: public Gui::ViewProviderBuilder
 {
 public:
     ViewProviderPointsBuilder() = default;
@@ -71,7 +75,7 @@ public:
  * a node representing the point data structure.
  * @author Werner Mayer
  */
-class PointsGuiExport ViewProviderPoints : public Gui::ViewProviderGeometryObject
+class PointsGuiExport ViewProviderPoints: public Gui::ViewProviderGeometryObject
 {
     PROPERTY_HEADER_WITH_OVERRIDE(PointsGui::ViewProviderPoints);
 
@@ -93,21 +97,21 @@ public:
     void unsetEdit(int ModNum) override;
 
 public:
-    static void clipPointsCallback(void * ud, SoEventCallback * n);
+    static void clipPointsCallback(void* ud, SoEventCallback* n);
 
 protected:
     void onChanged(const App::Property* prop) override;
     void setVertexColorMode(App::PropertyColorList*);
     void setVertexGreyvalueMode(Points::PropertyGreyValueList*);
     void setVertexNormalMode(Points::PropertyNormalList*);
-    virtual void cut(const std::vector<SbVec2f>& picked, Gui::View3DInventorViewer &Viewer) = 0;
+    virtual void cut(const std::vector<SbVec2f>& picked, Gui::View3DInventorViewer& Viewer) = 0;
 
 protected:
-    Gui::SoFCSelection  * pcHighlight;
-    SoCoordinate3       * pcPointsCoord;
-    SoMaterial          * pcColorMat;
-    SoNormal            * pcPointsNormal;
-    SoDrawStyle         * pcPointStyle;
+    Gui::SoFCSelection* pcHighlight;
+    SoCoordinate3* pcPointsCoord;
+    SoMaterial* pcColorMat;
+    SoNormal* pcPointsNormal;
+    SoDrawStyle* pcPointStyle;
 
 private:
     static App::PropertyFloatConstraint::Constraints floatRange;
@@ -118,7 +122,7 @@ private:
  * a node representing the scattered point cloud.
  * @author Werner Mayer
  */
-class PointsGuiExport ViewProviderScattered : public ViewProviderPoints
+class PointsGuiExport ViewProviderScattered: public ViewProviderPoints
 {
     PROPERTY_HEADER_WITH_OVERRIDE(PointsGui::ViewProviderScattered);
 
@@ -130,15 +134,15 @@ public:
      * Extracts the point data from the feature \a pcFeature and creates
      * an Inventor node \a SoNode with these data.
      */
-    void attach(App::DocumentObject *) override;
+    void attach(App::DocumentObject*) override;
     /// Update the point representation
     void updateData(const App::Property*) override;
 
 protected:
-    void cut(const std::vector<SbVec2f>& picked, Gui::View3DInventorViewer &Viewer) override;
+    void cut(const std::vector<SbVec2f>& picked, Gui::View3DInventorViewer& Viewer) override;
 
 protected:
-    SoPointSet          * pcPoints;
+    SoPointSet* pcPoints;
 };
 
 /**
@@ -146,7 +150,7 @@ protected:
  * a node representing the structured points.
  * @author Werner Mayer
  */
-class PointsGuiExport ViewProviderStructured : public ViewProviderPoints
+class PointsGuiExport ViewProviderStructured: public ViewProviderPoints
 {
     PROPERTY_HEADER_WITH_OVERRIDE(PointsGui::ViewProviderStructured);
 
@@ -158,21 +162,20 @@ public:
      * Extracts the point data from the feature \a pcFeature and creates
      * an Inventor node \a SoNode with these data.
      */
-    void attach(App::DocumentObject *) override;
+    void attach(App::DocumentObject*) override;
     /// Update the point representation
     void updateData(const App::Property*) override;
 
 protected:
-    void cut(const std::vector<SbVec2f>& picked, Gui::View3DInventorViewer &Viewer) override;
+    void cut(const std::vector<SbVec2f>& picked, Gui::View3DInventorViewer& Viewer) override;
 
 protected:
-    SoIndexedPointSet   * pcPoints;
+    SoIndexedPointSet* pcPoints;
 };
 
 using ViewProviderPython = Gui::ViewProviderPythonFeatureT<ViewProviderScattered>;
 
-} // namespace PointsGui
+}// namespace PointsGui
 
 
-#endif // POINTSGUI_VIEWPROVIDERPOINTS_H
-
+#endif// POINTSGUI_VIEWPROVIDERPOINTS_H

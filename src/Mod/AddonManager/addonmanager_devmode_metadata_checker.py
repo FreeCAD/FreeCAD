@@ -75,9 +75,7 @@ class MetadataValidators:
         errors.extend(self.validate_content(addon))
 
         if len(errors) > 0:
-            FreeCAD.Console.PrintError(
-                f"Errors found in package.xml file for '{addon.name}'\n"
-            )
+            FreeCAD.Console.PrintError(f"Errors found in package.xml file for '{addon.name}'\n")
             for error in errors:
                 FreeCAD.Console.PrintError(f"   * {error}\n")
 
@@ -111,17 +109,12 @@ class MetadataValidators:
         """Check for the presence of the required top-level elements"""
         errors = []
         if not addon.metadata.name or len(addon.metadata.name) == 0:
-            errors.append(
-                "No top-level <name> element found, or <name> element is empty"
-            )
+            errors.append("No top-level <name> element found, or <name> element is empty")
         if not addon.metadata.version:
-            errors.append(
-                "No top-level <version> element found, or <version> element is invalid"
-            )
+            errors.append("No top-level <version> element found, or <version> element is invalid")
         if not addon.metadata.description or len(addon.metadata.description) == 0:
             errors.append(
-                "No top-level <description> element found, or <description> element "
-                "is invalid"
+                "No top-level <description> element found, or <description> element " "is invalid"
             )
 
         maintainers = addon.metadata.maintainer
@@ -129,9 +122,7 @@ class MetadataValidators:
             errors.append("No top-level <maintainers> found, at least one is required")
         for maintainer in maintainers:
             if len(maintainer.email) == 0:
-                errors.append(
-                    f"No email address specified for maintainer '{maintainer.name}'"
-                )
+                errors.append(f"No email address specified for maintainer '{maintainer.name}'")
 
         licenses = addon.metadata.license
         if len(licenses) == 0:
@@ -146,9 +137,7 @@ class MetadataValidators:
         """Check the URLs provided by the addon"""
         errors = []
         if len(urls) == 0:
-            errors.append(
-                "No <url> elements found, at least a repo url must be provided"
-            )
+            errors.append("No <url> elements found, at least a repo url must be provided")
         else:
             found_repo = False
             found_readme = False
@@ -156,17 +145,13 @@ class MetadataValidators:
                 if url["type"] == "repository":
                     found_repo = True
                     if len(url["branch"]) == 0:
-                        errors.append(
-                            "<repository> element is missing the 'branch' attribute"
-                        )
+                        errors.append("<repository> element is missing the 'branch' attribute")
                 elif url["type"] == "readme":
                     found_readme = True
                     location = url["location"]
                     p = NetworkManager.AM_NETWORK_MANAGER.blocking_get(location)
                     if not p:
-                        errors.append(
-                            f"Could not access specified readme at {location}"
-                        )
+                        errors.append(f"Could not access specified readme at {location}")
                     else:
                         p = p.data().decode("utf8")
                         if "<html" in p or "<!DOCTYPE html>" in p:
@@ -179,9 +164,7 @@ class MetadataValidators:
             if not found_repo:
                 errors.append("No repo url specified")
             if not found_readme:
-                errors.append(
-                    "No readme url specified (not required, but highly recommended)"
-                )
+                errors.append("No readme url specified (not required, but highly recommended)")
         return errors
 
     @staticmethod

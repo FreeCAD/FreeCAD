@@ -83,8 +83,8 @@ class ViewProviderSketchDrawSketchHandlerAttorney
 {
 private:
     static inline void setConstraintSelectability(ViewProviderSketch& vp, bool enabled = true);
-    static inline void setPositionText(ViewProviderSketch& vp, const Base::Vector2d& Pos,
-                                       const SbString& txt);
+    static inline void
+    setPositionText(ViewProviderSketch& vp, const Base::Vector2d& Pos, const SbString& txt);
     static inline void setPositionText(ViewProviderSketch& vp, const Base::Vector2d& Pos);
     static inline void resetPositionText(ViewProviderSketch& vp);
     static inline void drawEdit(ViewProviderSketch& vp,
@@ -97,14 +97,16 @@ private:
     static inline void setAxisPickStyle(ViewProviderSketch& vp, bool on);
     static inline void moveCursorToSketchPoint(ViewProviderSketch& vp, Base::Vector2d point);
     static inline void preselectAtPoint(ViewProviderSketch& vp, Base::Vector2d point);
-    static inline void setAngleSnapping(ViewProviderSketch& vp, bool enable,
+    static inline void setAngleSnapping(ViewProviderSketch& vp,
+                                        bool enable,
                                         Base::Vector2d referencePoint = Base::Vector2d(0., 0.));
 
     static inline int getPreselectPoint(const ViewProviderSketch& vp);
     static inline int getPreselectCurve(const ViewProviderSketch& vp);
     static inline int getPreselectCross(const ViewProviderSketch& vp);
 
-    static inline void moveConstraint(ViewProviderSketch& vp, int constNum, const Base::Vector2d& toPos);
+    static inline void
+    moveConstraint(ViewProviderSketch& vp, int constNum, const Base::Vector2d& toPos);
 
     friend class DrawSketchHandler;
 };
@@ -153,12 +155,14 @@ public:
     int getHighestCurveIndex();
 
     int seekAutoConstraint(std::vector<AutoConstraint>& suggestedConstraints,
-                           const Base::Vector2d& Pos, const Base::Vector2d& Dir,
+                           const Base::Vector2d& Pos,
+                           const Base::Vector2d& Dir,
                            AutoConstraint::TargetType type = AutoConstraint::VERTEX);
     // createowncommand indicates whether a separate command shall be create and committed (for
     // example for undo purposes) or not is not it is the responsibility of the developer to create
     // and commit the command appropriately.
-    void createAutoConstraints(const std::vector<AutoConstraint>& autoConstrs, int geoId,
+    void createAutoConstraints(const std::vector<AutoConstraint>& autoConstrs,
+                               int geoId,
                                Sketcher::PointPos pointPos = Sketcher::PointPos::none,
                                bool createowncommand = true);
 
@@ -234,7 +238,9 @@ protected:
     void moveConstraint(int constNum, const Base::Vector2d& toPos);
 
 private:
-    void setSvgCursor(const QString& svgName, int x, int y,
+    void setSvgCursor(const QString& svgName,
+                      int x,
+                      int y,
                       const std::map<unsigned long, unsigned long>& colorMapping =
                           std::map<unsigned long, unsigned long>());
 

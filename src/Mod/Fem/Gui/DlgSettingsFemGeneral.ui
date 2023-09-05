@@ -351,11 +351,11 @@ with the last used dialog settings</string>
              <bool>true</bool>
             </property>
             <property name="toolTip">
-             <string>All constraints are hidden in the model view
+             <string>All analysis features are hidden in the model view
 when the results dialog is opened</string>
             </property>
             <property name="text">
-             <string>Hide constraints when open result dialog</string>
+             <string>Hide analysis features when open result dialog</string>
             </property>
             <property name="checkable">
              <bool>true</bool>

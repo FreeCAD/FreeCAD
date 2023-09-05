@@ -134,12 +134,8 @@ class PythonPackageManager:
         def process(self):
             """Execute this object."""
             try:
-                self.all_packages_stdout = call_pip(
-                    ["list", "--path", self.vendor_path]
-                )
-                self.outdated_packages_stdout = call_pip(
-                    ["list", "-o", "--path", self.vendor_path]
-                )
+                self.all_packages_stdout = call_pip(["list", "--path", self.vendor_path])
+                self.outdated_packages_stdout = call_pip(["list", "-o", "--path", self.vendor_path])
             except PipFailed as e:
                 FreeCAD.Console.PrintError(str(e) + "\n")
                 self.error.emit(str(e))
@@ -197,9 +193,7 @@ class PythonPackageManager:
         self.dlg.tableWidget.setItem(
             0,
             0,
-            QtWidgets.QTableWidgetItem(
-                translate("AddonsInstaller", "Processing, please wait...")
-            ),
+            QtWidgets.QTableWidgetItem(translate("AddonsInstaller", "Processing, please wait...")),
         )
         self.dlg.tableWidget.horizontalHeader().setSectionResizeMode(
             0, QtWidgets.QHeaderView.ResizeToContents
@@ -230,9 +224,7 @@ class PythonPackageManager:
                     dependencies.append(addon["name"] + "*")
                 else:
                     dependencies.append(addon["name"])
-            self.dlg.tableWidget.setItem(
-                counter, 0, QtWidgets.QTableWidgetItem(package_name)
-            )
+            self.dlg.tableWidget.setItem(counter, 0, QtWidgets.QTableWidgetItem(package_name))
             self.dlg.tableWidget.setItem(
                 counter,
                 1,
@@ -249,13 +241,9 @@ class PythonPackageManager:
                 QtWidgets.QTableWidgetItem(", ".join(dependencies)),
             )
             if len(package_details["available_version"]) > 0:
-                updateButtons.append(
-                    QtWidgets.QPushButton(translate("AddonsInstaller", "Update"))
-                )
+                updateButtons.append(QtWidgets.QPushButton(translate("AddonsInstaller", "Update")))
                 updateButtons[-1].setIcon(QtGui.QIcon(":/icons/button_up.svg"))
-                updateButtons[-1].clicked.connect(
-                    partial(self._update_package, package_name)
-                )
+                updateButtons[-1].clicked.connect(partial(self._update_package, package_name))
                 self.dlg.tableWidget.setCellWidget(counter, 4, updateButtons[-1])
                 update_counter += 1
             else:
@@ -292,9 +280,7 @@ class PythonPackageManager:
                 dependent_addons.append({"name": addon.name, "optional": True})
         return dependent_addons
 
-    def _parse_pip_list_output(
-        self, all_packages, outdated_packages
-    ) -> Dict[str, Dict[str, str]]:
+    def _parse_pip_list_output(self, all_packages, outdated_packages) -> Dict[str, Dict[str, str]]:
         """Parses the output from pip into a dictionary with update information in it. The pip
         output should be an array of lines of text."""
 
@@ -350,17 +336,13 @@ class PythonPackageManager:
                 self.dlg.tableWidget.setItem(
                     line,
                     2,
-                    QtWidgets.QTableWidgetItem(
-                        translate("AddonsInstaller", "Updating...")
-                    ),
+                    QtWidgets.QTableWidgetItem(translate("AddonsInstaller", "Updating...")),
                 )
                 break
         QtCore.QCoreApplication.processEvents(QtCore.QEventLoop.AllEvents, 50)
 
         try:
-            call_pip(
-                ["install", "--upgrade", package_name, "--target", self.vendor_path]
-            )
+            call_pip(["install", "--upgrade", package_name, "--target", self.vendor_path])
             self._create_list_from_pip()
         except PipFailed as e:
             FreeCAD.Console.PrintError(str(e) + "\n")
@@ -373,8 +355,7 @@ class PythonPackageManager:
         for package_name, package_details in package_list.items():
             if (
                 len(package_details["available_version"]) > 0
-                and package_details["available_version"]
-                != package_details["installed_version"]
+                and package_details["available_version"] != package_details["installed_version"]
             ):
                 updates.append(package_name)
 
@@ -389,9 +370,7 @@ class PythonPackageManager:
 
         migrated = False
 
-        old_directory = os.path.join(
-            FreeCAD.getUserAppDataDir(), "AdditionalPythonPackages"
-        )
+        old_directory = os.path.join(FreeCAD.getUserAppDataDir(), "AdditionalPythonPackages")
 
         new_directory = utils.get_pip_target_directory()
         new_directory_name = new_directory.rsplit(os.path.sep, 1)[1]
@@ -420,12 +399,8 @@ class PythonPackageManager:
         sys.path.append(new_directory)
         cls._add_current_python_version()
 
-        with open(
-            os.path.join(old_directory, "MIGRATION_COMPLETE"), "w", encoding="utf-8"
-        ) as f:
-            f.write(
-                "Files originally installed in this directory have been migrated to:\n"
-            )
+        with open(os.path.join(old_directory, "MIGRATION_COMPLETE"), "w", encoding="utf-8") as f:
+            f.write("Files originally installed in this directory have been migrated to:\n")
             f.write(new_directory)
             f.write(
                 "\nThe existence of this file prevents the Addon Manager from "

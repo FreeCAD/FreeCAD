@@ -49,7 +49,9 @@ public:
     explicit TaskSketcherMessages(ViewProviderSketch* sketchView);
     ~TaskSketcherMessages() override;
 
-    void slotSetUp(const QString& state, const QString& msg, const QString& link,
+    void slotSetUp(const QString& state,
+                   const QString& msg,
+                   const QString& link,
                    const QString& linkText);
 
 private:

@@ -86,8 +86,9 @@ Py::String GeometryFacadePy::getInternalType() const
 {
     int internaltypeindex = (int)this->getGeometryFacadePtr()->getInternalType();
 
-    if (internaltypeindex >= InternalType::NumInternalGeometryType)
+    if (internaltypeindex >= InternalType::NumInternalGeometryType) {
         throw Py::NotImplementedError("String name of enum not implemented");
+    }
 
     std::string typestr = SketchGeometryExtension::internaltype2str[internaltypeindex];
 
@@ -124,8 +125,9 @@ PyObject* GeometryFacadePy::testGeometryMode(PyObject* args)
 
         GeometryMode::GeometryMode mode;
 
-        if (SketchGeometryExtension::getGeometryModeFromName(flag, mode))
+        if (SketchGeometryExtension::getGeometryModeFromName(flag, mode)) {
             return new_reference_to(Py::Boolean(getGeometryFacadePtr()->testGeometryMode(mode)));
+        }
 
         PyErr_SetString(PyExc_TypeError, "Flag string does not exist.");
         return nullptr;
@@ -168,8 +170,12 @@ PyObject* GeometryFacadePy::mirror(PyObject* args)
 
     PyErr_Clear();
     PyObject* axis;
-    if (PyArg_ParseTuple(
-            args, "O!O!", &(Base::VectorPy::Type), &o, &(Base::VectorPy::Type), &axis)) {
+    if (PyArg_ParseTuple(args,
+                         "O!O!",
+                         &(Base::VectorPy::Type),
+                         &o,
+                         &(Base::VectorPy::Type),
+                         &axis)) {
         Base::Vector3d pnt = static_cast<Base::VectorPy*>(o)->value();
         Base::Vector3d dir = static_cast<Base::VectorPy*>(axis)->value();
         getGeometryFacadePtr()->mirror(pnt, dir);
@@ -184,8 +190,9 @@ PyObject* GeometryFacadePy::mirror(PyObject* args)
 PyObject* GeometryFacadePy::rotate(PyObject* args)
 {
     PyObject* o;
-    if (!PyArg_ParseTuple(args, "O!", &(Base::PlacementPy::Type), &o))
+    if (!PyArg_ParseTuple(args, "O!", &(Base::PlacementPy::Type), &o)) {
         return nullptr;
+    }
 
     Base::Placement* plm = static_cast<Base::PlacementPy*>(o)->getPlacementPtr();
     getGeometryFacadePtr()->rotate(*plm);
@@ -217,8 +224,9 @@ PyObject* GeometryFacadePy::scale(PyObject* args)
 PyObject* GeometryFacadePy::transform(PyObject* args)
 {
     PyObject* o;
-    if (!PyArg_ParseTuple(args, "O!", &(Base::MatrixPy::Type), &o))
+    if (!PyArg_ParseTuple(args, "O!", &(Base::MatrixPy::Type), &o)) {
         return nullptr;
+    }
     Base::Matrix4D mat = static_cast<Base::MatrixPy*>(o)->value();
     getGeometryFacadePtr()->transform(mat);
     Py_Return;

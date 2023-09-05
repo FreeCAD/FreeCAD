@@ -52,8 +52,9 @@ private:
     Py::Object open(const Py::Tuple& args)
     {
         char* Name;
-        if (!PyArg_ParseTuple(args.ptr(), "et", "utf-8", &Name))
+        if (!PyArg_ParseTuple(args.ptr(), "et", "utf-8", &Name)) {
             throw Py::Exception();
+        }
         std::string EncodedName = std::string(Name);
         PyMem_Free(Name);
 
@@ -61,8 +62,9 @@ private:
         Base::FileInfo file(EncodedName.c_str());
 
         // extract extension
-        if (file.extension().empty())
+        if (file.extension().empty()) {
             throw Py::RuntimeError("No file extension");
+        }
 
         throw Py::RuntimeError("Unknown file extension");
         // return Py::None();
@@ -72,8 +74,9 @@ private:
     {
         char* Name;
         const char* DocName;
-        if (!PyArg_ParseTuple(args.ptr(), "ets", "utf-8", &Name, &DocName))
+        if (!PyArg_ParseTuple(args.ptr(), "ets", "utf-8", &Name, &DocName)) {
             throw Py::Exception();
+        }
         std::string EncodedName = std::string(Name);
         PyMem_Free(Name);
 
@@ -82,8 +85,9 @@ private:
             Base::FileInfo file(EncodedName.c_str());
 
             // extract extension
-            if (file.extension().empty())
+            if (file.extension().empty()) {
                 throw Py::RuntimeError("No file extension");
+            }
 
             App::Document* pcDoc = App::GetApplication().getDocument(DocName);
             if (!pcDoc) {

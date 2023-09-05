@@ -27,35 +27,34 @@
 
 // point at which warnings of overly long specifiers disabled (needed for VC6)
 #ifdef _MSC_VER
-# pragma warning( disable : 4181 )
-# pragma warning( disable : 4305 )
-# pragma warning( disable : 4522 )
+#pragma warning(disable : 4181)
+#pragma warning(disable : 4305)
+#pragma warning(disable : 4522)
 #endif
 
 #ifdef _PreComp_
 
 // standard
-# include <cstdio>
+#include <cstdio>
 
 // STL
-# include <algorithm>
-# include <cmath>
-# include <iostream>
-# include <memory>
-# include <set>
-# include <sstream>
-# include <vector>
+#include <algorithm>
+#include <cmath>
+#include <iostream>
+#include <memory>
+#include <set>
+#include <sstream>
+#include <vector>
 
 // boost
-# include <boost/lexical_cast.hpp>
-# include <boost/regex.hpp>
-# include <boost/algorithm/string.hpp>
-# include <boost/math/special_functions/fpclassify.hpp>
+#include <boost/algorithm/string.hpp>
+#include <boost/lexical_cast.hpp>
+#include <boost/math/special_functions/fpclassify.hpp>
+#include <boost/regex.hpp>
 
 // Qt
-# include <QtConcurrentMap>
+#include <QtConcurrentMap>
 
-#endif //_PreComp_
+#endif//_PreComp_
 
 #endif
-

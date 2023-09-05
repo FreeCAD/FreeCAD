@@ -37,7 +37,8 @@ namespace SketcherGui
 class VisualLayer
 {
 public:
-    explicit VisualLayer(unsigned int linePattern = 0xFFFF, float lineWidth = 3.0,
+    explicit VisualLayer(unsigned int linePattern = 0xFFFF,
+                         float lineWidth = 3.0,
                          bool visible = true);
 
     unsigned int getLinePattern() const;

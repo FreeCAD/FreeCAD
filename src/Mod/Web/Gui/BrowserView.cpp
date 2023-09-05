@@ -22,53 +22,53 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <vector>
+#include <vector>
 
-# include <QApplication>
-# include <QDesktopServices>
-# include <QFileInfo>
-# include <QLatin1String>
-# include <QLineEdit>
-# include <QMenu>
-# include <QMessageBox>
-# include <QMouseEvent>
-# include <QNetworkRequest>
-# include <QRegularExpression>
-# include <QRegularExpressionMatch>
-# include <QSignalMapper>
-# include <QStatusBar>
+#include <QApplication>
+#include <QDesktopServices>
+#include <QFileInfo>
+#include <QLatin1String>
+#include <QLineEdit>
+#include <QMenu>
+#include <QMessageBox>
+#include <QMouseEvent>
+#include <QNetworkRequest>
+#include <QRegularExpression>
+#include <QRegularExpressionMatch>
+#include <QSignalMapper>
+#include <QStatusBar>
 #endif
 
 #if defined(QTWEBENGINE)
-# if QT_VERSION < QT_VERSION_CHECK(6,0,0)
-#  include <QWebEngineContextMenuData>
-# else
-#  include <QWebEngineContextMenuRequest>
-# endif
-# include <QWebEnginePage>
-# include <QWebEngineProfile>
-# include <QWebEngineSettings>
-# include <QWebEngineUrlRequestInfo>
-# include <QWebEngineUrlRequestInterceptor>
-# include <QWebEngineView>
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
+#include <QWebEngineContextMenuData>
+#else
+#include <QWebEngineContextMenuRequest>
+#endif
+#include <QWebEnginePage>
+#include <QWebEngineProfile>
+#include <QWebEngineSettings>
+#include <QWebEngineUrlRequestInfo>
+#include <QWebEngineUrlRequestInterceptor>
+#include <QWebEngineView>
 #elif defined(QTWEBKIT)
-# include <QWebFrame>
-# include <QNetworkAccessManager>
-# include <QWebSettings>
-# include <QWebView>
+#include <QNetworkAccessManager>
+#include <QWebFrame>
+#include <QWebSettings>
+#include <QWebView>
 using QWebEngineView = QWebView;
 using QWebEnginePage = QWebPage;
 #endif
 
 #include <App/Document.h>
-#include <Base/Parameter.h>
 #include <Base/Exception.h>
+#include <Base/Parameter.h>
 #include <Base/Tools.h>
 #include <Gui/Application.h>
 #include <Gui/Command.h>
 #include <Gui/DownloadManager.h>
-#include <Gui/MainWindow.h>
 #include <Gui/MDIViewPy.h>
+#include <Gui/MainWindow.h>
 #include <Gui/ProgressBar.h>
 #include <Gui/TextDocumentEditorView.h>
 
@@ -79,35 +79,38 @@ using QWebEnginePage = QWebPage;
 using namespace WebGui;
 using namespace Gui;
 
-namespace WebGui {
-enum WebAction {
+namespace WebGui
+{
+enum WebAction
+{
     OpenLink = 0,
     OpenLinkInNewWindow = 1,
-    ViewSource = 2 // QWebView doesn't have a ViewSource option
+    ViewSource = 2// QWebView doesn't have a ViewSource option
 };
 
 #ifdef QTWEBENGINE
-class WebEngineUrlRequestInterceptor : public QWebEngineUrlRequestInterceptor
+class WebEngineUrlRequestInterceptor: public QWebEngineUrlRequestInterceptor
 {
 public:
-    explicit WebEngineUrlRequestInterceptor(BrowserView *parent) :
-        QWebEngineUrlRequestInterceptor(parent),
-        m_parent(parent)
-    {
-    }
+    explicit WebEngineUrlRequestInterceptor(BrowserView* parent)
+        : QWebEngineUrlRequestInterceptor(parent)
+        , m_parent(parent)
+    {}
 
-    void interceptRequest(QWebEngineUrlRequestInfo &info) override
+    void interceptRequest(QWebEngineUrlRequestInfo& info) override
     {
         // do something with this resource, click or get img for example
         if (info.navigationType() == QWebEngineUrlRequestInfo::NavigationTypeLink) {
             // wash out windows file:///C:/something ->file://C:/something
             QUrl url = info.requestUrl();
-            QRegularExpression re(QLatin1String("^/([a-zA-Z]\\:.*)")); // match & catch drive letter forward
+            // match & catch drive letter forward
+            QRegularExpression re(QLatin1String("^/([a-zA-Z]\\:.*)"));
             QRegularExpressionMatch match = re.match(url.path());
 
-            if (url.host().isEmpty() && url.isLocalFile() && match.hasMatch())
+            if (url.host().isEmpty() && url.isLocalFile() && match.hasMatch()) {
                 // clip / in file urs ie /C:/something -> C:/something
                 url.setPath(match.captured(1));
+            }
 
             // invoke thread safe.
             QMetaObject::invokeMethod(m_parent, "urlFilter", Q_ARG(QUrl, url));
@@ -115,13 +118,14 @@ public:
     }
 
 private:
-    BrowserView *m_parent;
+    BrowserView* m_parent;
 };
 #endif
 
 // ---------------------------------------------------------------------------------------------
-UrlWidget::UrlWidget(BrowserView *view) :
-    QLineEdit(view), m_view(view)
+UrlWidget::UrlWidget(BrowserView* view)
+    : QLineEdit(view)
+    , m_view(view)
 {
     setText(QLatin1String("https://"));
     hide();
@@ -129,19 +133,19 @@ UrlWidget::UrlWidget(BrowserView *view) :
 
 UrlWidget::~UrlWidget() = default;
 
-void UrlWidget::keyPressEvent(QKeyEvent *keyEvt)
+void UrlWidget::keyPressEvent(QKeyEvent* keyEvt)
 {
     switch (keyEvt->key()) {
-    case Qt::Key_Escape:
-        hide();
-        break;
-    case Qt::Key_Return:
-    case Qt::Key_Enter:
-        m_view->load(text().toLatin1());
-        hide();
-        break;
-    default:
-        QLineEdit::keyPressEvent(keyEvt);
+        case Qt::Key_Escape:
+            hide();
+            break;
+        case Qt::Key_Return:
+        case Qt::Key_Enter:
+            m_view->load(text().toLatin1());
+            hide();
+            break;
+        default:
+            QLineEdit::keyPressEvent(keyEvt);
     }
 }
 
@@ -155,17 +159,17 @@ void UrlWidget::display()
 
 // ---------------------------------------------------------------------------------------------
 
-class BrowserViewPy : public Py::PythonExtension<BrowserViewPy>
+class BrowserViewPy: public Py::PythonExtension<BrowserViewPy>
 {
 public:
     using BaseType = Py::PythonExtension<BrowserViewPy>;
-    static void init_type();    // announce properties and methods
+    static void init_type();// announce properties and methods
 
     explicit BrowserViewPy(BrowserView* view);
     ~BrowserViewPy() override;
 
     Py::Object repr() override;
-    Py::Object getattr(const char *) override;
+    Py::Object getattr(const char*) override;
     Py::Object cast_to_base(const Py::Tuple&);
 
     Py::Object setHtml(const Py::Tuple&);
@@ -189,16 +193,18 @@ void BrowserViewPy::init_type()
     behaviors().supportSetattr();
     behaviors().readyType();
 
-    add_varargs_method("setHtml",&BrowserViewPy::setHtml,"setHtml(str)");
-    add_varargs_method("load",&BrowserViewPy::load,"load(url)");
-    add_varargs_method("stop",&BrowserViewPy::stop,"stop()");
-    add_varargs_method("url",&BrowserViewPy::url,"url()");
-    add_varargs_method("cast_to_base", &BrowserViewPy::cast_to_base, "cast_to_base() cast to MDIView class");
+    add_varargs_method("setHtml", &BrowserViewPy::setHtml, "setHtml(str)");
+    add_varargs_method("load", &BrowserViewPy::load, "load(url)");
+    add_varargs_method("stop", &BrowserViewPy::stop, "stop()");
+    add_varargs_method("url", &BrowserViewPy::url, "url()");
+    add_varargs_method("cast_to_base",
+                       &BrowserViewPy::cast_to_base,
+                       "cast_to_base() cast to MDIView class");
 }
 
-BrowserViewPy::BrowserViewPy(BrowserView* view) : base(view)
-{
-}
+BrowserViewPy::BrowserViewPy(BrowserView* view)
+    : base(view)
+{}
 
 BrowserViewPy::~BrowserViewPy() = default;
 
@@ -223,14 +229,14 @@ Py::Object BrowserViewPy::repr()
 // a trick is to use MDIViewPy as class member and override getattr() to
 // join the attributes of both classes. This way all methods of MDIViewPy
 // appear for SheetViewPy, too.
-Py::Object BrowserViewPy::getattr(const char * attr)
+Py::Object BrowserViewPy::getattr(const char* attr)
 {
     if (!getBrowserViewPtr()) {
         std::ostringstream s_out;
         s_out << "Cannot access attribute '" << attr << "' of deleted object";
         throw Py::RuntimeError(s_out.str());
     }
-    std::string name( attr );
+    std::string name(attr);
     if (name == "__dict__" || name == "__class__") {
         Py::Dict dict_self(BaseType::getattr("__dict__"));
         Py::Dict dict_base(base.getattr("__dict__"));
@@ -253,21 +259,24 @@ Py::Object BrowserViewPy::setHtml(const Py::Tuple& args)
 {
     char* HtmlCode;
     char* BaseUrl;
-    if (!PyArg_ParseTuple(args.ptr(), "et|s","utf-8",&HtmlCode,&BaseUrl))
+    if (!PyArg_ParseTuple(args.ptr(), "et|s", "utf-8", &HtmlCode, &BaseUrl)) {
         throw Py::Exception();
+    }
 
     std::string EncodedHtml = std::string(HtmlCode);
     PyMem_Free(HtmlCode);
 
-    getBrowserViewPtr()->setHtml(QString::fromUtf8(EncodedHtml.c_str()), QUrl(QString::fromUtf8(BaseUrl)));
+    getBrowserViewPtr()->setHtml(QString::fromUtf8(EncodedHtml.c_str()),
+                                 QUrl(QString::fromUtf8(BaseUrl)));
     return Py::None();
 }
 
 Py::Object BrowserViewPy::load(const Py::Tuple& args)
 {
     char* BaseUrl;
-    if (!PyArg_ParseTuple(args.ptr(), "s", &BaseUrl))
+    if (!PyArg_ParseTuple(args.ptr(), "s", &BaseUrl)) {
         throw Py::Exception();
+    }
 
     getBrowserViewPtr()->load(BaseUrl);
     return Py::None();
@@ -275,8 +284,9 @@ Py::Object BrowserViewPy::load(const Py::Tuple& args)
 
 Py::Object BrowserViewPy::stop(const Py::Tuple& args)
 {
-    if (!PyArg_ParseTuple(args.ptr(), ""))
+    if (!PyArg_ParseTuple(args.ptr(), "")) {
         throw Py::Exception();
+    }
 
     getBrowserViewPtr()->stop();
     return Py::None();
@@ -284,33 +294,34 @@ Py::Object BrowserViewPy::stop(const Py::Tuple& args)
 
 Py::Object BrowserViewPy::url(const Py::Tuple& args)
 {
-    if (!PyArg_ParseTuple(args.ptr(), ""))
+    if (!PyArg_ParseTuple(args.ptr(), "")) {
         throw Py::Exception();
+    }
 
     QUrl url = getBrowserViewPtr()->url();
     return Py::String(url.toString().toStdString());
 }
 
-}
+}// namespace WebGui
 
 /**
  *  Constructs a WebView widget which can be zoomed with Ctrl+Mousewheel
  *
  */
 
-WebView::WebView(QWidget *parent)
+WebView::WebView(QWidget* parent)
     : QWebEngineView(parent)
 {
 #ifdef QTWEBKIT
     // Increase html font size for high DPI displays
     QRect mainScreenSize = QApplication::primaryScreen()->geometry();
-    if (mainScreenSize.width() > 1920){
-        setTextSizeMultiplier (mainScreenSize.width()/1920.0);
+    if (mainScreenSize.width() > 1920) {
+        setTextSizeMultiplier(mainScreenSize.width() / 1920.0);
     }
 #endif
 }
 
-void WebView::mousePressEvent(QMouseEvent *event)
+void WebView::mousePressEvent(QMouseEvent* event)
 {
 #ifdef QTWEBKIT
     if (event->button() == Qt::MiddleButton) {
@@ -324,7 +335,7 @@ void WebView::mousePressEvent(QMouseEvent *event)
     QWebEngineView::mousePressEvent(event);
 }
 
-void WebView::wheelEvent(QWheelEvent *event)
+void WebView::wheelEvent(QWheelEvent* event)
 {
     if (QApplication::keyboardModifiers() & Qt::ControlModifier) {
         qreal factor = zoomFactor() + (-event->angleDelta().y() / 800.0);
@@ -335,16 +346,16 @@ void WebView::wheelEvent(QWheelEvent *event)
     QWebEngineView::wheelEvent(event);
 }
 
-void WebView::contextMenuEvent(QContextMenuEvent *event)
+void WebView::contextMenuEvent(QContextMenuEvent* event)
 {
 #ifdef QTWEBENGINE
-# if QT_VERSION < QT_VERSION_CHECK(6,0,0)
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
     const QWebEngineContextMenuData r = page()->contextMenuData();
     QUrl linkUrl = r.linkUrl();
-# else
+#else
     const QWebEngineContextMenuRequest* r = this->lastContextMenuRequest();
     QUrl linkUrl = r->linkUrl();
-# endif
+#endif
 #else
     QWebHitTestResult r = page()->mainFrame()->hitTestContent(event->pos());
     QUrl linkUrl = r.linkUrl();
@@ -353,7 +364,7 @@ void WebView::contextMenuEvent(QContextMenuEvent *event)
         QMenu menu(this);
 
         // building a custom signal for external browser action
-        QSignalMapper* signalMapper = new QSignalMapper (&menu);
+        QSignalMapper* signalMapper = new QSignalMapper(&menu);
         signalMapper->setProperty("url", QVariant(linkUrl));
 
         QAction* extAction = menu.addAction(tr("Open in External Browser"));
@@ -362,8 +373,11 @@ void WebView::contextMenuEvent(QContextMenuEvent *event)
         QAction* newAction = menu.addAction(tr("Open in new window"));
         signalMapper->setMapping(newAction, WebAction::OpenLinkInNewWindow);
 
-#if QT_VERSION < QT_VERSION_CHECK(5,15,0)
-        connect(signalMapper, qOverload<int>(&QSignalMapper::mapped), this, &WebView::triggerContextMenuAction);
+#if QT_VERSION < QT_VERSION_CHECK(5, 15, 0)
+        connect(signalMapper,
+                qOverload<int>(&QSignalMapper::mapped),
+                this,
+                &WebView::triggerContextMenuAction);
 #else
         connect(signalMapper, &QSignalMapper::mappedInt, this, &WebView::triggerContextMenuAction);
 #endif
@@ -376,43 +390,51 @@ void WebView::contextMenuEvent(QContextMenuEvent *event)
         return;
     }
 #if defined(QTWEBENGINE)
-    else { // for view source
+    else {// for view source
         // QWebEngine caches standardContextMenu, guard so we only add signalmapper once
         static bool firstRun = true;
         if (firstRun) {
             firstRun = false;
-#if QT_VERSION < QT_VERSION_CHECK(6,0,0)
-            QMenu *menu = page()->createStandardContextMenu();
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
+            QMenu* menu = page()->createStandardContextMenu();
 #else
-            QMenu *menu = this->createStandardContextMenu();
+            QMenu* menu = this->createStandardContextMenu();
 #endif
-            QList<QAction *> actions = menu->actions();
-            for(QAction *ac : actions) {
+            QList<QAction*> actions = menu->actions();
+            for (QAction* ac : actions) {
                 if (ac->data().toInt() == WebAction::ViewSource) {
-                    QSignalMapper* signalMapper = new QSignalMapper (this);
+                    QSignalMapper* signalMapper = new QSignalMapper(this);
                     signalMapper->setProperty("url", QVariant(linkUrl));
                     signalMapper->setMapping(ac, WebAction::ViewSource);
-#if QT_VERSION < QT_VERSION_CHECK(5,15,0)
-                    connect(signalMapper, qOverload<int>(&QSignalMapper::mapped), this, &WebView::triggerContextMenuAction);
+#if QT_VERSION < QT_VERSION_CHECK(5, 15, 0)
+                    connect(signalMapper,
+                            qOverload<int>(&QSignalMapper::mapped),
+                            this,
+                            &WebView::triggerContextMenuAction);
 #else
-                    connect(signalMapper, &QSignalMapper::mappedInt, this, &WebView::triggerContextMenuAction);
+                    connect(signalMapper,
+                            &QSignalMapper::mappedInt,
+                            this,
+                            &WebView::triggerContextMenuAction);
 #endif
-                    connect(ac, &QAction::triggered, signalMapper, qOverload<>(&QSignalMapper::map));
+                    connect(ac,
+                            &QAction::triggered,
+                            signalMapper,
+                            qOverload<>(&QSignalMapper::map));
                 }
             }
         }
     }
 #else
     else {
-        QMenu *menu = page()->createStandardContextMenu();
-        QAction *ac = menu->addAction(tr("View source"));
+        QMenu* menu = page()->createStandardContextMenu();
+        QAction* ac = menu->addAction(tr("View source"));
         ac->setData(WebAction::ViewSource);
-        QSignalMapper* signalMapper = new QSignalMapper (this);
+        QSignalMapper* signalMapper = new QSignalMapper(this);
         signalMapper->setProperty("url", QVariant(linkUrl));
         signalMapper->setMapping(ac, WebAction::ViewSource);
-        connect(signalMapper, SIGNAL(mapped(int)),
-                this, SLOT(triggerContextMenuAction(int)));
-        connect (ac, SIGNAL(triggered()), signalMapper, SLOT(map()));
+        connect(signalMapper, SIGNAL(mapped(int)), this, SLOT(triggerContextMenuAction(int)));
+        connect(ac, SIGNAL(triggered()), signalMapper, SLOT(map()));
         menu->exec(event->globalPos());
     }
 #endif
@@ -425,17 +447,17 @@ void WebView::triggerContextMenuAction(int id)
     QUrl url = s->property("url").toUrl();
 
     switch (id) {
-    case WebAction::OpenLink:
-        Q_EMIT openLinkInExternalBrowser(url);
-        break;
-    case WebAction::OpenLinkInNewWindow:
-        Q_EMIT openLinkInNewWindow(url);
-        break;
-    case WebAction::ViewSource:
-        Q_EMIT viewSource(url);
-        break;
-    default:
-        break;
+        case WebAction::OpenLink:
+            Q_EMIT openLinkInExternalBrowser(url);
+            break;
+        case WebAction::OpenLinkInNewWindow:
+            Q_EMIT openLinkInNewWindow(url);
+            break;
+        case WebAction::ViewSource:
+            Q_EMIT viewSource(url);
+            break;
+        default:
+            break;
     }
 }
 
@@ -450,13 +472,13 @@ TYPESYSTEM_SOURCE_ABSTRACT(WebGui::BrowserView, Gui::MDIView)
  *  name 'name'.
  */
 BrowserView::BrowserView(QWidget* parent)
-    : MDIView(nullptr,parent,Qt::WindowFlags()),
-      WindowParameter( "Browser" ),
-      isLoading(false)
+    : MDIView(nullptr, parent, Qt::WindowFlags())
+    , WindowParameter("Browser")
+    , isLoading(false)
 {
 #if defined(QTWEBENGINE)
     // Otherwise cause crash on exit, probably due to double deletion
-    setAttribute(Qt::WA_DeleteOnClose,false);
+    setAttribute(Qt::WA_DeleteOnClose, false);
 #endif
 
     view = new WebView(this);
@@ -478,27 +500,34 @@ BrowserView::BrowserView(QWidget* parent)
     // enable local storage so we can store stuff across sessions (startpage)
     QWebSettings* settings = view->settings();
     settings->setAttribute(QWebSettings::LocalStorageEnabled, true);
-    settings->setLocalStoragePath(QString::fromUtf8((App::Application::getUserAppDataDir()+"webdata").c_str()));
+    settings->setLocalStoragePath(
+        QString::fromUtf8((App::Application::getUserAppDataDir() + "webdata").c_str()));
 
     // setting background to white
     QPalette palette = view->palette();
     palette.setBrush(QPalette::Base, Qt::white);
     view->page()->setPalette(palette);
 
-    connect(view->page(), SIGNAL(linkHovered(const QString &, const QString &, const QString &)),
-            this, SLOT(onLinkHovered(const QString &, const QString &, const QString &)));
-    connect(view, SIGNAL(linkClicked(const QUrl &)),
-            this, SLOT(urlFilter(const QUrl &)));
-    connect(view->page(), SIGNAL(downloadRequested(const QNetworkRequest &)),
-            this, SLOT(onDownloadRequested(const QNetworkRequest &)));
-    connect(view->page(), SIGNAL(unsupportedContent(QNetworkReply*)),
-            this, SLOT(onUnsupportedContent(QNetworkReply*)));
+    connect(view->page(),
+            SIGNAL(linkHovered(const QString&, const QString&, const QString&)),
+            this,
+            SLOT(onLinkHovered(const QString&, const QString&, const QString&)));
+    connect(view, SIGNAL(linkClicked(const QUrl&)), this, SLOT(urlFilter(const QUrl&)));
+    connect(view->page(),
+            SIGNAL(downloadRequested(const QNetworkRequest&)),
+            this,
+            SLOT(onDownloadRequested(const QNetworkRequest&)));
+    connect(view->page(),
+            SIGNAL(unsupportedContent(QNetworkReply*)),
+            this,
+            SLOT(onUnsupportedContent(QNetworkReply*)));
 
-#else // QTWEBENGINE
+#else// QTWEBENGINE
     // QWebEngine doesn't support direct access to network
     // nor rendering access
-    QWebEngineProfile *profile = view->page()->profile();
-    QString basePath = QString::fromStdString(App::Application::getUserAppDataDir()) + QLatin1String("webdata/");
+    QWebEngineProfile* profile = view->page()->profile();
+    QString basePath =
+        QString::fromStdString(App::Application::getUserAppDataDir()) + QLatin1String("webdata/");
     profile->setPersistentStoragePath(basePath + QLatin1String("persistent"));
     profile->setCachePath(basePath + QLatin1String("cache"));
 
@@ -511,47 +540,42 @@ BrowserView::BrowserView(QWidget* parent)
 #endif
 
     view->settings()->setAttribute(QWebEngineSettings::AutoLoadIconsForPage, true);
-    view->settings()->setAttribute(QWebEngineSettings::FocusOnNavigationEnabled,false);
+    view->settings()->setAttribute(QWebEngineSettings::FocusOnNavigationEnabled, false);
 
-    connect(view->page()->profile(), &QWebEngineProfile::downloadRequested,
-            this, &BrowserView::onDownloadRequested);
-    connect(view->page(), &QWebEnginePage::iconChanged,
-            this, &BrowserView::setWindowIcon);
-    connect(view->page(), &QWebEnginePage::linkHovered,
-            this, &BrowserView::onLinkHovered);
+    connect(view->page()->profile(),
+            &QWebEngineProfile::downloadRequested,
+            this,
+            &BrowserView::onDownloadRequested);
+    connect(view->page(), &QWebEnginePage::iconChanged, this, &BrowserView::setWindowIcon);
+    connect(view->page(), &QWebEnginePage::linkHovered, this, &BrowserView::onLinkHovered);
 #endif
-    connect(view, &WebView::viewSource,
-            this, &BrowserView::onViewSource);
-    connect(view, &WebView::loadStarted,
-            this, &BrowserView::onLoadStarted);
-    connect(view, &WebView::loadProgress,
-            this, &BrowserView::onLoadProgress);
-    connect(view, &WebView::loadFinished,
-            this, &BrowserView::onLoadFinished);
-    connect(view, &WebView::openLinkInExternalBrowser,
-            this, &BrowserView::onOpenLinkInExternalBrowser);
-    connect(view, &WebView::openLinkInNewWindow,
-            this, &BrowserView::onOpenLinkInNewWindow);
-    connect(view, &WebView::loadStarted,
-            this, &BrowserView::onUpdateBrowserActions);
-    connect(view, &WebView::loadFinished,
-            this, &BrowserView::onUpdateBrowserActions);
+    connect(view, &WebView::viewSource, this, &BrowserView::onViewSource);
+    connect(view, &WebView::loadStarted, this, &BrowserView::onLoadStarted);
+    connect(view, &WebView::loadProgress, this, &BrowserView::onLoadProgress);
+    connect(view, &WebView::loadFinished, this, &BrowserView::onLoadFinished);
+    connect(view,
+            &WebView::openLinkInExternalBrowser,
+            this,
+            &BrowserView::onOpenLinkInExternalBrowser);
+    connect(view, &WebView::openLinkInNewWindow, this, &BrowserView::onOpenLinkInNewWindow);
+    connect(view, &WebView::loadStarted, this, &BrowserView::onUpdateBrowserActions);
+    connect(view, &WebView::loadFinished, this, &BrowserView::onUpdateBrowserActions);
 }
 
 /** Destroys the object and frees any allocated resources */
 BrowserView::~BrowserView()
 {
 #ifdef QTWEBENGINE
-    delete interceptLinks; // cleanup not handled implicitly
+    delete interceptLinks;// cleanup not handled implicitly
 #endif
     delete view;
 }
 
-void BrowserView::urlFilter(const QUrl & url)
+void BrowserView::urlFilter(const QUrl& url)
 {
-    QString scheme   = url.scheme();
-    QString host     = url.host();
-    //QString username = url.userName();
+    QString scheme = url.scheme();
+    QString host = url.host();
+    // QString username = url.userName();
 
     // path handling
     QString path = url.path();
@@ -559,66 +583,90 @@ void BrowserView::urlFilter(const QUrl & url)
 
     // query
     QString q;
-    if (url.hasQuery())
+    if (url.hasQuery()) {
         q = url.query();
+    }
 
-    //QString fragment = url.	fragment();
+    // QString fragment = url.	fragment();
 
 #ifdef QTWEBKIT
-    if (scheme==QString::fromLatin1("http") || scheme==QString::fromLatin1("https")) {
+    if (scheme == QString::fromLatin1("http") || scheme == QString::fromLatin1("https")) {
         load(url);
     }
 #endif
     // Small trick to force opening a link in an external browser: use exthttp or exthttps
     // Write your URL as exthttp://www.example.com
-    else if (scheme==QString::fromLatin1("exthttp")) {
+    else if (scheme == QString::fromLatin1("exthttp")) {
         exturl.setScheme(QString::fromLatin1("http"));
         QDesktopServices::openUrl(exturl);
         stop();// stop qwebengine, should do nothing in qwebkit at this point
     }
-    else if (scheme==QString::fromLatin1("exthttps")) {
+    else if (scheme == QString::fromLatin1("exthttps")) {
         exturl.setScheme(QString::fromLatin1("https"));
         QDesktopServices::openUrl(exturl);
         stop();// stop qwebengine, should do nothing in qwebkit at this point
     }
     // run scripts if not from somewhere else!
-    if ((scheme.size() < 2 || scheme==QString::fromLatin1("file"))&& host.isEmpty()) {
+    if ((scheme.size() < 2 || scheme == QString::fromLatin1("file")) && host.isEmpty()) {
         QFileInfo fi(path);
         if (fi.exists()) {
             QString ext = fi.completeSuffix();
             if (ext == QString::fromLatin1("py")) {
-                stop(); // stop qwebengine, should do nothing in qwebkit at this point
+                stop();// stop qwebengine, should do nothing in qwebkit at this point
 
                 try {
                     if (!q.isEmpty()) {
                         // encapsulate the value in quotes
-                        q = q.replace(QString::fromLatin1("="),QString::fromLatin1("=\""))+QString::fromLatin1("\"");
-                        q = q.replace(QString::fromLatin1("%"),QString::fromLatin1("%%"));
-                        // url queries in the form of somescript.py?key=value, the first key=value will be printed in the py console as key="value"
-                        Gui::Command::doCommand(Gui::Command::Gui,q.toStdString().c_str());
+                        q = q.replace(QString::fromLatin1("="), QString::fromLatin1("=\""))
+                            + QString::fromLatin1("\"");
+                        q = q.replace(QString::fromLatin1("%"), QString::fromLatin1("%%"));
+                        // url queries in the form of somescript.py?key=value, the first key=value
+                        // will be printed in the py console as key="value"
+                        Gui::Command::doCommand(Gui::Command::Gui, q.toStdString().c_str());
                     }
-                    // Gui::Command::doCommand(Gui::Command::Gui,"execfile('%s')",(const char*) fi.absoluteFilePath().	toLocal8Bit());
+                    // Gui::Command::doCommand(Gui::Command::Gui,"execfile('%s')",(const char*)
+                    // fi.absoluteFilePath().	toLocal8Bit());
                     QString filename = Base::Tools::escapeEncodeFilename(fi.absoluteFilePath());
-                    // Set flag indicating that this load/restore has been initiated by the user (not by a macro)
-                    Gui::Application::Instance->setStatus(Gui::Application::UserInitiatedOpenDocument, true);
-                    Gui::Command::doCommand(Gui::Command::Gui,"with open('%s') as file:\n\texec(file.read())",(const char*) filename.toUtf8());
-                    Gui::Application::Instance->setStatus(Gui::Application::UserInitiatedOpenDocument, false);
+                    // Set flag indicating that this load/restore has been initiated by the user
+                    // (not by a macro)
+                    Gui::Application::Instance->setStatus(
+                        Gui::Application::UserInitiatedOpenDocument,
+                        true);
+                    Gui::Command::doCommand(Gui::Command::Gui,
+                                            "with open('%s') as file:\n\texec(file.read())",
+                                            (const char*)filename.toUtf8());
+                    Gui::Application::Instance->setStatus(
+                        Gui::Application::UserInitiatedOpenDocument,
+                        false);
                 }
                 catch (const Base::Exception& e) {
                     QMessageBox::critical(this, tr("Error"), QString::fromUtf8(e.what()));
                 }
 
-                App::Document *doc = BaseView::getAppDocument();
-                if(doc && doc->testStatus(App::Document::PartialRestore))
-                    QMessageBox::critical(this, tr("Error"), tr("There were errors while loading the file. Some data might have been modified or not recovered at all. Look in the report view for more specific information about the objects involved."));
+                App::Document* doc = BaseView::getAppDocument();
+                if (doc && doc->testStatus(App::Document::PartialRestore)) {
+                    QMessageBox::critical(
+                        this,
+                        tr("Error"),
+                        tr("There were errors while loading the file. Some data might have been "
+                           "modified or not recovered at all. Look in the report view for more "
+                           "specific information about the objects involved."));
+                }
 
-                if(doc && doc->testStatus(App::Document::RestoreError))
-                    QMessageBox::critical(this, tr("Error"), tr("There were serious errors while loading the file. Some data might have been modified or not recovered at all. Saving the project will most likely result in loss of data."));
+                if (doc && doc->testStatus(App::Document::RestoreError)) {
+                    QMessageBox::critical(
+                        this,
+                        tr("Error"),
+                        tr("There were serious errors while loading the file. Some data might have "
+                           "been modified or not recovered at all. Saving the project will most "
+                           "likely result in loss of data."));
+                }
             }
         }
         else {
-            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("File does not exist!"),
-            fi.absoluteFilePath ());
+            QMessageBox::warning(Gui::getMainWindow(),
+                                 QObject::tr("File does not exist!"),
+                                 fi.absoluteFilePath());
         }
     }
 }
@@ -630,10 +678,10 @@ bool BrowserView::chckHostAllowed(const QString& host)
 }
 
 #ifdef QTWEBENGINE
-#if QT_VERSION < QT_VERSION_CHECK(6,0,0)
-void BrowserView::onDownloadRequested(QWebEngineDownloadItem *request)
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
+void BrowserView::onDownloadRequested(QWebEngineDownloadItem* request)
 #else
-void BrowserView::onDownloadRequested(QWebEngineDownloadRequest *request)
+void BrowserView::onDownloadRequested(QWebEngineDownloadRequest* request)
 #endif
 {
     QUrl url = request->url();
@@ -643,11 +691,12 @@ void BrowserView::onDownloadRequested(QWebEngineDownloadRequest *request)
     }
     else {
         request->cancel();
-        Gui::getMainWindow()->loadUrls(App::GetApplication().getActiveDocument(), QList<QUrl>() << url);
+        Gui::getMainWindow()->loadUrls(App::GetApplication().getActiveDocument(),
+                                       QList<QUrl>() << url);
     }
 }
 
-void BrowserView::setWindowIcon(const QIcon &icon)
+void BrowserView::setWindowIcon(const QIcon& icon)
 {
     Gui::MDIView::setWindowIcon(icon);
 }
@@ -657,29 +706,29 @@ void BrowserView::onLinkHovered(const QString& url)
     Gui::getMainWindow()->statusBar()->showMessage(url);
 }
 
-void BrowserView::onViewSource(const QUrl &url)
+void BrowserView::onViewSource(const QUrl& url)
 {
     Q_UNUSED(url);
-    view->page()->toHtml([=](const QString &pageSource){
-        QPlainTextEdit *editorWidget = new QPlainTextEdit {};
-        App::TextDocument *txtDoc = new App::TextDocument;
-        TextDocumentEditorView *textDocView = new TextDocumentEditorView {
-                txtDoc,
-                editorWidget, getMainWindow()};
+    view->page()->toHtml([=](const QString& pageSource) {
+        QPlainTextEdit* editorWidget = new QPlainTextEdit {};
+        App::TextDocument* txtDoc = new App::TextDocument;
+        TextDocumentEditorView* textDocView =
+            new TextDocumentEditorView {txtDoc, editorWidget, getMainWindow()};
         editorWidget->setReadOnly(true);
         editorWidget->setPlainText(pageSource);
         getMainWindow()->addWindow(textDocView);
     });
 }
 #else
-void BrowserView::onDownloadRequested(const QNetworkRequest & request)
+void BrowserView::onDownloadRequested(const QNetworkRequest& request)
 {
     QUrl url = request.url();
     if (!url.isLocalFile()) {
         Gui::Dialog::DownloadManager::getInstance()->download(request);
     }
     else {
-        Gui::getMainWindow()->loadUrls(App::GetApplication().getActiveDocument(), QList<QUrl>() << url);
+        Gui::getMainWindow()->loadUrls(App::GetApplication().getActiveDocument(),
+                                       QList<QUrl>() << url);
     }
 }
 
@@ -694,7 +743,9 @@ void BrowserView::onUnsupportedContent(QNetworkReply* reply)
     view->reload();
 }
 
-void BrowserView::onLinkHovered(const QString& link, const QString& title, const QString& textContent)
+void BrowserView::onLinkHovered(const QString& link,
+                                const QString& title,
+                                const QString& textContent)
 {
     Q_UNUSED(title)
     Q_UNUSED(textContent)
@@ -703,17 +754,17 @@ void BrowserView::onLinkHovered(const QString& link, const QString& title, const
     Gui::getMainWindow()->statusBar()->showMessage(str);
 }
 
-void BrowserView::onViewSource(const QUrl &url)
+void BrowserView::onViewSource(const QUrl& url)
 {
     Q_UNUSED(url);
-    if (!view->page() || !view->page()->currentFrame())
+    if (!view->page() || !view->page()->currentFrame()) {
         return;
+    }
     QString pageSource = view->page()->currentFrame()->toHtml();
-    QPlainTextEdit *editorWidget = new QPlainTextEdit {};
-    App::TextDocument *txtDoc = new App::TextDocument;
-    TextDocumentEditorView *textDocView = new TextDocumentEditorView {
-                txtDoc, editorWidget, getMainWindow()
-    };
+    QPlainTextEdit* editorWidget = new QPlainTextEdit {};
+    App::TextDocument* txtDoc = new App::TextDocument;
+    TextDocumentEditorView* textDocView =
+        new TextDocumentEditorView {txtDoc, editorWidget, getMainWindow()};
     editorWidget->setReadOnly(true);
     editorWidget->setPlainText(pageSource);
     getMainWindow()->addWindow(textDocView);
@@ -726,17 +777,18 @@ void BrowserView::load(const char* URL)
     load(url);
 }
 
-void BrowserView::load(const QUrl & url)
+void BrowserView::load(const QUrl& url)
 {
-    if (isLoading)
+    if (isLoading) {
         stop();
+    }
 
     urlWgt->setText(url.toString());
 
     view->load(url);
     view->setUrl(url);
     if (url.scheme().size() < 2) {
-        QString path     = url.path();
+        QString path = url.path();
         QFileInfo fi(path);
         QString name = fi.baseName();
 
@@ -751,10 +803,11 @@ void BrowserView::load(const QUrl & url)
 #endif
 }
 
-void BrowserView::setHtml(const QString& HtmlCode,const QUrl & BaseUrl)
+void BrowserView::setHtml(const QString& HtmlCode, const QUrl& BaseUrl)
 {
-    if (isLoading)
+    if (isLoading) {
         stop();
+    }
 
     view->setHtml(HtmlCode, BaseUrl);
 #ifdef QTWEBKIT
@@ -819,16 +872,22 @@ void BrowserView::onOpenLinkInNewWindow(const QUrl& url)
 void BrowserView::onUpdateBrowserActions()
 {
     CommandManager& mgr = Application::Instance->commandManager();
-    std::vector<const char*> cmds = {"Web_BrowserBack", "Web_BrowserNext", "Web_BrowserRefresh", "Web_BrowserStop",
-                                     "Web_BrowserZoomIn", "Web_BrowserZoomOut", "Web_BrowserSetURL"};
+    std::vector<const char*> cmds = {"Web_BrowserBack",
+                                     "Web_BrowserNext",
+                                     "Web_BrowserRefresh",
+                                     "Web_BrowserStop",
+                                     "Web_BrowserZoomIn",
+                                     "Web_BrowserZoomOut",
+                                     "Web_BrowserSetURL"};
     for (const auto& it : cmds) {
         Gui::Command* cmd = mgr.getCommandByName(it);
-        if (cmd)
+        if (cmd) {
             cmd->testActive();
+        }
     }
 }
 
-void BrowserView::OnChange(Base::Subject<const char*> &rCaller,const char* rcReason)
+void BrowserView::OnChange(Base::Subject<const char*>& rCaller, const char* rcReason)
 {
     Q_UNUSED(rCaller);
     Q_UNUSED(rcReason);
@@ -837,33 +896,41 @@ void BrowserView::OnChange(Base::Subject<const char*> &rCaller,const char* rcRea
 /**
  * Runs the action specified by \a pMsg.
  */
-bool BrowserView::onMsg(const char* pMsg,const char** )
+bool BrowserView::onMsg(const char* pMsg, const char**)
 {
-    if (strcmp(pMsg,"Back")==0){
+    if (strcmp(pMsg, "Back") == 0) {
         view->back();
         return true;
-    } else if (strcmp(pMsg,"Next")==0){
+    }
+    else if (strcmp(pMsg, "Next") == 0) {
         view->forward();
         return true;
-    } else if (strcmp(pMsg,"Refresh")==0){
+    }
+    else if (strcmp(pMsg, "Refresh") == 0) {
         view->reload();
         return true;
-    } else if (strcmp(pMsg,"Stop")==0){
+    }
+    else if (strcmp(pMsg, "Stop") == 0) {
         stop();
         return true;
-    } else if (strcmp(pMsg,"ZoomIn")==0){
+    }
+    else if (strcmp(pMsg, "ZoomIn") == 0) {
         qreal factor = view->zoomFactor();
         view->setZoomFactor(factor + 0.2);
         return true;
-    } else if (strcmp(pMsg,"ZoomOut")==0){
+    }
+    else if (strcmp(pMsg, "ZoomOut") == 0) {
         qreal factor = view->zoomFactor();
         view->setZoomFactor(factor - 0.2);
         return true;
-    } else if (strcmp(pMsg,"SetURL")==0){
-        if (urlWgt->isVisible())
+    }
+    else if (strcmp(pMsg, "SetURL") == 0) {
+        if (urlWgt->isVisible()) {
             urlWgt->hide();
-        else
+        }
+        else {
             urlWgt->display();
+        }
         return true;
     }
 
@@ -876,20 +943,27 @@ bool BrowserView::onMsg(const char* pMsg,const char** )
  */
 bool BrowserView::onHasMsg(const char* pMsg) const
 {
-    if (strcmp(pMsg,"Back")==0)
+    if (strcmp(pMsg, "Back") == 0) {
         return view->page()->action(QWebEnginePage::Back)->isEnabled();
-    if (strcmp(pMsg,"Next")==0)
+    }
+    if (strcmp(pMsg, "Next") == 0) {
         return view->page()->action(QWebEnginePage::Forward)->isEnabled();
-    if (strcmp(pMsg,"Refresh")==0)
+    }
+    if (strcmp(pMsg, "Refresh") == 0) {
         return !isLoading;
-    if (strcmp(pMsg,"Stop")==0)
+    }
+    if (strcmp(pMsg, "Stop") == 0) {
         return isLoading;
-    if (strcmp(pMsg,"ZoomIn")==0)
+    }
+    if (strcmp(pMsg, "ZoomIn") == 0) {
         return true;
-    if (strcmp(pMsg,"ZoomOut")==0)
+    }
+    if (strcmp(pMsg, "ZoomOut") == 0) {
         return true;
-    if (strcmp(pMsg,"SetURL")==0)
+    }
+    if (strcmp(pMsg, "SetURL") == 0) {
         return true;
+    }
 
     return false;
 }
@@ -911,4 +985,3 @@ PyObject* BrowserView::getPyObject()
     return new BrowserViewPy(this);
 }
 #include "moc_BrowserView.cpp"
-

@@ -421,7 +421,7 @@ void TaskDlgFemConstraintHeatflux::open()
 {
     // a transaction is already open at creation time of the panel
     if (!Gui::Command::hasPendingCommand()) {
-        QString msg = QObject::tr("Constraint heat flux");
+        QString msg = QObject::tr("Heat flux load");
         Gui::Command::openCommand((const char*)msg.toUtf8());
         ConstraintView->setVisible(true);
         Gui::Command::doCommand(

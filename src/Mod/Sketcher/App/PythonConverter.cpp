@@ -62,8 +62,9 @@ std::string PythonConverter::convert(const Sketcher::Constraint* constraint)
 std::string PythonConverter::convert(const std::string& doc,
                                      const std::vector<Part::Geometry*>& geos)
 {
-    if (geos.empty())
+    if (geos.empty()) {
         return std::string();
+    }
 
     // Generates a list for consecutive geometries of construction type, or of normal type
     auto printGeoList = [&doc](const std::string& geolist, int ngeos, bool construction) {
@@ -235,8 +236,9 @@ PythonConverter::SingleGeometry PythonConverter::process(const Part::Geometry* g
 
     auto result = converterMap.find(geo->getTypeId());
 
-    if (result == converterMap.end())
+    if (result == converterMap.end()) {
         THROWM(Base::ValueError, "PythonConverter: Geometry Type not supported")
+    }
 
     auto creator = result->second;
 
@@ -484,8 +486,9 @@ std::string PythonConverter::process(const Sketcher::Constraint* constraint)
 
     auto result = converterMap.find(constraint->Type);
 
-    if (result == converterMap.end())
+    if (result == converterMap.end()) {
         THROWM(Base::ValueError, "PythonConverter: Constraint Type not supported")
+    }
 
     auto creator = result->second;
 

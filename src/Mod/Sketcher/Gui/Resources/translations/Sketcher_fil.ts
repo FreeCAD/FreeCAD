@@ -301,7 +301,7 @@
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="316"/>
       <source>Rectangle</source>
-      <translation>	
+      <translation>
 Taluhaba</translation>
     </message>
     <message>
@@ -5625,7 +5625,7 @@ Select the method to attach this sketch to selected objects.</translation>
       <location filename="../../Command.cpp" line="390"/>
       <source>Sketch with a support face cannot be reoriented.
 Do you want to detach it from the support?</source>
-      <translation>Ang sketch ay may suporta ng face ay hindi pwedeng i-reorient. 
+      <translation>Ang sketch ay may suporta ng face ay hindi pwedeng i-reorient.
 Gusto mo bang tanggalin ito mula sa suporta?</translation>
     </message>
   </context>

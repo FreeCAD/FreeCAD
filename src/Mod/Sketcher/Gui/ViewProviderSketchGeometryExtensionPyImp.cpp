@@ -39,7 +39,8 @@ std::string ViewProviderSketchGeometryExtensionPy::representation() const
     return str.str();
 }
 
-PyObject* ViewProviderSketchGeometryExtensionPy::PyMake(struct _typeobject*, PyObject*,
+PyObject* ViewProviderSketchGeometryExtensionPy::PyMake(struct _typeobject*,
+                                                        PyObject*,
                                                         PyObject*)// Python wrapper
 {
     // create a new instance of PointPy and the Twin object

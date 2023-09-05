@@ -53,9 +53,7 @@ class TestUtilities(unittest.TestCase):
         ]
         for url in recognized_urls:
             repo = Addon("Test Repo", url, Addon.Status.NOT_INSTALLED, "branch")
-            self.assertTrue(
-                recognized_git_location(repo), f"{url} was unexpectedly not recognized"
-            )
+            self.assertTrue(recognized_git_location(repo), f"{url} was unexpectedly not recognized")
 
         unrecognized_urls = [
             "https://google.com",
@@ -65,9 +63,7 @@ class TestUtilities(unittest.TestCase):
         ]
         for url in unrecognized_urls:
             repo = Addon("Test Repo", url, Addon.Status.NOT_INSTALLED, "branch")
-            self.assertFalse(
-                recognized_git_location(repo), f"{url} was unexpectedly recognized"
-            )
+            self.assertFalse(recognized_git_location(repo), f"{url} was unexpectedly recognized")
 
     def test_get_readme_url(self):
         github_urls = [

@@ -87,9 +87,7 @@ class PythonIdentifierValidator(QValidator):
             return QValidator.Invalid  # Includes an illegal character of some sort
 
         if keyword.iskeyword(value):
-            return (
-                QValidator.Intermediate
-            )  # They can keep typing and it might become valid
+            return QValidator.Intermediate  # They can keep typing and it might become valid
 
         return QValidator.Acceptable
 

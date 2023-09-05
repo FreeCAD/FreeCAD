@@ -22,7 +22,7 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <QCoreApplication>
+#include <QCoreApplication>
 #endif
 
 #include <Base/Console.h>
@@ -31,8 +31,8 @@
 #include <Base/Tools.h>
 #include <Gui/Command.h>
 #include <Gui/DockWindowManager.h>
-#include <Gui/MainWindow.h>
 #include <Gui/MDIView.h>
+#include <Gui/MainWindow.h>
 #include <Gui/ToolBarManager.h>
 
 #include "Workbench.h"
@@ -81,23 +81,28 @@ void StartGui::Workbench::loadStartPage()
             << "    def __init__(self):\n"
             << "        self.browser=WebGui.openBrowserWindow(u\"" << escapedstr.c_str() << "\")\n"
 #if defined(FC_OS_WIN32)
-            << "        self.browser.setHtml(StartPage.handle(), App.getResourceDir() + 'Mod/Start/StartPage/')\n"
+            << "        self.browser.setHtml(StartPage.handle(), App.getResourceDir() + "
+               "'Mod/Start/StartPage/')\n"
 #else
-            << "        self.browser.setHtml(StartPage.handle(), 'file://' + App.getResourceDir() + 'Mod/Start/StartPage/')\n"
+            << "        self.browser.setHtml(StartPage.handle(), 'file://' + App.getResourceDir() "
+               "+ 'Mod/Start/StartPage/')\n"
 #endif
             << "    def onChange(self, par, reason):\n"
             << "        try:\n"
             << "            if reason == 'RecentFiles':\n"
 #if defined(FC_OS_WIN32)
-            << "                self.browser.setHtml(StartPage.handle(), App.getResourceDir() + 'Mod/Start/StartPage/')\n\n"
+            << "                self.browser.setHtml(StartPage.handle(), App.getResourceDir() + "
+               "'Mod/Start/StartPage/')\n\n"
 #else
-            << "                self.browser.setHtml(StartPage.handle(), 'file://' + App.getResourceDir() + 'Mod/Start/StartPage/')\n\n"
+            << "                self.browser.setHtml(StartPage.handle(), 'file://' + "
+               "App.getResourceDir() + 'Mod/Start/StartPage/')\n\n"
 #endif
             << "        except RuntimeError as e:\n"
             << "            pass\n"
             << "class WebView(object):\n"
             << "    def __init__(self):\n"
-            << "        self.pargrp = FreeCAD.ParamGet('User parameter:BaseApp/Preferences/RecentFiles')\n"
+            << "        self.pargrp = FreeCAD.ParamGet('User "
+               "parameter:BaseApp/Preferences/RecentFiles')\n"
             << "        self.webPage = WebPage()\n"
             << "        self.pargrp.Attach(self.webPage)\n"
             << "    def __del__(self):\n"
@@ -143,7 +148,6 @@ Gui::ToolBarItem* StartGui::Workbench::setupToolBars() const
                 << "Web_BrowserZoomOut";
 
     return root;
-
 }
 
 Gui::ToolBarItem* StartGui::Workbench::setupCommandBars() const
@@ -155,7 +159,7 @@ Gui::ToolBarItem* StartGui::Workbench::setupCommandBars() const
 Gui::DockWindowItems* StartGui::Workbench::setupDockWindows() const
 {
     Gui::DockWindowItems* root = Gui::StdWorkbench::setupDockWindows();
-    root->setVisibility(false); // hide all dock windows by default
-    root->setVisibility("Std_ComboView",true); // except of the combo view
+    root->setVisibility(false);                // hide all dock windows by default
+    root->setVisibility("Std_ComboView", true);// except of the combo view
     return root;
 }

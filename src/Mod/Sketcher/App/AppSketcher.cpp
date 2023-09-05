@@ -65,14 +65,18 @@ PyMOD_INIT_FUNC(Sketcher)
     // Add Types to module
     Base::Interpreter().addType(&Sketcher::ConstraintPy ::Type, sketcherModule, "Constraint");
     Base::Interpreter().addType(&Sketcher::SketchPy ::Type, sketcherModule, "Sketch");
-    Base::Interpreter().addType(
-        &Sketcher::ExternalGeometryExtensionPy ::Type, sketcherModule, "ExternalGeometryExtension");
-    Base::Interpreter().addType(
-        &Sketcher::SketchGeometryExtensionPy ::Type, sketcherModule, "SketchGeometryExtension");
-    Base::Interpreter().addType(
-        &Sketcher::GeometryFacadePy ::Type, sketcherModule, "GeometryFacade");
-    Base::Interpreter().addType(
-        &Sketcher::ExternalGeometryFacadePy ::Type, sketcherModule, "ExternalGeometryFacade");
+    Base::Interpreter().addType(&Sketcher::ExternalGeometryExtensionPy ::Type,
+                                sketcherModule,
+                                "ExternalGeometryExtension");
+    Base::Interpreter().addType(&Sketcher::SketchGeometryExtensionPy ::Type,
+                                sketcherModule,
+                                "SketchGeometryExtension");
+    Base::Interpreter().addType(&Sketcher::GeometryFacadePy ::Type,
+                                sketcherModule,
+                                "GeometryFacade");
+    Base::Interpreter().addType(&Sketcher::ExternalGeometryFacadePy ::Type,
+                                sketcherModule,
+                                "ExternalGeometryFacade");
 
 
     // NOTE: To finish the initialization of our own type objects we must
