@@ -44,6 +44,11 @@ TYPESYSTEM_SOURCE(Materials::MaterialManager, Base::BaseClass)
 MaterialManager::MaterialManager()
 {
     // TODO: Add a mutex or similar
+    initLibraries();
+}
+
+void MaterialManager::initLibraries()
+{
     if (_materialMap == nullptr) {
         // Load the models first
         ModelManager* manager = ModelManager::getManager();

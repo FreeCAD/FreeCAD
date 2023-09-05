@@ -43,6 +43,8 @@ public:
     MaterialManager();
     virtual ~MaterialManager() = default;
 
+    static void initLibraries();
+
     std::map<QString, Material*>* getMaterials()
     {
         return _materialMap;

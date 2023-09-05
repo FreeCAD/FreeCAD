@@ -69,6 +69,7 @@ PyObject* ModelManagerPy::getModel(PyObject* args)
         return new ModelPy(new Model(model));
     }
     catch (ModelNotFound const&) {
+        PyErr_SetString(PyExc_LookupError, "Model not found");
         return nullptr;
     }
 }
@@ -90,6 +91,7 @@ PyObject* ModelManagerPy::getModelByPath(PyObject* args)
             return new ModelPy(new Model(model));
         }
         catch (ModelNotFound const&) {
+            PyErr_SetString(PyExc_LookupError, "Model not found");
             return nullptr;
         }
     }
@@ -99,6 +101,7 @@ PyObject* ModelManagerPy::getModelByPath(PyObject* args)
         return new ModelPy(new Model(model));
     }
     catch (ModelNotFound const&) {
+        PyErr_SetString(PyExc_LookupError, "Model not found");
         return nullptr;
     }
 }
