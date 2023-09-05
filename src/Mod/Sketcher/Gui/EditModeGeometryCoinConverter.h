@@ -109,7 +109,8 @@ public:
      *
      * @param drawingparameters: Parameters for drawing the overlay information
      */
-    EditModeGeometryCoinConverter(ViewProviderSketch& vp, GeometryLayerNodes& geometrylayernodes,
+    EditModeGeometryCoinConverter(ViewProviderSketch& vp,
+                                  GeometryLayerNodes& geometrylayernodes,
                                   DrawingParameters& drawingparameters,
                                   GeometryLayerParameters& geometryLayerParams,
                                   CoinMapping& coinMap);

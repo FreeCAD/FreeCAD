@@ -48,13 +48,15 @@ IStream* CreateStreamOnResource(void* buffer, size_t length)
 
     // allocate memory to hold the resource data
     HGLOBAL hgblResourceData = GlobalAlloc(GMEM_MOVEABLE, length);
-    if (hgblResourceData == NULL)
+    if (hgblResourceData == NULL) {
         goto Return;
+    }
 
     // get a pointer to the allocated memory
     LPVOID pvResourceData = GlobalLock(hgblResourceData);
-    if (pvResourceData == NULL)
+    if (pvResourceData == NULL) {
         goto FreeData;
+    }
 
     // copy the data from the resource to the new memory block
     CopyMemory(pvResourceData, buffer, length);
@@ -62,8 +64,9 @@ IStream* CreateStreamOnResource(void* buffer, size_t length)
 
     // create a stream on the HGLOBAL containing the data
 
-    if (SUCCEEDED(CreateStreamOnHGlobal(hgblResourceData, TRUE, &ipStream)))
+    if (SUCCEEDED(CreateStreamOnHGlobal(hgblResourceData, TRUE, &ipStream))) {
         goto Return;
+    }
 
 FreeData:
     // couldn't create stream; free the memory
@@ -86,22 +89,26 @@ IWICBitmapSource* LoadBitmapFromStream(IStream* ipImageStream)
                                 NULL,
                                 CLSCTX_INPROC_SERVER,
                                 __uuidof(ipDecoder),
-                                reinterpret_cast<void**>(&ipDecoder))))
+                                reinterpret_cast<void**>(&ipDecoder)))) {
         goto Return;
+    }
 
     // load the PNG
-    if (FAILED(ipDecoder->Initialize(ipImageStream, WICDecodeMetadataCacheOnLoad)))
+    if (FAILED(ipDecoder->Initialize(ipImageStream, WICDecodeMetadataCacheOnLoad))) {
         goto ReleaseDecoder;
+    }
 
     // check for the presence of the first frame in the bitmap
     UINT nFrameCount = 0;
-    if (FAILED(ipDecoder->GetFrameCount(&nFrameCount)) || nFrameCount != 1)
+    if (FAILED(ipDecoder->GetFrameCount(&nFrameCount)) || nFrameCount != 1) {
         goto ReleaseDecoder;
+    }
 
     // load the first frame (i.e., the image)
     IWICBitmapFrameDecode* ipFrame = NULL;
-    if (FAILED(ipDecoder->GetFrame(0, &ipFrame)))
+    if (FAILED(ipDecoder->GetFrame(0, &ipFrame))) {
         goto ReleaseDecoder;
+    }
 
     // convert the image to 32bpp BGRA format with pre-multiplied alpha
     //   (it may not be stored in that format natively in the PNG resource,
@@ -123,8 +130,9 @@ HBITMAP CreateHBITMAP(IWICBitmapSource* ipBitmap)
     // get image attributes and check for valid image
     UINT width = 0;
     UINT height = 0;
-    if (FAILED(ipBitmap->GetSize(&width, &height)) || width == 0 || height == 0)
+    if (FAILED(ipBitmap->GetSize(&width, &height)) || width == 0 || height == 0) {
         goto Return;
+    }
 
     // prepare structure giving bitmap information (negative height indicates a top-down DIB)
     BITMAPINFO bminfo;
@@ -141,8 +149,9 @@ HBITMAP CreateHBITMAP(IWICBitmapSource* ipBitmap)
     HDC hdcScreen = GetDC(NULL);
     hbmp = CreateDIBSection(hdcScreen, &bminfo, DIB_RGB_COLORS, &pvImageBits, NULL, 0);
     ReleaseDC(NULL, hdcScreen);
-    if (hbmp == NULL)
+    if (hbmp == NULL) {
         goto Return;
+    }
 
     // extract the image into the HBITMAP
 
@@ -200,8 +209,9 @@ STDMETHODIMP_(ULONG) CThumbnailProvider::AddRef()
 STDMETHODIMP_(ULONG) CThumbnailProvider::Release()
 {
     LONG cRef = InterlockedDecrement(&m_cRef);
-    if (0 == cRef)
+    if (0 == cRef) {
         delete this;
+    }
     return (ULONG)cRef;
 }
 
@@ -224,10 +234,12 @@ bool CThumbnailProvider::CheckZip() const
     unsigned char pk[4] = {0x50, 0x4b, 0x03, 0x04};
     for (int i = 0; i < 4; i++) {
         unsigned char c;
-        if (!zip.get((char&)c))
+        if (!zip.get((char&)c)) {
             return false;
-        if (c != pk[i])
+        }
+        if (c != pk[i]) {
             return false;
+        }
     }
 
     return true;
@@ -237,15 +249,17 @@ STDMETHODIMP CThumbnailProvider::GetThumbnail(UINT cx, HBITMAP* phbmp, WTS_ALPHA
 {
     try {
         // first make sure we have a zip file but that might still be invalid
-        if (!CheckZip())
+        if (!CheckZip()) {
             return NOERROR;
+        }
 
         std::ifstream file(m_szFile, std::ios::in | std::ios::binary);
         zipios::ZipInputStream zipstream(file);
         zipios::ConstEntryPointer entry;
         entry = zipstream.getNextEntry();
-        while (entry->isValid() && entry->getName() != "thumbnails/Thumbnail.png")
+        while (entry->isValid() && entry->getName() != "thumbnails/Thumbnail.png") {
             entry = zipstream.getNextEntry();
+        }
         if (entry && entry->isValid()) {
             // ok, we have found the file. Now, read it in byte for byte
             std::istream* str = &zipstream;

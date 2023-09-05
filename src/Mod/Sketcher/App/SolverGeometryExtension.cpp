@@ -34,9 +34,9 @@ using namespace Sketcher;
 TYPESYSTEM_SOURCE(Sketcher::SolverGeometryExtension, Part::GeometryExtension)
 
 SolverGeometryExtension::SolverGeometryExtension()
-    : Start(SolverGeometryExtension::Dependent),
-      Mid(SolverGeometryExtension::Dependent),
-      End(SolverGeometryExtension::Dependent)
+    : Start(SolverGeometryExtension::Dependent)
+    , Mid(SolverGeometryExtension::Dependent)
+    , End(SolverGeometryExtension::Dependent)
 {}
 
 void SolverGeometryExtension::copyAttributes(Part::GeometryExtension* cpy) const
@@ -69,12 +69,15 @@ PyObject* SolverGeometryExtension::getPyObject()
 SolverGeometryExtension::PointParameterStatus
 SolverGeometryExtension::getPoint(Sketcher::PointPos pos) const
 {
-    if (pos == Sketcher::PointPos::start)
+    if (pos == Sketcher::PointPos::start) {
         return getStartPoint();
-    if (pos == Sketcher::PointPos::end)
+    }
+    if (pos == Sketcher::PointPos::end) {
         return getEndPoint();
-    if (pos == Sketcher::PointPos::mid)
+    }
+    if (pos == Sketcher::PointPos::mid) {
         return getMidPoint();
+    }
 
     THROWM(Base::ValueError, "SolverGeometryExtension - getPoint: Edge is not a point");
 }
@@ -98,21 +101,24 @@ void SolverGeometryExtension::notifyAttachment(Part::Geometry* geo)
 
     auto result = edgeParamMap.find(GeometryType);
 
-    if (result == edgeParamMap.end())
+    if (result == edgeParamMap.end()) {
         THROWM(Base::TypeError,
                "SolverGeometryExtension - notifyAttachment - Geometry not supported!!");
+    }
 
     auto nedgeparams = (*result).second;
 
-    if (nedgeparams > 0)
+    if (nedgeparams > 0) {
         Edge.init(nedgeparams);
+    }
 }
 
 void SolverGeometryExtension::ensureType(const Base::Type& type)
 {
-    if (GeometryType != type)
+    if (GeometryType != type) {
         THROWM(Base::TypeError,
                "SolverGeometryExtension - requested edge parameters do not match underlying type!");
+    }
 }
 
 SolverGeometryExtension::Point& SolverGeometryExtension::getPoint()

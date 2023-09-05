@@ -30,6 +30,6 @@
 // Qt Toolkit
 #include <QCoreApplication>
 
-#endif //_PreComp_
+#endif//_PreComp_
 
-#endif // STARTGUI_PRECOMPILED_H
+#endif// STARTGUI_PRECOMPILED_H

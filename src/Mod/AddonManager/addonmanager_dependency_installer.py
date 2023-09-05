@@ -151,9 +151,7 @@ class DependencyInstaller(QObject):
                 fci.Console.PrintMessage(proc.stdout + "\n")
             except subprocess.CalledProcessError as e:
                 fci.Console.PrintError(
-                    translate(
-                        "AddonsInstaller", "Installation of optional package failed"
-                    )
+                    translate("AddonsInstaller", "Installation of optional package failed")
                     + ":\n"
                     + str(e)
                     + "\n"
@@ -182,23 +180,19 @@ class DependencyInstaller(QObject):
             if is_interruption_requested():
                 return
             fci.Console.PrintMessage(
-                translate(
-                    "AddonsInstaller", "Installing required dependency {}"
-                ).format(addon.name)
+                translate("AddonsInstaller", "Installing required dependency {}").format(addon.name)
                 + "\n"
             )
             if addon.macro is None:
                 installer = AddonInstaller(addon)
             else:
                 installer = MacroInstaller(addon)
-            result = (
-                installer.run()
-            )  # Run in this thread, which should be off the GUI thread
+            result = installer.run()  # Run in this thread, which should be off the GUI thread
             if not result:
                 self.failure.emit(
-                    translate(
-                        "AddonsInstaller", "Installation of Addon {} failed"
-                    ).format(addon.name),
+                    translate("AddonsInstaller", "Installation of Addon {} failed").format(
+                        addon.name
+                    ),
                     "",
                 )
                 return

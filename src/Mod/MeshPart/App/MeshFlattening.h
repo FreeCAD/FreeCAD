@@ -36,6 +36,7 @@
 #include "MeshFlatteningNurbs.h"
 
 
+// clang-format off
 using Vector3 = Eigen::Vector3d;
 using Vector2 = Eigen::Vector2d;
 
@@ -75,5 +76,6 @@ public:
 	spMat A; // mapping between nurbs(poles) and mesh(vertices) computed with nurbs-basis-functions and uv_mesh
 
 };
+// clang-format on
 
-#endif // MESHFLATTENING
+#endif// MESHFLATTENING

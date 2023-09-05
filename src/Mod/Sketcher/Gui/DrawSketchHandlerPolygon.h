@@ -137,15 +137,17 @@ public:
 
                 // add auto constraints at the center of the polygon
                 if (!sugConstr1.empty()) {
-                    createAutoConstraints(
-                        sugConstr1, getHighestCurveIndex(), Sketcher::PointPos::mid);
+                    createAutoConstraints(sugConstr1,
+                                          getHighestCurveIndex(),
+                                          Sketcher::PointPos::mid);
                     sugConstr1.clear();
                 }
 
                 // add auto constraints to the last side of the polygon
                 if (!sugConstr2.empty()) {
-                    createAutoConstraints(
-                        sugConstr2, getHighestCurveIndex() - 1, Sketcher::PointPos::end);
+                    createAutoConstraints(sugConstr2,
+                                          getHighestCurveIndex() - 1,
+                                          Sketcher::PointPos::end);
                     sugConstr2.clear();
                 }
 

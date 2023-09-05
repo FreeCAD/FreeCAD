@@ -83,8 +83,9 @@ public:
         // return false;
         //}
 
-        if (!sSubName || sSubName[0] == '\0')
+        if (!sSubName || sSubName[0] == '\0') {
             return false;
+        }
         std::string element(sSubName);
         if ((element.size() > 4 && element.substr(0, 4) == "Edge")
             || (element.size() > 6 && element.substr(0, 6) == "Vertex")
@@ -92,8 +93,9 @@ public:
             return true;
         }
         if (pObj->getTypeId().isDerivedFrom(App::Plane::getClassTypeId())
-            || pObj->getTypeId().isDerivedFrom(Part::Datum::getClassTypeId()))
+            || pObj->getTypeId().isDerivedFrom(Part::Datum::getClassTypeId())) {
             return true;
+        }
         return false;
     }
 };
@@ -110,8 +112,9 @@ public:
     void mouseMove(Base::Vector2d onSketchPos) override
     {
         Q_UNUSED(onSketchPos);
-        if (Gui::Selection().getPreselection().pObjectName)
+        if (Gui::Selection().getPreselection().pObjectName) {
             applyCursor();
+        }
     }
 
     bool pressButton(Base::Vector2d onSketchPos) override
@@ -135,8 +138,9 @@ public:
         if (msg.Type == Gui::SelectionChanges::AddSelection) {
             App::DocumentObject* obj =
                 sketchgui->getObject()->getDocument()->getObject(msg.pObjectName);
-            if (!obj)
+            if (!obj) {
                 throw Base::ValueError("Sketcher: External geometry: Invalid object in selection");
+            }
             std::string subName(msg.pSubName);
             if (obj->getTypeId().isDerivedFrom(App::Plane::getClassTypeId())
                 || obj->getTypeId().isDerivedFrom(Part::Datum::getClassTypeId())

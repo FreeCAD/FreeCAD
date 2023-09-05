@@ -113,7 +113,7 @@ Click 'start', and the test thus produced will be run.
 
 Double click on an error in the tree view to see more information about it, including the stack trace.</source>
       <translation>Nhập tên của một đối tượng có thể gọi được và khi đối tượng đó được gọi, nó trở lại thành một Trường hợp kiểm tra.
-Nhấp chuột 'bắt đầu', sau đó bài kiểm tra được tạo sẽ hoạt động. 
+Nhấp chuột 'bắt đầu', sau đó bài kiểm tra được tạo sẽ hoạt động.
 
 Nhấp đúp vào một lỗi trong chế độ xem hình cây để xem thêm thông tin về nó, bao gồm cả ngăn xếp.</translation>
     </message>

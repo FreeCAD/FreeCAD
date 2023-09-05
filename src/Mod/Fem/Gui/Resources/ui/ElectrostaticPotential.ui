@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Constraint Properties</string>
+   <string>Analysis feature properties</string>
   </property>
   <layout class="QGridLayout" name="gridLayout_4">
    <item row="0" column="0">
@@ -528,7 +528,7 @@ Note: has no effect if a solid was selected</string>
    <item row="3" column="0">
     <widget class="QCheckBox" name="potentialConstantBox">
      <property name="toolTip">
-      <string>Whether the constraint defines a constant potential</string>
+      <string>Whether the boundary condition defines a constant potential</string>
      </property>
      <property name="text">
       <string>Potential Constant</string>
@@ -541,7 +541,7 @@ Note: has no effect if a solid was selected</string>
       <bool>true</bool>
      </property>
      <property name="toolTip">
-      <string>Whether the constraint defines a farfield potential</string>
+      <string>Whether the boundary condition defines a farfield potential</string>
      </property>
      <property name="text">
       <string>Farfield / Electric infinity</string>
@@ -551,7 +551,7 @@ Note: has no effect if a solid was selected</string>
    <item row="5" column="0">
     <widget class="QCheckBox" name="electricForcecalculationBox">
      <property name="toolTip">
-      <string>Whether the constraint is for the electric force</string>
+      <string>Whether the boundary condition is for the electric force</string>
      </property>
      <property name="text">
       <string>Calculate Electric Force</string>

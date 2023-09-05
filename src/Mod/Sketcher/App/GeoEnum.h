@@ -64,10 +64,10 @@ namespace Sketcher
  */
 enum GeoEnum
 {
-    RtPnt = -1, // GeoId of the Root Point
-    HAxis = -1, // GeoId of the Horizontal Axis
-    VAxis = -2, // GeoId of the Vertical Axis
-    RefExt = -3,// Starting GeoID of external geometry ( negative geoIds starting at this index)
+    RtPnt = -1,     // GeoId of the Root Point
+    HAxis = -1,     // GeoId of the Horizontal Axis
+    VAxis = -2,     // GeoId of the Vertical Axis
+    RefExt = -3,    // Starting GeoID of external geometry ( negative geoIds starting at this index)
     GeoUndef = -2000// GeoId of an undefined Geometry (uninitialised or unused GeoId)
 };
 
@@ -139,8 +139,8 @@ public:
 
 // inline constexpr constructor
 inline constexpr GeoElementId::GeoElementId(int geoId, PointPos pos)
-    : GeoId(geoId),
-      Pos(pos)
+    : GeoId(geoId)
+    , Pos(pos)
 {}
 
 inline bool GeoElementId::isCurve() const

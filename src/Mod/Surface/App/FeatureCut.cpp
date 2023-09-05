@@ -22,7 +22,7 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <TopoDS.hxx>
+#include <TopoDS.hxx>
 #endif
 
 #include "FeatureCut.h"
@@ -34,41 +34,43 @@ PROPERTY_SOURCE(Surface::Cut, Part::Feature)
 
 Cut::Cut()
 {
-    ADD_PROPERTY(ShapeList,(nullptr,"TopoDS_Shape"));
+    ADD_PROPERTY(ShapeList, (nullptr, "TopoDS_Shape"));
     ShapeList.setScope(App::LinkScope::Global);
 }
 
-//Check if any components of the surface have been modified
+// Check if any components of the surface have been modified
 
 short Cut::mustExecute() const
 {
-    if (ShapeList.isTouched())
+    if (ShapeList.isTouched()) {
         return 1;
+    }
     return 0;
 }
 
-App::DocumentObjectExecReturn *Cut::execute()
+App::DocumentObjectExecReturn* Cut::execute()
 {
-    //Perform error checking
+    // Perform error checking
 
     try {
         std::vector<App::DocumentObject*> shapes = ShapeList.getValues();
-        if (shapes.size() != 2){
-            return new App::DocumentObjectExecReturn("Two shapes must be entered at a time for a cut operation");
+        if (shapes.size() != 2) {
+            return new App::DocumentObjectExecReturn(
+                "Two shapes must be entered at a time for a cut operation");
         }
 
         Part::TopoShape ts1;
         Part::TopoShape ts2;
 
-        //Get first toposhape
+        // Get first toposhape
         if (shapes[0]->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
-            ts1 = static_cast<Part::Feature*>(shapes[0])->Shape.getShape(); //Part::TopoShape 1
+            ts1 = static_cast<Part::Feature*>(shapes[0])->Shape.getShape();// Part::TopoShape 1
         }
         else {
             return new App::DocumentObjectExecReturn("Shape1 not from Part::Feature");
         }
 
-        //Get second toposhape
+        // Get second toposhape
         if (shapes[1]->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
             ts2 = static_cast<Part::Feature*>(shapes[1])->Shape.getShape();
         }
@@ -76,12 +78,12 @@ App::DocumentObjectExecReturn *Cut::execute()
             return new App::DocumentObjectExecReturn("Shape2 not from Part::Feature");
         }
 
-        //Cut Shape1 by Shape2
+        // Cut Shape1 by Shape2
         TopoDS_Shape aCutShape;
         aCutShape = ts1.cut(ts2.getShape());
 
-        //Check if resulting shell is null
-        if (aCutShape.IsNull()){
+        // Check if resulting shell is null
+        if (aCutShape.IsNull()) {
             return new App::DocumentObjectExecReturn("Resulting shape is null");
         }
 

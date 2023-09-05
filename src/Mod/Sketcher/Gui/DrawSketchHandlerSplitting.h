@@ -46,10 +46,12 @@ public:
 
     bool allow(App::Document* /*pDoc*/, App::DocumentObject* pObj, const char* sSubName) override
     {
-        if (pObj != this->object)
+        if (pObj != this->object) {
             return false;
-        if (!sSubName || sSubName[0] == '\0')
+        }
+        if (!sSubName || sSubName[0] == '\0') {
             return false;
+        }
         std::string element(sSubName);
         if (element.substr(0, 4) == "Edge") {
             int GeoId = std::atoi(element.substr(4, 4000).c_str()) - 1;
@@ -69,8 +71,9 @@ public:
             Sketcher::PointPos PosId = Sketcher::PointPos::none;
             Sketcher::SketchObject* Sketch = static_cast<Sketcher::SketchObject*>(object);
             Sketch->getGeoVertexIndex(VertId, GeoId, PosId);
-            if (isBsplineKnot(Sketch, GeoId))
+            if (isBsplineKnot(Sketch, GeoId)) {
                 return true;
+            }
         }
         return false;
     }
@@ -127,8 +130,9 @@ public:
                                 && constr->First == pointGeoId);
                     });
 
-                if (conIt != constraints.end())
+                if (conIt != constraints.end()) {
                     GeoId = (*conIt)->Second;
+                }
             }
         }
 

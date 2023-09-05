@@ -7,6 +7,7 @@ SET(AddonManager_SRCS
     Addon.py
     AddonManager.py
     AddonManager.ui
+    addonmanager_cache.py
     addonmanager_connection_checker.py
     addonmanager_dependency_installer.py
     addonmanager_devmode.py
@@ -85,6 +86,7 @@ SET(AddonManagerTestsApp_SRCS
     AddonManagerTest/app/__init__.py
     AddonManagerTest/app/mocks.py
     AddonManagerTest/app/test_addon.py
+    AddonManagerTest/app/test_cache.py
     AddonManagerTest/app/test_dependency_installer.py
     AddonManagerTest/app/test_freecad_interface.py
     AddonManagerTest/app/test_git.py

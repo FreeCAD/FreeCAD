@@ -22,7 +22,7 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <cfloat>
+#include <cfloat>
 #endif
 
 #include <App/Document.h>
@@ -40,21 +40,22 @@
 
 using namespace InspectionGui;
 
-namespace InspectionGui {
-class SingleSelectionItem : public QTreeWidgetItem
+namespace InspectionGui
+{
+class SingleSelectionItem: public QTreeWidgetItem
 {
 public:
-    explicit SingleSelectionItem (QTreeWidget* parent)
-        : QTreeWidgetItem(parent), _compItem(nullptr)
-    {
-    }
+    explicit SingleSelectionItem(QTreeWidget* parent)
+        : QTreeWidgetItem(parent)
+        , _compItem(nullptr)
+    {}
 
-    explicit SingleSelectionItem (QTreeWidgetItem* parent)
-        : QTreeWidgetItem (parent), _compItem(nullptr)
-    {
-    }
+    explicit SingleSelectionItem(QTreeWidgetItem* parent)
+        : QTreeWidgetItem(parent)
+        , _compItem(nullptr)
+    {}
 
-    ~SingleSelectionItem () override = default;
+    ~SingleSelectionItem() override = default;
 
     SingleSelectionItem* getCompetitiveItem() const
     {
@@ -69,7 +70,7 @@ public:
 private:
     SingleSelectionItem* _compItem;
 };
-}
+}// namespace InspectionGui
 
 /* TRANSLATOR InspectionGui::DlgVisualInspectionImp */
 
@@ -78,17 +79,24 @@ private:
  *  name 'name' and widget flags set to 'f'.
  */
 VisualInspection::VisualInspection(QWidget* parent, Qt::WindowFlags fl)
-    : QDialog(parent, fl), ui(new Ui_VisualInspection)
+    : QDialog(parent, fl)
+    , ui(new Ui_VisualInspection)
 {
     ui->setupUi(this);
-    connect(ui->treeWidgetActual, &QTreeWidget::itemClicked,
-            this, &VisualInspection::onActivateItem);
-    connect(ui->treeWidgetNominal, &QTreeWidget::itemClicked,
-            this, &VisualInspection::onActivateItem);
-    connect(ui->buttonBox, &QDialogButtonBox::helpRequested,
-            Gui::getMainWindow(), &Gui::MainWindow::whatsThis);
+    connect(ui->treeWidgetActual,
+            &QTreeWidget::itemClicked,
+            this,
+            &VisualInspection::onActivateItem);
+    connect(ui->treeWidgetNominal,
+            &QTreeWidget::itemClicked,
+            this,
+            &VisualInspection::onActivateItem);
+    connect(ui->buttonBox,
+            &QDialogButtonBox::helpRequested,
+            Gui::getMainWindow(),
+            &Gui::MainWindow::whatsThis);
 
-    //FIXME: Not used yet
+    // FIXME: Not used yet
     ui->textLabel2->hide();
     ui->thickness->hide();
     ui->searchRadius->setUnit(Base::Unit::Length);
@@ -111,12 +119,11 @@ VisualInspection::VisualInspection(QWidget* parent, Qt::WindowFlags fl)
 
     std::vector<App::DocumentObject*> obj = doc->getObjects();
     Base::Type point = Base::Type::fromName("Points::Feature");
-    Base::Type mesh  = Base::Type::fromName("Mesh::Feature");
+    Base::Type mesh = Base::Type::fromName("Mesh::Feature");
     Base::Type shape = Base::Type::fromName("Part::Feature");
     for (auto it : obj) {
-        if (it->getTypeId().isDerivedFrom(point) ||
-            it->getTypeId().isDerivedFrom(mesh)  ||
-            it->getTypeId().isDerivedFrom(shape)) {
+        if (it->getTypeId().isDerivedFrom(point) || it->getTypeId().isDerivedFrom(mesh)
+            || it->getTypeId().isDerivedFrom(shape)) {
             Gui::ViewProvider* view = gui->getViewProvider(it);
             QIcon px = view->getIcon();
             SingleSelectionItem* item1 = new SingleSelectionItem(ui->treeWidgetActual);
@@ -150,8 +157,8 @@ VisualInspection::~VisualInspection()
 
 void VisualInspection::loadSettings()
 {
-    ParameterGrp::handle handle = App::GetApplication().GetParameterGroupByPath
-        ("User parameter:BaseApp/Preferences/Mod/Inspection/Inspection");
+    ParameterGrp::handle handle = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/Mod/Inspection/Inspection");
 
     double searchDistance = ui->searchRadius->value().getValue();
     searchDistance = handle->GetFloat("SearchDistance", searchDistance);
@@ -164,8 +171,8 @@ void VisualInspection::loadSettings()
 
 void VisualInspection::saveSettings()
 {
-    ParameterGrp::handle handle = App::GetApplication().GetParameterGroupByPath
-        ("User parameter:BaseApp/Preferences/Mod/Inspection/Inspection");
+    ParameterGrp::handle handle = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/Mod/Inspection/Inspection");
     double searchDistance = ui->searchRadius->value().getValue();
     handle->SetFloat("SearchDistance", searchDistance);
 
@@ -178,11 +185,12 @@ void VisualInspection::onActivateItem(QTreeWidgetItem* item)
     if (item) {
         SingleSelectionItem* sel = static_cast<SingleSelectionItem*>(item);
         SingleSelectionItem* cmp = sel->getCompetitiveItem();
-        if (cmp && cmp->checkState(0) == Qt::Checked)
+        if (cmp && cmp->checkState(0) == Qt::Checked) {
             cmp->setCheckState(0, Qt::Unchecked);
+        }
     }
 
-    bool ok=false;
+    bool ok = false;
     for (QTreeWidgetItemIterator it(ui->treeWidgetActual); *it; ++it) {
         SingleSelectionItem* sel = (SingleSelectionItem*)*it;
         if (sel->checkState(0) == Qt::Checked) {
@@ -193,7 +201,7 @@ void VisualInspection::onActivateItem(QTreeWidgetItem* item)
 
     if (ok) {
         ok = false;
-        for (QTreeWidgetItemIterator it (ui->treeWidgetNominal); *it; ++it) {
+        for (QTreeWidgetItemIterator it(ui->treeWidgetNominal); *it; ++it) {
             SingleSelectionItem* sel = (SingleSelectionItem*)*it;
             if (sel->checkState(0) == Qt::Checked) {
                 ok = true;
@@ -216,8 +224,9 @@ void VisualInspection::accept()
         QStringList nominalNames;
         for (QTreeWidgetItemIterator it(ui->treeWidgetNominal); *it; it++) {
             SingleSelectionItem* sel = (SingleSelectionItem*)*it;
-            if (sel->checkState(0) == Qt::Checked)
+            if (sel->checkState(0) == Qt::Checked) {
                 nominalNames << sel->data(0, Qt::UserRole).toString();
+            }
         }
 
         double searchRadius = ui->searchRadius->value().getValue();
@@ -228,33 +237,42 @@ void VisualInspection::accept()
         doc->openCommand(QT_TRANSLATE_NOOP("Command", "Visual Inspection"));
 
         // create a group
-        Gui::Command::runCommand(
-            Gui::Command::App, "App_activeDocument___InspectionGroup=App.ActiveDocument.addObject(\"Inspection::Group\",\"Inspection\")");
-    
+        Gui::Command::runCommand(Gui::Command::App,
+                                 "App_activeDocument___InspectionGroup=App.ActiveDocument."
+                                 "addObject(\"Inspection::Group\",\"Inspection\")");
+
         // for each actual geometry create an inspection feature
         for (QTreeWidgetItemIterator it(ui->treeWidgetActual); *it; it++) {
             SingleSelectionItem* sel = (SingleSelectionItem*)*it;
             if (sel->checkState(0) == Qt::Checked) {
                 QString actualName = sel->data(0, Qt::UserRole).toString();
                 Gui::Command::doCommand(Gui::Command::App,
-                    "App_activeDocument___InspectionGroup.newObject(\"Inspection::Feature\",\"%s_Inspect\")", (const char*)actualName.toLatin1());
-                Gui::Command::doCommand(Gui::Command::App,
+                                        "App_activeDocument___InspectionGroup.newObject("
+                                        "\"Inspection::Feature\",\"%s_Inspect\")",
+                                        (const char*)actualName.toLatin1());
+                Gui::Command::doCommand(
+                    Gui::Command::App,
                     "App.ActiveDocument.ActiveObject.Actual=App.ActiveDocument.%s\n"
                     "App_activeDocument___activeObject___Nominals=list()\n"
                     "App.ActiveDocument.ActiveObject.SearchRadius=%.3f\n"
-                    "App.ActiveDocument.ActiveObject.Thickness=%.3f\n", (const char*)actualName.toLatin1(), searchRadius, thickness);
+                    "App.ActiveDocument.ActiveObject.Thickness=%.3f\n",
+                    (const char*)actualName.toLatin1(),
+                    searchRadius,
+                    thickness);
                 for (const auto& it : nominalNames) {
                     Gui::Command::doCommand(Gui::Command::App,
-                        "App_activeDocument___activeObject___Nominals.append(App.ActiveDocument.%s)\n", (const char*)it.toLatin1());
+                                            "App_activeDocument___activeObject___Nominals.append("
+                                            "App.ActiveDocument.%s)\n",
+                                            (const char*)it.toLatin1());
                 }
                 Gui::Command::doCommand(Gui::Command::App,
-                    "App.ActiveDocument.ActiveObject.Nominals=App_activeDocument___activeObject___Nominals\n"
-                    "del App_activeDocument___activeObject___Nominals\n");
+                                        "App.ActiveDocument.ActiveObject.Nominals=App_"
+                                        "activeDocument___activeObject___Nominals\n"
+                                        "del App_activeDocument___activeObject___Nominals\n");
             }
         }
 
-        Gui::Command::runCommand(Gui::Command::App,
-            "del App_activeDocument___InspectionGroup\n");
+        Gui::Command::runCommand(Gui::Command::App, "del App_activeDocument___InspectionGroup\n");
 
         doc->commitCommand();
         doc->getDocument()->recompute();
@@ -263,18 +281,20 @@ void VisualInspection::accept()
         for (QTreeWidgetItemIterator it(ui->treeWidgetActual); *it; it++) {
             SingleSelectionItem* sel = (SingleSelectionItem*)*it;
             if (sel->checkState(0) == Qt::Checked) {
-                Gui::Command::doCommand(Gui::Command::App
-                    , "Gui.ActiveDocument.getObject(\"%s\").Visibility=False"
-                    , (const char*)sel->data(0, Qt::UserRole).toString().toLatin1());
+                Gui::Command::doCommand(
+                    Gui::Command::App,
+                    "Gui.ActiveDocument.getObject(\"%s\").Visibility=False",
+                    (const char*)sel->data(0, Qt::UserRole).toString().toLatin1());
             }
         }
 
         for (QTreeWidgetItemIterator it(ui->treeWidgetNominal); *it; it++) {
             SingleSelectionItem* sel = (SingleSelectionItem*)*it;
             if (sel->checkState(0) == Qt::Checked) {
-                Gui::Command::doCommand(Gui::Command::App
-                    , "Gui.ActiveDocument.getObject(\"%s\").Visibility=False"
-                    , (const char*)sel->data(0, Qt::UserRole).toString().toLatin1());
+                Gui::Command::doCommand(
+                    Gui::Command::App,
+                    "Gui.ActiveDocument.getObject(\"%s\").Visibility=False",
+                    (const char*)sel->data(0, Qt::UserRole).toString().toLatin1());
             }
         }
     }

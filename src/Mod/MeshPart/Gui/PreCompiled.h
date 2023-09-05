@@ -26,9 +26,9 @@
 #include <FCConfig.h>
 
 #ifdef _MSC_VER
-# pragma warning(disable : 4005)
-# pragma warning(disable : 4290)
-# pragma warning(disable : 4275)
+#pragma warning(disable : 4005)
+#pragma warning(disable : 4290)
+#pragma warning(disable : 4275)
 #endif
 
 #ifdef _PreComp_
@@ -40,31 +40,30 @@
 // Qt Toolkit
 #include <QApplication>
 #include <QFuture>
-#include <QMenu>
-#include <QMessageBox>
 #include <QKeyEvent>
+#include <QMenu>
 #include <QMessageBox>
 #include <QPointer>
 #include <QPushButton>
 #include <QStatusBar>
-#include <QtConcurrentMap>
 #include <QTimer>
+#include <QtConcurrentMap>
 
 // OCCT
-#include <BRep_Builder.hxx>
-#include <BRep_Tool.hxx>
 #include <BRepBuilderAPI_MakeEdge.hxx>
 #include <BRepBuilderAPI_MakePolygon.hxx>
 #include <BRepMesh_IncrementalMesh.hxx>
-#include <Geom_BSplineCurve.hxx>
+#include <BRep_Builder.hxx>
+#include <BRep_Tool.hxx>
 #include <GeomAPI_PointsToBSpline.hxx>
-#include <gp_Pnt.hxx>
+#include <Geom_BSplineCurve.hxx>
 #include <Poly_Polygon3D.hxx>
 #include <TColgp_Array1OfPnt.hxx>
 #include <TopoDS.hxx>
 #include <TopoDS_Compound.hxx>
 #include <TopoDS_Edge.hxx>
 #include <TopoDS_Wire.hxx>
+#include <gp_Pnt.hxx>
 
 // Inventor
 #include <Inventor/SoPickedPoint.h>
@@ -77,6 +76,6 @@
 #include <Inventor/nodes/SoPointSet.h>
 #include <Inventor/nodes/SoSeparator.h>
 
-#endif //_PreComp_
+#endif//_PreComp_
 
-#endif // __PRECOMPILED_GUI__
+#endif// __PRECOMPILED_GUI__

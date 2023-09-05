@@ -67,8 +67,11 @@ void ActivateBSplineHandler(Gui::Document* doc, DrawSketchHandler* handler)
 /// index within it (by OCC numbering).
 /// Returns true if the entities are found, false otherwise.
 /// If returns false, `splineGeoId` and `knotIndexOCC` have garbage values.
-bool findBSplineAndKnotIndex(Sketcher::SketchObject* Obj, int knotGeoId,
-                             Sketcher::PointPos knotPosId, int& splineGeoId, int& knotIndexOCC)
+bool findBSplineAndKnotIndex(Sketcher::SketchObject* Obj,
+                             int knotGeoId,
+                             Sketcher::PointPos knotPosId,
+                             int& splineGeoId,
+                             int& knotIndexOCC)
 {
     for (auto const constraint : Obj->Constraints.getValues()) {
         if (constraint->Type == Sketcher::InternalAlignment && constraint->First == knotGeoId
@@ -222,11 +225,13 @@ void CmdSketcherIncreaseDegree::activated(int iMsg)
             const Part::Geometry* geo = Obj->getGeometry(GeoId);
 
             if (geo->getTypeId() == Part::GeomBSplineCurve::getClassTypeId()) {
-                Gui::cmdAppObjectArgs(
-                    selection[0].getObject(), "increaseBSplineDegree(%d) ", GeoId);
+                Gui::cmdAppObjectArgs(selection[0].getObject(),
+                                      "increaseBSplineDegree(%d) ",
+                                      GeoId);
                 // add new control points
-                Gui::cmdAppObjectArgs(
-                    selection[0].getObject(), "exposeInternalGeometry(%d)", GeoId);
+                Gui::cmdAppObjectArgs(selection[0].getObject(),
+                                      "exposeInternalGeometry(%d)",
+                                      GeoId);
             }
             else {
                 ignored = true;
@@ -299,8 +304,9 @@ void CmdSketcherDecreaseDegree::activated(int iMsg)
             const Part::Geometry* geo = Obj->getGeometry(GeoId);
 
             if (geo->getTypeId() == Part::GeomBSplineCurve::getClassTypeId()) {
-                Gui::cmdAppObjectArgs(
-                    selection[0].getObject(), "decreaseBSplineDegree(%d) ", GeoId);
+                Gui::cmdAppObjectArgs(selection[0].getObject(),
+                                      "decreaseBSplineDegree(%d) ",
+                                      GeoId);
                 // add new control points
                 // Currently exposeInternalGeometry is called from within decreaseBSplineDegree
                 // because the old spline is deleted and a new one is added so that the GeoId is
@@ -411,16 +417,18 @@ void CmdSketcherIncreaseKnotMultiplicity::activated(int iMsg)
         catch (const Base::CADKernelError& e) {
             e.ReportException();
             if (e.getTranslatable()) {
-                Gui::TranslatedUserError(
-                    Obj, QObject::tr("CAD Kernel Error"), QObject::tr(e.getMessage().c_str()));
+                Gui::TranslatedUserError(Obj,
+                                         QObject::tr("CAD Kernel Error"),
+                                         QObject::tr(e.getMessage().c_str()));
             }
             getSelection().clearSelection();
         }
         catch (const Base::Exception& e) {
             e.ReportException();
             if (e.getTranslatable()) {
-                Gui::TranslatedUserError(
-                    Obj, QObject::tr("Input Error"), QObject::tr(e.getMessage().c_str()));
+                Gui::TranslatedUserError(Obj,
+                                         QObject::tr("Input Error"),
+                                         QObject::tr(e.getMessage().c_str()));
             }
             getSelection().clearSelection();
         }
@@ -451,12 +459,14 @@ void CmdSketcherIncreaseKnotMultiplicity::activated(int iMsg)
         if (ngfound) {
             try {
                 // add internalalignment for new pole
-                Gui::cmdAppObjectArgs(
-                    selection[0].getObject(), "exposeInternalGeometry(%d)", ngeoid);
+                Gui::cmdAppObjectArgs(selection[0].getObject(),
+                                      "exposeInternalGeometry(%d)",
+                                      ngeoid);
             }
             catch (const Base::Exception& e) {
-                Gui::NotifyUserError(
-                    Obj, QT_TRANSLATE_NOOP("Notifications", "Invalid Constraint"), e.what());
+                Gui::NotifyUserError(Obj,
+                                     QT_TRANSLATE_NOOP("Notifications", "Invalid Constraint"),
+                                     e.what());
                 getSelection().clearSelection();
             }
         }
@@ -585,12 +595,14 @@ void CmdSketcherDecreaseKnotMultiplicity::activated(int iMsg)
         if (ngfound) {
             try {
                 // add internalalignment for new pole
-                Gui::cmdAppObjectArgs(
-                    selection[0].getObject(), "exposeInternalGeometry(%d)", ngeoid);
+                Gui::cmdAppObjectArgs(selection[0].getObject(),
+                                      "exposeInternalGeometry(%d)",
+                                      ngeoid);
             }
             catch (const Base::Exception& e) {
-                Gui::NotifyUserError(
-                    Obj, QT_TRANSLATE_NOOP("Notifications", "Invalid Constraint"), e.what());
+                Gui::NotifyUserError(Obj,
+                                     QT_TRANSLATE_NOOP("Notifications", "Invalid Constraint"),
+                                     e.what());
                 getSelection().clearSelection();
             }
         }
@@ -780,15 +792,17 @@ public:
         catch (const Base::CADKernelError& e) {
             e.ReportException();
             if (e.getTranslatable()) {
-                Gui::TranslatedUserError(
-                    Obj, QObject::tr("CAD Kernel Error"), QObject::tr(e.getMessage().c_str()));
+                Gui::TranslatedUserError(Obj,
+                                         QObject::tr("CAD Kernel Error"),
+                                         QObject::tr(e.getMessage().c_str()));
             }
         }
         catch (const Base::Exception& e) {
             e.ReportException();
             if (e.getTranslatable()) {
-                Gui::TranslatedUserError(
-                    Obj, QObject::tr("Input Error"), QObject::tr(e.getMessage().c_str()));
+                Gui::TranslatedUserError(Obj,
+                                         QObject::tr("Input Error"),
+                                         QObject::tr(e.getMessage().c_str()));
             }
         }
 
@@ -814,8 +828,9 @@ public:
                     Gui::cmdAppObjectArgs(Obj, "exposeInternalGeometry(%d)", newGeoId);
                 }
                 catch (const Base::Exception& e) {
-                    Gui::NotifyUserError(
-                        Obj, QT_TRANSLATE_NOOP("Notifications", "Invalid Constraint"), e.what());
+                    Gui::NotifyUserError(Obj,
+                                         QT_TRANSLATE_NOOP("Notifications", "Invalid Constraint"),
+                                         e.what());
                 }
             }
         }
@@ -1052,8 +1067,9 @@ void CmdSketcherJoinCurves::activated(int iMsg)
         // Warning: GeoId list will have changed
     }
     catch (const Base::Exception& e) {
-        Gui::TranslatedUserError(
-            Obj, QObject::tr("Error"), QObject::tr(getStrippedPythonExceptionString(e).c_str()));
+        Gui::TranslatedUserError(Obj,
+                                 QObject::tr("Error"),
+                                 QObject::tr(getStrippedPythonExceptionString(e).c_str()));
 
         getSelection().clearSelection();
     }

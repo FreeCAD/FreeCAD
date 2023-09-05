@@ -22,16 +22,16 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <array>
-# include <cmath>
-# include <iostream>
-# include <map>
-# include <set>
-# include <vector>
+#include <array>
+#include <cmath>
+#include <iostream>
+#include <map>
+#include <set>
+#include <vector>
 #endif
 
 #ifndef M_PI
-# define M_PI 3.14159265358979323846f
+#define M_PI 3.14159265358979323846f
 #endif
 
 #include <Eigen/SparseCholesky>
@@ -43,6 +43,7 @@
 // area constrained (scale the final unwrapped mesh to the original area)
 // FEM approach
 
+// clang-format off
 namespace lscmrelax
 {
 
@@ -715,3 +716,4 @@ Eigen::MatrixXd LscmRelax::get_nullspace()
 
 
 }
+// clang-format on

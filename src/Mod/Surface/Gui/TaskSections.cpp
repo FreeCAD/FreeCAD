@@ -22,13 +22,13 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <QAction>
-# include <QMenu>
-# include <QMessageBox>
-# include <QTimer>
+#include <QAction>
+#include <QMenu>
+#include <QMessageBox>
+#include <QTimer>
 
-# include <TopExp.hxx>
-# include <TopTools_IndexedMapOfShape.hxx>
+#include <TopExp.hxx>
+#include <TopTools_IndexedMapOfShape.hxx>
 #endif
 
 #include <App/Document.h>
@@ -48,7 +48,8 @@ using namespace SurfaceGui;
 
 PROPERTY_SOURCE(SurfaceGui::ViewProviderSections, PartGui::ViewProviderSpline)
 
-namespace SurfaceGui {
+namespace SurfaceGui
+{
 
 void ViewProviderSections::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
 {
@@ -60,20 +61,21 @@ void ViewProviderSections::setupContextMenu(QMenu* menu, QObject* receiver, cons
 
 bool ViewProviderSections::setEdit(int ModNum)
 {
-    if (ModNum == ViewProvider::Default ) {
+    if (ModNum == ViewProvider::Default) {
         // When double-clicking on the item for this sketch the
         // object unsets and sets its edit mode without closing
         // the task panel
 
-        Surface::Sections* obj =  static_cast<Surface::Sections*>(this->getObject());
+        Surface::Sections* obj = static_cast<Surface::Sections*>(this->getObject());
 
         Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog();
 
         // start the edit dialog
         if (dlg) {
             TaskSections* tDlg = qobject_cast<TaskSections*>(dlg);
-            if (tDlg)
+            if (tDlg) {
                 tDlg->setEditedObject(obj);
+            }
             Gui::Control().showDialog(dlg);
         }
         else {
@@ -108,72 +110,78 @@ void ViewProviderSections::highlightReferences(ShapeType type, const References&
         Part::Feature* base = dynamic_cast<Part::Feature*>(it.first);
         if (base) {
             PartGui::ViewProviderPartExt* svp = dynamic_cast<PartGui::ViewProviderPartExt*>(
-                        Gui::Application::Instance->getViewProvider(base));
+                Gui::Application::Instance->getViewProvider(base));
             if (svp) {
                 switch (type) {
-                case ViewProviderSections::Vertex:
-                    if (on) {
-                        std::vector<App::Color> colors;
-                        TopTools_IndexedMapOfShape vMap;
-                        TopExp::MapShapes(base->Shape.getValue(), TopAbs_VERTEX, vMap);
-                        colors.resize(vMap.Extent(), svp->PointColor.getValue());
+                    case ViewProviderSections::Vertex:
+                        if (on) {
+                            std::vector<App::Color> colors;
+                            TopTools_IndexedMapOfShape vMap;
+                            TopExp::MapShapes(base->Shape.getValue(), TopAbs_VERTEX, vMap);
+                            colors.resize(vMap.Extent(), svp->PointColor.getValue());
 
-                        for (const auto& jt : it.second) {
-                            // check again that the index is in range because it's possible that the
-                            // sub-names are invalid
-                            std::size_t idx = static_cast<std::size_t>(std::stoi(jt.substr(6)) - 1);
-                            if (idx < colors.size())
-                                colors[idx] = App::Color(1.0,0.0,1.0); // magenta
+                            for (const auto& jt : it.second) {
+                                // check again that the index is in range because it's possible that
+                                // the sub-names are invalid
+                                std::size_t idx =
+                                    static_cast<std::size_t>(std::stoi(jt.substr(6)) - 1);
+                                if (idx < colors.size()) {
+                                    colors[idx] = App::Color(1.0, 0.0, 1.0);// magenta
+                                }
+                            }
+
+                            svp->setHighlightedPoints(colors);
                         }
-
-                        svp->setHighlightedPoints(colors);
-                    }
-                    else {
-                        svp->unsetHighlightedPoints();
-                    }
-                    break;
-                case ViewProviderSections::Edge:
-                    if (on) {
-                        std::vector<App::Color> colors;
-                        TopTools_IndexedMapOfShape eMap;
-                        TopExp::MapShapes(base->Shape.getValue(), TopAbs_EDGE, eMap);
-                        colors.resize(eMap.Extent(), svp->LineColor.getValue());
-
-                        for (const auto& jt : it.second) {
-                            std::size_t idx = static_cast<std::size_t>(std::stoi(jt.substr(4)) - 1);
-                            // check again that the index is in range because it's possible that the
-                            // sub-names are invalid
-                            if (idx < colors.size())
-                                colors[idx] = App::Color(1.0,0.0,1.0); // magenta
+                        else {
+                            svp->unsetHighlightedPoints();
                         }
+                        break;
+                    case ViewProviderSections::Edge:
+                        if (on) {
+                            std::vector<App::Color> colors;
+                            TopTools_IndexedMapOfShape eMap;
+                            TopExp::MapShapes(base->Shape.getValue(), TopAbs_EDGE, eMap);
+                            colors.resize(eMap.Extent(), svp->LineColor.getValue());
 
-                        svp->setHighlightedEdges(colors);
-                    }
-                    else {
-                        svp->unsetHighlightedEdges();
-                    }
-                    break;
-                case ViewProviderSections::Face:
-                    if (on) {
-                        std::vector<App::Color> colors;
-                        TopTools_IndexedMapOfShape fMap;
-                        TopExp::MapShapes(base->Shape.getValue(), TopAbs_FACE, fMap);
-                        colors.resize(fMap.Extent(), svp->ShapeColor.getValue());
+                            for (const auto& jt : it.second) {
+                                std::size_t idx =
+                                    static_cast<std::size_t>(std::stoi(jt.substr(4)) - 1);
+                                // check again that the index is in range because it's possible that
+                                // the sub-names are invalid
+                                if (idx < colors.size()) {
+                                    colors[idx] = App::Color(1.0, 0.0, 1.0);// magenta
+                                }
+                            }
 
-                        for (const auto& jt : it.second) {
-                            std::size_t idx = static_cast<std::size_t>(std::stoi(jt.substr(4)) - 1);
-                            // check again that the index is in range because it's possible that the
-                            // sub-names are invalid
-                            if (idx < colors.size())
-                                colors[idx] = App::Color(1.0,0.0,1.0); // magenta
+                            svp->setHighlightedEdges(colors);
                         }
+                        else {
+                            svp->unsetHighlightedEdges();
+                        }
+                        break;
+                    case ViewProviderSections::Face:
+                        if (on) {
+                            std::vector<App::Color> colors;
+                            TopTools_IndexedMapOfShape fMap;
+                            TopExp::MapShapes(base->Shape.getValue(), TopAbs_FACE, fMap);
+                            colors.resize(fMap.Extent(), svp->ShapeColor.getValue());
 
-                        svp->setHighlightedFaces(colors);
-                    }
-                    else {
-                        svp->unsetHighlightedFaces();
-                    }
-                    break;
+                            for (const auto& jt : it.second) {
+                                std::size_t idx =
+                                    static_cast<std::size_t>(std::stoi(jt.substr(4)) - 1);
+                                // check again that the index is in range because it's possible that
+                                // the sub-names are invalid
+                                if (idx < colors.size()) {
+                                    colors[idx] = App::Color(1.0, 0.0, 1.0);// magenta
+                                }
+                            }
+
+                            svp->setHighlightedFaces(colors);
+                        }
+                        else {
+                            svp->unsetHighlightedFaces();
+                        }
+                        break;
                 }
             }
         }
@@ -182,40 +190,42 @@ void ViewProviderSections::highlightReferences(ShapeType type, const References&
 
 // ----------------------------------------------------------------------------
 
-class SectionsPanel::ShapeSelection : public Gui::SelectionFilterGate
+class SectionsPanel::ShapeSelection: public Gui::SelectionFilterGate
 {
 public:
     ShapeSelection(SectionsPanel::SelectionMode& mode, Surface::Sections* editedObject)
         : Gui::SelectionFilterGate(nullPointer())
         , mode(mode)
         , editedObject(editedObject)
-    {
-    }
+    {}
     ~ShapeSelection() override
     {
         mode = SectionsPanel::None;
     }
     /**
-      * Allow the user to pick only edges.
-      */
+     * Allow the user to pick only edges.
+     */
     bool allow(App::Document*, App::DocumentObject* pObj, const char* sSubName) override
     {
         // don't allow references to itself
-        if (pObj == editedObject)
+        if (pObj == editedObject) {
             return false;
-        if (!pObj->isDerivedFrom(Part::Feature::getClassTypeId()))
+        }
+        if (!pObj->isDerivedFrom(Part::Feature::getClassTypeId())) {
             return false;
+        }
 
-        if (!sSubName || sSubName[0] == '\0')
+        if (!sSubName || sSubName[0] == '\0') {
             return false;
+        }
 
         switch (mode) {
-        case SectionsPanel::AppendEdge:
-            return allowEdge(true, pObj, sSubName);
-        case SectionsPanel::RemoveEdge:
-            return allowEdge(false, pObj, sSubName);
-        default:
-            return false;
+            case SectionsPanel::AppendEdge:
+                return allowEdge(true, pObj, sSubName);
+            case SectionsPanel::RemoveEdge:
+                return allowEdge(false, pObj, sSubName);
+            default:
+                return false;
         }
     }
 
@@ -223,15 +233,17 @@ private:
     bool allowEdge(bool appendEdges, App::DocumentObject* pObj, const char* sSubName)
     {
         std::string element(sSubName);
-        if (element.substr(0,4) != "Edge")
+        if (element.substr(0, 4) != "Edge") {
             return false;
+        }
 
         auto links = editedObject->NSections.getSubListValues();
         for (const auto& it : links) {
             if (it.first == pObj) {
                 for (const auto& jt : it.second) {
-                    if (jt == sSubName)
+                    if (jt == sSubName) {
                         return !appendEdges;
+                    }
                 }
             }
         }
@@ -246,7 +258,8 @@ private:
 
 // ----------------------------------------------------------------------------
 
-SectionsPanel::SectionsPanel(ViewProviderSections* vp, Surface::Sections* obj) : ui(new Ui_Sections())
+SectionsPanel::SectionsPanel(ViewProviderSections* vp, Surface::Sections* obj)
+    : ui(new Ui_Sections())
 {
     ui->setupUi(this);
     setupConnections();
@@ -270,7 +283,10 @@ SectionsPanel::SectionsPanel(ViewProviderSections* vp, Surface::Sections* obj) :
     connect(action, &QAction::triggered, this, &SectionsPanel::onDeleteEdge);
     ui->listSections->setContextMenuPolicy(Qt::ActionsContextMenu);
 
-    connect(ui->listSections->model(), &QAbstractItemModel::rowsMoved, this, &SectionsPanel::onIndexesMoved);
+    connect(ui->listSections->model(),
+            &QAbstractItemModel::rowsMoved,
+            this,
+            &SectionsPanel::onIndexesMoved);
 }
 
 /*
@@ -280,11 +296,11 @@ SectionsPanel::~SectionsPanel() = default;
 
 void SectionsPanel::setupConnections()
 {
-    connect(ui->buttonEdgeAdd, &QToolButton::toggled,
-            this, &SectionsPanel::onButtonEdgeAddToggled);
-    connect(ui->buttonEdgeRemove, &QToolButton::toggled,
-            this, &SectionsPanel::onButtonEdgeRemoveToggled);
-
+    connect(ui->buttonEdgeAdd, &QToolButton::toggled, this, &SectionsPanel::onButtonEdgeAddToggled);
+    connect(ui->buttonEdgeRemove,
+            &QToolButton::toggled,
+            this,
+            &SectionsPanel::onButtonEdgeRemoveToggled);
 }
 
 // stores object pointer, its old fill type and adjusts radio buttons according to it.
@@ -298,16 +314,15 @@ void SectionsPanel::setEditedObject(Surface::Sections* fea)
     auto count = objects.size();
 
     App::Document* doc = editedObject->getDocument();
-    for (std::size_t i=0; i<count; i++) {
+    for (std::size_t i = 0; i < count; i++) {
         App::DocumentObject* obj = objects[i];
         std::string edge = edges[i];
 
         QListWidgetItem* item = new QListWidgetItem(ui->listSections);
         ui->listSections->addItem(item);
 
-        QString text = QString::fromLatin1("%1.%2")
-                .arg(QString::fromUtf8(obj->Label.getValue()),
-                     QString::fromStdString(edge));
+        QString text = QString::fromLatin1("%1.%2").arg(QString::fromUtf8(obj->Label.getValue()),
+                                                        QString::fromStdString(edge));
         item->setText(text);
 
         // The user data field of a list widget item
@@ -326,7 +341,7 @@ void SectionsPanel::setEditedObject(Surface::Sections* fea)
     attachDocument(Gui::Application::Instance->getDocument(doc));
 }
 
-void SectionsPanel::changeEvent(QEvent *e)
+void SectionsPanel::changeEvent(QEvent* e)
 {
     if (e->type() == QEvent::LanguageChange) {
         ui->retranslateUi(this);
@@ -342,7 +357,8 @@ void SectionsPanel::open()
 
     // highlight the boundary edges
     this->vp->highlightReferences(ViewProviderSections::Edge,
-        editedObject->NSections.getSubListValues(), true);
+                                  editedObject->NSections.getSubListValues(),
+                                  true);
 
     Gui::Selection().clearSelection();
 }
@@ -378,7 +394,8 @@ void SectionsPanel::slotDeletedObject(const Gui::ViewProviderDocumentObject& Obj
     // referenced part objects. The dialog will be deleted later.
     if (this->vp == &Obj) {
         this->vp->highlightReferences(ViewProviderSections::Edge,
-            editedObject->NSections.getSubListValues(), false);
+                                      editedObject->NSections.getSubListValues(),
+                                      false);
     }
 }
 
@@ -387,16 +404,19 @@ bool SectionsPanel::accept()
     selectionMode = None;
     Gui::Selection().rmvSelectionGate();
 
-    if (editedObject->mustExecute())
+    if (editedObject->mustExecute()) {
         editedObject->recomputeFeature();
+    }
     if (!editedObject->isValid()) {
-        QMessageBox::warning(this, tr("Invalid object"),
-            QString::fromLatin1(editedObject->getStatusString()));
+        QMessageBox::warning(this,
+                             tr("Invalid object"),
+                             QString::fromLatin1(editedObject->getStatusString()));
         return false;
     }
 
     this->vp->highlightReferences(ViewProviderSections::Edge,
-        editedObject->NSections.getSubListValues(), false);
+                                  editedObject->NSections.getSubListValues(),
+                                  false);
 
     return true;
 }
@@ -404,7 +424,8 @@ bool SectionsPanel::accept()
 bool SectionsPanel::reject()
 {
     this->vp->highlightReferences(ViewProviderSections::Edge,
-        editedObject->NSections.getSubListValues(), false);
+                                  editedObject->NSections.getSubListValues(),
+                                  false);
 
     selectionMode = None;
     Gui::Selection().rmvSelectionGate();
@@ -438,8 +459,9 @@ void SectionsPanel::onButtonEdgeRemoveToggled(bool checked)
 
 void SectionsPanel::onSelectionChanged(const Gui::SelectionChanges& msg)
 {
-    if (selectionMode == None)
+    if (selectionMode == None) {
         return;
+    }
 
     if (msg.Type == Gui::SelectionChanges::AddSelection) {
         checkOpenCommand();
@@ -448,9 +470,9 @@ void SectionsPanel::onSelectionChanged(const Gui::SelectionChanges& msg)
             ui->listSections->addItem(item);
 
             Gui::SelectionObject sel(msg);
-            QString text = QString::fromLatin1("%1.%2")
-                    .arg(QString::fromUtf8(sel.getObject()->Label.getValue()),
-                         QString::fromLatin1(msg.pSubName));
+            QString text = QString::fromLatin1("%1.%2").arg(
+                QString::fromUtf8(sel.getObject()->Label.getValue()),
+                QString::fromLatin1(msg.pSubName));
             item->setText(text);
 
             QList<QVariant> data;
@@ -469,10 +491,10 @@ void SectionsPanel::onSelectionChanged(const Gui::SelectionChanges& msg)
             data << QByteArray(msg.pSubName);
 
             // only the three first elements must match
-            for (int i=0; i<ui->listSections->count(); i++) {
+            for (int i = 0; i < ui->listSections->count(); i++) {
                 QListWidgetItem* item = ui->listSections->item(i);
                 QList<QVariant> userdata = item->data(Qt::UserRole).toList();
-                if (userdata.mid(0,3) == data) {
+                if (userdata.mid(0, 3) == data) {
                     ui->listSections->takeItem(i);
                     delete item;
                     break;
@@ -509,8 +531,9 @@ void SectionsPanel::onDeleteEdge()
 void SectionsPanel::onIndexesMoved()
 {
     QAbstractItemModel* model = qobject_cast<QAbstractItemModel*>(sender());
-    if (!model)
+    if (!model) {
         return;
+    }
 
     std::vector<App::DocumentObject*> objects;
     std::vector<std::string> element;
@@ -542,13 +565,15 @@ void SectionsPanel::appendCurve(App::DocumentObject* obj, const std::string& sub
     editedObject->NSections.setValues(objects, element);
 
     this->vp->highlightReferences(ViewProviderSections::Edge,
-        editedObject->NSections.getSubListValues(), true);
+                                  editedObject->NSections.getSubListValues(),
+                                  true);
 }
 
 void SectionsPanel::removeCurve(App::DocumentObject* obj, const std::string& subname)
 {
     this->vp->highlightReferences(ViewProviderSections::Edge,
-        editedObject->NSections.getSubListValues(), false);
+                                  editedObject->NSections.getSubListValues(),
+                                  false);
 
     auto objects = editedObject->NSections.getValues();
     auto element = editedObject->NSections.getSubValues();
@@ -564,8 +589,8 @@ void SectionsPanel::removeCurve(App::DocumentObject* obj, const std::string& sub
         }
     }
     this->vp->highlightReferences(ViewProviderSections::Edge,
-        editedObject->NSections.getSubListValues(), true);
-
+                                  editedObject->NSections.getSubListValues(),
+                                  true);
 }
 
 void SectionsPanel::exitSelectionMode()
@@ -581,9 +606,11 @@ TaskSections::TaskSections(ViewProviderSections* vp, Surface::Sections* obj)
 {
     // first task box
     widget1 = new SectionsPanel(vp, obj);
-    Gui::TaskView::TaskBox* taskbox1 = new Gui::TaskView::TaskBox(
-        Gui::BitmapFactory().pixmap("Surface_Sections"),
-        widget1->windowTitle(), true, nullptr);
+    Gui::TaskView::TaskBox* taskbox1 =
+        new Gui::TaskView::TaskBox(Gui::BitmapFactory().pixmap("Surface_Sections"),
+                                   widget1->windowTitle(),
+                                   true,
+                                   nullptr);
     taskbox1->groupLayout()->addWidget(widget1);
     Content.push_back(taskbox1);
 }
@@ -603,7 +630,7 @@ bool TaskSections::accept()
     bool ok = widget1->accept();
     if (ok) {
         Gui::Command::commitCommand();
-        Gui::Command::doCommand(Gui::Command::Gui,"Gui.ActiveDocument.resetEdit()");
+        Gui::Command::doCommand(Gui::Command::Gui, "Gui.ActiveDocument.resetEdit()");
         Gui::Command::updateActive();
     }
 
@@ -615,13 +642,13 @@ bool TaskSections::reject()
     bool ok = widget1->reject();
     if (ok) {
         Gui::Command::abortCommand();
-        Gui::Command::doCommand(Gui::Command::Gui,"Gui.ActiveDocument.resetEdit()");
+        Gui::Command::doCommand(Gui::Command::Gui, "Gui.ActiveDocument.resetEdit()");
         Gui::Command::updateActive();
     }
 
     return ok;
 }
 
-}
+}// namespace SurfaceGui
 
 #include "moc_TaskSections.cpp"

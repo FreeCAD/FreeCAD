@@ -1298,6 +1298,10 @@ bool View3DInventorViewer::hasAxisCross()
 void View3DInventorViewer::showRotationCenter(bool show)
 {
     SoNode* scene = getSceneGraph();
+    if (!scene) {
+        return;
+    }
+
     auto sep = static_cast<SoSeparator*>(scene);
 
     bool showEnabled = App::GetApplication()

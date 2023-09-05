@@ -62,7 +62,7 @@ PyObject* PersistencePy::dumpContent(PyObject *args, PyObject *kwds)
     int compression = 3;
     static const std::array<const char *, 2> kwds_def {"Compression", nullptr};
     PyErr_Clear();
-    if (!Wrapped_ParseTupleAndKeywords(args, kwds, "|i", kwds_def, &compression)) {
+    if (!Base::Wrapped_ParseTupleAndKeywords(args, kwds, "|i", kwds_def, &compression)) {
         return nullptr;
     }
 

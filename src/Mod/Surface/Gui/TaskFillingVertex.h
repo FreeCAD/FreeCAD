@@ -23,11 +23,11 @@
 #ifndef SURFACEGUI_TASKFILLINGVERTEX_H
 #define SURFACEGUI_TASKFILLINGVERTEX_H
 
-#include <QWidget>
 #include <Gui/DocumentObserver.h>
 #include <Gui/SelectionFilter.h>
 #include <Mod/Surface/App/FeatureFilling.h>
 #include <Mod/Surface/Gui/SelectionMode.h>
+#include <QWidget>
 
 
 class QListWidgetItem;
@@ -43,15 +43,16 @@ namespace SurfaceGui
 class ViewProviderFilling;
 class Ui_TaskFillingVertex;
 
-class FillingVertexPanel : public QWidget,
-                           public Gui::SelectionObserver,
-                           public Gui::DocumentObserver
+class FillingVertexPanel: public QWidget,
+                          public Gui::SelectionObserver,
+                          public Gui::DocumentObserver
 {
     Q_OBJECT
 
 protected:
     class VertexSelection;
-    enum SelectionMode {
+    enum SelectionMode
+    {
         None = SurfaceGui::SelectionMode::None,
         AppendVertex = SurfaceGui::SelectionMode::AppendVertexConstraint,
         RemoveVertex = SurfaceGui::SelectionMode::RemoveVertexConstraint
@@ -72,10 +73,10 @@ public:
     void reject();
     void checkOpenCommand();
     void setEditedObject(Surface::Filling* obj);
-    void appendButtons(Gui::ButtonGroup *);
+    void appendButtons(Gui::ButtonGroup*);
 
 protected:
-    void changeEvent(QEvent *e) override;
+    void changeEvent(QEvent* e) override;
     void onSelectionChanged(const Gui::SelectionChanges& msg) override;
     /** Notifies on undo */
     void slotUndoDocument(const Gui::Document& Doc) override;
@@ -95,6 +96,6 @@ private:
     void exitSelectionMode();
 };
 
-} //namespace SurfaceGui
+}// namespace SurfaceGui
 
-#endif // SURFACEGUI_TASKFILLINGVERTEX_H
+#endif// SURFACEGUI_TASKFILLINGVERTEX_H

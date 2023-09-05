@@ -31,7 +31,7 @@
 namespace Surface
 {
 
-class SurfaceExport Sections :  public Part::Spline
+class SurfaceExport Sections: public Part::Spline
 {
     PROPERTY_HEADER_WITH_OVERRIDE(Surface::Sections);
 
@@ -41,13 +41,14 @@ public:
     App::PropertyLinkSubList NSections;
 
     // recalculate the feature
-    App::DocumentObjectExecReturn *execute() override;
+    App::DocumentObjectExecReturn* execute() override;
     /// returns the type name of the view provider
-    const char* getViewProviderName() const override {
+    const char* getViewProviderName() const override
+    {
         return "SurfaceGui::ViewProviderSections";
     }
 };
 
-}//Namespace Surface
+}// Namespace Surface
 
 #endif

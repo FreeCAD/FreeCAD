@@ -23,7 +23,7 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <vector>
+#include <vector>
 #endif
 
 #include "Structured.h"
@@ -62,30 +62,32 @@ PROPERTY_SOURCE(Points::Structured, Points::Feature)
 
 Structured::Structured()
 {
-//    App::PropertyType type = static_cast<App::PropertyType>(App::Prop_None);
+    //    App::PropertyType type = static_cast<App::PropertyType>(App::Prop_None);
     App::PropertyType type = static_cast<App::PropertyType>(App::Prop_ReadOnly);
-    ADD_PROPERTY_TYPE(Width,(1),"Structured points", type, "Width of the image");
-    ADD_PROPERTY_TYPE(Height,(1),"Structured points", type, "Height of the image");
-    //Width.setStatus(App::Property::ReadOnly, true);
-    //Height.setStatus(App::Property::ReadOnly, true);
+    ADD_PROPERTY_TYPE(Width, (1), "Structured points", type, "Width of the image");
+    ADD_PROPERTY_TYPE(Height, (1), "Structured points", type, "Height of the image");
+    // Width.setStatus(App::Property::ReadOnly, true);
+    // Height.setStatus(App::Property::ReadOnly, true);
 }
 
-App::DocumentObjectExecReturn *Structured::execute()
+App::DocumentObjectExecReturn* Structured::execute()
 {
     std::size_t size = Height.getValue() * Width.getValue();
-    if (size != Points.getValue().size())
+    if (size != Points.getValue().size()) {
         throw Base::ValueError("(Width * Height) doesn't match with number of points");
+    }
     this->Points.touch();
     return App::DocumentObject::StdReturn;
 }
 
 // ---------------------------------------------------------
 
-namespace App {
+namespace App
+{
 /// @cond DOXERR
 PROPERTY_SOURCE_TEMPLATE(Points::StructuredCustom, Points::Structured)
 /// @endcond
 
 // explicit template instantiation
 template class PointsExport FeatureCustomT<Points::Structured>;
-}
+}// namespace App

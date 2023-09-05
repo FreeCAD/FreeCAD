@@ -74,7 +74,7 @@ class Ui_CompactView(object):
     # setupUi
 
     def retranslateUi(self, CompactView):
-#        CompactView.setWindowTitle(QCoreApplication.translate("CompactView", "Form", None))
+        #        CompactView.setWindowTitle(QCoreApplication.translate("CompactView", "Form", None))
         self.labelIcon.setText(QCoreApplication.translate("CompactView", "Icon", None))
         self.labelPackageName.setText(
             QCoreApplication.translate("CompactView", "<b>Package Name</b>", None)

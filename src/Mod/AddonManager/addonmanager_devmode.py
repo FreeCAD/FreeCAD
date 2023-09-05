@@ -70,9 +70,7 @@ class AddonGitInterface:
             try:
                 AddonGitInterface.git_manager = GitManager()
             except NoGitFound:
-                FreeCAD.Console.PrintLog(
-                    "No git found, Addon Manager Developer Mode disabled."
-                )
+                FreeCAD.Console.PrintLog("No git found, Addon Manager Developer Mode disabled.")
                 return
 
         self.path = path
@@ -127,12 +125,8 @@ class DeveloperMode:
         small_size_policy.setHorizontalStretch(1)
         self.people_table.widget.setSizePolicy(large_size_policy)
         self.licenses_table.widget.setSizePolicy(small_size_policy)
-        self.dialog.peopleAndLicenseshorizontalLayout.addWidget(
-            self.people_table.widget
-        )
-        self.dialog.peopleAndLicenseshorizontalLayout.addWidget(
-            self.licenses_table.widget
-        )
+        self.dialog.peopleAndLicenseshorizontalLayout.addWidget(self.people_table.widget)
+        self.dialog.peopleAndLicenseshorizontalLayout.addWidget(self.licenses_table.widget)
         self.pref = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Addons")
         self.current_mod: str = ""
         self.git_interface = None
@@ -267,27 +261,17 @@ class DeveloperMode:
                 if item.Name:
                     info.append(translate("AddonsInstaller", "Name") + ": " + item.Name)
                 if item.Classname:
-                    info.append(
-                        translate("AddonsInstaller", "Class") + ": " + item.Classname
-                    )
+                    info.append(translate("AddonsInstaller", "Class") + ": " + item.Classname)
                 if item.Description:
                     info.append(
-                        translate("AddonsInstaller", "Description")
-                        + ": "
-                        + item.Description
+                        translate("AddonsInstaller", "Description") + ": " + item.Description
                     )
                 if item.Subdirectory:
                     info.append(
-                        translate("AddonsInstaller", "Subdirectory")
-                        + ": "
-                        + item.Subdirectory
+                        translate("AddonsInstaller", "Subdirectory") + ": " + item.Subdirectory
                     )
                 if item.File:
-                    info.append(
-                        translate("AddonsInstaller", "Files")
-                        + ": "
-                        + ", ".join(item.File)
-                    )
+                    info.append(translate("AddonsInstaller", "Files") + ": " + ", ".join(item.File))
                 contents_string += ", ".join(info)
 
                 item = QListWidgetItem(contents_string)
@@ -357,24 +341,14 @@ class DeveloperMode:
     def _setup_dialog_signals(self):
         """Set up the signal and slot connections for the main dialog."""
 
-        self.dialog.addonPathBrowseButton.clicked.connect(
-            self._addon_browse_button_clicked
-        )
-        self.dialog.pathToAddonComboBox.editTextChanged.connect(
-            self._addon_combo_text_changed
-        )
-        self.dialog.detectMinPythonButton.clicked.connect(
-            self._detect_min_python_clicked
-        )
+        self.dialog.addonPathBrowseButton.clicked.connect(self._addon_browse_button_clicked)
+        self.dialog.pathToAddonComboBox.editTextChanged.connect(self._addon_combo_text_changed)
+        self.dialog.detectMinPythonButton.clicked.connect(self._detect_min_python_clicked)
         self.dialog.iconBrowseButton.clicked.connect(self._browse_for_icon_clicked)
 
         self.dialog.addContentItemToolButton.clicked.connect(self._add_content_clicked)
-        self.dialog.removeContentItemToolButton.clicked.connect(
-            self._remove_content_clicked
-        )
-        self.dialog.contentsListWidget.itemSelectionChanged.connect(
-            self._content_selection_changed
-        )
+        self.dialog.removeContentItemToolButton.clicked.connect(self._remove_content_clicked)
+        self.dialog.contentsListWidget.itemSelectionChanged.connect(self._content_selection_changed)
         self.dialog.contentsListWidget.itemDoubleClicked.connect(self._edit_content)
 
         self.dialog.versionToTodayButton.clicked.connect(self._set_to_today_clicked)
@@ -393,17 +367,13 @@ class DeveloperMode:
             self.metadata = FreeCAD.Metadata()
 
         self.metadata.Name = self.dialog.displayNameLineEdit.text()
-        self.metadata.Description = (
-            self.dialog.descriptionTextEdit.document().toPlainText()
-        )
+        self.metadata.Description = self.dialog.descriptionTextEdit.document().toPlainText()
         self.metadata.Version = self.dialog.versionLineEdit.text()
         self.metadata.Icon = self.dialog.iconPathLineEdit.text()
 
         urls = []
         if self.dialog.websiteURLLineEdit.text():
-            urls.append(
-                {"location": self.dialog.websiteURLLineEdit.text(), "type": "website"}
-            )
+            urls.append({"location": self.dialog.websiteURLLineEdit.text(), "type": "website"})
         if self.dialog.repositoryURLLineEdit.text():
             urls.append(
                 {
@@ -420,9 +390,7 @@ class DeveloperMode:
                 }
             )
         if self.dialog.readmeURLLineEdit.text():
-            urls.append(
-                {"location": self.dialog.readmeURLLineEdit.text(), "type": "readme"}
-            )
+            urls.append({"location": self.dialog.readmeURLLineEdit.text(), "type": "readme"})
         if self.dialog.documentationURLLineEdit.text():
             urls.append(
                 {
@@ -594,9 +562,7 @@ class DeveloperMode:
             )
             return
         FreeCAD.Console.PrintMessage(
-            translate(
-                "AddonsInstaller", "Scanning Addon for Python version compatibility"
-            )
+            translate("AddonsInstaller", "Scanning Addon for Python version compatibility")
             + "...\n"
         )
         # pylint: disable=import-outside-toplevel
@@ -608,9 +574,7 @@ class DeveloperMode:
                 if filename.endswith(".py"):
                     with open(os.path.join(dir_path, filename), encoding="utf-8") as f:
                         contents = f.read()
-                        version_strings = vermin.version_strings(
-                            vermin.detect(contents)
-                        )
+                        version_strings = vermin.version_strings(vermin.detect(contents))
                         version = version_strings.split(",")
                         if len(version) >= 2:
                             # Only care about Py3, and only if there is a dot in the version:
@@ -622,9 +586,7 @@ class DeveloperMode:
                                     FreeCAD.Console.PrintLog(
                                         f"Detected Python 3.{minor} required by {filename}\n"
                                     )
-                                    required_minor_version = max(
-                                        required_minor_version, minor
-                                    )
+                                    required_minor_version = max(required_minor_version, minor)
         self.dialog.minPythonLineEdit.setText(f"3.{required_minor_version}")
         QMessageBox.information(
             self.dialog,
@@ -654,13 +616,10 @@ class DeveloperMode:
             if response == QMessageBox.Cancel:
                 return False
             FreeCAD.Console.PrintMessage(
-                translate("AddonsInstaller", "Attempting to install Vermin from PyPi")
-                + "...\n"
+                translate("AddonsInstaller", "Attempting to install Vermin from PyPi") + "...\n"
             )
             python_exe = utils.get_python_exe()
-            vendor_path = os.path.join(
-                FreeCAD.getUserAppDataDir(), "AdditionalPythonPackages"
-            )
+            vendor_path = os.path.join(FreeCAD.getUserAppDataDir(), "AdditionalPythonPackages")
             if not os.path.exists(vendor_path):
                 os.makedirs(vendor_path)
 

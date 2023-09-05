@@ -26,9 +26,10 @@
 
 #include <Gui/Workbench.h>
 
-namespace InspectionGui {
+namespace InspectionGui
+{
 
-class Workbench : public Gui::StdWorkbench
+class Workbench: public Gui::StdWorkbench
 {
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
@@ -41,7 +42,7 @@ protected:
     Gui::ToolBarItem* setupToolBars() const override;
 };
 
-} // namespace InspectionGui
+}// namespace InspectionGui
 
 
-#endif // Inspection_WORKBENCH_H 
+#endif// Inspection_WORKBENCH_H

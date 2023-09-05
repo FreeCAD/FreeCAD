@@ -297,30 +297,34 @@ public:
             if (constructionMethod == Diagonal) {
                 // add auto constraints at the start of the first side
                 if (!sugConstr1.empty()) {
-                    createAutoConstraints(
-                        sugConstr1, getHighestCurveIndex() - 3, Sketcher::PointPos::start);
+                    createAutoConstraints(sugConstr1,
+                                          getHighestCurveIndex() - 3,
+                                          Sketcher::PointPos::start);
                     sugConstr1.clear();
                 }
 
                 // add auto constraints at the end of the second side
                 if (!sugConstr2.empty()) {
-                    createAutoConstraints(
-                        sugConstr2, getHighestCurveIndex() - 2, Sketcher::PointPos::end);
+                    createAutoConstraints(sugConstr2,
+                                          getHighestCurveIndex() - 2,
+                                          Sketcher::PointPos::end);
                     sugConstr2.clear();
                 }
             }
             else if (constructionMethod == CenterAndCorner) {
                 // add auto constraints at the start of the first side
                 if (!sugConstr1.empty()) {
-                    createAutoConstraints(
-                        sugConstr1, getHighestCurveIndex(), Sketcher::PointPos::start);
+                    createAutoConstraints(sugConstr1,
+                                          getHighestCurveIndex(),
+                                          Sketcher::PointPos::start);
                     sugConstr1.clear();
                 }
 
                 // add auto constraints at the end of the second side
                 if (!sugConstr2.empty()) {
-                    createAutoConstraints(
-                        sugConstr2, getHighestCurveIndex() - 3, Sketcher::PointPos::end);
+                    createAutoConstraints(sugConstr2,
+                                          getHighestCurveIndex() - 3,
+                                          Sketcher::PointPos::end);
                     sugConstr2.clear();
                 }
             }
@@ -470,8 +474,10 @@ public:
                 std::string radiusString = lengthToDisplayFormat(radius, 1);
                 std::string xString = lengthToDisplayFormat(lengthX, 1);
                 std::string yString = lengthToDisplayFormat(lengthY, 1);
-                text.sprintf(
-                    "  (R%s X%s Y%s)", radiusString.c_str(), xString.c_str(), yString.c_str());
+                text.sprintf("  (R%s X%s Y%s)",
+                             radiusString.c_str(),
+                             xString.c_str(),
+                             yString.c_str());
                 setPositionText(onSketchPos, text);
             }
 
@@ -678,15 +684,17 @@ public:
 
                 // add auto constraints at the StartPos auxiliary point
                 if (!sugConstr1.empty()) {
-                    createAutoConstraints(
-                        sugConstr1, getHighestCurveIndex() - 1, Sketcher::PointPos::start);
+                    createAutoConstraints(sugConstr1,
+                                          getHighestCurveIndex() - 1,
+                                          Sketcher::PointPos::start);
                     sugConstr1.clear();
                 }
 
                 // add auto constraints at the EndPos auxiliary point
                 if (!sugConstr2.empty()) {
-                    createAutoConstraints(
-                        sugConstr2, getHighestCurveIndex(), Sketcher::PointPos::start);
+                    createAutoConstraints(sugConstr2,
+                                          getHighestCurveIndex(),
+                                          Sketcher::PointPos::start);
                     sugConstr2.clear();
                 }
 

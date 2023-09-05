@@ -132,8 +132,8 @@ public:
      * assertion is raised if this happens. The ownership needs to be specified on the GeoListFacade
      * objects themselves (setOwner method).
      */
-    static GeoListModel<T> getGeoListModel(std::vector<T>&& geometrylist, int intgeocount,
-                                           bool ownerT = false);
+    static GeoListModel<T>
+    getGeoListModel(std::vector<T>&& geometrylist, int intgeocount, bool ownerT = false);
     static const GeoListModel<T> getGeoListModel(const std::vector<T>& geometrylist,
                                                  int intgeocount);
 

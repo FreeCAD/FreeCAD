@@ -129,16 +129,18 @@ public:
             bool avoidredundant =
                 sketchgui->AvoidRedundant.getValue() && sketchgui->Autoconstraints.getValue();
 
-            if (avoidredundant)
+            if (avoidredundant) {
                 removeRedundantHorizontalVertical(
                     static_cast<Sketcher::SketchObject*>(sketchgui->getObject()),
                     sugConstr1,
                     sugConstr2);
+            }
 
             // add auto constraints for the line segment start
             if (!sugConstr1.empty()) {
-                createAutoConstraints(
-                    sugConstr1, getHighestCurveIndex(), Sketcher::PointPos::start);
+                createAutoConstraints(sugConstr1,
+                                      getHighestCurveIndex(),
+                                      Sketcher::PointPos::start);
                 sugConstr1.clear();
             }
 

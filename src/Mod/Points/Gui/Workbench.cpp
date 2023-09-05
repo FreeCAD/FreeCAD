@@ -30,7 +30,7 @@
 
 using namespace PointsGui;
 
-#if 0 // needed for Qt's lupdate utility
+#if 0// needed for Qt's lupdate utility
     qApp->translate("Workbench", "Points tools");
     qApp->translate("Workbench", "&Points");
 #endif
@@ -45,7 +45,7 @@ Workbench::~Workbench() = default;
 Gui::ToolBarItem* Workbench::setupToolBars() const
 {
     Gui::ToolBarItem* root = StdWorkbench::setupToolBars();
-    Gui::ToolBarItem* pnt = new Gui::ToolBarItem( root );
+    Gui::ToolBarItem* pnt = new Gui::ToolBarItem(root);
     pnt->setCommand("Points tools");
     *pnt << "Points_Import"
          << "Points_Export"
@@ -61,7 +61,7 @@ Gui::ToolBarItem* Workbench::setupCommandBars() const
 {
     // point tools
     Gui::ToolBarItem* root = new Gui::ToolBarItem;
-    Gui::ToolBarItem* pnt = new Gui::ToolBarItem( root );
+    Gui::ToolBarItem* pnt = new Gui::ToolBarItem(root);
     pnt->setCommand("Points tools");
     *pnt << "Points_Import"
          << "Points_Export"

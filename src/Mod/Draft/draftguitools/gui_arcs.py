@@ -342,13 +342,9 @@ class Arc(gui_base_original.Creator):
             end = math.degrees(self.firstangle + self.angle)
             if end < sta:
                 sta, end = end, sta
-            while True:
-                if sta > 360:
-                    sta = sta - 360
-                elif end > 360:
-                    end = end - 360
-                else:
-                    break
+            sta %= 360
+            end %= 360
+
             try:
                 Gui.addModule("Draft")
                 if utils.getParam("UsePartPrimitives", False):

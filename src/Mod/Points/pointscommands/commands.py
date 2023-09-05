@@ -32,6 +32,7 @@ __url__ = "https://www.freecad.org"
 import FreeCAD
 import Points
 
+
 def make_points_from_geometry(geometries, distance):
     for geom in geometries:
         global_plm = geom.getGlobalPlacement()
@@ -54,7 +55,9 @@ def make_points_from_geometry(geometries, distance):
         points.Points = kernel
         points.Placement = plm
 
-        if len(points_and_normals[1]) > 0 and len(points_and_normals[0]) == len(points_and_normals[1]):
+        if len(points_and_normals[1]) > 0 and len(points_and_normals[0]) == len(
+            points_and_normals[1]
+        ):
             points.addProperty("Points::PropertyNormalList", "Normal")
             points.Normal = points_and_normals[1]
 

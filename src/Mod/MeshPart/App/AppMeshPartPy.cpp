@@ -22,8 +22,8 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <BRepBuilderAPI_MakePolygon.hxx>
-# include <TopoDS.hxx>
+#include <BRepBuilderAPI_MakePolygon.hxx>
+#include <TopoDS.hxx>
 #endif
 
 #include <Base/Console.h>
@@ -33,17 +33,18 @@
 #include <Base/PyWrapParseTupleAndKeywords.h>
 #include <Base/Vector3D.h>
 #include <Base/VectorPy.h>
+#include <Mod/Mesh/App/Core/Algorithm.h>
+#include <Mod/Mesh/App/Core/MeshKernel.h>
+#include <Mod/Mesh/App/MeshPy.h>
 #include <Mod/Part/App/TopoShapeEdgePy.h>
 #include <Mod/Part/App/TopoShapePy.h>
 #include <Mod/Part/App/TopoShapeWirePy.h>
-#include <Mod/Mesh/App/MeshPy.h>
-#include <Mod/Mesh/App/Core/Algorithm.h>
-#include <Mod/Mesh/App/Core/MeshKernel.h>
 
 #include "MeshAlgos.h"
 #include "Mesher.h"
 
 
+// clang-format off
 namespace MeshPart {
 class Module : public Py::ExtensionModule<Module>
 {
@@ -639,3 +640,4 @@ PyObject* initModule()
 }
 
 } // namespace MeshPart
+// clang-format on
