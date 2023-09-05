@@ -9,19 +9,13 @@ if(WIN32 OR ${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
     set(PYSIDE_BIN_DIR ${PYTHON_BIN_DIR})
 endif(WIN32 OR ${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
 
-# Since Qt v5.14, pyside2-uic and pyside2-rcc are directly provided by Qt5Core uic and rcc, with '-g python' option
-# We test Qt5Core version to act accordingly
 
 FIND_PACKAGE(Qt5 COMPONENTS Core Widgets)
 
-IF(Qt5Core_VERSION VERSION_LESS 5.14)
-  # Legacy (< 5.14)
-  FIND_PROGRAM(PYSIDE2_UIC_EXECUTABLE NAMES python2-pyside2-uic pyside2-uic pyside2-uic-${PYTHON_VERSION_MAJOR}.${PYTHON_VERSION_MINOR} pyuic5 HINTS ${PYSIDE_BIN_DIR})
-  FIND_PROGRAM(PYSIDE2_RCC_EXECUTABLE NAMES pyside2-rcc pyside2-rcc-${PYTHON_VERSION_MAJOR}.${PYTHON_VERSION_MINOR} pyrcc5 HINTS ${PYSIDE_BIN_DIR})
-  set(UICOPTIONS "")
-  set(RCCOPTIONS "")
+IF(Qt5Core_VERSION VERSION_LESS 5.15)
+    message(FATAL_ERROR "QT tools >= 5.15 but are required.")
 ELSE()
-  # New (>= 5.14)
+  # New (>= 5.15)
   if (TARGET Qt::uic)
     get_property(PYSIDE2_UIC_EXECUTABLE TARGET Qt::uic PROPERTY LOCATION)
     set(UICOPTIONS "--generator=python")
