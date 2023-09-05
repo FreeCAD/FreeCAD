@@ -26,8 +26,6 @@
 # include <QFontDatabase>
 #endif
 
-#include <boost/algorithm/string.hpp>
-
 #include <App/Color.h>
 #include <Gui/PythonEditor.h>
 #include <Gui/Tools.h>
@@ -303,8 +301,7 @@ void DlgSettingsEditor::loadSettings()
     QStringList fixedFamilyNames;
     for (const auto &name : familyNames) {
         if (QFontDatabase().isFixedPitch(name)) {
-            std::string utf8_name = name.toUtf8().constData();
-            if (boost::iequals(utf8_name, "8514oem")) {
+            if (name.compare(QLatin1String("8514oem"), Qt::CaseInsensitive) != 0) {
                 fixedFamilyNames.append(name);
             }
         }
@@ -314,8 +311,7 @@ void DlgSettingsEditor::loadSettings()
     QStringList fixedFamilyNames;
     for (const auto &name : familyNames) {
         if (QFontDatabase::isFixedPitch(name)) {
-            std::string utf8_name = name.toUtf8().constData();
-            if (boost::iequals(utf8_name, "8514oem")) {
+            if (name.compare(QLatin1String("8514oem"), Qt::CaseInsensitive) != 0) {
                 fixedFamilyNames.append(name);
             }
         }
