@@ -39,7 +39,7 @@ TYPESYSTEM_SOURCE(Materials::LibraryBase, Base::BaseClass)
 
 LibraryBase::LibraryBase(const QString& libraryName, const QString& dir, const QString& icon)
     : _name(libraryName)
-    , _directory(dir)
+    , _directory(QDir::cleanPath(dir))
     , _iconPath(icon)
 {}
 
@@ -57,13 +57,14 @@ QString LibraryBase::getLocalPath(const QString& path) const
                         getDirectoryPath().toStdString().c_str());
 
     QString filePath = getDirectoryPath();
+    QString cleanPath = QDir::cleanPath(path);
     QString prefix = QString::fromStdString("/") + getName();
-    if (path.startsWith(prefix)) {
+    if (cleanPath.startsWith(prefix)) {
         // Remove the library name from the path
-        filePath += path.right(path.length() - prefix.length());
+        filePath += cleanPath.right(cleanPath.length() - prefix.length());
     }
     else {
-        filePath += path;
+        filePath += cleanPath;
     }
 
     Base::Console().Log("LibraryBase::getFilePath: filePath '%s'\n",
@@ -77,17 +78,18 @@ QString LibraryBase::getRelativePath(const QString& path) const
                         getDirectoryPath().toStdString().c_str());
 
     QString filePath;
+    QString cleanPath = QDir::cleanPath(path);
     QString prefix = QString::fromStdString("/") + getName();
-    if (path.startsWith(prefix)) {
+    if (cleanPath.startsWith(prefix)) {
         // Remove the library name from the path
-        filePath += path.right(path.length() - prefix.length());
+        filePath = cleanPath.right(cleanPath.length() - prefix.length());
     }
     else {
-        filePath += path;
+        filePath = cleanPath;
     }
 
     prefix = getDirectoryPath();
-    if (path.startsWith(prefix)) {
+    if (filePath.startsWith(prefix)) {
         // Remove the library root from the path
         filePath = filePath.right(filePath.length() - prefix.length());
     }

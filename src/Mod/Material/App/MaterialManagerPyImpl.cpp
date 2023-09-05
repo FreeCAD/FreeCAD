@@ -79,21 +79,34 @@ PyObject* MaterialManagerPy::getMaterialByPath(PyObject* args)
 {
     char* path;
     char* lib = "";
-    if (!PyArg_ParseTuple(args, "ss", &lib, &path)) {
+    if (!PyArg_ParseTuple(args, "s|s", &path, &lib)) {
         return nullptr;
     }
 
-    MaterialLibrary* library = nullptr;
-    try {
-        library = getMaterialManagerPtr()->getLibrary(QString::fromStdString(lib));
-    }
-    catch (const LibraryNotFound&) {
-        PyErr_SetString(PyExc_LookupError, "Library not found");
-        return nullptr;
+    std::string libPath(lib);
+    if (libPath.length() > 0) {
+        MaterialLibrary* library = nullptr;
+        try {
+            library = getMaterialManagerPtr()->getLibrary(QString::fromStdString(lib));
+        }
+        catch (const LibraryNotFound&) {
+            PyErr_SetString(PyExc_LookupError, "Library not found");
+            return nullptr;
+        }
+
+        try {
+            const Material& material = library->getMaterialByPath(QString::fromStdString(path));
+            return new MaterialPy(new Material(material));
+        }
+        catch (const MaterialNotFound&) {
+            PyErr_SetString(PyExc_LookupError, "Material not found");
+            return nullptr;
+        }
     }
 
     try {
-        const Material& material = library->getMaterialByPath(QString::fromStdString(path));
+        const Material& material =
+            getMaterialManagerPtr()->getMaterialByPath(QString::fromStdString(path));
         return new MaterialPy(new Material(material));
     }
     catch (const MaterialNotFound&) {

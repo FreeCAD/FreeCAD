@@ -270,7 +270,7 @@ def import_materials(category='Solid', template=False):
         physicalModels = mat.PhysicalModels
         fluid = ('1ae66d8c-1ba1-4211-ad12-b9917573b202' in physicalModels)
         if not fluid:
-            path = mat.LibraryRoot + "/" + mat.RelativePath
+            path = mat.LibraryRoot + "/" + mat.Directory
             print(path)
             materials[path] = mat.Properties
             cards[path] = mat.Name

@@ -106,6 +106,30 @@ const Material& MaterialManager::getMaterial(const QString& uuid) const
     }
 }
 
+const Material& MaterialManager::getMaterialByPath(const QString& path) const
+{
+    QString cleanPath = QDir::cleanPath(path);
+
+    for (auto library : *_libraryList) {
+        Base::Console().Log("MaterialManager::getMaterialByPath() Checking library '%s'->'%s'\n",
+                            library->getName().toStdString().c_str(),
+                            library->getDirectory().toStdString().c_str());
+
+
+        if (cleanPath.startsWith(library->getDirectory())) {
+            Base::Console().Log("MaterialManager::getMaterialByPath() Library '%s'\n",
+                                library->getDirectory().toStdString().c_str());
+            Base::Console().Log("MaterialManager::getMaterialByPath() Path '%s'\n",
+                                cleanPath.toStdString().c_str());
+            return library->getMaterialByPath(cleanPath);
+        }
+    }
+    Base::Console().Log("MaterialManager::getMaterialByPath() Library not found for path '%s'\n",
+                        cleanPath.toStdString().c_str());
+
+    throw MaterialNotFound();
+}
+
 MaterialLibrary* MaterialManager::getLibrary(const QString& name) const
 {
     for (auto library : *_libraryList) {

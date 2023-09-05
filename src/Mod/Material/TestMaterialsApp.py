@@ -215,8 +215,17 @@ class MaterialTestCases(unittest.TestCase):
             self.assertIn(mat, materials)
 
     def testModelByPath(self):
-        steel = self.MaterialManager.getMaterialByPath('System', 'StandardMaterial/Metal/Steel/CalculiX-Steel.FCMat')
+        steel = self.MaterialManager.getMaterialByPath('StandardMaterial/Metal/Steel/CalculiX-Steel.FCMat', 'System')
         self.assertIsNotNone(steel)
         self.assertEqual(steel.Name, "CalculiX-Steel")
         self.assertEqual(steel.UUID, "92589471-a6cb-4bbc-b748-d425a17dea7d")
 
+        steel2 = self.MaterialManager.getMaterialByPath('/StandardMaterial/Metal/Steel/CalculiX-Steel.FCMat', 'System')
+        self.assertIsNotNone(steel2)
+        self.assertEqual(steel2.Name, "CalculiX-Steel")
+        self.assertEqual(steel2.UUID, "92589471-a6cb-4bbc-b748-d425a17dea7d")
+
+        steel3 = self.MaterialManager.getMaterialByPath('/System/StandardMaterial/Metal/Steel/CalculiX-Steel.FCMat', 'System')
+        self.assertIsNotNone(steel3)
+        self.assertEqual(steel3.Name, "CalculiX-Steel")
+        self.assertEqual(steel3.UUID, "92589471-a6cb-4bbc-b748-d425a17dea7d")
