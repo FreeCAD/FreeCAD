@@ -230,7 +230,6 @@ SET(FreeCADBase_CPP_SRCS
     Matrix.cpp
     MatrixPyImp.cpp
     MemDebug.cpp
-    Mutex.cpp
     Observer.cpp
     Parameter.xsd
     Parameter.cpp
@@ -300,7 +299,6 @@ SET(FreeCADBase_HPP_SRCS
     Interpreter.h
     Matrix.h
     MemDebug.h
-    Mutex.h
     Observer.h
     Parameter.h
     Persistence.h
