@@ -350,10 +350,12 @@ def _svg_dimension(obj, plane, scale, linewidth, fontsize,
                 if vobj.FlipArrows:
                     angle = angle + math.pi
 
-            svg += get_arrow(obj,
-                             vobj.ArrowType,
-                             p2, arrowsize, stroke, linewidth,
-                             angle)
+            if hasattr(obj, "Diameter") and obj.Diameter == True:
+                svg += get_arrow(obj,
+                                 vobj.ArrowType,
+                                 p2, arrowsize, stroke, linewidth,
+                                 angle)
+
             svg += get_arrow(obj,
                              vobj.ArrowType,
                              p3, arrowsize, stroke, linewidth,

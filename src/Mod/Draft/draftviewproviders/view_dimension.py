@@ -585,6 +585,10 @@ class ViewProviderLinearDimension(ViewProviderDimensionBase):
                                                  'Length', show_unit, unit)
 
         if hasattr(vobj, "Override") and vobj.Override:
+            if hasattr(obj, "Diameter") and obj.Diameter == True:
+                vobj.Override = vobj.Override.replace("R", "Ø")
+            elif hasattr(obj, "Diameter") and obj.Diameter == False:
+                vobj.Override = vobj.Override.replace("Ø", "R")
             self.string = vobj.Override.replace("$dim", self.string)
 
         self.text_wld.string = utils.string_encode_coin(self.string)
@@ -615,6 +619,12 @@ class ViewProviderLinearDimension(ViewProviderDimensionBase):
                                          [self.p4.x, self.p4.y, self.p4.z]])
             # self.line.numVertices.setValue(4)
             self.line.coordIndex.setValues(0, 4, (0, 1, 2, 3))
+
+        if ("ArrowSize" in vobj.PropertiesList
+             and "ScaleMultiplier" in vobj.PropertiesList
+             and hasattr(self, "node_wld") and hasattr(self, "p2")):
+            self.remove_dim_arrows()
+            self.draw_dim_arrows(vobj)            
 
     def onChanged(self, vobj, prop):
         """Execute when a view property is changed."""
@@ -720,14 +730,15 @@ class ViewProviderLinearDimension(ViewProviderDimensionBase):
         self.marks = coin.SoSeparator()
         self.marks.addChild(self.linecolor)
 
-        s1 = coin.SoSeparator()
-        if symbol == "Circle":
-            s1.addChild(self.coord1)
-        else:
-            s1.addChild(self.trans1)
-
-        s1.addChild(gui_utils.dim_symbol(symbol, invert=not inv))
-        self.marks.addChild(s1)
+        if vobj.Object.Diameter == True:
+            s1 = coin.SoSeparator()
+            if symbol == "Circle":
+                s1.addChild(self.coord1)
+            else:
+                s1.addChild(self.trans1)
+            
+            s1.addChild(gui_utils.dim_symbol(symbol, invert=not inv))
+            self.marks.addChild(s1)
 
         s2 = coin.SoSeparator()
         if symbol == "Circle":
