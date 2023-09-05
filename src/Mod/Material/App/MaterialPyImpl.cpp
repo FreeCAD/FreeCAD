@@ -55,10 +55,8 @@ std::string MaterialPy::representation() const
     str << ptr->getLibrary().getDirectoryPath().toStdString();
     str << "), Library Icon=(";
     str << ptr->getLibrary().getIconPath().toStdString();
-    str << "), Relative Path=(";
-    str << ptr->getRelativePath().toStdString();
     str << "), Directory=(";
-    str << ptr->getDirectory().absolutePath().toStdString();
+    str << ptr->getDirectory().toStdString();
     // str << "), URL=(";
     // str << ptr->getURL();
     // str << "), DOI=(";
@@ -104,11 +102,6 @@ Py::String MaterialPy::getLibraryRoot() const
     return Py::String(getMaterialPtr()->getLibrary().getDirectoryPath().toStdString());
 }
 
-Py::String MaterialPy::getRelativePath() const
-{
-    return Py::String(getMaterialPtr()->getRelativePath().toStdString());
-}
-
 Py::String MaterialPy::getLibraryIcon() const
 {
     return Py::String(getMaterialPtr()->getLibrary().getIconPath().toStdString());
@@ -121,7 +114,7 @@ Py::String MaterialPy::getName() const
 
 Py::String MaterialPy::getDirectory() const
 {
-    return Py::String(getMaterialPtr()->getDirectory().absolutePath().toStdString());
+    return Py::String(getMaterialPtr()->getDirectory().toStdString());
 }
 
 Py::String MaterialPy::getUUID() const

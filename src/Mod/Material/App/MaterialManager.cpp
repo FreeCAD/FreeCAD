@@ -38,7 +38,6 @@ using namespace Materials;
 
 std::list<MaterialLibrary*>* MaterialManager::_libraryList = nullptr;
 std::map<QString, Material*>* MaterialManager::_materialMap = nullptr;
-std::map<QString, Material*>* MaterialManager::_materialPathMap = nullptr;
 
 TYPESYSTEM_SOURCE(Materials::MaterialManager, Base::BaseClass)
 
@@ -52,15 +51,12 @@ MaterialManager::MaterialManager()
 
         _materialMap = new std::map<QString, Material*>();
 
-        if (_materialPathMap == nullptr) {
-            _materialPathMap = new std::map<QString, Material*>();
-        }
         if (_libraryList == nullptr) {
             _libraryList = new std::list<MaterialLibrary*>();
         }
 
         // Load the libraries
-        MaterialLoader loader(_materialMap, _materialPathMap, _libraryList);
+        MaterialLoader loader(_materialMap, _libraryList);
     }
 }
 
@@ -69,11 +65,18 @@ void MaterialManager::saveMaterial(MaterialLibrary* library,
                                    const QString& path,
                                    bool saveAsCopy)
 {
-    library->saveMaterial(material, path, saveAsCopy);
+    Material* newMaterial = library->saveMaterial(material, path, saveAsCopy);
 
-    Material* newMaterial = new Material(material);
+    try {
+        Material* old = _materialMap->at(newMaterial->getUUID());
+        if (old) {
+            delete old;
+        }
+    }
+    catch (const std::out_of_range&) {
+    }
+
     (*_materialMap)[material.getUUID()] = newMaterial;
-    (*_materialPathMap)[path] = newMaterial;
 }
 
 bool MaterialManager::isMaterial(const fs::path& p)
@@ -98,48 +101,29 @@ const Material& MaterialManager::getMaterial(const QString& uuid) const
     }
 }
 
+MaterialLibrary* MaterialManager::getLibrary(const QString& name) const
+{
+    for (auto library : *_libraryList) {
+        if (library->getName() == name) {
+            return library;
+        }
+    }
+
+    throw LibraryNotFound();
+}
+
 std::list<MaterialLibrary*>* MaterialManager::getMaterialLibraries()
 {
     if (_libraryList == nullptr) {
         if (_materialMap == nullptr) {
             _materialMap = new std::map<QString, Material*>();
         }
-        if (_materialPathMap == nullptr) {
-            _materialPathMap = new std::map<QString, Material*>();
-        }
         _libraryList = new std::list<MaterialLibrary*>();
 
         // Load the libraries
-        MaterialLoader loader(_materialMap, _materialPathMap, _libraryList);
+        MaterialLoader loader(_materialMap, _libraryList);
     }
     return _libraryList;
-}
-
-const Material& MaterialManager::getMaterialByPath(const QString& path) const
-{
-    const QString& uuid = getUUIDFromPath(path);
-    return getMaterial(uuid);
-}
-
-const QString MaterialManager::getUUIDFromPath(const QString& path) const
-{
-    QDir dirPath(path);
-    QString normalized = dirPath.absolutePath();
-    try {
-        Material* material = _materialPathMap->at(normalized);
-        return material->getUUID();
-    }
-    catch (std::out_of_range& e) {
-        throw MaterialNotFound();
-    }
-}
-
-const Material& MaterialManager::getMaterialByPath(const QString& path,
-                                                   const QString& libraryPath) const
-{
-    QDir materialDir(QDir::cleanPath(libraryPath + QString::fromStdString("/") + path));
-    QString absPath = materialDir.absolutePath();
-    return getMaterialByPath(absPath);
 }
 
 std::map<QString, MaterialTreeNode*>*
@@ -152,7 +136,7 @@ MaterialManager::getMaterialTree(const MaterialLibrary& library)
         auto material = it->second;
 
         if (material->getLibrary() == library) {
-            fs::path path = material->getRelativePath().toStdString();
+            fs::path path = material->getDirectory().toStdString();
 
             // Start at the root
             std::map<QString, MaterialTreeNode*>* node = materialTree;

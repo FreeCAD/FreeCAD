@@ -29,49 +29,10 @@
 #include <QString>
 
 #include "MaterialValue.h"
+#include "ModelLibrary.h"
 
 namespace Materials
 {
-
-class MaterialsExport ModelLibrary: public Base::BaseClass
-{
-    TYPESYSTEM_HEADER();
-
-public:
-    ModelLibrary();
-    explicit ModelLibrary(const QString& libraryName, const QDir& dir, const QString& icon);
-    virtual ~ModelLibrary() = default;
-
-    const QString getName() const
-    {
-        return _name;
-    }
-    const QDir getDirectory() const
-    {
-        return _directory;
-    }
-    const QString getDirectoryPath() const
-    {
-        return _directory.absolutePath();
-    }
-    const QString getIconPath() const
-    {
-        return _iconPath;
-    }
-    bool operator==(const ModelLibrary& library) const
-    {
-        return (_name == library._name) && (_directory == library._directory);
-    }
-    bool operator!=(const ModelLibrary& library) const
-    {
-        return !operator==(library);
-    }
-
-private:
-    QString _name;
-    QDir _directory;
-    QString _iconPath;
-};
 
 class MaterialsExport ModelProperty: public Base::BaseClass
 {
@@ -181,7 +142,7 @@ public:
     explicit Model(const ModelLibrary& library,
                    ModelType type,
                    const QString& name,
-                   const QDir& directory,
+                   const QString& directory,
                    const QString& uuid,
                    const QString& description,
                    const QString& url,
@@ -205,17 +166,17 @@ public:
     {
         return _type;
     }
-    const QDir getDirectory() const
+    const QString getDirectory() const
     {
         return _directory;
     }
     const QString getDirectoryPath() const
     {
-        return _directory.absolutePath();
+        return QDir(_directory).absolutePath();
     }
     const QString getRelativePath() const
     {
-        return _library.getDirectory().relativeFilePath(_directory.absolutePath());
+        return QDir(_directory).relativeFilePath(QDir(_directory).absolutePath());
     }
     const QString getUUID() const
     {
@@ -248,7 +209,7 @@ public:
     }
     void setDirectory(const QString& directory)
     {
-        _directory = QDir(directory);
+        _directory = directory;
     }
     void setUUID(const QString& uuid)
     {
@@ -322,7 +283,7 @@ private:
     ModelLibrary _library;
     ModelType _type;
     QString _name;
-    QDir _directory;
+    QString _directory;
     QString _uuid;
     QString _description;
     QString _url;

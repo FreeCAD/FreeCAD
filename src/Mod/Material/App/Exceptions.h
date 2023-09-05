@@ -66,6 +66,18 @@ public:
     ~PropertyNotFound() throw() override = default;
 };
 
+class LibraryNotFound: public Base::Exception
+{
+public:
+    LibraryNotFound()
+    {}
+    explicit LibraryNotFound(char* msg)
+    {
+        this->setMessage(msg);
+    }
+    ~LibraryNotFound() throw() override = default;
+};
+
 class InvalidModel: public Base::Exception
 {
 public:

@@ -20,56 +20,81 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef MATERIAL_MATERIALMANAGER_H
-#define MATERIAL_MATERIALMANAGER_H
+#ifndef MATERIAL_MODELLIBRARY_H
+#define MATERIAL_MODELLIBRARY_H
 
-#include <boost/filesystem.hpp>
+#include <Base/BaseClass.h>
+#include <Base/Quantity.h>
+#include <QDir>
+#include <QString>
 
-#include "FolderTree.h"
-#include "Materials.h"
-
-namespace fs = boost::filesystem;
+#include "MaterialValue.h"
 
 namespace Materials
 {
 
-typedef FolderTreeNode<Material> MaterialTreeNode;
+class Model;
 
-class MaterialsExport MaterialManager: public Base::BaseClass
+class MaterialsExport LibraryBase: public Base::BaseClass
 {
     TYPESYSTEM_HEADER();
 
 public:
-    MaterialManager();
-    virtual ~MaterialManager() = default;
+    LibraryBase();
+    explicit LibraryBase(const QString& libraryName, const QString& dir, const QString& icon);
+    virtual ~LibraryBase() = default;
 
-    std::map<QString, Material*>* getMaterials()
+    const QString getName() const
     {
-        return _materialMap;
+        return _name;
     }
-    const Material& getMaterial(const QString& uuid) const;
-    MaterialLibrary* getLibrary(const QString& name) const;
-
-    // Library management
-    static std::list<MaterialLibrary*>* getMaterialLibraries();
-    std::map<QString, MaterialTreeNode*>* getMaterialTree(const MaterialLibrary& library);
-    std::list<QString>* getMaterialFolders(const MaterialLibrary& library);
-    void createPath(MaterialLibrary* library, const QString& path)
+    const QString getDirectory() const
     {
-        library->createPath(path);
+        return _directory;
     }
-    void saveMaterial(MaterialLibrary* library,
-                      Material& material,
-                      const QString& path,
-                      bool saveAsCopy = true);
-
-    static bool isMaterial(const fs::path& p);
+    const QString getDirectoryPath() const
+    {
+        return QDir(_directory).absolutePath();
+    }
+    const QString getIconPath() const
+    {
+        return _iconPath;
+    }
+    bool operator==(const LibraryBase& library) const;
+    bool operator!=(const LibraryBase& library) const
+    {
+        return !operator==(library);
+    }
+    QString getLocalPath(const QString& path) const;
+    QString getRelativePath(const QString& path) const;
 
 private:
-    static std::list<MaterialLibrary*>* _libraryList;
-    static std::map<QString, Material*>* _materialMap;
+    QString _name;
+    QString _directory;
+    QString _iconPath;
+};
+
+class MaterialsExport ModelLibrary: public LibraryBase
+{
+    TYPESYSTEM_HEADER();
+
+public:
+    ModelLibrary();
+    explicit ModelLibrary(const QString& libraryName, const QString& dir, const QString& icon);
+    virtual ~ModelLibrary() = default;
+
+    bool operator==(const ModelLibrary& library) const
+    {
+        return LibraryBase::operator==(library);
+    }
+    bool operator!=(const ModelLibrary& library) const
+    {
+        return !operator==(library);
+    }
+
+    Model* addModel(const Model& model, const QString& path);
 };
 
 }// namespace Materials
 
-#endif// MATERIAL_MATERIALMANAGER_H
+#endif// MATERIAL_MODELLIBRARY_H

@@ -26,7 +26,9 @@
 // #include <boost/filesystem.hpp>
 
 #include <QDialog>
+#include <QItemSelection>
 #include <QStandardItem>
+#include <QTreeView>
 
 #include <Mod/Material/App/MaterialManager.h>
 

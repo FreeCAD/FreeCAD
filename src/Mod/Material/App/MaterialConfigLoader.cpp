@@ -338,7 +338,6 @@ void MaterialConfigLoader::addMechanical(const QSettings& fcmat, Material* final
 Material* MaterialConfigLoader::getMaterialFromPath(const MaterialLibrary& library,
                                                     const QString& path)
 {
-    QDir modelDir(path);
     QString authorAndLicense = getAuthorAndLicense(path);
 
     QSettings fcmat(path, QSettings::IniFormat);
@@ -354,7 +353,7 @@ Material* MaterialConfigLoader::getMaterialFromPath(const MaterialLibrary& libra
     QString sourceReference = value(fcmat, "ReferenceSource", "");
     QString sourceURL = value(fcmat, "SourceURL", "");
 
-    Material* finalModel = new Material(library, modelDir, uuid, name);
+    Material* finalModel = new Material(library, path, uuid, name);
     finalModel->setAuthorAndLicense(authorAndLicense);
     finalModel->setDescription(description);
     finalModel->setReference(sourceReference);

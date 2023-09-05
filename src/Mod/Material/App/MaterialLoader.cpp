@@ -44,7 +44,7 @@ MaterialEntry::MaterialEntry()
 
 MaterialEntry::MaterialEntry(const MaterialLibrary& library,
                              const QString& modelName,
-                             const QDir& dir,
+                             const QString& dir,
                              const QString& modelUuid)
     : _library(library)
     , _name(modelName)
@@ -54,15 +54,15 @@ MaterialEntry::MaterialEntry(const MaterialLibrary& library,
 
 MaterialYamlEntry::MaterialYamlEntry(const MaterialLibrary& library,
                                      const QString& modelName,
-                                     const QDir& dir,
+                                     const QString& dir,
                                      const QString& modelUuid,
                                      const YAML::Node& modelData)
     : MaterialEntry(library, modelName, dir, modelUuid)
     , _model(modelData)
 {}
 
-MaterialYamlEntry::~MaterialYamlEntry()
-{}
+// MaterialYamlEntry::~MaterialYamlEntry()
+// {}
 
 QString MaterialYamlEntry::yamlValue(const YAML::Node& node,
                                      const std::string& key,
@@ -74,8 +74,7 @@ QString MaterialYamlEntry::yamlValue(const YAML::Node& node,
     return QString::fromStdString(defaultValue);
 }
 
-void MaterialYamlEntry::addToTree(std::map<QString, Material*>* materialMap,
-                                  std::map<QString, Material*>* materialPathMap)
+void MaterialYamlEntry::addToTree(std::map<QString, Material*>* materialMap)
 {
     std::set<QString> exclude;
     exclude.insert(QString::fromStdString("General"));
@@ -163,19 +162,16 @@ void MaterialYamlEntry::addToTree(std::map<QString, Material*>* materialMap,
         }
     }
 
-    QString path = directory.absolutePath();
+    QString path = QDir(directory).absolutePath();
     // Base::Console().Log("\tPath '%s'\n", path.toStdString().c_str());
-    (*materialMap)[uuid] = finalModel;
-    (*materialPathMap)[path] = finalModel;
+    (*materialMap)[uuid] = library.addMaterial(*finalModel, path);
 }
 
 std::map<QString, MaterialEntry*>* MaterialLoader::_materialEntryMap = nullptr;
 
 MaterialLoader::MaterialLoader(std::map<QString, Material*>* materialMap,
-                               std::map<QString, Material*>* materialPathMap,
                                std::list<MaterialLibrary*>* libraryList)
     : _materialMap(materialMap)
-    , _materialPathMap(materialPathMap)
     , _libraryList(libraryList)
 {
     loadLibraries();
@@ -192,18 +188,16 @@ void MaterialLoader::addLibrary(MaterialLibrary* model)
     _libraryList->push_back(model);
 }
 
-MaterialEntry* MaterialLoader::getMaterialFromPath(const MaterialLibrary& library,
+MaterialEntry* MaterialLoader::getMaterialFromPath(MaterialLibrary& library,
                                                    const QString& path) const
 {
-    QDir modelDir(path);
     MaterialEntry* model = nullptr;
 
     if (MaterialConfigLoader::isConfigStyle(path)) {
         Base::Console().Log("Old format .FCMat file: '%s'\n", path.toStdString().c_str());
         Material* material = MaterialConfigLoader::getMaterialFromPath(library, path);
         if (material) {
-            (*_materialMap)[material->getUUID()] = material;
-            (*_materialPathMap)[path] = material;
+            (*_materialMap)[material->getUUID()] = library.addMaterial(*material, path);
         }
 
         // Return the nullptr as there are no intermediate steps to take, such
@@ -221,8 +215,7 @@ MaterialEntry* MaterialLoader::getMaterialFromPath(const MaterialLibrary& librar
         QString name =
             filepath.fileName().remove(QString::fromStdString(".FCMat"), Qt::CaseInsensitive);
 
-        model =
-            new MaterialYamlEntry(library, name, modelDir, QString::fromStdString(uuid), yamlroot);
+        model = new MaterialYamlEntry(library, name, path, QString::fromStdString(uuid), yamlroot);
         // showYaml(yamlroot);
     }
     catch (YAML::Exception const&) {
@@ -250,8 +243,8 @@ void MaterialLoader::dereference(Material* material)
         return;
     }
 
-    Base::Console().Log("Dereferencing material '%s'.\n",
-                        material->getName().toStdString().c_str());
+    // Base::Console().Log("Dereferencing material '%s'.\n",
+    //                     material->getName().toStdString().c_str());
 
     auto parentUUID = material->getParentUUID();
     if (parentUUID.size() > 0) {
@@ -310,7 +303,7 @@ void MaterialLoader::dereference(Material* material)
     material->markDereferenced();
 }
 
-void MaterialLoader::loadLibrary(const MaterialLibrary& library)
+void MaterialLoader::loadLibrary(MaterialLibrary& library)
 {
     if (_materialEntryMap == nullptr) {
         _materialEntryMap = new std::map<QString, MaterialEntry*>();
@@ -333,7 +326,7 @@ void MaterialLoader::loadLibrary(const MaterialLibrary& library)
     }
 
     for (auto it = _materialEntryMap->begin(); it != _materialEntryMap->end(); it++) {
-        it->second->addToTree(_materialMap, _materialPathMap);
+        it->second->addToTree(_materialMap);
     }
 }
 
@@ -363,9 +356,8 @@ std::list<MaterialLibrary*>* MaterialLoader::getMaterialLibraries()
     if (useBuiltInMaterials) {
         QString resourceDir = QString::fromStdString(App::Application::getResourceDir()
                                                      + "/Mod/Material/Resources/Materials");
-        QDir materialDir(resourceDir);
         auto libData = new MaterialLibrary(QString::fromStdString("System"),
-                                           materialDir,
+                                           resourceDir,
                                            QString::fromStdString(":/icons/freecad.svg"),
                                            true);
         _libraryList->push_back(libData);
@@ -383,8 +375,11 @@ std::list<MaterialLibrary*>* MaterialLoader::getMaterialLibraries()
 
             if (materialDir.length() > 0) {
                 QDir dir(materialDir);
-                auto libData = new MaterialLibrary(moduleName, dir, materialIcon, materialReadOnly);
                 if (dir.exists()) {
+                    auto libData = new MaterialLibrary(moduleName,
+                                                       materialDir,
+                                                       materialIcon,
+                                                       materialReadOnly);
                     _libraryList->push_back(libData);
                 }
             }
@@ -395,12 +390,12 @@ std::list<MaterialLibrary*>* MaterialLoader::getMaterialLibraries()
         QString resourceDir =
             QString::fromStdString(App::Application::getUserAppDataDir() + "/Material");
         QDir materialDir(resourceDir);
-        auto libData =
-            new MaterialLibrary(QString::fromStdString("User"),
-                                materialDir,
-                                QString::fromStdString(":/icons/preferences-general.svg"),
-                                false);
         if (materialDir.exists()) {
+            auto libData =
+                new MaterialLibrary(QString::fromStdString("User"),
+                                    resourceDir,
+                                    QString::fromStdString(":/icons/preferences-general.svg"),
+                                    false);
             _libraryList->push_back(libData);
         }
     }
@@ -408,11 +403,11 @@ std::list<MaterialLibrary*>* MaterialLoader::getMaterialLibraries()
     if (useMatFromCustomDir) {
         QString resourceDir = QString::fromStdString(param->GetASCII("CustomMaterialsDir", ""));
         QDir materialDir(resourceDir);
-        auto libData = new MaterialLibrary(QString::fromStdString("Custom"),
-                                           materialDir,
-                                           QString::fromStdString(":/icons/user.svg"),
-                                           false);
         if (materialDir.exists()) {
+            auto libData = new MaterialLibrary(QString::fromStdString("Custom"),
+                                               resourceDir,
+                                               QString::fromStdString(":/icons/user.svg"),
+                                               false);
             _libraryList->push_back(libData);
         }
     }
@@ -428,7 +423,7 @@ std::list<QString>* MaterialLoader::getMaterialFolders(const MaterialLibrary& li
         auto pathname = it.next();
         QFileInfo file(pathname);
         if (file.isDir()) {
-            QString path = library.getDirectory().relativeFilePath(file.absoluteFilePath());
+            QString path = QDir(library.getDirectory()).relativeFilePath(file.absoluteFilePath());
             if (!path.startsWith(QString::fromStdString("."))) {
                 pathList->push_back(path);
             }

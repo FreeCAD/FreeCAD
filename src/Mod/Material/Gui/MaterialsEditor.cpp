@@ -359,7 +359,7 @@ void MaterialsEditor::saveMaterial()
     dialog.setModal(true);
     if (dialog.exec() == QDialog::Accepted) {
         _material.resetEditState();
-        fillMaterialTree();
+        refreshMaterialTree();
     }
 }
 
@@ -379,39 +379,33 @@ void MaterialsEditor::reject()
 // }
 
 void MaterialsEditor::addMaterials(QStandardItem& parent,
-                                   const QString& top,
-                                   const QString& folder,
+                                   const std::map<QString, Materials::MaterialTreeNode*>* modelTree,
+                                   const QIcon& folderIcon,
                                    const QIcon& icon)
 {
     auto tree = ui->treeMaterials;
-    for (const auto& mod : fs::directory_iterator(folder.toStdString())) {
-        if (fs::is_directory(mod)) {
-            auto node = new QStandardItem(QString::fromStdString(mod.path().filename().string()));
-            addExpanded(tree, &parent, node);
-            node->setFlags(Qt::ItemIsEnabled | Qt::ItemIsDragEnabled | Qt::ItemIsDropEnabled);
+    for (auto& mat : *modelTree) {
+        Materials::MaterialTreeNode* nodePtr = mat.second;
+        if (nodePtr->getType() == Materials::MaterialTreeNode::DataNode) {
+            const Materials::Material* material = nodePtr->getData();
+            QString uuid = material->getUUID();
+            // Base::Console().Log("Material path '%s'\n",
+            //                     material->getDirectory().toStdString().c_str());
 
-            addMaterials(*node, top, QString::fromStdString(mod.path().string()), icon);
-        }
-        else if (isMaterial(mod)) {
-            auto card =
-                new QStandardItem(icon, QString::fromStdString(mod.path().filename().string()));
+            // auto card = new QStandardItem(icon, material->getName());
+            auto card = new QStandardItem(icon, mat.first);
             card->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemIsDragEnabled
                            | Qt::ItemIsDropEnabled);
-            try {
-                const Materials::Material& material = getMaterialManager().getMaterialByPath(
-                    QString::fromStdString(mod.path().string()));
-                card->setData(QVariant(material.getUUID()), Qt::UserRole);
-            }
-            catch (Materials::ModelNotFound& e) {
-                Base::Console().Log("Model not found error\n");
-            }
-            catch (Materials::MaterialNotFound& e) {
-                // Base::Console().Log("Material not found error\n");
-            }
-            catch (std::exception& e) {
-                Base::Console().Log("Exception '%s'\n", e.what());
-            }
+            card->setData(QVariant(uuid), Qt::UserRole);
+
             addExpanded(tree, &parent, card);
+        }
+        else {
+            auto node = new QStandardItem(folderIcon, mat.first);
+            addExpanded(tree, &parent, node);
+            node->setFlags(Qt::ItemIsEnabled | Qt::ItemIsDragEnabled | Qt::ItemIsDropEnabled);
+            const std::map<QString, Materials::MaterialTreeNode*>* treeMap = nodePtr->getFolder();
+            addMaterials(*node, treeMap, folderIcon, icon);
         }
     }
 }
@@ -536,8 +530,6 @@ void MaterialsEditor::fillMaterialTree()
     auto tree = ui->treeMaterials;
     auto model = static_cast<QStandardItemModel*>(tree->model());
 
-    model->clear();
-
     auto lib = new QStandardItem(QString::fromStdString("Favorites"));
     lib->setFlags(Qt::ItemIsEnabled | Qt::ItemIsDragEnabled | Qt::ItemIsDropEnabled);
     addExpanded(tree, model, lib);
@@ -549,13 +541,17 @@ void MaterialsEditor::fillMaterialTree()
     addRecents(lib);
 
     auto libraries = Materials::MaterialManager::getMaterialLibraries();
-    for (const auto& value : *libraries) {
-        lib = new QStandardItem(value->getName());
+    for (const auto& library : *libraries) {
+        lib = new QStandardItem(library->getName());
         lib->setFlags(Qt::ItemIsEnabled | Qt::ItemIsDragEnabled | Qt::ItemIsDropEnabled);
         addExpanded(tree, model, lib);
 
-        auto path = value->getDirectoryPath();
-        addMaterials(*lib, path, path, QIcon(value->getIconPath()));
+        QIcon icon(library->getIconPath());
+        QIcon folderIcon(QString::fromStdString(":/icons/folder.svg"));
+
+        std::map<QString, Materials::MaterialTreeNode*>* modelTree =
+            _materialManager.getMaterialTree(*library);
+        addMaterials(*lib, modelTree, folderIcon, icon);
     }
 }
 
@@ -836,6 +832,7 @@ void MaterialsEditor::onSelectMaterial(const QItemSelection& selected,
     }
 
     if (uuid.isNull() || uuid == _material.getUUID()) {
+        Base::Console().Log("*** Unchanged material '%s'\n", uuid.toStdString().c_str());
         return;
     }
 
@@ -854,6 +851,7 @@ void MaterialsEditor::onSelectMaterial(const QItemSelection& selected,
         _material = getMaterialManager().getMaterial(uuid);
     }
     catch (Materials::ModelNotFound const&) {
+        Base::Console().Log("*** Unable to load material '%s'\n", uuid.toStdString().c_str());
         Materials::Material empty;
         _material = empty;
     }

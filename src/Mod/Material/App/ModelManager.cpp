@@ -27,15 +27,15 @@
 #include <Base/Console.h>
 
 #include "Model.h"
-#include "ModelManager.h"
 #include "ModelLoader.h"
+#include "ModelManager.h"
 
 
 using namespace Materials;
 
-ModelManager *ModelManager::manager = nullptr;
-std::list<ModelLibrary*> *ModelManager::_libraryList = nullptr;
-std::map<QString, Model*> *ModelManager::_modelMap = nullptr;
+ModelManager* ModelManager::manager = nullptr;
+std::list<ModelLibrary*>* ModelManager::_libraryList = nullptr;
+std::map<QString, Model*>* ModelManager::_modelMap = nullptr;
 
 TYPESYSTEM_SOURCE(Materials::ModelManager, Base::BaseClass)
 
@@ -44,8 +44,9 @@ ModelManager::ModelManager()
     // TODO: Add a mutex or similar
     if (_modelMap == nullptr) {
         _modelMap = new std::map<QString, Model*>();
-        if (_libraryList == nullptr)
+        if (_libraryList == nullptr) {
             _libraryList = new std::list<ModelLibrary*>();
+        }
 
         // Load the libraries
         ModelLoader loader(_modelMap, _libraryList);
@@ -60,17 +61,18 @@ ModelManager::~ModelManager()
     manager = nullptr;
 }
 
-bool ModelManager::isModel(const fs::path &p)
+bool ModelManager::isModel(const fs::path& p)
 {
     // if (!fs::is_regular_file(p))
     //     return false;
     // check file extension
-    if (p.extension() == ".yml")
+    if (p.extension() == ".yml") {
         return true;
+    }
     return false;
 }
 
-ModelManager *ModelManager::getManager()
+ModelManager* ModelManager::getManager()
 {
     // if (manager == nullptr)
     //     manager = new ModelManager();
@@ -90,24 +92,25 @@ void ModelManager::refresh()
     ModelLoader loader(_modelMap, _libraryList);
 }
 
-const Model &ModelManager::getModel(const QString &uuid) const
+const Model& ModelManager::getModel(const QString& uuid) const
 {
     try {
         return *(_modelMap->at(uuid));
-    } catch (std::out_of_range const &) {
+    }
+    catch (std::out_of_range const&) {
         throw ModelNotFound();
     }
 }
 
-const Model &ModelManager::getModelByPath(const QString &path) const
+const Model& ModelManager::getModelByPath(const QString& path) const
 {
-    const QString &uuid = ModelLoader::getUUIDFromPath(path);
-    const Model &model = getModel(uuid);
+    const QString& uuid = ModelLoader::getUUIDFromPath(path);
+    const Model& model = getModel(uuid);
 
     return model;
 }
 
-const Model &ModelManager::getModelByPath(const QString &path, const QString &libraryPath) const
+const Model& ModelManager::getModelByPath(const QString& path, const QString& libraryPath) const
 {
     QDir modelDir(QDir::cleanPath(libraryPath + QString::fromStdString("/") + path));
     QString absPath = modelDir.absolutePath();
@@ -116,8 +119,7 @@ const Model &ModelManager::getModelByPath(const QString &path, const QString &li
 
 bool ModelManager::passFilter(ModelFilter filter, Model::ModelType modelType) const
 {
-    switch (filter)
-    {
+    switch (filter) {
         case ModelFilter_None:
             return true;
 
@@ -131,40 +133,39 @@ bool ModelManager::passFilter(ModelFilter filter, Model::ModelType modelType) co
     return false;
 }
 
-std::map<QString, ModelTreeNode*>* ModelManager::getModelTree(const ModelLibrary &library, ModelFilter filter)
+std::map<QString, ModelTreeNode*>* ModelManager::getModelTree(const ModelLibrary& library,
+                                                              ModelFilter filter)
 {
-    std::map<QString, ModelTreeNode*> *modelTree = new std::map<QString, ModelTreeNode*>();
+    std::map<QString, ModelTreeNode*>* modelTree = new std::map<QString, ModelTreeNode*>();
 
-    for (auto it = _modelMap->begin(); it != _modelMap->end(); it++)
-    {
+    for (auto it = _modelMap->begin(); it != _modelMap->end(); it++) {
         auto filename = it->first;
         auto model = it->second;
 
-        if (model->getLibrary() == library && passFilter(filter, model->getType()))
-        {
-            fs::path path = model->getRelativePath().toStdString();
+        if (model->getLibrary() == library && passFilter(filter, model->getType())) {
+            fs::path path = model->getDirectory().toStdString();
             Base::Console().Log("Relative path '%s'\n\t", path.string().c_str());
 
             // Start at the root
-            std::map<QString, ModelTreeNode*> *node = modelTree;
-            for (auto itp = path.begin(); itp != path.end(); itp++)
-            {
+            std::map<QString, ModelTreeNode*>* node = modelTree;
+            for (auto itp = path.begin(); itp != path.end(); itp++) {
                 if (isModel(itp->string())) {
-                    ModelTreeNode *child = new ModelTreeNode();
+                    ModelTreeNode* child = new ModelTreeNode();
                     child->setData(model);
                     (*node)[QString::fromStdString(itp->string())] = child;
-                } else {
+                }
+                else {
                     // Add the folder only if it's not already there
                     QString folderName = QString::fromStdString(itp->string());
-                    std::map<QString, ModelTreeNode*> *mapPtr;
-                    if (node->count(QString::fromStdString(itp->string())) == 0)
-                    {
+                    std::map<QString, ModelTreeNode*>* mapPtr;
+                    if (node->count(QString::fromStdString(itp->string())) == 0) {
                         mapPtr = new std::map<QString, ModelTreeNode*>();
-                        ModelTreeNode *child = new ModelTreeNode();
+                        ModelTreeNode* child = new ModelTreeNode();
                         child->setFolder(mapPtr);
                         (*node)[QString::fromStdString(itp->string())] = child;
                         node = mapPtr;
-                    } else {
+                    }
+                    else {
                         node = (*node)[QString::fromStdString(itp->string())]->getFolder();
                     }
                 }
@@ -176,3 +177,71 @@ std::map<QString, ModelTreeNode*>* ModelManager::getModelTree(const ModelLibrary
 
     return modelTree;
 }
+
+// std::map<QString, MaterialTreeNode*>*
+// MaterialManager::getMaterialTree(const MaterialLibrary& library)
+// {
+//     std::map<QString, MaterialTreeNode*>* materialTree = new std::map<QString,
+//     MaterialTreeNode*>();
+
+//     for (auto it = _materialMap->begin(); it != _materialMap->end(); it++) {
+//         auto filename = it->first;
+//         auto material = it->second;
+
+//         if (material->getLibrary() == library) {
+//             fs::path path = material->getDirectory().toStdString();
+
+//             // Start at the root
+//             std::map<QString, MaterialTreeNode*>* node = materialTree;
+//             for (auto itp = path.begin(); itp != path.end(); itp++) {
+//                 if (QString::fromStdString(itp->string())
+//                         .endsWith(QString::fromStdString(".FCMat"))) {
+//                     MaterialTreeNode* child = new MaterialTreeNode();
+//                     child->setData(material);
+//                     (*node)[QString::fromStdString(itp->string())] = child;
+//                 }
+//                 else {
+//                     // Add the folder only if it's not already there
+//                     QString folderName = QString::fromStdString(itp->string());
+//                     std::map<QString, MaterialTreeNode*>* mapPtr;
+//                     if (node->count(folderName) == 0) {
+//                         mapPtr = new std::map<QString, MaterialTreeNode*>();
+//                         MaterialTreeNode* child = new MaterialTreeNode();
+//                         child->setFolder(mapPtr);
+//                         (*node)[folderName] = child;
+//                         node = mapPtr;
+//                     }
+//                     else {
+//                         node = (*node)[folderName]->getFolder();
+//                     }
+//                 }
+//             }
+//         }
+//     }
+
+//     std::list<QString>* folderList = getMaterialFolders(library);
+//     for (auto folder : *folderList) {
+//         fs::path path = folder.toStdString();
+
+//         // Start at the root
+//         std::map<QString, MaterialTreeNode*>* node = materialTree;
+//         for (auto itp = path.begin(); itp != path.end(); itp++) {
+//             // Add the folder only if it's not already there
+//             QString folderName = QString::fromStdString(itp->string());
+//             if (node->count(folderName) == 0) {
+//                 std::map<QString, MaterialTreeNode*>* mapPtr =
+//                     new std::map<QString, MaterialTreeNode*>();
+//                 MaterialTreeNode* child = new MaterialTreeNode();
+//                 child->setFolder(mapPtr);
+//                 (*node)[folderName] = child;
+//                 node = mapPtr;
+//             }
+//             else {
+//                 node = (*node)[folderName]->getFolder();
+//             }
+//         }
+//     }
+//     delete folderList;
+
+//     return materialTree;
+// }

@@ -27,12 +27,6 @@
       </Documentation>
       <Parameter Name="LibraryRoot" Type="String"/>
     </Attribute>
-    <Attribute Name="RelativePath" ReadOnly="true">
-      <Documentation>
-        <UserDocu>Model path relative to the library root.</UserDocu>
-      </Documentation>
-      <Parameter Name="RelativePath" Type="String"/>
-    </Attribute>
     <Attribute Name="LibraryIcon" ReadOnly="true">
       <Documentation>
         <UserDocu>Model icon path.</UserDocu>

@@ -41,7 +41,7 @@ using namespace Materials;
 ModelEntry::ModelEntry(const ModelLibrary& library,
                        const QString& baseName,
                        const QString& modelName,
-                       const QDir& dir,
+                       const QString& dir,
                        const QString& modelUuid,
                        const YAML::Node& modelData)
     : _library(library)
@@ -113,11 +113,10 @@ ModelEntry* ModelLoader::getModelFromPath(const ModelLibrary& library, const QSt
         throw InvalidModel();
     }
 
-    QDir modelDir(path);
     ModelEntry* model = new ModelEntry(library,
                                        QString::fromStdString(base),
                                        QString::fromStdString(name),
-                                       modelDir,
+                                       path,
                                        QString::fromStdString(uuid),
                                        yamlroot);
 
@@ -300,7 +299,7 @@ void ModelLoader::addToTree(ModelEntry* model,
         }
     }
 
-    (*_modelMap)[uuid] = finalModel;
+    (*_modelMap)[uuid] = library.addModel(*finalModel, directory);
 }
 
 void ModelLoader::loadLibrary(const ModelLibrary& library)
@@ -363,9 +362,8 @@ std::list<ModelLibrary*>* ModelLoader::getModelLibraries()
     if (useBuiltInMaterials) {
         QString resourceDir = QString::fromStdString(App::Application::getResourceDir()
                                                      + "/Mod/Material/Resources/Models");
-        QDir materialDir(resourceDir);
         auto libData = new ModelLibrary(QString::fromStdString("System"),
-                                        materialDir,
+                                        resourceDir,
                                         QString::fromStdString(":/icons/freecad.svg"));
         _libraryList->push_back(libData);
     }
@@ -381,8 +379,8 @@ std::list<ModelLibrary*>* ModelLoader::getModelLibraries()
 
             if (modelDir.length() > 0) {
                 QDir dir(modelDir);
-                auto libData = new ModelLibrary(moduleName, dir, modelIcon);
                 if (dir.exists()) {
+                    auto libData = new ModelLibrary(moduleName, modelDir, modelIcon);
                     _libraryList->push_back(libData);
                 }
             }
@@ -393,10 +391,11 @@ std::list<ModelLibrary*>* ModelLoader::getModelLibraries()
         QString resourceDir =
             QString::fromStdString(App::Application::getUserAppDataDir() + "/Models");
         QDir materialDir(resourceDir);
-        auto libData = new ModelLibrary(QString::fromStdString("User"),
-                                        materialDir,
-                                        QString::fromStdString(":/icons/preferences-general.svg"));
         if (materialDir.exists()) {
+            auto libData =
+                new ModelLibrary(QString::fromStdString("User"),
+                                 resourceDir,
+                                 QString::fromStdString(":/icons/preferences-general.svg"));
             _libraryList->push_back(libData);
         }
     }
@@ -404,10 +403,10 @@ std::list<ModelLibrary*>* ModelLoader::getModelLibraries()
     if (useMatFromCustomDir) {
         QString resourceDir = QString::fromStdString(param->GetASCII("CustomMaterialsDir", ""));
         QDir materialDir(resourceDir);
-        auto libData = new ModelLibrary(QString::fromStdString("Custom"),
-                                        materialDir,
-                                        QString::fromStdString(":/icons/user.svg"));
         if (materialDir.exists()) {
+            auto libData = new ModelLibrary(QString::fromStdString("Custom"),
+                                            resourceDir,
+                                            QString::fromStdString(":/icons/user.svg"));
             _libraryList->push_back(libData);
         }
     }

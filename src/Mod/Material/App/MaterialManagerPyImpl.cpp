@@ -26,6 +26,7 @@
 #include <boost/uuid/uuid_io.hpp>
 #endif
 
+#include "Exceptions.h"
 #include "MaterialManager.h"
 #include "MaterialManagerPy.h"
 #include "MaterialPy.h"
@@ -63,29 +64,42 @@ PyObject* MaterialManagerPy::getMaterial(PyObject* args)
         return nullptr;
     }
 
-    const Material& material = getMaterialManagerPtr()->getMaterial(QString::fromStdString(uuid));
-    return new MaterialPy(new Material(material));
+    try {
+        const Material& material =
+            getMaterialManagerPtr()->getMaterial(QString::fromStdString(uuid));
+        return new MaterialPy(new Material(material));
+    }
+    catch (const MaterialNotFound&) {
+        PyErr_SetString(PyExc_LookupError, "Material not found");
+        return nullptr;
+    }
 }
 
 PyObject* MaterialManagerPy::getMaterialByPath(PyObject* args)
 {
     char* path;
     char* lib = "";
-    if (!PyArg_ParseTuple(args, "s|s", &path, &lib)) {
+    if (!PyArg_ParseTuple(args, "ss", &lib, &path)) {
         return nullptr;
     }
 
-    std::string libPath(lib);
-    if (libPath.length() > 0) {
-        const Material& material =
-            getMaterialManagerPtr()->getMaterialByPath(QString::fromStdString(path),
-                                                       QString::fromStdString(libPath));
-        return new MaterialPy(new Material(material));
+    MaterialLibrary* library = nullptr;
+    try {
+        library = getMaterialManagerPtr()->getLibrary(QString::fromStdString(lib));
+    }
+    catch (const LibraryNotFound&) {
+        PyErr_SetString(PyExc_LookupError, "Library not found");
+        return nullptr;
     }
 
-    const Material& material =
-        getMaterialManagerPtr()->getMaterialByPath(QString::fromStdString(path));
-    return new MaterialPy(new Material(material));
+    try {
+        const Material& material = library->getMaterialByPath(QString::fromStdString(path));
+        return new MaterialPy(new Material(material));
+    }
+    catch (const MaterialNotFound&) {
+        PyErr_SetString(PyExc_LookupError, "Material not found");
+        return nullptr;
+    }
 }
 
 Py::List MaterialManagerPy::getMaterialLibraries() const

@@ -238,7 +238,7 @@ void MaterialProperty::setValue(const QString& value)
         setURL(value);
     }
     else if (_valuePtr->getType() == MaterialValue::Quantity) {
-        Base::Console().Log("\tParse quantity '%s'\n", value.toStdString().c_str());
+        // Base::Console().Log("\tParse quantity '%s'\n", value.toStdString().c_str());
         try {
             setQuantity(Base::Quantity::parse(value));
         }
@@ -371,18 +371,6 @@ Material::Material(const MaterialLibrary& library,
 {
     setDirectory(directory);
 }
-
-Material::Material(const MaterialLibrary& library,
-                   const QDir& directory,
-                   const QString& uuid,
-                   const QString& name)
-    : _library(library)
-    , _directory(directory)
-    , _uuid(uuid)
-    , _name(name)
-    , _dereferenced(false)
-    , _editState(ModelEdit_None)
-{}
 
 Material::Material(const Material& other)
     : _library(other._library)
@@ -528,9 +516,9 @@ void Material::setPhysicalEditState(const QString& name)
         setEditStateAlter();
     }
 
-    Base::Console().Log("Material::setPhysicalEditState(%s) -> %d\n",
-                        name.toStdString().c_str(),
-                        static_cast<int>(_editState));
+    // Base::Console().Log("Material::setPhysicalEditState(%s) -> %d\n",
+    //                     name.toStdString().c_str(),
+    //                     static_cast<int>(_editState));
 }
 
 void Material::setAppearanceEditState(const QString& name)
@@ -868,12 +856,14 @@ void Material::saveAppearanceModels(QTextStream& stream) const
     }
 }
 
+void Material::newUuid()
+{
+    _uuid = QUuid::createUuid().toString(QUuid::WithoutBraces);
+}
+
 void Material::save(QTextStream& stream, bool saveAsCopy)
 {
     Q_UNUSED(saveAsCopy)
-
-    // Create a new UUID
-    _uuid = QUuid::createUuid().toString(QUuid::WithoutBraces);
 
     stream << "# File created by FreeCAD\n";
     saveGeneral(stream);

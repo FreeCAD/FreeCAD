@@ -26,20 +26,11 @@
 
 #include "Exceptions.h"
 #include "Model.h"
+#include "ModelLibrary.h"
 #include <string>
 
 
 using namespace Materials;
-
-TYPESYSTEM_SOURCE(Materials::ModelLibrary, Base::BaseClass)
-
-ModelLibrary::ModelLibrary(const QString& libraryName, const QDir& dir, const QString& icon)
-    : _name(libraryName)
-    , _directory(dir)
-    , _iconPath(icon)
-{}
-ModelLibrary::ModelLibrary()
-{}
 
 TYPESYSTEM_SOURCE(Materials::ModelProperty, Base::BaseClass)
 
@@ -99,7 +90,7 @@ Model::Model()
 Model::Model(const ModelLibrary& library,
              ModelType type,
              const QString& name,
-             const QDir& directory,
+             const QString& directory,
              const QString& uuid,
              const QString& description,
              const QString& url,

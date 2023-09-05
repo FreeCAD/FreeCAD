@@ -39,12 +39,11 @@ public:
     MaterialEntry();
     explicit MaterialEntry(const MaterialLibrary& library,
                            const QString& modelName,
-                           const QDir& dir,
+                           const QString& dir,
                            const QString& modelUuid);
     virtual ~MaterialEntry() = default;
 
-    virtual void addToTree(std::map<QString, Material*>* materialMap,
-                           std::map<QString, Material*>* _materialPathMap) = 0;
+    virtual void addToTree(std::map<QString, Material*>* materialMap) = 0;
 
     const MaterialLibrary& getLibrary() const
     {
@@ -54,7 +53,7 @@ public:
     {
         return _name;
     }
-    const QDir getDirectory() const
+    const QString getDirectory() const
     {
         return _directory;
     }
@@ -66,7 +65,7 @@ public:
 protected:
     MaterialLibrary _library;
     QString _name;
-    QDir _directory;
+    QString _directory;
     QString _uuid;
 };
 
@@ -75,13 +74,12 @@ class MaterialYamlEntry: public MaterialEntry
 public:
     explicit MaterialYamlEntry(const MaterialLibrary& library,
                                const QString& modelName,
-                               const QDir& dir,
+                               const QString& dir,
                                const QString& modelUuid,
                                const YAML::Node& modelData);
-    ~MaterialYamlEntry() override;
+    ~MaterialYamlEntry() override = default;
 
-    void addToTree(std::map<QString, Material*>* materialMap,
-                   std::map<QString, Material*>* _materialPathMap) override;
+    void addToTree(std::map<QString, Material*>* materialMap) override;
 
     const YAML::Node& getModel() const
     {
@@ -105,7 +103,6 @@ class MaterialLoader
 {
 public:
     explicit MaterialLoader(std::map<QString, Material*>* materialMap,
-                            std::map<QString, Material*>* materialPathMap,
                             std::list<MaterialLibrary*>* libraryList);
     virtual ~MaterialLoader();
 
@@ -118,13 +115,12 @@ private:
 
     void addToTree(MaterialEntry* model);
     void dereference(Material* material);
-    MaterialEntry* getMaterialFromPath(const MaterialLibrary& library, const QString& path) const;
+    MaterialEntry* getMaterialFromPath(MaterialLibrary& library, const QString& path) const;
     void addLibrary(MaterialLibrary* model);
-    void loadLibrary(const MaterialLibrary& library);
+    void loadLibrary(MaterialLibrary& library);
     void loadLibraries(void);
     static std::map<QString, MaterialEntry*>* _materialEntryMap;
     std::map<QString, Material*>* _materialMap;
-    std::map<QString, Material*>* _materialPathMap;
     std::list<MaterialLibrary*>* _libraryList;
 };
 

@@ -49,10 +49,8 @@ std::string ModelPy::representation() const
     str << ptr->getLibrary().getDirectoryPath().toStdString();
     str << "), Library Icon=(";
     str << ptr->getLibrary().getIconPath().toStdString();
-    str << "), Relative Path=(";
-    str << ptr->getRelativePath().toStdString();
     str << "), Directory=(";
-    str << ptr->getDirectory().absolutePath().toStdString();
+    str << ptr->getDirectory().toStdString();
     str << "), URL=(";
     str << ptr->getURL().toStdString();
     str << "), DOI=(";
@@ -98,11 +96,6 @@ Py::String ModelPy::getLibraryRoot() const
     return Py::String(getModelPtr()->getLibrary().getDirectoryPath().toStdString());
 }
 
-Py::String ModelPy::getRelativePath() const
-{
-    return Py::String(getModelPtr()->getRelativePath().toStdString());
-}
-
 Py::String ModelPy::getLibraryIcon() const
 {
     return Py::String(getModelPtr()->getLibrary().getIconPath().toStdString());
@@ -115,7 +108,7 @@ Py::String ModelPy::getName() const
 
 Py::String ModelPy::getDirectory() const
 {
-    return Py::String(getModelPtr()->getDirectory().absolutePath().toStdString());
+    return Py::String(getModelPtr()->getDirectoryPath().toStdString());
 }
 
 Py::String ModelPy::getUUID() const

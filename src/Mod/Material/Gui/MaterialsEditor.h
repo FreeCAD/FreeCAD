@@ -116,8 +116,8 @@ private:
     void fillMaterialTree();
     void refreshMaterialTree();
     void addMaterials(QStandardItem& parent,
-                      const QString& top,
-                      const QString& folder,
+                      const std::map<QString, Materials::MaterialTreeNode*>* modelTree,
+                      const QIcon& folderIcon,
                       const QIcon& icon);
     bool isMaterial(const fs::path& p) const
     {

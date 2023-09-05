@@ -3,6 +3,7 @@ if(MSVC)
 else(MSVC)
     add_definitions(-DHAVE_LIMITS_H -DHAVE_CONFIG_H)
 endif(MSVC)
+
 add_definitions(-DYAML_CPP_STATIC_DEFINE)
 
 include_directories(
@@ -71,6 +72,8 @@ SET(Material_SRCS
     MaterialValue.h
     Model.cpp
     Model.h
+    ModelLibrary.cpp
+    ModelLibrary.h
     ModelLoader.cpp
     ModelLoader.h
     ModelManager.cpp

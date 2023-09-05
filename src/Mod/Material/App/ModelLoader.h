@@ -38,7 +38,7 @@ public:
     explicit ModelEntry(const ModelLibrary& library,
                         const QString& baseName,
                         const QString& modelName,
-                        const QDir& dir,
+                        const QString& dir,
                         const QString& modelUuid,
                         const YAML::Node& modelData);
     virtual ~ModelEntry() = default;
@@ -55,7 +55,7 @@ public:
     {
         return _name;
     }
-    const QDir getDirectory() const
+    const QString getDirectory() const
     {
         return _directory;
     }
@@ -87,7 +87,7 @@ private:
     ModelLibrary _library;
     QString _base;
     QString _name;
-    QDir _directory;
+    QString _directory;
     QString _uuid;
     YAML::Node _model;
     bool _dereferenced;

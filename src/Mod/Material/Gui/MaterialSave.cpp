@@ -28,10 +28,10 @@
 
 #include <Gui/MainWindow.h>
 
-#include "MaterialSave.h"
-#include "ui_MaterialSave.h"
 #include <Mod/Material/App/MaterialLibrary.h>
 
+#include "MaterialSave.h"
+#include "ui_MaterialSave.h"
 
 using namespace MatGui;
 
@@ -174,7 +174,7 @@ void MaterialSave::addMaterials(QStandardItem& parent,
             const Materials::Material* material = nodePtr->getData();
             QString uuid = material->getUUID();
             Base::Console().Log("Material path '%s'\n",
-                                material->getRelativePath().toStdString().c_str());
+                                material->getDirectory().toStdString().c_str());
 
             // auto card = new QStandardItem(icon, material->getName());
             auto card = new QStandardItem(icon, mat.first);
