@@ -1336,11 +1336,12 @@ public:
         if (selIdPair.GeoId == GeoEnum::GeoUndef) {
             // If mouse is released on "blank" space, finalize and start over
             finalizeCommand();
+            return true;
         }
 
-        else if (notSelectedYet(selIdPair)) {
-            std::vector<SelIdPair>& selVector = getSelectionVector(newselGeoType);
+        std::vector<SelIdPair>& selVector = getSelectionVector(newselGeoType);
 
+        if (notSelectedYet(selIdPair)) {
             //add the geometry to its type vector. Temporarily if not selAllowed
             selVector.push_back(selIdPair);
 
@@ -1356,6 +1357,21 @@ public:
             else {
                 selVector.pop_back();
             }
+        }
+        else {
+            //if it is already selected we unselect it.
+            selVector.pop_back();
+            if (!selectionEmpty()) {
+                makeAppropriateConstraint(onSketchPos);
+            }
+            else {
+                restartCommand(QT_TRANSLATE_NOOP("Command", "Dimension"));
+            }
+
+            Gui::Selection().rmvSelection(Obj->getDocument()->getName(),
+                Obj->getNameInDocument(),
+                ss.str().c_str());
+            sketchgui->draw(false, false); // Redraw
         }
         return true;
     }
@@ -1492,6 +1508,11 @@ protected:
             && !contains(selLine, elem)
             && !contains(selCircleArc, elem)
             && !contains(selEllipseAndCo, elem);
+    }
+
+    bool selectionEmpty()
+    {
+        return selPoints.empty() && selLine.empty() && selCircleArc.empty() && selEllipseAndCo.empty();
     }
 
     bool makeAppropriateConstraint(Base::Vector2d onSketchPos) {
