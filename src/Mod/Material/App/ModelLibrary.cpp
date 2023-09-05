@@ -48,12 +48,6 @@ LibraryBase::LibraryBase()
 
 bool LibraryBase::operator==(const LibraryBase& library) const
 {
-    if (this == nullptr) {
-        return (&library == nullptr);
-    }
-    if (this == &library) {
-        return true;
-    }
     return (_name == library._name) && (_directory == library._directory);
 }
 
