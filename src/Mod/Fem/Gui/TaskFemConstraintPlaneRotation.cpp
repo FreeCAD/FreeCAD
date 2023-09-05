@@ -113,7 +113,7 @@ void TaskFemConstraintPlaneRotation::addToSelection()
     if (rows == 1) {
         QMessageBox::warning(this,
                              tr("Selection error"),
-                             tr("Only one face can be selected for a plane rotation constraint!"));
+                             tr("Only one face can be selected for a plane multi-point constraint!"));
         Gui::Selection().clearSelection();
         return;
     }
@@ -182,7 +182,7 @@ void TaskFemConstraintPlaneRotation::addToSelection()
                 QMessageBox::warning(
                     this,
                     tr("Selection error"),
-                    tr("Only one face can be selected for a plane rotation constraint!"));
+                    tr("Only one face can be selected for a plane multi-point constraint!"));
                 Gui::Selection().clearSelection();
                 return;
             }
@@ -293,7 +293,7 @@ void TaskDlgFemConstraintPlaneRotation::open()
 {
     // a transaction is already open at creation time of the panel
     if (!Gui::Command::hasPendingCommand()) {
-        QString msg = QObject::tr("Constraint planerotation");
+        QString msg = QObject::tr("Plane multi-point constraint");
         Gui::Command::openCommand((const char*)msg.toUtf8());
         ConstraintView->setVisible(true);
         Gui::Command::doCommand(

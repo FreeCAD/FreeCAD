@@ -41,8 +41,11 @@ namespace SketcherGui
 /// NOTE: A command must be opened before calling this function, which this function
 /// commits or aborts as appropriate. The reason is for compatibility reasons with
 /// other code e.g. "Autoconstraints" in DrawSketchHandler.cpp
-void makeTangentToEllipseviaNewPoint(Sketcher::SketchObject* Obj, const Part::GeomEllipse* ellipse,
-                                     const Part::Geometry* geom2, int geoId1, int geoId2);
+void makeTangentToEllipseviaNewPoint(Sketcher::SketchObject* Obj,
+                                     const Part::GeomEllipse* ellipse,
+                                     const Part::Geometry* geom2,
+                                     int geoId1,
+                                     int geoId2);
 /// Makes a tangency constraint using external construction line between
 /// aoe => an arc of ellipse
 /// geom2 => any of an arc of ellipse, a circle, or an arc (of circle)
@@ -53,7 +56,9 @@ void makeTangentToEllipseviaNewPoint(Sketcher::SketchObject* Obj, const Part::Ge
 /// other code e.g. "Autoconstraints" in DrawSketchHandler.cpp
 void makeTangentToArcOfEllipseviaNewPoint(Sketcher::SketchObject* Obj,
                                           const Part::GeomArcOfEllipse* aoe,
-                                          const Part::Geometry* geom2, int geoId1, int geoId2);
+                                          const Part::Geometry* geom2,
+                                          int geoId1,
+                                          int geoId2);
 
 /// Makes a tangency constraint using external construction line between
 /// aoh => an arc of hyperbola
@@ -65,7 +70,9 @@ void makeTangentToArcOfEllipseviaNewPoint(Sketcher::SketchObject* Obj,
 /// other code e.g. "Autoconstraints" in DrawSketchHandler.cpp
 void makeTangentToArcOfHyperbolaviaNewPoint(Sketcher::SketchObject* Obj,
                                             const Part::GeomArcOfHyperbola* aoh,
-                                            const Part::Geometry* geom2, int geoId1, int geoId2);
+                                            const Part::Geometry* geom2,
+                                            int geoId1,
+                                            int geoId2);
 
 /// Makes a simple tangency constraint using extra point + tangent via point
 /// aop => an arc of parabola
@@ -79,14 +86,21 @@ void makeTangentToArcOfHyperbolaviaNewPoint(Sketcher::SketchObject* Obj,
 /// DrawSketchHandler.cpp
 void makeTangentToArcOfParabolaviaNewPoint(Sketcher::SketchObject* Obj,
                                            const Part::GeomArcOfParabola* aop,
-                                           const Part::Geometry* geom2, int geoId1, int geoId2);
+                                           const Part::Geometry* geom2,
+                                           int geoId1,
+                                           int geoId2);
 
 /// Does an endpoint-to-endpoint tangency
-void doEndpointTangency(Sketcher::SketchObject* Obj, int GeoId1, int GeoId2,
-                        Sketcher::PointPos PosId1, Sketcher::PointPos PosId2);
+void doEndpointTangency(Sketcher::SketchObject* Obj,
+                        int GeoId1,
+                        int GeoId2,
+                        Sketcher::PointPos PosId1,
+                        Sketcher::PointPos PosId2);
 
 /// Does an endpoint-edge tangency
-void doEndpointToEdgeTangency(Sketcher::SketchObject* Obj, int GeoId1, Sketcher::PointPos PosId1,
+void doEndpointToEdgeTangency(Sketcher::SketchObject* Obj,
+                              int GeoId1,
+                              Sketcher::PointPos PosId1,
                               int GeoId2);
 
 /// shows constraint substitution information dialog box, enabling the user to forgo further

@@ -116,9 +116,7 @@ class Macro:
             return False
         return os.path.exists(
             os.path.join(fci.DataPaths().macro_dir, self.filename)
-        ) or os.path.exists(
-            os.path.join(fci.DataPaths().macro_dir, "Macro_" + self.filename)
-        )
+        ) or os.path.exists(os.path.join(fci.DataPaths().macro_dir, "Macro_" + self.filename))
 
     def fill_details_from_file(self, filename: str) -> None:
         """Opens the given Macro file and parses it for its metadata"""
@@ -160,8 +158,7 @@ class Macro:
             code = self._read_code_from_wiki(p)
         if not code:
             self._console.PrintWarning(
-                translate("AddonsInstaller", "Unable to fetch the code of this macro.")
-                + "\n"
+                translate("AddonsInstaller", "Unable to fetch the code of this macro.") + "\n"
             )
             return
 
@@ -312,9 +309,7 @@ class Macro:
                 f.write(self.xpm)
         if self.icon:
             if os.path.isabs(self.icon):
-                dst_file = os.path.normpath(
-                    os.path.join(macro_dir, os.path.basename(self.icon))
-                )
+                dst_file = os.path.normpath(os.path.join(macro_dir, os.path.basename(self.icon)))
                 try:
                     shutil.copy(self.icon, dst_file)
                 except OSError:
@@ -340,9 +335,7 @@ class Macro:
                     return False
             if os.path.isabs(other_file):
                 src_file = other_file
-                dst_file = os.path.normpath(
-                    os.path.join(macro_dir, os.path.basename(other_file))
-                )
+                dst_file = os.path.normpath(os.path.join(macro_dir, os.path.basename(other_file)))
             else:
                 src_file = os.path.normpath(os.path.join(base_dir, other_file))
                 dst_file = os.path.normpath(os.path.join(macro_dir, other_file))
@@ -409,9 +402,7 @@ class Macro:
         icon_regex = re.compile(r'.*img.*?src="(.*?)"', re.IGNORECASE)
         if wiki_icon.startswith("http"):
             # It's a File: wiki link. We can load THAT page and get the image from it...
-            self._console.PrintLog(
-                f"Found a File: link for macro {self.name} -- {wiki_icon}\n"
-            )
+            self._console.PrintLog(f"Found a File: link for macro {self.name} -- {wiki_icon}\n")
             p = Macro.blocking_get(wiki_icon)
             if p:
                 p = p.decode("utf8")

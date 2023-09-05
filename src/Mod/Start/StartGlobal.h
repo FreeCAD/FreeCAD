@@ -29,19 +29,19 @@
 // Start
 #ifndef StartExport
 #ifdef Start_EXPORTS
-#  define StartExport      FREECAD_DECL_EXPORT
+#define StartExport FREECAD_DECL_EXPORT
 #else
-#  define StartExport      FREECAD_DECL_IMPORT
+#define StartExport FREECAD_DECL_IMPORT
 #endif
 #endif
 
 // StartGui
 #ifndef StartGuiExport
 #ifdef StartGui_EXPORTS
-#  define StartGuiExport   FREECAD_DECL_EXPORT
+#define StartGuiExport FREECAD_DECL_EXPORT
 #else
-#  define StartGuiExport   FREECAD_DECL_IMPORT
+#define StartGuiExport FREECAD_DECL_IMPORT
 #endif
 #endif
 
-#endif //START_GLOBAL_H
+#endif// START_GLOBAL_H

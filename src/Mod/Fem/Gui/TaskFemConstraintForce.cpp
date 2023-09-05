@@ -173,7 +173,7 @@ void TaskFemConstraintForce::addToSelection()
             for (const auto & SubElement : SubElements) {
                 if (SubElement.find(searchStr) == std::string::npos) {
                     QString msg = tr(
-                        "Only one type of selection (vertex,face or edge) per constraint allowed!");
+                        "Only one type of selection (vertex, face or edge) per analysis feature allowed!");
                     QMessageBox::warning(this, tr("Selection error"), msg);
                     addMe = false;
                     break;
@@ -434,7 +434,7 @@ void TaskDlgFemConstraintForce::open()
 {
     // a transaction is already open at creation time of the panel
     if (!Gui::Command::hasPendingCommand()) {
-        QString msg = QObject::tr("Constraint force");
+        QString msg = QObject::tr("Force load");
         Gui::Command::openCommand((const char*)msg.toUtf8());
         ConstraintView->setVisible(true);
         Gui::Command::doCommand(

@@ -45,10 +45,12 @@ public:
 
     bool allow(App::Document* /*pDoc*/, App::DocumentObject* pObj, const char* sSubName) override
     {
-        if (pObj != this->object)
+        if (pObj != this->object) {
             return false;
-        if (!sSubName || sSubName[0] == '\0')
+        }
+        if (!sSubName || sSubName[0] == '\0') {
             return false;
+        }
         std::string element(sSubName);
         if (element.substr(0, 4) == "Edge") {
             int GeoId = std::atoi(element.substr(4, 4000).c_str()) - 1;
@@ -59,8 +61,9 @@ public:
                 || geom->getTypeId() == Part::GeomEllipse::getClassTypeId()
                 || geom->getTypeId() == Part::GeomBSplineCurve::getClassTypeId()) {
                 // We do not trim internal geometry of complex geometries
-                if (Sketcher::GeometryFacade::isInternalType(geom, Sketcher::InternalType::None))
+                if (Sketcher::GeometryFacade::isInternalType(geom, Sketcher::InternalType::None)) {
                     return true;
+                }
             }
         }
         return false;
@@ -95,15 +98,17 @@ public:
 
                 EditMarkers.resize(0);
 
-                if (GeoId1 != Sketcher::GeoEnum::GeoUndef)
+                if (GeoId1 != Sketcher::GeoEnum::GeoUndef) {
                     EditMarkers.emplace_back(intersect1.x, intersect1.y);
+                }
                 else {
                     auto start = sk->getPoint(GeoId, Sketcher::PointPos::start);
                     EditMarkers.emplace_back(start.x, start.y);
                 }
 
-                if (GeoId2 != Sketcher::GeoEnum::GeoUndef)
+                if (GeoId2 != Sketcher::GeoEnum::GeoUndef) {
                     EditMarkers.emplace_back(intersect2.x, intersect2.y);
+                }
                 else {
                     auto end = sk->getPoint(GeoId, Sketcher::PointPos::end);
                     EditMarkers.emplace_back(end.x, end.y);
@@ -156,9 +161,10 @@ public:
             EditMarkers.resize(0);
             drawEditMarkers(EditMarkers);
         }
-        else// exit the trimming tool if the user clicked on empty space
+        else {// exit the trimming tool if the user clicked on empty space
             sketchgui
                 ->purgeHandler();// no code after this line, Handler get deleted in ViewProvider
+        }
 
         return true;
     }

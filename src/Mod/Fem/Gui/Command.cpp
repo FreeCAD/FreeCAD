@@ -177,8 +177,8 @@ CmdFemConstraintBearing::CmdFemConstraintBearing()
 {
     sAppModule      = "Fem";
     sGroup          = QT_TR_NOOP("Fem");
-    sMenuText       = QT_TR_NOOP("Constraint bearing");
-    sToolTipText    = QT_TR_NOOP("Creates a FEM constraint for a bearing");
+    sMenuText       = QT_TR_NOOP("Bearing constraint");
+    sToolTipText    = QT_TR_NOOP("Creates a bearing constraint");
     sWhatsThis      = "FEM_ConstraintBearing";
     sStatusTip      = sToolTipText;
     sPixmap         = "FEM_ConstraintBearing";
@@ -193,7 +193,7 @@ void CmdFemConstraintBearing::activated(int)
 
     std::string FeatName = getUniqueObjectName("ConstraintBearing");
 
-    openCommand(QT_TRANSLATE_NOOP("Command", "Make FEM constraint for bearing"));
+    openCommand(QT_TRANSLATE_NOOP("Command", "Make bearing constraint"));
     doCommand(
         Doc, "App.activeDocument().addObject(\"Fem::ConstraintBearing\",\"%s\")", FeatName.c_str());
     doCommand(Doc,
@@ -222,8 +222,8 @@ CmdFemConstraintContact::CmdFemConstraintContact()
 {
     sAppModule      = "Fem";
     sGroup          = QT_TR_NOOP("Fem");
-    sMenuText       = QT_TR_NOOP("Constraint contact");
-    sToolTipText    = QT_TR_NOOP("Creates a FEM constraint for contact between faces");
+    sMenuText       = QT_TR_NOOP("Contact constraint");
+    sToolTipText    = QT_TR_NOOP("Creates a contact constraint between faces");
     sWhatsThis      = "FEM_ConstraintContact";
     sStatusTip      = sToolTipText;
     sPixmap         = "FEM_ConstraintContact";
@@ -238,7 +238,7 @@ void CmdFemConstraintContact::activated(int)
 
     std::string FeatName = getUniqueObjectName("ConstraintContact");
 
-    openCommand(QT_TRANSLATE_NOOP("Command", "Make FEM constraint contact on face"));
+    openCommand(QT_TRANSLATE_NOOP("Command", "Make contact constraint on a face"));
     doCommand(
         Doc, "App.activeDocument().addObject(\"Fem::ConstraintContact\",\"%s\")", FeatName.c_str());
     doCommand(Doc,
@@ -277,7 +277,7 @@ CmdFemConstraintDisplacement::CmdFemConstraintDisplacement()
     sGroup = QT_TR_NOOP("Fem");
     sMenuText = QT_TR_NOOP("Constraint displacement");
     sToolTipText =
-        QT_TR_NOOP("Creates a FEM constraint for a displacement acting on a geometric entity");
+        QT_TR_NOOP("Creates a displacement boundary condition for a geometric entity");
     sWhatsThis = "FEM_ConstraintDisplacement";
     sStatusTip = sToolTipText;
     sPixmap = "FEM_ConstraintDisplacement";
@@ -292,7 +292,7 @@ void CmdFemConstraintDisplacement::activated(int)
 
     std::string FeatName = getUniqueObjectName("ConstraintDisplacement");
 
-    openCommand(QT_TRANSLATE_NOOP("Command", "Make FEM constraint displacement on face"));
+    openCommand(QT_TRANSLATE_NOOP("Command", "Make displacement boundary condition on face"));
     doCommand(Doc,
               "App.activeDocument().addObject(\"Fem::ConstraintDisplacement\",\"%s\")",
               FeatName.c_str());
@@ -325,7 +325,7 @@ CmdFemConstraintFixed::CmdFemConstraintFixed()
     sAppModule      = "Fem";
     sGroup          = QT_TR_NOOP("Fem");
     sMenuText       = QT_TR_NOOP("Constraint fixed");
-    sToolTipText    = QT_TR_NOOP("Creates a FEM constraint for a fixed geometric entity");
+    sToolTipText    = QT_TR_NOOP("Creates a fixed boundary condition for a geometric entity");
     sWhatsThis      = "FEM_ConstraintFixed";
     sStatusTip      = sToolTipText;
     sPixmap         = "FEM_ConstraintFixed";
@@ -340,7 +340,7 @@ void CmdFemConstraintFixed::activated(int)
 
     std::string FeatName = getUniqueObjectName("ConstraintFixed");
 
-    openCommand(QT_TRANSLATE_NOOP("Command", "Make FEM constraint fixed geometry"));
+    openCommand(QT_TRANSLATE_NOOP("Command", "Make fixed boundary condition for geometry"));
     doCommand(
         Doc, "App.activeDocument().addObject(\"Fem::ConstraintFixed\",\"%s\")", FeatName.c_str());
     doCommand(
@@ -421,7 +421,7 @@ CmdFemConstraintForce::CmdFemConstraintForce()
     sAppModule = "Fem";
     sGroup = QT_TR_NOOP("Fem");
     sMenuText = QT_TR_NOOP("Constraint force");
-    sToolTipText = QT_TR_NOOP("Creates a FEM constraint for a force acting on a geometric entity");
+    sToolTipText = QT_TR_NOOP("Creates a force load applied to a geometric entity");
     sWhatsThis = "FEM_ConstraintForce";
     sStatusTip = sToolTipText;
     sPixmap = "FEM_ConstraintForce";
@@ -436,7 +436,7 @@ void CmdFemConstraintForce::activated(int)
 
     std::string FeatName = getUniqueObjectName("ConstraintForce");
 
-    openCommand(QT_TRANSLATE_NOOP("Command", "Make FEM constraint force on geometry"));
+    openCommand(QT_TRANSLATE_NOOP("Command", "Make force load on geometry"));
     doCommand(
         Doc, "App.activeDocument().addObject(\"Fem::ConstraintForce\",\"%s\")", FeatName.c_str());
     doCommand(Doc,
@@ -473,8 +473,8 @@ CmdFemConstraintGear::CmdFemConstraintGear()
 {
     sAppModule      = "Fem";
     sGroup          = QT_TR_NOOP("Fem");
-    sMenuText       = QT_TR_NOOP("Constraint gear");
-    sToolTipText    = QT_TR_NOOP("Creates a FEM constraint for a gear");
+    sMenuText       = QT_TR_NOOP("Gear constraint");
+    sToolTipText    = QT_TR_NOOP("Creates a gear constraint");
     sWhatsThis      = "FEM_ConstraintGear";
     sStatusTip      = sToolTipText;
     sPixmap         = "FEM_ConstraintGear";
@@ -488,7 +488,7 @@ void CmdFemConstraintGear::activated(int)
         return;
     std::string FeatName = getUniqueObjectName("ConstraintGear");
 
-    openCommand(QT_TRANSLATE_NOOP("Command", "Make FEM constraint for gear"));
+    openCommand(QT_TRANSLATE_NOOP("Command", "Make gear constraint"));
     doCommand(
         Doc, "App.activeDocument().addObject(\"Fem::ConstraintGear\",\"%s\")", FeatName.c_str());
     doCommand(Doc, "App.activeDocument().%s.Diameter = 100.0", FeatName.c_str());
@@ -518,8 +518,8 @@ CmdFemConstraintHeatflux::CmdFemConstraintHeatflux()
 {
     sAppModule      = "Fem";
     sGroup          = QT_TR_NOOP("Fem");
-    sMenuText       = QT_TR_NOOP("Constraint heatflux");
-    sToolTipText    = QT_TR_NOOP("Creates a FEM constraint for a heatflux acting on a face");
+    sMenuText       = QT_TR_NOOP("Heat flux load");
+    sToolTipText    = QT_TR_NOOP("Creates a heat flux load acting on a face");
     sWhatsThis      = "FEM_ConstraintHeatflux";
     sStatusTip      = sToolTipText;
     sPixmap         = "FEM_ConstraintHeatflux";
@@ -534,7 +534,7 @@ void CmdFemConstraintHeatflux::activated(int)
 
     std::string FeatName = getUniqueObjectName("ConstraintHeatflux");
 
-    openCommand(QT_TRANSLATE_NOOP("Command", "Make FEM constraint heatflux on face"));
+    openCommand(QT_TRANSLATE_NOOP("Command", "Make heat flux load on face"));
     doCommand(Doc,
               "App.activeDocument().addObject(\"Fem::ConstraintHeatflux\",\"%s\")",
               FeatName.c_str());
@@ -572,8 +572,8 @@ CmdFemConstraintInitialTemperature::CmdFemConstraintInitialTemperature()
 {
     sAppModule = "Fem";
     sGroup = QT_TR_NOOP("Fem");
-    sMenuText = QT_TR_NOOP("Constraint initial temperature");
-    sToolTipText = QT_TR_NOOP("Creates a FEM constraint for initial temperature acting on a body");
+    sMenuText = QT_TR_NOOP("Initial temperature");
+    sToolTipText = QT_TR_NOOP("Creates an initial temperature acting on a body");
     sWhatsThis = "FEM_ConstraintInitialTemperature";
     sStatusTip = sToolTipText;
     sPixmap = "FEM_ConstraintInitialTemperature";
@@ -588,7 +588,7 @@ void CmdFemConstraintInitialTemperature::activated(int)
 
     std::string FeatName = getUniqueObjectName("ConstraintInitialTemperature");
 
-    openCommand(QT_TRANSLATE_NOOP("Command", "Make FEM constraint initial temperature on body"));
+    openCommand(QT_TRANSLATE_NOOP("Command", "Make initial temperature condition on body"));
     doCommand(Doc,
               "App.activeDocument().addObject(\"Fem::ConstraintInitialTemperature\",\"%s\")",
               FeatName.c_str());
@@ -620,8 +620,8 @@ CmdFemConstraintPlaneRotation::CmdFemConstraintPlaneRotation()
 {
     sAppModule      = "Fem";
     sGroup          = QT_TR_NOOP("Fem");
-    sMenuText       = QT_TR_NOOP("Constraint plane rotation");
-    sToolTipText    = QT_TR_NOOP("Creates a FEM constraint for plane rotation face");
+    sMenuText       = QT_TR_NOOP("Plane multi-point constraint");
+    sToolTipText    = QT_TR_NOOP("Creates a plane multi-point constraint for a face");
     sWhatsThis      = "FEM_ConstraintPlaneRotation";
     sStatusTip      = sToolTipText;
     sPixmap         = "FEM_ConstraintPlaneRotation";
@@ -636,7 +636,7 @@ void CmdFemConstraintPlaneRotation::activated(int)
 
     std::string FeatName = getUniqueObjectName("ConstraintPlaneRotation");
 
-    openCommand(QT_TRANSLATE_NOOP("Command", "Make FEM constraint Plane Rotation face"));
+    openCommand(QT_TRANSLATE_NOOP("Command", "Make plane multi-point constraint on face"));
     doCommand(Doc,
               "App.activeDocument().addObject(\"Fem::ConstraintPlaneRotation\",\"%s\")",
               FeatName.c_str());
@@ -669,7 +669,7 @@ CmdFemConstraintPressure::CmdFemConstraintPressure()
     sAppModule      = "Fem";
     sGroup          = QT_TR_NOOP("Fem");
     sMenuText       = QT_TR_NOOP("Constraint pressure");
-    sToolTipText    = QT_TR_NOOP("Creates a FEM constraint for a pressure acting on a face");
+    sToolTipText    = QT_TR_NOOP("Creates a pressure load acting on a face");
     sWhatsThis      = "FEM_ConstraintPressure";
     sStatusTip      = sToolTipText;
     sPixmap         = "FEM_ConstraintPressure";
@@ -684,7 +684,7 @@ void CmdFemConstraintPressure::activated(int)
 
     std::string FeatName = getUniqueObjectName("ConstraintPressure");
 
-    openCommand(QT_TRANSLATE_NOOP("Command", "Make FEM constraint pressure on face"));
+    openCommand(QT_TRANSLATE_NOOP("Command", "Make pressure load on face"));
     doCommand(Doc,
               "App.activeDocument().addObject(\"Fem::ConstraintPressure\",\"%s\")",
               FeatName.c_str());
@@ -722,8 +722,8 @@ CmdFemConstraintSpring::CmdFemConstraintSpring()
 {
     sAppModule      = "Fem";
     sGroup          = QT_TR_NOOP("Fem");
-    sMenuText       = QT_TR_NOOP("Constraint spring");
-    sToolTipText    = QT_TR_NOOP("Creates a FEM constraint for a spring acting on a face");
+    sMenuText       = QT_TR_NOOP("Spring");
+    sToolTipText    = QT_TR_NOOP("Creates a spring acting on a face");
     sWhatsThis      = "FEM_ConstraintSpring";
     sStatusTip      = sToolTipText;
     sPixmap         = "FEM_ConstraintSpring";
@@ -738,7 +738,7 @@ void CmdFemConstraintSpring::activated(int)
 
     std::string FeatName = getUniqueObjectName("ConstraintSpring");
 
-    openCommand(QT_TRANSLATE_NOOP("Command", "Make FEM constraint spring on face"));
+    openCommand(QT_TRANSLATE_NOOP("Command", "Make spring on face"));
     doCommand(
         Doc, "App.activeDocument().addObject(\"Fem::ConstraintSpring\",\"%s\")", FeatName.c_str());
     doCommand(Doc,
@@ -775,8 +775,8 @@ CmdFemConstraintPulley::CmdFemConstraintPulley()
 {
     sAppModule      = "Fem";
     sGroup          = QT_TR_NOOP("Fem");
-    sMenuText       = QT_TR_NOOP("Constraint pulley");
-    sToolTipText    = QT_TR_NOOP("Creates a FEM constraint for a pulley");
+    sMenuText       = QT_TR_NOOP("Pulley constraint");
+    sToolTipText    = QT_TR_NOOP("Creates a pulley constraint");
     sWhatsThis      = "FEM_ConstraintPulley";
     sStatusTip      = sToolTipText;
     sPixmap         = "FEM_ConstraintPulley";
@@ -791,7 +791,7 @@ void CmdFemConstraintPulley::activated(int)
 
     std::string FeatName = getUniqueObjectName("ConstraintPulley");
 
-    openCommand(QT_TRANSLATE_NOOP("Command", "Make FEM constraint for pulley"));
+    openCommand(QT_TRANSLATE_NOOP("Command", "Make pulley constraint"));
     doCommand(
         Doc, "App.activeDocument().addObject(\"Fem::ConstraintPulley\",\"%s\")", FeatName.c_str());
     doCommand(Doc, "App.activeDocument().%s.Diameter = 300.0", FeatName.c_str());
@@ -827,7 +827,7 @@ CmdFemConstraintTemperature::CmdFemConstraintTemperature()
     sGroup = QT_TR_NOOP("Fem");
     sMenuText = QT_TR_NOOP("Constraint temperature");
     sToolTipText = QT_TR_NOOP(
-        "Creates a FEM constraint for a temperature/concentrated heat flux acting on a face");
+        "Creates a temperature/concentrated heat flux load acting on a face");
     sWhatsThis = "FEM_ConstraintTemperature";
     sStatusTip = sToolTipText;
     sPixmap = "FEM_ConstraintTemperature";
@@ -842,7 +842,7 @@ void CmdFemConstraintTemperature::activated(int)
 
     std::string FeatName = getUniqueObjectName("ConstraintTemperature");
 
-    openCommand(QT_TRANSLATE_NOOP("Command", "Make FEM constraint temperature on face"));
+    openCommand(QT_TRANSLATE_NOOP("Command", "Make temperature boundary condition on face"));
     doCommand(Doc,
               "App.activeDocument().addObject(\"Fem::ConstraintTemperature\",\"%s\")",
               FeatName.c_str());
@@ -875,7 +875,7 @@ CmdFemConstraintTransform::CmdFemConstraintTransform()
     sAppModule      = "Fem";
     sGroup          = QT_TR_NOOP("Fem");
     sMenuText       = QT_TR_NOOP("Constraint transform");
-    sToolTipText    = QT_TR_NOOP("Create FEM constraint for transforming a face");
+    sToolTipText    = QT_TR_NOOP("Create a local coordinate system on a face");
     sWhatsThis      = "FEM_ConstraintTransform";
     sStatusTip      = sToolTipText;
     sPixmap         = "FEM_ConstraintTransform";
@@ -890,7 +890,7 @@ void CmdFemConstraintTransform::activated(int)
 
     std::string FeatName = getUniqueObjectName("ConstraintTransform");
 
-    openCommand(QT_TRANSLATE_NOOP("Command", "Make FEM constraint transform on face"));
+    openCommand(QT_TRANSLATE_NOOP("Command", "Make local coordinate system on face"));
     doCommand(Doc,
               "App.activeDocument().addObject(\"Fem::ConstraintTransform\",\"%s\")",
               FeatName.c_str());
@@ -1136,8 +1136,8 @@ CmdFemCompEmConstraints::CmdFemCompEmConstraints()
 {
     sAppModule = "Fem";
     sGroup = QT_TR_NOOP("Fem");
-    sMenuText = QT_TR_NOOP("Electromagnetic constraints");
-    sToolTipText = QT_TR_NOOP("Electromagnetic constraints");
+    sMenuText = QT_TR_NOOP("Electromagnetic boundary conditions");
+    sToolTipText = QT_TR_NOOP("Electromagnetic boundary conditions");
     sWhatsThis = "";
     sStatusTip = sToolTipText;
 }

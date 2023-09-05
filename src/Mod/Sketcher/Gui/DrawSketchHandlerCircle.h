@@ -79,8 +79,10 @@ public:
             }
 
             drawEdit(EditCurve);
-            if (seekAutoConstraint(
-                    sugConstr2, onSketchPos, onSketchPos - EditCurve[0], AutoConstraint::CURVE)) {
+            if (seekAutoConstraint(sugConstr2,
+                                   onSketchPos,
+                                   onSketchPos - EditCurve[0],
+                                   AutoConstraint::CURVE)) {
                 renderSuggestConstraintsCursor(sugConstr2);
                 return;
             }
@@ -203,19 +205,23 @@ public:
     {
         if (Mode == STATUS_SEEK_First) {
             setPositionText(onSketchPos);
-            if (seekAutoConstraint(
-                    sugConstr1, onSketchPos, Base::Vector2d(0.f, 0.f), AutoConstraint::CURVE)) {
+            if (seekAutoConstraint(sugConstr1,
+                                   onSketchPos,
+                                   Base::Vector2d(0.f, 0.f),
+                                   AutoConstraint::CURVE)) {
                 renderSuggestConstraintsCursor(sugConstr1);
                 return;
             }
         }
         else if (Mode == STATUS_SEEK_Second || Mode == STATUS_SEEK_Third) {
             try {
-                if (Mode == STATUS_SEEK_Second)
+                if (Mode == STATUS_SEEK_Second) {
                     CenterPoint = EditCurve[N + 1] = (onSketchPos - FirstPoint) / 2 + FirstPoint;
-                else
+                }
+                else {
                     CenterPoint = EditCurve[N + 1] =
                         Part::Geom2dCircle::getCircleCenter(FirstPoint, SecondPoint, onSketchPos);
+                }
                 radius = (onSketchPos - CenterPoint).Length();
                 double lineAngle = GetPointAngle(CenterPoint, onSketchPos);
 

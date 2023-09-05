@@ -51,7 +51,7 @@ class TestBlendCurve(unittest.TestCase):
         # Create C0 BlendPoint at origin
         b1 = Surface.BlendPoint()
         # Create G1 BlendPoint
-        b2 = Surface.BlendPoint([vec(10,3,6), vec(2,5,6)])
+        b2 = Surface.BlendPoint([vec(10, 3, 6), vec(2, 5, 6)])
         # BlendCurve between the two BlendPoints
         bc = Surface.BlendCurve(b1, b2)
         # Compute the interpolating BezierCurve
@@ -60,7 +60,7 @@ class TestBlendCurve(unittest.TestCase):
         # Create G2 BlendPoint at the end of previous BlendCurve
         b1 = Surface.BlendPoint(curve1.toShape(), 1, 2)
         # Create G1 BlendPoint
-        b2 = Surface.BlendPoint([vec(5,6,2), vec(2,5,6)])
+        b2 = Surface.BlendPoint([vec(5, 6, 2), vec(2, 5, 6)])
 
         bc = Surface.BlendCurve(b1, b2)
         # Compute the interpolating BezierCurve

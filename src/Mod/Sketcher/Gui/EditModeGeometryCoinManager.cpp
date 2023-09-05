@@ -52,9 +52,12 @@ using namespace Sketcher;
 //**************************** EditModeGeometryCoinManager class ******************************
 
 EditModeGeometryCoinManager::EditModeGeometryCoinManager(
-    ViewProviderSketch& vp, DrawingParameters& drawingParams,
-    GeometryLayerParameters& geometryLayerParams, AnalysisResults& analysisResultStruct,
-    EditModeScenegraphNodes& editModeScenegraph, CoinMapping& coinMap)
+    ViewProviderSketch& vp,
+    DrawingParameters& drawingParams,
+    GeometryLayerParameters& geometryLayerParams,
+    AnalysisResults& analysisResultStruct,
+    EditModeScenegraphNodes& editModeScenegraph,
+    CoinMapping& coinMap)
     : viewProvider(vp)
     , drawingParameters(drawingParams)
     , geometryLayerParameters(geometryLayerParams)
@@ -96,8 +99,11 @@ void EditModeGeometryCoinManager::processGeometry(const GeoListFacade& geolistfa
                                            editModeScenegraphNodes.CurveSet};
 
     // process geometry layers
-    EditModeGeometryCoinConverter gcconv(
-        viewProvider, geometrylayernodes, drawingParameters, geometryLayerParameters, coinMapping);
+    EditModeGeometryCoinConverter gcconv(viewProvider,
+                                         geometrylayernodes,
+                                         drawingParameters,
+                                         geometryLayerParameters,
+                                         coinMapping);
 
     gcconv.convert(geolistfacade);
 
@@ -118,15 +124,17 @@ void EditModeGeometryCoinManager::updateGeometryColor(const GeoListFacade& geoli
     // Lambdas for convenience retrieval of geometry information
     auto isConstructionGeom = [&geolistfacade](int GeoId) {
         auto geom = geolistfacade.getGeometryFacadeFromGeoId(GeoId);
-        if (geom)
+        if (geom) {
             return geom->getConstruction();
+        }
         return false;
     };
 
     auto isDefinedGeomPoint = [&geolistfacade](int GeoId) {
         auto geom = geolistfacade.getGeometryFacadeFromGeoId(GeoId);
-        if (geom)
+        if (geom) {
             return geom->isGeoType(Part::GeomPoint::getClassTypeId()) && !geom->getConstruction();
+        }
         return false;
     };
 
@@ -174,8 +182,9 @@ void EditModeGeometryCoinManager::updateGeometryColor(const GeoListFacade& geoli
 
         // colors of the point set
         if (issketchinvalid) {
-            for (int i = 0; i < PtNum; i++)
+            for (int i = 0; i < PtNum; i++) {
                 pcolor[i] = drawingParameters.InvalidSketchColor;
+            }
         }
         else {
 
@@ -191,23 +200,29 @@ void EditModeGeometryCoinManager::updateGeometryColor(const GeoListFacade& geoli
                     bool constrainedElement = isFullyConstraintElement(GeoId);
 
                     if (isInternalAlignedGeom(GeoId)) {
-                        if (constrainedElement)
+                        if (constrainedElement) {
                             pcolor[i] = drawingParameters.FullyConstraintInternalAlignmentColor;
-                        else
+                        }
+                        else {
                             pcolor[i] = drawingParameters.InternalAlignedGeoColor;
+                        }
                     }
                     else {
                         if (!isDefinedGeomPoint(GeoId)) {
-                            if (constrainedElement)
+                            if (constrainedElement) {
                                 pcolor[i] = drawingParameters.FullyConstraintConstructionPointColor;
-                            else
+                            }
+                            else {
                                 pcolor[i] = drawingParameters.VertexColor;
+                            }
                         }
                         else {// this is a defined GeomPoint
-                            if (constrainedElement)
+                            if (constrainedElement) {
                                 pcolor[i] = drawingParameters.FullyConstraintElementColor;
-                            else
+                            }
+                            else {
                                 pcolor[i] = drawingParameters.CurveColor;
+                            }
                         }
                     }
                 }
@@ -220,12 +235,15 @@ void EditModeGeometryCoinManager::updateGeometryColor(const GeoListFacade& geoli
                                       float toprendering,
                                       float midrendering,
                                       float lowrendering) {
-            if (drawingParameters.topRenderingGeometry == renderingtype)
+            if (drawingParameters.topRenderingGeometry == renderingtype) {
                 return toprendering;
-            else if (drawingParameters.midRenderingGeometry == renderingtype)
+            }
+            else if (drawingParameters.midRenderingGeometry == renderingtype) {
                 return midrendering;
-            else
+            }
+            else {
                 return lowrendering;
+            }
         };
 
         float zNormPoint = getRenderHeight(DrawingParameters::GeometryRendering::NormalGeometry,
@@ -248,10 +266,12 @@ void EditModeGeometryCoinManager::updateGeometryColor(const GeoListFacade& geoli
                     geolistfacade.getGeometryFacadeFromGeoId(coinMapping.getPointGeoId(i, l));
 
                 if (geom) {
-                    if (geom->getConstruction())
+                    if (geom->getConstruction()) {
                         pverts[i].setValue(x, y, viewOrientationFactor * zConstrPoint);
-                    else
+                    }
+                    else {
                         pverts[i].setValue(x, y, viewOrientationFactor * zNormPoint);
+                    }
                 }
             }
         }
@@ -269,8 +289,9 @@ void EditModeGeometryCoinManager::updateGeometryColor(const GeoListFacade& geoli
         MultiFieldId preselectpointmfid;
 
         if (preselectcross == 0) {
-            if (l == 0)// cross only in layer 0
+            if (l == 0) {// cross only in layer 0
                 pcolor[0] = drawingParameters.PreselectColor;
+            }
         }
         else if (preselectpoint != -1) {
             preselectpointmfid = coinMapping.getIndexLayer(preselectpoint);
@@ -279,7 +300,8 @@ void EditModeGeometryCoinManager::updateGeometryColor(const GeoListFacade& geoli
 
                 pcolor[preselectpointmfid.fieldIndex] = drawingParameters.PreselectColor;
 
-                raisePoint(pverts[preselectpointmfid.fieldIndex], viewOrientationFactor * drawingParameters.zHighlight);
+                raisePoint(pverts[preselectpointmfid.fieldIndex],
+                           viewOrientationFactor * drawingParameters.zHighlight);
             }
         }
 
@@ -301,7 +323,8 @@ void EditModeGeometryCoinManager::updateGeometryColor(const GeoListFacade& geoli
                         ? drawingParameters.PreselectSelectedColor
                         : drawingParameters.SelectColor;
 
-                    raisePoint(pverts[pointindex.fieldIndex], viewOrientationFactor * drawingParameters.zHighlight);
+                    raisePoint(pverts[pointindex.fieldIndex],
+                               viewOrientationFactor * drawingParameters.zHighlight);
                 }
             });
 
@@ -372,16 +395,20 @@ void EditModeGeometryCoinManager::updateGeometryColor(const GeoListFacade& geoli
             }
             else if (isConstructionGeom(GeoId)) {
                 if (isInternalAlignedGeom(GeoId)) {
-                    if (constrainedElement)
+                    if (constrainedElement) {
                         color[i] = drawingParameters.FullyConstraintInternalAlignmentColor;
-                    else
+                    }
+                    else {
                         color[i] = drawingParameters.InternalAlignedGeoColor;
+                    }
                 }
                 else {
-                    if (constrainedElement)
+                    if (constrainedElement) {
                         color[i] = drawingParameters.FullyConstraintConstructionElementColor;
-                    else
+                    }
+                    else {
                         color[i] = drawingParameters.CurveDraftColor;
+                    }
                 }
 
                 for (int k = j; j < k + indexes; j++) {

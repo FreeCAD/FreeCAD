@@ -116,9 +116,7 @@ class PackageList(QtWidgets.QWidget):
 
         self.item_filter.setHidePy2(pref.GetBool("HidePy2", True))
         self.item_filter.setHideObsolete(pref.GetBool("HideObsolete", True))
-        self.item_filter.setHideNewerFreeCADRequired(
-            pref.GetBool("HideNewerFreeCADRequired", True)
-        )
+        self.item_filter.setHideNewerFreeCADRequired(pref.GetBool("HideNewerFreeCADRequired", True))
 
     def on_listPackages_clicked(self, index: QtCore.QModelIndex):
         """Determine what addon was selected and emit the itemSelected signal with it as
@@ -155,9 +153,7 @@ class PackageList(QtWidgets.QWidget):
         """filter name and description by the regex specified by text_filter"""
 
         if text_filter:
-            if hasattr(
-                self.item_filter, "setFilterRegularExpression"
-            ):  # Added in Qt 5.12
+            if hasattr(self.item_filter, "setFilterRegularExpression"):  # Added in Qt 5.12
                 test_regex = QtCore.QRegularExpression(text_filter)
             else:
                 test_regex = QtCore.QRegExp(text_filter)
@@ -171,9 +167,7 @@ class PackageList(QtWidgets.QWidget):
                 self.ui.labelFilterValidity.setToolTip(
                     translate("AddonsInstaller", "Filter regular expression is invalid")
                 )
-                icon = QtGui.QIcon.fromTheme(
-                    "cancel", QtGui.QIcon(":/icons/edit_Cancel.svg")
-                )
+                icon = QtGui.QIcon.fromTheme("cancel", QtGui.QIcon(":/icons/edit_Cancel.svg"))
                 self.ui.labelFilterValidity.setPixmap(icon.pixmap(16, 16))
             self.ui.labelFilterValidity.show()
         else:
@@ -227,17 +221,17 @@ class PackageListItemModel(QtCore.QAbstractListModel):
         if role == QtCore.Qt.ToolTipRole:
             tooltip = ""
             if self.repos[row].repo_type == Addon.Kind.PACKAGE:
-                tooltip = translate(
-                    "AddonsInstaller", "Click for details about package {}"
-                ).format(self.repos[row].display_name)
+                tooltip = translate("AddonsInstaller", "Click for details about package {}").format(
+                    self.repos[row].display_name
+                )
             elif self.repos[row].repo_type == Addon.Kind.WORKBENCH:
                 tooltip = translate(
                     "AddonsInstaller", "Click for details about workbench {}"
                 ).format(self.repos[row].display_name)
             elif self.repos[row].repo_type == Addon.Kind.MACRO:
-                tooltip = translate(
-                    "AddonsInstaller", "Click for details about macro {}"
-                ).format(self.repos[row].display_name)
+                tooltip = translate("AddonsInstaller", "Click for details about macro {}").format(
+                    self.repos[row].display_name
+                )
             return tooltip
         if role == PackageListItemModel.DataAccessRole:
             return self.repos[row]
@@ -246,9 +240,7 @@ class PackageListItemModel(QtCore.QAbstractListModel):
         """No header in this implementation: always returns None."""
         return None
 
-    def setData(
-        self, index: QtCore.QModelIndex, value, role=QtCore.Qt.EditRole
-    ) -> None:
+    def setData(self, index: QtCore.QModelIndex, value, role=QtCore.Qt.EditRole) -> None:
         """Set the data for this row. The column of the index is ignored."""
 
         row = index.row()
@@ -290,18 +282,14 @@ class PackageListItemModel(QtCore.QAbstractListModel):
         """Set the status of addon with name to status."""
         for row, item in enumerate(self.repos):
             if item.name == name:
-                self.setData(
-                    self.index(row, 0), status, PackageListItemModel.StatusUpdateRole
-                )
+                self.setData(self.index(row, 0), status, PackageListItemModel.StatusUpdateRole)
                 return
 
     def update_item_icon(self, name: str, icon: QtGui.QIcon) -> None:
         """Set the icon for Addon with name to icon"""
         for row, item in enumerate(self.repos):
             if item.name == name:
-                self.setData(
-                    self.index(row, 0), icon, PackageListItemModel.IconUpdateRole
-                )
+                self.setData(self.index(row, 0), icon, PackageListItemModel.IconUpdateRole)
                 return
 
     def reload_item(self, repo: Addon) -> None:
@@ -432,9 +420,7 @@ class PackageListItemDelegate(QtWidgets.QStyledItemDelegate):
         if self.displayStyle == ListDisplayStyle.EXPANDED:
             if repo.macro.author:
                 caption = translate("AddonsInstaller", "Author")
-                self.widget.ui.labelMaintainer.setText(
-                    caption + ": " + repo.macro.author
-                )
+                self.widget.ui.labelMaintainer.setText(caption + ": " + repo.macro.author)
             else:
                 self.widget.ui.labelMaintainer.setText("")
 
@@ -454,14 +440,8 @@ class PackageListItemDelegate(QtWidgets.QStyledItemDelegate):
             result = translate("AddonsInstaller", "Pending restart")
 
         if repo.is_disabled():
-            style = (
-                "style='color:" + utils.warning_color_string() + "; font-weight:bold;'"
-            )
-            result += (
-                f"<span {style}> ["
-                + translate("AddonsInstaller", "DISABLED")
-                + "]</span>"
-            )
+            style = "style='color:" + utils.warning_color_string() + "; font-weight:bold;'"
+            result += f"<span {style}> [" + translate("AddonsInstaller", "DISABLED") + "]</span>"
 
         return result
 
@@ -480,15 +460,11 @@ class PackageListItemDelegate(QtWidgets.QStyledItemDelegate):
                 )
                 installed_version_string += str(repo.installed_version)
             else:
-                installed_version_string = "<br/>" + translate(
-                    "AddonsInstaller", "Unknown version"
-                )
+                installed_version_string = "<br/>" + translate("AddonsInstaller", "Unknown version")
 
         installed_date_string = ""
         if repo.updated_timestamp:
-            installed_date_string = (
-                "<br/>" + translate("AddonsInstaller", "Installed on") + ": "
-            )
+            installed_date_string = "<br/>" + translate("AddonsInstaller", "Installed on") + ": "
             installed_date_string += (
                 QtCore.QDateTime.fromTime_t(repo.updated_timestamp)
                 .date()
@@ -519,13 +495,9 @@ class PackageListItemDelegate(QtWidgets.QStyledItemDelegate):
             result = translate("AddonsInstaller", "Pending restart")
 
         if repo.is_disabled():
-            style = (
-                "style='color:" + utils.warning_color_string() + "; font-weight:bold;'"
-            )
+            style = "style='color:" + utils.warning_color_string() + "; font-weight:bold;'"
             result += (
-                f"<br/><span {style}>["
-                + translate("AddonsInstaller", "DISABLED")
-                + "]</span>"
+                f"<br/><span {style}>[" + translate("AddonsInstaller", "DISABLED") + "]</span>"
             )
 
         return result
@@ -623,19 +595,11 @@ class PackageListFilter(QtCore.QSortFilterProxyModel):
                 return False
 
         # If it's not installed, check to see if it's Py2 only
-        if (
-            data.status() == Addon.Status.NOT_INSTALLED
-            and self.hide_py2
-            and data.python2
-        ):
+        if data.status() == Addon.Status.NOT_INSTALLED and self.hide_py2 and data.python2:
             return False
 
         # If it's not installed, check to see if it's marked obsolete
-        if (
-            data.status() == Addon.Status.NOT_INSTALLED
-            and self.hide_obsolete
-            and data.obsolete
-        ):
+        if data.status() == Addon.Status.NOT_INSTALLED and self.hide_obsolete and data.obsolete:
             return False
 
         # If it's not installed, check to see if it's for a newer version of FreeCAD
@@ -664,11 +628,7 @@ class PackageListFilter(QtCore.QSortFilterProxyModel):
                     return True
                 if re.match(desc).hasMatch():
                     return True
-                if (
-                    data.macro
-                    and data.macro.comment
-                    and re.match(data.macro.comment).hasMatch()
-                ):
+                if data.macro and data.macro.comment and re.match(data.macro.comment).hasMatch():
                     return True
                 for tag in data.tags:
                     if re.match(tag).hasMatch():
@@ -682,11 +642,7 @@ class PackageListFilter(QtCore.QSortFilterProxyModel):
                 return True
             if re.indexIn(desc) != -1:
                 return True
-            if (
-                data.macro
-                and data.macro.comment
-                and re.indexIn(data.macro.comment) != -1
-            ):
+            if data.macro and data.macro.comment and re.indexIn(data.macro.comment) != -1:
                 return True
             for tag in data.tags:
                 if re.indexIn(tag) != -1:
@@ -712,9 +668,7 @@ class Ui_PackageList:
         self.buttonCompactLayout.setCheckable(True)
         self.buttonCompactLayout.setAutoExclusive(True)
         self.buttonCompactLayout.setIcon(
-            QtGui.QIcon.fromTheme(
-                "expanded_view", QtGui.QIcon(":/icons/compact_view.svg")
-            )
+            QtGui.QIcon.fromTheme("expanded_view", QtGui.QIcon(":/icons/compact_view.svg"))
         )
 
         self.horizontalLayout_6.addWidget(self.buttonCompactLayout)
@@ -725,9 +679,7 @@ class Ui_PackageList:
         self.buttonExpandedLayout.setChecked(True)
         self.buttonExpandedLayout.setAutoExclusive(True)
         self.buttonExpandedLayout.setIcon(
-            QtGui.QIcon.fromTheme(
-                "expanded_view", QtGui.QIcon(":/icons/expanded_view.svg")
-            )
+            QtGui.QIcon.fromTheme("expanded_view", QtGui.QIcon(":/icons/expanded_view.svg"))
         )
 
         self.horizontalLayout_6.addWidget(self.buttonExpandedLayout)
@@ -791,9 +743,7 @@ class Ui_PackageList:
 
     def retranslateUi(self, _):
         self.labelPackagesContaining.setText(
-            QtCore.QCoreApplication.translate(
-                "AddonsInstaller", "Show Addons containing:", None
-            )
+            QtCore.QCoreApplication.translate("AddonsInstaller", "Show Addons containing:", None)
         )
         self.comboPackageType.setItemText(
             0, QtCore.QCoreApplication.translate("AddonsInstaller", "All", None)
@@ -806,9 +756,7 @@ class Ui_PackageList:
         )
         self.comboPackageType.setItemText(
             3,
-            QtCore.QCoreApplication.translate(
-                "AddonsInstaller", "Preference Packs", None
-            ),
+            QtCore.QCoreApplication.translate("AddonsInstaller", "Preference Packs", None),
         )
         self.labelStatus.setText(
             QtCore.QCoreApplication.translate("AddonsInstaller", "Status:", None)
@@ -827,9 +775,7 @@ class Ui_PackageList:
         )
         self.comboStatus.setItemText(
             StatusFilter.UPDATE_AVAILABLE,
-            QtCore.QCoreApplication.translate(
-                "AddonsInstaller", "Update available", None
-            ),
+            QtCore.QCoreApplication.translate("AddonsInstaller", "Update available", None),
         )
         self.lineEditFilter.setPlaceholderText(
             QtCore.QCoreApplication.translate("AddonsInstaller", "Filter", None)

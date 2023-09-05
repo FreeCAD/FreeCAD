@@ -58,8 +58,9 @@ int SketchPy::PyInit(PyObject* /*args*/, PyObject* /*kwd*/)
 
 PyObject* SketchPy::solve(PyObject* args)
 {
-    if (!PyArg_ParseTuple(args, ""))
+    if (!PyArg_ParseTuple(args, "")) {
         return nullptr;
+    }
     getSketchPtr()->resetSolver();
     return Py::new_reference_to(Py::Long(getSketchPtr()->solve()));
 }
@@ -67,8 +68,9 @@ PyObject* SketchPy::solve(PyObject* args)
 PyObject* SketchPy::addGeometry(PyObject* args)
 {
     PyObject* pcObj;
-    if (!PyArg_ParseTuple(args, "O", &pcObj))
+    if (!PyArg_ParseTuple(args, "O", &pcObj)) {
         return nullptr;
+    }
 
     if (PyObject_TypeCheck(pcObj, &(Part::GeometryPy::Type))) {
         Part::Geometry* geo = static_cast<Part::GeometryPy*>(pcObj)->getGeometryPtr();
@@ -103,8 +105,9 @@ PyObject* SketchPy::addGeometry(PyObject* args)
 PyObject* SketchPy::addConstraint(PyObject* args)
 {
     PyObject* pcObj;
-    if (!PyArg_ParseTuple(args, "O", &pcObj))
+    if (!PyArg_ParseTuple(args, "O", &pcObj)) {
         return nullptr;
+    }
 
     if (PyObject_TypeCheck(pcObj, &(PyList_Type)) || PyObject_TypeCheck(pcObj, &(PyTuple_Type))) {
         std::vector<Constraint*> values;
@@ -139,8 +142,9 @@ PyObject* SketchPy::addConstraint(PyObject* args)
 
 PyObject* SketchPy::clear(PyObject* args)
 {
-    if (!PyArg_ParseTuple(args, ""))
+    if (!PyArg_ParseTuple(args, "")) {
         return nullptr;
+    }
 
     getSketchPtr()->clear();
 
@@ -152,13 +156,22 @@ PyObject* SketchPy::movePoint(PyObject* args)
     int index1, index2;
     PyObject* pcObj;
     int relative = 0;
-    if (!PyArg_ParseTuple(
-            args, "iiO!|i", &index1, &index2, &(Base::VectorPy::Type), &pcObj, &relative))
+    if (!PyArg_ParseTuple(args,
+                          "iiO!|i",
+                          &index1,
+                          &index2,
+                          &(Base::VectorPy::Type),
+                          &pcObj,
+                          &relative)) {
         return nullptr;
+    }
     Base::Vector3d* toPoint = static_cast<Base::VectorPy*>(pcObj)->getVectorPtr();
 
-    return Py::new_reference_to(Py::Long(getSketchPtr()->movePoint(
-        index1, static_cast<Sketcher::PointPos>(index2), *toPoint, (relative > 0))));
+    return Py::new_reference_to(
+        Py::Long(getSketchPtr()->movePoint(index1,
+                                           static_cast<Sketcher::PointPos>(index2),
+                                           *toPoint,
+                                           (relative > 0))));
 }
 
 // +++ attributes implementer ++++++++++++++++++++++++++++++++++++++++++++++++

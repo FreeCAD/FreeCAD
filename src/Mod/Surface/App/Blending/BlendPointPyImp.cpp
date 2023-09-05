@@ -25,9 +25,13 @@
 #include <BRepAdaptor_Curve.hxx>
 #include <TopoDS.hxx>
 #endif
+
+// clang-format off
 #include "Blending/BlendPoint.h"
 #include "Blending/BlendPointPy.h"
 #include "Blending/BlendPointPy.cpp"
+// clang-format on
+
 #include <Base/GeometryPyCXX.h>
 #include <Base/VectorPy.h>
 #include <Mod/Part/App/TopoShapePy.h>
@@ -47,15 +51,15 @@ std::string BlendPointPy::representation() const
     return str.str();
 }
 
-PyObject *BlendPointPy::PyMake(struct _typeobject *, PyObject *, PyObject *)// Python wrapper
+PyObject* BlendPointPy::PyMake(struct _typeobject*, PyObject*, PyObject*)// Python wrapper
 {
     // create a new instance of BlendPointPy
     return new BlendPointPy(new BlendPoint);
 }
 
-int BlendPointPy::PyInit(PyObject *args, PyObject *)
+int BlendPointPy::PyInit(PyObject* args, PyObject*)
 {
-    PyObject *plist;
+    PyObject* plist;
     std::vector<Base::Vector3d> vecs;
     if (PyArg_ParseTuple(args, "O", &plist)) {
         Py::Sequence list(plist);
@@ -82,14 +86,15 @@ int BlendPointPy::PyInit(PyObject *args, PyObject *)
 
     double param;
     int cont;
-    PyObject *pcObj;
+    PyObject* pcObj;
     PyErr_Clear();
     // Create a curve with an edge, parameter and continiuity.
     if (PyArg_ParseTuple(args, "O!di", &(Part::TopoShapePy::Type), &pcObj, &param, &cont)) {
         try {
             gp_Pnt Pt;
-            TopoDS_Shape shape = static_cast<Part::TopoShapePy *>(pcObj)->getTopoShapePtr()->getShape();
-            const TopoDS_Edge &e = TopoDS::Edge(shape);
+            TopoDS_Shape shape =
+                static_cast<Part::TopoShapePy*>(pcObj)->getTopoShapePtr()->getShape();
+            const TopoDS_Edge& e = TopoDS::Edge(shape);
             BRepAdaptor_Curve adapt(e);
             if (param < adapt.FirstParameter() || param > adapt.LastParameter()) {
                 PyErr_Warn(PyExc_UserWarning, "BlendPoint: edge is not a closed curve");
@@ -109,39 +114,42 @@ int BlendPointPy::PyInit(PyObject *args, PyObject *)
             this->getBlendPointPtr()->vectors = vecs;
             return 0;
         }
-        catch (const std::exception &e) {
+        catch (const std::exception& e) {
             PyErr_SetString(PyExc_RuntimeError, e.what());
             return -1;
         }
     }
 
-    PyErr_SetString(PyExc_TypeError, "supported signatures:\n"
+    PyErr_SetString(PyExc_TypeError,
+                    "supported signatures:\n"
                     "BlendPoint()\n"
                     "BlendPoint(list of Vector)\n"
                     "BlendPoint(edge, parameter and continiuity)\n");
     return -1;
 }
 
-PyObject *BlendPointPy::setSize(PyObject *args)
+PyObject* BlendPointPy::setSize(PyObject* args)
 {
     double size = 1.0;
 
-    if (!PyArg_ParseTuple(args, "d", &size))
+    if (!PyArg_ParseTuple(args, "d", &size)) {
         return nullptr;
+    }
     try {
         getBlendPointPtr()->setSize(size);
         Py_Return;
     }
-    catch (Standard_Failure &) {
+    catch (Standard_Failure&) {
         PyErr_SetString(Base::PyExc_FC_CADKernelError, "Failed to set size");
         return nullptr;
     }
 }
 
-PyObject *BlendPointPy::getSize(PyObject *args)
+PyObject* BlendPointPy::getSize(PyObject* args)
 {
-    if (!PyArg_ParseTuple(args, ""))
+    if (!PyArg_ParseTuple(args, "")) {
         return nullptr;
+    }
     int nb = getBlendPointPtr()->nbVectors();
     if (nb >= 2) {
         double bpTangentLength = getBlendPointPtr()->vectors[1].Length();
@@ -154,18 +162,18 @@ PyObject *BlendPointPy::getSize(PyObject *args)
 
 Py::List BlendPointPy::getVectors() const
 {
-    BlendPoint *bp = getBlendPointPtr();
+    BlendPoint* bp = getBlendPointPtr();
     Py::List vecs;
     for (const auto& p : bp->vectors) {
-        Base::VectorPy *vec = new Base::VectorPy(p);
+        Base::VectorPy* vec = new Base::VectorPy(p);
         vecs.append(Py::asObject(vec));
     }
     return vecs;
 }
 
-PyObject *BlendPointPy::setvectors(PyObject *args)
+PyObject* BlendPointPy::setvectors(PyObject* args)
 {
-    PyObject *plist;
+    PyObject* plist;
     if (!PyArg_ParseTuple(args, "O", &plist)) {
         PyErr_SetString(PyExc_TypeError, "List of vectors required.");
         return nullptr;
@@ -179,17 +187,17 @@ PyObject *BlendPointPy::setvectors(PyObject *args)
         vecs.emplace_back(pole);
     }
 
-    BlendPoint *bp = getBlendPointPtr();
+    BlendPoint* bp = getBlendPointPtr();
     bp->vectors = vecs;
     Py_Return;
 }
 
-PyObject *BlendPointPy::getCustomAttributes(const char * /*attr*/) const
+PyObject* BlendPointPy::getCustomAttributes(const char* /*attr*/) const
 {
     return nullptr;
 }
 
-int BlendPointPy::setCustomAttributes(const char * /*attr*/, PyObject * /*obj*/)
+int BlendPointPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
 {
     return 0;
 }

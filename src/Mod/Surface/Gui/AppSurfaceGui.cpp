@@ -41,11 +41,13 @@
 void CreateSurfaceCommands();
 
 
-namespace SurfaceGui {
-class Module : public Py::ExtensionModule<Module>
+namespace SurfaceGui
+{
+class Module: public Py::ExtensionModule<Module>
 {
 public:
-    Module() : Py::ExtensionModule<Module>("SurfaceGui")
+    Module()
+        : Py::ExtensionModule<Module>("SurfaceGui")
     {
         initialize("This module is the SurfaceGui module.");// register with Python
     }
@@ -53,7 +55,8 @@ public:
 private:
 };
 
-PyObject *initModule() {
+PyObject* initModule()
+{
     return Base::Interpreter().addModule(new Module);
 }
 
@@ -70,6 +73,7 @@ PyMOD_INIT_FUNC(SurfaceGui)
     Base::Interpreter().runString("import Surface");
     Base::Interpreter().runString("import PartGui");
 
+    // clang-format off
     // instantiating the commands
     CreateSurfaceCommands();
 
@@ -80,8 +84,9 @@ PyMOD_INIT_FUNC(SurfaceGui)
     SurfaceGui::ViewProviderExtend          ::init();
     SurfaceGui::ViewProviderBlendCurve      ::init();
     // SurfaceGui::ViewProviderCut::init();
+    // clang-format on
 
-    PyObject *mod = SurfaceGui::initModule();
+    PyObject* mod = SurfaceGui::initModule();
     Base::Console().Log("Loading GUI of Surface module... done\n");
     PyMOD_Return(mod);
 }

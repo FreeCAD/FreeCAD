@@ -46,20 +46,24 @@ public:
 
     bool allow(App::Document* /*pDoc*/, App::DocumentObject* pObj, const char* sSubName) override
     {
-        if (pObj != this->object)
+        if (pObj != this->object) {
             return false;
-        if (!sSubName || sSubName[0] == '\0')
+        }
+        if (!sSubName || sSubName[0] == '\0') {
             return false;
-        if (disabled)
+        }
+        if (disabled) {
             return true;
+        }
         std::string element(sSubName);
         if (element.substr(0, 4) == "Edge") {
             int GeoId = std::atoi(element.substr(4, 4000).c_str()) - 1;
             Sketcher::SketchObject* Sketch = static_cast<Sketcher::SketchObject*>(object);
             const Part::Geometry* geom = Sketch->getGeometry(GeoId);
             if (geom->getTypeId() == Part::GeomLineSegment::getClassTypeId()
-                || geom->getTypeId() == Part::GeomArcOfCircle::getClassTypeId())
+                || geom->getTypeId() == Part::GeomArcOfCircle::getClassTypeId()) {
                 return true;
+            }
         }
         return false;
     }
@@ -288,8 +292,9 @@ public:
                 ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
                     "User parameter:BaseApp/Preferences/Mod/Sketcher");
                 bool autoRecompute = hGrp->GetBool("AutoRecompute", false);
-                if (autoRecompute)
+                if (autoRecompute) {
                     Gui::Command::updateActive();
+                }
 
                 // constrain chosen point
                 if (!SugConstr.empty()) {

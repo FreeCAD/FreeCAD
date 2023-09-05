@@ -24,39 +24,41 @@
 #ifndef WEBGUI_COOKIEJAR_H
 #define WEBGUI_COOKIEJAR_H
 
+#include <Mod/Web/WebGlobal.h>
 #include <QFile>
 #include <QNetworkCookieJar>
 #include <QTimer>
-#include <Mod/Web/WebGlobal.h>
 
 class QNetworkCookieJar;
 
-namespace WebGui {
+namespace WebGui
+{
 
-    class WebGuiExport FcCookieJar : public QNetworkCookieJar {
+class WebGuiExport FcCookieJar: public QNetworkCookieJar
+{
 
-        Q_OBJECT
+    Q_OBJECT
 
-    public:
-        explicit FcCookieJar(QObject* parent = nullptr);
-        ~FcCookieJar() override;
-        bool setCookiesFromUrl(const QList<QNetworkCookie>&, const QUrl&) override;
+public:
+    explicit FcCookieJar(QObject* parent = nullptr);
+    ~FcCookieJar() override;
+    bool setCookiesFromUrl(const QList<QNetworkCookie>&, const QUrl&) override;
 
-    public Q_SLOTS:
-        void scheduleSaveToDisk();
-        void loadFromDisk();
-        void reset();
+public Q_SLOTS:
+    void scheduleSaveToDisk();
+    void loadFromDisk();
+    void reset();
 
-    private Q_SLOTS:
-        void saveToDisk();
+private Q_SLOTS:
+    void saveToDisk();
 
-    private:
-        void extractRawCookies();
-        QList<QByteArray> m_rawCookies;
-        QFile m_file;
-        QTimer m_timer;
-    };
+private:
+    void extractRawCookies();
+    QList<QByteArray> m_rawCookies;
+    QFile m_file;
+    QTimer m_timer;
+};
 
-}
+}// namespace WebGui
 
-#endif // WEBGUI_COOKIEJAR_H
+#endif// WEBGUI_COOKIEJAR_H

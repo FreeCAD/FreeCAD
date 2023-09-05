@@ -44,10 +44,7 @@ class AddonUninstallerGUI(QtCore.QObject):
     def __init__(self, addon_to_remove):
         super().__init__()
         self.addon_to_remove = addon_to_remove
-        if (
-            hasattr(self.addon_to_remove, "macro")
-            and self.addon_to_remove.macro is not None
-        ):
+        if hasattr(self.addon_to_remove, "macro") and self.addon_to_remove.macro is not None:
             self.uninstaller = MacroUninstaller(self.addon_to_remove)
         else:
             self.uninstaller = AddonUninstaller(self.addon_to_remove)
@@ -61,9 +58,7 @@ class AddonUninstallerGUI(QtCore.QObject):
         self.dialog_timer = QtCore.QTimer()
         self.dialog_timer.timeout.connect(self._show_progress_dialog)
         self.dialog_timer.setSingleShot(True)
-        self.dialog_timer.setInterval(
-            1000
-        )  # Can override from external (e.g. testing) code
+        self.dialog_timer.setInterval(1000)  # Can override from external (e.g. testing) code
 
     def run(self):
         """Begin the user interaction: asynchronous, only blocks while showing the initial modal
@@ -82,9 +77,9 @@ class AddonUninstallerGUI(QtCore.QObject):
         confirm = QtWidgets.QMessageBox.question(
             utils.get_main_am_window(),
             translate("AddonsInstaller", "Confirm remove"),
-            translate(
-                "AddonsInstaller", "Are you sure you want to uninstall {}?"
-            ).format(self.addon_to_remove.display_name),
+            translate("AddonsInstaller", "Are you sure you want to uninstall {}?").format(
+                self.addon_to_remove.display_name
+            ),
             QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.Cancel,
         )
         return confirm == QtWidgets.QMessageBox.Yes
@@ -93,9 +88,7 @@ class AddonUninstallerGUI(QtCore.QObject):
         self.progress_dialog = QtWidgets.QMessageBox(
             QtWidgets.QMessageBox.NoIcon,
             translate("AddonsInstaller", "Removing Addon"),
-            translate("AddonsInstaller", "Removing {}").format(
-                self.addon_to_remove.display_name
-            )
+            translate("AddonsInstaller", "Removing {}").format(self.addon_to_remove.display_name)
             + "...",
             QtWidgets.QMessageBox.Cancel,
             parent=utils.get_main_am_window(),
@@ -119,9 +112,7 @@ class AddonUninstallerGUI(QtCore.QObject):
         QtWidgets.QMessageBox.information(
             utils.get_main_am_window(),
             translate("AddonsInstaller", "Uninstall complete"),
-            translate("AddonInstaller", "Finished removing {}").format(
-                addon.display_name
-            ),
+            translate("AddonInstaller", "Finished removing {}").format(addon.display_name),
         )
         self._finalize()
 
@@ -133,9 +124,7 @@ class AddonUninstallerGUI(QtCore.QObject):
         QtWidgets.QMessageBox.critical(
             utils.get_main_am_window(),
             translate("AddonsInstaller", "Uninstall failed"),
-            translate("AddonInstaller", "Failed to remove some files")
-            + ":\n"
-            + message,
+            translate("AddonInstaller", "Failed to remove some files") + ":\n" + message,
         )
         self._finalize()
 

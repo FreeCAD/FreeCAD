@@ -86,4 +86,3 @@ fc_copy_sources(SurfaceGui "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/Sur
 
 install(TARGETS SurfaceGui DESTINATION ${CMAKE_INSTALL_LIBDIR})
 INSTALL(FILES ${SurfaceGuiIcon_SVG} DESTINATION "${CMAKE_INSTALL_DATADIR}/Mod/Surface/Resources/icons")
-

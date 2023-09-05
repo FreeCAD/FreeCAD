@@ -34,14 +34,14 @@ using namespace Sketcher;
 TYPESYSTEM_SOURCE(Sketcher::GeometryFacade, Base::BaseClass)
 
 GeometryFacade::GeometryFacade()
-    : Geo(nullptr),
-      OwnerGeo(false),
-      SketchGeoExtension(nullptr)
+    : Geo(nullptr)
+    , OwnerGeo(false)
+    , SketchGeoExtension(nullptr)
 {}
 
 GeometryFacade::GeometryFacade(const Part::Geometry* geometry, bool owner)
-    : Geo(geometry),
-      OwnerGeo(owner)
+    : Geo(geometry)
+    , OwnerGeo(owner)
 {
     assert(geometry);// This should never be nullptr, as this constructor is protected
 
@@ -50,26 +50,31 @@ GeometryFacade::GeometryFacade(const Part::Geometry* geometry, bool owner)
 
 GeometryFacade::~GeometryFacade()
 {
-    if (OwnerGeo && Geo)
+    if (OwnerGeo && Geo) {
         delete Geo;
+    }
 }
 
 std::unique_ptr<GeometryFacade> GeometryFacade::getFacade(Part::Geometry* geometry, bool owner)
 {
-    if (geometry)
+    if (geometry) {
         return std::unique_ptr<GeometryFacade>(new GeometryFacade(geometry, owner));
-    else
+    }
+    else {
         return std::unique_ptr<GeometryFacade>(nullptr);
+    }
     // make_unique has no access to private constructor
     // return std::make_unique<GeometryFacade>(geometry);
 }
 
 std::unique_ptr<const GeometryFacade> GeometryFacade::getFacade(const Part::Geometry* geometry)
 {
-    if (geometry)
+    if (geometry) {
         return std::unique_ptr<const GeometryFacade>(new GeometryFacade(geometry));
-    else
+    }
+    else {
         return std::unique_ptr<const GeometryFacade>(nullptr);
+    }
     // make_unique has no access to private constructor
     // return std::make_unique<const GeometryFacade>(geometry);
 }
@@ -78,10 +83,12 @@ void GeometryFacade::setGeometry(Part::Geometry* geometry)
 {
     Geo = geometry;
 
-    if (geometry)
+    if (geometry) {
         initExtension();
-    else
+    }
+    else {
         THROWM(Base::ValueError, "GeometryFacade initialized with Geometry null pointer");
+    }
 }
 
 void GeometryFacade::initExtension()
@@ -101,10 +108,11 @@ void GeometryFacade::initExtension()
 void GeometryFacade::initExtension() const
 {
     // const Geometry without SketchGeometryExtension cannot initialise a GeometryFacade
-    if (!Geo->hasExtension(SketchGeometryExtension::getClassTypeId()))
+    if (!Geo->hasExtension(SketchGeometryExtension::getClassTypeId())) {
         THROWM(Base::ValueError,
                "Cannot create a GeometryFacade out of a const Geometry pointer not having a "
                "SketchGeometryExtension!");
+    }
 
     auto ext = std::static_pointer_cast<const SketchGeometryExtension>(
         Geo->getExtension(SketchGeometryExtension::getClassTypeId()).lock());
@@ -114,8 +122,9 @@ void GeometryFacade::initExtension() const
 
 void GeometryFacade::throwOnNullPtr(const Part::Geometry* geo)
 {
-    if (!geo)
+    if (!geo) {
         THROWM(Base::ValueError, "Geometry is nullptr!");
+    }
 }
 
 void GeometryFacade::ensureSketchGeometryExtension(Part::Geometry* geometry)

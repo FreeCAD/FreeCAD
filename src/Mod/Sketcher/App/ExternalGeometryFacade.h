@@ -167,18 +167,20 @@ public:
     }
 
     // Geometry Element
-    template<typename GeometryT = Part::Geometry,
-             typename = typename std::enable_if<std::is_base_of<
-                 Part::Geometry, typename std::decay<GeometryT>::type>::value>::type>
+    template<
+        typename GeometryT = Part::Geometry,
+        typename = typename std::enable_if<
+            std::is_base_of<Part::Geometry, typename std::decay<GeometryT>::type>::value>::type>
     GeometryT* getGeometry()
     {
         return dynamic_cast<GeometryT*>(const_cast<GeometryT*>(Geo));
     }
 
     // Geometry Element
-    template<typename GeometryT = Part::Geometry,
-             typename = typename std::enable_if<std::is_base_of<
-                 Part::Geometry, typename std::decay<GeometryT>::type>::value>::type>
+    template<
+        typename GeometryT = Part::Geometry,
+        typename = typename std::enable_if<
+            std::is_base_of<Part::Geometry, typename std::decay<GeometryT>::type>::value>::type>
     GeometryT* getGeometry() const
     {
         return dynamic_cast<GeometryT*>(Geo);

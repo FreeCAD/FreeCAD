@@ -8,9 +8,10 @@
 // Writer is designed to be a base class, so for testing we actually instantiate a StringWriter,
 // which is derived from it
 
-class WriterTest : public ::testing::Test {
+class WriterTest: public ::testing::Test
+{
 protected:
-    //void SetUp() override {}
+    // void SetUp() override {}
 
     // void TearDown() override {}
 protected:
@@ -62,7 +63,7 @@ TEST_F(WriterTest, insertNonAsciiData)
 TEST_F(WriterTest, beginCharStream)
 {
     // Arrange & Act
-    auto & checkStream {_writer.beginCharStream()};
+    auto& checkStream {_writer.beginCharStream()};
 
     // Assert
     EXPECT_TRUE(checkStream.good());
@@ -74,10 +75,7 @@ TEST_F(WriterTest, beginCharStreamTwice)
     _writer.beginCharStream();
 
     // Act & Assert
-    EXPECT_THROW(
-        _writer.beginCharStream(),
-        Base::RuntimeError
-    );
+    EXPECT_THROW(_writer.beginCharStream(), Base::RuntimeError);
 }
 
 TEST_F(WriterTest, endCharStream)
@@ -99,7 +97,7 @@ TEST_F(WriterTest, endCharStreamTwice)
     _writer.endCharStream();
 
     // Act
-    _writer.endCharStream(); // Doesn't throw, or do anything at all
+    _writer.endCharStream();// Doesn't throw, or do anything at all
 
     // Assert
     EXPECT_EQ("<![CDATA[]]>", _writer.getString());
