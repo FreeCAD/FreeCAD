@@ -66,11 +66,16 @@ PyObject* ModelManagerPy::getModel(PyObject* args)
 
     std::map<QString, Model*>* _modelMap = getModelManagerPtr()->getModels();
     for (auto itp = _modelMap->begin(); itp != _modelMap->end(); itp++) {
-        Base::Console().Warning("_modelMap[%s] = '%s'\n",
-                                itp->first.toStdString().c_str(),
-                                itp->second->getName().toStdString().c_str());
+        // Base::Console().Warning("_modelMap[%s] = '%s'\n",
+        //                         itp->first.toStdString().c_str(),
+        //                         itp->second->getName().toStdString().c_str());
+        fprintf(stdout,
+                "_modelMap[%s] = '%s'\n",
+                itp->first.toStdString().c_str(),
+                itp->second->getName().toStdString().c_str());
     }
-    Base::Console().Warning("uuid = '%s'\n", uuid);
+    // Base::Console().Warning("uuid = '%s'\n", uuid);
+    fprintf(stdout, "uuid = '%s'\n", uuid);
 
     try {
         const Model model = getModelManagerPtr()->getModel(QString::fromStdString(uuid));
