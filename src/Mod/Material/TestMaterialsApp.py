@@ -215,6 +215,7 @@ class MaterialTestCases(unittest.TestCase):
             self.assertIn(mat, materials)
 
     def testModelByPath(self):
+        print("Check that we're updating")
         steel = self.MaterialManager.getMaterialByPath('StandardMaterial/Metal/Steel/CalculiX-Steel.FCMat', 'System')
         self.assertIsNotNone(steel)
         self.assertEqual(steel.Name, "CalculiX-Steel")
