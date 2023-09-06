@@ -7,7 +7,7 @@
 
 # Maintainers:  keep this list of plugins up to date
 # List plugins in %%{_libdir}/%{name}/lib, less '.so' and 'Gui.so', here
-%global plugins Fem FreeCAD PathApp Import Inspection Mesh MeshPart Part Points ReverseEngineering Robot Sketcher Start Web PartDesignGui _PartDesign Path PathGui Spreadsheet SpreadsheetGui area DraftUtils DraftUtils flatmesh libDriver libDriverDAT libDriverSTL libDriverUNV libE57Format libMEFISTO2 libSMDS libSMESH libSMESHDS libStdMeshers Measure TechDraw TechDrawGui libarea-native Surface SurfaceGui PathSimulator
+%global plugins Fem FreeCAD PathApp Import Inspection Mesh MeshPart Part Points ReverseEngineering Robot Sketcher Start Web PartDesignGui _PartDesign Path PathGui Spreadsheet SpreadsheetGui area DraftUtils DraftUtils libDriver libDriverDAT libDriverSTL libDriverUNV libE57Format libMEFISTO2 libSMDS libSMESH libSMESHDS libStdMeshers Measure TechDraw TechDrawGui libarea-native Surface SurfaceGui AssemblyGui flatmesh QtUnitGui PathSimulator
 
 
 # Some configuration options for other environments
@@ -76,7 +76,6 @@ BuildRequires:  qt5-qttools-static
 BuildRequires:  qt5-qtxmlpatterns-devel
 
 BuildRequires:  fmt-devel
-BuildRequires:  qqc2-desktop-style
 
 
 BuildRequires:  xerces-c
@@ -181,6 +180,9 @@ rm -rf src/zipios++
 #    src/Base/Reader.cpp src/Base/Writer.h
 %endif
 
+# Fix encodings
+dos2unix -k src/Mod/Test/unittestgui.py
+
 # Removed bundled libraries
 
 
@@ -233,6 +235,7 @@ LDFLAGS='-Wl,--as-needed -Wl,--no-undefined'; export LDFLAGS
        -DPACKAGE_WCREF="%{release} (Git)" \
        -DPACKAGE_WCURL="git://github.com/%{github_name}/FreeCAD.git master" \
        -DENABLE_DEVELOPER_TESTS=FALSE \
+	   -DBUILD_GUI=TRUE \
        ../
 
 make fc_version
@@ -257,6 +260,7 @@ mv %{buildroot}%{_libdir}/%{name}/share/metainfo/* %{buildroot}%{_metainfodir}/
 
 mkdir %{buildroot}%{_datadir}/applications/
 mv %{buildroot}%{_libdir}/%{name}/share/applications/* %{buildroot}%{_datadir}/applications/
+
 
 mkdir -p %{buildroot}%{_datadir}/thumbnailers/
 mv %{buildroot}%{_libdir}/%{name}/share/thumbnailers/* %{buildroot}%{_datadir}/thumbnailers/
