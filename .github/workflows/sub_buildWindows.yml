@@ -44,7 +44,7 @@ jobs:
     env:
       CCACHE_DIR: C:/FC/cache/
       CCACHE_COMPILERCHECK: "%compiler%" # default:mtime
-      CCACHE_MAXSIZE: 1G
+      CCACHE_MAXSIZE: 3G
       CCACHE_COMPRESS: true
       CCACHE_COMPRESSLEVEL: 1
       CCACHE_NOHASHDIR: true
