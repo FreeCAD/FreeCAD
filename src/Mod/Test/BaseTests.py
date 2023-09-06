@@ -21,7 +21,12 @@
 # *                                                                         *
 # ***************************************************************************/
 
-import FreeCAD, os, unittest, tempfile, math
+import math
+import os
+import sys
+import tempfile
+import unittest
+import FreeCAD
 from FreeCAD import Base
 
 
@@ -665,3 +670,8 @@ class MatrixTestCase(unittest.TestCase):
         self.assertEqual(+self.mat, self.mat)
         self.assertEqual(-self.mat, self.mat * -1)
         self.assertTrue(bool(self.mat))
+
+
+class FileSystem(unittest.TestCase):
+    def testEncoding(self):
+        self.assertEqual(sys.getfilesystemencoding(), "utf-8")
