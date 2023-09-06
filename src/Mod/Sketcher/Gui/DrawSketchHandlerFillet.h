@@ -31,7 +31,7 @@
 namespace SketcherGui
 {
 
-extern GeometryCreationMode geometryCreationMode;// defined in CommandCreateGeo.cpp
+extern GeometryCreationMode geometryCreationMode;  // defined in CommandCreateGeo.cpp
 
 class FilletSelection: public Gui::SelectionFilterGate
 {
@@ -251,7 +251,7 @@ public:
                         construction = Sketcher::GeometryFacade::getConstruction(lineSeg1)
                             && Sketcher::GeometryFacade::getConstruction(lineSeg2);
                     }
-                    else {// other supported curves
+                    else {  // other supported curves
                         const Part::Geometry* geo1 = static_cast<const Part::Geometry*>(
                             sketchgui->getSketchObject()->getGeometry(firstCurve));
                         const Part::Geometry* geo2 = static_cast<const Part::Geometry*>(
@@ -316,9 +316,9 @@ public:
             }
         }
 
-        if (VtId < 0 && GeoId < 0) {// exit the fillet tool if the user clicked on empty space
+        if (VtId < 0 && GeoId < 0) {  // exit the fillet tool if the user clicked on empty space
             sketchgui
-                ->purgeHandler();// no code after this line, Handler get deleted in ViewProvider
+                ->purgeHandler();  // no code after this line, Handler get deleted in ViewProvider
         }
 
         return true;
@@ -339,7 +339,7 @@ protected:
     Base::Vector2d firstPos;
 };
 
-}// namespace SketcherGui
+}  // namespace SketcherGui
 
 
-#endif// SKETCHERGUI_DrawSketchHandlerFillet_H
+#endif  // SKETCHERGUI_DrawSketchHandlerFillet_H

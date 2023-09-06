@@ -30,7 +30,7 @@
 
 using namespace PointsGui;
 
-#if 0// needed for Qt's lupdate utility
+#if 0  // needed for Qt's lupdate utility
     qApp->translate("Workbench", "Points tools");
     qApp->translate("Workbench", "&Points");
 #endif

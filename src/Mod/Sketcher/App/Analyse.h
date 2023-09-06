@@ -64,6 +64,6 @@ struct Constraint_Equal
     }
 };
 
-}// namespace Sketcher
+}  // namespace Sketcher
 
-#endif// SKETCHER_ANALYSE_H
+#endif  // SKETCHER_ANALYSE_H

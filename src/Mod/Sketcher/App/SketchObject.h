@@ -413,7 +413,7 @@ public:
     int getHighestVertexIndex() const
     {
         return VertexId2GeoId.size() - 1;
-    }// Most recently created
+    }  // Most recently created
     int getHighestCurveIndex() const
     {
         return Geometry.getSize() - 1;
@@ -614,11 +614,11 @@ public:
         rlCircularReference,
         rlOtherPart,
         rlOtherBody,
-        rlOtherBodyWithLinks,// for carbon copy
-        rlNotASketch,        // for carbon copy
-        rlNonParallel,       // for carbon copy
-        rlAxesMisaligned,    // for carbon copy
-        rlOriginsMisaligned  // for carbon copy
+        rlOtherBodyWithLinks,  // for carbon copy
+        rlNotASketch,          // for carbon copy
+        rlNonParallel,         // for carbon copy
+        rlAxesMisaligned,      // for carbon copy
+        rlOriginsMisaligned    // for carbon copy
     };
     /// Return true if this object is allowed as external geometry for the
     /// sketch. rsn argument receives the reason for disallowing.
@@ -713,7 +713,7 @@ public:
     // Validation routines
     std::vector<Base::Vector3d> getOpenVertices() const;
 
-public:// geometry extension functionalities for single element sketch object user convenience
+public:  // geometry extension functionalities for single element sketch object user convenience
     int setGeometryId(int GeoId, long id);
     int getGeometryId(int GeoId, long& id) const;
 
@@ -922,7 +922,7 @@ const GeometryT* SketchObject::getGeometry(int GeoId) const
 
 using SketchObjectPython = App::FeaturePythonT<SketchObject>;
 
-}// namespace Sketcher
+}  // namespace Sketcher
 
 
-#endif// SKETCHER_SKETCHOBJECT_H
+#endif  // SKETCHER_SKETCHOBJECT_H

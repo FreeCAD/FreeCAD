@@ -42,7 +42,7 @@ protected:
     Gui::ToolBarItem* setupToolBars() const override;
 };
 
-}// namespace SurfaceGui
+}  // namespace SurfaceGui
 
 
-#endif// Surface_WORKBENCH_H
+#endif  // Surface_WORKBENCH_H

@@ -43,6 +43,6 @@ using SET_I = std::set<int>;
 #define M_PI 3.14159265358979323846
 #endif
 
-}// namespace GCS
+}  // namespace GCS
 
-#endif// PLANEGCS_UTIL_H
+#endif  // PLANEGCS_UTIL_H

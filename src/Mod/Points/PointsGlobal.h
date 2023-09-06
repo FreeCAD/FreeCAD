@@ -44,4 +44,4 @@
 #endif
 #endif
 
-#endif// POINTS_GLOBAL_H
+#endif  // POINTS_GLOBAL_H

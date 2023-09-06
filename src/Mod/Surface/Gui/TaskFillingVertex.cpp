@@ -393,6 +393,6 @@ void FillingVertexPanel::exitSelectionMode()
     Gui::Selection().rmvSelectionGate();
 }
 
-}// namespace SurfaceGui
+}  // namespace SurfaceGui
 
 #include "moc_TaskFillingVertex.cpp"

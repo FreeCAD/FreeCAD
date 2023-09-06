@@ -44,4 +44,4 @@
 #endif
 #endif
 
-#endif// SURFACE_GLOBAL_H
+#endif  // SURFACE_GLOBAL_H

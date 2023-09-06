@@ -125,6 +125,6 @@ private:
     std::unique_ptr<Ui_SketcherSettingsColors> ui;
 };
 
-}// namespace SketcherGui
+}  // namespace SketcherGui
 
-#endif// SKETCHERGUI_SKETCHERSETTINGS_H
+#endif  // SKETCHERGUI_SKETCHERSETTINGS_H

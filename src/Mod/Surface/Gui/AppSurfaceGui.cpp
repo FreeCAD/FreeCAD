@@ -49,7 +49,7 @@ public:
     Module()
         : Py::ExtensionModule<Module>("SurfaceGui")
     {
-        initialize("This module is the SurfaceGui module.");// register with Python
+        initialize("This module is the SurfaceGui module.");  // register with Python
     }
 
 private:
@@ -60,7 +60,7 @@ PyObject* initModule()
     return Base::Interpreter().addModule(new Module);
 }
 
-}// namespace SurfaceGui
+}  // namespace SurfaceGui
 
 /* Python entry */
 PyMOD_INIT_FUNC(SurfaceGui)

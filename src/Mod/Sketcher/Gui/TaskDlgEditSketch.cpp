@@ -109,7 +109,7 @@ bool TaskDlgEditSketch::reject()
         sketchView->purgeHandler();
     }
 
-    std::string document = getDocumentName();// needed because resetEdit() deletes this instance
+    std::string document = getDocumentName();  // needed because resetEdit() deletes this instance
     Gui::Command::doCommand(Gui::Command::Gui,
                             "Gui.getDocument('%s').resetEdit()",
                             document.c_str());

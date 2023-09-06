@@ -107,5 +107,5 @@ void doEndpointToEdgeTangency(Sketcher::SketchObject* Obj,
 /// notifications
 void notifyConstraintSubstitutions(const QString& message);
 
-}// namespace SketcherGui
-#endif// SKETCHERGUI_CommandConstraints_H
+}  // namespace SketcherGui
+#endif  // SKETCHERGUI_CommandConstraints_H

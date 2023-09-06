@@ -236,7 +236,7 @@ private:
     std::vector<CurvatureInfo> _lValueList;
 };
 
-}// namespace Points
+}  // namespace Points
 
 
-#endif// POINTS_POINTPROPERTIES_H
+#endif  // POINTS_POINTPROPERTIES_H

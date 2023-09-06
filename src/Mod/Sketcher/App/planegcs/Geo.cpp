@@ -93,8 +93,8 @@ DeriVector2 DeriVector2::getNormalized() const
         rtn.dx = dx / l;
         rtn.dy = dy / l;
         // next, remove the collinear part of dx,dy (make a projection onto a normal)
-        double dsc = rtn.dx * rtn.x + rtn.dy * rtn.y;// scalar product d*v
-        rtn.dx -= dsc * rtn.x;                       // subtract the projection
+        double dsc = rtn.dx * rtn.x + rtn.dy * rtn.y;  // scalar product d*v
+        rtn.dx -= dsc * rtn.x;                         // subtract the projection
         rtn.dy -= dsc * rtn.y;
         return rtn;
     }
@@ -288,8 +288,8 @@ double Ellipse::getRadMaj(const DeriVector2& center,
         b,
         cf,
         db,
-        dcf);// hack = a nonsense vector to calculate major radius with derivatives, useful just
-             // because the calculation formula is the same as vector length formula
+        dcf);  // hack = a nonsense vector to calculate major radius with derivatives, useful just
+               // because the calculation formula is the same as vector length formula
     return hack.length(ret_dRadMaj);
 }
 
@@ -304,7 +304,7 @@ double Ellipse::getRadMaj(double* derivparam, double& ret_dRadMaj) const
 // returns the major radius (plain value, no derivatives)
 double Ellipse::getRadMaj() const
 {
-    double dradmaj;// dummy
+    double dradmaj;  // dummy
     return getRadMaj(nullptr, dradmaj);
 }
 
@@ -317,7 +317,7 @@ DeriVector2 Ellipse::CalculateNormal(const Point& p, const double* derivparam) c
 
     // calculation.
     // focus2:
-    DeriVector2 f2v = cv.linCombi(2.0, f1v, -1.0);// 2*cv - f1v
+    DeriVector2 f2v = cv.linCombi(2.0, f1v, -1.0);  // 2*cv - f1v
 
     // pf1, pf2 = vectors from p to focus1,focus2
     DeriVector2 pf1 = f1v.subtr(pv);
@@ -326,7 +326,7 @@ DeriVector2 Ellipse::CalculateNormal(const Point& p, const double* derivparam) c
     DeriVector2 ret = pf1.getNormalized().sum(pf2.getNormalized());
 
 // numeric derivatives for testing
-#if 0// make sure to enable DEBUG_DERIVS when enabling
+#if 0  // make sure to enable DEBUG_DERIVS when enabling
         if(derivparam) {
             double const eps = 0.00001;
             double oldparam = *derivparam;
@@ -379,7 +379,7 @@ DeriVector2 Ellipse::Value(double u, double du, const double* derivparam) const
     si = std::sin(u);
     dsi = std::cos(u) * du;
 
-    DeriVector2 ret;// point of ellipse at parameter value of u, in global coordinates
+    DeriVector2 ret;  // point of ellipse at parameter value of u, in global coordinates
     ret = a_vec.multD(co, dco).sum(b_vec.multD(si, dsi)).sum(c);
     return ret;
 }
@@ -489,7 +489,7 @@ double Hyperbola::getRadMaj(double* derivparam, double& ret_dRadMaj) const
 // returns the major radius (plain value, no derivatives)
 double Hyperbola::getRadMaj() const
 {
-    double dradmaj;// dummy
+    double dradmaj;  // dummy
     return getRadMaj(nullptr, dradmaj);
 }
 
@@ -502,11 +502,11 @@ DeriVector2 Hyperbola::CalculateNormal(const Point& p, const double* derivparam)
 
     // calculation.
     // focus2:
-    DeriVector2 f2v = cv.linCombi(2.0, f1v, -1.0);// 2*cv - f1v
+    DeriVector2 f2v = cv.linCombi(2.0, f1v, -1.0);  // 2*cv - f1v
 
     // pf1, pf2 = vectors from p to focus1,focus2
     DeriVector2 pf1 = f1v.subtr(pv).mult(
-        -1.0);// <--- differs from ellipse normal calculation code by inverting this vector
+        -1.0);  // <--- differs from ellipse normal calculation code by inverting this vector
     DeriVector2 pf2 = f2v.subtr(pv);
     // return sum of normalized pf2, pf2
     DeriVector2 ret = pf1.getNormalized().sum(pf2.getNormalized());
@@ -545,7 +545,7 @@ DeriVector2 Hyperbola::Value(double u, double du, const double* derivparam) cons
     si = std::sinh(u);
     dsi = std::cosh(u) * du;
 
-    DeriVector2 ret;// point of hyperbola at parameter value of u, in global coordinates
+    DeriVector2 ret;  // point of hyperbola at parameter value of u, in global coordinates
     ret = a_vec.multD(co, dco).sum(b_vec.multD(si, dsi)).sum(c);
     return ret;
 }
@@ -667,7 +667,7 @@ DeriVector2 Parabola::Value(double u, double du, const double* derivparam) const
 
     DeriVector2 dir = dirx.sum(diry);
 
-    DeriVector2 ret;// point of parabola at parameter value of u, in global coordinates
+    DeriVector2 ret;  // point of parabola at parameter value of u, in global coordinates
 
     ret = c.sum(dir);
 
@@ -925,7 +925,7 @@ void BSpline::setupFlattenedKnots()
     // Adjust for periodic: see OCC documentation for explanation
     if (periodic) {
         double period = *knots.back() - *knots.front();
-        int c = degree + 1 - mult[0];// number of knots to pad
+        int c = degree + 1 - mult[0];  // number of knots to pad
 
         // Add capacity so that iterators remain valid
         flattenedknots.reserve(flattenedknots.size() + 2 * c);
@@ -950,4 +950,4 @@ void BSpline::setupFlattenedKnots()
     }
 }
 
-}// namespace GCS
+}  // namespace GCS

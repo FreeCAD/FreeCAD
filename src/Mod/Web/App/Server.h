@@ -101,6 +101,6 @@ private:
     Py::Object module;
 };
 
-}// namespace Web
+}  // namespace Web
 
-#endif// Web_SERVER_H
+#endif  // Web_SERVER_H

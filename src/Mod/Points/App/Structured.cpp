@@ -90,4 +90,4 @@ PROPERTY_SOURCE_TEMPLATE(Points::StructuredCustom, Points::Structured)
 
 // explicit template instantiation
 template class PointsExport FeatureCustomT<Points::Structured>;
-}// namespace App
+}  // namespace App

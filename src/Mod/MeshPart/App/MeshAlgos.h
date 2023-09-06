@@ -116,6 +116,6 @@ public:
     */
 };
 
-}// namespace MeshPart
+}  // namespace MeshPart
 
 #endif

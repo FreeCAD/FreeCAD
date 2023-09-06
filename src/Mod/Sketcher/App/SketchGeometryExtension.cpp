@@ -88,7 +88,7 @@ void SketchGeometryExtension::saveAttributes(Base::Writer& writer) const
 
     // This is removed as the stored Id is not used and it may interfere with RT's future
     // implementation
-    writer.Stream()// << "\" id=\"" << Id
+    writer.Stream()  // << "\" id=\"" << Id
         << "\" internalGeometryType=\"" << (int)InternalGeometryType << "\" geometryModeFlags=\""
         << GeometryModeFlags.to_string() << "\" geometryLayer=\"" << GeometryLayer;
 }

@@ -34,7 +34,7 @@
 namespace SketcherGui
 {
 
-extern GeometryCreationMode geometryCreationMode;// defined in CommandCreateGeo.cpp
+extern GeometryCreationMode geometryCreationMode;  // defined in CommandCreateGeo.cpp
 
 class DrawSketchHandlerBSplineByInterpolation: public DrawSketchHandler
 {
@@ -102,7 +102,7 @@ public:
 
         if (Mode == STATUS_SEEK_FIRST_POINT) {
             BSplineKnots.push_back(onSketchPos);
-            BSplineMults.push_back(1);// NOTE: not strictly true for end-points
+            BSplineMults.push_back(1);  // NOTE: not strictly true for end-points
 
             Mode = STATUS_SEEK_ADDITIONAL_POINTS;
 
@@ -160,19 +160,19 @@ public:
                         else if (coincidents.find(knotGeoIds.back()) != coincidents.end()
                                  && coincidents.at(knotGeoIds.back())
                                      == Sketcher::PointPos::start) {
-                            return true;// OCCT doesn't allow consecutive points being coincident
+                            return true;  // OCCT doesn't allow consecutive points being coincident
                         }
                     }
                 }
             }
 
             BSplineKnots.push_back(onSketchPos);
-            BSplineMults.push_back(1);// NOTE: not strictly true for end-points
+            BSplineMults.push_back(1);  // NOTE: not strictly true for end-points
 
             if (IsClosed) {
                 Mode = STATUS_CLOSE;
 
-                if (ConstrMethod == 1) {// if periodic we do not need the last pole
+                if (ConstrMethod == 1) {  // if periodic we do not need the last pole
                     BSplineKnots.pop_back();
                     sugConstr.pop_back();
 
@@ -357,8 +357,8 @@ public:
                 resetHandlerState();
             }
         }
-        else {// we have no data (CurrentConstraint == 0) so user when right-clicking really wants
-              // to exit
+        else {  // we have no data (CurrentConstraint == 0) so user when right-clicking really wants
+                // to exit
             DrawSketchHandler::quit();
         }
     }
@@ -436,9 +436,9 @@ private:
 
             if (ConstrMethod == 0) {
                 BSplineMults.front() =
-                    myDegree + 1;// FIXME: This is hardcoded until degree can be changed
+                    myDegree + 1;  // FIXME: This is hardcoded until degree can be changed
                 BSplineMults.back() =
-                    myDegree + 1;// FIXME: This is hardcoded until degree can be changed
+                    myDegree + 1;  // FIXME: This is hardcoded until degree can be changed
             }
 
             std::vector<std::stringstream> streams;
@@ -527,7 +527,7 @@ private:
                                                  "_finalbsp_knots.extend([_finalbsp_knots[-1] + i "
                                                  "for i in _bsps[-1].getKnots()[1:]])");
                         Gui::Command::runCommand(Gui::Command::Gui,
-                                                 "_finalbsp_mults[-1] = 3");// FIXME: Hardcoded
+                                                 "_finalbsp_mults[-1] = 3");  // FIXME: Hardcoded
                         Gui::Command::runCommand(
                             Gui::Command::Gui,
                             "_finalbsp_mults.extend(_bsps[-1].getMultiplicities()[1:])");
@@ -645,8 +645,8 @@ private:
                      * right button of the mouse */
                 }
                 else {
-                    sketchgui->purgeHandler();// no code after this line, Handler get deleted in
-                                              // ViewProvider
+                    sketchgui->purgeHandler();  // no code after this line, Handler get deleted in
+                                                // ViewProvider
                 }
 
                 return false;
@@ -673,8 +673,8 @@ private:
                  * right button of the mouse */
             }
             else {
-                sketchgui
-                    ->purgeHandler();// no code after this line, Handler get deleted in ViewProvider
+                sketchgui->purgeHandler();  // no code after this line, Handler get deleted in
+                                            // ViewProvider
             }
         }
         else {
@@ -704,7 +704,7 @@ protected:
 };
 
 
-}// namespace SketcherGui
+}  // namespace SketcherGui
 
 
-#endif// SKETCHERGUI_DrawSketchHandlerBSplineByInterpolation_H
+#endif  // SKETCHERGUI_DrawSketchHandlerBSplineByInterpolation_H

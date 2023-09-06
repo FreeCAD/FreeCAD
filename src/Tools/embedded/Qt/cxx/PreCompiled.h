@@ -13,7 +13,7 @@
 #define FC_PLUGIN_EXPORT __declspec(dllimport)
 #endif
 #define MeshExport __declspec(dllimport)
-#else// for Linux
+#else  // for Linux
 #define FC_PLUGIN_EXPORT
 #define MeshExport
 #endif

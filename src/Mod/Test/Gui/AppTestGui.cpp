@@ -163,7 +163,7 @@ public:
         add_varargs_method("addTest", &Module::addTest, "addTest");
         add_varargs_method("runTest", &Module::runTest, "runTest");
         add_varargs_method("testILoggerBlocker", &Module::testILoggerBlocker, "testILoggerBlocker");
-        initialize("This module is the QtUnitGui module");// register with Python
+        initialize("This module is the QtUnitGui module");  // register with Python
     }
 
 private:
@@ -230,7 +230,7 @@ PyObject* initModule()
     return Base::Interpreter().addModule(new Module);
 }
 
-}// namespace TestGui
+}  // namespace TestGui
 
 void loadTestResource()
 {

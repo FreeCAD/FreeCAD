@@ -54,7 +54,7 @@ protected:
     Gui::DockWindowItems* setupDockWindows() const override;
 
 
-};// namespace WebGui
+};  // namespace WebGui
 
-}// namespace WebGui
-#endif// WEB_WORKBENCH_H
+}  // namespace WebGui
+#endif  // WEB_WORKBENCH_H

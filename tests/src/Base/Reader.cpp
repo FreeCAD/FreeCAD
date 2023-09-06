@@ -72,7 +72,7 @@ TEST_F(ReaderTest, beginCharStreamOpenClose)
     Reader()->readElement("data");
 
     // Act
-    auto& result = Reader()->beginCharStream();// Not an error, even though there is no data
+    auto& result = Reader()->beginCharStream();  // Not an error, even though there is no data
 
     // Assert
     EXPECT_TRUE(result.good());
@@ -86,7 +86,7 @@ TEST_F(ReaderTest, beginCharStreamAlreadyBegun)
     Reader()->beginCharStream();
 
     // Act & Assert
-    EXPECT_THROW(Reader()->beginCharStream(), Base::XMLParseException);// NOLINT
+    EXPECT_THROW(Reader()->beginCharStream(), Base::XMLParseException);  // NOLINT
 }
 
 TEST_F(ReaderTest, charStreamGood)
@@ -110,7 +110,7 @@ TEST_F(ReaderTest, charStreamBad)
     Reader()->readElement("data");
 
     // Act & Assert
-    EXPECT_THROW(Reader()->charStream(), Base::XMLParseException);// NOLINT
+    EXPECT_THROW(Reader()->charStream(), Base::XMLParseException);  // NOLINT
 }
 
 TEST_F(ReaderTest, endCharStreamGood)
@@ -121,7 +121,7 @@ TEST_F(ReaderTest, endCharStreamGood)
     Reader()->beginCharStream();
 
     // Act & Assert
-    Reader()->endCharStream();// Does not throw
+    Reader()->endCharStream();  // Does not throw
 }
 
 TEST_F(ReaderTest, endCharStreamBad)
@@ -132,7 +132,7 @@ TEST_F(ReaderTest, endCharStreamBad)
     // Do not open the stream...
 
     // Act & Assert
-    Reader()->endCharStream();// Does not throw, even with no open stream
+    Reader()->endCharStream();  // Does not throw, even with no open stream
 }
 
 TEST_F(ReaderTest, readDataSmallerThanBuffer)
@@ -182,10 +182,10 @@ TEST_F(ReaderTest, readDataLargerThanBufferSecondRead)
     Reader()->readElement("data");
     Reader()->beginCharStream();
     std::array<char, bufferSize> buffer {};
-    Reader()->read(buffer.data(), bufferSize);// Read the first five bytes
+    Reader()->read(buffer.data(), bufferSize);  // Read the first five bytes
 
     // Act
-    auto bytesRead = Reader()->read(buffer.data(), bufferSize);// Second five bytes
+    auto bytesRead = Reader()->read(buffer.data(), bufferSize);  // Second five bytes
 
     // Assert
     for (size_t i = 0; i < bufferSize; ++i) {
@@ -208,5 +208,5 @@ TEST_F(ReaderTest, readDataNotStarted)
     auto bytesRead = Reader()->read(buffer.data(), bufferSize);
 
     // Assert
-    EXPECT_EQ(-1, bytesRead);// Because we didn't call beginCharStream
+    EXPECT_EQ(-1, bytesRead);  // Because we didn't call beginCharStream
 }

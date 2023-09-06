@@ -56,7 +56,7 @@ public:
     bool load(const char* FileName);
 };
 
-}// namespace Sketcher
+}  // namespace Sketcher
 
 
-#endif// SKETCH_SKETCHOBJECTSF_H
+#endif  // SKETCH_SKETCHOBJECTSF_H

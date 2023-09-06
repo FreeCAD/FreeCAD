@@ -52,7 +52,7 @@ public:
     Module()
         : Py::ExtensionModule<Module>("PointsGui")
     {
-        initialize("This module is the PointsGui module.");// register with Python
+        initialize("This module is the PointsGui module.");  // register with Python
     }
 };
 
@@ -61,7 +61,7 @@ PyObject* initModule()
     return Base::Interpreter().addModule(new Module);
 }
 
-}// namespace PointsGui
+}  // namespace PointsGui
 
 
 /* Python entry */

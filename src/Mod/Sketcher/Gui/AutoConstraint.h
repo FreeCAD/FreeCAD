@@ -43,7 +43,7 @@ struct AutoConstraint
     Sketcher::PointPos PosId;
 };
 
-}// namespace SketcherGui
+}  // namespace SketcherGui
 
 
-#endif// SKETCHERGUI_AutoConstraint_H
+#endif  // SKETCHERGUI_AutoConstraint_H

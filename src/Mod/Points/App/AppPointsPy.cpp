@@ -56,7 +56,7 @@ public:
                            &Module::show,
                            "show(points,[string]) -- Add the points to the active document or "
                            "create one if no document exists.");
-        initialize("This module is the Points module.");// register with Python
+        initialize("This module is the Points module.");  // register with Python
     }
 
 private:
@@ -434,4 +434,4 @@ PyObject* initModule()
     return Base::Interpreter().addModule(new Module);
 }
 
-}// namespace Points
+}  // namespace Points

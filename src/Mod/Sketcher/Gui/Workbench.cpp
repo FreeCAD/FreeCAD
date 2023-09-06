@@ -32,7 +32,7 @@
 
 using namespace SketcherGui;
 
-#if 0// needed for Qt's lupdate utility
+#if 0  // needed for Qt's lupdate utility
     qApp->translate("CommandGroup", "Sketcher");
     qApp->translate("Workbench","P&rofiles");
     qApp->translate("Workbench","S&ketch");
@@ -172,7 +172,7 @@ inline const QStringList nonEditModeToolbarNames()
 {
     return QStringList {QString::fromLatin1("Structure"), QString::fromLatin1("Sketcher")};
 }
-}// namespace
+}  // namespace
 
 void Workbench::activated()
 {
@@ -493,8 +493,9 @@ inline void SketcherAddWorkbenchTools<Gui::MenuItem>(Gui::MenuItem& consaccel)
 template<>
 inline void SketcherAddWorkbenchTools<Gui::ToolBarItem>(Gui::ToolBarItem& consaccel)
 {
-    consaccel//<< "Sketcher_SelectElementsWithDoFs" //rarely used, it is usually accessed by solver
-             // message.
+    consaccel  //<< "Sketcher_SelectElementsWithDoFs" //rarely used, it is usually accessed by
+               //solver
+               // message.
         << "Sketcher_SelectConstraints"
         << "Sketcher_SelectElementsAssociatedWithConstraints"
         //<< "Sketcher_SelectRedundantConstraints" //rarely used, it is usually accessed by solver

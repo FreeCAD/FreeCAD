@@ -78,7 +78,7 @@ private:
     static UnitTestDialog* _instance;
 };
 
-}// namespace TestGui
+}  // namespace TestGui
 
 
-#endif// TESTGUI_UNITTESTIMP_H
+#endif  // TESTGUI_UNITTESTIMP_H

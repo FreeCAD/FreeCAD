@@ -29,7 +29,7 @@
 namespace SketcherGui
 {
 
-extern GeometryCreationMode geometryCreationMode;// defined in CommandCreateGeo.cpp
+extern GeometryCreationMode geometryCreationMode;  // defined in CommandCreateGeo.cpp
 
 class DrawSketchHandlerCircle: public DrawSketchHandler
 {
@@ -162,8 +162,8 @@ public:
                  * right button of the mouse */
             }
             else {
-                sketchgui
-                    ->purgeHandler();// no code after this line, Handler get deleted in ViewProvider
+                sketchgui->purgeHandler();  // no code after this line, Handler get deleted in
+                                            // ViewProvider
             }
         }
         return true;
@@ -229,7 +229,7 @@ public:
                 for (int i = 1; i < N; i++) {
                     // Start at current angle
                     double angle =
-                        i * 2 * M_PI / N + lineAngle;// N point closed circle has N segments
+                        i * 2 * M_PI / N + lineAngle;  // N point closed circle has N segments
                     EditCurve[i] = Base::Vector2d(CenterPoint.x + radius * cos(angle),
                                                   CenterPoint.y + radius * sin(angle));
                 }
@@ -362,8 +362,8 @@ public:
                  * right button of the mouse */
             }
             else {
-                sketchgui
-                    ->purgeHandler();// no code after this line, Handler get deleted in ViewProvider
+                sketchgui->purgeHandler();  // no code after this line, Handler get deleted in
+                                            // ViewProvider
             }
         }
         return true;
@@ -379,12 +379,12 @@ protected:
     SelectMode Mode;
     std::vector<Base::Vector2d> EditCurve;
     Base::Vector2d CenterPoint, FirstPoint, SecondPoint;
-    double radius, N;// N should be even
+    double radius, N;  // N should be even
     std::vector<AutoConstraint> sugConstr1, sugConstr2, sugConstr3;
 };
 
 
-}// namespace SketcherGui
+}  // namespace SketcherGui
 
 
-#endif// SKETCHERGUI_DrawSketchHandlerCircle_H
+#endif  // SKETCHERGUI_DrawSketchHandlerCircle_H

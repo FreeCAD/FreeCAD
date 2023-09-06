@@ -110,6 +110,6 @@ private:
     Gui::TaskView::TaskBox* taskbox;
 };
 
-}// namespace MeshPartGui
+}  // namespace MeshPartGui
 
-#endif// MESHPARTGUI_CROSSSECTIONS_H
+#endif  // MESHPARTGUI_CROSSSECTIONS_H

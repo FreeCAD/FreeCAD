@@ -60,6 +60,6 @@ bool copyProperty(App::DocumentObject* target,
     return false;
 }
 
-}// namespace Points
+}  // namespace Points
 
-#endif// POINTS_TOOLS_H
+#endif  // POINTS_TOOLS_H

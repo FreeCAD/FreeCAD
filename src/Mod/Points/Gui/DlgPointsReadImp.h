@@ -48,6 +48,6 @@ private:
     std::string _FileName;
 };
 
-}// namespace PointsGui
+}  // namespace PointsGui
 
-#endif// POINTSGUI_DLGREADPOINTS_H
+#endif  // POINTSGUI_DLGREADPOINTS_H

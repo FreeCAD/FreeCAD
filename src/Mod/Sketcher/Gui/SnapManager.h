@@ -121,7 +121,7 @@ private:
 };
 
 
-}// namespace SketcherGui
+}  // namespace SketcherGui
 
 
-#endif// SKETCHERGUI_SnapManager_H
+#endif  // SKETCHERGUI_SnapManager_H

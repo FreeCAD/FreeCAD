@@ -89,6 +89,6 @@
 #define NOMINMAX
 #endif
 #include <windows.h>
-#endif// _PreComp_
+#endif  // _PreComp_
 
 #endif

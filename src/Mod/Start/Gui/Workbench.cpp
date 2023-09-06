@@ -159,7 +159,7 @@ Gui::ToolBarItem* StartGui::Workbench::setupCommandBars() const
 Gui::DockWindowItems* StartGui::Workbench::setupDockWindows() const
 {
     Gui::DockWindowItems* root = Gui::StdWorkbench::setupDockWindows();
-    root->setVisibility(false);                // hide all dock windows by default
-    root->setVisibility("Std_ComboView", true);// except of the combo view
+    root->setVisibility(false);                  // hide all dock windows by default
+    root->setVisibility("Std_ComboView", true);  // except of the combo view
     return root;
 }

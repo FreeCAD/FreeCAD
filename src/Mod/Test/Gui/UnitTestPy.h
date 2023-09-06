@@ -35,7 +35,7 @@ class UnitTestDialog;
 class UnitTestDialogPy: public Py::PythonExtension<UnitTestDialogPy>
 {
 public:
-    static void init_type();// announce properties and methods
+    static void init_type();  // announce properties and methods
 
     UnitTestDialogPy();
     ~UnitTestDialogPy() override;
@@ -65,7 +65,7 @@ private:
     static PyObject* method_varargs_ext_handler(PyObject* _self, PyObject* _args);
 };
 
-}// namespace TestGui
+}  // namespace TestGui
 
 
 #endif

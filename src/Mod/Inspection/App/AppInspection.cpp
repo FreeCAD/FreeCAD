@@ -36,7 +36,7 @@ public:
     Module()
         : Py::ExtensionModule<Module>("Inspection")
     {
-        initialize("This module is the Inspection module.");// register with Python
+        initialize("This module is the Inspection module.");  // register with Python
     }
 
 private:
@@ -47,7 +47,7 @@ PyObject* initModule()
     return Base::Interpreter().addModule(new Module);
 }
 
-}// namespace Inspection
+}  // namespace Inspection
 
 
 /* Python entry */

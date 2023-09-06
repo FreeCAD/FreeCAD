@@ -39,7 +39,7 @@ namespace Sketcher
 {
 class Sketch;
 class SketchObject;
-}// namespace Sketcher
+}  // namespace Sketcher
 
 namespace SketcherGui
 {
@@ -171,7 +171,7 @@ public:
     void resetPositionText();
     void renderSuggestConstraintsCursor(std::vector<AutoConstraint>& suggestedConstraints);
 
-private:// NVI
+private:  // NVI
     virtual void preActivated();
     virtual void activated()
     {}
@@ -180,7 +180,7 @@ private:// NVI
     virtual void postDeactivated()
     {}
 
-protected:// NVI requiring base implementation
+protected:  // NVI requiring base implementation
     virtual QString getCrosshairCursorSVGName() const;
 
 protected:
@@ -265,7 +265,7 @@ protected:
 };
 
 
-}// namespace SketcherGui
+}  // namespace SketcherGui
 
 
-#endif// SKETCHERGUI_DrawSketchHandler_H
+#endif  // SKETCHERGUI_DrawSketchHandler_H
