@@ -85,7 +85,6 @@
 #include "SoFCDB.h"
 #include "Selection.h"
 #include "SelectionFilterPy.h"
-#include "SoQtOffscreenRendererPy.h"
 #include "SplitView3DInventor.h"
 #include "TaskView/TaskView.h"
 #include "TaskView/TaskDialogPython.h"
@@ -498,9 +497,6 @@ Application::Application(bool GUIenabled)
         Py_DECREF(descr);
     }
 
-    SoQtOffscreenRendererPy::init_type();
-    Base::Interpreter().addType(SoQtOffscreenRendererPy::type_object(),
-        module,"SoQtOffscreenRenderer");
 
     App::Application::Config()["COIN_VERSION"] = COIN_VERSION;
 

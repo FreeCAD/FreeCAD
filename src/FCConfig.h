@@ -263,13 +263,6 @@ typedef unsigned __int64    uint64_t;
 # endif
 #endif
 
-//**************************************************************************
-// SoQt
-#if defined (FC_OS_WIN32) || defined(FC_OS_CYGWIN)
-# ifndef SOQT_DLL
-#   define SOQT_DLL
-# endif
-#endif
 
 //**************************************************************************
 // Quarter

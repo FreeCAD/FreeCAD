@@ -968,7 +968,6 @@ SET(Inventor_CPP_SRCS
     SoFCDB.cpp
     SoFCInteractiveElement.cpp
     SoFCOffscreenRenderer.cpp
-    SoQtOffscreenRendererPy.cpp
     SoFCSelection.cpp
     SoFCUnifiedSelection.cpp
     SoFCSelectionContext.cpp
@@ -997,7 +996,6 @@ SET(Inventor_SRCS
     SoFCDB.h
     SoFCInteractiveElement.h
     SoFCOffscreenRenderer.h
-    SoQtOffscreenRendererPy.h
     SoFCSelection.h
     SoFCUnifiedSelection.h
     SoFCSelectionContext.h
