@@ -37,7 +37,6 @@ using namespace MeshCore;
 
 Writer3MF::Writer3MF(std::ostream &str)
   : zip(str)
-  , objectIndex(0)
 {
     zip.putNextEntry("3D/3dmodel.model");
     Initialize(zip);
@@ -45,10 +44,14 @@ Writer3MF::Writer3MF(std::ostream &str)
 
 Writer3MF::Writer3MF(const std::string &filename)
   : zip(filename)
-  , objectIndex(0)
 {
     zip.putNextEntry("3D/3dmodel.model");
     Initialize(zip);
+}
+
+void Writer3MF::SetForceModel(bool model)
+{
+    forceModel = model;
 }
 
 void Writer3MF::Initialize(std::ostream &str)
@@ -144,10 +147,8 @@ bool Writer3MF::SaveObject(std::ostream &str, int id, const MeshKernel& mesh) co
 
 std::string Writer3MF::GetType(const MeshKernel& mesh) const
 {
-    if (MeshEvalSolid(mesh).Evaluate())
-        return "model";
-    else
-        return "surface";
+    bool isSolid = (forceModel || MeshEvalSolid(mesh).Evaluate());
+    return isSolid ? "model" : "surface";
 }
 
 void Writer3MF::SaveBuildItem(int id, const Base::Matrix4D& mat)

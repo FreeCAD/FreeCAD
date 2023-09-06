@@ -62,7 +62,12 @@ public:
      * \param filename
      */
     explicit Writer3MF(const std::string &filename);
-
+    /*!
+     * \brief SetForceModel
+     * Forcces to write the mesh as model even if itsn't a solid.
+     * \param model
+     */
+    void SetForceModel(bool model);
     /*!
      * \brief Add a mesh object resource to the 3MF file.
      * \param mesh The mesh object to be written
@@ -94,9 +99,10 @@ private:
 
 private:
     zipios::ZipOutputStream zip;
-    int objectIndex;
+    int objectIndex = 0;
     std::vector<std::string> items;
     std::vector<Resource3MF> resources;
+    bool forceModel = true;
 };
 
 } // namespace MeshCore

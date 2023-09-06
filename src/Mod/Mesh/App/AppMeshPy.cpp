@@ -212,6 +212,7 @@ private:
         auto fTolerance( hGrp->GetFloat("MaxDeviationExport", 0.1f) );
 
         int exportAmfCompressed( hGrp->GetBool("ExportAmfCompressed", true) );
+        bool export3mfModel( hGrp->GetBool("Export3mfModel", true) );
 
         static char *kwList[] = {"objectList", "filename", "tolerance",
                                  "exportAmfCompressed", nullptr};
@@ -262,6 +263,7 @@ private:
         else if (exportFormat == MeshIO::ThreeMF) {
             Extension3MFFactory::initialize();
             exporter.reset( new Exporter3MF(outputFileName, Extension3MFFactory::createExtensions()) );
+            dynamic_cast<Exporter3MF*>(exporter.get())->setForceModel(export3mfModel);
         }
         else if (exportFormat != MeshIO::Undefined) {
             exporter.reset( new MergeExporter(outputFileName, exportFormat) );
