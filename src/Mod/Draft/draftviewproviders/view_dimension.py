@@ -586,9 +586,9 @@ class ViewProviderLinearDimension(ViewProviderDimensionBase):
 
         if hasattr(vobj, "Override") and vobj.Override:
             if hasattr(obj, "Diameter") and obj.Diameter == True:
-                vobj.Override = vobj.Override.replace("R", "Ø")
+                vobj.Override = vobj.Override.replace("R $dim", "Ø $dim")
             elif hasattr(obj, "Diameter") and obj.Diameter == False:
-                vobj.Override = vobj.Override.replace("Ø", "R")
+                vobj.Override = vobj.Override.replace("Ø $dim", "R $dim")
             self.string = vobj.Override.replace("$dim", self.string)
 
         self.text_wld.string = utils.string_encode_coin(self.string)
@@ -823,6 +823,7 @@ class ViewProviderLinearDimension(ViewProviderDimensionBase):
                 edge = linked_obj.Shape.Edges[index]
                 if DraftGeomUtils.geomType(edge) == "Circle":
                     return True
+        obj.Diameter = True
         return False
 
     def getIcon(self):

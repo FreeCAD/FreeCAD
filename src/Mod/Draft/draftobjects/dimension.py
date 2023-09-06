@@ -302,7 +302,7 @@ class LinearDimension(DimensionBase):
                             "Diameter",
                             "Radial dimension",
                             _tip)
-            obj.Diameter = True
+            obj.Diameter = False
 
     def onDocumentRestored(self, obj):
         """Execute code when the document is restored."""
