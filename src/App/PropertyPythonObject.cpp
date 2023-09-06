@@ -82,27 +82,53 @@ std::string PropertyPythonObject::toString() const
     std::string repr;
     Base::PyGILStateLocker lock;
     try {
-        Py::Module pickle(PyImport_ImportModule("json"),true);
-        if (pickle.isNull())
+        Py::Module pickle(PyImport_ImportModule("json"), true);
+        if (pickle.isNull()) {
             throw Py::Exception();
+        }
         Py::Callable method(pickle.getAttr(std::string("dumps")));
         Py::Object dump;
-#if PY_VERSION_HEX < 0x03b0000
+#if PY_VERSION_HEX < 0x030b0000
         if (this->object.hasAttr("__getstate__")) {
             Py::Tuple args;
             Py::Callable state(this->object.getAttr("__getstate__"));
             dump = state.apply(args);
+            if (dump.isNone()) {
+                Base::Console().Log("PropertyPythonObject::toString() JSON"
+                                    " __getstate__ is Null\n");
+            }
         }
         else if (this->object.hasAttr("__dict__")) {
             dump = this->object.getAttr("__dict__");
+            if (dump.isNone()) {
+                Base::Console().Log("PropertyPythonObject::toString() JSON"
+                                    " __dict__ is Null\n");
+            }
         }
         else {
             dump = this->object;
         }
 #else
-        dump = this->object;
+        if (this->object.hasAttr("__getstate__")) {
+            Py::Tuple args;
+            Py::Callable state(this->object.getAttr("__getstate__"));
+            dump = state.apply(args);
+            if (dump.isNone()) {
+                Base::Console().Log("PropertyPythonObject::toString() Python 3.11 or above"
+                                    " ignoring default JSON __getstate__ is Null\n");
+                if (this->object.hasAttr("__dict__")) {
+                    dump = this->object.getAttr("__dict__");
+                    if (dump.isNone()) {
+                        Base::Console().Log(
+                            "PropertyPythonObject::toString() JSON __dict__ is Null\n");
+                    }
+                }
+                else {
+                    dump = this->object;
+                }
+            }
+        }
 #endif
-
         Py::Tuple args(1);
         args.setItem(0, dump);
         Py::Object res = method.apply(args);
@@ -111,8 +137,9 @@ std::string PropertyPythonObject::toString() const
     }
     catch (Py::Exception&) {
         Py::String typestr(this->object.type().str());
-        Base::Console().Error("PropertyPythonObject::toString(): failed for %s\n", typestr.as_string().c_str());
-        Base::PyException e; // extract the Python error text
+        Base::Console().Error("PropertyPythonObject::toString(): failed for %s\n",
+                              typestr.as_string().c_str());
+        Base::PyException e;// extract the Python error text
         e.ReportException();
     }
 
