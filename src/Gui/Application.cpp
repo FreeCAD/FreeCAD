@@ -1745,6 +1745,7 @@ void setCategoryFilterRules()
     stream << "qt.qpa.xcb.warning=false\n";
     stream << "qt.qpa.mime.warning=false\n";
     stream << "qt.svg.warning=false\n";
+    stream << "qt.xkb.compose.warning=false\n";
     stream.flush();
     QLoggingCategory::setFilterRules(filter);
 }
