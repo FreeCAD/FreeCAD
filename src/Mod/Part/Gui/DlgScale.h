@@ -41,7 +41,7 @@ class DlgScale : public QDialog
 
 public:
     DlgScale(QWidget* parent = nullptr, Qt::WindowFlags fl = Qt::WindowFlags());
-    ~DlgScale() override;
+    ~DlgScale() = default;
     void accept() override;
     void apply();
     void reject() override;

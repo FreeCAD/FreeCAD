@@ -49,11 +49,10 @@ public:
 
     /**
      * @brief The ScaleParameters struct is supposed to be filled with final
-     * scale parameters, after resolving links, applying mode logic,
-     * reversing, etc., and be passed to scaleShape.
+     * scale parameters and be passed to scaleShape.
      */
     struct ScaleParameters {
-        bool uniform;
+        bool uniform{true};
         double uniformScale{1.0};
         double XScale{1.0};
         double YScale{1.0};

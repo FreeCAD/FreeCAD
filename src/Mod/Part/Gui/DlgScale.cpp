@@ -70,14 +70,6 @@ DlgScale::DlgScale(QWidget* parent, Qt::WindowFlags fl)
     findShapes();
 }
 
-/*
- *  Destroys the object and frees any allocated resources
- */
-DlgScale::~DlgScale()
-{
-    // no need to delete child widgets, Qt does it all for us
-}
-
 void DlgScale::setupConnections()
 {
     connect(ui->rbUniform, &QRadioButton::toggled,
