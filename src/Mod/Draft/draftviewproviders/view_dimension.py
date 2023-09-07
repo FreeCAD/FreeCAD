@@ -823,7 +823,8 @@ class ViewProviderLinearDimension(ViewProviderDimensionBase):
                 edge = linked_obj.Shape.Edges[index]
                 if DraftGeomUtils.geomType(edge) == "Circle":
                     return True
-        obj.Diameter = True
+        if obj.Diameter == False:
+            obj.Diameter = True
         return False
 
     def getIcon(self):
