@@ -48,7 +48,7 @@ def make_circle(radius, placement=None, face=None, startangle=None, endangle=Non
     Creates a circle object with given parameters.
 
     If startangle and endangle are provided and not equal, the object will show
-    an arc instead of a full cirle.
+    an arc instead of a full circle.
 
     Parameters
     ----------
