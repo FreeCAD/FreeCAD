@@ -127,7 +127,7 @@ TopoShape Scale::nonuniformScale(const TopoShape& source, const Scale::ScalePara
     mat.SetValue(3,4,matScale[2][3]);
 
     // this copy step seems to eliminate Part.OCCError: gp_GTrsf::Trsf() - non-orthogonal GTrsf
-    // which may to be related to the tesselation of the input shape.  See Github issue #9651
+    // which may to be related to the tessellation of the input shape.  See Github issue #9651
     // for more detail.
     BRepBuilderAPI_Copy copier(source.getShape());
     TopoShape transTopo;
