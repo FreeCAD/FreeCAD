@@ -106,6 +106,9 @@ void DlgStringListEditor::slotAddItem()
 
 void DlgStringListEditor::slotRemoveItem()
 {
+    if (ui->lwTexts->count() < 1) {
+        return;
+    }
     int row = ui->lwTexts->currentRow();
     if (row >= 0) {
         auto item = ui->lwTexts->takeItem(row);
@@ -116,6 +119,10 @@ void DlgStringListEditor::slotRemoveItem()
 std::vector<std::string> DlgStringListEditor::getTexts() const
 {
     std::vector<std::string> outTexts;
+    if (ui->lwTexts->count() < 1) {
+        return outTexts;
+    }
+
     for (int iRow = 0; iRow < ui->lwTexts->count(); iRow++) {
         QString itemText = ui->lwTexts->item(iRow)->text();
         outTexts.push_back(Base::Tools::toStdString(itemText));
