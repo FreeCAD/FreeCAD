@@ -173,7 +173,7 @@ int MappedName::findTagInElementName(long* tagOut, int* lenOut, std::string* pos
                 //                    next            pos
                 //
                 // There maybe other operation codes after this embedded tagOut
-                // postfixOut, search for the seperator.
+                // postfixOut, search for the separator.
                 //
                 int end {0};
                 if (pos == next) {
