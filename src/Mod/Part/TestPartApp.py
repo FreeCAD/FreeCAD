@@ -871,3 +871,20 @@ class PartBOPTestContainer(unittest.TestCase):
 
     def tearDown(self):
         FreeCAD.closeDocument(self.Doc.Name)
+
+class BSplineCurve2d(unittest.TestCase):
+    def setUp(self):
+        vec2 = FreeCAD.Base.Vector2d
+        self.pts = [vec2(0, 0), vec2(1, 0)]
+        self.bs = Part.Geom2d.BSplineCurve2d()
+
+    def testInterpolate(self):
+        self.bs.interpolate(Points=self.pts)
+
+    def testApproximate(self):
+        self.bs.approximate(Points=self.pts)
+
+class GeometryCurve(unittest.TestCase):
+    def testProject(self):
+        line = Part.Line()
+        line.projectPoint(FreeCAD.Vector())
