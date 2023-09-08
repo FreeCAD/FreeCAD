@@ -68,6 +68,12 @@ DlgScale::DlgScale(QWidget* parent, Qt::WindowFlags fl)
     ui->dsbYScale->setDecimals(Base::UnitsApi::getDecimals());
     ui->dsbZScale->setDecimals(Base::UnitsApi::getDecimals());
     findShapes();
+
+    // this will mark as selected all the items in treeWidget that are selected in the document
+    Gui::ItemViewSelection sel(ui->treeWidget);
+    sel.applyFrom(Gui::Selection().getObjectsOfType(Part::Feature::getClassTypeId()));
+    sel.applyFrom(Gui::Selection().getObjectsOfType(App::Link::getClassTypeId()));
+    sel.applyFrom(Gui::Selection().getObjectsOfType(App::Part::getClassTypeId()));
 }
 
 void DlgScale::setupConnections()
@@ -111,6 +117,8 @@ App::DocumentObject& DlgScale::getShapeToScale() const
     return *(objs[0]);
 }
 
+//! find all the scalable objects in the active document and load them into the
+//! list widget
 void DlgScale::findShapes()
 {
 //    Base::Console().Message("DS::findShapes()\n");
