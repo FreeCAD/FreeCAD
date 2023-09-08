@@ -342,7 +342,7 @@ void ModelLoader::loadLibrary(const ModelLibrary& library)
 
 void ModelLoader::loadLibraries(void)
 {
-    std::list<ModelLibrary*>* _libraryList = getModelLibraries();
+    getModelLibraries();
     // if (_libraryList) {
     //     for (auto it = _libraryList->begin(); it != _libraryList->end(); it++) {
     //         loadLibrary(**it);

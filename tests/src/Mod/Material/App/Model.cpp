@@ -32,6 +32,10 @@ TEST(Material, TestModelLoad)
     auto param = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/Mod/Material/Resources");
     EXPECT_NE(param, nullptr);
+    // bool useBuiltInMaterials = param->GetBool("UseBuiltInMaterials", true);
+    // bool useMatFromModules = param->GetBool("UseMaterialsFromWorkbenches", true);
+    // bool useMatFromConfigDir = param->GetBool("UseMaterialsFromConfigDir", true);
+    // bool useMatFromCustomDir = param->GetBool("UseMaterialsFromCustomDir", true);
 
     auto manager = Materials::ModelManager::getManager();
     // EXPECT_NE(manager, nullptr);
