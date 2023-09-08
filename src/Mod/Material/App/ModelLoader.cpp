@@ -359,57 +359,57 @@ std::list<ModelLibrary*>* ModelLoader::getModelLibraries()
     bool useMatFromConfigDir = param->GetBool("UseMaterialsFromConfigDir", true);
     bool useMatFromCustomDir = param->GetBool("UseMaterialsFromCustomDir", true);
 
-    if (useBuiltInMaterials) {
-        QString resourceDir = QString::fromStdString(App::Application::getResourceDir()
-                                                     + "/Mod/Material/Resources/Models");
-        auto libData = new ModelLibrary(QString::fromStdString("System"),
-                                        resourceDir,
-                                        QString::fromStdString(":/icons/freecad.svg"));
-        _libraryList->push_back(libData);
-    }
+    // if (useBuiltInMaterials) {
+    //     QString resourceDir = QString::fromStdString(App::Application::getResourceDir()
+    //                                                  + "/Mod/Material/Resources/Models");
+    //     auto libData = new ModelLibrary(QString::fromStdString("System"),
+    //                                     resourceDir,
+    //                                     QString::fromStdString(":/icons/freecad.svg"));
+    //     _libraryList->push_back(libData);
+    // }
 
-    if (useMatFromModules) {
-        auto moduleParam = App::GetApplication().GetParameterGroupByPath(
-            "User parameter:BaseApp/Preferences/Mod/Material/Resources/Modules");
-        for (auto& group : moduleParam->GetGroups()) {
-            // auto module = moduleParam->GetGroup(group->GetGroupName());
-            auto moduleName = QString::fromStdString(group->GetGroupName());
-            auto modelDir = QString::fromStdString(group->GetASCII("ModuleModelDir", ""));
-            auto modelIcon = QString::fromStdString(group->GetASCII("ModuleIcon", ""));
+    // if (useMatFromModules) {
+    //     auto moduleParam = App::GetApplication().GetParameterGroupByPath(
+    //         "User parameter:BaseApp/Preferences/Mod/Material/Resources/Modules");
+    //     for (auto& group : moduleParam->GetGroups()) {
+    //         // auto module = moduleParam->GetGroup(group->GetGroupName());
+    //         auto moduleName = QString::fromStdString(group->GetGroupName());
+    //         auto modelDir = QString::fromStdString(group->GetASCII("ModuleModelDir", ""));
+    //         auto modelIcon = QString::fromStdString(group->GetASCII("ModuleIcon", ""));
 
-            if (modelDir.length() > 0) {
-                QDir dir(modelDir);
-                if (dir.exists()) {
-                    auto libData = new ModelLibrary(moduleName, modelDir, modelIcon);
-                    _libraryList->push_back(libData);
-                }
-            }
-        }
-    }
+    //         if (modelDir.length() > 0) {
+    //             QDir dir(modelDir);
+    //             if (dir.exists()) {
+    //                 auto libData = new ModelLibrary(moduleName, modelDir, modelIcon);
+    //                 _libraryList->push_back(libData);
+    //             }
+    //         }
+    //     }
+    // }
 
-    if (useMatFromConfigDir) {
-        QString resourceDir =
-            QString::fromStdString(App::Application::getUserAppDataDir() + "/Models");
-        QDir materialDir(resourceDir);
-        if (materialDir.exists()) {
-            auto libData =
-                new ModelLibrary(QString::fromStdString("User"),
-                                 resourceDir,
-                                 QString::fromStdString(":/icons/preferences-general.svg"));
-            _libraryList->push_back(libData);
-        }
-    }
+    // if (useMatFromConfigDir) {
+    //     QString resourceDir =
+    //         QString::fromStdString(App::Application::getUserAppDataDir() + "/Models");
+    //     QDir materialDir(resourceDir);
+    //     if (materialDir.exists()) {
+    //         auto libData =
+    //             new ModelLibrary(QString::fromStdString("User"),
+    //                              resourceDir,
+    //                              QString::fromStdString(":/icons/preferences-general.svg"));
+    //         _libraryList->push_back(libData);
+    //     }
+    // }
 
-    if (useMatFromCustomDir) {
-        QString resourceDir = QString::fromStdString(param->GetASCII("CustomMaterialsDir", ""));
-        QDir materialDir(resourceDir);
-        if (materialDir.exists()) {
-            auto libData = new ModelLibrary(QString::fromStdString("Custom"),
-                                            resourceDir,
-                                            QString::fromStdString(":/icons/user.svg"));
-            _libraryList->push_back(libData);
-        }
-    }
+    // if (useMatFromCustomDir) {
+    //     QString resourceDir = QString::fromStdString(param->GetASCII("CustomMaterialsDir", ""));
+    //     QDir materialDir(resourceDir);
+    //     if (materialDir.exists()) {
+    //         auto libData = new ModelLibrary(QString::fromStdString("Custom"),
+    //                                         resourceDir,
+    //                                         QString::fromStdString(":/icons/user.svg"));
+    //         _libraryList->push_back(libData);
+    //     }
+    // }
 
     return _libraryList;
 }
