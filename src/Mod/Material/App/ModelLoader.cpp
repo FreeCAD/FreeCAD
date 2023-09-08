@@ -343,11 +343,11 @@ void ModelLoader::loadLibrary(const ModelLibrary& library)
 void ModelLoader::loadLibraries(void)
 {
     std::list<ModelLibrary*>* _libraryList = getModelLibraries();
-    if (_libraryList) {
-        for (auto it = _libraryList->begin(); it != _libraryList->end(); it++) {
-            loadLibrary(**it);
-        }
-    }
+    // if (_libraryList) {
+    //     for (auto it = _libraryList->begin(); it != _libraryList->end(); it++) {
+    //         loadLibrary(**it);
+    //     }
+    // }
 }
 
 std::list<ModelLibrary*>* ModelLoader::getModelLibraries()
