@@ -61,7 +61,7 @@ void MaterialManager::initLibraries()
         }
 
         // Load the libraries
-        MaterialLoader loader(_materialMap, _libraryList);
+        // MaterialLoader loader(_materialMap, _libraryList);
     }
 }
 
