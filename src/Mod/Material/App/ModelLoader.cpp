@@ -352,12 +352,12 @@ void ModelLoader::loadLibraries(void)
 
 std::list<ModelLibrary*>* ModelLoader::getModelLibraries()
 {
-    auto param = App::GetApplication().GetParameterGroupByPath(
-        "User parameter:BaseApp/Preferences/Mod/Material/Resources");
-    bool useBuiltInMaterials = param->GetBool("UseBuiltInMaterials", true);
-    bool useMatFromModules = param->GetBool("UseMaterialsFromWorkbenches", true);
-    bool useMatFromConfigDir = param->GetBool("UseMaterialsFromConfigDir", true);
-    bool useMatFromCustomDir = param->GetBool("UseMaterialsFromCustomDir", true);
+    // auto param = App::GetApplication().GetParameterGroupByPath(
+    //     "User parameter:BaseApp/Preferences/Mod/Material/Resources");
+    // bool useBuiltInMaterials = param->GetBool("UseBuiltInMaterials", true);
+    // bool useMatFromModules = param->GetBool("UseMaterialsFromWorkbenches", true);
+    // bool useMatFromConfigDir = param->GetBool("UseMaterialsFromConfigDir", true);
+    // bool useMatFromCustomDir = param->GetBool("UseMaterialsFromCustomDir", true);
 
     // if (useBuiltInMaterials) {
     //     QString resourceDir = QString::fromStdString(App::Application::getResourceDir()
