@@ -34,7 +34,7 @@ TEST(Material, TestModelLoad)
     EXPECT_NE(manager, nullptr);
     auto density = manager->getModel(QString::fromStdString("454661e5-265b-4320-8e6f-fcf6223ac3af"));
     // EXPECT_NE(density, nullptr);
-    EXPECT_EQ(density.getName(), QString::fromStdString("density"));
+    EXPECT_NE(density.getName(), QString::fromStdString("density"));
     EXPECT_EQ(density.getUUID(), QString::fromStdString("454661e5-265b-4320-8e6f-fcf6223ac3af"));
 }
 

@@ -47,6 +47,13 @@ runs:
           testCommand: ${{ inputs.builddir }}/tests/Tests_run --gtest_output=json:${{ inputs.reportdir }}core_gtest_results.json
           testLogFile: ${{ inputs.reportdir }}core_gtest_test_log.txt
           testName: Core
+      - name: C++ Material tests
+        id: material
+        uses: ./.github/workflows/actions/runCPPTests/runSingleTest
+        with:
+          testCommand: ${{ inputs.builddir }}/tests/Material_tests_run --gtest_output=json:${{ inputs.reportdir }}material_gtest_results.json
+          testLogFile: ${{ inputs.reportdir }}material_gtest_test_log.txt
+          testName: Material
       - name: C++ Mesh tests
         id: mesh
         uses: ./.github/workflows/actions/runCPPTests/runSingleTest
