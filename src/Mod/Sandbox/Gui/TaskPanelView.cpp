@@ -364,8 +364,6 @@ public:
         Q_UNUSED(MainWindow);
     } // retranslateUi
 };
-#else
-#include <Gui/iisTaskPanel/include/iisTaskPanel>
 #endif
 
 TaskPanelView::TaskPanelView(QWidget *parent)
@@ -580,96 +578,6 @@ TaskPanelView::TaskPanelView(QWidget *parent)
     connect(ui->rbAndroidScheme, SIGNAL(toggled(bool)), androidAction, SIGNAL(toggled(bool)));
     func->toggle(androidAction, boost::bind(&TaskPanelView::on_rbAndroidScheme_toggled, this, bp::_1));
     }
-#else
-    setWindowTitle(QLatin1String("Task View"));
-
-    QGridLayout* gridLayout = new QGridLayout(this);
-    iisTaskPanel *taskPanel = new iisTaskPanel(this);
-    iisTaskBox *tb1 = new iisTaskBox(
-        QPixmap(QString::fromLatin1(":/icons/document-save.svg")),QLatin1String("Expandable Group"),true, this);
-    taskPanel->addWidget(tb1);
-    gridLayout->addWidget(taskPanel, 0, 0, 2, 1);
-
-    iisIconLabel *i1 = new iisIconLabel(
-        Gui::BitmapFactory().iconFromTheme("document-new"), QLatin1String("Create new file"), tb1);
-    tb1->addIconLabel(i1);
-    connect(i1, SIGNAL(activated()), action, SIGNAL(triggered()));
-
-    iisIconLabel *i2 = new iisIconLabel(
-        Gui::BitmapFactory().iconFromTheme("document-open"), QLatin1String("Load a file"), tb1);
-    tb1->addIconLabel(i2);
-    connect(i2, SIGNAL(activated()), action, SIGNAL(triggered()));
-
-    tb1->groupLayout()->addWidget(new QPushButton(QLatin1String("Just a button"), this));
-
-    iisIconLabel *i3 = new iisIconLabel(
-        Gui::BitmapFactory().iconFromTheme("document-save"), QLatin1String("Save current file"), tb1);
-    tb1->addIconLabel(i3);
-
-    iisIconLabel *i4 = new iisIconLabel(
-        Gui::BitmapFactory().iconFromTheme("document-print"), QLatin1String("Print file contents"), tb1);
-    tb1->addIconLabel(i4);
-    i4->setColors(Qt::red, Qt::green, Qt::gray);
-    i4->setFocusPen(QPen());
-
-    tb1->groupLayout()->addWidget(new QPushButton(QLatin1String("Just another button"), this));
-
-    iisTaskBox *tb2 = new iisTaskBox(
-        Gui::BitmapFactory().pixmap("edit-redo"), QLatin1String("Non-expandable Group"), false, this);
-    taskPanel->addWidget(tb2);
-
-    iisIconLabel *i21 = new iisIconLabel(
-        Gui::BitmapFactory().iconFromTheme("document-new"), QLatin1String("Create new file"), tb2);
-    tb2->addIconLabel(i21);
-
-    iisIconLabel *i22 = new iisIconLabel(
-        Gui::BitmapFactory().iconFromTheme("document-open"), QLatin1String("Load a file"), tb2);
-    tb2->addIconLabel(i22);
-
-    iisIconLabel *i23 = new iisIconLabel(
-        Gui::BitmapFactory().iconFromTheme("document-save"), QLatin1String("Save current file"), tb2);
-    tb2->addIconLabel(i23);
-    i23->setEnabled(false);
-
-    iisIconLabel *i24 = new iisIconLabel(
-        Gui::BitmapFactory().iconFromTheme("document-print"), QLatin1String("Print file contents"), tb2);
-    tb2->addIconLabel(i24);
-
-
-    // Other widgets can be also added to the panel
-    QLabel *l1 = new QLabel(QLatin1String("Action Group without header"), this);
-    taskPanel->addWidget(l1);
-
-    iisTaskGroup *tb3 = new iisTaskGroup(this);
-    taskPanel->addWidget(tb3);
-
-    iisIconLabel *i31 = new iisIconLabel(
-        Gui::BitmapFactory().iconFromTheme("document-new"), QLatin1String("Create new file"), tb3);
-    tb3->addIconLabel(i31);
-
-    QHBoxLayout *hb3 = new QHBoxLayout();
-    tb3->groupLayout()->addLayout(hb3);
-
-    iisIconLabel *i32 = new iisIconLabel(
-        Gui::BitmapFactory().iconFromTheme("document-open"), QLatin1String("Load a file"), tb3);
-    tb3->addIconLabel(i32);
-    hb3->addWidget(i32);
-
-    iisIconLabel *i33 = new iisIconLabel(
-        Gui::BitmapFactory().iconFromTheme("document-save"), QLatin1String("Save current file"), tb3);
-    tb3->addIconLabel(i33);
-    i33->setDisabled(true);
-    hb3->addWidget(i33);
-
-    iisIconLabel *i34 = new iisIconLabel(
-        Gui::BitmapFactory().iconFromTheme("document-print"), QLatin1String("Print file contents"), tb3);
-    tb3->addIconLabel(i34);
-
-    taskPanel->addStretch();
-    taskPanel->setScheme(iisWinXPTaskPanelScheme::defaultScheme());
-    tb1->setScheme(iisWinXPTaskPanelScheme::defaultScheme());
-    tb2->setScheme(iisWinXPTaskPanelScheme2::defaultScheme());
-    tb3->setScheme(iisTaskPanelScheme::defaultScheme());
 #endif
 }
 
