@@ -16,21 +16,6 @@
 // clang-format off
 TEST(Material, TestModelLoad)
 {
-        // self.ModelManager = Material.ModelManager()
-        // self.MaterialManager = Material.MaterialManager()
-
-        //     density = self.ModelManager.getModel("454661e5-265b-4320-8e6f-fcf6223ac3af")
-        // self.assertIsNotNone(density)
-        // self.assertEqual(density.Name, "Density")
-        // self.assertEqual(density.UUID, "454661e5-265b-4320-8e6f-fcf6223ac3af")
-        // self.assertIn("Density", density.Properties)
-        // prop = density.Properties["Density"]
-        // self.assertIn("Description", dir(prop))
-        // self.assertIn("Name", dir(prop))
-        // self.assertIn("Type", dir(prop))
-        // self.assertIn("URL", dir(prop))
-        // self.assertIn("Units", dir(prop))
-        // self.assertEqual(prop.Name, "Density")
     try {
         auto param = App::GetApplication().GetParameterGroupByPath(
             "User parameter:BaseApp/Preferences/Mod/Material/Resources");
@@ -45,7 +30,7 @@ TEST(Material, TestModelLoad)
     // bool useMatFromConfigDir = param->GetBool("UseMaterialsFromConfigDir", true);
     // bool useMatFromCustomDir = param->GetBool("UseMaterialsFromCustomDir", true);
 
-    auto manager = Materials::ModelManager::getManager();
+    // auto manager = Materials::ModelManager::getManager();
     // EXPECT_NE(manager, nullptr);
     // auto density = manager->getModel(QString::fromStdString("454661e5-265b-4320-8e6f-fcf6223ac3af"));
     // // EXPECT_NE(density, nullptr);
