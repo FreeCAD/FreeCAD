@@ -53,17 +53,10 @@ using PyObject = struct _object;
 #include <vector>
 #include <boost_signals2.hpp>
 #include <xercesc/util/XercesDefs.hpp>
+#include <xercesc/sax/ErrorHandler.hpp>
 
 #include "Handle.h"
 #include "Observer.h"
-
-
-
-#ifndef _PreComp_
-//#   include <xercesc/sax/SAXParseException.hpp>
-#   include <xercesc/sax/ErrorHandler.hpp>
-#endif
-
 
 #ifdef _MSC_VER
 #	pragma warning( disable : 4251 )

@@ -26,6 +26,10 @@
 
 #include <FCConfig.h>
 
+#ifdef FC_OS_WIN32
+#include <windows.h>
+#endif
+
 // Importing of App classes
 #ifdef FC_OS_WIN32
 #define _TEMPLATE_AppExport __declspec(dllimport)
@@ -56,9 +60,7 @@
 // Xerces
 #include <xercesc/util/XercesDefs.hpp>
 
-#ifdef FC_OS_WIN32
-#include <windows.h>
-#endif
+
 
 // Qt Toolkit
 #ifndef __QtAll__

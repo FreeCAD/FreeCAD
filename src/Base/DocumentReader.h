@@ -30,12 +30,6 @@
 #include <vector>
 #include <FCGlobal.h>
 
-//#ifndef _PreComp_
-//#   include <xercesc/dom/DOM.hpp>
-//#   include <xercesc/parsers/XercesDOMParser.hpp>
-//#endif
-
- 
 #include <xercesc/util/XercesDefs.hpp>
 
 namespace zipios {
@@ -45,8 +39,6 @@ class ZipInputStream;
 XERCES_CPP_NAMESPACE_BEGIN
 	class DOMNode;
 	class DOMElement;
-//    class DefaultHandler;
-//    class SAX2XMLReader;
 XERCES_CPP_NAMESPACE_END
 namespace Base
 {

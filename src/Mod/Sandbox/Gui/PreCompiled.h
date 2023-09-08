@@ -26,6 +26,10 @@
 
 #include <FCConfig.h>
 
+#ifdef FC_OS_WIN32
+# include <windows.h>
+#endif
+
 // Importing of App classes
 #ifdef FC_OS_WIN32
 # define SandboxAppExport __declspec(dllimport)
@@ -61,10 +65,6 @@
 
 // Xerces
 #include <xercesc/util/XercesDefs.hpp>
-
-#ifdef FC_OS_WIN32
-# include <windows.h>
-#endif
 
 // Qt Toolkit
 #include <qaction.h>

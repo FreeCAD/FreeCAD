@@ -24,6 +24,8 @@
 #ifndef _PreComp_
 # include <Inventor/events/SoButtonEvent.h>
 #endif
+#include <Gui/View3DInventor.h>
+#include <Gui/View3DInventorViewer.h>
 
 #include <App/Document.h>
 #include <Gui/Application.h>
@@ -31,8 +33,6 @@
 #include <Gui/Command.h>
 #include <Gui/Document.h>
 #include <Gui/MainWindow.h>
-#include <Gui/View3DInventor.h>
-#include <Gui/View3DInventorViewer.h>
 #include <Mod/Inspection/App/InspectionFeature.h>
 
 #include "VisualInspection.h"

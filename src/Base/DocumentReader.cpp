@@ -19,6 +19,7 @@
  *   Suite 330, Boston, MA  02111-1307, USA                                *
  *                                                                         *
  ***************************************************************************/
+#include "PreCompiled.h"
 #include "DocumentReader.h"
 #include "InputSource.h"
 #include "XMLTools.h"
