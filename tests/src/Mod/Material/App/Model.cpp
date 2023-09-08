@@ -8,6 +8,8 @@
 
 #include <QString>
 
+#include <App/Application.h>
+
 #include <Mod/Material/App/Model.h>
 #include <Mod/Material/App/ModelManager.h>
 
