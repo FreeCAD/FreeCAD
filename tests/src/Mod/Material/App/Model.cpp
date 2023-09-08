@@ -31,9 +31,15 @@ TEST(Material, TestModelLoad)
         // self.assertIn("URL", dir(prop))
         // self.assertIn("Units", dir(prop))
         // self.assertEqual(prop.Name, "Density")
-    auto param = App::GetApplication().GetParameterGroupByPath(
-        "User parameter:BaseApp/Preferences/Mod/Material/Resources");
-    EXPECT_NE(param, nullptr);
+    try {
+        auto param = App::GetApplication().GetParameterGroupByPath(
+            "User parameter:BaseApp/Preferences/Mod/Material/Resources");
+        EXPECT_NE(param, nullptr);
+    }
+    catch (const std::exception &e)
+    {
+        FAIL() << "Exception: " << e.what() << "\n";
+    }
     // bool useBuiltInMaterials = param->GetBool("UseBuiltInMaterials", true);
     // bool useMatFromModules = param->GetBool("UseMaterialsFromWorkbenches", true);
     // bool useMatFromConfigDir = param->GetBool("UseMaterialsFromConfigDir", true);
