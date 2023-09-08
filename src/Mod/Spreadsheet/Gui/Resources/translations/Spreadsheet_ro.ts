@@ -1012,7 +1012,7 @@ Implicit la: %V = %A
       <location filename="../../SheetTableView.cpp" line="132"/>
       <source>Insert %n row(s) below</source>
       <translation type="unfinished">
-        <numerusform>Introduceți i%n rânduri mai (jos)</numerusform>
+        <numerusform>Introduceți rânduri mai jos</numerusform>
         <numerusform>Introduceți i%n rânduri mai jos</numerusform>
         <numerusform>Insert %n row(s) below</numerusform>
       </translation>
@@ -1123,7 +1123,7 @@ Implicit la: %V = %A
       <location filename="../../SheetTableView.cpp" line="207"/>
       <location filename="../../SheetTableView.cpp" line="621"/>
       <source>Paste</source>
-      <translation type="unfinished">Paste</translation>
+      <translation>Lipește</translation>
     </message>
     <message>
       <location filename="../../SheetTableView.cpp" line="209"/>

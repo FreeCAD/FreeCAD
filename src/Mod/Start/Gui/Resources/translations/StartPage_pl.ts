@@ -323,7 +323,7 @@ Używając ";;" do rozdzielenia ścieżek, możesz dodać tutaj kilka folderów<
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="44"/>
       <source>Adjust the number of recent files to be shown here in menu Edit -&gt; Preferences -&gt; General -&gt; Size of recent file list</source>
-      <translation>Dostosuj liczbę wyświetlanych nazw plików w menu Edycja -&gt; Preferencje -&gt; Ogólne -&gt; Rozmiar listy ostatnio otwartych plików</translation>
+      <translation>Dostosuj liczbę wyświetlanych nazw plików w menu Edycja → Preferencje → Ogólne → Rozmiar listy ostatnio otwartych plików</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="45"/>

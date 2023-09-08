@@ -4,11 +4,6 @@
   <context>
     <name>Angle</name>
     <message>
-      <location filename="../DlgLocationAngle.ui" line="14"/>
-      <source>Form</source>
-      <translation>Vorm</translation>
-    </message>
-    <message>
       <location filename="../DlgLocationAngle.ui" line="22"/>
       <source>A:</source>
       <translation>A:</translation>
@@ -1457,7 +1452,7 @@ same time. The one with the highest priority will be triggered.</source>
     <message>
       <location filename="../DlgToolbars.ui" line="165"/>
       <source>Move up</source>
-      <translation>Verplaats naar boven</translation>
+      <translation>Naar boven verplaatsen</translation>
     </message>
     <message>
       <location filename="../DlgToolbars.ui" line="168"/>
@@ -1467,7 +1462,7 @@ same time. The one with the highest priority will be triggered.</source>
     <message>
       <location filename="../DlgToolbars.ui" line="191"/>
       <source>Move down</source>
-      <translation>Verplaats naar beneden</translation>
+      <translation>Naar beneden verplaatsen</translation>
     </message>
     <message>
       <location filename="../DlgToolbars.ui" line="194"/>
@@ -2254,7 +2249,7 @@ Kies een andere map, alstublieft.</translation>
     <message>
       <location filename="../DlgParameter.ui" line="125"/>
       <source>&amp;Close</source>
-      <translation>&amp;Sluiten</translation>
+      <translation>&amp; Sluiten</translation>
     </message>
   </context>
   <context>
@@ -2952,7 +2947,7 @@ Er zijn 3 opties beschikbaar om dit te bereiken:
     <message>
       <location filename="../PreferencePages/DlgSettings3DView.ui" line="342"/>
       <source>Size of vertices in the Sketcher, TechDraw and other workbenches</source>
-      <translation type="unfinished">Size of vertices in the Sketcher, TechDraw and other workbenches</translation>
+      <translation>Grootte van de hoekpunten in de werkbanken Sketcher en TechDraw en in andere werkbanken</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettings3DView.ui" line="349"/>
@@ -5193,7 +5188,7 @@ The 'Status' column shows whether the document could be recovered.</source>
     <message>
       <location filename="../Placement.ui" line="471"/>
       <source>Reset</source>
-      <translation>Herstellen</translation>
+      <translation>Herstel</translation>
     </message>
     <message>
       <location filename="../Placement.ui" line="498"/>
@@ -5328,7 +5323,7 @@ The 'Status' column shows whether the document could be recovered.</source>
     <message>
       <location filename="../TextureMapping.ui" line="26"/>
       <source>Global</source>
-      <translation>Globaal</translation>
+      <translation>Overal</translation>
     </message>
     <message>
       <location filename="../TextureMapping.ui" line="33"/>
@@ -6094,12 +6089,12 @@ Wilt u uw wijzigingen opslaan?</translation>
       <translation>Macro's</translation>
     </message>
     <message>
-      <location filename="../Command.cpp" line="1143"/>
+      <location filename="../Command.cpp" line="1173"/>
       <source>Macro file doesn't exist</source>
       <translation>Macro-bestand bestaat niet</translation>
     </message>
     <message>
-      <location filename="../Command.cpp" line="1144"/>
+      <location filename="../Command.cpp" line="1174"/>
       <source>No such macro file: '%1'</source>
       <translation>Geen dergelijke macro-bestand: '%1'</translation>
     </message>
@@ -6158,8 +6153,8 @@ Wilt u uw wijzigingen opslaan?</translation>
     </message>
     <message>
       <location filename="../MainWindow.cpp" line="1717"/>
-      <source>Please do not use in a production environment.</source>
-      <translation>Alsjeblieft niet gebruiken in een productieomgeving.</translation>
+      <source>Please do not use it in a production environment.</source>
+      <translation type="unfinished">Please do not use it in a production environment.</translation>
     </message>
     <message>
       <location filename="../MainWindow.cpp" line="1921"/>
@@ -6957,7 +6952,7 @@ Wilt u een andere map opgeven?</translation>
     <message>
       <location filename="../TaskView/TaskAppearance.ui" line="130"/>
       <source>Line width:</source>
-      <translation>Lijnbreedte:</translation>
+      <translation>Lijndikte:</translation>
     </message>
     <message>
       <location filename="../TaskView/TaskAppearance.ui" line="168"/>
@@ -7043,7 +7038,7 @@ Wilt u een andere map opgeven?</translation>
     <message>
       <location filename="../TinkerCADNavigationStyle.cpp" line="51"/>
       <source>Press middle mouse button</source>
-      <translation>Druk op middelste muisknop</translation>
+      <translation>Druk op de middelste muisknop</translation>
     </message>
     <message>
       <location filename="../TinkerCADNavigationStyle.cpp" line="53"/>
@@ -7409,7 +7404,7 @@ Wilt u een andere map opgeven?</translation>
     <message>
       <location filename="../Tree.cpp" line="2812"/>
       <source>Finish editing</source>
-      <translation>Voltooi het bewerken</translation>
+      <translation>Bewerken gereed</translation>
     </message>
     <message>
       <location filename="../Tree.cpp" line="2813"/>
@@ -7740,7 +7735,7 @@ Wilt u een andere map opgeven?</translation>
     <message>
       <location filename="../DlgDisplayPropertiesImp.cpp" line="52"/>
       <source>Display properties</source>
-      <translation>Eigenschappen weergeven</translation>
+      <translation>Weergave eigenschappen</translation>
     </message>
   </context>
   <context>
@@ -7811,12 +7806,12 @@ Wilt u een andere map opgeven?</translation>
     <message>
       <location filename="../Application.cpp" line="2202"/>
       <source>This system is running OpenGL %1.%2. FreeCAD requires OpenGL 2.0 or above. Please upgrade your graphics driver and/or card as required.</source>
-      <translation type="unfinished">This system is running OpenGL %1.%2. FreeCAD requires OpenGL 2.0 or above. Please upgrade your graphics driver and/or card as required.</translation>
+      <translation>Dit systeem draait OpenGL %1.%2. FreeCAD vereist OpenGL 2.0 of hoger. Upgrade uw grafische stuurprogramma en/of grafische kaart indien nodig.</translation>
     </message>
     <message>
       <location filename="../Application.cpp" line="2211"/>
       <source>Invalid OpenGL Version</source>
-      <translation type="unfinished">Invalid OpenGL Version</translation>
+      <translation>Verkeerde OpenGL versie</translation>
     </message>
     <message>
       <location filename="../Command.cpp" line="488"/>
@@ -8408,12 +8403,12 @@ Open een browservenster en typ: http://localhost:%1.</translation>
       <translation>Opties...</translation>
     </message>
     <message>
-      <location filename="../View3DInventorViewer.cpp" line="2252"/>
+      <location filename="../View3DInventorViewer.cpp" line="2256"/>
       <source>Out of memory</source>
       <translation>Onvoldoende geheugen</translation>
     </message>
     <message>
-      <location filename="../View3DInventorViewer.cpp" line="2253"/>
+      <location filename="../View3DInventorViewer.cpp" line="2257"/>
       <source>Not enough memory available to display the data.</source>
       <translation>Niet genoeg geheugen beschikbaar om de gegevens weer te geven.</translation>
     </message>
@@ -10331,7 +10326,7 @@ de huidige kopie verloren gaat.
     <message>
       <location filename="../CommandDoc.cpp" line="1542"/>
       <source>Transform</source>
-      <translation>Transformeer</translation>
+      <translation>Transformeren</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="1543"/>
@@ -11137,7 +11132,7 @@ de huidige kopie verloren gaat.
     <message>
       <location filename="../CommandView.cpp" line="1858"/>
       <source>Fullscreen</source>
-      <translation>Volledig scherm</translation>
+      <translation>Schermvullend</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1859"/>
@@ -11923,7 +11918,7 @@ nadat FreeCAD opgestart is</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsWorkbenchesImp.cpp" line="239"/>
       <source>Sort alphabetically</source>
-      <translation type="unfinished">Sort alphabetically</translation>
+      <translation>Alfabetisch sorteren</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsWorkbenchesImp.cpp" line="485"/>
@@ -12777,29 +12772,29 @@ van de Python-console naar het rapportweergavepaneel</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsTheme.ui" line="34"/>
       <source>Accent color 1</source>
-      <translation type="unfinished">Accent color 1</translation>
+      <translation>Accentkleur 1</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsTheme.ui" line="67"/>
       <source>Accent color 2</source>
-      <translation type="unfinished">Accent color 2</translation>
+      <translation>Accentkleur 2</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsTheme.ui" line="100"/>
       <source>Accent color 3</source>
-      <translation type="unfinished">Accent color 3</translation>
+      <translation>Accentkleur 3</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsTheme.ui" line="133"/>
       <source>Style sheet (advanced):</source>
-      <translation type="unfinished">Style sheet (advanced):</translation>
+      <translation>Stijlblad (geavanceerd):</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsTheme.ui" line="140"/>
       <source>Apply manually .qss Qt Stylesheets. This is the legacy way that was used to customize the interface.
 You can now use Theme to get a full customization of the interface.</source>
-      <translation type="unfinished">Apply manually .qss Qt Stylesheets. This is the legacy way that was used to customize the interface.
-You can now use Theme to get a full customization of the interface.</translation>
+      <translation>Pas handmatig .qss Qt stijlblad toe. Dit is de oude manier die werd gebruikt om de interface aan te passen.
+Je kunt nu Thema gebruiken om de interface volledig aan te passen.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsTheme.ui" line="47"/>
@@ -12819,13 +12814,13 @@ You can now use Theme to get a full customization of the interface.</translation
     <message>
       <location filename="../CommandView.cpp" line="1366"/>
       <source>Selection filter</source>
-      <translation type="unfinished">Selection filter</translation>
+      <translation>Selectie filter</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1367"/>
       <location filename="../CommandView.cpp" line="1368"/>
       <source>Change the Selection filter</source>
-      <translation type="unfinished">Change the Selection filter</translation>
+      <translation>Het selectie filter wijzigen</translation>
     </message>
   </context>
   <context>
@@ -12833,13 +12828,13 @@ You can now use Theme to get a full customization of the interface.</translation
     <message>
       <location filename="../CommandView.cpp" line="1487"/>
       <source>Vertex Selection</source>
-      <translation type="unfinished">Vertex Selection</translation>
+      <translation>Hoekpunt selectie</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1488"/>
       <location filename="../CommandView.cpp" line="1490"/>
       <source>Select a Vertex/Vertices</source>
-      <translation type="unfinished">Select a Vertex/Vertices</translation>
+      <translation>Selecteer een hoekpunt/hoekpunten</translation>
     </message>
   </context>
   <context>
@@ -12847,13 +12842,13 @@ You can now use Theme to get a full customization of the interface.</translation
     <message>
       <location filename="../CommandView.cpp" line="1512"/>
       <source>Edge Selection</source>
-      <translation type="unfinished">Edge Selection</translation>
+      <translation>Rand selectie</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1513"/>
       <location filename="../CommandView.cpp" line="1515"/>
       <source>Select Edge(s)</source>
-      <translation type="unfinished">Select Edge(s)</translation>
+      <translation>Selecteer rand(en)</translation>
     </message>
   </context>
   <context>
@@ -12861,13 +12856,13 @@ You can now use Theme to get a full customization of the interface.</translation
     <message>
       <location filename="../CommandView.cpp" line="1537"/>
       <source>Face Selection</source>
-      <translation type="unfinished">Face Selection</translation>
+      <translation>Vlak selectie</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1538"/>
       <location filename="../CommandView.cpp" line="1540"/>
       <source>Select Face(s)</source>
-      <translation type="unfinished">Select Face(s)</translation>
+      <translation>Selecteer vlak(ken)</translation>
     </message>
   </context>
   <context>
@@ -12877,7 +12872,7 @@ You can now use Theme to get a full customization of the interface.</translation
       <location filename="../CommandView.cpp" line="1564"/>
       <location filename="../CommandView.cpp" line="1566"/>
       <source>All selection filters cleared</source>
-      <translation type="unfinished">All selection filters cleared</translation>
+      <translation>Alle selectie filters uit</translation>
     </message>
   </context>
 </TS>

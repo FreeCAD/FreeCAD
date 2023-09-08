@@ -843,7 +843,7 @@
     <message>
       <location filename="../../TaskRobotControl.ui" line="297"/>
       <source>10mm / 1°</source>
-      <translation>10mm / 1 °</translation>
+      <translation>10mm / 1°</translation>
     </message>
     <message>
       <location filename="../../TaskRobotControl.ui" line="302"/>

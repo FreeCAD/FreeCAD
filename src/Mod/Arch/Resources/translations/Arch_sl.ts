@@ -3252,7 +3252,7 @@ Ustvarjanje etaže prekinjeno.</translation>
     <message>
       <location filename="../../ArchAxis.py" line="809"/>
       <source>Distance</source>
-      <translation type="unfinished">Distance</translation>
+      <translation>Razdalja</translation>
     </message>
     <message>
       <location filename="../../ArchAxis.py" line="810"/>
