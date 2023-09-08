@@ -33,7 +33,7 @@
 
 using namespace Materials;
 
-ModelManager* ModelManager::manager = nullptr;
+ModelManager* ModelManager::_manager = nullptr;
 std::list<ModelLibrary*>* ModelManager::_libraryList = nullptr;
 std::map<QString, Model*>* ModelManager::_modelMap = nullptr;
 
@@ -58,7 +58,7 @@ ModelManager::ModelManager()
  */
 ModelManager::~ModelManager()
 {
-    manager = nullptr;
+    _manager = nullptr;
 }
 
 bool ModelManager::isModel(const fs::path& p)
