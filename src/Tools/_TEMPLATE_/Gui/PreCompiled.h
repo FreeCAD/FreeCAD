@@ -61,7 +61,6 @@
 #include <xercesc/util/XercesDefs.hpp>
 
 
-
 // Qt Toolkit
 #ifndef __QtAll__
 #include <Gui/QtAll.h>
