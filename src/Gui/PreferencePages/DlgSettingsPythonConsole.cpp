@@ -55,12 +55,12 @@ void DlgSettingsPythonConsole::loadSettings()
     ui->ProfilerInterval->onRestore();
 }
 
-void DlgSettingsPythonConsole::changeEvent(QEvent *e)
+void DlgSettingsPythonConsole::changeEvent(QEvent* event)
 {
-    if (e->type() == QEvent::LanguageChange) {
+    if (event->type() == QEvent::LanguageChange) {
         ui->retranslateUi(this);
     }
-    QWidget::changeEvent(e);
+    QWidget::changeEvent(event);
 }
 
 #include "moc_DlgSettingsPythonConsole.cpp"
