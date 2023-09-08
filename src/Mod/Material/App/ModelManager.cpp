@@ -49,7 +49,7 @@ ModelManager::ModelManager()
         }
 
         // Load the libraries
-        ModelLoader loader(_modelMap, _libraryList);
+        // ModelLoader loader(_modelMap, _libraryList);
     }
 }
 
