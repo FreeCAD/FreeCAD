@@ -350,7 +350,7 @@ void ModelLoader::loadLibraries(void)
     // }
 }
 
-std::list<ModelLibrary*>* ModelLoader::getModelLibraries()
+void ModelLoader::getModelLibraries()
 {
     // auto param = App::GetApplication().GetParameterGroupByPath(
     //     "User parameter:BaseApp/Preferences/Mod/Material/Resources");
@@ -410,6 +410,4 @@ std::list<ModelLibrary*>* ModelLoader::getModelLibraries()
     //         _libraryList->push_back(libData);
     //     }
     // }
-
-    return _libraryList;
 }

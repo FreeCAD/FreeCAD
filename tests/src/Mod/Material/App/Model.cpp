@@ -29,6 +29,9 @@ TEST(Material, TestModelLoad)
         // self.assertIn("URL", dir(prop))
         // self.assertIn("Units", dir(prop))
         // self.assertEqual(prop.Name, "Density")
+    auto param = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/Mod/Material/Resources");
+    EXPECT_NE(param, nullptr);
 
     auto manager = Materials::ModelManager::getManager();
     // EXPECT_NE(manager, nullptr);

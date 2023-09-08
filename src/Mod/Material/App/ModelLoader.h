@@ -100,12 +100,12 @@ public:
                          std::list<ModelLibrary*>* libraryList);
     virtual ~ModelLoader() = default;
 
-    std::list<ModelLibrary*>* getModelLibraries();
     static const QString getUUIDFromPath(const QString& path);
 
 private:
     ModelLoader();
 
+    void getModelLibraries();
     QString
     yamlValue(const YAML::Node& node, const std::string& key, const std::string& defaultValue);
     void addToTree(ModelEntry* model, std::map<std::pair<QString, QString>, QString>* inheritances);
