@@ -32,7 +32,7 @@ on:
         type: string
         required: true
       testOnBuildDir:
-        default: false
+        default: true
         type: boolean
         required: false
       allowedToFail:
