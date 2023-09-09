@@ -26,16 +26,17 @@
 #include <boost/filesystem.hpp>
 
 #include "Exceptions.h"
-#include "Model.h"
 #include "FolderTree.h"
+#include "Model.h"
 
 namespace fs = boost::filesystem;
 
-namespace Materials {
+namespace Materials
+{
 
 typedef FolderTreeNode<Model> ModelTreeNode;
 
-class MaterialsExport ModelManager : public Base::BaseClass
+class MaterialsExport ModelManager: public Base::BaseClass
 {
     TYPESYSTEM_HEADER();
 
@@ -49,16 +50,23 @@ public:
 
     virtual ~ModelManager();
 
-    static ModelManager *getManager();
+    static ModelManager* getManager();
 
     void refresh();
 
-    std::list<ModelLibrary*> *getModelLibraries() { return _libraryList; }
-    std::map<QString, Model*> *getModels() { return _modelMap; }
-    std::map<QString, ModelTreeNode*>* getModelTree(const ModelLibrary &library, ModelFilter filter=ModelFilter_None);
-    const Model &getModel(const QString& uuid) const;
-    const Model &getModelByPath(const QString &path) const;
-    const Model &getModelByPath(const QString &path, const QString &libraryPath) const;
+    std::list<ModelLibrary*>* getModelLibraries()
+    {
+        return _libraryList;
+    }
+    std::map<QString, Model*>* getModels()
+    {
+        return _modelMap;
+    }
+    std::map<QString, ModelTreeNode*>* getModelTree(const ModelLibrary& library,
+                                                    ModelFilter filter = ModelFilter_None);
+    const Model& getModel(const QString& uuid) const;
+    const Model& getModelByPath(const QString& path) const;
+    const Model& getModelByPath(const QString& path, const QString& libraryPath) const;
 
     static bool isModel(const fs::path& p);
     bool passFilter(ModelFilter filter, Model::ModelType modelType) const;
@@ -66,11 +74,11 @@ public:
 private:
     ModelManager();
 
-    static ModelManager *manager;
-    static std::list<ModelLibrary*> *_libraryList;
-    static std::map<QString, Model*> *_modelMap;
+    static ModelManager* _manager;
+    static std::list<ModelLibrary*>* _libraryList;
+    static std::map<QString, Model*>* _modelMap;
 };
 
-} // namespace Materials
+}// namespace Materials
 
-#endif // MATERIAL_MODELMANAGER_H
+#endif// MATERIAL_MODELMANAGER_H

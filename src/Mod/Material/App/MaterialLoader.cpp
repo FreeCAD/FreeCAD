@@ -193,8 +193,12 @@ MaterialEntry* MaterialLoader::getMaterialFromPath(MaterialLibrary& library,
 {
     MaterialEntry* model = nullptr;
 
+    // Used for debugging
+    std::string uuid;
+    std::string pathName = path.toStdString();
+
     if (MaterialConfigLoader::isConfigStyle(path)) {
-        Base::Console().Log("Old format .FCMat file: '%s'\n", path.toStdString().c_str());
+        Base::Console().Log("Old format .FCMat file: '%s'\n", pathName.c_str());
         Material* material = MaterialConfigLoader::getMaterialFromPath(library, path);
         if (material) {
             (*_materialMap)[material->getUUID()] = library.addMaterial(*material, path);
@@ -205,8 +209,9 @@ MaterialEntry* MaterialLoader::getMaterialFromPath(MaterialLibrary& library,
         return model;
     }
 
+    YAML::Node yamlroot;
     try {
-        YAML::Node yamlroot = YAML::LoadFile(path.toStdString());
+        yamlroot = YAML::LoadFile(pathName);
 
         const std::string uuid = yamlroot["General"]["UUID"].as<std::string>();
         // Always get the name from the filename
@@ -218,8 +223,10 @@ MaterialEntry* MaterialLoader::getMaterialFromPath(MaterialLibrary& library,
         model = new MaterialYamlEntry(library, name, path, QString::fromStdString(uuid), yamlroot);
         // showYaml(yamlroot);
     }
-    catch (YAML::Exception const&) {
-        Base::Console().Error("YAML parsing error: '%s'\n", path.toStdString().c_str());
+    catch (YAML::Exception const& e) {
+        Base::Console().Error("YAML parsing error: '%s'\n", pathName.c_str());
+        Base::Console().Error("\t'%s'\n", e.what());
+        showYaml(yamlroot);
     }
 
 
@@ -389,26 +396,30 @@ std::list<MaterialLibrary*>* MaterialLoader::getMaterialLibraries()
     if (useMatFromConfigDir) {
         QString resourceDir =
             QString::fromStdString(App::Application::getUserAppDataDir() + "/Material");
-        QDir materialDir(resourceDir);
-        if (materialDir.exists()) {
-            auto libData =
-                new MaterialLibrary(QString::fromStdString("User"),
-                                    resourceDir,
-                                    QString::fromStdString(":/icons/preferences-general.svg"),
-                                    false);
-            _libraryList->push_back(libData);
+        if (!resourceDir.isEmpty()) {
+            QDir materialDir(resourceDir);
+            if (materialDir.exists()) {
+                auto libData =
+                    new MaterialLibrary(QString::fromStdString("User"),
+                                        resourceDir,
+                                        QString::fromStdString(":/icons/preferences-general.svg"),
+                                        false);
+                _libraryList->push_back(libData);
+            }
         }
     }
 
     if (useMatFromCustomDir) {
         QString resourceDir = QString::fromStdString(param->GetASCII("CustomMaterialsDir", ""));
-        QDir materialDir(resourceDir);
-        if (materialDir.exists()) {
-            auto libData = new MaterialLibrary(QString::fromStdString("Custom"),
-                                               resourceDir,
-                                               QString::fromStdString(":/icons/user.svg"),
-                                               false);
-            _libraryList->push_back(libData);
+        if (!resourceDir.isEmpty()) {
+            QDir materialDir(resourceDir);
+            if (materialDir.exists()) {
+                auto libData = new MaterialLibrary(QString::fromStdString("Custom"),
+                                                   resourceDir,
+                                                   QString::fromStdString(":/icons/user.svg"),
+                                                   false);
+                _libraryList->push_back(libData);
+            }
         }
     }
 

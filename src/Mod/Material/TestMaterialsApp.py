@@ -29,7 +29,7 @@ class MaterialTestCases(unittest.TestCase):
         self.ModelManager = Material.ModelManager()
         self.MaterialManager = Material.MaterialManager()
 
-    def testManager(self):
+    def testModelManager(self):
         self.assertIn("ModelLibraries", dir(self.ModelManager))
         self.assertIn("Models", dir(self.ModelManager))
 

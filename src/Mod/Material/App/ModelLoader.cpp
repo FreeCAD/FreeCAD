@@ -342,7 +342,7 @@ void ModelLoader::loadLibrary(const ModelLibrary& library)
 
 void ModelLoader::loadLibraries(void)
 {
-    std::list<ModelLibrary*>* _libraryList = getModelLibraries();
+    getModelLibraries();
     if (_libraryList) {
         for (auto it = _libraryList->begin(); it != _libraryList->end(); it++) {
             loadLibrary(**it);
@@ -350,7 +350,7 @@ void ModelLoader::loadLibraries(void)
     }
 }
 
-std::list<ModelLibrary*>* ModelLoader::getModelLibraries()
+void ModelLoader::getModelLibraries()
 {
     auto param = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/Mod/Material/Resources");
@@ -390,26 +390,28 @@ std::list<ModelLibrary*>* ModelLoader::getModelLibraries()
     if (useMatFromConfigDir) {
         QString resourceDir =
             QString::fromStdString(App::Application::getUserAppDataDir() + "/Models");
-        QDir materialDir(resourceDir);
-        if (materialDir.exists()) {
-            auto libData =
-                new ModelLibrary(QString::fromStdString("User"),
-                                 resourceDir,
-                                 QString::fromStdString(":/icons/preferences-general.svg"));
-            _libraryList->push_back(libData);
+        if (!resourceDir.isEmpty()) {
+            QDir materialDir(resourceDir);
+            if (materialDir.exists()) {
+                auto libData =
+                    new ModelLibrary(QString::fromStdString("User"),
+                                     resourceDir,
+                                     QString::fromStdString(":/icons/preferences-general.svg"));
+                _libraryList->push_back(libData);
+            }
         }
     }
 
     if (useMatFromCustomDir) {
         QString resourceDir = QString::fromStdString(param->GetASCII("CustomMaterialsDir", ""));
-        QDir materialDir(resourceDir);
-        if (materialDir.exists()) {
-            auto libData = new ModelLibrary(QString::fromStdString("Custom"),
-                                            resourceDir,
-                                            QString::fromStdString(":/icons/user.svg"));
-            _libraryList->push_back(libData);
+        if (!resourceDir.isEmpty()) {
+            QDir materialDir(resourceDir);
+            if (materialDir.exists()) {
+                auto libData = new ModelLibrary(QString::fromStdString("Custom"),
+                                                resourceDir,
+                                                QString::fromStdString(":/icons/user.svg"));
+                _libraryList->push_back(libData);
+            }
         }
     }
-
-    return _libraryList;
 }
