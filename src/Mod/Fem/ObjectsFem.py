@@ -749,6 +749,7 @@ def makePostVtkResult(
         obj.ViewObject.SelectionStyle = "BoundBox"
         # to assure the user sees something, set the default to Surface
         obj.ViewObject.DisplayMode = "Surface"
+        App.Console.PrintError(str(obj.ViewObject.getEnumerationsOfProperty('Field'))+'\n')
         obj.ViewObject.Field = "Displacement Magnitude"
     return obj
 
