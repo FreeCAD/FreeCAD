@@ -350,7 +350,7 @@ def _svg_dimension(obj, plane, scale, linewidth, fontsize,
                 if vobj.FlipArrows:
                     angle = angle + math.pi
 
-            if hasattr(obj, "Diameter") and obj.Diameter == True:
+            if (hasattr(obj, "Diameter") and obj.Diameter == True) or not prx.is_linked_to_circle():
                 svg += get_arrow(obj,
                                  vobj.ArrowType,
                                  p2, arrowsize, stroke, linewidth,

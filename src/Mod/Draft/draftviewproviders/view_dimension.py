@@ -730,7 +730,7 @@ class ViewProviderLinearDimension(ViewProviderDimensionBase):
         self.marks = coin.SoSeparator()
         self.marks.addChild(self.linecolor)
 
-        if vobj.Object.Diameter == True:
+        if vobj.Object.Diameter == True or not self.is_linked_to_circle():
             s1 = coin.SoSeparator()
             if symbol == "Circle":
                 s1.addChild(self.coord1)
@@ -823,8 +823,6 @@ class ViewProviderLinearDimension(ViewProviderDimensionBase):
                 edge = linked_obj.Shape.Edges[index]
                 if DraftGeomUtils.geomType(edge) == "Circle":
                     return True
-        if obj.Diameter == False:
-            obj.Diameter = True
         return False
 
     def getIcon(self):
