@@ -16,6 +16,7 @@ files: |
         src/Mod/Surface|
         src/Mod/Start|
         src/Mod/Test|
+        src/Mod/Tux|
         src/Mod/Web
     )
 exclude: |

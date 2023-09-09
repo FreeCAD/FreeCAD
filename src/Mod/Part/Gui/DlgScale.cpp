@@ -68,6 +68,12 @@ DlgScale::DlgScale(QWidget* parent, Qt::WindowFlags fl)
     ui->dsbYScale->setDecimals(Base::UnitsApi::getDecimals());
     ui->dsbZScale->setDecimals(Base::UnitsApi::getDecimals());
     findShapes();
+
+    // this will mark as selected all the items in treeWidget that are selected in the document
+    Gui::ItemViewSelection sel(ui->treeWidget);
+    sel.applyFrom(Gui::Selection().getObjectsOfType(Part::Feature::getClassTypeId()));
+    sel.applyFrom(Gui::Selection().getObjectsOfType(App::Link::getClassTypeId()));
+    sel.applyFrom(Gui::Selection().getObjectsOfType(App::Part::getClassTypeId()));
 }
 
 void DlgScale::setupConnections()
@@ -102,15 +108,8 @@ void DlgScale::onUniformScaleToggled(bool state)
     }
 }
 
-App::DocumentObject& DlgScale::getShapeToScale() const
-{
-//    Base::Console().Message("DS::getShapeToScale()\n");
-    std::vector<App::DocumentObject*> objs = this->getShapesToScale();
-    if (objs.empty())
-        throw Base::ValueError("No shapes selected");
-    return *(objs[0]);
-}
-
+//! find all the scalable objects in the active document and load them into the
+//! list widget
 void DlgScale::findShapes()
 {
 //    Base::Console().Message("DS::findShapes()\n");
@@ -141,6 +140,7 @@ void DlgScale::findShapes()
     }
 }
 
+//! return true if shape can be scaled.
 bool DlgScale::canScale(const TopoDS_Shape& shape) const
 {
     if (shape.IsNull()) {
@@ -156,11 +156,13 @@ bool DlgScale::canScale(const TopoDS_Shape& shape) const
     if (type == TopAbs_COMPOUND ||
         type == TopAbs_COMPSOLID) {
         TopExp_Explorer xp;
-        xp.Init(shape, TopAbs_SHAPE);
+        xp.Init(shape, TopAbs_EDGE);
         for ( ; xp.More() ; xp.Next()) {
-            // there is at least 1 sub shape inside the compound
+            // there is at least 1 edge inside the compound, so as long as it isn't null,
+            // we can scale this shape.  We can stop looking as soon as we find a non-null
+            // edge.
             if (!xp.Current().IsNull()) {
-                // found a non-null shape
+                // found a non-null edge
                 return true;
             }
         }
@@ -186,6 +188,7 @@ void DlgScale::accept()
     };
 }
 
+// create a FeatureScale for each scalable object
 void DlgScale::apply()
 {
 //    Base::Console().Message("DS::apply()\n");
@@ -264,6 +267,8 @@ void DlgScale::reject()
     QDialog::reject();
 }
 
+//! retrieve the document objects associated with the selected items in the list
+//! widget
 std::vector<App::DocumentObject*> DlgScale::getShapesToScale() const
 {
 //    Base::Console().Message("DS::getShapesToScale()\n");
@@ -282,6 +287,8 @@ std::vector<App::DocumentObject*> DlgScale::getShapesToScale() const
     return objects;
 }
 
+//! return true if at least one item in the list widget corresponds to an
+//! available document object in the document
 bool DlgScale::validate()
 {
     QList<QTreeWidgetItem *> items = ui->treeWidget->selectedItems();
@@ -299,6 +306,7 @@ bool DlgScale::validate()
     return !objects.empty();
 }
 
+//! update a FeatureScale with the parameters from the UI
 void DlgScale::writeParametersToFeature(App::DocumentObject &feature, App::DocumentObject* base) const
 {
 //    Base::Console().Message("DS::writeParametersToFeature()\n");

@@ -148,7 +148,7 @@ directories = [
         "tsdir": "Gui/Resources/translations",
     },
     {
-        "tsname": "Start",
+        "tsname": "StartPage",
         "workingdir": "./src/Mod/Start/",
         "tsdir": "Gui/Resources/translations",
     },
