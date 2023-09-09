@@ -20,6 +20,11 @@ TEST(Material, TestDummy)
     FAIL() << "Checking that this even works\n";
 }
 
+TEST(Material, TestApplication)
+{
+    EXPECT_NE(App::GetApplication(), nullptr) << "Application failure\n";
+}
+
 // TEST(Material, TestResources)
 // {
 //     try {
