@@ -22,8 +22,8 @@ TEST(Material, TestDummy)
 
 TEST(Material, TestApplication)
 {
-    auto application = App::GetApplication();
-    if (application == nullptr)
+    App::Application& application = App::GetApplication();
+    if (&application == nullptr)
         ADD_FAILURE() << "Application failure\n";
 
     if (App::Application::GetARGC() == 0) {
@@ -32,9 +32,9 @@ TEST(Material, TestApplication)
         App::Application::Config()["ExeName"] = "FreeCAD";
         App::Application::init(argc, argv.data());
     }
-    application = App::GetApplication();
-    if (application == nullptr)
-        ADD_FAILURE() << "Application failure\n";
+    App::Application& application2 = App::GetApplication();
+    if (&application2 == nullptr)
+        ADD_FAILURE() << "Application 2 failure\n";
 
     SUCCEED();
 }
