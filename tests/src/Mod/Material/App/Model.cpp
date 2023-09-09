@@ -22,7 +22,21 @@ TEST(Material, TestDummy)
 
 TEST(Material, TestApplication)
 {
-    EXPECT_NE(App::GetApplication(), nullptr) << "Application failure\n";
+    auto application = App::GetApplication();
+    if (application == nullptr)
+        ADD_FAILURE() << "Application failure\n";
+
+    if (App::Application::GetARGC() == 0) {
+        constexpr int argc = 1;
+        std::array<char*, argc> argv {"FreeCAD"};
+        App::Application::Config()["ExeName"] = "FreeCAD";
+        App::Application::init(argc, argv.data());
+    }
+    application = App::GetApplication();
+    if (application == nullptr)
+        ADD_FAILURE() << "Application failure\n";
+
+    SUCCEED();
 }
 
 // TEST(Material, TestResources)
