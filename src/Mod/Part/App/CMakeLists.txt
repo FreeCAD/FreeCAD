@@ -189,6 +189,8 @@ SET(Features_SRCS
     FeatureCompound.h
     FeatureExtrusion.cpp
     FeatureExtrusion.h
+    FeatureScale.cpp
+    FeatureScale.h
     FeatureFace.cpp
     FeatureFace.h
     FeatureFillet.cpp
