@@ -53,9 +53,6 @@ ModelManager::ModelManager()
     }
 }
 
-/*
- *  Destroys the object and frees any allocated resources
- */
 ModelManager::~ModelManager()
 {
     _manager = nullptr;
