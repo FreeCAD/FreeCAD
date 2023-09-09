@@ -14,6 +14,12 @@
 #include <Mod/Material/App/ModelManager.h>
 
 // clang-format off
+
+TEST(Material, TestDummy)
+{
+    FAIL() << "Checking that this even works\n";
+}
+
 // TEST(Material, TestResources)
 // {
 //     try {
