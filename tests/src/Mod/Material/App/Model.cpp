@@ -15,51 +15,54 @@
 
 // clang-format off
 
-TEST(Material, TestDummy)
-{
-    FAIL() << "Checking that this even works\n";
-}
-
-TEST(Material, TestApplication)
-{
-    App::Application& application = App::GetApplication();
-    if (&application == nullptr)
-        ADD_FAILURE() << "Application failure\n";
-
+class MaterialTest : public ::testing::Test {
+ protected:
+  static void SetUpTestSuite() {
     if (App::Application::GetARGC() == 0) {
         constexpr int argc = 1;
         std::array<char*, argc> argv {"FreeCAD"};
         App::Application::Config()["ExeName"] = "FreeCAD";
         App::Application::init(argc, argv.data());
     }
-    App::Application& application2 = App::GetApplication();
-    if (&application2 == nullptr)
-        ADD_FAILURE() << "Application 2 failure\n";
+  }
+
+  void SetUp() override {
+    _modelManager = Materials::ModelManager::getManager();
+  }
+
+  // void TearDown() override {}
+  Materials::ModelManager* _modelManager;
+};
+
+TEST_F(MaterialTest, TestApplication)
+{
+    App::Application& application = App::GetApplication();
+    if (&application == nullptr)
+        ADD_FAILURE() << "Application failure\n";
 
     SUCCEED();
 }
 
-// TEST(Material, TestResources)
-// {
-//     try {
-//         auto param = App::GetApplication().GetParameterGroupByPath(
-//             "User parameter:BaseApp/Preferences/Mod/Material/Resources");
-//         EXPECT_NE(param, nullptr);
-//     }
-//     catch (const std::exception &e)
-//     {
-//         FAIL() << "Exception: " << e.what() << "\n";
-//     }
-// }
+TEST_F(MaterialTest, TestResources)
+{
+    try {
+        auto param = App::GetApplication().GetParameterGroupByPath(
+            "User parameter:BaseApp/Preferences/Mod/Material/Resources");
+        EXPECT_NE(param, nullptr);
+    }
+    catch (const std::exception &e)
+    {
+        FAIL() << "Exception: " << e.what() << "\n";
+    }
+}
 
-// TEST(Material, TestModelLoad)
-// {
-//     auto manager = Materials::ModelManager::getManager();
-//     EXPECT_NE(manager, nullptr);
-//     auto density = manager->getModel(QString::fromStdString("454661e5-265b-4320-8e6f-fcf6223ac3af"));
-//     // EXPECT_NE(density, nullptr);
-//     EXPECT_NE(density.getName(), QString::fromStdString("density"));
-//     EXPECT_EQ(density.getUUID(), QString::fromStdString("454661e5-265b-4320-8e6f-fcf6223ac3af"));
-// }
+TEST_F(MaterialTest, TestModelLoad)
+{
+    EXPECT_NE(_modelManager, nullptr);
+    auto density = _modelManager->getModel(QString::fromStdString("454661e5-265b-4320-8e6f-fcf6223ac3af"));
+    // EXPECT_NE(density, nullptr);
+    EXPECT_NE(density.getName(), QString::fromStdString("density"));
+    EXPECT_EQ(density.getUUID(), QString::fromStdString("454661e5-265b-4320-8e6f-fcf6223ac3af"));
+}
 
 // clang-format on
