@@ -131,10 +131,19 @@ Py::List MaterialManagerPy::getMaterialLibraries() const
 
 Py::Dict MaterialManagerPy::getMaterials() const
 {
-    std::map<QString, Material*>* Materials = getMaterialManagerPtr()->getMaterials();
     Py::Dict dict;
 
-    for (auto it = Materials->begin(); it != Materials->end(); it++) {
+    std::map<QString, Material*>* materials = getMaterialManagerPtr()->getMaterials();
+    if (materials == nullptr) {
+        PyErr_SetString(PyExc_LookupError, "Material not found - null materials");
+        return dict;
+    }
+    if (materials->empty()) {
+        PyErr_SetString(PyExc_LookupError, "Material not found - empty map");
+        return dict;
+    }
+
+    for (auto it = materials->begin(); it != materials->end(); it++) {
         QString key = it->first;
         Material* material = it->second;
 

@@ -33,6 +33,10 @@ class MaterialTestCases(unittest.TestCase):
         self.assertIn("ModelLibraries", dir(self.ModelManager))
         self.assertIn("Models", dir(self.ModelManager))
 
+    def testMaterialManager(self):
+        self.assertIn("MaterialLibraries", dir(self.MaterialManager))
+        self.assertIn("Materials", dir(self.MaterialManager))
+
     def testModelLoad(self):
         density = self.ModelManager.getModel("454661e5-265b-4320-8e6f-fcf6223ac3af")
         self.assertIsNotNone(density)
@@ -50,7 +54,7 @@ class MaterialTestCases(unittest.TestCase):
     def testCalculiXSteel(self):
         print("Materials:")
         for key, value in self.MaterialManager.Materials.items():
-            print("\t{0},{1}".format(key, value.Name))
+            print("\t{0}, {1}".format(key, value.Name))
 
         # steel = self.MaterialManager.getMaterial("92589471-a6cb-4bbc-b748-d425a17dea7d")
         # self.assertIsNotNone(steel)
