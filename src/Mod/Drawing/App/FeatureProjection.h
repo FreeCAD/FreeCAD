@@ -34,7 +34,7 @@ namespace Drawing
 
 /** Base class of all View Features in the drawing module
  */
-class DrawingExport FeatureProjection : public Part::Feature
+class DrawingExport FeatureProjection: public Part::Feature
 {
     PROPERTY_HEADER(Drawing::FeatureProjection);
 
@@ -43,28 +43,27 @@ public:
     FeatureProjection();
     virtual ~FeatureProjection();
 
-    App::PropertyLink   Source;
+    App::PropertyLink Source;
     App::PropertyVector Direction;
-    App::PropertyBool   VCompound;
-    App::PropertyBool   Rg1LineVCompound;
-    App::PropertyBool   RgNLineVCompound;
-    App::PropertyBool   OutLineVCompound;
-    App::PropertyBool   IsoLineVCompound;
-    App::PropertyBool   HCompound;
-    App::PropertyBool   Rg1LineHCompound;
-    App::PropertyBool   RgNLineHCompound;
-    App::PropertyBool   OutLineHCompound;
-    App::PropertyBool   IsoLineHCompound;
+    App::PropertyBool VCompound;
+    App::PropertyBool Rg1LineVCompound;
+    App::PropertyBool RgNLineVCompound;
+    App::PropertyBool OutLineVCompound;
+    App::PropertyBool IsoLineVCompound;
+    App::PropertyBool HCompound;
+    App::PropertyBool Rg1LineHCompound;
+    App::PropertyBool RgNLineHCompound;
+    App::PropertyBool OutLineHCompound;
+    App::PropertyBool IsoLineHCompound;
 
     /** @name methods override feature */
     //@{
     /// recalculate the Feature
-    virtual App::DocumentObjectExecReturn *execute(void);
+    virtual App::DocumentObjectExecReturn* execute(void);
     //@}
 };
 
-} //namespace Drawing
+}// namespace Drawing
 
 
-
-#endif // DRAWING_FEATUREPROJECTION
+#endif// DRAWING_FEATUREPROJECTION
