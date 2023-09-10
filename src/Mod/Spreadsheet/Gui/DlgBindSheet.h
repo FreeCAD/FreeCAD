@@ -23,21 +23,25 @@
 #ifndef DLG_BINDSHEET_H
 #define DLG_BINDSHEET_H
 
-#include <QDialog>
 #include <Mod/Spreadsheet/App/Sheet.h>
+#include <QDialog>
 
-namespace Ui {
+namespace Ui
+{
 class DlgBindSheet;
 }
 
-namespace SpreadsheetGui {
+namespace SpreadsheetGui
+{
 
-class DlgBindSheet : public QDialog
+class DlgBindSheet: public QDialog
 {
     Q_OBJECT
 
 public:
-    explicit DlgBindSheet(Spreadsheet::Sheet *sheet, const std::vector<App::Range> &range, QWidget *parent = nullptr);
+    explicit DlgBindSheet(Spreadsheet::Sheet* sheet,
+                          const std::vector<App::Range>& range,
+                          QWidget* parent = nullptr);
     ~DlgBindSheet() override;
 
     void accept() override;
@@ -46,11 +50,11 @@ public Q_SLOTS:
     void onDiscard();
 
 private:
-    Spreadsheet::Sheet * sheet;
+    Spreadsheet::Sheet* sheet;
     App::Range range;
-    Ui::DlgBindSheet *ui;
+    Ui::DlgBindSheet* ui;
 };
 
-}
+}// namespace SpreadsheetGui
 
-#endif // DLG_BINDSHEET_H
+#endif// DLG_BINDSHEET_H
