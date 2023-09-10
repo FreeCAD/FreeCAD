@@ -15,6 +15,7 @@ files: |
         src/Mod/Plot|
         src/Mod/Points|
         src/Mod/ReverseEngineering|
+        src/Mod/Show|
         src/Mod/Sketcher|
         src/Mod/Surface|
         src/Mod/Start|
