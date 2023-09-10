@@ -43,8 +43,6 @@ public:
     MaterialManager();
     virtual ~MaterialManager() = default;
 
-    static void initLibraries();
-
     std::map<QString, Material*>* getMaterials()
     {
         return _materialMap;
@@ -75,6 +73,8 @@ public:
 private:
     static std::list<MaterialLibrary*>* _libraryList;
     static std::map<QString, Material*>* _materialMap;
+
+    static void initLibraries();
 };
 
 }// namespace Materials

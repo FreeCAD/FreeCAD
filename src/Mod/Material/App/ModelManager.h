@@ -23,6 +23,8 @@
 #ifndef MATERIAL_MODELMANAGER_H
 #define MATERIAL_MODELMANAGER_H
 
+#include <QMutex>
+
 #include <boost/filesystem.hpp>
 
 #include "Exceptions.h"
@@ -74,9 +76,12 @@ public:
 private:
     ModelManager();
 
+    static void initLibraries();
+
     static ModelManager* _manager;
     static std::list<ModelLibrary*>* _libraryList;
     static std::map<QString, Model*>* _modelMap;
+    static QMutex _mutex;
 };
 
 }// namespace Materials

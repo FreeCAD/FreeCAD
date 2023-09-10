@@ -24,6 +24,8 @@
 #ifndef _PreComp_
 #endif
 
+#include <QMutexLocker>
+
 #include <Base/Console.h>
 
 #include "Model.h"
@@ -36,12 +38,24 @@ using namespace Materials;
 ModelManager* ModelManager::_manager = nullptr;
 std::list<ModelLibrary*>* ModelManager::_libraryList = nullptr;
 std::map<QString, Model*>* ModelManager::_modelMap = nullptr;
+QMutex ModelManager::_mutex;
 
 TYPESYSTEM_SOURCE(Materials::ModelManager, Base::BaseClass)
 
 ModelManager::ModelManager()
 {
-    // TODO: Add a mutex or similar
+    initLibraries();
+}
+
+ModelManager::~ModelManager()
+{
+    _manager = nullptr;
+}
+
+void ModelManager::initLibraries()
+{
+    QMutexLocker locker(&_mutex);
+
     if (_modelMap == nullptr) {
         _modelMap = new std::map<QString, Model*>();
         if (_libraryList == nullptr) {
@@ -51,11 +65,6 @@ ModelManager::ModelManager()
         // Load the libraries
         ModelLoader loader(_modelMap, _libraryList);
     }
-}
-
-ModelManager::~ModelManager()
-{
-    _manager = nullptr;
 }
 
 bool ModelManager::isModel(const fs::path& p)

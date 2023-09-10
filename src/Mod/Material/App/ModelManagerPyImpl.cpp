@@ -64,15 +64,6 @@ PyObject* ModelManagerPy::getModel(PyObject* args)
         return nullptr;
     }
 
-    // std::map<QString, Model*>* _modelMap = getModelManagerPtr()->getModels();
-    // for (auto itp = _modelMap->begin(); itp != _modelMap->end(); itp++) {
-    //     fprintf(stdout,
-    //             "_modelMap[%s] = '%s'\n",
-    //             itp->first.toStdString().c_str(),
-    //             itp->second->getName().toStdString().c_str());
-    // }
-    // fprintf(stdout, "uuid = '%s'\n", uuid);
-
     try {
         const Model model = getModelManagerPtr()->getModel(QString::fromStdString(uuid));
         return new ModelPy(new Model(model));
@@ -80,12 +71,13 @@ PyObject* ModelManagerPy::getModel(PyObject* args)
     catch (ModelNotFound const&) {
         QString error = QString::fromStdString("Model not found:\n");
         std::map<QString, Model*>* _modelMap = getModelManagerPtr()->getModels();
+        error += QString::fromStdString("ModelMap:\n");
         for (auto itp = _modelMap->begin(); itp != _modelMap->end(); itp++) {
-            error += QString::fromStdString("_modelMap[") + itp->first
+            error += QString::fromStdString("\t_modelMap[") + itp->first
                 + QString::fromStdString("] = '") + itp->second->getName()
                 + QString::fromStdString("'\n");
         }
-        error += QString::fromStdString("uuid = '") + QString::fromStdString(uuid)
+        error += QString::fromStdString("\tuuid = '") + QString::fromStdString(uuid)
             + QString::fromStdString("'\n");
         PyErr_SetString(PyExc_LookupError, error.toStdString().c_str());
         return nullptr;
