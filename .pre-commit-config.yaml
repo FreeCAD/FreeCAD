@@ -9,6 +9,7 @@ files: |
         tests/src|
         src/Mod/Assembly|
         src/Mod/Cloud|
+        src/Mod/Drawing|
         src/Mod/Inspection|
         src/Mod/JtReader|
         src/Mod/MeshPart|
