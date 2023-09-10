@@ -549,12 +549,6 @@ Za materijal obrade iz graničnog okvira to znači dodatni materijal u svim smje
   <context>
     <name>Form</name>
     <message>
-      <location filename="../panels/PageDepthsEdit.ui" line="17"/>
-      <location filename="../panels/PageOpDrillingEdit.ui" line="14"/>
-      <source>Form</source>
-      <translation>Obrazac</translation>
-    </message>
-    <message>
       <location filename="../panels/DressupPathBoundary.ui" line="20"/>
       <source>Boundary Body</source>
       <translation>Tijelo granice</translation>

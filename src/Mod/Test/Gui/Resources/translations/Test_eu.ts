@@ -107,7 +107,7 @@
       <translation>Laguntza</translation>
     </message>
     <message>
-      <location filename="../../UnitTestImp.cpp" line="165"/>
+      <location filename="../../UnitTestImp.cpp" line="166"/>
       <source>Enter the name of a callable object which, when called, will return a TestCase.
 Click 'start', and the test thus produced will be run.
 
@@ -115,12 +115,12 @@ Double click on an error in the tree view to see more information about it, incl
       <translation>Sartu izendagarria den objektuaren izena. Deitutakoan TestCase bat itzuliko du. Klikatu 'Hasi' eta proba abiatuko da.</translation>
     </message>
     <message>
-      <location filename="../../UnitTestImp.cpp" line="177"/>
+      <location filename="../../UnitTestImp.cpp" line="179"/>
       <source>About FreeCAD UnitTest</source>
       <translation>FreeCAD UnitTest aplikazioari buruz</translation>
     </message>
     <message>
-      <location filename="../../UnitTestImp.cpp" line="177"/>
+      <location filename="../../UnitTestImp.cpp" line="180"/>
       <source>Copyright (c) Werner Mayer
 
 FreeCAD UnitTest is part of FreeCAD and supports writing Unit Tests for ones own modules.</source>

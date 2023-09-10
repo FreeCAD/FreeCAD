@@ -335,11 +335,6 @@
       <translation>Rede circular</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_CircularArray.ui" line="44"/>
-      <source>(Placeholder for the icon)</source>
-      <translation>(Espaço reservado para o ícone)</translation>
-    </message>
-    <message>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="53"/>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="63"/>
       <source>Distance from one layer of objects to the next layer of objects.</source>
@@ -453,11 +448,6 @@ Uma rede de links é mais eficiente quando se criam várias cópias, mas não po
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="26"/>
       <source>Orthogonal array</source>
       <translation>Rede ortogonal</translation>
-    </message>
-    <message>
-      <location filename="../ui/TaskPanel_OrthoArray.ui" line="44"/>
-      <source>(Placeholder for the icon)</source>
-      <translation>(Espaço reservado para o ícone)</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="51"/>
@@ -589,11 +579,6 @@ Uma rede de links é mais eficiente quando se criam várias cópias, mas não po
       <location filename="../ui/TaskPanel_PolarArray.ui" line="26"/>
       <source>Polar array</source>
       <translation>Rede polar</translation>
-    </message>
-    <message>
-      <location filename="../ui/TaskPanel_PolarArray.ui" line="44"/>
-      <source>(Placeholder for the icon)</source>
-      <translation>(Espaço reservado para o ícone)</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_PolarArray.ui" line="53"/>
@@ -3151,7 +3136,7 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</sourc
       <location filename="../../DraftGui.py" line="970"/>
       <location filename="../../DraftGui.py" line="971"/>
       <source>Local {}</source>
-      <translation type="unfinished">Local {}</translation>
+      <translation>Local {}</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="973"/>
@@ -3161,7 +3146,7 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</sourc
       <location filename="../../DraftGui.py" line="978"/>
       <location filename="../../DraftGui.py" line="979"/>
       <source>Global {}</source>
-      <translation type="unfinished">Global {}</translation>
+      <translation>Global {}</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="1555"/>
@@ -3194,43 +3179,43 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</sourc
       <translation>Projeto</translation>
     </message>
     <message>
-      <location filename="../../importDWG.py" line="292"/>
-      <location filename="../../importDWG.py" line="310"/>
-      <location filename="../../importDWG.py" line="329"/>
-      <location filename="../../importDWG.py" line="376"/>
-      <location filename="../../importDWG.py" line="390"/>
-      <location filename="../../importDWG.py" line="401"/>
+      <location filename="../../importDWG.py" line="293"/>
+      <location filename="../../importDWG.py" line="311"/>
+      <location filename="../../importDWG.py" line="330"/>
+      <location filename="../../importDWG.py" line="377"/>
+      <location filename="../../importDWG.py" line="391"/>
+      <location filename="../../importDWG.py" line="402"/>
       <source>Converting:</source>
       <translation>Convertendo:</translation>
     </message>
     <message>
-      <location filename="../../importDWG.py" line="296"/>
-      <location filename="../../importDWG.py" line="315"/>
-      <location filename="../../importDWG.py" line="333"/>
+      <location filename="../../importDWG.py" line="297"/>
+      <location filename="../../importDWG.py" line="316"/>
+      <location filename="../../importDWG.py" line="334"/>
       <source>Conversion successful</source>
       <translation>Conversão bem sucedida</translation>
     </message>
     <message>
-      <location filename="../../importDWG.py" line="301"/>
-      <location filename="../../importDWG.py" line="381"/>
+      <location filename="../../importDWG.py" line="302"/>
+      <location filename="../../importDWG.py" line="382"/>
       <source>LibreDWG converter not found</source>
       <translation>Conversor LibreDWG não encontrado</translation>
     </message>
     <message>
-      <location filename="../../importDWG.py" line="320"/>
-      <location filename="../../importDWG.py" line="395"/>
+      <location filename="../../importDWG.py" line="321"/>
+      <location filename="../../importDWG.py" line="396"/>
       <source>ODA converter not found</source>
       <translation>Conversor ODA não encontrado</translation>
     </message>
     <message>
-      <location filename="../../importDWG.py" line="338"/>
-      <location filename="../../importDWG.py" line="406"/>
+      <location filename="../../importDWG.py" line="339"/>
+      <location filename="../../importDWG.py" line="407"/>
       <source>QCAD converter not found</source>
       <translation>Conversor QCAD não encontrado</translation>
     </message>
     <message>
-      <location filename="../../importDWG.py" line="343"/>
-      <location filename="../../importDWG.py" line="411"/>
+      <location filename="../../importDWG.py" line="344"/>
+      <location filename="../../importDWG.py" line="412"/>
       <source>No suitable external DWG converter has been found.
 Please set one manually under menu Edit -&gt; Preferences -&gt; Import/Export -&gt; DWG
 For more information see:
@@ -3241,7 +3226,7 @@ Para mais informações, visite:
 https://wiki.freecad.org/Import_Export_Preferences</translation>
     </message>
     <message>
-      <location filename="../../importDWG.py" line="283"/>
+      <location filename="../../importDWG.py" line="284"/>
       <source>Error during DWG conversion.
 Try moving the DWG file to a directory path without spaces and non-english characters,
 or try saving to a lower DWG version.</source>
@@ -3649,7 +3634,7 @@ Para habilitar o FreeCAD para fazer o download destas bibliotecas, responda Sim.
     <message>
       <location filename="../../draftguitools/gui_arcs.py" line="254"/>
       <location filename="../../draftguitools/gui_arcs.py" line="270"/>
-      <location filename="../../draftguitools/gui_arcs.py" line="410"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="406"/>
       <location filename="../../draftguitools/gui_polygons.py" line="196"/>
       <location filename="../../draftguitools/gui_polygons.py" line="207"/>
       <location filename="../../draftguitools/gui_polygons.py" line="267"/>
@@ -3659,22 +3644,22 @@ Para habilitar o FreeCAD para fazer o download destas bibliotecas, responda Sim.
     <message>
       <location filename="../../draftguitools/gui_arcs.py" line="277"/>
       <location filename="../../draftguitools/gui_arcs.py" line="278"/>
-      <location filename="../../draftguitools/gui_arcs.py" line="445"/>
-      <location filename="../../draftguitools/gui_arcs.py" line="446"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="441"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="442"/>
       <source>Start angle</source>
       <translation>Angulo inicial</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_arcs.py" line="283"/>
-      <location filename="../../draftguitools/gui_arcs.py" line="451"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="447"/>
       <source>Pick start angle</source>
       <translation>Escolha o ângulo inicial</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_arcs.py" line="285"/>
       <location filename="../../draftguitools/gui_arcs.py" line="286"/>
-      <location filename="../../draftguitools/gui_arcs.py" line="453"/>
-      <location filename="../../draftguitools/gui_arcs.py" line="454"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="449"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="450"/>
       <source>Aperture angle</source>
       <translation>Ângulo de abertura</translation>
     </message>
@@ -3694,23 +3679,23 @@ Para habilitar o FreeCAD para fazer o download destas bibliotecas, responda Sim.
       <translation>Criar Círculo</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_arcs.py" line="369"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="365"/>
       <source>Create Arc (Part)</source>
       <translation>Criar Arco (Parte)</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_arcs.py" line="389"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="385"/>
       <source>Create Arc</source>
       <translation>Criar Arco</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_arcs.py" line="465"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="461"/>
       <source>Pick aperture angle</source>
       <translation>Escolha o ângulo de abertura</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_arcs.py" line="508"/>
-      <location filename="../../draftguitools/gui_arcs.py" line="550"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="504"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="546"/>
       <source>Arc by 3 points</source>
       <translation>Arco por 3 pontos</translation>
     </message>
@@ -3813,7 +3798,7 @@ Para habilitar o FreeCAD para fazer o download destas bibliotecas, responda Sim.
       <location filename="../../draftguitools/gui_rotate.py" line="203"/>
       <location filename="../../draftguitools/gui_rotate.py" line="409"/>
       <source>Rotation</source>
-      <translation type="unfinished">Rotation</translation>
+      <translation>Rotação</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_rotate.py" line="204"/>
@@ -4012,7 +3997,7 @@ The final angle will be the base angle plus this amount.</source>
     <message>
       <location filename="../../draftguitools/gui_splines.py" line="68"/>
       <source>B-Spline</source>
-      <translation type="unfinished">B-Spline</translation>
+      <translation>Spline B</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_splines.py" line="120"/>
@@ -4368,7 +4353,7 @@ The final angle will be the base angle plus this amount.</source>
       <translation>Criar Retângulo</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_mirror.py" line="73"/>
+      <location filename="../../draftguitools/gui_mirror.py" line="74"/>
       <source>Select an object to mirror</source>
       <translation>Selecione um objeto a ser espelhado</translation>
     </message>
@@ -4383,8 +4368,8 @@ The final angle will be the base angle plus this amount.</source>
       <translation>Espelhar</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_mirror.py" line="173"/>
-      <location filename="../../draftguitools/gui_mirror.py" line="199"/>
+      <location filename="../../draftguitools/gui_mirror.py" line="163"/>
+      <location filename="../../draftguitools/gui_mirror.py" line="189"/>
       <source>Pick end point of mirror line</source>
       <translation>Escolha o ponto final da linha de espelhamento</translation>
     </message>
@@ -4682,12 +4667,12 @@ The final angle will be the base angle plus this amount.</source>
     <message>
       <location filename="../../draftobjects/shapestring.py" line="114"/>
       <source>added 'Justification', 'JustificationReference', 'KeepLeftMargin', 'ScaleToSize' and 'Fuse' properties</source>
-      <translation type="unfinished">added 'Justification', 'JustificationReference', 'KeepLeftMargin', 'ScaleToSize' and 'Fuse' properties</translation>
+      <translation>adicionado 'Justificativa', 'JustificaçãoReferência', 'ManterMargemEsquerda', 'EscalarAoTamanho' e 'Fuso' propriedades</translation>
     </message>
     <message>
       <location filename="../../draftobjects/shapestring.py" line="116"/>
       <source>changed 'Tracking' property type</source>
-      <translation type="unfinished">changed 'Tracking' property type</translation>
+      <translation>alterado o tipo de propriedade 'Rastreamento'</translation>
     </message>
     <message>
       <location filename="../../draftobjects/shapestring.py" line="168"/>
@@ -5589,7 +5574,7 @@ no menu ferramentas -&gt; Gerenciador de Extensões</translation>
     <message>
       <location filename="../../draftviewproviders/view_wpproxy.py" line="102"/>
       <source>Writing camera position</source>
-      <translation type="unfinished">Writing camera position</translation>
+      <translation>Escrevendo posição da câmera</translation>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_wpproxy.py" line="119"/>
@@ -5685,27 +5670,27 @@ no menu ferramentas -&gt; Gerenciador de Extensões</translation>
     <message>
       <location filename="../../draftobjects/label.py" line="336"/>
       <source>Label + Position</source>
-      <translation type="unfinished">Label + Position</translation>
+      <translation>Posição + Rótulo</translation>
     </message>
     <message>
       <location filename="../../draftobjects/label.py" line="337"/>
       <source>Label + Length</source>
-      <translation type="unfinished">Label + Length</translation>
+      <translation>Etiqueta + Comprimento</translation>
     </message>
     <message>
       <location filename="../../draftobjects/label.py" line="338"/>
       <source>Label + Area</source>
-      <translation type="unfinished">Label + Area</translation>
+      <translation>Rótulo + área</translation>
     </message>
     <message>
       <location filename="../../draftobjects/label.py" line="339"/>
       <source>Label + Volume</source>
-      <translation type="unfinished">Label + Volume</translation>
+      <translation>Rótulo + Volume</translation>
     </message>
     <message>
       <location filename="../../draftobjects/label.py" line="343"/>
       <source>Label + Material</source>
-      <translation type="unfinished">Label + Material</translation>
+      <translation>Rótulo + Material</translation>
     </message>
   </context>
   <context>
@@ -6145,12 +6130,12 @@ CTRL para ajustar, SHIFT para restringir.</translation>
   <context>
     <name>Draft_Arc_3Points</name>
     <message>
-      <location filename="../../draftguitools/gui_arcs.py" line="486"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="482"/>
       <source>Arc by 3 points</source>
       <translation>Arco por 3 pontos</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_arcs.py" line="489"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="485"/>
       <source>Creates a circular arc by picking 3 points.
 CTRL to snap, SHIFT to constrain.</source>
       <translation>Cria um arco circular escolhendo 3 pontos.
@@ -6160,12 +6145,12 @@ CTRL para ajustar, SHIFT para restringir.</translation>
   <context>
     <name>Draft_ArcTools</name>
     <message>
-      <location filename="../../draftguitools/gui_arcs.py" line="613"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="609"/>
       <source>Arc tools</source>
       <translation>Ferramentas de arco</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_arcs.py" line="616"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="612"/>
       <source>Create various types of circular arcs.</source>
       <translation>Cria vários tipos de arcos circulares.</translation>
     </message>
@@ -6808,12 +6793,12 @@ em seguida, desenhe uma linha para especificar a distância e direção do estic
   <context>
     <name>Draft_Mirror</name>
     <message>
-      <location filename="../../draftguitools/gui_mirror.py" line="63"/>
+      <location filename="../../draftguitools/gui_mirror.py" line="64"/>
       <source>Mirror</source>
       <translation>Espelhar</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_mirror.py" line="66"/>
+      <location filename="../../draftguitools/gui_mirror.py" line="67"/>
       <source>Mirrors the selected objects along a line defined by two points.</source>
       <translation>Espelha os objetos selecionados ao longo de uma linha definida por dois pontos.</translation>
     </message>
@@ -7041,22 +7026,22 @@ It is a list of strings; each element in the list will be displayed in its own l
     <message>
       <location filename="../../draftobjects/shapestring.py" line="67"/>
       <source>Horizontal and vertical alignment</source>
-      <translation type="unfinished">Horizontal and vertical alignment</translation>
+      <translation>Alinhamento horizontal e vertical</translation>
     </message>
     <message>
       <location filename="../../draftobjects/shapestring.py" line="75"/>
       <source>Height reference used for justification</source>
-      <translation type="unfinished">Height reference used for justification</translation>
+      <translation>Referência de altura usada para justificação</translation>
     </message>
     <message>
       <location filename="../../draftobjects/shapestring.py" line="81"/>
       <source>Keep left margin and leading white space when justification is left</source>
-      <translation type="unfinished">Keep left margin and leading white space when justification is left</translation>
+      <translation>Mantenha a margem esquerda e o espaço em branco quando a justificação for deixada</translation>
     </message>
     <message>
       <location filename="../../draftobjects/shapestring.py" line="85"/>
       <source>Scale to ensure cap height is equal to size</source>
-      <translation type="unfinished">Scale to ensure cap height is equal to size</translation>
+      <translation>Escala para garantir que a altura máxima é igual ao tamanho</translation>
     </message>
     <message>
       <location filename="../../draftobjects/shapestring.py" line="89"/>
@@ -7071,7 +7056,7 @@ It is a list of strings; each element in the list will be displayed in its own l
     <message>
       <location filename="../../draftobjects/shapestring.py" line="97"/>
       <source>Fuse faces if faces overlap, usually not required (can be very slow)</source>
-      <translation type="unfinished">Fuse faces if faces overlap, usually not required (can be very slow)</translation>
+      <translation>Fundir faces se as faces se sobrepõem, geralmente não é necessário (pode ser muito lento)</translation>
     </message>
     <message>
       <location filename="../../draftobjects/hatch.py" line="47"/>
@@ -7659,7 +7644,7 @@ isto deixa as faces no lugar do corte</translation>
     <message>
       <location filename="../../draftobjects/wpproxy.py" line="42"/>
       <source>The placement of this object</source>
-      <translation type="unfinished">The placement of this object</translation>
+      <translation>O posicionamento deste objeto</translation>
     </message>
     <message>
       <location filename="../../draftobjects/point.py" line="45"/>
@@ -8133,7 +8118,7 @@ Escreva '$dim' para que seja substituído pelo comprimento da cota.</translation
     <message>
       <location filename="../../draftviewproviders/view_dimension.py" line="177"/>
       <source>Show the unit suffix</source>
-      <translation type="unfinished">Show the unit suffix</translation>
+      <translation>Mostrar o sufixo de unidade</translation>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_dimension.py" line="188"/>

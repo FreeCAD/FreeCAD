@@ -4,17 +4,17 @@
   <context>
     <name>CmdApproxCylinder</name>
     <message>
-      <location filename="../../Command.cpp" line="205"/>
+      <location filename="../../Command.cpp" line="214"/>
       <source>Reverse Engineering</source>
       <translation>Vzvratni inženiring</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="206"/>
+      <location filename="../../Command.cpp" line="215"/>
       <source>Cylinder</source>
       <translation>Valj</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="207"/>
+      <location filename="../../Command.cpp" line="216"/>
       <source>Approximate a cylinder</source>
       <translation>Približek valja</translation>
     </message>
@@ -22,17 +22,17 @@
   <context>
     <name>CmdApproxPlane</name>
     <message>
-      <location filename="../../Command.cpp" line="104"/>
+      <location filename="../../Command.cpp" line="106"/>
       <source>Reverse Engineering</source>
-      <translation>Vzvratni inženiring</translation>
+      <translation>Vzvratno inženirstvo</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="105"/>
+      <location filename="../../Command.cpp" line="107"/>
       <source>Plane...</source>
       <translation>Ravnina ...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="106"/>
+      <location filename="../../Command.cpp" line="108"/>
       <source>Approximate a plane</source>
       <translation>Približek ravnine</translation>
     </message>
@@ -40,17 +40,17 @@
   <context>
     <name>CmdApproxPolynomial</name>
     <message>
-      <location filename="../../Command.cpp" line="318"/>
+      <location filename="../../Command.cpp" line="330"/>
       <source>Reverse Engineering</source>
       <translation>Vzvratno inženirstvo</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="319"/>
+      <location filename="../../Command.cpp" line="331"/>
       <source>Polynomial surface</source>
       <translation>Mnogočlensko površje</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="320"/>
+      <location filename="../../Command.cpp" line="332"/>
       <source>Approximate a polynomial surface</source>
       <translation>Približek mnogočlenskega površja</translation>
     </message>
@@ -58,17 +58,17 @@
   <context>
     <name>CmdApproxSphere</name>
     <message>
-      <location filename="../../Command.cpp" line="271"/>
+      <location filename="../../Command.cpp" line="282"/>
       <source>Reverse Engineering</source>
       <translation>Vzvratno inženirstvo</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="272"/>
+      <location filename="../../Command.cpp" line="283"/>
       <source>Sphere</source>
       <translation>Krogla</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="273"/>
+      <location filename="../../Command.cpp" line="284"/>
       <source>Approximate a sphere</source>
       <translation>Približek krogli</translation>
     </message>
@@ -94,17 +94,17 @@
   <context>
     <name>CmdMeshBoundary</name>
     <message>
-      <location filename="../../Command.cpp" line="484"/>
+      <location filename="../../Command.cpp" line="502"/>
       <source>Reverse Engineering</source>
       <translation>Vzvratno inženirstvo</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="485"/>
+      <location filename="../../Command.cpp" line="503"/>
       <source>Wire from mesh boundary...</source>
       <translation>Črtovje iz robov ploskovja ...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="486"/>
+      <location filename="../../Command.cpp" line="504"/>
       <source>Create wire from mesh boundaries</source>
       <translation>Ustvari žičje iz robov ploskovja</translation>
     </message>
@@ -112,17 +112,17 @@
   <context>
     <name>CmdPoissonReconstruction</name>
     <message>
-      <location filename="../../Command.cpp" line="550"/>
+      <location filename="../../Command.cpp" line="569"/>
       <source>Reverse Engineering</source>
       <translation>Vzvratno inženirstvo</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="551"/>
+      <location filename="../../Command.cpp" line="570"/>
       <source>Poisson...</source>
       <translation>Poisson …</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="552"/>
+      <location filename="../../Command.cpp" line="571"/>
       <source>Poisson surface reconstruction</source>
       <translation>Ponovna zgraditev površine po Poissonu</translation>
     </message>
@@ -130,17 +130,17 @@
   <context>
     <name>CmdSegmentation</name>
     <message>
-      <location filename="../../Command.cpp" line="373"/>
+      <location filename="../../Command.cpp" line="388"/>
       <source>Reverse Engineering</source>
       <translation>Vzvratno inženirstvo</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="374"/>
+      <location filename="../../Command.cpp" line="389"/>
       <source>Mesh segmentation...</source>
       <translation>Razčlenitev ploskovja ...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="375"/>
+      <location filename="../../Command.cpp" line="390"/>
       <source>Create mesh segments</source>
       <translation>Ustvari odseke ploskovja</translation>
     </message>
@@ -148,17 +148,17 @@
   <context>
     <name>CmdSegmentationFromComponents</name>
     <message>
-      <location filename="../../Command.cpp" line="434"/>
+      <location filename="../../Command.cpp" line="450"/>
       <source>Reverse Engineering</source>
       <translation>Vzvratno inženirstvo</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="435"/>
+      <location filename="../../Command.cpp" line="451"/>
       <source>From components</source>
       <translation>Iz sestavin</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="436"/>
+      <location filename="../../Command.cpp" line="452"/>
       <source>Create mesh segments from components</source>
       <translation>Iz sestavin ustvari odseke ploskovij</translation>
     </message>
@@ -166,17 +166,17 @@
   <context>
     <name>CmdSegmentationManual</name>
     <message>
-      <location filename="../../Command.cpp" line="405"/>
+      <location filename="../../Command.cpp" line="420"/>
       <source>Reverse Engineering</source>
       <translation>Vzvratno inženirstvo</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="406"/>
+      <location filename="../../Command.cpp" line="421"/>
       <source>Manual segmentation...</source>
       <translation>Ročna razčlenitev ...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="407"/>
+      <location filename="../../Command.cpp" line="422"/>
       <source>Create mesh segments manually</source>
       <translation>Ročno naredit odseke ploskovja</translation>
     </message>
@@ -184,18 +184,18 @@
   <context>
     <name>CmdViewTriangulation</name>
     <message>
-      <location filename="../../Command.cpp" line="584"/>
+      <location filename="../../Command.cpp" line="604"/>
       <source>Reverse Engineering</source>
       <translation>Vzvratno inženirstvo</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="585"/>
+      <location filename="../../Command.cpp" line="605"/>
       <source>Structured point clouds</source>
       <translation>Ustrojeni oblaki točk</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="586"/>
-      <location filename="../../Command.cpp" line="587"/>
+      <location filename="../../Command.cpp" line="606"/>
+      <location filename="../../Command.cpp" line="607"/>
       <source>Triangulation of structured point clouds</source>
       <translation>Trikotenje ustrojevanih točkovnih oblakov</translation>
     </message>
@@ -203,47 +203,47 @@
   <context>
     <name>Command</name>
     <message>
-      <location filename="../../Command.cpp" line="184"/>
+      <location filename="../../Command.cpp" line="192"/>
       <source>Fit plane</source>
       <translation>Prilegaj ravnino</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="215"/>
+      <location filename="../../Command.cpp" line="224"/>
       <source>Fit cylinder</source>
       <translation>Prilegaj valj</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="281"/>
+      <location filename="../../Command.cpp" line="292"/>
       <source>Fit sphere</source>
       <translation>Prilegaj kroglo</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="329"/>
+      <location filename="../../Command.cpp" line="341"/>
       <source>Fit polynomial surface</source>
       <translation>Prilegaj mnogočlensko površje</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="595"/>
+      <location filename="../../Command.cpp" line="616"/>
       <source>View triangulation</source>
       <translation>Trikotenje pogleda</translation>
     </message>
     <message>
-      <location filename="../../FitBSplineSurface.cpp" line="148"/>
+      <location filename="../../FitBSplineSurface.cpp" line="154"/>
       <source>Placement</source>
       <translation>Postavitev</translation>
     </message>
     <message>
-      <location filename="../../FitBSplineSurface.cpp" line="220"/>
+      <location filename="../../FitBSplineSurface.cpp" line="231"/>
       <source>Fit B-Spline</source>
       <translation>Prilegaj B-zlepek</translation>
     </message>
     <message>
-      <location filename="../../Poisson.cpp" line="87"/>
+      <location filename="../../Poisson.cpp" line="83"/>
       <source>Poisson reconstruction</source>
       <translation>Ponovna zgraditev po Poissonu</translation>
     </message>
     <message>
-      <location filename="../../SegmentationManual.cpp" line="255"/>
+      <location filename="../../SegmentationManual.cpp" line="281"/>
       <source>Segmentation</source>
       <translation>Členitev</translation>
     </message>
@@ -331,18 +331,18 @@
   <context>
     <name>ReenGui::FitBSplineSurfaceWidget</name>
     <message>
-      <location filename="../../FitBSplineSurface.cpp" line="159"/>
-      <location filename="../../FitBSplineSurface.cpp" line="227"/>
+      <location filename="../../FitBSplineSurface.cpp" line="165"/>
+      <location filename="../../FitBSplineSurface.cpp" line="238"/>
       <source>Input error</source>
       <translation>Napaka vnosa</translation>
     </message>
     <message>
-      <location filename="../../FitBSplineSurface.cpp" line="199"/>
+      <location filename="../../FitBSplineSurface.cpp" line="206"/>
       <source>Wrong selection</source>
       <translation>Napačen izbor</translation>
     </message>
     <message>
-      <location filename="../../FitBSplineSurface.cpp" line="200"/>
+      <location filename="../../FitBSplineSurface.cpp" line="207"/>
       <source>Please select a single placement object to get local orientation.</source>
       <translation>Izberite eno postavitev objekta za pridobitev lokalne usmerjenosti.</translation>
     </message>
@@ -375,7 +375,7 @@
       <translation>Vzorcev na vozlišče</translation>
     </message>
     <message>
-      <location filename="../../Poisson.cpp" line="94"/>
+      <location filename="../../Poisson.cpp" line="90"/>
       <source>Input error</source>
       <translation>Napaka vnosa</translation>
     </message>
@@ -383,18 +383,18 @@
   <context>
     <name>Reen_ApproxSurface</name>
     <message>
-      <location filename="../../Command.cpp" line="83"/>
-      <location filename="../../Command.cpp" line="563"/>
+      <location filename="../../Command.cpp" line="86"/>
+      <location filename="../../Command.cpp" line="584"/>
       <source>Wrong selection</source>
       <translation>Napačen izbor</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="84"/>
+      <location filename="../../Command.cpp" line="87"/>
       <source>Please select a point cloud or mesh.</source>
       <translation>Izberite oblak točk ali ploskovje.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="564"/>
+      <location filename="../../Command.cpp" line="585"/>
       <source>Please select a single point cloud.</source>
       <translation>Izberite en točkovni oblak.</translation>
     </message>
@@ -402,7 +402,7 @@
   <context>
     <name>Reen_ViewTriangulation</name>
     <message>
-      <location filename="../../Command.cpp" line="617"/>
+      <location filename="../../Command.cpp" line="638"/>
       <source>View triangulation failed</source>
       <translation>Trikotenje pogleda spodletelo</translation>
     </message>
@@ -521,7 +521,7 @@
       <location filename="../../SegmentationManual.ui" line="208"/>
       <location filename="../../SegmentationManual.ui" line="261"/>
       <source>Minimum number of faces</source>
-      <translation>Najmanjše število ploskev</translation>
+      <translation>Najmanjše št. ploskev</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="175"/>
@@ -567,7 +567,7 @@
   <context>
     <name>ReverseEngineeringGui::TaskSegmentationManual</name>
     <message>
-      <location filename="../../SegmentationManual.cpp" line="326"/>
+      <location filename="../../SegmentationManual.cpp" line="354"/>
       <source>Create</source>
       <translation>Ustvari</translation>
     </message>
@@ -577,7 +577,7 @@
     <message>
       <location filename="../../Workbench.cpp" line="34"/>
       <source>Reverse Engineering</source>
-      <translation>Vzvratno inženirstvo</translation>
+      <translation>Vzvratni inženiring</translation>
     </message>
   </context>
 </TS>

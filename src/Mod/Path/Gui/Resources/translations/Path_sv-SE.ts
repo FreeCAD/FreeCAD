@@ -547,12 +547,6 @@ For stock from the Base object's bounding box it means the extra material in all
   <context>
     <name>Form</name>
     <message>
-      <location filename="../panels/PageDepthsEdit.ui" line="17"/>
-      <location filename="../panels/PageOpDrillingEdit.ui" line="14"/>
-      <source>Form</source>
-      <translation>Form</translation>
-    </message>
-    <message>
       <location filename="../panels/DressupPathBoundary.ui" line="20"/>
       <source>Boundary Body</source>
       <translation type="unfinished">Boundary Body</translation>
@@ -6387,7 +6381,7 @@ For example:
     <message>
       <location filename="../../../Path/Main/Job.py" line="261"/>
       <source>2.5D</source>
-      <translation type="unfinished">2.5D</translation>
+      <translation>2.5D</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Job.py" line="262"/>

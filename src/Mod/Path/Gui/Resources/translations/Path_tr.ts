@@ -547,12 +547,6 @@ For stock from the Base object's bounding box it means the extra material in all
   <context>
     <name>Form</name>
     <message>
-      <location filename="../panels/PageDepthsEdit.ui" line="17"/>
-      <location filename="../panels/PageOpDrillingEdit.ui" line="14"/>
-      <source>Form</source>
-      <translation>Şekil:</translation>
-    </message>
-    <message>
       <location filename="../panels/DressupPathBoundary.ui" line="20"/>
       <source>Boundary Body</source>
       <translation>Sınır Gövdesi</translation>

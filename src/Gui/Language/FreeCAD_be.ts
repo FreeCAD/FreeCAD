@@ -4,11 +4,6 @@
   <context>
     <name>Angle</name>
     <message>
-      <location filename="../DlgLocationAngle.ui" line="14"/>
-      <source>Form</source>
-      <translation>Форма</translation>
-    </message>
-    <message>
       <location filename="../DlgLocationAngle.ui" line="22"/>
       <source>A:</source>
       <translation>A:</translation>
@@ -876,7 +871,7 @@ while doing a left or right click and move the mouse up or down</source>
     <message>
       <location filename="../Clipping.ui" line="197"/>
       <source>Adjust to view direction</source>
-      <translation>Рэгуляваць напрамак прагляду</translation>
+      <translation>Рэгуляваць напрамак выгляду</translation>
     </message>
     <message>
       <location filename="../Clipping.ui" line="204"/>
@@ -2788,7 +2783,7 @@ lower right corner within opened files</source>
       <location filename="../PreferencePages/DlgSettings3DView.ui" line="73"/>
       <source>Size of main coordinate system representation
 in the corner -- in % of height/width of viewport</source>
-      <translation>Памер прадстаўлення асноўнай сістэмы каардынат у куце - у % ад вышыні/шырыні вобласці прагляду</translation>
+      <translation>Памер прадстаўлення асноўнай сістэмы каардынат у куце - у % ад вышыні/шырыні вобласці выгляду</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettings3DView.ui" line="101"/>
@@ -2953,7 +2948,7 @@ but slower response to any scene changes.</source>
     <message>
       <location filename="../PreferencePages/DlgSettings3DView.ui" line="342"/>
       <source>Size of vertices in the Sketcher, TechDraw and other workbenches</source>
-      <translation type="unfinished">Size of vertices in the Sketcher, TechDraw and other workbenches</translation>
+      <translation>Памер вяршынь у варштаце Эскізу, Тэхнічным чарцяжы і іншых варштатах</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettings3DView.ui" line="349"/>
@@ -3489,8 +3484,8 @@ A partially loaded document cannot be edited. Double click the document
 icon in the tree view to fully reload it.</source>
       <translation>Дазваляе ўключыць частковую загрузку знешніх звязаных дакументаў.
 Тады пры аўтаматычным адкрыцці звязанага дакумента разам з асноўным дакументам будуць загружаныя толькі аб'екты, на якія зададзены спасылкі і іх залежнасці.
-Часткова загружаны дакумент не можа быць зменены. Падвоеная пстрычка
-па гузіку дакумента ў праглядзе дрэва, цалкам перазагрузіць яго.</translation>
+Часткова загружаны дакумент не можа быць зменены.
+&lt;Падвоеная пстрычка&gt; па гузіку дакумента ў праглядзе дрэва, цалкам перазагрузіць яго.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsDocument.ui" line="588"/>
@@ -4048,7 +4043,7 @@ You can also use the form: John Doe &lt;john@doe.com&gt;</source>
       <source>List the mouse button configs for each chosen navigation setting.
 Select a set and then press the button to view said configurations.</source>
       <translation>Спіс налад кнопак мышы для кожнай абранай налады навігацыі.
-Абярыце набор, потым націсніце кнопку, каб праглядзець названыя наладкі.</translation>
+Абярыце набор, потым націсніце кнопку, каб паглядзець названыя наладкі.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="285"/>
@@ -5474,7 +5469,7 @@ originally selected prior to opening this dialog</source>
     <message>
       <location filename="../ComboView.cpp" line="49"/>
       <source>Combo View</source>
-      <translation>Камбінаваны Прагляд</translation>
+      <translation>Камбінаваны прагляд</translation>
     </message>
     <message>
       <location filename="../ComboView.cpp" line="74"/>
@@ -5600,7 +5595,7 @@ originally selected prior to opening this dialog</source>
     <message>
       <location filename="../SelectionView.cpp" line="61"/>
       <source>Selection View</source>
-      <translation>Прагляд абранага</translation>
+      <translation>Выгляд абранага</translation>
     </message>
     <message>
       <location filename="../SelectionView.cpp" line="68"/>
@@ -6105,12 +6100,12 @@ Do you want to save your changes?</source>
       <translation>Макрас</translation>
     </message>
     <message>
-      <location filename="../Command.cpp" line="1143"/>
+      <location filename="../Command.cpp" line="1173"/>
       <source>Macro file doesn't exist</source>
       <translation>Файл макраса не існуе</translation>
     </message>
     <message>
-      <location filename="../Command.cpp" line="1144"/>
+      <location filename="../Command.cpp" line="1174"/>
       <source>No such macro file: '%1'</source>
       <translation>Файл макраса адсутнічае: '%1'</translation>
     </message>
@@ -6169,8 +6164,8 @@ Do you want to save your changes?</source>
     </message>
     <message>
       <location filename="../MainWindow.cpp" line="1717"/>
-      <source>Please do not use in a production environment.</source>
-      <translation>Калі ласка, не ўжывайце ў вытворчым асяроддзі.</translation>
+      <source>Please do not use it in a production environment.</source>
+      <translation type="unfinished">Please do not use it in a production environment.</translation>
     </message>
     <message>
       <location filename="../MainWindow.cpp" line="1921"/>
@@ -6877,7 +6872,7 @@ Do you want to specify another directory?</source>
     <message>
       <location filename="../TaskDlgRelocation.cpp" line="42"/>
       <source>Position</source>
-      <translation>Становішча</translation>
+      <translation type="unfinished">Position</translation>
     </message>
   </context>
   <context>
@@ -7736,7 +7731,7 @@ Do you want to specify another directory?</source>
     <message>
       <location filename="../MainWindow.cpp" line="566"/>
       <source>Combo View</source>
-      <translation>Камбінаваны Прагляд</translation>
+      <translation>Камбінаваны прагляд</translation>
     </message>
     <message>
       <location filename="../MainWindow.cpp" line="600"/>
@@ -7827,12 +7822,14 @@ Do you want to specify another directory?</source>
     <message>
       <location filename="../Application.cpp" line="2202"/>
       <source>This system is running OpenGL %1.%2. FreeCAD requires OpenGL 2.0 or above. Please upgrade your graphics driver and/or card as required.</source>
-      <translation type="unfinished">This system is running OpenGL %1.%2. FreeCAD requires OpenGL 2.0 or above. Please upgrade your graphics driver and/or card as required.</translation>
+      <translation>Ваша сістэма працуе пад кіраваннем OpenGL%1.%2.
+Для FreeCAD патрабуецца OpenGL версіі 2.0 ці вышэй.
+Калі ласка, абновіце ваш графічны драйвер і/ці відэакарту па неабходнасці.</translation>
     </message>
     <message>
       <location filename="../Application.cpp" line="2211"/>
       <source>Invalid OpenGL Version</source>
-      <translation type="unfinished">Invalid OpenGL Version</translation>
+      <translation>Хібная версія OpenGL</translation>
     </message>
     <message>
       <location filename="../Command.cpp" line="488"/>
@@ -8426,12 +8423,12 @@ Please open a browser window and type in: http://localhost:%1.</source>
       <translation>Налады...</translation>
     </message>
     <message>
-      <location filename="../View3DInventorViewer.cpp" line="2252"/>
+      <location filename="../View3DInventorViewer.cpp" line="2256"/>
       <source>Out of memory</source>
       <translation>Не хапае памяці</translation>
     </message>
     <message>
-      <location filename="../View3DInventorViewer.cpp" line="2253"/>
+      <location filename="../View3DInventorViewer.cpp" line="2257"/>
       <source>Not enough memory available to display the data.</source>
       <translation>Недастаткова памяці для адлюстравання дадзеных.</translation>
     </message>
@@ -11942,7 +11939,7 @@ after FreeCAD launches</source>
     <message>
       <location filename="../PreferencePages/DlgSettingsWorkbenchesImp.cpp" line="239"/>
       <source>Sort alphabetically</source>
-      <translation type="unfinished">Sort alphabetically</translation>
+      <translation>Парадкаваць па алфавіце</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsWorkbenchesImp.cpp" line="485"/>
@@ -12216,7 +12213,7 @@ after FreeCAD launches</source>
     <message>
       <location filename="../PreferencePages/DlgSettingsEditor.ui" line="363"/>
       <source>Preview:</source>
-      <translation>Папярэдні прагляд:</translation>
+      <translation>Папярэдні выгляд:</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsEditor.cpp" line="105"/>
@@ -12550,12 +12547,12 @@ display the splash screen</source>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="334"/>
       <source>Combo View</source>
-      <translation>Камбінаваны Прагляд</translation>
+      <translation>Камбінаваны прагляд</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="335"/>
       <source>TreeView and PropertyView</source>
-      <translation>Прагляд Дрэва і Уласцівасцяў</translation>
+      <translation>Прагляд дрэва і ўласцівасцяў</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="336"/>
@@ -12797,29 +12794,29 @@ from Python console to Report view panel</source>
     <message>
       <location filename="../PreferencePages/DlgSettingsTheme.ui" line="34"/>
       <source>Accent color 1</source>
-      <translation type="unfinished">Accent color 1</translation>
+      <translation>Асноўны колер 1</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsTheme.ui" line="67"/>
       <source>Accent color 2</source>
-      <translation type="unfinished">Accent color 2</translation>
+      <translation>Асноўны колер 2</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsTheme.ui" line="100"/>
       <source>Accent color 3</source>
-      <translation type="unfinished">Accent color 3</translation>
+      <translation>Асноўны колер 3</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsTheme.ui" line="133"/>
       <source>Style sheet (advanced):</source>
-      <translation type="unfinished">Style sheet (advanced):</translation>
+      <translation>Стыль інтэрфейсу (пашыраны):</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsTheme.ui" line="140"/>
       <source>Apply manually .qss Qt Stylesheets. This is the legacy way that was used to customize the interface.
 You can now use Theme to get a full customization of the interface.</source>
-      <translation type="unfinished">Apply manually .qss Qt Stylesheets. This is the legacy way that was used to customize the interface.
-You can now use Theme to get a full customization of the interface.</translation>
+      <translation>Прымяніць табліцы стыляў Qt уручную з файла .qss . Гэта састарэлы спосаб, які ўжываўся для налады інтэрфейсу.
+Цяпер вы можаце ўжываць іх для поўнай налады інтэрфейсу.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsTheme.ui" line="47"/>
@@ -12839,13 +12836,13 @@ You can now use Theme to get a full customization of the interface.</translation
     <message>
       <location filename="../CommandView.cpp" line="1366"/>
       <source>Selection filter</source>
-      <translation type="unfinished">Selection filter</translation>
+      <translation>Фільтр выбару</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1367"/>
       <location filename="../CommandView.cpp" line="1368"/>
       <source>Change the Selection filter</source>
-      <translation type="unfinished">Change the Selection filter</translation>
+      <translation>Змяніць фільтр выбару</translation>
     </message>
   </context>
   <context>
@@ -12853,13 +12850,13 @@ You can now use Theme to get a full customization of the interface.</translation
     <message>
       <location filename="../CommandView.cpp" line="1487"/>
       <source>Vertex Selection</source>
-      <translation type="unfinished">Vertex Selection</translation>
+      <translation>Выбар вяршыні</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1488"/>
       <location filename="../CommandView.cpp" line="1490"/>
       <source>Select a Vertex/Vertices</source>
-      <translation type="unfinished">Select a Vertex/Vertices</translation>
+      <translation>Абраць вяршыню/вяршыні</translation>
     </message>
   </context>
   <context>
@@ -12867,13 +12864,13 @@ You can now use Theme to get a full customization of the interface.</translation
     <message>
       <location filename="../CommandView.cpp" line="1512"/>
       <source>Edge Selection</source>
-      <translation type="unfinished">Edge Selection</translation>
+      <translation>Выбар рабра</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1513"/>
       <location filename="../CommandView.cpp" line="1515"/>
       <source>Select Edge(s)</source>
-      <translation type="unfinished">Select Edge(s)</translation>
+      <translation>Абраць рэбры</translation>
     </message>
   </context>
   <context>
@@ -12881,13 +12878,13 @@ You can now use Theme to get a full customization of the interface.</translation
     <message>
       <location filename="../CommandView.cpp" line="1537"/>
       <source>Face Selection</source>
-      <translation type="unfinished">Face Selection</translation>
+      <translation>Выбар грані</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1538"/>
       <location filename="../CommandView.cpp" line="1540"/>
       <source>Select Face(s)</source>
-      <translation type="unfinished">Select Face(s)</translation>
+      <translation>Абраць грані</translation>
     </message>
   </context>
   <context>
@@ -12897,7 +12894,7 @@ You can now use Theme to get a full customization of the interface.</translation
       <location filename="../CommandView.cpp" line="1564"/>
       <location filename="../CommandView.cpp" line="1566"/>
       <source>All selection filters cleared</source>
-      <translation type="unfinished">All selection filters cleared</translation>
+      <translation>Усе фільтры выбару ачышчаныя</translation>
     </message>
   </context>
 </TS>

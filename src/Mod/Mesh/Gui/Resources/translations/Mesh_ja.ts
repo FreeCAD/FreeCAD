@@ -1346,12 +1346,22 @@
       <translation>圧縮を使用してAMFファイルをエクスポート</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsImportExport.ui" line="95"/>
+      <location filename="../../DlgSettingsImportExport.ui" line="82"/>
+      <source>Always export mesh as model type in 3MF format even if not a solid</source>
+      <translation type="unfinished">Always export mesh as model type in 3MF format even if not a solid</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsImportExport.ui" line="85"/>
+      <source>Export 3MF files as model type</source>
+      <translation type="unfinished">Export 3MF files as model type</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsImportExport.ui" line="114"/>
       <source>Width:</source>
       <translation>幅：</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsImportExport.ui" line="119"/>
+      <location filename="../../DlgSettingsImportExport.ui" line="138"/>
       <source>Height:</source>
       <translation>高さ:</translation>
     </message>
@@ -1852,7 +1862,7 @@ to a smoother appearance.
     <message>
       <location filename="../../Segmentation.ui" line="163"/>
       <source>Sphere</source>
-      <translation>球体</translation>
+      <translation>球</translation>
     </message>
     <message>
       <location filename="../../Segmentation.ui" line="226"/>

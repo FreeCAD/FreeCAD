@@ -2044,7 +2044,7 @@ unit to work with when opening the file.</translation>
     <message>
       <location filename="../../ArchBuildingPart.py" line="206"/>
       <source>BuildingPart</source>
-      <translation type="unfinished">BuildingPart</translation>
+      <translation>Μέρος Κτιρίου</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="221"/>
@@ -6005,7 +6005,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchBuildingPart.py" line="287"/>
       <source>BuildingPart</source>
-      <translation type="unfinished">BuildingPart</translation>
+      <translation>Μέρος Κτιρίου</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="291"/>
@@ -6727,7 +6727,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchCommands.py" line="1514"/>
       <source>Closes holes in open shapes, turning them solids</source>
-      <translation type="unfinished">Closes holes in open shapes, turning them solids</translation>
+      <translation>Κλείνει τρύπες σε ανοιχτά σχήματα, μετατρέποντάς τα σε στερεά</translation>
     </message>
   </context>
   <context>

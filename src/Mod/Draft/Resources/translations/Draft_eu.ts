@@ -335,11 +335,6 @@
       <translation>Matrize zirkularra</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_CircularArray.ui" line="44"/>
-      <source>(Placeholder for the icon)</source>
-      <translation>(Ikonoaren lekua)</translation>
-    </message>
-    <message>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="53"/>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="63"/>
       <source>Distance from one layer of objects to the next layer of objects.</source>
@@ -454,11 +449,6 @@ Esteka-matrizea eraginkorragoa da kopia anitz sortzean, baina ezin da fusionatu.
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="26"/>
       <source>Orthogonal array</source>
       <translation>Matrize ortogonala</translation>
-    </message>
-    <message>
-      <location filename="../ui/TaskPanel_OrthoArray.ui" line="44"/>
-      <source>(Placeholder for the icon)</source>
-      <translation>(Ikonoaren lekua)</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="51"/>
@@ -591,11 +581,6 @@ Esteka-matrizea eraginkorragoa da kopia anitz sortzean, baina ezin da fusionatu.
       <location filename="../ui/TaskPanel_PolarArray.ui" line="26"/>
       <source>Polar array</source>
       <translation>Matrize polarra</translation>
-    </message>
-    <message>
-      <location filename="../ui/TaskPanel_PolarArray.ui" line="44"/>
-      <source>(Placeholder for the icon)</source>
-      <translation>(Ikonoaren leku-marka)</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_PolarArray.ui" line="53"/>
@@ -921,7 +906,7 @@ value by using the [ and ] keys while drawing</source>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="251"/>
       <source>Resets the working plane to its previous position</source>
-      <translation>Laneko planoa aurreko posiziora berrezartzen du</translation>
+      <translation>Laneko planoa aurreko posizioan berrezartzen du</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="254"/>
@@ -3146,7 +3131,7 @@ Ez dago erabilgarri zirriborroen 'Erabili piezen jatorrizkoak' aukera gaituta ba
       <location filename="../../DraftGui.py" line="970"/>
       <location filename="../../DraftGui.py" line="971"/>
       <source>Local {}</source>
-      <translation type="unfinished">Local {}</translation>
+      <translation>Lokala {}</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="973"/>
@@ -3156,7 +3141,7 @@ Ez dago erabilgarri zirriborroen 'Erabili piezen jatorrizkoak' aukera gaituta ba
       <location filename="../../DraftGui.py" line="978"/>
       <location filename="../../DraftGui.py" line="979"/>
       <source>Global {}</source>
-      <translation type="unfinished">Global {}</translation>
+      <translation>Globala {}</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="1555"/>
@@ -3189,43 +3174,43 @@ Ez dago erabilgarri zirriborroen 'Erabili piezen jatorrizkoak' aukera gaituta ba
       <translation>Zirriborroa</translation>
     </message>
     <message>
-      <location filename="../../importDWG.py" line="292"/>
-      <location filename="../../importDWG.py" line="310"/>
-      <location filename="../../importDWG.py" line="329"/>
-      <location filename="../../importDWG.py" line="376"/>
-      <location filename="../../importDWG.py" line="390"/>
-      <location filename="../../importDWG.py" line="401"/>
+      <location filename="../../importDWG.py" line="293"/>
+      <location filename="../../importDWG.py" line="311"/>
+      <location filename="../../importDWG.py" line="330"/>
+      <location filename="../../importDWG.py" line="377"/>
+      <location filename="../../importDWG.py" line="391"/>
+      <location filename="../../importDWG.py" line="402"/>
       <source>Converting:</source>
       <translation>Bihurtzen:</translation>
     </message>
     <message>
-      <location filename="../../importDWG.py" line="296"/>
-      <location filename="../../importDWG.py" line="315"/>
-      <location filename="../../importDWG.py" line="333"/>
+      <location filename="../../importDWG.py" line="297"/>
+      <location filename="../../importDWG.py" line="316"/>
+      <location filename="../../importDWG.py" line="334"/>
       <source>Conversion successful</source>
       <translation>Bihurketa ongi egin da</translation>
     </message>
     <message>
-      <location filename="../../importDWG.py" line="301"/>
-      <location filename="../../importDWG.py" line="381"/>
+      <location filename="../../importDWG.py" line="302"/>
+      <location filename="../../importDWG.py" line="382"/>
       <source>LibreDWG converter not found</source>
       <translation>Ez da aurkitu LibreDWG bihurtzailea</translation>
     </message>
     <message>
-      <location filename="../../importDWG.py" line="320"/>
-      <location filename="../../importDWG.py" line="395"/>
+      <location filename="../../importDWG.py" line="321"/>
+      <location filename="../../importDWG.py" line="396"/>
       <source>ODA converter not found</source>
       <translation>Ez da aurkitu ODA fitxategi-bihurtzailea</translation>
     </message>
     <message>
-      <location filename="../../importDWG.py" line="338"/>
-      <location filename="../../importDWG.py" line="406"/>
+      <location filename="../../importDWG.py" line="339"/>
+      <location filename="../../importDWG.py" line="407"/>
       <source>QCAD converter not found</source>
       <translation>Ez da aurkitu QCAD bihurtzailea</translation>
     </message>
     <message>
-      <location filename="../../importDWG.py" line="343"/>
-      <location filename="../../importDWG.py" line="411"/>
+      <location filename="../../importDWG.py" line="344"/>
+      <location filename="../../importDWG.py" line="412"/>
       <source>No suitable external DWG converter has been found.
 Please set one manually under menu Edit -&gt; Preferences -&gt; Import/Export -&gt; DWG
 For more information see:
@@ -3236,7 +3221,7 @@ Informazio gehiagorako, ikusi:
 https://wiki.freecad.org/Import_Export_Preferences</translation>
     </message>
     <message>
-      <location filename="../../importDWG.py" line="283"/>
+      <location filename="../../importDWG.py" line="284"/>
       <source>Error during DWG conversion.
 Try moving the DWG file to a directory path without spaces and non-english characters,
 or try saving to a lower DWG version.</source>
@@ -3646,7 +3631,7 @@ FreeCADek liburutegi horiek deskarga ditzan gaitzeko, erantzun 'Bai'.</translati
     <message>
       <location filename="../../draftguitools/gui_arcs.py" line="254"/>
       <location filename="../../draftguitools/gui_arcs.py" line="270"/>
-      <location filename="../../draftguitools/gui_arcs.py" line="410"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="406"/>
       <location filename="../../draftguitools/gui_polygons.py" line="196"/>
       <location filename="../../draftguitools/gui_polygons.py" line="207"/>
       <location filename="../../draftguitools/gui_polygons.py" line="267"/>
@@ -3656,22 +3641,22 @@ FreeCADek liburutegi horiek deskarga ditzan gaitzeko, erantzun 'Bai'.</translati
     <message>
       <location filename="../../draftguitools/gui_arcs.py" line="277"/>
       <location filename="../../draftguitools/gui_arcs.py" line="278"/>
-      <location filename="../../draftguitools/gui_arcs.py" line="445"/>
-      <location filename="../../draftguitools/gui_arcs.py" line="446"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="441"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="442"/>
       <source>Start angle</source>
       <translation>Hasierako angelua</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_arcs.py" line="283"/>
-      <location filename="../../draftguitools/gui_arcs.py" line="451"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="447"/>
       <source>Pick start angle</source>
       <translation>Aukeratu hasierako angelua</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_arcs.py" line="285"/>
       <location filename="../../draftguitools/gui_arcs.py" line="286"/>
-      <location filename="../../draftguitools/gui_arcs.py" line="453"/>
-      <location filename="../../draftguitools/gui_arcs.py" line="454"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="449"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="450"/>
       <source>Aperture angle</source>
       <translation>Irekidura-angelua</translation>
     </message>
@@ -3691,23 +3676,23 @@ FreeCADek liburutegi horiek deskarga ditzan gaitzeko, erantzun 'Bai'.</translati
       <translation>Sortu zirkulua</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_arcs.py" line="369"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="365"/>
       <source>Create Arc (Part)</source>
       <translation>Sortu arkua (pieza)</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_arcs.py" line="389"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="385"/>
       <source>Create Arc</source>
       <translation>Sortu arkua</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_arcs.py" line="465"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="461"/>
       <source>Pick aperture angle</source>
       <translation>Aukeratu irekidura-angelua</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_arcs.py" line="508"/>
-      <location filename="../../draftguitools/gui_arcs.py" line="550"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="504"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="546"/>
       <source>Arc by 3 points</source>
       <translation>Arkua 3 punturen arabera</translation>
     </message>
@@ -4366,7 +4351,7 @@ Amaierako angelua oinarriko angelua gehi kantitate hau izango da.</translation>
       <translation>Sortu laukizuzena</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_mirror.py" line="73"/>
+      <location filename="../../draftguitools/gui_mirror.py" line="74"/>
       <source>Select an object to mirror</source>
       <translation>Hautatu ispilatuko den objektua</translation>
     </message>
@@ -4381,8 +4366,8 @@ Amaierako angelua oinarriko angelua gehi kantitate hau izango da.</translation>
       <translation>Ispilatu</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_mirror.py" line="173"/>
-      <location filename="../../draftguitools/gui_mirror.py" line="199"/>
+      <location filename="../../draftguitools/gui_mirror.py" line="163"/>
+      <location filename="../../draftguitools/gui_mirror.py" line="189"/>
       <source>Pick end point of mirror line</source>
       <translation>Aukeratu ispilatze-lerroaren amaiera-puntua</translation>
     </message>
@@ -4680,12 +4665,12 @@ Amaierako angelua oinarriko angelua gehi kantitate hau izango da.</translation>
     <message>
       <location filename="../../draftobjects/shapestring.py" line="114"/>
       <source>added 'Justification', 'JustificationReference', 'KeepLeftMargin', 'ScaleToSize' and 'Fuse' properties</source>
-      <translation type="unfinished">added 'Justification', 'JustificationReference', 'KeepLeftMargin', 'ScaleToSize' and 'Fuse' properties</translation>
+      <translation>'Justification', 'JustificationReference', 'KeepLeftMargin', 'ScaleToSize' eta'Fuse' propietateak gehitu dira</translation>
     </message>
     <message>
       <location filename="../../draftobjects/shapestring.py" line="116"/>
       <source>changed 'Tracking' property type</source>
-      <translation type="unfinished">changed 'Tracking' property type</translation>
+      <translation>'Tracking' propietate mota aldatu da</translation>
     </message>
     <message>
       <location filename="../../draftobjects/shapestring.py" line="168"/>
@@ -5587,7 +5572,7 @@ Instalatu DXF liburutegiaren gehigarria eskuz
     <message>
       <location filename="../../draftviewproviders/view_wpproxy.py" line="102"/>
       <source>Writing camera position</source>
-      <translation>Kamera-kokapena idazten</translation>
+      <translation>Kameraren posizioa idazten</translation>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_wpproxy.py" line="119"/>
@@ -5683,27 +5668,27 @@ Instalatu DXF liburutegiaren gehigarria eskuz
     <message>
       <location filename="../../draftobjects/label.py" line="336"/>
       <source>Label + Position</source>
-      <translation type="unfinished">Label + Position</translation>
+      <translation>Etiketa + Posizioa</translation>
     </message>
     <message>
       <location filename="../../draftobjects/label.py" line="337"/>
       <source>Label + Length</source>
-      <translation type="unfinished">Label + Length</translation>
+      <translation>Etiketa + Luzera</translation>
     </message>
     <message>
       <location filename="../../draftobjects/label.py" line="338"/>
       <source>Label + Area</source>
-      <translation type="unfinished">Label + Area</translation>
+      <translation>Etiketa + Area</translation>
     </message>
     <message>
       <location filename="../../draftobjects/label.py" line="339"/>
       <source>Label + Volume</source>
-      <translation type="unfinished">Label + Volume</translation>
+      <translation>Etiketa + Bolumena</translation>
     </message>
     <message>
       <location filename="../../draftobjects/label.py" line="343"/>
       <source>Label + Material</source>
-      <translation type="unfinished">Label + Material</translation>
+      <translation>Etiketa + Materiala</translation>
     </message>
   </context>
   <context>
@@ -5808,7 +5793,7 @@ will be used to provide information to the label.</source>
       <translation>Etiketa bat sortzen du, aukeran hautatutako objektu edo azpielementu bati erantsita.
 
 Lehenengo hautatu erpin bat, ertz bat edo objektu bate aurpegi bat, eta ondoren aplikatu
-komando hau, eta ezarri gida-marraren eta testu-etiketaren kokapena.
+komando hau, eta ezarri gida-marraren eta testu-etiketaren posizioa.
 Etiketak objektu honi eta hautatutako azpielementuari buruzko informazioa bistaratzeko
 gai izango da.
 
@@ -6143,12 +6128,12 @@ Ctrl atxikitzeko, Shift murrizteko.</translation>
   <context>
     <name>Draft_Arc_3Points</name>
     <message>
-      <location filename="../../draftguitools/gui_arcs.py" line="486"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="482"/>
       <source>Arc by 3 points</source>
       <translation>Arkua 3 punturen arabera</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_arcs.py" line="489"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="485"/>
       <source>Creates a circular arc by picking 3 points.
 CTRL to snap, SHIFT to constrain.</source>
       <translation>Arku zirkular bat sortzen du hiru puntu erabilita.
@@ -6158,12 +6143,12 @@ Ctrl atxikitzeko, Shift murrizteko.</translation>
   <context>
     <name>Draft_ArcTools</name>
     <message>
-      <location filename="../../draftguitools/gui_arcs.py" line="613"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="609"/>
       <source>Arc tools</source>
       <translation>Arku-tresnak</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_arcs.py" line="616"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="612"/>
       <source>Create various types of circular arcs.</source>
       <translation>Arku zirkularren hainbat mota sortzen ditu.</translation>
     </message>
@@ -6383,7 +6368,7 @@ Eraikutzan-talde bat sortzen du, lehendik ez badago.</translation>
 Once the object is created double click it in the tree view to restore the camera position and objects' visibilities.
 Then you can use it to save a different camera position and objects' states any time you need.</source>
       <translation>Proxy-objektu bat sortzen du uneko laneko planotik abiatuta.
-Objektua sortu ondoren, egin klik bikoitza zuhaitz-bistan kameraren kokapena eta objektuen ikusgaitasunak leheneratzeko.
+Objektua sortu ondoren, egin klik bikoitza zuhaitz-bistan kameraren posizioa eta objektuen ikusgaitasunak leheneratzeko.
 Ondoren, kameraren kokapen desberdina eta objektuen egoera desberdinak gorde daitezke bertan, behar direnerako.</translation>
     </message>
   </context>
@@ -6810,12 +6795,12 @@ eta ondoren marraztu lerro bat luzatzearen distantzia eta norabidea zehazteko.</
   <context>
     <name>Draft_Mirror</name>
     <message>
-      <location filename="../../draftguitools/gui_mirror.py" line="63"/>
+      <location filename="../../draftguitools/gui_mirror.py" line="64"/>
       <source>Mirror</source>
       <translation>Ispilatu</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_mirror.py" line="66"/>
+      <location filename="../../draftguitools/gui_mirror.py" line="67"/>
       <source>Mirrors the selected objects along a line defined by two points.</source>
       <translation>Hautatutako objektuak ispilatzen ditu bi puntuk definitutako lerro baten luzeran.</translation>
     </message>
@@ -7043,22 +7028,22 @@ Kateen zerrenda bat da; zerrendako elementu bakoitza bere lerroan bistaratuko da
     <message>
       <location filename="../../draftobjects/shapestring.py" line="67"/>
       <source>Horizontal and vertical alignment</source>
-      <translation type="unfinished">Horizontal and vertical alignment</translation>
+      <translation>Lerrokatze horizontal eta bertikala</translation>
     </message>
     <message>
       <location filename="../../draftobjects/shapestring.py" line="75"/>
       <source>Height reference used for justification</source>
-      <translation type="unfinished">Height reference used for justification</translation>
+      <translation>Justifikaziorako erabitako altuera-erreferentzia</translation>
     </message>
     <message>
       <location filename="../../draftobjects/shapestring.py" line="81"/>
       <source>Keep left margin and leading white space when justification is left</source>
-      <translation type="unfinished">Keep left margin and leading white space when justification is left</translation>
+      <translation>Mantendu ezkerreko marjina eta aurreko zuriunea justifikazioa ezkerrekoa denean</translation>
     </message>
     <message>
       <location filename="../../draftobjects/shapestring.py" line="85"/>
       <source>Scale to ensure cap height is equal to size</source>
-      <translation type="unfinished">Scale to ensure cap height is equal to size</translation>
+      <translation>Eskalatu estalkiaren altuera bere tamainaren berdina izan dadin</translation>
     </message>
     <message>
       <location filename="../../draftobjects/shapestring.py" line="89"/>
@@ -7073,7 +7058,7 @@ Kateen zerrenda bat da; zerrendako elementu bakoitza bere lerroan bistaratuko da
     <message>
       <location filename="../../draftobjects/shapestring.py" line="97"/>
       <source>Fuse faces if faces overlap, usually not required (can be very slow)</source>
-      <translation type="unfinished">Fuse faces if faces overlap, usually not required (can be very slow)</translation>
+      <translation>Aurpegiak batzen ditu haiek gainjartzen badira, normalean ez da beharrezkoa (oso motela izan daiteke)</translation>
     </message>
     <message>
       <location filename="../../draftobjects/hatch.py" line="47"/>
@@ -7224,7 +7209,7 @@ ezarri 'Egia' fusiorako edo 'Faltsua' konposaturako</translation>
       <location filename="../../draftobjects/label.py" line="68"/>
       <source>The position of the tip of the leader line.
 This point can be decorated with an arrow or another symbol.</source>
-      <translation>Gida-marraren puntaren kokapena.
+      <translation>Gida-marraren puntaren posizioa.
 Puntu hori gezi batekin edo beste ikur batekin apaindu daiteke.</translation>
     </message>
     <message>
@@ -7251,7 +7236,7 @@ If 'Straight Direction' is set to 'Custom', the 'Points' property
 can be set as a list of arbitrary points.</source>
       <translation>Gida-marra definitzen duten puntuen zerrenda; normalean hiru punturen zerrenda da.
 
-Lehen puntua testuaren kokapena izango da, alegia, 'Kokapena', eta azken puntua
+Lehen puntua testuaren posizioa izango da, alegia, 'Kokapena', eta azken puntua
 marraren punta izango da, alegia, 'Helburuko puntua'. Erdiko puntua automatikoki
 kalkulatuko da, hautatutako 'Norabide zuzena' eta 'Distantzia zuzena' balioa
 eta ikurra erabilita.
@@ -7322,7 +7307,7 @@ or from the subelement 'VertexN', 'EdgeN', or 'FaceN', respectively, if it is sp
 Beste motetan, katea automatikoki kalkulatuko da 'Helburua' propietatean definitutako objektutik.
 'Etiketa' eta 'Materiala' propietateek, horiek dituzten objektuetan funtzionatuko dute soilik, adibidez arku-objektuetan.
 
-'Kokapena', 'Luzera' eta 'Area' propietateen kasuan, 'Helburua' propietatean adierazitako objektu
+'Posizioa', 'Luzera' eta 'Area' propietateen kasuan, 'Helburua' propietatean adierazitako objektu
 nagusitik erauziko dira, edo 'ErpinaN', 'ErtzaN' edo 'AurpegiaN' azpielementutik, adierazita badaude.</translation>
     </message>
     <message>
@@ -8117,8 +8102,8 @@ eta 'Azken angelua' propietateak erabiltzen baitira.</translation>
       <location filename="../../draftviewproviders/view_dimension.py" line="144"/>
       <source>Text Position.
 Leave '(0,0,0)' for automatic position</source>
-      <translation>Testuaren kokapena.
-Utzi '(0,0,0)' kokapen automatikorako</translation>
+      <translation>Testuaren posizioa.
+Utzi '(0,0,0)' posizio automatikorako</translation>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_dimension.py" line="155"/>

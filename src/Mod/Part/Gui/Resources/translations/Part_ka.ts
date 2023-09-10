@@ -1150,14 +1150,14 @@
   <context>
     <name>CmdBoxSelection</name>
     <message>
-      <location filename="../../Command.cpp" line="2326"/>
+      <location filename="../../Command.cpp" line="2356"/>
       <source>Part</source>
       <translation>ნაწილი</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2327"/>
-      <location filename="../../Command.cpp" line="2328"/>
-      <location filename="../../Command.cpp" line="2330"/>
+      <location filename="../../Command.cpp" line="2357"/>
+      <location filename="../../Command.cpp" line="2358"/>
+      <location filename="../../Command.cpp" line="2360"/>
       <source>Box selection</source>
       <translation>ყუთის არჩევანი</translation>
     </message>
@@ -1165,17 +1165,17 @@
   <context>
     <name>CmdCheckGeometry</name>
     <message>
-      <location filename="../../Command.cpp" line="2035"/>
+      <location filename="../../Command.cpp" line="2065"/>
       <source>Part</source>
       <translation>ნაწილი</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2036"/>
+      <location filename="../../Command.cpp" line="2066"/>
       <source>Check Geometry</source>
       <translation>გეომეტრიის შემოწმება</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2037"/>
+      <location filename="../../Command.cpp" line="2067"/>
       <source>Analyzes Geometry For Errors</source>
       <translation>გეომეტრის ანალიზი შეცდომების გამოსავლენად</translation>
     </message>
@@ -1183,17 +1183,17 @@
   <context>
     <name>CmdColorPerFace</name>
     <message>
-      <location filename="../../Command.cpp" line="2068"/>
+      <location filename="../../Command.cpp" line="2098"/>
       <source>Part</source>
       <translation>ნაწილი</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2069"/>
+      <location filename="../../Command.cpp" line="2099"/>
       <source>Color per face</source>
       <translation>თითოეული ზედაპირის ფერი</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2070"/>
+      <location filename="../../Command.cpp" line="2100"/>
       <source>Set the color of each individual face of the selected object.</source>
       <translation>მონიშნული ობიექტის ყველა ინდივიდუალური ზედაპირის ფერის დაყენება.</translation>
     </message>
@@ -1201,17 +1201,17 @@
   <context>
     <name>CmdMeasureAngular</name>
     <message>
-      <location filename="../../Command.cpp" line="2138"/>
+      <location filename="../../Command.cpp" line="2168"/>
       <source>Part</source>
       <translation>ნაწილი</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2139"/>
+      <location filename="../../Command.cpp" line="2169"/>
       <source>Measure Angular</source>
       <translation>კუთხის გაზომვა</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2140"/>
+      <location filename="../../Command.cpp" line="2170"/>
       <source>Measure the angle between two edges.</source>
       <translation>ორ წიბოს შუა კუთხის გაზომვა.</translation>
     </message>
@@ -1219,17 +1219,17 @@
   <context>
     <name>CmdMeasureClearAll</name>
     <message>
-      <location filename="../../Command.cpp" line="2197"/>
+      <location filename="../../Command.cpp" line="2227"/>
       <source>Part</source>
       <translation>ნაწილი</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2198"/>
+      <location filename="../../Command.cpp" line="2228"/>
       <source>Clear All</source>
       <translation>ყველაფრის გასუფთავება</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2199"/>
+      <location filename="../../Command.cpp" line="2229"/>
       <source>Clear all dimensions from the screen.</source>
       <translation>ყველა ზომის გაქრობა ეკრანიდან.</translation>
     </message>
@@ -1237,17 +1237,17 @@
   <context>
     <name>CmdMeasureLinear</name>
     <message>
-      <location filename="../../Command.cpp" line="2107"/>
+      <location filename="../../Command.cpp" line="2137"/>
       <source>Part</source>
       <translation>ნაწილი</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2108"/>
+      <location filename="../../Command.cpp" line="2138"/>
       <source>Measure Linear</source>
       <translation>სიგრძის გაზომვა</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2109"/>
+      <location filename="../../Command.cpp" line="2139"/>
       <source>Measure the linear distance between two points;
 if edges or faces are picked, it will measure
 between two vertices of them.</source>
@@ -1259,17 +1259,17 @@ between two vertices of them.</source>
   <context>
     <name>CmdMeasureRefresh</name>
     <message>
-      <location filename="../../Command.cpp" line="2167"/>
+      <location filename="../../Command.cpp" line="2197"/>
       <source>Part</source>
       <translation>ნაწილი</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2168"/>
+      <location filename="../../Command.cpp" line="2198"/>
       <source>Refresh</source>
       <translation>განახლება</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2169"/>
+      <location filename="../../Command.cpp" line="2199"/>
       <source>Recalculate the dimensions
 if the measured points have moved.</source>
       <translation>გაზომილი წერტილების გადაადგილების 
@@ -1279,17 +1279,17 @@ if the measured points have moved.</source>
   <context>
     <name>CmdMeasureToggle3d</name>
     <message>
-      <location filename="../../Command.cpp" line="2263"/>
+      <location filename="../../Command.cpp" line="2293"/>
       <source>Part</source>
       <translation>ნაწილი</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2264"/>
+      <location filename="../../Command.cpp" line="2294"/>
       <source>Toggle 3D</source>
       <translation>3D-ის ჩართ/გამორთ</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2265"/>
+      <location filename="../../Command.cpp" line="2295"/>
       <source>Toggle on and off all direct dimensions,
 including angular.</source>
       <translation>ყველა პირდაპირი ზომის ჩვენების, 
@@ -1299,17 +1299,17 @@ including angular.</source>
   <context>
     <name>CmdMeasureToggleAll</name>
     <message>
-      <location filename="../../Command.cpp" line="2226"/>
+      <location filename="../../Command.cpp" line="2256"/>
       <source>Part</source>
       <translation>ნაწილი</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2227"/>
+      <location filename="../../Command.cpp" line="2257"/>
       <source>Toggle All</source>
       <translation>ყველას ჩართ/გამორთ</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2228"/>
+      <location filename="../../Command.cpp" line="2258"/>
       <source>Toggle on and off all currently visible dimensions,
 direct, orthogonal, and angular.</source>
       <translation>ყველა მიმდინარე ხილული ზომების, პირდაპირის, 
@@ -1319,17 +1319,17 @@ direct, orthogonal, and angular.</source>
   <context>
     <name>CmdMeasureToggleDelta</name>
     <message>
-      <location filename="../../Command.cpp" line="2294"/>
+      <location filename="../../Command.cpp" line="2324"/>
       <source>Part</source>
       <translation>ნაწილი</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2295"/>
+      <location filename="../../Command.cpp" line="2325"/>
       <source>Toggle Delta</source>
       <translation>დელტას ჩართ/გამორთ</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2296"/>
+      <location filename="../../Command.cpp" line="2326"/>
       <source>Toggle on and off all orthogonal dimensions,
 meaning that a direct dimension will be decomposed
 into its X, Y, and Z components.</source>
@@ -1341,17 +1341,17 @@ into its X, Y, and Z components.</source>
   <context>
     <name>CmdPartBoolean</name>
     <message>
-      <location filename="../../Command.cpp" line="1247"/>
+      <location filename="../../Command.cpp" line="1248"/>
       <source>Part</source>
       <translation>ნაწილი</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1248"/>
+      <location filename="../../Command.cpp" line="1249"/>
       <source>Boolean...</source>
       <translation>ბულევური ოპერაციები...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1249"/>
+      <location filename="../../Command.cpp" line="1250"/>
       <source>Run a boolean operation with two shapes selected</source>
       <translation>ბულევური ოპერაცია ორი მონიშნული მონახაზით</translation>
     </message>
@@ -1379,17 +1379,17 @@ into its X, Y, and Z components.</source>
   <context>
     <name>CmdPartBox2</name>
     <message>
-      <location filename="../../Command.cpp" line="130"/>
+      <location filename="../../Command.cpp" line="131"/>
       <source>Part</source>
       <translation>ნაწილი</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="131"/>
+      <location filename="../../Command.cpp" line="132"/>
       <source>Box fix 1</source>
       <translation>ველის გასწორება 1</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="132"/>
+      <location filename="../../Command.cpp" line="133"/>
       <source>Create a box solid without dialog</source>
       <translation>შემომსაზღვრელი ჩარჩოს მყარი სხეულის შექმნა ფანჯრის გარეშე</translation>
     </message>
@@ -1397,17 +1397,17 @@ into its X, Y, and Z components.</source>
   <context>
     <name>CmdPartBox3</name>
     <message>
-      <location filename="../../Command.cpp" line="171"/>
+      <location filename="../../Command.cpp" line="172"/>
       <source>Part</source>
       <translation>ნაწილი</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="172"/>
+      <location filename="../../Command.cpp" line="173"/>
       <source>Box fix 2</source>
       <translation>ველის გასწორება 2</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="173"/>
+      <location filename="../../Command.cpp" line="174"/>
       <source>Create a box solid without dialog</source>
       <translation>შემომსაზღვრელი ჩარჩოს მყარი სხეულის შექმნა ფანჯრის გარეშე</translation>
     </message>
@@ -1415,17 +1415,17 @@ into its X, Y, and Z components.</source>
   <context>
     <name>CmdPartBuilder</name>
     <message>
-      <location filename="../../Command.cpp" line="1509"/>
+      <location filename="../../Command.cpp" line="1539"/>
       <source>Part</source>
       <translation>ნაწილი</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1510"/>
+      <location filename="../../Command.cpp" line="1540"/>
       <source>Shape builder...</source>
       <translation>მოხაზულობის ამწყობი...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1511"/>
+      <location filename="../../Command.cpp" line="1541"/>
       <source>Advanced utility to create shapes</source>
       <translation>ფორმების შესაქმნელი დამატებითი იარაღი</translation>
     </message>
@@ -1433,17 +1433,17 @@ into its X, Y, and Z components.</source>
   <context>
     <name>CmdPartChamfer</name>
     <message>
-      <location filename="../../Command.cpp" line="1414"/>
+      <location filename="../../Command.cpp" line="1444"/>
       <source>Part</source>
       <translation>ნაწილი</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1415"/>
+      <location filename="../../Command.cpp" line="1445"/>
       <source>Chamfer...</source>
       <translation>კუთხის ნაზოლი...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1416"/>
+      <location filename="../../Command.cpp" line="1446"/>
       <source>Chamfer the selected edges of a shape</source>
       <translation>მოხაზულობის მონიშნული წიბოების ნაზოლი</translation>
     </message>
@@ -1451,17 +1451,17 @@ into its X, Y, and Z components.</source>
   <context>
     <name>CmdPartCommon</name>
     <message>
-      <location filename="../../Command.cpp" line="358"/>
+      <location filename="../../Command.cpp" line="359"/>
       <source>Part</source>
       <translation>ნაწილი</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="359"/>
+      <location filename="../../Command.cpp" line="360"/>
       <source>Intersection</source>
       <translation>კვეთა</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="360"/>
+      <location filename="../../Command.cpp" line="361"/>
       <source>Make an intersection of two shapes</source>
       <translation>ორი მონახაზის ერთმანეთზე კვეთის შექმნა</translation>
     </message>
@@ -1469,17 +1469,17 @@ into its X, Y, and Z components.</source>
   <context>
     <name>CmdPartCompCompoundTools</name>
     <message>
-      <location filename="../../Command.cpp" line="735"/>
+      <location filename="../../Command.cpp" line="736"/>
       <source>Part</source>
       <translation>ნაწილი</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="736"/>
+      <location filename="../../Command.cpp" line="737"/>
       <source>Compound tools</source>
       <translation>გადაბმის ხელსაწყოები</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="737"/>
+      <location filename="../../Command.cpp" line="738"/>
       <source>Compound tools: working with lists of shapes.</source>
       <translation>გადაბმების ხელსაწყოები: მოხაზულობების სიებთან მუშაობა.</translation>
     </message>
@@ -1487,17 +1487,17 @@ into its X, Y, and Z components.</source>
   <context>
     <name>CmdPartCompJoinFeatures</name>
     <message>
-      <location filename="../../Command.cpp" line="511"/>
+      <location filename="../../Command.cpp" line="512"/>
       <source>Part</source>
       <translation>ნაწილი</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="512"/>
+      <location filename="../../Command.cpp" line="513"/>
       <source>Join objects...</source>
       <translation>ობიექტების შეერთება...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="513"/>
+      <location filename="../../Command.cpp" line="514"/>
       <source>Join walled objects</source>
       <translation>კედლის ობიექტების შეერთება</translation>
     </message>
@@ -1505,17 +1505,17 @@ into its X, Y, and Z components.</source>
   <context>
     <name>CmdPartCompOffset</name>
     <message>
-      <location filename="../../Command.cpp" line="1708"/>
+      <location filename="../../Command.cpp" line="1738"/>
       <source>Part</source>
       <translation>ნაწილი</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1709"/>
+      <location filename="../../Command.cpp" line="1739"/>
       <source>Offset:</source>
       <translation>წანაცვლება:</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1710"/>
+      <location filename="../../Command.cpp" line="1740"/>
       <source>Tools to offset shapes (construct parallel shapes)</source>
       <translation>მოხაზულობის წანაცვლების ხელსაწყოები (პარალელური მოხაზულობების შექმნა)</translation>
     </message>
@@ -1523,17 +1523,17 @@ into its X, Y, and Z components.</source>
   <context>
     <name>CmdPartCompSplitFeatures</name>
     <message>
-      <location filename="../../Command.cpp" line="617"/>
+      <location filename="../../Command.cpp" line="618"/>
       <source>Part</source>
       <translation>ნაწილი</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="618"/>
+      <location filename="../../Command.cpp" line="619"/>
       <source>Split objects...</source>
       <translation>ობიექტების დაყოფა...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="619"/>
+      <location filename="../../Command.cpp" line="620"/>
       <source>Shape splitting and Compsolid creation tools.</source>
       <translation>ფორმების გაყოფისა და კომპლექსური მყარი სხეულების შექმნის ხელსაწყო.</translation>
     </message>
@@ -1541,17 +1541,17 @@ into its X, Y, and Z components.</source>
   <context>
     <name>CmdPartCompound</name>
     <message>
-      <location filename="../../Command.cpp" line="842"/>
+      <location filename="../../Command.cpp" line="843"/>
       <source>Part</source>
       <translation>ნაწილი</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="843"/>
+      <location filename="../../Command.cpp" line="844"/>
       <source>Make compound</source>
       <translation>შეერთება</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="844"/>
+      <location filename="../../Command.cpp" line="845"/>
       <source>Make a compound of several shapes</source>
       <translation>რამდენიმე მოხაზულობისგან გადაბმის შექმნა</translation>
     </message>
@@ -1579,17 +1579,17 @@ into its X, Y, and Z components.</source>
   <context>
     <name>CmdPartCrossSections</name>
     <message>
-      <location filename="../../Command.cpp" line="1470"/>
+      <location filename="../../Command.cpp" line="1500"/>
       <source>Part</source>
       <translation>ნაწილი</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1471"/>
+      <location filename="../../Command.cpp" line="1501"/>
       <source>Cross-sections...</source>
       <translation>განივი-გადანაჭრები...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1472"/>
+      <location filename="../../Command.cpp" line="1502"/>
       <source>Cross-sections</source>
       <translation>განივი-გადანაჭრები</translation>
     </message>
@@ -1597,17 +1597,17 @@ into its X, Y, and Z components.</source>
   <context>
     <name>CmdPartCut</name>
     <message>
-      <location filename="../../Command.cpp" line="299"/>
+      <location filename="../../Command.cpp" line="300"/>
       <source>Part</source>
       <translation>ნაწილი</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="300"/>
+      <location filename="../../Command.cpp" line="301"/>
       <source>Cut</source>
       <translation>ამოჭრა</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="301"/>
+      <location filename="../../Command.cpp" line="302"/>
       <source>Make a cut of two shapes</source>
       <translation>ორი მონახაზის ჭრის შექმნა</translation>
     </message>
@@ -1671,17 +1671,17 @@ into its X, Y, and Z components.</source>
   <context>
     <name>CmdPartExport</name>
     <message>
-      <location filename="../../Command.cpp" line="1010"/>
+      <location filename="../../Command.cpp" line="1011"/>
       <source>Part</source>
       <translation>ნაწილი</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1011"/>
+      <location filename="../../Command.cpp" line="1012"/>
       <source>Export CAD...</source>
       <translation>CAD-ში გატანა...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1012"/>
+      <location filename="../../Command.cpp" line="1013"/>
       <source>Exports to a CAD file</source>
       <translation>CAD ფაილში გატანა</translation>
     </message>
@@ -1689,17 +1689,17 @@ into its X, Y, and Z components.</source>
   <context>
     <name>CmdPartExtrude</name>
     <message>
-      <location filename="../../Command.cpp" line="1278"/>
+      <location filename="../../Command.cpp" line="1279"/>
       <source>Part</source>
       <translation>ნაწილი</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1279"/>
+      <location filename="../../Command.cpp" line="1280"/>
       <source>Extrude...</source>
       <translation>გამოწნევით დაყალიბება...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1280"/>
+      <location filename="../../Command.cpp" line="1281"/>
       <source>Extrude a selected sketch</source>
       <translation>მონიშნული ესკიზის გამოწნევა</translation>
     </message>
@@ -1707,17 +1707,17 @@ into its X, Y, and Z components.</source>
   <context>
     <name>CmdPartFillet</name>
     <message>
-      <location filename="../../Command.cpp" line="1386"/>
+      <location filename="../../Command.cpp" line="1416"/>
       <source>Part</source>
       <translation>ნაწილი</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1387"/>
+      <location filename="../../Command.cpp" line="1417"/>
       <source>Fillet...</source>
       <translation>მომრგვალება...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1388"/>
+      <location filename="../../Command.cpp" line="1418"/>
       <source>Fillet the selected edges of a shape</source>
       <translation>მოხაზულობის მონიშნული წიბოების მომრგვალება</translation>
     </message>
@@ -1725,17 +1725,17 @@ into its X, Y, and Z components.</source>
   <context>
     <name>CmdPartFuse</name>
     <message>
-      <location filename="../../Command.cpp" line="434"/>
+      <location filename="../../Command.cpp" line="435"/>
       <source>Part</source>
       <translation>ნაწილი</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="435"/>
+      <location filename="../../Command.cpp" line="436"/>
       <source>Union</source>
       <translation>გაერთიანება</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="436"/>
+      <location filename="../../Command.cpp" line="437"/>
       <source>Make a union of several shapes</source>
       <translation>რამდენიმე მოხაზულობისგან კავშირის შექმნა</translation>
     </message>
@@ -1743,17 +1743,17 @@ into its X, Y, and Z components.</source>
   <context>
     <name>CmdPartImport</name>
     <message>
-      <location filename="../../Command.cpp" line="947"/>
+      <location filename="../../Command.cpp" line="948"/>
       <source>Part</source>
       <translation>ნაწილი</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="948"/>
+      <location filename="../../Command.cpp" line="949"/>
       <source>Import CAD...</source>
       <translation>CAD-ის შემოტანა...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="949"/>
+      <location filename="../../Command.cpp" line="950"/>
       <source>Imports a CAD file</source>
       <translation>CAD ფაილის შემოტანა</translation>
     </message>
@@ -1761,17 +1761,17 @@ into its X, Y, and Z components.</source>
   <context>
     <name>CmdPartImportCurveNet</name>
     <message>
-      <location filename="../../Command.cpp" line="1058"/>
+      <location filename="../../Command.cpp" line="1059"/>
       <source>Part</source>
       <translation>ნაწილი</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1059"/>
+      <location filename="../../Command.cpp" line="1060"/>
       <source>Import curve network...</source>
       <translation>რკალების ქსელის შემოტანა...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1060"/>
+      <location filename="../../Command.cpp" line="1061"/>
       <source>Import a curve network</source>
       <translation>მრუდების ქსელის შემოტანა</translation>
     </message>
@@ -1779,17 +1779,17 @@ into its X, Y, and Z components.</source>
   <context>
     <name>CmdPartLoft</name>
     <message>
-      <location filename="../../Command.cpp" line="1538"/>
+      <location filename="../../Command.cpp" line="1568"/>
       <source>Part</source>
       <translation>ნაწილი</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1539"/>
+      <location filename="../../Command.cpp" line="1569"/>
       <source>Loft...</source>
       <translation>სხვენი...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1540"/>
+      <location filename="../../Command.cpp" line="1570"/>
       <source>Utility to loft</source>
       <translation>სხვენის ხელსაწყო</translation>
     </message>
@@ -1797,17 +1797,17 @@ into its X, Y, and Z components.</source>
   <context>
     <name>CmdPartMakeFace</name>
     <message>
-      <location filename="../../Command.cpp" line="1306"/>
+      <location filename="../../Command.cpp" line="1336"/>
       <source>Part</source>
       <translation>ნაწილი</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1307"/>
+      <location filename="../../Command.cpp" line="1337"/>
       <source>Make face from wires</source>
       <translation>ზედაპირის პოლიხაზებისგან შექმნა</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1308"/>
+      <location filename="../../Command.cpp" line="1338"/>
       <source>Make face from set of wires (e.g. from a sketch)</source>
       <translation>პოლიხაზების ნაკრებისგან ზედაპირის შექმნა (მაგ. ესკიზიდან)</translation>
     </message>
@@ -1815,17 +1815,17 @@ into its X, Y, and Z components.</source>
   <context>
     <name>CmdPartMakeSolid</name>
     <message>
-      <location filename="../../Command.cpp" line="1106"/>
+      <location filename="../../Command.cpp" line="1107"/>
       <source>Part</source>
       <translation>ნაწილი</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1107"/>
+      <location filename="../../Command.cpp" line="1108"/>
       <source>Convert to solid</source>
       <translation>მყარ სხეულად გარდაქმნა</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1108"/>
+      <location filename="../../Command.cpp" line="1109"/>
       <source>Create solid from a shell or compound</source>
       <translation>გარსის ან გადაბმისგან მყარი სხეულის შექმნა</translation>
     </message>
@@ -1833,17 +1833,17 @@ into its X, Y, and Z components.</source>
   <context>
     <name>CmdPartMirror</name>
     <message>
-      <location filename="../../Command.cpp" line="1442"/>
+      <location filename="../../Command.cpp" line="1472"/>
       <source>Part</source>
       <translation>ნაწილი</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1443"/>
+      <location filename="../../Command.cpp" line="1473"/>
       <source>Mirroring...</source>
       <translation>სარკისებური ასლი...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1444"/>
+      <location filename="../../Command.cpp" line="1474"/>
       <source>Mirroring a selected shape</source>
       <translation>მონიშნული მოხაზულობის ასლის გადაღება</translation>
     </message>
@@ -1851,17 +1851,17 @@ into its X, Y, and Z components.</source>
   <context>
     <name>CmdPartOffset</name>
     <message>
-      <location filename="../../Command.cpp" line="1596"/>
+      <location filename="../../Command.cpp" line="1626"/>
       <source>Part</source>
       <translation>ნაწილი</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1597"/>
+      <location filename="../../Command.cpp" line="1627"/>
       <source>3D Offset...</source>
       <translation>3D წანაცვლება...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1598"/>
+      <location filename="../../Command.cpp" line="1628"/>
       <source>Utility to offset in 3D</source>
       <translation>3D-ში წანაცვლების იარაღი</translation>
     </message>
@@ -1869,17 +1869,17 @@ into its X, Y, and Z components.</source>
   <context>
     <name>CmdPartOffset2D</name>
     <message>
-      <location filename="../../Command.cpp" line="1653"/>
+      <location filename="../../Command.cpp" line="1683"/>
       <source>Part</source>
       <translation>ნაწილი</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1654"/>
+      <location filename="../../Command.cpp" line="1684"/>
       <source>2D Offset...</source>
       <translation>2D წანაცვლება...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1655"/>
+      <location filename="../../Command.cpp" line="1685"/>
       <source>Utility to offset planar shapes</source>
       <translation>ბრტყელი მოხაზულობების წანაცვლების ხელსაწყო</translation>
     </message>
@@ -1887,17 +1887,17 @@ into its X, Y, and Z components.</source>
   <context>
     <name>CmdPartPickCurveNet</name>
     <message>
-      <location filename="../../Command.cpp" line="84"/>
+      <location filename="../../Command.cpp" line="85"/>
       <source>Part</source>
       <translation>ნაწილი</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="85"/>
+      <location filename="../../Command.cpp" line="86"/>
       <source>Pick curve network</source>
       <translation>აირჩიეთ მრუდების ქსელი</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="86"/>
+      <location filename="../../Command.cpp" line="87"/>
       <source>Pick a curve network</source>
       <translation>აირჩიეთ რკალების ქსელი</translation>
     </message>
@@ -1923,17 +1923,17 @@ into its X, Y, and Z components.</source>
   <context>
     <name>CmdPartPrimitives</name>
     <message>
-      <location filename="../../Command.cpp" line="212"/>
+      <location filename="../../Command.cpp" line="213"/>
       <source>Part</source>
       <translation>ნაწილი</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="213"/>
+      <location filename="../../Command.cpp" line="214"/>
       <source>Create primitives...</source>
       <translation>პრიმიტივების შექმნა...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="214"/>
+      <location filename="../../Command.cpp" line="215"/>
       <source>Creation of parametrized geometric primitives</source>
       <translation>პარამეტრიზებული გეომეტრიული პრიმიტივების შექმნა</translation>
     </message>
@@ -1941,17 +1941,17 @@ into its X, Y, and Z components.</source>
   <context>
     <name>CmdPartProjectionOnSurface</name>
     <message>
-      <location filename="../../Command.cpp" line="2356"/>
+      <location filename="../../Command.cpp" line="2386"/>
       <source>Part</source>
       <translation>ნაწილი</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2357"/>
+      <location filename="../../Command.cpp" line="2387"/>
       <source>Create projection on surface...</source>
       <translation>ზედაპირზე პროექციის შექმნა...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2358"/>
+      <location filename="../../Command.cpp" line="2388"/>
       <source>Project edges, wires, or faces of one object
 onto a face of another object.
 The camera view determines the direction
@@ -1982,17 +1982,17 @@ of projection.</source>
   <context>
     <name>CmdPartReverseShape</name>
     <message>
-      <location filename="../../Command.cpp" line="1185"/>
+      <location filename="../../Command.cpp" line="1186"/>
       <source>Part</source>
       <translation>ნაწილი</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1186"/>
+      <location filename="../../Command.cpp" line="1187"/>
       <source>Reverse shapes</source>
       <translation>მონახაზების რევერსი</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1187"/>
+      <location filename="../../Command.cpp" line="1188"/>
       <source>Reverse orientation of shapes</source>
       <translation>მონახაზების ორიენტაციის შებრუნება</translation>
     </message>
@@ -2000,17 +2000,17 @@ of projection.</source>
   <context>
     <name>CmdPartRevolve</name>
     <message>
-      <location filename="../../Command.cpp" line="1358"/>
+      <location filename="../../Command.cpp" line="1388"/>
       <source>Part</source>
       <translation>ნაწილი</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1359"/>
+      <location filename="../../Command.cpp" line="1389"/>
       <source>Revolve...</source>
       <translation>ტრიალი...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1360"/>
+      <location filename="../../Command.cpp" line="1390"/>
       <source>Revolve a selected shape</source>
       <translation>მონიშნული მონახაზის ბრუნვა</translation>
     </message>
@@ -2018,17 +2018,17 @@ of projection.</source>
   <context>
     <name>CmdPartRuledSurface</name>
     <message>
-      <location filename="../../Command.cpp" line="1930"/>
+      <location filename="../../Command.cpp" line="1960"/>
       <source>Part</source>
       <translation>ნაწილი</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1931"/>
+      <location filename="../../Command.cpp" line="1961"/>
       <source>Create ruled surface</source>
       <translation>დახაზული ზედაპირის შექმნა</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1932"/>
+      <location filename="../../Command.cpp" line="1962"/>
       <source>Create a ruled surface from either two Edges or two wires</source>
       <translation>2 წიბოსგან ან პოლიხაზისგან დახაზული ზედაპირის შექმნა</translation>
     </message>
@@ -2036,17 +2036,17 @@ of projection.</source>
   <context>
     <name>CmdPartSection</name>
     <message>
-      <location filename="../../Command.cpp" line="899"/>
+      <location filename="../../Command.cpp" line="900"/>
       <source>Part</source>
       <translation>ნაწილი</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="900"/>
+      <location filename="../../Command.cpp" line="901"/>
       <source>Section</source>
       <translation>ჭრილი</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="901"/>
+      <location filename="../../Command.cpp" line="902"/>
       <source>Make a section of two shapes</source>
       <translation>ორი მონახაზის კვეთის შექმნა</translation>
     </message>
@@ -2054,12 +2054,12 @@ of projection.</source>
   <context>
     <name>CmdPartSectionCut</name>
     <message>
-      <location filename="../../Command.cpp" line="2390"/>
+      <location filename="../../Command.cpp" line="2420"/>
       <source>Persistent section cut</source>
       <translation>მუდმივი კვეთა</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2391"/>
+      <location filename="../../Command.cpp" line="2421"/>
       <source>Creates a persistent section cut of visible part objects</source>
       <translation>ხილული ნაწილი ობიექტების მუდმივი კვეთის შექმნა</translation>
     </message>
@@ -2141,17 +2141,17 @@ of projection.</source>
   <context>
     <name>CmdPartSweep</name>
     <message>
-      <location filename="../../Command.cpp" line="1567"/>
+      <location filename="../../Command.cpp" line="1597"/>
       <source>Part</source>
       <translation>ნაწილი</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1568"/>
+      <location filename="../../Command.cpp" line="1598"/>
       <source>Sweep...</source>
       <translation>შლილი...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1569"/>
+      <location filename="../../Command.cpp" line="1599"/>
       <source>Utility to sweep</source>
       <translation>შლილის ხელსაწყო</translation>
     </message>
@@ -2159,27 +2159,27 @@ of projection.</source>
   <context>
     <name>CmdPartThickness</name>
     <message>
-      <location filename="../../Command.cpp" line="1800"/>
+      <location filename="../../Command.cpp" line="1830"/>
       <source>Part</source>
       <translation>ნაწილი</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1801"/>
+      <location filename="../../Command.cpp" line="1831"/>
       <source>Thickness...</source>
       <translation>სისქე...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1802"/>
+      <location filename="../../Command.cpp" line="1832"/>
       <source>Utility to apply a thickness</source>
       <translation>სისქის შეცვლის ხელსაწყო</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1851"/>
+      <location filename="../../Command.cpp" line="1881"/>
       <source>Wrong selection</source>
       <translation>არასწორი არჩევანი</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1852"/>
+      <location filename="../../Command.cpp" line="1882"/>
       <source>Selected shape is not a solid</source>
       <translation>მონიშნული მონახაზი მყარი სხეული არაა</translation>
     </message>
@@ -2225,73 +2225,73 @@ of projection.</source>
   <context>
     <name>Command</name>
     <message>
-      <location filename="../../Command.cpp" line="141"/>
-      <location filename="../../Command.cpp" line="182"/>
+      <location filename="../../Command.cpp" line="142"/>
+      <location filename="../../Command.cpp" line="183"/>
       <source>Part Box Create</source>
       <translation>პარალელეპიპედის ნაწილის შექმნა</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="335"/>
+      <location filename="../../Command.cpp" line="336"/>
       <source>Part Cut</source>
       <translation>ნაწილის ჭრილი</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="411"/>
+      <location filename="../../Command.cpp" line="412"/>
       <source>Common</source>
       <translation>ჩვეულებრივი</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="487"/>
+      <location filename="../../Command.cpp" line="488"/>
       <source>Fusion</source>
       <translation>შერწყმა</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="877"/>
+      <location filename="../../Command.cpp" line="878"/>
       <source>Compound</source>
       <translation>გადაბმა</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="922"/>
+      <location filename="../../Command.cpp" line="923"/>
       <source>Section</source>
       <translation>ჭრილი</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="974"/>
+      <location filename="../../Command.cpp" line="975"/>
       <source>Import Part</source>
       <translation>ნაწილის შემოტანა</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1081"/>
+      <location filename="../../Command.cpp" line="1082"/>
       <source>Part Import Curve Net</source>
       <translation>Part-ში მრუდების ქსელის შემოტანა</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1198"/>
+      <location filename="../../Command.cpp" line="1199"/>
       <source>Reverse</source>
       <translation>რევერსი</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1320"/>
+      <location filename="../../Command.cpp" line="1350"/>
       <source>Make face</source>
       <translation>ზედაპირის შექმნა</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1620"/>
+      <location filename="../../Command.cpp" line="1650"/>
       <source>Make Offset</source>
       <translation>წანაცვლების შექმნა</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1678"/>
+      <location filename="../../Command.cpp" line="1708"/>
       <source>Make 2D Offset</source>
       <translation>2D წანაცვლების შექმნა</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1858"/>
+      <location filename="../../Command.cpp" line="1888"/>
       <source>Make Thickness</source>
       <translation>სისქის შექმნა</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2010"/>
+      <location filename="../../Command.cpp" line="2040"/>
       <source>Create ruled surface</source>
       <translation>დახაზული ზედაპირის შექმნა</translation>
     </message>
@@ -2374,11 +2374,6 @@ of projection.</source>
   </context>
   <context>
     <name>PartDesignGui::TaskDatumParameters</name>
-    <message>
-      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="14"/>
-      <source>Form</source>
-      <translation>ფორმა</translation>
-    </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="20"/>
       <source>Selection accepted</source>
@@ -2997,7 +2992,7 @@ If both lengths are zero, magnitude of direction is used.</source>
     <message>
       <location filename="../../DlgFilletEdges.ui" line="20"/>
       <source>Shape</source>
-      <translation>მოხაზულობა</translation>
+      <translation>ფიგურა</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.ui" line="32"/>
@@ -5078,7 +5073,7 @@ of object being attached.</source>
     <message>
       <location filename="../../TaskAttacher.cpp" line="713"/>
       <source>Selecting...</source>
-      <translation>არჩევა...</translation>
+      <translation>მონიშვნა...</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.cpp" line="717"/>
@@ -5405,7 +5400,7 @@ by dragging a selection rectangle in the 3D view</source>
     <message>
       <location filename="../../TaskFaceColors.ui" line="101"/>
       <source>Box selection</source>
-      <translation>ყუთის არჩევანი</translation>
+      <translation>არეალის მონიშვნა</translation>
     </message>
   </context>
   <context>
@@ -5645,7 +5640,7 @@ in the 3D view for the sweep path.</source>
     <message>
       <location filename="../../TaskThickness.cpp" line="253"/>
       <source>Input error</source>
-      <translation type="unfinished">Input error</translation>
+      <translation>შეყვანის შეცდომა</translation>
     </message>
   </context>
   <context>
@@ -5702,83 +5697,83 @@ in the 3D view for the sweep path.</source>
       <translation>%1-ის ჩასწორება</translation>
     </message>
     <message>
-      <location filename="../../AppPartGui.cpp" line="226"/>
+      <location filename="../../AppPartGui.cpp" line="228"/>
       <source>Part and Part Design workbench</source>
       <translation>ნაწილისა და ნაწილის დიზაინის სამუშაო მაგიდა</translation>
     </message>
     <message>
-      <location filename="../../AppPartGui.cpp" line="227"/>
-      <location filename="../../AppPartGui.cpp" line="228"/>
       <location filename="../../AppPartGui.cpp" line="229"/>
       <location filename="../../AppPartGui.cpp" line="230"/>
+      <location filename="../../AppPartGui.cpp" line="231"/>
+      <location filename="../../AppPartGui.cpp" line="232"/>
       <source>Part/Part Design</source>
       <translation>ნაწილი/ნაწილის დიზაინი</translation>
     </message>
     <message>
-      <location filename="../../AppPartGui.cpp" line="231"/>
-      <location filename="../../AppPartGui.cpp" line="232"/>
+      <location filename="../../AppPartGui.cpp" line="233"/>
+      <location filename="../../AppPartGui.cpp" line="234"/>
       <source>Import-Export</source>
       <translation>შეტანა-გატანა</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="313"/>
-      <location filename="../../Command.cpp" line="389"/>
-      <location filename="../../Command.cpp" line="465"/>
-      <location filename="../../Command.cpp" line="856"/>
-      <location filename="../../Command.cpp" line="913"/>
-      <location filename="../../Command.cpp" line="2005"/>
+      <location filename="../../Command.cpp" line="314"/>
+      <location filename="../../Command.cpp" line="390"/>
+      <location filename="../../Command.cpp" line="466"/>
+      <location filename="../../Command.cpp" line="857"/>
+      <location filename="../../Command.cpp" line="914"/>
+      <location filename="../../Command.cpp" line="2035"/>
       <source>Wrong selection</source>
       <translation>არასწორი მონიშნული</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="314"/>
-      <location filename="../../Command.cpp" line="914"/>
+      <location filename="../../Command.cpp" line="315"/>
+      <location filename="../../Command.cpp" line="915"/>
       <source>Select two shapes please.</source>
       <translation>გთხოვ, აირჩიოთ ორი ფიგურა.</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="324"/>
-      <location filename="../../Command.cpp" line="400"/>
-      <location filename="../../Command.cpp" line="476"/>
-      <source>Non-solids selected</source>
-      <translation>მონიშნული არა-მყარი სხეულია</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="325"/>
       <location filename="../../Command.cpp" line="401"/>
       <location filename="../../Command.cpp" line="477"/>
+      <source>Non-solids selected</source>
+      <translation>მონიშნული არა-მყარი სხეულია</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="326"/>
+      <location filename="../../Command.cpp" line="402"/>
+      <location filename="../../Command.cpp" line="478"/>
       <source>The use of non-solids for boolean operations may lead to unexpected results.
 Do you want to continue?</source>
       <translation>ბულევურ ოპერაციებში არა-მყარი სხეულების გამოყენებამ შეიძლება მოულოდნელი შედეგები გამოიღოს.
 გნებავთ გავაგრძელო?</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="390"/>
+      <location filename="../../Command.cpp" line="391"/>
       <source>Select two shapes or more, please. Or, select one compound containing two or more shapes to compute common between.</source>
       <translation>კვეთის გამოსათვლელად აირჩიეთ ორი მოხაზულობა ან აირჩიეთ ერთი გადაბმა, რომელიც ორ ან მეტ მოხაზულობას შეიცავს.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="466"/>
+      <location filename="../../Command.cpp" line="467"/>
       <source>Select two shapes or more, please. Or, select one compound containing two or more shapes to be fused.</source>
       <translation>მონიშნეთ ორი ან მეტი მოხაზულობა, ან აირჩიეთ ერთი გადაბმა, რომელიც ორ ან მეტ მოხაზულობას შეიცავს, მათ შესარწყმელად.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="857"/>
+      <location filename="../../Command.cpp" line="858"/>
       <source>Select one shape or more, please.</source>
       <translation>მონიშნეთ ერთი ან მეტი მონახაზი, გეთაყვა.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1071"/>
+      <location filename="../../Command.cpp" line="1072"/>
       <source>All CAD Files</source>
       <translation>ყველა CAD ფაილი</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1076"/>
+      <location filename="../../Command.cpp" line="1077"/>
       <source>All Files</source>
       <translation>ყველა ფაილი</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2006"/>
+      <location filename="../../Command.cpp" line="2036"/>
       <source>You have to select either two edges or two wires.</source>
       <translation>უნდა აირჩიოთ ორი წიბო ან ორი პოლიხაზი.</translation>
     </message>
@@ -5834,7 +5829,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="85"/>
       <source>Shape</source>
-      <translation>ფიგურა</translation>
+      <translation>მოხაზულობა</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="100"/>
@@ -6234,7 +6229,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../Workbench.cpp" line="44"/>
       <source>Measure</source>
-      <translation>საზომი</translation>
+      <translation>გაზომვა</translation>
     </message>
   </context>
   <context>
@@ -6344,7 +6339,7 @@ Do you want to continue?</source>
       <location filename="../../../BOPTools/SplitFeatures.py" line="299"/>
       <location filename="../../../BOPTools/SplitFeatures.py" line="493"/>
       <source>Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
-      <translation>დააწექით "გაგრძელებას" თვისების მაინც შესაქმნელად, ან "შეწყვეტას", გაუქმებისთვის.</translation>
+      <translation>დააწექით "გაგრძელება"-ს თვისების მაინც შესაქმნელად, ან "შეწყვეტა"-ს, გაუქმებისთვის.</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="157"/>
@@ -6415,7 +6410,7 @@ for collision or distance filtering.</source>
     <message>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="111"/>
       <source>Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
-      <translation>დააწექით "გაგრძელება"-ს თვისების მაინც შესაქმნელად, ან "შეწყვეტა"-ს, გაუქმებისთვის.</translation>
+      <translation>დააწექით "გაგრძელებას" თვისების მაინც შესაქმნელად, ან "შეწყვეტას", გაუქმებისთვის.</translation>
     </message>
   </context>
   <context>
@@ -6515,7 +6510,7 @@ It will create a 'Compound Filter' for each shape.</source>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="558"/>
       <source>Selecting...</source>
-      <translation>მონიშვნა...</translation>
+      <translation>არჩევა...</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="582"/>
@@ -6646,7 +6641,7 @@ It will create a 'Compound Filter' for each shape.</source>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="156"/>
       <source>Continuity</source>
-      <translation>გაგრძელება</translation>
+      <translation>უწყვეტობა</translation>
     </message>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="163"/>
@@ -6749,6 +6744,100 @@ A 'Compound Filter' can be used to extract the remaining pieces.</source>
 ან გადაბმის შიგნით არსებულ მოხაზულობებზე.
 ეს ასევე ნიშნავს, რომ წაიშლება მოხაზულობის გადაფარვადი სივრცეები.
 დარჩენილი ნაწილების მისაღებად შეგიძლიათ 'გადაბმის ფილტრი' გამოიყენოთ.</translation>
+    </message>
+  </context>
+  <context>
+    <name>PartGui::DlgScale</name>
+    <message>
+      <location filename="../../DlgScale.ui" line="14"/>
+      <source>Scale</source>
+      <translation>მასშტაბირება</translation>
+    </message>
+    <message>
+      <location filename="../../DlgScale.ui" line="22"/>
+      <source>X Factor</source>
+      <translation type="unfinished">X Factor</translation>
+    </message>
+    <message>
+      <location filename="../../DlgScale.ui" line="29"/>
+      <source>Factor</source>
+      <translation>ფაქტორი</translation>
+    </message>
+    <message>
+      <location filename="../../DlgScale.ui" line="64"/>
+      <source>Z Factor</source>
+      <translation type="unfinished">Z Factor</translation>
+    </message>
+    <message>
+      <location filename="../../DlgScale.ui" line="71"/>
+      <source>Scale the object by a single factor in all directions.</source>
+      <translation type="unfinished">Scale the object by a single factor in all directions.</translation>
+    </message>
+    <message>
+      <location filename="../../DlgScale.ui" line="74"/>
+      <source>Uniform Scaling</source>
+      <translation type="unfinished">Uniform Scaling</translation>
+    </message>
+    <message>
+      <location filename="../../DlgScale.ui" line="112"/>
+      <source>Y Factor</source>
+      <translation type="unfinished">Y Factor</translation>
+    </message>
+    <message>
+      <location filename="../../DlgScale.ui" line="119"/>
+      <source>Specify a different scale factor for each cardinal direction.</source>
+      <translation type="unfinished">Specify a different scale factor for each cardinal direction.</translation>
+    </message>
+    <message>
+      <location filename="../../DlgScale.ui" line="122"/>
+      <source>Non-Uniform Scaling</source>
+      <translation type="unfinished">Non-Uniform Scaling</translation>
+    </message>
+    <message>
+      <location filename="../../DlgScale.ui" line="195"/>
+      <source>Select shape(s) that should be scaled</source>
+      <translation type="unfinished">Select shape(s) that should be scaled</translation>
+    </message>
+    <message>
+      <location filename="../../DlgScale.ui" line="199"/>
+      <source>Shape</source>
+      <translation>ფიგურა</translation>
+    </message>
+    <message>
+      <location filename="../../DlgScale.cpp" line="195"/>
+      <source>No scalable shapes selected</source>
+      <translation type="unfinished">No scalable shapes selected</translation>
+    </message>
+    <message>
+      <location filename="../../DlgScale.cpp" line="203"/>
+      <source>The document '%1' doesn't exist.</source>
+      <translation type="unfinished">The document '%1' doesn't exist.</translation>
+    </message>
+    <message>
+      <location filename="../../DlgScale.cpp" line="251"/>
+      <location filename="../../DlgScale.cpp" line="257"/>
+      <source>Creating Scale failed.
+%1</source>
+      <translation type="unfinished">Creating Scale failed.
+%1</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdPartScale</name>
+    <message>
+      <location filename="../../Command.cpp" line="1307"/>
+      <source>Part</source>
+      <translation>ნაწილი</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1308"/>
+      <source>Scale...</source>
+      <translation>მასშტაბირება...</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1309"/>
+      <source>Scale a selected shape</source>
+      <translation type="unfinished">Scale a selected shape</translation>
     </message>
   </context>
 </TS>

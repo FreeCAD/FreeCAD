@@ -4,11 +4,6 @@
   <context>
     <name>Angle</name>
     <message>
-      <location filename="../DlgLocationAngle.ui" line="14"/>
-      <source>Form</source>
-      <translation>Formular</translation>
-    </message>
-    <message>
       <location filename="../DlgLocationAngle.ui" line="22"/>
       <source>A:</source>
       <translation>A:</translation>
@@ -6110,12 +6105,12 @@ Doriți să salvați modificările?</translation>
       <translation>Macro-uri</translation>
     </message>
     <message>
-      <location filename="../Command.cpp" line="1143"/>
+      <location filename="../Command.cpp" line="1173"/>
       <source>Macro file doesn't exist</source>
       <translation>Fișierul macro nu există</translation>
     </message>
     <message>
-      <location filename="../Command.cpp" line="1144"/>
+      <location filename="../Command.cpp" line="1174"/>
       <source>No such macro file: '%1'</source>
       <translation>Fișier macro inexistent: «%1 »</translation>
     </message>
@@ -6174,8 +6169,8 @@ Doriți să salvați modificările?</translation>
     </message>
     <message>
       <location filename="../MainWindow.cpp" line="1717"/>
-      <source>Please do not use in a production environment.</source>
-      <translation type="unfinished">Please do not use in a production environment.</translation>
+      <source>Please do not use it in a production environment.</source>
+      <translation type="unfinished">Please do not use it in a production environment.</translation>
     </message>
     <message>
       <location filename="../MainWindow.cpp" line="1921"/>
@@ -8425,12 +8420,12 @@ Please open a browser window and type in: http://localhost:%1.</source>
       <translation>Opţiuni...</translation>
     </message>
     <message>
-      <location filename="../View3DInventorViewer.cpp" line="2252"/>
+      <location filename="../View3DInventorViewer.cpp" line="2256"/>
       <source>Out of memory</source>
       <translation>Memorie insuficientă</translation>
     </message>
     <message>
-      <location filename="../View3DInventorViewer.cpp" line="2253"/>
+      <location filename="../View3DInventorViewer.cpp" line="2257"/>
       <source>Not enough memory available to display the data.</source>
       <translation>Insuficientă memorie disponibilă pentru a afişa datele.</translation>
     </message>

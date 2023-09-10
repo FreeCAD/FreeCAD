@@ -22,11 +22,6 @@
   <context>
     <name>CompactView</name>
     <message>
-      <location filename="../../compact_view.py" line="77"/>
-      <source>Form</source>
-      <translation>Μορφή</translation>
-    </message>
-    <message>
       <location filename="../../compact_view.py" line="78"/>
       <location filename="../../compact_view.ui" line="59"/>
       <source>Icon</source>
@@ -88,7 +83,7 @@
     <name>DependencyResolutionDialog</name>
     <message>
       <location filename="../../dependency_resolution_dialog.ui" line="17"/>
-      <location filename="../../AddonManagerTest/gui/test_installer_gui.py" line="213"/>
+      <location filename="../../AddonManagerTest/gui/test_installer_gui.py" line="175"/>
       <source>Resolve Dependencies</source>
       <translation>Επίλυση Εξαρτήσεων</translation>
     </message>
@@ -421,11 +416,6 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
   <context>
     <name>ExpandedView</name>
     <message>
-      <location filename="../../expanded_view.py" line="116"/>
-      <source>Form</source>
-      <translation>Μορφή</translation>
-    </message>
-    <message>
       <location filename="../../expanded_view.py" line="117"/>
       <location filename="../../expanded_view.ui" line="68"/>
       <source>Icon</source>
@@ -474,11 +464,6 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
   </context>
   <context>
     <name>Form</name>
-    <message>
-      <location filename="../../developer_mode_people_table.ui" line="14"/>
-      <source>Form</source>
-      <translation>Μορφή</translation>
-    </message>
     <message>
       <location filename="../../developer_mode_licenses_table.ui" line="38"/>
       <source>Licenses</source>
@@ -943,7 +928,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../developer_mode_add_content.ui" line="330"/>
       <source>Any fields left blank are inherited from the top-level Addon metadata, so technically they are all optional. For Addons with multiple content items, each item should provide a unique Display Name and Description.</source>
-      <translation type="unfinished">Any fields left blank are inherited from the top-level Addon metadata, so technically they are all optional. For Addons with multiple content items, each item should provide a unique Display Name and Description.</translation>
+      <translation>Τυχόν πεδία που παραμένουν κενά κληρονομούνται από τα ανώτερα μεταδεδομένα του Addon, οπότε τεχνικά είναι όλα προαιρετικά. Για τα Πρόσθετα με πολλαπλά στοιχεία περιεχομένου, κάθε στοιχείο θα πρέπει να παρέχει ένα μοναδικό Εμφανιζόμενο Όνομα και Περιγραφή.</translation>
     </message>
   </context>
   <context>
@@ -1118,9 +1103,9 @@ installed addons will be checked for available updates
     <name>select_toolbar_dialog</name>
     <message>
       <location filename="../../select_toolbar_dialog.ui" line="14"/>
-      <location filename="../../AddonManagerTest/gui/test_installer_gui.py" line="458"/>
-      <location filename="../../AddonManagerTest/gui/test_installer_gui.py" line="474"/>
-      <location filename="../../AddonManagerTest/gui/test_installer_gui.py" line="493"/>
+      <location filename="../../AddonManagerTest/gui/test_installer_gui.py" line="396"/>
+      <location filename="../../AddonManagerTest/gui/test_installer_gui.py" line="412"/>
+      <location filename="../../AddonManagerTest/gui/test_installer_gui.py" line="429"/>
       <source>Select Toolbar</source>
       <translation type="unfinished">Select Toolbar</translation>
     </message>
@@ -1139,7 +1124,7 @@ installed addons will be checked for available updates
     <name>toolbar_button</name>
     <message>
       <location filename="../../toolbar_button.ui" line="14"/>
-      <location filename="../../AddonManagerTest/gui/test_installer_gui.py" line="552"/>
+      <location filename="../../AddonManagerTest/gui/test_installer_gui.py" line="486"/>
       <source>Add button?</source>
       <translation type="unfinished">Add button?</translation>
     </message>
@@ -1167,139 +1152,139 @@ installed addons will be checked for available updates
   <context>
     <name>AddonsInstaller</name>
     <message>
-      <location filename="../../AddonManager.py" line="229"/>
+      <location filename="../../AddonManager.py" line="228"/>
       <source>Starting up...</source>
       <translation type="unfinished">Starting up...</translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="268"/>
+      <location filename="../../AddonManager.py" line="267"/>
       <source>Loading addon information</source>
       <translation type="unfinished">Loading addon information</translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="294"/>
+      <location filename="../../AddonManager.py" line="293"/>
       <source>Worker process {} is taking a long time to stop...</source>
       <translation type="unfinished">Worker process {} is taking a long time to stop...</translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="350"/>
+      <location filename="../../addonmanager_cache.py" line="95"/>
       <source>Previous cache process was interrupted, restarting...
 </source>
       <translation type="unfinished">Previous cache process was interrupted, restarting...
 </translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="369"/>
+      <location filename="../../addonmanager_cache.py" line="116"/>
       <source>Custom repo list changed, forcing recache...
 </source>
       <translation type="unfinished">Custom repo list changed, forcing recache...
 </translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="422"/>
+      <location filename="../../AddonManager.py" line="348"/>
       <source>Addon manager</source>
       <translation type="unfinished">Addon manager</translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="429"/>
+      <location filename="../../AddonManager.py" line="355"/>
       <source>You must restart FreeCAD for changes to take effect.</source>
       <translation type="unfinished">You must restart FreeCAD for changes to take effect.</translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="435"/>
+      <location filename="../../AddonManager.py" line="361"/>
       <source>Restart now</source>
       <translation type="unfinished">Restart now</translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="436"/>
+      <location filename="../../AddonManager.py" line="362"/>
       <source>Restart later</source>
       <translation type="unfinished">Restart later</translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="501"/>
-      <location filename="../../AddonManager.py" line="934"/>
+      <location filename="../../AddonManager.py" line="427"/>
+      <location filename="../../AddonManager.py" line="860"/>
       <source>Refresh local cache</source>
       <translation>Ανανέωση τοπικής προσωρινής μνήμης</translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="629"/>
+      <location filename="../../AddonManager.py" line="555"/>
       <source>Updating cache...</source>
       <translation type="unfinished">Updating cache...</translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="663"/>
+      <location filename="../../AddonManager.py" line="589"/>
       <source>Could not find addon &apos;{}&apos; to select
 </source>
       <translation type="unfinished">Could not find addon &apos;{}&apos; to select
 </translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="691"/>
-      <location filename="../../AddonManager.py" line="724"/>
+      <location filename="../../AddonManager.py" line="617"/>
+      <location filename="../../AddonManager.py" line="650"/>
       <source>Checking for updates...</source>
       <translation type="unfinished">Checking for updates...</translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="719"/>
+      <location filename="../../AddonManager.py" line="645"/>
       <source>Apply {} update(s)</source>
       <translation type="unfinished">Apply {} update(s)</translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="728"/>
+      <location filename="../../AddonManager.py" line="654"/>
       <source>No updates available</source>
       <translation type="unfinished">No updates available</translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="861"/>
-      <location filename="../../AddonManager.py" line="887"/>
-      <location filename="../../AddonManager.py" line="988"/>
+      <location filename="../../AddonManager.py" line="787"/>
+      <location filename="../../AddonManager.py" line="813"/>
+      <location filename="../../AddonManager.py" line="914"/>
       <source>Cannot launch a new installer until the previous one has finished.</source>
       <translation type="unfinished">Cannot launch a new installer until the previous one has finished.</translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="974"/>
+      <location filename="../../AddonManager.py" line="900"/>
       <source>Execution of macro failed. See console for failure details.</source>
       <translation type="unfinished">Execution of macro failed. See console for failure details.</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_devmode.py" line="116"/>
-      <location filename="../../addonmanager_devmode_people_table.py" line="88"/>
+      <location filename="../../addonmanager_devmode.py" line="114"/>
+      <location filename="../../addonmanager_devmode_people_table.py" line="86"/>
       <location filename="../../addonmanager_devmode_person_editor.py" line="47"/>
-      <location filename="../../package_list.py" line="398"/>
+      <location filename="../../package_list.py" line="386"/>
       <source>Maintainer</source>
       <translation>Συντηρητής</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_devmode.py" line="117"/>
-      <location filename="../../addonmanager_devmode_people_table.py" line="89"/>
-      <location filename="../../addonmanager_devmode_person_editor.py" line="50"/>
-      <location filename="../../package_list.py" line="435"/>
+      <location filename="../../addonmanager_devmode.py" line="115"/>
+      <location filename="../../addonmanager_devmode_people_table.py" line="87"/>
+      <location filename="../../addonmanager_devmode_person_editor.py" line="49"/>
+      <location filename="../../package_list.py" line="423"/>
       <source>Author</source>
       <translation>Συγγραφέας</translation>
     </message>
     <message>
-      <location filename="../../manage_python_dependencies.py" line="166"/>
+      <location filename="../../manage_python_dependencies.py" line="162"/>
       <source>New Python Version Detected</source>
       <translation type="unfinished">New Python Version Detected</translation>
     </message>
     <message>
-      <location filename="../../manage_python_dependencies.py" line="170"/>
+      <location filename="../../manage_python_dependencies.py" line="166"/>
       <source>This appears to be the first time this version of Python has been used with the Addon Manager. Would you like to install the same auto-installed dependencies for it?</source>
       <translation type="unfinished">This appears to be the first time this version of Python has been used with the Addon Manager. Would you like to install the same auto-installed dependencies for it?</translation>
     </message>
     <message>
-      <location filename="../../manage_python_dependencies.py" line="202"/>
+      <location filename="../../manage_python_dependencies.py" line="196"/>
       <source>Processing, please wait...</source>
       <translation type="unfinished">Processing, please wait...</translation>
     </message>
     <message>
-      <location filename="../../manage_python_dependencies.py" line="253"/>
-      <location filename="../../package_details.py" line="918"/>
+      <location filename="../../manage_python_dependencies.py" line="244"/>
+      <location filename="../../package_details.py" line="872"/>
       <source>Update</source>
       <translation>Ενημέρωση</translation>
     </message>
     <message>
-      <location filename="../../manage_python_dependencies.py" line="355"/>
+      <location filename="../../manage_python_dependencies.py" line="339"/>
       <source>Updating...</source>
       <translation type="unfinished">Updating...</translation>
     </message>
@@ -1309,63 +1294,63 @@ installed addons will be checked for available updates
       <translation type="unfinished">Could not import QtNetwork -- it does not appear to be installed on your system. Your provider may have a package for this dependency (often called &quot;python3-pyside2.qtnetwork&quot;)</translation>
     </message>
     <message>
-      <location filename="../../NetworkManager.py" line="221"/>
+      <location filename="../../NetworkManager.py" line="211"/>
       <source>Failed to convert the specified proxy port &apos;{}&apos; to a port number</source>
       <translation type="unfinished">Failed to convert the specified proxy port &apos;{}&apos; to a port number</translation>
     </message>
     <message>
-      <location filename="../../NetworkManager.py" line="252"/>
+      <location filename="../../NetworkManager.py" line="240"/>
       <source>Parameter error: mutually exclusive proxy options set. Resetting to default.</source>
       <translation type="unfinished">Parameter error: mutually exclusive proxy options set. Resetting to default.</translation>
     </message>
     <message>
-      <location filename="../../NetworkManager.py" line="267"/>
+      <location filename="../../NetworkManager.py" line="255"/>
       <source>Parameter error: user proxy indicated, but no proxy provided. Resetting to default.</source>
       <translation type="unfinished">Parameter error: user proxy indicated, but no proxy provided. Resetting to default.</translation>
     </message>
     <message>
-      <location filename="../../NetworkManager.py" line="406"/>
+      <location filename="../../NetworkManager.py" line="386"/>
       <source>Addon Manager: Unexpected {} response from server</source>
       <translation type="unfinished">Addon Manager: Unexpected {} response from server</translation>
     </message>
     <message>
-      <location filename="../../NetworkManager.py" line="506"/>
+      <location filename="../../NetworkManager.py" line="479"/>
       <source>Error with encrypted connection</source>
       <translation type="unfinished">Error with encrypted connection</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_uninstaller_gui.py" line="84"/>
+      <location filename="../../addonmanager_uninstaller_gui.py" line="79"/>
       <location filename="../../AddonManagerTest/gui/test_uninstaller_gui.py" line="61"/>
-      <location filename="../../AddonManagerTest/gui/test_uninstaller_gui.py" line="75"/>
+      <location filename="../../AddonManagerTest/gui/test_uninstaller_gui.py" line="71"/>
       <source>Confirm remove</source>
       <translation type="unfinished">Confirm remove</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_uninstaller_gui.py" line="87"/>
+      <location filename="../../addonmanager_uninstaller_gui.py" line="80"/>
       <source>Are you sure you want to uninstall {}?</source>
       <translation type="unfinished">Are you sure you want to uninstall {}?</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_uninstaller_gui.py" line="95"/>
-      <location filename="../../AddonManagerTest/gui/test_uninstaller_gui.py" line="91"/>
-      <location filename="../../AddonManagerTest/gui/test_uninstaller_gui.py" line="108"/>
+      <location filename="../../addonmanager_uninstaller_gui.py" line="90"/>
+      <location filename="../../AddonManagerTest/gui/test_uninstaller_gui.py" line="81"/>
+      <location filename="../../AddonManagerTest/gui/test_uninstaller_gui.py" line="94"/>
       <source>Removing Addon</source>
       <translation type="unfinished">Removing Addon</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_uninstaller_gui.py" line="96"/>
+      <location filename="../../addonmanager_uninstaller_gui.py" line="91"/>
       <source>Removing {}</source>
       <translation type="unfinished">Removing {}</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_uninstaller_gui.py" line="121"/>
-      <location filename="../../AddonManagerTest/gui/test_uninstaller_gui.py" line="131"/>
+      <location filename="../../addonmanager_uninstaller_gui.py" line="114"/>
+      <location filename="../../AddonManagerTest/gui/test_uninstaller_gui.py" line="109"/>
       <source>Uninstall complete</source>
       <translation type="unfinished">Uninstall complete</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_uninstaller_gui.py" line="135"/>
-      <location filename="../../AddonManagerTest/gui/test_uninstaller_gui.py" line="144"/>
+      <location filename="../../addonmanager_uninstaller_gui.py" line="126"/>
+      <location filename="../../AddonManagerTest/gui/test_uninstaller_gui.py" line="118"/>
       <source>Uninstall failed</source>
       <translation type="unfinished">Uninstall failed</translation>
     </message>
@@ -1375,183 +1360,183 @@ installed addons will be checked for available updates
       <translation type="unfinished">Addon Manager Warning: Could not import QtWebEngineWidgets -- README data will display as text-only</translation>
     </message>
     <message>
-      <location filename="../../package_details.py" line="187"/>
+      <location filename="../../package_details.py" line="177"/>
       <source>Version {version} installed on {date}</source>
       <translation type="unfinished">Version {version} installed on {date}</translation>
     </message>
     <message>
-      <location filename="../../package_details.py" line="192"/>
+      <location filename="../../package_details.py" line="184"/>
       <source>Version {version} installed</source>
       <translation type="unfinished">Version {version} installed</translation>
     </message>
     <message>
-      <location filename="../../package_details.py" line="196"/>
+      <location filename="../../package_details.py" line="188"/>
       <source>Installed on {date}</source>
       <translation type="unfinished">Installed on {date}</translation>
     </message>
     <message>
-      <location filename="../../package_details.py" line="200"/>
-      <location filename="../../package_list.py" line="449"/>
-      <location filename="../../package_list.py" line="507"/>
-      <location filename="../../package_list.py" line="822"/>
+      <location filename="../../package_details.py" line="191"/>
+      <location filename="../../package_list.py" line="435"/>
+      <location filename="../../package_list.py" line="483"/>
+      <location filename="../../package_list.py" line="770"/>
       <source>Installed</source>
       <translation type="unfinished">Installed</translation>
     </message>
     <message>
-      <location filename="../../package_details.py" line="210"/>
+      <location filename="../../package_details.py" line="200"/>
       <source>On branch {}, update available to version</source>
       <translation type="unfinished">On branch {}, update available to version</translation>
     </message>
     <message>
-      <location filename="../../package_details.py" line="219"/>
+      <location filename="../../package_details.py" line="207"/>
       <source>Update available to version</source>
       <translation type="unfinished">Update available to version</translation>
     </message>
     <message>
-      <location filename="../../package_details.py" line="230"/>
+      <location filename="../../package_details.py" line="218"/>
       <source>An update is available</source>
       <translation type="unfinished">An update is available</translation>
     </message>
     <message>
-      <location filename="../../package_details.py" line="248"/>
+      <location filename="../../package_details.py" line="236"/>
       <source>Git tag &apos;{}&apos; checked out, no updates possible</source>
       <translation type="unfinished">Git tag &apos;{}&apos; checked out, no updates possible</translation>
     </message>
     <message>
-      <location filename="../../package_details.py" line="256"/>
+      <location filename="../../package_details.py" line="244"/>
       <source>This is the latest version available for branch {}</source>
       <translation type="unfinished">This is the latest version available for branch {}</translation>
     </message>
     <message>
-      <location filename="../../package_details.py" line="264"/>
+      <location filename="../../package_details.py" line="249"/>
       <source>Updated, please restart FreeCAD to use</source>
       <translation type="unfinished">Updated, please restart FreeCAD to use</translation>
     </message>
     <message>
-      <location filename="../../package_details.py" line="271"/>
+      <location filename="../../package_details.py" line="256"/>
       <source>Update check in progress</source>
       <translation type="unfinished">Update check in progress</translation>
     </message>
     <message>
-      <location filename="../../package_details.py" line="276"/>
+      <location filename="../../package_details.py" line="260"/>
       <source>Automatic update checks disabled</source>
       <translation type="unfinished">Automatic update checks disabled</translation>
     </message>
     <message>
-      <location filename="../../package_details.py" line="298"/>
+      <location filename="../../package_details.py" line="278"/>
       <source>Installation location</source>
       <translation type="unfinished">Installation location</translation>
     </message>
     <message>
-      <location filename="../../package_details.py" line="345"/>
+      <location filename="../../package_details.py" line="323"/>
       <source>WARNING: This addon is obsolete</source>
       <translation type="unfinished">WARNING: This addon is obsolete</translation>
     </message>
     <message>
-      <location filename="../../package_details.py" line="355"/>
+      <location filename="../../package_details.py" line="331"/>
       <source>WARNING: This addon is Python 2 Only</source>
       <translation type="unfinished">WARNING: This addon is Python 2 Only</translation>
     </message>
     <message>
-      <location filename="../../package_details.py" line="365"/>
+      <location filename="../../package_details.py" line="339"/>
       <source>WARNING: This addon requires FreeCAD </source>
       <translation type="unfinished">WARNING: This addon requires FreeCAD </translation>
     </message>
     <message>
-      <location filename="../../package_details.py" line="379"/>
+      <location filename="../../package_details.py" line="351"/>
       <source>WARNING: This addon is currently installed, but disabled. Use the &apos;enable&apos; button to re-enable.</source>
       <translation type="unfinished">WARNING: This addon is currently installed, but disabled. Use the &apos;enable&apos; button to re-enable.</translation>
     </message>
     <message>
-      <location filename="../../package_details.py" line="510"/>
-      <location filename="../../package_details.py" line="523"/>
+      <location filename="../../package_details.py" line="476"/>
+      <location filename="../../package_details.py" line="487"/>
       <source>No URL or wiki page provided by this macro</source>
       <translation type="unfinished">No URL or wiki page provided by this macro</translation>
     </message>
     <message>
-      <location filename="../../package_details.py" line="627"/>
+      <location filename="../../package_details.py" line="589"/>
       <source>Could not load README data from URL {}</source>
       <translation type="unfinished">Could not load README data from URL {}</translation>
     </message>
     <message>
-      <location filename="../../package_details.py" line="653"/>
+      <location filename="../../package_details.py" line="617"/>
       <source>This Addon will be enabled next time you restart FreeCAD.</source>
       <translation type="unfinished">This Addon will be enabled next time you restart FreeCAD.</translation>
     </message>
     <message>
-      <location filename="../../package_details.py" line="671"/>
+      <location filename="../../package_details.py" line="635"/>
       <source>This Addon will be disabled next time you restart FreeCAD.</source>
       <translation type="unfinished">This Addon will be disabled next time you restart FreeCAD.</translation>
     </message>
     <message>
-      <location filename="../../package_details.py" line="949"/>
+      <location filename="../../package_details.py" line="899"/>
       <source>QtWebEngine Python bindings not installed -- using fallback README display.</source>
       <translation type="unfinished">QtWebEngine Python bindings not installed -- using fallback README display.</translation>
     </message>
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="476"/>
-      <location filename="../../package_details.py" line="682"/>
+      <location filename="../../package_details.py" line="644"/>
       <location filename="../../AddonManagerTest/gui/test_installer_gui.py" line="54"/>
       <source>Success</source>
       <translation type="unfinished">Success</translation>
     </message>
     <message>
-      <location filename="../../package_details.py" line="686"/>
+      <location filename="../../package_details.py" line="648"/>
       <source>Branch change succeeded, please restart to use the new version.</source>
       <translation type="unfinished">Branch change succeeded, please restart to use the new version.</translation>
     </message>
     <message>
-      <location filename="../../package_details.py" line="707"/>
+      <location filename="../../package_details.py" line="667"/>
       <source>Changed to git ref &apos;{}&apos; -- please restart to use Addon.</source>
       <translation type="unfinished">Changed to git ref &apos;{}&apos; -- please restart to use Addon.</translation>
     </message>
     <message>
-      <location filename="../../package_details.py" line="757"/>
+      <location filename="../../package_details.py" line="713"/>
       <source>Page JavaScript reported</source>
       <translation type="unfinished">Page JavaScript reported</translation>
     </message>
     <message>
-      <location filename="../../package_details.py" line="912"/>
+      <location filename="../../package_details.py" line="866"/>
       <source>Install</source>
       <translation>Εγκατάσταση</translation>
     </message>
     <message>
-      <location filename="../../package_details.py" line="915"/>
+      <location filename="../../package_details.py" line="869"/>
       <source>Uninstall</source>
       <translation>Απεγκατάσταση</translation>
     </message>
     <message>
-      <location filename="../../package_details.py" line="923"/>
+      <location filename="../../package_details.py" line="875"/>
       <source>Check for Update</source>
       <translation type="unfinished">Check for Update</translation>
     </message>
     <message>
-      <location filename="../../package_details.py" line="926"/>
+      <location filename="../../package_details.py" line="878"/>
       <source>Run Macro</source>
       <translation type="unfinished">Run Macro</translation>
     </message>
     <message>
-      <location filename="../../package_details.py" line="929"/>
+      <location filename="../../package_details.py" line="881"/>
       <source>Change Branch</source>
       <translation>Αλλαγή Κλάδου</translation>
     </message>
     <message>
-      <location filename="../../package_details.py" line="932"/>
+      <location filename="../../package_details.py" line="884"/>
       <source>Enable</source>
       <translation>Ενεργοποίηση</translation>
     </message>
     <message>
-      <location filename="../../package_details.py" line="935"/>
+      <location filename="../../package_details.py" line="887"/>
       <source>Disable</source>
       <translation>Απενεργοποίηση</translation>
     </message>
     <message>
-      <location filename="../../package_details.py" line="940"/>
+      <location filename="../../package_details.py" line="890"/>
       <source>Return to package list</source>
       <translation type="unfinished">Return to package list</translation>
     </message>
     <message>
-      <location filename="../../package_details.py" line="957"/>
+      <location filename="../../package_details.py" line="907"/>
       <source>The page is taking a long time to load... showing the data we have so far...</source>
       <translation type="unfinished">The page is taking a long time to load... showing the data we have so far...</translation>
     </message>
@@ -1566,17 +1551,17 @@ installed addons will be checked for available updates
       <translation type="unfinished">Checking for connection to GitHub...</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_connection_checker.py" line="95"/>
+      <location filename="../../addonmanager_connection_checker.py" line="93"/>
       <source>Connection failed</source>
       <translation type="unfinished">Connection failed</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_connection_checker.py" line="101"/>
+      <location filename="../../addonmanager_connection_checker.py" line="99"/>
       <source>Missing dependency</source>
       <translation type="unfinished">Missing dependency</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_connection_checker.py" line="105"/>
+      <location filename="../../addonmanager_connection_checker.py" line="103"/>
       <source>Could not import QtNetwork -- see Report View for details. Addon Manager unavailable.</source>
       <translation type="unfinished">Could not import QtNetwork -- see Report View for details. Addon Manager unavailable.</translation>
     </message>
@@ -1587,12 +1572,12 @@ installed addons will be checked for available updates
       <translation type="unfinished">Other...</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_devmode_license_selector.py" line="208"/>
+      <location filename="../../addonmanager_devmode_license_selector.py" line="204"/>
       <source>Select the corresponding license file in your Addon</source>
       <translation type="unfinished">Select the corresponding license file in your Addon</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_devmode_license_selector.py" line="241"/>
+      <location filename="../../addonmanager_devmode_license_selector.py" line="237"/>
       <source>Location for new license file</source>
       <translation type="unfinished">Location for new license file</translation>
     </message>
@@ -1607,75 +1592,75 @@ installed addons will be checked for available updates
       <translation type="unfinished">Failed to install macro {}</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_devmode_add_content.py" line="137"/>
+      <location filename="../../addonmanager_devmode_add_content.py" line="127"/>
       <source>Unrecognized content kind &apos;{}&apos;</source>
       <translation type="unfinished">Unrecognized content kind &apos;{}&apos;</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_devmode_add_content.py" line="202"/>
+      <location filename="../../addonmanager_devmode_add_content.py" line="188"/>
       <source>Unable to locate icon at {}</source>
       <translation type="unfinished">Unable to locate icon at {}</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_devmode_add_content.py" line="279"/>
+      <location filename="../../addonmanager_devmode_add_content.py" line="260"/>
       <source>Select an icon file for this content item</source>
       <translation type="unfinished">Select an icon file for this content item</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_devmode.py" line="732"/>
-      <location filename="../../addonmanager_devmode_add_content.py" line="293"/>
-      <location filename="../../addonmanager_devmode_add_content.py" line="332"/>
+      <location filename="../../addonmanager_devmode.py" line="691"/>
+      <location filename="../../addonmanager_devmode_add_content.py" line="274"/>
+      <location filename="../../addonmanager_devmode_add_content.py" line="313"/>
       <source>{} is not a subdirectory of {}</source>
       <translation type="unfinished">{} is not a subdirectory of {}</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_devmode_add_content.py" line="311"/>
+      <location filename="../../addonmanager_devmode_add_content.py" line="292"/>
       <source>Select the subdirectory for this content item</source>
       <translation type="unfinished">Select the subdirectory for this content item</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_devmode_add_content.py" line="452"/>
+      <location filename="../../addonmanager_devmode_add_content.py" line="427"/>
       <source>Automatic</source>
       <translation>Αυτόματη</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_devmode_add_content.py" line="453"/>
+      <location filename="../../addonmanager_devmode_add_content.py" line="428"/>
       <source>Workbench</source>
       <translation>Πάγκος εργασίας</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_devmode_add_content.py" line="454"/>
+      <location filename="../../addonmanager_devmode_add_content.py" line="429"/>
       <source>Addon</source>
       <translation type="unfinished">Addon</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_devmode_add_content.py" line="455"/>
+      <location filename="../../addonmanager_devmode_add_content.py" line="430"/>
       <source>Python</source>
       <translation type="unfinished">Python</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_devmode_add_content.py" line="465"/>
+      <location filename="../../addonmanager_devmode_add_content.py" line="440"/>
       <source>Yes</source>
       <translation type="unfinished">Yes</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_devmode_add_content.py" line="521"/>
+      <location filename="../../addonmanager_devmode_add_content.py" line="494"/>
       <source>Internal Workbench</source>
       <translation type="unfinished">Internal Workbench</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_devmode_add_content.py" line="524"/>
+      <location filename="../../addonmanager_devmode_add_content.py" line="496"/>
       <source>External Addon</source>
       <translation type="unfinished">External Addon</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_devmode_add_content.py" line="527"/>
+      <location filename="../../addonmanager_devmode_add_content.py" line="497"/>
       <source>Python Package</source>
       <translation type="unfinished">Python Package</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_devmode_add_content.py" line="597"/>
-      <location filename="../../addonmanager_devmode_add_content.py" line="610"/>
+      <location filename="../../addonmanager_devmode_add_content.py" line="559"/>
+      <location filename="../../addonmanager_devmode_add_content.py" line="570"/>
       <source>Other...</source>
       <translation type="unfinished">Other...</translation>
     </message>
@@ -1692,10 +1677,10 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="164"/>
       <location filename="../../addonmanager_installer_gui.py" line="201"/>
-      <location filename="../../AddonManagerTest/gui/test_installer_gui.py" line="146"/>
-      <location filename="../../AddonManagerTest/gui/test_installer_gui.py" line="163"/>
-      <location filename="../../AddonManagerTest/gui/test_installer_gui.py" line="178"/>
-      <location filename="../../AddonManagerTest/gui/test_installer_gui.py" line="193"/>
+      <location filename="../../AddonManagerTest/gui/test_installer_gui.py" line="124"/>
+      <location filename="../../AddonManagerTest/gui/test_installer_gui.py" line="137"/>
+      <location filename="../../AddonManagerTest/gui/test_installer_gui.py" line="148"/>
+      <location filename="../../AddonManagerTest/gui/test_installer_gui.py" line="159"/>
       <source>Missing Requirement</source>
       <translation type="unfinished">Missing Requirement</translation>
     </message>
@@ -1716,7 +1701,7 @@ installed addons will be checked for available updates
     </message>
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="243"/>
-      <location filename="../../AddonManagerTest/gui/test_installer_gui.py" line="231"/>
+      <location filename="../../AddonManagerTest/gui/test_installer_gui.py" line="189"/>
       <source>Incompatible Python version</source>
       <translation type="unfinished">Incompatible Python version</translation>
     </message>
@@ -1738,7 +1723,7 @@ installed addons will be checked for available updates
     </message>
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="340"/>
-      <location filename="../../AddonManagerTest/gui/test_installer_gui.py" line="84"/>
+      <location filename="../../AddonManagerTest/gui/test_installer_gui.py" line="76"/>
       <source>Cannot execute Python</source>
       <translation type="unfinished">Cannot execute Python</translation>
     </message>
@@ -1754,7 +1739,7 @@ installed addons will be checked for available updates
     </message>
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="364"/>
-      <location filename="../../AddonManagerTest/gui/test_installer_gui.py" line="98"/>
+      <location filename="../../AddonManagerTest/gui/test_installer_gui.py" line="86"/>
       <source>Cannot execute pip</source>
       <translation type="unfinished">Cannot execute pip</translation>
     </message>
@@ -1771,7 +1756,7 @@ installed addons will be checked for available updates
     </message>
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="390"/>
-      <location filename="../../AddonManagerTest/gui/test_installer_gui.py" line="112"/>
+      <location filename="../../AddonManagerTest/gui/test_installer_gui.py" line="96"/>
       <source>Package installation failed</source>
       <translation type="unfinished">Package installation failed</translation>
     </message>
@@ -1807,7 +1792,7 @@ installed addons will be checked for available updates
     </message>
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="489"/>
-      <location filename="../../AddonManagerTest/gui/test_installer_gui.py" line="68"/>
+      <location filename="../../AddonManagerTest/gui/test_installer_gui.py" line="64"/>
       <source>Installation Failed</source>
       <translation type="unfinished">Installation Failed</translation>
     </message>
@@ -1818,19 +1803,19 @@ installed addons will be checked for available updates
     </message>
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="607"/>
-      <location filename="../../install_to_toolbar.py" line="102"/>
+      <location filename="../../install_to_toolbar.py" line="96"/>
       <source>Create new toolbar</source>
       <translation type="unfinished">Create new toolbar</translation>
     </message>
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="733"/>
-      <location filename="../../install_to_toolbar.py" line="245"/>
+      <location filename="../../install_to_toolbar.py" line="231"/>
       <source>A macro installed with the FreeCAD Addon Manager</source>
       <translation type="unfinished">A macro installed with the FreeCAD Addon Manager</translation>
     </message>
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="735"/>
-      <location filename="../../install_to_toolbar.py" line="247"/>
+      <location filename="../../install_to_toolbar.py" line="233"/>
       <source>Run</source>
       <comment>Indicates a macro that can be &apos;run&apos;</comment>
       <translation>Εκτέλεση</translation>
@@ -1841,304 +1826,304 @@ installed addons will be checked for available updates
       <translation type="unfinished">Unable to read data from GitHub: check your internet connection and proxy settings and try again.</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_devmode.py" line="197"/>
+      <location filename="../../addonmanager_devmode.py" line="191"/>
       <source>XML failure while reading metadata from file {}</source>
       <translation type="unfinished">XML failure while reading metadata from file {}</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_devmode.py" line="204"/>
+      <location filename="../../addonmanager_devmode.py" line="198"/>
       <source>Invalid metadata in file {}</source>
       <translation type="unfinished">Invalid metadata in file {}</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_devmode.py" line="246"/>
+      <location filename="../../addonmanager_devmode.py" line="240"/>
       <source>WARNING: Path specified in package.xml metadata does not match currently checked-out branch.</source>
       <translation type="unfinished">WARNING: Path specified in package.xml metadata does not match currently checked-out branch.</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_devmode.py" line="268"/>
+      <location filename="../../addonmanager_devmode.py" line="262"/>
       <source>Name</source>
       <translation>Όνομα</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_devmode.py" line="271"/>
+      <location filename="../../addonmanager_devmode.py" line="264"/>
       <source>Class</source>
       <translation>Κλάση</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_devmode.py" line="276"/>
+      <location filename="../../addonmanager_devmode.py" line="267"/>
       <source>Description</source>
       <translation>Περιγραφή</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_devmode.py" line="282"/>
+      <location filename="../../addonmanager_devmode.py" line="271"/>
       <source>Subdirectory</source>
       <translation type="unfinished">Subdirectory</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_devmode.py" line="288"/>
+      <location filename="../../addonmanager_devmode.py" line="274"/>
       <source>Files</source>
       <translation type="unfinished">Files</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_devmode.py" line="464"/>
+      <location filename="../../addonmanager_devmode.py" line="432"/>
       <source>Select the folder containing your Addon</source>
       <translation type="unfinished">Select the folder containing your Addon</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_devmode.py" line="593"/>
+      <location filename="../../addonmanager_devmode.py" line="561"/>
       <source>No Vermin, cancelling operation.</source>
       <comment>NOTE: Vermin is a Python package and proper noun - do not translate</comment>
       <translation type="unfinished">No Vermin, cancelling operation.</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_devmode.py" line="600"/>
+      <location filename="../../addonmanager_devmode.py" line="566"/>
       <source>Scanning Addon for Python version compatibility</source>
       <translation type="unfinished">Scanning Addon for Python version compatibility</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_devmode.py" line="631"/>
+      <location filename="../../addonmanager_devmode.py" line="593"/>
       <source>Minimum Python Version Detected</source>
       <translation type="unfinished">Minimum Python Version Detected</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_devmode.py" line="635"/>
+      <location filename="../../addonmanager_devmode.py" line="597"/>
       <source>Vermin auto-detected a required version of Python 3.{}</source>
       <translation type="unfinished">Vermin auto-detected a required version of Python 3.{}</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_devmode.py" line="647"/>
+      <location filename="../../addonmanager_devmode.py" line="609"/>
       <source>Install Vermin?</source>
       <translation type="unfinished">Install Vermin?</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_devmode.py" line="651"/>
+      <location filename="../../addonmanager_devmode.py" line="613"/>
       <source>Auto-detecting the required version of Python for this Addon requires Vermin (https://pypi.org/project/vermin/). OK to install?</source>
       <translation type="unfinished">Auto-detecting the required version of Python for this Addon requires Vermin (https://pypi.org/project/vermin/). OK to install?</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_devmode.py" line="658"/>
+      <location filename="../../addonmanager_devmode.py" line="619"/>
       <source>Attempting to install Vermin from PyPi</source>
       <translation type="unfinished">Attempting to install Vermin from PyPi</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_devmode.py" line="685"/>
-      <location filename="../../addonmanager_devmode.py" line="700"/>
+      <location filename="../../addonmanager_devmode.py" line="644"/>
+      <location filename="../../addonmanager_devmode.py" line="659"/>
       <source>Installation failed</source>
       <translation type="unfinished">Installation failed</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_devmode.py" line="690"/>
+      <location filename="../../addonmanager_devmode.py" line="649"/>
       <source>Failed to install Vermin -- check Report View for details.</source>
       <comment>&apos;Vermin&apos; is the name of a Python package, do not translate</comment>
       <translation type="unfinished">Failed to install Vermin -- check Report View for details.</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_devmode.py" line="705"/>
+      <location filename="../../addonmanager_devmode.py" line="664"/>
       <source>Failed to import vermin after installation -- cannot scan Addon.</source>
       <comment>&apos;vermin&apos; is the name of a Python package, do not translate</comment>
       <translation type="unfinished">Failed to import vermin after installation -- cannot scan Addon.</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_devmode.py" line="718"/>
+      <location filename="../../addonmanager_devmode.py" line="677"/>
       <source>Select an icon file for this package</source>
       <translation type="unfinished">Select an icon file for this package</translation>
     </message>
     <message>
-      <location filename="../../package_list.py" line="167"/>
+      <location filename="../../package_list.py" line="163"/>
       <source>Filter is valid</source>
       <translation type="unfinished">Filter is valid</translation>
     </message>
     <message>
-      <location filename="../../package_list.py" line="173"/>
+      <location filename="../../package_list.py" line="169"/>
       <source>Filter regular expression is invalid</source>
       <translation type="unfinished">Filter regular expression is invalid</translation>
     </message>
     <message>
-      <location filename="../../package_list.py" line="232"/>
+      <location filename="../../package_list.py" line="224"/>
       <source>Click for details about package {}</source>
       <translation type="unfinished">Click for details about package {}</translation>
     </message>
     <message>
-      <location filename="../../package_list.py" line="236"/>
+      <location filename="../../package_list.py" line="230"/>
       <source>Click for details about workbench {}</source>
       <translation type="unfinished">Click for details about workbench {}</translation>
     </message>
     <message>
-      <location filename="../../package_list.py" line="240"/>
+      <location filename="../../package_list.py" line="232"/>
       <source>Click for details about macro {}</source>
       <translation type="unfinished">Click for details about macro {}</translation>
     </message>
     <message>
-      <location filename="../../package_list.py" line="403"/>
+      <location filename="../../package_list.py" line="391"/>
       <source>Maintainers:</source>
       <translation type="unfinished">Maintainers:</translation>
     </message>
     <message>
-      <location filename="../../package_list.py" line="408"/>
+      <location filename="../../package_list.py" line="396"/>
       <source>Tags</source>
       <translation>Ετικέτες</translation>
     </message>
     <message>
-      <location filename="../../package_list.py" line="428"/>
+      <location filename="../../package_list.py" line="416"/>
       <source>updated</source>
       <translation type="unfinished">updated</translation>
     </message>
     <message>
-      <location filename="../../package_list.py" line="451"/>
-      <location filename="../../package_list.py" line="511"/>
+      <location filename="../../package_list.py" line="437"/>
+      <location filename="../../package_list.py" line="487"/>
       <source>Up-to-date</source>
       <translation type="unfinished">Up-to-date</translation>
     </message>
     <message>
-      <location filename="../../package_list.py" line="453"/>
-      <location filename="../../package_list.py" line="515"/>
-      <location filename="../../package_list.py" line="832"/>
+      <location filename="../../package_list.py" line="439"/>
+      <location filename="../../package_list.py" line="491"/>
+      <location filename="../../package_list.py" line="778"/>
       <source>Update available</source>
       <translation type="unfinished">Update available</translation>
     </message>
     <message>
-      <location filename="../../package_list.py" line="456"/>
-      <location filename="../../package_list.py" line="521"/>
+      <location filename="../../package_list.py" line="442"/>
+      <location filename="../../package_list.py" line="497"/>
       <source>Pending restart</source>
       <translation type="unfinished">Pending restart</translation>
     </message>
     <message>
-      <location filename="../../package_list.py" line="463"/>
-      <location filename="../../package_list.py" line="528"/>
+      <location filename="../../package_list.py" line="444"/>
+      <location filename="../../package_list.py" line="500"/>
       <source>DISABLED</source>
       <translation type="unfinished">DISABLED</translation>
     </message>
     <message>
-      <location filename="../../package_list.py" line="479"/>
+      <location filename="../../package_list.py" line="459"/>
       <source>Installed version</source>
       <translation type="unfinished">Installed version</translation>
     </message>
     <message>
-      <location filename="../../package_list.py" line="487"/>
+      <location filename="../../package_list.py" line="465"/>
       <source>Unknown version</source>
       <translation type="unfinished">Unknown version</translation>
     </message>
     <message>
-      <location filename="../../package_list.py" line="490"/>
+      <location filename="../../package_list.py" line="467"/>
       <source>Installed on</source>
       <translation type="unfinished">Installed on</translation>
     </message>
     <message>
-      <location filename="../../package_list.py" line="501"/>
+      <location filename="../../package_list.py" line="477"/>
       <source>Available version</source>
       <translation type="unfinished">Available version</translation>
     </message>
     <message>
-      <location filename="../../package_list.py" line="797"/>
+      <location filename="../../package_list.py" line="747"/>
       <source>Show Addons containing:</source>
       <translation type="unfinished">Show Addons containing:</translation>
     </message>
     <message>
-      <location filename="../../package_list.py" line="800"/>
+      <location filename="../../package_list.py" line="750"/>
       <source>All</source>
       <translation>Όλα</translation>
     </message>
     <message>
-      <location filename="../../package_list.py" line="803"/>
+      <location filename="../../package_list.py" line="753"/>
       <source>Workbenches</source>
       <translation>Πάγκοι Εργασίας</translation>
     </message>
     <message>
-      <location filename="../../package_list.py" line="806"/>
+      <location filename="../../package_list.py" line="756"/>
       <source>Macros</source>
       <translation>Μακροεντολές</translation>
     </message>
     <message>
-      <location filename="../../package_list.py" line="811"/>
+      <location filename="../../package_list.py" line="759"/>
       <source>Preference Packs</source>
       <translation type="unfinished">Preference Packs</translation>
     </message>
     <message>
-      <location filename="../../package_list.py" line="815"/>
+      <location filename="../../package_list.py" line="763"/>
       <source>Status:</source>
       <translation type="unfinished">Status:</translation>
     </message>
     <message>
-      <location filename="../../package_list.py" line="818"/>
+      <location filename="../../package_list.py" line="766"/>
       <source>Any</source>
       <translation>Οποιαδήποτε</translation>
     </message>
     <message>
-      <location filename="../../package_list.py" line="826"/>
+      <location filename="../../package_list.py" line="774"/>
       <source>Not installed</source>
       <translation type="unfinished">Not installed</translation>
     </message>
     <message>
-      <location filename="../../package_list.py" line="836"/>
+      <location filename="../../package_list.py" line="782"/>
       <source>Filter</source>
       <translation>Φίλτρο</translation>
     </message>
     <message>
-      <location filename="../../package_list.py" line="839"/>
+      <location filename="../../package_list.py" line="785"/>
       <source>OK</source>
       <translation>ΟΚ</translation>
     </message>
     <message>
-      <location filename="../../change_branch.py" line="102"/>
+      <location filename="../../change_branch.py" line="94"/>
       <source>DANGER: Developer feature</source>
       <translation type="unfinished">DANGER: Developer feature</translation>
     </message>
     <message>
-      <location filename="../../change_branch.py" line="106"/>
+      <location filename="../../change_branch.py" line="98"/>
       <source>DANGER: Switching branches is intended for developers and beta testers, and may result in broken, non-backwards compatible documents, instability, crashes, and/or the premature heat death of the universe. Are you sure you want to continue?</source>
       <translation type="unfinished">DANGER: Switching branches is intended for developers and beta testers, and may result in broken, non-backwards compatible documents, instability, crashes, and/or the premature heat death of the universe. Are you sure you want to continue?</translation>
     </message>
     <message>
-      <location filename="../../change_branch.py" line="115"/>
+      <location filename="../../change_branch.py" line="107"/>
       <source>There are local changes</source>
       <translation type="unfinished">There are local changes</translation>
     </message>
     <message>
-      <location filename="../../change_branch.py" line="119"/>
+      <location filename="../../change_branch.py" line="111"/>
       <source>WARNING: This repo has uncommitted local changes. Are you sure you want to change branches (bringing the changes with you)?</source>
       <translation type="unfinished">WARNING: This repo has uncommitted local changes. Are you sure you want to change branches (bringing the changes with you)?</translation>
     </message>
     <message>
-      <location filename="../../change_branch.py" line="171"/>
+      <location filename="../../change_branch.py" line="163"/>
+      <location filename="../../change_branch.py" line="177"/>
       <location filename="../../change_branch.py" line="185"/>
-      <location filename="../../change_branch.py" line="193"/>
       <source>Branch</source>
       <comment>git terminology</comment>
       <translation>Κλάδος</translation>
     </message>
     <message>
-      <location filename="../../change_branch.py" line="179"/>
+      <location filename="../../change_branch.py" line="171"/>
       <source>Tag</source>
       <comment>git terminology</comment>
       <translation type="unfinished">Tag</translation>
     </message>
     <message>
-      <location filename="../../change_branch.py" line="262"/>
+      <location filename="../../change_branch.py" line="254"/>
       <source>Kind</source>
       <comment>Table header for git ref type (e.g. either Tag or Branch)</comment>
       <translation type="unfinished">Kind</translation>
     </message>
     <message>
-      <location filename="../../change_branch.py" line="266"/>
+      <location filename="../../change_branch.py" line="256"/>
       <source>Local name</source>
       <comment>Table header for git ref name</comment>
       <translation type="unfinished">Local name</translation>
     </message>
     <message>
-      <location filename="../../change_branch.py" line="272"/>
+      <location filename="../../change_branch.py" line="262"/>
       <source>Tracking</source>
       <comment>Table header for git remote tracking branch name name</comment>
       <translation>Απόσταση Γραμμάτων</translation>
     </message>
     <message>
-      <location filename="../../change_branch.py" line="278"/>
+      <location filename="../../change_branch.py" line="268"/>
       <source>Local updated</source>
       <comment>Table header for git update time of local branch</comment>
       <translation type="unfinished">Local updated</translation>
     </message>
     <message>
-      <location filename="../../change_branch.py" line="284"/>
+      <location filename="../../change_branch.py" line="274"/>
       <source>Remote updated</source>
       <comment>Table header for git update time of remote branch</comment>
       <translation type="unfinished">Remote updated</translation>
@@ -2149,77 +2134,77 @@ installed addons will be checked for available updates
       <translation type="unfinished">Installation of Python package {} failed</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_dependency_installer.py" line="157"/>
+      <location filename="../../addonmanager_dependency_installer.py" line="155"/>
       <source>Installation of optional package failed</source>
       <translation type="unfinished">Installation of optional package failed</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_dependency_installer.py" line="187"/>
+      <location filename="../../addonmanager_dependency_installer.py" line="183"/>
       <source>Installing required dependency {}</source>
       <translation type="unfinished">Installing required dependency {}</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_dependency_installer.py" line="201"/>
+      <location filename="../../addonmanager_dependency_installer.py" line="193"/>
       <source>Installation of Addon {} failed</source>
       <translation type="unfinished">Installation of Addon {} failed</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_installation.py" line="174"/>
+      <location filename="../../addonmanager_workers_installation.py" line="166"/>
       <source>Downloaded package.xml for {}</source>
       <translation type="unfinished">Downloaded package.xml for {}</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_installation.py" line="207"/>
+      <location filename="../../addonmanager_workers_installation.py" line="197"/>
       <source>Failed to decode {} file for Addon &apos;{}&apos;</source>
       <translation type="unfinished">Failed to decode {} file for Addon &apos;{}&apos;</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_installation.py" line="216"/>
+      <location filename="../../addonmanager_workers_installation.py" line="206"/>
       <source>Any dependency information in this file will be ignored</source>
       <translation type="unfinished">Any dependency information in this file will be ignored</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_installation.py" line="223"/>
+      <location filename="../../addonmanager_workers_installation.py" line="213"/>
       <source>Downloaded metadata.txt for {}</source>
       <translation type="unfinished">Downloaded metadata.txt for {}</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_installation.py" line="268"/>
+      <location filename="../../addonmanager_workers_installation.py" line="256"/>
       <source>Downloaded requirements.txt for {}</source>
       <translation type="unfinished">Downloaded requirements.txt for {}</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_installation.py" line="286"/>
+      <location filename="../../addonmanager_workers_installation.py" line="274"/>
       <source>Downloaded icon for {}</source>
       <translation type="unfinished">Downloaded icon for {}</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_macro.py" line="150"/>
+      <location filename="../../addonmanager_macro.py" line="148"/>
       <source>Unable to open macro wiki page at {}</source>
       <translation type="unfinished">Unable to open macro wiki page at {}</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_macro.py" line="164"/>
+      <location filename="../../addonmanager_macro.py" line="161"/>
       <source>Unable to fetch the code of this macro.</source>
       <translation type="unfinished">Unable to fetch the code of this macro.</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_macro.py" line="179"/>
+      <location filename="../../addonmanager_macro.py" line="176"/>
       <source>Unable to retrieve a description from the wiki for macro {}</source>
       <translation type="unfinished">Unable to retrieve a description from the wiki for macro {}</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_macro.py" line="212"/>
+      <location filename="../../addonmanager_macro.py" line="209"/>
       <source>Unable to open macro code URL {}</source>
       <translation type="unfinished">Unable to open macro code URL {}</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_macro.py" line="371"/>
+      <location filename="../../addonmanager_macro.py" line="364"/>
       <source>Unable to fetch macro-specified file {} from {}</source>
       <translation type="unfinished">Unable to fetch macro-specified file {} from {}</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_macro.py" line="379"/>
+      <location filename="../../addonmanager_macro.py" line="372"/>
       <source>Could not locate macro-specified file {} (expected at {})</source>
       <translation type="unfinished">Could not locate macro-specified file {} (expected at {})</translation>
     </message>
@@ -2260,17 +2245,17 @@ installed addons will be checked for available updates
       <translation type="unfinished">Execution of Addon&apos;s uninstall.py script failed. Proceeding with uninstall...</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_uninstaller.py" line="176"/>
+      <location filename="../../addonmanager_uninstaller.py" line="170"/>
       <source>Removed extra installed file {}</source>
       <translation type="unfinished">Removed extra installed file {}</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_uninstaller.py" line="188"/>
+      <location filename="../../addonmanager_uninstaller.py" line="184"/>
       <source>Error while trying to remove extra installed file {}</source>
       <translation type="unfinished">Error while trying to remove extra installed file {}</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_uninstaller.py" line="249"/>
+      <location filename="../../addonmanager_uninstaller.py" line="245"/>
       <source>Error while trying to remove macro file {}: </source>
       <translation type="unfinished">Error while trying to remove macro file {}: </translation>
     </message>
@@ -2280,132 +2265,132 @@ installed addons will be checked for available updates
       <translation type="unfinished">Failed to connect to GitHub. Check your connection and proxy settings.</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="183"/>
+      <location filename="../../addonmanager_workers_startup.py" line="179"/>
       <source>WARNING: Duplicate addon {} ignored</source>
       <translation type="unfinished">WARNING: Duplicate addon {} ignored</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="256"/>
+      <location filename="../../addonmanager_workers_startup.py" line="252"/>
       <source>Workbenches list was updated.</source>
       <translation type="unfinished">Workbenches list was updated.</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="272"/>
+      <location filename="../../addonmanager_workers_startup.py" line="268"/>
       <source>Git is disabled, skipping git macros</source>
       <translation type="unfinished">Git is disabled, skipping git macros</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="320"/>
+      <location filename="../../addonmanager_workers_startup.py" line="316"/>
       <source>Attempting to change non-git Macro setup to use git
 </source>
       <translation type="unfinished">Attempting to change non-git Macro setup to use git
 </translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="337"/>
+      <location filename="../../addonmanager_workers_startup.py" line="333"/>
       <source>An error occurred updating macros from GitHub, trying clean checkout...</source>
       <translation type="unfinished">An error occurred updating macros from GitHub, trying clean checkout...</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="342"/>
+      <location filename="../../addonmanager_workers_startup.py" line="337"/>
       <source>Attempting to do a clean checkout...</source>
       <translation type="unfinished">Attempting to do a clean checkout...</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="354"/>
+      <location filename="../../addonmanager_workers_startup.py" line="349"/>
       <source>Clean checkout succeeded</source>
       <translation type="unfinished">Clean checkout succeeded</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="364"/>
+      <location filename="../../addonmanager_workers_startup.py" line="359"/>
       <source>Failed to update macros from GitHub -- try clearing the Addon Manager&apos;s cache.</source>
       <translation type="unfinished">Failed to update macros from GitHub -- try clearing the Addon Manager&apos;s cache.</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="387"/>
+      <location filename="../../addonmanager_workers_startup.py" line="382"/>
       <source>Error connecting to the Wiki, FreeCAD cannot retrieve the Wiki macro list at this time</source>
       <translation type="unfinished">Error connecting to the Wiki, FreeCAD cannot retrieve the Wiki macro list at this time</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="602"/>
+      <location filename="../../addonmanager_workers_startup.py" line="593"/>
       <source>Unable to fetch git updates for workbench {}</source>
       <translation type="unfinished">Unable to fetch git updates for workbench {}</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="617"/>
+      <location filename="../../addonmanager_workers_startup.py" line="606"/>
       <source>git status failed for {}</source>
       <translation type="unfinished">git status failed for {}</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="662"/>
+      <location filename="../../addonmanager_workers_startup.py" line="651"/>
       <source>Failed to read metadata from {name}</source>
       <translation type="unfinished">Failed to read metadata from {name}</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="687"/>
+      <location filename="../../addonmanager_workers_startup.py" line="674"/>
       <source>Failed to fetch code for macro &apos;{name}&apos;</source>
       <translation type="unfinished">Failed to fetch code for macro &apos;{name}&apos;</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="742"/>
+      <location filename="../../addonmanager_workers_startup.py" line="727"/>
       <source>Caching macro code...</source>
       <translation type="unfinished">Caching macro code...</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="765"/>
+      <location filename="../../addonmanager_workers_startup.py" line="750"/>
       <source>Addon Manager: a worker process failed to complete while fetching {name}</source>
       <translation type="unfinished">Addon Manager: a worker process failed to complete while fetching {name}</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="780"/>
+      <location filename="../../addonmanager_workers_startup.py" line="765"/>
       <source>Out of {num_macros} macros, {num_failed} timed out while processing</source>
       <translation type="unfinished">Out of {num_macros} macros, {num_failed} timed out while processing</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="802"/>
+      <location filename="../../addonmanager_workers_startup.py" line="787"/>
       <source>Addon Manager: a worker process failed to halt ({name})</source>
       <translation type="unfinished">Addon Manager: a worker process failed to halt ({name})</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="843"/>
+      <location filename="../../addonmanager_workers_startup.py" line="826"/>
       <source>Getting metadata from macro {}</source>
       <translation type="unfinished">Getting metadata from macro {}</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="857"/>
+      <location filename="../../addonmanager_workers_startup.py" line="840"/>
       <source>Timeout while fetching metadata for macro {}</source>
       <translation type="unfinished">Timeout while fetching metadata for macro {}</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="868"/>
+      <location filename="../../addonmanager_workers_startup.py" line="851"/>
       <source>Failed to kill process for macro {}!
 </source>
       <translation type="unfinished">Failed to kill process for macro {}!
 </translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="891"/>
+      <location filename="../../addonmanager_workers_startup.py" line="872"/>
       <source>Retrieving macro description...</source>
       <translation type="unfinished">Retrieving macro description...</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="895"/>
+      <location filename="../../addonmanager_workers_startup.py" line="874"/>
       <source>Retrieving info from git</source>
       <translation type="unfinished">Retrieving info from git</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="900"/>
+      <location filename="../../addonmanager_workers_startup.py" line="877"/>
       <source>Retrieving info from wiki</source>
       <translation type="unfinished">Retrieving info from wiki</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.py" line="274"/>
+      <location filename="../../AddonManagerOptions.py" line="262"/>
       <source>Repository URL</source>
       <comment>Preferences header for custom repositories</comment>
       <translation>URL Χώρου Αποθήκευσης</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.py" line="280"/>
+      <location filename="../../AddonManagerOptions.py" line="268"/>
       <source>Branch name</source>
       <comment>Preferences header for custom repositories</comment>
       <translation type="unfinished">Branch name</translation>
@@ -2421,7 +2406,7 @@ installed addons will be checked for available updates
       <translation type="unfinished">Backing up the original directory and re-cloning</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_git.py" line="218"/>
+      <location filename="../../addonmanager_git.py" line="212"/>
       <source>Failed to clone {} into {} using git</source>
       <translation type="unfinished">Failed to clone {} into {} using git</translation>
     </message>
@@ -2441,12 +2426,12 @@ installed addons will be checked for available updates
       <translation type="unfinished">Failed</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_update_all_gui.py" line="203"/>
+      <location filename="../../addonmanager_update_all_gui.py" line="199"/>
       <source>Update was cancelled</source>
       <translation type="unfinished">Update was cancelled</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_update_all_gui.py" line="204"/>
+      <location filename="../../addonmanager_update_all_gui.py" line="200"/>
       <source>some addons may have been updated</source>
       <translation type="unfinished">some addons may have been updated</translation>
     </message>
@@ -2454,12 +2439,12 @@ installed addons will be checked for available updates
   <context>
     <name>Std_AddonMgr</name>
     <message>
-      <location filename="../../AddonManager.py" line="151"/>
+      <location filename="../../AddonManager.py" line="150"/>
       <source>&amp;Addon manager</source>
       <translation type="unfinished">&amp;Addon manager</translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="155"/>
+      <location filename="../../AddonManager.py" line="154"/>
       <source>Manage external workbenches, macros, and preference packs</source>
       <translation type="unfinished">Manage external workbenches, macros, and preference packs</translation>
     </message>
@@ -2467,12 +2452,12 @@ installed addons will be checked for available updates
   <context>
     <name>AddonInstaller</name>
     <message>
-      <location filename="../../addonmanager_uninstaller_gui.py" line="122"/>
+      <location filename="../../addonmanager_uninstaller_gui.py" line="115"/>
       <source>Finished removing {}</source>
       <translation type="unfinished">Finished removing {}</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_uninstaller_gui.py" line="137"/>
+      <location filename="../../addonmanager_uninstaller_gui.py" line="127"/>
       <source>Failed to remove some files</source>
       <translation type="unfinished">Failed to remove some files</translation>
     </message>
@@ -2480,7 +2465,7 @@ installed addons will be checked for available updates
   <context>
     <name>Addons installer</name>
     <message>
-      <location filename="../../addonmanager_update_all_gui.py" line="197"/>
+      <location filename="../../addonmanager_update_all_gui.py" line="193"/>
       <source>Finished updating the following addons</source>
       <translation type="unfinished">Finished updating the following addons</translation>
     </message>
@@ -2496,7 +2481,7 @@ installed addons will be checked for available updates
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../AddonManager.py" line="124"/>
+      <location filename="../../AddonManager.py" line="123"/>
       <source>Addon Manager</source>
       <translation>Διαχειριστής Πρόσθετων</translation>
     </message>

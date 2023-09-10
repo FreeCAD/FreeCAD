@@ -25,7 +25,7 @@
     <message>
       <location filename="../../Command.cpp" line="1336"/>
       <source>Mesh</source>
-      <translation>Mesh</translation>
+      <translation>Maillage</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1337"/>
@@ -650,7 +650,7 @@
     <message>
       <location filename="../../Command.cpp" line="555"/>
       <source>Mesh</source>
-      <translation>Maillage</translation>
+      <translation>Mesh</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="556"/>
@@ -1346,12 +1346,22 @@
       <translation>Exporter les fichiers AMF en utilisant la compression</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsImportExport.ui" line="95"/>
+      <location filename="../../DlgSettingsImportExport.ui" line="82"/>
+      <source>Always export mesh as model type in 3MF format even if not a solid</source>
+      <translation type="unfinished">Always export mesh as model type in 3MF format even if not a solid</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsImportExport.ui" line="85"/>
+      <source>Export 3MF files as model type</source>
+      <translation type="unfinished">Export 3MF files as model type</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsImportExport.ui" line="114"/>
       <source>Width:</source>
       <translation>Largeur :</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsImportExport.ui" line="119"/>
+      <location filename="../../DlgSettingsImportExport.ui" line="138"/>
       <source>Height:</source>
       <translation>Hauteur :</translation>
     </message>
@@ -1824,7 +1834,7 @@ l'ombrage Phong conduit à un aspect plus lisse.
       <location filename="../../Segmentation.ui" line="252"/>
       <location filename="../../Segmentation.ui" line="286"/>
       <source>Tolerance</source>
-      <translation>Tolérance </translation>
+      <translation>Tolérance</translation>
     </message>
     <message>
       <location filename="../../Segmentation.ui" line="63"/>
@@ -1900,7 +1910,7 @@ l'ombrage Phong conduit à un aspect plus lisse.
       <location filename="../../SegmentationBestFit.ui" line="89"/>
       <location filename="../../SegmentationBestFit.ui" line="142"/>
       <source>Tolerance</source>
-      <translation>Tolérance</translation>
+      <translation>Tolérance </translation>
     </message>
     <message>
       <location filename="../../SegmentationBestFit.ui" line="53"/>

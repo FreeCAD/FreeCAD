@@ -4,17 +4,17 @@
   <context>
     <name>CmdApproxCylinder</name>
     <message>
-      <location filename="../../Command.cpp" line="205"/>
+      <location filename="../../Command.cpp" line="214"/>
       <source>Reverse Engineering</source>
       <translation>Alderantzizko ingeniaritza</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="206"/>
+      <location filename="../../Command.cpp" line="215"/>
       <source>Cylinder</source>
       <translation>Zilindroa</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="207"/>
+      <location filename="../../Command.cpp" line="216"/>
       <source>Approximate a cylinder</source>
       <translation>Hurbildu zilindro batera</translation>
     </message>
@@ -22,17 +22,17 @@
   <context>
     <name>CmdApproxPlane</name>
     <message>
-      <location filename="../../Command.cpp" line="104"/>
+      <location filename="../../Command.cpp" line="106"/>
       <source>Reverse Engineering</source>
       <translation>Alderantzizko ingeniaritza</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="105"/>
+      <location filename="../../Command.cpp" line="107"/>
       <source>Plane...</source>
       <translation>Plano...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="106"/>
+      <location filename="../../Command.cpp" line="108"/>
       <source>Approximate a plane</source>
       <translation>Hurbildu plano batera</translation>
     </message>
@@ -40,17 +40,17 @@
   <context>
     <name>CmdApproxPolynomial</name>
     <message>
-      <location filename="../../Command.cpp" line="318"/>
+      <location filename="../../Command.cpp" line="330"/>
       <source>Reverse Engineering</source>
       <translation>Alderantzizko ingeniaritza</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="319"/>
+      <location filename="../../Command.cpp" line="331"/>
       <source>Polynomial surface</source>
       <translation>Gainazal polinomiala</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="320"/>
+      <location filename="../../Command.cpp" line="332"/>
       <source>Approximate a polynomial surface</source>
       <translation>Hurbildu gainazal polinomial batera</translation>
     </message>
@@ -58,17 +58,17 @@
   <context>
     <name>CmdApproxSphere</name>
     <message>
-      <location filename="../../Command.cpp" line="271"/>
+      <location filename="../../Command.cpp" line="282"/>
       <source>Reverse Engineering</source>
       <translation>Alderantzizko ingeniaritza</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="272"/>
+      <location filename="../../Command.cpp" line="283"/>
       <source>Sphere</source>
       <translation>Esfera</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="273"/>
+      <location filename="../../Command.cpp" line="284"/>
       <source>Approximate a sphere</source>
       <translation>Hurbildu esfera batera</translation>
     </message>
@@ -94,17 +94,17 @@
   <context>
     <name>CmdMeshBoundary</name>
     <message>
-      <location filename="../../Command.cpp" line="484"/>
+      <location filename="../../Command.cpp" line="502"/>
       <source>Reverse Engineering</source>
       <translation>Alderantzizko ingeniaritza</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="485"/>
+      <location filename="../../Command.cpp" line="503"/>
       <source>Wire from mesh boundary...</source>
       <translation>Alanbrea amaraun-mugatik...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="486"/>
+      <location filename="../../Command.cpp" line="504"/>
       <source>Create wire from mesh boundaries</source>
       <translation>Sortu alanbrea amaraun-mugetatik</translation>
     </message>
@@ -112,17 +112,17 @@
   <context>
     <name>CmdPoissonReconstruction</name>
     <message>
-      <location filename="../../Command.cpp" line="550"/>
+      <location filename="../../Command.cpp" line="569"/>
       <source>Reverse Engineering</source>
       <translation>Alderantzizko ingeniaritza</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="551"/>
+      <location filename="../../Command.cpp" line="570"/>
       <source>Poisson...</source>
       <translation>Poisson...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="552"/>
+      <location filename="../../Command.cpp" line="571"/>
       <source>Poisson surface reconstruction</source>
       <translation>Poisson gainazalaren berreraikitzea</translation>
     </message>
@@ -130,17 +130,17 @@
   <context>
     <name>CmdSegmentation</name>
     <message>
-      <location filename="../../Command.cpp" line="373"/>
+      <location filename="../../Command.cpp" line="388"/>
       <source>Reverse Engineering</source>
       <translation>Alderantzizko ingeniaritza</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="374"/>
+      <location filename="../../Command.cpp" line="389"/>
       <source>Mesh segmentation...</source>
       <translation>Amaraun-segmentazioa...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="375"/>
+      <location filename="../../Command.cpp" line="390"/>
       <source>Create mesh segments</source>
       <translation>Sortu amaraun segmentuak</translation>
     </message>
@@ -148,17 +148,17 @@
   <context>
     <name>CmdSegmentationFromComponents</name>
     <message>
-      <location filename="../../Command.cpp" line="434"/>
+      <location filename="../../Command.cpp" line="450"/>
       <source>Reverse Engineering</source>
       <translation>Alderantzizko ingeniaritza</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="435"/>
+      <location filename="../../Command.cpp" line="451"/>
       <source>From components</source>
       <translation>Osagaietatik</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="436"/>
+      <location filename="../../Command.cpp" line="452"/>
       <source>Create mesh segments from components</source>
       <translation>Sortu amaraun segmentuak osagaietatik</translation>
     </message>
@@ -166,17 +166,17 @@
   <context>
     <name>CmdSegmentationManual</name>
     <message>
-      <location filename="../../Command.cpp" line="405"/>
+      <location filename="../../Command.cpp" line="420"/>
       <source>Reverse Engineering</source>
       <translation>Alderantzizko ingeniaritza</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="406"/>
+      <location filename="../../Command.cpp" line="421"/>
       <source>Manual segmentation...</source>
       <translation>Eskuzko segmentazioa...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="407"/>
+      <location filename="../../Command.cpp" line="422"/>
       <source>Create mesh segments manually</source>
       <translation>Sortu amaraun segmentuak eskuz</translation>
     </message>
@@ -184,18 +184,18 @@
   <context>
     <name>CmdViewTriangulation</name>
     <message>
-      <location filename="../../Command.cpp" line="584"/>
+      <location filename="../../Command.cpp" line="604"/>
       <source>Reverse Engineering</source>
       <translation>Alderantzizko ingeniaritza</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="585"/>
+      <location filename="../../Command.cpp" line="605"/>
       <source>Structured point clouds</source>
       <translation>Puntu egituratuen hodeiak</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="586"/>
-      <location filename="../../Command.cpp" line="587"/>
+      <location filename="../../Command.cpp" line="606"/>
+      <location filename="../../Command.cpp" line="607"/>
       <source>Triangulation of structured point clouds</source>
       <translation>Puntu egituratuen hodeien triangelaketa</translation>
     </message>
@@ -203,47 +203,47 @@
   <context>
     <name>Command</name>
     <message>
-      <location filename="../../Command.cpp" line="184"/>
+      <location filename="../../Command.cpp" line="192"/>
       <source>Fit plane</source>
       <translation>Doitu planoa</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="215"/>
+      <location filename="../../Command.cpp" line="224"/>
       <source>Fit cylinder</source>
       <translation>Doitu zilindroa</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="281"/>
+      <location filename="../../Command.cpp" line="292"/>
       <source>Fit sphere</source>
       <translation>Doitu esfera</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="329"/>
+      <location filename="../../Command.cpp" line="341"/>
       <source>Fit polynomial surface</source>
       <translation>Doitu gainazal polinomiala</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="595"/>
+      <location filename="../../Command.cpp" line="616"/>
       <source>View triangulation</source>
       <translation>Bistaren triangelaketa</translation>
     </message>
     <message>
-      <location filename="../../FitBSplineSurface.cpp" line="148"/>
+      <location filename="../../FitBSplineSurface.cpp" line="154"/>
       <source>Placement</source>
       <translation>Kokapena</translation>
     </message>
     <message>
-      <location filename="../../FitBSplineSurface.cpp" line="220"/>
+      <location filename="../../FitBSplineSurface.cpp" line="231"/>
       <source>Fit B-Spline</source>
       <translation>Doitu B-spline kurba</translation>
     </message>
     <message>
-      <location filename="../../Poisson.cpp" line="87"/>
+      <location filename="../../Poisson.cpp" line="83"/>
       <source>Poisson reconstruction</source>
       <translation>Poissonen berreraikitzea</translation>
     </message>
     <message>
-      <location filename="../../SegmentationManual.cpp" line="255"/>
+      <location filename="../../SegmentationManual.cpp" line="281"/>
       <source>Segmentation</source>
       <translation>Segmentazioa</translation>
     </message>
@@ -331,18 +331,18 @@
   <context>
     <name>ReenGui::FitBSplineSurfaceWidget</name>
     <message>
-      <location filename="../../FitBSplineSurface.cpp" line="159"/>
-      <location filename="../../FitBSplineSurface.cpp" line="227"/>
+      <location filename="../../FitBSplineSurface.cpp" line="165"/>
+      <location filename="../../FitBSplineSurface.cpp" line="238"/>
       <source>Input error</source>
       <translation>Sarrera-errorea</translation>
     </message>
     <message>
-      <location filename="../../FitBSplineSurface.cpp" line="199"/>
+      <location filename="../../FitBSplineSurface.cpp" line="206"/>
       <source>Wrong selection</source>
       <translation>Hautapen okerra</translation>
     </message>
     <message>
-      <location filename="../../FitBSplineSurface.cpp" line="200"/>
+      <location filename="../../FitBSplineSurface.cpp" line="207"/>
       <source>Please select a single placement object to get local orientation.</source>
       <translation>Hautatu kokapen-objektu bakarra tokiko orientazioa eskuratzeko.</translation>
     </message>
@@ -375,7 +375,7 @@
       <translation>Laginak nodoko</translation>
     </message>
     <message>
-      <location filename="../../Poisson.cpp" line="94"/>
+      <location filename="../../Poisson.cpp" line="90"/>
       <source>Input error</source>
       <translation>Sarrera-errorea</translation>
     </message>
@@ -383,18 +383,18 @@
   <context>
     <name>Reen_ApproxSurface</name>
     <message>
-      <location filename="../../Command.cpp" line="83"/>
-      <location filename="../../Command.cpp" line="563"/>
+      <location filename="../../Command.cpp" line="86"/>
+      <location filename="../../Command.cpp" line="584"/>
       <source>Wrong selection</source>
       <translation>Hautapen okerra</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="84"/>
+      <location filename="../../Command.cpp" line="87"/>
       <source>Please select a point cloud or mesh.</source>
       <translation>Hautatu puntuen hodei bat edo amaraun bat.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="564"/>
+      <location filename="../../Command.cpp" line="585"/>
       <source>Please select a single point cloud.</source>
       <translation>Hautatu puntu bakarreko hodeia.</translation>
     </message>
@@ -402,7 +402,7 @@
   <context>
     <name>Reen_ViewTriangulation</name>
     <message>
-      <location filename="../../Command.cpp" line="617"/>
+      <location filename="../../Command.cpp" line="638"/>
       <source>View triangulation failed</source>
       <translation>Bistaren triangelaketak huts egin du</translation>
     </message>
@@ -567,7 +567,7 @@
   <context>
     <name>ReverseEngineeringGui::TaskSegmentationManual</name>
     <message>
-      <location filename="../../SegmentationManual.cpp" line="326"/>
+      <location filename="../../SegmentationManual.cpp" line="354"/>
       <source>Create</source>
       <translation>Sortu</translation>
     </message>

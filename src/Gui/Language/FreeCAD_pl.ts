@@ -4,11 +4,6 @@
   <context>
     <name>Angle</name>
     <message>
-      <location filename="../DlgLocationAngle.ui" line="14"/>
-      <source>Form</source>
-      <translation>Formularz</translation>
-    </message>
-    <message>
       <location filename="../DlgLocationAngle.ui" line="22"/>
       <source>A:</source>
       <translation>A:</translation>
@@ -418,7 +413,7 @@
     <message>
       <location filename="../Application.h" line="255"/>
       <source>Default</source>
-      <translation>Domyślny</translation>
+      <translation>Domyślnie</translation>
     </message>
     <message>
       <location filename="../Application.h" line="256"/>
@@ -1459,7 +1454,7 @@ wyzwolone zostanie to, które ma najwyższy priorytet.</translation>
     <message>
       <location filename="../DlgToolbars.ui" line="165"/>
       <source>Move up</source>
-      <translation>Przesuń w górę</translation>
+      <translation>Przenieś wyżej</translation>
     </message>
     <message>
       <location filename="../DlgToolbars.ui" line="168"/>
@@ -1469,7 +1464,7 @@ wyzwolone zostanie to, które ma najwyższy priorytet.</translation>
     <message>
       <location filename="../DlgToolbars.ui" line="191"/>
       <source>Move down</source>
-      <translation>Przesuń w dół</translation>
+      <translation>Przenieś w dół</translation>
     </message>
     <message>
       <location filename="../DlgToolbars.ui" line="194"/>
@@ -2962,7 +2957,7 @@ ale wolniej reaguje na każdą zmianę ujęcia.</translation>
     <message>
       <location filename="../PreferencePages/DlgSettings3DView.ui" line="342"/>
       <source>Size of vertices in the Sketcher, TechDraw and other workbenches</source>
-      <translation type="unfinished">Size of vertices in the Sketcher, TechDraw and other workbenches</translation>
+      <translation>Rozmiar wierzchołków w Szkicowniku, Rysunku Technicznym i innych środowiskach pracy</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettings3DView.ui" line="349"/>
@@ -3242,7 +3237,7 @@ będą wyświetlane na szaro</translation>
     <message>
       <location filename="../DlgSettingsColorGradient.ui" line="166"/>
       <source>Alt+R</source>
-      <translation>Alt + R</translation>
+      <translation>Alt+R</translation>
     </message>
     <message>
       <location filename="../DlgSettingsColorGradient.ui" line="173"/>
@@ -3718,7 +3713,7 @@ Możesz również skorzystać z formatki: John Doe &lt;john@doe.com&gt;</transla
     <message>
       <location filename="../DlgSettingsImage.ui" line="282"/>
       <source>Alt+S</source>
-      <translation>Alt + S</translation>
+      <translation>Alt+S</translation>
     </message>
     <message>
       <location filename="../DlgSettingsImage.ui" line="289"/>
@@ -4028,7 +4023,7 @@ Możesz również skorzystać z formatki: John Doe &lt;john@doe.com&gt;</transla
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="162"/>
       <source>Default</source>
-      <translation>Domyślnie</translation>
+      <translation>Domyślny</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="170"/>
@@ -5210,7 +5205,7 @@ Kolumna "Aktualny status" pokazuje, czy dokument może być odzyskany.</translat
     <message>
       <location filename="../Placement.ui" line="471"/>
       <source>Reset</source>
-      <translation>Resetuj</translation>
+      <translation>Reset</translation>
     </message>
     <message>
       <location filename="../Placement.ui" line="498"/>
@@ -5345,7 +5340,7 @@ Kolumna "Aktualny status" pokazuje, czy dokument może być odzyskany.</translat
     <message>
       <location filename="../TextureMapping.ui" line="26"/>
       <source>Global</source>
-      <translation>Globalnie</translation>
+      <translation>Globalne</translation>
     </message>
     <message>
       <location filename="../TextureMapping.ui" line="33"/>
@@ -6112,12 +6107,12 @@ Do you want to save your changes?</source>
       <translation>Makrodefinicje</translation>
     </message>
     <message>
-      <location filename="../Command.cpp" line="1143"/>
+      <location filename="../Command.cpp" line="1173"/>
       <source>Macro file doesn't exist</source>
       <translation>Plik makrodefinicji nie istnieje</translation>
     </message>
     <message>
-      <location filename="../Command.cpp" line="1144"/>
+      <location filename="../Command.cpp" line="1174"/>
       <source>No such macro file: '%1'</source>
       <translation>Nie ma takiego pliku makroinstrukcji: '%1'</translation>
     </message>
@@ -6176,8 +6171,8 @@ Do you want to save your changes?</source>
     </message>
     <message>
       <location filename="../MainWindow.cpp" line="1717"/>
-      <source>Please do not use in a production environment.</source>
-      <translation>Proszę nie używać w środowisku produkcyjnym.</translation>
+      <source>Please do not use it in a production environment.</source>
+      <translation type="unfinished">Please do not use it in a production environment.</translation>
     </message>
     <message>
       <location filename="../MainWindow.cpp" line="1921"/>
@@ -6910,7 +6905,7 @@ Do you want to specify another directory?</source>
     <message>
       <location filename="../TaskElementColors.ui" line="22"/>
       <source>TextLabel</source>
-      <translation>Etykieta</translation>
+      <translation>Etykieta tekstu</translation>
     </message>
     <message>
       <location filename="../TaskElementColors.ui" line="40"/>
@@ -7060,7 +7055,7 @@ Do you want to specify another directory?</source>
     <message>
       <location filename="../TinkerCADNavigationStyle.cpp" line="51"/>
       <source>Press middle mouse button</source>
-      <translation>Naciśnij środkowy przycisk myszki</translation>
+      <translation>Wciśnij środkowy przycisk myszki</translation>
     </message>
     <message>
       <location filename="../TinkerCADNavigationStyle.cpp" line="53"/>
@@ -7078,7 +7073,7 @@ Do you want to specify another directory?</source>
     <message>
       <location filename="../TouchpadNavigationStyle.cpp" line="48"/>
       <source>Press left mouse button</source>
-      <translation>Naciśnij lewy przycisk myszki</translation>
+      <translation>Wciśnij lewy przycisk myszki</translation>
     </message>
     <message>
       <location filename="../TouchpadNavigationStyle.cpp" line="50"/>
@@ -7421,17 +7416,17 @@ Do you want to specify another directory?</source>
     <message>
       <location filename="../Tree.cpp" line="2810"/>
       <source>Rename object</source>
-      <translation>Zmień nazwę obiektu</translation>
+      <translation>Zmiana nazwy obiektu</translation>
     </message>
     <message>
       <location filename="../Tree.cpp" line="2812"/>
       <source>Finish editing</source>
-      <translation>Zakończ modyfikację</translation>
+      <translation>Zakończ edycję</translation>
     </message>
     <message>
       <location filename="../Tree.cpp" line="2813"/>
       <source>Finish editing object</source>
-      <translation>Zakończ modyfikację obiektu</translation>
+      <translation>Zakończ edycję obiektu</translation>
     </message>
     <message>
       <location filename="../Tree.cpp" line="2815"/>
@@ -7829,12 +7824,12 @@ Do you want to specify another directory?</source>
     <message>
       <location filename="../Application.cpp" line="2202"/>
       <source>This system is running OpenGL %1.%2. FreeCAD requires OpenGL 2.0 or above. Please upgrade your graphics driver and/or card as required.</source>
-      <translation type="unfinished">This system is running OpenGL %1.%2. FreeCAD requires OpenGL 2.0 or above. Please upgrade your graphics driver and/or card as required.</translation>
+      <translation>W tym systemie działa OpenGL w wersji %1.%2. FreeCAD wymaga OpenGL 2.0 lub nowszego. W razie potrzeby zaktualizuj sterownik i/lub kartę graficzną.</translation>
     </message>
     <message>
       <location filename="../Application.cpp" line="2211"/>
       <source>Invalid OpenGL Version</source>
-      <translation type="unfinished">Invalid OpenGL Version</translation>
+      <translation>Nieprawidłowa wersja OpenGL</translation>
     </message>
     <message>
       <location filename="../Command.cpp" line="488"/>
@@ -8426,12 +8421,12 @@ Proszę otworzyć okno przeglądarki i wpisać: http://localhost:%1.</translatio
       <translation>Opcje ...</translation>
     </message>
     <message>
-      <location filename="../View3DInventorViewer.cpp" line="2252"/>
+      <location filename="../View3DInventorViewer.cpp" line="2256"/>
       <source>Out of memory</source>
       <translation>Przekroczono limit pamięci</translation>
     </message>
     <message>
-      <location filename="../View3DInventorViewer.cpp" line="2253"/>
+      <location filename="../View3DInventorViewer.cpp" line="2257"/>
       <source>Not enough memory available to display the data.</source>
       <translation>Za mało dostępnej pamięci, aby wyświetlić dane.</translation>
     </message>
@@ -11442,7 +11437,7 @@ Czy nadal chcesz kontynuować?</translation>
     <message>
       <location filename="../Workbench.cpp" line="529"/>
       <source>Structure</source>
-      <translation>Struktura</translation>
+      <translation>Konstrukcja</translation>
     </message>
     <message>
       <location filename="../Workbench.cpp" line="530"/>
@@ -11512,7 +11507,7 @@ Czy nadal chcesz kontynuować?</translation>
     <message>
       <location filename="../Workbench.cpp" line="543"/>
       <source>Macro</source>
-      <translation>Makrodefinicja</translation>
+      <translation>Makrodefinicje</translation>
     </message>
     <message>
       <location filename="../Workbench.cpp" line="544"/>
@@ -11946,7 +11941,7 @@ po uruchomieniu FreeCAD</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsWorkbenchesImp.cpp" line="239"/>
       <source>Sort alphabetically</source>
-      <translation type="unfinished">Sort alphabetically</translation>
+      <translation>Sortuj alfabetycznie</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsWorkbenchesImp.cpp" line="485"/>
@@ -12803,29 +12798,29 @@ z konsoli Python do panelu Widoku Raportu</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsTheme.ui" line="34"/>
       <source>Accent color 1</source>
-      <translation type="unfinished">Accent color 1</translation>
+      <translation>Kolor akcentu 1</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsTheme.ui" line="67"/>
       <source>Accent color 2</source>
-      <translation type="unfinished">Accent color 2</translation>
+      <translation>Kolor akcentu 2</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsTheme.ui" line="100"/>
       <source>Accent color 3</source>
-      <translation type="unfinished">Accent color 3</translation>
+      <translation>Kolor akcentu 3</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsTheme.ui" line="133"/>
       <source>Style sheet (advanced):</source>
-      <translation type="unfinished">Style sheet (advanced):</translation>
+      <translation>Arkusz stylów (opcje zaawansowane):</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsTheme.ui" line="140"/>
       <source>Apply manually .qss Qt Stylesheets. This is the legacy way that was used to customize the interface.
 You can now use Theme to get a full customization of the interface.</source>
-      <translation type="unfinished">Apply manually .qss Qt Stylesheets. This is the legacy way that was used to customize the interface.
-You can now use Theme to get a full customization of the interface.</translation>
+      <translation>Zastosuj samodzielnie arkusze stylów .qss Qt. Jest to starszy sposób, który był używany do dostosowywania interfejsu.
+Teraz można użyć motywu, aby uzyskać pełną personalizację interfejsu.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsTheme.ui" line="47"/>
@@ -12845,13 +12840,13 @@ You can now use Theme to get a full customization of the interface.</translation
     <message>
       <location filename="../CommandView.cpp" line="1366"/>
       <source>Selection filter</source>
-      <translation type="unfinished">Selection filter</translation>
+      <translation>Filtr wyboru</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1367"/>
       <location filename="../CommandView.cpp" line="1368"/>
       <source>Change the Selection filter</source>
-      <translation type="unfinished">Change the Selection filter</translation>
+      <translation>Zmień filtr wyboru</translation>
     </message>
   </context>
   <context>
@@ -12859,13 +12854,13 @@ You can now use Theme to get a full customization of the interface.</translation
     <message>
       <location filename="../CommandView.cpp" line="1487"/>
       <source>Vertex Selection</source>
-      <translation type="unfinished">Vertex Selection</translation>
+      <translation>Wybór wierzchołka</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1488"/>
       <location filename="../CommandView.cpp" line="1490"/>
       <source>Select a Vertex/Vertices</source>
-      <translation type="unfinished">Select a Vertex/Vertices</translation>
+      <translation>Wybierz jeden lub kilka wierzchołków</translation>
     </message>
   </context>
   <context>
@@ -12873,13 +12868,13 @@ You can now use Theme to get a full customization of the interface.</translation
     <message>
       <location filename="../CommandView.cpp" line="1512"/>
       <source>Edge Selection</source>
-      <translation type="unfinished">Edge Selection</translation>
+      <translation>Wybór krawędzi</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1513"/>
       <location filename="../CommandView.cpp" line="1515"/>
       <source>Select Edge(s)</source>
-      <translation type="unfinished">Select Edge(s)</translation>
+      <translation>Wybierz jedną lub kilka krawędzi</translation>
     </message>
   </context>
   <context>
@@ -12887,13 +12882,13 @@ You can now use Theme to get a full customization of the interface.</translation
     <message>
       <location filename="../CommandView.cpp" line="1537"/>
       <source>Face Selection</source>
-      <translation type="unfinished">Face Selection</translation>
+      <translation>Wybór płaszczyzny</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1538"/>
       <location filename="../CommandView.cpp" line="1540"/>
       <source>Select Face(s)</source>
-      <translation type="unfinished">Select Face(s)</translation>
+      <translation>Wybierz płaszczyznę(y)</translation>
     </message>
   </context>
   <context>
@@ -12903,7 +12898,7 @@ You can now use Theme to get a full customization of the interface.</translation
       <location filename="../CommandView.cpp" line="1564"/>
       <location filename="../CommandView.cpp" line="1566"/>
       <source>All selection filters cleared</source>
-      <translation type="unfinished">All selection filters cleared</translation>
+      <translation>Wszystkie filtry zostały wyczyszczone</translation>
     </message>
   </context>
 </TS>

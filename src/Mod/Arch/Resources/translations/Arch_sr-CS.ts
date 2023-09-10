@@ -3253,7 +3253,7 @@ Floor creation aborted.</translation>
     <message>
       <location filename="../../ArchAxis.py" line="809"/>
       <source>Distance</source>
-      <translation type="unfinished">Distance</translation>
+      <translation>Rastojanje</translation>
     </message>
     <message>
       <location filename="../../ArchAxis.py" line="810"/>
