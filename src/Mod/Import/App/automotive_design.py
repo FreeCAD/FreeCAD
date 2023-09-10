@@ -40840,7 +40840,7 @@ def get_name_value(obj,):
 	if (SIZEOF(name_bag)  ==  1):
 		return name_bag[1].attribute_value
 	else:
-		return  None 
+		return  None
 
 ####################
  # FUNCTION convert_spatial_to_ypr_rotation #
@@ -40863,7 +40863,7 @@ def convert_spatial_to_ypr_rotation(pair,rotation,):
 	dz = axis.direction_ratios[3]
 	conv_angle = plane_angle_for_pair_in_radian(pair,angle)
 	if (conv_angle  ==   None ):
-		return  None 
+		return  None
 	ucf = angle / conv_angle
 	s_a = SIN(conv_angle)
 	c_a = COS(conv_angle)
@@ -40890,7 +40890,7 @@ def convert_spatial_to_ypr_rotation(pair,rotation,):
 			ya = 0
 			ra = 0
 		else:
-			ya = ucf  *   PI 
+			ya = ucf  *   PI
 			ra = ya
 		pa = ucf  *  ATAN(s_a,ABS(c_a))
 		if (dy  <  0):
@@ -40900,29 +40900,29 @@ def convert_spatial_to_ypr_rotation(pair,rotation,):
 	rotmat = [[((dx  *  dx)  *  cm1)  +  c_a,((dx  *  dy)  *  cm1) - (dz  *  s_a),((dx  *  dz)  *  cm1)  +  (dy  *  s_a)],[((dx  *  dy)  *  cm1)  +  (dz  *  s_a),((dy  *  dy)  *  cm1)  +  c_a,((dy  *  dz)  *  cm1) - (dx  *  s_a)],[((dx  *  dz)  *  cm1) - (dy  *  s_a),((dy  *  dz)  *  cm1)  +  (dx  *  s_a),((dz  *  dz)  *  cm1)  +  c_a]]
 	if (ABS(rotmat[1][3])  ==  1):
 		if (rotmat[1][3]  ==  1):
-			pa = 0.5  *   PI 
+			pa = 0.5  *   PI
 		else:
-			pa = (-0.5)  *   PI 
+			pa = (-0.5)  *   PI
 		ra = 0
 		ya = ATAN(rotmat[2][1],rotmat[2][2])
 		if (rotmat[2][2]  <  0):
 			if (ya  <=  0):
-				ya = ya  +   PI 
+				ya = ya  +   PI
 			else:
-				ya = ya -  PI 
+				ya = ya -  PI
 	else:
 		ya = ATAN(-rotmat[1][2],rotmat[1][1])
 		if (rotmat[1][1]  <  0):
 			if (ya  <=  0):
-				ya = ya  +   PI 
+				ya = ya  +   PI
 			else:
-				ya = ya -  PI 
+				ya = ya -  PI
 		ra = ATAN(-rotmat[2][3],rotmat[3][3])
 		if (rotmat[3][3]  <  0):
 			if (ra  <=  0):
-				ra = ra  +   PI 
+				ra = ra  +   PI
 			else:
-				ra = ra -  PI 
+				ra = ra -  PI
 		s_y = SIN(ya)
 		c_y = COS(ya)
 		s_r = SIN(ra)
@@ -41187,7 +41187,7 @@ def get_diameter_for_round_hole(rh,):
 							for  l in range(1,HIINDEX(ri_set),1):
 								if (('AUTOMOTIVE_DESIGN.MEASURE_REPRESENTATION_ITEM'  ==  TYPEOF(ri_set[l]))  and  ('AUTOMOTIVE_DESIGN.LENGTH_MEASURE_WITH_UNIT'  ==  TYPEOF(ri_set[l]))):
 									return ri_set[l].measure_with_unit.value_component
-	return  None 
+	return  None
 
 ####################
  # FUNCTION list_of_topology_reversed #
@@ -41258,7 +41258,7 @@ def shell_reversed(a_shell,):
 		if ('AUTOMOTIVE_DESIGN.CLOSED_SHELL'  ==  TYPEOF(a_shell)):
 			return closed_shell_reversed(a_shell)
 		else:
-			return  None 
+			return  None
 
 ####################
  # FUNCTION topology_reversed #
@@ -41282,7 +41282,7 @@ def topology_reversed(an_item,):
 		return set_of_topology_reversed(an_item)
 	if ('LIST'  ==  TYPEOF(an_item)):
 		return list_of_topology_reversed(an_item)
-	return  None 
+	return  None
 
 ####################
  # FUNCTION first_proj_axis #
@@ -41295,7 +41295,7 @@ def first_proj_axis(z_axis,arg,):
 	:type arg:direction
 	'''
 	if ( not EXISTS(z_axis)):
-		return  None 
+		return  None
 	else:
 		z = normalise(z_axis)
 		if ( not EXISTS(arg)):
@@ -41305,9 +41305,9 @@ def first_proj_axis(z_axis,arg,):
 				v = dummy_gri  ==  direction([0,1,0])
 		else:
 			if (arg.dim  !=  3):
-				return  None 
+				return  None
 			if (cross_product(arg,z).magnitude  ==  0):
-				return  None 
+				return  None
 			else:
 				v = normalise(arg)
 		x_vec = scalar_times_vector(dot_product(v,z),z)
@@ -41367,7 +41367,7 @@ def orthogonal_complement(vec,):
 	:type vec:direction
 	'''
 	if ((vec.dim  !=  2)  or  ( not EXISTS(vec))):
-		return  None 
+		return  None
 	else:
 		result = dummy_gri  ==  direction([-vec.direction_ratios[2],vec.direction_ratios[1]])
 		return result
@@ -41404,13 +41404,13 @@ def make_array_of_array(lis,low1,u1,low2,u2,):
 	:type u2:INTEGER
 	'''
 	if (((u1 - low1)  +  1)  !=  SIZEOF(lis)):
-		return  None 
+		return  None
 	if (((u2 - low2)  +  1)  !=  SIZEOF(lis[1])):
-		return  None 
+		return  None
 	res = [list_to_array(lis[1],low2,u2),(u1 - low1)  +  1]
 	for  i in range(2,HIINDEX(lis),1):
 		if (((u2 - low2)  +  1)  !=  SIZEOF(lis[i])):
-			return  None 
+			return  None
 		res[(low1  +  i) - 1] = list_to_array(lis[i],low2,u2)
 	return res
 
@@ -41515,7 +41515,7 @@ def vector_difference(arg1,arg2,):
 	:type arg2:vector_or_direction
 	'''
 	if ((( not EXISTS(arg1))  or  ( not EXISTS(arg2)))  or  (arg1.dim  !=  arg2.dim)):
-		return  None 
+		return  None
 	else:
 		if ('AUTOMOTIVE_DESIGN.VECTOR'  ==  TYPEOF(arg1)):
 			mag1 = arg1.magnitude
@@ -41712,7 +41712,7 @@ def list_to_array(lis,low,u,):
 	'''
 	n = SIZEOF(lis)
 	if (n  !=  ((u - low)  +  1)):
-		return  None 
+		return  None
 	else:
 		res = [lis[1],n]
 		for  i in range(2,n,1):
@@ -41933,7 +41933,7 @@ def scalar_times_vector(scalar,vec,):
 	:type vec:vector_or_direction
 	'''
 	if (( not EXISTS(scalar))  or  ( not EXISTS(vec))):
-		return  None 
+		return  None
 	else:
 		if ('AUTOMOTIVE_DESIGN.VECTOR'  ==  TYPEOF(vec)):
 			v = dummy_gri  ==  direction(vec.vector.orientation.direction_ratios)
@@ -42014,7 +42014,7 @@ def dimensions_for_si_unit(n,):
 	elif case_selector == sievert:
 		return dimensional_exponents(2,0,-2,0,0,0,0)
 	else:
-		return  None 
+		return  None
 
 ####################
  # FUNCTION assembly_shape_is_defined #
@@ -42175,13 +42175,13 @@ def normalise(arg,):
 	:type arg:vector_or_direction
 	'''
 	if ( not EXISTS(arg)):
-		result =  None 
+		result =  None
 	else:
 		ndim = arg.dim
 		if ('AUTOMOTIVE_DESIGN.VECTOR'  ==  TYPEOF(arg)):
 			v = dummy_gri  ==  direction(arg.vector.orientation.direction_ratios)
 			if (arg.magnitude  ==  0):
-				return  None 
+				return  None
 			else:
 				vec = dummy_gri  ==  vector(v,1)
 		else:
@@ -42199,7 +42199,7 @@ def normalise(arg,):
 			else:
 				result = v
 		else:
-			return  None 
+			return  None
 	return result
 
 ####################
@@ -42370,7 +42370,7 @@ def get_id_value(obj,):
 	if (SIZEOF(id_bag)  ==  1):
 		return id_bag[1].attribute_value
 	else:
-		return  None 
+		return  None
 
 ####################
  # FUNCTION aspect_ratio #
@@ -42383,7 +42383,7 @@ def aspect_ratio(p,):
 	if ((p.size_in_x  >  0)  and  (p.size_in_y  >  0)):
 		return p.size_in_x / p.size_in_y
 	else:
-		return  None 
+		return  None
 
 ####################
  # FUNCTION convert_plane_angle_for_pair_from_radian #
@@ -42397,19 +42397,19 @@ def convert_plane_angle_for_pair_from_radian(pair,angle_expr,):
 	'''
 	link_cntxt = link_rep.representation.context_of_items
 	if ( not ('AUTOMOTIVE_DESIGN.GLOBAL_UNIT_ASSIGNED_CONTEXT'  ==  TYPEOF(link_cntxt))):
-		return  None 
+		return  None
 	pa_units = None
 	if (SIZEOF(pa_units)  !=  1):
-		return  None 
+		return  None
 	pau = pa_units[1]
 	if (( not ('AUTOMOTIVE_DESIGN.SI_UNIT'  ==  TYPEOF(pau)))  and  ( not ('AUTOMOTIVE_DESIGN.CONVERSION_BASED_UNIT'  ==  TYPEOF(pau)))):
-		return  None 
+		return  None
 	for  while 'AUTOMOTIVE_DESIGN.CONVERSION_BASED_UNIT'  ==  TYPEOF(pau)		conv_factor = conv_factor  *  pau.conversion_based_unit.conversion_factor.value_component
 		pau = pau.conversion_based_unit.conversion_factor.unit_component
 		if ((( not ('AUTOMOTIVE_DESIGN.SI_UNIT'  ==  TYPEOF(pau)))  and  ( not ('AUTOMOTIVE_DESIGN.CONVERSION_BASED_UNIT'  ==  TYPEOF(pau))))  or  ( not ('AUTOMOTIVE_DESIGN.PLANE_ANGLE_UNIT'  ==  TYPEOF(pau)))):
-			return  None 
+			return  None
 	if (pau.si_unit.name  !=  si_unit_name.radian):
-		return  None 
+		return  None
 	case_selector = pau.si_unit.prefix
 	if  case_selector == si_prefix.exa:
 		conv_factor = 1e+018  *  conv_factor
@@ -42506,7 +42506,7 @@ def get_description_value(obj,):
 	if (SIZEOF(description_bag)  ==  1):
 		return description_bag[1].attribute_value
 	else:
-		return  None 
+		return  None
 
 ####################
  # FUNCTION constraints_param_b_spline #
@@ -42597,7 +42597,7 @@ def representation_of_link(link,):
 	'''
 	link_rep_rel = USEDIN(link,'AUTOMOTIVE_DESIGN.KINEMATIC_LINK_REPRESENTATION_RELATION.TOPOLOGICAL_ASPECTS')
 	if (SIZEOF(link_rep_rel)  ==  0):
-		return  None 
+		return  None
 	else:
 		return link_rep_rel[1].geometric_aspects
 
@@ -42616,7 +42616,7 @@ def ypr_index(ypr,):
 		return 2
 	elif case_selector == roll:
 		return 3
-	return  None 
+	return  None
 
 ####################
  # FUNCTION acyclic_mapped_item_usage #
@@ -42649,19 +42649,19 @@ def plane_angle_for_pair_in_radian(pair,angle,):
 	'''
 	link_cntxt = link_rep.representation.context_of_items
 	if ( not ('AUTOMOTIVE_DESIGN.GLOBAL_UNIT_ASSIGNED_CONTEXT'  ==  TYPEOF(link_cntxt))):
-		return  None 
+		return  None
 	pa_units = None
 	if (SIZEOF(pa_units)  !=  1):
-		return  None 
+		return  None
 	pau = pa_units[1]
 	if (( not ('AUTOMOTIVE_DESIGN.SI_UNIT'  ==  TYPEOF(pau)))  and  ( not ('AUTOMOTIVE_DESIGN.CONVERSION_BASED_UNIT'  ==  TYPEOF(pau)))):
-		return  None 
+		return  None
 	for  while 'AUTOMOTIVE_DESIGN.CONVERSION_BASED_UNIT'  ==  TYPEOF(pau)		converted_angle = converted_angle  *  pau.conversion_based_unit.conversion_factor.value_component
 		pau = pau.conversion_based_unit.conversion_factor.unit_component
 		if ((( not ('AUTOMOTIVE_DESIGN.SI_UNIT'  ==  TYPEOF(pau)))  and  ( not ('AUTOMOTIVE_DESIGN.CONVERSION_BASED_UNIT'  ==  TYPEOF(pau))))  or  ( not ('AUTOMOTIVE_DESIGN.PLANE_ANGLE_UNIT'  ==  TYPEOF(pau)))):
-			return  None 
+			return  None
 	if (pau.si_unit.name  !=  si_unit_name.radian):
-		return  None 
+		return  None
 	case_selector = pau.si_unit.prefix
 	if  case_selector == si_prefix.exa:
 		return 1e+018  *  converted_angle
@@ -42708,7 +42708,7 @@ def get_multi_language(x,):
 	'''
 	if (SIZEOF(alas)  >  0):
 		return alas[1].language
-	return  None 
+	return  None
 
 ####################
  # FUNCTION unique_link_usage #
@@ -42806,7 +42806,7 @@ def cross_product(arg1,arg2,):
 	:type arg2:direction
 	'''
 	if (((( not EXISTS(arg1))  or  (arg1.dim  ==  2))  or  ( not EXISTS(arg2)))  or  (arg2.dim  ==  2)):
-		return  None 
+		return  None
 	else:
 		v1 = normalise(arg1).direction_ratios
 		v2 = normalise(arg2).direction_ratios
@@ -43138,10 +43138,10 @@ def dot_product(arg1,arg2,):
 	:type arg2:direction
 	'''
 	if (( not EXISTS(arg1))  or  ( not EXISTS(arg2))):
-		scalar =  None 
+		scalar =  None
 	else:
 		if (arg1.dim  !=  arg2.dim):
-			scalar =  None 
+			scalar =  None
 		else:
 			vec1 = normalise(arg1)
 			vec2 = normalise(arg2)
@@ -43162,7 +43162,7 @@ def get_role(obj,):
 	if (SIZEOF(role_bag)  ==  1):
 		return role_bag[1].role
 	else:
-		return  None 
+		return  None
 
 ####################
  # FUNCTION acyclic_curve_replica #

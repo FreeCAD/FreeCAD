@@ -39689,7 +39689,7 @@ def get_name_value(obj,):
 	if (SIZEOF(name_bag)  ==  1):
 		return name_bag[1].attribute_value
 	else:
-		return  None 
+		return  None
 
 ####################
  # FUNCTION validate_countersink_radii #
@@ -40036,7 +40036,7 @@ def shell_reversed(a_shell,):
 		if ('AP203_CONFIGURATION_CONTROLLED_3D_DESIGN_OF_MECHANICAL_PARTS_AND_ASSEMBLIES_MIM_LF.CLOSED_SHELL'  ==  TYPEOF(a_shell)):
 			return closed_shell_reversed(a_shell)
 		else:
-			return  None 
+			return  None
 
 ####################
  # FUNCTION topology_reversed #
@@ -40060,7 +40060,7 @@ def topology_reversed(an_item,):
 		return set_of_topology_reversed(an_item)
 	if ('LIST'  ==  TYPEOF(an_item)):
 		return list_of_topology_reversed(an_item)
-	return  None 
+	return  None
 
 ####################
  # FUNCTION first_proj_axis #
@@ -40073,7 +40073,7 @@ def first_proj_axis(z_axis,arg,):
 	:type arg:direction
 	'''
 	if ( not EXISTS(z_axis)):
-		return  None 
+		return  None
 	else:
 		z = normalise(z_axis)
 		if ( not EXISTS(arg)):
@@ -40083,9 +40083,9 @@ def first_proj_axis(z_axis,arg,):
 				v = dummy_gri  ==  direction([0,1,0])
 		else:
 			if (arg.dim  !=  3):
-				return  None 
+				return  None
 			if (cross_product(arg,z).magnitude  ==  0):
-				return  None 
+				return  None
 			else:
 				v = normalise(arg)
 		x_vec = scalar_times_vector(dot_product(v,z),z)
@@ -40145,7 +40145,7 @@ def orthogonal_complement(vec,):
 	:type vec:direction
 	'''
 	if ((vec.dim  !=  2)  or  ( not EXISTS(vec))):
-		return  None 
+		return  None
 	else:
 		result = dummy_gri  ==  direction([-vec.direction_ratios[2],vec.direction_ratios[1]])
 		return result
@@ -40187,13 +40187,13 @@ def make_array_of_array(lis,low1,u1,low2,u2,):
 	:type u2:INTEGER
 	'''
 	if (((u1 - low1)  +  1)  !=  SIZEOF(lis)):
-		return  None 
+		return  None
 	if (((u2 - low2)  +  1)  !=  SIZEOF(lis[1])):
-		return  None 
+		return  None
 	res = [list_to_array(lis[1],low2,u2),(u1 - low1)  +  1]
 	for  i in range(2,HIINDEX(lis),1):
 		if (((u2 - low2)  +  1)  !=  SIZEOF(lis[i])):
-			return  None 
+			return  None
 		res[(low1  +  i) - 1] = list_to_array(lis[i],low2,u2)
 	return res
 
@@ -40292,7 +40292,7 @@ def vector_difference(arg1,arg2,):
 	:type arg2:vector_or_direction
 	'''
 	if ((( not EXISTS(arg1))  or  ( not EXISTS(arg2)))  or  (arg1.dim  !=  arg2.dim)):
-		return  None 
+		return  None
 	else:
 		# begin/end block
 		if ('AP203_CONFIGURATION_CONTROLLED_3D_DESIGN_OF_MECHANICAL_PARTS_AND_ASSEMBLIES_MIM_LF.VECTOR'  ==  TYPEOF(arg1)):
@@ -40510,7 +40510,7 @@ def list_to_array(lis,low,u,):
 	'''
 	n = SIZEOF(lis)
 	if (n  !=  ((u - low)  +  1)):
-		return  None 
+		return  None
 	else:
 		res = [lis[1],n]
 		for  i in range(2,n,1):
@@ -40712,7 +40712,7 @@ def scalar_times_vector(scalar,vec,):
 	:type vec:vector_or_direction
 	'''
 	if (( not EXISTS(scalar))  or  ( not EXISTS(vec))):
-		return  None 
+		return  None
 	else:
 		if ('AP203_CONFIGURATION_CONTROLLED_3D_DESIGN_OF_MECHANICAL_PARTS_AND_ASSEMBLIES_MIM_LF.VECTOR'  ==  TYPEOF(vec)):
 			v = dummy_gri  ==  direction(vec.vector.orientation.direction_ratios)
@@ -40793,7 +40793,7 @@ def dimensions_for_si_unit(n,):
 	elif case_selector == sievert:
 		return dimensional_exponents(2,0,-2,0,0,0,0)
 	else:
-		return  None 
+		return  None
 
 ####################
  # FUNCTION surface_condition_correlation #
@@ -40916,14 +40916,14 @@ def normalise(arg,):
 	:type arg:vector_or_direction
 	'''
 	if ( not EXISTS(arg)):
-		result =  None 
+		result =  None
 	else:
 		ndim = arg.dim
 		if ('AP203_CONFIGURATION_CONTROLLED_3D_DESIGN_OF_MECHANICAL_PARTS_AND_ASSEMBLIES_MIM_LF.VECTOR'  ==  TYPEOF(arg)):
 			# begin/end block
 			v = dummy_gri  ==  direction(arg.vector.orientation.direction_ratios)
 			if (arg.magnitude  ==  0):
-				return  None 
+				return  None
 			else:
 				vec = dummy_gri  ==  vector(v,1)
 		else:
@@ -40941,7 +40941,7 @@ def normalise(arg,):
 			else:
 				result = v
 		else:
-			return  None 
+			return  None
 	return result
 
 ####################
@@ -41112,7 +41112,7 @@ def get_id_value(obj,):
 	if (SIZEOF(id_bag)  ==  1):
 		return id_bag[1].attribute_value
 	else:
-		return  None 
+		return  None
 
 ####################
  # FUNCTION aspect_ratio #
@@ -41125,7 +41125,7 @@ def aspect_ratio(p,):
 	if ((p.size_in_x  >  0)  and  (p.size_in_y  >  0)):
 		return p.size_in_x / p.size_in_y
 	else:
-		return  None 
+		return  None
 
 ####################
  # FUNCTION is_acyclic #
@@ -41187,7 +41187,7 @@ def get_description_value(obj,):
 	if (SIZEOF(description_bag)  ==  1):
 		return description_bag[1].attribute_value
 	else:
-		return  None 
+		return  None
 
 ####################
  # FUNCTION constraints_param_b_spline #
@@ -41392,7 +41392,7 @@ def cross_product(arg1,arg2,):
 	:type arg2:direction
 	'''
 	if ((( not EXISTS(arg1))  or  (arg1.dim  ==  2))  or  (( not EXISTS(arg2))  or  (arg2.dim  ==  2))):
-		return  None 
+		return  None
 	else:
 		# begin/end block
 		v1 = normalise(arg1).direction_ratios
@@ -41712,10 +41712,10 @@ def dot_product(arg1,arg2,):
 	:type arg2:direction
 	'''
 	if (( not EXISTS(arg1))  or  ( not EXISTS(arg2))):
-		scalar =  None 
+		scalar =  None
 	else:
 		if (arg1.dim  !=  arg2.dim):
-			scalar =  None 
+			scalar =  None
 		else:
 			# begin/end block
 			vec1 = normalise(arg1)
@@ -41737,7 +41737,7 @@ def get_role(obj,):
 	if (SIZEOF(role_bag)  ==  1):
 		return role_bag[1].role
 	else:
-		return  None 
+		return  None
 
 ####################
  # FUNCTION acyclic_curve_replica #
