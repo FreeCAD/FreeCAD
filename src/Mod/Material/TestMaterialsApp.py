@@ -147,7 +147,7 @@ class MaterialTestCases(unittest.TestCase):
         print("Shininess " + properties["Shininess"])
         print("SpecularColor " + properties["SpecularColor"])
         print("Transparency " + properties["Transparency"])
-        
+
         self.assertTrue(len(properties["Density"]) > 0)
         # self.assertTrue(len(properties["BulkModulus"]) == 0)
         self.assertTrue(len(properties["PoissonRatio"]) > 0)
@@ -162,7 +162,7 @@ class MaterialTestCases(unittest.TestCase):
         self.assertTrue(len(properties["Shininess"]) > 0)
         self.assertTrue(len(properties["SpecularColor"]) > 0)
         self.assertTrue(len(properties["Transparency"]) > 0)
-        
+
         self.assertEqual(properties["Density"], "7900.00 kg/m^3")
         # self.assertEqual(properties["BulkModulus"], "")
         self.assertEqual(properties["PoissonRatio"], "0.30000001192092896")
