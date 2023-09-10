@@ -10,6 +10,7 @@ files: |
         src/Mod/Assembly|
         src/Mod/Cloud|
         src/Mod/Inspection|
+        src/Mod/JtReader|
         src/Mod/MeshPart|
         src/Mod/Points|
         src/Mod/ReverseEngineering|
