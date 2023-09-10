@@ -79,7 +79,21 @@ TEST_F(MaterialTest, TestMaterialsWithModel)
     
     auto materialsComplete = _materialManager->materialsWithModelComplete(
         QString::fromStdString("f6f9e48c-b116-4e82-ad7f-3659a9219c50"));  // IsotropicLinearElastic
-    EXPECT_GE(materialsComplete->size(), materials->size());
+    EXPECT_LE(materialsComplete->size(), materials->size());
+
+    auto materialsLinearElastic = _materialManager->materialsWithModel(
+        QString::fromStdString("7b561d1d-fb9b-44f6-9da9-56a4f74d7536")); // LinearElastic
+
+    // All LinearElastic models should be in IsotropicLinearElastic since it is inherited
+    EXPECT_LE(materialsLinearElastic->size(), materials->size());
+    for (auto itp = materialsLinearElastic->begin(); itp != materialsLinearElastic->end(); itp++) {
+        auto mat = itp->first;
+        EXPECT_NO_THROW(materials->at(mat));
+    }
+
+    delete materials;
+    delete materialsComplete;
+    delete materialsLinearElastic;
 }
     // def testMaterialsWithModel(self):
     //     materials = self.MaterialManager.materialsWithModel('f6f9e48c-b116-4e82-ad7f-3659a9219c50') # IsotropicLinearElastic
