@@ -138,7 +138,7 @@ void finishDatumConstraint(Gui::Command* cmd,
 
             if (lastConstraintType == Radius || lastConstraintType == Diameter) {
                 const Part::Geometry* geo = sketch->getGeometry(ConStr[i]->First);
-                if (geo && geo->getTypeId() == Part::GeomCircle::getClassTypeId()) {
+                if (geo && Sketcher::isCircle(geo)) {
                     ConStr[i]->LabelPosition = labelPosition;
                 }
             }
@@ -182,10 +182,10 @@ void showNoConstraintBetweenFixedGeometry(const App::DocumentObject* obj)
 
 bool isGeoConcentricCompatible(const Part::Geometry* geo)
 {
-    if (geo->getTypeId() == Part::GeomEllipse::getClassTypeId()
-        || geo->getTypeId() == Part::GeomArcOfEllipse::getClassTypeId()
-        || geo->getTypeId() == Part::GeomCircle::getClassTypeId()
-        || geo->getTypeId() == Part::GeomArcOfCircle::getClassTypeId()) {
+    if (Sketcher::isEllipse(geo)
+        || Sketcher::isArcOfEllipse(geo)
+        || Sketcher::isCircle(geo)
+        || Sketcher::isArcOfCircle(geo)) {
         return true;
     }
     return false;
@@ -213,16 +213,16 @@ void SketcherGui::makeTangentToEllipseviaNewPoint(Sketcher::SketchObject* Obj,
 
     Base::Vector3d center2;
 
-    if (geom2->getTypeId() == Part::GeomEllipse::getClassTypeId()) {
+    if (Sketcher::isEllipse(geom2)) {
         center2 = (static_cast<const Part::GeomEllipse*>(geom2))->getCenter();
     }
-    else if (geom2->getTypeId() == Part::GeomArcOfEllipse::getClassTypeId()) {
+    else if (Sketcher::isArcOfEllipse(geom2)) {
         center2 = (static_cast<const Part::GeomArcOfEllipse*>(geom2))->getCenter();
     }
-    else if (geom2->getTypeId() == Part::GeomCircle::getClassTypeId()) {
+    else if (Sketcher::isCircle(geom2)) {
         center2 = (static_cast<const Part::GeomCircle*>(geom2))->getCenter();
     }
-    else if (geom2->getTypeId() == Part::GeomArcOfCircle::getClassTypeId()) {
+    else if (Sketcher::isArcOfCircle(geom2)) {
         center2 = (static_cast<const Part::GeomArcOfCircle*>(geom2))->getCenter();
     }
 
@@ -296,13 +296,13 @@ void SketcherGui::makeTangentToArcOfEllipseviaNewPoint(Sketcher::SketchObject* O
 
     Base::Vector3d center2;
 
-    if (geom2->getTypeId() == Part::GeomArcOfEllipse::getClassTypeId()) {
+    if (Sketcher::isArcOfEllipse(geom2)) {
         center2 = (static_cast<const Part::GeomArcOfEllipse*>(geom2))->getCenter();
     }
-    else if (geom2->getTypeId() == Part::GeomCircle::getClassTypeId()) {
+    else if (Sketcher::isCircle(geom2)) {
         center2 = (static_cast<const Part::GeomCircle*>(geom2))->getCenter();
     }
-    else if (geom2->getTypeId() == Part::GeomArcOfCircle::getClassTypeId()) {
+    else if (Sketcher::isArcOfCircle(geom2)) {
         center2 = (static_cast<const Part::GeomArcOfCircle*>(geom2))->getCenter();
     }
 
@@ -379,7 +379,7 @@ void SketcherGui::makeTangentToArcOfHyperbolaviaNewPoint(Sketcher::SketchObject*
 
     Base::Vector3d center2;
 
-    if (geom2->getTypeId() == Part::GeomArcOfHyperbola::getClassTypeId()) {
+    if (Sketcher::isArcOfHyperbola(geom2)) {
         const Part::GeomArcOfHyperbola* aoh2 = static_cast<const Part::GeomArcOfHyperbola*>(geom2);
         Base::Vector3d dirmaj2 = aoh2->getMajorAxisDir();
         double majord2 = aoh2->getMajorRadius();
@@ -387,19 +387,19 @@ void SketcherGui::makeTangentToArcOfHyperbolaviaNewPoint(Sketcher::SketchObject*
         double df2 = sqrt(majord2 * majord2 + minord2 * minord2);
         center2 = aoh2->getCenter() + df2 * dirmaj2;// positive focus
     }
-    else if (geom2->getTypeId() == Part::GeomArcOfEllipse::getClassTypeId()) {
+    else if (Sketcher::isArcOfEllipse(geom2)) {
         center2 = (static_cast<const Part::GeomArcOfEllipse*>(geom2))->getCenter();
     }
-    else if (geom2->getTypeId() == Part::GeomEllipse::getClassTypeId()) {
+    else if (Sketcher::isEllipse(geom2)) {
         center2 = (static_cast<const Part::GeomEllipse*>(geom2))->getCenter();
     }
-    else if (geom2->getTypeId() == Part::GeomCircle::getClassTypeId()) {
+    else if (Sketcher::isCircle(geom2)) {
         center2 = (static_cast<const Part::GeomCircle*>(geom2))->getCenter();
     }
-    else if (geom2->getTypeId() == Part::GeomArcOfCircle::getClassTypeId()) {
+    else if (Sketcher::isArcOfCircle(geom2)) {
         center2 = (static_cast<const Part::GeomArcOfCircle*>(geom2))->getCenter();
     }
-    else if (geom2->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
+    else if (Sketcher::isLineSegment(geom2)) {
         const Part::GeomLineSegment* l2 = static_cast<const Part::GeomLineSegment*>(geom2);
         center2 = (l2->getStartPoint() + l2->getEndPoint()) / 2;
     }
@@ -470,10 +470,10 @@ void SketcherGui::makeTangentToArcOfParabolaviaNewPoint(Sketcher::SketchObject* 
 
     Base::Vector3d center2;
 
-    if (geom2->getTypeId() == Part::GeomArcOfParabola::getClassTypeId()) {
+    if (Sketcher::isArcOfParabola(geom2)) {
         center2 = (static_cast<const Part::GeomArcOfParabola*>(geom2))->getFocus();
     }
-    else if (geom2->getTypeId() == Part::GeomArcOfHyperbola::getClassTypeId()) {
+    else if (Sketcher::isArcOfHyperbola(geom2)) {
         const Part::GeomArcOfHyperbola* aoh2 = static_cast<const Part::GeomArcOfHyperbola*>(geom2);
         Base::Vector3d dirmaj2 = aoh2->getMajorAxisDir();
         double majord2 = aoh2->getMajorRadius();
@@ -481,19 +481,19 @@ void SketcherGui::makeTangentToArcOfParabolaviaNewPoint(Sketcher::SketchObject* 
         double df2 = sqrt(majord2 * majord2 + minord2 * minord2);
         center2 = aoh2->getCenter() + df2 * dirmaj2;// positive focus
     }
-    else if (geom2->getTypeId() == Part::GeomArcOfEllipse::getClassTypeId()) {
+    else if (Sketcher::isArcOfEllipse(geom2)) {
         center2 = (static_cast<const Part::GeomArcOfEllipse*>(geom2))->getCenter();
     }
-    else if (geom2->getTypeId() == Part::GeomEllipse::getClassTypeId()) {
+    else if (Sketcher::isEllipse(geom2)) {
         center2 = (static_cast<const Part::GeomEllipse*>(geom2))->getCenter();
     }
-    else if (geom2->getTypeId() == Part::GeomCircle::getClassTypeId()) {
+    else if (Sketcher::isCircle(geom2)) {
         center2 = (static_cast<const Part::GeomCircle*>(geom2))->getCenter();
     }
-    else if (geom2->getTypeId() == Part::GeomArcOfCircle::getClassTypeId()) {
+    else if (Sketcher::isArcOfCircle(geom2)) {
         center2 = (static_cast<const Part::GeomArcOfCircle*>(geom2))->getCenter();
     }
-    else if (geom2->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
+    else if (Sketcher::isLineSegment(geom2)) {
         const Part::GeomLineSegment* l2 = static_cast<const Part::GeomLineSegment*>(geom2);
         center2 = (l2->getStartPoint() + l2->getEndPoint()) / 2;
     }
@@ -553,10 +553,10 @@ void SketcherGui::doEndpointTangency(Sketcher::SketchObject* Obj,
     const Part::Geometry* geom2 = Obj->getGeometry(GeoId2);
 
     if (geom1 && geom2
-        && (geom1->getTypeId() == Part::GeomBSplineCurve::getClassTypeId()
-            || geom2->getTypeId() == Part::GeomBSplineCurve::getClassTypeId())) {
+        && (Sketcher::isBSplineCurve(geom1)
+            || Sketcher::isBSplineCurve(geom2))) {
 
-        if (geom1->getTypeId() != Part::GeomBSplineCurve::getClassTypeId()) {
+        if (! Sketcher::isBSplineCurve(geom1)) {
             std::swap(GeoId1, GeoId2);
             std::swap(PosId1, PosId2);
         }
@@ -1649,7 +1649,7 @@ protected:
     {
         //Distance. For now only circles not arcs!
         const Part::Geometry* geom = Obj->getGeometry(selCircleArc[0].GeoId);
-        if (availableConstraint == AvailableConstraint::FIRST && geom->getTypeId() == Part::GeomCircle::getClassTypeId()) {
+        if (availableConstraint == AvailableConstraint::FIRST && Sketcher::isCircle(geom)) {
             restartCommand(QT_TRANSLATE_NOOP("Command", "Add length constraint"));
             createDistanceConstrain(selPoints[0].GeoId, selPoints[0].PosId, selCircleArc[0].GeoId, selCircleArc[0].PosId, onSketchPos);
             selAllowed = true;
@@ -1738,7 +1738,7 @@ protected:
     {
         //Distance. For now only circles not arcs!
         const Part::Geometry* geom = Obj->getGeometry(selCircleArc[0].GeoId);
-        if (availableConstraint == AvailableConstraint::FIRST && geom->getTypeId() == Part::GeomCircle::getClassTypeId()) {
+        if (availableConstraint == AvailableConstraint::FIRST && Sketcher::isCircle(geom)) {
             restartCommand(QT_TRANSLATE_NOOP("Command", "Add length constraint"));
             createDistanceConstrain(selCircleArc[0].GeoId, selCircleArc[0].PosId, selLine[0].GeoId, selLine[0].PosId, onSketchPos); //Line second parameter
             selAllowed = true;
@@ -1779,7 +1779,7 @@ protected:
         const Part::Geometry* geom = Obj->getGeometry(selCircleArc[0].GeoId);
         const Part::Geometry* geom2 = Obj->getGeometry(selCircleArc[1].GeoId);
         if (availableConstraint == AvailableConstraint::FIRST) {
-            if (geom->getTypeId() == Part::GeomCircle::getClassTypeId() && geom2->getTypeId() == Part::GeomCircle::getClassTypeId()) {
+            if (Sketcher::isCircle(geom) && Sketcher::isCircle(geom2)) {
                 restartCommand(QT_TRANSLATE_NOOP("Command", "Add length constraint"));
                 createDistanceConstrain(selCircleArc[0].GeoId, selCircleArc[0].PosId, selCircleArc[1].GeoId, selCircleArc[1].PosId, onSketchPos);
             }
@@ -1866,14 +1866,14 @@ protected:
             Base::Vector3d pnt = Obj->getPoint(GeoId1, PosId1);
             double ActDist = 0.;
             const Part::Geometry* geom = Obj->getGeometry(GeoId2);
-            if (geom->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
+            if (Sketcher::isLineSegment(geom)) {
                 const Part::GeomLineSegment* lineSeg = static_cast<const Part::GeomLineSegment*>(geom);
                 Base::Vector3d pnt1 = lineSeg->getStartPoint();
                 Base::Vector3d pnt2 = lineSeg->getEndPoint();
                 Base::Vector3d d = pnt2 - pnt1;
                 ActDist = std::abs(-pnt.x * d.y + pnt.y * d.x + pnt1.x * pnt2.y - pnt2.x * pnt1.y) / d.Length();
             }
-            else if (geom->getTypeId() == Part::GeomCircle::getClassTypeId()) {
+            else if (Sketcher::isCircle(geom)) {
                 const Part::GeomCircle* circle = static_cast<const Part::GeomCircle*>(geom);
                 Base::Vector3d ct = circle->getCenter();
                 Base::Vector3d di = ct - pnt;
@@ -1887,8 +1887,8 @@ protected:
             const Part::Geometry* geo1 = Obj->getGeometry(GeoId1);
             const Part::Geometry* geo2 = Obj->getGeometry(GeoId2);
 
-            if (geo1->getTypeId() == Part::GeomCircle::getClassTypeId()
-                && geo2->getTypeId() == Part::GeomLineSegment::getClassTypeId()) { // Circle - line case
+            if (Sketcher::isCircle(geo1)
+                && Sketcher::isLineSegment(geo2)) { // Circle - line case
                 auto circleSeg = static_cast<const Part::GeomCircle*>(geo1);
                 double radius = circleSeg->getRadius();
                 Base::Vector3d center = circleSeg->getCenter();
@@ -1905,8 +1905,8 @@ protected:
                 Gui::cmdAppObjectArgs(Obj, "addConstraint(Sketcher.Constraint('Distance',%d,%d,%f))",
                     GeoId1, GeoId2, ActDist);
             }
-            else if (geo1->getTypeId() == Part::GeomCircle::getClassTypeId()
-                && geo2->getTypeId() == Part::GeomCircle::getClassTypeId()) { // Circle - circle case
+            else if (Sketcher::isCircle(geo1)
+                && Sketcher::isCircle(geo2)) { // Circle - circle case
                 auto circleSeg1 = static_cast<const Part::GeomCircle*>(geo1);
                 double radius1 = circleSeg1->getRadius();
                 Base::Vector3d center1 = circleSeg1->getCenter();
@@ -1997,12 +1997,12 @@ protected:
         bool isCircle = true;
 
         const Part::Geometry* geom = Obj->getGeometry(GeoId);
-        if (geom && geom->getTypeId() == Part::GeomArcOfCircle::getClassTypeId()) {
+        if (geom && Sketcher::isArcOfCircle(geom)) {
             const Part::GeomArcOfCircle* arc = static_cast<const Part::GeomArcOfCircle*>(geom);
             radius = arc->getRadius();
             isCircle = false;
         }
-        else if (geom && geom->getTypeId() == Part::GeomCircle::getClassTypeId()) {
+        else if (geom && Sketcher::isCircle(geom)) {
             const Part::GeomCircle* circle = static_cast<const Part::GeomCircle*>(geom);
             radius = circle->getRadius();
         }
@@ -2073,14 +2073,14 @@ protected:
         const Part::Geometry* geo1 = Obj->getGeometry(GeoId1);
         const Part::Geometry* geo2 = Obj->getGeometry(GeoId2);
 
-        if ((geo1->getTypeId() == Part::GeomLineSegment::getClassTypeId() && geo2->getTypeId() != Part::GeomLineSegment::getClassTypeId()) ||
-            (geo1->getTypeId() == Part::GeomArcOfHyperbola::getClassTypeId() && geo2->getTypeId() != Part::GeomArcOfHyperbola::getClassTypeId()) ||
-            (geo1->getTypeId() == Part::GeomArcOfParabola::getClassTypeId() && geo2->getTypeId() != Part::GeomArcOfParabola::getClassTypeId()) ||
+        if ((Sketcher::isLineSegment(geo1) && ! Sketcher::isLineSegment(geo2)) ||
+            (Sketcher::isArcOfHyperbola(geo1) && ! Sketcher::isArcOfHyperbola(geo2)) ||
+            (Sketcher::isArcOfParabola(geo1) && ! Sketcher::isArcOfParabola(geo2)) ||
             (isBsplinePole(geo1) && !isBsplinePole(geo2)) ||
-            ((geo1->getTypeId() == Part::GeomCircle::getClassTypeId() || geo1->getTypeId() == Part::GeomArcOfCircle::getClassTypeId()) &&
-                !(geo2->getTypeId() == Part::GeomCircle::getClassTypeId() || geo2->getTypeId() == Part::GeomArcOfCircle::getClassTypeId())) ||
-            ((geo1->getTypeId() == Part::GeomEllipse::getClassTypeId() || geo1->getTypeId() == Part::GeomArcOfEllipse::getClassTypeId()) &&
-                !(geo2->getTypeId() == Part::GeomEllipse::getClassTypeId() || geo2->getTypeId() == Part::GeomArcOfEllipse::getClassTypeId()))) {
+            ((Sketcher::isCircle(geo1) || Sketcher::isArcOfCircle(geo1)) &&
+                !(Sketcher::isCircle(geo2) || Sketcher::isArcOfCircle(geo2))) ||
+            ((Sketcher::isEllipse(geo1) || Sketcher::isArcOfEllipse(geo1)) &&
+                !(Sketcher::isEllipse(geo2) || Sketcher::isArcOfEllipse(geo2)))) {
 
             Gui::TranslatedUserWarning(Obj,
                 QObject::tr("Wrong selection"),
@@ -2096,8 +2096,8 @@ protected:
     void createAngleConstrain(int GeoId1, int GeoId2, Base::Vector2d onSketchPos) {
         const Part::Geometry* geom1 = Obj->getGeometry(GeoId1);
         const Part::Geometry* geom2 = Obj->getGeometry(GeoId2);
-        if (geom1->getTypeId() == Part::GeomLineSegment::getClassTypeId() &&
-            geom2->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
+        if (Sketcher::isLineSegment(geom1) &&
+            Sketcher::isLineSegment(geom2)) {
             const Part::GeomLineSegment* lineSeg1 = static_cast<const Part::GeomLineSegment*>(geom1);
             const Part::GeomLineSegment* lineSeg2 = static_cast<const Part::GeomLineSegment*>(geom2);
 
@@ -2249,7 +2249,7 @@ protected:
             }
 
             const Part::Geometry* geom = Obj->getGeometry(GeoId3);
-            if (geom->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
+            if (Sketcher::isLineSegment(geom)) {
                 if (GeoId1 == GeoId2 && GeoId2 == GeoId3) {
                     Gui::TranslatedUserWarning(Obj,
                         QObject::tr("Wrong selection"),
@@ -2505,7 +2505,7 @@ void CmdSketcherConstrainHorizontal::activated(int iMsg)
 
         if (isEdge(GeoId, PosId)) {// it is an edge
             const Part::Geometry* geo = Obj->getGeometry(GeoId);
-            if (geo->getTypeId() != Part::GeomLineSegment::getClassTypeId()) {
+            if (! Sketcher::isLineSegment(geo)) {
                 Gui::TranslatedUserWarning(Obj,
                                            QObject::tr("Impossible constraint"),
                                            QObject::tr("The selected edge is not a line segment."));
@@ -2623,7 +2623,7 @@ void CmdSketcherConstrainHorizontal::applyConstraint(std::vector<SelIdPair>& sel
             int CrvId = selSeq.front().GeoId;
             if (CrvId != -1) {
                 const Part::Geometry* geo = Obj->getGeometry(CrvId);
-                if (geo->getTypeId() != Part::GeomLineSegment::getClassTypeId()) {
+                if (! Sketcher::isLineSegment(geo)) {
                     Gui::TranslatedUserWarning(
                         Obj,
                         QObject::tr("Impossible constraint"),
@@ -2792,7 +2792,7 @@ void CmdSketcherConstrainVertical::activated(int iMsg)
 
         if (isEdge(GeoId, PosId)) {// it is an edge
             const Part::Geometry* geo = Obj->getGeometry(GeoId);
-            if (geo->getTypeId() != Part::GeomLineSegment::getClassTypeId()) {
+            if (! Sketcher::isLineSegment(geo)) {
                 Gui::TranslatedUserWarning(Obj,
                                            QObject::tr("Impossible constraint"),
                                            QObject::tr("The selected edge is not a line segment."));
@@ -2910,7 +2910,7 @@ void CmdSketcherConstrainVertical::applyConstraint(std::vector<SelIdPair>& selSe
             int CrvId = selSeq.front().GeoId;
             if (CrvId != -1) {
                 const Part::Geometry* geo = Obj->getGeometry(CrvId);
-                if (geo->getTypeId() != Part::GeomLineSegment::getClassTypeId()) {
+                if (! Sketcher::isLineSegment(geo)) {
                     Gui::TranslatedUserWarning(
                         Obj,
                         QObject::tr("Impossible constraint"),
@@ -4076,7 +4076,7 @@ void CmdSketcherConstrainDistance::activated(int iMsg)
         }
         Base::Vector3d pnt = Obj->getPoint(GeoId1, PosId1);
         const Part::Geometry* geom = Obj->getGeometry(GeoId2);
-        if (geom->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
+        if (Sketcher::isLineSegment(geom)) {
             const Part::GeomLineSegment* lineSeg;
             lineSeg = static_cast<const Part::GeomLineSegment*>(geom);
             Base::Vector3d pnt1 = lineSeg->getStartPoint();
@@ -4111,7 +4111,7 @@ void CmdSketcherConstrainDistance::activated(int iMsg)
 
             return;
         }
-        else if (geom->getTypeId() == Part::GeomCircle::getClassTypeId()) {
+        else if (Sketcher::isCircle(geom)) {
             const Part::GeomCircle* circleSeg;
             circleSeg = static_cast<const Part::GeomCircle*>(geom);
             Base::Vector3d ct = circleSeg->getCenter();
@@ -4147,7 +4147,7 @@ void CmdSketcherConstrainDistance::activated(int iMsg)
     else if (isEdge(GeoId1, PosId1) && isEdge(GeoId2, PosId2)) {
         const Part::Geometry* geom1 = Obj->getGeometry(GeoId1);
         const Part::Geometry* geom2 = Obj->getGeometry(GeoId2);
-        if (geom1->getTypeId() == Part::GeomCircle::getClassTypeId()
+        if (Sketcher::isCircle(geom1)
             && geom2->getTypeId()
                 == Part::GeomCircle::getClassTypeId()) {// circle to circle distance
             auto circleSeg1 = static_cast<const Part::GeomCircle*>(geom1);
@@ -4198,13 +4198,10 @@ void CmdSketcherConstrainDistance::activated(int iMsg)
 
             return;
         }
-        else if ((geom1->getTypeId() == Part::GeomCircle::getClassTypeId()
-                  && geom2->getTypeId() == Part::GeomLineSegment::getClassTypeId())
-                 || (geom1->getTypeId() == Part::GeomLineSegment::getClassTypeId()
-                     && geom2->getTypeId()
-                         == Part::GeomCircle::getClassTypeId())) {// circle to line distance
+        else if ((Sketcher::isCircle(geom1) && Sketcher::isLineSegment(geom2))
+                 || (Sketcher::isLineSegment(geom1) && Sketcher::isCircle(geom2))) {// circle to line distance
 
-            if (geom1->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
+            if (Sketcher::isLineSegment(geom1)) {
                 std::swap(geom1, geom2);// Assume circle is first
                 std::swap(GeoId1, GeoId2);
             }
@@ -4258,7 +4255,7 @@ void CmdSketcherConstrainDistance::activated(int iMsg)
         arebothpointsorsegmentsfixed = isPointOrSegmentFixed(Obj, GeoId1);
 
         const Part::Geometry* geom = Obj->getGeometry(GeoId1);
-        if (geom->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
+        if (Sketcher::isLineSegment(geom)) {
             const Part::GeomLineSegment* lineSeg;
             lineSeg = static_cast<const Part::GeomLineSegment*>(geom);
             double ActLength = (lineSeg->getEndPoint() - lineSeg->getStartPoint()).Length();
@@ -4382,7 +4379,7 @@ void CmdSketcherConstrainDistance::applyConstraint(std::vector<SelIdPair>& selSe
             arebothpointsorsegmentsfixed = isPointOrSegmentFixed(Obj, GeoId1);
 
             const Part::Geometry* geom = Obj->getGeometry(GeoId1);
-            if (geom->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
+            if (Sketcher::isLineSegment(geom)) {
                 const Part::GeomLineSegment* lineSeg;
                 lineSeg = static_cast<const Part::GeomLineSegment*>(geom);
                 double ActLength = (lineSeg->getEndPoint() - lineSeg->getStartPoint()).Length();
@@ -4405,7 +4402,7 @@ void CmdSketcherConstrainDistance::applyConstraint(std::vector<SelIdPair>& selSe
                     finishDatumConstraint(this, Obj, true);
                 }
             }
-            else if (geom->getTypeId() == Part::GeomCircle::getClassTypeId()) {
+            else if (Sketcher::isCircle(geom)) {
                 // allow this selection but do nothing as it needs 2 circles or 1 circle and 1 line
             }
             else {
@@ -4429,7 +4426,7 @@ void CmdSketcherConstrainDistance::applyConstraint(std::vector<SelIdPair>& selSe
 
             Base::Vector3d pnt = Obj->getPoint(GeoId1, PosId1);
             const Part::Geometry* geom = Obj->getGeometry(GeoId2);
-            if (geom->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
+            if (Sketcher::isLineSegment(geom)) {
                 const Part::GeomLineSegment* lineSeg;
                 lineSeg = static_cast<const Part::GeomLineSegment*>(geom);
                 Base::Vector3d pnt1 = lineSeg->getStartPoint();
@@ -4467,9 +4464,7 @@ void CmdSketcherConstrainDistance::applyConstraint(std::vector<SelIdPair>& selSe
             GeoId2 = selSeq.at(1).GeoId;
             const Part::Geometry* geom1 = Obj->getGeometry(GeoId1);
             const Part::Geometry* geom2 = Obj->getGeometry(GeoId2);
-            if (geom1->getTypeId() == Part::GeomCircle::getClassTypeId()
-                && geom2->getTypeId()
-                    == Part::GeomCircle::getClassTypeId()) {// circle to circle distance
+            if (Sketcher::isCircle(geom1) && Sketcher::isCircle(geom2)) {// circle to circle distance
                 auto circleSeg1 = static_cast<const Part::GeomCircle*>(geom1);
                 double radius1 = circleSeg1->getRadius();
                 Base::Vector3d center1 = circleSeg1->getCenter();
@@ -4924,7 +4919,7 @@ void CmdSketcherConstrainDistanceX::activated(int iMsg)
         arebothpointsorsegmentsfixed = isPointOrSegmentFixed(Obj, GeoId1);
 
         const Part::Geometry* geom = Obj->getGeometry(GeoId1);
-        if (geom->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
+        if (Sketcher::isLineSegment(geom)) {
             // convert to as if two endpoints of the line have been selected
             PosId1 = Sketcher::PointPos::start;
             GeoId2 = GeoId1;
@@ -5047,7 +5042,7 @@ void CmdSketcherConstrainDistanceX::applyConstraint(std::vector<SelIdPair>& selS
             PosId2 = Sketcher::PointPos::end;
 
             const Part::Geometry* geom = Obj->getGeometry(GeoId1);
-            if (geom->getTypeId() != Part::GeomLineSegment::getClassTypeId()) {
+            if (! Sketcher::isLineSegment(geom)) {
                 Gui::TranslatedUserWarning(
                     Obj,
                     QObject::tr("Wrong selection"),
@@ -5225,7 +5220,7 @@ void CmdSketcherConstrainDistanceY::activated(int iMsg)
         arebothpointsorsegmentsfixed = isPointOrSegmentFixed(Obj, GeoId1);
 
         const Part::Geometry* geom = Obj->getGeometry(GeoId1);
-        if (geom->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
+        if (Sketcher::isLineSegment(geom)) {
             // convert to as if two endpoints of the line have been selected
             PosId1 = Sketcher::PointPos::start;
             GeoId2 = GeoId1;
@@ -5347,7 +5342,7 @@ void CmdSketcherConstrainDistanceY::applyConstraint(std::vector<SelIdPair>& selS
             PosId2 = Sketcher::PointPos::end;
 
             const Part::Geometry* geom = Obj->getGeometry(GeoId1);
-            if (geom->getTypeId() != Part::GeomLineSegment::getClassTypeId()) {
+            if (! Sketcher::isLineSegment(geom)) {
                 Gui::TranslatedUserWarning(
                     Obj,
                     QObject::tr("Wrong selection"),
@@ -5518,7 +5513,7 @@ void CmdSketcherConstrainParallel::activated(int iMsg)
 
         // Check that the curve is a line segment
         const Part::Geometry* geo = Obj->getGeometry(GeoId);
-        if (geo->getTypeId() != Part::GeomLineSegment::getClassTypeId()) {
+        if (! Sketcher::isLineSegment(geo)) {
             Gui::TranslatedUserWarning(Obj,
                                        QObject::tr("Wrong selection"),
                                        QObject::tr("The selected edge is not a valid line."));
@@ -5560,9 +5555,7 @@ void CmdSketcherConstrainParallel::applyConstraint(std::vector<SelIdPair>& selSe
             int GeoId1 = selSeq.at(0).GeoId, GeoId2 = selSeq.at(1).GeoId;
 
             // Check that the curves are line segments
-            if (Obj->getGeometry(GeoId1)->getTypeId() != Part::GeomLineSegment::getClassTypeId()
-                || Obj->getGeometry(GeoId2)->getTypeId()
-                    != Part::GeomLineSegment::getClassTypeId()) {
+            if (! Sketcher::isLineSegment(Obj->getGeometry(GeoId1)) || ! Sketcher::isLineSegment(Obj->getGeometry(GeoId2)) {
                 Gui::TranslatedUserWarning(Obj,
                                            QObject::tr("Wrong selection"),
                                            QObject::tr("The selected edge is not a valid line."));
@@ -5795,11 +5788,8 @@ void CmdSketcherConstrainPerpendicular::activated(int iMsg)
             const Part::Geometry* geom1 = Obj->getGeometry(GeoId1);
             const Part::Geometry* geom2 = Obj->getGeometry(GeoId2);
 
-            if (geom1 && geom2
-                && (geom1->getTypeId() == Part::GeomBSplineCurve::getClassTypeId()
-                    || geom2->getTypeId() == Part::GeomBSplineCurve::getClassTypeId())) {
-
-                if (geom1->getTypeId() != Part::GeomBSplineCurve::getClassTypeId()) {
+            if (geom1 && geom2 && (Sketcher::isBSplineCurve(geom1) || Sketcher::isBSplineCurve(geom2))) {
+                if (! Sketcher::isBSplineCurve(geom1)) {
                     std::swap(GeoId1, GeoId2);
                     std::swap(PosId1, PosId2);
                 }
@@ -5837,7 +5827,7 @@ void CmdSketcherConstrainPerpendicular::activated(int iMsg)
 
             const Part::Geometry* geom2 = Obj->getGeometry(GeoId2);
 
-            if (geom2 && geom2->getTypeId() == Part::GeomBSplineCurve::getClassTypeId()) {
+            if (geom2 && Sketcher::isBSplineCurve(geom2)) {
                 // unsupported until normal to B-spline at any point implemented.
                 Gui::TranslatedUserWarning(
                     Obj,
@@ -5875,8 +5865,8 @@ void CmdSketcherConstrainPerpendicular::activated(int iMsg)
                 return;
             }
 
-            if (geo1->getTypeId() != Part::GeomLineSegment::getClassTypeId()
-                && geo2->getTypeId() != Part::GeomLineSegment::getClassTypeId()) {
+            if (! Sketcher::isLineSegment(geo1)
+                && ! Sketcher::isLineSegment(geo2)) {
                 Gui::TranslatedUserWarning(
                     Obj,
                     QObject::tr("Wrong selection"),
@@ -5884,9 +5874,7 @@ void CmdSketcherConstrainPerpendicular::activated(int iMsg)
                 return;
             }
 
-            if (geo1->getTypeId() == Part::GeomBSplineCurve::getClassTypeId()
-                || geo2->getTypeId() == Part::GeomBSplineCurve::getClassTypeId()) {
-
+            if (Sketcher::isBSplineCurve(geo1) || Sketcher::isBSplineCurve(geo2)) {
                 // unsupported until tangent to B-spline at any point implemented.
                 Gui::TranslatedUserWarning(
                     Obj,
@@ -5895,7 +5883,7 @@ void CmdSketcherConstrainPerpendicular::activated(int iMsg)
                 return;
             }
 
-            if (geo1->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
+            if (Sketcher::isLineSegment(geo1)) {
                 std::swap(GeoId1, GeoId2);
             }
 
@@ -5911,10 +5899,8 @@ void CmdSketcherConstrainPerpendicular::activated(int iMsg)
             geo1 = Obj->getGeometry(GeoId1);
             geo2 = Obj->getGeometry(GeoId2);
 
-            if (geo1->getTypeId() == Part::GeomEllipse::getClassTypeId()
-                || geo1->getTypeId() == Part::GeomArcOfEllipse::getClassTypeId()
-                || geo1->getTypeId() == Part::GeomArcOfHyperbola::getClassTypeId()
-                || geo1->getTypeId() == Part::GeomArcOfParabola::getClassTypeId()) {
+            if (Sketcher::isEllipse(geo1) || Sketcher::isArcOfEllipse(geo1)
+                || Sketcher::isArcOfHyperbola(geo1) || Sketcher::isArcOfParabola(geo1)) {
 
                 Base::Vector3d center;
                 Base::Vector3d majdir;
@@ -5923,7 +5909,7 @@ void CmdSketcherConstrainPerpendicular::activated(int iMsg)
                 double minord = 0;
                 double phi = 0;
 
-                if (geo1->getTypeId() == Part::GeomEllipse::getClassTypeId()) {
+                if (Sketcher::isEllipse(geo1)) {
                     const Part::GeomEllipse* ellipse = static_cast<const Part::GeomEllipse*>(geo1);
 
                     center = ellipse->getCenter();
@@ -5932,9 +5918,8 @@ void CmdSketcherConstrainPerpendicular::activated(int iMsg)
                     majdir = ellipse->getMajorAxisDir();
                     phi = atan2(majdir.y, majdir.x);
                 }
-                else if (geo1->getTypeId() == Part::GeomArcOfEllipse::getClassTypeId()) {
-                    const Part::GeomArcOfEllipse* aoe =
-                        static_cast<const Part::GeomArcOfEllipse*>(geo1);
+                else if (Sketcher::isArcOfEllipse(geo1)) {
+                    const Part::GeomArcOfEllipse* aoe = static_cast<const Part::GeomArcOfEllipse*>(geo1);
 
                     center = aoe->getCenter();
                     majord = aoe->getMajorRadius();
@@ -5942,7 +5927,7 @@ void CmdSketcherConstrainPerpendicular::activated(int iMsg)
                     majdir = aoe->getMajorAxisDir();
                     phi = atan2(majdir.y, majdir.x);
                 }
-                else if (geo1->getTypeId() == Part::GeomArcOfHyperbola::getClassTypeId()) {
+                else if (Sketcher::isArcOfHyperbola(geo1)) {
                     const Part::GeomArcOfHyperbola* aoh =
                         static_cast<const Part::GeomArcOfHyperbola*>(geo1);
 
@@ -5952,9 +5937,8 @@ void CmdSketcherConstrainPerpendicular::activated(int iMsg)
                     majdir = aoh->getMajorAxisDir();
                     phi = atan2(majdir.y, majdir.x);
                 }
-                else if (geo1->getTypeId() == Part::GeomArcOfParabola::getClassTypeId()) {
-                    const Part::GeomArcOfParabola* aop =
-                        static_cast<const Part::GeomArcOfParabola*>(geo1);
+                else if (Sketcher::isArcOfParabola(geo1)) {
+                    const Part::GeomArcOfParabola* aop = static_cast<const Part::GeomArcOfParabola*>(geo1);
 
                     center = aop->getCenter();
                     focus = aop->getFocus();
@@ -5965,7 +5949,7 @@ void CmdSketcherConstrainPerpendicular::activated(int iMsg)
                 Base::Vector3d point1 = line->getStartPoint();
                 Base::Vector3d PoO;
 
-                if (geo1->getTypeId() == Part::GeomArcOfHyperbola::getClassTypeId()) {
+                if (Sketcher::isArcOfHyperbola(geo1)) {
                     double df = sqrt(majord * majord + minord * minord);
                     Base::Vector3d direction = point1 - (center + majdir * df);// towards the focus
                     double tapprox = atan2(direction.y, direction.x) - phi;
@@ -5976,7 +5960,7 @@ void CmdSketcherConstrainPerpendicular::activated(int iMsg)
                                              + minord * sinh(tapprox) * cos(phi),
                                          0);
                 }
-                else if (geo1->getTypeId() == Part::GeomArcOfParabola::getClassTypeId()) {
+                else if (Sketcher::isArcOfParabola(geo1)) {
                     Base::Vector3d direction = point1 - focus;// towards the focus
 
                     PoO = point1 + direction / 2;
@@ -6091,8 +6075,7 @@ void CmdSketcherConstrainPerpendicular::applyConstraint(std::vector<SelIdPair>& 
                 return;
             }
 
-            if (geo1->getTypeId() != Part::GeomLineSegment::getClassTypeId()
-                && geo2->getTypeId() != Part::GeomLineSegment::getClassTypeId()) {
+            if (! Sketcher::isLineSegment(geo1) && ! Sketcher::isLineSegment(geo2)) {
                 Gui::TranslatedUserWarning(
                     Obj,
                     QObject::tr("Wrong selection"),
@@ -6100,9 +6083,7 @@ void CmdSketcherConstrainPerpendicular::applyConstraint(std::vector<SelIdPair>& 
                 return;
             }
 
-            if (geo1->getTypeId() == Part::GeomBSplineCurve::getClassTypeId()
-                || geo2->getTypeId() == Part::GeomBSplineCurve::getClassTypeId()) {
-
+            if (Sketcher::isBSplineCurve(geo1) || Sketcher::isBSplineCurve(geo2)) {
                 // unsupported until tangent to B-spline at any point implemented.
                 Gui::TranslatedUserWarning(
                     Obj,
@@ -6112,7 +6093,7 @@ void CmdSketcherConstrainPerpendicular::applyConstraint(std::vector<SelIdPair>& 
                 return;
             }
 
-            if (geo1->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
+            if (Sketcher::isLineSegment(geo1)) {
                 std::swap(GeoId1, GeoId2);
             }
 
@@ -6128,10 +6109,8 @@ void CmdSketcherConstrainPerpendicular::applyConstraint(std::vector<SelIdPair>& 
             geo1 = Obj->getGeometry(GeoId1);
             geo2 = Obj->getGeometry(GeoId2);
 
-            if (geo1->getTypeId() == Part::GeomEllipse::getClassTypeId()
-                || geo1->getTypeId() == Part::GeomArcOfEllipse::getClassTypeId()
-                || geo1->getTypeId() == Part::GeomArcOfHyperbola::getClassTypeId()
-                || geo1->getTypeId() == Part::GeomArcOfParabola::getClassTypeId()) {
+            if (Sketcher::isEllipse(geo1) || Sketcher::isArcOfEllipse(geo1)
+                || Sketcher::isArcOfHyperbola(geo1) || Sketcher::isArcOfParabola(geo1)) {
 
                 Base::Vector3d center;
                 Base::Vector3d majdir;
@@ -6140,7 +6119,7 @@ void CmdSketcherConstrainPerpendicular::applyConstraint(std::vector<SelIdPair>& 
                 double minord = 0;
                 double phi = 0;
 
-                if (geo1->getTypeId() == Part::GeomEllipse::getClassTypeId()) {
+                if (Sketcher::isEllipse(geo1)) {
                     const Part::GeomEllipse* ellipse = static_cast<const Part::GeomEllipse*>(geo1);
 
                     center = ellipse->getCenter();
@@ -6149,9 +6128,8 @@ void CmdSketcherConstrainPerpendicular::applyConstraint(std::vector<SelIdPair>& 
                     majdir = ellipse->getMajorAxisDir();
                     phi = atan2(majdir.y, majdir.x);
                 }
-                else if (geo1->getTypeId() == Part::GeomArcOfEllipse::getClassTypeId()) {
-                    const Part::GeomArcOfEllipse* aoe =
-                        static_cast<const Part::GeomArcOfEllipse*>(geo1);
+                else if (Sketcher::isArcOfEllipse(geo1)) {
+                    const Part::GeomArcOfEllipse* aoe = static_cast<const Part::GeomArcOfEllipse*>(geo1);
 
                     center = aoe->getCenter();
                     majord = aoe->getMajorRadius();
@@ -6159,9 +6137,8 @@ void CmdSketcherConstrainPerpendicular::applyConstraint(std::vector<SelIdPair>& 
                     majdir = aoe->getMajorAxisDir();
                     phi = atan2(majdir.y, majdir.x);
                 }
-                else if (geo1->getTypeId() == Part::GeomArcOfHyperbola::getClassTypeId()) {
-                    const Part::GeomArcOfHyperbola* aoh =
-                        static_cast<const Part::GeomArcOfHyperbola*>(geo1);
+                else if (Sketcher::isArcOfHyperbola(geo1)) {
+                    const Part::GeomArcOfHyperbola* aoh = static_cast<const Part::GeomArcOfHyperbola*>(geo1);
 
                     center = aoh->getCenter();
                     majord = aoh->getMajorRadius();
@@ -6169,9 +6146,8 @@ void CmdSketcherConstrainPerpendicular::applyConstraint(std::vector<SelIdPair>& 
                     majdir = aoh->getMajorAxisDir();
                     phi = atan2(majdir.y, majdir.x);
                 }
-                else if (geo1->getTypeId() == Part::GeomArcOfParabola::getClassTypeId()) {
-                    const Part::GeomArcOfParabola* aop =
-                        static_cast<const Part::GeomArcOfParabola*>(geo1);
+                else if (Sketcher::isArcOfParabola(geo1)) {
+                    const Part::GeomArcOfParabola* aop = static_cast<const Part::GeomArcOfParabola*>(geo1);
 
                     center = aop->getCenter();
                     focus = aop->getFocus();
@@ -6182,7 +6158,7 @@ void CmdSketcherConstrainPerpendicular::applyConstraint(std::vector<SelIdPair>& 
                 Base::Vector3d point1 = line->getStartPoint();
                 Base::Vector3d PoO;
 
-                if (geo1->getTypeId() == Part::GeomArcOfHyperbola::getClassTypeId()) {
+                if (Sketcher::isArcOfHyperbola(geo1)) {
                     double df = sqrt(majord * majord + minord * minord);
                     Base::Vector3d direction = point1 - (center + majdir * df);// towards the focus
                     double tapprox = atan2(direction.y, direction.x) - phi;
@@ -6193,7 +6169,7 @@ void CmdSketcherConstrainPerpendicular::applyConstraint(std::vector<SelIdPair>& 
                                              + minord * sinh(tapprox) * cos(phi),
                                          0);
                 }
-                else if (geo1->getTypeId() == Part::GeomArcOfParabola::getClassTypeId()) {
+                else if (Sketcher::isArcOfParabola(geo1)) {
                     Base::Vector3d direction = point1 - focus;// towards the focus
 
                     PoO = point1 + direction / 2;
@@ -6648,7 +6624,7 @@ void CmdSketcherConstrainTangent::activated(int iMsg)
 
                 if (isBsplineKnot(Obj, GeoId1)) {
                     const Part::Geometry* geom2 = Obj->getGeometry(GeoId2);
-                    if (!geom2 || geom2->getTypeId() != Part::GeomLineSegment::getClassTypeId()) {
+                    if (! geom2 || ! Sketcher::isLineSegment(geom2)) {
                         Gui::TranslatedUserWarning(
                             Obj,
                             QObject::tr("Wrong selection"),
@@ -6687,7 +6663,7 @@ void CmdSketcherConstrainTangent::activated(int iMsg)
             if (isSimpleVertex(Obj, GeoId1, PosId1)) {
                 if (isBsplineKnot(Obj, GeoId1)) {
                     const Part::Geometry* geom2 = Obj->getGeometry(GeoId2);
-                    if (!geom2 || geom2->getTypeId() != Part::GeomLineSegment::getClassTypeId()) {
+                    if (!geom2 || ! Sketcher::isLineSegment(geom2)) {
                         Gui::TranslatedUserWarning(
                             Obj,
                             QObject::tr("Wrong selection"),
@@ -6708,7 +6684,7 @@ void CmdSketcherConstrainTangent::activated(int iMsg)
 
             const Part::Geometry* geom2 = Obj->getGeometry(GeoId2);
 
-            if (geom2 && geom2->getTypeId() == Part::GeomBSplineCurve::getClassTypeId()) {
+            if (geom2 && Sketcher::isBSplineCurve(geom2)) {
                 // unsupported until tangent to B-spline at any point implemented.
                 Gui::TranslatedUserWarning(
                     Obj,
@@ -6745,10 +6721,7 @@ void CmdSketcherConstrainTangent::activated(int iMsg)
             const Part::Geometry* geom1 = Obj->getGeometry(GeoId1);
             const Part::Geometry* geom2 = Obj->getGeometry(GeoId2);
 
-            if (geom1 && geom2
-                && (geom1->getTypeId() == Part::GeomBSplineCurve::getClassTypeId()
-                    || geom2->getTypeId() == Part::GeomBSplineCurve::getClassTypeId())) {
-
+            if (geom1 && geom2 && (Sketcher::isBSplineCurve(geom1) || Sketcher::isBSplineCurve(geom2))) {
                 // unsupported until tangent to B-spline at any point implemented.
                 Gui::TranslatedUserWarning(
                     Obj,
@@ -6775,11 +6748,8 @@ void CmdSketcherConstrainTangent::activated(int iMsg)
                 return;
             }
 
-            if (geom1 && geom2
-                && (geom1->getTypeId() == Part::GeomEllipse::getClassTypeId()
-                    || geom2->getTypeId() == Part::GeomEllipse::getClassTypeId())) {
-
-                if (geom1->getTypeId() != Part::GeomEllipse::getClassTypeId()) {
+            if (geom1 && geom2 && (Sketcher::isEllipse(geom1) || Sketcher::isEllipse(geom2))) {
+                if (! Sketcher::isEllipse(geom1)) {
                     std::swap(GeoId1, GeoId2);
                 }
 
@@ -6787,10 +6757,8 @@ void CmdSketcherConstrainTangent::activated(int iMsg)
                 geom1 = Obj->getGeometry(GeoId1);
                 geom2 = Obj->getGeometry(GeoId2);
 
-                if (geom2->getTypeId() == Part::GeomEllipse::getClassTypeId()
-                    || geom2->getTypeId() == Part::GeomArcOfEllipse::getClassTypeId()
-                    || geom2->getTypeId() == Part::GeomCircle::getClassTypeId()
-                    || geom2->getTypeId() == Part::GeomArcOfCircle::getClassTypeId()) {
+                if (Sketcher::isEllipse(geom2) || Sketcher::isArcOfEllipse(geom2)
+                    || Sketcher::isCircle(geom2) || Sketcher::isArcOfCircle(geom2)) {
 
                     Gui::Command::openCommand(
                         QT_TRANSLATE_NOOP("Command", "Add tangent constraint point"));
@@ -6802,7 +6770,7 @@ void CmdSketcherConstrainTangent::activated(int iMsg)
                     getSelection().clearSelection();
                     return;
                 }
-                else if (geom2->getTypeId() == Part::GeomArcOfHyperbola::getClassTypeId()) {
+                else if (Sketcher::isArcOfHyperbola(geom2)) {
                     Gui::Command::openCommand(
                         QT_TRANSLATE_NOOP("Command", "Add tangent constraint point"));
                     makeTangentToArcOfHyperbolaviaNewPoint(
@@ -6814,7 +6782,7 @@ void CmdSketcherConstrainTangent::activated(int iMsg)
                     getSelection().clearSelection();
                     return;
                 }
-                else if (geom2->getTypeId() == Part::GeomArcOfParabola::getClassTypeId()) {
+                else if (Sketcher::isArcOfParabola(geom2)) {
                     Gui::Command::openCommand(
                         QT_TRANSLATE_NOOP("Command", "Add tangent constraint point"));
                     makeTangentToArcOfParabolaviaNewPoint(
@@ -6827,11 +6795,8 @@ void CmdSketcherConstrainTangent::activated(int iMsg)
                     return;
                 }
             }
-            else if (geom1 && geom2
-                     && (geom1->getTypeId() == Part::GeomArcOfEllipse::getClassTypeId()
-                         || geom2->getTypeId() == Part::GeomArcOfEllipse::getClassTypeId())) {
-
-                if (geom1->getTypeId() != Part::GeomArcOfEllipse::getClassTypeId()) {
+            else if (geom1 && geom2 && (Sketcher::isArcOfEllipse(geom1) || Sketcher::isArcOfEllipse(geom2))) {
+                if (! Sketcher::isArcOfEllipse(geom1)) {
                     std::swap(GeoId1, GeoId2);
                 }
 
@@ -6839,11 +6804,9 @@ void CmdSketcherConstrainTangent::activated(int iMsg)
                 geom1 = Obj->getGeometry(GeoId1);
                 geom2 = Obj->getGeometry(GeoId2);
 
-                if (geom2->getTypeId() == Part::GeomArcOfHyperbola::getClassTypeId()
-                    || geom2->getTypeId() == Part::GeomArcOfEllipse::getClassTypeId()
-                    || geom2->getTypeId() == Part::GeomCircle::getClassTypeId()
-                    || geom2->getTypeId() == Part::GeomArcOfCircle::getClassTypeId()
-                    || geom2->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
+                if (Sketcher::isArcOfHyperbola(geom2) || Sketcher::isArcOfEllipse(geom2)
+                    || Sketcher::isCircle(geom2) || Sketcher::isArcOfCircle(geom2)
+                    || Sketcher::isLineSegment(geom2)) {
 
                     Gui::Command::openCommand(
                         QT_TRANSLATE_NOOP("Command", "Add tangent constraint point"));
@@ -6857,7 +6820,7 @@ void CmdSketcherConstrainTangent::activated(int iMsg)
                     getSelection().clearSelection();
                     return;
                 }
-                else if (geom2->getTypeId() == Part::GeomArcOfParabola::getClassTypeId()) {
+                else if (Sketcher::isArcOfParabola(geom2)) {
                     Gui::Command::openCommand(
                         QT_TRANSLATE_NOOP("Command", "Add tangent constraint point"));
                     makeTangentToArcOfParabolaviaNewPoint(
@@ -6870,11 +6833,8 @@ void CmdSketcherConstrainTangent::activated(int iMsg)
                     return;
                 }
             }
-            else if (geom1 && geom2
-                     && (geom1->getTypeId() == Part::GeomArcOfHyperbola::getClassTypeId()
-                         || geom2->getTypeId() == Part::GeomArcOfHyperbola::getClassTypeId())) {
-
-                if (geom1->getTypeId() != Part::GeomArcOfHyperbola::getClassTypeId()) {
+            else if (geom1 && geom2 && (Sketcher::isArcOfHyperbola(geom1) || Sketcher::isArcOfHyperbola(geom2))) {
+                if (! Sketcher::isArcOfHyperbola(geom1)) {
                     std::swap(GeoId1, GeoId2);
                 }
 
@@ -6882,11 +6842,8 @@ void CmdSketcherConstrainTangent::activated(int iMsg)
                 geom1 = Obj->getGeometry(GeoId1);
                 geom2 = Obj->getGeometry(GeoId2);
 
-                if (geom2->getTypeId() == Part::GeomArcOfHyperbola::getClassTypeId()
-                    || geom2->getTypeId() == Part::GeomArcOfEllipse::getClassTypeId()
-                    || geom2->getTypeId() == Part::GeomCircle::getClassTypeId()
-                    || geom2->getTypeId() == Part::GeomArcOfCircle::getClassTypeId()
-                    || geom2->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
+                if (Sketcher::isArcOfHyperbola(geom2) || Sketcher::isArcOfEllipse(geom2) || Sketcher::isCircle(geom2)
+                    || Sketcher::isArcOfCircle(geom2) || Sketcher::isLineSegment(geom2)) {
 
                     Gui::Command::openCommand(
                         QT_TRANSLATE_NOOP("Command", "Add tangent constraint point"));
@@ -6899,7 +6856,7 @@ void CmdSketcherConstrainTangent::activated(int iMsg)
                     getSelection().clearSelection();
                     return;
                 }
-                else if (geom2->getTypeId() == Part::GeomArcOfParabola::getClassTypeId()) {
+                else if (Sketcher::isArcOfParabola(geom2)) {
                     Gui::Command::openCommand(
                         QT_TRANSLATE_NOOP("Command", "Add tangent constraint point"));
                     makeTangentToArcOfParabolaviaNewPoint(
@@ -6912,11 +6869,8 @@ void CmdSketcherConstrainTangent::activated(int iMsg)
                     return;
                 }
             }
-            else if (geom1 && geom2
-                     && (geom1->getTypeId() == Part::GeomArcOfParabola::getClassTypeId()
-                         || geom2->getTypeId() == Part::GeomArcOfParabola::getClassTypeId())) {
-
-                if (geom1->getTypeId() != Part::GeomArcOfParabola::getClassTypeId()) {
+            else if (geom1 && geom2 && (Sketcher::isArcOfParabola(geom1) || Sketcher::isArcOfParabola(geom2))) {
+                if (! Sketcher::isArcOfParabola(geom1)) {
                     std::swap(GeoId1, GeoId2);
                 }
 
@@ -6924,12 +6878,9 @@ void CmdSketcherConstrainTangent::activated(int iMsg)
                 geom1 = Obj->getGeometry(GeoId1);
                 geom2 = Obj->getGeometry(GeoId2);
 
-                if (geom2->getTypeId() == Part::GeomArcOfParabola::getClassTypeId()
-                    || geom2->getTypeId() == Part::GeomArcOfHyperbola::getClassTypeId()
-                    || geom2->getTypeId() == Part::GeomArcOfEllipse::getClassTypeId()
-                    || geom2->getTypeId() == Part::GeomCircle::getClassTypeId()
-                    || geom2->getTypeId() == Part::GeomArcOfCircle::getClassTypeId()
-                    || geom2->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
+                if (Sketcher::isArcOfParabola(geom2) || Sketcher::isArcOfHyperbola(geom2)
+                    || Sketcher::isArcOfEllipse(geom2) || Sketcher::isCircle(geom2)
+                    || Sketcher::isArcOfCircle(geom2) || Sketcher::isLineSegment(geom2)) {
 
                     Gui::Command::openCommand(
                         QT_TRANSLATE_NOOP("Command", "Add tangent constraint point"));
@@ -6988,10 +6939,7 @@ void CmdSketcherConstrainTangent::applyConstraint(std::vector<SelIdPair>& selSeq
             const Part::Geometry* geom1 = Obj->getGeometry(GeoId1);
             const Part::Geometry* geom2 = Obj->getGeometry(GeoId2);
 
-            if (geom1 && geom2
-                && (geom1->getTypeId() == Part::GeomBSplineCurve::getClassTypeId()
-                    || geom2->getTypeId() == Part::GeomBSplineCurve::getClassTypeId())) {
-
+            if (geom1 && geom2 && (Sketcher::isBSplineCurve(geom1) || Sketcher::isBSplineCurve(geom2))) {
                 // unsupported until tangent to B-spline at any point implemented.
                 Gui::TranslatedUserWarning(
                     Obj,
@@ -7018,11 +6966,8 @@ void CmdSketcherConstrainTangent::applyConstraint(std::vector<SelIdPair>& selSeq
                 return;
             }
 
-            if (geom1 && geom2
-                && (geom1->getTypeId() == Part::GeomEllipse::getClassTypeId()
-                    || geom2->getTypeId() == Part::GeomEllipse::getClassTypeId())) {
-
-                if (geom1->getTypeId() != Part::GeomEllipse::getClassTypeId()) {
+            if (geom1 && geom2 && (Sketcher::isEllipse(geom1) || Sketcher::isEllipse(geom2))) {
+                if (! Sketcher::isEllipse(geom1)) {
                     std::swap(GeoId1, GeoId2);
                 }
 
@@ -7030,10 +6975,8 @@ void CmdSketcherConstrainTangent::applyConstraint(std::vector<SelIdPair>& selSeq
                 geom1 = Obj->getGeometry(GeoId1);
                 geom2 = Obj->getGeometry(GeoId2);
 
-                if (geom2->getTypeId() == Part::GeomEllipse::getClassTypeId()
-                    || geom2->getTypeId() == Part::GeomArcOfEllipse::getClassTypeId()
-                    || geom2->getTypeId() == Part::GeomCircle::getClassTypeId()
-                    || geom2->getTypeId() == Part::GeomArcOfCircle::getClassTypeId()) {
+                if (Sketcher::isEllipse(geom2) || Sketcher::isArcOfEllipse(geom2)
+                    || Sketcher::isCircle(geom2) || Sketcher::isArcOfCircle(geom2)) {
 
                     Gui::Command::openCommand(
                         QT_TRANSLATE_NOOP("Command", "Add tangent constraint point"));
@@ -7045,7 +6988,7 @@ void CmdSketcherConstrainTangent::applyConstraint(std::vector<SelIdPair>& selSeq
                     getSelection().clearSelection();
                     return;
                 }
-                else if (geom2->getTypeId() == Part::GeomArcOfHyperbola::getClassTypeId()) {
+                else if (Sketcher::isArcOfHyperbola(geom2)) {
                     Gui::Command::openCommand(
                         QT_TRANSLATE_NOOP("Command", "Add tangent constraint point"));
                     makeTangentToArcOfHyperbolaviaNewPoint(
@@ -7057,7 +7000,7 @@ void CmdSketcherConstrainTangent::applyConstraint(std::vector<SelIdPair>& selSeq
                     getSelection().clearSelection();
                     return;
                 }
-                else if (geom2->getTypeId() == Part::GeomArcOfParabola::getClassTypeId()) {
+                else if (Sketcher::isArcOfParabola(geom2)) {
                     Gui::Command::openCommand(
                         QT_TRANSLATE_NOOP("Command", "Add tangent constraint point"));
                     makeTangentToArcOfParabolaviaNewPoint(
@@ -7070,11 +7013,8 @@ void CmdSketcherConstrainTangent::applyConstraint(std::vector<SelIdPair>& selSeq
                     return;
                 }
             }
-            else if (geom1 && geom2
-                     && (geom1->getTypeId() == Part::GeomArcOfHyperbola::getClassTypeId()
-                         || geom2->getTypeId() == Part::GeomArcOfHyperbola::getClassTypeId())) {
-
-                if (geom1->getTypeId() != Part::GeomArcOfHyperbola::getClassTypeId()) {
+            else if (geom1 && geom2 && (Sketcher::isArcOfHyperbola(geom1) || Sketcher::isArcOfHyperbola(geom2))) {
+                if (! Sketcher::isArcOfHyperbola(geom1)) {
                     std::swap(GeoId1, GeoId2);
                 }
 
@@ -7082,11 +7022,7 @@ void CmdSketcherConstrainTangent::applyConstraint(std::vector<SelIdPair>& selSeq
                 geom1 = Obj->getGeometry(GeoId1);
                 geom2 = Obj->getGeometry(GeoId2);
 
-                if (geom2->getTypeId() == Part::GeomArcOfHyperbola::getClassTypeId()
-                    || geom2->getTypeId() == Part::GeomArcOfEllipse::getClassTypeId()
-                    || geom2->getTypeId() == Part::GeomCircle::getClassTypeId()
-                    || geom2->getTypeId() == Part::GeomArcOfCircle::getClassTypeId()
-                    || geom2->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
+                if (Sketcher::isArcOfHyperbola(geom2) || Sketcher::isArcOfEllipse(geom2) || Sketcher::isCircle(geom2) || Sketcher::isArcOfCircle(geom2) || Sketcher::isLineSegment(geom2)) {
 
                     Gui::Command::openCommand(
                         QT_TRANSLATE_NOOP("Command", "Add tangent constraint point"));
@@ -7099,7 +7035,7 @@ void CmdSketcherConstrainTangent::applyConstraint(std::vector<SelIdPair>& selSeq
                     getSelection().clearSelection();
                     return;
                 }
-                else if (geom2->getTypeId() == Part::GeomArcOfParabola::getClassTypeId()) {
+                else if (Sketcher::isArcOfParabola(geom2)) {
                     Gui::Command::openCommand(
                         QT_TRANSLATE_NOOP("Command", "Add tangent constraint point"));
                     makeTangentToArcOfParabolaviaNewPoint(
@@ -7112,11 +7048,8 @@ void CmdSketcherConstrainTangent::applyConstraint(std::vector<SelIdPair>& selSeq
                     return;
                 }
             }
-            else if (geom1 && geom2
-                     && (geom1->getTypeId() == Part::GeomArcOfParabola::getClassTypeId()
-                         || geom2->getTypeId() == Part::GeomArcOfParabola::getClassTypeId())) {
-
-                if (geom1->getTypeId() != Part::GeomArcOfParabola::getClassTypeId()) {
+            else if (geom1 && geom2 && (Sketcher::isArcOfParabola(geom1) || Sketcher::isArcOfParabola(geom2))) {
+                if (! Sketcher::isArcOfParabola(geom1)) {
                     std::swap(GeoId1, GeoId2);
                 }
 
@@ -7124,13 +7057,7 @@ void CmdSketcherConstrainTangent::applyConstraint(std::vector<SelIdPair>& selSeq
                 geom1 = Obj->getGeometry(GeoId1);
                 geom2 = Obj->getGeometry(GeoId2);
 
-                if (geom2->getTypeId() == Part::GeomArcOfParabola::getClassTypeId()
-                    || geom2->getTypeId() == Part::GeomArcOfHyperbola::getClassTypeId()
-                    || geom2->getTypeId() == Part::GeomArcOfEllipse::getClassTypeId()
-                    || geom2->getTypeId() == Part::GeomCircle::getClassTypeId()
-                    || geom2->getTypeId() == Part::GeomArcOfCircle::getClassTypeId()
-                    || geom2->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
-
+                if (Sketcher::isArcOfParabola(geom2) || Sketcher::isArcOfHyperbola(geom2) || Sketcher::isArcOfEllipse(geom2) || Sketcher::isCircle(geom2) || Sketcher::isArcOfCircle(geom2) || Sketcher::isLineSegment(geom2)) {
                     Gui::Command::openCommand(
                         QT_TRANSLATE_NOOP("Command", "Add tangent constraint point"));
                     makeTangentToArcOfParabolaviaNewPoint(
@@ -7207,11 +7134,8 @@ void CmdSketcherConstrainTangent::applyConstraint(std::vector<SelIdPair>& selSeq
             const Part::Geometry* geom1 = Obj->getGeometry(GeoId1);
             const Part::Geometry* geom2 = Obj->getGeometry(GeoId2);
 
-            if (geom1 && geom2
-                && (geom1->getTypeId() == Part::GeomBSplineCurve::getClassTypeId()
-                    || geom2->getTypeId() == Part::GeomBSplineCurve::getClassTypeId())) {
-
-                if (geom1->getTypeId() != Part::GeomBSplineCurve::getClassTypeId()) {
+            if (geom1 && geom2 && (Sketcher::isBSplineCurve(geom1) || Sketcher::isBSplineCurve(geom2))) {
+                if (! Sketcher::isBSplineCurve(geom1)) {
                     std::swap(GeoId1, GeoId2);
                     std::swap(PosId1, PosId2);
                 }
@@ -7410,7 +7334,7 @@ void CmdSketcherConstrainRadius::activated(int iMsg)
 
         const Part::Geometry* geom = Obj->getGeometry(GeoId);
 
-        if (geom && geom->getTypeId() == Part::GeomArcOfCircle::getClassTypeId()) {
+        if (geom && Sketcher::isArcOfCircle(geom)) {
             const Part::GeomArcOfCircle* arc = static_cast<const Part::GeomArcOfCircle*>(geom);
             double radius = arc->getRadius();
 
@@ -7423,7 +7347,7 @@ void CmdSketcherConstrainRadius::activated(int iMsg)
 
             nonpoles = true;
         }
-        else if (geom && geom->getTypeId() == Part::GeomCircle::getClassTypeId()) {
+        else if (geom && Sketcher::isCircle(geom)) {
             const Part::GeomCircle* circle = static_cast<const Part::GeomCircle*>(geom);
             double radius = circle->getRadius();
 
@@ -7601,11 +7525,11 @@ void CmdSketcherConstrainRadius::applyConstraint(std::vector<SelIdPair>& selSeq,
         case 1:// {SelExternalEdge}
         {
             const Part::Geometry* geom = Obj->getGeometry(GeoId);
-            if (geom && geom->getTypeId() == Part::GeomArcOfCircle::getClassTypeId()) {
+            if (geom && Sketcher::isArcOfCircle(geom)) {
                 const Part::GeomArcOfCircle* arc = static_cast<const Part::GeomArcOfCircle*>(geom);
                 radius = arc->getRadius();
             }
-            else if (geom && geom->getTypeId() == Part::GeomCircle::getClassTypeId()) {
+            else if (geom && Sketcher::isCircle(geom)) {
                 const Part::GeomCircle* circle = static_cast<const Part::GeomCircle*>(geom);
                 radius = circle->getRadius();
             }
@@ -7775,7 +7699,7 @@ void CmdSketcherConstrainDiameter::activated(int iMsg)
 
         const Part::Geometry* geom = Obj->getGeometry(GeoId);
 
-        if (geom && geom->getTypeId() == Part::GeomArcOfCircle::getClassTypeId()) {
+        if (geom && Sketcher::isArcOfCircle(geom)) {
             const Part::GeomArcOfCircle* arc = static_cast<const Part::GeomArcOfCircle*>(geom);
             double radius = arc->getRadius();
 
@@ -7786,7 +7710,7 @@ void CmdSketcherConstrainDiameter::activated(int iMsg)
                 geoIdDiameterMap.emplace_back(GeoId, 2 * radius);
             }
         }
-        else if (geom && geom->getTypeId() == Part::GeomCircle::getClassTypeId()) {
+        else if (geom && Sketcher::isCircle(geom)) {
             const Part::GeomCircle* circle = static_cast<const Part::GeomCircle*>(geom);
             double radius = circle->getRadius();
 
@@ -7927,11 +7851,11 @@ void CmdSketcherConstrainDiameter::applyConstraint(std::vector<SelIdPair>& selSe
         case 1:// {SelExternalEdge}
         {
             const Part::Geometry* geom = Obj->getGeometry(GeoId);
-            if (geom && geom->getTypeId() == Part::GeomArcOfCircle::getClassTypeId()) {
+            if (geom && Sketcher::isArcOfCircle(geom)) {
                 const Part::GeomArcOfCircle* arc = static_cast<const Part::GeomArcOfCircle*>(geom);
                 diameter = 2 * arc->getRadius();
             }
-            else if (geom && geom->getTypeId() == Part::GeomCircle::getClassTypeId()) {
+            else if (geom && Sketcher::isCircle(geom)) {
                 const Part::GeomCircle* circle = static_cast<const Part::GeomCircle*>(geom);
                 diameter = 2 * circle->getRadius();
             }
@@ -8103,12 +8027,12 @@ void CmdSketcherConstrainRadiam::activated(int iMsg)
         const Part::Geometry* geom = Obj->getGeometry(GeoId);
         double radius;
 
-        if (geom && geom->getTypeId() == Part::GeomArcOfCircle::getClassTypeId()) {
+        if (geom && Sketcher::isArcOfCircle(geom)) {
             const Part::GeomArcOfCircle* arcir = static_cast<const Part::GeomArcOfCircle*>(geom);
             radius = arcir->getRadius();
             nonpoles = true;
         }
-        else if (geom && geom->getTypeId() == Part::GeomCircle::getClassTypeId()) {
+        else if (geom && Sketcher::isCircle(geom)) {
             const Part::GeomCircle* arcir = static_cast<const Part::GeomCircle*>(geom);
             radius = arcir->getRadius();
             if (isBsplinePole(geom)) {
@@ -8308,11 +8232,11 @@ void CmdSketcherConstrainRadiam::applyConstraint(std::vector<SelIdPair>& selSeq,
         case 1:// {SelExternalEdge}
         {
             const Part::Geometry* geom = Obj->getGeometry(GeoId);
-            if (geom && geom->getTypeId() == Part::GeomArcOfCircle::getClassTypeId()) {
+            if (geom && Sketcher::isArcOfCircle(geom)) {
                 const Part::GeomArcOfCircle* arc = static_cast<const Part::GeomArcOfCircle*>(geom);
                 radiam = arc->getRadius();
             }
-            else if (geom && geom->getTypeId() == Part::GeomCircle::getClassTypeId()) {
+            else if (geom && Sketcher::isCircle(geom)) {
                 const Part::GeomCircle* circle = static_cast<const Part::GeomCircle*>(geom);
                 radiam = circle->getRadius();
                 isCircle = true;
@@ -8760,8 +8684,7 @@ void CmdSketcherConstrainAngle::activated(int iMsg)
 
             const Part::Geometry* geom1 = Obj->getGeometry(GeoId1);
             const Part::Geometry* geom2 = Obj->getGeometry(GeoId2);
-            if (geom1->getTypeId() == Part::GeomLineSegment::getClassTypeId()
-                && geom2->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
+            if (Sketcher::isLineSegment(geom1) && Sketcher::isLineSegment(geom2)) {
                 const Part::GeomLineSegment* lineSeg1 =
                     static_cast<const Part::GeomLineSegment*>(geom1);
                 const Part::GeomLineSegment* lineSeg2 =
@@ -8880,7 +8803,7 @@ void CmdSketcherConstrainAngle::activated(int iMsg)
             }
 
             const Part::Geometry* geom = Obj->getGeometry(GeoId1);
-            if (geom->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
+            if (Sketcher::isLineSegment(geom)) {
                 const Part::GeomLineSegment* lineSeg;
                 lineSeg = static_cast<const Part::GeomLineSegment*>(geom);
                 Base::Vector3d dir = lineSeg->getEndPoint() - lineSeg->getStartPoint();
@@ -8908,7 +8831,7 @@ void CmdSketcherConstrainAngle::activated(int iMsg)
 
                 return;
             }
-            else if (geom->getTypeId() == Part::GeomArcOfCircle::getClassTypeId()) {
+            else if (Sketcher::isArcOfCircle(geom)) {
                 const Part::GeomArcOfCircle* arc;
                 arc = static_cast<const Part::GeomArcOfCircle*>(geom);
                 double startangle, endangle;
@@ -8970,8 +8893,7 @@ void CmdSketcherConstrainAngle::applyConstraint(std::vector<SelIdPair>& selSeq, 
 
             const Part::Geometry* geom1 = Obj->getGeometry(GeoId1);
             const Part::Geometry* geom2 = Obj->getGeometry(GeoId2);
-            if (geom1->getTypeId() == Part::GeomLineSegment::getClassTypeId()
-                && geom2->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
+            if (Sketcher::isLineSegment(geom1) && Sketcher::isLineSegment(geom2)) {
                 const Part::GeomLineSegment* lineSeg1 =
                     static_cast<const Part::GeomLineSegment*>(geom1);
                 const Part::GeomLineSegment* lineSeg2 =
@@ -9315,7 +9237,7 @@ void CmdSketcherConstrainEqual::activated(int iMsg)
 
         const Part::Geometry* geo = Obj->getGeometry(GeoId);
 
-        if (geo->getTypeId() == Part::GeomBSplineCurve::getClassTypeId()) {
+        if (Sketcher::isBSplineCurve(geo)) {
             // unsupported as they are generally hereogeneus shapes
             Gui::TranslatedUserWarning(
                 Obj,
@@ -9325,13 +9247,13 @@ void CmdSketcherConstrainEqual::activated(int iMsg)
             return;
         }
 
-        if (geo->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
+        if (Sketcher::isLineSegment(geo)) {
             lineSel = true;
         }
-        else if (geo->getTypeId() == Part::GeomArcOfCircle::getClassTypeId()) {
+        else if (Sketcher::isArcOfCircle(geo)) {
             arcSel = true;
         }
-        else if (geo->getTypeId() == Part::GeomCircle::getClassTypeId()) {
+        else if (Sketcher::isCircle(geo)) {
             if (isBsplinePole(geo)) {
                 weightSel = true;
             }
@@ -9339,16 +9261,16 @@ void CmdSketcherConstrainEqual::activated(int iMsg)
                 circSel = true;
             }
         }
-        else if (geo->getTypeId() == Part::GeomEllipse::getClassTypeId()) {
+        else if (Sketcher::isEllipse(geo)) {
             ellipsSel = true;
         }
-        else if (geo->getTypeId() == Part::GeomArcOfEllipse::getClassTypeId()) {
+        else if (Sketcher::isArcOfEllipse(geo)) {
             arcEllipsSel = true;
         }
-        else if (geo->getTypeId() == Part::GeomArcOfHyperbola::getClassTypeId()) {
+        else if (Sketcher::isArcOfHyperbola(geo)) {
             hyperbSel = true;
         }
-        else if (geo->getTypeId() == Part::GeomArcOfParabola::getClassTypeId()) {
+        else if (Sketcher::isArcOfParabola(geo)) {
             parabSel = true;
         }
         else {
@@ -9364,10 +9286,8 @@ void CmdSketcherConstrainEqual::activated(int iMsg)
 
     // Check for heterogeneous groups in selection
     if ((lineSel
-         && ((arcSel || circSel) || (ellipsSel || arcEllipsSel) || hyperbSel || parabSel
-             || weightSel))
-        || ((arcSel || circSel)
-            && ((ellipsSel || arcEllipsSel) || hyperbSel || parabSel || weightSel))
+         && ((arcSel || circSel) || (ellipsSel || arcEllipsSel) || hyperbSel || parabSel || weightSel))
+        || ((arcSel || circSel) && ((ellipsSel || arcEllipsSel) || hyperbSel || parabSel || weightSel))
         || ((ellipsSel || arcEllipsSel) && (hyperbSel || parabSel || weightSel))
         || (hyperbSel && (parabSel || weightSel)) || (parabSel && weightSel)) {
 
@@ -9419,21 +9339,12 @@ void CmdSketcherConstrainEqual::applyConstraint(std::vector<SelIdPair>& selSeq, 
             const Part::Geometry* geo1 = Obj->getGeometry(GeoId1);
             const Part::Geometry* geo2 = Obj->getGeometry(GeoId2);
 
-            if ((geo1->getTypeId() == Part::GeomLineSegment::getClassTypeId()
-                 && geo2->getTypeId() != Part::GeomLineSegment::getClassTypeId())
-                || (geo1->getTypeId() == Part::GeomArcOfHyperbola::getClassTypeId()
-                    && geo2->getTypeId() != Part::GeomArcOfHyperbola::getClassTypeId())
-                || (geo1->getTypeId() == Part::GeomArcOfParabola::getClassTypeId()
-                    && geo2->getTypeId() != Part::GeomArcOfParabola::getClassTypeId())
+            if ((Sketcher::isLineSegment(geo1) && ! Sketcher::isLineSegment(geo2))
+                || (Sketcher::isArcOfHyperbola(geo1) && ! Sketcher::isArcOfHyperbola(geo2))
+                || (Sketcher::isArcOfParabola(geo1) && ! Sketcher::isArcOfParabola(geo2))
                 || (isBsplinePole(geo1) && !isBsplinePole(geo2))
-                || ((geo1->getTypeId() == Part::GeomCircle::getClassTypeId()
-                     || geo1->getTypeId() == Part::GeomArcOfCircle::getClassTypeId())
-                    && !(geo2->getTypeId() == Part::GeomCircle::getClassTypeId()
-                         || geo2->getTypeId() == Part::GeomArcOfCircle::getClassTypeId()))
-                || ((geo1->getTypeId() == Part::GeomEllipse::getClassTypeId()
-                     || geo1->getTypeId() == Part::GeomArcOfEllipse::getClassTypeId())
-                    && !(geo2->getTypeId() == Part::GeomEllipse::getClassTypeId()
-                         || geo2->getTypeId() == Part::GeomArcOfEllipse::getClassTypeId()))) {
+                || ((Sketcher::isCircle(geo1) || Sketcher::isArcOfCircle(geo1)) && !(Sketcher::isCircle(geo2) || Sketcher::isArcOfCircle(geo2)))
+                || ((Sketcher::isEllipse(geo1) || Sketcher::isArcOfEllipse(geo1)) && !(Sketcher::isEllipse(geo2) || Sketcher::isArcOfEllipse(geo2)))) {
 
                 Gui::TranslatedUserWarning(
                     Obj,
@@ -9568,7 +9479,7 @@ void CmdSketcherConstrainSymmetric::activated(int iMsg)
         }
         if (isEdge(GeoId1, PosId1) && isVertex(GeoId2, PosId2)) {
             const Part::Geometry* geom = Obj->getGeometry(GeoId1);
-            if (geom->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
+            if (Sketcher::isLineSegment(geom)) {
                 if (GeoId1 == GeoId2) {
                     Gui::TranslatedUserWarning(Obj,
                                                QObject::tr("Wrong selection"),
@@ -9629,7 +9540,7 @@ void CmdSketcherConstrainSymmetric::activated(int iMsg)
 
         if (isEdge(GeoId3, PosId3)) {
             const Part::Geometry* geom = Obj->getGeometry(GeoId3);
-            if (geom->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
+            if (Sketcher::isLineSegment(geom)) {
                 if (GeoId1 == GeoId2 && GeoId2 == GeoId3) {
                     Gui::TranslatedUserWarning(Obj,
                                                QObject::tr("Wrong selection"),
@@ -9758,7 +9669,7 @@ void CmdSketcherConstrainSymmetric::applyConstraint(std::vector<SelIdPair>& selS
             }
 
             const Part::Geometry* geom = Obj->getGeometry(GeoId3);
-            if (geom->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
+            if (Sketcher::isLineSegment(geom)) {
                 if (GeoId1 == GeoId2 && GeoId2 == GeoId3) {
                     Gui::TranslatedUserWarning(Obj,
                                                QObject::tr("Wrong selection"),
@@ -9937,7 +9848,7 @@ void CmdSketcherConstrainSnellsLaw::activated(int iMsg)
 
     const Part::Geometry* geo = Obj->getGeometry(GeoId3);
 
-    if (geo && geo->getTypeId() == Part::GeomBSplineCurve::getClassTypeId()) {
+    if (geo && Sketcher::isBSplineCurve(geo)) {
         // unsupported until normal to B-spline at any point implemented.
         Gui::TranslatedUserWarning(
             Obj,

@@ -48,6 +48,50 @@ using namespace std;
 using namespace SketcherGui;
 using namespace Sketcher;
 
+bool Sketcher::isCircle(const Part::Geometry* geom)
+{
+    return geom->getTypeId() == Part::GeomCircle::getClassTypeId();
+}
+
+bool Sketcher::isArcOfCircle(const Part::Geometry* geom)
+{
+    return geom->getTypeId() == Part::GeomArcOfCircle::getClassTypeId();
+}
+
+bool Sketcher::isEllipse(const Part::Geometry* geom)
+{
+    return geom->getTypeId() == Part::GeomEllipse::getClassTypeId();
+}
+
+bool Sketcher::isArcOfEllipse(const Part::Geometry* geom)
+{
+    return geom->getTypeId() == Part::GeomArcOfEllipse::getClassTypeId();
+}
+bool Sketcher::isLineSegment(const Part::Geometry* geom)
+{
+    return geom->getTypeId() == Part::GeomLineSegment::getClassTypeId();
+}
+
+bool Sketcher::isArcOfHyperbola(const Part::Geometry* geom)
+{
+    return geom->getTypeId() == Part::GeomArcOfHyperbola::getClassTypeId();
+}
+
+bool Sketcher::isArcOfParabola(const Part::Geometry* geom)
+{
+    return geom->getTypeId() == Part::GeomArcOfParabola::getClassTypeId();
+}
+
+bool Sketcher::isBSplineCurve(const Part::Geometry* geom)
+{
+    return geom->getTypeId() == Part::GeomBSplineCurve::getClassTypeId();
+}
+
+bool Sketcher::isPoint(const Part::Geometry* geom)
+{
+    return geom->getTypeId() == Part::GeomPoint::getClassTypeId();
+}
+
 bool SketcherGui::tryAutoRecompute(Sketcher::SketchObject* obj, bool& autoremoveredundants)
 {
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
