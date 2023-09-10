@@ -1333,7 +1333,7 @@ void View3DInventorViewer::showRotationCenter(bool show)
 
             auto material = new SoMaterial();
             material->emissiveColor = SbColor(1, 0, 0);
-            material->transparency = 0.8;
+            material->transparency = 0.8F;
 
             auto translation = new SoTranslation();
             translation->translation.setValue(center);
