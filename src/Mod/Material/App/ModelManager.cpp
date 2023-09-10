@@ -92,6 +92,10 @@ void ModelManager::refresh()
 const Model& ModelManager::getModel(const QString& uuid) const
 {
     try {
+        if (_modelMap == nullptr) {
+            throw Uninitialized();
+        }
+
         return *(_modelMap->at(uuid));
     }
     catch (std::out_of_range const&) {

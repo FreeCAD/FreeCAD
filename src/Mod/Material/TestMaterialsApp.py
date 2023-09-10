@@ -214,7 +214,7 @@ class MaterialTestCases(unittest.TestCase):
         for mat in materialsLinearElastic:
             self.assertIn(mat, materials)
 
-    def testModelByPath(self):
+    def testMaterialByPath(self):
         steel = self.MaterialManager.getMaterialByPath('StandardMaterial/Metal/Steel/CalculiX-Steel.FCMat', 'System')
         self.assertIsNotNone(steel)
         self.assertEqual(steel.Name, "CalculiX-Steel")

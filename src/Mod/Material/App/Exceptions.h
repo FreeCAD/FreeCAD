@@ -29,6 +29,17 @@
 namespace Materials
 {
 
+class Uninitialized: public Base::Exception
+{
+public:
+    Uninitialized()
+    {}
+    explicit Uninitialized(char* msg)
+    {
+        this->setMessage(msg);
+    }
+    ~Uninitialized() throw() override = default;
+};
 
 class ModelNotFound: public Base::Exception
 {

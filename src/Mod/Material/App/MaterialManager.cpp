@@ -130,6 +130,12 @@ const Material& MaterialManager::getMaterialByPath(const QString& path) const
     throw MaterialNotFound();
 }
 
+const Material& MaterialManager::getMaterialByPath(const QString& path, const QString& lib) const
+{
+    auto library = getLibrary(lib);         // May throw LibraryNotFound
+    return library->getMaterialByPath(path);// May throw MaterialNotFound
+}
+
 MaterialLibrary* MaterialManager::getLibrary(const QString& name) const
 {
     for (auto library : *_libraryList) {

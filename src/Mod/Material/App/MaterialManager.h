@@ -51,6 +51,7 @@ public:
     }
     const Material& getMaterial(const QString& uuid) const;
     const Material& getMaterialByPath(const QString& path) const;
+    const Material& getMaterialByPath(const QString& path, const QString& library) const;
     MaterialLibrary* getLibrary(const QString& name) const;
 
     // Library management

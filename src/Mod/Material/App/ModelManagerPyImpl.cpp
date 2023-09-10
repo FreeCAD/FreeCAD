@@ -81,6 +81,10 @@ PyObject* ModelManagerPy::getModel(PyObject* args)
         PyErr_SetString(PyExc_LookupError, "Model not found");
         return nullptr;
     }
+    catch (Uninitialized const&) {
+        PyErr_SetString(PyExc_LookupError, "Uninitialized model list");
+        return nullptr;
+    }
 }
 
 PyObject* ModelManagerPy::getModelByPath(PyObject* args)

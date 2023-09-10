@@ -95,17 +95,31 @@ TEST_F(MaterialTest, TestMaterialsWithModel)
     delete materialsComplete;
     delete materialsLinearElastic;
 }
-    // def testMaterialsWithModel(self):
-    //     materials = self.MaterialManager.materialsWithModel('f6f9e48c-b116-4e82-ad7f-3659a9219c50') # IsotropicLinearElastic
-    //     materialsComplete = self.MaterialManager.materialsWithModelComplete('f6f9e48c-b116-4e82-ad7f-3659a9219c50') # IsotropicLinearElastic
 
-    //     self.assertTrue(len(materialsComplete) <= len(materials)) # Not all will be complete
+TEST_F(MaterialTest, testMaterialByPath)
+{
+    auto& steel = _materialManager->getMaterialByPath(
+        QString::fromStdString("StandardMaterial/Metal/Steel/CalculiX-Steel.FCMat"),
+        QString::fromStdString("System"));
+    EXPECT_NE(&steel, nullptr);
+    EXPECT_EQ(steel.getName(), QString::fromStdString("CalculiX-Steel"));
+    EXPECT_EQ(steel.getUUID(), QString::fromStdString("92589471-a6cb-4bbc-b748-d425a17dea7d"));
 
-    //     materialsLinearElastic = self.MaterialManager.materialsWithModel('7b561d1d-fb9b-44f6-9da9-56a4f74d7536') # LinearElastic
+    // The same but with a leading '/'
+    auto& steel2 = _materialManager->getMaterialByPath(
+        QString::fromStdString("/System/StandardMaterial/Metal/Steel/CalculiX-Steel.FCMat"),
+        QString::fromStdString("System"));
+    EXPECT_NE(&steel2, nullptr);
+    EXPECT_EQ(steel2.getName(), QString::fromStdString("CalculiX-Steel"));
+    EXPECT_EQ(steel2.getUUID(), QString::fromStdString("92589471-a6cb-4bbc-b748-d425a17dea7d"));
 
-    //     # All LinearElastic models should be in IsotropicLinearElastic since it is inherited
-    //     self.assertTrue(len(materialsLinearElastic) <= len(materials))
-    //     for mat in materialsLinearElastic:
-    //         self.assertIn(mat, materials)
+    // Same with the library name as a prefix
+    auto& steel3 = _materialManager->getMaterialByPath(
+        QString::fromStdString("StandardMaterial/Metal/Steel/CalculiX-Steel.FCMat"),
+        QString::fromStdString("System"));
+    EXPECT_NE(&steel3, nullptr);
+    EXPECT_EQ(steel3.getName(), QString::fromStdString("CalculiX-Steel"));
+    EXPECT_EQ(steel3.getUUID(), QString::fromStdString("92589471-a6cb-4bbc-b748-d425a17dea7d"));
+}
 
 // clang-format on

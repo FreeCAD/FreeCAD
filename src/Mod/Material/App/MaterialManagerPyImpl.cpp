@@ -83,23 +83,19 @@ PyObject* MaterialManagerPy::getMaterialByPath(PyObject* args)
         return nullptr;
     }
 
-    std::string libPath(lib);
-    if (libPath.length() > 0) {
-        MaterialLibrary* library = nullptr;
+    QString libPath(QString::fromStdString(lib));
+    if (!libPath.isEmpty()) {
         try {
-            library = getMaterialManagerPtr()->getLibrary(QString::fromStdString(lib));
-        }
-        catch (const LibraryNotFound&) {
-            PyErr_SetString(PyExc_LookupError, "Library not found");
-            return nullptr;
-        }
-
-        try {
-            const Material& material = library->getMaterialByPath(QString::fromStdString(path));
+            const Material& material =
+                getMaterialManagerPtr()->getMaterialByPath(QString::fromStdString(path), libPath);
             return new MaterialPy(new Material(material));
         }
         catch (const MaterialNotFound&) {
             PyErr_SetString(PyExc_LookupError, "Material not found");
+            return nullptr;
+        }
+        catch (const LibraryNotFound&) {
+            PyErr_SetString(PyExc_LookupError, "Library not found");
             return nullptr;
         }
     }
@@ -166,18 +162,18 @@ PyObject* MaterialManagerPy::materialsWithModel(PyObject* args)
         return nullptr;
     }
 
-    std::map<QString, Material*>* Materials = getMaterialManagerPtr()->getMaterials();
+    std::map<QString, Material*>* materials =
+        getMaterialManagerPtr()->materialsWithModel(QString::fromStdString(uuid));
     PyObject* dict = PyDict_New();
 
-    for (auto it = Materials->begin(); it != Materials->end(); it++) {
+    for (auto it = materials->begin(); it != materials->end(); it++) {
         QString key = it->first;
         Material* material = it->second;
 
-        if (material->hasModel(QString::fromStdString(uuid))) {
-            PyObject* materialPy = new MaterialPy(new Material(*material));
-            PyDict_SetItem(dict, PyUnicode_FromString(key.toStdString().c_str()), materialPy);
-        }
+        PyObject* materialPy = new MaterialPy(new Material(*material));
+        PyDict_SetItem(dict, PyUnicode_FromString(key.toStdString().c_str()), materialPy);
     }
+    delete materials;
 
     return dict;
 }
@@ -189,18 +185,18 @@ PyObject* MaterialManagerPy::materialsWithModelComplete(PyObject* args)
         return nullptr;
     }
 
-    std::map<QString, Material*>* Materials = getMaterialManagerPtr()->getMaterials();
+    std::map<QString, Material*>* materials =
+        getMaterialManagerPtr()->materialsWithModelComplete(QString::fromStdString(uuid));
     PyObject* dict = PyDict_New();
 
-    for (auto it = Materials->begin(); it != Materials->end(); it++) {
+    for (auto it = materials->begin(); it != materials->end(); it++) {
         QString key = it->first;
         Material* material = it->second;
 
-        if (material->isModelComplete(QString::fromStdString(uuid))) {
-            PyObject* materialPy = new MaterialPy(new Material(*material));
-            PyDict_SetItem(dict, PyUnicode_FromString(key.toStdString().c_str()), materialPy);
-        }
+        PyObject* materialPy = new MaterialPy(new Material(*material));
+        PyDict_SetItem(dict, PyUnicode_FromString(key.toStdString().c_str()), materialPy);
     }
+    delete materials;
 
     return dict;
 }
