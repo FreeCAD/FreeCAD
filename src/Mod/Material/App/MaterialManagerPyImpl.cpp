@@ -129,18 +129,18 @@ Py::List MaterialManagerPy::getMaterialLibraries() const
     return list;
 }
 
-Py::Dict MaterialManagerPy::getMaterials() const
+Py::Object MaterialManagerPy::getMaterials() const
 {
     Py::Dict dict;
 
     std::map<QString, Material*>* materials = getMaterialManagerPtr()->getMaterials();
     if (materials == nullptr) {
         PyErr_SetString(PyExc_LookupError, "Material not found - null materials");
-        return dict;
+        return Py::None();
     }
     if (materials->empty()) {
         PyErr_SetString(PyExc_LookupError, "Material not found - empty map");
-        return dict;
+        return Py::None();
     }
 
     for (auto it = materials->begin(); it != materials->end(); it++) {
@@ -151,6 +151,7 @@ Py::Dict MaterialManagerPy::getMaterials() const
         dict.setItem(Py::String(key.toStdString()), Py::Object(materialPy, true));
     }
 
+    // return Py::new_reference_to(dict);
     return dict;
 }
 

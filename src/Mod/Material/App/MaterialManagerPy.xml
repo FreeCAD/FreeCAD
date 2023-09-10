@@ -35,7 +35,7 @@
       <Documentation>
         <UserDocu>List of Materials.</UserDocu>
       </Documentation>
-      <Parameter Name="Materials" Type="Dict"/>
+      <Parameter Name="Materials" Type="Object"/>
     </Attribute>
     <Methode Name="materialsWithModel">
       <Documentation>
