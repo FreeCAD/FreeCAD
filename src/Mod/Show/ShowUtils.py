@@ -1,4 +1,4 @@
-#/***************************************************************************
+# /***************************************************************************
 # *   Copyright (c) 2019 Victor Titov (DeepSOIC) <vv.titov@gmail.com>       *
 # *                                                                         *
 # *   This file is part of the FreeCAD CAx development system.              *
@@ -20,6 +20,7 @@
 # *                                                                         *
 # ***************************************************************************/
 
+
 def is3DObject(obj):
     """is3DObject(obj): tests if the object has some 3d geometry.
     TempoVis is made only for objects in 3d view, so all objects that don't pass this check are ignored by TempoVis."""
@@ -29,8 +30,10 @@ def is3DObject(obj):
     # observation: all viewproviders have transform node, then a switch node. If that switch node contains something, the object has something in 3d view.
     try:
         from pivy import coin
-        return obj.ViewObject.SwitchNode.getNumChildren()>0
+
+        return obj.ViewObject.SwitchNode.getNumChildren() > 0
     except Exception as err:
         import FreeCAD as App
-        App.Console.PrintWarning(u"Show.ShowUtils.is3DObject error: {err}\n".format(err= str(err)))
-        return True #assume.
+
+        App.Console.PrintWarning("Show.ShowUtils.is3DObject error: {err}\n".format(err=str(err)))
+        return True  # assume.
