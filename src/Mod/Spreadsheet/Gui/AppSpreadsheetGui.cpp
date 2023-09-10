@@ -30,18 +30,18 @@
 #include <Base/FileInfo.h>
 #include <Base/Interpreter.h>
 #include <Gui/Application.h>
+#include <Gui/Language/Translator.h>
 #include <Gui/MainWindow.h>
 #include <Gui/WidgetFactory.h>
-#include <Gui/Language/Translator.h>
 #include <Mod/Spreadsheet/App/Sheet.h>
 
 #include "DlgSettingsImp.h"
-#include "SpreadsheetView.h"
 #include "SheetTableViewAccessibleInterface.h"
+#include "SpreadsheetView.h"
 #include "ViewProviderSpreadsheet.h"
 #include "Workbench.h"
 
- // use a different name to CreateCommand()
+// use a different name to CreateCommand()
 void CreateSpreadsheetCommands();
 
 void loadSpreadsheetResource()
@@ -52,49 +52,53 @@ void loadSpreadsheetResource()
     Gui::Translator::instance()->refresh();
 }
 
-namespace SpreadsheetGui {
-    class Module : public Py::ExtensionModule<Module>
+namespace SpreadsheetGui
+{
+class Module: public Py::ExtensionModule<Module>
+{
+public:
+    Module()
+        : Py::ExtensionModule<Module>("SpreadsheetGui")
     {
-    public:
-        Module() : Py::ExtensionModule<Module>("SpreadsheetGui")
-        {
-        add_varargs_method("open",&Module::open
-            );
-            initialize("This module is the SpreadsheetGui module."); // register with Python
-        }
-
-    private:
-        Py::Object open(const Py::Tuple& args)
-        {
-            char* Name;
-        const char* DocName=nullptr;
-        if (!PyArg_ParseTuple(args.ptr(), "et|s","utf-8",&Name,&DocName))
-                throw Py::Exception();
-            std::string EncodedName = std::string(Name);
-            PyMem_Free(Name);
-
-            try {
-                Base::FileInfo file(EncodedName);
-            App::Document *pcDoc = App::GetApplication().newDocument(DocName ? DocName : QT_TR_NOOP("Unnamed"));
-            Spreadsheet::Sheet *pcSheet = static_cast<Spreadsheet::Sheet *>(pcDoc->addObject("Spreadsheet::Sheet", file.fileNamePure().c_str()));
-
-                pcSheet->importFromFile(EncodedName, '\t', '"', '\\');
-                pcSheet->execute();
-            }
-            catch (const Base::Exception& e) {
-                throw Py::RuntimeError(e.what());
-            }
-
-            return Py::None();
-        }
-    };
-
-    PyObject* initModule()
-    {
-        return Base::Interpreter().addModule(new Module);
+        add_varargs_method("open", &Module::open);
+        initialize("This module is the SpreadsheetGui module.");// register with Python
     }
 
-} // namespace SpreadsheetGui
+private:
+    Py::Object open(const Py::Tuple& args)
+    {
+        char* Name;
+        const char* DocName = nullptr;
+        if (!PyArg_ParseTuple(args.ptr(), "et|s", "utf-8", &Name, &DocName)) {
+            throw Py::Exception();
+        }
+        std::string EncodedName = std::string(Name);
+        PyMem_Free(Name);
+
+        try {
+            Base::FileInfo file(EncodedName);
+            App::Document* pcDoc =
+                App::GetApplication().newDocument(DocName ? DocName : QT_TR_NOOP("Unnamed"));
+            Spreadsheet::Sheet* pcSheet = static_cast<Spreadsheet::Sheet*>(
+                pcDoc->addObject("Spreadsheet::Sheet", file.fileNamePure().c_str()));
+
+            pcSheet->importFromFile(EncodedName, '\t', '"', '\\');
+            pcSheet->execute();
+        }
+        catch (const Base::Exception& e) {
+            throw Py::RuntimeError(e.what());
+        }
+
+        return Py::None();
+    }
+};
+
+PyObject* initModule()
+{
+    return Base::Interpreter().addModule(new Module);
+}
+
+}// namespace SpreadsheetGui
 
 /* Python entry */
 PyMOD_INIT_FUNC(SpreadsheetGui)
@@ -116,7 +120,8 @@ PyMOD_INIT_FUNC(SpreadsheetGui)
     SpreadsheetGui::SheetViewPy::init_type();
 
     // register preference page
-    new Gui::PrefPageProducer<SpreadsheetGui::DlgSettingsImp> (QT_TRANSLATE_NOOP("QObject","Spreadsheet"));
+    new Gui::PrefPageProducer<SpreadsheetGui::DlgSettingsImp>(
+        QT_TRANSLATE_NOOP("QObject", "Spreadsheet"));
 
     // add resources and reloads the translators
     loadSpreadsheetResource();

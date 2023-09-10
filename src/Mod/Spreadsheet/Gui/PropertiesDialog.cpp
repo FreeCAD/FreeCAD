@@ -22,9 +22,9 @@
 
 #include "PreCompiled.h"
 
-#include <App/Range.h>
 #include <App/Document.h>
 #include <App/ExpressionParser.h>
+#include <App/Range.h>
 #include <Base/Tools.h>
 #include <Gui/CommandT.h>
 
@@ -36,14 +36,16 @@ using namespace App;
 using namespace Spreadsheet;
 using namespace SpreadsheetGui;
 
-PropertiesDialog::PropertiesDialog(Sheet *_sheet, const std::vector<Range> &_ranges, QWidget *parent) :
-    QDialog(parent),
-    sheet(_sheet),
-    ranges(_ranges),
-    ui(new Ui::PropertiesDialog),
-    alignment(0),
-    displayUnitOk(true),
-    aliasOk(true)
+PropertiesDialog::PropertiesDialog(Sheet* _sheet,
+                                   const std::vector<Range>& _ranges,
+                                   QWidget* parent)
+    : QDialog(parent)
+    , sheet(_sheet)
+    , ranges(_ranges)
+    , ui(new Ui::PropertiesDialog)
+    , alignment(0)
+    , displayUnitOk(true)
+    , aliasOk(true)
 {
     ui->setupUi(this);
     ui->foregroundColor->setStandardColors();
@@ -52,7 +54,7 @@ PropertiesDialog::PropertiesDialog(Sheet *_sheet, const std::vector<Range> &_ran
     assert(ranges.size() > 0);
     Range range = ranges[0];
 
-    Cell * cell = sheet->getNewCell(*range);
+    Cell* cell = sheet->getNewCell(*range);
 
     assert(cell);
 
@@ -79,34 +81,49 @@ PropertiesDialog::PropertiesDialog(Sheet *_sheet, const std::vector<Range> &_ran
                                                           backgroundColor.b,
                                                           backgroundColor.a));
 
-    if (alignment & Cell::ALIGNMENT_LEFT)
+    if (alignment & Cell::ALIGNMENT_LEFT) {
         ui->alignLeft->setChecked(true);
-    else if (alignment & Cell::ALIGNMENT_HCENTER)
+    }
+    else if (alignment & Cell::ALIGNMENT_HCENTER) {
         ui->alignHCenter->setChecked(true);
-    else if (alignment & Cell::ALIGNMENT_RIGHT)
+    }
+    else if (alignment & Cell::ALIGNMENT_RIGHT) {
         ui->alignRight->setChecked(true);
+    }
 
-    if (alignment & Cell::ALIGNMENT_TOP)
+    if (alignment & Cell::ALIGNMENT_TOP) {
         ui->alignTop->setChecked(true);
-    else if (alignment & Cell::ALIGNMENT_VCENTER)
+    }
+    else if (alignment & Cell::ALIGNMENT_VCENTER) {
         ui->alignVCenter->setChecked(true);
-    else if (alignment & Cell::ALIGNMENT_BOTTOM)
+    }
+    else if (alignment & Cell::ALIGNMENT_BOTTOM) {
         ui->alignBottom->setChecked(true);
+    }
 
-    if (style.find("bold") != style.end())
+    if (style.find("bold") != style.end()) {
         ui->styleBold->setChecked(true);
-    if (style.find("italic") != style.end())
+    }
+    if (style.find("italic") != style.end()) {
         ui->styleItalic->setChecked(true);
-    if (style.find("underline") != style.end())
+    }
+    if (style.find("underline") != style.end()) {
         ui->styleUnderline->setChecked(true);
+    }
 
     ui->displayUnit->setText(Base::Tools::fromStdString(displayUnit.stringRep));
 
     ui->alias->setText(Base::Tools::fromStdString(alias));
 
     // Colors
-    connect(ui->foregroundColor, &QtColorPicker::colorChanged, this, &PropertiesDialog::foregroundColorChanged);
-    connect(ui->backgroundColor, &QtColorPicker::colorChanged, this, &PropertiesDialog::backgroundColorChanged);
+    connect(ui->foregroundColor,
+            &QtColorPicker::colorChanged,
+            this,
+            &PropertiesDialog::foregroundColorChanged);
+    connect(ui->backgroundColor,
+            &QtColorPicker::colorChanged,
+            this,
+            &PropertiesDialog::backgroundColorChanged);
 
     // Alignment
     connect(ui->alignLeft, &QRadioButton::clicked, this, &PropertiesDialog::alignmentChanged);
@@ -134,55 +151,67 @@ PropertiesDialog::PropertiesDialog(Sheet *_sheet, const std::vector<Range> &_ran
     ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(displayUnitOk && aliasOk);
 }
 
-void PropertiesDialog::foregroundColorChanged(const QColor & color)
+void PropertiesDialog::foregroundColorChanged(const QColor& color)
 {
     foregroundColor = App::Color(color.redF(), color.greenF(), color.blueF(), color.alphaF());
 }
 
-void PropertiesDialog::backgroundColorChanged(const QColor & color)
+void PropertiesDialog::backgroundColorChanged(const QColor& color)
 {
     backgroundColor = App::Color(color.redF(), color.greenF(), color.blueF(), color.alphaF());
 }
 
 void PropertiesDialog::alignmentChanged()
 {
-    if (sender() == ui->alignLeft)
+    if (sender() == ui->alignLeft) {
         alignment = (alignment & ~Cell::ALIGNMENT_HORIZONTAL) | Cell::ALIGNMENT_LEFT;
-    else if (sender() == ui->alignHCenter)
+    }
+    else if (sender() == ui->alignHCenter) {
         alignment = (alignment & ~Cell::ALIGNMENT_HORIZONTAL) | Cell::ALIGNMENT_HCENTER;
-    else if (sender() == ui->alignRight)
+    }
+    else if (sender() == ui->alignRight) {
         alignment = (alignment & ~Cell::ALIGNMENT_HORIZONTAL) | Cell::ALIGNMENT_RIGHT;
-    else if (sender() == ui->alignTop)
+    }
+    else if (sender() == ui->alignTop) {
         alignment = (alignment & ~Cell::ALIGNMENT_VERTICAL) | Cell::ALIGNMENT_TOP;
-    else if (sender() == ui->alignVCenter)
+    }
+    else if (sender() == ui->alignVCenter) {
         alignment = (alignment & ~Cell::ALIGNMENT_VERTICAL) | Cell::ALIGNMENT_VCENTER;
-    else if (sender() == ui->alignBottom)
+    }
+    else if (sender() == ui->alignBottom) {
         alignment = (alignment & ~Cell::ALIGNMENT_VERTICAL) | Cell::ALIGNMENT_BOTTOM;
+    }
 }
 
 void PropertiesDialog::styleChanged()
 {
     if (sender() == ui->styleBold) {
-        if (ui->styleBold->isChecked())
+        if (ui->styleBold->isChecked()) {
             style.insert("bold");
-        else
+        }
+        else {
             style.erase("bold");
+        }
     }
     else if (sender() == ui->styleItalic) {
-        if (ui->styleItalic->isChecked())
+        if (ui->styleItalic->isChecked()) {
             style.insert("italic");
-        else
+        }
+        else {
             style.erase("italic");
+        }
     }
     else if (sender() == ui->styleUnderline) {
-        if (ui->styleUnderline->isChecked())
+        if (ui->styleUnderline->isChecked()) {
             style.insert("underline");
-        else
+        }
+        else {
             style.erase("underline");
+        }
     }
 }
 
-void PropertiesDialog::displayUnitChanged(const QString & text)
+void PropertiesDialog::displayUnitChanged(const QString& text)
 {
     if (text.isEmpty()) {
         displayUnit = DisplayUnit();
@@ -192,7 +221,8 @@ void PropertiesDialog::displayUnitChanged(const QString & text)
 
     QPalette palette = ui->displayUnit->palette();
     try {
-        std::unique_ptr<UnitExpression> e(App::ExpressionParser::parseUnit(sheet, text.toUtf8().constData()));
+        std::unique_ptr<UnitExpression> e(
+            App::ExpressionParser::parseUnit(sheet, text.toUtf8().constData()));
 
         displayUnit = DisplayUnit(text.toUtf8().constData(), e->getUnit(), e->getScaler());
         palette.setColor(QPalette::Text, Qt::black);
@@ -207,7 +237,7 @@ void PropertiesDialog::displayUnitChanged(const QString & text)
     ui->displayUnit->setPalette(palette);
 }
 
-void PropertiesDialog::aliasChanged(const QString & text)
+void PropertiesDialog::aliasChanged(const QString& text)
 {
     QPalette palette = ui->alias->palette();
 
@@ -233,42 +263,53 @@ void PropertiesDialog::apply()
 
         for (; i != ranges.end(); ++i) {
             if (orgAlignment != alignment) {
-                Gui::cmdAppObjectArgs(sheet, "setAlignment('%s', '%s')",
-                                        i->rangeString().c_str(), Cell::encodeAlignment(alignment).c_str());
+                Gui::cmdAppObjectArgs(sheet,
+                                      "setAlignment('%s', '%s')",
+                                      i->rangeString().c_str(),
+                                      Cell::encodeAlignment(alignment).c_str());
                 changes = true;
             }
             if (orgStyle != style) {
-                Gui::cmdAppObjectArgs(sheet, "setStyle('%s', '%s')",
-                                        i->rangeString().c_str(), Cell::encodeStyle(style).c_str());
+                Gui::cmdAppObjectArgs(sheet,
+                                      "setStyle('%s', '%s')",
+                                      i->rangeString().c_str(),
+                                      Cell::encodeStyle(style).c_str());
                 changes = true;
             }
             if (orgForegroundColor != foregroundColor) {
-                Gui::cmdAppObjectArgs(sheet, "setForeground('%s', (%f,%f,%f,%f))",
-                                        i->rangeString().c_str(),
-                                        foregroundColor.r,
-                                        foregroundColor.g,
-                                        foregroundColor.b,
-                                        foregroundColor.a);
+                Gui::cmdAppObjectArgs(sheet,
+                                      "setForeground('%s', (%f,%f,%f,%f))",
+                                      i->rangeString().c_str(),
+                                      foregroundColor.r,
+                                      foregroundColor.g,
+                                      foregroundColor.b,
+                                      foregroundColor.a);
                 changes = true;
             }
             if (orgBackgroundColor != backgroundColor) {
-                Gui::cmdAppObjectArgs(sheet, "setBackground('%s', (%f,%f,%f,%f))",
-                                        i->rangeString().c_str(),
-                                        backgroundColor.r,
-                                        backgroundColor.g,
-                                        backgroundColor.b,
-                                        backgroundColor.a);
+                Gui::cmdAppObjectArgs(sheet,
+                                      "setBackground('%s', (%f,%f,%f,%f))",
+                                      i->rangeString().c_str(),
+                                      backgroundColor.r,
+                                      backgroundColor.g,
+                                      backgroundColor.b,
+                                      backgroundColor.a);
                 changes = true;
             }
             if (orgDisplayUnit != displayUnit) {
-                std::string escapedstr = Base::Tools::escapedUnicodeFromUtf8(displayUnit.stringRep.c_str());
-                Gui::cmdAppObjectArgs(sheet, "setDisplayUnit('%s', '%s')",
-                                        i->rangeString().c_str(), escapedstr.c_str());
+                std::string escapedstr =
+                    Base::Tools::escapedUnicodeFromUtf8(displayUnit.stringRep.c_str());
+                Gui::cmdAppObjectArgs(sheet,
+                                      "setDisplayUnit('%s', '%s')",
+                                      i->rangeString().c_str(),
+                                      escapedstr.c_str());
                 changes = true;
             }
             if (ranges.size() == 1 && ranges[0].size() == 1 && orgAlias != alias) {
-                Gui::cmdAppObjectArgs(sheet, "setAlias('%s', '%s')",
-                                        i->address().c_str(), alias.c_str());
+                Gui::cmdAppObjectArgs(sheet,
+                                      "setAlias('%s', '%s')",
+                                      i->address().c_str(),
+                                      alias.c_str());
                 changes = true;
             }
         }
@@ -276,8 +317,9 @@ void PropertiesDialog::apply()
             Gui::Command::commitCommand();
             Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
         }
-        else
+        else {
             Gui::Command::abortCommand();
+        }
     }
 }
 
