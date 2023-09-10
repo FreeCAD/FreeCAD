@@ -23,37 +23,42 @@
 #ifndef PROPERTIESDIALOG_H
 #define PROPERTIESDIALOG_H
 
-#include <QDialog>
 #include <Mod/Spreadsheet/App/Sheet.h>
+#include <QDialog>
 
-namespace Ui {
+namespace Ui
+{
 class PropertiesDialog;
 }
 
-namespace SpreadsheetGui {
+namespace SpreadsheetGui
+{
 
-class PropertiesDialog : public QDialog
+class PropertiesDialog: public QDialog
 {
     Q_OBJECT
 
 public:
-    explicit PropertiesDialog(Spreadsheet::Sheet *_sheet, const std::vector<App::Range> & _ranges, QWidget *parent = nullptr);
+    explicit PropertiesDialog(Spreadsheet::Sheet* _sheet,
+                              const std::vector<App::Range>& _ranges,
+                              QWidget* parent = nullptr);
     ~PropertiesDialog() override;
 
     void apply();
     void selectAlias();
 
 private Q_SLOTS:
-    void foregroundColorChanged(const QColor &color);
-    void backgroundColorChanged(const QColor &color);
+    void foregroundColorChanged(const QColor& color);
+    void backgroundColorChanged(const QColor& color);
     void alignmentChanged();
     void styleChanged();
-    void displayUnitChanged(const QString &text);
-    void aliasChanged(const QString &text);
+    void displayUnitChanged(const QString& text);
+    void aliasChanged(const QString& text);
+
 private:
-    Spreadsheet::Sheet * sheet;
+    Spreadsheet::Sheet* sheet;
     std::vector<App::Range> ranges;
-    Ui::PropertiesDialog *ui;
+    Ui::PropertiesDialog* ui;
     App::Color foregroundColor;
     App::Color backgroundColor;
     int alignment;
@@ -72,6 +77,6 @@ private:
     bool aliasOk;
 };
 
-}
+}// namespace SpreadsheetGui
 
-#endif // PROPERTIESDIALOG_H
+#endif// PROPERTIESDIALOG_H
