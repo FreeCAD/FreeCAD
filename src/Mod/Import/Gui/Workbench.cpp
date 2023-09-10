@@ -46,4 +46,3 @@ Gui::ToolBarItem* Workbench::setupCommandBars() const
     Gui::ToolBarItem* root = new Gui::ToolBarItem;
     return root;
 }
-
