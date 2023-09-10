@@ -319,7 +319,7 @@ void DrawViewSection::onChanged(const App::Property* prop)
     else if (prop == &BaseView) {
         // if the BaseView is a Section, then the option of using UsePreviousCut is
         // valid.
-        if (BaseView.getValue()->getTypeId().isDerivedFrom(
+        if (BaseView.getValue() && BaseView.getValue()->getTypeId().isDerivedFrom(
                 TechDraw::DrawViewSection::getClassTypeId())) {
             UsePreviousCut.setStatus(App::Property::ReadOnly, false);
         }
