@@ -96,7 +96,7 @@ By using ";;" to separate paths, you can add several folders here</source>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="182"/>
       <source>Show scrollbars</source>
-      <translation type="unfinished">Show scrollbars</translation>
+      <translation>Εμφάνιση γραμμών κύλισης</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="211"/>
@@ -313,7 +313,7 @@ By using ";;" to separate paths, you can add several folders here</source>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="42"/>
       <source>Recent files</source>
-      <translation type="unfinished">Recent files</translation>
+      <translation>Πρόσφατα αρχεία</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="43"/>
@@ -393,27 +393,27 @@ By using ";;" to separate paths, you can add several folders here</source>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="58"/>
       <source>The &lt;a href="http://forum.freecad.org"&gt;FreeCAD forum&lt;/a&gt; is a great place to get help from other FreeCAD users and developers. The forum has many sections for different types of issues and discussion subjects. If in doubt, post in the more general &lt;a href="https://forum.freecad.org/viewforum.php?f=3"&gt;Help on using FreeCAD&lt;/a&gt; section.</source>
-      <translation type="unfinished">The &lt;a href="http://forum.freecad.org"&gt;FreeCAD forum&lt;/a&gt; is a great place to get help from other FreeCAD users and developers. The forum has many sections for different types of issues and discussion subjects. If in doubt, post in the more general &lt;a href="https://forum.freecad.org/viewforum.php?f=3"&gt;Help on using FreeCAD&lt;/a&gt; section.</translation>
+      <translation>Το φόρουμ &lt;a href="http://forum.freecad.org"&gt;FreeCAD&lt;/a&gt; είναι ένα εξαιρετικό μέρος για να λάβετε βοήθεια από άλλους χρήστες και προγραμματιστές του FreeCAD. Το φόρουμ έχει πολλές ενότητες για διαφορετικούς τύπους θεμάτων και θεμάτων συζήτησης. Αν έχετε αμφιβολίες, δημοσιεύστε τη βοήθεια &lt;a href="https://forum.freecad.org/viewforum.php?f=3"&gt;στην ενότητα FreeCAD&lt;/a&gt;.</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="59"/>
       <source>If it is the first time you are posting on the forum, be sure to &lt;a href="https://forum.freecad.org/viewtopic.php?f=3&amp;t=2264"&gt;read the guidelines&lt;/a&gt; first!</source>
-      <translation type="unfinished">If it is the first time you are posting on the forum, be sure to &lt;a href="https://forum.freecad.org/viewtopic.php?f=3&amp;t=2264"&gt;read the guidelines&lt;/a&gt; first!</translation>
+      <translation>Αν είναι η πρώτη φορά που δημοσιεύετε στο φόρουμ, να είστε βέβαιος να &lt;a href="https://forum.freecad.org/viewtopic.php?f=3&amp;t=2264"&gt;διαβάσετε τις κατευθυντήριες γραμμές&lt;/a&gt; πρώτα!</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="60"/>
       <source>FreeCAD also maintains a public &lt;a href="https://www.freecad.org/tracker"&gt;bug tracker&lt;/a&gt; where anybody can submit bugs and propose new features. To avoid causing extra work and give the best chances to see your bug solved, make sure you read the &lt;a href="https://forum.freecad.org/viewtopic.php?f=3&amp;t=5236"&gt;bug submission guide&lt;/a&gt; before posting.</source>
-      <translation type="unfinished">FreeCAD also maintains a public &lt;a href="https://www.freecad.org/tracker"&gt;bug tracker&lt;/a&gt; where anybody can submit bugs and propose new features. To avoid causing extra work and give the best chances to see your bug solved, make sure you read the &lt;a href="https://forum.freecad.org/viewtopic.php?f=3&amp;t=5236"&gt;bug submission guide&lt;/a&gt; before posting.</translation>
+      <translation>Το FreeCAD διατηρεί επίσης ένα δημόσιο &lt;a href="https://www.freecad.org/tracker"&gt;bug tracker&lt;/a&gt; όπου ο καθένας μπορεί να υποβάλει σφάλματα και να προτείνει νέα χαρακτηριστικά. Για να αποφύγετε την πρόκληση επιπλέον εργασίας και να δώσετε τις καλύτερες πιθανότητες να δείτε το σφάλμα σας να λυθεί, Σιγουρευτείτε ότι διαβάσατε τον οδηγό υποβολής σφαλμάτων &lt;a href="https://forum.freecad.org/viewtopic.php?f=3&amp;t=5236"&gt;&lt;/a&gt; πριν δημοσιεύσετε.</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="66"/>
       <source>Below are the latest changes added to the &lt;a href="http://github.com/FreeCAD/FreeCAD/"&gt;FreeCAD source code&lt;/a&gt;. These changes might not reflect yet in the FreeCAD version that you are currently running. Check the &lt;a href="https://www.freecad.org/wiki/Downloads"&gt;available options&lt;/a&gt; if you wish to obtain a development version.</source>
-      <translation type="unfinished">Below are the latest changes added to the &lt;a href="http://github.com/FreeCAD/FreeCAD/"&gt;FreeCAD source code&lt;/a&gt;. These changes might not reflect yet in the FreeCAD version that you are currently running. Check the &lt;a href="https://www.freecad.org/wiki/Downloads"&gt;available options&lt;/a&gt; if you wish to obtain a development version.</translation>
+      <translation>Παρακάτω είναι οι τελευταίες αλλαγές που προστίθενται στον πηγαίο κώδικα &lt;a href="http://github.com/FreeCAD/FreeCAD/"&gt;FreeCAD&lt;/a&gt;. Αυτές οι αλλαγές ενδέχεται να μην αντικατοπτρίζουν ακόμα την έκδοση του FreeCAD που εκτελείτε αυτή τη στιγμή. Ελέγξτε τις &lt;a href="https://www.freecad.org/wiki/Downloads"&gt;διαθέσιμες επιλογές&lt;/a&gt; αν θέλετε να αποκτήσετε μια έκδοση για ανάπτυξη.</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="74"/>
       <source>The latest posts on the &lt;a href="https://forum.freecad.org"&gt;FreeCAD forum&lt;/a&gt;:</source>
-      <translation type="unfinished">The latest posts on the &lt;a href="https://forum.freecad.org"&gt;FreeCAD forum&lt;/a&gt;:</translation>
+      <translation>Οι τελευταίες δημοσιεύσεις στο φόρουμ &lt;a href="https://forum.freecad.org"&gt;FreeCAD&lt;/a&gt;:</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="61"/>

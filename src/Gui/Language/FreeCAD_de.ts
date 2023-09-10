@@ -4,11 +4,6 @@
   <context>
     <name>Angle</name>
     <message>
-      <location filename="../DlgLocationAngle.ui" line="14"/>
-      <source>Form</source>
-      <translation>Form</translation>
-    </message>
-    <message>
       <location filename="../DlgLocationAngle.ui" line="22"/>
       <source>A:</source>
       <translation>A:</translation>
@@ -1580,7 +1575,7 @@ same time. The one with the highest priority will be triggered.</source>
     <message>
       <location filename="../DlgCustomizeSpaceball.cpp" line="678"/>
       <source>No Spaceball Present</source>
-      <translation>Kein Spaceball vorhanden</translation>
+      <translation>Kein Spaceball gefunden</translation>
     </message>
     <message>
       <location filename="../DlgCustomizeSpaceball.cpp" line="727"/>
@@ -2079,7 +2074,7 @@ Perhaps a file permission error?</source>
     <message>
       <location filename="../DlgMacroRecord.ui" line="146"/>
       <source>Stop</source>
-      <translation>Stop</translation>
+      <translation>Beenden</translation>
     </message>
     <message>
       <location filename="../DlgMacroRecord.ui" line="156"/>
@@ -2255,7 +2250,7 @@ Wählen Sie bitte ein anderes Verzeichnis aus.</translation>
     <message>
       <location filename="../DlgParameter.ui" line="125"/>
       <source>&amp;Close</source>
-      <translation>&amp;Schließen</translation>
+      <translation>S&amp;chließen</translation>
     </message>
   </context>
   <context>
@@ -2640,7 +2635,7 @@ Wählen Sie bitte ein anderes Verzeichnis aus.</translation>
     <message>
       <location filename="../DlgPropertyLink.ui" line="14"/>
       <source>Link</source>
-      <translation>Verknüpfung</translation>
+      <translation>Link</translation>
     </message>
     <message>
       <location filename="../DlgPropertyLink.ui" line="46"/>
@@ -5262,7 +5257,7 @@ The 'Status' column shows whether the document could be recovered.</source>
     <message>
       <location filename="../RemoteDebugger.ui" line="30"/>
       <source>Password:</source>
-      <translation>Passwort:</translation>
+      <translation>Kennwort:</translation>
     </message>
     <message>
       <location filename="../RemoteDebugger.ui" line="58"/>
@@ -5436,7 +5431,7 @@ The 'Status' column shows whether the document could be recovered.</source>
     <message>
       <location filename="../DlgObjectSelection.cpp" line="130"/>
       <source>All</source>
-      <translation>Alle</translation>
+      <translation>Alles</translation>
     </message>
     <message>
       <location filename="../DlgObjectSelection.cpp" line="157"/>
@@ -6105,12 +6100,12 @@ Sollen die Änderungen gespeichert werden?</translation>
       <translation>Makros</translation>
     </message>
     <message>
-      <location filename="../Command.cpp" line="1143"/>
+      <location filename="../Command.cpp" line="1173"/>
       <source>Macro file doesn't exist</source>
       <translation>Makro-Datei existiert nicht</translation>
     </message>
     <message>
-      <location filename="../Command.cpp" line="1144"/>
+      <location filename="../Command.cpp" line="1174"/>
       <source>No such macro file: '%1'</source>
       <translation>Keine solche Makrodatei: "%1"</translation>
     </message>
@@ -6169,8 +6164,8 @@ Sollen die Änderungen gespeichert werden?</translation>
     </message>
     <message>
       <location filename="../MainWindow.cpp" line="1717"/>
-      <source>Please do not use in a production environment.</source>
-      <translation>Bitte nicht in einer Produktionsumgebung verwenden.</translation>
+      <source>Please do not use it in a production environment.</source>
+      <translation type="unfinished">Please do not use it in a production environment.</translation>
     </message>
     <message>
       <location filename="../MainWindow.cpp" line="1921"/>
@@ -6307,7 +6302,7 @@ How do you want to proceed?</source>
     <message>
       <location filename="../ManualAlignment.cpp" line="1250"/>
       <source>&amp;Cancel</source>
-      <translation>&amp;Abbrechen</translation>
+      <translation>A&amp;bbrechen</translation>
     </message>
     <message>
       <location filename="../ManualAlignment.cpp" line="1254"/>
@@ -6707,7 +6702,7 @@ Wollen Sie sie beenden, ohne Ihre Daten zu speichern?</translation>
     <message>
       <location filename="../Action.cpp" line="1026"/>
       <source>none</source>
-      <translation>keins</translation>
+      <translation>kein</translation>
     </message>
     <message>
       <location filename="../Action.cpp" line="1041"/>
@@ -6908,7 +6903,7 @@ Möchten Sie ein anderes Verzeichnis angeben?</translation>
     <message>
       <location filename="../TaskElementColors.ui" line="22"/>
       <source>TextLabel</source>
-      <translation>Textlabel</translation>
+      <translation>TextLabel</translation>
     </message>
     <message>
       <location filename="../TaskElementColors.ui" line="40"/>
@@ -7847,7 +7842,7 @@ Möchten Sie ein anderes Verzeichnis angeben?</translation>
       <location filename="../CommandDoc.cpp" line="164"/>
       <location filename="../CommandDoc.cpp" line="169"/>
       <source>Error</source>
-      <translation>Fehler</translation>
+      <translation>Fehlermeldungen</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="165"/>
@@ -8153,7 +8148,7 @@ Wollen Sie fortfahren?</translation>
       <location filename="../NotificationArea.cpp" line="553"/>
       <location filename="../NotificationArea.cpp" line="1022"/>
       <source>Type</source>
-      <translation>Typ</translation>
+      <translation>Art</translation>
     </message>
     <message>
       <location filename="../NotificationArea.cpp" line="553"/>
@@ -8365,7 +8360,7 @@ Wählen Sie 'Abbrechen' um abzubrechen</translation>
       <location filename="../MouseSelection.cpp" line="213"/>
       <location filename="../MouseSelection.cpp" line="417"/>
       <source>Clear</source>
-      <translation>Leeren</translation>
+      <translation>Löschen</translation>
     </message>
     <message>
       <location filename="../MouseSelection.cpp" line="214"/>
@@ -8425,12 +8420,12 @@ Bitte starten Sie einen Browser und geben darin ein: http://localhost:%1.</trans
       <translation>Einstellungen...</translation>
     </message>
     <message>
-      <location filename="../View3DInventorViewer.cpp" line="2252"/>
+      <location filename="../View3DInventorViewer.cpp" line="2256"/>
       <source>Out of memory</source>
       <translation>Nicht genügend Speicher</translation>
     </message>
     <message>
-      <location filename="../View3DInventorViewer.cpp" line="2253"/>
+      <location filename="../View3DInventorViewer.cpp" line="2257"/>
       <source>Not enough memory available to display the data.</source>
       <translation>Nicht genügend Speicher verfügbar, um die Daten darstellen zu können.</translation>
     </message>
@@ -11941,7 +11936,7 @@ after FreeCAD launches</source>
     <message>
       <location filename="../PreferencePages/DlgSettingsWorkbenchesImp.cpp" line="239"/>
       <source>Sort alphabetically</source>
-      <translation type="unfinished">Sort alphabetically</translation>
+      <translation>Alphabetisch sortieren</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsWorkbenchesImp.cpp" line="485"/>
@@ -12488,7 +12483,7 @@ display the splash screen</source>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="418"/>
       <source>Type</source>
-      <translation>Art</translation>
+      <translation>Typ</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="429"/>
@@ -12796,22 +12791,22 @@ Python-Konsole in das Ausgabefenster umgeleitet</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsTheme.ui" line="34"/>
       <source>Accent color 1</source>
-      <translation type="unfinished">Accent color 1</translation>
+      <translation>Akzentfarbe 1</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsTheme.ui" line="67"/>
       <source>Accent color 2</source>
-      <translation type="unfinished">Accent color 2</translation>
+      <translation>Akzentfarbe 2</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsTheme.ui" line="100"/>
       <source>Accent color 3</source>
-      <translation type="unfinished">Accent color 3</translation>
+      <translation>Akzentfarbe 3</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsTheme.ui" line="133"/>
       <source>Style sheet (advanced):</source>
-      <translation type="unfinished">Style sheet (advanced):</translation>
+      <translation>Formatvorlage (erweitert):</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsTheme.ui" line="140"/>
@@ -12838,13 +12833,13 @@ You can now use Theme to get a full customization of the interface.</translation
     <message>
       <location filename="../CommandView.cpp" line="1366"/>
       <source>Selection filter</source>
-      <translation type="unfinished">Selection filter</translation>
+      <translation>Auswahlfilter</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1367"/>
       <location filename="../CommandView.cpp" line="1368"/>
       <source>Change the Selection filter</source>
-      <translation type="unfinished">Change the Selection filter</translation>
+      <translation>Auswahlfilter ändern</translation>
     </message>
   </context>
   <context>
@@ -12852,7 +12847,7 @@ You can now use Theme to get a full customization of the interface.</translation
     <message>
       <location filename="../CommandView.cpp" line="1487"/>
       <source>Vertex Selection</source>
-      <translation type="unfinished">Vertex Selection</translation>
+      <translation>Knotenauswahl</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1488"/>
@@ -12866,13 +12861,13 @@ You can now use Theme to get a full customization of the interface.</translation
     <message>
       <location filename="../CommandView.cpp" line="1512"/>
       <source>Edge Selection</source>
-      <translation type="unfinished">Edge Selection</translation>
+      <translation>Kantenauswahl</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1513"/>
       <location filename="../CommandView.cpp" line="1515"/>
       <source>Select Edge(s)</source>
-      <translation type="unfinished">Select Edge(s)</translation>
+      <translation>Kante(n) auswählen</translation>
     </message>
   </context>
   <context>
@@ -12880,13 +12875,13 @@ You can now use Theme to get a full customization of the interface.</translation
     <message>
       <location filename="../CommandView.cpp" line="1537"/>
       <source>Face Selection</source>
-      <translation type="unfinished">Face Selection</translation>
+      <translation>Flächenauswahl</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1538"/>
       <location filename="../CommandView.cpp" line="1540"/>
       <source>Select Face(s)</source>
-      <translation type="unfinished">Select Face(s)</translation>
+      <translation>Fläche(n) auswählen</translation>
     </message>
   </context>
   <context>
@@ -12896,7 +12891,7 @@ You can now use Theme to get a full customization of the interface.</translation
       <location filename="../CommandView.cpp" line="1564"/>
       <location filename="../CommandView.cpp" line="1566"/>
       <source>All selection filters cleared</source>
-      <translation type="unfinished">All selection filters cleared</translation>
+      <translation>Alle Auswahlfilter gelöscht</translation>
     </message>
   </context>
 </TS>

@@ -51,7 +51,7 @@
     <message>
       <location filename="../../UnitsApi.cpp" line="86"/>
       <source>Unknown schema</source>
-      <translation type="unfinished">Unknown schema</translation>
+      <translation>Skema tak-dikenal</translation>
     </message>
   </context>
 </TS>

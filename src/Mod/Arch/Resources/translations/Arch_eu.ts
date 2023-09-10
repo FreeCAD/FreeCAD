@@ -2576,7 +2576,7 @@ Distantzia = 0 bada, orduan distantzia kalkulatzen da altuera profil erlatiboare
       <location filename="../../ArchWindow.py" line="1263"/>
       <location filename="../../ArchWindow.py" line="1814"/>
       <source>Invert hinge position</source>
-      <translation>Alderantzikatu gontzaren kokalekua</translation>
+      <translation>Alderantzikatu gontzaren posizioa</translation>
     </message>
     <message>
       <location filename="../../ArchAxisSystem.py" line="59"/>
@@ -6020,7 +6020,7 @@ Eraikinaren sorrera utzi egin da.</translation>
     <message>
       <location filename="../../ArchBuildingPart.py" line="996"/>
       <source>Writing camera position</source>
-      <translation>Kamera-kokapena idazten</translation>
+      <translation>Kameraren posizioa idazten</translation>
     </message>
   </context>
   <context>
