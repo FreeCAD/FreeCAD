@@ -282,9 +282,10 @@ INSTALL(
 )
 
 foreach(file ${MaterialLib_Files} ${FluidMaterial_Files} ${AppearanceLib_Files} ${MaterialModel_Files})
+    cmake_path(REMOVE_FILENAME file OUTPUT_VARIABLE filepath)
     INSTALL(
         FILES ${file}
-        DESTINATION ${CMAKE_INSTALL_DATADIR}/Mod/Material/${file}
+        DESTINATION ${CMAKE_INSTALL_DATADIR}/Mod/Material/${filepath}
     )
 endforeach()
 
