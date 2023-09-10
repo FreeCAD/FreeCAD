@@ -69,10 +69,6 @@ TEST_F(MaterialTest, TestModelLoad)
 
     auto& prop = density[QString::fromStdString("Density")];
     EXPECT_EQ(prop.getName(), QString::fromStdString("Density"));
-
-    std::cout << "Resource dir '" << App::Application::getResourceDir() << "'\n";
-    std::cout << "Application dir '" << App::Application::getHomePath() << "'\n";
-    std::cout << "Library dir '" << App::Application::getLibraryDir() << "'\n";
 }
 
 TEST_F(MaterialTest, TestMaterialsWithModel)

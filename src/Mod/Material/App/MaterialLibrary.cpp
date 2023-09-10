@@ -65,10 +65,6 @@ void MaterialLibrary::createPath(const QString& path)
 
 Material* MaterialLibrary::saveMaterial(Material& material, const QString& path, bool saveAsCopy)
 {
-    Base::Console().Log("MaterialLibrary::saveMaterial(material(%s), path(%s))\n",
-                        material.getName().toStdString().c_str(),
-                        path.toStdString().c_str());
-
     QString filePath = getLocalPath(path);
     Base::Console().Log("\tfilePath = '%s'\n", filePath.toStdString().c_str());
     QFile file(filePath);
@@ -98,7 +94,6 @@ Material* MaterialLibrary::saveMaterial(Material& material, const QString& path,
 
         // Write the contents
         material.setLibrary(*this);
-        Base::Console().Log("\trelativePath = '%s'\n", getRelativePath(path).toStdString().c_str());
         material.setDirectory(getRelativePath(path));
         material.save(stream, saveAsCopy);
     }
@@ -112,9 +107,6 @@ Material* MaterialLibrary::addMaterial(const Material& material, const QString& 
     Material* newMaterial = new Material(material);
     newMaterial->setLibrary(*this);
     newMaterial->setDirectory(filePath);
-
-    Base::Console().Log("MaterialLibrary::addMaterial() path='%s'\n",
-                        filePath.toStdString().c_str());
 
     try {
         // If there's already a material at that path we'll replace it

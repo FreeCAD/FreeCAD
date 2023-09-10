@@ -69,9 +69,6 @@ void MaterialManager::initLibraries()
 
         // Load the libraries
         MaterialLoader loader(_materialMap, _libraryList);
-        // if (_materialMap->empty()) {
-        //     throw Uninitialized("No materials loaded");
-        // }
     }
 }
 

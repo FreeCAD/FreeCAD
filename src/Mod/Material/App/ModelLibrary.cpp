@@ -53,9 +53,6 @@ bool LibraryBase::operator==(const LibraryBase& library) const
 
 QString LibraryBase::getLocalPath(const QString& path) const
 {
-    Base::Console().Log("LibraryBase::getFilePath: directory path '%s'\n",
-                        getDirectoryPath().toStdString().c_str());
-
     QString filePath = getDirectoryPath();
     QString cleanPath = QDir::cleanPath(path);
     QString prefix = QString::fromStdString("/") + getName();
@@ -67,16 +64,11 @@ QString LibraryBase::getLocalPath(const QString& path) const
         filePath += cleanPath;
     }
 
-    Base::Console().Log("LibraryBase::getFilePath: filePath '%s'\n",
-                        filePath.toStdString().c_str());
     return filePath;
 }
 
 QString LibraryBase::getRelativePath(const QString& path) const
 {
-    Base::Console().Log("LibraryBase::getRelativePath: directory path '%s'\n",
-                        getDirectoryPath().toStdString().c_str());
-
     QString filePath;
     QString cleanPath = QDir::cleanPath(path);
     QString prefix = QString::fromStdString("/") + getName();
@@ -99,8 +91,6 @@ QString LibraryBase::getRelativePath(const QString& path) const
         filePath.remove(0, 1);
     }
 
-    Base::Console().Log("LibraryBase::getRelativePath: filePath '%s'\n",
-                        filePath.toStdString().c_str());
     return filePath;
 }
 
@@ -119,8 +109,6 @@ Model* ModelLibrary::addModel(const Model& model, const QString& path)
     Model* newModel = new Model(model);
     newModel->setLibrary(*this);
     newModel->setDirectory(filePath);
-
-    Base::Console().Log("ModelLibrary::addModel() path='%s'\n", filePath.toStdString().c_str());
 
     return newModel;
 }

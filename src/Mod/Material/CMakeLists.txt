@@ -238,12 +238,6 @@ fc_target_copy_resource(MaterialIconsLib
 INSTALL(FILES ${MaterialTools_Files} DESTINATION Mod/Material/materialtools)
 INSTALL(FILES ${Material_Icon_Files} DESTINATION Mod/Material/Resources/icons)
 
-# IF (BUILD_GUI)
-# fc_target_copy_resource(Material
-# ${CMAKE_CURRENT_BINARY_DIR}
-# ${CMAKE_BINARY_DIR}/Mod/Material
-# Material_rc.py)
-# ENDIF (BUILD_GUI)
 ADD_CUSTOM_TARGET(MaterialLib ALL
     SOURCES ${MaterialLib_Files}
 )
@@ -288,35 +282,3 @@ foreach(file ${MaterialLib_Files} ${FluidMaterial_Files} ${AppearanceLib_Files} 
         DESTINATION ${CMAKE_INSTALL_DATADIR}/Mod/Material/${filepath}
     )
 endforeach()
-
-# INSTALL(
-# FILES
-# ${MaterialLib_Files}
-# ${FluidMaterial_Files}
-# ${AppearanceLib_Files}
-# ${MaterialModel_Files}
-# DESTINATION
-# ${CMAKE_INSTALL_DATADIR}/Mod/Material
-# )
-
-# INSTALL(
-# DIRECTORY
-# StandardMaterial
-# DIRECTORY
-# FluidMaterial
-# DESTINATION
-# ${CMAKE_INSTALL_DATADIR}/Mod/Material
-# FILES_MATCHING PATTERN "*.FCMat*"
-# )
-
-# ADD_CUSTOM_TARGET(MaterialScriptsTarget ALL
-# SOURCES ${MaterialScripts}
-# )
-# fc_copy_sources(MaterialScriptsTarget "${CMAKE_BINARY_DIR}/Mod/Material" ${MaterialScripts})
-
-# INSTALL(
-# FILES
-# ${MaterialScripts}
-# DESTINATION
-# ${CMAKE_INSTALL_DATADIR}/Mod/Material
-# )
