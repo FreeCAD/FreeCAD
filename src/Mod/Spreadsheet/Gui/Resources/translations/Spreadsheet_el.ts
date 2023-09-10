@@ -888,9 +888,9 @@ Do you want to continue?</source>
     </message>
     <message>
       <location filename="../../DlgBindSheet.cpp" line="225"/>
-      <source>Error: 
+      <source>Error:
 </source>
-      <translation>Σφάλμα: 
+      <translation>Σφάλμα:
 </translation>
     </message>
     <message>

@@ -888,7 +888,7 @@ Wilt u doorgaan?</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.cpp" line="225"/>
-      <source>Error: 
+      <source>Error:
 </source>
       <translation>Fout:
 </translation>

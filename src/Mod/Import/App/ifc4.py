@@ -42688,7 +42688,7 @@ def ifcnormalise(arg,):
 	:type arg:ifcvectorordirection
 	'''
 	if ( not EXISTS(arg)):
-		return  None 
+		return  None
 	else:
 		if ('IFC4.IFCVECTOR'  ==  TYPEOF(arg)):
 			# begin/end block
@@ -42697,7 +42697,7 @@ def ifcnormalise(arg,):
 			vec.magnitude = arg.ifcvector.magnitude
 			vec.orientation = v
 			if (arg.ifcvector.magnitude  ==  0):
-				return  None 
+				return  None
 			else:
 				vec.magnitude = 1
 		else:
@@ -42717,7 +42717,7 @@ def ifcnormalise(arg,):
 			else:
 				result = v
 		else:
-			return  None 
+			return  None
 	return result
 
 ####################
@@ -42796,7 +42796,7 @@ def ifcvectorsum(arg1,arg2,):
 	:type arg2:ifcvectorordirection
 	'''
 	if ((( not EXISTS(arg1))  or  ( not EXISTS(arg2)))  or  (arg1.dim  !=  arg2.dim)):
-		return  None 
+		return  None
 	else:
 		# begin/end block
 		if ('IFC4.IFCVECTOR'  ==  TYPEOF(arg1)):
@@ -42836,7 +42836,7 @@ def ifcvectordifference(arg1,arg2,):
 	:type arg2:ifcvectorordirection
 	'''
 	if ((( not EXISTS(arg1))  or  ( not EXISTS(arg2)))  or  (arg1.dim  !=  arg2.dim)):
-		return  None 
+		return  None
 	else:
 		# begin/end block
 		if ('IFC4.IFCVECTOR'  ==  TYPEOF(arg1)):
@@ -42877,7 +42877,7 @@ def ifccorrectlocalplacement(axisplacement,relplacement,):
 	'''
 	if (EXISTS(relplacement)):
 		if ('IFC4.IFCGRIDPLACEMENT'  ==  TYPEOF(relplacement)):
-			return  None 
+			return  None
 		if ('IFC4.IFCLOCALPLACEMENT'  ==  TYPEOF(relplacement)):
 			if ('IFC4.IFCAXIS2PLACEMENT2D'  ==  TYPEOF(axisplacement)):
 				return TRUE
@@ -42888,7 +42888,7 @@ def ifccorrectlocalplacement(axisplacement,relplacement,):
 					return FALSE
 	else:
 		return TRUE
-	return  None 
+	return  None
 
 ####################
  # FUNCTION ifccorrectfillareastyle #
@@ -42953,13 +42953,13 @@ def ifcmakearrayofarray(lis,low1,u1,low2,u2,):
 	:type u2:INTEGER
 	'''
 	if (((u1 - low1)  +  1)  !=  SIZEOF(lis)):
-		return  None 
+		return  None
 	if (((u2 - low2)  +  1)  !=  SIZEOF(lis[1])):
-		return  None 
+		return  None
 	res = [ifclisttoarray(lis[1],low2,u2),(u1 - low1)  +  1]
 	for  i in range(2,HIINDEX(lis),1):
 		if (((u2 - low2)  +  1)  !=  SIZEOF(lis[i])):
-			return  None 
+			return  None
 		res[(low1  +  i) - 1] = ifclisttoarray(lis[i],low2,u2)
 	return res
 
@@ -42989,7 +42989,7 @@ def ifccurvedim(curve,):
 		return 3
 	if ('IFC4.IFCPCURVE'  ==  TYPEOF(curve)):
 		return 3
-	return  None 
+	return  None
 
 ####################
  # FUNCTION ifcsamedirection #
@@ -43023,7 +43023,7 @@ def ifclisttoarray(lis,low,u,):
 	'''
 	n = SIZEOF(lis)
 	if (n  !=  ((u - low)  +  1)):
-		return  None 
+		return  None
 	else:
 		res = [lis[1],n]
 		for  i in range(2,n,1):
@@ -43059,7 +43059,7 @@ def ifctopologyrepresentationtypes(reptype,items,):
 	elif case_selector == 'Undefined':
 		return TRUE
 	else:
-		return  None 
+		return  None
 	return count  ==  SIZEOF(items)
 
 ####################
@@ -43091,10 +43091,10 @@ def ifcdotproduct(arg1,arg2,):
 	:type arg2:ifcdirection
 	'''
 	if (( not EXISTS(arg1))  or  ( not EXISTS(arg2))):
-		scalar =  None 
+		scalar =  None
 	else:
 		if (arg1.dim  !=  arg2.dim):
-			scalar =  None 
+			scalar =  None
 		else:
 			# begin/end block
 			vec1 = ifcnormalise(arg1)
@@ -43116,7 +43116,7 @@ def ifcfirstprojaxis(zaxis,arg,):
 	:type arg:ifcdirection
 	'''
 	if ( not EXISTS(zaxis)):
-		return  None 
+		return  None
 	else:
 		z = ifcnormalise(zaxis)
 		if ( not EXISTS(arg)):
@@ -43126,9 +43126,9 @@ def ifcfirstprojaxis(zaxis,arg,):
 				v = (ifcrepresentationitem()  ==  ifcgeometricrepresentationitem())  ==  ifcdirection([0,1,0])
 		else:
 			if (arg.dim  !=  3):
-				return  None 
+				return  None
 			if (ifccrossproduct(arg,z).magnitude  ==  0):
-				return  None 
+				return  None
 			else:
 				v = ifcnormalise(arg)
 		xvec = ifcscalartimesvector(ifcdotproduct(v,z),z)
@@ -43238,7 +43238,7 @@ def ifcshaperepresentationtypes(reptype,items,):
 		# begin/end block
 		count = SIZEOF(None)
 	else:
-		return  None 
+		return  None
 	return count  ==  SIZEOF(items)
 
 ####################
@@ -43323,7 +43323,7 @@ def ifcscalartimesvector(scalar,vec,):
 	:type vec:ifcvectorordirection
 	'''
 	if (( not EXISTS(scalar))  or  ( not EXISTS(vec))):
-		return  None 
+		return  None
 	else:
 		if ('IFC4.IFCVECTOR'  ==  TYPEOF(vec)):
 			v = vec.ifcvector.orientation
@@ -43428,7 +43428,7 @@ def ifcorthogonalcomplement(vec,):
 	:type vec:ifcdirection
 	'''
 	if (( not EXISTS(vec))  or  (vec.dim  !=  2)):
-		return  None 
+		return  None
 	else:
 		result = (ifcrepresentationitem()  ==  ifcgeometricrepresentationitem())  ==  ifcdirection([-vec.directionratios[2],vec.directionratios[1]])
 		return result
@@ -43734,7 +43734,7 @@ def ifccorrectobjectassignment(constraint,objects,):
 		count = SIZEOF(None)
 		return count  ==  0
 	else:
-		return  None 
+		return  None
 
 ####################
  # FUNCTION ifccurveweightspositive #
@@ -43824,7 +43824,7 @@ def ifccrossproduct(arg1,arg2,):
 	:type arg2:ifcdirection
 	'''
 	if ((( not EXISTS(arg1))  or  (arg1.dim  ==  2))  or  (( not EXISTS(arg2))  or  (arg2.dim  ==  2))):
-		return  None 
+		return  None
 	else:
 		# begin/end block
 		v1 = ifcnormalise(arg1).ifcdirection.directionratios

@@ -897,9 +897,9 @@ Doriţi să continuaţi?</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.cpp" line="225"/>
-      <source>Error: 
+      <source>Error:
 </source>
-      <translation>Eroare: 
+      <translation>Eroare:
 </translation>
     </message>
     <message>

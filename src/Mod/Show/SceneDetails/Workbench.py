@@ -1,4 +1,4 @@
-#/***************************************************************************
+# /***************************************************************************
 # *   Copyright (c) 2019 Victor Titov (DeepSOIC) <vv.titov@gmail.com>       *
 # *                                                                         *
 # *   This file is part of the FreeCAD CAx development system.              *
@@ -24,14 +24,16 @@ from Show.SceneDetail import SceneDetail
 
 import FreeCADGui
 
+
 class Workbench(SceneDetail):
     """Workbench(wb = None): Plugin for TempoVis for changing active workbench.
     wb: string, a name of a workbench (e.g. 'SketcherWorkbench')"""
-    class_id = 'SDWorkbench'
+
+    class_id = "SDWorkbench"
     mild_restore = True
 
-    def __init__(self, wb = None):
-        self.key = 'workbench'
+    def __init__(self, wb=None):
+        self.key = "workbench"
         if wb is not None:
             self.data = wb
 
@@ -40,4 +42,3 @@ class Workbench(SceneDetail):
 
     def apply_data(self, val):
         FreeCADGui.activateWorkbench(val)
-

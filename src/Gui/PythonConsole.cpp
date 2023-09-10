@@ -32,6 +32,7 @@
 # include <QTextCursor>
 # include <QTextDocumentFragment>
 # include <QTextStream>
+# include <QTime>
 # include <QUrl>
 #endif
 
@@ -40,6 +41,7 @@
 
 #include "PythonConsole.h"
 #include "PythonConsolePy.h"
+#include "PythonTracing.h"
 #include "Application.h"
 #include "CallTips.h"
 #include "FileDialog.h"
@@ -77,9 +79,8 @@ inline bool cursorBeyond( const QTextCursor &cursor, const QTextCursor &limit, i
     if (cursor.hasSelection()) {
         return (cursor.selectionStart() >= pos && cursor.selectionEnd() >= pos);
     }
-    else {
-        return cursor.position() >= (pos + shift);
-    }
+    
+    return cursor.position() >= (pos + shift);
 }
 
 struct PythonConsoleP
@@ -87,9 +88,9 @@ struct PythonConsoleP
     enum Output {Error = 20, Message = 21};
     enum CopyType {Normal, History, Command};
     CopyType type;
-    PyObject *_stdoutPy, *_stderrPy, *_stdinPy, *_stdin;
-    InteractiveInterpreter* interpreter;
-    CallTipsList* callTipsList;
+    PyObject *_stdoutPy=nullptr, *_stderrPy=nullptr, *_stdinPy=nullptr, *_stdin=nullptr;
+    InteractiveInterpreter* interpreter=nullptr;
+    CallTipsList* callTipsList=nullptr;
     ConsoleHistory history;
     QString output, error, info, historyFile;
     QStringList statements;
@@ -99,12 +100,6 @@ struct PythonConsoleP
     PythonConsoleP()
     {
         type = Normal;
-        _stdoutPy = nullptr;
-        _stderrPy = nullptr;
-        _stdinPy = nullptr;
-        _stdin = nullptr;
-        interpreter = nullptr;
-        callTipsList = nullptr;
         interactive = false;
         historyFile = QString::fromUtf8((App::Application::getUserAppDataDir() + "PythonHistory.log").c_str());
         colormap[QLatin1String("Text")] = qApp->palette().windowText().color();
@@ -123,12 +118,15 @@ struct PythonConsoleP
         colormap[QLatin1String("Python error")] = Qt::red;
     }
 };
+
 struct InteractiveInterpreterP
 {
-    PyObject* interpreter;
-    PyObject* sysmodule;
+    PyObject* interpreter{nullptr};
+    PyObject* sysmodule{nullptr};
     QStringList buffer;
+    PythonTracing trace;
 };
+
 } // namespace Gui
 
 InteractiveInterpreter::InteractiveInterpreter()
@@ -302,6 +300,16 @@ bool InteractiveInterpreter::runSource(const char* source) const
     return false;
 }
 
+bool InteractiveInterpreter::isOccupied() const
+{
+    return d->trace.isActive();
+}
+
+bool InteractiveInterpreter::interrupt() const
+{
+    return d->trace.interrupt();
+}
+
 /* Execute a code object.
  *
  * When an exception occurs,  a traceback is displayed.
@@ -309,6 +317,13 @@ bool InteractiveInterpreter::runSource(const char* source) const
  */
 void InteractiveInterpreter::runCode(PyCodeObject* code) const
 {
+    if (isOccupied()) {
+        return;
+    }
+
+    d->trace.fetchFromSettings();
+    PythonTracingLocker tracelock(d->trace);
+
     Base::PyGILStateLocker lock;
     PyObject *module, *dict, *presult;           /* "exec code in d, d" */
     module = PyImport_AddModule("__main__");     /* get module, init python */
@@ -485,6 +500,10 @@ PythonConsole::PythonConsole(QWidget *parent)
     d->output = d->info;
     printPrompt(PythonConsole::Complete);
     loadHistory();
+
+    flusher = new QTimer(this);
+    connect(flusher, &QTimer::timeout, this, &PythonConsole::flushOutput);
+    flusher->start(100);
 }
 
 /** Destroys the object and frees any allocated resources */
@@ -564,6 +583,12 @@ void PythonConsole::keyPressEvent(QKeyEvent * e)
     bool restartHistory = true;
     QTextCursor cursor = this->textCursor();
     QTextCursor inputLineBegin = this->inputBegin();
+
+    if (e->key() == Qt::Key_C && e->modifiers() == Qt::ControlModifier) {
+        if (d->interpreter->interrupt()) {
+            return;
+        }
+    }
 
     if (!cursorBeyond( cursor, inputLineBegin ))
     {
@@ -740,6 +765,15 @@ void PythonConsole::onFlush()
     printPrompt(PythonConsole::Flush);
 }
 
+void PythonConsole::flushOutput()
+{
+    if (d->interpreter->isOccupied()) {
+        if (d->output.length() > 0 || d->error.length() > 0) {
+            printPrompt(PythonConsole::Complete);
+        }
+    }
+}
+
 /** Prints the ps1 prompt (>>> ) for complete and ps2 prompt (... ) for
  * incomplete commands to the console window.
  */
@@ -827,6 +861,11 @@ void PythonConsole::runSource(const QString& line)
     if (this->_sourceDrain) {
         *this->_sourceDrain = line;
         Q_EMIT pendingSource();
+        return;
+    }
+
+    if (d->interpreter->isOccupied()) {
+        insertPythonError(QString::fromLatin1("Previous command still running!"));
         return;
     }
 

@@ -34,7 +34,7 @@ namespace Drawing
 
 /** Base class of all View Features in the drawing module
  */
-class DrawingExport FeatureViewSpreadsheet : public FeatureView
+class DrawingExport FeatureViewSpreadsheet: public FeatureView
 {
     PROPERTY_HEADER(Drawing::FeatureView);
 
@@ -42,27 +42,28 @@ public:
     /// Constructor
     FeatureViewSpreadsheet(void);
     virtual ~FeatureViewSpreadsheet();
-    App::PropertyLink         Source;
-    App::PropertyString       CellStart;
-    App::PropertyString       CellEnd;
-    App::PropertyString       Font;
-    App::PropertyColor        Color;
-    App::PropertyFloat        LineWidth;
-    App::PropertyFloat        FontSize;
+    App::PropertyLink Source;
+    App::PropertyString CellStart;
+    App::PropertyString CellEnd;
+    App::PropertyString Font;
+    App::PropertyColor Color;
+    App::PropertyFloat LineWidth;
+    App::PropertyFloat FontSize;
 
     /** @name methods override Feature */
     //@{
     /// recalculate the Feature
-    virtual App::DocumentObjectExecReturn *execute(void);
+    virtual App::DocumentObjectExecReturn* execute(void);
     //@}
 
     /// returns the type name of the ViewProvider
-    virtual const char* getViewProviderName(void) const {
+    virtual const char* getViewProviderName(void) const
+    {
         return "DrawingGui::ViewProviderDrawingView";
     }
 };
 
-} //namespace Drawing
+}// namespace Drawing
 
 
 #endif

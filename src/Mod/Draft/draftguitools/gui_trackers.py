@@ -530,7 +530,7 @@ class arcTracker(Tracker):
     """An arc tracker."""
 
     def __init__(self, dotted=False, scolor=None, swidth=None,
-                 start=0, end=math.pi*2, normal=None):
+                 start=0, end=math.pi*2):
         self.circle = None
         self.startangle = math.degrees(start)
         self.endangle = math.degrees(end)
@@ -538,10 +538,11 @@ class arcTracker(Tracker):
         self.trans.translation.setValue([0, 0, 0])
         self.sep = coin.SoSeparator()
         self.autoinvert = True
-        if normal:
-            self.normal = normal
-        else:
-            self.normal = FreeCAD.DraftWorkingPlane.axis
+        self.normal = FreeCAD.DraftWorkingPlane.axis
+        ang = DraftVecUtils.angle(self.getDeviation(),
+                                  FreeCAD.DraftWorkingPlane.u,
+                                  self.normal)
+        self.ang_offset = math.degrees(ang)
         self.recompute()
         super().__init__(dotted, scolor, swidth,
                          [self.trans, self.sep], name="arcTracker")
@@ -578,10 +579,7 @@ class arcTracker(Tracker):
         """Return the angle of a given vector in radians."""
         c = self.trans.translation.getValue()
         center = Vector(c[0], c[1], c[2])
-        rad = pt.sub(center)
-        a = DraftVecUtils.angle(rad, self.getDeviation(), self.normal)
-        # print(a)
-        return a
+        return DraftVecUtils.angle(self.getDeviation(), pt.sub(center), self.normal)
 
     def getAngles(self):
         """Return the start and end angles in degrees."""
@@ -589,11 +587,11 @@ class arcTracker(Tracker):
 
     def setStartPoint(self, pt):
         """Set the start angle from a point."""
-        self.setStartAngle(-self.getAngle(pt))
+        self.setStartAngle(self.getAngle(pt))
 
     def setEndPoint(self, pt):
         """Set the end angle from a point."""
-        self.setEndAngle(-self.getAngle(pt))
+        self.setEndAngle(self.getAngle(pt))
 
     def setApertureAngle(self, ang):
         """Set the end angle by giving the aperture angle."""
@@ -622,12 +620,16 @@ class arcTracker(Tracker):
         if self.circle:
             self.sep.removeChild(self.circle)
         self.circle = None
-        if (self.endangle < self.startangle) or not self.autoinvert:
-            c = Part.makeCircle(1, Vector(0, 0, 0),
-                                self.normal, self.endangle, self.startangle)
+        if self.autoinvert is False:
+            ang_sta = self.endangle
+            ang_end = self.startangle
+        elif self.endangle < self.startangle:
+            ang_sta = self.endangle + self.ang_offset
+            ang_end = self.startangle + self.ang_offset
         else:
-            c = Part.makeCircle(1, Vector(0, 0, 0),
-                                self.normal, self.startangle, self.endangle)
+            ang_sta = self.startangle + self.ang_offset
+            ang_end = self.endangle + self.ang_offset
+        c = Part.makeCircle(1, Vector(0, 0, 0), self.normal, ang_sta, ang_end)
         buf = c.writeInventor(2, 0.01)
         try:
             ivin = coin.SoInput()
@@ -779,7 +781,7 @@ class ghostTracker(Tracker):
 
     def setMatrix(self, matrix):
         """Set the transformation matrix.
-        
+
         The 4th column of the matrix (the position) is ignored.
         """
         m = coin.SbMatrix(matrix.A11, matrix.A12, matrix.A13, matrix.A14,

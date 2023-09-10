@@ -22,9 +22,11 @@
 
 #include "PreCompiled.h"
 
+// clang-format off
 #include "SpreadsheetView.h"
 #include "ViewProviderSpreadsheetPy.h"
 #include "ViewProviderSpreadsheetPy.cpp"
+// clang-format on
 
 
 using namespace SpreadsheetGui;
@@ -37,17 +39,19 @@ std::string ViewProviderSpreadsheetPy::representation() const
 
 PyObject* ViewProviderSpreadsheetPy::getView(PyObject* args)
 {
-    if (!PyArg_ParseTuple(args, ""))
+    if (!PyArg_ParseTuple(args, "")) {
         return nullptr;
+    }
 
     ViewProviderSheet* vp = this->getViewProviderSheetPtr();
     SheetView* sheetView = vp->getView();
-    if (sheetView)
+    if (sheetView) {
         return sheetView->getPyObject();
+    }
     Py_RETURN_NONE;
 }
 
-PyObject *ViewProviderSpreadsheetPy::getCustomAttributes(const char* /*attr*/) const
+PyObject* ViewProviderSpreadsheetPy::getCustomAttributes(const char* /*attr*/) const
 {
     return nullptr;
 }

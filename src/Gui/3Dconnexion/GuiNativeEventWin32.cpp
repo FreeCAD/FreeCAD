@@ -45,9 +45,7 @@ http://www.3dconnexion.com/forum/viewtopic.php?f=19&t=4968&sid=72c018bdcf0e6edc9
 #include <QWidget>
 #include <Base/Console.h>
 #include "GuiApplicationNativeEventAware.h"
-#if QT_VERSION >= 0x050000
-  #include "GuiRawInputEventFilter.h"
-#endif // #if QT_VERSION >= 0x050000
+#include "GuiRawInputEventFilter.h"
 
 Gui::GuiNativeEvent* Gui::GuiNativeEvent::gMouseInput = 0;
 
@@ -277,12 +275,8 @@ void Gui::GuiNativeEvent::initSpaceball(QMainWindow *mainWindow)
 
         if (InitializeRawInput((HWND)mainWindow->winId())) {
             gMouseInput = this;
-#if QT_VERSION >= 0x050000
             qApp->installNativeEventFilter(
                 new Gui::RawInputEventFilter(Gui::GuiNativeEvent::RawInputEventFilter));
-#else
-            qApp->setEventFilter(Gui::GuiNativeEvent::RawInputEventFilter);
-#endif
             Base::Console().Log("3Dconnexion device initialized.\n");
         }
         else {

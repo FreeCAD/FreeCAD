@@ -8,14 +8,22 @@ files: |
         src/Tools|
         tests/src|
         src/Mod/Assembly|
+        src/Mod/Cloud|
+        src/Mod/Drawing|
+        src/Mod/Import|
         src/Mod/Inspection|
+        src/Mod/JtReader|
         src/Mod/MeshPart|
+        src/Mod/Plot|
         src/Mod/Points|
         src/Mod/ReverseEngineering|
+        src/Mod/Show|
         src/Mod/Sketcher|
+        src/Mod/Spreadsheet|
         src/Mod/Surface|
         src/Mod/Start|
         src/Mod/Test|
+        src/Mod/Tux|
         src/Mod/Web
     )
 exclude: |

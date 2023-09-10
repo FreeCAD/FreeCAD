@@ -1734,7 +1734,7 @@ void MainWindow::renderDevBuildWarning(
         lineHeight = painter.fontMetrics().lineSpacing();
         boxWidth = maxSize.width();
     }
-    constexpr float lineExpansionFactor(2.3);
+    constexpr float lineExpansionFactor(2.3F);
     int boxHeight = static_cast<int>(lineHeight*lineExpansionFactor);
 
     // Draw the background rectangle and the text
