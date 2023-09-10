@@ -365,7 +365,9 @@ std::list<MaterialLibrary*>* MaterialLoader::getMaterialLibraries()
                                                      + "/Mod/Material/Resources/Materials");
         QDir materialDir(resourceDir);
         if (!materialDir.exists()) {
-            throw Uninitialized("System material directory does not exist");
+            QString error =
+                QString::fromStdString("System material directory does not exist: ") + resourceDir;
+            throw Uninitialized(error.toStdString().c_str());
         }
         auto libData = new MaterialLibrary(QString::fromStdString("System"),
                                            resourceDir,

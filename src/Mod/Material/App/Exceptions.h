@@ -34,7 +34,7 @@ class Uninitialized: public Base::Exception
 public:
     Uninitialized()
     {}
-    explicit Uninitialized(char* msg)
+    explicit Uninitialized(const char* msg)
     {
         this->setMessage(msg);
     }
