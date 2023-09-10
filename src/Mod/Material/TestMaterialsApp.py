@@ -52,6 +52,10 @@ class MaterialTestCases(unittest.TestCase):
         self.assertEqual(prop.Name, "Density")
 
     def testCalculiXSteel(self):
+        import FreeCAD as App
+        print("\nResource dir {0}".format(App.getResourceDir()))
+        print("Application dir {0}".format(App.getHomePath()))
+        print("Library dir {0}".format(App.getLibraryDir()))
         print("Materials:")
         for key, value in self.MaterialManager.Materials.items():
             print("\t{0}, {1}".format(key, value.Name))

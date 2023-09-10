@@ -80,7 +80,7 @@ TEST_F(MaterialTest, TestMaterialsWithModel)
     auto materials = _materialManager->materialsWithModel(
         QString::fromStdString("f6f9e48c-b116-4e82-ad7f-3659a9219c50")); // IsotropicLinearElastic
     EXPECT_GT(materials->size(), 0);
-    
+
     auto materialsComplete = _materialManager->materialsWithModelComplete(
         QString::fromStdString("f6f9e48c-b116-4e82-ad7f-3659a9219c50"));  // IsotropicLinearElastic
     EXPECT_LE(materialsComplete->size(), materials->size());
