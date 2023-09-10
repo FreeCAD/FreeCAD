@@ -182,7 +182,6 @@ private:
     TechDraw::DrawView* m_balloonParent;//temp field. used during balloon placing.
 
     QPoint panOrigin;
-    bool panningActive;
 
     bool m_showGrid;
     QPainterPath m_gridPath;
