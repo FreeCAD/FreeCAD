@@ -364,7 +364,10 @@ void ModelLoader::getModelLibraries()
                                                      + "/Mod/Material/Resources/Models");
         QDir materialDir(resourceDir);
         if (!materialDir.exists()) {
-            throw Uninitialized("System model directory does not exist");
+            QString error =
+                QString::fromStdString("System Materials model directory does not exist: '")
+                + resourceDir + QString::fromStdString("'");
+            throw Uninitialized(error.toStdString().c_str());
         }
         auto libData = new ModelLibrary(QString::fromStdString("System"),
                                         resourceDir,
