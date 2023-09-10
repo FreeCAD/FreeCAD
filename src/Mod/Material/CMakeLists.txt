@@ -281,15 +281,22 @@ INSTALL(
     DESTINATION Mod/Material
 )
 
-INSTALL(
-    FILES
-    ${MaterialLib_Files}
-    ${FluidMaterial_Files}
-    ${AppearanceLib_Files}
-    ${MaterialModel_Files}
-    DESTINATION
-    ${CMAKE_INSTALL_DATADIR}/Mod/Material
-)
+foreach(file ${MaterialLib_Files} ${FluidMaterial_Files} ${AppearanceLib_Files} ${MaterialModel_Files})
+    INSTALL(
+        FILES ${file}
+        DESTINATION ${CMAKE_INSTALL_DATADIR}/Mod/Material/${file}
+    )
+endforeach()
+
+# INSTALL(
+# FILES
+# ${MaterialLib_Files}
+# ${FluidMaterial_Files}
+# ${AppearanceLib_Files}
+# ${MaterialModel_Files}
+# DESTINATION
+# ${CMAKE_INSTALL_DATADIR}/Mod/Material
+# )
 
 # INSTALL(
 # DIRECTORY
