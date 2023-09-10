@@ -166,7 +166,7 @@ public:
 
 QGVPage::QGVPage(ViewProviderPage* vpPage, QGSPage* scenePage, QWidget* parent)
     : QGraphicsView(parent), m_renderer(Native), drawBkg(true), m_vpPage(nullptr),
-      m_scene(scenePage), balloonPlacing(false), panningActive(false), m_showGrid(false),
+      m_scene(scenePage), balloonPlacing(false), m_showGrid(false),
       m_navStyle(nullptr), d(new Private(this))
 {
     assert(vpPage);
