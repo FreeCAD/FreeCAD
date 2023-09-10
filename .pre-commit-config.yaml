@@ -18,6 +18,7 @@ files: |
         src/Mod/ReverseEngineering|
         src/Mod/Show|
         src/Mod/Sketcher|
+        src/Mod/Spreadsheet|
         src/Mod/Surface|
         src/Mod/Start|
         src/Mod/Test|
