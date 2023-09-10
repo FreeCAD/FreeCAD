@@ -29,7 +29,9 @@ files: |
 exclude: |
     (?x)^(
         .*vcproj.*|
-        .*vcxproj.*
+        .*vcxproj.*|
+        src/Mod/Import/App/SCL|
+        src/Mod/Import/App/SCL_output
     )
 repos:
 -   repo: https://github.com/pre-commit/pre-commit-hooks
