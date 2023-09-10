@@ -135,12 +135,14 @@ Py::Object MaterialManagerPy::getMaterials() const
 
     std::map<QString, Material*>* materials = getMaterialManagerPtr()->getMaterials();
     if (materials == nullptr) {
-        PyErr_SetString(PyExc_LookupError, "Material not found - null materials");
-        return Py::None();
+        throw Py::RuntimeError("Material not found - null materials");
+        // PyErr_SetString(PyExc_LookupError, "Material not found - null materials");
+        // return nullptr;
     }
     if (materials->empty()) {
-        PyErr_SetString(PyExc_LookupError, "Material not found - empty map");
-        return Py::None();
+        throw Py::RuntimeError("Material not found - empty map");
+        // PyErr_SetString(PyExc_LookupError, "Material not found - empty map");
+        // return nullptr;
     }
 
     for (auto it = materials->begin(); it != materials->end(); it++) {
