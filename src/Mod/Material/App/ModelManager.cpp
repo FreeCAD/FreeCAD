@@ -58,6 +58,9 @@ void ModelManager::initLibraries()
 
         // Load the libraries
         ModelLoader loader(_modelMap, _libraryList);
+        if (_modelMap->empty()) {
+            throw Uninitialized("No models loaded");
+        }
     }
 }
 

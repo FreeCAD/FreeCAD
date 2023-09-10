@@ -363,6 +363,10 @@ std::list<MaterialLibrary*>* MaterialLoader::getMaterialLibraries()
     if (useBuiltInMaterials) {
         QString resourceDir = QString::fromStdString(App::Application::getResourceDir()
                                                      + "/Mod/Material/Resources/Materials");
+        QDir materialDir(resourceDir);
+        if (!materialDir.exists()) {
+            throw Uninitialized("System material directory does not exist");
+        }
         auto libData = new MaterialLibrary(QString::fromStdString("System"),
                                            resourceDir,
                                            QString::fromStdString(":/icons/freecad.svg"),

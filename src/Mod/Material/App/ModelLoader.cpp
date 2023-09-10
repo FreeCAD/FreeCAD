@@ -362,6 +362,10 @@ void ModelLoader::getModelLibraries()
     if (useBuiltInMaterials) {
         QString resourceDir = QString::fromStdString(App::Application::getResourceDir()
                                                      + "/Mod/Material/Resources/Models");
+        QDir materialDir(resourceDir);
+        if (!materialDir.exists()) {
+            throw Uninitialized("System model directory does not exist");
+        }
         auto libData = new ModelLibrary(QString::fromStdString("System"),
                                         resourceDir,
                                         QString::fromStdString(":/icons/freecad.svg"));

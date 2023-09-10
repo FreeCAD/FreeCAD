@@ -64,6 +64,16 @@ PyObject* MaterialManagerPy::getMaterial(PyObject* args)
         return nullptr;
     }
 
+    std::map<QString, Material*>* materials = getMaterialManagerPtr()->getMaterials();
+    if (materials == nullptr) {
+        PyErr_SetString(PyExc_RuntimeError, "Material not found - null materials");
+        return nullptr;
+    }
+    if (materials->empty()) {
+        PyErr_SetString(PyExc_RuntimeError, "Material not found - empty map");
+        return nullptr;
+    }
+
     try {
         const Material& material =
             getMaterialManagerPtr()->getMaterial(QString::fromStdString(uuid));
