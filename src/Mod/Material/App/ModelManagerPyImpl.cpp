@@ -46,9 +46,7 @@ std::string ModelManagerPy::representation() const
 PyObject* ModelManagerPy::PyMake(struct _typeobject*, PyObject*, PyObject*)// Python wrapper
 {
     // never create such objects with the constructor
-    // return new ModelManagerPy(new ModelManager());
-    return new ModelManagerPy(
-        ModelManager::getManager());// Does this delete the model manager on exit?
+    return new ModelManagerPy(new ModelManager());
 }
 
 // constructor method

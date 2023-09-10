@@ -35,7 +35,6 @@
 
 using namespace Materials;
 
-ModelManager* ModelManager::_manager = nullptr;
 std::list<ModelLibrary*>* ModelManager::_libraryList = nullptr;
 std::map<QString, Model*>* ModelManager::_modelMap = nullptr;
 QMutex ModelManager::_mutex;
@@ -45,11 +44,6 @@ TYPESYSTEM_SOURCE(Materials::ModelManager, Base::BaseClass)
 ModelManager::ModelManager()
 {
     initLibraries();
-}
-
-ModelManager::~ModelManager()
-{
-    _manager = nullptr;
 }
 
 void ModelManager::initLibraries()
@@ -78,21 +72,10 @@ bool ModelManager::isModel(const fs::path& p)
     return false;
 }
 
-ModelManager* ModelManager::getManager()
-{
-    // if (manager == nullptr)
-    //     manager = new ModelManager();
-    // return manager;
-    return new ModelManager();
-}
-
 void ModelManager::refresh()
 {
-    delete _modelMap;
-    delete _libraryList;
-
-    _modelMap = new std::map<QString, Model*>();
-    _libraryList = new std::list<ModelLibrary*>();
+    _modelMap->clear();
+    _libraryList->clear();
 
     // Load the libraries
     ModelLoader loader(_modelMap, _libraryList);

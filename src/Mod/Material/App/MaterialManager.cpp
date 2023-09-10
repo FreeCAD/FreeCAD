@@ -24,6 +24,8 @@
 #ifndef _PreComp_
 #endif
 
+#include <QMutexLocker>
+
 #include <App/Application.h>
 
 #include "Exceptions.h"
@@ -38,6 +40,7 @@ using namespace Materials;
 
 std::list<MaterialLibrary*>* MaterialManager::_libraryList = nullptr;
 std::map<QString, Material*>* MaterialManager::_materialMap = nullptr;
+QMutex MaterialManager::_mutex;
 
 TYPESYSTEM_SOURCE(Materials::MaterialManager, Base::BaseClass)
 
@@ -49,10 +52,14 @@ MaterialManager::MaterialManager()
 
 void MaterialManager::initLibraries()
 {
+    QMutexLocker locker(&_mutex);
+
     if (_materialMap == nullptr) {
         // Load the models first
-        ModelManager* manager = ModelManager::getManager();
+        ModelManager* manager = new ModelManager();
         Q_UNUSED(manager)
+
+        delete manager;
 
         _materialMap = new std::map<QString, Material*>();
 

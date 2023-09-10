@@ -423,10 +423,10 @@ void Material::addModel(const QString& uuid)
 
     _allUuids.push_back(uuid);
 
-    ModelManager* manager = ModelManager::getManager();
+    ModelManager manager;
 
     try {
-        const Model& model = manager->getModel(uuid);
+        const Model& model = manager.getModel(uuid);
         auto inheritance = model.getInheritance();
         for (auto inherits = inheritance.begin(); inherits != inheritance.end(); inherits++) {
             addModel(*inherits);
@@ -454,10 +454,10 @@ void Material::addPhysical(const QString& uuid)
         return;
     }
 
-    ModelManager* manager = ModelManager::getManager();
+    ModelManager manager;
 
     try {
-        const Model& model = manager->getModel(uuid);
+        const Model& model = manager.getModel(uuid);
 
         _physicalUuids.push_back(uuid);
         addModel(uuid);
@@ -487,10 +487,10 @@ void Material::addAppearance(const QString& uuid)
         return;
     }
 
-    ModelManager* manager = ModelManager::getManager();
+    ModelManager manager;
 
     try {
-        const Model& model = manager->getModel(uuid);
+        const Model& model = manager.getModel(uuid);
 
         _appearanceUuids.push_back(uuid);
         addModel(uuid);
@@ -515,10 +515,6 @@ void Material::setPhysicalEditState(const QString& name)
     else {
         setEditStateAlter();
     }
-
-    // Base::Console().Log("Material::setPhysicalEditState(%s) -> %d\n",
-    //                     name.toStdString().c_str(),
-    //                     static_cast<int>(_editState));
 }
 
 void Material::setAppearanceEditState(const QString& name)
@@ -694,10 +690,10 @@ bool Material::hasPhysicalModel(const QString& uuid) const
         return false;
     }
 
-    ModelManager* manager = ModelManager::getManager();
+    ModelManager manager;
 
     try {
-        const Model& model = manager->getModel(uuid);
+        const Model& model = manager.getModel(uuid);
         if (model.getType() == Model::ModelType_Physical) {
             return true;
         }
@@ -714,10 +710,10 @@ bool Material::hasAppearanceModel(const QString& uuid) const
         return false;
     }
 
-    ModelManager* manager = ModelManager::getManager();
+    ModelManager manager;
 
     try {
-        const Model& model = manager->getModel(uuid);
+        const Model& model = manager.getModel(uuid);
         if (model.getType() == Model::ModelType_Appearance) {
             return true;
         }
@@ -734,10 +730,10 @@ bool Material::isPhysicalModelComplete(const QString& uuid) const
         return false;
     }
 
-    ModelManager* manager = ModelManager::getManager();
+    ModelManager manager;
 
     try {
-        const Model& model = manager->getModel(uuid);
+        const Model& model = manager.getModel(uuid);
         for (auto it = model.begin(); it != model.end(); it++) {
             QString propertyName = it->first;
             const MaterialProperty& property = getPhysicalProperty(propertyName);
@@ -760,10 +756,10 @@ bool Material::isAppearanceModelComplete(const QString& uuid) const
         return false;
     }
 
-    ModelManager* manager = ModelManager::getManager();
+    ModelManager manager;
 
     try {
-        const Model& model = manager->getModel(uuid);
+        const Model& model = manager.getModel(uuid);
         for (auto it = model.begin(); it != model.end(); it++) {
             QString propertyName = it->first;
             const MaterialProperty& property = getAppearanceProperty(propertyName);
@@ -813,11 +809,11 @@ void Material::saveInherits(QTextStream& stream) const
 void Material::saveModels(QTextStream& stream) const
 {
     if (!_physical.empty()) {
-        ModelManager* modelManager = ModelManager::getManager();
+        ModelManager modelManager;
 
         stream << "Models:\n";
         for (auto itm = _physicalUuids.begin(); itm != _physicalUuids.end(); itm++) {
-            auto model = modelManager->getModel(*itm);
+            auto model = modelManager.getModel(*itm);
             stream << "  " << model.getName() << ":\n";
             stream << "    UUID: \"" << model.getUUID() << "\"\n";
             for (auto itp = model.begin(); itp != model.end(); itp++) {
@@ -836,11 +832,11 @@ void Material::saveModels(QTextStream& stream) const
 void Material::saveAppearanceModels(QTextStream& stream) const
 {
     if (!_appearance.empty()) {
-        ModelManager* modelManager = ModelManager::getManager();
+        ModelManager modelManager;
 
         stream << "AppearanceModels:\n";
         for (auto itm = _appearanceUuids.begin(); itm != _appearanceUuids.end(); itm++) {
-            auto model = modelManager->getModel(*itm);
+            auto model = modelManager.getModel(*itm);
             stream << "  " << model.getName() << ":\n";
             stream << "    UUID: \"" << model.getUUID() << "\"\n";
             for (auto itp = model.begin(); itp != model.end(); itp++) {

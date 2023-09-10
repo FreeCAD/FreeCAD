@@ -28,7 +28,7 @@ class MaterialTest : public ::testing::Test {
   }
 
   void SetUp() override {
-    _modelManager = Materials::ModelManager::getManager();
+    _modelManager = new Materials::ModelManager();
     _materialManager = new Materials::MaterialManager();
   }
 

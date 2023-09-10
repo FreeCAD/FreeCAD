@@ -23,6 +23,8 @@
 #ifndef MATERIAL_MATERIALMANAGER_H
 #define MATERIAL_MATERIALMANAGER_H
 
+#include <QMutex>
+
 #include <boost/filesystem.hpp>
 
 #include "FolderTree.h"
@@ -73,6 +75,7 @@ public:
 private:
     static std::list<MaterialLibrary*>* _libraryList;
     static std::map<QString, Material*>* _materialMap;
+    static QMutex _mutex;
 
     static void initLibraries();
 };

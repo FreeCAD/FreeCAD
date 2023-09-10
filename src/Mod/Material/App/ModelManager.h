@@ -50,9 +50,8 @@ public:
         ModelFilter_Appearance
     };
 
-    virtual ~ModelManager();
-
-    static ModelManager* getManager();
+    ModelManager();
+    virtual ~ModelManager() = default;
 
     void refresh();
 
@@ -74,11 +73,8 @@ public:
     bool passFilter(ModelFilter filter, Model::ModelType modelType) const;
 
 private:
-    ModelManager();
-
     static void initLibraries();
 
-    static ModelManager* _manager;
     static std::list<ModelLibrary*>* _libraryList;
     static std::map<QString, Model*>* _modelMap;
     static QMutex _mutex;

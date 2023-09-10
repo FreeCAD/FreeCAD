@@ -92,11 +92,12 @@ private:
     void createModelProperties();
     Materials::ModelManager& getModelManager()
     {
-        return *Materials::ModelManager::getManager();
+        return _modelManager;
     }
 
     Materials::ModelManager::ModelFilter _filter;
     std::unique_ptr<Ui_ModelSelect> ui;
+    Materials::ModelManager _modelManager;
     QString _selected;
     std::list<QString> _favorites;
     std::list<QString> _recents;

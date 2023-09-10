@@ -68,7 +68,7 @@ public:
     }
     Materials::ModelManager& getModelManager()
     {
-        return *Materials::ModelManager::getManager();
+        return _modelManager;
     }
 
     void updateMaterialAppearance();
@@ -83,6 +83,7 @@ protected:
 private:
     std::unique_ptr<Ui_MaterialsEditor> ui;
     Materials::MaterialManager _materialManager;
+    Materials::ModelManager _modelManager;
     Materials::Material _material;
     QSvgWidget* _rendered;
     QSvgWidget* _vectored;
