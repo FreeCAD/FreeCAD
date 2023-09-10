@@ -226,3 +226,35 @@ std::list<QString>* MaterialManager::getMaterialFolders(const MaterialLibrary& l
 {
     return MaterialLoader::getMaterialFolders(library);
 }
+
+std::map<QString, Material*>* MaterialManager::materialsWithModel(QString uuid)
+{
+    std::map<QString, Material*>* dict = new std::map<QString, Material*>();
+
+    for (auto it = _materialMap->begin(); it != _materialMap->end(); it++) {
+        QString key = it->first;
+        Material* material = it->second;
+
+        if (material->hasModel(uuid)) {
+            (*dict)[key] = material;
+        }
+    }
+
+    return dict;
+}
+
+std::map<QString, Material*>* MaterialManager::materialsWithModelComplete(QString uuid)
+{
+    std::map<QString, Material*>* dict = new std::map<QString, Material*>();
+
+    for (auto it = _materialMap->begin(); it != _materialMap->end(); it++) {
+        QString key = it->first;
+        Material* material = it->second;
+
+        if (material->isModelComplete(uuid)) {
+            (*dict)[key] = material;
+        }
+    }
+
+    return dict;
+}

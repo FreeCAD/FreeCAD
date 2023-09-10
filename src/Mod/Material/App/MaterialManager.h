@@ -68,6 +68,9 @@ public:
 
     static bool isMaterial(const fs::path& p);
 
+    std::map<QString, Material*>* materialsWithModel(QString uuid);
+    std::map<QString, Material*>* materialsWithModelComplete(QString uuid);
+
 private:
     static std::list<MaterialLibrary*>* _libraryList;
     static std::map<QString, Material*>* _materialMap;
