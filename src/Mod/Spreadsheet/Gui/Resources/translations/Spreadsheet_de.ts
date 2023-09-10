@@ -896,9 +896,9 @@ Möchten Sie fortfahren?</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.cpp" line="225"/>
-      <source>Error: 
+      <source>Error:
 </source>
-      <translation>Fehler: 
+      <translation>Fehler:
 </translation>
     </message>
     <message>

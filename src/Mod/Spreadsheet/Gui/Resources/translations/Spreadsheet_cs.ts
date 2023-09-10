@@ -899,9 +899,9 @@ Chcete pokračovat?</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.cpp" line="225"/>
-      <source>Error: 
+      <source>Error:
 </source>
-      <translation>Chyba: 
+      <translation>Chyba:
 </translation>
     </message>
     <message>
