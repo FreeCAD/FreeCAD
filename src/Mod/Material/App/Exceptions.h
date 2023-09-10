@@ -46,7 +46,7 @@ class ModelNotFound: public Base::Exception
 public:
     ModelNotFound()
     {}
-    explicit ModelNotFound(char* msg)
+    explicit ModelNotFound(const char* msg)
     {
         this->setMessage(msg);
     }
@@ -58,7 +58,7 @@ class MaterialNotFound: public Base::Exception
 public:
     MaterialNotFound()
     {}
-    explicit MaterialNotFound(char* msg)
+    explicit MaterialNotFound(const char* msg)
     {
         this->setMessage(msg);
     }
@@ -70,7 +70,7 @@ class PropertyNotFound: public Base::Exception
 public:
     PropertyNotFound()
     {}
-    explicit PropertyNotFound(char* msg)
+    explicit PropertyNotFound(const char* msg)
     {
         this->setMessage(msg);
     }
@@ -82,7 +82,7 @@ class LibraryNotFound: public Base::Exception
 public:
     LibraryNotFound()
     {}
-    explicit LibraryNotFound(char* msg)
+    explicit LibraryNotFound(const char* msg)
     {
         this->setMessage(msg);
     }
@@ -94,7 +94,7 @@ class InvalidModel: public Base::Exception
 public:
     InvalidModel()
     {}
-    explicit InvalidModel(char* msg)
+    explicit InvalidModel(const char* msg)
     {
         this->setMessage(msg);
     }
