@@ -12,6 +12,7 @@ files: |
         src/Mod/Inspection|
         src/Mod/JtReader|
         src/Mod/MeshPart|
+        src/Mod/Plot|
         src/Mod/Points|
         src/Mod/ReverseEngineering|
         src/Mod/Sketcher|
