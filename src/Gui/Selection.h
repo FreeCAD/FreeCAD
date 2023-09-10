@@ -531,10 +531,16 @@ public:
      */
     //@{
     /// Return the current selection stack size
-    int selStackBackSize() const {return _SelStackBack.size();}
+    std::size_t selStackBackSize() const
+    {
+        return _SelStackBack.size();
+    }
 
     /// Return the current forward selection stack size
-    int selStackForwardSize() const {return _SelStackForward.size();}
+    std::size_t selStackForwardSize() const
+    {
+        return _SelStackForward.size();
+    }
 
     /** Obtain selected objects from stack
      *
