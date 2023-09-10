@@ -831,7 +831,7 @@ void MaterialsEditor::onSelectMaterial(const QItemSelection& selected,
         }
     }
 
-    if (uuid.isNull() || uuid == _material.getUUID()) {
+    if (uuid.isEmpty() || uuid == _material.getUUID()) {
         Base::Console().Log("*** Unchanged material '%s'\n", uuid.toStdString().c_str());
         return;
     }
