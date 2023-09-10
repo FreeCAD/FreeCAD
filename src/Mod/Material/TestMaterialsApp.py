@@ -21,6 +21,7 @@
 #**************************************************************************
 
 # import FreeCAD
+from os import walk
 import unittest
 import Material
 
@@ -56,9 +57,10 @@ class MaterialTestCases(unittest.TestCase):
         print("\nResource dir {0}".format(App.getResourceDir()))
         print("Application dir {0}".format(App.getHomePath()))
         print("Library dir {0}".format(App.getLibraryDir()))
+
         print("Materials:")
-        # for key, value in self.MaterialManager.Materials.items():
-        #     print("\t{0}, {1}".format(key, value.Name))
+        for key, value in self.MaterialManager.Materials.items():
+            print("\t{0}, {1}".format(key, value.Name))
 
         # steel = self.MaterialManager.getMaterial("92589471-a6cb-4bbc-b748-d425a17dea7d")
         # self.assertIsNotNone(steel)

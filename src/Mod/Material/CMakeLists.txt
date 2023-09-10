@@ -1,11 +1,12 @@
 add_subdirectory(App)
+
 if(BUILD_GUI)
     add_subdirectory(Gui)
 endif(BUILD_GUI)
 
-IF (BUILD_GUI)
+IF(BUILD_GUI)
     PYSIDE_WRAP_RC(Material_QRC_SRCS Resources/Material.qrc)
-ENDIF (BUILD_GUI)
+ENDIF(BUILD_GUI)
 
 SET(MaterialScripts_Files
     Init.py
@@ -16,22 +17,21 @@ SET(MaterialScripts_Files
     Resources/ui/materials-editor.ui
     Templatematerial.yml
 )
-# SOURCE_GROUP("MaterialScripts" FILES ${MaterialScripts_Files})
 
-SET (MaterialTools_Files
+# SOURCE_GROUP("MaterialScripts" FILES ${MaterialScripts_Files})
+SET(MaterialTools_Files
     materialtools/__init__.py
     materialtools/cardutils.py
     materialtools/MaterialModels.py
 )
-SET (Material_Icon_Files
+SET(Material_Icon_Files
     Resources/icons/preview-rendered.svg
     Resources/icons/preview-vector.svg
 )
 
 # collect all the material cards:
-#FILE( GLOB MaterialLib_Files ./StandardMaterial/*.FCMat ./StandardMaterial/*.txt  )
-
-SET (MaterialLib_Files
+# FILE( GLOB MaterialLib_Files ./StandardMaterial/*.FCMat ./StandardMaterial/*.txt  )
+SET(MaterialLib_Files
     Resources/Materials/StandardMaterial/Aggregate/Concrete-EN-C35_45.FCMat
     Resources/Materials/StandardMaterial/Aggregate/Concrete-Generic.FCMat
     Resources/Materials/StandardMaterial/Aggregate/Reinforcement-FIB-B500.FCMat
@@ -152,7 +152,7 @@ SET (MaterialLib_Files
     Resources/Materials/StandardMaterial/Wood/Wood-Generic.FCMat
 )
 
-SET (FluidMaterial_Files
+SET(FluidMaterial_Files
     Resources/Materials/FluidMaterial/None.FCMat
     Resources/Materials/FluidMaterial/Air.FCMat
     Resources/Materials/FluidMaterial/Argon.FCMat
@@ -161,7 +161,7 @@ SET (FluidMaterial_Files
     Resources/Materials/FluidMaterial/Water.FCMat
 )
 
-SET (AppearanceLib_Files
+SET(AppearanceLib_Files
     Resources/Materials/Appearance/Aluminum.FCMat
     Resources/Materials/Appearance/Brass.FCMat
     Resources/Materials/Appearance/Bronze.FCMat
@@ -186,7 +186,7 @@ SET (AppearanceLib_Files
     Resources/Materials/Appearance/Stone.FCMat
 )
 
-SET (MaterialModel_Files
+SET(MaterialModel_Files
     Resources/Models/Architectural/Architectural.yml
     Resources/Models/Costs/Costs.yml
     Resources/Models/Electromagnetic/Electromagnetic.yml
@@ -217,7 +217,6 @@ fc_target_copy_resource(MaterialScripts
 
 INSTALL(FILES ${MaterialScripts_Files} DESTINATION Mod/Material)
 
-
 ADD_CUSTOM_TARGET(MaterialToolsLib ALL
     SOURCES ${MaterialTools_Files}
 )
@@ -240,12 +239,11 @@ INSTALL(FILES ${MaterialTools_Files} DESTINATION Mod/Material/materialtools)
 INSTALL(FILES ${Material_Icon_Files} DESTINATION Mod/Material/Resources/icons)
 
 # IF (BUILD_GUI)
-#     fc_target_copy_resource(Material
-#         ${CMAKE_CURRENT_BINARY_DIR}
-#         ${CMAKE_BINARY_DIR}/Mod/Material
-#         Material_rc.py)
+# fc_target_copy_resource(Material
+# ${CMAKE_CURRENT_BINARY_DIR}
+# ${CMAKE_BINARY_DIR}/Mod/Material
+# Material_rc.py)
 # ENDIF (BUILD_GUI)
-
 ADD_CUSTOM_TARGET(MaterialLib ALL
     SOURCES ${MaterialLib_Files}
 )
@@ -284,23 +282,33 @@ INSTALL(
 )
 
 INSTALL(
-    DIRECTORY
-        StandardMaterial
-    DIRECTORY
-        FluidMaterial
+    FILES
+    ${MaterialLib_Files}
+    ${FluidMaterial_Files}
+    ${AppearanceLib_Files}
+    ${MaterialModel_Files}
     DESTINATION
-        ${CMAKE_INSTALL_DATADIR}/Mod/Material
-    FILES_MATCHING PATTERN "*.FCMat*"
+    ${CMAKE_INSTALL_DATADIR}/Mod/Material
 )
 
+# INSTALL(
+# DIRECTORY
+# StandardMaterial
+# DIRECTORY
+# FluidMaterial
+# DESTINATION
+# ${CMAKE_INSTALL_DATADIR}/Mod/Material
+# FILES_MATCHING PATTERN "*.FCMat*"
+# )
+
 # ADD_CUSTOM_TARGET(MaterialScriptsTarget ALL
-#     SOURCES ${MaterialScripts}
+# SOURCES ${MaterialScripts}
 # )
 # fc_copy_sources(MaterialScriptsTarget "${CMAKE_BINARY_DIR}/Mod/Material" ${MaterialScripts})
 
 # INSTALL(
-#     FILES
-#         ${MaterialScripts}
-#     DESTINATION
-#         ${CMAKE_INSTALL_DATADIR}/Mod/Material
+# FILES
+# ${MaterialScripts}
+# DESTINATION
+# ${CMAKE_INSTALL_DATADIR}/Mod/Material
 # )
