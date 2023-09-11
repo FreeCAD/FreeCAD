@@ -75,7 +75,8 @@ TaskDlgEditSketch::TaskDlgEditSketch(ViewProviderSketch* sketchView)
         Elements->hideGroupBox();
     }
 
-    connectionToolSettings = sketchView->registerToolChanged(boost::bind(&SketcherGui::TaskDlgEditSketch::slotToolChanged, this, bp::_1));
+    connectionToolSettings = sketchView->registerToolChanged(
+        boost::bind(&SketcherGui::TaskDlgEditSketch::slotToolChanged, this, bp::_1));
 
     ToolSettings->setHidden(true);
 }
@@ -87,15 +88,17 @@ TaskDlgEditSketch::~TaskDlgEditSketch()
     std::vector<QWidget*>::iterator it = std::find(Content.begin(), Content.end(), SolverAdvanced);
     if (it == Content.end()) {
         Content.push_back(SolverAdvanced);
+    }
 
     connectionToolSettings.disconnect();
 }
 
-void TaskDlgEditSketch::slotToolChanged(const std::string & toolname)
+void TaskDlgEditSketch::slotToolChanged(const std::string& toolname)
 {
 
-    if( toolname == "DSH_None" )
+    if (toolname == "DSH_None") {
         ToolSettings->setHidden(true);
+    }
     else {
         ToolSettings->setHidden(false);
         ToolSettings->toolChanged(toolname);

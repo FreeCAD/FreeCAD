@@ -3247,7 +3247,7 @@ bool ViewProviderSketch::setEdit(int ModNum)
     if (!sketchDlg)
         sketchDlg = new TaskDlgEditSketch(this);
 
-    connectionToolWidget = sketchDlg->registerToolWidgetChanged(boost::bind(&SketcherGui::ViewProviderSketch::slotToolWidgetChanged, this, bp::_1));
+    connectionToolWidget = sketchDlg->registerToolWidgetChanged(boost::bind(&SketcherGui::ViewProviderSketch::slotToolWidgetChanged, this, boost::placeholders::_1));
 
     Gui::Control().showDialog(sketchDlg);
 
