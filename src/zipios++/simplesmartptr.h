@@ -1,7 +1,7 @@
 #ifndef SIMPLESMARTPTR_H
 #define SIMPLESMARTPTR_H
 
-#include "zipios-config.h"
+#include "zipios++/zipios-config.h"
 
 namespace zipios {
 
@@ -118,16 +118,16 @@ class ReferenceCount {
   friend class Bogus ;
   
 public:
-  /** Constructor initializes count to zero. */
+  /** Constructor intializes count to zero. */
   ReferenceCount() : _ref_count( 0 ) {}
 
-  /** Copy-constructor initializes count to zero. It doesn't copy it
+  /** Copy-constructor intializes count to zero. It doesn't copy it
       from src. */
-  ReferenceCount( const ReferenceCount & /*src*/ ) : _ref_count( 0 ) {}
+  ReferenceCount( const ReferenceCount &src ) : _ref_count( 0 ) {}
 
   /** The assignment operator doesn't copy the reference count, it
       leaves it unchanged.  */
-  const ReferenceCount &operator= ( const ReferenceCount & /*src*/ ) { return *this; }
+  const ReferenceCount &operator= ( const ReferenceCount &src ) { return *this; }
 private:
 
   /** Increases the reference count. */
@@ -155,7 +155,7 @@ private:
 
 /*
   Zipios++ - a small C++ library that provides easy access to .zip files.
-  Copyright (C) 2000  Thomas SÃ¸ndergaard
+  Copyright (C) 2000  Thomas Søndergaard
   
   This library is free software; you can redistribute it and/or
   modify it under the terms of the GNU Lesser General Public

@@ -1,14 +1,14 @@
 #ifndef ZIPFILE_H
 #define ZIPFILE_H
 
-#include "zipios-config.h"
+#include "zipios++/zipios-config.h"
 
 #include <vector>
-#include "meta-iostreams.h"
+#include "zipios++/meta-iostreams.h"
 
-#include "fcoll.h"
-#include "ziphead.h"
-#include "virtualseeker.h"
+#include "zipios++/fcoll.h"
+#include "zipios++/ziphead.h"
+#include "zipios++/virtualseeker.h"
 
 namespace zipios {
 
@@ -17,7 +17,7 @@ using std::ifstream ;
 /** \anchor zipfile_anchor
     ZipFile is a FileCollection, where the files are stored
  in a .zip file.  */
-class BaseExport ZipFile : public FileCollection {
+class ZipFile : public FileCollection {
 public:
   /** \anchor zipfile_openembeddedzipfile
       Opens a Zip archive embedded in another file, by writing the zip
@@ -76,6 +76,7 @@ private:
   void setError( string error_str ) ;
 };
 
+
 }
 
 #endif
@@ -86,7 +87,7 @@ private:
 
 /*
   Zipios++ - a small C++ library that provides easy access to .zip files.
-  Copyright (C) 2000  Thomas SÃ¸ndergaard
+  Copyright (C) 2000  Thomas Søndergaard
   
   This library is free software; you can redistribute it and/or
   modify it under the terms of the GNU Lesser General Public

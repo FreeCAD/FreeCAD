@@ -1,22 +1,19 @@
 
-#include "zipios-config.h"
+#include "zipios++/zipios-config.h"
 
-#include "meta-iostreams.h"
+#include "zipios++/meta-iostreams.h"
 
-#include "zipoutputstreambuf.h"
-#include "zipoutputstream.h"
-#if defined(_WIN32) && defined(ZIPIOS_UTF8)
-#include <Base/FileInfo.h>
-#endif
+#include "zipios++/zipoutputstreambuf.h"
+#include "zipios++/zipoutputstream.h"
 
 using std::ostream;
 
 namespace zipios {
 
 ZipOutputStream::ZipOutputStream( std::ostream &os ) 
-  : std::ostream( nullptr ), 
+  : ostream( 0 ), 
 // SGIs basic_ifstream calls istream with 0, but calls basic_ios constructor first??
-    ofs( nullptr )
+    ofs( 0 )
 {
   ozf = new ZipOutputStreambuf( os.rdbuf() ) ;
   
@@ -25,15 +22,10 @@ ZipOutputStream::ZipOutputStream( std::ostream &os )
 
 
 ZipOutputStream::ZipOutputStream( const std::string &filename )
-  : std::ostream( nullptr ),
-    ofs( nullptr )
+  : ostream( 0 ),
+    ofs( 0 )
 {
-#if defined(_WIN32) && defined(ZIPIOS_UTF8)
-  std::wstring wsfilename = Base::FileInfo(filename).toStdWString();
-  ofs = new std::ofstream( wsfilename.c_str(), std::ios::out | std::ios::binary ) ;
-#else
   ofs = new std::ofstream( filename.c_str(), std::ios::out | std::ios::binary ) ;
-#endif
   ozf = new ZipOutputStreambuf( ofs->rdbuf() ) ;
   this->init( ozf ) ;
 }
@@ -93,7 +85,7 @@ ZipOutputStream::~ZipOutputStream() {
 
 /*
   Zipios++ - a small C++ library that provides easy access to .zip files.
-  Copyright (C) 2000  Thomas SÃ¸ndergaard
+  Copyright (C) 2000  Thomas Søndergaard
   
   This library is free software; you can redistribute it and/or
   modify it under the terms of the GNU Lesser General Public

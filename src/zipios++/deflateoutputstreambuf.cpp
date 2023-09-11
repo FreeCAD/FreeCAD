@@ -1,12 +1,12 @@
 
-#include "zipios-config.h"
+#include "zipios++/zipios-config.h"
 
-#include "meta-iostreams.h"
+#include "zipios++/meta-iostreams.h"
 
 #include <zlib.h>
 
-#include "fcollexceptions.h"
-#include "deflateoutputstreambuf.h"
+#include "zipios++/fcollexceptions.h"
+#include "zipios++/deflateoutputstreambuf.h"
 
 #include "outputstringstream.h"
 
@@ -206,7 +206,7 @@ void DeflateOutputStreambuf::endDeflation() {
 
 /*
   Zipios++ - a small C++ library that provides easy access to .zip files.
-  Copyright (C) 2000  Thomas SÃ¸ndergaard
+  Copyright (C) 2000  Thomas Søndergaard
   
   This library is free software; you can redistribute it and/or
   modify it under the terms of the GNU Lesser General Public

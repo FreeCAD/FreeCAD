@@ -1,12 +1,12 @@
 
-#include "zipios-config.h"
+#include "zipios++/zipios-config.h"
 
-#include "meta-iostreams.h"
+#include "zipios++/meta-iostreams.h"
 #include <iterator>
 #include <string>
 
 #include "zipios_common.h"
-#include "zipheadio.h"
+#include "zipios++/zipheadio.h"
 
 #include "outputstringstream.h"
 
@@ -177,7 +177,7 @@ std::ostream &operator<< ( std::ostream &os, const EndOfCentralDirectory &eocd )
 
 /*
   Zipios++ - a small C++ library that provides easy access to .zip files.
-  Copyright (C) 2000  Thomas SÃ¸ndergaard
+  Copyright (C) 2000  Thomas Søndergaard
   
   This library is free software; you can redistribute it and/or
   modify it under the terms of the GNU Lesser General Public

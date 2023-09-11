@@ -1,15 +1,6 @@
 #ifndef ZIPIOS_CONFIG_H
 #define ZIPIOS_CONFIG_H
 
-#include <FCConfig.h>
-
-// undef IGNORE that is pulled in by Windows.h
-#ifdef IGNORE
-#undef IGNORE
-#endif
-
-#ifdef _MSC_VER
-
 // This is fine for VC++ 5.0 sp 3
 #define HAVE_STD_IOSTREAM
 #define USE_STD_IOSTREAM
@@ -24,39 +15,16 @@
 #endif //_MSC_VER
 
 // Needed for FilePath
-#ifndef S_ISREG
 #define S_ISREG(mode)	(((mode) & _S_IFREG) == _S_IFREG)
-#endif
-#ifndef S_ISDIR
 #define S_ISDIR(mode)	(((mode) & _S_IFDIR) == _S_IFDIR)
-#endif
-#ifndef S_ISCHR
 #define S_ISCHR(mode)	(((mode) & _S_IFCHR) == _S_IFCHR)
-#endif
-#ifndef S_ISBLK
 #define S_ISBLK(mode)	0
-#endif
-#ifndef S_ISSOCK
 #define S_ISSOCK(mode)	0
-#endif
-#ifndef S_ISFIFO
 #define S_ISFIFO(mode)	(((mode) & _S_IFIFO) == _S_IFIFO)
-#endif
 
 
 // Convenient place to include any debugging-headers
 #include <assert.h>
-
-#else // gcc and others
-#ifndef S_ISSOCK
-#define S_ISSOCK(mode)	0
-#endif
-#include <stdint.h>
-# if HAVE_CONFIG_H
-#	  include <config.h>
-# endif // HAVE_CONFIG_H
-
-#endif //_MSC_VER
 
 #endif // ZIPIOS_CONFIG_H
 
@@ -66,7 +34,7 @@
 
 /*
   Zipios++ - a small C++ library that provides easy access to .zip files.
-  Copyright (C) 2000  1. Thomas SÃ¸ndergaard 2. Kevin Shea
+  Copyright (C) 2000  1. Thomas Søndergaard 2. Kevin Shea
   Written by Kevin Shea
   
   This library is free software; you can redistribute it and/or

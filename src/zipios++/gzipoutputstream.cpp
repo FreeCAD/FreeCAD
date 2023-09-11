@@ -1,18 +1,18 @@
 
-#include "zipios-config.h"
+#include "zipios++/zipios-config.h"
 
-#include "meta-iostreams.h"
+#include "zipios++/meta-iostreams.h"
 
-#include "gzipoutputstreambuf.h"
-#include "gzipoutputstream.h"
+#include "zipios++/gzipoutputstreambuf.h"
+#include "zipios++/gzipoutputstream.h"
 
 using std::ostream;
 
 namespace zipios {
 
 GZIPOutputStream::GZIPOutputStream( std::ostream &os )
-  : ostream( nullptr ),
-    ofs( nullptr )
+  : ostream( 0 ),
+    ofs( 0 )
 {
   ozf = new GZIPOutputStreambuf( os.rdbuf() ) ;
 
@@ -20,8 +20,8 @@ GZIPOutputStream::GZIPOutputStream( std::ostream &os )
 }
 
 GZIPOutputStream::GZIPOutputStream( const std::string &filename )
-  : ostream( nullptr ),
-    ofs( nullptr )
+  : ostream( 0 ),
+    ofs( 0 )
 {
   ofs = new std::ofstream( filename.c_str(), std::ios::out | std::ios::binary ) ;
   ozf = new GZIPOutputStreambuf( ofs->rdbuf() ) ;
@@ -62,7 +62,7 @@ GZIPOutputStream::~GZIPOutputStream() {
 
 /*
   Zipios++ - a small C++ library that provides easy access to .zip files.
-  Copyright (C) 2000  Thomas SÃ¸ndergaard
+  Copyright (C) 2000  Thomas Søndergaard
 
   This library is free software; you can redistribute it and/or
   modify it under the terms of the GNU Lesser General Public

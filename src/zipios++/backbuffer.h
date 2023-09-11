@@ -1,17 +1,17 @@
 #ifndef BACKBUFFER_H
 #define BACKBUFFER_H
 
-#include "zipios-config.h"
+#include "zipios++/zipios-config.h"
 
 #include <algorithm>
 
-#include "meta-iostreams.h"
+#include "zipios++/meta-iostreams.h"
 #include <vector>
 
-#include "fcollexceptions.h"
-#include "ziphead.h"
-#include "zipheadio.h"
-#include "virtualseeker.h"
+#include "zipios++/fcollexceptions.h"
+#include "zipios++/ziphead.h"
+#include "zipios++/zipheadio.h"
+#include "zipios++/virtualseeker.h"
 #include "zipios_common.h"
 
 namespace zipios {
@@ -32,14 +32,13 @@ using std::endl ;
 class BackBuffer : public vector< unsigned char > {
 public:
   /** BackBuffer constructor.
-      @param is The istream to read the data from. The stream must be
-                seekable, as BackBuffer will reposition the file position to
-                read chunks from the back of the file.
-      @param vs 
-      @param chunk_size specifies the size of the chunks to read the file
-                        into  the BackBuffer in.
-      @throw FCollException Thrown if the VirtualSeeker vs that has been
-      specified is  invalid for the istream is.  */
+      @param is The istream to read the data from. The stream must be seekable,
+      as BackBuffer will reposition the file position to read chunks from the back
+      of the file.
+      @param chunk_size specifies the size of the chunks to read the file into 
+      the BackBuffer in.
+      @throw FCollException Thrown if the VirtualSeeker vs that has been specified is 
+      invalid for the istream is.  */
   inline explicit BackBuffer( istream &is, VirtualSeeker vs = VirtualSeeker(), 
 			      int chunk_size = 1024 ) ;
   /** Reads another chunk and returns the size of the chunk that has
@@ -100,7 +99,7 @@ int BackBuffer::readChunk( int &read_pointer ) {
 
 /*
   Zipios++ - a small C++ library that provides easy access to .zip files.
-  Copyright (C) 2000  Thomas SÃ¸ndergaard
+  Copyright (C) 2000  Thomas Søndergaard
   
   This library is free software; you can redistribute it and/or
   modify it under the terms of the GNU Lesser General Public

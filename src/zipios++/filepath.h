@@ -1,7 +1,7 @@
 #ifndef FILEPATH_H
 #define FILEPATH_H
 
-#include "zipios-config.h"
+#include "zipios++/zipios-config.h"
 
 #include <stdexcept>
 #include <string>
@@ -20,7 +20,7 @@ public:
   /** Constructor.
       @param path A string representation of the path.
       @param check_exists If true is specified the constructor will
-      check the existence and type of the path immediately, instead of
+      check the existence and type of the path immidiately, instead of
       deferring that task until it is needed. */
   FilePath( const string &path = "", bool check_exists = false ) ;
 
@@ -184,7 +184,7 @@ bool FilePath::isFifo() const {
 
 /*
   Zipios++ - a small C++ library that provides easy access to .zip files.
-  Copyright (C) 2000  Thomas SÃ¸ndergaard
+  Copyright (C) 2000  Thomas Søndergaard
   
   This library is free software; you can redistribute it and/or
   modify it under the terms of the GNU Lesser General Public

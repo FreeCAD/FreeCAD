@@ -1,16 +1,16 @@
 #ifndef DEFLATEOUTPUTSTREAMBUF_H
 #define DEFLATEOUTPUTSTREAMBUF_H
 
-#include "zipios-config.h"
+#include "zipios++/zipios-config.h"
 
-#include "meta-iostreams.h"
+#include "zipios++/meta-iostreams.h"
 #include <vector>
 
 #include <zlib.h>
 
-#include "filteroutputstreambuf.h"
-#include "ziphead.h"
-#include "zipios_defs.h"
+#include "zipios++/filteroutputstreambuf.h"
+#include "zipios++/ziphead.h"
+#include "zipios++/zipios_defs.h"
 
 namespace zipios {
 
@@ -22,7 +22,7 @@ using std::vector ;
     compression/decompression method used in gzip and zip. The zlib
     library is used to perform the actual deflation, this class only
     wraps the functionality in an output stream filter. */
-class BaseExport DeflateOutputStreambuf : public FilterOutputStreambuf {
+class DeflateOutputStreambuf : public FilterOutputStreambuf {
 public:
 
   /** DeflateOutputStreambuf constructor.
@@ -91,7 +91,7 @@ protected: // FIXME: reconsider design?
 
 /*
   Zipios++ - a small C++ library that provides easy access to .zip files.
-  Copyright (C) 2000  Thomas SÃ¸ndergaard
+  Copyright (C) 2000  Thomas Søndergaard
   
   This library is free software; you can redistribute it and/or
   modify it under the terms of the GNU Lesser General Public

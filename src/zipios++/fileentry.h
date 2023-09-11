@@ -1,14 +1,14 @@
 #ifndef FILEENTRY_H
 #define FILEENTRY_H
 
-#include "zipios-config.h"
+#include "zipios++/zipios-config.h"
 
 #include <string>
 #include <vector>
-#include "meta-iostreams.h"
+#include "zipios++/meta-iostreams.h"
 
-#include "simplesmartptr.h"
-#include "zipios_defs.h"
+#include "zipios++/simplesmartptr.h"
+#include "zipios++/zipios_defs.h"
 
 namespace zipios {
 
@@ -49,7 +49,7 @@ typedef vector< EntryPointer > ConstEntries ;
     package. The name has been changed to FileEntry, as FileCollection
     is a more general abstraction, that covers other types of file
     collections than just zip files. */
-class BaseExport FileEntry {
+class FileEntry {
 public:
 
   /* Default construcotr, copy constructor and copy assignment
@@ -104,7 +104,7 @@ public:
   /** Any method or operator that initializes a FileEntry may set a
       flag, that specifies whether the read entry is valid or not. If
       it isn't this method returns false.  
-      @return true if the FileEntry has been parsed successfully.
+      @return true if the FileEntry has been parsed succesfully.
    */
   virtual bool isValid() const = 0 ;
   //     virtual int hashCode() const = 0 ;
@@ -202,7 +202,7 @@ private:
   string _name ;
 };
 
-BaseExport ostream &operator<< ( ostream &os, const FileEntry &entry ) ;
+ostream &operator<< ( ostream &os, const FileEntry &entry ) ;
 
 inline ostream &operator<< ( ostream &os, const ConstEntryPointer &entry ) {
   os << *entry ;
@@ -222,7 +222,7 @@ inline ostream &operator<< ( ostream &os, const ConstEntryPointer &entry ) {
 
 /*
   Zipios++ - a small C++ library that provides easy access to .zip files.
-  Copyright (C) 2000  Thomas SÃ¸ndergaard
+  Copyright (C) 2000  Thomas Søndergaard
   
   This library is free software; you can redistribute it and/or
   modify it under the terms of the GNU Lesser General Public

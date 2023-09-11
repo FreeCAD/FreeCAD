@@ -1,29 +1,30 @@
 #ifndef ZIPOUTPUTSTREAM_H
 #define ZIPOUTPUTSTREAM_H
 
-#include "zipios-config.h"
+#include "zipios++/zipios-config.h"
 
-#include "meta-iostreams.h"
+#include "zipios++/meta-iostreams.h"
 
 #include <string>
 
-#include "ziphead.h"
-#include "zipoutputstreambuf.h"
+#include "zipios++/ziphead.h"
+#include "zipios++/zipoutputstreambuf.h"
 
 namespace zipios {
 
 /** \anchor ZipOutputStream_anchor
     ZipOutputStream is an ostream that writes the output to a zip file. The
     interface approximates the interface of the Java ZipOutputStream. */
-class BaseExport ZipOutputStream : public std::ostream {
+class ZipOutputStream : public std::ostream {
 public:
 
   /** ZipOutputStream constructor.
-      @param os ostream to which the compressed zip archive is written. */
+      @param os ostream to which the compressed zip archive is written.
+      @param pos position to reposition the ostream to before reading.  */
   explicit ZipOutputStream( std::ostream &os ) ;
 
   /** ZipOutputStream constructor.
-      @param filename filename to write the zip archive to. */
+      @filename filename to write the zip archive to. */
   explicit ZipOutputStream( const std::string &filename ) ;
   
   /** Closes the current entry updates its header with the relevant
@@ -82,7 +83,7 @@ private:
 
 /*
   Zipios++ - a small C++ library that provides easy access to .zip files.
-  Copyright (C) 2000  Thomas SÃ¸ndergaard
+  Copyright (C) 2000  Thomas Søndergaard
   
   This library is free software; you can redistribute it and/or
   modify it under the terms of the GNU Lesser General Public

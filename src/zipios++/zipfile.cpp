@@ -1,17 +1,14 @@
 
-#include "zipios-config.h"
+#include "zipios++/zipios-config.h"
 
-#include "meta-iostreams.h"
+#include "zipios++/meta-iostreams.h"
 
-#include "fcoll.h"
-#include "zipfile.h"
-#include "zipinputstream.h"
-#include "zipios_defs.h"
+#include "zipios++/fcoll.h"
+#include "zipios++/zipfile.h"
+#include "zipios++/zipinputstream.h"
+#include "zipios++/zipios_defs.h"
 
 #include "backbuffer.h"
-#if defined(_WIN32) && defined(ZIPIOS_UTF8)
-#include <Base/FileInfo.h>
-#endif
 
 namespace zipios {
 
@@ -36,12 +33,7 @@ ZipFile::ZipFile( const string &name , int s_off, int e_off
 
   _filename = name ;
   
-#if defined(_WIN32) && defined(ZIPIOS_UTF8)
-  std::wstring wsname = Base::FileInfo(name).toStdWString();
-  ifstream _zipfile( wsname.c_str(), ios::in | ios::binary ) ;
-#else
   ifstream _zipfile( name.c_str(), ios::in | ios::binary ) ;
-#endif
   init( _zipfile ) ;
 }
 
@@ -73,12 +65,15 @@ istream *ZipFile::getInputStream( const string &entry_name,
 
   ConstEntryPointer ent = getEntry( entry_name, matchpath ) ;
   
-  if ( !ent )
-    return nullptr ;
-  else
-    return new ZipInputStream( _filename,	
-			   static_cast< const ZipCDirEntry * >( ent.get() )->
-			   getLocalHeaderOffset() + _vs.startOffset() ) ;
+  if ( ent == 0 )
+    return 0 ;
+  else {
+    ZipInputStream *zis( new ZipInputStream( _filename,
+      static_cast< const ZipCDirEntry * >( ent.get() )->
+      getLocalHeaderOffset() + _vs.startOffset() ) ) ;
+    zis->getNextEntry();
+    return zis;
+  }
 }
 
 
@@ -110,7 +105,7 @@ bool ZipFile::readCentralDirectory ( istream &_zipfile ) {
 
   int entry_num = 0 ;
   // Giving the default argument in the next line to keep Visual C++ quiet
-  _entries.resize ( _eocd.totalCount(), nullptr ) ;
+  _entries.resize ( _eocd.totalCount(), 0 ) ;
   while ( ( entry_num < _eocd.totalCount() ) ) {
     ZipCDirEntry *ent = new ZipCDirEntry ; 
     _entries[ entry_num ] = ent ;

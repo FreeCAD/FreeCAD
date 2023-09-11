@@ -1,11 +1,11 @@
 
-#include "zipios-config.h"
+#include "zipios++/zipios-config.h"
 
 #include <algorithm>
 #include <string>
 #include <vector>
 
-#include "fcoll.h"
+#include "zipios++/fcoll.h"
 
 namespace zipios {
 
@@ -42,7 +42,7 @@ ConstEntryPointer FileCollection::getEntry( const string &name,
   else
     iter = find_if( _entries.begin(), _entries.end(), FileEntry::MatchFileName( name ) ) ;
   if ( iter == _entries.end() )
-    return nullptr ;
+    return 0 ;
   else
     return *iter ; 
 }
@@ -72,7 +72,7 @@ FileCollection::~FileCollection() {
 
 /*
   Zipios++ - a small C++ library that provides easy access to .zip files.
-  Copyright (C) 2000  Thomas SÃ¸ndergaard
+  Copyright (C) 2000  Thomas Søndergaard
   
   This library is free software; you can redistribute it and/or
   modify it under the terms of the GNU Lesser General Public

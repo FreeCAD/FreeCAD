@@ -1,18 +1,18 @@
 #ifndef GZIPOUTPUTSTREAMBUF_H
 #define GZIPOUTPUTSTREAMBUF_H
 
-#include "zipios-config.h"
+#include "zipios++/zipios-config.h"
 
 #include <vector>
 
 #include <zlib.h>
 
-#include "deflateoutputstreambuf.h"
+#include "zipios++/deflateoutputstreambuf.h"
 
 namespace zipios {
 
 /** GZIPOutputStreambuf is a zip output streambuf filter.  */
-class BaseExport GZIPOutputStreambuf : public DeflateOutputStreambuf {
+class GZIPOutputStreambuf : public DeflateOutputStreambuf {
 public:
 
   /** GZIPOutputStreambuf constructor. A newly constructed GZIPOutputStreambuf
@@ -61,7 +61,7 @@ private:
 
 /*
   Zipios++ - a small C++ library that provides easy access to .zip files.
-  Copyright (C) 2000  Thomas SÃ¸ndergaard
+  Copyright (C) 2000  Thomas Søndergaard
   
   This library is free software; you can redistribute it and/or
   modify it under the terms of the GNU Lesser General Public

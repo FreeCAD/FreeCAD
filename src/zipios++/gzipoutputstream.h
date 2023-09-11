@@ -1,20 +1,20 @@
 #ifndef GZIPOUTPUTSTREAM_H
 #define GZIPOUTPUTSTREAM_H
 
-#include "zipios-config.h"
+#include "zipios++/zipios-config.h"
 
-#include "meta-iostreams.h"
+#include "zipios++/meta-iostreams.h"
 
 #include <string>
 
-#include "gzipoutputstreambuf.h"
+#include "zipios++/gzipoutputstreambuf.h"
 
 namespace zipios {
 
 /** \anchor GZIPOutputStream_anchor
     GZIPOutputStream is an ostream that writes the output to a gz file. The
     interface approximates the interface of the Java GZIPOutputStream. */
-class BaseExport GZIPOutputStream : public std::ostream {
+class GZIPOutputStream : public std::ostream {
 public:
 
   /** GZIPOutputStream constructor.
@@ -23,8 +23,7 @@ public:
   explicit GZIPOutputStream( std::ostream &os ) ;
 
   /** GZIPOutputStream constructor.
-      @param filename filename to write the gzip archive to.
-   */
+      @filename filename to write the gzip archive to. */
   explicit GZIPOutputStream( const std::string &filename ) ;
 
   void setFilename( const string &filename );
@@ -54,7 +53,7 @@ private:
 
 /*
   Zipios++ - a small C++ library that provides easy access to .zip files.
-  Copyright (C) 2000  Thomas SÃ¸ndergaard
+  Copyright (C) 2000  Thomas Søndergaard
   
   This library is free software; you can redistribute it and/or
   modify it under the terms of the GNU Lesser General Public

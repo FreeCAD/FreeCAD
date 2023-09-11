@@ -1,9 +1,9 @@
 #ifndef OUTPUTSTRINGSTREAM_H
 #define OUTPUTSTRINGSTREAM_H
 
-#include "zipios-config.h"
+#include "zipios++/zipios-config.h"
 
-#include "meta-iostreams.h"
+#include "zipios++/meta-iostreams.h"
 #include <string>
 
 namespace zipios {
@@ -21,13 +21,13 @@ typedef std::ostringstream OutputStringStream ;
     strstream.h. In this case OutputStringStream specializes the str()
     method, such that the caller does not have to concern himself with
     null-terminating the string and unfreezing the ostrstream. */
-class OutputStringStream : public std::ostrstream {
+class OutputStringStream : public ostrstream {
 public:
 
   /** Specialization of ostrstream::str() that takes care of
       null-terminating the string and unfreezing the ostrstream.  */
-  inline std::string str() {
-    *this << std::ends ; // null terminate ostrstream
+  inline string str() {
+    *this << ends ; // null terminate ostrstream
     string o_str( ostrstream::str() ) ;
     freeze( 0 ) ;
     return o_str ;
@@ -35,7 +35,7 @@ public:
 private:
   // To avoid invoking such a member function in the base
   // class if there is one!
-  std::string str() const ; 
+  string str() const ; 
 };
 
 #endif
@@ -51,7 +51,7 @@ private:
 
 /*
   Zipios++ - a small C++ library that provides easy access to .zip files.
-  Copyright (C) 2000  Thomas SÃ¸ndergaard
+  Copyright (C) 2000  Thomas Søndergaard
   
   This library is free software; you can redistribute it and/or
   modify it under the terms of the GNU Lesser General Public

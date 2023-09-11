@@ -1,15 +1,15 @@
 
-#include "zipios-config.h"
+#include "zipios++/zipios-config.h"
 
-#include "meta-iostreams.h"
+#include "zipios++/meta-iostreams.h"
 #include <iterator>
 #include <string>
 #include <cassert>
 
 #include "zipios_common.h"
-#include "ziphead.h"
-#include "zipheadio.h"
-#include "zipios_defs.h"
+#include "zipios++/ziphead.h"
+#include "zipios++/zipheadio.h"
+#include "zipios++/zipios_defs.h"
 
 #include "outputstringstream.h"
 
@@ -52,6 +52,7 @@ bool operator== ( const ZipLocalEntry &zlh, const ZipCDirEntry &ze ) {
 //
 
 const uint32 ZipLocalEntry::signature = 0x04034b50 ;
+
 
 
 void ZipLocalEntry::setDefaultExtract() {
@@ -109,7 +110,7 @@ bool ZipLocalEntry::isValid() const {
 }
 
 bool ZipLocalEntry::isDirectory() const {
-  //std::assert( filename.size() != 0 ) ;
+  assert( filename.size() != 0 ) ;
   return  filename[ filename.size() - 1 ] == separator ;
 }
 
@@ -168,7 +169,10 @@ bool ZipLocalEntry::trailingDataDescriptor() const {
   // gp_bitfield bit 3 is one, if this entry uses a trailing data
   // descriptor to keep size, compressed size and crc-32
   // fields.
-  return ( gp_bitfield & 4 ) != 0 ;
+  if ( ( gp_bitfield & 4 ) == 1 )
+    return true ;
+  else
+    return false ;
 }
 
 FileEntry *ZipLocalEntry::clone() const {
@@ -273,7 +277,7 @@ bool EndOfCentralDirectory::checkSignature ( unsigned char *buf ) const {
 
 /*
   Zipios++ - a small C++ library that provides easy access to .zip files.
-  Copyright (C) 2000  Thomas SÃ¸ndergaard
+  Copyright (C) 2000  Thomas Søndergaard
   
   This library is free software; you can redistribute it and/or
   modify it under the terms of the GNU Lesser General Public

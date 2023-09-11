@@ -1,9 +1,9 @@
 #ifndef FILTEROUTPUTSTREAMBUF_H
 #define FILTEROUTPUTSTREAMBUF_H
 
-#include "zipios-config.h"
+#include "zipios++/zipios-config.h"
 
-#include "meta-iostreams.h"
+#include "zipios++/meta-iostreams.h"
 
 namespace zipios {
 
@@ -11,7 +11,7 @@ using std::streambuf ;
 
 /** A FilterOutputStreambuf is a streambuf that filters the data that is written
     to it before it passes it on to the output streambuf it is connected to. */
-class BaseExport FilterOutputStreambuf : public streambuf {
+class FilterOutputStreambuf : public streambuf {
 public:
 
   /** Constructor.
@@ -40,7 +40,7 @@ protected:
 
 /*
   Zipios++ - a small C++ library that provides easy access to .zip files.
-  Copyright (C) 2000  Thomas SÃ¸ndergaard
+  Copyright (C) 2000  Thomas Søndergaard
   
   This library is free software; you can redistribute it and/or
   modify it under the terms of the GNU Lesser General Public

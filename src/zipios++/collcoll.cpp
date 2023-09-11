@@ -1,16 +1,16 @@
 
-#include "zipios-config.h"
+#include "zipios++/zipios-config.h"
 
-#include "meta-iostreams.h"
+#include "zipios++/meta-iostreams.h"
 
-#include "collcoll.h"
+#include "zipios++/collcoll.h"
 #include "zipios_common.h"
 
 namespace zipios {
 
 using std::ifstream ;
 
-CollectionCollection *CollectionCollection::_inst = nullptr ;
+CollectionCollection *CollectionCollection::_inst = 0 ;
 
 
 CollectionCollection::CollectionCollection() {
@@ -31,7 +31,7 @@ bool CollectionCollection::addCollection( const FileCollection &collection ) {
 bool CollectionCollection::addCollection( FileCollection *collection ) {
   if ( ! _valid )
     throw InvalidStateException( "Attempt to add a FileCollection to an invalid CollectionCollection" ) ;
-  if ( !collection || this == collection || ! collection->isValid() )
+  if ( collection == 0 || this == collection || ! collection->isValid() )
     return false ;
   _collections.push_back( collection ) ;
   return true ;
@@ -87,8 +87,8 @@ istream *CollectionCollection::getInputStream( const string &entry_name,
 
   getEntry( entry_name, cep, it, matchpath ) ; 
   
-  if ( !cep )
-    return nullptr ;
+  if ( cep == 0 )
+    return 0 ;
   else
     return (*it)->getInputStream( entry_name ) ;
   
@@ -126,7 +126,7 @@ void CollectionCollection::getEntry( const string &name,
 				     MatchPath matchpath ) const {
   
   // Returns the first matching entry.
-  cep = nullptr ;
+  cep = 0 ;
   for ( it = _collections.begin() ; it != _collections.end() ; it++ ) {
     cep = (*it)->getEntry( name, matchpath ) ;
     if ( cep )
@@ -144,7 +144,7 @@ void CollectionCollection::getEntry( const string &name,
 
 /*
   Zipios++ - a small C++ library that provides easy access to .zip files.
-  Copyright (C) 2000  Thomas SÃ¸ndergaard
+  Copyright (C) 2000  Thomas Søndergaard
   
   This library is free software; you can redistribute it and/or
   modify it under the terms of the GNU Lesser General Public

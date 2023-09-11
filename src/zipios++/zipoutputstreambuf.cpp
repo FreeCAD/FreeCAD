@@ -1,22 +1,21 @@
 
-#include "zipios-config.h"
+#include <time.h>
+
+#include "zipios++/zipios-config.h"
 
 #include <algorithm>
-#include <vector>
-#include <ctime>
-#include "meta-iostreams.h"
+#include "zipios++/meta-iostreams.h"
 
 #include <zlib.h>
 
-#include "zipoutputstreambuf.h"
+#include "zipios++/zipoutputstreambuf.h"
 
 namespace zipios {
 
 using std::ios ;
 using std::cerr ;
 using std::endl ;
-using std::min ;
-using std::vector ;
+//using std::min ;
 
 ZipOutputStreambuf::ZipOutputStreambuf( streambuf *outbuf, bool del_outbuf ) 
   : DeflateOutputStreambuf( outbuf, false, del_outbuf ),
@@ -187,7 +186,7 @@ void ZipOutputStreambuf::writeCentralDirectory( const vector< ZipCDirEntry > &en
 
 /*
   Zipios++ - a small C++ library that provides easy access to .zip files.
-  Copyright (C) 2000  Thomas SÃ¸ndergaard
+  Copyright (C) 2000  Thomas Søndergaard
   
   This library is free software; you can redistribute it and/or
   modify it under the terms of the GNU Lesser General Public

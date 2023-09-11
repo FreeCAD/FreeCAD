@@ -1,13 +1,13 @@
 #ifndef ZIPINPUTSTREAM_H
 #define ZIPINPUTSTREAM_H
 
-#include "zipios-config.h"
+#include "zipios++/zipios-config.h"
 
-#include "meta-iostreams.h"
+#include "zipios++/meta-iostreams.h"
 #include <string>
 
-#include "ziphead.h"
-#include "zipinputstreambuf.h"
+#include "zipios++/ziphead.h"
+#include "zipios++/zipinputstreambuf.h"
 
 namespace zipios {
 
@@ -17,19 +17,18 @@ using std::ifstream ;
     ZipInputStream is an istream that gets it's input from a zip file. The
     interface approximates the interface of the Java
     ZipInputStream. */
-class BaseExport ZipInputStream : public istream {
+class ZipInputStream : public istream {
 public:
 
   /** ZipInputStream constructor.
       @param is istream from which the compressed zip archive can be read.
       @param pos position to reposition the istream to before reading.  */
-  explicit ZipInputStream( std::istream &is, std::streampos pos = 0 ) ;
+  explicit ZipInputStream( istream &is, streampos pos = 0 ) ;
 
   /** ZipInputStream constructor.
-      @param filename filename of a valid zip file.
-      @param pos position to reposition the istream to before reading.
-   */
-  explicit ZipInputStream( const std::string &filename, std::streampos pos = 0 ) ;
+      @filename filename of a valid zip file.
+      @param pos position to reposition the istream to before reading.   */
+  explicit ZipInputStream( const string &filename, streampos pos = 0 ) ;
   
   int available() ;
   /** Closes the current entry, and positions the stream read pointer at 
@@ -43,7 +42,8 @@ public:
 
   /** \anchor ZipInputStream_getnextentry_anchor
       Opens the next entry in the zip archive and returns a const pointer to a 
-      FileEntry object for the entry.
+      FileEntry object for the entry. For new instances this method has to be
+      called once before you can read from the first entry.
       @return a const FileEntry * containing information about the (now) current 
       entry.
   */
@@ -74,7 +74,7 @@ private:
 
 /*
   Zipios++ - a small C++ library that provides easy access to .zip files.
-  Copyright (C) 2000  Thomas SÃ¸ndergaard
+  Copyright (C) 2000  Thomas Søndergaard
   
   This library is free software; you can redistribute it and/or
   modify it under the terms of the GNU Lesser General Public

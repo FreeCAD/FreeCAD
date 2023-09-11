@@ -1,15 +1,15 @@
 #ifndef ZIPINPUTSTREAMBUF_H
 #define ZIPINPUTSTREAMBUF_H
 
-#include "zipios-config.h"
+#include "zipios++/zipios-config.h"
 
 #include <vector>
 
 #include <zlib.h>
 
-#include "fcoll.h"
-#include "inflateinputstreambuf.h"
-#include "ziphead.h"
+#include "zipios++/fcoll.h"
+#include "zipios++/inflateinputstreambuf.h"
+#include "zipios++/ziphead.h"
 
 namespace zipios {
 
@@ -71,7 +71,7 @@ private:
 
 /*
   Zipios++ - a small C++ library that provides easy access to .zip files.
-  Copyright (C) 2000  Thomas SÃ¸ndergaard
+  Copyright (C) 2000  Thomas Søndergaard
   
   This library is free software; you can redistribute it and/or
   modify it under the terms of the GNU Lesser General Public

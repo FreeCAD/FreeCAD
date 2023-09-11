@@ -1,7 +1,7 @@
 
-#include "zipios-config.h"
+#include "zipios++/zipios-config.h"
 
-#include "filteroutputstreambuf.h"
+#include "zipios++/filteroutputstreambuf.h"
 
 namespace zipios {
 
@@ -9,14 +9,14 @@ FilterOutputStreambuf::FilterOutputStreambuf( streambuf *outbuf, bool del_outbuf
   : _outbuf( outbuf),
     _del_outbuf( del_outbuf )
 {
-  if (!_outbuf) {
+  if ( _outbuf == NULL ) {
     // throw an exception
   }
 }
 
 
 FilterOutputStreambuf::~FilterOutputStreambuf() {
-  if (_del_outbuf)
+  if ( _del_outbuf )
     delete _outbuf ;
 }
 
@@ -29,7 +29,7 @@ FilterOutputStreambuf::~FilterOutputStreambuf() {
 
 /*
   Zipios++ - a small C++ library that provides easy access to .zip files.
-  Copyright (C) 2000  Thomas SÃ¸ndergaard
+  Copyright (C) 2000  Thomas Søndergaard
   
   This library is free software; you can redistribute it and/or
   modify it under the terms of the GNU Lesser General Public

@@ -1,12 +1,12 @@
 #ifndef COLLCOLL_H
 #define COLLCOLL_H
 
-#include "zipios-config.h"
+#include "zipios++/zipios-config.h"
 
 #include <string>
 #include <vector>
 
-#include "fcoll.h"
+#include "zipios++/fcoll.h"
 
 namespace zipios {
 
@@ -23,8 +23,7 @@ using std::string ;
     the same path only the one in the first added collection will
     be accessible.
 */
-class BaseExport CollectionCollection: public FileCollection
-{
+class CollectionCollection : public FileCollection {
 public:
   /** \anchor collcoll_inst_anchor
       This static method provides a singleton instance of a CollectionCollection.
@@ -46,21 +45,20 @@ public:
   /** \anchor collcoll_addcoll_anchor
       Adds a collection.
       @param collection The collection to add.
-      @return true if the collection was added successfully and
+      @return true if the collection was added succesfully and
       the added collection is valid.
    */
   bool addCollection( const FileCollection &collection ) ;
 
   /** Adds the collection pointed to by collection. The CollectionCollection
       will call delete on the pointer when it is destructed, so the caller
-      should make absolutely sure to only pass in a collection created with
-      new and be sure to leave it alone after adding it. If the collection is
-      not added false is returned and the caller remains responsible for the
+      should make absolutely sure to only pass in a collection created with new
+      and be sure to leave it alone after adding it. If the collection is not
+      added false is returned and the caller remains responsible for the
       collection pointed to by collection.
       @param collection A pointer to the collection to add.
-      @return true if the collection was added successfully and
-      the added collection is valid.
-   */
+      @return true if the collection was added succesfully and
+      the added collection is valid. */
   bool addCollection( FileCollection *collection ) ;
 
   virtual void close() ;
@@ -158,7 +156,7 @@ CollectionCollection::operator= ( const CollectionCollection &src ) {
 
 /*
   Zipios++ - a small C++ library that provides easy access to .zip files.
-  Copyright (C) 2000  Thomas SÃ¸ndergaard
+  Copyright (C) 2000  Thomas Søndergaard
   
   This library is free software; you can redistribute it and/or
   modify it under the terms of the GNU Lesser General Public

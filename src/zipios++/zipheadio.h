@@ -1,15 +1,15 @@
 #ifndef ZIPHEADIO_H
 #define ZIPHEADIO_H
 
-#include "zipios-config.h"
+#include "zipios++/zipios-config.h"
 
-#include "meta-iostreams.h"
+#include "zipios++/meta-iostreams.h"
 #include <string>
 #include <vector>
 
-#include "ziphead.h"
-#include "zipios_defs.h"
-#include "fcollexceptions.h"
+#include "zipios++/ziphead.h"
+#include "zipios++/zipios_defs.h"
+#include "zipios++/fcollexceptions.h"
 
 namespace zipios {
 
@@ -83,7 +83,7 @@ inline uint32 readUint32 ( istream &is ) {
   std::streampos original_pos = is.tellg() ;
   while ( rsf < buf_len && !is.eof() ) {
     is.read ( reinterpret_cast< char * >( buf ) + rsf, buf_len - rsf ) ;
-    rsf += static_cast< int >( is.gcount () ) ;
+    rsf += is.gcount () ;
   }
   if ( rsf != buf_len ) {
     is.seekg( original_pos ) ;
@@ -105,7 +105,7 @@ inline uint16 readUint16 ( istream &is ) {
   std::streampos original_pos = is.tellg() ;
   while ( rsf < buf_len && !is.eof() ) {
     is.read ( reinterpret_cast< char * >( buf ) + rsf, buf_len - rsf ) ;
-    rsf += static_cast< int >( is.gcount () ) ;
+    rsf += is.gcount () ;
   }
   if ( rsf != buf_len ) {
     is.seekg( original_pos ) ;
@@ -116,7 +116,7 @@ inline uint16 readUint16 ( istream &is ) {
 }
 
 inline void writeUint16 ( uint16 host_val, ostream &os ) {
-  uint16 val = htozs( reinterpret_cast< unsigned char * >( &host_val ) ) ;
+  uint16 val = htozl( reinterpret_cast< unsigned char * >( &host_val ) ) ;
   os.write( reinterpret_cast< char * >( &val ), sizeof( uint16 ) ) ;
 }
 
@@ -163,8 +163,7 @@ inline void readByteSeq ( istream &is, vector < unsigned char > &vec, int count 
 }
 
 inline void writeByteSeq ( ostream &os, const vector < unsigned char > &vec ) {
-  if(!vec.empty())
-    os.rdbuf()->sputn( reinterpret_cast< const char * >( &( vec[ 0 ] ) ), vec.size() ) ;
+  os.rdbuf()->sputn( reinterpret_cast< const char * >( &( vec[ 0 ] ) ), vec.size() ) ;
 }
 
 istream& operator>> ( istream &is, ZipLocalEntry &zlh         ) ;
@@ -188,7 +187,7 @@ ostream &operator<< ( ostream &os, const EndOfCentralDirectory &eocd ) ;
 
 /*
   Zipios++ - a small C++ library that provides easy access to .zip files.
-  Copyright (C) 2000  Thomas SÃ¸ndergaard
+  Copyright (C) 2000  Thomas Søndergaard
   
   This library is free software; you can redistribute it and/or
   modify it under the terms of the GNU Lesser General Public

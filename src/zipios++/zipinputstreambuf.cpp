@@ -1,12 +1,12 @@
 
-#include "zipios-config.h"
+#include "zipios++/zipios-config.h"
 
 #include <algorithm>
-#include "meta-iostreams.h"
+#include "zipios++/meta-iostreams.h"
 
 #include <zlib.h>
 
-#include "zipinputstreambuf.h"
+#include "zipios++/zipinputstreambuf.h"
 #include "zipios_common.h"
 
 namespace zipios {
@@ -18,13 +18,7 @@ using std::endl ;
 ZipInputStreambuf::ZipInputStreambuf( streambuf *inbuf, int s_pos, bool del_inbuf ) 
   : InflateInputStreambuf( inbuf, s_pos, del_inbuf ),
     _open_entry( false                   ) 
-{
-  ConstEntryPointer entry = getNextEntry() ;
-
-  if ( ! entry->isValid() ) {
-    ; // FIXME: throw something?
-  }
-}
+{}
 
 void ZipInputStreambuf::closeEntry() {
   if ( ! _open_entry )
@@ -48,28 +42,30 @@ ConstEntryPointer ZipInputStreambuf::getNextEntry() {
 
   // read the zip local header
   istream is( _inbuf ) ; // istream does not destroy the streambuf.
-  is.exceptions(istream::eofbit | istream::failbit | istream::badbit);
-  is >> _curr_entry ;
-  if ( _curr_entry.isValid() ) {
-    _data_start = _inbuf->pubseekoff(0, ios::cur,
-				     ios::in);
-    if ( _curr_entry.getMethod() == DEFLATED ) {
-      _open_entry = true ;
-      reset() ; // reset inflatestream data structures
-//        cerr << "deflated" << endl ;
-    } else if ( _curr_entry.getMethod() == STORED ) {
-      _open_entry = true ;
-      _remain = _curr_entry.getSize() ;
-      // Force underflow on first read:
-      setg( &( _outvec[ 0 ] ),
-	    &( _outvec[ 0 ] ) + _outvecsize,
-	    &( _outvec[ 0 ] ) + _outvecsize ) ;
-//        cerr << "stored" << endl ;
-    } else {
-      _open_entry = false ; // Unsupported compression format.
-      throw FCollException( "Unsupported compression format" ) ;
+  is.exceptions( ios::eofbit | ios::failbit | ios::badbit );
+
+  try {
+    is >> _curr_entry ;
+    if ( _curr_entry.isValid() ) {
+      _data_start = _inbuf->pubseekoff(0, ios::cur, ios::in);
+      if ( _curr_entry.getMethod() == DEFLATED ) {
+        _open_entry = true ;
+        reset() ; // reset inflatestream data structures 
+        // cerr << "deflated" << endl ;
+      } else if ( _curr_entry.getMethod() == STORED ) {
+        _open_entry = true ;
+        _remain = _curr_entry.getSize() ;
+        // Force underflow on first read:
+        setg( &( _outvec[ 0 ] ),
+              &( _outvec[ 0 ] ) + _outvecsize,
+              &( _outvec[ 0 ] ) + _outvecsize );
+        // cerr << "stored" << endl ;
+      } else {
+        _open_entry = false ; // Unsupported compression format.
+        throw FCollException( "Unsupported compression format" ) ;
+      }
     }
-  } else {
+  } catch (...) {
     _open_entry = false ;
   }
 
