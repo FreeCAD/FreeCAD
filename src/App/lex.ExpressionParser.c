@@ -1,6 +1,6 @@
-#line 1 "lex.ExpressionParser.c"
+#line 2 "lex.ExpressionParser.c"
 
-#line 3 "lex.ExpressionParser.c"
+#line 4 "lex.ExpressionParser.c"
 
 #define  YY_INT_ALIGNED short int
 
@@ -623,7 +623,7 @@ struct yy_trans_info
 	};
 static const flex_int16_t yy_accept[3331] =
     {   0,
-        0,    0,  151,  150,    1,    2,  150,   49,    4,  150,
+        0,    0,  151,  150,    1,    2,  150,   49,    4,    4,
        51,    4,   11,    4,  137,    8,    4,    7,   37,  149,
        98,  102,  100,  108,  113,   41,  130,   65,  149,  149,
        91,   99,   86,   82,  149,  149,  149,  149,  139,  149,
@@ -8608,14 +8608,14 @@ extern int column;
 
 #define COUNTCHARS do { last_column = column; column += yyleng; } while (0)
 
-#line 8611 "lex.ExpressionParser.c"
+#line 8612 "lex.ExpressionParser.c"
 /*** Flex Declarations and Options ***/
 /* change the name of the scanner class. */
 /* the manual says "somewhat more optimized" */
 /* no support for include files is planned */
 /* UTF-8 unicode regular expressions. */
 /* http://www.unicode.org/reports/tr44/#General_Category_Values */
-#line 8618 "lex.ExpressionParser.c"
+#line 8619 "lex.ExpressionParser.c"
 
 #define INITIAL 0
 
@@ -8833,7 +8833,7 @@ YY_DECL
 #line 170 "ExpressionParser.l"
 
 
-#line 8836 "lex.ExpressionParser.c"
+#line 8837 "lex.ExpressionParser.c"
 
 	while ( /*CONSTCOND*/1 )		/* loops until end-of-file is reached */
 		{
@@ -9658,7 +9658,7 @@ YY_RULE_SETUP
 #line 380 "ExpressionParser.l"
 ECHO;
 	YY_BREAK
-#line 9661 "lex.ExpressionParser.c"
+#line 9662 "lex.ExpressionParser.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 

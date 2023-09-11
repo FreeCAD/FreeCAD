@@ -174,7 +174,7 @@ EXPO     [eE][-+]?[0-9]+
 
 \<\<(\\(.|\n)|[^\\>\n])*\>\> COUNTCHARS; yylval.string = unquote(yytext); return STRING;
 
-[%+()=/*^,\.\{\}\[\]:;@\?#]   COUNTCHARS; return *yytext;
+[%+()=/*^,\.\{\}\[\]:;@\?#$]   COUNTCHARS; return *yytext;
 
 "=="                         COUNTCHARS; return EQ;
 "!="                         COUNTCHARS; return NEQ;
