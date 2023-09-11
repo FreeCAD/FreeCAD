@@ -93,7 +93,9 @@ unit_num: num unit_exp %prec NUM_AND_UNIT       { $$ = new OperatorExpression(Do
 exp:      num                                   { $$ = $1;                                                                        }
         | unit_num                              { $$ = $1;                                                                        }
         | STRING                                { $$ = new StringExpression(DocumentObject, $1);                                  }
-        | identifier                            { $$ = new VariableExpression(DocumentObject, $1);                                }
+        | identifier                            { printf("test in exp 'identifier'\n");
+                                                  $$ = new VariableExpression(DocumentObject, $1);
+ }
         | MINUSSIGN exp %prec NEG               { $$ = new OperatorExpression(DocumentObject, $2, OperatorExpression::NEG, new NumberExpression(DocumentObject, Quantity(-1))); }
         | '+' exp %prec POS                     { $$ = new OperatorExpression(DocumentObject, $2, OperatorExpression::POS, new NumberExpression(DocumentObject, Quantity(1))); }
         | exp '+' exp                           { $$ = new OperatorExpression(DocumentObject, $1, OperatorExpression::ADD, $3);   }
@@ -189,6 +191,13 @@ iden
                                                 $$.setDocumentName(std::move($1), true);
                                                 $$.setDocumentObjectName(std::move($3), true);
                                                 $$.addComponent(ObjectIdentifier::SimpleComponent($5));
+                                                $$.resolveAmbiguity();
+                                            }
+    | document '$' IDENTIFIER
+                                            {   $$ = ObjectIdentifier(DocumentObject);
+                                                $$.setDocumentName(std::move($1), true);
+                                                printf("test");
+                                                $$.addComponent(ObjectIdentifier::SimpleComponent($3));
                                                 $$.resolveAmbiguity();
                                             }
     | document '#' object '.' STRING '.' id_or_cell

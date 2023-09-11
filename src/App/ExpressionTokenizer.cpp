@@ -78,7 +78,10 @@ QString ExpressionTokenizer::perform(const QString& prefix, int pos)
         if (std::get<1>(*it) >= pos) {
             // Include the immediately followed '.' or '#', because we'll be
             // inserting these separators too, in ExpressionCompleteModel::pathFromIndex()
-            if (it != tokens.begin() && std::get<0>(*it) != '.' && std::get<0>(*it) != '#')
+            if (it != tokens.begin() &&
+                std::get<0>(*it) != '.' &&
+                std::get<0>(*it) != '#' &&
+                std::get<0>(*it) != '$')
                 it = it - 1;
             tokens.resize(it - tokens.begin() + 1);
             prefixEnd = start + std::get<1>(*it) + (int)std::get<2>(*it).size();
@@ -123,6 +126,7 @@ QString ExpressionTokenizer::perform(const QString& prefix, int pos)
             int token = std::get<0>(tokens[i]);
             if (token != '.' &&
                 token != '#' &&
+                token != '$' &&
                 token != ExpressionParser::IDENTIFIER &&
                 token != ExpressionParser::STRING &&
                 token != ExpressionParser::UNIT)
