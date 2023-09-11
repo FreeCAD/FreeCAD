@@ -538,7 +538,7 @@ such as &quot;Arial:Bold&quot;</string>
         <item>
          <widget class="Gui::PrefLineEdit" name="lineEdit_2">
           <property name="toolTip">
-           <string>Here you can set an optional, customized separator to apear between the feet and inches values on dimensions</string>
+           <string>Optional string to appear between the feet and inches values in dimensions</string>
           </property>
           <property name="prefEntry" stdset="0">
            <cstring>FeetSeparator</cstring>
