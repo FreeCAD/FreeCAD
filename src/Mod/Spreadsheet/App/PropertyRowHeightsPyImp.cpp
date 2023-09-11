@@ -24,8 +24,10 @@
 
 #include "PropertyRowHeights.h"
 // inclusion of the generated files (generated out of PropertyRowHeightsPy.xml)
+// clang-format off
 #include "PropertyRowHeightsPy.h"
 #include "PropertyRowHeightsPy.cpp"
+// clang-format on
 
 
 using namespace Spreadsheet;
@@ -36,7 +38,7 @@ std::string PropertyRowHeightsPy::representation() const
     return {"<PropertyRowHeights object>"};
 }
 
-PyObject *PropertyRowHeightsPy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // Python wrapper
+PyObject* PropertyRowHeightsPy::PyMake(struct _typeobject*, PyObject*, PyObject*)// Python wrapper
 {
     // create a new instance of PropertyRowHeightsPy and the Twin object
     return new PropertyRowHeightsPy(new PropertyRowHeights);
@@ -48,7 +50,7 @@ int PropertyRowHeightsPy::PyInit(PyObject* /*args*/, PyObject* /*kwd*/)
     return 0;
 }
 
-PyObject *PropertyRowHeightsPy::getCustomAttributes(const char* /*attr*/) const
+PyObject* PropertyRowHeightsPy::getCustomAttributes(const char* /*attr*/) const
 {
     return nullptr;
 }

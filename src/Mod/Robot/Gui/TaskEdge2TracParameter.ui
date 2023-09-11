@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>TaskEdge2TracParameter</class>
+ <class>RobotGui::TaskEdge2TracParameter</class>
  <widget class="QWidget" name="TaskEdge2TracParameter">
   <property name="geometry">
    <rect>

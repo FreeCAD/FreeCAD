@@ -27,8 +27,8 @@
 
 #include "Edge2TracObject.h"
 #include "PropertyTrajectory.h"
-#include "Robot6AxisPy.h"
 #include "Robot6Axis.h"
+#include "Robot6AxisPy.h"
 #include "RobotObject.h"
 #include "Simulation.h"
 #include "Trajectory.h"
@@ -36,39 +36,48 @@
 #include "TrajectoryDressUpObject.h"
 #include "TrajectoryObject.h"
 #include "TrajectoryPy.h"
-#include "WaypointPy.h"
 #include "Waypoint.h"
+#include "WaypointPy.h"
 
 
-namespace Robot {
-class Module : public Py::ExtensionModule<Module>
+namespace Robot
+{
+class Module: public Py::ExtensionModule<Module>
 {
 public:
-    Module() : Py::ExtensionModule<Module>("Robot")
+    Module()
+        : Py::ExtensionModule<Module>("Robot")
     {
-        add_varargs_method("simulateToFile",&Module::simulateToFile,
-            "simulateToFile(Robot,Trajectory,TickSize,FileName) - runs the simulation and write the result to a file."
-        );
-        initialize("This module is the Robot module."); // register with Python
+        add_varargs_method("simulateToFile",
+                           &Module::simulateToFile,
+                           "simulateToFile(Robot,Trajectory,TickSize,FileName) - runs the "
+                           "simulation and write the result to a file.");
+        initialize("This module is the Robot module.");// register with Python
     }
 
 private:
     Py::Object simulateToFile(const Py::Tuple& args)
     {
-        PyObject *pcRobObj;
-        PyObject *pcTracObj;
+        PyObject* pcRobObj;
+        PyObject* pcTracObj;
         float tick;
         char* FileName;
 
-        if (!PyArg_ParseTuple(args.ptr(), "O!O!fs", &(Robot6AxisPy::Type), &pcRobObj,
-                                                    &(TrajectoryPy::Type), &pcTracObj,
-                                                    &tick,&FileName))
+        if (!PyArg_ParseTuple(args.ptr(),
+                              "O!O!fs",
+                              &(Robot6AxisPy::Type),
+                              &pcRobObj,
+                              &(TrajectoryPy::Type),
+                              &pcTracObj,
+                              &tick,
+                              &FileName)) {
             throw Py::Exception();
+        }
 
         try {
-            Robot::Trajectory &Trac = * static_cast<TrajectoryPy*>(pcTracObj)->getTrajectoryPtr();
-            Robot::Robot6Axis &Rob  = * static_cast<Robot6AxisPy*>(pcRobObj)->getRobot6AxisPtr();
-            Simulation Sim(Trac,Rob);
+            Robot::Trajectory& Trac = *static_cast<TrajectoryPy*>(pcTracObj)->getTrajectoryPtr();
+            Robot::Robot6Axis& Rob = *static_cast<Robot6AxisPy*>(pcRobObj)->getRobot6AxisPtr();
+            Simulation Sim(Trac, Rob);
         }
         catch (const Base::Exception& e) {
             throw Py::RuntimeError(e.what());
@@ -83,12 +92,13 @@ PyObject* initModule()
     return Base::Interpreter().addModule(new Module);
 }
 
-} // namespace Robot
+}// namespace Robot
 
 
 /* Python entry */
 PyMOD_INIT_FUNC(Robot)
 {
+    // clang-format off
     // load dependent module
     try {
         Base::Interpreter().runString("import Part");
@@ -122,4 +132,5 @@ PyMOD_INIT_FUNC(Robot)
     Robot::TrajectoryDressUpObject ::init();
 
     PyMOD_Return(robotModule);
+    // clang-format on
 }

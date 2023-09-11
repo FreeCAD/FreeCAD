@@ -27,27 +27,29 @@
 #include <Mod/Robot/App/Edge2TracObject.h>
 
 
-class Ui_TaskEdge2TracParameter;
-
-namespace App {
+namespace App
+{
 class Property;
 }
 
-namespace Gui {
+namespace Gui
+{
 class ViewProvider;
 }
 
-namespace RobotGui { 
+namespace RobotGui
+{
 
-class TaskEdge2TracParameter : public Gui::TaskView::TaskBox
+class Ui_TaskEdge2TracParameter;
+class TaskEdge2TracParameter: public Gui::TaskView::TaskBox
 {
     Q_OBJECT
 
 public:
-    explicit TaskEdge2TracParameter(Robot::Edge2TracObject *pcObject,QWidget *parent = nullptr);
+    explicit TaskEdge2TracParameter(Robot::Edge2TracObject* pcObject, QWidget* parent = nullptr);
     ~TaskEdge2TracParameter() override;
 
-    void setEdgeAndClusterNbr(int NbrEdges,int NbrClusters);
+    void setEdgeAndClusterNbr(int NbrEdges, int NbrClusters);
 
 private Q_SLOTS:
     void hideShow();
@@ -55,17 +57,17 @@ private Q_SLOTS:
     void orientationToggled(bool Value);
 
 protected:
-    Robot::Edge2TracObject *pcObject;
-    App::DocumentObject *HideShowObj;
+    Robot::Edge2TracObject* pcObject;
+    App::DocumentObject* HideShowObj;
 
     void setHideShowObject();
-private:
 
+private:
 private:
     QWidget* proxy;
     Ui_TaskEdge2TracParameter* ui;
 };
 
-} //namespace PartDesignGui
+}// namespace RobotGui
 
-#endif // GUI_TASKVIEW_TASKAPPERANCE_H
+#endif// GUI_TASKVIEW_TASKAPPERANCE_H

@@ -35,7 +35,7 @@ namespace Drawing
 
 /** Base class of all View Features in the drawing module
  */
-class DrawingExport FeatureViewAnnotation : public FeatureView
+class DrawingExport FeatureViewAnnotation: public FeatureView
 {
     PROPERTY_HEADER(Drawing::FeatureView);
 
@@ -44,18 +44,19 @@ public:
     FeatureViewAnnotation(void);
     virtual ~FeatureViewAnnotation();
 
-    App::PropertyStringList   Text;
-    App::PropertyString       Font;
-    App::PropertyColor        TextColor;
+    App::PropertyStringList Text;
+    App::PropertyString Font;
+    App::PropertyColor TextColor;
 
     /** @name methods override Feature */
     //@{
     /// recalculate the Feature
-    virtual App::DocumentObjectExecReturn *execute(void);
+    virtual App::DocumentObjectExecReturn* execute(void);
     //@}
 
     /// returns the type name of the ViewProvider
-    virtual const char* getViewProviderName(void) const {
+    virtual const char* getViewProviderName(void) const
+    {
         return "DrawingGui::ViewProviderDrawingView";
     }
 };
@@ -63,7 +64,7 @@ public:
 using FeatureViewAnnotationPython = App::FeaturePythonT<FeatureViewAnnotation>;
 
 
-} //namespace Drawing
+}// namespace Drawing
 
 
 #endif

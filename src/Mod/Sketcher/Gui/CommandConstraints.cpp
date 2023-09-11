@@ -1223,7 +1223,7 @@ public:
 
     void registerPressedKey(bool pressed, int key) override
     {
-        if ((key == SoKeyboardEvent::RIGHT_SHIFT || key == SoKeyboardEvent::LEFT_SHIFT) && pressed) {
+        if (key == SoKeyboardEvent::M && pressed) {
             if (availableConstraint == AvailableConstraint::FIRST) {
                 availableConstraint = AvailableConstraint::SECOND;
             }
@@ -2379,7 +2379,7 @@ CmdSketcherDimension::CmdSketcherDimension()
     sGroup = "Sketcher";
     sMenuText = QT_TR_NOOP("Dimension");
     sToolTipText = QT_TR_NOOP("Constrain contextually based on your selection.\n"
-        "Depending on your selection you might have several constraints available. You can cycle through them using SHIFT key.\n"
+        "Depending on your selection you might have several constraints available. You can cycle through them using M key.\n"
         "Left clicking on empty space will validate the current constraint. Right clicking or pressing Esc will cancel.");
     sWhatsThis = "Sketcher_Dimension";
     sStatusTip = sToolTipText;

@@ -34,16 +34,15 @@ class RobotGuiExport ViewProviderTrajectoryCompound: public ViewProviderTrajecto
     PROPERTY_HEADER_WITH_OVERRIDE(RobotGui::ViewProviderTrajectoryCompound);
 
 public:
-    /// grouping handling 
+    /// grouping handling
     std::vector<App::DocumentObject*> claimChildren() const override;
 
 protected:
     bool setEdit(int ModNum) override;
     void unsetEdit(int ModNum) override;
-
 };
 
-} //namespace RobotGui
+}// namespace RobotGui
 
 
-#endif // ROBOT_ViewProviderTrajectoryCompound_H
+#endif// ROBOT_ViewProviderTrajectoryCompound_H

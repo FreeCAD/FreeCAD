@@ -22,9 +22,11 @@
 
 #include "PreCompiled.h"
 
+// clang-format off
 // inclusion of the generated files (generated out of RobotObjectPy.xml)
 #include "RobotObjectPy.h"
 #include "RobotObjectPy.cpp"
+// clang-format on
 
 
 using namespace Robot;
@@ -36,23 +38,19 @@ std::string RobotObjectPy::representation() const
 }
 
 
-
-PyObject* RobotObjectPy::getRobot(PyObject * /*args*/)
+PyObject* RobotObjectPy::getRobot(PyObject* /*args*/)
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not yet implemented");
     return nullptr;
 }
 
 
-
-PyObject *RobotObjectPy::getCustomAttributes(const char* /*attr*/) const
+PyObject* RobotObjectPy::getCustomAttributes(const char* /*attr*/) const
 {
     return nullptr;
 }
 
 int RobotObjectPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
 {
-    return 0; 
+    return 0;
 }
-
-

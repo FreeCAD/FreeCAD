@@ -65,9 +65,9 @@ SET(SCL_Resources
     SCL/Aufspannung.stp
     SCL/gasket1.p21
     SCL/Product1.stp
-    automotive_design.py     # AP214e3
-    ifc2x3.py                # IFC
-    ifc4.py                  # IFC 4
+    SCL_output/automotive_design.py     # AP214e3
+    SCL_output/ifc2x3.py                # IFC
+    SCL_output/ifc4.py                  # IFC 4
     PlmXmlParser.py
 )
 SOURCE_GROUP("SCL" FILES ${SCL_Resources})

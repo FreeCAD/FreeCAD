@@ -29,27 +29,28 @@
 #include "TaskRobotControl.h"
 
 
-namespace RobotGui {
+namespace RobotGui
+{
 
 class TaskContent;
 
 /// Father class of watcher classes
-class RobotGuiExport TaskWatcherRobot : public Gui::TaskView::TaskWatcher 
+class RobotGuiExport TaskWatcherRobot: public Gui::TaskView::TaskWatcher
 {
     Q_OBJECT
 
 public:
     TaskWatcherRobot();
 
-    /// is called when the document or the selection changes. 
+    /// is called when the document or the selection changes.
     bool shouldShow() override;
 
 protected:
-    TaskRobot6Axis    *rob; 
-    TaskRobotControl  *ctr ;
+    TaskRobot6Axis* rob;
+    TaskRobotControl* ctr;
 };
 
 
-} //namespace RobotGui
+}// namespace RobotGui
 
-#endif // ROBOTGUI_TASKWATCHER_H
+#endif// ROBOTGUI_TASKWATCHER_H

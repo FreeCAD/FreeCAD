@@ -66,7 +66,7 @@ PyObject*  DocumentPy::addProperty(PyObject *args, PyObject *kwd)
     // enum support
     auto* propEnum = dynamic_cast<App::PropertyEnumeration*>(prop);
     if (propEnum) {
-        if (PySequence_Check(enumVals)) {
+        if (enumVals && PySequence_Check(enumVals)) {
             std::vector<std::string> enumValsAsVector;
             for (Py_ssize_t i = 0; i < PySequence_Length(enumVals); ++i) {
                 enumValsAsVector.emplace_back(PyUnicode_AsUTF8(PySequence_GetItem(enumVals,i)));

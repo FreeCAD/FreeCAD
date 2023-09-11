@@ -1,5 +1,5 @@
 <RCC>
-    <qresource> 
+    <qresource>
         <file>icons/Page.svg</file>
         <file>icons/Pages.svg</file>
         <file>icons/View.svg</file>
@@ -26,4 +26,4 @@
         <file>icons/actions/drawing-draft-view.svg</file>
         <file>icons/actions/drawing-spreadsheet.svg</file>
     </qresource>
-</RCC> 
+</RCC>

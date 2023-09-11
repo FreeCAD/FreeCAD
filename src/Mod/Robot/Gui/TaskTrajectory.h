@@ -32,29 +32,32 @@
 #include "ViewProviderRobotObject.h"
 
 
-class Ui_TaskTrajectory;
-
-namespace App {
+namespace App
+{
 class Property;
 }
 
-namespace Gui {
+namespace Gui
+{
 class ViewProvider;
 }
 
-namespace RobotGui { 
+namespace RobotGui
+{
 
 
-
-class TaskTrajectory : public Gui::TaskView::TaskBox
+class Ui_TaskTrajectory;
+class TaskTrajectory: public Gui::TaskView::TaskBox
 {
     Q_OBJECT
 
 public:
-    TaskTrajectory(Robot::RobotObject *pcRobotObject,Robot::TrajectoryObject *pcTrajectoryObject,QWidget *parent = nullptr);
+    TaskTrajectory(Robot::RobotObject* pcRobotObject,
+                   Robot::TrajectoryObject* pcTrajectoryObject,
+                   QWidget* parent = nullptr);
     ~TaskTrajectory() override;
     /// Observer message from the Selection
-    void OnChange(Gui::SelectionSingleton::SubjectType &rCaller,
+    void OnChange(Gui::SelectionSingleton::SubjectType& rCaller,
                   Gui::SelectionSingleton::MessageType Reason);
 
 private Q_SLOTS:
@@ -66,21 +69,27 @@ private Q_SLOTS:
     void end();
 
     void timerDone();
-    void valueChanged ( int value );
-    void valueChanged ( double d );
+    void valueChanged(int value);
+    void valueChanged(double d);
 
 Q_SIGNALS:
-    void axisChanged(float A1,float A2,float A3,float A4,float A5,float A6,const Base::Placement &Tcp);
+    void axisChanged(float A1,
+                     float A2,
+                     float A3,
+                     float A4,
+                     float A5,
+                     float A6,
+                     const Base::Placement& Tcp);
 
 protected:
     void setTo();
     void viewTool(const Base::Placement& pos);
 
-    QTimer *timer;
+    QTimer* timer;
 
     Robot::Simulation sim;
-    Robot::RobotObject *pcRobot;
-    ViewProviderRobotObject *ViewProv;
+    Robot::RobotObject* pcRobot;
+    ViewProviderRobotObject* ViewProv;
 
     bool Run;
     bool block;
@@ -93,6 +102,6 @@ private:
     Ui_TaskTrajectory* ui;
 };
 
-} //namespace PartDesignGui
+}// namespace RobotGui
 
-#endif // GUI_TASKVIEW_TASKAPPERANCE_H
+#endif// GUI_TASKVIEW_TASKAPPERANCE_H

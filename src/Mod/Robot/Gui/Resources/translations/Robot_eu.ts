@@ -905,12 +905,12 @@
     <message>
       <location filename="../../TaskTrajectoryDressUpParameter.ui" line="127"/>
       <source>Position and Orientation:</source>
-      <translation>Kokapena eta orientazioa:</translation>
+      <translation>Posizioa eta orientazioa:</translation>
     </message>
     <message>
       <location filename="../../TaskTrajectoryDressUpParameter.ui" line="159"/>
       <source>Don't change Position &amp; Orientation</source>
-      <translation>Ez aldatu kokapena eta orientazioa</translation>
+      <translation>Ez aldatu posizioa eta orientazioa</translation>
     </message>
     <message>
       <location filename="../../TaskTrajectoryDressUpParameter.ui" line="164"/>
@@ -920,7 +920,7 @@
     <message>
       <location filename="../../TaskTrajectoryDressUpParameter.ui" line="169"/>
       <source>Add Position</source>
-      <translation>Gehitu kokapena</translation>
+      <translation>Gehitu posizioa</translation>
     </message>
     <message>
       <location filename="../../TaskTrajectoryDressUpParameter.ui" line="174"/>

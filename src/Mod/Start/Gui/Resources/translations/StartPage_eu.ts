@@ -70,8 +70,8 @@
       <location filename="../../DlgStartPreferences.ui" line="96"/>
       <source>An optional custom folder to be displayed at the bottom of the first page.
 By using ";;" to separate paths, you can add several folders here</source>
-      <translation type="unfinished">An optional custom folder to be displayed at the bottom of the first page.
-By using ";;" to separate paths, you can add several folders here</translation>
+      <translation>Lehen orriaren beheko aldean bistaratuko den karpeta pertsonalizatua, aukerakoa.
+Bide-izenak bereizteko ";;" erabiliz, karpeta bat baino gehiago gehitu daiteke hemen</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="120"/>

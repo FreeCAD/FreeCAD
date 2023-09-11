@@ -126,7 +126,7 @@
     <message>
       <location filename="../panels/DlgJobModelSelect.ui" line="14"/>
       <source>Select Base Models</source>
-      <translation>Selektieren Sie das Basismodell</translation>
+      <translation>Basismodelle auswählen</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobModelSelect.ui" line="24"/>
@@ -146,7 +146,7 @@
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="14"/>
       <source>Job Template Export</source>
-      <translation>Auftragsvorlagen-Export</translation>
+      <translation>Auftragsvorlage exportieren</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="23"/>
@@ -545,12 +545,6 @@ Für das Standard Rohmaterial aus dem Begrenzungsrahmen des Basisobjekts bedeute
   </context>
   <context>
     <name>Form</name>
-    <message>
-      <location filename="../panels/PageDepthsEdit.ui" line="17"/>
-      <location filename="../panels/PageOpDrillingEdit.ui" line="14"/>
-      <source>Form</source>
-      <translation>Form</translation>
-    </message>
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="20"/>
       <source>Boundary Body</source>
@@ -3643,7 +3637,7 @@ Sollten mehrere Werkzeuge oder Werkzeugformen mit dem gleichen Namen in verschie
     <message>
       <location filename="../panels/ToolBitSelector.ui" line="104"/>
       <source>Add To Job</source>
-      <translation>zum Auftrag hinzufügen</translation>
+      <translation>Zum Auftrag hinzufügen</translation>
     </message>
   </context>
   <context>
@@ -3651,7 +3645,7 @@ Sollten mehrere Werkzeuge oder Werkzeugformen mit dem gleichen Namen in verschie
     <message>
       <location filename="../panels/PathEdit.ui" line="14"/>
       <source>Job Edit</source>
-      <translation>Auftrag editieren</translation>
+      <translation>Auftrag bearbeiten</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="21"/>
@@ -4903,7 +4897,7 @@ Zum Beispiel:
     <message>
       <location filename="../../../Path/Main/Job.py" line="157"/>
       <source>Job Cycle Time Estimation</source>
-      <translation>Abschätzung des Durchlaufzeit des Auftrags</translation>
+      <translation>Abschätzung der Durchlaufzeit des Auftrags</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Job.py" line="167"/>
@@ -4923,7 +4917,7 @@ Zum Beispiel:
     <message>
       <location filename="../../../Path/Main/Job.py" line="190"/>
       <source>Select the Type of Job</source>
-      <translation>Wählen Sie die Art der Aufgabe</translation>
+      <translation>Auftragsart auswählen</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Job.py" line="200"/>
@@ -6468,7 +6462,7 @@ Zum Beispiel:
     <message>
       <location filename="../../../Path/Main/Gui/JobCmd.py" line="59"/>
       <source>Creates a Path Job</source>
-      <translation>Erstellt ein Pfad Auftrag</translation>
+      <translation>Erstellt einen Path-Auftrag</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/JobDlg.py" line="60"/>
@@ -6576,7 +6570,7 @@ Zum Beispiel:
     <message>
       <location filename="../../../Path/Main/Gui/JobCmd.py" line="105"/>
       <source>Exports Path Job as a template to be used for other jobs</source>
-      <translation>Exportiert den Path Auftrag als Vorlage, um diese für andere Aufträge zu verwenden</translation>
+      <translation>Exportiert einen Path-Auftrag als Vorlage, die für andere Aufträge verwendet werden kann</translation>
     </message>
   </context>
   <context>
@@ -6613,7 +6607,7 @@ Zum Beispiel:
     <message>
       <location filename="../../../Path/Main/Gui/Sanity.py" line="248"/>
       <source>Job Type</source>
-      <translation>Auftragstyp</translation>
+      <translation>Auftragsart</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/Sanity.py" line="249"/>
