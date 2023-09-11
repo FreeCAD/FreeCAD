@@ -23,10 +23,10 @@
 #ifndef _RobotAlgos_h_
 #define _RobotAlgos_h_
 
+#include "kdl_cp/frames_io.hpp"
 #include <Base/Placement.h>
 #include <Base/Vector3D.h>
 #include <Mod/Robot/RobotGlobal.h>
-#include "kdl_cp/frames_io.hpp"
 
 
 namespace Robot
@@ -38,24 +38,29 @@ class RobotExport RobotAlgos
 {
 
 public:
-	/// Constructor
+    /// Constructor
     RobotAlgos();
-	virtual ~RobotAlgos();
+    virtual ~RobotAlgos();
 
     void Test();
 };
 
-inline  KDL::Frame toFrame(const Base::Placement &To){
-    return KDL::Frame(KDL::Rotation::Quaternion(To.getRotation()[0],To.getRotation()[1],To.getRotation()[2],To.getRotation()[3]),KDL::Vector(To.getPosition()[0],To.getPosition()[1],To.getPosition()[2]));
+inline KDL::Frame toFrame(const Base::Placement& To)
+{
+    return KDL::Frame(KDL::Rotation::Quaternion(To.getRotation()[0],
+                                                To.getRotation()[1],
+                                                To.getRotation()[2],
+                                                To.getRotation()[3]),
+                      KDL::Vector(To.getPosition()[0], To.getPosition()[1], To.getPosition()[2]));
 }
-inline  Base::Placement toPlacement(const KDL::Frame &To){
-	double x,y,z,w;
-	To.M.GetQuaternion(x,y,z,w);
-	return Base::Placement(Base::Vector3d(To.p[0],To.p[1],To.p[2]),Base::Rotation(x,y,z,w));
+inline Base::Placement toPlacement(const KDL::Frame& To)
+{
+    double x, y, z, w;
+    To.M.GetQuaternion(x, y, z, w);
+    return Base::Placement(Base::Vector3d(To.p[0], To.p[1], To.p[2]), Base::Rotation(x, y, z, w));
 }
 
-} //namespace Robot
-
+}// namespace Robot
 
 
 #endif
