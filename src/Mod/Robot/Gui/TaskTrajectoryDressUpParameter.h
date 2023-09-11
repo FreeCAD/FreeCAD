@@ -27,26 +27,27 @@
 #include <Mod/Robot/App/TrajectoryDressUpObject.h>
 
 
-class Ui_TaskTrajectoryDressUpParameter;
- 
-namespace RobotGui { 
+namespace RobotGui
+{
 
-class TaskTrajectoryDressUpParameter : public Gui::TaskView::TaskBox
+class Ui_TaskTrajectoryDressUpParameter;
+class TaskTrajectoryDressUpParameter: public Gui::TaskView::TaskBox
 {
     Q_OBJECT
 
 public:
-    explicit TaskTrajectoryDressUpParameter(Robot::TrajectoryDressUpObject *obj,QWidget *parent = nullptr);
+    explicit TaskTrajectoryDressUpParameter(Robot::TrajectoryDressUpObject* obj,
+                                            QWidget* parent = nullptr);
     ~TaskTrajectoryDressUpParameter() override;
 
     /// this methode write the values from the Gui to the object, usually in accept()
     void writeValues();
- 
+
 private Q_SLOTS:
     /// edit the placement
     void createPlacementDlg();
 
-   
+
 protected:
     Base::Placement PosAdd;
 
@@ -55,9 +56,9 @@ protected:
 private:
     QWidget* proxy;
     Ui_TaskTrajectoryDressUpParameter* ui;
-    Robot::TrajectoryDressUpObject *pcObject;
+    Robot::TrajectoryDressUpObject* pcObject;
 };
 
-} //namespace PartDesignGui
+}// namespace RobotGui
 
-#endif // GUI_TASKVIEW_TASKAPPERANCE_H
+#endif// GUI_TASKVIEW_TASKAPPERANCE_H
