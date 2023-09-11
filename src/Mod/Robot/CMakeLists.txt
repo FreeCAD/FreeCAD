@@ -64,4 +64,3 @@ INSTALL(
     PATTERN "Makefile*" EXCLUDE
     PATTERN "*.pdf" EXCLUDE
 )
-
