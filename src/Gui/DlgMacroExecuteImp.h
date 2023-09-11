@@ -26,6 +26,7 @@
 
 #include <QDialog>
 #include <memory>
+#include "PythonTracing.h"
 #include "Window.h"
 
 class QTreeWidgetItem;
@@ -71,6 +72,7 @@ protected:
     QString macroPath;
 
 private:
+    std::unique_ptr<PythonTracingWatcher> watcher;
     std::unique_ptr<Ui_DlgMacroExecute> ui;
 };
 
