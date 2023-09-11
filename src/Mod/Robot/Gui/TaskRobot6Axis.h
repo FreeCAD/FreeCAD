@@ -27,33 +27,36 @@
 #include <Mod/Robot/App/RobotObject.h>
 
 
-class Ui_TaskRobot6Axis;
 class QLineEdit;
 
-namespace App {
+namespace App
+{
 class Property;
 }
 
-namespace Gui {
+namespace Gui
+{
 class ViewProvider;
 }
 
-namespace RobotGui { 
+namespace RobotGui
+{
 
 
-
-class TaskRobot6Axis : public Gui::TaskView::TaskBox
+class Ui_TaskRobot6Axis;
+class TaskRobot6Axis: public Gui::TaskView::TaskBox
 {
     Q_OBJECT
 
 public:
-    explicit TaskRobot6Axis(Robot::RobotObject *pcRobotObject,QWidget *parent = nullptr);
+    explicit TaskRobot6Axis(Robot::RobotObject* pcRobotObject, QWidget* parent = nullptr);
     ~TaskRobot6Axis() override;
 
-    void setRobot(Robot::RobotObject *pcRobotObject);
+    void setRobot(Robot::RobotObject* pcRobotObject);
 
 public Q_SLOTS:
-    void setAxis(float A1,float A2,float A3,float A4,float A5,float A6,const Base::Placement &Tcp);
+    void
+    setAxis(float A1, float A2, float A3, float A4, float A5, float A6, const Base::Placement& Tcp);
     void changeSliderA1(int value);
     void changeSliderA2(int value);
     void changeSliderA3(int value);
@@ -63,18 +66,18 @@ public Q_SLOTS:
     void createPlacementDlg();
 
 protected:
-    Robot::RobotObject *pcRobot;
+    Robot::RobotObject* pcRobot;
     void viewTcp(const Base::Placement& pos);
     void viewTool(const Base::Placement& pos);
-    void setColor(int i,float angle, QLineEdit &lineEdit);
-private:
+    void setColor(int i, float angle, QLineEdit& lineEdit);
 
+private:
 private:
     QWidget* proxy;
     Ui_TaskRobot6Axis* ui;
-    Robot::Robot6Axis *Rob;
+    Robot::Robot6Axis* Rob;
 };
 
-} //namespace PartDesignGui
+}// namespace RobotGui
 
-#endif // GUI_TASKVIEW_TASKAPPERANCE_H
+#endif// GUI_TASKVIEW_TASKAPPERANCE_H

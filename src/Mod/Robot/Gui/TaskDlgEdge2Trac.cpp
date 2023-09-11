@@ -22,7 +22,7 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <QApplication>
+#include <QApplication>
 #endif
 
 #include <Base/Console.h>
@@ -42,11 +42,14 @@ using namespace RobotGui;
 // TaskDialog
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-TaskDlgEdge2Trac::TaskDlgEdge2Trac(Robot::Edge2TracObject *obj)
-    : TaskDialog(),Edge2TaskObject(obj)
+TaskDlgEdge2Trac::TaskDlgEdge2Trac(Robot::Edge2TracObject* obj)
+    : TaskDialog()
+    , Edge2TaskObject(obj)
 {
-    param  = new TaskEdge2TracParameter(obj);
-    select = new Gui::TaskView::TaskSelectLinkProperty("SELECT Part::Feature SUBELEMENT Edge COUNT 1..",&(obj->Source));
+    param = new TaskEdge2TracParameter(obj);
+    select =
+        new Gui::TaskView::TaskSelectLinkProperty("SELECT Part::Feature SUBELEMENT Edge COUNT 1..",
+                                                  &(obj->Source));
 
     Content.push_back(param);
     Content.push_back(select);
@@ -59,23 +62,23 @@ void TaskDlgEdge2Trac::open()
 {
     select->activate();
     Edge2TaskObject->execute();
-    param->setEdgeAndClusterNbr(Edge2TaskObject->NbrOfEdges,Edge2TaskObject->NbrOfCluster);
-
+    param->setEdgeAndClusterNbr(Edge2TaskObject->NbrOfEdges, Edge2TaskObject->NbrOfCluster);
 }
 
 void TaskDlgEdge2Trac::clicked(int button)
 {
     try {
-        if(QDialogButtonBox::Apply == button)
-        {
-            if (select->isSelectionValid()){
+        if (QDialogButtonBox::Apply == button) {
+            if (select->isSelectionValid()) {
                 select->sendSelection2Property();
                 // May throw an exception which we must handle here
                 Edge2TaskObject->execute();
-                param->setEdgeAndClusterNbr(Edge2TaskObject->NbrOfEdges,Edge2TaskObject->NbrOfCluster);
-            } else {
+                param->setEdgeAndClusterNbr(Edge2TaskObject->NbrOfEdges,
+                                            Edge2TaskObject->NbrOfCluster);
+            }
+            else {
                 QApplication::beep();
-                param->setEdgeAndClusterNbr(0,0);
+                param->setEdgeAndClusterNbr(0, 0);
             }
         }
     }
@@ -87,16 +90,18 @@ void TaskDlgEdge2Trac::clicked(int button)
 bool TaskDlgEdge2Trac::accept()
 {
     try {
-        if (select->isSelectionValid()){
+        if (select->isSelectionValid()) {
             select->accept();
             Edge2TaskObject->recomputeFeature();
             Gui::Document* doc = Gui::Application::Instance->activeDocument();
-            if(doc) 
+            if (doc) {
                 doc->resetEdit();
+            }
             return true;
         }
-        else
+        else {
             QApplication::beep();
+        }
     }
     catch (const Base::Exception& e) {
         Base::Console().Warning("TaskDlgEdge2Trac::accept(): %s\n", e.what());
@@ -113,9 +118,7 @@ bool TaskDlgEdge2Trac::reject()
 }
 
 void TaskDlgEdge2Trac::helpRequested()
-{
-
-}
+{}
 
 
 #include "moc_TaskDlgEdge2Trac.cpp"
