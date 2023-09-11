@@ -210,12 +210,12 @@ void TaskRobot6Axis::setColor(int i, float angle, QLineEdit& lineEdit)
 
     if (angle > Rob->getMaxAngle(i) || angle < Rob->getMinAngle(i)) {
         QPalette p = lineEdit.palette();
-        p.setColor(QPalette::Base, QColor(255, 220, 220));// green color
+        p.setColor(QPalette::Base, QColor(255, 220, 220));  // green color
         lineEdit.setPalette(p);
     }
     else {
         QPalette p = lineEdit.palette();
-        p.setColor(QPalette::Base, QColor(220, 255, 220));// green color
+        p.setColor(QPalette::Base, QColor(220, 255, 220));  // green color
         lineEdit.setPalette(p);
     }
 }

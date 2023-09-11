@@ -425,8 +425,8 @@ std::string ImpExpDxfRead::Deformat(const char* text)
 {
     // this function removes DXF formatting from texts
     std::stringstream ss;
-    bool escape = false;    // turned on when finding an escape character
-    bool longescape = false;// turned on for certain escape codes that expect additional chars
+    bool escape = false;      // turned on when finding an escape character
+    bool longescape = false;  // turned on for certain escape codes that expect additional chars
     for (unsigned int i = 0; i < strlen(text); i++) {
         if (text[i] == '\\') {
             escape = true;
@@ -472,7 +472,7 @@ void ImpExpDxfRead::AddGraphics() const
             TopoDS_Compound comp;
             builder.MakeCompound(comp);
             std::string k = i->first;
-            if (k == "0") {// FreeCAD doesn't like an object name being '0'...
+            if (k == "0") {  // FreeCAD doesn't like an object name being '0'...
                 k = "LAYER_0";
             }
             std::vector<Part::TopoShape*> v = i->second;
@@ -563,7 +563,7 @@ void ImpExpDxfWrite::exportShape(const TopoDS_Shape input)
                     if (m_version >= 14) {
                         exportLWPoly(adapt);
                     }
-                    else {// m_version < 14
+                    else {  // m_version < 14
                         exportPolyline(adapt);
                     }
                 }
@@ -571,11 +571,11 @@ void ImpExpDxfWrite::exportShape(const TopoDS_Shape input)
                     if (m_version >= 14) {
                         exportLWPoly(adapt);
                     }
-                    else {// m_version < 14
+                    else {  // m_version < 14
                         exportPolyline(adapt);
                     }
                 }
-                else {// no overrides, do what's right!
+                else {  // no overrides, do what's right!
                     if (m_version < 14) {
                         exportPolyline(adapt);
                     }
@@ -584,12 +584,12 @@ void ImpExpDxfWrite::exportShape(const TopoDS_Shape input)
                     }
                 }
             }
-            else {// it's an arc
+            else {  // it's an arc
                 if (m_polyOverride) {
                     if (m_version >= 14) {
                         exportLWPoly(adapt);
                     }
-                    else {// m_version < 14
+                    else {  // m_version < 14
                         exportPolyline(adapt);
                     }
                 }
@@ -597,11 +597,11 @@ void ImpExpDxfWrite::exportShape(const TopoDS_Shape input)
                     if (m_version >= 14) {
                         exportLWPoly(adapt);
                     }
-                    else {// m_version < 14
+                    else {  // m_version < 14
                         exportPolyline(adapt);
                     }
                 }
-                else {// no overrides, do what's right!
+                else {  // no overrides, do what's right!
                     if (m_version < 14) {
                         exportPolyline(adapt);
                     }
@@ -616,7 +616,7 @@ void ImpExpDxfWrite::exportShape(const TopoDS_Shape input)
                 if (m_version >= 14) {
                     exportLWPoly(adapt);
                 }
-                else {// m_version < 14
+                else {  // m_version < 14
                     exportPolyline(adapt);
                 }
             }
@@ -624,11 +624,11 @@ void ImpExpDxfWrite::exportShape(const TopoDS_Shape input)
                 if (m_version >= 14) {
                     exportLWPoly(adapt);
                 }
-                else {// m_version < 14
+                else {  // m_version < 14
                     exportPolyline(adapt);
                 }
             }
-            else {// no overrides, do what's right!
+            else {  // no overrides, do what's right!
                 if (m_version < 14) {
                     exportPolyline(adapt);
                 }
@@ -683,11 +683,11 @@ bool ImpExpDxfWrite::gp_PntEqual(gp_Pnt p1, gp_Pnt p2)
 bool ImpExpDxfWrite::gp_PntCompare(gp_Pnt p1, gp_Pnt p2)
 {
     bool result = false;
-    if (!(p1.IsEqual(p2, Precision::Confusion()))) {            // ie v1 != v2
-        if (!(fabs(p1.X() - p2.X()) < Precision::Confusion())) {// x1 != x2
+    if (!(p1.IsEqual(p2, Precision::Confusion()))) {              // ie v1 != v2
+        if (!(fabs(p1.X() - p2.X()) < Precision::Confusion())) {  // x1 != x2
             result = p1.X() < p2.X();
         }
-        else if (!(fabs(p1.Y() - p2.Y()) < Precision::Confusion())) {// y1 != y2
+        else if (!(fabs(p1.Y() - p2.Y()) < Precision::Confusion())) {  // y1 != y2
             result = p1.Y() < p2.Y();
         }
         else {
@@ -720,7 +720,7 @@ void ImpExpDxfWrite::exportEllipse(BRepAdaptor_Curve& c)
     double major = ellp.MajorRadius();
     double minor = ellp.MinorRadius();
 
-    gp_Dir xaxis = ellp.XAxis().Direction();// direction of major axis
+    gp_Dir xaxis = ellp.XAxis().Direction();  // direction of major axis
     // rotation appears to be the clockwise(?) angle between major & +Y??
     double rotation = xaxis.AngleWithRef(gp_Dir(0, 1, 0), gp_Dir(0, 0, 1));
 
@@ -765,7 +765,7 @@ void ImpExpDxfWrite::exportEllipseArc(BRepAdaptor_Curve& c)
     double major = ellp.MajorRadius();
     double minor = ellp.MinorRadius();
 
-    gp_Dir xaxis = ellp.XAxis().Direction();// direction of major axis
+    gp_Dir xaxis = ellp.XAxis().Direction();  // direction of major axis
     // rotation appears to be the clockwise angle between major & +Y??
     double rotation = xaxis.AngleWithRef(gp_Dir(0, 1, 0), gp_Dir(0, 0, 1));
 
@@ -778,14 +778,14 @@ void ImpExpDxfWrite::exportEllipseArc(BRepAdaptor_Curve& c)
     gp_Vec v1(m, s);
     gp_Vec v2(m, e);
     gp_Vec v3(0, 0, 1);
-    double a = v3.DotCross(v1, v2);// a = v3 dot (v1 cross v2)
-                                   // relates to "handedness" of 3 vectors
-                                   // a > 0 ==> v2 is CCW from v1 (righthanded)?
-                                   // a < 0 ==> v2 is CW from v1 (lefthanded)?
+    double a = v3.DotCross(v1, v2);  // a = v3 dot (v1 cross v2)
+                                     // relates to "handedness" of 3 vectors
+                                     // a > 0 ==> v2 is CCW from v1 (righthanded)?
+                                     // a < 0 ==> v2 is CW from v1 (lefthanded)?
 
-    double startAngle = fmod(f, 2.0 * M_PI);// revolutions
+    double startAngle = fmod(f, 2.0 * M_PI);  // revolutions
     double endAngle = fmod(l, 2.0 * M_PI);
-    bool endIsCW = (a < 0) ? true : false;// if !endIsCW swap(start,end)
+    bool endIsCW = (a < 0) ? true : false;  // if !endIsCW swap(start,end)
     // not sure if this is a hack or not. seems to make valid arcs.
     if (!endIsCW) {
         startAngle = -startAngle;
@@ -810,7 +810,7 @@ void ImpExpDxfWrite::exportBSpline(BRepAdaptor_Curve& c)
         spline = approx.Curve();
     }
     else {
-        if (approx.HasResult()) {// result, but not within tolerance
+        if (approx.HasResult()) {  // result, but not within tolerance
             spline = approx.Curve();
             Base::Console().Message("DxfWrite::exportBSpline - result not within tolerance\n");
         }
@@ -840,7 +840,7 @@ void ImpExpDxfWrite::exportBSpline(BRepAdaptor_Curve& c)
     sd.flag = spline->IsClosed();
     sd.flag += spline->IsPeriodic() * 2;
     sd.flag += spline->IsRational() * 4;
-    sd.flag += 8;// planar spline
+    sd.flag += 8;  // planar spline
 
     sd.degree = spline->Degree();
     sd.control_points = spline->NbPoles();

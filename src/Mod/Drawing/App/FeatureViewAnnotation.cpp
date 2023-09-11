@@ -98,4 +98,4 @@ const char* Drawing::FeatureViewAnnotationPython::getViewProviderName(void) cons
 
 // explicit template instantiation
 template class DrawingExport FeaturePythonT<Drawing::FeatureViewAnnotation>;
-}// namespace App
+}  // namespace App

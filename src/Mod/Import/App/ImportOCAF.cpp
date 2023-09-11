@@ -22,7 +22,7 @@
 
 #include "PreCompiled.h"
 #if defined(__MINGW32__)
-#define WNT// avoid conflict with GUID
+#define WNT  // avoid conflict with GUID
 #endif
 #ifndef _PreComp_
 #include <BRepBndLib.hxx>
@@ -43,7 +43,7 @@
 #include <XCAFDoc_DocumentTool.hxx>
 #include <XCAFDoc_Location.hxx>
 #include <climits>
-#include <gp_Pln.hxx>// for Precision::Confusion()
+#include <gp_Pln.hxx>  // for Precision::Confusion()
 #include <gp_Trsf.hxx>
 #endif
 
@@ -553,7 +553,7 @@ void ImportXCAF::createShape(const TopoDS_Shape& shape, bool perface, bool setna
     jt = myColorMap.find(shape.HashCode(INT_MAX));
 
     App::Color partColor(0.8f, 0.8f, 0.8f);
-#if 0// TODO
+#if 0  // TODO
     Gui::ViewProvider* vp = Gui::Application::Instance->getViewProvider(part);
     if (vp && vp->isDerivedFrom(PartGui::ViewProviderPart::getClassTypeId())) {
         if (jt != myColorMap.end()) {
@@ -601,7 +601,7 @@ void ImportXCAF::createShape(const TopoDS_Shape& shape, bool perface, bool setna
         }
 
         if (found_face_color) {
-#if 0// TODO
+#if 0  // TODO
             Gui::ViewProvider* vp = Gui::Application::Instance->getViewProvider(part);
             if (vp && vp->isDerivedFrom(PartGui::ViewProviderPartExt::getClassTypeId())) {
                 static_cast<PartGui::ViewProviderPartExt*>(vp)->DiffuseColor.setValues(faceColors);

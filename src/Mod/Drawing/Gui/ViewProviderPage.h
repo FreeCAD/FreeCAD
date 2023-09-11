@@ -82,7 +82,7 @@ private:
     QPointer<DrawingView> view;
 };
 
-}// namespace DrawingGui
+}  // namespace DrawingGui
 
 
-#endif// DRAWINGGUI_VIEWPROVIDERPAGE_H
+#endif  // DRAWINGGUI_VIEWPROVIDERPAGE_H

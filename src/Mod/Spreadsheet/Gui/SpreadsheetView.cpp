@@ -470,10 +470,10 @@ void SheetView::aliasChanged(const QString& text)
     static auto originalStylesheet = ui->cellAlias->styleSheet();
     QString warningColor;
     if (qApp->styleSheet().contains(QLatin1String("dark"), Qt::CaseInsensitive)) {
-        warningColor = QLatin1String("rgb(255,90,90)");// Light red for dark mode
+        warningColor = QLatin1String("rgb(255,90,90)");  // Light red for dark mode
     }
     else {
-        warningColor = QLatin1String("rgb(200,0,0)");// Dark red for light mode
+        warningColor = QLatin1String("rgb(200,0,0)");  // Dark red for light mode
     }
 
     if (!text.isEmpty() && !sheet->isValidAlias(Base::Tools::toStdString(text))) {

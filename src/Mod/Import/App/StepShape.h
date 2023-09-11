@@ -43,7 +43,7 @@ public:
     int read(const char* fileName);
 };
 
-}// namespace Import
+}  // namespace Import
 
 
-#endif// IMPORT_STEPSHAPE_H
+#endif  // IMPORT_STEPSHAPE_H

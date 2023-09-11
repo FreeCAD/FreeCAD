@@ -53,7 +53,7 @@ public:
         add_varargs_method("open", &Module::open);
         add_varargs_method("insert", &Module::importer);
         add_varargs_method("export", &Module::exporter);
-        initialize("This module is the DrawingGui module.");// register with Python
+        initialize("This module is the DrawingGui module.");  // register with Python
     }
 
     virtual ~Module()
@@ -209,7 +209,7 @@ private:
 
                                     Drawing::ProjectionAlgos project(shape, dir);
                                     str_out << project.getDXF(type, scale, tol);
-                                    break;// TODO: How to add several shapes?
+                                    break;  // TODO: How to add several shapes?
                                 }
                             }
                         }
@@ -237,4 +237,4 @@ PyObject* initModule()
     return Base::Interpreter().addModule(new Module);
 }
 
-}// namespace DrawingGui
+}  // namespace DrawingGui

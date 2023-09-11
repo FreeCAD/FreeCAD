@@ -50,6 +50,6 @@ private:
     Qt::KeyboardModifiers lastModifiers;
 };
 
-}// namespace SpreadsheetGui
+}  // namespace SpreadsheetGui
 
-#endif// LINEEDIT_H
+#endif  // LINEEDIT_H

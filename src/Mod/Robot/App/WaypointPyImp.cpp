@@ -80,7 +80,7 @@ std::string WaypointPy::representation() const
     return str.str();
 }
 
-PyObject* WaypointPy::PyMake(struct _typeobject*, PyObject*, PyObject*)// Python wrapper
+PyObject* WaypointPy::PyMake(struct _typeobject*, PyObject*, PyObject*)  // Python wrapper
 {
     // create a new instance of WaypointPy and the Twin object
     return new WaypointPy(new Waypoint);
@@ -106,7 +106,7 @@ int WaypointPy::PyInit(PyObject* args, PyObject* kwd)
                                              "O!|ssOiiiO",
                                              kwlist,
                                              &(Base::PlacementPy::Type),
-                                             &pos,// the placement object
+                                             &pos,  // the placement object
                                              &type,
                                              &name,
                                              &vel,

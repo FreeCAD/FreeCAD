@@ -94,6 +94,6 @@ private:
     Py::Object PythonObject;
 };
 
-}// namespace Spreadsheet
+}  // namespace Spreadsheet
 
-#endif// PROPERTYCOLUMNWIDTHS_H
+#endif  // PROPERTYCOLUMNWIDTHS_H

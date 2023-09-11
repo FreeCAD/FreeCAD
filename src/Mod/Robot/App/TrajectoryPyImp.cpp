@@ -48,7 +48,7 @@ std::string TrajectoryPy::representation() const
     return str.str();
 }
 
-PyObject* TrajectoryPy::PyMake(struct _typeobject*, PyObject*, PyObject*)// Python wrapper
+PyObject* TrajectoryPy::PyMake(struct _typeobject*, PyObject*, PyObject*)  // Python wrapper
 {
     // create a new instance of TrajectoryPy and the Twin object
     return new TrajectoryPy(new Trajectory);

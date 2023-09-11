@@ -53,7 +53,7 @@ protected:
     // virtual void onChanged (const App::Property* prop);
 };
 
-}// namespace Robot
+}  // namespace Robot
 
 
-#endif// ROBOT_ROBOTOBJECT_H
+#endif  // ROBOT_ROBOTOBJECT_H

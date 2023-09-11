@@ -22,7 +22,7 @@
 
 #include "PreCompiled.h"
 #if defined(__MINGW32__)
-#define WNT// avoid conflict with GUID
+#define WNT  // avoid conflict with GUID
 #endif
 #ifndef _PreComp_
 #include <climits>
@@ -385,7 +385,7 @@ public:
                            &Module::exporter,
                            "export(list,string) -- Export a list of objects into a single file.");
         add_varargs_method("ocaf", &Module::ocaf, "ocaf(string) -- Browse the ocaf structure.");
-        initialize("This module is the ImportGui module.");// register with Python
+        initialize("This module is the ImportGui module.");  // register with Python
     }
 
 private:
@@ -917,4 +917,4 @@ PyObject* initModule()
     return Base::Interpreter().addModule(new Module);
 }
 
-}// namespace ImportGui
+}  // namespace ImportGui

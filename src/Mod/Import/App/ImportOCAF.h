@@ -47,7 +47,7 @@ namespace App
 {
 class Document;
 class DocumentObject;
-}// namespace App
+}  // namespace App
 namespace Part
 {
 class Feature;
@@ -140,6 +140,6 @@ private:
     std::map<Standard_Integer, std::string> myNameMap;
 };
 
-}// namespace Import
+}  // namespace Import
 
-#endif// IMPORT_IMPORTOCAF_H
+#endif  // IMPORT_IMPORTOCAF_H

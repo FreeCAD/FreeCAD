@@ -112,14 +112,14 @@ void PropertyColumnWidths::Save(Base::Writer& writer) const
 {
     // Save column information
     writer.Stream() << writer.ind() << "<ColumnInfo Count=\"" << size() << "\">" << std::endl;
-    writer.incInd();// indentation for 'ColumnInfo'
+    writer.incInd();  // indentation for 'ColumnInfo'
     std::map<int, int>::const_iterator coli = begin();
     while (coli != end()) {
         writer.Stream() << writer.ind() << "<Column name=\"" << columnName(coli->first)
                         << "\" width=\"" << coli->second << "\" />" << std::endl;
         ++coli;
     }
-    writer.decInd();// indentation for 'ColumnInfo'
+    writer.decInd();  // indentation for 'ColumnInfo'
     writer.Stream() << writer.ind() << "</ColumnInfo>" << std::endl;
 }
 

@@ -100,7 +100,7 @@ public:
             &Module::removeSvgTags,
             "string = removeSvgTags(string) -- Removes the opening and closing svg tags\n"
             "and other metatags from a svg code, making it embeddable");
-        initialize("This module is the Drawing module.");// register with Python
+        initialize("This module is the Drawing module.");  // register with Python
     }
 
     virtual ~Module()
@@ -381,4 +381,4 @@ PyObject* initModule()
     return Base::Interpreter().addModule(new Module);
 }
 
-}// namespace Drawing
+}  // namespace Drawing

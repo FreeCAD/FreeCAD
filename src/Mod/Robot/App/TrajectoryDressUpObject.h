@@ -65,7 +65,7 @@ protected:
     void onChanged(const App::Property* prop) override;
 };
 
-}// namespace Robot
+}  // namespace Robot
 
 
-#endif// ROBOT_ROBOTOBJECT_H
+#endif  // ROBOT_ROBOTOBJECT_H

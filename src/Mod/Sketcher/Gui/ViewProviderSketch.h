@@ -391,8 +391,8 @@ private:
             return -PreselectCurve - 2;
         }
 
-        int PreselectPoint;  // VertexN, with N = PreselectPoint + 1, same as DragPoint indexing
-                             // (NOTE -1 is NOT the root point)
+        int PreselectPoint;   // VertexN, with N = PreselectPoint + 1, same as DragPoint indexing
+                              // (NOTE -1 is NOT the root point)
         int PreselectCurve;   // EdgeN, with N = PreselectCurve + 1 for positive values ;
                               // ExternalEdgeN, with N = -PreselectCurve - 2
         Axes PreselectCross;  // 0 => rootPoint, 1 => HAxis, 2 => VAxis

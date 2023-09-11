@@ -72,5 +72,5 @@
 #include <BRepAdaptor_HCurve.hxx>
 #endif
 
-#endif// _PreComp_
+#endif  // _PreComp_
 #endif

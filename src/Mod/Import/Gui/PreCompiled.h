@@ -32,7 +32,7 @@
 #pragma warning(disable : 4005)
 #pragma warning(disable : 4251)
 #pragma warning(disable : 4503)
-#pragma warning(disable : 4786)// specifier longer then 255 chars
+#pragma warning(disable : 4786)  // specifier longer then 255 chars
 #endif
 
 #ifdef _PreComp_
@@ -94,6 +94,6 @@
 #endif
 
 
-#endif//_PreComp_
+#endif  //_PreComp_
 
-#endif// __PRECOMPILED_GUI__
+#endif  // __PRECOMPILED_GUI__

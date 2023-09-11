@@ -62,6 +62,6 @@ private:
     Ui_TaskRobotMessages* ui;
 };
 
-}// namespace RobotGui
+}  // namespace RobotGui
 
-#endif// GUI_TASKVIEW_TASKAPPERANCE_H
+#endif  // GUI_TASKVIEW_TASKAPPERANCE_H

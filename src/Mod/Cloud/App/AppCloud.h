@@ -169,7 +169,7 @@ public:
                            &Module::sCloudRegion,
                            "Region(string) -- Specify Amazon s3 Region");
 
-        initialize("This module is the Cloud module.");// register with Python
+        initialize("This module is the Cloud module.");  // register with Python
     }
 
     virtual ~Module()
@@ -244,6 +244,6 @@ protected:
 };
 
 
-}// namespace Cloud
+}  // namespace Cloud
 
 void readFiles(Cloud::CloudReader reader, Base::XMLReader* xmlreader);

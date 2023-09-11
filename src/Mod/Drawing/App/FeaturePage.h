@@ -70,7 +70,7 @@ private:
 };
 
 
-}// namespace Drawing
+}  // namespace Drawing
 
 
 #endif

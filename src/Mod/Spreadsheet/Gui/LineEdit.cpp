@@ -51,7 +51,7 @@ bool LineEdit::eventFilter(QObject* object, QEvent* event)
             if (completerActive()) {
                 hideCompleter();
                 event->accept();
-                return true;// To make sure this tab press doesn't do anything else
+                return true;  // To make sure this tab press doesn't do anything else
             }
             else {
                 lastKeyPressed = keyEvent->key();
@@ -59,7 +59,7 @@ bool LineEdit::eventFilter(QObject* object, QEvent* event)
             }
         }
     }
-    return false;// We don't usually actually "handle" the tab event, we just keep track of it
+    return false;  // We don't usually actually "handle" the tab event, we just keep track of it
 }
 
 bool LineEdit::event(QEvent* event)

@@ -58,6 +58,6 @@ private:
     Ui::DlgSheetConf* ui;
 };
 
-}// namespace SpreadsheetGui
+}  // namespace SpreadsheetGui
 
-#endif// DLG_SHEETCONF_H
+#endif  // DLG_SHEETCONF_H

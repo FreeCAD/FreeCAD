@@ -55,7 +55,7 @@ protected:
     std::vector<Gui::TaskView::TaskWatcher*> Watcher;
 };
 
-}// namespace RobotGui
+}  // namespace RobotGui
 
 
-#endif// ROBOT_WORKBENCH_H
+#endif  // ROBOT_WORKBENCH_H

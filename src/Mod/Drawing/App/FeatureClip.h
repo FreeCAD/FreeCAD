@@ -67,7 +67,7 @@ protected:
 };
 
 
-}// namespace Drawing
+}  // namespace Drawing
 
 
 #endif

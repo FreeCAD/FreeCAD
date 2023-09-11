@@ -54,6 +54,6 @@ public:
 
     static QAccessibleInterface* ifactory(const QString& key, QObject* obj);
 };
-}// namespace SpreadsheetGui
+}  // namespace SpreadsheetGui
 
-#endif// SHEETTABLEVIEW_INTERFACE_H
+#endif  // SHEETTABLEVIEW_INTERFACE_H

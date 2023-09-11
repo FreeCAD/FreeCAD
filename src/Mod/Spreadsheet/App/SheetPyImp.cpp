@@ -45,7 +45,7 @@ std::string SheetPy::representation() const
     return {"<Sheet object>"};
 }
 
-PyObject* SheetPy::PyMake(struct _typeobject*, PyObject*, PyObject*)// Python wrapper
+PyObject* SheetPy::PyMake(struct _typeobject*, PyObject*, PyObject*)  // Python wrapper
 {
     // create a new instance of SheetPy and the Twin object
     return new SheetPy(new Sheet());

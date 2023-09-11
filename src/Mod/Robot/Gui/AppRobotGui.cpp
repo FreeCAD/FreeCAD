@@ -58,7 +58,7 @@ public:
     Module()
         : Py::ExtensionModule<Module>("RobotGui")
     {
-        initialize("This module is the RobotGui module.");// register with Python
+        initialize("This module is the RobotGui module.");  // register with Python
     }
 
 private:
@@ -69,7 +69,7 @@ PyObject* initModule()
     return Base::Interpreter().addModule(new Module);
 }
 
-}// namespace RobotGui
+}  // namespace RobotGui
 
 
 /* Python entry */
