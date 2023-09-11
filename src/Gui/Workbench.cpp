@@ -702,6 +702,7 @@ MenuItem* StdWorkbench::setupMenuBar() const
           << "Std_ViewLoadImage"
           << "Std_SceneInspector"
           << "Std_DependencyGraph"
+          << "Std_ExportDependencyGraph"
           << "Std_ProjectUtil"
           << "Separator"
           << "Std_MeasureDistance"

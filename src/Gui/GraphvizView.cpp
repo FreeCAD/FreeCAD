@@ -441,35 +441,45 @@ QByteArray GraphvizView::exportGraph(const QString& format)
     return dotProc.readAll();
 }
 
-bool GraphvizView::onMsg(const char* pMsg,const char**)
+bool GraphvizView::onMsg(const char* pMsg, const char**)
 {
     if (strcmp("Save",pMsg) == 0 || strcmp("SaveAs",pMsg) == 0) {
         QList< QPair<QString, QString> > formatMap;
+        formatMap << qMakePair(QString::fromLatin1("%1 (*.gv)").arg(tr("Graphviz format")), QString::fromLatin1("gv"));
         formatMap << qMakePair(QString::fromLatin1("%1 (*.png)").arg(tr("PNG format")), QString::fromLatin1("png"));
         formatMap << qMakePair(QString::fromLatin1("%1 (*.bmp)").arg(tr("Bitmap format")), QString::fromLatin1("bmp"));
         formatMap << qMakePair(QString::fromLatin1("%1 (*.gif)").arg(tr("GIF format")), QString::fromLatin1("gif"));
         formatMap << qMakePair(QString::fromLatin1("%1 (*.jpg)").arg(tr("JPG format")), QString::fromLatin1("jpg"));
         formatMap << qMakePair(QString::fromLatin1("%1 (*.svg)").arg(tr("SVG format")), QString::fromLatin1("svg"));
         formatMap << qMakePair(QString::fromLatin1("%1 (*.pdf)").arg(tr("PDF format")), QString::fromLatin1("pdf"));
-      //formatMap << qMakePair(tr("VRML format (*.vrml)"), QString::fromLatin1("vrml"));
 
         QStringList filter;
-        for (const auto & it : formatMap)
+        for (const auto & it : qAsConst(formatMap)) {
             filter << it.first;
+        }
 
         QString selectedFilter;
         QString fn = Gui::FileDialog::getSaveFileName(this, tr("Export graph"), QString(), filter.join(QLatin1String(";;")), &selectedFilter);
         if (!fn.isEmpty()) {
             QString format;
-            for (const auto & it : formatMap) {
+            for (const auto & it : qAsConst(formatMap)) {
                 if (selectedFilter == it.first) {
                     format = it.second;
                     break;
                 }
             }
-            QByteArray buffer = exportGraph(format);
-            if (buffer.isEmpty())
+            QByteArray buffer;
+            if (format == QLatin1String("gv")) {
+                std::stringstream str;
+                doc.exportGraphviz(str);
+                buffer = QByteArray::fromStdString(str.str());
+            }
+            else {
+                buffer = exportGraph(format);
+            }
+            if (buffer.isEmpty()) {
                 return true;
+            }
             QFile file(fn);
             if (file.open(QFile::WriteOnly)) {
                 file.write(buffer);
