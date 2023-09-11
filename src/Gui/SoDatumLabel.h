@@ -77,6 +77,7 @@ public:
     SoSFImage  image;
     SoSFFloat  lineWidth;
     bool       useAntialiasing;
+    SbVec3f textOffset;
 
 protected:
     ~SoDatumLabel() override = default;

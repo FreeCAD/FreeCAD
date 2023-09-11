@@ -97,6 +97,7 @@ SoDatumLabel::SoDatumLabel()
     this->imgWidth = 0;
     this->imgHeight = 0;
     this->glimagevalid = false;
+    this->textOffset = SbVec3f(0.f, 0.f, 0.f);
 }
 
 void SoDatumLabel::drawImage()
@@ -485,7 +486,7 @@ void SoDatumLabel::generateDistancePrimitives(SoAction * action, const SbVec3f& 
     img3 = SbVec3f((img3[0] * c) - (img3[1] * s), (img3[0] * s) + (img3[1] * c), 0.f);
     img4 = SbVec3f((img4[0] * c) - (img4[1] * s), (img4[0] * s) + (img4[1] * c), 0.f);
 
-    SbVec3f textOffset = midpos + normal * length + dir * length2;
+    textOffset = midpos + normal * length + dir * length2;
 
     img1 += textOffset;
     img2 += textOffset;
@@ -539,7 +540,7 @@ void SoDatumLabel::generateDiameterPrimitives(SoAction * action, const SbVec3f& 
     img3 = SbVec3f((img3[0] * c) - (img3[1] * s), (img3[0] * s) + (img3[1] * c), 0.f);
     img4 = SbVec3f((img4[0] * c) - (img4[1] * s), (img4[0] * s) + (img4[1] * c), 0.f);
 
-    SbVec3f textOffset = pos;
+    textOffset = pos;
 
     img1 += textOffset;
     img2 += textOffset;
@@ -585,7 +586,7 @@ void SoDatumLabel::generateAnglePrimitives(SoAction * action, const SbVec3f& p0)
     // p0 - vector for angle intersect
     SbVec3f v0(cos(startangle+range/2),sin(startangle+range/2),0);
 
-    SbVec3f textOffset = p0 + v0 * r;
+    textOffset = p0 + v0 * r;
 
     SbVec3f img1 = SbVec3f(-this->imgWidth / 2, -this->imgHeight / 2, 0.f);
     SbVec3f img2 = SbVec3f(-this->imgWidth / 2,  this->imgHeight / 2, 0.f);
@@ -820,8 +821,6 @@ void SoDatumLabel::GLRender(SoGLRenderAction * action)
 
     // Position for Datum Text Label
     float angle = 0;
-
-    SbVec3f textOffset;
 
     // Get the colour
     const SbColor& t = textColor.getValue();
