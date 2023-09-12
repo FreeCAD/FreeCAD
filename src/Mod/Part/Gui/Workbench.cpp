@@ -122,9 +122,9 @@ Gui::MenuItem* Workbench::setupMenuBar() const
           << bop << join << split << compound
           << "Separator"
           << "Part_Extrude"
-          << "Part_Scale"
           << "Part_Revolve"
           << "Part_Mirror"
+          << "Part_Scale"
           << "Part_Fillet"
           << "Part_Chamfer"
           << "Part_MakeFace"
@@ -182,9 +182,9 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
     Gui::ToolBarItem* tool = new Gui::ToolBarItem(root);
     tool->setCommand("Part tools");
     *tool << "Part_Extrude"
-          << "Part_Scale"
           << "Part_Revolve"
           << "Part_Mirror"
+          << "Part_Scale"
           << "Part_Fillet"
           << "Part_Chamfer"
           << "Part_MakeFace"
