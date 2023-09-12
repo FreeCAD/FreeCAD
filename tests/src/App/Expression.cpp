@@ -1,5 +1,7 @@
 #include "gtest/gtest.h"
 
+#include <tuple>
+
 #include "App/ExpressionParser.h"
 #include "App/ExpressionTokenizer.h"
 
@@ -24,6 +26,29 @@ TEST(Expression, tokenizePi)
     EXPECT_EQ(App::ExpressionTokenizer().perform(QString::fromLatin1("pi ra"), 5), QString::fromLatin1("ra"));
     EXPECT_EQ(App::ExpressionTokenizer().perform(QString::fromLatin1("pi rad"), 6), QString::fromLatin1("rad"));
     EXPECT_EQ(App::ExpressionTokenizer().perform(QString::fromLatin1("pi rad"), 2), QString());
+}
+
+TEST(Expression, tokenizeDocumentProperty)
+{
+    // Arrange
+    std::vector<std::tuple<int, int, std::string>> expectedTokens{
+        { App::ExpressionParser::IDENTIFIER, 0, "myDocName" },
+        { 36, 9, "$" }, // the "46" *might* be dynamic ?
+        { App::ExpressionParser::IDENTIFIER, 10, "myProp" }
+    };
+    std::basic_string<char> srcString("myDocName$myProp");
+
+    // Act
+    std::vector<std::tuple<int, int, std::string>> result =
+        App::ExpressionParser::tokenize(srcString);
+
+    int i = 4;
+
+    // Assert
+    EXPECT_EQ(result.size(), expectedTokens.size());
+    EXPECT_EQ(result[0], expectedTokens[0]);
+    EXPECT_EQ(result[1], expectedTokens[1]);
+    EXPECT_EQ(result[2], expectedTokens[2]);
 }
 
 TEST(Expression, toString)
