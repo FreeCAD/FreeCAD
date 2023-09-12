@@ -51,7 +51,7 @@ class Vector3;
 class Vector2d;
 
 class Placement;
-}// namespace Base
+}  // namespace Base
 
 namespace Part
 {
@@ -62,7 +62,7 @@ namespace Sketcher
 {
 class Constraint;
 class PropertyConstraintList;
-};// namespace Sketcher
+};  // namespace Sketcher
 
 namespace SketcherGui
 {
@@ -138,7 +138,7 @@ public:
     void createEditModeInventorNodes();
 
 private:
-    void rebuildConstraintNodes(const GeoListFacade& geolistfacade);// with specific geometry
+    void rebuildConstraintNodes(const GeoListFacade& geolistfacade);  // with specific geometry
 
     void rebuildConstraintNodes(const GeoListFacade& geolistfacade,
                                 const std::vector<Sketcher::Constraint*> constrlist,
@@ -265,7 +265,7 @@ private:
 };
 
 
-}// namespace SketcherGui
+}  // namespace SketcherGui
 
 
-#endif// SKETCHERGUI_EditModeConstraintCoinManager_H
+#endif  // SKETCHERGUI_EditModeConstraintCoinManager_H

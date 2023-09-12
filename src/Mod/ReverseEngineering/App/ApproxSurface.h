@@ -137,7 +137,7 @@ public:
     virtual void
     SetKnots(TColStd_Array1OfReal& vKnots, TColStd_Array1OfInteger& vMults, int iOrder = 1);
 
-protected:// Member
+protected:  // Member
     // Knot vector
     TColStd_Array1OfReal _vKnotVector;
 
@@ -269,10 +269,10 @@ class ReenExport ParameterCorrection
 public:
     // Constructor
     explicit ParameterCorrection(
-        unsigned usUOrder = 4,      // Order in u-direction (order = degree + 1)
-        unsigned usVOrder = 4,      // Order in v-direction
-        unsigned usUCtrlpoints = 6, // Qty. of the control points in the u-direction
-        unsigned usVCtrlpoints = 6);// Qty. of the control points in the v-direction
+        unsigned usUOrder = 4,        // Order in u-direction (order = degree + 1)
+        unsigned usVOrder = 4,        // Order in v-direction
+        unsigned usUCtrlpoints = 6,   // Qty. of the control points in the u-direction
+        unsigned usVCtrlpoints = 6);  // Qty. of the control points in the v-direction
 
     virtual ~ParameterCorrection()
     {
@@ -351,23 +351,23 @@ public:
     virtual void EnableSmoothing(bool bSmooth = true, double fSmoothInfl = 1.0f);
 
 protected:
-    bool _bGetUVDir;                            //! Determines whether u/v direction is given
-    bool _bSmoothing;                           //! Use smoothing
-    double _fSmoothInfluence;                   //! Influence of smoothing
-    unsigned _usUOrder;                         //! Order in u-direction
-    unsigned _usVOrder;                         //! Order in v-direction
-    unsigned _usUCtrlpoints;                    //! Number of control points in the u-direction
-    unsigned _usVCtrlpoints;                    //! Number of control points in the v-direction
-    Base::Vector3d _clU;                        //! u-direction
-    Base::Vector3d _clV;                        //! v-direction
-    Base::Vector3d _clW;                        //! w-direction (perpendicular to u & v directions)
-    TColgp_Array1OfPnt* _pvcPoints {nullptr};   //! Raw data point list
-    TColgp_Array1OfPnt2d* _pvcUVParam {nullptr};//! Parameter value for the points in the list
-    TColgp_Array2OfPnt _vCtrlPntsOfSurf;        //! Array of control points
-    TColStd_Array1OfReal _vUKnots;   //! Knot vector of the B-spline surface in the u-direction
-    TColStd_Array1OfReal _vVKnots;   //! Knot vector of the B-spline surface in the v-direction
-    TColStd_Array1OfInteger _vUMults;//! Multiplicity of the knots in the knot vector
-    TColStd_Array1OfInteger _vVMults;//! Multiplicity of the knots in the knot vector
+    bool _bGetUVDir;                           //! Determines whether u/v direction is given
+    bool _bSmoothing;                          //! Use smoothing
+    double _fSmoothInfluence;                  //! Influence of smoothing
+    unsigned _usUOrder;                        //! Order in u-direction
+    unsigned _usVOrder;                        //! Order in v-direction
+    unsigned _usUCtrlpoints;                   //! Number of control points in the u-direction
+    unsigned _usVCtrlpoints;                   //! Number of control points in the v-direction
+    Base::Vector3d _clU;                       //! u-direction
+    Base::Vector3d _clV;                       //! v-direction
+    Base::Vector3d _clW;                       //! w-direction (perpendicular to u & v directions)
+    TColgp_Array1OfPnt* _pvcPoints {nullptr};  //! Raw data point list
+    TColgp_Array1OfPnt2d* _pvcUVParam {nullptr};  //! Parameter value for the points in the list
+    TColgp_Array2OfPnt _vCtrlPntsOfSurf;          //! Array of control points
+    TColStd_Array1OfReal _vUKnots;     //! Knot vector of the B-spline surface in the u-direction
+    TColStd_Array1OfReal _vVKnots;     //! Knot vector of the B-spline surface in the v-direction
+    TColStd_Array1OfInteger _vUMults;  //! Multiplicity of the knots in the knot vector
+    TColStd_Array1OfInteger _vVMults;  //! Multiplicity of the knots in the knot vector
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
@@ -385,10 +385,10 @@ class ReenExport BSplineParameterCorrection: public ParameterCorrection
 public:
     // Constructor
     explicit BSplineParameterCorrection(
-        unsigned usUOrder = 4,      // Order in u-direction (order = degree + 1)
-        unsigned usVOrder = 4,      // Order in the v-direction
-        unsigned usUCtrlpoints = 6, // Qty. of the control points in u-direction
-        unsigned usVCtrlpoints = 6);// Qty. of the control points in v-direction
+        unsigned usUOrder = 4,        // Order in u-direction (order = degree + 1)
+        unsigned usVOrder = 4,        // Order in the v-direction
+        unsigned usUCtrlpoints = 6,   // Qty. of the control points in u-direction
+        unsigned usVCtrlpoints = 6);  // Qty. of the control points in v-direction
 
     ~BSplineParameterCorrection() override = default;
 
@@ -491,14 +491,14 @@ protected:
     virtual void CalcThirdSmoothMatrix(Base::SequencerLauncher&);
 
 protected:
-    BSplineBasis _clUSpline;    //! B-spline basic function in the u-direction
-    BSplineBasis _clVSpline;    //! B-spline basic function in the v-direction
-    math_Matrix _clSmoothMatrix;//! Matrix of smoothing functionals
-    math_Matrix _clFirstMatrix; //! Matrix of the 1st smoothing functionals
-    math_Matrix _clSecondMatrix;//! Matrix of the 2nd smoothing functionals
-    math_Matrix _clThirdMatrix; //! Matrix of the 3rd smoothing functionals
+    BSplineBasis _clUSpline;      //! B-spline basic function in the u-direction
+    BSplineBasis _clVSpline;      //! B-spline basic function in the v-direction
+    math_Matrix _clSmoothMatrix;  //! Matrix of smoothing functionals
+    math_Matrix _clFirstMatrix;   //! Matrix of the 1st smoothing functionals
+    math_Matrix _clSecondMatrix;  //! Matrix of the 2nd smoothing functionals
+    math_Matrix _clThirdMatrix;   //! Matrix of the 3rd smoothing functionals
 };
 
-}// namespace Reen
+}  // namespace Reen
 
-#endif// REEN_APPROXSURFACE_H
+#endif  // REEN_APPROXSURFACE_H

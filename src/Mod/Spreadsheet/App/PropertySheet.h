@@ -330,5 +330,5 @@ private:
     bool restoring = false;
 };
 
-}// namespace Spreadsheet
-#endif// PROPERTYSHEET_H
+}  // namespace Spreadsheet
+#endif  // PROPERTYSHEET_H

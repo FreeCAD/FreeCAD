@@ -96,9 +96,9 @@ App::DocumentObjectExecReturn* Sewing::execute()
             }
         }
 
-        builder.Perform();// Perform Sewing
+        builder.Perform();  // Perform Sewing
 
-        TopoDS_Shape aShape = builder.SewedShape();// Get Shape
+        TopoDS_Shape aShape = builder.SewedShape();  // Get Shape
         if (aShape.IsNull()) {
             return new App::DocumentObjectExecReturn("Resulting shape is null");
         }

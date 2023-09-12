@@ -97,7 +97,7 @@ TEST_F(WriterTest, endCharStreamTwice)
     _writer.endCharStream();
 
     // Act
-    _writer.endCharStream();// Doesn't throw, or do anything at all
+    _writer.endCharStream();  // Doesn't throw, or do anything at all
 
     // Assert
     EXPECT_EQ("<![CDATA[]]>", _writer.getString());

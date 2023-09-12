@@ -38,7 +38,8 @@ std::string PropertyColumnWidthsPy::representation() const
     return {"<PropertyColumnWidths object>"};
 }
 
-PyObject* PropertyColumnWidthsPy::PyMake(struct _typeobject*, PyObject*, PyObject*)// Python wrapper
+PyObject*
+PropertyColumnWidthsPy::PyMake(struct _typeobject*, PyObject*, PyObject*)  // Python wrapper
 {
     // create a new instance of PropertyColumnWidthsPy and the Twin object
     return new PropertyColumnWidthsPy(new PropertyColumnWidths);

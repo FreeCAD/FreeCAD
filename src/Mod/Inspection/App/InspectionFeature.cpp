@@ -283,7 +283,7 @@ protected:
 private:
     Base::Matrix4D _transform;
 };
-}// namespace Inspection
+}  // namespace Inspection
 
 InspectNominalMesh::InspectNominalMesh(const Mesh::MeshObject& rMesh, float offset)
     : _mesh(rMesh.getKernel())
@@ -321,7 +321,7 @@ InspectNominalMesh::~InspectNominalMesh()
 float InspectNominalMesh::getDistance(const Base::Vector3f& point) const
 {
     if (!_box.IsInBox(point)) {
-        return FLT_MAX;// must be inside bbox
+        return FLT_MAX;  // must be inside bbox
     }
 
     std::vector<unsigned long> indices;
@@ -398,11 +398,11 @@ InspectNominalFastMesh::~InspectNominalFastMesh()
 float InspectNominalFastMesh::getDistance(const Base::Vector3f& point) const
 {
     if (!_box.IsInBox(point)) {
-        return FLT_MAX;// must be inside bbox
+        return FLT_MAX;  // must be inside bbox
     }
 
     std::set<unsigned long> indices;
-#if 0// a point in a neighbour grid can be nearer
+#if 0  // a point in a neighbour grid can be nearer
     std::vector<unsigned long> elements;
     _pGrid->GetElements(point, elements);
     indices.insert(elements.begin(), elements.end());
@@ -444,7 +444,7 @@ float InspectNominalFastMesh::getDistance(const Base::Vector3f& point) const
 InspectNominalPoints::InspectNominalPoints(const Points::PointKernel& Kernel, float /*offset*/)
     : _rKernel(Kernel)
 {
-    int uGridPerAxis = 50;// totally 125.000 grid elements
+    int uGridPerAxis = 50;  // totally 125.000 grid elements
     this->_pGrid = new Points::PointsGrid(Kernel, uGridPerAxis);
 }
 
@@ -763,7 +763,7 @@ public:
     int m_numv {0};
     double m_sumsq {0.0};
 };
-}// namespace Inspection
+}  // namespace Inspection
 
 PROPERTY_SOURCE(Inspection::Feature, App::DocumentObject)
 
@@ -849,7 +849,7 @@ App::DocumentObjectExecReturn* Feature::execute()
     // clang-format on
 
 #if 0
-#if 1// test with some huge data sets
+#if 1  // test with some huge data sets
     std::vector<unsigned long> index(actual->countPoints());
     std::generate(index.begin(), index.end(), Base::iotaGen<unsigned long>(0));
     DistanceInspection check(this->SearchRadius.getValue(), actual, inspectNominal);

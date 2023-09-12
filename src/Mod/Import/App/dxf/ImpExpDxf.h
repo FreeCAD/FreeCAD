@@ -66,8 +66,8 @@ public:
     void AddGraphics() const override;
 
     // FreeCAD-specific functions
-    void AddObject(Part::TopoShape* shape);// Called by OnRead functions to add Part objects
-    std::string Deformat(const char* text);// Removes DXF formatting from texts
+    void AddObject(Part::TopoShape* shape);  // Called by OnRead functions to add Part objects
+    std::string Deformat(const char* text);  // Removes DXF formatting from texts
 
     std::string getOptionSource()
     {
@@ -146,7 +146,7 @@ protected:
     void exportBSpline(BRepAdaptor_Curve& c);
     void exportBCurve(BRepAdaptor_Curve& c);
     void exportLine(BRepAdaptor_Curve& c);
-    void exportLWPoly(BRepAdaptor_Curve& c);// LWPolyline not supported in R12?
+    void exportLWPoly(BRepAdaptor_Curve& c);  // LWPolyline not supported in R12?
     void exportPolyline(BRepAdaptor_Curve& c);
 
     //        std::string m_optionSource;
@@ -155,6 +155,6 @@ protected:
     bool optionExpPoints;
 };
 
-}// namespace Import
+}  // namespace Import
 
-#endif// IMPEXPDXF_H
+#endif  // IMPEXPDXF_H

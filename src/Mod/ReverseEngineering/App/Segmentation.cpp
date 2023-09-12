@@ -156,7 +156,7 @@ void Segmentation::perform(int ksearch)
     extract.filter(*cloud_cylinder);
 }
 
-#endif// HAVE_PCL_SEGMENTATION
+#endif  // HAVE_PCL_SEGMENTATION
 
 // ----------------------------------------------------------------------------
 
@@ -212,4 +212,4 @@ void NormalEstimation::perform(std::vector<Base::Vector3d>& normals)
     }
 }
 
-#endif// HAVE_PCL_FILTERS
+#endif  // HAVE_PCL_FILTERS

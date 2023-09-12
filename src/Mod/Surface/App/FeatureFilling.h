@@ -42,29 +42,29 @@ public:
 
     // Properties of Curves
     App::PropertyLinkSubList
-        BoundaryEdges;// Boundary Edges (C0 is required for edges without a corresponding face)
-    App::PropertyStringList BoundaryFaces; // Boundary Faces (C0, G1 and G2 are possible)
-    App::PropertyIntegerList BoundaryOrder;// Order of constraint on border faces
-    App::PropertyLinkSubList UnboundEdges; // Unbound constraint edges (C0 is required for edges
-                                           // without a corresponding face)
-    App::PropertyStringList UnboundFaces;  // Unbound constraint faces (C0, G1 and G2 are possible)
-    App::PropertyIntegerList UnboundOrder; // Order of constraint on curve faces
-    App::PropertyLinkSubList FreeFaces;    // Free constraint faces
-    App::PropertyIntegerList FreeOrder;    // Order of constraint on free faces
-    App::PropertyLinkSubList Points;       // Constraint Points (on Surface)
-    App::PropertyLinkSub InitialFace;      // Initial Face to use
+        BoundaryEdges;  // Boundary Edges (C0 is required for edges without a corresponding face)
+    App::PropertyStringList BoundaryFaces;   // Boundary Faces (C0, G1 and G2 are possible)
+    App::PropertyIntegerList BoundaryOrder;  // Order of constraint on border faces
+    App::PropertyLinkSubList UnboundEdges;   // Unbound constraint edges (C0 is required for edges
+                                             // without a corresponding face)
+    App::PropertyStringList UnboundFaces;   // Unbound constraint faces (C0, G1 and G2 are possible)
+    App::PropertyIntegerList UnboundOrder;  // Order of constraint on curve faces
+    App::PropertyLinkSubList FreeFaces;     // Free constraint faces
+    App::PropertyIntegerList FreeOrder;     // Order of constraint on free faces
+    App::PropertyLinkSubList Points;        // Constraint Points (on Surface)
+    App::PropertyLinkSub InitialFace;       // Initial Face to use
 
     // Algorithm Variables
-    App::PropertyInteger Degree;         // Starting degree
-    App::PropertyInteger PointsOnCurve;  // Number of points on an edge for constraint
-    App::PropertyInteger Iterations;     // Number of iterations
-    App::PropertyBool Anisotropy;        // Anisotropy
-    App::PropertyFloat Tolerance2d;      // 2D Tolerance
-    App::PropertyFloat Tolerance3d;      // 3D Tolerance
-    App::PropertyFloat TolAngular;       // G1 tolerance
-    App::PropertyFloat TolCurvature;     // G2 tolerance
-    App::PropertyInteger MaximumDegree;  // Maximum curve degree
-    App::PropertyInteger MaximumSegments;// Maximum number of segments
+    App::PropertyInteger Degree;           // Starting degree
+    App::PropertyInteger PointsOnCurve;    // Number of points on an edge for constraint
+    App::PropertyInteger Iterations;       // Number of iterations
+    App::PropertyBool Anisotropy;          // Anisotropy
+    App::PropertyFloat Tolerance2d;        // 2D Tolerance
+    App::PropertyFloat Tolerance3d;        // 3D Tolerance
+    App::PropertyFloat TolAngular;         // G1 tolerance
+    App::PropertyFloat TolCurvature;       // G2 tolerance
+    App::PropertyInteger MaximumDegree;    // Maximum curve degree
+    App::PropertyInteger MaximumSegments;  // Maximum number of segments
 
     // recalculate the feature
     App::DocumentObjectExecReturn* execute() override;
@@ -87,6 +87,6 @@ private:
     void addConstraints(BRepFill_Filling& builder, const App::PropertyLinkSubList& points);
 };
 
-}// Namespace Surface
+}  // Namespace Surface
 
 #endif

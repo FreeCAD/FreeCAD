@@ -83,6 +83,6 @@ private:
     double searchRadius;
 };
 
-}// namespace Reen
+}  // namespace Reen
 
-#endif// REEN_SEGMENTATION_H
+#endif  // REEN_SEGMENTATION_H

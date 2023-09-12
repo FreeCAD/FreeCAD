@@ -46,7 +46,7 @@ public:
     Module()
         : Py::ExtensionModule<Module>("Surface")
     {
-        initialize("This module is the Surface module.");// register with Python
+        initialize("This module is the Surface module.");  // register with Python
     }
 
 private:
@@ -57,7 +57,7 @@ PyObject* initModule()
     return Base::Interpreter().addModule(new Module);
 }
 
-}// namespace Surface
+}  // namespace Surface
 
 /* Python entry */
 PyMOD_INIT_FUNC(Surface)

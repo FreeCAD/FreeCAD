@@ -52,7 +52,7 @@ public:
     Module()
         : Py::ExtensionModule<Module>("StartGui")
     {
-        initialize("This module is the StartGui module.");// register with Python
+        initialize("This module is the StartGui module.");  // register with Python
     }
 
 private:
@@ -63,7 +63,7 @@ PyObject* initModule()
     return Base::Interpreter().addModule(new Module);
 }
 
-}// namespace StartGui
+}  // namespace StartGui
 
 
 /* Python entry */

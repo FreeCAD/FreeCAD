@@ -50,7 +50,7 @@ public:
     Module()
         : Py::ExtensionModule<Module>("ReverseEngineeringGui")
     {
-        initialize("This module is the ReverseEngineeringGui module.");// register with Python
+        initialize("This module is the ReverseEngineeringGui module.");  // register with Python
     }
 
 private:
@@ -61,7 +61,7 @@ PyObject* initModule()
     return Base::Interpreter().addModule(new Module);
 }
 
-}// namespace ReverseEngineeringGui
+}  // namespace ReverseEngineeringGui
 
 
 /* Python entry */

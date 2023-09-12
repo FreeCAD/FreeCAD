@@ -38,7 +38,7 @@ namespace Base
 class Unit;
 class XMLReader;
 class Writer;
-}// namespace Base
+}  // namespace Base
 
 namespace Spreadsheet
 {
@@ -211,6 +211,6 @@ private:
     friend class PropertySheet;
 };
 
-}// namespace Spreadsheet
+}  // namespace Spreadsheet
 
-#endif// CELL_H
+#endif  // CELL_H

@@ -41,7 +41,7 @@ namespace Gui
 {
 class DocumentObject;
 class Document;
-}// namespace Gui
+}  // namespace Gui
 
 namespace Part
 {
@@ -51,7 +51,7 @@ namespace Sketcher
 {
 enum class PointPos : int;
 class SketchObject;
-}// namespace Sketcher
+}  // namespace Sketcher
 
 namespace SketcherGui
 {
@@ -178,7 +178,7 @@ bool useSystemDecimals();
 std::string lengthToDisplayFormat(double value, int digits);
 std::string angleToDisplayFormat(double value, int digits);
 
-}// namespace SketcherGui
+}  // namespace SketcherGui
 
 /// converts a 2D vector into a 3D vector in the XY plane
 inline Base::Vector3d toVector3d(const Base::Vector2d& vector2d)
@@ -241,4 +241,4 @@ void setSafeGeomLayerId(T geom, int layerindex)
     vpext->setVisualLayerId(layerindex);
 }
 
-#endif// SKETCHERGUI_Recompute_H
+#endif  // SKETCHERGUI_Recompute_H

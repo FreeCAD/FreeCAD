@@ -71,7 +71,7 @@ Handle(Geom_BezierCurve) BlendCurve::compute()
         }
 
         Handle(Geom_BezierCurve) curve;
-        if (num_poles > (curve->MaxDegree() + 1)) {// use Geom_BezierCurve max degree
+        if (num_poles > (curve->MaxDegree() + 1)) {  // use Geom_BezierCurve max degree
             Standard_Failure::Raise("number of constraints exceeds bezier curve capacity");
         }
 

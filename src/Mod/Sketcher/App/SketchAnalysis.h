@@ -187,6 +187,6 @@ protected:
     bool checkVertical(Base::Vector3d dir, double angleprecision);
 };
 
-}// namespace Sketcher
+}  // namespace Sketcher
 
-#endif// SKETCHER_SKETCHANALYSIS_H
+#endif  // SKETCHER_SKETCHANALYSIS_H

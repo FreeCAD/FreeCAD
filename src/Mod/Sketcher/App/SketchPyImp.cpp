@@ -42,7 +42,7 @@ std::string SketchPy::representation() const
     return std::string("<Sketch object>");
 }
 
-PyObject* SketchPy::PyMake(struct _typeobject*, PyObject*, PyObject*)// Python wrapper
+PyObject* SketchPy::PyMake(struct _typeobject*, PyObject*, PyObject*)  // Python wrapper
 {
     // create a new instance of SketchPy and the Twin object
     return new SketchPy(new Sketch());

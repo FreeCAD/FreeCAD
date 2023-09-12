@@ -53,6 +53,6 @@ private:
     std::unique_ptr<Ui_DlgSettings> ui;
 };
 
-}// namespace SpreadsheetGui
+}  // namespace SpreadsheetGui
 
-#endif// SPREADSHEETGUI_DLGSETTINGSIMP_H
+#endif  // SPREADSHEETGUI_DLGSETTINGSIMP_H

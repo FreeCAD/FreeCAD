@@ -29,7 +29,7 @@ TEST(Unit, TestTypeString)
     EXPECT_EQ(toString(Base::Unit::Acceleration), "Acceleration");
     EXPECT_EQ(toString(Base::Unit::AmountOfSubstance), "AmountOfSubstance");
     EXPECT_EQ(toString(Base::Unit::Angle), "Angle");
-    EXPECT_EQ(toString(Base::Unit::AngleOfFriction), "Angle");// same unit as Angle
+    EXPECT_EQ(toString(Base::Unit::AngleOfFriction), "Angle");  // same unit as Angle
     EXPECT_EQ(toString(Base::Unit::Area), "Area");
     EXPECT_EQ(toString(Base::Unit::CurrentDensity), "CurrentDensity");
     EXPECT_EQ(toString(Base::Unit::Density), "Density");
@@ -56,21 +56,21 @@ TEST(Unit, TestTypeString)
     EXPECT_EQ(toString(Base::Unit::MagneticFlux), "MagneticFlux");
     EXPECT_EQ(toString(Base::Unit::MagneticFluxDensity), "MagneticFluxDensity");
     EXPECT_EQ(toString(Base::Unit::Magnetization),
-              "MagneticFieldStrength");// same as MagneticFieldStrength
+              "MagneticFieldStrength");  // same as MagneticFieldStrength
     EXPECT_EQ(toString(Base::Unit::Mass), "Mass");
     EXPECT_EQ(toString(Base::Unit::Pressure), "Pressure");
     EXPECT_EQ(toString(Base::Unit::Power), "Power");
-    EXPECT_EQ(toString(Base::Unit::ShearModulus), "Pressure");// same as Pressure
+    EXPECT_EQ(toString(Base::Unit::ShearModulus), "Pressure");  // same as Pressure
     EXPECT_EQ(toString(Base::Unit::SpecificEnergy), "SpecificEnergy");
     EXPECT_EQ(toString(Base::Unit::SpecificHeat), "SpecificHeat");
     EXPECT_EQ(toString(Base::Unit::Stiffness), "Stiffness");
-    EXPECT_EQ(toString(Base::Unit::Stress), "Pressure");// same as Pressure
+    EXPECT_EQ(toString(Base::Unit::Stress), "Pressure");  // same as Pressure
     EXPECT_EQ(toString(Base::Unit::Temperature), "Temperature");
     EXPECT_EQ(toString(Base::Unit::ThermalConductivity), "ThermalConductivity");
     EXPECT_EQ(toString(Base::Unit::ThermalExpansionCoefficient), "ThermalExpansionCoefficient");
     EXPECT_EQ(toString(Base::Unit::ThermalTransferCoefficient), "ThermalTransferCoefficient");
     EXPECT_EQ(toString(Base::Unit::TimeSpan), "TimeSpan");
-    EXPECT_EQ(toString(Base::Unit::UltimateTensileStrength), "Pressure");// same as Pressure
+    EXPECT_EQ(toString(Base::Unit::UltimateTensileStrength), "Pressure");  // same as Pressure
     EXPECT_EQ(toString(Base::Unit::VacuumPermittivity), "VacuumPermittivity");
     EXPECT_EQ(toString(Base::Unit::Velocity), "Velocity");
     EXPECT_EQ(toString(Base::Unit::Volume), "Volume");
@@ -78,8 +78,8 @@ TEST(Unit, TestTypeString)
     EXPECT_EQ(toString(Base::Unit::VolumetricThermalExpansionCoefficient),
               "ThermalExpansionCoefficient");
     EXPECT_EQ(toString(Base::Unit::Work), "Work");
-    EXPECT_EQ(toString(Base::Unit::YieldStrength), "Pressure");// same as Pressure
-    EXPECT_EQ(toString(Base::Unit::YoungsModulus), "Pressure");// same unit as Pressure
+    EXPECT_EQ(toString(Base::Unit::YieldStrength), "Pressure");  // same as Pressure
+    EXPECT_EQ(toString(Base::Unit::YoungsModulus), "Pressure");  // same unit as Pressure
 }
 TEST(Unit, strings)
 {

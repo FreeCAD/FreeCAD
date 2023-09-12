@@ -105,7 +105,7 @@ App::DocumentObjectExecReturn* TrajectoryDressUpObject::execute()
                 wpt.Cont = false;
                 break;
             default:
-                assert(0);// must not happen!
+                assert(0);  // must not happen!
         }
         switch (AddType.getValue()) {
                 // do nothing
@@ -128,7 +128,7 @@ App::DocumentObjectExecReturn* TrajectoryDressUpObject::execute()
                 wpt.EndPos = wpt.EndPos * PosAdd.getValue();
                 break;
             default:
-                assert(0);// must not happen!
+                assert(0);  // must not happen!
         }
 
         result.addWaypoint(wpt);

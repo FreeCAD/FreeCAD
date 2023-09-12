@@ -67,6 +67,6 @@ private:
     QColor negativeFgColor;
 };
 
-}// namespace SpreadsheetGui
+}  // namespace SpreadsheetGui
 
-#endif// SHEETMODEL_H
+#endif  // SHEETMODEL_H

@@ -67,7 +67,7 @@ bool operator==(VisualLayer const& lhs, VisualLayer const& rhs)
         && (lhs.visible == rhs.visible);
 }
 
-}// namespace SketcherGui
+}  // namespace SketcherGui
 
 
-#endif// SKETCHERGUI_VisualLayer_H
+#endif  // SKETCHERGUI_VisualLayer_H

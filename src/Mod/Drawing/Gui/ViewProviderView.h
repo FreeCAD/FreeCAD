@@ -98,7 +98,7 @@ public:
     //@}
 };
 
-}// namespace DrawingGui
+}  // namespace DrawingGui
 
 
-#endif// DRAWINGGUI_VIEWPROVIDERVIEW_H
+#endif  // DRAWINGGUI_VIEWPROVIDERVIEW_H

@@ -897,7 +897,7 @@ void SheetTableView::finishEditWithMove(int keyPressed,
 
         case Qt::Key_Left:
             if (targetColumn == 0) {
-                break;// Nothing to do, we're already in the first column
+                break;  // Nothing to do, we're already in the first column
             }
             if (modifiers == Qt::NoModifier || modifiers == Qt::ShiftModifier) {
                 targetColumn--;
@@ -907,13 +907,14 @@ void SheetTableView::finishEditWithMove(int keyPressed,
                 scanForRegionBoundary(targetRow, targetColumn, 0, -1);
             }
             else {
-                targetColumn--;// Unrecognized modifier combination: default to just moving one cell
+                targetColumn--;  // Unrecognized modifier combination: default to just moving one
+                                 // cell
             }
             tabCounter = 0;
             break;
         case Qt::Key_Right:
             if (targetColumn >= this->model()->columnCount() - 1) {
-                break;// Nothing to do, we're already in the last column
+                break;  // Nothing to do, we're already in the last column
             }
             if (modifiers == Qt::NoModifier || modifiers == Qt::ShiftModifier) {
                 targetColumn += colSpan;
@@ -924,13 +925,13 @@ void SheetTableView::finishEditWithMove(int keyPressed,
             }
             else {
                 targetColumn +=
-                    colSpan;// Unrecognized modifier combination: default to just moving one cell
+                    colSpan;  // Unrecognized modifier combination: default to just moving one cell
             }
             tabCounter = 0;
             break;
         case Qt::Key_Up:
             if (targetRow == 0) {
-                break;// Nothing to do, we're already in the first column
+                break;  // Nothing to do, we're already in the first column
             }
             if (modifiers == Qt::NoModifier || modifiers == Qt::ShiftModifier) {
                 targetRow--;
@@ -940,13 +941,13 @@ void SheetTableView::finishEditWithMove(int keyPressed,
                 scanForRegionBoundary(targetRow, targetColumn, -1, 0);
             }
             else {
-                targetRow--;// Unrecognized modifier combination: default to just moving one cell
+                targetRow--;  // Unrecognized modifier combination: default to just moving one cell
             }
             tabCounter = 0;
             break;
         case Qt::Key_Down:
             if (targetRow >= this->model()->rowCount() - 1) {
-                break;// Nothing to do, we're already in the last row
+                break;  // Nothing to do, we're already in the last row
             }
             if (modifiers == Qt::NoModifier || modifiers == Qt::ShiftModifier) {
                 targetRow += rowSpan;
@@ -957,7 +958,7 @@ void SheetTableView::finishEditWithMove(int keyPressed,
             }
             else {
                 targetRow +=
-                    rowSpan;// Unrecognized modifier combination: default to just moving one cell
+                    rowSpan;  // Unrecognized modifier combination: default to just moving one cell
             }
             tabCounter = 0;
             break;

@@ -59,7 +59,7 @@ public:
 
 using StructuredCustom = App::FeatureCustomT<Structured>;
 
-}// namespace Points
+}  // namespace Points
 
 
 #endif

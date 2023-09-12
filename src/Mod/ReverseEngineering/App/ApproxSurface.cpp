@@ -147,7 +147,7 @@ int BSplineBasis::FindSpan(double fParam)
 
     int low = _iOrder - 1;
     int high = n + 1;
-    int mid = (low + high) / 2;// Binary search
+    int mid = (low + high) / 2;  // Binary search
 
     while (fParam < _vKnotVector(mid) || fParam >= _vKnotVector(mid + 1)) {
         if (fParam < _vKnotVector(mid)) {
@@ -355,7 +355,7 @@ void BSplineBasis::DerivativesOfBasisFunction(int iIndex,
             }
         }
 
-        Derivat(k) = ND(0);// kth derivative
+        Derivat(k) = ND(0);  // kth derivative
     }
 }
 
@@ -448,7 +448,7 @@ double BSplineBasis::DerivativeOfBasisFunction(int iIndex, int iMaxDer, double f
         }
     }
 
-    return ND(0);// iMax-th derivative
+    return ND(0);  // iMax-th derivative
 }
 
 double BSplineBasis::GetIntegralOfProductOfBSplines(int iIdx1, int iIdx2, int iOrd1, int iOrd2)
@@ -825,7 +825,7 @@ Handle(Geom_BSplineSurface) ParameterCorrection::CreateSurface(const TColgp_Arra
     _pvcUVParam = new TColgp_Array1OfPnt2d(points.Lower(), points.Upper());
 
     if (_usUCtrlpoints * _usVCtrlpoints > static_cast<unsigned>(_pvcPoints->Length())) {
-        return nullptr;// LGS under-determined
+        return nullptr;  // LGS under-determined
     }
     if (!DoInitialParameterCorrection(fSizeFactor)) {
         return nullptr;
@@ -1134,7 +1134,7 @@ public:
 private:
     const math_Matrix& mat;
 };
-}// namespace Reen
+}  // namespace Reen
 
 bool BSplineParameterCorrection::SolveWithSmoothing(double fWeight)
 {
@@ -1197,7 +1197,7 @@ bool BSplineParameterCorrection::SolveWithSmoothing(double fWeight)
             MTM(m, n) = MTM(n, m) = Mm * M.Col(n);
         }
     }
-#else// multi-threaded
+#else  // multi-threaded
     std::vector<int> columns(ulDim);
     std::generate(columns.begin(), columns.end(), Base::iotaGen<int>(0));
     ScalarProduct scalar(M);

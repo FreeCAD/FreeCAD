@@ -94,7 +94,7 @@ private:
 
 using ViewProviderSheetPython = Gui::ViewProviderPythonFeatureT<ViewProviderSheet>;
 
-}// namespace SpreadsheetGui
+}  // namespace SpreadsheetGui
 
 
-#endif// SPREADSHEET_ViewProviderSpreadsheet_H
+#endif  // SPREADSHEET_ViewProviderSpreadsheet_H

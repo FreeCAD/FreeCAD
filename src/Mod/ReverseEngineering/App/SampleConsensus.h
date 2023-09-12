@@ -59,6 +59,6 @@ private:
     const std::vector<Base::Vector3d>& myNormals;
 };
 
-}// namespace Reen
+}  // namespace Reen
 
-#endif// REEN_SAMPLECONSENSUS_H
+#endif  // REEN_SAMPLECONSENSUS_H

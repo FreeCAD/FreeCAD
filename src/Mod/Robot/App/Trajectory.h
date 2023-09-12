@@ -91,7 +91,7 @@ protected:
     KDL::Trajectory_Composite* pcTrajectory {nullptr};
 };
 
-}// namespace Robot
+}  // namespace Robot
 
 
-#endif// PART_TOPOSHAPE_H
+#endif  // PART_TOPOSHAPE_H

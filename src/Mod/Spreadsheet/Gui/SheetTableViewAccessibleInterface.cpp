@@ -87,4 +87,4 @@ QAccessibleInterface* SheetTableViewAccessibleInterface::ifactory(const QString&
     }
     return nullptr;
 }
-}// namespace SpreadsheetGui
+}  // namespace SpreadsheetGui

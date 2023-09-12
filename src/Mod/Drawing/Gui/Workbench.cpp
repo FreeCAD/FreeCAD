@@ -30,7 +30,7 @@
 
 using namespace DrawingGui;
 
-#if 0// needed for Qt's lupdate utility
+#if 0  // needed for Qt's lupdate utility
     qApp->translate("Workbench", "Drawing");
 #endif
 

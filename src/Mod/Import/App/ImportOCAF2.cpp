@@ -22,7 +22,7 @@
 
 #include "PreCompiled.h"
 #if defined(__MINGW32__)
-#define WNT// avoid conflict with GUID
+#define WNT  // avoid conflict with GUID
 #endif
 #ifndef _PreComp_
 #include <Interface_Static.hxx>
@@ -1071,7 +1071,7 @@ static Standard_Boolean FindSHUO(const TDF_LabelSequence& theLabels,
         // check for any upper_usage
         ::XCAFDoc_ShapeTool::GetSHUOUpperUsage(anSHUO->Label(), aUpLabels);
         if (aUpLabels.Length() > 0) {
-            continue;// reject if there is one
+            continue;  // reject if there is one
         }
         int j = 2;
         for (; anSHUO->NbChildren(); ++j) {

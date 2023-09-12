@@ -63,7 +63,7 @@ private:
     Gui::TaskView::TaskBox* taskbox;
 };
 
-}// namespace DrawingGui
+}  // namespace DrawingGui
 
 
-#endif// DRAWINGGUI_TASKDIALOG
+#endif  // DRAWINGGUI_TASKDIALOG

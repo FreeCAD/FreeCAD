@@ -114,9 +114,9 @@ void SurfaceTriangulation::perform(int ksearch)
     gp3.setSearchRadius(searchRadius);
     gp3.setMu(mu);
     gp3.setMaximumNearestNeighbors(100);
-    gp3.setMaximumSurfaceAngle(M_PI / 4);// 45 degrees
-    gp3.setMinimumAngle(M_PI / 18);      // 10 degrees
-    gp3.setMaximumAngle(2 * M_PI / 3);   // 120 degrees
+    gp3.setMaximumSurfaceAngle(M_PI / 4);  // 45 degrees
+    gp3.setMinimumAngle(M_PI / 18);        // 10 degrees
+    gp3.setMaximumAngle(2 * M_PI / 3);     // 120 degrees
     gp3.setNormalConsistency(false);
     gp3.setConsistentVertexOrdering(true);
 
@@ -171,9 +171,9 @@ void SurfaceTriangulation::perform(const std::vector<Base::Vector3f>& normals)
     gp3.setSearchRadius(searchRadius);
     gp3.setMu(mu);
     gp3.setMaximumNearestNeighbors(100);
-    gp3.setMaximumSurfaceAngle(M_PI / 4);// 45 degrees
-    gp3.setMinimumAngle(M_PI / 18);      // 10 degrees
-    gp3.setMaximumAngle(2 * M_PI / 3);   // 120 degrees
+    gp3.setMaximumSurfaceAngle(M_PI / 4);  // 45 degrees
+    gp3.setMinimumAngle(M_PI / 18);        // 10 degrees
+    gp3.setMaximumAngle(2 * M_PI / 3);     // 120 degrees
     gp3.setNormalConsistency(true);
     gp3.setConsistentVertexOrdering(true);
 
@@ -785,4 +785,4 @@ void MeshConversion::convert(const pcl::PolygonMesh& pclMesh, Mesh::MeshObject& 
     meshObject.harmonizeNormals();
 }
 
-#endif// HAVE_PCL_SURFACE
+#endif  // HAVE_PCL_SURFACE

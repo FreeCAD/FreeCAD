@@ -11,9 +11,9 @@
 #define MAX_LOADSTRING 100
 
 // Global Variables:
-HINSTANCE hInst;                    // current instance
-TCHAR szTitle[MAX_LOADSTRING];      // The title bar text
-TCHAR szWindowClass[MAX_LOADSTRING];// the main window class name
+HINSTANCE hInst;                      // current instance
+TCHAR szTitle[MAX_LOADSTRING];        // The title bar text
+TCHAR szWindowClass[MAX_LOADSTRING];  // the main window class name
 
 // Forward declarations of functions included in this code module:
 ATOM MyRegisterClass(HINSTANCE hInstance);
@@ -106,7 +106,7 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 {
     HWND hWnd;
 
-    hInst = hInstance;// Store instance handle in our global variable
+    hInst = hInstance;  // Store instance handle in our global variable
 
     hWnd = CreateWindow(szWindowClass,
                         szTitle,

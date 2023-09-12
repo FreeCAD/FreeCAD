@@ -49,6 +49,6 @@ public:
     }
 };
 
-}// Namespace Surface
+}  // Namespace Surface
 
 #endif

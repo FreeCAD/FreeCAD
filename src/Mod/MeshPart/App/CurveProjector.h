@@ -38,7 +38,7 @@ namespace MeshCore
 class MeshKernel;
 class MeshGeomFacet;
 class MeshFacetGrid;
-}// namespace MeshCore
+}  // namespace MeshCore
 
 using MeshCore::MeshGeomFacet;
 using MeshCore::MeshKernel;
@@ -255,6 +255,6 @@ private:
     const MeshKernel& _rcMesh;
 };
 
-}// namespace MeshPart
+}  // namespace MeshPart
 
 #endif

@@ -38,7 +38,7 @@ namespace MeshCore
 {
 class MeshKernel;
 class MeshGrid;
-}// namespace MeshCore
+}  // namespace MeshCore
 
 namespace Mesh
 {
@@ -287,7 +287,7 @@ public:
     }
 };
 
-}// namespace Inspection
+}  // namespace Inspection
 
 
-#endif// INSPECTION_FEATURE_H
+#endif  // INSPECTION_FEATURE_H

@@ -66,7 +66,7 @@ protected:
 using FeatureViewSymbolPython = App::FeaturePythonT<FeatureViewSymbol>;
 
 
-}// namespace Drawing
+}  // namespace Drawing
 
 
 #endif

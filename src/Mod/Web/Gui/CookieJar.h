@@ -59,6 +59,6 @@ private:
     QTimer m_timer;
 };
 
-}// namespace WebGui
+}  // namespace WebGui
 
-#endif// WEBGUI_COOKIEJAR_H
+#endif  // WEBGUI_COOKIEJAR_H

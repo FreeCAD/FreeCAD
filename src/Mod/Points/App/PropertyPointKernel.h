@@ -91,7 +91,7 @@ private:
     Base::Reference<PointKernel> _cPoints;
 };
 
-}// namespace Points
+}  // namespace Points
 
 
-#endif// POINTS_PROPERTYPOINTKERNEL_H
+#endif  // POINTS_PROPERTYPOINTKERNEL_H

@@ -42,7 +42,7 @@ public:
     Module()
         : Py::ExtensionModule<Module>("CloudGui")
     {
-        initialize("This module is the CloudGui module.");// register with Python
+        initialize("This module is the CloudGui module.");  // register with Python
     }
 
     virtual ~Module()
@@ -56,7 +56,7 @@ PyObject* initModule()
     return Base::Interpreter().addModule(new Module);
 }
 
-}// namespace CloudGui
+}  // namespace CloudGui
 
 
 /* Python entry */

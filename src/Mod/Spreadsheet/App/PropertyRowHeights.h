@@ -93,6 +93,6 @@ private:
     Py::Object PythonObject;
 };
 
-}// namespace Spreadsheet
+}  // namespace Spreadsheet
 
-#endif// PROPERTYROWHEIGHTS_H
+#endif  // PROPERTYROWHEIGHTS_H

@@ -507,7 +507,7 @@ void DrawingView::printPdf()
     item->setData(Qt::UserRole, QVariant(QPageSize::A4));
     item = new QListWidgetItem(tr("A5"), listWidget);
     item->setData(Qt::UserRole, QVariant(QPageSize::A5));
-    int index = 4;// by default A4
+    int index = 4;  // by default A4
     for (int i = 0; i < listWidget->count(); i++) {
         if (listWidget->item(i)->data(Qt::UserRole).toInt() == m_pageSize) {
             index = i;
@@ -646,36 +646,36 @@ void DrawingView::print(QPrinter* printer)
 QPageSize::PageSizeId DrawingView::getPageSize(int w, int h) const
 {
     static const float paperSizes[][2] = {
-        {210, 297},      // A4
-        {176, 250},      // B5
-        {215.9f, 279.4f},// Letter
-        {215.9f, 355.6f},// Legal
-        {190.5f, 254},   // Executive
-        {841, 1189},     // A0
-        {594, 841},      // A1
-        {420, 594},      // A2
-        {297, 420},      // A3
-        {148, 210},      // A5
-        {105, 148},      // A6
-        {74, 105},       // A7
-        {52, 74},        // A8
-        {37, 52},        // A8
-        {1000, 1414},    // B0
-        {707, 1000},     // B1
-        {31, 44},        // B10
-        {500, 707},      // B2
-        {353, 500},      // B3
-        {250, 353},      // B4
-        {125, 176},      // B6
-        {88, 125},       // B7
-        {62, 88},        // B8
-        {33, 62},        // B9
-        {163, 229},      // C5E
-        {105, 241},      // US Common
-        {110, 220},      // DLE
-        {210, 330},      // Folio
-        {431.8f, 279.4f},// Ledger
-        {279.4f, 431.8f} // Tabloid
+        {210, 297},        // A4
+        {176, 250},        // B5
+        {215.9f, 279.4f},  // Letter
+        {215.9f, 355.6f},  // Legal
+        {190.5f, 254},     // Executive
+        {841, 1189},       // A0
+        {594, 841},        // A1
+        {420, 594},        // A2
+        {297, 420},        // A3
+        {148, 210},        // A5
+        {105, 148},        // A6
+        {74, 105},         // A7
+        {52, 74},          // A8
+        {37, 52},          // A8
+        {1000, 1414},      // B0
+        {707, 1000},       // B1
+        {31, 44},          // B10
+        {500, 707},        // B2
+        {353, 500},        // B3
+        {250, 353},        // B4
+        {125, 176},        // B6
+        {88, 125},         // B7
+        {62, 88},          // B8
+        {33, 62},          // B9
+        {163, 229},        // C5E
+        {105, 241},        // US Common
+        {110, 220},        // DLE
+        {210, 330},        // Folio
+        {431.8f, 279.4f},  // Ledger
+        {279.4f, 431.8f}   // Tabloid
     };
 
     QPageSize::PageSizeId ps = QPageSize::Custom;

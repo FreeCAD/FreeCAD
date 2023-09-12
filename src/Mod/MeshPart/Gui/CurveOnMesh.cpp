@@ -319,7 +319,7 @@ public:
     std::list<std::vector<Base::Vector3f>> cutLines;
     bool wireClosed {false};
     double distance {1};
-    double cosAngle {0.7071};// 45 degree
+    double cosAngle {0.7071};  // 45 degree
     bool approximate {true};
     ViewProviderCurveOnMesh* curve;
     Gui::ViewProviderDocumentObject* mesh {0};

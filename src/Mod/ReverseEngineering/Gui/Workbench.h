@@ -46,7 +46,7 @@ protected:
     Gui::ToolBarItem* setupCommandBars() const override;
 };
 
-}// namespace ReverseEngineeringGui
+}  // namespace ReverseEngineeringGui
 
 
-#endif// REENGUI_WORKBENCH_H
+#endif  // REENGUI_WORKBENCH_H

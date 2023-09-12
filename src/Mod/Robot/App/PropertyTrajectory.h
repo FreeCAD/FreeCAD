@@ -79,7 +79,7 @@ private:
 };
 
 
-}// namespace Robot
+}  // namespace Robot
 
 
-#endif// PROPERTYTOPOSHAPE_H
+#endif  // PROPERTYTOPOSHAPE_H

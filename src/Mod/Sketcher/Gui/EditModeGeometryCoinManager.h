@@ -44,7 +44,7 @@ class Vector3;
 class Vector2d;
 
 class Placement;
-}// namespace Base
+}  // namespace Base
 
 namespace Part
 {
@@ -55,7 +55,7 @@ namespace Sketcher
 {
 class Constraint;
 class PropertyConstraintList;
-};// namespace Sketcher
+};  // namespace Sketcher
 
 namespace SketcherGui
 {
@@ -125,7 +125,7 @@ private:
 };
 
 
-}// namespace SketcherGui
+}  // namespace SketcherGui
 
 
-#endif// SKETCHERGUI_EditModeGeometryCoinManager_H
+#endif  // SKETCHERGUI_EditModeGeometryCoinManager_H

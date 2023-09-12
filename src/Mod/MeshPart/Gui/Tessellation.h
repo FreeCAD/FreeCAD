@@ -35,7 +35,7 @@ namespace App
 {
 class Document;
 class SubObjectT;
-}// namespace App
+}  // namespace App
 namespace MeshPartGui
 {
 
@@ -140,6 +140,6 @@ private:
     Tessellation* widget;
 };
 
-}// namespace MeshPartGui
+}  // namespace MeshPartGui
 
-#endif// MESHPARTGUI_TESSELLATION_H
+#endif  // MESHPARTGUI_TESSELLATION_H

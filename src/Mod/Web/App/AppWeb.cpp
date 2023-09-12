@@ -78,7 +78,7 @@ public:
         add_varargs_method("registerServerFirewall",
                            &Module::registerServerFirewall,
                            "registerServerFirewall(callable(string)) -- Register a firewall.");
-        initialize("This module is the Web module.");// register with Python
+        initialize("This module is the Web module.");  // register with Python
     }
 
 private:
@@ -175,7 +175,7 @@ PyObject* initModule()
     return Base::Interpreter().addModule(new Module);
 }
 
-}// namespace Web
+}  // namespace Web
 
 
 /* Python entry */

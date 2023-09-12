@@ -64,7 +64,7 @@ App::DocumentObjectExecReturn* Cut::execute()
 
         // Get first toposhape
         if (shapes[0]->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
-            ts1 = static_cast<Part::Feature*>(shapes[0])->Shape.getShape();// Part::TopoShape 1
+            ts1 = static_cast<Part::Feature*>(shapes[0])->Shape.getShape();  // Part::TopoShape 1
         }
         else {
             return new App::DocumentObjectExecReturn("Shape1 not from Part::Feature");

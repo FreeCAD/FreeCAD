@@ -374,7 +374,7 @@ TEST_F(IndexedNameTest, booleanConversionFalse)
     }
 
     // Usage example:
-    auto indexedName = Data::IndexedName(".EDGE", 1);// Invalid name
+    auto indexedName = Data::IndexedName(".EDGE", 1);  // Invalid name
     if (indexedName) {
         FAIL() << "indexedName as a boolean should have been false for an invalid name";
     }
@@ -474,7 +474,7 @@ TEST_F(IndexedNameTest, assignmentOperator)
     const int testIndex2 {24};
     auto indexedName1 = Data::IndexedName::fromConst("TestName", testIndex1);
     auto indexedName2 = Data::IndexedName::fromConst("TestName2", testIndex2);
-    EXPECT_NE(indexedName1, indexedName2);// Ensure the test is set up correctly
+    EXPECT_NE(indexedName1, indexedName2);  // Ensure the test is set up correctly
 
     // Act
     indexedName1 = indexedName2;

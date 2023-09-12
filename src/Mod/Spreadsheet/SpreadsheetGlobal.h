@@ -44,4 +44,4 @@
 #endif
 #endif
 
-#endif// SPREADSHEET_GLOBAL_H
+#endif  // SPREADSHEET_GLOBAL_H

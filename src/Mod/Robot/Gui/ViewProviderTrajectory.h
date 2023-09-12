@@ -61,7 +61,7 @@ protected:
     SoLineSet* pcLines;
 };
 
-}// namespace RobotGui
+}  // namespace RobotGui
 
 
-#endif// ROBOT_VIEWPROVIDERROBOTOBJECT_H
+#endif  // ROBOT_VIEWPROVIDERROBOTOBJECT_H

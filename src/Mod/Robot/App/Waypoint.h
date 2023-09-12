@@ -75,7 +75,7 @@ public:
     Base::Placement EndPos;
 };
 
-}// namespace Robot
+}  // namespace Robot
 
 
-#endif// ROBOT_WAYPOINT_H
+#endif  // ROBOT_WAYPOINT_H

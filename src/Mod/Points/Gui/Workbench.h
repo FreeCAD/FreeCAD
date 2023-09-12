@@ -47,7 +47,7 @@ protected:
     Gui::MenuItem* setupMenuBar() const override;
 };
 
-}// namespace PointsGui
+}  // namespace PointsGui
 
 
-#endif// POINTS_WORKBENCH_H
+#endif  // POINTS_WORKBENCH_H

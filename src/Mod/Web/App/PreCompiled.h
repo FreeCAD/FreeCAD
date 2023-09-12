@@ -38,6 +38,6 @@
 #include <QCoreApplication>
 #include <QTcpSocket>
 
-#endif//_PreComp_
+#endif  //_PreComp_
 
 #endif

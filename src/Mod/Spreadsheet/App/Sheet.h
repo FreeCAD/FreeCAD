@@ -302,7 +302,7 @@ protected:
 
 using SheetPython = App::FeaturePythonT<Sheet>;
 
-}// namespace Spreadsheet
+}  // namespace Spreadsheet
 
 
-#endif// Spreadsheet_Spreadsheet_H
+#endif  // Spreadsheet_Spreadsheet_H

@@ -23,7 +23,7 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 #include <QApplication>
-#endif// #ifndef _PreComp_
+#endif  // #ifndef _PreComp_
 
 #include <Mod/Sketcher/App/SketchObject.h>
 
@@ -131,8 +131,8 @@ void SnapManager::ParameterObserver::subscribeToParameters()
         ParameterGrp::handle hGrp = getParameterGrpHandle();
         hGrp->Attach(this);
     }
-    catch (const Base::ValueError& e) {// ensure that if parameter strings are not well-formed, the
-                                       // exception is not propagated
+    catch (const Base::ValueError& e) {  // ensure that if parameter strings are not well-formed,
+                                         // the exception is not propagated
         Base::Console().DeveloperError("SnapManager", "Malformed parameter string: %s\n", e.what());
     }
 }
@@ -144,8 +144,8 @@ void SnapManager::ParameterObserver::unsubscribeToParameters()
         hGrp->Detach(this);
     }
     catch (const Base::ValueError&
-               e) {// ensure that if parameter strings are not well-formed, the program is not
-                   // terminated when calling the noexcept destructor.
+               e) {  // ensure that if parameter strings are not well-formed, the program is not
+                     // terminated when calling the noexcept destructor.
         Base::Console().DeveloperError("SnapManager", "Malformed parameter string: %s\n", e.what());
     }
 }
@@ -207,9 +207,9 @@ bool SnapManager::snap(double& x, double& y)
     }
 
     // 3 - Snap to grid
-    if (snapToGridRequested /*&& viewProvider.ShowGrid.getValue() */) {// Snap to grid is enabled
-                                                                       // even if the grid is not
-                                                                       // visible.
+    if (snapToGridRequested /*&& viewProvider.ShowGrid.getValue() */) {  // Snap to grid is enabled
+                                                                         // even if the grid is not
+                                                                         // visible.
         return snapToGrid(x, y);
     }
 
@@ -256,15 +256,15 @@ bool SnapManager::snapToObject(double& x, double& y)
         y = Obj->getPoint(geoId, posId).y;
         return true;
     }
-    else if (CrsId == 1) {// H_Axis
+    else if (CrsId == 1) {  // H_Axis
         y = 0;
         return true;
     }
-    else if (CrsId == 2) {// V_Axis
+    else if (CrsId == 2) {  // V_Axis
         x = 0;
         return true;
     }
-    else if (CrvId >= 0 || CrvId <= Sketcher::GeoEnum::RefExt) {// Curves
+    else if (CrvId >= 0 || CrvId <= Sketcher::GeoEnum::RefExt) {  // Curves
 
         const Part::Geometry* geo = Obj->getGeometry(CrvId);
 
@@ -317,13 +317,13 @@ bool SnapManager::snapToGrid(double& x, double& y)
 
     // Check if x within snap tolerance
     if (x < tmpX + snapTol && x > tmpX - snapTol) {
-        x = tmpX;// Snap X Mouse Position
+        x = tmpX;  // Snap X Mouse Position
         snapped = true;
     }
 
     // Check if y within snap tolerance
     if (y < tmpY + snapTol && y > tmpY - snapTol) {
-        y = tmpY;// Snap Y Mouse Position
+        y = tmpY;  // Snap Y Mouse Position
         snapped = true;
     }
 

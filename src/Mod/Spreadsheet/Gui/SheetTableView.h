@@ -128,6 +128,6 @@ protected:
     std::set<App::CellAddress> spanChanges;
 };
 
-}// namespace SpreadsheetGui
+}  // namespace SpreadsheetGui
 
-#endif// SHEETTABLEVIEW_H
+#endif  // SHEETTABLEVIEW_H

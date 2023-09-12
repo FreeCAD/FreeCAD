@@ -30,7 +30,7 @@
 #ifdef FC_OS_WIN32
 #define CloudAppExport __declspec(dllimport)
 #define CloudGuiExport __declspec(dllexport)
-#else// for Linux
+#else  // for Linux
 #define CloudAppExport
 #define CloudGuiExport
 #endif
@@ -62,6 +62,6 @@
 #include <Gui/QtAll.h>
 #endif
 
-#endif//_PreComp_
+#endif  //_PreComp_
 
-#endif// GUI_PRECOMPILED_H
+#endif  // GUI_PRECOMPILED_H

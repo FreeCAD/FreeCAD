@@ -44,4 +44,4 @@
 #endif
 #endif
 
-#endif// DRAWING_GLOBAL_H
+#endif  // DRAWING_GLOBAL_H

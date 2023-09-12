@@ -155,4 +155,4 @@ const char* Drawing::FeatureViewPartPython::getViewProviderName(void) const
 
 // explicit template instantiation
 template class DrawingExport FeaturePythonT<Drawing::FeatureViewPart>;
-}// namespace App
+}  // namespace App

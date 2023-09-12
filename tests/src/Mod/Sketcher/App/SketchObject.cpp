@@ -53,7 +53,7 @@ private:
                                            "RootPoint"};
 };
 
-TEST_F(SketchObjectTest, createSketchObject)// NOLINT
+TEST_F(SketchObjectTest, createSketchObject)  // NOLINT
 {
     // Arrange
 

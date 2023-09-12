@@ -29,7 +29,7 @@
 // Exporting of App classes
 #ifdef FC_OS_WIN32
 #define CloudAppExport __declspec(dllexport)
-#else// for Linux
+#else  // for Linux
 #define CloudAppExport
 #endif
 
@@ -55,6 +55,6 @@
 // Xerces
 #include <xercesc/util/XercesDefs.hpp>
 
-#endif//_PreComp_
+#endif  //_PreComp_
 
 #endif

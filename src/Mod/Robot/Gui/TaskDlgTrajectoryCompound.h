@@ -34,7 +34,7 @@ namespace TaskView
 {
 class TaskSelectLinkProperty;
 }
-}// namespace Gui
+}  // namespace Gui
 
 namespace RobotGui
 {
@@ -69,6 +69,6 @@ protected:
 };
 
 
-}// namespace RobotGui
+}  // namespace RobotGui
 
-#endif// ROBOTGUI_TASKDLGSIMULATE_H
+#endif  // ROBOTGUI_TASKDLGSIMULATE_H

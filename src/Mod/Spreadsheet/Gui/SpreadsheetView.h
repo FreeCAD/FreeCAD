@@ -42,7 +42,7 @@ namespace App
 {
 class DocumentObject;
 class Property;
-}// namespace App
+}  // namespace App
 
 namespace Ui
 {
@@ -167,6 +167,6 @@ protected:
     Gui::MDIViewPy base;
 };
 
-}// namespace SpreadsheetGui
+}  // namespace SpreadsheetGui
 
-#endif// SpreadsheetView_H
+#endif  // SpreadsheetView_H

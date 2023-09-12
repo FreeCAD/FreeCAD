@@ -36,7 +36,7 @@ std::string StepShapePy::representation() const
     return {"<StepShape object>"};
 }
 
-PyObject* StepShapePy::PyMake(struct _typeobject*, PyObject*, PyObject*)// Python wrapper
+PyObject* StepShapePy::PyMake(struct _typeobject*, PyObject*, PyObject*)  // Python wrapper
 {
     // create a new instance of StepShapePy and the Twin object
     return new StepShapePy(new StepShape);

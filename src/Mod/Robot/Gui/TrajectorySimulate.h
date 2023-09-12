@@ -79,6 +79,6 @@ private:
     std::unique_ptr<Ui_DlgTrajectorySimulate> ui;
 };
 
-}// namespace RobotGui
+}  // namespace RobotGui
 
-#endif// GUI_TASKVIEW_TrajectorySimulate_H
+#endif  // GUI_TASKVIEW_TrajectorySimulate_H

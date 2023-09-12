@@ -78,7 +78,7 @@ Base::BoundBox3d PropertyPointKernel::getBoundingBox() const
 PyObject* PropertyPointKernel::getPyObject()
 {
     PointsPy* points = new PointsPy(&*_cPoints);
-    points->setConst();// set immutable
+    points->setConst();  // set immutable
     return points;
 }
 

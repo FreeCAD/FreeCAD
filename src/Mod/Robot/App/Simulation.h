@@ -76,7 +76,7 @@ public:
 };
 
 
-}// namespace Robot
+}  // namespace Robot
 
 
 #endif

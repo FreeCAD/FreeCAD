@@ -22,7 +22,7 @@
 
 #include "PreCompiled.h"
 #if defined(__MINGW32__)
-#define WNT// avoid conflict with GUID
+#define WNT  // avoid conflict with GUID
 #endif
 #ifndef _PreComp_
 #include <Quantity_Color.hxx>

@@ -44,4 +44,4 @@
 #endif
 #endif
 
-#endif// WEB_GLOBAL_H
+#endif  // WEB_GLOBAL_H

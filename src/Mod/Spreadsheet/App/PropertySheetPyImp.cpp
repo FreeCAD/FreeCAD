@@ -38,7 +38,7 @@ std::string PropertySheetPy::representation() const
     return {"<PropertySheet object>"};
 }
 
-PyObject* PropertySheetPy::PyMake(struct _typeobject*, PyObject*, PyObject*)// Python wrapper
+PyObject* PropertySheetPy::PyMake(struct _typeobject*, PyObject*, PyObject*)  // Python wrapper
 {
     // create a new instance of PropertySheetPy and the Twin object
     return new PropertySheetPy(new PropertySheet);

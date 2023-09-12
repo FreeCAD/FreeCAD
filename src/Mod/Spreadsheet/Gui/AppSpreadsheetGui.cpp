@@ -61,7 +61,7 @@ public:
         : Py::ExtensionModule<Module>("SpreadsheetGui")
     {
         add_varargs_method("open", &Module::open);
-        initialize("This module is the SpreadsheetGui module.");// register with Python
+        initialize("This module is the SpreadsheetGui module.");  // register with Python
     }
 
 private:
@@ -98,7 +98,7 @@ PyObject* initModule()
     return Base::Interpreter().addModule(new Module);
 }
 
-}// namespace SpreadsheetGui
+}  // namespace SpreadsheetGui
 
 /* Python entry */
 PyMOD_INIT_FUNC(SpreadsheetGui)

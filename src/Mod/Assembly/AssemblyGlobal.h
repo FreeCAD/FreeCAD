@@ -45,4 +45,4 @@
 #endif
 #endif
 
-#endif// ASSEMBLY_GLOBAL_H
+#endif  // ASSEMBLY_GLOBAL_H

@@ -40,7 +40,7 @@
 #include <Inventor/nodes/SoSeparator.h>
 #include <Inventor/nodes/SoText2.h>
 #include <Inventor/nodes/SoTranslation.h>
-#endif// #ifndef _PreComp_
+#endif  // #ifndef _PreComp_
 
 #include <Base/Exception.h>
 #include <Gui/Inventor/MarkerBitmaps.h>
@@ -338,7 +338,7 @@ void EditModeCoinManager::ParameterObserver::updateElementSizeParameters(
     int markersize = hGrp->GetInt("MarkerSize", 7);
 
     int defaultFontSizePixels =
-        Client.defaultApplicationFontSizePixels();// returns height in pixels, not points
+        Client.defaultApplicationFontSizePixels();  // returns height in pixels, not points
 
     int sketcherfontSize = hGrp->GetInt("EditSketcherFontSize", defaultFontSizePixels);
 
@@ -346,7 +346,7 @@ void EditModeCoinManager::ParameterObserver::updateElementSizeParameters(
 
     // simple scaling factor for hardcoded pixel values in the Sketcher
     Client.drawingParameters.pixelScalingFactor = viewScalingFactor * dpi
-        / 96;// 96 ppi is the standard pixel density for which pixel quantities were calculated
+        / 96;  // 96 ppi is the standard pixel density for which pixel quantities were calculated
 
     // About sizes:
     // SoDatumLabel takes the size in points, not in pixels. This is because it uses QFont
@@ -368,9 +368,9 @@ void EditModeCoinManager::ParameterObserver::updateElementSizeParameters(
     // necessary so that the Sketcher is usable in HDPI monitors.
 
     Client.drawingParameters.coinFontSize =
-        std::lround(sketcherfontSize * 96.0f / dpi);// this is in pixels
+        std::lround(sketcherfontSize * 96.0f / dpi);  // this is in pixels
     Client.drawingParameters.labelFontSize = std::lround(
-        sketcherfontSize * 72.0f / dpi);// this is in points, as SoDatumLabel uses points
+        sketcherfontSize * 72.0f / dpi);  // this is in points, as SoDatumLabel uses points
     Client.drawingParameters.constraintIconSize = std::lround(0.8 * sketcherfontSize);
 
     // For marker size the global default is used.
@@ -424,8 +424,8 @@ void EditModeCoinManager::ParameterObserver::subscribeToParameters()
             "User parameter:BaseApp/Preferences/Units");
         hGrpu->Attach(this);
     }
-    catch (const Base::ValueError& e) {// ensure that if parameter strings are not well-formed, the
-                                       // exception is not propagated
+    catch (const Base::ValueError& e) {  // ensure that if parameter strings are not well-formed,
+                                         // the exception is not propagated
         Base::Console().DeveloperError("EditModeCoinManager",
                                        "Malformed parameter string: %s\n",
                                        e.what());
@@ -452,8 +452,8 @@ void EditModeCoinManager::ParameterObserver::unsubscribeToParameters()
         hGrpu->Detach(this);
     }
     catch (const Base::ValueError&
-               e) {// ensure that if parameter strings are not well-formed, the program is not
-                   // terminated when calling the noexcept destructor.
+               e) {  // ensure that if parameter strings are not well-formed, the program is not
+                     // terminated when calling the noexcept destructor.
         Base::Console().DeveloperError("EditModeCoinManager",
                                        "Malformed parameter string: %s\n",
                                        e.what());
@@ -472,7 +472,7 @@ void EditModeCoinManager::ParameterObserver::OnChange(Base::Subject<const char*>
 
         function(string);
 
-        Client.redrawViewProvider();// redraw with non-temporal geometry
+        Client.redrawViewProvider();  // redraw with non-temporal geometry
     }
 }
 
@@ -545,7 +545,7 @@ void EditModeCoinManager::drawEditMarkers(const std::vector<Base::Vector2d>& Edi
     SbVec3f* verts = editModeScenegraphNodes.EditMarkersCoordinate->point.startEditing();
     SbColor* color = editModeScenegraphNodes.EditMarkersMaterials->diffuseColor.startEditing();
 
-    int i = 0;// setting up the line set
+    int i = 0;  // setting up the line set
     for (std::vector<Base::Vector2d>::const_iterator it = EditMarkers.begin();
          it != EditMarkers.end();
          ++it, i++) {
@@ -570,7 +570,7 @@ void EditModeCoinManager::drawEdit(const std::vector<Base::Vector2d>& EditCurve)
     int32_t* index = editModeScenegraphNodes.EditCurveSet->numVertices.startEditing();
     SbColor* color = editModeScenegraphNodes.EditCurvesMaterials->diffuseColor.startEditing();
 
-    int i = 0;// setting up the line set
+    int i = 0;  // setting up the line set
     for (std::vector<Base::Vector2d>::const_iterator it = EditCurve.begin(); it != EditCurve.end();
          ++it, i++) {
         verts[i].setValue(it->x,
@@ -669,7 +669,7 @@ EditModeCoinManager::detectPreselection(SoPickedPoint* Point, const SbVec2s& cur
 
     // Base::Console().Log("Point pick\n");
     SoPath* path = Point->getPath();
-    SoNode* tail = path->getTail();// Tail is directly the node containing points and curves
+    SoNode* tail = path->getTail();  // Tail is directly the node containing points and curves
 
     for (int l = 0; l < geometryLayerParameters.getCoinLayerCount(); l++) {
         // checking for a hit in the points
@@ -680,7 +680,7 @@ EditModeCoinManager::detectPreselection(SoPickedPoint* Point, const SbVec2s& cur
                 int pindex = static_cast<const SoPointDetail*>(point_detail)->getCoordinateIndex();
                 result.PointIndex = coinMapping.getPointVertexId(
                     pindex,
-                    l);// returns -1 for root, global VertexId for the rest of vertices.
+                    l);  // returns -1 for root, global VertexId for the rest of vertices.
 
                 if (result.PointIndex == -1) {
                     result.Cross = PreselectionResult::Axes::RootPoint;
@@ -798,7 +798,7 @@ void EditModeCoinManager::processGeometryInformationOverlay(const GeoListFacade&
     }
 
 
-    overlayParameters.visibleInformationChanged = false;// just updated
+    overlayParameters.visibleInformationChanged = false;  // just updated
 }
 
 void EditModeCoinManager::updateAxesLength()
@@ -859,7 +859,7 @@ void EditModeCoinManager::createEditModeInventorNodes()
     // 1 - Create the edit root node
     editModeScenegraphNodes.EditRoot = new SoSeparator;
     editModeScenegraphNodes.EditRoot
-        ->ref();// Node is unref in the destructor of EditModeCoinManager
+        ->ref();  // Node is unref in the destructor of EditModeCoinManager
     editModeScenegraphNodes.EditRoot->setName("Sketch_EditRoot");
     ViewProviderSketchCoinAttorney::addNodeToRoot(viewProvider, editModeScenegraphNodes.EditRoot);
     editModeScenegraphNodes.EditRoot->renderCaching = SoSeparator::OFF;

@@ -256,24 +256,24 @@ MeshCore::MeshKernel* MeshAlgos::boolean(MeshCore::MeshKernel* pMesh1,
                          gts_face_class(),
                          gts_edge_class(),
                          gts_vertex_class());
-    if (Type == 0) {// union
+    if (Type == 0) {  // union
         gts_surface_inter_boolean(si, s3, GTS_1_OUT_2);
         gts_surface_inter_boolean(si, s3, GTS_2_OUT_1);
     }
-    else if (Type == 1) {// inter
+    else if (Type == 1) {  // inter
         gts_surface_inter_boolean(si, s3, GTS_1_IN_2);
         gts_surface_inter_boolean(si, s3, GTS_2_IN_1);
     }
-    else if (Type == 2) {// diff
+    else if (Type == 2) {  // diff
         gts_surface_inter_boolean(si, s3, GTS_1_OUT_2);
         gts_surface_inter_boolean(si, s3, GTS_2_IN_1);
         gts_surface_foreach_face(si->s2, (GtsFunc)gts_triangle_revert, NULL);
         gts_surface_foreach_face(s2, (GtsFunc)gts_triangle_revert, NULL);
     }
-    else if (Type == 3) {// cut inner
+    else if (Type == 3) {  // cut inner
         gts_surface_inter_boolean(si, s3, GTS_1_IN_2);
     }
-    else if (Type == 4) {// cut outer
+    else if (Type == 4) {  // cut outer
         gts_surface_inter_boolean(si, s3, GTS_1_OUT_2);
     }
 
@@ -571,12 +571,12 @@ void MeshAlgos::LoftOnCurve(MeshCore::MeshKernel& ResultMesh,
                 ConnectMap[V1] = actPoint;
             }
 
-            if (i)// not the first row or something to connect to
+            if (i)  // not the first row or something to connect to
             {
                 for (l = 0; l < actPoint.size(); l++) {
-                    if (l)// not first point in row
+                    if (l)  // not first point in row
                     {
-                        if (i == res - 1 && bEnd) {// if last row and a end to connect
+                        if (i == res - 1 && bEnd) {  // if last row and a end to connect
                             actPoint = ConnectMap[V2];
                         }
 

@@ -124,7 +124,7 @@ void CurveProjectorShape::projectCurve(const TopoDS_Edge& aEdge,
     Base::Vector3f cResultPoint, cSplitPoint, cPlanePnt, cPlaneNormal;
     MeshCore::FacetIndex uStartFacetIdx, uCurFacetIdx;
     MeshCore::FacetIndex uLastFacetIdx =
-        MeshCore::FACET_INDEX_MAX - 1;// use another value as FACET_INDEX_MAX
+        MeshCore::FACET_INDEX_MAX - 1;  // use another value as FACET_INDEX_MAX
     MeshCore::FacetIndex auNeighboursIdx[3];
     bool GoOn;
 
@@ -1106,7 +1106,7 @@ void MeshProjection::projectEdgeToEdge(const TopoDS_Edge& aEdge,
 
         const std::list<MeshCore::FacetIndex>& auFaces = it->second;
         if (auFaces.size() > 2) {
-            continue;// non-manifold edge -> don't handle this
+            continue;  // non-manifold edge -> don't handle this
         }
         //      if ( clBB.IsOut( gp_Pnt(cE0.x, cE0.y, cE0.z) ) && clBB.IsOut( gp_Pnt(cE1.x, cE1.y,
         //      cE1.z) ) )

@@ -250,4 +250,4 @@ Handle(Geom_BSplineSurface) BSplineFitting::perform()
     return Handle(Geom_BSplineSurface)();
 #endif
 }
-#endif// HAVE_PCL_OPENNURBS
+#endif  // HAVE_PCL_OPENNURBS

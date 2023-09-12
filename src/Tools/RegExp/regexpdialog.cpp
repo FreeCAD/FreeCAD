@@ -107,7 +107,7 @@ void RegExpDialog::performRegExp()
     ui->textLabel4->setText(rx.errorString());
     if (!rx.isValid()) {
         rxhilighter->resethighlight();
-        return;// invalid expression
+        return;  // invalid expression
     }
 
     rxhilighter->highlightMatchedText(rx);
@@ -137,7 +137,7 @@ void RegExpSyntaxHighlighter::highlightBlock(const QString& text)
     setFormat(0, text.length(), regFormat);
 
     if (regexp.pattern().isEmpty()) {
-        return;// empty regular expression
+        return;  // empty regular expression
     }
 
     int pos = 0;

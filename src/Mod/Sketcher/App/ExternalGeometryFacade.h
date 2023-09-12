@@ -57,15 +57,15 @@ class SketcherExport ExternalGeometryFacade: public Base::BaseClass,
 
 private:
     explicit ExternalGeometryFacade(const Part::Geometry* geometry);
-    ExternalGeometryFacade();// As TYPESYSTEM requirement
+    ExternalGeometryFacade();  // As TYPESYSTEM requirement
 
     friend class ExternalGeometryFacadePy;
 
-public:// Factory methods
+public:  // Factory methods
     static std::unique_ptr<ExternalGeometryFacade> getFacade(Part::Geometry* geometry);
     static std::unique_ptr<const ExternalGeometryFacade> getFacade(const Part::Geometry* geometry);
 
-public:// Utility methods
+public:  // Utility methods
     static void ensureSketchGeometryExtensions(Part::Geometry* geometry);
     static void copyId(const Part::Geometry* src, Part::Geometry* dst);
 
@@ -306,7 +306,7 @@ private:
 };
 
 
-}// namespace Sketcher
+}  // namespace Sketcher
 
 
-#endif// SKETCHER_GEOMETRYEXTERNALFACADE_H
+#endif  // SKETCHER_GEOMETRYEXTERNALFACADE_H

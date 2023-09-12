@@ -68,7 +68,7 @@ PyObject* SketchObjectPy::solve(PyObject* args)
 PyObject* SketchObjectPy::addGeometry(PyObject* args)
 {
     PyObject* pcObj;
-    PyObject* construction;// this is an optional argument default false
+    PyObject* construction;  // this is an optional argument default false
     bool isConstruction;
     if (!PyArg_ParseTuple(args, "OO!", &pcObj, &PyBool_Type, &construction)) {
         PyErr_Clear();
@@ -375,7 +375,7 @@ PyObject* SketchObjectPy::addConstraint(PyObject* args)
         // exist. this forces recalculation of the initial solution (not a full solve)
         if (this->getSketchObjectPtr()->noRecomputes) {
             this->getSketchObjectPtr()->setUpSketch();
-            this->getSketchObjectPtr()->Constraints.touch();// update solver information
+            this->getSketchObjectPtr()->Constraints.touch();  // update solver information
         }
         return Py::new_reference_to(Py::Long(ret));
     }

@@ -60,7 +60,7 @@ inline Base::Placement toPlacement(const KDL::Frame& To)
     return Base::Placement(Base::Vector3d(To.p[0], To.p[1], To.p[2]), Base::Rotation(x, y, z, w));
 }
 
-}// namespace Robot
+}  // namespace Robot
 
 
 #endif

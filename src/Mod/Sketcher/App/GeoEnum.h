@@ -64,11 +64,11 @@ namespace Sketcher
  */
 enum GeoEnum
 {
-    RtPnt = -1,     // GeoId of the Root Point
-    HAxis = -1,     // GeoId of the Horizontal Axis
-    VAxis = -2,     // GeoId of the Vertical Axis
-    RefExt = -3,    // Starting GeoID of external geometry ( negative geoIds starting at this index)
-    GeoUndef = -2000// GeoId of an undefined Geometry (uninitialised or unused GeoId)
+    RtPnt = -1,   // GeoId of the Root Point
+    HAxis = -1,   // GeoId of the Horizontal Axis
+    VAxis = -2,   // GeoId of the Vertical Axis
+    RefExt = -3,  // Starting GeoID of external geometry ( negative geoIds starting at this index)
+    GeoUndef = -2000  // GeoId of an undefined Geometry (uninitialised or unused GeoId)
 };
 
 /*!
@@ -81,10 +81,10 @@ enum GeoEnum
  */
 enum class PointPos : int
 {
-    none = 0, // Edge of a geometry
-    start = 1,// Starting point of a geometry
-    end = 2,  // End point of a geometry
-    mid = 3   // Mid point of a geometry
+    none = 0,   // Edge of a geometry
+    start = 1,  // Starting point of a geometry
+    end = 2,    // End point of a geometry
+    mid = 3     // Mid point of a geometry
 };
 
 /** @brief      Struct for storing a {GeoId, PointPos} pair.
@@ -159,7 +159,7 @@ constexpr const GeoElementId GeoElementId::HAxis = GeoElementId(GeoEnum::HAxis, 
 constexpr const GeoElementId GeoElementId::VAxis = GeoElementId(GeoEnum::VAxis, PointPos::none);
 #endif
 
-}// namespace Sketcher
+}  // namespace Sketcher
 
 namespace std
 {
@@ -172,6 +172,6 @@ struct less<Sketcher::GeoElementId>
                                         : (static_cast<int>(lhs.Pos) < static_cast<int>(rhs.Pos));
     }
 };
-}// namespace std
+}  // namespace std
 
-#endif// SKETCHER_GeoEnum_H
+#endif  // SKETCHER_GeoEnum_H

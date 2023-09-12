@@ -22,7 +22,7 @@
 
 #include "PreCompiled.h"
 #if defined(__MINGW32__)
-#define WNT// avoid conflict with GUID
+#define WNT  // avoid conflict with GUID
 #endif
 #ifndef _PreComp_
 #include <Quantity_ColorRGBA.hxx>
@@ -39,7 +39,7 @@
 #include <climits>
 #include <gp_Ax1.hxx>
 #include <gp_Dir.hxx>
-#include <gp_Pln.hxx>// for Precision::Confusion()
+#include <gp_Pln.hxx>  // for Precision::Confusion()
 #include <gp_Trsf.hxx>
 #endif
 

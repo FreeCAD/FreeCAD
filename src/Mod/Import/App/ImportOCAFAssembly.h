@@ -42,7 +42,7 @@ namespace App
 {
 class Document;
 class DocumentObject;
-}// namespace App
+}  // namespace App
 namespace Part
 {
 class Feature;
@@ -90,6 +90,6 @@ private:
 };
 
 
-}// namespace Import
+}  // namespace Import
 
-#endif// IMPORT_ImportOCAFAssembly_H
+#endif  // IMPORT_ImportOCAFAssembly_H

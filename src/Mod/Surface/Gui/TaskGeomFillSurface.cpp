@@ -127,7 +127,7 @@ void ViewProviderGeomFillSurface::highlightReferences(bool on)
                     for (const auto& jt : it.second) {
                         std::size_t idx = static_cast<std::size_t>(std::stoi(jt.substr(4)) - 1);
                         assert(idx < colors.size());
-                        colors[idx] = App::Color(1.0, 0.0, 1.0);// magenta
+                        colors[idx] = App::Color(1.0, 0.0, 1.0);  // magenta
                     }
 
                     svp->setHighlightedEdges(colors);
@@ -686,6 +686,6 @@ bool TaskGeomFillSurface::reject()
     return widget->reject();
 }
 
-}// namespace SurfaceGui
+}  // namespace SurfaceGui
 
 #include "moc_TaskGeomFillSurface.cpp"

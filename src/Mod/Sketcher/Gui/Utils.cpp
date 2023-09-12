@@ -379,13 +379,13 @@ void SketcherGui::GetCirclesMinimalDistance(const Part::GeomCircle* circle1,
     Base::Vector3d v = point2 - point1;
     double length = v.Length();
 
-    if (length == 0) {// concentric case
+    if (length == 0) {  // concentric case
         point1.x += radius1;
         point2.x += radius2;
     }
     else {
         v = v.Normalize();
-        if (length <= std::max(radius1, radius2)) {// inner case
+        if (length <= std::max(radius1, radius2)) {  // inner case
             if (radius1 > radius2) {
                 point1 += v * radius1;
                 point2 += v * radius2;
@@ -395,7 +395,7 @@ void SketcherGui::GetCirclesMinimalDistance(const Part::GeomCircle* circle1,
                 point2 += -v * radius2;
             }
         }
-        else {// outer case
+        else {  // outer case
             point1 += v * radius1;
             point2 += -v * radius2;
         }
@@ -525,8 +525,8 @@ void SketcherGui::removeRedundantHorizontalVertical(Sketcher::SketchObject* pske
                                 }
                             }
                         }
-                        else {// it may be that there is no constraint at all, but there is external
-                              // geometry
+                        else {  // it may be that there is no constraint at all, but there is
+                                // external geometry
                             ext = (*it).GeoId < 0;
                             orig = ((*it).GeoId == -1 && (*it).PosId == Sketcher::PointPos::start);
                         }
@@ -545,9 +545,10 @@ void SketcherGui::removeRedundantHorizontalVertical(Sketcher::SketchObject* pske
         detectredundant(sug2, secondext, secondorig, secondaxis);
 
 
-        rmvhorvert = ((firstext && secondext) ||  // coincident with external on both endpoints
-                      (firstorig && secondaxis) ||// coincident origin and point on object on other
-                      (secondorig && firstaxis));
+        rmvhorvert =
+            ((firstext && secondext) ||    // coincident with external on both endpoints
+             (firstorig && secondaxis) ||  // coincident origin and point on object on other
+             (secondorig && firstaxis));
 
         if (rmvhorvert) {
             for (std::vector<AutoConstraint>::reverse_iterator it = sug2.rbegin();
@@ -555,7 +556,7 @@ void SketcherGui::removeRedundantHorizontalVertical(Sketcher::SketchObject* pske
                  ++it) {
                 if ((*it).Type == Sketcher::Horizontal || (*it).Type == Sketcher::Vertical) {
                     sug2.erase(std::next(it).base());
-                    it = sug2.rbegin();// erase invalidates the iterator
+                    it = sug2.rbegin();  // erase invalidates the iterator
                 }
             }
         }
@@ -622,7 +623,7 @@ bool SketcherGui::showCursorCoords()
                                              .GetGroup("BaseApp")
                                              ->GetGroup("Preferences")
                                              ->GetGroup("Mod/Sketcher");
-    return hGrp->GetBool("ShowCursorCoords", true);// true for testing. set to false for prod.
+    return hGrp->GetBool("ShowCursorCoords", true);  // true for testing. set to false for prod.
 }
 
 bool SketcherGui::useSystemDecimals()
@@ -660,13 +661,13 @@ std::string SketcherGui::lengthToDisplayFormat(double value, int digits)
 
     // get the numeric part of the user string
     QRegularExpression rxNoUnits(
-        QString::fromUtf8("(.*) \\D*$"));// text before space + any non digits at end of string
+        QString::fromUtf8("(.*) \\D*$"));  // text before space + any non digits at end of string
     QRegularExpressionMatch match = rxNoUnits.match(qUserString);
     if (!match.hasMatch()) {
         // no units in userString?
         return Base::Tools::toStdString(qUserString);
     }
-    QString matched = match.captured(1);// matched is the numeric part of user string
+    QString matched = match.captured(1);  // matched is the numeric part of user string
     int dpPos = matched.indexOf(QLocale().decimalPoint());
     if (dpPos < 0) {
         // no decimal separator (ie an integer), return all the digits
@@ -711,10 +712,10 @@ std::string SketcherGui::angleToDisplayFormat(double value, int digits)
     if (Base::UnitsApi::isMultiUnitAngle()) {
         // just return the user string
         // Coin SbString doesn't handle utf8 well, so we convert to ascii
-        QString schemeMinute = QString::fromUtf8("\xE2\x80\xB2");// prime symbol
-        QString schemeSecond = QString::fromUtf8("\xE2\x80\xB3");// double prime symbol
-        QString escapeMinute = QString::fromLatin1("\'");        // substitute ascii single quote
-        QString escapeSecond = QString::fromLatin1("\"");        // substitute ascii double quote
+        QString schemeMinute = QString::fromUtf8("\xE2\x80\xB2");  // prime symbol
+        QString schemeSecond = QString::fromUtf8("\xE2\x80\xB3");  // double prime symbol
+        QString escapeMinute = QString::fromLatin1("\'");          // substitute ascii single quote
+        QString escapeSecond = QString::fromLatin1("\"");          // substitute ascii double quote
         QString displayString = qUserString.replace(schemeMinute, escapeMinute);
         displayString = displayString.replace(schemeSecond, escapeSecond);
         return Base::Tools::toStdString(displayString);
@@ -727,13 +728,13 @@ std::string SketcherGui::angleToDisplayFormat(double value, int digits)
 
     // get the numeric part of the user string
     QRegularExpression rxNoUnits(QString::fromUtf8("(\\d*\\%1?\\d*)(\\D*)$")
-                                     .arg(decimalSep));// number + non digits at end of string
+                                     .arg(decimalSep));  // number + non digits at end of string
     QRegularExpressionMatch match = rxNoUnits.match(qUserString);
     if (!match.hasMatch()) {
         // no units in userString?
         return Base::Tools::toStdString(qUserString);
     }
-    QString matched = match.captured(1);// matched is the numeric part of user string
+    QString matched = match.captured(1);  // matched is the numeric part of user string
     int dpPos = matched.indexOf(decimalSep);
     if (dpPos < 0) {
         // no decimal separator (ie an integer), return all the digits

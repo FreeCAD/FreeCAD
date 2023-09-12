@@ -35,7 +35,7 @@ private:
     std::unique_ptr<SystemTest> _system;
 };
 
-TEST_F(GCSTest, clearConstraints)// NOLINT
+TEST_F(GCSTest, clearConstraints)  // NOLINT
 {
     // Arrange
     const size_t numConstraints {100};

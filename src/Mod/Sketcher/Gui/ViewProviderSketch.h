@@ -83,7 +83,7 @@ namespace Sketcher
 class Constraint;
 class Sketch;
 class SketchObject;
-}// namespace Sketcher
+}  // namespace Sketcher
 
 namespace SketcherGui
 {
@@ -294,14 +294,14 @@ private:
             return DragCurve > InvalidCurve;
         }
 
-        double xInit, yInit;// starting point of the dragging operation
-        bool relative;      // whether the dragging move vector is relative or absolute
+        double xInit, yInit;  // starting point of the dragging operation
+        bool relative;        // whether the dragging move vector is relative or absolute
 
 
-        int DragPoint;// dragged point id (only positive integers)
-        int DragCurve;// dragged curve id (only positive integers), negative external curves cannot
-                      // be dragged.
-        std::set<int> DragConstraintSet;// dragged constraints ids
+        int DragPoint;  // dragged point id (only positive integers)
+        int DragCurve;  // dragged curve id (only positive integers), negative external curves
+                        // cannot be dragged.
+        std::set<int> DragConstraintSet;  // dragged constraints ids
     };
 
     // TODO: Selection and Preselection should use a same structure. Probably Drag should use the
@@ -391,12 +391,12 @@ private:
             return -PreselectCurve - 2;
         }
 
-        int PreselectPoint;// VertexN, with N = PreselectPoint + 1, same as DragPoint indexing (NOTE
-                           // -1 is NOT the root point)
-        int PreselectCurve;// EdgeN, with N = PreselectCurve + 1 for positive values ;
-                           // ExternalEdgeN, with N = -PreselectCurve - 2
-        Axes PreselectCross;                 // 0 => rootPoint, 1 => HAxis, 2 => VAxis
-        std::set<int> PreselectConstraintSet;// ConstraintN, N = index + 1
+        int PreselectPoint;  // VertexN, with N = PreselectPoint + 1, same as DragPoint indexing
+                             // (NOTE -1 is NOT the root point)
+        int PreselectCurve;   // EdgeN, with N = PreselectCurve + 1 for positive values ;
+                              // ExternalEdgeN, with N = -PreselectCurve - 2
+        Axes PreselectCross;  // 0 => rootPoint, 1 => HAxis, 2 => VAxis
+        std::set<int> PreselectConstraintSet;  // ConstraintN, N = index + 1
         bool blockedPreselection;
     };
 
@@ -433,9 +433,9 @@ private:
             SelConstraintSet.clear();
         }
 
-        std::set<int> SelPointSet;     // Indices as PreselectPoint (and -1 for rootpoint)
-        std::set<int> SelCurvSet;      // also holds cross axes at -1 and -2
-        std::set<int> SelConstraintSet;// ConstraintN, N = index + 1.
+        std::set<int> SelPointSet;       // Indices as PreselectPoint (and -1 for rootpoint)
+        std::set<int> SelCurvSet;        // also holds cross axes at -1 and -2
+        std::set<int> SelConstraintSet;  // ConstraintN, N = index + 1.
     };
     //@}
 
@@ -444,7 +444,7 @@ private:
     struct DoubleClick
     {
         static SbTime prvClickTime;
-        static SbVec2s prvClickPos;// used by double-click-detector
+        static SbVec2s prvClickPos;  // used by double-click-detector
         static SbVec2s prvCursorPos;
         static SbVec2s newCursorPos;
     };
@@ -457,8 +457,9 @@ private:
         bool autoRecompute = false;
         bool recalculateInitialSolutionWhileDragging = false;
 
-        bool isShownVirtualSpace = false;// indicates whether the present virtual space view is the
-                                         // Real Space or the Virtual Space (virtual space 1 or 2)
+        bool isShownVirtualSpace =
+            false;  // indicates whether the present virtual space view is the
+                    // Real Space or the Virtual Space (virtual space 1 or 2)
         bool buttonPress = false;
     };
 
@@ -666,7 +667,7 @@ protected:
     void unsetEdit(int ModNum) override;
     void setEditViewer(Gui::View3DInventorViewer*, int ModNum) override;
     void unsetEditViewer(Gui::View3DInventorViewer*) override;
-    static void camSensCB(void* data, SoSensor*);// camera sensor callback
+    static void camSensCB(void* data, SoSensor*);  // camera sensor callback
     void onCameraChanged(SoCamera* cam);
     //@}
 
@@ -884,10 +885,10 @@ private:
     ViewProviderParameters viewProviderParameters;
 
     SoNodeSensor cameraSensor;
-    int viewOrientationFactor;// stores if sketch viewed from front or back
+    int viewOrientationFactor;  // stores if sketch viewed from front or back
 };
 
-}// namespace SketcherGui
+}  // namespace SketcherGui
 
 
-#endif// SKETCHERGUI_VIEWPROVIDERSKETCH_H
+#endif  // SKETCHERGUI_VIEWPROVIDERSKETCH_H

@@ -169,7 +169,7 @@ private:
     bool connectEdges;
     double epsilon;
 };
-}// namespace MeshPartGui
+}  // namespace MeshPartGui
 
 CrossSections::CrossSections(const Base::BoundBox3d& bb, QWidget* parent, Qt::WindowFlags fl)
     : QDialog(parent, fl)
@@ -296,7 +296,7 @@ void CrossSections::apply()
     bool connectEdges = ui->checkBoxConnect->isChecked();
     double eps = ui->spinEpsilon->value();
 
-#if 1// multi-threaded sections
+#if 1  // multi-threaded sections
     for (auto it : obj) {
         const Mesh::MeshObject& mesh = static_cast<Mesh::Feature*>(it)->Mesh.getValue();
 

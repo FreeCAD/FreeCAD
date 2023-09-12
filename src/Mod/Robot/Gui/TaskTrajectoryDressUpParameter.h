@@ -59,6 +59,6 @@ private:
     Robot::TrajectoryDressUpObject* pcObject;
 };
 
-}// namespace RobotGui
+}  // namespace RobotGui
 
-#endif// GUI_TASKVIEW_TASKAPPERANCE_H
+#endif  // GUI_TASKVIEW_TASKAPPERANCE_H

@@ -53,15 +53,15 @@ using namespace Spreadsheet;
 
 PROPERTY_SOURCE(Spreadsheet::Sheet, App::DocumentObject)
 
-using DependencyList =
-    boost::adjacency_list<boost::vecS,// class OutEdgeListS  : a Sequence or an AssociativeContainer
-                          boost::vecS,// class VertexListS   : a Sequence or a RandomAccessContainer
-                          boost::directedS,  // class DirectedS     : This is a directed graph
-                          boost::no_property,// class VertexProperty:
-                          boost::no_property,// class EdgeProperty:
-                          boost::no_property,// class GraphProperty:
-                          boost::listS       // class EdgeListS:
-                          >;
+using DependencyList = boost::adjacency_list<
+    boost::vecS,         // class OutEdgeListS  : a Sequence or an AssociativeContainer
+    boost::vecS,         // class VertexListS   : a Sequence or a RandomAccessContainer
+    boost::directedS,    // class DirectedS     : This is a directed graph
+    boost::no_property,  // class VertexProperty:
+    boost::no_property,  // class EdgeProperty:
+    boost::no_property,  // class GraphProperty:
+    boost::listS         // class EdgeListS:
+    >;
 using Traits = boost::graph_traits<DependencyList>;
 using Vertex = Traits::vertex_descriptor;
 using Edge = Traits::edge_descriptor;
@@ -1120,7 +1120,7 @@ DocumentObjectExecReturn* Sheet::execute()
             try {
                 boost::topological_sort(graph, std::front_inserter(make_order));
             }
-            catch (std::exception&) {// TODO: evaluate using a more specific exception (not_a_dag)
+            catch (std::exception&) {  // TODO: evaluate using a more specific exception (not_a_dag)
                 // Cycle detected; flag all with errors
                 Base::Console().Error("Cyclic dependency detected in spreadsheet : %s\n",
                                       *pcNameInDocument);
@@ -1501,17 +1501,17 @@ void Sheet::setAlias(CellAddress address, const std::string& alias)
     std::string existingAlias = getAddressFromAlias(alias);
 
     if (!existingAlias.empty()) {
-        if (existingAlias == address.toString()) {// Same as old?
+        if (existingAlias == address.toString()) {  // Same as old?
             return;
         }
         else {
             throw Base::ValueError("Alias already defined");
         }
     }
-    else if (alias.empty()) {// Empty?
+    else if (alias.empty()) {  // Empty?
         cells.setAlias(address, "");
     }
-    else if (isValidAlias(alias)) {// Valid?
+    else if (isValidAlias(alias)) {  // Valid?
         cells.setAlias(address, alias);
     }
     else {
@@ -1795,4 +1795,4 @@ PyObject* Spreadsheet::SheetPython::getPyObject()
 
 // explicit template instantiation
 template class SpreadsheetExport FeaturePythonT<Spreadsheet::Sheet>;
-}// namespace App
+}  // namespace App

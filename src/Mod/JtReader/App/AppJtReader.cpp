@@ -56,4 +56,4 @@ void AppJtReaderExport initJtReader()
 }
 
 
-}// extern "C" {
+}  // extern "C" {

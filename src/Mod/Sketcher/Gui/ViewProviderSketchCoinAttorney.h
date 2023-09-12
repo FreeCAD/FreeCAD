@@ -41,7 +41,7 @@ class Vector3;
 class Vector2d;
 
 class Placement;
-}// namespace Base
+}  // namespace Base
 
 namespace Part
 {
@@ -52,7 +52,7 @@ namespace Sketcher
 {
 class Constraint;
 class PropertyConstraintList;
-};// namespace Sketcher
+};  // namespace Sketcher
 
 namespace SketcherGui
 {
@@ -278,7 +278,7 @@ inline void ViewProviderSketchCoinAttorney::executeOnSelectionPointSet(
     vp.executeOnSelectionPointSet(std::move(operation));
 }
 
-}// namespace SketcherGui
+}  // namespace SketcherGui
 
 
-#endif// SKETCHERGUI_ViewProviderSketchCoinAttorney_H
+#endif  // SKETCHERGUI_ViewProviderSketchCoinAttorney_H

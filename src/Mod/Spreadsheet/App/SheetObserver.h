@@ -52,6 +52,6 @@ private:
     PropertySheet* sheet;
 };
 
-}// namespace Spreadsheet
+}  // namespace Spreadsheet
 
-#endif// SHEETOBSERVER_H
+#endif  // SHEETOBSERVER_H

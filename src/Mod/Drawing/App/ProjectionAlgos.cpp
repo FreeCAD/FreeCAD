@@ -87,16 +87,16 @@ void ProjectionAlgos::execute(void)
     // extracting the result sets:
     HLRBRep_HLRToShape shapes(brep_hlr);
 
-    V = build3dCurves(shapes.VCompound());        // hard edge visibly
-    V1 = build3dCurves(shapes.Rg1LineVCompound());// Smoth edges visibly
-    VN = build3dCurves(shapes.RgNLineVCompound());// contour edges visibly
-    VO = build3dCurves(shapes.OutLineVCompound());// contours apparents visibly
-    VI = build3dCurves(shapes.IsoLineVCompound());// isoparamtriques   visibly
-    H = build3dCurves(shapes.HCompound());        // hard edge       invisibly
-    H1 = build3dCurves(shapes.Rg1LineHCompound());// Smoth edges  invisibly
-    HN = build3dCurves(shapes.RgNLineHCompound());// contour edges invisibly
-    HO = build3dCurves(shapes.OutLineHCompound());// contours apparents invisibly
-    HI = build3dCurves(shapes.IsoLineHCompound());// isoparamtriques   invisibly
+    V = build3dCurves(shapes.VCompound());          // hard edge visibly
+    V1 = build3dCurves(shapes.Rg1LineVCompound());  // Smoth edges visibly
+    VN = build3dCurves(shapes.RgNLineVCompound());  // contour edges visibly
+    VO = build3dCurves(shapes.OutLineVCompound());  // contours apparents visibly
+    VI = build3dCurves(shapes.IsoLineVCompound());  // isoparamtriques   visibly
+    H = build3dCurves(shapes.HCompound());          // hard edge       invisibly
+    H1 = build3dCurves(shapes.Rg1LineHCompound());  // Smoth edges  invisibly
+    HN = build3dCurves(shapes.RgNLineHCompound());  // contour edges invisibly
+    HO = build3dCurves(shapes.OutLineHCompound());  // contours apparents invisibly
+    HI = build3dCurves(shapes.IsoLineHCompound());  // isoparamtriques   invisibly
 }
 
 string ProjectionAlgos::getSVG(ExtractionType type,

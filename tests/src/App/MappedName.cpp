@@ -102,7 +102,7 @@ TEST(MappedName, constructFromIndexedNameNoIndex)
     Data::MappedName mappedName {indexedName};
 
     // Assert
-    EXPECT_EQ(mappedName.dataBytes().constData(), indexedName.getType());// shared memory
+    EXPECT_EQ(mappedName.dataBytes().constData(), indexedName.getType());  // shared memory
     EXPECT_EQ(mappedName.isRaw(), true);
 }
 
@@ -115,7 +115,7 @@ TEST(MappedName, constructFromIndexedNameWithIndex)
     Data::MappedName mappedName {indexedName};
 
     // Assert
-    EXPECT_NE(mappedName.dataBytes().constData(), indexedName.getType());// NOT shared memory
+    EXPECT_NE(mappedName.dataBytes().constData(), indexedName.getType());  // NOT shared memory
     EXPECT_EQ(mappedName.isRaw(), false);
     EXPECT_EQ(mappedName.toString(), indexedName.toString());
 }
@@ -245,7 +245,7 @@ TEST(MappedName, fromRawDataCopy)
     QByteArray testByteArray("TESTTEST", 10);
     Data::MappedName temp = Data::MappedName::fromRawData(testByteArray);
     temp.append("TESTPOSTFIX");
-    temp.compact();// Always call compact before accessing data!
+    temp.compact();  // Always call compact before accessing data!
 
     // Act
     Data::MappedName mappedName = Data::MappedName::fromRawData(temp, 0);
@@ -263,8 +263,8 @@ TEST(MappedName, fromRawDataCopyStartposAndSize)
     // Arrange
     QByteArray testByteArray("TESTTEST", 8);
     Data::MappedName temp = Data::MappedName::fromRawData(testByteArray);
-    temp.append("ABCDEFGHIJKLM");// postfix
-    temp.compact();              // Always call compact before accessing data!
+    temp.append("ABCDEFGHIJKLM");  // postfix
+    temp.compact();                // Always call compact before accessing data!
 
     // Act
     Data::MappedName mappedName = Data::MappedName::fromRawData(temp, 2, 13);
@@ -576,8 +576,8 @@ TEST(MappedName, appendToBufferWithPrefix)
     EXPECT_EQ(buffer, std::string("STUFF") + elemMapPrefix + std::string("TESTPOSTFIXTEST"));
 
     // Arrange
-    Data::MappedName mappedName2("TEST");// If mappedName does not have a postfix and is a valid
-                                         // indexedName: prefix is not added
+    Data::MappedName mappedName2("TEST");  // If mappedName does not have a postfix and is a valid
+                                           // indexedName: prefix is not added
 
     // Act
     mappedName2.appendToBufferWithPrefix(buffer);
@@ -602,8 +602,8 @@ TEST(MappedName, toPrefixedString)
     EXPECT_EQ(buffer, std::string("STUFF") + elemMapPrefix + std::string("TESTPOSTFIXTEST"));
 
     // Arrange
-    Data::MappedName mappedName2("TEST");// If mappedName does not have a postfix and is a valid
-                                         // indexedName: prefix is not added
+    Data::MappedName mappedName2("TEST");  // If mappedName does not have a postfix and is a valid
+                                           // indexedName: prefix is not added
 
     // Act
     buffer += mappedName2.toPrefixedString();
@@ -732,7 +732,7 @@ TEST(MappedName, find)
     EXPECT_EQ(mappedName.find(""), 0);
     EXPECT_EQ(mappedName.find(std::string("")), 0);
     EXPECT_EQ(mappedName.find("TEST"), 0);
-    EXPECT_EQ(mappedName.find("STPO"), -1);// sentence must be fully contained in data or postfix
+    EXPECT_EQ(mappedName.find("STPO"), -1);  // sentence must be fully contained in data or postfix
     EXPECT_EQ(mappedName.find("POST"), 4);
     EXPECT_EQ(mappedName.find("POST", 4), 4);
     EXPECT_EQ(mappedName.find("POST", 5), -1);
@@ -766,7 +766,7 @@ TEST(MappedName, rfind)
     EXPECT_EQ(mappedName.rfind(""), mappedName.size());
     EXPECT_EQ(mappedName.rfind(std::string("")), mappedName.size());
     EXPECT_EQ(mappedName.rfind("TEST"), 11);
-    EXPECT_EQ(mappedName.rfind("STPO"), -1);// sentence must be fully contained in data or postfix
+    EXPECT_EQ(mappedName.rfind("STPO"), -1);  // sentence must be fully contained in data or postfix
     EXPECT_EQ(mappedName.rfind("POST"), 4);
     EXPECT_EQ(mappedName.rfind("POST", 4), 4);
     EXPECT_EQ(mappedName.rfind("POST", 3), -1);
@@ -853,11 +853,11 @@ TEST(MappedName, findTagInElementNameHexPositiveIndexNonrecursive)
         mappedName.findTagInElementName(&tagOutput, &lenOutput, &postfix, &type, false, false);
 
     // Assert
-    EXPECT_EQ(result, 36);     // The location of the tag
-    EXPECT_EQ(tagOutput, 0x1b);// The tag
-    EXPECT_EQ(lenOutput, 20);  // The calculated length based on the tag's length parameter
+    EXPECT_EQ(result, 36);       // The location of the tag
+    EXPECT_EQ(tagOutput, 0x1b);  // The tag
+    EXPECT_EQ(lenOutput, 20);    // The calculated length based on the tag's length parameter
     EXPECT_EQ(postfix, ";:H1b:10,F");
-    EXPECT_EQ(type, 'F');// F=Face
+    EXPECT_EQ(type, 'F');  // F=Face
 }
 
 TEST(MappedName, findTagInElementNameDecPositiveIndexNonrecursive)
@@ -876,11 +876,11 @@ TEST(MappedName, findTagInElementNameDecPositiveIndexNonrecursive)
         mappedName.findTagInElementName(&tagOutput, &lenOutput, &postfix, &type, false, false);
 
     // Assert
-    EXPECT_EQ(result, 36);   // The location of the tag
-    EXPECT_EQ(tagOutput, 27);// The tag
-    EXPECT_EQ(lenOutput, 16);// The specified length
+    EXPECT_EQ(result, 36);     // The location of the tag
+    EXPECT_EQ(tagOutput, 27);  // The tag
+    EXPECT_EQ(lenOutput, 16);  // The specified length
     EXPECT_EQ(postfix, ";:T27:16,F");
-    EXPECT_EQ(type, 'F');// F=Face
+    EXPECT_EQ(type, 'F');  // F=Face
 }
 
 TEST(MappedName, findTagInElementNameHexNegativeIndexNonrecursive)
@@ -899,11 +899,11 @@ TEST(MappedName, findTagInElementNameHexNegativeIndexNonrecursive)
         mappedName.findTagInElementName(&tagOutput, &lenOutput, &postfix, &type, false, false);
 
     // Assert
-    EXPECT_EQ(result, 36);     // The location of the tag
-    EXPECT_EQ(tagOutput, 0x1b);// The tag is returned positive, even though it was input negative
-    EXPECT_EQ(lenOutput, 20);  // The calculated length based on the tag's length parameter
+    EXPECT_EQ(result, 36);       // The location of the tag
+    EXPECT_EQ(tagOutput, 0x1b);  // The tag is returned positive, even though it was input negative
+    EXPECT_EQ(lenOutput, 20);    // The calculated length based on the tag's length parameter
     EXPECT_EQ(postfix, ";:H-1b:10,F");
-    EXPECT_EQ(type, 'F');// F=Face
+    EXPECT_EQ(type, 'F');  // F=Face
 }
 
 TEST(MappedName, findTagInElementNameHexExpectedNegativeIndexNonrecursive)
@@ -922,11 +922,11 @@ TEST(MappedName, findTagInElementNameHexExpectedNegativeIndexNonrecursive)
         mappedName.findTagInElementName(&tagOutput, &lenOutput, &postfix, &type, true, false);
 
     // Assert
-    EXPECT_EQ(result, 36);      // The location of the tag
-    EXPECT_EQ(tagOutput, -0x1b);// The tag is returned negative
-    EXPECT_EQ(lenOutput, 20);   // The calculated length based on the tag's length parameter
+    EXPECT_EQ(result, 36);        // The location of the tag
+    EXPECT_EQ(tagOutput, -0x1b);  // The tag is returned negative
+    EXPECT_EQ(lenOutput, 20);     // The calculated length based on the tag's length parameter
     EXPECT_EQ(postfix, ";:H-1b:10,F");
-    EXPECT_EQ(type, 'F');// F=Face
+    EXPECT_EQ(type, 'F');  // F=Face
 }
 
 TEST(MappedName, findTagInElementNameRecursive)
@@ -945,11 +945,11 @@ TEST(MappedName, findTagInElementNameRecursive)
         mappedName.findTagInElementName(&tagOutput, &lenOutput, &postfix, &type, false, true);
 
     // Assert
-    EXPECT_EQ(result, 36);     // The location of the tag
-    EXPECT_EQ(tagOutput, 0x1b);// The tag
-    EXPECT_EQ(lenOutput, 27);  // Now includes the next tag, from the recursive search
+    EXPECT_EQ(result, 36);       // The location of the tag
+    EXPECT_EQ(tagOutput, 0x1b);  // The tag
+    EXPECT_EQ(lenOutput, 27);    // Now includes the next tag, from the recursive search
     EXPECT_EQ(postfix, ";:H1b:10,F");
-    EXPECT_EQ(type, 'F');// F=Face
+    EXPECT_EQ(type, 'F');  // F=Face
 }
 
 TEST(MappedName, hash)
