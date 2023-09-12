@@ -51,6 +51,17 @@ namespace Sketcher
 {
 enum class PointPos : int;
 class SketchObject;
+
+bool isCircle(const Part::Geometry&);
+bool isArcOfCircle(const Part::Geometry&);
+bool isEllipse(const Part::Geometry&);
+bool isArcOfEllipse(const Part::Geometry&);
+bool isLineSegment(const Part::Geometry&);
+bool isArcOfHyperbola(const Part::Geometry&);
+bool isArcOfParabola(const Part::Geometry&);
+bool isBSplineCurve(const Part::Geometry&);
+bool isPoint(const Part::Geometry&);
+
 }  // namespace Sketcher
 
 namespace SketcherGui
