@@ -155,7 +155,7 @@ private:
         small_v[4];  // page size avoiding title block, using maximum horizontal / vertical space
     int* page_dims;  // points to one of above arrays for which set of page dimensions to use
     int block[4];    // title block info [corner x, corner y, width, height], eg [-1, 1, w, h] is in
-                   // top left corner
+                     // top left corner
     bool title;
     int *horiz,
         *vert;  // points to min or max r_x / r_y depending upon which corner title block is in

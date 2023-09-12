@@ -494,7 +494,7 @@ template<>
 inline void SketcherAddWorkbenchTools<Gui::ToolBarItem>(Gui::ToolBarItem& consaccel)
 {
     consaccel  //<< "Sketcher_SelectElementsWithDoFs" //rarely used, it is usually accessed by
-               //solver
+               // solver
                // message.
         << "Sketcher_SelectConstraints"
         << "Sketcher_SelectElementsAssociatedWithConstraints"
