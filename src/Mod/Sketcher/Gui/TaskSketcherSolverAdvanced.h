@@ -82,6 +82,6 @@ private:
     std::unique_ptr<Ui_TaskSketcherSolverAdvanced> ui;
 };
 
-}// namespace SketcherGui
+}  // namespace SketcherGui
 
-#endif// GUI_TASKVIEW_TaskSketcherSolverAdvanced_H
+#endif  // GUI_TASKVIEW_TaskSketcherSolverAdvanced_H

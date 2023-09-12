@@ -101,7 +101,7 @@ QVariant formatCellDisplay(QString value, const Cell* cell)
     }
     return QVariant(value);
 }
-}// namespace
+}  // namespace
 
 QVariant SheetModel::data(const QModelIndex& index, int role) const
 {
@@ -258,7 +258,7 @@ QVariant SheetModel::data(const QModelIndex& index, int role) const
             case Qt::ForegroundRole: {
                 return QColor(0,
                               0,
-                              255.0);// TODO: Remove this hardcoded color, replace with preference
+                              255.0);  // TODO: Remove this hardcoded color, replace with preference
             }
             case Qt::TextAlignmentRole: {
                 qtAlignment = Qt::AlignHCenter | Qt::AlignVCenter;

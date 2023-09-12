@@ -37,7 +37,7 @@ std::string BlendCurvePy::representation() const
     return "BlendCurve";
 }
 
-PyObject* BlendCurvePy::PyMake(struct _typeobject*, PyObject*, PyObject*)// Python wrapper
+PyObject* BlendCurvePy::PyMake(struct _typeobject*, PyObject*, PyObject*)  // Python wrapper
 {
     // create a new instance of BlendCurvePy
     return new BlendCurvePy(new BlendCurve);

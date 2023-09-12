@@ -26,11 +26,11 @@ function load()
 
     if (localStorage["notepad"]) {
         document.getElementById("notepad").value =
-            localStorage["notepad"];// Load notepad from local storage
+            localStorage["notepad"];  // Load notepad from local storage
     }
     document.getElementById("notepad").addEventListener("input", function() {
         localStorage.setItem("notepad",
-                             document.getElementById("notepad").value);// Save notepad on type
+                             document.getElementById("notepad").value);  // Save notepad on type
     }, false);
 
     if (allowDownloads == 1) {
@@ -39,16 +39,16 @@ function load()
         ddiv.innerHTML = "Connecting...";
         var tobj = new JSONscriptRequest(
             'https://api.github.com/repos/FreeCAD/FreeCAD/commits?callback=printCommits');
-        tobj.buildScriptTag();// Build the script tag
-        tobj.addScriptTag();  // Execute (add) the script tag
+        tobj.buildScriptTag();  // Build the script tag
+        tobj.addScriptTag();    // Execute (add) the script tag
         ddiv.innerHTML = "Downloading latest news...";
         // load addons list
         ddiv = document.getElementById("addons");
         ddiv.innerHTML = "Connecting...";
         var tobj = new JSONscriptRequest(
             'https://api.github.com/repos/FreeCAD/FreeCAD-addons/contents?callback=printAddons');
-        tobj.buildScriptTag();// Build the script tag
-        tobj.addScriptTag();  // Execute (add) the script tag
+        tobj.buildScriptTag();  // Build the script tag
+        tobj.addScriptTag();    // Execute (add) the script tag
         ddiv.innerHTML = "Downloading addons list...";
         if (showForum == 1) {
             // load forum recent posts
@@ -56,8 +56,8 @@ function load()
             ddiv.innerHTML = "Connecting...";
             var tobj = new JSONscriptRequest(
                 'https://www.freecad.org/xml-to-json.php?callback=printForum&url=https://forum.freecad.org/feed.php');
-            tobj.buildScriptTag();// Build the script tag
-            tobj.addScriptTag();  // Execute (add) the script tag
+            tobj.buildScriptTag();  // Build the script tag
+            tobj.addScriptTag();    // Execute (add) the script tag
             ddiv.innerHTML = "Downloading addons list...";
         }
     }

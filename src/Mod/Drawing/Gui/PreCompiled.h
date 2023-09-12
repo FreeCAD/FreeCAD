@@ -64,6 +64,6 @@
 #include <QTimer>
 #include <QWheelEvent>
 
-#endif//_PreComp_
+#endif  //_PreComp_
 
-#endif// DRAWINGGUI_PRECOMPILED_H
+#endif  // DRAWINGGUI_PRECOMPILED_H

@@ -273,10 +273,10 @@ std::string Trajectory::getUniqueWaypointName(const char* Name) const
     }
     // strip illegal chars
     for (char& it : CleanName) {
-        if (!((it >= 48 && it <= 57) ||  // number
-              (it >= 65 && it <= 90) ||  // uppercase letter
-              (it >= 97 && it <= 122))) {// lowercase letter
-            it = '_';                    // it's neither number nor letter
+        if (!((it >= 48 && it <= 57) ||    // number
+              (it >= 65 && it <= 90) ||    // uppercase letter
+              (it >= 97 && it <= 122))) {  // lowercase letter
+            it = '_';                      // it's neither number nor letter
         }
     }
 
@@ -297,7 +297,7 @@ std::string Trajectory::getUniqueWaypointName(const char* Name) const
         int nSuff = 0;
         for (it = vpcWaypoints.begin(); it != vpcWaypoints.end(); ++it) {
             const std::string& ObjName = (*it)->Name;
-            if (ObjName.substr(0, CleanName.length()) == CleanName) {// same prefix
+            if (ObjName.substr(0, CleanName.length()) == CleanName) {  // same prefix
                 std::string clSuffix(ObjName.substr(CleanName.length()));
                 if (!clSuffix.empty()) {
                     std::string::size_type nPos = clSuffix.find_first_not_of("0123456789");

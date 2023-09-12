@@ -44,4 +44,4 @@
 #endif
 #endif
 
-#endif// MESHPART_GLOBAL_H
+#endif  // MESHPART_GLOBAL_H

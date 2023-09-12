@@ -1456,7 +1456,7 @@ void Cloud::Module::LinkXSetValue(std::string filename)
 
     size_t header = filename.find_first_of(":");
     string protocol = filename.substr(0, header);
-    string url_new = filename.substr(header + 3);// url_new is the url excluding the http part
+    string url_new = filename.substr(header + 3);  // url_new is the url excluding the http part
     size_t part2 = url_new.find_first_of("/");
     string path = url_new.substr(part2 + 1);
     // Starting from here the Document doesn't exist we must create it

@@ -191,7 +191,7 @@ std::tuple<CellAddress, CellAddress> extractRange(const std::vector<CellAddress>
     }
     return std::make_tuple(firstRowAndColumn, lastRowAndColumn);
 }
-}// namespace
+}  // namespace
 
 std::vector<CellAddress> PropertySheet::getUsedCells() const
 {
@@ -328,11 +328,11 @@ void PropertySheet::Paste(const Property& from)
             if (rows != r || cols != c) {
                 spanChanges.push_back(ifrom->first);
             }
-            *cell = *(ifrom->second);// Exists; assign cell directly
+            *cell = *(ifrom->second);  // Exists; assign cell directly
         }
         else {
             cell = new Cell(this,
-                            *(ifrom->second));// Doesn't exist, copy using Cell's copy constructor
+                            *(ifrom->second));  // Doesn't exist, copy using Cell's copy constructor
             if (cell->getSpans(rows, cols)) {
                 spanChanges.push_back(ifrom->first);
             }
@@ -696,7 +696,7 @@ void PropertySheet::setAlignment(CellAddress address, int _alignment)
 {
     Cell* cell = nonNullCellAt(address);
     assert(cell);
-    if (cell->address != address) {// Reject alignment change for merged cell except top-left one
+    if (cell->address != address) {  // Reject alignment change for merged cell except top-left one
         return;
     }
     cell->setAlignment(_alignment);
@@ -907,7 +907,7 @@ void PropertySheet::insertRows(int row, int count)
     /* Sort them */
     std::sort(keys.begin(),
               keys.end(),
-              std::bind(&PropertySheet::rowSortFunc, this, sp::_1, sp::_2));// NOLINT
+              std::bind(&PropertySheet::rowSortFunc, this, sp::_1, sp::_2));  // NOLINT
 
     MoveCellsExpressionVisitor<PropertySheet> visitor(*this,
                                                       CellAddress(row, CellAddress::MAX_COLUMNS),
@@ -1029,7 +1029,7 @@ void PropertySheet::removeRows(int row, int count)
         }
 
         if (key.row() >= row && key.row() < row + count) {
-            clear(key, false);// aliases were cleared earlier
+            clear(key, false);  // aliases were cleared earlier
         }
         else if (key.row() >= row + count) {
             moveCell(key, CellAddress(key.row() - count, key.col()), renames);
@@ -1148,7 +1148,7 @@ void PropertySheet::removeColumns(int col, int count)
     /* Sort them */
     std::sort(keys.begin(),
               keys.end(),
-              std::bind(&PropertySheet::colSortFunc, this, sp::_1, sp::_2));// NOLINT
+              std::bind(&PropertySheet::colSortFunc, this, sp::_1, sp::_2));  // NOLINT
 
     MoveCellsExpressionVisitor<PropertySheet> visitor(
         *this,
@@ -1185,7 +1185,7 @@ void PropertySheet::removeColumns(int col, int count)
         }
 
         if (key.col() >= col && key.col() < col + count) {
-            clear(key, false);// aliases were cleared earlier
+            clear(key, false);  // aliases were cleared earlier
         }
         else if (key.col() >= col + count) {
             moveCell(key, CellAddress(key.row(), key.col() - count), renames);

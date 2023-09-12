@@ -48,7 +48,7 @@ std::string GeometryFacadePy::representation() const
     return str.str();
 }
 
-PyObject* GeometryFacadePy::PyMake(struct _typeobject*, PyObject*, PyObject*)// Python wrapper
+PyObject* GeometryFacadePy::PyMake(struct _typeobject*, PyObject*, PyObject*)  // Python wrapper
 {
     // create a new instance of PointPy and the Twin object
     return new GeometryFacadePy(new GeometryFacade());

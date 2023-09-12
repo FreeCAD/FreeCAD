@@ -159,6 +159,6 @@ protected:
     void keyPressEvent(QKeyEvent* keyEvt) override;
 };
 
-}// namespace WebGui
+}  // namespace WebGui
 
-#endif// WEBGUI_BROWSERVIEW_H
+#endif  // WEBGUI_BROWSERVIEW_H

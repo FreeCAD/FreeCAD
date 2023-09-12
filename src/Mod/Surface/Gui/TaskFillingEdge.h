@@ -100,6 +100,6 @@ private:
     void exitSelectionMode();
 };
 
-}// namespace SurfaceGui
+}  // namespace SurfaceGui
 
-#endif// SURFACEGUI_TASKFILLINGEDGE_H
+#endif  // SURFACEGUI_TASKFILLINGEDGE_H

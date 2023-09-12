@@ -77,6 +77,6 @@ private:
     bool aliasOk;
 };
 
-}// namespace SpreadsheetGui
+}  // namespace SpreadsheetGui
 
-#endif// PROPERTIESDIALOG_H
+#endif  // PROPERTIESDIALOG_H

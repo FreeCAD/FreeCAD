@@ -51,6 +51,6 @@ protected:
 };
 
 
-}// namespace RobotGui
+}  // namespace RobotGui
 
-#endif// ROBOTGUI_TASKWATCHER_H
+#endif  // ROBOTGUI_TASKWATCHER_H

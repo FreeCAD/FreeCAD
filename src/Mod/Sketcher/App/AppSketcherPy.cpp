@@ -42,7 +42,7 @@ public:
     {
         add_varargs_method("open", &Module::open);
         add_varargs_method("insert", &Module::insert);
-        initialize("This module is the Sketcher module.");// register with Python
+        initialize("This module is the Sketcher module.");  // register with Python
     }
 
     ~Module() override
@@ -119,4 +119,4 @@ PyObject* initModule()
 }
 /// @endcond
 
-}// namespace Sketcher
+}  // namespace Sketcher

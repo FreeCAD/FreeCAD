@@ -138,6 +138,6 @@ private:
     Gui::TaskView::TaskBox* taskbox;
 };
 
-}// namespace SurfaceGui
+}  // namespace SurfaceGui
 
-#endif// SURFACEGUI_TASKGEOMFILLSURFACE_H
+#endif  // SURFACEGUI_TASKGEOMFILLSURFACE_H

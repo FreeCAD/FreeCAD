@@ -46,7 +46,7 @@ protected:
     Gui::ToolBarItem* setupCommandBars() const;
 };
 
-}// namespace DrawingGui
+}  // namespace DrawingGui
 
 
-#endif// DRAWING_WORKBENCH_H
+#endif  // DRAWING_WORKBENCH_H

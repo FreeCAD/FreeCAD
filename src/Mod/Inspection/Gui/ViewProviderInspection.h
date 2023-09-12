@@ -40,7 +40,7 @@ namespace Gui
 {
 class SoFCColorBar;
 class View3DInventorViewer;
-}// namespace Gui
+}  // namespace Gui
 
 namespace InspectionGui
 {
@@ -123,7 +123,7 @@ public:
     QIcon getIcon() const override;
 };
 
-}// namespace InspectionGui
+}  // namespace InspectionGui
 
 
-#endif// INSPECTIOGUI_VIEWPROVIDERINSPECTION_H
+#endif  // INSPECTIOGUI_VIEWPROVIDERINSPECTION_H

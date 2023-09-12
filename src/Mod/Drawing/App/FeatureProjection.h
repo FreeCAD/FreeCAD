@@ -63,7 +63,7 @@ public:
     //@}
 };
 
-}// namespace Drawing
+}  // namespace Drawing
 
 
-#endif// DRAWING_FEATUREPROJECTION
+#endif  // DRAWING_FEATUREPROJECTION

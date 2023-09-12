@@ -43,7 +43,7 @@
 
 using namespace RobotGui;
 
-#if 0// needed for Qt's lupdate utility
+#if 0  // needed for Qt's lupdate utility
     qApp->translate("Workbench", "Robot");
     qApp->translate("Workbench", "Insert Robots");
     qApp->translate("Workbench", "&Robot");

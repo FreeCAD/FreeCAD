@@ -44,4 +44,4 @@
 #endif
 #endif
 
-#endif// START_GLOBAL_H
+#endif  // START_GLOBAL_H

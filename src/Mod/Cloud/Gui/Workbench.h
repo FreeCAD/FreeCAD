@@ -42,7 +42,7 @@ protected:
     //    Gui::ToolBarItem* setupToolBars() const;
 };
 
-}// namespace CloudGui
+}  // namespace CloudGui
 
 
-#endif// Cloud_WORKBENCH_H
+#endif  // Cloud_WORKBENCH_H

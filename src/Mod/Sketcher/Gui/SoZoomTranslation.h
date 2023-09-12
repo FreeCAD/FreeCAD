@@ -61,5 +61,5 @@ protected:
     mutable float scaleFactor;
 };
 
-}// namespace SketcherGui
-#endif// SKETCHERGUI_SOZOOMTRANSLATION_H
+}  // namespace SketcherGui
+#endif  // SKETCHERGUI_SOZOOMTRANSLATION_H

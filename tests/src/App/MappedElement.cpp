@@ -55,7 +55,7 @@ TEST_F(MappedElementTest, assignmentOperator)
     // Arrange
     auto mappedElementA = givenMappedElement("EDGE1", "OTHER_NAME");
     auto mappedElementB = givenMappedElement("EDGE2", "ANOTHER_NAME");
-    EXPECT_NE(mappedElementA, mappedElementB);// Verify test setup
+    EXPECT_NE(mappedElementA, mappedElementB);  // Verify test setup
 
     // Act
     mappedElementA = mappedElementB;
@@ -69,7 +69,7 @@ TEST_F(MappedElementTest, moveAssignmentOperator)
     // Arrange
     auto mappedElementA = givenMappedElement("EDGE1", "OTHER_NAME");
     auto mappedElementB = givenMappedElement("EDGE2", "ANOTHER_NAME");
-    EXPECT_NE(mappedElementA, mappedElementB);// Verify test setup
+    EXPECT_NE(mappedElementA, mappedElementB);  // Verify test setup
 
     // Act
     mappedElementA = std::move(mappedElementB);

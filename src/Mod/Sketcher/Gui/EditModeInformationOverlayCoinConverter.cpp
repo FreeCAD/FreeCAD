@@ -31,7 +31,7 @@
 #include <Inventor/nodes/SoSwitch.h>
 #include <Inventor/nodes/SoText2.h>
 #include <Inventor/nodes/SoTranslation.h>
-#endif// #ifndef _PreComp_
+#endif  // #ifndef _PreComp_
 
 #include <Base/Console.h>
 #include <Base/Exception.h>
@@ -163,7 +163,7 @@ void EditModeInformationOverlayCoinConverter::calculate(const Part::Geometry* ge
             }
 
             controlPolygon.indices.push_back(
-                nvertices);// single continuous polygon starting at index 0
+                nvertices);  // single continuous polygon starting at index 0
         }
         else if constexpr (calculation == CalculationType::BSplineCurvatureComb) {
 
@@ -178,7 +178,7 @@ void EditModeInformationOverlayCoinConverter::calculate(const Part::Geometry* ge
             auto knots = spline->getKnots();
             auto mults = spline->getMultiplicities();
 
-            const int ndivPerPiece = 64;// heuristic of number of division to fill in
+            const int ndivPerPiece = 64;  // heuristic of number of division to fill in
             const int ndiv = ndivPerPiece * (knots.size() - 1);
 
             std::vector<Base::Vector3d> pointatcurvelist;
@@ -241,11 +241,10 @@ void EditModeInformationOverlayCoinConverter::calculate(const Part::Geometry* ge
                         * normallist[i]);
             }
 
-            curvatureComb.coordinates.reserve(
-                3
-                * ndiv);// 2*ndiv +1 points of ndiv separate segments + ndiv points for last segment
+            curvatureComb.coordinates.reserve(3 * ndiv);  // 2*ndiv +1 points of ndiv separate
+                                                          // segments + ndiv points for last segment
             curvatureComb.indices.reserve(
-                ndiv + 1);// ndiv separate segments of radials + 1 segment connecting at comb end
+                ndiv + 1);  // ndiv separate segments of radials + 1 segment connecting at comb end
 
             auto zInfoH = ViewProviderSketchCoinAttorney::getViewOrientationFactor(viewProvider)
                 * drawingParameters.zInfo;
@@ -254,21 +253,21 @@ void EditModeInformationOverlayCoinConverter::calculate(const Part::Geometry* ge
                 // note emplace emplaces on the position BEFORE the iterator given.
                 curvatureComb.coordinates.emplace_back(pointatcurvelist[i].x,
                                                        pointatcurvelist[i].y,
-                                                       zInfoH);// radials
+                                                       zInfoH);  // radials
                 curvatureComb.coordinates.emplace_back(pointatcomblist[i].x,
                                                        pointatcomblist[i].y,
-                                                       zInfoH);// radials
+                                                       zInfoH);  // radials
 
-                curvatureComb.indices.emplace_back(2);// line
+                curvatureComb.indices.emplace_back(2);  // line
             }
 
             for (int i = 0; i < ndiv; i++) {
                 curvatureComb.coordinates.emplace_back(pointatcomblist[i].x,
                                                        pointatcomblist[i].y,
-                                                       zInfoH);// // comb endpoint closing segment
+                                                       zInfoH);  // // comb endpoint closing segment
             }
 
-            curvatureComb.indices.emplace_back(ndiv);// Comb line
+            curvatureComb.indices.emplace_back(ndiv);  // Comb line
         }
         else if constexpr (calculation == CalculationType::BSplineKnotMultiplicity) {
 

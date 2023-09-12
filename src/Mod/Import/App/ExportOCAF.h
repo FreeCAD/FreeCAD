@@ -45,7 +45,7 @@ namespace App
 class Document;
 class DocumentObject;
 class Part;
-}// namespace App
+}  // namespace App
 namespace Part
 {
 class Feature;
@@ -120,6 +120,6 @@ private:
 };
 
 
-}// namespace Import
+}  // namespace Import
 
-#endif// IMPORT_EXPORTOCAF_H
+#endif  // IMPORT_EXPORTOCAF_H

@@ -177,4 +177,4 @@ PROPERTY_SOURCE_TEMPLATE(SpreadsheetGui::ViewProviderSheetPython, SpreadsheetGui
 
 // explicit template instantiation
 template class SpreadsheetGuiExport ViewProviderPythonFeatureT<ViewProviderSheet>;
-}// namespace Gui
+}  // namespace Gui

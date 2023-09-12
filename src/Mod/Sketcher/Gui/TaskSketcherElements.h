@@ -161,6 +161,6 @@ private:
     bool isNamingBoxChecked;
 };
 
-}// namespace SketcherGui
+}  // namespace SketcherGui
 
-#endif// GUI_TASKVIEW_TASKAPPERANCE_H
+#endif  // GUI_TASKVIEW_TASKAPPERANCE_H

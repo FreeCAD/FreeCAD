@@ -42,7 +42,7 @@ protected:
     Gui::ToolBarItem* setupToolBars() const override;
 };
 
-}// namespace InspectionGui
+}  // namespace InspectionGui
 
 
-#endif// Inspection_WORKBENCH_H
+#endif  // Inspection_WORKBENCH_H

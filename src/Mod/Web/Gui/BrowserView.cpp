@@ -85,7 +85,7 @@ enum WebAction
 {
     OpenLink = 0,
     OpenLinkInNewWindow = 1,
-    ViewSource = 2// QWebView doesn't have a ViewSource option
+    ViewSource = 2  // QWebView doesn't have a ViewSource option
 };
 
 #ifdef QTWEBENGINE
@@ -163,7 +163,7 @@ class BrowserViewPy: public Py::PythonExtension<BrowserViewPy>
 {
 public:
     using BaseType = Py::PythonExtension<BrowserViewPy>;
-    static void init_type();// announce properties and methods
+    static void init_type();  // announce properties and methods
 
     explicit BrowserViewPy(BrowserView* view);
     ~BrowserViewPy() override;
@@ -302,7 +302,7 @@ Py::Object BrowserViewPy::url(const Py::Tuple& args)
     return Py::String(url.toString().toStdString());
 }
 
-}// namespace WebGui
+}  // namespace WebGui
 
 /**
  *  Constructs a WebView widget which can be zoomed with Ctrl+Mousewheel
@@ -390,7 +390,7 @@ void WebView::contextMenuEvent(QContextMenuEvent* event)
         return;
     }
 #if defined(QTWEBENGINE)
-    else {// for view source
+    else {  // for view source
         // QWebEngine caches standardContextMenu, guard so we only add signalmapper once
         static bool firstRun = true;
         if (firstRun) {
@@ -522,7 +522,7 @@ BrowserView::BrowserView(QWidget* parent)
             this,
             SLOT(onUnsupportedContent(QNetworkReply*)));
 
-#else// QTWEBENGINE
+#else  // QTWEBENGINE
     // QWebEngine doesn't support direct access to network
     // nor rendering access
     QWebEngineProfile* profile = view->page()->profile();
@@ -566,7 +566,7 @@ BrowserView::BrowserView(QWidget* parent)
 BrowserView::~BrowserView()
 {
 #ifdef QTWEBENGINE
-    delete interceptLinks;// cleanup not handled implicitly
+    delete interceptLinks;  // cleanup not handled implicitly
 #endif
     delete view;
 }
@@ -599,12 +599,12 @@ void BrowserView::urlFilter(const QUrl& url)
     else if (scheme == QString::fromLatin1("exthttp")) {
         exturl.setScheme(QString::fromLatin1("http"));
         QDesktopServices::openUrl(exturl);
-        stop();// stop qwebengine, should do nothing in qwebkit at this point
+        stop();  // stop qwebengine, should do nothing in qwebkit at this point
     }
     else if (scheme == QString::fromLatin1("exthttps")) {
         exturl.setScheme(QString::fromLatin1("https"));
         QDesktopServices::openUrl(exturl);
-        stop();// stop qwebengine, should do nothing in qwebkit at this point
+        stop();  // stop qwebengine, should do nothing in qwebkit at this point
     }
     // run scripts if not from somewhere else!
     if ((scheme.size() < 2 || scheme == QString::fromLatin1("file")) && host.isEmpty()) {
@@ -612,7 +612,7 @@ void BrowserView::urlFilter(const QUrl& url)
         if (fi.exists()) {
             QString ext = fi.completeSuffix();
             if (ext == QString::fromLatin1("py")) {
-                stop();// stop qwebengine, should do nothing in qwebkit at this point
+                stop();  // stop qwebengine, should do nothing in qwebkit at this point
 
                 try {
                     if (!q.isEmpty()) {

@@ -105,6 +105,6 @@ private:
     Gui::TaskView::TaskBox* taskbox;
 };
 
-}// namespace ReverseEngineeringGui
+}  // namespace ReverseEngineeringGui
 
-#endif// REVERSEENGINEERINGGUI_SEGMENTATIONMANUAL_H
+#endif  // REVERSEENGINEERINGGUI_SEGMENTATIONMANUAL_H

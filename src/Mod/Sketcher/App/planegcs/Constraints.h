@@ -114,7 +114,7 @@ public:
     };
 
     _PROTECTED_UNLESS_EXTRACT_MODE_
-        : VEC_pD origpvec;// is used only as a reference for redirecting and reverting pvec
+        : VEC_pD origpvec;  // is used only as a reference for redirecting and reverting pvec
     VEC_pD pvec;
     double scale;
     int tag;
@@ -1249,11 +1249,11 @@ private:
     {
         return pvec[0];
     }
-    void ReconstructGeomPointers();// writes pointers in pvec to the parameters of c
+    void ReconstructGeomPointers();  // writes pointers in pvec to the parameters of c
     void
     errorgrad(double* err,
               double* grad,
-              double* param);// error and gradient combined. Values are returned through pointers.
+              double* param);  // error and gradient combined. Values are returned through pointers.
 public:
     ConstraintP2CDistance(Point& p, Circle& c, double* d);
     ConstraintType getTypeId() override;
@@ -1263,6 +1263,6 @@ public:
 };
 
 
-}// namespace GCS
+}  // namespace GCS
 
-#endif// PLANEGCS_CONSTRAINTS_H
+#endif  // PLANEGCS_CONSTRAINTS_H

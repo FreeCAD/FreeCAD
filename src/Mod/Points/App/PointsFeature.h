@@ -25,7 +25,7 @@
 
 #include <App/FeatureCustom.h>
 #include <App/FeaturePython.h>
-#include <App/GeoFeature.h>// must be first include
+#include <App/GeoFeature.h>  // must be first include
 #include <App/PropertyGeo.h>
 
 #include "Points.h"
@@ -87,7 +87,7 @@ public:
 using FeatureCustom = App::FeatureCustomT<Feature>;
 using FeaturePython = App::FeaturePythonT<Feature>;
 
-}// namespace Points
+}  // namespace Points
 
 
 #endif

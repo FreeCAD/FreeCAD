@@ -36,14 +36,14 @@ namespace Robot
 /// Definition of the Axis properties
 struct AxisDefinition
 {
-    double a = 0.0;       // a of the Denavit-Hartenberg parameters (mm)
-    double alpha = 0.0;   // alpha of the Denavit-Hartenberg parameters (°)
-    double d = 0.0;       // d of the Denavit-Hartenberg parameters (mm)
-    double theta = 0.0;   // a of the Denavit-Hartenberg parameters (°)
-    double rotDir = 0.0;  // rotational direction (1|-1)
-    double maxAngle = 0.0;// soft ends + in °
-    double minAngle = 0.0;// soft ends - in °
-    double velocity = 0.0;// max vlocity of the axle in °/s
+    double a = 0.0;         // a of the Denavit-Hartenberg parameters (mm)
+    double alpha = 0.0;     // alpha of the Denavit-Hartenberg parameters (°)
+    double d = 0.0;         // d of the Denavit-Hartenberg parameters (mm)
+    double theta = 0.0;     // a of the Denavit-Hartenberg parameters (°)
+    double rotDir = 0.0;    // rotational direction (1|-1)
+    double maxAngle = 0.0;  // soft ends + in °
+    double minAngle = 0.0;  // soft ends - in °
+    double velocity = 0.0;  // max vlocity of the axle in °/s
 };
 
 
@@ -91,7 +91,7 @@ protected:
     double RotDir[6];
 };
 
-}// namespace Robot
+}  // namespace Robot
 
 
-#endif// PART_TOPOSHAPE_H
+#endif  // PART_TOPOSHAPE_H

@@ -72,6 +72,6 @@ private:
     void printGeneric(const BRepAdaptor_Curve&, int id, std::ostream&);
 };
 
-}// namespace Drawing
+}  // namespace Drawing
 
-#endif// DRAWING_EXPORT_H
+#endif  // DRAWING_EXPORT_H

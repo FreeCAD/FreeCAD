@@ -97,4 +97,4 @@ PROPERTY_SOURCE_TEMPLATE(SketcherGui::ViewProviderCustomPython, SketcherGui::Vie
 
 // explicit template instantiation
 template class SketcherGuiExport ViewProviderPythonFeatureT<SketcherGui::ViewProviderCustom>;
-}// namespace Gui
+}  // namespace Gui

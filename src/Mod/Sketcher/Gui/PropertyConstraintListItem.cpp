@@ -76,7 +76,7 @@ void PropertyConstraintListItem::initialize()
 
     for (std::vector<Sketcher::Constraint*>::const_iterator it = vals.begin(); it != vals.end();
          ++it, ++id) {
-        if ((*it)->Type == Sketcher::Distance ||// Datum constraint
+        if ((*it)->Type == Sketcher::Distance ||  // Datum constraint
             (*it)->Type == Sketcher::DistanceX || (*it)->Type == Sketcher::DistanceY
             || (*it)->Type == Sketcher::Radius || (*it)->Type == Sketcher::Diameter
             || (*it)->Type == Sketcher::Angle) {
@@ -175,7 +175,7 @@ void PropertyConstraintListItem::assignProperty(const App::Property* prop)
 
     for (std::vector<Sketcher::Constraint*>::const_iterator it = vals.begin(); it != vals.end();
          ++it, ++id) {
-        if ((*it)->Type == Sketcher::Distance ||// Datum constraint
+        if ((*it)->Type == Sketcher::Distance ||  // Datum constraint
             (*it)->Type == Sketcher::DistanceX || (*it)->Type == Sketcher::DistanceY
             || (*it)->Type == Sketcher::Radius || (*it)->Type == Sketcher::Diameter
             || (*it)->Type == Sketcher::Angle) {
@@ -255,7 +255,7 @@ QVariant PropertyConstraintListItem::value(const App::Property* prop) const
         static_cast<const Sketcher::PropertyConstraintList*>(prop)->getValues();
     for (std::vector<Sketcher::Constraint*>::const_iterator it = vals.begin(); it != vals.end();
          ++it, ++id) {
-        if ((*it)->Type == Sketcher::Distance ||// Datum constraint
+        if ((*it)->Type == Sketcher::Distance ||  // Datum constraint
             (*it)->Type == Sketcher::DistanceX || (*it)->Type == Sketcher::DistanceY
             || (*it)->Type == Sketcher::Radius || (*it)->Type == Sketcher::Diameter
             || (*it)->Type == Sketcher::Angle) {
@@ -338,7 +338,7 @@ bool PropertyConstraintListItem::event(QEvent* ev)
             for (std::vector<Sketcher::Constraint*>::const_iterator it = vals.begin();
                  it != vals.end();
                  ++it, ++id) {
-                if ((*it)->Type == Sketcher::Distance ||// Datum constraint
+                if ((*it)->Type == Sketcher::Distance ||  // Datum constraint
                     (*it)->Type == Sketcher::DistanceX || (*it)->Type == Sketcher::DistanceY
                     || (*it)->Type == Sketcher::Radius || (*it)->Type == Sketcher::Diameter
                     || (*it)->Type == Sketcher::Angle) {

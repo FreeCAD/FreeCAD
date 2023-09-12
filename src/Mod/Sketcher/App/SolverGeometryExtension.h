@@ -497,7 +497,7 @@ private:
     Base::Type GeometryType;
 };
 
-}// namespace Sketcher
+}  // namespace Sketcher
 
 
-#endif// SKETCHER_SOLVERGEOMETRYEXTENSION_H
+#endif  // SKETCHER_SOLVERGEOMETRYEXTENSION_H

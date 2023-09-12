@@ -72,7 +72,7 @@ private:
 using FeatureViewPartPython = App::FeaturePythonT<FeatureViewPart>;
 
 
-}// namespace Drawing
+}  // namespace Drawing
 
 
 #endif

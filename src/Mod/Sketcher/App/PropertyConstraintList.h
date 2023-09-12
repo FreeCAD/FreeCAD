@@ -183,7 +183,7 @@ private:
     static std::vector<Constraint*> _emptyValueList;
 };
 
-}// namespace Sketcher
+}  // namespace Sketcher
 
 
-#endif// APP_PropertyConstraintList_H
+#endif  // APP_PropertyConstraintList_H

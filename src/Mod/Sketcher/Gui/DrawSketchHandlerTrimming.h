@@ -31,7 +31,7 @@
 namespace SketcherGui
 {
 
-extern GeometryCreationMode geometryCreationMode;// defined in CommandCreateGeo.cpp
+extern GeometryCreationMode geometryCreationMode;  // defined in CommandCreateGeo.cpp
 
 class TrimmingSelection: public Gui::SelectionFilterGate
 {
@@ -115,7 +115,7 @@ public:
                 }
 
                 drawEditMarkers(EditMarkers,
-                                2);// maker augmented by two sizes (see supported marker sizes)
+                                2);  // maker augmented by two sizes (see supported marker sizes)
             }
         }
         else {
@@ -161,9 +161,9 @@ public:
             EditMarkers.resize(0);
             drawEditMarkers(EditMarkers);
         }
-        else {// exit the trimming tool if the user clicked on empty space
+        else {  // exit the trimming tool if the user clicked on empty space
             sketchgui
-                ->purgeHandler();// no code after this line, Handler get deleted in ViewProvider
+                ->purgeHandler();  // no code after this line, Handler get deleted in ViewProvider
         }
 
         return true;
@@ -187,7 +187,7 @@ private:
 };
 
 
-}// namespace SketcherGui
+}  // namespace SketcherGui
 
 
-#endif// SKETCHERGUI_DrawSketchHandlerTrimming_H
+#endif  // SKETCHERGUI_DrawSketchHandlerTrimming_H

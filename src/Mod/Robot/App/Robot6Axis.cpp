@@ -230,15 +230,15 @@ void Robot6Axis::Restore(XMLReader& reader)
 bool Robot6Axis::setTo(const Placement& To)
 {
     // Creation of the solvers:
-    ChainFkSolverPos_recursive fksolver1(Kinematic);// Forward position solver
-    ChainIkSolverVel_pinv iksolver1v(Kinematic);    // Inverse velocity solver
+    ChainFkSolverPos_recursive fksolver1(Kinematic);  // Forward position solver
+    ChainIkSolverVel_pinv iksolver1v(Kinematic);      // Inverse velocity solver
     ChainIkSolverPos_NR_JL iksolver1(Kinematic,
                                      Min,
                                      Max,
                                      fksolver1,
                                      iksolver1v,
                                      100,
-                                     1e-6);// Maximum 100 iterations, stop at accuracy 1e-6
+                                     1e-6);  // Maximum 100 iterations, stop at accuracy 1e-6
 
     // Creation of jntarrays:
     JntArray result(Kinematic.getNrOfJoints());
@@ -292,11 +292,11 @@ bool Robot6Axis::calcTcp()
 
 bool Robot6Axis::setAxis(int Axis, double Value)
 {
-    Actual(Axis) = RotDir[Axis] * Value * (M_PI / 180);// degree to radiants
+    Actual(Axis) = RotDir[Axis] * Value * (M_PI / 180);  // degree to radiants
     return calcTcp();
 }
 
 double Robot6Axis::getAxis(int Axis)
 {
-    return RotDir[Axis] * (Actual(Axis) / (M_PI / 180));// radian to degree
+    return RotDir[Axis] * (Actual(Axis) / (M_PI / 180));  // radian to degree
 }

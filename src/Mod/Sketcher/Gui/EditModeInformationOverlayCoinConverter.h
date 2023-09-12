@@ -34,7 +34,7 @@ template<typename T>
 class Vector3;
 
 class Vector2d;
-}// namespace Base
+}  // namespace Base
 
 namespace Part
 {
@@ -215,7 +215,7 @@ private:
 };
 
 
-}// namespace SketcherGui
+}  // namespace SketcherGui
 
 
-#endif// SKETCHERGUI_InformationOverlayCoinConverter_H
+#endif  // SKETCHERGUI_InformationOverlayCoinConverter_H

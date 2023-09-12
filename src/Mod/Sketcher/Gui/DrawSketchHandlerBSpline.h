@@ -34,7 +34,7 @@
 namespace SketcherGui
 {
 
-extern GeometryCreationMode geometryCreationMode;// defined in CommandCreateGeo.cpp
+extern GeometryCreationMode geometryCreationMode;  // defined in CommandCreateGeo.cpp
 
 class DrawSketchHandlerBSpline: public DrawSketchHandler
 {
@@ -121,7 +121,7 @@ public:
                 Gui::cmdAppObjectArgs(sketchgui->getObject(),
                                       "addConstraint(Sketcher.Constraint('Weight',%d,%f)) ",
                                       poleGeoIds.back(),
-                                      1.0);// First pole defaults to 1.0 weight
+                                      1.0);  // First pole defaults to 1.0 weight
             }
             catch (const Base::Exception&) {
                 Gui::NotifyError(sketchgui,
@@ -176,7 +176,7 @@ public:
             if (IsClosed) {
                 Mode = STATUS_CLOSE;
 
-                if (ConstrMethod == 1) {// if periodic we do not need the last pole
+                if (ConstrMethod == 1) {  // if periodic we do not need the last pole
                     BSplinePoles.pop_back();
                     sugConstr.pop_back();
 
@@ -361,8 +361,8 @@ public:
                 resetHandlerState();
             }
         }
-        else {// we have no data (CurrentConstraint == 0) so user when right-clicking really wants
-              // to exit
+        else {  // we have no data (CurrentConstraint == 0) so user when right-clicking really wants
+                // to exit
             DrawSketchHandler::quit();
         }
     }
@@ -555,8 +555,8 @@ private:
                  * right button of the mouse */
             }
             else {
-                sketchgui
-                    ->purgeHandler();// no code after this line, Handler get deleted in ViewProvider
+                sketchgui->purgeHandler();  // no code after this line, Handler get deleted in
+                                            // ViewProvider
             }
         }
         else {
@@ -585,7 +585,7 @@ protected:
 };
 
 
-}// namespace SketcherGui
+}  // namespace SketcherGui
 
 
-#endif// SKETCHERGUI_DrawSketchHandlerBSpline_H
+#endif  // SKETCHERGUI_DrawSketchHandlerBSpline_H

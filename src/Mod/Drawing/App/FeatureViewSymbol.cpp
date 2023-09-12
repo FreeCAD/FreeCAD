@@ -146,4 +146,4 @@ const char* Drawing::FeatureViewSymbolPython::getViewProviderName(void) const
 
 // explicit template instantiation
 template class DrawingExport FeaturePythonT<Drawing::FeatureViewSymbol>;
-}// namespace App
+}  // namespace App

@@ -63,6 +63,6 @@ private:
     Spreadsheet::Sheet* sheet;
 };
 
-}// namespace SpreadsheetGui
+}  // namespace SpreadsheetGui
 
-#endif// SPREADSHEETDELEGATE_H
+#endif  // SPREADSHEETDELEGATE_H

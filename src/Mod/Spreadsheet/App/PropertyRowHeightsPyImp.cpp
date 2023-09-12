@@ -38,7 +38,7 @@ std::string PropertyRowHeightsPy::representation() const
     return {"<PropertyRowHeights object>"};
 }
 
-PyObject* PropertyRowHeightsPy::PyMake(struct _typeobject*, PyObject*, PyObject*)// Python wrapper
+PyObject* PropertyRowHeightsPy::PyMake(struct _typeobject*, PyObject*, PyObject*)  // Python wrapper
 {
     // create a new instance of PropertyRowHeightsPy and the Twin object
     return new PropertyRowHeightsPy(new PropertyRowHeights);

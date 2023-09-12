@@ -50,7 +50,7 @@ std::string ExternalGeometryFacadePy::representation() const
 
 PyObject* ExternalGeometryFacadePy::PyMake(struct _typeobject*,
                                            PyObject*,
-                                           PyObject*)// Python wrapper
+                                           PyObject*)  // Python wrapper
 {
     // create a new instance of PointPy and the Twin object
     return new ExternalGeometryFacadePy(new ExternalGeometryFacade());

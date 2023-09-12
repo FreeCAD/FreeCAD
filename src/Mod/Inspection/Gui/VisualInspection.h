@@ -52,6 +52,6 @@ private:
     QPushButton* buttonOk;
 };
 
-}// namespace InspectionGui
+}  // namespace InspectionGui
 
-#endif// INSPECTIONGUI_VISUALINSPECTION_H
+#endif  // INSPECTIONGUI_VISUALINSPECTION_H

@@ -22,7 +22,7 @@
 
 #include "PreCompiled.h"
 #if defined(__MINGW32__)
-#define WNT// avoid conflict with GUID
+#define WNT  // avoid conflict with GUID
 #endif
 #ifndef _PreComp_
 #include <climits>
@@ -123,7 +123,7 @@ public:
             &Module::writeDXFObject,
             "writeDXFObject([objects],filename [,version,usePolyline,optionSource]): Exports "
             "DocumentObject(s) to a DXF file.");
-        initialize("This module is the Import module.");// register with Python
+        initialize("This module is the Import module.");  // register with Python
     }
 
     ~Module() override = default;
@@ -765,4 +765,4 @@ PyObject* initModule()
     return Base::Interpreter().addModule(new Module);
 }
 
-}// namespace Import
+}  // namespace Import

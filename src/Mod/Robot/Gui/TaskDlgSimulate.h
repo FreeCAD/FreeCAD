@@ -70,6 +70,6 @@ protected:
 };
 
 
-}// namespace RobotGui
+}  // namespace RobotGui
 
-#endif// ROBOTGUI_TASKDLGSIMULATE_H
+#endif  // ROBOTGUI_TASKDLGSIMULATE_H

@@ -85,7 +85,7 @@ UnitTestDialog::UnitTestDialog(QWidget* parent, Qt::WindowFlags f)
     ui->setupUi(this);
     setupConnections();
 
-    setProgressColor(QColor(40, 210, 43));// a darker green
+    setProgressColor(QColor(40, 210, 43));  // a darker green
     ui->progressBar->setAlignment(Qt::AlignCenter);
 
     // red items
@@ -188,7 +188,7 @@ void UnitTestDialog::onAboutButtonClicked()
 void UnitTestDialog::onStartButtonClicked()
 {
     reset();
-    setProgressColor(QColor(40, 210, 43));// a darker green
+    setProgressColor(QColor(40, 210, 43));  // a darker green
     ui->startButton->setDisabled(true);
     try {
         Base::Interpreter().runString("import qtunittest, gc\n"

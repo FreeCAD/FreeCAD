@@ -52,7 +52,7 @@ public:
 };
 
 
-}// namespace Drawing
+}  // namespace Drawing
 
 
 #endif

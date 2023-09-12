@@ -170,7 +170,7 @@ FaceUnwrapper::FaceUnwrapper(const TopoDS_Face& face)
 
 void FaceUnwrapper::findFlatNodes(int steps, double val)
 {
-    std::vector<long> fixed_pins;// TODO: INPUT
+    std::vector<long> fixed_pins;  // TODO: INPUT
     lscmrelax::LscmRelax mesh_flattener(this->xyz_nodes.transpose(),
                                         this->tris.transpose(),
                                         fixed_pins);

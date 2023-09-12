@@ -44,7 +44,7 @@ protected:
     void unsetEdit(int ModNum) override;
 };
 
-}// namespace RobotGui
+}  // namespace RobotGui
 
 
-#endif// ROBOT_ViewProviderTrajectoryDressUp_H
+#endif  // ROBOT_ViewProviderTrajectoryDressUp_H

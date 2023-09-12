@@ -255,7 +255,7 @@ private:
     bool OwnerT;
     mutable bool indexInit;
     mutable std::vector<Sketcher::GeoElementId>
-        VertexId2GeoElementId;// these maps a lazy initialised on first demand.
+        VertexId2GeoElementId;  // these maps a lazy initialised on first demand.
     mutable std::map<Sketcher::GeoElementId, int> GeoElementId2VertexId;
 };
 
@@ -267,7 +267,7 @@ using GeoListFacade = GeoListModel<GeometryFacadeUniquePtr>;
 
 GeoListFacade getGeoListFacade(const GeoList& geolist);
 
-}// namespace Sketcher
+}  // namespace Sketcher
 
 
-#endif// SKETCHER_GeoList_H
+#endif  // SKETCHER_GeoList_H

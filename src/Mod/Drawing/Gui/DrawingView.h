@@ -133,6 +133,6 @@ private:
     QPageSize::PageSizeId m_pageSize;
 };
 
-}// namespace DrawingGui
+}  // namespace DrawingGui
 
-#endif// DRAWINGGUI_DRAWINGVIEW_H
+#endif  // DRAWINGGUI_DRAWINGVIEW_H

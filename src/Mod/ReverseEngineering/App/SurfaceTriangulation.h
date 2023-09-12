@@ -208,6 +208,6 @@ private:
     Mesh::MeshObject& myMesh;
 };
 
-}// namespace Reen
+}  // namespace Reen
 
-#endif// REEN_SURFACETRIANGULATION_H
+#endif  // REEN_SURFACETRIANGULATION_H

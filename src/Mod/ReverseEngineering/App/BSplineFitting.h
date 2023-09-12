@@ -58,8 +58,8 @@ private:
     double myBoundaryWeight;
 };
 
-}// namespace Reen
+}  // namespace Reen
 
-#endif// HAVE_PCL_OPENNURBS
+#endif  // HAVE_PCL_OPENNURBS
 
-#endif// REEN_BSPLINEFITTING_H
+#endif  // REEN_BSPLINEFITTING_H

@@ -149,7 +149,7 @@ TEST_F(ElementMapTest, setElementNameWithHashing)
     Data::ElementMap elementMap;
     std::ostringstream ss;
     Data::IndexedName element("Edge", 1);
-    Data::MappedName elementNameHolder(element);// Will get modified by the encoder
+    Data::MappedName elementNameHolder(element);  // Will get modified by the encoder
     const Data::MappedName expectedName(element);
 
     // Act
@@ -376,7 +376,7 @@ TEST_F(ElementMapTest, mimicSimpleUnion)
 
     // we are only going to simulate one face for testing purpose
     Data::IndexedName uface3("Face", 3);
-    auto PartOp = "FUS";// Part::OpCodes::Fuse;
+    auto PartOp = "FUS";  // Part::OpCodes::Fuse;
 
     // Act
     //   act: simulate a union/fuse operation
@@ -468,7 +468,7 @@ TEST_F(ElementMapTest, mimicOperationAgainstSelf)
 
     // Assert
     EXPECT_EQ(postfixStr, ":M9999;MYS");
-    EXPECT_EQ(finalPart.elementMapPtr->find(uface3).toString(), "Face3");// override not forced
+    EXPECT_EQ(finalPart.elementMapPtr->find(uface3).toString(), "Face3");  // override not forced
     EXPECT_EQ(uface3Holder.toString(), "Face6;:M9999;MYS;:H63:b,F");
     // explaining ";Face6;:M2;MYS;:H2:3,F" name:
     //
@@ -511,7 +511,7 @@ TEST_F(ElementMapTest, hashChildMapsTest)
         7,
         3L,
         Data::ElementMapPtr(),
-        QByteArray("abcdefghij"),// postfix must be 10 or more bytes to invoke hasher
+        QByteArray("abcdefghij"),  // postfix must be 10 or more bytes to invoke hasher
         _sid};
     std::vector<Data::ElementMap::MappedChildElements> children = {childOne};
     cube.elementMapPtr->addChildElements(cube.Tag, children);
@@ -536,7 +536,7 @@ TEST_F(ElementMapTest, addAndGetChildElementsTest)
         7,
         3L,
         Data::ElementMapPtr(),
-        QByteArray("abcdefghij"),// postfix must be 10 or more bytes to invoke hasher
+        QByteArray("abcdefghij"),  // postfix must be 10 or more bytes to invoke hasher
         _sid};
     Data::ElementMap::MappedChildElements childTwo =
         {Data::IndexedName("Pong", 2), 2, 7, 4L, Data::ElementMapPtr(), QByteArray("abc"), _sid};

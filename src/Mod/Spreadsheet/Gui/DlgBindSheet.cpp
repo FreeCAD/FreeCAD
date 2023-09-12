@@ -161,7 +161,7 @@ void DlgBindSheet::accept()
     try {
         const char* ref = ui->comboBox->itemData(ui->comboBox->currentIndex())
                               .toByteArray()
-                              .constData();// clazy:exclude=returning-data-from-temporary
+                              .constData();  // clazy:exclude=returning-data-from-temporary
         auto obj = sheet;
         if (ref[0]) {
             const char* sep = strchr(ref, '#');

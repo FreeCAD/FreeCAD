@@ -129,7 +129,7 @@ void CmdSketcherToggleConstruction::activated(int iMsg)
 
         rcCmdMgr.updateCommands("ToggleConstruction", static_cast<int>(geometryCreationMode));
     }
-    else// there was a selection, so operate in toggle mode.
+    else  // there was a selection, so operate in toggle mode.
     {
         // get the selection
         std::vector<Gui::SelectionObject> selection;
@@ -220,7 +220,7 @@ bool CmdSketcherToggleConstruction::isActive()
     return isAlterGeoActive(getActiveGuiDocument());
 }
 
-}// namespace SketcherGui
+}  // namespace SketcherGui
 
 void CreateSketcherCommandsAlterGeo()
 {

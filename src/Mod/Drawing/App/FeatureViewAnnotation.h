@@ -64,7 +64,7 @@ public:
 using FeatureViewAnnotationPython = App::FeaturePythonT<FeatureViewAnnotation>;
 
 
-}// namespace Drawing
+}  // namespace Drawing
 
 
 #endif

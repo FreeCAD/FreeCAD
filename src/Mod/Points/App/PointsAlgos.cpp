@@ -30,7 +30,7 @@
 
 #include <boost/algorithm/string.hpp>
 #include <boost/lexical_cast.hpp>
-#include <boost/math/special_functions/fpclassify.hpp>// needed for compilation on some systems
+#include <boost/math/special_functions/fpclassify.hpp>  // needed for compilation on some systems
 #include <boost/regex.hpp>
 #endif
 
@@ -535,7 +535,7 @@ lzfDecompress(const void* const in_data, unsigned int in_len, void* out_data, un
                     *op++ = *ref++;
                     /* FALLTHRU */
                 case 0:
-                    *op++ = *ref++;// two octets more
+                    *op++ = *ref++;  // two octets more
                     *op++ = *ref++;
             }
         }
@@ -543,7 +543,7 @@ lzfDecompress(const void* const in_data, unsigned int in_len, void* out_data, un
 
     return (static_cast<unsigned int>(op - static_cast<unsigned char*>(out_data)));
 }
-}// namespace Points
+}  // namespace Points
 
 PlyReader::PlyReader() = default;
 
@@ -733,7 +733,7 @@ std::size_t PlyReader::readHeader(std::istream& in,
     in.read(ply, 3);
     in.ignore(1);
     if (!in || (ply[0] != 'p') || (ply[1] != 'l') || (ply[2] != 'y')) {
-        throw Base::BadFormatError("Not a ply file");// wrong header
+        throw Base::BadFormatError("Not a ply file");  // wrong header
     }
 
     while (std::getline(in, line)) {
@@ -807,8 +807,8 @@ std::size_t PlyReader::readHeader(std::istream& in,
             std::list<std::string> number;
             if (list[1] == "list") {
                 number.insert(number.end(), list.begin(), list.end());
-                number.pop_front();// property
-                number.pop_front();// list
+                number.pop_front();  // property
+                number.pop_front();  // list
                 number.pop_back();
             }
             else {
@@ -1768,7 +1768,7 @@ private:
     PointKernel points;
     std::vector<Base::Vector3f> normals;
 };
-}// namespace
+}  // namespace
 
 E57Reader::E57Reader(bool Color, bool State, double Distance)
     : useColor {Color}

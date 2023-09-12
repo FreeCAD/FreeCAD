@@ -94,13 +94,13 @@ void RobotAlgos::Test()
     }
 
     // Creation of the solvers:
-    ChainFkSolverPos_recursive fksolver1(chain);// Forward position solver
-    ChainIkSolverVel_pinv iksolver1v(chain);    // Inverse velocity solver
+    ChainFkSolverPos_recursive fksolver1(chain);  // Forward position solver
+    ChainIkSolverVel_pinv iksolver1v(chain);      // Inverse velocity solver
     ChainIkSolverPos_NR iksolver1(chain,
                                   fksolver1,
                                   iksolver1v,
                                   100,
-                                  1e-6);// Maximum 100 iterations, stop at accuracy 1e-6
+                                  1e-6);  // Maximum 100 iterations, stop at accuracy 1e-6
 
     // Creation of jntarrays:
     JntArray result(chain.getNrOfJoints());

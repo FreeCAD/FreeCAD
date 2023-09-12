@@ -55,6 +55,6 @@ private:
     Ui::DlgBindSheet* ui;
 };
 
-}// namespace SpreadsheetGui
+}  // namespace SpreadsheetGui
 
-#endif// DLG_BINDSHEET_H
+#endif  // DLG_BINDSHEET_H

@@ -43,7 +43,7 @@ GeometryFacade::GeometryFacade(const Part::Geometry* geometry, bool owner)
     : Geo(geometry)
     , OwnerGeo(owner)
 {
-    assert(geometry);// This should never be nullptr, as this constructor is protected
+    assert(geometry);  // This should never be nullptr, as this constructor is protected
 
     initExtension();
 }
@@ -95,7 +95,7 @@ void GeometryFacade::initExtension()
 {
     if (!Geo->hasExtension(SketchGeometryExtension::getClassTypeId())) {
 
-        getGeo()->setExtension(std::make_unique<SketchGeometryExtension>());// Create getExtension
+        getGeo()->setExtension(std::make_unique<SketchGeometryExtension>());  // Create getExtension
 
         // Base::Console().Warning("%s\nSketcher Geometry without Extension: %s \n",
         // boost::uuids::to_string(Geo->getTag()).c_str());
@@ -132,7 +132,7 @@ void GeometryFacade::ensureSketchGeometryExtension(Part::Geometry* geometry)
     throwOnNullPtr(geometry);
 
     if (!geometry->hasExtension(SketchGeometryExtension::getClassTypeId())) {
-        geometry->setExtension(std::make_unique<SketchGeometryExtension>());// Create getExtension
+        geometry->setExtension(std::make_unique<SketchGeometryExtension>());  // Create getExtension
     }
 }
 

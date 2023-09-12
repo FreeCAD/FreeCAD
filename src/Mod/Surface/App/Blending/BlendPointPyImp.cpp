@@ -51,7 +51,7 @@ std::string BlendPointPy::representation() const
     return str.str();
 }
 
-PyObject* BlendPointPy::PyMake(struct _typeobject*, PyObject*, PyObject*)// Python wrapper
+PyObject* BlendPointPy::PyMake(struct _typeobject*, PyObject*, PyObject*)  // Python wrapper
 {
     // create a new instance of BlendPointPy
     return new BlendPointPy(new BlendPoint);

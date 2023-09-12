@@ -24,7 +24,7 @@ protected:
     }
 };
 
-TEST_F(StringIDTest, stringIDManualConstructionNoFlags)// NOLINT
+TEST_F(StringIDTest, stringIDManualConstructionNoFlags)  // NOLINT
 {
     // Arrange
     const long expectedValue {42};
@@ -39,7 +39,7 @@ TEST_F(StringIDTest, stringIDManualConstructionNoFlags)// NOLINT
     EXPECT_FALSE(id.isBinary());
 }
 
-TEST_F(StringIDTest, stringIDManualConstructionWithFlag)// NOLINT
+TEST_F(StringIDTest, stringIDManualConstructionWithFlag)  // NOLINT
 {
     // Arrange
     const long expectedValue {42};
@@ -55,7 +55,7 @@ TEST_F(StringIDTest, stringIDManualConstructionWithFlag)// NOLINT
     EXPECT_TRUE(id.isBinary());
 }
 
-TEST_F(StringIDTest, stringIDDefaultConstruction)// NOLINT
+TEST_F(StringIDTest, stringIDDefaultConstruction)  // NOLINT
 {
     // Arrange & Act
     auto id = App::StringID();
@@ -64,7 +64,7 @@ TEST_F(StringIDTest, stringIDDefaultConstruction)// NOLINT
     EXPECT_EQ(0, id.value());
 }
 
-TEST_F(StringIDTest, value)// NOLINT
+TEST_F(StringIDTest, value)  // NOLINT
 {
     // Arrange
     const long expectedValueA {0};
@@ -85,12 +85,12 @@ TEST_F(StringIDTest, value)// NOLINT
     EXPECT_EQ(expectedValueC, valueC);
 }
 
-TEST_F(StringIDTest, relatedIDs)// NOLINT
+TEST_F(StringIDTest, relatedIDs)  // NOLINT
 {
     // Nothing to test -- relatedIDs are storage-only in this class
 }
 
-TEST_F(StringIDTest, isBinary)// NOLINT
+TEST_F(StringIDTest, isBinary)  // NOLINT
 {
     // Arrange
     auto flaggedID = givenFlaggedStringID(App::StringID::Flag::Binary);
@@ -101,7 +101,7 @@ TEST_F(StringIDTest, isBinary)// NOLINT
     EXPECT_FALSE(controlID.isBinary());
 }
 
-TEST_F(StringIDTest, isHashed)// NOLINT
+TEST_F(StringIDTest, isHashed)  // NOLINT
 {
     // Arrange
     auto flaggedID = givenFlaggedStringID(App::StringID::Flag::Hashed);
@@ -112,7 +112,7 @@ TEST_F(StringIDTest, isHashed)// NOLINT
     EXPECT_FALSE(controlID.isHashed());
 }
 
-TEST_F(StringIDTest, isPostfixed)// NOLINT
+TEST_F(StringIDTest, isPostfixed)  // NOLINT
 {
     // Arrange
     auto flaggedID = givenFlaggedStringID(App::StringID::Flag::Postfixed);
@@ -123,7 +123,7 @@ TEST_F(StringIDTest, isPostfixed)// NOLINT
     EXPECT_FALSE(controlID.isPostfixed());
 }
 
-TEST_F(StringIDTest, isPostfixEncoded)// NOLINT
+TEST_F(StringIDTest, isPostfixEncoded)  // NOLINT
 {
     // Arrange
     auto flaggedID = givenFlaggedStringID(App::StringID::Flag::PostfixEncoded);
@@ -134,7 +134,7 @@ TEST_F(StringIDTest, isPostfixEncoded)// NOLINT
     EXPECT_FALSE(controlID.isPostfixEncoded());
 }
 
-TEST_F(StringIDTest, isIndexed)// NOLINT
+TEST_F(StringIDTest, isIndexed)  // NOLINT
 {
     // Arrange
     auto flaggedID = givenFlaggedStringID(App::StringID::Flag::Indexed);
@@ -145,7 +145,7 @@ TEST_F(StringIDTest, isIndexed)// NOLINT
     EXPECT_FALSE(controlID.isIndexed());
 }
 
-TEST_F(StringIDTest, isPrefixID)// NOLINT
+TEST_F(StringIDTest, isPrefixID)  // NOLINT
 {
     // Arrange
     auto flaggedID = givenFlaggedStringID(App::StringID::Flag::PrefixID);
@@ -156,7 +156,7 @@ TEST_F(StringIDTest, isPrefixID)// NOLINT
     EXPECT_FALSE(controlID.isPrefixID());
 }
 
-TEST_F(StringIDTest, isPrefixIDIndex)// NOLINT
+TEST_F(StringIDTest, isPrefixIDIndex)  // NOLINT
 {
     // Arrange
     auto flaggedID = givenFlaggedStringID(App::StringID::Flag::PrefixIDIndex);
@@ -167,7 +167,7 @@ TEST_F(StringIDTest, isPrefixIDIndex)// NOLINT
     EXPECT_FALSE(controlID.isPrefixIDIndex());
 }
 
-TEST_F(StringIDTest, isMarked)// NOLINT
+TEST_F(StringIDTest, isMarked)  // NOLINT
 {
     // Arrange
     auto flaggedID = givenFlaggedStringID(App::StringID::Flag::Marked);
@@ -178,7 +178,7 @@ TEST_F(StringIDTest, isMarked)// NOLINT
     EXPECT_FALSE(controlID.isMarked());
 }
 
-TEST_F(StringIDTest, isPersistent)// NOLINT
+TEST_F(StringIDTest, isPersistent)  // NOLINT
 {
     // Arrange
     auto flaggedID = givenFlaggedStringID(App::StringID::Flag::Persistent);
@@ -189,17 +189,17 @@ TEST_F(StringIDTest, isPersistent)// NOLINT
     EXPECT_FALSE(controlID.isPersistent());
 }
 
-TEST_F(StringIDTest, isFromSameHasher)// NOLINT
+TEST_F(StringIDTest, isFromSameHasher)  // NOLINT
 {
     // Nothing to test except when used by StringHasher
 }
 
-TEST_F(StringIDTest, getHasher)// NOLINT
+TEST_F(StringIDTest, getHasher)  // NOLINT
 {
     // Nothing to test except when used by StringHasher
 }
 
-TEST_F(StringIDTest, data)// NOLINT
+TEST_F(StringIDTest, data)  // NOLINT
 {
     // Arrange
     QByteArray expectedData {"data", 4};
@@ -212,12 +212,12 @@ TEST_F(StringIDTest, data)// NOLINT
     EXPECT_EQ(expectedData, data);
 }
 
-TEST_F(StringIDTest, postfix)// NOLINT
+TEST_F(StringIDTest, postfix)  // NOLINT
 {
     // Nothing to test except when used by StringHasher
 }
 
-TEST_F(StringIDTest, getPyObject)// NOLINT
+TEST_F(StringIDTest, getPyObject)  // NOLINT
 {
     // Arrange
     Py_Initialize();
@@ -232,7 +232,7 @@ TEST_F(StringIDTest, getPyObject)// NOLINT
     EXPECT_TRUE(PyObject_TypeCheck(py.ptr(), &App::StringIDPy::Type));
 }
 
-TEST_F(StringIDTest, getPyObjectWithIndex)// NOLINT
+TEST_F(StringIDTest, getPyObjectWithIndex)  // NOLINT
 {
     // Arrange
     Py_Initialize();
@@ -247,7 +247,7 @@ TEST_F(StringIDTest, getPyObjectWithIndex)// NOLINT
     ASSERT_TRUE(PyObject_TypeCheck(py.ptr(), &App::StringIDPy::Type));
 }
 
-TEST_F(StringIDTest, toStringWithoutIndex)// NOLINT
+TEST_F(StringIDTest, toStringWithoutIndex)  // NOLINT
 {
     // Arrange
     const long bigHex = 0xfcad10;
@@ -260,10 +260,10 @@ TEST_F(StringIDTest, toStringWithoutIndex)// NOLINT
 
     // Assert
     EXPECT_EQ(std::string("#1"), resultA);
-    EXPECT_EQ(std::string("#fcad10"), resultB);// Make sure result is in hex
+    EXPECT_EQ(std::string("#fcad10"), resultB);  // Make sure result is in hex
 }
 
-TEST_F(StringIDTest, toStringWithIndex)// NOLINT
+TEST_F(StringIDTest, toStringWithIndex)  // NOLINT
 {
     // Arrange
     const long bigHex = 0xfcad10;
@@ -278,7 +278,7 @@ TEST_F(StringIDTest, toStringWithIndex)// NOLINT
     EXPECT_EQ(std::string("#1"), resultB);
 }
 
-TEST_F(StringIDTest, fromStringWithEOFAndLengthGood)// NOLINT
+TEST_F(StringIDTest, fromStringWithEOFAndLengthGood)  // NOLINT
 {
     // Arrange
     const std::string testString {"#1:fcad"};
@@ -292,7 +292,7 @@ TEST_F(StringIDTest, fromStringWithEOFAndLengthGood)// NOLINT
     EXPECT_EQ(result.index, 0xfcad);
 }
 
-TEST_F(StringIDTest, fromStringExtraData)// NOLINT
+TEST_F(StringIDTest, fromStringExtraData)  // NOLINT
 {
     // Arrange
     const std::string testString {"#1:fcad#2:bad"};
@@ -308,7 +308,7 @@ TEST_F(StringIDTest, fromStringExtraData)// NOLINT
     EXPECT_EQ(falseResult.id, 1);
 }
 
-TEST_F(StringIDTest, fromStringLengthUnspecified)// NOLINT
+TEST_F(StringIDTest, fromStringLengthUnspecified)  // NOLINT
 {
     // Arrange
     const std::string testString {"#1:fcad#2:bad"};
@@ -322,7 +322,7 @@ TEST_F(StringIDTest, fromStringLengthUnspecified)// NOLINT
     EXPECT_EQ(falseResult.id, 1);
 }
 
-TEST_F(StringIDTest, fromStringShorterLength)// NOLINT
+TEST_F(StringIDTest, fromStringShorterLength)  // NOLINT
 {
     // Arrange
     const int dataLength {7};
@@ -337,7 +337,7 @@ TEST_F(StringIDTest, fromStringShorterLength)// NOLINT
     EXPECT_EQ(falseResult.id, 1);
 }
 
-TEST_F(StringIDTest, fromStringNoHashtag)// NOLINT
+TEST_F(StringIDTest, fromStringNoHashtag)  // NOLINT
 {
     // Arrange
     const std::string testString {"1:fcad"};
@@ -349,7 +349,7 @@ TEST_F(StringIDTest, fromStringNoHashtag)// NOLINT
     EXPECT_EQ(result.id, -1);
 }
 
-TEST_F(StringIDTest, fromStringNotHex)// NOLINT
+TEST_F(StringIDTest, fromStringNotHex)  // NOLINT
 {
     // Arrange
     const std::string testStringA {"1:freecad"};
@@ -364,7 +364,7 @@ TEST_F(StringIDTest, fromStringNotHex)// NOLINT
     EXPECT_EQ(resultB.id, -1);
 }
 
-TEST_F(StringIDTest, fromStringQByteArray)// NOLINT
+TEST_F(StringIDTest, fromStringQByteArray)  // NOLINT
 {
     // Arrange
     const QByteArray testString {"#1:fcad", 7};
@@ -377,10 +377,10 @@ TEST_F(StringIDTest, fromStringQByteArray)// NOLINT
     EXPECT_EQ(result.index, 0xfcad);
 }
 
-TEST_F(StringIDTest, dataToTextHashed)// NOLINT
+TEST_F(StringIDTest, dataToTextHashed)  // NOLINT
 {
     // Arrange
-    QByteArray buffer {"120ca87015d849dbea060eaf2295fcc4ee981427", 40};// NOLINT
+    QByteArray buffer {"120ca87015d849dbea060eaf2295fcc4ee981427", 40};  // NOLINT
     auto id = App::StringID(1, buffer, App::StringID::Flag::Hashed);
 
     // Act
@@ -390,10 +390,10 @@ TEST_F(StringIDTest, dataToTextHashed)// NOLINT
     EXPECT_EQ(result, buffer.toBase64().constData());
 }
 
-TEST_F(StringIDTest, dataToTextBinary)// NOLINT
+TEST_F(StringIDTest, dataToTextBinary)  // NOLINT
 {
     // Arrange
-    QByteArray buffer {"120ca87015d849dbea060eaf2295fcc4ee981427", 40};// NOLINT
+    QByteArray buffer {"120ca87015d849dbea060eaf2295fcc4ee981427", 40};  // NOLINT
     auto id = App::StringID(1, buffer, App::StringID::Flag::Binary);
 
     // Act
@@ -403,7 +403,7 @@ TEST_F(StringIDTest, dataToTextBinary)// NOLINT
     EXPECT_EQ(result, buffer.toBase64().constData());
 }
 
-TEST_F(StringIDTest, dataToTextNoIndex)// NOLINT
+TEST_F(StringIDTest, dataToTextNoIndex)  // NOLINT
 {
     // Arrange
     QByteArray data {"data", 4};
@@ -416,7 +416,7 @@ TEST_F(StringIDTest, dataToTextNoIndex)// NOLINT
     EXPECT_EQ(result, "data");
 }
 
-TEST_F(StringIDTest, dataToTextWithIndex)// NOLINT
+TEST_F(StringIDTest, dataToTextWithIndex)  // NOLINT
 {
     // Arrange
     QByteArray data {"data", 4};
@@ -424,18 +424,18 @@ TEST_F(StringIDTest, dataToTextWithIndex)// NOLINT
 
     // Act
     auto resultA = id.dataToText(1);
-    auto resultB = id.dataToText(1024);// NOLINT
+    auto resultB = id.dataToText(1024);  // NOLINT
 
     // Assert
     EXPECT_EQ(resultA, "data1");
-    EXPECT_EQ(resultB, "data1024");// Not hex!
+    EXPECT_EQ(resultB, "data1024");  // Not hex!
 }
 
-TEST_F(StringIDTest, dataToTextWithPostfix)// NOLINT
+TEST_F(StringIDTest, dataToTextWithPostfix)  // NOLINT
 {
     // Arrange
     QByteArray data {"data", 4};
-    QByteArray postfix {"postfix", 7};// NOLINT
+    QByteArray postfix {"postfix", 7};  // NOLINT
     auto id = App::StringID(1, data);
     id.setPostfix(postfix);
 
@@ -446,7 +446,7 @@ TEST_F(StringIDTest, dataToTextWithPostfix)// NOLINT
     EXPECT_EQ(result, "data1postfix");
 }
 
-TEST_F(StringIDTest, dataToBytesNoIndex)// NOLINT
+TEST_F(StringIDTest, dataToBytesNoIndex)  // NOLINT
 {
     // Arrange
     QByteArray data {"data", 4};
@@ -459,7 +459,7 @@ TEST_F(StringIDTest, dataToBytesNoIndex)// NOLINT
     EXPECT_EQ(data, result);
 }
 
-TEST_F(StringIDTest, dataToBytesWithIndex)// NOLINT
+TEST_F(StringIDTest, dataToBytesWithIndex)  // NOLINT
 {
     // Arrange
     QByteArray data {"data", 4};
@@ -473,11 +473,11 @@ TEST_F(StringIDTest, dataToBytesWithIndex)// NOLINT
     EXPECT_EQ(data + QByteArray::number(index), result);
 }
 
-TEST_F(StringIDTest, dataToBytesWithPostfix)// NOLINT
+TEST_F(StringIDTest, dataToBytesWithPostfix)  // NOLINT
 {
     // Arrange
     QByteArray data {"data", 4};
-    QByteArray postfix {"postfix", 7};// NOLINT
+    QByteArray postfix {"postfix", 7};  // NOLINT
     auto id = App::StringID(1, data);
     id.setPostfix(postfix);
 
@@ -488,11 +488,11 @@ TEST_F(StringIDTest, dataToBytesWithPostfix)// NOLINT
     EXPECT_EQ(data + postfix, result);
 }
 
-TEST_F(StringIDTest, dataToBytesWithIndexAndPostfix)// NOLINT
+TEST_F(StringIDTest, dataToBytesWithIndexAndPostfix)  // NOLINT
 {
     // Arrange
     QByteArray data {"data", 4};
-    QByteArray postfix {"postfix", 7};// NOLINT
+    QByteArray postfix {"postfix", 7};  // NOLINT
     const int index {1234};
     auto id = App::StringID(1, data);
     id.setPostfix(postfix);
@@ -504,7 +504,7 @@ TEST_F(StringIDTest, dataToBytesWithIndexAndPostfix)// NOLINT
     EXPECT_EQ(data + QByteArray::number(index) + postfix, result);
 }
 
-TEST_F(StringIDTest, mark)// NOLINT
+TEST_F(StringIDTest, mark)  // NOLINT
 {
     // Arrange
     QByteArray data {"data", 4};
@@ -518,7 +518,7 @@ TEST_F(StringIDTest, mark)// NOLINT
     EXPECT_TRUE(id.isMarked());
 }
 
-TEST_F(StringIDTest, setPersistent)// NOLINT
+TEST_F(StringIDTest, setPersistent)  // NOLINT
 {
     // Arrange
     QByteArray data {"data", 4};
@@ -532,17 +532,17 @@ TEST_F(StringIDTest, setPersistent)// NOLINT
     EXPECT_TRUE(id.isPersistent());
 }
 
-TEST_F(StringIDTest, operatorLessThan)// NOLINT
+TEST_F(StringIDTest, operatorLessThan)  // NOLINT
 {
     // Can't test without a _hasher
 }
 
-TEST_F(StringIDTest, compare)// NOLINT
+TEST_F(StringIDTest, compare)  // NOLINT
 {
     // Can't test without a _hasher
 }
 
-TEST_F(StringIDTest, IndexIDBooleanConversion)// NOLINT
+TEST_F(StringIDTest, IndexIDBooleanConversion)  // NOLINT
 {
     // Arrange
     const long id {42};
@@ -555,7 +555,7 @@ TEST_F(StringIDTest, IndexIDBooleanConversion)// NOLINT
     EXPECT_FALSE(indexIdFalse);
 }
 
-TEST_F(StringIDTest, IndexIDStreamInsertionOperator)// NOLINT
+TEST_F(StringIDTest, IndexIDStreamInsertionOperator)  // NOLINT
 {
     // Arrange
     const long id {42};
@@ -589,7 +589,7 @@ private:
 };
 
 
-TEST_F(StringIDRefTest, defaultConstructor)// NOLINT
+TEST_F(StringIDRefTest, defaultConstructor)  // NOLINT
 {
     // Arrange & Act
     auto idRef = App::StringIDRef();
@@ -598,7 +598,7 @@ TEST_F(StringIDRefTest, defaultConstructor)// NOLINT
     EXPECT_FALSE(idRef);
 }
 
-TEST_F(StringIDRefTest, constructFromNewStringID)// NOLINT
+TEST_F(StringIDRefTest, constructFromNewStringID)  // NOLINT
 {
     // Arrange & Act
     auto idRef = App::StringIDRef(createStringID());
@@ -611,7 +611,7 @@ TEST_F(StringIDRefTest, constructFromNewStringID)// NOLINT
     // when its destructor is called (upon exit from this test function).
 }
 
-TEST_F(StringIDRefTest, constructFromStringIDAndIndex)// NOLINT
+TEST_F(StringIDRefTest, constructFromStringIDAndIndex)  // NOLINT
 {
     // Arrange
     const int index {42};
@@ -628,7 +628,7 @@ TEST_F(StringIDRefTest, constructFromStringIDAndIndex)// NOLINT
     // when its destructor is called (upon exit from this test function).
 }
 
-TEST_F(StringIDRefTest, copyConstructor)// NOLINT
+TEST_F(StringIDRefTest, copyConstructor)  // NOLINT
 {
     // Arrange
     const int index {42};
@@ -644,7 +644,7 @@ TEST_F(StringIDRefTest, copyConstructor)// NOLINT
     EXPECT_EQ(index, newIdRef.getIndex());
 }
 
-TEST_F(StringIDRefTest, copyConstructorWithIndex)// NOLINT
+TEST_F(StringIDRefTest, copyConstructorWithIndex)  // NOLINT
 {
     // Arrange
     const int index {42};
@@ -661,7 +661,7 @@ TEST_F(StringIDRefTest, copyConstructorWithIndex)// NOLINT
     EXPECT_EQ(otherIndex, newIdRef.getIndex());
 }
 
-TEST_F(StringIDRefTest, moveConstructor)// NOLINT
+TEST_F(StringIDRefTest, moveConstructor)  // NOLINT
 {
     // Arrange
     auto idRef = App::StringIDRef(createStringID());
@@ -673,14 +673,14 @@ TEST_F(StringIDRefTest, moveConstructor)// NOLINT
     EXPECT_EQ(1, newIdRef.getRefCount());
 }
 
-TEST_F(StringIDRefTest, destructor)// NOLINT
+TEST_F(StringIDRefTest, destructor)  // NOLINT
 {
     // Arrange
     auto idRef = App::StringIDRef(createStringID());
 
     {
         auto newIdRef = App::StringIDRef(idRef);
-        ASSERT_EQ(2, idRef.getRefCount());// Verify the test setup
+        ASSERT_EQ(2, idRef.getRefCount());  // Verify the test setup
 
         // Act
         // The scope ends, causing newIdRef destructor execution
@@ -690,7 +690,7 @@ TEST_F(StringIDRefTest, destructor)// NOLINT
     EXPECT_EQ(1, idRef.getRefCount());
 }
 
-TEST_F(StringIDRefTest, reset)// NOLINT
+TEST_F(StringIDRefTest, reset)  // NOLINT
 {
     // Arrange
     auto idRef = App::StringIDRef(createStringID());
@@ -702,7 +702,7 @@ TEST_F(StringIDRefTest, reset)// NOLINT
     EXPECT_FALSE(idRef);
 }
 
-TEST_F(StringIDRefTest, resetWithStringID)// NOLINT
+TEST_F(StringIDRefTest, resetWithStringID)  // NOLINT
 {
     // Arrange
     const int index {42};
@@ -716,7 +716,7 @@ TEST_F(StringIDRefTest, resetWithStringID)// NOLINT
     EXPECT_NE(index, idRef.getIndex());
 }
 
-TEST_F(StringIDRefTest, resetWithStringIDAndIndex)// NOLINT
+TEST_F(StringIDRefTest, resetWithStringIDAndIndex)  // NOLINT
 {
     // Arrange
     const int indexA {42};
@@ -731,7 +731,7 @@ TEST_F(StringIDRefTest, resetWithStringIDAndIndex)// NOLINT
     EXPECT_EQ(indexB, idRef.getIndex());
 }
 
-TEST_F(StringIDRefTest, swap)// NOLINT
+TEST_F(StringIDRefTest, swap)  // NOLINT
 {
     // Arrange
     const int indexA {42};
@@ -747,7 +747,7 @@ TEST_F(StringIDRefTest, swap)// NOLINT
     EXPECT_EQ(indexA, idRefB.getIndex());
 }
 
-TEST_F(StringIDRefTest, assignmentFromSelf)// NOLINT
+TEST_F(StringIDRefTest, assignmentFromSelf)  // NOLINT
 {
     // Arrange
     auto idRef = App::StringIDRef(createStringID());
@@ -759,12 +759,12 @@ TEST_F(StringIDRefTest, assignmentFromSelf)// NOLINT
     EXPECT_EQ(1, idRef.getRefCount());
 }
 
-TEST_F(StringIDRefTest, assignmentToEmptyFromStringID)// NOLINT
+TEST_F(StringIDRefTest, assignmentToEmptyFromStringID)  // NOLINT
 {
     // Arrange
     Py_Initialize();
     auto idRef = App::StringIDRef();
-    ASSERT_FALSE(idRef);// Verify setup
+    ASSERT_FALSE(idRef);  // Verify setup
 
     // Act
     idRef = createStringID();
@@ -773,7 +773,7 @@ TEST_F(StringIDRefTest, assignmentToEmptyFromStringID)// NOLINT
     EXPECT_TRUE(idRef);
 }
 
-TEST_F(StringIDRefTest, assignmentFromStringIDRef)// NOLINT
+TEST_F(StringIDRefTest, assignmentFromStringIDRef)  // NOLINT
 {
     // Arrange
     auto firstIdRef = App::StringIDRef(createStringID());
@@ -789,11 +789,11 @@ TEST_F(StringIDRefTest, assignmentFromStringIDRef)// NOLINT
     EXPECT_EQ(1, firstIdRefExtra.getRefCount());
 }
 
-TEST_F(StringIDRefTest, moveAssignmentFromStringIDRef)// NOLINT
+TEST_F(StringIDRefTest, moveAssignmentFromStringIDRef)  // NOLINT
 {
     auto emptyIdRef = App::StringIDRef();
     auto goodIdRef = App::StringIDRef(createStringID());
-    ASSERT_FALSE(emptyIdRef);// Verify setup
+    ASSERT_FALSE(emptyIdRef);  // Verify setup
 
     // Act
     emptyIdRef = std::move(goodIdRef);
@@ -803,7 +803,7 @@ TEST_F(StringIDRefTest, moveAssignmentFromStringIDRef)// NOLINT
     EXPECT_EQ(1, emptyIdRef.getRefCount());
 }
 
-TEST_F(StringIDRefTest, operatorLess)// NOLINT
+TEST_F(StringIDRefTest, operatorLess)  // NOLINT
 {
     // Arrange
     auto emptySIDA = App::StringIDRef();
@@ -822,7 +822,7 @@ TEST_F(StringIDRefTest, operatorLess)// NOLINT
     // NOTE: Cannot test the impact of hasher without a StringHasher
 }
 
-TEST_F(StringIDRefTest, operatorEquality)// NOLINT
+TEST_F(StringIDRefTest, operatorEquality)  // NOLINT
 {
     // Arrange
     auto emptySIDA = App::StringIDRef();
@@ -838,7 +838,7 @@ TEST_F(StringIDRefTest, operatorEquality)// NOLINT
     EXPECT_FALSE(nonEmptyA == nonEmptyOther);
 }
 
-TEST_F(StringIDRefTest, operatorInequality)// NOLINT
+TEST_F(StringIDRefTest, operatorInequality)  // NOLINT
 {
     // Arrange
     auto emptySIDA = App::StringIDRef();
@@ -854,7 +854,7 @@ TEST_F(StringIDRefTest, operatorInequality)// NOLINT
     EXPECT_TRUE(nonEmptyA != nonEmptyOther);
 }
 
-TEST_F(StringIDRefTest, booleanConversion)// NOLINT
+TEST_F(StringIDRefTest, booleanConversion)  // NOLINT
 {
     // Arrange
     auto emptySID = App::StringIDRef();
@@ -865,7 +865,7 @@ TEST_F(StringIDRefTest, booleanConversion)// NOLINT
     EXPECT_TRUE(nonEmpty);
 }
 
-TEST_F(StringIDRefTest, getRefCount)// NOLINT
+TEST_F(StringIDRefTest, getRefCount)  // NOLINT
 {
     // Arrange
     auto stringID = createStringID();
@@ -881,7 +881,7 @@ TEST_F(StringIDRefTest, getRefCount)// NOLINT
     EXPECT_EQ(2, secondCount);
 }
 
-TEST_F(StringIDRefTest, toString)// NOLINT
+TEST_F(StringIDRefTest, toString)  // NOLINT
 {
     // Arrange
     auto emptySID = App::StringIDRef();
@@ -897,7 +897,7 @@ TEST_F(StringIDRefTest, toString)// NOLINT
     EXPECT_FALSE(nonempty.empty());
 }
 
-TEST_F(StringIDRefTest, dataToText)// NOLINT
+TEST_F(StringIDRefTest, dataToText)  // NOLINT
 {
     // Arrange
     auto emptySID = App::StringIDRef();
@@ -913,7 +913,7 @@ TEST_F(StringIDRefTest, dataToText)// NOLINT
     EXPECT_FALSE(nonempty.empty());
 }
 
-TEST_F(StringIDRefTest, constData)// NOLINT
+TEST_F(StringIDRefTest, constData)  // NOLINT
 {
     // Arrange
     auto sid = App::StringIDRef(createStringID());
@@ -926,7 +926,7 @@ TEST_F(StringIDRefTest, constData)// NOLINT
     EXPECT_STREQ(constData, "data");
 }
 
-TEST_F(StringIDRefTest, deref)// NOLINT
+TEST_F(StringIDRefTest, deref)  // NOLINT
 {
     // Arrange
     auto sid = createStringID();
@@ -936,7 +936,7 @@ TEST_F(StringIDRefTest, deref)// NOLINT
     EXPECT_EQ(sid, &(ref.deref()));
 }
 
-TEST_F(StringIDRefTest, value)// NOLINT
+TEST_F(StringIDRefTest, value)  // NOLINT
 {
     // Arrange
     auto empty = App::StringIDRef();
@@ -951,12 +951,12 @@ TEST_F(StringIDRefTest, value)// NOLINT
     EXPECT_NE(0, nonEmptyValue);
 }
 
-TEST_F(StringIDRefTest, relatedIDs)// NOLINT
+TEST_F(StringIDRefTest, relatedIDs)  // NOLINT
 {
     // Nothing to test without a StringHasher
 }
 
-TEST_F(StringIDRefTest, isBinary)// NOLINT
+TEST_F(StringIDRefTest, isBinary)  // NOLINT
 {
     // Arrange
     auto nothing = App::StringIDRef();
@@ -969,7 +969,7 @@ TEST_F(StringIDRefTest, isBinary)// NOLINT
     EXPECT_FALSE(nonBinary.isBinary());
 }
 
-TEST_F(StringIDRefTest, isHashed)// NOLINT
+TEST_F(StringIDRefTest, isHashed)  // NOLINT
 {
     // Arrange
     auto nothing = App::StringIDRef();
@@ -982,7 +982,7 @@ TEST_F(StringIDRefTest, isHashed)// NOLINT
     EXPECT_FALSE(nonHashed.isHashed());
 }
 
-TEST_F(StringIDRefTest, toBytes)// NOLINT
+TEST_F(StringIDRefTest, toBytes)  // NOLINT
 {
     // Arrange
     QByteArray byteStorage;
@@ -995,7 +995,7 @@ TEST_F(StringIDRefTest, toBytes)// NOLINT
     EXPECT_FALSE(byteStorage.isNull());
 }
 
-TEST_F(StringIDRefTest, getPyObject)// NOLINT
+TEST_F(StringIDRefTest, getPyObject)  // NOLINT
 {
     // Arrange
     auto ref = App::StringIDRef(createStringID());
@@ -1010,7 +1010,7 @@ TEST_F(StringIDRefTest, getPyObject)// NOLINT
     EXPECT_EQ(none.ptr(), Py_None);
 }
 
-TEST_F(StringIDRefTest, mark)// NOLINT
+TEST_F(StringIDRefTest, mark)  // NOLINT
 {
     // Arrange
     auto ref = App::StringIDRef(createStringID());
@@ -1023,7 +1023,7 @@ TEST_F(StringIDRefTest, mark)// NOLINT
     EXPECT_TRUE(ref.isMarked());
 }
 
-TEST_F(StringIDRefTest, isMarked)// NOLINT
+TEST_F(StringIDRefTest, isMarked)  // NOLINT
 {
     // Arrange
     auto marked = App::StringIDRef(new App::StringID(1, nullptr, App::StringID::Flag::Marked));
@@ -1034,17 +1034,17 @@ TEST_F(StringIDRefTest, isMarked)// NOLINT
     EXPECT_FALSE(notMarked.isMarked());
 }
 
-TEST_F(StringIDRefTest, isFromSameHasher)// NOLINT
+TEST_F(StringIDRefTest, isFromSameHasher)  // NOLINT
 {
     // Nothing to test, requires a StringHasher
 }
 
-TEST_F(StringIDRefTest, getHasher)// NOLINT
+TEST_F(StringIDRefTest, getHasher)  // NOLINT
 {
     // Nothing to test, requires a StringHasher
 }
 
-TEST_F(StringIDRefTest, setPersistent)// NOLINT
+TEST_F(StringIDRefTest, setPersistent)  // NOLINT
 {
     // Arrange
     auto persistent = App::StringIDRef(createStringID());
@@ -1104,7 +1104,7 @@ private:
     Base::Reference<App::StringHasher> _hasher;
 };
 
-TEST_F(StringHasherTest, defaultConstructor)// NOLINT
+TEST_F(StringHasherTest, defaultConstructor)  // NOLINT
 {
     // Arrange
     // Done in Setup()
@@ -1116,7 +1116,7 @@ TEST_F(StringHasherTest, defaultConstructor)// NOLINT
     EXPECT_EQ(0, Hasher()->size());
 }
 
-TEST_F(StringHasherTest, getMemSize)// NOLINT
+TEST_F(StringHasherTest, getMemSize)  // NOLINT
 {
     // Arrange
     givenSomeHashedValues();
@@ -1130,49 +1130,49 @@ TEST_F(StringHasherTest, getMemSize)// NOLINT
     EXPECT_LT(Hasher()->size(), result);
 }
 
-TEST_F(StringHasherTest, Save)// NOLINT
+TEST_F(StringHasherTest, Save)  // NOLINT
 {
     // Arrange
     // Act
     // Assert
 }
 
-TEST_F(StringHasherTest, Restore)// NOLINT
+TEST_F(StringHasherTest, Restore)  // NOLINT
 {
     // Arrange
     // Act
     // Assert
 }
 
-TEST_F(StringHasherTest, SaveDocFile)// NOLINT
+TEST_F(StringHasherTest, SaveDocFile)  // NOLINT
 {
     // Arrange
     // Act
     // Assert
 }
 
-TEST_F(StringHasherTest, RestoreDocFile)// NOLINT
+TEST_F(StringHasherTest, RestoreDocFile)  // NOLINT
 {
     // Arrange
     // Act
     // Assert
 }
 
-TEST_F(StringHasherTest, setPersistenceFileName)// NOLINT
+TEST_F(StringHasherTest, setPersistenceFileName)  // NOLINT
 {
     // Arrange
     // Act
     // Assert
 }
 
-TEST_F(StringHasherTest, getPersistenceFileName)// NOLINT
+TEST_F(StringHasherTest, getPersistenceFileName)  // NOLINT
 {
     // Arrange
     // Act
     // Assert
 }
 
-TEST_F(StringHasherTest, getIDFromQByteArrayShort)// NOLINT
+TEST_F(StringHasherTest, getIDFromQByteArrayShort)  // NOLINT
 {
     // Arrange
     const std::array<char, 5> string {"data"};
@@ -1185,11 +1185,11 @@ TEST_F(StringHasherTest, getIDFromQByteArrayShort)// NOLINT
     // Assert
     EXPECT_STREQ(string.data(), id.constData());
     EXPECT_FALSE(id.isHashed());
-    EXPECT_NE(qba.constData(), id.constData());// A copy was made, the pointers differ
+    EXPECT_NE(qba.constData(), id.constData());  // A copy was made, the pointers differ
     EXPECT_EQ(2, id.getRefCount());
 }
 
-TEST_F(StringHasherTest, getIDFromQByteArrayLongHashable)// NOLINT
+TEST_F(StringHasherTest, getIDFromQByteArrayLongHashable)  // NOLINT
 {
     // Arrange
     const std::array<char, 47> string {"data that is longer than our hasher threshold"};
@@ -1202,10 +1202,10 @@ TEST_F(StringHasherTest, getIDFromQByteArrayLongHashable)// NOLINT
     // Assert
     EXPECT_STRNE(string.data(), id.constData());
     EXPECT_TRUE(id.isHashed());
-    EXPECT_NE(qba.constData(), id.constData());// A copy was made, the pointers differ
+    EXPECT_NE(qba.constData(), id.constData());  // A copy was made, the pointers differ
 }
 
-TEST_F(StringHasherTest, getIDFromQByteArrayLongUnhashable)// NOLINT
+TEST_F(StringHasherTest, getIDFromQByteArrayLongUnhashable)  // NOLINT
 {
     // Arrange
     const std::array<char, 47> string {"data that is longer than our hasher threshold"};
@@ -1218,10 +1218,10 @@ TEST_F(StringHasherTest, getIDFromQByteArrayLongUnhashable)// NOLINT
     // Assert
     EXPECT_STREQ(string.data(), id.constData());
     EXPECT_FALSE(id.isHashed());
-    EXPECT_NE(qba.constData(), id.constData());// A copy was made, the pointers differ
+    EXPECT_NE(qba.constData(), id.constData());  // A copy was made, the pointers differ
 }
 
-TEST_F(StringHasherTest, getIDFromQByteArrayNoCopy)// NOLINT
+TEST_F(StringHasherTest, getIDFromQByteArrayNoCopy)  // NOLINT
 {
     // Arrange
     const std::array<char, 5> string {"data"};
@@ -1233,10 +1233,10 @@ TEST_F(StringHasherTest, getIDFromQByteArrayNoCopy)// NOLINT
 
     // Assert
     EXPECT_STREQ(string.data(), id.constData());
-    EXPECT_EQ(qba.constData(), id.constData());// No copy was made, the pointers are the same
+    EXPECT_EQ(qba.constData(), id.constData());  // No copy was made, the pointers are the same
 }
 
-TEST_F(StringHasherTest, getIDFromQByteArrayTwoDifferentStrings)// NOLINT
+TEST_F(StringHasherTest, getIDFromQByteArrayTwoDifferentStrings)  // NOLINT
 {
     // Arrange
     const std::array<char, 6> stringA {"dataA"};
@@ -1252,7 +1252,7 @@ TEST_F(StringHasherTest, getIDFromQByteArrayTwoDifferentStrings)// NOLINT
     EXPECT_NE(idA.dataToText(), idB.dataToText());
 }
 
-TEST_F(StringHasherTest, getIDFromQByteArrayTwoIdenticalStrings)// NOLINT
+TEST_F(StringHasherTest, getIDFromQByteArrayTwoIdenticalStrings)  // NOLINT
 {
     // Arrange
     const std::array<char, 5> stringA {"data"};
@@ -1268,7 +1268,7 @@ TEST_F(StringHasherTest, getIDFromQByteArrayTwoIdenticalStrings)// NOLINT
     EXPECT_EQ(idA.dataToText(), idB.dataToText());
 }
 
-TEST_F(StringHasherTest, getIDFromQByteArrayBinaryFlag)// NOLINT
+TEST_F(StringHasherTest, getIDFromQByteArrayBinaryFlag)  // NOLINT
 {
     // Arrange
     const std::array<char, 5> string {"data"};
@@ -1281,7 +1281,7 @@ TEST_F(StringHasherTest, getIDFromQByteArrayBinaryFlag)// NOLINT
     EXPECT_TRUE(id.isBinary());
 }
 
-TEST_F(StringHasherTest, getIDFromCString)// NOLINT
+TEST_F(StringHasherTest, getIDFromCString)  // NOLINT
 {
     // Arrange
     // Act
@@ -1300,7 +1300,7 @@ TEST_F(StringHasherTest, getIDFromCString)// NOLINT
  *   8. If sids.size() > 10, duplicates get removed
  */
 
-TEST_F(StringHasherTest, getIDFromMappedNameWithoutPostfixWithoutIndex)// NOLINT
+TEST_F(StringHasherTest, getIDFromMappedNameWithoutPostfixWithoutIndex)  // NOLINT
 {
     // Arrange
     const char* name {"Face"};
@@ -1315,7 +1315,7 @@ TEST_F(StringHasherTest, getIDFromMappedNameWithoutPostfixWithoutIndex)// NOLINT
     EXPECT_EQ(id.dataToText(), mappedName1.toString());
 }
 
-TEST_F(StringHasherTest, getIDFromMappedNameWithoutPostfixWithIndex)// NOLINT
+TEST_F(StringHasherTest, getIDFromMappedNameWithoutPostfixWithIndex)  // NOLINT
 {
     // Arrange
     const char* expectedName {"Face"};
@@ -1332,7 +1332,7 @@ TEST_F(StringHasherTest, getIDFromMappedNameWithoutPostfixWithIndex)// NOLINT
     EXPECT_EQ(id.dataToText(), mappedName1.toString());
 }
 
-TEST_F(StringHasherTest, getIDFromMappedNameWithoutIndexWithPostfix)// NOLINT
+TEST_F(StringHasherTest, getIDFromMappedNameWithoutIndexWithPostfix)  // NOLINT
 {
     // Arrange
     const char* name {"Face"};
@@ -1351,7 +1351,7 @@ TEST_F(StringHasherTest, getIDFromMappedNameWithoutIndexWithPostfix)// NOLINT
     EXPECT_EQ(expectedPostfix, id.deref().postfix());
 }
 
-TEST_F(StringHasherTest, getIDFromMappedNameWithIndexWithPostfix)// NOLINT
+TEST_F(StringHasherTest, getIDFromMappedNameWithIndexWithPostfix)  // NOLINT
 {
     // Arrange
     const char* name {"Face3"};
@@ -1369,7 +1369,7 @@ TEST_F(StringHasherTest, getIDFromMappedNameWithIndexWithPostfix)// NOLINT
     EXPECT_EQ(id.dataToText(), mappedName2.toString());
 }
 
-TEST_F(StringHasherTest, getIDFromMappedNameExistingNameNoIndex)// NOLINT
+TEST_F(StringHasherTest, getIDFromMappedNameExistingNameNoIndex)  // NOLINT
 {
     // Arrange
     Data::MappedName mappedName1 = givenMappedName("SomeTestName");
@@ -1384,7 +1384,7 @@ TEST_F(StringHasherTest, getIDFromMappedNameExistingNameNoIndex)// NOLINT
     EXPECT_EQ(secondIDInserted.dataToText(), mappedName1.toString());
 }
 
-TEST_F(StringHasherTest, getIDFromMappedNameExistingNameWithIndex)// NOLINT
+TEST_F(StringHasherTest, getIDFromMappedNameExistingNameWithIndex)  // NOLINT
 {
     // Arrange
     auto mappedNameA = givenMappedName("Test1");
@@ -1400,7 +1400,7 @@ TEST_F(StringHasherTest, getIDFromMappedNameExistingNameWithIndex)// NOLINT
     EXPECT_EQ(secondIDInserted.dataToText(), mappedNameB.toString());
 }
 
-TEST_F(StringHasherTest, getIDFromMappedNameExistingNameWithIndexAndPostfix)// NOLINT
+TEST_F(StringHasherTest, getIDFromMappedNameExistingNameWithIndexAndPostfix)  // NOLINT
 {
     // Arrange
     auto mappedNameA = givenMappedName("Test1", ";:M;FUS;:Hb:7,F");
@@ -1416,7 +1416,7 @@ TEST_F(StringHasherTest, getIDFromMappedNameExistingNameWithIndexAndPostfix)// N
     EXPECT_EQ(secondIDInserted.dataToText(), mappedNameB.toString());
 }
 
-TEST_F(StringHasherTest, getIDFromMappedNameDuplicateWithEncodedPostfix)// NOLINT
+TEST_F(StringHasherTest, getIDFromMappedNameDuplicateWithEncodedPostfix)  // NOLINT
 {
     // Arrange
     auto mappedNameA = givenMappedName("Test1", ";:M;FUS;:Hb:7,F");
@@ -1432,7 +1432,7 @@ TEST_F(StringHasherTest, getIDFromMappedNameDuplicateWithEncodedPostfix)// NOLIN
     EXPECT_EQ(secondIDInserted.dataToText(), mappedNameB.toString());
 }
 
-TEST_F(StringHasherTest, getIDFromIntegerIDNoSuchID)// NOLINT
+TEST_F(StringHasherTest, getIDFromIntegerIDNoSuchID)  // NOLINT
 {
     // Arrange
     // Do nothing, so the hash table is empty
@@ -1444,7 +1444,7 @@ TEST_F(StringHasherTest, getIDFromIntegerIDNoSuchID)// NOLINT
     EXPECT_FALSE(result);
 }
 
-TEST_F(StringHasherTest, getIDFromIntegerIDBadID)// NOLINT
+TEST_F(StringHasherTest, getIDFromIntegerIDBadID)  // NOLINT
 {
     // Arrange
     const std::string prefix {"Test1"};
@@ -1461,7 +1461,7 @@ TEST_F(StringHasherTest, getIDFromIntegerIDBadID)// NOLINT
 }
 
 
-TEST_F(StringHasherTest, getIDMap)// NOLINT
+TEST_F(StringHasherTest, getIDMap)  // NOLINT
 {
     // Arrange
     givenSomeHashedValues();
@@ -1473,7 +1473,7 @@ TEST_F(StringHasherTest, getIDMap)// NOLINT
     EXPECT_GT(map.size(), 0);
 }
 
-TEST_F(StringHasherTest, clear)// NOLINT
+TEST_F(StringHasherTest, clear)  // NOLINT
 {
     // Arrange
     givenSomeHashedValues();
@@ -1485,7 +1485,7 @@ TEST_F(StringHasherTest, clear)// NOLINT
     EXPECT_EQ(0, Hasher()->size());
 }
 
-TEST_F(StringHasherTest, size)// NOLINT
+TEST_F(StringHasherTest, size)  // NOLINT
 {
     // Arrange
     givenSomeHashedValues();
@@ -1497,7 +1497,7 @@ TEST_F(StringHasherTest, size)// NOLINT
     EXPECT_GT(result, 0);
 }
 
-TEST_F(StringHasherTest, count)// NOLINT
+TEST_F(StringHasherTest, count)  // NOLINT
 {
     // Arrange
     givenSomeHashedValues();
@@ -1509,7 +1509,7 @@ TEST_F(StringHasherTest, count)// NOLINT
     EXPECT_GT(result, 0);
 }
 
-TEST_F(StringHasherTest, getPyObject)// NOLINT
+TEST_F(StringHasherTest, getPyObject)  // NOLINT
 {
     // Arrange - done in setUp()
 
@@ -1520,7 +1520,7 @@ TEST_F(StringHasherTest, getPyObject)// NOLINT
     EXPECT_TRUE(PyObject_TypeCheck(py.ptr(), &App::StringHasherPy::Type));
 }
 
-TEST_F(StringHasherTest, setGetSaveAll)// NOLINT
+TEST_F(StringHasherTest, setGetSaveAll)  // NOLINT
 {
     // Arrange - done by setUp()
 
@@ -1535,7 +1535,7 @@ TEST_F(StringHasherTest, setGetSaveAll)// NOLINT
     EXPECT_FALSE(expectedFalse);
 }
 
-TEST_F(StringHasherTest, setGetThreshold)// NOLINT
+TEST_F(StringHasherTest, setGetThreshold)  // NOLINT
 {
     // Arrange
     const int expectedThreshold {42};
@@ -1548,7 +1548,7 @@ TEST_F(StringHasherTest, setGetThreshold)// NOLINT
     EXPECT_EQ(expectedThreshold, foundThreshold);
 }
 
-TEST_F(StringHasherTest, clearMarks)// NOLINT
+TEST_F(StringHasherTest, clearMarks)  // NOLINT
 {
     // Arrange
     auto ref = givenSomeHashedValues();
@@ -1562,7 +1562,7 @@ TEST_F(StringHasherTest, clearMarks)// NOLINT
     ASSERT_FALSE(ref.isMarked());
 }
 
-TEST_F(StringHasherTest, compact)// NOLINT
+TEST_F(StringHasherTest, compact)  // NOLINT
 {
     // Arrange
     givenSomeHashedValues();

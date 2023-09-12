@@ -507,12 +507,12 @@ public:
     enum GeoType
     {
         None = 0,
-        Point = 1,  // 1 Point(start), 2 Parameters(x,y)
-        Line = 2,   // 2 Points(start,end), 4 Parameters(x1,y1,x2,y2)
-        Arc = 3,    // 3 Points(start,end,mid), (4)+5 Parameters((x1,y1,x2,y2),x,y,r,a1,a2)
-        Circle = 4, // 1 Point(mid), 3 Parameters(x,y,r)
-        Ellipse = 5,// 1 Point(mid), 5 Parameters(x,y,r1,r2,phi)
-                    // phi=angle xaxis of ellipse with respect of sketch xaxis
+        Point = 1,    // 1 Point(start), 2 Parameters(x,y)
+        Line = 2,     // 2 Points(start,end), 4 Parameters(x1,y1,x2,y2)
+        Arc = 3,      // 3 Points(start,end,mid), (4)+5 Parameters((x1,y1,x2,y2),x,y,r,a1,a2)
+        Circle = 4,   // 1 Point(mid), 3 Parameters(x,y,r)
+        Ellipse = 5,  // 1 Point(mid), 5 Parameters(x,y,r1,r2,phi)
+                      // phi=angle xaxis of ellipse with respect of sketch xaxis
         ArcOfEllipse = 6,
         ArcOfHyperbola = 7,
         ArcOfParabola = 8,
@@ -541,13 +541,13 @@ protected:
             , midPointId(-1)
             , endPointId(-1)
         {}
-        Part::Geometry* geo;// pointer to the geometry
-        GeoType type;       // type of the geometry
-        bool external;      // flag for external geometries
-        int index;          // index in the corresponding storage vector (Lines, Arcs, Circles, ...)
-        int startPointId;   // index in Points of the start point of this geometry
-        int midPointId;     // index in Points of the start point of this geometry
-        int endPointId;     // index in Points of the end point of this geometry
+        Part::Geometry* geo;  // pointer to the geometry
+        GeoType type;         // type of the geometry
+        bool external;        // flag for external geometries
+        int index;         // index in the corresponding storage vector (Lines, Arcs, Circles, ...)
+        int startPointId;  // index in Points of the start point of this geometry
+        int midPointId;    // index in Points of the start point of this geometry
+        int endPointId;    // index in Points of the end point of this geometry
     };
     /// container element to store and work with the constraints of this sketch
     struct ConstrDef
@@ -558,10 +558,10 @@ protected:
             , value(nullptr)
             , secondvalue(nullptr)
         {}
-        Constraint* constr;// pointer to the constraint
+        Constraint* constr;  // pointer to the constraint
         bool driving;
         double* value;
-        double* secondvalue;// this is needed for SnellsLaw
+        double* secondvalue;  // this is needed for SnellsLaw
     };
 
     std::vector<GeoDef> Geoms;
@@ -590,9 +590,9 @@ protected:
     std::map<double*, std::tuple<int, Sketcher::PointPos, int>> param2geoelement;
 
     // solving parameters
-    std::vector<double*> Parameters;      // with memory allocation
-    std::vector<double*> DrivenParameters;// with memory allocation
-    std::vector<double*> FixParameters;   // with memory allocation
+    std::vector<double*> Parameters;        // with memory allocation
+    std::vector<double*> DrivenParameters;  // with memory allocation
+    std::vector<double*> FixParameters;     // with memory allocation
     std::vector<double> MoveParameters, InitParameters;
     std::vector<GCS::Point> Points;
     std::vector<GCS::Line> Lines;
@@ -804,7 +804,7 @@ private:
     void fixParametersAndDiagnose(std::vector<double*>& params_to_block);
 };
 
-}// namespace Sketcher
+}  // namespace Sketcher
 
 
-#endif// SKETCHER_SKETCH_H
+#endif  // SKETCHER_SKETCH_H

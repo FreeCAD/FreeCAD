@@ -43,6 +43,6 @@ createRectangles(std::set<std::pair<int, int>>& cells,
 SpreadsheetExport std::string quote(const std::string& input);
 SpreadsheetExport std::string unquote(const std::string& input);
 
-}// namespace Spreadsheet
+}  // namespace Spreadsheet
 
-#endif// UTILS_H
+#endif  // UTILS_H

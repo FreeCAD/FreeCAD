@@ -44,4 +44,4 @@
 #endif
 #endif
 
-#endif// IMPORT_GLOBAL_H
+#endif  // IMPORT_GLOBAL_H

@@ -71,6 +71,6 @@ private:
     std::unique_ptr<Ui_TaskSketcherMessages> ui;
 };
 
-}// namespace SketcherGui
+}  // namespace SketcherGui
 
-#endif// GUI_TASKVIEW_TaskSketcherMessages_H
+#endif  // GUI_TASKVIEW_TaskSketcherMessages_H

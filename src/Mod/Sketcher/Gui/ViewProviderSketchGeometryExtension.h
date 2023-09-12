@@ -82,7 +82,7 @@ private:
     int VisualLayerId;
 };
 
-}// namespace SketcherGui
+}  // namespace SketcherGui
 
 
-#endif// SKETCHER_VIEWPROVIDERSKETCHGEOMETRYEXTENSION_H
+#endif  // SKETCHER_VIEWPROVIDERSKETCHGEOMETRYEXTENSION_H

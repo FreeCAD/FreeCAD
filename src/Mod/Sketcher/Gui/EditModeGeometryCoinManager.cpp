@@ -31,7 +31,7 @@
 #include <Inventor/nodes/SoMarkerSet.h>
 #include <Inventor/nodes/SoMaterial.h>
 #include <Inventor/nodes/SoSeparator.h>
-#endif// #ifndef _PreComp_
+#endif  // #ifndef _PreComp_
 
 #include <Gui/Inventor/MarkerBitmaps.h>
 #include <Gui/Inventor/SmSwitchboard.h>
@@ -78,8 +78,8 @@ void EditModeGeometryCoinManager::processGeometry(const GeoListFacade& geolistfa
     SbBool* swsc = editModeScenegraphNodes.CurvesGroup->enable.startEditing();
 
     auto setEnableLayer = [swsp, swsc](int l, bool enabled) {
-        swsp[l] = enabled;// layer defaults to enabled
-        swsc[l] = enabled;// layer defaults to enabled
+        swsp[l] = enabled;  // layer defaults to enabled
+        swsc[l] = enabled;  // layer defaults to enabled
     };
 
     auto layersconfigurations = viewProvider.VisualLayerList.getValues();
@@ -191,7 +191,7 @@ void EditModeGeometryCoinManager::updateGeometryColor(const GeoListFacade& geoli
             for (int i = 0; i < PtNum; i++) {
                 if (!(i == 0 && l == 0)
                     && ViewProviderSketchCoinAttorney::isSketchFullyConstrained(
-                        viewProvider)) {// root point is not coloured
+                        viewProvider)) {  // root point is not coloured
                     pcolor[i] = drawingParameters.FullyConstrainedColor;
                 }
                 else {
@@ -216,7 +216,7 @@ void EditModeGeometryCoinManager::updateGeometryColor(const GeoListFacade& geoli
                                 pcolor[i] = drawingParameters.VertexColor;
                             }
                         }
-                        else {// this is a defined GeomPoint
+                        else {  // this is a defined GeomPoint
                             if (constrainedElement) {
                                 pcolor[i] = drawingParameters.FullyConstraintElementColor;
                             }
@@ -256,8 +256,8 @@ void EditModeGeometryCoinManager::updateGeometryColor(const GeoListFacade& geoli
                                              drawingParameters.zLowPoints,
                                              drawingParameters.zLowPoints);
 
-        for (int i = 0; i < PtNum; i++) {// 0 is the origin
-            if (i == 0 && l == 0) {      // reset root point to lowest
+        for (int i = 0; i < PtNum; i++) {  // 0 is the origin
+            if (i == 0 && l == 0) {        // reset root point to lowest
                 pverts[i].setValue(0, 0, viewOrientationFactor * drawingParameters.zRootPoint);
             }
             else {
@@ -289,7 +289,7 @@ void EditModeGeometryCoinManager::updateGeometryColor(const GeoListFacade& geoli
         MultiFieldId preselectpointmfid;
 
         if (preselectcross == 0) {
-            if (l == 0) {// cross only in layer 0
+            if (l == 0) {  // cross only in layer 0
                 pcolor[0] = drawingParameters.PreselectColor;
             }
         }
@@ -345,7 +345,7 @@ void EditModeGeometryCoinManager::updateGeometryColor(const GeoListFacade& geoli
                                          drawingParameters.zMidLines,
                                          drawingParameters.zLowLines);
 
-        int j = 0;// vertexindex
+        int j = 0;  // vertexindex
 
         for (int i = 0; i < CurvNum; i++) {
             int GeoId = coinMapping.getCurveGeoId(i, l);
@@ -379,7 +379,7 @@ void EditModeGeometryCoinManager::updateGeometryColor(const GeoListFacade& geoli
                     verts[j] = SbVec3f(x, y, viewOrientationFactor * drawingParameters.zHighLine);
                 }
             }
-            else if (GeoId <= Sketcher::GeoEnum::RefExt) {// external Geometry
+            else if (GeoId <= Sketcher::GeoEnum::RefExt) {  // external Geometry
                 color[i] = drawingParameters.CurveExternalColor;
                 for (int k = j; j < k + indexes; j++) {
                     verts[j].getValue(x, y, z);
@@ -440,12 +440,12 @@ void EditModeGeometryCoinManager::updateGeometryColor(const GeoListFacade& geoli
         }
 
         // colors of the cross
-        if (l == 0) {// only in layer 0
+        if (l == 0) {  // only in layer 0
             if (ViewProviderSketchCoinAttorney::isCurveSelected(viewProvider,
                                                                 Sketcher::GeoEnum::HAxis)) {
                 crosscolor[0] = drawingParameters.SelectColor;
             }
-            else if (preselectcross == 1) {// cross only in layer 0
+            else if (preselectcross == 1) {  // cross only in layer 0
                 crosscolor[0] = drawingParameters.PreselectColor;
             }
             else {

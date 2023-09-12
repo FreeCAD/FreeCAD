@@ -48,6 +48,6 @@
 #include <TopoDS_Edge.hxx>
 #include <TopoDS_Shape.hxx>
 
-#endif//_PreComp_
+#endif  //_PreComp_
 
-#endif// GUI_PRECOMPILED_H
+#endif  // GUI_PRECOMPILED_H

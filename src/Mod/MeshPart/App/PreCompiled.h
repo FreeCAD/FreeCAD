@@ -78,5 +78,5 @@
 #include <TopoDS_Shape.hxx>
 #include <gp_Pln.hxx>
 
-#endif// _PreComp_
+#endif  // _PreComp_
 #endif

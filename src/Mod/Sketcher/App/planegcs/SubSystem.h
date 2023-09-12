@@ -39,13 +39,13 @@ class SubSystem
 private:
     int psize, csize;
     std::vector<Constraint*> clist;
-    VEC_pD plist;  // pointers to the original parameters
-    MAP_pD_pD pmap;// redirection map from the original parameters to pvals
-    VEC_D pvals;   // current variables vector (psize)
-                   //        JacobianMatrix jacobi;  // jacobi matrix of the residuals
-    std::map<Constraint*, VEC_pD> c2p;              // constraint to parameter adjacency list
-    std::map<double*, std::vector<Constraint*>> p2c;// parameter to constraint adjacency list
-    void initialize(VEC_pD& params, MAP_pD_pD& reductionmap);// called by the constructors
+    VEC_pD plist;    // pointers to the original parameters
+    MAP_pD_pD pmap;  // redirection map from the original parameters to pvals
+    VEC_D pvals;     // current variables vector (psize)
+                     //        JacobianMatrix jacobi;  // jacobi matrix of the residuals
+    std::map<Constraint*, VEC_pD> c2p;                // constraint to parameter adjacency list
+    std::map<double*, std::vector<Constraint*>> p2c;  // parameter to constraint adjacency list
+    void initialize(VEC_pD& params, MAP_pD_pD& reductionmap);  // called by the constructors
 public:
     SubSystem(std::vector<Constraint*>& clist_, VEC_pD& params);
     SubSystem(std::vector<Constraint*>& clist_, VEC_pD& params, MAP_pD_pD& reductionmap);
@@ -93,6 +93,6 @@ public:
 
 double lineSearch(SubSystem* subsys, Eigen::VectorXd& xdir);
 
-}// namespace GCS
+}  // namespace GCS
 
-#endif// PLANEGCS_SUBSYSTEM_H
+#endif  // PLANEGCS_SUBSYSTEM_H

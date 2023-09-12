@@ -66,7 +66,7 @@ protected:
     Gui::ToolBarItem* setupCommandBars() const override;
 };
 
-}// namespace SpreadsheetGui
+}  // namespace SpreadsheetGui
 
 
-#endif// SPREADSHEET_WORKBENCH_H
+#endif  // SPREADSHEET_WORKBENCH_H

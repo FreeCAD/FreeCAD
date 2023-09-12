@@ -30,7 +30,7 @@
 #ifdef FC_OS_WIN32
 #define START_SHOW_SKETCHER
 #define START_USE_DRAFTING
-#else// for Linux
+#else  // for Linux
 #define START_USE_DRAFTING
 #endif
 

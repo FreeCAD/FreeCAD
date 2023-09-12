@@ -60,6 +60,6 @@ public:
     }
 };
 
-}// namespace Spreadsheet
+}  // namespace Spreadsheet
 
-#endif// DISPLAYUNIT_H
+#endif  // DISPLAYUNIT_H

@@ -78,7 +78,7 @@ bool findBSplineAndKnotIndex(Sketcher::SketchObject* Obj,
             && constraint->AlignmentType == Sketcher::BSplineKnotPoint) {
             splineGeoId = constraint->Second;
             knotIndexOCC = constraint->InternalAlignmentIndex + 1;
-            return true;// we have already found our knot.
+            return true;  // we have already found our knot.
         }
     }
 
@@ -313,8 +313,8 @@ void CmdSketcherDecreaseDegree::activated(int iMsg)
                 // invalid afterwards
                 // Gui::cmdAppObjectArgs(selection[0].getObject(), "exposeInternalGeometry(%d)",
                 // GeoId);
-                break;// cannot handle more than spline because the GeoIds will be invalidated after
-                      // the first change
+                break;  // cannot handle more than spline because the GeoIds will be invalidated
+                        // after the first change
             }
             else {
                 ignored = true;
@@ -861,7 +861,7 @@ public:
         }
         else {
             sketchgui
-                ->purgeHandler();// no code after this line, Handler get deleted in ViewProvider
+                ->purgeHandler();  // no code after this line, Handler get deleted in ViewProvider
         }
 
         return true;

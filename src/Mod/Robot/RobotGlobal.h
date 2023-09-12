@@ -44,4 +44,4 @@
 #endif
 #endif
 
-#endif// ROBOT_GLOBAL_H
+#endif  // ROBOT_GLOBAL_H

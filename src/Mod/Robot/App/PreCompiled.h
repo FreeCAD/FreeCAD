@@ -30,7 +30,7 @@
 #define RobotExport __declspec(dllexport)
 #define PartExport __declspec(dllimport)
 #define MeshExport __declspec(dllimport)
-#else// for Linux
+#else  // for Linux
 #define RobotExport
 #define PartExport
 #define MeshExport
@@ -63,5 +63,5 @@
 #include <TopoDS.hxx>
 #include <TopoDS_Edge.hxx>
 
-#endif// _PreComp_
+#endif  // _PreComp_
 #endif

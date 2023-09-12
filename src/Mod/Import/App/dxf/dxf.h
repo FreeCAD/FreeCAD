@@ -21,11 +21,11 @@
 #include <Mod/Import/ImportGlobal.h>
 
 
-typedef int ColorIndex_t;// DXF color index
+typedef int ColorIndex_t;  // DXF color index
 
 typedef enum
 {
-    eUnspecified = 0,// Unspecified (No units)
+    eUnspecified = 0,  // Unspecified (No units)
     eInches,
     eFeet,
     eMiles,
@@ -319,7 +319,7 @@ private:
 
 
     std::map<std::string, ColorIndex_t>
-        m_layer_ColorIndex_map;// Mapping from layer name -> layer color index
+        m_layer_ColorIndex_map;  // Mapping from layer name -> layer color index
     const ColorIndex_t ColorBylayer = 256;
     const ColorIndex_t ColorByBlock = 0;
 
@@ -360,27 +360,27 @@ private:
 
 protected:
     ColorIndex_t m_ColorIndex;
-    eDXFVersion_t m_version;// Version from $ACADVER variable in DXF
+    eDXFVersion_t m_version;  // Version from $ACADVER variable in DXF
     const char* (CDxfRead::*stringToUTF8)(const char*) const;
 
 private:
-    const std::string* m_CodePage;// Code Page name from $DWGCODEPAGE or null if none/not read yet
+    const std::string* m_CodePage;  // Code Page name from $DWGCODEPAGE or null if none/not read yet
     // The following was going to be python's canonical name for the encoding, but this is (a) not
     // easily found and (b) does not speed up finding the encoding object.
-    const std::string* m_encoding;// A name for the encoding implied by m_version and m_CodePage
+    const std::string* m_encoding;  // A name for the encoding implied by m_version and m_CodePage
     const char* UTF8ToUTF8(const char* encoded) const;
     const char* GeneralToUTF8(const char* encoded) const;
 
 public:
-    ImportExport CDxfRead(const char* filepath);// this opens the file
-    ImportExport virtual ~CDxfRead();           // this closes the file
+    ImportExport CDxfRead(const char* filepath);  // this opens the file
+    ImportExport virtual ~CDxfRead();             // this closes the file
 
     ImportExport bool Failed()
     {
         return m_fail;
     }
     ImportExport void DoRead(
-        const bool ignore_errors = false);// this reads the file and calls the following functions
+        const bool ignore_errors = false);  // this reads the file and calls the following functions
 
     ImportExport double mm(double value) const;
 

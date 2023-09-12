@@ -52,7 +52,7 @@ public:
                            &Module::simulateToFile,
                            "simulateToFile(Robot,Trajectory,TickSize,FileName) - runs the "
                            "simulation and write the result to a file.");
-        initialize("This module is the Robot module.");// register with Python
+        initialize("This module is the Robot module.");  // register with Python
     }
 
 private:
@@ -92,7 +92,7 @@ PyObject* initModule()
     return Base::Interpreter().addModule(new Module);
 }
 
-}// namespace Robot
+}  // namespace Robot
 
 
 /* Python entry */

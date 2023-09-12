@@ -78,6 +78,6 @@ private:
     Robot::Robot6Axis* Rob;
 };
 
-}// namespace RobotGui
+}  // namespace RobotGui
 
-#endif// GUI_TASKVIEW_TASKAPPERANCE_H
+#endif  // GUI_TASKVIEW_TASKAPPERANCE_H

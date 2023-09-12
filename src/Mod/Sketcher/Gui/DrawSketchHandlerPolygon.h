@@ -32,7 +32,7 @@
 namespace SketcherGui
 {
 
-extern GeometryCreationMode geometryCreationMode;// defined in CommandCreateGeo.cpp
+extern GeometryCreationMode geometryCreationMode;  // defined in CommandCreateGeo.cpp
 
 class DrawSketchHandlerRegularPolygon: public DrawSketchHandler
 {
@@ -181,8 +181,8 @@ public:
                  * right button of the mouse */
             }
             else {
-                sketchgui
-                    ->purgeHandler();// no code after this line, Handler get deleted in ViewProvider
+                sketchgui->purgeHandler();  // no code after this line, Handler get deleted in
+                                            // ViewProvider
             }
         }
         return true;
@@ -205,7 +205,7 @@ protected:
 };
 
 
-}// namespace SketcherGui
+}  // namespace SketcherGui
 
 
-#endif// SKETCHERGUI_DrawSketchHandlerPolygon_H
+#endif  // SKETCHERGUI_DrawSketchHandlerPolygon_H

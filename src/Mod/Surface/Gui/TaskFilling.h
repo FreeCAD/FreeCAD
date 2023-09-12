@@ -151,6 +151,6 @@ private:
     FillingVertexPanel* widget3;
 };
 
-}// namespace SurfaceGui
+}  // namespace SurfaceGui
 
-#endif// SURFACEGUI_TASKFILLING_H
+#endif  // SURFACEGUI_TASKFILLING_H

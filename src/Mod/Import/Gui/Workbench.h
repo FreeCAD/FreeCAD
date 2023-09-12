@@ -45,7 +45,7 @@ protected:
     Gui::ToolBarItem* setupCommandBars() const override;
 };
 
-}// namespace ImportGui
+}  // namespace ImportGui
 
 
-#endif// IMPORT_WORKBENCH_H
+#endif  // IMPORT_WORKBENCH_H

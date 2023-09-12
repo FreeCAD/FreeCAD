@@ -55,7 +55,7 @@ class PropertyGreyValueList;
 class PropertyNormalList;
 class PointKernel;
 class Feature;
-}// namespace Points
+}  // namespace Points
 
 namespace PointsGui
 {
@@ -175,7 +175,7 @@ protected:
 
 using ViewProviderPython = Gui::ViewProviderPythonFeatureT<ViewProviderScattered>;
 
-}// namespace PointsGui
+}  // namespace PointsGui
 
 
-#endif// POINTSGUI_VIEWPROVIDERPOINTS_H
+#endif  // POINTSGUI_VIEWPROVIDERPOINTS_H

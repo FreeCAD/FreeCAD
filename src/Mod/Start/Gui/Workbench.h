@@ -57,7 +57,7 @@ protected:
     /** Returns a DockWindowItems structure of dock windows this workbench. */
     Gui::DockWindowItems* setupDockWindows() const override;
 
-};// namespace StartGui
+};  // namespace StartGui
 
-}// namespace StartGui
-#endif// START_WORKBENCH_H
+}  // namespace StartGui
+#endif  // START_WORKBENCH_H

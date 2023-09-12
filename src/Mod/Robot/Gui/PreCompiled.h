@@ -31,7 +31,7 @@
 #define PartExport __declspec(dllimport)
 #define PartGuiExport __declspec(dllimport)
 #define RobotGuiExport __declspec(dllexport)
-#else// for Linux
+#else  // for Linux
 #define PartExport
 #define RobotExport
 #define PartGuiExport
@@ -78,6 +78,6 @@
 #include <Inventor/nodes/SoMarkerSet.h>
 #include <Inventor/nodes/SoSeparator.h>
 
-#endif//_PreComp_
+#endif  //_PreComp_
 
-#endif// ROBOTGUI_PRECOMPILED_H
+#endif  // ROBOTGUI_PRECOMPILED_H

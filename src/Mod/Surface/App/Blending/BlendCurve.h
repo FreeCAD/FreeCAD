@@ -57,6 +57,6 @@ public:
      */
     void setSize(int, double, bool);
 };
-}// namespace Surface
+}  // namespace Surface
 
 #endif

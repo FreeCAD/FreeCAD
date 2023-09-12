@@ -41,7 +41,7 @@ namespace Gui
 {
 class View3DInventor;
 class ViewProvider;
-}// namespace Gui
+}  // namespace Gui
 
 namespace MeshPartGui
 {
@@ -102,6 +102,6 @@ private:
     std::unique_ptr<Private> d_ptr;
 };
 
-}// namespace MeshPartGui
+}  // namespace MeshPartGui
 
-#endif// MESHPARTGUI_CURVEONMESH_H
+#endif  // MESHPARTGUI_CURVEONMESH_H

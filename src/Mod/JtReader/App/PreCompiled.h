@@ -13,7 +13,7 @@
 #ifdef FC_OS_WIN32
 #define MeshExport __declspec(dllimport)
 #define AppJtReaderExport __declspec(dllexport)
-#else// for Linux
+#else  // for Linux
 #define MeshExport
 #define AppJtReaderExport
 #endif
@@ -26,7 +26,7 @@
 #pragma warning(disable : 4251)
 #pragma warning(disable : 4503)
 #pragma warning(disable : 4275)
-#pragma warning(disable : 4786)// specifier longer then 255 chars
+#pragma warning(disable : 4786)  // specifier longer then 255 chars
 #endif
 
 // standard
@@ -51,6 +51,6 @@
 // sys
 #include <sys/types.h>
 
-#endif//_PreComp_
+#endif  //_PreComp_
 
 #endif

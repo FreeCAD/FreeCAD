@@ -57,7 +57,7 @@ protected:
     bool onlyUnnamed;
 };
 
-}// namespace SketcherGui
+}  // namespace SketcherGui
 
 
 #endif

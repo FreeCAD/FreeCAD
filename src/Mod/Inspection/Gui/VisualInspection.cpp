@@ -70,7 +70,7 @@ public:
 private:
     SingleSelectionItem* _compItem;
 };
-}// namespace InspectionGui
+}  // namespace InspectionGui
 
 /* TRANSLATOR InspectionGui::DlgVisualInspectionImp */
 

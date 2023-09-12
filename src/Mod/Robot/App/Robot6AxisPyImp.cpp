@@ -58,7 +58,7 @@ std::string Robot6AxisPy::representation() const
     return str.str();
 }
 
-PyObject* Robot6AxisPy::PyMake(struct _typeobject*, PyObject*, PyObject*)// Python wrapper
+PyObject* Robot6AxisPy::PyMake(struct _typeobject*, PyObject*, PyObject*)  // Python wrapper
 {
     // create a new instance of Robot6AxisPy and the Twin object
     return new Robot6AxisPy(new Robot6Axis);
