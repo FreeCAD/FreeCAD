@@ -219,6 +219,23 @@ void PropertyContainer::handleChangedPropertyType(XMLReader &reader, const char 
 
 PropertyData PropertyContainer::propertyData;
 
+void PropertyContainer::beforeSave() const
+{
+    std::map<std::string,Property*> Map;
+    getPropertyMap(Map);
+    for(auto &entry : Map) {
+        auto prop = entry.second;
+        if(!prop->testStatus(Property::PropDynamic)
+            && (prop->testStatus(Property::Transient) ||
+                getPropertyType(prop) & Prop_Transient))
+        {
+            // Nothing
+        } else {
+            prop->beforeSave();
+        }
+    }
+}
+
 void PropertyContainer::Save (Base::Writer &writer) const
 {
     std::map<std::string,Property*> Map;
