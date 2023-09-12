@@ -2429,10 +2429,23 @@ void GeomArcOfCircle::setRadius(double Radius)
 }
 
 /*!
+ * \brief GeomArcOfCircle::getAngle
+ * \param emulateCCWXY: if true, the arc will pretend to be a CCW arc in XY plane.
+ * For this to work, the arc must lie in XY plane (i.e. Axis is either +Z or -Z).
+ */
+double GeomArcOfCircle::getAngle(bool emulateCCWXY) const
+{
+    double startangle, endangle;
+    getRange(startangle, endangle, emulateCCWXY);
+    double angle = endangle - startangle;
+    return angle;
+}
+
+/*!
  * \brief GeomArcOfCircle::getRange
  * \param u [out] start angle of the arc, in radians.
  * \param v [out] end angle of the arc, in radians.
- * \param emulateCCWXY: if true, the arc will pretent to be a CCW arc in XY plane.
+ * \param emulateCCWXY: if true, the arc will pretend to be a CCW arc in XY plane.
  * For this to work, the arc must lie in XY plane (i.e. Axis is either +Z or -Z).
  * Additionally, arc's rotation as a whole will be included in the returned u,v
  * (ArcOfCircle specific).

@@ -8772,7 +8772,7 @@ void CmdSketcherConstrainAngle::activated(int iMsg)
                 return;
             }
         }
-        else if (isEdge(GeoId1, PosId1)) {// line angle
+        else if (isEdge(GeoId1, PosId1)) {// line angle or arc angle
             if (GeoId1 < 0 && GeoId1 >= Sketcher::GeoEnum::VAxis) {
                 Gui::TranslatedUserWarning(
                     Obj,
@@ -8812,9 +8812,7 @@ void CmdSketcherConstrainAngle::activated(int iMsg)
             }
             else if (isArcOfCircle(*geom)) {
                 auto arc = static_cast<const Part::GeomArcOfCircle*>(geom);
-                double startangle, endangle;
-                arc->getRange(startangle, endangle, /*EmulateCCWXY=*/true);
-                double angle = endangle - startangle;
+                double angle = arc->getAngle(/*EmulateCCWXY=*/true);
 
                 openCommand(QT_TRANSLATE_NOOP("Command", "Add angle constraint"));
                 Gui::cmdAppObjectArgs(selection[0].getObject(),
