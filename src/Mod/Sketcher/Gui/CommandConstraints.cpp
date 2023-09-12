@@ -614,7 +614,7 @@ bool addConstraintSafely(SketchObject* obj, std::function<void()> constraintaddi
         tryAutoRecompute(obj);
         return false;
     }
-    catch (const Base::Exception& e) {
+    catch (const Base::Exception&) {
         Gui::TranslatedUserError(
             obj,
             QObject::tr("Error"),
