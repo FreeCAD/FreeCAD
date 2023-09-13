@@ -94,7 +94,6 @@ private:
 
 private:
     void drawImage();
-    SbBox3f bbox;
     float imgWidth;
     float imgHeight;
     bool glimagevalid;
