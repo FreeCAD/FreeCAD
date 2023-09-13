@@ -367,7 +367,7 @@ class ViewProviderLinearDimension(ViewProviderDimensionBase):
 
         It only runs if `Start`, `End`, `Dimline`, or `Direction` changed.
         """
-        if prop not in ("Start", "End", "Dimline", "Direction"):
+        if prop not in ("Start", "End", "Dimline", "Direction", "Diameter"):
             return
 
         if obj.Start == obj.End:
@@ -377,6 +377,16 @@ class ViewProviderLinearDimension(ViewProviderDimensionBase):
             return
 
         vobj = obj.ViewObject
+
+        if prop == "Diameter":
+            if hasattr(vobj, "Override") and vobj.Override:
+                if obj.Diameter:
+                    vobj.Override = vobj.Override.replace("R $dim", "Ø $dim")
+                else:
+                    vobj.Override = vobj.Override.replace("Ø $dim", "R $dim")
+
+            self.onChanged(vobj, "ArrowType")
+            return
 
         # Calculate the 4 points
         #
@@ -728,14 +738,15 @@ class ViewProviderLinearDimension(ViewProviderDimensionBase):
         self.marks = coin.SoSeparator()
         self.marks.addChild(self.linecolor)
 
-        s1 = coin.SoSeparator()
-        if symbol == "Circle":
-            s1.addChild(self.coord1)
-        else:
-            s1.addChild(self.trans1)
+        if vobj.Object.Diameter or not self.is_linked_to_circle():
+            s1 = coin.SoSeparator()
+            if symbol == "Circle":
+                s1.addChild(self.coord1)
+            else:
+                s1.addChild(self.trans1)
 
-        s1.addChild(gui_utils.dim_symbol(symbol, invert=not inv))
-        self.marks.addChild(s1)
+            s1.addChild(gui_utils.dim_symbol(symbol, invert=not inv))
+            self.marks.addChild(s1)
 
         s2 = coin.SoSeparator()
         if symbol == "Circle":
