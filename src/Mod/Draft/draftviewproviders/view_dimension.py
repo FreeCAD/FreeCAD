@@ -496,33 +496,36 @@ class ViewProviderLinearDimension(ViewProviderDimensionBase):
         # Calculate the position of the arrows and extension lines
         v1 = norm.cross(u)
         _plane_rot = DraftVecUtils.getPlaneRotation(u, v1, norm)
-        rot1 = App.Placement(_plane_rot).Rotation.Q
-        self.transDimOvershoot1.rotation.setValue((rot1[0], rot1[1],
-                                                   rot1[2], rot1[3]))
-        self.transDimOvershoot2.rotation.setValue((rot1[0], rot1[1],
-                                                   rot1[2], rot1[3]))
+        if _plane_rot is not None:
+            rot1 = App.Placement(_plane_rot).Rotation.Q
+            self.transDimOvershoot1.rotation.setValue((rot1[0], rot1[1],
+                                                       rot1[2], rot1[3]))
+            self.transDimOvershoot2.rotation.setValue((rot1[0], rot1[1],
+                                                       rot1[2], rot1[3]))
 
         if hasattr(vobj, "FlipArrows") and vobj.FlipArrows:
             u = u.negative()
 
         v2 = norm.cross(u)
         _plane_rot = DraftVecUtils.getPlaneRotation(u, v2)
-        rot2 = App.Placement(_plane_rot).Rotation.Q
-        self.trans1.rotation.setValue((rot2[0], rot2[1],
-                                       rot2[2], rot2[3]))
-        self.trans2.rotation.setValue((rot2[0], rot2[1],
-                                       rot2[2], rot2[3]))
+        if _plane_rot is not None:
+            rot2 = App.Placement(_plane_rot).Rotation.Q
+            self.trans1.rotation.setValue((rot2[0], rot2[1],
+                                           rot2[2], rot2[3]))
+            self.trans2.rotation.setValue((rot2[0], rot2[1],
+                                           rot2[2], rot2[3]))
 
         if self.p1 != self.p2:
             u3 = self.p1 - self.p2
             u3.normalize()
             v3 = norm.cross(u3)
             _plane_rot = DraftVecUtils.getPlaneRotation(u3, v3)
-            rot3 = App.Placement(_plane_rot).Rotation.Q
-            self.transExtOvershoot1.rotation.setValue((rot3[0], rot3[1],
-                                                       rot3[2], rot3[3]))
-            self.transExtOvershoot2.rotation.setValue((rot3[0], rot3[1],
-                                                       rot3[2], rot3[3]))
+            if _plane_rot is not None:
+                rot3 = App.Placement(_plane_rot).Rotation.Q
+                self.transExtOvershoot1.rotation.setValue((rot3[0], rot3[1],
+                                                           rot3[2], rot3[3]))
+                self.transExtOvershoot2.rotation.setValue((rot3[0], rot3[1],
+                                                           rot3[2], rot3[3]))
 
         # Offset is the distance from the dimension line to the textual
         # element that displays the value of the measurement
