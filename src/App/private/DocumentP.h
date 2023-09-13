@@ -50,7 +50,7 @@ using Node =  std::vector <size_t>;
 using Path =  std::vector <size_t>;
 
 namespace App {
-typedef boost::bimap<StringHasherRef,int> HasherMap;
+using HasherMap = boost::bimap<StringHasherRef, int>;
 class Transaction;
 
 // Pimpl class
