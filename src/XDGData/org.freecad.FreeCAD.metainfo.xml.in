@@ -40,22 +40,43 @@
   </description>
   <screenshots>
     <screenshot type="default">
+      <caption>Part Design</caption>
       <image>https://wiki.freecad.org/images/7/72/Freecad016_screenshot1.jpg</image>
     </screenshot>
     <screenshot>
+      <caption>An assembly</caption>
       <image>https://wiki.freecad.org/images/f/f7/FreeCAD_highlight_3_0.19.jpg</image>
     </screenshot>
     <screenshot>
+      <caption>Arch Workbench</caption>
       <image>https://wiki.freecad.org/images/c/c3/Arch_tutorial_43.jpg</image>
     </screenshot>
     <screenshot>
+      <caption>Part Design</caption>
       <image>https://wiki.freecad.org/images/f/f4/Freecad-document-01.jpg</image>
     </screenshot>
   </screenshots>
-  <url type="homepage">https://www.freecad.org</url>
-  <url type="bugtracker">https://www.freecad.org/tracker</url>
-  <url type="help">https://forum.freecad.org</url>
-  <url type="donation">https://www.freecad.org/wiki/Donate</url>
+  <keywords>
+    <!-- copied from https://www.freecad.org/ HTML: <meta name="keywords" [...] />  -->
+    <keyword>engineering</keyword>
+    <keyword translate="no">opencascade</keyword>
+    <keyword >architecture</keyword>
+    <keyword translate="no">cad</keyword>
+    <keyword translate="no">bim</keyword>
+    <keyword translate="no">fem</keyword>
+    <keyword translate="no">3d</keyword>
+    <keyword translate="no">3d-printing</keyword>
+    <keyword translate="no">coin</keyword>
+    <keyword translate="no">parametric-modeler</keyword>
+  </keywords>
+  <url type="homepage">https://www.freecad.org/</url>
+  <url type="bugtracker">https://github.com/FreeCAD/FreeCAD/issues</url>
+  <url type="faq">https://wiki.freecad.org/Frequently_asked_questions</url>
+  <url type="help">https://wiki.freecad.org/User_hub</url>
+  <url type="donation">https://www.freecad.org/sponsor.php</url>
+  <url type="translate">https://crowdin.com/project/freecad</url>
+  <url type="vcs-browser">https://github.com/FreeCAD/FreeCAD</url>
+  <url type="contribute">https://github.com/FreeCAD/FreeCAD/blob/master/CONTRIBUTING.md</url>
   <update_contact>yorik_AT_uncreated.net</update_contact>
   <content_rating type="oars-1.1"/>
   <releases>
