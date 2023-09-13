@@ -222,9 +222,9 @@ void LscmRelax::relax(double weight)
         K_g_triplets.emplace_back(trip(this->flat_vertices.cols() * 2 + 2, i * 2 + 1, this->flat_vertices(0, i)));
     }
 
-   
+
     K_g.setFromTriplets(K_g_triplets.begin(), K_g_triplets.end());
-   
+
     // solve linear system (privately store the value for guess in next step)
     Eigen::SimplicialLDLT<spMat, Eigen::Lower> solver;
     solver.compute(K_g);
