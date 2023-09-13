@@ -367,7 +367,7 @@ class ViewProviderLinearDimension(ViewProviderDimensionBase):
 
         It only runs if `Start`, `End`, `Dimline`, or `Direction` changed.
         """
-        if prop not in ("Start", "End", "Dimline", "Direction"):
+        if prop not in ("Start", "End", "Dimline", "Direction", "Diameter"):
             return
 
         if obj.Start == obj.End:
@@ -377,6 +377,16 @@ class ViewProviderLinearDimension(ViewProviderDimensionBase):
             return
 
         vobj = obj.ViewObject
+
+        if prop == "Diameter":
+            if hasattr(vobj, "Override") and vobj.Override:
+                if obj.Diameter:
+                    vobj.Override = vobj.Override.replace("R $dim", "Ø $dim")
+                else:
+                    vobj.Override = vobj.Override.replace("Ø $dim", "R $dim")
+
+            self.onChanged(vobj, "ArrowType")
+            return
 
         # Calculate the 4 points
         #
@@ -585,10 +595,6 @@ class ViewProviderLinearDimension(ViewProviderDimensionBase):
                                                  'Length', show_unit, unit)
 
         if hasattr(vobj, "Override") and vobj.Override:
-            if hasattr(obj, "Diameter") and obj.Diameter == True:
-                vobj.Override = vobj.Override.replace("R $dim", "Ø $dim")
-            elif hasattr(obj, "Diameter") and obj.Diameter == False:
-                vobj.Override = vobj.Override.replace("Ø $dim", "R $dim")
             self.string = vobj.Override.replace("$dim", self.string)
 
         self.text_wld.string = utils.string_encode_coin(self.string)
@@ -619,12 +625,6 @@ class ViewProviderLinearDimension(ViewProviderDimensionBase):
                                          [self.p4.x, self.p4.y, self.p4.z]])
             # self.line.numVertices.setValue(4)
             self.line.coordIndex.setValues(0, 4, (0, 1, 2, 3))
-
-        if ("ArrowSize" in vobj.PropertiesList
-             and "ScaleMultiplier" in vobj.PropertiesList
-             and hasattr(self, "node_wld") and hasattr(self, "p2")):
-            self.remove_dim_arrows()
-            self.draw_dim_arrows(vobj)            
 
     def onChanged(self, vobj, prop):
         """Execute when a view property is changed."""
@@ -730,13 +730,13 @@ class ViewProviderLinearDimension(ViewProviderDimensionBase):
         self.marks = coin.SoSeparator()
         self.marks.addChild(self.linecolor)
 
-        if vobj.Object.Diameter == True or not self.is_linked_to_circle():
+        if vobj.Object.Diameter or not self.is_linked_to_circle():
             s1 = coin.SoSeparator()
             if symbol == "Circle":
                 s1.addChild(self.coord1)
             else:
                 s1.addChild(self.trans1)
-            
+
             s1.addChild(gui_utils.dim_symbol(symbol, invert=not inv))
             self.marks.addChild(s1)
 
