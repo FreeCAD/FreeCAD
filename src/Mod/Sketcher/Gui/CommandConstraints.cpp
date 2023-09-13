@@ -1544,17 +1544,17 @@ protected:
 
     void makeCts_1Point(bool& selAllowed, Base::Vector2d onSketchPos)
     {
-        //Lock, autodistance
+        //distance, lock
         if (availableConstraint == AvailableConstraint::FIRST) {
+            restartCommand(QT_TRANSLATE_NOOP("Command", "Add 'Distance to origin' constraint"));
+            createDistanceConstrain(selPoints[0].GeoId, selPoints[0].PosId, Sketcher::GeoEnum::RtPnt, Sketcher::PointPos::start, onSketchPos);
+            selAllowed = true;
+        }
+        if (availableConstraint == AvailableConstraint::SECOND) {
             restartCommand(QT_TRANSLATE_NOOP("Command", "Add lock constraint"));
             specialConstraint = SpecialConstraint::Block;
             createDistanceXYConstrain(Sketcher::DistanceX, selPoints[0].GeoId, selPoints[0].PosId, Sketcher::GeoEnum::RtPnt, Sketcher::PointPos::start, onSketchPos);
             createDistanceXYConstrain(Sketcher::DistanceY, selPoints[0].GeoId, selPoints[0].PosId, Sketcher::GeoEnum::RtPnt, Sketcher::PointPos::start, onSketchPos);
-            selAllowed = true;
-        }
-        if (availableConstraint == AvailableConstraint::SECOND) {
-            restartCommand(QT_TRANSLATE_NOOP("Command", "Add 'Distance to origin' constraint"));
-            createDistanceConstrain(selPoints[0].GeoId, selPoints[0].PosId, Sketcher::GeoEnum::RtPnt, Sketcher::PointPos::start, onSketchPos);
             availableConstraint = AvailableConstraint::RESET;
         }
     }
