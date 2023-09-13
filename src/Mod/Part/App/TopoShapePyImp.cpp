@@ -96,13 +96,6 @@
 
 using namespace Part;
 
-#ifndef M_PI
-    #define M_PI    3.14159265358979323846 /* pi */
-#endif
-
-#ifndef M_PI_2
-    #define M_PI_2  1.57079632679489661923 /* pi/2 */
-#endif
 
 // returns a string which represents the object e.g. when printed in python
 std::string TopoShapePy::representation() const

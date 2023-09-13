@@ -51,10 +51,6 @@
 #include "PrimitiveFeature.h"
 #include "PartFeaturePy.h"
 
-#ifndef M_PI
-#define M_PI       3.14159265358979323846
-#endif
-
 
 namespace Part {
     const App::PropertyQuantityConstraint::Constraints apexRange = {-90.0, 90.0, 0.1};

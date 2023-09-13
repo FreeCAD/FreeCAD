@@ -111,10 +111,6 @@ inline T sgn (T t)
         return (t > 0) ? T(1) : T(-1);
 }
 
-#ifndef M_PI
-#define M_PI       3.14159265358979323846
-#endif
-
 template<class T>
 inline T toRadians(T d)
 {
