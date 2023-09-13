@@ -32,6 +32,7 @@ import zipfile
 import re
 import FreeCAD
 import FreeCADGui
+import codecs
 import urllib.parse
 from . import TranslationTexts
 from PySide import QtCore, QtGui
@@ -424,7 +425,7 @@ def handle():
                             "<!--QSS-->", '<style type="text/css">' + ALTCSS + "</style>"
                         )
                 else:
-                    with open(path, "r") as f:
+                    with codecs.open(path, encoding="utf-8") as f:
                         ALTCSS = f.read()
                         HTML = HTML.replace(
                             "<!--QSS-->", '<style type="text/css">' + ALTCSS + "</style>"
@@ -789,9 +790,13 @@ def exportTestFile():
 
     "Allow to check if everything is Ok"
 
-    f = open(os.path.expanduser("~") + os.sep + "freecad-startpage.html", "w")
-    f.write(handle())
-    f.close()
+    with codecs.open(
+        os.path.expanduser("~") + os.sep + "freecad-startpage.html",
+        encoding="utf-8",
+        mode="w",
+    ) as f:
+        f.write(handle())
+        f.close()
 
 
 def postStart(switch_wb=True):
