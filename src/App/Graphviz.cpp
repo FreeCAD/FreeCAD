@@ -130,7 +130,7 @@ void Document::exportGraphviz(std::ostream& out) const
          */
 
         std::string getId(const ObjectIdentifier & path) {
-            DocumentObject * docObj = path.getDocumentObject();
+            PropertyContainer * docObj = path.getPropertyContainer();
             if (!docObj)
                 return {};
 
@@ -218,7 +218,7 @@ void Document::exportGraphviz(std::ostream& out) const
                     for (const auto &dep : deps) {
                         if (dep.second)
                             continue;
-                        DocumentObject * o = dep.first.getDocumentObject();
+                        PropertyContainer * o = dep.first.getPropertyContainer();
 
                         // Doesn't exist already?
                         if (o && !GraphList[o]) {
@@ -321,7 +321,7 @@ void Document::exportGraphviz(std::ostream& out) const
                     if (dep.second) {
                         continue;
                     }
-                    DocumentObject *depObjDoc = dep.first.getDocumentObject();
+                    PropertyContainer *depObjDoc = dep.first.getPropertyContainer();
                     auto found = GlobalVertexList.find(getId(dep.first));
 
                     if (found == GlobalVertexList.end()) {
@@ -449,7 +449,7 @@ void Document::exportGraphviz(std::ostream& out) const
             const boost::property_map<Graph, boost::edge_attribute_t>::type& edgeAttrMap = boost::get(boost::edge_attribute, DepList);
 
             // Track edges between document objects connected by expression dependencies
-            std::set<std::pair<const DocumentObject*, const DocumentObject*> > existingEdges;
+            std::set<std::pair<const DocumentObject*, const PropertyContainer*> > existingEdges;
 
             // Add edges between properties
             for (const auto &docObj : objects) {
@@ -464,7 +464,7 @@ void Document::exportGraphviz(std::ostream& out) const
                     for (const auto &dep : deps) {
                         if (dep.second)
                             continue;
-                        DocumentObject * depObjDoc = dep.first.getDocumentObject();
+                        PropertyContainer * depObjDoc = dep.first.getPropertyContainer();
                         Edge edge;
                         bool inserted;
 
@@ -497,7 +497,7 @@ void Document::exportGraphviz(std::ostream& out) const
                 }
 
                 std::map<DocumentObject*, int> dups;
-                std::vector<DocumentObject*> OutList = It.second->getOutList();
+                std::vector<PropertyContainer*> OutList = It.second->getOutList();
                 const DocumentObject * docObj = It.second;
 
                 for (auto obj : OutList) {
@@ -662,7 +662,7 @@ void Document::exportGraphviz(std::ostream& out) const
         std::map<std::string, Vertex> LocalVertexList;
         std::map<std::string, Vertex> GlobalVertexList;
         std::set<const DocumentObject*> objects;
-        std::map<const DocumentObject*, Graph*> GraphList;
+        std::map<const PropertyContainer*, Graph*> GraphList;
         //random color generation
         std::mt19937 seed;
         std::uniform_int_distribution<int> distribution;

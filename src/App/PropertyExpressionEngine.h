@@ -70,6 +70,7 @@ public:
     void updateElementReference(
             App::DocumentObject *feature, bool reverse=false, bool notify=false) override;
     bool referenceChanged() const override;
+    bool adjustLink(const std::set<App::PropertyContainer *> &inList);
     bool adjustLink(const std::set<App::DocumentObject *> &inList) override;
     Property *CopyOnImportExternal(const std::map<std::string,std::string> &nameMap) const override;
     Property *CopyOnLabelChange(App::DocumentObject *obj,

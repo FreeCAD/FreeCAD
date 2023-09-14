@@ -134,7 +134,7 @@ public:
         bool operator>(const String & other) const { return str > other.str; }
 
         void checkImport(const App::DocumentObject *owner,
-                const App::DocumentObject *obj=nullptr, String *objName=nullptr);
+                const App::PropertyContainer *obj=nullptr, String *objName=nullptr);
     private:
 
         std::string str;
@@ -266,12 +266,12 @@ public:
     FC_DEFAULT_CTORS(ObjectIdentifier) {
         owner = other.owner;
         documentName = std::move(other.documentName);
-        documentObjectName = std::move(other.documentObjectName);
+        propertyContainerName = std::move(other.propertyContainerName);
         subObjectName = std::move(other.subObjectName);
         shadowSub = std::move(other.shadowSub);
         components = std::move(other.components);
         documentNameSet = other.documentNameSet;
-        documentObjectNameSet = other.documentObjectNameSet;
+        propertyContainerNameSet = other.propertyContainerNameSet;
         localProperty = other.localProperty;
         _cache = std::move(other._cache);
         _hash = other._hash;
@@ -331,25 +331,25 @@ public:
 
     String getDocumentName() const;
 
-    void setDocumentObjectName(String &&name, bool force = false,
+    void setPropertyContainerName(String &&name, bool force = false,
             String &&subname = String(), bool checkImport=false);
 
-    void setDocumentObjectName(const App::DocumentObject *obj, bool force = false,
+    void setPropertyContainerName(const App::PropertyContainer *obj, bool force = false,
             String &&subname = String(), bool checkImport=false);
 
-    bool hasDocumentObjectName(bool forced=false) const;
+    bool hasPropertyContainerName(bool forced=false) const;
 
     bool isLocalProperty() const { return localProperty; }
 
-    String getDocumentObjectName() const;
+    String getPropertyContainerName() const;
 
     const std::string &getSubObjectName(bool newStyle) const;
     const std::string &getSubObjectName() const;
 
-    using SubNameMap = std::map<std::pair<App::DocumentObject*,std::string>,std::string>;
+    using SubNameMap = std::map<std::pair<App::PropertyContainer*,std::string>,std::string>;
     void importSubNames(const SubNameMap &subNameMap);
 
-    bool updateLabelReference(App::DocumentObject *, const std::string &, const char *);
+    bool updateLabelReference(App::PropertyContainer *, const std::string &, const char *);
 
     bool relabeledDocument(ExpressionVisitor &v, const std::string &oldLabel, const std::string &newLabel);
 
@@ -363,7 +363,7 @@ public:
      * the property may not exist at the time this ObjectIdentifier is
      * constructed.
      */
-    using Dependencies = std::map<App::DocumentObject *, std::set<std::string> >;
+    using Dependencies = std::map<App::PropertyContainer *, std::set<std::string> >;
 
     /** Get dependencies of this object identifier
      *
@@ -395,14 +395,14 @@ public:
 
     App::Document *getDocument(String name = String(), bool *ambiguous=nullptr) const;
 
-    App::DocumentObject *getDocumentObject() const;
+    App::PropertyContainer *getPropertyContainer() const;
 
     std::vector<std::string> getStringList() const;
 
     App::ObjectIdentifier relativeTo(const App::ObjectIdentifier & other) const;
 
-    bool replaceObject(ObjectIdentifier &res, const App::DocumentObject *parent,
-            App::DocumentObject *oldObj, App::DocumentObject *newObj) const;
+    bool replaceObject(ObjectIdentifier &res, const App::PropertyContainer *parent,
+            App::PropertyContainer *oldObj, App::PropertyContainer *newObj) const;
 
     // Operators
 
@@ -428,13 +428,13 @@ public:
 
     // Static functions
 
-    static ObjectIdentifier parse(const App::DocumentObject *docObj, const std::string & str);
+    static ObjectIdentifier parse(const App::PropertyContainer *docObj, const std::string & str);
 
     std::string resolveErrorString() const;
 
-    bool adjustLinks(ExpressionVisitor &v, const std::set<App::DocumentObject *> &inList);
+    bool adjustLinks(ExpressionVisitor &v, const std::set<App::PropertyContainer *> &inList);
 
-    bool updateElementReference(ExpressionVisitor &v, App::DocumentObject *feature=nullptr, bool reverse=false);
+    bool updateElementReference(ExpressionVisitor &v, App::PropertyContainer *feature=nullptr, bool reverse=false);
 
     void resolveAmbiguity();
 
@@ -451,10 +451,10 @@ protected:
         int propertyIndex{0};
         App::Document * resolvedDocument{nullptr};
         String resolvedDocumentName;
-        App::DocumentObject * resolvedDocumentObject{nullptr};
-        String resolvedDocumentObjectName;
+        App::PropertyContainer * resolvedPropertyContainer{nullptr};
+        String resolvedPropertyContainerName;
         String subObjectName;
-        App::DocumentObject * resolvedSubObject{nullptr};
+        App::PropertyContainer * resolvedSubObject{nullptr};
         App::Property * resolvedProperty{nullptr};
         std::string propertyName;
         int propertyType{0};
@@ -466,8 +466,8 @@ protected:
 
     friend struct ResolveResults;
 
-    App::Property *resolveProperty(const App::DocumentObject *obj,
-        const char *propertyName, App::DocumentObject *&sobj,int &ptype) const;
+    App::Property *resolveProperty(const App::PropertyContainer *obj,
+        const char *propertyName, App::PropertyContainer *&sobj,int &ptype) const;
 
     void getSubPathStr(std::ostream &ss, const ResolveResults &result, bool toPython=false) const;
 
@@ -477,19 +477,19 @@ protected:
     void resolve(ResolveResults & results) const;
     void resolveAmbiguity(ResolveResults &results);
 
-    static App::DocumentObject *getDocumentObject(
+    static App::PropertyContainer *getPropertyContainer(
             const App::Document *doc, const String &name, std::bitset<32> &flags);
 
     void getDepLabels(const ResolveResults &result, std::vector<std::string> &labels) const;
 
     App::DocumentObject * owner;
     String  documentName;
-    String  documentObjectName;
+    String  propertyContainerName;
     String  subObjectName;
     std::pair<std::string,std::string> shadowSub;
     std::vector<Component> components;
     bool documentNameSet;
-    bool documentObjectNameSet;
+    bool propertyContainerNameSet;
     bool localProperty;
 
 private:
