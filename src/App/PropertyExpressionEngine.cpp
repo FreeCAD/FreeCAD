@@ -777,10 +777,10 @@ std::string PropertyExpressionEngine::validateExpression(const ObjectIdentifier 
     }
 
     // Get document object
-    DocumentObject * pathDocObj = usePath.getDocumentObject();
-    assert(pathDocObj);
+    PropertyContainer * pathPropCont = usePath.getPropertyContainer();
+    assert(pathPropCont);
 
-    auto inList = pathDocObj->getInListEx(true);
+    auto inList = pathPropCont->getInListEx(true);
     for(auto &v : expr->getDepObjects()) {
         auto docObj = v.first;
         if(!v.second && inList.count(docObj)) {
@@ -904,7 +904,7 @@ void PropertyExpressionEngine::breakLink(App::DocumentObject *obj, bool clear) {
 }
 */
 
-bool PropertyExpressionEngine::adjustLink(const std::set<DocumentObject*> &inList) {
+bool PropertyExpressionEngine::adjustLink(const std::set<PropertyContainer*> &inList) {
     auto owner = dynamic_cast<App::DocumentObject*>(getContainer());
     if(!owner)
         return false;
@@ -931,6 +931,15 @@ bool PropertyExpressionEngine::adjustLink(const std::set<DocumentObject*> &inLis
         }
     }
     return true;
+}
+
+bool PropertyExpressionEngine::adjustLink(const std::set<DocumentObject*> &inList) {
+    std::set<PropertyContainer*> propContInList;
+    for (const auto& obj: inList) {
+        propContInList.insert(static_cast<App::PropertyContainer*> obj);
+    }
+
+    return this->adjustLink(propContInList);
 }
 
 void PropertyExpressionEngine::updateElementReference(DocumentObject *feature, bool reverse, bool notify)
