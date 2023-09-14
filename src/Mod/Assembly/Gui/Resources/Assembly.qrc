@@ -4,5 +4,13 @@
         <file>icons/preferences-assembly.svg</file>
         <file>panels/TaskAssemblyInsertLink.ui</file>
         <file>preferences/Assembly.ui</file>
+        <file>icons/Assembly_CreateJointBall.svg</file>
+        <file>icons/Assembly_CreateJointCylindrical.svg</file>
+        <file>icons/Assembly_CreateJointFixed.svg</file>
+        <file>icons/Assembly_CreateJointParallel.svg</file>
+        <file>icons/Assembly_CreateJointPlanar.svg</file>
+        <file>icons/Assembly_CreateJointRevolute.svg</file>
+        <file>icons/Assembly_CreateJointSlider.svg</file>
+        <file>icons/Assembly_CreateJointTangent.svg</file>
     </qresource>
 </RCC>
