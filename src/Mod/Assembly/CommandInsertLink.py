@@ -31,6 +31,7 @@ if App.GuiUp:
     from PySide import QtCore, QtGui, QtWidgets
 
 import UtilsAssembly
+
 # translate = App.Qt.translate
 
 __title__ = "Assembly Command Insert Link"
@@ -120,9 +121,17 @@ class TaskAssemblyInsertLink(QtCore.QObject):
             if UtilsAssembly.isDocTemporary(doc):
                 continue
 
+            # Build list of current assembly's parents, including the current assembly itself
+            parents = self.assembly.Parents
+            if parents:
+                root_parent, sub = parents[0]
+                parents_names, _ = UtilsAssembly.getObjsNamesAndElement(root_parent.Name, sub)
+            else:
+                parents_names = [self.assembly.Name]
+
             for obj in doc.findObjects("App::Part"):
-                # we don't want to link to itself
-                if obj != self.assembly:
+                # we don't want to link to itself or parents.
+                if obj.Name not in parents_names:
                     self.allParts.append(obj)
                     self.partsDoc.append(doc)
 

@@ -59,6 +59,7 @@ class CommandCreateAssembly:
         assembly = App.ActiveDocument.addObject("App::Part", "Assembly")
         assembly.Type = "Assembly"
         Gui.ActiveDocument.ActiveView.setActiveObject("part", assembly)
+        assembly.newObject("App::DocumentObjectGroup", "Joints")
         App.closeActiveTransaction()
 
 
