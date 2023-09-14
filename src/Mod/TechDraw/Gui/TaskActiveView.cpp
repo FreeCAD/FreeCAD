@@ -27,6 +27,8 @@
 # include <QMessageBox>
 # include <QPushButton>
 #endif // #ifndef _PreComp_
+#include <Gui/View3DInventor.h>
+#include <Gui/ViewProvider.h>
 
 #include <App/Document.h>
 #include <Base/Console.h>
@@ -36,8 +38,7 @@
 #include <Gui/Command.h>
 #include <Gui/Document.h>
 #include <Gui/MainWindow.h>
-#include <Gui/View3DInventor.h>
-#include <Gui/ViewProvider.h>
+
 #include <Mod/TechDraw/App/DrawPage.h>
 #include <Mod/TechDraw/App/DrawViewImage.h>
 
