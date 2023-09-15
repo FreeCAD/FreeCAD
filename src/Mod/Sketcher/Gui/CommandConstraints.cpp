@@ -5584,7 +5584,7 @@ void CmdSketcherConstrainParallel::applyConstraint(std::vector<SelIdPair>& selSe
             int GeoId1 = selSeq.at(0).GeoId, GeoId2 = selSeq.at(1).GeoId;
 
             // Check that the curves are line segments
-            if (! Sketcher::isLineSegment(Obj->getGeometry(GeoId1)) || ! Sketcher::isLineSegment(Obj->getGeometry(GeoId2))) {
+            if (! isLineSegment(*(Obj->getGeometry(GeoId1))) || ! isLineSegment(*(Obj->getGeometry(GeoId2)))) {
                 Gui::TranslatedUserWarning(Obj,
                                            QObject::tr("Wrong selection"),
                                            QObject::tr("The selected edge is not a valid line."));
