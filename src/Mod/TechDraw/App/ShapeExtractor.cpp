@@ -341,7 +341,7 @@ TopoDS_Shape ShapeExtractor::getShapesFused(const std::vector<App::DocumentObjec
     std::vector<TopoDS_Shape> shapes2d = getShapes2d(links, true);
     if (!shapes2d.empty()) {
         shapes2d.push_back(baseShape);
-        return DrawUtil::shapeVectorToCompound(shapes2d);
+        return DrawUtil::shapeVectorToCompound(shapes2d, false);
     }
 
     return baseShape;
