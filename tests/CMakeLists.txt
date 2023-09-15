@@ -82,10 +82,13 @@ add_subdirectory(src)
 target_include_directories(Tests_run PUBLIC
     ${Python3_INCLUDE_DIRS}
     ${XercesC_INCLUDE_DIRS}
+    ${OCC_INCLUDE_DIR}
 )
 target_link_libraries(Tests_run
     gtest_main
     gmock_main
     ${Google_Tests_LIBS}
+    Part
+    Spreadsheet
     FreeCADApp
 )
