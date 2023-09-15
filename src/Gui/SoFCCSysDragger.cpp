@@ -27,6 +27,9 @@
 #include <Inventor/SbRotation.h>
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/engines/SoComposeVec3f.h>
+#include <Inventor/elements/SoLazyElement.h>
+#include <Inventor/nodes/SoLightModel.h>
+#include <Inventor/nodes/SoDrawStyle.h>
 #include <Inventor/nodes/SoAnnotation.h>
 #include <Inventor/nodes/SoBaseColor.h>
 #include <Inventor/nodes/SoCone.h>
@@ -164,9 +167,13 @@ SoGroup* TDragger::buildGeometry()
 
     //cylinder
     float cylinderHeight = 10.0;
-    float cylinderRadius = 0.2f;
+    float cylinderRadius = 0.1f;
     auto cylinderSeparator = new SoSeparator();
     root->addChild(cylinderSeparator);
+
+    auto cylinderLightModel = new SoLightModel();
+    cylinderLightModel->model = SoLightModel::BASE_COLOR;
+    cylinderSeparator->addChild(cylinderLightModel);
 
     auto cylinderTranslation = new SoTranslation();
     cylinderTranslation->translation.setValue(0.0, cylinderHeight / 2.0, 0.0);
@@ -178,10 +185,14 @@ SoGroup* TDragger::buildGeometry()
     cylinderSeparator->addChild(cylinder);
 
     //cone
-    float coneBottomRadius = 1.0;
-    float coneHeight = 2.0;
+    float coneBottomRadius = 0.8;
+    float coneHeight = 2.5;
     auto coneSeparator = new SoSeparator();
     root->addChild(coneSeparator);
+
+    auto coneLightModel = new SoLightModel();
+    coneLightModel->model = SoLightModel::BASE_COLOR;
+    coneSeparator->addChild(coneLightModel);
 
     auto pickStyle = new SoPickStyle();
     pickStyle->style.setValue(SoPickStyle::SHAPE);
@@ -448,7 +459,7 @@ SoGroup* RDragger::buildGeometry()
     //arc
     auto coordinates = new SoCoordinate3();
 
-    unsigned int segments = 6;
+    unsigned int segments = 15;
 
     float angleIncrement = static_cast<float>(M_PI / 2.0) / static_cast<float>(segments);
     SbRotation rotation(SbVec3f(0.0, 0.0, 1.0), angleIncrement);
@@ -459,6 +470,14 @@ SoGroup* RDragger::buildGeometry()
         rotation.multVec(point, point);
     }
     root->addChild(coordinates);
+
+    auto drawStyle = new SoDrawStyle();
+    drawStyle->lineWidth = 4.0;
+    root->addChild(drawStyle);
+
+    auto lightModel = new SoLightModel();
+    lightModel->model = SoLightModel::BASE_COLOR;
+    root->addChild(lightModel);
 
     auto lineSet = new SoLineSet();
     lineSet->numVertices.setValue(segments + 1);
@@ -478,7 +497,7 @@ SoGroup* RDragger::buildGeometry()
     root->addChild(sphereTranslation);
 
     auto sphere = new SoSphere();
-    sphere->radius.setValue(1.0);
+    sphere->radius.setValue(0.8);
     root->addChild(sphere);
 
     return root;
@@ -727,17 +746,17 @@ SoFCCSysDragger::SoFCCSysDragger()
 
     SoBaseColor *color;
     color = SO_GET_ANY_PART(this, "xTranslatorColor", SoBaseColor);
-    color->rgb.setValue(1.0, 0.0, 0.0);
+    color->rgb.setValue(0.8, 0.2, 0.2);
     color = SO_GET_ANY_PART(this, "yTranslatorColor", SoBaseColor);
-    color->rgb.setValue(0.0, 1.0, 0.0);
+    color->rgb.setValue(0.2, 0.8, 0.2);
     color = SO_GET_ANY_PART(this, "zTranslatorColor", SoBaseColor);
-    color->rgb.setValue(0.0, 0.0, 1.0);
+    color->rgb.setValue(0.2, 0.2, 0.8);
     color = SO_GET_ANY_PART(this, "xRotatorColor", SoBaseColor);
-    color->rgb.setValue(1.0, 0.0, 0.0);
+    color->rgb.setValue(0.9, 0.3, 0.3);
     color = SO_GET_ANY_PART(this, "yRotatorColor", SoBaseColor);
-    color->rgb.setValue(0.0, 1.0, 0.0);
+    color->rgb.setValue(0.3, 0.9, 0.3);
     color = SO_GET_ANY_PART(this, "zRotatorColor", SoBaseColor);
-    color->rgb.setValue(0.0, 0.0, 1.0);
+    color->rgb.setValue(0.3, 0.3, 0.9);
 
     TDragger *tDragger;
     tDragger = SO_GET_ANY_PART(this, "xTranslatorDragger", TDragger);
