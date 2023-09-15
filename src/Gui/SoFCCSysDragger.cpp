@@ -48,6 +48,8 @@
 #endif
 
 #include <Base/Quantity.h>
+#include "Gui/ViewParams.h"
+#include "App/Color.h"
 
 #include "SoFCCSysDragger.h"
 #include "MainWindow.h"
@@ -745,18 +747,26 @@ SoFCCSysDragger::SoFCCSysDragger()
     SO_KIT_INIT_INSTANCE();
 
     SoBaseColor *color;
+    App::Color stdColor;
+    auto viewParams = Gui::ViewParams::instance();
     color = SO_GET_ANY_PART(this, "xTranslatorColor", SoBaseColor);
-    color->rgb.setValue(0.8, 0.2, 0.2);
+    stdColor.setPackedValue(viewParams->getAxisXColor());
+    color->rgb.setValue(stdColor.r, stdColor.g, stdColor.b);
     color = SO_GET_ANY_PART(this, "yTranslatorColor", SoBaseColor);
-    color->rgb.setValue(0.2, 0.8, 0.2);
+    stdColor.setPackedValue(viewParams->getAxisYColor());
+    color->rgb.setValue(stdColor.r, stdColor.g, stdColor.b);
     color = SO_GET_ANY_PART(this, "zTranslatorColor", SoBaseColor);
-    color->rgb.setValue(0.2, 0.2, 0.8);
+    stdColor.setPackedValue(viewParams->getAxisZColor());
+    color->rgb.setValue(stdColor.r, stdColor.g, stdColor.b);
     color = SO_GET_ANY_PART(this, "xRotatorColor", SoBaseColor);
-    color->rgb.setValue(0.9, 0.3, 0.3);
+    stdColor.setPackedValue(viewParams->getAxisXAltColor());
+    color->rgb.setValue(stdColor.r, stdColor.g, stdColor.b);
     color = SO_GET_ANY_PART(this, "yRotatorColor", SoBaseColor);
-    color->rgb.setValue(0.3, 0.9, 0.3);
+    stdColor.setPackedValue(viewParams->getAxisYAltColor());
+    color->rgb.setValue(stdColor.r, stdColor.g, stdColor.b);
     color = SO_GET_ANY_PART(this, "zRotatorColor", SoBaseColor);
-    color->rgb.setValue(0.3, 0.3, 0.9);
+    stdColor.setPackedValue(viewParams->getAxisZAltColor());
+    color->rgb.setValue(stdColor.r, stdColor.g, stdColor.b);
 
     TDragger *tDragger;
     tDragger = SO_GET_ANY_PART(this, "xTranslatorDragger", TDragger);
