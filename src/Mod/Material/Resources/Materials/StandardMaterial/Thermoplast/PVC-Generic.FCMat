@@ -1,0 +1,21 @@
+# File created by ConvertFCMat.py
+General:
+  UUID: "758cfc44-f4ad-4605-8645-75e9e6b053ab"
+  AuthorAndLicense: "(c) 2019 Uwe Stöhr (CC-BY 3.0)"
+  Name: "PVC"
+  SourceURL: "http://www.matweb.com/search/DataSheet.aspx?MatGUID=1f650966ec834bb8833dd4c6e3116079"
+Models:
+  LinearElastic:
+    UUID: '7b561d1d-fb9b-44f6-9da9-56a4f74d7536'
+    Density: "1380 kg/m^3"
+    PoissonRatio: "0.38"
+    UltimateTensileStrength: "50 MPa"
+    YoungsModulus: "2800 MPa"
+  Thermal:
+    UUID: '9959d007-a970-4ea7-bae4-3eb1b8b883c7'
+    SpecificHeat: "1000 J/kg/K"
+    ThermalConductivity: "0.150 W/m/K"
+    ThermalExpansionCoefficient: "0.000075 m/m/K"
+  Costs:
+    UUID: '881df808-8726-4c2e-be38-688bb6cce466'
+    ProductURL: "https://en.wikipedia.org/wiki/Polyvinyl_chloride"

@@ -1,0 +1,25 @@
+# File created by ConvertFCMat.py
+General:
+  UUID: "e359c5b5-eae2-42b1-9ef6-edde21d706ee"
+  Name: "Argon"
+  Description: "Argon properties at 20 Degrees Celsius and 1 atm"
+Models:
+  Father:
+    UUID: '9cdda8b6-b606-4778-8f13-3934d8668e67'
+    Father: "Gas"
+  Fluid:
+    UUID: '1ae66d8c-1ba1-4211-ad12-b9917573b202'
+    Density: "1.641 kg/m^3"
+    DynamicViscosity: "22.3e-6 kg/m/s"
+    KinematicViscosity: "13.59-6 m^2/s"
+    PrandtlNumber: "0.7"
+  Thermal:
+    UUID: '9959d007-a970-4ea7-bae4-3eb1b8b883c7'
+    SpecificHeat: "0.520 kJ/kg/K"
+    ThermalConductivity: "0.018 W/m/K"
+    ThermalExpansionCoefficient: "3.43e-3 1/K"
+  Electromagnetic:
+    UUID: 'b2eb5f48-74b3-4193-9fbb-948674f427f3'
+    RelativePermittivity: "1.000513"
+    ElectricalConductivity: "1e-15 S/m"
+    RelativePermeability: "1.0"

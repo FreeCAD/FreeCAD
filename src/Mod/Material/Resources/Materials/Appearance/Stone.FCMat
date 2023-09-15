@@ -1,0 +1,15 @@
+# File created by ConvertFCMat.py
+General:
+  UUID: "a9f54d61-cc98-46df-8734-b0543ceb4e45"
+  AuthorAndLicense: "(c) 2023 David Carter"
+  Name: "Stone"
+  Description: "Defines the Stone appearance properties"
+AppearanceModels:
+  BasicRendering:
+    UUID: 'f006c7e4-35b7-43d5-bbf9-c5d572309e6e'
+    AmbientColor: "(0.1900, 0.1520, 0.1178, 1.0)"
+    DiffuseColor: "(0.7500, 0.6000, 0.4650, 1.0)"
+    EmissiveColor: "(0.0000, 0.0000, 0.0000, 1.0)"
+    Shininess: "0.1700"
+    SpecularColor: "(0.0784, 0.0800, 0.0480, 1.0)"
+    Transparency: "0.0"

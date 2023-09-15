@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenerateMaterial xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaMaterial_Module.xsd">
+  <PythonExport
+      Father="BaseClassPy"
+      Name="MaterialManagerPy"
+      Twin="MaterialManager"
+      TwinPointer="MaterialManager"
+      Include="Mod/Material/App/MaterialManager.h"
+      Namespace="Materials"
+      FatherInclude="Base/BaseClassPy.h"
+      FatherNamespace="Base"
+      Constructor="true"
+      Delete="true">
+    <Documentation>
+      <Author Licence="LGPL" Name="DavidCarter" EMail="dcarter@davidcarter.ca" />
+      <UserDocu>Material descriptions.</UserDocu>
+    </Documentation>
+    <Methode Name="getMaterial">
+      <Documentation>
+        <UserDocu>Get a material object by specifying its UUID</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="getMaterialByPath">
+      <Documentation>
+        <UserDocu>Get a material object by specifying its path and library name</UserDocu>
+      </Documentation>
+    </Methode>
+    <Attribute Name="MaterialLibraries" ReadOnly="true">
+      <Documentation>
+        <UserDocu>List of Material libraries.</UserDocu>
+      </Documentation>
+      <Parameter Name="MaterialLibraries" Type="List"/>
+    </Attribute>
+    <Attribute Name="Materials" ReadOnly="true">
+      <Documentation>
+        <UserDocu>List of Materials.</UserDocu>
+      </Documentation>
+      <Parameter Name="Materials" Type="Dict"/>
+    </Attribute>
+    <Methode Name="materialsWithModel">
+      <Documentation>
+        <UserDocu>Get a list of materials implementing the specified model</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="materialsWithModelComplete">
+      <Documentation>
+        <UserDocu>Get a list of materials implementing the specified model, with values for all properties</UserDocu>
+      </Documentation>
+    </Methode>
+  </PythonExport>
+</GenerateMaterial>

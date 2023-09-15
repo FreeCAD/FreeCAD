@@ -1,0 +1,29 @@
+# File created by ConvertFCMat.py
+General:
+  UUID: "71f32e31-656e-4f94-a5f0-5b656b9367c6"
+  AuthorAndLicense: "(c) 2014 M. Münch - GNU Lesser General Public License (LGPL)"
+  Name: "EN-GJL-250"
+Inherits:
+  Steel:
+    UUID: "4b849c55-6b3a-4f75-a055-40c0d0324596"
+Models:
+  Father:
+    UUID: '9cdda8b6-b606-4778-8f13-3934d8668e67'
+    Father: "Metal"
+  MaterialStandard:
+    UUID: '1e2c0088-904a-4537-925f-64064c07d700'
+    KindOfMaterial: "Cast iron"
+    MaterialNumber: "0.6025"
+    StandardCode: "EN 1561"
+  LinearElastic:
+    UUID: '7b561d1d-fb9b-44f6-9da9-56a4f74d7536'
+    Density: "7200 kg/m^3"
+    PoissonRatio: "0.3"
+    ShearModulus: "44000 MPa"
+    UltimateStrain: "0"
+    UltimateTensileStrength: "250 MPa"
+    YieldStrength: "165 MPa"
+    YoungsModulus: "115000 MPa"
+  Thermal:
+    UUID: '9959d007-a970-4ea7-bae4-3eb1b8b883c7'
+    ThermalExpansionCoefficient: "0.00001 m/m/K"
