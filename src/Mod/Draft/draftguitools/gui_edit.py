@@ -498,7 +498,7 @@ class Edit(gui_base_original.Modifier):
             orthoConstrain = True
         snappedPos = Gui.Snapper.snap((pos[0],pos[1]),self.node[-1], constrain=orthoConstrain)
         self.trackers[self.obj.Name][self.editing].set(snappedPos)
-        self.ui.displayPoint(snappedPos, self.node[-1])
+        self.ui.displayPoint(snappedPos, self.node[-1], mask=Gui.Snapper.affinity)
         if self.ghost:
             self.updateGhost(obj=self.obj, node_idx=self.editing, v=snappedPos)
 
