@@ -34,7 +34,7 @@ template<typename T>
 class Vector3;
 
 class Vector2d;
-}// namespace Base
+}  // namespace Base
 
 namespace Part
 {
@@ -154,7 +154,8 @@ public:
      * @param overlayparameters: Parameters for controlling the overlay
      * @param drawingparameters: Parameters for drawing the overlay information
      */
-    EditModeInformationOverlayCoinConverter(ViewProviderSketch& vp, SoGroup* infogroup,
+    EditModeInformationOverlayCoinConverter(ViewProviderSketch& vp,
+                                            SoGroup* infogroup,
                                             OverlayParameters& overlayparameters,
                                             DrawingParameters& drawingparameters);
 
@@ -214,7 +215,7 @@ private:
 };
 
 
-}// namespace SketcherGui
+}  // namespace SketcherGui
 
 
-#endif// SKETCHERGUI_InformationOverlayCoinConverter_H
+#endif  // SKETCHERGUI_InformationOverlayCoinConverter_H

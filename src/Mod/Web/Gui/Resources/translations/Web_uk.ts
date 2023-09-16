@@ -129,12 +129,12 @@
     <name>QObject</name>
     <message>
       <location filename="../../AppWebGui.cpp" line="91"/>
-      <location filename="../../BrowserView.cpp" line="812"/>
+      <location filename="../../BrowserView.cpp" line="865"/>
       <source>Browser</source>
       <translation>Браузер</translation>
     </message>
     <message>
-      <location filename="../../BrowserView.cpp" line="620"/>
+      <location filename="../../BrowserView.cpp" line="668"/>
       <source>File does not exist!</source>
       <translation>Файл не існує!</translation>
     </message>
@@ -142,24 +142,24 @@
   <context>
     <name>WebGui::BrowserView</name>
     <message>
-      <location filename="../../BrowserView.cpp" line="608"/>
-      <location filename="../../BrowserView.cpp" line="613"/>
-      <location filename="../../BrowserView.cpp" line="616"/>
+      <location filename="../../BrowserView.cpp" line="643"/>
+      <location filename="../../BrowserView.cpp" line="650"/>
+      <location filename="../../BrowserView.cpp" line="659"/>
       <source>Error</source>
       <translation>Помилка</translation>
     </message>
     <message>
-      <location filename="../../BrowserView.cpp" line="613"/>
+      <location filename="../../BrowserView.cpp" line="651"/>
       <source>There were errors while loading the file. Some data might have been modified or not recovered at all. Look in the report view for more specific information about the objects involved.</source>
       <translation>Під час завантаження файлу виникли помилки. Деякі дані, можливо, були змінені або взагалі не відновлені. Ознайомтесь зі звітом для більш отримання конкретної інформації щодо таких обʼєктів.</translation>
     </message>
     <message>
-      <location filename="../../BrowserView.cpp" line="616"/>
+      <location filename="../../BrowserView.cpp" line="660"/>
       <source>There were serious errors while loading the file. Some data might have been modified or not recovered at all. Saving the project will most likely result in loss of data.</source>
       <translation>При завантаженні файлу сталася серйозна помилка. Можливо, деякі дані були змінені або взагалі не відновлені. Збереження проєкту швидше за все, призведе до втрати даних.</translation>
     </message>
     <message>
-      <location filename="../../BrowserView.cpp" line="780"/>
+      <location filename="../../BrowserView.cpp" line="833"/>
       <source>Loading %1...</source>
       <translation>Завантаження %1...</translation>
     </message>
@@ -167,17 +167,17 @@
   <context>
     <name>WebGui::WebView</name>
     <message>
-      <location filename="../../BrowserView.cpp" line="359"/>
+      <location filename="../../BrowserView.cpp" line="370"/>
       <source>Open in External Browser</source>
       <translation>Відкрити у зовнішньому браузері</translation>
     </message>
     <message>
-      <location filename="../../BrowserView.cpp" line="362"/>
+      <location filename="../../BrowserView.cpp" line="373"/>
       <source>Open in new window</source>
       <translation>Відкрити у новому вікні</translation>
     </message>
     <message>
-      <location filename="../../BrowserView.cpp" line="408"/>
+      <location filename="../../BrowserView.cpp" line="431"/>
       <source>View source</source>
       <translation>Переглянути вихідний код</translation>
     </message>

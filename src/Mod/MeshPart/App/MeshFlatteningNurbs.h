@@ -20,6 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
+// clang-format off
 #ifndef NURBS_H
 #define NURBS_H
 
@@ -115,3 +116,4 @@ struct NurbsBase1D
 }
 
 #endif
+// clang-format on

@@ -49,7 +49,9 @@ public:
     explicit TaskSketcherMessages(ViewProviderSketch* sketchView);
     ~TaskSketcherMessages() override;
 
-    void slotSetUp(const QString& state, const QString& msg, const QString& link,
+    void slotSetUp(const QString& state,
+                   const QString& msg,
+                   const QString& link,
                    const QString& linkText);
 
 private:
@@ -69,6 +71,6 @@ private:
     std::unique_ptr<Ui_TaskSketcherMessages> ui;
 };
 
-}// namespace SketcherGui
+}  // namespace SketcherGui
 
-#endif// GUI_TASKVIEW_TaskSketcherMessages_H
+#endif  // GUI_TASKVIEW_TaskSketcherMessages_H

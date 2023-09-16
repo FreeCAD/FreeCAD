@@ -26,7 +26,7 @@
 
 #include <QGuiApplication>
 #include <QPainter>
-#endif// #ifndef _PreComp_
+#endif  // #ifndef _PreComp_
 #include <Gui/View3DInventor.h>
 #include <Gui/View3DInventorViewer.h>
 #include <Base/Console.h>
@@ -81,13 +81,15 @@ ViewProviderSketchDrawSketchHandlerAttorney::drawEdit(ViewProviderSketch& vp,
 }
 
 inline void ViewProviderSketchDrawSketchHandlerAttorney::drawEdit(
-    ViewProviderSketch& vp, const std::list<std::vector<Base::Vector2d>>& list)
+    ViewProviderSketch& vp,
+    const std::list<std::vector<Base::Vector2d>>& list)
 {
     vp.drawEdit(list);
 }
 
 inline void ViewProviderSketchDrawSketchHandlerAttorney::drawEditMarkers(
-    ViewProviderSketch& vp, const std::vector<Base::Vector2d>& EditMarkers,
+    ViewProviderSketch& vp,
+    const std::vector<Base::Vector2d>& EditMarkers,
     unsigned int augmentationlevel)
 {
     vp.drawEditMarkers(EditMarkers, augmentationlevel);
@@ -131,15 +133,16 @@ ViewProviderSketchDrawSketchHandlerAttorney::getPreselectCross(const ViewProvide
 }
 
 inline void
-ViewProviderSketchDrawSketchHandlerAttorney::setAngleSnapping(ViewProviderSketch& vp, bool enable,
+ViewProviderSketchDrawSketchHandlerAttorney::setAngleSnapping(ViewProviderSketch& vp,
+                                                              bool enable,
                                                               Base::Vector2d referencePoint)
 {
     vp.setAngleSnapping(enable, referencePoint);
 }
 
-inline void
-ViewProviderSketchDrawSketchHandlerAttorney::moveConstraint(ViewProviderSketch& vp, int constNum,
-    const Base::Vector2d& toPos)
+inline void ViewProviderSketchDrawSketchHandlerAttorney::moveConstraint(ViewProviderSketch& vp,
+                                                                        int constNum,
+                                                                        const Base::Vector2d& toPos)
 {
     vp.moveConstraint(constNum, toPos);
 }
@@ -154,10 +157,11 @@ CurveConverter::CurveConverter()
             "User parameter:BaseApp/Preferences/View");
         hGrp->Attach(this);
     }
-    catch (const Base::ValueError& e) {// ensure that if parameter strings are not well-formed, the
-                                       // exception is not propagated
-        Base::Console().DeveloperError(
-            "CurveConverter", "Malformed parameter string: %s\n", e.what());
+    catch (const Base::ValueError& e) {  // ensure that if parameter strings are not well-formed,
+                                         // the exception is not propagated
+        Base::Console().DeveloperError("CurveConverter",
+                                       "Malformed parameter string: %s\n",
+                                       e.what());
     }
 
     updateCurvedEdgeCountSegmentsParameter();
@@ -171,10 +175,11 @@ CurveConverter::~CurveConverter()
         hGrp->Detach(this);
     }
     catch (const Base::ValueError&
-               e) {// ensure that if parameter strings are not well-formed, the program is not
-                   // terminated when calling the noexcept destructor.
-        Base::Console().DeveloperError(
-            "CurveConverter", "Malformed parameter string: %s\n", e.what());
+               e) {  // ensure that if parameter strings are not well-formed, the program is not
+                     // terminated when calling the noexcept destructor.
+        Base::Console().DeveloperError("CurveConverter",
+                                       "Malformed parameter string: %s\n",
+                                       e.what());
     }
 }
 
@@ -191,7 +196,7 @@ std::vector<Base::Vector2d> CurveConverter::toVector2D(const Part::Geometry* geo
     auto isconic = type.isDerivedFrom(Part::GeomConic::getClassTypeId());
     auto isbounded = type.isDerivedFrom(Part::GeomBoundedCurve::getClassTypeId());
 
-    if (type == Part::GeomLineSegment::getClassTypeId()) {// add a line
+    if (type == Part::GeomLineSegment::getClassTypeId()) {  // add a line
         auto geo = static_cast<const Part::GeomLineSegment*>(geometry);
 
         emplaceasvector2d(geo->getStartPoint());
@@ -204,8 +209,9 @@ std::vector<Base::Vector2d> CurveConverter::toVector2D(const Part::Geometry* geo
         double segment =
             (geo->getLastParameter() - geo->getFirstParameter()) / curvedEdgeCountSegments;
 
-        for (int i = 0; i < curvedEdgeCountSegments; i++)
+        for (int i = 0; i < curvedEdgeCountSegments; i++) {
             emplaceasvector2d(geo->value(geo->getFirstParameter() + i * segment));
+        }
 
         // either close the curve for untrimmed conic or set the last point for bounded curves
         emplaceasvector2d(isconic ? geo->value(0) : geo->value(geo->getLastParameter()));
@@ -219,8 +225,9 @@ CurveConverter::toVector2DList(const std::vector<Part::Geometry*>& geometries)
 {
     std::list<std::vector<Base::Vector2d>> list;
 
-    for (const auto& geo : geometries)
+    for (const auto& geo : geometries) {
         list.push_back(toVector2D(geo));
+    }
 
     return list;
 }
@@ -232,8 +239,9 @@ void CurveConverter::updateCurvedEdgeCountSegmentsParameter()
     int stdcountsegments = hGrp->GetInt("SegmentsPerGeometry", 50);
 
     // value cannot be smaller than 6
-    if (stdcountsegments < 6)
+    if (stdcountsegments < 6) {
         stdcountsegments = 6;
+    }
 
     curvedEdgeCountSegments = stdcountsegments;
 };
@@ -325,7 +333,7 @@ int DrawSketchHandler::getHighestCurveIndex()
 
 unsigned long DrawSketchHandler::getCrosshairColor()
 {
-    unsigned long color = 0xFFFFFFFF;// white
+    unsigned long color = 0xFFFFFFFF;  // white
     ParameterGrp::handle hGrp =
         App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
     color = hGrp->GetUnsigned("CursorCrosshairColor", color);
@@ -352,7 +360,9 @@ void DrawSketchHandler::setCrosshairCursor(const char* svgName)
     setCrosshairCursor(cursorName);
 }
 
-void DrawSketchHandler::setSvgCursor(const QString& cursorName, int x, int y,
+void DrawSketchHandler::setSvgCursor(const QString& cursorName,
+                                     int x,
+                                     int y,
                                      const std::map<unsigned long, unsigned long>& colorMapping)
 {
     // The Sketcher_Pointer_*.svg icons have a default size of 64x64. When directly creating
@@ -373,10 +383,12 @@ void DrawSketchHandler::setSvgCursor(const QString& cursorName, int x, int y,
 #endif
     qreal cursorSize = defaultCursorSize * pRatio;
 
-    QPixmap pointer = Gui::BitmapFactory().pixmapFromSvg(
-        cursorName.toStdString().c_str(), QSizeF(cursorSize, cursorSize), colorMapping);
-    if (isRatioOne)
+    QPixmap pointer = Gui::BitmapFactory().pixmapFromSvg(cursorName.toStdString().c_str(),
+                                                         QSizeF(cursorSize, cursorSize),
+                                                         colorMapping);
+    if (isRatioOne) {
         pointer = pointer.scaled(32, 32);
+    }
     pointer.setDevicePixelRatio(pRatio);
     setCursor(pointer, hotX, hotY, false);
 }
@@ -463,7 +475,7 @@ void DrawSketchHandler::addCursorTail(std::vector<QPixmap>& pixmaps)
             currentIconX += icon.width();
         }
 
-        qp.end();// Finish painting
+        qp.end();  // Finish painting
 
         // Create the new cursor with the icon.
         QPoint p = actCursor.hotSpot();
@@ -477,8 +489,9 @@ void DrawSketchHandler::updateCursor()
 {
     auto cursorstring = getCrosshairCursorSVGName();
 
-    if (cursorstring != QString::fromLatin1("None"))
+    if (cursorstring != QString::fromLatin1("None")) {
         setCrosshairCursor(cursorstring);
+    }
 }
 
 void DrawSketchHandler::applyCursor()
@@ -561,16 +574,20 @@ DrawSketchHandler::suggestedConstraintsPixmaps(std::vector<AutoConstraint>& sugg
 }
 
 int DrawSketchHandler::seekAutoConstraint(std::vector<AutoConstraint>& suggestedConstraints,
-                                          const Base::Vector2d& Pos, const Base::Vector2d& Dir,
+                                          const Base::Vector2d& Pos,
+                                          const Base::Vector2d& Dir,
                                           AutoConstraint::TargetType type)
 {
     suggestedConstraints.clear();
 
-    if (!sketchgui->Autoconstraints.getValue())
-        return 0;// If Autoconstraints property is not set quit
+    if (!sketchgui->Autoconstraints.getValue()) {
+        return 0;  // If Autoconstraints property is not set quit
+    }
 
-    Base::Vector3d hitShapeDir = Base::Vector3d(
-        0, 0, 0);// direction of hit shape (if it is a line, the direction of the line)
+    Base::Vector3d hitShapeDir =
+        Base::Vector3d(0,
+                       0,
+                       0);  // direction of hit shape (if it is a line, the direction of the line)
 
     // Get Preselection
     int preSelPnt = getPreselectPoint();
@@ -580,8 +597,9 @@ int DrawSketchHandler::seekAutoConstraint(std::vector<AutoConstraint>& suggested
 
     Sketcher::PointPos PosId = Sketcher::PointPos::none;
 
-    if (preSelPnt != -1)
+    if (preSelPnt != -1) {
         sketchgui->getSketchObject()->getGeoVertexIndex(preSelPnt, GeoId, PosId);
+    }
     else if (preSelCrv != -1) {
         const Part::Geometry* geom = sketchgui->getSketchObject()->getGeometry(preSelCrv);
 
@@ -594,15 +612,15 @@ int DrawSketchHandler::seekAutoConstraint(std::vector<AutoConstraint>& suggested
             }
         }
     }
-    else if (preSelCrs == 0) {// root point
+    else if (preSelCrs == 0) {  // root point
         GeoId = Sketcher::GeoEnum::RtPnt;
         PosId = Sketcher::PointPos::start;
     }
-    else if (preSelCrs == 1) {// x axis
+    else if (preSelCrs == 1) {  // x axis
         GeoId = Sketcher::GeoEnum::HAxis;
         hitShapeDir = Base::Vector3d(1, 0, 0);
     }
-    else if (preSelCrs == 2) {// y axis
+    else if (preSelCrs == 2) {  // y axis
         GeoId = Sketcher::GeoEnum::VAxis;
         hitShapeDir = Base::Vector3d(0, 1, 0);
     }
@@ -614,19 +632,23 @@ int DrawSketchHandler::seekAutoConstraint(std::vector<AutoConstraint>& suggested
         constr.GeoId = GeoId;
         constr.PosId = PosId;
         if ((type == AutoConstraint::VERTEX || type == AutoConstraint::VERTEX_NO_TANGENCY)
-            && PosId != Sketcher::PointPos::none)
+            && PosId != Sketcher::PointPos::none) {
             constr.Type = Sketcher::Coincident;
-        else if (type == AutoConstraint::CURVE && PosId != Sketcher::PointPos::none)
+        }
+        else if (type == AutoConstraint::CURVE && PosId != Sketcher::PointPos::none) {
             constr.Type = Sketcher::PointOnObject;
+        }
         else if ((type == AutoConstraint::VERTEX || type == AutoConstraint::VERTEX_NO_TANGENCY)
-                 && PosId == Sketcher::PointPos::none)
+                 && PosId == Sketcher::PointPos::none) {
             constr.Type = Sketcher::PointOnObject;
-        else if (type == AutoConstraint::CURVE && PosId == Sketcher::PointPos::none)
+        }
+        else if (type == AutoConstraint::CURVE && PosId == Sketcher::PointPos::none) {
             constr.Type = Sketcher::Tangent;
+        }
 
         if (constr.Type == Sketcher::Tangent && Dir.Length() > 1e-8
             && hitShapeDir.Length()
-                > 1e-8) {// We are hitting a line and have hitting vector information
+                > 1e-8) {  // We are hitting a line and have hitting vector information
             Base::Vector3d dir3d = Base::Vector3d(Dir.x, Dir.y, 0);
             double cosangle = dir3d.Normalize() * hitShapeDir.Normalize();
 
@@ -636,20 +658,23 @@ int DrawSketchHandler::seekAutoConstraint(std::vector<AutoConstraint>& suggested
             // degrees)
             if (fabs(cosangle) < 0.995f
                 || ((GeoId == Sketcher::GeoEnum::HAxis || GeoId == Sketcher::GeoEnum::VAxis)
-                    && fabs(cosangle) < 0.1))
+                    && fabs(cosangle) < 0.1)) {
                 suggestedConstraints.push_back(constr);
+            }
 
 
             return suggestedConstraints.size();
         }
 
-        if (constr.Type != Sketcher::None)
+        if (constr.Type != Sketcher::None) {
             suggestedConstraints.push_back(constr);
+        }
     }
 
-    if (Dir.Length() < 1e-8 || type == AutoConstraint::CURVE)
+    if (Dir.Length() < 1e-8 || type == AutoConstraint::CURVE) {
         // Direction not set so return;
         return suggestedConstraints.size();
+    }
 
     // Suggest vertical and horizontal constraints
 
@@ -662,19 +687,23 @@ int DrawSketchHandler::seekAutoConstraint(std::vector<AutoConstraint>& suggested
     constr.GeoId = GeoEnum::GeoUndef;
     constr.PosId = Sketcher::PointPos::none;
     double angle = std::abs(atan2(Dir.y, Dir.x));
-    if (angle < angleDevRad || (M_PI - angle) < angleDevRad)
+    if (angle < angleDevRad || (M_PI - angle) < angleDevRad) {
         // Suggest horizontal constraint
         constr.Type = Sketcher::Horizontal;
-    else if (std::abs(angle - M_PI_2) < angleDevRad)
+    }
+    else if (std::abs(angle - M_PI_2) < angleDevRad) {
         // Suggest vertical constraint
         constr.Type = Sketcher::Vertical;
+    }
 
-    if (constr.Type != Sketcher::None)
+    if (constr.Type != Sketcher::None) {
         suggestedConstraints.push_back(constr);
+    }
 
     // Do not seek for tangent if we are actually building a primitive
-    if (type == AutoConstraint::VERTEX_NO_TANGENCY)
+    if (type == AutoConstraint::VERTEX_NO_TANGENCY) {
         return suggestedConstraints.size();
+    }
 
     // Find if there are tangent constraints (currently arcs and circles)
 
@@ -688,9 +717,9 @@ int DrawSketchHandler::seekAutoConstraint(std::vector<AutoConstraint>& suggested
     const std::vector<Part::Geometry*> geomlist =
         sketchgui->getSketchObject()->getCompleteGeometry();
 
-    Base::Vector3d tmpPos(Pos.x, Pos.y, 0.f);                  // Current cursor point
-    Base::Vector3d tmpDir(Dir.x, Dir.y, 0.f);                  // Direction of line
-    Base::Vector3d tmpStart(Pos.x - Dir.x, Pos.y - Dir.y, 0.f);// Start point
+    Base::Vector3d tmpPos(Pos.x, Pos.y, 0.f);                    // Current cursor point
+    Base::Vector3d tmpDir(Dir.x, Dir.y, 0.f);                    // Direction of line
+    Base::Vector3d tmpStart(Pos.x - Dir.x, Pos.y - Dir.y, 0.f);  // Start point
 
     // Iterate through geometry
     int i = 0;
@@ -705,8 +734,9 @@ int DrawSketchHandler::seekAutoConstraint(std::vector<AutoConstraint>& suggested
             double radius = circle->getRadius();
 
             // ignore if no touch (use dot product)
-            if (tmpDir * (center - tmpPos) > 0 || tmpDir * (center - tmpStart) < 0)
+            if (tmpDir * (center - tmpPos) > 0 || tmpDir * (center - tmpStart) < 0) {
                 continue;
+            }
 
             Base::Vector3d projPnt(0.f, 0.f, 0.f);
             projPnt = projPnt.ProjectToLine(center - tmpPos, tmpDir);
@@ -735,10 +765,10 @@ int DrawSketchHandler::seekAutoConstraint(std::vector<AutoConstraint>& suggested
 
             Base::Vector3d norm = Base::Vector3d(Dir.y, -Dir.x).Normalize();
 
-            double distancetoline = norm * (tmpPos - focus1P);// distance focus1 to line
+            double distancetoline = norm * (tmpPos - focus1P);  // distance focus1 to line
 
             Base::Vector3d focus1PMirrored =
-                focus1P + 2 * distancetoline * norm;// mirror of focus1 with respect to the line
+                focus1P + 2 * distancetoline * norm;  // mirror of focus1 with respect to the line
 
             double error = fabs((focus1PMirrored - focus2P).Length() - 2 * a);
 
@@ -754,8 +784,9 @@ int DrawSketchHandler::seekAutoConstraint(std::vector<AutoConstraint>& suggested
             double radius = arc->getRadius();
 
             // ignore if no touch (use dot product)
-            if (tmpDir * (center - tmpPos) > 0 || tmpDir * (center - tmpStart) < 0)
+            if (tmpDir * (center - tmpPos) > 0 || tmpDir * (center - tmpStart) < 0) {
                 continue;
+            }
 
             Base::Vector3d projPnt(0.f, 0.f, 0.f);
             projPnt = projPnt.ProjectToLine(center - tmpPos, tmpDir);
@@ -766,11 +797,12 @@ int DrawSketchHandler::seekAutoConstraint(std::vector<AutoConstraint>& suggested
                 arc->getRange(startAngle, endAngle, /*emulateCCW=*/true);
 
                 double angle = atan2(projPnt.y, projPnt.x);
-                while (angle < startAngle)
-                    angle += 2 * D_PI;// Bring it to range of arc
+                while (angle < startAngle) {
+                    angle += 2 * D_PI;  // Bring it to range of arc
+                }
 
                 // if the point is on correct side of arc
-                if (angle <= endAngle) {// Now need to check only one side
+                if (angle <= endAngle) {  // Now need to check only one side
                     tangId = i;
                     tangDeviation = projDist;
                 }
@@ -792,10 +824,10 @@ int DrawSketchHandler::seekAutoConstraint(std::vector<AutoConstraint>& suggested
 
             Base::Vector3d norm = Base::Vector3d(Dir.y, -Dir.x).Normalize();
 
-            double distancetoline = norm * (tmpPos - focus1P);// distance focus1 to line
+            double distancetoline = norm * (tmpPos - focus1P);  // distance focus1 to line
 
             Base::Vector3d focus1PMirrored =
-                focus1P + 2 * distancetoline * norm;// mirror of focus1 with respect to the line
+                focus1P + 2 * distancetoline * norm;  // mirror of focus1 with respect to the line
 
             double error = fabs((focus1PMirrored - focus2P).Length() - 2 * a);
 
@@ -817,11 +849,12 @@ int DrawSketchHandler::seekAutoConstraint(std::vector<AutoConstraint>& suggested
                         - startAngle,
                     2.f * M_PI);
 
-                while (angle < startAngle)
-                    angle += 2 * D_PI;// Bring it to range of arc
+                while (angle < startAngle) {
+                    angle += 2 * D_PI;  // Bring it to range of arc
+                }
 
                 // if the point is on correct side of arc
-                if (angle <= endAngle) {// Now need to check only one side
+                if (angle <= endAngle) {  // Now need to check only one side
                     tangId = i;
                     tangDeviation = error;
                 }
@@ -830,8 +863,9 @@ int DrawSketchHandler::seekAutoConstraint(std::vector<AutoConstraint>& suggested
     }
 
     if (tangId != GeoEnum::GeoUndef) {
-        if (tangId > getHighestCurveIndex())// external Geometry
+        if (tangId > getHighestCurveIndex()) {  // external Geometry
             tangId = getHighestCurveIndex() - tangId;
+        }
         // Suggest vertical constraint
         constr.Type = Tangent;
         constr.GeoId = tangId;
@@ -843,11 +877,13 @@ int DrawSketchHandler::seekAutoConstraint(std::vector<AutoConstraint>& suggested
 }
 
 void DrawSketchHandler::createAutoConstraints(const std::vector<AutoConstraint>& autoConstrs,
-                                              int geoId1, Sketcher::PointPos posId1,
+                                              int geoId1,
+                                              Sketcher::PointPos posId1,
                                               bool createowncommand /*= true*/)
 {
-    if (!sketchgui->Autoconstraints.getValue())
-        return;// If Autoconstraints property is not set quit
+    if (!sketchgui->Autoconstraints.getValue()) {
+        return;  // If Autoconstraints property is not set quit
+    }
 
     if (!autoConstrs.empty()) {
 
@@ -863,8 +899,9 @@ void DrawSketchHandler::createAutoConstraints(const std::vector<AutoConstraint>&
 
             switch (it->Type) {
                 case Sketcher::Coincident: {
-                    if (posId1 == Sketcher::PointPos::none)
+                    if (posId1 == Sketcher::PointPos::none) {
                         continue;
+                    }
                     // If the auto constraint has a point create a coincident otherwise it is an
                     // edge on a point
                     Gui::cmdAppObjectArgs(
@@ -917,8 +954,9 @@ void DrawSketchHandler::createAutoConstraints(const std::vector<AutoConstraint>&
                         && (geom1->getTypeId() == Part::GeomEllipse::getClassTypeId()
                             || geom2->getTypeId() == Part::GeomEllipse::getClassTypeId())) {
 
-                        if (geom1->getTypeId() != Part::GeomEllipse::getClassTypeId())
+                        if (geom1->getTypeId() != Part::GeomEllipse::getClassTypeId()) {
                             std::swap(geoId1, geoId2);
+                        }
 
                         // geoId1 is the ellipse
                         geom1 = Obj->getGeometry(geoId1);
@@ -944,8 +982,9 @@ void DrawSketchHandler::createAutoConstraints(const std::vector<AutoConstraint>&
                         && (geom1->getTypeId() == Part::GeomArcOfEllipse::getClassTypeId()
                             || geom2->getTypeId() == Part::GeomArcOfEllipse::getClassTypeId())) {
 
-                        if (geom1->getTypeId() != Part::GeomArcOfEllipse::getClassTypeId())
+                        if (geom1->getTypeId() != Part::GeomArcOfEllipse::getClassTypeId()) {
                             std::swap(geoId1, geoId2);
+                        }
 
                         // geoId1 is the arc of ellipse
                         geom1 = Obj->getGeometry(geoId1);
@@ -1048,8 +1087,9 @@ void DrawSketchHandler::drawDirectionAtCursor(const Base::Vector2d& position,
 void DrawSketchHandler::drawEditMarkers(const std::vector<Base::Vector2d>& EditMarkers,
                                         unsigned int augmentationlevel)
 {
-    ViewProviderSketchDrawSketchHandlerAttorney::drawEditMarkers(
-        *sketchgui, EditMarkers, augmentationlevel);
+    ViewProviderSketchDrawSketchHandlerAttorney::drawEditMarkers(*sketchgui,
+                                                                 EditMarkers,
+                                                                 augmentationlevel);
 }
 
 void DrawSketchHandler::setAxisPickStyle(bool on)
@@ -1089,12 +1129,12 @@ Sketcher::SketchObject* DrawSketchHandler::getSketchObject()
 
 void DrawSketchHandler::setAngleSnapping(bool enable, Base::Vector2d referencePoint)
 {
-    ViewProviderSketchDrawSketchHandlerAttorney::setAngleSnapping(
-        *sketchgui, enable, referencePoint);
+    ViewProviderSketchDrawSketchHandlerAttorney::setAngleSnapping(*sketchgui,
+                                                                  enable,
+                                                                  referencePoint);
 }
 
 void DrawSketchHandler::moveConstraint(int constNum, const Base::Vector2d& toPos)
 {
-    ViewProviderSketchDrawSketchHandlerAttorney::moveConstraint(
-        *sketchgui, constNum, toPos);
+    ViewProviderSketchDrawSketchHandlerAttorney::moveConstraint(*sketchgui, constNum, toPos);
 }

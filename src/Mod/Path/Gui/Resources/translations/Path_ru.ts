@@ -547,12 +547,6 @@ For stock from the Base object's bounding box it means the extra material in all
   <context>
     <name>Form</name>
     <message>
-      <location filename="../panels/PageDepthsEdit.ui" line="17"/>
-      <location filename="../panels/PageOpDrillingEdit.ui" line="14"/>
-      <source>Form</source>
-      <translation>Форма</translation>
-    </message>
-    <message>
       <location filename="../panels/DressupPathBoundary.ui" line="20"/>
       <source>Boundary Body</source>
       <translation>Габаритные размеры</translation>
@@ -1466,12 +1460,12 @@ The latter can be used to face of the entire stock area to ensure uniform height
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="258"/>
       <source>Check to skip machining regions that have already been cleared by previous operations</source>
-      <translation type="unfinished">Check to skip machining regions that have already been cleared by previous operations</translation>
+      <translation>Установите этот флажок, чтобы пропустить области обработки, которые уже были очищены предыдущими операциями</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="261"/>
       <source>Use Rest Machining</source>
-      <translation type="unfinished">Use Rest Machining</translation>
+      <translation>Используйте доработку</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="204"/>
@@ -5487,18 +5481,18 @@ For example:
       <location filename="../../../Path/Op/PocketBase.py" line="195"/>
       <location filename="../../../Path/Op/PocketBase.py" line="277"/>
       <source>Skips machining regions that have already been cleared by previous operations.</source>
-      <translation type="unfinished">Skips machining regions that have already been cleared by previous operations.</translation>
+      <translation>Пропускает области обработки, которые уже были очищены предыдущими операциями.</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/PocketBase.py" line="204"/>
       <location filename="../../../Path/Op/PocketBase.py" line="288"/>
       <source>The areas cleared by this operation, one area per height, stored as a compound part. Used internally for rest machining.</source>
-      <translation type="unfinished">The areas cleared by this operation, one area per height, stored as a compound part. Used internally for rest machining.</translation>
+      <translation>Области, очищенные в результате этой операции, по одной области на высоту, сохраняются как составная деталь. Используется внутри для остаточной обработки.</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/PocketBase.py" line="299"/>
       <source>Flag to indicate that the rest machining regions have never been computed, and must be recomputed before being used.</source>
-      <translation type="unfinished">Flag to indicate that the rest machining regions have never been computed, and must be recomputed before being used.</translation>
+      <translation>Флаг, указывающий, что остальные области обработки никогда не вычислялись и должны быть пересчитаны перед использованием.</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Probe.py" line="55"/>
@@ -6872,7 +6866,7 @@ For example:
     <message>
       <location filename="../../../Path/Op/Area.py" line="259"/>
       <source>Previous operation %s is required for rest machining, but it has no stored rest machining metadata. Recomputing to generate this metadata...</source>
-      <translation type="unfinished">Previous operation %s is required for rest machining, but it has no stored rest machining metadata. Recomputing to generate this metadata...</translation>
+      <translation>Предыдущая операция %s необходима для остаточной обработки, но у нее нет сохраненных метаданных остаточной обработки. Повторные вычисления для создания этих метаданных...</translation>
     </message>
   </context>
   <context>

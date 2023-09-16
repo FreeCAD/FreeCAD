@@ -68,9 +68,7 @@ class MacroParser:
         }
         self.remaining_item_map = {}
         self.console = None if FreeCAD is None else FreeCAD.Console
-        self.current_thread = (
-            DummyThread() if QtCore is None else QtCore.QThread.currentThread()
-        )
+        self.current_thread = DummyThread() if QtCore is None else QtCore.QThread.currentThread()
         if code:
             self.fill_details_from_code(code)
 
@@ -177,9 +175,7 @@ class MacroParser:
         stripped_of_quotes = None
         if line.startswith('"""') and line.endswith('"""'):
             stripped_of_quotes = line[3:-3]
-        elif (line[0] == '"' and line[-1] == '"') or (
-            line[0] == "'" and line[-1] == "'"
-        ):
+        elif (line[0] == '"' and line[-1] == '"') or (line[0] == "'" and line[-1] == "'"):
             stripped_of_quotes = line[1:-1]
         return stripped_of_quotes
 
@@ -197,9 +193,7 @@ class MacroParser:
     def _cleanup_comment(self):
         """Remove HTML from the comment line, and truncate it at 512 characters."""
 
-        self.parse_results["comment"] = re.sub(
-            "<.*?>", "", self.parse_results["comment"]
-        )
+        self.parse_results["comment"] = re.sub("<.*?>", "", self.parse_results["comment"])
         if len(self.parse_results["comment"]) > 512:
             self.parse_results["comment"] = self.parse_results["comment"][:511] + "…"
 

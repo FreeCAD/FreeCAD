@@ -292,7 +292,7 @@ void TaskDlgFemConstraintPressure::open()
 {
     // a transaction is already open at creation time of the panel
     if (!Gui::Command::hasPendingCommand()) {
-        QString msg = QObject::tr("Constraint pressure");
+        QString msg = QObject::tr("Pressure load");
         Gui::Command::openCommand((const char*)msg.toUtf8());
         ConstraintView->setVisible(true);
         Gui::Command::doCommand(

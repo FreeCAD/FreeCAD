@@ -50,7 +50,7 @@ enum InternalType
     BSplineControlPoint = 9,
     BSplineKnotPoint = 10,
     ParabolaFocalAxis = 11,
-    NumInternalGeometryType// Must be the last
+    NumInternalGeometryType  // Must be the last
 };
 }
 
@@ -60,7 +60,7 @@ enum GeometryMode
 {
     Blocked = 0,
     Construction = 1,
-    NumGeometryMode// Must be the last
+    NumGeometryMode  // Must be the last
 };
 }
 
@@ -174,7 +174,7 @@ private:
     static std::atomic<long> _GeometryID;
 };
 
-}// namespace Sketcher
+}  // namespace Sketcher
 
 
-#endif// SKETCHER_SKETCHGEOMETRYEXTENSION_H
+#endif  // SKETCHER_SKETCHGEOMETRYEXTENSION_H

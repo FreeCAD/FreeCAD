@@ -32,9 +32,9 @@ import FreeCADGui as Gui
 class SurfaceWorkbench(Gui.Workbench):
     """Surface workbench object."""
 
-    Icon = os.path.join(App.getResourceDir(),
-                        "Mod", "Surface",
-                        "Resources", "icons", "Surface_Workbench.svg")
+    Icon = os.path.join(
+        App.getResourceDir(), "Mod", "Surface", "Resources", "icons", "Surface_Workbench.svg"
+    )
     MenuText = "Surface"
     ToolTip = "Surface workbench: Create and edit complex surfaces"
 

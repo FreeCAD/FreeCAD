@@ -169,7 +169,7 @@ wartość Fałsz = uzębienie wewnętrzne</translation>
     <message>
       <location filename="../../Command.cpp" line="1227"/>
       <source>PartDesign</source>
-      <translation>Projekt Części</translation>
+      <translation>Projekt części</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1228"/>
@@ -259,7 +259,7 @@ wartość Fałsz = uzębienie wewnętrzne</translation>
     <message>
       <location filename="../../Command.cpp" line="428"/>
       <source>PartDesign</source>
-      <translation>Projekt części</translation>
+      <translation>Projekt Części</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="429"/>
@@ -277,7 +277,7 @@ wartość Fałsz = uzębienie wewnętrzne</translation>
     <message>
       <location filename="../../Command.cpp" line="1753"/>
       <source>PartDesign</source>
-      <translation>Part Design</translation>
+      <translation>Projekt części</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1754"/>
@@ -295,7 +295,7 @@ wartość Fałsz = uzębienie wewnętrzne</translation>
     <message>
       <location filename="../../CommandBody.cpp" line="606"/>
       <source>PartDesign</source>
-      <translation>Projekt Części</translation>
+      <translation>Part Design</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="607"/>
@@ -331,7 +331,7 @@ wartość Fałsz = uzębienie wewnętrzne</translation>
     <message>
       <location filename="../../Command.cpp" line="1160"/>
       <source>PartDesign</source>
-      <translation>Part Design</translation>
+      <translation>Projekt Części</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1161"/>
@@ -349,7 +349,7 @@ wartość Fałsz = uzębienie wewnętrzne</translation>
     <message>
       <location filename="../../Command.cpp" line="1054"/>
       <source>PartDesign</source>
-      <translation>Projekt Części</translation>
+      <translation>Part Design</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1055"/>
@@ -655,7 +655,7 @@ wartość Fałsz = uzębienie wewnętrzne</translation>
     <message>
       <location filename="../../Command.cpp" line="278"/>
       <source>PartDesign</source>
-      <translation>Part Design</translation>
+      <translation>Projekt Części</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="279"/>
@@ -673,7 +673,7 @@ wartość Fałsz = uzębienie wewnętrzne</translation>
     <message>
       <location filename="../../Command.cpp" line="344"/>
       <source>PartDesign</source>
-      <translation>Projekt Części</translation>
+      <translation>Part Design</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="345"/>
@@ -813,7 +813,7 @@ wartość Fałsz = uzębienie wewnętrzne</translation>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="243"/>
       <source>PartDesign</source>
-      <translation>Projekt części</translation>
+      <translation>Projekt Części</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="244"/>
@@ -1413,11 +1413,6 @@ Jeśli wartość wynosi zero, jest równa wartości promienia 2</translation>
   <context>
     <name>PartDesignGui::TaskBooleanParameters</name>
     <message>
-      <location filename="../../TaskBooleanParameters.ui" line="14"/>
-      <source>Form</source>
-      <translation>Formularz</translation>
-    </message>
-    <message>
       <location filename="../../TaskBooleanParameters.ui" line="22"/>
       <source>Add body</source>
       <translation>Dodaj zawartość</translation>
@@ -1500,11 +1495,6 @@ Jeśli wartość wynosi zero, jest równa wartości promienia 2</translation>
   </context>
   <context>
     <name>PartDesignGui::TaskChamferParameters</name>
-    <message>
-      <location filename="../../TaskChamferParameters.ui" line="14"/>
-      <source>Form</source>
-      <translation>Formularz</translation>
-    </message>
     <message>
       <location filename="../../TaskChamferParameters.ui" line="20"/>
       <source>Click button to enter selection mode,
@@ -1627,15 +1617,10 @@ kliknij ponownie, aby zakończyć wybór</translation>
   <context>
     <name>PartDesignGui::TaskDraftParameters</name>
     <message>
-      <location filename="../../TaskDraftParameters.ui" line="14"/>
-      <source>Form</source>
-      <translation>Formularz</translation>
-    </message>
-    <message>
       <location filename="../../TaskDraftParameters.ui" line="20"/>
       <source>Click button to enter selection mode,
 click again to end selection</source>
-      <translation>Kliknij w przycisk, aby przejść do trybu wyboru,
+      <translation>Kliknij, aby przejść do trybu wyboru,
 kliknij ponownie, aby zakończyć wybór</translation>
     </message>
     <message>
@@ -1749,11 +1734,6 @@ kliknij ponownie, aby zakończyć wybór</translation>
   <context>
     <name>PartDesignGui::TaskFeaturePick</name>
     <message>
-      <location filename="../../TaskFeaturePick.ui" line="14"/>
-      <source>Form</source>
-      <translation>Formularz</translation>
-    </message>
-    <message>
       <location filename="../../TaskFeaturePick.ui" line="23"/>
       <source>Allow used features</source>
       <translation>Zezwalaj na używane cechy</translation>
@@ -1842,11 +1822,6 @@ kliknij ponownie, aby zakończyć wybór</translation>
   <context>
     <name>PartDesignGui::TaskFilletParameters</name>
     <message>
-      <location filename="../../TaskFilletParameters.ui" line="14"/>
-      <source>Form</source>
-      <translation>Formularz</translation>
-    </message>
-    <message>
       <location filename="../../TaskFilletParameters.ui" line="20"/>
       <source>Click button to enter selection mode,
 click again to end selection</source>
@@ -1885,11 +1860,6 @@ kliknij ponownie, aby zakończyć wybór</translation>
   </context>
   <context>
     <name>PartDesignGui::TaskHelixParameters</name>
-    <message>
-      <location filename="../../TaskHelixParameters.ui" line="14"/>
-      <source>Form</source>
-      <translation>Formularz</translation>
-    </message>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="22"/>
       <source>Status:</source>
@@ -1975,7 +1945,7 @@ kliknij ponownie, aby zakończyć wybór</translation>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="125"/>
       <source>Pitch:</source>
-      <translation>Odstęp:</translation>
+      <translation>Skok:</translation>
     </message>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="152"/>
@@ -2099,11 +2069,6 @@ kliknij ponownie, aby zakończyć wybór</translation>
   <context>
     <name>PartDesignGui::TaskLinearPatternParameters</name>
     <message>
-      <location filename="../../TaskLinearPatternParameters.ui" line="14"/>
-      <source>Form</source>
-      <translation>Formularz</translation>
-    </message>
-    <message>
       <location filename="../../TaskLinearPatternParameters.ui" line="22"/>
       <source>Add feature</source>
       <translation>Dodaj element</translation>
@@ -2136,7 +2101,7 @@ kliknij ponownie, aby zakończyć wybór</translation>
     <message>
       <location filename="../../TaskLinearPatternParameters.ui" line="85"/>
       <source>Overall Length</source>
-      <translation type="unfinished">Overall Length</translation>
+      <translation>Długość całkowita</translation>
     </message>
     <message>
       <location filename="../../TaskLinearPatternParameters.ui" line="90"/>
@@ -2177,11 +2142,6 @@ kliknij ponownie, aby zakończyć wybór</translation>
   </context>
   <context>
     <name>PartDesignGui::TaskLoftParameters</name>
-    <message>
-      <location filename="../../TaskLoftParameters.ui" line="14"/>
-      <source>Form</source>
-      <translation>Formularz</translation>
-    </message>
     <message>
       <location filename="../../TaskLoftParameters.ui" line="20"/>
       <source>Ruled surface</source>
@@ -2236,11 +2196,6 @@ kliknij ponownie, aby zakończyć wybór</translation>
   <context>
     <name>PartDesignGui::TaskMirroredParameters</name>
     <message>
-      <location filename="../../TaskMirroredParameters.ui" line="14"/>
-      <source>Form</source>
-      <translation>Formularz</translation>
-    </message>
-    <message>
       <location filename="../../TaskMirroredParameters.ui" line="22"/>
       <source>Add feature</source>
       <translation>Dodaj element</translation>
@@ -2283,11 +2238,6 @@ kliknij ponownie, aby zakończyć wybór</translation>
   </context>
   <context>
     <name>PartDesignGui::TaskMultiTransformParameters</name>
-    <message>
-      <location filename="../../TaskMultiTransformParameters.ui" line="14"/>
-      <source>Form</source>
-      <translation>Formularz</translation>
-    </message>
     <message>
       <location filename="../../TaskMultiTransformParameters.ui" line="22"/>
       <source>Add feature</source>
@@ -2410,11 +2360,6 @@ kliknij ponownie, aby zakończyć wybór</translation>
   <context>
     <name>PartDesignGui::TaskPadPocketParameters</name>
     <message>
-      <location filename="../../TaskPadPocketParameters.ui" line="14"/>
-      <source>Form</source>
-      <translation>Formularz</translation>
-    </message>
-    <message>
       <location filename="../../TaskPadPocketParameters.ui" line="22"/>
       <source>Type</source>
       <translation>Typ</translation>
@@ -2464,7 +2409,7 @@ z modelu jako odniesienie</translation>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="171"/>
       <source>Custom direction</source>
-      <translation>Kierunek niestandardowy</translation>
+      <translation>Kierunek użytkownika</translation>
     </message>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="181"/>
@@ -2533,7 +2478,7 @@ mierzona wzdłuż podanego kierunku</translation>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="134"/>
       <source>Reversed</source>
-      <translation>Odwrócony</translation>
+      <translation>Odwrotny</translation>
     </message>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="316"/>
@@ -2569,11 +2514,6 @@ mierzona wzdłuż podanego kierunku</translation>
   </context>
   <context>
     <name>PartDesignGui::TaskPipeOrientation</name>
-    <message>
-      <location filename="../../TaskPipeOrientation.ui" line="14"/>
-      <source>Form</source>
-      <translation>Formularz</translation>
-    </message>
     <message>
       <location filename="../../TaskPipeOrientation.ui" line="22"/>
       <source>Orientation mode</source>
@@ -2663,11 +2603,6 @@ mierzona wzdłuż podanego kierunku</translation>
   <context>
     <name>PartDesignGui::TaskPipeParameters</name>
     <message>
-      <location filename="../../TaskPipeParameters.ui" line="14"/>
-      <source>Form</source>
-      <translation>Formularz</translation>
-    </message>
-    <message>
       <location filename="../../TaskPipeParameters.ui" line="20"/>
       <source>Profile</source>
       <translation>Profil</translation>
@@ -2737,11 +2672,6 @@ mierzona wzdłuż podanego kierunku</translation>
   </context>
   <context>
     <name>PartDesignGui::TaskPipeScaling</name>
-    <message>
-      <location filename="../../TaskPipeScaling.ui" line="14"/>
-      <source>Form</source>
-      <translation>Formularz</translation>
-    </message>
     <message>
       <location filename="../../TaskPipeScaling.ui" line="22"/>
       <source>Transform mode</source>
@@ -2829,11 +2759,6 @@ mierzona wzdłuż podanego kierunku</translation>
   <context>
     <name>PartDesignGui::TaskPolarPatternParameters</name>
     <message>
-      <location filename="../../TaskPolarPatternParameters.ui" line="14"/>
-      <source>Form</source>
-      <translation>Formularz</translation>
-    </message>
-    <message>
       <location filename="../../TaskPolarPatternParameters.ui" line="22"/>
       <source>Add feature</source>
       <translation>Dodaj element</translation>
@@ -2866,12 +2791,12 @@ mierzona wzdłuż podanego kierunku</translation>
     <message>
       <location filename="../../TaskPolarPatternParameters.ui" line="85"/>
       <source>Overall Angle</source>
-      <translation type="unfinished">Overall Angle</translation>
+      <translation>Kąt całkowity</translation>
     </message>
     <message>
       <location filename="../../TaskPolarPatternParameters.ui" line="90"/>
       <source>Offset Angle</source>
-      <translation type="unfinished">Offset Angle</translation>
+      <translation>Kąt odsunięcia</translation>
     </message>
     <message>
       <location filename="../../TaskPolarPatternParameters.ui" line="115"/>
@@ -2919,11 +2844,6 @@ mierzona wzdłuż podanego kierunku</translation>
   </context>
   <context>
     <name>PartDesignGui::TaskRevolutionParameters</name>
-    <message>
-      <location filename="../../TaskRevolutionParameters.ui" line="14"/>
-      <source>Form</source>
-      <translation>Formularz</translation>
-    </message>
     <message>
       <location filename="../../TaskRevolutionParameters.ui" line="22"/>
       <source>Axis:</source>
@@ -2976,7 +2896,7 @@ mierzona wzdłuż podanego kierunku</translation>
     <message>
       <location filename="../../TaskRevolutionParameters.ui" line="108"/>
       <source>Reversed</source>
-      <translation>Odwrotny</translation>
+      <translation>Odwrócony</translation>
     </message>
     <message>
       <location filename="../../TaskRevolutionParameters.ui" line="122"/>
@@ -2991,11 +2911,6 @@ mierzona wzdłuż podanego kierunku</translation>
   </context>
   <context>
     <name>PartDesignGui::TaskScaledParameters</name>
-    <message>
-      <location filename="../../TaskScaledParameters.ui" line="14"/>
-      <source>Form</source>
-      <translation>Formularz</translation>
-    </message>
     <message>
       <location filename="../../TaskScaledParameters.ui" line="22"/>
       <source>Add feature</source>
@@ -3035,11 +2950,6 @@ mierzona wzdłuż podanego kierunku</translation>
   <context>
     <name>PartDesignGui::TaskShapeBinder</name>
     <message>
-      <location filename="../../TaskShapeBinder.ui" line="14"/>
-      <source>Form</source>
-      <translation>Formularz</translation>
-    </message>
-    <message>
       <location filename="../../TaskShapeBinder.ui" line="22"/>
       <source>Object</source>
       <translation>Obiekt</translation>
@@ -3076,21 +2986,16 @@ mierzona wzdłuż podanego kierunku</translation>
   <context>
     <name>PartDesignGui::TaskThicknessParameters</name>
     <message>
-      <location filename="../../TaskThicknessParameters.ui" line="14"/>
-      <source>Form</source>
-      <translation>Formularz</translation>
-    </message>
-    <message>
       <location filename="../../TaskThicknessParameters.ui" line="20"/>
       <source>Click button to enter selection mode,
 click again to end selection</source>
-      <translation>Kliknij, aby przejść do trybu wyboru,
+      <translation>Kliknij w przycisk, aby przejść do trybu wyboru,
 kliknij ponownie, aby zakończyć wybór</translation>
     </message>
     <message>
       <location filename="../../TaskThicknessParameters.ui" line="24"/>
       <source>Select</source>
-      <translation>Dodaj</translation>
+      <translation>Wybierz</translation>
     </message>
     <message>
       <location filename="../../TaskThicknessParameters.ui" line="34"/>
@@ -4273,11 +4178,6 @@ Migracja będzie możliwa w każdej chwili za pomocą "Projekt części -&gt; Mi
   </context>
   <context>
     <name>TaskHole</name>
-    <message>
-      <location filename="../../../FeatureHole/TaskHole.ui" line="14"/>
-      <source>Form</source>
-      <translation>Formularz</translation>
-    </message>
     <message>
       <location filename="../../../FeatureHole/TaskHole.ui" line="24"/>
       <source>Position</source>

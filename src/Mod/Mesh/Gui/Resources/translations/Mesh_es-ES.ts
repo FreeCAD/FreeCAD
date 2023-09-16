@@ -1346,12 +1346,22 @@
       <translation>Exportar archivos AMF utilizando compresión</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsImportExport.ui" line="95"/>
+      <location filename="../../DlgSettingsImportExport.ui" line="82"/>
+      <source>Always export mesh as model type in 3MF format even if not a solid</source>
+      <translation type="unfinished">Always export mesh as model type in 3MF format even if not a solid</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsImportExport.ui" line="85"/>
+      <source>Export 3MF files as model type</source>
+      <translation type="unfinished">Export 3MF files as model type</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsImportExport.ui" line="114"/>
       <source>Width:</source>
       <translation>Ancho:</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsImportExport.ui" line="119"/>
+      <location filename="../../DlgSettingsImportExport.ui" line="138"/>
       <source>Height:</source>
       <translation>Altura:</translation>
     </message>
@@ -1855,7 +1865,7 @@ a una apariencia poco realista para superficies curvas mientras que si se usa el
     <message>
       <location filename="../../Segmentation.ui" line="163"/>
       <source>Sphere</source>
-      <translation>Esfera</translation>
+      <translation>Esféra</translation>
     </message>
     <message>
       <location filename="../../Segmentation.ui" line="226"/>
@@ -1989,7 +1999,7 @@ a una apariencia poco realista para superficies curvas mientras que si se usa el
       <location filename="../../RemoveComponents.cpp" line="203"/>
       <location filename="../../RemoveComponents.cpp" line="253"/>
       <source>Delete</source>
-      <translation>Borrar</translation>
+      <translation>Eliminar</translation>
     </message>
     <message>
       <location filename="../../RemoveComponents.cpp" line="204"/>

@@ -22,17 +22,23 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <map>
-# include <memory>
-# include <stdexcept>
-# include <vector>
-# include <TopoDS.hxx>
-# include <TopoDS_Edge.hxx>
-# include <TopoDS_Face.hxx>
+#include <TopoDS.hxx>
+#include <TopoDS_Edge.hxx>
+#include <TopoDS_Face.hxx>
+#include <map>
+#include <memory>
+#include <stdexcept>
+#include <vector>
 #endif
 
 // boost is purposely not in the precompiled headers, see
 // https://github.com/FreeCAD/FreeCAD/pull/7979#issuecomment-1358123252
+#include <Base/Interpreter.h>
+#include <Eigen/Core>
+#include <Eigen/Geometry>
+#include <Eigen/Sparse>
+#include <Mod/Part/App/TopoShapeEdgePy.h>
+#include <Mod/Part/App/TopoShapeFacePy.h>
 #include <boost/python.hpp>
 #include <boost/python/call.hpp>
 #include <boost/python/class.hpp>
@@ -40,18 +46,13 @@
 #include <boost/python/module.hpp>
 #include <boost/python/return_value_policy.hpp>
 #include <boost/python/wrapper.hpp>
-#include <Eigen/Core>
-#include <Eigen/Geometry>
-#include <Eigen/Sparse>
-#include <Base/Interpreter.h>
-#include <Mod/Part/App/TopoShapeEdgePy.h>
-#include <Mod/Part/App/TopoShapeFacePy.h>
 
 #include "MeshFlattening.h"
 #include "MeshFlatteningLscmRelax.h"
 #include "MeshFlatteningNurbs.h"
 
 
+// clang-format off
 namespace py = boost::python;
 
 const TopoDS_Face& getTopoDSFace(const py::object& face)
@@ -261,3 +262,4 @@ BOOST_PYTHON_MODULE(flatmesh)
     fm::eigen_matrix<ColMat<long,   1>>::to_python_converter();
     fm::eigen_matrix<ColMat<long,   3>>::to_python_converter();
 }
+// clang-format on

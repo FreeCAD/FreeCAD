@@ -29,19 +29,19 @@
 // Drawing
 #ifndef DrawingExport
 #ifdef Drawing_EXPORTS
-#       define DrawingExport   FREECAD_DECL_EXPORT
+#define DrawingExport FREECAD_DECL_EXPORT
 #else
-#       define DrawingExport   FREECAD_DECL_IMPORT
+#define DrawingExport FREECAD_DECL_IMPORT
 #endif
 #endif
 
 // DrawingGui
 #ifndef DrawingGuiExport
 #ifdef DrawingGui_EXPORTS
-#       define DrawingGuiExport   FREECAD_DECL_EXPORT
+#define DrawingGuiExport FREECAD_DECL_EXPORT
 #else
-#       define DrawingGuiExport   FREECAD_DECL_IMPORT
+#define DrawingGuiExport FREECAD_DECL_IMPORT
 #endif
 #endif
 
-#endif //DRAWING_GLOBAL_H
+#endif  // DRAWING_GLOBAL_H

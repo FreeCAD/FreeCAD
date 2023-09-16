@@ -903,10 +903,10 @@ double ConstraintP2LDistance::error()
     double dist = *distance();
     double dx = x2 - x1;
     double dy = y2 - y1;
-    double d = sqrt(dx * dx + dy * dy);// line length
+    double d = sqrt(dx * dx + dy * dy);  // line length
     double area =
         std::abs(-x0 * dy + y0 * dx + x1 * y2
-                 - x2 * y1);// = x1y2 - x2y1 - x0y2 + x2y0 + x0y1 - x1y0 = 2*(triangle area)
+                 - x2 * y1);  // = x1y2 - x2y1 - x0y2 + x2y0 + x0y1 - x1y0 = 2*(triangle area)
     return scale * (area / d - dist);
 }
 
@@ -1053,7 +1053,7 @@ double ConstraintPointOnLine::error()
     double dy = y2 - y1;
     double d = sqrt(dx * dx + dy * dy);
     double area = -x0 * dy + y0 * dx + x1 * y2
-        - x2 * y1;// = x1y2 - x2y1 - x0y2 + x2y0 + x0y1 - x1y0 = 2*(triangle area)
+        - x2 * y1;  // = x1y2 - x2y1 - x0y2 + x2y0 + x0y1 - x1y0 = 2*(triangle area)
     return scale * area / d;
 }
 
@@ -1219,29 +1219,29 @@ double ConstraintParallel::grad(double* param)
 {
     double deriv = 0.;
     if (param == l1p1x()) {
-        deriv += (*l2p1y() - *l2p2y());// = dy2
+        deriv += (*l2p1y() - *l2p2y());  // = dy2
     }
     if (param == l1p2x()) {
-        deriv += -(*l2p1y() - *l2p2y());// = -dy2
+        deriv += -(*l2p1y() - *l2p2y());  // = -dy2
     }
     if (param == l1p1y()) {
-        deriv += -(*l2p1x() - *l2p2x());// = -dx2
+        deriv += -(*l2p1x() - *l2p2x());  // = -dx2
     }
     if (param == l1p2y()) {
-        deriv += (*l2p1x() - *l2p2x());// = dx2
+        deriv += (*l2p1x() - *l2p2x());  // = dx2
     }
 
     if (param == l2p1x()) {
-        deriv += -(*l1p1y() - *l1p2y());// = -dy1
+        deriv += -(*l1p1y() - *l1p2y());  // = -dy1
     }
     if (param == l2p2x()) {
-        deriv += (*l1p1y() - *l1p2y());// = dy1
+        deriv += (*l1p1y() - *l1p2y());  // = dy1
     }
     if (param == l2p1y()) {
-        deriv += (*l1p1x() - *l1p2x());// = dx1
+        deriv += (*l1p1x() - *l1p2x());  // = dx1
     }
     if (param == l2p2y()) {
-        deriv += -(*l1p1x() - *l1p2x());// = -dx1
+        deriv += -(*l1p1x() - *l1p2x());  // = -dx1
     }
 
     return scale * deriv;
@@ -1305,29 +1305,29 @@ double ConstraintPerpendicular::grad(double* param)
 {
     double deriv = 0.;
     if (param == l1p1x()) {
-        deriv += (*l2p1x() - *l2p2x());// = dx2
+        deriv += (*l2p1x() - *l2p2x());  // = dx2
     }
     if (param == l1p2x()) {
-        deriv += -(*l2p1x() - *l2p2x());// = -dx2
+        deriv += -(*l2p1x() - *l2p2x());  // = -dx2
     }
     if (param == l1p1y()) {
-        deriv += (*l2p1y() - *l2p2y());// = dy2
+        deriv += (*l2p1y() - *l2p2y());  // = dy2
     }
     if (param == l1p2y()) {
-        deriv += -(*l2p1y() - *l2p2y());// = -dy2
+        deriv += -(*l2p1y() - *l2p2y());  // = -dy2
     }
 
     if (param == l2p1x()) {
-        deriv += (*l1p1x() - *l1p2x());// = dx1
+        deriv += (*l1p1x() - *l1p2x());  // = dx1
     }
     if (param == l2p2x()) {
-        deriv += -(*l1p1x() - *l1p2x());// = -dx1
+        deriv += -(*l1p1x() - *l1p2x());  // = -dx1
     }
     if (param == l2p1y()) {
-        deriv += (*l1p1y() - *l1p2y());// = dy1
+        deriv += (*l1p1y() - *l1p2y());  // = dy1
     }
     if (param == l2p2y()) {
-        deriv += -(*l1p1y() - *l1p2y());// = -dy1
+        deriv += -(*l1p1y() - *l1p2y());  // = -dy1
     }
 
     return scale * deriv;
@@ -1514,7 +1514,7 @@ double ConstraintMidpointOnLine::error()
     double dy = y2 - y1;
     double d = sqrt(dx * dx + dy * dy);
     double area = -x0 * dy + y0 * dx + x1 * y2
-        - x2 * y1;// = x1y2 - x2y1 - x0y2 + x2y0 + x0y1 - x1y0 = 2*(triangle area)
+        - x2 * y1;  // = x1y2 - x2y1 - x0y2 + x2y0 + x0y1 - x1y0 = 2*(triangle area)
     return scale * area / d;
 }
 
@@ -1749,7 +1749,7 @@ ConstraintEllipseTangentLine::ConstraintEllipseTangentLine(Line& l, Ellipse& e)
     this->l.PushOwnParams(pvec);
 
     this->e = e;
-    this->e.PushOwnParams(pvec);// DeepSOIC: hopefully, this won't push arc's parameters
+    this->e.PushOwnParams(pvec);  // DeepSOIC: hopefully, this won't push arc's parameters
     origpvec = pvec;
     pvecChangedFlag = true;
     rescale();
@@ -1785,13 +1785,13 @@ void ConstraintEllipseTangentLine::errorgrad(double* err, double* grad, double* 
     DeriVector2 p2(l.p2, param);
     DeriVector2 f1(e.focus1, param);
     DeriVector2 c(e.center, param);
-    DeriVector2 f2 = c.linCombi(2.0, f1, -1.0);// 2*cv - f1v
+    DeriVector2 f2 = c.linCombi(2.0, f1, -1.0);  // 2*cv - f1v
 
     // mirror F1 against the line
     DeriVector2 nl = l.CalculateNormal(l.p1, param).getNormalized();
-    double distF1L = 0, ddistF1L = 0;// distance F1 to line
+    double distF1L = 0, ddistF1L = 0;  // distance F1 to line
     distF1L = f1.subtr(p1).scalarProd(nl, &ddistF1L);
-    DeriVector2 f1m = f1.sum(nl.multD(-2 * distF1L, -2 * ddistF1L));// f1m = f1 mirrored
+    DeriVector2 f1m = f1.sum(nl.multD(-2 * distF1L, -2 * ddistF1L));  // f1m = f1 mirrored
 
     // calculate distance form f1m to f2
     double distF1mF2, ddistF1mF2;
@@ -1899,7 +1899,7 @@ void ConstraintInternalAlignmentPoint2Ellipse::errorgrad(double* err, double* gr
     DeriVector2 emaj = f1.subtr(c).getNormalized();
     DeriVector2 emin = emaj.rotate90ccw();
     DeriVector2 pv(p, param);
-    double b, db;// minor radius
+    double b, db;  // minor radius
     b = *e.radmin;
     db = (e.radmin == param) ? 1.0 : 0.0;
 
@@ -1907,9 +1907,9 @@ void ConstraintInternalAlignmentPoint2Ellipse::errorgrad(double* err, double* gr
     double a, da;
     a = e.getRadMaj(c, f1, b, db, da);
 
-    DeriVector2 poa;// point to align to
+    DeriVector2 poa;  // point to align to
     bool by_y_not_by_x =
-        false;// a flag to indicate if the alignment error function is for y (false - x, true - y)
+        false;  // a flag to indicate if the alignment error function is for y (false - x, true - y)
 
     switch (AlignmentType) {
         case EllipsePositiveMajorX:
@@ -1939,7 +1939,7 @@ void ConstraintInternalAlignmentPoint2Ellipse::errorgrad(double* err, double* gr
             break;
         default:
             // shouldn't happen
-            poa = pv;// align to the point itself, doing nothing essentially
+            poa = pv;  // align to the point itself, doing nothing essentially
     }
     if (err) {
         *err = by_y_not_by_x ? pv.y - poa.y : pv.x - poa.x;
@@ -2039,7 +2039,7 @@ void ConstraintInternalAlignmentPoint2Hyperbola::errorgrad(double* err, double* 
     DeriVector2 emin = emaj.rotate90ccw();
     DeriVector2 pv(p, param);
 
-    double b, db;// minor radius
+    double b, db;  // minor radius
     b = *e.radmin;
     db = (e.radmin == param) ? 1.0 : 0.0;
 
@@ -2047,9 +2047,9 @@ void ConstraintInternalAlignmentPoint2Hyperbola::errorgrad(double* err, double* 
     double a, da;
     a = e.getRadMaj(c, f1, b, db, da);
 
-    DeriVector2 poa;// point to align to
+    DeriVector2 poa;  // point to align to
     bool by_y_not_by_x =
-        false;// a flag to indicate if the alignment error function is for y (false - x, true - y)
+        false;  // a flag to indicate if the alignment error function is for y (false - x, true - y)
 
     switch (AlignmentType) {
         case HyperbolaPositiveMajorX:
@@ -2082,7 +2082,7 @@ void ConstraintInternalAlignmentPoint2Hyperbola::errorgrad(double* err, double* 
         }
         default:
             // shouldn't happen
-            poa = pv;// align to the point itself, doing nothing essentially
+            poa = pv;  // align to the point itself, doing nothing essentially
     }
 
     if (err) {
@@ -2294,8 +2294,8 @@ void ConstraintCurveValue::ReconstructGeomPointers()
     i++;
     p.y = pvec[i];
     i++;
-    i++;// we have an inline function for point coordinate
-    i++;// we have an inline function for the parameterU
+    i++;  // we have an inline function for point coordinate
+    i++;  // we have an inline function for the parameterU
     this->crv->ReconstructOnNewPvec(pvec, i);
     pvecChangedFlag = false;
 }
@@ -2320,14 +2320,14 @@ void ConstraintCurveValue::errorgrad(double* err, double* grad, double* param)
     u = *(this->u());
     du = (param == this->u()) ? 1.0 : 0.0;
 
-    DeriVector2 P_to;// point of curve at parameter value of u, in global coordinates
+    DeriVector2 P_to;  // point of curve at parameter value of u, in global coordinates
     P_to = this->crv->Value(u, du, param);
 
-    DeriVector2 P_from(this->p, param);// point to be constrained
+    DeriVector2 P_from(this->p, param);  // point to be constrained
 
     DeriVector2 err_vec = P_from.subtr(P_to);
 
-    if (this->pcoord() == this->p.x) {// this constraint is for X projection
+    if (this->pcoord() == this->p.x) {  // this constraint is for X projection
         if (err) {
             *err = err_vec.x;
         }
@@ -2335,7 +2335,7 @@ void ConstraintCurveValue::errorgrad(double* err, double* grad, double* param)
             *grad = err_vec.dx;
         }
     }
-    else if (this->pcoord() == this->p.y) {// this constraint is for Y projection
+    else if (this->pcoord() == this->p.y) {  // this constraint is for Y projection
         if (err) {
             *err = err_vec.y;
         }
@@ -2564,7 +2564,7 @@ void ConstraintPointOnParabola::errorgrad(double* err, double* grad, double* par
     DeriVector2 focus(this->parab->focus1, param);
     DeriVector2 vertex(this->parab->vertex, param);
 
-    DeriVector2 point(this->p, param);// point to be constrained to parabola
+    DeriVector2 point(this->p, param);  // point to be constrained to parabola
 
     DeriVector2 focalvect = focus.subtr(vertex);
 
@@ -2640,7 +2640,7 @@ ConstraintAngleViaPoint::~ConstraintAngleViaPoint()
 void ConstraintAngleViaPoint::ReconstructGeomPointers()
 {
     int cnt = 0;
-    cnt++;// skip angle - we have an inline function for that
+    cnt++;  // skip angle - we have an inline function for that
     poa.x = pvec[cnt];
     cnt++;
     poa.y = pvec[cnt];
@@ -2768,7 +2768,7 @@ void ConstraintSnell::ReconstructGeomPointers()
 {
     int cnt = 0;
     cnt++;
-    cnt++;// skip n1, n2 - we have an inline function for that
+    cnt++;  // skip n1, n2 - we have an inline function for that
     poa.x = pvec[cnt];
     cnt++;
     poa.y = pvec[cnt];
@@ -2799,7 +2799,7 @@ void ConstraintSnell::errorgrad(double* err, double* grad, double* param)
     DeriVector2 tang2 = ray2->CalculateNormal(poa, param).rotate90cw().getNormalized();
     DeriVector2 tangB = boundary->CalculateNormal(poa, param).rotate90cw().getNormalized();
     double sin1, dsin1, sin2, dsin2;
-    sin1 = tang1.scalarProd(tangB, &dsin1);// sinus of angle of incidence
+    sin1 = tang1.scalarProd(tangB, &dsin1);  // sinus of angle of incidence
     sin2 = tang2.scalarProd(tangB, &dsin2);
     if (flipn1) {
         sin1 = -sin1;
@@ -2994,7 +2994,7 @@ ConstraintC2CDistance::ConstraintC2CDistance(Circle& c1, Circle& c2, double* d)
 void ConstraintC2CDistance::ReconstructGeomPointers()
 {
     int i = 0;
-    i++;// skip the first parameter as there is the inline function distance for it
+    i++;  // skip the first parameter as there is the inline function distance for it
     c1.ReconstructOnNewPvec(pvec, i);
     c2.ReconstructOnNewPvec(pvec, i);
     pvecChangedFlag = false;
@@ -3059,7 +3059,7 @@ void ConstraintC2CDistance::errorgrad(double* err, double* grad, double* param)
             if (length_ct12 > 1e-13) {
                 *grad = -dlength_ct12 + drad;
             }
-            else {// concentric case
+            else {  // concentric case
                 *grad = drad;
             }
         }
@@ -3116,7 +3116,7 @@ void ConstraintC2LDistance::rescale(double coef)
 void ConstraintC2LDistance::ReconstructGeomPointers()
 {
     int i = 0;
-    i++;// skip the first parameter as there is the inline function distance for it
+    i++;  // skip the first parameter as there is the inline function distance for it
     circle.ReconstructOnNewPvec(pvec, i);
     line.ReconstructOnNewPvec(pvec, i);
     pvecChangedFlag = false;
@@ -3136,7 +3136,7 @@ void ConstraintC2LDistance::errorgrad(double* err, double* grad, double* param)
 
     // center to line distance (=h) and its derivative (=dh)
     double darea = 0.0;
-    double area = v_line.crossProdNorm(v_p1ct, darea);// parallelogram oriented area
+    double area = v_line.crossProdNorm(v_p1ct, darea);  // parallelogram oriented area
 
     double dlength;
     double length = v_line.length(dlength);
@@ -3220,7 +3220,7 @@ void ConstraintP2CDistance::rescale(double coef)
 void ConstraintP2CDistance::ReconstructGeomPointers()
 {
     int i = 0;
-    i++;// skip the first parameter as there is the inline function distance for it
+    i++;  // skip the first parameter as there is the inline function distance for it
     circle.ReconstructOnNewPvec(pvec, i);
     pt.ReconstructOnNewPvec(pvec, i);
     pvecChangedFlag = false;
@@ -3280,4 +3280,4 @@ double ConstraintP2CDistance::grad(double* param)
     return deriv * scale;
 }
 
-}// namespace GCS
+}  // namespace GCS

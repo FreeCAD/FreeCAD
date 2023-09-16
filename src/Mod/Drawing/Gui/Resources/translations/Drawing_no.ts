@@ -350,7 +350,7 @@ Do you want to continue?</translation>
       <location filename="../../DrawingView.cpp" line="596"/>
       <source>The printer uses a different paper size than the drawing.
 Do you want to continue?</source>
-      <translation>Skriveren bruker en annen papirstørrelse enn tegningen. 
+      <translation>Skriveren bruker en annen papirstørrelse enn tegningen.
 Vil du fortsette?</translation>
     </message>
     <message>

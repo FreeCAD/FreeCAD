@@ -41,11 +41,11 @@ inputs:
   libpackdownloadurl:
     description: "URL where to download libpack"
     required: false
-    default: https://github.com/FreeCAD/FreeCAD-LibPack/releases/download/2.8.2/LibPack-OCC76-V2-8.7z
+    default: https://github.com/FreeCAD/FreeCAD-LibPack/releases/download/2.10/LibPack-0.21-V2.10.7z
   libpackname:
     description: "Libpack name (once downloaded)"
     required: false
-    default: LibPack-OCC76-V2
+    default: LibPack-0.21-V2.10
 
 runs:
   using: "composite"

@@ -68,14 +68,17 @@ QStringList QSvgPlugin::keys() const
 QImageIOPlugin::Capabilities QSvgPlugin::capabilities(QIODevice* device,
                                                       const QByteArray& format) const
 {
-    if (format == "svg" || format == "svgz")
+    if (format == "svg" || format == "svgz") {
         return Capabilities(CanRead);
-    if (!format.isEmpty())
+    }
+    if (!format.isEmpty()) {
         return 0;
+    }
 
     Capabilities cap;
-    if (device->isReadable() && QSvgIOHandler::canRead(device))
+    if (device->isReadable() && QSvgIOHandler::canRead(device)) {
         cap |= CanRead;
+    }
     return cap;
 }
 
@@ -92,4 +95,4 @@ Q_EXPORT_PLUGIN2(qsvg, QSvgPlugin)
 
 QT_END_NAMESPACE
 
-#endif// !QT_NO_IMAGEFORMATPLUGIN
+#endif  // !QT_NO_IMAGEFORMATPLUGIN

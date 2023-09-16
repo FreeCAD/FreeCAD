@@ -136,7 +136,7 @@
     <message>
       <location filename="../panels/DlgJobModelSelect.ui" line="34"/>
       <source>2D</source>
-      <translation type="unfinished">2D</translation>
+      <translation>2D</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobModelSelect.ui" line="44"/>
@@ -546,12 +546,6 @@ For stock from the Base object's bounding box it means the extra material in all
   </context>
   <context>
     <name>Form</name>
-    <message>
-      <location filename="../panels/PageDepthsEdit.ui" line="17"/>
-      <location filename="../panels/PageOpDrillingEdit.ui" line="14"/>
-      <source>Form</source>
-      <translation>Μορφή</translation>
-    </message>
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="20"/>
       <source>Boundary Body</source>
@@ -2050,12 +2044,12 @@ Default: 3 mm</translation>
     <message>
       <location filename="../panels/SetupGlobal.ui" line="192"/>
       <source>Horizontal</source>
-      <translation type="unfinished">Horizontal</translation>
+      <translation>Οριζόντια</translation>
     </message>
     <message>
       <location filename="../panels/SetupGlobal.ui" line="212"/>
       <source>Vertical</source>
-      <translation type="unfinished">Vertical</translation>
+      <translation>Κατακόρυφα</translation>
     </message>
     <message>
       <location filename="../panels/PageOpThreadMillingEdit.ui" line="32"/>
@@ -2977,7 +2971,7 @@ Should multiple tools or tool shapes with the same name exist in different direc
     <message>
       <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="677"/>
       <source>LeadInOut</source>
-      <translation type="unfinished">LeadInOut</translation>
+      <translation>Οδηγήστε μέσα/έξω</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="681"/>
@@ -4182,12 +4176,12 @@ Default: 3 mm</translation>
     <message>
       <location filename="../panels/PathEdit.ui" line="1334"/>
       <source>Horizontal</source>
-      <translation type="unfinished">Horizontal</translation>
+      <translation>Οριζόντια</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="1354"/>
       <source>Vertical</source>
-      <translation type="unfinished">Vertical</translation>
+      <translation>Κατακόρυφα</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="1395"/>
@@ -6382,7 +6376,7 @@ For example:
       <location filename="../../../Path/Main/Job.py" line="260"/>
       <location filename="../../../Path/Main/Gui/JobDlg.py" line="61"/>
       <source>2D</source>
-      <translation type="unfinished">2D</translation>
+      <translation>2D</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Job.py" line="261"/>

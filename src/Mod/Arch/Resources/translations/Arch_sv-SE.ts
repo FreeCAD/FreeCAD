@@ -2179,7 +2179,7 @@ Site creation aborted.</translation>
       <location filename="../../ArchRoof.py" line="166"/>
       <location filename="../../ArchRoof.py" line="1010"/>
       <source>Roof</source>
-      <translation type="unfinished">Roof</translation>
+      <translation>Tak</translation>
     </message>
     <message>
       <location filename="../../ArchRoof.py" line="1011"/>
@@ -6160,7 +6160,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchRoof.py" line="206"/>
       <source>Roof</source>
-      <translation type="unfinished">Roof</translation>
+      <translation>Tak</translation>
     </message>
     <message>
       <location filename="../../ArchRoof.py" line="210"/>

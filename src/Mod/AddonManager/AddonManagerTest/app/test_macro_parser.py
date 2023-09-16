@@ -100,9 +100,7 @@ class TestMacroParser(unittest.TestCase):
                 catcher = CallCatcher()
                 self.test_object._process_key = catcher.catch_call
                 self.test_object._process_line(read_in_line, content_lines)
-                self.assertTrue(
-                    catcher.called, "_process_key was not called for a known key"
-                )
+                self.assertTrue(catcher.called, "_process_key was not called for a known key")
 
     def test_process_line_unknown_lines(self):
         """Lines starting with non-keys are not processed"""
@@ -123,9 +121,7 @@ class TestMacroParser(unittest.TestCase):
                 catcher = CallCatcher()
                 self.test_object._process_key = catcher.catch_call
                 self.test_object._process_line(read_in_line, content_lines)
-                self.assertFalse(
-                    catcher.called, "_process_key was called for an unknown key"
-                )
+                self.assertFalse(catcher.called, "_process_key was called for an unknown key")
 
     def test_process_key_standard(self):
         """Normal expected data is processed"""

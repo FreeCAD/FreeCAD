@@ -75,7 +75,8 @@ public:
      * constraints or may not
      */
     int setUpSketch(const std::vector<Part::Geometry*>& GeoList,
-                    const std::vector<Constraint*>& ConstraintList, int extGeoCount = 0);
+                    const std::vector<Constraint*>& ConstraintList,
+                    int extGeoCount = 0);
     /// return the actual geometry of the sketch a TopoShape
     Part::TopoShape toShape() const;
     /// add unspecified geometry
@@ -165,7 +166,9 @@ public:
     /** Initializes a B-spline piece drag by setting the current
      * sketch status as a reference. Only moves piece around `firstPoint`.
      */
-    int initBSplinePieceMove(int geoId, PointPos pos, const Base::Vector3d& firstPoint,
+    int initBSplinePieceMove(int geoId,
+                             PointPos pos,
+                             const Base::Vector3d& firstPoint,
                              bool fine = true);
 
     /** Resets the initialization of a point or curve drag
@@ -264,7 +267,11 @@ public:
      *   constraint value and already inserted into either the FixParameters or
      *   Parameters array, as the case may be.
      */
-    int addDistanceXConstraint(int geoId1, PointPos pos1, int geoId2, PointPos pos2, double* value,
+    int addDistanceXConstraint(int geoId1,
+                               PointPos pos1,
+                               int geoId2,
+                               PointPos pos2,
+                               double* value,
                                bool driving = true);
     /**
      *   add a vertical distance constraint to two points or line ends
@@ -281,7 +288,11 @@ public:
      *   constraint value and already inserted into either the FixParameters or
      *   Parameters array, as the case may be.
      */
-    int addDistanceYConstraint(int geoId1, PointPos pos1, int geoId2, PointPos pos2, double* value,
+    int addDistanceYConstraint(int geoId1,
+                               PointPos pos1,
+                               int geoId2,
+                               PointPos pos2,
+                               double* value,
                                bool driving = true);
     /// add a horizontal constraint to a geometry
     int addHorizontalConstraint(int geoId);
@@ -306,7 +317,10 @@ public:
      *   constraint value and already inserted into either the FixParameters or
      *   Parameters array, as the case may be.
      */
-    int addDistanceConstraint(int geoId1, PointPos pos1, int geoId2, double* value,
+    int addDistanceConstraint(int geoId1,
+                              PointPos pos1,
+                              int geoId2,
+                              double* value,
                               bool driving = true);
     /**
      *   add a length or distance constraint
@@ -315,7 +329,11 @@ public:
      *   constraint value and already inserted into either the FixParameters or
      *   Parameters array, as the case may be.
      */
-    int addDistanceConstraint(int geoId1, PointPos pos1, int geoId2, PointPos pos2, double* value,
+    int addDistanceConstraint(int geoId1,
+                              PointPos pos1,
+                              int geoId2,
+                              PointPos pos2,
+                              double* value,
                               bool driving = true);
     /**
      *   add a length or distance constraint
@@ -332,13 +350,21 @@ public:
     int addPerpendicularConstraint(int geoId1, int geoId2);
     /// add a tangency constraint between two geometries
     int addTangentConstraint(int geoId1, int geoId2);
-    int addTangentLineAtBSplineKnotConstraint(int checkedlinegeoId, int checkedbsplinegeoId,
+    int addTangentLineAtBSplineKnotConstraint(int checkedlinegeoId,
+                                              int checkedbsplinegeoId,
                                               int checkedknotgeoid);
-    int addTangentLineEndpointAtBSplineKnotConstraint(int checkedlinegeoId, PointPos endpointPos,
+    int addTangentLineEndpointAtBSplineKnotConstraint(int checkedlinegeoId,
+                                                      PointPos endpointPos,
                                                       int checkedbsplinegeoId,
                                                       int checkedknotgeoid);
-    int addAngleAtPointConstraint(int geoId1, PointPos pos1, int geoId2, PointPos pos2, int geoId3,
-                                  PointPos pos3, double* value, ConstraintType cTyp,
+    int addAngleAtPointConstraint(int geoId1,
+                                  PointPos pos1,
+                                  int geoId2,
+                                  PointPos pos2,
+                                  int geoId3,
+                                  PointPos pos3,
+                                  double* value,
+                                  ConstraintType cTyp,
                                   bool driving = true);
     /**
      *   add a radius constraint on a circle or an arc
@@ -379,7 +405,11 @@ public:
      *   constraint value and already inserted into either the FixParameters or
      *   Parameters array, as the case may be.
      */
-    int addAngleConstraint(int geoId1, PointPos pos1, int geoId2, PointPos pos2, double* value,
+    int addAngleConstraint(int geoId1,
+                           PointPos pos1,
+                           int geoId2,
+                           PointPos pos2,
+                           double* value,
                            bool driving = true);
     /**
      *   add angle-via-point constraint between any two curves
@@ -388,20 +418,31 @@ public:
      *   constraint value and already inserted into either the FixParameters or
      *   Parameters array, as the case may be.
      */
-    int addAngleViaPointConstraint(int geoId1, int geoId2, int geoId3, PointPos pos3, double value,
+    int addAngleViaPointConstraint(int geoId1,
+                                   int geoId2,
+                                   int geoId3,
+                                   PointPos pos3,
+                                   double value,
                                    bool driving = true);
     /// add an equal length or radius constraints between two lines or between circles and arcs
     int addEqualConstraint(int geoId1, int geoId2);
     /// add a point on line constraint
     int addPointOnObjectConstraint(int geoId1, PointPos pos1, int geoId2, bool driving = true);
     /// add a point on B-spline constraint: needs a parameter
-    int addPointOnObjectConstraint(int geoId1, PointPos pos1, int geoId2, double* pointparam,
+    int addPointOnObjectConstraint(int geoId1,
+                                   PointPos pos1,
+                                   int geoId2,
+                                   double* pointparam,
                                    bool driving = true);
     /// add a symmetric constraint between two points with respect to a line
     int addSymmetricConstraint(int geoId1, PointPos pos1, int geoId2, PointPos pos2, int geoId3);
     /// add a symmetric constraint between three points, the last point is in the middle of the
     /// first two
-    int addSymmetricConstraint(int geoId1, PointPos pos1, int geoId2, PointPos pos2, int geoId3,
+    int addSymmetricConstraint(int geoId1,
+                               PointPos pos1,
+                               int geoId2,
+                               PointPos pos2,
+                               int geoId3,
                                PointPos pos3);
     /**
      *   add a snell's law constraint
@@ -414,8 +455,14 @@ public:
      *   second may be initialized to any value, however the solver will
      *   provide n1 in value and n2 in second.
      */
-    int addSnellsLawConstraint(int geoIdRay1, PointPos posRay1, int geoIdRay2, PointPos posRay2,
-                               int geoIdBnd, double* value, double* second, bool driving = true);
+    int addSnellsLawConstraint(int geoIdRay1,
+                               PointPos posRay1,
+                               int geoIdRay2,
+                               PointPos posRay2,
+                               int geoIdBnd,
+                               double* value,
+                               double* second,
+                               bool driving = true);
     //@}
 
     /// Internal Alignment constraints
@@ -460,12 +507,12 @@ public:
     enum GeoType
     {
         None = 0,
-        Point = 1,  // 1 Point(start), 2 Parameters(x,y)
-        Line = 2,   // 2 Points(start,end), 4 Parameters(x1,y1,x2,y2)
-        Arc = 3,    // 3 Points(start,end,mid), (4)+5 Parameters((x1,y1,x2,y2),x,y,r,a1,a2)
-        Circle = 4, // 1 Point(mid), 3 Parameters(x,y,r)
-        Ellipse = 5,// 1 Point(mid), 5 Parameters(x,y,r1,r2,phi)
-                    // phi=angle xaxis of ellipse with respect of sketch xaxis
+        Point = 1,    // 1 Point(start), 2 Parameters(x,y)
+        Line = 2,     // 2 Points(start,end), 4 Parameters(x1,y1,x2,y2)
+        Arc = 3,      // 3 Points(start,end,mid), (4)+5 Parameters((x1,y1,x2,y2),x,y,r,a1,a2)
+        Circle = 4,   // 1 Point(mid), 3 Parameters(x,y,r)
+        Ellipse = 5,  // 1 Point(mid), 5 Parameters(x,y,r1,r2,phi)
+                      // phi=angle xaxis of ellipse with respect of sketch xaxis
         ArcOfEllipse = 6,
         ArcOfHyperbola = 7,
         ArcOfParabola = 8,
@@ -486,35 +533,35 @@ protected:
     struct GeoDef
     {
         GeoDef()
-            : geo(nullptr),
-              type(None),
-              external(false),
-              index(-1),
-              startPointId(-1),
-              midPointId(-1),
-              endPointId(-1)
+            : geo(nullptr)
+            , type(None)
+            , external(false)
+            , index(-1)
+            , startPointId(-1)
+            , midPointId(-1)
+            , endPointId(-1)
         {}
-        Part::Geometry* geo;// pointer to the geometry
-        GeoType type;       // type of the geometry
-        bool external;      // flag for external geometries
-        int index;          // index in the corresponding storage vector (Lines, Arcs, Circles, ...)
-        int startPointId;   // index in Points of the start point of this geometry
-        int midPointId;     // index in Points of the start point of this geometry
-        int endPointId;     // index in Points of the end point of this geometry
+        Part::Geometry* geo;  // pointer to the geometry
+        GeoType type;         // type of the geometry
+        bool external;        // flag for external geometries
+        int index;         // index in the corresponding storage vector (Lines, Arcs, Circles, ...)
+        int startPointId;  // index in Points of the start point of this geometry
+        int midPointId;    // index in Points of the start point of this geometry
+        int endPointId;    // index in Points of the end point of this geometry
     };
     /// container element to store and work with the constraints of this sketch
     struct ConstrDef
     {
         ConstrDef()
-            : constr(nullptr),
-              driving(true),
-              value(nullptr),
-              secondvalue(nullptr)
+            : constr(nullptr)
+            , driving(true)
+            , value(nullptr)
+            , secondvalue(nullptr)
         {}
-        Constraint* constr;// pointer to the constraint
+        Constraint* constr;  // pointer to the constraint
         bool driving;
         double* value;
-        double* secondvalue;// this is needed for SnellsLaw
+        double* secondvalue;  // this is needed for SnellsLaw
     };
 
     std::vector<GeoDef> Geoms;
@@ -543,9 +590,9 @@ protected:
     std::map<double*, std::tuple<int, Sketcher::PointPos, int>> param2geoelement;
 
     // solving parameters
-    std::vector<double*> Parameters;      // with memory allocation
-    std::vector<double*> DrivenParameters;// with memory allocation
-    std::vector<double*> FixParameters;   // with memory allocation
+    std::vector<double*> Parameters;        // with memory allocation
+    std::vector<double*> DrivenParameters;  // with memory allocation
+    std::vector<double*> FixParameters;     // with memory allocation
     std::vector<double> MoveParameters, InitParameters;
     std::vector<GCS::Point> Points;
     std::vector<GCS::Line> Lines;
@@ -757,7 +804,7 @@ private:
     void fixParametersAndDiagnose(std::vector<double*>& params_to_block);
 };
 
-}// namespace Sketcher
+}  // namespace Sketcher
 
 
-#endif// SKETCHER_SKETCH_H
+#endif  // SKETCHER_SKETCH_H

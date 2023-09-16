@@ -335,11 +335,6 @@
       <translation>Szyk kołowy</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_CircularArray.ui" line="44"/>
-      <source>(Placeholder for the icon)</source>
-      <translation>(Miejsce na ikonę)</translation>
-    </message>
-    <message>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="53"/>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="63"/>
       <source>Distance from one layer of objects to the next layer of objects.</source>
@@ -454,11 +449,6 @@ A Link array is more efficient when creating multiple copies, but it cannot be f
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="26"/>
       <source>Orthogonal array</source>
       <translation>Szyk prostopadły</translation>
-    </message>
-    <message>
-      <location filename="../ui/TaskPanel_OrthoArray.ui" line="44"/>
-      <source>(Placeholder for the icon)</source>
-      <translation>(Miejsce na ikonę)</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="51"/>
@@ -592,11 +582,6 @@ A Link array is more efficient when creating multiple copies, but it cannot be f
       <translation>Szyk biegunowy</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_PolarArray.ui" line="44"/>
-      <source>(Placeholder for the icon)</source>
-      <translation>(Miejsce na ikonkę)</translation>
-    </message>
-    <message>
       <location filename="../ui/TaskPanel_PolarArray.ui" line="53"/>
       <location filename="../ui/TaskPanel_PolarArray.ui" line="65"/>
       <source>Sweeping angle of the polar distribution.
@@ -671,7 +656,7 @@ Działa to tylko wtedy, gdy opcja "Szyk łączy" jest nieaktywna.</translation>
     <message>
       <location filename="../ui/TaskPanel_PolarArray.ui" line="209"/>
       <source>Fuse</source>
-      <translation>Scal</translation>
+      <translation>Scalenie</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_PolarArray.ui" line="216"/>
@@ -2443,7 +2428,7 @@ Te linie są grubsze niż normalne linie siatki.</translation>
     <message>
       <location filename="../ui/preferences-dwg.ui" line="51"/>
       <source>Automatic</source>
-      <translation>Automatycznie</translation>
+      <translation>Automatyczna</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dwg.ui" line="56"/>
@@ -2713,7 +2698,7 @@ Te linie są grubsze niż normalne linie siatki.</translation>
       <location filename="../../DraftGui.py" line="60"/>
       <location filename="../../DraftGui.py" line="633"/>
       <source>Global</source>
-      <translation>Globalnie</translation>
+      <translation>Globalne</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="65"/>
@@ -3170,7 +3155,7 @@ Opcja jest niedostępna, jeśli opcja preferencji Rysunku Roboczego "używaj ele
       <location filename="../../DraftGui.py" line="970"/>
       <location filename="../../DraftGui.py" line="971"/>
       <source>Local {}</source>
-      <translation type="unfinished">Local {}</translation>
+      <translation>Lokalnie {}</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="973"/>
@@ -3180,7 +3165,7 @@ Opcja jest niedostępna, jeśli opcja preferencji Rysunku Roboczego "używaj ele
       <location filename="../../DraftGui.py" line="978"/>
       <location filename="../../DraftGui.py" line="979"/>
       <source>Global {}</source>
-      <translation type="unfinished">Global {}</translation>
+      <translation>Globalnie {}</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="1555"/>
@@ -3213,43 +3198,43 @@ Opcja jest niedostępna, jeśli opcja preferencji Rysunku Roboczego "używaj ele
       <translation>Rysunek Roboczy</translation>
     </message>
     <message>
-      <location filename="../../importDWG.py" line="292"/>
-      <location filename="../../importDWG.py" line="310"/>
-      <location filename="../../importDWG.py" line="329"/>
-      <location filename="../../importDWG.py" line="376"/>
-      <location filename="../../importDWG.py" line="390"/>
-      <location filename="../../importDWG.py" line="401"/>
+      <location filename="../../importDWG.py" line="293"/>
+      <location filename="../../importDWG.py" line="311"/>
+      <location filename="../../importDWG.py" line="330"/>
+      <location filename="../../importDWG.py" line="377"/>
+      <location filename="../../importDWG.py" line="391"/>
+      <location filename="../../importDWG.py" line="402"/>
       <source>Converting:</source>
       <translation>Konwertowanie:</translation>
     </message>
     <message>
-      <location filename="../../importDWG.py" line="296"/>
-      <location filename="../../importDWG.py" line="315"/>
-      <location filename="../../importDWG.py" line="333"/>
+      <location filename="../../importDWG.py" line="297"/>
+      <location filename="../../importDWG.py" line="316"/>
+      <location filename="../../importDWG.py" line="334"/>
       <source>Conversion successful</source>
       <translation>Konwersja zakończona</translation>
     </message>
     <message>
-      <location filename="../../importDWG.py" line="301"/>
-      <location filename="../../importDWG.py" line="381"/>
+      <location filename="../../importDWG.py" line="302"/>
+      <location filename="../../importDWG.py" line="382"/>
       <source>LibreDWG converter not found</source>
       <translation>Nie znaleziono konwertera LibreDWG</translation>
     </message>
     <message>
-      <location filename="../../importDWG.py" line="320"/>
-      <location filename="../../importDWG.py" line="395"/>
+      <location filename="../../importDWG.py" line="321"/>
+      <location filename="../../importDWG.py" line="396"/>
       <source>ODA converter not found</source>
       <translation>Nie znaleziono konwertera ODA</translation>
     </message>
     <message>
-      <location filename="../../importDWG.py" line="338"/>
-      <location filename="../../importDWG.py" line="406"/>
+      <location filename="../../importDWG.py" line="339"/>
+      <location filename="../../importDWG.py" line="407"/>
       <source>QCAD converter not found</source>
       <translation>Nie znaleziono konwertera QCAD</translation>
     </message>
     <message>
-      <location filename="../../importDWG.py" line="343"/>
-      <location filename="../../importDWG.py" line="411"/>
+      <location filename="../../importDWG.py" line="344"/>
+      <location filename="../../importDWG.py" line="412"/>
       <source>No suitable external DWG converter has been found.
 Please set one manually under menu Edit -&gt; Preferences -&gt; Import/Export -&gt; DWG
 For more information see:
@@ -3260,7 +3245,7 @@ Aby uzyskać więcej informacji, zobacz stronę:
 https://wiki.freecad.org/Import_Export_Preferences/pl</translation>
     </message>
     <message>
-      <location filename="../../importDWG.py" line="283"/>
+      <location filename="../../importDWG.py" line="284"/>
       <source>Error during DWG conversion.
 Try moving the DWG file to a directory path without spaces and non-english characters,
 or try saving to a lower DWG version.</source>
@@ -3669,7 +3654,7 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
     <message>
       <location filename="../../draftguitools/gui_arcs.py" line="254"/>
       <location filename="../../draftguitools/gui_arcs.py" line="270"/>
-      <location filename="../../draftguitools/gui_arcs.py" line="410"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="406"/>
       <location filename="../../draftguitools/gui_polygons.py" line="196"/>
       <location filename="../../draftguitools/gui_polygons.py" line="207"/>
       <location filename="../../draftguitools/gui_polygons.py" line="267"/>
@@ -3679,22 +3664,22 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
     <message>
       <location filename="../../draftguitools/gui_arcs.py" line="277"/>
       <location filename="../../draftguitools/gui_arcs.py" line="278"/>
-      <location filename="../../draftguitools/gui_arcs.py" line="445"/>
-      <location filename="../../draftguitools/gui_arcs.py" line="446"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="441"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="442"/>
       <source>Start angle</source>
       <translation>Kąt początkowy</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_arcs.py" line="283"/>
-      <location filename="../../draftguitools/gui_arcs.py" line="451"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="447"/>
       <source>Pick start angle</source>
       <translation>Wybierz kąt początkowy</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_arcs.py" line="285"/>
       <location filename="../../draftguitools/gui_arcs.py" line="286"/>
-      <location filename="../../draftguitools/gui_arcs.py" line="453"/>
-      <location filename="../../draftguitools/gui_arcs.py" line="454"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="449"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="450"/>
       <source>Aperture angle</source>
       <translation>Kąt otwarcia</translation>
     </message>
@@ -3714,23 +3699,23 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
       <translation>Utwórz okrąg</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_arcs.py" line="369"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="365"/>
       <source>Create Arc (Part)</source>
       <translation>Utwórz łuk (środowisko pracy Część)</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_arcs.py" line="389"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="385"/>
       <source>Create Arc</source>
       <translation>Utwórz łuk</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_arcs.py" line="465"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="461"/>
       <source>Pick aperture angle</source>
       <translation>Wybierz kąt otwarcia</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_arcs.py" line="508"/>
-      <location filename="../../draftguitools/gui_arcs.py" line="550"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="504"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="546"/>
       <source>Arc by 3 points</source>
       <translation>Łuk przez trzy punkty</translation>
     </message>
@@ -4389,7 +4374,7 @@ Kąt końcowy będzie równy kątowi podstawowemu plus ta wartość.</translatio
       <translation>Utwórz prostokąt</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_mirror.py" line="73"/>
+      <location filename="../../draftguitools/gui_mirror.py" line="74"/>
       <source>Select an object to mirror</source>
       <translation>Wybierz obiekt do odbicia lustrzanego</translation>
     </message>
@@ -4404,8 +4389,8 @@ Kąt końcowy będzie równy kątowi podstawowemu plus ta wartość.</translatio
       <translation>Odbicie lustrzane</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_mirror.py" line="173"/>
-      <location filename="../../draftguitools/gui_mirror.py" line="199"/>
+      <location filename="../../draftguitools/gui_mirror.py" line="163"/>
+      <location filename="../../draftguitools/gui_mirror.py" line="189"/>
       <source>Pick end point of mirror line</source>
       <translation>Wybierz punkt końcowy linii odbicia</translation>
     </message>
@@ -4703,12 +4688,12 @@ Kąt końcowy będzie równy kątowi podstawowemu plus ta wartość.</translatio
     <message>
       <location filename="../../draftobjects/shapestring.py" line="114"/>
       <source>added 'Justification', 'JustificationReference', 'KeepLeftMargin', 'ScaleToSize' and 'Fuse' properties</source>
-      <translation type="unfinished">added 'Justification', 'JustificationReference', 'KeepLeftMargin', 'ScaleToSize' and 'Fuse' properties</translation>
+      <translation>dodano właściwości "Justowanie", "OdniesienieJustowania", "ZachowajLewyMargines", "SkalujDoRozmiaru" i "Scal"</translation>
     </message>
     <message>
       <location filename="../../draftobjects/shapestring.py" line="116"/>
       <source>changed 'Tracking' property type</source>
-      <translation type="unfinished">changed 'Tracking' property type</translation>
+      <translation>zmieniono typ właściwości "Śledzenie"</translation>
     </message>
     <message>
       <location filename="../../draftobjects/shapestring.py" line="168"/>
@@ -5635,7 +5620,7 @@ Proszę zainstalować dodatek bibliotek dxf ręcznie z narzędzi Menu -&gt; Mene
     <message>
       <location filename="../../draftguitools/gui_layers.py" line="280"/>
       <source>Draw style</source>
-      <translation>Styl rysowania</translation>
+      <translation>Styl kreślenia</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_layers.py" line="281"/>
@@ -5705,27 +5690,27 @@ Proszę zainstalować dodatek bibliotek dxf ręcznie z narzędzi Menu -&gt; Mene
     <message>
       <location filename="../../draftobjects/label.py" line="336"/>
       <source>Label + Position</source>
-      <translation type="unfinished">Label + Position</translation>
+      <translation>Etykieta + pozycja</translation>
     </message>
     <message>
       <location filename="../../draftobjects/label.py" line="337"/>
       <source>Label + Length</source>
-      <translation type="unfinished">Label + Length</translation>
+      <translation>Etykieta + długość</translation>
     </message>
     <message>
       <location filename="../../draftobjects/label.py" line="338"/>
       <source>Label + Area</source>
-      <translation type="unfinished">Label + Area</translation>
+      <translation>Etykieta + obszar</translation>
     </message>
     <message>
       <location filename="../../draftobjects/label.py" line="339"/>
       <source>Label + Volume</source>
-      <translation type="unfinished">Label + Volume</translation>
+      <translation>Etykieta + objętość</translation>
     </message>
     <message>
       <location filename="../../draftobjects/label.py" line="343"/>
       <source>Label + Material</source>
-      <translation type="unfinished">Label + Material</translation>
+      <translation>Etykieta + materiał</translation>
     </message>
   </context>
   <context>
@@ -5929,7 +5914,7 @@ Jednak pojedynczy szkic z rozłączonymi elementami zostanie przekonwertowany na
     <message>
       <location filename="../../draftguitools/gui_snaps.py" line="66"/>
       <source>Snap Lock</source>
-      <translation>Zablokuj przyciąganie</translation>
+      <translation>Przełącz przyciąganie</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_snaps.py" line="67"/>
@@ -6167,12 +6152,12 @@ CTRL, aby przyciągnąć, SHIFT, aby utworzyć wiązanie.</translation>
   <context>
     <name>Draft_Arc_3Points</name>
     <message>
-      <location filename="../../draftguitools/gui_arcs.py" line="486"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="482"/>
       <source>Arc by 3 points</source>
-      <translation>Łuk przez 3 punkty</translation>
+      <translation>Łuk przez trzy punkty</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_arcs.py" line="489"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="485"/>
       <source>Creates a circular arc by picking 3 points.
 CTRL to snap, SHIFT to constrain.</source>
       <translation>Tworzy łuk kołowy przez wskazanie 3 punktów. 
@@ -6182,12 +6167,12 @@ CTRL, aby przyciągnąć, SHIFT, aby utworzyć wiązanie.</translation>
   <context>
     <name>Draft_ArcTools</name>
     <message>
-      <location filename="../../draftguitools/gui_arcs.py" line="613"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="609"/>
       <source>Arc tools</source>
       <translation>Narzędzia łuku</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_arcs.py" line="616"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="612"/>
       <source>Create various types of circular arcs.</source>
       <translation>Twórz różne rodzaje łuków kołowych.</translation>
     </message>
@@ -6223,7 +6208,7 @@ CTRL, aby przyciągnąć, SHIFT, aby utworzyć wiązanie.</translation>
     <message>
       <location filename="../../draftguitools/gui_edit.py" line="258"/>
       <source>Edit</source>
-      <translation>Edytuj</translation>
+      <translation>Edycja</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_edit.py" line="267"/>
@@ -6835,12 +6820,12 @@ CTRL, aby przyciągnąć.</translation>
   <context>
     <name>Draft_Mirror</name>
     <message>
-      <location filename="../../draftguitools/gui_mirror.py" line="63"/>
+      <location filename="../../draftguitools/gui_mirror.py" line="64"/>
       <source>Mirror</source>
       <translation>Odbicie lustrzane</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_mirror.py" line="66"/>
+      <location filename="../../draftguitools/gui_mirror.py" line="67"/>
       <source>Mirrors the selected objects along a line defined by two points.</source>
       <translation>Odbija wybrane obiekty względem linii określonej przez dwa punkty.</translation>
     </message>
@@ -7068,22 +7053,22 @@ Jest to lista ciągów znaków; każdy element na liście będzie wyświetlany w
     <message>
       <location filename="../../draftobjects/shapestring.py" line="67"/>
       <source>Horizontal and vertical alignment</source>
-      <translation type="unfinished">Horizontal and vertical alignment</translation>
+      <translation>Wyrównanie poziome i pionowe</translation>
     </message>
     <message>
       <location filename="../../draftobjects/shapestring.py" line="75"/>
       <source>Height reference used for justification</source>
-      <translation type="unfinished">Height reference used for justification</translation>
+      <translation>Wysokość odniesienia używana do justowania</translation>
     </message>
     <message>
       <location filename="../../draftobjects/shapestring.py" line="81"/>
       <source>Keep left margin and leading white space when justification is left</source>
-      <translation type="unfinished">Keep left margin and leading white space when justification is left</translation>
+      <translation>Po pozostawieniu justowania zachowaj lewy margines i początkową spację</translation>
     </message>
     <message>
       <location filename="../../draftobjects/shapestring.py" line="85"/>
       <source>Scale to ensure cap height is equal to size</source>
-      <translation type="unfinished">Scale to ensure cap height is equal to size</translation>
+      <translation>Skaluj, aby upewnić się, że wysokość nasadki jest zgodna z rozmiarem</translation>
     </message>
     <message>
       <location filename="../../draftobjects/shapestring.py" line="89"/>
@@ -7098,7 +7083,7 @@ Jest to lista ciągów znaków; każdy element na liście będzie wyświetlany w
     <message>
       <location filename="../../draftobjects/shapestring.py" line="97"/>
       <source>Fuse faces if faces overlap, usually not required (can be very slow)</source>
-      <translation type="unfinished">Fuse faces if faces overlap, usually not required (can be very slow)</translation>
+      <translation>Łączenie ścian, jeśli zachodzą na siebie, zwykle nie jest wymagane (może być bardzo powolne)</translation>
     </message>
     <message>
       <location filename="../../draftobjects/hatch.py" line="47"/>

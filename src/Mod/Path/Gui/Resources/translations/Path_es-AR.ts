@@ -547,12 +547,6 @@ Para existencias desde la caja delimitadora del objeto Base significa el materia
   <context>
     <name>Form</name>
     <message>
-      <location filename="../panels/PageDepthsEdit.ui" line="17"/>
-      <location filename="../panels/PageOpDrillingEdit.ui" line="14"/>
-      <source>Form</source>
-      <translation>Forma</translation>
-    </message>
-    <message>
       <location filename="../panels/DressupPathBoundary.ui" line="20"/>
       <source>Boundary Body</source>
       <translation>Cuerpo Límite</translation>

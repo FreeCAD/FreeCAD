@@ -547,12 +547,6 @@ Oinarri-objektuaren muga-kutxatik eratorritako piezari dagokionez, esan nahi du 
   <context>
     <name>Form</name>
     <message>
-      <location filename="../panels/PageDepthsEdit.ui" line="17"/>
-      <location filename="../panels/PageOpDrillingEdit.ui" line="14"/>
-      <source>Form</source>
-      <translation>Inprimakia</translation>
-    </message>
-    <message>
       <location filename="../panels/DressupPathBoundary.ui" line="20"/>
       <source>Boundary Body</source>
       <translation>Muga-gorputza</translation>
@@ -1466,12 +1460,12 @@ Azken aukera pieza gordinaren area osoaren aurpegirako erabili daiteke, hurrengo
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="258"/>
       <source>Check to skip machining regions that have already been cleared by previous operations</source>
-      <translation type="unfinished">Check to skip machining regions that have already been cleared by previous operations</translation>
+      <translation>Markatu hau aurreko eragiketekin garbitu diren mekanizazio-eskualdeak saltatzeko</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="261"/>
       <source>Use Rest Machining</source>
-      <translation type="unfinished">Use Rest Machining</translation>
+      <translation>Erabili artezketa-mekanizazioa</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="204"/>
@@ -5495,18 +5489,18 @@ Adibidez:
       <location filename="../../../Path/Op/PocketBase.py" line="195"/>
       <location filename="../../../Path/Op/PocketBase.py" line="277"/>
       <source>Skips machining regions that have already been cleared by previous operations.</source>
-      <translation type="unfinished">Skips machining regions that have already been cleared by previous operations.</translation>
+      <translation>Aurreko eragiketekin garbitu diren mekanizazio-eskualdeak saltatzen ditu.</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/PocketBase.py" line="204"/>
       <location filename="../../../Path/Op/PocketBase.py" line="288"/>
       <source>The areas cleared by this operation, one area per height, stored as a compound part. Used internally for rest machining.</source>
-      <translation type="unfinished">The areas cleared by this operation, one area per height, stored as a compound part. Used internally for rest machining.</translation>
+      <translation>Eragiketa honek garbitzen dituen areak, area bana altuera bakoitzeko, konposatu-atal gisa biltegiratua. Barnean erabilia artezketa-mekanizaziorako.</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/PocketBase.py" line="299"/>
       <source>Flag to indicate that the rest machining regions have never been computed, and must be recomputed before being used.</source>
-      <translation type="unfinished">Flag to indicate that the rest machining regions have never been computed, and must be recomputed before being used.</translation>
+      <translation>Artezketa-mekanizazioko eskualdeak inoiz ez direla kalkulatu eta erabiliak izan baino lehen berriro kalkulatu behar direla adierazten duen bandera.</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Probe.py" line="55"/>
@@ -6880,7 +6874,7 @@ Adibidez:
     <message>
       <location filename="../../../Path/Op/Area.py" line="259"/>
       <source>Previous operation %s is required for rest machining, but it has no stored rest machining metadata. Recomputing to generate this metadata...</source>
-      <translation type="unfinished">Previous operation %s is required for rest machining, but it has no stored rest machining metadata. Recomputing to generate this metadata...</translation>
+      <translation>Aurretik %s eragiketa behar da artezketa-mekanizaziorako, baina ez du artezketa-mekanizazioko metadaturik. Berriro kalkulatzen metadatu horiek sortzeko...</translation>
     </message>
   </context>
   <context>

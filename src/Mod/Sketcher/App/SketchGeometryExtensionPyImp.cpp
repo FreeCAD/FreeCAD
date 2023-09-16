@@ -35,8 +35,9 @@ std::string SketchGeometryExtensionPy::representation() const
     std::stringstream str;
     str << "<SketchGeometryExtension (";
 
-    if (!getSketchGeometryExtensionPtr()->getName().empty())
+    if (!getSketchGeometryExtensionPtr()->getName().empty()) {
         str << "\'" << getSketchGeometryExtensionPtr()->getName() << "\', ";
+    }
 
     str << "\"";
 
@@ -89,8 +90,9 @@ Py::String SketchGeometryExtensionPy::getInternalType() const
 {
     int internaltypeindex = (int)this->getSketchGeometryExtensionPtr()->getInternalType();
 
-    if (internaltypeindex >= InternalType::NumInternalGeometryType)
+    if (internaltypeindex >= InternalType::NumInternalGeometryType) {
         throw Py::NotImplementedError("String name of enum not implemented");
+    }
 
     std::string typestr =
         this->getSketchGeometryExtensionPtr()->internaltype2str[internaltypeindex];
@@ -139,9 +141,10 @@ PyObject* SketchGeometryExtensionPy::testGeometryMode(PyObject* args)
 
         GeometryMode::GeometryMode mode;
 
-        if (getSketchGeometryExtensionPtr()->getGeometryModeFromName(flag, mode))
+        if (getSketchGeometryExtensionPtr()->getGeometryModeFromName(flag, mode)) {
             return new_reference_to(
                 Py::Boolean(getSketchGeometryExtensionPtr()->testGeometryMode(mode)));
+        }
 
         PyErr_SetString(PyExc_TypeError, "Flag string does not exist.");
         return nullptr;

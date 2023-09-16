@@ -40,7 +40,7 @@
 #include <Inventor/nodes/SoSeparator.h>
 #include <Inventor/nodes/SoText2.h>
 #include <Inventor/nodes/SoTranslation.h>
-#endif// #ifndef _PreComp_
+#endif  // #ifndef _PreComp_
 
 #include <Base/Exception.h>
 #include <Gui/Inventor/MarkerBitmaps.h>
@@ -250,8 +250,9 @@ void EditModeCoinManager::ParameterObserver::updateCurvedEdgeCountSegmentsParame
         App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
     int stdcountsegments = hGrp->GetInt(parametername.c_str(), 50);
     // value cannot be smaller than 6
-    if (stdcountsegments < 6)
+    if (stdcountsegments < 6) {
         stdcountsegments = 6;
+    }
 
     Client.drawingParameters.curvedEdgeCountSegments = stdcountsegments;
 }
@@ -292,25 +293,32 @@ void EditModeCoinManager::ParameterObserver::updateOverlayVisibilityParameter(
     ParameterGrp::handle hGrpsk = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/Mod/Sketcher/General");
 
-    if constexpr (visibilityparameter == OverlayVisibilityParameter::BSplineDegree)
+    if constexpr (visibilityparameter == OverlayVisibilityParameter::BSplineDegree) {
         Client.overlayParameters.bSplineDegreeVisible =
             hGrpsk->GetBool(parametername.c_str(), true);
+    }
     else if constexpr (visibilityparameter
-                       == OverlayVisibilityParameter::BSplineControlPolygonVisible)
+                       == OverlayVisibilityParameter::BSplineControlPolygonVisible) {
         Client.overlayParameters.bSplineControlPolygonVisible =
             hGrpsk->GetBool(parametername.c_str(), true);
-    else if constexpr (visibilityparameter == OverlayVisibilityParameter::BSplineCombVisible)
+    }
+    else if constexpr (visibilityparameter == OverlayVisibilityParameter::BSplineCombVisible) {
         Client.overlayParameters.bSplineCombVisible = hGrpsk->GetBool(parametername.c_str(), true);
+    }
     else if constexpr (visibilityparameter
-                       == OverlayVisibilityParameter::BSplineKnotMultiplicityVisible)
+                       == OverlayVisibilityParameter::BSplineKnotMultiplicityVisible) {
         Client.overlayParameters.bSplineKnotMultiplicityVisible =
             hGrpsk->GetBool(parametername.c_str(), true);
-    else if constexpr (visibilityparameter == OverlayVisibilityParameter::BSplinePoleWeightVisible)
+    }
+    else if constexpr (visibilityparameter
+                       == OverlayVisibilityParameter::BSplinePoleWeightVisible) {
         Client.overlayParameters.bSplinePoleWeightVisible =
             hGrpsk->GetBool(parametername.c_str(), true);
-    else if constexpr (visibilityparameter == OverlayVisibilityParameter::ArcCircleHelperVisible)
+    }
+    else if constexpr (visibilityparameter == OverlayVisibilityParameter::ArcCircleHelperVisible) {
         Client.overlayParameters.arcCircleHelperVisible =
             hGrpsk->GetBool(parametername.c_str(), false);
+    }
 
     Client.overlayParameters.visibleInformationChanged = true;
 }
@@ -330,7 +338,7 @@ void EditModeCoinManager::ParameterObserver::updateElementSizeParameters(
     int markersize = hGrp->GetInt("MarkerSize", 7);
 
     int defaultFontSizePixels =
-        Client.defaultApplicationFontSizePixels();// returns height in pixels, not points
+        Client.defaultApplicationFontSizePixels();  // returns height in pixels, not points
 
     int sketcherfontSize = hGrp->GetInt("EditSketcherFontSize", defaultFontSizePixels);
 
@@ -338,7 +346,7 @@ void EditModeCoinManager::ParameterObserver::updateElementSizeParameters(
 
     // simple scaling factor for hardcoded pixel values in the Sketcher
     Client.drawingParameters.pixelScalingFactor = viewScalingFactor * dpi
-        / 96;// 96 ppi is the standard pixel density for which pixel quantities were calculated
+        / 96;  // 96 ppi is the standard pixel density for which pixel quantities were calculated
 
     // About sizes:
     // SoDatumLabel takes the size in points, not in pixels. This is because it uses QFont
@@ -360,9 +368,9 @@ void EditModeCoinManager::ParameterObserver::updateElementSizeParameters(
     // necessary so that the Sketcher is usable in HDPI monitors.
 
     Client.drawingParameters.coinFontSize =
-        std::lround(sketcherfontSize * 96.0f / dpi);// this is in pixels
+        std::lround(sketcherfontSize * 96.0f / dpi);  // this is in pixels
     Client.drawingParameters.labelFontSize = std::lround(
-        sketcherfontSize * 72.0f / dpi);// this is in points, as SoDatumLabel uses points
+        sketcherfontSize * 72.0f / dpi);  // this is in points, as SoDatumLabel uses points
     Client.drawingParameters.constraintIconSize = std::lround(0.8 * sketcherfontSize);
 
     // For marker size the global default is used.
@@ -416,10 +424,11 @@ void EditModeCoinManager::ParameterObserver::subscribeToParameters()
             "User parameter:BaseApp/Preferences/Units");
         hGrpu->Attach(this);
     }
-    catch (const Base::ValueError& e) {// ensure that if parameter strings are not well-formed, the
-                                       // exception is not propagated
-        Base::Console().DeveloperError(
-            "EditModeCoinManager", "Malformed parameter string: %s\n", e.what());
+    catch (const Base::ValueError& e) {  // ensure that if parameter strings are not well-formed,
+                                         // the exception is not propagated
+        Base::Console().DeveloperError("EditModeCoinManager",
+                                       "Malformed parameter string: %s\n",
+                                       e.what());
     }
 }
 
@@ -443,10 +452,11 @@ void EditModeCoinManager::ParameterObserver::unsubscribeToParameters()
         hGrpu->Detach(this);
     }
     catch (const Base::ValueError&
-               e) {// ensure that if parameter strings are not well-formed, the program is not
-                   // terminated when calling the noexcept destructor.
-        Base::Console().DeveloperError(
-            "EditModeCoinManager", "Malformed parameter string: %s\n", e.what());
+               e) {  // ensure that if parameter strings are not well-formed, the program is not
+                     // terminated when calling the noexcept destructor.
+        Base::Console().DeveloperError("EditModeCoinManager",
+                                       "Malformed parameter string: %s\n",
+                                       e.what());
     }
 }
 
@@ -462,7 +472,7 @@ void EditModeCoinManager::ParameterObserver::OnChange(Base::Subject<const char*>
 
         function(string);
 
-        Client.redrawViewProvider();// redraw with non-temporal geometry
+        Client.redrawViewProvider();  // redraw with non-temporal geometry
     }
 }
 
@@ -518,8 +528,9 @@ void EditModeCoinManager::drawEditMarkers(const std::vector<Base::Vector2d>& Edi
     if (defaultmarker != supportedsizes.end()) {
         auto validAugmentationLevels = std::distance(defaultmarker, supportedsizes.end());
 
-        if (augmentationlevel >= validAugmentationLevels)
+        if (augmentationlevel >= validAugmentationLevels) {
             augmentationlevel = validAugmentationLevels - 1;
+        }
 
         augmentedmarkersize = *std::next(defaultmarker, augmentationlevel);
     }
@@ -534,7 +545,7 @@ void EditModeCoinManager::drawEditMarkers(const std::vector<Base::Vector2d>& Edi
     SbVec3f* verts = editModeScenegraphNodes.EditMarkersCoordinate->point.startEditing();
     SbColor* color = editModeScenegraphNodes.EditMarkersMaterials->diffuseColor.startEditing();
 
-    int i = 0;// setting up the line set
+    int i = 0;  // setting up the line set
     for (std::vector<Base::Vector2d>::const_iterator it = EditMarkers.begin();
          it != EditMarkers.end();
          ++it, i++) {
@@ -559,7 +570,7 @@ void EditModeCoinManager::drawEdit(const std::vector<Base::Vector2d>& EditCurve)
     int32_t* index = editModeScenegraphNodes.EditCurveSet->numVertices.startEditing();
     SbColor* color = editModeScenegraphNodes.EditCurvesMaterials->diffuseColor.startEditing();
 
-    int i = 0;// setting up the line set
+    int i = 0;  // setting up the line set
     for (std::vector<Base::Vector2d>::const_iterator it = EditCurve.begin(); it != EditCurve.end();
          ++it, i++) {
         verts[i].setValue(it->x,
@@ -579,8 +590,9 @@ void EditModeCoinManager::drawEdit(const std::list<std::vector<Base::Vector2d>>&
 {
     int ncoords = 0;
 
-    for (const auto& v : list)
+    for (const auto& v : list) {
         ncoords += v.size();
+    }
 
     editModeScenegraphNodes.EditCurveSet->numVertices.setNum(list.size());
     editModeScenegraphNodes.EditCurvesCoordinate->point.setNum(ncoords);
@@ -638,10 +650,12 @@ void EditModeCoinManager::resetPositionText()
 
 void EditModeCoinManager::setAxisPickStyle(bool on)
 {
-    if (on)
+    if (on) {
         editModeScenegraphNodes.pickStyleAxes->style = SoPickStyle::SHAPE;
-    else
+    }
+    else {
         editModeScenegraphNodes.pickStyleAxes->style = SoPickStyle::UNPICKABLE;
+    }
 }
 
 EditModeCoinManager::PreselectionResult
@@ -649,12 +663,13 @@ EditModeCoinManager::detectPreselection(SoPickedPoint* Point, const SbVec2s& cur
 {
     EditModeCoinManager::PreselectionResult result;
 
-    if (!Point)
+    if (!Point) {
         return result;
+    }
 
     // Base::Console().Log("Point pick\n");
     SoPath* path = Point->getPath();
-    SoNode* tail = path->getTail();// Tail is directly the node containing points and curves
+    SoNode* tail = path->getTail();  // Tail is directly the node containing points and curves
 
     for (int l = 0; l < geometryLayerParameters.getCoinLayerCount(); l++) {
         // checking for a hit in the points
@@ -664,10 +679,12 @@ EditModeCoinManager::detectPreselection(SoPickedPoint* Point, const SbVec2s& cur
                 // get the index
                 int pindex = static_cast<const SoPointDetail*>(point_detail)->getCoordinateIndex();
                 result.PointIndex = coinMapping.getPointVertexId(
-                    pindex, l);// returns -1 for root, global VertexId for the rest of vertices.
+                    pindex,
+                    l);  // returns -1 for root, global VertexId for the rest of vertices.
 
-                if (result.PointIndex == -1)
+                if (result.PointIndex == -1) {
                     result.Cross = PreselectionResult::Axes::RootPoint;
+                }
 
                 return result;
             }
@@ -692,10 +709,12 @@ EditModeCoinManager::detectPreselection(SoPickedPoint* Point, const SbVec2s& cur
             // get the index (reserve index 0 for root point)
             int CrossIndex = static_cast<const SoLineDetail*>(cross_detail)->getLineIndex();
 
-            if (CrossIndex == 0)
+            if (CrossIndex == 0) {
                 result.Cross = PreselectionResult::Axes::HorizontalAxis;
-            else if (CrossIndex == 1)
+            }
+            else if (CrossIndex == 1) {
                 result.Cross = PreselectionResult::Axes::VerticalAxis;
+            }
 
             return result;
         }
@@ -715,8 +734,9 @@ SoGroup* EditModeCoinManager::getSelectedConstraints()
     for (int i = 0; i < editModeScenegraphNodes.constrGroup->getNumChildren(); i++) {
         if (ViewProviderSketchCoinAttorney::isConstraintSelected(viewProvider, i)) {
             SoSeparator* sep = pEditModeConstraintCoinManager->getConstraintIdSeparator(i);
-            if (sep)
+            if (sep) {
                 group->addChild(sep);
+            }
         }
     }
 
@@ -726,7 +746,8 @@ SoGroup* EditModeCoinManager::getSelectedConstraints()
 /***** update coin nodes *****/
 
 void EditModeCoinManager::processGeometryConstraintsInformationOverlay(
-    const GeoListFacade& geolistfacade, bool rebuildinformationlayer)
+    const GeoListFacade& geolistfacade,
+    bool rebuildinformationlayer)
 {
     overlayParameters.rebuildInformationLayer = rebuildinformationlayer;
 
@@ -746,9 +767,10 @@ void EditModeCoinManager::updateOverlayParameters()
     if ((analysisResults.combRepresentationScale
          > (2 * overlayParameters.currentBSplineCombRepresentationScale))
         || (analysisResults.combRepresentationScale
-            < (overlayParameters.currentBSplineCombRepresentationScale / 2)))
+            < (overlayParameters.currentBSplineCombRepresentationScale / 2))) {
         overlayParameters.currentBSplineCombRepresentationScale =
             analysisResults.combRepresentationScale;
+    }
 }
 
 void EditModeCoinManager::processGeometryInformationOverlay(const GeoListFacade& geolistfacade)
@@ -758,8 +780,10 @@ void EditModeCoinManager::processGeometryInformationOverlay(const GeoListFacade&
         Gui::coinRemoveAllChildren(editModeScenegraphNodes.infoGroup);
     }
 
-    auto ioconv = EditModeInformationOverlayCoinConverter(
-        viewProvider, editModeScenegraphNodes.infoGroup, overlayParameters, drawingParameters);
+    auto ioconv = EditModeInformationOverlayCoinConverter(viewProvider,
+                                                          editModeScenegraphNodes.infoGroup,
+                                                          overlayParameters,
+                                                          drawingParameters);
 
     // geometry information layer for bsplines, as they need a second round now that max curvature
     // is known
@@ -774,7 +798,7 @@ void EditModeCoinManager::processGeometryInformationOverlay(const GeoListFacade&
     }
 
 
-    overlayParameters.visibleInformationChanged = false;// just updated
+    overlayParameters.visibleInformationChanged = false;  // just updated
 }
 
 void EditModeCoinManager::updateAxesLength()
@@ -782,13 +806,17 @@ void EditModeCoinManager::updateAxesLength()
     auto zCrossH = ViewProviderSketchCoinAttorney::getViewOrientationFactor(viewProvider)
         * drawingParameters.zCross;
     editModeScenegraphNodes.RootCrossCoordinate->point.set1Value(
-        0, SbVec3f(-analysisResults.boundingBoxMagnitudeOrder, 0.0f, zCrossH));
+        0,
+        SbVec3f(-analysisResults.boundingBoxMagnitudeOrder, 0.0f, zCrossH));
     editModeScenegraphNodes.RootCrossCoordinate->point.set1Value(
-        1, SbVec3f(analysisResults.boundingBoxMagnitudeOrder, 0.0f, zCrossH));
+        1,
+        SbVec3f(analysisResults.boundingBoxMagnitudeOrder, 0.0f, zCrossH));
     editModeScenegraphNodes.RootCrossCoordinate->point.set1Value(
-        2, SbVec3f(0.0f, -analysisResults.boundingBoxMagnitudeOrder, zCrossH));
+        2,
+        SbVec3f(0.0f, -analysisResults.boundingBoxMagnitudeOrder, zCrossH));
     editModeScenegraphNodes.RootCrossCoordinate->point.set1Value(
-        3, SbVec3f(0.0f, analysisResults.boundingBoxMagnitudeOrder, zCrossH));
+        3,
+        SbVec3f(0.0f, analysisResults.boundingBoxMagnitudeOrder, zCrossH));
 }
 
 void EditModeCoinManager::updateColor()
@@ -808,8 +836,9 @@ void EditModeCoinManager::updateColor(const GeoListFacade& geolistfacade)
 
     auto constraints = ViewProviderSketchCoinAttorney::getConstraints(viewProvider);
 
-    if (ViewProviderSketchCoinAttorney::haveConstraintsInvalidGeometry(viewProvider))
+    if (ViewProviderSketchCoinAttorney::haveConstraintsInvalidGeometry(viewProvider)) {
         return;
+    }
 
     pEditModeConstraintCoinManager->updateConstraintColor(constraints);
 }
@@ -830,7 +859,7 @@ void EditModeCoinManager::createEditModeInventorNodes()
     // 1 - Create the edit root node
     editModeScenegraphNodes.EditRoot = new SoSeparator;
     editModeScenegraphNodes.EditRoot
-        ->ref();// Node is unref in the destructor of EditModeCoinManager
+        ->ref();  // Node is unref in the destructor of EditModeCoinManager
     editModeScenegraphNodes.EditRoot->setName("Sketch_EditRoot");
     ViewProviderSketchCoinAttorney::addNodeToRoot(viewProvider, editModeScenegraphNodes.EditRoot);
     editModeScenegraphNodes.EditRoot->renderCaching = SoSeparator::OFF;
@@ -858,9 +887,11 @@ void EditModeCoinManager::createEditModeInventorNodes()
     editModeScenegraphNodes.RootCrossMaterials = new SoMaterial;
     editModeScenegraphNodes.RootCrossMaterials->setName("RootCrossMaterials");
     editModeScenegraphNodes.RootCrossMaterials->diffuseColor.set1Value(
-        0, drawingParameters.CrossColorH);
+        0,
+        drawingParameters.CrossColorH);
     editModeScenegraphNodes.RootCrossMaterials->diffuseColor.set1Value(
-        1, drawingParameters.CrossColorV);
+        1,
+        drawingParameters.CrossColorV);
     crossRoot->addChild(editModeScenegraphNodes.RootCrossMaterials);
 
     editModeScenegraphNodes.RootCrossCoordinate = new SoCoordinate3;
@@ -1036,9 +1067,11 @@ void EditModeCoinManager::updateInventorNodeSizes()
 void EditModeCoinManager::updateInventorColors()
 {
     editModeScenegraphNodes.RootCrossMaterials->diffuseColor.set1Value(
-        0, drawingParameters.CrossColorH);
+        0,
+        drawingParameters.CrossColorH);
     editModeScenegraphNodes.RootCrossMaterials->diffuseColor.set1Value(
-        1, drawingParameters.CrossColorV);
+        1,
+        drawingParameters.CrossColorV);
     editModeScenegraphNodes.textMaterial->diffuseColor = drawingParameters.CursorTextColor;
 }
 

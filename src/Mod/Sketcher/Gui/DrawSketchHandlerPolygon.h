@@ -32,7 +32,7 @@
 namespace SketcherGui
 {
 
-extern GeometryCreationMode geometryCreationMode;// defined in CommandCreateGeo.cpp
+extern GeometryCreationMode geometryCreationMode;  // defined in CommandCreateGeo.cpp
 
 class DrawSketchHandlerRegularPolygon: public DrawSketchHandler
 {
@@ -137,15 +137,17 @@ public:
 
                 // add auto constraints at the center of the polygon
                 if (!sugConstr1.empty()) {
-                    createAutoConstraints(
-                        sugConstr1, getHighestCurveIndex(), Sketcher::PointPos::mid);
+                    createAutoConstraints(sugConstr1,
+                                          getHighestCurveIndex(),
+                                          Sketcher::PointPos::mid);
                     sugConstr1.clear();
                 }
 
                 // add auto constraints to the last side of the polygon
                 if (!sugConstr2.empty()) {
-                    createAutoConstraints(
-                        sugConstr2, getHighestCurveIndex() - 1, Sketcher::PointPos::end);
+                    createAutoConstraints(sugConstr2,
+                                          getHighestCurveIndex() - 1,
+                                          Sketcher::PointPos::end);
                     sugConstr2.clear();
                 }
 
@@ -179,8 +181,8 @@ public:
                  * right button of the mouse */
             }
             else {
-                sketchgui
-                    ->purgeHandler();// no code after this line, Handler get deleted in ViewProvider
+                sketchgui->purgeHandler();  // no code after this line, Handler get deleted in
+                                            // ViewProvider
             }
         }
         return true;
@@ -203,7 +205,7 @@ protected:
 };
 
 
-}// namespace SketcherGui
+}  // namespace SketcherGui
 
 
-#endif// SKETCHERGUI_DrawSketchHandlerPolygon_H
+#endif  // SKETCHERGUI_DrawSketchHandlerPolygon_H

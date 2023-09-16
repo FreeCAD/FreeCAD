@@ -33,7 +33,7 @@ using namespace std;
 namespace SketcherGui
 {
 
-extern GeometryCreationMode geometryCreationMode;// defined in CommandCreateGeo.cpp
+extern GeometryCreationMode geometryCreationMode;  // defined in CommandCreateGeo.cpp
 
 class DrawSketchHandlerArc: public DrawSketchHandler
 {
@@ -154,8 +154,9 @@ public:
                 atan2(onSketchPos.y - CenterPoint.y, onSketchPos.x - CenterPoint.x) - startAngle;
             double angle2 = angle1 + (angle1 < 0. ? 2 : -2) * M_PI;
             arcAngle = abs(angle1 - arcAngle) < abs(angle2 - arcAngle) ? angle1 : angle2;
-            if (arcAngle > 0)
+            if (arcAngle > 0) {
                 endAngle = startAngle + arcAngle;
+            }
             else {
                 endAngle = startAngle;
                 startAngle += arcAngle;
@@ -189,7 +190,7 @@ public:
                     startAngle,
                     endAngle,
                     geometryCreationMode == Construction ? "True"
-                                                         : "False");// arcAngle > 0 ? 0 : 1);
+                                                         : "False");  // arcAngle > 0 ? 0 : 1);
 
                 Gui::Command::commitCommand();
             }
@@ -244,8 +245,8 @@ public:
                  * right button of the mouse */
             }
             else {
-                sketchgui
-                    ->purgeHandler();// no code after this line, Handler get deleted in ViewProvider
+                sketchgui->purgeHandler();  // no code after this line, Handler get deleted in
+                                            // ViewProvider
             }
         }
         return true;
@@ -308,7 +309,7 @@ public:
             for (int i = 1; i <= 32; i++) {
                 // Start at current angle
                 double angle =
-                    (i - 1) * 2 * M_PI / 32.0 + lineAngle;// N point closed circle has N segments
+                    (i - 1) * 2 * M_PI / 32.0 + lineAngle;  // N point closed circle has N segments
                 if (i != 1 && i != 17) {
                     EditCurve[i] = Base::Vector2d(CenterPoint.x + radius * cos(angle),
                                                   CenterPoint.y + radius * sin(angle));
@@ -387,7 +388,8 @@ public:
 
                 // Build a 30 point circle ignoring already constructed points
                 for (int i = 1; i <= 28; i++) {
-                    double angle = startAngle + i * arcAngle / 29.0;// N point arc has N-1 segments
+                    double angle =
+                        startAngle + i * arcAngle / 29.0;  // N point arc has N-1 segments
                     EditCurve[i] = Base::Vector2d(CenterPoint.x + radius * cos(angle),
                                                   CenterPoint.y + radius * sin(angle));
                 }
@@ -401,8 +403,10 @@ public:
                 }
 
                 drawEdit(EditCurve);
-                if (seekAutoConstraint(
-                        sugConstr3, onSketchPos, Base::Vector2d(0.0, 0.0), AutoConstraint::CURVE)) {
+                if (seekAutoConstraint(sugConstr3,
+                                       onSketchPos,
+                                       Base::Vector2d(0.0, 0.0),
+                                       AutoConstraint::CURVE)) {
                     renderSuggestConstraintsCursor(sugConstr3);
                     return;
                 }
@@ -509,8 +513,8 @@ public:
                  * right button of the mouse */
             }
             else {
-                sketchgui
-                    ->purgeHandler();// no code after this line, Handler get deleted in ViewProvider
+                sketchgui->purgeHandler();  // no code after this line, Handler get deleted in
+                                            // ViewProvider
             }
         }
         return true;
@@ -531,7 +535,7 @@ protected:
     Sketcher::PointPos arcPos1, arcPos2;
 };
 
-}// namespace SketcherGui
+}  // namespace SketcherGui
 
 
-#endif// SKETCHERGUI_DrawSketchHandlerArc_H
+#endif  // SKETCHERGUI_DrawSketchHandlerArc_H

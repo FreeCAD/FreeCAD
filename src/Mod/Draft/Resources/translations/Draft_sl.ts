@@ -335,11 +335,6 @@
       <translation>Krožna razpostavitev</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_CircularArray.ui" line="44"/>
-      <source>(Placeholder for the icon)</source>
-      <translation>(Prostornik ikone)</translation>
-    </message>
-    <message>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="53"/>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="63"/>
       <source>Distance from one layer of objects to the next layer of objects.</source>
@@ -455,11 +450,6 @@ Vezana razpostavitev je učinkovitejša pri ustvarjanju večjega števila dvojni
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="26"/>
       <source>Orthogonal array</source>
       <translation>Pravokotna razpostavitev</translation>
-    </message>
-    <message>
-      <location filename="../ui/TaskPanel_OrthoArray.ui" line="44"/>
-      <source>(Placeholder for the icon)</source>
-      <translation>(Prostornik ikone)</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="51"/>
@@ -594,11 +584,6 @@ Vezana razpostavitev je učinkovitejša pri ustvarjanju večjega števila dvojni
       <translation>Krožna razpostavitev</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_PolarArray.ui" line="44"/>
-      <source>(Placeholder for the icon)</source>
-      <translation>(Prostornik ikone)</translation>
-    </message>
-    <message>
       <location filename="../ui/TaskPanel_PolarArray.ui" line="53"/>
       <location filename="../ui/TaskPanel_PolarArray.ui" line="65"/>
       <source>Sweeping angle of the polar distribution.
@@ -673,7 +658,7 @@ To deluje le, če je "Vezana razpostavitev" izključena.</translation>
     <message>
       <location filename="../ui/TaskPanel_PolarArray.ui" line="209"/>
       <source>Fuse</source>
-      <translation>Združi</translation>
+      <translation>Zlij</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_PolarArray.ui" line="216"/>
@@ -2705,7 +2690,7 @@ To lahko spodleti pri predlogah novejših od DXF R12.</translation>
       <location filename="../../DraftGui.py" line="60"/>
       <location filename="../../DraftGui.py" line="633"/>
       <source>Global</source>
-      <translation>Obče</translation>
+      <translation>Splošno</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="65"/>
@@ -3162,7 +3147,7 @@ Ta možnost ni na voljo, če je v prednastavitvah izrisovanja možnost "Uporabi 
       <location filename="../../DraftGui.py" line="970"/>
       <location filename="../../DraftGui.py" line="971"/>
       <source>Local {}</source>
-      <translation type="unfinished">Local {}</translation>
+      <translation>Krajevni {}</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="973"/>
@@ -3172,7 +3157,7 @@ Ta možnost ni na voljo, če je v prednastavitvah izrisovanja možnost "Uporabi 
       <location filename="../../DraftGui.py" line="978"/>
       <location filename="../../DraftGui.py" line="979"/>
       <source>Global {}</source>
-      <translation type="unfinished">Global {}</translation>
+      <translation>Obče {}</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="1555"/>
@@ -3205,43 +3190,43 @@ Ta možnost ni na voljo, če je v prednastavitvah izrisovanja možnost "Uporabi 
       <translation>Izris</translation>
     </message>
     <message>
-      <location filename="../../importDWG.py" line="292"/>
-      <location filename="../../importDWG.py" line="310"/>
-      <location filename="../../importDWG.py" line="329"/>
-      <location filename="../../importDWG.py" line="376"/>
-      <location filename="../../importDWG.py" line="390"/>
-      <location filename="../../importDWG.py" line="401"/>
+      <location filename="../../importDWG.py" line="293"/>
+      <location filename="../../importDWG.py" line="311"/>
+      <location filename="../../importDWG.py" line="330"/>
+      <location filename="../../importDWG.py" line="377"/>
+      <location filename="../../importDWG.py" line="391"/>
+      <location filename="../../importDWG.py" line="402"/>
       <source>Converting:</source>
       <translation>Pretvarjanje:</translation>
     </message>
     <message>
-      <location filename="../../importDWG.py" line="296"/>
-      <location filename="../../importDWG.py" line="315"/>
-      <location filename="../../importDWG.py" line="333"/>
+      <location filename="../../importDWG.py" line="297"/>
+      <location filename="../../importDWG.py" line="316"/>
+      <location filename="../../importDWG.py" line="334"/>
       <source>Conversion successful</source>
       <translation>Pretvaranje uspelo</translation>
     </message>
     <message>
-      <location filename="../../importDWG.py" line="301"/>
-      <location filename="../../importDWG.py" line="381"/>
+      <location filename="../../importDWG.py" line="302"/>
+      <location filename="../../importDWG.py" line="382"/>
       <source>LibreDWG converter not found</source>
       <translation>Pretvornika LibreDWG datotek ni mogoče najti</translation>
     </message>
     <message>
-      <location filename="../../importDWG.py" line="320"/>
-      <location filename="../../importDWG.py" line="395"/>
+      <location filename="../../importDWG.py" line="321"/>
+      <location filename="../../importDWG.py" line="396"/>
       <source>ODA converter not found</source>
       <translation>Pretvornika ODA datotek ni mogoče najti</translation>
     </message>
     <message>
-      <location filename="../../importDWG.py" line="338"/>
-      <location filename="../../importDWG.py" line="406"/>
+      <location filename="../../importDWG.py" line="339"/>
+      <location filename="../../importDWG.py" line="407"/>
       <source>QCAD converter not found</source>
       <translation>Pretvornika QCAD datotek ni mogoče najti</translation>
     </message>
     <message>
-      <location filename="../../importDWG.py" line="343"/>
-      <location filename="../../importDWG.py" line="411"/>
+      <location filename="../../importDWG.py" line="344"/>
+      <location filename="../../importDWG.py" line="412"/>
       <source>No suitable external DWG converter has been found.
 Please set one manually under menu Edit -&gt; Preferences -&gt; Import/Export -&gt; DWG
 For more information see:
@@ -3252,7 +3237,7 @@ Več informacij lahko najdete na:
 https://wiki.freecad.org/Import_Export_Preferences</translation>
     </message>
     <message>
-      <location filename="../../importDWG.py" line="283"/>
+      <location filename="../../importDWG.py" line="284"/>
       <source>Error during DWG conversion.
 Try moving the DWG file to a directory path without spaces and non-english characters,
 or try saving to a lower DWG version.</source>
@@ -3662,7 +3647,7 @@ Da FreeCADu omogočite prenos teh knjižnic, odgovorite z Da.</translation>
     <message>
       <location filename="../../draftguitools/gui_arcs.py" line="254"/>
       <location filename="../../draftguitools/gui_arcs.py" line="270"/>
-      <location filename="../../draftguitools/gui_arcs.py" line="410"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="406"/>
       <location filename="../../draftguitools/gui_polygons.py" line="196"/>
       <location filename="../../draftguitools/gui_polygons.py" line="207"/>
       <location filename="../../draftguitools/gui_polygons.py" line="267"/>
@@ -3672,22 +3657,22 @@ Da FreeCADu omogočite prenos teh knjižnic, odgovorite z Da.</translation>
     <message>
       <location filename="../../draftguitools/gui_arcs.py" line="277"/>
       <location filename="../../draftguitools/gui_arcs.py" line="278"/>
-      <location filename="../../draftguitools/gui_arcs.py" line="445"/>
-      <location filename="../../draftguitools/gui_arcs.py" line="446"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="441"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="442"/>
       <source>Start angle</source>
       <translation>Začetni kot</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_arcs.py" line="283"/>
-      <location filename="../../draftguitools/gui_arcs.py" line="451"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="447"/>
       <source>Pick start angle</source>
       <translation>Izberite začetni kot</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_arcs.py" line="285"/>
       <location filename="../../draftguitools/gui_arcs.py" line="286"/>
-      <location filename="../../draftguitools/gui_arcs.py" line="453"/>
-      <location filename="../../draftguitools/gui_arcs.py" line="454"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="449"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="450"/>
       <source>Aperture angle</source>
       <translation>Središčni kot</translation>
     </message>
@@ -3707,23 +3692,23 @@ Da FreeCADu omogočite prenos teh knjižnic, odgovorite z Da.</translation>
       <translation>Ustvari krog</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_arcs.py" line="369"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="365"/>
       <source>Create Arc (Part)</source>
       <translation>Ustvari lok (Del)</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_arcs.py" line="389"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="385"/>
       <source>Create Arc</source>
       <translation>Ustvari lok</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_arcs.py" line="465"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="461"/>
       <source>Pick aperture angle</source>
       <translation>Izberite središčni kot</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_arcs.py" line="508"/>
-      <location filename="../../draftguitools/gui_arcs.py" line="550"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="504"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="546"/>
       <source>Arc by 3 points</source>
       <translation>Lok iz 3 točk</translation>
     </message>
@@ -4382,7 +4367,7 @@ Končni kót bo seštevek izhodiščnega in tega kóta.</translation>
       <translation>Ustvari pravokotnik</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_mirror.py" line="73"/>
+      <location filename="../../draftguitools/gui_mirror.py" line="74"/>
       <source>Select an object to mirror</source>
       <translation>Izberite predmet za zrcaljenje</translation>
     </message>
@@ -4397,8 +4382,8 @@ Končni kót bo seštevek izhodiščnega in tega kóta.</translation>
       <translation>Zrcali</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_mirror.py" line="173"/>
-      <location filename="../../draftguitools/gui_mirror.py" line="199"/>
+      <location filename="../../draftguitools/gui_mirror.py" line="163"/>
+      <location filename="../../draftguitools/gui_mirror.py" line="189"/>
       <source>Pick end point of mirror line</source>
       <translation>Izberite končno točko zrcalne črte</translation>
     </message>
@@ -4696,12 +4681,12 @@ Končni kót bo seštevek izhodiščnega in tega kóta.</translation>
     <message>
       <location filename="../../draftobjects/shapestring.py" line="114"/>
       <source>added 'Justification', 'JustificationReference', 'KeepLeftMargin', 'ScaleToSize' and 'Fuse' properties</source>
-      <translation type="unfinished">added 'Justification', 'JustificationReference', 'KeepLeftMargin', 'ScaleToSize' and 'Fuse' properties</translation>
+      <translation>dodane lastnosti "Poravnava", "Sklic poravnave", "Ohrani levi rob", "Prevelikosti na mero" in "Združi"</translation>
     </message>
     <message>
       <location filename="../../draftobjects/shapestring.py" line="116"/>
       <source>changed 'Tracking' property type</source>
-      <translation type="unfinished">changed 'Tracking' property type</translation>
+      <translation>spremenjena vrsta lastnosti "Sledenje"</translation>
     </message>
     <message>
       <location filename="../../draftobjects/shapestring.py" line="168"/>
@@ -5669,7 +5654,7 @@ z menija Orodja -&gt; Upravljalnik vstavkov</translation>
     <message>
       <location filename="../../draftobjects/label.py" line="330"/>
       <source>Position</source>
-      <translation type="unfinished">Position</translation>
+      <translation>Položaj</translation>
     </message>
     <message>
       <location filename="../../draftobjects/label.py" line="331"/>
@@ -5699,27 +5684,27 @@ z menija Orodja -&gt; Upravljalnik vstavkov</translation>
     <message>
       <location filename="../../draftobjects/label.py" line="336"/>
       <source>Label + Position</source>
-      <translation type="unfinished">Label + Position</translation>
+      <translation>Oznaka + Položaj</translation>
     </message>
     <message>
       <location filename="../../draftobjects/label.py" line="337"/>
       <source>Label + Length</source>
-      <translation type="unfinished">Label + Length</translation>
+      <translation>Oznaka + Dolžina</translation>
     </message>
     <message>
       <location filename="../../draftobjects/label.py" line="338"/>
       <source>Label + Area</source>
-      <translation type="unfinished">Label + Area</translation>
+      <translation>Oznaka + Površina</translation>
     </message>
     <message>
       <location filename="../../draftobjects/label.py" line="339"/>
       <source>Label + Volume</source>
-      <translation type="unfinished">Label + Volume</translation>
+      <translation>Oznaka + Prostornina</translation>
     </message>
     <message>
       <location filename="../../draftobjects/label.py" line="343"/>
       <source>Label + Material</source>
-      <translation type="unfinished">Label + Material</translation>
+      <translation>Oznaka + Snov</translation>
     </message>
   </context>
   <context>
@@ -6158,12 +6143,12 @@ CTRL za pripenjanje, PREMAKNI za omejitev.</translation>
   <context>
     <name>Draft_Arc_3Points</name>
     <message>
-      <location filename="../../draftguitools/gui_arcs.py" line="486"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="482"/>
       <source>Arc by 3 points</source>
       <translation>Lok iz 3 točk</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_arcs.py" line="489"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="485"/>
       <source>Creates a circular arc by picking 3 points.
 CTRL to snap, SHIFT to constrain.</source>
       <translation>Ustvari krožni lok z določitvijo 3 točk.
@@ -6173,12 +6158,12 @@ CTRL za pripenjanje, PREMAKNI za omejitev.</translation>
   <context>
     <name>Draft_ArcTools</name>
     <message>
-      <location filename="../../draftguitools/gui_arcs.py" line="613"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="609"/>
       <source>Arc tools</source>
       <translation>Ločna orodja</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_arcs.py" line="616"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="612"/>
       <source>Create various types of circular arcs.</source>
       <translation>Ustvari različne vrste krožnih lokov.</translation>
     </message>
@@ -6823,12 +6808,12 @@ in potegnite črto, vzdolž katere bo potekal premik.</translation>
   <context>
     <name>Draft_Mirror</name>
     <message>
-      <location filename="../../draftguitools/gui_mirror.py" line="63"/>
+      <location filename="../../draftguitools/gui_mirror.py" line="64"/>
       <source>Mirror</source>
       <translation>Zrcali</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_mirror.py" line="66"/>
+      <location filename="../../draftguitools/gui_mirror.py" line="67"/>
       <source>Mirrors the selected objects along a line defined by two points.</source>
       <translation>Prezrcali izbrane predmete preko črte, določene z dvema točkama.</translation>
     </message>
@@ -7056,22 +7041,22 @@ To je seznam nizov, ki bodo prikazani vsak v svoji vrsti.</translation>
     <message>
       <location filename="../../draftobjects/shapestring.py" line="67"/>
       <source>Horizontal and vertical alignment</source>
-      <translation type="unfinished">Horizontal and vertical alignment</translation>
+      <translation>Vodoravna in navpična poravnava</translation>
     </message>
     <message>
       <location filename="../../draftobjects/shapestring.py" line="75"/>
       <source>Height reference used for justification</source>
-      <translation type="unfinished">Height reference used for justification</translation>
+      <translation>Višinski sklic poravnave</translation>
     </message>
     <message>
       <location filename="../../draftobjects/shapestring.py" line="81"/>
       <source>Keep left margin and leading white space when justification is left</source>
-      <translation type="unfinished">Keep left margin and leading white space when justification is left</translation>
+      <translation>Pri levi poravnavi ohrani levi rob in začetni presledek</translation>
     </message>
     <message>
       <location filename="../../draftobjects/shapestring.py" line="85"/>
       <source>Scale to ensure cap height is equal to size</source>
-      <translation type="unfinished">Scale to ensure cap height is equal to size</translation>
+      <translation>Prevelikosti tako, da bo višina pokrova enaka velikosti</translation>
     </message>
     <message>
       <location filename="../../draftobjects/shapestring.py" line="89"/>
@@ -7086,7 +7071,7 @@ To je seznam nizov, ki bodo prikazani vsak v svoji vrsti.</translation>
     <message>
       <location filename="../../draftobjects/shapestring.py" line="97"/>
       <source>Fuse faces if faces overlap, usually not required (can be very slow)</source>
-      <translation type="unfinished">Fuse faces if faces overlap, usually not required (can be very slow)</translation>
+      <translation>Združi ploskve, če se prekrivajo, običajno pa ni potrebno (lahko zelo počasno)</translation>
     </message>
     <message>
       <location filename="../../draftobjects/hatch.py" line="47"/>

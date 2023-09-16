@@ -109,17 +109,31 @@ G0 X5.000000 Y5.000000 Z18.000000G0 Z20.000000"
         args["tool_diameter"] = "5"
         self.assertRaises(TypeError, generator.generate, **args)
 
+        # require tool fit 2: hole diameter not greater than tool diam
+        # with zero inner radius
         args = _resetArgs()
-        # require tool fit 1: radius diff less than tool diam
-        args["hole_radius"] = 10.0
-        args["inner_radius"] = 6.0
+        args["hole_radius"] = 2.0
+        args["inner_radius"] = 0.0
         args["tool_diameter"] = 5.0
         self.assertRaises(ValueError, generator.generate, **args)
 
-        # require tool fit 2: hole diameter not greater than tool diam
-        # with zero inner radius
-        args["hole_radius"] = 2.0
-        args["inner_radius"] = 0.0
+        # require tool fit: actual hole diameter after taking Extra Offset into account >= tool diameter
+        # 1. Extra Offset just small enough to leave room for tool should not raise an error
+        args = _resetArgs()
+        designed_hole_diameter = 10.0
+        extra_offset = 2.49
+        args["hole_radius"] = designed_hole_diameter / 2 - extra_offset
+        args["inner_radius"] = extra_offset
+        args["tool_diameter"] = 5.0
+        result = generator.generate(**args)
+        self.assertTrue(result)
+
+        # 2. Extra Offset does not leave room for tool, should raise an error
+        args = _resetArgs()
+        designed_hole_diameter = 10.0
+        extra_offset = 2.50
+        args["hole_radius"] = designed_hole_diameter / 2 - extra_offset
+        args["inner_radius"] = extra_offset
         args["tool_diameter"] = 5.0
         self.assertRaises(ValueError, generator.generate, **args)
 

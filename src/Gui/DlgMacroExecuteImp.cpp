@@ -44,6 +44,7 @@
 #include "Macro.h"
 #include "MainWindow.h"
 #include "PythonEditor.h"
+#include "WaitCursor.h"
 
 
 using namespace Gui;
@@ -80,6 +81,7 @@ DlgMacroExecuteImp::DlgMacroExecuteImp( QWidget* parent, Qt::WindowFlags fl )
     , WindowParameter( "Macro" )
     , ui(new Ui_DlgMacroExecute)
 {
+    watcher = std::make_unique<PythonTracingWatcher>(this);
     ui->setupUi(this);
     setupConnections();
 
@@ -300,6 +302,9 @@ void DlgMacroExecuteImp::accept()
 
     QFileInfo fi(dir, item->text(0));
     try {
+        WaitCursor wc;
+        PythonTracingLocker tracelock(watcher->getTrace());
+
         getMainWindow()->appendRecentMacro(fi.filePath());
         Application::Instance->macroManager()->run(Gui::MacroManager::File, fi.filePath().toUtf8());
         // after macro run recalculate the document

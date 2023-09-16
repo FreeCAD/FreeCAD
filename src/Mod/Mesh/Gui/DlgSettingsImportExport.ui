@@ -76,6 +76,25 @@
           </property>
          </widget>
         </item>
+        <item row="2" column="0">
+         <widget class="Gui::PrefCheckBox" name="export3mfModel">
+          <property name="toolTip">
+           <string>Always export mesh as model type in 3MF format even if not a solid</string>
+          </property>
+          <property name="text">
+           <string>Export 3MF files as model type</string>
+          </property>
+          <property name="checked">
+           <bool>true</bool>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>Export3mfModel</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Mesh</cstring>
+          </property>
+         </widget>
+        </item>
        </layout>
       </item>
      </layout>

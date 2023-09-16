@@ -34,13 +34,13 @@ template<typename T>
 class Vector3;
 
 class Vector2d;
-}// namespace Base
+}  // namespace Base
 
 namespace Sketcher
 {
 enum ConstraintType : int;
 enum class PointPos : int;
-}// namespace Sketcher
+}  // namespace Sketcher
 
 namespace Part
 {
@@ -109,7 +109,8 @@ public:
      *
      * @param drawingparameters: Parameters for drawing the overlay information
      */
-    EditModeGeometryCoinConverter(ViewProviderSketch& vp, GeometryLayerNodes& geometrylayernodes,
+    EditModeGeometryCoinConverter(ViewProviderSketch& vp,
+                                  GeometryLayerNodes& geometrylayernodes,
                                   DrawingParameters& drawingparameters,
                                   GeometryLayerParameters& geometryLayerParams,
                                   CoinMapping& coinMap);
@@ -179,13 +180,13 @@ private:
     // measurements
     float boundingBoxMaxMagnitude = 100;
     double combrepscale =
-        0;// the repscale that would correspond to this comb based only on this calculation.
+        0;  // the repscale that would correspond to this comb based only on this calculation.
     std::vector<int> bsplineGeoIds;
     std::vector<int> arcGeoIds;
 };
 
 
-}// namespace SketcherGui
+}  // namespace SketcherGui
 
 
-#endif// SKETCHERGUI_GeometryCoinConverter_H
+#endif  // SKETCHERGUI_GeometryCoinConverter_H

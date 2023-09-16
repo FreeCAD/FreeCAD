@@ -1412,11 +1412,6 @@ If zero, it is equal to Radius2</source>
   <context>
     <name>PartDesignGui::TaskBooleanParameters</name>
     <message>
-      <location filename="../../TaskBooleanParameters.ui" line="14"/>
-      <source>Form</source>
-      <translation>フォーム</translation>
-    </message>
-    <message>
       <location filename="../../TaskBooleanParameters.ui" line="22"/>
       <source>Add body</source>
       <translation>ボディーを追加</translation>
@@ -1499,11 +1494,6 @@ If zero, it is equal to Radius2</source>
   </context>
   <context>
     <name>PartDesignGui::TaskChamferParameters</name>
-    <message>
-      <location filename="../../TaskChamferParameters.ui" line="14"/>
-      <source>Form</source>
-      <translation>フォーム</translation>
-    </message>
     <message>
       <location filename="../../TaskChamferParameters.ui" line="20"/>
       <source>Click button to enter selection mode,
@@ -1626,11 +1616,6 @@ click again to end selection</source>
   <context>
     <name>PartDesignGui::TaskDraftParameters</name>
     <message>
-      <location filename="../../TaskDraftParameters.ui" line="14"/>
-      <source>Form</source>
-      <translation>フォーム</translation>
-    </message>
-    <message>
       <location filename="../../TaskDraftParameters.ui" line="20"/>
       <source>Click button to enter selection mode,
 click again to end selection</source>
@@ -1748,11 +1733,6 @@ click again to end selection</source>
   <context>
     <name>PartDesignGui::TaskFeaturePick</name>
     <message>
-      <location filename="../../TaskFeaturePick.ui" line="14"/>
-      <source>Form</source>
-      <translation>フォーム</translation>
-    </message>
-    <message>
       <location filename="../../TaskFeaturePick.ui" line="23"/>
       <source>Allow used features</source>
       <translation>使用されているフィーチャーを許可</translation>
@@ -1841,11 +1821,6 @@ click again to end selection</source>
   <context>
     <name>PartDesignGui::TaskFilletParameters</name>
     <message>
-      <location filename="../../TaskFilletParameters.ui" line="14"/>
-      <source>Form</source>
-      <translation>フォーム</translation>
-    </message>
-    <message>
       <location filename="../../TaskFilletParameters.ui" line="20"/>
       <source>Click button to enter selection mode,
 click again to end selection</source>
@@ -1884,11 +1859,6 @@ click again to end selection</source>
   </context>
   <context>
     <name>PartDesignGui::TaskHelixParameters</name>
-    <message>
-      <location filename="../../TaskHelixParameters.ui" line="14"/>
-      <source>Form</source>
-      <translation>フォーム</translation>
-    </message>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="22"/>
       <source>Status:</source>
@@ -2098,11 +2068,6 @@ click again to end selection</source>
   <context>
     <name>PartDesignGui::TaskLinearPatternParameters</name>
     <message>
-      <location filename="../../TaskLinearPatternParameters.ui" line="14"/>
-      <source>Form</source>
-      <translation>フォーム</translation>
-    </message>
-    <message>
       <location filename="../../TaskLinearPatternParameters.ui" line="22"/>
       <source>Add feature</source>
       <translation>フィーチャーを追加</translation>
@@ -2177,11 +2142,6 @@ click again to end selection</source>
   <context>
     <name>PartDesignGui::TaskLoftParameters</name>
     <message>
-      <location filename="../../TaskLoftParameters.ui" line="14"/>
-      <source>Form</source>
-      <translation>フォーム</translation>
-    </message>
-    <message>
       <location filename="../../TaskLoftParameters.ui" line="20"/>
       <source>Ruled surface</source>
       <translation>線織面</translation>
@@ -2235,11 +2195,6 @@ click again to end selection</source>
   <context>
     <name>PartDesignGui::TaskMirroredParameters</name>
     <message>
-      <location filename="../../TaskMirroredParameters.ui" line="14"/>
-      <source>Form</source>
-      <translation>フォーム</translation>
-    </message>
-    <message>
       <location filename="../../TaskMirroredParameters.ui" line="22"/>
       <source>Add feature</source>
       <translation>フィーチャーを追加</translation>
@@ -2282,11 +2237,6 @@ click again to end selection</source>
   </context>
   <context>
     <name>PartDesignGui::TaskMultiTransformParameters</name>
-    <message>
-      <location filename="../../TaskMultiTransformParameters.ui" line="14"/>
-      <source>Form</source>
-      <translation>フォーム</translation>
-    </message>
     <message>
       <location filename="../../TaskMultiTransformParameters.ui" line="22"/>
       <source>Add feature</source>
@@ -2408,11 +2358,6 @@ click again to end selection</source>
   </context>
   <context>
     <name>PartDesignGui::TaskPadPocketParameters</name>
-    <message>
-      <location filename="../../TaskPadPocketParameters.ui" line="14"/>
-      <source>Form</source>
-      <translation>フォーム</translation>
-    </message>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="22"/>
       <source>Type</source>
@@ -2568,11 +2513,6 @@ measured along the specified direction</source>
   <context>
     <name>PartDesignGui::TaskPipeOrientation</name>
     <message>
-      <location filename="../../TaskPipeOrientation.ui" line="14"/>
-      <source>Form</source>
-      <translation>フォーム</translation>
-    </message>
-    <message>
       <location filename="../../TaskPipeOrientation.ui" line="22"/>
       <source>Orientation mode</source>
       <translation>方向モード</translation>
@@ -2661,11 +2601,6 @@ measured along the specified direction</source>
   <context>
     <name>PartDesignGui::TaskPipeParameters</name>
     <message>
-      <location filename="../../TaskPipeParameters.ui" line="14"/>
-      <source>Form</source>
-      <translation>フォーム</translation>
-    </message>
-    <message>
       <location filename="../../TaskPipeParameters.ui" line="20"/>
       <source>Profile</source>
       <translation>プロファイル</translation>
@@ -2735,11 +2670,6 @@ measured along the specified direction</source>
   </context>
   <context>
     <name>PartDesignGui::TaskPipeScaling</name>
-    <message>
-      <location filename="../../TaskPipeScaling.ui" line="14"/>
-      <source>Form</source>
-      <translation>フォーム</translation>
-    </message>
     <message>
       <location filename="../../TaskPipeScaling.ui" line="22"/>
       <source>Transform mode</source>
@@ -2827,11 +2757,6 @@ measured along the specified direction</source>
   <context>
     <name>PartDesignGui::TaskPolarPatternParameters</name>
     <message>
-      <location filename="../../TaskPolarPatternParameters.ui" line="14"/>
-      <source>Form</source>
-      <translation>フォーム</translation>
-    </message>
-    <message>
       <location filename="../../TaskPolarPatternParameters.ui" line="22"/>
       <source>Add feature</source>
       <translation>フィーチャーを追加</translation>
@@ -2918,11 +2843,6 @@ measured along the specified direction</source>
   <context>
     <name>PartDesignGui::TaskRevolutionParameters</name>
     <message>
-      <location filename="../../TaskRevolutionParameters.ui" line="14"/>
-      <source>Form</source>
-      <translation>フォーム</translation>
-    </message>
-    <message>
       <location filename="../../TaskRevolutionParameters.ui" line="22"/>
       <source>Axis:</source>
       <translation>軸:</translation>
@@ -2990,11 +2910,6 @@ measured along the specified direction</source>
   <context>
     <name>PartDesignGui::TaskScaledParameters</name>
     <message>
-      <location filename="../../TaskScaledParameters.ui" line="14"/>
-      <source>Form</source>
-      <translation>フォーム</translation>
-    </message>
-    <message>
       <location filename="../../TaskScaledParameters.ui" line="22"/>
       <source>Add feature</source>
       <translation>フィーチャーを追加</translation>
@@ -3033,11 +2948,6 @@ measured along the specified direction</source>
   <context>
     <name>PartDesignGui::TaskShapeBinder</name>
     <message>
-      <location filename="../../TaskShapeBinder.ui" line="14"/>
-      <source>Form</source>
-      <translation>フォーム</translation>
-    </message>
-    <message>
       <location filename="../../TaskShapeBinder.ui" line="22"/>
       <source>Object</source>
       <translation>オブジェクト</translation>
@@ -3073,11 +2983,6 @@ measured along the specified direction</source>
   </context>
   <context>
     <name>PartDesignGui::TaskThicknessParameters</name>
-    <message>
-      <location filename="../../TaskThicknessParameters.ui" line="14"/>
-      <source>Form</source>
-      <translation>フォーム</translation>
-    </message>
     <message>
       <location filename="../../TaskThicknessParameters.ui" line="20"/>
       <source>Click button to enter selection mode,
@@ -4266,14 +4171,9 @@ Although you will be able to migrate any moment later with 'Part Design -&gt; Mi
   <context>
     <name>TaskHole</name>
     <message>
-      <location filename="../../../FeatureHole/TaskHole.ui" line="14"/>
-      <source>Form</source>
-      <translation>フォーム</translation>
-    </message>
-    <message>
       <location filename="../../../FeatureHole/TaskHole.ui" line="24"/>
       <source>Position</source>
-      <translation type="unfinished">Position</translation>
+      <translation>位置</translation>
     </message>
     <message>
       <location filename="../../../FeatureHole/TaskHole.ui" line="35"/>

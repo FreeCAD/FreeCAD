@@ -46,9 +46,9 @@ lines, polylines, lwpolylines, circles, arcs,
 texts, colors,layers (from groups)
 """
 # scaling factor between autocad font sizes and coin font sizes
-# the minimum version of the dxfLibrary needed to run
 TEXTSCALING = 1.35
-CURRENTDXFLIB = 1.41
+# the minimum version of the dxfLibrary needed to run - OBSOLETE - not used anymore
+# CURRENTDXFLIB = 1.41
 
 import sys
 import os
@@ -118,7 +118,8 @@ def errorDXFLib(gui):
 
         _weburl = 'https://raw.githubusercontent.com/yorikvanhavre/'
         _weburl += 'Draft-dxf-importer/'
-        baseurl = _weburl + '{0:.2f}'.format(CURRENTDXFLIB) + "/"
+        # baseurl = _weburl + '{0:.2f}'.format(CURRENTDXFLIB) + "/"
+        baseurl = _weburl + "master/"
         import ArchCommands
         from FreeCAD import Base
         progressbar = Base.ProgressIndicator()

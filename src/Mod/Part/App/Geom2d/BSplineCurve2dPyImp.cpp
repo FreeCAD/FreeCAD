@@ -742,11 +742,11 @@ PyObject* BSplineCurve2dPy::approximate(PyObject *args, PyObject *kwds)
                                                           "ParamType", "Parameters", "LengthWeight", "CurvatureWeight",
                                                           "TorsionWeight", nullptr};
 
-    if (Base::Wrapped_ParseTupleAndKeywords(args, kwds, "O|isdisOddd",kwds_interp,
-                                            &obj, &degMax,
-                                            &continuity, &tol3d, &degMin,
-                                            &parType, &par,
-                                            &weight1, &weight2, &weight3)) {
+    if (!Base::Wrapped_ParseTupleAndKeywords(args, kwds, "O|isdisOddd",kwds_interp,
+                                             &obj, &degMax,
+                                             &continuity, &tol3d, &degMin,
+                                             &parType, &par,
+                                             &weight1, &weight2, &weight3)) {
         return nullptr;
     }
 
@@ -920,11 +920,11 @@ PyObject* BSplineCurve2dPy::interpolate(PyObject *args, PyObject *kwds)
                                                          "FinalTangent", "Tangents", "TangentFlags", "Parameters",
                                                          nullptr};
 
-    if (Base::Wrapped_ParseTupleAndKeywords(args, kwds, "O|O!dO!O!OOO",kwds_interp,
-                                            &obj, &PyBool_Type, &periodic, &tol3d,
-                                            Base::Vector2dPy::type_object(), &t1,
-                                            Base::Vector2dPy::type_object(), &t2,
-                                            &ts, &fl, &par)) {
+    if (!Base::Wrapped_ParseTupleAndKeywords(args, kwds, "O|O!dO!O!OOO",kwds_interp,
+                                             &obj, &PyBool_Type, &periodic, &tol3d,
+                                             Base::Vector2dPy::type_object(), &t1,
+                                             Base::Vector2dPy::type_object(), &t2,
+                                             &ts, &fl, &par)) {
         return nullptr;
     }
 

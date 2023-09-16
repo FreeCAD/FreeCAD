@@ -4,11 +4,6 @@
   <context>
     <name>Angle</name>
     <message>
-      <location filename="../DlgLocationAngle.ui" line="14"/>
-      <source>Form</source>
-      <translation>Formulario</translation>
-    </message>
-    <message>
       <location filename="../DlgLocationAngle.ui" line="22"/>
       <source>A:</source>
       <translation>A:</translation>
@@ -6111,12 +6106,12 @@ Desea guardar los cambios?</translation>
       <translation>Macros</translation>
     </message>
     <message>
-      <location filename="../Command.cpp" line="1143"/>
+      <location filename="../Command.cpp" line="1173"/>
       <source>Macro file doesn't exist</source>
       <translation>No existe el archivo de la macro</translation>
     </message>
     <message>
-      <location filename="../Command.cpp" line="1144"/>
+      <location filename="../Command.cpp" line="1174"/>
       <source>No such macro file: '%1'</source>
       <translation>No hay tal archivo macro: '%1'</translation>
     </message>
@@ -6175,8 +6170,8 @@ Desea guardar los cambios?</translation>
     </message>
     <message>
       <location filename="../MainWindow.cpp" line="1717"/>
-      <source>Please do not use in a production environment.</source>
-      <translation>Por favor, no utilizar en un entorno de producción.</translation>
+      <source>Please do not use it in a production environment.</source>
+      <translation type="unfinished">Please do not use it in a production environment.</translation>
     </message>
     <message>
       <location filename="../MainWindow.cpp" line="1921"/>
@@ -7829,12 +7824,12 @@ Do you want to specify another directory?</source>
     <message>
       <location filename="../Application.cpp" line="2202"/>
       <source>This system is running OpenGL %1.%2. FreeCAD requires OpenGL 2.0 or above. Please upgrade your graphics driver and/or card as required.</source>
-      <translation type="unfinished">This system is running OpenGL %1.%2. FreeCAD requires OpenGL 2.0 or above. Please upgrade your graphics driver and/or card as required.</translation>
+      <translation>Este sistema está ejecutando OpenGL %1.%2. FreeCAD requiere OpenGL 2.0 o superior. Por favor actualice su controlador gráfico y/o tarjeta de ser necesario.</translation>
     </message>
     <message>
       <location filename="../Application.cpp" line="2211"/>
       <source>Invalid OpenGL Version</source>
-      <translation type="unfinished">Invalid OpenGL Version</translation>
+      <translation>Versión OpenGL inválida</translation>
     </message>
     <message>
       <location filename="../Command.cpp" line="488"/>
@@ -8426,12 +8421,12 @@ Por favor abra una ventana del navegador y escriba en ella: http://localhost:%1.
       <translation>Opciones...</translation>
     </message>
     <message>
-      <location filename="../View3DInventorViewer.cpp" line="2252"/>
+      <location filename="../View3DInventorViewer.cpp" line="2256"/>
       <source>Out of memory</source>
       <translation>Memoria insuficiente</translation>
     </message>
     <message>
-      <location filename="../View3DInventorViewer.cpp" line="2253"/>
+      <location filename="../View3DInventorViewer.cpp" line="2257"/>
       <source>Not enough memory available to display the data.</source>
       <translation>Insuficiente memoria disponible para mostrar los datos.</translation>
     </message>
@@ -11945,7 +11940,7 @@ después de que FreeCAD inicie</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsWorkbenchesImp.cpp" line="239"/>
       <source>Sort alphabetically</source>
-      <translation type="unfinished">Sort alphabetically</translation>
+      <translation>Ordenar alfabéticamente</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsWorkbenchesImp.cpp" line="485"/>
@@ -12797,22 +12792,22 @@ from Python console to Report view panel</source>
     <message>
       <location filename="../PreferencePages/DlgSettingsTheme.ui" line="34"/>
       <source>Accent color 1</source>
-      <translation type="unfinished">Accent color 1</translation>
+      <translation>Color de acento 1</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsTheme.ui" line="67"/>
       <source>Accent color 2</source>
-      <translation type="unfinished">Accent color 2</translation>
+      <translation>Color de acento 2</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsTheme.ui" line="100"/>
       <source>Accent color 3</source>
-      <translation type="unfinished">Accent color 3</translation>
+      <translation>Color de acento 3</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsTheme.ui" line="133"/>
       <source>Style sheet (advanced):</source>
-      <translation type="unfinished">Style sheet (advanced):</translation>
+      <translation>Hoja de estilo (avanzado):</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsTheme.ui" line="140"/>
@@ -12839,13 +12834,13 @@ You can now use Theme to get a full customization of the interface.</translation
     <message>
       <location filename="../CommandView.cpp" line="1366"/>
       <source>Selection filter</source>
-      <translation type="unfinished">Selection filter</translation>
+      <translation>Filtro de selección</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1367"/>
       <location filename="../CommandView.cpp" line="1368"/>
       <source>Change the Selection filter</source>
-      <translation type="unfinished">Change the Selection filter</translation>
+      <translation>Cambiar el filtro de selección</translation>
     </message>
   </context>
   <context>
@@ -12853,13 +12848,13 @@ You can now use Theme to get a full customization of the interface.</translation
     <message>
       <location filename="../CommandView.cpp" line="1487"/>
       <source>Vertex Selection</source>
-      <translation type="unfinished">Vertex Selection</translation>
+      <translation>Selección de vértices</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1488"/>
       <location filename="../CommandView.cpp" line="1490"/>
       <source>Select a Vertex/Vertices</source>
-      <translation type="unfinished">Select a Vertex/Vertices</translation>
+      <translation>Seleccione un vértice/vértices</translation>
     </message>
   </context>
   <context>
@@ -12867,13 +12862,13 @@ You can now use Theme to get a full customization of the interface.</translation
     <message>
       <location filename="../CommandView.cpp" line="1512"/>
       <source>Edge Selection</source>
-      <translation type="unfinished">Edge Selection</translation>
+      <translation>Selección de arista</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1513"/>
       <location filename="../CommandView.cpp" line="1515"/>
       <source>Select Edge(s)</source>
-      <translation type="unfinished">Select Edge(s)</translation>
+      <translation>Seleccione arista(s)</translation>
     </message>
   </context>
   <context>
@@ -12881,13 +12876,13 @@ You can now use Theme to get a full customization of the interface.</translation
     <message>
       <location filename="../CommandView.cpp" line="1537"/>
       <source>Face Selection</source>
-      <translation type="unfinished">Face Selection</translation>
+      <translation>Selección de caras</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1538"/>
       <location filename="../CommandView.cpp" line="1540"/>
       <source>Select Face(s)</source>
-      <translation type="unfinished">Select Face(s)</translation>
+      <translation>Seleccione cara(s)</translation>
     </message>
   </context>
   <context>
@@ -12897,7 +12892,7 @@ You can now use Theme to get a full customization of the interface.</translation
       <location filename="../CommandView.cpp" line="1564"/>
       <location filename="../CommandView.cpp" line="1566"/>
       <source>All selection filters cleared</source>
-      <translation type="unfinished">All selection filters cleared</translation>
+      <translation>Todos los filtros de selección eliminados</translation>
     </message>
   </context>
 </TS>

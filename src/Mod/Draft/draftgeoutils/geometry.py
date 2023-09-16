@@ -517,6 +517,32 @@ def mirror(point, edge):
         return None
 
 
+def mirror_matrix(mtx, pos, nor):
+    """Return a mirrored copy of a matrix.
+
+    Parameters
+    ----------
+    mtx: Base::Matrix
+        Matrix.
+    pos: Base::Vector3
+        Point on mirror plane.
+    nor: Base::Vector3
+        Normal of mirror plane.
+
+    Return
+    ------
+    Base::Matrix
+    """
+    # Code by Jolbas:
+    # https://forum.freecad.org/viewtopic.php?p=702793#p702793
+    mtx_copy = App.Matrix(mtx)
+    mtx_copy.move(-pos)
+    mtx_copy.scale(-1)
+    mtx_copy = App.Rotation(nor, 180) * mtx_copy
+    mtx_copy.move(pos)
+    return mtx_copy
+
+
 def uv_vectors_from_face(face, vec_z=App.Vector(0, 0, 1), tol=-1):
     """Return the u and v vectors of a planar face.
 
@@ -525,6 +551,8 @@ def uv_vectors_from_face(face, vec_z=App.Vector(0, 0, 1), tol=-1):
     If the u vector matches +/-vec_z, or the v vector matches -vec_z, the
     vectors are rotated to ensure the v vector matches +vec_z.
 
+    Parameters
+    ----------
     face: Part.Face
         Face.
     vec_z: Base::Vector3, optional

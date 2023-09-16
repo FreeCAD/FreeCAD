@@ -3,7 +3,7 @@ cog==0.6.1
 ConfigParser==5.3.0
 defusedxml==0.7.1
 ifcopenshell==0.7.0.230318
-ladybug==0.0.2
+ladybug-core==0.42.2
 matplotlib==3.6.3
 numpy==1.24.2
 opencamlib==2023.1.11

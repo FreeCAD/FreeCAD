@@ -20,6 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
+#include "PreCompiled.h"
 #include <App/DocumentObjectPy.h>
 
 #include "SelectionFilterPy.h"

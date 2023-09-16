@@ -146,7 +146,6 @@ bool ViewProviderDragger::setEdit(int ModNum)
     pcTransform->translation.connectFrom(&csysDragger->translation);
     pcTransform->rotation.connectFrom(&csysDragger->rotation);
 
-    csysDragger->addStartCallback(dragStartCallback, this);
     csysDragger->addFinishCallback(dragFinishCallback, this);
 
     // dragger node is added to viewer's editing root in setEditViewer
@@ -212,12 +211,6 @@ void ViewProviderDragger::unsetEditViewer(Gui::View3DInventorViewer* viewer)
     }
 }
 
-void ViewProviderDragger::dragStartCallback(void *, SoDragger *)
-{
-    // This is called when a manipulator is about to manipulating
-    Gui::Application::Instance->activeDocument()->openCommand(QT_TRANSLATE_NOOP("Command", "Transform"));
-}
-
 void ViewProviderDragger::dragFinishCallback(void *data, SoDragger *d)
 {
     // This is called when a manipulator has done manipulating
@@ -226,7 +219,7 @@ void ViewProviderDragger::dragFinishCallback(void *data, SoDragger *d)
     auto dragger = static_cast<SoFCCSysDragger *>(d);
     updatePlacementFromDragger(sudoThis, dragger);
 
-    Gui::Application::Instance->activeDocument()->commitCommand();
+    //Gui::Application::Instance->activeDocument()->commitCommand();
 }
 
 void ViewProviderDragger::updatePlacementFromDragger(ViewProviderDragger* sudoThis, SoFCCSysDragger* draggerIn)

@@ -4,11 +4,6 @@
   <context>
     <name>Angle</name>
     <message>
-      <location filename="../DlgLocationAngle.ui" line="14"/>
-      <source>Form</source>
-      <translation>Formulário</translation>
-    </message>
-    <message>
       <location filename="../DlgLocationAngle.ui" line="22"/>
       <source>A:</source>
       <translation>A:</translation>
@@ -2456,17 +2451,17 @@ Por favor especifique outro diretório.</translation>
     <message>
       <location filename="../DlgPreferencesImp.cpp" line="493"/>
       <source>You must restart FreeCAD for changes to take effect.</source>
-      <translation type="unfinished">You must restart FreeCAD for changes to take effect.</translation>
+      <translation>Você deve reiniciar o FreeCAD para que as alterações tenham efeito.</translation>
     </message>
     <message>
       <location filename="../DlgPreferencesImp.cpp" line="498"/>
       <source>Restart now</source>
-      <translation type="unfinished">Restart now</translation>
+      <translation>Reiniciar agora</translation>
     </message>
     <message>
       <location filename="../DlgPreferencesImp.cpp" line="499"/>
       <source>Restart later</source>
-      <translation type="unfinished">Restart later</translation>
+      <translation>Reiniciar mais tarde</translation>
     </message>
   </context>
   <context>
@@ -2960,7 +2955,7 @@ mas mais lenta para qualquer mudança de cena.</translation>
     <message>
       <location filename="../PreferencePages/DlgSettings3DView.ui" line="342"/>
       <source>Size of vertices in the Sketcher, TechDraw and other workbenches</source>
-      <translation type="unfinished">Size of vertices in the Sketcher, TechDraw and other workbenches</translation>
+      <translation>Tamanho dos vértices no esboço, TechDraw e outras bancadas</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettings3DView.ui" line="349"/>
@@ -3120,7 +3115,7 @@ tamanho da caixa delimitadora do objeto 3D que está sendo exibido.</translation
     <message>
       <location filename="../PreferencePages/DlgSettingsCacheDirectory.ui" line="108"/>
       <source>Never</source>
-      <translation type="unfinished">Never</translation>
+      <translation>Nunca</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsCacheDirectory.ui" line="116"/>
@@ -6107,12 +6102,12 @@ Deseja salvar as alterações?</translation>
       <translation>Macros</translation>
     </message>
     <message>
-      <location filename="../Command.cpp" line="1143"/>
+      <location filename="../Command.cpp" line="1173"/>
       <source>Macro file doesn't exist</source>
       <translation>Arquivo de macro não existe</translation>
     </message>
     <message>
-      <location filename="../Command.cpp" line="1144"/>
+      <location filename="../Command.cpp" line="1174"/>
       <source>No such macro file: '%1'</source>
       <translation>Não existe tal arquivo de macro: '%1'</translation>
     </message>
@@ -6171,8 +6166,8 @@ Deseja salvar as alterações?</translation>
     </message>
     <message>
       <location filename="../MainWindow.cpp" line="1717"/>
-      <source>Please do not use in a production environment.</source>
-      <translation>Por favor, não use em ambiente de produção.</translation>
+      <source>Please do not use it in a production environment.</source>
+      <translation type="unfinished">Please do not use it in a production environment.</translation>
     </message>
     <message>
       <location filename="../MainWindow.cpp" line="1921"/>
@@ -7785,7 +7780,7 @@ Do you want to specify another directory?</source>
       <location filename="../resource.cpp" line="81"/>
       <location filename="../resource.cpp" line="82"/>
       <source>Python</source>
-      <translation type="unfinished">Python</translation>
+      <translation>Python</translation>
     </message>
     <message>
       <location filename="../Application.cpp" line="628"/>
@@ -7828,7 +7823,7 @@ Do you want to specify another directory?</source>
     <message>
       <location filename="../Application.cpp" line="2211"/>
       <source>Invalid OpenGL Version</source>
-      <translation type="unfinished">Invalid OpenGL Version</translation>
+      <translation>Versão OpenGL inválida</translation>
     </message>
     <message>
       <location filename="../Command.cpp" line="488"/>
@@ -8417,12 +8412,12 @@ Please open a browser window and type in: http://localhost:%1.</source>
       <translation>Opções...</translation>
     </message>
     <message>
-      <location filename="../View3DInventorViewer.cpp" line="2252"/>
+      <location filename="../View3DInventorViewer.cpp" line="2256"/>
       <source>Out of memory</source>
       <translation>Memória insuficiente</translation>
     </message>
     <message>
-      <location filename="../View3DInventorViewer.cpp" line="2253"/>
+      <location filename="../View3DInventorViewer.cpp" line="2257"/>
       <source>Not enough memory available to display the data.</source>
       <translation>Não há memória suficiente para exibir os dados.</translation>
     </message>
@@ -11936,7 +11931,7 @@ after FreeCAD launches</source>
     <message>
       <location filename="../PreferencePages/DlgSettingsWorkbenchesImp.cpp" line="239"/>
       <source>Sort alphabetically</source>
-      <translation type="unfinished">Sort alphabetically</translation>
+      <translation>Ordenar alfabeticamente</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsWorkbenchesImp.cpp" line="485"/>
@@ -12790,22 +12785,22 @@ do console Python para o painel de Relatórios</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsTheme.ui" line="34"/>
       <source>Accent color 1</source>
-      <translation type="unfinished">Accent color 1</translation>
+      <translation>Cor de realce 1</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsTheme.ui" line="67"/>
       <source>Accent color 2</source>
-      <translation type="unfinished">Accent color 2</translation>
+      <translation>Cor de realce 2</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsTheme.ui" line="100"/>
       <source>Accent color 3</source>
-      <translation type="unfinished">Accent color 3</translation>
+      <translation>Cor de destaque</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsTheme.ui" line="133"/>
       <source>Style sheet (advanced):</source>
-      <translation type="unfinished">Style sheet (advanced):</translation>
+      <translation>Folha de estilo (avançada):</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsTheme.ui" line="140"/>
@@ -12832,13 +12827,13 @@ You can now use Theme to get a full customization of the interface.</translation
     <message>
       <location filename="../CommandView.cpp" line="1366"/>
       <source>Selection filter</source>
-      <translation type="unfinished">Selection filter</translation>
+      <translation>Selecionar filtro</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1367"/>
       <location filename="../CommandView.cpp" line="1368"/>
       <source>Change the Selection filter</source>
-      <translation type="unfinished">Change the Selection filter</translation>
+      <translation>Alterar o filtro de seleção</translation>
     </message>
   </context>
   <context>
@@ -12846,7 +12841,7 @@ You can now use Theme to get a full customization of the interface.</translation
     <message>
       <location filename="../CommandView.cpp" line="1487"/>
       <source>Vertex Selection</source>
-      <translation type="unfinished">Vertex Selection</translation>
+      <translation>Seleção de vértices</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1488"/>

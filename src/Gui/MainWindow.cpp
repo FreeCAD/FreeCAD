@@ -1714,7 +1714,7 @@ void MainWindow::renderDevBuildWarning(
 
     // Construct the lines of text and figure out how much space they need
     const auto devWarningLine1 = tr("WARNING: This is a development version.");
-    const auto devWarningLine2 = tr("Please do not use in a production environment.");
+    const auto devWarningLine2 = tr("Please do not use it in a production environment.");
     QFontMetrics fontMetrics(painter.font()); // Try to use the existing font
     int padding = QtTools::horizontalAdvance(fontMetrics, QLatin1String("M")); // Arbitrary
     int line1Width = QtTools::horizontalAdvance(fontMetrics, devWarningLine1);
@@ -1734,7 +1734,7 @@ void MainWindow::renderDevBuildWarning(
         lineHeight = painter.fontMetrics().lineSpacing();
         boxWidth = maxSize.width();
     }
-    constexpr float lineExpansionFactor(2.3);
+    constexpr float lineExpansionFactor(2.3F);
     int boxHeight = static_cast<int>(lineHeight*lineExpansionFactor);
 
     // Draw the background rectangle and the text

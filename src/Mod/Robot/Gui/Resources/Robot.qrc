@@ -1,5 +1,5 @@
 <RCC>
-    <qresource> 
+    <qresource>
         <file>icons/Robot_CreateRobot.svg</file>
         <file>icons/Robot_CreateTrajectory.svg</file>
         <file>icons/Robot_Edge2Trac.svg</file>
@@ -15,4 +15,4 @@
         <file>icons/Robot_TrajectoryDressUp.svg</file>
         <file>icons/RobotWorkbench.svg</file>
     </qresource>
-</RCC> 
+</RCC>

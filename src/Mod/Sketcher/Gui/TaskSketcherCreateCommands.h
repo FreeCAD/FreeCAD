@@ -60,7 +60,7 @@ private:
     // QWidget* proxy;
 };
 
-}// namespace TaskView
-}// namespace Gui
+}  // namespace TaskView
+}  // namespace Gui
 
-#endif// GUI_TASKVIEW_TASKAPPERANCE_H
+#endif  // GUI_TASKVIEW_TASKAPPERANCE_H

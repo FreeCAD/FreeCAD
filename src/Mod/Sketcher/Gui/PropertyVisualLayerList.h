@@ -72,7 +72,7 @@ protected:
     VisualLayer getPyValue(PyObject*) const override;
 };
 
-}// namespace SketcherGui
+}  // namespace SketcherGui
 
 
-#endif// SKETCHERGUI_PropertyVisualLayerList_H
+#endif  // SKETCHERGUI_PropertyVisualLayerList_H

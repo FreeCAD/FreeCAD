@@ -162,7 +162,7 @@ FemPostDataAlongLineFilter::FemPostDataAlongLineFilter()
     m_probe->SetPassPointArrays(1);
     m_probe->SetPassCellArrays(1);
     // needs vtk > 6.1
-#if (VTK_MAJOR_VERSION > 6) || (VTK_MINOR_VERSION > 1)
+#if (VTK_MAJOR_VERSION > 6) && (VTK_MINOR_VERSION > 1)
     m_probe->ComputeToleranceOff();
     m_probe->SetTolerance(0.01);
 #endif
@@ -311,7 +311,7 @@ FemPostDataAtPointFilter::FemPostDataAtPointFilter()
     m_probe->SetPassPointArrays(1);
     m_probe->SetPassCellArrays(1);
     // needs vtk > 6.1
-#if (VTK_MAJOR_VERSION > 6) || (VTK_MINOR_VERSION > 1)
+#if (VTK_MAJOR_VERSION > 6) && (VTK_MINOR_VERSION > 1)
     m_probe->ComputeToleranceOff();
     m_probe->SetTolerance(0.01);
 #endif

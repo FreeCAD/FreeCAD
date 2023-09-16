@@ -38,29 +38,32 @@ using Gui::FileDialog;
 DEF_STD_CMD_A(FCCmdImportReadBREP)
 
 FCCmdImportReadBREP::FCCmdImportReadBREP()
-   : Command("Import_ReadBREP")
+    : Command("Import_ReadBREP")
 {
-    sAppModule      = "Import";
-    sGroup          = "Import";
-    sMenuText       = "Read BREP";
-    sToolTipText    = "Read a BREP file";
-    sWhatsThis      = "Import_ReadBREP";
-    sStatusTip      = sToolTipText;
-    sPixmap         = "Std_Tool1";
+    sAppModule = "Import";
+    sGroup = "Import";
+    sMenuText = "Read BREP";
+    sToolTipText = "Read a BREP file";
+    sWhatsThis = "Import_ReadBREP";
+    sStatusTip = sToolTipText;
+    sPixmap = "Std_Tool1";
 }
 
 void FCCmdImportReadBREP::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     openCommand(QT_TRANSLATE_NOOP("Command", "Read BREP"));
-    QString fn = Gui::FileDialog::getOpenFileName(Gui::getMainWindow(), QString(), QString(), QLatin1String("BREP (*.brep *.rle)"));
+    QString fn = Gui::FileDialog::getOpenFileName(Gui::getMainWindow(),
+                                                  QString(),
+                                                  QString(),
+                                                  QLatin1String("BREP (*.brep *.rle)"));
     if (fn.isEmpty()) {
         abortCommand();
         return;
     }
 
     fn = Base::Tools::escapeEncodeFilename(fn);
-    doCommand(Doc,"TopoShape = Import.ReadBREP(\"%s\")",(const char*)fn.toUtf8());
+    doCommand(Doc, "TopoShape = Import.ReadBREP(\"%s\")", (const char*)fn.toUtf8());
     commitCommand();
 }
 
@@ -75,27 +78,30 @@ bool FCCmdImportReadBREP::isActive()
 DEF_STD_CMD_A(ImportStep)
 
 ImportStep::ImportStep()
-  : Command("Part_ImportStep")
+    : Command("Part_ImportStep")
 {
-    sAppModule      = "Part";
-    sGroup          = "Part";
-    sMenuText       = "Import STEP";
-    sToolTipText    = "Create or change a Import STEP feature";
-    sWhatsThis      = "Part_ImportStep";
-    sStatusTip      = sToolTipText;
-    sPixmap         = "Save";
+    sAppModule = "Part";
+    sGroup = "Part";
+    sMenuText = "Import STEP";
+    sToolTipText = "Create or change a Import STEP feature";
+    sWhatsThis = "Part_ImportStep";
+    sStatusTip = sToolTipText;
+    sPixmap = "Save";
 }
 
 
 void ImportStep::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    QString fn = Gui::FileDialog::getOpenFileName(Gui::getMainWindow(), QString(), QString(), QLatin1String("STEP (*.stp *.step)"));
+    QString fn = Gui::FileDialog::getOpenFileName(Gui::getMainWindow(),
+                                                  QString(),
+                                                  QString(),
+                                                  QLatin1String("STEP (*.stp *.step)"));
     if (!fn.isEmpty()) {
         openCommand(QT_TRANSLATE_NOOP("Command", "Part ImportSTEP Create"));
-        doCommand(Doc,"f = App.document().addObject(\"ImportStep\",\"ImportStep\")");
+        doCommand(Doc, "f = App.document().addObject(\"ImportStep\",\"ImportStep\")");
         fn = Base::Tools::escapeEncodeFilename(fn);
-        doCommand(Doc,"f.FileName = \"%s\"",(const char*)fn.toUtf8());
+        doCommand(Doc, "f.FileName = \"%s\"", (const char*)fn.toUtf8());
         commitCommand();
         updateActive();
     }
@@ -103,10 +109,12 @@ void ImportStep::activated(int iMsg)
 
 bool ImportStep::isActive()
 {
-    if (getActiveGuiDocument())
+    if (getActiveGuiDocument()) {
         return true;
-    else
+    }
+    else {
         return false;
+    }
 }
 
 
@@ -116,26 +124,29 @@ bool ImportStep::isActive()
 DEF_STD_CMD_A(ImportIges)
 
 ImportIges::ImportIges()
-  : Command("Import_Iges")
+    : Command("Import_Iges")
 {
-    sAppModule      = "Import";
-    sGroup          = "Part";
-    sMenuText       = "Import IGES";
-    sToolTipText    = "Create or change a Import IGES feature";
-    sWhatsThis      = "Import_Iges";
-    sStatusTip      = sToolTipText;
-    sPixmap         = "Save";
+    sAppModule = "Import";
+    sGroup = "Part";
+    sMenuText = "Import IGES";
+    sToolTipText = "Create or change a Import IGES feature";
+    sWhatsThis = "Import_Iges";
+    sStatusTip = sToolTipText;
+    sPixmap = "Save";
 }
 
 void ImportIges::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    QString fn = Gui::FileDialog::getOpenFileName(Gui::getMainWindow(), QString(), QString(), QLatin1String("IGES (*.igs *.iges)"));
+    QString fn = Gui::FileDialog::getOpenFileName(Gui::getMainWindow(),
+                                                  QString(),
+                                                  QString(),
+                                                  QLatin1String("IGES (*.igs *.iges)"));
     if (!fn.isEmpty()) {
         openCommand(QT_TRANSLATE_NOOP("Command", "ImportIGES Create"));
-        doCommand(Doc,"f = App.document().addObject(\"ImportIges\",\"ImportIges\")");
+        doCommand(Doc, "f = App.document().addObject(\"ImportIges\",\"ImportIges\")");
         fn = Base::Tools::escapeEncodeFilename(fn);
-        doCommand(Doc,"f.FileName = \"%s\"",(const char*)fn.toUtf8());
+        doCommand(Doc, "f.FileName = \"%s\"", (const char*)fn.toUtf8());
         commitCommand();
         updateActive();
     }
@@ -143,15 +154,17 @@ void ImportIges::activated(int iMsg)
 
 bool ImportIges::isActive()
 {
-    if (getActiveGuiDocument())
+    if (getActiveGuiDocument()) {
         return true;
-    else
+    }
+    else {
         return false;
+    }
 }
 
 
 void CreateImportCommands()
 {
-    Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
+    Gui::CommandManager& rcCmdMgr = Gui::Application::Instance->commandManager();
     rcCmdMgr.addCommand(new FCCmdImportReadBREP());
 }

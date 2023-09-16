@@ -32,7 +32,6 @@
 #include <iomanip>
 #include <iostream>
 #include <iterator>
-#include <iterator>
 #include <sstream>
 
 // boost
@@ -40,26 +39,20 @@
 
 // OpenCasCade
 #include <Approx_Curve3d.hxx>
-#include <BRep_Builder.hxx>
-#include <BRep_Tool.hxx>
 #include <BRepAdaptor_Curve.hxx>
 #include <BRepBuilderAPI_MakeEdge.hxx>
 #include <BRepLProp_CLProps.hxx>
-#include <BRepMesh_IncrementalMesh.hxx>
 #include <BRepLib.hxx>
-#include <Geom_BezierCurve.hxx>
-#include <Geom_BSplineCurve.hxx>
+#include <BRepMesh_IncrementalMesh.hxx>
+#include <BRep_Builder.hxx>
+#include <BRep_Tool.hxx>
 #include <GeomConvert_BSplineCurveKnotSplitting.hxx>
 #include <GeomConvert_BSplineCurveToBezierCurve.hxx>
-#include <gp_Ax2.hxx>
-#include <gp_Circ.hxx>
-#include <gp_Dir.hxx>
-#include <gp_Elips.hxx>
-#include <gp_Pnt.hxx>
-#include <gp_Vec.hxx>
+#include <Geom_BSplineCurve.hxx>
+#include <Geom_BezierCurve.hxx>
+#include <HLRAlgo_Projector.hxx>
 #include <HLRBRep_Algo.hxx>
 #include <HLRBRep_HLRToShape.hxx>
-#include <HLRAlgo_Projector.hxx>
 #include <Poly_Polygon3D.hxx>
 #include <Standard_Failure.hxx>
 #include <Standard_Version.hxx>
@@ -69,9 +62,15 @@
 #include <TopoDS_Compound.hxx>
 #include <TopoDS_Edge.hxx>
 #include <TopoDS_Shape.hxx>
+#include <gp_Ax2.hxx>
+#include <gp_Circ.hxx>
+#include <gp_Dir.hxx>
+#include <gp_Elips.hxx>
+#include <gp_Pnt.hxx>
+#include <gp_Vec.hxx>
 #if OCC_VERSION_HEX < 0x070600
-# include <BRepAdaptor_HCurve.hxx>
+#include <BRepAdaptor_HCurve.hxx>
 #endif
 
-#endif // _PreComp_
+#endif  // _PreComp_
 #endif

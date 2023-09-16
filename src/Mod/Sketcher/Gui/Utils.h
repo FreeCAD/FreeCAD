@@ -41,7 +41,7 @@ namespace Gui
 {
 class DocumentObject;
 class Document;
-}// namespace Gui
+}  // namespace Gui
 
 namespace Part
 {
@@ -51,7 +51,18 @@ namespace Sketcher
 {
 enum class PointPos : int;
 class SketchObject;
-}// namespace Sketcher
+
+bool isCircle(const Part::Geometry&);
+bool isArcOfCircle(const Part::Geometry&);
+bool isEllipse(const Part::Geometry&);
+bool isArcOfEllipse(const Part::Geometry&);
+bool isLineSegment(const Part::Geometry&);
+bool isArcOfHyperbola(const Part::Geometry&);
+bool isArcOfParabola(const Part::Geometry&);
+bool isBSplineCurve(const Part::Geometry&);
+bool isPoint(const Part::Geometry&);
+
+}  // namespace Sketcher
 
 namespace SketcherGui
 {
@@ -75,7 +86,9 @@ bool ReleaseHandler(Gui::Document* doc);
 
 std::string getStrippedPythonExceptionString(const Base::Exception&);
 
-void getIdsFromName(const std::string& name, const Sketcher::SketchObject* Obj, int& GeoId,
+void getIdsFromName(const std::string& name,
+                    const Sketcher::SketchObject* Obj,
+                    int& GeoId,
                     Sketcher::PointPos& PosId);
 
 /// Returns ONLY the geometry elements when the "Edge" is selected (including GeomPoints)
@@ -88,7 +101,9 @@ bool isPointOrSegmentFixed(const Sketcher::SketchObject* Obj, int GeoId);
 
 bool areBothPointsOrSegmentsFixed(const Sketcher::SketchObject* Obj, int GeoId1, int GeoId2);
 
-bool areAllPointsOrSegmentsFixed(const Sketcher::SketchObject* Obj, int GeoId1, int GeoId2,
+bool areAllPointsOrSegmentsFixed(const Sketcher::SketchObject* Obj,
+                                 int GeoId1,
+                                 int GeoId2,
                                  int GeoId3);
 
 bool inline isVertex(int GeoId, Sketcher::PointPos PosId);
@@ -101,10 +116,13 @@ bool isSimpleVertex(const Sketcher::SketchObject* Obj, int GeoId, Sketcher::Poin
 bool isBsplineKnot(const Sketcher::SketchObject* Obj, int GeoId);
 /// Checks if the (`GeoId`, `PosId`) pair corresponds to a B-Spline knot, including first and last
 /// knots
-bool isBsplineKnotOrEndPoint(const Sketcher::SketchObject* Obj, int GeoId,
+bool isBsplineKnotOrEndPoint(const Sketcher::SketchObject* Obj,
+                             int GeoId,
                              Sketcher::PointPos PosId);
 
-bool IsPointAlreadyOnCurve(int GeoIdCurve, int GeoIdPoint, Sketcher::PointPos PosIdPoint,
+bool IsPointAlreadyOnCurve(int GeoIdCurve,
+                           int GeoIdPoint,
+                           Sketcher::PointPos PosIdPoint,
                            Sketcher::SketchObject* Obj);
 
 bool isBsplinePole(const Part::Geometry* geo);
@@ -113,8 +131,10 @@ bool isBsplinePole(const Sketcher::SketchObject* Obj, int GeoId);
 
 /// Checks whether there is a constraint of the given type with a First element geoid and a FirstPos
 /// PosId
-bool checkConstraint(const std::vector<Sketcher::Constraint*>& vals, Sketcher::ConstraintType type,
-                     int geoid, Sketcher::PointPos pos);
+bool checkConstraint(const std::vector<Sketcher::Constraint*>& vals,
+                     Sketcher::ConstraintType type,
+                     int geoid,
+                     Sketcher::PointPos pos);
 
 inline bool isVertex(int GeoId, Sketcher::PointPos PosId)
 {
@@ -133,8 +153,10 @@ inline bool isEdge(int GeoId, Sketcher::PointPos PosId)
 double GetPointAngle(const Base::Vector2d& p1, const Base::Vector2d& p2);
 
 // Set the two points on circles at minimal distance
-void GetCirclesMinimalDistance(const Part::GeomCircle* circle1, const Part::GeomCircle* circle2,
-                               Base::Vector3d& point1, Base::Vector3d& point2);
+void GetCirclesMinimalDistance(const Part::GeomCircle* circle1,
+                               const Part::GeomCircle* circle2,
+                               Base::Vector3d& point1,
+                               Base::Vector3d& point2);
 
 void ActivateHandler(Gui::Document* doc, DrawSketchHandler* handler);
 
@@ -155,8 +177,10 @@ void removeRedundantHorizontalVertical(Sketcher::SketchObject* psketch,
                                        std::vector<AutoConstraint>& sug1,
                                        std::vector<AutoConstraint>& sug2);
 
-void ConstraintToAttachment(Sketcher::GeoElementId element, Sketcher::GeoElementId attachment,
-                            double distance, App::DocumentObject* obj);
+void ConstraintToAttachment(Sketcher::GeoElementId element,
+                            Sketcher::GeoElementId attachment,
+                            double distance,
+                            App::DocumentObject* obj);
 
 // convenience functions for cursor coordinates
 bool hideUnits();
@@ -165,7 +189,7 @@ bool useSystemDecimals();
 std::string lengthToDisplayFormat(double value, int digits);
 std::string angleToDisplayFormat(double value, int digits);
 
-}// namespace SketcherGui
+}  // namespace SketcherGui
 
 /// converts a 2D vector into a 3D vector in the XY plane
 inline Base::Vector3d toVector3d(const Base::Vector2d& vector2d)
@@ -228,4 +252,4 @@ void setSafeGeomLayerId(T geom, int layerindex)
     vpext->setVisualLayerId(layerindex);
 }
 
-#endif// SKETCHERGUI_Recompute_H
+#endif  // SKETCHERGUI_Recompute_H

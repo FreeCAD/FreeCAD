@@ -241,16 +241,20 @@ CmdSketcherCompCreateRectangles::CmdSketcherCompCreateRectangles()
 
 void CmdSketcherCompCreateRectangles::activated(int iMsg)
 {
-    if (iMsg == 0)
+    if (iMsg == 0) {
         ActivateHandler(getActiveGuiDocument(),
                         new DrawSketchHandlerBox(DrawSketchHandlerBox::Diagonal));
-    else if (iMsg == 1)
+    }
+    else if (iMsg == 1) {
         ActivateHandler(getActiveGuiDocument(),
                         new DrawSketchHandlerBox(DrawSketchHandlerBox::CenterAndCorner));
-    else if (iMsg == 2)
+    }
+    else if (iMsg == 2) {
         ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerOblong());
-    else
+    }
+    else {
         return;
+    }
 
     // Since the default icon is reset when enabling/disabling the command we have
     // to explicitly set the icon of the used command.
@@ -287,8 +291,9 @@ Gui::Action* CmdSketcherCompCreateRectangles::createAction()
 void CmdSketcherCompCreateRectangles::updateAction(int mode)
 {
     Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(getAction());
-    if (!pcAction)
+    if (!pcAction) {
         return;
+    }
 
     QList<QAction*> a = pcAction->actions();
     int index = pcAction->property("defaultAction").toInt();
@@ -313,8 +318,9 @@ void CmdSketcherCompCreateRectangles::languageChange()
 {
     Command::languageChange();
 
-    if (!_pcAction)
+    if (!_pcAction) {
         return;
+    }
     Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(_pcAction);
     QList<QAction*> a = pcAction->actions();
 
@@ -454,12 +460,15 @@ CmdSketcherCompCreateArc::CmdSketcherCompCreateArc()
 
 void CmdSketcherCompCreateArc::activated(int iMsg)
 {
-    if (iMsg == 0)
+    if (iMsg == 0) {
         ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerArc());
-    else if (iMsg == 1)
+    }
+    else if (iMsg == 1) {
         ActivateHandler(getActiveGuiDocument(), new DrawSketchHandler3PointArc());
-    else
+    }
+    else {
         return;
+    }
 
     // Since the default icon is reset when enabling/disabling the command we have
     // to explicitly set the icon of the used command.
@@ -494,8 +503,9 @@ Gui::Action* CmdSketcherCompCreateArc::createAction()
 void CmdSketcherCompCreateArc::updateAction(int mode)
 {
     Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(getAction());
-    if (!pcAction)
+    if (!pcAction) {
         return;
+    }
 
     QList<QAction*> a = pcAction->actions();
     int index = pcAction->property("defaultAction").toInt();
@@ -517,8 +527,9 @@ void CmdSketcherCompCreateArc::languageChange()
 {
     Command::languageChange();
 
-    if (!_pcAction)
+    if (!_pcAction) {
         return;
+    }
     Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(_pcAction);
     QList<QAction*> a = pcAction->actions();
 
@@ -526,14 +537,17 @@ void CmdSketcherCompCreateArc::languageChange()
     arc1->setText(QApplication::translate("CmdSketcherCompCreateArc", "Center and end points"));
     arc1->setToolTip(QApplication::translate("Sketcher_CreateArc",
                                              "Create an arc by its center and by its end points"));
-    arc1->setStatusTip(QApplication::translate(
-        "Sketcher_CreateArc", "Create an arc by its center and by its end points"));
+    arc1->setStatusTip(
+        QApplication::translate("Sketcher_CreateArc",
+                                "Create an arc by its center and by its end points"));
     QAction* arc2 = a[1];
     arc2->setText(QApplication::translate("CmdSketcherCompCreateArc", "End points and rim point"));
-    arc2->setToolTip(QApplication::translate(
-        "Sketcher_Create3PointArc", "Create an arc by its end points and a point along the arc"));
-    arc2->setStatusTip(QApplication::translate(
-        "Sketcher_Create3PointArc", "Create an arc by its end points and a point along the arc"));
+    arc2->setToolTip(
+        QApplication::translate("Sketcher_Create3PointArc",
+                                "Create an arc by its end points and a point along the arc"));
+    arc2->setStatusTip(
+        QApplication::translate("Sketcher_Create3PointArc",
+                                "Create an arc by its end points and a point along the arc"));
 }
 
 bool CmdSketcherCompCreateArc::isActive()
@@ -813,8 +827,9 @@ Gui::Action* CmdSketcherCompCreateConic::createAction()
 void CmdSketcherCompCreateConic::updateAction(int mode)
 {
     Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(getAction());
-    if (!pcAction)
+    if (!pcAction) {
         return;
+    }
 
     QList<QAction*> a = pcAction->actions();
     int index = pcAction->property("defaultAction").toInt();
@@ -847,21 +862,25 @@ void CmdSketcherCompCreateConic::languageChange()
 {
     Command::languageChange();
 
-    if (!_pcAction)
+    if (!_pcAction) {
         return;
+    }
     Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(_pcAction);
     QList<QAction*> a = pcAction->actions();
 
     QAction* ellipseByCenter = a[0];
     ellipseByCenter->setText(QApplication::translate("CmdSketcherCompCreateConic",
                                                      "Ellipse by center, major radius, point"));
-    ellipseByCenter->setToolTip(QApplication::translate(
-        "Sketcher_CreateEllipseByCenter", "Create an ellipse by center, major radius and point"));
-    ellipseByCenter->setStatusTip(QApplication::translate(
-        "Sketcher_CreateEllipseByCenter", "Create an ellipse by center, major radius and point"));
+    ellipseByCenter->setToolTip(
+        QApplication::translate("Sketcher_CreateEllipseByCenter",
+                                "Create an ellipse by center, major radius and point"));
+    ellipseByCenter->setStatusTip(
+        QApplication::translate("Sketcher_CreateEllipseByCenter",
+                                "Create an ellipse by center, major radius and point"));
     QAction* ellipseBy3Points = a[1];
-    ellipseBy3Points->setText(QApplication::translate(
-        "CmdSketcherCompCreateConic", "Ellipse by periapsis, apoapsis, minor radius"));
+    ellipseBy3Points->setText(
+        QApplication::translate("CmdSketcherCompCreateConic",
+                                "Ellipse by periapsis, apoapsis, minor radius"));
     ellipseBy3Points->setToolTip(
         QApplication::translate("Sketcher_CreateEllipseBy3Points",
                                 "Create a ellipse by periapsis, apoapsis, and minor radius"));
@@ -869,8 +888,9 @@ void CmdSketcherCompCreateConic::languageChange()
         QApplication::translate("Sketcher_CreateEllipseBy3Points",
                                 "Create a ellipse by periapsis, apoapsis, and minor radius"));
     QAction* arcofellipse = a[2];
-    arcofellipse->setText(QApplication::translate(
-        "CmdSketcherCompCreateConic", "Arc of ellipse by center, major radius, endpoints"));
+    arcofellipse->setText(
+        QApplication::translate("CmdSketcherCompCreateConic",
+                                "Arc of ellipse by center, major radius, endpoints"));
     arcofellipse->setToolTip(QApplication::translate(
         "Sketcher_CreateArcOfEllipse",
         "Create an arc of ellipse by its center, major radius, and endpoints"));
@@ -878,8 +898,9 @@ void CmdSketcherCompCreateConic::languageChange()
         "Sketcher_CreateArcOfEllipse",
         "Create an arc of ellipse by its center, major radius, and endpoints"));
     QAction* arcofhyperbola = a[3];
-    arcofhyperbola->setText(QApplication::translate(
-        "CmdSketcherCompCreateConic", "Arc of hyperbola by center, major radius, endpoints"));
+    arcofhyperbola->setText(
+        QApplication::translate("CmdSketcherCompCreateConic",
+                                "Arc of hyperbola by center, major radius, endpoints"));
     arcofhyperbola->setToolTip(QApplication::translate(
         "Sketcher_CreateArcOfHyperbola",
         "Create an arc of hyperbola by its center, major radius, and endpoints"));
@@ -1116,8 +1137,9 @@ Gui::Action* CmdSketcherCompCreateBSpline::createAction()
 void CmdSketcherCompCreateBSpline::updateAction(int mode)
 {
     Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(getAction());
-    if (!pcAction)
+    if (!pcAction) {
         return;
+    }
 
     QList<QAction*> a = pcAction->actions();
     int index = pcAction->property("defaultAction").toInt();
@@ -1148,8 +1170,9 @@ void CmdSketcherCompCreateBSpline::languageChange()
 {
     Command::languageChange();
 
-    if (!_pcAction)
+    if (!_pcAction) {
         return;
+    }
     Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(_pcAction);
     QList<QAction*> a = pcAction->actions();
 
@@ -1163,10 +1186,12 @@ void CmdSketcherCompCreateBSpline::languageChange()
     QAction* periodicbspline = a[1];
     periodicbspline->setText(QApplication::translate("Sketcher_Create_Periodic_BSpline",
                                                      "Periodic B-spline by control points"));
-    periodicbspline->setToolTip(QApplication::translate(
-        "Sketcher_Create_Periodic_BSpline", "Create a periodic B-spline by control points"));
-    periodicbspline->setStatusTip(QApplication::translate(
-        "Sketcher_Create_Periodic_BSpline", "Create a periodic B-spline by control points"));
+    periodicbspline->setToolTip(
+        QApplication::translate("Sketcher_Create_Periodic_BSpline",
+                                "Create a periodic B-spline by control points"));
+    periodicbspline->setStatusTip(
+        QApplication::translate("Sketcher_Create_Periodic_BSpline",
+                                "Create a periodic B-spline by control points"));
     QAction* bsplinebyknot = a[2];
     bsplinebyknot->setText(
         QApplication::translate("Sketcher_CreateBSplineByInterpolation", "B-spline by knots"));
@@ -1175,12 +1200,15 @@ void CmdSketcherCompCreateBSpline::languageChange()
     bsplinebyknot->setStatusTip(QApplication::translate("Sketcher_CreateBSplineByInterpolation",
                                                         "Create a B-spline by knots"));
     QAction* periodicbsplinebyknot = a[3];
-    periodicbsplinebyknot->setText(QApplication::translate(
-        "Sketcher_Create_Periodic_BSplineByInterpolation", "Periodic B-spline by knots"));
-    periodicbsplinebyknot->setToolTip(QApplication::translate(
-        "Sketcher_Create_Periodic_BSplineByInterpolation", "Create a periodic B-spline by knots"));
-    periodicbsplinebyknot->setStatusTip(QApplication::translate(
-        "Sketcher_Create_Periodic_BSplineByInterpolation", "Create a periodic B-spline by knots"));
+    periodicbsplinebyknot->setText(
+        QApplication::translate("Sketcher_Create_Periodic_BSplineByInterpolation",
+                                "Periodic B-spline by knots"));
+    periodicbsplinebyknot->setToolTip(
+        QApplication::translate("Sketcher_Create_Periodic_BSplineByInterpolation",
+                                "Create a periodic B-spline by knots"));
+    periodicbsplinebyknot->setStatusTip(
+        QApplication::translate("Sketcher_Create_Periodic_BSplineByInterpolation",
+                                "Create a periodic B-spline by knots"));
 }
 
 bool CmdSketcherCompCreateBSpline::isActive()
@@ -1237,12 +1265,15 @@ CmdSketcherCompCreateCircle::CmdSketcherCompCreateCircle()
 
 void CmdSketcherCompCreateCircle::activated(int iMsg)
 {
-    if (iMsg == 0)
+    if (iMsg == 0) {
         ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerCircle());
-    else if (iMsg == 1)
+    }
+    else if (iMsg == 1) {
         ActivateHandler(getActiveGuiDocument(), new DrawSketchHandler3PointCircle());
-    else
+    }
+    else {
         return;
+    }
 
     // Since the default icon is reset when enabling/disabling the command we have
     // to explicitly set the icon of the used command.
@@ -1277,8 +1308,9 @@ Gui::Action* CmdSketcherCompCreateCircle::createAction()
 void CmdSketcherCompCreateCircle::updateAction(int mode)
 {
     Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(getAction());
-    if (!pcAction)
+    if (!pcAction) {
         return;
+    }
 
     QList<QAction*> a = pcAction->actions();
     int index = pcAction->property("defaultAction").toInt();
@@ -1300,8 +1332,9 @@ void CmdSketcherCompCreateCircle::languageChange()
 {
     Command::languageChange();
 
-    if (!_pcAction)
+    if (!_pcAction) {
         return;
+    }
     Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(_pcAction);
     QList<QAction*> a = pcAction->actions();
 
@@ -1488,8 +1521,9 @@ void CmdSketcherCompCreateFillets::updateAction(int mode)
 {
     Q_UNUSED(mode);
     Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(getAction());
-    if (!pcAction)
+    if (!pcAction) {
         return;
+    }
 
     QList<QAction*> a = pcAction->actions();
     int index = pcAction->property("defaultAction").toInt();
@@ -1502,8 +1536,9 @@ void CmdSketcherCompCreateFillets::languageChange()
 {
     Command::languageChange();
 
-    if (!_pcAction)
+    if (!_pcAction) {
         return;
+    }
     Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(_pcAction);
     QList<QAction*> a = pcAction->actions();
 
@@ -1516,10 +1551,12 @@ void CmdSketcherCompCreateFillets::languageChange()
     QAction* pointFillet = a[1];
     pointFillet->setText(QApplication::translate("CmdSketcherCompCreateFillets",
                                                  "Constraint-preserving sketch fillet"));
-    pointFillet->setToolTip(QApplication::translate(
-        "Sketcher_CreatePointFillet", "Fillet that preserves constraints and intersection point"));
-    pointFillet->setStatusTip(QApplication::translate(
-        "Sketcher_CreatePointFillet", "Fillet that preserves constraints and intersection point"));
+    pointFillet->setToolTip(
+        QApplication::translate("Sketcher_CreatePointFillet",
+                                "Fillet that preserves constraints and intersection point"));
+    pointFillet->setStatusTip(
+        QApplication::translate("Sketcher_CreatePointFillet",
+                                "Fillet that preserves constraints and intersection point"));
 }
 
 bool CmdSketcherCompCreateFillets::isActive()
@@ -1911,8 +1948,9 @@ void CmdSketcherCreateRegularPolygon::activated(int iMsg)
 
     // Pop-up asking for values
     SketcherRegularPolygonDialog srpd;
-    if (srpd.exec() == QDialog::Accepted)
+    if (srpd.exec() == QDialog::Accepted) {
         ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerRegularPolygon(srpd.sides));
+    }
 }
 
 bool CmdSketcherCreateRegularPolygon::isActive()
@@ -1959,9 +1997,10 @@ void CmdSketcherCompCreateRegularPolygon::activated(int iMsg)
         case 6: {
             // Pop-up asking for values
             SketcherRegularPolygonDialog srpd;
-            if (srpd.exec() == QDialog::Accepted)
+            if (srpd.exec() == QDialog::Accepted) {
                 ActivateHandler(getActiveGuiDocument(),
                                 new DrawSketchHandlerRegularPolygon(srpd.sides));
+            }
         } break;
         default:
             return;
@@ -2010,8 +2049,9 @@ Gui::Action* CmdSketcherCompCreateRegularPolygon::createAction()
 void CmdSketcherCompCreateRegularPolygon::updateAction(int mode)
 {
     Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(getAction());
-    if (!pcAction)
+    if (!pcAction) {
         return;
+    }
 
     QList<QAction*> a = pcAction->actions();
     int index = pcAction->property("defaultAction").toInt();
@@ -2044,8 +2084,9 @@ void CmdSketcherCompCreateRegularPolygon::languageChange()
 {
     Command::languageChange();
 
-    if (!_pcAction)
+    if (!_pcAction) {
         return;
+    }
     Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(_pcAction);
     QList<QAction*> a = pcAction->actions();
 
@@ -2061,39 +2102,50 @@ void CmdSketcherCompCreateRegularPolygon::languageChange()
     square->setText(QApplication::translate("CmdSketcherCompCreateRegularPolygon", "Square"));
     square->setToolTip(QApplication::translate("Sketcher_CreateSquare",
                                                "Create a square by its center and by one corner"));
-    square->setStatusTip(QApplication::translate(
-        "Sketcher_CreateSquare", "Create a square by its center and by one corner"));
+    square->setStatusTip(
+        QApplication::translate("Sketcher_CreateSquare",
+                                "Create a square by its center and by one corner"));
     QAction* pentagon = a[2];
     pentagon->setText(QApplication::translate("CmdSketcherCompCreateRegularPolygon", "Pentagon"));
-    pentagon->setToolTip(QApplication::translate(
-        "Sketcher_CreatePentagon", "Create a pentagon by its center and by one corner"));
-    pentagon->setStatusTip(QApplication::translate(
-        "Sketcher_CreatePentagon", "Create a pentagon by its center and by one corner"));
+    pentagon->setToolTip(
+        QApplication::translate("Sketcher_CreatePentagon",
+                                "Create a pentagon by its center and by one corner"));
+    pentagon->setStatusTip(
+        QApplication::translate("Sketcher_CreatePentagon",
+                                "Create a pentagon by its center and by one corner"));
     QAction* hexagon = a[3];
     hexagon->setText(QApplication::translate("CmdSketcherCompCreateRegularPolygon", "Hexagon"));
-    hexagon->setToolTip(QApplication::translate(
-        "Sketcher_CreateHexagon", "Create a hexagon by its center and by one corner"));
-    hexagon->setStatusTip(QApplication::translate(
-        "Sketcher_CreateHexagon", "Create a hexagon by its center and by one corner"));
+    hexagon->setToolTip(
+        QApplication::translate("Sketcher_CreateHexagon",
+                                "Create a hexagon by its center and by one corner"));
+    hexagon->setStatusTip(
+        QApplication::translate("Sketcher_CreateHexagon",
+                                "Create a hexagon by its center and by one corner"));
     QAction* heptagon = a[4];
     heptagon->setText(QApplication::translate("CmdSketcherCompCreateRegularPolygon", "Heptagon"));
-    heptagon->setToolTip(QApplication::translate(
-        "Sketcher_CreateHeptagon", "Create a heptagon by its center and by one corner"));
-    heptagon->setStatusTip(QApplication::translate(
-        "Sketcher_CreateHeptagon", "Create a heptagon by its center and by one corner"));
+    heptagon->setToolTip(
+        QApplication::translate("Sketcher_CreateHeptagon",
+                                "Create a heptagon by its center and by one corner"));
+    heptagon->setStatusTip(
+        QApplication::translate("Sketcher_CreateHeptagon",
+                                "Create a heptagon by its center and by one corner"));
     QAction* octagon = a[5];
     octagon->setText(QApplication::translate("CmdSketcherCompCreateRegularPolygon", "Octagon"));
-    octagon->setToolTip(QApplication::translate(
-        "Sketcher_CreateOctagon", "Create an octagon by its center and by one corner"));
-    octagon->setStatusTip(QApplication::translate(
-        "Sketcher_CreateOctagon", "Create an octagon by its center and by one corner"));
+    octagon->setToolTip(
+        QApplication::translate("Sketcher_CreateOctagon",
+                                "Create an octagon by its center and by one corner"));
+    octagon->setStatusTip(
+        QApplication::translate("Sketcher_CreateOctagon",
+                                "Create an octagon by its center and by one corner"));
     QAction* regular = a[6];
     regular->setText(
         QApplication::translate("CmdSketcherCompCreateRegularPolygon", "Regular polygon"));
-    regular->setToolTip(QApplication::translate(
-        "Sketcher_CreateOctagon", "Create a regular polygon by its center and by one corner"));
-    regular->setStatusTip(QApplication::translate(
-        "Sketcher_CreateOctagon", "Create a regular polygon by its center and by one corner"));
+    regular->setToolTip(
+        QApplication::translate("Sketcher_CreateOctagon",
+                                "Create a regular polygon by its center and by one corner"));
+    regular->setStatusTip(
+        QApplication::translate("Sketcher_CreateOctagon",
+                                "Create a regular polygon by its center and by one corner"));
 }
 
 bool CmdSketcherCompCreateRegularPolygon::isActive()

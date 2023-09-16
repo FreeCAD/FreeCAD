@@ -899,9 +899,9 @@ Do you want to continue?</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.cpp" line="225"/>
-      <source>Error: 
+      <source>Error:
 </source>
-      <translation>오류: 
+      <translation>오류:
 </translation>
     </message>
     <message>

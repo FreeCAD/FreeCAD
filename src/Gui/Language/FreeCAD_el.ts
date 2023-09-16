@@ -4,11 +4,6 @@
   <context>
     <name>Angle</name>
     <message>
-      <location filename="../DlgLocationAngle.ui" line="14"/>
-      <source>Form</source>
-      <translation>Μορφή</translation>
-    </message>
-    <message>
       <location filename="../DlgLocationAngle.ui" line="22"/>
       <source>A:</source>
       <translation>Α:</translation>
@@ -6113,12 +6108,12 @@ Do you want to save your changes?</source>
       <translation>Μακροεντολές</translation>
     </message>
     <message>
-      <location filename="../Command.cpp" line="1143"/>
+      <location filename="../Command.cpp" line="1173"/>
       <source>Macro file doesn't exist</source>
       <translation>Το αρχείο μακροεντολής δεν υπάρχει</translation>
     </message>
     <message>
-      <location filename="../Command.cpp" line="1144"/>
+      <location filename="../Command.cpp" line="1174"/>
       <source>No such macro file: '%1'</source>
       <translation>Δεν υπάρχει τέτοιο αρχείο μακροεντολής: '%1'</translation>
     </message>
@@ -6177,8 +6172,8 @@ Do you want to save your changes?</source>
     </message>
     <message>
       <location filename="../MainWindow.cpp" line="1717"/>
-      <source>Please do not use in a production environment.</source>
-      <translation type="unfinished">Please do not use in a production environment.</translation>
+      <source>Please do not use it in a production environment.</source>
+      <translation type="unfinished">Please do not use it in a production environment.</translation>
     </message>
     <message>
       <location filename="../MainWindow.cpp" line="1921"/>
@@ -7370,7 +7365,7 @@ Do you want to specify another directory?</source>
     <message>
       <location filename="../Tree.cpp" line="916"/>
       <source>Show an extra tree view column for item description. The item's description can be set by pressing F2 (or your OS's edit button) or by editing the 'label2' property.</source>
-      <translation type="unfinished">Show an extra tree view column for item description. The item's description can be set by pressing F2 (or your OS's edit button) or by editing the 'label2' property.</translation>
+      <translation>Εμφάνιση μιας επιπλέον στήλης προβολής δέντρου για την περιγραφή αντικειμένου. Η περιγραφή του στοιχείου μπορεί να οριστεί πατώντας το F2 (ή το κουμπί επεξεργασίας του OS) ή επεξεργάζοντας την ιδιότητα 'label2'.</translation>
     </message>
     <message>
       <location filename="../Tree.cpp" line="957"/>
@@ -7390,12 +7385,12 @@ Do you want to specify another directory?</source>
     <message>
       <location filename="../Tree.cpp" line="2800"/>
       <source>Show items hidden in tree view</source>
-      <translation type="unfinished">Show items hidden in tree view</translation>
+      <translation>Εμφάνιση κρυφών αντικειμένων στην προβολή δέντρου</translation>
     </message>
     <message>
       <location filename="../Tree.cpp" line="2801"/>
       <source>Show items that are marked as 'hidden' in the tree view</source>
-      <translation type="unfinished">Show items that are marked as 'hidden' in the tree view</translation>
+      <translation>Εμφάνιση αντικειμένων που έχουν επισημανθεί ως 'κρυμμένα' στην προβολή δέντρου</translation>
     </message>
     <message>
       <location filename="../Tree.cpp" line="2803"/>
@@ -8433,12 +8428,12 @@ Please open a browser window and type in: http://localhost:%1.</source>
       <translation>Επιλογές...</translation>
     </message>
     <message>
-      <location filename="../View3DInventorViewer.cpp" line="2252"/>
+      <location filename="../View3DInventorViewer.cpp" line="2256"/>
       <source>Out of memory</source>
       <translation>Μνήμη πλήρης</translation>
     </message>
     <message>
-      <location filename="../View3DInventorViewer.cpp" line="2253"/>
+      <location filename="../View3DInventorViewer.cpp" line="2257"/>
       <source>Not enough memory available to display the data.</source>
       <translation>Δεν υπάρχει αρκετή μνήμη διαθέσιμη για την προβολή των δεδομένων.</translation>
     </message>

@@ -92,6 +92,6 @@ public:
     }
 };
 
-}// namespace SketcherGui
+}  // namespace SketcherGui
 
-#endif// SKETCHERGUI_TASKSKETCHERVALIDATION_H
+#endif  // SKETCHERGUI_TASKSKETCHERVALIDATION_H

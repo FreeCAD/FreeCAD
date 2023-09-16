@@ -4,11 +4,6 @@
   <context>
     <name>Angle</name>
     <message>
-      <location filename="../DlgLocationAngle.ui" line="14"/>
-      <source>Form</source>
-      <translation>Inprimakia</translation>
-    </message>
-    <message>
       <location filename="../DlgLocationAngle.ui" line="22"/>
       <source>A:</source>
       <translation>A:</translation>
@@ -2961,7 +2956,7 @@ azkarrena eskaintzen du, baina erantzun motelagoa eszena-aldaketetan.</translati
     <message>
       <location filename="../PreferencePages/DlgSettings3DView.ui" line="342"/>
       <source>Size of vertices in the Sketcher, TechDraw and other workbenches</source>
-      <translation type="unfinished">Size of vertices in the Sketcher, TechDraw and other workbenches</translation>
+      <translation>Erpinen tamaina Sketcher, TechDraw eta beste lan-mahaietan</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettings3DView.ui" line="349"/>
@@ -4222,7 +4217,7 @@ Ezarpen honek ez du desgaitzen sagu bidezko inklinazioa.</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="624"/>
       <source>Enable rotation center indication</source>
-      <translation type="unfinished">Enable rotation center indication</translation>
+      <translation>Gaitu biraketa-zentroaren adierazlea</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="150"/>
@@ -5233,7 +5228,7 @@ The 'Status' column shows whether the document could be recovered.</source>
     <message>
       <location filename="../Placement.cpp" line="613"/>
       <source>Please select 1, 2, or 3 points before clicking this button.  A point may be on a vertex, face, or edge.  If on a face or edge the point used will be the point at the mouse position along face or edge.  If 1 point is selected it will be used as the center of rotation.  If 2 points are selected the midpoint between them will be the center of rotation and a new custom axis will be created, if needed.  If 3 points are selected the first point becomes the center of rotation and lies on the vector that is normal to the plane defined by the 3 points.  Some distance and angle information is provided in the report view, which can be useful when aligning objects.  For your convenience when Shift + click is used the appropriate distance or angle is copied to the clipboard.</source>
-      <translation>Hautatu 1, 2 edo 3 puntu botoi hau sakatu baino lehen. Puntuak erpin batean, aurpegi batean edo ertz batean egon daitezke. Aurpegi edo ertz batean badago, erabiliko den puntua saguak aurpegian edo ertzean duen kokapenaren puntua izango da. Puntu bat hautatzen bada, biraketa-zentro gisa erabiliko da. Bi puntu hautatzen badira, bien arteko erdiko puntua izango da biraketa-zentroa eta ardatz pertsonalizatu berria sortuko da, beharrezkoa bada. Hiru puntu hautatzen badira, lehen puntua biraketa-zentroa izango da eta hiru puntuek definitutako planoarekiko normala den bektorean egongo da. Txosten-bistak distantziari eta angeluari buruzko informazioa ematen du. Informazio hori erabilgarria izan daiteke objektuak lerrokatzean. Shift + klik erabiltzen denean, distantzia edo angelu egokia arbelera kopiatuko da.</translation>
+      <translation>Hautatu 1, 2 edo 3 puntu botoi hau sakatu baino lehen. Puntuak erpin batean, aurpegi batean edo ertz batean egon daitezke. Aurpegi edo ertz batean badago, erabiliko den puntua saguak aurpegian edo ertzean duen posizioaren puntua izango da. Puntu bat hautatzen bada, biraketa-zentro gisa erabiliko da. Bi puntu hautatzen badira, bien arteko erdiko puntua izango da biraketa-zentroa eta ardatz pertsonalizatu berria sortuko da, beharrezkoa bada. Hiru puntu hautatzen badira, lehen puntua biraketa-zentroa izango da eta hiru puntuek definitutako planoarekiko normala den bektorean egongo da. Txosten-bistak distantziari eta angeluari buruzko informazioa ematen du. Informazio hori erabilgarria izan daiteke objektuak lerrokatzean. Shift + klik erabiltzen denean, distantzia edo angelu egokia arbelera kopiatuko da.</translation>
     </message>
     <message>
       <location filename="../Placement.cpp" line="709"/>
@@ -6117,12 +6112,12 @@ Aldaketak gorde nahi dituzu?</translation>
       <translation>Makroak</translation>
     </message>
     <message>
-      <location filename="../Command.cpp" line="1143"/>
+      <location filename="../Command.cpp" line="1173"/>
       <source>Macro file doesn't exist</source>
       <translation>Makro-fitxategia ez da existitzen</translation>
     </message>
     <message>
-      <location filename="../Command.cpp" line="1144"/>
+      <location filename="../Command.cpp" line="1174"/>
       <source>No such macro file: '%1'</source>
       <translation>Ez dago makro fitxategi hori: '%1'</translation>
     </message>
@@ -6181,8 +6176,8 @@ Aldaketak gorde nahi dituzu?</translation>
     </message>
     <message>
       <location filename="../MainWindow.cpp" line="1717"/>
-      <source>Please do not use in a production environment.</source>
-      <translation>Ez erabili hau ekoizpen-ingurune batean.</translation>
+      <source>Please do not use it in a production environment.</source>
+      <translation type="unfinished">Please do not use it in a production environment.</translation>
     </message>
     <message>
       <location filename="../MainWindow.cpp" line="1921"/>
@@ -6752,7 +6747,7 @@ Datuak gorde gabe irten nahi duzu?</translation>
     <message>
       <location filename="../RevitNavigationStyle.cpp" line="55"/>
       <source>Press SHIFT and middle mouse button</source>
-      <translation>Sakatu Shift eta saguaren erdiko botoia</translation>
+      <translation>Sakatu SHIFT eta xaguaren erdiko botoia</translation>
     </message>
     <message>
       <location filename="../RevitNavigationStyle.cpp" line="57"/>
@@ -7838,12 +7833,12 @@ Beste direktorio bat aukeratu nahi al duzu?</translation>
     <message>
       <location filename="../Application.cpp" line="2202"/>
       <source>This system is running OpenGL %1.%2. FreeCAD requires OpenGL 2.0 or above. Please upgrade your graphics driver and/or card as required.</source>
-      <translation type="unfinished">This system is running OpenGL %1.%2. FreeCAD requires OpenGL 2.0 or above. Please upgrade your graphics driver and/or card as required.</translation>
+      <translation>Sistema honek OpenGL %1.%2 bertsioa du. FreeCADek OpenGL 2.0 edo berriagoa behar du. Eguneratu zure txartel grafikoa edo bere kontrolagailua.</translation>
     </message>
     <message>
       <location filename="../Application.cpp" line="2211"/>
       <source>Invalid OpenGL Version</source>
-      <translation type="unfinished">Invalid OpenGL Version</translation>
+      <translation>OpenGL bertsio baliogabea</translation>
     </message>
     <message>
       <location filename="../Command.cpp" line="488"/>
@@ -8437,12 +8432,12 @@ Mesedez, ireki nabigatzaile-leiho bat eta idatzi: http://localhost:%1.</translat
       <translation>Aukerak...</translation>
     </message>
     <message>
-      <location filename="../View3DInventorViewer.cpp" line="2252"/>
+      <location filename="../View3DInventorViewer.cpp" line="2256"/>
       <source>Out of memory</source>
       <translation>Memoria gutxiegi</translation>
     </message>
     <message>
-      <location filename="../View3DInventorViewer.cpp" line="2253"/>
+      <location filename="../View3DInventorViewer.cpp" line="2257"/>
       <source>Not enough memory available to display the data.</source>
       <translation>Ez dago nahiko memoriarik datuak bistaratzeko.</translation>
     </message>
@@ -10256,7 +10251,7 @@ egindako aldaketak galdu egingo direla.</translation>
       <location filename="../CommandMacro.cpp" line="295"/>
       <location filename="../CommandMacro.cpp" line="297"/>
       <source>Add or remove a breakpoint at this position</source>
-      <translation>Gehitu edo kendu eten-puntu bat kokaleku honetan</translation>
+      <translation>Gehitu edo kendu eten-puntu bat posizio honetan</translation>
     </message>
   </context>
   <context>
@@ -11735,7 +11730,7 @@ FreeCAD abiarazi ondoren</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsWorkbenches.ui" line="97"/>
       <source>Workbench selector position :</source>
-      <translation>Lan-mahaien hautatzailearen kokalekua :</translation>
+      <translation>Lan-mahaien hautatzailearen posizioa :</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsWorkbenches.ui" line="104"/>
@@ -11955,7 +11950,7 @@ FreeCAD abiarazi ondoren</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsWorkbenchesImp.cpp" line="239"/>
       <source>Sort alphabetically</source>
-      <translation type="unfinished">Sort alphabetically</translation>
+      <translation>Ordenatu alfabetikoki</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsWorkbenchesImp.cpp" line="485"/>
@@ -12807,41 +12802,41 @@ txosten-bistaren panelera birzuzenduko da</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsTheme.ui" line="20"/>
       <source>This page let you customize your current theme. The offered settings are optional for theme developers so they may or may not have an effect in your current theme.</source>
-      <translation type="unfinished">This page let you customize your current theme. The offered settings are optional for theme developers so they may or may not have an effect in your current theme.</translation>
+      <translation>Orri honetan uneko gaia pertsonalizatu daiteke. Eskainitako ezarpenak aukerakoak dira gai-garatzaileentzat eta, beraz, uneko gaian eragina izan dezakete edo ez.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsTheme.ui" line="34"/>
       <source>Accent color 1</source>
-      <translation type="unfinished">Accent color 1</translation>
+      <translation>1. nabarmentze-kolorea</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsTheme.ui" line="67"/>
       <source>Accent color 2</source>
-      <translation type="unfinished">Accent color 2</translation>
+      <translation>2. nabarmentze-kolorea</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsTheme.ui" line="100"/>
       <source>Accent color 3</source>
-      <translation type="unfinished">Accent color 3</translation>
+      <translation>3. nabarmentze-kolorea</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsTheme.ui" line="133"/>
       <source>Style sheet (advanced):</source>
-      <translation type="unfinished">Style sheet (advanced):</translation>
+      <translation>Estilo-orria (aurreratua):</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsTheme.ui" line="140"/>
       <source>Apply manually .qss Qt Stylesheets. This is the legacy way that was used to customize the interface.
 You can now use Theme to get a full customization of the interface.</source>
-      <translation type="unfinished">Apply manually .qss Qt Stylesheets. This is the legacy way that was used to customize the interface.
-You can now use Theme to get a full customization of the interface.</translation>
+      <translation>Aplikatu .qss Qt estilo-orriak eskuz. Interfazea pertsonalizatzeko modu zaharra da hori.
+Orain gaiak erabili daitezke interfazea osorik pertsonalizatzeko.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsTheme.ui" line="47"/>
       <location filename="../PreferencePages/DlgSettingsTheme.ui" line="80"/>
       <location filename="../PreferencePages/DlgSettingsTheme.ui" line="113"/>
       <source>This color might be used by your theme to let you customize it.</source>
-      <translation type="unfinished">This color might be used by your theme to let you customize it.</translation>
+      <translation>Zure gaiak kolore hau erabili dezake pertsonalizaziorako.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsTheme.cpp" line="116"/>
@@ -12854,13 +12849,13 @@ You can now use Theme to get a full customization of the interface.</translation
     <message>
       <location filename="../CommandView.cpp" line="1366"/>
       <source>Selection filter</source>
-      <translation type="unfinished">Selection filter</translation>
+      <translation>Hautapen-iragazkia</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1367"/>
       <location filename="../CommandView.cpp" line="1368"/>
       <source>Change the Selection filter</source>
-      <translation type="unfinished">Change the Selection filter</translation>
+      <translation>Aldatu hautapen-iragazkia</translation>
     </message>
   </context>
   <context>
@@ -12868,13 +12863,13 @@ You can now use Theme to get a full customization of the interface.</translation
     <message>
       <location filename="../CommandView.cpp" line="1487"/>
       <source>Vertex Selection</source>
-      <translation type="unfinished">Vertex Selection</translation>
+      <translation>Erpin-hautapena</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1488"/>
       <location filename="../CommandView.cpp" line="1490"/>
       <source>Select a Vertex/Vertices</source>
-      <translation type="unfinished">Select a Vertex/Vertices</translation>
+      <translation>Hautatu erpina/erpinak</translation>
     </message>
   </context>
   <context>
@@ -12882,13 +12877,13 @@ You can now use Theme to get a full customization of the interface.</translation
     <message>
       <location filename="../CommandView.cpp" line="1512"/>
       <source>Edge Selection</source>
-      <translation type="unfinished">Edge Selection</translation>
+      <translation>Ertz-hautapena</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1513"/>
       <location filename="../CommandView.cpp" line="1515"/>
       <source>Select Edge(s)</source>
-      <translation type="unfinished">Select Edge(s)</translation>
+      <translation>Hautatu ertza(k)</translation>
     </message>
   </context>
   <context>
@@ -12896,13 +12891,13 @@ You can now use Theme to get a full customization of the interface.</translation
     <message>
       <location filename="../CommandView.cpp" line="1537"/>
       <source>Face Selection</source>
-      <translation type="unfinished">Face Selection</translation>
+      <translation>Aurpegi-hautapena</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1538"/>
       <location filename="../CommandView.cpp" line="1540"/>
       <source>Select Face(s)</source>
-      <translation type="unfinished">Select Face(s)</translation>
+      <translation>Hautatu aurpegia(k)</translation>
     </message>
   </context>
   <context>
@@ -12912,7 +12907,7 @@ You can now use Theme to get a full customization of the interface.</translation
       <location filename="../CommandView.cpp" line="1564"/>
       <location filename="../CommandView.cpp" line="1566"/>
       <source>All selection filters cleared</source>
-      <translation type="unfinished">All selection filters cleared</translation>
+      <translation>Hautapen-iragazki guztiak garbitu dira</translation>
     </message>
   </context>
 </TS>

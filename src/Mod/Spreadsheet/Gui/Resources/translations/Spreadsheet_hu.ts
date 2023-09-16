@@ -899,7 +899,7 @@ Szeretné folytatni?</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.cpp" line="225"/>
-      <source>Error: 
+      <source>Error:
 </source>
       <translation>Hiba:
 </translation>

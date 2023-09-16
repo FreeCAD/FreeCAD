@@ -1411,11 +1411,6 @@ Se for zero, é igual ao Raio2</translation>
   <context>
     <name>PartDesignGui::TaskBooleanParameters</name>
     <message>
-      <location filename="../../TaskBooleanParameters.ui" line="14"/>
-      <source>Form</source>
-      <translation>Forma</translation>
-    </message>
-    <message>
       <location filename="../../TaskBooleanParameters.ui" line="22"/>
       <source>Add body</source>
       <translation>Adicionar corpo</translation>
@@ -1498,11 +1493,6 @@ Se for zero, é igual ao Raio2</translation>
   </context>
   <context>
     <name>PartDesignGui::TaskChamferParameters</name>
-    <message>
-      <location filename="../../TaskChamferParameters.ui" line="14"/>
-      <source>Form</source>
-      <translation>Forma</translation>
-    </message>
     <message>
       <location filename="../../TaskChamferParameters.ui" line="20"/>
       <source>Click button to enter selection mode,
@@ -1625,11 +1615,6 @@ clique novamente para terminar a seleção</translation>
   <context>
     <name>PartDesignGui::TaskDraftParameters</name>
     <message>
-      <location filename="../../TaskDraftParameters.ui" line="14"/>
-      <source>Form</source>
-      <translation>Formulário</translation>
-    </message>
-    <message>
       <location filename="../../TaskDraftParameters.ui" line="20"/>
       <source>Click button to enter selection mode,
 click again to end selection</source>
@@ -1747,11 +1732,6 @@ clique novamente para terminar a seleção</translation>
   <context>
     <name>PartDesignGui::TaskFeaturePick</name>
     <message>
-      <location filename="../../TaskFeaturePick.ui" line="14"/>
-      <source>Form</source>
-      <translation>Formulário</translation>
-    </message>
-    <message>
       <location filename="../../TaskFeaturePick.ui" line="23"/>
       <source>Allow used features</source>
       <translation>Permitir objetos em uso</translation>
@@ -1840,11 +1820,6 @@ clique novamente para terminar a seleção</translation>
   <context>
     <name>PartDesignGui::TaskFilletParameters</name>
     <message>
-      <location filename="../../TaskFilletParameters.ui" line="14"/>
-      <source>Form</source>
-      <translation>Formulário</translation>
-    </message>
-    <message>
       <location filename="../../TaskFilletParameters.ui" line="20"/>
       <source>Click button to enter selection mode,
 click again to end selection</source>
@@ -1871,7 +1846,7 @@ clique novamente para terminar a seleção</translation>
     <message>
       <location filename="../../TaskFilletParameters.ui" line="63"/>
       <source>Use All Edges</source>
-      <translation type="unfinished">Use All Edges</translation>
+      <translation>Use todas as arestas</translation>
     </message>
     <message>
       <location filename="../../TaskFilletParameters.cpp" line="193"/>
@@ -1883,11 +1858,6 @@ clique novamente para terminar a seleção</translation>
   </context>
   <context>
     <name>PartDesignGui::TaskHelixParameters</name>
-    <message>
-      <location filename="../../TaskHelixParameters.ui" line="14"/>
-      <source>Form</source>
-      <translation>Formulário</translation>
-    </message>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="22"/>
       <source>Status:</source>
@@ -2097,11 +2067,6 @@ clique novamente para terminar a seleção</translation>
   <context>
     <name>PartDesignGui::TaskLinearPatternParameters</name>
     <message>
-      <location filename="../../TaskLinearPatternParameters.ui" line="14"/>
-      <source>Form</source>
-      <translation>Formulário</translation>
-    </message>
-    <message>
       <location filename="../../TaskLinearPatternParameters.ui" line="22"/>
       <source>Add feature</source>
       <translation>Adicionar objeto</translation>
@@ -2176,11 +2141,6 @@ clique novamente para terminar a seleção</translation>
   <context>
     <name>PartDesignGui::TaskLoftParameters</name>
     <message>
-      <location filename="../../TaskLoftParameters.ui" line="14"/>
-      <source>Form</source>
-      <translation>Formulário</translation>
-    </message>
-    <message>
       <location filename="../../TaskLoftParameters.ui" line="20"/>
       <source>Ruled surface</source>
       <translation>Superfície regrada</translation>
@@ -2234,11 +2194,6 @@ clique novamente para terminar a seleção</translation>
   <context>
     <name>PartDesignGui::TaskMirroredParameters</name>
     <message>
-      <location filename="../../TaskMirroredParameters.ui" line="14"/>
-      <source>Form</source>
-      <translation>Formulário</translation>
-    </message>
-    <message>
       <location filename="../../TaskMirroredParameters.ui" line="22"/>
       <source>Add feature</source>
       <translation>Adicionar objeto</translation>
@@ -2281,11 +2236,6 @@ clique novamente para terminar a seleção</translation>
   </context>
   <context>
     <name>PartDesignGui::TaskMultiTransformParameters</name>
-    <message>
-      <location filename="../../TaskMultiTransformParameters.ui" line="14"/>
-      <source>Form</source>
-      <translation>Formulário</translation>
-    </message>
     <message>
       <location filename="../../TaskMultiTransformParameters.ui" line="22"/>
       <source>Add feature</source>
@@ -2407,11 +2357,6 @@ clique novamente para terminar a seleção</translation>
   </context>
   <context>
     <name>PartDesignGui::TaskPadPocketParameters</name>
-    <message>
-      <location filename="../../TaskPadPocketParameters.ui" line="14"/>
-      <source>Form</source>
-      <translation>Formulário</translation>
-    </message>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="22"/>
       <source>Type</source>
@@ -2568,11 +2513,6 @@ medido ao longo da direção especificada</translation>
   <context>
     <name>PartDesignGui::TaskPipeOrientation</name>
     <message>
-      <location filename="../../TaskPipeOrientation.ui" line="14"/>
-      <source>Form</source>
-      <translation>Formulário</translation>
-    </message>
-    <message>
       <location filename="../../TaskPipeOrientation.ui" line="22"/>
       <source>Orientation mode</source>
       <translation>Modo de orientação</translation>
@@ -2661,11 +2601,6 @@ medido ao longo da direção especificada</translation>
   <context>
     <name>PartDesignGui::TaskPipeParameters</name>
     <message>
-      <location filename="../../TaskPipeParameters.ui" line="14"/>
-      <source>Form</source>
-      <translation>Formulário</translation>
-    </message>
-    <message>
       <location filename="../../TaskPipeParameters.ui" line="20"/>
       <source>Profile</source>
       <translation>Perfil</translation>
@@ -2735,11 +2670,6 @@ medido ao longo da direção especificada</translation>
   </context>
   <context>
     <name>PartDesignGui::TaskPipeScaling</name>
-    <message>
-      <location filename="../../TaskPipeScaling.ui" line="14"/>
-      <source>Form</source>
-      <translation>Formulário</translation>
-    </message>
     <message>
       <location filename="../../TaskPipeScaling.ui" line="22"/>
       <source>Transform mode</source>
@@ -2827,11 +2757,6 @@ medido ao longo da direção especificada</translation>
   <context>
     <name>PartDesignGui::TaskPolarPatternParameters</name>
     <message>
-      <location filename="../../TaskPolarPatternParameters.ui" line="14"/>
-      <source>Form</source>
-      <translation>Formulário</translation>
-    </message>
-    <message>
       <location filename="../../TaskPolarPatternParameters.ui" line="22"/>
       <source>Add feature</source>
       <translation>Adicionar objeto</translation>
@@ -2918,11 +2843,6 @@ medido ao longo da direção especificada</translation>
   <context>
     <name>PartDesignGui::TaskRevolutionParameters</name>
     <message>
-      <location filename="../../TaskRevolutionParameters.ui" line="14"/>
-      <source>Form</source>
-      <translation>Formulário</translation>
-    </message>
-    <message>
       <location filename="../../TaskRevolutionParameters.ui" line="22"/>
       <source>Axis:</source>
       <translation>Eixo:</translation>
@@ -2990,11 +2910,6 @@ medido ao longo da direção especificada</translation>
   <context>
     <name>PartDesignGui::TaskScaledParameters</name>
     <message>
-      <location filename="../../TaskScaledParameters.ui" line="14"/>
-      <source>Form</source>
-      <translation>Formulário</translation>
-    </message>
-    <message>
       <location filename="../../TaskScaledParameters.ui" line="22"/>
       <source>Add feature</source>
       <translation>Adicionar objeto</translation>
@@ -3033,11 +2948,6 @@ medido ao longo da direção especificada</translation>
   <context>
     <name>PartDesignGui::TaskShapeBinder</name>
     <message>
-      <location filename="../../TaskShapeBinder.ui" line="14"/>
-      <source>Form</source>
-      <translation>Formulário</translation>
-    </message>
-    <message>
       <location filename="../../TaskShapeBinder.ui" line="22"/>
       <source>Object</source>
       <translation>Objeto</translation>
@@ -3073,11 +2983,6 @@ medido ao longo da direção especificada</translation>
   </context>
   <context>
     <name>PartDesignGui::TaskThicknessParameters</name>
-    <message>
-      <location filename="../../TaskThicknessParameters.ui" line="14"/>
-      <source>Form</source>
-      <translation>Formulário</translation>
-    </message>
     <message>
       <location filename="../../TaskThicknessParameters.ui" line="20"/>
       <source>Click button to enter selection mode,
@@ -4267,11 +4172,6 @@ Embora você possa migrar a qualquer momento mais tarde com 'Part Design -&gt; M
   <context>
     <name>TaskHole</name>
     <message>
-      <location filename="../../../FeatureHole/TaskHole.ui" line="14"/>
-      <source>Form</source>
-      <translation>Formulário</translation>
-    </message>
-    <message>
       <location filename="../../../FeatureHole/TaskHole.ui" line="24"/>
       <source>Position</source>
       <translation>Posição</translation>
@@ -5132,7 +5032,7 @@ Intersecting sketch entities in a sketch are not allowed.</translation>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="169"/>
       <source>Error: unsupported mode</source>
-      <translation type="unfinished">Error: unsupported mode</translation>
+      <translation>Erro: modo não suportado</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="181"/>

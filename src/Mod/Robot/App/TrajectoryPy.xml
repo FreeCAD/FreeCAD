@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
-  <PythonExport 
-      Father="PersistencePy" 
-      Name="TrajectoryPy" 
-      Twin="Trajectory" 
-      TwinPointer="Trajectory" 
-      Include="Mod/Robot/App/Trajectory.h" 
-      Namespace="Robot" 
-      FatherInclude="Base/PersistencePy.h" 
+  <PythonExport
+      Father="PersistencePy"
+      Name="TrajectoryPy"
+      Twin="Trajectory"
+      TwinPointer="Trajectory"
+      Include="Mod/Robot/App/Trajectory.h"
+      Namespace="Robot"
+      FatherInclude="Base/PersistencePy.h"
       FatherNamespace="Base"
       Constructor="true"
       Delete="true">

@@ -30,7 +30,7 @@ TEST(Axis, TestAssign)
     Base::Axis move;
     axis.setBase(Base::Vector3d(0, 0, 1));
     axis.setDirection(Base::Vector3d(1, 1, 1));
-    move = std::move(axis);// NOLINT
+    move = std::move(axis);  // NOLINT
     EXPECT_EQ(move.getBase(), Base::Vector3d(0, 0, 1));
     EXPECT_EQ(move.getDirection(), Base::Vector3d(1, 1, 1));
 }

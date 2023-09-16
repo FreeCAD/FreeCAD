@@ -2015,7 +2015,7 @@
     </message>
     <message>
         <location filename="../../Command.cpp" line="1636"/>
-        <location filename="../../MDIViewPage.cpp" line="734"/>
+        <location filename="../../PagePrinter.cpp" line="357"/>
         <source>Save page to dxf</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2071,7 +2071,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../QGIViewDimension.cpp" line="688"/>
+        <location filename="../../QGIViewDimension.cpp" line="686"/>
         <source>Drag Dimension</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2928,7 +2928,7 @@
         <location filename="../../CommandCreateDims.cpp" line="1218"/>
         <location filename="../../CommandDecorate.cpp" line="371"/>
         <location filename="../../CommandDecorate.cpp" line="377"/>
-        <location filename="../../TaskDimension.cpp" line="400"/>
+        <location filename="../../TaskDimension.cpp" line="417"/>
         <location filename="../../TaskDimRepair.cpp" line="126"/>
         <location filename="../../TaskDimRepair.cpp" line="138"/>
         <location filename="../../TaskDimRepair.cpp" line="149"/>
@@ -3370,33 +3370,33 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../MDIViewPage.cpp" line="282"/>
+        <location filename="../../MDIViewPage.cpp" line="307"/>
         <source>PDF (*.pdf)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../MDIViewPage.cpp" line="283"/>
-        <location filename="../../MDIViewPage.cpp" line="693"/>
+        <location filename="../../MDIViewPage.cpp" line="308"/>
+        <location filename="../../MDIViewPage.cpp" line="493"/>
         <source>All Files (*.*)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../MDIViewPage.cpp" line="285"/>
+        <location filename="../../MDIViewPage.cpp" line="310"/>
         <source>Export Page As PDF</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../MDIViewPage.cpp" line="584"/>
+        <location filename="../../PagePrinter.cpp" line="270"/>
         <source>Document Name: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../MDIViewPage.cpp" line="692"/>
+        <location filename="../../MDIViewPage.cpp" line="492"/>
         <source>SVG (*.svg)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../MDIViewPage.cpp" line="695"/>
+        <location filename="../../MDIViewPage.cpp" line="495"/>
         <source>Export page as SVG</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3723,7 +3723,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskDimension.cpp" line="401"/>
+        <location filename="../../TaskDimension.cpp" line="418"/>
         <source>Select 2 Vertexes or 1 Edge</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5521,49 +5521,59 @@ Fast, but result is a collection of short straight lines.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../MDIViewPage.cpp" line="395"/>
+        <location filename="../../MDIViewPage.cpp" line="401"/>
         <source>Different orientation</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../MDIViewPage.cpp" line="396"/>
+        <location filename="../../MDIViewPage.cpp" line="402"/>
         <source>The printer uses a different orientation  than the drawing.
 Do you want to continue?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../MDIViewPage.cpp" line="405"/>
+        <location filename="../../MDIViewPage.cpp" line="411"/>
         <source>Different paper size</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../MDIViewPage.cpp" line="406"/>
+        <location filename="../../MDIViewPage.cpp" line="412"/>
         <source>The printer uses a different paper size than the drawing.
 Do you want to continue?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../MDIViewPage.cpp" line="419"/>
+        <location filename="../../MDIViewPage.cpp" line="426"/>
         <source>Opening file failed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../MDIViewPage.cpp" line="420"/>
+        <location filename="../../MDIViewPage.cpp" line="427"/>
         <source>Can not open file %1 for writing.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../MDIViewPage.cpp" line="719"/>
+        <location filename="../../MDIViewPage.cpp" line="516"/>
         <source>Save DXF file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../MDIViewPage.cpp" line="720"/>
+        <location filename="../../MDIViewPage.cpp" line="517"/>
         <source>DXF (*.dxf)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../MDIViewPage.cpp" line="1228"/>
+        <location filename="../../MDIViewPage.cpp" line="537"/>
+        <source>Save PDF file</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../MDIViewPage.cpp" line="538"/>
+        <source>PDF (*.pdf)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../MDIViewPage.cpp" line="1029"/>
         <source>Selected:</source>
         <translation type="unfinished"></translation>
     </message>

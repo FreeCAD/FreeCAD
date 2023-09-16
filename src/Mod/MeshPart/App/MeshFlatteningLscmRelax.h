@@ -21,6 +21,7 @@
  ***************************************************************************/
 
 
+// clang-format off
 // LeastSquareConformalMapping + fem relaxing
 // ------------------------------------------
 //
@@ -123,3 +124,4 @@ public:
 }
 
 #endif
+// clang-format on

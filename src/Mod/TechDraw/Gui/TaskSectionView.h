@@ -94,6 +94,7 @@ protected Q_SLOTS:
 
 private:
     double requiredRotation(double inputAngle);
+    std::string makeSectionLabel(QString symbol);
 
     std::unique_ptr<Ui_TaskSectionView> ui;
     TechDraw::DrawViewPart* m_base;
