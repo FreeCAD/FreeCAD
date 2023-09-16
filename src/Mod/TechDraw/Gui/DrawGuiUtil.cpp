@@ -35,7 +35,8 @@
 # include <BRepLProp_SLProps.hxx>
 # include <gp_Dir.hxx>
 #endif
-
+#include <Gui/View3DInventor.h>
+#include <Gui/View3DInventorViewer.h>
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/DocumentObject.h>
@@ -50,8 +51,6 @@
 #include <Gui/MainWindow.h>
 #include <Gui/MDIView.h>
 #include <Gui/Selection.h>
-#include <Gui/View3DInventor.h>
-#include <Gui/View3DInventorViewer.h>
 #include <Inventor/SbVec3f.h>
 #include <Mod/TechDraw/App/ArrowPropEnum.h>
 #include <Mod/TechDraw/App/DrawPage.h>

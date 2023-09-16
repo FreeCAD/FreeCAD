@@ -34,7 +34,8 @@
 #include <QScrollBar>
 #include <QWheelEvent>
 #endif
-
+#include <Gui/View3DInventor.h>
+#include <Gui/View3DInventorViewer.h>
 #include <App/Application.h>
 #include <App/Document.h>
 #include <Base/Parameter.h>
@@ -42,8 +43,6 @@
 #include <Gui/Document.h>
 #include <Gui/NavigationStyle.h>
 #include <Gui/Selection.h>
-#include <Gui/View3DInventor.h>
-#include <Gui/View3DInventorViewer.h>
 
 #include <Mod/TechDraw/App/DrawPage.h>
 #include <Mod/TechDraw/App/DrawSVGTemplate.h>

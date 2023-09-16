@@ -41,6 +41,8 @@
 # include <Inventor/nodes/SoAnnotation.h>
 # include <Inventor/nodes/SoTransform.h>
 #endif
+#include <Gui/View3DInventor.h>
+#include <Gui/View3DInventorViewer.h>
 
 #include <Base/Console.h>
 #include <Base/Precision.h>
@@ -52,8 +54,7 @@
 #include <Gui/Camera.h>
 #include <Gui/Document.h>
 #include <Gui/SoDatumLabel.h>
-#include <Gui/View3DInventor.h>
-#include <Gui/View3DInventorViewer.h>
+
 #include <Gui/ViewProviderDocumentObject.h>
 #include <Gui/TaskView/TaskView.h>
 

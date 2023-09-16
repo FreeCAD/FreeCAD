@@ -42,6 +42,8 @@
 # include <QMessageBox>
 # include <QTextStream>
 #endif
+#include <Gui/View3DInventor.h>
+#include <Gui/View3DInventorViewer.h>
 
 #include <App/Document.h>
 #include <Base/UnitsApi.h>
@@ -49,8 +51,7 @@
 #include <Gui/Control.h>
 #include <Gui/Document.h>
 #include <Gui/MainWindow.h>
-#include <Gui/View3DInventor.h>
-#include <Gui/View3DInventorViewer.h>
+
 #include <Gui/TaskView/TaskDialog.h>
 
 #include "ViewProviderFemPostFunction.h"

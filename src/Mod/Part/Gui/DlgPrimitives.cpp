@@ -33,7 +33,8 @@
 #include <Inventor/SoPickedPoint.h>
 #include <Inventor/events/SoMouseButtonEvent.h>
 #endif
-
+#include <Gui/View3DInventor.h>
+#include <Gui/View3DInventorViewer.h>
 #include <App/Application.h>
 #include <App/Part.h>
 #include <App/Document.h>
@@ -43,8 +44,6 @@
 #include <Gui/Application.h>
 #include <Gui/Document.h>
 #include <Gui/Command.h>
-#include <Gui/View3DInventor.h>
-#include <Gui/View3DInventorViewer.h>
 #include <Gui/SoFCUnifiedSelection.h>
 #include <Gui/TaskView/TaskView.h>
 #include <Mod/Part/App/PrimitiveFeature.h>
