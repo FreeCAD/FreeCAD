@@ -546,8 +546,6 @@ void TPlanarDragger::dragStart()
     projector.setPlane(SbPlane(SbVec3f(0.0, 0.0, 0.0), SbVec3f(1.0, 0.0, 0.0), SbVec3f(0.0, 1.0, 0.0)));
     SbVec3f hitPoint = projector.project(getNormalizedLocaterPosition());
 
-    // projector.setPlane(SbPlane(SbVec3f(0.0, 0.0, 0.0), SbVec3f(0.0, 1.0, 0.0), hitPoint));
-
     SbMatrix localToWorld = getLocalToWorldMatrix();
     localToWorld.multVecMatrix(hitPoint, hitPoint);
     setStartingPoint((hitPoint));
@@ -1095,6 +1093,7 @@ SoFCCSysDragger::SoFCCSysDragger()
 
     // Increments
 
+    // Translator
     TDragger *tDragger;
     tDragger = SO_GET_ANY_PART(this, "xTranslatorDragger", TDragger);
     tDragger->translationIncrement.connectFrom(&this->translationIncrement);
@@ -1108,7 +1107,7 @@ SoFCCSysDragger::SoFCCSysDragger()
     tDragger->translationIncrement.connectFrom(&this->translationIncrement);
     tDragger->autoScaleResult.connectFrom(&this->autoScaleResult);
     translationIncrementCountZ.connectFrom(&tDragger->translationIncrementCount);
-
+    // Planar Translator
     TPlanarDragger *tPlanarDragger;
     tPlanarDragger = SO_GET_ANY_PART(this, "xyPlanarTranslatorDragger", TPlanarDragger);
     tPlanarDragger->translationIncrement.connectFrom(&this->translationIncrement);
@@ -1125,7 +1124,7 @@ SoFCCSysDragger::SoFCCSysDragger()
     tPlanarDragger->autoScaleResult.connectFrom(&this->autoScaleResult);
     translationIncrementCountX.appendConnection(&tPlanarDragger->translationIncrementXCount);
     translationIncrementCountZ.appendConnection(&tPlanarDragger->translationIncrementYCount);
-
+    // Rotator
     RDragger *rDragger;
     rDragger = SO_GET_ANY_PART(this, "xRotatorDragger", RDragger);
     rDragger->rotationIncrement.connectFrom(&this->rotationIncrement);
@@ -1139,20 +1138,21 @@ SoFCCSysDragger::SoFCCSysDragger()
 
     // Switches
 
+    // Translator
     SoSwitch *sw = SO_GET_ANY_PART(this, "xTranslatorSwitch", SoSwitch);
     SoInteractionKit::setSwitchValue(sw, SO_SWITCH_ALL);
     sw = SO_GET_ANY_PART(this, "yTranslatorSwitch", SoSwitch);
     SoInteractionKit::setSwitchValue(sw, SO_SWITCH_ALL);
     sw = SO_GET_ANY_PART(this, "zTranslatorSwitch", SoSwitch);
     SoInteractionKit::setSwitchValue(sw, SO_SWITCH_ALL);
-
+    // Planar Translator
     sw = SO_GET_ANY_PART(this, "xyPlanarTranslatorSwitch", SoSwitch);
     SoInteractionKit::setSwitchValue(sw, SO_SWITCH_ALL);
     sw = SO_GET_ANY_PART(this, "yzPlanarTranslatorSwitch", SoSwitch);
     SoInteractionKit::setSwitchValue(sw, SO_SWITCH_ALL);
     sw = SO_GET_ANY_PART(this, "zxPlanarTranslatorSwitch", SoSwitch);
     SoInteractionKit::setSwitchValue(sw, SO_SWITCH_ALL);
-
+    // Rotator
     sw = SO_GET_ANY_PART(this, "xRotatorSwitch", SoSwitch);
     SoInteractionKit::setSwitchValue(sw, SO_SWITCH_ALL);
     sw = SO_GET_ANY_PART(this, "yRotatorSwitch", SoSwitch);
@@ -1165,21 +1165,21 @@ SoFCCSysDragger::SoFCCSysDragger()
     SoRotation *localRotation;
     SbRotation tempRotation;
     auto angle = static_cast<float>(M_PI / 2.0);
-
+    // Translator
     localRotation = SO_GET_ANY_PART(this, "xTranslatorRotation", SoRotation);
     localRotation->rotation.setValue(SbVec3f(0.0, 0.0, -1.0), angle);
     localRotation = SO_GET_ANY_PART(this, "yTranslatorRotation", SoRotation);
     localRotation->rotation.setValue(SbRotation::identity());
     localRotation = SO_GET_ANY_PART(this, "zTranslatorRotation", SoRotation);
     localRotation->rotation.setValue(SbVec3f(1.0, 0.0, 0.0), angle);
-
+    // Planar Translator
     localRotation = SO_GET_ANY_PART(this, "xyPlanarTranslatorRotation", SoRotation);
     localRotation->rotation.setValue(SbRotation::identity());
     localRotation = SO_GET_ANY_PART(this, "yzPlanarTranslatorRotation", SoRotation);
     localRotation->rotation.setValue(SbVec3f(0.0, -1.0, 0.0), angle);
     localRotation = SO_GET_ANY_PART(this, "zxPlanarTranslatorRotation", SoRotation);
     localRotation->rotation.setValue(SbVec3f(1.0, 0.0, 0.0), angle);
-
+    // Rotator
     localRotation = SO_GET_ANY_PART(this, "xRotatorRotation", SoRotation);
     tempRotation = SbRotation(SbVec3f(1.0, 0.0, 0.0), angle);
     tempRotation *= SbRotation(SbVec3f(0.0, 0.0, 1.0), angle);

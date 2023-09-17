@@ -90,9 +90,12 @@ private:
  *
  * used for translating on a plane. Set the
  * translationIncrement to desired step. Use
- * 'translationIncrementCount' multiplied with
+ * 'translationIncrementXCount' or
+ * 'translationIncrementYCount' multiplied with
  * 'translationIncrement' for a full double
  * precision vector scalar.
+ * 
+ * @author qewer33
  */
 class TPlanarDragger : public SoDragger
 {
@@ -290,18 +293,18 @@ public:
     bool isHiddenTranslationY(); //!< is y translation dragger hidden.
     bool isHiddenTranslationZ(); //!< is z translation dragger hidden.
 
-    void showPlanarTranslationXY(); //!< show the x translation dragger.
-    void showPlanarTranslationYZ(); //!< show the y translation dragger.
-    void showPlanarTranslationZX(); //!< show the z translation dragger.
-    void hidePlanarTranslationXY(); //!< hide the x translation dragger.
-    void hidePlanarTranslationYZ(); //!< hide the y translation dragger.
-    void hidePlanarTranslationZX(); //!< hide the z translation dragger.
-    bool isShownPlanarTranslationXY(); //!< is x translation dragger shown.
-    bool isShownPlanarTranslationYZ(); //!< is y translation dragger shown.
-    bool isShownPlanarTranslationZX(); //!< is z translation dragger shown.
-    bool isHiddenPlanarTranslationXY(); //!< is x translation dragger hidden.
-    bool isHiddenPlanarTranslationYZ(); //!< is y translation dragger hidden.
-    bool isHiddenPlanarTranslationZX(); //!< is z translation dragger hidden.
+    void showPlanarTranslationXY(); //!< show the xy planar translation dragger.
+    void showPlanarTranslationYZ(); //!< show the yz planar translation dragger.
+    void showPlanarTranslationZX(); //!< show the zx planar translation dragger.
+    void hidePlanarTranslationXY(); //!< hide the xy planar translation dragger.
+    void hidePlanarTranslationYZ(); //!< hide the yz planar translation dragger.
+    void hidePlanarTranslationZX(); //!< hide the zx planar translation dragger.
+    bool isShownPlanarTranslationXY(); //!< is xy planar translation dragger shown.
+    bool isShownPlanarTranslationYZ(); //!< is yz planar translation dragger shown.
+    bool isShownPlanarTranslationZX(); //!< is zx planar translation dragger shown.
+    bool isHiddenPlanarTranslationXY(); //!< is xy planar translation dragger hidden.
+    bool isHiddenPlanarTranslationYZ(); //!< is yz planar translation dragger hidden.
+    bool isHiddenPlanarTranslationZX(); //!< is zx planar translation dragger hidden.
 
     void showRotationX(); //!< show the x rotation dragger.
     void showRotationY(); //!< show the y rotation dragger.
