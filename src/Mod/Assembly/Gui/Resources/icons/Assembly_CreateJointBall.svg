@@ -7,7 +7,7 @@
    id="svg2784"
    sodipodi:version="0.32"
    inkscape:version="1.3 (0e150ed6c4, 2023-07-21)"
-   sodipodi:docname="Joint_Ball.svg"
+   sodipodi:docname="Assembly_CreateJointBall.svg"
    inkscape:output_extension="org.inkscape.output.svg.inkscape"
    version="1.1"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
@@ -110,9 +110,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="9.0727665"
-     inkscape:cx="46.788375"
-     inkscape:cy="12.620186"
+     inkscape:zoom="12.830829"
+     inkscape:cx="35.344558"
+     inkscape:cy="26.225896"
      inkscape:current-layer="layer1"
      showgrid="true"
      inkscape:document-units="px"
@@ -184,7 +184,7 @@
     <g
        id="g1"
        inkscape:label="Part"
-       transform="matrix(0.83333332,0,0,0.83333332,5.3333339,5.3333339)">
+       transform="matrix(0.93353917,0,0,0.93353917,3.1649726,2.1267463)">
       <circle
          style="color:#000000;display:inline;overflow:visible;visibility:visible;fill:url(#radialGradient3808);fill-opacity:1;fill-rule:evenodd;stroke:#0b1521;stroke-width:1.80564;marker:none;enable-background:accumulate"
          id="path2826"
@@ -209,7 +209,7 @@
     </g>
     <g
        id="g3894"
-       transform="matrix(0.59756098,0,0,0.59756098,6.2756094,12.367563)">
+       transform="matrix(0.6694159,0,0,0.6694159,4.2205539,10.00682)">
       <path
          id="path3034"
          style="fill:#cc0000;stroke:#280000;stroke-width:2;stroke-linecap:butt;stroke-linejoin:round;stroke-opacity:1"

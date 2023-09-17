@@ -7,7 +7,7 @@
    id="svg2821"
    sodipodi:version="0.32"
    inkscape:version="1.3 (0e150ed6c4, 2023-07-21)"
-   sodipodi:docname="Joint_Planar.svg"
+   sodipodi:docname="Assembly_CreateJointPlanar.svg"
    inkscape:output_extension="org.inkscape.output.svg.inkscape"
    version="1.1"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
@@ -158,9 +158,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="16"
-     inkscape:cx="37.09375"
-     inkscape:cy="32.09375"
+     inkscape:zoom="11.313708"
+     inkscape:cx="26.825864"
+     inkscape:cy="27.356194"
      inkscape:current-layer="layer1"
      showgrid="true"
      inkscape:document-units="px"
@@ -229,7 +229,7 @@
     <g
        id="g6"
        inkscape:label="Plane"
-       transform="matrix(0.90708807,0,0,0.90708807,2.9731817,2.9731817)">
+       transform="matrix(1.0798517,0,0,1.0798517,-2.5552547,-2.5552547)">
       <rect
          style="fill:url(#linearGradient6);fill-opacity:1;stroke:#302b00;stroke-width:1.5;stroke-dasharray:none;stroke-opacity:1"
          id="rect3"
@@ -247,7 +247,7 @@
     </g>
     <g
        id="g1"
-       transform="translate(0.14066863,-5.5382098e-4)"
+       transform="matrix(1.1586625,0,0,1.1586625,-4.9142154,-5.0778445)"
        inkscape:label="Arrows">
       <g
          id="g3894-3"
