@@ -124,11 +124,19 @@ float SoFCColorBarBase::getBounds(const SbVec2s& size, float& fMinX, float&fMinY
     // Therefore the normalized coordinates are in the range [-5, +5] x [-5ratio, +5ratio] if ratio > 1
     //  and [-5ratio, +5ratio] x [-5, +5] if ratio < 1.
     // We don't want the whole height covered by the color bar (to have e.g space to the axis cross
-    // and the Navigation Cube) thus we take as base 3.25.
-    float baseYValue = 3.25f;
+    // and the Navigation Cube) thus we take as base 3 or if the height reduces significantly it is 2.5.
+
+    float baseYValue;
+    if (fRatio > 3.0f) {
+        baseYValue = 2.5f;
+    }
+    else {
+        baseYValue = 3.0f;
+    }
     float barWidth = 0.5f;
 
-    fMinX = 5.0f * fRatio; // must be scaled with the ratio to assure it stays at the right
+    // we want the color bar at the rightmost position, therefore we take 4.95 as base
+    fMinX = 4.95f * fRatio; // must be scaled with the ratio to assure it stays at the right
 
     fMaxX = fMinX + barWidth;
     fMinY = -baseYValue - 0.6f; // Extend shortened bar towards axis cross
