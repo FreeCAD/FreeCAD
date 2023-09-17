@@ -42,9 +42,11 @@ class View3DInventorViewer;
 class GuiExport EditableDatumLabel : public QObject
 {
     Q_OBJECT
+    Q_DISABLE_COPY(EditableDatumLabel)
+
 public:
-    EditableDatumLabel(View3DInventorViewer* view, Base::Placement plc, SbColor color, bool autoDistance = false);
-    ~EditableDatumLabel();
+    EditableDatumLabel(View3DInventorViewer* view, const Base::Placement& plc, SbColor color, bool autoDistance = false);
+    ~EditableDatumLabel() override;
 
     void activate();
     void deactivate();
@@ -53,7 +55,7 @@ public:
     void stopEdit();
     double getValue();
     void setSpinboxValue(double val);
-    void setPlacement(Base::Placement plc);
+    void setPlacement(const Base::Placement& plc);
     void setColor(SbColor color);
     void setFocus();
     void setPoints(SbVec3f p1, SbVec3f p2);
@@ -64,17 +66,19 @@ public:
     void setLabelRecommendedDistance();
     void setLabelAutoDistanceReverse(bool val);
 
+    // NOLINTBEGIN
     SoDatumLabel* label;
     bool isSet;
     bool autoDistance;
     bool autoDistanceReverse;
+    // NOLINTEND
 
 Q_SIGNALS:
     void valueChanged(double val);
 
 private:
     void positionSpinbox();
-    const SbVec3f getTextCenterPoint();
+    SbVec3f getTextCenterPoint() const;
 
 private:
     SoSeparator* root;
