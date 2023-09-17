@@ -7,7 +7,7 @@
    id="svg2821"
    sodipodi:version="0.32"
    inkscape:version="1.3 (0e150ed6c4, 2023-07-21)"
-   sodipodi:docname="Joint_Parallel_Alt.svg"
+   sodipodi:docname="Assembly_CreateJointParallel.svg"
    inkscape:output_extension="org.inkscape.output.svg.inkscape"
    version="1.1"
    xml:space="preserve"
@@ -172,10 +172,10 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="11.313708"
-     inkscape:cx="29.565902"
-     inkscape:cy="26.295533"
-     inkscape:current-layer="g7"
+     inkscape:zoom="7.9999996"
+     inkscape:cx="33.562501"
+     inkscape:cy="26.812501"
+     inkscape:current-layer="layer1"
      showgrid="true"
      inkscape:document-units="px"
      inkscape:grid-bbox="true"
@@ -206,7 +206,7 @@
      inkscape:groupmode="layer"><g
        id="g8"
        inkscape:label="Main"
-       transform="translate(-0.08400268,-0.27617774)"><g
+       transform="matrix(1.0899303,0,0,1.0899303,-2.9693267,-3.1787843)"><g
          id="g6"
          inkscape:label="Plane"
          transform="matrix(0.90708807,-0.79900391,0,1.0698986,-19.299267,34.058528)"><rect
