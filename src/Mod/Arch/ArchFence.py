@@ -158,15 +158,9 @@ class _Fence(ArchComponent.Component):
         # We want to center the posts on the path. So move them the half width in
         transformationVector = FreeCAD.Vector(0, - postWidth / 2, 0)
 
-        placements = patharray.placements_on_path(rotation, pathwire,
-                                                  obj.NumberOfSections + 1,
-                                                  transformationVector, True)
-
-        # The placement of the last object is always the second entry in the list.
-        # So we move it to the end
-        placements.append(placements.pop(1))
-
-        return placements
+        return patharray.placements_on_path(rotation, pathwire,
+                                            obj.NumberOfSections + 1,
+                                            transformationVector, True)
 
     def calculatePosts(self, obj, postPlacements):
         posts = []
