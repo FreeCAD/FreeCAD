@@ -43,9 +43,10 @@ class ViewProvider;
 class InteractiveScale : public QObject
 {
     Q_OBJECT
+    Q_DISABLE_COPY(InteractiveScale)
 
 public:
-    explicit InteractiveScale(View3DInventorViewer* view, ViewProvider* vp, Base::Placement plc);
+    explicit InteractiveScale(View3DInventorViewer* view, ViewProvider* vp, const Base::Placement& plc);
     ~InteractiveScale() override;
 
     bool eventFilter(QObject* object, QEvent* event) override;
@@ -56,7 +57,7 @@ public:
     }
     double getScaleFactor() const;
     double getDistance(const SbVec3f&) const;
-    void setPlacement(Base::Placement plc);
+    void setPlacement(const Base::Placement& plc);
 
 private:
     static void soEventFilter(void * ud, SoEventCallback * ecb);
@@ -87,6 +88,7 @@ class Ui_TaskImage;
 class TaskImage : public QWidget
 {
     Q_OBJECT
+    Q_DISABLE_COPY(TaskImage)
 
 public:
     explicit TaskImage(Image::ImagePlane* obj, QWidget* parent = nullptr);
@@ -109,6 +111,7 @@ private:
     void enableApplyBtn();
 
     void restore(const Base::Placement&);
+    void restoreAngles(const Base::Rotation&);
     void onPreview();
     void updateIcon();
     void updatePlacement();
