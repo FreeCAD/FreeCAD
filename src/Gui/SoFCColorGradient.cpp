@@ -103,28 +103,26 @@ void SoFCColorGradient::setMarkerLabel(const SoMFString& label)
         auto trans = new SoTransform;
 
         ParameterGrp::handle hGrp = Gui::WindowParameter::getDefaultParameter()->GetGroup("View");
-        int LabelTextSize = hGrp->GetInt("CbLabelTextSize", 13);
-        App::Color LabelTextColor =
+        auto LabelTextSize = hGrp->GetInt("CbLabelTextSize", 13);
+        auto LabelTextColor =
             App::Color((uint32_t)hGrp->GetUnsigned("CbLabelColor", 0xffffffff));
-
         auto textFont = new SoFont;
+        auto color = new SoBaseColor;
         textFont->name.setValue("Helvetica,Arial,Times New Roman");
         textFont->size.setValue(LabelTextSize);
         trans->translation.setValue(maxPt[0] + 0.1f, maxPt[1] - 0.05f + fStep, 0.0f);
+        color->rgb.setValue(LabelTextColor.r,LabelTextColor.g,LabelTextColor.b);
         labels->addChild(trans);
+        labels->addChild(color);
         labels->addChild(textFont);
+
         for (int i = 0; i < num; i++) {
             auto trans = new SoTransform;
-            auto color = new SoBaseColor;
             auto text2 = new SoColorBarLabel;
-
             trans->translation.setValue(0, -fStep, 0);
-            color->rgb.setValue(LabelTextColor.r,LabelTextColor.g,LabelTextColor.b);
             text2->string.setValue(label[i]);
             labels->addChild(trans);
-            labels->addChild(color);
             labels->addChild(text2);
-            labels->addChild(textFont);
         }
     }
 
