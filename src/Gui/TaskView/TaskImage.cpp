@@ -33,13 +33,6 @@
 # include <Inventor/events/SoButtonEvent.h>
 # include <Inventor/events/SoMouseButtonEvent.h>
 # include <Inventor/events/SoKeyboardEvent.h>
-# include <Inventor/sensors/SoNodeSensor.h>
-# include <Inventor/nodes/SoOrthographicCamera.h>
-# include <Inventor/nodes/SoBaseColor.h>
-# include <Inventor/nodes/SoCoordinate3.h>
-# include <Inventor/nodes/SoLineSet.h>
-# include <Inventor/nodes/SoAnnotation.h>
-# include <Inventor/nodes/SoTransform.h>
 #endif
 
 #include <Base/Console.h>
@@ -51,7 +44,7 @@
 #include <Gui/BitmapFactory.h>
 #include <Gui/Camera.h>
 #include <Gui/Document.h>
-#include <Gui/SoDatumLabel.h>
+#include <Gui/EditableDatumLabel.h>
 #include <Gui/View3DInventor.h>
 #include <Gui/View3DInventorViewer.h>
 #include <Gui/ViewProviderDocumentObject.h>
@@ -410,11 +403,6 @@ void TaskImage::updateIcon()
 
 // ----------------------------------------------------------------------------
 
-
-struct NodeData {
-    InteractiveScale* scale;
-};
-
 InteractiveScale::InteractiveScale(View3DInventorViewer* view, ViewProvider* vp, Base::Placement plc)
     : active(false)
     , placement(plc)
@@ -422,57 +410,17 @@ InteractiveScale::InteractiveScale(View3DInventorViewer* view, ViewProvider* vp,
     , viewProv(vp)
     , midPoint(SbVec3f(0,0,0))
 {
-    root = new SoAnnotation;
-    root->ref();
-    root->renderCaching = SoSeparator::OFF;
-
-    measureLabel = new SoDatumLabel();
-    measureLabel->ref();
-    measureLabel->string = "";
-    measureLabel->textColor = SbColor(1.0f, 0.149f, 0.0f);
-    measureLabel->size.setValue(17);
-    measureLabel->lineWidth = 2.0;
-    measureLabel->useAntialiasing = false;
-    measureLabel->param1 = 0.;
-    measureLabel->param2 = 0.;
-
-    transform = new SoTransform();
-    root->addChild(transform);
-    setPlacement(placement);
-
-    QWidget* mdi = view->parentWidget();
-
-    distanceBox = new QuantitySpinBox(mdi);
-    distanceBox->setUnit(Base::Unit::Length);
-    distanceBox->setMinimum(0.0);
-    distanceBox->setMaximum(INT_MAX);
-    distanceBox->setButtonSymbols(QAbstractSpinBox::NoButtons);
-    distanceBox->setToolTip(tr("Enter desired distance between the points"));
-    distanceBox->setKeyboardTracking(false);
-    distanceBox->installEventFilter(this);
-
-    //track camera movements to update spinbox position.
-    NodeData* info = new NodeData{ this };
-    cameraSensor = new SoNodeSensor([](void* data, SoSensor* sensor) {
-        Q_UNUSED(sensor)
-        NodeData* info = static_cast<NodeData*>(data);
-        info->scale->positionWidget();
-    }, info);
-    cameraSensor->attach(viewer->getCamera());
+    measureLabel = new EditableDatumLabel(viewer, placement, SbColor(1.0f, 0.149f, 0.0f));
 }
 
 InteractiveScale::~InteractiveScale()
 {
-    root->unref();
-    measureLabel->unref();
-    distanceBox->deleteLater();
-    cameraSensor->detach();
+    delete measureLabel;
 }
 
 void InteractiveScale::activate()
 {
     if (viewer) {
-        static_cast<SoSeparator*>(viewer->getSceneGraph())->addChild(root);
         viewer->setEditing(true);
         viewer->addEventCallback(SoLocation2Event::getClassTypeId(), InteractiveScale::getMousePosition, this);
         viewer->addEventCallback(SoButtonEvent::getClassTypeId(), InteractiveScale::soEventFilter, this);
@@ -485,10 +433,8 @@ void InteractiveScale::activate()
 void InteractiveScale::deactivate()
 {
     if (viewer) {
-        distanceBox->hide();
         points.clear();
-        root->removeChild(measureLabel);
-        static_cast<SoSeparator*>(viewer->getSceneGraph())->removeChild(root);
+        measureLabel->deactivate();
         viewer->setEditing(false);
         viewer->removeEventCallback(SoLocation2Event::getClassTypeId(), InteractiveScale::getMousePosition, this);
         viewer->removeEventCallback(SoButtonEvent::getClassTypeId(), InteractiveScale::soEventFilter, this);
@@ -503,7 +449,7 @@ double InteractiveScale::getScaleFactor() const
     if ((points[0] - points[1]).length() == 0.)
         return 1.0;
 
-    return distanceBox->value().getValue() / (points[0] - points[1]).length();
+    return measureLabel->getValue() / (points[0] - points[1]).length();
 }
 
 double InteractiveScale::getDistance(const SbVec3f& pt) const
@@ -524,8 +470,8 @@ void InteractiveScale::setDistance(const SbVec3f& pos3d)
     double factor;
     QString unitStr, valueStr;
     valueStr = quantity.getUserString(factor, unitStr);
-    measureLabel->string = SbString(valueStr.toUtf8().constData());
-    measureLabel->setPoints(getCoordsOnImagePlane(points[0]), getCoordsOnImagePlane(pos3d));
+    measureLabel->label->string = SbString(valueStr.toUtf8().constData());
+    measureLabel->label->setPoints(getCoordsOnImagePlane(points[0]), getCoordsOnImagePlane(pos3d));
 }
 
 void InteractiveScale::findPointOnImagePlane(SoEventCallback * ecb)
@@ -545,8 +491,8 @@ void InteractiveScale::collectPoint(const SbVec3f& pos3d)
     if (points.empty()) {
         points.push_back(pos3d);
 
-        measureLabel->setPoints(getCoordsOnImagePlane(pos3d), getCoordsOnImagePlane(pos3d));
-        root->addChild(measureLabel);
+        measureLabel->label->setPoints(getCoordsOnImagePlane(pos3d), getCoordsOnImagePlane(pos3d));
+        measureLabel->activate();
     }
     else if (points.size() == 1) {
         double distance = getDistance(pos3d);
@@ -555,8 +501,7 @@ void InteractiveScale::collectPoint(const SbVec3f& pos3d)
 
             midPoint = (points[0] + points[1]) / 2;
 
-            measureLabel->string = "";
-            showDistanceField();
+            measureLabel->startEdit(getDistance(points[1]), this);
 
             Q_EMIT enableApplyBtn();
         }
@@ -564,26 +509,6 @@ void InteractiveScale::collectPoint(const SbVec3f& pos3d)
             Base::Console().Warning(std::string("Image scale"), "The second point is too close. Retry!\n");
         }
     }
-}
-
-void InteractiveScale::showDistanceField()
-{
-    distanceBox->show();
-    QSignalBlocker block(distanceBox);
-    distanceBox->setValue(getDistance(points[1]));
-    distanceBox->adjustSize();
-    positionWidget();
-    distanceBox->selectNumber();
-    distanceBox->setFocus();
-}
-
-void InteractiveScale::positionWidget()
-{
-    QSize wSize = distanceBox->size();
-    QPoint pxCoord = viewer->toQPoint(viewer->getPointOnViewport(midPoint));
-    pxCoord.setX(std::max(pxCoord.x() - wSize.width() / 2, 0));
-    pxCoord.setY(std::max(pxCoord.y() - wSize.height() / 2, 0));
-    distanceBox->move(pxCoord);
 }
 
 void InteractiveScale::getMousePosition(void * ud, SoEventCallback * ecb)
@@ -655,15 +580,7 @@ bool InteractiveScale::eventFilter(QObject* object, QEvent* event)
 void InteractiveScale::setPlacement(Base::Placement plc)
 {
     placement = plc;
-    double x, y, z, w;
-    placement.getRotation().getValue(x, y, z, w);
-    transform->rotation.setValue(x, y, z, w);
-    Base::Vector3d pos = placement.getPosition();
-    transform->translation.setValue(pos.x, pos.y, pos.z);
-
-    Base::Vector3d RN(0, 0, 1);
-    RN = placement.getRotation().multVec(RN);
-    measureLabel->norm.setValue(SbVec3f(RN.x, RN.y, RN.z));
+    measureLabel->setPlacement(plc);
 }
 
 SbVec3f InteractiveScale::getCoordsOnImagePlane(const SbVec3f& point)
