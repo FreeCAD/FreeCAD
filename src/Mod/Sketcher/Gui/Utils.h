@@ -62,6 +62,17 @@ bool isArcOfParabola(const Part::Geometry&);
 bool isBSplineCurve(const Part::Geometry&);
 bool isPoint(const Part::Geometry&);
 
+Base::Vector3d getPoint3d(const Part::Geometry* geo, PointPos PosId);
+Base::Vector2d getPoint2d(const Part::Geometry* geo, PointPos PosId);
+Base::Vector2d startPoint2d(const Part::Geometry* geo);
+Base::Vector2d endPoint2d(const Part::Geometry* geo);
+Base::Vector2d centerPoint2d(const Part::Geometry* geo);
+Base::Vector3d startPoint3d(const Part::Geometry* geo);
+Base::Vector3d endPoint3d(const Part::Geometry* geo);
+Base::Vector3d centerPoint3d(const Part::Geometry* geo);
+Base::Vector3d vec2dTo3d(Base::Vector2d& vec2d);
+Base::Vector2d vec3dTo2d(Base::Vector3d& vec2d);
+
 }  // namespace Sketcher
 
 namespace SketcherGui

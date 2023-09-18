@@ -93,6 +93,145 @@ bool Sketcher::isPoint(const Part::Geometry& geom)
     return geom.getTypeId() == Part::GeomPoint::getClassTypeId();
 }
 
+Base::Vector2d Sketcher::startPoint2d(const Part::Geometry* geo)
+{
+    return getPoint2d(geo, PointPos::start);
+}
+
+Base::Vector2d Sketcher::endPoint2d(const Part::Geometry* geo)
+{
+    return getPoint2d(geo, PointPos::end);
+}
+
+Base::Vector2d Sketcher::centerPoint2d(const Part::Geometry* geo)
+{
+    return getPoint2d(geo, PointPos::mid);
+}
+
+Base::Vector3d Sketcher::startPoint3d(const Part::Geometry* geo)
+{
+    return getPoint3d(geo, PointPos::start);
+}
+
+Base::Vector3d Sketcher::endPoint3d(const Part::Geometry* geo)
+{
+    return getPoint3d(geo, PointPos::end);
+}
+
+Base::Vector3d Sketcher::centerPoint3d(const Part::Geometry* geo)
+{
+    return getPoint3d(geo, PointPos::mid);
+}
+
+Base::Vector2d Sketcher::getPoint2d(const Part::Geometry* geo, PointPos PosId)
+{
+    Base::Vector3d p = getPoint3D(geo, PosId);
+    return Base::Vector2d(p.x, p.y);
+}
+
+Base::Vector3d Sketcher::getPoint3d(const Part::Geometry* geo, PointPos PosId)
+{
+    if (isPoint(*geo)) {
+        return (static_cast<const Part::GeomPoint*>(geo))->getPoint();
+    }
+    else if (isLineSegment(*geo)) {
+        const auto* lineSeg = static_cast<const Part::GeomLineSegment*>(geo);
+        if (PosId == PointPos::start) {
+            return lineSeg->getStartPoint();
+        }
+        else if (PosId == PointPos::end) {
+            return lineSeg->getEndPoint();
+        }
+        else if (PosId == PointPos::mid) {
+            return (lineSeg->getStartPoint() + lineSeg->getEndPoint()) / 2;
+        }
+    }
+    else if (isCircle(*geo)) {
+        const auto* circle = static_cast<const Part::GeomCircle*>(geo);
+        auto pt = circle->getCenter();
+        if (PosId != PointPos::mid) {
+            pt.x += circle->getRadius();
+        }
+        return pt;
+    }
+    else if (isEllipse(*geo)) {
+        const auto* ellipse = static_cast<const Part::GeomEllipse*>(geo);
+        auto pt = ellipse->getCenter();
+        if (PosId != PointPos::mid) {
+            pt += ellipse->getMajorAxisDir() * ellipse->getMajorRadius();
+        }
+        return pt;
+    }
+    else if (isArcOfCircle(*geo)) {
+        const auto* aoc = static_cast<const Part::GeomArcOfCircle*>(geo);
+        if (PosId == PointPos::start) {
+            return aoc->getStartPoint(/*emulateCCW=*/true);
+        }
+        else if (PosId == PointPos::end) {
+            return aoc->getEndPoint(/*emulateCCW=*/true);
+        }
+        else if (PosId == PointPos::mid) {
+            return aoc->getCenter();
+        }
+    }
+    else if (isArcOfEllipse(*geo)) {
+        const auto* aoc = static_cast<const Part::GeomArcOfEllipse*>(geo);
+        if (PosId == PointPos::start) {
+            return aoc->getStartPoint(/*emulateCCW=*/true);
+        }
+        else if (PosId == PointPos::end) {
+            return aoc->getEndPoint(/*emulateCCW=*/true);
+        }
+        else if (PosId == PointPos::mid) {
+            return aoc->getCenter();
+        }
+    }
+    else if (isArcOfHyperbola(*geo)) {
+        const auto* aoh = static_cast<const Part::GeomArcOfHyperbola*>(geo);
+        if (PosId == PointPos::start) {
+            return aoh->getStartPoint();
+        }
+        else if (PosId == PointPos::end) {
+            return aoh->getEndPoint();
+        }
+        else if (PosId == PointPos::mid) {
+            return aoh->getCenter();
+        }
+    }
+    else if (isArcOfParabola(*geo)) {
+        const auto* aop = static_cast<const Part::GeomArcOfParabola*>(geo);
+        if (PosId == PointPos::start) {
+            return aop->getStartPoint();
+        }
+        else if (PosId == PointPos::end) {
+            return aop->getEndPoint();
+        }
+        else if (PosId == PointPos::mid) {
+            return aop->getCenter();
+        }
+    }
+    else if (isBSplineCurve(*geo)) {
+        const auto* bsp = static_cast<const Part::GeomBSplineCurve*>(geo);
+        if (PosId == PointPos::start) {
+            return bsp->getStartPoint();
+        }
+        else if (PosId == PointPos::end) {
+            return bsp->getEndPoint();
+        }
+    }
+    return Base::Vector3d();
+}
+
+Base::Vector3d Sketcher::vec2dTo3d(Base::Vector2d& vec2d)
+{
+    return Base::Vector3d(vec2d.x, vec2d.y, 0.);
+}
+
+Base::Vector2d Sketcher::vec3dTo2d(Base::Vector3d& vec3d)
+{
+    return Base::Vector2d(vec3d.x, vec3d.y);
+}
+
 bool SketcherGui::tryAutoRecompute(Sketcher::SketchObject* obj, bool& autoremoveredundants)
 {
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(

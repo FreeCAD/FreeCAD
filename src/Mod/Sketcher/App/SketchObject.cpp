@@ -80,6 +80,7 @@
 #include <Mod/Part/App/DatumFeature.h>
 #include <Mod/Part/App/GeometryMigrationExtension.h>
 #include <Mod/Part/App/TopoShapeOpCode.h>
+#include <Mod/Sketcher/Gui/Utils.h>
 
 #include "SketchObject.h"
 #include "SketchObjectPy.h"
@@ -914,68 +915,7 @@ int SketchObject::movePoint(int GeoId, PointPos PosId, const Base::Vector3d& toP
 
 Base::Vector3d SketchObject::getPoint(const Part::Geometry *geo, PointPos PosId)
 {
-    if (geo->getTypeId() == Part::GeomPoint::getClassTypeId()) {
-        const Part::GeomPoint *p = static_cast<const Part::GeomPoint*>(geo);
-        if (PosId == PointPos::start || PosId == PointPos::mid || PosId == PointPos::end)
-            return p->getPoint();
-    } else if (geo->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
-        const Part::GeomLineSegment *lineSeg = static_cast<const Part::GeomLineSegment*>(geo);
-        if (PosId == PointPos::start)
-            return lineSeg->getStartPoint();
-        else if (PosId == PointPos::end)
-            return lineSeg->getEndPoint();
-    } else if (geo->getTypeId() == Part::GeomCircle::getClassTypeId()) {
-        const Part::GeomCircle *circle = static_cast<const Part::GeomCircle*>(geo);
-        auto pt = circle->getCenter();
-        if(PosId != PointPos::mid)
-             pt.x += circle->getRadius();
-        return pt;
-    } else if (geo->getTypeId() == Part::GeomEllipse::getClassTypeId()) {
-        const Part::GeomEllipse *ellipse = static_cast<const Part::GeomEllipse*>(geo);
-        auto pt = ellipse->getCenter();
-        if(PosId != PointPos::mid)
-            pt += ellipse->getMajorAxisDir()*ellipse->getMajorRadius();
-        return pt;
-    } else if (geo->getTypeId() == Part::GeomArcOfCircle::getClassTypeId()) {
-        const Part::GeomArcOfCircle *aoc = static_cast<const Part::GeomArcOfCircle*>(geo);
-        if (PosId == PointPos::start)
-            return aoc->getStartPoint(/*emulateCCW=*/true);
-        else if (PosId == PointPos::end)
-            return aoc->getEndPoint(/*emulateCCW=*/true);
-        else if (PosId == PointPos::mid)
-            return aoc->getCenter();
-    } else if (geo->getTypeId() == Part::GeomArcOfEllipse::getClassTypeId()) {
-        const Part::GeomArcOfEllipse *aoc = static_cast<const Part::GeomArcOfEllipse*>(geo);
-        if (PosId == PointPos::start)
-            return aoc->getStartPoint(/*emulateCCW=*/true);
-        else if (PosId == PointPos::end)
-            return aoc->getEndPoint(/*emulateCCW=*/true);
-        else if (PosId == PointPos::mid)
-            return aoc->getCenter();
-    } else if (geo->getTypeId() == Part::GeomArcOfHyperbola::getClassTypeId()) {
-        const Part::GeomArcOfHyperbola *aoh = static_cast<const Part::GeomArcOfHyperbola*>(geo);
-        if (PosId == PointPos::start)
-            return aoh->getStartPoint();
-        else if (PosId == PointPos::end)
-            return aoh->getEndPoint();
-        else if (PosId == PointPos::mid)
-            return aoh->getCenter();
-    } else if (geo->getTypeId() == Part::GeomArcOfParabola::getClassTypeId()) {
-        const Part::GeomArcOfParabola *aop = static_cast<const Part::GeomArcOfParabola*>(geo);
-        if (PosId == PointPos::start)
-            return aop->getStartPoint();
-        else if (PosId == PointPos::end)
-            return aop->getEndPoint();
-        else if (PosId == PointPos::mid)
-            return aop->getCenter();
-    } else if (geo->getTypeId() == Part::GeomBSplineCurve::getClassTypeId()) {
-        const Part::GeomBSplineCurve *bsp = static_cast<const Part::GeomBSplineCurve*>(geo);
-        if (PosId == PointPos::start)
-            return bsp->getStartPoint();
-        else if (PosId == PointPos::end)
-            return bsp->getEndPoint();
-    }
-    return Base::Vector3d();
+    return getPoint3d(geo, PosId);
 }
 
 Base::Vector3d SketchObject::getPoint(int GeoId, PointPos PosId) const
