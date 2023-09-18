@@ -176,6 +176,20 @@ QWidget* DockWindowManager::getDockWindow(const char* name) const
 }
 
 /**
+ * Returns the dock widget by name.
+ * If it does not exist 0 is returned.
+ */
+QDockWidget* DockWindowManager::getDockContainer(const char* name) const
+{
+    for (QList<QDockWidget*>::Iterator it = d->_dockedWindows.begin(); it != d->_dockedWindows.end(); ++it) {
+        if ((*it)->objectName() == QLatin1String(name))
+            return (*it);
+    }
+
+    return nullptr;
+}
+
+/**
  * Returns a list of all widgets inside the dock windows.
  */
 QList<QWidget*> DockWindowManager::getDockWindows() const
