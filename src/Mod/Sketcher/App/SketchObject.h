@@ -269,6 +269,9 @@ public:
     /// Move Dimensional constraints at the end of the properties array
     int moveDatumsToEnd();
 
+    /// Change an angle constraint to its supplementary angle.
+    void reverseAngleConstraintToSupplementary(Constraint* constr, int constNum);
+
     // Check if a constraint has an expression associated.
     bool constraintHasExpression(int constNum);
     // Get a constraint associated expression

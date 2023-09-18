@@ -660,6 +660,28 @@ int SketchObject::moveDatumsToEnd()
     return 0;
 }
 
+
+void SketchObject::reverseAngleConstraintToSupplementary(Constraint* constr, int constNum)
+{
+    std::swap(constr->First, constr->Second);
+    std::swap(constr->FirstPos, constr->SecondPos);
+    constr->FirstPos = (constr->FirstPos == Sketcher::PointPos::start) ? Sketcher::PointPos::end : Sketcher::PointPos::start;
+    double actAngle = constr->getValue();
+    constr->setValue(M_PI - actAngle);
+
+    // Edit the expression if any
+    if (constraintHasExpression(constNum)) {
+        std::string expression = getConstraintExpression(constNum);
+        if (expression.substr(0, 7) == "180 - (") {
+            expression = expression.substr(7, expression.size() - 8);
+        }
+        else {
+            expression = "180 - (" + expression + ")";
+        }
+        setConstraintExpression(constNum, expression);
+    }
+}
+
 bool SketchObject::constraintHasExpression(int constNum)
 {
     App::ObjectIdentifier path = Constraints.createPath(constNum);
