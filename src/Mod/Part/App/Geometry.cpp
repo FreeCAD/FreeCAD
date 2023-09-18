@@ -103,6 +103,7 @@
 # include <ctime>
 #endif //_PreComp_
 
+#include <Base/Console.h>
 #include <Base/Exception.h>
 #include <Base/Reader.h>
 #include <Base/Writer.h>
@@ -232,16 +233,21 @@ void Geometry::Restore(Base::XMLReader &reader)
 
     if(strcmp(reader.localName(),"GeoExtensions") == 0) { // new format
 
-        int count = reader.getAttributeAsInteger("count");
+        long count = reader.getAttributeAsInteger("count");
 
-        for (int i = 0; i < count; i++) {
+        for (long i = 0; i < count; i++) {
             reader.readElement("GeoExtension");
             const char* TypeName = reader.getAttribute("type");
             Base::Type type = Base::Type::fromName(TypeName);
             GeometryPersistenceExtension *newE = static_cast<GeometryPersistenceExtension *>(type.createInstance());
-            newE->Restore(reader);
+            if (newE) {
+                newE->Restore(reader);
 
-            extensions.push_back(std::shared_ptr<GeometryExtension>(newE));
+                extensions.push_back(std::shared_ptr<GeometryExtension>(newE));
+            }
+            else {
+                Base::Console().Warning("Cannot restore geometry extension of type: %s\n", TypeName);
+            }
         }
 
         reader.readEndElement("GeoExtensions");

@@ -487,17 +487,17 @@ PyObject* MatrixPy::setRow(PyObject * args)
     Py_Return;
 }
 
-PyObject* MatrixPy::trace(PyObject * args)
+PyObject* MatrixPy::diagonal(PyObject * args)
 {
     if (!PyArg_ParseTuple(args, ""))
         return nullptr;
 
     Matrix4D* mat = getMatrixPtr();
-    Base::Vector3d v = mat->trace();
+    Base::Vector3d v = mat->diagonal();
     return Py::new_reference_to(Py::Vector(v));
 }
 
-PyObject* MatrixPy::setTrace(PyObject * args)
+PyObject* MatrixPy::setDiagonal(PyObject * args)
 {
     PyObject* o{};
     if (!PyArg_ParseTuple(args, "O!", &(VectorPy::Type), &o))
@@ -505,7 +505,7 @@ PyObject* MatrixPy::setTrace(PyObject * args)
 
     Base::Vector3d v = Py::Vector(o, false).toVector();
     Matrix4D* mat = getMatrixPtr();
-    mat->setTrace(v);
+    mat->setDiagonal(v);
     Py_Return;
 }
 

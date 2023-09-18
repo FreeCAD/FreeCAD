@@ -132,8 +132,8 @@ def InitApplications():
         InstallFile = os.path.join(Dir,"InitGui.py")
         if os.path.exists(InstallFile):
             try:
-                with open(file=InstallFile, encoding="utf-8") as f:
-                    exec(f.read())
+                with open(InstallFile, 'rt', encoding='utf-8') as f:
+                    exec(compile(f.read(), InstallFile, 'exec'))
             except Exception as inst:
                 Log('Init:      Initializing ' + Dir + '... failed\n')
                 Log('-'*100+'\n')

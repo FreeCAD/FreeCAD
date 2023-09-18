@@ -502,6 +502,9 @@ class ViewProviderLinearDimension(ViewProviderDimensionBase):
                                                        rot1[2], rot1[3]))
             self.transDimOvershoot2.rotation.setValue((rot1[0], rot1[1],
                                                        rot1[2], rot1[3]))
+            self.trot = rot1
+        else:
+            self.trot = (0, 0, 0, 1)
 
         if hasattr(vobj, "FlipArrows") and vobj.FlipArrows:
             u = u.negative()
@@ -535,7 +538,6 @@ class ViewProviderLinearDimension(ViewProviderDimensionBase):
         else:
             offset = DraftVecUtils.scaleTo(v1, 0.05)
 
-        self.trot = rot1
         if hasattr(vobj, "FlipText") and vobj.FlipText:
             _rott = App.Rotation(self.trot[0], self.trot[1], self.trot[2], self.trot[3])
             self.trot = _rott.multiply(App.Rotation(App.Vector(0, 0, 1), 180)).Q

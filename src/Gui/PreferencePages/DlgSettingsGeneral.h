@@ -73,6 +73,8 @@ public Q_SLOTS:
     void on_checkBox_projectUnitSystemIgnore_stateChanged(int state);
 
 private:
+    void saveDockWindowVisibility();
+    void loadDockWindowVisibility();
     void setRecentFileSize();
     void saveAsNewPreferencePack();
     void revertToSavedConfig();

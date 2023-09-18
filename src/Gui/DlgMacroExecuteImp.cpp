@@ -27,6 +27,7 @@
 # include <QMessageBox>
 # include <QComboBox>
 # include <QSignalBlocker>
+# include <QTextStream>
 #endif
 
 #include <App/Document.h>
@@ -132,34 +133,107 @@ void DlgMacroExecuteImp::setupConnections()
             this, &DlgMacroExecuteImp::onSystemMacroListBoxCurrentItemChanged);
     connect(ui->tabMacroWidget, &QTabWidget::currentChanged,
             this, &DlgMacroExecuteImp::onTabMacroWidgetCurrentChanged);
+    connect(ui->LineEditFind, &QLineEdit::textChanged,
+            this, &DlgMacroExecuteImp::onLineEditFindTextChanged);
+    connect(ui->LineEditFindInFiles, &QLineEdit::textChanged,
+            this, &DlgMacroExecuteImp::onLineEditFindInFilesTextChanged);
+}
+
+/** Take a folder and return a StringList of the filenames in it
+ * filtered by both filename *and* by content, if the user has
+ * put text in one or both of the search line edits.
+ *
+ * First filtering is done by file name, which reduces the
+ * number of files to open and read (relatively expensive operation).
+ *
+ * Then we filter by file content after reducing the number of files
+ * to open and read.  But both loops are skipped if there is no text
+ * in either of the line edits.
+ *
+ * We do this as another function in order to reuse this code for
+ * doing both the User and System macro list boxes in the fillUpList() function.
+ */
+
+QStringList DlgMacroExecuteImp::filterFiles(const QString& folder){
+    QDir dir(folder, QLatin1String("*.FCMacro *.py"));
+    QStringList unfiltered = dir.entryList(); //all .fcmacro and .py files
+    QString fileFilter = ui->LineEditFind->text(); //used to search by filename
+    QString searchText = ui->LineEditFindInFiles->text(); //used to search in file content
+
+    if (fileFilter.isEmpty() && searchText.isEmpty()){ //skip filtering if no filters
+        return unfiltered;
+    }
+    QStringList filteredByFileName;
+    if (fileFilter.isEmpty()){
+        filteredByFileName = unfiltered; //skip the loop if no file filter
+    } else {
+        QRegularExpression regexFileName(fileFilter, QRegularExpression::CaseInsensitiveOption);
+        bool isValidFileFilter = regexFileName.isValid(); //check here instead of inside the loop
+        for (auto uf : unfiltered){
+            if (isValidFileFilter){
+                if (regexFileName.match(uf).hasMatch()) {
+                    filteredByFileName.append(uf);
+                }
+            } else { //not valid, so do a simple text search
+                if (uf.contains(fileFilter, Qt::CaseInsensitive)) {
+                    filteredByFileName.append(uf);
+                }
+            }
+        }
+    }
+
+    if (searchText.isEmpty()){ //skip reading file contents if no find in file filter
+        return filteredByFileName;
+    }
+
+    QRegularExpression regexContent(searchText, QRegularExpression::CaseInsensitiveOption);
+    bool isValidContentFilter = regexContent.isValid();
+    QStringList filteredByContent;
+    for (auto fn : filteredByFileName) {
+        const QString &fileName = fn;
+        QString filePath = dir.filePath(fileName);
+        QFile file(filePath);
+        if (file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+            QTextStream in(&file);
+            QString fileContent = in.readAll();
+            if (isValidContentFilter){
+                if (regexContent.match(fileContent).hasMatch()) {
+                    filteredByContent.append(fileName);
+                }
+            } else {
+                if (fileContent.contains(searchText, Qt::CaseInsensitive)){
+                    filteredByContent.append(fileName);
+                }
+            }
+            file.close();
+        }
+    }
+    return filteredByContent;
 }
 
 /**
- * Fills up the list with all macro files found in the specified location.
+ * Fills up the list with macro files found in the specified location
+ * that have been filtered by both filename and by content
  */
 void DlgMacroExecuteImp::fillUpList()
 {
-    // lists all files in macro path
-    QDir dir(this->macroPath, QLatin1String("*.FCMacro *.py"));
-
-    // fill up with the directory
+    QStringList filteredByContent = this->filterFiles(this->macroPath);
     ui->userMacroListBox->clear();
-    for (unsigned int i=0; i<dir.count(); i++ ) {
+    for (auto fn : filteredByContent){
         auto item = new MacroItem(ui->userMacroListBox,false);
-        item->setText(0, dir[i]);
+        item->setText(0, fn);
     }
 
     QString dirstr = QString::fromStdString(App::Application::getHomePath()) + QString::fromLatin1("Macro");
-    dir = QDir(dirstr, QLatin1String("*.FCMacro *.py"));
+    filteredByContent = this->filterFiles(dirstr);
 
     ui->systemMacroListBox->clear();
-    if (dir.exists()) {
-        for (unsigned int i=0; i<dir.count(); i++ ) {
-            auto item = new MacroItem(ui->systemMacroListBox,true);
-            item->setText(0, dir[i]);
-        }
+    for (auto fn : filteredByContent) {
+        auto item = new MacroItem(ui->systemMacroListBox,true);
+        item->setText(0, fn);
     }
 }
+
 
 /**
  * Selects a macro file in the list view.
@@ -186,6 +260,16 @@ void DlgMacroExecuteImp::onUserMacroListBoxCurrentItemChanged(QTreeWidgetItem* i
         ui->renameButton->setEnabled(false);
         ui->duplicateButton->setEnabled(false);
     }
+}
+
+void DlgMacroExecuteImp::onLineEditFindTextChanged(const QString &text){
+    Q_UNUSED(text);
+    this->fillUpList();
+}
+
+void DlgMacroExecuteImp::onLineEditFindInFilesTextChanged(const QString &text){
+    Q_UNUSED(text);
+    this->fillUpList();
 }
 
 void DlgMacroExecuteImp::onSystemMacroListBoxCurrentItemChanged(QTreeWidgetItem* item)

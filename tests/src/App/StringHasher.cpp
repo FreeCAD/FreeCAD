@@ -1002,8 +1002,8 @@ TEST_F(StringIDRefTest, getPyObject)  // NOLINT
     auto empty = App::StringIDRef();
 
     // Act
-    Py::Object pyObject(ref.getPyObject());
-    Py::Object none(empty.getPyObject());
+    Py::Object pyObject(ref.getPyObject(), true);
+    Py::Object none(empty.getPyObject(), true);
 
     // Assert
     EXPECT_TRUE(PyObject_TypeCheck(pyObject.ptr(), &App::StringIDPy::Type));

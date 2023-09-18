@@ -77,7 +77,39 @@
           </property>
          </widget>
         </item>
-       <item row="1" column="0">
+        <item row="1" column="0">
+         <layout class="QHBoxLayout">
+          <item>
+           <widget class="QLabel" name="label">
+            <property name="text">
+             <string>Find file:</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLineEdit" name="LineEditFind">
+            <property name="toolTip">
+             <string>Case-insensitive search for filenames, regular expressions supported</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="label">
+            <property name="text">
+             <string>Find in files:</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLineEdit" name="LineEditFindInFiles">
+            <property name="toolTip">
+             <string>Filter by case-insensitive file content, regular expressions supported</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item row="2" column="0">
          <widget class="QTabWidget" name="tabMacroWidget">
           <property name="tabPosition">
            <enum>QTabWidget::North</enum>
@@ -137,7 +169,7 @@
           </widget>
          </widget>
         </item>
-        </layout>
+       </layout>
       </widget>
      </item>
      <item row="0" column="1">
@@ -281,7 +313,7 @@
        </item>
       </layout>
      </item>
-    <item row="1" column="0">
+     <item row="1" column="0">
       <widget class="QGroupBox" name="DestinationGroup">
        <property name="title">
         <string>User macros location:</string>
@@ -307,15 +339,12 @@
           <property name="focusPolicy">
            <enum>Qt::StrongFocus</enum>
           </property>
-          <property name="mode">
-           <enum>Gui::FileChooser::Directory</enum>
-          </property>
          </widget>
         </item>
        </layout>
       </widget>
      </item>
-     </layout>
+    </layout>
    </item>
   </layout>
  </widget>

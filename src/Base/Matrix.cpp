@@ -63,9 +63,9 @@ Matrix4D::Matrix4D (double a11, double a12, double a13, double a14,
 {
 }
 
-Matrix4D::Matrix4D (const Matrix4D& rclMtrx) : Matrix4D()
+Matrix4D::Matrix4D (const Matrix4D& mat) : Matrix4D()
 {
-    (*this) = rclMtrx;
+    (*this) = mat;
 }
 
 Matrix4D::Matrix4D (const Vector3f& rclBase, const Vector3f& rclDir, float fAngle)
@@ -148,47 +148,48 @@ double Matrix4D::determinant() const
 
 double Matrix4D::determinant3() const
 {
-    double a = dMtrx4D[0][0] * dMtrx4D[1][1] * dMtrx4D[2][2];
-    double b = dMtrx4D[0][1] * dMtrx4D[1][2] * dMtrx4D[2][0];
-    double c = dMtrx4D[1][0] * dMtrx4D[2][1] * dMtrx4D[0][2];
-    double d = dMtrx4D[0][2] * dMtrx4D[1][1] * dMtrx4D[2][0];
-    double e = dMtrx4D[1][0] * dMtrx4D[0][1] * dMtrx4D[2][2];
-    double f = dMtrx4D[0][0] * dMtrx4D[2][1] * dMtrx4D[1][2];
-    double det = (a + b + c) - (d + e + f);
+    double va = dMtrx4D[0][0] * dMtrx4D[1][1] * dMtrx4D[2][2];
+    double vb = dMtrx4D[0][1] * dMtrx4D[1][2] * dMtrx4D[2][0];
+    double vc = dMtrx4D[1][0] * dMtrx4D[2][1] * dMtrx4D[0][2];
+    double vd = dMtrx4D[0][2] * dMtrx4D[1][1] * dMtrx4D[2][0];
+    double ve = dMtrx4D[1][0] * dMtrx4D[0][1] * dMtrx4D[2][2];
+    double vf = dMtrx4D[0][0] * dMtrx4D[2][1] * dMtrx4D[1][2];
+    double det = (va + vb + vc) - (vd + ve + vf);
     return det;
 }
 
-void Matrix4D::move (const Vector3f& rclVct)
+void Matrix4D::move (const Vector3f& vec)
 {
-    move(convertTo<Vector3d>(rclVct));
+    move(convertTo<Vector3d>(vec));
 }
 
-void Matrix4D::move (const Vector3d& rclVct)
+void Matrix4D::move (const Vector3d& vec)
 {
-    dMtrx4D[0][3] += rclVct.x;
-    dMtrx4D[1][3] += rclVct.y;
-    dMtrx4D[2][3] += rclVct.z;
+    dMtrx4D[0][3] += vec.x;
+    dMtrx4D[1][3] += vec.y;
+    dMtrx4D[2][3] += vec.z;
 }
 
-void Matrix4D::scale (const Vector3f& rclVct)
+void Matrix4D::scale (const Vector3f& vec)
 {
-    scale(convertTo<Vector3d>(rclVct));
+    scale(convertTo<Vector3d>(vec));
 }
 
-void Matrix4D::scale (const Vector3d& rclVct)
+void Matrix4D::scale (const Vector3d& vec)
 {
     Matrix4D clMat;
 
-    clMat.dMtrx4D[0][0] = rclVct.x;
-    clMat.dMtrx4D[1][1] = rclVct.y;
-    clMat.dMtrx4D[2][2] = rclVct.z;
+    clMat.dMtrx4D[0][0] = vec.x;
+    clMat.dMtrx4D[1][1] = vec.y;
+    clMat.dMtrx4D[2][2] = vec.z;
     (*this) = clMat * (*this);
 }
 
 void Matrix4D::rotX (double fAngle)
 {
     Matrix4D clMat;
-    double fsin{}, fcos{};
+    double fsin{};
+    double fcos{};
 
     fsin = sin (fAngle);
     fcos = cos (fAngle);
@@ -201,7 +202,8 @@ void Matrix4D::rotX (double fAngle)
 void Matrix4D::rotY (double fAngle)
 {
     Matrix4D clMat;
-    double fsin{}, fcos{};
+    double fsin{};
+    double fcos{};
 
     fsin = sin (fAngle);
     fcos = cos (fAngle);
@@ -214,7 +216,8 @@ void Matrix4D::rotY (double fAngle)
 void Matrix4D::rotZ (double fAngle)
 {
     Matrix4D clMat;
-    double fsin{}, fcos{};
+    double fsin{};
+    double fcos{};
 
     fsin = sin (fAngle);
     fcos = cos (fAngle);
@@ -224,17 +227,20 @@ void Matrix4D::rotZ (double fAngle)
     (*this) = clMat * (*this);
 }
 
-void Matrix4D::rotLine(const Vector3d& rclVct, double fAngle)
+void Matrix4D::rotLine(const Vector3d& vec, double fAngle)
 {
     // **** algorithm was taken from a math book
-    Matrix4D  clMA, clMB, clMC, clMRot;
-    Vector3d  clRotAxis(rclVct);
-    short iz{}, is{};
-    double fcos{}, fsin{};
+    Matrix4D clMA;
+    Matrix4D clMB;
+    Matrix4D clMC;
+    Matrix4D clMRot;
+    Vector3d clRotAxis(vec);
+    double fcos{};
+    double fsin{};
 
     // set all entries to "0"
-    for (iz = 0; iz < 4; iz++) {
-        for (is = 0; is < 4; is++)  {
+    for (short iz = 0; iz < 4; iz++) {
+        for (short is = 0; is < 4; is++)  {
             clMA.dMtrx4D[iz][is] = 0;
             clMB.dMtrx4D[iz][is] = 0;
             clMC.dMtrx4D[iz][is] = 0;
@@ -269,8 +275,8 @@ void Matrix4D::rotLine(const Vector3d& rclVct, double fAngle)
     clMC.dMtrx4D[2][0] = -fsin * clRotAxis.y;
     clMC.dMtrx4D[2][1] =  fsin * clRotAxis.x;
 
-    for (iz = 0; iz < 3; iz++) {
-        for (is = 0; is < 3; is++)
+    for (short iz = 0; iz < 3; iz++) {
+        for (short is = 0; is < 3; is++)
             clMRot.dMtrx4D[iz][is] = clMA.dMtrx4D[iz][is] +
                                      clMB.dMtrx4D[iz][is] +
                                      clMC.dMtrx4D[iz][is];
@@ -279,9 +285,9 @@ void Matrix4D::rotLine(const Vector3d& rclVct, double fAngle)
     (*this) = clMRot * (*this);
 }
 
-void Matrix4D::rotLine(const Vector3f& rclVct, float fAngle)
+void Matrix4D::rotLine(const Vector3f& vec, float fAngle)
 {
-    Vector3d tmp = convertTo<Vector3d>(rclVct);
+    Vector3d tmp = convertTo<Vector3d>(vec);
     rotLine(tmp, static_cast<double>(fAngle));
 }
 
@@ -455,35 +461,38 @@ bool Matrix4D::toAxisAngle (Vector3d& rclBase, Vector3d& rclDir, double& rfAngle
   return true;
 }
 
-void Matrix4D::transform (const Vector3f& rclVct, const Matrix4D& rclMtrx)
+void Matrix4D::transform (const Vector3f& vec, const Matrix4D& mat)
 {
-    move(-rclVct);
-    (*this) = rclMtrx * (*this);
-    move(rclVct);
+    move(-vec);
+    (*this) = mat * (*this);
+    move(vec);
 }
 
-void Matrix4D::transform (const Vector3d& rclVct, const Matrix4D& rclMtrx)
+void Matrix4D::transform (const Vector3d& vec, const Matrix4D& mat)
 {
-    move(-rclVct);
-    (*this) = rclMtrx * (*this);
-    move(rclVct);
+    move(-vec);
+    (*this) = mat * (*this);
+    move(vec);
 }
 
 void Matrix4D::inverse ()
 {
-  Matrix4D clInvTrlMat, clInvRotMat;
-  short  iz{}, is{};
+  Matrix4D clInvTrlMat;
+  Matrix4D clInvRotMat;
 
   /**** Herausnehmen und Inversion der TranslationsMatrix
   aus der TransformationMatrix                      ****/
-  for (iz = 0 ;iz < 3; iz++)
+  for (short iz = 0 ;iz < 3; iz++) {
     clInvTrlMat.dMtrx4D[iz][3] = -dMtrx4D[iz][3];
+  }
 
   /**** Herausnehmen und Inversion der RotationsMatrix
   aus der TransformationMatrix                      ****/
-  for (iz = 0 ;iz < 3; iz++)
-    for (is = 0 ;is < 3; is++)
+  for (short iz = 0 ;iz < 3; iz++) {
+    for (short is = 0 ;is < 3; is++) {
       clInvRotMat.dMtrx4D[iz][is] = dMtrx4D[is][iz];
+    }
+  }
 
   /**** inv(M) = inv(Mtrl * Mrot) = inv(Mrot) * inv(Mtrl) ****/
   (*this) = clInvRotMat * clInvTrlMat;
@@ -563,12 +572,12 @@ void Matrix_gauss(Matrix a, Matrix b)
 
 void  Matrix4D::inverseOrthogonal()
 {
-    Base::Vector3d c(dMtrx4D[0][3],dMtrx4D[1][3],dMtrx4D[2][3]);
+    Base::Vector3d vec(dMtrx4D[0][3],dMtrx4D[1][3],dMtrx4D[2][3]);
     transpose();
-    c = this->operator * (c);
-    dMtrx4D[0][3] = -c.x; dMtrx4D[3][0] = 0;
-    dMtrx4D[1][3] = -c.y; dMtrx4D[3][1] = 0;
-    dMtrx4D[2][3] = -c.z; dMtrx4D[3][2] = 0;
+    vec = this->operator * (vec);
+    dMtrx4D[0][3] = -vec.x; dMtrx4D[3][0] = 0;
+    dMtrx4D[1][3] = -vec.y; dMtrx4D[3][1] = 0;
+    dMtrx4D[2][3] = -vec.z; dMtrx4D[3][2] = 0;
 }
 
 void Matrix4D::inverseGauss ()
@@ -767,8 +776,9 @@ std::string Matrix4D::analyse() const
                 }
             }
         }
-        if (hastranslation)
+        if (hastranslation) {
             text += " with Translation";
+        }
     }
     return text;
 }
@@ -831,20 +841,26 @@ Matrix4D& Matrix4D::Hat(const Vector3d& rV)
 
 ScaleType Matrix4D::hasScale(double tol) const
 {
+    const double defaultTolerance = 1e-9;
     // check for uniform scaling
     //
     // For a scaled rotation matrix it matters whether
     // the scaling was applied from the left or right side.
     // Only in case of uniform scaling it doesn't make a difference.
-    if (tol == 0.0)
-        tol = 1e-9;
+    if (tol == 0.0) {
+        tol = defaultTolerance;
+    }
 
     // check if the absolute values are proportionally close or equal
-    auto closeAbs = [&](double a, double b) {
-        double c = fabs(a);
-        double d = fabs(b);
-        if (d>c) return (d-c)/d <= tol;
-        else if (c>d) return (c-d)/c <= tol;
+    auto closeAbs = [&](double val_a, double val_b) {
+        double abs_a = fabs(val_a);
+        double abs_b = fabs(val_b);
+        if (abs_b > abs_a) {
+            return (abs_b - abs_a)/abs_b <= tol;
+        }
+        if (abs_a > abs_b) {
+            return (abs_a-abs_b)/abs_a <= tol;
+        }
         return true;
     };
 

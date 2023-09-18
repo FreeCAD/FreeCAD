@@ -97,6 +97,7 @@ SoDatumLabel::SoDatumLabel()
     this->imgWidth = 0;
     this->imgHeight = 0;
     this->glimagevalid = false;
+    this->textOffset = SbVec3f(0.f, 0.f, 0.f);
 }
 
 void SoDatumLabel::drawImage()
@@ -433,19 +434,11 @@ private:
 
 void SoDatumLabel::computeBBox(SoAction * action, SbBox3f &box, SbVec3f &center)
 {
-    if (!this->bbox.isEmpty()) {
-        // Set the bounding box using stored parameters
-        box.setBounds(this->bbox.getMin(),this->bbox.getMax() );
-        SbVec3f bbcenter = this->bbox.getCenter();
-        center.setValue(bbcenter[0], bbcenter[1], bbcenter[2]);
-    }
-    else {
-        SoState *state = action->getState();
-        float scale = getScaleFactor(state);
+    SoState *state = action->getState();
+    float scale = getScaleFactor(state);
 
-        DatumLabelBox datumBox(scale, this);
-        datumBox.computeBBox(box, center);
-    }
+    DatumLabelBox datumBox(scale, this);
+    datumBox.computeBBox(box, center);
 }
 
 void SoDatumLabel::generateDistancePrimitives(SoAction * action, const SbVec3f& p1, const SbVec3f& p2)
@@ -485,7 +478,7 @@ void SoDatumLabel::generateDistancePrimitives(SoAction * action, const SbVec3f& 
     img3 = SbVec3f((img3[0] * c) - (img3[1] * s), (img3[0] * s) + (img3[1] * c), 0.f);
     img4 = SbVec3f((img4[0] * c) - (img4[1] * s), (img4[0] * s) + (img4[1] * c), 0.f);
 
-    SbVec3f textOffset = midpos + normal * length + dir * length2;
+    textOffset = midpos + normal * length + dir * length2;
 
     img1 += textOffset;
     img2 += textOffset;
@@ -539,7 +532,7 @@ void SoDatumLabel::generateDiameterPrimitives(SoAction * action, const SbVec3f& 
     img3 = SbVec3f((img3[0] * c) - (img3[1] * s), (img3[0] * s) + (img3[1] * c), 0.f);
     img4 = SbVec3f((img4[0] * c) - (img4[1] * s), (img4[0] * s) + (img4[1] * c), 0.f);
 
-    SbVec3f textOffset = pos;
+    textOffset = pos;
 
     img1 += textOffset;
     img2 += textOffset;
@@ -585,7 +578,7 @@ void SoDatumLabel::generateAnglePrimitives(SoAction * action, const SbVec3f& p0)
     // p0 - vector for angle intersect
     SbVec3f v0(cos(startangle+range/2),sin(startangle+range/2),0);
 
-    SbVec3f textOffset = p0 + v0 * r;
+    textOffset = p0 + v0 * r;
 
     SbVec3f img1 = SbVec3f(-this->imgWidth / 2, -this->imgHeight / 2, 0.f);
     SbVec3f img2 = SbVec3f(-this->imgWidth / 2,  this->imgHeight / 2, 0.f);
@@ -821,8 +814,6 @@ void SoDatumLabel::GLRender(SoGLRenderAction * action)
     // Position for Datum Text Label
     float angle = 0;
 
-    SbVec3f textOffset;
-
     // Get the colour
     const SbColor& t = textColor.getValue();
 
@@ -913,13 +904,13 @@ void SoDatumLabel::GLRender(SoGLRenderAction * action)
         }
         // Perp Lines
         glBegin(GL_LINES);
-        if (length != 0.) {
-            glVertex2f(p1[0], p1[1]);
-            glVertex2f(perp1[0], perp1[1]);
+            if (length != 0.) {
+                glVertex2f(p1[0], p1[1]);
+                glVertex2f(perp1[0], perp1[1]);
 
-            glVertex2f(p2[0], p2[1]);
-            glVertex2f(perp2[0], perp2[1]);
-        }
+                glVertex2f(p2[0], p2[1]);
+                glVertex2f(perp2[0], perp2[1]);
+            }
 
             glVertex2f(par1[0], par1[1]);
             glVertex2f(par2[0], par2[1]);
@@ -946,30 +937,6 @@ void SoDatumLabel::GLRender(SoGLRenderAction * action)
             glVertex2f(ar3[0], ar3[1]);
             glVertex2f(ar4[0], ar4[1]);
         glEnd();
-
-        // BOUNDING BOX CALCULATION - IMPORTANT
-        // Finds the mins and maxes
-        std::vector<SbVec3f> corners;
-        corners.push_back(p1);
-        corners.push_back(p2);
-        corners.push_back(perp1);
-        corners.push_back(perp2);
-
-        // Make sure that the label is inside the bounding box
-        corners.push_back(textOffset + dir * (this->imgWidth / 2 + margin) + normal * (srch + margin));
-        corners.push_back(textOffset - dir * (this->imgWidth / 2 + margin) + normal * (srch + margin));
-        corners.push_back(textOffset + dir * (this->imgWidth / 2 + margin) - normal * margin);
-        corners.push_back(textOffset - dir * (this->imgWidth / 2 + margin) - normal * margin);
-
-        float minX = p1[0], minY = p1[1], maxX = p1[0] , maxY = p1[1];
-        for (SbVec3f it : corners) {
-            minX = (it[0] < minX) ? it[0] : minX;
-            minY = (it[1] < minY) ? it[1] : minY;
-            maxX = (it[0] > maxX) ? it[0] : maxX;
-            maxY = (it[1] > maxY) ? it[1] : maxY;
-        }
-        //Store the bounding box
-        this->bbox.setBounds(SbVec3f(minX, minY, 0.f), SbVec3f (maxX, maxY, 0.f));
     }
     else if (this->datumtype.getValue() == RADIUS || this->datumtype.getValue() == DIAMETER) {
         // Get the Points
@@ -1039,23 +1006,6 @@ void SoDatumLabel::GLRender(SoGLRenderAction * action)
 
         }
 
-        // BOUNDING BOX CALCULATION - IMPORTANT
-        // Finds the mins and maxes
-        std::vector<SbVec3f> corners;
-        corners.push_back(p1);
-        corners.push_back(p2);
-        corners.push_back(pnt1);
-        corners.push_back(pnt2);
-
-        float minX = p1[0], minY = p1[1], maxX = p1[0] , maxY = p1[1];
-        for (SbVec3f it : corners) {
-            minX = (it[0] < minX) ? it[0] : minX;
-            minY = (it[1] < minY) ? it[1] : minY;
-            maxX = (it[0] > maxX) ? it[0] : maxX;
-            maxY = (it[1] > maxY) ? it[1] : maxY;
-        }
-        //Store the bounding box
-        this->bbox.setBounds(SbVec3f(minX, minY, 0.f), SbVec3f (maxX, maxY, 0.f));
     } else if (this->datumtype.getValue() == ANGLE) {
         // Only the angle intersection point is needed
         SbVec3f p0 = points[0];
@@ -1125,39 +1075,6 @@ void SoDatumLabel::GLRender(SoGLRenderAction * action)
             glVertex2f(pnt4[0],pnt4[1]);
         glEnd();
 
-        // BOUNDING BOX CALCULATION - IMPORTANT
-        // Finds the mins and maxes
-        // We may need to include the text position too
-
-        SbVec3f img1 = SbVec3f(-this->imgWidth / 2, -this->imgHeight / 2, 0.f);
-        SbVec3f img2 = SbVec3f(-this->imgWidth / 2,  this->imgHeight / 2, 0.f);
-        SbVec3f img3 = SbVec3f( this->imgWidth / 2, -this->imgHeight / 2, 0.f);
-        SbVec3f img4 = SbVec3f( this->imgWidth / 2,  this->imgHeight / 2, 0.f);
-
-        img1 += textOffset;
-        img2 += textOffset;
-        img3 += textOffset;
-        img4 += textOffset;
-
-        std::vector<SbVec3f> corners;
-        corners.push_back(pnt1);
-        corners.push_back(pnt2);
-        corners.push_back(pnt3);
-        corners.push_back(pnt4);
-        corners.push_back(img1);
-        corners.push_back(img2);
-        corners.push_back(img3);
-        corners.push_back(img4);
-
-        float minX = pnt1[0], minY = pnt1[1], maxX = pnt1[0] , maxY = pnt1[1];
-        for (SbVec3f it : corners) {
-            minX = (it[0] < minX) ? it[0] : minX;
-            minY = (it[1] < minY) ? it[1] : minY;
-            maxX = (it[0] > maxX) ? it[0] : maxX;
-            maxY = (it[1] > maxY) ? it[1] : maxY;
-        }
-        //Store the bounding box
-        this->bbox.setBounds(SbVec3f(minX, minY, 0.f), SbVec3f (maxX, maxY, 0.f));
     } else if (this->datumtype.getValue() == SYMMETRIC) {
 
         SbVec3f p1 = points[0];
@@ -1200,22 +1117,6 @@ void SoDatumLabel::GLRender(SoGLRenderAction * action)
             glVertex3f(ar3[0], ar3[1], ZCONSTR);
             glVertex3f(ar5[0], ar5[1], ZCONSTR);
         glEnd();
-
-        // BOUNDING BOX CALCULATION - IMPORTANT
-        // Finds the mins and maxes
-        std::vector<SbVec3f> corners;
-        corners.push_back(p1);
-        corners.push_back(p2);
-
-        float minX = p1[0], minY = p1[1], maxX = p1[0] , maxY = p1[1];
-        for (SbVec3f it : corners) {
-            minX = (it[0] < minX) ? it[0] : minX;
-            minY = (it[1] < minY) ? it[1] : minY;
-            maxX = (it[0] > maxX) ? it[0] : maxX;
-            maxY = (it[1] > maxY) ? it[1] : maxY;
-        }
-        //Store the bounding box
-        this->bbox.setBounds(SbVec3f(minX, minY, 0.f), SbVec3f (maxX, maxY, 0.f));
     }
 
     if (hasText) {

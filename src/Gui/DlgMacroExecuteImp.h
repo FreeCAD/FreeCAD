@@ -64,9 +64,12 @@ private:
     void onUserMacroListBoxCurrentItemChanged(QTreeWidgetItem*);
     void onSystemMacroListBoxCurrentItemChanged(QTreeWidgetItem*);
     void onTabMacroWidgetCurrentChanged(int index);
+    void onLineEditFindTextChanged(const QString&);
+    void onLineEditFindInFilesTextChanged(const QString&);
 
 protected:
     void fillUpList();
+    QStringList filterFiles(const QString&);
 
 protected:
     QString macroPath;

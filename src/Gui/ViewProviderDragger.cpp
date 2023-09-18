@@ -243,7 +243,7 @@ void ViewProviderDragger::updatePlacementFromDragger(ViewProviderDragger* sudoTh
   int rCountY = draggerIn->rotationIncrementCountY.getValue();
   int rCountZ = draggerIn->rotationIncrementCountZ.getValue();
 
-  //just as a little sanity check make sure only 1 field has changed.
+  //just as a little sanity check make sure only 1 or 2 fields has changed.
   int numberOfFieldChanged = 0;
   if (tCountX) numberOfFieldChanged++;
   if (tCountY) numberOfFieldChanged++;
@@ -253,7 +253,7 @@ void ViewProviderDragger::updatePlacementFromDragger(ViewProviderDragger* sudoTh
   if (rCountZ) numberOfFieldChanged++;
   if (numberOfFieldChanged == 0)
     return;
-  assert(numberOfFieldChanged == 1);
+  assert(numberOfFieldChanged == 1 || numberOfFieldChanged == 2);
 
   //helper lambdas.
   auto getVectorX = [&pMatrix]() {return Base::Vector3d(pMatrix[0], pMatrix[4], pMatrix[8]);};
@@ -267,35 +267,35 @@ void ViewProviderDragger::updatePlacementFromDragger(ViewProviderDragger* sudoTh
     freshPlacement.move(movementVector);
     geoFeature->Placement.setValue(freshPlacement);
   }
-  else if (tCountY)
+  if (tCountY)
   {
     Base::Vector3d movementVector(getVectorY());
     movementVector *= (tCountY * translationIncrement);
     freshPlacement.move(movementVector);
     geoFeature->Placement.setValue(freshPlacement);
   }
-  else if (tCountZ)
+  if (tCountZ)
   {
     Base::Vector3d movementVector(getVectorZ());
     movementVector *= (tCountZ * translationIncrement);
     freshPlacement.move(movementVector);
     geoFeature->Placement.setValue(freshPlacement);
   }
-  else if (rCountX)
+  if (rCountX)
   {
     Base::Vector3d rotationVector(getVectorX());
     Base::Rotation rotation(rotationVector, rCountX * rotationIncrement);
     freshPlacement.setRotation(rotation * freshPlacement.getRotation());
     geoFeature->Placement.setValue(freshPlacement);
   }
-  else if (rCountY)
+  if (rCountY)
   {
     Base::Vector3d rotationVector(getVectorY());
     Base::Rotation rotation(rotationVector, rCountY * rotationIncrement);
     freshPlacement.setRotation(rotation * freshPlacement.getRotation());
     geoFeature->Placement.setValue(freshPlacement);
   }
-  else if (rCountZ)
+  if (rCountZ)
   {
     Base::Vector3d rotationVector(getVectorZ());
     Base::Rotation rotation(rotationVector, rCountZ * rotationIncrement);
