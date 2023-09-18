@@ -241,12 +241,12 @@ class Shape2DView(DraftObject):
                                 else:
                                     shtypes.setdefault(o.Material.Name
                                                        if (hasattr(o,"Material") and o.Material)
-                                                       else "None",[]).append(o.Shape.copy())
+                                                       else "None",[]).extend(o.Shape.SubShapes)
                             elif hasattr(o,'Shape'):
                                 if onlysolids:
                                     shapes.extend(o.Shape.Solids)
                                 else:
-                                    shapes.append(o.Shape.copy())
+                                    shapes.extend(o.Shape.SubShapes)
                         for k, v in shtypes.items():
                             v1 = v.pop()
                             if v:
@@ -256,14 +256,14 @@ class Shape2DView(DraftObject):
                                 shapes.extend(v1.Solids)
                             else:
                                 print("Shape2DView: Fusing Arch objects produced non-solid results")
-                                shapes.append(v1)
+                                shapes.extend(v1.SubShapes)
                     else:
                         for o in objs:
                             if hasattr(o,'Shape'):
                                 if onlysolids:
                                     shapes.extend(o.Shape.Solids)
                                 else:
-                                    shapes.append(o.Shape.copy())
+                                    shapes.extend(o.Shape.SubShapes)
                     clip = False
                     if hasattr(obj.Base,"Clip"):
                         clip = obj.Base.Clip
@@ -294,12 +294,12 @@ class Shape2DView(DraftObject):
                                 if onlysolids:
                                     cuts.extend(c.Solids)
                                 else:
-                                    cuts.append(c)
+                                    cuts.extend(c.SubShapes)
                             else:
                                 if onlysolids:
                                     cuts.extend(sh.Solids)
                                 else:
-                                    cuts.append(sh.copy())
+                                    cuts.extend(sh.SubShapes)
                         comp = Part.makeCompound(cuts)
                         obj.Shape = self.getProjected(obj,comp,proj)
                     elif obj.ProjectionMode in ["Cutlines", "Cutfaces"]:
@@ -331,9 +331,7 @@ class Shape2DView(DraftObject):
                 objs = self.excludeNames(obj,groups.get_group_contents(obj.Base))
                 for o in objs:
                     if hasattr(o,'Shape'):
-                        if o.Shape:
-                            if not o.Shape.isNull():
-                                shapes.append(o.Shape)
+                        shapes.extend(o.Shape.SubShapes)
                 if shapes:
                     import Part
                     comp = Part.makeCompound(shapes)
