@@ -269,6 +269,13 @@ public:
     /// Move Dimensional constraints at the end of the properties array
     int moveDatumsToEnd();
 
+    // Check if a constraint has an expression associated.
+    bool constraintHasExpression(int constNum);
+    // Get a constraint associated expression
+    std::string getConstraintExpression(int constNum);
+    // Set a constraint associated expression
+    void setConstraintExpression(int constNum, std::string& newExpression);
+
     /// set the driving status of this constraint and solve
     int setVirtualSpace(int ConstrId, bool isinvirtualspace);
     /// set the driving status of a group of constraints at once

@@ -660,6 +660,45 @@ int SketchObject::moveDatumsToEnd()
     return 0;
 }
 
+bool SketchObject::constraintHasExpression(int constNum)
+{
+    App::ObjectIdentifier path = Constraints.createPath(constNum);
+    auto info = getExpression(path);
+    if (info.expression) {
+        return true;
+    }
+    return false;
+}
+
+std::string SketchObject::getConstraintExpression(int constNum)
+{
+    App::ObjectIdentifier path = Constraints.createPath(constNum);
+    auto info = getExpression(path);
+    if (info.expression) {
+        std::string expression = info.expression->toString();
+        return expression;
+    }
+
+    return "";
+}
+
+void SketchObject::setConstraintExpression(int constNum, std::string& newExpression)
+{
+    App::ObjectIdentifier path = Constraints.createPath(constNum);
+    auto info = getExpression(path);
+    if (info.expression) {
+        try {
+            std::shared_ptr<App::Expression> expr(App::Expression::parse(this, newExpression));
+            // there is a bug in the SketchObject API because setExpression() is protected but public in DocumentObject
+            App::DocumentObject* base = this;
+            base->setExpression(path, expr);
+        }
+        catch (const Base::Exception&) {
+            Base::Console().Error("Failed to set constraint expression.");
+        }
+    }
+}
+
 int SketchObject::setVirtualSpace(int ConstrId, bool isinvirtualspace)
 {
     // no need to check input data validity as this is an sketchobject managed operation.
