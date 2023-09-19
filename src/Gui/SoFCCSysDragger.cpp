@@ -49,8 +49,6 @@
 #endif
 
 #include <Base/Quantity.h>
-#include "Gui/ViewParams.h"
-#include "App/Color.h"
 
 #include "SoFCCSysDragger.h"
 #include "MainWindow.h"
@@ -287,6 +285,7 @@ void TDragger::dragStart()
 
     translationIncrementCount.setValue(0);
 }
+
 void TDragger::drag()
 {
     projector.setViewVolume(this->getViewVolume());
@@ -553,6 +552,7 @@ void TPlanarDragger::dragStart()
     translationIncrementXCount.setValue(0);
     translationIncrementYCount.setValue(0);
 }
+
 void TPlanarDragger::drag()
 {
     projector.setViewVolume(this->getViewVolume());
@@ -952,6 +952,7 @@ int RDragger::roundIncrement(const float &radiansIn)
     return rCount;
 }
 
+
 SO_KIT_SOURCE(SoFCCSysDragger)
 
 void SoFCCSysDragger::initClass()
@@ -1056,40 +1057,11 @@ SoFCCSysDragger::SoFCCSysDragger()
     SO_KIT_INIT_INSTANCE();
 
     // Colors
-
-    SoBaseColor *color;
-    App::Color stdColor;
-    auto viewParams = Gui::ViewParams::instance();
-    // Translator
-    color = SO_GET_ANY_PART(this, "xTranslatorColor", SoBaseColor);
-    stdColor.setPackedValue(viewParams->getAxisXColor());
-    color->rgb.setValue(stdColor.r, stdColor.g, stdColor.b);
-    color = SO_GET_ANY_PART(this, "yTranslatorColor", SoBaseColor);
-    stdColor.setPackedValue(viewParams->getAxisYColor());
-    color->rgb.setValue(stdColor.r, stdColor.g, stdColor.b);
-    color = SO_GET_ANY_PART(this, "zTranslatorColor", SoBaseColor);
-    stdColor.setPackedValue(viewParams->getAxisZColor());
-    color->rgb.setValue(stdColor.r, stdColor.g, stdColor.b);
-    // Planar Translator
-    color = SO_GET_ANY_PART(this, "xyPlanarTranslatorColor", SoBaseColor);
-    stdColor.setPackedValue(viewParams->getAxisZColor());
-    color->rgb.setValue(stdColor.r, stdColor.g, stdColor.b);
-    color = SO_GET_ANY_PART(this, "yzPlanarTranslatorColor", SoBaseColor);
-    stdColor.setPackedValue(viewParams->getAxisXColor());
-    color->rgb.setValue(stdColor.r, stdColor.g, stdColor.b);
-    color = SO_GET_ANY_PART(this, "zxPlanarTranslatorColor", SoBaseColor);
-    stdColor.setPackedValue(viewParams->getAxisYColor());
-    color->rgb.setValue(stdColor.r, stdColor.g, stdColor.b);
-    // Rotator
-    color = SO_GET_ANY_PART(this, "xRotatorColor", SoBaseColor);
-    stdColor.setPackedValue(viewParams->getAxisXAltColor());
-    color->rgb.setValue(stdColor.r, stdColor.g, stdColor.b);
-    color = SO_GET_ANY_PART(this, "yRotatorColor", SoBaseColor);
-    stdColor.setPackedValue(viewParams->getAxisYAltColor());
-    color->rgb.setValue(stdColor.r, stdColor.g, stdColor.b);
-    color = SO_GET_ANY_PART(this, "zRotatorColor", SoBaseColor);
-    stdColor.setPackedValue(viewParams->getAxisZAltColor());
-    color->rgb.setValue(stdColor.r, stdColor.g, stdColor.b);
+    setAxisColors(
+      SbColor(1.0, 0, 0).getPackedValue(0.0f), 
+      SbColor(0, 1.0, 0).getPackedValue(0.0f), 
+      SbColor(0, 0, 1.0).getPackedValue(0.0f)
+    );
 
     // Increments
 
@@ -1466,6 +1438,41 @@ void SoFCCSysDragger::clearIncrementCounts()
     rotationIncrementCountX.setValue(0);
     rotationIncrementCountY.setValue(0);
     rotationIncrementCountZ.setValue(0);
+}
+
+void SoFCCSysDragger::setAxisColors(unsigned long x, unsigned long y, unsigned long z) {
+    SbColor colorX;
+    SbColor colorY;
+    SbColor colorZ;
+
+    float t = 0.0f;
+    colorX.setPackedValue(x, t);
+    colorY.setPackedValue(y, t);
+    colorZ.setPackedValue(z, t);
+
+    SoBaseColor* color;
+
+    // Translator
+    color = SO_GET_ANY_PART(this, "xTranslatorColor", SoBaseColor);
+    color->rgb.setValue(colorX[0], colorX[1], colorX[2]);
+    color = SO_GET_ANY_PART(this, "yTranslatorColor", SoBaseColor);
+    color->rgb.setValue(colorY[0], colorY[1], colorY[2]);
+    color = SO_GET_ANY_PART(this, "zTranslatorColor", SoBaseColor);
+    color->rgb.setValue(colorZ[0], colorZ[1], colorZ[2]);
+    // Planar Translator
+    color = SO_GET_ANY_PART(this, "xyPlanarTranslatorColor", SoBaseColor);
+    color->rgb.setValue(colorZ[0], colorZ[1], colorZ[2]);
+    color = SO_GET_ANY_PART(this, "yzPlanarTranslatorColor", SoBaseColor);
+    color->rgb.setValue(colorX[0], colorX[1], colorX[2]);
+    color = SO_GET_ANY_PART(this, "zxPlanarTranslatorColor", SoBaseColor);
+    color->rgb.setValue(colorY[0], colorY[1], colorY[2]);
+    // Rotator
+    color = SO_GET_ANY_PART(this, "xRotatorColor", SoBaseColor);
+    color->rgb.setValue(colorX[0], colorX[1], colorX[2]);
+    color = SO_GET_ANY_PART(this, "yRotatorColor", SoBaseColor);
+    color->rgb.setValue(colorY[0], colorY[1], colorY[2]);
+    color = SO_GET_ANY_PART(this, "zRotatorColor", SoBaseColor);
+    color->rgb.setValue(colorZ[0], colorZ[1], colorZ[2]);
 }
 
 // Visiblity API Functions

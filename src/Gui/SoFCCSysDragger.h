@@ -278,6 +278,8 @@ public:
     SoIdleSensor idleSensor; //!< might be overkill, but want to make sure of performance.
     void setUpAutoScale(SoCamera *cameraIn); //!< used to setup the auto scaling of dragger.
 
+    void setAxisColors(unsigned long x, unsigned long y, unsigned long z); //!< set the axis colors.
+
     //! @name Visibility Functions
     //@{
     void showTranslationX(); //!< show the x translation dragger.
