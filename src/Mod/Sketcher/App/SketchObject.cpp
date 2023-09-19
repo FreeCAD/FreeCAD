@@ -666,19 +666,35 @@ void SketchObject::reverseAngleConstraintToSupplementary(Constraint* constr, int
     std::swap(constr->First, constr->Second);
     std::swap(constr->FirstPos, constr->SecondPos);
     constr->FirstPos = (constr->FirstPos == Sketcher::PointPos::start) ? Sketcher::PointPos::end : Sketcher::PointPos::start;
-    double actAngle = constr->getValue();
-    constr->setValue(M_PI - actAngle);
 
-    // Edit the expression if any
+    // Edit the expression if any, else modify constraint value directly
     if (constraintHasExpression(constNum)) {
         std::string expression = getConstraintExpression(constNum);
-        if (expression.substr(0, 7) == "180 - (") {
-            expression = expression.substr(7, expression.size() - 8);
+
+        // Check if expression contains units (°, deg, rad)
+        if (expression.find("°") != std::string::npos
+            || expression.find("deg") != std::string::npos
+            || expression.find("rad") != std::string::npos) {
+            if (expression.substr(0, 9) == "180 ° - ") {
+                expression = expression.substr(9, expression.size() - 9);
+            }
+            else {
+                expression = "180 ° - (" + expression + ")";
+            }
         }
         else {
-            expression = "180 - (" + expression + ")";
+            if (expression.substr(0, 6) == "180 - ") {
+                expression = expression.substr(6, expression.size() - 6);
+            }
+            else {
+                expression = "180 - (" + expression + ")";
+            }
         }
         setConstraintExpression(constNum, expression);
+    }
+    else {
+        double actAngle = constr->getValue();
+        constr->setValue(M_PI - actAngle);
     }
 }
 
