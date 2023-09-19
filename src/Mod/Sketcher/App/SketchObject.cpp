@@ -682,7 +682,7 @@ void SketchObject::reverseAngleConstraintToSupplementary(Constraint* constr, int
     }
 }
 
-bool SketchObject::constraintHasExpression(int constNum)
+bool SketchObject::constraintHasExpression(int constNum) const
 {
     App::ObjectIdentifier path = Constraints.createPath(constNum);
     auto info = getExpression(path);
@@ -692,7 +692,7 @@ bool SketchObject::constraintHasExpression(int constNum)
     return false;
 }
 
-std::string SketchObject::getConstraintExpression(int constNum)
+std::string SketchObject::getConstraintExpression(int constNum) const
 {
     App::ObjectIdentifier path = Constraints.createPath(constNum);
     auto info = getExpression(path);
@@ -701,19 +701,17 @@ std::string SketchObject::getConstraintExpression(int constNum)
         return expression;
     }
 
-    return "";
+    return {};
 }
 
-void SketchObject::setConstraintExpression(int constNum, std::string& newExpression)
+void SketchObject::setConstraintExpression(int constNum, const std::string& newExpression)
 {
     App::ObjectIdentifier path = Constraints.createPath(constNum);
     auto info = getExpression(path);
     if (info.expression) {
         try {
             std::shared_ptr<App::Expression> expr(App::Expression::parse(this, newExpression));
-            // there is a bug in the SketchObject API because setExpression() is protected but public in DocumentObject
-            App::DocumentObject* base = this;
-            base->setExpression(path, expr);
+            setExpression(path, expr);
         }
         catch (const Base::Exception&) {
             Base::Console().Error("Failed to set constraint expression.");
@@ -9159,16 +9157,6 @@ int SketchObject::changeConstraintsLocking(bool bLock)
 
     return cntSuccess;
 }
-
-bool SketchObject::constraintHasExpression(int constrid) const
-{
-    App::ObjectIdentifier spath = this->Constraints.createPath(constrid);
-
-    App::PropertyExpressionEngine::ExpressionInfo expr_info = this->getExpression(spath);
-
-    return (expr_info.expression != nullptr);
-}
-
 
 /*!
  * \brief SketchObject::port_reversedExternalArcs finds constraints that link to endpoints of
