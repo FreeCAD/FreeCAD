@@ -86,6 +86,6 @@ protected:
 };
 
 
-}// namespace SketcherGui
+}  // namespace SketcherGui
 
-#endif// SKETCHERGUI_TaskDlgEditSketch_H
+#endif  // SKETCHERGUI_TaskDlgEditSketch_H

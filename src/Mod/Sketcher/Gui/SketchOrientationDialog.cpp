@@ -95,22 +95,28 @@ void SketchOrientationDialog::onPreview()
     std::string icon;
     bool reverse = ui->Reverse_checkBox->isChecked();
     if (ui->XY_radioButton->isChecked()) {
-        if (reverse)
+        if (reverse) {
             icon = "view-bottom";
-        else
+        }
+        else {
             icon = "view-top";
+        }
     }
     else if (ui->XZ_radioButton->isChecked()) {
-        if (reverse)
+        if (reverse) {
             icon = "view-rear";
-        else
+        }
+        else {
             icon = "view-front";
+        }
     }
     else if (ui->YZ_radioButton->isChecked()) {
-        if (reverse)
+        if (reverse) {
             icon = "view-left";
-        else
+        }
+        else {
             icon = "view-right";
+        }
     }
 
     ui->previewLabel->setPixmap(

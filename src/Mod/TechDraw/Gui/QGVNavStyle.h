@@ -85,6 +85,8 @@ public:
     virtual void zoom(double factor);
     virtual void stopZoom();
     virtual double mouseZoomFactor(QPoint p);
+    virtual void zoomIn();
+    virtual void zoomOut();
 
     virtual void startPan(QPoint p);
     virtual void pan(QPoint p);

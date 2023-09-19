@@ -502,6 +502,8 @@ public:
     double getRadius() const;
     void setRadius(double Radius);
 
+    double getAngle(bool emulateCCWXY) const;
+
     void getRange(double& u, double& v, bool emulateCCWXY) const override;
     void setRange(double u, double v, bool emulateCCWXY) override;
 

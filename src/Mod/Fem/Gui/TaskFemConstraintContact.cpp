@@ -454,7 +454,7 @@ void TaskDlgFemConstraintContact::open()
 {
     // a transaction is already open at creation time of the panel
     if (!Gui::Command::hasPendingCommand()) {
-        QString msg = QObject::tr("Constraint Contact");
+        QString msg = QObject::tr("Contact constraint");
         Gui::Command::openCommand((const char*)msg.toUtf8());
         ConstraintView->setVisible(true);
         Gui::Command::runCommand(

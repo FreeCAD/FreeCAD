@@ -469,15 +469,18 @@ void MainWindow::setupDockWindows()
     if (ht != config.end())
         hiddenDockWindows = ht->second;
 
-    bool treeView = setupTreeView(hiddenDockWindows);
-    bool propertyView = setupPropertyView(hiddenDockWindows);
+    setupTreeView(hiddenDockWindows);
+    setupPropertyView(hiddenDockWindows);
+    setupTaskView(hiddenDockWindows);
     setupSelectionView(hiddenDockWindows);
-    setupComboView(hiddenDockWindows, !treeView || !propertyView);
+    setupComboView(hiddenDockWindows);
 
     // Report view must be created before PythonConsole!
     setupReportView(hiddenDockWindows);
     setupPythonConsole(hiddenDockWindows);
     setupDAGView(hiddenDockWindows);
+
+    this->setTabPosition(Qt::LeftDockWidgetArea, QTabWidget::North);
 }
 
 bool MainWindow::setupTreeView(const std::string& hiddenDockWindows)
@@ -489,7 +492,7 @@ bool MainWindow::setupTreeView(const std::string& hiddenDockWindows)
         bool enabled = group->GetBool("Enabled", true);
         if (enabled != group->GetBool("Enabled", false)) {
             enabled = App::GetApplication().GetUserParameter().GetGroup("BaseApp")
-                            ->GetGroup("MainWindow")->GetGroup("DockWindows")->GetBool("Std_TreeView",false);
+                            ->GetGroup("MainWindow")->GetGroup("DockWindows")->GetBool("Std_TreeView", true);
         }
         group->SetBool("Enabled", enabled); //ensure entry exists.
         if (enabled) {
@@ -507,6 +510,23 @@ bool MainWindow::setupTreeView(const std::string& hiddenDockWindows)
     return false;
 }
 
+bool MainWindow::setupTaskView(const std::string& hiddenDockWindows)
+{
+    // Task view
+    if (hiddenDockWindows.find("Std_TaskView") == std::string::npos) {
+        auto taskView = new Gui::TaskView::TaskView(this);
+        taskView->setObjectName
+            (QString::fromLatin1(QT_TRANSLATE_NOOP("QDockWidget","Tasks")));
+        taskView->setMinimumWidth(210);
+
+        DockWindowManager* pDockMgr = DockWindowManager::instance();
+        pDockMgr->registerDockWindow("Std_TaskView", taskView);
+        return true;
+    }
+
+    return false;
+}
+
 bool MainWindow::setupPropertyView(const std::string& hiddenDockWindows)
 {
     // Property view
@@ -517,7 +537,7 @@ bool MainWindow::setupPropertyView(const std::string& hiddenDockWindows)
         bool enabled = group->GetBool("Enabled", true);
         if (enabled != group->GetBool("Enabled", false)) {
             enabled = App::GetApplication().GetUserParameter().GetGroup("BaseApp")
-                            ->GetGroup("MainWindow")->GetGroup("DockWindows")->GetBool("Std_PropertyView",false);
+                            ->GetGroup("MainWindow")->GetGroup("DockWindows")->GetBool("Std_PropertyView", true);
         }
         group->SetBool("Enabled", enabled); //ensure entry exists.
         if (enabled) {
@@ -552,23 +572,23 @@ bool MainWindow::setupSelectionView(const std::string& hiddenDockWindows)
     return false;
 }
 
-bool MainWindow::setupComboView(const std::string& hiddenDockWindows, bool enable)
+bool MainWindow::setupComboView(const std::string& hiddenDockWindows)
 {
     // Combo view
     if (hiddenDockWindows.find("Std_ComboView") == std::string::npos) {
-        if (!enable) {
-            ParameterGrp::handle group = App::GetApplication().GetUserParameter().
-                    GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("DockWindows")->GetGroup("ComboView");
-            enable = group->GetBool("Enabled", true);
+        ParameterGrp::handle group = App::GetApplication().GetUserParameter().
+                GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("DockWindows")->GetGroup("ComboView");
+        bool enable = group->GetBool("Enabled", false);
+
+        if (enable) {
+            auto pcComboView = new ComboView(nullptr, this);
+            pcComboView->setObjectName(QString::fromLatin1(QT_TRANSLATE_NOOP("QDockWidget", "Model")));
+            pcComboView->setMinimumWidth(150);
+
+            DockWindowManager* pDockMgr = DockWindowManager::instance();
+            pDockMgr->registerDockWindow("Std_ComboView", pcComboView);
+            return true;
         }
-
-        auto pcComboView = new ComboView(enable, nullptr, this);
-        pcComboView->setObjectName(QString::fromLatin1(QT_TRANSLATE_NOOP("QDockWidget","Combo View")));
-        pcComboView->setMinimumWidth(150);
-
-        DockWindowManager* pDockMgr = DockWindowManager::instance();
-        pDockMgr->registerDockWindow("Std_ComboView", pcComboView);
-        return true;
     }
 
     return false;
@@ -1714,7 +1734,7 @@ void MainWindow::renderDevBuildWarning(
 
     // Construct the lines of text and figure out how much space they need
     const auto devWarningLine1 = tr("WARNING: This is a development version.");
-    const auto devWarningLine2 = tr("Please do not use in a production environment.");
+    const auto devWarningLine2 = tr("Please do not use it in a production environment.");
     QFontMetrics fontMetrics(painter.font()); // Try to use the existing font
     int padding = QtTools::horizontalAdvance(fontMetrics, QLatin1String("M")); // Arbitrary
     int line1Width = QtTools::horizontalAdvance(fontMetrics, devWarningLine1);
@@ -1734,7 +1754,7 @@ void MainWindow::renderDevBuildWarning(
         lineHeight = painter.fontMetrics().lineSpacing();
         boxWidth = maxSize.width();
     }
-    constexpr float lineExpansionFactor(2.3);
+    constexpr float lineExpansionFactor(2.3F);
     int boxHeight = static_cast<int>(lineHeight*lineExpansionFactor);
 
     // Draw the background rectangle and the text

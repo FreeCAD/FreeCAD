@@ -702,6 +702,7 @@ MenuItem* StdWorkbench::setupMenuBar() const
           << "Std_ViewLoadImage"
           << "Std_SceneInspector"
           << "Std_DependencyGraph"
+          << "Std_ExportDependencyGraph"
           << "Std_ProjectUtil"
           << "Separator"
           << "Std_MeasureDistance"
@@ -836,6 +837,7 @@ DockWindowItems* StdWorkbench::setupDockWindows() const
     //root->addDockWidget("Std_HelpView", Qt::RightDockWidgetArea, true, false);
     root->addDockWidget("Std_TreeView", Qt::LeftDockWidgetArea, true, false);
     root->addDockWidget("Std_PropertyView", Qt::LeftDockWidgetArea, true, false);
+    root->addDockWidget("Std_TaskView", Qt::LeftDockWidgetArea, true, true);
     root->addDockWidget("Std_SelectionView", Qt::LeftDockWidgetArea, false, false);
     root->addDockWidget("Std_ComboView", Qt::LeftDockWidgetArea, false, false);
     root->addDockWidget("Std_ReportView", Qt::BottomDockWidgetArea, true, true);

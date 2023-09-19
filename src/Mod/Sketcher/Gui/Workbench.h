@@ -71,6 +71,6 @@ SketcherGuiExport void addSketcherWorkbenchBSplines(Gui::ToolBarItem& bspline);
 SketcherGuiExport void addSketcherWorkbenchVisual(Gui::ToolBarItem& visual);
 SketcherGuiExport void addSketcherWorkbenchEditTools(Gui::ToolBarItem& edittools);
 
-}// namespace SketcherGui
+}  // namespace SketcherGui
 
-#endif// SKETCHER_WORKBENCH_H
+#endif  // SKETCHER_WORKBENCH_H

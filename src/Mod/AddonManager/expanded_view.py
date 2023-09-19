@@ -113,7 +113,7 @@ class Ui_ExpandedView(object):
     # setupUi
 
     def retranslateUi(self, ExpandedView):
-#        ExpandedView.setWindowTitle(QCoreApplication.translate("ExpandedView", "Form", None))
+        #        ExpandedView.setWindowTitle(QCoreApplication.translate("ExpandedView", "Form", None))
         self.labelIcon.setText(QCoreApplication.translate("ExpandedView", "Icon", None))
         self.labelPackageName.setText(
             QCoreApplication.translate("ExpandedView", "<h1>Package Name</h1>", None)

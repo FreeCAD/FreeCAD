@@ -53,6 +53,6 @@ private:
     std::unique_ptr<Ui_SketchOrientationDialog> ui;
 };
 
-}// namespace SketcherGui
+}  // namespace SketcherGui
 
-#endif// SKETCHERGUI_SketchOrientationDialog_H
+#endif  // SKETCHERGUI_SketchOrientationDialog_H

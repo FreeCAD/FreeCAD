@@ -51,11 +51,11 @@ namespace GCS
 
 enum SolveStatus
 {
-    Success = 0,                  // Found a solution zeroing the error function
-    Converged = 1,                // Found a solution minimizing the error function
-    Failed = 2,                   // Failed to find any solution
-    SuccessfulSolutionInvalid = 3,// This is a solution where the solver succeeded, but the
-                                  // resulting geometry is OCE-invalid
+    Success = 0,                    // Found a solution zeroing the error function
+    Converged = 1,                  // Found a solution minimizing the error function
+    Failed = 2,                     // Failed to find any solution
+    SuccessfulSolutionInvalid = 3,  // This is a solution where the solver succeeded, but the
+                                    // resulting geometry is OCE-invalid
 };
 
 enum Algorithm
@@ -107,41 +107,41 @@ class SketcherExport System
     // This is the main class. It holds all constraints and information
     // about partitioning into subsystems and solution strategies
 private:
-    VEC_pD plist;      // list of the unknown parameters
-    VEC_pD pdrivenlist;// list of parameters of driven constraints
+    VEC_pD plist;        // list of the unknown parameters
+    VEC_pD pdrivenlist;  // list of parameters of driven constraints
     MAP_pD_I pIndex;
 
-    VEC_pD pDependentParameters;// list of dependent parameters by the system
+    VEC_pD pDependentParameters;  // list of dependent parameters by the system
 
     // This is a map of primary and secondary identifiers that are found dependent by the solver
     // GCS ignores from a type point
     std::vector<std::vector<double*>> pDependentParametersGroups;
 
     std::vector<Constraint*> clist;
-    std::map<Constraint*, VEC_pD> c2p;              // constraint to parameter adjacency list
-    std::map<double*, std::vector<Constraint*>> p2c;// parameter to constraint adjacency list
+    std::map<Constraint*, VEC_pD> c2p;                // constraint to parameter adjacency list
+    std::map<double*, std::vector<Constraint*>> p2c;  // parameter to constraint adjacency list
 
     std::vector<SubSystem*> subSystems, subSystemsAux;
     void clearSubSystems();
 
     VEC_D reference;
-    void setReference();    // copies the current parameter values to reference
-    void resetToReference();// reverts all parameter values to the stored reference
+    void setReference();      // copies the current parameter values to reference
+    void resetToReference();  // reverts all parameter values to the stored reference
 
-    std::vector<VEC_pD> plists;// partitioned plist except equality constraints
+    std::vector<VEC_pD> plists;  // partitioned plist except equality constraints
     // partitioned clist except equality constraints
     std::vector<std::vector<Constraint*>> clists;
-    std::vector<MAP_pD_pD> reductionmaps;// for simplification of equality constraints
+    std::vector<MAP_pD_pD> reductionmaps;  // for simplification of equality constraints
 
     int dofs;
     std::set<Constraint*> redundant;
     VEC_I conflictingTags, redundantTags, partiallyRedundantTags;
 
-    bool hasUnknowns; // if plist is filled with the unknown parameters
-    bool hasDiagnosis;// if dofs, conflictingTags, redundantTags are up to date
-    bool isInit;      // if plists, clists, reductionmaps are up to date
+    bool hasUnknowns;   // if plist is filled with the unknown parameters
+    bool hasDiagnosis;  // if dofs, conflictingTags, redundantTags are up to date
+    bool isInit;        // if plists, clists, reductionmaps are up to date
 
-    bool emptyDiagnoseMatrix;// false only if there is at least one driving constraint.
+    bool emptyDiagnoseMatrix;  // false only if there is at least one driving constraint.
 
     int solve_BFGS(SubSystem* subsys, bool isFine = true, bool isRedundantsolving = false);
     int solve_LM(SubSystem* subsys, bool isRedundantsolving = false);
@@ -217,8 +217,8 @@ private:
 public:
     int maxIter;
     int maxIterRedundant;
-    bool sketchSizeMultiplier;// if true note that the total number of iterations allowed is
-                              // MaxIterations *xLength
+    bool sketchSizeMultiplier;  // if true note that the total number of iterations allowed is
+                                // MaxIterations *xLength
     bool sketchSizeMultiplierRedundant;
     double convergence;
     double convergenceRedundant;
@@ -610,6 +610,6 @@ void free(VEC_pD& doublevec);
 void free(std::vector<Constraint*>& constrvec);
 void free(std::vector<SubSystem*>& subsysvec);
 
-}// namespace GCS
+}  // namespace GCS
 
-#endif// PLANEGCS_GCS_H
+#endif  // PLANEGCS_GCS_H

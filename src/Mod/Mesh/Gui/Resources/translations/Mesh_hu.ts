@@ -1346,12 +1346,22 @@
       <translation>AMF-fájlok exportálása tömörítéssel</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsImportExport.ui" line="95"/>
+      <location filename="../../DlgSettingsImportExport.ui" line="82"/>
+      <source>Always export mesh as model type in 3MF format even if not a solid</source>
+      <translation type="unfinished">Always export mesh as model type in 3MF format even if not a solid</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsImportExport.ui" line="85"/>
+      <source>Export 3MF files as model type</source>
+      <translation type="unfinished">Export 3MF files as model type</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsImportExport.ui" line="114"/>
       <source>Width:</source>
       <translation>Szélesség:</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsImportExport.ui" line="119"/>
+      <location filename="../../DlgSettingsImportExport.ui" line="138"/>
       <source>Height:</source>
       <translation>Magasság:</translation>
     </message>
@@ -1990,7 +2000,7 @@ Ha a felület szöge ≥ gyűrődésszögét, a feület árnyékolást használj
       <location filename="../../RemoveComponents.cpp" line="203"/>
       <location filename="../../RemoveComponents.cpp" line="253"/>
       <source>Delete</source>
-      <translation>Törlés</translation>
+      <translation>Töröl</translation>
     </message>
     <message>
       <location filename="../../RemoveComponents.cpp" line="204"/>

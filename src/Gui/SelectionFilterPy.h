@@ -45,6 +45,10 @@ public:
 
 public:
     static void init_type();    // announce properties and methods
+    static SelectionFilterPy* cast(PyObject* py) {
+        using SelectionFilterClass = Py::PythonClassObject<SelectionFilterPy>;
+        return SelectionFilterClass(py).getCxxObject();
+    }
 
     SelectionFilterPy(Py::PythonClassInstance* self, Py::Tuple& args, Py::Dict& kdws);
 

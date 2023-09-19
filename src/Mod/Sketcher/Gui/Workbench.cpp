@@ -32,7 +32,7 @@
 
 using namespace SketcherGui;
 
-#if 0// needed for Qt's lupdate utility
+#if 0  // needed for Qt's lupdate utility
     qApp->translate("CommandGroup", "Sketcher");
     qApp->translate("Workbench","P&rofiles");
     qApp->translate("Workbench","S&ketch");
@@ -172,7 +172,7 @@ inline const QStringList nonEditModeToolbarNames()
 {
     return QStringList {QString::fromLatin1("Structure"), QString::fromLatin1("Sketcher")};
 }
-}// namespace
+}  // namespace
 
 void Workbench::activated()
 {
@@ -441,15 +441,20 @@ inline void SketcherAddWorkbenchConstraints<Gui::ToolBarItem>(Gui::ToolBarItem& 
          << "Sketcher_ConstrainBlock"
          << "Separator";
     if (hGrp->GetBool("SingleDimensioningTool", true)) {
-        cons << "Sketcher_Dimension";
+        if (!hGrp->GetBool("SeparatedDimensioningTools", false)) {
+            cons << "Sketcher_CompDimensionTools";
+        }
+        else {
+            cons << "Sketcher_Dimension";
+        }
     }
     if (hGrp->GetBool("SeparatedDimensioningTools", false)) {
         cons << "Sketcher_ConstrainLock"
-            << "Sketcher_ConstrainDistanceX"
-            << "Sketcher_ConstrainDistanceY"
-            << "Sketcher_ConstrainDistance"
-            << "Sketcher_CompConstrainRadDia"
-            << "Sketcher_ConstrainAngle";
+             << "Sketcher_ConstrainDistanceX"
+             << "Sketcher_ConstrainDistanceY"
+             << "Sketcher_ConstrainDistance"
+             << "Sketcher_CompConstrainRadDia"
+             << "Sketcher_ConstrainAngle";
         // << "Sketcher_ConstrainSnellsLaw" // Rarely used, show only in menu
     }
     cons << "Separator"
@@ -488,8 +493,9 @@ inline void SketcherAddWorkbenchTools<Gui::MenuItem>(Gui::MenuItem& consaccel)
 template<>
 inline void SketcherAddWorkbenchTools<Gui::ToolBarItem>(Gui::ToolBarItem& consaccel)
 {
-    consaccel//<< "Sketcher_SelectElementsWithDoFs" //rarely used, it is usually accessed by solver
-             // message.
+    consaccel  //<< "Sketcher_SelectElementsWithDoFs" //rarely used, it is usually accessed by
+               // solver
+               // message.
         << "Sketcher_SelectConstraints"
         << "Sketcher_SelectElementsAssociatedWithConstraints"
         //<< "Sketcher_SelectRedundantConstraints" //rarely used, it is usually accessed by solver

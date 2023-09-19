@@ -83,7 +83,7 @@ namespace Sketcher
 class Constraint;
 class Sketch;
 class SketchObject;
-}// namespace Sketcher
+}  // namespace Sketcher
 
 namespace SketcherGui
 {
@@ -175,14 +175,17 @@ private:
         void OnChange(Base::Subject<const char*>& rCaller, const char* sReason) override;
 
     private:
-        void updateBoolProperty(const std::string& string, App::Property* property,
-                                bool defaultvalue);
+        void
+        updateBoolProperty(const std::string& string, App::Property* property, bool defaultvalue);
         void updateGridSize(const std::string& string, App::Property* property);
 
         // Only for colors outside of edit mode, edit mode colors are handled by
         // EditModeCoinManager.
-        void updateColorProperty(const std::string& string, App::Property* property, float r,
-                                 float g, float b);
+        void updateColorProperty(const std::string& string,
+                                 App::Property* property,
+                                 float r,
+                                 float g,
+                                 float b);
 
         void updateEscapeKeyBehaviour(const std::string& string, App::Property* property);
 
@@ -291,14 +294,14 @@ private:
             return DragCurve > InvalidCurve;
         }
 
-        double xInit, yInit;// starting point of the dragging operation
-        bool relative;      // whether the dragging move vector is relative or absolute
+        double xInit, yInit;  // starting point of the dragging operation
+        bool relative;        // whether the dragging move vector is relative or absolute
 
 
-        int DragPoint;// dragged point id (only positive integers)
-        int DragCurve;// dragged curve id (only positive integers), negative external curves cannot
-                      // be dragged.
-        std::set<int> DragConstraintSet;// dragged constraints ids
+        int DragPoint;  // dragged point id (only positive integers)
+        int DragCurve;  // dragged curve id (only positive integers), negative external curves
+                        // cannot be dragged.
+        std::set<int> DragConstraintSet;  // dragged constraints ids
     };
 
     // TODO: Selection and Preselection should use a same structure. Probably Drag should use the
@@ -388,12 +391,12 @@ private:
             return -PreselectCurve - 2;
         }
 
-        int PreselectPoint;// VertexN, with N = PreselectPoint + 1, same as DragPoint indexing (NOTE
-                           // -1 is NOT the root point)
-        int PreselectCurve;// EdgeN, with N = PreselectCurve + 1 for positive values ;
-                           // ExternalEdgeN, with N = -PreselectCurve - 2
-        Axes PreselectCross;                 // 0 => rootPoint, 1 => HAxis, 2 => VAxis
-        std::set<int> PreselectConstraintSet;// ConstraintN, N = index + 1
+        int PreselectPoint;   // VertexN, with N = PreselectPoint + 1, same as DragPoint indexing
+                              // (NOTE -1 is NOT the root point)
+        int PreselectCurve;   // EdgeN, with N = PreselectCurve + 1 for positive values ;
+                              // ExternalEdgeN, with N = -PreselectCurve - 2
+        Axes PreselectCross;  // 0 => rootPoint, 1 => HAxis, 2 => VAxis
+        std::set<int> PreselectConstraintSet;  // ConstraintN, N = index + 1
         bool blockedPreselection;
     };
 
@@ -430,9 +433,9 @@ private:
             SelConstraintSet.clear();
         }
 
-        std::set<int> SelPointSet;     // Indices as PreselectPoint (and -1 for rootpoint)
-        std::set<int> SelCurvSet;      // also holds cross axes at -1 and -2
-        std::set<int> SelConstraintSet;// ConstraintN, N = index + 1.
+        std::set<int> SelPointSet;       // Indices as PreselectPoint (and -1 for rootpoint)
+        std::set<int> SelCurvSet;        // also holds cross axes at -1 and -2
+        std::set<int> SelConstraintSet;  // ConstraintN, N = index + 1.
     };
     //@}
 
@@ -441,7 +444,7 @@ private:
     struct DoubleClick
     {
         static SbTime prvClickTime;
-        static SbVec2s prvClickPos;// used by double-click-detector
+        static SbVec2s prvClickPos;  // used by double-click-detector
         static SbVec2s prvCursorPos;
         static SbVec2s newCursorPos;
     };
@@ -454,8 +457,9 @@ private:
         bool autoRecompute = false;
         bool recalculateInitialSolutionWhileDragging = false;
 
-        bool isShownVirtualSpace = false;// indicates whether the present virtual space view is the
-                                         // Real Space or the Virtual Space (virtual space 1 or 2)
+        bool isShownVirtualSpace =
+            false;  // indicates whether the present virtual space view is the
+                    // Real Space or the Virtual Space (virtual space 1 or 2)
         bool buttonPress = false;
     };
 
@@ -624,9 +628,12 @@ public:
     /// is called when the Provider is in edit and a key event ocours. Only ESC ends edit.
     bool keyPressed(bool pressed, int key) override;
     /// is called when the Provider is in edit and the mouse is clicked
-    bool mouseButtonPressed(int Button, bool pressed, const SbVec2s& cursorPos,
+    bool mouseButtonPressed(int Button,
+                            bool pressed,
+                            const SbVec2s& cursorPos,
                             const Gui::View3DInventorViewer* viewer) override;
-    bool mouseWheelEvent(int delta, const SbVec2s& cursorPos,
+    bool mouseWheelEvent(int delta,
+                         const SbVec2s& cursorPos,
                          const Gui::View3DInventorViewer* viewer) override;
     //@}
 
@@ -639,8 +646,8 @@ public:
     /// signals if the constraints list has changed
     boost::signals2::signal<void()> signalConstraintsChanged;
     /// signals if the sketch has been set up
-    boost::signals2::signal<void(const QString& state, const QString& msg, const QString& url,
-                                 const QString& linkText)>
+    boost::signals2::signal<
+        void(const QString& state, const QString& msg, const QString& url, const QString& linkText)>
         signalSetUp;
     /// signals if the elements list has changed
     boost::signals2::signal<void()> signalElementsChanged;
@@ -660,7 +667,7 @@ protected:
     void unsetEdit(int ModNum) override;
     void setEditViewer(Gui::View3DInventorViewer*, int ModNum) override;
     void unsetEditViewer(Gui::View3DInventorViewer*) override;
-    static void camSensCB(void* data, SoSensor*);// camera sensor callback
+    static void camSensCB(void* data, SoSensor*);  // camera sensor callback
     void onCameraChanged(SoCamera* cam);
     //@}
 
@@ -679,7 +686,8 @@ protected:
 
     /// Auxiliary function to generate messages about conflicting, redundant and malformed
     /// constraints
-    static QString appendConstraintMsg(const QString& singularmsg, const QString& pluralmsg,
+    static QString appendConstraintMsg(const QString& singularmsg,
+                                       const QString& pluralmsg,
                                        const std::vector<int>& vector);
     //@}
 
@@ -699,13 +707,14 @@ protected:
 private:
     /// function to handle OCCT BSpline weight calculation singularities and representation
     void scaleBSplinePoleCirclesAndUpdateSolverAndSketchObjectGeometry(
-        GeoListFacade& geolist, bool geometrywithmemoryallocation);
+        GeoListFacade& geolist,
+        bool geometrywithmemoryallocation);
 
     /** @name geometry and coordinates auxiliary functions */
     //@{
     /// give the coordinates of a line on the sketch plane in sketcher (2D) coordinates
-    void getCoordsOnSketchPlane(const SbVec3f& point, const SbVec3f& normal, double& u,
-                                double& v) const;
+    void
+    getCoordsOnSketchPlane(const SbVec3f& point, const SbVec3f& normal, double& u, double& v) const;
 
     /// give projecting line of position
     void getProjectingLine(const SbVec2s&, const Gui::View3DInventorViewer* viewer, SbLine&) const;
@@ -728,7 +737,8 @@ private:
     /** @name Selection functions */
     //@{
     /// box selection method
-    void doBoxSelection(const SbVec2s& startPos, const SbVec2s& endPos,
+    void doBoxSelection(const SbVec2s& startPos,
+                        const SbVec2s& endPos,
                         const Gui::View3DInventorViewer* viewer);
 
     void addSelectPoint(int SelectPoint);
@@ -745,6 +755,7 @@ private:
     //@{
     /// moves a selected constraint
     void moveConstraint(int constNum, const Base::Vector2d& toPos);
+    void moveAngleConstraint(int constNum, const Base::Vector2d& toPos);
 
     /// returns whether the sketch is in edit mode.
     bool isInEditMode() const;
@@ -875,10 +886,10 @@ private:
     ViewProviderParameters viewProviderParameters;
 
     SoNodeSensor cameraSensor;
-    int viewOrientationFactor;// stores if sketch viewed from front or back
+    int viewOrientationFactor;  // stores if sketch viewed from front or back
 };
 
-}// namespace SketcherGui
+}  // namespace SketcherGui
 
 
-#endif// SKETCHERGUI_VIEWPROVIDERSKETCH_H
+#endif  // SKETCHERGUI_VIEWPROVIDERSKETCH_H

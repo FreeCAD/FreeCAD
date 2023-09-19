@@ -550,12 +550,6 @@ For stock from the Base object's bounding box it means the extra material in all
   <context>
     <name>Form</name>
     <message>
-      <location filename="../panels/PageDepthsEdit.ui" line="17"/>
-      <location filename="../panels/PageOpDrillingEdit.ui" line="14"/>
-      <source>Form</source>
-      <translation>Formular</translation>
-    </message>
-    <message>
       <location filename="../panels/DressupPathBoundary.ui" line="20"/>
       <source>Boundary Body</source>
       <translation>Corp limită</translation>
@@ -7057,7 +7051,7 @@ De exemplu:
     <message>
       <location filename="../../../Path/Op/MillFace.py" line="68"/>
       <source>Boundbox</source>
-      <translation type="unfinished">Boundbox</translation>
+      <translation>Limite</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/MillFace.py" line="69"/>
@@ -7442,7 +7436,7 @@ De exemplu:
     <message>
       <location filename="../../../Path/Op/Surface.py" line="449"/>
       <source>BaseBoundBox</source>
-      <translation type="unfinished">BaseBoundBox</translation>
+      <translation>Casetă de BaseBoundBox</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Surface.py" line="450"/>
@@ -7754,7 +7748,7 @@ De exemplu:
     <message>
       <location filename="../../../Path/Op/Waterline.py" line="102"/>
       <source>BaseBoundBox</source>
-      <translation type="unfinished">BaseBoundBox</translation>
+      <translation>Casetă de BaseBoundBox</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Waterline.py" line="103"/>

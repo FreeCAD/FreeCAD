@@ -69,9 +69,7 @@ class _CommandProfileHexagon1:
         FreeCADGui.addModule("ProfileLib.Hexagon")
         sketch = getSketch()
         if not sketch is None:
-            FreeCADGui.doCommand(
-                "ProfileLib.Hexagon.makeHexagonSimple('%s')" % (sketch.Name)
-            )
+            FreeCADGui.doCommand("ProfileLib.Hexagon.makeHexagonSimple('%s')" % (sketch.Name))
         else:
             FreeCADGui.doCommand("ProfileLib.Hexagon.makeHexagonSimple()")
         FreeCAD.ActiveDocument.recompute()

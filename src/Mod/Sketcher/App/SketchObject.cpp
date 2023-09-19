@@ -660,6 +660,65 @@ int SketchObject::moveDatumsToEnd()
     return 0;
 }
 
+
+void SketchObject::reverseAngleConstraintToSupplementary(Constraint* constr, int constNum)
+{
+    std::swap(constr->First, constr->Second);
+    std::swap(constr->FirstPos, constr->SecondPos);
+    constr->FirstPos = (constr->FirstPos == Sketcher::PointPos::start) ? Sketcher::PointPos::end : Sketcher::PointPos::start;
+    double actAngle = constr->getValue();
+    constr->setValue(M_PI - actAngle);
+
+    // Edit the expression if any
+    if (constraintHasExpression(constNum)) {
+        std::string expression = getConstraintExpression(constNum);
+        if (expression.substr(0, 7) == "180 - (") {
+            expression = expression.substr(7, expression.size() - 8);
+        }
+        else {
+            expression = "180 - (" + expression + ")";
+        }
+        setConstraintExpression(constNum, expression);
+    }
+}
+
+bool SketchObject::constraintHasExpression(int constNum) const
+{
+    App::ObjectIdentifier path = Constraints.createPath(constNum);
+    auto info = getExpression(path);
+    if (info.expression) {
+        return true;
+    }
+    return false;
+}
+
+std::string SketchObject::getConstraintExpression(int constNum) const
+{
+    App::ObjectIdentifier path = Constraints.createPath(constNum);
+    auto info = getExpression(path);
+    if (info.expression) {
+        std::string expression = info.expression->toString();
+        return expression;
+    }
+
+    return {};
+}
+
+void SketchObject::setConstraintExpression(int constNum, const std::string& newExpression)
+{
+    App::ObjectIdentifier path = Constraints.createPath(constNum);
+    auto info = getExpression(path);
+    if (info.expression) {
+        try {
+            std::shared_ptr<App::Expression> expr(App::Expression::parse(this, newExpression));
+            setExpression(path, expr);
+        }
+        catch (const Base::Exception&) {
+            Base::Console().Error("Failed to set constraint expression.");
+        }
+    }
+}
+
 int SketchObject::setVirtualSpace(int ConstrId, bool isinvirtualspace)
 {
     // no need to check input data validity as this is an sketchobject managed operation.
@@ -7649,7 +7708,7 @@ void SketchObject::rebuildExternalGeometry()
                     double t_min = t_max + 0.5 * M_PI;
 
                     // ON_max = OM(t_max) gives the point, which projected on the sketch plane,
-                    //     becomes the apoapse of the pojected ellipse.
+                    //     becomes the apoapse of the projected ellipse.
                     gp_Vec ON_max = origAxisMajor * cos(t_max) + origAxisMinor * sin(t_max);
                     gp_Vec ON_min = origAxisMajor * cos(t_min) + origAxisMinor * sin(t_min);
                     gp_Vec destAxisMajor = ProjVecOnPlane_UVN(ON_max, sketchPlane);
@@ -9098,16 +9157,6 @@ int SketchObject::changeConstraintsLocking(bool bLock)
 
     return cntSuccess;
 }
-
-bool SketchObject::constraintHasExpression(int constrid) const
-{
-    App::ObjectIdentifier spath = this->Constraints.createPath(constrid);
-
-    App::PropertyExpressionEngine::ExpressionInfo expr_info = this->getExpression(spath);
-
-    return (expr_info.expression != nullptr);
-}
-
 
 /*!
  * \brief SketchObject::port_reversedExternalArcs finds constraints that link to endpoints of

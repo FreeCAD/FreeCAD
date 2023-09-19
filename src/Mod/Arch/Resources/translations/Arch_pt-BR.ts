@@ -2942,12 +2942,12 @@ Se a extensão = 0, ela será calculada de modo que a altura seja a mesma do per
     <message>
       <location filename="../../ArchPrecast.py" line="1416"/>
       <source>Rotation</source>
-      <translation type="unfinished">Rotation</translation>
+      <translation>Rotação</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="83"/>
       <source>Panel</source>
-      <translation type="unfinished">Panel</translation>
+      <translation>Painel</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="105"/>
@@ -3024,7 +3024,7 @@ Se a extensão = 0, ela será calculada de modo que a altura seja a mesma do per
     <message>
       <location filename="../../ArchPipe.py" line="90"/>
       <source>Connector</source>
-      <translation type="unfinished">Connector</translation>
+      <translation>Conector</translation>
     </message>
     <message>
       <location filename="../../ArchPipe.py" line="123"/>
@@ -3785,7 +3785,7 @@ Criação de edifício abortada.</translation>
     <message>
       <location filename="../../ArchStructure.py" line="236"/>
       <source>Create a structural system from a selected structure and axis</source>
-      <translation type="unfinished">Create a structural system from a selected structure and axis</translation>
+      <translation>Criar um sistema estrutural para a estrutura e eixo selecionado</translation>
     </message>
   </context>
   <context>
@@ -3798,7 +3798,7 @@ Criação de edifício abortada.</translation>
     <message>
       <location filename="../../ArchStructure.py" line="274"/>
       <source>Creates a structure from scratch or from a selected object (sketch, wire, face or solid)</source>
-      <translation type="unfinished">Creates a structure from scratch or from a selected object (sketch, wire, face or solid)</translation>
+      <translation>Criar uma estrutura do zero ou a partir de um objeto selecionado (esboço, linha, face ou sólido)</translation>
     </message>
   </context>
   <context>
@@ -3807,12 +3807,12 @@ Criação de edifício abortada.</translation>
       <location filename="../../ArchStructure.py" line="676"/>
       <location filename="../../ArchStructure.py" line="1353"/>
       <source>An optional extrusion path for this element</source>
-      <translation type="unfinished">An optional extrusion path for this element</translation>
+      <translation>Um caminho de extrusão opcional para este elemento</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="678"/>
       <source>The computed length of the extrusion path</source>
-      <translation type="unfinished">The computed length of the extrusion path</translation>
+      <translation>O comprimento calculado do caminho de extrusão</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="680"/>

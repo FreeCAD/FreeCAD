@@ -77,6 +77,7 @@ public:
     SoSFImage  image;
     SoSFFloat  lineWidth;
     bool       useAntialiasing;
+    SbVec3f textOffset;
 
 protected:
     ~SoDatumLabel() override = default;
@@ -94,7 +95,6 @@ private:
 
 private:
     void drawImage();
-    SbBox3f bbox;
     float imgWidth;
     float imgHeight;
     bool glimagevalid;

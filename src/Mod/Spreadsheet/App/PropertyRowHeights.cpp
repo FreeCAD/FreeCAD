@@ -35,28 +35,29 @@ using namespace Spreadsheet;
 
 const int PropertyRowHeights::defaultHeight = 30;
 
-TYPESYSTEM_SOURCE(Spreadsheet::PropertyRowHeights , App::Property)
+TYPESYSTEM_SOURCE(Spreadsheet::PropertyRowHeights, App::Property)
 
 PropertyRowHeights::PropertyRowHeights() = default;
 
-PropertyRowHeights::PropertyRowHeights(const PropertyRowHeights &other)
-  : Property(), std::map<int, int>(other)
-{
-}
+PropertyRowHeights::PropertyRowHeights(const PropertyRowHeights& other)
+    : Property()
+    , std::map<int, int>(other)
+{}
 
-App::Property *PropertyRowHeights::Copy() const
+App::Property* PropertyRowHeights::Copy() const
 {
-    PropertyRowHeights * prop = new PropertyRowHeights(*this);
+    PropertyRowHeights* prop = new PropertyRowHeights(*this);
 
     return prop;
 }
 
-void PropertyRowHeights::Paste(const Property &from)
+void PropertyRowHeights::Paste(const Property& from)
 {
     setValues(dynamic_cast<const PropertyRowHeights&>(from).getValues());
 }
 
-void PropertyRowHeights::setValues(const std::map<int,int> &values) {
+void PropertyRowHeights::setValues(const std::map<int, int>& values)
+{
     aboutToSetValue();
 
     std::map<int, int>::const_iterator i;
@@ -81,28 +82,29 @@ void PropertyRowHeights::setValues(const std::map<int,int> &values) {
     hasSetValue();
 }
 
-void PropertyRowHeights::Save(Base::Writer &writer) const
+void PropertyRowHeights::Save(Base::Writer& writer) const
 {
     // Save row information
     writer.Stream() << writer.ind() << "<RowInfo Count=\"" << size() << "\">" << std::endl;
-    writer.incInd(); // indentation for 'RowInfo'
+    writer.incInd();  // indentation for 'RowInfo'
 
     std::map<int, int>::const_iterator ri = begin();
     while (ri != end()) {
-        writer.Stream() << writer.ind() << "<Row name=\"" << rowName(ri->first) << "\"  height=\"" << ri->second << "\" />" << std::endl;
+        writer.Stream() << writer.ind() << "<Row name=\"" << rowName(ri->first) << "\"  height=\""
+                        << ri->second << "\" />" << std::endl;
         ++ri;
     }
-    writer.decInd(); // indentation for 'RowInfo'
+    writer.decInd();  // indentation for 'RowInfo'
     writer.Stream() << writer.ind() << "</RowInfo>" << std::endl;
 }
 
 /**
-  * Set height of row given by \a row to \a height in pixels.
-  *
-  * @param row    Address of row
-  * @param height Height in pixels
-  *
-  */
+ * Set height of row given by \a row to \a height in pixels.
+ *
+ * @param row    Address of row
+ * @param height Height in pixels
+ *
+ */
 
 void PropertyRowHeights::setValue(int row, int height)
 {
@@ -114,7 +116,7 @@ void PropertyRowHeights::setValue(int row, int height)
     }
 }
 
-void PropertyRowHeights::Restore(Base::XMLReader &reader)
+void PropertyRowHeights::Restore(Base::XMLReader& reader)
 {
     int Cnt;
 
@@ -124,7 +126,8 @@ void PropertyRowHeights::Restore(Base::XMLReader &reader)
     for (int i = 0; i < Cnt; i++) {
         reader.readElement("Row");
         const char* name = reader.hasAttribute("name") ? reader.getAttribute("name") : nullptr;
-        const char * height = reader.hasAttribute("height") ? reader.getAttribute("height") : nullptr;
+        const char* height =
+            reader.hasAttribute("height") ? reader.getAttribute("height") : nullptr;
 
         try {
             if (name && height) {
@@ -141,11 +144,11 @@ void PropertyRowHeights::Restore(Base::XMLReader &reader)
     reader.readEndElement("RowInfo");
 }
 
-PyObject *PropertyRowHeights::getPyObject()
+PyObject* PropertyRowHeights::getPyObject()
 {
-    if (PythonObject.is(Py::_None())){
+    if (PythonObject.is(Py::_None())) {
         // ref counter is set to 1
-        PythonObject = Py::Object(new PropertyRowHeightsPy(this),true);
+        PythonObject = Py::Object(new PropertyRowHeightsPy(this), true);
     }
     return Py::new_reference_to(PythonObject);
 }
@@ -158,5 +161,5 @@ void PropertyRowHeights::clear()
         dirty.insert(i->first);
         ++i;
     }
-    std::map<int,int>::clear();
+    std::map<int, int>::clear();
 }

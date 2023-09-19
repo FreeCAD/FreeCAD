@@ -40,16 +40,19 @@
 class TDF_Label;
 class TopLoc_Location;
 
-namespace App {
+namespace App
+{
 class Document;
 class DocumentObject;
 class Part;
-}
-namespace Part {
+}  // namespace App
+namespace Part
+{
 class Feature;
 }
 
-namespace Import {
+namespace Import
+{
 
 class ImportExport ExportOCAF
 {
@@ -57,33 +60,38 @@ public:
     ExportOCAF(Handle(TDocStd_Document) h, bool explicitPlacement);
     virtual ~ExportOCAF();
     int exportObject(App::DocumentObject* obj,
-                     std::vector <TDF_Label>& hierarchical_label,
-                     std::vector <TopLoc_Location>& hierarchical_loc,
-                     std::vector <App::DocumentObject*>& hierarchical_part);
-    int saveShape(Part::Feature* part, const std::vector<App::Color>&,
-                  std::vector <TDF_Label>& hierarchical_label,
-                  std::vector <TopLoc_Location>& hierarchical_loc,
-                  std::vector <App::DocumentObject*>& hierarchical_part);
-    void getPartColors(std::vector <App::DocumentObject*> hierarchical_part,
-                       std::vector <TDF_Label> FreeLabels,
-                       std::vector <int> part_id,
-                       std::vector < std::vector<App::Color> >& Colors) const;
-    void reallocateFreeShape(std::vector <App::DocumentObject*> hierarchical_part,
-                             std::vector <TDF_Label> FreeLabels,
-                             std::vector <int> part_id,
-                             std::vector< std::vector<App::Color> >& Colors);
-    void getFreeLabels(std::vector <TDF_Label>& hierarchical_label,
-                       std::vector <TDF_Label>& labels,
-                       std::vector <int>& label_part_id);
-    void createNode(App::Part* part, int& root_it,
-                    std::vector <TDF_Label>& hierarchical_label,
-                    std::vector <TopLoc_Location>& hierarchical_loc,
-                    std::vector <App::DocumentObject*>& hierarchical_part);
-    void pushNode(int root, int node, std::vector <TDF_Label>& hierarchical_label,
-                  std::vector <TopLoc_Location>& hierarchical_loc);
+                     std::vector<TDF_Label>& hierarchical_label,
+                     std::vector<TopLoc_Location>& hierarchical_loc,
+                     std::vector<App::DocumentObject*>& hierarchical_part);
+    int saveShape(Part::Feature* part,
+                  const std::vector<App::Color>&,
+                  std::vector<TDF_Label>& hierarchical_label,
+                  std::vector<TopLoc_Location>& hierarchical_loc,
+                  std::vector<App::DocumentObject*>& hierarchical_part);
+    void getPartColors(std::vector<App::DocumentObject*> hierarchical_part,
+                       std::vector<TDF_Label> FreeLabels,
+                       std::vector<int> part_id,
+                       std::vector<std::vector<App::Color>>& Colors) const;
+    void reallocateFreeShape(std::vector<App::DocumentObject*> hierarchical_part,
+                             std::vector<TDF_Label> FreeLabels,
+                             std::vector<int> part_id,
+                             std::vector<std::vector<App::Color>>& Colors);
+    void getFreeLabels(std::vector<TDF_Label>& hierarchical_label,
+                       std::vector<TDF_Label>& labels,
+                       std::vector<int>& label_part_id);
+    void createNode(App::Part* part,
+                    int& root_it,
+                    std::vector<TDF_Label>& hierarchical_label,
+                    std::vector<TopLoc_Location>& hierarchical_loc,
+                    std::vector<App::DocumentObject*>& hierarchical_part);
+    void pushNode(int root,
+                  int node,
+                  std::vector<TDF_Label>& hierarchical_label,
+                  std::vector<TopLoc_Location>& hierarchical_loc);
 
 private:
-    virtual void findColors(Part::Feature*, std::vector<App::Color>&) const {}
+    virtual void findColors(Part::Feature*, std::vector<App::Color>&) const
+    {}
     std::vector<App::DocumentObject*> filterPart(App::Part* part) const;
 
 private:
@@ -92,14 +100,15 @@ private:
     Handle(XCAFDoc_ColorTool) aColorTool;
     TDF_Label rootLabel;
     bool keepExplicitPlacement;
-    bool filterBaseFeature{true};
+    bool filterBaseFeature {true};
 };
 
-class ImportExport ExportOCAFCmd : public ExportOCAF
+class ImportExport ExportOCAFCmd: public ExportOCAF
 {
 public:
     ExportOCAFCmd(Handle(TDocStd_Document) h, bool explicitPlacement);
-    void setPartColorsMap(const std::map<Part::Feature*, std::vector<App::Color> >& colors) {
+    void setPartColorsMap(const std::map<Part::Feature*, std::vector<App::Color>>& colors)
+    {
         partColors = colors;
     }
 
@@ -107,10 +116,10 @@ private:
     void findColors(Part::Feature*, std::vector<App::Color>&) const override;
 
 private:
-    std::map<Part::Feature*, std::vector<App::Color> > partColors;
+    std::map<Part::Feature*, std::vector<App::Color>> partColors;
 };
 
 
-}
+}  // namespace Import
 
-#endif //IMPORT_EXPORTOCAF_H
+#endif  // IMPORT_EXPORTOCAF_H

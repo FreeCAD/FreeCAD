@@ -245,7 +245,7 @@
     <message>
       <location filename="../../DrawingView.cpp" line="215"/>
       <source>&amp;Outline</source>
-      <translation>&amp;amp; Оивичење</translation>
+      <translation>&amp;Обрис</translation>
     </message>
     <message>
       <location filename="../../DrawingView.cpp" line="221"/>

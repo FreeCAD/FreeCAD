@@ -1,0 +1,17 @@
+<RCC>
+    <qresource>
+        <file>icons/Assembly_InsertLink.svg</file>
+        <file>icons/preferences-assembly.svg</file>
+        <file>icons/Assembly_CreateJointBall.svg</file>
+        <file>icons/Assembly_CreateJointCylindrical.svg</file>
+        <file>icons/Assembly_CreateJointFixed.svg</file>
+        <file>icons/Assembly_CreateJointParallel.svg</file>
+        <file>icons/Assembly_CreateJointPlanar.svg</file>
+        <file>icons/Assembly_CreateJointRevolute.svg</file>
+        <file>icons/Assembly_CreateJointSlider.svg</file>
+        <file>icons/Assembly_CreateJointTangent.svg</file>
+        <file>panels/TaskAssemblyCreateJoint.ui</file>
+        <file>panels/TaskAssemblyInsertLink.ui</file>
+        <file>preferences/Assembly.ui</file>
+    </qresource>
+</RCC>

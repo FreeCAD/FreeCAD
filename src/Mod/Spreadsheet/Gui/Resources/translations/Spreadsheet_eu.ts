@@ -899,9 +899,9 @@ Jarraitu?</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.cpp" line="225"/>
-      <source>Error: 
+      <source>Error:
 </source>
-      <translation>Errorea: 
+      <translation>Errorea:
 </translation>
     </message>
     <message>

@@ -42,7 +42,7 @@ public:
     Module()
         : Py::ExtensionModule<Module>("_TEMPLATE_")
     {
-        initialize("This module is the _TEMPLATE_ module.");// register with Python
+        initialize("This module is the _TEMPLATE_ module.");  // register with Python
     }
 
     virtual ~Module()
@@ -57,7 +57,7 @@ PyObject* initModule()
 }
 
 
-}// namespace _TEMPLATE_
+}  // namespace _TEMPLATE_
 
 
 /* Python entry */

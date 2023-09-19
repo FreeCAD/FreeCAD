@@ -113,7 +113,7 @@ void Persistence::dumpToStream(std::ostream& stream, int compression)
         writer.putNextEntry("Persistence.xml");
         writer.setMode("BinaryBrep");
 
-        //save the content (we need to encapsulte it with xml tags to be able to read single element xmls like happen for properties)
+        //save the content (we need to encapsulate it with xml tags to be able to read single element xmls like happen for properties)
         writer.Stream() << "<Content>" << std::endl;
         Save(writer);
         writer.Stream() << "</Content>";

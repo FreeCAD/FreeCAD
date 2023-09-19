@@ -35,7 +35,9 @@ import Path
 import Path.Log
 from collections import Counter
 from datetime import datetime
+import codecs
 import os
+import time
 import webbrowser
 import subprocess
 from PySide.QtCore import QT_TRANSLATE_NOOP
@@ -80,7 +82,7 @@ class CommandPathSanity:
         if "%M" in filepath:
             pref = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Macro")
             M = pref.GetString("MacroPath", FreeCAD.getUserAppDataDir())
-            filepath = filepath.replace("%M", M+ os.path.sep)
+            filepath = filepath.replace("%M", M + os.path.sep)
 
         # strip out all substitutions related to output splitting
         for elem in ["%O", "%W", "%T", "%t", "%S"]:
@@ -130,16 +132,33 @@ class CommandPathSanity:
 
     def Activated(self):
         # if everything is ok, execute
-        self.squawkData = {"items": []}
 
+        if FreeCAD.GuiUp:
+            currentCamera = FreeCADGui.ActiveDocument.ActiveView.getCameraType()
+            if currentCamera != "Perspective":
+                FreeCADGui.SendMsgToActiveView("PerspectiveCamera")
+                FreeCADGui.updateGui()
+                time.sleep(4)
+                FreeCAD.Console.PrintLog(
+                    "Path - Sanity - Changing to Perspective Camera temporarily\n"
+                )
+        FreeCADGui.addIconPath(":/icons")
+        self.squawkData = {"items": []}
         obj = FreeCADGui.Selection.getSelectionEx()[0].Object
         self.outputpath = self.resolveOutputPath(obj)
         Path.Log.debug(f"outputstring: {self.outputpath}")
         data = self.__summarize(obj)
         html = self.__report(data)
         if html is not None:
-            FreeCAD.Console.PrintMessage("HTML report written to {}".format(html))
             webbrowser.open(html)
+        if FreeCAD.GuiUp:
+            if currentCamera != "Perspective":
+                FreeCADGui.SendMsgToActiveView("OrthographicCamera")
+                FreeCADGui.updateGui()
+                time.sleep(0.5)
+                FreeCAD.Console.PrintLog(
+                    "Path - Sanity - Changing back to Orthographic Camera\n"
+                )
 
     def __makePicture(self, obj, imageName):
         """
@@ -187,6 +206,983 @@ class CommandPathSanity:
         """
         generates an asciidoc file with the report information
         """
+        Title = translate("Path_Sanity", "Setup Report for FreeCAD Job")
+        ToC = translate("Path_Sanity", "Table of Contents")
+        PartInfoHeading = translate("Path_Sanity", "Part Information")
+        RunSumHeading = translate("Path_Sanity", "Run Summary")
+        RoughStkHeading = translate("Path_Sanity", "Rough Stock")
+        ToolDataHeading = translate("Path_Sanity", "Tool Data")
+        OutputHeading = translate("Path_Sanity", "Output")
+        FixturesHeading = translate("Path_Sanity", "Fixtures")
+        SquawksHeading = translate("Path_Sanity", "Squawks")
+
+        PartLabel = translate("Path_Sanity", "Base Object(s)")
+        SequenceLabel = translate("Path_Sanity", "Job Sequence")
+        DescriptionLabel = translate("Path_Sanity", "Job Description")
+        JobTypeLabel = translate("Path_Sanity", "Job Type")
+        CADLabel = translate("Path_Sanity", "CAD File Name")
+        LastSaveLabel = translate("Path_Sanity", "Last Save Date")
+        CustomerLabel = translate("Path_Sanity", "Customer")
+        DesignerLabel = translate("Path_Sanity", "Designer")
+
+        b = data["baseData"]
+        d = data["designData"]
+        jobname = d["JobLabel"]
+
+        opLabel = translate("Path_Sanity", "Operation")
+        zMinLabel = translate("Path_Sanity", "Minimum Z Height")
+        zMaxLabel = translate("Path_Sanity", "Maximum Z Height")
+        cycleTimeLabel = translate("Path_Sanity", "Cycle Time")
+
+        coolantLabel = translate("Path_Sanity", "Coolant")
+        jobTotalLabel = translate("Path_Sanity", "TOTAL JOB")
+        d = data["toolData"]
+        toolLabel = translate("Path_Sanity", "Tool Number")
+        imageCounter = 1
+        reportHtmlTemplate = """
+
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+	<title>Setup Report for FreeCAD Job: Path Special
+</title>
+	<style type="text/css">
+       /* Light mode */
+       :root {
+          --body-bg: #FFFFFF;
+          --body-color: #000000;
+       }
+
+        body { background: var(--body-bg); color: var(--body-color);}
+		@page { size: 21cm 29.7cm; margin: 2cm }
+		p { line-height: 115%; margin-bottom: 0.25cm; background: transparent }
+		h1 { margin-bottom: 0.21cm; background: transparent; page-break-after: avoid }
+		h1.western { font-family: "Liberation Serif", serif; font-size: 24pt; font-weight: normal }
+		h1.cjk { font-family: "Noto Serif CJK SC"; font-size: 24pt; font-weight: normal }
+		h1.ctl { font-family: "Lohit Devanagari"; font-size: 24pt; font-weight: normal }
+        .ToC { font-size: 20pt; color: #7a2518 }
+		h2 { margin-top: 0.35cm; margin-bottom: 0.21cm; background: transparent; page-break-after: avoid }
+		h2.western { font-family: "Liberation Serif", serif; font-size: 18pt; font-weight: bold }
+		h2.cjk { font-family: "Noto Serif CJK SC"; font-size: 18pt; font-weight: bold }
+		h2.ctl { font-family: "Lohit Devanagari"; font-size: 18pt; font-weight: bold }
+		td p { orphans: 0; widows: 0; background: transparent }
+		h3 { margin-top: 0.25cm; margin-bottom: 0.21cm; background: transparent; page-break-after: avoid }
+		h3.western { font-family: "Liberation Serif", serif; font-size: 14pt; font-weight: bold }
+		h3.cjk { font-family: "Noto Serif CJK SC"; font-size: 14pt; font-weight: bold }
+		h3.ctl { font-family: "Lohit Devanagari"; font-size: 14pt; font-weight: bold }
+		strong { font-weight: bold }
+		a:link { color: #000080; text-decoration: underline }
+	</style>
+</head>
+<body><h1 class="western">
+<font color="#000000"><font face="Open Sans, DejaVu Sans, sans-serif">"""
+        reportHtmlTemplate += Title + ": " + jobname
+        reportHtmlTemplate += """
+</font></font></h1>
+<div id="toc" dir="ltr"><p style="orphans: 2; widows: 2; margin-top: 0.21cm; margin-bottom: 0cm">
+	<br/>
+
+	</p>
+	<div id="toctitle" dir="ltr"><p style="font-variant: normal; font-style: normal; font-weight: normal; line-height: 120%; orphans: 2; widows: 2; margin-top: 0.21cm; margin-bottom: 0cm">
+		<span class="ToC "style="display: inline-block; border: none; padding: 0cm"><font face="Open Sans, DejaVu Sans, sans-serif">
+"""
+        reportHtmlTemplate += ToC
+        reportHtmlTemplate += """
+</span></font></font></p>
+	</div>
+</div>
+<p style="font-variant: normal; letter-spacing: normal; font-style: normal; font-weight: normal">
+<span style="display: inline-block; border: none; padding: 0cm"><font face="Open Sans, DejaVu Sans, sans-serif"><font size="3" style="font-size: 12pt">
+<font color="#ba3925"><a href="#_part_information"><font color="#2156a5"><span style="text-decoration: none">
+"""
+        reportHtmlTemplate += PartInfoHeading
+        reportHtmlTemplate += """
+</span></font></a></span></font></font></font></p>
+<ul>
+	<li><p style="line-height: 133%; orphans: 2; widows: 2; margin-bottom: 0cm; border: none; padding: 0cm">
+	<a href="#_run_summary"><span style="font-variant: normal"><font color="#2156a5"><span style="text-decoration: none"><font face="Open Sans, DejaVu Sans, sans-serif">
+<font size="3" style="font-size: 12pt"><span style="letter-spacing: normal"><span style="font-style: normal"><span style="font-weight: normal">
+"""
+        reportHtmlTemplate += RunSumHeading
+        reportHtmlTemplate += """
+</span></span></span></font></font></span></font></span></a></p>
+	<li><p style="line-height: 133%; orphans: 2; widows: 2; margin-bottom: 0cm; border: none; padding: 0cm">
+	<span style="display: inline-block; border: none; padding: 0cm"><span style="font-variant: normal"><font color="#1d4b8f"><span style="text-decoration: none">
+<font face="Open Sans, DejaVu Sans, sans-serif"><font size="3" style="font-size: 12pt"><span style="letter-spacing: normal"><span style="font-style: normal"><span style="font-weight: normal"><a href="#_rough_stock">
+"""
+        reportHtmlTemplate += RoughStkHeading
+        reportHtmlTemplate += """
+</span></span></span></span></font></font></span></font></span></a></p>
+	<li><p style="line-height: 133%; orphans: 2; widows: 2; margin-bottom: 0cm; border: none; padding: 0cm">
+	<a href="#_tool_data"><span style="font-variant: normal"><font color="#2156a5"><span style="text-decoration: none"><font face="Open Sans, DejaVu Sans, sans-serif">
+<font size="3" style="font-size: 12pt"><span style="letter-spacing: normal"><span style="font-style: normal"><span style="font-weight: normal">
+"""
+        reportHtmlTemplate += ToolDataHeading
+        reportHtmlTemplate += """
+</span></span></span></font></font></span></font></span></a></p>"""
+        for key, value in d.items():
+            reportHtmlTemplate += """
+	<ul>
+		<li><p style="line-height: 133%; orphans: 2; widows: 2; margin-bottom: 0cm; border: none; padding: 0cm">
+		<a href='#"""
+            reportHtmlTemplate += toolLabel + key + "'<"
+            reportHtmlTemplate += """
+<span style="font-variant: normal"><font color="#2156a5"><span style="text-decoration: none"><font face="Open Sans, DejaVu Sans, sans-serif">
+<font size="3" style="font-size: 12pt"><span style="letter-spacing: normal"><span style="font-style: normal"><span style="font-weight: normal">
+"""
+            reportHtmlTemplate += (
+                toolLabel
+                + ": T"
+                + key
+                + "</span></span></span></font></font></span></font></span></a></p>"
+            )
+            reportHtmlTemplate += """
+	</ul>"""
+        reportHtmlTemplate += """
+	<li><p style="line-height: 133%; orphans: 2; widows: 2; margin-bottom: 0cm; border: none; padding: 0cm">
+	<a href="#_output_gcode"><span style="font-variant: normal"><font color="#2156a5"><span style="text-decoration: none"><font face="Open Sans, DejaVu Sans, sans-serif">
+<font size="3" style="font-size: 12pt"><span style="letter-spacing: normal"><span style="font-style: normal"><span style="font-weight: normal">
+"""
+        reportHtmlTemplate += OutputHeading + " (Gcode)"
+        reportHtmlTemplate += """
+</span></span></span></font></font></span></font></span></a></p>
+	<li><p style="line-height: 133%; orphans: 2; widows: 2; margin-bottom: 0cm; border: none; padding: 0cm">
+	<a href="#_fixtures_and_workholding"><span style="font-variant: normal"><font color="#2156a5"><span style="text-decoration: none"><font face="Open Sans, DejaVu Sans, sans-serif">
+<font size="3" style="font-size: 12pt"><span style="letter-spacing: normal"><span style="font-style: normal"><span style="font-weight: normal">
+"""
+        reportHtmlTemplate += FixturesHeading
+        reportHtmlTemplate += """
+</span></span></span></font></font></span></font></span></a></p>
+	<li><p style="line-height: 133%; orphans: 2; widows: 2; margin-bottom: 0cm; border: none; padding: 0cm">
+	<a href="#_squawks"><span style="font-variant: normal"><font color="#2156a5"><span style="text-decoration: none"><font face="Open Sans, DejaVu Sans, sans-serif">
+<font size="3" style="font-size: 12pt"><span style="letter-spacing: normal"><span style="font-style: normal"><span style="font-weight: normal">
+"""
+        reportHtmlTemplate += SquawksHeading
+        reportHtmlTemplate += """
+</span></span></span></font></font></span></font></span></a></p>
+</ul>
+<p style="font-variant: normal; letter-spacing: normal; font-style: normal; font-weight: normal">
+<br/>
+<br/>
+
+</p>
+<h2 class="western" style="font-variant: normal; letter-spacing: normal; font-style: normal; font-weight: normal"><a name="_part_information"></a>
+<span style="display: inline-block; border: none; padding: 0cm"><font face="Open Sans, DejaVu Sans, sans-serif"><font size="3" style="font-size: 20pt"><font color="#ba3925">
+"""
+        reportHtmlTemplate += PartInfoHeading
+        reportHtmlTemplate += """
+</span></font></font></font></h2>
+<table style="table-layout: fixed; cellpadding="2" cellspacing="2" bgcolor="#ffffff" style="background: #ffffff">
+	<col width="200"/>
+
+	<col width="525"/>
+
+	<col width="250"/>
+
+	<tr valign=top>
+		<td style="border: 1px solid #dedede; padding: 0.05cm"; top><p align="left" "style="border: none; padding: 0cm">
+			<strong><font color="#000000"><b>"""
+        reportHtmlTemplate += PartLabel
+        reportHtmlTemplate += """
+</b></font></strong></p>
+		</td>
+		<td style="border: 1px solid #dedede; padding: 0.05cm">
+			<table cellpadding="2" cellspacing="2" bgcolor="#ffffff" style="background: #ffffff">
+				<col width="175"/>
+
+				<col width="175"/>"""
+        d = data["designData"]
+        for key, val in b["bases"].items():
+            reportHtmlTemplate += """
+				<tr>
+					<td style='border: 1px solid #dedede; padding: 0.05cm'><p align='left' style='border: none; padding: 0cm'>
+						<font color='#000000'>"""
+            reportHtmlTemplate += key
+            reportHtmlTemplate += """
+</font></p>
+					</td>
+					<td style='border: 1px solid #dedede; padding: 0.05cm'><p align='left' style='border: none; padding: 0cm'>
+						<font color='#000000'>"""
+            reportHtmlTemplate += val
+            reportHtmlTemplate += """
+</font></p>
+					</td>
+				</tr>"""
+        reportHtmlTemplate += """
+			</table>
+			<p><br/>
+
+			</p>
+		</td>
+		<td rowspan="7" style="border: 1px solid #dedede; padding: 0.05cm"><p align="left" style="line-height: 160%">
+			<span style="display: inline-block; border: none; padding: 0cm"><font color="#000000"><img src='
+"""
+        reportHtmlTemplate += b["baseimage"] + "'" + "name='Image" + str(imageCounter)
+        reportHtmlTemplate += "' alt='Base Object(s)' align='bottom'"
+        reportHtmlTemplate += " width='320' height='320' border='0'/>"
+        imageCounter += 1
+        reportHtmlTemplate += """
+</span></font></p>
+		</td>
+	</tr>
+	<tr>
+		<td style="border: 1px solid #dedede; padding: 0.05cm"><p align="left" style="line-height: 160%; border: none; padding: 0cm">
+			<strong><font color="#000000"><b>"""
+        reportHtmlTemplate += SequenceLabel
+        reportHtmlTemplate += """</b></font></strong></p>
+		</td>
+		<td style="border: 1px solid #dedede; padding: 0.05cm"><p align="left" style="line-height: 160%; border: none; padding: 0cm">
+			<font color="#000000">"""
+        reportHtmlTemplate += d["Sequence"]
+        reportHtmlTemplate += """</font></p>
+		</td>
+	</tr>
+	<tr>
+		<td style="border: 1px solid #dedede; padding: 0.05cm"><p align="left" style="line-height: 160%; border: none; padding: 0cm">
+			<strong><font color="#000000"><b>"""
+        reportHtmlTemplate += JobTypeLabel
+        reportHtmlTemplate += """</b></font></strong></p>
+		</td>
+		<td style="border: 1px solid #dedede; padding: 0.05cm"><p align="left" style="line-height: 160%; border: none; padding: 0cm">
+			<font color="#000000">"""
+        reportHtmlTemplate += d["JobType"]
+        reportHtmlTemplate += """</font></p>
+		</td>
+	</tr>
+	<tr>
+		<td style="border: 1px solid #dedede; padding: 0.05cm"><p align="left" style="line-height: 160%; border: none; padding: 0cm">
+			<strong><font color="#000000"><b>"""
+        reportHtmlTemplate += DescriptionLabel
+        reportHtmlTemplate += """</b></font></strong></p>
+		</td>
+		<td style="border: 1px solid #dedede; padding: 0.05cm"><p align="left" style="line-height: 160%; border: none; padding: 0cm">
+			<font color="#000000">"""
+        reportHtmlTemplate += d["JobDescription"]
+        reportHtmlTemplate += """</font></p>
+		</td>
+	</tr>
+	<tr>
+		<td style="border: 1px solid #dedede; padding: 0.05cm"><p align="left" style="line-height: 160%; border: none; padding: 0cm">
+			<strong><font color="#000000"><b>"""
+        reportHtmlTemplate += CADLabel
+        reportHtmlTemplate += """</b></font></strong></p>
+		</td>
+		<td style="word-wrap: break-word; border: 1px solid #dedede; padding: 0.05cm"><p align="left" style="line-height: 160%; border: none; padding: 0cm">
+			<font color="#000000">"""
+        reportHtmlTemplate += d["FileName"]
+        reportHtmlTemplate += """</font></p>
+		</td>
+	</tr>
+	<tr>
+		<td style="border: 1px solid #dedede; padding: 0.05cm"><p align="left" style="line-height: 160%; border: none; padding: 0cm">
+			<strong><font color="#000000"><b>"""
+        reportHtmlTemplate += LastSaveLabel
+        reportHtmlTemplate += """</b></font></strong></p>
+		</td>
+		<td style="border: 1px solid #dedede; padding: 0.05cm"><p align="left" style="line-height: 160%; border: none; padding: 0cm">
+			<font color="#000000">"""
+        reportHtmlTemplate += d["LastModifiedDate"]
+        reportHtmlTemplate += """</font></p>
+		</td>
+	</tr>
+	<tr>
+		<td style="border: 1px solid #dedede; padding: 0.05cm"><p align="left" style="line-height: 160%; border: none; padding: 0cm">
+			<strong><font color="#000000"><b>"""
+        reportHtmlTemplate += CustomerLabel
+        reportHtmlTemplate += """</b></font></strong></p>
+		</td>
+		<td style="border: 1px solid #dedede; padding: 0.05cm"><p align="left" style="line-height: 160%; border: none; padding: 0cm">
+			<font color="#000000">"""
+        reportHtmlTemplate += d["Customer"]
+        reportHtmlTemplate += """</font></p>
+		</td>
+	</tr>
+</table>"""
+
+        descriptionLabel = translate("Path_Sanity", "Description")
+        manufLabel = translate("Path_Sanity", "Manufacturer")
+        partNumberLabel = translate("Path_Sanity", "Part Number")
+        urlLabel = translate("Path_Sanity", "URL")
+        inspectionNotesLabel = translate("Path_Sanity", "Inspection Notes")
+        opLabel = translate("Path_Sanity", "Operation")
+        tcLabel = translate("Path_Sanity", "Tool Controller")
+        feedLabel = translate("Path_Sanity", "Feed Rate")
+        speedLabel = translate("Path_Sanity", "Spindle Speed")
+        shapeLabel = translate("Path_Sanity", "Tool Shape")
+        diameterLabel = translate("Path_Sanity", "Tool Diameter")
+
+        xDimLabel = translate("Path_Sanity", "X Size")
+        yDimLabel = translate("Path_Sanity", "Y Size")
+        zDimLabel = translate("Path_Sanity", "Z Size")
+        materialLabel = translate("Path_Sanity", "Material")
+
+        offsetsLabel = translate("Path_Sanity", "Work Offsets")
+        orderByLabel = translate("Path_Sanity", "Order By")
+        datumLabel = translate("Path_Sanity", "Part Datum")
+
+        gcodeFileLabel = translate("Path_Sanity", "G-code File")
+        lastpostLabel = translate("Path_Sanity", "Last Post Process Date")
+        stopsLabel = translate("Path_Sanity", "Stops")
+        programmerLabel = translate("Path_Sanity", "Programmer")
+        machineLabel = translate("Path_Sanity", "Machine")
+        postLabel = translate("Path_Sanity", "Postprocessor")
+        flagsLabel = translate("Path_Sanity", "Post Processor Flags")
+        fileSizeLabel = translate("Path_Sanity", "File Size (kB)")
+        lineCountLabel = translate("Path_Sanity", "Line Count")
+
+        noteLabel = translate("Path_Sanity", "Note")
+        operatorLabel = translate("Path_Sanity", "Operator")
+        dateLabel = translate("Path_Sanity", "Date")
+
+        d = data["runData"]
+        reportHtmlTemplate += """
+<p><h2 class="western" style="font-variant: normal; letter-spacing: normal; font-style: normal; font-weight: normal; line-height: 120%; orphans: 2; widows: 2; margin-top: 0cm; margin-bottom: 0cm; border: none; padding: 0cm"><a name="_run_summary"></a>
+<span style="display: inline-block; border-top: 1px solid #e7e7e9; border-bottom: none; border-left: none; border-right: none; padding-top: 0.05cm; padding-bottom: 0cm; padding-left: 0cm; padding-right: 0cm"><font face="Open Sans, DejaVu Sans, sans-serif"><font size="3" style="font-size: 20pt"><font color="#ba3925">
+"""
+        reportHtmlTemplate += RunSumHeading
+        reportHtmlTemplate += """
+</span></font></font></font></h2>"""
+        for i in d["items"]:
+            reportHtmlTemplate += """
+
+<table cellpadding="2" cellspacing="2" bgcolor="#ffffff" style="background: #ffffff">
+	<col width="210"/>
+
+	<col width="210"/>
+
+	<col width="210"/>
+
+	<col width="210"/>
+
+	<col width="210"/>
+
+	<tr>
+		<td style="border: 1px solid #dedede; padding: 0.05cm"><p align="left" style="border: none; padding: 0cm">
+			<strong><font color="#000000"><b>"""
+            reportHtmlTemplate += opLabel
+            reportHtmlTemplate += """</b></font></strong></p>
+		</td>
+		<td style="border: 1px solid #dedede; padding: 0.05cm"><p align="left" style="border: none; padding: 0cm">
+			<strong><font color="#000000"><b>"""
+            reportHtmlTemplate += zMinLabel
+            reportHtmlTemplate += """</b></font></strong></p>
+		</td>
+		<td style="border: 1px solid #dedede; padding: 0.05cm"><p align="left" style="border: none; padding: 0cm">
+			<strong><font color="#000000"><b>"""
+            reportHtmlTemplate += zMaxLabel
+            reportHtmlTemplate += """</b></font></strong></p>
+		</td>
+		<td style="border: 1px solid #dedede; padding: 0.05cm"><p align="left" style="border: none; padding: 0cm">
+			<strong><font color="#000000"><b>"""
+            reportHtmlTemplate += coolantLabel
+            reportHtmlTemplate += """</b></font></strong></p>
+		</td>
+		<td style="border: 1px solid #dedede; padding: 0.05cm"><p align="left" style="border: none; padding: 0cm">
+			<strong><font color="#000000"><b>"""
+            reportHtmlTemplate += cycleTimeLabel
+            reportHtmlTemplate += """</b></font></strong></p>
+		</td>
+	</tr>
+	<tr>
+		<td style="border: 1px solid #dedede; padding: 0.05cm"><p align="left" style="border: none; padding: 0cm">
+			<font color="#000000">"""
+            reportHtmlTemplate += i["opName"]
+            reportHtmlTemplate += """</font></p>
+		</td>
+		<td style="border: 1px solid #dedede; padding: 0.05cm"><p align="left" style="border: none; padding: 0cm">
+			<font color="#000000">"""
+            reportHtmlTemplate += i["minZ"]
+            reportHtmlTemplate += """</font></p>
+		</td>
+		<td style="border: 1px solid #dedede; padding: 0.05cm"><p align="left" style="border: none; padding: 0cm">
+			<font color="#000000">"""
+            reportHtmlTemplate += i["maxZ"]
+            reportHtmlTemplate += """</font></p>
+		</td>
+		<td style="border: 1px solid #dedede; padding: 0.05cm"><p align="left" style="border: none; padding: 0cm">
+			<font color="#000000">"""
+            reportHtmlTemplate += i["coolantMode"]
+            reportHtmlTemplate += """</font></p>
+		</td>
+		<td style="border: 1px solid #dedede; padding: 0.05cm"><p align="left" style="border: none; padding: 0cm">
+			<font color="#000000">"""
+            reportHtmlTemplate += i["cycleTime"]
+            reportHtmlTemplate += """
+</font></p>
+		</td>
+	</tr>
+</table>"""
+        d = data["stockData"]
+        reportHtmlTemplate += """
+<p><h2 class="western" style="font-variant: normal; letter-spacing: normal; font-style: normal; font-weight: normal; line-height: 120%; orphans: 2; widows: 2; margin-top: 0cm; margin-bottom: 0cm; border: none; padding: 0cm"><a name="_rough_stock"></a>
+<span style="display: inline-block; border-top: 1px solid #e7e7e9; border-bottom: none; border-left: none; border-right: none; padding-top: 0.05cm; padding-bottom: 0cm; padding-left: 0cm; padding-right: 0cm"><font face="Open Sans, DejaVu Sans, sans-serif"><font size="3" style="font-size: 20pt"><font color="#ba3925">
+"""
+        reportHtmlTemplate += RoughStkHeading
+        reportHtmlTemplate += """
+</span></font></font></font></h2>
+<table cellpadding="2" cellspacing="2" bgcolor="#ffffff" style="background: #ffffff">
+	<col width="350"/>
+
+	<col width="350"/>
+
+	<col width="350"/>
+
+	<tr>
+		<td style="border: 1px solid #dedede; padding: 0.05cm"><p align="left" style="border: none; padding: 0cm">
+			<strong><font color="#000000"><b>"""
+        reportHtmlTemplate += materialLabel
+        reportHtmlTemplate += """
+</b></font></strong></p>
+		</td>
+		<td style="border: 1px solid #dedede; padding: 0.05cm"><p align="left" style="line-height: 160%; border: none; padding: 0cm">
+			<font color="#000000">"""
+        reportHtmlTemplate += d["material"] + "</font></p>"
+        reportHtmlTemplate += """
+		<td rowspan="4" style="border: 1px solid #dedede; padding: 0.05cm"><p align="left">
+			<span style="display: inline-block; border: none; padding: 0cm"><font color="#000000"><img src='
+"""
+        reportHtmlTemplate += d["stockImage"] + "'" + "name='Image" + str(imageCounter)
+        reportHtmlTemplate += "' alt='stock' align='bottom' width='320' height='320' border='0'/>"
+        imageCounter += 1
+        reportHtmlTemplate += """
+</span></font></p>
+		</td>
+	</tr>
+	<tr>
+		<td style="border: 1px solid #dedede; padding: 0.05cm"><p align="left" style="border: none; padding: 0cm">
+			<strong><font color="#000000"><b>"""
+        reportHtmlTemplate += xDimLabel
+        reportHtmlTemplate += """</b></font></strong></p>
+		</td>
+		<td style="border: 1px solid #dedede; padding: 0.05cm"><p align="left" style="border: none; padding: 0cm">
+			<font color="#000000">"""
+        reportHtmlTemplate += d["xLen"]
+        reportHtmlTemplate += """</font></p>
+		</td>
+	</tr>
+	<tr>
+		<td style="border: 1px solid #dedede; padding: 0.05cm"><p align="left" style="border: none; padding: 0cm">
+			<strong><font color="#000000"><b>"""
+        reportHtmlTemplate += yDimLabel
+        reportHtmlTemplate += """</b></font></strong></p>
+		</td>
+		<td style="border: 1px solid #dedede; padding: 0.05cm"><p align="left" style="border: none; padding: 0cm">
+			<font color="#000000">"""
+        reportHtmlTemplate += d["yLen"]
+        reportHtmlTemplate += """</font></p>
+		</td>
+	</tr>
+	<tr>
+		<td style="border: 1px solid #dedede; padding: 0.05cm"><p align="left" style="border: none; padding: 0cm">
+			<strong><font color="#000000"><b>"""
+        reportHtmlTemplate += zDimLabel
+        reportHtmlTemplate += """</b></font></strong></p>
+		</td>
+		<td style="border: 1px solid #dedede; padding: 0.05cm"><p align="left" style="border: none; padding: 0cm">
+			<font color="#000000">"""
+        reportHtmlTemplate += d["zLen"]
+        reportHtmlTemplate += """</font></p>
+		</td>
+	</tr>
+</table>"""
+        d = data["toolData"]
+        reportHtmlTemplate += """
+<p><h2 class="western" style="font-variant: normal; letter-spacing: normal; font-style: normal; font-weight: normal; line-height: 120%; orphans: 2; widows: 2; margin-top: 0cm; margin-bottom: 0cm; border: none; padding: 0cm"><a name="_tool_data"></a>
+<span style="display: inline-block; border-top: 1px solid #e7e7e9; border-bottom: none; border-left: none; border-right: none; padding-top: 0.05cm; padding-bottom: 0cm; padding-left: 0cm; padding-right: 0cm"><font face="Open Sans, DejaVu Sans, sans-serif"><font size="3" style="font-size: 20pt"><font color="#ba3925">
+"""
+        reportHtmlTemplate += ToolDataHeading
+        reportHtmlTemplate += """
+</span></font></font></font></h2>"""
+        for key, value in d.items():
+            reportHtmlTemplate += """
+<h3 class='western' style='font-variant: normal; letter-spacing: normal; font-style: normal; font-weight: normal; line-height: 120%; orphans: 2; widows: 2; margin-top: 0cm; margin-bottom: 0cm; border: none; padding: 0cm'><a name='
+"""
+            reportHtmlTemplate += toolLabel + key
+            reportHtmlTemplate += "'>"
+            reportHtmlTemplate += """
+</a><span style='display: inline-block; border: none; padding: 0cm'><font face='Open Sans, DejaVu Sans, sans-serif'><font size='3' style='font-size: 16pt'><font color='#ba3925'>
+"""
+            reportHtmlTemplate += toolLabel + ": T" + key
+            reportHtmlTemplate += """</span></font></font></font></h3>"""
+            reportHtmlTemplate += """
+<table cellpadding="2" cellspacing="2" bgcolor="#ffffff" style="background: #ffffff">
+	<col width="350"/>
+
+	<col width="350"/>
+
+	<col width="350"/>
+
+	<tr>
+		<td style="border: 1px solid #dedede; padding: 0.05cm"><p align="left" style="border: none; padding: 0cm">
+			<strong><font color="#000000"><b>"""
+            reportHtmlTemplate += descriptionLabel
+            reportHtmlTemplate += """</b></font></strong></p>
+		</td>
+		<td style="border: 1px solid #dedede; padding: 0.05cm"><p align="left" style="border: none; padding: 0cm">
+			<font color="#000000">"""
+            reportHtmlTemplate += value["description"]
+            reportHtmlTemplate += """
+</font></p>
+		</td>
+		<td style="border: 1px solid #dedede; padding: 0.05cm"><p align="left">
+			<span style="display: inline-block; border: none; padding: 0cm"><font color="#000000"><img src='
+"""
+            try:
+                reportHtmlTemplate += value["imagepath"]
+            except:
+                pass
+            reportHtmlTemplate += (
+                "' name='Image"
+                + str(imageCounter)
+                + "' alt='2' align='bottom' width='135' height='135' border='0'/>"
+            )
+            reportHtmlTemplate += """
+</span></font></p>
+		</td>
+	</tr>
+	<tr>
+		<td style="border: 1px solid #dedede; padding: 0.05cm"><p align="left" style="border: none; padding: 0cm">
+			<strong><font color="#000000"><b>"""
+            reportHtmlTemplate += manufLabel
+            reportHtmlTemplate += """</b></font></strong></p>
+		</td>
+		<td style="border: 1px solid #dedede; padding: 0.05cm"><p align="left" style="border: none; padding: 0cm">
+			<font color="#000000">"""
+            reportHtmlTemplate += value["manufacturer"]
+            reportHtmlTemplate += """</font></p>
+		</td>
+	</tr>
+	<tr>
+		<td style="border: 1px solid #dedede; padding: 0.05cm"><p align="left" style="border: none; padding: 0cm">
+			<strong><font color="#000000"><b>"""
+            reportHtmlTemplate += partNumberLabel
+            reportHtmlTemplate += """</b></font></strong></p>
+		</td>
+		<td colspan="2" style="border: 1px solid #dedede; padding: 0.05cm"><p align="left" style="border: none; padding: 0cm">
+			<font color="#000000">"""
+            reportHtmlTemplate += value["partNumber"]
+            reportHtmlTemplate += """</font></p>
+		</td>
+	</tr>
+	<tr>
+		<td style="border: 1px solid #dedede; padding: 0.05cm"><p align="left" style="border: none; padding: 0cm">
+			<strong><font color="#000000"><b>"""
+            reportHtmlTemplate += urlLabel
+            reportHtmlTemplate += """</b></font></strong></p>
+		</td>
+		<td colspan="2" style="border: 1px solid #dedede; padding: 0.05cm"><p align="left" style="border: none; padding: 0cm">
+			<font color="#000000">"""
+            reportHtmlTemplate += value["url"]
+            reportHtmlTemplate += """</font></p>
+		</td>
+	</tr>
+	<tr>
+		<td style="border: 1px solid #dedede; padding: 0.05cm"><p align="left" style="border: none; padding: 0cm">
+			<strong><font color="#000000"><b>"""
+            reportHtmlTemplate += shapeLabel
+            reportHtmlTemplate += """</b></font></strong></p>
+		<td colspan="2" style="border: 1px solid #dedede; padding: 0.05cm"><p align="left" style="border: none; padding: 0cm">
+			<font color="#000000">"""
+            reportHtmlTemplate += value["shape"]
+            reportHtmlTemplate += """</font></p>
+		</td>
+	</tr>
+	<tr>
+		<td style="border: 1px solid #dedede; padding: 0.05cm"><p align="left" style="border: none; padding: 0cm">
+			<strong><font color="#000000"><b>"""
+            reportHtmlTemplate += inspectionNotesLabel
+            reportHtmlTemplate += """</b></font></strong></p>
+		</td>
+		<td colspan="2" style="border: 1px solid #dedede; padding: 0.05cm"><p align="left" style="border: none; padding: 0cm">
+			<font color="#000000">"""
+            reportHtmlTemplate += value["inspectionNotes"]
+            reportHtmlTemplate += """</font></p>
+		</td>
+	</tr>
+	<tr>
+		<td style="border: 1px solid #dedede; padding: 0.05cm"><p align="left" style="border: none; padding: 0cm">
+			<strong><font color="#000000"><b>"""
+            reportHtmlTemplate += diameterLabel
+            reportHtmlTemplate += """</b></font></strong></p>
+		</td>
+		<td colspan="2" style="border: 1px solid #dedede; padding: 0.05cm"><p align="left" style="border: none; padding: 0cm">
+			<font color="#000000">"""
+            reportHtmlTemplate += value["diameter"]
+            imageCounter += 1
+            reportHtmlTemplate += """</font></p>
+		</td>
+	</tr>
+</table>"""
+            for o in value["ops"]:
+                reportHtmlTemplate += """
+<table cellpadding="2" cellspacing="2" bgcolor="#ffffff" style="background: #ffffff">
+	<col width="262"/>
+
+	<col width="262"/>
+
+	<col width="262"/>
+
+	<col width="262"/>
+
+	<tr>
+		<td style="border: 1px solid #dedede; padding: 0.05cm"><p align="left" style="border: none; padding: 0cm">
+			<strong><font color="#000000"><b>"""
+                reportHtmlTemplate += opLabel
+                reportHtmlTemplate += """</b></font></strong></p>
+		</td>
+		<td style="border: 1px solid #dedede; padding: 0.05cm"><p align="left" style="border: none; padding: 0cm">
+			<strong><font color="#000000"><b>"""
+                reportHtmlTemplate += tcLabel
+                reportHtmlTemplate += """</b></font></strong></p>
+		</td>
+		<td style="border: 1px solid #dedede; padding: 0.05cm"><p align="left" style="border: none; padding: 0cm">
+			<strong><font color="#000000"><b>"""
+                reportHtmlTemplate += feedLabel
+                reportHtmlTemplate += """</b></font></strong></p>
+		</td>
+		<td style="border: 1px solid #dedede; padding: 0.05cm"><p align="left" style="border: none; padding: 0cm">
+			<strong><font color="#000000"><b>"""
+                reportHtmlTemplate += speedLabel
+                reportHtmlTemplate += """</b></font></strong></p>
+		</td>
+	</tr>
+	<tr>
+		<td style="border: 1px solid #dedede; padding: 0.05cm"><p align="left" style="border: none; padding: 0cm">
+			<font color="#000000">"""
+                reportHtmlTemplate += o["Operation"]
+                reportHtmlTemplate += """</font></p>
+		</td>
+		<td style="border: 1px solid #dedede; padding: 0.05cm"><p align="left" style="border: none; padding: 0cm">
+			<font color="#000000">"""
+                reportHtmlTemplate += o["ToolController"]
+                reportHtmlTemplate += """</font></p>
+		</td>
+		<td style="border: 1px solid #dedede; padding: 0.05cm"><p align="left" style="border: none; padding: 0cm">
+			<font color="#000000">"""
+                reportHtmlTemplate += o["Feed"]
+                reportHtmlTemplate += """</font></p>
+		</td>
+		<td style="border: 1px solid #dedede; padding: 0.05cm"><p align="left" style="border: none; padding: 0cm">
+			<font color="#000000">"""
+                reportHtmlTemplate += o["Speed"]
+                reportHtmlTemplate += """</font></p>
+		</td>
+	</tr>
+</table>"""
+        d = data["outputData"]
+        reportHtmlTemplate += """
+<p><h2 class="western" style="font-variant: normal; letter-spacing: normal; font-style: normal; font-weight: normal; line-height: 120%; orphans: 2; widows: 2; margin-top: 0cm; margin-bottom: 0cm; border: none; padding: 0cm"><a name="_output_gcode"></a>
+<span style="display: inline-block; border-top: 1px solid #e7e7e9; border-bottom: none; border-left: none; border-right: none; padding-top: 0.05cm; padding-bottom: 0cm; padding-left: 0cm; padding-right: 0cm"><font face="Open Sans, DejaVu Sans, sans-serif"><font size="3" style="font-size: 20pt"><font color="#ba3925">
+"""
+        reportHtmlTemplate += OutputHeading + " (Gcode)"
+        reportHtmlTemplate += """
+</span></font></font></font></h2>
+<table cellpadding="2" cellspacing="2" bgcolor="#ffffff" style="background: #ffffff">
+	<col width="525"/>
+
+	<col width="525"/>
+
+	<tr>
+		<td style="border: 1px solid #dedede; padding: 0.05cm"><p align="left" style="border: none; padding: 0cm">
+			<strong><font color="#000000"><b>"""
+        reportHtmlTemplate += gcodeFileLabel
+        reportHtmlTemplate += """</b></font></strong></p>
+		</td>
+		<td style="border: 1px solid #dedede; padding: 0.05cm"><p align="left" style="border: none; padding: 0cm">
+			<font color="#000000">"""
+        reportHtmlTemplate += d["lastgcodefile"]
+        reportHtmlTemplate += """</font></p>
+		</td>
+	</tr>
+	<tr>
+		<td style="border: 1px solid #dedede; padding: 0.05cm"><p align="left" style="border: none; padding: 0cm">
+			<strong><font color="#000000"><b>"""
+        reportHtmlTemplate += lastpostLabel
+        reportHtmlTemplate += """</b></font></strong></p>
+		</td>
+		<td style="border: 1px solid #dedede; padding: 0.05cm"><p align="left" style="border: none; padding: 0cm">
+			<font color="#000000">"""
+        reportHtmlTemplate += d["lastpostprocess"]
+        reportHtmlTemplate += """</font></p>
+		</td>
+	</tr>
+	<tr>
+		<td style="border: 1px solid #dedede; padding: 0.05cm"><p align="left" style="border: none; padding: 0cm">
+			<strong><font color="#000000"><b>"""
+        reportHtmlTemplate += stopsLabel
+        reportHtmlTemplate += """</b></font></strong></p>
+		</td>
+		<td style="border: 1px solid #dedede; padding: 0.05cm"><p align="left" style="border: none; padding: 0cm">
+			<font color="#000000">"""
+        reportHtmlTemplate += d["optionalstops"]
+        reportHtmlTemplate += """</font></p>
+		</td>
+	</tr>
+	<tr>
+		<td style="border: 1px solid #dedede; padding: 0.05cm"><p align="left" style="border: none; padding: 0cm">
+			<strong><font color="#000000"><b>"""
+        reportHtmlTemplate += programmerLabel
+        reportHtmlTemplate += """</b></font></strong></p>
+		</td>
+		<td style="border: 1px solid #dedede; padding: 0.05cm"><p align="left" style="border: none; padding: 0cm">
+			<font color="#000000">"""
+        reportHtmlTemplate += d["programmer"]
+        reportHtmlTemplate += """</font></p>
+		</td>
+	</tr>
+	<tr>
+		<td style="border: 1px solid #dedede; padding: 0.05cm"><p align="left" style="border: none; padding: 0cm">
+			<strong><font color="#000000"><b>"""
+        reportHtmlTemplate += machineLabel
+        reportHtmlTemplate += """</b></font></strong></p>
+		</td>
+		<td style="border: 1px solid #dedede; padding: 0.05cm"><p align="left" style="border: none; padding: 0cm">
+			<font color="#000000">"""
+        reportHtmlTemplate += d["machine"]
+        reportHtmlTemplate += """</font></p>
+		</td>
+	</tr>
+	<tr>
+		<td style="border: 1px solid #dedede; padding: 0.05cm"><p align="left" style="border: none; padding: 0cm">
+			<strong><font color="#000000"><b>"""
+        reportHtmlTemplate += postLabel
+        reportHtmlTemplate += """</b></font></strong></p>
+		</td>
+		<td style="border: 1px solid #dedede; padding: 0.05cm"><p align="left" style="border: none; padding: 0cm">
+			<font color="#000000">"""
+        reportHtmlTemplate += d["postprocessor"]
+        reportHtmlTemplate += """</font></p>
+		</td>
+	</tr>
+	<tr>
+		<td style="border: 1px solid #dedede; padding: 0.05cm"><p align="left" style="border: none; padding: 0cm">
+			<strong><font color="#000000"><b>"""
+        reportHtmlTemplate += flagsLabel
+        reportHtmlTemplate += """</b></font></strong></p>
+		</td>
+		<td style="border: 1px solid #dedede; padding: 0.05cm"><p align="left" style="border: none; padding: 0cm">
+			<font color="#000000">"""
+        reportHtmlTemplate += d["postprocessorFlags"]
+        reportHtmlTemplate += """</font></p>
+		</td>
+	</tr>
+	<tr>
+		<td style="border: 1px solid #dedede; padding: 0.05cm"><p align="left" style="border: none; padding: 0cm">
+			<strong><font color="#000000"><b>"""
+        reportHtmlTemplate += fileSizeLabel
+        reportHtmlTemplate += """</b></font></strong></p>
+		</td>
+		<td style="border: 1px solid #dedede; padding: 0.05cm"><p align="left" style="border: none; padding: 0cm">
+			<font color="#000000">"""
+        reportHtmlTemplate += d["filesize"]
+        reportHtmlTemplate += """</font></p>
+		</td>
+	</tr>
+	<tr>
+		<td style="border: 1px solid #dedede; padding: 0.05cm"><p align="left" style="border: none; padding: 0cm">
+			<strong><font color="#000000"><b>"""
+        reportHtmlTemplate += lineCountLabel
+        reportHtmlTemplate += """</b></font></strong></p>
+		</td>
+		<td style="border: 1px solid #dedede; padding: 0.05cm"><p align="left" style="border: none; padding: 0cm">
+			<font color="#000000">"""
+        reportHtmlTemplate += d["linecount"]
+        reportHtmlTemplate += """</font></p>
+		</td>
+	</tr>
+</table>"""
+        d = data["fixtureData"]
+        reportHtmlTemplate += """
+<p><h2 class="western" style="font-variant: normal; letter-spacing: normal; font-style: normal; font-weight: normal; line-height: 120%; orphans: 2; widows: 2; margin-top: 0cm; margin-bottom: 0cm; border: none; padding: 0cm"><a name="_fixtures_and_workholding"></a>
+<span style="display: inline-block; border-top: 1px solid #e7e7e9; border-bottom: none; border-left: none; border-right: none; padding-top: 0.05cm; padding-bottom: 0cm; padding-left: 0cm; padding-right: 0cm"><font face="Open Sans, DejaVu Sans, sans-serif"><font size="3" style="font-size: 20pt"><font color="#ba3925">
+"""
+        reportHtmlTemplate += FixturesHeading
+        reportHtmlTemplate += """
+</span></font></font></font></h2>
+<table cellpadding="2" cellspacing="2" bgcolor="#ffffff" style="background: #ffffff">
+	<col width="525"/>
+
+	<col width="525"/>
+
+	<tr>
+		<td style="border: 1px solid #dedede; padding: 0.05cm"><p align="left" style="border: none; padding: 0cm">
+			<strong><font color="#000000"><b>"""
+        reportHtmlTemplate += offsetsLabel
+        reportHtmlTemplate += """</b></font></strong></p>
+		</td>
+		<td style="border: 1px solid #dedede; padding: 0.05cm"><p align="left" style="border: none; padding: 0cm">
+			<font color="#000000">"""
+        reportHtmlTemplate += d["fixtures"]
+        reportHtmlTemplate += """</font></p>
+		</td>
+	</tr>
+	<tr>
+		<td style="border: 1px solid #dedede; padding: 0.05cm"><p align="left" style="border: none; padding: 0cm">
+			<strong><font color="#000000"><b>"""
+        reportHtmlTemplate += orderByLabel
+        reportHtmlTemplate += """</b></font></strong></p>
+		</td>
+		<td style="border: 1px solid #dedede; padding: 0.05cm"><p align="left" style="border: none; padding: 0cm">
+			<font color="#000000">"""
+        reportHtmlTemplate += d["orderBy"]
+        reportHtmlTemplate += """</font></p>
+		</td>
+	</tr>
+	<tr>
+		<td style="border: 1px solid #dedede; padding: 0.05cm"><p align="left" style="border: none; padding: 0cm">
+			<strong><font color="#000000">"""
+        reportHtmlTemplate += datumLabel
+        reportHtmlTemplate += """</font></p>
+		</td>
+		<td style="border: 1px solid #dedede; padding: 0.05cm"><p align="left">
+			<span style="display: inline-block; border: none; padding: 0cm"><font color="#000000"><img src='
+"""
+        reportHtmlTemplate += d["datumImage"] + "'" + "name='Image" + str(imageCounter)
+        reportHtmlTemplate += "' alt='origin t' align='bottom'"
+        reportHtmlTemplate += " width='320' height='320' border='0'/>"
+        imageCounter += 1
+        reportHtmlTemplate += """
+</span></font></p>
+		</td>
+	</tr>
+</table>"""
+        d = data["squawkData"]
+        TIPIcon = FreeCAD.getHomePath() + "Mod/Path/Path/Main/Gui/Sanity_Bulb.svg"
+        NOTEIcon = FreeCAD.getHomePath() + "Mod/Path/Path/Main/Gui/Sanity_Note.svg"
+        WARNINGIcon = (
+            FreeCAD.getHomePath() + "Mod/Path/Path/Main/Gui/Sanity_Warning.svg"
+        )
+        CAUTIONIcon = FreeCAD.getHomePath() + "Mod/Path/Path/Main/Gui/Sanity_Stop.svg"
+
+        reportHtmlTemplate += """
+<p><h2 class="western" style="font-variant: normal; letter-spacing: normal; font-style: normal; font-weight: normal; line-height: 120%; orphans: 2; widows: 2; margin-top: 0cm; margin-bottom: 0cm; border: none; padding: 0cm"><a name="_squawks"></a>
+<span style="display: inline-block; border-top: 1px solid #e7e7e9; border-bottom: none; border-left: none; border-right: none; padding-top: 0.05cm; padding-bottom: 0cm; padding-left: 0cm; padding-right: 0cm"><font face="Open Sans, DejaVu Sans, sans-serif"><font size="3" style="font-size: 20pt"><font color="#ba3925">
+"""
+        reportHtmlTemplate += SquawksHeading
+        reportHtmlTemplate += """
+</span></font></font></font></h2>
+<table cellpadding="2" cellspacing="2" bgcolor="#ffffff" style="background: #ffffff">
+	<col width="350"/>
+
+	<col width="350"/>
+
+	<col width="350"/>
+
+	<tr>
+		<td style="border: 1px solid #dedede; padding: 0.05cm"><p align="left" style="border: none; padding: 0cm">
+			<strong><font color="#000000"><b>"""
+        reportHtmlTemplate += noteLabel
+        reportHtmlTemplate += """</b></font></strong></p>
+		</td>
+		<td style="border: 1px solid #dedede; padding: 0.05cm"><p align="left" style="border: none; padding: 0cm">
+			<strong><font color="#000000"><b>"""
+        reportHtmlTemplate += operatorLabel
+        reportHtmlTemplate += """</b></font></strong></p>
+		</td>
+		<td style="border: 1px solid #dedede; padding: 0.05cm"><p align="left" style="border: none; padding: 0cm">
+			<strong><font color="#000000"><b>"""
+        reportHtmlTemplate += dateLabel
+        reportHtmlTemplate += """</b></font></strong></p>
+		</td>
+	</tr>"""
+        for i in d["items"]:
+            reportHtmlTemplate += """
+	<tr>
+		<td style="border: 1px solid #dedede; padding: 0.05cm">
+			<table cellpadding="2" cellspacing="2">
+				<tr>
+					<td style="border-top: none; border-bottom: none; border-left: 1px solid #dddddf; border-right: none; padding-top: 0cm; padding-bottom: 0cm; padding-left: 0.05cm; padding-right: 0cm"><p>
+						<font color="#000000">"""
+            if str(i["squawkType"]) == "TIP":
+                reportHtmlTemplate += (
+                    "<img src='"
+                    + TIPIcon
+                    + "' "
+                    + " name='Image"
+                    + str(imageCounter)
+                    + "' alt='TIP' align='middle' width='32' height='32' border='0'/>"
+                    + "<td style='border-top: none; border-bottom: none;"
+                    + " border-left: 1px solid #dddddf;"
+                    + " border-right: none; padding-top: 0cm;"
+                    + " padding-bottom: 0cm;"
+                    + " padding-left: 0.05cm;"
+                    + " padding-right: 0cm'><p>"
+                    + str(i["Note"])
+                )
+            if str(i["squawkType"]) == "NOTE":
+                reportHtmlTemplate += (
+                    "<img src='"
+                    + NOTEIcon
+                    + "' "
+                    + " name='Image"
+                    + str(imageCounter)
+                    + "' alt='NOTE' align='middle' width='32' height='32' border='0'/>"
+                    + "<td style='border-top: none; border-bottom: none;"
+                    + " border-left: 1px solid #dddddf;"
+                    + " border-right: none; padding-top: 0cm;"
+                    + " padding-bottom: 0cm;"
+                    + " padding-left: 0.05cm;"
+                    + " padding-right: 0cm'><p>"
+                    + str(i["Note"])
+                )
+            if str(i["squawkType"]) == "WARNING":
+                reportHtmlTemplate += (
+                    "<img src='"
+                    + WARNINGIcon
+                    + "' "
+                    + " name='Image"
+                    + str(imageCounter)
+                    + "' alt='WARNING' align='middle' width='32' height='32' border='0'/>"
+                    + "<td style='border-top: none; border-bottom: none;"
+                    + " border-left: 1px solid #dddddf;"
+                    + " border-right: none; padding-top: 0cm;"
+                    + " padding-bottom: 0cm;"
+                    + " padding-left: 0.05cm;"
+                    + " padding-right: 0cm'><p>"
+                    + str(i["Note"])
+                )
+            if str(i["squawkType"]) == "CAUTION":
+                reportHtmlTemplate += (
+                    "<img src='"
+                    + CAUTIONIcon
+                    + "' "
+                    + " name='Image"
+                    + str(imageCounter)
+                    + "' alt='CAUTION' align='middle' width='32' height='32' border='0'/>"
+                    + "<td style='border-top: none; border-bottom: none;"
+                    + " border-left: 1px solid #dddddf;"
+                    + " border-right: none; padding-top: 0cm;"
+                    + " padding-bottom: 0cm;"
+                    + " padding-left: 0.05cm;"
+                    + " padding-right: 0cm'><p>"
+                    + str(i["Note"])
+                )
+            imageCounter += 1
+            reportHtmlTemplate += """</font></p>
+					</td>
+				</tr>
+			</table>
+		</td>
+		<td style="border: 1px solid #dedede; padding: 0.05cm"><p align="left" style="line-height: 160%; border: none; padding: 0cm">
+			<font color="#000000">"""
+            reportHtmlTemplate += i["Operator"]
+            reportHtmlTemplate += """</font></p>
+		</td>
+		<td style="border: 1px solid #dedede; padding: 0.05cm"><p align="left" style="line-height: 160%; border: none; padding: 0cm">
+			<font color="#000000">"""
+            reportHtmlTemplate += i["Date"]
+            reportHtmlTemplate += """</font></p>
+		</td>
+	</tr>"""
+        reportHtmlTemplate += """
+</table>
+<p style="line-height: 100%; margin-bottom: 0cm"><br/>
+
+</p>
+</body>
+</html>
+"""
 
         reportTemplate = """
 = Setup Report for FreeCAD Job: {jobname}
@@ -470,23 +1466,18 @@ class CommandPathSanity:
 
         reportraw = self.outputpath + data["outputData"]["outputfilename"] + ".asciidoc"
         reporthtml = self.outputpath + data["outputData"]["outputfilename"] + ".html"
-        with open(reportraw, "w") as fd:
+        # Python 3.11 aware
+        with codecs.open(reportraw, encoding="utf-8", mode="w") as fd:
             fd.write(report)
             fd.close()
             FreeCAD.Console.PrintMessage(
                 "asciidoc file written to {}\n".format(reportraw)
             )
 
-        try:
-            result = subprocess.run(["asciidoctor", reportraw, "-o", reporthtml])
-            if str(result) == "32512":
-                msg = "asciidoctor not found. html cannot be generated."
-                QtGui.QMessageBox.information(None, "Path Sanity", msg)
-                FreeCAD.Console.PrintMessage(msg)
-                reporthtml = None
-
-        except Exception as e:
-            FreeCAD.Console.PrintError(e)
+        with codecs.open(reporthtml, encoding="utf-8", mode="w") as fd:
+            fd.write(reportHtmlTemplate)
+            fd.close()
+            FreeCAD.Console.PrintMessage("html file written to {}\n".format(reporthtml))
 
         return reporthtml
 
@@ -594,10 +1585,11 @@ class CommandPathSanity:
                 if not hasattr(TC.Tool, "BitBody"):
                     self.squawk(
                         "PathSanity",
-                        "Tool number {} is a legacy tool. Legacy tools not \
-                        supported by Path-Sanity".format(
-                            TC.ToolNumber
-                        ),
+                        translate(
+                            "Path_Sanity",
+                            "Tool number {} is a legacy tool. Legacy tools not \
+                        supported by Path-Sanity",
+                        ).format(TC.ToolNumber),
                         squawkType="WARNING",
                     )
                     continue  # skip old-style tools
@@ -606,7 +1598,9 @@ class CommandPathSanity:
                 if bitshape not in ["", TC.Tool.BitShape]:
                     self.squawk(
                         "PathSanity",
-                        "Tool number {} used by multiple tools".format(TC.ToolNumber),
+                        translate(
+                            "Path_Sanity", "Tool number {} used by multiple tools"
+                        ).format(TC.ToolNumber),
                         squawkType="CAUTION",
                     )
                 tooldata["bitShape"] = TC.Tool.BitShape
@@ -632,7 +1626,9 @@ class CommandPathSanity:
                 if TC.SpindleSpeed == 0.0:
                     self.squawk(
                         "PathSanity",
-                        "Tool Controller '{}' has no spindlespeed".format(TC.Label),
+                        translate(
+                            "Path_Sanity", "Tool Controller '{}' has no spindlespeed"
+                        ).format(TC.Label),
                         squawkType="WARNING",
                     )
 
@@ -658,7 +1654,9 @@ class CommandPathSanity:
                     tooldata.setdefault("ops", [])
                     self.squawk(
                         "PathSanity",
-                        "Tool Controller '{}' is not used".format(TC.Label),
+                        translate(
+                            "Path_Sanity", "Tool Controller '{}' is not used"
+                        ).format(TC.Label),
                         squawkType="WARNING",
                     )
 
@@ -688,7 +1686,6 @@ class CommandPathSanity:
 
             data["items"] = []
             for op in obj.Operations.Group:
-
                 oplabel = op.Label
                 ctime = op.CycleTime if hasattr(op, "CycleTime") else 0.0
                 cool = op.CoolantMode if hasattr(op, "CoolantMode") else "N/A"
@@ -754,7 +1751,7 @@ class CommandPathSanity:
             if data["material"] == "Not Specified":
                 self.squawk(
                     "PathSanity",
-                    "Consider Specifying the Stock Material",
+                    translate("Path_Sanity", "Consider Specifying the Stock Material"),
                     squawkType="TIP",
                 )
 
@@ -843,9 +1840,14 @@ class CommandPathSanity:
             if obj.LastPostProcessOutput == "":
                 data["filesize"] = str(0.0)
                 data["linecount"] = str(0)
-                self.squawk("PathSanity", "The Job has not been post-processed")
+                self.squawk(
+                    "PathSanity",
+                    translate("Path_Sanity", "The Job has not been post-processed"),
+                )
             else:
-                data["filesize"] = str(os.path.getsize(obj.LastPostProcessOutput)/1000)
+                data["filesize"] = str(
+                    os.path.getsize(obj.LastPostProcessOutput) / 1000
+                )
                 data["linecount"] = str(
                     sum(1 for line in open(obj.LastPostProcessOutput))
                 )

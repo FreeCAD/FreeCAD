@@ -251,6 +251,9 @@ SbBool OpenCascadeNavigationStyle::processSoEvent(const SoEvent * const ev)
         newmode = NavigationStyle::PANNING;
         break;
     case CTRLDOWN|BUTTON2DOWN:
+        if (newmode != NavigationStyle::DRAGGING) {
+            saveCursorPosition(ev);
+        }
         newmode = NavigationStyle::DRAGGING;
         break;
     case BUTTON2DOWN:

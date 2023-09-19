@@ -41,7 +41,7 @@ class Vector3;
 class Vector2d;
 
 class Placement;
-}// namespace Base
+}  // namespace Base
 
 namespace Part
 {
@@ -52,7 +52,7 @@ namespace Sketcher
 {
 class Constraint;
 class PropertyConstraintList;
-};// namespace Sketcher
+};  // namespace Sketcher
 
 namespace SketcherGui
 {
@@ -183,7 +183,8 @@ inline QFont ViewProviderSketchCoinAttorney::getApplicationFont(const ViewProvid
 }
 
 inline double ViewProviderSketchCoinAttorney::getRotation(const ViewProviderSketch& vp,
-                                                          SbVec3f pos0, SbVec3f pos1)
+                                                          SbVec3f pos0,
+                                                          SbVec3f pos1)
 {
     return vp.getRotation(pos0, pos1);
 }
@@ -271,12 +272,13 @@ inline bool ViewProviderSketchCoinAttorney::isConstraintSelected(const ViewProvi
 }
 
 inline void ViewProviderSketchCoinAttorney::executeOnSelectionPointSet(
-    const ViewProviderSketch& vp, std::function<void(const int)>&& operation)
+    const ViewProviderSketch& vp,
+    std::function<void(const int)>&& operation)
 {
     vp.executeOnSelectionPointSet(std::move(operation));
 }
 
-}// namespace SketcherGui
+}  // namespace SketcherGui
 
 
-#endif// SKETCHERGUI_ViewProviderSketchCoinAttorney_H
+#endif  // SKETCHERGUI_ViewProviderSketchCoinAttorney_H

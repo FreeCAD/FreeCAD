@@ -113,15 +113,15 @@ class SketcherExport GeometryFacade: public Base::BaseClass, private ISketchGeom
 
 protected:
     explicit GeometryFacade(const Part::Geometry* geometry, bool owner = false);
-    GeometryFacade();// As TYPESYSTEM requirement
+    GeometryFacade();  // As TYPESYSTEM requirement
 
     friend class GeometryFacadePy;
 
-public:// Factory methods
+public:  // Factory methods
     static std::unique_ptr<GeometryFacade> getFacade(Part::Geometry* geometry, bool owner = false);
     static std::unique_ptr<const GeometryFacade> getFacade(const Part::Geometry* geometry);
 
-public:// Utility methods
+public:  // Utility methods
     static void ensureSketchGeometryExtension(Part::Geometry* geometry);
     static void copyId(const Part::Geometry* src, Part::Geometry* dst);
     static bool getConstruction(const Part::Geometry* geometry);
@@ -225,18 +225,20 @@ public:
     }
 
     // Geometry Element
-    template<typename GeometryT = Part::Geometry,
-             typename = typename std::enable_if<std::is_base_of<
-                 Part::Geometry, typename std::decay<GeometryT>::type>::value>::type>
+    template<
+        typename GeometryT = Part::Geometry,
+        typename = typename std::enable_if<
+            std::is_base_of<Part::Geometry, typename std::decay<GeometryT>::type>::value>::type>
     GeometryT* getGeometry()
     {
         return dynamic_cast<GeometryT*>(const_cast<Part::Geometry*>(Geo));
     }
 
     // Geometry Element
-    template<typename GeometryT = Part::Geometry,
-             typename = typename std::enable_if<std::is_base_of<
-                 Part::Geometry, typename std::decay<GeometryT>::type>::value>::type>
+    template<
+        typename GeometryT = Part::Geometry,
+        typename = typename std::enable_if<
+            std::is_base_of<Part::Geometry, typename std::decay<GeometryT>::type>::value>::type>
     const GeometryT* getGeometry() const
     {
         return dynamic_cast<const GeometryT*>(Geo);
@@ -402,7 +404,7 @@ private:
         : GeometryFacade()
     {}
 
-public:// Factory methods
+public:  // Factory methods
     static std::unique_ptr<GeometryTypedFacade<GeometryT>> getTypedFacade(GeometryT* geometry,
                                                                           bool owner = false)
     {
@@ -448,7 +450,7 @@ public:// Factory methods
 };
 
 
-}// namespace Sketcher
+}  // namespace Sketcher
 
 
-#endif// SKETCHER_GEOMETRYFACADE_H
+#endif  // SKETCHER_GEOMETRYFACADE_H

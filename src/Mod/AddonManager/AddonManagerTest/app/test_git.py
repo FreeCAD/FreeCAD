@@ -78,9 +78,7 @@ class TestGit(unittest.TestCase):
         checkout_dir = self._clone_test_repo()
         self.assertTrue(os.path.exists(checkout_dir))
         self.assertTrue(os.path.exists(os.path.join(checkout_dir, ".git")))
-        self.assertEqual(
-            os.getcwd(), self.cwd, "We should be left in the same CWD we started"
-        )
+        self.assertEqual(os.getcwd(), self.cwd, "We should be left in the same CWD we started")
 
     def test_checkout(self):
         """Test git checkout"""
@@ -91,9 +89,7 @@ class TestGit(unittest.TestCase):
         expected_status = "## HEAD (no branch)"
         self.assertEqual(status, expected_status)
 
-        self.assertEqual(
-            os.getcwd(), self.cwd, "We should be left in the same CWD we started"
-        )
+        self.assertEqual(os.getcwd(), self.cwd, "We should be left in the same CWD we started")
 
     def test_update(self):
         """Test using git to update the local repo"""
@@ -103,9 +99,7 @@ class TestGit(unittest.TestCase):
         self.assertTrue(self.git.update_available(checkout_dir))
         self.git.update(checkout_dir)
         self.assertFalse(self.git.update_available(checkout_dir))
-        self.assertEqual(
-            os.getcwd(), self.cwd, "We should be left in the same CWD we started"
-        )
+        self.assertEqual(os.getcwd(), self.cwd, "We should be left in the same CWD we started")
 
     def test_tag_and_branch(self):
         """Test checking the currently checked-out tag"""
@@ -129,9 +123,7 @@ class TestGit(unittest.TestCase):
         self.assertEqual(found_branch, expected_branch)
         self.assertFalse(self.git.update_available(checkout_dir))
 
-        self.assertEqual(
-            os.getcwd(), self.cwd, "We should be left in the same CWD we started"
-        )
+        self.assertEqual(os.getcwd(), self.cwd, "We should be left in the same CWD we started")
 
     def test_get_remote(self):
         """Test getting the remote location"""
@@ -139,9 +131,7 @@ class TestGit(unittest.TestCase):
         expected_remote = self.test_repo_remote
         returned_remote = self.git.get_remote(checkout_dir)
         self.assertEqual(expected_remote, returned_remote)
-        self.assertEqual(
-            os.getcwd(), self.cwd, "We should be left in the same CWD we started"
-        )
+        self.assertEqual(os.getcwd(), self.cwd, "We should be left in the same CWD we started")
 
     def test_repair(self):
         """Test the repair feature (and some exception throwing)"""
@@ -158,9 +148,7 @@ class TestGit(unittest.TestCase):
         self.git.repair(remote, checkout_dir)
         status = self.git.status(checkout_dir)
         self.assertEqual(status, "## main...origin/main\n")
-        self.assertEqual(
-            os.getcwd(), self.cwd, "We should be left in the same CWD we started"
-        )
+        self.assertEqual(os.getcwd(), self.cwd, "We should be left in the same CWD we started")
 
     def _rmdir(self, path):
         try:

@@ -53,6 +53,6 @@ private:
     std::unique_ptr<Ui_SketchRectangularArrayDialog> ui;
 };
 
-}// namespace SketcherGui
+}  // namespace SketcherGui
 
-#endif// SKETCHERGUI_SketchRectangularArrayDialog_H
+#endif  // SKETCHERGUI_SketchRectangularArrayDialog_H

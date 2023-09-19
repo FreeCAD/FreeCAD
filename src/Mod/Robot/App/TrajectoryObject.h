@@ -26,14 +26,14 @@
 #include <App/GeoFeature.h>
 #include <App/PropertyGeo.h>
 
-#include "Trajectory.h"
 #include "PropertyTrajectory.h"
+#include "Trajectory.h"
 
 
 namespace Robot
 {
 
-class RobotExport TrajectoryObject : public App::GeoFeature
+class RobotExport TrajectoryObject: public App::GeoFeature
 {
     PROPERTY_HEADER_WITH_OVERRIDE(Robot::TrajectoryObject);
 
@@ -42,26 +42,27 @@ public:
     TrajectoryObject();
 
     /// returns the type name of the ViewProvider
-    const char* getViewProviderName() const override {
+    const char* getViewProviderName() const override
+    {
         return "RobotGui::ViewProviderTrajectory";
     }
-    App::DocumentObjectExecReturn *execute() override {
+    App::DocumentObjectExecReturn* execute() override
+    {
         return App::DocumentObject::StdReturn;
     }
     short mustExecute() const override;
-    PyObject *getPyObject() override;
+    PyObject* getPyObject() override;
 
     App::PropertyPlacement Base;
-    PropertyTrajectory     Trajectory;
+    PropertyTrajectory Trajectory;
 
 
 protected:
     /// get called by the container when a property has changed
-    void onChanged (const App::Property* prop) override;
-
+    void onChanged(const App::Property* prop) override;
 };
 
-} //namespace Robot
+}  // namespace Robot
 
 
-#endif // ROBOT_ROBOTOBJECT_H
+#endif  // ROBOT_ROBOTOBJECT_H
