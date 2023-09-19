@@ -862,7 +862,7 @@ double ConstraintP2PAngle::maxStep(MAP_pD_D& dir, double lim)
     if (it != dir.end()) {
         double step = std::abs(it->second);
         if (step > pi_18) {
-            lim = std::min(lim, pi_18/ step);
+            lim = std::min(lim, pi_18 / step);
         }
     }
     return lim;
@@ -902,8 +902,7 @@ double ConstraintP2LDistance::error()
     double dx = x2 - x1;
     double dy = y2 - y1;
     double d = sqrt(dx * dx + dy * dy);  // line length
-    double area =
-        std::abs(-x0 * dy + y0 * dx + x1 * y2 - x2 * y1);
+    double area = std::abs(-x0 * dy + y0 * dx + x1 * y2 - x2 * y1);
     return scale * (area / d - dist);
 }
 

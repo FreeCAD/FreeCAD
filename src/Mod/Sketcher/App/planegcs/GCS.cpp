@@ -4695,7 +4695,7 @@ int System::solve(SubSystem* subsysA, SubSystem* subsysB, bool /*isFine*/, bool 
             double alpha = 1;
             alpha = std::min(alpha, subsysA->maxStep(plistAB, xdir));
 
-             // Eq. 18.36
+            // Eq. 18.36
             mu = std::max(mu,
                           (grad.dot(xdir) + std::max(0., 0.5 * xdir.dot(B * xdir)))
                               / ((1. - rho) * resA.lpNorm<1>()));
