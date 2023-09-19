@@ -818,6 +818,8 @@ class _Window(ArchComponent.Component):
                             pass
                         elif omode == 10: # -sliding
                             pass
+                exv = FreeCAD.Vector()
+                zov = FreeCAD.Vector()
                 V = 0
                 thk = obj.WindowParts[(i*5)+3]
                 if "+V" in thk:
@@ -841,12 +843,19 @@ class _Window(ArchComponent.Component):
                     if zof:
                         zov = DraftVecUtils.scaleTo(norm,zof)
                         shape.translate(zov)
-                        for symb in ssymbols:
-                            symb.translate(zov)
-                        for symb in vsymbols:
-                            symb.translate(zov)
-                        if rotdata and hinge and omode:
-                            rotdata[0] = rotdata[0].add(zov)
+                if hinge and omode and 0 < omode < 9:
+                    if DraftVecUtils.angle(chord, norm, enorm) < 0:
+                        if omode%2 == 0:
+                            zov = zov.add(exv)
+                    else:
+                        if omode%2 == 1:
+                            zov = zov.add(exv)
+                    for symb in ssymbols:
+                        symb.translate(zov)
+                    for symb in vsymbols:
+                        symb.translate(zov)
+                    if rotdata:
+                        rotdata[0] = rotdata[0].add(zov)
                 if obj.WindowParts[(i*5)+1] == "Louvre":
                     if hasattr(obj,"LouvreWidth"):
                         if obj.LouvreWidth and obj.LouvreSpacing:
