@@ -462,11 +462,12 @@ void DrawViewSection::sectionExec(TopoDS_Shape& baseShape)
             QObject::connect(&m_cutWatcher, &QFutureWatcherBase::finished, &m_cutWatcher, [this] {
                 this->onSectionCutFinished();
             });
-#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
-        m_cutFuture = QtConcurrent::run(this, &DrawViewSection::makeSectionCut, baseShape);
-#else
-        m_cutFuture = QtConcurrent::run(&DrawViewSection::makeSectionCut, this, baseShape);
-#endif
+
+        // We create a lambda closure to hold a copy of baseShape.
+        // This is important because this variable might be local to the calling
+        // function and might get destructed before the parallel processing finishes.
+        auto lambda = [this, baseShape]{this->makeSectionCut(baseShape);};
+        m_cutFuture = QtConcurrent::run(std::move(lambda));
         m_cutWatcher.setFuture(m_cutFuture);
         waitingForCut(true);
     }
