@@ -1795,6 +1795,8 @@ protected:
     void makeCts_1Circle(bool& selAllowed, Base::Vector2d onSketchPos)
     {
         const Part::Geometry* geom = Obj->getGeometry(selCircleArc[0].GeoId);
+        Q_UNUSED(geom)
+
         if (availableConstraint == AvailableConstraint::FIRST
             || availableConstraint == AvailableConstraint::SECOND) {
             //Radius/diameter. Mode changes in createRadiusDiameterConstrain.
