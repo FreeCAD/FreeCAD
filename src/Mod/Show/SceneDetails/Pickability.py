@@ -1,4 +1,4 @@
-#/***************************************************************************
+# /***************************************************************************
 # *   Copyright (c) 2019 Victor Titov (DeepSOIC) <vv.titov@gmail.com>       *
 # *                                                                         *
 # *   This file is part of the FreeCAD CAx development system.              *
@@ -22,6 +22,7 @@
 
 from Show.SceneDetail import SceneDetail
 
+
 class Pickability(SceneDetail):
     """Pickability(object, pickstyle = None):Plugin for TempoVis for altering pick style
     of objects (i.e., selectability).
@@ -29,11 +30,12 @@ class Pickability(SceneDetail):
         PS_REGULAR = 0 # selectable
         PS_BOUNDBOX = 1 # selectable, but faster hit testing using bounding box
         PS_UNPICKABLE = 2 # not selectable and not obstructing."""
-    class_id = 'SDPickability'
-    propname = ''
-    objname = ''
 
-    def __init__(self, object, pickstyle = None):
+    class_id = "SDPickability"
+    propname = ""
+    objname = ""
+
+    def __init__(self, object, pickstyle=None):
         self.objname = object.Name
         self.doc = object.Document
         self.key = self.objname
@@ -46,12 +48,15 @@ class Pickability(SceneDetail):
     def apply_data(self, val):
         setPickStyle(self.doc.getObject(self.objname).ViewObject, val)
 
+
 PS_REGULAR = 0
 PS_BOUNDBOX = 1
 PS_UNPICKABLE = 2
 
-def getPickStyleNode(viewprovider, make_if_missing = True):
+
+def getPickStyleNode(viewprovider, make_if_missing=True):
     from pivy import coin
+
     sa = coin.SoSearchAction()
     sa.setType(coin.SoPickStyle.getClassTypeId())
     sa.traverse(viewprovider.RootNode)
@@ -67,14 +72,14 @@ def getPickStyleNode(viewprovider, make_if_missing = True):
 
 
 def getPickStyle(viewprovider):
-    ps = getPickStyleNode(viewprovider, make_if_missing= False)
+    ps = getPickStyleNode(viewprovider, make_if_missing=False)
     if ps is not None:
         return ps.style.getValue()
     else:
         return PS_REGULAR
 
+
 def setPickStyle(viewprovider, pickstyle):
-    ps = getPickStyleNode(viewprovider, make_if_missing= pickstyle != 0) #coin.SoPickStyle.SHAPE
+    ps = getPickStyleNode(viewprovider, make_if_missing=pickstyle != 0)  # coin.SoPickStyle.SHAPE
     if ps is not None:
         return ps.style.setValue(pickstyle)
-

@@ -66,7 +66,7 @@ public:
     Module()
         : Py::ExtensionModule<Module>("SketcherGui")
     {
-        initialize("This module is the SketcherGui module.");// register with Python
+        initialize("This module is the SketcherGui module.");  // register with Python
     }
 
     ~Module() override
@@ -80,7 +80,7 @@ PyObject* initModule()
     return Base::Interpreter().addModule(new Module);
 }
 
-}// namespace SketcherGui
+}  // namespace SketcherGui
 
 /* Python entry */
 PyMOD_INIT_FUNC(SketcherGui)

@@ -955,6 +955,8 @@ class svgHandler(xml.sax.ContentHandler):
                         sh = makewire(path)
                         if self.fill and sh.isClosed():
                             sh = Part.Face(sh)
+                            if sh.isValid() is False:
+                                sh.fix(1e-6, 0, 1)
                         sh = self.applyTrans(sh)
                         obj = self.doc.addObject("Part::Feature", pathname)
                         obj.Shape = sh
@@ -1227,6 +1229,8 @@ class svgHandler(xml.sax.ContentHandler):
                                 and len(sh.Wires) == 1 \
                                 and sh.Wires[0].isClosed():
                             sh = Part.Face(sh)
+                            if sh.isValid() is False:
+                                sh.fix(1e-6, 0, 1)
                         sh = self.applyTrans(sh)
                         obj = self.doc.addObject("Part::Feature", pathname)
                         obj.Shape = sh
@@ -1244,6 +1248,8 @@ class svgHandler(xml.sax.ContentHandler):
                 # sh = Part.Wire(path)
                 if self.fill and sh.isClosed():
                     sh = Part.Face(sh)
+                    if sh.isValid() is False:
+                        sh.fix(1e-6, 0, 1)
                 sh = self.applyTrans(sh)
                 obj = self.doc.addObject("Part::Feature", pathname)
                 obj.Shape = sh

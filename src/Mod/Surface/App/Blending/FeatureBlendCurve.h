@@ -27,8 +27,8 @@
 #include <App/PropertyStandard.h>
 #include <App/PropertyUnits.h>
 #include <Mod/Part/App/FeaturePartSpline.h>
-#include <Mod/Surface/SurfaceGlobal.h>
 #include <Mod/Surface/App/Blending/BlendPoint.h>
+#include <Mod/Surface/SurfaceGlobal.h>
 
 namespace Surface
 {
@@ -38,37 +38,37 @@ class SurfaceExport FeatureBlendCurve: public Part::Spline
     PROPERTY_HEADER_WITH_OVERRIDE(Surface::FeatureBlendCurve);
 
 public:
-
     FeatureBlendCurve();
 
     App::PropertyLinkSub StartEdge;
     App::PropertyFloatConstraint StartParameter;
     App::PropertyIntegerConstraint StartContinuity;
-    App::PropertyFloat StartSize;
+    App::PropertyFloatConstraint StartSize;
 
     App::PropertyLinkSub EndEdge;
     App::PropertyFloatConstraint EndParameter;
     App::PropertyIntegerConstraint EndContinuity;
-    App::PropertyFloat EndSize;
+    App::PropertyFloatConstraint EndSize;
 
     Standard_Integer maxDegree;
 
-    App::DocumentObjectExecReturn *execute() override;
+    App::DocumentObjectExecReturn* execute() override;
     short mustExecute() const override;
-    const char *getViewProviderName() const override
+    const char* getViewProviderName() const override
     {
         return "SurfaceGui::ViewProviderBlendCurve";
     }
 
 private:
-    BlendPoint GetBlendPoint(App::PropertyLinkSub &link, App::PropertyFloatConstraint &param, App::PropertyIntegerConstraint &Continuity);
+    BlendPoint GetBlendPoint(App::PropertyLinkSub& link,
+                             App::PropertyFloatConstraint& param,
+                             App::PropertyIntegerConstraint& Continuity);
     double RelativeToRealParameters(double, double, double);
-    bool lockOnChangeMutex{false};
 
 protected:
-    void onChanged(const App::Property *prop) override;
+    void onChanged(const App::Property* prop) override;
 };
 
-}//Namespace Surface
+}  // Namespace Surface
 
 #endif

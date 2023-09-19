@@ -26,9 +26,10 @@
 
 #include <Gui/Workbench.h>
 
-namespace CloudGui {
+namespace CloudGui
+{
 
-class Workbench : public Gui::StdWorkbench
+class Workbench: public Gui::StdWorkbench
 {
     TYPESYSTEM_HEADER();
 
@@ -37,11 +38,11 @@ public:
     virtual ~Workbench();
 
 protected:
-//    Gui::MenuItem* setupMenuBar() const;
-//    Gui::ToolBarItem* setupToolBars() const;
+    //    Gui::MenuItem* setupMenuBar() const;
+    //    Gui::ToolBarItem* setupToolBars() const;
 };
 
-} // namespace CloudGui
+}  // namespace CloudGui
 
 
-#endif // Cloud_WORKBENCH_H 
+#endif  // Cloud_WORKBENCH_H

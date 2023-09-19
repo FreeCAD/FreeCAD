@@ -45,7 +45,7 @@ class Vector3;
 class Vector2d;
 
 class Placement;
-}// namespace Base
+}  // namespace Base
 
 namespace Part
 {
@@ -56,7 +56,7 @@ namespace Sketcher
 {
 class Constraint;
 class PropertyConstraintList;
-};// namespace Sketcher
+};  // namespace Sketcher
 
 namespace SketcherGui
 {
@@ -185,8 +185,8 @@ public:
         };
 
         int PointIndex = InvalidPoint;
-        int GeoIndex = InvalidCurve;// valid values are 0,1,2,... for normal geometry and
-                                    // -3,-4,-5,... for external geometry
+        int GeoIndex = InvalidCurve;  // valid values are 0,1,2,... for normal geometry and
+                                      // -3,-4,-5,... for external geometry
         Axes Cross = Axes::None;
         std::set<int> ConstrIndices;
 
@@ -246,7 +246,7 @@ public:
     //@{
     void updateColor();
     void
-    updateColor(const GeoListFacade& geolistfacade);// overload to be used with temporal geometry.
+    updateColor(const GeoListFacade& geolistfacade);  // overload to be used with temporal geometry.
     //@}
 
     /** @name change constraints selectability*/
@@ -310,7 +310,7 @@ private:
 };
 
 
-}// namespace SketcherGui
+}  // namespace SketcherGui
 
 
-#endif// SKETCHERGUI_EditModeCoinManager_H
+#endif  // SKETCHERGUI_EditModeCoinManager_H

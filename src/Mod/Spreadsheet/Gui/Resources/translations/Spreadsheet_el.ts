@@ -347,43 +347,43 @@
       <translation>Ορισμός ιδιοτήτων κελιού</translation>
     </message>
     <message>
-      <location filename="../../SheetModel.cpp" line="512"/>
+      <location filename="../../SheetModel.cpp" line="510"/>
       <source>Edit cell</source>
       <translation>Επεξεργασία κελιού</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="325"/>
-      <location filename="../../SheetTableView.cpp" line="357"/>
+      <location filename="../../SheetTableView.cpp" line="326"/>
+      <location filename="../../SheetTableView.cpp" line="358"/>
       <source>Insert rows</source>
       <translation>Εισαγωγή σειρών</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="376"/>
-      <location filename="../../SheetTableView.cpp" line="449"/>
+      <location filename="../../SheetTableView.cpp" line="378"/>
+      <location filename="../../SheetTableView.cpp" line="453"/>
       <source>Remove rows</source>
       <translation>Αφαίρεση σειρών</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="397"/>
-      <location filename="../../SheetTableView.cpp" line="430"/>
+      <location filename="../../SheetTableView.cpp" line="400"/>
+      <location filename="../../SheetTableView.cpp" line="433"/>
       <source>Insert columns</source>
       <translation>Εισαγωγή στηλών</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="632"/>
+      <location filename="../../SheetTableView.cpp" line="634"/>
       <location filename="../../SpreadsheetView.cpp" line="161"/>
       <source>Clear cell(s)</source>
       <translation>Καθαρισμός κελιού(ων)</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="132"/>
+      <location filename="../../Workbench.cpp" line="130"/>
       <source>Set foreground color</source>
-      <translation type="unfinished">Set foreground color</translation>
+      <translation>Ορισμός χρώματος προσκηνίου</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="159"/>
+      <location filename="../../Workbench.cpp" line="157"/>
       <source>Set background color</source>
-      <translation type="unfinished">Set background color</translation>
+      <translation>Ορισμός χρώματος φόντου</translation>
     </message>
   </context>
   <context>
@@ -391,84 +391,82 @@
     <message>
       <location filename="../../DlgBindSheet.ui" line="14"/>
       <source>Bind Spreadsheet Cells</source>
-      <translation type="unfinished">Bind Spreadsheet Cells</translation>
+      <translation>Δέσμευση Κελιών Φύλλων</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="69"/>
       <source>To cells:</source>
-      <translation type="unfinished">To cells:</translation>
+      <translation>Σε κελιά:</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="117"/>
       <source>Sheet:</source>
-      <translation type="unfinished">Sheet:</translation>
+      <translation>Φύλλα:</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="22"/>
       <source>First cell in range</source>
-      <translation type="unfinished">First cell in range</translation>
+      <translation>Πρώτο κελί στην περιοχή</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="29"/>
       <source>Last cell in range</source>
-      <translation type="unfinished">Last cell in range</translation>
+      <translation>Τελευταίο κελί στην περιοχή</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="36"/>
       <source>Bind cells:</source>
-      <translation type="unfinished">Bind cells:</translation>
+      <translation>Δεσμευμένα κελιά:</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="49"/>
       <source>Start cell address</source>
-      <translation type="unfinished">Start cell address</translation>
+      <translation>Έναρξη διεύθυνση κελιού</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="62"/>
       <source>End cell address</source>
-      <translation type="unfinished">End cell address</translation>
+      <translation>Διεύθυνση τελικού κελιού</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="82"/>
       <source>Start cell address to bind to.
 Type '=' if you want to use an expression.
 The expression must evaluate to a string of some cell address.</source>
-      <translation type="unfinished">Start cell address to bind to.
-Type '=' if you want to use an expression.
-The expression must evaluate to a string of some cell address.</translation>
+      <translation>Ξεκινήστε τη σύνδεση της διεύθυνσης κελιού στο.
+Πληκτρολογήστε '=' αν θέλετε να χρησιμοποιήσετε μια έκφραση.
+Η έκφραση πρέπει να αξιολογηθεί σε μια συμβολοσειρά κάποιας διεύθυνσης κελιού.</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="97"/>
       <source>End cell address to bind to.
 Type '=' if you want to use an expression.
 The expression must evaluate to a string of some cell address.</source>
-      <translation type="unfinished">End cell address to bind to.
-Type '=' if you want to use an expression.
-The expression must evaluate to a string of some cell address.</translation>
+      <translation>Δώστε τη διεύθυνση κελιού στο οποίο θα συνδεθείτε.
+Πληκτρολογήστε '=' αν θέλετε να χρησιμοποιήσετε μια έκφραση.
+Η έκφραση πρέπει να αξιολογηθεί σε μια συμβολοσειρά κάποιας διεύθυνσης κελιού.</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="110"/>
       <source>Which spread sheet to bind to</source>
-      <translation type="unfinished">Which spread sheet to bind to</translation>
+      <translation>Ποιο φύλλο να συνδεθεί με</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="126"/>
       <source>The dependency with the referenced spreadsheet will
 be hidden to the dependency checking.
 Useful to avoid cyclic dependencies, but use with caution!</source>
-      <translation type="unfinished">The dependency with the referenced spreadsheet will
-be hidden to the dependency checking.
-Useful to avoid cyclic dependencies, but use with caution!</translation>
+      <translation>Η εξάρτηση με το αναφερόμενο υπολογιστικό φύλλο θα κρυφτεί στον έλεγχο εξάρτησης. Χρήσιμο για να αποφύγετε τις κυκλικές εξαρτήσεις, αλλά χρησιμοποιήστε το με προσοχή!</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="131"/>
       <source>Hide dependency of binding</source>
-      <translation type="unfinished">Hide dependency of binding</translation>
+      <translation>Απόκρυψη εξάρτησης από τη σύνδεση</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="140"/>
       <source>Unbind</source>
-      <translation type="unfinished">Unbind</translation>
+      <translation>Αποσύνδεση</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="147"/>
@@ -486,12 +484,12 @@ Useful to avoid cyclic dependencies, but use with caution!</translation>
     <message>
       <location filename="../../DlgSheetConf.ui" line="14"/>
       <source>Setup Configuration Table</source>
-      <translation type="unfinished">Setup Configuration Table</translation>
+      <translation>Ρύθμιση Πίνακα Διαμόρφωσης</translation>
     </message>
     <message>
       <location filename="../../DlgSheetConf.ui" line="20"/>
       <source>Cell range:</source>
-      <translation type="unfinished">Cell range:</translation>
+      <translation>Περιοχή κελιών:</translation>
     </message>
     <message>
       <location filename="../../DlgSheetConf.ui" line="27"/>
@@ -504,14 +502,11 @@ property for user to dynamically switch configuration.
 The first row of the range will be bound to whatever row (indirectly) selected
 by that property.
 </source>
-      <translation type="unfinished">Starting cell address.
+      <translation>Διεύθυνση κελιού έναρξης.
 
-The first column of the range is assumed to contain a list of configuration
-names, which will be used to generate a string list and bind to the given
-property for user to dynamically switch configuration.
+Η πρώτη στήλη του εύρους θεωρείται ότι περιέχει μια λίστα ονομάτων διαμόρφωσης, η οποία θα χρησιμοποιηθεί για τη δημιουργία μιας λίστας συμβολοσειρών και τη δέσμευση στη δεδομένη ιδιότητα, προκειμένου ο χρήστης να αλλάξει δυναμικά τη διαμόρφωση.
 
-The first row of the range will be bound to whatever row (indirectly) selected
-by that property.
+Η πρώτη γραμμή του εύρους θα δεσμευτεί σε οποιαδήποτε σειρά (έμμεσα) επιλεγεί από αυτήν την ιδιότητα.
 </translation>
     </message>
     <message>
@@ -525,20 +520,14 @@ property for user to dynamically switch configuration.
 The first row of the range will be bound to whatever row (indirectly) selected
 by that property.
 </source>
-      <translation type="unfinished">Ending cell address.
+      <translation>Η πρώτη στήλη του εύρους θεωρείται ότι περιέχει μια λίστα ονομάτων διαμόρφωσης, η οποία θα χρησιμοποιηθεί για τη δημιουργία μιας λίστας συμβολοσειρών και τη δέσμευση στη δεδομένη ιδιότητα ώστε ο χρήστης να αλλάξει δυναμικά τη διαμόρφωση.
 
-The first column of the range is assumed to contain a list of configuration
-names, which will be used to generate a string list and bind to the given
-property for user to dynamically switch configuration.
-
-The first row of the range will be bound to whatever row (indirectly) selected
-by that property.
-</translation>
+Η πρώτη σειρά του εύρους θα δεσμευτεί σε οποιαδήποτε σειρά (έμμεσα) επιλεγεί από αυτήν την ιδιότητα.</translation>
     </message>
     <message>
       <location filename="../../DlgSheetConf.ui" line="57"/>
       <source>Property:</source>
-      <translation type="unfinished">Property:</translation>
+      <translation>Ιδιότητα:</translation>
     </message>
     <message>
       <location filename="../../DlgSheetConf.ui" line="64"/>
@@ -550,17 +539,17 @@ switch the design configuration. The property will be created if not exist.</tra
     <message>
       <location filename="../../DlgSheetConf.ui" line="72"/>
       <source>Group:</source>
-      <translation type="unfinished">Group:</translation>
+      <translation>Ομάδα:</translation>
     </message>
     <message>
       <location filename="../../DlgSheetConf.ui" line="79"/>
       <source>Optional property group name.</source>
-      <translation type="unfinished">Optional property group name.</translation>
+      <translation>Προαιρετικό όνομα ομάδας ιδιοτήτων.</translation>
     </message>
     <message>
       <location filename="../../DlgSheetConf.ui" line="88"/>
       <source>Unsetup</source>
-      <translation type="unfinished">Unsetup</translation>
+      <translation>Κατάργηση</translation>
     </message>
     <message>
       <location filename="../../DlgSheetConf.ui" line="95"/>
@@ -603,7 +592,7 @@ switch the design configuration. The property will be created if not exist.</tra
     <message>
       <location filename="../../PropertiesDialog.ui" line="88"/>
       <source>Horizontal</source>
-      <translation type="unfinished">Horizontal</translation>
+      <translation>Οριζόντια</translation>
     </message>
     <message>
       <location filename="../../PropertiesDialog.ui" line="95"/>
@@ -624,7 +613,7 @@ switch the design configuration. The property will be created if not exist.</tra
     <message>
       <location filename="../../PropertiesDialog.ui" line="141"/>
       <source>Vertical</source>
-      <translation type="unfinished">Vertical</translation>
+      <translation>Κατακόρυφα</translation>
     </message>
     <message>
       <location filename="../../PropertiesDialog.ui" line="148"/>
@@ -701,46 +690,46 @@ switch the design configuration. The property will be created if not exist.</tra
       <translation>Εμφάνιση υπολογιστικού φύλλου</translation>
     </message>
     <message>
+      <location filename="../../Workbench.cpp" line="89"/>
       <location filename="../../Workbench.cpp" line="91"/>
-      <location filename="../../Workbench.cpp" line="93"/>
       <source>Set cell(s) foreground color</source>
       <translation>Ορισμός χρώματος προσκηνίου κελιών</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="92"/>
+      <location filename="../../Workbench.cpp" line="90"/>
       <source>Sets the Spreadsheet cell(s) foreground color</source>
       <translation>Ορίζει το χρώμα προσκηνίου κελιών του Υπολογιστικού Φύλλου</translation>
     </message>
     <message>
+      <location filename="../../Workbench.cpp" line="104"/>
       <location filename="../../Workbench.cpp" line="106"/>
-      <location filename="../../Workbench.cpp" line="108"/>
       <source>Set cell(s) background color</source>
       <translation>Ορισμός χρώματος υποβάθρου κελιών</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="107"/>
+      <location filename="../../Workbench.cpp" line="105"/>
       <source>Sets the Spreadsheet cell(s) background color</source>
       <translation>Ορίζει το χρώμα υποβάθρου κελιών του Υπολογιστικού Φύλλου</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="752"/>
+      <location filename="../../SheetTableView.cpp" line="754"/>
       <source>Copy &amp; Paste failed</source>
-      <translation type="unfinished">Copy &amp; Paste failed</translation>
+      <translation>Η αντιγραφή &amp; επικόλληση απέτυχε</translation>
     </message>
     <message>
       <location filename="../../SpreadsheetView.cpp" line="430"/>
       <source>Alias contains invalid characters!</source>
-      <translation type="unfinished">Alias contains invalid characters!</translation>
+      <translation>Το ψευδώνυμο περιέχει μη έγκυρους χαρακτήρες!</translation>
     </message>
     <message>
       <location filename="../../SpreadsheetView.cpp" line="436"/>
       <source>Refer to cell by alias, for example
 Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
-      <translation type="unfinished">Refer to cell by alias, for example
-Spreadsheet.my_alias_name instead of Spreadsheet.B1</translation>
+      <translation>Ανατρέξτε στο κελί με το ψευδώνυμο, για παράδειγμα
+Spreadsheet.my_alias_name αντί του Spreadsheet.B1</translation>
     </message>
     <message>
-      <location filename="../../AppSpreadsheetGui.cpp" line="121"/>
+      <location filename="../../AppSpreadsheetGui.cpp" line="119"/>
       <source>Spreadsheet</source>
       <translation>Υπολογιστικό Φύλλο</translation>
     </message>
@@ -859,14 +848,9 @@ Spreadsheet.my_alias_name instead of Spreadsheet.B1</translation>
   <context>
     <name>Sheet</name>
     <message>
-      <location filename="../../Sheet.ui" line="14"/>
-      <source>Form</source>
-      <translation>Μορφή</translation>
-    </message>
-    <message>
       <location filename="../../Sheet.ui" line="22"/>
       <source>&amp;Content:</source>
-      <translation type="unfinished">&amp;Content:</translation>
+      <translation>&amp;Περιεχόμενο:</translation>
     </message>
     <message>
       <location filename="../../Sheet.ui" line="39"/>
@@ -877,8 +861,8 @@ Spreadsheet.my_alias_name instead of Spreadsheet.B1</translation>
       <location filename="../../Sheet.ui" line="52"/>
       <source>Refer to cell by alias, for example
 Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
-      <translation type="unfinished">Refer to cell by alias, for example
-Spreadsheet.my_alias_name instead of Spreadsheet.B1</translation>
+      <translation>Ανατρέξτε στο κελί με το ψευδώνυμο, για παράδειγμα
+Spreadsheet.my_alias_name αντί του Spreadsheet.B1</translation>
     </message>
   </context>
   <context>
@@ -886,33 +870,33 @@ Spreadsheet.my_alias_name instead of Spreadsheet.B1</translation>
     <message>
       <location filename="../../DlgBindSheet.cpp" line="197"/>
       <source>Bind cells</source>
-      <translation type="unfinished">Bind cells</translation>
+      <translation>Δέσμευση κελιών</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.cpp" line="198"/>
       <source>Source and target cell count mismatch. Partial binding may still work.
 
 Do you want to continue?</source>
-      <translation type="unfinished">Source and target cell count mismatch. Partial binding may still work.
+      <translation>Αναντιστοιχία αριθμού κυττάρων πηγής και στόχου. Μερική σύνδεση μπορεί να συνεχίσει να λειτουργεί.
 
-Do you want to continue?</translation>
+Θέλετε να συνεχίσετε;</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.cpp" line="225"/>
       <source>Bind Spreadsheet Cells</source>
-      <translation type="unfinished">Bind Spreadsheet Cells</translation>
+      <translation>Δέσμευση Κελιών Φύλλων</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.cpp" line="225"/>
-      <source>Error: 
+      <source>Error:
 </source>
-      <translation type="unfinished">Error: 
+      <translation>Σφάλμα:
 </translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.cpp" line="243"/>
       <source>Unbind cells</source>
-      <translation type="unfinished">Unbind cells</translation>
+      <translation>Αποσύνδεση κελιών</translation>
     </message>
   </context>
   <context>
@@ -925,17 +909,17 @@ Do you want to continue?</translation>
     <message>
       <location filename="../../DlgSettings.ui" line="26"/>
       <source>Display Settings</source>
-      <translation type="unfinished">Display Settings</translation>
+      <translation>Ρυθμίσεις Εμφάνισης</translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="32"/>
       <source>If checked, use the custom presentation to display cell string.</source>
-      <translation type="unfinished">If checked, use the custom presentation to display cell string.</translation>
+      <translation>Εάν είναι επιλεγμένο, χρησιμοποιήστε την προσαρμοσμένη παρουσίαση για να εμφανίσετε τη συμβολοσειρά κελιού.</translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="35"/>
       <source>Show alias in cell with format</source>
-      <translation type="unfinished">Show alias in cell with format</translation>
+      <translation>Εμφάνιση ψευδώνυμου σε κελί με μορφή</translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="64"/>
@@ -944,51 +928,51 @@ Defaults to: %V = %A
 
 %A - alias name
 %V - cell value</source>
-      <translation type="unfinished">The format of the custom cell string presentation.
-Defaults to: %V = %A
+      <translation>Η μορφή της προσαρμοσμένης συμβολοσειράς κελιών παρουσίασης.
+Προκαθορισμένα σε: %V = %A
 
-%A - alias name
-%V - cell value</translation>
+%A - ψευδώνυμο
+%V - τιμή κελιού</translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="84"/>
       <source>Import/Export Settings</source>
-      <translation type="unfinished">Import/Export Settings</translation>
+      <translation>Ρυθμίσεις Εισαγωγής/Εξαγωγής</translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="96"/>
       <source>Delimiter Character: </source>
-      <translation type="unfinished">Delimiter Character: </translation>
+      <translation>Χαρακτήρας Οριοθέτησης: </translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="116"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Character to use as field delimiter.  Default is tab, but also commonly used are commas (,) and semicolons (;). Select from the list or enter your own in the field. Must be a single character or the words &lt;span style=" font-style:italic;"&gt;tab&lt;/span&gt;, &lt;span style=" font-style:italic;"&gt;comma&lt;/span&gt;, or &lt;span style=" font-style:italic;"&gt;semicolon&lt;/span&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Character to use as field delimiter.  Default is tab, but also commonly used are commas (,) and semicolons (;). Select from the list or enter your own in the field. Must be a single character or the words &lt;span style=" font-style:italic;"&gt;tab&lt;/span&gt;, &lt;span style=" font-style:italic;"&gt;comma&lt;/span&gt;, or &lt;span style=" font-style:italic;"&gt;semicolon&lt;/span&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Χαρακτήρας για χρήση ως οριοθέτης πεδίου. Η προεπιλογή είναι η καρτέλα, αλλά επίσης χρησιμοποιούνται συνήθως κόμματα (,) και ερωτηματικά (;). Επιλέξτε από τη λίστα ή εισάγετε τη δική σας στο πεδίο. Πρέπει να είναι ένας μόνο χαρακτήρας ή η καρτέλα &lt;span style=" font-style:italic;"&gt;των λέξεων&lt;/span&gt;, &lt;span style=" font-style:italic;"&gt;κόμμα&lt;/span&gt;ή &lt;span style=" font-style:italic;"&gt;ερωτηματικό&lt;/span&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="132"/>
       <source>tab</source>
-      <translation type="unfinished">tab</translation>
+      <translation>tab</translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="156"/>
       <source>Quote Character: </source>
-      <translation type="unfinished">Quote Character: </translation>
+      <translation>Χαρακτήρας απόσπασμα: </translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="163"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Character used to delimit strings, typically is single quote (') or double quote (&amp;quot;). Must be a single character.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Character used to delimit strings, typically is single quote (') or double quote (&amp;quot;). Must be a single character.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Ο χαρακτήρας που χρησιμοποιείται για την οριοθέτηση συμβολοσειρών, είναι συνήθως μονό εισαγωγικό (') ή διπλό εισαγωγικό (&amp;quot;). Πρέπει να είναι ένας χαρακτήρας.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="188"/>
       <source>Escape Character: </source>
-      <translation type="unfinished">Escape Character: </translation>
+      <translation>Χαρακτήρας Διαφυγής: </translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="195"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Escape character, typically the backslash (\), used to indicate special unprintable characters, e.g. \t = tab. Must be a single character.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Escape character, typically the backslash (\), used to indicate special unprintable characters, e.g. \t = tab. Must be a single character.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Χαρακτήρας διαφυγής, συνήθως η αντίστροφη κάθετος (\), που χρησιμοποιείται για να υποδείξει ειδικούς μη εκτυπώσιμους χαρακτήρες, e.. \t = καρτέλα. Πρέπει να είναι ένας μόνο χαρακτήρας.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
   </context>
   <context>
@@ -996,12 +980,12 @@ Defaults to: %V = %A
     <message>
       <location filename="../../DlgSheetConf.cpp" line="247"/>
       <source>Setup configuration table</source>
-      <translation type="unfinished">Setup configuration table</translation>
+      <translation>Ρύθμιση πίνακα ρυθμίσεων</translation>
     </message>
     <message>
       <location filename="../../DlgSheetConf.cpp" line="294"/>
       <source>Unsetup configuration table</source>
-      <translation type="unfinished">Unsetup configuration table</translation>
+      <translation>Κατάργηση ρυθμίσεων παραμέτρων πίνακα</translation>
     </message>
   </context>
   <context>
@@ -1010,7 +994,7 @@ Defaults to: %V = %A
       <location filename="../../SheetTableView.cpp" line="128"/>
       <source>Insert %n row(s) above</source>
       <translation type="unfinished">
-        <numerusform>Insert %n row(s) above</numerusform>
+        <numerusform>Εισαγωγή %n γραμμής(ών) παραπάνω</numerusform>
         <numerusform>Insert %n row(s) above</numerusform>
       </translation>
     </message>
@@ -1018,7 +1002,7 @@ Defaults to: %V = %A
       <location filename="../../SheetTableView.cpp" line="132"/>
       <source>Insert %n row(s) below</source>
       <translation type="unfinished">
-        <numerusform>Insert %n row(s) below</numerusform>
+        <numerusform>Εισάγετε %n γραμμή(ές) παρακάτω</numerusform>
         <numerusform>Insert %n row(s) below</numerusform>
       </translation>
     </message>
@@ -1026,7 +1010,7 @@ Defaults to: %V = %A
       <location filename="../../SheetTableView.cpp" line="136"/>
       <source>Insert %n non-contiguous rows</source>
       <translation type="unfinished">
-        <numerusform>Insert %n non-contiguous rows</numerusform>
+        <numerusform>Εισαγάγετε %n μη συνεχόμενες στήλες</numerusform>
         <numerusform>Insert %n non-contiguous rows</numerusform>
       </translation>
     </message>
@@ -1034,7 +1018,7 @@ Defaults to: %V = %A
       <location filename="../../SheetTableView.cpp" line="139"/>
       <source>Remove row(s)</source>
       <translation type="unfinished">
-        <numerusform>Remove row(s)</numerusform>
+        <numerusform>Αφαίρεση σειράς(ών)</numerusform>
         <numerusform>Remove row(s)</numerusform>
       </translation>
     </message>
@@ -1042,7 +1026,7 @@ Defaults to: %V = %A
       <location filename="../../SheetTableView.cpp" line="153"/>
       <source>Insert %n column(s) left</source>
       <translation type="unfinished">
-        <numerusform>Insert %n column(s) left</numerusform>
+        <numerusform>Εισαγωγή στήλης %n αριστερά</numerusform>
         <numerusform>Insert %n column(s) left</numerusform>
       </translation>
     </message>
@@ -1050,7 +1034,7 @@ Defaults to: %V = %A
       <location filename="../../SheetTableView.cpp" line="157"/>
       <source>Insert %n column(s) right</source>
       <translation type="unfinished">
-        <numerusform>Insert %n column(s) right</numerusform>
+        <numerusform>Εισαγωγή %n στήλης δεξιά</numerusform>
         <numerusform>Insert %n column(s) right</numerusform>
       </translation>
     </message>
@@ -1058,7 +1042,7 @@ Defaults to: %V = %A
       <location filename="../../SheetTableView.cpp" line="161"/>
       <source>Insert %n non-contiguous columns</source>
       <translation type="unfinished">
-        <numerusform>Insert %n non-contiguous columns</numerusform>
+        <numerusform>Εισαγάγετε %n μη συνεχόμενες στήλες</numerusform>
         <numerusform>Insert %n non-contiguous columns</numerusform>
       </translation>
     </message>
@@ -1066,67 +1050,67 @@ Defaults to: %V = %A
       <location filename="../../SheetTableView.cpp" line="164"/>
       <source>Remove column(s)</source>
       <translation type="unfinished">
-        <numerusform>Remove column(s)</numerusform>
+        <numerusform>Αφαίρεση στηλών(η)</numerusform>
         <numerusform>Remove column(s)</numerusform>
       </translation>
     </message>
     <message>
       <location filename="../../SheetTableView.cpp" line="169"/>
-      <location filename="../../SheetTableView.cpp" line="613"/>
+      <location filename="../../SheetTableView.cpp" line="615"/>
       <source>Properties...</source>
       <translation>Ιδιότητες...</translation>
     </message>
     <message>
       <location filename="../../SheetTableView.cpp" line="181"/>
-      <location filename="../../SheetTableView.cpp" line="614"/>
+      <location filename="../../SheetTableView.cpp" line="616"/>
       <source>Recompute</source>
-      <translation type="unfinished">Recompute</translation>
+      <translation>Υπολογίστε ξανά</translation>
     </message>
     <message>
       <location filename="../../SheetTableView.cpp" line="185"/>
-      <location filename="../../SheetTableView.cpp" line="622"/>
+      <location filename="../../SheetTableView.cpp" line="624"/>
       <source>Bind...</source>
-      <translation type="unfinished">Bind...</translation>
+      <translation>Δεσμεύω...</translation>
     </message>
     <message>
       <location filename="../../SheetTableView.cpp" line="189"/>
-      <location filename="../../SheetTableView.cpp" line="615"/>
+      <location filename="../../SheetTableView.cpp" line="617"/>
       <source>Configuration table...</source>
-      <translation type="unfinished">Configuration table...</translation>
+      <translation>Πίνακας διαμόρφωσης...</translation>
     </message>
     <message>
       <location filename="../../SheetTableView.cpp" line="197"/>
-      <location filename="../../SheetTableView.cpp" line="616"/>
+      <location filename="../../SheetTableView.cpp" line="618"/>
       <source>Merge cells</source>
       <translation>Συγχώνευση κελιών</translation>
     </message>
     <message>
       <location filename="../../SheetTableView.cpp" line="199"/>
-      <location filename="../../SheetTableView.cpp" line="617"/>
+      <location filename="../../SheetTableView.cpp" line="619"/>
       <source>Split cells</source>
-      <translation type="unfinished">Split cells</translation>
+      <translation>Διαίρεση κελιών</translation>
     </message>
     <message>
       <location filename="../../SheetTableView.cpp" line="203"/>
-      <location filename="../../SheetTableView.cpp" line="620"/>
+      <location filename="../../SheetTableView.cpp" line="622"/>
       <source>Cut</source>
       <translation>Περικοπή</translation>
     </message>
     <message>
       <location filename="../../SheetTableView.cpp" line="205"/>
-      <location filename="../../SheetTableView.cpp" line="618"/>
+      <location filename="../../SheetTableView.cpp" line="620"/>
       <source>Copy</source>
       <translation>Αντιγραφή</translation>
     </message>
     <message>
       <location filename="../../SheetTableView.cpp" line="207"/>
-      <location filename="../../SheetTableView.cpp" line="619"/>
+      <location filename="../../SheetTableView.cpp" line="621"/>
       <source>Paste</source>
-      <translation type="unfinished">Paste</translation>
+      <translation>Επικόλληση</translation>
     </message>
     <message>
       <location filename="../../SheetTableView.cpp" line="209"/>
-      <location filename="../../SheetTableView.cpp" line="621"/>
+      <location filename="../../SheetTableView.cpp" line="623"/>
       <source>Delete</source>
       <translation>Διαγραφή</translation>
     </message>
@@ -1154,7 +1138,7 @@ Defaults to: %V = %A
     <message>
       <location filename="../../Workbench.cpp" line="51"/>
       <source>&amp;Spreadsheet</source>
-      <translation type="unfinished">&amp;Spreadsheet</translation>
+      <translation>&amp;Υπολογιστικό Φύλλο</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="52"/>
@@ -1164,13 +1148,13 @@ Defaults to: %V = %A
     <message>
       <location filename="../../Workbench.cpp" line="53"/>
       <source>&amp;Styles</source>
-      <translation type="unfinished">&amp;Styles</translation>
+      <translation>&amp;Στυλ</translation>
     </message>
   </context>
   <context>
     <name>Py</name>
     <message>
-      <location filename="../../AppSpreadsheetGui.cpp" line="80"/>
+      <location filename="../../AppSpreadsheetGui.cpp" line="78"/>
       <source>Unnamed</source>
       <translation>Ανώνυμο</translation>
     </message>

@@ -1298,6 +1298,10 @@ bool View3DInventorViewer::hasAxisCross()
 void View3DInventorViewer::showRotationCenter(bool show)
 {
     SoNode* scene = getSceneGraph();
+    if (!scene) {
+        return;
+    }
+
     auto sep = static_cast<SoSeparator*>(scene);
 
     bool showEnabled = App::GetApplication()
@@ -1329,7 +1333,7 @@ void View3DInventorViewer::showRotationCenter(bool show)
 
             auto material = new SoMaterial();
             material->emissiveColor = SbColor(1, 0, 0);
-            material->transparency = 0.8;
+            material->transparency = 0.8F;
 
             auto translation = new SoTranslation();
             translation->translation.setValue(center);

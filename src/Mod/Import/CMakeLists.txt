@@ -81,4 +81,3 @@ INSTALL(
     FILES_MATCHING
         PATTERN "*.rub*"
 )
-

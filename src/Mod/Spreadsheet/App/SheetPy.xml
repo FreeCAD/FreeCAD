@@ -10,7 +10,6 @@
     FatherInclude="App/DocumentObjectPy.h"
     FatherNamespace="App"
     Constructor="true">
-
     <Documentation>
       <Author Licence="LGPL" Name="Eivind Kvedalen" EMail="eivind@kvedalen.name" />
       <UserDocu>With this object you can manipulate spreadsheets</UserDocu>
@@ -180,7 +179,7 @@ following dependency order.
         </UserDocu>
       </Documentation>
     </Methode>
-	  
+
     <Methode Name="getUsedCells">
       <Documentation>
         <UserDocu>
@@ -191,7 +190,7 @@ or may not have a non-empty string content.
         </UserDocu>
       </Documentation>
     </Methode>
-	  
+
     <Methode Name="getNonEmptyCells">
       <Documentation>
         <UserDocu>
@@ -201,7 +200,7 @@ Get a list of the names of all cells with data in them.
         </UserDocu>
       </Documentation>
     </Methode>
-    
+
     <Methode Name="getUsedRange">
       <Documentation>
         <UserDocu>
@@ -214,7 +213,7 @@ of the block are not necessarily used.
         </UserDocu>
       </Documentation>
     </Methode>
-    
+
     <Methode Name="getNonEmptyRange">
       <Documentation>
         <UserDocu>
@@ -227,6 +226,6 @@ of the block do not necessarily contain anything.
         </UserDocu>
       </Documentation>
     </Methode>
-    
+
   </PythonExport>
 </GenerateModel>

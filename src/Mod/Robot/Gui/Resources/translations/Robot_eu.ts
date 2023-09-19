@@ -479,12 +479,12 @@
       <translation>Aldatu</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="79"/>
+      <location filename="../../Workbench.cpp" line="75"/>
       <source>No robot files installed</source>
       <translation>Ez dago robot-fitxategirik instalatuta</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="80"/>
+      <location filename="../../Workbench.cpp" line="76"/>
       <source>Please visit %1 and copy the files to %2</source>
       <translation>Bisitatu %1 eta kopiatu fitxategiak %2 helbidera</translation>
     </message>
@@ -558,11 +558,6 @@
   <context>
     <name>RobotGui::TaskRobot6Axis</name>
     <message>
-      <location filename="../../TaskRobot6Axis.ui" line="14"/>
-      <source>Form</source>
-      <translation>Inprimakia</translation>
-    </message>
-    <message>
       <location filename="../../TaskRobot6Axis.ui" line="22"/>
       <source>A1</source>
       <translation>A1</translation>
@@ -626,11 +621,6 @@
   </context>
   <context>
     <name>RobotGui::TaskTrajectory</name>
-    <message>
-      <location filename="../../TaskTrajectory.ui" line="20"/>
-      <source>Form</source>
-      <translation>Inprimakia</translation>
-    </message>
     <message>
       <location filename="../../TaskTrajectory.ui" line="58"/>
       <source>|&lt;</source>
@@ -728,11 +718,6 @@
   <context>
     <name>TaskEdge2TracParameter</name>
     <message>
-      <location filename="../../TaskEdge2TracParameter.ui" line="14"/>
-      <source>Form</source>
-      <translation>Inprimakia</translation>
-    </message>
-    <message>
       <location filename="../../TaskEdge2TracParameter.ui" line="29"/>
       <source>Hide / Show</source>
       <translation>Ezkutatu / erakutsi</translation>
@@ -760,11 +745,6 @@
   </context>
   <context>
     <name>TaskRobotControl</name>
-    <message>
-      <location filename="../../TaskRobotControl.ui" line="14"/>
-      <source>Form</source>
-      <translation>Inprimakia</translation>
-    </message>
     <message>
       <location filename="../../TaskRobotControl.ui" line="37"/>
       <source>X+</source>
@@ -879,11 +859,6 @@
   <context>
     <name>TaskRobotMessages</name>
     <message>
-      <location filename="../../TaskRobotMessages.ui" line="14"/>
-      <source>Form</source>
-      <translation>Inprimakia</translation>
-    </message>
-    <message>
       <location filename="../../TaskRobotMessages.ui" line="20"/>
       <source>clear</source>
       <translation>garbitu</translation>
@@ -891,11 +866,6 @@
   </context>
   <context>
     <name>TaskTrajectoryDressUpParameter</name>
-    <message>
-      <location filename="../../TaskTrajectoryDressUpParameter.ui" line="14"/>
-      <source>Form</source>
-      <translation>Inprimakia</translation>
-    </message>
     <message>
       <location filename="../../TaskTrajectoryDressUpParameter.ui" line="20"/>
       <source>Speed &amp; Acceleration:</source>
@@ -935,12 +905,12 @@
     <message>
       <location filename="../../TaskTrajectoryDressUpParameter.ui" line="127"/>
       <source>Position and Orientation:</source>
-      <translation>Kokapena eta orientazioa:</translation>
+      <translation>Posizioa eta orientazioa:</translation>
     </message>
     <message>
       <location filename="../../TaskTrajectoryDressUpParameter.ui" line="159"/>
       <source>Don't change Position &amp; Orientation</source>
-      <translation>Ez aldatu kokapena eta orientazioa</translation>
+      <translation>Ez aldatu posizioa eta orientazioa</translation>
     </message>
     <message>
       <location filename="../../TaskTrajectoryDressUpParameter.ui" line="164"/>
@@ -950,7 +920,7 @@
     <message>
       <location filename="../../TaskTrajectoryDressUpParameter.ui" line="169"/>
       <source>Add Position</source>
-      <translation>Gehitu kokapena</translation>
+      <translation>Gehitu posizioa</translation>
     </message>
     <message>
       <location filename="../../TaskTrajectoryDressUpParameter.ui" line="174"/>

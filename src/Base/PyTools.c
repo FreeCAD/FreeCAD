@@ -42,10 +42,7 @@ PP_Run_Method(PyObject *pobject,  const char *method,
         va_end(argslist);
         return -1;                                 /* bound method? has self */
     }
-	/* handle zero args different */
-//	if(resfmt == 0 || strcmp(resfmt,"") == 0)
-//		pargs = Py_BuildValue("()");
-//	else
+
     pargs = Py_VaBuildValue(argfmt, argslist);     /* args: c->python */
     va_end(argslist);
 
@@ -64,10 +61,8 @@ PP_Run_Method(PyObject *pobject,  const char *method,
 
     Py_DECREF(pmeth);
     Py_DECREF(pargs);
-//	if(cresult != 0 && resfmt != 0)
-		return PP_Convert_Result(presult, resfmt, cresult);    /* to C format */
-//	else 
-//		return 0;
+
+	return PP_Convert_Result(presult, resfmt, cresult);    /* to C format */
 }
  
 
@@ -231,8 +226,6 @@ PyObject *PP_last_exception_type = NULL;    /* saved exception python type */
 
 void PP_Fetch_Error_Text()
 {
-    // called without exception happened!
-    //assert(PyErr_Occurred());
 
     char *tempstr = NULL;
     PyObject *errobj = NULL, *errdata = NULL, *errtraceback = NULL, *pystring = NULL, *pydict = NULL;
@@ -256,12 +249,10 @@ void PP_Fetch_Error_Text()
     }
     else
     {
-        /* strcpy(PP_last_error_type, "<unknown exception type>"); */
         PP_last_error_type[0] = '\0';
     }
     
     Py_XDECREF(pystring);
-
 
     pystring = NULL;
     pydict = NULL;
@@ -324,7 +315,6 @@ void PP_Fetch_Error_Text()
 #else
         const char *_f = strstr(file, "/src/");
 #endif
-        /* strcpy(PP_last_error_trace, "<unknown exception traceback>");  */
         snprintf(PP_last_error_trace,sizeof(PP_last_error_trace),"%s(%d)",(_f?_f+5:file),line);
     }
     Py_XDECREF(pystring);
@@ -439,17 +429,10 @@ int PP_DEBUG  = 0;    /* debug embedded code with pdb? */
 
 const char *PP_Init(const char *modname) {
     Py_Initialize();                               /* init python if needed */
-//#ifdef FC_OS_LINUX /* cannot convert `const char *' to `char *' in assignment */
     if (modname!=NULL) return modname;
     { /* we assume here that the caller frees allocated memory */
-      // #0000716: strange assignment and a memory leak
-      return "__main__";
-      //char* __main__=(char *)malloc(sizeof("__main__"));
-      //return __main__="__main__";
+    	return "__main__";
     }
-//#else    
-//    return modname == NULL ? "__main__" : modname;  /* default to '__main__' */
-//#endif    
 }
 
 
@@ -681,3 +664,4 @@ PP_Debug_Bytecode(PyObject *codeobject, PyObject *moddict)
     return (res != 0) ? NULL : presult;     /* null if error in run_function */
 }
 // NOLINTEND
+

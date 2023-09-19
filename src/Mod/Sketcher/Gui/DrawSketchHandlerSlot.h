@@ -31,7 +31,7 @@
 namespace SketcherGui
 {
 
-extern GeometryCreationMode geometryCreationMode;// defined in CommandCreateGeo.cpp
+extern GeometryCreationMode geometryCreationMode;  // defined in CommandCreateGeo.cpp
 
 class DrawSketchHandlerSlot: public DrawSketchHandler
 {
@@ -81,10 +81,12 @@ public:
             dx = onSketchPos.x - StartPos.x;
             dy = onSketchPos.y - StartPos.y;
 
-            if (QApplication::keyboardModifiers() == Qt::ControlModifier)
+            if (QApplication::keyboardModifiers() == Qt::ControlModifier) {
                 SnapMode = SNAP_MODE_Straight;
-            else
+            }
+            else {
                 SnapMode = SNAP_MODE_Free;
+            }
 
             double a = 0;
             double rev = 0;
@@ -92,16 +94,18 @@ public:
                 r = fabs(dx) / 4;
                 rev = Base::sgn(dx);
                 SnapDir = SNAP_DIR_Horz;
-                if (SnapMode == SNAP_MODE_Straight)
+                if (SnapMode == SNAP_MODE_Straight) {
                     dy = 0;
+                }
             }
             else {
                 r = fabs(dy) / 4;
                 a = 8;
                 rev = Base::sgn(dy);
                 SnapDir = SNAP_DIR_Vert;
-                if (SnapMode == SNAP_MODE_Straight)
+                if (SnapMode == SNAP_MODE_Straight) {
                     dx = 0;
+                }
             }
 
             // draw the arcs with each 16 segments
@@ -116,8 +120,9 @@ public:
                 // onSketchPos
                 if (!(dx == 0 || dy == 0)) {
                     double rotAngle = atan(dy / dx);
-                    if (a > 0)
+                    if (a > 0) {
                         rotAngle = -atan(dx / dy);
+                    }
                     double rxRot = rx * cos(rotAngle) - ry * sin(rotAngle);
                     double ryRot = rx * sin(rotAngle) + ry * cos(rotAngle);
                     rx = rxRot;
@@ -195,11 +200,13 @@ public:
             try {
                 Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add slot"));
 
-                AutoConstraint lastCons = {
-                    Sketcher::None, Sketcher::GeoEnum::GeoUndef, Sketcher::PointPos::none};
+                AutoConstraint lastCons = {Sketcher::None,
+                                           Sketcher::GeoEnum::GeoUndef,
+                                           Sketcher::PointPos::none};
 
-                if (!sugConstr2.empty())
+                if (!sugConstr2.empty()) {
                     lastCons = sugConstr2.back();
+                }
 
                 ostringstream snapCon = ostringstream("");
                 if (SnapMode == SNAP_MODE_Straight) {
@@ -215,15 +222,17 @@ public:
                     // If horizontal/vertical already applied because of snap, do not duplicate with
                     // Autocontraint
                     if (lastCons.Type == Sketcher::Horizontal
-                        || lastCons.Type == Sketcher::Vertical)
+                        || lastCons.Type == Sketcher::Vertical) {
                         sugConstr2.pop_back();
+                    }
                 }
                 else {
                     // If horizontal/vertical Autoconstraint suggested, applied it on first line
                     // (rather than last arc)
                     if (lastCons.Type == Sketcher::Horizontal
-                        || lastCons.Type == Sketcher::Vertical)
+                        || lastCons.Type == Sketcher::Vertical) {
                         sugConstr2.back().GeoId = firstCurve + 2;
+                    }
                 }
 
                 Gui::Command::doCommand(
@@ -248,53 +257,55 @@ public:
                     "%s.addConstraint(conList)\n"
                     "del geoList, conList\n",
                     StartPos.x,
-                    StartPos.y,// center of the arc1
-                    r,         // radius arc1
+                    StartPos.y,  // center of the arc1
+                    r,           // radius arc1
                     start,
-                    end,// start and end angle of arc1
+                    end,  // start and end angle of arc1
                     StartPos.x + dx,
-                    StartPos.y + dy,// center of the arc2
-                    r,              // radius arc2
+                    StartPos.y + dy,  // center of the arc2
+                    r,                // radius arc2
                     end,
-                    end + M_PI,// start and end angle of arc2
+                    end + M_PI,  // start and end angle of arc2
                     EditCurve[16].x,
                     EditCurve[16].y,
                     EditCurve[17].x,
-                    EditCurve[17].y,// line1
+                    EditCurve[17].y,  // line1
                     EditCurve[33].x,
                     EditCurve[33].y,
                     EditCurve[34].x,
-                    EditCurve[34].y,                                           // line2
-                    Gui::Command::getObjectCmd(sketchgui->getObject()).c_str(),// the sketch
+                    EditCurve[34].y,                                             // line2
+                    Gui::Command::getObjectCmd(sketchgui->getObject()).c_str(),  // the sketch
                     geometryCreationMode == Construction
                         ? "True"
-                        : "False",// geometry as construction or not
+                        : "False",  // geometry as construction or not
                     firstCurve,
-                    firstCurve + 2,// tangent1
+                    firstCurve + 2,  // tangent1
                     firstCurve + 2,
-                    firstCurve + 1,// tangent2
+                    firstCurve + 1,  // tangent2
                     firstCurve + 1,
-                    firstCurve + 3,// tangent3
+                    firstCurve + 3,  // tangent3
                     firstCurve + 3,
-                    firstCurve,// tangent4
+                    firstCurve,  // tangent4
                     firstCurve,
-                    firstCurve + 1,       // equal constraint
-                    snapCon.str().c_str(),// horizontal/vertical constraint if snapping
-                    Gui::Command::getObjectCmd(sketchgui->getObject()).c_str());// the sketch
+                    firstCurve + 1,         // equal constraint
+                    snapCon.str().c_str(),  // horizontal/vertical constraint if snapping
+                    Gui::Command::getObjectCmd(sketchgui->getObject()).c_str());  // the sketch
 
                 Gui::Command::commitCommand();
 
                 // add auto constraints at the center of the first arc
                 if (!sugConstr1.empty()) {
-                    createAutoConstraints(
-                        sugConstr1, getHighestCurveIndex() - 3, Sketcher::PointPos::mid);
+                    createAutoConstraints(sugConstr1,
+                                          getHighestCurveIndex() - 3,
+                                          Sketcher::PointPos::mid);
                     sugConstr1.clear();
                 }
 
                 // add auto constraints at the center of the second arc
                 if (!sugConstr2.empty()) {
-                    createAutoConstraints(
-                        sugConstr2, getHighestCurveIndex() - 2, Sketcher::PointPos::mid);
+                    createAutoConstraints(sugConstr2,
+                                          getHighestCurveIndex() - 2,
+                                          Sketcher::PointPos::mid);
                     sugConstr2.clear();
                 }
 
@@ -327,8 +338,8 @@ public:
                  * right button of the mouse */
             }
             else {
-                sketchgui
-                    ->purgeHandler();// no code after this line, Handler get deleted in ViewProvider
+                sketchgui->purgeHandler();  // no code after this line, Handler get deleted in
+                                            // ViewProvider
             }
             SnapMode = SNAP_MODE_Straight;
         }
@@ -352,7 +363,7 @@ protected:
 };
 
 
-}// namespace SketcherGui
+}  // namespace SketcherGui
 
 
-#endif// SKETCHERGUI_DrawSketchHandlerSlot_H
+#endif  // SKETCHERGUI_DrawSketchHandlerSlot_H

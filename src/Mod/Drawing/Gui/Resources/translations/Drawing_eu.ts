@@ -470,7 +470,7 @@ Jarraitu nahi duzu?</translation>
     <message>
       <location filename="../../TaskOrthoViews.ui" line="541"/>
       <source>Auto scale / position</source>
-      <translation>Auto eskala / kokapena</translation>
+      <translation>Auto eskala / posizioa</translation>
     </message>
     <message>
       <location filename="../../TaskOrthoViews.ui" line="556"/>

@@ -32,6 +32,8 @@
 #include "Geometry2d.h"
 #include "GeometrySurfacePy.h"
 
+#include <Base/PyWrapParseTupleAndKeywords.h>
+
 
 using namespace Part;
 
@@ -92,13 +94,14 @@ int BuildPlateSurfacePy::PyInit(PyObject* args, PyObject* kwds)
     double tolCurv = 0.1;
     PyObject* anisotropy = Py_False;
 
-    static char* keywords[] = {"Surface", "Degree", "NbPtsOnCur", "NbIter", "Tol2d",
-                               "Tol3d", "TolAng", "TolCurv", "Anisotropy", nullptr};
-    if (!PyArg_ParseTupleAndKeywords(args, kwds, "|O!iiiddddO!", keywords,
-                                     &(GeometrySurfacePy::Type), &surf, &degree,
-                                     &nbPtsOnCur, &nbIter, &tol2d, &tol3d,
-                                     &tolAng, &tolCurv, &PyBool_Type, &anisotropy))
+    static const std::array<const char *, 10> keywords{"Surface", "Degree", "NbPtsOnCur", "NbIter", "Tol2d", "Tol3d",
+                                                       "TolAng", "TolCurv", "Anisotropy", nullptr};
+    if (!Base::Wrapped_ParseTupleAndKeywords(args, kwds, "|O!iiiddddO!", keywords,
+                                             &(GeometrySurfacePy::Type), &surf, &degree,
+                                             &nbPtsOnCur, &nbIter, &tol2d, &tol3d,
+                                             &tolAng, &tolCurv, &PyBool_Type, &anisotropy)) {
         return -1;
+    }
 
     try {
         std::unique_ptr<GeomPlate_BuildPlateSurface> ptr(new GeomPlate_BuildPlateSurface

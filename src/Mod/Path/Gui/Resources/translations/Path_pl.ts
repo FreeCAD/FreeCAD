@@ -551,35 +551,6 @@ Dla nadmiaru materiału podstawowego z ramki otaczającej oznacza to naddatek ma
   <context>
     <name>Form</name>
     <message>
-      <location filename="../panels/DressupPathBoundary.ui" line="14"/>
-      <location filename="../panels/PageBaseGeometryEdit.ui" line="20"/>
-      <location filename="../panels/PageBaseHoleGeometryEdit.ui" line="14"/>
-      <location filename="../panels/PageBaseLocationEdit.ui" line="14"/>
-      <location filename="../panels/PageDepthsEdit.ui" line="17"/>
-      <location filename="../panels/PageDiametersEdit.ui" line="14"/>
-      <location filename="../panels/PageHeightsEdit.ui" line="14"/>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="14"/>
-      <location filename="../panels/PageOpCustomEdit.ui" line="14"/>
-      <location filename="../panels/PageOpDeburrEdit.ui" line="14"/>
-      <location filename="../panels/PageOpDrillingEdit.ui" line="14"/>
-      <location filename="../panels/PageOpEngraveEdit.ui" line="14"/>
-      <location filename="../panels/PageOpHelixEdit.ui" line="14"/>
-      <location filename="../panels/PageOpPocketExtEdit.ui" line="14"/>
-      <location filename="../panels/PageOpPocketFullEdit.ui" line="14"/>
-      <location filename="../panels/PageOpProbeEdit.ui" line="14"/>
-      <location filename="../panels/PageOpProfileFullEdit.ui" line="14"/>
-      <location filename="../panels/PageOpSlotEdit.ui" line="14"/>
-      <location filename="../panels/PageOpSurfaceEdit.ui" line="14"/>
-      <location filename="../panels/PageOpThreadMillingEdit.ui" line="14"/>
-      <location filename="../panels/PageOpVcarveEdit.ui" line="14"/>
-      <location filename="../panels/PageOpWaterlineEdit.ui" line="14"/>
-      <location filename="../panels/SetupOp.ui" line="14"/>
-      <location filename="../panels/ToolEditor.ui" line="14"/>
-      <location filename="../preferences/PathDressupHoldingTags.ui" line="14"/>
-      <source>Form</source>
-      <translation>Formularz</translation>
-    </message>
-    <message>
       <location filename="../panels/DressupPathBoundary.ui" line="20"/>
       <source>Boundary Body</source>
       <translation>Zawartość graniczna</translation>
@@ -592,7 +563,7 @@ Dla nadmiaru materiału podstawowego z ramki otaczającej oznacza to naddatek ma
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="45"/>
       <source>Create Box</source>
-      <translation>Utwórz pole</translation>
+      <translation>Utwórz prostopadłościan</translation>
     </message>
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="50"/>
@@ -900,7 +871,7 @@ Zresetuje wszystkie bieżące elementy z listy i wypełnia listę wszystkimi okr
       <location filename="../panels/PageDepthsEdit.ui" line="85"/>
       <location filename="../panels/SetupGlobal.ui" line="52"/>
       <source>Final Depth</source>
-      <translation>Ostateczna głębokość</translation>
+      <translation>Głębokość końcowa</translation>
     </message>
     <message>
       <location filename="../panels/PageDepthsEdit.ui" line="131"/>
@@ -911,7 +882,7 @@ Zresetuje wszystkie bieżące elementy z listy i wypełnia listę wszystkimi okr
     <message>
       <location filename="../panels/PageDepthsEdit.ui" line="163"/>
       <source>Finish Step Down</source>
-      <translation>Zakończ krokiem w dół</translation>
+      <translation>Przejście wykończeniowe</translation>
     </message>
     <message>
       <location filename="../panels/PageDiametersEdit.ui" line="20"/>
@@ -941,7 +912,7 @@ Zresetuje wszystkie bieżące elementy z listy i wypełnia listę wszystkimi okr
     <message>
       <location filename="../panels/PageHeightsEdit.ui" line="47"/>
       <source>Clearance Height</source>
-      <translation>Wysokość prześwitu</translation>
+      <translation>Wysokość wycofania</translation>
     </message>
     <message>
       <location filename="../panels/PageOpCustomEdit.ui" line="42"/>
@@ -1025,7 +996,7 @@ Zresetuje wszystkie bieżące elementy z listy i wypełnia listę wszystkimi okr
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="90"/>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="178"/>
       <source>Step Over Percent</source>
-      <translation>Krok dalej procentowo</translation>
+      <translation>Zachodzenie przejść</translation>
     </message>
     <message>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="148"/>
@@ -1302,13 +1273,13 @@ Zresetuje wszystkie bieżące elementy z listy i wypełnia listę wszystkimi okr
     <message>
       <location filename="../panels/PageOpHelixEdit.ui" line="111"/>
       <source>Step over percent</source>
-      <translation>Krok dalej procentowo</translation>
+      <translation>Zachodzenie przejść</translation>
     </message>
     <message>
       <location filename="../panels/PageOpHelixEdit.ui" line="137"/>
       <location filename="../panels/PageOpProfileFullEdit.ui" line="101"/>
       <source>Extra Offset</source>
-      <translation>Przesunięcie dodatkowe</translation>
+      <translation>Naddatek</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketExtEdit.ui" line="22"/>
@@ -1383,17 +1354,17 @@ Zresetuje wszystkie bieżące elementy z listy i wypełnia listę wszystkimi okr
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="88"/>
       <source>Cut Mode</source>
-      <translation>Tryb skrawania</translation>
+      <translation>Sposób obróbki</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="99"/>
       <source>Climb</source>
-      <translation>Podejście</translation>
+      <translation>Współbieżnie</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="104"/>
       <source>Conventional</source>
-      <translation>Konwencjonalne</translation>
+      <translation>Przeciwbieżnie</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="112"/>
@@ -1491,6 +1462,16 @@ Ta druga opcja może być użyta do ściany całego obszaru naddatku, aby zapewn
       <translation>W przypadku wybrania tej opcji operacja wykorzystuje kontur wybranej geometrii bazowej i ignoruje wszystkie otwory i wyspy</translation>
     </message>
     <message>
+      <location filename="../panels/PageOpPocketFullEdit.ui" line="258"/>
+      <source>Check to skip machining regions that have already been cleared by previous operations</source>
+      <translation>Sprawdź, czy pominąć obszary obróbki, które zostały już oczyszczone przez poprzednie operacje</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpPocketFullEdit.ui" line="261"/>
+      <source>Use Rest Machining</source>
+      <translation>Użyj obróbki spoczynkowej</translation>
+    </message>
+    <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="204"/>
       <source>Material Allowance</source>
       <translation>Dodatek materiału</translation>
@@ -1565,7 +1546,7 @@ Ta druga opcja może być użyta do ściany całego obszaru naddatku, aby zapewn
     <message>
       <location filename="../panels/PageOpProfileFullEdit.ui" line="63"/>
       <source>Cut Side</source>
-      <translation>Wytnij stronę</translation>
+      <translation>Strona obróbki</translation>
     </message>
     <message>
       <location filename="../panels/PageOpProfileFullEdit.ui" line="70"/>
@@ -1902,12 +1883,12 @@ Obrotowy: Skanowanie obrotowe w 4 osiach.</translation>
     <message>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="162"/>
       <source>Additional offset to the selected bounding box along the X axis.</source>
-      <translation>Dodatkowe przesunięcie względem wybranej ramki otaczającej wzdłuż osi X.</translation>
+      <translation>Naddatek względem wybranej ramki otaczającej wzdłuż osi X.</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="172"/>
       <source>Additional offset to the selected bounding box along the Y axis.</source>
-      <translation>Dodatkowe przesunięcie względem wybranej ramki otaczającej wzdłuż osi Y.</translation>
+      <translation>Naddatek względem wybranej ramki otaczającej wzdłuż osi Y.</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="198"/>
@@ -2014,7 +1995,7 @@ Domyślnie: OpToolDiameter</translation>
       <source>Expression set as ClearanceHeight for new operations.
 
 Default: "OpStockZMax+SetupSheet.ClearanceHeightOffset"</source>
-      <translation>Wyrażenie ustawione jako Wysokość prześwitu dla nowych operacji.
+      <translation>Wyrażenie ustawione jako Wysokość wycofania dla nowych operacji.
 
 Domyślnie: "OpStockZMax+SetupSheet.ClearanceHeightOffset"</translation>
     </message>
@@ -2572,12 +2553,12 @@ Jeśli pole pozostanie puste, żaden szablon nie zostanie wstępnie wybrany.</tr
     <message>
       <location filename="../preferences/PathJob.ui" line="376"/>
       <source>Stock</source>
-      <translation>Półwyrób</translation>
+      <translation>Przygotówka</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="395"/>
       <source>Create Box</source>
-      <translation>Utwórz sześcian</translation>
+      <translation>Utwórz prostopadłościan</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="400"/>
@@ -3382,7 +3363,7 @@ Should multiple tools or tool shapes with the same name exist in different direc
     <message>
       <location filename="../panels/SurfaceEdit.ui" line="178"/>
       <source>Finish Step Down</source>
-      <translation>Zakończ krok w dół</translation>
+      <translation>Przejście wykończeniowe</translation>
     </message>
     <message>
       <location filename="../panels/SurfaceEdit.ui" line="198"/>
@@ -3397,7 +3378,7 @@ Should multiple tools or tool shapes with the same name exist in different direc
     <message>
       <location filename="../panels/SurfaceEdit.ui" line="228"/>
       <source>Clearance Height</source>
-      <translation>Wysokość prześwitu</translation>
+      <translation>Wysokość wycofania</translation>
     </message>
     <message>
       <location filename="../panels/SurfaceEdit.ui" line="248"/>
@@ -3795,12 +3776,12 @@ FreeCAD has no knowledge of where a particular coordinate system exists within t
     <message>
       <location filename="../panels/PathEdit.ui" line="457"/>
       <source>Stock</source>
-      <translation>Półwyrób</translation>
+      <translation>Przygotówka</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="478"/>
       <source>Create Box</source>
-      <translation>Utwórz sześcian</translation>
+      <translation>Utwórz prostopadłościan</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="483"/>
@@ -3959,7 +3940,7 @@ FreeCAD has no knowledge of where a particular coordinate system exists within t
       <source>Expression set as ClearanceHeight for new operations.
 
 Default: "OpStockZMax+SetupSheet.ClearanceHeightOffset"</source>
-      <translation>Wyrażenie ustawione jako Wysokość prześwitu dla nowych operacji.
+      <translation>Wyrażenie ustawione jako Wysokość wycofania dla nowych operacji.
 
 Domyślnie: "OpStockZMax+SetupSheet.ClearanceHeightOffset"</translation>
     </message>
@@ -4477,13 +4458,13 @@ Na przykład:
       <translation>Przeciwnie do ruchu wskazówek zegara</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Pocket.py" line="333"/>
+      <location filename="../../../Path/Op/Pocket.py" line="334"/>
       <source>A planar adaptive start is unavailable. The non-planar will be attempted.</source>
       <translation>Adaptacyjny start planarny jest niedostępny. Zostanie podjęta próba startu nieplanarnego.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Pocket.py" line="349"/>
-      <location filename="../../../Path/Op/Pocket.py" line="379"/>
+      <location filename="../../../Path/Op/Pocket.py" line="350"/>
+      <location filename="../../../Path/Op/Pocket.py" line="380"/>
       <source>The non-planar adaptive start is also unavailable.</source>
       <translation>Nie jest również dostępny nieplanarny start adaptacyjny.</translation>
     </message>
@@ -5228,7 +5209,7 @@ Na przykład:
     <message>
       <location filename="../../../Path/Op/Base.py" line="244"/>
       <source>Final Depth of Tool- lowest value in Z</source>
-      <translation>Ostateczna głębokość narzędzia - najniższa wartość w Z</translation>
+      <translation>Głębokość końcowa narzędzia - najniższa wartość w Z</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Base.py" line="258"/>
@@ -5503,9 +5484,26 @@ Na przykład:
     </message>
     <message>
       <location filename="../../../Path/Op/PocketBase.py" line="186"/>
-      <location filename="../../../Path/Op/PocketBase.py" line="246"/>
+      <location filename="../../../Path/Op/PocketBase.py" line="265"/>
       <source>Last Stepover Radius.  If 0, 50% of cutter is used. Tuning this can be used to improve stepover for some shapes</source>
       <translation>Ostatni promień przejścia. Jeśli 0, 50% noża jest używane. Dostrajanie może być użyte do poprawy przejścia dla niektórych kształtów</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/PocketBase.py" line="195"/>
+      <location filename="../../../Path/Op/PocketBase.py" line="277"/>
+      <source>Skips machining regions that have already been cleared by previous operations.</source>
+      <translation>Pomija obszary obróbki, które zostały już oczyszczone przez poprzednie operacje.</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/PocketBase.py" line="204"/>
+      <location filename="../../../Path/Op/PocketBase.py" line="288"/>
+      <source>The areas cleared by this operation, one area per height, stored as a compound part. Used internally for rest machining.</source>
+      <translation>Obszary oczyszczone w wyniku tej operacji, po jednym obszarze na wysokość, przechowywane jako część złożona. Używany wewnętrznie do obróbki spoczynkowej.</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/PocketBase.py" line="299"/>
+      <source>Flag to indicate that the rest machining regions have never been computed, and must be recomputed before being used.</source>
+      <translation>Flaga wskazująca, że regiony obróbki spoczynkowej nigdy nie zostały obliczone i muszą zostać ponownie obliczone przed użyciem.</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Probe.py" line="55"/>
@@ -6556,7 +6554,7 @@ OL Dropcutter* lub Eksperymentalny (nieoparty na OCL).</translation>
     <message>
       <location filename="../../../Path/Main/Gui/Inspect.py" line="268"/>
       <source>Inspect Path Commands</source>
-      <translation>Przeglądaj polecenia ścieżki</translation>
+      <translation>Sprawdź ścieżkę narzędzia</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/Inspect.py" line="272"/>
@@ -6879,6 +6877,11 @@ OL Dropcutter* lub Eksperymentalny (nieoparty na OCL).</translation>
       <source>no job for operation %s found.</source>
       <translation>nie znaleziono zadań dla operacji %s.</translation>
     </message>
+    <message>
+      <location filename="../../../Path/Op/Area.py" line="259"/>
+      <source>Previous operation %s is required for rest machining, but it has no stored rest machining metadata. Recomputing to generate this metadata...</source>
+      <translation>Poprzednia operacja %s jest wymagana do obróbki spoczynkowej, ale nie ma zapisanych metadanych obróbki spoczynkowej. Należy ponownie wykonać obliczenia, aby wygenerować te metadane ...</translation>
+    </message>
   </context>
   <context>
     <name>Path_Operation</name>
@@ -6890,7 +6893,7 @@ OL Dropcutter* lub Eksperymentalny (nieoparty na OCL).</translation>
     <message>
       <location filename="../../../Path/Op/Base.py" line="379"/>
       <source>Flood</source>
-      <translation>Strumień</translation>
+      <translation>Zalewowe</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Base.py" line="380"/>
@@ -7079,12 +7082,12 @@ OL Dropcutter* lub Eksperymentalny (nieoparty na OCL).</translation>
     <message>
       <location filename="../../../Path/Op/PocketBase.py" line="61"/>
       <source>Climb</source>
-      <translation>Podejście</translation>
+      <translation>Współbieżnie</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/PocketBase.py" line="62"/>
       <source>Conventional</source>
-      <translation>Konwencjonalne</translation>
+      <translation>Przeciwbieżnie</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/PocketBase.py" line="65"/>
@@ -7125,7 +7128,7 @@ OL Dropcutter* lub Eksperymentalny (nieoparty na OCL).</translation>
   <context>
     <name>PathPocket</name>
     <message>
-      <location filename="../../../Path/Op/Pocket.py" line="191"/>
+      <location filename="../../../Path/Op/Pocket.py" line="192"/>
       <source>Final depth set below ZMin of face(s) selected.</source>
       <translation>Głębokość końcowa ustawiona poniżej Z min dla wybranych powierzchni.</translation>
     </message>
@@ -7145,12 +7148,12 @@ OL Dropcutter* lub Eksperymentalny (nieoparty na OCL).</translation>
       <translation>Y</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/PocketBase.py" line="81"/>
+      <location filename="../../../Path/Op/Gui/PocketBase.py" line="82"/>
       <source>Pass Extension</source>
       <translation>Zakres przejść</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/PocketBase.py" line="87"/>
+      <location filename="../../../Path/Op/Gui/PocketBase.py" line="88"/>
       <source>The distance the facing operation will extend beyond the boundary shape.</source>
       <translation>Odległość, na jaką skierowana jest operacja, przekroczy granicę kształtu.</translation>
     </message>
@@ -7439,7 +7442,7 @@ OL Dropcutter* lub Eksperymentalny (nieoparty na OCL).</translation>
     <message>
       <location filename="../../../Path/Op/Surface.py" line="450"/>
       <source>Stock</source>
-      <translation>Półwyrób</translation>
+      <translation>Przygotówka</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Surface.py" line="453"/>
@@ -7464,12 +7467,12 @@ OL Dropcutter* lub Eksperymentalny (nieoparty na OCL).</translation>
     <message>
       <location filename="../../../Path/Op/Surface.py" line="459"/>
       <source>Conventional</source>
-      <translation>Konwencjonalne</translation>
+      <translation>Przeciwbieżnie</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Surface.py" line="460"/>
       <source>Climb</source>
-      <translation>Podejście</translation>
+      <translation>Współbieżnie</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Surface.py" line="463"/>
@@ -7677,12 +7680,12 @@ OL Dropcutter* lub Eksperymentalny (nieoparty na OCL).</translation>
     <message>
       <location filename="../../../Path/Op/ThreadMilling.py" line="293"/>
       <source>Climb</source>
-      <translation>Podejście</translation>
+      <translation>Współbieżnie</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/ThreadMilling.py" line="297"/>
       <source>Conventional</source>
-      <translation>Konwencjonalne</translation>
+      <translation>Przeciwbieżnie</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Gui/ThreadMilling.py" line="253"/>
@@ -7817,12 +7820,12 @@ OL Dropcutter* lub Eksperymentalny (nieoparty na OCL).</translation>
     <message>
       <location filename="../../../Path/Op/Waterline.py" line="121"/>
       <source>Conventional</source>
-      <translation>Konwencjonalne</translation>
+      <translation>Przeciwbieżnie</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Waterline.py" line="122"/>
       <source>Climb</source>
-      <translation>Podejście</translation>
+      <translation>Współbieżnie</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Waterline.py" line="125"/>
@@ -8137,7 +8140,7 @@ Przerwanie procesu tworzenia</translation>
     <message>
       <location filename="../../../Path/Op/Gui/MillFace.py" line="76"/>
       <source>Face</source>
-      <translation>Powierzchnia</translation>
+      <translation>Planowanie</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Gui/MillFace.py" line="79"/>
@@ -8163,7 +8166,7 @@ Przerwanie procesu tworzenia</translation>
     <message>
       <location filename="../../../Path/Op/Gui/PocketShape.py" line="70"/>
       <source>Pocket Shape</source>
-      <translation>Kształt kieszeni</translation>
+      <translation>Obróbka kieszeni</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Gui/PocketShape.py" line="73"/>
@@ -8221,7 +8224,7 @@ Przerwanie procesu tworzenia</translation>
     <message>
       <location filename="../../../Path/Post/Command.py" line="472"/>
       <source>Post Process</source>
-      <translation>Przetwarzanie końcowe</translation>
+      <translation>Generuj program</translation>
     </message>
     <message>
       <location filename="../../../Path/Post/Command.py" line="474"/>
@@ -8379,12 +8382,12 @@ Przerwanie procesu tworzenia</translation>
     <message>
       <location filename="../../../Path/Tool/Gui/BitLibraryCmd.py" line="48"/>
       <source>ToolBit Dock</source>
-      <translation>Magazynek narzędzi</translation>
+      <translation>Tabela narzędzi</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/Gui/BitLibraryCmd.py" line="49"/>
       <source>Toggle the Toolbit Dock</source>
-      <translation>Przełącz magazynek narzędzi</translation>
+      <translation>Przełącza tabelę narzędzi</translation>
     </message>
   </context>
   <context>

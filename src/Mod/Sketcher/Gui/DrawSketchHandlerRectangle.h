@@ -31,7 +31,7 @@
 namespace SketcherGui
 {
 
-extern GeometryCreationMode geometryCreationMode;// defined in CommandCreateGeo.cpp
+extern GeometryCreationMode geometryCreationMode;  // defined in CommandCreateGeo.cpp
 
 class DrawSketchHandlerBox: public DrawSketchHandler
 {
@@ -183,36 +183,36 @@ public:
                         EditCurve[0].x,
                         EditCurve[0].y,
                         EditCurve[1].x,
-                        EditCurve[1].y,// line 1
+                        EditCurve[1].y,  // line 1
                         EditCurve[1].x,
                         EditCurve[1].y,
                         EditCurve[2].x,
-                        EditCurve[2].y,// line 2
+                        EditCurve[2].y,  // line 2
                         EditCurve[2].x,
                         EditCurve[2].y,
                         EditCurve[3].x,
-                        EditCurve[3].y,// line 3
+                        EditCurve[3].y,  // line 3
                         EditCurve[3].x,
                         EditCurve[3].y,
                         EditCurve[0].x,
-                        EditCurve[0].y,                                            // line 4
-                        Gui::Command::getObjectCmd(sketchgui->getObject()).c_str(),// the sketch
+                        EditCurve[0].y,                                              // line 4
+                        Gui::Command::getObjectCmd(sketchgui->getObject()).c_str(),  // the sketch
                         geometryCreationMode == Construction
                             ? "True"
-                            : "False",// geometry as construction or not
+                            : "False",  // geometry as construction or not
                         firstCurve,
-                        firstCurve + 1,// coincident1
+                        firstCurve + 1,  // coincident1
                         firstCurve + 1,
-                        firstCurve + 2,// coincident2
+                        firstCurve + 2,  // coincident2
                         firstCurve + 2,
-                        firstCurve + 3,// coincident3
+                        firstCurve + 3,  // coincident3
                         firstCurve + 3,
-                        firstCurve,                                                 // coincident4
-                        firstCurve,                                                 // horizontal1
-                        firstCurve + 2,                                             // horizontal2
-                        firstCurve + 1,                                             // vertical1
-                        firstCurve + 3,                                             // vertical2
-                        Gui::Command::getObjectCmd(sketchgui->getObject()).c_str());// the sketch
+                        firstCurve,                                                   // coincident4
+                        firstCurve,                                                   // horizontal1
+                        firstCurve + 2,                                               // horizontal2
+                        firstCurve + 1,                                               // vertical1
+                        firstCurve + 3,                                               // vertical2
+                        Gui::Command::getObjectCmd(sketchgui->getObject()).c_str());  // the sketch
 
                     Gui::Command::commitCommand();
                 }
@@ -247,41 +247,41 @@ public:
                         EditCurve[0].x,
                         EditCurve[0].y,
                         EditCurve[1].x,
-                        EditCurve[1].y,// line 1
+                        EditCurve[1].y,  // line 1
                         EditCurve[1].x,
                         EditCurve[1].y,
                         EditCurve[2].x,
-                        EditCurve[2].y,// line 2
+                        EditCurve[2].y,  // line 2
                         EditCurve[2].x,
                         EditCurve[2].y,
                         EditCurve[3].x,
-                        EditCurve[3].y,// line 3
+                        EditCurve[3].y,  // line 3
                         EditCurve[3].x,
                         EditCurve[3].y,
                         EditCurve[0].x,
-                        EditCurve[0].y,// line 4
+                        EditCurve[0].y,  // line 4
                         center.x,
-                        center.y,                                                  // center point
-                        Gui::Command::getObjectCmd(sketchgui->getObject()).c_str(),// the sketch
+                        center.y,                                                    // center point
+                        Gui::Command::getObjectCmd(sketchgui->getObject()).c_str(),  // the sketch
                         geometryCreationMode == Construction
                             ? "True"
-                            : "False",// geometry as construction or not
+                            : "False",  // geometry as construction or not
                         firstCurve,
-                        firstCurve + 1,// coincident1
+                        firstCurve + 1,  // coincident1
                         firstCurve + 1,
-                        firstCurve + 2,// coincident2
+                        firstCurve + 2,  // coincident2
                         firstCurve + 2,
-                        firstCurve + 3,// coincident3
+                        firstCurve + 3,  // coincident3
                         firstCurve + 3,
-                        firstCurve,    // coincident4
-                        firstCurve + 1,// horizontal1
-                        firstCurve + 3,// horizontal2
-                        firstCurve,    // vertical1
-                        firstCurve + 2,// vertical2
+                        firstCurve,      // coincident4
+                        firstCurve + 1,  // horizontal1
+                        firstCurve + 3,  // horizontal2
+                        firstCurve,      // vertical1
+                        firstCurve + 2,  // vertical2
                         firstCurve + 1,
                         firstCurve,
-                        firstCurve + 4,                                             // Symmetric
-                        Gui::Command::getObjectCmd(sketchgui->getObject()).c_str());// the sketch
+                        firstCurve + 4,                                               // Symmetric
+                        Gui::Command::getObjectCmd(sketchgui->getObject()).c_str());  // the sketch
 
                     Gui::Command::commitCommand();
                 }
@@ -297,30 +297,34 @@ public:
             if (constructionMethod == Diagonal) {
                 // add auto constraints at the start of the first side
                 if (!sugConstr1.empty()) {
-                    createAutoConstraints(
-                        sugConstr1, getHighestCurveIndex() - 3, Sketcher::PointPos::start);
+                    createAutoConstraints(sugConstr1,
+                                          getHighestCurveIndex() - 3,
+                                          Sketcher::PointPos::start);
                     sugConstr1.clear();
                 }
 
                 // add auto constraints at the end of the second side
                 if (!sugConstr2.empty()) {
-                    createAutoConstraints(
-                        sugConstr2, getHighestCurveIndex() - 2, Sketcher::PointPos::end);
+                    createAutoConstraints(sugConstr2,
+                                          getHighestCurveIndex() - 2,
+                                          Sketcher::PointPos::end);
                     sugConstr2.clear();
                 }
             }
             else if (constructionMethod == CenterAndCorner) {
                 // add auto constraints at the start of the first side
                 if (!sugConstr1.empty()) {
-                    createAutoConstraints(
-                        sugConstr1, getHighestCurveIndex(), Sketcher::PointPos::start);
+                    createAutoConstraints(sugConstr1,
+                                          getHighestCurveIndex(),
+                                          Sketcher::PointPos::start);
                     sugConstr1.clear();
                 }
 
                 // add auto constraints at the end of the second side
                 if (!sugConstr2.empty()) {
-                    createAutoConstraints(
-                        sugConstr2, getHighestCurveIndex() - 3, Sketcher::PointPos::end);
+                    createAutoConstraints(sugConstr2,
+                                          getHighestCurveIndex() - 3,
+                                          Sketcher::PointPos::end);
                     sugConstr2.clear();
                 }
             }
@@ -344,8 +348,8 @@ public:
                  * right button of the mouse */
             }
             else {
-                sketchgui
-                    ->purgeHandler();// no code after this line, Handler get deleted in ViewProvider
+                sketchgui->purgeHandler();  // no code after this line, Handler get deleted in
+                                            // ViewProvider
             }
         }
         return true;
@@ -406,8 +410,8 @@ public:
             signX = Base::sgn(distanceX);
             signY = Base::sgn(distanceY);
             if (fabs(distanceX) > fabs(distanceY)) {
-                radius =
-                    fabs(distanceY) / 4;// we use a fourth of the smaller distance as default radius
+                radius = fabs(distanceY)
+                    / 4;  // we use a fourth of the smaller distance as default radius
             }
             else {
                 radius = fabs(distanceX) / 4;
@@ -470,8 +474,10 @@ public:
                 std::string radiusString = lengthToDisplayFormat(radius, 1);
                 std::string xString = lengthToDisplayFormat(lengthX, 1);
                 std::string yString = lengthToDisplayFormat(lengthY, 1);
-                text.sprintf(
-                    "  (R%s X%s Y%s)", radiusString.c_str(), xString.c_str(), yString.c_str());
+                text.sprintf("  (R%s X%s Y%s)",
+                             radiusString.c_str(),
+                             xString.c_str(),
+                             yString.c_str());
                 setPositionText(onSketchPos, text);
             }
 
@@ -565,16 +571,17 @@ public:
                     "%s.addConstraint(conList)\n"
                     "del geoList, conList\n",
                     StartPos.x + (signX * radius),
-                    StartPos.y + (signY * radius),// center of the  arc 1
+                    StartPos.y + (signY * radius),  // center of the  arc 1
                     radius,
                     start,
-                    end,// start and end angle of arc1
+                    end,  // start and end angle of arc1
                     EditCurve[8].x,
                     EditCurve[8].y,
                     EditCurve[9].x,
-                    EditCurve[9].y,// line 1
-                    signX == signY ? StartPos.x + (signX * radius)
-                                   : StartPos.x + lengthX - (signX * radius),// center of the arc 2
+                    EditCurve[9].y,  // line 1
+                    signX == signY
+                        ? StartPos.x + (signX * radius)
+                        : StartPos.x + lengthX - (signX * radius),  // center of the arc 2
                     signX == signY ? StartPos.y + lengthY - (signY * radius)
                                    : StartPos.y + (signY * radius),
                     radius,
@@ -586,18 +593,18 @@ public:
                     EditCurve[17].x,
                     EditCurve[17].y,
                     EditCurve[18].x,
-                    EditCurve[18].y,// line 2
+                    EditCurve[18].y,  // line 2
                     StartPos.x + lengthX - (signX * radius),
-                    StartPos.y + lengthY - (signY * radius),// center of the arc 3
+                    StartPos.y + lengthY - (signY * radius),  // center of the arc 3
                     radius,
                     end - 1.5 * M_PI,
                     end - M_PI,
                     EditCurve[26].x,
                     EditCurve[26].y,
                     EditCurve[27].x,
-                    EditCurve[27].y,// line 3
+                    EditCurve[27].y,  // line 3
                     signX == signY ? StartPos.x + lengthX - (signX * radius)
-                                   : StartPos.x + (signX * radius),// center of the arc 4
+                                   : StartPos.x + (signX * radius),  // center of the arc 4
                     signX == signY ? StartPos.y + (signY * radius)
                                    : StartPos.y + lengthY - (signY * radius),
                     radius,
@@ -606,38 +613,38 @@ public:
                     EditCurve[35].x,
                     EditCurve[35].y,
                     EditCurve[36].x,
-                    EditCurve[36].y,                                           // line 4
-                    Gui::Command::getObjectCmd(sketchgui->getObject()).c_str(),// the sketch
+                    EditCurve[36].y,                                             // line 4
+                    Gui::Command::getObjectCmd(sketchgui->getObject()).c_str(),  // the sketch
                     geometryCreationMode == Construction
                         ? "True"
-                        : "False",// geometry as construction or not
+                        : "False",  // geometry as construction or not
                     firstCurve,
-                    firstCurve + 1,// tangent 1
+                    firstCurve + 1,  // tangent 1
                     firstCurve + 1,
-                    firstCurve + 2,// tangent 2
+                    firstCurve + 2,  // tangent 2
                     firstCurve + 2,
-                    firstCurve + 3,// tangent 3
+                    firstCurve + 3,  // tangent 3
                     firstCurve + 3,
-                    firstCurve + 4,// tangent 4
+                    firstCurve + 4,  // tangent 4
                     firstCurve + 4,
-                    firstCurve + 5,// tangent 5
+                    firstCurve + 5,  // tangent 5
                     firstCurve + 5,
-                    firstCurve + 6,// tangent 6
+                    firstCurve + 6,  // tangent 6
                     firstCurve + 6,
-                    firstCurve + 7,// tangent 7
+                    firstCurve + 7,  // tangent 7
                     firstCurve + 7,
-                    firstCurve,                                      // tangent 8
-                    signX == signY ? firstCurve + 3 : firstCurve + 1,// horizontal constraint
-                    signX == signY ? firstCurve + 7 : firstCurve + 5,// horizontal constraint
-                    signX == signY ? firstCurve + 1 : firstCurve + 3,// vertical constraint
-                    signX == signY ? firstCurve + 5 : firstCurve + 7,// vertical constraint
+                    firstCurve,                                        // tangent 8
+                    signX == signY ? firstCurve + 3 : firstCurve + 1,  // horizontal constraint
+                    signX == signY ? firstCurve + 7 : firstCurve + 5,  // horizontal constraint
+                    signX == signY ? firstCurve + 1 : firstCurve + 3,  // vertical constraint
+                    signX == signY ? firstCurve + 5 : firstCurve + 7,  // vertical constraint
                     firstCurve,
-                    firstCurve + 2,// equal  1
+                    firstCurve + 2,  // equal  1
                     firstCurve + 2,
-                    firstCurve + 4,// equal  2
+                    firstCurve + 4,  // equal  2
                     firstCurve + 4,
-                    firstCurve + 6,                                             // equal  3
-                    Gui::Command::getObjectCmd(sketchgui->getObject()).c_str());// the sketch
+                    firstCurve + 6,                                               // equal  3
+                    Gui::Command::getObjectCmd(sketchgui->getObject()).c_str());  // the sketch
 
                 // not all users want these extra points, some power users find them unnecessary
                 ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
@@ -650,7 +657,7 @@ public:
                         "geoList = []\n"
                         "geoList.append(Part.Point(App.Vector(%f, %f, 0)))\n"
                         "geoList.append(Part.Point(App.Vector(%f, %f, 0)))\n"
-                        "%s.addGeometry(geoList, True)\n"// geometry as construction
+                        "%s.addGeometry(geoList, True)\n"  // geometry as construction
                         "conList = []\n"
                         "conList.append(Sketcher.Constraint('PointOnObject', %i, 1, %i, ))\n"
                         "conList.append(Sketcher.Constraint('PointOnObject', %i, 1, %i, ))\n"
@@ -659,34 +666,36 @@ public:
                         "%s.addConstraint(conList)\n"
                         "del geoList, conList\n",
                         StartPos.x,
-                        StartPos.y,// point at StartPos
+                        StartPos.y,  // point at StartPos
                         EndPos.x,
-                        EndPos.y,// point at EndPos
-                        Gui::Command::getObjectCmd(sketchgui->getObject()).c_str(),// the sketch
+                        EndPos.y,  // point at EndPos
+                        Gui::Command::getObjectCmd(sketchgui->getObject()).c_str(),  // the sketch
                         firstCurve + 8,
-                        firstCurve + 1,// point on object constraint
+                        firstCurve + 1,  // point on object constraint
                         firstCurve + 8,
-                        firstCurve + 7,// point on object constraint
+                        firstCurve + 7,  // point on object constraint
                         firstCurve + 9,
-                        firstCurve + 3,// point on object constraint
+                        firstCurve + 3,  // point on object constraint
                         firstCurve + 9,
-                        firstCurve + 5,// point on object constraint
-                        Gui::Command::getObjectCmd(sketchgui->getObject()).c_str());// the sketch
+                        firstCurve + 5,  // point on object constraint
+                        Gui::Command::getObjectCmd(sketchgui->getObject()).c_str());  // the sketch
                 }
 
                 Gui::Command::commitCommand();
 
                 // add auto constraints at the StartPos auxiliary point
                 if (!sugConstr1.empty()) {
-                    createAutoConstraints(
-                        sugConstr1, getHighestCurveIndex() - 1, Sketcher::PointPos::start);
+                    createAutoConstraints(sugConstr1,
+                                          getHighestCurveIndex() - 1,
+                                          Sketcher::PointPos::start);
                     sugConstr1.clear();
                 }
 
                 // add auto constraints at the EndPos auxiliary point
                 if (!sugConstr2.empty()) {
-                    createAutoConstraints(
-                        sugConstr2, getHighestCurveIndex(), Sketcher::PointPos::start);
+                    createAutoConstraints(sugConstr2,
+                                          getHighestCurveIndex(),
+                                          Sketcher::PointPos::start);
                     sugConstr2.clear();
                 }
 
@@ -720,8 +729,8 @@ public:
                  * right button of the mouse */
             }
             else {
-                sketchgui
-                    ->purgeHandler();// no code after this line, Handler get deleted in ViewProvider
+                sketchgui->purgeHandler();  // no code after this line, Handler get deleted in
+                                            // ViewProvider
             }
         }
         return true;
@@ -743,7 +752,7 @@ protected:
 };
 
 
-}// namespace SketcherGui
+}  // namespace SketcherGui
 
 
-#endif// SKETCHERGUI_DrawSketchHandlerRectangle_H
+#endif  // SKETCHERGUI_DrawSketchHandlerRectangle_H

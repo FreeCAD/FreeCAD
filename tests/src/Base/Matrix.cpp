@@ -1,7 +1,8 @@
 #include "gtest/gtest.h"
 #include <Base/Matrix.h>
+#include <Base/Rotation.h>
 
-// NOLINTBEGIN(cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)
+// NOLINTBEGIN(cppcoreguidelines-*,readability-magic-numbers)
 // clang-format off
 TEST(Matrix, TestShearing)
 {
@@ -87,12 +88,12 @@ TEST(Matrix, TestNonUniformScaleLeftTwo)
     EXPECT_EQ(mat.hasScale(), Base::ScaleType::Uniform);
 }
 
-TEST(Matrix, TestTrace)
+TEST(Matrix, TestDiagonal)
 {
     Base::Matrix4D mat;
     mat.scale(2.0, 2.0, 2.0);
-    Base::Vector3d trace = mat.trace();
-    EXPECT_EQ(trace.x + trace.y + trace.z, 6.0);
+    Base::Vector3d diag = mat.diagonal();
+    EXPECT_EQ(diag.x + diag.y + diag.z, 6.0);
 }
 
 TEST(Matrix, TestColRow)
@@ -263,5 +264,84 @@ TEST(Matrix, TestSubAssign)
                         0.0, 0.0, 0.0, 0.0};
     EXPECT_EQ(mat1, mat4);
 }
+
+TEST(Matrix, TestHatOperator)
+{
+    Base::Vector3d vec{1.0, 2.0, 3.0};
+
+    Base::Matrix4D mat1;
+    mat1.Hat(vec);
+
+    Base::Matrix4D mat2{0.0, -vec.z, vec.y, 0.0,
+                        vec.z, 0.0, -vec.x, 0.0,
+                        -vec.y, vec.x, 0.0, 0.0,
+                        0.0, 0.0, 0.0, 1.0};
+
+    EXPECT_EQ(mat1, mat2);
+}
+
+TEST(Matrix, TestDyadic)
+{
+    Base::Vector3d vec{1.0, 2.0, 3.0};
+
+    Base::Matrix4D mat1;
+    mat1.Outer(vec, vec);
+
+    Base::Matrix4D mat2{1.0, 2.0, 3.0, 0.0,
+                        2.0, 4.0, 6.0, 0.0,
+                        3.0, 6.0, 9.0, 0.0,
+                        0.0, 0.0, 0.0, 1.0};
+
+    EXPECT_EQ(mat1, mat2);
+}
+
+TEST(Matrix, TestRotLine)
+{
+    Base::Vector3d axis{1.0, 2.0, 3.0};
+    double angle = 1.2345;
+
+    Base::Matrix4D mat1;
+    Base::Matrix4D mat2;
+    mat1.rotLine(axis, angle);
+
+    Base::Rotation rot(axis, angle);
+    rot.getValue(mat2);
+
+    EXPECT_EQ(mat1, mat2);
+}
+
+TEST(Matrix, TestRotAxisFormula) //NOLINT
+{
+    // R = I + sin(alpha)*P + (1-cos(alpha))*P^2
+    // with P = hat operator of a vector
+    Base::Vector3d axis{1.0, 2.0, 3.0};
+    double angle = 1.2345;
+
+    Base::Matrix4D mat1;
+    Base::Matrix4D mat2;
+    mat1.rotLine(axis, angle);
+
+    double fsin = std::sin(angle);
+    double fcos = std::cos(angle);
+    Base::Matrix4D unit;
+    Base::Matrix4D hat;
+    Base::Matrix4D hat2;
+
+    axis.Normalize();
+    hat.Hat(axis);
+
+    hat2 = hat * hat;
+    mat2 = unit + hat * fsin + hat2 * (1 - fcos);
+
+    EXPECT_DOUBLE_EQ(mat1[0][0], mat2[0][0]);
+    EXPECT_DOUBLE_EQ(mat1[0][1], mat2[0][1]);
+    EXPECT_DOUBLE_EQ(mat1[0][2], mat2[0][2]);
+    EXPECT_DOUBLE_EQ(mat1[1][0], mat2[1][0]);
+    EXPECT_DOUBLE_EQ(mat1[1][1], mat2[1][1]);
+    EXPECT_DOUBLE_EQ(mat1[1][2], mat2[1][2]);
+    EXPECT_DOUBLE_EQ(mat1[2][0], mat2[2][0]);
+    EXPECT_DOUBLE_EQ(mat1[2][1], mat2[2][1]);
+    EXPECT_DOUBLE_EQ(mat1[2][2], mat2[2][2]);
+}
 // clang-format on
-// NOLINTEND(cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)
+// NOLINTEND(cppcoreguidelines-*,readability-magic-numbers)

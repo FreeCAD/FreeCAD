@@ -300,6 +300,11 @@ bool Exporter3MF::addMesh(const char *name, const MeshObject & mesh)
     return ok;
 }
 
+void Exporter3MF::setForceModel(bool model)
+{
+    d->writer3mf.SetForceModel(model);
+}
+
 void Exporter3MF::write()
 {
     d->writer3mf.Save();

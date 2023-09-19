@@ -49,6 +49,6 @@ private:
     std::unique_ptr<Ui_SketcherRegularPolygonDialog> ui;
 };
 
-}// namespace SketcherGui
+}  // namespace SketcherGui
 
-#endif// SKETCHERGUI_SketcherRegularPolygonDialog_H
+#endif  // SKETCHERGUI_SketcherRegularPolygonDialog_H

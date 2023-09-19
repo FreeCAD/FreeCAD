@@ -329,9 +329,9 @@ protected:
     void renderPrivate(SoGLRenderAction *, bool inPath);
     bool _renderPrivate(SoGLRenderAction *, bool inPath);
 
-    class Stack : public std::vector<SoFCSelectionRoot*> {
+    class Stack : public std::vector<SoNode*> {
     public:
-        std::unordered_set<SoFCSelectionRoot*> nodeSet;
+        std::unordered_set<SoNode*> nodeSet;
         size_t offset = 0;
     };
 

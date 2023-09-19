@@ -91,9 +91,7 @@ class PackageDetails(QtWidgets.QWidget):
         self.ui.buttonInstall.clicked.connect(lambda: self.install.emit(self.repo))
         self.ui.buttonUninstall.clicked.connect(lambda: self.uninstall.emit(self.repo))
         self.ui.buttonUpdate.clicked.connect(lambda: self.update.emit(self.repo))
-        self.ui.buttonCheckForUpdate.clicked.connect(
-            lambda: self.check_for_update.emit(self.repo)
-        )
+        self.ui.buttonCheckForUpdate.clicked.connect(lambda: self.check_for_update.emit(self.repo))
         self.ui.buttonChangeBranch.clicked.connect(self.change_branch_clicked)
         self.ui.buttonEnable.clicked.connect(self.enable_clicked)
         self.ui.buttonDisable.clicked.connect(self.disable_clicked)
@@ -125,13 +123,9 @@ class PackageDetails(QtWidgets.QWidget):
                 self.ui.webView.setHtml("<html><body>Loading...</body></html>")
                 self.ui.webView.hide()
                 self.ui.progressBar.show()
-                self.timeout = QtCore.QTimer.singleShot(
-                    6000, self.long_load_running
-                )  # Six seconds
+                self.timeout = QtCore.QTimer.singleShot(6000, self.long_load_running)  # Six seconds
             else:
-                self.ui.missingWebViewLabel.setStyleSheet(
-                    "color:" + utils.warning_color_string()
-                )
+                self.ui.missingWebViewLabel.setStyleSheet("color:" + utils.warning_color_string())
 
             if self.worker is not None:
                 if not self.worker.isFinished():
@@ -157,9 +151,7 @@ class PackageDetails(QtWidgets.QWidget):
                 self.status_create_addon_list_worker.deleteLater
             )
             self.check_for_update.connect(self.status_create_addon_list_worker.do_work)
-            self.status_create_addon_list_worker.update_status.connect(
-                self.display_repo_status
-            )
+            self.status_create_addon_list_worker.update_status.connect(self.display_repo_status)
             self.status_update_thread.start()
             self.check_for_update.emit(self.repo)
 
@@ -182,9 +174,9 @@ class PackageDetails(QtWidgets.QWidget):
                 )
             if version and date:
                 installed_version_string += (
-                    translate(
-                        "AddonsInstaller", "Version {version} installed on {date}"
-                    ).format(version=version, date=date)
+                    translate("AddonsInstaller", "Version {version} installed on {date}").format(
+                        version=version, date=date
+                    )
                     + ". "
                 )
             elif version:
@@ -196,9 +188,7 @@ class PackageDetails(QtWidgets.QWidget):
                     translate("AddonsInstaller", "Installed on {date}") + ". "
                 ).format(date=date)
             else:
-                installed_version_string += (
-                    translate("AddonsInstaller", "Installed") + ". "
-                )
+                installed_version_string += translate("AddonsInstaller", "Installed") + ". "
 
             if status == Addon.Status.UPDATE_AVAILABLE:
                 if repo.metadata:
@@ -214,9 +204,7 @@ class PackageDetails(QtWidgets.QWidget):
                     installed_version_string += ".</b>"
                 elif repo.macro and repo.macro.version:
                     installed_version_string += (
-                        "<b>"
-                        + translate("AddonsInstaller", "Update available to version")
-                        + " "
+                        "<b>" + translate("AddonsInstaller", "Update available to version") + " "
                     )
                     installed_version_string += repo.macro.version
                     installed_version_string += ".</b>"
@@ -258,10 +246,7 @@ class PackageDetails(QtWidgets.QWidget):
                     )
             elif status == Addon.Status.PENDING_RESTART:
                 installed_version_string += (
-                    translate(
-                        "AddonsInstaller", "Updated, please restart FreeCAD to use"
-                    )
-                    + "."
+                    translate("AddonsInstaller", "Updated, please restart FreeCAD to use") + "."
                 )
             elif status == Addon.Status.UNCHECKED:
                 pref = fci.ParamGet("User parameter:BaseApp/Preferences/Addons")
@@ -272,20 +257,15 @@ class PackageDetails(QtWidgets.QWidget):
                     )
                 else:
                     installed_version_string += (
-                        translate("AddonsInstaller", "Automatic update checks disabled")
-                        + "."
+                        translate("AddonsInstaller", "Automatic update checks disabled") + "."
                     )
 
             installed_version_string += "</h3>"
             self.ui.labelPackageDetails.setText(installed_version_string)
             if repo.status() == Addon.Status.UPDATE_AVAILABLE:
-                self.ui.labelPackageDetails.setStyleSheet(
-                    "color:" + utils.attention_color_string()
-                )
+                self.ui.labelPackageDetails.setStyleSheet("color:" + utils.attention_color_string())
             else:
-                self.ui.labelPackageDetails.setStyleSheet(
-                    "color:" + utils.bright_color_string()
-                )
+                self.ui.labelPackageDetails.setStyleSheet("color:" + utils.bright_color_string())
             self.ui.labelPackageDetails.show()
 
             if repo.macro is not None:
@@ -340,13 +320,9 @@ class PackageDetails(QtWidgets.QWidget):
         if repo.obsolete:
             self.ui.labelWarningInfo.show()
             self.ui.labelWarningInfo.setText(
-                "<h1>"
-                + translate("AddonsInstaller", "WARNING: This addon is obsolete")
-                + "</h1>"
+                "<h1>" + translate("AddonsInstaller", "WARNING: This addon is obsolete") + "</h1>"
             )
-            self.ui.labelWarningInfo.setStyleSheet(
-                "color:" + utils.warning_color_string()
-            )
+            self.ui.labelWarningInfo.setStyleSheet("color:" + utils.warning_color_string())
         elif repo.python2:
             self.ui.labelWarningInfo.show()
             self.ui.labelWarningInfo.setText(
@@ -354,9 +330,7 @@ class PackageDetails(QtWidgets.QWidget):
                 + translate("AddonsInstaller", "WARNING: This addon is Python 2 Only")
                 + "</h1>"
             )
-            self.ui.labelWarningInfo.setStyleSheet(
-                "color:" + utils.warning_color_string()
-            )
+            self.ui.labelWarningInfo.setStyleSheet("color:" + utils.warning_color_string())
         elif required_version:
             self.ui.labelWarningInfo.show()
             self.ui.labelWarningInfo.setText(
@@ -365,9 +339,7 @@ class PackageDetails(QtWidgets.QWidget):
                 + required_version
                 + "</h1>"
             )
-            self.ui.labelWarningInfo.setStyleSheet(
-                "color:" + utils.warning_color_string()
-            )
+            self.ui.labelWarningInfo.setStyleSheet("color:" + utils.warning_color_string())
         elif repo.is_disabled():
             self.ui.labelWarningInfo.show()
             self.ui.labelWarningInfo.setText(
@@ -378,9 +350,7 @@ class PackageDetails(QtWidgets.QWidget):
                 )
                 + "</h2>"
             )
-            self.ui.labelWarningInfo.setStyleSheet(
-                "color:" + utils.warning_color_string()
-            )
+            self.ui.labelWarningInfo.setStyleSheet("color:" + utils.warning_color_string())
 
         else:
             self.ui.labelWarningInfo.hide()
@@ -396,9 +366,7 @@ class PackageDetails(QtWidgets.QWidget):
             # it's possible that this package actually provides versions of itself
             # for newer and older versions
 
-            first_supported_version = get_first_supported_freecad_version(
-                self.repo.metadata
-            )
+            first_supported_version = get_first_supported_freecad_version(self.repo.metadata)
             if first_supported_version is not None:
                 fc_version = Version(from_list=fci.Version())
                 if first_supported_version > fc_version:
@@ -504,9 +472,7 @@ class PackageDetails(QtWidgets.QWidget):
             else:
                 self.ui.urlBar.setText(
                     "("
-                    + translate(
-                        "AddonsInstaller", "No URL or wiki page provided by this macro"
-                    )
+                    + translate("AddonsInstaller", "No URL or wiki page provided by this macro")
                     + ")"
                 )
         else:
@@ -517,9 +483,7 @@ class PackageDetails(QtWidgets.QWidget):
             else:
                 self.ui.textBrowserReadMe.setHtml(
                     "("
-                    + translate(
-                        "AddonsInstaller", "No URL or wiki page provided by this macro"
-                    )
+                    + translate("AddonsInstaller", "No URL or wiki page provided by this macro")
                     + ")"
                 )
 
@@ -622,9 +586,9 @@ class PackageDetails(QtWidgets.QWidget):
 
     def show_error_for(self, url: QtCore.QUrl) -> None:
         """Displays error information."""
-        m = translate(
-            "AddonsInstaller", "Could not load README data from URL {}"
-        ).format(url.toString())
+        m = translate("AddonsInstaller", "Could not load README data from URL {}").format(
+            url.toString()
+        )
         html = f"<html><body><p>{m}</p></body></html>"
         self.ui.webView.setHtml(html)
 
@@ -670,9 +634,7 @@ class PackageDetails(QtWidgets.QWidget):
             )
             + "</h3>"
         )
-        self.ui.labelWarningInfo.setStyleSheet(
-            "color:" + utils.attention_color_string()
-        )
+        self.ui.labelWarningInfo.setStyleSheet("color:" + utils.attention_color_string())
 
     def branch_changed(self, name: str) -> None:
         """Displays a dialog confirming the branch changed, and tries to access the
@@ -695,9 +657,7 @@ class PackageDetails(QtWidgets.QWidget):
             self.repo.repo_type = Addon.Kind.WORKBENCH
             self.repo.metadata = None
             self.repo.installed_version = None
-        self.repo.updated_timestamp = (
-            QtCore.QDateTime.currentDateTime().toSecsSinceEpoch()
-        )
+        self.repo.updated_timestamp = QtCore.QDateTime.currentDateTime().toSecsSinceEpoch()
         self.repo.branch = name
         self.repo.set_status(Addon.Status.PENDING_RESTART)
 
@@ -707,9 +667,7 @@ class PackageDetails(QtWidgets.QWidget):
         ).format(name)
         installed_version_string += "</h3>"
         self.ui.labelPackageDetails.setText(installed_version_string)
-        self.ui.labelPackageDetails.setStyleSheet(
-            "color:" + utils.attention_color_string()
-        )
+        self.ui.labelPackageDetails.setStyleSheet("color:" + utils.attention_color_string())
         self.update_status.emit(self.repo)
 
 
@@ -738,9 +696,7 @@ if HAS_QTWEBENGINE:
                     requested_url.host() == "wiki.freecad.org"
                     or requested_url.host() == "wiki.freecad.org"
                 ):
-                    return super().acceptNavigationRequest(
-                        requested_url, _type, isMainFrame
-                    )
+                    return super().acceptNavigationRequest(requested_url, _type, isMainFrame)
                 QtGui.QDesktopServices.openUrl(requested_url)
                 self.stored_url = self.url()
                 QtCore.QTimer.singleShot(0, self._reload_stored_url)
@@ -838,9 +794,7 @@ class Ui_PackageDetails(object):
         self.verticalLayout_2.addWidget(self.labelPackageDetails)
 
         self.labelInstallationLocation = QtWidgets.QLabel(PackageDetails)
-        self.labelInstallationLocation.setTextInteractionFlags(
-            QtCore.Qt.TextSelectableByMouse
-        )
+        self.labelInstallationLocation.setTextInteractionFlags(QtCore.Qt.TextSelectableByMouse)
         self.labelInstallationLocation.hide()
 
         self.verticalLayout_2.addWidget(self.labelInstallationLocation)
@@ -917,9 +871,7 @@ class Ui_PackageDetails(object):
             QtCore.QCoreApplication.translate("AddonsInstaller", "Update", None)
         )
         self.buttonCheckForUpdate.setText(
-            QtCore.QCoreApplication.translate(
-                "AddonsInstaller", "Check for Update", None
-            )
+            QtCore.QCoreApplication.translate("AddonsInstaller", "Check for Update", None)
         )
         self.buttonExecute.setText(
             QtCore.QCoreApplication.translate("AddonsInstaller", "Run Macro", None)
@@ -934,9 +886,7 @@ class Ui_PackageDetails(object):
             QtCore.QCoreApplication.translate("AddonsInstaller", "Disable", None)
         )
         self.buttonBack.setToolTip(
-            QtCore.QCoreApplication.translate(
-                "AddonsInstaller", "Return to package list", None
-            )
+            QtCore.QCoreApplication.translate("AddonsInstaller", "Return to package list", None)
         )
         if not HAS_QTWEBENGINE:
             self.missingWebViewLabel.setText(

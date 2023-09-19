@@ -1,4 +1,4 @@
-#/***************************************************************************
+# /***************************************************************************
 # *   Copyright (c) 2018 Victor Titov (DeepSOIC) <vv.titov@gmail.com>       *
 # *                                                                         *
 # *   This file is part of the FreeCAD CAx development system.              *
@@ -20,12 +20,14 @@
 # *                                                                         *
 # ***************************************************************************/
 
-#This is a temporary replacement for C++-powered Container class that should be eventually introduced into FreeCAD
+# This is a temporary replacement for C++-powered Container class that should be eventually introduced into FreeCAD
+
 
 class Container(object):
     """Container class: a unified interface for container objects, such as Group, Part, Body, or Document.
     This is a temporary implementation."""
-    Object = None #DocumentObject or Document, the actual container
+
+    Object = None  # DocumentObject or Document, the actual container
 
     def __init__(self, obj):
         self.Object = obj
@@ -33,7 +35,7 @@ class Container(object):
     def self_check(self):
         if self.Object is None:
             raise ValueError("Null!")
-        if not isAContainer(self.Object, links_too= True):
+        if not isAContainer(self.Object, links_too=True):
             raise NotAContainerError(self.Object)
 
     def getAllChildren(self):
@@ -46,18 +48,18 @@ class Container(object):
 
         self.self_check()
         container = self.Object
-        if container.isDerivedFrom('App::Document'):
+        if container.isDerivedFrom("App::Document"):
             return []
-        elif container.hasExtension('App::OriginGroupExtension'):
+        elif container.hasExtension("App::OriginGroupExtension"):
             if container.Origin is not None:
                 return [container.Origin]
             else:
                 return []
-        elif container.isDerivedFrom('App::Origin'):
+        elif container.isDerivedFrom("App::Origin"):
             return container.OriginFeatures
-        elif container.hasExtension('App::GroupExtension'):
+        elif container.hasExtension("App::GroupExtension"):
             return []
-        elif container.hasChildElement(): # Link
+        elif container.hasChildElement():  # Link
             return []
         raise RuntimeError("getStaticChildren: unexpected container type!")
 
@@ -66,7 +68,7 @@ class Container(object):
         self.self_check()
         container = self.Object
 
-        if container.isDerivedFrom('App::Document'):
+        if container.isDerivedFrom("App::Document"):
             # find all objects not contained by any Part or Body
             result = set(container.Objects)
             for obj in container.Objects:
@@ -74,18 +76,18 @@ class Container(object):
                     children = set(Container(obj).getAllChildren())
                     result = result - children
             return list(result)
-        elif container.hasExtension('App::GroupExtension'):
+        elif container.hasExtension("App::GroupExtension"):
             result = container.Group
-            if container.hasExtension('App::GeoFeatureGroupExtension'):
-                #geofeaturegroup's group contains all objects within the CS, we don't want that
+            if container.hasExtension("App::GeoFeatureGroupExtension"):
+                # geofeaturegroup's group contains all objects within the CS, we don't want that
                 result = [obj for obj in result if obj.getParentGroup() is not container]
             return result
-        elif container.isDerivedFrom('App::Origin'):
+        elif container.isDerivedFrom("App::Origin"):
             return []
         elif container.hasChildElement():
             result = []
             for sub in container.getSubObjects(1):
-                sobj = container.getSubObject(sub,retType=1)
+                sobj = container.getSubObject(sub, retType=1)
                 if sobj:
                     result.append(sobj)
             return result
@@ -97,11 +99,11 @@ class Container(object):
         self.self_check()
         container = self.Object
 
-        if container.isDerivedFrom('App::Document'):
-            return True #Document is a special thing... is it a CS or not is a matter of coding convenience.
-        elif container.hasExtension('App::GeoFeatureGroupExtension'):
+        if container.isDerivedFrom("App::Document"):
+            return True  # Document is a special thing... is it a CS or not is a matter of coding convenience.
+        elif container.hasExtension("App::GeoFeatureGroupExtension"):
             return True
-        elif container.hasChildElement(): # Link
+        elif container.hasChildElement():  # Link
             return True
         else:
             return False
@@ -111,13 +113,13 @@ class Container(object):
         self.self_check()
         container = self.Object
 
-        if container.isDerivedFrom('App::Document'):
-            return True #Document is a special thing... Return value is a matter of coding convenience.
-        elif container.hasExtension('App::GeoFeatureGroupExtension'):
+        if container.isDerivedFrom("App::Document"):
+            return True  # Document is a special thing... Return value is a matter of coding convenience.
+        elif container.hasExtension("App::GeoFeatureGroupExtension"):
             return True
-        elif container.isDerivedFrom('App::Origin'):
+        elif container.isDerivedFrom("App::Origin"):
             return True
-        elif container.hasChildElement(): # Link
+        elif container.hasChildElement():  # Link
             return True
         else:
             return False
@@ -134,15 +136,15 @@ class Container(object):
         container = self.Object
         return _getMetacontainerChildren(self, Container.isAVisGroup)
 
-    def isChildVisible(self,obj):
+    def isChildVisible(self, obj):
         container = self.Object
-        isElementVisible = getattr(container,'isElementVisible',None)
+        isElementVisible = getattr(container, "isElementVisible", None)
         if not isElementVisible:
             return obj.Visibility
         vis = isElementVisible(obj.Name)
         if vis < 0:
             return obj.Visibility
-        return vis>0
+        return vis > 0
 
     def hasObject(self, obj):
         """Returns True if the container contains specified object directly."""
@@ -150,6 +152,7 @@ class Container(object):
 
     def hasObjectRecursive(self, obj):
         return self.Object in ContainerChain(obj)
+
 
 def _getMetacontainerChildren(container, isrightcontainer_func):
     """Gathers up children of metacontainer - a container structure formed by containers of specific type.
@@ -159,9 +162,9 @@ def _getMetacontainerChildren(container, isrightcontainer_func):
     isrightcontainer_func: a function f(cnt)->bool, where cnt is a Container object."""
 
     result = []
-    list_traversing_now = [container] #list of Container instances
-    list_to_be_traversed_next = [] #list of Container instances
-    visited_containers = set([container.Object]) #set of DocumentObjects
+    list_traversing_now = [container]  # list of Container instances
+    list_to_be_traversed_next = []  # list of Container instances
+    visited_containers = set([container.Object])  # set of DocumentObjects
 
     while len(list_traversing_now) > 0:
         list_to_be_traversed_next = []
@@ -178,26 +181,26 @@ def _getMetacontainerChildren(container, isrightcontainer_func):
     return result
 
 
-
-def isAContainer(obj, links_too = False):
-    '''isAContainer(obj, links_too): returns True if obj is an object container, such as
+def isAContainer(obj, links_too=False):
+    """isAContainer(obj, links_too): returns True if obj is an object container, such as
     Group, Part, Body. The important characteristic of an object being a
     container is that it can be activated to receive new objects. Documents
     are considered containers, too.
     If links_too, App::Link objects are considered containers, too. Then, container tree
-    isn't necessarily a tree.'''
+    isn't necessarily a tree."""
 
-    if obj.isDerivedFrom('App::Document'):
+    if obj.isDerivedFrom("App::Document"):
         return True
-    if obj.hasExtension('App::GroupExtension'):
+    if obj.hasExtension("App::GroupExtension"):
         return True
-    if obj.isDerivedFrom('App::Origin'):
+    if obj.isDerivedFrom("App::Origin"):
         return True
     if obj.hasChildElement():
         return True if links_too else False
     return False
 
-#from Part-o-magic...
+
+# from Part-o-magic...
 def ContainerOf(obj):
     """ContainerOf(obj): returns the container that immediately has obj."""
     cnt = None
@@ -211,17 +214,19 @@ def ContainerOf(obj):
         return obj.Document
     return cnt
 
+
 def getVisGroupOf(obj):
     chain = VisGroupChain(obj)
     return chain[-1]
 
-#from Part-o-magic... over-engineered, but proven to work
-def ContainerChain(feat):
-    '''ContainerChain(feat): container path to feat (not including feat itself).
-    Last container directly contains the feature.
-    Example of output:  [<document>,<SuperPart>,<Part>,<Body>]'''
 
-    if feat.isDerivedFrom('App::Document'):
+# from Part-o-magic... over-engineered, but proven to work
+def ContainerChain(feat):
+    """ContainerChain(feat): container path to feat (not including feat itself).
+    Last container directly contains the feature.
+    Example of output:  [<document>,<SuperPart>,<Part>,<Body>]"""
+
+    if feat.isDerivedFrom("App::Document"):
         return []
 
     list_traversing_now = [feat]
@@ -243,18 +248,25 @@ def ContainerChain(feat):
 
     return [feat.Document] + list_of_deps[::-1]
 
+
 def CSChain(feat):
     cnt_chain = ContainerChain(feat)
     return [cnt for cnt in cnt_chain if Container(cnt).isACS()]
+
 
 def VisGroupChain(feat):
     cnt_chain = ContainerChain(feat)
     return [cnt for cnt in cnt_chain if Container(cnt).isAVisGroup()]
 
+
 class ContainerError(RuntimeError):
     pass
+
+
 class NotAContainerError(ContainerError):
     def __init__(self, name="None"):
         ContainerError.__init__(self, "'{}' is not recognized as container".format(name))
+
+
 class ContainerTreeError(ContainerError):
     pass

@@ -4,17 +4,17 @@
   <context>
     <name>CmdMeshPartCrossSections</name>
     <message>
-      <location filename="../../Command.cpp" line="269"/>
+      <location filename="../../Command.cpp" line="280"/>
       <source>MeshPart</source>
       <translation>Metal Örgü Bölümü</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="270"/>
+      <location filename="../../Command.cpp" line="281"/>
       <source>Cross-sections...</source>
       <translation>Kesitler...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="271"/>
+      <location filename="../../Command.cpp" line="282"/>
       <source>Cross-sections</source>
       <translation>Kesit</translation>
     </message>
@@ -22,20 +22,20 @@
   <context>
     <name>CmdMeshPartCurveOnMesh</name>
     <message>
-      <location filename="../../Command.cpp" line="305"/>
+      <location filename="../../Command.cpp" line="316"/>
       <source>Mesh</source>
       <translation>Parçacık</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="306"/>
+      <location filename="../../Command.cpp" line="317"/>
       <source>Curve on mesh...</source>
       <translation>Metal örgü üzerinde eğri...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="307"/>
+      <location filename="../../Command.cpp" line="318"/>
       <source>Creates an approximated curve on top of a mesh.
 This command only works with a 'mesh' object.</source>
-      <translation>Bir metal örgünün üstünde yaklaşık bir eğri oluşturur. 
+      <translation>Bir metal örgünün üstünde yaklaşık bir eğri oluşturur.
 Bu komut yalnızca bir 'metal örgü' nesnesiyle çalışır.</translation>
     </message>
   </context>
@@ -60,17 +60,17 @@ Bu komut yalnızca bir 'metal örgü' nesnesiyle çalışır.</translation>
   <context>
     <name>CmdMeshPartSection</name>
     <message>
-      <location filename="../../Command.cpp" line="185"/>
+      <location filename="../../Command.cpp" line="192"/>
       <source>Mesh</source>
-      <translation>Parçacık</translation>
+      <translation type="unfinished">Mesh</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="186"/>
+      <location filename="../../Command.cpp" line="193"/>
       <source>Create section from mesh and plane</source>
       <translation>Örgü ve düzlemden kesit oluştur</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="187"/>
+      <location filename="../../Command.cpp" line="194"/>
       <source>Section</source>
       <translation>Kesişim</translation>
     </message>
@@ -97,12 +97,12 @@ Bu komut yalnızca bir 'metal örgü' nesnesiyle çalışır.</translation>
   <context>
     <name>Command</name>
     <message>
-      <location filename="../../Command.cpp" line="129"/>
+      <location filename="../../Command.cpp" line="134"/>
       <source>Trim with plane</source>
       <translation>Düzlem ile kes</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="208"/>
+      <location filename="../../Command.cpp" line="217"/>
       <source>Section with plane</source>
       <translation>Düzlemli bölüm</translation>
     </message>
@@ -170,7 +170,7 @@ Bu komut yalnızca bir 'metal örgü' nesnesiyle çalışır.</translation>
       <translation>Mesafe şundan azsa kenarları birleştirin</translation>
     </message>
     <message>
-      <location filename="../../CrossSections.cpp" line="368"/>
+      <location filename="../../CrossSections.cpp" line="384"/>
       <source>Failure</source>
       <translation>Başarısız</translation>
     </message>
@@ -178,32 +178,32 @@ Bu komut yalnızca bir 'metal örgü' nesnesiyle çalışır.</translation>
   <context>
     <name>MeshPartGui::CurveOnMeshHandler</name>
     <message>
-      <location filename="../../CurveOnMesh.cpp" line="364"/>
+      <location filename="../../CurveOnMesh.cpp" line="362"/>
       <source>Create</source>
       <translation>Oluştur</translation>
     </message>
     <message>
-      <location filename="../../CurveOnMesh.cpp" line="366"/>
+      <location filename="../../CurveOnMesh.cpp" line="364"/>
       <source>Close wire</source>
       <translation>Telin Yakını</translation>
     </message>
     <message>
-      <location filename="../../CurveOnMesh.cpp" line="368"/>
+      <location filename="../../CurveOnMesh.cpp" line="366"/>
       <source>Clear</source>
       <translation>Temizle</translation>
     </message>
     <message>
-      <location filename="../../CurveOnMesh.cpp" line="369"/>
+      <location filename="../../CurveOnMesh.cpp" line="367"/>
       <source>Cancel</source>
       <translation>İptal</translation>
     </message>
     <message>
-      <location filename="../../CurveOnMesh.cpp" line="615"/>
+      <location filename="../../CurveOnMesh.cpp" line="626"/>
       <source>Wrong mesh picked</source>
       <translation>Yanlış metal örgü seçildi</translation>
     </message>
     <message>
-      <location filename="../../CurveOnMesh.cpp" line="655"/>
+      <location filename="../../CurveOnMesh.cpp" line="667"/>
       <source>No point was picked</source>
       <translation>Hiçbir nokta seçilmedi</translation>
     </message>
@@ -220,7 +220,7 @@ Bu komut yalnızca bir 'metal örgü' nesnesiyle çalışır.</translation>
       <source>Press 'Start', then pick points on the mesh; when enough points have been set, right-click and choose 'Create'. Repeat this process to create more splines. Close this task panel to complete the operation.
 
 This command only works with a 'mesh' object, not a regular face or surface. To convert an object to a mesh use the tools of the Mesh Workbench.</source>
-      <translation>"Başlat"a basın, ardından metal örgü üzerindeki noktaları seçin; Yeterli nokta ayarlandığında, sağ tıklayın ve 'Oluştur'u seçin. Daha fazla spline oluşturmak için bu işlemi tekrarlayın. İşlemi tamamlamak için bu görev panelini kapatın. 
+      <translation>"Başlat"a basın, ardından metal örgü üzerindeki noktaları seçin; Yeterli nokta ayarlandığında, sağ tıklayın ve 'Oluştur'u seçin. Daha fazla spline oluşturmak için bu işlemi tekrarlayın. İşlemi tamamlamak için bu görev panelini kapatın.
 
 Bu komut, normal bir yüz veya yüzeyle değil, yalnızca 'metal örgü' nesnesiyle çalışır. Bir nesneyi metal örgüye dönüştürmek için Metal Örgü Çalışma Tezgahının araçlarını kullanın.</translation>
     </message>
@@ -338,7 +338,7 @@ Surface deviation multiplied by the length of the current mesh segment (edge)</s
       <source>Mesh segments will be grouped according to the color of the object faces.
 These groups will be exported for mesh output formats supporting
 this feature (e.g. the format OBJ).</source>
-      <translation>Metal örgü bölümleri, nesne yüzlerinin rengine göre gruplandırılacaktır. 
+      <translation>Metal örgü bölümleri, nesne yüzlerinin rengine göre gruplandırılacaktır.
 Bu gruplar, bu özelliği destekleyen metal örgü çıktı biçimleri için dışa aktarılacaktır (ör. OBJ biçimi).</translation>
     </message>
     <message>
@@ -427,7 +427,7 @@ En küçük değer 0'dır.</translation>
       <location filename="../../Tessellation.ui" line="279"/>
       <source>If this parameter is smaller, the mesh becomes finer.
 A value in the range of 0.1-1.</source>
-      <translation>Bu parametre daha küçükse, metal örgü daha ince hale gelir. 
+      <translation>Bu parametre daha küçükse, metal örgü daha ince hale gelir.
 0.1-1 aralığında bir değer.</translation>
     </message>
     <message>
@@ -483,31 +483,31 @@ A value in the range of 0.2-10.</source>
       <translation>Paneli açık bırak</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.cpp" line="61"/>
+      <location filename="../../Tessellation.cpp" line="62"/>
       <source>Gmsh</source>
       <translation>Gmsh</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.cpp" line="225"/>
-      <location filename="../../Tessellation.cpp" line="231"/>
+      <location filename="../../Tessellation.cpp" line="235"/>
+      <location filename="../../Tessellation.cpp" line="241"/>
       <source>No active document</source>
       <translation>Etkin belge yok</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.cpp" line="259"/>
+      <location filename="../../Tessellation.cpp" line="272"/>
       <source>You have selected a body without tip.
 Either set the tip of the body or select a different shape, please.</source>
       <translation>Uçsuz bir gövde seçtiniz. Ya gövdenin ucunu ayarlayın ya da farklı bir şekil seçin lütfen.</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.cpp" line="263"/>
+      <location filename="../../Tessellation.cpp" line="278"/>
       <source>You have selected a shape without faces.
 Select a different shape, please.</source>
       <translation>Yüzleri olmayan bir şekil seçtiniz.
 Lütfen farklı bir şekil seçin.</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.cpp" line="267"/>
+      <location filename="../../Tessellation.cpp" line="282"/>
       <source>Select a shape for meshing, first.</source>
       <translation>Önce metal örgü haline getirmek için bir şekil seçiniz.</translation>
     </message>
@@ -515,12 +515,12 @@ Lütfen farklı bir şekil seçin.</translation>
   <context>
     <name>MeshPart_Section</name>
     <message>
-      <location filename="../../Command.cpp" line="198"/>
+      <location filename="../../Command.cpp" line="206"/>
       <source>Select plane</source>
       <translation>Bir düzlem seçin</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="199"/>
+      <location filename="../../Command.cpp" line="207"/>
       <source>Please select a plane at which you section the mesh.</source>
       <translation>Lütfen metal örgüyü bölümlendireceğiniz bir düzlem seçin.</translation>
     </message>
@@ -538,27 +538,27 @@ Lütfen farklı bir şekil seçin.</translation>
       <translation>Lütfen metal örgüyü kırpacağınız bir düzlem seçin.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="102"/>
+      <location filename="../../Command.cpp" line="103"/>
       <source>Trim by plane</source>
       <translation>Düzlemden Kırp</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="103"/>
+      <location filename="../../Command.cpp" line="104"/>
       <source>Select the side you want to keep.</source>
       <translation>Tutmak istediğiniz tarafı seçiniz.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="104"/>
+      <location filename="../../Command.cpp" line="106"/>
       <source>Below</source>
       <translation>Altta</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="105"/>
+      <location filename="../../Command.cpp" line="108"/>
       <source>Above</source>
       <translation>Üstünde</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="106"/>
+      <location filename="../../Command.cpp" line="110"/>
       <source>Split</source>
       <translation>Ayır</translation>
     </message>
@@ -574,12 +574,12 @@ Lütfen farklı bir şekil seçin.</translation>
   <context>
     <name>MeshPart_CreateFlatMesh</name>
     <message>
-      <location filename="../../MeshFlatteningCommand.py" line="47"/>
+      <location filename="../../MeshFlatteningCommand.py" line="49"/>
       <source>Unwrap Mesh</source>
       <translation type="unfinished">Unwrap Mesh</translation>
     </message>
     <message>
-      <location filename="../../MeshFlatteningCommand.py" line="50"/>
+      <location filename="../../MeshFlatteningCommand.py" line="52"/>
       <source>Find a flat representation of a mesh.</source>
       <translation type="unfinished">Find a flat representation of a mesh.</translation>
     </message>
@@ -587,12 +587,12 @@ Lütfen farklı bir şekil seçin.</translation>
   <context>
     <name>MeshPart_CreateFlatFace</name>
     <message>
-      <location filename="../../MeshFlatteningCommand.py" line="79"/>
+      <location filename="../../MeshFlatteningCommand.py" line="88"/>
       <source>Unwrap Face</source>
       <translation type="unfinished">Unwrap Face</translation>
     </message>
     <message>
-      <location filename="../../MeshFlatteningCommand.py" line="82"/>
+      <location filename="../../MeshFlatteningCommand.py" line="91"/>
       <source>Find a flat representation of a face.</source>
       <translation type="unfinished">Find a flat representation of a face.</translation>
     </message>

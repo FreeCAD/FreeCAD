@@ -27,6 +27,8 @@
 # include <boost/uuid/uuid_io.hpp>
 #endif
 
+#include <Base/PyWrapParseTupleAndKeywords.h>
+
 #include "CosmeticEdgePy.h"
 #include "CosmeticEdgePy.cpp"
 #include "Cosmetic.h"
@@ -122,9 +124,9 @@ void CosmeticEdgePy::setFormat(Py::Dict arg)
     double weight = 0.5;
     PyObject* pColor = color.ptr();
     PyObject* visible = Py_True;
-    static char* kw[] = {"style", "weight", "color", "visible", nullptr};
-    if (!PyArg_ParseTupleAndKeywords(dummy.ptr(), arg.ptr(), "|idO!O!", kw,
-        &style, &weight, &PyTuple_Type, &pColor, &PyBool_Type, &visible)) {
+    static const std::array<const char *, 5> kw{"style", "weight", "color", "visible", nullptr};
+    if (!Base::Wrapped_ParseTupleAndKeywords(dummy.ptr(), arg.ptr(), "|idO!O!", kw,
+                                             &style, &weight, &PyTuple_Type, &pColor, &PyBool_Type, &visible)) {
         throw Py::ValueError("Expected {'style':int, 'weight':float, 'color':tuple, 'visible':bool} dict");
     }
 

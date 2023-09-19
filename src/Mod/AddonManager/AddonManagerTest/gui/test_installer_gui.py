@@ -55,12 +55,8 @@ class TestInstallerGui(unittest.TestCase):
             QtWidgets.QDialogButtonBox.Ok,
         )
         self.installer_gui._installation_succeeded()
-        self.assertTrue(
-            dialog_watcher.dialog_found, "Failed to find the expected dialog box"
-        )
-        self.assertTrue(
-            dialog_watcher.button_found, "Failed to find the expected button"
-        )
+        self.assertTrue(dialog_watcher.dialog_found, "Failed to find the expected dialog box")
+        self.assertTrue(dialog_watcher.button_found, "Failed to find the expected button")
 
     def test_failure_dialog(self):
         # Pop the modal dialog and verify that it opens, and responds to a Cancel click
@@ -71,12 +67,8 @@ class TestInstallerGui(unittest.TestCase):
         self.installer_gui._installation_failed(
             self.addon_to_install, "Test of installation failure"
         )
-        self.assertTrue(
-            dialog_watcher.dialog_found, "Failed to find the expected dialog box"
-        )
-        self.assertTrue(
-            dialog_watcher.button_found, "Failed to find the expected button"
-        )
+        self.assertTrue(dialog_watcher.dialog_found, "Failed to find the expected dialog box")
+        self.assertTrue(dialog_watcher.button_found, "Failed to find the expected button")
 
     def test_no_python_dialog(self):
         # Pop the modal dialog and verify that it opens, and responds to a No click
@@ -85,12 +77,8 @@ class TestInstallerGui(unittest.TestCase):
             QtWidgets.QDialogButtonBox.No,
         )
         self.installer_gui._report_no_python_exe()
-        self.assertTrue(
-            dialog_watcher.dialog_found, "Failed to find the expected dialog box"
-        )
-        self.assertTrue(
-            dialog_watcher.button_found, "Failed to find the expected button"
-        )
+        self.assertTrue(dialog_watcher.dialog_found, "Failed to find the expected dialog box")
+        self.assertTrue(dialog_watcher.button_found, "Failed to find the expected button")
 
     def test_no_pip_dialog(self):
         # Pop the modal dialog and verify that it opens, and responds to a No click
@@ -99,12 +87,8 @@ class TestInstallerGui(unittest.TestCase):
             QtWidgets.QDialogButtonBox.No,
         )
         self.installer_gui._report_no_pip("pip not actually run, this was a test")
-        self.assertTrue(
-            dialog_watcher.dialog_found, "Failed to find the expected dialog box"
-        )
-        self.assertTrue(
-            dialog_watcher.button_found, "Failed to find the expected button"
-        )
+        self.assertTrue(dialog_watcher.dialog_found, "Failed to find the expected dialog box")
+        self.assertTrue(dialog_watcher.button_found, "Failed to find the expected button")
 
     def test_dependency_failure_dialog(self):
         # Pop the modal dialog and verify that it opens, and responds to a No click
@@ -115,12 +99,8 @@ class TestInstallerGui(unittest.TestCase):
         self.installer_gui._report_dependency_failure(
             "Unit test", "Nothing really failed, this is a test of the dialog box"
         )
-        self.assertTrue(
-            dialog_watcher.dialog_found, "Failed to find the expected dialog box"
-        )
-        self.assertTrue(
-            dialog_watcher.button_found, "Failed to find the expected button"
-        )
+        self.assertTrue(dialog_watcher.dialog_found, "Failed to find the expected dialog box")
+        self.assertTrue(dialog_watcher.button_found, "Failed to find the expected button")
 
     def test_install(self):
         # Run the installation code and make sure it puts the directory in place
@@ -130,9 +110,7 @@ class TestInstallerGui(unittest.TestCase):
             self.installer_gui.installer.success.disconnect(
                 self.installer_gui._installation_succeeded
             )
-            self.installer_gui.installer.failure.disconnect(
-                self.installer_gui._installation_failed
-            )
+            self.installer_gui.installer.failure.disconnect(self.installer_gui._installation_failed)
             while not self.installer_gui.worker_thread.isFinished():
                 QtCore.QCoreApplication.processEvents(QtCore.QEventLoop.AllEvents, 100)
             self.assertTrue(
@@ -147,12 +125,8 @@ class TestInstallerGui(unittest.TestCase):
             QtWidgets.QDialogButtonBox.Cancel,
         )
         self.installer_gui._handle_disallowed_python(disallowed_packages)
-        self.assertTrue(
-            dialog_watcher.dialog_found, "Failed to find the expected dialog box"
-        )
-        self.assertTrue(
-            dialog_watcher.button_found, "Failed to find the expected button"
-        )
+        self.assertTrue(dialog_watcher.dialog_found, "Failed to find the expected dialog box")
+        self.assertTrue(dialog_watcher.button_found, "Failed to find the expected button")
 
     def test_handle_disallowed_python_long_list(self):
         """A separate test for when there are MANY packages, which takes a separate code path."""
@@ -164,12 +138,8 @@ class TestInstallerGui(unittest.TestCase):
             QtWidgets.QDialogButtonBox.Cancel,
         )
         self.installer_gui._handle_disallowed_python(disallowed_packages)
-        self.assertTrue(
-            dialog_watcher.dialog_found, "Failed to find the expected dialog box"
-        )
-        self.assertTrue(
-            dialog_watcher.button_found, "Failed to find the expected button"
-        )
+        self.assertTrue(dialog_watcher.dialog_found, "Failed to find the expected dialog box")
+        self.assertTrue(dialog_watcher.button_found, "Failed to find the expected button")
 
     def test_report_missing_workbenches_single(self):
         """Test only missing one workbench"""
@@ -179,12 +149,8 @@ class TestInstallerGui(unittest.TestCase):
             QtWidgets.QDialogButtonBox.Cancel,
         )
         self.installer_gui._report_missing_workbenches(wbs)
-        self.assertTrue(
-            dialog_watcher.dialog_found, "Failed to find the expected dialog box"
-        )
-        self.assertTrue(
-            dialog_watcher.button_found, "Failed to find the expected button"
-        )
+        self.assertTrue(dialog_watcher.dialog_found, "Failed to find the expected dialog box")
+        self.assertTrue(dialog_watcher.button_found, "Failed to find the expected button")
 
     def test_report_missing_workbenches_multiple(self):
         """Test only missing one workbench"""
@@ -194,12 +160,8 @@ class TestInstallerGui(unittest.TestCase):
             QtWidgets.QDialogButtonBox.Cancel,
         )
         self.installer_gui._report_missing_workbenches(wbs)
-        self.assertTrue(
-            dialog_watcher.dialog_found, "Failed to find the expected dialog box"
-        )
-        self.assertTrue(
-            dialog_watcher.button_found, "Failed to find the expected button"
-        )
+        self.assertTrue(dialog_watcher.dialog_found, "Failed to find the expected dialog box")
+        self.assertTrue(dialog_watcher.button_found, "Failed to find the expected button")
 
     def test_resolve_dependencies_then_install(self):
         class MissingDependenciesMock:
@@ -214,12 +176,8 @@ class TestInstallerGui(unittest.TestCase):
             QtWidgets.QDialogButtonBox.Cancel,
         )
         self.installer_gui._resolve_dependencies_then_install(missing)
-        self.assertTrue(
-            dialog_watcher.dialog_found, "Failed to find the expected dialog box"
-        )
-        self.assertTrue(
-            dialog_watcher.button_found, "Failed to find the expected button"
-        )
+        self.assertTrue(dialog_watcher.dialog_found, "Failed to find the expected dialog box")
+        self.assertTrue(dialog_watcher.button_found, "Failed to find the expected button")
 
     def test_check_python_version_bad(self):
         class MissingDependenciesMock:
@@ -232,15 +190,9 @@ class TestInstallerGui(unittest.TestCase):
             QtWidgets.QDialogButtonBox.Cancel,
         )
         stop_installing = self.installer_gui._check_python_version(missing)
-        self.assertTrue(
-            dialog_watcher.dialog_found, "Failed to find the expected dialog box"
-        )
-        self.assertTrue(
-            dialog_watcher.button_found, "Failed to find the expected button"
-        )
-        self.assertTrue(
-            stop_installing, "Failed to halt installation on bad Python version"
-        )
+        self.assertTrue(dialog_watcher.dialog_found, "Failed to find the expected dialog box")
+        self.assertTrue(dialog_watcher.button_found, "Failed to find the expected button")
+        self.assertTrue(stop_installing, "Failed to halt installation on bad Python version")
 
     def test_check_python_version_good(self):
         class MissingDependenciesMock:
@@ -249,9 +201,7 @@ class TestInstallerGui(unittest.TestCase):
 
         missing = MissingDependenciesMock()
         stop_installing = self.installer_gui._check_python_version(missing)
-        self.assertFalse(
-            stop_installing, "Failed to continue installation on good Python version"
-        )
+        self.assertFalse(stop_installing, "Failed to continue installation on good Python version")
 
     def test_clean_up_optional(self):
         class MissingDependenciesMock:
@@ -270,9 +220,7 @@ class TestInstallerGui(unittest.TestCase):
         self.assertTrue("allowed_packages_2" in missing.python_optional)
         self.assertFalse("disallowed_package" in missing.python_optional)
 
-    def intercept_run_dependency_installer(
-        self, addons, python_requires, python_optional
-    ):
+    def intercept_run_dependency_installer(self, addons, python_requires, python_optional):
         self.assertEqual(python_requires, ["py_req_1", "py_req_2"])
         self.assertEqual(python_optional, ["py_opt_1", "py_opt_2"])
         self.assertEqual(addons[0].name, "addon_1")
@@ -294,9 +242,7 @@ class TestInstallerGui(unittest.TestCase):
                 def __init__(self, items):
                     self.list = []
                     for item in items:
-                        self.list.append(
-                            DialogMock.ListWidgetMock.ListWidgetItemMock(item)
-                        )
+                        self.list.append(DialogMock.ListWidgetMock.ListWidgetItemMock(item))
 
                 def count(self):
                     return len(self.list)
@@ -305,15 +251,9 @@ class TestInstallerGui(unittest.TestCase):
                     return self.list[i]
 
             def __init__(self):
-                self.listWidgetAddons = DialogMock.ListWidgetMock(
-                    ["addon_1", "addon_2"]
-                )
-                self.listWidgetPythonRequired = DialogMock.ListWidgetMock(
-                    ["py_req_1", "py_req_2"]
-                )
-                self.listWidgetPythonOptional = DialogMock.ListWidgetMock(
-                    ["py_opt_1", "py_opt_2"]
-                )
+                self.listWidgetAddons = DialogMock.ListWidgetMock(["addon_1", "addon_2"])
+                self.listWidgetPythonRequired = DialogMock.ListWidgetMock(["py_req_1", "py_req_2"])
+                self.listWidgetPythonOptional = DialogMock.ListWidgetMock(["py_opt_1", "py_opt_2"])
 
         class AddonMock:
             def __init__(self, name):
@@ -321,9 +261,7 @@ class TestInstallerGui(unittest.TestCase):
 
         self.installer_gui.dependency_dialog = DialogMock()
         self.installer_gui.addons = [AddonMock("addon_1"), AddonMock("addon_2")]
-        self.installer_gui._run_dependency_installer = (
-            self.intercept_run_dependency_installer
-        )
+        self.installer_gui._run_dependency_installer = self.intercept_run_dependency_installer
         self.installer_gui._dependency_dialog_yes_clicked()
 
 
@@ -481,9 +419,7 @@ class TestMacroInstallerGui(unittest.TestCase):
         self.assertEqual(name, "UnitTestCustomToolbar")
         self.assertIn("alwaysAskForToolbar", self.installer.addon_params.params)
         self.assertFalse(self.installer.addon_params.get("alwaysAskForToolbar", True))
-        self.assertTrue(
-            dialog_watcher.button_found, "Failed to find the expected button"
-        )
+        self.assertTrue(dialog_watcher.button_found, "Failed to find the expected button")
 
     def test_ask_for_toolbar_with_dialog_selection(self):
 
@@ -530,9 +466,7 @@ class TestMacroInstallerGui(unittest.TestCase):
     def test_macro_button_exists_true(self):
         # Test 2: Macro is in the list of buttons
         ut_tb_1 = self.installer.toolbar_params.GetGroup("UnitTestCommand")
-        ut_tb_1.set(
-            "UnitTestCommand", "FreeCAD"
-        )  # This is what the real thing looks like...
+        ut_tb_1.set("UnitTestCommand", "FreeCAD")  # This is what the real thing looks like...
         self.installer._find_custom_command = lambda _: "UnitTestCommand"
         self.assertTrue(self.installer._macro_button_exists())
 

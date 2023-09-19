@@ -51,7 +51,7 @@ using namespace Gui;
 /* TRANSLATOR FemGui::TaskFemConstraint */
 
 TaskFemConstraint::TaskFemConstraint(ViewProviderFemConstraint *ConstraintView,QWidget *parent,const char* pixmapname)
-    : TaskBox(Gui::BitmapFactory().pixmap(pixmapname),tr("FEM constraint parameters"),true, parent)
+    : TaskBox(Gui::BitmapFactory().pixmap(pixmapname),tr("Analysis feature parameters"),true, parent)
     , proxy(nullptr)
     , deleteAction(nullptr)
     , ConstraintView(ConstraintView)

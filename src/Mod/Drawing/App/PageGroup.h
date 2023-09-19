@@ -33,7 +33,7 @@ namespace Drawing
 
 /** Base class of all View Features in the drawing module
  */
-class DrawingExport PageGroup : public App::DocumentObjectGroup
+class DrawingExport PageGroup: public App::DocumentObjectGroup
 {
     PROPERTY_HEADER(Drawing::PageGroup);
 
@@ -45,14 +45,14 @@ public:
     App::PropertyLinkList Pages;
 
     /// returns the type name of the ViewProvider
-    virtual const char* getViewProviderName(void) const {
+    virtual const char* getViewProviderName(void) const
+    {
         return "DrawingGui::ViewProviderDrawing";
     }
 };
 
 
-} //namespace Drawing
-
+}  // namespace Drawing
 
 
 #endif

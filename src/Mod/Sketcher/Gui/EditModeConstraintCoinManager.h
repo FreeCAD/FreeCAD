@@ -51,7 +51,7 @@ class Vector3;
 class Vector2d;
 
 class Placement;
-}// namespace Base
+}  // namespace Base
 
 namespace Part
 {
@@ -62,7 +62,7 @@ namespace Sketcher
 {
 class Constraint;
 class PropertyConstraintList;
-};// namespace Sketcher
+};  // namespace Sketcher
 
 namespace SketcherGui
 {
@@ -94,7 +94,8 @@ private:
     };
 
 public:
-    explicit EditModeConstraintCoinManager(ViewProviderSketch& vp, DrawingParameters& drawingParams,
+    explicit EditModeConstraintCoinManager(ViewProviderSketch& vp,
+                                           DrawingParameters& drawingParams,
                                            GeometryLayerParameters& geometryLayerParams,
                                            ConstraintParameters& constraintParams,
                                            EditModeScenegraphNodes& editModeScenegraph,
@@ -137,14 +138,17 @@ public:
     void createEditModeInventorNodes();
 
 private:
-    void rebuildConstraintNodes(const GeoListFacade& geolistfacade);// with specific geometry
+    void rebuildConstraintNodes(const GeoListFacade& geolistfacade);  // with specific geometry
 
     void rebuildConstraintNodes(const GeoListFacade& geolistfacade,
-                                const std::vector<Sketcher::Constraint*> constrlist, SbVec3f norm);
+                                const std::vector<Sketcher::Constraint*> constrlist,
+                                SbVec3f norm);
 
     /// finds a free position for placing a constraint icon
-    Base::Vector3d seekConstraintPosition(const Base::Vector3d& origPos, const Base::Vector3d& norm,
-                                          const Base::Vector3d& dir, float step,
+    Base::Vector3d seekConstraintPosition(const Base::Vector3d& origPos,
+                                          const Base::Vector3d& norm,
+                                          const Base::Vector3d& dir,
+                                          float step,
                                           const SoNode* constraint);
 
     /// Return display string for constraint including hiding units if
@@ -227,8 +231,11 @@ private:
     void drawMergedConstraintIcons(IconQueue iconQueue);
 
     /// Helper for drawMergedConstraintIcons and drawTypicalConstraintIcon
-    QImage renderConstrIcon(const QString& type, const QColor& iconColor, const QStringList& labels,
-                            const QList<QColor>& labelColors, double iconRotation,
+    QImage renderConstrIcon(const QString& type,
+                            const QColor& iconColor,
+                            const QStringList& labels,
+                            const QList<QColor>& labelColors,
+                            double iconRotation,
                             //! Gets populated with bounding boxes (in icon
                             //! image coordinates) for the icon at left, then
                             //! labels for different constraints.
@@ -258,7 +265,7 @@ private:
 };
 
 
-}// namespace SketcherGui
+}  // namespace SketcherGui
 
 
-#endif// SKETCHERGUI_EditModeConstraintCoinManager_H
+#endif  // SKETCHERGUI_EditModeConstraintCoinManager_H

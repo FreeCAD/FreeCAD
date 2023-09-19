@@ -72,7 +72,7 @@ bool SoFCSelectionContext::removeIndex(int index) {
 }
 
 int SoFCSelectionContext::merge(int status, SoFCSelectionContextBasePtr &output,
-        SoFCSelectionContextBasePtr input, SoFCSelectionRoot *)
+        SoFCSelectionContextBasePtr input, SoNode *)
 {
     auto ctx = std::dynamic_pointer_cast<SoFCSelectionContext>(input);
     if(!ctx)
@@ -178,11 +178,13 @@ bool SoFCSelectionContextEx::isSingleColor(uint32_t &color, bool &hasTransparenc
 }
 
 int SoFCSelectionContextEx::merge(int status, SoFCSelectionContextBasePtr &output,
-        SoFCSelectionContextBasePtr input, SoFCSelectionRoot *node)
+        SoFCSelectionContextBasePtr input, SoNode *node)
 {
     auto ctx = std::dynamic_pointer_cast<SoFCSelectionContextEx>(input);
+    SoFCSelectionRoot* selectionNode = dynamic_cast<SoFCSelectionRoot*>(node);
+
     if(!ctx) {
-        if(node && node->hasColorOverride()) {
+        if(selectionNode && selectionNode->hasColorOverride()) {
             if(!status)
                 status = 2;
             else if(status == 1)
@@ -225,7 +227,7 @@ int SoFCSelectionContextEx::merge(int status, SoFCSelectionContextBasePtr &outpu
         ret->colors.insert(v);
     }
 
-    if(node && node->hasColorOverride()) {
+    if(selectionNode && selectionNode->hasColorOverride()) {
         if(!status)
             status = 2;
         else if(status == 1)

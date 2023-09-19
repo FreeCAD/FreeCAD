@@ -34,7 +34,7 @@
 namespace SketcherGui
 {
 
-extern GeometryCreationMode geometryCreationMode;// defined in CommandCreateGeo.cpp
+extern GeometryCreationMode geometryCreationMode;  // defined in CommandCreateGeo.cpp
 
 class DrawSketchHandlerBSpline: public DrawSketchHandler
 {
@@ -121,7 +121,7 @@ public:
                 Gui::cmdAppObjectArgs(sketchgui->getObject(),
                                       "addConstraint(Sketcher.Constraint('Weight',%d,%f)) ",
                                       poleGeoIds.back(),
-                                      1.0);// First pole defaults to 1.0 weight
+                                      1.0);  // First pole defaults to 1.0 weight
             }
             catch (const Base::Exception&) {
                 Gui::NotifyError(sketchgui,
@@ -141,8 +141,10 @@ public:
 
             // add auto constraints on pole
             if (!sugConstr.back().empty()) {
-                createAutoConstraints(
-                    sugConstr.back(), poleGeoIds.back(), Sketcher::PointPos::mid, false);
+                createAutoConstraints(sugConstr.back(),
+                                      poleGeoIds.back(),
+                                      Sketcher::PointPos::mid,
+                                      false);
             }
 
             static_cast<Sketcher::SketchObject*>(sketchgui->getObject())->solve();
@@ -155,16 +157,18 @@ public:
             // check if coincident with first pole
             for (auto& ac : sugConstr.back()) {
                 if (ac.Type == Sketcher::Coincident) {
-                    if (ac.GeoId == poleGeoIds[0] && ac.PosId == Sketcher::PointPos::mid)
+                    if (ac.GeoId == poleGeoIds[0] && ac.PosId == Sketcher::PointPos::mid) {
                         IsClosed = true;
+                    }
                     else {
                         // The coincidence with first point may be indirect
                         const auto coincidents =
                             static_cast<Sketcher::SketchObject*>(sketchgui->getObject())
                                 ->getAllCoincidentPoints(ac.GeoId, ac.PosId);
                         if (coincidents.find(poleGeoIds[0]) != coincidents.end()
-                            && coincidents.at(poleGeoIds[0]) == Sketcher::PointPos::mid)
+                            && coincidents.at(poleGeoIds[0]) == Sketcher::PointPos::mid) {
                             IsClosed = true;
+                        }
                     }
                 }
             }
@@ -172,7 +176,7 @@ public:
             if (IsClosed) {
                 Mode = STATUS_CLOSE;
 
-                if (ConstrMethod == 1) {// if periodic we do not need the last pole
+                if (ConstrMethod == 1) {  // if periodic we do not need the last pole
                     BSplinePoles.pop_back();
                     sugConstr.pop_back();
 
@@ -217,8 +221,10 @@ public:
 
             // add auto constraints on pole
             if (!sugConstr.back().empty()) {
-                createAutoConstraints(
-                    sugConstr.back(), poleGeoIds.back(), Sketcher::PointPos::mid, false);
+                createAutoConstraints(sugConstr.back(),
+                                      poleGeoIds.back(),
+                                      Sketcher::PointPos::mid,
+                                      false);
             }
 
             // static_cast<Sketcher::SketchObject *>(sketchgui->getObject())->solve();
@@ -256,12 +262,14 @@ public:
         // On pressing Backspace delete last pole
         else if (SoKeyboardEvent::BACKSPACE == key && pressed) {
             // when mouse is pressed we are in a transitional state so don't mess with it
-            if (MOUSE_PRESSED == MousePressMode)
+            if (MOUSE_PRESSED == MousePressMode) {
                 return;
+            }
 
             // can only delete last pole if it exists
-            if (STATUS_SEEK_FIRST_CONTROLPOINT == Mode || STATUS_CLOSE == Mode)
+            if (STATUS_SEEK_FIRST_CONTROLPOINT == Mode || STATUS_CLOSE == Mode) {
                 return;
+            }
 
             // if only first pole exists it's equivalent to canceling current spline
             if (poleGeoIds.size() == 1) {
@@ -279,8 +287,9 @@ public:
                         ->Constraints.getValues();
                 for (int i = constraints.size() - 1; i >= 0; --i) {
                     if (delGeoId == constraints[i]->First || delGeoId == constraints[i]->Second
-                        || delGeoId == constraints[i]->Third)
+                        || delGeoId == constraints[i]->Third) {
                         Gui::cmdAppObjectArgs(sketchgui->getObject(), "delConstraint(%d)", i);
+                    }
                 }
 
                 // Remove pole
@@ -352,8 +361,8 @@ public:
                 resetHandlerState();
             }
         }
-        else {// we have no data (CurrentConstraint == 0) so user when right-clicking really wants
-              // to exit
+        else {  // we have no data (CurrentConstraint == 0) so user when right-clicking really wants
+                // to exit
             DrawSketchHandler::quit();
         }
     }
@@ -509,8 +518,9 @@ private:
                 Gui::Command::doCommand(Gui::Command::Doc, cstream.str().c_str());
 
                 // for showing the knots on creation
-                Gui::cmdAppObjectArgs(
-                    sketchgui->getObject(), "exposeInternalGeometry(%d)", currentgeoid);
+                Gui::cmdAppObjectArgs(sketchgui->getObject(),
+                                      "exposeInternalGeometry(%d)",
+                                      currentgeoid);
             }
             catch (const Base::Exception&) {
                 Gui::NotifyError(sketchgui,
@@ -545,8 +555,8 @@ private:
                  * right button of the mouse */
             }
             else {
-                sketchgui
-                    ->purgeHandler();// no code after this line, Handler get deleted in ViewProvider
+                sketchgui->purgeHandler();  // no code after this line, Handler get deleted in
+                                            // ViewProvider
             }
         }
         else {
@@ -575,7 +585,7 @@ protected:
 };
 
 
-}// namespace SketcherGui
+}  // namespace SketcherGui
 
 
-#endif// SKETCHERGUI_DrawSketchHandlerBSpline_H
+#endif  // SKETCHERGUI_DrawSketchHandlerBSpline_H

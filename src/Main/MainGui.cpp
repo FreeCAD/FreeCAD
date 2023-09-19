@@ -97,8 +97,9 @@ private:
 
 int main( int argc, char ** argv )
 {
-    setlocale(LC_ALL, ""); // use native environment settings
 #if defined (FC_OS_LINUX) || defined(FC_OS_BSD)
+    setlocale(LC_ALL, ""); // use native environment settings
+
     // Make sure to setup the Qt locale system before setting LANG and LC_ALL to C.
     // which is needed to use the system locale settings.
     (void)QLocale::system();

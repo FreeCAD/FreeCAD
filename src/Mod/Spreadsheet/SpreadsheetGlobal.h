@@ -29,19 +29,19 @@
 // Spreadsheet
 #ifndef SpreadsheetExport
 #ifdef Spreadsheet_EXPORTS
-#  define SpreadsheetExport      FREECAD_DECL_EXPORT
+#define SpreadsheetExport FREECAD_DECL_EXPORT
 #else
-#  define SpreadsheetExport      FREECAD_DECL_IMPORT
+#define SpreadsheetExport FREECAD_DECL_IMPORT
 #endif
 #endif
 
 // SpreadsheetGui
 #ifndef SpreadsheetGuiExport
 #ifdef SpreadsheetGui_EXPORTS
-#  define SpreadsheetGuiExport   FREECAD_DECL_EXPORT
+#define SpreadsheetGuiExport FREECAD_DECL_EXPORT
 #else
-#  define SpreadsheetGuiExport   FREECAD_DECL_IMPORT
+#define SpreadsheetGuiExport FREECAD_DECL_IMPORT
 #endif
 #endif
 
-#endif //SPREADSHEET_GLOBAL_H
+#endif  // SPREADSHEET_GLOBAL_H

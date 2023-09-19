@@ -64,9 +64,7 @@ class TestConsole(unittest.TestCase):
         """Test that if the FreeCAD import fails, the logger is set up correctly, and
         implements PrintLog"""
         sys.modules["FreeCAD"] = None
-        with patch(
-            "addonmanager_freecad_interface.logging", new=MagicMock()
-        ) as mock_logging:
+        with patch("addonmanager_freecad_interface.logging", new=MagicMock()) as mock_logging:
             import addonmanager_freecad_interface as fc
 
             fc.Console.PrintLog("Test output")
@@ -76,9 +74,7 @@ class TestConsole(unittest.TestCase):
     def test_message_no_freecad(self):
         """Test that if the FreeCAD import fails the logger implements PrintMessage"""
         sys.modules["FreeCAD"] = None
-        with patch(
-            "addonmanager_freecad_interface.logging", new=MagicMock()
-        ) as mock_logging:
+        with patch("addonmanager_freecad_interface.logging", new=MagicMock()) as mock_logging:
             import addonmanager_freecad_interface as fc
 
             fc.Console.PrintMessage("Test output")
@@ -87,9 +83,7 @@ class TestConsole(unittest.TestCase):
     def test_warning_no_freecad(self):
         """Test that if the FreeCAD import fails the logger implements PrintWarning"""
         sys.modules["FreeCAD"] = None
-        with patch(
-            "addonmanager_freecad_interface.logging", new=MagicMock()
-        ) as mock_logging:
+        with patch("addonmanager_freecad_interface.logging", new=MagicMock()) as mock_logging:
             import addonmanager_freecad_interface as fc
 
             fc.Console.PrintWarning("Test output")
@@ -98,9 +92,7 @@ class TestConsole(unittest.TestCase):
     def test_error_no_freecad(self):
         """Test that if the FreeCAD import fails the logger implements PrintError"""
         sys.modules["FreeCAD"] = None
-        with patch(
-            "addonmanager_freecad_interface.logging", new=MagicMock()
-        ) as mock_logging:
+        with patch("addonmanager_freecad_interface.logging", new=MagicMock()) as mock_logging:
             import addonmanager_freecad_interface as fc
 
             fc.Console.PrintError("Test output")

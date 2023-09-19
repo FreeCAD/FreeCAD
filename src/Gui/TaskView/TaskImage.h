@@ -27,7 +27,6 @@
 #include <Inventor/SbVec3f.h>
 #include <QPointer>
 #include <Gui/TaskView/TaskDialog.h>
-#include <Gui/QuantitySpinBox.h>
 #include <App/DocumentObserver.h>
 #include <App/ImagePlane.h>
 #include <memory>
@@ -35,10 +34,7 @@
 
 class SbVec3f;
 class SoEventCallback;
-class SoSeparator;
-class SoDatumLabel;
-class SoNodeSensor;
-class SoTransform;
+class EditableDatumLabel;
 
 namespace Gui {
 
@@ -47,9 +43,10 @@ class ViewProvider;
 class InteractiveScale : public QObject
 {
     Q_OBJECT
+    Q_DISABLE_COPY(InteractiveScale)
 
 public:
-    explicit InteractiveScale(View3DInventorViewer* view, ViewProvider* vp, Base::Placement plc);
+    explicit InteractiveScale(View3DInventorViewer* view, ViewProvider* vp, const Base::Placement& plc);
     ~InteractiveScale() override;
 
     bool eventFilter(QObject* object, QEvent* event) override;
@@ -60,15 +57,13 @@ public:
     }
     double getScaleFactor() const;
     double getDistance(const SbVec3f&) const;
-    void setPlacement(Base::Placement plc);
+    void setPlacement(const Base::Placement& plc);
 
 private:
     static void soEventFilter(void * ud, SoEventCallback * ecb);
     static void getMousePosition(void * ud, SoEventCallback * ecb);
     void findPointOnImagePlane(SoEventCallback * ecb);
     void collectPoint(const SbVec3f&);
-    void positionWidget();
-    void showDistanceField();
     void setDistance(const SbVec3f&);
 
     /// give the coordinates of a line on the image plane in imagePlane (2D) coordinates
@@ -82,21 +77,18 @@ Q_SIGNALS:
 private:
     bool active;
     Base::Placement placement;
-    SoSeparator* root;
-    SoDatumLabel* measureLabel;
-    SoTransform* transform;
+    EditableDatumLabel* measureLabel;
     QPointer<Gui::View3DInventorViewer> viewer;
     ViewProvider* viewProv;
     std::vector<SbVec3f> points;
     SbVec3f midPoint;
-    QuantitySpinBox* distanceBox;
-    SoNodeSensor* cameraSensor;
 };
 
 class Ui_TaskImage;
 class TaskImage : public QWidget
 {
     Q_OBJECT
+    Q_DISABLE_COPY(TaskImage)
 
 public:
     explicit TaskImage(Image::ImagePlane* obj, QWidget* parent = nullptr);
@@ -119,6 +111,7 @@ private:
     void enableApplyBtn();
 
     void restore(const Base::Placement&);
+    void restoreAngles(const Base::Rotation&);
     void onPreview();
     void updateIcon();
     void updatePlacement();

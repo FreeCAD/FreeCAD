@@ -41,7 +41,7 @@
       <item row="0" column="0">
        <widget class="QLabel" name="label_icon">
         <property name="text">
-         <string>(Placeholder for the icon)</string>
+         <string notr="true">(Placeholder for the icon)</string>
         </property>
        </widget>
       </item>

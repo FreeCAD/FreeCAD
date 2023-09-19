@@ -198,6 +198,8 @@ CenterLine* CenterLine::CenterLineBuilder(const DrawViewPart* partFeat,
         Base::Console().Warning("CenterLineBuilder - check V/H/A and/or Flip parameters\n");
         return nullptr;
     }
+
+
     TechDraw::CenterLine* cl = new TechDraw::CenterLine(ends.first, ends.second);
     if (cl) {
         cl->m_type = type;
@@ -214,6 +216,7 @@ TechDraw::BaseGeomPtr CenterLine::scaledGeometry(const TechDraw::DrawViewPart* p
 {
 //    Base::Console().Message("CL::scaledGeometry() - m_type: %d\n", m_type);
     double scale = partFeat->getScale();
+    double viewAngleDeg = partFeat->Rotation.getValue();
     std::pair<Base::Vector3d, Base::Vector3d> ends;
     try {
         if (m_faces.empty() &&
@@ -222,7 +225,7 @@ TechDraw::BaseGeomPtr CenterLine::scaledGeometry(const TechDraw::DrawViewPart* p
 //            Base::Console().Message("CL::scaledGeometry - no geometry to scale!\n");
             //CenterLine was created by points without a geometry reference,
             ends = calcEndPointsNoRef(m_start, m_end, scale, m_extendBy,
-                                      m_hShift, m_vShift, m_rotate);
+                                      m_hShift, m_vShift, m_rotate, viewAngleDeg);
         } else if (m_type == CLTYPE::FACE) {
             ends = calcEndPoints(partFeat,
                                  m_faces,
@@ -307,38 +310,35 @@ void CenterLine::dump(const char* title)
     Base::Console().Message("CL::dump - %s \n", toString().c_str());
 }
 
-std::tuple<Base::Vector3d, Base::Vector3d>
-CenterLine::rotatePointsAroundMid(const Base::Vector3d& p1,
+//! rotate a notional 2d vector from p1 to p2 around its midpoint by angleDeg
+std::pair<Base::Vector3d, Base::Vector3d> CenterLine::rotatePointsAroundMid(const Base::Vector3d& p1,
                                   const Base::Vector3d& p2,
                                   const Base::Vector3d& mid,
-                                  const double rotate)
+                                  const double angleDeg)
 {
-    //rotate p1, p2 about mid
-    double revRotate = -rotate;
-    double cosTheta = cos(revRotate * M_PI / 180.0);
-    double sinTheta = sin(revRotate * M_PI / 180.0);
-    Base::Vector3d toOrg = p1 - mid;
-    double xRot = toOrg.x * cosTheta - toOrg.y * sinTheta;
-    double yRot = toOrg.y * cosTheta + toOrg.x * sinTheta;
-    Base::Vector3d newp1 = Base::Vector3d(xRot, yRot, 0.0) + mid;
-    toOrg = p2 - mid;
-    xRot = toOrg.x * cosTheta - toOrg.y * sinTheta;
-    yRot = toOrg.y * cosTheta + toOrg.x * sinTheta;
-    Base::Vector3d newp2 = Base::Vector3d(xRot, yRot, 0.0) + mid;
+    std::pair<Base::Vector3d, Base::Vector3d> result;
+    double angleRad = angleDeg * M_PI / 180.0;
 
-    return std::make_tuple(newp1, newp2);
+    result.first.x = ((p1.x - mid.x) * cos(angleRad)) - ((p1.y - mid.y) * sin(angleRad)) + mid.x;
+    result.first.y = ((p1.x - mid.x) * sin(angleRad)) + ((p1.y - mid.y) * cos(angleRad)) + mid.y;
+    result.first.z = 0.0;
+
+    result.second.x = ((p2.x - mid.x) * cos(angleRad)) - ((p2.y - mid.y) * sin(angleRad)) + mid.x;
+    result.second.y = ((p2.x - mid.x) * sin(angleRad)) + ((p2.y - mid.y) * cos(angleRad)) + mid.y;
+    result.second.z = 0.0;
+
+    return result;
 }
 
 
 //end points for centerline with no geometry reference
-std::pair<Base::Vector3d, Base::Vector3d> CenterLine::calcEndPointsNoRef(
-                                                      const Base::Vector3d& start,
+std::pair<Base::Vector3d, Base::Vector3d> CenterLine::calcEndPointsNoRef(const Base::Vector3d& start,
                                                       const Base::Vector3d& end,
                                                       const double scale,
                                                       const double ext,
                                                       const double hShift,
                                                       const double vShift,
-                                                      const double rotate)
+                                                      const double rotate, const double viewAngleDeg)
 {
 //    Base::Console().Message("CL::calcEndPointsNoRef()\n");
     Base::Vector3d p1 = start;
@@ -369,9 +369,14 @@ std::pair<Base::Vector3d, Base::Vector3d> CenterLine::calcEndPointsNoRef(
         p2.y = p2.y + vss;
     }
 
+    // rotate the endpoints so that when the View's Rotation is applied, the
+    // centerline is aligned correctly
     std::pair<Base::Vector3d, Base::Vector3d> result;
     result.first = p1 / scale;
     result.second = p2 / scale;
+    Base::Vector3d midpoint = (result.first + result.second) / 2.0;
+    result = rotatePointsAroundMid(result.first, result.second, midpoint, viewAngleDeg * -1.0);
+
     return result;
 }
 
@@ -395,21 +400,30 @@ std::pair<Base::Vector3d, Base::Vector3d> CenterLine::calcEndPoints(const DrawVi
 
     double scale = partFeat->getScale();
 
+    std::vector<TopoDS_Edge> faceEdgesAll;
     for (auto& fn: faceNames) {
         if (TechDraw::DrawUtil::getGeomTypeFromName(fn) != "Face") {
             continue;
         }
         int idx = TechDraw::DrawUtil::getIndexFromName(fn);
-        std::vector<TechDraw::BaseGeomPtr> faceEdges =
+        std::vector<TechDraw::BaseGeomPtr> faceGeoms =
                                                 partFeat->getFaceEdgesByIndex(idx);
-        if (!faceEdges.empty()) {
-            for (auto& fe: faceEdges) {
+        if (!faceGeoms.empty()) {
+            for (auto& fe: faceGeoms) {
                 if (!fe->getCosmetic()) {
-                    BRepBndLib::AddOptimal(fe->getOCCEdge(), faceBox);
+                    faceEdgesAll.push_back(fe->getOCCEdge());
                 }
             }
         }
     }
+    TopoDS_Shape faceEdgeCompound = DU::vectorToCompound(faceEdgesAll);
+    if (partFeat->Rotation.getValue() != 0.0) {
+        // align a copy of the input shape with the cardinal axes so we can use bbox to
+        // get size measurements
+        faceEdgeCompound = ShapeUtils::rotateShape(faceEdgeCompound, partFeat->getProjectionCS(), partFeat->Rotation.getValue() * -1.0);
+    }
+
+    BRepBndLib::AddOptimal(faceEdgeCompound, faceBox);
 
     if (faceBox.IsVoid()) {
         Base::Console().Error("CL::calcEndPoints - faceBox is void!\n");
@@ -466,9 +480,14 @@ std::pair<Base::Vector3d, Base::Vector3d> CenterLine::calcEndPoints(const DrawVi
         p2.y = p2.y + vss;
     }
 
+    // rotate the endpoints so that when the View's Rotation is applied, the
+    // centerline is aligned correctly
     std::pair<Base::Vector3d, Base::Vector3d> result;
     result.first = p1 / scale;
     result.second = p2 / scale;
+    Base::Vector3d midpoint = (result.first + result.second) / 2.0;
+    result = rotatePointsAroundMid(result.first, result.second, midpoint, partFeat->Rotation.getValue() * -1.0);
+
     return result;
 }
 
@@ -568,7 +587,9 @@ std::pair<Base::Vector3d, Base::Vector3d> CenterLine::calcEndPoints2Lines(const 
     //rotate
     if (!DrawUtil::fpCompare(rotate, 0.0)) {
         //rotate p1, p2 about mid
-        std::tie(p1, p2) = rotatePointsAroundMid(p1, p2, mid, rotate);
+        std::pair<Base::Vector3d, Base::Vector3d> ends = rotatePointsAroundMid(p1, p2, mid, rotate);
+        p1 = ends.first;
+        p2 = ends.second;
     }
 
     //shift
@@ -583,8 +604,13 @@ std::pair<Base::Vector3d, Base::Vector3d> CenterLine::calcEndPoints2Lines(const 
         p2.y = p2.y + vss;
     }
 
+    // rotate the endpoints so that when the View's Rotation is applied, the
+    // centerline is aligned correctly
     result.first = p1 / scale;
     result.second = p2 / scale;
+    Base::Vector3d midpoint = (result.first + result.second) / 2.0;
+    result = rotatePointsAroundMid(result.first, result.second, midpoint, partFeat->Rotation.getValue() * -1.0);
+
     return result;
 }
 
@@ -688,9 +714,12 @@ std::pair<Base::Vector3d, Base::Vector3d> CenterLine::calcEndPoints2Points(const
         p2.y = p2.y + vss;
     }
 
+    // in the case of points, we do not need to apply a rotation, since the points will
+    // rotated already
     std::pair<Base::Vector3d, Base::Vector3d> result;
     result.first = p1 / scale;
     result.second = p2 / scale;
+
     return result;
 }
 
@@ -1014,3 +1043,4 @@ bool CenterLine::getFlip() const
 {
     return m_flip2Line;
 }
+

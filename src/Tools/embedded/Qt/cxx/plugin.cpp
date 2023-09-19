@@ -40,7 +40,7 @@ PyMODINIT_FUNC FreeCAD_init()
 /* A test function for the plugin to load a mesh and call "getVal()" */
 PyMODINIT_FUNC FreeCAD_test(const char* path)
 {
-    try {// Use FreeCADGui here, not Gui
+    try {  // Use FreeCADGui here, not Gui
         Base::Interpreter().runString("FreeCADGui.activateWorkbench(\"MeshWorkbench\")");
         Base::Interpreter().runString("import Mesh");
         Base::Interpreter().runStringArg("Mesh.insert(u\"%s\", \"%s\")", path, "Document");

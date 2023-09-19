@@ -6,7 +6,7 @@
     <message>
       <location filename="../../UnitsApi.cpp" line="68"/>
       <source>Standard (mm, kg, s, degree)</source>
-      <translation>Standaard (mm, kg, graden)</translation>
+      <translation>Standaard (mm, kg, s, graden)</translation>
     </message>
     <message>
       <location filename="../../UnitsApi.cpp" line="70"/>
@@ -21,17 +21,17 @@
     <message>
       <location filename="../../UnitsApi.cpp" line="74"/>
       <source>Imperial decimal (in, lb)</source>
-      <translation>Engels (in/lb)</translation>
+      <translation>Engels (in, lb)</translation>
     </message>
     <message>
       <location filename="../../UnitsApi.cpp" line="76"/>
       <source>Building Euro (cm, m², m³)</source>
-      <translation>Bouwen Europees (cm, m², m³)</translation>
+      <translation>Bouw (Europees) (cm, m², m³)</translation>
     </message>
     <message>
       <location filename="../../UnitsApi.cpp" line="78"/>
       <source>Building US (ft-in, sqft, cft)</source>
-      <translation>Bouwen Amerikaans (ft-in/sqft/cft)</translation>
+      <translation>Bouw (Amerikaans) (ft-in, sqft, cft)</translation>
     </message>
     <message>
       <location filename="../../UnitsApi.cpp" line="80"/>

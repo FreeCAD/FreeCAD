@@ -61,7 +61,7 @@ class Ellipse(gui_base_original.Creator):
 
     def Activated(self):
         """Execute when the command is called."""
-        super(Ellipse, self).Activated(name="Ellipse")
+        super().Activated(name="Ellipse")
         if self.ui:
             self.refpoint = None
             self.ui.pointUi(title=translate("draft", "Ellipse"), icon="Draft_Ellipse")
@@ -79,7 +79,7 @@ class Ellipse(gui_base_original.Creator):
             Restart (continue) the command if `True`, or if `None` and
             `ui.continueMode` is `True`.
         """
-        super(Ellipse, self).finish(self)
+        super().finish(self)
         if self.ui:
             self.rect.off()
             self.rect.finalize()
@@ -88,14 +88,13 @@ class Ellipse(gui_base_original.Creator):
 
     def createObject(self):
         """Create the actual object in the current document."""
-        plane = App.DraftWorkingPlane
         p1 = self.node[0]
         p3 = self.node[-1]
         diagonal = p3.sub(p1)
         halfdiag = App.Vector(diagonal).multiply(0.5)
         center = p1.add(halfdiag)
-        p2 = p1.add(DraftVecUtils.project(diagonal, plane.v))
-        p4 = p1.add(DraftVecUtils.project(diagonal, plane.u))
+        p2 = p1.add(DraftVecUtils.project(diagonal, self.wp.v))
+        p4 = p1.add(DraftVecUtils.project(diagonal, self.wp.u))
         r1 = (p4.sub(p1).Length)/2
         r2 = (p2.sub(p1).Length)/2
         try:

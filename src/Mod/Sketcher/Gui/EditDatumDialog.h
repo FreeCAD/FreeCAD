@@ -31,7 +31,7 @@ namespace Sketcher
 {
 class Constraint;
 class SketchObject;
-}// namespace Sketcher
+}  // namespace Sketcher
 
 namespace SketcherGui
 {
@@ -47,12 +47,14 @@ public:
     EditDatumDialog(Sketcher::SketchObject* pcSketch, int ConstrNbr);
     ~EditDatumDialog() override;
 
-    void exec(bool atCursor = true);
+    int exec(bool atCursor = true);
+    bool isSuccess();
 
 private:
     Sketcher::SketchObject* sketch;
     Sketcher::Constraint* Constr;
     int ConstrNbr;
+    bool success;
     std::unique_ptr<Ui_InsertDatum> ui_ins_datum;
 
 private Q_SLOTS:
@@ -63,5 +65,5 @@ private Q_SLOTS:
     void formEditorOpened(bool);
 };
 
-}// namespace SketcherGui
-#endif// SKETCHERGUI_DrawSketchHandler_H
+}  // namespace SketcherGui
+#endif  // SKETCHERGUI_DrawSketchHandler_H

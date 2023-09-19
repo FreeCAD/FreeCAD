@@ -1,13 +1,13 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
-  <PythonExport 
-    Father="Part2DObjectPy"  
-    Name="SketchObjectSFPy" 
-    Twin="SketchObjectSF" 
-    TwinPointer="SketchObjectSF" 
-    Include="Mod/Sketcher/App/SketchObjectSF.h" 
-    Namespace="Sketcher" 
-    FatherInclude="Mod/Part/App/Part2DObjectPy.h" 
+  <PythonExport
+    Father="Part2DObjectPy"
+    Name="SketchObjectSFPy"
+    Twin="SketchObjectSF"
+    TwinPointer="SketchObjectSF"
+    Include="Mod/Sketcher/App/SketchObjectSF.h"
+    Namespace="Sketcher"
+    FatherInclude="Mod/Part/App/Part2DObjectPy.h"
     FatherNamespace="Part">
     <Documentation>
       <Author Licence="LGPL" Name="Juergen Riegel" EMail="FreeCAD@juergen-riegel.net" />

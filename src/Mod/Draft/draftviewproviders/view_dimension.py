@@ -367,7 +367,7 @@ class ViewProviderLinearDimension(ViewProviderDimensionBase):
 
         It only runs if `Start`, `End`, `Dimline`, or `Direction` changed.
         """
-        if prop not in ("Start", "End", "Dimline", "Direction"):
+        if prop not in ("Start", "End", "Dimline", "Direction", "Diameter"):
             return
 
         if obj.Start == obj.End:
@@ -377,6 +377,16 @@ class ViewProviderLinearDimension(ViewProviderDimensionBase):
             return
 
         vobj = obj.ViewObject
+
+        if prop == "Diameter":
+            if hasattr(vobj, "Override") and vobj.Override:
+                if obj.Diameter:
+                    vobj.Override = vobj.Override.replace("R $dim", "Ø $dim")
+                else:
+                    vobj.Override = vobj.Override.replace("Ø $dim", "R $dim")
+
+            self.onChanged(vobj, "ArrowType")
+            return
 
         # Calculate the 4 points
         #
@@ -486,33 +496,39 @@ class ViewProviderLinearDimension(ViewProviderDimensionBase):
         # Calculate the position of the arrows and extension lines
         v1 = norm.cross(u)
         _plane_rot = DraftVecUtils.getPlaneRotation(u, v1, norm)
-        rot1 = App.Placement(_plane_rot).Rotation.Q
-        self.transDimOvershoot1.rotation.setValue((rot1[0], rot1[1],
-                                                   rot1[2], rot1[3]))
-        self.transDimOvershoot2.rotation.setValue((rot1[0], rot1[1],
-                                                   rot1[2], rot1[3]))
+        if _plane_rot is not None:
+            rot1 = App.Placement(_plane_rot).Rotation.Q
+            self.transDimOvershoot1.rotation.setValue((rot1[0], rot1[1],
+                                                       rot1[2], rot1[3]))
+            self.transDimOvershoot2.rotation.setValue((rot1[0], rot1[1],
+                                                       rot1[2], rot1[3]))
+            self.trot = rot1
+        else:
+            self.trot = (0, 0, 0, 1)
 
         if hasattr(vobj, "FlipArrows") and vobj.FlipArrows:
             u = u.negative()
 
         v2 = norm.cross(u)
         _plane_rot = DraftVecUtils.getPlaneRotation(u, v2)
-        rot2 = App.Placement(_plane_rot).Rotation.Q
-        self.trans1.rotation.setValue((rot2[0], rot2[1],
-                                       rot2[2], rot2[3]))
-        self.trans2.rotation.setValue((rot2[0], rot2[1],
-                                       rot2[2], rot2[3]))
+        if _plane_rot is not None:
+            rot2 = App.Placement(_plane_rot).Rotation.Q
+            self.trans1.rotation.setValue((rot2[0], rot2[1],
+                                           rot2[2], rot2[3]))
+            self.trans2.rotation.setValue((rot2[0], rot2[1],
+                                           rot2[2], rot2[3]))
 
         if self.p1 != self.p2:
             u3 = self.p1 - self.p2
             u3.normalize()
             v3 = norm.cross(u3)
             _plane_rot = DraftVecUtils.getPlaneRotation(u3, v3)
-            rot3 = App.Placement(_plane_rot).Rotation.Q
-            self.transExtOvershoot1.rotation.setValue((rot3[0], rot3[1],
-                                                       rot3[2], rot3[3]))
-            self.transExtOvershoot2.rotation.setValue((rot3[0], rot3[1],
-                                                       rot3[2], rot3[3]))
+            if _plane_rot is not None:
+                rot3 = App.Placement(_plane_rot).Rotation.Q
+                self.transExtOvershoot1.rotation.setValue((rot3[0], rot3[1],
+                                                           rot3[2], rot3[3]))
+                self.transExtOvershoot2.rotation.setValue((rot3[0], rot3[1],
+                                                           rot3[2], rot3[3]))
 
         # Offset is the distance from the dimension line to the textual
         # element that displays the value of the measurement
@@ -522,7 +538,6 @@ class ViewProviderLinearDimension(ViewProviderDimensionBase):
         else:
             offset = DraftVecUtils.scaleTo(v1, 0.05)
 
-        self.trot = rot1
         if hasattr(vobj, "FlipText") and vobj.FlipText:
             _rott = App.Rotation(self.trot[0], self.trot[1], self.trot[2], self.trot[3])
             self.trot = _rott.multiply(App.Rotation(App.Vector(0, 0, 1), 180)).Q
@@ -572,9 +587,17 @@ class ViewProviderLinearDimension(ViewProviderDimensionBase):
         # Special representation if we use 'Building US' scheme
         u_params = App.ParamGet("User parameter:BaseApp/Preferences/Units")
         if u_params.GetInt("UserSchema", 0) == 5:
-            s = App.Units.Quantity(length, App.Units.Length).UserString
-            self.string = s.replace("' ", "'- ")  # feet
-            self.string = s.replace("+", " ")
+            self.string = App.Units.Quantity(length, App.Units.Length).UserString
+            if self.string.count('"') > 1:
+                # multiple inch tokens
+                self.string = self.string.replace('"',"",self.string.count('"')-1)
+            d_params = App.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
+            sep = d_params.GetString("FeetSeparator"," ")
+            # use a custom separator
+            self.string = self.string.replace("' ", "'" + sep)
+            self.string = self.string.replace("+", " ")
+            self.string = self.string.replace("   ", " ")
+            self.string = self.string.replace("  ", " ")
         elif hasattr(vobj, "Decimals"):
             self.string = units.display_external(length,
                                                  vobj.Decimals,
@@ -720,14 +743,15 @@ class ViewProviderLinearDimension(ViewProviderDimensionBase):
         self.marks = coin.SoSeparator()
         self.marks.addChild(self.linecolor)
 
-        s1 = coin.SoSeparator()
-        if symbol == "Circle":
-            s1.addChild(self.coord1)
-        else:
-            s1.addChild(self.trans1)
+        if vobj.Object.Diameter or not self.is_linked_to_circle():
+            s1 = coin.SoSeparator()
+            if symbol == "Circle":
+                s1.addChild(self.coord1)
+            else:
+                s1.addChild(self.trans1)
 
-        s1.addChild(gui_utils.dim_symbol(symbol, invert=not inv))
-        self.marks.addChild(s1)
+            s1.addChild(gui_utils.dim_symbol(symbol, invert=not inv))
+            self.marks.addChild(s1)
 
         s2 = coin.SoSeparator()
         if symbol == "Circle":

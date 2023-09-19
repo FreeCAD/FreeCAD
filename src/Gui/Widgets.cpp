@@ -1564,7 +1564,7 @@ void ExpLineEdit::setExpression(std::shared_ptr<Expression> expr)
     try {
         ExpressionBinding::setExpression(expr);
     }
-    catch (const Base::Exception & e) {
+    catch (const Base::Exception&) {
         setReadOnly(true);
         QPalette p(palette());
         p.setColor(QPalette::Active, QPalette::Text, Qt::red);
@@ -1631,7 +1631,7 @@ void ExpLineEdit::resizeEvent(QResizeEvent * event)
             iconLabel->setExpressionText(QString());
         }
     }
-    catch (const Base::Exception & e) {
+    catch (const Base::Exception&) {
         setReadOnly(true);
         QPalette p(palette());
         p.setColor(QPalette::Active, QPalette::Text, Qt::red);

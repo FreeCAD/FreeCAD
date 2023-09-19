@@ -66,4 +66,4 @@ private:
     QRegularExpression regexp;
 };
 
-#endif// REG_EXP_DIALOG_H
+#endif  // REG_EXP_DIALOG_H

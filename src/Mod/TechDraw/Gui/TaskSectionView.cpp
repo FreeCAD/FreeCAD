@@ -507,10 +507,17 @@ TechDraw::DrawViewSection* TaskSectionView::createSectionView(void)
         // section labels (Section A-A) are not unique, and are not the same as the object name (SectionView)
         // we pluck the generated suffix from the object name and append it to "Section" to generate
         // unique Labels
-        std::string uniqueSuffix{m_sectionName.substr(objectName.length(), std::string::npos)};
-        std::string uniqueLabel = "Section" + uniqueSuffix;
+        QString qTemp = ui->leSymbol->text();
+        std::string temp = Base::Tools::toStdString(qTemp);
+        Command::doCommand(Command::Doc, "App.ActiveDocument.%s.SectionSymbol = '%s'",
+                           m_sectionName.c_str(), temp.c_str());
+
+        Command::doCommand(Command::Doc, "App.ActiveDocument.%s.Label = '%s'",
+                           m_sectionName.c_str(),
+                           makeSectionLabel(qTemp).c_str());
         Command::doCommand(Command::Doc, "App.activeDocument().%s.translateLabel('DrawViewSection', 'Section', '%s')",
-              m_sectionName.c_str(), uniqueLabel.c_str());
+              m_sectionName.c_str(), makeSectionLabel(qTemp).c_str());
+
 
         Command::doCommand(Command::Doc, "App.ActiveDocument.%s.addView(App.ActiveDocument.%s)",
                            m_savePageName.c_str(), m_sectionName.c_str());
@@ -566,6 +573,7 @@ void TaskSectionView::updateSectionView()
         return;
     }
 
+    const std::string objectName("SectionView");
     Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Edit SectionView"));
     if (m_section) {
         Command::doCommand(Command::Doc, "App.ActiveDocument.%s.SectionDirection = '%s'",
@@ -579,9 +587,12 @@ void TaskSectionView::updateSectionView()
         std::string temp = Base::Tools::toStdString(qTemp);
         Command::doCommand(Command::Doc, "App.ActiveDocument.%s.SectionSymbol = '%s'",
                            m_sectionName.c_str(), temp.c_str());
-        std::string lblText = std::string(m_section->Label.getValue()) + " " + temp + " - " + temp;
+
         Command::doCommand(Command::Doc, "App.ActiveDocument.%s.Label = '%s'",
-                           m_sectionName.c_str(), lblText.c_str());
+                           m_sectionName.c_str(),
+                           makeSectionLabel(qTemp).c_str());
+        Command::doCommand(Command::Doc, "App.activeDocument().%s.translateLabel('DrawViewSection', 'Section', '%s')",
+              m_sectionName.c_str(), makeSectionLabel(qTemp).c_str());
 
         Command::doCommand(Command::Doc, "App.ActiveDocument.%s.Scale = %0.6f",
                            m_sectionName.c_str(), ui->sbScale->value().getValue());
@@ -608,6 +619,15 @@ void TaskSectionView::updateSectionView()
                            m_sectionName.c_str(), rotation);
     }
     Gui::Command::commitCommand();
+}
+
+std::string TaskSectionView::makeSectionLabel(QString symbol)
+{
+    const std::string objectName("SectionView");
+    std::string uniqueSuffix{m_sectionName.substr(objectName.length(), std::string::npos)};
+    std::string uniqueLabel = "Section" + uniqueSuffix;
+    std::string temp = Base::Tools::toStdString(symbol);
+    return ( uniqueLabel + " " + temp + " - " + temp );
 }
 
 void TaskSectionView::failNoObject(void)

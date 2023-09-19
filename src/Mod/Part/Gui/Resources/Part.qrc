@@ -65,6 +65,7 @@
         <file>icons/tools/Part_ColorFace.svg</file>
         <file>icons/tools/Part_Element_Copy.svg</file>
         <file>icons/tools/Part_Extrude.svg</file>
+        <file>icons/tools/Part_Scale.svg</file>
         <file>icons/tools/Part_Fillet.svg</file>
         <file>icons/tools/Part_Loft.svg</file>
         <file>icons/tools/Part_MakeFace.svg</file>

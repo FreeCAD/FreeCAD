@@ -162,9 +162,7 @@ class CreateAddonListWorker(QtCore.QThread):
         for addon in addon_list:
             if " " in addon:
                 addon_and_branch = addon.split(" ")
-                custom_addons.append(
-                    {"url": addon_and_branch[0], "branch": addon_and_branch[1]}
-                )
+                custom_addons.append({"url": addon_and_branch[0], "branch": addon_and_branch[1]})
             else:
                 custom_addons.append({"url": addon, "branch": "master"})
         for addon in custom_addons:
@@ -178,9 +176,9 @@ class CreateAddonListWorker(QtCore.QThread):
                 if name in self.package_names:
                     # We already have something with this name, skip this one
                     FreeCAD.Console.PrintWarning(
-                        translate(
-                            "AddonsInstaller", "WARNING: Duplicate addon {} ignored"
-                        ).format(name)
+                        translate("AddonsInstaller", "WARNING: Duplicate addon {} ignored").format(
+                            name
+                        )
                     )
                     continue
                 FreeCAD.Console.PrintLog(
@@ -251,9 +249,7 @@ class CreateAddonListWorker(QtCore.QThread):
                 repo.obsolete = True
             self.addon_repo.emit(repo)
 
-            self.status_message.emit(
-                translate("AddonsInstaller", "Workbenches list was updated.")
-            )
+            self.status_message.emit(translate("AddonsInstaller", "Workbenches list was updated."))
 
     def _retrieve_macros_from_git(self):
         """Retrieve macros from FreeCAD-macros.git
@@ -338,8 +334,7 @@ class CreateAddonListWorker(QtCore.QThread):
             )
             FreeCAD.Console.PrintMessage(f"{macro_cache_location}\n")
             FreeCAD.Console.PrintMessage(
-                translate("AddonsInstaller", "Attempting to do a clean checkout...")
-                + "\n"
+                translate("AddonsInstaller", "Attempting to do a clean checkout...") + "\n"
             )
             try:
                 os.chdir(
@@ -459,13 +454,9 @@ class LoadPackagesFromCacheWorker(QtCore.QThread):
                         try:
                             repo.load_metadata_file(repo_metadata_cache_path)
                             repo.installed_version = repo.metadata.version
-                            repo.updated_timestamp = os.path.getmtime(
-                                repo_metadata_cache_path
-                            )
+                            repo.updated_timestamp = os.path.getmtime(repo_metadata_cache_path)
                         except Exception as e:
-                            FreeCAD.Console.PrintLog(
-                                f"Failed loading {repo_metadata_cache_path}\n"
-                            )
+                            FreeCAD.Console.PrintLog(f"Failed loading {repo_metadata_cache_path}\n")
                             FreeCAD.Console.PrintLog(str(e) + "\n")
                     self.addon_repo.emit(repo)
 
@@ -612,9 +603,7 @@ class UpdateChecker:
                             wb.set_status(Addon.Status.NO_UPDATE_AVAILABLE)
                     except GitFailed:
                         FreeCAD.Console.PrintWarning(
-                            translate(
-                                "AddonsInstaller", "git status failed for {}"
-                            ).format(wb.name)
+                            translate("AddonsInstaller", "git status failed for {}").format(wb.name)
                             + "\n"
                         )
                         wb.set_status(Addon.Status.CANNOT_CHECK)
@@ -670,9 +659,7 @@ class UpdateChecker:
         # Make sure this macro has its code downloaded:
         try:
             if not macro_wrapper.macro.parsed and macro_wrapper.macro.on_git:
-                macro_wrapper.macro.fill_details_from_file(
-                    macro_wrapper.macro.src_filename
-                )
+                macro_wrapper.macro.fill_details_from_file(macro_wrapper.macro.src_filename)
             elif not macro_wrapper.macro.parsed and macro_wrapper.macro.on_wiki:
                 mac = macro_wrapper.macro.name.replace(" ", "_")
                 mac = mac.replace("&", "%26")
@@ -694,9 +681,7 @@ class UpdateChecker:
         hasher2 = hashlib.sha1()
         hasher1.update(macro_wrapper.macro.code.encode("utf-8"))
         new_sha1 = hasher1.hexdigest()
-        test_file_one = os.path.join(
-            FreeCAD.getUserMacroDir(True), macro_wrapper.macro.filename
-        )
+        test_file_one = os.path.join(FreeCAD.getUserMacroDir(True), macro_wrapper.macro.filename)
         test_file_two = os.path.join(
             FreeCAD.getUserMacroDir(True), "Macro_" + macro_wrapper.macro.filename
         )
@@ -823,9 +808,7 @@ class CacheMacroCodeWorker(QtCore.QThread):
         if QtCore.QThread.currentThread().isInterruptionRequested():
             return
 
-        self.progress_made.emit(
-            len(self.repos) - self.repo_queue.qsize(), len(self.repos)
-        )
+        self.progress_made.emit(len(self.repos) - self.repo_queue.qsize(), len(self.repos))
 
         try:
             next_repo = self.repo_queue.get_nowait()
@@ -886,18 +869,12 @@ class GetMacroDetailsWorker(QtCore.QThread):
         """Rarely called directly: create an instance and call start() on it instead to
         launch in a new thread"""
 
-        self.status_message.emit(
-            translate("AddonsInstaller", "Retrieving macro description...")
-        )
+        self.status_message.emit(translate("AddonsInstaller", "Retrieving macro description..."))
         if not self.macro.parsed and self.macro.on_git:
-            self.status_message.emit(
-                translate("AddonsInstaller", "Retrieving info from git")
-            )
+            self.status_message.emit(translate("AddonsInstaller", "Retrieving info from git"))
             self.macro.fill_details_from_file(self.macro.src_filename)
         if not self.macro.parsed and self.macro.on_wiki:
-            self.status_message.emit(
-                translate("AddonsInstaller", "Retrieving info from wiki")
-            )
+            self.status_message.emit(translate("AddonsInstaller", "Retrieving info from wiki"))
             mac = self.macro.name.replace(" ", "_")
             mac = mac.replace("&", "%26")
             mac = mac.replace("+", "%2B")

@@ -49,6 +49,6 @@ private:
     std::unique_ptr<Ui_SketchMirrorDialog> ui;
 };
 
-}// namespace SketcherGui
+}  // namespace SketcherGui
 
-#endif// SKETCHERGUI_SketchMirrorDialog_H
+#endif  // SKETCHERGUI_SketchMirrorDialog_H

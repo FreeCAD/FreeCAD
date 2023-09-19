@@ -30,7 +30,7 @@
 #ifdef FC_OS_WIN32
 #define _TEMPLATE_AppExport __declspec(dllimport)
 #define _TEMPLATE_GuiExport __declspec(dllexport)
-#else// for Linux
+#else  // for Linux
 #define _TEMPLATE_AppExport
 #define _TEMPLATE_GuiExport
 #endif
@@ -65,6 +65,6 @@
 #include <Gui/QtAll.h>
 #endif
 
-#endif//_PreComp_
+#endif  //_PreComp_
 
-#endif// GUI_PRECOMPILED_H
+#endif  // GUI_PRECOMPILED_H

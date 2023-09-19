@@ -32,7 +32,7 @@
 
 using namespace SketcherGui;
 
-#if 0// needed for Qt's lupdate utility
+#if 0  // needed for Qt's lupdate utility
     qApp->translate("CommandGroup", "Sketcher");
     qApp->translate("Workbench","P&rofiles");
     qApp->translate("Workbench","S&ketch");
@@ -164,7 +164,7 @@ inline const QStringList editModeToolbarNames()
                         QString::fromLatin1("Sketcher constraints"),
                         QString::fromLatin1("Sketcher tools"),
                         QString::fromLatin1("Sketcher B-spline tools"),
-                        QString::fromLatin1("Sketcher virtual space"),
+                        QString::fromLatin1("Sketcher visual"),
                         QString::fromLatin1("Sketcher edit tools")};
 }
 
@@ -172,7 +172,7 @@ inline const QStringList nonEditModeToolbarNames()
 {
     return QStringList {QString::fromLatin1("Structure"), QString::fromLatin1("Sketcher")};
 }
-}// namespace
+}  // namespace
 
 void Workbench::activated()
 {
@@ -408,6 +408,7 @@ inline void SketcherAddWorkbenchConstraints<Gui::MenuItem>(Gui::MenuItem& cons)
          << "Sketcher_ConstrainSymmetric"
          << "Sketcher_ConstrainBlock"
          << "Separator"
+         << "Sketcher_Dimension"
          << "Sketcher_ConstrainLock"
          << "Sketcher_ConstrainDistanceX"
          << "Sketcher_ConstrainDistanceY"
@@ -425,6 +426,9 @@ inline void SketcherAddWorkbenchConstraints<Gui::MenuItem>(Gui::MenuItem& cons)
 template<>
 inline void SketcherAddWorkbenchConstraints<Gui::ToolBarItem>(Gui::ToolBarItem& cons)
 {
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/Mod/Sketcher/dimensioning");
+
     cons << "Sketcher_ConstrainCoincident"
          << "Sketcher_ConstrainPointOnObject"
          << "Sketcher_ConstrainVertical"
@@ -435,15 +439,25 @@ inline void SketcherAddWorkbenchConstraints<Gui::ToolBarItem>(Gui::ToolBarItem& 
          << "Sketcher_ConstrainEqual"
          << "Sketcher_ConstrainSymmetric"
          << "Sketcher_ConstrainBlock"
-         << "Separator"
-         << "Sketcher_ConstrainLock"
-         << "Sketcher_ConstrainDistanceX"
-         << "Sketcher_ConstrainDistanceY"
-         << "Sketcher_ConstrainDistance"
-         << "Sketcher_CompConstrainRadDia"
-         << "Sketcher_ConstrainAngle"
-         // << "Sketcher_ConstrainSnellsLaw" // Rarely used, show only in menu
-         << "Separator"
+         << "Separator";
+    if (hGrp->GetBool("SingleDimensioningTool", true)) {
+        if (!hGrp->GetBool("SeparatedDimensioningTools", false)) {
+            cons << "Sketcher_CompDimensionTools";
+        }
+        else {
+            cons << "Sketcher_Dimension";
+        }
+    }
+    if (hGrp->GetBool("SeparatedDimensioningTools", false)) {
+        cons << "Sketcher_ConstrainLock"
+             << "Sketcher_ConstrainDistanceX"
+             << "Sketcher_ConstrainDistanceY"
+             << "Sketcher_ConstrainDistance"
+             << "Sketcher_CompConstrainRadDia"
+             << "Sketcher_ConstrainAngle";
+        // << "Sketcher_ConstrainSnellsLaw" // Rarely used, show only in menu
+    }
+    cons << "Separator"
          << "Sketcher_ToggleDrivingConstraint"
          << "Sketcher_ToggleActiveConstraint";
 }
@@ -479,8 +493,9 @@ inline void SketcherAddWorkbenchTools<Gui::MenuItem>(Gui::MenuItem& consaccel)
 template<>
 inline void SketcherAddWorkbenchTools<Gui::ToolBarItem>(Gui::ToolBarItem& consaccel)
 {
-    consaccel//<< "Sketcher_SelectElementsWithDoFs" //rarely used, it is usually accessed by solver
-             // message.
+    consaccel  //<< "Sketcher_SelectElementsWithDoFs" //rarely used, it is usually accessed by
+               // solver
+               // message.
         << "Sketcher_SelectConstraints"
         << "Sketcher_SelectElementsAssociatedWithConstraints"
         //<< "Sketcher_SelectRedundantConstraints" //rarely used, it is usually accessed by solver

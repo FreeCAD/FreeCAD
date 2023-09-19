@@ -36,6 +36,7 @@
 #include "DocumentPy.h"
 #include "DocumentPy.cpp"
 #include <boost/regex.hpp>
+#include <Base/PyWrapParseTupleAndKeywords.h>
 
 using namespace App;
 
@@ -65,7 +66,7 @@ PyObject*  DocumentPy::addProperty(PyObject *args, PyObject *kwd)
     // enum support
     auto* propEnum = dynamic_cast<App::PropertyEnumeration*>(prop);
     if (propEnum) {
-        if (PySequence_Check(enumVals)) {
+        if (enumVals && PySequence_Check(enumVals)) {
             std::vector<std::string> enumValsAsVector;
             for (Py_ssize_t i = 0; i < PySequence_Length(enumVals); ++i) {
                 enumValsAsVector.emplace_back(PyUnicode_AsUTF8(PySequence_GetItem(enumVals,i)));
@@ -254,14 +255,16 @@ PyObject*  DocumentPy::exportGraphviz(PyObject * args)
 
 PyObject*  DocumentPy::addObject(PyObject *args, PyObject *kwd)
 {
-    char *sType,*sName=nullptr,*sViewType=nullptr;
-    PyObject* obj=nullptr;
-    PyObject* view=nullptr;
-    PyObject *attach=Py_False;
-    static char *kwlist[] = {"type","name","objProxy","viewProxy","attach","viewType",nullptr};
-    if (!PyArg_ParseTupleAndKeywords(args,kwd,"s|sOOO!s",
-                kwlist, &sType,&sName,&obj,&view,&PyBool_Type,&attach,&sViewType))
+    char *sType, *sName = nullptr, *sViewType = nullptr;
+    PyObject *obj = nullptr;
+    PyObject *view = nullptr;
+    PyObject *attach = Py_False;
+    static const std::array<const char *, 7> kwlist{"type", "name", "objProxy", "viewProxy", "attach", "viewType",
+                                                    nullptr};
+    if (!Base::Wrapped_ParseTupleAndKeywords(args, kwd, "s|sOOO!s",
+                                             kwlist, &sType, &sName, &obj, &view, &PyBool_Type, &attach, &sViewType)) {
         return nullptr;
+    }
 
     DocumentObject *pcFtr = nullptr;
 
@@ -658,10 +661,10 @@ PyObject*  DocumentPy::getObjectsByLabel(PyObject *args)
 PyObject*  DocumentPy::findObjects(PyObject *args, PyObject *kwds)
 {
     const char *sType = "App::DocumentObject", *sName = nullptr, *sLabel = nullptr;
-    static char *kwlist[] = {"Type", "Name", "Label", nullptr};
-    if (!PyArg_ParseTupleAndKeywords(args, kwds, "|sss",
-                kwlist, &sType, &sName, &sLabel))
+    static const std::array<const char *, 4> kwlist{"Type", "Name", "Label", nullptr};
+    if (!Base::Wrapped_ParseTupleAndKeywords(args, kwds, "|sss", kwlist, &sType, &sName, &sLabel)) {
         return nullptr;
+    }
 
     Base::Type type = Base::Type::getTypeIfDerivedFrom(sType, App::DocumentObject::getClassTypeId(), true);
     if (type.isBad()) {

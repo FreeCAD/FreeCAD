@@ -30,7 +30,7 @@
 namespace SketcherGui
 {
 
-extern GeometryCreationMode geometryCreationMode;// defined in CommandCreateGeo.cpp
+extern GeometryCreationMode geometryCreationMode;  // defined in CommandCreateGeo.cpp
 
 class DrawSketchHandlerArcOfEllipse: public DrawSketchHandler
 {
@@ -62,8 +62,9 @@ public:
     {
         if (Mode == STATUS_SEEK_First) {
             setPositionText(onSketchPos);
-            if (seekAutoConstraint(
-                    sugConstr1, onSketchPos, Base::Vector2d(0.f, 0.f))) {// TODO: ellipse prio 1
+            if (seekAutoConstraint(sugConstr1,
+                                   onSketchPos,
+                                   Base::Vector2d(0.f, 0.f))) {  // TODO: ellipse prio 1
                 renderSuggestConstraintsCursor(sugConstr1);
                 return;
             }
@@ -91,8 +92,10 @@ public:
             }
 
             drawEdit(EditCurve);
-            if (seekAutoConstraint(
-                    sugConstr2, onSketchPos, onSketchPos - centerPoint, AutoConstraint::CURVE)) {
+            if (seekAutoConstraint(sugConstr2,
+                                   onSketchPos,
+                                   onSketchPos - centerPoint,
+                                   AutoConstraint::CURVE)) {
                 renderSuggestConstraintsCursor(sugConstr2);
                 return;
             }
@@ -134,7 +137,7 @@ public:
                 return;
             }
         }
-        else if (Mode == STATUS_SEEK_Fourth) {// here we differ from ellipse creation
+        else if (Mode == STATUS_SEEK_Fourth) {  // here we differ from ellipse creation
             // angle between the major axis of the ellipse and the X axis
             double a = (axisPoint - centerPoint).Length();
             double phi = atan2(axisPoint.y - centerPoint.y, axisPoint.x - centerPoint.x);
@@ -149,7 +152,7 @@ public:
             double rxs = startingPoint.x - centerPoint.x;
             double rys = startingPoint.y - centerPoint.y;
             startAngle = atan2(a * (rys * cos(phi) - rxs * sin(phi)),
-                               b * (rxs * cos(phi) + rys * sin(phi)));// eccentric anomaly angle
+                               b * (rxs * cos(phi) + rys * sin(phi)));  // eccentric anomaly angle
 
             double angle1 = atan2(a
                                       * ((onSketchPos.y - centerPoint.y) * cos(phi)
@@ -177,8 +180,10 @@ public:
                 std::string aString = lengthToDisplayFormat(a, 1);
                 std::string bString = lengthToDisplayFormat(b, 1);
                 std::string angleString = angleToDisplayFormat(arcAngle * 180.0 / M_PI, 1);
-                text.sprintf(
-                    " (R%s, R%s, %s)", aString.c_str(), bString.c_str(), angleString.c_str());
+                text.sprintf(" (R%s, R%s, %s)",
+                             aString.c_str(),
+                             bString.c_str(),
+                             angleString.c_str());
                 setPositionText(onSketchPos, text);
             }
 
@@ -212,7 +217,7 @@ public:
             arcAngle_t = 0.;
             Mode = STATUS_SEEK_Fourth;
         }
-        else {// Fourth
+        else {  // Fourth
             endPoint = onSketchPos;
 
             setAngleSnapping(false);
@@ -252,8 +257,9 @@ public:
 
             bool isOriginalArcCCW = true;
 
-            if (arcAngle > 0)
+            if (arcAngle > 0) {
                 endAngle = startAngle + arcAngle;
+            }
             else {
                 endAngle = startAngle;
                 startAngle += arcAngle;
@@ -287,7 +293,7 @@ public:
                 phi -= M_PI / 2;
                 double t = a;
                 a = b;
-                b = t;// swap a,b
+                b = t;  // swap a,b
             }
 
             int currentgeoid = getHighestCurveIndex();
@@ -312,8 +318,9 @@ public:
 
                 currentgeoid++;
 
-                Gui::cmdAppObjectArgs(
-                    sketchgui->getObject(), "exposeInternalGeometry(%d)", currentgeoid);
+                Gui::cmdAppObjectArgs(sketchgui->getObject(),
+                                      "exposeInternalGeometry(%d)",
+                                      currentgeoid);
             }
             catch (const Base::Exception&) {
                 Gui::NotifyError(
@@ -379,8 +386,8 @@ public:
                  * right button of the mouse */
             }
             else {
-                sketchgui
-                    ->purgeHandler();// no code after this line, Handler get deleted in ViewProvider
+                sketchgui->purgeHandler();  // no code after this line, Handler get deleted in
+                                            // ViewProvider
             }
         }
         return true;
@@ -400,7 +407,7 @@ protected:
     std::vector<AutoConstraint> sugConstr1, sugConstr2, sugConstr3, sugConstr4;
 };
 
-}// namespace SketcherGui
+}  // namespace SketcherGui
 
 
-#endif// SKETCHERGUI_DrawSketchHandlerArcOfEllipse_H
+#endif  // SKETCHERGUI_DrawSketchHandlerArcOfEllipse_H
