@@ -28,6 +28,7 @@
 # include <Inventor/fields/SoMFString.h>
 # include <Inventor/nodes/SoBaseColor.h>
 # include <Inventor/nodes/SoCoordinate3.h>
+# include <Inventor/nodes/SoFont.h>
 # include <Inventor/nodes/SoIndexedFaceSet.h>
 # include <Inventor/nodes/SoMaterial.h>
 # include <Inventor/nodes/SoText2.h>
@@ -35,6 +36,7 @@
 # include <Inventor/nodes/SoTransparencyType.h>
 #endif
 
+#include <Base/Parameter.h>
 #include "SoFCColorGradient.h"
 #include "SoTextLabel.h"
 #include "DlgSettingsColorGradientImp.h"
@@ -99,19 +101,27 @@ void SoFCColorGradient::setMarkerLabel(const SoMFString& label)
         SbVec2f minPt = _bbox.getMin();
         float fStep = (maxPt[1] - minPt[1]) / ((float)num - 1);
         auto trans = new SoTransform;
+
+        ParameterGrp::handle hGrp = Gui::WindowParameter::getDefaultParameter()->GetGroup("View");
+        auto LabelTextSize = hGrp->GetInt("CbLabelTextSize", 13);
+        auto LabelTextColor =
+            App::Color((uint32_t)hGrp->GetUnsigned("CbLabelColor", 0xffffffff));
+        auto textFont = new SoFont;
+        auto color = new SoBaseColor;
+        textFont->name.setValue("Helvetica,Arial,Times New Roman");
+        textFont->size.setValue(LabelTextSize);
         trans->translation.setValue(maxPt[0] + 0.1f, maxPt[1] - 0.05f + fStep, 0.0f);
+        color->rgb.setValue(LabelTextColor.r,LabelTextColor.g,LabelTextColor.b);
         labels->addChild(trans);
+        labels->addChild(color);
+        labels->addChild(textFont);
 
         for (int i = 0; i < num; i++) {
             auto trans = new SoTransform;
-            auto color = new SoBaseColor;
             auto text2 = new SoColorBarLabel;
-
             trans->translation.setValue(0, -fStep, 0);
-            color->rgb.setValue(0, 0, 0);
             text2->string.setValue(label[i]);
             labels->addChild(trans);
-            labels->addChild(color);
             labels->addChild(text2);
         }
     }
