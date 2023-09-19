@@ -1058,8 +1058,8 @@ SoFCCSysDragger::SoFCCSysDragger()
 
     // Colors
     setAxisColors(
-      SbColor(1.0, 0, 0).getPackedValue(0.0f), 
-      SbColor(0, 1.0, 0).getPackedValue(0.0f), 
+      SbColor(1.0, 0, 0).getPackedValue(0.0f),
+      SbColor(0, 1.0, 0).getPackedValue(0.0f),
       SbColor(0, 0, 1.0).getPackedValue(0.0f)
     );
 
@@ -1475,7 +1475,7 @@ void SoFCCSysDragger::setAxisColors(unsigned long x, unsigned long y, unsigned l
     color->rgb.setValue(colorZ[0], colorZ[1], colorZ[2]);
 }
 
-// Visiblity API Functions
+// Visibility API Functions
 
 // Translator
 void SoFCCSysDragger::showTranslationX()

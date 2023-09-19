@@ -139,8 +139,8 @@ bool ViewProviderDragger::setEdit(int ModNum)
     assert(!csysDragger);
     csysDragger = new SoFCCSysDragger();
     csysDragger->setAxisColors(
-      Gui::ViewParams::instance()->getAxisXColor(), 
-      Gui::ViewParams::instance()->getAxisYColor(), 
+      Gui::ViewParams::instance()->getAxisXColor(),
+      Gui::ViewParams::instance()->getAxisYColor(),
       Gui::ViewParams::instance()->getAxisZColor()
     );
     csysDragger->draggerSize.setValue(0.05f);

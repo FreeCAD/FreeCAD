@@ -94,7 +94,7 @@ private:
  * 'translationIncrementYCount' multiplied with
  * 'translationIncrement' for a full double
  * precision vector scalar.
- * 
+ *
  * @author qewer33
  */
 class TPlanarDragger : public SoDragger
