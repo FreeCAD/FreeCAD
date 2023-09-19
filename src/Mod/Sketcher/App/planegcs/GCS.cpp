@@ -26,10 +26,6 @@
 #pragma warning(disable : 4996)
 #endif
 
-// #define _GCS_DEBUG
-// #define _GCS_DEBUG_SOLVER_JACOBIAN_QR_DECOMPOSITION_TRIANGULAR_MATRIX
-// #define _DEBUG_TO_FILE // Many matrices surpass the report view string size.
-// #define PROFILE_DIAGNOSE
 #undef _GCS_DEBUG
 #undef _GCS_DEBUG_SOLVER_JACOBIAN_QR_DECOMPOSITION_TRIANGULAR_MATRIX
 #undef _DEBUG_TO_FILE
@@ -504,76 +500,6 @@ System::System()
     Eigen::setNbThreads(1);
 #endif
 }
-
-/*DeepSOIC: seriously outdated, needs redesign
-System::System(std::vector<Constraint *> clist_)
-: plist(0),
-  c2p(), p2c(),
-  subSystems(0), subSystemsAux(0),
-  reference(0),
-  hasUnknowns(false), hasDiagnosis(false), isInit(false)
-{
-    // create own (shallow) copy of constraints
-    for (std::vector<Constraint *>::iterator constr=clist_.begin();
-         constr != clist_.end(); ++constr) {
-        Constraint *newconstr = 0;
-        switch ((*constr)->getTypeId()) {
-            case Equal: {
-                ConstraintEqual *oldconstr = static_cast<ConstraintEqual *>(*constr);
-                newconstr = new ConstraintEqual(*oldconstr);
-                break;
-            }
-            case Difference: {
-                ConstraintDifference *oldconstr = static_cast<ConstraintDifference *>(*constr);
-                newconstr = new ConstraintDifference(*oldconstr);
-                break;
-            }
-            case P2PDistance: {
-                ConstraintP2PDistance *oldconstr = static_cast<ConstraintP2PDistance *>(*constr);
-                newconstr = new ConstraintP2PDistance(*oldconstr);
-                break;
-            }
-            case P2PAngle: {
-                ConstraintP2PAngle *oldconstr = static_cast<ConstraintP2PAngle *>(*constr);
-                newconstr = new ConstraintP2PAngle(*oldconstr);
-                break;
-            }
-            case P2LDistance: {
-                ConstraintP2LDistance *oldconstr = static_cast<ConstraintP2LDistance *>(*constr);
-                newconstr = new ConstraintP2LDistance(*oldconstr);
-                break;
-            }
-            case PointOnLine: {
-                ConstraintPointOnLine *oldconstr = static_cast<ConstraintPointOnLine *>(*constr);
-                newconstr = new ConstraintPointOnLine(*oldconstr);
-                break;
-            }
-            case Parallel: {
-                ConstraintParallel *oldconstr = static_cast<ConstraintParallel *>(*constr);
-                newconstr = new ConstraintParallel(*oldconstr);
-                break;
-            }
-            case Perpendicular: {
-                ConstraintPerpendicular *oldconstr = static_cast<ConstraintPerpendicular
-*>(*constr); newconstr = new ConstraintPerpendicular(*oldconstr); break;
-            }
-            case L2LAngle: {
-                ConstraintL2LAngle *oldconstr = static_cast<ConstraintL2LAngle *>(*constr);
-                newconstr = new ConstraintL2LAngle(*oldconstr);
-                break;
-            }
-            case MidpointOnLine: {
-                ConstraintMidpointOnLine *oldconstr = static_cast<ConstraintMidpointOnLine
-*>(*constr); newconstr = new ConstraintMidpointOnLine(*oldconstr); break;
-            }
-            case None:
-                break;
-        }
-        if (newconstr)
-            addConstraint(newconstr);
-    }
-}
-*/
 
 System::~System()
 {
@@ -1057,7 +983,7 @@ int System::addConstraintPerpendicularLine2Arc(Point& p1,
         return addConstraintP2PAngle(p1, p2, a.startAngle, 0, tagId, driving);
     }
     else {
-        return addConstraintP2PAngle(p1, p2, a.startAngle, M_PI, tagId, driving);
+        return addConstraintP2PAngle(p1, p2, a.startAngle, pi, tagId, driving);
     }
 }
 
@@ -1074,7 +1000,7 @@ int System::addConstraintPerpendicularArc2Line(Arc& a,
         return addConstraintP2PAngle(p1, p2, a.endAngle, 0, tagId, driving);
     }
     else {
-        return addConstraintP2PAngle(p1, p2, a.endAngle, M_PI, tagId, driving);
+        return addConstraintP2PAngle(p1, p2, a.endAngle, pi, tagId, driving);
     }
 }
 
@@ -1085,7 +1011,7 @@ int System::addConstraintPerpendicularCircle2Arc(Point& center,
                                                  bool driving)
 {
     addConstraintP2PDistance(a.start, center, radius, tagId, driving);
-    double incrAngle = *(a.startAngle) < *(a.endAngle) ? M_PI / 2 : -M_PI / 2;
+    double incrAngle = *(a.startAngle) < *(a.endAngle) ? pi_2 : -pi_2;
     double tangAngle = *a.startAngle + incrAngle;
     double dx = *(a.start.x) - *(center.x);
     double dy = *(a.start.y) - *(center.y);
@@ -1104,7 +1030,7 @@ int System::addConstraintPerpendicularArc2Circle(Arc& a,
                                                  bool driving)
 {
     addConstraintP2PDistance(a.end, center, radius, tagId, driving);
-    double incrAngle = *(a.startAngle) < *(a.endAngle) ? -M_PI / 2 : M_PI / 2;
+    double incrAngle = *(a.startAngle) < *(a.endAngle) ? -pi_2 : pi_2;
     double tangAngle = *a.endAngle + incrAngle;
     double dx = *(a.end.x) - *(center.x);
     double dy = *(a.end.y) - *(center.y);
@@ -1331,14 +1257,6 @@ int System::addConstraintInternalAlignmentEllipseMajorDiameter(Ellipse& e,
     double Y_F1 = *e.focus1.y;
     double b = *e.radmin;
 
-    // P1=vector([X_1,Y_1])
-    // P2=vector([X_2,Y_2])
-    // dF1= (F1-C)/sqrt((F1-C)*(F1-C))
-    // print "these are the extreme points of the major axis"
-    // PA = C + a * dF1
-    // PN = C - a * dF1
-    // print "this is a simple function to know which point is closer to the positive edge of the
-    // ellipse" DMC=(P1-PA)*(P1-PA)-(P2-PA)*(P2-PA)
     double closertopositivemajor =
         pow(X_1 - X_c
                 - (X_F1 - X_c) * sqrt(pow(b, 2) + pow(X_F1 - X_c, 2) + pow(Y_F1 - Y_c, 2))
@@ -1397,8 +1315,6 @@ int System::addConstraintInternalAlignmentEllipseMinorDiameter(Ellipse& e,
     double Y_F1 = *e.focus1.y;
     double b = *e.radmin;
 
-    // Same idea as for major above, but for minor
-    // DMC=(P1-PA)*(P1-PA)-(P2-PA)*(P2-PA)
     double closertopositiveminor =
         pow(X_1 - X_c + b * (Y_F1 - Y_c) / sqrt(pow(X_F1 - X_c, 2) + pow(Y_F1 - Y_c, 2)), 2)
         - pow(X_2 - X_c + b * (Y_F1 - Y_c) / sqrt(pow(X_F1 - X_c, 2) + pow(Y_F1 - Y_c, 2)), 2)
@@ -1465,14 +1381,6 @@ int System::addConstraintInternalAlignmentHyperbolaMajorDiameter(Hyperbola& e,
     double Y_F1 = *e.focus1.y;
     double b = *e.radmin;
 
-    // P1=vector([X_1,Y_1])
-    // P2=vector([X_2,Y_2])
-    // dF1= (F1-C)/sqrt((F1-C)*(F1-C))
-    // print "these are the extreme points of the major axis"
-    // PA = C + a * dF1
-    // PN = C - a * dF1
-    // print "this is a simple function to know which point is closer to the positive edge of the
-    // ellipse" DMC=(P1-PA)*(P1-PA)-(P2-PA)*(P2-PA)
     double closertopositivemajor =
         pow(-X_1 + X_c
                 + (X_F1 - X_c) * (-pow(b, 2) + pow(X_F1 - X_c, 2) + pow(Y_F1 - Y_c, 2))
@@ -1555,8 +1463,6 @@ int System::addConstraintInternalAlignmentHyperbolaMinorDiameter(Hyperbola& e,
     double Y_F1 = *e.focus1.y;
     double b = *e.radmin;
 
-    // Same idea as for major above, but for minor
-    // DMC=(P1-PA)*(P1-PA)-(P2-PA)*(P2-PA)
     double closertopositiveminor =
         pow(-X_1 + X_c + b * (Y_F1 - Y_c) / sqrt(pow(X_F1 - X_c, 2) + pow(Y_F1 - Y_c, 2))
                 + (X_F1 - X_c) * (-pow(b, 2) + pow(X_F1 - X_c, 2) + pow(Y_F1 - Y_c, 2))
@@ -2505,11 +2411,6 @@ int System::solve_DL(SubSystem* subsys, bool isRedundantsolving)
             break;
         }
 
-        // it didn't work in some tests
-        //        // restrict h_dl according to maxStep
-        //        double scale = subsys->maxStep(h_dl);
-        //        if (scale < 1.)
-        //            h_dl *= scale;
 
         // get the new values
         double err_new;
@@ -4794,13 +4695,7 @@ int System::solve(SubSystem* subsysA, SubSystem* subsysB, bool /*isFine*/, bool 
             double alpha = 1;
             alpha = std::min(alpha, subsysA->maxStep(plistAB, xdir));
 
-            // From the book "Numerical Optimization - Jorge Nocedal, Stephen J. Wright".
-            // See https://forum.freecad.org/viewtopic.php?f=10&t=35469.
-            // Eq. 18.32
-            // double mu = lambda.lpNorm<Eigen::Infinity>() + 0.01;
-            // Eq. 18.33
-            // double mu =  grad.dot(xdir) / ( (1.-rho) * resA.lpNorm<1>());
-            // Eq. 18.36
+             // Eq. 18.36
             mu = std::max(mu,
                           (grad.dot(xdir) + std::max(0., 0.5 * xdir.dot(B * xdir)))
                               / ((1. - rho) * resA.lpNorm<1>()));
@@ -4821,9 +4716,6 @@ int System::solve(SubSystem* subsysA, SubSystem* subsysB, bool /*isFine*/, bool 
             bool first = true;
             while (f > f0 + eta * alpha * deriv) {
                 if (first) {
-                    // try a second order step
-                    // xdir1 = JA.jacobiSvd(Eigen::ComputeThinU |
-                    // Eigen::ComputeThinV).solve(-resA);
                     xdir1 = -Y * resA;
                     x += xdir1;  // = x0 + alpha * xdir + xdir1
                     subsysA->setParams(plistAB, x);

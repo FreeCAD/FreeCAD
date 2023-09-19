@@ -254,22 +254,6 @@ void SubSystem::calcResidual(Eigen::VectorXd& r, double& err)
     err *= 0.5;
 }
 
-/*
-void SubSystem::calcJacobi()
-{
-    assert(grad.size() != xsize);
-
-    for (MAP_pD_pD::const_iterator param=pmap.begin();
-         param != pmap.end(); ++param) {
-        // assert(p2c.find(param->second) != p2c.end());
-        std::vector<Constraint *> constrs=p2c[param->second];
-        for (std::vector<Constraint *>::const_iterator constr = constrs.begin();
-             constr != constrs.end(); ++constr)
-            jacobi.set(*constr,param->second,(*constr)->grad(param->second));
-    }
-}
-*/
-
 void SubSystem::calcJacobi(VEC_pD& params, Eigen::MatrixXd& jacobi)
 {
     jacobi.setZero(csize, params.size());
@@ -296,7 +280,6 @@ void SubSystem::calcGrad(VEC_pD& params, Eigen::VectorXd& grad)
     for (int j = 0; j < int(params.size()); j++) {
         MAP_pD_pD::const_iterator pmapfind = pmap.find(params[j]);
         if (pmapfind != pmap.end()) {
-            // assert(p2c.find(pmapfind->second) != p2c.end());
             std::vector<Constraint*> constrs = p2c[pmapfind->second];
             for (std::vector<Constraint*>::const_iterator constr = constrs.begin();
                  constr != constrs.end();

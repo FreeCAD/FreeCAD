@@ -23,10 +23,8 @@
 #ifndef PLANEGCS_GEO_H
 #define PLANEGCS_GEO_H
 
-#include <cmath>
-
 #include "Util.h"
-
+#include <boost/math/constants/constants.hpp>
 
 namespace GCS
 {
@@ -50,6 +48,9 @@ public:
 };
 
 using VEC_P = std::vector<Point>;
+static const float pi = boost::math::constants::pi<float>();
+static const float pi_2 = boost::math::constants::pi<float>() / 2.0f;
+static const float pi_18 = boost::math::constants::pi<float>() / 18.0f;
 
 /// Class DeriVector2 holds a vector value and its derivative on the
 /// parameter that the derivatives are being calculated for now. x,y is the
