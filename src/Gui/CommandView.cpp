@@ -3578,9 +3578,11 @@ StdCmdSelBack::StdCmdSelBack()
 {
   sGroup        = "View";
   sMenuText     = QT_TR_NOOP("Selection Back");
-  sToolTipText  = QT_TR_NOOP("<p>The Std SelBack command restores the previous"
-      " recorded Tree view selection. Note that selections are only recorded if"
-      " Tree RecordSelection mode is switched on.</p>");
+  static std::string toolTip = std::string("<p>")
+      + QT_TR_NOOP("Restore the previous Tree view selection. "
+      "Only works if Tree RecordSelection mode is switched on.")
+      + "</p>";
+  sToolTipText = toolTip.c_str();
   sWhatsThis    = "Std_SelBack";
   sStatusTip    = sToolTipText;
   sPixmap       = "sel-back";
@@ -3610,9 +3612,11 @@ StdCmdSelForward::StdCmdSelForward()
 {
   sGroup        = "View";
   sMenuText     = QT_TR_NOOP("Selection Forward");
-  sToolTipText  = QT_TR_NOOP("<p>The Std SelForward command restores the next "
-      "recorded Tree view selection. Note that selections are only recorded if "
-      "Tree RecordSelection mode is switched on.</p>");
+  static std::string toolTip = std::string("<p>")
+      + QT_TR_NOOP("Restore the next Tree view selection. "
+      "Only works if Tree RecordSelection mode is switched on.")
+      + "</p>";
+  sToolTipText = toolTip.c_str();
   sWhatsThis    = "Std_SelForward";
   sStatusTip    = sToolTipText;
   sPixmap       = "sel-forward";

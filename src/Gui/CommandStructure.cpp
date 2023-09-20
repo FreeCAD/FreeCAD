@@ -49,11 +49,13 @@ StdCmdPart::StdCmdPart()
 {
     sGroup        = "Structure";
     sMenuText     = QT_TR_NOOP("Create part");
-    sToolTipText = QT_TR_NOOP("<p>An App::Part is is a general purpose container that keeps together a "
-        "group of objects so that they can be moved together as a unit in the 3D view.\n"
-        "it is meant to arrange objects that have a Part TopoShape, like Part Primitives, PartDesign"
-        " Bodies, and other Part Features. In addition, Std Parts may be nested inside other"
-        " Std Parts to create a big assembly from smaller sub-assemblies.</p>");
+    static std::string toolTip = std::string("<p>")
+        + QT_TR_NOOP("A Part is is a general purpose container to keep together a "
+            "group of objects so that they act as a unit in the 3D view.\n"
+            "It is meant to arrange objects that have a Part TopoShape, like Part Primitives, PartDesign"
+            " Bodies, and other Parts.") 
+        + "</p>";
+    sToolTipText  = toolTip.c_str();
     sWhatsThis    = "Std_Part";
     sStatusTip    = sToolTipText;
     sPixmap       = "Geofeaturegroup";
@@ -94,10 +96,13 @@ StdCmdGroup::StdCmdGroup()
 {
     sGroup        = "Structure";
     sMenuText     = QT_TR_NOOP("Create group");
-    sToolTipText = QT_TR_NOOP("<p>Group is a general purpose container that allows you to "
-        "group different types of objects in the Tree view, regardless of their data type. "
-        "It is used as a simple folder to categorize and organize the objects in your model, "
-        "in order to keep a logical structure. Std Groups may be nested inside other Std Groups.</p>");
+    static std::string toolTip = std::string("<p>")
+        + QT_TR_NOOP("A Group is a general purpose container to group objects in the "
+        "Tree view, regardless of their data type. It is a simple folder to organize "
+        "the objects in a model.")
+        + "</p>";
+    
+    sToolTipText = toolTip.c_str();
     sWhatsThis    = "Std_Group";
     sStatusTip    = sToolTipText;
     sPixmap       = "folder";
