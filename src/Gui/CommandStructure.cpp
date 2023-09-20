@@ -49,7 +49,11 @@ StdCmdPart::StdCmdPart()
 {
     sGroup        = "Structure";
     sMenuText     = QT_TR_NOOP("Create part");
-    sToolTipText  = QT_TR_NOOP("Create a new part and make it active");
+    sToolTipText = QT_TR_NOOP("<p>An App::Part is is a general purpose container that keeps together a "
+        "group of objects so that they can be moved together as a unit in the 3D view.\n"
+        "it is meant to arrange objects that have a Part TopoShape, like Part Primitives, PartDesign"
+        " Bodies, and other Part Features. In addition, Std Parts may be nested inside other"
+        " Std Parts to create a big assembly from smaller sub-assemblies.</p>");
     sWhatsThis    = "Std_Part";
     sStatusTip    = sToolTipText;
     sPixmap       = "Geofeaturegroup";
