@@ -1762,7 +1762,7 @@ les mises à jour disponibles seront vérifiées pour les extensions installées
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="394"/>
       <source>See Report View for detailed failure log.</source>
-      <translation>Reportez-vous à la vue rapport pour plus de détails sur les échecs.</translation>
+      <translation>Voir la Vue rapport pour pour les logs détaillés des défaillances.</translation>
     </message>
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="435"/>
@@ -1915,7 +1915,7 @@ les mises à jour disponibles seront vérifiées pour les extensions installées
       <location filename="../../addonmanager_devmode.py" line="649"/>
       <source>Failed to install Vermin -- check Report View for details.</source>
       <comment>&apos;Vermin&apos; is the name of a Python package, do not translate</comment>
-      <translation>L'installation de Vermin a échoué - consultez la vue rapport pour plus de détails.</translation>
+      <translation>L'installation de Vermin a échoué - voir la Vue rapport pour plus de détails.</translation>
     </message>
     <message>
       <location filename="../../addonmanager_devmode.py" line="664"/>

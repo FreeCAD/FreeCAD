@@ -1107,8 +1107,7 @@ instead of the FreeCAD web workbench</source>
       <location filename="../ui/preferences-ifc.ui" line="54"/>
       <source>Shows verbose debug messages during import and export
 of IFC files in the Report view panel</source>
-      <translation>Afficher les messages de débogage pendant l'import et l'export
-des fichiers IFC dans la vue rapport</translation>
+      <translation>Afficher les messages de débogage pendant l'import et l'export des fichiers IFC dans la Vue rapport</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="58"/>
@@ -4889,7 +4888,7 @@ La création du bâtiment est abandonnée.</translation>
       <translation>Le nombre de poteaux utilisés pour construire la clôture</translation>
     </message>
     <message>
-      <location filename="../../ArchFence.py" line="269"/>
+      <location filename="../../ArchFence.py" line="263"/>
       <source>When true, the fence will be colored like the original post and section.</source>
       <translation>Si mis à vrai, la clôture sera colorée comme le poteau et la section d'origine.</translation>
     </message>
@@ -6270,12 +6269,12 @@ La création du bâtiment est abandonnée.</translation>
   <context>
     <name>Arch_Fence</name>
     <message>
-      <location filename="../../ArchFence.py" line="388"/>
+      <location filename="../../ArchFence.py" line="382"/>
       <source>Fence</source>
       <translation>Clôture</translation>
     </message>
     <message>
-      <location filename="../../ArchFence.py" line="391"/>
+      <location filename="../../ArchFence.py" line="385"/>
       <source>Creates a fence object from a selected section, post and path</source>
       <translation>Créer une clôture à partir de la section sélectionnée, du poteau et du chemin</translation>
     </message>
