@@ -660,7 +660,6 @@ int SketchObject::moveDatumsToEnd()
     return 0;
 }
 
-
 void SketchObject::reverseAngleConstraintToSupplementary(Constraint* constr, int constNum)
 {
     std::swap(constr->First, constr->Second);
@@ -670,27 +669,7 @@ void SketchObject::reverseAngleConstraintToSupplementary(Constraint* constr, int
     // Edit the expression if any, else modify constraint value directly
     if (constraintHasExpression(constNum)) {
         std::string expression = getConstraintExpression(constNum);
-
-        // Check if expression contains units (°, deg, rad)
-        if (expression.find("°") != std::string::npos
-            || expression.find("deg") != std::string::npos
-            || expression.find("rad") != std::string::npos) {
-            if (expression.substr(0, 9) == "180 ° - ") {
-                expression = expression.substr(9, expression.size() - 9);
-            }
-            else {
-                expression = "180 ° - (" + expression + ")";
-            }
-        }
-        else {
-            if (expression.substr(0, 6) == "180 - ") {
-                expression = expression.substr(6, expression.size() - 6);
-            }
-            else {
-                expression = "180 - (" + expression + ")";
-            }
-        }
-        setConstraintExpression(constNum, expression);
+        setConstraintExpression(constNum, reverseAngleConstraintExpression(expression));
     }
     else {
         double actAngle = constr->getValue();
@@ -733,6 +712,30 @@ void SketchObject::setConstraintExpression(int constNum, const std::string& newE
             Base::Console().Error("Failed to set constraint expression.");
         }
     }
+}
+
+std::string SketchObject::reverseAngleConstraintExpression(std::string& expression)
+{
+    // Check if expression contains units (°, deg, rad)
+    if (expression.find("°") != std::string::npos
+        || expression.find("deg") != std::string::npos
+        || expression.find("rad") != std::string::npos) {
+        if (expression.substr(0, 9) == "180 ° - ") {
+            expression = expression.substr(9, expression.size() - 9);
+        }
+        else {
+            expression = "180 ° - (" + expression + ")";
+        }
+    }
+    else {
+        if (expression.substr(0, 6) == "180 - ") {
+            expression = expression.substr(6, expression.size() - 6);
+        }
+        else {
+            expression = "180 - (" + expression + ")";
+        }
+    }
+    return expression;
 }
 
 int SketchObject::setVirtualSpace(int ConstrId, bool isinvirtualspace)
