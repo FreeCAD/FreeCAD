@@ -167,7 +167,7 @@ TEST_F(SketchObjectTest, testGeoIdFromShapeTypeRootPoint)
 TEST_F(SketchObjectTest, testReverseAngleConstraintToSupplementaryExpressionSimple)
 {
     // Arrange
-    auto constraint = new Sketcher::Constraint(); // Ownership will be transferred to the sketch
+    auto constraint = new Sketcher::Constraint();  // Ownership will be transferred to the sketch
     constraint->Type = Sketcher::ConstraintType::Angle;
     auto id = getObject()->addConstraint(constraint);
     getObject()->setConstraintExpression(id, "180 - (60)");
@@ -176,13 +176,13 @@ TEST_F(SketchObjectTest, testReverseAngleConstraintToSupplementaryExpressionSimp
     getObject()->reverseAngleConstraintToSupplementary(constraint, id);
 
     // Assert
-    //EXPECT_EQ(/*expected*/,/*actual*/);
+    // EXPECT_EQ(/*expected*/,/*actual*/);
 }
 
 TEST_F(SketchObjectTest, testReverseAngleConstraintToSupplementaryExpressionApplyAndReverse)
 {
     // Arrange
-    auto constraint = new Sketcher::Constraint(); // Ownership will be transferred to the sketch
+    auto constraint = new Sketcher::Constraint();  // Ownership will be transferred to the sketch
     constraint->Type = Sketcher::ConstraintType::Angle;
     auto id = getObject()->addConstraint(constraint);
     getObject()->setConstraintExpression(id, "180");
@@ -192,5 +192,5 @@ TEST_F(SketchObjectTest, testReverseAngleConstraintToSupplementaryExpressionAppl
     getObject()->reverseAngleConstraintToSupplementary(constraint, id);
 
     // Assert
-    //EXPECT_EQ(/*expected*/,/*actual*/);
+    // EXPECT_EQ(/*expected*/,/*actual*/);
 }
