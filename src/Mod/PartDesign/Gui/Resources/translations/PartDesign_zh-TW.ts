@@ -93,7 +93,7 @@ so that self intersection is avoided.</source>
     <message>
       <location filename="../../../InvoluteGearFeature.py" line="104"/>
       <source>Pressure angle of gear teeth</source>
-      <translation>輪齒壓力角度</translation>
+      <translation>輪齒壓力角</translation>
     </message>
     <message>
       <location filename="../../../InvoluteGearFeature.py" line="108"/>
@@ -3835,7 +3835,7 @@ This feature is broken and can't be edited.</source>
     <message>
       <location filename="../../ViewProviderLoft.cpp" line="66"/>
       <source>Edit loft</source>
-      <translation>編輯拉伸體</translation>
+      <translation>編輯拉伸成形</translation>
     </message>
     <message>
       <location filename="../../ViewProviderPad.cpp" line="46"/>
@@ -5242,7 +5242,7 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed for m
     <message>
       <location filename="../../../App/FeatureLoft.cpp" line="288"/>
       <source>Loft: Adding the loft failed</source>
-      <translation type="unfinished">Loft: Adding the loft failed</translation>
+      <translation>拉伸成形：添加拉伸成形失敗</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureLoft.cpp" line="306"/>

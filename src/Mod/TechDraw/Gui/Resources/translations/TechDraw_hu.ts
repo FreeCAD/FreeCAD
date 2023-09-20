@@ -2141,8 +2141,8 @@
       <translation>Összetett szakasz létrehozása</translation>
     </message>
     <message>
-      <location filename="../../TaskComplexSection.cpp" line="643"/>
-      <location filename="../../TaskSectionView.cpp" line="569"/>
+      <location filename="../../TaskComplexSection.cpp" line="644"/>
+      <location filename="../../TaskSectionView.cpp" line="577"/>
       <source>Edit SectionView</source>
       <translation>Szakasznézet szerkesztés</translation>
     </message>
@@ -3522,8 +3522,8 @@
       <translation>Az alapnézet koordinátái által meghatározott irány megtekintése</translation>
     </message>
     <message>
-      <location filename="../../TaskComplexSection.cpp" line="692"/>
-      <location filename="../../TaskSectionView.cpp" line="618"/>
+      <location filename="../../TaskComplexSection.cpp" line="704"/>
+      <location filename="../../TaskSectionView.cpp" line="638"/>
       <source>Operation Failed</source>
       <translation>Sikertelen művelet</translation>
     </message>
@@ -3830,7 +3830,7 @@ it has a weld symbol that would become broken.</source>
 olyan hegesztési szimbólummal rendelkezik, amely megtörne.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderViewPart.cpp" line="319"/>
+      <location filename="../../ViewProviderViewPart.cpp" line="331"/>
       <source>You cannot delete this view because it has one or more dependent views that would become broken.</source>
       <translation>Nem törölheti ezt a nézetet, mert egy vagy több nézetnek függősége van, amely megszakadna.</translation>
     </message>
@@ -3844,7 +3844,7 @@ olyan hegesztési szimbólummal rendelkezik, amely megtörne.</translation>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="165"/>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="173"/>
       <location filename="../../ViewProviderTemplate.cpp" line="205"/>
-      <location filename="../../ViewProviderViewPart.cpp" line="322"/>
+      <location filename="../../ViewProviderViewPart.cpp" line="334"/>
       <location filename="../../ViewProviderWeld.cpp" line="145"/>
       <source>Object dependencies</source>
       <translation>Objektumfüggőségek</translation>
@@ -6093,11 +6093,12 @@ Szeretné folytatni?</translation>
     </message>
     <message>
       <location filename="../../TaskComplexSection.cpp" line="559"/>
+      <location filename="../../TaskComplexSection.cpp" line="692"/>
       <source>ComplexSection</source>
       <translation type="unfinished">ComplexSection</translation>
     </message>
     <message>
-      <location filename="../../TaskComplexSection.cpp" line="691"/>
+      <location filename="../../TaskComplexSection.cpp" line="703"/>
       <source>Can not continue. Object * %1 or %2 not found.</source>
       <translation>Nem folytatható. * %1 vagy %2 tárgy nem található.</translation>
     </message>
@@ -7868,7 +7869,7 @@ a megadott X/Y távolság használatával</translation>
       <translation>Nincs mit alkalmazni. Még nincs a szakaszirány kiválasztva</translation>
     </message>
     <message>
-      <location filename="../../TaskSectionView.cpp" line="617"/>
+      <location filename="../../TaskSectionView.cpp" line="637"/>
       <source>Can not continue. Object * %1 or %2 not found.</source>
       <translation>Nem folytatható. * %1 vagy %2 tárgy nem található.</translation>
     </message>

@@ -6759,7 +6759,7 @@ Horrek esan nahi du gainjarrita dauden formen bolumenak kendu egingo direla.
     <message>
       <location filename="../../DlgScale.ui" line="22"/>
       <source>X Factor</source>
-      <translation type="unfinished">X Factor</translation>
+      <translation>X faktorea</translation>
     </message>
     <message>
       <location filename="../../DlgScale.ui" line="29"/>
@@ -6769,37 +6769,37 @@ Horrek esan nahi du gainjarrita dauden formen bolumenak kendu egingo direla.
     <message>
       <location filename="../../DlgScale.ui" line="64"/>
       <source>Z Factor</source>
-      <translation type="unfinished">Z Factor</translation>
+      <translation>Z faktorea</translation>
     </message>
     <message>
       <location filename="../../DlgScale.ui" line="71"/>
       <source>Scale the object by a single factor in all directions.</source>
-      <translation type="unfinished">Scale the object by a single factor in all directions.</translation>
+      <translation>Eskalatu objektua faktore bakarraren arabera norabide guztietan.</translation>
     </message>
     <message>
       <location filename="../../DlgScale.ui" line="74"/>
       <source>Uniform Scaling</source>
-      <translation type="unfinished">Uniform Scaling</translation>
+      <translation>Eskalatze uniformea</translation>
     </message>
     <message>
       <location filename="../../DlgScale.ui" line="112"/>
       <source>Y Factor</source>
-      <translation type="unfinished">Y Factor</translation>
+      <translation>Y faktorea</translation>
     </message>
     <message>
       <location filename="../../DlgScale.ui" line="119"/>
       <source>Specify a different scale factor for each cardinal direction.</source>
-      <translation type="unfinished">Specify a different scale factor for each cardinal direction.</translation>
+      <translation>Zehaztu eskala-faktore desberdina norabide kardinal bakoitzerako.</translation>
     </message>
     <message>
       <location filename="../../DlgScale.ui" line="122"/>
       <source>Non-Uniform Scaling</source>
-      <translation type="unfinished">Non-Uniform Scaling</translation>
+      <translation>Eskalatze ez uniformea</translation>
     </message>
     <message>
       <location filename="../../DlgScale.ui" line="195"/>
       <source>Select shape(s) that should be scaled</source>
-      <translation type="unfinished">Select shape(s) that should be scaled</translation>
+      <translation>Hautatu eskalatu behar d(ir)en forma(k)</translation>
     </message>
     <message>
       <location filename="../../DlgScale.ui" line="199"/>
@@ -6807,21 +6807,21 @@ Horrek esan nahi du gainjarrita dauden formen bolumenak kendu egingo direla.
       <translation>Forma</translation>
     </message>
     <message>
-      <location filename="../../DlgScale.cpp" line="195"/>
+      <location filename="../../DlgScale.cpp" line="198"/>
       <source>No scalable shapes selected</source>
-      <translation type="unfinished">No scalable shapes selected</translation>
+      <translation>Ez dira forma eskalagarriak hautatu</translation>
     </message>
     <message>
-      <location filename="../../DlgScale.cpp" line="203"/>
+      <location filename="../../DlgScale.cpp" line="206"/>
       <source>The document '%1' doesn't exist.</source>
       <translation>%1' dokumentua ez da existitzen.</translation>
     </message>
     <message>
-      <location filename="../../DlgScale.cpp" line="251"/>
-      <location filename="../../DlgScale.cpp" line="257"/>
+      <location filename="../../DlgScale.cpp" line="254"/>
+      <location filename="../../DlgScale.cpp" line="260"/>
       <source>Creating Scale failed.
 %1</source>
-      <translation type="unfinished">Creating Scale failed.
+      <translation>Eskala sortzeak huts egin du.
 %1</translation>
     </message>
   </context>
@@ -6840,7 +6840,7 @@ Horrek esan nahi du gainjarrita dauden formen bolumenak kendu egingo direla.
     <message>
       <location filename="../../Command.cpp" line="1309"/>
       <source>Scale a selected shape</source>
-      <translation type="unfinished">Scale a selected shape</translation>
+      <translation>Eskalatu hautatutako forma bat</translation>
     </message>
   </context>
 </TS>

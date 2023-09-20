@@ -1235,12 +1235,12 @@ Wenn Null, ist er gleich Radius2</translation>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="1023"/>
       <source>Radius in local xy-plane</source>
-      <translation>Radius in lokaler XY-Ebene</translation>
+      <translation>Radius auf lokaler XY-Ebene</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="1046"/>
       <source>Radius in local xz-plane</source>
-      <translation>Radius in lokaler XZ-Ebene</translation>
+      <translation>Radius auf lokaler XZ-Ebene</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="1091"/>
@@ -2780,7 +2780,7 @@ entlang der angegebenen Richtung gemessen</translation>
     <message>
       <location filename="../../TaskPolarPatternParameters.ui" line="68"/>
       <source>Reverse direction</source>
-      <translation>Umgekehrte Richtung</translation>
+      <translation>Richtung umkehren</translation>
     </message>
     <message>
       <location filename="../../TaskPolarPatternParameters.ui" line="77"/>
@@ -3112,17 +3112,17 @@ Nochmaliges Klicken beendet den Auswahl-Modus.</translation>
     <message>
       <location filename="../../TaskTransformedParameters.cpp" line="304"/>
       <source>Base XY plane</source>
-      <translation>Basis XY-Ebene</translation>
+      <translation>XY-Basis-Ebene</translation>
     </message>
     <message>
       <location filename="../../TaskTransformedParameters.cpp" line="305"/>
       <source>Base YZ plane</source>
-      <translation>Basis YZ-Ebene</translation>
+      <translation>YZ-Basis-Ebene</translation>
     </message>
     <message>
       <location filename="../../TaskTransformedParameters.cpp" line="306"/>
       <source>Base XZ plane</source>
-      <translation>Basis XZ-Ebene</translation>
+      <translation>XZ-Basis-Ebene</translation>
     </message>
   </context>
   <context>

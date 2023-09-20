@@ -1838,7 +1838,7 @@ Flächenwinkel &lt; SickenWinkel, wird glattes Schattieren angewendet</translati
       <location filename="../../Segmentation.ui" line="206"/>
       <location filename="../../Segmentation.ui" line="303"/>
       <source>Minimum number of faces</source>
-      <translation>Minimale Anzahl von Dreiecken</translation>
+      <translation>Mindestanzahl von Dreiecken</translation>
     </message>
     <message>
       <location filename="../../Segmentation.ui" line="83"/>
@@ -1913,7 +1913,7 @@ Flächenwinkel &lt; SickenWinkel, wird glattes Schattieren angewendet</translati
       <location filename="../../SegmentationBestFit.ui" line="106"/>
       <location filename="../../SegmentationBestFit.ui" line="159"/>
       <source>Minimum number of faces</source>
-      <translation>Minimale Anzahl von Dreiecken</translation>
+      <translation>Mindestanzahl von Dreiecken</translation>
     </message>
     <message>
       <location filename="../../SegmentationBestFit.ui" line="73"/>

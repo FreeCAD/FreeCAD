@@ -2166,8 +2166,8 @@
       <translation>Utwórz przekrój złożony</translation>
     </message>
     <message>
-      <location filename="../../TaskComplexSection.cpp" line="643"/>
-      <location filename="../../TaskSectionView.cpp" line="569"/>
+      <location filename="../../TaskComplexSection.cpp" line="644"/>
+      <location filename="../../TaskSectionView.cpp" line="577"/>
       <source>Edit SectionView</source>
       <translation>Edytuj widok przekroju</translation>
     </message>
@@ -3547,8 +3547,8 @@
       <translation>Kierunek widoku określony współrzędnymi Widoku podstawowego</translation>
     </message>
     <message>
-      <location filename="../../TaskComplexSection.cpp" line="692"/>
-      <location filename="../../TaskSectionView.cpp" line="618"/>
+      <location filename="../../TaskComplexSection.cpp" line="704"/>
+      <location filename="../../TaskSectionView.cpp" line="638"/>
       <source>Operation Failed</source>
       <translation>Operacja nie powiodła się</translation>
     </message>
@@ -3855,7 +3855,7 @@ it has a weld symbol that would become broken.</source>
 zawiera symbol spoiny który zostałby uszkodzony.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderViewPart.cpp" line="319"/>
+      <location filename="../../ViewProviderViewPart.cpp" line="331"/>
       <source>You cannot delete this view because it has one or more dependent views that would become broken.</source>
       <translation>Nie można usunąć tego widoku, ponieważ ma on co najmniej jeden obiekt zależny, który zostałby uszkodzony.</translation>
     </message>
@@ -3869,7 +3869,7 @@ zawiera symbol spoiny który zostałby uszkodzony.</translation>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="165"/>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="173"/>
       <location filename="../../ViewProviderTemplate.cpp" line="205"/>
-      <location filename="../../ViewProviderViewPart.cpp" line="322"/>
+      <location filename="../../ViewProviderViewPart.cpp" line="334"/>
       <location filename="../../ViewProviderWeld.cpp" line="145"/>
       <source>Object dependencies</source>
       <translation>Zależności obiektu</translation>
@@ -5631,7 +5631,7 @@ Czy chcesz kontynuować?</translation>
     <message>
       <location filename="../../MDIViewPage.cpp" line="537"/>
       <source>Save PDF file</source>
-      <translation type="unfinished">Save PDF file</translation>
+      <translation>Zapisz plik PDF</translation>
     </message>
     <message>
       <location filename="../../MDIViewPage.cpp" line="538"/>
@@ -6125,11 +6125,12 @@ Czy chcesz kontynuować?</translation>
     </message>
     <message>
       <location filename="../../TaskComplexSection.cpp" line="559"/>
+      <location filename="../../TaskComplexSection.cpp" line="692"/>
       <source>ComplexSection</source>
       <translation>Przekrój złożony</translation>
     </message>
     <message>
-      <location filename="../../TaskComplexSection.cpp" line="691"/>
+      <location filename="../../TaskComplexSection.cpp" line="703"/>
       <source>Can not continue. Object * %1 or %2 not found.</source>
       <translation>Nie można kontynuować. Obiekt * %1 lub %2 nie został znaleziony.</translation>
     </message>
@@ -7901,7 +7902,7 @@ przy użyciu podanego odstępu X/Y</translation>
       <translation>Nie ma nic do zastosowania. Nie wybrano jeszcze kierunku widoku dla przekroju</translation>
     </message>
     <message>
-      <location filename="../../TaskSectionView.cpp" line="617"/>
+      <location filename="../../TaskSectionView.cpp" line="637"/>
       <source>Can not continue. Object * %1 or %2 not found.</source>
       <translation>Nie można kontynuować. Obiekt * %1 lub %2 nie został znaleziony.</translation>
     </message>

@@ -134,12 +134,12 @@
     <message>
       <location filename="../../Command.cpp" line="1418"/>
       <source>Insert Arch Workbench Object</source>
-      <translation>Vložit objekt pracovního prostředí Arch</translation>
+      <translation>Vložit objekt pracovního prostředí architektury</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1419"/>
       <source>Insert a View of a Section Plane from Arch Workbench</source>
-      <translation>Vložit pohled roviny řezu z pracovního prostředí Arch</translation>
+      <translation>Vloží pohled roviny řezu z pracovního prostředí architektury</translation>
     </message>
   </context>
   <context>
@@ -152,7 +152,7 @@
     <message>
       <location filename="../../Command.cpp" line="1043"/>
       <source>Insert Balloon Annotation</source>
-      <translation>Vloží balonový popisek</translation>
+      <translation>Vloží balonovou poznámku</translation>
     </message>
   </context>
   <context>
@@ -341,12 +341,12 @@
     <message>
       <location filename="../../Command.cpp" line="1354"/>
       <source>Insert Draft Workbench Object</source>
-      <translation>Vložit objekt pracovního prostředí Draft</translation>
+      <translation>Vložit objekt pracovního prostředí návrhu</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1355"/>
       <source>Insert a View of a Draft Workbench object</source>
-      <translation>Vložit zobrazení objektu z pracovního prostředí Draft</translation>
+      <translation>Vloží pohled na objekt z pracovního prostředí návrhu</translation>
     </message>
   </context>
   <context>
@@ -436,7 +436,7 @@
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1081"/>
       <source>Evenly space horizontal dimensions:&lt;br&gt;- Specify the cascade spacing (optional)&lt;br&gt;- Select two or more horizontal dimensions&lt;br&gt;- The first dimension defines the position&lt;br&gt;- Click this tool</source>
-      <translation>Rovnoměrné rozmístění horizontálních rozměrů:&lt;br&gt;- Zadejte kaskádové rozmístění (volitelné)&lt;br&gt;- Vyberte dva nebo více horizontálních rozměrů&lt;br&gt;- První rozměr určuje polohu&lt;br&gt;- Klikněte na tento nástroj</translation>
+      <translation>Rovnoměrné rozmístění vodorovných rozměrů:&lt;br&gt;- Zadejte kaskádové rozmístění (volitelné)&lt;br&gt;- Vyberte dva nebo více vodorovných rozměrů&lt;br&gt;- První rozměr určuje polohu&lt;br&gt;- Klikněte na tento nástroj</translation>
     </message>
   </context>
   <context>
@@ -456,7 +456,7 @@
       <location filename="../../CommandExtensionDims.cpp" line="903"/>
       <location filename="../../CommandExtensionDims.cpp" line="1157"/>
       <source>Evenly space horizontal dimensions:&lt;br&gt;- Specify the cascade spacing (optional)&lt;br&gt;- Select two or more horizontal dimensions&lt;br&gt;- The first dimension defines the position&lt;br&gt;- Click this tool</source>
-      <translation>Rovnoměrné rozmístění horizontálních rozměrů:&lt;br&gt;- Zadejte kaskádové rozmístění (volitelné)&lt;br&gt;- Vyberte dva nebo více horizontálních rozměrů&lt;br&gt;- První rozměr určuje polohu&lt;br&gt;- Klikněte na tento nástroj</translation>
+      <translation>Rovnoměrné rozmístění vodorovných rozměrů:&lt;br&gt;- Zadejte kaskádové rozmístění (volitelné)&lt;br&gt;- Vyberte dva nebo více vodorovných rozměrů&lt;br&gt;- První rozměr určuje polohu&lt;br&gt;- Klikněte na tento nástroj</translation>
     </message>
   </context>
   <context>
@@ -476,7 +476,7 @@
       <location filename="../../CommandExtensionDims.cpp" line="1045"/>
       <location filename="../../CommandExtensionDims.cpp" line="1175"/>
       <source>Evenly space oblique dimensions:&lt;br&gt;- Specify the cascade spacing (optional)&lt;br&gt;- Select two or more parallel oblique dimensions&lt;br&gt;- The first dimension defines the position&lt;br&gt;- Click this tool</source>
-      <translation>Rozměry dvojité kliky:&lt;br&gt;- Určete mezeru mezi kaskádami (volitelné)&lt;br&gt;- Vyberte dva nebo více paralelních rozměrů lomu&lt;br&gt;- První rozměr definuje pozici&lt;br&gt;- Klikněte na tento nástroj</translation>
+      <translation>Rovnoměrné rozmístění šikmých rozměrů:&lt;br&gt;- Zadejte kaskádové rozmístění (volitelné)&lt;br&gt;- Vyberte dva nebo více šikmých paralelních rozměrů&lt;br&gt;- První rozměr určuje polohu&lt;br&gt;- Klikněte na tento nástroj</translation>
     </message>
   </context>
   <context>
@@ -496,7 +496,7 @@
       <location filename="../../CommandExtensionDims.cpp" line="970"/>
       <location filename="../../CommandExtensionDims.cpp" line="1166"/>
       <source>Evenly space vertical dimensions:&lt;br&gt;- Specify the cascade spacing (optional)&lt;br&gt;- Select two or more vertical dimensions&lt;br&gt;- The first dimension defines the position&lt;br&gt;- Click this tool</source>
-      <translation>Svislé rozměry prostoru ve svislém směru:&lt;br&gt;- Určete mezeru mezi kaskádami (volitelné)&lt;br&gt;- Vyberte dva nebo více vertikálních rozměrů&lt;br&gt;- První rozměr definuje pozici&lt;br&gt;- klikněte na tento nástroj</translation>
+      <translation>Rovnoměrné rozmístění svislých rozměrů:&lt;br&gt;- Zadejte kaskádové rozmístění (volitelné)&lt;br&gt;- Vyberte dva nebo více svislých rozměrů&lt;br&gt;- První rozměr určuje polohu&lt;br&gt;- Klikněte na tento nástroj</translation>
     </message>
   </context>
   <context>
@@ -1168,7 +1168,7 @@
       <location filename="../../CommandExtensionDims.cpp" line="718"/>
       <location filename="../../CommandExtensionDims.cpp" line="844"/>
       <source>Position Oblique Chain Dimensions</source>
-      <translation>Rozměry segmentu pozice</translation>
+      <translation>Poloha šikmého řetězce</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="719"/>
@@ -2001,7 +2001,7 @@
     <message>
       <location filename="../../Command.cpp" line="1390"/>
       <source>Create DraftView</source>
-      <translation>Vytvořit Draft pohled</translation>
+      <translation>Vytvořit pohled návrhu</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1464"/>
@@ -2141,8 +2141,8 @@
       <translation type="unfinished">Create ComplexSection</translation>
     </message>
     <message>
-      <location filename="../../TaskComplexSection.cpp" line="643"/>
-      <location filename="../../TaskSectionView.cpp" line="569"/>
+      <location filename="../../TaskComplexSection.cpp" line="644"/>
+      <location filename="../../TaskSectionView.cpp" line="577"/>
       <source>Edit SectionView</source>
       <translation type="unfinished">Edit SectionView</translation>
     </message>
@@ -3435,14 +3435,14 @@
     <message>
       <location filename="../../TaskRichAnno.cpp" line="140"/>
       <source>Rich text creator</source>
-      <translation>Rozšířený editor textu</translation>
+      <translation>Editor rozsáhlého textu</translation>
     </message>
     <message>
       <location filename="../../QGIRichAnno.cpp" line="323"/>
       <location filename="../../TaskRichAnno.cpp" line="102"/>
       <location filename="../../TaskRichAnno.cpp" line="240"/>
       <source>Rich text editor</source>
-      <translation>Rozšířený editor textu</translation>
+      <translation>Editor rozsáhlého textu</translation>
     </message>
     <message>
       <location filename="../../TaskCosVertex.cpp" line="109"/>
@@ -3522,8 +3522,8 @@
       <translation type="unfinished">The view direction in BaseView coordinates</translation>
     </message>
     <message>
-      <location filename="../../TaskComplexSection.cpp" line="692"/>
-      <location filename="../../TaskSectionView.cpp" line="618"/>
+      <location filename="../../TaskComplexSection.cpp" line="704"/>
+      <location filename="../../TaskSectionView.cpp" line="638"/>
       <source>Operation Failed</source>
       <translation>Operace se nezdařila</translation>
     </message>
@@ -3829,7 +3829,7 @@ it has a weld symbol that would become broken.</source>
       <translation>Nemůžete smazat tento odkaz, protože obsahuje symbol svaru, který by se rozbil.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderViewPart.cpp" line="319"/>
+      <location filename="../../ViewProviderViewPart.cpp" line="331"/>
       <source>You cannot delete this view because it has one or more dependent views that would become broken.</source>
       <translation>Nemůžete smazat tento názor, protože má jeden nebo více závislých názorů, které by byly porušeny.</translation>
     </message>
@@ -3843,7 +3843,7 @@ it has a weld symbol that would become broken.</source>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="165"/>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="173"/>
       <location filename="../../ViewProviderTemplate.cpp" line="205"/>
-      <location filename="../../ViewProviderViewPart.cpp" line="322"/>
+      <location filename="../../ViewProviderViewPart.cpp" line="334"/>
       <location filename="../../ViewProviderWeld.cpp" line="145"/>
       <source>Object dependencies</source>
       <translation>Závislosti objektu</translation>
@@ -4375,7 +4375,7 @@ při vylíhnutí plochy s modelem PAT</translation>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="20"/>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="32"/>
       <source>Annotation</source>
-      <translation>Vysvětlivka</translation>
+      <translation>Poznámka</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="296"/>
@@ -4538,7 +4538,7 @@ při vylíhnutí plochy s modelem PAT</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="555"/>
       <source>Shape of balloon annotations</source>
-      <translation type="unfinished">Shape of balloon annotations</translation>
+      <translation>Tvar balonových poznámek</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="565"/>
@@ -6095,11 +6095,12 @@ Chcete pokračovat?</translation>
     </message>
     <message>
       <location filename="../../TaskComplexSection.cpp" line="559"/>
+      <location filename="../../TaskComplexSection.cpp" line="692"/>
       <source>ComplexSection</source>
       <translation type="unfinished">ComplexSection</translation>
     </message>
     <message>
-      <location filename="../../TaskComplexSection.cpp" line="691"/>
+      <location filename="../../TaskComplexSection.cpp" line="703"/>
       <source>Can not continue. Object * %1 or %2 not found.</source>
       <translation type="unfinished">Can not continue. Object * %1 or %2 not found.</translation>
     </message>
@@ -6125,12 +6126,12 @@ Chcete pokračovat?</translation>
     <message>
       <location filename="../../TaskCosVertex.ui" line="95"/>
       <source>Position from the view center</source>
-      <translation type="unfinished">Position from the view center</translation>
+      <translation>Pozice ze středu pohledu</translation>
     </message>
     <message>
       <location filename="../../TaskCosVertex.ui" line="98"/>
       <source>Position</source>
-      <translation type="unfinished">Position</translation>
+      <translation>Poloha</translation>
     </message>
     <message>
       <location filename="../../TaskCosVertex.ui" line="106"/>
@@ -6282,7 +6283,7 @@ Chcete pokračovat?</translation>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="156"/>
       <source>Position</source>
-      <translation type="unfinished">Position</translation>
+      <translation>Poloha</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="166"/>
@@ -6550,7 +6551,7 @@ Chcete pokračovat?</translation>
     <message>
       <location filename="../../TaskDetail.ui" line="80"/>
       <source>Click to drag detail highlight to new position</source>
-      <translation type="unfinished">Click to drag detail highlight to new position</translation>
+      <translation>Kliknutím přetáhnete zvýraznění detailu na novou polohu</translation>
     </message>
     <message>
       <location filename="../../TaskDetail.ui" line="83"/>
@@ -6566,7 +6567,7 @@ Chcete pokračovat?</translation>
     <message>
       <location filename="../../TaskDetail.ui" line="134"/>
       <source>x position of detail highlight within view</source>
-      <translation type="unfinished">x position of detail highlight within view</translation>
+      <translation>poloha x detailního zvýraznění v pohledu</translation>
     </message>
     <message>
       <location filename="../../TaskDetail.ui" line="153"/>
@@ -6576,7 +6577,7 @@ Chcete pokračovat?</translation>
     <message>
       <location filename="../../TaskDetail.ui" line="160"/>
       <source>y position of detail highlight within view</source>
-      <translation type="unfinished">y position of detail highlight within view</translation>
+      <translation>poloha y detailního zvýraznění v pohledu</translation>
     </message>
     <message>
       <location filename="../../TaskDetail.ui" line="176"/>
@@ -7635,7 +7636,7 @@ using the given X/Y Spacing</translation>
     <message>
       <location filename="../../TaskRichAnno.ui" line="26"/>
       <source>Rich Text Annotation Block</source>
-      <translation>Blok rozšířené textové poznámky</translation>
+      <translation>Blok rozsáhlé textové poznámky</translation>
     </message>
     <message>
       <location filename="../../TaskRichAnno.ui" line="53"/>
@@ -7655,7 +7656,7 @@ using the given X/Y Spacing</translation>
     <message>
       <location filename="../../TaskRichAnno.ui" line="102"/>
       <source>Start Rich Text Editor</source>
-      <translation>Otevřít rozšířený textový editor</translation>
+      <translation>Otevřít editor rozsáhlého textu</translation>
     </message>
     <message>
       <location filename="../../TaskRichAnno.ui" line="121"/>
@@ -7725,12 +7726,12 @@ using the given X/Y Spacing</translation>
     <message>
       <location filename="../../TaskRichAnno.cpp" line="181"/>
       <source>Input the annotation text directly or start the rich text editor</source>
-      <translation type="unfinished">Input the annotation text directly or start the rich text editor</translation>
+      <translation>Vložte text poznámky přímo nebo spusťte editor rozsáhlého textu</translation>
     </message>
     <message>
       <location filename="../../TaskRichAnno.cpp" line="283"/>
       <source>RichTextAnnotation</source>
-      <translation type="unfinished">RichTextAnnotation</translation>
+      <translation>RozsáhláTextováPoznámka</translation>
     </message>
   </context>
   <context>
@@ -7843,7 +7844,7 @@ using the given X/Y Spacing</translation>
     <message>
       <location filename="../../TaskSectionView.ui" line="316"/>
       <source>Position from the 3D origin of the object in the view</source>
-      <translation type="unfinished">Position from the 3D origin of the object in the view</translation>
+      <translation>Poloha z počátku 3D objektu v pohledu</translation>
     </message>
     <message>
       <location filename="../../TaskSectionView.ui" line="319"/>
@@ -7871,7 +7872,7 @@ using the given X/Y Spacing</translation>
       <translation type="unfinished">Nothing to apply. No section direction picked yet</translation>
     </message>
     <message>
-      <location filename="../../TaskSectionView.cpp" line="617"/>
+      <location filename="../../TaskSectionView.cpp" line="637"/>
       <source>Can not continue. Object * %1 or %2 not found.</source>
       <translation type="unfinished">Can not continue. Object * %1 or %2 not found.</translation>
     </message>
@@ -8420,7 +8421,7 @@ using the given X/Y Spacing</translation>
     <message>
       <location filename="../../Workbench.cpp" line="48"/>
       <source>TechDraw Annotation</source>
-      <translation type="unfinished">TechDraw Annotation</translation>
+      <translation>TechDraw poznámka</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="60"/>
@@ -8649,7 +8650,7 @@ using the given X/Y Spacing</translation>
     <message>
       <location filename="../../../TechDrawTools/CommandHoleShaftFit.py" line="43"/>
       <source>Add hole or shaft fit</source>
-      <translation>Přidat uložení otvoru nebo hřídele</translation>
+      <translation>Přidat díru nebo uložení hřídele</translation>
     </message>
     <message>
       <location filename="../../../TechDrawTools/CommandHoleShaftFit.py" line="50"/>
@@ -8658,11 +8659,11 @@ using the given X/Y Spacing</translation>
                 - click the tool button, a panel opens&lt;br&gt;
                 - select shaft fit / hole fit&lt;br&gt;
                 - select the desired ISO 286 fit field using the combo box</source>
-      <translation type="unfinished">Add a hole or shaft fit to a dimension&lt;br&gt;
-                - select one length dimension or diameter dimension&lt;br&gt;
-                - click the tool button, a panel opens&lt;br&gt;
-                - select shaft fit / hole fit&lt;br&gt;
-                - select the desired ISO 286 fit field using the combo box</translation>
+      <translation>Přidat díru nebo uložení hřídele do rozměru&lt;br&gt;
+                - vyberte jeden rozměr délky nebo rozměr průměru&lt;br&gt;
+                - klikněte na tlačítko nástroje, otevře se panel&lt;br&gt;
+                - vyberte požadovanou položku pro umístění hřídele / díry&lt;br&gt;
+                - vyberte požadované pole ISO 286 pomocí kompaktního boxu</translation>
     </message>
     <message>
       <location filename="../../../TechDrawTools/TaskHoleShaftFit.py" line="42"/>
@@ -8865,7 +8866,7 @@ je zde otevřený dialog.</translation>
     <message>
       <location filename="../../../App/DrawView.cpp" line="63"/>
       <source>Annotation</source>
-      <translation>Vysvětlivka</translation>
+      <translation>Poznámka</translation>
     </message>
   </context>
   <context>
@@ -8897,7 +8898,7 @@ je zde otevřený dialog.</translation>
     <message>
       <location filename="../../../App/DrawView.cpp" line="67"/>
       <source>Draft</source>
-      <translation>Ponor</translation>
+      <translation>Zkosení</translation>
     </message>
   </context>
   <context>

@@ -198,7 +198,7 @@ Czy chcesz, aby Menadżer dodatków zainstalował je automatycznie? Wybierz "Zig
     <message>
       <location filename="../../developer_mode.ui" line="166"/>
       <source>TIP: Since this is displayed within FreeCAD, in the Addon Manager, it is not necessary to take up space saying things like &quot;This is a FreeCAD Addon...&quot; -- just say what it does.</source>
-      <translation>Wskazówka: ponieważ jest to wyświetlane w programie FreeCAD, w Menedżerze Dodatków, nie jest konieczne zajmowanie miejsca informacjami takimi jak &quot;To jest dodatek do programu FreeCAD...&quot; -- po prostu powiedz co on robi.</translation>
+      <translation>Wskazówka: ponieważ jest to wyświetlane w programie FreeCAD, w Menedżerze Dodatków, nie jest konieczne zajmowanie miejsca informacjami takimi jak "To jest dodatek do programu FreeCAD..." -- po prostu powiedz, co on robi.</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="173"/>
