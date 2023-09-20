@@ -568,7 +568,7 @@ Ceci ne fonctionne que si "Réseau lié" est désactivé.</translation>
       <source>If checked, the resulting object will be a "Link array" instead of a regular array.
 A Link array is more efficient when creating multiple copies, but it cannot be fused together.</source>
       <translation>Si coché, l'objet résultant sera un "Réseau lié" au lieu d'un réseau normal.
-Un réseau lié est plus efficace lors de la création de plusieurs copies mais il ne peut pas être fusionné.</translation>
+Un réseau lié est plus efficace lors de la création de plusieurs copies, mais il ne peut pas être fusionné.</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="418"/>
@@ -615,7 +615,7 @@ Il doit être au moins égal à 2.</translation>
       <location filename="../ui/TaskPanel_PolarArray.ui" line="116"/>
       <source>The coordinates of the point through which the axis of rotation passes.
 Change the direction of the axis itself in the property editor.</source>
-      <translation>Coordonnées du point par lequel passe l’axe de rotation.
+      <translation>Coordonnées du point à travers lequel passe l’axe de rotation.
 Changer la direction de l’axe lui-même dans l’éditeur de propriété.</translation>
     </message>
     <message>
@@ -665,12 +665,12 @@ Ceci ne fonctionne que si "Réseau lié" est désactivé.</translation>
       <source>If checked, the resulting object will be a "Link array" instead of a regular array.
 A Link array is more efficient when creating multiple copies, but it cannot be fused together.</source>
       <translation>Si coché, l'objet résultant sera un "Réseau lié" au lieu d'un réseau normal.
-Un réseau lié est plus efficace lors de la création de plusieurs copies, mais il ne peut pas être fusionné.</translation>
+Un réseau lié est plus efficace lors de la création de plusieurs copies mais il ne peut pas être fusionné.</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_PolarArray.ui" line="220"/>
       <source>Link array</source>
-      <translation>Réseau lié</translation>
+      <translation>Réseau de liens</translation>
     </message>
   </context>
   <context>
@@ -1142,7 +1142,7 @@ en utilisant les touches [ et ] lors du dessin</translation>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="314"/>
       <source>Tick</source>
-      <translation>Cocher</translation>
+      <translation>Oblique </translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="319"/>
@@ -1566,17 +1566,17 @@ Notez que ce n'est pas entièrement supporté et que de nombreux objets ne seron
       <translation>Textes et dimensions</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-drafttexts.ui" line="26"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="35"/>
       <source>Text settings</source>
       <translation>Paramètres pour le texte</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-drafttexts.ui" line="34"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="43"/>
       <source>Font family</source>
       <translation>Famille de polices</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-drafttexts.ui" line="47"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="56"/>
       <source>This is the default font name for all Draft texts and dimensions.
 It can be a font name such as "Arial", a default style such as "sans", "serif"
 or "mono", or a family such as "Arial,Helvetica,sans" or a name with a style
@@ -1587,184 +1587,194 @@ d'un nom de police comme "Arial", un style par défaut tel que "sans", "serif" o
 comme "Arial:Bold"</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-drafttexts.ui" line="59"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="68"/>
       <source>Internal font</source>
       <translation>Police interne</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-drafttexts.ui" line="76"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="85"/>
       <source>Font size</source>
-      <translation>Taille de police</translation>
+      <translation>Taille de la police</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-drafttexts.ui" line="89"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="98"/>
       <source>Default height for texts and dimensions</source>
       <translation>Hauteur par défaut pour les textes et les cotes</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-drafttexts.ui" line="92"/>
-      <location filename="../ui/preferences-drafttexts.ui" line="211"/>
-      <location filename="../ui/preferences-drafttexts.ui" line="247"/>
-      <location filename="../ui/preferences-drafttexts.ui" line="283"/>
-      <location filename="../ui/preferences-drafttexts.ui" line="365"/>
-      <location filename="../ui/preferences-drafttexts.ui" line="432"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="101"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="220"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="256"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="292"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="374"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="441"/>
       <location filename="../ui/preferences-dxf.ui" line="535"/>
       <location filename="../ui/preferences-svg.ui" line="209"/>
       <source>mm</source>
       <translation>mm</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-drafttexts.ui" line="116"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="125"/>
       <source>Dimension settings</source>
       <translation>Paramètres pour les dimensions</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-drafttexts.ui" line="124"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="133"/>
       <source>Display mode</source>
       <translation>Mode d'affichage</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-drafttexts.ui" line="144"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="153"/>
       <source>World</source>
       <translation>Monde</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-drafttexts.ui" line="149"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="158"/>
       <source>Screen</source>
       <translation>Écran</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-drafttexts.ui" line="161"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="170"/>
       <source>Number of decimals</source>
       <translation>Nombre de décimales</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-drafttexts.ui" line="201"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="210"/>
       <source>Extension lines size</source>
       <translation>Taille des lignes d'extension</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-drafttexts.ui" line="208"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="217"/>
       <source>The default size of dimensions extension lines</source>
       <translation>Taille par défaut des lignes d'extension des dimensions</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-drafttexts.ui" line="237"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="246"/>
       <source>Extension line overshoot</source>
       <translation>Dépassement des lignes d'extension</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-drafttexts.ui" line="244"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="253"/>
       <source>The default length of extension line above dimension line</source>
       <translation>La longueur par défaut de la ligne d'extension au-dessus de ligne de la dimension</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-drafttexts.ui" line="273"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="282"/>
       <source>Dimension line overshoot</source>
       <translation>Dépassement des lignes de dimension</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-drafttexts.ui" line="280"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="289"/>
       <source>The default distance the dimension line is extended past extension lines</source>
       <translation>La distance par défaut à laquelle la ligne de la dimension est prolongée au-delà des lignes d'extension</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-drafttexts.ui" line="309"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="318"/>
       <source>Arrows style</source>
       <translation>Style des flèches</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-drafttexts.ui" line="323"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="332"/>
       <source>Dot</source>
       <translation>Point</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-drafttexts.ui" line="328"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="337"/>
       <source>Circle</source>
       <translation>Cercle</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-drafttexts.ui" line="333"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="342"/>
       <source>Arrow</source>
       <translation>Flèche</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-drafttexts.ui" line="338"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="347"/>
       <source>Tick</source>
-      <translation>Oblique </translation>
+      <translation>Cocher</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-drafttexts.ui" line="343"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="352"/>
       <source>Tick-2</source>
       <translation>Oblique 2</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-drafttexts.ui" line="355"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="364"/>
       <source>Arrows size</source>
       <translation>Taille des flèches</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-drafttexts.ui" line="362"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="371"/>
       <source>The default size of arrows</source>
       <translation>Taille des flèches par défaut</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-drafttexts.ui" line="388"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="397"/>
       <source>Text orientation</source>
       <translation>Orientation du texte</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-drafttexts.ui" line="395"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="404"/>
       <source>This is the orientation of the dimension texts when those dimensions are vertical. Default is left, which is the ISO standard.</source>
       <translation>Il s'agit de l'orientation du texte des cotes verticales. Par défaut elle est à gauche, qui est la norme ISO.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-drafttexts.ui" line="405"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="414"/>
       <source>Left (ISO standard)</source>
       <translation>Gauche (norme ISO)</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-drafttexts.ui" line="410"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="419"/>
       <source>Right</source>
       <translation>Droit</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-drafttexts.ui" line="422"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="431"/>
       <source>Text spacing</source>
       <translation>Espacement du texte</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-drafttexts.ui" line="429"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="438"/>
       <source>The space between the dimension line and the dimension text</source>
       <translation>L'espacement entre la ligne de la dimension et le texte de la dimension</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-drafttexts.ui" line="455"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="464"/>
       <source>Show the unit suffix in dimensions</source>
       <translation>Afficher le suffixe de l'unité aux dimensions</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-drafttexts.ui" line="475"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="484"/>
       <source>Override unit</source>
       <translation>Remplacer l'unité</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-drafttexts.ui" line="495"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="504"/>
       <source>By leaving this field blank, the dimension measurements will be shown in the current unit defined in FreeCAD. By indicating a unit here such as m or cm, you can force new dimensions to be shown in that unit.</source>
       <translation>En laissant ce champ vide, les mesures des dimensions seront affichées avec l'unité en cours définie dans FreeCAD. En indiquant ici une unité telle que m ou cm, vous pouvez forcer l'affichage des nouvelles dimensions avec cette unité.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-drafttexts.ui" line="513"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="521"/>
+      <source>Feet separator</source>
+      <translation type="unfinished">Feet separator</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-drafttexts.ui" line="541"/>
+      <source>Optional string to appear between the feet and inches values in dimensions</source>
+      <translation type="unfinished">Optional string to appear between the feet and inches values in dimensions</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-drafttexts.ui" line="559"/>
       <source>ShapeString settings</source>
       <translation>Paramètres pour les Formes à partir de texte</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-drafttexts.ui" line="521"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="567"/>
       <source>Default ShapeString font file</source>
       <translation>Fichier de la police par défaut de Formes à partir de texte</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-drafttexts.ui" line="534"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="580"/>
       <source>Select a font file</source>
       <translation>Sélectionnez un fichier de police</translation>
     </message>
@@ -3252,7 +3262,7 @@ Essayez de déplacer le fichier DWG vers un chemin de répertoire sans espaces n
       <translation>Les formes sélectionnées doivent définir un plan</translation>
     </message>
     <message>
-      <location filename="../../importDXF.py" line="152"/>
+      <location filename="../../importDXF.py" line="153"/>
       <source>The DXF import/export libraries needed by FreeCAD to handle
 the DXF format were not found on this system.
 Please either enable FreeCAD to download these libraries:
@@ -4553,7 +4563,7 @@ L'angle final sera l'angle de base plus cette quantité.</translation>
       <location filename="../../drafttaskpanels/task_orthoarray.py" line="269"/>
       <location filename="../../drafttaskpanels/task_orthoarray.py" line="396"/>
       <source>Orthogonal array</source>
-      <translation>Réseau orthogonal</translation>
+      <translation>Matrice orthogonale</translation>
     </message>
     <message>
       <location filename="../../drafttaskpanels/task_orthoarray.py" line="205"/>
@@ -5428,7 +5438,7 @@ L'angle final sera l'angle de base plus cette quantité.</translation>
   <context>
     <name>Draft</name>
     <message>
-      <location filename="../../importDXF.py" line="135"/>
+      <location filename="../../importDXF.py" line="136"/>
       <source>Download of dxf libraries failed.
 Please install the dxf Library addon manually
 from menu Tools -&gt; Addon Manager</source>
@@ -5604,12 +5614,12 @@ Installer l’extension de la bibliothèque dxf manuellement depuis le menu Outi
     <message>
       <location filename="../../draftguitools/gui_layers.py" line="280"/>
       <source>Draw style</source>
-      <translation>Style de représentation</translation>
+      <translation>Style de dessin</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_layers.py" line="281"/>
       <source>Line color</source>
-      <translation>Couleur des lignes</translation>
+      <translation>Couleur de la ligne</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_layers.py" line="282"/>
@@ -5721,12 +5731,12 @@ Installer l’extension de la bibliothèque dxf manuellement depuis le menu Outi
   <context>
     <name>ImportSVG</name>
     <message>
-      <location filename="../../importSVG.py" line="1815"/>
+      <location filename="../../importSVG.py" line="1821"/>
       <source>Unknown SVG export style, switching to Translated</source>
       <translation>Style d'exportation SVG inconnu, changer de méthode</translation>
     </message>
     <message>
-      <location filename="../../importSVG.py" line="1835"/>
+      <location filename="../../importSVG.py" line="1841"/>
       <source>The export list contains no object with a valid bounding box</source>
       <translation>La liste d'exportation ne contient aucun objet avec une boite englobante valide</translation>
     </message>
@@ -8022,12 +8032,12 @@ des propriétés du "premier angle" et du "dernier angle".</translation>
     <message>
       <location filename="../../draftviewproviders/view_draft_annotation.py" line="153"/>
       <source>Line width</source>
-      <translation>Épaisseur de trait</translation>
+      <translation>Largeur de ligne</translation>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_draft_annotation.py" line="160"/>
       <source>Line color</source>
-      <translation>Couleur de ligne</translation>
+      <translation>Couleur des lignes</translation>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_base.py" line="108"/>
@@ -8092,7 +8102,7 @@ des propriétés du "premier angle" et du "dernier angle".</translation>
     <message>
       <location filename="../../draftviewproviders/view_draft_annotation.py" line="132"/>
       <source>Font size</source>
-      <translation>Taille de la police</translation>
+      <translation>Taille de police</translation>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_dimension.py" line="125"/>

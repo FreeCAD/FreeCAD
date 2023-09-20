@@ -4048,7 +4048,7 @@ a fájl olvasása közben (lassabb, de pontosabb).</translation>
     <message>
       <location filename="../../DlgRevolution.ui" line="281"/>
       <source>Angle:</source>
-      <translation>Szög:</translation>
+      <translation>Dőlésszög:</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.ui" line="315"/>
@@ -6804,18 +6804,18 @@ A fennmaradó darabok kivonására az 'összetevő szűrő' használható.</tran
       <translation>Alakzat</translation>
     </message>
     <message>
-      <location filename="../../DlgScale.cpp" line="195"/>
+      <location filename="../../DlgScale.cpp" line="198"/>
       <source>No scalable shapes selected</source>
       <translation type="unfinished">No scalable shapes selected</translation>
     </message>
     <message>
-      <location filename="../../DlgScale.cpp" line="203"/>
+      <location filename="../../DlgScale.cpp" line="206"/>
       <source>The document '%1' doesn't exist.</source>
       <translation>A '%1' dokumentum nem létezik.</translation>
     </message>
     <message>
-      <location filename="../../DlgScale.cpp" line="251"/>
-      <location filename="../../DlgScale.cpp" line="257"/>
+      <location filename="../../DlgScale.cpp" line="254"/>
+      <location filename="../../DlgScale.cpp" line="260"/>
       <source>Creating Scale failed.
 %1</source>
       <translation type="unfinished">Creating Scale failed.

@@ -17,7 +17,7 @@
       <location filename="../../Command.cpp" line="208"/>
       <location filename="../../Command.cpp" line="210"/>
       <source>Convert to points</source>
-      <translation>In Punkte umwandeln</translation>
+      <translation>Wandelt ausgewählte Objekte in Punkte um</translation>
     </message>
   </context>
   <context>

@@ -287,7 +287,7 @@
 <context>
     <name>Workbench</name>
     <message>
-        <location filename="../../../StartPage/StartPage.py" line="821"/>
+        <location filename="../../../StartPage/StartPage.py" line="826"/>
         <location filename="../../Workbench.cpp" line="62"/>
         <source>Start page</source>
         <translation type="unfinished"></translation>

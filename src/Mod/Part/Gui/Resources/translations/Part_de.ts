@@ -435,7 +435,7 @@
       <location filename="../../AttacherTexts.cpp" line="247"/>
       <source>Intersection</source>
       <comment>AttachmentLine mode caption</comment>
-      <translation>Schnitt</translation>
+      <translation>Schnittstelle</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="248"/>
@@ -859,7 +859,7 @@
       <location filename="../../AttacherTexts.cpp" line="92"/>
       <source>Align XY plane to pass through three vertices.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation>Richten Sie die XY-Ebene aus, um durch drei Ecken zu passieren.</translation>
+      <translation>Richtet die XY-Ebene so aus, dass sie durch drei Knoten verläuft.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="94"/>
@@ -1672,7 +1672,7 @@ X-, Y- und Z-Komponenten zerlegt wird.</translation>
     <message>
       <location filename="../../Command.cpp" line="1011"/>
       <source>Part</source>
-      <translation>Part</translation>
+      <translation>Formteil</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1012"/>
@@ -1690,7 +1690,7 @@ X-, Y- und Z-Komponenten zerlegt wird.</translation>
     <message>
       <location filename="../../Command.cpp" line="1279"/>
       <source>Part</source>
-      <translation>Formteil</translation>
+      <translation>Part</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1280"/>
@@ -2209,7 +2209,7 @@ der Projektion.</translation>
     <message>
       <location filename="../../CommandSimple.cpp" line="296"/>
       <source>Part</source>
-      <translation>Bauteil</translation>
+      <translation>Formteil</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="297"/>
@@ -4948,7 +4948,7 @@ nur die beschnittenen Objeke sichtbar</translation>
       <location filename="../../TaskAttacher.ui" line="124"/>
       <location filename="../../TaskAttacher.cpp" line="337"/>
       <source>Attachment Offset (in local coordinates):</source>
-      <translation>Versatz der Anhänge (in lokalen Koordinaten):</translation>
+      <translation>Versatz der Befestigung (in lokalen Koordinaten):</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.ui" line="136"/>
@@ -5429,7 +5429,7 @@ indem Sie ein Auswahlrechteck in der 3D-Ansicht aufziehen</translation>
       <location filename="../../TaskOffset.ui" line="14"/>
       <location filename="../../TaskOffset.ui" line="20"/>
       <source>Offset</source>
-      <translation>Versatz</translation>
+      <translation>Versetzen</translation>
     </message>
     <message>
       <location filename="../../TaskOffset.ui" line="34"/>
@@ -5470,7 +5470,7 @@ indem Sie ein Auswahlrechteck in der 3D-Ansicht aufziehen</translation>
       <location filename="../../TaskOffset.ui" line="78"/>
       <location filename="../../TaskOffset.ui" line="86"/>
       <source>Intersection</source>
-      <translation>Schnittstelle</translation>
+      <translation>Schnitt</translation>
     </message>
     <message>
       <location filename="../../TaskOffset.ui" line="93"/>
@@ -6531,7 +6531,7 @@ Es wird ein 'Compound-Filter'-Objekt für jede Form erzeugt.</translation>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="602"/>
       <source>Attachment Offset (in local coordinates):</source>
-      <translation>Versatz der Befestigung (in lokalen Koordinaten):</translation>
+      <translation>Versatz der Anhänge (in lokalen Koordinaten):</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="605"/>
@@ -6751,7 +6751,7 @@ Ein 'Verbundfilter' kann verwendet werden, um die restlichen Stücke zu extrahie
     <message>
       <location filename="../../DlgScale.ui" line="22"/>
       <source>X Factor</source>
-      <translation type="unfinished">X Factor</translation>
+      <translation>X-Faktor</translation>
     </message>
     <message>
       <location filename="../../DlgScale.ui" line="29"/>
@@ -6761,37 +6761,37 @@ Ein 'Verbundfilter' kann verwendet werden, um die restlichen Stücke zu extrahie
     <message>
       <location filename="../../DlgScale.ui" line="64"/>
       <source>Z Factor</source>
-      <translation type="unfinished">Z Factor</translation>
+      <translation>Z-Faktor</translation>
     </message>
     <message>
       <location filename="../../DlgScale.ui" line="71"/>
       <source>Scale the object by a single factor in all directions.</source>
-      <translation type="unfinished">Scale the object by a single factor in all directions.</translation>
+      <translation>Skaliert das Objekt mit demselben Faktor in alle Richtungen.</translation>
     </message>
     <message>
       <location filename="../../DlgScale.ui" line="74"/>
       <source>Uniform Scaling</source>
-      <translation type="unfinished">Uniform Scaling</translation>
+      <translation>Einheitliche Skalierung</translation>
     </message>
     <message>
       <location filename="../../DlgScale.ui" line="112"/>
       <source>Y Factor</source>
-      <translation type="unfinished">Y Factor</translation>
+      <translation>Y-Faktor</translation>
     </message>
     <message>
       <location filename="../../DlgScale.ui" line="119"/>
       <source>Specify a different scale factor for each cardinal direction.</source>
-      <translation type="unfinished">Specify a different scale factor for each cardinal direction.</translation>
+      <translation>Verwendet unterschiedliche Skalierungsfaktoren für jede der Hauptrichtungen.</translation>
     </message>
     <message>
       <location filename="../../DlgScale.ui" line="122"/>
       <source>Non-Uniform Scaling</source>
-      <translation type="unfinished">Non-Uniform Scaling</translation>
+      <translation>Uneinheitliche Skalierung</translation>
     </message>
     <message>
       <location filename="../../DlgScale.ui" line="195"/>
       <source>Select shape(s) that should be scaled</source>
-      <translation type="unfinished">Select shape(s) that should be scaled</translation>
+      <translation>Form(en) auswählen, die extrudiert werden soll(en)</translation>
     </message>
     <message>
       <location filename="../../DlgScale.ui" line="199"/>
@@ -6799,21 +6799,21 @@ Ein 'Verbundfilter' kann verwendet werden, um die restlichen Stücke zu extrahie
       <translation>Form</translation>
     </message>
     <message>
-      <location filename="../../DlgScale.cpp" line="195"/>
+      <location filename="../../DlgScale.cpp" line="198"/>
       <source>No scalable shapes selected</source>
-      <translation type="unfinished">No scalable shapes selected</translation>
+      <translation>Keine skalierbaren Formen ausgewählt</translation>
     </message>
     <message>
-      <location filename="../../DlgScale.cpp" line="203"/>
+      <location filename="../../DlgScale.cpp" line="206"/>
       <source>The document '%1' doesn't exist.</source>
       <translation>Das Dokument '%1' existiert nicht.</translation>
     </message>
     <message>
-      <location filename="../../DlgScale.cpp" line="251"/>
-      <location filename="../../DlgScale.cpp" line="257"/>
+      <location filename="../../DlgScale.cpp" line="254"/>
+      <location filename="../../DlgScale.cpp" line="260"/>
       <source>Creating Scale failed.
 %1</source>
-      <translation type="unfinished">Creating Scale failed.
+      <translation>Fehler beim Erstellen der Skalierung.
 %1</translation>
     </message>
   </context>
@@ -6822,7 +6822,7 @@ Ein 'Verbundfilter' kann verwendet werden, um die restlichen Stücke zu extrahie
     <message>
       <location filename="../../Command.cpp" line="1307"/>
       <source>Part</source>
-      <translation>Formteil</translation>
+      <translation>Bauteil</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1308"/>
@@ -6832,7 +6832,7 @@ Ein 'Verbundfilter' kann verwendet werden, um die restlichen Stücke zu extrahie
     <message>
       <location filename="../../Command.cpp" line="1309"/>
       <source>Scale a selected shape</source>
-      <translation type="unfinished">Scale a selected shape</translation>
+      <translation>Skaliert eine ausgewählte Form</translation>
     </message>
   </context>
 </TS>

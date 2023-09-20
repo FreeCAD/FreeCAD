@@ -5777,7 +5777,7 @@ Vill du fortsätta?</translation>
     <message>
       <location filename="../../Command.cpp" line="1077"/>
       <source>All Files</source>
-      <translation>Alla filer</translation>
+      <translation>Alla Filer</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2036"/>
@@ -6811,18 +6811,18 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
       <translation>Form</translation>
     </message>
     <message>
-      <location filename="../../DlgScale.cpp" line="195"/>
+      <location filename="../../DlgScale.cpp" line="198"/>
       <source>No scalable shapes selected</source>
       <translation type="unfinished">No scalable shapes selected</translation>
     </message>
     <message>
-      <location filename="../../DlgScale.cpp" line="203"/>
+      <location filename="../../DlgScale.cpp" line="206"/>
       <source>The document '%1' doesn't exist.</source>
       <translation>Dokumentet "%1" finns inte.</translation>
     </message>
     <message>
-      <location filename="../../DlgScale.cpp" line="251"/>
-      <location filename="../../DlgScale.cpp" line="257"/>
+      <location filename="../../DlgScale.cpp" line="254"/>
+      <location filename="../../DlgScale.cpp" line="260"/>
       <source>Creating Scale failed.
 %1</source>
       <translation type="unfinished">Creating Scale failed.

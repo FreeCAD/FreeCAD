@@ -74,7 +74,7 @@
       <location filename="../../Command.cpp" line="344"/>
       <location filename="../../Command.cpp" line="346"/>
       <source>Merge several point clouds into one</source>
-      <translation>Mesclar várias pontos nuvens em uma</translation>
+      <translation>Mesclar vários pontos nuvens em uma</translation>
     </message>
   </context>
   <context>
@@ -155,7 +155,7 @@
       <location filename="../../ViewProvider.cpp" line="485"/>
       <location filename="../../ViewProvider.cpp" line="653"/>
       <source>Cut points</source>
-      <translation>Recortar pontos</translation>
+      <translation>Pontos de nó</translation>
     </message>
   </context>
   <context>
