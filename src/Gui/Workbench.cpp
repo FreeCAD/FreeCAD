@@ -690,6 +690,7 @@ MenuItem* StdWorkbench::setupMenuBar() const
           << "Std_ToggleNavigation"
           << "Std_SetAppearance" << "Std_RandomColor" << "Separator"
           << "Std_Workbench" << "Std_ToolBarMenu" << "Std_DockViewMenu" << "Separator"
+          << "Std_LinkSelectActions"
           << "Std_TreeViewActions"
           << "Std_ViewStatusBar";
 
@@ -791,11 +792,11 @@ ToolBarItem* StdWorkbench::setupToolBars() const
     // View
     auto view = new ToolBarItem( root );
     view->setCommand("View");
-    *view << "Std_ViewFitAll" << "Std_ViewFitSelection" << "Std_DrawStyle" << "Std_SelBoundingBox"
-          << "Separator" << "Std_SelectFilter" << "Std_SelBack" << "Std_SelForward"
-          << "Std_LinkSelectActions"<< "Separator" << "Std_TreeViewActions" << "Std_ViewIsometric"
-          << "Std_ViewFront"<< "Std_ViewTop" << "Std_ViewRight" << "Separator" << "Std_ViewRear"
-          << "Separator" << "Std_ViewBottom"<< "Std_ViewLeft"  << "Separator" << "Std_MeasureDistance";
+    *view << "Std_ViewFitAll" << "Std_ViewFitSelection" << "Std_ViewIsometric"
+          << "Std_ViewFront"<< "Std_ViewTop" << "Std_ViewRight"
+          << "Std_ViewRear" << "Std_ViewBottom"<< "Std_ViewLeft"
+          << "Separator" << "Std_DrawStyle" << "Std_SelectFilter" << "Std_TreeViewActions"
+          << "Separator" << "Std_MeasureDistance";
 
     // Structure
     auto structure = new ToolBarItem( root );
