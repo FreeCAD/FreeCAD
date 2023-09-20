@@ -22,8 +22,10 @@
 # ***************************************************************************/
 
 import FreeCAD as App
+import UtilsAssembly
 
 from PySide.QtCore import QT_TRANSLATE_NOOP
+from PySide.QtWidgets import QFileDialog
 
 if App.GuiUp:
     import FreeCADGui as Gui
@@ -35,33 +37,46 @@ __author__ = "Ondsel"
 __url__ = "https://www.freecad.org"
 
 
-class CommandCreateAssembly:
+class CommandExportASMT:
     def __init__(self):
         pass
 
     def GetResources(self):
         return {
-            "Pixmap": "Geoassembly",
-            "MenuText": QT_TRANSLATE_NOOP("Assembly_CreateAssembly", "Create Assembly"),
-            "Accel": "A",
+            "Pixmap": "Assembly_ExportASMT",
+            "MenuText": QT_TRANSLATE_NOOP("Assembly_ExportASMT", "Export ASMT File"),
+            "Accel": "E",
             "ToolTip": QT_TRANSLATE_NOOP(
-                "Assembly_CreateAssembly",
-                "Create an assembly object in the current document.",
+                "Assembly_ExportASMT",
+                "Export currently active assembly as a ASMT file.",
             ),
             "CmdType": "ForEdit",
         }
 
     def IsActive(self):
-        return App.ActiveDocument is not None
+        return UtilsAssembly.activeAssembly() is not None
 
     def Activated(self):
-        App.setActiveTransaction("Create assembly")
-        assembly = App.ActiveDocument.addObject("Assembly::AssemblyObject", "Assembly")
-        assembly.Type = "Assembly"
-        Gui.ActiveDocument.ActiveView.setActiveObject("part", assembly)
-        assembly.newObject("Assembly::JointGroup", "Joints")
-        App.closeActiveTransaction()
+        document = App.ActiveDocument
+        if not document:
+            return
+
+        assembly = UtilsAssembly.activeAssembly()
+        if not assembly:
+            return
+
+        # Prompt the user for a file location and name
+        defaultFileName = document.Name + ".asmt"
+        filePath, _ = QFileDialog.getSaveFileName(
+            None,
+            "Save ASMT File",
+            defaultFileName,
+            "ASMT Files (*.asmt);;All Files (*)",
+        )
+
+        if filePath:
+            assembly.exportAsASMT(filePath)
 
 
 if App.GuiUp:
-    Gui.addCommand("Assembly_CreateAssembly", CommandCreateAssembly())
+    Gui.addCommand("Assembly_ExportASMT", CommandExportASMT())

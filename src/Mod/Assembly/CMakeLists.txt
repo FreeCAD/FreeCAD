@@ -8,7 +8,9 @@ set(Assembly_Scripts
     Init.py
     CommandCreateAssembly.py
     CommandInsertLink.py
+    CommandSolveAssembly.py
     CommandCreateJoint.py
+    CommandExportASMT.py
     TestAssemblyWorkbench.py
     JointObject.py
     Preferences.py

@@ -244,3 +244,11 @@ def color_from_unsigned(c):
         float(int((c >> 16) & 0xFF) / 255),
         float(int((c >> 8) & 0xFF) / 255),
     ]
+
+
+def getJointGroup(assembly):
+    joint_group = assembly.getObject("Joints")
+
+    if not joint_group:
+        joint_group = assembly.newObject("Assembly::JointGroup", "Joints")
+    return joint_group

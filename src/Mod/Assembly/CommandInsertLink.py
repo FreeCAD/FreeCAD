@@ -110,6 +110,7 @@ class TaskAssemblyInsertLink(QtCore.QObject):
     def deactivated(self):
         if self.partMoving:
             self.endMove()
+            self.doc.removeObject(self.createdLink.Name)
 
     def buildPartList(self):
         self.allParts.clear()

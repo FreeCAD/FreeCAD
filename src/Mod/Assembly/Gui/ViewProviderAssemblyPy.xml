@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
+    <PythonExport
+        Father="ViewProviderPy"
+        Name="ViewProviderAssemblyPy"
+        Twin="ViewProviderAssembly"
+        TwinPointer="ViewProviderAssembly"
+        Include="Mod/Assembly/Gui/ViewProviderAssembly.h"
+        Namespace="AssemblyGui"
+        FatherInclude="Gui/ViewProviderPy.h"
+        FatherNamespace="Gui">
+        <Documentation>
+            <Author Licence="LGPL" Name="Ondsel" EMail="development@ondsel.com" />
+            <UserDocu>This is the ViewProviderAssembly class</UserDocu>
+        </Documentation>
+        <Attribute Name="EnableMovement">
+            <Documentation>
+                <UserDocu>Enable moving the parts by clicking and dragging.</UserDocu>
+            </Documentation>
+            <Parameter Name="EnableMoving" Type="Boolean" />
+        </Attribute>
+    </PythonExport>
+</GenerateModel>

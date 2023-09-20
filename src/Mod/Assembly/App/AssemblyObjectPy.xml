@@ -1,0 +1,50 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
+  <PythonExport
+      Father="PartPy"
+      Name="AssemblyObjectPy"
+      Twin="AssemblyObject"
+      TwinPointer="AssemblyObject"
+      Include="Mod/Assembly/App/AssemblyObject.h"
+      Namespace="Assembly"
+      FatherInclude="App/PartPy.h"
+      FatherNamespace="App">
+    <Documentation>
+      <Author Licence="LGPL" Name="Ondsel" EMail="development@ondsel.com" />
+      <UserDocu>This class handles document objects in Assembly</UserDocu>
+    </Documentation>
+    <Methode Name="solve">
+      <Documentation>
+        <UserDocu>
+          Solve the assembly and update part placements.
+
+          solve()
+
+          Returns:
+          0 in case of success, otherwise the following codes in this order of
+          priority:
+          -6 if no parts are fixed.
+          -4 if over-constrained,
+          -3 if conflicting constraints,
+          -5 if malformed constraints
+          -1 if solver error,
+          -2 if redundant constraints.
+        </UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="exportAsASMT">
+      <Documentation>
+        <UserDocu>
+          Export the assembly in a text format called ASMT.
+
+          exportAsASMT(fileName:str)
+
+          Args:
+          fileName: The name of the file where the ASMT will be exported.
+        </UserDocu>
+      </Documentation>
+    </Methode>
+
+    <CustomAttributes />
+  </PythonExport>
+</GenerateModel>

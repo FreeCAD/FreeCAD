@@ -21,47 +21,56 @@
 #                                                                           *
 # ***************************************************************************/
 
+import os
 import FreeCAD as App
 
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 if App.GuiUp:
     import FreeCADGui as Gui
+    from PySide import QtCore, QtGui, QtWidgets
+
+import UtilsAssembly
+import Assembly_rc
 
 # translate = App.Qt.translate
 
-__title__ = "Assembly Command Create Assembly"
+__title__ = "Assembly Command to Solve Assembly"
 __author__ = "Ondsel"
 __url__ = "https://www.freecad.org"
 
 
-class CommandCreateAssembly:
+class CommandSolveAssembly:
     def __init__(self):
         pass
 
     def GetResources(self):
+
         return {
-            "Pixmap": "Geoassembly",
-            "MenuText": QT_TRANSLATE_NOOP("Assembly_CreateAssembly", "Create Assembly"),
-            "Accel": "A",
-            "ToolTip": QT_TRANSLATE_NOOP(
-                "Assembly_CreateAssembly",
-                "Create an assembly object in the current document.",
-            ),
+            "Pixmap": "Assembly_SolveAssembly",
+            "MenuText": QT_TRANSLATE_NOOP("Assembly_SolveAssembly", "Solve Assembly"),
+            "Accel": "F",
+            "ToolTip": "<p>"
+            + QT_TRANSLATE_NOOP(
+                "Assembly_SolveAssembly",
+                "Solve the currently active assembly.",
+            )
+            + "</p>",
             "CmdType": "ForEdit",
         }
 
     def IsActive(self):
-        return App.ActiveDocument is not None
+        return UtilsAssembly.activeAssembly() is not None
 
     def Activated(self):
-        App.setActiveTransaction("Create assembly")
-        assembly = App.ActiveDocument.addObject("Assembly::AssemblyObject", "Assembly")
-        assembly.Type = "Assembly"
-        Gui.ActiveDocument.ActiveView.setActiveObject("part", assembly)
-        assembly.newObject("Assembly::JointGroup", "Joints")
+        assembly = UtilsAssembly.activeAssembly()
+        if not assembly:
+            return
+
+        App.setActiveTransaction("Solve assembly")
+        assembly.solve()
         App.closeActiveTransaction()
 
 
 if App.GuiUp:
-    Gui.addCommand("Assembly_CreateAssembly", CommandCreateAssembly())
+    Gui.addCommand("Assembly_SolveAssembly", CommandSolveAssembly())
