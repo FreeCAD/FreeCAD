@@ -33,6 +33,7 @@
 
 #include <App/GeoFeature.h>
 #include <Base/Placement.h>
+#include "Gui/ViewParams.h"
 
 #include "Application.h"
 #include "BitmapFactory.h"
@@ -137,6 +138,11 @@ bool ViewProviderDragger::setEdit(int ModNum)
 
     assert(!csysDragger);
     csysDragger = new SoFCCSysDragger();
+    csysDragger->setAxisColors(
+      Gui::ViewParams::instance()->getAxisXColor(),
+      Gui::ViewParams::instance()->getAxisYColor(),
+      Gui::ViewParams::instance()->getAxisZColor()
+    );
     csysDragger->draggerSize.setValue(0.05f);
     csysDragger->translation.setValue(tempTransform->translation.getValue());
     csysDragger->rotation.setValue(tempTransform->rotation.getValue());
