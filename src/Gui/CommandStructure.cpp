@@ -94,7 +94,10 @@ StdCmdGroup::StdCmdGroup()
 {
     sGroup        = "Structure";
     sMenuText     = QT_TR_NOOP("Create group");
-    sToolTipText  = QT_TR_NOOP("Create a new group for ordering objects");
+    sToolTipText = QT_TR_NOOP("<p>Group is a general purpose container that allows you to "
+        "group different types of objects in the Tree view, regardless of their data type. "
+        "It is used as a simple folder to categorize and organize the objects in your model, "
+        "in order to keep a logical structure. Std Groups may be nested inside other Std Groups.</p>");
     sWhatsThis    = "Std_Group";
     sStatusTip    = sToolTipText;
     sPixmap       = "folder";
