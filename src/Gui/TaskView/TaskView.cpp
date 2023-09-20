@@ -407,6 +407,30 @@ void TaskView::keyPressEvent(QKeyEvent* ke)
     }
 }
 
+void TaskView::triggerMinimumSizeHint()
+{
+    // NOLINTNEXTLINE
+    QTimer::singleShot(100, this, &TaskView::adjustMinimumSizeHint);
+}
+
+void TaskView::adjustMinimumSizeHint()
+{
+    QSize ms = minimumSizeHint();
+    setMinimumWidth(ms.width());
+}
+
+QSize TaskView::minimumSizeHint() const
+{
+    QSize ms = QScrollArea::minimumSizeHint();
+    int spacing = 0;
+    if (QLayout* layout = taskPanel->layout()) {
+        spacing = 2 * layout->spacing();
+    }
+
+    ms.setWidth(taskPanel->minimumSizeHint().width() + spacing);
+    return ms;
+}
+
 void TaskView::slotActiveDocument(const App::Document& doc)
 {
     Q_UNUSED(doc); 
@@ -477,6 +501,7 @@ void TaskView::showDialog(TaskDialog *dlg)
     ActiveCtrl->buttonBox->setStandardButtons(dlg->getStandardButtons());
     TaskDialogAttorney::setButtonBox(dlg, ActiveCtrl->buttonBox);
 
+    // clang-format off
     // make connection to the needed signals
     connect(ActiveCtrl->buttonBox, &QDialogButtonBox::accepted,
             this, &TaskView::accept);
@@ -486,6 +511,7 @@ void TaskView::showDialog(TaskDialog *dlg)
             this, &TaskView::helpRequested);
     connect(ActiveCtrl->buttonBox, &QDialogButtonBox::clicked,
             this, &TaskView::clicked);
+    // clang-format on
 
     const std::vector<QWidget*>& cont = dlg->getDialogContent();
 
@@ -516,6 +542,7 @@ void TaskView::showDialog(TaskDialog *dlg)
     ActiveDialog->open();
 
     getMainWindow()->updateActions();
+    triggerMinimumSizeHint();
 }
 
 void TaskView::removeDialog()
@@ -554,6 +581,8 @@ void TaskView::removeDialog()
         remove->emitDestructionSignal();
         delete remove;
     }
+
+    triggerMinimumSizeHint();
 }
 
 void TaskView::updateWatcher()
@@ -591,6 +620,8 @@ void TaskView::updateWatcher()
     // give it the focus back.
     if (fwp && fwp->isVisible())
         fwp->setFocus();
+
+    triggerMinimumSizeHint();
 }
 
 void TaskView::addTaskWatcher(const std::vector<TaskWatcher*> &Watcher)
