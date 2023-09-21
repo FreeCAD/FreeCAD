@@ -21,6 +21,8 @@
 #                                                                           *
 # ***************************************************************************/
 
+import math
+
 import FreeCAD as App
 import Part
 
@@ -256,13 +258,17 @@ class ViewProviderJoint:
         obj.color_X_axis = (1.0, 0.0, 0.0)
         obj.color_Y_axis = (0.0, 1.0, 0.0)
         obj.color_Z_axis = (0.0, 0.0, 1.0)
-        obj.axis_thickness = 2
+        obj.axis_thickness = 3
         self.x_axis_so_color = coin.SoBaseColor()
         self.x_axis_so_color.rgb.setValue(1.0, 0.0, 0.0)
         self.y_axis_so_color = coin.SoBaseColor()
         self.y_axis_so_color.rgb.setValue(0.0, 1.0, 0.0)
         self.z_axis_so_color = coin.SoBaseColor()
         self.z_axis_so_color.rgb.setValue(0.0, 0.0, 1.0)
+
+        camera = Gui.ActiveDocument.ActiveView.getCameraNode()
+        self.cameraSensor = coin.SoFieldSensor(self.camera_callback, camera)
+        self.cameraSensor.attach(camera.height)
 
         self.app_obj = app_obj
         obj.Proxy = self
@@ -291,6 +297,10 @@ class ViewProviderJoint:
         self.display_mode.addChild(self.switch_JCS_preview)
         obj.addDisplayMode(self.display_mode, "Wireframe")
 
+    def camera_callback(self, *args):
+        scaleF = self.get_JCS_size()
+        self.axisScale.scaleFactor.setValue(scaleF, scaleF, scaleF)
+
     def JCS_sep(self, obj, soTransform):
         pick = coin.SoPickStyle()
         pick.style.setValue(coin.SoPickStyle.UNPICKABLE)
@@ -299,10 +309,12 @@ class ViewProviderJoint:
         JCS.addChild(soTransform)
         JCS.addChild(pick)
 
-        X_axis_sep = self.line_sep([0, 0, 0], [1, 0, 0], self.x_axis_so_color)
-        Y_axis_sep = self.line_sep([0, 0, 0], [0, 1, 0], self.y_axis_so_color)
+        base_plane_sep = self.plane_sep(0.4, 15)
+        X_axis_sep = self.line_sep([0.5, 0, 0], [1, 0, 0], self.x_axis_so_color)
+        Y_axis_sep = self.line_sep([0, 0.5, 0], [0, 1, 0], self.y_axis_so_color)
         Z_axis_sep = self.line_sep([0, 0, 0], [0, 0, 1], self.z_axis_so_color)
 
+        JCS.addChild(base_plane_sep)
         JCS.addChild(X_axis_sep)
         JCS.addChild(Y_axis_sep)
         JCS.addChild(Z_axis_sep)
@@ -326,12 +338,46 @@ class ViewProviderJoint:
         axis_sep.addChild(line)
         return axis_sep
 
+    def plane_sep(self, size, num_vertices):
+        coords = coin.SoCoordinate3()
+
+        for i in range(num_vertices):
+            angle = float(i) / num_vertices * 2.0 * math.pi
+            x = math.cos(angle) * size
+            y = math.sin(angle) * size
+            coords.point.set1Value(i, x, y, 0)
+
+        face = coin.SoFaceSet()
+        face.numVertices.setValue(num_vertices)
+
+        transform = coin.SoTransform()
+        transform.translation.setValue(0, 0, 0)
+
+        draw_style = coin.SoDrawStyle()
+        draw_style.style = coin.SoDrawStyle.FILLED
+
+        material = coin.SoMaterial()
+        material.diffuseColor.setValue([1, 1, 1])
+        material.ambientColor.setValue([1, 1, 1])
+        material.specularColor.setValue([1, 1, 1])
+        material.emissiveColor.setValue([1, 1, 1])
+        material.transparency.setValue(0.7)
+
+        face_sep = coin.SoAnnotation()
+        face_sep.addChild(self.axisScale)
+        face_sep.addChild(transform)
+        face_sep.addChild(draw_style)
+        face_sep.addChild(material)
+        face_sep.addChild(coords)
+        face_sep.addChild(face)
+        return face_sep
+
     def get_JCS_size(self):
         camera = Gui.ActiveDocument.ActiveView.getCameraNode()
         if not camera:
             return 10
 
-        return camera.height.getValue() / 10
+        return camera.height.getValue() / 20
 
     def set_JCS_placement(self, soTransform, placement):
         t = placement.Base
