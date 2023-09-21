@@ -714,7 +714,7 @@ void SketchObject::setConstraintExpression(int constNum, const std::string& newE
     }
 }
 
-std::string SketchObject::reverseAngleConstraintExpression(std::string& expression)
+std::string SketchObject::reverseAngleConstraintExpression(std::string expression)
 {
     // Check if expression contains units (°, deg, rad)
     if (expression.find("°") != std::string::npos
