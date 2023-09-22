@@ -29,9 +29,10 @@
 
 #include "FemConstraint.h"
 
-namespace Fem {
+namespace Fem
+{
 
-class FemExport ConstraintHeatflux : public Fem::Constraint
+class FemExport ConstraintHeatflux: public Fem::Constraint
 {
     PROPERTY_HEADER_WITH_OVERRIDE(Fem::ConstraintHeatflux);
 
@@ -48,7 +49,7 @@ public:
     App::PropertyVectorList Normals;
 
     /// recalculate the object
-    App::DocumentObjectExecReturn *execute() override;
+    App::DocumentObjectExecReturn* execute() override;
 
     /// returns the type name of the ViewProvider
     const char* getViewProviderName() const override;
@@ -57,6 +58,6 @@ protected:
     void onChanged(const App::Property* prop) override;
 };
 
-}
+}  // namespace Fem
 
-#endif // FEM_CONSTRAINTHEATFLUX_H
+#endif  // FEM_CONSTRAINTHEATFLUX_H
