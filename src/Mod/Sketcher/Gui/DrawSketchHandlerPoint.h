@@ -148,6 +148,8 @@ void DrawSketchHandlerPointBase::ToolWidgetManager::beforeFirstMouseMove(Base::V
 
     onViewParameters[WLabel::Second]->startEdit(onSketchPos.y);
     onViewParameters[WLabel::First]->startEdit(onSketchPos.x);
+    onViewParameters[WLabel::First]->setSpinboxInvisibleToMouse(true);
+    onViewParameters[WLabel::Second]->setSpinboxInvisibleToMouse(true);
 }
 
 template<>
