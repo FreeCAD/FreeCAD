@@ -10,6 +10,8 @@ files: |
         src/Mod/Assembly|
         src/Mod/Cloud|
         src/Mod/Drawing|
+        src/Mod/Fem/App|
+        src/Mod/Fem/Gui|
         src/Mod/Import|
         src/Mod/Inspection|
         src/Mod/JtReader|
