@@ -113,11 +113,11 @@ class ArchReference:
             if obj.ViewObject and obj.ViewObject.Proxy:
                 obj.ViewObject.Proxy.loadInventor(obj)
 
-    def __getstate__(self):
+    def dumps(self):
 
         return None
 
-    def __setstate__(self,state):
+    def loads(self,state):
 
         return None
 
@@ -395,11 +395,11 @@ class ViewProviderArchReference:
         s = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").GetInt("ReferenceCheckInterval",60)
         self.timer.start(1000*s)
 
-    def __getstate__(self):
+    def dumps(self):
 
         return None
 
-    def __setstate__(self,state):
+    def loads(self,state):
 
         return None
 

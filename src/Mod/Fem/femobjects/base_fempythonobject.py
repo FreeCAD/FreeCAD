@@ -42,8 +42,8 @@ class BaseFemPythonObject(object):
     # they are needed, see:
     # https://forum.freecad.org/viewtopic.php?f=18&t=44021
     # https://forum.freecad.org/viewtopic.php?f=18&t=44009
-    def __getstate__(self):
+    def dumps(self):
         return None
 
-    def __setstate__(self, state):
+    def loads(self, state):
         return None

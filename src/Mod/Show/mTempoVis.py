@@ -533,8 +533,8 @@ class TempoVis(object):
 
         return [obj for obj in doc_obj_or_list if is3DObject(obj)]
 
-    def __getstate__(self):
+    def dumps(self):
         return None
 
-    def __setstate__(self, state):
+    def loads(self, state):
         self._init_attrs()

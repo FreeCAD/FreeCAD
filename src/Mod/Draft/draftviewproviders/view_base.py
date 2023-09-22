@@ -118,7 +118,7 @@ class ViewProviderDraft(object):
                                                "Defines the size of the SVG pattern."))
             vobj.PatternSize = utils.get_param("HatchPatternSize", 1)
 
-    def __getstate__(self):
+    def dumps(self):
         """Return a tuple of all serializable objects or None.
 
         When saving the document this view provider object gets stored
@@ -138,7 +138,7 @@ class ViewProviderDraft(object):
         """
         return None
 
-    def __setstate__(self, state):
+    def loads(self, state):
         """Set some internal properties for all restored objects.
 
         When a document is restored this method is used to set some properties
@@ -147,7 +147,7 @@ class ViewProviderDraft(object):
         Override this method to define the properties to change for the
         restored serialized objects.
 
-        By default no objects were serialized with `__getstate__`,
+        By default no objects were serialized with `dumps`,
         so nothing needs to be done here, and it returns `None`.
 
         Parameters

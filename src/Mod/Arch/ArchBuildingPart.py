@@ -356,11 +356,11 @@ class BuildingPart(ArchIFC.IfcProduct):
 
         self.setProperties(obj)
 
-    def __getstate__(self):
+    def dumps(self):
 
         return None
 
-    def __setstate__(self,state):
+    def loads(self,state):
 
         return None
 
@@ -1054,10 +1054,10 @@ class ViewProviderBuildingPart:
                     no.LongName = no.CloneOf.LongName
             FreeCAD.ActiveDocument.recompute()
 
-    def __getstate__(self):
+    def dumps(self):
         return None
 
-    def __setstate__(self,state):
+    def loads(self,state):
         return None
 
     def writeInventor(self,obj):
