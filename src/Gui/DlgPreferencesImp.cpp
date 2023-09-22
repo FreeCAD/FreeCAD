@@ -29,6 +29,7 @@
 # include <QAbstractButton>
 # include <QApplication>
 # include <QDebug>
+# include <QLabel>
 # include <QMessageBox>
 # include <QScreen>
 # include <QScrollArea>
@@ -79,7 +80,15 @@ DlgPreferencesImp::DlgPreferencesImp(QWidget* parent, Qt::WindowFlags fl)
     int length = QtTools::horizontalAdvance(fm, longestGroupName());
     ui->listBox->setFixedWidth(Base::clamp<int>(length + 20, 108, 120));
     ui->listBox->setGridSize(QSize(Base::clamp<int>(length + 20, 108, 120), 75));
+    
     ui->buttonResetGroup->setFixedWidth(Base::clamp<int>(length + 20, 108, 120));
+    ui->buttonResetGroup->setLayout(new QVBoxLayout(ui->buttonResetGroup));
+    auto ResetGroup = new QLabel(ui->buttonResetGroup);
+    ResetGroup->setAlignment(Qt::AlignCenter);
+    ResetGroup->setWordWrap(true);
+    ui->buttonResetGroup->layout()->setMargin(0);
+    ui->buttonResetGroup->layout()->addWidget(ResetGroup);
+
     ui->buttonResetAll->setFixedWidth(Base::clamp<int>(length + 20, 108, 120));
 
     // remove unused help button
@@ -112,11 +121,11 @@ DlgPreferencesImp::~DlgPreferencesImp()
 
 void DlgPreferencesImp::setupConnections()
 {
-    connect(ui->buttonResetTab, &QPushButton::clicked,
+    connect(ui->buttonResetTab, &QToolButton::clicked,
             this, &DlgPreferencesImp::onButtonResetTabClicked);
-    connect(ui->buttonResetGroup, &QPushButton::clicked,
+    connect(ui->buttonResetGroup, &QToolButton::clicked,
             this, &DlgPreferencesImp::onButtonResetGroupClicked);
-    connect(ui->buttonResetAll, &QPushButton::clicked,
+    connect(ui->buttonResetAll, &QToolButton::clicked,
             this, &DlgPreferencesImp::restoreDefaults);
 }
 
@@ -229,9 +238,8 @@ void DlgPreferencesImp::relabelResetButtons()
     QTabWidget* tabWidget = static_cast<QTabWidget*>(ui->tabWidgetStack->currentWidget());
     int tabIndex = tabWidget->currentIndex();
 
-
-    ui->buttonResetGroup->setText(tr(std::string("Reset Group\n" + group.toStdString()).c_str()));
-    ui->buttonResetTab->setText(tr(std::string("Reset Tab " + tabWidget->tabText(tabIndex).toStdString()).c_str()));
+    static_cast<QLabel*>(ui->buttonResetGroup->layout()->itemAt(0)->widget())->setText(tr("Reset Group %1").arg(group));
+    ui->buttonResetTab->setText(tr("Reset Tab %1").arg(tabWidget->tabText(tabIndex)));
 }
 
 void DlgPreferencesImp::changeTab(int current)
@@ -619,6 +627,14 @@ void DlgPreferencesImp::changeEvent(QEvent *e)
             QByteArray group = item->data(GroupNameRole).toByteArray();
             item->setText(QObject::tr(group.constData()));
         }
+
+        //resizes items list and buttons        
+        QFontMetrics fm(font());
+        int length = QtTools::horizontalAdvance(fm, longestGroupName());
+        ui->listBox->setFixedWidth(Base::clamp<int>(length + 20, 108, 120));
+        ui->listBox->setGridSize(QSize(Base::clamp<int>(length + 20, 108, 120), 75));
+        ui->buttonResetGroup->setFixedWidth(Base::clamp<int>(length + 20, 108, 120));
+        ui->buttonResetAll->setFixedWidth(Base::clamp<int>(length + 20, 108, 120));
     } else {
         QWidget::changeEvent(e);
     }
@@ -667,7 +683,7 @@ void DlgPreferencesImp::onButtonResetTabClicked()
     QMessageBox box(this);
     box.setIcon(QMessageBox::Question);
     box.setWindowTitle(tr("Reset Tab Parameters"));
-    box.setText(tr(std::string("All the parameters for the Tab " + tabWidget->tabText(tabWidget->currentIndex()).toStdString() + " will be deleted.").c_str()));
+    box.setText(tr("All the parameters for the Tab %1 will be deleted.").arg(tabWidget->tabText(tabWidget->currentIndex())));
     box.setInformativeText(tr("Do you want to continue?"));
     box.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
     box.setDefaultButton(QMessageBox::No);
@@ -693,7 +709,7 @@ void DlgPreferencesImp::onButtonResetGroupClicked()
     QMessageBox box(this);
     box.setIcon(QMessageBox::Question);
     box.setWindowTitle(tr("Reset Group Parameters"));
-    box.setText(tr(std::string("All the parameters for the Group " + ui->listBox->currentItem()->text().toStdString() + " will be deleted.").c_str()));
+    box.setText(tr("All the parameters for the Group %1 will be deleted.").arg(ui->listBox->currentItem()->text()));
     box.setInformativeText(tr("Do you want to continue?"));
     box.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
     box.setDefaultButton(QMessageBox::No);
