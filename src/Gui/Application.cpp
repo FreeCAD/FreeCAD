@@ -2145,7 +2145,7 @@ void Application::runApplication()
                      &mw, SLOT(processMessages(const QList<QByteArray> &)));
 
     ParameterGrp::handle hDocGrp = WindowParameter::getDefaultParameter()->GetGroup("Document");
-    int timeout = hDocGrp->GetInt("AutoSaveTimeout", 15); // 15 min
+    int timeout = hDocGrp->GetInt("AutoSaveTimeout", 5); // 5 min
     if (!hDocGrp->GetBool("AutoSaveEnabled", true))
         timeout = 0;
     AutoSaver::instance()->setTimeout(timeout * 60000);
