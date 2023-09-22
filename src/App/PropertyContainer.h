@@ -26,7 +26,6 @@
 
 #include <map>
 #include <cstring>
-#include <boost/signals2.hpp>
 #include <Base/Persistence.h>
 
 #include "DynamicProperty.h"
@@ -156,11 +155,6 @@ public:
    * A more elaborate description of the destructor.
    */
   ~PropertyContainer() override;
-
-  /// signal before changing a property of this object
-  boost::signals2::signal<void (const App::DocumentObject&, const App::Property&)> signalBeforeChange;
-  /// signal on changed  property of this object
-  boost::signals2::signal<void (const App::DocumentObject&, const App::Property&)> signalChanged;
 
   unsigned int getMemSize () const override;
 
