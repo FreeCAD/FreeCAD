@@ -240,31 +240,19 @@ class Joint:
 class ViewProviderJoint:
     def __init__(self, obj, app_obj):
         """Set this object to the proxy object of the actual view provider"""
-        obj.addProperty(
-            "App::PropertyColor", "color_X_axis", "JCS", "Joint coordinate system X axis color"
-        )
-        obj.addProperty(
-            "App::PropertyColor", "color_Y_axis", "JCS", "Joint coordinate system Y axis color"
-        )
-        obj.addProperty(
-            "App::PropertyColor", "color_Z_axis", "JCS", "Joint coordinate system Z axis color"
-        )
-        obj.addProperty(
-            "App::PropertyInteger",
-            "axis_thickness",
-            "JCS",
-            "Joint cordinate system X axis thickness",
-        )
-        obj.color_X_axis = (1.0, 0.0, 0.0)
-        obj.color_Y_axis = (0.0, 1.0, 0.0)
-        obj.color_Z_axis = (0.0, 0.0, 1.0)
-        obj.axis_thickness = 3
+        self.axis_thickness = 3
+
+        view_params = App.ParamGet("User parameter:BaseApp/Preferences/View")
+        param_x_axis_color = view_params.GetUnsigned("AxisXColor", 0xCC333300)
+        param_y_axis_color = view_params.GetUnsigned("AxisYColor", 0x33CC3300)
+        param_z_axis_color = view_params.GetUnsigned("AxisZColor", 0x3333CC00)
+
         self.x_axis_so_color = coin.SoBaseColor()
-        self.x_axis_so_color.rgb.setValue(1.0, 0.0, 0.0)
+        self.x_axis_so_color.rgb.setValue(UtilsAssembly.color_from_unsigned(param_x_axis_color))
         self.y_axis_so_color = coin.SoBaseColor()
-        self.y_axis_so_color.rgb.setValue(0.0, 1.0, 0.0)
+        self.y_axis_so_color.rgb.setValue(UtilsAssembly.color_from_unsigned(param_y_axis_color))
         self.z_axis_so_color = coin.SoBaseColor()
-        self.z_axis_so_color.rgb.setValue(0.0, 0.0, 1.0)
+        self.z_axis_so_color.rgb.setValue(UtilsAssembly.color_from_unsigned(param_z_axis_color))
 
         camera = Gui.ActiveDocument.ActiveView.getCameraNode()
         self.cameraSensor = coin.SoFieldSensor(self.camera_callback, camera)
@@ -285,7 +273,7 @@ class ViewProviderJoint:
 
         self.draw_style = coin.SoDrawStyle()
         self.draw_style.style = coin.SoDrawStyle.LINES
-        self.draw_style.lineWidth = obj.axis_thickness
+        self.draw_style.lineWidth = self.axis_thickness
 
         self.switch_JCS1 = self.JCS_sep(obj, self.transform1)
         self.switch_JCS2 = self.JCS_sep(obj, self.transform2)
