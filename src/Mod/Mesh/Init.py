@@ -21,4 +21,4 @@ FreeCAD.addExportType("Additive Manufacturing Format (*.amf)", "Mesh")
 FreeCAD.addExportType("Simple Model Format (*.smf)", "Mesh")
 FreeCAD.addExportType("3D Manufacturing Format (*.3mf)", "Mesh")
 
-FreeCAD.__unit_test__ += [ "MeshTestsApp" ]
+FreeCAD.__unit_test__ += ["MeshTestsApp"]

@@ -24,13 +24,14 @@
 #ifndef MESHGUI_REMOVECOMPONENTS_H
 #define MESHGUI_REMOVECOMPONENTS_H
 
-#include <QDialog>
+#include "MeshSelection.h"
 #include <Gui/TaskView/TaskDialog.h>
 #include <Gui/TaskView/TaskView.h>
 #include <Mod/Mesh/MeshGlobal.h>
-#include "MeshSelection.h"
+#include <QDialog>
 
-namespace MeshGui {
+namespace MeshGui
+{
 class Ui_RemoveComponents;
 
 /**
@@ -38,7 +39,7 @@ class Ui_RemoveComponents;
  * of a mesh and delete them.
  * @author Werner Mayer
  */
-class MeshGuiExport RemoveComponents : public QWidget
+class MeshGuiExport RemoveComponents: public QWidget
 {
     Q_OBJECT
 
@@ -64,7 +65,7 @@ public:
     void onDeselectCompToggled(bool);
 
 protected:
-    void changeEvent(QEvent *e) override;
+    void changeEvent(QEvent* e) override;
 
 private:
     void setupConnections();
@@ -77,12 +78,13 @@ private:
 /**
  * Embed the panel into a dialog.
  */
-class MeshGuiExport RemoveComponentsDialog : public QDialog
+class MeshGuiExport RemoveComponentsDialog: public QDialog
 {
     Q_OBJECT
 
 public:
-    explicit RemoveComponentsDialog(QWidget* parent = nullptr, Qt::WindowFlags fl = Qt::WindowFlags());
+    explicit RemoveComponentsDialog(QWidget* parent = nullptr,
+                                    Qt::WindowFlags fl = Qt::WindowFlags());
     ~RemoveComponentsDialog() override;
     void reject() override;
 
@@ -96,7 +98,7 @@ private:
 /**
  * Embed the panel into a task dialog.
  */
-class TaskRemoveComponents : public Gui::TaskView::TaskDialog
+class TaskRemoveComponents: public Gui::TaskView::TaskDialog
 {
     Q_OBJECT
 
@@ -108,9 +110,13 @@ public:
     void clicked(int) override;
 
     QDialogButtonBox::StandardButtons getStandardButtons() const override
-    { return QDialogButtonBox::Ok | QDialogButtonBox::Close; }
+    {
+        return QDialogButtonBox::Ok | QDialogButtonBox::Close;
+    }
     bool isAllowedAlterDocument() const override
-    { return true; }
+    {
+        return true;
+    }
     void modifyStandardButtons(QDialogButtonBox*) override;
 
 private:
@@ -118,6 +124,6 @@ private:
     Gui::TaskView::TaskBox* taskbox;
 };
 
-}
+}  // namespace MeshGui
 
-#endif // MESHGUI_REMOVECOMPONENTS_H
+#endif  // MESHGUI_REMOVECOMPONENTS_H

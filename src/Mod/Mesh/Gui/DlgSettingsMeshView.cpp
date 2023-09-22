@@ -34,8 +34,8 @@ using namespace MeshGui;
  *  Constructs a DlgSettingsMeshView which is a child of 'parent'.
  */
 DlgSettingsMeshView::DlgSettingsMeshView(QWidget* parent)
-  : PreferencePage(parent)
-  , ui(new Ui_DlgSettingsMeshView)
+    : PreferencePage(parent)
+    , ui(new Ui_DlgSettingsMeshView)
 {
     ui->setupUi(this);
     ui->labelBackfaceColor->hide();
@@ -64,9 +64,9 @@ void DlgSettingsMeshView::loadSettings()
 {
     Base::Reference<ParameterGrp> hGrp = Gui::WindowParameter::getDefaultParameter();
     hGrp = hGrp->GetGroup("View");
-    if (!hGrp->GetBool("EnablePreselection",true) &&
-        !hGrp->GetBool("EnableSelection",true))
+    if (!hGrp->GetBool("EnablePreselection", true) && !hGrp->GetBool("EnableSelection", true)) {
         ui->checkboxBoundbox->setDisabled(true);
+    }
     ui->checkboxRendering->onRestore();
     ui->checkboxBoundbox->onRestore();
     ui->buttonMeshColor->onRestore();
@@ -81,7 +81,7 @@ void DlgSettingsMeshView::loadSettings()
 /**
  * Sets the strings of the subwidgets using the current language.
  */
-void DlgSettingsMeshView::changeEvent(QEvent *e)
+void DlgSettingsMeshView::changeEvent(QEvent* e)
 {
     if (e->type() == QEvent::LanguageChange) {
         ui->retranslateUi(this);

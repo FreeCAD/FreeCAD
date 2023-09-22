@@ -31,7 +31,8 @@ using namespace MeshGui;
 /* TRANSLATOR MeshGui::Selection */
 
 Selection::Selection(QWidget* parent)
-    : QWidget(parent), ui(new Ui_Selection())
+    : QWidget(parent)
+    , ui(new Ui_Selection())
 {
     ui->setupUi(this);
     setupConnections();
@@ -56,6 +57,7 @@ Selection::~Selection()
 
 void Selection::setupConnections()
 {
+    // clang-format off
     connect(ui->addSelection, &QPushButton::clicked,
             this, &Selection::onAddSelectionClicked);
     connect(ui->clearSelection, &QPushButton::clicked,
@@ -64,6 +66,7 @@ void Selection::setupConnections()
             this, &Selection::onVisibleTrianglesToggled);
     connect(ui->screenTriangles, &QPushButton::clicked,
             this, &Selection::onScreenTrianglesToggled);
+    // clang-format on
 }
 
 void Selection::setObjects(const std::vector<Gui::SelectionObject>& o)

@@ -1102,7 +1102,7 @@
       <location filename="../../DlgEvaluateMeshImp.cpp" line="451"/>
       <source>Check failed due to folds on the surface.
 Please run the command to repair folds first</source>
-      <translation>Kontrole het misluk weens voue op die oppervlak. 
+      <translation>Kontrole het misluk weens voue op die oppervlak.
 Gee eers die opdrag om die voue te herstel</translation>
     </message>
     <message>
