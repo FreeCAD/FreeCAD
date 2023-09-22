@@ -39,19 +39,17 @@ public:
                         const Base::Vector3f& p1,
                         const Base::Vector3f& p2,
                         const Base::Vector3f& p3) const;
-    virtual bool MustFlip(const Base::Vector3f& n1,
-                          const Base::Vector3f& n2) const;
+    virtual bool MustFlip(const Base::Vector3f& n1, const Base::Vector3f& n2) const;
 };
 
-class MeshExport TriangulationVerifierV2 : public TriangulationVerifier
+class MeshExport TriangulationVerifierV2: public TriangulationVerifier
 {
 public:
     bool Accept(const Base::Vector3f& n,
-                        const Base::Vector3f& p1,
-                        const Base::Vector3f& p2,
-                        const Base::Vector3f& p3) const override;
-    bool MustFlip(const Base::Vector3f& n1,
-                          const Base::Vector3f& n2) const override;
+                const Base::Vector3f& p1,
+                const Base::Vector3f& p2,
+                const Base::Vector3f& p3) const override;
+    bool MustFlip(const Base::Vector3f& n1, const Base::Vector3f& n2) const override;
 };
 
 class MeshExport AbstractPolygonTriangulator
@@ -62,7 +60,10 @@ public:
 
     /** Sets the polygon to be triangulated. */
     void SetPolygon(const std::vector<Base::Vector3f>& raclPoints);
-    void SetIndices(const std::vector<PointIndex>& d) {_indices = d;}
+    void SetIndices(const std::vector<PointIndex>& d)
+    {
+        _indices = d;
+    }
     /** Set a verifier object that checks if the generated triangulation
      * can be accepted and added to the mesh kernel.
      * The triangulator takes ownership of the passed verifier.
@@ -76,7 +77,10 @@ public:
      * of the mesh and thus do not need to be touched afterwards. In this
      * case the method should be reimplemented to return false.
      */
-    virtual bool NeedsReindexing() const { return true; }
+    virtual bool NeedsReindexing() const
+    {
+        return true;
+    }
     /** Get the polygon points to be triangulated. The points may be
      * projected onto its average plane.
      */
@@ -105,9 +109,15 @@ public:
      */
     virtual void PostProcessing(const std::vector<Base::Vector3f>&);
     /** Returns the geometric triangles of the polygon. */
-    const std::vector<MeshGeomFacet>& GetTriangles() const { return _triangles;}
+    const std::vector<MeshGeomFacet>& GetTriangles() const
+    {
+        return _triangles;
+    }
     /** Returns the topologic facets of the polygon. */
-    const std::vector<MeshFacet>& GetFacets() const { return _facets;}
+    const std::vector<MeshFacet>& GetFacets() const
+    {
+        return _facets;
+    }
     /** Returns the triangle to a given topologic facet. */
     virtual MeshGeomFacet GetTriangle(const MeshPointArray&, const MeshFacet&) const;
     /** Returns the length of the polygon */
@@ -129,22 +139,22 @@ protected:
     void Done();
 
 protected:
-    bool                        _discard;
-    Base::Matrix4D              _inverse;
-    std::vector<PointIndex>     _indices;
+    bool _discard;
+    Base::Matrix4D _inverse;
+    std::vector<PointIndex> _indices;
     std::vector<Base::Vector3f> _points;
     std::vector<Base::Vector3f> _newpoints;
-    std::vector<MeshGeomFacet>  _triangles;
-    std::vector<MeshFacet>      _facets;
-    std::vector<PointIndex>     _info;
-    TriangulationVerifier*      _verifier;
+    std::vector<MeshGeomFacet> _triangles;
+    std::vector<MeshFacet> _facets;
+    std::vector<PointIndex> _info;
+    TriangulationVerifier* _verifier;
 };
 
 /**
  * The EarClippingTriangulator embeds an efficient algorithm to triangulate
  * polygons taken from http://www.flipcode.com/files/code/triangulate.cpp.
  */
-class MeshExport EarClippingTriangulator : public AbstractPolygonTriangulator
+class MeshExport EarClippingTriangulator: public AbstractPolygonTriangulator
 {
 public:
     EarClippingTriangulator();
@@ -154,38 +164,45 @@ protected:
 
 private:
     /**
-    * Static class to triangulate any contour/polygon (without holes) efficiently.
-    * The original code snippet was submitted to FlipCode.com by John W. Ratcliff
-    * (jratcliff@verant.com) on July 22, 2000.
-    * The original vector of 2d points is replaced by a vector of 3d points where the
-    * z-coordinate is ignored. This is because the algorithm is often used for 3d points
-    * projected to a common plane. The result vector of 2d points is replaced by an
-    * array of indices to the points of the polygon.
-    */
+     * Static class to triangulate any contour/polygon (without holes) efficiently.
+     * The original code snippet was submitted to FlipCode.com by John W. Ratcliff
+     * (jratcliff@verant.com) on July 22, 2000.
+     * The original vector of 2d points is replaced by a vector of 3d points where the
+     * z-coordinate is ignored. This is because the algorithm is often used for 3d points
+     * projected to a common plane. The result vector of 2d points is replaced by an
+     * array of indices to the points of the polygon.
+     */
     class Triangulate
     {
     public:
         // triangulate a contour/polygon, places results in STL vector
         // as series of triangles.indicating the points
-        static bool Process(const std::vector<Base::Vector3f> &contour,
-            std::vector<PointIndex> &result);
+        static bool Process(const std::vector<Base::Vector3f>& contour,
+                            std::vector<PointIndex>& result);
 
         // compute area of a contour/polygon
-        static float Area(const std::vector<Base::Vector3f> &contour);
+        static float Area(const std::vector<Base::Vector3f>& contour);
 
         // decide if point Px/Py is inside triangle defined by
         // (Ax,Ay) (Bx,By) (Cx,Cy)
-        static bool InsideTriangle(float Ax, float Ay, float Bx, float By,
-            float Cx, float Cy, float Px, float Py);
+        static bool InsideTriangle(float Ax,
+                                   float Ay,
+                                   float Bx,
+                                   float By,
+                                   float Cx,
+                                   float Cy,
+                                   float Px,
+                                   float Py);
 
         static bool _invert;
+
     private:
-        static bool Snip(const std::vector<Base::Vector3f> &contour,
-            int u,int v,int w,int n,int *V);
+        static bool
+        Snip(const std::vector<Base::Vector3f>& contour, int u, int v, int w, int n, int* V);
     };
 };
 
-class MeshExport QuasiDelaunayTriangulator : public EarClippingTriangulator
+class MeshExport QuasiDelaunayTriangulator: public EarClippingTriangulator
 {
 public:
     QuasiDelaunayTriangulator();
@@ -194,7 +211,7 @@ protected:
     bool Triangulate() override;
 };
 
-class MeshExport DelaunayTriangulator : public AbstractPolygonTriangulator
+class MeshExport DelaunayTriangulator: public AbstractPolygonTriangulator
 {
 public:
     DelaunayTriangulator();
@@ -203,7 +220,7 @@ protected:
     bool Triangulate() override;
 };
 
-class MeshExport FlatTriangulator : public AbstractPolygonTriangulator
+class MeshExport FlatTriangulator: public AbstractPolygonTriangulator
 {
 public:
     FlatTriangulator();
@@ -214,7 +231,7 @@ protected:
     bool Triangulate() override;
 };
 
-class MeshExport ConstraintDelaunayTriangulator : public AbstractPolygonTriangulator
+class MeshExport ConstraintDelaunayTriangulator: public AbstractPolygonTriangulator
 {
 public:
     explicit ConstraintDelaunayTriangulator(float area);
@@ -246,7 +263,7 @@ protected:
 };
 #endif
 
-} // namespace MeshCore
+}  // namespace MeshCore
 
 
 #endif  // MESH_TRIANGULATION_H

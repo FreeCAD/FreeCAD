@@ -44,16 +44,19 @@
 #include "Segment.h"
 
 
-namespace Py {
+namespace Py
+{
 class List;
 }
 
-namespace Base {
-  class Polygon2d;
-  class ViewProjMethod;
-}
+namespace Base
+{
+class Polygon2d;
+class ViewProjMethod;
+}  // namespace Base
 
-namespace MeshCore {
+namespace MeshCore
+{
 class AbstractPolygonTriangulator;
 }
 
@@ -61,12 +64,13 @@ namespace Mesh
 {
 
 class MeshObject;
-class MeshExport MeshSegment : public Data::Segment
+class MeshExport MeshSegment: public Data::Segment
 {
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
-    std::string getName() const override {
+    std::string getName() const override
+    {
         return "MeshSegment";
     }
 
@@ -80,30 +84,39 @@ public:
  * @note Each instance of MeshObject has its own instance of a MeshKernel so it's not possible
  * that several instances of MeshObject manage one instance of MeshKernel.
  */
-class MeshExport MeshObject : public Data::ComplexGeoData
+class MeshExport MeshObject: public Data::ComplexGeoData
 {
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
-    enum GeometryType {PLANE, CYLINDER, SPHERE};
-    enum CutType {INNER, OUTER};
+    enum GeometryType
+    {
+        PLANE,
+        CYLINDER,
+        SPHERE
+    };
+    enum CutType
+    {
+        INNER,
+        OUTER
+    };
 
     using TFacePair = std::pair<FacetIndex, FacetIndex>;
     using TFacePairs = std::vector<TFacePair>;
 
     // type def needed for cross-section
-    using TPlane =  std::pair<Base::Vector3f, Base::Vector3f>;
+    using TPlane = std::pair<Base::Vector3f, Base::Vector3f>;
     using TPolylines = std::list<std::vector<Base::Vector3f>>;
     using TRay = std::pair<Base::Vector3d, Base::Vector3d>;
     using TFaceSection = std::pair<FacetIndex, Base::Vector3d>;
 
     MeshObject();
     explicit MeshObject(const MeshCore::MeshKernel& Kernel);
-    explicit MeshObject(const MeshCore::MeshKernel& Kernel, const Base::Matrix4D &Mtrx);
+    explicit MeshObject(const MeshCore::MeshKernel& Kernel, const Base::Matrix4D& Mtrx);
     MeshObject(const MeshObject&);
     ~MeshObject() override;
 
-    void operator = (const MeshObject&);
+    void operator=(const MeshObject&);
 
     /** @name Subelement management */
     //@{
@@ -116,16 +129,15 @@ public:
     /// get the subelement by type and number
     Data::Segment* getSubElement(const char* Type, unsigned long) const override;
     /** Get faces from segment */
-    void getFacesFromSubElement(
-        const Data::Segment*,
-        std::vector<Base::Vector3d> &Points,
-        std::vector<Base::Vector3d> &PointNormals,
-        std::vector<Facet> &faces) const override;
+    void getFacesFromSubElement(const Data::Segment*,
+                                std::vector<Base::Vector3d>& Points,
+                                std::vector<Base::Vector3d>& PointNormals,
+                                std::vector<Facet>& faces) const override;
     //@}
 
     void setTransform(const Base::Matrix4D& rclTrf) override;
     Base::Matrix4D getTransform() const override;
-    void transformGeometry(const Base::Matrix4D &rclMat) override;
+    void transformGeometry(const Base::Matrix4D& rclMat) override;
 
     /**
      * Swaps the content of \a Kernel and the internal mesh kernel.
@@ -139,7 +151,7 @@ public:
     std::string topologyInfo() const;
     unsigned long countPoints() const;
     unsigned long countFacets() const;
-    unsigned long countEdges () const;
+    unsigned long countEdges() const;
     unsigned long countSegments() const;
     bool isSolid() const;
     Base::Vector3d getPoint(PointIndex) const;
@@ -148,11 +160,14 @@ public:
     double getSurface() const;
     double getVolume() const;
     /** Get points from object with given accuracy */
-    void getPoints(std::vector<Base::Vector3d> &Points,
-        std::vector<Base::Vector3d> &Normals,
-        double Accuracy, uint16_t flags=0) const override;
-    void getFaces(std::vector<Base::Vector3d> &Points,std::vector<Facet> &Topo,
-        double Accuracy, uint16_t flags=0) const override;
+    void getPoints(std::vector<Base::Vector3d>& Points,
+                   std::vector<Base::Vector3d>& Normals,
+                   double Accuracy,
+                   uint16_t flags = 0) const override;
+    void getFaces(std::vector<Base::Vector3d>& Points,
+                  std::vector<Facet>& Topo,
+                  double Accuracy,
+                  uint16_t flags = 0) const override;
     std::vector<PointIndex> getPointsFromFacets(const std::vector<FacetIndex>& facets) const;
     bool nearestFacetOnRay(const TRay& ray, double maxAngle, TFaceSection& output) const;
     std::vector<TFaceSection> foraminate(const TRay& ray, double maxAngle) const;
@@ -160,9 +175,13 @@ public:
 
     void setKernel(const MeshCore::MeshKernel& m);
     MeshCore::MeshKernel& getKernel()
-    { return _kernel; }
+    {
+        return _kernel;
+    }
     const MeshCore::MeshKernel& getKernel() const
-    { return _kernel; }
+    {
+        return _kernel;
+    }
 
     Base::BoundBox3d getBoundBox() const override;
     bool getCenterOfGravity(Base::Vector3d& center) const override;
@@ -170,39 +189,40 @@ public:
     /** @name I/O */
     //@{
     // Implemented from Persistence
-    unsigned int getMemSize () const override;
-    void Save (Base::Writer &writer) const override;
-    void SaveDocFile (Base::Writer &writer) const override;
-    void Restore(Base::XMLReader &reader) override;
-    void RestoreDocFile(Base::Reader &reader) override;
-    void save(const char* file,MeshCore::MeshIO::Format f=MeshCore::MeshIO::Undefined,
-        const MeshCore::Material* mat = nullptr,
-        const char* objectname = nullptr) const;
-    void save(std::ostream&,MeshCore::MeshIO::Format f,
-        const MeshCore::Material* mat = nullptr,
-        const char* objectname = nullptr) const;
+    unsigned int getMemSize() const override;
+    void Save(Base::Writer& writer) const override;
+    void SaveDocFile(Base::Writer& writer) const override;
+    void Restore(Base::XMLReader& reader) override;
+    void RestoreDocFile(Base::Reader& reader) override;
+    void save(const char* file,
+              MeshCore::MeshIO::Format f = MeshCore::MeshIO::Undefined,
+              const MeshCore::Material* mat = nullptr,
+              const char* objectname = nullptr) const;
+    void save(std::ostream&,
+              MeshCore::MeshIO::Format f,
+              const MeshCore::Material* mat = nullptr,
+              const char* objectname = nullptr) const;
     bool load(const char* file, MeshCore::Material* mat = nullptr);
     bool load(std::istream&, MeshCore::MeshIO::Format f, MeshCore::Material* mat = nullptr);
     // Save and load in internal format
     void save(std::ostream&) const;
     void load(std::istream&);
-    void writeInventor(std::ostream& str, float creaseangle=0.0f) const;
+    void writeInventor(std::ostream& str, float creaseangle = 0.0f) const;
     //@}
 
     /** @name Manipulation */
     //@{
     void addFacet(const MeshCore::MeshGeomFacet& facet);
     void addFacets(const std::vector<MeshCore::MeshGeomFacet>& facets);
-    void addFacets(const std::vector<MeshCore::MeshFacet> &facets,
-                   bool checkManifolds);
-    void addFacets(const std::vector<MeshCore::MeshFacet> &facets,
+    void addFacets(const std::vector<MeshCore::MeshFacet>& facets, bool checkManifolds);
+    void addFacets(const std::vector<MeshCore::MeshFacet>& facets,
                    const std::vector<Base::Vector3f>& points,
                    bool checkManifolds);
-    void addFacets(const std::vector<Data::ComplexGeoData::Facet> &facets,
+    void addFacets(const std::vector<Data::ComplexGeoData::Facet>& facets,
                    const std::vector<Base::Vector3d>& points,
                    bool checkManifolds);
     void setFacets(const std::vector<MeshCore::MeshGeomFacet>& facets);
-    void setFacets(const std::vector<Data::ComplexGeoData::Facet> &facets,
+    void setFacets(const std::vector<Data::ComplexGeoData::Facet>& facets,
                    const std::vector<Base::Vector3d>& points);
     /**
      * Combines two independent mesh objects.
@@ -218,7 +238,7 @@ public:
     void addMesh(const MeshCore::MeshKernel&);
     void deleteFacets(const std::vector<FacetIndex>& removeIndices);
     void deletePoints(const std::vector<PointIndex>& removeIndices);
-    std::vector<std::vector<FacetIndex> > getComponents() const;
+    std::vector<std::vector<FacetIndex>> getComponents() const;
     unsigned long countComponents() const;
     void removeComponents(unsigned long);
     /**
@@ -228,7 +248,7 @@ public:
      * gives the number of points which will have a degree of zero.
      */
     unsigned long getPointDegree(const std::vector<FacetIndex>& facets,
-        std::vector<PointIndex>& point_degree) const;
+                                 std::vector<PointIndex>& point_degree) const;
     void fillupHoles(unsigned long, int, MeshCore::AbstractPolygonTriangulator&);
     void offset(float fSize);
     void offsetSpecial2(float fSize);
@@ -244,8 +264,10 @@ public:
     void decimate(int targetSize);
     Base::Vector3d getPointNormal(PointIndex) const;
     std::vector<Base::Vector3d> getPointNormals() const;
-    void crossSections(const std::vector<TPlane>&, std::vector<TPolylines> &sections,
-                       float fMinEps = 1.0e-2f, bool bConnectPolygons = false) const;
+    void crossSections(const std::vector<TPlane>&,
+                       std::vector<TPolylines>& sections,
+                       float fMinEps = 1.0e-2f,
+                       bool bConnectPolygons = false) const;
     void cut(const Base::Polygon2d& polygon, const Base::ViewProjMethod& proj, CutType);
     void trim(const Base::Polygon2d& polygon, const Base::ViewProjMethod& proj, CutType);
     void trimByPlane(const Base::Vector3f& base, const Base::Vector3f& normal);
@@ -276,7 +298,8 @@ public:
     MeshObject* subtract(const MeshObject&) const;
     MeshObject* inner(const MeshObject&) const;
     MeshObject* outer(const MeshObject&) const;
-    std::vector< std::vector<Base::Vector3f> > section(const MeshObject&, bool connectLines, float fMinDist) const;
+    std::vector<std::vector<Base::Vector3f>>
+    section(const MeshObject&, bool connectLines, float fMinDist) const;
     //@}
 
     /** @name Topological operations */
@@ -366,6 +389,7 @@ public:
         bool operator!=(const const_point_iterator& fi) const;
         const_point_iterator& operator++();
         const_point_iterator& operator--();
+
     private:
         void dereference();
         const MeshObject* _mesh;
@@ -387,6 +411,7 @@ public:
         bool operator!=(const const_facet_iterator& fi) const;
         const_facet_iterator& operator++();
         const_facet_iterator& operator--();
+
     private:
         void dereference();
         const MeshObject* _mesh;
@@ -397,20 +422,32 @@ public:
     /** @name Iterator */
     //@{
     const_point_iterator points_begin() const
-    { return {this, 0}; }
+    {
+        return {this, 0};
+    }
     const_point_iterator points_end() const
-    { return {this, countPoints()}; }
+    {
+        return {this, countPoints()};
+    }
 
     const_facet_iterator facets_begin() const
-    { return {this, 0}; }
+    {
+        return {this, 0};
+    }
     const_facet_iterator facets_end() const
-    { return {this, countFacets()}; }
+    {
+        return {this, countFacets()};
+    }
 
     using const_segment_iterator = std::vector<Segment>::const_iterator;
     const_segment_iterator segments_begin() const
-    { return _segments.begin(); }
+    {
+        return _segments.begin();
+    }
     const_segment_iterator segments_end() const
-    { return _segments.end(); }
+    {
+        return _segments.end();
+    }
     //@}
 
     // friends
@@ -431,7 +468,7 @@ private:
     static const float Epsilon;
 };
 
-} // namespace Mesh
+}  // namespace Mesh
 
 
-#endif // MESH_MESH_H
+#endif  // MESH_MESH_H

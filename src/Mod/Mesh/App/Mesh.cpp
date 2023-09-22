@@ -22,8 +22,8 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <algorithm>
-# include <sstream>
+#include <algorithm>
+#include <sstream>
 #endif
 
 #include <Base/Builder3D.h>
@@ -64,19 +64,21 @@ TYPESYSTEM_SOURCE(Mesh::MeshSegment, Data::Segment)
 MeshObject::MeshObject() = default;
 
 MeshObject::MeshObject(const MeshCore::MeshKernel& Kernel)
-  : _kernel(Kernel)
+    : _kernel(Kernel)
 {
     // copy the mesh structure
 }
 
-MeshObject::MeshObject(const MeshCore::MeshKernel& Kernel, const Base::Matrix4D &Mtrx)
-  : _Mtrx(Mtrx),_kernel(Kernel)
+MeshObject::MeshObject(const MeshCore::MeshKernel& Kernel, const Base::Matrix4D& Mtrx)
+    : _Mtrx(Mtrx)
+    , _kernel(Kernel)
 {
     // copy the mesh structure
 }
 
 MeshObject::MeshObject(const MeshObject& mesh)
-  : _Mtrx(mesh._Mtrx),_kernel(mesh._kernel)
+    : _Mtrx(mesh._Mtrx)
+    , _kernel(mesh._kernel)
 {
     // copy the mesh structure
     copySegments(mesh);
@@ -96,10 +98,12 @@ std::vector<const char*> MeshObject::getElementTypes() const
 unsigned long MeshObject::countSubElements(const char* Type) const
 {
     std::string element(Type);
-    if (element == "Mesh")
+    if (element == "Mesh") {
         return 1;
-    else if (element == "Segment")
+    }
+    else if (element == "Segment") {
         return countSegments();
+    }
     return 0;
 }
 
@@ -115,7 +119,9 @@ Data::Segment* MeshObject::getSubElement(const char* Type, unsigned long n) cons
         MeshSegment* segm = new MeshSegment();
         segm->mesh = new MeshObject(*this);
         const Segment& faces = getSegment(n);
-        segm->segment = std::make_unique<Segment>(static_cast<MeshObject*>(segm->mesh), faces.getIndices(), false);
+        segm->segment = std::make_unique<Segment>(static_cast<MeshObject*>(segm->mesh),
+                                                  faces.getIndices(),
+                                                  false);
         return segm;
     }
 
@@ -123,14 +129,15 @@ Data::Segment* MeshObject::getSubElement(const char* Type, unsigned long n) cons
 }
 
 void MeshObject::getFacesFromSubElement(const Data::Segment* element,
-                                        std::vector<Base::Vector3d> &points,
-                                        std::vector<Base::Vector3d> &/*pointNormals*/,
-                                        std::vector<Facet> &faces) const
+                                        std::vector<Base::Vector3d>& points,
+                                        std::vector<Base::Vector3d>& /*pointNormals*/,
+                                        std::vector<Facet>& faces) const
 {
     if (element && element->getTypeId() == MeshSegment::getClassTypeId()) {
         const MeshSegment* segm = static_cast<const MeshSegment*>(element);
         if (segm->segment) {
-            Base::Reference<MeshObject> submesh(segm->mesh->meshFromSegment(segm->segment->getIndices()));
+            Base::Reference<MeshObject> submesh(
+                segm->mesh->meshFromSegment(segm->segment->getIndices()));
             submesh->getFaces(points, faces, 0.0);
         }
         else {
@@ -139,7 +146,7 @@ void MeshObject::getFacesFromSubElement(const Data::Segment* element,
     }
 }
 
-void MeshObject::transformGeometry(const Base::Matrix4D &rclMat)
+void MeshObject::transformGeometry(const Base::Matrix4D& rclMat)
 {
     MeshCore::MeshKernel kernel;
     swap(kernel);
@@ -157,15 +164,16 @@ Base::Matrix4D MeshObject::getTransform() const
     return _Mtrx;
 }
 
-Base::BoundBox3d MeshObject::getBoundBox()const
+Base::BoundBox3d MeshObject::getBoundBox() const
 {
     _kernel.RecalcBoundBox();
     Base::BoundBox3f Bnd = _kernel.GetBoundBox();
 
     Base::BoundBox3d Bnd2;
     if (Bnd.IsValid()) {
-        for (int i =0 ;i<=7;i++)
+        for (int i = 0; i <= 7; i++) {
             Bnd2.Add(transformPointToOutside(Bnd.CalcPoint(Base::BoundBox3f::CORNER(i))));
+        }
     }
 
     return Bnd2;
@@ -199,7 +207,7 @@ void MeshObject::swapSegments(MeshObject& mesh)
     });
 }
 
-void MeshObject::operator = (const MeshObject& mesh)
+void MeshObject::operator=(const MeshObject& mesh)
 {
     if (this != &mesh) {
         // copy the mesh structure
@@ -227,7 +235,7 @@ void MeshObject::swap(MeshObject& mesh)
 {
     this->_kernel.Swap(mesh._kernel);
     swapSegments(mesh);
-    Base::Matrix4D tmp=this->_Mtrx;
+    Base::Matrix4D tmp = this->_Mtrx;
     this->_Mtrx = mesh._Mtrx;
     mesh._Mtrx = tmp;
 }
@@ -258,12 +266,12 @@ unsigned long MeshObject::countFacets() const
     return _kernel.CountFacets();
 }
 
-unsigned long MeshObject::countEdges () const
+unsigned long MeshObject::countEdges() const
 {
     return _kernel.CountEdges();
 }
 
-unsigned long MeshObject::countSegments () const
+unsigned long MeshObject::countSegments() const
 {
     return this->_segments.size();
 }
@@ -298,9 +306,10 @@ MeshPoint MeshObject::getMeshPoint(PointIndex index) const
     return point;
 }
 
-void MeshObject::getPoints(std::vector<Base::Vector3d> &Points,
-                           std::vector<Base::Vector3d> &Normals,
-                           double /*Accuracy*/, uint16_t /*flags*/) const
+void MeshObject::getPoints(std::vector<Base::Vector3d>& Points,
+                           std::vector<Base::Vector3d>& Normals,
+                           double /*Accuracy*/,
+                           uint16_t /*flags*/) const
 {
     Points = transformPointsToOutside(_kernel.GetPoints());
     MeshCore::MeshRefNormalToPoints ptNormals(_kernel);
@@ -313,19 +322,21 @@ Mesh::Facet MeshObject::getMeshFacet(FacetIndex index) const
     return face;
 }
 
-void MeshObject::getFaces(std::vector<Base::Vector3d> &Points,std::vector<Facet> &Topo,
-                          double /*Accuracy*/, uint16_t /*flags*/) const
+void MeshObject::getFaces(std::vector<Base::Vector3d>& Points,
+                          std::vector<Facet>& Topo,
+                          double /*Accuracy*/,
+                          uint16_t /*flags*/) const
 {
     unsigned long ctpoints = _kernel.CountPoints();
     Points.reserve(ctpoints);
-    for (unsigned long i=0; i<ctpoints; i++) {
+    for (unsigned long i = 0; i < ctpoints; i++) {
         Points.push_back(getPoint(i));
     }
 
     unsigned long ctfacets = _kernel.CountFacets();
     const MeshCore::MeshFacetArray& ary = _kernel.GetFacets();
     Topo.reserve(ctfacets);
-    for (unsigned long i=0; i<ctfacets; i++) {
+    for (unsigned long i = 0; i < ctfacets; i++) {
         Facet face;
         face.I1 = (unsigned int)ary[i]._aulPoints[0];
         face.I2 = (unsigned int)ary[i]._aulPoints[1];
@@ -334,43 +345,45 @@ void MeshObject::getFaces(std::vector<Base::Vector3d> &Points,std::vector<Facet>
     }
 }
 
-unsigned int MeshObject::getMemSize () const
+unsigned int MeshObject::getMemSize() const
 {
     return _kernel.GetMemSize();
 }
 
-void MeshObject::Save (Base::Writer &/*writer*/) const
+void MeshObject::Save(Base::Writer& /*writer*/) const
 {
     // this is handled by the property class
 }
 
-void MeshObject::SaveDocFile (Base::Writer &writer) const
+void MeshObject::SaveDocFile(Base::Writer& writer) const
 {
     _kernel.Write(writer.Stream());
 }
 
-void MeshObject::Restore(Base::XMLReader &/*reader*/)
+void MeshObject::Restore(Base::XMLReader& /*reader*/)
 {
     // this is handled by the property class
 }
 
-void MeshObject::RestoreDocFile(Base::Reader &reader)
+void MeshObject::RestoreDocFile(Base::Reader& reader)
 {
     load(reader);
 }
 
-void MeshObject::save(const char* file, MeshCore::MeshIO::Format f,
+void MeshObject::save(const char* file,
+                      MeshCore::MeshIO::Format f,
                       const MeshCore::Material* mat,
                       const char* objectname) const
 {
     MeshCore::MeshOutput aWriter(this->_kernel, mat);
-    if (objectname)
+    if (objectname) {
         aWriter.SetObjectName(objectname);
+    }
 
     // go through the segment list and put them to the exporter when
     // the "save" flag is set
     std::vector<MeshCore::Group> groups;
-    for (const auto & segment : this->_segments) {
+    for (const auto& segment : this->_segments) {
         if (segment.isSaved()) {
             MeshCore::Group g;
             g.indices = segment.getIndices();
@@ -388,18 +401,20 @@ void MeshObject::save(const char* file, MeshCore::MeshIO::Format f,
     aWriter.SaveAny(file, f);
 }
 
-void MeshObject::save(std::ostream& str, MeshCore::MeshIO::Format f,
+void MeshObject::save(std::ostream& str,
+                      MeshCore::MeshIO::Format f,
                       const MeshCore::Material* mat,
                       const char* objectname) const
 {
     MeshCore::MeshOutput aWriter(this->_kernel, mat);
-    if (objectname)
+    if (objectname) {
         aWriter.SetObjectName(objectname);
+    }
 
     // go through the segment list and put them to the exporter when
     // the "save" flag is set
     std::vector<MeshCore::Group> groups;
-    for (const auto & segment : this->_segments) {
+    for (const auto& segment : this->_segments) {
         if (segment.isSaved()) {
             MeshCore::Group g;
             g.indices = segment.getIndices();
@@ -417,8 +432,9 @@ bool MeshObject::load(const char* file, MeshCore::Material* mat)
 {
     MeshCore::MeshKernel kernel;
     MeshCore::MeshInput aReader(kernel, mat);
-    if (!aReader.LoadAny(file))
+    if (!aReader.LoadAny(file)) {
         return false;
+    }
 
     swapKernel(kernel, aReader.GetGroupNames());
     return true;
@@ -428,15 +444,15 @@ bool MeshObject::load(std::istream& str, MeshCore::MeshIO::Format f, MeshCore::M
 {
     MeshCore::MeshKernel kernel;
     MeshCore::MeshInput aReader(kernel, mat);
-    if (!aReader.LoadFormat(str, f))
+    if (!aReader.LoadFormat(str, f)) {
         return false;
+    }
 
     swapKernel(kernel, aReader.GetGroupNames());
     return true;
 }
 
-void MeshObject::swapKernel(MeshCore::MeshKernel& kernel,
-                            const std::vector<std::string>& g)
+void MeshObject::swapKernel(MeshCore::MeshKernel& kernel, const std::vector<std::string>& g)
 {
     _kernel.Swap(kernel);
     // Some file formats define several objects per file (e.g. OBJ).
@@ -453,7 +469,7 @@ void MeshObject::swapKernel(MeshCore::MeshKernel& kernel,
         if (prop < it->_ulProp) {
             prop = it->_ulProp;
             if (!segment.empty()) {
-                this->_segments.emplace_back(this,segment,true);
+                this->_segments.emplace_back(this, segment, true);
                 segment.clear();
             }
         }
@@ -463,7 +479,7 @@ void MeshObject::swapKernel(MeshCore::MeshKernel& kernel,
 
     // if the whole mesh is a single object then don't mark as segment
     if (!segment.empty() && (segment.size() < faces.size())) {
-        this->_segments.emplace_back(this,segment,true);
+        this->_segments.emplace_back(this, segment, true);
     }
 
     // apply the group names to the segments
@@ -525,11 +541,11 @@ void MeshObject::writeInventor(std::ostream& str, float creaseangle) const
 
     Base::InventorBuilder builder(str);
     builder.beginSeparator();
-    builder.addNode(Base::TransformItem{getTransform()});
-    Base::ShapeHintsItem shapeHints{creaseangle};
+    builder.addNode(Base::TransformItem {getTransform()});
+    Base::ShapeHintsItem shapeHints {creaseangle};
     builder.addNode(shapeHints);
-    builder.addNode(Base::Coordinate3Item{coords});
-    builder.addNode(Base::IndexedFaceSetItem{indices});
+    builder.addNode(Base::Coordinate3Item {coords});
+    builder.addNode(Base::IndexedFaceSetItem {indices});
     builder.endSeparator();
 }
 
@@ -543,20 +559,19 @@ void MeshObject::addFacets(const std::vector<MeshCore::MeshGeomFacet>& facets)
     _kernel.AddFacets(facets);
 }
 
-void MeshObject::addFacets(const std::vector<MeshCore::MeshFacet> &facets,
-                           bool checkManifolds)
+void MeshObject::addFacets(const std::vector<MeshCore::MeshFacet>& facets, bool checkManifolds)
 {
     _kernel.AddFacets(facets, checkManifolds);
 }
 
-void MeshObject::addFacets(const std::vector<MeshCore::MeshFacet> &facets,
+void MeshObject::addFacets(const std::vector<MeshCore::MeshFacet>& facets,
                            const std::vector<Base::Vector3f>& points,
                            bool checkManifolds)
 {
     _kernel.AddFacets(facets, points, checkManifolds);
 }
 
-void MeshObject::addFacets(const std::vector<Data::ComplexGeoData::Facet> &facets,
+void MeshObject::addFacets(const std::vector<Data::ComplexGeoData::Facet>& facets,
                            const std::vector<Base::Vector3d>& points,
                            bool checkManifolds)
 {
@@ -572,8 +587,8 @@ void MeshObject::addFacets(const std::vector<Data::ComplexGeoData::Facet> &facet
 
     std::vector<Base::Vector3f> point_v;
     point_v.reserve(points.size());
-    for (const auto & point : points) {
-        Base::Vector3f p((float)point.x,(float)point.y,(float)point.z);
+    for (const auto& point : points) {
+        Base::Vector3f p((float)point.x, (float)point.y, (float)point.z);
         point_v.push_back(p);
     }
 
@@ -585,7 +600,7 @@ void MeshObject::setFacets(const std::vector<MeshCore::MeshGeomFacet>& facets)
     _kernel = facets;
 }
 
-void MeshObject::setFacets(const std::vector<Data::ComplexGeoData::Facet> &facets,
+void MeshObject::setFacets(const std::vector<Data::ComplexGeoData::Facet>& facets,
                            const std::vector<Base::Vector3d>& points)
 {
     MeshCore::MeshFacetArray facet_v;
@@ -600,8 +615,8 @@ void MeshObject::setFacets(const std::vector<Data::ComplexGeoData::Facet> &facet
 
     MeshCore::MeshPointArray point_v;
     point_v.reserve(points.size());
-    for (const auto & point : points) {
-        Base::Vector3f p((float)point.x,(float)point.y,(float)point.z);
+    for (const auto& point : points) {
+        Base::Vector3f p((float)point.x, (float)point.y, (float)point.z);
         point_v.push_back(p);
     }
 
@@ -620,53 +635,59 @@ void MeshObject::addMesh(const MeshCore::MeshKernel& kernel)
 
 void MeshObject::deleteFacets(const std::vector<FacetIndex>& removeIndices)
 {
-    if (removeIndices.empty())
+    if (removeIndices.empty()) {
         return;
+    }
     _kernel.DeleteFacets(removeIndices);
     deletedFacets(removeIndices);
 }
 
 void MeshObject::deletePoints(const std::vector<PointIndex>& removeIndices)
 {
-    if (removeIndices.empty())
+    if (removeIndices.empty()) {
         return;
+    }
     _kernel.DeletePoints(removeIndices);
     this->_segments.clear();
 }
 
 void MeshObject::deletedFacets(const std::vector<FacetIndex>& remFacets)
 {
-    if (remFacets.empty())
-        return; // nothing has changed
-    if (this->_segments.empty())
-        return; // nothing to do
+    if (remFacets.empty()) {
+        return;  // nothing has changed
+    }
+    if (this->_segments.empty()) {
+        return;  // nothing to do
+    }
     // set an array with the original indices and mark the removed as MeshCore::FACET_INDEX_MAX
-    std::vector<FacetIndex> f_indices(_kernel.CountFacets()+remFacets.size());
+    std::vector<FacetIndex> f_indices(_kernel.CountFacets() + remFacets.size());
     for (FacetIndex remFacet : remFacets) {
         f_indices[remFacet] = MeshCore::FACET_INDEX_MAX;
     }
 
     FacetIndex index = 0;
     for (FacetIndex& it : f_indices) {
-        if (it == 0)
+        if (it == 0) {
             it = index++;
+        }
     }
 
     // the array serves now as LUT to set the new indices in the segments
-    for (auto & segment : this->_segments) {
+    for (auto& segment : this->_segments) {
         std::vector<FacetIndex> segm = segment._indices;
-        for (FacetIndex & jt : segm) {
+        for (FacetIndex& jt : segm) {
             jt = f_indices[jt];
         }
 
         // remove the invalid indices
         std::sort(segm.begin(), segm.end());
-        std::vector<FacetIndex>::iterator ft = std::find_if
-            (segm.begin(), segm.end(), [](FacetIndex v) {
+        std::vector<FacetIndex>::iterator ft =
+            std::find_if(segm.begin(), segm.end(), [](FacetIndex v) {
                 return v == MeshCore::FACET_INDEX_MAX;
             });
-        if (ft != segm.end())
+        if (ft != segm.end()) {
             segm.erase(ft, segm.end());
+        }
         segment._indices = segm;
     }
 }
@@ -750,7 +771,9 @@ std::vector<PointIndex> MeshObject::getPointsFromFacets(const std::vector<FacetI
     return _kernel.GetFacetPoints(facets);
 }
 
-bool MeshObject::nearestFacetOnRay(const MeshObject::TRay& ray, double maxAngle, MeshObject::TFaceSection& output) const
+bool MeshObject::nearestFacetOnRay(const MeshObject::TRay& ray,
+                                   double maxAngle,
+                                   MeshObject::TFaceSection& output) const
 {
     Base::Vector3f pnt = Base::toVector<float>(ray.first);
     Base::Vector3f dir = Base::toVector<float>(ray.second);
@@ -822,27 +845,27 @@ void MeshObject::updateMesh() const
     MeshCore::MeshAlgorithm alg(_kernel);
     alg.ResetFacetFlag(MeshCore::MeshFacet::SEGMENT);
     alg.ResetPointFlag(MeshCore::MeshPoint::SEGMENT);
-    for (const auto & segment : this->_segments) {
-            std::vector<PointIndex> points;
-            points = _kernel.GetFacetPoints(segment.getIndices());
-            alg.SetFacetsFlag(segment.getIndices(), MeshCore::MeshFacet::SEGMENT);
-            alg.SetPointsFlag(points, MeshCore::MeshPoint::SEGMENT);
+    for (const auto& segment : this->_segments) {
+        std::vector<PointIndex> points;
+        points = _kernel.GetFacetPoints(segment.getIndices());
+        alg.SetFacetsFlag(segment.getIndices(), MeshCore::MeshFacet::SEGMENT);
+        alg.SetPointsFlag(points, MeshCore::MeshPoint::SEGMENT);
     }
 }
 
-std::vector<std::vector<FacetIndex> > MeshObject::getComponents() const
+std::vector<std::vector<FacetIndex>> MeshObject::getComponents() const
 {
-    std::vector<std::vector<FacetIndex> > segments;
+    std::vector<std::vector<FacetIndex>> segments;
     MeshCore::MeshComponents comp(_kernel);
-    comp.SearchForComponents(MeshCore::MeshComponents::OverEdge,segments);
+    comp.SearchForComponents(MeshCore::MeshComponents::OverEdge, segments);
     return segments;
 }
 
 unsigned long MeshObject::countComponents() const
 {
-    std::vector<std::vector<FacetIndex> > segments;
+    std::vector<std::vector<FacetIndex>> segments;
     MeshCore::MeshComponents comp(_kernel);
-    comp.SearchForComponents(MeshCore::MeshComponents::OverEdge,segments);
+    comp.SearchForComponents(MeshCore::MeshComponents::OverEdge, segments);
     return segments.size();
 }
 
@@ -860,7 +883,7 @@ unsigned long MeshObject::getPointDegree(const std::vector<FacetIndex>& indices,
     const MeshCore::MeshFacetArray& faces = _kernel.GetFacets();
     std::vector<PointIndex> pointDeg(_kernel.CountPoints());
 
-    for (const auto & face : faces) {
+    for (const auto& face : faces) {
         pointDeg[face._aulPoints[0]]++;
         pointDeg[face._aulPoints[1]]++;
         pointDeg[face._aulPoints[2]]++;
@@ -881,10 +904,11 @@ unsigned long MeshObject::getPointDegree(const std::vector<FacetIndex>& indices,
     return countInvalids;
 }
 
-void MeshObject::fillupHoles(unsigned long length, int level,
+void MeshObject::fillupHoles(unsigned long length,
+                             int level,
                              MeshCore::AbstractPolygonTriangulator& cTria)
 {
-    std::list<std::vector<PointIndex> > aFailed;
+    std::list<std::vector<PointIndex>> aFailed;
     MeshCore::MeshTopoAlgorithm topalg(_kernel);
     topalg.FillupHoles(length, level, cTria, aFailed);
 }
@@ -895,59 +919,69 @@ void MeshObject::offset(float fSize)
 
     unsigned int i = 0;
     // go through all the vertex normals
-    for (std::vector<Base::Vector3f>::iterator It= normals.begin();It != normals.end();++It,i++)
+    for (std::vector<Base::Vector3f>::iterator It = normals.begin(); It != normals.end();
+         ++It, i++) {
         // and move each mesh point in the normal direction
-        _kernel.MovePoint(i,It->Normalize() * fSize);
+        _kernel.MovePoint(i, It->Normalize() * fSize);
+    }
     _kernel.RecalcBoundBox();
 }
 
 void MeshObject::offsetSpecial2(float fSize)
 {
     Base::Builder3D builder;
-    std::vector<Base::Vector3f> PointNormals= _kernel.CalcVertexNormals();
+    std::vector<Base::Vector3f> PointNormals = _kernel.CalcVertexNormals();
     std::vector<Base::Vector3f> FaceNormals;
     std::set<FacetIndex> fliped;
 
     MeshCore::MeshFacetIterator it(_kernel);
-    for (it.Init(); it.More(); it.Next())
+    for (it.Init(); it.More(); it.Next()) {
         FaceNormals.push_back(it->GetNormal().Normalize());
+    }
 
     unsigned int i = 0;
 
     // go through all the vertex normals
-    for (std::vector<Base::Vector3f>::iterator It= PointNormals.begin();It != PointNormals.end();++It,i++) {
-        Base::Line3f line{_kernel.GetPoint(i), _kernel.GetPoint(i) + It->Normalize() * fSize};
+    for (std::vector<Base::Vector3f>::iterator It = PointNormals.begin(); It != PointNormals.end();
+         ++It, i++) {
+        Base::Line3f line {_kernel.GetPoint(i), _kernel.GetPoint(i) + It->Normalize() * fSize};
         Base::DrawStyle drawStyle;
-        builder.addNode(Base::LineItem{line, drawStyle});
+        builder.addNode(Base::LineItem {line, drawStyle});
         // and move each mesh point in the normal direction
-        _kernel.MovePoint(i,It->Normalize() * fSize);
+        _kernel.MovePoint(i, It->Normalize() * fSize);
     }
     _kernel.RecalcBoundBox();
 
     MeshCore::MeshTopoAlgorithm alg(_kernel);
 
-    for (int l= 0; l<1 ;l++) {
-        for ( it.Init(),i=0; it.More(); it.Next(),i++) {
-            if (it->IsFlag(MeshCore::MeshFacet::INVALID))
+    for (int l = 0; l < 1; l++) {
+        for (it.Init(), i = 0; it.More(); it.Next(), i++) {
+            if (it->IsFlag(MeshCore::MeshFacet::INVALID)) {
                 continue;
+            }
             // calculate the angle between them
-            float angle = acos((FaceNormals[i] * it->GetNormal()) / (it->GetNormal().Length() * FaceNormals[i].Length()));
+            float angle = acos((FaceNormals[i] * it->GetNormal())
+                               / (it->GetNormal().Length() * FaceNormals[i].Length()));
             if (angle > 1.6) {
                 Base::DrawStyle drawStyle;
                 drawStyle.pointSize = 4.0F;
-                Base::PointItem item{it->GetGravityPoint(), drawStyle, Base::ColorRGB{1.0F, 0.0F, 0.0F}};
+                Base::PointItem item {it->GetGravityPoint(),
+                                      drawStyle,
+                                      Base::ColorRGB {1.0F, 0.0F, 0.0F}};
                 builder.addNode(item);
                 fliped.insert(it.Position());
             }
         }
 
         // if there are no flipped triangles -> stop
-        //int f =fliped.size();
-        if (fliped.empty())
+        // int f =fliped.size();
+        if (fliped.empty()) {
             break;
+        }
 
-        for(FacetIndex It : fliped)
+        for (FacetIndex It : fliped) {
             alg.CollapseFacet(It);
+        }
         fliped.clear();
     }
 
@@ -955,7 +989,7 @@ void MeshObject::offsetSpecial2(float fSize)
 
     // search for intersected facets
     MeshCore::MeshEvalSelfIntersection eval(_kernel);
-    std::vector<std::pair<FacetIndex, FacetIndex> > faces;
+    std::vector<std::pair<FacetIndex, FacetIndex>> faces;
     eval.GetIntersections(faces);
     builder.saveToLog();
 }
@@ -966,15 +1000,16 @@ void MeshObject::offsetSpecial(float fSize, float zmax, float zmin)
 
     unsigned int i = 0;
     // go through all the vertex normals
-    for (std::vector<Base::Vector3f>::iterator It= normals.begin();It != normals.end();++It,i++) {
+    for (std::vector<Base::Vector3f>::iterator It = normals.begin(); It != normals.end();
+         ++It, i++) {
         Base::Vector3f Pnt = _kernel.GetPoint(i);
         if (Pnt.z < zmax && Pnt.z > zmin) {
             Pnt.z = 0;
-            _kernel.MovePoint(i,Pnt.Normalize() * fSize);
+            _kernel.MovePoint(i, Pnt.Normalize() * fSize);
         }
         else {
             // and move each mesh point in the normal direction
-            _kernel.MovePoint(i,It->Normalize() * fSize);
+            _kernel.MovePoint(i, It->Normalize() * fSize);
         }
     }
 }
@@ -1054,15 +1089,17 @@ std::vector<Base::Vector3d> MeshObject::getPointNormals() const
     return normals;
 }
 
-void MeshObject::crossSections(const std::vector<MeshObject::TPlane>& planes, std::vector<MeshObject::TPolylines> &sections,
-                               float fMinEps, bool bConnectPolygons) const
+void MeshObject::crossSections(const std::vector<MeshObject::TPlane>& planes,
+                               std::vector<MeshObject::TPolylines>& sections,
+                               float fMinEps,
+                               bool bConnectPolygons) const
 {
     MeshCore::MeshKernel kernel(this->_kernel);
     kernel.Transform(this->_Mtrx);
 
     MeshCore::MeshFacetGrid grid(kernel);
     MeshCore::MeshAlgorithm algo(kernel);
-    for (const auto & plane : planes) {
+    for (const auto& plane : planes) {
         MeshObject::TPolylines polylines;
         algo.CutWithPlane(plane.first, plane.second, grid, polylines, fMinEps, bConnectPolygons);
         sections.push_back(polylines);
@@ -1070,7 +1107,8 @@ void MeshObject::crossSections(const std::vector<MeshObject::TPlane>& planes, st
 }
 
 void MeshObject::cut(const Base::Polygon2d& polygon2d,
-                     const Base::ViewProjMethod& proj, MeshObject::CutType type)
+                     const Base::ViewProjMethod& proj,
+                     MeshObject::CutType type)
 {
     MeshCore::MeshKernel kernel(this->_kernel);
     kernel.Transform(getTransform());
@@ -1080,25 +1118,27 @@ void MeshObject::cut(const Base::Polygon2d& polygon2d,
 
     bool inner;
     switch (type) {
-    case INNER:
-        inner = true;
-        break;
-    case OUTER:
-        inner = false;
-        break;
-    default:
-        inner = true;
-        break;
+        case INNER:
+            inner = true;
+            break;
+        case OUTER:
+            inner = false;
+            break;
+        default:
+            inner = true;
+            break;
     }
 
     MeshCore::MeshFacetGrid meshGrid(kernel);
     meshAlg.CheckFacets(meshGrid, &proj, polygon2d, inner, check);
-    if (!check.empty())
+    if (!check.empty()) {
         this->deleteFacets(check);
+    }
 }
 
 void MeshObject::trim(const Base::Polygon2d& polygon2d,
-                      const Base::ViewProjMethod& proj, MeshObject::CutType type)
+                      const Base::ViewProjMethod& proj,
+                      MeshObject::CutType type)
 {
     MeshCore::MeshKernel kernel(this->_kernel);
     kernel.Transform(getTransform());
@@ -1108,26 +1148,28 @@ void MeshObject::trim(const Base::Polygon2d& polygon2d,
     std::vector<MeshCore::MeshGeomFacet> triangle;
 
     switch (type) {
-    case INNER:
-        trim.SetInnerOrOuter(MeshCore::MeshTrimming::INNER);
-        break;
-    case OUTER:
-        trim.SetInnerOrOuter(MeshCore::MeshTrimming::OUTER);
-        break;
+        case INNER:
+            trim.SetInnerOrOuter(MeshCore::MeshTrimming::INNER);
+            break;
+        case OUTER:
+            trim.SetInnerOrOuter(MeshCore::MeshTrimming::OUTER);
+            break;
     }
 
     MeshCore::MeshFacetGrid meshGrid(kernel);
     trim.CheckFacets(meshGrid, check);
     trim.TrimFacets(check, triangle);
-    if (!check.empty())
+    if (!check.empty()) {
         this->deleteFacets(check);
+    }
 
     // Re-add some triangles
     if (!triangle.empty()) {
         Base::Matrix4D mat(getTransform());
         mat.inverse();
-        for (auto& it : triangle)
+        for (auto& it : triangle) {
             it.Transform(mat);
+        }
         this->_kernel.AddFacets(triangle);
     }
 }
@@ -1149,10 +1191,12 @@ void MeshObject::trimByPlane(const Base::Vector3f& base, const Base::Vector3f& n
     MeshCore::MeshFacetGrid meshGrid(this->_kernel);
     trim.CheckFacets(meshGrid, basePlane, normalPlane, trimFacets, removeFacets);
     trim.TrimFacets(trimFacets, basePlane, normalPlane, triangle);
-    if (!removeFacets.empty())
+    if (!removeFacets.empty()) {
         this->deleteFacets(removeFacets);
-    if (!triangle.empty())
+    }
+    if (!triangle.empty()) {
         this->_kernel.AddFacets(triangle);
+    }
 }
 
 MeshObject* MeshObject::unite(const MeshObject& mesh) const
@@ -1162,8 +1206,11 @@ MeshObject* MeshObject::unite(const MeshObject& mesh) const
     kernel1.Transform(this->_Mtrx);
     MeshCore::MeshKernel kernel2(mesh._kernel);
     kernel2.Transform(mesh._Mtrx);
-    MeshCore::SetOperations setOp(kernel1, kernel2, result,
-                                  MeshCore::SetOperations::Union, Epsilon);
+    MeshCore::SetOperations setOp(kernel1,
+                                  kernel2,
+                                  result,
+                                  MeshCore::SetOperations::Union,
+                                  Epsilon);
     setOp.Do();
     return new MeshObject(result);
 }
@@ -1175,8 +1222,11 @@ MeshObject* MeshObject::intersect(const MeshObject& mesh) const
     kernel1.Transform(this->_Mtrx);
     MeshCore::MeshKernel kernel2(mesh._kernel);
     kernel2.Transform(mesh._Mtrx);
-    MeshCore::SetOperations setOp(kernel1, kernel2, result,
-                                  MeshCore::SetOperations::Intersect, Epsilon);
+    MeshCore::SetOperations setOp(kernel1,
+                                  kernel2,
+                                  result,
+                                  MeshCore::SetOperations::Intersect,
+                                  Epsilon);
     setOp.Do();
     return new MeshObject(result);
 }
@@ -1188,8 +1238,11 @@ MeshObject* MeshObject::subtract(const MeshObject& mesh) const
     kernel1.Transform(this->_Mtrx);
     MeshCore::MeshKernel kernel2(mesh._kernel);
     kernel2.Transform(mesh._Mtrx);
-    MeshCore::SetOperations setOp(kernel1, kernel2, result,
-                                  MeshCore::SetOperations::Difference, Epsilon);
+    MeshCore::SetOperations setOp(kernel1,
+                                  kernel2,
+                                  result,
+                                  MeshCore::SetOperations::Difference,
+                                  Epsilon);
     setOp.Do();
     return new MeshObject(result);
 }
@@ -1201,8 +1254,11 @@ MeshObject* MeshObject::inner(const MeshObject& mesh) const
     kernel1.Transform(this->_Mtrx);
     MeshCore::MeshKernel kernel2(mesh._kernel);
     kernel2.Transform(mesh._Mtrx);
-    MeshCore::SetOperations setOp(kernel1, kernel2, result,
-                                  MeshCore::SetOperations::Inner, Epsilon);
+    MeshCore::SetOperations setOp(kernel1,
+                                  kernel2,
+                                  result,
+                                  MeshCore::SetOperations::Inner,
+                                  Epsilon);
     setOp.Do();
     return new MeshObject(result);
 }
@@ -1214,20 +1270,23 @@ MeshObject* MeshObject::outer(const MeshObject& mesh) const
     kernel1.Transform(this->_Mtrx);
     MeshCore::MeshKernel kernel2(mesh._kernel);
     kernel2.Transform(mesh._Mtrx);
-    MeshCore::SetOperations setOp(kernel1, kernel2, result,
-                                  MeshCore::SetOperations::Outer, Epsilon);
+    MeshCore::SetOperations setOp(kernel1,
+                                  kernel2,
+                                  result,
+                                  MeshCore::SetOperations::Outer,
+                                  Epsilon);
     setOp.Do();
     return new MeshObject(result);
 }
 
-std::vector< std::vector<Base::Vector3f> >
+std::vector<std::vector<Base::Vector3f>>
 MeshObject::section(const MeshObject& mesh, bool connectLines, float fMinDist) const
 {
     MeshCore::MeshKernel kernel1(this->_kernel);
     kernel1.Transform(this->_Mtrx);
     MeshCore::MeshKernel kernel2(mesh._kernel);
     kernel2.Transform(mesh._Mtrx);
-    std::vector< std::vector<Base::Vector3f> > lines;
+    std::vector<std::vector<Base::Vector3f>> lines;
 
     MeshCore::MeshIntersection sec(kernel1, kernel2, fMinDist);
     std::list<MeshCore::MeshIntersection::Tuple> tuple;
@@ -1242,15 +1301,16 @@ MeshObject::section(const MeshObject& mesh, bool connectLines, float fMinDist) c
         }
     }
     else {
-        std::list< std::list<MeshCore::MeshIntersection::Triple> > triple;
+        std::list<std::list<MeshCore::MeshIntersection::Triple>> triple;
         sec.connectLines(false, tuple, triple);
 
         for (const auto& it : triple) {
             std::vector<Base::Vector3f> curve;
             curve.reserve(it.size());
 
-            for (const auto& jt : it)
+            for (const auto& jt : it) {
                 curve.push_back(jt.p);
+            }
             lines.push_back(curve);
         }
     }
@@ -1265,10 +1325,11 @@ void MeshObject::refine()
     MeshCore::MeshTopoAlgorithm topalg(_kernel);
 
     // x < 30 deg => cos(x) > sqrt(3)/2 or x > 120 deg => cos(x) < -0.5
-    for (unsigned long i=0; i<cnt; i++) {
+    for (unsigned long i = 0; i < cnt; i++) {
         cF.Set(i);
-        if (!cF->IsDeformed(0.86f, -0.5f))
+        if (!cF->IsDeformed(0.86f, -0.5f)) {
             topalg.InsertVertexAndSwapEdge(i, cF->GetGravityPoint(), 0.1f);
+        }
     }
 
     // clear the segments because we don't know how the new
@@ -1281,8 +1342,9 @@ void MeshObject::removeNeedles(float length)
     unsigned long count = _kernel.CountFacets();
     MeshCore::MeshRemoveNeedles eval(_kernel, length);
     eval.Fixup();
-    if (_kernel.CountFacets() < count)
+    if (_kernel.CountFacets() < count) {
         this->_segments.clear();
+    }
 }
 
 void MeshObject::validateCaps(float fMaxAngle, float fSplitFactor)
@@ -1294,10 +1356,12 @@ void MeshObject::validateCaps(float fMaxAngle, float fSplitFactor)
 void MeshObject::optimizeTopology(float fMaxAngle)
 {
     MeshCore::MeshTopoAlgorithm topalg(_kernel);
-    if (fMaxAngle > 0.0f)
+    if (fMaxAngle > 0.0f) {
         topalg.OptimizeTopology(fMaxAngle);
-    else
+    }
+    else {
         topalg.OptimizeTopology();
+    }
 
     // clear the segments because we don't know how the new
     // topology looks like
@@ -1312,27 +1376,29 @@ void MeshObject::optimizeEdges()
 
 void MeshObject::splitEdges()
 {
-    std::vector<std::pair<FacetIndex, FacetIndex> > adjacentFacet;
+    std::vector<std::pair<FacetIndex, FacetIndex>> adjacentFacet;
     MeshCore::MeshAlgorithm alg(_kernel);
     alg.ResetFacetFlag(MeshCore::MeshFacet::VISIT);
     const MeshCore::MeshFacetArray& rFacets = _kernel.GetFacets();
-    for (MeshCore::MeshFacetArray::_TConstIterator pF = rFacets.begin(); pF != rFacets.end(); ++pF) {
-        int id=2;
+    for (MeshCore::MeshFacetArray::_TConstIterator pF = rFacets.begin(); pF != rFacets.end();
+         ++pF) {
+        int id = 2;
         if (pF->_aulNeighbours[id] != MeshCore::FACET_INDEX_MAX) {
             const MeshCore::MeshFacet& rFace = rFacets[pF->_aulNeighbours[id]];
-            if (!pF->IsFlag(MeshCore::MeshFacet::VISIT) && !rFace.IsFlag(MeshCore::MeshFacet::VISIT)) {
+            if (!pF->IsFlag(MeshCore::MeshFacet::VISIT)
+                && !rFace.IsFlag(MeshCore::MeshFacet::VISIT)) {
                 pF->SetFlag(MeshCore::MeshFacet::VISIT);
                 rFace.SetFlag(MeshCore::MeshFacet::VISIT);
-                adjacentFacet.emplace_back(pF-rFacets.begin(), pF->_aulNeighbours[id]);
+                adjacentFacet.emplace_back(pF - rFacets.begin(), pF->_aulNeighbours[id]);
             }
         }
     }
 
     MeshCore::MeshFacetIterator cIter(_kernel);
     MeshCore::MeshTopoAlgorithm topalg(_kernel);
-    for (const auto & it : adjacentFacet) {
+    for (const auto& it : adjacentFacet) {
         cIter.Set(it.first);
-        Base::Vector3f mid = 0.5f*(cIter->_aclPoints[0]+cIter->_aclPoints[2]);
+        Base::Vector3f mid = 0.5f * (cIter->_aclPoints[0] + cIter->_aclPoints[2]);
         topalg.SplitEdge(it.first, it.second, mid);
     }
 
@@ -1461,7 +1527,8 @@ MeshObject::TFacePairs MeshObject::getSelfIntersections() const
     return pairs;
 }
 
-std::vector<Base::Line3d> MeshObject::getSelfIntersections(const MeshObject::TFacePairs& facets) const
+std::vector<Base::Line3d>
+MeshObject::getSelfIntersections(const MeshObject::TFacePairs& facets) const
 {
     MeshCore::MeshEvalSelfIntersection eval(getKernel());
     using Section = std::pair<Base::Vector3f, Base::Vector3f>;
@@ -1472,16 +1539,19 @@ std::vector<Base::Line3d> MeshObject::getSelfIntersections(const MeshObject::TFa
     lines.reserve(selfPoints.size());
 
     Base::Matrix4D mat(getTransform());
-    std::transform(selfPoints.begin(), selfPoints.end(), std::back_inserter(lines), [&mat](const Section& l){
-        return Base::Line3d(mat * Base::convertTo<Base::Vector3d>(l.first),
-                            mat * Base::convertTo<Base::Vector3d>(l.second));
-    });
+    std::transform(selfPoints.begin(),
+                   selfPoints.end(),
+                   std::back_inserter(lines),
+                   [&mat](const Section& l) {
+                       return Base::Line3d(mat * Base::convertTo<Base::Vector3d>(l.first),
+                                           mat * Base::convertTo<Base::Vector3d>(l.second));
+                   });
     return lines;
 }
 
 void MeshObject::removeSelfIntersections()
 {
-    std::vector<std::pair<FacetIndex, FacetIndex> > selfIntersections;
+    std::vector<std::pair<FacetIndex, FacetIndex>> selfIntersections;
     MeshCore::MeshEvalSelfIntersection cMeshEval(_kernel);
     cMeshEval.GetIntersections(selfIntersections);
 
@@ -1494,19 +1564,26 @@ void MeshObject::removeSelfIntersections()
 void MeshObject::removeSelfIntersections(const std::vector<FacetIndex>& indices)
 {
     // make sure that the number of indices is even and are in range
-    if (indices.size() % 2 != 0)
+    if (indices.size() % 2 != 0) {
         return;
+    }
     unsigned long cntfacets = _kernel.CountFacets();
-    if (std::find_if(indices.begin(), indices.end(), [cntfacets](FacetIndex v) {
-        return v >= cntfacets;
-    }) < indices.end())
+    if (std::find_if(indices.begin(),
+                     indices.end(),
+                     [cntfacets](FacetIndex v) {
+                         return v >= cntfacets;
+                     })
+        < indices.end()) {
         return;
-    std::vector<std::pair<FacetIndex, FacetIndex> > selfIntersections;
+    }
+    std::vector<std::pair<FacetIndex, FacetIndex>> selfIntersections;
     std::vector<FacetIndex>::const_iterator it;
-    for (it = indices.begin(); it != indices.end(); ) {
-        FacetIndex id1 = *it; ++it;
-        FacetIndex id2 = *it; ++it;
-        selfIntersections.emplace_back(id1,id2);
+    for (it = indices.begin(); it != indices.end();) {
+        FacetIndex id1 = *it;
+        ++it;
+        FacetIndex id2 = *it;
+        ++it;
+        selfIntersections.emplace_back(id1, id2);
     }
 
     if (!selfIntersections.empty()) {
@@ -1523,7 +1600,7 @@ void MeshObject::removeFoldsOnSurface()
     MeshCore::MeshEvalFoldOversOnSurface f_eval(_kernel);
 
     f_eval.Evaluate();
-    std::vector<FacetIndex> inds  = f_eval.GetIndices();
+    std::vector<FacetIndex> inds = f_eval.GetIndices();
 
     s_eval.Evaluate();
     std::vector<FacetIndex> inds1 = s_eval.GetIndices();
@@ -1533,17 +1610,20 @@ void MeshObject::removeFoldsOnSurface()
     std::sort(inds.begin(), inds.end());
     inds.erase(std::unique(inds.begin(), inds.end()), inds.end());
 
-    if (!inds.empty())
+    if (!inds.empty()) {
         deleteFacets(inds);
+    }
 
     // do this as additional check after removing folds on closed area
-    for (int i=0; i<5; i++) {
+    for (int i = 0; i < 5; i++) {
         MeshCore::MeshEvalFoldsOnBoundary b_eval(_kernel);
-        if (b_eval.Evaluate())
+        if (b_eval.Evaluate()) {
             break;
+        }
         inds = b_eval.GetIndices();
-        if (!inds.empty())
+        if (!inds.empty()) {
             deleteFacets(inds);
+        }
     }
 }
 
@@ -1584,8 +1664,9 @@ void MeshObject::mergeFacets()
     unsigned long count = _kernel.CountFacets();
     MeshCore::MeshFixMergeFacets merge(_kernel);
     merge.Fixup();
-    if (_kernel.CountFacets() < count)
+    if (_kernel.CountFacets() < count) {
         this->_segments.clear();
+    }
 }
 
 void MeshObject::validateIndices()
@@ -1615,8 +1696,9 @@ void MeshObject::validateIndices()
         fix.Fixup();
     }
 
-    if (_kernel.CountFacets() < count)
+    if (_kernel.CountFacets() < count) {
         this->_segments.clear();
+    }
 }
 
 bool MeshObject::hasInvalidNeighbourhood() const
@@ -1649,10 +1731,12 @@ void MeshObject::validateDeformations(float fMaxAngle, float fEps)
     MeshCore::MeshFixDeformedFacets eval(_kernel,
                                          Base::toRadians(15.0f),
                                          Base::toRadians(150.0f),
-                                         fMaxAngle, fEps);
+                                         fMaxAngle,
+                                         fEps);
     eval.Fixup();
-    if (_kernel.CountFacets() < count)
+    if (_kernel.CountFacets() < count) {
         this->_segments.clear();
+    }
 }
 
 void MeshObject::validateDegenerations(float fEps)
@@ -1660,8 +1744,9 @@ void MeshObject::validateDegenerations(float fEps)
     unsigned long count = _kernel.CountFacets();
     MeshCore::MeshFixDegeneratedFacets eval(_kernel, fEps);
     eval.Fixup();
-    if (_kernel.CountFacets() < count)
+    if (_kernel.CountFacets() < count) {
         this->_segments.clear();
+    }
 }
 
 void MeshObject::removeDuplicatedPoints()
@@ -1669,8 +1754,9 @@ void MeshObject::removeDuplicatedPoints()
     unsigned long count = _kernel.CountFacets();
     MeshCore::MeshFixDuplicatePoints eval(_kernel);
     eval.Fixup();
-    if (_kernel.CountFacets() < count)
+    if (_kernel.CountFacets() < count) {
         this->_segments.clear();
+    }
 }
 
 void MeshObject::removeDuplicatedFacets()
@@ -1678,8 +1764,9 @@ void MeshObject::removeDuplicatedFacets()
     unsigned long count = _kernel.CountFacets();
     MeshCore::MeshFixDuplicateFacets eval(_kernel);
     eval.Fixup();
-    if (_kernel.CountFacets() < count)
+    if (_kernel.CountFacets() < count) {
         this->_segments.clear();
+    }
 }
 
 MeshObject* MeshObject::createMeshFromList(Py::List& list)
@@ -1702,7 +1789,7 @@ MeshObject* MeshObject::createMeshFromList(Py::List& list)
 
     Base::EmptySequencer seq;
     std::unique_ptr<MeshObject> mesh(new MeshObject);
-    //mesh->addFacets(facets);
+    // mesh->addFacets(facets);
     mesh->getKernel() = facets;
     return mesh.release();
 }
@@ -1712,9 +1799,10 @@ MeshObject* MeshObject::createSphere(float radius, int sampling)
     // load the 'BuildRegularGeoms' module
     Base::PyGILStateLocker lock;
     try {
-        Py::Module module(PyImport_ImportModule("BuildRegularGeoms"),true);
-        if (module.isNull())
+        Py::Module module(PyImport_ImportModule("BuildRegularGeoms"), true);
+        if (module.isNull()) {
             return nullptr;
+        }
         Py::Dict dict = module.getDict();
         Py::Callable call(dict.getItem("Sphere"));
         Py::Tuple args(2);
@@ -1735,9 +1823,10 @@ MeshObject* MeshObject::createEllipsoid(float radius1, float radius2, int sampli
     // load the 'BuildRegularGeoms' module
     Base::PyGILStateLocker lock;
     try {
-        Py::Module module(PyImport_ImportModule("BuildRegularGeoms"),true);
-        if (module.isNull())
+        Py::Module module(PyImport_ImportModule("BuildRegularGeoms"), true);
+        if (module.isNull()) {
             return nullptr;
+        }
         Py::Dict dict = module.getDict();
         Py::Callable call(dict.getItem("Ellipsoid"));
         Py::Tuple args(3);
@@ -1754,14 +1843,16 @@ MeshObject* MeshObject::createEllipsoid(float radius1, float radius2, int sampli
     return nullptr;
 }
 
-MeshObject* MeshObject::createCylinder(float radius, float length, int closed, float edgelen, int sampling)
+MeshObject*
+MeshObject::createCylinder(float radius, float length, int closed, float edgelen, int sampling)
 {
     // load the 'BuildRegularGeoms' module
     Base::PyGILStateLocker lock;
     try {
-        Py::Module module(PyImport_ImportModule("BuildRegularGeoms"),true);
-        if (module.isNull())
+        Py::Module module(PyImport_ImportModule("BuildRegularGeoms"), true);
+        if (module.isNull()) {
             return nullptr;
+        }
         Py::Dict dict = module.getDict();
         Py::Callable call(dict.getItem("Cylinder"));
         Py::Tuple args(5);
@@ -1780,14 +1871,20 @@ MeshObject* MeshObject::createCylinder(float radius, float length, int closed, f
     return nullptr;
 }
 
-MeshObject* MeshObject::createCone(float radius1, float radius2, float len, int closed, float edgelen, int sampling)
+MeshObject* MeshObject::createCone(float radius1,
+                                   float radius2,
+                                   float len,
+                                   int closed,
+                                   float edgelen,
+                                   int sampling)
 {
     // load the 'BuildRegularGeoms' module
     Base::PyGILStateLocker lock;
     try {
-        Py::Module module(PyImport_ImportModule("BuildRegularGeoms"),true);
-        if (module.isNull())
+        Py::Module module(PyImport_ImportModule("BuildRegularGeoms"), true);
+        if (module.isNull()) {
             return nullptr;
+        }
         Py::Dict dict = module.getDict();
         Py::Callable call(dict.getItem("Cone"));
         Py::Tuple args(6);
@@ -1812,9 +1909,10 @@ MeshObject* MeshObject::createTorus(float radius1, float radius2, int sampling)
     // load the 'BuildRegularGeoms' module
     Base::PyGILStateLocker lock;
     try {
-        Py::Module module(PyImport_ImportModule("BuildRegularGeoms"),true);
-        if (module.isNull())
+        Py::Module module(PyImport_ImportModule("BuildRegularGeoms"), true);
+        if (module.isNull()) {
             return nullptr;
+        }
         Py::Dict dict = module.getDict();
         Py::Callable call(dict.getItem("Toroid"));
         Py::Tuple args(3);
@@ -1836,9 +1934,10 @@ MeshObject* MeshObject::createCube(float length, float width, float height)
     // load the 'BuildRegularGeoms' module
     Base::PyGILStateLocker lock;
     try {
-        Py::Module module(PyImport_ImportModule("BuildRegularGeoms"),true);
-        if (module.isNull())
+        Py::Module module(PyImport_ImportModule("BuildRegularGeoms"), true);
+        if (module.isNull()) {
             return nullptr;
+        }
         Py::Dict dict = module.getDict();
         Py::Callable call(dict.getItem("Cube"));
         Py::Tuple args(3);
@@ -1860,9 +1959,10 @@ MeshObject* MeshObject::createCube(float length, float width, float height, floa
     // load the 'BuildRegularGeoms' module
     Base::PyGILStateLocker lock;
     try {
-        Py::Module module(PyImport_ImportModule("BuildRegularGeoms"),true);
-        if (module.isNull())
+        Py::Module module(PyImport_ImportModule("BuildRegularGeoms"), true);
+        if (module.isNull()) {
             return nullptr;
+        }
         Py::Dict dict = module.getDict();
         Py::Callable call(dict.getItem("FineCube"));
         Py::Tuple args(4);
@@ -1925,11 +2025,12 @@ void MeshObject::addSegment(const std::vector<FacetIndex>& inds)
 {
     unsigned long maxIndex = _kernel.CountFacets();
     for (FacetIndex it : inds) {
-        if (it >= maxIndex)
+        if (it >= maxIndex) {
             throw Base::IndexError("Index out of range");
+        }
     }
 
-    this->_segments.emplace_back(this,inds,true);
+    this->_segments.emplace_back(this, inds, true);
 }
 
 const Segment& MeshObject::getSegment(unsigned long index) const
@@ -1959,29 +2060,40 @@ MeshObject* MeshObject::meshFromSegment(const std::vector<FacetIndex>& indices) 
 }
 
 std::vector<Segment> MeshObject::getSegmentsOfType(MeshObject::GeometryType type,
-                                                   float dev, unsigned long minFacets) const
+                                                   float dev,
+                                                   unsigned long minFacets) const
 {
     std::vector<Segment> segm;
-    if (this->_kernel.CountFacets() == 0)
+    if (this->_kernel.CountFacets() == 0) {
         return segm;
+    }
 
     MeshCore::MeshSegmentAlgorithm finder(this->_kernel);
     std::shared_ptr<MeshCore::MeshDistanceSurfaceSegment> surf;
     switch (type) {
-    case PLANE:
-        surf.reset(new MeshCore::MeshDistanceGenericSurfaceFitSegment(new MeshCore::PlaneSurfaceFit,
-                   this->_kernel, minFacets, dev));
-    break;
-    case CYLINDER:
-        surf.reset(new MeshCore::MeshDistanceGenericSurfaceFitSegment(new MeshCore::CylinderSurfaceFit,
-                   this->_kernel, minFacets, dev));
-        break;
-    case SPHERE:
-        surf.reset(new MeshCore::MeshDistanceGenericSurfaceFitSegment(new MeshCore::SphereSurfaceFit,
-                   this->_kernel, minFacets, dev));
-        break;
-    default:
-        break;
+        case PLANE:
+            surf.reset(
+                new MeshCore::MeshDistanceGenericSurfaceFitSegment(new MeshCore::PlaneSurfaceFit,
+                                                                   this->_kernel,
+                                                                   minFacets,
+                                                                   dev));
+            break;
+        case CYLINDER:
+            surf.reset(
+                new MeshCore::MeshDistanceGenericSurfaceFitSegment(new MeshCore::CylinderSurfaceFit,
+                                                                   this->_kernel,
+                                                                   minFacets,
+                                                                   dev));
+            break;
+        case SPHERE:
+            surf.reset(
+                new MeshCore::MeshDistanceGenericSurfaceFitSegment(new MeshCore::SphereSurfaceFit,
+                                                                   this->_kernel,
+                                                                   minFacets,
+                                                                   dev));
+            break;
+        default:
+            break;
     }
 
     if (surf.get()) {
@@ -1990,7 +2102,7 @@ std::vector<Segment> MeshObject::getSegmentsOfType(MeshObject::GeometryType type
         finder.FindSegments(surfaces);
 
         const std::vector<MeshCore::MeshSegment>& data = surf->GetSegments();
-        for (const auto & it : data) {
+        for (const auto& it : data) {
             segm.emplace_back(this, it, false);
         }
     }
@@ -2001,20 +2113,21 @@ std::vector<Segment> MeshObject::getSegmentsOfType(MeshObject::GeometryType type
 // ----------------------------------------------------------------------------
 
 MeshObject::const_point_iterator::const_point_iterator(const MeshObject* mesh, PointIndex index)
-  : _mesh(mesh), _p_it(mesh->getKernel())
+    : _mesh(mesh)
+    , _p_it(mesh->getKernel())
 {
     this->_p_it.Set(index);
     this->_p_it.Transform(_mesh->_Mtrx);
     this->_point.Mesh = _mesh;
 }
 
-MeshObject::const_point_iterator::const_point_iterator
-(const MeshObject::const_point_iterator& fi) = default;
+MeshObject::const_point_iterator::const_point_iterator(const MeshObject::const_point_iterator& fi) =
+    default;
 
 MeshObject::const_point_iterator::~const_point_iterator() = default;
 
-MeshObject::const_point_iterator& MeshObject::const_point_iterator::operator=
-(const MeshObject::const_point_iterator& pi) = default;
+MeshObject::const_point_iterator&
+MeshObject::const_point_iterator::operator=(const MeshObject::const_point_iterator& pi) = default;
 
 void MeshObject::const_point_iterator::dereference()
 {
@@ -2061,27 +2174,28 @@ MeshObject::const_point_iterator& MeshObject::const_point_iterator::operator--()
 // ----------------------------------------------------------------------------
 
 MeshObject::const_facet_iterator::const_facet_iterator(const MeshObject* mesh, FacetIndex index)
-  : _mesh(mesh), _f_it(mesh->getKernel())
+    : _mesh(mesh)
+    , _f_it(mesh->getKernel())
 {
     this->_f_it.Set(index);
     this->_f_it.Transform(_mesh->_Mtrx);
     this->_facet.Mesh = _mesh;
 }
 
-MeshObject::const_facet_iterator::const_facet_iterator
-(const MeshObject::const_facet_iterator& fi) = default;
+MeshObject::const_facet_iterator::const_facet_iterator(const MeshObject::const_facet_iterator& fi) =
+    default;
 
 MeshObject::const_facet_iterator::~const_facet_iterator() = default;
 
-MeshObject::const_facet_iterator& MeshObject::const_facet_iterator::operator=
-(const MeshObject::const_facet_iterator& fi) = default;
+MeshObject::const_facet_iterator&
+MeshObject::const_facet_iterator::operator=(const MeshObject::const_facet_iterator& fi) = default;
 
 void MeshObject::const_facet_iterator::dereference()
 {
-    this->_facet.MeshCore::MeshGeomFacet::operator = (*_f_it);
+    this->_facet.MeshCore::MeshGeomFacet::operator=(*_f_it);
     this->_facet.Index = _f_it.Position();
     const MeshCore::MeshFacet& face = _f_it.GetReference();
-    for (int i=0; i<3;i++) {
+    for (int i = 0; i < 3; i++) {
         this->_facet.PIndex[i] = face._aulPoints[i];
         this->_facet.NIndex[i] = face._aulNeighbours[i];
     }

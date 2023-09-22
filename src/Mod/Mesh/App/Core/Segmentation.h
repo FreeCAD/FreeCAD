@@ -31,7 +31,8 @@
 #include "Visitor.h"
 
 
-namespace MeshCore {
+namespace MeshCore
+{
 
 class PlaneFit;
 class CylinderFit;
@@ -43,15 +44,19 @@ class MeshExport MeshSurfaceSegment
 {
 public:
     explicit MeshSurfaceSegment(unsigned long minFacets)
-        : minFacets(minFacets) {}
+        : minFacets(minFacets)
+    {}
     virtual ~MeshSurfaceSegment() = default;
-    virtual bool TestFacet (const MeshFacet &rclFacet) const = 0;
+    virtual bool TestFacet(const MeshFacet& rclFacet) const = 0;
     virtual const char* GetType() const = 0;
     virtual void Initialize(FacetIndex);
     virtual bool TestInitialFacet(FacetIndex) const;
     virtual void AddFacet(const MeshFacet& rclFacet);
     void AddSegment(const std::vector<FacetIndex>&);
-    const std::vector<MeshSegment>& GetSegments() const { return segments; }
+    const std::vector<MeshSegment>& GetSegments() const
+    {
+        return segments;
+    }
     MeshSegment FindSegment(FacetIndex) const;
 
 protected:
@@ -62,24 +67,30 @@ using MeshSurfaceSegmentPtr = std::shared_ptr<MeshSurfaceSegment>;
 
 // --------------------------------------------------------
 
-class MeshExport MeshDistanceSurfaceSegment : public MeshSurfaceSegment
+class MeshExport MeshDistanceSurfaceSegment: public MeshSurfaceSegment
 {
 public:
     MeshDistanceSurfaceSegment(const MeshKernel& mesh, unsigned long minFacets, float tol)
-        : MeshSurfaceSegment(minFacets), kernel(mesh), tolerance(tol) {}
+        : MeshSurfaceSegment(minFacets)
+        , kernel(mesh)
+        , tolerance(tol)
+    {}
 
 protected:
     const MeshKernel& kernel;
     float tolerance;
 };
 
-class MeshExport MeshDistancePlanarSegment : public MeshDistanceSurfaceSegment
+class MeshExport MeshDistancePlanarSegment: public MeshDistanceSurfaceSegment
 {
 public:
     MeshDistancePlanarSegment(const MeshKernel& mesh, unsigned long minFacets, float tol);
     ~MeshDistancePlanarSegment() override;
-    bool TestFacet (const MeshFacet& rclFacet) const override;
-    const char* GetType() const override { return "Plane"; }
+    bool TestFacet(const MeshFacet& rclFacet) const override;
+    const char* GetType() const override
+    {
+        return "Plane";
+    }
     void Initialize(FacetIndex) override;
     void AddFacet(const MeshFacet& rclFacet) override;
 
@@ -104,13 +115,16 @@ public:
     virtual std::vector<float> Parameters() const = 0;
 };
 
-class MeshExport PlaneSurfaceFit : public AbstractSurfaceFit
+class MeshExport PlaneSurfaceFit: public AbstractSurfaceFit
 {
 public:
     PlaneSurfaceFit();
     PlaneSurfaceFit(const Base::Vector3f& b, const Base::Vector3f& n);
     ~PlaneSurfaceFit() override;
-    const char* GetType() const override { return "Plane"; }
+    const char* GetType() const override
+    {
+        return "Plane";
+    }
     void Initialize(const MeshGeomFacet&) override;
     bool TestTriangle(const MeshGeomFacet&) const override;
     void AddTriangle(const MeshGeomFacet&) override;
@@ -125,13 +139,16 @@ private:
     PlaneFit* fitter;
 };
 
-class MeshExport CylinderSurfaceFit : public AbstractSurfaceFit
+class MeshExport CylinderSurfaceFit: public AbstractSurfaceFit
 {
 public:
     CylinderSurfaceFit();
     CylinderSurfaceFit(const Base::Vector3f& b, const Base::Vector3f& a, float r);
     ~CylinderSurfaceFit() override;
-    const char* GetType() const override { return "Cylinder"; }
+    const char* GetType() const override
+    {
+        return "Cylinder";
+    }
     void Initialize(const MeshGeomFacet&) override;
     bool TestTriangle(const MeshGeomFacet&) const override;
     void AddTriangle(const MeshGeomFacet&) override;
@@ -147,13 +164,16 @@ private:
     CylinderFit* fitter;
 };
 
-class MeshExport SphereSurfaceFit : public AbstractSurfaceFit
+class MeshExport SphereSurfaceFit: public AbstractSurfaceFit
 {
 public:
     SphereSurfaceFit();
     SphereSurfaceFit(const Base::Vector3f& c, float r);
     ~SphereSurfaceFit() override;
-    const char* GetType() const override { return "Sphere"; }
+    const char* GetType() const override
+    {
+        return "Sphere";
+    }
     void Initialize(const MeshGeomFacet&) override;
     bool TestTriangle(const MeshGeomFacet&) const override;
     void AddTriangle(const MeshGeomFacet&) override;
@@ -168,14 +188,19 @@ private:
     SphereFit* fitter;
 };
 
-class MeshExport MeshDistanceGenericSurfaceFitSegment : public MeshDistanceSurfaceSegment
+class MeshExport MeshDistanceGenericSurfaceFitSegment: public MeshDistanceSurfaceSegment
 {
 public:
-    MeshDistanceGenericSurfaceFitSegment(AbstractSurfaceFit*, const MeshKernel& mesh,
-                                         unsigned long minFacets, float tol);
+    MeshDistanceGenericSurfaceFitSegment(AbstractSurfaceFit*,
+                                         const MeshKernel& mesh,
+                                         unsigned long minFacets,
+                                         float tol);
     ~MeshDistanceGenericSurfaceFitSegment() override;
-    bool TestFacet (const MeshFacet& rclFacet) const override;
-    const char* GetType() const override { return fitter->GetType(); }
+    bool TestFacet(const MeshFacet& rclFacet) const override;
+    const char* GetType() const override
+    {
+        return fitter->GetType();
+    }
     void Initialize(FacetIndex) override;
     bool TestInitialFacet(FacetIndex) const override;
     void AddFacet(const MeshFacet& rclFacet) override;
@@ -187,36 +212,56 @@ protected:
 
 // --------------------------------------------------------
 
-class MeshExport MeshCurvatureSurfaceSegment : public MeshSurfaceSegment
+class MeshExport MeshCurvatureSurfaceSegment: public MeshSurfaceSegment
 {
 public:
     MeshCurvatureSurfaceSegment(const std::vector<CurvatureInfo>& ci, unsigned long minFacets)
-        : MeshSurfaceSegment(minFacets), info(ci) {}
+        : MeshSurfaceSegment(minFacets)
+        , info(ci)
+    {}
 
 protected:
     const std::vector<CurvatureInfo>& info;
 };
 
-class MeshExport MeshCurvaturePlanarSegment : public MeshCurvatureSurfaceSegment
+class MeshExport MeshCurvaturePlanarSegment: public MeshCurvatureSurfaceSegment
 {
 public:
-    MeshCurvaturePlanarSegment(const std::vector<CurvatureInfo>& ci, unsigned long minFacets, float tol)
-        : MeshCurvatureSurfaceSegment(ci, minFacets), tolerance(tol) {}
-    bool TestFacet (const MeshFacet &rclFacet) const override;
-    const char* GetType() const override { return "Plane"; }
+    MeshCurvaturePlanarSegment(const std::vector<CurvatureInfo>& ci,
+                               unsigned long minFacets,
+                               float tol)
+        : MeshCurvatureSurfaceSegment(ci, minFacets)
+        , tolerance(tol)
+    {}
+    bool TestFacet(const MeshFacet& rclFacet) const override;
+    const char* GetType() const override
+    {
+        return "Plane";
+    }
 
 private:
     float tolerance;
 };
 
-class MeshExport MeshCurvatureCylindricalSegment : public MeshCurvatureSurfaceSegment
+class MeshExport MeshCurvatureCylindricalSegment: public MeshCurvatureSurfaceSegment
 {
 public:
-    MeshCurvatureCylindricalSegment(const std::vector<CurvatureInfo>& ci, unsigned long minFacets,
-                                    float tolMin, float tolMax, float curv)
-        : MeshCurvatureSurfaceSegment(ci, minFacets), toleranceMin(tolMin), toleranceMax(tolMax) { curvature = curv;}
-    bool TestFacet (const MeshFacet &rclFacet) const override;
-    const char* GetType() const override { return "Cylinder"; }
+    MeshCurvatureCylindricalSegment(const std::vector<CurvatureInfo>& ci,
+                                    unsigned long minFacets,
+                                    float tolMin,
+                                    float tolMax,
+                                    float curv)
+        : MeshCurvatureSurfaceSegment(ci, minFacets)
+        , toleranceMin(tolMin)
+        , toleranceMax(tolMax)
+    {
+        curvature = curv;
+    }
+    bool TestFacet(const MeshFacet& rclFacet) const override;
+    const char* GetType() const override
+    {
+        return "Cylinder";
+    }
 
 private:
     float curvature;
@@ -224,28 +269,49 @@ private:
     float toleranceMax;
 };
 
-class MeshExport MeshCurvatureSphericalSegment : public MeshCurvatureSurfaceSegment
+class MeshExport MeshCurvatureSphericalSegment: public MeshCurvatureSurfaceSegment
 {
 public:
-    MeshCurvatureSphericalSegment(const std::vector<CurvatureInfo>& ci, unsigned long minFacets, float tol, float curv)
-        : MeshCurvatureSurfaceSegment(ci, minFacets), tolerance(tol) { curvature = curv;}
-    bool TestFacet (const MeshFacet &rclFacet) const override;
-    const char* GetType() const override { return "Sphere"; }
+    MeshCurvatureSphericalSegment(const std::vector<CurvatureInfo>& ci,
+                                  unsigned long minFacets,
+                                  float tol,
+                                  float curv)
+        : MeshCurvatureSurfaceSegment(ci, minFacets)
+        , tolerance(tol)
+    {
+        curvature = curv;
+    }
+    bool TestFacet(const MeshFacet& rclFacet) const override;
+    const char* GetType() const override
+    {
+        return "Sphere";
+    }
 
 private:
     float curvature;
     float tolerance;
 };
 
-class MeshExport MeshCurvatureFreeformSegment : public MeshCurvatureSurfaceSegment
+class MeshExport MeshCurvatureFreeformSegment: public MeshCurvatureSurfaceSegment
 {
 public:
-    MeshCurvatureFreeformSegment(const std::vector<CurvatureInfo>& ci, unsigned long minFacets,
-                                 float tolMin, float tolMax, float c1, float c2)
-        : MeshCurvatureSurfaceSegment(ci, minFacets), c1(c1), c2(c2),
-          toleranceMin(tolMin), toleranceMax(tolMax) {}
-    bool TestFacet (const MeshFacet &rclFacet) const override;
-    const char* GetType() const override { return "Freeform"; }
+    MeshCurvatureFreeformSegment(const std::vector<CurvatureInfo>& ci,
+                                 unsigned long minFacets,
+                                 float tolMin,
+                                 float tolMax,
+                                 float c1,
+                                 float c2)
+        : MeshCurvatureSurfaceSegment(ci, minFacets)
+        , c1(c1)
+        , c2(c2)
+        , toleranceMin(tolMin)
+        , toleranceMax(tolMax)
+    {}
+    bool TestFacet(const MeshFacet& rclFacet) const override;
+    const char* GetType() const override
+    {
+        return "Freeform";
+    }
 
 private:
     float c1, c2;
@@ -253,30 +319,34 @@ private:
     float toleranceMax;
 };
 
-class MeshExport MeshSurfaceVisitor : public MeshFacetVisitor
+class MeshExport MeshSurfaceVisitor: public MeshFacetVisitor
 {
 public:
-    MeshSurfaceVisitor (MeshSurfaceSegment& segm, std::vector<FacetIndex> &indices);
-    bool AllowVisit (const MeshFacet& face, const MeshFacet&,
-                     FacetIndex, unsigned long, unsigned short neighbourIndex) override;
-    bool Visit (const MeshFacet & face, const MeshFacet &,
-                FacetIndex ulFInd, unsigned long) override;
+    MeshSurfaceVisitor(MeshSurfaceSegment& segm, std::vector<FacetIndex>& indices);
+    bool AllowVisit(const MeshFacet& face,
+                    const MeshFacet&,
+                    FacetIndex,
+                    unsigned long,
+                    unsigned short neighbourIndex) override;
+    bool Visit(const MeshFacet& face, const MeshFacet&, FacetIndex ulFInd, unsigned long) override;
 
 protected:
-    std::vector<FacetIndex>  &indices;
+    std::vector<FacetIndex>& indices;
     MeshSurfaceSegment& segm;
 };
 
 class MeshExport MeshSegmentAlgorithm
 {
 public:
-    explicit MeshSegmentAlgorithm(const MeshKernel& kernel) : myKernel(kernel) {}
+    explicit MeshSegmentAlgorithm(const MeshKernel& kernel)
+        : myKernel(kernel)
+    {}
     void FindSegments(std::vector<MeshSurfaceSegmentPtr>&);
 
 private:
     const MeshKernel& myKernel;
 };
 
-} // MeshCore
+}  // namespace MeshCore
 
-#endif // MESHCORE_SEGMENTATION_H
+#endif  // MESHCORE_SEGMENTATION_H
