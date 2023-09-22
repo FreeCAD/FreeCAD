@@ -3340,9 +3340,9 @@ neben dem Farbbalken</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsDocument.ui" line="90"/>
       <source>Document save compression level
-(0 = none, 9 = highest, 3 = default)</source>
+(0 = none, 9 = highest, 7 = default)</source>
       <translation>Kompressionsstufe beim Speichern des Dokuments
-(0 = keine, 9 = höchste, 3 = standardmäßige Kompression)</translation>
+(0 = keine, 9 = höchste, 7 = standardmäßige Kompression)</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsDocument.ui" line="98"/>

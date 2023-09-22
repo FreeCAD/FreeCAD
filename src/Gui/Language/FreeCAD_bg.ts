@@ -2804,8 +2804,8 @@ bounding box size of the 3D object that is currently displayed.</source>
     </message>
     <message>
       <source>Document save compression level
-(0 = none, 9 = highest, 3 = default)</source>
-      <translation>Документ запазване със степен на компресиране (0 = няма, 9 = най-високата, 3 = по подразбиране) </translation>
+(0 = none, 9 = highest, 7 = default)</source>
+      <translation>Документ запазване със степен на компресиране (0 = няма, 9 = най-високата, 7 = по подразбиране)</translation>
     </message>
     <message>
       <source>Create new document at start up</source>

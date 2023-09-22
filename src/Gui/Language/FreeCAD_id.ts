@@ -3347,8 +3347,8 @@ besides the color bar</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsDocument.ui" line="90"/>
       <source>Document save compression level
-(0 = none, 9 = highest, 3 = default)</source>
-      <translation>Dokumen menyimpan tingkat kompresi (0 = none, 9 = tertinggi, 3 = default)</translation>
+(0 = none, 9 = highest, 7 = default)</source>
+      <translation>Dokumen menyimpan tingkat kompresi (0 = none, 9 = tertinggi, 7 = default)</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsDocument.ui" line="98"/>

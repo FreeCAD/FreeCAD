@@ -3345,8 +3345,8 @@ podél barevné škály</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsDocument.ui" line="90"/>
       <source>Document save compression level
-(0 = none, 9 = highest, 3 = default)</source>
-      <translation>Úroveň komprese při ukládání dokumentu (0 = žádná, 9 = nejvyšší, 3 = výchozí)</translation>
+(0 = none, 9 = highest, 7 = default)</source>
+      <translation>Úroveň komprese při ukládání dokumentu (0 = žádná, 9 = nejvyšší, 7 = výchozí)</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsDocument.ui" line="98"/>

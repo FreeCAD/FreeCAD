@@ -3360,8 +3360,8 @@ osim trake boja</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsDocument.ui" line="90"/>
       <source>Document save compression level
-(0 = none, 9 = highest, 3 = default)</source>
-      <translation>Razina kompresije spremanja dokumenta (0 = ništa, 9 = najviši, 3 = zadana vrijednost)</translation>
+(0 = none, 9 = highest, 7 = default)</source>
+      <translation>Razina kompresije spremanja dokumenta (0 = ništa, 9 = najviši, 7 = zadana vrijednost)</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsDocument.ui" line="98"/>

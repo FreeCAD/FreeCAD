@@ -3341,9 +3341,9 @@ a més de la barra de colors</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsDocument.ui" line="90"/>
       <source>Document save compression level
-(0 = none, 9 = highest, 3 = default)</source>
+(0 = none, 9 = highest, 7 = default)</source>
       <translation>Nivell de compressió per a desar el document
-(0 = cap, 9 = el més alt, 3 = per defecte)</translation>
+(0 = cap, 9 = el més alt, 7 = per defecte)</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsDocument.ui" line="98"/>

@@ -3329,8 +3329,8 @@ besides the color bar</source>
     <message>
       <location filename="../PreferencePages/DlgSettingsDocument.ui" line="90"/>
       <source>Document save compression level
-(0 = none, 9 = highest, 3 = default)</source>
-      <translation>ドキュメントの圧縮レベル(0 = 非圧縮、9 = 高圧縮、3 = デフォルト)</translation>
+(0 = none, 9 = highest, 7 = default)</source>
+      <translation>ドキュメントの圧縮レベル(0 = 非圧縮、9 = 高圧縮、7 = デフォルト)</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsDocument.ui" line="98"/>

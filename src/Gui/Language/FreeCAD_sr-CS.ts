@@ -3348,9 +3348,9 @@ besides the color bar</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsDocument.ui" line="90"/>
       <source>Document save compression level
-(0 = none, 9 = highest, 3 = default)</source>
+(0 = none, 9 = highest, 7 = default)</source>
       <translation>Nivo kompresije za čuvanje dokumenta
-(0 = ništa, 9 = najviše, 3 = podrazumevano)</translation>
+(0 = ništa, 9 = najviše, 7 = podrazumevano)</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsDocument.ui" line="98"/>

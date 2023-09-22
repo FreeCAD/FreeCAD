@@ -3343,9 +3343,9 @@ besides the color bar</source>
     <message>
       <location filename="../PreferencePages/DlgSettingsDocument.ui" line="90"/>
       <source>Document save compression level
-(0 = none, 9 = highest, 3 = default)</source>
+(0 = none, 9 = highest, 7 = default)</source>
       <translation>დოკუმენტის შეკუმშვის დონე შენახვისას
-(0 = არაფერი, 9 = უმაღლესი, 3 = ნაგულისხმევი)</translation>
+(0 = არაფერი, 9 = უმაღლესი, 7 = ნაგულისხმევი)</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsDocument.ui" line="98"/>
