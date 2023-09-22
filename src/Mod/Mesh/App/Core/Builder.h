@@ -29,7 +29,8 @@
 #include "MeshKernel.h"
 
 
-namespace Base {
+namespace Base
+{
 class SequencerLauncher;
 }
 
@@ -63,37 +64,35 @@ private:
     //@{
     class Edge
     {
-        public:
+    public:
         PointIndex pt1;
         PointIndex pt2;
         FacetIndex facetIdx;
 
-        Edge (PointIndex p1, PointIndex p2, FacetIndex idx)
+        Edge(PointIndex p1, PointIndex p2, FacetIndex idx)
         {
             facetIdx = idx;
-            if (p1 > p2)
-            {
+            if (p1 > p2) {
                 pt1 = p2;
                 pt2 = p1;
             }
-            else
-            {
+            else {
                 pt1 = p1;
                 pt2 = p2;
             }
         }
 
-        bool operator < (const Edge &e) const
+        bool operator<(const Edge& e) const
         {
             return (pt1 == e.pt1) ? (pt2 < e.pt2) : (pt1 < e.pt1);
         }
 
-        bool operator > (const Edge &e) const
+        bool operator>(const Edge& e) const
         {
             return (pt1 == e.pt1) ? (pt2 > e.pt2) : (pt1 > e.pt1);
         }
 
-        bool operator == (const Edge &e) const
+        bool operator==(const Edge& e) const
         {
             return (pt1 == e.pt1) && (pt2 == e.pt2);
         }
@@ -102,19 +101,20 @@ private:
 
     MeshKernel& _meshKernel;
     std::set<MeshPoint> _points;
-    Base::SequencerLauncher* _seq{nullptr};
+    Base::SequencerLauncher* _seq {nullptr};
 
     // keep an array of iterators pointing to the vertex inside the set to save memory
     using MeshPointIterator = std::pair<std::set<MeshPoint>::iterator, bool>;
     std::vector<MeshPointIterator> _pointsIterator;
-    size_t _ptIdx{0};
+    size_t _ptIdx {0};
 
-    void SetNeighbourhood  ();
-    // As it's forbidden to insert a degenerated facet but insert its vertices anyway we must remove them
+    void SetNeighbourhood();
+    // As it's forbidden to insert a degenerated facet but insert its vertices anyway we must remove
+    // them
     void RemoveUnreferencedPoints();
 
 public:
-    explicit MeshBuilder(MeshKernel &rclM);
+    explicit MeshBuilder(MeshKernel& rclM);
     ~MeshBuilder();
 
     /**
@@ -130,7 +130,7 @@ public:
      * AddFacet(), otherwise you'll possibly run into wastage of memory
      * and performance problems.
      */
-    void Initialize (size_t ctFacets, bool deletion = true);
+    void Initialize(size_t ctFacets, bool deletion = true);
 
     /** adding facets */
     /** Add new facet
@@ -138,17 +138,22 @@ public:
      * @param takeFlag if true the flag from the MeshGeomFacet will be taken
      * @param takeProperty
      */
-    void AddFacet (const MeshGeomFacet& facet, bool takeFlag = false, bool takeProperty = false);
+    void AddFacet(const MeshGeomFacet& facet, bool takeFlag = false, bool takeProperty = false);
     /** Add new facet
      */
-    void AddFacet (const Base::Vector3f& pt1, const Base::Vector3f& pt2, const Base::Vector3f& pt3, const Base::Vector3f& normal, unsigned char flag = 0, unsigned long prop = 0);
+    void AddFacet(const Base::Vector3f& pt1,
+                  const Base::Vector3f& pt2,
+                  const Base::Vector3f& pt3,
+                  const Base::Vector3f& normal,
+                  unsigned char flag = 0,
+                  unsigned long prop = 0);
     /** Add new facet
      * @param facetPoints Array of vectors (size 4) in order of vec1, vec2,
      *                    vec3, normal
      * @param flag
      * @param prop
      */
-    void AddFacet (Base::Vector3f* facetPoints, unsigned char flag = 0, unsigned long prop = 0);
+    void AddFacet(Base::Vector3f* facetPoints, unsigned char flag = 0, unsigned long prop = 0);
 
     /** Finishes building up the mesh structure. Must be done after adding facets.
      * @param freeMemory if false (default) only the memory of internal
@@ -158,7 +163,7 @@ public:
      * Initialize() then absolutely no memory is wasted and you can leave the
      * default value.
      */
-    void Finish (bool freeMemory=false);
+    void Finish(bool freeMemory = false);
 
     friend class MeshKernel;
 
@@ -190,29 +195,29 @@ private:
 
 public:
     using size_type = int;
-    explicit MeshFastBuilder(MeshKernel &rclM);
+    explicit MeshFastBuilder(MeshKernel& rclM);
     ~MeshFastBuilder();
 
     /** Initializes the class. Must be done before adding facets
      * @param ctFacets count of facets.
      */
-    void Initialize (size_type ctFacets);
+    void Initialize(size_type ctFacets);
     /** Add new facet
      */
-    void AddFacet (const Base::Vector3f* facetPoints);
+    void AddFacet(const Base::Vector3f* facetPoints);
     /** Add new facet
      */
-    void AddFacet (const MeshGeomFacet& facetPoints);
+    void AddFacet(const MeshGeomFacet& facetPoints);
 
     /** Finishes building up the mesh structure. Must be done after adding facets.
      */
-    void Finish ();
+    void Finish();
 
 private:
     struct Private;
     Private* p;
 };
 
-} // namespace MeshCore
+}  // namespace MeshCore
 
 #endif
