@@ -51,6 +51,7 @@ void Document::writeDependencyGraphViz(std::ostream &out)
 
     for (const auto &It : d->objectMap) {
         out << "\t" << It.first << ";" << std::endl;
+        // TODO: This should eventually be changed to PropertyContainer
         std::vector<DocumentObject*> OutList = It.second->getOutList();
         for (const auto &It2 : OutList) {
             if (It2) {
@@ -114,13 +115,23 @@ void Document::exportGraphviz(std::ostream& out) const
         }
 
         /**
-         * @brief getId returns a canonical string for a DocumentObject.
-         * @param docObj Document object to get an ID from
+         * @brief getId returns a canonical string for a Document.
+         * @param doc Document to get an ID from
          * @return A string
          */
 
-        std::string getId(const DocumentObject * docObj) {
-            return std::string((docObj)->getDocument()->getName()) + "#" + docObj->getNameInDocument();
+        std::string getId(const Document * doc) {
+            return std::string(doc->getName());
+        }
+
+        /**
+         * @brief getId returns a canonical string for a DocumentObject.
+         * @param propCont Document object to get an ID from
+         * @return A string
+         */
+
+        std::string getId(const DocumentObject * propCont) {
+            return std::string((propCont)->getDocument()->getName()) + "#" + propCont->getNameInDocument();
         }
 
         /**
@@ -130,15 +141,23 @@ void Document::exportGraphviz(std::ostream& out) const
          */
 
         std::string getId(const ObjectIdentifier & path) {
-            PropertyContainer * docObj = path.getPropertyContainer();
-            if (!docObj)
+            PropertyContainer * propCont = path.getDocumentObject();
+            if (!propCont)
                 return {};
 
-            return std::string((docObj)->getDocument()->getName()) + "#" + docObj->getNameInDocument() + "." + path.getPropertyName() + path.getSubPathStr();
+            // FIXME: Shouldn't be needed
+            if (!dynamic_cast<DocumentObject*>(propCont))
+                return {};
+
+            return std::string(static_cast<DocumentObject*>(propCont)->getDocument()->getName()) + "#" + static_cast<DocumentObject*>(propCont)->getNameInDocument() + "." + path.getPropertyName() + path.getSubPathStr();
         }
 
-        std::string getClusterName(const DocumentObject * docObj) const {
-            return std::string("cluster") + docObj->getNameInDocument();
+        std::string getClusterName(const PropertyContainer * propCont) const {
+            if (dynamic_cast<const DocumentObject*>(propCont))
+                return std::string("cluster") + static_cast<const DocumentObject*>(propCont)->getNameInDocument();
+
+            // FIXME: Handle `Document` and throw exception if not supported anyway.
+            return {};
         }
 
         void setGraphLabel(Graph& g, const DocumentObject* obj) const {
@@ -218,7 +237,9 @@ void Document::exportGraphviz(std::ostream& out) const
                     for (const auto &dep : deps) {
                         if (dep.second)
                             continue;
-                        PropertyContainer * o = dep.first.getPropertyContainer();
+                        PropertyContainer * _o = dep.first.getDocumentObject();
+                        // TODO: This needs to be replaced with PropertyContainer when ready
+                        DocumentObject * o = dynamic_cast<DocumentObject*>(_o);
 
                         // Doesn't exist already?
                         if (o && !GraphList[o]) {
@@ -242,65 +263,65 @@ void Document::exportGraphviz(std::ostream& out) const
         }
 
         /**
-         * @brief add Add @docObj to the graph, including all expressions (and dependencies) it includes.
-         * @param docObj The document object to add.
+         * @brief add Add @propCont to the graph, including all expressions (and dependencies) it includes.
+         * @param propCont The document object to add.
          * @param name Name of node.
          */
 
-        void add(DocumentObject *docObj, const std::string &name, const std::string &label, bool CSSubgraphs)
+        void add(DocumentObject *propCont, const std::string &name, const std::string &label, bool CSSubgraphs)
         {
 
             //don't add objects twice
-            if (std::find(objects.begin(), objects.end(), docObj) != objects.end())
+            if (std::find(objects.begin(), objects.end(), propCont) != objects.end())
                 return;
 
             //find the correct graph to add the vertex to. Check first expression graphs, afterwards
             //the parent CS and origin graphs
-            Graph *sgraph = GraphList[docObj];
+            Graph *sgraph = GraphList[propCont];
             if (CSSubgraphs) {
                 if (!sgraph) {
-                    auto group = GeoFeatureGroupExtension::getGroupOfObject(docObj);
+                    auto group = GeoFeatureGroupExtension::getGroupOfObject(propCont);
                     if (group) {
-                        if (docObj->isDerivedFrom(App::OriginFeature::getClassTypeId()))
+                        if (propCont->isDerivedFrom(App::OriginFeature::getClassTypeId()))
                             sgraph = GraphList[group->getExtensionByType<OriginGroupExtension>()->Origin.getValue()];
                         else
                             sgraph = GraphList[group];
                     }
                 }
                 if (!sgraph) {
-                    if (docObj->isDerivedFrom(OriginFeature::getClassTypeId()))
-                        sgraph = GraphList[static_cast<OriginFeature *>(docObj)->getOrigin()];
+                    if (propCont->isDerivedFrom(OriginFeature::getClassTypeId()))
+                        sgraph = GraphList[static_cast<OriginFeature *>(propCont)->getOrigin()];
                 }
             }
             if (!sgraph)
                 sgraph = &DepList;
 
             // Keep a list of all added document objects.
-            objects.insert(docObj);
+            objects.insert(propCont);
 
             // Add vertex to graph. Track global and local index
-            LocalVertexList[getId(docObj)] = add_vertex(*sgraph);
-            GlobalVertexList[getId(docObj)] = vertex_no++;
+            LocalVertexList[getId(propCont)] = add_vertex(*sgraph);
+            GlobalVertexList[getId(propCont)] = vertex_no++;
 
             // If node is in main graph, style it with rounded corners. If not, make it invisible.
-            if (!GraphList[docObj]) {
-                get(vertex_attribute, *sgraph)[LocalVertexList[getId(docObj)]]["style"] = "filled";
-                get(vertex_attribute, *sgraph)[LocalVertexList[getId(docObj)]]["shape"] = "Mrecord";
+            if (!GraphList[propCont]) {
+                get(vertex_attribute, *sgraph)[LocalVertexList[getId(propCont)]]["style"] = "filled";
+                get(vertex_attribute, *sgraph)[LocalVertexList[getId(propCont)]]["shape"] = "Mrecord";
                 // Set node label
                 if (name == label)
-                    get(vertex_attribute, *sgraph)[LocalVertexList[getId(docObj)]]["label"] = name;
+                    get(vertex_attribute, *sgraph)[LocalVertexList[getId(propCont)]]["label"] = name;
                 else
-                    get(vertex_attribute, *sgraph)[LocalVertexList[getId(docObj)]]["label"] = name + "&#92;n(" + label + ")";
+                    get(vertex_attribute, *sgraph)[LocalVertexList[getId(propCont)]]["label"] = name + "&#92;n(" + label + ")";
             }
             else {
-                get(vertex_attribute, *sgraph)[LocalVertexList[getId(docObj)]]["style"] = "invis";
-                get(vertex_attribute, *sgraph)[LocalVertexList[getId(docObj)]]["fixedsize"] = "true";
-                get(vertex_attribute, *sgraph)[LocalVertexList[getId(docObj)]]["width"] = "0";
-                get(vertex_attribute, *sgraph)[LocalVertexList[getId(docObj)]]["height"] = "0";
+                get(vertex_attribute, *sgraph)[LocalVertexList[getId(propCont)]]["style"] = "invis";
+                get(vertex_attribute, *sgraph)[LocalVertexList[getId(propCont)]]["fixedsize"] = "true";
+                get(vertex_attribute, *sgraph)[LocalVertexList[getId(propCont)]]["width"] = "0";
+                get(vertex_attribute, *sgraph)[LocalVertexList[getId(propCont)]]["height"] = "0";
             }
 
             // Add expressions and its dependencies
-            auto expressions{docObj->ExpressionEngine.getExpressions()};
+            auto expressions{propCont->ExpressionEngine.getExpressions()};
             for (const auto &expr : expressions) {
                 auto found = std::as_const(GlobalVertexList).find(getId(expr.first));
                 if (found == GlobalVertexList.end()) {
@@ -321,7 +342,7 @@ void Document::exportGraphviz(std::ostream& out) const
                     if (dep.second) {
                         continue;
                     }
-                    PropertyContainer *depObjDoc = dep.first.getPropertyContainer();
+                    PropertyContainer *depObjDoc = dep.first.getDocumentObject();
                     auto found = GlobalVertexList.find(getId(dep.first));
 
                     if (found == GlobalVertexList.end()) {
@@ -452,10 +473,10 @@ void Document::exportGraphviz(std::ostream& out) const
             std::set<std::pair<const DocumentObject*, const PropertyContainer*> > existingEdges;
 
             // Add edges between properties
-            for (const auto &docObj : objects) {
+            for (const auto &propCont : objects) {
 
                 // Add expressions and its dependencies
-                auto expressions = docObj->ExpressionEngine.getExpressions();
+                auto expressions = propCont->ExpressionEngine.getExpressions();
                 for (const auto &expr : expressions) {
                     std::map<ObjectIdentifier, bool> deps;
                     expr.second->getIdentifiers(deps);
@@ -464,14 +485,14 @@ void Document::exportGraphviz(std::ostream& out) const
                     for (const auto &dep : deps) {
                         if (dep.second)
                             continue;
-                        PropertyContainer * depObjDoc = dep.first.getPropertyContainer();
+                        PropertyContainer * depObjDoc = dep.first.getDocumentObject();
                         Edge edge;
                         bool inserted;
 
                         tie(edge, inserted) = add_edge(GlobalVertexList[getId(expr.first)], GlobalVertexList[getId(dep.first)], DepList);
 
                         // Add this edge to the set of all expression generated edges
-                        existingEdges.insert(std::make_pair(docObj, depObjDoc));
+                        existingEdges.insert(std::make_pair(propCont, depObjDoc));
 
                         // Edges between properties should be a bit smaller, and dashed
                         edgeAttrMap[edge]["arrowsize"] = "0.5";
@@ -496,33 +517,43 @@ void Document::exportGraphviz(std::ostream& out) const
                         continue;
                 }
 
-                std::map<DocumentObject*, int> dups;
-                std::vector<PropertyContainer*> OutList = It.second->getOutList();
-                const DocumentObject * docObj = It.second;
+                std::map<PropertyContainer*, int> dups;
+                // TODO: This should eventually be `std::vector<PropertyContainer*>`.
+                // To make that happen, `DocumentP` class needs to be changed.
+                std::vector<DocumentObject*> OutList = It.second->getOutList();
+                // TODO: Replace this with PropertyContainer
+                const DocumentObject * propCont = It.second;
 
                 for (auto obj : OutList) {
                     if (obj) {
+                        std::string objId;
+
+                        if (dynamic_cast<DocumentObject*>(obj))
+                            objId = getId(static_cast<DocumentObject*>(obj));
+                        // TODO: Following lines for when `OutList` supports `PropertyContainer`
+                        // else if (dynamic_cast<Document*>(obj))
+                        //     objId = getId(static_cast<Document*>(obj));
 
                         // Count duplicate edges
-                        bool inserted = edge(GlobalVertexList[getId(docObj)], GlobalVertexList[getId(obj)], DepList).second;
+                        bool inserted = edge(GlobalVertexList[getId(propCont)], GlobalVertexList[objId], DepList).second;
                         if (inserted) {
                             dups[obj]++;
                             continue;
                         }
 
                         // Skip edge if an expression edge already exists
-                        if (existingEdges.find(std::make_pair(docObj, obj)) != existingEdges.end())
+                        if (existingEdges.find(std::make_pair(propCont, obj)) != existingEdges.end())
                             continue;
 
                         // Add edge
 
                         Edge edge;
 
-                        tie(edge, inserted) = add_edge(GlobalVertexList[getId(docObj)], GlobalVertexList[getId(obj)], DepList);
+                        tie(edge, inserted) = add_edge(GlobalVertexList[getId(propCont)], GlobalVertexList[objId], DepList);
 
                         // Set properties to make arrows go between subgraphs if needed
-                        if (GraphList[docObj])
-                            edgeAttrMap[edge]["ltail"] = getClusterName(docObj);
+                        if (GraphList[propCont])
+                            edgeAttrMap[edge]["ltail"] = getClusterName(propCont);
                         if (GraphList[obj])
                             edgeAttrMap[edge]["lhead"] = getClusterName(obj);
                     }
@@ -530,7 +561,14 @@ void Document::exportGraphviz(std::ostream& out) const
 
                 // Set labels for duplicate edges
                 for (const auto & dup : dups) {
-                    Edge e(edge(GlobalVertexList[getId(It.second)], GlobalVertexList[getId(dup.first)], DepList).first);
+                    std::string objId;
+
+                    if (dynamic_cast<DocumentObject*>(dup.first))
+                        objId = getId(static_cast<DocumentObject*>(dup.first));
+                    else if (dynamic_cast<Document*>(dup.first))
+                        objId = getId(static_cast<Document*>(dup.first));
+
+                    Edge e(edge(GlobalVertexList[getId(It.second)], GlobalVertexList[objId], DepList).first);
                     std::stringstream s;
                     s << " " << (dup.second + 1) << "x";
                     edgeAttrMap[e]["label"] = s.str();

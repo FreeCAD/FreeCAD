@@ -237,7 +237,7 @@ void ExpressionVisitor::getIdentifiers(Expression &e, std::map<App::ObjectIdenti
     e._getIdentifiers(ids);
 }
 
-bool ExpressionVisitor::adjustLinks(Expression &e, const std::set<App::PropertyContainer*> &inList) {
+bool ExpressionVisitor::adjustLinks(Expression &e, const std::set<App::DocumentObject*> &inList) {
     return e._adjustLinks(inList,*this);
 }
 
@@ -896,7 +896,7 @@ void Expression::getDeps(ExpressionDeps &deps, int option)  const {
                 || (!hidden && option==DepHidden))
             continue;
         for(auto &dep : var.getDep(true)) {
-            PropertyContainer *obj = dep.first;
+            DocumentObject *obj = dep.first;
             for(auto &propName : dep.second) {
                 deps[obj][propName].push_back(var);
             }
@@ -918,7 +918,7 @@ void Expression::getDepObjects(
         const ObjectIdentifier &var = v.first;
         std::vector<std::string> strings;
         for(auto &dep : var.getDep(false, &strings)) {
-            PropertyContainer *obj = dep.first;
+            DocumentObject *obj = dep.first;
             if (!obj->testStatus(ObjectStatus::Remove)) {
                 if (labels) {
                     std::copy(strings.begin(), strings.end(), std::back_inserter(*labels));
@@ -1005,7 +1005,7 @@ ExpressionPtr Expression::importSubNames(const std::map<std::string,std::string>
     for(auto &dep : getDeps(DepAll)) {
         for(auto &info : dep.second) {
             for(auto &path : info.second) {
-                auto obj = path.getPropertyContainer();
+                auto obj = path.getDocumentObject();
                 if(!obj)
                     continue;
                 auto it = nameMap.find(obj->getExportName(true));
@@ -3004,7 +3004,7 @@ bool VariableExpression::_relabeledDocument(const std::string &oldName,
 }
 
 bool VariableExpression::_adjustLinks(
-        const std::set<App::PropertyContainer *> &inList, ExpressionVisitor &v)
+        const std::set<App::DocumentObject *> &inList, ExpressionVisitor &v)
 {
     return var.adjustLinks(v,inList);
 }
@@ -3035,8 +3035,8 @@ bool VariableExpression::_renameObjectIdentifier(
     auto it = paths.find(oldPath);
     if (it != paths.end()) {
         visitor.aboutToChange();
-        const bool originalHasPropertyContainerName = var.hasPropertyContainerName();
-        ObjectIdentifier::String originalDocumentObjectName = var.getPropertyContainerName();
+        const bool originalHasDocumentObjectName = var.hasDocumentObjectName();
+        ObjectIdentifier::String originalDocumentObjectName = var.getDocumentObjectName();
         std::string originalSubObjectName = var.getSubObjectName();
         if (path.getOwner()) {
             var = it->second.relativeTo(path);
@@ -3044,8 +3044,8 @@ bool VariableExpression::_renameObjectIdentifier(
         else {
             var = it->second;
         }
-        if (originalHasPropertyContainerName) {
-            var.setPropertyContainerName(std::move(originalDocumentObjectName),
+        if (originalHasDocumentObjectName) {
+            var.setDocumentObjectName(std::move(originalDocumentObjectName),
                                       true,
                                       originalSubObjectName);
         }
@@ -3068,7 +3068,7 @@ void VariableExpression::_collectReplacement(
 void VariableExpression::_moveCells(const CellAddress &address,
         int rowCount, int colCount, ExpressionVisitor &v)
 {
-    if(var.hasPropertyContainerName(true))
+    if(var.hasDocumentObjectName(true))
         return;
 
     int idx = 0;
@@ -3088,7 +3088,7 @@ void VariableExpression::_moveCells(const CellAddress &address,
 }
 
 void VariableExpression::_offsetCells(int rowOffset, int colOffset, ExpressionVisitor &v) {
-    if(var.hasPropertyContainerName(true))
+    if(var.hasDocumentObjectName(true))
         return;
 
     int idx = 0;

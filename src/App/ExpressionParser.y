@@ -165,17 +165,17 @@ identifier
 iden
     :  '.' STRING '.' id_or_cell            { /* Path to property of a sub-object of the current object*/
                                                 $$ = ObjectIdentifier(DocumentObject,true);
-                                                $$.setPropertyContainerName(DocumentObject,false,ObjectIdentifier::String(std::move($2),true),true);
+                                                $$.setDocumentObjectName(DocumentObject,false,ObjectIdentifier::String(std::move($2),true),true);
                                                 $$.addComponent(ObjectIdentifier::SimpleComponent($4));
                                             }
     | '.' id_or_cell                        { /* Path to property of the current document object */
                                                 $$ = ObjectIdentifier(DocumentObject,true);
-                                                $$.setPropertyContainerName(DocumentObject);
+                                                $$.setDocumentObjectName(DocumentObject);
                                                 $$.addComponent(ObjectIdentifier::SimpleComponent($2));
                                             }
     | object '.' STRING '.' id_or_cell      { /* Path to property of a sub-object */
                                                 $$ = ObjectIdentifier(DocumentObject);
-                                                $$.setPropertyContainerName(std::move($1), true, ObjectIdentifier::String(std::move($3),true),true);
+                                                $$.setDocumentObjectName(std::move($1), true, ObjectIdentifier::String(std::move($3),true),true);
                                                 $$.addComponent(ObjectIdentifier::SimpleComponent($5));
                                                 $$.resolveAmbiguity();
                                             }
@@ -189,7 +189,7 @@ iden
     | document '#' object '.' id_or_cell    { /* Path to property from an external document, within a named document object */
                                                 $$ = ObjectIdentifier(DocumentObject);
                                                 $$.setDocumentName(std::move($1), true);
-                                                $$.setPropertyContainerName(std::move($3), true);
+                                                $$.setDocumentObjectName(std::move($3), true);
                                                 $$.addComponent(ObjectIdentifier::SimpleComponent($5));
                                                 $$.resolveAmbiguity();
                                             }
@@ -203,7 +203,7 @@ iden
     | document '#' object '.' STRING '.' id_or_cell
                                             {   $$ = ObjectIdentifier(DocumentObject);
                                                 $$.setDocumentName(std::move($1), true);
-                                                $$.setPropertyContainerName(std::move($3), true, ObjectIdentifier::String(std::move($5),true));
+                                                $$.setDocumentObjectName(std::move($3), true, ObjectIdentifier::String(std::move($5),true));
                                                 $$.addComponent(ObjectIdentifier::SimpleComponent($7));
                                                 $$.resolveAmbiguity();
                                             }
