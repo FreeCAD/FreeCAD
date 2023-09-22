@@ -576,6 +576,9 @@ such as &quot;Arial:Bold&quot;</string>
             <height>0</height>
            </size>
           </property>
+          <property name="filter">
+           <string>Font files (*.ttf *.otf *.pfb)</string>
+          </property>
           <property name="toolTip">
            <string>Select a font file</string>
           </property>
