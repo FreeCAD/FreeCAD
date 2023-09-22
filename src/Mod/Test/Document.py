@@ -29,9 +29,30 @@ import math
 # ---------------------------------------------------------------------------
 
 
+class Proxy:
+    def __init__(self, obj):
+        self.Dictionary = {}
+        self.obj = obj
+        obj.Proxy = self
+
+    def dumps(self):
+        return self.Dictionary
+
+    def loads(self, data):
+        self.Dictionary = data
+
+
 class DocumentBasicCases(unittest.TestCase):
     def setUp(self):
         self.Doc = FreeCAD.newDocument("CreateTest")
+
+    def saveAndRestore(self):
+        # saving and restoring
+        SaveName = tempfile.gettempdir() + os.sep + "CreateTest.FCStd"
+        self.Doc.saveAs(SaveName)
+        FreeCAD.closeDocument("CreateTest")
+        self.Doc = FreeCAD.open(SaveName)
+        return self.Doc
 
     def testAccessByNameOrID(self):
         obj = self.Doc.addObject("App::DocumentObject", "MyName")
@@ -586,6 +607,26 @@ class DocumentBasicCases(unittest.TestCase):
         self.Doc = FreeCAD.open(SaveName)
         self.assertIn("Test", self.Doc.Python.PropertiesList)
         self.assertIn("Test", self.Doc.Link.PropertiesList)
+
+    def testNoProxy(self):
+        test = self.Doc.addObject("App::DocumentObject", "Object")
+        test.addProperty("App::PropertyPythonObject", "Dictionary")
+        test.Dictionary = {"Stored data": [3, 5, 7]}
+
+        doc = self.saveAndRestore()
+        obj = doc.Object
+
+        self.assertEqual(obj.Dictionary, {"Stored data": [3, 5, 7]})
+
+    def testWithProxy(self):
+        test = self.Doc.addObject("App::FeaturePython", "Python")
+        proxy = Proxy(test)
+        proxy.Dictionary["Stored data"] = [3, 5, 7]
+
+        doc = self.saveAndRestore()
+        obj = doc.Python.Proxy
+
+        self.assertEqual(obj.Dictionary, {"Stored data": [3, 5, 7]})
 
     def tearDown(self):
         # closing doc
