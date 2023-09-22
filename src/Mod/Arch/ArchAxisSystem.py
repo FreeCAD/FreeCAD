@@ -136,11 +136,11 @@ class _AxisSystem:
                 for o in obj.Axes:
                     o.Placement = delta.multiply(o.Placement)
 
-    def __getstate__(self):
+    def dumps(self):
 
         return None
 
-    def __setstate__(self,state):
+    def loads(self,state):
 
         return None
 
@@ -259,11 +259,11 @@ class _ViewProviderAxisSystem:
     def edit(self):
         FreeCADGui.ActiveDocument.setEdit(self.Object, 0)
 
-    def __getstate__(self):
+    def dumps(self):
 
         return None
 
-    def __setstate__(self,state):
+    def loads(self,state):
 
         return None
 

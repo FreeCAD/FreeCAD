@@ -64,10 +64,10 @@ class ViewProvider:
         vobj.setEditorMode("Visibility", mode)
         self.vobj = vobj
 
-    def __getstate__(self):
+    def dumps(self):
         return None
 
-    def __setstate__(self, state):
+    def loads(self, state):
         return None
 
     def getIcon(self):

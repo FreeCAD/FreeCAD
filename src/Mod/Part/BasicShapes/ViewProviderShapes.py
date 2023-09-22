@@ -68,10 +68,10 @@ class ViewProviderTube:
     def getIcon(self):
         return ":/icons/parametric/Part_Tube_Parametric.svg"
 
-    def __getstate__(self):
+    def dumps(self):
         return None
 
-    def __setstate__(self,state):
+    def loads(self,state):
         return None
 
 

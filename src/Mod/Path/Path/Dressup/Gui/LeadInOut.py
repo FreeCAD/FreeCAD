@@ -137,10 +137,10 @@ class ObjectDressup:
         self.wire = None
         self.rapids = None
 
-    def __getstate__(self):
+    def dumps(self):
         return None
 
-    def __setstate__(self, state):
+    def loads(self, state):
         return None
 
     def setup(self, obj):
@@ -660,10 +660,10 @@ class ViewProviderDressup:
             arg1.Object.Base = None
         return True
 
-    def __getstate__(self):
+    def dumps(self):
         return None
 
-    def __setstate__(self, state):
+    def loads(self, state):
         return None
 
     def clearTaskPanel(self):

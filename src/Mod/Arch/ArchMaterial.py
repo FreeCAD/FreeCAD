@@ -186,11 +186,11 @@ class _ArchMaterialContainer:
     def execute(self,obj):
         return
 
-    def __getstate__(self):
+    def dumps(self):
         if hasattr(self,"Type"):
             return self.Type
 
-    def __setstate__(self,state):
+    def loads(self,state):
         if state:
             self.Type = state
 
@@ -266,10 +266,10 @@ class _ViewProviderArchMaterialContainer:
                 self.Object.Group = g
                 FreeCAD.ActiveDocument.recompute()
 
-    def __getstate__(self):
+    def dumps(self):
         return None
 
-    def __setstate__(self,state):
+    def loads(self,state):
         return None
 
 
@@ -410,11 +410,11 @@ class _ArchMaterial:
                                 p.ViewObject.ShapeColor = c
         return
 
-    def __getstate__(self):
+    def dumps(self):
         if hasattr(self,"Type"):
             return self.Type
 
-    def __setstate__(self,state):
+    def loads(self,state):
         if state:
             self.Type = state
 
@@ -510,10 +510,10 @@ class _ViewProviderArchMaterial:
                     elif hasattr(widget,"setValue"):
                         widget.setText(value)
 
-    def __getstate__(self):
+    def dumps(self):
         return None
 
-    def __setstate__(self,state):
+    def loads(self,state):
         return None
 
     def claimChildren(self):
@@ -744,11 +744,11 @@ class _ArchMultiMaterial:
         obj.addProperty("App::PropertyLinkList","Materials","Arch",QT_TRANSLATE_NOOP("App::Property","The list of layer materials"))
         obj.addProperty("App::PropertyFloatList","Thicknesses","Arch",QT_TRANSLATE_NOOP("App::Property","The list of layer thicknesses"))
 
-    def __getstate__(self):
+    def dumps(self):
         if hasattr(self,"Type"):
             return self.Type
 
-    def __setstate__(self,state):
+    def loads(self,state):
         if state:
             self.Type = state
 
@@ -794,10 +794,10 @@ class _ViewProviderArchMultiMaterial:
     def edit(self):
         FreeCADGui.ActiveDocument.setEdit(self.Object, 0)
 
-    def __getstate__(self):
+    def dumps(self):
         return None
 
-    def __setstate__(self,state):
+    def loads(self,state):
         return None
 
     def isShow(self):

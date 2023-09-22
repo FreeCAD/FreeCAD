@@ -57,11 +57,11 @@ class ViewProviderTree:
     def onChanged(self, vp, prop):
         return
 
-    def __getstate__(self):
+    def dumps(self):
 #        return {'ObjectName' : self.Object.Name}
         return None
 
-    def __setstate__(self,state):
+    def loads(self,state):
         if state is not None:
             import FreeCAD
             doc = FreeCAD.ActiveDocument #crap
@@ -210,10 +210,10 @@ class Resize:
         mat.A33 = self.Vector[2]
         fp.Shape = self.Target.Shape.transformGeometry(mat)
 
-    def __getstate__(self):
+    def dumps(self):
         return None
 
-    def __setstate__(self,state):
+    def loads(self,state):
         return None
 
 

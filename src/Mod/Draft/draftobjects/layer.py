@@ -80,11 +80,11 @@ class Layer:
         _wrn("v0.19, " + obj.Label + ", "
              + translate("draft", "added missing view properties"))
 
-    def __getstate__(self):
+    def dumps(self):
         """Return a tuple of objects to save or None."""
         return self.Type
 
-    def __setstate__(self, state):
+    def loads(self, state):
         """Set the internal properties from the restored state."""
         if state:
             self.Type = state
@@ -126,12 +126,12 @@ class LayerContainer:
         group.sort(key=lambda layer: layer.Label)
         obj.Group = group
 
-    def __getstate__(self):
+    def dumps(self):
         """Return a tuple of objects to save or None."""
         if hasattr(self, "Type"):
             return self.Type
 
-    def __setstate__(self, state):
+    def loads(self, state):
         """Set the internal properties from the restored state."""
         if state:
             self.Type = state
