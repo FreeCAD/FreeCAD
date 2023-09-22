@@ -34,7 +34,7 @@
 namespace Fem
 {
 
-class FemExport FemPostPipeline : public Fem::FemPostFilter
+class FemExport FemPostPipeline: public Fem::FemPostFilter
 {
     PROPERTY_HEADER_WITH_OVERRIDE(Fem::FemPostPipeline);
 
@@ -43,38 +43,41 @@ public:
     FemPostPipeline();
     ~FemPostPipeline() override;
 
-    App::PropertyLinkList       Filter;
-    App::PropertyLink           Functions;
-    App::PropertyEnumeration    Mode;
+    App::PropertyLinkList Filter;
+    App::PropertyLink Functions;
+    App::PropertyEnumeration Mode;
 
     short mustExecute() const override;
     App::DocumentObjectExecReturn* execute() override;
     PyObject* getPyObject() override;
 
-    const char* getViewProviderName() const override {
+    const char* getViewProviderName() const override
+    {
         return "FemGui::ViewProviderFemPostPipeline";
     }
 
-    //load data from files
+    // load data from files
     static bool canRead(Base::FileInfo file);
     void read(Base::FileInfo file);
     void scale(double s);
 
-    //load from results
+    // load from results
     void load(FemResultObject* res);
 
-    //Pipeline handling
+    // Pipeline handling
     void recomputeChildren();
-    FemPostObject *getLastPostObject();
-    bool holdsPostObject(FemPostObject *obj);
+    FemPostObject* getLastPostObject();
+    bool holdsPostObject(FemPostObject* obj);
 
 protected:
-    void onChanged(const App::Property *prop) override;
+    void onChanged(const App::Property* prop) override;
 
 private:
     static const char* ModeEnums[];
 
-    template<class TReader> void readXMLFile(std::string file) {
+    template<class TReader>
+    void readXMLFile(std::string file)
+    {
 
         vtkSmartPointer<TReader> reader = vtkSmartPointer<TReader>::New();
         reader->SetFileName(file.c_str());
@@ -83,7 +86,7 @@ private:
     }
 };
 
-} //namespace Fem
+}  // namespace Fem
 
 
-#endif // Fem_FemPostPipeline_H
+#endif  // Fem_FemPostPipeline_H
