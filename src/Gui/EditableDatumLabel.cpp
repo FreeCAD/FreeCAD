@@ -321,4 +321,9 @@ void EditableDatumLabel::setLabelAutoDistanceReverse(bool val)
     autoDistanceReverse = val;
 }
 
+void EditableDatumLabel::setSpinboxInvisibleToMouse(bool val)
+{
+    spinBox->setAttribute(Qt::WA_TransparentForMouseEvents, val);
+}
+
 #include "moc_EditableDatumLabel.cpp"
