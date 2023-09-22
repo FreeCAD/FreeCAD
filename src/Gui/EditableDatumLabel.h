@@ -65,6 +65,7 @@ public:
     void setLabelDistance(double distance);
     void setLabelRecommendedDistance();
     void setLabelAutoDistanceReverse(bool val);
+    void setSpinboxInvisibleToMouse(bool val);
 
     // NOLINTBEGIN
     SoDatumLabel* label;
