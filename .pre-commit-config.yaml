@@ -13,6 +13,7 @@ files: |
         src/Mod/Import|
         src/Mod/Inspection|
         src/Mod/JtReader|
+        src/Mod/Mesh|
         src/Mod/MeshPart|
         src/Mod/Plot|
         src/Mod/Points|
@@ -33,6 +34,8 @@ exclude: |
         .*vcxproj.*|
         src/Mod/Import/App/SCL|
         src/Mod/Import/App/SCL_output|
+        src/Mod/Mesh/App/TestData|
+        src/Mod/Mesh/App/WildMagic4|
         src/Mod/Robot/App/kdl_cp|
         src/Mod/Robot/Lib
     )
