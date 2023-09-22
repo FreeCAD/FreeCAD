@@ -29,13 +29,14 @@
 #include "SketcherToolDefaultWidget.h"
 
 #include <Base/Tools.h>
-#include <Gui/SoDatumLabel.h>
+#include <Gui/EditableDatumLabel.h>
 
 #include <QApplication>
 
 namespace bp = boost::placeholders;
 
-namespace SketcherGui {
+namespace SketcherGui
+{
 
 /** @brief Template class intended for handlers that interact with SketcherToolDefaultWidget.
  *
@@ -84,78 +85,101 @@ namespace SketcherGui {
  * Handler MUST specialise:
  * - getToolName                            => provide the string name of the tool
  * - getCrosshairCursorSVGName               => provide the string for the svg icon of the cursor
- * - updateEditDataAndDrawToPositionImpl    => function to update the EditData structure and draw a temporal curve
+ * - updateEditDataAndDrawToPositionImpl    => function to update the EditData structure and draw a
+ * temporal curve
  * - executeCommands                        => execution of commands to create the geometry
- * - createAutoConstraints                  => execution of commands to create autoconstraints (widget mandated constraints are called BEFORE this)
+ * - createAutoConstraints                  => execution of commands to create autoconstraints
+ * (widget mandated constraints are called BEFORE this)
  *
- * Question: Do I need to use this handler or derive from this handler to make a new handler using the default tool widget?
+ * Question: Do I need to use this handler or derive from this handler to make a new handler using
+ * the default tool widget?
  *
- * No, you do not NEED to. But you are encouraged to. Structuring a handler following this NVI, apart
- * from substantial savings in amount of code typed, enables a much easier and less verbose implementation of a handler
- * using a default widget (toolwidget), and will lead to easier to maintain code.
+ * No, you do not NEED to. But you are encouraged to. Structuring a handler following this NVI,
+ * apart from substantial savings in amount of code typed, enables a much easier and less verbose
+ * implementation of a handler using a default widget (toolwidget), and will lead to easier to
+ * maintain code.
  */
 
-template< int... sizes> // Initial sizes for each mode
-class WidgetInitialValues {
+template<int... sizes>  // Initial sizes for each mode
+class WidgetInitialValues
+{
 public:
     template<typename constructionT>
-    static constexpr int size(constructionT constructionmethod) {
+    static constexpr int size(constructionT constructionmethod)
+    {
         auto modeint = static_cast<int>(constructionmethod);
 
         return constructionMethodParameters[modeint];
     }
 
-    static constexpr int defaultMethodSize() {
+    static constexpr int defaultMethodSize()
+    {
         return size(0);
     }
+
 private:
-    static constexpr std::array<int,sizeof...(sizes)> constructionMethodParameters = {{sizes...}};
+    static constexpr std::array<int, sizeof...(sizes)> constructionMethodParameters = {{sizes...}};
 };
 
-template< int... sizes> // Initial sizes for each mode
-class OnViewParameters : public WidgetInitialValues<sizes...> {
-};
-
-template< int... sizes> // Initial sizes for each mode
-class WidgetParameters : public WidgetInitialValues<sizes...> {
-};
-
-template< int... sizes> // Initial sizes for each mode
-class WidgetCheckboxes : public WidgetInitialValues<sizes...> {
-};
-
-template< int... sizes> // Initial sizes for each mode
-class WidgetComboboxes : public WidgetInitialValues<sizes...> {
-};
-
-template< typename HandlerT,          // The geometry tool for which the template is created (See GeometryTools above)
-          typename SelectModeT,         // The state machine defining the states that the handle iterates
-          int PEditCurveSize,           // The initial size of the EditCurve
-          int PAutoConstraintSize,      // The initial size of the AutoConstraint
-          typename OnViewParametersT, // The number of parameter spinboxes in the 3D view
-          typename WidgetParametersT, // The number of parameter spinboxes in the default widget
-          typename WidgetCheckboxesT, // The number of checkboxes in the default widget
-          typename WidgetComboboxesT, // The number of comboboxes in the default widget
-          typename ConstructionMethodT = ConstructionMethods::DefaultConstructionMethod,
-          bool PFirstComboboxIsConstructionMethod = false>
-class DrawSketchDefaultWidgetHandler: public DrawSketchDefaultHandler<HandlerT, SelectModeT, PEditCurveSize, PAutoConstraintSize, ConstructionMethodT>
+template<int... sizes>  // Initial sizes for each mode
+class OnViewParameters: public WidgetInitialValues<sizes...>
 {
-    using DSDefaultHandler = DrawSketchDefaultHandler<HandlerT, SelectModeT, PEditCurveSize, PAutoConstraintSize, ConstructionMethodT>;
+};
+
+template<int... sizes>  // Initial sizes for each mode
+class WidgetParameters: public WidgetInitialValues<sizes...>
+{
+};
+
+template<int... sizes>  // Initial sizes for each mode
+class WidgetCheckboxes: public WidgetInitialValues<sizes...>
+{
+};
+
+template<int... sizes>  // Initial sizes for each mode
+class WidgetComboboxes: public WidgetInitialValues<sizes...>
+{
+};
+
+template<typename HandlerT,        // The geometry tool for which the template is created (See
+                                   // GeometryTools above)
+         typename SelectModeT,     // The state machine defining the states that the handle iterates
+         int PEditCurveSize,       // The initial size of the EditCurve
+         int PAutoConstraintSize,  // The initial size of the AutoConstraint
+         typename OnViewParametersT,  // The number of parameter spinboxes in the 3D view
+         typename WidgetParametersT,  // The number of parameter spinboxes in the default widget
+         typename WidgetCheckboxesT,  // The number of checkboxes in the default widget
+         typename WidgetComboboxesT,  // The number of comboboxes in the default widget
+         typename ConstructionMethodT = ConstructionMethods::DefaultConstructionMethod,
+         bool PFirstComboboxIsConstructionMethod = false>
+class DrawSketchDefaultWidgetHandler: public DrawSketchDefaultHandler<HandlerT,
+                                                                      SelectModeT,
+                                                                      PEditCurveSize,
+                                                                      PAutoConstraintSize,
+                                                                      ConstructionMethodT>
+{
+    using DSDefaultHandler = DrawSketchDefaultHandler<HandlerT,
+                                                      SelectModeT,
+                                                      PEditCurveSize,
+                                                      PAutoConstraintSize,
+                                                      ConstructionMethodT>;
     using ConstructionMachine = ConstructionMethodMachine<ConstructionMethodT>;
 
 private:
-    class ToolWidgetManager {
+    class ToolWidgetManager
+    {
         int nOnViewParameter = OnViewParametersT::defaultMethodSize();
         int nParameter = WidgetParametersT::defaultMethodSize();
         int nCheckbox = WidgetCheckboxesT::defaultMethodSize();
         int nCombobox = WidgetComboboxesT::defaultMethodSize();
 
-        //std::array<int,ConstructionMachine::ConstructionMethodsCount()> constructionMethodParameters;
+        // std::array<int,ConstructionMachine::ConstructionMethodsCount()>
+        // constructionMethodParameters;
 
         SketcherToolDefaultWidget* toolWidget;
-        DrawSketchDefaultWidgetHandler * handler; // used to access private implementations
-        HandlerT * dHandler; // real derived type
-        bool init = false; // returns true if the widget has been configured
+        DrawSketchDefaultWidgetHandler* handler;  // used to access private implementations
+        HandlerT* dHandler;                       // real derived type
+        bool init = false;                        // returns true if the widget has been configured
 
         using Connection = boost::signals2::connection;
 
@@ -166,7 +190,8 @@ private:
         Base::Vector2d prevCursorPosition;
         Base::Vector2d lastWidgetEnforcedPosition;
 
-        enum WLabel {
+        enum WLabel
+        {
             First,
             Second,
             Third,
@@ -177,10 +202,10 @@ private:
             Eighth,
             Ninth,
             Tenth,
-            nLabels // Must Always be the last one
+            nLabels  // Must Always be the last one
         };
         using WParameter = SketcherToolDefaultWidget::Parameter;
-        using WCheckbox  = SketcherToolDefaultWidget::Checkbox;
+        using WCheckbox = SketcherToolDefaultWidget::Checkbox;
         using WCombobox = SketcherToolDefaultWidget::Combobox;
         using SelectMode = SelectModeT;
 
@@ -190,11 +215,13 @@ private:
         bool firstMoveInit = false;
 
     public:
-        ToolWidgetManager(DrawSketchDefaultWidgetHandler * dshandler) :
-              handler(dshandler)
-            , dHandler(static_cast<HandlerT *>(dshandler)) {}
+        ToolWidgetManager(DrawSketchDefaultWidgetHandler* dshandler)
+            : handler(dshandler)
+            , dHandler(static_cast<HandlerT*>(dshandler))
+        {}
 
-        ~ToolWidgetManager(){
+        ~ToolWidgetManager()
+        {
             connectionParameterValueChanged.disconnect();
             connectionCheckboxCheckedChanged.disconnect();
             connectionComboboxSelectionChanged.disconnect();
@@ -206,24 +233,32 @@ private:
 
         /** @name functions NOT intended for specialisation */
         //@{
-        void initWidget(QWidget* widget) {
+        void initWidget(QWidget* widget)
+        {
             toolWidget = static_cast<SketcherToolDefaultWidget*>(widget);
 
-            connectionParameterValueChanged = toolWidget->registerParameterValueChanged(boost::bind(&ToolWidgetManager::parameterValueChanged, this, bp::_1, bp::_2));
+            connectionParameterValueChanged = toolWidget->registerParameterValueChanged(
+                boost::bind(&ToolWidgetManager::parameterValueChanged, this, bp::_1, bp::_2));
 
-            connectionCheckboxCheckedChanged = toolWidget->registerCheckboxCheckedChanged(boost::bind(&ToolWidgetManager::checkboxCheckedChanged, this, bp::_1, bp::_2));
+            connectionCheckboxCheckedChanged = toolWidget->registerCheckboxCheckedChanged(
+                boost::bind(&ToolWidgetManager::checkboxCheckedChanged, this, bp::_1, bp::_2));
 
-            connectionComboboxSelectionChanged = toolWidget->registerComboboxSelectionChanged(boost::bind(&ToolWidgetManager::comboboxSelectionChanged, this, bp::_1, bp::_2));
+            connectionComboboxSelectionChanged = toolWidget->registerComboboxSelectionChanged(
+                boost::bind(&ToolWidgetManager::comboboxSelectionChanged, this, bp::_1, bp::_2));
 
             reset();
             init = true;
         }
 
-        void reset() {
+        void reset()
+        {
 
-            boost::signals2::shared_connection_block parameter_block(connectionParameterValueChanged);
-            boost::signals2::shared_connection_block checkbox_block(connectionCheckboxCheckedChanged);
-            boost::signals2::shared_connection_block combobox_block(connectionComboboxSelectionChanged);
+            boost::signals2::shared_connection_block parameter_block(
+                connectionParameterValueChanged);
+            boost::signals2::shared_connection_block checkbox_block(
+                connectionCheckboxCheckedChanged);
+            boost::signals2::shared_connection_block combobox_block(
+                connectionComboboxSelectionChanged);
 
             initNLabels(nOnViewParameter);
             toolWidget->initNParameters(nParameter);
@@ -246,9 +281,11 @@ private:
             onViewParameters.clear();
 
             for (int i = 0; i < n; i++) {
-                auto* label = new Gui::EditableDatumLabel(viewer, placement, SbColor(0.8f, 0.8f, 0.8f), /*autoDistance = */ true);
-                QObject::connect(label, &Gui::EditableDatumLabel::valueChanged,
-                    [=](double value) {
+                auto* label = new Gui::EditableDatumLabel(viewer,
+                                                          placement,
+                                                          SbColor(0.8f, 0.8f, 0.8f),
+                                                          /*autoDistance = */ true);
+                QObject::connect(label, &Gui::EditableDatumLabel::valueChanged, [=](double value) {
                     labelValueChanged(i, value);
                     label->setColor(SbColor(1.0f, 0.149f, 0.0f));
                 });
@@ -256,13 +293,13 @@ private:
             }
         }
 
-        void enforceWidgetParameters(Base::Vector2d &onSketchPos)
+        void enforceWidgetParameters(Base::Vector2d& onSketchPos)
         {
             prevCursorPosition = onSketchPos;
 
             doEnforceWidgetParameters(onSketchPos);
 
-            lastWidgetEnforcedPosition = onSketchPos; // store enforced cursor position.
+            lastWidgetEnforcedPosition = onSketchPos;  // store enforced cursor position.
         }
 
         /** slot triggering when a on view parameter has changed
@@ -274,14 +311,17 @@ private:
                 onViewParameters[labelindex + 1]->setFocusToSpinbox();
             }
 
-            // -> A machine does not forward to a next state when adapting the parameter (though it may forward to
-            //    a next state if all the parameters are fulfiled, see doChangeDrawSketchHandlerMode). This ensures
-            //    that the geometry has been defined (either by mouse clicking or by widget). Autoconstraints on point
-            //    should be picked when the state is reached upon machine state advancement.
+            // -> A machine does not forward to a next state when adapting the parameter (though it
+            // may forward to
+            //    a next state if all the parameters are fulfiled, see
+            //    doChangeDrawSketchHandlerMode). This ensures that the geometry has been defined
+            //    (either by mouse clicking or by widget). Autoconstraints on point should be picked
+            //    when the state is reached upon machine state advancement.
             //
-            // -> A machine goes back to a previous state if a parameter of a previous state is modified. This ensures
+            // -> A machine goes back to a previous state if a parameter of a previous state is
+            // modified. This ensures
             //    that appropriate autoconstraints are picked.
-            if(isParameterOfPreviousMode(labelindex)) {
+            if (isParameterOfPreviousMode(labelindex)) {
                 // change to previous state
                 handler->setState(getState(labelindex));
             }
@@ -308,12 +348,13 @@ private:
         /** boost slot triggering when a checkbox has changed in the widget
          * It is intended to remote control the DrawSketchDefaultWidgetHandler
          */
-        void checkboxCheckedChanged(int checkboxindex, bool value) {
+        void checkboxCheckedChanged(int checkboxindex, bool value)
+        {
             enforceWidgetParametersOnPreviousCursorPosition();
 
             adaptDrawingToCheckboxChange(checkboxindex, value);
 
-            onHandlerModeChanged(); //re-focus/select spinbox
+            onHandlerModeChanged();  // re-focus/select spinbox
 
             finishWidgetChanged();
         }
@@ -321,7 +362,8 @@ private:
         /** boost slot triggering when a combobox has changed in the widget
          * It is intended to remote control the DrawSketchDefaultWidgetHandler
          */
-        void comboboxSelectionChanged(int comboboxindex, int value) {
+        void comboboxSelectionChanged(int comboboxindex, int value)
+        {
             enforceWidgetParametersOnPreviousCursorPosition();
 
             adaptDrawingToComboboxChange(comboboxindex, value);
@@ -329,7 +371,8 @@ private:
             finishWidgetChanged();
         }
 
-        void adaptWidgetParameters() {
+        void adaptWidgetParameters()
+        {
             adaptWidgetParameters(lastWidgetEnforcedPosition);
         }
 
@@ -338,565 +381,612 @@ private:
         /** @name functions which MUST be specialised */
         //@{
         /// Change DSH to reflect a value entered in the view
-        void adaptDrawingToLabelChange(int labelindex, double value) {Q_UNUSED(labelindex);Q_UNUSED(value);}
+        void adaptDrawingToLabelChange(int labelindex, double value)
+        {
+            Q_UNUSED(labelindex);
+            Q_UNUSED(value);
+        }
 
         /// Change DSH to reflect a value entered in the widget
-        void adaptDrawingToParameterChange(int parameterindex, double value) {Q_UNUSED(parameterindex);Q_UNUSED(value);}
+        void adaptDrawingToParameterChange(int parameterindex, double value)
+        {
+            Q_UNUSED(parameterindex);
+            Q_UNUSED(value);
+        }
 
         /// Change DSH to reflect a checkbox changed in the widget
-        void adaptDrawingToCheckboxChange(int checkboxindex, bool value) {Q_UNUSED(checkboxindex);Q_UNUSED(value);}
+        void adaptDrawingToCheckboxChange(int checkboxindex, bool value)
+        {
+            Q_UNUSED(checkboxindex);
+            Q_UNUSED(value);
+        }
 
         /// Change DSH to reflect a comboBox changed in the widget
-        void adaptDrawingToComboboxChange(int comboboxindex, int value) {
-            Q_UNUSED(comboboxindex); Q_UNUSED(value);
+        void adaptDrawingToComboboxChange(int comboboxindex, int value)
+        {
+            Q_UNUSED(comboboxindex);
+            Q_UNUSED(value);
 
             if constexpr (PFirstComboboxIsConstructionMethod == true) {
 
-                if (comboboxindex == WCombobox::FirstCombo && handler->ConstructionMethodsCount() > 1) {
+                if (comboboxindex == WCombobox::FirstCombo
+                    && handler->ConstructionMethodsCount() > 1) {
                     handler->iterateToNextConstructionMethod();
                 }
-
             }
         }
 
-        /** Returns the state to which the widget parameter corresponds in the current construction method
-        */
-        auto getState(int parameterindex) const {
+        /** Returns the state to which the widget parameter corresponds in the current construction
+         * method
+         */
+        auto getState(int parameterindex) const
+        {
             Q_UNUSED(parameterindex);
             return handler->getFirstState();
         }
 
         /// function to create constraints based on widget information.
-        void addConstraints() {}
+        void addConstraints()
+        {}
         //@}
 
         /** @name functions which MAY need to be specialised */
         //@{
         /// Function to specialise to set the correct widget strings and commands
-        void configureToolWidget() {
+        void configureToolWidget()
+        {
             if constexpr (std::is_same_v<StateMachines::OneSeekEnd, SelectMode>) {
-                toolWidget->setParameterLabel(WParameter::First, QApplication::translate("ToolWidgetManager_p1", "x of point"));
-                toolWidget->setParameterLabel(WParameter::Second, QApplication::translate("ToolWidgetManager_p2", "y of point"));
+                toolWidget->setParameterLabel(
+                    WParameter::First,
+                    QApplication::translate("ToolWidgetManager_p1", "x of point"));
+                toolWidget->setParameterLabel(
+                    WParameter::Second,
+                    QApplication::translate("ToolWidgetManager_p2", "y of point"));
             }
             else if constexpr (std::is_same_v<StateMachines::TwoSeekEnd, SelectMode>) {
-                toolWidget->setParameterLabel(WParameter::First, QApplication::translate("ToolWidgetManager_p1", "x of 1st point"));
-                toolWidget->setParameterLabel(WParameter::Second, QApplication::translate("ToolWidgetManager_p2", "y of 1st point"));
-                toolWidget->setParameterLabel(WParameter::Third, QApplication::translate("ToolWidgetManager_p3", "x of 2nd point"));
-                toolWidget->setParameterLabel(WParameter::Fourth, QApplication::translate("ToolWidgetManager_p4", "y of 2nd point"));
+                toolWidget->setParameterLabel(
+                    WParameter::First,
+                    QApplication::translate("ToolWidgetManager_p1", "x of 1st point"));
+                toolWidget->setParameterLabel(
+                    WParameter::Second,
+                    QApplication::translate("ToolWidgetManager_p2", "y of 1st point"));
+                toolWidget->setParameterLabel(
+                    WParameter::Third,
+                    QApplication::translate("ToolWidgetManager_p3", "x of 2nd point"));
+                toolWidget->setParameterLabel(
+                    WParameter::Fourth,
+                    QApplication::translate("ToolWidgetManager_p4", "y of 2nd point"));
             }
             else if constexpr (std::is_same_v<StateMachines::ThreeSeekEnd, SelectMode>) {
-                toolWidget->setParameterLabel(WParameter::First, QApplication::translate("ToolWidgetManager_p1", "x of 1st point"));
-                toolWidget->setParameterLabel(WParameter::Second, QApplication::translate("ToolWidgetManager_p2", "y of 1st point"));
-                toolWidget->setParameterLabel(WParameter::Third, QApplication::translate("ToolWidgetManager_p3", "x of 2nd point"));
-                toolWidget->setParameterLabel(WParameter::Fourth, QApplication::translate("ToolWidgetManager_p4", "y of 2nd point"));
-                toolWidget->setParameterLabel(WParameter::Fifth, QApplication::translate("ToolWidgetManager_p5", "x of 3rd point"));
-                toolWidget->setParameterLabel(WParameter::Sixth, QApplication::translate("ToolWidgetManager_p6", "y of 3rd point"));
+                toolWidget->setParameterLabel(
+                    WParameter::First,
+                    QApplication::translate("ToolWidgetManager_p1", "x of 1st point"));
+                toolWidget->setParameterLabel(
+                    WParameter::Second,
+                    QApplication::translate("ToolWidgetManager_p2", "y of 1st point"));
+                toolWidget->setParameterLabel(
+                    WParameter::Third,
+                    QApplication::translate("ToolWidgetManager_p3", "x of 2nd point"));
+                toolWidget->setParameterLabel(
+                    WParameter::Fourth,
+                    QApplication::translate("ToolWidgetManager_p4", "y of 2nd point"));
+                toolWidget->setParameterLabel(
+                    WParameter::Fifth,
+                    QApplication::translate("ToolWidgetManager_p5", "x of 3rd point"));
+                toolWidget->setParameterLabel(
+                    WParameter::Sixth,
+                    QApplication::translate("ToolWidgetManager_p6", "y of 3rd point"));
             }
             else if constexpr (std::is_same_v<StateMachines::FourSeekEnd, SelectMode>) {
-                toolWidget->setParameterLabel(WParameter::First, QApplication::translate("ToolWidgetManager_p1", "x of 1st point"));
-                toolWidget->setParameterLabel(WParameter::Second, QApplication::translate("ToolWidgetManager_p2", "y of 1st point"));
-                toolWidget->setParameterLabel(WParameter::Third, QApplication::translate("ToolWidgetManager_p3", "x of 2nd point"));
-                toolWidget->setParameterLabel(WParameter::Fourth, QApplication::translate("ToolWidgetManager_p4", "y of 2nd point"));
-                toolWidget->setParameterLabel(WParameter::Fifth, QApplication::translate("ToolWidgetManager_p5", "x of 3rd point"));
-                toolWidget->setParameterLabel(WParameter::Sixth, QApplication::translate("ToolWidgetManager_p6", "y of 3rd point"));
+                toolWidget->setParameterLabel(
+                    WParameter::First,
+                    QApplication::translate("ToolWidgetManager_p1", "x of 1st point"));
+                toolWidget->setParameterLabel(
+                    WParameter::Second,
+                    QApplication::translate("ToolWidgetManager_p2", "y of 1st point"));
+                toolWidget->setParameterLabel(
+                    WParameter::Third,
+                    QApplication::translate("ToolWidgetManager_p3", "x of 2nd point"));
+                toolWidget->setParameterLabel(
+                    WParameter::Fourth,
+                    QApplication::translate("ToolWidgetManager_p4", "y of 2nd point"));
+                toolWidget->setParameterLabel(
+                    WParameter::Fifth,
+                    QApplication::translate("ToolWidgetManager_p5", "x of 3rd point"));
+                toolWidget->setParameterLabel(
+                    WParameter::Sixth,
+                    QApplication::translate("ToolWidgetManager_p6", "y of 3rd point"));
             }
         }
 
-        /// Function triggered before the first mouse move, to be used to initialize the on view labels.
-        void beforeFirstMouseMove(Base::Vector2d onSketchPos) {Q_UNUSED(onSketchPos);}
+        /// Function triggered before the first mouse move, to be used to initialize the on view
+        /// labels.
+        void beforeFirstMouseMove(Base::Vector2d onSketchPos)
+        {
+            Q_UNUSED(onSketchPos);
+        }
 
-        /** Change DSH to reflect the SelectMode it should be in based on values entered in the widget
-        *
-        * This is just a default implementation for common stateMachines, that may
-        * or may not do what you expect. It assumes two parameters per seek state.
-        *
-        * It MUST be specialised otherwise
-        */
-        void doChangeDrawSketchHandlerMode() {
+        /** Change DSH to reflect the SelectMode it should be in based on values entered in the
+         * widget
+         *
+         * This is just a default implementation for common stateMachines, that may
+         * or may not do what you expect. It assumes two parameters per seek state.
+         *
+         * It MUST be specialised otherwise
+         */
+        void doChangeDrawSketchHandlerMode()
+        {
             if constexpr (std::is_same_v<StateMachines::OneSeekEnd, SelectMode>) {
                 switch (handler->state()) {
-                case SelectMode::SeekFirst:
-                {
-                    if (toolWidget->isParameterSet(WParameter::First) &&
-                        toolWidget->isParameterSet(WParameter::Second)) {
+                    case SelectMode::SeekFirst: {
+                        if (toolWidget->isParameterSet(WParameter::First)
+                            && toolWidget->isParameterSet(WParameter::Second)) {
 
-                        handler->setState(SelectMode::End);
-                        handler->finish();
-                    }
-                }
-                break;
-                default:
-                    break;
+                            handler->setState(SelectMode::End);
+                            handler->finish();
+                        }
+                    } break;
+                    default:
+                        break;
                 }
             }
             else if constexpr (std::is_same_v<StateMachines::TwoSeekEnd, SelectMode>) {
-                switch(handler->state()) {
-                    case SelectMode::SeekFirst:
-                    {
-                        if (toolWidget->isParameterSet(WParameter::First) &&
-                            toolWidget->isParameterSet(WParameter::Second)) {
+                switch (handler->state()) {
+                    case SelectMode::SeekFirst: {
+                        if (toolWidget->isParameterSet(WParameter::First)
+                            && toolWidget->isParameterSet(WParameter::Second)) {
 
                             handler->setState(SelectMode::SeekSecond);
                         }
-                    }
-                    break;
-                    case SelectMode::SeekSecond:
-                    {
-                        if (toolWidget->isParameterSet(WParameter::Third) ||
-                            toolWidget->isParameterSet(WParameter::Fourth)) {
+                    } break;
+                    case SelectMode::SeekSecond: {
+                        if (toolWidget->isParameterSet(WParameter::Third)
+                            || toolWidget->isParameterSet(WParameter::Fourth)) {
 
-                            if(toolWidget->isParameterSet(WParameter::Third) &&
-                                toolWidget->isParameterSet(WParameter::Fourth)) {
+                            if (toolWidget->isParameterSet(WParameter::Third)
+                                && toolWidget->isParameterSet(WParameter::Fourth)) {
 
-                                    handler->setState(SelectMode::End);
-                                    handler->finish();
-                                }
+                                handler->setState(SelectMode::End);
+                                handler->finish();
+                            }
                         }
-                    }
-                    break;
+                    } break;
                     default:
                         break;
                 }
             }
             else if constexpr (std::is_same_v<StateMachines::ThreeSeekEnd, SelectMode>) {
-               switch(handler->state()) {
-                    case SelectMode::SeekFirst:
-                    {
-                        if (toolWidget->isParameterSet(WParameter::First) &&
-                            toolWidget->isParameterSet(WParameter::Second)) {
+                switch (handler->state()) {
+                    case SelectMode::SeekFirst: {
+                        if (toolWidget->isParameterSet(WParameter::First)
+                            && toolWidget->isParameterSet(WParameter::Second)) {
 
                             handler->setState(SelectMode::SeekSecond);
                         }
-                    }
-                    break;
-                    case SelectMode::SeekSecond:
-                    {
-                        if (toolWidget->isParameterSet(WParameter::Third) ||
-                            toolWidget->isParameterSet(WParameter::Fourth)) {
+                    } break;
+                    case SelectMode::SeekSecond: {
+                        if (toolWidget->isParameterSet(WParameter::Third)
+                            || toolWidget->isParameterSet(WParameter::Fourth)) {
 
-                            if(toolWidget->isParameterSet(WParameter::Third) &&
-                                toolWidget->isParameterSet(WParameter::Fourth)) {
+                            if (toolWidget->isParameterSet(WParameter::Third)
+                                && toolWidget->isParameterSet(WParameter::Fourth)) {
 
-                                    handler->setState(SelectMode::SeekThird);
+                                handler->setState(SelectMode::SeekThird);
                             }
                         }
-                    }
-                    break;
-                    case SelectMode::SeekThird:
-                    {
-                        if (toolWidget->isParameterSet(WParameter::Fifth) ||
-                            toolWidget->isParameterSet(WParameter::Sixth)) {
+                    } break;
+                    case SelectMode::SeekThird: {
+                        if (toolWidget->isParameterSet(WParameter::Fifth)
+                            || toolWidget->isParameterSet(WParameter::Sixth)) {
 
-                            if(toolWidget->isParameterSet(WParameter::Fifth) &&
-                                toolWidget->isParameterSet(WParameter::Sixth)) {
+                            if (toolWidget->isParameterSet(WParameter::Fifth)
+                                && toolWidget->isParameterSet(WParameter::Sixth)) {
 
-                                    handler->setState(SelectMode::End);
-                                    handler->finish();
+                                handler->setState(SelectMode::End);
+                                handler->finish();
                             }
                         }
-                    }
-                    break;
+                    } break;
                     default:
                         break;
                 }
             }
             else if constexpr (std::is_same_v<StateMachines::FourSeekEnd, SelectMode>) {
                 switch (handler->state()) {
-                case SelectMode::SeekFirst:
-                {
-                    if (toolWidget->isParameterSet(WParameter::First) &&
-                        toolWidget->isParameterSet(WParameter::Second)) {
+                    case SelectMode::SeekFirst: {
+                        if (toolWidget->isParameterSet(WParameter::First)
+                            && toolWidget->isParameterSet(WParameter::Second)) {
 
-                        handler->setState(SelectMode::SeekSecond);
-                    }
-                }
-                break;
-                case SelectMode::SeekSecond:
-                {
-                    if (toolWidget->isParameterSet(WParameter::Third) ||
-                        toolWidget->isParameterSet(WParameter::Fourth)) {
-
-                        if (toolWidget->isParameterSet(WParameter::Third) &&
-                            toolWidget->isParameterSet(WParameter::Fourth)) {
-
-                            handler->setState(SelectMode::SeekThird);
+                            handler->setState(SelectMode::SeekSecond);
                         }
-                    }
-                }
-                break;
-                case SelectMode::SeekThird:
-                {
-                    if (toolWidget->isParameterSet(WParameter::Fifth)) {
+                    } break;
+                    case SelectMode::SeekSecond: {
+                        if (toolWidget->isParameterSet(WParameter::Third)
+                            || toolWidget->isParameterSet(WParameter::Fourth)) {
 
-                        handler->setState(SelectMode::SeekFourth);
-                    }
-                }
-                break;
-                case SelectMode::SeekFourth:
-                {
-                    if (toolWidget->isParameterSet(WParameter::Sixth)) {
+                            if (toolWidget->isParameterSet(WParameter::Third)
+                                && toolWidget->isParameterSet(WParameter::Fourth)) {
 
-                        handler->setState(SelectMode::End);
-                        handler->finish();
-                    }
-                }
-                break;
-                default:
-                    break;
+                                handler->setState(SelectMode::SeekThird);
+                            }
+                        }
+                    } break;
+                    case SelectMode::SeekThird: {
+                        if (toolWidget->isParameterSet(WParameter::Fifth)) {
+
+                            handler->setState(SelectMode::SeekFourth);
+                        }
+                    } break;
+                    case SelectMode::SeekFourth: {
+                        if (toolWidget->isParameterSet(WParameter::Sixth)) {
+
+                            handler->setState(SelectMode::End);
+                            handler->finish();
+                        }
+                    } break;
+                    default:
+                        break;
                 }
             }
         }
 
         /** function that is called by the handler when the selection mode changed
-        *
-        * This is just a default implementation for common stateMachines, that may
-        * or may not do what you expect. It assumes two parameters per seek state.
-        *
-        * It MUST be specialised otherwise
-        */
-        void onHandlerModeChanged() {
+         *
+         * This is just a default implementation for common stateMachines, that may
+         * or may not do what you expect. It assumes two parameters per seek state.
+         *
+         * It MUST be specialised otherwise
+         */
+        void onHandlerModeChanged()
+        {
             if constexpr (std::is_same_v<StateMachines::OneSeekEnd, SelectMode>) {
                 switch (handler->state()) {
-                case SelectMode::SeekFirst:
-                    toolWidget->setParameterFocus(WParameter::First);
-                    break;
-                default:
-                    break;
+                    case SelectMode::SeekFirst:
+                        toolWidget->setParameterFocus(WParameter::First);
+                        break;
+                    default:
+                        break;
                 }
             }
             else if constexpr (std::is_same_v<StateMachines::TwoSeekEnd, SelectMode>) {
                 switch (handler->state()) {
-                case SelectMode::SeekFirst:
-                    toolWidget->setParameterFocus(WParameter::First);
-                    break;
-                case SelectMode::SeekSecond:
-                    toolWidget->setParameterFocus(WParameter::Third);
-                    break;
-                default:
-                    break;
+                    case SelectMode::SeekFirst:
+                        toolWidget->setParameterFocus(WParameter::First);
+                        break;
+                    case SelectMode::SeekSecond:
+                        toolWidget->setParameterFocus(WParameter::Third);
+                        break;
+                    default:
+                        break;
                 }
             }
             else if constexpr (std::is_same_v<StateMachines::ThreeSeekEnd, SelectMode>) {
                 switch (handler->state()) {
-                case SelectMode::SeekFirst:
-                    toolWidget->setParameterFocus(WParameter::First);
-                    break;
-                case SelectMode::SeekSecond:
-                    toolWidget->setParameterFocus(WParameter::Third);
-                    break;
-                case SelectMode::SeekThird:
-                    toolWidget->setParameterFocus(WParameter::Fifth);
-                    break;
-                default:
-                    break;
+                    case SelectMode::SeekFirst:
+                        toolWidget->setParameterFocus(WParameter::First);
+                        break;
+                    case SelectMode::SeekSecond:
+                        toolWidget->setParameterFocus(WParameter::Third);
+                        break;
+                    case SelectMode::SeekThird:
+                        toolWidget->setParameterFocus(WParameter::Fifth);
+                        break;
+                    default:
+                        break;
                 }
             }
             else if constexpr (std::is_same_v<StateMachines::FourSeekEnd, SelectMode>) {
                 switch (handler->state()) {
-                case SelectMode::SeekFirst:
-                    toolWidget->setParameterFocus(WParameter::First);
-                    break;
-                case SelectMode::SeekSecond:
-                    toolWidget->setParameterFocus(WParameter::Third);
-                    break;
-                case SelectMode::SeekThird:
-                    toolWidget->setParameterFocus(WParameter::Fifth);
-                    break;
-                case SelectMode::SeekFourth:
-                    toolWidget->setParameterFocus(WParameter::Sixth);
-                    break;
-                default:
-                    break;
+                    case SelectMode::SeekFirst:
+                        toolWidget->setParameterFocus(WParameter::First);
+                        break;
+                    case SelectMode::SeekSecond:
+                        toolWidget->setParameterFocus(WParameter::Third);
+                        break;
+                    case SelectMode::SeekThird:
+                        toolWidget->setParameterFocus(WParameter::Fifth);
+                        break;
+                    case SelectMode::SeekFourth:
+                        toolWidget->setParameterFocus(WParameter::Sixth);
+                        break;
+                    default:
+                        break;
                 }
             }
         }
 
         /** function that is called by the handler when the construction mode changed
-        *
-        * This is just a default implementation for common stateMachines, that may
-        * or may not do what you expect. It assumes two parameters per seek state.
-        *
-        * It MUST be specialised otherwise
-        */
-        void onConstructionMethodChanged() {
+         *
+         * This is just a default implementation for common stateMachines, that may
+         * or may not do what you expect. It assumes two parameters per seek state.
+         *
+         * It MUST be specialised otherwise
+         */
+        void onConstructionMethodChanged()
+        {
 
             nOnViewParameter = OnViewParametersT::size(handler->constructionMethod());
             nParameter = WidgetParametersT::size(handler->constructionMethod());
             nCheckbox = WidgetCheckboxesT::size(handler->constructionMethod());
             nCombobox = WidgetComboboxesT::size(handler->constructionMethod());
 
-            // update the combobox only if necessary (if the change was not triggered by the combobox)
+            // update the combobox only if necessary (if the change was not triggered by the
+            // combobox)
             if constexpr (PFirstComboboxIsConstructionMethod == true) {
                 auto currentindex = toolWidget->getComboboxIndex(WCombobox::FirstCombo);
                 auto methodint = static_cast<int>(handler->constructionMethod());
 
                 if (currentindex != methodint) {
                     // avoid triggering of method change
-                    boost::signals2::shared_connection_block combobox_block(connectionComboboxSelectionChanged);
+                    boost::signals2::shared_connection_block combobox_block(
+                        connectionComboboxSelectionChanged);
                     toolWidget->setComboboxIndex(WCombobox::FirstCombo, methodint);
                 }
             }
 
             dHandler->updateCursor();
 
-            dHandler->reset(); //reset of handler to restart.
+            dHandler->reset();  // reset of handler to restart.
         }
 
         /** function that is called by the handler with a Vector2d position to update the widget
-        *
-        * This is just a default implementation for common stateMachines, that may
-        * or may not do what you expect. It assumes two parameters per seek state.
-        *
-        * It MUST be specialised if the states correspond to different parameters
-        */
-        void adaptWidgetParameters(Base::Vector2d onSketchPos) {
+         *
+         * This is just a default implementation for common stateMachines, that may
+         * or may not do what you expect. It assumes two parameters per seek state.
+         *
+         * It MUST be specialised if the states correspond to different parameters
+         */
+        void adaptWidgetParameters(Base::Vector2d onSketchPos)
+        {
             if constexpr (std::is_same_v<StateMachines::OneSeekEnd, SelectMode>) {
                 switch (handler->state()) {
-                case SelectMode::SeekFirst:
-                {
-                    if (!toolWidget->isParameterSet(WParameter::First))
-                        toolWidget->updateVisualValue(WParameter::First, onSketchPos.x);
+                    case SelectMode::SeekFirst: {
+                        if (!toolWidget->isParameterSet(WParameter::First)) {
+                            toolWidget->updateVisualValue(WParameter::First, onSketchPos.x);
+                        }
 
-                    if (!toolWidget->isParameterSet(WParameter::Second))
-                        toolWidget->updateVisualValue(WParameter::Second, onSketchPos.y);
-                }
-                break;
-                default:
-                    break;
+                        if (!toolWidget->isParameterSet(WParameter::Second)) {
+                            toolWidget->updateVisualValue(WParameter::Second, onSketchPos.y);
+                        }
+                    } break;
+                    default:
+                        break;
                 }
             }
             else if constexpr (std::is_same_v<StateMachines::TwoSeekEnd, SelectMode>) {
                 switch (handler->state()) {
-                case SelectMode::SeekFirst:
-                {
-                    if (!toolWidget->isParameterSet(WParameter::First))
-                        toolWidget->updateVisualValue(WParameter::First, onSketchPos.x);
+                    case SelectMode::SeekFirst: {
+                        if (!toolWidget->isParameterSet(WParameter::First)) {
+                            toolWidget->updateVisualValue(WParameter::First, onSketchPos.x);
+                        }
 
-                    if (!toolWidget->isParameterSet(WParameter::Second))
-                        toolWidget->updateVisualValue(WParameter::Second, onSketchPos.y);
-                }
-                break;
-                case SelectMode::SeekSecond:
-                {
-                    if (!toolWidget->isParameterSet(WParameter::Third))
-                        toolWidget->updateVisualValue(WParameter::Third, onSketchPos.x);
+                        if (!toolWidget->isParameterSet(WParameter::Second)) {
+                            toolWidget->updateVisualValue(WParameter::Second, onSketchPos.y);
+                        }
+                    } break;
+                    case SelectMode::SeekSecond: {
+                        if (!toolWidget->isParameterSet(WParameter::Third)) {
+                            toolWidget->updateVisualValue(WParameter::Third, onSketchPos.x);
+                        }
 
-                    if (!toolWidget->isParameterSet(WParameter::Fourth))
-                        toolWidget->updateVisualValue(WParameter::Fourth, onSketchPos.y);
-                }
-                break;
-                default:
-                    break;
+                        if (!toolWidget->isParameterSet(WParameter::Fourth)) {
+                            toolWidget->updateVisualValue(WParameter::Fourth, onSketchPos.y);
+                        }
+                    } break;
+                    default:
+                        break;
                 }
             }
             else if constexpr (std::is_same_v<StateMachines::ThreeSeekEnd, SelectMode>) {
                 switch (handler->state()) {
-                case SelectMode::SeekFirst:
-                {
-                    if (!toolWidget->isParameterSet(WParameter::First))
-                        toolWidget->updateVisualValue(WParameter::First, onSketchPos.x);
+                    case SelectMode::SeekFirst: {
+                        if (!toolWidget->isParameterSet(WParameter::First)) {
+                            toolWidget->updateVisualValue(WParameter::First, onSketchPos.x);
+                        }
 
-                    if (!toolWidget->isParameterSet(WParameter::Second))
-                        toolWidget->updateVisualValue(WParameter::Second, onSketchPos.y);
-                }
-                break;
-                case SelectMode::SeekSecond:
-                {
-                    if (!toolWidget->isParameterSet(WParameter::Third))
-                        toolWidget->updateVisualValue(WParameter::Third, onSketchPos.x);
+                        if (!toolWidget->isParameterSet(WParameter::Second)) {
+                            toolWidget->updateVisualValue(WParameter::Second, onSketchPos.y);
+                        }
+                    } break;
+                    case SelectMode::SeekSecond: {
+                        if (!toolWidget->isParameterSet(WParameter::Third)) {
+                            toolWidget->updateVisualValue(WParameter::Third, onSketchPos.x);
+                        }
 
-                    if (!toolWidget->isParameterSet(WParameter::Fourth))
-                        toolWidget->updateVisualValue(WParameter::Fourth, onSketchPos.y);
-                }
-                break;
-                case SelectMode::SeekThird:
-                {
-                    if (!toolWidget->isParameterSet(WParameter::Fifth))
-                        toolWidget->updateVisualValue(WParameter::Fifth, onSketchPos.x);
+                        if (!toolWidget->isParameterSet(WParameter::Fourth)) {
+                            toolWidget->updateVisualValue(WParameter::Fourth, onSketchPos.y);
+                        }
+                    } break;
+                    case SelectMode::SeekThird: {
+                        if (!toolWidget->isParameterSet(WParameter::Fifth)) {
+                            toolWidget->updateVisualValue(WParameter::Fifth, onSketchPos.x);
+                        }
 
-                    if (!toolWidget->isParameterSet(WParameter::Sixth))
-                        toolWidget->updateVisualValue(WParameter::Sixth, onSketchPos.y);
-                }
-                break;
-                default:
-                    break;
+                        if (!toolWidget->isParameterSet(WParameter::Sixth)) {
+                            toolWidget->updateVisualValue(WParameter::Sixth, onSketchPos.y);
+                        }
+                    } break;
+                    default:
+                        break;
                 }
             }
             else if constexpr (std::is_same_v<StateMachines::FourSeekEnd, SelectMode>) {
                 switch (handler->state()) {
-                case SelectMode::SeekFirst:
-                {
-                    if (!toolWidget->isParameterSet(WParameter::First))
-                        toolWidget->updateVisualValue(WParameter::First, onSketchPos.x);
+                    case SelectMode::SeekFirst: {
+                        if (!toolWidget->isParameterSet(WParameter::First)) {
+                            toolWidget->updateVisualValue(WParameter::First, onSketchPos.x);
+                        }
 
-                    if (!toolWidget->isParameterSet(WParameter::Second))
-                        toolWidget->updateVisualValue(WParameter::Second, onSketchPos.y);
-                }
-                break;
-                case SelectMode::SeekSecond:
-                {
-                    if (!toolWidget->isParameterSet(WParameter::Third))
-                        toolWidget->updateVisualValue(WParameter::Third, onSketchPos.x);
+                        if (!toolWidget->isParameterSet(WParameter::Second)) {
+                            toolWidget->updateVisualValue(WParameter::Second, onSketchPos.y);
+                        }
+                    } break;
+                    case SelectMode::SeekSecond: {
+                        if (!toolWidget->isParameterSet(WParameter::Third)) {
+                            toolWidget->updateVisualValue(WParameter::Third, onSketchPos.x);
+                        }
 
-                    if (!toolWidget->isParameterSet(WParameter::Fourth))
-                        toolWidget->updateVisualValue(WParameter::Fourth, onSketchPos.y);
-                }
-                break;
-                case SelectMode::SeekThird:
-                {
-                    if (!toolWidget->isParameterSet(WParameter::Fifth))
-                        toolWidget->updateVisualValue(WParameter::Fifth, onSketchPos.x);
+                        if (!toolWidget->isParameterSet(WParameter::Fourth)) {
+                            toolWidget->updateVisualValue(WParameter::Fourth, onSketchPos.y);
+                        }
+                    } break;
+                    case SelectMode::SeekThird: {
+                        if (!toolWidget->isParameterSet(WParameter::Fifth)) {
+                            toolWidget->updateVisualValue(WParameter::Fifth, onSketchPos.x);
+                        }
 
-                    if (!toolWidget->isParameterSet(WParameter::Sixth))
-                        toolWidget->updateVisualValue(WParameter::Sixth, onSketchPos.y);
-                }
-                break;
-                case SelectMode::SeekFourth:
-                {
-                    if (!toolWidget->isParameterSet(WParameter::Fifth))
-                        toolWidget->updateVisualValue(WParameter::Fifth, onSketchPos.x);
+                        if (!toolWidget->isParameterSet(WParameter::Sixth)) {
+                            toolWidget->updateVisualValue(WParameter::Sixth, onSketchPos.y);
+                        }
+                    } break;
+                    case SelectMode::SeekFourth: {
+                        if (!toolWidget->isParameterSet(WParameter::Fifth)) {
+                            toolWidget->updateVisualValue(WParameter::Fifth, onSketchPos.x);
+                        }
 
-                    if (!toolWidget->isParameterSet(WParameter::Sixth))
-                        toolWidget->updateVisualValue(WParameter::Sixth, onSketchPos.y);
-                }
-                break;
-                default:
-                    break;
+                        if (!toolWidget->isParameterSet(WParameter::Sixth)) {
+                            toolWidget->updateVisualValue(WParameter::Sixth, onSketchPos.y);
+                        }
+                    } break;
+                    default:
+                        break;
                 }
             }
         }
 
         /** function that is called by the handler with a mouse position, enabling the
-        * widget to override it having regard to the widget information.
-        *
-        * This is just a default implementation for common stateMachines, that may
-        * or may not do what you expect. It assumes two parameters per seek state.
-        *
-        * It MUST be specialised if the states correspond to different parameters
-        */
-        void doEnforceWidgetParameters(Base::Vector2d &onSketchPos) {
+         * widget to override it having regard to the widget information.
+         *
+         * This is just a default implementation for common stateMachines, that may
+         * or may not do what you expect. It assumes two parameters per seek state.
+         *
+         * It MUST be specialised if the states correspond to different parameters
+         */
+        void doEnforceWidgetParameters(Base::Vector2d& onSketchPos)
+        {
             if constexpr (std::is_same_v<StateMachines::OneSeekEnd, SelectMode>) {
                 switch (handler->state()) {
-                case SelectMode::SeekFirst:
-                {
-                    if (toolWidget->isParameterSet(WParameter::First))
-                        onSketchPos.x = toolWidget->getParameter(WParameter::First);
+                    case SelectMode::SeekFirst: {
+                        if (toolWidget->isParameterSet(WParameter::First)) {
+                            onSketchPos.x = toolWidget->getParameter(WParameter::First);
+                        }
 
-                    if (toolWidget->isParameterSet(WParameter::Second))
-                        onSketchPos.y = toolWidget->getParameter(WParameter::Second);
-                }
-                break;
-                default:
-                    break;
+                        if (toolWidget->isParameterSet(WParameter::Second)) {
+                            onSketchPos.y = toolWidget->getParameter(WParameter::Second);
+                        }
+                    } break;
+                    default:
+                        break;
                 }
             }
             else if constexpr (std::is_same_v<StateMachines::TwoSeekEnd, SelectMode>) {
-                switch(handler->state()) {
-                    case SelectMode::SeekFirst:
-                    {
-                        if (toolWidget->isParameterSet(WParameter::First))
+                switch (handler->state()) {
+                    case SelectMode::SeekFirst: {
+                        if (toolWidget->isParameterSet(WParameter::First)) {
                             onSketchPos.x = toolWidget->getParameter(WParameter::First);
+                        }
 
-                        if(toolWidget->isParameterSet(WParameter::Second))
+                        if (toolWidget->isParameterSet(WParameter::Second)) {
                             onSketchPos.y = toolWidget->getParameter(WParameter::Second);
-                    }
-                    break;
-                    case SelectMode::SeekSecond:
-                    {
-                        if (toolWidget->isParameterSet(WParameter::Third))
+                        }
+                    } break;
+                    case SelectMode::SeekSecond: {
+                        if (toolWidget->isParameterSet(WParameter::Third)) {
                             onSketchPos.x = toolWidget->getParameter(WParameter::Third);
+                        }
 
-                        if(toolWidget->isParameterSet(WParameter::Fourth))
+                        if (toolWidget->isParameterSet(WParameter::Fourth)) {
                             onSketchPos.y = toolWidget->getParameter(WParameter::Fourth);
-                    }
-                    break;
+                        }
+                    } break;
                     default:
                         break;
                 }
             }
             else if constexpr (std::is_same_v<StateMachines::ThreeSeekEnd, SelectMode>) {
-                switch(handler->state()) {
-                    case SelectMode::SeekFirst:
-                    {
-                        if (toolWidget->isParameterSet(WParameter::First))
+                switch (handler->state()) {
+                    case SelectMode::SeekFirst: {
+                        if (toolWidget->isParameterSet(WParameter::First)) {
                             onSketchPos.x = toolWidget->getParameter(WParameter::First);
+                        }
 
-                        if(toolWidget->isParameterSet(WParameter::Second))
+                        if (toolWidget->isParameterSet(WParameter::Second)) {
                             onSketchPos.y = toolWidget->getParameter(WParameter::Second);
-                    }
-                    break;
-                    case SelectMode::SeekSecond:
-                    {
-                        if (toolWidget->isParameterSet(WParameter::Third))
+                        }
+                    } break;
+                    case SelectMode::SeekSecond: {
+                        if (toolWidget->isParameterSet(WParameter::Third)) {
                             onSketchPos.x = toolWidget->getParameter(WParameter::Third);
+                        }
 
-                        if(toolWidget->isParameterSet(WParameter::Fourth))
+                        if (toolWidget->isParameterSet(WParameter::Fourth)) {
                             onSketchPos.y = toolWidget->getParameter(WParameter::Fourth);
-                    }
-                    break;
-                    case SelectMode::SeekThird:
-                    {
-                        if (toolWidget->isParameterSet(WParameter::Fifth))
+                        }
+                    } break;
+                    case SelectMode::SeekThird: {
+                        if (toolWidget->isParameterSet(WParameter::Fifth)) {
                             onSketchPos.x = toolWidget->getParameter(WParameter::Fifth);
+                        }
 
-                        if(toolWidget->isParameterSet(WParameter::Sixth))
+                        if (toolWidget->isParameterSet(WParameter::Sixth)) {
                             onSketchPos.y = toolWidget->getParameter(WParameter::Sixth);
-                    }
-                    break;
+                        }
+                    } break;
                     default:
                         break;
                 }
             }
             else if constexpr (std::is_same_v<StateMachines::FourSeekEnd, SelectMode>) {
                 switch (handler->state()) {
-                case SelectMode::SeekFirst:
-                {
-                    if (toolWidget->isParameterSet(WParameter::First))
-                        onSketchPos.x = toolWidget->getParameter(WParameter::First);
+                    case SelectMode::SeekFirst: {
+                        if (toolWidget->isParameterSet(WParameter::First)) {
+                            onSketchPos.x = toolWidget->getParameter(WParameter::First);
+                        }
 
-                    if (toolWidget->isParameterSet(WParameter::Second))
-                        onSketchPos.y = toolWidget->getParameter(WParameter::Second);
-                }
-                break;
-                case SelectMode::SeekSecond:
-                {
-                    if (toolWidget->isParameterSet(WParameter::Third))
-                        onSketchPos.x = toolWidget->getParameter(WParameter::Third);
+                        if (toolWidget->isParameterSet(WParameter::Second)) {
+                            onSketchPos.y = toolWidget->getParameter(WParameter::Second);
+                        }
+                    } break;
+                    case SelectMode::SeekSecond: {
+                        if (toolWidget->isParameterSet(WParameter::Third)) {
+                            onSketchPos.x = toolWidget->getParameter(WParameter::Third);
+                        }
 
-                    if (toolWidget->isParameterSet(WParameter::Fourth))
-                        onSketchPos.y = toolWidget->getParameter(WParameter::Fourth);
-                }
-                break;
-                case SelectMode::SeekThird:
-                {
-                    if (toolWidget->isParameterSet(WParameter::Fifth))
-                        onSketchPos.x = toolWidget->getParameter(WParameter::Fifth);
+                        if (toolWidget->isParameterSet(WParameter::Fourth)) {
+                            onSketchPos.y = toolWidget->getParameter(WParameter::Fourth);
+                        }
+                    } break;
+                    case SelectMode::SeekThird: {
+                        if (toolWidget->isParameterSet(WParameter::Fifth)) {
+                            onSketchPos.x = toolWidget->getParameter(WParameter::Fifth);
+                        }
 
-                    if (toolWidget->isParameterSet(WParameter::Sixth))
-                        onSketchPos.y = toolWidget->getParameter(WParameter::Sixth);
-                }
-                break;
-                case SelectMode::SeekFourth:
-                {
-                    //nothing. It has to be reimplemented.
-                }
-                break;
-                default:
-                    break;
+                        if (toolWidget->isParameterSet(WParameter::Sixth)) {
+                            onSketchPos.y = toolWidget->getParameter(WParameter::Sixth);
+                        }
+                    } break;
+                    case SelectMode::SeekFourth: {
+                        // nothing. It has to be reimplemented.
+                    } break;
+                    default:
+                        break;
                 }
             }
         }
 
-        /** on first shortcut, it toggles the first checkbox if there is go. Must be specialised if this is not intended */
-        void firstKeyShortcut() {
-            if(nCheckbox >= 1) {
+        /** on first shortcut, it toggles the first checkbox if there is go. Must be specialised if
+         * this is not intended */
+        void firstKeyShortcut()
+        {
+            if (nCheckbox >= 1) {
                 auto firstchecked = toolWidget->getCheckboxChecked(WCheckbox::FirstBox);
                 toolWidget->setCheckboxChecked(WCheckbox::FirstBox, !firstchecked);
             }
         }
 
-        void secondKeyShortcut() {
-            if(nCheckbox >= 2) {
+        void secondKeyShortcut()
+        {
+            if (nCheckbox >= 2) {
                 auto secondchecked = toolWidget->getCheckboxChecked(WCheckbox::SecondBox);
                 toolWidget->setCheckboxChecked(WCheckbox::SecondBox, !secondchecked);
             }
@@ -906,129 +996,147 @@ private:
     private:
         /** @name helper functions */
         //@{
-            /// function to assist in adaptDrawingToComboboxChange specialisation
-            /// assigns the modevalue to the modeenum and updates the number of parameters according to map
-            /// it also triggers an update of the cursor
-            /*template <typename T>
-            void setModeAndAdaptParameters(T & modeenum, int modevalue, const std::vector<int> & parametersmap) {
-                if (modevalue < static_cast<int>(parametersmap.size())) {
-                    auto mode = static_cast<T>(modevalue);
+        /// function to assist in adaptDrawingToComboboxChange specialisation
+        /// assigns the modevalue to the modeenum and updates the number of parameters according to
+        /// map it also triggers an update of the cursor
+        /*template <typename T>
+        void setModeAndAdaptParameters(T & modeenum, int modevalue, const std::vector<int> &
+        parametersmap) { if (modevalue < static_cast<int>(parametersmap.size())) { auto mode =
+        static_cast<T>(modevalue);
 
-                    nOnViewParameter = OnViewParametersT::constructionMethodParameters[modevalue];
-                    nParameter = WidgetParametersT::constructionMethodParameters[modevalue];
-                    nCheckbox = WidgetCheckboxesT::constructionMethodParameters[modevalue];
-                    nCombobox = WidgetComboboxesT::constructionMethodParameters[modevalue];
-
-                    modeenum = mode;
-
-                    dHandler->updateCursor();
-
-                    reset(); //reset the widget to take into account the change of nparameter
-                    dHandler->reset(); //reset of handler to restart.
-                }
-            }*/
-
-            /// function to assist in adaptDrawingToComboboxChange specialisation
-            /// assigns the modevalue to the modeenum
-            /// it also triggers an update of the cursor
-            template <typename T>
-            void setMode(T & modeenum, int modevalue) {
-                auto mode = static_cast<T>(modevalue);
+                nOnViewParameter = OnViewParametersT::constructionMethodParameters[modevalue];
+                nParameter = WidgetParametersT::constructionMethodParameters[modevalue];
+                nCheckbox = WidgetCheckboxesT::constructionMethodParameters[modevalue];
+                nCombobox = WidgetComboboxesT::constructionMethodParameters[modevalue];
 
                 modeenum = mode;
 
                 dHandler->updateCursor();
 
+                reset(); //reset the widget to take into account the change of nparameter
                 dHandler->reset(); //reset of handler to restart.
             }
+        }*/
 
-            /// function to redraw before and after any eventual mode change in reaction to a widget change
-            void finishWidgetChanged() {
+        /// function to assist in adaptDrawingToComboboxChange specialisation
+        /// assigns the modevalue to the modeenum
+        /// it also triggers an update of the cursor
+        template<typename T>
+        void setMode(T& modeenum, int modevalue)
+        {
+            auto mode = static_cast<T>(modevalue);
 
-                //handler->moveCursorToSketchPoint(lastWidgetEnforcedPosition);
+            modeenum = mode;
 
-                auto currentstate = handler->state();
-                // ensure that object at point is preselected, so that autoconstraints are generated
-                handler->preselectAtPoint(lastWidgetEnforcedPosition);
-                // ensure drawing in the previous mode
+            dHandler->updateCursor();
+
+            dHandler->reset();  // reset of handler to restart.
+        }
+
+        /// function to redraw before and after any eventual mode change in reaction to a widget
+        /// change
+        void finishWidgetChanged()
+        {
+
+            // handler->moveCursorToSketchPoint(lastWidgetEnforcedPosition);
+
+            auto currentstate = handler->state();
+            // ensure that object at point is preselected, so that autoconstraints are generated
+            handler->preselectAtPoint(lastWidgetEnforcedPosition);
+            // ensure drawing in the previous mode
+            handler->updateDataAndDrawToPosition(lastWidgetEnforcedPosition);
+
+            doChangeDrawSketchHandlerMode();
+
+            // if the state changed and is not the last state (End)
+            if (!handler->isLastState() && handler->state() != currentstate) {
+                // mode has changed, so reprocess the previous position to the new widget state
+                enforceWidgetParametersOnPreviousCursorPosition();
+
+                // update the widget if state changed
+                adaptWidgetParameters(lastWidgetEnforcedPosition);
+
+                // ensure drawing in the next mode
                 handler->updateDataAndDrawToPosition(lastWidgetEnforcedPosition);
+            }
+        }
 
-                doChangeDrawSketchHandlerMode();
+        void enforceWidgetParametersOnPreviousCursorPosition()
+        {
+            auto simulatedCursorPosition =
+                prevCursorPosition;  // ensure prevCursorPosition is preserved
 
-                // if the state changed and is not the last state (End)
-                if(!handler->isLastState() && handler->state() != currentstate) {
-                    // mode has changed, so reprocess the previous position to the new widget state
-                    enforceWidgetParametersOnPreviousCursorPosition();
+            doEnforceWidgetParameters(
+                simulatedCursorPosition);  // updates lastWidgetEnforcedPosition with new widget
+                                           // state
 
-                    // update the widget if state changed
-                    adaptWidgetParameters(lastWidgetEnforcedPosition);
+            lastWidgetEnforcedPosition =
+                simulatedCursorPosition;  // store enforced cursor position.
+        }
 
-                    // ensure drawing in the next mode
-                    handler->updateDataAndDrawToPosition(lastWidgetEnforcedPosition);
+        /// returns the status to which the handler was updated
+        bool syncHandlerToCheckbox(int checkboxindex, bool& handlerboolean)
+        {
+            bool status = toolWidget->getCheckboxChecked(checkboxindex);
+            handlerboolean = status;
+
+            return status;
+        }
+
+        /// returns true if checkbox was changed, and false if no sync was necessary
+        bool syncCheckboxToHandler(int checkboxindex, bool handlerboolean)
+        {
+            bool status = toolWidget->getCheckboxChecked(checkboxindex);
+            if (handlerboolean != status) {
+                toolWidget->setCheckboxChecked(checkboxindex, handlerboolean);
+                return true;
+            }
+
+            return false;
+        }
+
+        void syncHandlerToConstructionMethodCombobox()
+        {
+
+            if constexpr (PFirstComboboxIsConstructionMethod == true) {
+                auto constructionmethod = toolWidget->getComboboxIndex(WCombobox::FirstCombo);
+
+                handler->initConstructionMethod(
+                    static_cast<ConstructionMethodT>(constructionmethod));
+            }
+        }
+        void syncConstructionMethodComboboxToHandler()
+        {
+
+            if constexpr (PFirstComboboxIsConstructionMethod == true) {
+                auto constructionmethod = toolWidget->getComboboxIndex(WCombobox::FirstCombo);
+
+                auto actualconstructionmethod = static_cast<int>(handler->constructionMethod());
+
+                if (constructionmethod != actualconstructionmethod) {
+                    toolWidget->setComboboxIndex(WCombobox::FirstCombo, actualconstructionmethod);
                 }
             }
+        }
 
-            void enforceWidgetParametersOnPreviousCursorPosition() {
-                auto simulatedCursorPosition = prevCursorPosition; // ensure prevCursorPosition is preserved
+        bool isParameterOfCurrentMode(int parameterindex) const
+        {
+            return getState(parameterindex) == handler->state();
+        }
 
-                doEnforceWidgetParameters(simulatedCursorPosition); // updates lastWidgetEnforcedPosition with new widget state
-
-                lastWidgetEnforcedPosition = simulatedCursorPosition; // store enforced cursor position.
-            }
-
-            /// returns the status to which the handler was updated
-            bool syncHandlerToCheckbox(int checkboxindex, bool & handlerboolean) {
-                bool status = toolWidget->getCheckboxChecked(checkboxindex);
-                handlerboolean = status;
-
-                return status;
-            }
-
-            /// returns true if checkbox was changed, and false if no sync was necessary
-            bool syncCheckboxToHandler(int checkboxindex, bool handlerboolean) {
-                bool status = toolWidget->getCheckboxChecked(checkboxindex);
-                if(handlerboolean != status) {
-                    toolWidget->setCheckboxChecked(checkboxindex, handlerboolean);
-                    return true;
-                }
-
-                return false;
-            }
-
-            void syncHandlerToConstructionMethodCombobox() {
-
-                if constexpr (PFirstComboboxIsConstructionMethod == true) {
-                    auto constructionmethod = toolWidget->getComboboxIndex(WCombobox::FirstCombo);
-
-                    handler->initConstructionMethod(static_cast<ConstructionMethodT>(constructionmethod));
-                }
-            }
-            void syncConstructionMethodComboboxToHandler() {
-
-                if constexpr (PFirstComboboxIsConstructionMethod == true) {
-                    auto constructionmethod = toolWidget->getComboboxIndex(WCombobox::FirstCombo);
-
-                    auto actualconstructionmethod = static_cast<int>(handler->constructionMethod());
-
-                    if(constructionmethod != actualconstructionmethod)
-                        toolWidget->setComboboxIndex(WCombobox::FirstCombo, actualconstructionmethod);
-                }
-            }
-
-            bool isParameterOfCurrentMode(int parameterindex) const {
-                return getState(parameterindex) == handler->state();
-            }
-
-            bool isParameterOfPreviousMode(int parameterindex) const {
-                return getState(parameterindex) < handler->state();
-            }
+        bool isParameterOfPreviousMode(int parameterindex) const
+        {
+            return getState(parameterindex) < handler->state();
+        }
         //@}
-     };
+    };
 
 public:
-    DrawSketchDefaultWidgetHandler(ConstructionMethodT constructionmethod = static_cast<ConstructionMethodT>(0)):
-         DSDefaultHandler(constructionmethod)
-        , toolWidgetManager(this) {}
+    DrawSketchDefaultWidgetHandler(
+        ConstructionMethodT constructionmethod = static_cast<ConstructionMethodT>(0))
+        : DSDefaultHandler(constructionmethod)
+        , toolWidgetManager(this)
+    {}
     virtual ~DrawSketchDefaultWidgetHandler() = default;
 
     /** @name functions NOT intended for specialisation */
@@ -1041,7 +1149,7 @@ public:
         }
         toolWidgetManager.enforceWidgetParameters(onSketchPos);
         toolWidgetManager.adaptWidgetParameters(onSketchPos);
-        updateDataAndDrawToPosition (onSketchPos);
+        updateDataAndDrawToPosition(onSketchPos);
     }
 
     virtual bool pressButton(Base::Vector2d onSketchPos) override
@@ -1052,7 +1160,8 @@ public:
         return true;
     }
 
-    virtual bool releaseButton(Base::Vector2d onSketchPos) override {
+    virtual bool releaseButton(Base::Vector2d onSketchPos) override
+    {
         Q_UNUSED(onSketchPos);
         DSDefaultHandler::finish();
         return true;
@@ -1063,8 +1172,14 @@ public:
 protected:
     /** @name functions requiring specialisation */
     //@{
-    virtual std::string getToolName() const override { return DrawSketchHandler::getToolName();}
-    virtual QString getCrosshairCursorSVGName() const override { return DrawSketchHandler::getCrosshairCursorSVGName();}
+    virtual std::string getToolName() const override
+    {
+        return DrawSketchHandler::getToolName();
+    }
+    virtual QString getCrosshairCursorSVGName() const override
+    {
+        return DrawSketchHandler::getCrosshairCursorSVGName();
+    }
     //@}
 
 private:
@@ -1072,7 +1187,10 @@ private:
     //@{
     // For every machine state, it updates the EditData temporary
     // curve, and draws the temporary curve during edit mode.
-    virtual void updateDataAndDrawToPosition(Base::Vector2d onSketchPos) override {Q_UNUSED(onSketchPos)};
+    virtual void updateDataAndDrawToPosition(Base::Vector2d onSketchPos) override
+    {
+        Q_UNUSED(onSketchPos)
+    };
 
     virtual void executeCommands() override {};
     virtual void createAutoConstraints() override {};
@@ -1083,7 +1201,8 @@ private:
     /** Default implementation is that on every mouse click the mode is changed to the next seek
         On the last seek, it changes to SelectMode::End
         If this behaviour is not acceptable, then the function must be specialised.*/
-    virtual void onButtonPressed(Base::Vector2d onSketchPos) override {
+    virtual void onButtonPressed(Base::Vector2d onSketchPos) override
+    {
         DSDefaultHandler::onButtonPressed(onSketchPos);
     }
 
@@ -1092,31 +1211,38 @@ private:
         toolWidgetManager.addConstraints();
     }
 
-    virtual void onWidgetChanged() override {
+    virtual void onWidgetChanged() override
+    {
         toolWidgetManager.initWidget(DSDefaultHandler::toolwidget);
     }
 
-    virtual void onReset() override {
+    virtual void onReset() override
+    {
         toolWidgetManager.reset();
     }
 
-    virtual void onModeChanged() override {
+    virtual void onModeChanged() override
+    {
         toolWidgetManager.onHandlerModeChanged();
         DSDefaultHandler::onModeChanged();
     }
 
-    virtual void onConstructionMethodChanged() override {
+    virtual void onConstructionMethodChanged() override
+    {
         toolWidgetManager.onConstructionMethodChanged();
     }
 
-    virtual void registerPressedKey(bool pressed, int key) override {
+    virtual void registerPressedKey(bool pressed, int key) override
+    {
         DSDefaultHandler::registerPressedKey(pressed, key);
 
-        if (key == SoKeyboardEvent::U && !pressed && !this->isLastState())
+        if (key == SoKeyboardEvent::U && !pressed && !this->isLastState()) {
             toolWidgetManager.firstKeyShortcut();
+        }
 
-        if (key == SoKeyboardEvent::J && !pressed && !this->isLastState())
+        if (key == SoKeyboardEvent::J && !pressed && !this->isLastState()) {
             toolWidgetManager.secondKeyShortcut();
+        }
     }
     //@}
 
@@ -1124,8 +1250,7 @@ protected:
     ToolWidgetManager toolWidgetManager;
 };
 
-} // namespace SketcherGui
+}  // namespace SketcherGui
 
 
-#endif // SKETCHERGUI_DrawSketchHandlerDefaultWidget_H
-
+#endif  // SKETCHERGUI_DrawSketchHandlerDefaultWidget_H
