@@ -22,16 +22,16 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <QBuffer>
-# include <QByteArray>
+#include <QBuffer>
+#include <QByteArray>
 
-# include <Inventor/SbRotation.h>
-# include <Inventor/SbViewportRegion.h>
-# include <Inventor/nodes/SoCoordinate3.h>
-# include <Inventor/nodes/SoDirectionalLight.h>
-# include <Inventor/nodes/SoIndexedFaceSet.h>
-# include <Inventor/nodes/SoOrthographicCamera.h>
-# include <Inventor/nodes/SoSeparator.h>
+#include <Inventor/SbRotation.h>
+#include <Inventor/SbViewportRegion.h>
+#include <Inventor/nodes/SoCoordinate3.h>
+#include <Inventor/nodes/SoDirectionalLight.h>
+#include <Inventor/nodes/SoIndexedFaceSet.h>
+#include <Inventor/nodes/SoOrthographicCamera.h>
+#include <Inventor/nodes/SoSeparator.h>
 #endif
 
 #include <Gui/SoFCOffscreenRenderer.h>
@@ -42,7 +42,7 @@
 
 using namespace MeshGui;
 
-Mesh::Extension3MF::Resource ThumbnailExtension3MF::addMesh(const Mesh::MeshObject &mesh)
+Mesh::Extension3MF::Resource ThumbnailExtension3MF::addMesh(const Mesh::MeshObject& mesh)
 {
     SoCoordinate3* coord = new SoCoordinate3();
     SoIndexedFaceSet* faces = new SoIndexedFaceSet();
@@ -78,7 +78,8 @@ Mesh::Extension3MF::Resource ThumbnailExtension3MF::addMesh(const Mesh::MeshObje
     Mesh::Extension3MF::Resource res;
     res.extension = "png";
     res.contentType = "image/png";
-    res.relationshipType = "http://schemas.openxmlformats.org/package/2006/relationships/metadata/thumbnail";
+    res.relationshipType =
+        "http://schemas.openxmlformats.org/package/2006/relationships/metadata/thumbnail";
     res.fileContent = std::string(data.data(), data.size());
     setContentName(res);
 

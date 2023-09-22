@@ -24,25 +24,27 @@
 #ifndef MESHGUI_DLGSMOOTHING_H
 #define MESHGUI_DLGSMOOTHING_H
 
-#include <QDialog>
 #include <Gui/TaskView/TaskDialog.h>
 #include <Gui/TaskView/TaskView.h>
+#include <QDialog>
 #ifndef MESH_GLOBAL_H
 #include <Mod/Mesh/MeshGlobal.h>
 #endif
 
 class QButtonGroup;
 
-namespace MeshGui {
+namespace MeshGui
+{
 
 class Selection;
 class Ui_DlgSmoothing;
-class DlgSmoothing : public QWidget
+class DlgSmoothing: public QWidget
 {
     Q_OBJECT
 
 public:
-    enum Smooth {
+    enum Smooth
+    {
         None,
         Taubin,
         Laplace,
@@ -72,7 +74,7 @@ private:
 /**
  * Embed the panel into a dialog.
  */
-class MeshGuiExport SmoothingDialog : public QDialog
+class MeshGuiExport SmoothingDialog: public QDialog
 {
     Q_OBJECT
 
@@ -81,15 +83,25 @@ public:
     ~SmoothingDialog() override;
 
     int iterations() const
-    { return widget->iterations(); }
+    {
+        return widget->iterations();
+    }
     double lambdaStep() const
-    { return widget->lambdaStep(); }
+    {
+        return widget->lambdaStep();
+    }
     double microStep() const
-    { return widget->microStep(); }
+    {
+        return widget->microStep();
+    }
     DlgSmoothing::Smooth method() const
-    { return widget->method(); }
+    {
+        return widget->method();
+    }
     bool smoothSelection() const
-    { return widget->smoothSelection(); }
+    {
+        return widget->smoothSelection();
+    }
 
 private:
     DlgSmoothing* widget;
@@ -98,7 +110,7 @@ private:
 /**
  * Embed the panel into a task dialog.
  */
-class TaskSmoothing : public Gui::TaskView::TaskDialog
+class TaskSmoothing: public Gui::TaskView::TaskDialog
 {
     Q_OBJECT
 
@@ -109,15 +121,19 @@ public:
     bool accept() override;
 
     QDialogButtonBox::StandardButtons getStandardButtons() const override
-    { return QDialogButtonBox::Ok | QDialogButtonBox::Cancel; }
+    {
+        return QDialogButtonBox::Ok | QDialogButtonBox::Cancel;
+    }
     bool isAllowedAlterDocument() const override
-    { return true; }
+    {
+        return true;
+    }
 
 private:
     DlgSmoothing* widget;
     Selection* selection;
 };
 
-}
+}  // namespace MeshGui
 
-#endif // MESHGUI_DLGSMOOTHING_H
+#endif  // MESHGUI_DLGSMOOTHING_H

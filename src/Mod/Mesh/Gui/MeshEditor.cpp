@@ -23,27 +23,27 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <algorithm>
-# include <functional>
-# include <QMenu>
-# include <QTimer>
+#include <QMenu>
+#include <QTimer>
+#include <algorithm>
+#include <functional>
 
-# include <Inventor/SbLine.h>
-# include <Inventor/SoPickedPoint.h>
-# include <Inventor/details/SoFaceDetail.h>
-# include <Inventor/events/SoKeyboardEvent.h>
-# include <Inventor/events/SoLocation2Event.h>
-# include <Inventor/events/SoMouseButtonEvent.h>
-# include <Inventor/nodes/SoBaseColor.h>
-# include <Inventor/nodes/SoCamera.h>
-# include <Inventor/nodes/SoCoordinate3.h>
-# include <Inventor/nodes/SoDirectionalLight.h>
-# include <Inventor/nodes/SoDrawStyle.h>
-# include <Inventor/nodes/SoFaceSet.h>
-# include <Inventor/nodes/SoPickStyle.h>
-# include <Inventor/nodes/SoPointSet.h>
-# include <Inventor/nodes/SoSeparator.h>
-# include <Inventor/nodes/SoShapeHints.h>
+#include <Inventor/SbLine.h>
+#include <Inventor/SoPickedPoint.h>
+#include <Inventor/details/SoFaceDetail.h>
+#include <Inventor/events/SoKeyboardEvent.h>
+#include <Inventor/events/SoLocation2Event.h>
+#include <Inventor/events/SoMouseButtonEvent.h>
+#include <Inventor/nodes/SoBaseColor.h>
+#include <Inventor/nodes/SoCamera.h>
+#include <Inventor/nodes/SoCoordinate3.h>
+#include <Inventor/nodes/SoDirectionalLight.h>
+#include <Inventor/nodes/SoDrawStyle.h>
+#include <Inventor/nodes/SoFaceSet.h>
+#include <Inventor/nodes/SoPickStyle.h>
+#include <Inventor/nodes/SoPointSet.h>
+#include <Inventor/nodes/SoSeparator.h>
+#include <Inventor/nodes/SoShapeHints.h>
 #endif
 
 #include <App/Application.h>
@@ -51,8 +51,8 @@
 #include <Gui/View3DInventor.h>
 #include <Gui/View3DInventorViewer.h>
 #include <Gui/WaitCursor.h>
-#include <Mod/Mesh/App/MeshFeature.h>
 #include <Mod/Mesh/App/Core/Algorithm.h>
+#include <Mod/Mesh/App/MeshFeature.h>
 
 #include "MeshEditor.h"
 #include "SoFCMeshObject.h"
@@ -64,7 +64,9 @@ namespace sp = std::placeholders;
 
 PROPERTY_SOURCE(MeshGui::ViewProviderFace, Gui::ViewProviderDocumentObject)
 
-ViewProviderFace::ViewProviderFace() : mesh(nullptr), current_index(-1)
+ViewProviderFace::ViewProviderFace()
+    : mesh(nullptr)
+    , current_index(-1)
 {
     pcCoords = new SoCoordinate3();
     pcCoords->ref();
@@ -95,7 +97,7 @@ void ViewProviderFace::attach(App::DocumentObject* obj)
     pointStyle->pointSize = 8.0f;
     markers->addChild(pointStyle);
 
-    SoBaseColor * markcol = new SoBaseColor;
+    SoBaseColor* markcol = new SoBaseColor;
     markcol->rgb.setValue(1.0f, 1.0f, 0.0f);
     SoPointSet* marker = new SoPointSet();
     markers->addChild(markcol);
@@ -108,9 +110,9 @@ void ViewProviderFace::attach(App::DocumentObject* obj)
     faceStyle->style = SoDrawStyle::FILLED;
     faces->addChild(faceStyle);
 
-    SoShapeHints * flathints = new SoShapeHints;
-    //flathints->vertexOrdering = SoShapeHints::COUNTERCLOCKWISE ;
-    //flathints->shapeType = SoShapeHints::UNKNOWN_SHAPE_TYPE;
+    SoShapeHints* flathints = new SoShapeHints;
+    // flathints->vertexOrdering = SoShapeHints::COUNTERCLOCKWISE ;
+    // flathints->shapeType = SoShapeHints::UNKNOWN_SHAPE_TYPE;
     faces->addChild(flathints);
 
     SoBaseColor* basecol = new SoBaseColor;
@@ -137,10 +139,12 @@ void ViewProviderFace::attach(App::DocumentObject* obj)
 
 void ViewProviderFace::setDisplayMode(const char* ModeName)
 {
-    if (strcmp(ModeName, "Face") == 0)
+    if (strcmp(ModeName, "Face") == 0) {
         setDisplayMaskMode("Face");
-    else if (strcmp(ModeName, "Marker") == 0)
+    }
+    else if (strcmp(ModeName, "Marker") == 0) {
         setDisplayMaskMode("Marker");
+    }
     ViewProviderDocumentObject::setDisplayMode(ModeName);
 }
 
@@ -157,7 +161,8 @@ std::vector<std::string> ViewProviderFace::getDisplayModes() const
     return modes;
 }
 
-SoPickedPoint* ViewProviderFace::getPickedPoint(const SbVec2s& pos, const Gui::View3DInventorViewer* viewer) const
+SoPickedPoint* ViewProviderFace::getPickedPoint(const SbVec2s& pos,
+                                                const Gui::View3DInventorViewer* viewer) const
 {
     SoSeparator* root = new SoSeparator;
     root->ref();
@@ -172,7 +177,7 @@ SoPickedPoint* ViewProviderFace::getPickedPoint(const SbVec2s& pos, const Gui::V
 
     // returns a copy of the point
     SoPickedPoint* pick = rp.getPickedPoint();
-    //return (pick ? pick->copy() : 0); // needs the same instance of CRT under MS Windows
+    // return (pick ? pick->copy() : 0); // needs the same instance of CRT under MS Windows
     return (pick ? new SoPickedPoint(*pick) : nullptr);
 }
 
@@ -181,9 +186,9 @@ SoPickedPoint* ViewProviderFace::getPickedPoint(const SbVec2s& pos, const Gui::V
 /* TRANSLATOR MeshGui::MeshFaceAddition */
 
 MeshFaceAddition::MeshFaceAddition(Gui::View3DInventor* parent)
-  : QObject(parent), faceView(new MeshGui::ViewProviderFace())
-{
-}
+    : QObject(parent)
+    , faceView(new MeshGui::ViewProviderFace())
+{}
 
 MeshFaceAddition::~MeshFaceAddition()
 {
@@ -202,9 +207,8 @@ void MeshFaceAddition::startEditing(MeshGui::ViewProviderMesh* vp)
     faceView->mesh = vp;
     faceView->attach(vp->getObject());
     viewer->addViewProvider(faceView);
-    //faceView->mesh->startEditing();
-    viewer->addEventCallback(SoEvent::getClassTypeId(),
-        MeshFaceAddition::addFacetCallback, this);
+    // faceView->mesh->startEditing();
+    viewer->addEventCallback(SoEvent::getClassTypeId(), MeshFaceAddition::addFacetCallback, this);
 }
 
 void MeshFaceAddition::finishEditing()
@@ -217,9 +221,10 @@ void MeshFaceAddition::finishEditing()
     viewer->setRedirectToSceneGraphEnabled(false);
 
     viewer->removeViewProvider(faceView);
-    //faceView->mesh->finishEditing();
+    // faceView->mesh->finishEditing();
     viewer->removeEventCallback(SoEvent::getClassTypeId(),
-        MeshFaceAddition::addFacetCallback, this);
+                                MeshFaceAddition::addFacetCallback,
+                                this);
     this->deleteLater();
 }
 
@@ -252,8 +257,9 @@ void MeshFaceAddition::clearPoints()
 
 void MeshFaceAddition::flipNormal()
 {
-    if (faceView->index.size() < 3)
+    if (faceView->index.size() < 3) {
         return;
+    }
     std::swap(faceView->index[0], faceView->index[1]);
     SbVec3f v1 = faceView->pcCoords->point[0];
     SbVec3f v2 = faceView->pcCoords->point[1];
@@ -263,14 +269,17 @@ void MeshFaceAddition::flipNormal()
 
 bool MeshFaceAddition::addMarkerPoint()
 {
-    if (faceView->current_index < 0)
+    if (faceView->current_index < 0) {
         return false;
-    if (faceView->index.size() >= 3)
+    }
+    if (faceView->index.size() >= 3) {
         return false;
+    }
     faceView->index.push_back(faceView->current_index);
     faceView->current_index = -1;
-    if (faceView->index.size() == 3)
+    if (faceView->index.size() == 3) {
         faceView->setDisplayMode("Face");
+    }
     return true;
 }
 
@@ -282,17 +291,20 @@ void MeshFaceAddition::showMarker(SoPickedPoint* pp)
         if (detail->isOfType(SoFaceDetail::getClassTypeId())) {
             const SoFaceDetail* fd = static_cast<const SoFaceDetail*>(detail);
             Mesh::Feature* mf = static_cast<Mesh::Feature*>(faceView->mesh->getObject());
-            const MeshCore::MeshFacetArray& facets = mf->Mesh.getValuePtr()->getKernel().GetFacets();
-            const MeshCore::MeshPointArray& points = mf->Mesh.getValuePtr()->getKernel().GetPoints();
+            const MeshCore::MeshFacetArray& facets =
+                mf->Mesh.getValuePtr()->getKernel().GetFacets();
+            const MeshCore::MeshPointArray& points =
+                mf->Mesh.getValuePtr()->getKernel().GetPoints();
             // is the face index valid?
             int face_index = fd->getFaceIndex();
-            if (face_index >= (int)facets.size())
+            if (face_index >= (int)facets.size()) {
                 return;
+            }
             // is a border facet picked?
             MeshCore::MeshFacet f = facets[face_index];
             if (!f.HasOpenEdge()) {
                 // check if a neighbour facet is at the border
-                bool ok=false;
+                bool ok = false;
                 for (Mesh::FacetIndex nbIndex : f._aulNeighbours) {
                     if (facets[nbIndex].HasOpenEdge()) {
                         f = facets[nbIndex];
@@ -300,8 +312,9 @@ void MeshFaceAddition::showMarker(SoPickedPoint* pp)
                         break;
                     }
                 }
-                if (!ok)
+                if (!ok) {
                     return;
+                }
             }
 
             int point_index = -1;
@@ -309,28 +322,31 @@ void MeshFaceAddition::showMarker(SoPickedPoint* pp)
             Base::Vector3f pnt;
             SbVec3f face_pnt;
 
-            for (int i=0; i<3; i++) {
+            for (int i = 0; i < 3; i++) {
                 int index = (int)f._aulPoints[i];
-                if (std::find(faceView->index.begin(), faceView->index.end(), index) != faceView->index.end())
-                    continue; // already inside
-                if (f._aulNeighbours[i] == MeshCore::FACET_INDEX_MAX ||
-                    f._aulNeighbours[(i+2)%3] == MeshCore::FACET_INDEX_MAX) {
+                if (std::find(faceView->index.begin(), faceView->index.end(), index)
+                    != faceView->index.end()) {
+                    continue;  // already inside
+                }
+                if (f._aulNeighbours[i] == MeshCore::FACET_INDEX_MAX
+                    || f._aulNeighbours[(i + 2) % 3] == MeshCore::FACET_INDEX_MAX) {
                     pnt = points[index];
-                    float len = Base::DistanceP2(pnt, Base::Vector3f(vec[0],vec[1],vec[2]));
+                    float len = Base::DistanceP2(pnt, Base::Vector3f(vec[0], vec[1], vec[2]));
                     if (len < distance) {
                         distance = len;
                         point_index = index;
-                        face_pnt.setValue(pnt.x,pnt.y,pnt.z);
+                        face_pnt.setValue(pnt.x, pnt.y, pnt.z);
                     }
                 }
             }
 
-            if (point_index < 0)
-                return; // picked point is rejected
+            if (point_index < 0) {
+                return;  // picked point is rejected
+            }
 
             int num = faceView->pcCoords->point.getNum();
             if (faceView->current_index >= 0) {
-                num = std::max<int>(num-1, 0);
+                num = std::max<int>(num - 1, 0);
             }
             faceView->current_index = point_index;
             faceView->pcCoords->point.set1Value(num, face_pnt);
@@ -339,11 +355,11 @@ void MeshFaceAddition::showMarker(SoPickedPoint* pp)
     }
 }
 
-void MeshFaceAddition::addFacetCallback(void * ud, SoEventCallback * n)
+void MeshFaceAddition::addFacetCallback(void* ud, SoEventCallback* n)
 {
     MeshFaceAddition* that = static_cast<MeshFaceAddition*>(ud);
-    ViewProviderFace* face =  that->faceView;
-    Gui::View3DInventorViewer* view  = static_cast<Gui::View3DInventorViewer*>(n->getUserData());
+    ViewProviderFace* face = that->faceView;
+    Gui::View3DInventorViewer* view = static_cast<Gui::View3DInventorViewer*>(n->getUserData());
 
     const SoEvent* ev = n->getEvent();
     // If we are in navigation mode then ignore all but key events
@@ -355,7 +371,7 @@ void MeshFaceAddition::addFacetCallback(void * ud, SoEventCallback * n)
     if (ev->getTypeId() == SoLocation2Event::getClassTypeId()) {
         n->setHandled();
         if (face->index.size() < 3) {
-            SoPickedPoint * point = face->getPickedPoint(ev->getPosition(), view);
+            SoPickedPoint* point = face->getPickedPoint(ev->getPosition(), view);
             if (point) {
                 that->showMarker(point);
                 delete point;
@@ -363,16 +379,18 @@ void MeshFaceAddition::addFacetCallback(void * ud, SoEventCallback * n)
         }
     }
     else if (ev->getTypeId() == SoMouseButtonEvent::getClassTypeId()) {
-        const SoMouseButtonEvent * mbe = static_cast<const SoMouseButtonEvent *>(ev);
-        if (mbe->getButton() == SoMouseButtonEvent::BUTTON1 ||
-            mbe->getButton() == SoMouseButtonEvent::BUTTON2 ||
-            mbe->getButton() == SoMouseButtonEvent::BUTTON3) {
+        const SoMouseButtonEvent* mbe = static_cast<const SoMouseButtonEvent*>(ev);
+        if (mbe->getButton() == SoMouseButtonEvent::BUTTON1
+            || mbe->getButton() == SoMouseButtonEvent::BUTTON2
+            || mbe->getButton() == SoMouseButtonEvent::BUTTON3) {
             n->setHandled();
         }
-        if (mbe->getButton() == SoMouseButtonEvent::BUTTON1 && mbe->getState() == SoButtonEvent::DOWN) {
+        if (mbe->getButton() == SoMouseButtonEvent::BUTTON1
+            && mbe->getState() == SoButtonEvent::DOWN) {
             that->addMarkerPoint();
         }
-        else if (mbe->getButton() == SoMouseButtonEvent::BUTTON1 && mbe->getState() == SoButtonEvent::UP) {
+        else if (mbe->getButton() == SoMouseButtonEvent::BUTTON1
+                 && mbe->getState() == SoButtonEvent::UP) {
             if (face->index.size() == 3) {
                 QMenu menu;
                 QAction* add = menu.addAction(MeshFaceAddition::tr("Add triangle"));
@@ -390,7 +408,8 @@ void MeshFaceAddition::addFacetCallback(void * ud, SoEventCallback * n)
                 }
             }
         }
-        else if (mbe->getButton() == SoMouseButtonEvent::BUTTON2 && mbe->getState() == SoButtonEvent::UP) {
+        else if (mbe->getButton() == SoMouseButtonEvent::BUTTON2
+                 && mbe->getState() == SoButtonEvent::UP) {
             QMenu menu;
             QAction* fin = menu.addAction(MeshFaceAddition::tr("Finish"));
             QAction* act = menu.exec(QCursor::pos());
@@ -401,9 +420,8 @@ void MeshFaceAddition::addFacetCallback(void * ud, SoEventCallback * n)
     }
     // toggle between edit and navigation mode
     else if (ev->getTypeId().isDerivedFrom(SoKeyboardEvent::getClassTypeId())) {
-        const SoKeyboardEvent * const ke = static_cast<const SoKeyboardEvent *>(ev);
-        if (ke->getState() == SoButtonEvent::DOWN &&
-            ke->getKey() == SoKeyboardEvent::ESCAPE) {
+        const SoKeyboardEvent* const ke = static_cast<const SoKeyboardEvent*>(ev);
+        if (ke->getState() == SoButtonEvent::DOWN && ke->getKey() == SoKeyboardEvent::ESCAPE) {
             SbBool toggle = view->isRedirectedToSceneGraph();
             view->setRedirectToSceneGraph(!toggle);
             n->setHandled();
@@ -413,27 +431,28 @@ void MeshFaceAddition::addFacetCallback(void * ud, SoEventCallback * n)
 
 // ----------------------------------------------------------------------
 
-namespace MeshGui {
-    // for sorting of elements
-    struct NofFacetsCompare
+namespace MeshGui
+{
+// for sorting of elements
+struct NofFacetsCompare
+{
+    bool operator()(const std::vector<Mesh::PointIndex>& rclC1,
+                    const std::vector<Mesh::PointIndex>& rclC2)
     {
-        bool operator () (const std::vector<Mesh::PointIndex> &rclC1,
-                          const std::vector<Mesh::PointIndex> &rclC2)
-        {
-            return rclC1.size() < rclC2.size();
-        }
-    };
-}
+        return rclC1.size() < rclC2.size();
+    }
+};
+}  // namespace MeshGui
 
 /* TRANSLATOR MeshGui::MeshFillHole */
 
 MeshFillHole::MeshFillHole(MeshHoleFiller& hf, Gui::View3DInventor* parent)
-  : QObject(parent)
-  , myMesh(nullptr)
-  , myNumPoints(0)
-  , myVertex1(0)
-  , myVertex2(0)
-  , myHoleFiller(hf)
+    : QObject(parent)
+    , myMesh(nullptr)
+    , myNumPoints(0)
+    , myVertex1(0)
+    , myVertex2(0)
+    , myHoleFiller(hf)
 {
     myBoundariesRoot = new SoSeparator;
     myBoundariesRoot->ref();
@@ -449,7 +468,7 @@ MeshFillHole::MeshFillHole(MeshHoleFiller& hf, Gui::View3DInventor* parent)
     pointStyle->pointSize = 8.0f;
     myBridgeRoot->addChild(pointStyle);
 
-    SoBaseColor * markcol = new SoBaseColor;
+    SoBaseColor* markcol = new SoBaseColor;
     markcol->rgb.setValue(1.0f, 1.0f, 0.0f);
     myBridgeRoot->addChild(markcol);
 
@@ -473,13 +492,12 @@ void MeshFillHole::startEditing(MeshGui::ViewProviderMesh* vp)
     Gui::View3DInventor* view = static_cast<Gui::View3DInventor*>(parent());
     Gui::View3DInventorViewer* viewer = view->getViewer();
     viewer->setEditing(true);
-    //viewer->setRedirectToSceneGraph(true);
-    viewer->addEventCallback(SoEvent::getClassTypeId(),
-        MeshFillHole::fileHoleCallback, this);
-    //NOLINTBEGIN
+    // viewer->setRedirectToSceneGraph(true);
+    viewer->addEventCallback(SoEvent::getClassTypeId(), MeshFillHole::fileHoleCallback, this);
+    // NOLINTBEGIN
     myConnection = App::GetApplication().signalChangedObject.connect(
         std::bind(&MeshFillHole::slotChangedObject, this, sp::_1, sp::_2));
-    //NOLINTEND
+    // NOLINTEND
 
     Gui::coinRemoveAllChildren(myBoundariesRoot);
     myBoundariesRoot->addChild(viewer->getHeadlight());
@@ -497,9 +515,8 @@ void MeshFillHole::finishEditing()
     Gui::View3DInventor* view = static_cast<Gui::View3DInventor*>(parent());
     Gui::View3DInventorViewer* viewer = view->getViewer();
     viewer->setEditing(false);
-    //viewer->setRedirectToSceneGraph(false);
-    viewer->removeEventCallback(SoEvent::getClassTypeId(),
-        MeshFillHole::fileHoleCallback, this);
+    // viewer->setRedirectToSceneGraph(false);
+    viewer->removeEventCallback(SoEvent::getClassTypeId(), MeshFillHole::fileHoleCallback, this);
     myConnection.disconnect();
     this->deleteLater();
     static_cast<SoGroup*>(viewer->getSceneGraph())->removeChild(myBridgeRoot);
@@ -513,8 +530,9 @@ void MeshFillHole::closeBridge()
     TBoundary::iterator jt = std::find(myPolygon.begin(), myPolygon.end(), myVertex2);
     if (it != myPolygon.end() && jt != myPolygon.end()) {
         // which iterator comes first
-        if (jt < it)
+        if (jt < it) {
             std::swap(it, jt);
+        }
         // split the boundary into two loops and take the shorter one
         std::list<TBoundary> bounds;
         TBoundary loop1, loop2;
@@ -522,28 +540,33 @@ void MeshFillHole::closeBridge()
         loop1.insert(loop1.end(), jt, myPolygon.end());
         loop2.insert(loop2.end(), it, jt);
         // this happens when myVertex1 == myVertex2
-        if (loop2.empty())
+        if (loop2.empty()) {
             bounds.push_back(loop1);
-        else if (loop1.size() < loop2.size())
+        }
+        else if (loop1.size() < loop2.size()) {
             bounds.push_back(loop1);
-        else
+        }
+        else {
             bounds.push_back(loop2);
+        }
 
         App::Document* doc = myMesh->getDocument();
         doc->openTransaction("Bridge && Fill hole");
         Mesh::MeshObject* pMesh = myMesh->Mesh.startEditing();
         bool ok = myHoleFiller.fillHoles(*pMesh, bounds, myVertex1, myVertex2);
         myMesh->Mesh.finishEditing();
-        if (ok)
+        if (ok) {
             doc->commitTransaction();
-        else
+        }
+        else {
             doc->abortTransaction();
+        }
     }
 }
 
 void MeshFillHole::slotChangedObject(const App::DocumentObject& Obj, const App::Property& Prop)
 {
-    if (&Obj == myMesh && strcmp(Prop.getName(),"Mesh") == 0) {
+    if (&Obj == myMesh && strcmp(Prop.getName(), "Mesh") == 0) {
         Gui::coinRemoveAllChildren(myBoundariesGroup);
         myVertex->point.setNum(0);
         myNumPoints = 0;
@@ -564,10 +587,10 @@ void MeshFillHole::createPolygons()
     myBoundaryRoot->addChild(pickStyle);
 
     // get mesh kernel
-    const MeshCore::MeshKernel & rMesh = this->myMesh->Mesh.getValue().getKernel();
+    const MeshCore::MeshKernel& rMesh = this->myMesh->Mesh.getValue().getKernel();
 
     // get the mesh boundaries as an array of point indices
-    std::list<std::vector<Mesh::PointIndex> > borders;
+    std::list<std::vector<Mesh::PointIndex>> borders;
     MeshCore::MeshAlgorithm cAlgo(rMesh);
     MeshCore::MeshPointIterator p_iter(rMesh);
     cAlgo.GetMeshBorders(borders);
@@ -576,10 +599,11 @@ void MeshFillHole::createPolygons()
     // sort the borders in ascending order of the number of edges
     borders.sort(NofFacetsCompare());
 
-    int32_t count=0;
-    for (auto & border : borders) {
-        if (border.front() == border.back())
+    int32_t count = 0;
+    for (auto& border : borders) {
+        if (border.front() == border.back()) {
             border.pop_back();
+        }
         count += border.size();
     }
 
@@ -589,7 +613,7 @@ void MeshFillHole::createPolygons()
 
     coords->point.setNum(count);
     int32_t index = 0;
-    for (const auto & border : borders) {
+    for (const auto& border : borders) {
         SoPolygon* polygon = new SoPolygon();
         polygon->startIndex = index;
         polygon->numVertices = border.size();
@@ -597,18 +621,20 @@ void MeshFillHole::createPolygons()
         myPolygons[polygon] = border;
         for (Mesh::PointIndex jt : border) {
             p_iter.Set(jt);
-            coords->point.set1Value(index++,p_iter->x,p_iter->y,p_iter->z);
+            coords->point.set1Value(index++, p_iter->x, p_iter->y, p_iter->z);
         }
     }
 }
 
-SoNode* MeshFillHole::getPickedPolygon(const SoRayPickAction& action/*SoNode* root, const SbVec2s& pos*/) const
+SoNode* MeshFillHole::getPickedPolygon(
+    const SoRayPickAction& action /*SoNode* root, const SbVec2s& pos*/) const
 {
     SoPolygon* poly = nullptr;
-    const SoPickedPointList & points = action.getPickedPointList();
-    for (int i=0; i < points.getLength(); i++) {
-        const SoPickedPoint * point = points[i];
-        if (point && point->getPath()->getTail()->getTypeId() == MeshGui::SoPolygon::getClassTypeId()) {
+    const SoPickedPointList& points = action.getPickedPointList();
+    for (int i = 0; i < points.getLength(); i++) {
+        const SoPickedPoint* point = points[i];
+        if (point
+            && point->getPath()->getTail()->getTypeId() == MeshGui::SoPolygon::getClassTypeId()) {
             // we have something picked, now check if it was an SoPolygon node
             SoPolygon* node = static_cast<SoPolygon*>(point->getPath()->getTail());
             if (!poly) {
@@ -624,21 +650,23 @@ SoNode* MeshFillHole::getPickedPolygon(const SoRayPickAction& action/*SoNode* ro
     return poly;
 }
 
-float MeshFillHole::findClosestPoint(const SbLine& ray, const TBoundary& polygon,
-                                     Mesh::PointIndex& vertex_index, SbVec3f& closestPoint) const
+float MeshFillHole::findClosestPoint(const SbLine& ray,
+                                     const TBoundary& polygon,
+                                     Mesh::PointIndex& vertex_index,
+                                     SbVec3f& closestPoint) const
 {
     // now check which vertex of the polygon is closest to the ray
     float minDist = FLT_MAX;
     vertex_index = MeshCore::POINT_INDEX_MAX;
 
-    const MeshCore::MeshKernel & rMesh = myMesh->Mesh.getValue().getKernel();
+    const MeshCore::MeshKernel& rMesh = myMesh->Mesh.getValue().getKernel();
     const MeshCore::MeshPointArray& pts = rMesh.GetPoints();
     for (Mesh::PointIndex it : polygon) {
         SbVec3f vertex;
         const Base::Vector3f& v = pts[it];
-        vertex.setValue(v.x,v.y,v.z);
+        vertex.setValue(v.x, v.y, v.z);
         SbVec3f point = ray.getClosestPoint(vertex);
-        float distance = (vertex-point).sqrLength();
+        float distance = (vertex - point).sqrLength();
         if (distance < minDist) {
             minDist = distance;
             vertex_index = it;
@@ -649,10 +677,10 @@ float MeshFillHole::findClosestPoint(const SbLine& ray, const TBoundary& polygon
     return minDist;
 }
 
-void MeshFillHole::fileHoleCallback(void * ud, SoEventCallback * n)
+void MeshFillHole::fileHoleCallback(void* ud, SoEventCallback* n)
 {
     MeshFillHole* self = static_cast<MeshFillHole*>(ud);
-    Gui::View3DInventorViewer* view  = static_cast<Gui::View3DInventorViewer*>(n->getUserData());
+    Gui::View3DInventorViewer* view = static_cast<Gui::View3DInventorViewer*>(n->getUserData());
 
     const SoEvent* ev = n->getEvent();
     if (ev->getTypeId() == SoLocation2Event::getClassTypeId()) {
@@ -660,10 +688,12 @@ void MeshFillHole::fileHoleCallback(void * ud, SoEventCallback * n)
         SoRayPickAction rp(view->getSoRenderManager()->getViewportRegion());
         rp.setPoint(ev->getPosition());
         rp.setPickAll(true);
-        if (self->myNumPoints == 0)
+        if (self->myNumPoints == 0) {
             rp.apply(self->myBoundariesRoot);
-        else
+        }
+        else {
             rp.apply(self->myBoundaryRoot);
+        }
         SoNode* node = self->getPickedPolygon(rp);
         if (node) {
             std::map<SoNode*, TBoundary>::iterator it = self->myPolygons.find(node);
@@ -671,29 +701,36 @@ void MeshFillHole::fileHoleCallback(void * ud, SoEventCallback * n)
                 // now check which vertex of the polygon is closest to the ray
                 Mesh::PointIndex vertex_index;
                 SbVec3f closestPoint;
-                float minDist = self->findClosestPoint(rp.getLine(), it->second, vertex_index, closestPoint);
+                float minDist =
+                    self->findClosestPoint(rp.getLine(), it->second, vertex_index, closestPoint);
                 if (minDist < 1.0f) {
-                    if (self->myNumPoints == 0)
+                    if (self->myNumPoints == 0) {
                         self->myVertex->point.set1Value(0, closestPoint);
-                    else
+                    }
+                    else {
                         self->myVertex->point.set1Value(1, closestPoint);
+                    }
                 }
             }
         }
     }
     else if (ev->getTypeId() == SoMouseButtonEvent::getClassTypeId()) {
         n->setHandled();
-        const SoMouseButtonEvent * mbe = static_cast<const SoMouseButtonEvent *>(ev);
-        if (mbe->getButton() == SoMouseButtonEvent::BUTTON1 && mbe->getState() == SoButtonEvent::UP) {
-            if (self->myNumPoints > 1)
+        const SoMouseButtonEvent* mbe = static_cast<const SoMouseButtonEvent*>(ev);
+        if (mbe->getButton() == SoMouseButtonEvent::BUTTON1
+            && mbe->getState() == SoButtonEvent::UP) {
+            if (self->myNumPoints > 1) {
                 return;
+            }
             SoRayPickAction rp(view->getSoRenderManager()->getViewportRegion());
             rp.setPoint(ev->getPosition());
             rp.setPickAll(true);
-            if (self->myNumPoints == 0)
+            if (self->myNumPoints == 0) {
                 rp.apply(self->myBoundariesRoot);
-            else
+            }
+            else {
                 rp.apply(self->myBoundaryRoot);
+            }
             SoNode* node = self->getPickedPolygon(rp);
             if (node) {
                 std::map<SoNode*, TBoundary>::iterator it = self->myPolygons.find(node);
@@ -701,7 +738,10 @@ void MeshFillHole::fileHoleCallback(void * ud, SoEventCallback * n)
                     // now check which vertex of the polygon is closest to the ray
                     Mesh::PointIndex vertex_index;
                     SbVec3f closestPoint;
-                    float minDist = self->findClosestPoint(rp.getLine(), it->second, vertex_index, closestPoint);
+                    float minDist = self->findClosestPoint(rp.getLine(),
+                                                           it->second,
+                                                           vertex_index,
+                                                           closestPoint);
                     if (minDist < 1.0f) {
                         if (self->myNumPoints == 0) {
                             self->myBoundaryRoot->addChild(node);
@@ -722,7 +762,8 @@ void MeshFillHole::fileHoleCallback(void * ud, SoEventCallback * n)
                 }
             }
         }
-        else if (mbe->getButton() == SoMouseButtonEvent::BUTTON2 && mbe->getState() == SoButtonEvent::UP) {
+        else if (mbe->getButton() == SoMouseButtonEvent::BUTTON2
+                 && mbe->getState() == SoButtonEvent::UP) {
             QMenu menu;
             QAction* fin = menu.addAction(MeshFillHole::tr("Finish"));
             QAction* act = menu.exec(QCursor::pos());
