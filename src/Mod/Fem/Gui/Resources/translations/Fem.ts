@@ -1231,7 +1231,7 @@ the constraint or material is applied.</source>
     </message>
     <message>
         <location filename="../../DlgSettingsFemGeneral.ui" line="72"/>
-        <source>Let the application manage (create, delete) the working directories for all solver. Use temporary directories.</source>
+        <source>Let the application manage (create, delete) the working directories for all solvers. Use temporary directories.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

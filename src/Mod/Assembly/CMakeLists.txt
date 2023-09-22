@@ -6,10 +6,14 @@ endif(BUILD_GUI)
 
 set(Assembly_Scripts
     Init.py
-    Commands.py
+    CommandCreateAssembly.py
+    CommandInsertLink.py
+    CommandCreateJoint.py
     TestAssemblyWorkbench.py
+    JointObject.py
     Preferences.py
     AssemblyImport.py
+    UtilsAssembly.py
 )
 
 if(BUILD_GUI)

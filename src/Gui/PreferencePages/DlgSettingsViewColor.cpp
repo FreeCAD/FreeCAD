@@ -75,6 +75,8 @@ void DlgSettingsViewColor::saveSettings()
     ui->checkMidColor->onSave();
     ui->TreeEditColor->onSave();
     ui->TreeActiveColor->onSave();
+    ui->CbLabelColor->onSave();
+    ui->CbLabelTextSize->onSave();
 }
 
 void DlgSettingsViewColor::loadSettings()
@@ -89,7 +91,9 @@ void DlgSettingsViewColor::loadSettings()
     ui->checkMidColor->onRestore();
     ui->TreeEditColor->onRestore();
     ui->TreeActiveColor->onRestore();
-
+    ui->CbLabelColor->onRestore();
+    ui->CbLabelTextSize->onRestore();
+    
     if (ui->radioButtonSimple->isChecked())
         onRadioButtonSimpleToggled(true);
     else if(ui->radioButtonGradient->isChecked())

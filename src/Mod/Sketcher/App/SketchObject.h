@@ -269,6 +269,18 @@ public:
     /// Move Dimensional constraints at the end of the properties array
     int moveDatumsToEnd();
 
+    /// Change an angle constraint to its supplementary angle.
+    void reverseAngleConstraintToSupplementary(Constraint* constr, int constNum);
+
+    // Check if a constraint has an expression associated.
+    bool constraintHasExpression(int constNum) const;
+    // Get a constraint associated expression
+    std::string getConstraintExpression(int constNum) const;
+    // Set a constraint associated expression
+    void setConstraintExpression(int constNum, const std::string& newExpression);
+    void setExpression(const App::ObjectIdentifier& path,
+                       std::shared_ptr<App::Expression> expr) override;
+
     /// set the driving status of this constraint and solve
     int setVirtualSpace(int ConstrId, bool isinvirtualspace);
     /// set the driving status of a group of constraints at once
@@ -461,8 +473,6 @@ public:
     bool isPointOnCurve(int geoIdCurve, double px, double py);
     double calculateConstraintError(int ConstrId);
     int changeConstraintsLocking(bool bLock);
-    /// returns whether a given constraint has an associated expression or not
-    bool constraintHasExpression(int constrid) const;
 
     /// porting functions
     int port_reversedExternalArcs(bool justAnalyze);
@@ -724,9 +734,6 @@ protected:
     void restoreFinished() override;
 
     void buildShape();
-
-    void setExpression(const App::ObjectIdentifier& path,
-                       std::shared_ptr<App::Expression> expr) override;
 
     std::string validateExpression(const App::ObjectIdentifier& path,
                                    std::shared_ptr<const App::Expression> expr);

@@ -2078,7 +2078,7 @@ bude pracovat při otevírání souboru.</translation>
     <message>
       <location filename="../../ArchBuildingPart.py" line="923"/>
       <source>Write camera position</source>
-      <translation>Zapsat pozici kamery</translation>
+      <translation>Zapsat polohu kamery</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="930"/>
@@ -2577,7 +2577,7 @@ Je-li Run = 0, pak se běh vypočítá tak, aby výška byla stejná jako relati
       <location filename="../../ArchWindow.py" line="1263"/>
       <location filename="../../ArchWindow.py" line="1814"/>
       <source>Invert hinge position</source>
-      <translation>Otočit pozici závěsů</translation>
+      <translation>Otočit polohu závěsů</translation>
     </message>
     <message>
       <location filename="../../ArchAxisSystem.py" line="59"/>
@@ -3025,7 +3025,7 @@ Je-li Run = 0, pak se běh vypočítá tak, aby výška byla stejná jako relati
     <message>
       <location filename="../../ArchPanel.py" line="1390"/>
       <source>Edit views positions</source>
-      <translation type="unfinished">Edit views positions</translation>
+      <translation>Upravit polohy pohledů</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="1480"/>
@@ -3237,7 +3237,7 @@ Floor creation aborted.</translation>
     <message>
       <location filename="../../ArchAxis.py" line="99"/>
       <source>Create Axis</source>
-      <translation type="unfinished">Create Axis</translation>
+      <translation>Vytvořit osu</translation>
     </message>
     <message>
       <location filename="../../ArchAxis.py" line="807"/>
@@ -3560,7 +3560,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchSpace.py" line="782"/>
       <source>Set text position</source>
-      <translation type="unfinished">Set text position</translation>
+      <translation>Nastavit polohu textu</translation>
     </message>
     <message>
       <location filename="../../ArchSpace.py" line="786"/>
@@ -4134,7 +4134,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchBuildingPart.py" line="583"/>
       <source>Camera position data associated with this object</source>
-      <translation type="unfinished">Camera position data associated with this object</translation>
+      <translation>Údaje o poloze kamery přiřazené k tomuto objektu</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="586"/>
@@ -4411,7 +4411,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchSite.py" line="862"/>
       <source>The position of the solar diagram</source>
-      <translation type="unfinished">The position of the solar diagram</translation>
+      <translation>Poloha solárního diagramu</translation>
     </message>
     <message>
       <location filename="../../ArchSite.py" line="864"/>
@@ -4436,7 +4436,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchSite.py" line="876"/>
       <source>The position of the Compass relative to the Site placement</source>
-      <translation type="unfinished">The position of the Compass relative to the Site placement</translation>
+      <translation>Poloha kompasu vzhledem k umístění stavby</translation>
     </message>
     <message>
       <location filename="../../ArchSite.py" line="878"/>
@@ -4681,12 +4681,12 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchTruss.py" line="162"/>
       <source>The height of the truss at the start position</source>
-      <translation type="unfinished">The height of the truss at the start position</translation>
+      <translation>Výška vazníku v počáteční poloze</translation>
     </message>
     <message>
       <location filename="../../ArchTruss.py" line="166"/>
       <source>The height of the truss at the end position</source>
-      <translation type="unfinished">The height of the truss at the end position</translation>
+      <translation>Výška vazníku v koncové poloze</translation>
     </message>
     <message>
       <location filename="../../ArchTruss.py" line="170"/>
@@ -4921,7 +4921,7 @@ Building creation aborted.</translation>
       <translation>Počet sloupků použitých pro vytvoření plotu</translation>
     </message>
     <message>
-      <location filename="../../ArchFence.py" line="269"/>
+      <location filename="../../ArchFence.py" line="263"/>
       <source>When true, the fence will be colored like the original post and section.</source>
       <translation type="unfinished">When true, the fence will be colored like the original post and section.</translation>
     </message>
@@ -5182,7 +5182,7 @@ Building creation aborted.</translation>
       <location filename="../../ArchPanel.py" line="832"/>
       <location filename="../../ArchPanel.py" line="1113"/>
       <source>The position of the tag text. Keep (0,0,0) for center position</source>
-      <translation type="unfinished">The position of the tag text. Keep (0,0,0) for center position</translation>
+      <translation>Poloha textu štítku. Použij (0,0,0) pro vystředění</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="834"/>
@@ -5865,7 +5865,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchSpace.py" line="530"/>
       <source>The position of the text. Leave (0,0,0) for automatic position</source>
-      <translation type="unfinished">The position of the text. Leave (0,0,0) for automatic position</translation>
+      <translation>Poloha textu. Použij (0,0,0) pro automatickou polohu</translation>
     </message>
     <message>
       <location filename="../../ArchSpace.py" line="532"/>
@@ -6021,7 +6021,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchBuildingPart.py" line="996"/>
       <source>Writing camera position</source>
-      <translation type="unfinished">Writing camera position</translation>
+      <translation>Zápis polohy kamery</translation>
     </message>
   </context>
   <context>
@@ -6069,7 +6069,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../InitGui.py" line="173"/>
       <source>Draft annotation tools</source>
-      <translation>Nástroje pro anotaci návrhů</translation>
+      <translation>Nástroje pro poznámky k návrhu</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="176"/>
@@ -6079,7 +6079,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../InitGui.py" line="179"/>
       <source>Draft snap</source>
-      <translation>Snímek konceptu</translation>
+      <translation>Snímek návrhu</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="184"/>
@@ -6099,7 +6099,7 @@ Building creation aborted.</translation>
       <location filename="../../InitGui.py" line="199"/>
       <location filename="../../InitGui.py" line="203"/>
       <source>&amp;Draft</source>
-      <translation type="unfinished">&amp;Draft</translation>
+      <translation>&amp;Návrh</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="192"/>
@@ -6109,7 +6109,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../InitGui.py" line="196"/>
       <source>Annotation</source>
-      <translation>Vysvětlivka</translation>
+      <translation>Poznámka</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="200"/>
@@ -6302,12 +6302,12 @@ Building creation aborted.</translation>
   <context>
     <name>Arch_Fence</name>
     <message>
-      <location filename="../../ArchFence.py" line="388"/>
+      <location filename="../../ArchFence.py" line="382"/>
       <source>Fence</source>
       <translation>Plot</translation>
     </message>
     <message>
-      <location filename="../../ArchFence.py" line="391"/>
+      <location filename="../../ArchFence.py" line="385"/>
       <source>Creates a fence object from a selected section, post and path</source>
       <translation type="unfinished">Creates a fence object from a selected section, post and path</translation>
     </message>
@@ -6848,7 +6848,7 @@ Building creation aborted.</translation>
       <location filename="../../InitGui.py" line="219"/>
       <location filename="../../InitGui.py" line="220"/>
       <source>Draft</source>
-      <translation>Ponor</translation>
+      <translation>Návrh</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="256"/>

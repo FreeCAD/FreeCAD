@@ -2141,8 +2141,8 @@
       <translation>Sortu sekzio konplexua</translation>
     </message>
     <message>
-      <location filename="../../TaskComplexSection.cpp" line="643"/>
-      <location filename="../../TaskSectionView.cpp" line="569"/>
+      <location filename="../../TaskComplexSection.cpp" line="644"/>
+      <location filename="../../TaskSectionView.cpp" line="577"/>
       <source>Edit SectionView</source>
       <translation>Editatu sekzio-bista</translation>
     </message>
@@ -3522,8 +3522,8 @@
       <translation>Bistaren norabidea oinarri-bistaren koordenatuetan</translation>
     </message>
     <message>
-      <location filename="../../TaskComplexSection.cpp" line="692"/>
-      <location filename="../../TaskSectionView.cpp" line="618"/>
+      <location filename="../../TaskComplexSection.cpp" line="704"/>
+      <location filename="../../TaskSectionView.cpp" line="638"/>
       <source>Operation Failed</source>
       <translation>Eragiketak huts egin du</translation>
     </message>
@@ -3830,7 +3830,7 @@ it has a weld symbol that would become broken.</source>
 hautsi daitekeen soldadura-ikur bat duelako.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderViewPart.cpp" line="319"/>
+      <location filename="../../ViewProviderViewPart.cpp" line="331"/>
       <source>You cannot delete this view because it has one or more dependent views that would become broken.</source>
       <translation>Ezin da bista hau ezabatu, hautsita geratuko liratekeen mendeko bista bat edo gehiago dituelako.</translation>
     </message>
@@ -3844,7 +3844,7 @@ hautsi daitekeen soldadura-ikur bat duelako.</translation>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="165"/>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="173"/>
       <location filename="../../ViewProviderTemplate.cpp" line="205"/>
-      <location filename="../../ViewProviderViewPart.cpp" line="322"/>
+      <location filename="../../ViewProviderViewPart.cpp" line="334"/>
       <location filename="../../ViewProviderWeld.cpp" line="145"/>
       <source>Object dependencies</source>
       <translation>Objektuaren mendekotasunak</translation>
@@ -5606,7 +5606,7 @@ Jarraitu nahi duzu?</translation>
     <message>
       <location filename="../../MDIViewPage.cpp" line="537"/>
       <source>Save PDF file</source>
-      <translation type="unfinished">Save PDF file</translation>
+      <translation>Gorde PDF fitxategia</translation>
     </message>
     <message>
       <location filename="../../MDIViewPage.cpp" line="538"/>
@@ -6100,11 +6100,12 @@ Jarraitu nahi duzu?</translation>
     </message>
     <message>
       <location filename="../../TaskComplexSection.cpp" line="559"/>
+      <location filename="../../TaskComplexSection.cpp" line="692"/>
       <source>ComplexSection</source>
       <translation>Sekzio konplexua</translation>
     </message>
     <message>
-      <location filename="../../TaskComplexSection.cpp" line="691"/>
+      <location filename="../../TaskComplexSection.cpp" line="703"/>
       <source>Can not continue. Object * %1 or %2 not found.</source>
       <translation>Ezin da jarraitu. Ez da * %1 edo %2 objektua aurkitu.</translation>
     </message>
@@ -7876,7 +7877,7 @@ emandako X/Y espazioa erabilita</translation>
       <translation>Ez dago aplikatzeko ezer. Oraindik ez da sekzio-norabiderik aukeratu</translation>
     </message>
     <message>
-      <location filename="../../TaskSectionView.cpp" line="617"/>
+      <location filename="../../TaskSectionView.cpp" line="637"/>
       <source>Can not continue. Object * %1 or %2 not found.</source>
       <translation>Ezin da jarraitu. Ez da * %1 edo %2 objektua aurkitu.</translation>
     </message>
@@ -8792,7 +8793,7 @@ emandako X/Y espazioa erabilita</translation>
       <location filename="../../ViewProviderBalloon.cpp" line="183"/>
       <source>You cannot delete this balloon now because
 there is an open task dialog.</source>
-      <translation>Ezin da bunbuilo hau ezabatu orain zeregin baten
+      <translation>Ezin da bunbuilo hau ezabatu orain ataza baten
 elkarrizketa-koadroa irekita dagoelako.</translation>
     </message>
     <message>

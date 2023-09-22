@@ -141,6 +141,5 @@ ensures that:
 |t1-t0| &lt; UTolerance =""==&gt; |f(t1)-f(t0)| &lt; Tolerance3D</UserDocu>
 			</Documentation>
 		</Methode>
-        -->
 	</PythonExport>
 </GenerateModel>

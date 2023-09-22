@@ -423,7 +423,7 @@ bool BaseGeom::closed()
 // return a BaseGeom similar to this, but inverted with respect to Y axis
 BaseGeomPtr BaseGeom::inverted()
 {
-    Base::Console().Message("BG::inverted()\n");
+//    Base::Console().Message("BG::inverted()\n");
     TopoDS_Shape invertedShape = ShapeUtils::invertGeometry(occEdge);
     TopoDS_Edge invertedEdge = TopoDS::Edge(invertedShape);
     return baseFactory(invertedEdge);

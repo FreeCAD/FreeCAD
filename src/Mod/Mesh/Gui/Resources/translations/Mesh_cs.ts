@@ -2333,7 +2333,7 @@ Prosím navštivte http://www.openscad.org/index.html a nainstalujte ho.</transl
     <message>
       <location filename="../../ViewProviderCurvature.cpp" line="492"/>
       <source>Annotation</source>
-      <translation>Vysvětlivka</translation>
+      <translation>Poznámka</translation>
     </message>
   </context>
   <context>

@@ -96,7 +96,7 @@
     <message>
       <location filename="../../ViewProviderInspection.cpp" line="483"/>
       <source>Remove annotations</source>
-      <translation>Odstranit anotace</translation>
+      <translation>Odstranit poznámky</translation>
     </message>
     <message>
       <location filename="../../ViewProviderInspection.cpp" line="484"/>
@@ -106,7 +106,7 @@
     <message>
       <location filename="../../ViewProviderInspection.cpp" line="542"/>
       <source>Annotation</source>
-      <translation>Vysvětlivka</translation>
+      <translation>Poznámka</translation>
     </message>
     <message>
       <location filename="../../ViewProviderInspection.cpp" line="545"/>
