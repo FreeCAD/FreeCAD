@@ -46,10 +46,10 @@ class Stop:
         mode = 2
         obj.setEditorMode("Placement", mode)
 
-    def __getstate__(self):
+    def dumps(self):
         return None
 
-    def __setstate__(self, state):
+    def loads(self, state):
         return None
 
     def onChanged(self, obj, prop):
@@ -81,10 +81,10 @@ class _ViewProviderStop:
         vobj.setEditorMode("Transparency", mode)
         vobj.setEditorMode("Visibility", mode)
 
-    def __getstate__(self):  # mandatory
+    def dumps(self):  # mandatory
         return None
 
-    def __setstate__(self, state):  # mandatory
+    def loads(self, state):  # mandatory
         return None
 
     def getIcon(self):  # optional

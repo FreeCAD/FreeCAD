@@ -91,10 +91,10 @@ class ObjectDressup:
         obj.ArcInterpolate = 0.1
         obj.SegInterpolate = 1.0
 
-    def __getstate__(self):
+    def dumps(self):
         return None
 
-    def __setstate__(self, state):
+    def loads(self, state):
         return None
 
     def onChanged(self, fp, prop):
@@ -325,10 +325,10 @@ class ViewProviderDressup:
         panel.setupUi()
         return True
 
-    def __getstate__(self):
+    def dumps(self):
         return None
 
-    def __setstate__(self, state):
+    def loads(self, state):
         return None
 
     def onDelete(self, arg1=None, arg2=None):

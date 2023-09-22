@@ -204,11 +204,11 @@ class ViewProviderLayer:
         """Return the saved display mode."""
         return mode
 
-    def __getstate__(self):
+    def dumps(self):
         """Return a tuple of objects to save or None."""
         return None
 
-    def __setstate__(self, state):
+    def loads(self, state):
         """Set the internal properties from the restored state."""
         return None
 
@@ -574,11 +574,11 @@ class ViewProviderLayerContainer:
         doc.recompute()
         doc.commitTransaction()
 
-    def __getstate__(self):
+    def dumps(self):
         """Return a tuple of objects to save or None."""
         return None
 
-    def __setstate__(self, state):
+    def loads(self, state):
         """Set the internal properties from the restored state."""
         return None
 

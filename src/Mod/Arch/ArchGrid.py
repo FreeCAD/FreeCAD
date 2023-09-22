@@ -279,11 +279,11 @@ class ArchGrid:
         else:
             return [f.CenterOfMass for f in obj.Shape.Faces]
 
-    def __getstate__(self):
+    def dumps(self):
 
         return None
 
-    def __setstate__(self,state):
+    def loads(self,state):
 
         return None
 
@@ -330,11 +330,11 @@ class ViewProviderArchGrid:
     def edit(self):
         FreeCADGui.ActiveDocument.setEdit(self.Object, 0)
 
-    def __getstate__(self):
+    def dumps(self):
 
         return None
 
-    def __setstate__(self,state):
+    def loads(self,state):
 
         return None
 

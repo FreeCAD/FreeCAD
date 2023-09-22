@@ -401,11 +401,11 @@ class _ArchSchedule:
                             print("TOTAL:"+34*" "+v)
         self.setSpreadsheetData(obj)
 
-    def __getstate__(self):
+    def dumps(self):
 
         return self.Type
 
-    def __setstate__(self,state):
+    def loads(self,state):
 
         if state:
             self.Type = state
@@ -477,10 +477,10 @@ class _ViewProviderArchSchedule:
         if hasattr(self,"Object"):
             return [self.Object.Proxy.getSpreadSheet(self.Object)]
 
-    def __getstate__(self):
+    def dumps(self):
         return None
 
-    def __setstate__(self,state):
+    def loads(self,state):
         return None
 
     def getDisplayModes(self,vobj):

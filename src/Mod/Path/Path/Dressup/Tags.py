@@ -998,10 +998,10 @@ class ObjectTagDressup:
         obj.Proxy = self
         obj.Base = base
 
-    def __getstate__(self):
+    def dumps(self):
         return None
 
-    def __setstate__(self, state):
+    def loads(self, state):
         self.obj = state
         self.solids = []
         self.tags = []

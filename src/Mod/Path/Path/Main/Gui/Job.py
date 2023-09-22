@@ -149,10 +149,10 @@ class ViewProvider:
         sw = coin.SO_SWITCH_ALL if yes else coin.SO_SWITCH_NONE
         self.switch.whichChild = sw
 
-    def __getstate__(self):
+    def dumps(self):
         return None
 
-    def __setstate__(self, state):
+    def loads(self, state):
         return None
 
     def deleteObjectsOnReject(self):

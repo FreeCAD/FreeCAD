@@ -46,10 +46,10 @@ class ObjectHop:
         )
         obj.Proxy = self
 
-    def __getstate__(self):
+    def dumps(self):
         return None
 
-    def __setstate__(self, state):
+    def loads(self, state):
         return None
 
     def execute(self, obj):
@@ -87,10 +87,10 @@ class ViewProviderPathHop:
     def getIcon(self):
         return ":/icons/Path_Hop.svg"
 
-    def __getstate__(self):
+    def dumps(self):
         return None
 
-    def __setstate__(self, state):
+    def loads(self, state):
         return None
 
 

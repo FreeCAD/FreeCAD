@@ -264,10 +264,10 @@ class Proxy(object):
         self.obj = obj
         obj.setEditorMode("BoneBlacklist", 2)  # hide
 
-    def __getstate__(self):
+    def dumps(self):
         return None
 
-    def __setstate__(self, state):
+    def loads(self, state):
         return None
 
     def toolRadius(self, obj):
