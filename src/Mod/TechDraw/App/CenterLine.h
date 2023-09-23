@@ -88,6 +88,7 @@ public:
                                          const int mode = 0,
                                          const bool flip = false);
     TechDraw::BaseGeomPtr scaledGeometry(const TechDraw::DrawViewPart* partFeat);
+    TechDraw::BaseGeomPtr scaledAndRotatedGeometry(TechDraw::DrawViewPart* partFeat);
 
     static std::pair<Base::Vector3d, Base::Vector3d> rotatePointsAroundMid(
                                           const Base::Vector3d& p1,
@@ -139,6 +140,8 @@ public:
     double getExtend() const;
     void setFlip(const bool f);
     bool getFlip() const;
+    void setType(const int type) { m_type = type; };
+    int getType() const { return m_type; }
 
     Base::Vector3d m_start;
     Base::Vector3d m_end;
