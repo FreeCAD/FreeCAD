@@ -27,6 +27,7 @@
 # include <QButtonGroup>
 # include <QCompleter>
 # include <QCryptographicHash>
+# include <QDialogButtonBox>
 # include <QDir>
 # include <QGridLayout>
 # include <QGroupBox>
@@ -899,16 +900,17 @@ SelectModule::SelectModule (const QString& type, const SelectModule::Dict& types
     spacerItem1 = new QSpacerItem(131, 31, QSizePolicy::Expanding, QSizePolicy::Minimum);
     hboxLayout->addItem(spacerItem1);
 
-    okButton = new QPushButton(this);
-    okButton->setObjectName(QString::fromUtf8("okButton"));
-    okButton->setText(tr("Select"));
-    okButton->setEnabled(false);
+    buttonBox = new QDialogButtonBox(this);
+    buttonBox->setObjectName(QString::fromUtf8("buttonBox"));
+    buttonBox->setStandardButtons(QDialogButtonBox::Open | QDialogButtonBox::Cancel);
+    buttonBox->button(QDialogButtonBox::Open)->setEnabled(false);
 
-    hboxLayout->addWidget(okButton);
+    hboxLayout->addWidget(buttonBox);
     gridLayout->addLayout(hboxLayout, 2, 0, 1, 1);
 
     // connections
-    connect(okButton, &QPushButton::clicked, this, &SelectModule::accept);
+    connect(buttonBox, &QDialogButtonBox::accepted, this, &SelectModule::accept);
+    connect(buttonBox, &QDialogButtonBox::rejected, this, &SelectModule::reject);
 #if QT_VERSION < QT_VERSION_CHECK(5,15,0)
     connect(group, qOverload<int>(&QButtonGroup::buttonClicked), this, &SelectModule::onButtonClicked);
 #else
@@ -928,16 +930,13 @@ void SelectModule::accept()
 
 void SelectModule::reject()
 {
-    if (group->checkedButton())
-        QDialog::reject();
+    QDialog::reject();
 }
 
 void SelectModule::onButtonClicked()
 {
-    if (group->checkedButton())
-        okButton->setEnabled(true);
-    else
-        okButton->setEnabled(false);
+    QWidget* button = buttonBox->button(QDialogButtonBox::Open);
+    button->setEnabled(group->checkedButton() != nullptr);
 }
 
 QString SelectModule::getModule() const
@@ -1061,8 +1060,13 @@ SelectModule::Dict SelectModule::importHandler(const QStringList& fileNames, con
             if (dlg.exec()) {
                 QString mod = dlg.getModule();
                 const QStringList& files = fileExtension[it.key()];
-                for (const auto & file : files)
+                for (const auto & file : files) {
                     dict[file] = mod;
+                }
+            }
+            else {
+                // Cancelled
+                return {};
             }
         }
     }
