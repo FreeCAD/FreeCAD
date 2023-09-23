@@ -27,6 +27,7 @@
 
 ## \addtogroup draftobjects
 # @{
+import math
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCAD as App
@@ -88,6 +89,10 @@ class ShapeString(DraftObject):
             _tip = QT_TRANSLATE_NOOP("App::Property", "Inter-character spacing")
             obj.addProperty("App::PropertyDistance", "Tracking", "Draft", _tip)
 
+        if "ObliqueAngle" not in properties:
+            _tip = QT_TRANSLATE_NOOP("App::Property", "Oblique (slant) angle")
+            obj.addProperty("App::PropertyAngle", "ObliqueAngle", "Draft", _tip)
+
         if "MakeFace" not in properties:
             _tip = QT_TRANSLATE_NOOP("App::Property", "Fill letters with faces")
             obj.addProperty("App::PropertyBool", "MakeFace", "Draft", _tip).MakeFace = True
@@ -98,7 +103,7 @@ class ShapeString(DraftObject):
 
     def onDocumentRestored(self, obj):
         super().onDocumentRestored(obj)
-        if hasattr(obj, "Justification"): # several more properties were added
+        if hasattr(obj, "ObliqueAngle"): # several more properties were added
             return
         self.update_properties_0v22(obj)
 
@@ -111,7 +116,7 @@ class ShapeString(DraftObject):
         obj.ScaleToSize = False
         obj.Tracking = old_tracking
         _wrn("v0.22, " + obj.Label + ", "
-             + translate("draft", "added 'Justification', 'JustificationReference', 'KeepLeftMargin', 'ScaleToSize' and 'Fuse' properties"))
+             + translate("draft", "added 'Fuse', 'Justification', 'JustificationReference', 'KeepLeftMargin', 'ObliqueAngle' and 'ScaleToSize'  properties"))
         _wrn("v0.22, " + obj.Label + ", "
              + translate("draft", "changed 'Tracking' property type"))
 
@@ -159,6 +164,14 @@ class ShapeString(DraftObject):
                 if obj.ScaleToSize:
                     ss_shape.scale(obj.Size / cap_height)
                     cap_height = obj.Size
+                if obj.ObliqueAngle:
+                    if -80 <= obj.ObliqueAngle <= 80:
+                        mtx = App.Matrix()
+                        mtx.A12 = math.tan(math.radians(obj.ObliqueAngle))
+                        ss_shape = ss_shape.transformGeometry(mtx)
+                    else:
+                        wrn = translate("draft", "ShapeString: oblique angle must be in the -80 to +80 degree range") + "\n"
+                        App.Console.PrintWarning(wrn)
                 obj.Shape = self.justification(ss_shape,
                                                cap_height,
                                                obj.Justification,
