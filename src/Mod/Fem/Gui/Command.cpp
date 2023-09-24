@@ -275,7 +275,7 @@ CmdFemConstraintDisplacement::CmdFemConstraintDisplacement()
 {
     sAppModule = "Fem";
     sGroup = QT_TR_NOOP("Fem");
-    sMenuText = QT_TR_NOOP("Constraint displacement");
+    sMenuText = QT_TR_NOOP("Displacement boundary condition");
     sToolTipText =
         QT_TR_NOOP("Creates a displacement boundary condition for a geometric entity");
     sWhatsThis = "FEM_ConstraintDisplacement";
@@ -324,7 +324,7 @@ CmdFemConstraintFixed::CmdFemConstraintFixed()
 {
     sAppModule      = "Fem";
     sGroup          = QT_TR_NOOP("Fem");
-    sMenuText       = QT_TR_NOOP("Constraint fixed");
+    sMenuText       = QT_TR_NOOP("Fixed boundary condition");
     sToolTipText    = QT_TR_NOOP("Creates a fixed boundary condition for a geometric entity");
     sWhatsThis      = "FEM_ConstraintFixed";
     sStatusTip      = sToolTipText;
@@ -420,7 +420,7 @@ CmdFemConstraintForce::CmdFemConstraintForce()
 {
     sAppModule = "Fem";
     sGroup = QT_TR_NOOP("Fem");
-    sMenuText = QT_TR_NOOP("Constraint force");
+    sMenuText = QT_TR_NOOP("Force load");
     sToolTipText = QT_TR_NOOP("Creates a force load applied to a geometric entity");
     sWhatsThis = "FEM_ConstraintForce";
     sStatusTip = sToolTipText;
@@ -668,7 +668,7 @@ CmdFemConstraintPressure::CmdFemConstraintPressure()
 {
     sAppModule      = "Fem";
     sGroup          = QT_TR_NOOP("Fem");
-    sMenuText       = QT_TR_NOOP("Constraint pressure");
+    sMenuText       = QT_TR_NOOP("Pressure load");
     sToolTipText    = QT_TR_NOOP("Creates a pressure load acting on a face");
     sWhatsThis      = "FEM_ConstraintPressure";
     sStatusTip      = sToolTipText;
@@ -825,7 +825,7 @@ CmdFemConstraintTemperature::CmdFemConstraintTemperature()
 {
     sAppModule = "Fem";
     sGroup = QT_TR_NOOP("Fem");
-    sMenuText = QT_TR_NOOP("Constraint temperature");
+    sMenuText = QT_TR_NOOP("Temperature boundary condition");
     sToolTipText = QT_TR_NOOP(
         "Creates a temperature/concentrated heat flux load acting on a face");
     sWhatsThis = "FEM_ConstraintTemperature";
@@ -874,7 +874,7 @@ CmdFemConstraintTransform::CmdFemConstraintTransform()
 {
     sAppModule      = "Fem";
     sGroup          = QT_TR_NOOP("Fem");
-    sMenuText       = QT_TR_NOOP("Constraint transform");
+    sMenuText       = QT_TR_NOOP("Local coordinate system");
     sToolTipText    = QT_TR_NOOP("Create a local coordinate system on a face");
     sWhatsThis      = "FEM_ConstraintTransform";
     sStatusTip      = sToolTipText;
