@@ -4,15 +4,14 @@
 # See https://pre-commit.com/hooks.html for more hooks
 files: |
     (?x)^(
-        src/Mod/AddonManager|
-        src/Tools|
-        tests/src|
-        src/Mod/Sketcher
+        tests/src
     )
 exclude: |
     (?x)^(
         .*vcproj.*|
-        .*vcxproj.*
+        .*vcxproj.*|
+        src|
+        tests/src
     )
 repos:
 -   repo: https://github.com/pre-commit/pre-commit-hooks
