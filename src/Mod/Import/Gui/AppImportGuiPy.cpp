@@ -88,7 +88,6 @@
 
 #if OCC_VERSION_HEX >= 0x070500
 #include <Message_ProgressRange.hxx>
-#include <RWGltf_CafWriter.hxx>
 #endif
 #if defined(__clang__)
 #pragma clang diagnostic pop
@@ -105,6 +104,7 @@
 #include <Gui/MainWindow.h>
 #include <Gui/ViewProviderLink.h>
 #include <Mod/Import/App/ImportOCAF2.h>
+#include <Mod/Import/App/WriterGltf.h>
 #include <Mod/Part/App/ImportIges.h>
 #include <Mod/Part/App/ImportStep.h>
 #include <Mod/Part/App/Interface.h>
@@ -769,25 +769,8 @@ private:
                 }
             }
             else if (file.hasExtension({"glb", "gltf"})) {
-#if OCC_VERSION_HEX >= 0x070500
-                TColStd_IndexedDataMapOfStringString aMetadata;
-                RWGltf_CafWriter aWriter(name8bit.c_str(), file.hasExtension("glb"));
-                aWriter.SetTransformationFormat(RWGltf_WriterTrsfFormat_Compact);
-                // https://github.com/KhronosGroup/glTF/blob/master/specification/2.0/README.md#coordinate-system-and-units
-                aWriter.ChangeCoordinateSystemConverter().SetInputLengthUnit(0.001);
-                aWriter.ChangeCoordinateSystemConverter().SetInputCoordinateSystem(
-                    RWMesh_CoordinateSystem_Zup);
-#if OCC_VERSION_HEX >= 0x070700
-                aWriter.SetParallel(true);
-#endif
-                Standard_Boolean ret = aWriter.Perform(hDoc, aMetadata, Message_ProgressRange());
-                if (!ret) {
-                    PyErr_Format(PyExc_IOError, "Cannot save to file '%s'", Utf8Name.c_str());
-                    throw Py::Exception();
-                }
-#else
-                throw Py::RuntimeError("gITF support requires OCCT 7.5.0 or later");
-#endif
+                Import::WriterGltf writer(name8bit, file);
+                writer.write(hDoc);
             }
 
             hApp->Close(hDoc);
