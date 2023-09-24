@@ -164,6 +164,11 @@ class ShapeString(DraftObject):
                 if obj.ScaleToSize:
                     ss_shape.scale(obj.Size / cap_height)
                     cap_height = obj.Size
+                just_vec = self.justification_vector(ss_shape,
+                                                     cap_height,
+                                                     obj.Justification,
+                                                     obj.JustificationReference,
+                                                     obj.KeepLeftMargin)
                 if obj.ObliqueAngle:
                     if -80 <= obj.ObliqueAngle <= 80:
                         mtx = App.Matrix()
@@ -172,11 +177,10 @@ class ShapeString(DraftObject):
                     else:
                         wrn = translate("draft", "ShapeString: oblique angle must be in the -80 to +80 degree range") + "\n"
                         App.Console.PrintWarning(wrn)
-                obj.Shape = self.justification(ss_shape,
-                                               cap_height,
-                                               obj.Justification,
-                                               obj.JustificationReference,
-                                               obj.KeepLeftMargin)
+                shapes = ss_shape.SubShapes
+                for shape in shapes:
+                    shape.translate(just_vec)
+                obj.Shape = Part.Compound(shapes)
             else:
                 App.Console.PrintWarning(translate("draft", "ShapeString: string has no wires") + "\n")
 
@@ -189,10 +193,9 @@ class ShapeString(DraftObject):
     def onChanged(self, obj, prop):
         self.props_changed_store(prop)
 
-    def justification(self, ss_shape, cap_height, just, just_ref, keep_left_margin): # ss_shape is a compound
-        shapes = ss_shape.SubShapes
+    def justification_vector(self, ss_shape, cap_height, just, just_ref, keep_left_margin): # ss_shape is a compound
         box = ss_shape.BoundBox
-        if keep_left_margin is True:
+        if keep_left_margin is True and "Left" in just:
             vec = App.Vector(0, 0, 0)
         else:
             vec = App.Vector(-box.XMin, 0, 0) # remove left margin caused by kerning and white space characters
@@ -210,9 +213,7 @@ class ShapeString(DraftObject):
             vec = vec + App.Vector(-width, 0, 0)
         elif "Center" in just:
             vec = vec + App.Vector(-width/2, 0, 0)
-        for shape in shapes:
-            shape.translate(vec)
-        return Part.Compound(shapes)
+        return vec
 
     def make_faces(self, wireChar):
         wrn = translate("draft", "ShapeString: face creation failed for one character") + "\n"
