@@ -77,7 +77,7 @@ void DlgSettingsFemGmshImp::onfileNameChanged(QString FileName)
     if (!QFileInfo::exists(FileName)) {
         QMessageBox::critical(this,
                               tr("File does not exist"),
-                              tr("The specified executable \n'%1'\n does not exist!\n"
+                              tr("The specified executable\n'%1'\n does not exist!\n"
                                  "Specify another file please.")
                                   .arg(FileName));
     }
