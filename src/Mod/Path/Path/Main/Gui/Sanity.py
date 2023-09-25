@@ -1203,10 +1203,7 @@ class CommandPathSanity:
             filepath = self.resolveOutputFile(obj)
             Path.Log.debug("filepath: {}".format(filepath))
             base_name = os.path.splitext(filepath)[0]
-            if "%D" in subsLookup or "%M" in subsLookup:
-                reporthtml = base_name + ".html"
-            else:
-                reporthtml = self.outputpath + base_name + ".html"
+            reporthtml = base_name + ".html"
         else:
             reporthtml = self.outputpath + data["outputData"]["outputfilename"] + ".html"
 
