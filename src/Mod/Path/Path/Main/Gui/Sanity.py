@@ -1202,6 +1202,11 @@ class CommandPathSanity:
         if foundSub:
             filepath = self.resolveOutputFile(obj)
             Path.Log.debug("filepath: {}".format(filepath))
+
+            # Make sure the filepath is fully qualified
+            if os.path.basename(filepath) == filepath:
+                filepath = f"{os.path.dirname(FreeCAD.ActiveDocument.FileName)}/{filepath}"
+            Path.Log.debug("filepath: {}".format(filepath))
             base_name = os.path.splitext(filepath)[0]
             reporthtml = base_name + ".html"
         else:
