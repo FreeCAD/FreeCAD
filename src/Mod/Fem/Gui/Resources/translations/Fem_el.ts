@@ -1022,11 +1022,11 @@
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcxImp.cpp" line="141"/>
-      <source>The specified executable 
+      <source>The specified executable
 '%1'
  does not exist!
 Specify another file please.</source>
-      <translation type="unfinished">The specified executable 
+      <translation type="unfinished">The specified executable
 '%1'
  does not exist!
 Specify another file please.</translation>
@@ -1124,11 +1124,11 @@ will be merged to make the volume boundaries invisible.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemElmerImp.cpp" line="100"/>
-      <source>The specified executable 
+      <source>The specified executable
 '%1'
  does not exist!
 Specify another file please.</source>
-      <translation type="unfinished">The specified executable 
+      <translation type="unfinished">The specified executable
 '%1'
  does not exist!
 Specify another file please.</translation>
@@ -1390,11 +1390,11 @@ adding an analysis container</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGmshImp.cpp" line="77"/>
-      <source>The specified executable 
+      <source>The specified executable
 '%1'
  does not exist!
 Specify another file please.</source>
-      <translation type="unfinished">The specified executable 
+      <translation type="unfinished">The specified executable
 '%1'
  does not exist!
 Specify another file please.</translation>
@@ -1582,11 +1582,11 @@ If unchecked, they will be sorted by their name.</source>
     </message>
     <message>
       <location filename="../../DlgSettingsFemMystranImp.cpp" line="79"/>
-      <source>The specified executable 
+      <source>The specified executable
 '%1'
  does not exist!
 Specify another file please.</source>
-      <translation type="unfinished">The specified executable 
+      <translation type="unfinished">The specified executable
 '%1'
  does not exist!
 Specify another file please.</translation>
@@ -1677,11 +1677,11 @@ You might need to increase this when using an
 iterative solver and you get the error message
 that "MAXKOI" needs to be increased.</source>
       <translation>Μέγιστες θέσεις σε τυχαίο διάνυσμα.
-(αριθμός κόμπων ανά στοιχείο επί τον 
+(αριθμός κόμπων ανά στοιχείο επί τον
 αριθμό των πεπερασμένων στοιχείων)
 
 Ίσως, χρειαστεί να το αυξήσετε όταν χρησιμοποιείτε
-έναν επαναληπτικό λύτη όταν λαμβάνετε το μήνυμα 
+έναν επαναληπτικό λύτη όταν λαμβάνετε το μήνυμα
 σφάλματος ότι πρέπει να αυξηθεί το "MAXKOI".</translation>
     </message>
     <message>
@@ -1691,11 +1691,11 @@ that "MAXKOI" needs to be increased.</source>
     </message>
     <message>
       <location filename="../../DlgSettingsFemZ88Imp.cpp" line="102"/>
-      <source>The specified z88r executable 
+      <source>The specified z88r executable
 '%1'
  does not exist!
 Specify another file please.</source>
-      <translation type="unfinished">The specified z88r executable 
+      <translation type="unfinished">The specified z88r executable
 '%1'
  does not exist!
 Specify another file please.</translation>

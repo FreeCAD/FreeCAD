@@ -1023,11 +1023,11 @@
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcxImp.cpp" line="141"/>
-      <source>The specified executable 
+      <source>The specified executable
 '%1'
  does not exist!
 Specify another file please.</source>
-      <translation>指定された実行可能ファイル 
+      <translation>指定された実行可能ファイル
 '%1'
  が存在しません!
 別のファイルを指定してください。</translation>
@@ -1124,11 +1124,11 @@ will be merged to make the volume boundaries invisible.</source>
     </message>
     <message>
       <location filename="../../DlgSettingsFemElmerImp.cpp" line="100"/>
-      <source>The specified executable 
+      <source>The specified executable
 '%1'
  does not exist!
 Specify another file please.</source>
-      <translation>指定された実行可能ファイル 
+      <translation>指定された実行可能ファイル
 '%1'
  が存在しません!
 別のファイルを指定してください。</translation>
@@ -1387,11 +1387,11 @@ adding an analysis container</source>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGmshImp.cpp" line="77"/>
-      <source>The specified executable 
+      <source>The specified executable
 '%1'
  does not exist!
 Specify another file please.</source>
-      <translation>指定された実行可能ファイル 
+      <translation>指定された実行可能ファイル
 '%1'
  が存在しません!
 別のファイルを指定してください。</translation>
@@ -1573,11 +1573,11 @@ If unchecked, they will be sorted by their name.</source>
     </message>
     <message>
       <location filename="../../DlgSettingsFemMystranImp.cpp" line="79"/>
-      <source>The specified executable 
+      <source>The specified executable
 '%1'
  does not exist!
 Specify another file please.</source>
-      <translation>指定された実行可能ファイル 
+      <translation>指定された実行可能ファイル
 '%1'
  が存在しません!
 別のファイルを指定してください。</translation>
@@ -1682,11 +1682,11 @@ that "MAXKOI" needs to be increased.</source>
     </message>
     <message>
       <location filename="../../DlgSettingsFemZ88Imp.cpp" line="102"/>
-      <source>The specified z88r executable 
+      <source>The specified z88r executable
 '%1'
  does not exist!
 Specify another file please.</source>
-      <translation type="unfinished">The specified z88r executable 
+      <translation type="unfinished">The specified z88r executable
 '%1'
  does not exist!
 Specify another file please.</translation>
