@@ -302,7 +302,7 @@ automatically run a file recovery when it is started.</string>
            <number>60</number>
           </property>
           <property name="value">
-           <number>5</number>
+           <number>15</number>
           </property>
           <property name="prefEntry" stdset="0">
            <cstring>AutoSaveTimeout</cstring>
