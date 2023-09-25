@@ -602,7 +602,7 @@ void StdWorkbench::setupContextMenu(const char* recipient, MenuItem* item) const
         if (Gui::Selection().countObjectsOfType(App::DocumentObject::getClassTypeId()) > 0) {
             *item << "Separator" << "Std_SetAppearance" << "Std_ToggleVisibility"
                   << "Std_ToggleSelectability" << "Std_TreeSelection"
-                  << "Std_RandomColor" << "Separator" << "Std_Delete"
+                  << "Std_RandomColor" << "Std_ToggleTransparency" << "Separator" << "Std_Delete"
                   << "Std_SendToPythonConsole" << "Std_TransformManip";
         }
     }
@@ -611,7 +611,7 @@ void StdWorkbench::setupContextMenu(const char* recipient, MenuItem* item) const
         if (Gui::Selection().countObjectsOfType(App::DocumentObject::getClassTypeId()) > 0) {
             *item << "Std_ToggleVisibility" << "Std_ShowSelection" << "Std_HideSelection"
                   << "Std_ToggleSelectability" << "Std_TreeSelectAllInstances" << "Separator"
-                  << "Std_SetAppearance" << "Std_RandomColor" << "Separator"
+                  << "Std_SetAppearance" << "Std_RandomColor" << "Std_ToggleTransparency" << "Separator"
                   << "Std_Cut" << "Std_Copy" << "Std_Paste" << "Std_Delete"
                   << "Std_SendToPythonConsole" << "Separator";
         }
@@ -708,6 +708,7 @@ MenuItem* StdWorkbench::setupMenuBar() const
         *view << "Std_DockOverlay";
     }
     *view << "Separator"
+          << "Std_ToggleTransparency"
           << "Std_LinkSelectActions"
           << "Std_TreeViewActions"
           << "Std_ViewStatusBar";
@@ -812,7 +813,7 @@ ToolBarItem* StdWorkbench::setupToolBars() const
     *view << "Std_ViewFitAll" << "Std_ViewFitSelection" << "Std_ViewIsometric"
           << "Std_ViewFront"<< "Std_ViewTop" << "Std_ViewRight"
           << "Std_ViewRear" << "Std_ViewBottom"<< "Std_ViewLeft"
-          << "Separator" << "Std_DrawStyle" << "Std_TreeViewActions"
+          << "Separator" << "Std_ToggleTransparency" << "Std_DrawStyle" << "Std_TreeViewActions"
           << "Separator" << "Std_MeasureDistance";
 
     // Structure
