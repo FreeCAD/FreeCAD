@@ -1192,12 +1192,21 @@ class CommandPathSanity:
 
         # Save the report
         subsLookup = os.path.splitext(os.path.basename(obj.PostProcessorOutputFile))[0]
+        foundSub = False
 
-        if subsLookup == "%D" or subsLookup == "%d" or subsLookup == "%M" or subsLookup == "%j":
+        for elem in ["%D", "%d", "%M", "%j"]:
+            if elem in subsLookup:
+                foundSub = True
+                break
+
+        if foundSub:
             filepath = self.resolveOutputFile(obj)
             Path.Log.debug("filepath: {}".format(filepath))
             base_name = os.path.splitext(filepath)[0]
-            reporthtml = self.outputpath + base_name + ".html"
+            if "%D" in subsLookup or "%M" in subsLookup:
+                reporthtml = base_name + ".html"
+            else:
+                reporthtml = self.outputpath + base_name + ".html"
         else:
             reporthtml = self.outputpath + data["outputData"]["outputfilename"] + ".html"
 
