@@ -546,7 +546,7 @@ class ObjectDressup:
                     queue = []
                 if (
                     obj.IncludeLayers
-                    and curCommand.z < currLocation["Z"]
+                    and curCommand.z < currLocation["Z"] and not Path.Geom.isRoughly(curCommand.z, currLocation["Z"])
                     and prevCmd.Name in movecommands
                 ):
                     # Layer change within move cmds
