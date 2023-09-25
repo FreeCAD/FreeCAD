@@ -3347,9 +3347,9 @@ kolore-barraz aparte</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsDocument.ui" line="90"/>
       <source>Document save compression level
-(0 = none, 9 = highest, 7 = default)</source>
+(0 = none, 9 = highest, 3 = default)</source>
       <translation>Dokumentua gordetzeko konpresio maila
-(0 = zero, 9 = handiena, 7 = lehenetsia)</translation>
+(0 = zero, 9 = handiena, 3 = lehenetsia)</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsDocument.ui" line="98"/>

@@ -3335,8 +3335,8 @@ besides the color bar</source>
     <message>
       <location filename="../PreferencePages/DlgSettingsDocument.ui" line="90"/>
       <source>Document save compression level
-(0 = none, 9 = highest, 7 = default)</source>
-      <translation>Document op te slaan compressie-niveau (0=geen, 9=hoogste, 7=standaard)</translation>
+(0 = none, 9 = highest, 3 = default)</source>
+      <translation>Document op te slaan compressie-niveau (0=geen, 9=hoogste, 3=standaard)</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsDocument.ui" line="98"/>

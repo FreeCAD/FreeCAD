@@ -3345,9 +3345,9 @@ a színsáv mellett</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsDocument.ui" line="90"/>
       <source>Document save compression level
-(0 = none, 9 = highest, 7 = default)</source>
+(0 = none, 9 = highest, 3 = default)</source>
       <translation>Dokumentum mentésének tömörítési szintje
-(0=nincs, 9=legnagyobb, 7=alapértelmezett)</translation>
+(0=nincs, 9=legnagyobb, 3=alapértelmezett)</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsDocument.ui" line="98"/>

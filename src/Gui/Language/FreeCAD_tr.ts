@@ -3349,9 +3349,9 @@ besides the color bar</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsDocument.ui" line="90"/>
       <source>Document save compression level
-(0 = none, 9 = highest, 7 = default)</source>
+(0 = none, 9 = highest, 3 = default)</source>
       <translation>Belge kaydındaki sıkıştırma seviyesi
-(0=hiç,9=en yüksek,7=varsayılan)</translation>
+(0=hiç,9=en yüksek,3=varsayılan)</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsDocument.ui" line="98"/>

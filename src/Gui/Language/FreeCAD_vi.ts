@@ -3955,9 +3955,9 @@ besides the color bar</translation>
     <message>
       <location filename="../DlgSettingsDocument.ui" line="90"/>
       <source>Document save compression level
-(0 = none, 9 = highest, 7 = default)</source>
+(0 = none, 9 = highest, 3 = default)</source>
       <translation>Mức độ nén tài liệu lưu trữ
-(0 = không, 9 = cao nhất, 7 = mặc định)</translation>
+(0 = không, 9 = cao nhất, 3 = mặc định)</translation>
     </message>
     <message>
       <location filename="../DlgSettingsDocument.ui" line="98"/>

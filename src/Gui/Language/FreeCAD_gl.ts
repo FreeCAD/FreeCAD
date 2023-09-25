@@ -3350,9 +3350,9 @@ besides the color bar</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsDocument.ui" line="90"/>
       <source>Document save compression level
-(0 = none, 9 = highest, 7 = default)</source>
+(0 = none, 9 = highest, 3 = default)</source>
       <translation>Nivel de compresión no gardado de documentos
-(0 = ningún, 9 = o máis alto, 7 = por defecto)</translation>
+(0 = ningún, 9 = o máis alto, 3 = por defecto)</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsDocument.ui" line="98"/>

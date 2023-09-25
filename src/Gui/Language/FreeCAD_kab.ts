@@ -2810,9 +2810,9 @@ bounding box size of the 3D object that is currently displayed.</translation>
     </message>
     <message>
       <source>Document save compression level
-(0 = none, 9 = highest, 7 = default)</source>
+(0 = none, 9 = highest, 3 = default)</source>
       <translation>Niveau de compression pour la sauvegarde de document
-(0 = aucune, 9 = forte, 7 = par défaut)</translation>
+(0 = aucune, 9 = forte, 3 = par défaut)</translation>
     </message>
     <message>
       <source>Create new document at start up</source>

@@ -3936,9 +3936,9 @@ besides the color bar</translation>
     <message>
       <location filename="../DlgSettingsDocument.ui" line="90"/>
       <source>Document save compression level
-(0 = none, 9 = highest, 7 = default)</source>
+(0 = none, 9 = highest, 3 = default)</source>
       <translation>Išsaugomo dokumento suglaudinimo lygis
-(0 = neglaudintas; 9 = labiausiai suglaudintas; 7 = numatytasis)</translation>
+(0 = neglaudintas; 9 = labiausiai suglaudintas; 3 = numatytasis)</translation>
     </message>
     <message>
       <location filename="../DlgSettingsDocument.ui" line="98"/>

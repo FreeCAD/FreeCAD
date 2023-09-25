@@ -3350,9 +3350,9 @@ poleg barvne vrstice</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsDocument.ui" line="90"/>
       <source>Document save compression level
-(0 = none, 9 = highest, 7 = default)</source>
+(0 = none, 9 = highest, 3 = default)</source>
       <translation>Raven stiskanja pri shranjevanju dokumenta
-(0 = brez, 9 = najvišja, 7 = privzeta)</translation>
+(0 = brez, 9 = najvišja, 3 = privzeta)</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsDocument.ui" line="98"/>

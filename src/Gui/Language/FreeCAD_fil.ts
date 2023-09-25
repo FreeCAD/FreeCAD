@@ -3953,9 +3953,9 @@ besides the color bar</translation>
     <message>
       <location filename="../DlgSettingsDocument.ui" line="90"/>
       <source>Document save compression level
-(0 = none, 9 = highest, 7 = default)</source>
+(0 = none, 9 = highest, 3 = default)</source>
       <translation>Dokumento i-impok ang antas ng compression
-(0 = none, 9 = highest, 7 = default)</translation>
+(0 = none, 9 = highest, 3 = default)</translation>
     </message>
     <message>
       <location filename="../DlgSettingsDocument.ui" line="98"/>

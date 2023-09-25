@@ -3335,9 +3335,9 @@ besides the color bar</source>
     <message>
       <location filename="../PreferencePages/DlgSettingsDocument.ui" line="90"/>
       <source>Document save compression level
-(0 = none, 9 = highest, 7 = default)</source>
+(0 = none, 9 = highest, 3 = default)</source>
       <translation>Узровень сціску захавання дакумента
-(0 = няма, 9 = самы высокі, 7 = першапачатковы)</translation>
+(0 = няма, 9 = самы высокі, 3 = першапачатковы)</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsDocument.ui" line="98"/>

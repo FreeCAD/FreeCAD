@@ -3350,8 +3350,8 @@ besides the color bar</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsDocument.ui" line="90"/>
       <source>Document save compression level
-(0 = none, 9 = highest, 7 = default)</source>
-      <translation>Asiakirja tallennetaan pakkaustasolla (0 = ei yhtään, 9 = suurin, 7 = oletus)</translation>
+(0 = none, 9 = highest, 3 = default)</source>
+      <translation>Asiakirja tallennetaan pakkaustasolla (0 = ei yhtään, 9 = suurin, 3 = oletus)</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsDocument.ui" line="98"/>

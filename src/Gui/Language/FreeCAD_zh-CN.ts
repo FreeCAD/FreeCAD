@@ -3335,8 +3335,8 @@ besides the color bar</source>
     <message>
       <location filename="../PreferencePages/DlgSettingsDocument.ui" line="90"/>
       <source>Document save compression level
-(0 = none, 9 = highest, 7 = default)</source>
-      <translation>保存文件的压缩级别(0 = 无，9 = 最高，7 = 默认)</translation>
+(0 = none, 9 = highest, 3 = default)</source>
+      <translation>保存文件的压缩级别(0 = 无，9 = 最高，3 = 默认)</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsDocument.ui" line="98"/>

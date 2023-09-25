@@ -3346,8 +3346,8 @@ além da barra de cores</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsDocument.ui" line="90"/>
       <source>Document save compression level
-(0 = none, 9 = highest, 7 = default)</source>
-      <translation>Nível de compactação ao salvar documentos (0 = nenhum, 9 = mais alto, 7 = padrão)</translation>
+(0 = none, 9 = highest, 3 = default)</source>
+      <translation>Nível de compactação ao salvar documentos (0 = nenhum, 9 = mais alto, 3 = padrão)</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsDocument.ui" line="98"/>

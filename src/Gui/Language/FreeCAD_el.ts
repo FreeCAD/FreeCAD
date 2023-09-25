@@ -3346,9 +3346,9 @@ besides the color bar</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsDocument.ui" line="90"/>
       <source>Document save compression level
-(0 = none, 9 = highest, 7 = default)</source>
+(0 = none, 9 = highest, 3 = default)</source>
       <translation>Βαθμός συμπίεσης αποθηκευόμενων εγγράφων
-(0 = καμία, 9 = ύψιστη, 7 = προεπιλεγμένη)</translation>
+(0 = καμία, 9 = ύψιστη, 3 = προεπιλεγμένη)</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsDocument.ui" line="98"/>

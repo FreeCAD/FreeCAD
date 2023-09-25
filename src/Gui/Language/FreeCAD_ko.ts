@@ -3346,9 +3346,9 @@ besides the color bar</source>
     <message>
       <location filename="../PreferencePages/DlgSettingsDocument.ui" line="90"/>
       <source>Document save compression level
-(0 = none, 9 = highest, 7 = default)</source>
+(0 = none, 9 = highest, 3 = default)</source>
       <translation>문서 저장 압축 수준
-(0 = 없음, 9 = 최고, 7 = 기본값)</translation>
+(0 = 없음, 9 = 최고, 3 = 기본값)</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsDocument.ui" line="98"/>
