@@ -153,7 +153,7 @@ bool WriterOBJ::Save(std::ostream& out)
     }
     // Export normals
     MeshFacetIterator clIter(_kernel), clEnd(_kernel);
-    const MeshGeomFacet* pclFacet;
+    const MeshGeomFacet* pclFacet {};
 
     clIter.Begin();
     clEnd.End();

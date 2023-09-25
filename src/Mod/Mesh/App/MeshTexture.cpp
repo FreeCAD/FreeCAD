@@ -29,8 +29,8 @@ using namespace Mesh;
 
 MeshTexture::MeshTexture(const Mesh::MeshObject& mesh, const MeshCore::Material& material)
     : materialRefMesh(material)
+    , countPointsRefMesh {mesh.countPoints()}
 {
-    countPointsRefMesh = mesh.countPoints();
     unsigned long countFacets = mesh.countFacets();
 
     if (material.binding == MeshCore::MeshIO::PER_VERTEX

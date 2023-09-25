@@ -37,7 +37,6 @@ using namespace MeshGui;
 
 DlgDecimating::DlgDecimating(QWidget* parent, Qt::WindowFlags fl)
     : QWidget(parent, fl)
-    , numberOfTriangles(0)
     , ui(new Ui_DlgDecimating)
 {
     ui->setupUi(this);
@@ -135,7 +134,7 @@ double DlgDecimating::reduction() const
 
 TaskDecimating::TaskDecimating()
 {
-    widget = new DlgDecimating();
+    widget = new DlgDecimating();  // NOLINT
     Gui::TaskView::TaskBox* taskbox =
         new Gui::TaskView::TaskBox(QPixmap(), widget->windowTitle(), false, nullptr);
     taskbox->groupLayout()->addWidget(widget);

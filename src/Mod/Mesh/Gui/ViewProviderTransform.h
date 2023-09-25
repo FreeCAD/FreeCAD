@@ -70,7 +70,7 @@ public:
     /// Update the Mesh representation
     void updateData(const App::Property*) override;
 
-protected:
+private:
     SoTransformerManip* pcTransformerDragger;
 };
 

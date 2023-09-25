@@ -34,7 +34,7 @@ using namespace MeshCore;
 unsigned long MeshKernel::VisitNeighbourFacets(MeshFacetVisitor& rclFVisitor,
                                                FacetIndex ulStartFacet) const
 {
-    unsigned long ulVisited = 0, j, ulLevel = 0;
+    unsigned long ulVisited = 0, ulLevel = 0;
     unsigned long ulCount = _aclFacetArray.size();
     std::vector<FacetIndex> clCurrentLevel, clNextLevel;
     std::vector<FacetIndex>::iterator clCurrIter;
@@ -52,7 +52,7 @@ unsigned long MeshKernel::VisitNeighbourFacets(MeshFacetVisitor& rclFVisitor,
 
             // visit all neighbours of the current level if not yet done
             for (unsigned short i = 0; i < 3; i++) {
-                j = clCurrFacet->_aulNeighbours[i];  // index to neighbour facet
+                auto j = clCurrFacet->_aulNeighbours[i];  // index to neighbour facet
                 if (j == FACET_INDEX_MAX) {
                     continue;  // no neighbour facet
                 }

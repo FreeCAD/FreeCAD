@@ -72,7 +72,9 @@ public:
     ViewProviderMeshCurvature();
     ~ViewProviderMeshCurvature() override;
 
+    // NOLINTBEGIN
     App::PropertyMaterial TextureMaterial;
+    // NOLINTEND
 
     /// Extracts the mesh data from the feature \a pcFeature and creates an Inventor node \a SoNode
     /// with these data.
@@ -115,7 +117,7 @@ private:
 
     void slotChangedObject(const App::DocumentObject& Obj, const App::Property& Prop) override;
 
-protected:
+private:
     SoMaterial* pcColorMat;
     SoGroup* pcLinkRoot;
     Gui::SoFCColorBar* pcColorBar;

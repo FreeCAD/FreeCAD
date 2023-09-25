@@ -146,8 +146,15 @@ float PlaneFit::Fit()
         return FLOAT_MAX;
     }
 
-    double sxx, sxy, sxz, syy, syz, szz, mx, my, mz;
-    sxx = sxy = sxz = syy = syz = szz = mx = my = mz = 0.0;
+    double sxx {0.0};
+    double sxy {0.0};
+    double sxz {0.0};
+    double syy {0.0};
+    double syz {0.0};
+    double szz {0.0};
+    double mx {0.0};
+    double my {0.0};
+    double mz {0.0};
 
     for (const auto& vPoint : _vPoints) {
         sxx += double(vPoint.x * vPoint.x);
@@ -356,9 +363,9 @@ float PlaneFit::GetSignedStdDeviation() const
         return FLOAT_MAX;
     }
 
-    float fSumXi = 0.0f, fSumXi2 = 0.0f, fMean = 0.0f, fDist = 0.0f;
+    float fSumXi = 0.0F, fSumXi2 = 0.0F, fMean = 0.0F, fDist = 0.0F;
     float fMinDist = FLOAT_MAX;
-    float fFactor;
+    float fFactor = 0.0F;
 
     float ulPtCt = float(CountPoints());
     Base::Vector3f clGravity, clPt;
@@ -1036,8 +1043,7 @@ struct LMCylinderFunctor
         // 'fjac' has dimensions m x n
         // It will contain the jacobian of the errors, calculated numerically in this case.
 
-        double epsilon;
-        epsilon = 1e-5;
+        const double epsilon = 1e-5;
 
         for (int i = 0; i < x.size(); i++) {
             Eigen::VectorXd xPlus(x);
@@ -1122,8 +1128,12 @@ Base::Vector3f CylinderFit::GetInitialAxisFromNormals(const std::vector<Base::Ve
 #endif
 
     // Like a plane fit where the base is at (0,0,0)
-    double sxx, sxy, sxz, syy, syz, szz;
-    sxx = sxy = sxz = syy = syz = szz = 0.0;
+    double sxx {0.0};
+    double sxy {0.0};
+    double sxz {0.0};
+    double syy {0.0};
+    double syz {0.0};
+    double szz {0.0};
 
     for (auto it : n) {
         sxx += double(it.x * it.x);

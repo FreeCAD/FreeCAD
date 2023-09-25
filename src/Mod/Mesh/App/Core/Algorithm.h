@@ -415,7 +415,7 @@ protected:
     void SplitBoundaryFromOpenEdges(std::list<std::pair<PointIndex, PointIndex>>& openEdges,
                                     std::list<PointIndex>& boundary) const;
 
-protected:
+private:
     const MeshKernel& _rclMesh; /**< The mesh kernel. */
 };
 
@@ -424,6 +424,10 @@ class MeshExport MeshCollector
 public:
     MeshCollector() = default;
     virtual ~MeshCollector() = default;
+    MeshCollector(const MeshCollector&) = default;
+    MeshCollector(MeshCollector&&) = default;
+    MeshCollector& operator=(const MeshCollector&) = default;
+    MeshCollector& operator=(MeshCollector&&) = default;
     virtual void Append(const MeshCore::MeshKernel&, FacetIndex index) = 0;
 };
 
@@ -435,7 +439,7 @@ public:
     {}
     void Append(const MeshCore::MeshKernel& kernel, FacetIndex index) override
     {
-        PointIndex ulP1, ulP2, ulP3;
+        PointIndex ulP1 {}, ulP2 {}, ulP3 {};
         kernel.GetFacetPoints(index, ulP1, ulP2, ulP3);
         indices.push_back(ulP1);
         indices.push_back(ulP2);
@@ -499,7 +503,7 @@ protected:
                           std::set<FacetIndex>& visit,
                           MeshCollector& collect) const;
 
-protected:
+private:
     const MeshKernel& _rclMesh; /**< The mesh kernel. */
     std::vector<std::set<FacetIndex>> _map;
 };
@@ -528,7 +532,7 @@ public:
     /// Returns an array of common facets of the passed facet indexes.
     std::vector<FacetIndex> GetIndices(FacetIndex, FacetIndex) const;
 
-protected:
+private:
     const MeshKernel& _rclMesh; /**< The mesh kernel. */
     std::vector<std::set<FacetIndex>> _map;
 };
@@ -557,7 +561,7 @@ public:
     void AddNeighbour(PointIndex, PointIndex);
     void RemoveNeighbour(PointIndex, PointIndex);
 
-protected:
+private:
     const MeshKernel& _rclMesh; /**< The mesh kernel. */
     std::vector<std::set<PointIndex>> _map;
 };
@@ -582,7 +586,7 @@ public:
     void Rebuild();
     const std::pair<FacetIndex, FacetIndex>& operator[](const MeshEdge&) const;
 
-protected:
+private:
     class EdgeOrder
     {
     public:
@@ -630,7 +634,7 @@ public:
         return _norm;
     }
 
-protected:
+private:
     const MeshKernel& _rclMesh; /**< The mesh kernel. */
     std::vector<Base::Vector3f> _norm;
 };

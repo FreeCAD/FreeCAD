@@ -43,13 +43,15 @@ public:
                    const MeshObject* obj = nullptr,
                    MeshCore::FacetIndex index = MeshCore::FACET_INDEX_MAX);
     Facet(const Facet& f);
+    Facet(Facet&& f);
     ~Facet();
 
     bool isBound() const
     {
         return Index != MeshCore::FACET_INDEX_MAX;
     }
-    void operator=(const Facet& f);
+    Facet& operator=(const Facet& f);
+    Facet& operator=(Facet&& f);
     Edge getEdge(int) const;
 
     MeshCore::FacetIndex Index;

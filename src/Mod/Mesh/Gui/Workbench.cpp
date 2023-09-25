@@ -63,6 +63,7 @@ public:
     MeshInfoWatcher()
         : TaskWatcher(nullptr)
     {
+        // NOLINTBEGIN
         labelPoints = new QLabel();
         labelPoints->setText(tr("Number of points:"));
 
@@ -80,6 +81,7 @@ public:
 
         numMin = new QLabel();
         numMax = new QLabel();
+        // NOLINTEND
 
         QGroupBox* box = new QGroupBox();
         box->setTitle(tr("Mesh info box"));

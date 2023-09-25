@@ -204,7 +204,7 @@ float SphereFit::Fit()
     Eigen::VectorXd atpl(4);
 
     // Iteration loop...
-    double sigma0;
+    double sigma0 {};
     bool cont = true;
     while (cont && (_numIter < _maxIter)) {
         ++_numIter;
@@ -228,7 +228,7 @@ float SphereFit::Fit()
 
         // Before updating the unknowns, compute the residuals and sigma0 and check the residual
         // convergence
-        bool vConverged;
+        bool vConverged {};
         if (!computeResiduals(x, residuals, sigma0, _vConvLimit, vConverged)) {
             return FLOAT_MAX;
         }
@@ -267,8 +267,8 @@ void SphereFit::setupNormalEquationMatrices(const std::vector<Base::Vector3d>& r
 
     // For each point, setup the observation equation coefficients and add their
     // contribution into the normal equation matrices
-    double a[4], b[3];
-    double f0, qw;
+    double a[4] {}, b[3] {};
+    double f0 {}, qw {};
     std::vector<Base::Vector3d>::const_iterator vIt = residuals.begin();
     std::list<Base::Vector3f>::const_iterator cIt;
     for (cIt = _vPoints.begin(); cIt != _vPoints.end(); ++cIt, ++vIt) {
@@ -377,8 +377,8 @@ bool SphereFit::computeResiduals(const Eigen::VectorXd& x,
     vConverged = true;
     int nPtsUsed = 0;
     sigma0 = 0.0;
-    double a[4], b[3];
-    double f0, qw;
+    double a[4] {}, b[3] {};
+    double f0 {}, qw {};
     // double maxdVx = 0.0;
     // double maxdVy = 0.0;
     // double maxdVz = 0.0;

@@ -291,7 +291,7 @@ float CylinderFit::Fit()
     //		solL:	Yc, Zc, M, N, R
     //		solM:	Xc, Zc, L, N, R
     //		solN:	Xc, Yc, L, M, R
-    SolutionD solDir;
+    SolutionD solDir {};
     findBestSolDirection(solDir);
 
     // Initialise some matrices and vectors
@@ -300,7 +300,7 @@ float CylinderFit::Fit()
     Eigen::VectorXd atpl(5);
 
     // Iteration loop...
-    double sigma0;
+    double sigma0 {};
     bool cont = true;
     while (cont && (_numIter < _maxIter)) {
         ++_numIter;
@@ -327,7 +327,7 @@ float CylinderFit::Fit()
 
         // Before updating the unknowns, compute the residuals and sigma0 and check the residual
         // convergence
-        bool vConverged;
+        bool vConverged {};
         if (!computeResiduals(solDir, x, residuals, sigma0, _vConvLimit, vConverged)) {
             return FLOAT_MAX;
         }
@@ -465,8 +465,8 @@ void CylinderFit::setupNormalEquationMatrices(SolutionD solDir,
 
     // For each point, setup the observation equation coefficients and add their
     // contribution into the normal equation matrices
-    double a[5], b[3];
-    double f0, qw;
+    double a[5] {}, b[3] {};
+    double f0 {}, qw {};
     std::vector<Base::Vector3d>::const_iterator vIt = residuals.begin();
     std::list<Base::Vector3f>::const_iterator cIt;
     for (cIt = _vPoints.begin(); cIt != _vPoints.end(); ++cIt, ++vIt) {
@@ -523,11 +523,12 @@ void CylinderFit::setupObservation(SolutionD solDir,
     b[2] =
         2.0 * (dz - _vAxis.x * _vAxis.z * dx - _vAxis.y * _vAxis.z * dy - _vAxis.z * _vAxis.z * dz);
 
+    double ddxdl {}, ddydl {}, ddzdl {};
+    double ddxdm {}, ddydm {}, ddzdm {};
+    double ddxdn {}, ddydn {}, ddzdn {};
+
     // partials of the parameters
     switch (solDir) {
-        double ddxdl, ddydl, ddzdl;
-        double ddxdm, ddydm, ddzdm;
-        double ddxdn, ddydn, ddzdn;
         case solL:
             // order of parameters: Yc, Zc, M, N, R
             ddxdm = -2.0 * _vAxis.y * dx00 + (_vAxis.x - _vAxis.y * _vAxis.y / _vAxis.x) * dy00
@@ -645,8 +646,8 @@ bool CylinderFit::computeResiduals(SolutionD solDir,
     vConverged = true;
     int nPtsUsed = 0;
     sigma0 = 0.0;
-    double a[5], b[3];
-    double f0, qw;
+    double a[5] {}, b[3] {};
+    double f0 {}, qw {};
     // double maxdVx = 0.0;
     // double maxdVy = 0.0;
     // double maxdVz = 0.0;
@@ -747,7 +748,7 @@ bool CylinderFit::updateParameters(SolutionD solDir, const Eigen::VectorXd& x)
     }
 
     // Update the dependent axis direction parameter
-    double l2, m2, n2;
+    double l2 {}, m2 {}, n2 {};
     switch (solDir) {
         case solL:
             l2 = 1.0 - _vAxis.y * _vAxis.y - _vAxis.z * _vAxis.z;

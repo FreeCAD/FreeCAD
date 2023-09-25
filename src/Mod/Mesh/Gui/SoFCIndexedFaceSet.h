@@ -42,6 +42,7 @@ using GLfloat = float;
 namespace MeshGui
 {
 
+// NOLINTBEGIN
 class MeshRenderer
 {
 public:
@@ -142,6 +143,7 @@ private:
     MeshRenderer render;
     GLuint* selectBuf {nullptr};
 };
+// NOLINTEND
 
 }  // namespace MeshGui
 

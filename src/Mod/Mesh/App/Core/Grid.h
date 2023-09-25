@@ -61,6 +61,10 @@ protected:
     explicit MeshGrid(const MeshKernel& rclM);
     /// Construction
     MeshGrid();
+    MeshGrid(const MeshGrid&) = default;
+    MeshGrid(MeshGrid&&) = default;
+    MeshGrid& operator=(const MeshGrid&) = default;
+    MeshGrid& operator=(MeshGrid&&) = default;
     //@}
 
 public:
@@ -195,6 +199,7 @@ protected:
     virtual unsigned long HasElements() const = 0;
 
 protected:
+    // NOLINTBEGIN
     std::vector<std::vector<std::vector<std::set<ElementIndex>>>>
         _aulGrid;                /**< Grid data structure. */
     const MeshKernel* _pclMesh;  /**< The mesh kernel. */
@@ -208,6 +213,7 @@ protected:
     float _fMinX;                /**< Grid null position in x. */
     float _fMinY;                /**< Grid null position in y. */
     float _fMinZ;                /**< Grid null position in z. */
+    // NOLINTEND
 
     // friends
     friend class MeshGridIterator;
@@ -234,8 +240,12 @@ public:
     MeshFacetGrid(const MeshKernel& rclM, int iCtGridPerAxis);
     /// Construction
     MeshFacetGrid(const MeshKernel& rclM, float fGridLen);
+    MeshFacetGrid(const MeshFacetGrid&) = default;
+    MeshFacetGrid(MeshFacetGrid&&) = default;
     /// Destruction
     ~MeshFacetGrid() override = default;
+    MeshFacetGrid& operator=(const MeshFacetGrid&) = default;
+    MeshFacetGrid& operator=(MeshFacetGrid&&) = default;
     //@}
 
     /** @name Search */
@@ -314,8 +324,12 @@ public:
     MeshPointGrid(const MeshKernel& rclM, float fGridLen);
     /// Construction
     MeshPointGrid(const MeshKernel& rclM, unsigned long ulX, unsigned long ulY, unsigned long ulZ);
+    MeshPointGrid(const MeshPointGrid&) = default;
+    MeshPointGrid(MeshPointGrid&&) = default;
     /// Destruction
     ~MeshPointGrid() override = default;
+    MeshPointGrid& operator=(const MeshPointGrid&) = default;
+    MeshPointGrid& operator=(MeshPointGrid&&) = default;
     //@}
 
     /** Finds all points that lie in the same grid as the point \a rclPoint. */
@@ -427,6 +441,12 @@ public:
     }
 
 protected:
+    const MeshGrid& GetGrid() const
+    {
+        return _rclGrid;
+    }
+
+private:
     const MeshGrid& _rclGrid; /**< The mesh kernel. */
     unsigned long _ulX {0};   /**< Number of grids in x. */
     unsigned long _ulY {0};   /**< Number of grids in y. */
@@ -439,11 +459,10 @@ protected:
     struct GridElement
     {
         GridElement(unsigned long x, unsigned long y, unsigned long z)
-        {
-            this->x = x;
-            this->y = y;
-            this->z = z;
-        }
+            : x(x)
+            , y(y)
+            , z(z)
+        {}
         bool operator<(const GridElement& pos) const
         {
             if (x == pos.x) {
@@ -470,7 +489,7 @@ protected:
 inline Base::BoundBox3f
 MeshGrid::GetBoundBox(unsigned long ulX, unsigned long ulY, unsigned long ulZ) const
 {
-    float fX, fY, fZ;
+    float fX {}, fY {}, fZ {};
 
     fX = _fMinX + (float(ulX) * _fGridLenX);
     fY = _fMinY + (float(ulY) * _fGridLenY);
@@ -558,9 +577,9 @@ inline void MeshFacetGrid::AddFacet(const MeshGeomFacet& rclFacet,
                                     ElementIndex ulFacetIndex,
                                     float /*fEpsilon*/)
 {
-    unsigned long ulX, ulY, ulZ;
+    unsigned long ulX {}, ulY {}, ulZ {};
 
-    unsigned long ulX1, ulY1, ulZ1, ulX2, ulY2, ulZ2;
+    unsigned long ulX1 {}, ulY1 {}, ulZ1 {}, ulX2 {}, ulY2 {}, ulZ2 {};
 
     Base::BoundBox3f clBB;
 

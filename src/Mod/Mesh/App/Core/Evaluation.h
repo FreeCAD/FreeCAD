@@ -50,6 +50,11 @@ public:
     {}
     virtual ~MeshEvaluation() = default;
 
+    MeshEvaluation(const MeshEvaluation&) = delete;
+    MeshEvaluation(MeshEvaluation&&) = delete;
+    MeshEvaluation& operator=(const MeshEvaluation&) = delete;
+    MeshEvaluation& operator=(MeshEvaluation&&) = delete;
+
     /**
      * Evaluates the mesh kernel with respect to certain criteria. Must be reimplemented by every
      * subclass. This pure virtual function returns false if the mesh kernel is invalid according
@@ -58,6 +63,7 @@ public:
     virtual bool Evaluate() = 0;
 
 protected:
+    // NOLINTNEXTLINE
     const MeshKernel& _rclMesh; /**< Mesh kernel */
 };
 
@@ -78,6 +84,11 @@ public:
     {}
     virtual ~MeshValidation() = default;
 
+    MeshValidation(const MeshValidation&) = delete;
+    MeshValidation(MeshValidation&&) = delete;
+    MeshValidation& operator=(const MeshValidation&) = delete;
+    MeshValidation& operator=(MeshValidation&&) = delete;
+
     /**
      * This function attempts to change the mesh kernel to be valid according to the checked
      * criterion: True is returned if the errors could be fixed, false otherwise.
@@ -85,6 +96,7 @@ public:
     virtual bool Fixup() = 0;
 
 protected:
+    // NOLINTNEXTLINE
     MeshKernel& _rclMesh; /**< Mesh kernel */
 };
 
@@ -207,8 +219,10 @@ public:
     }
 
 protected:
+    // NOLINTBEGIN
     std::vector<std::pair<FacetIndex, FacetIndex>> nonManifoldList;
     std::list<std::vector<FacetIndex>> nonManifoldFacets;
+    // NOLINTEND
 };
 
 /**
@@ -229,7 +243,7 @@ public:
         return deletedFaces;
     }
 
-protected:
+private:
     std::vector<FacetIndex> deletedFaces;
     const std::list<std::vector<FacetIndex>>& nonManifoldList;
 };
@@ -264,7 +278,7 @@ public:
         return static_cast<unsigned long>(nonManifoldPoints.size());
     }
 
-protected:
+private:
     std::vector<FacetIndex> nonManifoldPoints;
     std::list<std::vector<FacetIndex>> facetsOfNonManifoldPoints;
 };
@@ -300,7 +314,7 @@ public:
     {}
     bool Fixup() override;
 
-protected:
+private:
     const std::vector<std::list<FacetIndex>>& _raclManifoldList;
 };
 

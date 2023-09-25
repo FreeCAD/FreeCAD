@@ -146,7 +146,7 @@ private:
  * The DockEvaluateMeshImp class creates a single instance and embeds it into a dock window.
  * \author Werner Mayer
  */
-class DockEvaluateMeshImp: public DlgEvaluateMeshImp
+class DockEvaluateMeshImp: public DlgEvaluateMeshImp  // NOLINT
 {
     Q_OBJECT
 

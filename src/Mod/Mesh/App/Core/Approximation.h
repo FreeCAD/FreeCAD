@@ -106,7 +106,7 @@ public:
         return (Real)0.0;
     }
 
-protected:
+private:
     Real m_afCoeff[6];
 };
 
@@ -191,6 +191,11 @@ protected:
      * Creates a vector of Wm4::Vector3 elements.
      */
     void GetMgcVectorArray(std::vector<Wm4::Vector3<double>>& rcPts) const;
+
+    Approximation(const Approximation&) = default;
+    Approximation(Approximation&&) = default;
+    Approximation& operator=(const Approximation&) = default;
+    Approximation& operator=(Approximation&&) = default;
 
 protected:
     // NOLINTBEGIN
@@ -387,7 +392,7 @@ public:
     std::vector<Base::Vector3d>
     toBezier(double umin = 0.0, double umax = 1.0, double vmin = 0.0, double vmax = 1.0) const;
 
-protected:
+private:
     double PolynomFit();
     double _fCoeff[10]; /**< Ziel der Koeffizienten aus dem Fit */
 };
@@ -437,7 +442,7 @@ public:
      */
     void GetBounding(Base::Vector3f& bottom, Base::Vector3f& top) const;
 
-protected:
+private:
     Base::Vector3f _vBase; /**< Base vector of the cylinder. */
     Base::Vector3f _vAxis; /**< Axis of the cylinder. */
     float _fRadius {0};    /**< Radius of the cylinder. */
@@ -474,7 +479,7 @@ public:
      */
     void ProjectToSphere();
 
-protected:
+private:
     Base::Vector3f _vCenter; /**< Center of the sphere. */
     float _fRadius {0};      /**< Radius of the cylinder. */
 };
@@ -498,11 +503,19 @@ public:
      * @param pKoef Pointer to the quadric coefficients
      *        (double [10])
      */
+    // NOLINTBEGIN
     explicit FunctionContainer(const double* pKoef)
     {
         Assign(pKoef);
         pImplSurf = new Wm4::QuadricSurface<double>(dKoeff);
     }
+    // NOLINTEND
+
+    FunctionContainer(const FunctionContainer&) = delete;
+    FunctionContainer(FunctionContainer&&) = delete;
+    FunctionContainer& operator=(const FunctionContainer&) = delete;
+    FunctionContainer& operator=(FunctionContainer&&) = delete;
+
     /**
      * Apply quadric coefficients
      * @param pKoef Pointer to the quadric coefficients
@@ -676,7 +689,7 @@ public:
         return (2.0 * dKoeff[6]);
     }
 
-protected:
+private:
     double dKoeff[10];                       /**< Coefficients of quadric */
     Wm4::ImplicitSurface<double>* pImplSurf; /**< Access to the WildMagic library */
 
@@ -695,7 +708,7 @@ public:
     float Fit() override;
     float Value(float x, float y) const;
 
-protected:
+private:
     float _fCoeff[9];
 };
 

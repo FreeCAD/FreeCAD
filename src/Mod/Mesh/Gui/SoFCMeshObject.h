@@ -44,6 +44,7 @@ class MeshFacetGrid;
 namespace MeshGui
 {
 
+// NOLINTBEGIN(cppcoreguidelines-special-member-functions,cppcoreguidelines-virtual-class-destructor)
 class MeshGuiExport SoSFMeshObject: public SoSField
 {
     using inherited = SoSField;
@@ -77,7 +78,9 @@ public:
 
 protected:
     ~SoFCMeshObjectElement() override;
-    const Mesh::MeshObject* mesh;
+
+private:
+    const Mesh::MeshObject* mesh {};
 };
 
 // -------------------------------------------------------
@@ -93,7 +96,7 @@ public:
     SoFCMeshPickNode();
     void notify(SoNotList*) override;
 
-    SoSFMeshObject mesh;
+    SoSFMeshObject mesh;  // NOLINT
 
     void rayPick(SoRayPickAction* action) override;
     void pick(SoPickAction* action) override;
@@ -181,7 +184,7 @@ public:
     static void initClass();
     SoFCMeshObjectShape();
 
-    unsigned int renderTriangleLimit;
+    unsigned int renderTriangleLimit;  // NOLINT
 
 protected:
     void doAction(SoAction* action) override;
@@ -299,6 +302,7 @@ protected:
 private:
     void drawLines(const Mesh::MeshObject*) const;
 };
+// NOLINTEND(cppcoreguidelines-special-member-functions,cppcoreguidelines-virtual-class-destructor)
 
 }  // namespace MeshGui
 

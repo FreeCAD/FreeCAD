@@ -35,6 +35,7 @@ PROPERTYITEM_SOURCE(MeshGui::PropertyMeshKernelItem)
 
 PropertyMeshKernelItem::PropertyMeshKernelItem()
 {
+    // NOLINTBEGIN
     m_p = static_cast<Gui::PropertyEditor::PropertyIntegerItem*>(
         Gui::PropertyEditor::PropertyIntegerItem::create());
     m_p->setParent(this);
@@ -50,6 +51,7 @@ PropertyMeshKernelItem::PropertyMeshKernelItem()
     m_f->setParent(this);
     m_f->setPropertyName(QLatin1String("Faces"));
     this->appendChild(m_f);
+    // NOLINTEND
 }
 
 void PropertyMeshKernelItem::initialize()

@@ -54,11 +54,27 @@ MeshKernel::MeshKernel(const MeshKernel& rclMesh)
     *this = rclMesh;
 }
 
+MeshKernel::MeshKernel(MeshKernel&& rclMesh)
+{
+    *this = rclMesh;
+}
+
 MeshKernel& MeshKernel::operator=(const MeshKernel& rclMesh)
 {
     if (this != &rclMesh) {  // must be a different instance
         this->_aclPointArray = rclMesh._aclPointArray;
         this->_aclFacetArray = rclMesh._aclFacetArray;
+        this->_clBoundBox = rclMesh._clBoundBox;
+        this->_bValid = rclMesh._bValid;
+    }
+    return *this;
+}
+
+MeshKernel& MeshKernel::operator=(MeshKernel&& rclMesh)
+{
+    if (this != &rclMesh) {  // must be a different instance
+        this->_aclPointArray = std::move(rclMesh._aclPointArray);
+        this->_aclFacetArray = std::move(rclMesh._aclFacetArray);
         this->_clBoundBox = rclMesh._clBoundBox;
         this->_bValid = rclMesh._bValid;
     }
@@ -441,7 +457,7 @@ void MeshKernel::Clear()
 
 bool MeshKernel::DeleteFacet(const MeshFacetIterator& rclIter)
 {
-    FacetIndex ulNFacet, ulInd;
+    FacetIndex ulNFacet {}, ulInd {};
 
     if (rclIter._clIter >= _aclFacetArray.end()) {
         return false;
@@ -539,7 +555,7 @@ bool MeshKernel::DeletePoint(const MeshPointIterator& rclIter)
 {
     MeshFacetIterator pFIter(*this), pFEnd(*this);
     std::vector<MeshFacetIterator> clToDel;
-    PointIndex ulInd;
+    PointIndex ulInd {};
 
     // index of the point to delete
     ulInd = rclIter._clIter - _aclPointArray.begin();
@@ -657,7 +673,7 @@ void MeshKernel::RemoveInvalids()
 {
     std::vector<unsigned long> aulDecrements;
     std::vector<unsigned long>::iterator pDIter;
-    unsigned long ulDec;
+    unsigned long ulDec {};
     MeshPointArray::_TIterator pPIter, pPEnd;
     MeshFacetArray::_TIterator pFIter, pFEnd;
 
@@ -784,7 +800,7 @@ std::vector<PointIndex> MeshKernel::GetFacetPoints(const std::vector<FacetIndex>
 {
     std::vector<PointIndex> points;
     for (FacetIndex it : facets) {
-        PointIndex p0, p1, p2;
+        PointIndex p0 {}, p1 {}, p2 {};
         GetFacetPoints(it, p0, p1, p2);
         points.push_back(p0);
         points.push_back(p1);
@@ -913,7 +929,7 @@ void MeshKernel::Read(std::istream& rclIn)
     Base::InputStream str(rclIn);
 
     // Read the header with a "magic number" and a version
-    uint32_t magic, version, swap_magic, swap_version;
+    uint32_t magic {}, version {}, swap_magic {}, swap_version {};
     str >> magic >> version;
     swap_magic = magic;
     Base::SwapEndian(swap_magic);
@@ -950,7 +966,7 @@ void MeshKernel::Read(std::istream& rclIn)
             MeshFacetArray facetArray;
             facetArray.resize(uCtFts);
 
-            uint32_t v1, v2, v3;
+            uint32_t v1 {}, v2 {}, v3 {};
             for (auto& it : facetArray) {
                 str >> v1 >> v2 >> v3;
 
@@ -1048,11 +1064,11 @@ void MeshKernel::Read(std::istream& rclIn)
             for (auto& it : pointArray) {
                 str >> it.x >> it.y >> it.z;
             }
-            uint32_t dummy;
+            uint32_t dummy {};
             for (unsigned long i = 0; i < uCtEdges; i++) {
                 str >> dummy;
             }
-            uint32_t v1, v2, v3;
+            uint32_t v1 {}, v2 {}, v3 {};
             facetArray.resize(uCtFts);
             for (auto& it : facetArray) {
                 str >> v1 >> v2 >> v3;
@@ -1124,7 +1140,7 @@ std::vector<Base::Vector3f> MeshKernel::CalcVertexNormals() const
 
     normals.resize(CountPoints());
 
-    PointIndex p1, p2, p3;
+    PointIndex p1 {}, p2 {}, p3 {};
     unsigned int ct = CountFacets();
     for (unsigned int pFIter = 0; pFIter < ct; pFIter++) {
         GetFacetPoints(pFIter, p1, p2, p3);

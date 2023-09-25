@@ -23,9 +23,9 @@
 #ifndef MESHGUI_REMESHGMSH_H
 #define MESHGUI_REMESHGMSH_H
 
+#include <memory>
 #include <QDialog>
 #include <QProcess>
-#include <memory>
 
 #include <Gui/TaskView/TaskDialog.h>
 #include <Gui/TaskView/TaskView.h>

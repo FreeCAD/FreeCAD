@@ -57,6 +57,8 @@ public:
     inline MeshFacetIterator(const MeshKernel& rclM, FacetIndex ulPos);
     /// construction
     inline MeshFacetIterator(const MeshFacetIterator& rclI);
+    inline MeshFacetIterator(MeshFacetIterator&& rclI);
+    ~MeshFacetIterator() = default;
     //@}
 
     /** @name Transformation */
@@ -105,6 +107,7 @@ public:
     }
     /// Assignment.
     inline MeshFacetIterator& operator=(const MeshFacetIterator& rpI);
+    inline MeshFacetIterator& operator=(MeshFacetIterator&& rpI);
     /// Compares if this iterator points to a lower element than the other one.
     bool operator<(const MeshFacetIterator& rclI) const
     {
@@ -205,7 +208,7 @@ public:
 protected:
     inline const MeshGeomFacet& Dereference();
 
-protected:
+private:
     const MeshKernel& _rclMesh;
     const MeshFacetArray& _rclFAry;
     const MeshPointArray& _rclPAry;
@@ -230,6 +233,8 @@ public:
     inline explicit MeshPointIterator(const MeshKernel& rclM);
     inline MeshPointIterator(const MeshKernel& rclM, PointIndex ulPos);
     inline MeshPointIterator(const MeshPointIterator& rclI);
+    inline MeshPointIterator(MeshPointIterator&& rclI);
+    ~MeshPointIterator() = default;
     //@}
 
     /** @name Transformation */
@@ -266,6 +271,7 @@ public:
     }
     /// Assignment.
     inline MeshPointIterator& operator=(const MeshPointIterator& rpI);
+    inline MeshPointIterator& operator=(MeshPointIterator&& rpI);
     /// Compares if this iterator points to a lower element than the other one.
     bool operator<(const MeshPointIterator& rclI) const
     {
@@ -345,10 +351,10 @@ public:
     }
     //@}
 
-protected:
+private:
     inline const MeshPoint& Dereference() const;
 
-protected:
+private:
     const MeshKernel& _rclMesh;
     const MeshPointArray& _rclPAry;
     mutable MeshPoint _clPoint;
@@ -376,22 +382,22 @@ public:
         return _clIter != _rclFAry.end();
     }
 
-    Base::Vector3f _afPoints[3];
+    Base::Vector3f _afPoints[3];  // NOLINT
 
-protected:
-    const MeshKernel& _rclMesh;
+private:
     const MeshFacetArray& _rclFAry;
     const MeshPointArray& _rclPAry;
     MeshFacetArray::_TConstIterator _clIter;
 
 public:
     MeshFastFacetIterator(const MeshFastFacetIterator&) = delete;
+    MeshFastFacetIterator(MeshFastFacetIterator&&) = delete;
     void operator=(const MeshFastFacetIterator&) = delete;
+    void operator=(MeshFastFacetIterator&&) = delete;
 };
 
 inline MeshFastFacetIterator::MeshFastFacetIterator(const MeshKernel& rclM)
-    : _rclMesh(rclM)
-    , _rclFAry(rclM._aclFacetArray)
+    : _rclFAry(rclM._aclFacetArray)
     , _rclPAry(rclM._aclPointArray)
     , _clIter(_rclFAry.begin())
 {}
@@ -422,6 +428,15 @@ inline MeshFacetIterator::MeshFacetIterator(const MeshKernel& rclM, FacetIndex u
 {}
 
 inline MeshFacetIterator::MeshFacetIterator(const MeshFacetIterator& rclI)
+    : _rclMesh(rclI._rclMesh)
+    , _rclFAry(rclI._rclFAry)
+    , _rclPAry(rclI._rclPAry)
+    , _clIter(rclI._clIter)
+    , _bApply(rclI._bApply)
+    , _clTrf(rclI._clTrf)
+{}
+
+inline MeshFacetIterator::MeshFacetIterator(MeshFacetIterator&& rclI)
     : _rclMesh(rclI._rclMesh)
     , _rclFAry(rclI._rclFAry)
     , _rclPAry(rclI._rclPAry)
@@ -470,6 +485,14 @@ inline bool MeshFacetIterator::Set(FacetIndex ulIndex)
 }
 
 inline MeshFacetIterator& MeshFacetIterator::operator=(const MeshFacetIterator& rpI)
+{
+    _clIter = rpI._clIter;
+    _bApply = rpI._bApply;
+    _clTrf = rpI._clTrf;
+    return *this;
+}
+
+inline MeshFacetIterator& MeshFacetIterator::operator=(MeshFacetIterator&& rpI)
 {
     _clIter = rpI._clIter;
     _bApply = rpI._bApply;
@@ -542,6 +565,14 @@ inline MeshPointIterator::MeshPointIterator(const MeshPointIterator& rclI)
     , _clTrf(rclI._clTrf)
 {}
 
+inline MeshPointIterator::MeshPointIterator(MeshPointIterator&& rclI)
+    : _rclMesh(rclI._rclMesh)
+    , _rclPAry(rclI._rclPAry)
+    , _clIter(rclI._clIter)
+    , _bApply(rclI._bApply)
+    , _clTrf(rclI._clTrf)
+{}
+
 inline void MeshPointIterator::Transform(const Base::Matrix4D& rclTrf)
 {
     _clTrf = rclTrf;
@@ -573,6 +604,14 @@ inline bool MeshPointIterator::Set(PointIndex ulIndex)
 }
 
 inline MeshPointIterator& MeshPointIterator::operator=(const MeshPointIterator& rpI)
+{
+    _clIter = rpI._clIter;
+    _bApply = rpI._bApply;
+    _clTrf = rpI._clTrf;
+    return *this;
+}
+
+inline MeshPointIterator& MeshPointIterator::operator=(MeshPointIterator&& rpI)
 {
     _clIter = rpI._clIter;
     _bApply = rpI._bApply;

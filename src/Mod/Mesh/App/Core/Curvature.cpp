@@ -59,11 +59,11 @@ MeshCurvature::MeshCurvature(const MeshKernel& kernel)
     std::generate(mySegment.begin(), mySegment.end(), Base::iotaGen<FacetIndex>(0));
 }
 
-MeshCurvature::MeshCurvature(const MeshKernel& kernel, const std::vector<FacetIndex>& segm)
+MeshCurvature::MeshCurvature(const MeshKernel& kernel, std::vector<FacetIndex> segm)
     : myKernel(kernel)
     , myMinPoints(20)
     , myRadius(0.5f)
-    , mySegment(segm)
+    , mySegment(std::move(segm))
 {}
 
 void MeshCurvature::ComputePerFace(bool parallel)
@@ -357,7 +357,7 @@ public:
     {}
     void Append(const MeshCore::MeshKernel& kernel, FacetIndex index) override
     {
-        PointIndex ulP1, ulP2, ulP3;
+        PointIndex ulP1 {}, ulP2 {}, ulP3 {};
         kernel.GetFacetPoints(index, ulP1, ulP2, ulP3);
         indices.insert(ulP1);
         indices.insert(ulP2);
@@ -411,13 +411,13 @@ CurvatureInfo FacetCurvature::Compute(FacetIndex index) const
         fitPoints.push_back(verts[it] - face_gravity);
     }
 
-    float fMin, fMax;
+    float fMin {}, fMax {};
     if (fitPoints.size() >= myMinPoints) {
         SurfaceFit surf_fit;
         surf_fit.AddPoints(fitPoints);
         surf_fit.Fit();
         rkNormal = surf_fit.GetNormal();
-        double dMin, dMax, dDistance;
+        double dMin {}, dMax {}, dDistance {};
         if (surf_fit.GetCurvatureInfo(0.0, 0.0, 0.0, dMin, dMax, rkDir1, rkDir0, dDistance)) {
             fMin = (float)dMin;
             fMax = (float)dMax;

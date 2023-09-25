@@ -47,6 +47,12 @@ public:
         : minFacets(minFacets)
     {}
     virtual ~MeshSurfaceSegment() = default;
+
+    MeshSurfaceSegment(const MeshSurfaceSegment&) = delete;
+    MeshSurfaceSegment(MeshSurfaceSegment&&) = delete;
+    MeshSurfaceSegment& operator=(const MeshSurfaceSegment&) = delete;
+    MeshSurfaceSegment& operator=(MeshSurfaceSegment&&) = delete;
+
     virtual bool TestFacet(const MeshFacet& rclFacet) const = 0;
     virtual const char* GetType() const = 0;
     virtual void Initialize(FacetIndex);
@@ -59,7 +65,7 @@ public:
     }
     MeshSegment FindSegment(FacetIndex) const;
 
-protected:
+private:
     std::vector<MeshSegment> segments;
     unsigned long minFacets;
 };
@@ -77,8 +83,10 @@ public:
     {}
 
 protected:
+    // NOLINTBEGIN
     const MeshKernel& kernel;
     float tolerance;
+    // NOLINTEND
 };
 
 class MeshExport MeshDistancePlanarSegment: public MeshDistanceSurfaceSegment
@@ -86,6 +94,12 @@ class MeshExport MeshDistancePlanarSegment: public MeshDistanceSurfaceSegment
 public:
     MeshDistancePlanarSegment(const MeshKernel& mesh, unsigned long minFacets, float tol);
     ~MeshDistancePlanarSegment() override;
+
+    MeshDistancePlanarSegment(const MeshDistancePlanarSegment&) = delete;
+    MeshDistancePlanarSegment(MeshDistancePlanarSegment&&) = delete;
+    MeshDistancePlanarSegment& operator=(const MeshDistancePlanarSegment&) = delete;
+    MeshDistancePlanarSegment& operator=(MeshDistancePlanarSegment&&) = delete;
+
     bool TestFacet(const MeshFacet& rclFacet) const override;
     const char* GetType() const override
     {
@@ -94,7 +108,7 @@ public:
     void Initialize(FacetIndex) override;
     void AddFacet(const MeshFacet& rclFacet) override;
 
-protected:
+private:
     Base::Vector3f basepoint;
     Base::Vector3f normal;
     PlaneFit* fitter;
@@ -105,6 +119,12 @@ class MeshExport AbstractSurfaceFit
 public:
     AbstractSurfaceFit() = default;
     virtual ~AbstractSurfaceFit() = default;
+
+    AbstractSurfaceFit(const AbstractSurfaceFit&) = delete;
+    AbstractSurfaceFit(AbstractSurfaceFit&&) = delete;
+    AbstractSurfaceFit& operator=(const AbstractSurfaceFit&) = delete;
+    AbstractSurfaceFit& operator=(AbstractSurfaceFit&&) = delete;
+
     virtual const char* GetType() const = 0;
     virtual void Initialize(const MeshGeomFacet&) = 0;
     virtual bool TestTriangle(const MeshGeomFacet&) const = 0;
@@ -121,6 +141,12 @@ public:
     PlaneSurfaceFit();
     PlaneSurfaceFit(const Base::Vector3f& b, const Base::Vector3f& n);
     ~PlaneSurfaceFit() override;
+
+    PlaneSurfaceFit(const PlaneSurfaceFit&) = delete;
+    PlaneSurfaceFit(PlaneSurfaceFit&&) = delete;
+    PlaneSurfaceFit& operator=(const PlaneSurfaceFit&) = delete;
+    PlaneSurfaceFit& operator=(PlaneSurfaceFit&&) = delete;
+
     const char* GetType() const override
     {
         return "Plane";
@@ -145,6 +171,12 @@ public:
     CylinderSurfaceFit();
     CylinderSurfaceFit(const Base::Vector3f& b, const Base::Vector3f& a, float r);
     ~CylinderSurfaceFit() override;
+
+    CylinderSurfaceFit(const CylinderSurfaceFit&) = delete;
+    CylinderSurfaceFit(CylinderSurfaceFit&&) = delete;
+    CylinderSurfaceFit& operator=(const CylinderSurfaceFit&) = delete;
+    CylinderSurfaceFit& operator=(CylinderSurfaceFit&&) = delete;
+
     const char* GetType() const override
     {
         return "Cylinder";
@@ -170,6 +202,12 @@ public:
     SphereSurfaceFit();
     SphereSurfaceFit(const Base::Vector3f& c, float r);
     ~SphereSurfaceFit() override;
+
+    SphereSurfaceFit(const SphereSurfaceFit&) = delete;
+    SphereSurfaceFit(SphereSurfaceFit&&) = delete;
+    SphereSurfaceFit& operator=(const SphereSurfaceFit&) = delete;
+    SphereSurfaceFit& operator=(SphereSurfaceFit&&) = delete;
+
     const char* GetType() const override
     {
         return "Sphere";
@@ -196,6 +234,14 @@ public:
                                          unsigned long minFacets,
                                          float tol);
     ~MeshDistanceGenericSurfaceFitSegment() override;
+
+    MeshDistanceGenericSurfaceFitSegment(const MeshDistanceGenericSurfaceFitSegment&) = delete;
+    MeshDistanceGenericSurfaceFitSegment(MeshDistanceGenericSurfaceFitSegment&&) = delete;
+    MeshDistanceGenericSurfaceFitSegment&
+    operator=(const MeshDistanceGenericSurfaceFitSegment&) = delete;
+    MeshDistanceGenericSurfaceFitSegment&
+    operator=(MeshDistanceGenericSurfaceFitSegment&&) = delete;
+
     bool TestFacet(const MeshFacet& rclFacet) const override;
     const char* GetType() const override
     {
@@ -206,7 +252,7 @@ public:
     void AddFacet(const MeshFacet& rclFacet) override;
     std::vector<float> Parameters() const;
 
-protected:
+private:
     AbstractSurfaceFit* fitter;
 };
 
@@ -220,7 +266,12 @@ public:
         , info(ci)
     {}
 
-protected:
+    const CurvatureInfo& GetInfo(std::size_t pos) const
+    {
+        return info.at(pos);
+    }
+
+private:
     const std::vector<CurvatureInfo>& info;
 };
 
@@ -252,11 +303,10 @@ public:
                                     float tolMax,
                                     float curv)
         : MeshCurvatureSurfaceSegment(ci, minFacets)
+        , curvature(curv)
         , toleranceMin(tolMin)
         , toleranceMax(tolMax)
-    {
-        curvature = curv;
-    }
+    {}
     bool TestFacet(const MeshFacet& rclFacet) const override;
     const char* GetType() const override
     {
@@ -277,10 +327,9 @@ public:
                                   float tol,
                                   float curv)
         : MeshCurvatureSurfaceSegment(ci, minFacets)
+        , curvature(curv)
         , tolerance(tol)
-    {
-        curvature = curv;
-    }
+    {}
     bool TestFacet(const MeshFacet& rclFacet) const override;
     const char* GetType() const override
     {
@@ -330,7 +379,7 @@ public:
                     unsigned short neighbourIndex) override;
     bool Visit(const MeshFacet& face, const MeshFacet&, FacetIndex ulFInd, unsigned long) override;
 
-protected:
+private:
     std::vector<FacetIndex>& indices;
     MeshSurfaceSegment& segm;
 };

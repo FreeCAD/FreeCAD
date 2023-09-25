@@ -28,8 +28,6 @@
 #include <vector>
 #endif
 
-#include "Core/IO/Writer3MF.h"
-#include "Core/Iterator.h"
 #include <App/Application.h>
 #include <App/ComplexGeoData.h>
 #include <App/ComplexGeoDataPy.h>
@@ -40,6 +38,8 @@
 #include <Base/Sequencer.h>
 #include <Base/Stream.h>
 #include <Base/Tools.h>
+#include "Core/Iterator.h"
+#include "Core/IO/Writer3MF.h"
 #include <zipios++/zipoutputstream.h>
 
 #include "Exporter.h"
@@ -159,7 +159,7 @@ void Exporter::throwIfNoPermission(const std::string& filename)
 // ----------------------------------------------------------------------------
 
 MergeExporter::MergeExporter(std::string fileName, MeshIO::Format)
-    : fName(fileName)
+    : fName(std::move(fileName))
 {}
 
 MergeExporter::~MergeExporter()
@@ -281,9 +281,9 @@ std::vector<Extension3MFProducerPtr> Extension3MFFactory::producer;
 class Exporter3MF::Private
 {
 public:
-    explicit Private(const std::string& filename, const std::vector<Extension3MFPtr>& ext)
+    explicit Private(const std::string& filename, std::vector<Extension3MFPtr> ext)
         : writer3mf(filename)
-        , ext(ext)
+        , ext(std::move(ext))
     {}
     MeshCore::Writer3MF writer3mf;
     std::vector<Extension3MFPtr> ext;
@@ -428,7 +428,7 @@ bool ExporterAMF::addMesh(const char* name, const MeshObject& mesh)
     *outputStreamPtr << "\t\t<mesh>\n"
                      << "\t\t\t<vertices>\n";
 
-    const MeshCore::MeshGeomFacet* facet;
+    const MeshCore::MeshGeomFacet* facet {};
 
     // Iterate through all facets of the mesh, and construct a:
     //   * Cache (map) of used vertices, outputting each new unique vertex to

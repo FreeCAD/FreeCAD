@@ -584,7 +584,7 @@ public:
     {}
     bool Evaluate() override;
 
-protected:
+private:
     std::vector<FacetIndex>& _facets;
 };
 

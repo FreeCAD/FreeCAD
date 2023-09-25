@@ -23,8 +23,8 @@
 #ifndef MESHGUI_MESHSELECTION_H
 #define MESHGUI_MESHSELECTION_H
 
-#include <QWidget>
 #include <vector>
+#include <QWidget>
 
 #include <Gui/SelectionObject.h>
 #include <Inventor/nodes/SoEventCallback.h>
@@ -48,6 +48,11 @@ class MeshGuiExport MeshSelection
 public:
     MeshSelection();
     ~MeshSelection();
+
+    MeshSelection(const MeshSelection&) = delete;
+    MeshSelection(MeshSelection&&) = delete;
+    MeshSelection& operator=(const MeshSelection&) = delete;
+    MeshSelection& operator=(MeshSelection&&) = delete;
 
     void setEnabledViewerSelection(bool);
 

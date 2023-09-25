@@ -74,7 +74,7 @@ bool ReaderOBJ::Load(std::istream& str)
     MeshFacetArray meshFacets;
 
     std::string line;
-    float fX, fY, fZ;
+    float fX {}, fY {}, fZ {};
     int i1 = 1, i2 = 1, i3 = 1, i4 = 1;
     MeshFacet item;
 

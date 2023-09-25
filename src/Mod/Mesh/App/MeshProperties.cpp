@@ -30,11 +30,11 @@
 #include <Base/Writer.h>
 
 #include "Core/Iterator.h"
-#include "Core/MeshIO.h"
 #include "Core/MeshKernel.h"
+#include "Core/MeshIO.h"
 
-#include "Mesh.h"
 #include "MeshProperties.h"
+#include "Mesh.h"
 #include "MeshPy.h"
 
 
@@ -645,7 +645,7 @@ void PropertyMaterial::RestoreDocFile(Base::Reader& reader)
         str >> count;
         color.resize(count);
         for (auto& it : color) {
-            uint32_t value;  // must be 32 bit long
+            uint32_t value {};  // must be 32 bit long
             str >> value;
             it.setPackedValue(value);
         }
@@ -656,7 +656,7 @@ void PropertyMaterial::RestoreDocFile(Base::Reader& reader)
         str >> count;
         value.resize(count);
         for (auto& it : value) {
-            float valueF;
+            float valueF {};
             str >> valueF;
             it = valueF;
         }

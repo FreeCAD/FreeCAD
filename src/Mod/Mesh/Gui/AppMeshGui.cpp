@@ -83,8 +83,8 @@ public:
 private:
     Py::Object convertToSTL(const Py::Tuple& args)
     {
-        char* inname;
-        char* outname;
+        char* inname {};
+        char* outname {};
         if (!PyArg_ParseTuple(args.ptr(), "etet", "utf-8", &inname, "utf-8", &outname)) {
             throw Py::Exception();
         }
@@ -108,7 +108,7 @@ private:
             }
         }
 
-        return Py::Boolean(ok);
+        return Py::Boolean(ok);  // NOLINT
     }
 };
 
@@ -147,6 +147,7 @@ PyMOD_INIT_FUNC(MeshGui)
         (void)new MeshGui::CleanupHandler;
     }
 
+    // NOLINTBEGIN
     // try to instantiate flat-mesh commands
     try {
         Base::Interpreter().runString("import MeshFlatteningCommand");
@@ -162,6 +163,7 @@ PyMOD_INIT_FUNC(MeshGui)
         QT_TRANSLATE_NOOP("QObject", "Import-Export"));
 
     Mesh::Extension3MFFactory::addProducer(new MeshGui::ThumbnailExtensionProducer);
+    // NOLINTEND
 
     // clang-format off
     MeshGui::SoFCMeshObjectElement              ::initClass();
