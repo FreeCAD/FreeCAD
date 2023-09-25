@@ -73,6 +73,7 @@
 #include <Mod/Part/App/encodeFilename.h>
 
 #include "ImportOCAF2.h"
+#include "ReaderGltf.h"
 #include "WriterGltf.h"
 
 namespace Import
@@ -247,6 +248,10 @@ private:
                     Part::ImportIgesParts(pcDoc, Utf8Name.c_str());
                     pcDoc->recompute();
                 }
+            }
+            else if (file.hasExtension({"glb", "gltf"})) {
+                Import::ReaderGltf reader(file);
+                reader.read(hDoc);
             }
             else {
                 throw Py::Exception(PyExc_IOError, "no supported file format");

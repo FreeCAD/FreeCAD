@@ -24,9 +24,31 @@
 #ifndef IMPORT_READER_GLTF_H
 #define IMPORT_READER_GLTF_H
 
+#include <Mod/Import/ImportGlobal.h>
+#include <Base/FileInfo.h>
+#include <TDocStd_Document.hxx>
+#include <TopoDS_Shape.hxx>
+
 namespace Import
 {
 
-}
+class ImportExport ReaderGltf
+{
+public:
+    explicit ReaderGltf(const Base::FileInfo& file);
+
+    void read(Handle(TDocStd_Document) hDoc);
+    bool cleanup() const;
+    void setCleanup(bool);
+
+private:
+    TopoDS_Shape fixShape(TopoDS_Shape);
+
+private:
+    Base::FileInfo file;
+    bool clean = true;
+};
+
+}  // namespace Import
 
 #endif  // IMPORT_READER_GLTF_H
