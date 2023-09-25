@@ -23,10 +23,10 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-#include <QMenu>
-#include <QTimer>
 #include <algorithm>
 #include <functional>
+#include <QMenu>
+#include <QTimer>
 
 #include <Inventor/SbLine.h>
 #include <Inventor/SoPickedPoint.h>
@@ -51,8 +51,8 @@
 #include <Gui/View3DInventor.h>
 #include <Gui/View3DInventorViewer.h>
 #include <Gui/WaitCursor.h>
-#include <Mod/Mesh/App/Core/Algorithm.h>
 #include <Mod/Mesh/App/MeshFeature.h>
+#include <Mod/Mesh/App/Core/Algorithm.h>
 
 #include "MeshEditor.h"
 #include "SoFCMeshObject.h"
@@ -65,9 +65,8 @@ namespace sp = std::placeholders;
 PROPERTY_SOURCE(MeshGui::ViewProviderFace, Gui::ViewProviderDocumentObject)
 
 ViewProviderFace::ViewProviderFace()
-    : mesh(nullptr)
-    , current_index(-1)
 {
+    // NOLINTBEGIN
     pcCoords = new SoCoordinate3();
     pcCoords->ref();
     pcCoords->point.setNum(0);
@@ -75,6 +74,7 @@ ViewProviderFace::ViewProviderFace()
     pcFaces->ref();
     pcMeshPick = new SoFCMeshPickNode();
     pcMeshPick->ref();
+    // NOLINTEND
 }
 
 ViewProviderFace::~ViewProviderFace()
@@ -448,12 +448,9 @@ struct NofFacetsCompare
 
 MeshFillHole::MeshFillHole(MeshHoleFiller& hf, Gui::View3DInventor* parent)
     : QObject(parent)
-    , myMesh(nullptr)
-    , myNumPoints(0)
-    , myVertex1(0)
-    , myVertex2(0)
     , myHoleFiller(hf)
 {
+    // NOLINTBEGIN
     myBoundariesRoot = new SoSeparator;
     myBoundariesRoot->ref();
     myBoundaryRoot = new SoSeparator;
@@ -475,6 +472,7 @@ MeshFillHole::MeshFillHole(MeshHoleFiller& hf, Gui::View3DInventor* parent)
     myVertex = new SoCoordinate3();
     myBridgeRoot->addChild(myVertex);
     myBridgeRoot->addChild(new SoPointSet);
+    // NOLINTEND
 }
 
 MeshFillHole::~MeshFillHole()
@@ -699,7 +697,7 @@ void MeshFillHole::fileHoleCallback(void* ud, SoEventCallback* n)
             std::map<SoNode*, TBoundary>::iterator it = self->myPolygons.find(node);
             if (it != self->myPolygons.end()) {
                 // now check which vertex of the polygon is closest to the ray
-                Mesh::PointIndex vertex_index;
+                Mesh::PointIndex vertex_index {};
                 SbVec3f closestPoint;
                 float minDist =
                     self->findClosestPoint(rp.getLine(), it->second, vertex_index, closestPoint);
@@ -736,7 +734,7 @@ void MeshFillHole::fileHoleCallback(void* ud, SoEventCallback* n)
                 std::map<SoNode*, TBoundary>::iterator it = self->myPolygons.find(node);
                 if (it != self->myPolygons.end()) {
                     // now check which vertex of the polygon is closest to the ray
-                    Mesh::PointIndex vertex_index;
+                    Mesh::PointIndex vertex_index {};
                     SbVec3f closestPoint;
                     float minDist = self->findClosestPoint(rp.getLine(),
                                                            it->second,

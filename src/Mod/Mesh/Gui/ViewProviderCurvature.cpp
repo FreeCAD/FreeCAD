@@ -22,16 +22,16 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-#include <QCursor>
-#include <QMenu>
 #include <algorithm>
 #include <iomanip>
 #include <ios>
 #include <sstream>
+#include <QCursor>
+#include <QMenu>
 
 #include <Inventor/SoPickedPoint.h>
-#include <Inventor/actions/SoSearchAction.h>
 #include <Inventor/details/SoFaceDetail.h>
+#include <Inventor/actions/SoSearchAction.h>
 #include <Inventor/events/SoLocation2Event.h>
 #include <Inventor/events/SoMouseButtonEvent.h>
 #include <Inventor/nodes/SoDrawStyle.h>
@@ -73,6 +73,7 @@ PROPERTY_SOURCE(MeshGui::ViewProviderMeshCurvature, Gui::ViewProviderDocumentObj
 
 ViewProviderMeshCurvature::ViewProviderMeshCurvature()
 {
+    // NOLINTBEGIN
     pcColorRoot = new SoSeparator();
     pcColorRoot->ref();
     pcColorMat = new SoMaterial;
@@ -86,9 +87,10 @@ ViewProviderMeshCurvature::ViewProviderMeshCurvature()
     pcColorBar->setRange(-0.5f, 0.5f, 3);
     pcLinkRoot = new SoGroup;
     pcLinkRoot->ref();
+    // NOLINTEND
 
     App::Material mat;
-    const SbColor* cols;
+    const SbColor* cols {};
     if (pcColorMat->ambientColor.getNum() == 1) {
         cols = pcColorMat->ambientColor.getValues(0);
         mat.ambientColor.setPackedValue(cols[0].getPackedValue());

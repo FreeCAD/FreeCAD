@@ -63,13 +63,13 @@ TYPESYSTEM_SOURCE(Mesh::MeshSegment, Data::Segment)
 
 MeshObject::MeshObject() = default;
 
-MeshObject::MeshObject(const MeshCore::MeshKernel& Kernel)
+MeshObject::MeshObject(const MeshCore::MeshKernel& Kernel)  // NOLINT
     : _kernel(Kernel)
 {
     // copy the mesh structure
 }
 
-MeshObject::MeshObject(const MeshCore::MeshKernel& Kernel, const Base::Matrix4D& Mtrx)
+MeshObject::MeshObject(const MeshCore::MeshKernel& Kernel, const Base::Matrix4D& Mtrx)  // NOLINT
     : _Mtrx(Mtrx)
     , _kernel(Kernel)
 {
@@ -77,6 +77,14 @@ MeshObject::MeshObject(const MeshCore::MeshKernel& Kernel, const Base::Matrix4D&
 }
 
 MeshObject::MeshObject(const MeshObject& mesh)
+    : _Mtrx(mesh._Mtrx)
+    , _kernel(mesh._kernel)
+{
+    // copy the mesh structure
+    copySegments(mesh);
+}
+
+MeshObject::MeshObject(MeshObject&& mesh)
     : _Mtrx(mesh._Mtrx)
     , _kernel(mesh._kernel)
 {
@@ -207,7 +215,7 @@ void MeshObject::swapSegments(MeshObject& mesh)
     });
 }
 
-void MeshObject::operator=(const MeshObject& mesh)
+MeshObject& MeshObject::operator=(const MeshObject& mesh)
 {
     if (this != &mesh) {
         // copy the mesh structure
@@ -215,6 +223,20 @@ void MeshObject::operator=(const MeshObject& mesh)
         this->_kernel = mesh._kernel;
         copySegments(mesh);
     }
+
+    return *this;
+}
+
+MeshObject& MeshObject::operator=(MeshObject&& mesh)
+{
+    if (this != &mesh) {
+        // copy the mesh structure
+        setTransform(mesh._Mtrx);
+        this->_kernel = mesh._kernel;
+        copySegments(mesh);
+    }
+
+    return *this;
 }
 
 void MeshObject::setKernel(const MeshCore::MeshKernel& m)
@@ -294,7 +316,7 @@ double MeshObject::getVolume() const
 
 Base::Vector3d MeshObject::getPoint(PointIndex index) const
 {
-    Base::Vector3f vertf = _kernel.GetPoint(index);
+    MeshCore::MeshPoint vertf = _kernel.GetPoint(index);
     Base::Vector3d vertd(vertf.x, vertf.y, vertf.z);
     vertd = _Mtrx * vertd;
     return vertd;
@@ -337,7 +359,7 @@ void MeshObject::getFaces(std::vector<Base::Vector3d>& Points,
     const MeshCore::MeshFacetArray& ary = _kernel.GetFacets();
     Topo.reserve(ctfacets);
     for (unsigned long i = 0; i < ctfacets; i++) {
-        Facet face;
+        Facet face {};
         face.I1 = (unsigned int)ary[i]._aulPoints[0];
         face.I2 = (unsigned int)ary[i]._aulPoints[1];
         face.I3 = (unsigned int)ary[i]._aulPoints[2];
@@ -1002,7 +1024,7 @@ void MeshObject::offsetSpecial(float fSize, float zmax, float zmin)
     // go through all the vertex normals
     for (std::vector<Base::Vector3f>::iterator It = normals.begin(); It != normals.end();
          ++It, i++) {
-        Base::Vector3f Pnt = _kernel.GetPoint(i);
+        auto Pnt = _kernel.GetPoint(i);
         if (Pnt.z < zmax && Pnt.z > zmin) {
             Pnt.z = 0;
             _kernel.MovePoint(i, Pnt.Normalize() * fSize);
@@ -1116,7 +1138,7 @@ void MeshObject::cut(const Base::Polygon2d& polygon2d,
     MeshCore::MeshAlgorithm meshAlg(kernel);
     std::vector<FacetIndex> check;
 
-    bool inner;
+    bool inner {};
     switch (type) {
         case INNER:
             inner = true;
@@ -2124,10 +2146,16 @@ MeshObject::const_point_iterator::const_point_iterator(const MeshObject* mesh, P
 MeshObject::const_point_iterator::const_point_iterator(const MeshObject::const_point_iterator& fi) =
     default;
 
+MeshObject::const_point_iterator::const_point_iterator(MeshObject::const_point_iterator&& fi) =
+    default;
+
 MeshObject::const_point_iterator::~const_point_iterator() = default;
 
 MeshObject::const_point_iterator&
 MeshObject::const_point_iterator::operator=(const MeshObject::const_point_iterator& pi) = default;
+
+MeshObject::const_point_iterator&
+MeshObject::const_point_iterator::operator=(MeshObject::const_point_iterator&& pi) = default;
 
 void MeshObject::const_point_iterator::dereference()
 {
@@ -2185,10 +2213,16 @@ MeshObject::const_facet_iterator::const_facet_iterator(const MeshObject* mesh, F
 MeshObject::const_facet_iterator::const_facet_iterator(const MeshObject::const_facet_iterator& fi) =
     default;
 
+MeshObject::const_facet_iterator::const_facet_iterator(MeshObject::const_facet_iterator&& fi) =
+    default;
+
 MeshObject::const_facet_iterator::~const_facet_iterator() = default;
 
 MeshObject::const_facet_iterator&
 MeshObject::const_facet_iterator::operator=(const MeshObject::const_facet_iterator& fi) = default;
+
+MeshObject::const_facet_iterator&
+MeshObject::const_facet_iterator::operator=(MeshObject::const_facet_iterator&& fi) = default;
 
 void MeshObject::const_facet_iterator::dereference()
 {

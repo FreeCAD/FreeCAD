@@ -69,7 +69,7 @@ App::DocumentObjectExecReturn* SetOperations::execute()
 
         std::unique_ptr<MeshObject> pcKernel(new MeshObject());  // Result Meshkernel
 
-        MeshCore::SetOperations::OperationType type;
+        MeshCore::SetOperations::OperationType type {};
         string ot(OperationType.getValue());
         if (ot == "union") {
             type = MeshCore::SetOperations::Union;

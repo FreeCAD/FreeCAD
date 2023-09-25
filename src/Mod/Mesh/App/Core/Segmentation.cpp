@@ -203,10 +203,10 @@ std::vector<float> PlaneSurfaceFit::Parameters() const
 // --------------------------------------------------------
 
 CylinderSurfaceFit::CylinderSurfaceFit()
-    : fitter(new CylinderFit)
+    : radius(FLOAT_MAX)
+    , fitter(new CylinderFit)
 {
     axis.Set(0, 0, 0);
-    radius = FLOAT_MAX;
 }
 
 /*!
@@ -311,10 +311,10 @@ std::vector<float> CylinderSurfaceFit::Parameters() const
 // --------------------------------------------------------
 
 SphereSurfaceFit::SphereSurfaceFit()
-    : fitter(new SphereFit)
+    : radius(FLOAT_MAX)
+    , fitter(new SphereFit)
 {
     center.Set(0, 0, 0);
-    radius = FLOAT_MAX;
 }
 
 SphereSurfaceFit::SphereSurfaceFit(const Base::Vector3f& c, float r)
@@ -462,7 +462,7 @@ std::vector<float> MeshDistanceGenericSurfaceFitSegment::Parameters() const
 bool MeshCurvaturePlanarSegment::TestFacet(const MeshFacet& rclFacet) const
 {
     for (PointIndex ptIndex : rclFacet._aulPoints) {
-        const CurvatureInfo& ci = info[ptIndex];
+        const CurvatureInfo& ci = GetInfo(ptIndex);
         if (fabs(ci.fMinCurvature) > tolerance) {
             return false;
         }
@@ -477,7 +477,7 @@ bool MeshCurvaturePlanarSegment::TestFacet(const MeshFacet& rclFacet) const
 bool MeshCurvatureCylindricalSegment::TestFacet(const MeshFacet& rclFacet) const
 {
     for (PointIndex ptIndex : rclFacet._aulPoints) {
-        const CurvatureInfo& ci = info[ptIndex];
+        const CurvatureInfo& ci = GetInfo(ptIndex);
         float fMax = std::max<float>(fabs(ci.fMaxCurvature), fabs(ci.fMinCurvature));
         float fMin = std::min<float>(fabs(ci.fMaxCurvature), fabs(ci.fMinCurvature));
         if (fMin > toleranceMin) {
@@ -494,11 +494,11 @@ bool MeshCurvatureCylindricalSegment::TestFacet(const MeshFacet& rclFacet) const
 bool MeshCurvatureSphericalSegment::TestFacet(const MeshFacet& rclFacet) const
 {
     for (PointIndex ptIndex : rclFacet._aulPoints) {
-        const CurvatureInfo& ci = info[ptIndex];
+        const CurvatureInfo& ci = GetInfo(ptIndex);
         if (ci.fMaxCurvature * ci.fMinCurvature < 0) {
             return false;
         }
-        float diff;
+        float diff {};
         diff = fabs(ci.fMinCurvature) - curvature;
         if (fabs(diff) > tolerance) {
             return false;
@@ -515,7 +515,7 @@ bool MeshCurvatureSphericalSegment::TestFacet(const MeshFacet& rclFacet) const
 bool MeshCurvatureFreeformSegment::TestFacet(const MeshFacet& rclFacet) const
 {
     for (PointIndex ptIndex : rclFacet._aulPoints) {
-        const CurvatureInfo& ci = info[ptIndex];
+        const CurvatureInfo& ci = GetInfo(ptIndex);
         if (fabs(ci.fMinCurvature - c2) > toleranceMin) {
             return false;
         }
@@ -558,7 +558,7 @@ bool MeshSurfaceVisitor::Visit(const MeshFacet& face,
 void MeshSegmentAlgorithm::FindSegments(std::vector<MeshSurfaceSegmentPtr>& segm)
 {
     // reset VISIT flags
-    FacetIndex startFacet;
+    FacetIndex startFacet {};
     MeshCore::MeshAlgorithm cAlgo(myKernel);
     cAlgo.ResetFacetFlag(MeshCore::MeshFacet::VISIT);
 

@@ -51,7 +51,7 @@ bool MeshAlgorithm::IsVertexVisible(const Base::Vector3f& rcVertex,
     Base::Vector3f cDirection = rcVertex - rcView;
     float fDistance = cDirection.Length();
     Base::Vector3f cIntsct;
-    FacetIndex uInd;
+    FacetIndex uInd {};
 
     // search for the nearest facet to rcView in direction to rcVertex
     if (NearestFacetOnRay(rcView, cDirection, /*1.2f*fDistance,*/ rclGrid, cIntsct, uInd)) {
@@ -265,8 +265,8 @@ bool MeshAlgorithm::FirstFacetToVertex(const Base::Vector3f& rPt,
         else {
             // if not then check the distance to the border of the triangle
             Base::Vector3f res;
-            float fDist;
-            unsigned short uSide;
+            float fDist {};
+            unsigned short uSide {};
             cFacet.ProjectPointToPlane(rPt, res);
             cFacet.NearestEdgeToPoint(res, fDist, uSide);
             if (fDist < fEps) {
@@ -405,7 +405,7 @@ void MeshAlgorithm::GetFacetBorders(const std::vector<FacetIndex>& raulInd,
     }
 
     // search for edges in the unsorted list
-    PointIndex ulFirst, ulLast;
+    PointIndex ulFirst {}, ulLast {};
     std::list<PointIndex> clBorder;
     ulFirst = aclEdges.begin()->first;
     ulLast = aclEdges.begin()->second;
@@ -1187,7 +1187,7 @@ void MeshAlgorithm::CheckFacets(const MeshFacetGrid& rclGrid,
     MeshFacetIterator clIter(_rclMesh, 0);
     Base::Vector3f clPt2d;
     Base::Vector3f clGravityOfFacet;
-    bool bNoPointInside;
+    bool bNoPointInside {};
     // Cache current view projection matrix since calls to Coin's projection are expensive
     Base::ViewProjMatrix fixedProj(pclProj->getComposedProjectionMatrix());
     // Precompute the polygon's bounding box
@@ -1614,7 +1614,7 @@ bool MeshAlgorithm::ConnectLines(std::list<std::pair<Base::Vector3f, Base::Vecto
 
         // search for the next line on the begin/end of the polyline and add it
         TCIter pFront, pEnd;
-        bool bFoundLine;
+        bool bFoundLine {};
         do {
             float fFrontMin = fMinEps, fEndMin = fMinEps;
             bool bFrontFirst = false, bEndFirst = false;
@@ -2000,7 +2000,7 @@ void MeshRefPointToFacets::RemoveNeighbour(PointIndex pos, FacetIndex facet)
 
 void MeshRefPointToFacets::RemoveFacet(FacetIndex facetIndex)
 {
-    PointIndex p0, p1, p2;
+    PointIndex p0 {}, p1 {}, p2 {};
     _rclMesh.GetFacetPoints(facetIndex, p0, p1, p2);
 
     _map[p0].erase(facetIndex);

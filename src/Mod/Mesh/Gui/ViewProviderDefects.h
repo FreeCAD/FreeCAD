@@ -46,8 +46,10 @@ public:
     ViewProviderMeshDefects();
     ~ViewProviderMeshDefects() override;
 
+    // NOLINTBEGIN
     // Display properties
     App::PropertyFloat LineWidth;
+    // NOLINTEND
 
     // Build up the initial Inventor node
     void attach(App::DocumentObject* pcFeature) override = 0;
@@ -58,8 +60,11 @@ protected:
     /// get called by the container whenever a property has been changed
     void onChanged(const App::Property* prop) override;
 
+protected:
+    // NOLINTBEGIN
     SoCoordinate3* pcCoords;
     SoDrawStyle* pcDrawStyle;
+    // NOLINTEND
 };
 
 /** The ViewProviderMeshOrientation class displays wrong oriented facets (i.e. flipped normals) in
@@ -77,7 +82,7 @@ public:
     void attach(App::DocumentObject* pcFeature) override;
     void showDefects(const std::vector<Mesh::ElementIndex>&) override;
 
-protected:
+private:
     SoFaceSet* pcFaces;
 };
 
@@ -95,7 +100,7 @@ public:
     void attach(App::DocumentObject* pcFeature) override;
     void showDefects(const std::vector<Mesh::ElementIndex>&) override;
 
-protected:
+private:
     SoLineSet* pcLines;
 };
 
@@ -113,7 +118,7 @@ public:
     void attach(App::DocumentObject* pcFeature) override;
     void showDefects(const std::vector<Mesh::ElementIndex>&) override;
 
-protected:
+private:
     SoPointSet* pcPoints;
 };
 
@@ -131,7 +136,7 @@ public:
     void attach(App::DocumentObject* pcFeature) override;
     void showDefects(const std::vector<Mesh::ElementIndex>&) override;
 
-protected:
+private:
     SoFaceSet* pcFaces;
 };
 
@@ -150,7 +155,7 @@ public:
     void attach(App::DocumentObject* pcFeature) override;
     void showDefects(const std::vector<Mesh::ElementIndex>&) override;
 
-protected:
+private:
     SoLineSet* pcLines;
 };
 
@@ -165,7 +170,7 @@ public:
     void attach(App::DocumentObject* pcFeature) override;
     void showDefects(const std::vector<Mesh::ElementIndex>&) override;
 
-protected:
+private:
     SoPointSet* pcPoints;
 };
 
@@ -180,7 +185,7 @@ public:
     void attach(App::DocumentObject* pcFeature) override;
     void showDefects(const std::vector<Mesh::ElementIndex>&) override;
 
-protected:
+private:
     SoFaceSet* pcFaces;
 };
 
@@ -198,7 +203,7 @@ public:
     void attach(App::DocumentObject* pcFeature) override;
     void showDefects(const std::vector<Mesh::ElementIndex>&) override;
 
-protected:
+private:
     SoLineSet* pcLines;
 };
 
@@ -213,7 +218,7 @@ public:
     void attach(App::DocumentObject* pcFeature) override;
     void showDefects(const std::vector<Mesh::ElementIndex>&) override;
 
-protected:
+private:
     SoFaceSet* pcFaces;
 };
 

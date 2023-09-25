@@ -41,9 +41,9 @@ using namespace MeshGui;
 
 Segmentation::Segmentation(Mesh::Feature* mesh, QWidget* parent, Qt::WindowFlags fl)
     : QWidget(parent, fl)
+    , ui(new Ui_Segmentation)
     , myMesh(mesh)
 {
-    ui = new Ui_Segmentation;
     ui->setupUi(this);
     ui->numPln->setRange(1, INT_MAX);
     ui->numPln->setValue(100);
@@ -158,7 +158,7 @@ void Segmentation::changeEvent(QEvent* e)
 
 TaskSegmentation::TaskSegmentation(Mesh::Feature* mesh)
 {
-    widget = new Segmentation(mesh);
+    widget = new Segmentation(mesh);  // NOLINT
     taskbox = new Gui::TaskView::TaskBox(QPixmap(), widget->windowTitle(), false, nullptr);
     taskbox->groupLayout()->addWidget(widget);
     Content.push_back(taskbox);

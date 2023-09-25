@@ -41,7 +41,7 @@ MeshInfo::MeshInfo(const MeshKernel& rclM)
 
 std::ostream& MeshInfo::GeneralInformation(std::ostream& rclStream) const
 {
-    unsigned long ulCtPt, ulCtEd, ulCtFc;
+    unsigned long ulCtPt {}, ulCtEd {}, ulCtFc {};
     ulCtPt = _rclMesh.CountPoints();
     ulCtFc = _rclMesh.CountFacets();
     ulCtEd = _rclMesh.CountEdges();
@@ -126,7 +126,7 @@ std::ostream& MeshInfo::DetailedEdgeInfo(std::ostream& rclStream) const
 std::ostream& MeshInfo::DetailedFacetInfo(std::ostream& rclStream) const
 {
     // print facets
-    unsigned long i, j;
+    unsigned long i {}, j {};
     rclStream << _rclMesh.CountFacets() << " Faces:" << std::endl;
     MeshFacetIterator pFIter(_rclMesh), pFEnd(_rclMesh);
     pFIter.Begin();
@@ -163,7 +163,7 @@ std::ostream& MeshInfo::DetailedInformation(std::ostream& rclStream) const
 std::ostream& MeshInfo::InternalPointInfo(std::ostream& rclStream) const
 {
     // print points
-    unsigned long i;
+    unsigned long i {};
     rclStream << _rclMesh.CountPoints() << " Points:" << std::endl;
     MeshPointIterator pPIter(_rclMesh), pPEnd(_rclMesh);
     pPIter.Begin();
@@ -190,7 +190,7 @@ std::ostream& MeshInfo::InternalPointInfo(std::ostream& rclStream) const
 std::ostream& MeshInfo::InternalFacetInfo(std::ostream& rclStream) const
 {
     // print facets
-    unsigned long i;
+    unsigned long i {};
     rclStream << _rclMesh.CountFacets() << " Faces:" << std::endl;
 
     const MeshFacetArray& rFacets = _rclMesh.GetFacets();

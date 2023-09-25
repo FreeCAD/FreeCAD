@@ -184,7 +184,7 @@ unsigned long MeshEvalOrientation::HasFalsePositives(const std::vector<FacetInde
 
 std::vector<FacetIndex> MeshEvalOrientation::GetIndices() const
 {
-    FacetIndex ulStartFacet, ulVisited;
+    FacetIndex ulStartFacet {}, ulVisited {};
 
     if (_rclMesh.CountFacets() == 0) {
         return {};
@@ -346,7 +346,7 @@ bool MeshEvalTopology::Evaluate()
     Base::SequencerLauncher seq("Checking topology...", rclFAry.size());
     for (pI = rclFAry.begin(); pI != rclFAry.end(); ++pI) {
         for (int i = 0; i < 3; i++) {
-            Edge_Index item;
+            Edge_Index item {};
             item.p0 = std::min<PointIndex>(pI->_aulPoints[i], pI->_aulPoints[(i + 1) % 3]);
             item.p1 = std::max<PointIndex>(pI->_aulPoints[i], pI->_aulPoints[(i + 1) % 3]);
             item.f = pI - rclFAry.begin();
@@ -485,7 +485,7 @@ bool MeshEvalPointManifolds::Evaluate()
         const std::set<FacetIndex>& nf = vf_it[index];
         const std::set<PointIndex>& np = vv_it[index];
 
-        std::set<unsigned long>::size_type sp, sf;
+        std::set<unsigned long>::size_type sp {}, sf {};
         sp = np.size();
         sf = nf.size();
         // for an inner point the number of adjacent points is equal to the number of shared faces
@@ -607,7 +607,7 @@ bool MeshEvalSelfIntersection::Evaluate()
     MeshFacetGrid cMeshFacetGrid(_rclMesh);
     const MeshFacetArray& rFaces = _rclMesh.GetFacets();
     MeshGridIterator clGridIter(cMeshFacetGrid);
-    unsigned long ulGridX, ulGridY, ulGridZ;
+    unsigned long ulGridX {}, ulGridY {}, ulGridZ {};
     cMeshFacetGrid.GetCtGrids(ulGridX, ulGridY, ulGridZ);
 
     MeshFacetIterator cMFI(_rclMesh);
@@ -713,7 +713,7 @@ void MeshEvalSelfIntersection::GetIntersections(
     MeshFacetGrid cMeshFacetGrid(_rclMesh);
     const MeshFacetArray& rFaces = _rclMesh.GetFacets();
     MeshGridIterator clGridIter(cMeshFacetGrid);
-    unsigned long ulGridX, ulGridY, ulGridZ;
+    unsigned long ulGridX {}, ulGridY {}, ulGridZ {};
     cMeshFacetGrid.GetCtGrids(ulGridX, ulGridY, ulGridZ);
 
     MeshFacetIterator cMFI(_rclMesh);
@@ -838,7 +838,7 @@ bool MeshEvalNeighbourhood::Evaluate()
     Base::SequencerLauncher seq("Checking indices...", rclFAry.size());
     for (pI = rclFAry.begin(); pI != rclFAry.end(); ++pI) {
         for (int i = 0; i < 3; i++) {
-            Edge_Index item;
+            Edge_Index item {};
             item.p0 = std::min<PointIndex>(pI->_aulPoints[i], pI->_aulPoints[(i + 1) % 3]);
             item.p1 = std::max<PointIndex>(pI->_aulPoints[i], pI->_aulPoints[(i + 1) % 3]);
             item.f = pI - rclFAry.begin();
@@ -905,7 +905,7 @@ std::vector<FacetIndex> MeshEvalNeighbourhood::GetIndices() const
     Base::SequencerLauncher seq("Checking indices...", rclFAry.size());
     for (pI = rclFAry.begin(); pI != rclFAry.end(); ++pI) {
         for (int i = 0; i < 3; i++) {
-            Edge_Index item;
+            Edge_Index item {};
             item.p0 = std::min<PointIndex>(pI->_aulPoints[i], pI->_aulPoints[(i + 1) % 3]);
             item.p1 = std::max<PointIndex>(pI->_aulPoints[i], pI->_aulPoints[(i + 1) % 3]);
             item.f = pI - rclFAry.begin();
@@ -981,7 +981,7 @@ void MeshKernel::RebuildNeighbours(FacetIndex index)
     MeshFacetArray::_TConstIterator pB = this->_aclFacetArray.begin();
     for (pI = pB + index; pI != this->_aclFacetArray.end(); ++pI) {
         for (int i = 0; i < 3; i++) {
-            Edge_Index item;
+            Edge_Index item {};
             item.p0 = std::min<PointIndex>(pI->_aulPoints[i], pI->_aulPoints[(i + 1) % 3]);
             item.p1 = std::max<PointIndex>(pI->_aulPoints[i], pI->_aulPoints[(i + 1) % 3]);
             item.f = pI - pB;
@@ -1111,7 +1111,7 @@ bool MeshEigensystem::Evaluate()
     float xmin = 0.0f, xmax = 0.0f, ymin = 0.0f, ymax = 0.0f, zmin = 0.0f, zmax = 0.0f;
 
     Base::Vector3f clVect, clProj;
-    float fH;
+    float fH {};
 
     const MeshPointArray& aclPoints = _rclMesh.GetPoints();
     for (const auto& it : aclPoints) {
@@ -1192,8 +1192,7 @@ void MeshEigensystem::CalculateLocalSystem()
     _cW = planeFit.GetNormal();
 
     // set the sign for the vectors
-    float fSumU, fSumV, fSumW;
-    fSumU = fSumV = fSumW = 0.0f;
+    float fSumU {0.0F}, fSumV {0.0F}, fSumW {0.0F};
     for (it = aclPoints.begin(); it != aclPoints.end(); ++it) {
         float fU = _cU * (*it - _cC);
         float fV = _cV * (*it - _cC);

@@ -283,7 +283,7 @@ struct MeshFacet_Less
 {
     bool operator()(const FaceIterator& x, const FaceIterator& y) const
     {
-        PointIndex tmp;
+        PointIndex tmp {};
         PointIndex x0 = x->_aulPoints[0];
         PointIndex x1 = x->_aulPoints[1];
         PointIndex x2 = x->_aulPoints[2];

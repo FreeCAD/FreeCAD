@@ -56,6 +56,11 @@ public:
 
     explicit AbstractSmoothing(MeshKernel&);
     virtual ~AbstractSmoothing();
+    AbstractSmoothing(const AbstractSmoothing&) = delete;
+    AbstractSmoothing(AbstractSmoothing&&) = delete;
+    AbstractSmoothing& operator=(const AbstractSmoothing&) = delete;
+    AbstractSmoothing& operator=(AbstractSmoothing&&) = delete;
+
     void initialize(Component comp, Continuity cont);
 
     /** Smooth the triangle mesh. */
@@ -63,10 +68,12 @@ public:
     virtual void SmoothPoints(unsigned int, const std::vector<PointIndex>&) = 0;
 
 protected:
+    // NOLINTBEGIN
     MeshKernel& kernel;
 
     Component component {Normal};
     Continuity continuity {C0};
+    // NOLINTEND
 };
 
 class MeshExport PlaneFitSmoothing: public AbstractSmoothing
@@ -94,6 +101,10 @@ public:
     {
         lambda = l;
     }
+    double GetLambda() const
+    {
+        return lambda;
+    }
 
 protected:
     void Umbrella(const MeshRefPointToPoints&, const MeshRefPointToFacets&, double);
@@ -102,7 +113,7 @@ protected:
                   double,
                   const std::vector<PointIndex>&);
 
-protected:
+private:
     double lambda {0.6307};
 };
 
@@ -117,7 +128,7 @@ public:
         micro = m;
     }
 
-protected:
+private:
     double micro {0.0424};
 };
 

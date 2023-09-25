@@ -74,10 +74,9 @@ bool TriangulationVerifierV2::MustFlip(const Base::Vector3f& n1, const Base::Vec
 // ----------------------------------------------------------------------------
 
 AbstractPolygonTriangulator::AbstractPolygonTriangulator()
-{
-    _discard = false;
-    _verifier = new TriangulationVerifier();
-}
+    : _discard {false}
+    , _verifier {new TriangulationVerifier()}
+{}
 
 AbstractPolygonTriangulator::~AbstractPolygonTriangulator()
 {
@@ -358,8 +357,8 @@ bool EarClippingTriangulator::Triangulate::InsideTriangle(float Ax,
                                                           float Px,
                                                           float Py)
 {
-    float ax, ay, bx, by, cx, cy, apx, apy, bpx, bpy, cpx, cpy;
-    float cCROSSap, bCROSScp, aCROSSbp;
+    float ax {}, ay {}, bx {}, by {}, cx {}, cy {}, apx {}, apy {}, bpx {}, bpy {}, cpx {}, cpy {};
+    float cCROSSap {}, bCROSScp {}, aCROSSbp {};
 
     ax = Cx - Bx;
     ay = Cy - By;
@@ -388,8 +387,8 @@ bool EarClippingTriangulator::Triangulate::Snip(const std::vector<Base::Vector3f
                                                 int n,
                                                 int* V)
 {
-    int p;
-    float Ax, Ay, Bx, By, Cx, Cy, Px, Py;
+    int p {};
+    float Ax {}, Ay {}, Bx {}, By {}, Cx {}, Cy {}, Px {}, Py {};
 
     Ax = contour[V[u]].x;
     Ay = contour[V[u]].y;
@@ -476,7 +475,7 @@ bool EarClippingTriangulator::Triangulate::Process(const std::vector<Base::Vecto
         }
 
         if (Snip(contour, u, v, w, nv, V)) {
-            int a, b, c, s, t;
+            int a {}, b {}, c {}, s {}, t {};
 
             /* true names of the vertices */
             a = V[u];

@@ -114,9 +114,11 @@ public:
     explicit MeshObject(const MeshCore::MeshKernel& Kernel);
     explicit MeshObject(const MeshCore::MeshKernel& Kernel, const Base::Matrix4D& Mtrx);
     MeshObject(const MeshObject&);
+    MeshObject(MeshObject&&);
     ~MeshObject() override;
 
-    void operator=(const MeshObject&);
+    MeshObject& operator=(const MeshObject&);
+    MeshObject& operator=(MeshObject&&);
 
     /** @name Subelement management */
     //@{
@@ -380,9 +382,11 @@ public:
     public:
         const_point_iterator(const MeshObject*, PointIndex index);
         const_point_iterator(const const_point_iterator& pi);
+        const_point_iterator(const_point_iterator&& pi);
         ~const_point_iterator();
 
         const_point_iterator& operator=(const const_point_iterator& fi);
+        const_point_iterator& operator=(const_point_iterator&& fi);
         const MeshPoint& operator*();
         const MeshPoint* operator->();
         bool operator==(const const_point_iterator& fi) const;
@@ -402,9 +406,11 @@ public:
     public:
         const_facet_iterator(const MeshObject*, FacetIndex index);
         const_facet_iterator(const const_facet_iterator& fi);
+        const_facet_iterator(const_facet_iterator&& fi);
         ~const_facet_iterator();
 
         const_facet_iterator& operator=(const const_facet_iterator& fi);
+        const_facet_iterator& operator=(const_facet_iterator&& fi);
         Mesh::Facet& operator*();
         Mesh::Facet* operator->();
         bool operator==(const const_facet_iterator& fi) const;

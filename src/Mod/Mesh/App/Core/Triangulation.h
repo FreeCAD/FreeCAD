@@ -35,6 +35,11 @@ class MeshExport TriangulationVerifier
 public:
     TriangulationVerifier() = default;
     virtual ~TriangulationVerifier() = default;
+    TriangulationVerifier(const TriangulationVerifier&) = delete;
+    TriangulationVerifier(TriangulationVerifier&&) = delete;
+    TriangulationVerifier& operator=(const TriangulationVerifier&) = delete;
+    TriangulationVerifier& operator=(TriangulationVerifier&&) = delete;
+
     virtual bool Accept(const Base::Vector3f& n,
                         const Base::Vector3f& p1,
                         const Base::Vector3f& p2,
@@ -57,6 +62,11 @@ class MeshExport AbstractPolygonTriangulator
 public:
     AbstractPolygonTriangulator();
     virtual ~AbstractPolygonTriangulator();
+
+    AbstractPolygonTriangulator(const AbstractPolygonTriangulator&) = delete;
+    AbstractPolygonTriangulator(AbstractPolygonTriangulator&&) = delete;
+    AbstractPolygonTriangulator& operator=(const AbstractPolygonTriangulator&) = delete;
+    AbstractPolygonTriangulator& operator=(AbstractPolygonTriangulator&&) = delete;
 
     /** Sets the polygon to be triangulated. */
     void SetPolygon(const std::vector<Base::Vector3f>& raclPoints);
@@ -139,6 +149,7 @@ protected:
     void Done();
 
 protected:
+    // NOLINTBEGIN
     bool _discard;
     Base::Matrix4D _inverse;
     std::vector<PointIndex> _indices;
@@ -148,6 +159,7 @@ protected:
     std::vector<MeshFacet> _facets;
     std::vector<PointIndex> _info;
     TriangulationVerifier* _verifier;
+    // NOLINTEND
 };
 
 /**

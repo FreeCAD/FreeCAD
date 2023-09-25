@@ -41,7 +41,7 @@ using namespace Mesh;
 std::string MeshPointPy::representation() const
 {
     MeshPointPy::PointerType ptr = getMeshPointPtr();
-    Base::Vector3d vec = *ptr;
+    Base::Vector3d vec = *ptr;  // NOLINT
 
     std::stringstream str;
     str << "MeshPoint (";

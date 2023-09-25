@@ -70,8 +70,8 @@ private:
         FacetIndex facetIdx;
 
         Edge(PointIndex p1, PointIndex p2, FacetIndex idx)
+            : facetIdx {idx}
         {
-            facetIdx = idx;
             if (p1 > p2) {
                 pt1 = p2;
                 pt2 = p1;
@@ -116,6 +116,11 @@ private:
 public:
     explicit MeshBuilder(MeshKernel& rclM);
     ~MeshBuilder();
+
+    MeshBuilder(const MeshBuilder&) = delete;
+    MeshBuilder(MeshBuilder&&) = delete;
+    MeshBuilder& operator=(const MeshBuilder&) = delete;
+    MeshBuilder& operator=(MeshBuilder&&) = delete;
 
     /**
      * Set the tolerance for the comparison of points. Normally you don't need to set the tolerance.
@@ -197,6 +202,11 @@ public:
     using size_type = int;
     explicit MeshFastBuilder(MeshKernel& rclM);
     ~MeshFastBuilder();
+
+    MeshFastBuilder(const MeshFastBuilder&) = delete;
+    MeshFastBuilder(MeshFastBuilder&&) = delete;
+    MeshFastBuilder& operator=(const MeshFastBuilder&) = delete;
+    MeshFastBuilder& operator=(MeshFastBuilder&&) = delete;
 
     /** Initializes the class. Must be done before adding facets
      * @param ctFacets count of facets.

@@ -165,7 +165,7 @@ bool MeshTrimming::PolygonContainsCompleteFacet(bool bInner, FacetIndex ulIndex)
 bool MeshTrimming::IsPolygonPointInFacet(FacetIndex ulIndex, Base::Vector3f& clPoint)
 {
     Base::Vector2d A, B, C, P;
-    float u, v, w, fDetPAC, fDetPBC, fDetPAB, fDetABC;
+    float u {}, v {}, w {}, fDetPAC {}, fDetPBC {}, fDetPAB {}, fDetABC {};
     Base::Polygon2d clFacPoly;
     const MeshGeomFacet& rclFacet = myMesh.GetFacet(ulIndex);
 
@@ -346,7 +346,7 @@ bool MeshTrimming::GetIntersectionPointsOfPolygonAndFacet(
 
 void MeshTrimming::AdjustFacet(MeshFacet& facet, int iInd)
 {
-    unsigned long tmp;
+    unsigned long tmp {};
 
     if (iInd == 1) {
         tmp = facet._aulPoints[0];
@@ -774,7 +774,7 @@ void MeshTrimming::TrimFacets(const std::vector<FacetIndex>& raulFacets,
 {
     Base::Vector3f clP;
     std::vector<Base::Vector3f> clIntsct;
-    int iSide;
+    int iSide {};
 
     Base::SequencerLauncher seq("trimming facets...", raulFacets.size());
     for (FacetIndex index : raulFacets) {

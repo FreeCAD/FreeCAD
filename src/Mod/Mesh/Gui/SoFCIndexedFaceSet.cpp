@@ -564,14 +564,14 @@ void SoFCIndexedFaceSet::drawFaces(SoGLRenderAction* action)
         SoMaterialBindingElement::Binding matbind = SoMaterialBindingElement::get(state);
         int32_t binding = (int32_t)(matbind);
 
-        const SoCoordinateElement* coords;
-        const SbVec3f* normals;
-        const int32_t* cindices;
-        int numindices;
-        const int32_t* nindices;
-        const int32_t* tindices;
-        const int32_t* mindices;
-        SbBool normalCacheUsed;
+        const SoCoordinateElement* coords = nullptr;
+        const SbVec3f* normals = nullptr;
+        const int32_t* cindices = nullptr;
+        int numindices = 0;
+        const int32_t* nindices = nullptr;
+        const int32_t* tindices = nullptr;
+        const int32_t* mindices = nullptr;
+        SbBool normalCacheUsed {};
 
         SoMaterialBundle mb(action);
 
@@ -648,7 +648,7 @@ void SoFCIndexedFaceSet::drawCoords(const SoGLCoordinateElement* const vertexlis
 
     int ct = 0;
     const int32_t* viptr = vertexindices;
-    int32_t v1, v2, v3;
+    int32_t v1 {}, v2 {}, v3 {};
     SbVec3f dummynormal(0, 0, 1);
     const SbVec3f* currnormal = &dummynormal;
     if (normals) {
@@ -720,16 +720,16 @@ void SoFCIndexedFaceSet::invalidate()
 
 void SoFCIndexedFaceSet::generateGLArrays(SoGLRenderAction* action)
 {
-    const SoCoordinateElement* coords;
-    const SbVec3f* normals;
-    const int32_t* cindices;
+    const SoCoordinateElement* coords = nullptr;
+    const SbVec3f* normals = nullptr;
+    const int32_t* cindices = nullptr;
     const SbColor* pcolors = nullptr;
     const float* transp = nullptr;
-    int numindices, numcolors = 0, numtransp = 0;
-    const int32_t* nindices;
-    const int32_t* tindices;
-    const int32_t* mindices;
-    SbBool normalCacheUsed;
+    int numindices = 0, numcolors = 0, numtransp = 0;
+    const int32_t* nindices = nullptr;
+    const int32_t* tindices = nullptr;
+    const int32_t* mindices = nullptr;
+    SbBool normalCacheUsed {};
 
     SbBool sendNormals = true;
 
@@ -1062,7 +1062,7 @@ void SoFCIndexedFaceSet::renderSelectionGeometry(const SbVec3f* coords3d)
     const int32_t* cindices = this->coordIndex.getValues(0);
 
     int fcnt = 0;
-    int32_t v1, v2, v3;
+    int32_t v1 {}, v2 {}, v3 {};
     for (int index = 0; index < numfaces; index++, cindices++) {
         glLoadName(fcnt);
         glBegin(GL_TRIANGLES);
@@ -1116,10 +1116,10 @@ void SoFCIndexedFaceSet::renderVisibleFaces(const SbVec3f* coords3d)
     uint32_t numfaces = this->coordIndex.getNum() / 4;
     const int32_t* cindices = this->coordIndex.getValues(0);
 
-    int32_t v1, v2, v3;
+    int32_t v1 {}, v2 {}, v3 {};
     for (uint32_t index = 0; index < numfaces; index++, cindices++) {
         glBegin(GL_TRIANGLES);
-        float t;
+        float t {};
         SbColor c;
         c.setPackedValue(index << 8, t);
         glColor3f(c[0], c[1], c[2]);

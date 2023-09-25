@@ -297,7 +297,7 @@ bool MeshInput::LoadSTL(std::istream& rstrIn)
         return false;
     }
     buf->pubseekoff(80, std::ios::beg, std::ios::in);
-    uint32_t ulCt, ulBytes = 50;
+    uint32_t ulCt {}, ulBytes = 50;
     rstrIn.read((char*)&ulCt, sizeof(ulCt));
     // if we have a binary STL with a single triangle we can only read-in 50 bytes
     if (ulCt > 1) {
@@ -393,7 +393,7 @@ bool MeshInput::LoadSMF(std::istream& rstrIn)
     MeshFacetArray meshFacets;
 
     std::string line;
-    float fX, fY, fZ;
+    float fX {}, fY {}, fZ {};
     int i1 = 1, i2 = 1, i3 = 1;
     MeshFacet item;
 
@@ -510,7 +510,7 @@ bool MeshInput::LoadOFF(std::istream& rstrIn)
             continue;  // empty line
         }
 
-        float fX, fY, fZ;
+        float fX {}, fY {}, fZ {};
         str >> fX >> std::ws >> fY >> std::ws >> fZ;
         if (str) {
             meshPoints.push_back(MeshPoint(Base::Vector3f(fX, fY, fZ)));
@@ -519,7 +519,7 @@ bool MeshInput::LoadOFF(std::istream& rstrIn)
             if (colorPerVertex) {
                 std::size_t pos = std::size_t(str.tellg());
                 if (line.size() > pos) {
-                    float r, g, b, a;
+                    float r {}, g {}, b {}, a {};
                     str >> std::ws >> r >> std::ws >> g >> std::ws >> b;
                     if (str) {
                         str >> std::ws >> a;
@@ -552,7 +552,7 @@ bool MeshInput::LoadOFF(std::istream& rstrIn)
         if (str.eof()) {
             continue;  // empty line
         }
-        int count, index;
+        int count {}, index {};
         str >> count;
         if (count >= 3) {
             std::vector<int> faces;
@@ -572,7 +572,7 @@ bool MeshInput::LoadOFF(std::istream& rstrIn)
 
             std::size_t pos = std::size_t(str.tellg());
             if (line.size() > pos) {
-                float r, g, b, a;
+                float r {}, g {}, b {}, a {};
                 str >> std::ws >> r >> std::ws >> g >> std::ws >> b;
                 if (str) {
                     str >> std::ws >> a;
@@ -704,7 +704,7 @@ bool MeshInput::LoadPLY(std::istream& inp)
         str >> kw;
         if (kw == "format") {
             std::string format_string, version;
-            char space_format_string, space_format_version;
+            char space_format_string {}, space_format_version {};
             str >> space_format_string >> std::ws >> format_string >> space_format_version
                 >> std::ws >> version;
             if (/*!str || !str.eof() ||*/
@@ -731,8 +731,8 @@ bool MeshInput::LoadPLY(std::istream& inp)
         }
         else if (kw == "element") {
             std::string name;
-            std::size_t count;
-            char space_element_name, space_name_count;
+            std::size_t count {};
+            char space_element_name {}, space_name_count {};
             str >> space_element_name >> std::ws >> name >> space_name_count >> std::ws >> count;
             if (/*!str || !str.eof() ||*/
                 !std::isspace(space_element_name) || !std::isspace(space_name_count)) {
@@ -754,11 +754,11 @@ bool MeshInput::LoadPLY(std::istream& inp)
         }
         else if (kw == "property") {
             std::string type, name;
-            char space;
+            char space {};
             if (element == "vertex") {
                 str >> space >> std::ws >> type >> space >> std::ws >> name >> std::ws;
 
-                Ply::Number number;
+                Ply::Number number {};
                 if (type == "char" || type == "int8") {
                     number = int8;
                 }
@@ -803,7 +803,7 @@ bool MeshInput::LoadPLY(std::istream& inp)
                     str >> name;
                 }
                 if (name != "vertex_indices" && name != "vertex_index") {
-                    Number number;
+                    Number number {};
                     if (type == "char" || type == "int8") {
                         number = int8;
                     }
@@ -930,7 +930,7 @@ bool MeshInput::LoadPLY(std::istream& inp)
                     case int16:
                     case int32: {
                         if (boost::regex_search(line, what, rx_s)) {
-                            int v;
+                            int v {};
                             v = boost::lexical_cast<int>(what[1]);
                             prop_values[it.first] = static_cast<float>(v);
                             line = line.substr(what[0].length());
@@ -943,7 +943,7 @@ bool MeshInput::LoadPLY(std::istream& inp)
                     case uint16:
                     case uint32: {
                         if (boost::regex_search(line, what, rx_u)) {
-                            int v;
+                            int v {};
                             v = boost::lexical_cast<int>(what[1]);
                             prop_values[it.first] = static_cast<float>(v);
                             line = line.substr(what[0].length());
@@ -955,7 +955,7 @@ bool MeshInput::LoadPLY(std::istream& inp)
                     case float32:
                     case float64: {
                         if (boost::regex_search(line, what, rx_d)) {
-                            double v;
+                            double v {};
                             v = boost::lexical_cast<double>(what[1]);
                             prop_values[it.first] = static_cast<float>(v);
                             line = line.substr(what[0].length());
@@ -983,7 +983,7 @@ bool MeshInput::LoadPLY(std::istream& inp)
             }
         }
 
-        int f1, f2, f3;
+        int f1 {}, f2 {}, f3 {};
         for (std::size_t i = 0; i < f_count && std::getline(inp, line); i++) {
             if (boost::regex_search(line, what, rx_f)) {
                 f1 = boost::lexical_cast<int>(what[1]);
@@ -1009,42 +1009,42 @@ bool MeshInput::LoadPLY(std::istream& inp)
             for (const auto& it : vertex_props) {
                 switch (it.second) {
                     case int8: {
-                        int8_t v;
+                        int8_t v {};
                         is >> v;
                         prop_values[it.first] = static_cast<float>(v);
                     } break;
                     case uint8: {
-                        uint8_t v;
+                        uint8_t v {};
                         is >> v;
                         prop_values[it.first] = static_cast<float>(v);
                     } break;
                     case int16: {
-                        int16_t v;
+                        int16_t v {};
                         is >> v;
                         prop_values[it.first] = static_cast<float>(v);
                     } break;
                     case uint16: {
-                        uint16_t v;
+                        uint16_t v {};
                         is >> v;
                         prop_values[it.first] = static_cast<float>(v);
                     } break;
                     case int32: {
-                        int32_t v;
+                        int32_t v {};
                         is >> v;
                         prop_values[it.first] = static_cast<float>(v);
                     } break;
                     case uint32: {
-                        uint32_t v;
+                        uint32_t v {};
                         is >> v;
                         prop_values[it.first] = static_cast<float>(v);
                     } break;
                     case float32: {
-                        float v;
+                        float v {};
                         is >> v;
                         prop_values[it.first] = v;
                     } break;
                     case float64: {
-                        double v;
+                        double v {};
                         is >> v;
                         prop_values[it.first] = static_cast<float>(v);
                     } break;
@@ -1067,8 +1067,8 @@ bool MeshInput::LoadPLY(std::istream& inp)
             }
         }
 
-        unsigned char n;
-        uint32_t f1, f2, f3;
+        unsigned char n {};
+        uint32_t f1 {}, f2 {}, f3 {};
         for (std::size_t i = 0; i < f_count; i++) {
             is >> n;
             if (n == 3) {
@@ -1079,39 +1079,39 @@ bool MeshInput::LoadPLY(std::istream& inp)
                 for (auto it : face_props) {
                     switch (it) {
                         case int8: {
-                            int8_t v;
+                            int8_t v {};
                             is >> v;
                         } break;
                         case uint8: {
-                            uint8_t v;
+                            uint8_t v {};
                             is >> v;
                         } break;
                         case int16: {
-                            int16_t v;
+                            int16_t v {};
                             is >> v;
                         } break;
                         case uint16: {
-                            uint16_t v;
+                            uint16_t v {};
                             is >> v;
                         } break;
                         case int32: {
-                            int32_t v;
+                            int32_t v {};
                             is >> v;
                         } break;
                         case uint32: {
-                            uint32_t v;
+                            uint32_t v {};
                             is >> v;
                         } break;
                         case float32: {
                             is >> n;
-                            float v;
+                            float v {};
                             for (unsigned char j = 0; j < n; j++) {
                                 is >> v;
                             }
                         } break;
                         case float64: {
                             is >> n;
-                            double v;
+                            double v {};
                             for (unsigned char j = 0; j < n; j++) {
                                 is >> v;
                             }
@@ -1151,7 +1151,7 @@ bool MeshInput::LoadMeshNode(std::istream& rstrIn)
     MeshFacetArray meshFacets;
 
     std::string line;
-    float fX, fY, fZ;
+    float fX {}, fY {}, fZ {};
     unsigned int i1 = 1, i2 = 1, i3 = 1;
     MeshGeomFacet clFacet;
 
@@ -1206,8 +1206,8 @@ bool MeshInput::LoadAsciiSTL(std::istream& rstrIn)
     boost::cmatch what;
 
     std::string line;
-    float fX, fY, fZ;
-    unsigned long ulVertexCt, ulFacetCt = 0;
+    float fX {}, fY {}, fZ {};
+    unsigned long ulVertexCt {}, ulFacetCt {};
     MeshGeomFacet clFacet;
 
     if (!rstrIn || rstrIn.bad()) {
@@ -1296,7 +1296,7 @@ bool MeshInput::LoadBinarySTL(std::istream& rstrIn)
     std::streamoff ulSize = 0;
     std::streambuf* buf = rstrIn.rdbuf();
     if (buf) {
-        std::streamoff ulCurr;
+        std::streamoff ulCurr {};
         ulCurr = buf->pubseekoff(0, std::ios::cur, std::ios::in);
         ulSize = buf->pubseekoff(0, std::ios::end, std::ios::in);
         buf->pubseekoff(ulCurr, std::ios::beg, std::ios::in);
@@ -1461,7 +1461,7 @@ bool MeshInput::LoadNastran(std::istream& rstrIn)
     MeshPointArray vVertices;
     MeshFacetArray vTriangle;
 
-    int index;
+    int index {};
     std::map<int, NODE> mNode;
     std::map<int, TRIA> mTria;
     std::map<int, QUAD> mQuad;
@@ -2055,7 +2055,7 @@ bool MeshOutput::SaveAsciiSTL(std::ostream& rstrOut) const
 {
     MeshFacetIterator clIter(_rclMesh), clEnd(_rclMesh);
     clIter.Transform(this->_transform);
-    const MeshGeomFacet* pclFacet;
+    const MeshGeomFacet* pclFacet {};
 
     if (!rstrOut || rstrOut.bad() || _rclMesh.CountFacets() == 0) {
         return false;
@@ -2104,9 +2104,9 @@ bool MeshOutput::SaveBinarySTL(std::ostream& rstrOut) const
 {
     MeshFacetIterator clIter(_rclMesh), clEnd(_rclMesh);
     clIter.Transform(this->_transform);
-    const MeshGeomFacet* pclFacet;
-    uint32_t i;
-    uint16_t usAtt;
+    const MeshGeomFacet* pclFacet {};
+    uint32_t i {};
+    uint16_t usAtt {};
     char szInfo[81];
 
     if (!rstrOut || rstrOut.bad() /*|| _rclMesh.CountFacets() == 0*/) {
@@ -2290,7 +2290,7 @@ bool MeshOutput::SaveAsymptote(std::ostream& out) const
     }
 
     std::size_t index = 0;
-    const MeshGeomFacet* pclFacet;
+    const MeshGeomFacet* pclFacet {};
     while (clIter < clEnd) {
         pclFacet = &(*clIter);
 
@@ -2468,7 +2468,7 @@ bool MeshOutput::SaveBinaryPLY(std::ostream& out) const
         }
     }
     unsigned char n = 3;
-    int f1, f2, f3;
+    int f1 {}, f2 {}, f3 {};
     for (std::size_t i = 0; i < f_count; i++) {
         const MeshFacet& f = rFacets[i];
         f1 = (int)f._aulPoints[0];
@@ -2543,7 +2543,7 @@ bool MeshOutput::SaveAsciiPLY(std::ostream& out) const
     }
 
     unsigned int n = 3;
-    int f1, f2, f3;
+    int f1 {}, f2 {}, f3 {};
     for (std::size_t i = 0; i < f_count; i++) {
         const MeshFacet& f = rFacets[i];
         f1 = (int)f._aulPoints[0];
@@ -2923,7 +2923,7 @@ bool MeshOutput::SaveX3DContent(std::ostream& out, bool exportViewpoints) const
         const Base::Vector3d& v = p.getPosition();
         const Base::Rotation& r = p.getRotation();
         Base::Vector3d axis;
-        double angle;
+        double angle {};
         r.getValue(axis, angle);
         out << "    <Transform "
             << "translation='" << v.x << " " << v.y << " " << v.z << "' "

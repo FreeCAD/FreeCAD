@@ -50,6 +50,11 @@ public:
     explicit MeshTopoAlgorithm(MeshKernel& rclM);
     ~MeshTopoAlgorithm();
 
+    MeshTopoAlgorithm(const MeshTopoAlgorithm&) = delete;
+    MeshTopoAlgorithm(MeshTopoAlgorithm&&) = delete;
+    MeshTopoAlgorithm& operator=(const MeshTopoAlgorithm&) = delete;
+    MeshTopoAlgorithm& operator=(MeshTopoAlgorithm&&) = delete;
+
 public:
     /** @name Topological Operations */
     //@{
@@ -360,7 +365,7 @@ protected:
         }
     };
 
-protected:
+private:
     const MeshKernel& _rclMesh;
 };
 
