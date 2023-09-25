@@ -1,27 +1,28 @@
 /***************************************************************************
  *   Copyright (c) 2023 David Carter <dcarter@david.carter.ca>             *
  *                                                                         *
- *   This file is part of the FreeCAD CAx development system.              *
+ *   This file is part of FreeCAD.                                         *
  *                                                                         *
- *   This library is free software; you can redistribute it and/or         *
- *   modify it under the terms of the GNU Library General Public           *
- *   License as published by the Free Software Foundation; either          *
- *   version 2 of the License, or (at your option) any later version.      *
+ *   FreeCAD is free software: you can redistribute it and/or modify it    *
+ *   under the terms of the GNU Lesser General Public License as           *
+ *   published by the Free Software Foundation, either version 2.1 of the  *
+ *   License, or (at your option) any later version.                       *
  *                                                                         *
- *   This library  is distributed in the hope that it will be useful,      *
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
- *   GNU Library General Public License for more details.                  *
+ *   FreeCAD is distributed in the hope that it will be useful, but        *
+ *   WITHOUT ANY WARRANTY; without even the implied warranty of            *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU      *
+ *   Lesser General Public License for more details.                       *
  *                                                                         *
- *   You should have received a copy of the GNU Library General Public     *
- *   License along with this library; see the file COPYING.LIB. If not,    *
- *   write to the Free Software Foundation, Inc., 59 Temple Place,         *
- *   Suite 330, Boston, MA  02111-1307, USA                                *
+ *   You should have received a copy of the GNU Lesser General Public      *
+ *   License along with FreeCAD. If not, see                               *
+ *   <https://www.gnu.org/licenses/>.                                      *
  *                                                                         *
- ***************************************************************************/
+ **************************************************************************/
 
 #ifndef MATERIAL_MATERIALS_H
 #define MATERIAL_MATERIALS_H
+
+#include <Mod/Material/MaterialGlobal.h>
 
 #include <Base/BaseClass.h>
 #include <QDir>
@@ -46,28 +47,30 @@ public:
     MaterialProperty();
     explicit MaterialProperty(const ModelProperty& property);
     explicit MaterialProperty(const MaterialProperty& property);
-    virtual ~MaterialProperty();
+    ~MaterialProperty() override = default;
 
-    MaterialValue::ValueType getType(void) const
+    MaterialValue::ValueType getType() const
     {
         return _valuePtr->getType();
     }
 
-    const QString getModelUUID(void) const;
-    const QVariant getValue(void) const;
+    const QString getModelUUID() const;
+    const QVariant getValue() const;
     bool isNull() const
     {
         return _valuePtr->isNull();
     }
-    MaterialValue* getMaterialValue(void);
-    const QString getString(void) const;
-    bool getBoolean(void) const;
-    int getInt(void) const;
-    double getFloat(void) const;
-    const Base::Quantity& getQuantity(void) const;
-    const QString getURL(void) const;
+    std::shared_ptr<MaterialValue> getMaterialValue();
+    const std::shared_ptr<MaterialValue> getMaterialValue() const;
+    const QString getString() const;
+    bool getBoolean() const;
+    int getInt() const;
+    double getFloat() const;
+    const Base::Quantity& getQuantity() const;
+    const QString getURL() const;
 
     MaterialProperty& getColumn(int column);
+    const MaterialProperty& getColumn(int column) const;
     MaterialValue::ValueType getColumnType(int column) const;
     QString getColumnUnits(int column) const;
     QVariant getColumnNull(int column) const;
@@ -102,7 +105,7 @@ protected:
 
 private:
     QString _modelUUID;
-    MaterialValue* _valuePtr;
+    std::shared_ptr<MaterialValue> _valuePtr;
     std::vector<MaterialProperty> _columns;
 };
 
@@ -113,9 +116,9 @@ class MaterialsExport Material: public Base::BaseClass
 public:
     enum ModelEdit
     {
-        ModelEdit_None, // No change
-        ModelEdit_Alter,// Existing values are changed
-        ModelEdit_Extend// New values added
+        ModelEdit_None,   // No change
+        ModelEdit_Alter,  // Existing values are changed
+        ModelEdit_Extend  // New values added
     };
 
     Material();
@@ -320,15 +323,15 @@ private:
     std::list<QString> _tags;
     std::vector<QString> _physicalUuids;
     std::vector<QString> _appearanceUuids;
-    std::vector<QString> _allUuids;// Includes inherited models
+    std::vector<QString> _allUuids;  // Includes inherited models
     std::map<QString, MaterialProperty> _physical;
     std::map<QString, MaterialProperty> _appearance;
     bool _dereferenced;
     ModelEdit _editState;
 };
 
-}// namespace Materials
+}  // namespace Materials
 
 Q_DECLARE_METATYPE(Materials::Material*)
 
-#endif// MATERIAL_MATERIALS_H
+#endif  // MATERIAL_MATERIALS_H

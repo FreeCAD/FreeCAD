@@ -1,24 +1,23 @@
 /***************************************************************************
  *   Copyright (c) 2023 David Carter <dcarter@david.carter.ca>             *
  *                                                                         *
- *   This file is part of the FreeCAD CAx development system.              *
+ *   This file is part of FreeCAD.                                         *
  *                                                                         *
- *   This library is free software; you can redistribute it and/or         *
- *   modify it under the terms of the GNU Library General Public           *
- *   License as published by the Free Software Foundation; either          *
- *   version 2 of the License, or (at your option) any later version.      *
+ *   FreeCAD is free software: you can redistribute it and/or modify it    *
+ *   under the terms of the GNU Lesser General Public License as           *
+ *   published by the Free Software Foundation, either version 2.1 of the  *
+ *   License, or (at your option) any later version.                       *
  *                                                                         *
- *   This library  is distributed in the hope that it will be useful,      *
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
- *   GNU Library General Public License for more details.                  *
+ *   FreeCAD is distributed in the hope that it will be useful, but        *
+ *   WITHOUT ANY WARRANTY; without even the implied warranty of            *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU      *
+ *   Lesser General Public License for more details.                       *
  *                                                                         *
- *   You should have received a copy of the GNU Library General Public     *
- *   License along with this library; see the file COPYING.LIB. If not,    *
- *   write to the Free Software Foundation, Inc., 59 Temple Place,         *
- *   Suite 330, Boston, MA  02111-1307, USA                                *
+ *   You should have received a copy of the GNU Lesser General Public      *
+ *   License along with FreeCAD. If not, see                               *
+ *   <https://www.gnu.org/licenses/>.                                      *
  *                                                                         *
- ***************************************************************************/
+ **************************************************************************/
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
@@ -47,8 +46,8 @@ AbstractArrayModel::AbstractArrayModel(QObject* parent)
 //===
 
 
-Array2DModel::Array2DModel(Materials::MaterialProperty* property,
-                           Materials::Material2DArray* value,
+Array2DModel::Array2DModel(const Materials::MaterialProperty* property,
+                           std::shared_ptr<Materials::Material2DArray> value,
                            QObject* parent)
     : AbstractArrayModel(parent)
     , _property(property)
@@ -58,10 +57,10 @@ Array2DModel::Array2DModel(Materials::MaterialProperty* property,
 int Array2DModel::rowCount(const QModelIndex& parent) const
 {
     if (parent.isValid()) {
-        return 0;// No children
+        return 0;  // No children
     }
 
-    return _value->rows() + 1;// Will always have 1 empty row
+    return _value->rows() + 1;  // Will always have 1 empty row
 }
 
 bool Array2DModel::newRow(const QModelIndex& index) const
@@ -105,7 +104,7 @@ QVariant Array2DModel::headerData(int section, Qt::Orientation orientation, int 
 {
     if (role == Qt::DisplayRole) {
         if (orientation == Qt::Horizontal) {
-            Materials::MaterialProperty& column = _property->getColumn(section);
+            const Materials::MaterialProperty& column = _property->getColumn(section);
             return QVariant(column.getName());
         }
         else if (orientation == Qt::Vertical) {
@@ -188,8 +187,8 @@ bool Array2DModel::removeColumns(int column, int count, const QModelIndex& paren
 
 //===
 
-Array3DDepthModel::Array3DDepthModel(Materials::MaterialProperty* property,
-                                     Materials::Material3DArray* value,
+Array3DDepthModel::Array3DDepthModel(const Materials::MaterialProperty* property,
+                                     std::shared_ptr<Materials::Material3DArray> value,
                                      QObject* parent)
     : AbstractArrayModel(parent)
     , _property(property)
@@ -199,10 +198,10 @@ Array3DDepthModel::Array3DDepthModel(Materials::MaterialProperty* property,
 int Array3DDepthModel::rowCount(const QModelIndex& parent) const
 {
     if (parent.isValid()) {
-        return 0;// No children
+        return 0;  // No children
     }
 
-    return _value->depth() + 1;// Will always have 1 empty row
+    return _value->depth() + 1;  // Will always have 1 empty row
 }
 
 bool Array3DDepthModel::newRow(const QModelIndex& index) const
@@ -239,7 +238,7 @@ QVariant Array3DDepthModel::headerData(int section, Qt::Orientation orientation,
 {
     if (role == Qt::DisplayRole) {
         if (orientation == Qt::Horizontal) {
-            Materials::MaterialProperty& column = _property->getColumn(section);
+            const Materials::MaterialProperty& column = _property->getColumn(section);
             return QVariant(column.getName());
         }
         else if (orientation == Qt::Vertical) {
@@ -322,8 +321,8 @@ bool Array3DDepthModel::removeColumns(int column, int count, const QModelIndex& 
 
 //===
 
-Array3DModel::Array3DModel(Materials::MaterialProperty* property,
-                           Materials::Material3DArray* value,
+Array3DModel::Array3DModel(const Materials::MaterialProperty* property,
+                           std::shared_ptr<Materials::Material3DArray> value,
                            QObject* parent)
     : AbstractArrayModel(parent)
     , _property(property)
@@ -333,10 +332,10 @@ Array3DModel::Array3DModel(Materials::MaterialProperty* property,
 int Array3DModel::rowCount(const QModelIndex& parent) const
 {
     if (parent.isValid()) {
-        return 0;// No children
+        return 0;  // No children
     }
 
-    return _value->depth() + 1;// Will always have 1 empty row
+    return _value->depth() + 1;  // Will always have 1 empty row
 }
 
 int Array3DModel::columnCount(const QModelIndex& parent) const
@@ -384,7 +383,7 @@ QVariant Array3DModel::headerData(int section, Qt::Orientation orientation, int 
 {
     if (role == Qt::DisplayRole) {
         if (orientation == Qt::Horizontal) {
-            Materials::MaterialProperty& column = _property->getColumn(section + 1);
+            const Materials::MaterialProperty& column = _property->getColumn(section + 1);
             return QVariant(column.getName());
         }
         else if (orientation == Qt::Vertical) {

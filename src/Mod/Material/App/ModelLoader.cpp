@@ -1,24 +1,23 @@
 /***************************************************************************
  *   Copyright (c) 2023 David Carter <dcarter@david.carter.ca>             *
  *                                                                         *
- *   This file is part of the FreeCAD CAx development system.              *
+ *   This file is part of FreeCAD.                                         *
  *                                                                         *
- *   This library is free software; you can redistribute it and/or         *
- *   modify it under the terms of the GNU Library General Public           *
- *   License as published by the Free Software Foundation; either          *
- *   version 2 of the License, or (at your option) any later version.      *
+ *   FreeCAD is free software: you can redistribute it and/or modify it    *
+ *   under the terms of the GNU Lesser General Public License as           *
+ *   published by the Free Software Foundation, either version 2.1 of the  *
+ *   License, or (at your option) any later version.                       *
  *                                                                         *
- *   This library  is distributed in the hope that it will be useful,      *
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
- *   GNU Library General Public License for more details.                  *
+ *   FreeCAD is distributed in the hope that it will be useful, but        *
+ *   WITHOUT ANY WARRANTY; without even the implied warranty of            *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU      *
+ *   Lesser General Public License for more details.                       *
  *                                                                         *
- *   You should have received a copy of the GNU Library General Public     *
- *   License along with this library; see the file COPYING.LIB. If not,    *
- *   write to the Free Software Foundation, Inc., 59 Temple Place,         *
- *   Suite 330, Boston, MA  02111-1307, USA                                *
+ *   You should have received a copy of the GNU Lesser General Public      *
+ *   License along with FreeCAD. If not, see                               *
+ *   <https://www.gnu.org/licenses/>.                                      *
  *                                                                         *
- ***************************************************************************/
+ **************************************************************************/
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
@@ -53,9 +52,10 @@ ModelEntry::ModelEntry(const ModelLibrary& library,
     , _dereferenced(false)
 {}
 
-std::map<QString, ModelEntry*>* ModelLoader::_modelEntryMap = nullptr;
+std::unique_ptr<std::map<QString, ModelEntry*>> ModelLoader::_modelEntryMap = nullptr;
 
-ModelLoader::ModelLoader(std::map<QString, Model*>* modelMap, std::list<ModelLibrary*>* libraryList)
+ModelLoader::ModelLoader(std::shared_ptr<std::map<QString, Model*>> modelMap,
+                         std::shared_ptr<std::list<ModelLibrary*>> libraryList)
     : _modelMap(modelMap)
     , _libraryList(libraryList)
 {
@@ -305,7 +305,7 @@ void ModelLoader::addToTree(ModelEntry* model,
 void ModelLoader::loadLibrary(const ModelLibrary& library)
 {
     if (_modelEntryMap == nullptr) {
-        _modelEntryMap = new std::map<QString, ModelEntry*>();
+        _modelEntryMap = std::make_unique<std::map<QString, ModelEntry*>>();
     }
 
     QDirIterator it(library.getDirectory(), QDirIterator::Subdirectories);
@@ -340,7 +340,7 @@ void ModelLoader::loadLibrary(const ModelLibrary& library)
     // delete inheritances;
 }
 
-void ModelLoader::loadLibraries(void)
+void ModelLoader::loadLibraries()
 {
     getModelLibraries();
     if (_libraryList) {

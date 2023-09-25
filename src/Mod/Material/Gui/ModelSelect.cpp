@@ -1,24 +1,23 @@
 /***************************************************************************
  *   Copyright (c) 2023 David Carter <dcarter@david.carter.ca>             *
  *                                                                         *
- *   This file is part of the FreeCAD CAx development system.              *
+ *   This file is part of FreeCAD.                                         *
  *                                                                         *
- *   This library is free software; you can redistribute it and/or         *
- *   modify it under the terms of the GNU Library General Public           *
- *   License as published by the Free Software Foundation; either          *
- *   version 2 of the License, or (at your option) any later version.      *
+ *   FreeCAD is free software: you can redistribute it and/or modify it    *
+ *   under the terms of the GNU Lesser General Public License as           *
+ *   published by the Free Software Foundation, either version 2.1 of the  *
+ *   License, or (at your option) any later version.                       *
  *                                                                         *
- *   This library  is distributed in the hope that it will be useful,      *
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
- *   GNU Library General Public License for more details.                  *
+ *   FreeCAD is distributed in the hope that it will be useful, but        *
+ *   WITHOUT ANY WARRANTY; without even the implied warranty of            *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU      *
+ *   Lesser General Public License for more details.                       *
  *                                                                         *
- *   You should have received a copy of the GNU Library General Public     *
- *   License along with this library; see the file COPYING.LIB. If not,    *
- *   write to the Free Software Foundation, Inc., 59 Temple Place,         *
- *   Suite 330, Boston, MA  02111-1307, USA                                *
+ *   You should have received a copy of the GNU Lesser General Public      *
+ *   License along with FreeCAD. If not, see                               *
+ *   <https://www.gnu.org/licenses/>.                                      *
  *                                                                         *
- ***************************************************************************/
+ **************************************************************************/
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
@@ -233,9 +232,10 @@ void ModelSelect::addExpanded(QTreeView* tree, QStandardItemModel* parent, QStan
     tree->setExpanded(child->index(), true);
 }
 
-void ModelSelect::addModels(QStandardItem& parent,
-                            const std::map<QString, Materials::ModelTreeNode*>* modelTree,
-                            const QIcon& icon)
+void ModelSelect::addModels(
+    QStandardItem& parent,
+    const std::shared_ptr<std::map<QString, Materials::ModelTreeNode*>> modelTree,
+    const QIcon& icon)
 {
     auto tree = ui->treeModels;
     for (auto& mod : *modelTree) {
@@ -255,7 +255,7 @@ void ModelSelect::addModels(QStandardItem& parent,
             auto node = new QStandardItem(mod.first);
             addExpanded(tree, &parent, node);
             node->setFlags(Qt::ItemIsEnabled | Qt::ItemIsDragEnabled | Qt::ItemIsDropEnabled);
-            const std::map<QString, Materials::ModelTreeNode*>* treeMap = nodePtr->getFolder();
+            auto treeMap = nodePtr->getFolder();
             addModels(*node, treeMap, icon);
         }
     }
@@ -343,16 +343,13 @@ void ModelSelect::fillTree()
     addExpanded(tree, model, lib);
     addRecents(lib);
 
-    std::list<Materials::ModelLibrary*>* libraries = getModelManager().getModelLibraries();
-    for (Materials::ModelLibrary* library : *libraries) {
+    auto libraries = getModelManager().getModelLibraries();
+    for (auto library : *libraries) {
         lib = new QStandardItem(library->getName());
         lib->setFlags(Qt::ItemIsEnabled | Qt::ItemIsDragEnabled | Qt::ItemIsDropEnabled);
         addExpanded(tree, model, lib);
 
-        // auto path = library->getDirectoryPath();
-        std::map<QString, Materials::ModelTreeNode*>* modelTree =
-            getModelManager().getModelTree(*library, _filter);
-        // delete modelTree;
+        auto modelTree = getModelManager().getModelTree(*library, _filter);
         addModels(*lib, modelTree, QIcon(library->getIconPath()));
     }
 }
@@ -450,7 +447,7 @@ void ModelSelect::updateMaterialModel(const QString& uuid)
     updateModelProperties(model);
 }
 
-void ModelSelect::clearMaterialModel(void)
+void ModelSelect::clearMaterialModel()
 {
     // Update the general information
     ui->editName->setText(QString::fromStdString(""));

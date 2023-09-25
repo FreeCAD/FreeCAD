@@ -30,7 +30,7 @@ list(APPEND MatGui_LIBS
     ${QtConcurrent_LIBRARIES}
 )
 
-set (Material_TR_QRC ${CMAKE_CURRENT_BINARY_DIR}/Resources/Material_translation.qrc)
+set(Material_TR_QRC ${CMAKE_CURRENT_BINARY_DIR}/Resources/Material_translation.qrc)
 qt_find_and_add_translation(QM_SRCS "Resources/translations/*_*.ts"
     ${CMAKE_CURRENT_BINARY_DIR}/Resources/translations)
 qt_create_resource_file(${Material_TR_QRC} ${QM_SRCS})
@@ -76,6 +76,8 @@ SET(MatGui_SRCS
     ModelSelect.ui
     PreCompiled.cpp
     PreCompiled.h
+    Workbench.cpp
+    Workbench.h
 )
 
 if(FREECAD_USE_PCH)
@@ -95,7 +97,6 @@ SET(MatGuiIcon_SVG
 
 add_library(MatGui SHARED ${MatGui_SRCS} ${MatGuiIcon_SVG})
 target_link_libraries(MatGui ${MatGui_LIBS})
-
 
 SET_BIN_DIR(MatGui MatGui /Mod/Material)
 SET_PYTHON_PREFIX_SUFFIX(MatGui)

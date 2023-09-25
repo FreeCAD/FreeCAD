@@ -1,24 +1,23 @@
 /***************************************************************************
  *   Copyright (c) 2023 David Carter <dcarter@david.carter.ca>             *
  *                                                                         *
- *   This file is part of the FreeCAD CAx development system.              *
+ *   This file is part of FreeCAD.                                         *
  *                                                                         *
- *   This library is free software; you can redistribute it and/or         *
- *   modify it under the terms of the GNU Library General Public           *
- *   License as published by the Free Software Foundation; either          *
- *   version 2 of the License, or (at your option) any later version.      *
+ *   FreeCAD is free software: you can redistribute it and/or modify it    *
+ *   under the terms of the GNU Lesser General Public License as           *
+ *   published by the Free Software Foundation, either version 2.1 of the  *
+ *   License, or (at your option) any later version.                       *
  *                                                                         *
- *   This library  is distributed in the hope that it will be useful,      *
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
- *   GNU Library General Public License for more details.                  *
+ *   FreeCAD is distributed in the hope that it will be useful, but        *
+ *   WITHOUT ANY WARRANTY; without even the implied warranty of            *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU      *
+ *   Lesser General Public License for more details.                       *
  *                                                                         *
- *   You should have received a copy of the GNU Library General Public     *
- *   License along with this library; see the file COPYING.LIB. If not,    *
- *   write to the Free Software Foundation, Inc., 59 Temple Place,         *
- *   Suite 330, Boston, MA  02111-1307, USA                                *
+ *   You should have received a copy of the GNU Lesser General Public      *
+ *   License along with FreeCAD. If not, see                               *
+ *   <https://www.gnu.org/licenses/>.                                      *
  *                                                                         *
- ***************************************************************************/
+ **************************************************************************/
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
@@ -378,10 +377,11 @@ void MaterialsEditor::reject()
 //     auto pixmap = icon.pixmap();
 // }
 
-void MaterialsEditor::addMaterials(QStandardItem& parent,
-                                   const std::map<QString, Materials::MaterialTreeNode*>* modelTree,
-                                   const QIcon& folderIcon,
-                                   const QIcon& icon)
+void MaterialsEditor::addMaterials(
+    QStandardItem& parent,
+    const std::shared_ptr<std::map<QString, Materials::MaterialTreeNode*>> modelTree,
+    const QIcon& folderIcon,
+    const QIcon& icon)
 {
     auto tree = ui->treeMaterials;
     for (auto& mat : *modelTree) {
@@ -404,7 +404,7 @@ void MaterialsEditor::addMaterials(QStandardItem& parent,
             auto node = new QStandardItem(folderIcon, mat.first);
             addExpanded(tree, &parent, node);
             node->setFlags(Qt::ItemIsEnabled | Qt::ItemIsDragEnabled | Qt::ItemIsDropEnabled);
-            const std::map<QString, Materials::MaterialTreeNode*>* treeMap = nodePtr->getFolder();
+            auto treeMap = nodePtr->getFolder();
             addMaterials(*node, treeMap, folderIcon, icon);
         }
     }
@@ -549,8 +549,7 @@ void MaterialsEditor::fillMaterialTree()
         QIcon icon(library->getIconPath());
         QIcon folderIcon(QString::fromStdString(":/icons/folder.svg"));
 
-        std::map<QString, Materials::MaterialTreeNode*>* modelTree =
-            _materialManager.getMaterialTree(*library);
+        auto modelTree = _materialManager.getMaterialTree(*library);
         addMaterials(*lib, modelTree, folderIcon, icon);
     }
 }
@@ -650,16 +649,16 @@ QString MaterialsEditor::getColorHash(const QString& colorString, int colorRange
     std::stringstream stream(colorString.toStdString());
 
     char c;
-    stream >> c;// read "("
+    stream >> c;  // read "("
     double red;
     stream >> red;
-    stream >> c;// ","
+    stream >> c;  // ","
     double green;
     stream >> green;
-    stream >> c;// ","
+    stream >> c;  // ","
     double blue;
     stream >> blue;
-    stream >> c;// ","
+    stream >> c;  // ","
     double alpha = 1.0;
     if (c == ',') {
         stream >> alpha;
@@ -888,7 +887,7 @@ int MaterialsEditor::confirmSave(QWidget* parent)
     }
 
     int res = QMessageBox::Cancel;
-    box.adjustSize();// Silence warnings from Qt on Windows
+    box.adjustSize();  // Silence warnings from Qt on Windows
     switch (box.exec()) {
         case QMessageBox::Save:
             saveMaterial();

@@ -1,24 +1,23 @@
 /***************************************************************************
  *   Copyright (c) 2023 David Carter <dcarter@david.carter.ca>             *
  *                                                                         *
- *   This file is part of the FreeCAD CAx development system.              *
+ *   This file is part of FreeCAD.                                         *
  *                                                                         *
- *   This library is free software; you can redistribute it and/or         *
- *   modify it under the terms of the GNU Library General Public           *
- *   License as published by the Free Software Foundation; either          *
- *   version 2 of the License, or (at your option) any later version.      *
+ *   FreeCAD is free software: you can redistribute it and/or modify it    *
+ *   under the terms of the GNU Lesser General Public License as           *
+ *   published by the Free Software Foundation, either version 2.1 of the  *
+ *   License, or (at your option) any later version.                       *
  *                                                                         *
- *   This library  is distributed in the hope that it will be useful,      *
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
- *   GNU Library General Public License for more details.                  *
+ *   FreeCAD is distributed in the hope that it will be useful, but        *
+ *   WITHOUT ANY WARRANTY; without even the implied warranty of            *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU      *
+ *   Lesser General Public License for more details.                       *
  *                                                                         *
- *   You should have received a copy of the GNU Library General Public     *
- *   License along with this library; see the file COPYING.LIB. If not,    *
- *   write to the Free Software Foundation, Inc., 59 Temple Place,         *
- *   Suite 330, Boston, MA  02111-1307, USA                                *
+ *   You should have received a copy of the GNU Lesser General Public      *
+ *   License along with FreeCAD. If not, see                               *
+ *   <https://www.gnu.org/licenses/>.                                      *
  *                                                                         *
- ***************************************************************************/
+ **************************************************************************/
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
@@ -43,7 +42,7 @@ TYPESYSTEM_SOURCE(Materials::MaterialProperty, Materials::ModelProperty)
 
 MaterialProperty::MaterialProperty()
 {
-    _valuePtr = new MaterialValue(MaterialValue::None);
+    _valuePtr = std::make_shared<MaterialValue>(MaterialValue::None);
 }
 
 MaterialProperty::MaterialProperty(const ModelProperty& property)
@@ -59,10 +58,10 @@ MaterialProperty::MaterialProperty(const ModelProperty& property)
     }
 
     if (_valuePtr->getType() == MaterialValue::Array2D) {
-        reinterpret_cast<Material2DArray*>(_valuePtr)->setDefault(getColumnNull(0));
+        std::static_pointer_cast<Material2DArray>(_valuePtr)->setDefault(getColumnNull(0));
     }
     else if (_valuePtr->getType() == MaterialValue::Array3D) {
-        reinterpret_cast<Material3DArray*>(_valuePtr)->setDefault(getColumnNull(0));
+        std::static_pointer_cast<Material3DArray>(_valuePtr)->setDefault(getColumnNull(0));
     }
 }
 
@@ -71,7 +70,7 @@ MaterialProperty::MaterialProperty(const MaterialProperty& other)
 {
     _modelUUID = other._modelUUID;
     if (other._valuePtr != nullptr) {
-        _valuePtr = new MaterialValue(*(other._valuePtr));
+        _valuePtr = std::make_shared<MaterialValue>(*(other._valuePtr));
     }
     else {
         _valuePtr = nullptr;
@@ -82,25 +81,30 @@ MaterialProperty::MaterialProperty(const MaterialProperty& other)
     }
 }
 
-MaterialProperty::~MaterialProperty()
-{}
+// MaterialProperty::~MaterialProperty()
+// {}
 
 void MaterialProperty::setModelUUID(const QString& uuid)
 {
     _modelUUID = uuid;
 }
 
-const QVariant MaterialProperty::getValue(void) const
+const QVariant MaterialProperty::getValue() const
 {
     return _valuePtr->getValue();
 }
 
-MaterialValue* MaterialProperty::getMaterialValue(void)
+std::shared_ptr<MaterialValue> MaterialProperty::getMaterialValue()
 {
     return _valuePtr;
 }
 
-const QString MaterialProperty::getString(void) const
+const std::shared_ptr<MaterialValue> MaterialProperty::getMaterialValue() const
+{
+    return _valuePtr;
+}
+
+const QString MaterialProperty::getString() const
 {
     if (getType() == MaterialValue::Quantity) {
         Base::Quantity quantity = getValue().value<Base::Quantity>();
@@ -117,49 +121,45 @@ void MaterialProperty::setPropertyType(const QString& type)
 
 void MaterialProperty::setType(const QString& type)
 {
-    if (_valuePtr) {
-        delete _valuePtr;
-    }
-
     if (type == QString::fromStdString("String")) {
-        _valuePtr = new MaterialValue(MaterialValue::String);
+        _valuePtr = std::make_shared<MaterialValue>(MaterialValue::String);
     }
     else if (type == QString::fromStdString("Boolean")) {
-        _valuePtr = new MaterialValue(MaterialValue::Boolean);
+        _valuePtr = std::make_shared<MaterialValue>(MaterialValue::Boolean);
     }
     else if (type == QString::fromStdString("Integer")) {
-        _valuePtr = new MaterialValue(MaterialValue::Integer);
+        _valuePtr = std::make_shared<MaterialValue>(MaterialValue::Integer);
     }
     else if (type == QString::fromStdString("Float")) {
-        _valuePtr = new MaterialValue(MaterialValue::Float);
+        _valuePtr = std::make_shared<MaterialValue>(MaterialValue::Float);
     }
     else if (type == QString::fromStdString("URL")) {
-        _valuePtr = new MaterialValue(MaterialValue::URL);
+        _valuePtr = std::make_shared<MaterialValue>(MaterialValue::URL);
     }
     else if (type == QString::fromStdString("Quantity")) {
-        _valuePtr = new MaterialValue(MaterialValue::Quantity);
+        _valuePtr = std::make_shared<MaterialValue>(MaterialValue::Quantity);
     }
     else if (type == QString::fromStdString("Color")) {
-        _valuePtr = new MaterialValue(MaterialValue::Color);
+        _valuePtr = std::make_shared<MaterialValue>(MaterialValue::Color);
     }
     else if (type == QString::fromStdString("File")) {
-        _valuePtr = new MaterialValue(MaterialValue::File);
+        _valuePtr = std::make_shared<MaterialValue>(MaterialValue::File);
     }
     else if (type == QString::fromStdString("Image")) {
-        _valuePtr = new MaterialValue(MaterialValue::Image);
+        _valuePtr = std::make_shared<MaterialValue>(MaterialValue::Image);
     }
     else if (type == QString::fromStdString("List")) {
-        _valuePtr = new MaterialValue(MaterialValue::List);
+        _valuePtr = std::make_shared<MaterialValue>(MaterialValue::List);
     }
     else if (type == QString::fromStdString("2DArray")) {
-        _valuePtr = new Material2DArray();
+        _valuePtr = std::make_shared<Material2DArray>();
     }
     else if (type == QString::fromStdString("3DArray")) {
-        _valuePtr = new Material3DArray();
+        _valuePtr = std::make_shared<Material3DArray>();
     }
     else {
         // Error. Throw something
-        _valuePtr = new MaterialValue(MaterialValue::None);
+        _valuePtr = std::make_shared<MaterialValue>(MaterialValue::None);
         std::string stringType = type.toStdString();
         std::string name = getName().toStdString();
         throw UnknownValueType();
@@ -167,6 +167,16 @@ void MaterialProperty::setType(const QString& type)
 }
 
 MaterialProperty& MaterialProperty::getColumn(int column)
+{
+    try {
+        return _columns.at(column);
+    }
+    catch (std::out_of_range const&) {
+        throw InvalidColumn();
+    }
+}
+
+const MaterialProperty& MaterialProperty::getColumn(int column) const
 {
     try {
         return _columns.at(column);
@@ -337,9 +347,9 @@ MaterialProperty& MaterialProperty::operator=(const MaterialProperty& other)
 
     ModelProperty::operator=(other);
     _modelUUID = other._modelUUID;
-    delete _valuePtr;
+
     if (other._valuePtr != nullptr) {
-        _valuePtr = new MaterialValue(*(other._valuePtr));
+        _valuePtr = std::make_shared<MaterialValue>(*(other._valuePtr));
     }
     else {
         _valuePtr = nullptr;
@@ -531,7 +541,7 @@ void Material::setPhysicalValue(const QString& name, const QString& value)
 {
     setPhysicalEditState(name);
 
-    _physical[name].setValue(value);// may not be a string type
+    _physical[name].setValue(value);  // may not be a string type
 }
 
 void Material::setPhysicalValue(const QString& name, int value)
@@ -559,7 +569,7 @@ void Material::setAppearanceValue(const QString& name, const QString& value)
 {
     setAppearanceEditState(name);
 
-    _appearance[name].setValue(value);// may not be a string type
+    _appearance[name].setValue(value);  // may not be a string type
 }
 
 MaterialProperty& Material::getPhysicalProperty(const QString& name)

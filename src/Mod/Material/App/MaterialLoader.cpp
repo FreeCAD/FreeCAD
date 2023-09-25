@@ -1,24 +1,23 @@
 /***************************************************************************
  *   Copyright (c) 2023 David Carter <dcarter@david.carter.ca>             *
  *                                                                         *
- *   This file is part of the FreeCAD CAx development system.              *
+ *   This file is part of FreeCAD.                                         *
  *                                                                         *
- *   This library is free software; you can redistribute it and/or         *
- *   modify it under the terms of the GNU Library General Public           *
- *   License as published by the Free Software Foundation; either          *
- *   version 2 of the License, or (at your option) any later version.      *
+ *   FreeCAD is free software: you can redistribute it and/or modify it    *
+ *   under the terms of the GNU Lesser General Public License as           *
+ *   published by the Free Software Foundation, either version 2.1 of the  *
+ *   License, or (at your option) any later version.                       *
  *                                                                         *
- *   This library  is distributed in the hope that it will be useful,      *
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
- *   GNU Library General Public License for more details.                  *
+ *   FreeCAD is distributed in the hope that it will be useful, but        *
+ *   WITHOUT ANY WARRANTY; without even the implied warranty of            *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU      *
+ *   Lesser General Public License for more details.                       *
  *                                                                         *
- *   You should have received a copy of the GNU Library General Public     *
- *   License along with this library; see the file COPYING.LIB. If not,    *
- *   write to the Free Software Foundation, Inc., 59 Temple Place,         *
- *   Suite 330, Boston, MA  02111-1307, USA                                *
+ *   You should have received a copy of the GNU Lesser General Public      *
+ *   License along with FreeCAD. If not, see                               *
+ *   <https://www.gnu.org/licenses/>.                                      *
  *                                                                         *
- ***************************************************************************/
+ **************************************************************************/
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
@@ -74,7 +73,7 @@ QString MaterialYamlEntry::yamlValue(const YAML::Node& node,
     return QString::fromStdString(defaultValue);
 }
 
-void MaterialYamlEntry::addToTree(std::map<QString, Material*>* materialMap)
+void MaterialYamlEntry::addToTree(std::shared_ptr<std::map<QString, Material*>> materialMap)
 {
     std::set<QString> exclude;
     exclude.insert(QString::fromStdString("General"));
@@ -100,7 +99,7 @@ void MaterialYamlEntry::addToTree(std::map<QString, Material*>* materialMap)
             std::string nodeName = it->second["UUID"].as<std::string>();
 
             finalModel->setParentUUID(
-                QString::fromStdString(nodeName));// Should only be one. Need to check
+                QString::fromStdString(nodeName));  // Should only be one. Need to check
         }
     }
 
@@ -167,10 +166,10 @@ void MaterialYamlEntry::addToTree(std::map<QString, Material*>* materialMap)
     (*materialMap)[uuid] = library.addMaterial(*finalModel, path);
 }
 
-std::map<QString, MaterialEntry*>* MaterialLoader::_materialEntryMap = nullptr;
+std::unique_ptr<std::map<QString, MaterialEntry*>> MaterialLoader::_materialEntryMap = nullptr;
 
-MaterialLoader::MaterialLoader(std::map<QString, Material*>* materialMap,
-                               std::list<MaterialLibrary*>* libraryList)
+MaterialLoader::MaterialLoader(std::shared_ptr<std::map<QString, Material*>> materialMap,
+                               std::shared_ptr<std::list<MaterialLibrary*>> libraryList)
     : _materialMap(materialMap)
     , _libraryList(libraryList)
 {
@@ -313,7 +312,7 @@ void MaterialLoader::dereference(Material* material)
 void MaterialLoader::loadLibrary(MaterialLibrary& library)
 {
     if (_materialEntryMap == nullptr) {
-        _materialEntryMap = new std::map<QString, MaterialEntry*>();
+        _materialEntryMap = std::make_unique<std::map<QString, MaterialEntry*>>();
     }
 
     QDirIterator it(library.getDirectory(), QDirIterator::Subdirectories);
@@ -337,9 +336,9 @@ void MaterialLoader::loadLibrary(MaterialLibrary& library)
     }
 }
 
-void MaterialLoader::loadLibraries(void)
+void MaterialLoader::loadLibraries()
 {
-    std::list<MaterialLibrary*>* _libraryList = getMaterialLibraries();
+    auto _libraryList = getMaterialLibraries();
     if (_libraryList) {
         for (auto it = _libraryList->begin(); it != _libraryList->end(); it++) {
             loadLibrary(**it);
@@ -351,7 +350,7 @@ void MaterialLoader::loadLibraries(void)
     }
 }
 
-std::list<MaterialLibrary*>* MaterialLoader::getMaterialLibraries()
+std::shared_ptr<std::list<MaterialLibrary*>> MaterialLoader::getMaterialLibraries()
 {
     auto param = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/Mod/Material/Resources");
@@ -426,9 +425,10 @@ std::list<MaterialLibrary*>* MaterialLoader::getMaterialLibraries()
     return _libraryList;
 }
 
-std::list<QString>* MaterialLoader::getMaterialFolders(const MaterialLibrary& library)
+std::shared_ptr<std::list<QString>>
+MaterialLoader::getMaterialFolders(const MaterialLibrary& library)
 {
-    std::list<QString>* pathList = new std::list<QString>();
+    std::shared_ptr<std::list<QString>> pathList = std::make_shared<std::list<QString>>();
     QDirIterator it(library.getDirectory(), QDirIterator::Subdirectories);
     while (it.hasNext()) {
         auto pathname = it.next();

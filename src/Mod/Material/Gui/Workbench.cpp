@@ -19,27 +19,16 @@
  *                                                                         *
  **************************************************************************/
 
-#include <FCGlobal.h>
 
-#ifndef MATERIAL_GLOBAL_H
-#define MATERIAL_GLOBAL_H
+#include "PreCompiled.h"
 
-// Material
-#ifndef MaterialsExport
-#ifdef Material_EXPORTS
-#define MaterialsExport FREECAD_DECL_EXPORT
-#else
-#define MaterialsExport FREECAD_DECL_IMPORT
-#endif
-#endif
+#include "Workbench.h"
 
-// MatGui
-#ifndef MatGuiExport
-#ifdef MatGui_EXPORTS
-#define MatGuiExport FREECAD_DECL_EXPORT
-#else
-#define MatGuiExport FREECAD_DECL_IMPORT
-#endif
-#endif
+using namespace MatGui;
 
-#endif  // MATERIAL_GLOBAL_H
+/// @namespace MatGui @class Workbench
+TYPESYSTEM_SOURCE(MatGui::Workbench, Gui::StdWorkbench)
+
+Workbench::Workbench() = default;
+
+Workbench::~Workbench() = default;

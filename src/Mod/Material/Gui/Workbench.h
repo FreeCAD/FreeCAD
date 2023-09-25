@@ -19,27 +19,29 @@
  *                                                                         *
  **************************************************************************/
 
-#include <FCGlobal.h>
 
-#ifndef MATERIAL_GLOBAL_H
-#define MATERIAL_GLOBAL_H
+#ifndef MATGUI_WORKBENCH_H
+#define MATGUI_WORKBENCH_H
 
-// Material
-#ifndef MaterialsExport
-#ifdef Material_EXPORTS
-#define MaterialsExport FREECAD_DECL_EXPORT
-#else
-#define MaterialsExport FREECAD_DECL_IMPORT
-#endif
-#endif
+#include <Gui/Workbench.h>
+#include <Mod/Material/MaterialGlobal.h>
 
-// MatGui
-#ifndef MatGuiExport
-#ifdef MatGui_EXPORTS
-#define MatGuiExport FREECAD_DECL_EXPORT
-#else
-#define MatGuiExport FREECAD_DECL_IMPORT
-#endif
-#endif
+namespace MatGui
+{
 
-#endif  // MATERIAL_GLOBAL_H
+/**
+ * @author David Carter
+ */
+class MatGuiExport Workbench: public Gui::StdWorkbench
+{
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
+
+public:
+    Workbench();
+    ~Workbench() override;
+};
+
+}  // namespace MatGui
+
+
+#endif  // MATGUI_WORKBENCH_H

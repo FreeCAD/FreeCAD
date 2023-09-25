@@ -1,24 +1,23 @@
 /***************************************************************************
  *   Copyright (c) 2023 David Carter <dcarter@david.carter.ca>             *
  *                                                                         *
- *   This file is part of the FreeCAD CAx development system.              *
+ *   This file is part of FreeCAD.                                         *
  *                                                                         *
- *   This library is free software; you can redistribute it and/or         *
- *   modify it under the terms of the GNU Library General Public           *
- *   License as published by the Free Software Foundation; either          *
- *   version 2 of the License, or (at your option) any later version.      *
+ *   FreeCAD is free software: you can redistribute it and/or modify it    *
+ *   under the terms of the GNU Lesser General Public License as           *
+ *   published by the Free Software Foundation, either version 2.1 of the  *
+ *   License, or (at your option) any later version.                       *
  *                                                                         *
- *   This library  is distributed in the hope that it will be useful,      *
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
- *   GNU Library General Public License for more details.                  *
+ *   FreeCAD is distributed in the hope that it will be useful, but        *
+ *   WITHOUT ANY WARRANTY; without even the implied warranty of            *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU      *
+ *   Lesser General Public License for more details.                       *
  *                                                                         *
- *   You should have received a copy of the GNU Library General Public     *
- *   License along with this library; see the file COPYING.LIB. If not,    *
- *   write to the Free Software Foundation, Inc., 59 Temple Place,         *
- *   Suite 330, Boston, MA  02111-1307, USA                                *
+ *   You should have received a copy of the GNU Lesser General Public      *
+ *   License along with FreeCAD. If not, see                               *
+ *   <https://www.gnu.org/licenses/>.                                      *
  *                                                                         *
- ***************************************************************************/
+ **************************************************************************/
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
@@ -112,7 +111,7 @@ bool MaterialDelegate::editorEvent(QEvent* event,
 
 void MaterialDelegate::showColorModal(QStandardItem* item)
 {
-    QColor currentColor;// = d->col;
+    QColor currentColor;  // = d->col;
     currentColor.setRgba(parseColor(item->text()));
     QColorDialog* dlg = new QColorDialog(currentColor);
 
@@ -275,7 +274,7 @@ QSize MaterialDelegate::sizeHint(const QStyleOptionViewItem& option, const QMode
 
     std::string type = propertyType.toStdString();
     if (type == "Color") {
-        return QSize(75, 23);// Standard QPushButton size
+        return QSize(75, 23);  // Standard QPushButton size
     }
     else if (type == "2DArray" || type == "3DArray") {
         return QSize(23, 23);
@@ -421,7 +420,7 @@ QWidget* MaterialDelegate::createWidget(QWidget* parent,
         Gui::InputField* input = new Gui::InputField();
         input->setMinimum(std::numeric_limits<double>::min());
         input->setMaximum(std::numeric_limits<double>::max());
-        input->setUnitText(propertyUnits);// TODO: Ensure this exists
+        input->setUnitText(propertyUnits);  // TODO: Ensure this exists
         input->setPrecision(6);
         input->setQuantityString(propertyValue);
 

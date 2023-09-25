@@ -1,24 +1,23 @@
 /***************************************************************************
  *   Copyright (c) 2023 David Carter <dcarter@david.carter.ca>             *
  *                                                                         *
- *   This file is part of the FreeCAD CAx development system.              *
+ *   This file is part of FreeCAD.                                         *
  *                                                                         *
- *   This library is free software; you can redistribute it and/or         *
- *   modify it under the terms of the GNU Library General Public           *
- *   License as published by the Free Software Foundation; either          *
- *   version 2 of the License, or (at your option) any later version.      *
+ *   FreeCAD is free software: you can redistribute it and/or modify it    *
+ *   under the terms of the GNU Lesser General Public License as           *
+ *   published by the Free Software Foundation, either version 2.1 of the  *
+ *   License, or (at your option) any later version.                       *
  *                                                                         *
- *   This library  is distributed in the hope that it will be useful,      *
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
- *   GNU Library General Public License for more details.                  *
+ *   FreeCAD is distributed in the hope that it will be useful, but        *
+ *   WITHOUT ANY WARRANTY; without even the implied warranty of            *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU      *
+ *   Lesser General Public License for more details.                       *
  *                                                                         *
- *   You should have received a copy of the GNU Library General Public     *
- *   License along with this library; see the file COPYING.LIB. If not,    *
- *   write to the Free Software Foundation, Inc., 59 Temple Place,         *
- *   Suite 330, Boston, MA  02111-1307, USA                                *
+ *   You should have received a copy of the GNU Lesser General Public      *
+ *   License along with FreeCAD. If not, see                               *
+ *   <https://www.gnu.org/licenses/>.                                      *
  *                                                                         *
- ***************************************************************************/
+ **************************************************************************/
 
 #ifndef MATGUI_ARRAYMODEL_H
 #define MATGUI_ARRAYMODEL_H
@@ -46,8 +45,8 @@ public:
 class Array2DModel: public AbstractArrayModel
 {
 public:
-    explicit Array2DModel(Materials::MaterialProperty* property = nullptr,
-                          Materials::Material2DArray* value = nullptr,
+    explicit Array2DModel(const Materials::MaterialProperty* property = nullptr,
+                          std::shared_ptr<Materials::Material2DArray> value = nullptr,
                           QObject* parent = nullptr);
     ~Array2DModel() override = default;
 
@@ -68,15 +67,15 @@ public:
     bool removeColumns(int column, int count, const QModelIndex& parent = QModelIndex()) override;
 
 private:
-    Materials::MaterialProperty* _property;
-    Materials::Material2DArray* _value;
+    const Materials::MaterialProperty* _property;
+    std::shared_ptr<Materials::Material2DArray> _value;
 };
 
 class Array3DDepthModel: public AbstractArrayModel
 {
 public:
-    explicit Array3DDepthModel(Materials::MaterialProperty* property = nullptr,
-                               Materials::Material3DArray* value = nullptr,
+    explicit Array3DDepthModel(const Materials::MaterialProperty* property = nullptr,
+                               std::shared_ptr<Materials::Material3DArray> value = nullptr,
                                QObject* parent = nullptr);
     ~Array3DDepthModel() override = default;
 
@@ -101,15 +100,15 @@ public:
     bool removeColumns(int column, int count, const QModelIndex& parent = QModelIndex()) override;
 
 private:
-    Materials::MaterialProperty* _property;
-    Materials::Material3DArray* _value;
+    const Materials::MaterialProperty* _property;
+    std::shared_ptr<Materials::Material3DArray> _value;
 };
 
 class Array3DModel: public AbstractArrayModel
 {
 public:
-    explicit Array3DModel(Materials::MaterialProperty* property = nullptr,
-                          Materials::Material3DArray* value = nullptr,
+    explicit Array3DModel(const Materials::MaterialProperty* property = nullptr,
+                          std::shared_ptr<Materials::Material3DArray> value = nullptr,
                           QObject* parent = nullptr);
     ~Array3DModel() override = default;
 
@@ -130,10 +129,10 @@ public:
     bool removeColumns(int column, int count, const QModelIndex& parent = QModelIndex()) override;
 
 private:
-    Materials::MaterialProperty* _property;
-    Materials::Material3DArray* _value;
+    const Materials::MaterialProperty* _property;
+    std::shared_ptr<Materials::Material3DArray> _value;
 };
 
-}// namespace MatGui
+}  // namespace MatGui
 
-#endif// MATGUI_ARRAYMODEL_H
+#endif  // MATGUI_ARRAYMODEL_H

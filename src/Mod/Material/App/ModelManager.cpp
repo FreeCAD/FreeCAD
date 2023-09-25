@@ -1,24 +1,23 @@
 /***************************************************************************
  *   Copyright (c) 2023 David Carter <dcarter@david.carter.ca>             *
  *                                                                         *
- *   This file is part of the FreeCAD CAx development system.              *
+ *   This file is part of FreeCAD.                                         *
  *                                                                         *
- *   This library is free software; you can redistribute it and/or         *
- *   modify it under the terms of the GNU Library General Public           *
- *   License as published by the Free Software Foundation; either          *
- *   version 2 of the License, or (at your option) any later version.      *
+ *   FreeCAD is free software: you can redistribute it and/or modify it    *
+ *   under the terms of the GNU Lesser General Public License as           *
+ *   published by the Free Software Foundation, either version 2.1 of the  *
+ *   License, or (at your option) any later version.                       *
  *                                                                         *
- *   This library  is distributed in the hope that it will be useful,      *
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
- *   GNU Library General Public License for more details.                  *
+ *   FreeCAD is distributed in the hope that it will be useful, but        *
+ *   WITHOUT ANY WARRANTY; without even the implied warranty of            *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU      *
+ *   Lesser General Public License for more details.                       *
  *                                                                         *
- *   You should have received a copy of the GNU Library General Public     *
- *   License along with this library; see the file COPYING.LIB. If not,    *
- *   write to the Free Software Foundation, Inc., 59 Temple Place,         *
- *   Suite 330, Boston, MA  02111-1307, USA                                *
+ *   You should have received a copy of the GNU Lesser General Public      *
+ *   License along with FreeCAD. If not, see                               *
+ *   <https://www.gnu.org/licenses/>.                                      *
  *                                                                         *
- ***************************************************************************/
+ **************************************************************************/
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
@@ -35,8 +34,8 @@
 
 using namespace Materials;
 
-std::list<ModelLibrary*>* ModelManager::_libraryList = nullptr;
-std::map<QString, Model*>* ModelManager::_modelMap = nullptr;
+std::shared_ptr<std::list<ModelLibrary*>> ModelManager::_libraryList = nullptr;
+std::shared_ptr<std::map<QString, Model*>> ModelManager::_modelMap = nullptr;
 QMutex ModelManager::_mutex;
 
 TYPESYSTEM_SOURCE(Materials::ModelManager, Base::BaseClass)
@@ -51,9 +50,9 @@ void ModelManager::initLibraries()
     QMutexLocker locker(&_mutex);
 
     if (_modelMap == nullptr) {
-        _modelMap = new std::map<QString, Model*>();
+        _modelMap = std::make_shared<std::map<QString, Model*>>();
         if (_libraryList == nullptr) {
-            _libraryList = new std::list<ModelLibrary*>();
+            _libraryList = std::make_shared<std::list<ModelLibrary*>>();
         }
 
         // Load the libraries
@@ -126,10 +125,11 @@ bool ModelManager::passFilter(ModelFilter filter, Model::ModelType modelType) co
     return false;
 }
 
-std::map<QString, ModelTreeNode*>* ModelManager::getModelTree(const ModelLibrary& library,
-                                                              ModelFilter filter)
+std::shared_ptr<std::map<QString, ModelTreeNode*>>
+ModelManager::getModelTree(const ModelLibrary& library, ModelFilter filter) const
 {
-    std::map<QString, ModelTreeNode*>* modelTree = new std::map<QString, ModelTreeNode*>();
+    std::shared_ptr<std::map<QString, ModelTreeNode*>> modelTree =
+        std::make_shared<std::map<QString, ModelTreeNode*>>();
 
     for (auto it = _modelMap->begin(); it != _modelMap->end(); it++) {
         auto filename = it->first;
@@ -140,7 +140,7 @@ std::map<QString, ModelTreeNode*>* ModelManager::getModelTree(const ModelLibrary
             Base::Console().Log("Relative path '%s'\n\t", path.string().c_str());
 
             // Start at the root
-            std::map<QString, ModelTreeNode*>* node = modelTree;
+            std::shared_ptr<std::map<QString, ModelTreeNode*>> node = modelTree;
             for (auto itp = path.begin(); itp != path.end(); itp++) {
                 if (isModel(itp->string())) {
                     ModelTreeNode* child = new ModelTreeNode();
@@ -150,9 +150,9 @@ std::map<QString, ModelTreeNode*>* ModelManager::getModelTree(const ModelLibrary
                 else {
                     // Add the folder only if it's not already there
                     QString folderName = QString::fromStdString(itp->string());
-                    std::map<QString, ModelTreeNode*>* mapPtr;
+                    std::shared_ptr<std::map<QString, ModelTreeNode*>> mapPtr;
                     if (node->count(QString::fromStdString(itp->string())) == 0) {
-                        mapPtr = new std::map<QString, ModelTreeNode*>();
+                        mapPtr = std::make_shared<std::map<QString, ModelTreeNode*>>();
                         ModelTreeNode* child = new ModelTreeNode();
                         child->setFolder(mapPtr);
                         (*node)[QString::fromStdString(itp->string())] = child;

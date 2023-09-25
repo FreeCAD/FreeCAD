@@ -1,24 +1,23 @@
 /***************************************************************************
  *   Copyright (c) 2023 David Carter <dcarter@david.carter.ca>             *
  *                                                                         *
- *   This file is part of the FreeCAD CAx development system.              *
+ *   This file is part of FreeCAD.                                         *
  *                                                                         *
- *   This library is free software; you can redistribute it and/or         *
- *   modify it under the terms of the GNU Library General Public           *
- *   License as published by the Free Software Foundation; either          *
- *   version 2 of the License, or (at your option) any later version.      *
+ *   FreeCAD is free software: you can redistribute it and/or modify it    *
+ *   under the terms of the GNU Lesser General Public License as           *
+ *   published by the Free Software Foundation, either version 2.1 of the  *
+ *   License, or (at your option) any later version.                       *
  *                                                                         *
- *   This library  is distributed in the hope that it will be useful,      *
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
- *   GNU Library General Public License for more details.                  *
+ *   FreeCAD is distributed in the hope that it will be useful, but        *
+ *   WITHOUT ANY WARRANTY; without even the implied warranty of            *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU      *
+ *   Lesser General Public License for more details.                       *
  *                                                                         *
- *   You should have received a copy of the GNU Library General Public     *
- *   License along with this library; see the file COPYING.LIB. If not,    *
- *   write to the Free Software Foundation, Inc., 59 Temple Place,         *
- *   Suite 330, Boston, MA  02111-1307, USA                                *
+ *   You should have received a copy of the GNU Lesser General Public      *
+ *   License along with FreeCAD. If not, see                               *
+ *   <https://www.gnu.org/licenses/>.                                      *
  *                                                                         *
- ***************************************************************************/
+ **************************************************************************/
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
@@ -56,7 +55,7 @@ MaterialSave::MaterialSave(Materials::Material* material, QWidget* parent)
     else {
         ui->editFilename->setText(QString::fromStdString("NewMaterial.FCMat"));
     }
-    _filename = QString(ui->editFilename->text());// No filename by default
+    _filename = QString(ui->editFilename->text());  // No filename by default
 
     connect(ui->standardButtons->button(QDialogButtonBox::Ok),
             &QPushButton::clicked,
@@ -97,7 +96,7 @@ void MaterialSave::onOk(bool checked)
     Base::Console().Log("name '%s'\n", _filename.toStdString().c_str());
     if (name != _material->getName()) {
         _material->setName(name);
-        _material->setEditStateAlter();// ? Does a name change count?
+        _material->setEditStateAlter();  // ? Does a name change count?
     }
 
     auto variant = ui->comboLibrary->currentData();
@@ -132,8 +131,8 @@ void MaterialSave::reject()
 
 void MaterialSave::setLibraries()
 {
-    std::list<Materials::MaterialLibrary*>* libraries = _manager.getMaterialLibraries();
-    for (Materials::MaterialLibrary* library : *libraries) {
+    auto libraries = _manager.getMaterialLibraries();
+    for (auto library : *libraries) {
         if (!library->isReadOnly()) {
             QVariant libraryVariant;
             libraryVariant.setValue(*library);
@@ -162,10 +161,11 @@ void MaterialSave::addExpanded(QTreeView* tree, QStandardItemModel* parent, QSta
     tree->setExpanded(child->index(), true);
 }
 
-void MaterialSave::addMaterials(QStandardItem& parent,
-                                const std::map<QString, Materials::MaterialTreeNode*>* modelTree,
-                                const QIcon& folderIcon,
-                                const QIcon& icon)
+void MaterialSave::addMaterials(
+    QStandardItem& parent,
+    const std::shared_ptr<std::map<QString, Materials::MaterialTreeNode*>> modelTree,
+    const QIcon& folderIcon,
+    const QIcon& icon)
 {
     auto tree = ui->treeMaterials;
     for (auto& mat : *modelTree) {
@@ -188,7 +188,7 @@ void MaterialSave::addMaterials(QStandardItem& parent,
             auto node = new QStandardItem(folderIcon, mat.first);
             addExpanded(tree, &parent, node);
             // node->setFlags(Qt::ItemIsEnabled | Qt::ItemIsDragEnabled | Qt::ItemIsDropEnabled);
-            const std::map<QString, Materials::MaterialTreeNode*>* treeMap = nodePtr->getFolder();
+            auto treeMap = nodePtr->getFolder();
             addMaterials(*node, treeMap, folderIcon, icon);
         }
     }
@@ -212,8 +212,7 @@ void MaterialSave::showSelectedTree()
         lib->setFlags(Qt::ItemIsEnabled | Qt::ItemIsDragEnabled | Qt::ItemIsDropEnabled);
         addExpanded(tree, model, lib);
 
-        std::map<QString, Materials::MaterialTreeNode*>* modelTree =
-            _manager.getMaterialTree(library);
+        auto modelTree = _manager.getMaterialTree(library);
         addMaterials(*lib, modelTree, folderIcon, icon);
     }
     else {
@@ -241,7 +240,7 @@ void MaterialSave::onSelectModel(const QItemSelection& selected, const QItemSele
     // Q_UNUSED(selected);
     Q_UNUSED(deselected);
 
-    _filename = QString(ui->editFilename->text());// No filename by default
+    _filename = QString(ui->editFilename->text());  // No filename by default
     QStandardItemModel* model = static_cast<QStandardItemModel*>(ui->treeMaterials->model());
     QModelIndexList indexes = selected.indexes();
     if (indexes.count() == 0) {

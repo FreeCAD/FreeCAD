@@ -1,24 +1,23 @@
 /***************************************************************************
- *   Copyright (c) 2008 Werner Mayer <wmayer[at]users.sourceforge.net>     *
+ *   Copyright (c) 2023 David Carter <dcarter@david.carter.ca>             *
  *                                                                         *
- *   This file is part of the FreeCAD CAx development system.              *
+ *   This file is part of FreeCAD.                                         *
  *                                                                         *
- *   This library is free software; you can redistribute it and/or         *
- *   modify it under the terms of the GNU Library General Public           *
- *   License as published by the Free Software Foundation; either          *
- *   version 2 of the License, or (at your option) any later version.      *
+ *   FreeCAD is free software: you can redistribute it and/or modify it    *
+ *   under the terms of the GNU Lesser General Public License as           *
+ *   published by the Free Software Foundation, either version 2.1 of the  *
+ *   License, or (at your option) any later version.                       *
  *                                                                         *
- *   This library  is distributed in the hope that it will be useful,      *
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
- *   GNU Library General Public License for more details.                  *
+ *   FreeCAD is distributed in the hope that it will be useful, but        *
+ *   WITHOUT ANY WARRANTY; without even the implied warranty of            *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU      *
+ *   Lesser General Public License for more details.                       *
  *                                                                         *
- *   You should have received a copy of the GNU Library General Public     *
- *   License along with this library; see the file COPYING.LIB. If not,    *
- *   write to the Free Software Foundation, Inc., 59 Temple Place,         *
- *   Suite 330, Boston, MA  02111-1307, USA                                *
+ *   You should have received a copy of the GNU Lesser General Public      *
+ *   License along with FreeCAD. If not, see                               *
+ *   <https://www.gnu.org/licenses/>.                                      *
  *                                                                         *
- ***************************************************************************/
+ **************************************************************************/
 
 #include "PreCompiled.h"
 
@@ -45,7 +44,7 @@ std::string MaterialManagerPy::representation() const
     return str.str();
 }
 
-PyObject* MaterialManagerPy::PyMake(struct _typeobject*, PyObject*, PyObject*)// Python wrapper
+PyObject* MaterialManagerPy::PyMake(struct _typeobject*, PyObject*, PyObject*)  // Python wrapper
 {
     // never create such objects with the constructor
     return new MaterialManagerPy(new MaterialManager());
@@ -113,7 +112,7 @@ PyObject* MaterialManagerPy::getMaterialByPath(PyObject* args)
 
 Py::List MaterialManagerPy::getMaterialLibraries() const
 {
-    std::list<MaterialLibrary*>* libraries = getMaterialManagerPtr()->getMaterialLibraries();
+    auto libraries = getMaterialManagerPtr()->getMaterialLibraries();
     Py::List list;
 
     for (auto it = libraries->begin(); it != libraries->end(); it++) {
@@ -133,7 +132,7 @@ Py::Dict MaterialManagerPy::getMaterials() const
 {
     Py::Dict dict;
 
-    std::map<QString, Material*>* materials = getMaterialManagerPtr()->getMaterials();
+    auto materials = getMaterialManagerPtr()->getMaterials();
 
     for (auto it = materials->begin(); it != materials->end(); it++) {
         QString key = it->first;
@@ -164,8 +163,7 @@ PyObject* MaterialManagerPy::materialsWithModel(PyObject* args)
         return nullptr;
     }
 
-    std::map<QString, Material*>* materials =
-        getMaterialManagerPtr()->materialsWithModel(QString::fromStdString(uuid));
+    auto materials = getMaterialManagerPtr()->materialsWithModel(QString::fromStdString(uuid));
     PyObject* dict = PyDict_New();
 
     for (auto it = materials->begin(); it != materials->end(); it++) {
@@ -175,7 +173,6 @@ PyObject* MaterialManagerPy::materialsWithModel(PyObject* args)
         PyObject* materialPy = new MaterialPy(new Material(*material));
         PyDict_SetItem(dict, PyUnicode_FromString(key.toStdString().c_str()), materialPy);
     }
-    delete materials;
 
     return dict;
 }
@@ -187,7 +184,7 @@ PyObject* MaterialManagerPy::materialsWithModelComplete(PyObject* args)
         return nullptr;
     }
 
-    std::map<QString, Material*>* materials =
+    auto materials =
         getMaterialManagerPtr()->materialsWithModelComplete(QString::fromStdString(uuid));
     PyObject* dict = PyDict_New();
 
@@ -198,7 +195,6 @@ PyObject* MaterialManagerPy::materialsWithModelComplete(PyObject* args)
         PyObject* materialPy = new MaterialPy(new Material(*material));
         PyDict_SetItem(dict, PyUnicode_FromString(key.toStdString().c_str()), materialPy);
     }
-    delete materials;
 
     return dict;
 }

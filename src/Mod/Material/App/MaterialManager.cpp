@@ -1,24 +1,23 @@
 /***************************************************************************
  *   Copyright (c) 2023 David Carter <dcarter@david.carter.ca>             *
  *                                                                         *
- *   This file is part of the FreeCAD CAx development system.              *
+ *   This file is part of FreeCAD.                                         *
  *                                                                         *
- *   This library is free software; you can redistribute it and/or         *
- *   modify it under the terms of the GNU Library General Public           *
- *   License as published by the Free Software Foundation; either          *
- *   version 2 of the License, or (at your option) any later version.      *
+ *   FreeCAD is free software: you can redistribute it and/or modify it    *
+ *   under the terms of the GNU Lesser General Public License as           *
+ *   published by the Free Software Foundation, either version 2.1 of the  *
+ *   License, or (at your option) any later version.                       *
  *                                                                         *
- *   This library  is distributed in the hope that it will be useful,      *
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
- *   GNU Library General Public License for more details.                  *
+ *   FreeCAD is distributed in the hope that it will be useful, but        *
+ *   WITHOUT ANY WARRANTY; without even the implied warranty of            *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU      *
+ *   Lesser General Public License for more details.                       *
  *                                                                         *
- *   You should have received a copy of the GNU Library General Public     *
- *   License along with this library; see the file COPYING.LIB. If not,    *
- *   write to the Free Software Foundation, Inc., 59 Temple Place,         *
- *   Suite 330, Boston, MA  02111-1307, USA                                *
+ *   You should have received a copy of the GNU Lesser General Public      *
+ *   License along with FreeCAD. If not, see                               *
+ *   <https://www.gnu.org/licenses/>.                                      *
  *                                                                         *
- ***************************************************************************/
+ **************************************************************************/
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
@@ -38,8 +37,8 @@ using namespace Materials;
 
 /* TRANSLATOR Material::Materials */
 
-std::list<MaterialLibrary*>* MaterialManager::_libraryList = nullptr;
-std::map<QString, Material*>* MaterialManager::_materialMap = nullptr;
+std::shared_ptr<std::list<MaterialLibrary*>> MaterialManager::_libraryList = nullptr;
+std::shared_ptr<std::map<QString, Material*>> MaterialManager::_materialMap = nullptr;
 QMutex MaterialManager::_mutex;
 
 TYPESYSTEM_SOURCE(Materials::MaterialManager, Base::BaseClass)
@@ -61,10 +60,10 @@ void MaterialManager::initLibraries()
 
         delete manager;
 
-        _materialMap = new std::map<QString, Material*>();
+        _materialMap = std::make_shared<std::map<QString, Material*>>();
 
         if (_libraryList == nullptr) {
-            _libraryList = new std::list<MaterialLibrary*>();
+            _libraryList = std::make_shared<std::list<MaterialLibrary*>>();
         }
 
         // Load the libraries
@@ -139,8 +138,8 @@ const Material& MaterialManager::getMaterialByPath(const QString& path) const
 
 const Material& MaterialManager::getMaterialByPath(const QString& path, const QString& lib) const
 {
-    auto library = getLibrary(lib);         // May throw LibraryNotFound
-    return library->getMaterialByPath(path);// May throw MaterialNotFound
+    auto library = getLibrary(lib);           // May throw LibraryNotFound
+    return library->getMaterialByPath(path);  // May throw MaterialNotFound
 }
 
 MaterialLibrary* MaterialManager::getLibrary(const QString& name) const
@@ -154,13 +153,13 @@ MaterialLibrary* MaterialManager::getLibrary(const QString& name) const
     throw LibraryNotFound();
 }
 
-std::list<MaterialLibrary*>* MaterialManager::getMaterialLibraries()
+std::shared_ptr<std::list<MaterialLibrary*>> MaterialManager::getMaterialLibraries()
 {
     if (_libraryList == nullptr) {
         if (_materialMap == nullptr) {
-            _materialMap = new std::map<QString, Material*>();
+            _materialMap = std::make_shared<std::map<QString, Material*>>();
         }
-        _libraryList = new std::list<MaterialLibrary*>();
+        _libraryList = std::make_shared<std::list<MaterialLibrary*>>();
 
         // Load the libraries
         MaterialLoader loader(_materialMap, _libraryList);
@@ -168,10 +167,11 @@ std::list<MaterialLibrary*>* MaterialManager::getMaterialLibraries()
     return _libraryList;
 }
 
-std::map<QString, MaterialTreeNode*>*
-MaterialManager::getMaterialTree(const MaterialLibrary& library)
+std::shared_ptr<std::map<QString, MaterialTreeNode*>>
+MaterialManager::getMaterialTree(const MaterialLibrary& library) const
 {
-    std::map<QString, MaterialTreeNode*>* materialTree = new std::map<QString, MaterialTreeNode*>();
+    std::shared_ptr<std::map<QString, MaterialTreeNode*>> materialTree =
+        std::make_shared<std::map<QString, MaterialTreeNode*>>();
 
     for (auto it = _materialMap->begin(); it != _materialMap->end(); it++) {
         auto filename = it->first;
@@ -181,7 +181,7 @@ MaterialManager::getMaterialTree(const MaterialLibrary& library)
             fs::path path = material->getDirectory().toStdString();
 
             // Start at the root
-            std::map<QString, MaterialTreeNode*>* node = materialTree;
+            auto node = materialTree;
             for (auto itp = path.begin(); itp != path.end(); itp++) {
                 if (QString::fromStdString(itp->string())
                         .endsWith(QString::fromStdString(".FCMat"))) {
@@ -192,9 +192,9 @@ MaterialManager::getMaterialTree(const MaterialLibrary& library)
                 else {
                     // Add the folder only if it's not already there
                     QString folderName = QString::fromStdString(itp->string());
-                    std::map<QString, MaterialTreeNode*>* mapPtr;
+                    std::shared_ptr<std::map<QString, MaterialTreeNode*>> mapPtr;
                     if (node->count(folderName) == 0) {
-                        mapPtr = new std::map<QString, MaterialTreeNode*>();
+                        mapPtr = std::make_shared<std::map<QString, MaterialTreeNode*>>();
                         MaterialTreeNode* child = new MaterialTreeNode();
                         child->setFolder(mapPtr);
                         (*node)[folderName] = child;
@@ -208,18 +208,18 @@ MaterialManager::getMaterialTree(const MaterialLibrary& library)
         }
     }
 
-    std::list<QString>* folderList = getMaterialFolders(library);
+    auto folderList = getMaterialFolders(library);
     for (auto folder : *folderList) {
         fs::path path = folder.toStdString();
 
         // Start at the root
-        std::map<QString, MaterialTreeNode*>* node = materialTree;
+        auto node = materialTree;
         for (auto itp = path.begin(); itp != path.end(); itp++) {
             // Add the folder only if it's not already there
             QString folderName = QString::fromStdString(itp->string());
             if (node->count(folderName) == 0) {
-                std::map<QString, MaterialTreeNode*>* mapPtr =
-                    new std::map<QString, MaterialTreeNode*>();
+                std::shared_ptr<std::map<QString, MaterialTreeNode*>> mapPtr =
+                    std::make_shared<std::map<QString, MaterialTreeNode*>>();
                 MaterialTreeNode* child = new MaterialTreeNode();
                 child->setFolder(mapPtr);
                 (*node)[folderName] = child;
@@ -230,19 +230,20 @@ MaterialManager::getMaterialTree(const MaterialLibrary& library)
             }
         }
     }
-    delete folderList;
 
     return materialTree;
 }
 
-std::list<QString>* MaterialManager::getMaterialFolders(const MaterialLibrary& library)
+std::shared_ptr<std::list<QString>>
+MaterialManager::getMaterialFolders(const MaterialLibrary& library) const
 {
     return MaterialLoader::getMaterialFolders(library);
 }
 
-std::map<QString, Material*>* MaterialManager::materialsWithModel(QString uuid)
+std::shared_ptr<std::map<QString, Material*>> MaterialManager::materialsWithModel(QString uuid)
 {
-    std::map<QString, Material*>* dict = new std::map<QString, Material*>();
+    std::shared_ptr<std::map<QString, Material*>> dict =
+        std::make_shared<std::map<QString, Material*>>();
 
     for (auto it = _materialMap->begin(); it != _materialMap->end(); it++) {
         QString key = it->first;
@@ -256,9 +257,11 @@ std::map<QString, Material*>* MaterialManager::materialsWithModel(QString uuid)
     return dict;
 }
 
-std::map<QString, Material*>* MaterialManager::materialsWithModelComplete(QString uuid)
+std::shared_ptr<std::map<QString, Material*>>
+MaterialManager::materialsWithModelComplete(QString uuid)
 {
-    std::map<QString, Material*>* dict = new std::map<QString, Material*>();
+    std::shared_ptr<std::map<QString, Material*>> dict =
+        std::make_shared<std::map<QString, Material*>>();
 
     for (auto it = _materialMap->begin(); it != _materialMap->end(); it++) {
         QString key = it->first;
