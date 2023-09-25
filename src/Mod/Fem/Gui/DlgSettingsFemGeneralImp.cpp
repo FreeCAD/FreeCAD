@@ -43,17 +43,22 @@ DlgSettingsFemGeneralImp::DlgSettingsFemGeneralImp(QWidget* parent)
     ui->cmb_def_solver->clear();
     std::vector<std::string> Solvers = {"None"};
 
-    if (!Fem::Tools::checkIfBinaryExists("CCX", "ccx", "ccx").empty())
+    if (!Fem::Tools::checkIfBinaryExists("CCX", "ccx", "ccx").empty()) {
         Solvers.emplace_back("CalculiX");
-    if (!Fem::Tools::checkIfBinaryExists("Elmer", "elmer", "ElmerSolver").empty())
+    }
+    if (!Fem::Tools::checkIfBinaryExists("Elmer", "elmer", "ElmerSolver").empty()) {
         Solvers.emplace_back("Elmer");
+    }
     // also check the multi-CPU Elmer build
-    else if (!Fem::Tools::checkIfBinaryExists("Elmer", "elmer", "ElmerSolver_mpi").empty())
+    else if (!Fem::Tools::checkIfBinaryExists("Elmer", "elmer", "ElmerSolver_mpi").empty()) {
         Solvers.emplace_back("Elmer");
-    if (!Fem::Tools::checkIfBinaryExists("Mystran", "mystran", "mystran").empty())
+    }
+    if (!Fem::Tools::checkIfBinaryExists("Mystran", "mystran", "mystran").empty()) {
         Solvers.emplace_back("Mystran");
-    if (!Fem::Tools::checkIfBinaryExists("Z88", "z88", "z88r").empty())
+    }
+    if (!Fem::Tools::checkIfBinaryExists("Z88", "z88", "z88r").empty()) {
         Solvers.emplace_back("Z88");
+    }
 
     QStringList solversList;
     for (auto item : Solvers) {
@@ -66,8 +71,9 @@ DlgSettingsFemGeneralImp::DlgSettingsFemGeneralImp(QWidget* parent)
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/Mod/Fem/General");
     auto DefaultSolver = hGrp->GetInt("DefaultSolver", 0);
-    if (!DefaultSolver && ui->cmb_def_solver->count() == 2)
+    if (!DefaultSolver && ui->cmb_def_solver->count() == 2) {
         ui->cmb_def_solver->setCurrentIndex(1);
+    }
 }
 
 DlgSettingsFemGeneralImp::~DlgSettingsFemGeneralImp() = default;

@@ -28,43 +28,44 @@
 
 class Ui_TaskObjectName;
 
-namespace App {
+namespace App
+{
 class Property;
 class DocumentObject;
-}
+}  // namespace App
 
-namespace Gui {
+namespace Gui
+{
 class ViewProvider;
 }
 
-namespace FemGui {
+namespace FemGui
+{
 
 
-
-class TaskObjectName : public Gui::TaskView::TaskBox
+class TaskObjectName: public Gui::TaskView::TaskBox
 {
     Q_OBJECT
 
 public:
-    explicit TaskObjectName(App::DocumentObject *pcObject,QWidget *parent = nullptr);
+    explicit TaskObjectName(App::DocumentObject* pcObject, QWidget* parent = nullptr);
     ~TaskObjectName() override;
 
 
     std::string name;
 
 private Q_SLOTS:
-    void TextChanged ( const QString &);
+    void TextChanged(const QString&);
 
 protected:
-    App::DocumentObject *pcObject;
+    App::DocumentObject* pcObject;
 
 private:
-
 private:
     QWidget* proxy;
     std::unique_ptr<Ui_TaskObjectName> ui;
 };
 
-} //namespace FemGui
+}  // namespace FemGui
 
-#endif // GUI_TASKVIEW_TaskObjectName_H
+#endif  // GUI_TASKVIEW_TaskObjectName_H

@@ -28,9 +28,11 @@
 
 #include "ViewProviderFemConstraintOnBoundary.h"
 
-namespace FemGui {
+namespace FemGui
+{
 
-class FemGuiExport ViewProviderFemConstraintHeatflux : public FemGui::ViewProviderFemConstraintOnBoundary
+class FemGuiExport ViewProviderFemConstraintHeatflux
+    : public FemGui::ViewProviderFemConstraintOnBoundary
 {
     PROPERTY_HEADER_WITH_OVERRIDE(FemGui::ViewProviderFemConstraintHeatflux);
 
@@ -43,6 +45,6 @@ protected:
     bool setEdit(int ModNum) override;
 };
 
-}
+}  // namespace FemGui
 
-#endif // GUI_VIEWPROVIDERFEMCONSTRAINTHEATFLUX_H
+#endif  // GUI_VIEWPROVIDERFEMCONSTRAINTHEATFLUX_H

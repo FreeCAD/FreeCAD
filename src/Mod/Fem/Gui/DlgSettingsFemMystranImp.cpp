@@ -24,7 +24,7 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <QMessageBox>
+#include <QMessageBox>
 #endif
 
 #include "DlgSettingsFemMystranImp.h"
@@ -39,8 +39,10 @@ DlgSettingsFemMystranImp::DlgSettingsFemMystranImp(QWidget* parent)
 {
     ui->setupUi(this);
 
-    connect(ui->fc_mystran_binary_path, &Gui::PrefFileChooser::fileNameChanged,
-            this, &DlgSettingsFemMystranImp::onfileNameChanged);
+    connect(ui->fc_mystran_binary_path,
+            &Gui::PrefFileChooser::fileNameChanged,
+            this,
+            &DlgSettingsFemMystranImp::onfileNameChanged);
 }
 
 DlgSettingsFemMystranImp::~DlgSettingsFemMystranImp() = default;
@@ -75,9 +77,11 @@ void DlgSettingsFemMystranImp::changeEvent(QEvent* e)
 void DlgSettingsFemMystranImp::onfileNameChanged(QString FileName)
 {
     if (!QFileInfo::exists(FileName)) {
-        QMessageBox::critical(this, tr("File does not exist"),
+        QMessageBox::critical(this,
+                              tr("File does not exist"),
                               tr("The specified executable \n'%1'\n does not exist!\n"
-                                 "Specify another file please.").arg(FileName));
+                                 "Specify another file please.")
+                                  .arg(FileName));
     }
 }
 

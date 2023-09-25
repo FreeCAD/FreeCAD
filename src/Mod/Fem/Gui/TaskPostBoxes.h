@@ -24,9 +24,9 @@
 #define GUI_TASKVIEW_TaskPostDisplay_H
 
 #include <Gui/DocumentObserver.h>
-#include <Gui/ViewProviderDocumentObject.h>
 #include <Gui/TaskView/TaskDialog.h>
 #include <Gui/TaskView/TaskView.h>
+#include <Gui/ViewProviderDocumentObject.h>
 
 #include "ViewProviderFemPostFunction.h"
 
@@ -57,7 +57,7 @@ namespace FemGui
 // ***************************************************************************
 // point marker
 class ViewProviderPointMarker;
-class PointMarker : public QObject
+class PointMarker: public QObject
 {
     Q_OBJECT
 
@@ -75,13 +75,13 @@ protected:
     void customEvent(QEvent* e) override;
 
 private:
-    Gui::View3DInventorViewer *view;
-    ViewProviderPointMarker *vp;
+    Gui::View3DInventorViewer* view;
+    ViewProviderPointMarker* vp;
     std::string m_name;
     std::string ObjectInvisible();
 };
 
-class FemGuiExport ViewProviderPointMarker : public Gui::ViewProviderDocumentObject
+class FemGuiExport ViewProviderPointMarker: public Gui::ViewProviderDocumentObject
 {
     PROPERTY_HEADER_WITH_OVERRIDE(FemGui::ViewProviderPointMarker);
 
@@ -90,7 +90,7 @@ public:
     ~ViewProviderPointMarker() override;
 
 protected:
-    SoCoordinate3    * pCoords;
+    SoCoordinate3* pCoords;
     friend class PointMarker;
 };
 
@@ -98,7 +98,7 @@ protected:
 // ***************************************************************************
 // data marker
 class ViewProviderDataMarker;
-class DataMarker : public QObject
+class DataMarker: public QObject
 {
     Q_OBJECT
 
@@ -116,14 +116,14 @@ protected:
     void customEvent(QEvent* e) override;
 
 private:
-    Gui::View3DInventorViewer *view;
-    ViewProviderDataMarker *vp;
+    Gui::View3DInventorViewer* view;
+    ViewProviderDataMarker* vp;
     std::string m_name;
     std::string ObjectInvisible();
 };
 
 
-class FemGuiExport ViewProviderDataMarker : public Gui::ViewProviderDocumentObject
+class FemGuiExport ViewProviderDataMarker: public Gui::ViewProviderDocumentObject
 {
     PROPERTY_HEADER_WITH_OVERRIDE(FemGui::ViewProviderDataMarker);
 
@@ -132,41 +132,48 @@ public:
     ~ViewProviderDataMarker() override;
 
 protected:
-    SoCoordinate3    * pCoords;
-    SoMarkerSet      * pMarker;
+    SoCoordinate3* pCoords;
+    SoMarkerSet* pMarker;
     friend class DataMarker;
 };
 
 
 // ***************************************************************************
 // main task dialog
-class TaskPostBox : public Gui::TaskView::TaskBox
+class TaskPostBox: public Gui::TaskView::TaskBox
 {
     Q_OBJECT
 
 public:
-    TaskPostBox(Gui::ViewProviderDocumentObject* view, const QPixmap& icon, const QString& title,
+    TaskPostBox(Gui::ViewProviderDocumentObject* view,
+                const QPixmap& icon,
+                const QString& title,
                 QWidget* parent = nullptr);
     ~TaskPostBox() override;
 
     virtual void applyPythonCode() = 0;
-    virtual bool isGuiTaskOnly() {
+    virtual bool isGuiTaskOnly()
+    {
         return false;
-    } // return true if only gui properties are manipulated
+    }  // return true if only gui properties are manipulated
 
 protected:
-    App::DocumentObject* getObject() const {
+    App::DocumentObject* getObject() const
+    {
         return *m_object;
     }
     template<typename T>
-    T* getTypedObject() const {
+    T* getTypedObject() const
+    {
         return m_object.get<T>();
     }
-    Gui::ViewProviderDocumentObject* getView() const {
+    Gui::ViewProviderDocumentObject* getView() const
+    {
         return *m_view;
     }
     template<typename T>
-    T* getTypedView() const {
+    T* getTypedView() const
+    {
         return m_view.get<T>();
     }
 
@@ -179,23 +186,24 @@ protected:
 
 private:
     App::DocumentObjectWeakPtrT m_object;
-    Gui::ViewProviderWeakPtrT   m_view;
+    Gui::ViewProviderWeakPtrT m_view;
 };
 
 
 // ***************************************************************************
 // simulation dialog for the TaskView
-class TaskDlgPost : public Gui::TaskView::TaskDialog
+class TaskDlgPost: public Gui::TaskView::TaskDialog
 {
     Q_OBJECT
 
 public:
-    explicit TaskDlgPost(Gui::ViewProviderDocumentObject *view);
+    explicit TaskDlgPost(Gui::ViewProviderDocumentObject* view);
     ~TaskDlgPost() override;
     void connectSlots();
 
     void appendBox(TaskPostBox* box);
-    Gui::ViewProviderDocumentObject* getView() const {
+    Gui::ViewProviderDocumentObject* getView() const
+    {
         return *m_view;
     }
 
@@ -210,7 +218,9 @@ public:
     bool reject() override;
     /// is called by the framework if the user presses the help button
     bool isAllowedAlterDocument() const override
-    { return false; }
+    {
+        return false;
+    }
     void modifyStandardButtons(QDialogButtonBox*) override;
 
     /// returns for Close and Help button
@@ -220,23 +230,26 @@ protected:
     void recompute();
 
 protected:
-    Gui::ViewProviderWeakPtrT   m_view;
-    std::vector<TaskPostBox*>   m_boxes;
+    Gui::ViewProviderWeakPtrT m_view;
+    std::vector<TaskPostBox*> m_boxes;
 };
 
 
 // ***************************************************************************
 // box to set the coloring
-class TaskPostDisplay : public TaskPostBox
+class TaskPostDisplay: public TaskPostBox
 {
     Q_OBJECT
 
 public:
-    explicit TaskPostDisplay(Gui::ViewProviderDocumentObject* view, QWidget *parent = nullptr);
+    explicit TaskPostDisplay(Gui::ViewProviderDocumentObject* view, QWidget* parent = nullptr);
     ~TaskPostDisplay() override;
 
     void applyPythonCode() override;
-    bool isGuiTaskOnly() override {return true;}
+    bool isGuiTaskOnly() override
+    {
+        return true;
+    }
 
 private:
     void setupConnections();
@@ -254,7 +267,7 @@ private:
 
 // ***************************************************************************
 // functions
-class TaskPostFunction : public TaskPostBox
+class TaskPostFunction: public TaskPostBox
 {
     Q_OBJECT
 
@@ -337,12 +350,13 @@ private:
 
 // ***************************************************************************
 // clip filter
-class TaskPostClip : public TaskPostBox
+class TaskPostClip: public TaskPostBox
 {
     Q_OBJECT
 
 public:
-    TaskPostClip(Gui::ViewProviderDocumentObject* view, App::PropertyLink* function,
+    TaskPostClip(Gui::ViewProviderDocumentObject* view,
+                 App::PropertyLink* function,
                  QWidget* parent = nullptr);
     ~TaskPostClip() override;
 
@@ -361,7 +375,7 @@ Q_SIGNALS:
 private:
     void collectImplicitFunctions();
 
-  //App::PropertyLink* m_functionProperty;
+    // App::PropertyLink* m_functionProperty;
     QWidget* proxy;
     std::unique_ptr<Ui_TaskPostClip> ui;
     FunctionWidget* fwidget;
@@ -401,7 +415,8 @@ class TaskPostCut: public TaskPostBox
     Q_OBJECT
 
 public:
-    TaskPostCut(Gui::ViewProviderDocumentObject* view, App::PropertyLink* function,
+    TaskPostCut(Gui::ViewProviderDocumentObject* view,
+                App::PropertyLink* function,
                 QWidget* parent = nullptr);
     ~TaskPostCut() override;
 
@@ -418,7 +433,7 @@ Q_SIGNALS:
 private:
     void collectImplicitFunctions();
 
-    //App::PropertyLink* m_functionProperty;
+    // App::PropertyLink* m_functionProperty;
     QWidget* proxy;
     std::unique_ptr<Ui_TaskPostCut> ui;
     FunctionWidget* fwidget;
@@ -427,7 +442,7 @@ private:
 
 // ***************************************************************************
 // scalar clip filter
-class TaskPostScalarClip : public TaskPostBox
+class TaskPostScalarClip: public TaskPostBox
 {
     Q_OBJECT
 
@@ -452,7 +467,7 @@ private:
 
 // ***************************************************************************
 // warp vector filter
-class TaskPostWarpVector : public TaskPostBox
+class TaskPostWarpVector: public TaskPostBox
 {
     Q_OBJECT
 
@@ -475,6 +490,6 @@ private:
     std::unique_ptr<Ui_TaskPostWarpVector> ui;
 };
 
-} //namespace FemGui
+}  // namespace FemGui
 
-#endif // GUI_TASKVIEW_TaskPostDisplay_H
+#endif  // GUI_TASKVIEW_TaskPostDisplay_H

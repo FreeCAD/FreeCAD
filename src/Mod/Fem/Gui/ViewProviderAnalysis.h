@@ -37,7 +37,7 @@ class ViewProviderFemHighlighter
 public:
     /// Constructor
     ViewProviderFemHighlighter();
-     ~ViewProviderFemHighlighter();
+    ~ViewProviderFemHighlighter();
 
     void attach(ViewProviderFemAnalysis*);
     void highlightView(Gui::ViewProviderDocumentObject*);
@@ -46,7 +46,7 @@ private:
     SoSeparator* annotate;
 };
 
-class FemGuiExport ViewProviderFemAnalysis : public Gui::ViewProviderDocumentObjectGroup
+class FemGuiExport ViewProviderFemAnalysis: public Gui::ViewProviderDocumentObjectGroup
 {
     Q_DECLARE_TR_FUNCTIONS(FemGui::ViewProviderFemAnalysis)
     PROPERTY_HEADER_WITH_OVERRIDE(FemGui::ViewProviderAnalysis);
@@ -61,13 +61,14 @@ public:
     void attach(App::DocumentObject*) override;
     bool doubleClicked() override;
 
-    std::vector<App::DocumentObject*> claimChildren()const override;
+    std::vector<App::DocumentObject*> claimChildren() const override;
 
     /// handling when object is deleted
     bool onDelete(const std::vector<std::string>&) override;
     /// warning on deletion when there are children
     static bool checkSelectedChildren(const std::vector<App::DocumentObject*> objs,
-                                      Gui::Document* docGui, std::string objectName);
+                                      Gui::Document* docGui,
+                                      std::string objectName);
     /// asks the view provider if the given object can be deleted
     bool canDelete(App::DocumentObject* obj) const override;
 
@@ -76,7 +77,8 @@ public:
     /// list of all possible display modes
     std::vector<std::string> getDisplayModes() const override;
     /// shows solid in the tree
-    bool isShow() const override {
+    bool isShow() const override
+    {
         return Visibility.getValue();
     }
     /// Hide the object in the view
@@ -112,7 +114,7 @@ private:
 
 using ViewProviderFemAnalysisPython = Gui::ViewProviderPythonFeatureT<ViewProviderFemAnalysis>;
 
-} //namespace FemGui
+}  // namespace FemGui
 
 
-#endif // FEM_ViewProviderAnalysis_H
+#endif  // FEM_ViewProviderAnalysis_H
