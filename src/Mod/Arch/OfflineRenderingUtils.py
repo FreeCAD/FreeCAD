@@ -478,9 +478,8 @@ def viewer(scene=None,background=(1.0,1.0,1.0),lightdir=None):
     # Create a Qt widget, which will be our window.
     win = quarter.QuarterWidget()
 
-    win = sogui.SoGui.init()
     if win is None:
-        print("Unable to create a SoGui window")
+        print("Unable to create a Quarter window")
         return
 
     win.setBackgroundColor(coin.SbColor(background[0],background[1],background[2]))
