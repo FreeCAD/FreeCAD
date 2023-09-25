@@ -104,6 +104,7 @@
 #include <Gui/MainWindow.h>
 #include <Gui/ViewProviderLink.h>
 #include <Mod/Import/App/ImportOCAF2.h>
+#include <Mod/Import/App/ReaderGltf.h>
 #include <Mod/Import/App/WriterGltf.h>
 #include <Mod/Part/App/ImportIges.h>
 #include <Mod/Part/App/ImportStep.h>
@@ -523,6 +524,10 @@ private:
                     pcDoc->recompute();
                 }
             }
+            else if (file.hasExtension({"glb", "gltf"})) {
+                Import::ReaderGltf reader(file);
+                reader.read(hDoc);
+            }
             else {
                 throw Py::Exception(PyExc_IOError, "no supported file format");
             }
@@ -537,7 +542,9 @@ private:
             if (useLinkGroup != Py_None) {
                 ocaf.setUseLinkGroup(Base::asBoolean(useLinkGroup));
             }
-            ocaf.setMode(mode);
+            if (mode >= 0) {
+                ocaf.setMode(mode);
+            }
             auto ret = ocaf.loadShapes();
             hApp->Close(hDoc);
             FC_DURATION_PLUS(d2, t);
