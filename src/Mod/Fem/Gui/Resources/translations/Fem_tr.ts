@@ -1023,11 +1023,11 @@
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcxImp.cpp" line="141"/>
-      <source>The specified executable 
+      <source>The specified executable
 '%1'
  does not exist!
 Specify another file please.</source>
-      <translation>Belirtilen uygulama 
+      <translation>Belirtilen uygulama
 '%1'
  mevcut değil!
 Lütfen başka bir dosya belirtin.</translation>
@@ -1125,11 +1125,11 @@ will be merged to make the volume boundaries invisible.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemElmerImp.cpp" line="100"/>
-      <source>The specified executable 
+      <source>The specified executable
 '%1'
  does not exist!
 Specify another file please.</source>
-      <translation>Belirtilen uygulama 
+      <translation>Belirtilen uygulama
 '%1'
  mevcut değil!
 Lütfen başka bir dosya belirtin.</translation>
@@ -1389,11 +1389,11 @@ adding an analysis container</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGmshImp.cpp" line="77"/>
-      <source>The specified executable 
+      <source>The specified executable
 '%1'
  does not exist!
 Specify another file please.</source>
-      <translation>Belirtilen uygulama 
+      <translation>Belirtilen uygulama
 '%1'
  mevcut değil!
 Lütfen başka bir dosya belirtin.</translation>
@@ -1576,11 +1576,11 @@ If unchecked, they will be sorted by their name.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemMystranImp.cpp" line="79"/>
-      <source>The specified executable 
+      <source>The specified executable
 '%1'
  does not exist!
 Specify another file please.</source>
-      <translation>Belirtilen uygulama 
+      <translation>Belirtilen uygulama
 '%1'
  mevcut değil!
 Lütfen başka bir dosya belirtin.</translation>
@@ -1688,11 +1688,11 @@ that "MAXKOI" needs to be increased.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemZ88Imp.cpp" line="102"/>
-      <source>The specified z88r executable 
+      <source>The specified z88r executable
 '%1'
  does not exist!
 Specify another file please.</source>
-      <translation type="unfinished">The specified z88r executable 
+      <translation type="unfinished">The specified z88r executable
 '%1'
  does not exist!
 Specify another file please.</translation>

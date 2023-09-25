@@ -1023,11 +1023,11 @@
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcxImp.cpp" line="141"/>
-      <source>The specified executable 
+      <source>The specified executable
 '%1'
  does not exist!
 Specify another file please.</source>
-      <translation>L'exécutable 
+      <translation>L'exécutable
 '%1'
  spécifié n'existe pas !
 Veuillez spécifiez un autre fichier.</translation>
@@ -1127,11 +1127,11 @@ Remarque : pour utiliser le multithreading, spécifier ici la variante exécutab
     </message>
     <message>
       <location filename="../../DlgSettingsFemElmerImp.cpp" line="100"/>
-      <source>The specified executable 
+      <source>The specified executable
 '%1'
  does not exist!
 Specify another file please.</source>
-      <translation>L'exécutable 
+      <translation>L'exécutable
 '%1'
  spécifié n'existe pas !
 Veuillez spécifiez un autre fichier.</translation>
@@ -1191,7 +1191,7 @@ FEM : seuls les éléments FEM seront exportés. Cela signifie uniquement les ar
       <location filename="../../DlgSettingsFemExportAbaqus.ui" line="47"/>
       <source>element parameter: All: all elements, highest: highest elements only, FEM: FEM elements only (only edges not belonging to faces and faces not belonging to volumes)</source>
       <translation>paramètre d'élément :
-Tout : tous les éléments, 
+Tout : tous les éléments,
 Le plus haut : éléments les plus élevés seulement
 FEM : éléments FEM seulement (uniquement les arêtes n'appartenant pas aux faces et faces n'appartenant pas aux volumes)</translation>
     </message>
@@ -1398,7 +1398,7 @@ adding an analysis container</source>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGmshImp.cpp" line="77"/>
-      <source>The specified executable 
+      <source>The specified executable
 '%1'
  does not exist!
 Specify another file please.</source>
@@ -1586,7 +1586,7 @@ Si elles ne sont pas cochées, elles seront triées par leur nom.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemMystranImp.cpp" line="79"/>
-      <source>The specified executable 
+      <source>The specified executable
 '%1'
  does not exist!
 Specify another file please.</source>
@@ -1694,11 +1694,11 @@ indiquant que "MAXKOI" doit être augmenté.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemZ88Imp.cpp" line="102"/>
-      <source>The specified z88r executable 
+      <source>The specified z88r executable
 '%1'
  does not exist!
 Specify another file please.</source>
-      <translation>L'exécutable z88r 
+      <translation>L'exécutable z88r
 '%1'
  spécifié n'existe pas!
 Veuillez spécifier un autre fichier.</translation>

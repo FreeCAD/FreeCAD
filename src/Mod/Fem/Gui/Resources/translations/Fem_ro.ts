@@ -1023,11 +1023,11 @@
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcxImp.cpp" line="141"/>
-      <source>The specified executable 
+      <source>The specified executable
 '%1'
  does not exist!
 Specify another file please.</source>
-      <translation>Fișierul executabil specificat 
+      <translation>Fișierul executabil specificat
 '%1'
  nu există!
 Specificați un alt fișier.</translation>
@@ -1125,11 +1125,11 @@ vor fi unite pentru a face limitele de volum invizibile.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemElmerImp.cpp" line="100"/>
-      <source>The specified executable 
+      <source>The specified executable
 '%1'
  does not exist!
 Specify another file please.</source>
-      <translation>Fișierul executabil specificat 
+      <translation>Fișierul executabil specificat
 '%1'
  nu există!
 Specificați un alt fișier.</translation>
@@ -1391,11 +1391,11 @@ adding an analysis container</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGmshImp.cpp" line="77"/>
-      <source>The specified executable 
+      <source>The specified executable
 '%1'
  does not exist!
 Specify another file please.</source>
-      <translation>Fișierul executabil specificat 
+      <translation>Fișierul executabil specificat
 '%1'
  nu există!
 Specificați un alt fișier.</translation>
@@ -1583,11 +1583,11 @@ If unchecked, they will be sorted by their name.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemMystranImp.cpp" line="79"/>
-      <source>The specified executable 
+      <source>The specified executable
 '%1'
  does not exist!
 Specify another file please.</source>
-      <translation>Fișierul executabil specificat 
+      <translation>Fișierul executabil specificat
 '%1'
  nu există!
 Specificați un alt fișier.</translation>
@@ -1695,11 +1695,11 @@ that "MAXKOI" needs to be increased.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemZ88Imp.cpp" line="102"/>
-      <source>The specified z88r executable 
+      <source>The specified z88r executable
 '%1'
  does not exist!
 Specify another file please.</source>
-      <translation type="unfinished">The specified z88r executable 
+      <translation type="unfinished">The specified z88r executable
 '%1'
  does not exist!
 Specify another file please.</translation>

@@ -1022,11 +1022,11 @@
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcxImp.cpp" line="141"/>
-      <source>The specified executable 
+      <source>The specified executable
 '%1'
  does not exist!
 Specify another file please.</source>
-      <translation>Двайковы файл 
+      <translation>Двайковы файл
 '%1'
 не існуе!
 Калі ласка, пакажыце іншы файл.</translation>
@@ -1123,11 +1123,11 @@ will be merged to make the volume boundaries invisible.</source>
     </message>
     <message>
       <location filename="../../DlgSettingsFemElmerImp.cpp" line="100"/>
-      <source>The specified executable 
+      <source>The specified executable
 '%1'
  does not exist!
 Specify another file please.</source>
-      <translation>Двайковы файл 
+      <translation>Двайковы файл
 '%1'
 не існуе!
 Калі ласка, пакажыце іншы файл.</translation>
@@ -1382,11 +1382,11 @@ adding an analysis container</source>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGmshImp.cpp" line="77"/>
-      <source>The specified executable 
+      <source>The specified executable
 '%1'
  does not exist!
 Specify another file please.</source>
-      <translation>Двайковы файл 
+      <translation>Двайковы файл
 '%1'
 не існуе!
 Калі ласка, пакажыце іншы файл.</translation>
@@ -1570,11 +1570,11 @@ If unchecked, they will be sorted by their name.</source>
     </message>
     <message>
       <location filename="../../DlgSettingsFemMystranImp.cpp" line="79"/>
-      <source>The specified executable 
+      <source>The specified executable
 '%1'
  does not exist!
 Specify another file please.</source>
-      <translation>Двайковы файл 
+      <translation>Двайковы файл
 '%1'
 не існуе!
 Калі ласка, пакажыце іншы файл.</translation>
@@ -1677,11 +1677,11 @@ that "MAXKOI" needs to be increased.</source>
     </message>
     <message>
       <location filename="../../DlgSettingsFemZ88Imp.cpp" line="102"/>
-      <source>The specified z88r executable 
+      <source>The specified z88r executable
 '%1'
  does not exist!
 Specify another file please.</source>
-      <translation>Паказаны двайковы файл z88r 
+      <translation>Паказаны двайковы файл z88r
 '%1'
  не існуе!
 Калі ласка, пакажыце іншы файл.</translation>

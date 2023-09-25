@@ -1023,11 +1023,11 @@
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcxImp.cpp" line="141"/>
-      <source>The specified executable 
+      <source>The specified executable
 '%1'
  does not exist!
 Specify another file please.</source>
-      <translation>L'eseguibile specificato 
+      <translation>L'eseguibile specificato
 '%1'
  non esiste!
 Specificare un altro file, per favore.</translation>
@@ -1125,11 +1125,11 @@ will be merged to make the volume boundaries invisible.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemElmerImp.cpp" line="100"/>
-      <source>The specified executable 
+      <source>The specified executable
 '%1'
  does not exist!
 Specify another file please.</source>
-      <translation>L'eseguibile specificato 
+      <translation>L'eseguibile specificato
 '%1'
  non esiste!
 Specificare un altro file, per favore.</translation>
@@ -1391,11 +1391,11 @@ adding an analysis container</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGmshImp.cpp" line="77"/>
-      <source>The specified executable 
+      <source>The specified executable
 '%1'
  does not exist!
 Specify another file please.</source>
-      <translation>L'eseguibile specificato 
+      <translation>L'eseguibile specificato
 '%1'
  non esiste!
 Specificare un altro file, per favore.</translation>
@@ -1583,11 +1583,11 @@ If unchecked, they will be sorted by their name.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemMystranImp.cpp" line="79"/>
-      <source>The specified executable 
+      <source>The specified executable
 '%1'
  does not exist!
 Specify another file please.</source>
-      <translation>L'eseguibile specificato 
+      <translation>L'eseguibile specificato
 '%1'
  non esiste!
 Specificare un altro file, per favore.</translation>
@@ -1695,11 +1695,11 @@ that "MAXKOI" needs to be increased.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemZ88Imp.cpp" line="102"/>
-      <source>The specified z88r executable 
+      <source>The specified z88r executable
 '%1'
  does not exist!
 Specify another file please.</source>
-      <translation>L'eseguibile z88r specificato 
+      <translation>L'eseguibile z88r specificato
 '%1'
  non esiste!
 Specificare un altro file, per favore.</translation>
@@ -3189,14 +3189,14 @@ con una forza motrice armonica/oscillante</translation>
       <location filename="../ui/ElectrostaticPotential.ui" line="247"/>
       <source>Real part of potential x-component
 Note: has no effect if a solid was selected</source>
-      <translation>Parte reale componente x del potenziale 
+      <translation>Parte reale componente x del potenziale
 Nota: non ha effetto se è stato selezionato un solido</translation>
     </message>
     <message>
       <location filename="../ui/ElectrostaticPotential.ui" line="292"/>
       <source>Imaginary part of potential x-component
 Note: has no effect if a solid was selected</source>
-      <translation>Parte immaginaria componente x del potenziale 
+      <translation>Parte immaginaria componente x del potenziale
 Nota: non ha effetto se è stato selezionato un solido</translation>
     </message>
     <message>
@@ -3210,14 +3210,14 @@ Nota: non ha effetto se è stato selezionato un solido</translation>
       <location filename="../ui/ElectrostaticPotential.ui" line="347"/>
       <source>Real part of potential y-component
 Note: has no effect if a solid was selected</source>
-      <translation>Parte reale componente y del potenziale 
+      <translation>Parte reale componente y del potenziale
 Nota: non ha effetto se è stato selezionato un solido</translation>
     </message>
     <message>
       <location filename="../ui/ElectrostaticPotential.ui" line="392"/>
       <source>Imaginary part of potential y-component
 Note: has no effect if a solid was selected</source>
-      <translation>Parte immaginaria componente y del potenziale 
+      <translation>Parte immaginaria componente y del potenziale
 Nota: non ha effetto se è stato selezionato un solido</translation>
     </message>
     <message>
@@ -3231,14 +3231,14 @@ Nota: non ha effetto se è stato selezionato un solido</translation>
       <location filename="../ui/ElectrostaticPotential.ui" line="447"/>
       <source>Real part of potential z-component
 Note: has no effect if a solid was selected</source>
-      <translation>Parte reale componente z del potenziale 
+      <translation>Parte reale componente z del potenziale
 Nota: non ha effetto se è stato selezionato un solido</translation>
     </message>
     <message>
       <location filename="../ui/ElectrostaticPotential.ui" line="492"/>
       <source>Imaginary part of potential z-component
 Note: has no effect if a solid was selected</source>
-      <translation>Parte immaginaria componente z del potenziale 
+      <translation>Parte immaginaria componente z del potenziale
 Nota: non ha effetto se è stato selezionato un solido</translation>
     </message>
     <message>

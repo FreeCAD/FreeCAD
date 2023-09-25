@@ -1022,11 +1022,11 @@
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcxImp.cpp" line="141"/>
-      <source>The specified executable 
+      <source>The specified executable
 '%1'
  does not exist!
 Specify another file please.</source>
-      <translation>Die angegebene ausführbare Datei 
+      <translation>Die angegebene ausführbare Datei
 '%1'
  existiert nicht!
 Bitte eine andere Datei angeben.</translation>
@@ -1124,11 +1124,11 @@ verarbeiteten Mesh-Volume-Bereiche werden zusammengeführt, um die Volume-Grenze
     </message>
     <message>
       <location filename="../../DlgSettingsFemElmerImp.cpp" line="100"/>
-      <source>The specified executable 
+      <source>The specified executable
 '%1'
  does not exist!
 Specify another file please.</source>
-      <translation>Die angegebene ausführbare Datei 
+      <translation>Die angegebene ausführbare Datei
 '%1'
  existiert nicht!
 Bitte eine andere Datei angeben.</translation>
@@ -1388,11 +1388,11 @@ adding an analysis container</source>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGmshImp.cpp" line="77"/>
-      <source>The specified executable 
+      <source>The specified executable
 '%1'
  does not exist!
 Specify another file please.</source>
-      <translation>Die angegebene ausführbare Datei 
+      <translation>Die angegebene ausführbare Datei
 '%1'
  existiert nicht!
 Bitte eine andere Datei angeben.</translation>
@@ -1575,11 +1575,11 @@ Wenn deaktiviert, werden sie nach ihrem Namen sortiert.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemMystranImp.cpp" line="79"/>
-      <source>The specified executable 
+      <source>The specified executable
 '%1'
  does not exist!
 Specify another file please.</source>
-      <translation>Die angegebene ausführbare Datei 
+      <translation>Die angegebene ausführbare Datei
 '%1'
  existiert nicht!
 Bitte eine andere Datei angeben.</translation>
@@ -1671,7 +1671,7 @@ You might need to increase this when using an
 iterative solver and you get the error message
 that "MAXKOI" needs to be increased.</source>
       <translation>Maximale Plätze im Zufallsvektor.
-(Anzahl der Knoten pro Element multipliziert 
+(Anzahl der Knoten pro Element multipliziert
 mit Anzahl der Finiten Elementen)
 
 Eventuell ist eine Erweiterung der Plätze nötig, wenn ein
@@ -1685,7 +1685,7 @@ iterativen Löser eingesetzt wird und die Fehlermeldung
     </message>
     <message>
       <location filename="../../DlgSettingsFemZ88Imp.cpp" line="102"/>
-      <source>The specified z88r executable 
+      <source>The specified z88r executable
 '%1'
  does not exist!
 Specify another file please.</source>

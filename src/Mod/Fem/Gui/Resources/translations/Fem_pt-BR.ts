@@ -1022,11 +1022,11 @@
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcxImp.cpp" line="141"/>
-      <source>The specified executable 
+      <source>The specified executable
 '%1'
  does not exist!
 Specify another file please.</source>
-      <translation>O executável especificado 
+      <translation>O executável especificado
 '%1'
  não existe!
 Especifique outro arquivo, por favor.</translation>
@@ -1124,11 +1124,11 @@ serão mescladas para tornar os limites de volume invisíveis.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemElmerImp.cpp" line="100"/>
-      <source>The specified executable 
+      <source>The specified executable
 '%1'
  does not exist!
 Specify another file please.</source>
-      <translation>O executável especificado 
+      <translation>O executável especificado
 '%1'
  não existe!
 Especifique outro arquivo, por favor.</translation>
@@ -1390,11 +1390,11 @@ adicionar um recipiente de análise</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGmshImp.cpp" line="77"/>
-      <source>The specified executable 
+      <source>The specified executable
 '%1'
  does not exist!
 Specify another file please.</source>
-      <translation>O executável especificado 
+      <translation>O executável especificado
 '%1'
  não existe!
 Especifique outro arquivo, por favor.</translation>
@@ -1435,8 +1435,8 @@ exported from FreeCAD.</source>
 Objeto de malha FEM: O resultado no arquivo VTK será omitido, apenas os
 dados da malha serão importados e o objeto de malha FEM FreeCAD será criado.
 
-Objeto resultado FreeCAD: Os dados importados serão convertidos em um 
-objeto resultado FEM FreeCAD. Nota: esta configuração precisa do componente nome 
+Objeto resultado FreeCAD: Os dados importados serão convertidos em um
+objeto resultado FEM FreeCAD. Nota: esta configuração precisa do componente nome
 exato, então só funciona com arquivos VTK própriamente exportados do FreeCAD.</translation>
     </message>
     <message>
@@ -1581,11 +1581,11 @@ Se desmarcado, eles serão classificados por seus nomes.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemMystranImp.cpp" line="79"/>
-      <source>The specified executable 
+      <source>The specified executable
 '%1'
  does not exist!
 Specify another file please.</source>
-      <translation>O executável especificado 
+      <translation>O executável especificado
 '%1'
  não existe!
 Especifique outro arquivo, por favor.</translation>
@@ -1693,11 +1693,11 @@ que "MAXKOI" precisa ser aumentada.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemZ88Imp.cpp" line="102"/>
-      <source>The specified z88r executable 
+      <source>The specified z88r executable
 '%1'
  does not exist!
 Specify another file please.</source>
-      <translation>O executável z88r especificado 
+      <translation>O executável z88r especificado
 '%1'
  não existe!
 Especifique outro arquivo, por favor.</translation>
@@ -3129,7 +3129,7 @@ Especifique outro arquivo, por favor.</translation>
       <location filename="../ui/ElectrostaticPotential.ui" line="104"/>
       <source>Imaginary part is only used for equations
 with a harmonic/oscillating driving force</source>
-      <translation>Parte imaginária é usada apenas para equações 
+      <translation>Parte imaginária é usada apenas para equações
 com forças atuantes harmônicas/oscilantes</translation>
     </message>
     <message>
