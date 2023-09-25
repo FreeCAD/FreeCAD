@@ -26,8 +26,8 @@
 #ifndef GUI_TASKVIEW_TaskFemConstraintPlaneRotation_H
 #define GUI_TASKVIEW_TaskFemConstraintPlaneRotation_H
 
-#include <memory>
 #include <QObject>
+#include <memory>
 
 #include "TaskFemConstraint.h"
 #include "ViewProviderFemConstraintPlaneRotation.h"
@@ -35,8 +35,9 @@
 
 class Ui_TaskFemConstraintPlaneRotation;
 
-namespace FemGui {
-class TaskFemConstraintPlaneRotation : public TaskFemConstraint
+namespace FemGui
+{
+class TaskFemConstraintPlaneRotation: public TaskFemConstraint
 {
     Q_OBJECT
 
@@ -52,15 +53,15 @@ private Q_SLOTS:
     void removeFromSelection();
 
 protected:
-    bool event(QEvent *e) override;
-    void changeEvent(QEvent *e) override;
+    bool event(QEvent* e) override;
+    void changeEvent(QEvent* e) override;
 
 private:
     void updateUI();
     std::unique_ptr<Ui_TaskFemConstraintPlaneRotation> ui;
 };
 
-class TaskDlgFemConstraintPlaneRotation : public TaskDlgFemConstraint
+class TaskDlgFemConstraintPlaneRotation: public TaskDlgFemConstraint
 {
     Q_OBJECT
 
@@ -72,6 +73,6 @@ public:
     bool reject() override;
 };
 
-} //namespace FemGui
+}  // namespace FemGui
 
-#endif // GUI_TASKVIEW_TaskFemConstraintPlaneRotation_H
+#endif  // GUI_TASKVIEW_TaskFemConstraintPlaneRotation_H

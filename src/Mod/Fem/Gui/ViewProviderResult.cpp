@@ -39,11 +39,12 @@ ViewProviderResult::~ViewProviderResult() = default;
 
 // Python feature -----------------------------------------------------------------------
 
-namespace Gui {
+namespace Gui
+{
 /// @cond DOXERR
 PROPERTY_SOURCE_TEMPLATE(FemGui::ViewProviderResultPython, FemGui::ViewProviderResult)
 /// @endcond
 
 // explicit template instantiation
 template class FemGuiExport ViewProviderPythonFeatureT<ViewProviderResult>;
-}
+}  // namespace Gui

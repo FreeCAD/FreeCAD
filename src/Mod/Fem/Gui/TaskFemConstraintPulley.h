@@ -27,14 +27,16 @@
 #include "TaskFemConstraintGear.h"
 #include "ViewProviderFemConstraintPulley.h"
 
-namespace FemGui {
+namespace FemGui
+{
 
-class TaskFemConstraintPulley : public TaskFemConstraintGear
+class TaskFemConstraintPulley: public TaskFemConstraintGear
 {
     Q_OBJECT
 
 public:
-    explicit TaskFemConstraintPulley(ViewProviderFemConstraintPulley *ConstraintView,QWidget *parent = nullptr);
+    explicit TaskFemConstraintPulley(ViewProviderFemConstraintPulley* ConstraintView,
+                                     QWidget* parent = nullptr);
 
     double getOtherDiameter() const;
     double getCenterDistance() const;
@@ -49,22 +51,22 @@ private Q_SLOTS:
     void onCheckIsDriven(bool);
 
 protected:
-    void changeEvent(QEvent *e) override;
+    void changeEvent(QEvent* e) override;
 };
 
 /// simulation dialog for the TaskView
-class TaskDlgFemConstraintPulley : public TaskDlgFemConstraintGear
+class TaskDlgFemConstraintPulley: public TaskDlgFemConstraintGear
 {
     Q_OBJECT
 
 public:
-    explicit TaskDlgFemConstraintPulley(ViewProviderFemConstraintPulley *ConstraintView);
+    explicit TaskDlgFemConstraintPulley(ViewProviderFemConstraintPulley* ConstraintView);
 
     /// is called by the framework if the dialog is accepted (Ok)
     bool accept() override;
     void open() override;
 };
 
-} //namespace FemGui
+}  // namespace FemGui
 
-#endif // GUI_TASKVIEW_TaskFemConstraintPulley_H
+#endif  // GUI_TASKVIEW_TaskFemConstraintPulley_H

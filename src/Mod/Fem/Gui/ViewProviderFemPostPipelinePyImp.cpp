@@ -22,10 +22,12 @@
 
 #include "PreCompiled.h"
 
+// clang-format off
 #include "ViewProviderFemPostPipeline.h"
 // inclusion of the generated files (generated out of ViewProviderFemPostPipelinePy.xml)
 #include "ViewProviderFemPostPipelinePy.h"
 #include "ViewProviderFemPostPipelinePy.cpp"
+// clang-format on
 
 
 using namespace FemGui;
@@ -36,35 +38,37 @@ std::string ViewProviderFemPostPipelinePy::representation() const
     return {"<ViewProviderFemPostPipeline object>"};
 }
 
-PyObject *ViewProviderFemPostPipelinePy::updateColorBars(PyObject *args)
+PyObject* ViewProviderFemPostPipelinePy::updateColorBars(PyObject* args)
 {
-    if (!PyArg_ParseTuple(args, ""))
+    if (!PyArg_ParseTuple(args, "")) {
         return nullptr;
+    }
 
     this->getViewProviderFemPostPipelinePtr()->updateColorBars();
 
     Py_Return;
 }
 
-PyObject *ViewProviderFemPostPipelinePy::transformField(PyObject *args)
+PyObject* ViewProviderFemPostPipelinePy::transformField(PyObject* args)
 {
-    char *FieldName;
+    char* FieldName;
     double FieldFactor;
 
-    if (!PyArg_ParseTuple(args, "sd", &FieldName, &FieldFactor))
+    if (!PyArg_ParseTuple(args, "sd", &FieldName, &FieldFactor)) {
         return nullptr;
+    }
 
     this->getViewProviderFemPostPipelinePtr()->transformField(FieldName, FieldFactor);
 
     Py_Return;
 }
 
-PyObject *ViewProviderFemPostPipelinePy::getCustomAttributes(const char * /*attr*/) const
+PyObject* ViewProviderFemPostPipelinePy::getCustomAttributes(const char* /*attr*/) const
 {
     return nullptr;
 }
 
-int ViewProviderFemPostPipelinePy::setCustomAttributes(const char * /*attr*/, PyObject * /*obj*/)
+int ViewProviderFemPostPipelinePy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
 {
     return 0;
 }

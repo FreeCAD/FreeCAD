@@ -28,9 +28,10 @@
 
 #include "ViewProviderFemConstraint.h"
 
-namespace FemGui {
+namespace FemGui
+{
 
-class FemGuiExport ViewProviderFemConstraintOnBoundary : public FemGui::ViewProviderFemConstraint
+class FemGuiExport ViewProviderFemConstraintOnBoundary: public FemGui::ViewProviderFemConstraint
 {
     PROPERTY_HEADER_WITH_OVERRIDE(FemGui::ViewProviderFemConstraintOnBoundary);
 
@@ -41,11 +42,11 @@ public:
     void highlightReferences(const bool on) override;
 
 private:
-    std::map< Part::Feature*, std::vector<App::Color> > originalPointColors;
-    std::map< Part::Feature*, std::vector<App::Color> > originalLineColors;
-    std::map< Part::Feature*, std::vector<App::Color> > originalFaceColors;
+    std::map<Part::Feature*, std::vector<App::Color>> originalPointColors;
+    std::map<Part::Feature*, std::vector<App::Color>> originalLineColors;
+    std::map<Part::Feature*, std::vector<App::Color>> originalFaceColors;
 };
 
-}
+}  // namespace FemGui
 
-#endif // GUI_VIEWPROVIDERFEMCONSTRAINTONBOUNDARY_H
+#endif  // GUI_VIEWPROVIDERFEMCONSTRAINTONBOUNDARY_H

@@ -25,8 +25,8 @@
 #include <Base/Console.h>
 #include <Base/PyObjectBase.h>
 #include <Gui/Application.h>
-#include <Gui/WidgetFactory.h>
 #include <Gui/Language/Translator.h>
+#include <Gui/WidgetFactory.h>
 
 #include "DlgSettingsFemCcxImp.h"
 #include "DlgSettingsFemElmerImp.h"
@@ -39,21 +39,13 @@
 #include "DlgSettingsFemZ88Imp.h"
 #include "PropertyFemMeshItem.h"
 #include "ViewProviderAnalysis.h"
-#include "ViewProviderFemMesh.h"
-#include "ViewProviderFemMeshShape.h"
-#include "ViewProviderFemMeshShapeNetgen.h"
-#include "ViewProviderSetElements.h"
-#include "ViewProviderSetFaces.h"
-#include "ViewProviderSetGeometry.h"
-#include "ViewProviderSetNodes.h"
-#include "ViewProviderSolver.h"
 #include "ViewProviderFemConstraint.h"
 #include "ViewProviderFemConstraintBearing.h"
 #include "ViewProviderFemConstraintContact.h"
 #include "ViewProviderFemConstraintDisplacement.h"
 #include "ViewProviderFemConstraintFixed.h"
-#include "ViewProviderFemConstraintForce.h"
 #include "ViewProviderFemConstraintFluidBoundary.h"
+#include "ViewProviderFemConstraintForce.h"
 #include "ViewProviderFemConstraintGear.h"
 #include "ViewProviderFemConstraintHeatflux.h"
 #include "ViewProviderFemConstraintInitialTemperature.h"
@@ -64,7 +56,15 @@
 #include "ViewProviderFemConstraintSpring.h"
 #include "ViewProviderFemConstraintTemperature.h"
 #include "ViewProviderFemConstraintTransform.h"
+#include "ViewProviderFemMesh.h"
+#include "ViewProviderFemMeshShape.h"
+#include "ViewProviderFemMeshShapeNetgen.h"
 #include "ViewProviderResult.h"
+#include "ViewProviderSetElements.h"
+#include "ViewProviderSetFaces.h"
+#include "ViewProviderSetGeometry.h"
+#include "ViewProviderSetNodes.h"
+#include "ViewProviderSolver.h"
 #include "Workbench.h"
 
 #ifdef FC_USE_VTK
@@ -75,7 +75,7 @@
 #endif
 
 
- // use a different name to CreateCommand()
+// use a different name to CreateCommand()
 void CreateFemCommands();
 
 void loadFemResource()
@@ -86,8 +86,9 @@ void loadFemResource()
     Gui::Translator::instance()->refresh();
 }
 
-namespace FemGui {
-    extern PyObject* initModule();
+namespace FemGui
+{
+extern PyObject* initModule();
 }
 
 
@@ -105,6 +106,7 @@ PyMOD_INIT_FUNC(FemGui)
     // instantiating the commands
     CreateFemCommands();
 
+    // clang-format off
     // addition objects
     FemGui::Workbench                                           ::init();
 
@@ -184,6 +186,7 @@ PyMOD_INIT_FUNC(FemGui)
 
     // add resources and reloads the translators
     loadFemResource();
+    // clang-format on
 
     PyMOD_Return(mod);
 }
