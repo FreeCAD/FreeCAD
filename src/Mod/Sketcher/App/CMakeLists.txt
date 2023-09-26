@@ -131,6 +131,8 @@ SET(SketchModule_SRCS
 SOURCE_GROUP("Module" FILES ${SketchModule_SRCS})
 
 SET(Sketcher_SRCS
+    Utils.h
+    Utils.cpp
     ${Features_SRCS}
     ${PlaneGCS_SRCS}
     ${SketchModule_SRCS}

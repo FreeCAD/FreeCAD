@@ -52,26 +52,6 @@ namespace Sketcher
 enum class PointPos : int;
 class SketchObject;
 
-bool isCircle(const Part::Geometry&);
-bool isArcOfCircle(const Part::Geometry&);
-bool isEllipse(const Part::Geometry&);
-bool isArcOfEllipse(const Part::Geometry&);
-bool isLineSegment(const Part::Geometry&);
-bool isArcOfHyperbola(const Part::Geometry&);
-bool isArcOfParabola(const Part::Geometry&);
-bool isBSplineCurve(const Part::Geometry&);
-bool isPoint(const Part::Geometry&);
-
-Base::Vector3d getPoint3d(const Part::Geometry* geo, PointPos PosId);
-Base::Vector2d getPoint2d(const Part::Geometry* geo, PointPos PosId);
-Base::Vector2d startPoint2d(const Part::Geometry* geo);
-Base::Vector2d endPoint2d(const Part::Geometry* geo);
-Base::Vector2d centerPoint2d(const Part::Geometry* geo);
-Base::Vector3d startPoint3d(const Part::Geometry* geo);
-Base::Vector3d endPoint3d(const Part::Geometry* geo);
-Base::Vector3d centerPoint3d(const Part::Geometry* geo);
-Base::Vector3d vec2dTo3d(Base::Vector2d& vec2d);
-Base::Vector2d vec3dTo2d(Base::Vector3d& vec2d);
 
 }  // namespace Sketcher
 
@@ -201,12 +181,6 @@ std::string lengthToDisplayFormat(double value, int digits);
 std::string angleToDisplayFormat(double value, int digits);
 
 }  // namespace SketcherGui
-
-/// converts a 2D vector into a 3D vector in the XY plane
-inline Base::Vector3d toVector3d(const Base::Vector2d& vector2d)
-{
-    return Base::Vector3d(vector2d.x, vector2d.y, 0.);
-}
 
 
 template<typename T>

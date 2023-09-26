@@ -43,6 +43,7 @@
 #include <Gui/SelectionObject.h>
 #include <Mod/Sketcher/App/GeometryFacade.h>
 #include <Mod/Sketcher/App/SketchObject.h>
+#include <Mod/Sketcher/App/Utils.h>
 
 #include "CommandConstraints.h"
 #include "DrawSketchHandler.h"
