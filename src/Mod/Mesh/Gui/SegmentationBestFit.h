@@ -23,14 +23,14 @@
 #ifndef MESHGUI_SEGMENTATIONBESTFIT_H
 #define MESHGUI_SEGMENTATIONBESTFIT_H
 
-#include <QDialog>
 #include <list>
+#include <QDialog>
 
 #include <Gui/TaskView/TaskDialog.h>
 #include <Gui/TaskView/TaskView.h>
 
-#include "MeshSelection.h"
 #include <Mod/Mesh/MeshGlobal.h>
+#include "MeshSelection.h"
 
 
 class QDoubleSpinBox;
@@ -53,7 +53,12 @@ public:
         std::vector<Base::Vector3f> points;
         std::vector<Base::Vector3f> normals;
     };
+    FitParameter() = default;
     virtual ~FitParameter() = default;
+    FitParameter(const FitParameter&) = delete;
+    FitParameter(FitParameter&&) = delete;
+    FitParameter& operator=(const FitParameter&) = delete;
+    FitParameter& operator=(FitParameter&&) = delete;
     virtual std::vector<float> getParameter(Points) const = 0;
 };
 
