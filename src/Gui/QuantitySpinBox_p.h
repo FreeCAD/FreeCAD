@@ -34,9 +34,9 @@ public:
 
     void setExpressionText(const QString& text) {
         if (text.isEmpty())
-            this->setToolTip(genericFormulaEditorTooltip);
+            this->setToolTip(genericExpressionEditorTooltip);
         else
-            this->setToolTip(formulaEditorTooltipPrefix + text);
+            this->setToolTip(expressionEditorTooltipPrefix + text);
     }
 
 protected:
@@ -50,8 +50,8 @@ Q_SIGNALS:
 
 private:
 
-    const QString genericFormulaEditorTooltip = tr("Enter an expression...");
-    const QString formulaEditorTooltipPrefix = tr("Expression: ");
+    const QString genericExpressionEditorTooltip = tr("Enter an expression... (=)");
+    const QString expressionEditorTooltipPrefix = tr("Expression: ");
 };
 
 #endif // QUANTITYSPINBOX_P_H
