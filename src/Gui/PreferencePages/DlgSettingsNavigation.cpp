@@ -58,6 +58,7 @@ DlgSettingsNavigation::DlgSettingsNavigation(QWidget* parent)
 {
     ui->setupUi(this);
     ui->naviCubeBaseColor->setAllowTransparency(true);
+    ui->rotationCenterColor->setAllowTransparency(true);
     retranslate();
 }
 
@@ -84,7 +85,8 @@ void DlgSettingsNavigation::saveSettings()
     ui->checkBoxZoomAtCursor->onSave();
     ui->checkBoxInvertZoom->onSave();
     ui->checkBoxDisableTilt->onSave();
-    ui->checkBoxShowRotationCenter->onSave();
+    ui->rotationCenterSize->onSave();
+    ui->rotationCenterColor->onSave();
     ui->spinBoxZoomStep->onSave();
     ui->checkBoxNavigationAnimations->onSave();
     ui->spinBoxAnimationDuration->onSave();
@@ -97,6 +99,9 @@ void DlgSettingsNavigation::saveSettings()
 
     bool showNaviCube = ui->groupBoxNaviCube->isChecked();
     hGrp->SetBool("ShowNaviCube", showNaviCube);
+
+    bool showRotationCenter = ui->groupBoxRotationCenter->isChecked();
+    hGrp->SetBool("ShowRotationCenter", showRotationCenter);
 
     QVariant camera = ui->comboNewDocView->itemData(ui->comboNewDocView->currentIndex(),
         Qt::UserRole);
@@ -122,7 +127,8 @@ void DlgSettingsNavigation::loadSettings()
     ui->checkBoxZoomAtCursor->onRestore();
     ui->checkBoxInvertZoom->onRestore();
     ui->checkBoxDisableTilt->onRestore();
-    ui->checkBoxShowRotationCenter->onRestore();
+    ui->rotationCenterSize->onRestore();
+    ui->rotationCenterColor->onRestore();
     ui->spinBoxZoomStep->onRestore();
     ui->checkBoxNavigationAnimations->onRestore();
     ui->spinBoxAnimationDuration->onRestore();
@@ -148,6 +154,9 @@ void DlgSettingsNavigation::loadSettings()
 
     bool showNaviCube = hGrp->GetBool("ShowNaviCube", true);
     ui->groupBoxNaviCube->setChecked(showNaviCube);
+
+    bool showRotationCenter = hGrp->GetBool("ShowRotationCenter", true);
+    ui->groupBoxRotationCenter->setChecked(showRotationCenter);
 
     ui->comboNewDocView->addItem(tr("Isometric"), QByteArray("Isometric"));
     ui->comboNewDocView->addItem(tr("Dimetric"), QByteArray("Dimetric"));

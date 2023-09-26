@@ -1319,6 +1319,17 @@ void View3DInventorViewer::showRotationCenter(bool show)
         }
 
         if (!rotationCenterGroup) {
+            float size = App::GetApplication()
+                             .GetParameterGroupByPath("User parameter:BaseApp/Preferences/View")
+                             ->GetFloat("RotationCenterSize", 5.0);
+
+            unsigned long rotationCenterColor =
+                App::GetApplication()
+                    .GetParameterGroupByPath("User parameter:BaseApp/Preferences/View")
+                    ->GetUnsigned("RotationCenterColor", 4278190131);
+
+            QColor color = App::Color::fromPackedRGBA<QColor>(rotationCenterColor);
+
             rotationCenterGroup = new SoSkipBoundingGroup();
 
             auto sphere = new SoSphere();
@@ -1334,8 +1345,8 @@ void View3DInventorViewer::showRotationCenter(bool show)
             complexity->value = 1;
 
             auto material = new SoMaterial();
-            material->emissiveColor = SbColor(1, 0, 0);
-            material->transparency = 0.8F;
+            material->emissiveColor = SbColor(color.redF(), color.greenF(), color.blueF());
+            material->transparency = 1.0F - color.alphaF();
 
             auto translation = new SoTranslation();
             translation->translation.setValue(center);
@@ -1347,7 +1358,7 @@ void View3DInventorViewer::showRotationCenter(bool show)
 
             auto scaledSphere = new SoShapeScale();
             scaledSphere->setPart("shape", annotation);
-            scaledSphere->scaleFactor = 4.0;
+            scaledSphere->scaleFactor = size;
 
             rotationCenterGroup->addChild(translation);
             rotationCenterGroup->addChild(hidden);
