@@ -35,12 +35,16 @@ SET(Import_SRCS
     ImportOCAF2.h
     #ImportOCAFAssembly.cpp
     #ImportOCAFAssembly.h
+    ReaderGltf.cpp
+    ReaderGltf.h
     StepShapePy.xml
     StepShape.h
     StepShape.cpp
     StepShapePyImp.cpp
     PreCompiled.cpp
     PreCompiled.h
+    WriterGltf.cpp
+    WriterGltf.h
     dxf/ImpExpDxf.cpp
     dxf/ImpExpDxf.h
     dxf/dxf.cpp

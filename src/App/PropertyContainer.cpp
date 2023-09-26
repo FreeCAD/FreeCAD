@@ -239,6 +239,23 @@ void PropertyContainer::handleChangedPropertyType(DocumentReader &reader, const 
 
 PropertyData PropertyContainer::propertyData;
 
+void PropertyContainer::beforeSave() const
+{
+    std::map<std::string, Property*> Map;
+    getPropertyMap(Map);
+    for (auto& entry : Map) {
+        auto prop = entry.second;
+        if (!prop->testStatus(Property::PropDynamic)
+            && (prop->testStatus(Property::Transient)
+                || ((getPropertyType(prop) & Prop_Transient) != 0))) {
+            // Nothing
+        }
+        else {
+            prop->beforeSave();
+        }
+    }
+}
+
 void PropertyContainer::Save (Base::Writer &writer) const
 {
     std::map<std::string,Property*> Map;
@@ -257,8 +274,9 @@ void PropertyContainer::Save (Base::Writer &writer) const
         {
             transients.push_back(prop);
             it = Map.erase(it);
-        }else
+        } else {
             ++it;
+        }
     }
 
     writer.incInd(); // indentation for 'Properties Count'

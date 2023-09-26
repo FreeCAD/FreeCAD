@@ -85,7 +85,7 @@ class DraftObject(object):
         # Object properties are updated when the document is opened.
         self.props_changed_clear()
 
-    def __getstate__(self):
+    def dumps(self):
         """Return a tuple of all serializable objects or None.
 
         When saving the document this object gets stored
@@ -102,7 +102,7 @@ class DraftObject(object):
         """
         return self.Type
 
-    def __setstate__(self, state):
+    def loads(self, state):
         """Set some internal properties for all restored objects.
 
         When a document is restored this method is used to set some properties

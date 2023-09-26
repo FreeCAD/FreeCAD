@@ -236,6 +236,9 @@
             <height>0</height>
            </size>
           </property>
+          <property name="mode">
+           <enum>Gui::FileChooser::Directory</enum>
+          </property>
           <property name="toolTip">
            <string>The path to the directory for transferring files to and from OpenSCAD</string>
           </property>

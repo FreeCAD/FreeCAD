@@ -2141,8 +2141,8 @@
       <translation>Komplexe Schnittansicht erstellen</translation>
     </message>
     <message>
-      <location filename="../../TaskComplexSection.cpp" line="643"/>
-      <location filename="../../TaskSectionView.cpp" line="569"/>
+      <location filename="../../TaskComplexSection.cpp" line="644"/>
+      <location filename="../../TaskSectionView.cpp" line="577"/>
       <source>Edit SectionView</source>
       <translation>Schnittansicht bearbeiten</translation>
     </message>
@@ -3372,7 +3372,7 @@
     <message>
       <location filename="../../MDIViewPage.cpp" line="307"/>
       <source>PDF (*.pdf)</source>
-      <translation>PDF (*.PDF)</translation>
+      <translation>PDF (*.pdf)</translation>
     </message>
     <message>
       <location filename="../../MDIViewPage.cpp" line="308"/>
@@ -3522,8 +3522,8 @@
       <translation>Die Richtung derAnsicht in BaseView-Koordinaten</translation>
     </message>
     <message>
-      <location filename="../../TaskComplexSection.cpp" line="692"/>
-      <location filename="../../TaskSectionView.cpp" line="618"/>
+      <location filename="../../TaskComplexSection.cpp" line="704"/>
+      <location filename="../../TaskSectionView.cpp" line="638"/>
       <source>Operation Failed</source>
       <translation>Vorgang fehlgeschlagen</translation>
     </message>
@@ -3829,7 +3829,7 @@ it has a weld symbol that would become broken.</source>
       <translation>Diese Hinweislinie kann nicht gelöscht werden, weil ihr ein Schweißsymbol zugeordnet ist, das dadurch unbrauchbar werden würde.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderViewPart.cpp" line="319"/>
+      <location filename="../../ViewProviderViewPart.cpp" line="331"/>
       <source>You cannot delete this view because it has one or more dependent views that would become broken.</source>
       <translation>Diese Ansicht kann nicht gelöscht werden, da von ihr eine oder mehrere Ansichten abhängen, die beschädigt werden könnten.</translation>
     </message>
@@ -3843,7 +3843,7 @@ it has a weld symbol that would become broken.</source>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="165"/>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="173"/>
       <location filename="../../ViewProviderTemplate.cpp" line="205"/>
-      <location filename="../../ViewProviderViewPart.cpp" line="322"/>
+      <location filename="../../ViewProviderViewPart.cpp" line="334"/>
       <location filename="../../ViewProviderWeld.cpp" line="145"/>
       <source>Object dependencies</source>
       <translation>Objektabhängigkeiten</translation>
@@ -5597,12 +5597,12 @@ Do you want to continue?</source>
     <message>
       <location filename="../../MDIViewPage.cpp" line="537"/>
       <source>Save PDF file</source>
-      <translation type="unfinished">Save PDF file</translation>
+      <translation>PDF-Datei speichern</translation>
     </message>
     <message>
       <location filename="../../MDIViewPage.cpp" line="538"/>
       <source>PDF (*.pdf)</source>
-      <translation>PDF (*.PDF)</translation>
+      <translation>PDF (*.pdf)</translation>
     </message>
     <message>
       <location filename="../../MDIViewPage.cpp" line="1029"/>
@@ -6090,11 +6090,12 @@ Do you want to continue?</source>
     </message>
     <message>
       <location filename="../../TaskComplexSection.cpp" line="559"/>
+      <location filename="../../TaskComplexSection.cpp" line="692"/>
       <source>ComplexSection</source>
       <translation>Komplexe Schnittansicht</translation>
     </message>
     <message>
-      <location filename="../../TaskComplexSection.cpp" line="691"/>
+      <location filename="../../TaskComplexSection.cpp" line="703"/>
       <source>Can not continue. Object * %1 or %2 not found.</source>
       <translation>Kann nicht fortfahren. Objekt * %1 oder %2 nicht gefunden.</translation>
     </message>
@@ -7861,7 +7862,7 @@ mit dem vorgegebenen X/Y-Abstand</translation>
       <translation>Nichts zu tun. Es wurde keine Schnittausrichtung ausgewählt</translation>
     </message>
     <message>
-      <location filename="../../TaskSectionView.cpp" line="617"/>
+      <location filename="../../TaskSectionView.cpp" line="637"/>
       <source>Can not continue. Object * %1 or %2 not found.</source>
       <translation>Kann nicht fortfahren. Objekt * %1 oder %2 nicht gefunden.</translation>
     </message>

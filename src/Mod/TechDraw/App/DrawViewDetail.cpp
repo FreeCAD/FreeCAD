@@ -187,11 +187,13 @@ void DrawViewDetail::detailExec(TopoDS_Shape& shape, DrawViewPart* dvp, DrawView
     connectDetailWatcher =
         QObject::connect(&m_detailWatcher, &QFutureWatcherBase::finished, &m_detailWatcher,
                          [this] { this->onMakeDetailFinished(); });
-#if QT_VERSION < QT_VERSION_CHECK(6,0,0)
-    m_detailFuture = QtConcurrent::run(this, &DrawViewDetail::makeDetailShape, shape, dvp, dvs);
-#else
-    m_detailFuture = QtConcurrent::run(&DrawViewDetail::makeDetailShape, this, shape, dvp, dvs);
-#endif
+
+    // We create a lambda closure to hold a copy of shape.
+    // This is important because this variable might be local to the calling
+    // function and might get destructed before the parallel processing finishes.
+    // TODO: What about dvp and dvs? Do they live past makeDetailShape?
+    auto lambda = [this, shape, dvp, dvs]{this->makeDetailShape(shape, dvp, dvs);};
+    m_detailFuture = QtConcurrent::run(std::move(lambda));
     m_detailWatcher.setFuture(m_detailFuture);
     waitingForDetail(true);
 }

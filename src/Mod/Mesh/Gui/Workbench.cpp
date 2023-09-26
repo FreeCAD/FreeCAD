@@ -22,16 +22,16 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <QGroupBox>
-# include <QLabel>
+#include <QGroupBox>
+#include <QLabel>
 #endif
 
 #include <Gui/Application.h>
 #include <Gui/Command.h>
 #include <Gui/MenuManager.h>
 #include <Gui/Selection.h>
-#include <Gui/ToolBarManager.h>
 #include <Gui/TaskView/TaskView.h>
+#include <Gui/ToolBarManager.h>
 #include <Mod/Mesh/App/MeshFeature.h>
 
 #include "Workbench.h"
@@ -39,7 +39,7 @@
 
 using namespace MeshGui;
 
-#if 0 // needed for Qt's lupdate utility
+#if 0  // needed for Qt's lupdate utility
     qApp->translate("Workbench", "Analyze");
     qApp->translate("Workbench", "Boolean");
     qApp->translate("Workbench", "&Meshes");
@@ -57,10 +57,11 @@ TYPESYSTEM_SOURCE(MeshGui::Workbench, Gui::StdWorkbench)
 
 Workbench::Workbench() = default;
 
-class MeshInfoWatcher : public Gui::TaskView::TaskWatcher, public Gui::SelectionObserver
+class MeshInfoWatcher: public Gui::TaskView::TaskWatcher, public Gui::SelectionObserver
 {
 public:
-    MeshInfoWatcher() : TaskWatcher(nullptr)
+    MeshInfoWatcher()
+        : TaskWatcher(nullptr)
     {
         labelPoints = new QLabel();
         labelPoints->setText(tr("Number of points:"));
@@ -82,7 +83,7 @@ public:
 
         QGroupBox* box = new QGroupBox();
         box->setTitle(tr("Mesh info box"));
-        //box->setAutoFillBackground(true);
+        // box->setAutoFillBackground(true);
         QGridLayout* grid = new QGridLayout(box);
         grid->addWidget(labelPoints, 0, 0);
         grid->addWidget(numPoints, 0, 1);
@@ -94,8 +95,8 @@ public:
         grid->addWidget(labelMax, 3, 0);
         grid->addWidget(numMax, 3, 1);
 
-        Gui::TaskView::TaskBox* taskbox = new Gui::TaskView::TaskBox(
-            QPixmap(), tr("Mesh info"), false, nullptr);
+        Gui::TaskView::TaskBox* taskbox =
+            new Gui::TaskView::TaskBox(QPixmap(), tr("Mesh info"), false, nullptr);
         taskbox->groupLayout()->addWidget(box);
         Content.push_back(taskbox);
     }
@@ -106,7 +107,7 @@ public:
     void onSelectionChanged(const Gui::SelectionChanges&) override
     {
         Base::BoundBox3d bbox;
-        unsigned long countPoints=0, countFacets=0;
+        unsigned long countPoints = 0, countFacets = 0;
         std::vector<Mesh::Feature*> mesh = Gui::Selection().getObjectsOfType<Mesh::Feature>();
         for (auto it : mesh) {
             countPoints += it->Mesh.getValue().countPoints();
@@ -117,10 +118,8 @@ public:
         if (countPoints > 0) {
             numPoints->setText(QString::number(countPoints));
             numFacets->setText(QString::number(countFacets));
-            numMin->setText(tr("X: %1\tY: %2\tZ: %3")
-                .arg(bbox.MinX).arg(bbox.MinY).arg(bbox.MinZ));
-            numMax->setText(tr("X: %1\tY: %2\tZ: %3")
-                .arg(bbox.MaxX).arg(bbox.MaxY).arg(bbox.MaxZ));
+            numMin->setText(tr("X: %1\tY: %2\tZ: %3").arg(bbox.MinX).arg(bbox.MinY).arg(bbox.MinZ));
+            numMax->setText(tr("X: %1\tY: %2\tZ: %3").arg(bbox.MaxX).arg(bbox.MaxY).arg(bbox.MaxZ));
         }
         else {
             numPoints->setText(QString::fromLatin1(""));
@@ -154,15 +153,16 @@ void Workbench::deactivated()
 {
     Gui::Workbench::deactivated();
     removeTaskWatcher();
-
 }
 
-void Workbench::setupContextMenu(const char* recipient,Gui::MenuItem* item) const
+void Workbench::setupContextMenu(const char* recipient, Gui::MenuItem* item) const
 {
-    StdWorkbench::setupContextMenu( recipient, item );
-    if (Gui::Selection().countObjectsOfType(Mesh::Feature::getClassTypeId()) > 0)
-    {
-        *item << "Separator" << "Mesh_Import" << "Mesh_Export" << "Mesh_VertexCurvature";
+    StdWorkbench::setupContextMenu(recipient, item);
+    if (Gui::Selection().countObjectsOfType(Mesh::Feature::getClassTypeId()) > 0) {
+        *item << "Separator"
+              << "Mesh_Import"
+              << "Mesh_Export"
+              << "Mesh_VertexCurvature";
     }
 }
 
@@ -171,13 +171,17 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     Gui::MenuItem* root = StdWorkbench::setupMenuBar();
     Gui::MenuItem* item = root->findItem("&Windows");
     Gui::MenuItem* mesh = new Gui::MenuItem;
-    root->insertItem( item, mesh );
+    root->insertItem(item, mesh);
 
     // analyze
     Gui::MenuItem* analyze = new Gui::MenuItem;
     analyze->setCommand("Analyze");
-    *analyze << "Mesh_Evaluation" << "Mesh_EvaluateFacet" << "Mesh_CurvatureInfo" << "Separator"
-             << "Mesh_EvaluateSolid" << "Mesh_BoundingBox";
+    *analyze << "Mesh_Evaluation"
+             << "Mesh_EvaluateFacet"
+             << "Mesh_CurvatureInfo"
+             << "Separator"
+             << "Mesh_EvaluateSolid"
+             << "Mesh_BoundingBox";
 
     // boolean
     Gui::MenuItem* boolean = new Gui::MenuItem;
@@ -191,7 +195,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     cutting->setCommand("Cutting");
     *cutting << "Mesh_PolyCut"
              << "Mesh_PolyTrim"
-           //<< "Mesh_PolySegm"
+             //<< "Mesh_PolySegm"
              << "Mesh_TrimByPlane"
              << "Mesh_SectionByPlane"
              << "Mesh_CrossSections";
@@ -201,9 +205,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
           << "Mesh_Export"
           << "Mesh_FromPartShape"
           << "Mesh_RemeshGmsh"
-          << "Separator"
-          << analyze
-          << "Mesh_VertexCurvature"
+          << "Separator" << analyze << "Mesh_VertexCurvature"
           << "Mesh_HarmonizeNormals"
           << "Mesh_FlipNormals"
           << "Separator"
@@ -219,18 +221,17 @@ Gui::MenuItem* Workbench::setupMenuBar() const
           << "Mesh_Decimating"
           << "Mesh_Scale"
           << "Separator"
-          << "Mesh_BuildRegularSolid"
-          << boolean
-          << cutting
-          << "Separator"
+          << "Mesh_BuildRegularSolid" << boolean << cutting << "Separator"
           << "Mesh_Merge"
           << "Mesh_SplitComponents"
           << "Separator";
     Gui::CommandManager& mgr = Gui::Application::Instance->commandManager();
-    if (mgr.getCommandByName("MeshPart_CreateFlatMesh"))
+    if (mgr.getCommandByName("MeshPart_CreateFlatMesh")) {
         *mesh << "MeshPart_CreateFlatMesh";
-    if (mgr.getCommandByName("MeshPart_CreateFlatFace"))
+    }
+    if (mgr.getCommandByName("MeshPart_CreateFlatFace")) {
         *mesh << "MeshPart_CreateFlatFace";
+    }
     return root;
 }
 
@@ -298,14 +299,17 @@ Gui::ToolBarItem* Workbench::setupCommandBars() const
     Gui::ToolBarItem* root = new Gui::ToolBarItem;
     Gui::ToolBarItem* mesh;
 
-    mesh = new Gui::ToolBarItem( root );
+    mesh = new Gui::ToolBarItem(root);
     mesh->setCommand("Mesh tools");
-    *mesh << "Mesh_Import" << "Mesh_Export" << "Mesh_PolyCut";
+    *mesh << "Mesh_Import"
+          << "Mesh_Export"
+          << "Mesh_PolyCut";
 
-    mesh = new Gui::ToolBarItem( root );
+    mesh = new Gui::ToolBarItem(root);
     mesh->setCommand("Mesh test suite");
-    *mesh << "Mesh_Demolding" << "Mesh_Transform" << "Separator" ;
+    *mesh << "Mesh_Demolding"
+          << "Mesh_Transform"
+          << "Separator";
 
     return root;
 }
-

@@ -92,11 +92,19 @@ std::string PropertyPythonObject::toString() const
             throw Py::Exception();
         Py::Callable method(pickle.getAttr(std::string("dumps")));
         Py::Object dump;
-        if (this->object.hasAttr("__getstate__")) {
+        if (this->object.hasAttr("dumps")) {
+            Py::Tuple args;
+            Py::Callable state(this->object.getAttr("dumps"));
+            dump = state.apply(args);
+        }
+#if PY_VERSION_HEX < 0x030b0000
+        // support add-ons that use the old method names
+        else if (this->object.hasAttr("__getstate__")) {
             Py::Tuple args;
             Py::Callable state(this->object.getAttr("__getstate__"));
             dump = state.apply(args);
         }
+#endif
         else if (this->object.hasAttr("__dict__")) {
             dump = this->object.getAttr("__dict__");
         }
@@ -134,12 +142,21 @@ void PropertyPythonObject::fromString(const std::string& repr)
         args.setItem(0, Py::String(repr));
         Py::Object res = method.apply(args);
 
-        if (this->object.hasAttr("__setstate__")) {
+        if (this->object.hasAttr("loads")) {
+            Py::Tuple args(1);
+            args.setItem(0, res);
+            Py::Callable state(this->object.getAttr("loads"));
+            state.apply(args);
+        }
+#if PY_VERSION_HEX < 0x030b0000
+        // support add-ons that use the old method names
+        else if (this->object.hasAttr("__setstate__")) {
             Py::Tuple args(1);
             args.setItem(0, res);
             Py::Callable state(this->object.getAttr("__setstate__"));
             state.apply(args);
         }
+#endif
         else if (this->object.hasAttr("__dict__")) {
             if (!res.isNone()) {
                 this->object.setAttr("__dict__", res);

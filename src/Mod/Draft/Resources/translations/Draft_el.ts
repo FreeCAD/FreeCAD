@@ -1561,17 +1561,17 @@ Note that this is not fully supported, and many object will be not editable with
       <translation>Κείμενα και διαστάσεις</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-drafttexts.ui" line="26"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="35"/>
       <source>Text settings</source>
       <translation>Ρυθμίσεις κειμένου</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-drafttexts.ui" line="34"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="43"/>
       <source>Font family</source>
       <translation>Οικογένεια γραμματοσειράς</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-drafttexts.ui" line="47"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="56"/>
       <source>This is the default font name for all Draft texts and dimensions.
 It can be a font name such as "Arial", a default style such as "sans", "serif"
 or "mono", or a family such as "Arial,Helvetica,sans" or a name with a style
@@ -1581,184 +1581,194 @@ such as "Arial:Bold"</source>
 ή ένα όνομα ακολουθούμενο από έναν τύπο μορφοποίησης όπως ''Arial:Bold''</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-drafttexts.ui" line="59"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="68"/>
       <source>Internal font</source>
       <translation>Εσωτερική γραμματοσειρά</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-drafttexts.ui" line="76"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="85"/>
       <source>Font size</source>
       <translation>Μέγεθος γραμματοσειράς</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-drafttexts.ui" line="89"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="98"/>
       <source>Default height for texts and dimensions</source>
       <translation>Προεπιλεγμένο ύψος για κείμενα και διαστάσεις</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-drafttexts.ui" line="92"/>
-      <location filename="../ui/preferences-drafttexts.ui" line="211"/>
-      <location filename="../ui/preferences-drafttexts.ui" line="247"/>
-      <location filename="../ui/preferences-drafttexts.ui" line="283"/>
-      <location filename="../ui/preferences-drafttexts.ui" line="365"/>
-      <location filename="../ui/preferences-drafttexts.ui" line="432"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="101"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="220"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="256"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="292"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="374"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="441"/>
       <location filename="../ui/preferences-dxf.ui" line="535"/>
       <location filename="../ui/preferences-svg.ui" line="209"/>
       <source>mm</source>
       <translation>χιλιοστά</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-drafttexts.ui" line="116"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="125"/>
       <source>Dimension settings</source>
       <translation>Ρυθμίσεις διάστασης</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-drafttexts.ui" line="124"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="133"/>
       <source>Display mode</source>
       <translation>Λειτουργία προβολής</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-drafttexts.ui" line="144"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="153"/>
       <source>World</source>
       <translation>Κόσμος</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-drafttexts.ui" line="149"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="158"/>
       <source>Screen</source>
       <translation type="unfinished">Screen</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-drafttexts.ui" line="161"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="170"/>
       <source>Number of decimals</source>
       <translation>Αριθμός δεκαδικών</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-drafttexts.ui" line="201"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="210"/>
       <source>Extension lines size</source>
       <translation>Μέγεθος γραμμών επέκτασης</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-drafttexts.ui" line="208"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="217"/>
       <source>The default size of dimensions extension lines</source>
       <translation>Το προεπιλεγμένο μέγεθος γραμμών επέκτασης των διαστάσεων</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-drafttexts.ui" line="237"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="246"/>
       <source>Extension line overshoot</source>
       <translation>Υπέρβαση γραμμής επέκτασης</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-drafttexts.ui" line="244"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="253"/>
       <source>The default length of extension line above dimension line</source>
       <translation>Το προεπιλεγμένο μήκος γραμμής επέκτασης πάνω από τη γραμμή διάστασης</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-drafttexts.ui" line="273"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="282"/>
       <source>Dimension line overshoot</source>
       <translation>Υπέρβαση γραμμής διάστασης</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-drafttexts.ui" line="280"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="289"/>
       <source>The default distance the dimension line is extended past extension lines</source>
       <translation>Η προεπιλεγμένη απόσταση κατά την οποία επεκτείνεται η γραμμή διάστασης πέρα από τις γραμμές επέκτασης</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-drafttexts.ui" line="309"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="318"/>
       <source>Arrows style</source>
       <translation>Τύπος μορφοποίησης βελών</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-drafttexts.ui" line="323"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="332"/>
       <source>Dot</source>
       <translation>Τελεία</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-drafttexts.ui" line="328"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="337"/>
       <source>Circle</source>
       <translation>Κύκλος</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-drafttexts.ui" line="333"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="342"/>
       <source>Arrow</source>
       <translation>Βέλος</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-drafttexts.ui" line="338"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="347"/>
       <source>Tick</source>
       <translation>Σημειώστε</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-drafttexts.ui" line="343"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="352"/>
       <source>Tick-2</source>
       <translation>Σημειώστε-2</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-drafttexts.ui" line="355"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="364"/>
       <source>Arrows size</source>
       <translation>Μέγεθος βελών</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-drafttexts.ui" line="362"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="371"/>
       <source>The default size of arrows</source>
       <translation>Το προεπιλεγμένο μέγεθος βελών</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-drafttexts.ui" line="388"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="397"/>
       <source>Text orientation</source>
       <translation>Προσανατολισμός κειμένου</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-drafttexts.ui" line="395"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="404"/>
       <source>This is the orientation of the dimension texts when those dimensions are vertical. Default is left, which is the ISO standard.</source>
       <translation>Αυτός είναι ο προσανατολισμός των κειμένων διαστάσεων όταν αυτές οι διαστάσεις είναι κάθετες. Η προεπιλογή είναι αριστερά, που είναι και το πρότυπο ISO.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-drafttexts.ui" line="405"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="414"/>
       <source>Left (ISO standard)</source>
       <translation>Αριστερά (πρότυπο ISO)</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-drafttexts.ui" line="410"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="419"/>
       <source>Right</source>
       <translation>Δεξιά</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-drafttexts.ui" line="422"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="431"/>
       <source>Text spacing</source>
       <translation>Αποστάσεις κειμένου</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-drafttexts.ui" line="429"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="438"/>
       <source>The space between the dimension line and the dimension text</source>
       <translation>Το διάστημα μεταξύ της γραμμής διάστασης και του κειμένου διάστασης</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-drafttexts.ui" line="455"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="464"/>
       <source>Show the unit suffix in dimensions</source>
       <translation>Εμφάνιση την κατάληξη μονάδας στις διαστάσεις</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-drafttexts.ui" line="475"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="484"/>
       <source>Override unit</source>
       <translation>Override unit</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-drafttexts.ui" line="495"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="504"/>
       <source>By leaving this field blank, the dimension measurements will be shown in the current unit defined in FreeCAD. By indicating a unit here such as m or cm, you can force new dimensions to be shown in that unit.</source>
       <translation>Αφήνοντας αυτό το πεδίο κενό, οι μετρήσεις διαστάσεων θα εμφανίζονται στην τρέχουσα μονάδα που ορίζεται στο FreeCAD. Υποδεικνύοντας μια μονάδα εδώ, όπως m ή cm, μπορείτε να επιβάλετε την εμφάνιση νέων διαστάσεων σε αυτήν τη μονάδα.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-drafttexts.ui" line="513"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="521"/>
+      <source>Feet separator</source>
+      <translation type="unfinished">Feet separator</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-drafttexts.ui" line="541"/>
+      <source>Optional string to appear between the feet and inches values in dimensions</source>
+      <translation type="unfinished">Optional string to appear between the feet and inches values in dimensions</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-drafttexts.ui" line="559"/>
       <source>ShapeString settings</source>
       <translation>Ρυθμίσεις Πλαισίου Συμβολοσειράς Κειμένου</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-drafttexts.ui" line="521"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="567"/>
       <source>Default ShapeString font file</source>
       <translation>Προεπιλεγμένο αρχείο γραμματοσειράς Πλαισίου Συμβολοσειράς Κειμένου</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-drafttexts.ui" line="534"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="580"/>
       <source>Select a font file</source>
       <translation>Επιλέξτε ένα αρχείο γραμματοσειράς</translation>
     </message>
@@ -3251,7 +3261,7 @@ or try saving to a lower DWG version.</translation>
       <translation type="unfinished">Selected Shapes must define a plane</translation>
     </message>
     <message>
-      <location filename="../../importDXF.py" line="152"/>
+      <location filename="../../importDXF.py" line="153"/>
       <source>The DXF import/export libraries needed by FreeCAD to handle
 the DXF format were not found on this system.
 Please either enable FreeCAD to download these libraries:
@@ -5430,7 +5440,7 @@ The final angle will be the base angle plus this amount.</translation>
   <context>
     <name>Draft</name>
     <message>
-      <location filename="../../importDXF.py" line="135"/>
+      <location filename="../../importDXF.py" line="136"/>
       <source>Download of dxf libraries failed.
 Please install the dxf Library addon manually
 from menu Tools -&gt; Addon Manager</source>
@@ -5724,12 +5734,12 @@ from menu Tools -&gt; Addon Manager</translation>
   <context>
     <name>ImportSVG</name>
     <message>
-      <location filename="../../importSVG.py" line="1815"/>
+      <location filename="../../importSVG.py" line="1821"/>
       <source>Unknown SVG export style, switching to Translated</source>
       <translation type="unfinished">Unknown SVG export style, switching to Translated</translation>
     </message>
     <message>
-      <location filename="../../importSVG.py" line="1835"/>
+      <location filename="../../importSVG.py" line="1841"/>
       <source>The export list contains no object with a valid bounding box</source>
       <translation type="unfinished">The export list contains no object with a valid bounding box</translation>
     </message>

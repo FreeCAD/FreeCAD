@@ -369,26 +369,18 @@ TechDraw::GeometryObjectPtr DrawViewPart::buildGeometryObject(TopoDS_Shape& shap
         go->projectShapeWithPolygonAlgo(shape, viewAxis);
     }
     else {
-        // TODO: we should give the thread its own copy of the shape because the passed one will be
-        // destroyed when the call stack we followed to get here unwinds and the thread could still be
-        // running.
-        // Should we pass a smart pointer instead of const& ??
-    //    bool copyGeometry = true;
-    //    bool copyMesh = false;
-    //    BRepBuilderAPI_Copy copier(shape, copyGeometry, copyMesh);
-    //    copier.Shape();
-
         //projectShape (the HLR process) runs in a separate thread since it can take a long time
         //note that &m_hlrWatcher in the third parameter is not strictly required, but using the
         //4 parameter signature instead of the 3 parameter signature prevents clazy warning:
         //https://github.com/KDE/clazy/blob/1.11/docs/checks/README-connect-3arg-lambda.md
         connectHlrWatcher = QObject::connect(&m_hlrWatcher, &QFutureWatcherBase::finished,
                                              &m_hlrWatcher, [this] { this->onHlrFinished(); });
-#if QT_VERSION < QT_VERSION_CHECK(6,0,0)
-        m_hlrFuture = QtConcurrent::run(go.get(), &GeometryObject::projectShape, shape, viewAxis);
-#else
-        m_hlrFuture = QtConcurrent::run(&GeometryObject::projectShape, go.get(), shape, viewAxis);
-#endif
+
+        // We create a lambda closure to hold a copy of go, shape and viewAxis.
+        // This is important because those variables might be local to the calling
+        // function and might get destructed before the parallel processing finishes.
+        auto lambda = [go, shape, viewAxis]{go->projectShape(shape, viewAxis);};
+        m_hlrFuture = QtConcurrent::run(std::move(lambda));
         m_hlrWatcher.setFuture(m_hlrFuture);
         waitingForHlr(true);
     }
@@ -428,11 +420,9 @@ void DrawViewPart::onHlrFinished(void)
             connectFaceWatcher =
                 QObject::connect(&m_faceWatcher, &QFutureWatcherBase::finished, &m_faceWatcher,
                                  [this] { this->onFacesFinished(); });
-#if QT_VERSION < QT_VERSION_CHECK(6,0,0)
-            m_faceFuture = QtConcurrent::run(this, &DrawViewPart::extractFaces);
-#else
-            m_faceFuture = QtConcurrent::run(&DrawViewPart::extractFaces, this);
-#endif
+
+            auto lambda = [this]{this->extractFaces();};
+            m_faceFuture = QtConcurrent::run(std::move(lambda));
             m_faceWatcher.setFuture(m_faceFuture);
             waitingForFaces(true);
         }

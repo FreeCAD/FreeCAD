@@ -4908,7 +4908,7 @@ Creazione Edificio interrotta.</translation>
       <translation>Il numero di piantoni usati per costruire la recinzione</translation>
     </message>
     <message>
-      <location filename="../../ArchFence.py" line="269"/>
+      <location filename="../../ArchFence.py" line="263"/>
       <source>When true, the fence will be colored like the original post and section.</source>
       <translation>Quando è vero, la recinzione è colorata come il piantone e la sezione originali.</translation>
     </message>
@@ -6289,12 +6289,12 @@ Creazione Edificio interrotta.</translation>
   <context>
     <name>Arch_Fence</name>
     <message>
-      <location filename="../../ArchFence.py" line="388"/>
+      <location filename="../../ArchFence.py" line="382"/>
       <source>Fence</source>
       <translation>Recinzione</translation>
     </message>
     <message>
-      <location filename="../../ArchFence.py" line="391"/>
+      <location filename="../../ArchFence.py" line="385"/>
       <source>Creates a fence object from a selected section, post and path</source>
       <translation>Crea un oggetto recinzione da una sezione, un piantone e un percorso selezionati</translation>
     </message>

@@ -660,6 +660,84 @@ int SketchObject::moveDatumsToEnd()
     return 0;
 }
 
+void SketchObject::reverseAngleConstraintToSupplementary(Constraint* constr, int constNum)
+{
+    std::swap(constr->First, constr->Second);
+    std::swap(constr->FirstPos, constr->SecondPos);
+    constr->FirstPos = (constr->FirstPos == Sketcher::PointPos::start) ? Sketcher::PointPos::end : Sketcher::PointPos::start;
+
+    // Edit the expression if any, else modify constraint value directly
+    if (constraintHasExpression(constNum)) {
+        std::string expression = getConstraintExpression(constNum);
+        setConstraintExpression(constNum, reverseAngleConstraintExpression(expression));
+    }
+    else {
+        double actAngle = constr->getValue();
+        constr->setValue(M_PI - actAngle);
+    }
+}
+
+bool SketchObject::constraintHasExpression(int constNum) const
+{
+    App::ObjectIdentifier path = Constraints.createPath(constNum);
+    auto info = getExpression(path);
+    if (info.expression) {
+        return true;
+    }
+    return false;
+}
+
+std::string SketchObject::getConstraintExpression(int constNum) const
+{
+    App::ObjectIdentifier path = Constraints.createPath(constNum);
+    auto info = getExpression(path);
+    if (info.expression) {
+        std::string expression = info.expression->toString();
+        return expression;
+    }
+
+    return {};
+}
+
+void SketchObject::setConstraintExpression(int constNum, const std::string& newExpression)
+{
+    App::ObjectIdentifier path = Constraints.createPath(constNum);
+    auto info = getExpression(path);
+    if (info.expression) {
+        try {
+            std::shared_ptr<App::Expression> expr(App::Expression::parse(this, newExpression));
+            setExpression(path, expr);
+        }
+        catch (const Base::Exception&) {
+            Base::Console().Error("Failed to set constraint expression.");
+        }
+    }
+}
+
+std::string SketchObject::reverseAngleConstraintExpression(std::string expression)
+{
+    // Check if expression contains units (°, deg, rad)
+    if (expression.find("°") != std::string::npos
+        || expression.find("deg") != std::string::npos
+        || expression.find("rad") != std::string::npos) {
+        if (expression.substr(0, 9) == "180 ° - ") {
+            expression = expression.substr(9, expression.size() - 9);
+        }
+        else {
+            expression = "180 ° - (" + expression + ")";
+        }
+    }
+    else {
+        if (expression.substr(0, 6) == "180 - ") {
+            expression = expression.substr(6, expression.size() - 6);
+        }
+        else {
+            expression = "180 - (" + expression + ")";
+        }
+    }
+    return expression;
+}
+
 int SketchObject::setVirtualSpace(int ConstrId, bool isinvirtualspace)
 {
     // no need to check input data validity as this is an sketchobject managed operation.
@@ -9098,16 +9176,6 @@ int SketchObject::changeConstraintsLocking(bool bLock)
 
     return cntSuccess;
 }
-
-bool SketchObject::constraintHasExpression(int constrid) const
-{
-    App::ObjectIdentifier spath = this->Constraints.createPath(constrid);
-
-    App::PropertyExpressionEngine::ExpressionInfo expr_info = this->getExpression(spath);
-
-    return (expr_info.expression != nullptr);
-}
-
 
 /*!
  * \brief SketchObject::port_reversedExternalArcs finds constraints that link to endpoints of

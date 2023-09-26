@@ -1794,10 +1794,21 @@ protected:
 
     void makeCts_1Circle(bool& selAllowed, Base::Vector2d onSketchPos)
     {
-        //Radius/diameter. Mode changes in createRadiusDiameterConstrain.
-        restartCommand(QT_TRANSLATE_NOOP("Command", "Add Radius constraint"));
-        createRadiusDiameterConstrain(selCircleArc[0].GeoId, onSketchPos);
-        selAllowed = true;
+        const Part::Geometry* geom = Obj->getGeometry(selCircleArc[0].GeoId);
+        Q_UNUSED(geom)
+
+        if (availableConstraint == AvailableConstraint::FIRST
+            || availableConstraint == AvailableConstraint::SECOND) {
+            //Radius/diameter. Mode changes in createRadiusDiameterConstrain.
+            restartCommand(QT_TRANSLATE_NOOP("Command", "Add Radius constraint"));
+            createRadiusDiameterConstrain(selCircleArc[0].GeoId, onSketchPos);
+            selAllowed = true;
+        }
+        if (availableConstraint == AvailableConstraint::THIRD) {
+            restartCommand(QT_TRANSLATE_NOOP("Command", "Add arc angle constraint"));
+            createArcAngleConstrain(selCircleArc[0].GeoId, onSketchPos);
+            availableConstraint = AvailableConstraint::RESET;
+        }
     }
 
     void makeCts_2Circle(bool& selAllowed, Base::Vector2d onSketchPos)
@@ -2037,9 +2048,10 @@ protected:
             radius = circle->getRadius();
         }
 
-        if (isBsplinePole(geom))
+        if (isBsplinePole(geom)) {
             Gui::cmdAppObjectArgs(Obj, "addConstraint(Sketcher.Constraint('Weight',%d,%f)) ",
                 GeoId, radius);
+        }
         else {
             ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher/dimensioning");
             bool dimensioningDiameter = hGrp->GetBool("DimensioningDiameter", true);
@@ -2048,8 +2060,10 @@ protected:
             bool firstCstr = true;
             if (availableConstraint != AvailableConstraint::FIRST) {
                 firstCstr = false;
-                //This way if key is pressed again it goes back to FIRST
-                availableConstraint = AvailableConstraint::RESET;
+                if (!isArcOfCircle(*geom)) {
+                    //This way if key is pressed again it goes back to FIRST
+                    availableConstraint = AvailableConstraint::RESET;
+                }
             }
 
             if ((firstCstr && dimensioningRadius && !dimensioningDiameter) ||
@@ -2206,6 +2220,26 @@ protected:
             if (areBothPointsOrSegmentsFixed(Obj, GeoId1, GeoId2) || constraintCreationMode == Reference) {
                 // it is a constraint on a external line, make it non-driving
 
+                Gui::cmdAppObjectArgs(Obj, "setDriving(%i,%s)", ConStr.size() - 1, "False");
+            }
+            numberOfConstraintsCreated++;
+            moveConstraint(ConStr.size() - 1, onSketchPos);
+        }
+    }
+
+    void createArcAngleConstrain(int GeoId, Base::Vector2d onSketchPos) {
+        const Part::Geometry* geom = Obj->getGeometry(GeoId);
+        if (isArcOfCircle(*geom)) {
+
+            const auto* arc = static_cast<const Part::GeomArcOfCircle*>(geom);
+            double angle = arc->getAngle(/*EmulateCCWXY=*/true);
+
+            Gui::cmdAppObjectArgs(Obj, "addConstraint(Sketcher.Constraint('Angle',%d,%f))",
+                GeoId, angle);
+
+            const std::vector<Sketcher::Constraint*>& ConStr = Obj->Constraints.getValues();
+            if (isPointOrSegmentFixed(Obj, GeoId) || constraintCreationMode == Reference) {
+                // it is a constraint on a external line, make it non-driving
                 Gui::cmdAppObjectArgs(Obj, "setDriving(%i,%s)", ConStr.size() - 1, "False");
             }
             numberOfConstraintsCreated++;
@@ -8772,7 +8806,7 @@ void CmdSketcherConstrainAngle::activated(int iMsg)
                 return;
             }
         }
-        else if (isEdge(GeoId1, PosId1)) {// line angle
+        else if (isEdge(GeoId1, PosId1)) {// line angle or arc angle
             if (GeoId1 < 0 && GeoId1 >= Sketcher::GeoEnum::VAxis) {
                 Gui::TranslatedUserWarning(
                     Obj,
@@ -8812,9 +8846,7 @@ void CmdSketcherConstrainAngle::activated(int iMsg)
             }
             else if (isArcOfCircle(*geom)) {
                 auto arc = static_cast<const Part::GeomArcOfCircle*>(geom);
-                double startangle, endangle;
-                arc->getRange(startangle, endangle, /*EmulateCCWXY=*/true);
-                double angle = endangle - startangle;
+                double angle = arc->getAngle(/*EmulateCCWXY=*/true);
 
                 openCommand(QT_TRANSLATE_NOOP("Command", "Add angle constraint"));
                 Gui::cmdAppObjectArgs(selection[0].getObject(),

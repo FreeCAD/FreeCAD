@@ -1022,7 +1022,7 @@
     </message>
     <message>
         <location filename="../../DlgSettingsFemCcxImp.cpp" line="141"/>
-        <source>The specified executable 
+        <source>The specified executable
 &apos;%1&apos;
  does not exist!
 Specify another file please.</source>
@@ -1120,7 +1120,7 @@ will be merged to make the volume boundaries invisible.</source>
     </message>
     <message>
         <location filename="../../DlgSettingsFemElmerImp.cpp" line="100"/>
-        <source>The specified executable 
+        <source>The specified executable
 &apos;%1&apos;
  does not exist!
 Specify another file please.</source>
@@ -1231,7 +1231,7 @@ the constraint or material is applied.</source>
     </message>
     <message>
         <location filename="../../DlgSettingsFemGeneral.ui" line="72"/>
-        <source>Let the application manage (create, delete) the working directories for all solver. Use temporary directories.</source>
+        <source>Let the application manage (create, delete) the working directories for all solvers. Use temporary directories.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1368,7 +1368,7 @@ adding an analysis container</source>
     </message>
     <message>
         <location filename="../../DlgSettingsFemGmshImp.cpp" line="77"/>
-        <source>The specified executable 
+        <source>The specified executable
 &apos;%1&apos;
  does not exist!
 Specify another file please.</source>
@@ -1546,7 +1546,7 @@ If unchecked, they will be sorted by their name.</source>
     </message>
     <message>
         <location filename="../../DlgSettingsFemMystranImp.cpp" line="79"/>
-        <source>The specified executable 
+        <source>The specified executable
 &apos;%1&apos;
  does not exist!
 Specify another file please.</source>
@@ -1646,7 +1646,7 @@ that &quot;MAXKOI&quot; needs to be increased.</source>
     </message>
     <message>
         <location filename="../../DlgSettingsFemZ88Imp.cpp" line="102"/>
-        <source>The specified z88r executable 
+        <source>The specified z88r executable
 &apos;%1&apos;
  does not exist!
 Specify another file please.</source>

@@ -20,6 +20,10 @@
  *                                                                         *
  ***************************************************************************/
 
+#ifdef _MSC_VER
+#pragma warning(disable : 4251)
+#endif
+
 #include <algorithm>
 #define DEBUG_DERIVS 0
 #if DEBUG_DERIVS

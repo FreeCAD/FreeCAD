@@ -30,33 +30,37 @@
 class Ui_TaskCreateNodeSet;
 class SoEventCallback;
 
-namespace Base {
+namespace Base
+{
 class Polygon2d;
 }
-namespace App {
+namespace App
+{
 class Property;
 }
 
-namespace Gui {
+namespace Gui
+{
 class ViewProvider;
 class ViewVolumeProjection;
-}
+}  // namespace Gui
 
-namespace FemGui {
+namespace FemGui
+{
 
 class ViewProviderFemMesh;
 
 
-class TaskCreateNodeSet : public Gui::TaskView::TaskBox, public Gui::SelectionObserver
+class TaskCreateNodeSet: public Gui::TaskView::TaskBox, public Gui::SelectionObserver
 {
     Q_OBJECT
 
 public:
-    explicit TaskCreateNodeSet(Fem::FemSetNodesObject *pcObject,QWidget *parent = nullptr);
+    explicit TaskCreateNodeSet(Fem::FemSetNodesObject* pcObject, QWidget* parent = nullptr);
     ~TaskCreateNodeSet() override;
 
     std::set<long> tempSet;
-    ViewProviderFemMesh * MeshViewProvider;
+    ViewProviderFemMesh* MeshViewProvider;
 
 private Q_SLOTS:
     void Poly();
@@ -64,19 +68,23 @@ private Q_SLOTS:
     void SwitchMethod(int Value);
 
 protected:
-    Fem::FemSetNodesObject *pcObject;
-    static void DefineNodesCallback(void * ud, SoEventCallback * n);
-    void DefineNodes(const Base::Polygon2d &polygon,const Gui::ViewVolumeProjection &proj,bool);
+    Fem::FemSetNodesObject* pcObject;
+    static void DefineNodesCallback(void* ud, SoEventCallback* n);
+    void DefineNodes(const Base::Polygon2d& polygon, const Gui::ViewVolumeProjection& proj, bool);
 
 protected:
     void onSelectionChanged(const Gui::SelectionChanges& msg) override;
-    enum selectionModes { none, PickElement} selectionMode;
+    enum selectionModes
+    {
+        none,
+        PickElement
+    } selectionMode;
 
 private:
     QWidget* proxy;
     std::unique_ptr<Ui_TaskCreateNodeSet> ui;
 };
 
-} //namespace PartDesignGui
+}  // namespace FemGui
 
-#endif // GUI_TASKVIEW_TaskCreateNodeSet_H
+#endif  // GUI_TASKVIEW_TaskCreateNodeSet_H

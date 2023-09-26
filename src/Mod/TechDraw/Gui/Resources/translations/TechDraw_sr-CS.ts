@@ -2141,8 +2141,8 @@
       <translation>Napravi složeni presek</translation>
     </message>
     <message>
-      <location filename="../../TaskComplexSection.cpp" line="643"/>
-      <location filename="../../TaskSectionView.cpp" line="569"/>
+      <location filename="../../TaskComplexSection.cpp" line="644"/>
+      <location filename="../../TaskSectionView.cpp" line="577"/>
       <source>Edit SectionView</source>
       <translation>Uredi pun presek</translation>
     </message>
@@ -3522,8 +3522,8 @@
       <translation>Pravac pogleda u koordinatama baznog pogleda</translation>
     </message>
     <message>
-      <location filename="../../TaskComplexSection.cpp" line="692"/>
-      <location filename="../../TaskSectionView.cpp" line="618"/>
+      <location filename="../../TaskComplexSection.cpp" line="704"/>
+      <location filename="../../TaskSectionView.cpp" line="638"/>
       <source>Operation Failed</source>
       <translation>Operacija nije izvršena</translation>
     </message>
@@ -3830,7 +3830,7 @@ it has a weld symbol that would become broken.</source>
 ima simbol zavarivanja koji bi se pokvario.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderViewPart.cpp" line="319"/>
+      <location filename="../../ViewProviderViewPart.cpp" line="331"/>
       <source>You cannot delete this view because it has one or more dependent views that would become broken.</source>
       <translation>Ne možeš obrisati ovaj pogled jer ima jedan ili više zavisnih objekata koji će postati neispravni.</translation>
     </message>
@@ -3844,7 +3844,7 @@ ima simbol zavarivanja koji bi se pokvario.</translation>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="165"/>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="173"/>
       <location filename="../../ViewProviderTemplate.cpp" line="205"/>
-      <location filename="../../ViewProviderViewPart.cpp" line="322"/>
+      <location filename="../../ViewProviderViewPart.cpp" line="334"/>
       <location filename="../../ViewProviderWeld.cpp" line="145"/>
       <source>Object dependencies</source>
       <translation>Međuzavisnosti objekata</translation>
@@ -5600,7 +5600,7 @@ Da li želiš da nastaviš?</translation>
     <message>
       <location filename="../../MDIViewPage.cpp" line="537"/>
       <source>Save PDF file</source>
-      <translation type="unfinished">Save PDF file</translation>
+      <translation>Sačuvaj PDF datoteku</translation>
     </message>
     <message>
       <location filename="../../MDIViewPage.cpp" line="538"/>
@@ -6094,11 +6094,12 @@ Da li želiš da nastaviš?</translation>
     </message>
     <message>
       <location filename="../../TaskComplexSection.cpp" line="559"/>
+      <location filename="../../TaskComplexSection.cpp" line="692"/>
       <source>ComplexSection</source>
       <translation>Složeni presek</translation>
     </message>
     <message>
-      <location filename="../../TaskComplexSection.cpp" line="691"/>
+      <location filename="../../TaskComplexSection.cpp" line="703"/>
       <source>Can not continue. Object * %1 or %2 not found.</source>
       <translation>Ne mogu da nastavim. Objekat * %1 ili %2 nije pronađen.</translation>
     </message>
@@ -7869,7 +7870,7 @@ using the given X/Y Spacing</source>
       <translation>Nema šta da se primeni. Još nije odabran pravac preseka</translation>
     </message>
     <message>
-      <location filename="../../TaskSectionView.cpp" line="617"/>
+      <location filename="../../TaskSectionView.cpp" line="637"/>
       <source>Can not continue. Object * %1 or %2 not found.</source>
       <translation>Ne mogu da nastavim. Objekat * %1 ili %2 nije pronađen.</translation>
     </message>

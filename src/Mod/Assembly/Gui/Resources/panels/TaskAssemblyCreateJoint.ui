@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>TaskAssemblyCreateJoint</class>
+ <widget class="QWidget" name="TaskAssemblyCreateJoint">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>376</width>
+    <height>387</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Create Joint</string>
+  </property>
+  <layout class="QGridLayout" name="gridLayout">
+   <item row="0" column="0">
+    <widget class="QComboBox" name="jointType"/>
+   </item>
+   <item row="1" column="0">
+    <widget class="QListWidget" name="featureList"/>
+   </item>
+   </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

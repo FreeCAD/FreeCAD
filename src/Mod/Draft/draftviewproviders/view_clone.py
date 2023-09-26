@@ -38,10 +38,10 @@ class ViewProviderClone:
     def getIcon(self):
         return ":/icons/Draft_Clone.svg"
 
-    def __getstate__(self):
+    def dumps(self):
         return None
 
-    def __setstate__(self, state):
+    def loads(self, state):
         return None
 
     def getDisplayModes(self, vobj):

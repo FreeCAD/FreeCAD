@@ -180,6 +180,13 @@ public:
             "string = removeSvgTags(string) -- Removes the opening and closing svg tags\n"
             "and other metatags from a svg code, making it embeddable"
         );
+        add_varargs_method("exportSVGEdges", &Module::exportSVGEdges,
+            "string = exportSVGEdges(TopoShape) -- export an SVG string of the shape\n"
+        );
+        add_varargs_method("build3dCurves", &Module::build3dCurves,
+            "TopoShape = build3dCurves(TopoShape) -- convert the edges to a 3D curve\n"
+	    "which is useful for shapes obtained Part.HLRBRep.Algo"
+        );
         initialize("This is a module for making drawings"); // register with Python
     }
     ~Module() override {}
@@ -1224,6 +1231,35 @@ private:
         return result;
     }
 
+    Py::Object exportSVGEdges(const Py::Tuple& args)
+    {
+        PyObject *pcObjShape(nullptr);
+
+        if (!PyArg_ParseTuple(args.ptr(), "O!",
+			      &(TopoShapePy::Type), &pcObjShape))
+            throw Py::Exception();
+
+        TopoShapePy* pShape = static_cast<TopoShapePy*>(pcObjShape);
+	SVGOutput output;
+	Py::String result(output.exportEdges(pShape->getTopoShapePtr()->getShape()));
+
+	return result;
+    }
+
+    Py::Object build3dCurves(const Py::Tuple& args)
+    {
+        PyObject *pcObjShape(nullptr);
+
+        if (!PyArg_ParseTuple(args.ptr(), "O!",
+			      &(TopoShapePy::Type), &pcObjShape))
+            throw Py::Exception();
+
+        TopoShapePy* pShape = static_cast<TopoShapePy*>(pcObjShape);
+	const TopoShape& nShape =
+	    TechDraw::build3dCurves(pShape->getTopoShapePtr()->getShape());
+	
+	return Py::Object(new TopoShapePy(new TopoShape(nShape)));
+    }
  };
 
  PyObject* initModule()

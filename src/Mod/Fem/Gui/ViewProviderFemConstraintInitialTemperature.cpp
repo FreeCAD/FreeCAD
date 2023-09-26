@@ -25,16 +25,17 @@
 
 #include "PreCompiled.h"
 
-#include <Gui/Control.h>
 #include "Mod/Fem/App/FemConstraintInitialTemperature.h"
+#include <Gui/Control.h>
 
-#include "ViewProviderFemConstraintInitialTemperature.h"
 #include "TaskFemConstraintInitialTemperature.h"
+#include "ViewProviderFemConstraintInitialTemperature.h"
 
 
 using namespace FemGui;
 
-PROPERTY_SOURCE(FemGui::ViewProviderFemConstraintInitialTemperature, FemGui::ViewProviderFemConstraint)
+PROPERTY_SOURCE(FemGui::ViewProviderFemConstraintInitialTemperature,
+                FemGui::ViewProviderFemConstraint)
 
 ViewProviderFemConstraintInitialTemperature::ViewProviderFemConstraintInitialTemperature()
 {
@@ -42,25 +43,28 @@ ViewProviderFemConstraintInitialTemperature::ViewProviderFemConstraintInitialTem
     ADD_PROPERTY(FaceColor, (0.2f, 0.3f, 0.2f));
 }
 
-ViewProviderFemConstraintInitialTemperature::~ViewProviderFemConstraintInitialTemperature() = default;
+ViewProviderFemConstraintInitialTemperature::~ViewProviderFemConstraintInitialTemperature() =
+    default;
 
-//FIXME setEdit needs a careful review
+// FIXME setEdit needs a careful review
 bool ViewProviderFemConstraintInitialTemperature::setEdit(int ModNum)
 {
     if (ModNum == ViewProvider::Default) {
         // When double-clicking on the item for this constraint the
         // object unsets and sets its edit mode without closing
         // the task panel
-        Gui::TaskView::TaskDialog *dlg = Gui::Control().activeDialog();
-        TaskDlgFemConstraintInitialTemperature *constrDlg =
-            qobject_cast<TaskDlgFemConstraintInitialTemperature *>(dlg);
-        if (constrDlg && constrDlg->getConstraintView() != this)
-            constrDlg = nullptr; // another constraint left open its task panel
+        Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog();
+        TaskDlgFemConstraintInitialTemperature* constrDlg =
+            qobject_cast<TaskDlgFemConstraintInitialTemperature*>(dlg);
+        if (constrDlg && constrDlg->getConstraintView() != this) {
+            constrDlg = nullptr;  // another constraint left open its task panel
+        }
         if (dlg && !constrDlg) {
             if (constraintDialog) {
                 // Ignore the request to open another dialog
                 return false;
-            } else {
+            }
+            else {
                 constraintDialog = new TaskFemConstraintInitialTemperature(this);
                 return true;
             }
@@ -70,14 +74,16 @@ bool ViewProviderFemConstraintInitialTemperature::setEdit(int ModNum)
         Gui::Selection().clearSelection();
 
         // start the edit dialog
-        if (constrDlg)
+        if (constrDlg) {
             Gui::Control().showDialog(constrDlg);
-        else
+        }
+        else {
             Gui::Control().showDialog(new TaskDlgFemConstraintInitialTemperature(this));
+        }
         return true;
     }
     else {
-        return ViewProviderDocumentObject::setEdit(ModNum); // clazy:exclude=skipped-base-method
+        return ViewProviderDocumentObject::setEdit(ModNum);  // clazy:exclude=skipped-base-method
     }
 }
 

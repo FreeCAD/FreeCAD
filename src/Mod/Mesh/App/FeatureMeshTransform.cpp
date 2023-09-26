@@ -41,19 +41,18 @@ Transform::Transform()
 
 App::DocumentObjectExecReturn* Transform::execute()
 {
-/*
-    Feature* pcFirst = dynamic_cast<Feature*>(Source.getValue());
-    if (!pcFirst || pcFirst->isError())
-        return new App::DocumentObjectExecReturn("Unknown Error");
+    /*
+        Feature* pcFirst = dynamic_cast<Feature*>(Source.getValue());
+        if (!pcFirst || pcFirst->isError())
+            return new App::DocumentObjectExecReturn("Unknown Error");
 
-    Matrix4D Matrix = Position.getValue();
+        Matrix4D Matrix = Position.getValue();
 
 
-    MeshCore::MeshKernel* pcKernel =
-        new MeshCore::MeshKernel(pcFirst->Mesh.getValue());// Result Meshkernel
-    pcKernel->Transform(Matrix);
-    Mesh.setValue(pcKernel);
-*/
+        MeshCore::MeshKernel* pcKernel =
+            new MeshCore::MeshKernel(pcFirst->Mesh.getValue());// Result Meshkernel
+        pcKernel->Transform(Matrix);
+        Mesh.setValue(pcKernel);
+    */
     return App::DocumentObject::StdReturn;
 }
-

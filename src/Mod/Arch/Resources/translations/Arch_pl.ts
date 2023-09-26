@@ -4932,7 +4932,7 @@ Tworzenie budynku zostało przerwane.</translation>
       <translation>Liczba słupków użytych do budowy ogrodzenia</translation>
     </message>
     <message>
-      <location filename="../../ArchFence.py" line="269"/>
+      <location filename="../../ArchFence.py" line="263"/>
       <source>When true, the fence will be colored like the original post and section.</source>
       <translation>Jeśli to prawda, ogrodzenie będzie pokolorowane jak oryginalny słupek i przekrój.</translation>
     </message>
@@ -6313,12 +6313,12 @@ Tworzenie budynku zostało przerwane.</translation>
   <context>
     <name>Arch_Fence</name>
     <message>
-      <location filename="../../ArchFence.py" line="388"/>
+      <location filename="../../ArchFence.py" line="382"/>
       <source>Fence</source>
       <translation>Ogrodzenie</translation>
     </message>
     <message>
-      <location filename="../../ArchFence.py" line="391"/>
+      <location filename="../../ArchFence.py" line="385"/>
       <source>Creates a fence object from a selected section, post and path</source>
       <translation>Tworzy obiekt ogrodzenia z wybranego przekroju, słupka i ścieżki</translation>
     </message>

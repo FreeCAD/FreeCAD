@@ -1023,7 +1023,7 @@
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcxImp.cpp" line="141"/>
-      <source>The specified executable 
+      <source>The specified executable
 '%1'
  does not exist!
 Specify another file please.</source>
@@ -1127,7 +1127,7 @@ will be merged to make the volume boundaries invisible.</source>
     </message>
     <message>
       <location filename="../../DlgSettingsFemElmerImp.cpp" line="100"/>
-      <source>The specified executable 
+      <source>The specified executable
 '%1'
  does not exist!
 Specify another file please.</source>
@@ -1255,8 +1255,8 @@ the constraint or material is applied.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="72"/>
-      <source>Let the application manage (create, delete) the working directories for all solver. Use temporary directories.</source>
-      <translation>Neka aplikacija upravlja (stvara, briše) radne direktorije za sve rješavače. Koristit će se privremeni direktoriji.</translation>
+      <source>Let the application manage (create, delete) the working directories for all solvers. Use temporary directories.</source>
+      <translation type="unfinished">Let the application manage (create, delete) the working directories for all solvers. Use temporary directories.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="98"/>
@@ -1321,7 +1321,7 @@ dok ne budu prepisani novim pokretanjem rješavača</translation>
       <location filename="../../DlgSettingsFemGeneral.ui" line="331"/>
       <source>The results dialog will be opened
 with the last used dialog settings</source>
-      <translation>Rezultati će se otvoriti u dijalogu 
+      <translation>Rezultati će se otvoriti u dijalogu
 sa posljednjim korištenim postavkama dijaloga</translation>
     </message>
     <message>
@@ -1355,7 +1355,7 @@ when the results dialog is opened</translation>
       <location filename="../../DlgSettingsFemGeneral.ui" line="403"/>
       <source>Default solver to be added when
 adding an analysis container</source>
-      <translation>Zadani alat za rješavanje koji će biti dodan kada 
+      <translation>Zadani alat za rješavanje koji će biti dodan kada
 se dodaje kontejner za analizu</translation>
     </message>
     <message>
@@ -1398,7 +1398,7 @@ se dodaje kontejner za analizu</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGmshImp.cpp" line="77"/>
-      <source>The specified executable 
+      <source>The specified executable
 '%1'
  does not exist!
 Specify another file please.</source>
@@ -1461,7 +1461,7 @@ Objekt FreeCAD rezultata: Uvezeni podaci bit će pretvoreni u FreeCAD FEM objekt
     <message>
       <location filename="../../DlgSettingsFemInOutVtk.ui" line="76"/>
       <source>FreeCAD result object</source>
-      <translation>FreeCAD Objekt rezultata 
+      <translation>FreeCAD Objekt rezultata
 </translation>
     </message>
   </context>
@@ -1585,7 +1585,7 @@ Ako nije označeno, one će biti sortirane po imenima.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemMystranImp.cpp" line="79"/>
-      <source>The specified executable 
+      <source>The specified executable
 '%1'
  does not exist!
 Specify another file please.</source>
@@ -1664,8 +1664,8 @@ You might need to increase this when using the
 Cholesky solver and you get the error message
 that "MAXGS" needs to be increased.</source>
       <translation>Maksimalan broj mjesta u matrici krutosti.
-Možda ćete to morati povećati kada koristite 
-Choleskyov rješavač i dobijete poruku o pogrešci 
+Možda ćete to morati povećati kada koristite
+Choleskyov rješavač i dobijete poruku o pogrešci
 da se "MAXGS" mora povećati."</translation>
     </message>
     <message>
@@ -1682,12 +1682,12 @@ da se "MAXGS" mora povećati."</translation>
 You might need to increase this when using an
 iterative solver and you get the error message
 that "MAXKOI" needs to be increased.</source>
-      <translation>Maksimalan broj mjesta u vektoru koincidencije. 
+      <translation>Maksimalan broj mjesta u vektoru koincidencije.
 (broj čvorova po elementu množeno sa
  broj konačnih elementa)
 
-Možda ćete to morati povećati kada koristite 
-iterativni rješavač i dobijete poruku o pogrešci 
+Možda ćete to morati povećati kada koristite
+iterativni rješavač i dobijete poruku o pogrešci
 da se "MAXKOI" mora povećati</translation>
     </message>
     <message>
@@ -1697,7 +1697,7 @@ da se "MAXKOI" mora povećati</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemZ88Imp.cpp" line="102"/>
-      <source>The specified z88r executable 
+      <source>The specified z88r executable
 '%1'
  does not exist!
 Specify another file please.</source>
@@ -3134,7 +3134,7 @@ Navedi drugu datoteku.</translation>
       <location filename="../ui/ElectrostaticPotential.ui" line="104"/>
       <source>Imaginary part is only used for equations
 with a harmonic/oscillating driving force</source>
-      <translation>Imaginarni dio se koristi samo za jednadžbe 
+      <translation>Imaginarni dio se koristi samo za jednadžbe
 s harmoničnim/oscilirajućim pogonskim silom.</translation>
     </message>
     <message>
@@ -3192,14 +3192,14 @@ s harmoničnim/oscilirajućim pogonskim silom.</translation>
       <location filename="../ui/ElectrostaticPotential.ui" line="247"/>
       <source>Real part of potential x-component
 Note: has no effect if a solid was selected</source>
-      <translation>Realni dio potencijalne x-komponente 
+      <translation>Realni dio potencijalne x-komponente
 Napomena: nema utjecaja ako je odabrano volumensko tijelo</translation>
     </message>
     <message>
       <location filename="../ui/ElectrostaticPotential.ui" line="292"/>
       <source>Imaginary part of potential x-component
 Note: has no effect if a solid was selected</source>
-      <translation>Imaginarni dio potencijalne x-komponente 
+      <translation>Imaginarni dio potencijalne x-komponente
 Napomena: nema utjecaja ako je odabrano volumensko tijelo</translation>
     </message>
     <message>
@@ -3213,14 +3213,14 @@ Napomena: nema utjecaja ako je odabrano volumensko tijelo</translation>
       <location filename="../ui/ElectrostaticPotential.ui" line="347"/>
       <source>Real part of potential y-component
 Note: has no effect if a solid was selected</source>
-      <translation>Realni dio potencijalne -komponente 
+      <translation>Realni dio potencijalne -komponente
 Napomena: nema utjecaja ako je odabrano volumensko tijelo</translation>
     </message>
     <message>
       <location filename="../ui/ElectrostaticPotential.ui" line="392"/>
       <source>Imaginary part of potential y-component
 Note: has no effect if a solid was selected</source>
-      <translation>Imaginarni dio potencijalne y-komponente 
+      <translation>Imaginarni dio potencijalne y-komponente
 Napomena: nema utjecaja ako je odabrano volumensko tijelo</translation>
     </message>
     <message>
@@ -3234,14 +3234,14 @@ Napomena: nema utjecaja ako je odabrano volumensko tijelo</translation>
       <location filename="../ui/ElectrostaticPotential.ui" line="447"/>
       <source>Real part of potential z-component
 Note: has no effect if a solid was selected</source>
-      <translation>Realni dio potencijalne z-komponente 
+      <translation>Realni dio potencijalne z-komponente
 Napomena: nema utjecaja ako je odabrano volumensko tijelo</translation>
     </message>
     <message>
       <location filename="../ui/ElectrostaticPotential.ui" line="492"/>
       <source>Imaginary part of potential z-component
 Note: has no effect if a solid was selected</source>
-      <translation>Imaginarni dio potencijalne z-komponente 
+      <translation>Imaginarni dio potencijalne z-komponente
 Napomena: nema utjecaja ako je odabrano volumensko tijelo</translation>
     </message>
     <message>
@@ -4394,9 +4394,9 @@ for the Elmer solver</source>
 surface force (and thus displacement)
 generated by the flow
 (Option only applies for Elmer solver)</source>
-      <translation>Rješavanje protoka se koristi 
+      <translation>Rješavanje protoka se koristi
 za određivanje površinske sile
- (i time pomaka) generirane strujom 
+ (i time pomaka) generirane strujom
 (Opcija vrijedi samo za Elmerov rješavač)</translation>
     </message>
     <message>
@@ -4499,7 +4499,7 @@ za određivanje površinske sile
       <location filename="../../TaskFemConstraintFluidBoundary.ui" line="273"/>
       <source>The direction of the edge or the direction of the
 normal vector of the face is used as direction</source>
-      <translation>Smjer ruba ili smjer normalnog 
+      <translation>Smjer ruba ili smjer normalnog
 vektora površine koristi se kao smjer</translation>
     </message>
     <message>
@@ -4594,7 +4594,7 @@ vektora površine koristi se kao smjer</translation>
       <location filename="../../TaskFemConstraintForce.ui" line="121"/>
       <source>The direction of the edge or the direction of the
 normal vector of the face is used as direction</source>
-      <translation>Smjer ruba ili smjer normalnog 
+      <translation>Smjer ruba ili smjer normalnog
 vektora površine koristi se kao smjer</translation>
     </message>
     <message>
@@ -4757,7 +4757,7 @@ vektora površine koristi se kao smjer</translation>
       <location filename="../../TaskFemConstraintSpring.ui" line="116"/>
       <source>What stiffness should be
 used for the Elmer solver</source>
-      <translation>Koja krutost bi se trebala 
+      <translation>Koja krutost bi se trebala
 koristiti za Elmerov rješavač</translation>
     </message>
     <message>
@@ -5524,7 +5524,7 @@ koristiti za Elmerov rješavač</translation>
       <location filename="../../../femcommands/commands.py" line="475"/>
       <source>Creates a FEM equation for
  elasticity (stress)</source>
-      <translation>Stvara FEM jednadžbe za 
+      <translation>Stvara FEM jednadžbe za
  elastičnost (naprezanje)</translation>
     </message>
   </context>

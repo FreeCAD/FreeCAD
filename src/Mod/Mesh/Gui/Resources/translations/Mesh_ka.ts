@@ -1348,12 +1348,12 @@
     <message>
       <location filename="../../DlgSettingsImportExport.ui" line="82"/>
       <source>Always export mesh as model type in 3MF format even if not a solid</source>
-      <translation type="unfinished">Always export mesh as model type in 3MF format even if not a solid</translation>
+      <translation>3MF ფორმატში ბადის მოდელის ტიპად გატანა მაშინაც კი, როცა ის მყარი სხეული არაა</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsImportExport.ui" line="85"/>
       <source>Export 3MF files as model type</source>
-      <translation type="unfinished">Export 3MF files as model type</translation>
+      <translation>3MF ფაილების გატანა მოდელის ტიპად</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsImportExport.ui" line="114"/>
@@ -1369,7 +1369,7 @@
       <location filename="../../DlgSettingsImportExportImp.cpp" line="38"/>
       <source>This parameter indicates whether ZIP compression
 is used when writing a file in AMF format</source>
-      <translation>ეს პარამეტრი განსაზღვრავს ჩართულია თუ არა 
+      <translation>ეს პარამეტრი განსაზღვრავს ჩართულია თუ არა
 ZIP კომპრესია AMF ფაილის ფორმატის ჩაწერის დროს</translation>
     </message>
   </context>

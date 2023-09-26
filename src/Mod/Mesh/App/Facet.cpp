@@ -22,7 +22,7 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <sstream>
+#include <sstream>
 #endif
 
 #include "Facet.h"
@@ -32,14 +32,15 @@
 using namespace Mesh;
 
 Facet::Facet(const MeshCore::MeshFacet& face, const MeshObject* obj, MeshCore::FacetIndex index)
-  : Index(index), Mesh(obj)
+    : Index(index)
+    , Mesh(obj)
 {
-    for (int i=0; i<3; i++) {
+    for (int i = 0; i < 3; i++) {
         PIndex[i] = face._aulPoints[i];
         NIndex[i] = face._aulNeighbours[i];
     }
     if (Mesh.isValid() && index != MeshCore::FACET_INDEX_MAX) {
-        for (int i=0; i<3; i++) {
+        for (int i = 0; i < 3; i++) {
             Base::Vector3d vert = Mesh->getPoint(PIndex[i]);
             _aclPoints[i].Set((float)vert.x, (float)vert.y, (float)vert.z);
         }
@@ -47,9 +48,11 @@ Facet::Facet(const MeshCore::MeshFacet& face, const MeshObject* obj, MeshCore::F
 }
 
 Facet::Facet(const Facet& f)
-  : MeshCore::MeshGeomFacet(f), Index(f.Index), Mesh(f.Mesh)
+    : MeshCore::MeshGeomFacet(f)
+    , Index(f.Index)
+    , Mesh(f.Mesh)
 {
-    for (int i=0; i<3; i++) {
+    for (int i = 0; i < 3; i++) {
         PIndex[i] = f.PIndex[i];
         NIndex[i] = f.NIndex[i];
     }
@@ -57,12 +60,12 @@ Facet::Facet(const Facet& f)
 
 Facet::~Facet() = default;
 
-void Facet::operator = (const Facet& f)
+void Facet::operator=(const Facet& f)
 {
-    MeshCore::MeshGeomFacet::operator = (f);
-    Mesh  = f.Mesh;
+    MeshCore::MeshGeomFacet::operator=(f);
+    Mesh = f.Mesh;
     Index = f.Index;
-    for (int i=0; i<3; i++) {
+    for (int i = 0; i < 3; i++) {
         PIndex[i] = f.PIndex[i];
         NIndex[i] = f.NIndex[i];
     }

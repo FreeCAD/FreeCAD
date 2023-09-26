@@ -11,12 +11,12 @@
     <message>
       <location filename="../../Command.cpp" line="180"/>
       <source>Bearing constraint</source>
-      <translation type="unfinished">Bearing constraint</translation>
+      <translation>Kojinete-murrizketa</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="181"/>
       <source>Creates a bearing constraint</source>
-      <translation type="unfinished">Creates a bearing constraint</translation>
+      <translation>Kojinete-murrizketa sortzen du</translation>
     </message>
   </context>
   <context>
@@ -29,12 +29,12 @@
     <message>
       <location filename="../../Command.cpp" line="225"/>
       <source>Contact constraint</source>
-      <translation type="unfinished">Contact constraint</translation>
+      <translation>Kontaktu-murrizketa</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="226"/>
       <source>Creates a contact constraint between faces</source>
-      <translation type="unfinished">Creates a contact constraint between faces</translation>
+      <translation>Aurpegien arteko kontaktu-murrizketa sortzen du</translation>
     </message>
   </context>
   <context>
@@ -52,7 +52,7 @@
     <message>
       <location filename="../../Command.cpp" line="280"/>
       <source>Creates a displacement boundary condition for a geometric entity</source>
-      <translation type="unfinished">Creates a displacement boundary condition for a geometric entity</translation>
+      <translation>Desplazamenduaren muga-baldintza bat sortzen du entitate geometriko baterako</translation>
     </message>
   </context>
   <context>
@@ -70,7 +70,7 @@
     <message>
       <location filename="../../Command.cpp" line="328"/>
       <source>Creates a fixed boundary condition for a geometric entity</source>
-      <translation type="unfinished">Creates a fixed boundary condition for a geometric entity</translation>
+      <translation>Muga finkoaren baldintza bat sortzen du entitate geometriko baterako</translation>
     </message>
   </context>
   <context>
@@ -83,12 +83,12 @@
     <message>
       <location filename="../../Command.cpp" line="374"/>
       <source>Fluid boundary condition</source>
-      <translation>Jariakin-mugen baldintza</translation>
+      <translation>Jariakinen muga-baldintza</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="376"/>
       <source>Create fluid boundary condition on face entity for Computional Fluid Dynamics</source>
-      <translation>Sortu jariakin-mugen baldintza aurpegi-entitatean, Ordenagailu bidezko Jariakinen Dinamikarako</translation>
+      <translation>Sortu jariakinen muga-baldintza aurpegi-entitatean, Ordenagailu bidezko Jariakinen Dinamikarako</translation>
     </message>
   </context>
   <context>
@@ -106,7 +106,7 @@
     <message>
       <location filename="../../Command.cpp" line="424"/>
       <source>Creates a force load applied to a geometric entity</source>
-      <translation type="unfinished">Creates a force load applied to a geometric entity</translation>
+      <translation>Entitate geometriko bati aplikatutako indar-karga bat sortzen du</translation>
     </message>
   </context>
   <context>
@@ -119,12 +119,12 @@
     <message>
       <location filename="../../Command.cpp" line="476"/>
       <source>Gear constraint</source>
-      <translation type="unfinished">Gear constraint</translation>
+      <translation>Engranaje-murrizketa</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="477"/>
       <source>Creates a gear constraint</source>
-      <translation type="unfinished">Creates a gear constraint</translation>
+      <translation>Engranaje-murrizketa sortzen du</translation>
     </message>
   </context>
   <context>
@@ -137,12 +137,12 @@
     <message>
       <location filename="../../Command.cpp" line="521"/>
       <source>Heat flux load</source>
-      <translation type="unfinished">Heat flux load</translation>
+      <translation>Bero-fluxuaren karga</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="522"/>
       <source>Creates a heat flux load acting on a face</source>
-      <translation type="unfinished">Creates a heat flux load acting on a face</translation>
+      <translation>Aurpegi batean eragiten duen bero-fluxuaren karga bat sortzen du</translation>
     </message>
   </context>
   <context>
@@ -155,12 +155,12 @@
     <message>
       <location filename="../../Command.cpp" line="575"/>
       <source>Initial temperature</source>
-      <translation type="unfinished">Initial temperature</translation>
+      <translation>Hasierako tenperatura</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="576"/>
       <source>Creates an initial temperature acting on a body</source>
-      <translation type="unfinished">Creates an initial temperature acting on a body</translation>
+      <translation>Hasierako tenperatura bat sortzen du gorputz baterako</translation>
     </message>
   </context>
   <context>
@@ -173,12 +173,12 @@
     <message>
       <location filename="../../Command.cpp" line="623"/>
       <source>Plane multi-point constraint</source>
-      <translation type="unfinished">Plane multi-point constraint</translation>
+      <translation>Planoaren puntu anitzeko murrizketa</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="624"/>
       <source>Creates a plane multi-point constraint for a face</source>
-      <translation type="unfinished">Creates a plane multi-point constraint for a face</translation>
+      <translation>Planoaren puntu anitzeko murrizketa bat sortzen du aurpegi baterako</translation>
     </message>
   </context>
   <context>
@@ -196,7 +196,7 @@
     <message>
       <location filename="../../Command.cpp" line="672"/>
       <source>Creates a pressure load acting on a face</source>
-      <translation type="unfinished">Creates a pressure load acting on a face</translation>
+      <translation>Aurpegi batean eragiten duen presio-karga bat sortzen du</translation>
     </message>
   </context>
   <context>
@@ -209,12 +209,12 @@
     <message>
       <location filename="../../Command.cpp" line="778"/>
       <source>Pulley constraint</source>
-      <translation type="unfinished">Pulley constraint</translation>
+      <translation>Polea-murrizketa</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="779"/>
       <source>Creates a pulley constraint</source>
-      <translation type="unfinished">Creates a pulley constraint</translation>
+      <translation>Polea-murrizketa sortzen du</translation>
     </message>
   </context>
   <context>
@@ -227,12 +227,12 @@
     <message>
       <location filename="../../Command.cpp" line="725"/>
       <source>Spring</source>
-      <translation type="unfinished">Spring</translation>
+      <translation>Malgukia</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="726"/>
       <source>Creates a spring acting on a face</source>
-      <translation type="unfinished">Creates a spring acting on a face</translation>
+      <translation>Aurpegi batean eragiten duen malguki bat sortzen du</translation>
     </message>
   </context>
   <context>
@@ -250,7 +250,7 @@
     <message>
       <location filename="../../Command.cpp" line="829"/>
       <source>Creates a temperature/concentrated heat flux load acting on a face</source>
-      <translation type="unfinished">Creates a temperature/concentrated heat flux load acting on a face</translation>
+      <translation>Aurpegi batean eragiten duen tenperaturaren/bero-fluxu kontzentratuaren karga bat sortzen du</translation>
     </message>
   </context>
   <context>
@@ -268,7 +268,7 @@
     <message>
       <location filename="../../Command.cpp" line="878"/>
       <source>Create a local coordinate system on a face</source>
-      <translation type="unfinished">Create a local coordinate system on a face</translation>
+      <translation>Sortu koordenatuen sistema lokala aurpegi batean</translation>
     </message>
   </context>
   <context>
@@ -591,77 +591,77 @@
     <message>
       <location filename="../../Command.cpp" line="391"/>
       <source>Create fluid boundary condition</source>
-      <translation>Sortu jariakin-mugen baldintza</translation>
+      <translation>Sortu jariakinen muga-baldintza</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="196"/>
       <source>Make bearing constraint</source>
-      <translation type="unfinished">Make bearing constraint</translation>
+      <translation>Sortu kojinete-murrizketa</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="241"/>
       <source>Make contact constraint on a face</source>
-      <translation type="unfinished">Make contact constraint on a face</translation>
+      <translation>Sortu kontaktu-murrizketa aurpegi batean</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="295"/>
       <source>Make displacement boundary condition on face</source>
-      <translation type="unfinished">Make displacement boundary condition on face</translation>
+      <translation>Sortu desplazamenduaren muga-baldintza aurpegian</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="343"/>
       <source>Make fixed boundary condition for geometry</source>
-      <translation type="unfinished">Make fixed boundary condition for geometry</translation>
+      <translation>Sortu muga finkoaren baldintza geometriarako</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="439"/>
       <source>Make force load on geometry</source>
-      <translation type="unfinished">Make force load on geometry</translation>
+      <translation>Sortu indar-karga geometrian</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="491"/>
       <source>Make gear constraint</source>
-      <translation type="unfinished">Make gear constraint</translation>
+      <translation>Sortu engranaje-murrizketa</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="537"/>
       <source>Make heat flux load on face</source>
-      <translation type="unfinished">Make heat flux load on face</translation>
+      <translation>Sortu bero-fluxuaren karga aurpegian</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="591"/>
       <source>Make initial temperature condition on body</source>
-      <translation type="unfinished">Make initial temperature condition on body</translation>
+      <translation>Sortu hasierako tenperatura-baldintza gorputzean</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="639"/>
       <source>Make plane multi-point constraint on face</source>
-      <translation type="unfinished">Make plane multi-point constraint on face</translation>
+      <translation>Sortu planoaren puntu anitzeko murrizketa aurpegian</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="687"/>
       <source>Make pressure load on face</source>
-      <translation type="unfinished">Make pressure load on face</translation>
+      <translation>Sortu presio-karga aurpegian</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="741"/>
       <source>Make spring on face</source>
-      <translation type="unfinished">Make spring on face</translation>
+      <translation>Sortu malgukia aurpegian</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="794"/>
       <source>Make pulley constraint</source>
-      <translation type="unfinished">Make pulley constraint</translation>
+      <translation>Sortu polea-murrizketa</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="845"/>
       <source>Make temperature boundary condition on face</source>
-      <translation type="unfinished">Make temperature boundary condition on face</translation>
+      <translation>Sortu tenperaturaren muga-baldintza aurpegian</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="893"/>
       <source>Make local coordinate system on face</source>
-      <translation type="unfinished">Make local coordinate system on face</translation>
+      <translation>Sortu koordenatuen sistema lokala aurpegian</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="988"/>
@@ -1023,11 +1023,11 @@ hasierako tenperatura:</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcxImp.cpp" line="141"/>
-      <source>The specified executable 
+      <source>The specified executable
 '%1'
  does not exist!
 Specify another file please.</source>
-      <translation>Zehaztutako exekutagarria: 
+      <translation>Zehaztutako exekutagarria:
 '%1'
 ez da existitzen.
 Zehaztu beste fitxategi bat.</translation>
@@ -1125,11 +1125,11 @@ fusionatuko dira bolumenaren mugak ikusgai izan daitezen.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemElmerImp.cpp" line="100"/>
-      <source>The specified executable 
+      <source>The specified executable
 '%1'
  does not exist!
 Specify another file please.</source>
-      <translation>Zehaztutako exekutagarria: 
+      <translation>Zehaztutako exekutagarria:
 '%1'
 ez da existitzen.
 Zehaztu beste fitxategi bat.</translation>
@@ -1221,10 +1221,10 @@ aurpegienak ez diren ertzak eta bolumenenak ez diren aurpegiak soilik.</translat
 Every analysis feature and, if there are different materials,
 material consists of two mesh groups, faces and nodes where
 the constraint or material is applied.</source>
-      <translation type="unfinished">Mesh groups are exported too.
-Every analysis feature and, if there are different materials,
-material consists of two mesh groups, faces and nodes where
-the constraint or material is applied.</translation>
+      <translation>Amaraun-taldeak ere esportatzen dira.
+Analisi-elementu guztiak eta, material desberdinak badaude, material
+guztiak ere, bi amaraun-taldez, aurpegiz eta nodoz osatuta daude,
+non murrizketa edo materiala aplikatzen den.</translation>
     </message>
   </context>
   <context>
@@ -1251,8 +1251,8 @@ the constraint or material is applied.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="72"/>
-      <source>Let the application manage (create, delete) the working directories for all solver. Use temporary directories.</source>
-      <translation>Utzi aplikazioari ebazle guztien laneko direktorioak kudeatzen (sortzen, ezabatzen). Erabili aldi baterako direktorioak.</translation>
+      <source>Let the application manage (create, delete) the working directories for all solvers. Use temporary directories.</source>
+      <translation type="unfinished">Let the application manage (create, delete) the working directories for all solvers. Use temporary directories.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="98"/>
@@ -1327,13 +1327,13 @@ azken ezarpenekin irekiko da</translation>
       <location filename="../../DlgSettingsFemGeneral.ui" line="354"/>
       <source>All analysis features are hidden in the model view
 when the results dialog is opened</source>
-      <translation type="unfinished">All analysis features are hidden in the model view
-when the results dialog is opened</translation>
+      <translation>Emaitzen elkarrizketa-koadroa irekitzen denean,
+analisi-elementu guztiak ezkutatuta daude eredu-bistan</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="358"/>
       <source>Hide analysis features when open result dialog</source>
-      <translation type="unfinished">Hide analysis features when open result dialog</translation>
+      <translation>Ezkutatu analisi-elementuak emaitzen elkarrizketa-koadroa irekitzean</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="382"/>
@@ -1392,11 +1392,11 @@ gehituko den ebazle lehenetsia</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGmshImp.cpp" line="77"/>
-      <source>The specified executable 
+      <source>The specified executable
 '%1'
  does not exist!
 Specify another file please.</source>
-      <translation>Zehaztutako exekutagarria: 
+      <translation>Zehaztutako exekutagarria:
 '%1'
 ez da existitzen.
 Zehaztu beste fitxategi bat.</translation>
@@ -1584,11 +1584,11 @@ Hau ez badago markatuta, izenaren arabera ordenatuko dira.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemMystranImp.cpp" line="79"/>
-      <source>The specified executable 
+      <source>The specified executable
 '%1'
  does not exist!
 Specify another file please.</source>
-      <translation>Zehaztutako exekutagarria: 
+      <translation>Zehaztutako exekutagarria:
 '%1'
 ez da existitzen.
 Zehaztu beste fitxategi bat.</translation>
@@ -1696,11 +1696,11 @@ mezu bat jaso daiteke.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemZ88Imp.cpp" line="102"/>
-      <source>The specified z88r executable 
+      <source>The specified z88r executable
 '%1'
  does not exist!
 Specify another file please.</source>
-      <translation>Zehaztutako z88r exekutagarria: 
+      <translation>Zehaztutako z88r exekutagarria:
 '%1'
 ez da existitzen.
 Zehaztu beste fitxategi bat.</translation>
@@ -1897,7 +1897,7 @@ Zehaztu beste fitxategi bat.</translation>
     <message>
       <location filename="../../TaskFemConstraint.cpp" line="54"/>
       <source>Analysis feature parameters</source>
-      <translation type="unfinished">Analysis feature parameters</translation>
+      <translation>Analisi-elementuaren parametroak</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraint.cpp" line="199"/>
@@ -2053,7 +2053,7 @@ Zehaztu beste fitxategi bat.</translation>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.cpp" line="345"/>
       <source>Only one type of selection (vertex,face or edge) per analysis feature allowed!</source>
-      <translation type="unfinished">Only one type of selection (vertex,face or edge) per analysis feature allowed!</translation>
+      <translation>Hautapen mota bakarra (erpina, aurpegia edo ertza) onartzen da analisi-elementu bakoitzeko</translation>
     </message>
   </context>
   <context>
@@ -2082,7 +2082,7 @@ Zehaztu beste fitxategi bat.</translation>
     <message>
       <location filename="../../TaskFemConstraintFixed.cpp" line="151"/>
       <source>Only one type of selection (vertex, face or edge) per analysis feature allowed!</source>
-      <translation type="unfinished">Only one type of selection (vertex, face or edge) per analysis feature allowed!</translation>
+      <translation>Hautapen mota bakarra (erpina, aurpegia edo ertza) onartzen da analisi-elementu bakoitzeko</translation>
     </message>
   </context>
   <context>
@@ -2211,7 +2211,7 @@ Zehaztu beste fitxategi bat.</translation>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="828"/>
       <source>Only one type of selection (vertex, face or edge) per analysis feature allowed!</source>
-      <translation type="unfinished">Only one type of selection (vertex, face or edge) per analysis feature allowed!</translation>
+      <translation>Hautapen mota bakarra (erpina, aurpegia edo ertza) onartzen da analisi-elementu bakoitzeko</translation>
     </message>
   </context>
   <context>
@@ -2240,7 +2240,7 @@ Zehaztu beste fitxategi bat.</translation>
     <message>
       <location filename="../../TaskFemConstraintForce.cpp" line="175"/>
       <source>Only one type of selection (vertex, face or edge) per analysis feature allowed!</source>
-      <translation type="unfinished">Only one type of selection (vertex, face or edge) per analysis feature allowed!</translation>
+      <translation>Hautapen mota bakarra (erpina, aurpegia edo ertza) onartzen da analisi-elementu bakoitzeko</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintForce.cpp" line="325"/>
@@ -2328,7 +2328,7 @@ Zehaztu beste fitxategi bat.</translation>
       <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="116"/>
       <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="185"/>
       <source>Only one face can be selected for a plane multi-point constraint!</source>
-      <translation type="unfinished">Only one face can be selected for a plane multi-point constraint!</translation>
+      <translation>Aurpegi bakarra hautatu daiteke planoaren puntu anitzeko murrizketa baterako!</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="124"/>
@@ -2452,7 +2452,7 @@ Zehaztu beste fitxategi bat.</translation>
     <message>
       <location filename="../../TaskFemConstraintTransform.cpp" line="162"/>
       <source>Analysis feature update error</source>
-      <translation type="unfinished">Analysis feature update error</translation>
+      <translation>Analisi-elementuaren eguneratze-errorea</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintTransform.cpp" line="163"/>
@@ -2483,17 +2483,17 @@ Zehaztu beste fitxategi bat.</translation>
       <location filename="../../TaskFemConstraintTransform.cpp" line="273"/>
       <location filename="../../TaskFemConstraintTransform.cpp" line="280"/>
       <source>Only one face for rectangular local coordinate system!</source>
-      <translation type="unfinished">Only one face for rectangular local coordinate system!</translation>
+      <translation>Aurpegi bakar bat koordenatuen sistema lokal laukizuzen bakoizeko!</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintTransform.cpp" line="301"/>
       <source>Only one face for local coordinate system!</source>
-      <translation type="unfinished">Only one face for local coordinate system!</translation>
+      <translation>Aurpegi bakar bat koordenatuen sistema lokal bakoizeko!</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintTransform.cpp" line="360"/>
       <source>Only transformable faces can be selected! Apply displacement boundary condition to surface first then apply local coordinate system to surface</source>
-      <translation type="unfinished">Only transformable faces can be selected! Apply displacement boundary condition to surface first then apply local coordinate system to surface</translation>
+      <translation>Aurpegi transformagarriak soilik hautatu daitezke! Aplikatu desplazamenduaren muga-baldintza gainazalari lehenengo, gero aplikatu koordenatu-sistema gainazalari</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintTransform.cpp" line="294"/>
@@ -3070,7 +3070,7 @@ Zehaztu beste fitxategi bat.</translation>
       <location filename="../ui/InitialPressure.ui" line="14"/>
       <location filename="../ui/Magnetization.ui" line="14"/>
       <source>Analysis feature properties</source>
-      <translation type="unfinished">Analysis feature properties</translation>
+      <translation>Analisi-elementuaren propietateak</translation>
     </message>
     <message>
       <location filename="../ui/BodyHeatSource.ui" line="20"/>
@@ -3138,17 +3138,17 @@ duten ekuazioetan soilik erabiltzen da</translation>
     <message>
       <location filename="../ui/ElectrostaticPotential.ui" line="531"/>
       <source>Whether the boundary condition defines a constant potential</source>
-      <translation type="unfinished">Whether the boundary condition defines a constant potential</translation>
+      <translation>Muga-baldintzak potentzial-konstante bat definitzen duen ala ez</translation>
     </message>
     <message>
       <location filename="../ui/ElectrostaticPotential.ui" line="544"/>
       <source>Whether the boundary condition defines a farfield potential</source>
-      <translation type="unfinished">Whether the boundary condition defines a farfield potential</translation>
+      <translation>Muga-baldintzak urruneko eremuko potentzial bat definitzen duen ala ez</translation>
     </message>
     <message>
       <location filename="../ui/ElectrostaticPotential.ui" line="554"/>
       <source>Whether the boundary condition is for the electric force</source>
-      <translation type="unfinished">Whether the boundary condition is for the electric force</translation>
+      <translation>Muga-baldintza indar elektrikorako den ala ez</translation>
     </message>
     <message>
       <location filename="../ui/CurrentDensity.ui" line="30"/>
@@ -3709,57 +3709,57 @@ Oharra: 2D kasuetan soilik, X-en ezarpena posible da,
     <message>
       <location filename="../../TaskFemConstraintContact.cpp" line="457"/>
       <source>Contact constraint</source>
-      <translation type="unfinished">Contact constraint</translation>
+      <translation>Kontaktu-murrizketa</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.cpp" line="612"/>
       <source>Displacement boundary condition</source>
-      <translation type="unfinished">Displacement boundary condition</translation>
+      <translation>Desplazamenduaren muga-baldintza</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFixed.cpp" line="278"/>
       <source>Fixed boundary condition</source>
-      <translation type="unfinished">Fixed boundary condition</translation>
+      <translation>Muga finkoaren baldintza</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="960"/>
       <source>Fluid boundary condition</source>
-      <translation>Jariakin-mugen baldintza</translation>
+      <translation>Jariakinen muga-baldintza</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintForce.cpp" line="437"/>
       <source>Force load</source>
-      <translation type="unfinished">Force load</translation>
+      <translation>Indar-karga</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintHeatflux.cpp" line="424"/>
       <source>Heat flux load</source>
-      <translation type="unfinished">Heat flux load</translation>
+      <translation>Bero-fluxuaren karga</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="296"/>
       <source>Plane multi-point constraint</source>
-      <translation type="unfinished">Plane multi-point constraint</translation>
+      <translation>Planoaren puntu anitzeko murrizketa</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintPressure.cpp" line="295"/>
       <source>Pressure load</source>
-      <translation type="unfinished">Pressure load</translation>
+      <translation>Presio-karga</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintTemperature.cpp" line="333"/>
       <source>Temperature boundary condition</source>
-      <translation type="unfinished">Temperature boundary condition</translation>
+      <translation>Tenperaturaren muga-baldintza</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintTransform.cpp" line="563"/>
       <source>Local coordinate system</source>
-      <translation type="unfinished">Local coordinate system</translation>
+      <translation>Koordenatuen sistema lokala</translation>
     </message>
     <message>
       <location filename="../../ViewProviderFemConstraint.cpp" line="139"/>
       <source>Edit analysis feature</source>
-      <translation type="unfinished">Edit analysis feature</translation>
+      <translation>Editatu analisi-elementua</translation>
     </message>
   </context>
   <context>
@@ -4110,7 +4110,7 @@ Balizko aldagaietarako, ikusi beheko deskribapen-koadroa.</translation>
     <message>
       <location filename="../../TaskAnalysisInfo.ui" line="48"/>
       <source>Analysis features</source>
-      <translation type="unfinished">Analysis features</translation>
+      <translation>Analisi-elementuak</translation>
     </message>
   </context>
   <context>
@@ -4605,7 +4605,7 @@ norabidea erabiliko da norabide gisa</translation>
     <message>
       <location filename="../../TaskFemConstraintHeatflux.ui" line="14"/>
       <source>Task Fem Heat flux Load</source>
-      <translation type="unfinished">Task Fem Heat flux Load</translation>
+      <translation>FEM ataza bero-fluxuaren karga</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintHeatflux.ui" line="20"/>
@@ -5249,72 +5249,72 @@ Elmer ebazlean</translation>
     <message>
       <location filename="../../Workbench.cpp" line="49"/>
       <source>Electrostatic boundary conditions</source>
-      <translation type="unfinished">Electrostatic boundary conditions</translation>
+      <translation>Muga-baldintza elektrostatikoak</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="50"/>
       <source>&amp;Electrostatic boundary conditions</source>
-      <translation type="unfinished">&amp;Electrostatic boundary conditions</translation>
+      <translation>Muga-baldintza elektro&amp;statikoak</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="51"/>
       <source>Fluid boundary conditions</source>
-      <translation type="unfinished">Fluid boundary conditions</translation>
+      <translation>Jariakinen muga-baldintzak</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="52"/>
       <source>&amp;Fluid boundary conditions</source>
-      <translation type="unfinished">&amp;Fluid boundary conditions</translation>
+      <translation>&amp;Jariakinen muga-baldintzak</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="53"/>
       <source>Electromagnetic boundary conditions</source>
-      <translation type="unfinished">Electromagnetic boundary conditions</translation>
+      <translation>Muga-baldintza elektromagnetikoak</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="54"/>
       <source>&amp;Electromagnetic boundary conditions</source>
-      <translation type="unfinished">&amp;Electromagnetic boundary conditions</translation>
+      <translation>Muga-baldintza elektro&amp;magnetikoak</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="55"/>
       <source>Geometrical analysis features</source>
-      <translation type="unfinished">Geometrical analysis features</translation>
+      <translation>Analisi-elementu geometrikoak</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="56"/>
       <source>&amp;Geometrical analysis features</source>
-      <translation type="unfinished">&amp;Geometrical analysis features</translation>
+      <translation>Analisi-elementu &amp;geometrikoak</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="57"/>
       <source>Mechanical boundary conditions and loads</source>
-      <translation type="unfinished">Mechanical boundary conditions and loads</translation>
+      <translation>Muga-baldintza eta karga mekanikoak</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="58"/>
       <source>&amp;Mechanical boundary conditions and loads</source>
-      <translation type="unfinished">&amp;Mechanical boundary conditions and loads</translation>
+      <translation>&amp;Muga-baldintza eta karga mekanikoak</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="59"/>
       <source>Thermal boundary conditions and loads</source>
-      <translation type="unfinished">Thermal boundary conditions and loads</translation>
+      <translation>Muga-baldintza eta karga termikoak</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="60"/>
       <source>&amp;Thermal boundary conditions and loads</source>
-      <translation type="unfinished">&amp;Thermal boundary conditions and loads</translation>
+      <translation>Muga-baldintza eta karga &amp;termikoak</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="61"/>
       <source>Analysis features without solver</source>
-      <translation type="unfinished">Analysis features without solver</translation>
+      <translation>Ebazlerik gabeko analisi-elementuak</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="62"/>
       <source>&amp;Analysis features without solver</source>
-      <translation type="unfinished">&amp;Analysis features without solver</translation>
+      <translation>&amp;Ebazlerik gabeko analisi-elementuak</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="63"/>
@@ -5429,7 +5429,7 @@ Elmer ebazlean</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="157"/>
       <source>Removes all clipping planes</source>
-      <translation type="unfinished">Removes all clipping planes</translation>
+      <translation>Ebaketa-plano guztiak kentzen ditu</translation>
     </message>
   </context>
   <context>
@@ -5521,7 +5521,7 @@ Elmer ebazlean</translation>
       <location filename="../../../femcommands/commands.py" line="475"/>
       <source>Creates a FEM equation for
  elasticity (stress)</source>
-      <translation>FEM ekuazio bat sortzen du 
+      <translation>FEM ekuazio bat sortzen du
 elastikotasunerako (estreserako)</translation>
     </message>
   </context>
@@ -5587,7 +5587,7 @@ elastikotasunerako (estreserako)</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="612"/>
       <source>Opens the FEM examples</source>
-      <translation type="unfinished">Opens the FEM examples</translation>
+      <translation>FEM adibideak irekitzen ditu</translation>
     </message>
   </context>
   <context>
@@ -5665,7 +5665,7 @@ elastikotasunerako (estreserako)</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="776"/>
       <source>Converts the surface of a FEM mesh to a mesh</source>
-      <translation type="unfinished">Converts the surface of a FEM mesh to a mesh</translation>
+      <translation>FEM amaraun baten azalera amaraun bihurtzen du</translation>
     </message>
   </context>
   <context>
@@ -5691,7 +5691,7 @@ elastikotasunerako (estreserako)</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="841"/>
       <source>Clears the Mesh of a FEM mesh object</source>
-      <translation type="unfinished">Clears the Mesh of a FEM mesh object</translation>
+      <translation>FEM amaraun-objektu baten amarauna garbitzen du</translation>
     </message>
   </context>
   <context>
@@ -5704,7 +5704,7 @@ elastikotasunerako (estreserako)</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="867"/>
       <source>Displays FEM mesh information</source>
-      <translation type="unfinished">Displays FEM mesh information</translation>
+      <translation>FEM amaraunaren informazioa bistaratzen du</translation>
     </message>
   </context>
   <context>
@@ -5717,7 +5717,7 @@ elastikotasunerako (estreserako)</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="897"/>
       <source>Creates a FEM mesh from a shape by Gmsh mesher</source>
-      <translation type="unfinished">Creates a FEM mesh from a shape by Gmsh mesher</translation>
+      <translation>FEM amaraun bat sortzen du forma batetik abiatuz, Gmsh sare-sortzailea erabiliz</translation>
     </message>
   </context>
   <context>
@@ -5743,7 +5743,7 @@ elastikotasunerako (estreserako)</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="960"/>
       <source>Creates a FEM mesh from a solid or face shape by Netgen internal mesher</source>
-      <translation type="unfinished">Creates a FEM mesh from a solid or face shape by Netgen internal mesher</translation>
+      <translation>FEM amaraun bat sortzen du solido batetik edo aurpegi-forma batetik, Netgen barneko amaraun-sortzailea erabiliz</translation>
     </message>
   </context>
   <context>
@@ -6111,7 +6111,7 @@ Hasteko, hautatu emaitza mota bat.</translation>
       <location filename="../../Command.cpp" line="1139"/>
       <location filename="../../Command.cpp" line="1140"/>
       <source>Electromagnetic boundary conditions</source>
-      <translation type="unfinished">Electromagnetic boundary conditions</translation>
+      <translation>Muga-baldintza elektromagnetikoak</translation>
     </message>
   </context>
   <context>
@@ -6318,12 +6318,12 @@ deformaziorako (elastikotasun ez linealerako)</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="198"/>
       <source>Body heat source</source>
-      <translation type="unfinished">Body heat source</translation>
+      <translation>Gorputz-beroaren iturburua</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="202"/>
       <source>Creates a body heat source</source>
-      <translation type="unfinished">Creates a body heat source</translation>
+      <translation>Gorputz-beroaren iturburu bat sortzen du</translation>
     </message>
   </context>
   <context>
@@ -6331,12 +6331,12 @@ deformaziorako (elastikotasun ez linealerako)</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="215"/>
       <source>Centrifugal load</source>
-      <translation type="unfinished">Centrifugal load</translation>
+      <translation>Karga zentrifugoa</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="219"/>
       <source>Creates a centrifugal load</source>
-      <translation type="unfinished">Creates a centrifugal load</translation>
+      <translation>Karga zentrifukoa sortzen du</translation>
     </message>
   </context>
   <context>
@@ -6344,12 +6344,12 @@ deformaziorako (elastikotasun ez linealerako)</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="233"/>
       <source>Current density boundary condition</source>
-      <translation type="unfinished">Current density boundary condition</translation>
+      <translation>Uneko dentsitatearen muga-baldintza</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="237"/>
       <source>Creates a current density boundary condition</source>
-      <translation type="unfinished">Creates a current density boundary condition</translation>
+      <translation>Uneko dentsitatearen muga-baldintza sortzen du</translation>
     </message>
   </context>
   <context>
@@ -6357,12 +6357,12 @@ deformaziorako (elastikotasun ez linealerako)</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="250"/>
       <source>Electrostatic potential boundary condition</source>
-      <translation type="unfinished">Electrostatic potential boundary condition</translation>
+      <translation>Potentzial elektrostatikoaren muga-baldintza</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="254"/>
       <source>Creates an electrostatic potential boundary condition</source>
-      <translation type="unfinished">Creates an electrostatic potential boundary condition</translation>
+      <translation>Potentzial elektrostatikoaren muga-baldintza sortzen du</translation>
     </message>
   </context>
   <context>
@@ -6370,12 +6370,12 @@ deformaziorako (elastikotasun ez linealerako)</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="267"/>
       <source>Flow velocity boundary condition</source>
-      <translation type="unfinished">Flow velocity boundary condition</translation>
+      <translation>Fluxu-abiaduraren muga-baldintza</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="271"/>
       <source>Creates a flow velocity boundary condition</source>
-      <translation type="unfinished">Creates a flow velocity boundary condition</translation>
+      <translation>Fluxu-abiaduraren muga-baldintza sortzen du</translation>
     </message>
   </context>
   <context>
@@ -6383,12 +6383,12 @@ deformaziorako (elastikotasun ez linealerako)</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="284"/>
       <source>Initial flow velocity condition</source>
-      <translation type="unfinished">Initial flow velocity condition</translation>
+      <translation>Hasierako fluxu-abiaduraren baldintza</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="288"/>
       <source>Creates initial flow velocity condition</source>
-      <translation type="unfinished">Creates initial flow velocity condition</translation>
+      <translation>Hasierako fluxu-abiaduraren baldintza sortzen du</translation>
     </message>
   </context>
   <context>
@@ -6396,12 +6396,12 @@ deformaziorako (elastikotasun ez linealerako)</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="301"/>
       <source>Initial pressure condition</source>
-      <translation type="unfinished">Initial pressure condition</translation>
+      <translation>Hasierako presio-baldintza</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="305"/>
       <source>Creates an initial pressure condition</source>
-      <translation type="unfinished">Creates an initial pressure condition</translation>
+      <translation>Hasierako presioaren baldintza sortzen du</translation>
     </message>
   </context>
   <context>
@@ -6409,12 +6409,12 @@ deformaziorako (elastikotasun ez linealerako)</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="318"/>
       <source>Magnetization boundary condition</source>
-      <translation type="unfinished">Magnetization boundary condition</translation>
+      <translation>Magnetizazioaren muga-baldintza</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="322"/>
       <source>Creates a magnetization boundary condition</source>
-      <translation type="unfinished">Creates a magnetization boundary condition</translation>
+      <translation>Magnetizazioaren muga-baldintza sortzen du</translation>
     </message>
   </context>
   <context>
@@ -6422,12 +6422,12 @@ deformaziorako (elastikotasun ez linealerako)</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="335"/>
       <source>Section print feature</source>
-      <translation type="unfinished">Section print feature</translation>
+      <translation>Sekzio-inprimatzearen elementua</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="339"/>
       <source>Creates a section print feature</source>
-      <translation type="unfinished">Creates a section print feature</translation>
+      <translation>Sekzio-inprimatzearen elementu bat sortzen du</translation>
     </message>
   </context>
   <context>
@@ -6435,12 +6435,12 @@ deformaziorako (elastikotasun ez linealerako)</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="352"/>
       <source>Gravity load</source>
-      <translation type="unfinished">Gravity load</translation>
+      <translation>Grabitate-karga</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="356"/>
       <source>Creates a gravity load</source>
-      <translation type="unfinished">Creates a gravity load</translation>
+      <translation>Grabitate-karga bat sortzen du</translation>
     </message>
   </context>
   <context>
@@ -6448,12 +6448,12 @@ deformaziorako (elastikotasun ez linealerako)</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="369"/>
       <source>Tie constraint</source>
-      <translation type="unfinished">Tie constraint</translation>
+      <translation>Lokarri-murrizketa</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="373"/>
       <source>Creates a tie constraint</source>
-      <translation type="unfinished">Creates a tie constraint</translation>
+      <translation>Lokarri-murrizketa sortzen du</translation>
     </message>
   </context>
 </TS>

@@ -226,7 +226,7 @@
       <location filename="../../AttacherTexts.cpp" line="295"/>
       <source>Vertex</source>
       <comment>AttachmentPoint mode caption</comment>
-      <translation type="unfinished">Vertex</translation>
+      <translation>頂點</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="296"/>
@@ -5772,7 +5772,7 @@ Do you want to continue?</source>
       <location filename="../../TaskAttacher.cpp" line="81"/>
       <location filename="../../TaskCheckGeometry.cpp" line="84"/>
       <source>Vertex</source>
-      <translation>頂點</translation>
+      <translation type="unfinished">Vertex</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="77"/>
@@ -6439,7 +6439,7 @@ It will create a 'Compound Filter' for each shape.</source>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="217"/>
       <source>Continue</source>
-      <translation>繼續</translation>
+      <translation type="unfinished">Continue</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="272"/>
@@ -6764,18 +6764,18 @@ A 'Compound Filter' can be used to extract the remaining pieces.</source>
       <translation>造型</translation>
     </message>
     <message>
-      <location filename="../../DlgScale.cpp" line="195"/>
+      <location filename="../../DlgScale.cpp" line="198"/>
       <source>No scalable shapes selected</source>
       <translation type="unfinished">No scalable shapes selected</translation>
     </message>
     <message>
-      <location filename="../../DlgScale.cpp" line="203"/>
+      <location filename="../../DlgScale.cpp" line="206"/>
       <source>The document '%1' doesn't exist.</source>
       <translation type="unfinished">The document '%1' doesn't exist.</translation>
     </message>
     <message>
-      <location filename="../../DlgScale.cpp" line="251"/>
-      <location filename="../../DlgScale.cpp" line="257"/>
+      <location filename="../../DlgScale.cpp" line="254"/>
+      <location filename="../../DlgScale.cpp" line="260"/>
       <source>Creating Scale failed.
 %1</source>
       <translation type="unfinished">Creating Scale failed.

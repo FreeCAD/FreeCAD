@@ -118,6 +118,8 @@
 #include "ViewProvider.h"
 #include "ViewProviderDocumentObject.h"
 #include "ViewProviderLink.h"
+#include "NavigationAnimator.h"
+#include "NavigationAnimation.h"
 
 
 FC_LOG_LEVEL_INIT("3DViewer",true,true)
@@ -202,8 +204,8 @@ while the progress bar is running.
 class Gui::ViewerEventFilter : public QObject
 {
 public:
-    ViewerEventFilter() = default;
-    ~ViewerEventFilter() override = default;
+    ViewerEventFilter() {}
+    ~ViewerEventFilter() override {}
 
     bool eventFilter(QObject* obj, QEvent* event) override {
         // Bug #0000607: Some mice also support horizontal scrolling which however might
@@ -245,8 +247,8 @@ public:
 
 class SpaceNavigatorDevice : public Quarter::InputDevice {
 public:
-    SpaceNavigatorDevice() = default;
-    ~SpaceNavigatorDevice() override = default;
+    SpaceNavigatorDevice() {}
+    ~SpaceNavigatorDevice() override {}
     const SoEvent* translateEvent(QEvent* event) override {
 
         if (event->type() == Spaceball::MotionEvent::MotionEventType) {
@@ -2235,8 +2237,6 @@ void View3DInventorViewer::renderScene()
     drawSingleBackground(col);
     glra->apply(this->backgroundroot);
 
-    navigation->updateAnimation();
-
     if (!this->shading) {
         state->push();
         SoLightModelElement::set(state, selectionRoot, SoLightModelElement::BASE_COLOR);
@@ -2754,9 +2754,9 @@ void View3DInventorViewer::pubSeekToPoint(const SbVec3f& pos)
     this->seekToPoint(pos);
 }
 
-void View3DInventorViewer::setCameraOrientation(const SbRotation& rot, SbBool moveTocenter)
+void View3DInventorViewer::setCameraOrientation(const SbRotation& orientation, SbBool moveToCenter)
 {
-    navigation->setCameraOrientation(rot, moveTocenter);
+    navigation->setCameraOrientation(orientation, moveToCenter);
 }
 
 void View3DInventorViewer::setCameraType(SoType t)
@@ -2777,54 +2777,19 @@ void View3DInventorViewer::setCameraType(SoType t)
     }
 }
 
-namespace Gui {
-    class CameraAnimation : public QVariantAnimation
-    {
-        SoCamera* camera;
-        SbRotation startRot, endRot;
-        SbVec3f startPos, endPos;
-
-    public:
-        CameraAnimation(SoCamera* camera, const SbRotation& rot, const SbVec3f& pos)
-            : camera(camera), endRot(rot), endPos(pos)
-        {
-            startPos = camera->position.getValue();
-            startRot = camera->orientation.getValue();
-        }
-        ~CameraAnimation() override = default;
-    protected:
-        void updateCurrentValue(const QVariant & value) override
-        {
-            int steps = endValue().toInt();
-            int curr = value.toInt();
-
-            float s = static_cast<float>(curr)/static_cast<float>(steps);
-            SbVec3f curpos = startPos * (1.0f-s) + endPos * s;
-            SbRotation currot = SbRotation::slerp(startRot, endRot, s);
-            camera->orientation.setValue(currot);
-            camera->position.setValue(curpos);
-        }
-    };
-}
-
-void View3DInventorViewer::moveCameraTo(const SbRotation& rot, const SbVec3f& pos, int steps, int ms)
+void View3DInventorViewer::moveCameraTo(const SbRotation& orientation, const SbVec3f& position)
 {
-    SoCamera* cam = this->getSoRenderManager()->getCamera();
-    if (!cam)
+    SoCamera* camera = getCamera();
+    if (!camera)
         return;
 
-    CameraAnimation anim(cam, rot, pos);
-    anim.setDuration(Base::clamp<int>(ms,0,5000));
-    anim.setStartValue(static_cast<int>(0));
-    anim.setEndValue(steps);
+    if (isAnimationEnabled()) {
+        startAnimation(
+            orientation, camera->position.getValue(), position - camera->position.getValue(), true);
+    }
 
-    QEventLoop loop;
-    QObject::connect(&anim, &CameraAnimation::finished, &loop, &QEventLoop::quit);
-    anim.start();
-    loop.exec(QEventLoop::ExcludeUserInputEvents);
-
-    cam->orientation.setValue(rot);
-    cam->position.setValue(pos);
+    camera->orientation.setValue(orientation);
+    camera->position.setValue(position);
 }
 
 void View3DInventorViewer::animatedViewAll(int steps, int ms)
@@ -3106,18 +3071,49 @@ SbBool View3DInventorViewer::isAnimating() const
     return navigation->isAnimating();
 }
 
-/*!
- * Starts programmatically the viewer in animation mode. The given axis direction
- * is always in screen coordinates, not in world coordinates.
+/**
+ * @brief Change the camera pose with an animation
+ *
+ * @param orientation The new orientation
+ * @param rotationCenter The rotation center
+ * @param translation An additional translation on top of the translation caused by the rotation around the rotation center
  */
-void View3DInventorViewer::startAnimating(const SbVec3f& axis, float velocity)
+void View3DInventorViewer::startAnimation(const SbRotation& orientation,
+                                          const SbVec3f& rotationCenter, const SbVec3f& translation, bool wait)
 {
-    navigation->startAnimating(axis, velocity);
+    // Currently starts a FixedTimeAnimation. If there is going to be an additional animation like
+    // FixedVelocityAnimation, check the animation type from a parameter and start the right animation
+
+    int duration = App::GetApplication()
+                       .GetParameterGroupByPath("User parameter:BaseApp/Preferences/View")
+                       ->GetInt("AnimationDuration", 250);
+
+    auto animation = std::make_shared<FixedTimeAnimation>(
+        navigation, orientation, rotationCenter, translation, duration);
+
+    if (wait) {
+        navigation->getAnimator()->startAndWait(animation);
+    }
+    else {
+        navigation->getAnimator()->start(animation);
+    }
+}
+
+/**
+ * @brief Start an infinite spin animation
+ *
+ * @param axis The rotation axis in screen coordinates
+ * @param velocity The angular velocity in radians per second
+ */
+void View3DInventorViewer::startSpinningAnimation(const SbVec3f& axis, float velocity)
+{
+    auto animation = std::make_shared<SpinningAnimation>(navigation, axis, velocity);
+    navigation->getAnimator()->start(animation);
 }
 
 void View3DInventorViewer::stopAnimating()
 {
-    navigation->stopAnimating();
+    navigation->getAnimator()->stop();
 }
 
 void View3DInventorViewer::setPopupMenuEnabled(const SbBool on)

@@ -30,13 +30,15 @@ class SoPointSet;
 class SoLineSet;
 class SoFaceSet;
 
-namespace MeshGui {
+namespace MeshGui
+{
 
-/** The ViewProviderMeshDefects class is used to display the most known types of defects of a polymesh.
- * In subclasses defects like non-manifolds, wrong oriented facets, degenerated facets, duplicates, .... are displayed.
+/** The ViewProviderMeshDefects class is used to display the most known types of defects of a
+ * polymesh. In subclasses defects like non-manifolds, wrong oriented facets, degenerated facets,
+ * duplicates, .... are displayed.
  * @author Werner Mayer
  */
-class MeshGuiExport ViewProviderMeshDefects : public Gui::ViewProviderDocumentObject
+class MeshGuiExport ViewProviderMeshDefects: public Gui::ViewProviderDocumentObject
 {
     PROPERTY_HEADER_WITH_OVERRIDE(MeshGui::ViewProviderMeshDefects);
 
@@ -56,14 +58,15 @@ protected:
     /// get called by the container whenever a property has been changed
     void onChanged(const App::Property* prop) override;
 
-    SoCoordinate3 * pcCoords;
-    SoDrawStyle   * pcDrawStyle;
+    SoCoordinate3* pcCoords;
+    SoDrawStyle* pcDrawStyle;
 };
 
-/** The ViewProviderMeshOrientation class displays wrong oriented facets (i.e. flipped normals) in orange.
+/** The ViewProviderMeshOrientation class displays wrong oriented facets (i.e. flipped normals) in
+ * orange.
  * @author Werner Mayer
  */
-class MeshGuiExport ViewProviderMeshOrientation : public ViewProviderMeshDefects
+class MeshGuiExport ViewProviderMeshOrientation: public ViewProviderMeshDefects
 {
     PROPERTY_HEADER_WITH_OVERRIDE(MeshGui::ViewProviderMeshOrientation);
 
@@ -81,7 +84,7 @@ protected:
 /** The ViewProviderMeshNonManifolds class displays edges with more than two faces attached in red.
  * @author Werner Mayer
  */
-class MeshGuiExport ViewProviderMeshNonManifolds : public ViewProviderMeshDefects
+class MeshGuiExport ViewProviderMeshNonManifolds: public ViewProviderMeshDefects
 {
     PROPERTY_HEADER_WITH_OVERRIDE(MeshGui::ViewProviderMeshNonManifolds);
 
@@ -99,7 +102,7 @@ protected:
 /** The ViewProviderMeshNonManifoldPoints class displays non-manifold vertexes in red.
  * @author Werner Mayer
  */
-class MeshGuiExport ViewProviderMeshNonManifoldPoints : public ViewProviderMeshDefects
+class MeshGuiExport ViewProviderMeshNonManifoldPoints: public ViewProviderMeshDefects
 {
     PROPERTY_HEADER_WITH_OVERRIDE(MeshGui::ViewProviderMeshNonManifoldPoints);
 
@@ -117,7 +120,7 @@ protected:
 /** The ViewProviderMeshDuplicatedFaces class displays duplicated faces in red.
  * @author Werner Mayer
  */
-class MeshGuiExport ViewProviderMeshDuplicatedFaces : public ViewProviderMeshDefects
+class MeshGuiExport ViewProviderMeshDuplicatedFaces: public ViewProviderMeshDefects
 {
     PROPERTY_HEADER_WITH_OVERRIDE(MeshGui::ViewProviderMeshDuplicatedFaces);
 
@@ -132,10 +135,11 @@ protected:
     SoFaceSet* pcFaces;
 };
 
-/** The ViewProviderMeshDegenerations class displays degenerated faces to a line or even a point in orange.
+/** The ViewProviderMeshDegenerations class displays degenerated faces to a line or even a point in
+ * orange.
  * @author Werner Mayer
  */
-class MeshGuiExport ViewProviderMeshDegenerations : public ViewProviderMeshDefects
+class MeshGuiExport ViewProviderMeshDegenerations: public ViewProviderMeshDefects
 {
     PROPERTY_HEADER_WITH_OVERRIDE(MeshGui::ViewProviderMeshDegenerations);
 
@@ -150,7 +154,7 @@ protected:
     SoLineSet* pcLines;
 };
 
-class MeshGuiExport ViewProviderMeshDuplicatedPoints : public ViewProviderMeshDefects
+class MeshGuiExport ViewProviderMeshDuplicatedPoints: public ViewProviderMeshDefects
 {
     PROPERTY_HEADER_WITH_OVERRIDE(MeshGui::ViewProviderMeshDuplicatedPoints);
 
@@ -165,7 +169,7 @@ protected:
     SoPointSet* pcPoints;
 };
 
-class MeshGuiExport ViewProviderMeshIndices : public ViewProviderMeshDefects
+class MeshGuiExport ViewProviderMeshIndices: public ViewProviderMeshDefects
 {
     PROPERTY_HEADER_WITH_OVERRIDE(MeshGui::ViewProviderMeshIndices);
 
@@ -183,7 +187,7 @@ protected:
 /** The ViewProviderMeshSelfIntersections class displays lines of self-intersections.
  * @author Werner Mayer
  */
-class MeshGuiExport ViewProviderMeshSelfIntersections : public ViewProviderMeshDefects
+class MeshGuiExport ViewProviderMeshSelfIntersections: public ViewProviderMeshDefects
 {
     PROPERTY_HEADER_WITH_OVERRIDE(MeshGui::ViewProviderMeshSelfIntersections);
 
@@ -198,7 +202,7 @@ protected:
     SoLineSet* pcLines;
 };
 
-class MeshGuiExport ViewProviderMeshFolds : public ViewProviderMeshDefects
+class MeshGuiExport ViewProviderMeshFolds: public ViewProviderMeshDefects
 {
     PROPERTY_HEADER_WITH_OVERRIDE(MeshGui::ViewProviderMeshFolds);
 
@@ -213,8 +217,7 @@ protected:
     SoFaceSet* pcFaces;
 };
 
-} // namespace MeshGui
+}  // namespace MeshGui
 
 
-#endif // MESHGUI_VIEWPROVIDER_MESH_DEFECTS_H
-
+#endif  // MESHGUI_VIEWPROVIDER_MESH_DEFECTS_H

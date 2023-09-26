@@ -76,7 +76,7 @@ class Text(DraftAnnotation):
         """Execute code when the document is restored."""
         super().onDocumentRestored(obj)
 
-        # See __setstate__: self.Type is None for new objects.
+        # See loads: self.Type is None for new objects.
         if self.Type is not None \
                 and hasattr(obj, "ViewObject") \
                 and obj.ViewObject:
@@ -93,7 +93,7 @@ class Text(DraftAnnotation):
         _wrn("v0.21, " + obj.Label + ", "
              + translate("draft", "renamed 'DisplayMode' options to 'World/Screen'"))
 
-    def __setstate__(self,state):
+    def loads(self,state):
         # Before update_properties_0v21 the self.Type value was stored.
         # We use this to identify older objects that need to be updated.
         self.Type = state

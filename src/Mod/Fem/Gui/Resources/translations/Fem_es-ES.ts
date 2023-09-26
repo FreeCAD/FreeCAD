@@ -11,7 +11,7 @@
     <message>
       <location filename="../../Command.cpp" line="180"/>
       <source>Bearing constraint</source>
-      <translation type="unfinished">Bearing constraint</translation>
+      <translation>Restricción de rodamiento</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="181"/>
@@ -70,7 +70,7 @@
     <message>
       <location filename="../../Command.cpp" line="328"/>
       <source>Creates a fixed boundary condition for a geometric entity</source>
-      <translation type="unfinished">Creates a fixed boundary condition for a geometric entity</translation>
+      <translation>Crea una condición límite fija para una entidad geométrica</translation>
     </message>
   </context>
   <context>
@@ -106,7 +106,7 @@
     <message>
       <location filename="../../Command.cpp" line="424"/>
       <source>Creates a force load applied to a geometric entity</source>
-      <translation type="unfinished">Creates a force load applied to a geometric entity</translation>
+      <translation>Crea una carga de fuerza aplicada a una entidad geométrica</translation>
     </message>
   </context>
   <context>
@@ -137,7 +137,7 @@
     <message>
       <location filename="../../Command.cpp" line="521"/>
       <source>Heat flux load</source>
-      <translation type="unfinished">Heat flux load</translation>
+      <translation>Carga de flujo calorífico</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="522"/>
@@ -155,7 +155,7 @@
     <message>
       <location filename="../../Command.cpp" line="575"/>
       <source>Initial temperature</source>
-      <translation type="unfinished">Initial temperature</translation>
+      <translation>Temperatura Inicial</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="576"/>
@@ -178,7 +178,7 @@
     <message>
       <location filename="../../Command.cpp" line="624"/>
       <source>Creates a plane multi-point constraint for a face</source>
-      <translation type="unfinished">Creates a plane multi-point constraint for a face</translation>
+      <translation>Crea una restricción plano de multipunto para una cara</translation>
     </message>
   </context>
   <context>
@@ -196,7 +196,7 @@
     <message>
       <location filename="../../Command.cpp" line="672"/>
       <source>Creates a pressure load acting on a face</source>
-      <translation type="unfinished">Creates a pressure load acting on a face</translation>
+      <translation>Crea una carga de presión actuando sobre una cara</translation>
     </message>
   </context>
   <context>
@@ -209,12 +209,12 @@
     <message>
       <location filename="../../Command.cpp" line="778"/>
       <source>Pulley constraint</source>
-      <translation type="unfinished">Pulley constraint</translation>
+      <translation>restricción de polea</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="779"/>
       <source>Creates a pulley constraint</source>
-      <translation type="unfinished">Creates a pulley constraint</translation>
+      <translation>Crear una restriccíón de polea</translation>
     </message>
   </context>
   <context>
@@ -227,12 +227,12 @@
     <message>
       <location filename="../../Command.cpp" line="725"/>
       <source>Spring</source>
-      <translation type="unfinished">Spring</translation>
+      <translation>Resorte</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="726"/>
       <source>Creates a spring acting on a face</source>
-      <translation type="unfinished">Creates a spring acting on a face</translation>
+      <translation>Crea un resorte que actúa sobre una cara</translation>
     </message>
   </context>
   <context>
@@ -1022,11 +1022,11 @@
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcxImp.cpp" line="141"/>
-      <source>The specified executable 
+      <source>The specified executable
 '%1'
  does not exist!
 Specify another file please.</source>
-      <translation>El ejecutable especificado 
+      <translation>El ejecutable especificado
 '%1'
  no existe!
 Por favor, especifique otro archivo.</translation>
@@ -1124,11 +1124,11 @@ se fusionarán para que los límites de volumen sean invisibles.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemElmerImp.cpp" line="100"/>
-      <source>The specified executable 
+      <source>The specified executable
 '%1'
  does not exist!
 Specify another file please.</source>
-      <translation>El ejecutable especificado 
+      <translation>El ejecutable especificado
 '%1'
  no existe!
 Por favor, especifique otro archivo.</translation>
@@ -1249,8 +1249,8 @@ the constraint or material is applied.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="72"/>
-      <source>Let the application manage (create, delete) the working directories for all solver. Use temporary directories.</source>
-      <translation>Permitir que la apliación administre (crear, eliminar) el directorio funcionando para todos los solucionadores. Usar directorios temporales.</translation>
+      <source>Let the application manage (create, delete) the working directories for all solvers. Use temporary directories.</source>
+      <translation type="unfinished">Let the application manage (create, delete) the working directories for all solvers. Use temporary directories.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="98"/>
@@ -1347,7 +1347,7 @@ when the results dialog is opened</translation>
       <location filename="../../DlgSettingsFemGeneral.ui" line="403"/>
       <source>Default solver to be added when
 adding an analysis container</source>
-      <translation>Solver por defecto a ser añadido al 
+      <translation>Solver por defecto a ser añadido al
 añadir un contenedor de análisis</translation>
     </message>
     <message>
@@ -1390,11 +1390,11 @@ añadir un contenedor de análisis</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGmshImp.cpp" line="77"/>
-      <source>The specified executable 
+      <source>The specified executable
 '%1'
  does not exist!
 Specify another file please.</source>
-      <translation>El ejecutable especificado 
+      <translation>El ejecutable especificado
 '%1'
  no existe!
 Por favor, especifique otro archivo.</translation>
@@ -1582,11 +1582,11 @@ Si no están marcadas, serán ordenadas por su nombre.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemMystranImp.cpp" line="79"/>
-      <source>The specified executable 
+      <source>The specified executable
 '%1'
  does not exist!
 Specify another file please.</source>
-      <translation>El ejecutable especificado 
+      <translation>El ejecutable especificado
 '%1'
  no existe!
 Por favor, especifique otro archivo.</translation>
@@ -1694,11 +1694,11 @@ de que "MAXKOI" necesita ser aumentado.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemZ88Imp.cpp" line="102"/>
-      <source>The specified z88r executable 
+      <source>The specified z88r executable
 '%1'
  does not exist!
 Specify another file please.</source>
-      <translation>El ejecutable z88r especificado 
+      <translation>El ejecutable z88r especificado
 '%1'
  no existe!
 Especifique otro archivo, por favor.</translation>
@@ -3732,7 +3732,7 @@ Nota: para 2D solo la configuración para x es posible,
     <message>
       <location filename="../../TaskFemConstraintHeatflux.cpp" line="424"/>
       <source>Heat flux load</source>
-      <translation type="unfinished">Heat flux load</translation>
+      <translation>Carga de flujo calorífico</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="296"/>
@@ -4108,7 +4108,7 @@ Para posibles variables, vea el cuadro de descripción a continuación.</transla
     <message>
       <location filename="../../TaskAnalysisInfo.ui" line="48"/>
       <source>Analysis features</source>
-      <translation type="unfinished">Analysis features</translation>
+      <translation>Funciones de análisis</translation>
     </message>
   </context>
   <context>
@@ -4389,7 +4389,7 @@ para el solver Elmer</translation>
 surface force (and thus displacement)
 generated by the flow
 (Option only applies for Elmer solver)</source>
-      <translation>La solución de flujo se utiliza para determinar 
+      <translation>La solución de flujo se utiliza para determinar
 la fuerza de superficie (y por lo tanto el desplazamiento)
 generada por el flujo
 (la opción solo se aplica para el solver Elmer)</translation>
@@ -5519,7 +5519,7 @@ usada por el solver Elmer</translation>
       <location filename="../../../femcommands/commands.py" line="475"/>
       <source>Creates a FEM equation for
  elasticity (stress)</source>
-      <translation>Crea una ecuación FEM para 
+      <translation>Crea una ecuación FEM para
 elasticidad (estrés)</translation>
     </message>
   </context>
@@ -6094,7 +6094,7 @@ Por favor, primero seleccione un tipo de resultado.</translation>
       <location filename="../../../femcommands/commands.py" line="594"/>
       <source>Creates a FEM equation for
  2D magnetodynamic forces</source>
-      <translation>Crea una ecuación FEM 
+      <translation>Crea una ecuación FEM
 para fuerzas magnetodinámicas 2D</translation>
     </message>
   </context>
@@ -6123,7 +6123,7 @@ para fuerzas magnetodinámicas 2D</translation>
       <location filename="../../../femcommands/commands.py" line="577"/>
       <source>Creates a FEM equation for
  magnetodynamic forces</source>
-      <translation>Crea una ecuación FEM para 
+      <translation>Crea una ecuación FEM para
 fuerzas magnetodinámicas</translation>
     </message>
   </context>
@@ -6205,7 +6205,7 @@ fuerzas magnetodinámicas</translation>
       <location filename="../../../femcommands/commands.py" line="458"/>
       <source>Creates a FEM equation for
  deformation (nonlinear elasticity)</source>
-      <translation>Crea una ecuación FEM para 
+      <translation>Crea una ecuación FEM para
 deformación (elasticidad no lineal)</translation>
     </message>
   </context>
@@ -6394,7 +6394,7 @@ deformación (elasticidad no lineal)</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="301"/>
       <source>Initial pressure condition</source>
-      <translation type="unfinished">Initial pressure condition</translation>
+      <translation>Condición de presión inicial</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="305"/>
@@ -6433,12 +6433,12 @@ deformación (elasticidad no lineal)</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="352"/>
       <source>Gravity load</source>
-      <translation type="unfinished">Gravity load</translation>
+      <translation>Carga de gravedad</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="356"/>
       <source>Creates a gravity load</source>
-      <translation type="unfinished">Creates a gravity load</translation>
+      <translation>Crea una carga de gravedad</translation>
     </message>
   </context>
   <context>

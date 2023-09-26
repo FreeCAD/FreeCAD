@@ -11,12 +11,12 @@
     <message>
       <location filename="../../Command.cpp" line="180"/>
       <source>Bearing constraint</source>
-      <translation type="unfinished">Bearing constraint</translation>
+      <translation>Csapágy kényszerítés</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="181"/>
       <source>Creates a bearing constraint</source>
-      <translation type="unfinished">Creates a bearing constraint</translation>
+      <translation>Létrehoz egy csapágy kényszerítést</translation>
     </message>
   </context>
   <context>
@@ -24,17 +24,17 @@
     <message>
       <location filename="../../Command.cpp" line="224"/>
       <source>Fem</source>
-      <translation>Végeselemes analízis Vem</translation>
+      <translation>Végeselemes analízis FEM</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="225"/>
       <source>Contact constraint</source>
-      <translation type="unfinished">Contact constraint</translation>
+      <translation>Kapcsolat kényszerítés</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="226"/>
       <source>Creates a contact constraint between faces</source>
-      <translation type="unfinished">Creates a contact constraint between faces</translation>
+      <translation>Érintkezési kényszerítést hoz létre a felületek közt</translation>
     </message>
   </context>
   <context>
@@ -52,7 +52,7 @@
     <message>
       <location filename="../../Command.cpp" line="280"/>
       <source>Creates a displacement boundary condition for a geometric entity</source>
-      <translation type="unfinished">Creates a displacement boundary condition for a geometric entity</translation>
+      <translation>Kiszorítási peremfeltételt hoz létre egy geometriai egységhez</translation>
     </message>
   </context>
   <context>
@@ -60,7 +60,7 @@
     <message>
       <location filename="../../Command.cpp" line="326"/>
       <source>Fem</source>
-      <translation>Vem</translation>
+      <translation>Végeselemes analízis Vem</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="327"/>
@@ -70,7 +70,7 @@
     <message>
       <location filename="../../Command.cpp" line="328"/>
       <source>Creates a fixed boundary condition for a geometric entity</source>
-      <translation type="unfinished">Creates a fixed boundary condition for a geometric entity</translation>
+      <translation>Rögzített peremfeltételt hoz létre egy geometriai egységhez</translation>
     </message>
   </context>
   <context>
@@ -78,7 +78,7 @@
     <message>
       <location filename="../../Command.cpp" line="373"/>
       <source>Fem</source>
-      <translation>Végeselemes analízis Vem</translation>
+      <translation>Vem</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="374"/>
@@ -106,7 +106,7 @@
     <message>
       <location filename="../../Command.cpp" line="424"/>
       <source>Creates a force load applied to a geometric entity</source>
-      <translation type="unfinished">Creates a force load applied to a geometric entity</translation>
+      <translation>Létrehoz egy geometriai egységre alkalmazott erőterhelést</translation>
     </message>
   </context>
   <context>
@@ -114,17 +114,17 @@
     <message>
       <location filename="../../Command.cpp" line="475"/>
       <source>Fem</source>
-      <translation>Vem</translation>
+      <translation>Végeselemes analízis Vem</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="476"/>
       <source>Gear constraint</source>
-      <translation type="unfinished">Gear constraint</translation>
+      <translation>Fogaskerék kényszerítés</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="477"/>
       <source>Creates a gear constraint</source>
-      <translation type="unfinished">Creates a gear constraint</translation>
+      <translation>Létrehoz egy fogaskerék kényszerítést</translation>
     </message>
   </context>
   <context>
@@ -137,7 +137,7 @@
     <message>
       <location filename="../../Command.cpp" line="521"/>
       <source>Heat flux load</source>
-      <translation type="unfinished">Heat flux load</translation>
+      <translation>Hőáram terhelés</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="522"/>
@@ -341,7 +341,7 @@
     <message>
       <location filename="../../Command.cpp" line="1699"/>
       <source>Fem</source>
-      <translation>Végeselemes analízis Vem</translation>
+      <translation>Vem</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1700"/>
@@ -369,7 +369,7 @@
     <message>
       <location filename="../../Command.cpp" line="1745"/>
       <source>Fem</source>
-      <translation>Vem</translation>
+      <translation>Végeselemes analízis Vem</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1746"/>
@@ -423,7 +423,7 @@
     <message>
       <location filename="../../Command.cpp" line="2082"/>
       <source>Fem</source>
-      <translation>Végeselemes analízis Vem</translation>
+      <translation>Vem</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2083"/>
@@ -497,7 +497,7 @@
     <message>
       <location filename="../../Command.cpp" line="1878"/>
       <source>Fem</source>
-      <translation>Vem</translation>
+      <translation>Végeselemes analízis Vem</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1879"/>
@@ -573,7 +573,7 @@
     <message>
       <location filename="../../Command.cpp" line="1995"/>
       <source>Fem</source>
-      <translation>Végeselemes analízis FEM</translation>
+      <translation>Vem</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1996"/>
@@ -1023,11 +1023,11 @@
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcxImp.cpp" line="141"/>
-      <source>The specified executable 
+      <source>The specified executable
 '%1'
  does not exist!
 Specify another file please.</source>
-      <translation>A megadott végrehajtható fájl 
+      <translation>A megadott végrehajtható fájl
 '%1'
  nem létezik!
 Kérjük, adjon meg egy másik fájlt.</translation>
@@ -1125,11 +1125,11 @@ will be merged to make the volume boundaries invisible.</source>
     </message>
     <message>
       <location filename="../../DlgSettingsFemElmerImp.cpp" line="100"/>
-      <source>The specified executable 
+      <source>The specified executable
 '%1'
  does not exist!
 Specify another file please.</source>
-      <translation>A megadott végrehajtható fájl 
+      <translation>A megadott végrehajtható fájl
 '%1'
  nem létezik!
 Kérjük, adjon meg egy másik fájlt.</translation>
@@ -1247,8 +1247,8 @@ the constraint or material is applied.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="72"/>
-      <source>Let the application manage (create, delete) the working directories for all solver. Use temporary directories.</source>
-      <translation>Lehetővé teszi az alkalmazás számára az összes megoldó munkakönyvtárainak kezelését (létrehozását, törlését). Használjon ideiglenes könyvtárakat.</translation>
+      <source>Let the application manage (create, delete) the working directories for all solvers. Use temporary directories.</source>
+      <translation type="unfinished">Let the application manage (create, delete) the working directories for all solvers. Use temporary directories.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="98"/>
@@ -1388,11 +1388,11 @@ elemzési konténer hozzáadásakor</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGmshImp.cpp" line="77"/>
-      <source>The specified executable 
+      <source>The specified executable
 '%1'
  does not exist!
 Specify another file please.</source>
-      <translation>A megadott végrehajtható fájl 
+      <translation>A megadott végrehajtható fájl
 '%1'
  nem létezik!
 Kérjük, adjon meg egy másik fájlt.</translation>
@@ -1575,11 +1575,11 @@ Ha le van tiltva, név szerint vannak rendezve.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemMystranImp.cpp" line="79"/>
-      <source>The specified executable 
+      <source>The specified executable
 '%1'
  does not exist!
 Specify another file please.</source>
-      <translation>A megadott végrehajtható fájl 
+      <translation>A megadott végrehajtható fájl
 '%1'
  nem létezik!
 Kérjük, adjon meg egy másik fájlt.</translation>
@@ -1674,8 +1674,8 @@ that "MAXKOI" needs to be increased.</source>
 (csomópontok száma elemenként szorozva
  véges elemek száma)
 
-Előfordulhat, hogy növelnie kell ezt a paramétert, ha 
-egy iteratív megoldó használata esetén a "MAXKOI" paraméter 
+Előfordulhat, hogy növelnie kell ezt a paramétert, ha
+egy iteratív megoldó használata esetén a "MAXKOI" paraméter
 értékét növelni kell hibaüzenet jelenik meg.</translation>
     </message>
     <message>
@@ -1685,11 +1685,11 @@ egy iteratív megoldó használata esetén a "MAXKOI" paraméter
     </message>
     <message>
       <location filename="../../DlgSettingsFemZ88Imp.cpp" line="102"/>
-      <source>The specified z88r executable 
+      <source>The specified z88r executable
 '%1'
  does not exist!
 Specify another file please.</source>
-      <translation>A megadott z88r végrehajtható 
+      <translation>A megadott z88r végrehajtható
 '%1'
  nem létezik!
 Kérjük, adjon meg egy másik fájlt.</translation>
@@ -1716,7 +1716,7 @@ Kérjük, adjon meg egy másik fájlt.</translation>
     <message>
       <location filename="../../TaskAnalysisInfo.cpp" line="35"/>
       <source>Nodes set</source>
-      <translation>Csomópontok beállítása</translation>
+      <translation>Csomópontok beálítása</translation>
     </message>
   </context>
   <context>
@@ -1724,7 +1724,7 @@ Kérjük, adjon meg egy másik fájlt.</translation>
     <message>
       <location filename="../../TaskCreateNodeSet.cpp" line="57"/>
       <source>Nodes set</source>
-      <translation>Csomópontok beálítása</translation>
+      <translation>Csomópontok beállítása</translation>
     </message>
   </context>
   <context>
@@ -3698,7 +3698,7 @@ Megjegyzés: 2D esetén csak az x beállítása lehetséges,
     <message>
       <location filename="../../TaskFemConstraintContact.cpp" line="457"/>
       <source>Contact constraint</source>
-      <translation type="unfinished">Contact constraint</translation>
+      <translation>Kapcsolat kényszerítés</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.cpp" line="612"/>
@@ -3723,7 +3723,7 @@ Megjegyzés: 2D esetén csak az x beállítása lehetséges,
     <message>
       <location filename="../../TaskFemConstraintHeatflux.cpp" line="424"/>
       <source>Heat flux load</source>
-      <translation type="unfinished">Heat flux load</translation>
+      <translation>Hőáram terhelés</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="296"/>

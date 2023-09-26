@@ -757,6 +757,7 @@ private:
     //@{
     /// moves a selected constraint
     void moveConstraint(int constNum, const Base::Vector2d& toPos);
+    void moveAngleConstraint(int constNum, const Base::Vector2d& toPos);
 
     /// returns whether the sketch is in edit mode.
     bool isInEditMode() const;

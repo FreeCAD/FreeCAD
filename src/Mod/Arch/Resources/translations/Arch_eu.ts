@@ -4920,7 +4920,7 @@ Eraikinaren sorrera utzi egin da.</translation>
       <translation>Hesia eraikitzeko erabilitako zutoin kopurua</translation>
     </message>
     <message>
-      <location filename="../../ArchFence.py" line="269"/>
+      <location filename="../../ArchFence.py" line="263"/>
       <source>When true, the fence will be colored like the original post and section.</source>
       <translation>Egia denean, hesia jatorrizko zutoina eta sekzioa bezala koloreztatuko da.</translation>
     </message>
@@ -6301,12 +6301,12 @@ Eraikinaren sorrera utzi egin da.</translation>
   <context>
     <name>Arch_Fence</name>
     <message>
-      <location filename="../../ArchFence.py" line="388"/>
+      <location filename="../../ArchFence.py" line="382"/>
       <source>Fence</source>
       <translation>Hesia</translation>
     </message>
     <message>
-      <location filename="../../ArchFence.py" line="391"/>
+      <location filename="../../ArchFence.py" line="385"/>
       <source>Creates a fence object from a selected section, post and path</source>
       <translation>Hesi-objektu bat sortzen du hautatutako sekzio, zutoin eta bide bat erabilita</translation>
     </message>

@@ -26,8 +26,8 @@
 #include <FCConfig.h>
 
 #ifdef _MSC_VER
-# pragma warning(disable : 4290)
-# pragma warning(disable : 4275)
+#pragma warning(disable : 4290)
+#pragma warning(disable : 4275)
 #endif
 
 #ifdef _PreComp_
@@ -56,19 +56,19 @@
 #include <QFileInfo>
 
 // Salomesh
+#include <SMDSAbs_ElementType.hxx>
 #include <SMDS_MeshElement.hxx>
 #include <SMDS_MeshGroup.hxx>
 #include <SMDS_MeshNode.hxx>
 #include <SMDS_PolyhedralVolumeOfNodes.hxx>
-#include <SMDSAbs_ElementType.hxx>
+#include <SMESHDS_Group.hxx>
+#include <SMESHDS_GroupBase.hxx>
+#include <SMESHDS_Mesh.hxx>
 #include <SMESH_Gen.hxx>
 #include <SMESH_Group.hxx>
 #include <SMESH_Mesh.hxx>
 #include <SMESH_MeshEditor.hxx>
 #include <SMESH_Version.h>
-#include <SMESHDS_Group.hxx>
-#include <SMESHDS_GroupBase.hxx>
-#include <SMESHDS_Mesh.hxx>
 
 #include <StdMeshers_Arithmetic1D.hxx>
 #include <StdMeshers_AutomaticLength.hxx>
@@ -78,40 +78,40 @@
 #include <StdMeshers_LayerDistribution.hxx>
 #include <StdMeshers_LengthFromEdges.hxx>
 #include <StdMeshers_LocalLength.hxx>
+#include <StdMeshers_MEFISTO_2D.hxx>
 #include <StdMeshers_MaxElementArea.hxx>
 #include <StdMeshers_MaxElementVolume.hxx>
 #include <StdMeshers_MaxLength.hxx>
-#include <StdMeshers_MEFISTO_2D.hxx>
 #include <StdMeshers_NotConformAllowed.hxx>
 #include <StdMeshers_NumberOfLayers.hxx>
 #include <StdMeshers_NumberOfSegments.hxx>
 #include <StdMeshers_Prism_3D.hxx>
-#include <StdMeshers_Projection_1D.hxx>
-#include <StdMeshers_Projection_2D.hxx>
-#include <StdMeshers_Projection_3D.hxx>
 #include <StdMeshers_ProjectionSource1D.hxx>
 #include <StdMeshers_ProjectionSource2D.hxx>
 #include <StdMeshers_ProjectionSource3D.hxx>
+#include <StdMeshers_Projection_1D.hxx>
+#include <StdMeshers_Projection_2D.hxx>
+#include <StdMeshers_Projection_3D.hxx>
+#include <StdMeshers_QuadranglePreference.hxx>
 #include <StdMeshers_Quadrangle_2D.hxx>
 #include <StdMeshers_QuadraticMesh.hxx>
-#include <StdMeshers_QuadranglePreference.hxx>
 #include <StdMeshers_RadialPrism_3D.hxx>
 #include <StdMeshers_Regular_1D.hxx>
 #include <StdMeshers_SegmentAroundVertex_0D.hxx>
 #include <StdMeshers_SegmentLengthAroundVertex.hxx>
 #include <StdMeshers_StartEndLength.hxx>
 #if SMESH_VERSION_MAJOR < 7
-# include <StdMeshers_TrianglePreference.hxx>
+#include <StdMeshers_TrianglePreference.hxx>
 #endif
 #include <StdMeshers_UseExisting_1D2D.hxx>
 
 // Opencascade
 #include <Adaptor3d_IsoCurve.hxx>
-#include <Bnd_Box.hxx>
-#include <BRep_Tool.hxx>
 #include <BRepAdaptor_Curve.hxx>
+#include <BRep_Tool.hxx>
+#include <Bnd_Box.hxx>
 #if OCC_VERSION_HEX < 0x070600
-# include <BRepAdaptor_HSurface.hxx>
+#include <BRepAdaptor_HSurface.hxx>
 #endif
 #include <BRepAdaptor_Surface.hxx>
 #include <BRepBndLib.hxx>
@@ -123,20 +123,15 @@
 #include <BRepGProp_Face.hxx>
 #include <BRepTools.hxx>
 #include <GCPnts_AbscissaPoint.hxx>
-#include <Geom_BezierCurve.hxx>
-#include <Geom_BezierSurface.hxx>
-#include <Geom_BSplineCurve.hxx>
-#include <Geom_BSplineSurface.hxx>
-#include <Geom_Line.hxx>
-#include <Geom_Plane.hxx>
+#include <GProp_GProps.hxx>
 #include <GeomAPI_IntCS.hxx>
 #include <GeomAPI_ProjectPointOnSurf.hxx>
-#include <gp_Dir.hxx>
-#include <gp_Lin.hxx>
-#include <gp_Pln.hxx>
-#include <gp_Pnt.hxx>
-#include <gp_Vec.hxx>
-#include <GProp_GProps.hxx>
+#include <Geom_BSplineCurve.hxx>
+#include <Geom_BSplineSurface.hxx>
+#include <Geom_BezierCurve.hxx>
+#include <Geom_BezierSurface.hxx>
+#include <Geom_Line.hxx>
+#include <Geom_Plane.hxx>
 #include <Precision.hxx>
 #include <ShapeAnalysis_ShapeTolerance.hxx>
 #include <Standard_Real.hxx>
@@ -148,6 +143,11 @@
 #include <TopoDS_Shape.hxx>
 #include <TopoDS_Solid.hxx>
 #include <TopoDS_Vertex.hxx>
+#include <gp_Dir.hxx>
+#include <gp_Lin.hxx>
+#include <gp_Pln.hxx>
+#include <gp_Pnt.hxx>
+#include <gp_Vec.hxx>
 
 // VTK
 #include <vtkAppendFilter.h>
@@ -190,10 +190,10 @@
 
 // Netgen
 #ifdef FCWithNetgen
-# include <NETGENPlugin_Hypothesis.hxx>
-# include <NETGENPlugin_Mesher.hxx>
-# include <NETGENPlugin_SimpleHypothesis_3D.hxx>
+#include <NETGENPlugin_Hypothesis.hxx>
+#include <NETGENPlugin_Mesher.hxx>
+#include <NETGENPlugin_SimpleHypothesis_3D.hxx>
 #endif
 
-#endif // _PreComp_
+#endif  // _PreComp_
 #endif

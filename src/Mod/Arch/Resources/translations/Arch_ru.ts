@@ -4900,7 +4900,7 @@ Building creation aborted.</source>
       <translation>Количество столбов, используемых для возведения забора</translation>
     </message>
     <message>
-      <location filename="../../ArchFence.py" line="269"/>
+      <location filename="../../ArchFence.py" line="263"/>
       <source>When true, the fence will be colored like the original post and section.</source>
       <translation>Когда значение истинно, ограждение будет окрашено как первоначальная деталь и секция.</translation>
     </message>
@@ -6281,12 +6281,12 @@ Building creation aborted.</source>
   <context>
     <name>Arch_Fence</name>
     <message>
-      <location filename="../../ArchFence.py" line="388"/>
+      <location filename="../../ArchFence.py" line="382"/>
       <source>Fence</source>
       <translation>Ограда</translation>
     </message>
     <message>
-      <location filename="../../ArchFence.py" line="391"/>
+      <location filename="../../ArchFence.py" line="385"/>
       <source>Creates a fence object from a selected section, post and path</source>
       <translation>Создать объект ограждения из выбранной секции, детали и траектории</translation>
     </message>

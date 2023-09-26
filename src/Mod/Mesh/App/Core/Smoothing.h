@@ -40,13 +40,15 @@ class MeshRefFacetToFacets;
 class MeshExport AbstractSmoothing
 {
 public:
-    enum Component {
-        Tangential,         ///< Smooth tangential direction
-        Normal,             ///< Smooth normal direction
-        TangentialNormal    ///< Smooth tangential and normal direction
+    enum Component
+    {
+        Tangential,       ///< Smooth tangential direction
+        Normal,           ///< Smooth normal direction
+        TangentialNormal  ///< Smooth tangential and normal direction
     };
 
-    enum Continuity {
+    enum Continuity
+    {
         C0,
         C1,
         C2
@@ -63,53 +65,60 @@ public:
 protected:
     MeshKernel& kernel;
 
-    Component   component{Normal};
-    Continuity  continuity{C0};
+    Component component {Normal};
+    Continuity continuity {C0};
 };
 
-class MeshExport PlaneFitSmoothing : public AbstractSmoothing
+class MeshExport PlaneFitSmoothing: public AbstractSmoothing
 {
 public:
     explicit PlaneFitSmoothing(MeshKernel&);
-    void SetMaximum(float max) {
+    void SetMaximum(float max)
+    {
         maximum = max;
     }
     void Smooth(unsigned int) override;
     void SmoothPoints(unsigned int, const std::vector<PointIndex>&) override;
 
 private:
-    float maximum{FLT_MAX};
+    float maximum {FLT_MAX};
 };
 
-class MeshExport LaplaceSmoothing : public AbstractSmoothing
+class MeshExport LaplaceSmoothing: public AbstractSmoothing
 {
 public:
     explicit LaplaceSmoothing(MeshKernel&);
     void Smooth(unsigned int) override;
     void SmoothPoints(unsigned int, const std::vector<PointIndex>&) override;
-    void SetLambda(double l) { lambda = l;}
+    void SetLambda(double l)
+    {
+        lambda = l;
+    }
 
 protected:
+    void Umbrella(const MeshRefPointToPoints&, const MeshRefPointToFacets&, double);
     void Umbrella(const MeshRefPointToPoints&,
-                  const MeshRefPointToFacets&, double);
-    void Umbrella(const MeshRefPointToPoints&,
-                  const MeshRefPointToFacets&, double,
+                  const MeshRefPointToFacets&,
+                  double,
                   const std::vector<PointIndex>&);
 
 protected:
-    double lambda{0.6307};
+    double lambda {0.6307};
 };
 
-class MeshExport TaubinSmoothing : public LaplaceSmoothing
+class MeshExport TaubinSmoothing: public LaplaceSmoothing
 {
 public:
     explicit TaubinSmoothing(MeshKernel&);
     void Smooth(unsigned int) override;
     void SmoothPoints(unsigned int, const std::vector<PointIndex>&) override;
-    void SetMicro(double m) { micro = m;}
+    void SetMicro(double m)
+    {
+        micro = m;
+    }
 
 protected:
-    double micro{0.0424};
+    double micro {0.0424};
 };
 
 /*!
@@ -117,11 +126,12 @@ protected:
  * Smoothing based on median filter from the paper:
  * Mesh Median Filter for Smoothing 3-D Polygonal Surfaces
  */
-class MeshExport MedianFilterSmoothing : public AbstractSmoothing
+class MeshExport MedianFilterSmoothing: public AbstractSmoothing
 {
 public:
     explicit MedianFilterSmoothing(MeshKernel&);
-    void SetWeight(int w) {
+    void SetWeight(int w)
+    {
         weights = w;
     }
     void Smooth(unsigned int) override;
@@ -133,10 +143,10 @@ private:
                       const std::vector<PointIndex>&);
 
 private:
-    int weights{1};
+    int weights {1};
 };
 
-} // namespace MeshCore
+}  // namespace MeshCore
 
 
 #endif  // MESH_SMOOTHING_H

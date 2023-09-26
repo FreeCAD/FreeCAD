@@ -155,7 +155,7 @@
     <message>
       <location filename="../../Command.cpp" line="575"/>
       <source>Initial temperature</source>
-      <translation type="unfinished">Initial temperature</translation>
+      <translation>Initiële temperatuur</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="576"/>
@@ -1023,11 +1023,11 @@
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcxImp.cpp" line="141"/>
-      <source>The specified executable 
+      <source>The specified executable
 '%1'
  does not exist!
 Specify another file please.</source>
-      <translation>Het gespecificeerde uitvoerbare bestand 
+      <translation>Het gespecificeerde uitvoerbare bestand
 '%1'
  bestaat niet!
 Geef een ander bestand op.</translation>
@@ -1125,11 +1125,11 @@ will be merged to make the volume boundaries invisible.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemElmerImp.cpp" line="100"/>
-      <source>The specified executable 
+      <source>The specified executable
 '%1'
  does not exist!
 Specify another file please.</source>
-      <translation>Het gespecificeerde uitvoerbare bestand 
+      <translation>Het gespecificeerde uitvoerbare bestand
 '%1'
  bestaat niet!
 Geef een ander bestand op.</translation>
@@ -1250,8 +1250,8 @@ the constraint or material is applied.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="72"/>
-      <source>Let the application manage (create, delete) the working directories for all solver. Use temporary directories.</source>
-      <translation type="unfinished">Let the application manage (create, delete) the working directories for all solver. Use temporary directories.</translation>
+      <source>Let the application manage (create, delete) the working directories for all solvers. Use temporary directories.</source>
+      <translation type="unfinished">Let the application manage (create, delete) the working directories for all solvers. Use temporary directories.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="98"/>
@@ -1391,11 +1391,11 @@ adding an analysis container</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGmshImp.cpp" line="77"/>
-      <source>The specified executable 
+      <source>The specified executable
 '%1'
  does not exist!
 Specify another file please.</source>
-      <translation>Het gespecificeerde uitvoerbare bestand 
+      <translation>Het gespecificeerde uitvoerbare bestand
 '%1'
  bestaat niet!
 Geef een ander bestand op.</translation>
@@ -1583,11 +1583,11 @@ If unchecked, they will be sorted by their name.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemMystranImp.cpp" line="79"/>
-      <source>The specified executable 
+      <source>The specified executable
 '%1'
  does not exist!
 Specify another file please.</source>
-      <translation>Het gespecificeerde uitvoerbare bestand 
+      <translation>Het gespecificeerde uitvoerbare bestand
 '%1'
  bestaat niet!
 Geef een ander bestand op.</translation>
@@ -1695,11 +1695,11 @@ that "MAXKOI" needs to be increased.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemZ88Imp.cpp" line="102"/>
-      <source>The specified z88r executable 
+      <source>The specified z88r executable
 '%1'
  does not exist!
 Specify another file please.</source>
-      <translation type="unfinished">The specified z88r executable 
+      <translation type="unfinished">The specified z88r executable
 '%1'
  does not exist!
 Specify another file please.</translation>

@@ -24,8 +24,8 @@
 
 #include <Mod/Fem/App/FemPostFilter.h>
 
-#include "ViewProviderFemPostFilter.h"
 #include "TaskPostBoxes.h"
+#include "ViewProviderFemPostFilter.h"
 
 
 using namespace FemGui;
@@ -48,7 +48,7 @@ ViewProviderFemPostDataAlongLine::~ViewProviderFemPostDataAlongLine() = default;
 
 void ViewProviderFemPostDataAlongLine::setupTaskDialog(TaskDlgPost* dlg)
 {
-    //add the function box
+    // add the function box
     dlg->appendBox(new TaskPostDataAlongLine(dlg->getView()));
 }
 
@@ -78,7 +78,7 @@ ViewProviderFemPostDataAtPoint::~ViewProviderFemPostDataAtPoint() = default;
 
 void ViewProviderFemPostDataAtPoint::setupTaskDialog(TaskDlgPost* dlg)
 {
-    //add the function box
+    // add the function box
     dlg->appendBox(new TaskPostDataAtPoint(dlg->getView()));
 }
 
@@ -87,20 +87,23 @@ void ViewProviderFemPostDataAtPoint::setupTaskDialog(TaskDlgPost* dlg)
 // clip filter
 PROPERTY_SOURCE(FemGui::ViewProviderFemPostClip, FemGui::ViewProviderFemPostObject)
 
-ViewProviderFemPostClip::ViewProviderFemPostClip() {
+ViewProviderFemPostClip::ViewProviderFemPostClip()
+{
 
     sPixmap = "FEM_PostFilterClipRegion";
 }
 
 ViewProviderFemPostClip::~ViewProviderFemPostClip() = default;
 
-void ViewProviderFemPostClip::setupTaskDialog(TaskDlgPost* dlg) {
+void ViewProviderFemPostClip::setupTaskDialog(TaskDlgPost* dlg)
+{
 
-    //add the function box
-    dlg->appendBox(new TaskPostClip(dlg->getView(),
+    // add the function box
+    dlg->appendBox(new TaskPostClip(
+        dlg->getView(),
         &static_cast<Fem::FemPostClipFilter*>(dlg->getView()->getObject())->Function));
 
-    //add the display options
+    // add the display options
     FemGui::ViewProviderFemPostObject::setupTaskDialog(dlg);
 }
 
@@ -136,12 +139,12 @@ ViewProviderFemPostCut::~ViewProviderFemPostCut() = default;
 
 void ViewProviderFemPostCut::setupTaskDialog(TaskDlgPost* dlg)
 {
-    //add the function box
+    // add the function box
     dlg->appendBox(new TaskPostCut(
         dlg->getView(),
         &static_cast<Fem::FemPostCutFilter*>(dlg->getView()->getObject())->Function));
 
-    //add the display options
+    // add the display options
     FemGui::ViewProviderFemPostObject::setupTaskDialog(dlg);
 }
 
@@ -159,10 +162,10 @@ ViewProviderFemPostScalarClip::~ViewProviderFemPostScalarClip() = default;
 
 void ViewProviderFemPostScalarClip::setupTaskDialog(TaskDlgPost* dlg)
 {
-    //add the function box
+    // add the function box
     dlg->appendBox(new TaskPostScalarClip(dlg->getView()));
 
-    //add the display options
+    // add the display options
     FemGui::ViewProviderFemPostObject::setupTaskDialog(dlg);
 }
 
@@ -180,9 +183,9 @@ ViewProviderFemPostWarpVector::~ViewProviderFemPostWarpVector() = default;
 
 void ViewProviderFemPostWarpVector::setupTaskDialog(TaskDlgPost* dlg)
 {
-    //add the function box
+    // add the function box
     dlg->appendBox(new TaskPostWarpVector(dlg->getView()));
 
-    //add the display options
+    // add the display options
     FemGui::ViewProviderFemPostObject::setupTaskDialog(dlg);
 }

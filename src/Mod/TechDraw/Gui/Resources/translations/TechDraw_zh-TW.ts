@@ -2141,8 +2141,8 @@
       <translation type="unfinished">Create ComplexSection</translation>
     </message>
     <message>
-      <location filename="../../TaskComplexSection.cpp" line="643"/>
-      <location filename="../../TaskSectionView.cpp" line="569"/>
+      <location filename="../../TaskComplexSection.cpp" line="644"/>
+      <location filename="../../TaskSectionView.cpp" line="577"/>
       <source>Edit SectionView</source>
       <translation>編輯剖面視圖</translation>
     </message>
@@ -3522,8 +3522,8 @@
       <translation type="unfinished">The view direction in BaseView coordinates</translation>
     </message>
     <message>
-      <location filename="../../TaskComplexSection.cpp" line="692"/>
-      <location filename="../../TaskSectionView.cpp" line="618"/>
+      <location filename="../../TaskComplexSection.cpp" line="704"/>
+      <location filename="../../TaskSectionView.cpp" line="638"/>
       <source>Operation Failed</source>
       <translation>操作失敗</translation>
     </message>
@@ -3830,7 +3830,7 @@ it has a weld symbol that would become broken.</source>
 它有銲接符號會損壞。</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderViewPart.cpp" line="319"/>
+      <location filename="../../ViewProviderViewPart.cpp" line="331"/>
       <source>You cannot delete this view because it has one or more dependent views that would become broken.</source>
       <translation type="unfinished">You cannot delete this view because it has one or more dependent views that would become broken.</translation>
     </message>
@@ -3844,7 +3844,7 @@ it has a weld symbol that would become broken.</source>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="165"/>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="173"/>
       <location filename="../../ViewProviderTemplate.cpp" line="205"/>
-      <location filename="../../ViewProviderViewPart.cpp" line="322"/>
+      <location filename="../../ViewProviderViewPart.cpp" line="334"/>
       <location filename="../../ViewProviderWeld.cpp" line="145"/>
       <source>Object dependencies</source>
       <translation>物件相依</translation>
@@ -6090,11 +6090,12 @@ Do you want to continue?</source>
     </message>
     <message>
       <location filename="../../TaskComplexSection.cpp" line="559"/>
+      <location filename="../../TaskComplexSection.cpp" line="692"/>
       <source>ComplexSection</source>
       <translation type="unfinished">ComplexSection</translation>
     </message>
     <message>
-      <location filename="../../TaskComplexSection.cpp" line="691"/>
+      <location filename="../../TaskComplexSection.cpp" line="703"/>
       <source>Can not continue. Object * %1 or %2 not found.</source>
       <translation type="unfinished">Can not continue. Object * %1 or %2 not found.</translation>
     </message>
@@ -7865,7 +7866,7 @@ using the given X/Y Spacing</source>
       <translation>無法套用。尚未挑選剖面方向</translation>
     </message>
     <message>
-      <location filename="../../TaskSectionView.cpp" line="617"/>
+      <location filename="../../TaskSectionView.cpp" line="637"/>
       <source>Can not continue. Object * %1 or %2 not found.</source>
       <translation type="unfinished">Can not continue. Object * %1 or %2 not found.</translation>
     </message>

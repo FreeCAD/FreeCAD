@@ -103,7 +103,7 @@
     <linearGradient xlink:href="#linearGradient5034" id="linearGradient5122" gradientUnits="userSpaceOnUse" gradientTransform="translate(80,0)" x1="23" y1="42" x2="23" y2="32" />
     <linearGradient xlink:href="#linearGradient5048" id="linearGradient5124" gradientUnits="userSpaceOnUse" x1="31" y1="33" x2="28" y2="28" />
   </defs>
-  
+
   <path style="fill:#ef2929;stroke:#280000;stroke-width:2;stroke-linecap:butt;stroke-linejoin:round;stroke-opacity:1;display:inline" d="M 5,19 9,21 27,11 23,9 z" id="path4106" />
   <path style="fill:#cc0000;stroke:#280000;stroke-width:2;stroke-linecap:butt;stroke-linejoin:round;stroke-opacity:1;display:inline" d="M 5,19 9,21 9,43 5,41 z" id="path4108" />
   <path style="fill:url(#linearGradient4120);fill-opacity:1;stroke:#280000;stroke-width:2;stroke-linecap:butt;stroke-linejoin:round;stroke-opacity:1;display:inline" d="M 9,43 27,33 27,11 9,21 z" id="path4110" />

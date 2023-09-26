@@ -1023,7 +1023,7 @@
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcxImp.cpp" line="141"/>
-      <source>The specified executable 
+      <source>The specified executable
 '%1'
  does not exist!
 Specify another file please.</source>
@@ -1125,7 +1125,7 @@ budou sloučeny, aby byly hranice objemu neviditelné.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemElmerImp.cpp" line="100"/>
-      <source>The specified executable 
+      <source>The specified executable
 '%1'
  does not exist!
 Specify another file please.</source>
@@ -1250,8 +1250,8 @@ the constraint or material is applied.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="72"/>
-      <source>Let the application manage (create, delete) the working directories for all solver. Use temporary directories.</source>
-      <translation>Nechte aplikaci spravovat (vytvářet, mazat) pracovní adresáře pro všechny řešitele. Použijte dočasné adresáře.</translation>
+      <source>Let the application manage (create, delete) the working directories for all solvers. Use temporary directories.</source>
+      <translation type="unfinished">Let the application manage (create, delete) the working directories for all solvers. Use temporary directories.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="98"/>
@@ -1391,7 +1391,7 @@ přidání nádoby na analýzu</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGmshImp.cpp" line="77"/>
-      <source>The specified executable 
+      <source>The specified executable
 '%1'
  does not exist!
 Specify another file please.</source>
@@ -1583,7 +1583,7 @@ Pokud není zaškrtnuto, budou seřazeny podle jména.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemMystranImp.cpp" line="79"/>
-      <source>The specified executable 
+      <source>The specified executable
 '%1'
  does not exist!
 Specify another file please.</source>
@@ -1695,7 +1695,7 @@ iterativní řešitel a zobrazí se chybová zpráva
     </message>
     <message>
       <location filename="../../DlgSettingsFemZ88Imp.cpp" line="102"/>
-      <source>The specified z88r executable 
+      <source>The specified z88r executable
 '%1'
  does not exist!
 Specify another file please.</source>
@@ -3260,12 +3260,12 @@ Poznámka: nemá žádný účinek, pokud bylo vybráno těleso</translation>
       <location filename="../ui/ElectrostaticPotential.ui" line="566"/>
       <source>Capacity Body: </source>
       <extracomment>Enabled by 'Calculate Capacity Matrix' in Electrostatic equation</extracomment>
-      <translation>Kapacita těla:</translation>
+      <translation>Kapacita tělesa: </translation>
     </message>
     <message>
       <location filename="../ui/ElectrostaticPotential.ui" line="602"/>
       <source>Counter of the body (or face) with a capacitance</source>
-      <translation>Pult těla (nebo obličeje) s kapacitou</translation>
+      <translation>Čítač tělesa (nebo plochy) s kapacitou</translation>
     </message>
     <message>
       <location filename="../ui/ElementGeometry1D.ui" line="14"/>
@@ -4278,7 +4278,7 @@ Možné proměnné naleznete v popisném poli níže.</translation>
     <message>
       <location filename="../../TaskFemConstraintBearing.ui" line="219"/>
       <source>Distance</source>
-      <translation>Vzdálenost</translation>
+      <translation type="unfinished">Distance</translation>
     </message>
   </context>
   <context>
@@ -5328,7 +5328,7 @@ používá se pro řešič Elmer</translation>
     <message>
       <location filename="../../Workbench.cpp" line="66"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Síť</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="67"/>
@@ -5348,7 +5348,7 @@ používá se pro řešič Elmer</translation>
     <message>
       <location filename="../../Workbench.cpp" line="72"/>
       <source>Results</source>
-      <translation type="unfinished">Results</translation>
+      <translation>Výsledky</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="73"/>
@@ -6317,12 +6317,12 @@ Nejprve prosím vyberte typ výsledku.</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="198"/>
       <source>Body heat source</source>
-      <translation type="unfinished">Body heat source</translation>
+      <translation>Zdroj tepla tělesa</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="202"/>
       <source>Creates a body heat source</source>
-      <translation type="unfinished">Creates a body heat source</translation>
+      <translation>Vytvoří zdroj tepla tělesa</translation>
     </message>
   </context>
   <context>

@@ -500,8 +500,8 @@ Hodnota v rozmezí 0.2-10.</translation>
       <location filename="../../Tessellation.cpp" line="272"/>
       <source>You have selected a body without tip.
 Either set the tip of the body or select a different shape, please.</source>
-      <translation>Vybrali jste tělo bez špičky.
-Buď nastavte špičku těla nebo vyberte jiný tvar, prosím.</translation>
+      <translation>Vybrali jste těleso bez špičky.
+Buď nastavte špičku tělesa nebo vyberte jiný tvar, prosím.</translation>
     </message>
     <message>
       <location filename="../../Tessellation.cpp" line="278"/>

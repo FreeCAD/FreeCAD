@@ -11,12 +11,12 @@
     <message>
       <location filename="../../Command.cpp" line="180"/>
       <source>Bearing constraint</source>
-      <translation type="unfinished">Bearing constraint</translation>
+      <translation>Ograničenje ležaja</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="181"/>
       <source>Creates a bearing constraint</source>
-      <translation type="unfinished">Creates a bearing constraint</translation>
+      <translation>Pravi ograničenje ležaja</translation>
     </message>
   </context>
   <context>
@@ -24,17 +24,17 @@
     <message>
       <location filename="../../Command.cpp" line="224"/>
       <source>Fem</source>
-      <translation>MKE</translation>
+      <translation type="unfinished">Fem</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="225"/>
       <source>Contact constraint</source>
-      <translation type="unfinished">Contact constraint</translation>
+      <translation>Kontaktno ograničenje</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="226"/>
       <source>Creates a contact constraint between faces</source>
-      <translation type="unfinished">Creates a contact constraint between faces</translation>
+      <translation>Pravi kontaktno ograničenje između sve stranice</translation>
     </message>
   </context>
   <context>
@@ -119,12 +119,12 @@
     <message>
       <location filename="../../Command.cpp" line="476"/>
       <source>Gear constraint</source>
-      <translation type="unfinished">Gear constraint</translation>
+      <translation>Ograničenje zupčanika</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="477"/>
       <source>Creates a gear constraint</source>
-      <translation type="unfinished">Creates a gear constraint</translation>
+      <translation>Pravi ograničenje zupčanika</translation>
     </message>
   </context>
   <context>
@@ -209,12 +209,12 @@
     <message>
       <location filename="../../Command.cpp" line="778"/>
       <source>Pulley constraint</source>
-      <translation type="unfinished">Pulley constraint</translation>
+      <translation>Ograničenje remenice</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="779"/>
       <source>Creates a pulley constraint</source>
-      <translation type="unfinished">Creates a pulley constraint</translation>
+      <translation>Pravi ograničenje remenice</translation>
     </message>
   </context>
   <context>
@@ -227,7 +227,7 @@
     <message>
       <location filename="../../Command.cpp" line="725"/>
       <source>Spring</source>
-      <translation type="unfinished">Spring</translation>
+      <translation>Opruga</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="726"/>
@@ -268,7 +268,7 @@
     <message>
       <location filename="../../Command.cpp" line="878"/>
       <source>Create a local coordinate system on a face</source>
-      <translation type="unfinished">Create a local coordinate system on a face</translation>
+      <translation>Napravi lokalni koordinatni sistem na stranici</translation>
     </message>
   </context>
   <context>
@@ -596,12 +596,12 @@
     <message>
       <location filename="../../Command.cpp" line="196"/>
       <source>Make bearing constraint</source>
-      <translation type="unfinished">Make bearing constraint</translation>
+      <translation>Napravi ograničenje ležaja</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="241"/>
       <source>Make contact constraint on a face</source>
-      <translation type="unfinished">Make contact constraint on a face</translation>
+      <translation>Napravi kontaktno ograničenje na stranici</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="295"/>
@@ -621,7 +621,7 @@
     <message>
       <location filename="../../Command.cpp" line="491"/>
       <source>Make gear constraint</source>
-      <translation type="unfinished">Make gear constraint</translation>
+      <translation>Napravi ograničenje zupčanika</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="537"/>
@@ -1022,7 +1022,7 @@
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcxImp.cpp" line="141"/>
-      <source>The specified executable 
+      <source>The specified executable
 '%1'
  does not exist!
 Specify another file please.</source>
@@ -1124,7 +1124,7 @@ will be merged to make the volume boundaries invisible.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemElmerImp.cpp" line="100"/>
-      <source>The specified executable 
+      <source>The specified executable
 '%1'
  does not exist!
 Specify another file please.</source>
@@ -1249,8 +1249,8 @@ the constraint or material is applied.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="72"/>
-      <source>Let the application manage (create, delete) the working directories for all solver. Use temporary directories.</source>
-      <translation type="unfinished">Let the application manage (create, delete) the working directories for all solver. Use temporary directories.</translation>
+      <source>Let the application manage (create, delete) the working directories for all solvers. Use temporary directories.</source>
+      <translation type="unfinished">Let the application manage (create, delete) the working directories for all solvers. Use temporary directories.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="98"/>
@@ -1390,7 +1390,7 @@ adding an analysis container</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGmshImp.cpp" line="77"/>
-      <source>The specified executable 
+      <source>The specified executable
 '%1'
  does not exist!
 Specify another file please.</source>
@@ -1581,7 +1581,7 @@ Ako nije čekirano, biće sortirani po imenima.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemMystranImp.cpp" line="79"/>
-      <source>The specified executable 
+      <source>The specified executable
 '%1'
  does not exist!
 Specify another file please.</source>
@@ -1693,7 +1693,7 @@ that "MAXKOI" needs to be increased.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemZ88Imp.cpp" line="102"/>
-      <source>The specified z88r executable 
+      <source>The specified z88r executable
 '%1'
  does not exist!
 Specify another file please.</source>
@@ -3706,7 +3706,7 @@ Note: for 2D only setting for x is possible,
     <message>
       <location filename="../../TaskFemConstraintContact.cpp" line="457"/>
       <source>Contact constraint</source>
-      <translation type="unfinished">Contact constraint</translation>
+      <translation>Kontaktno ograničenje</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.cpp" line="612"/>
@@ -4276,7 +4276,7 @@ Za moguće promenljive, pogledaj okvir za opis ispod.</translation>
     <message>
       <location filename="../../TaskFemConstraintBearing.ui" line="219"/>
       <source>Distance</source>
-      <translation>Rastojanje</translation>
+      <translation type="unfinished">Distance</translation>
     </message>
   </context>
   <context>
@@ -6102,7 +6102,7 @@ Please select a result type first.</translation>
     <message>
       <location filename="../../Command.cpp" line="1138"/>
       <source>Fem</source>
-      <translation type="unfinished">Fem</translation>
+      <translation>MKE</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1139"/>

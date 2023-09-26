@@ -22,7 +22,7 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <sstream>
+#include <sstream>
 #endif
 
 #include <App/Application.h>
@@ -40,7 +40,8 @@
 using namespace MeshGui;
 
 Segmentation::Segmentation(Mesh::Feature* mesh, QWidget* parent, Qt::WindowFlags fl)
-  : QWidget(parent, fl), myMesh(mesh)
+    : QWidget(parent, fl)
+    , myMesh(mesh)
 {
     ui = new Ui_Segmentation;
     ui->setupUi(this);
@@ -83,22 +84,34 @@ void Segmentation::accept()
 
     std::vector<MeshCore::MeshSurfaceSegmentPtr> segm;
     if (ui->groupBoxFree->isChecked()) {
-        segm.emplace_back(std::make_shared<MeshCore::MeshCurvatureFreeformSegment>
-            (meshCurv.GetCurvature(), ui->numFree->value(),
-             ui->tol1Free->value(), ui->tol2Free->value(),
-             ui->crv1Free->value(), ui->crv2Free->value()));
+        segm.emplace_back(
+            std::make_shared<MeshCore::MeshCurvatureFreeformSegment>(meshCurv.GetCurvature(),
+                                                                     ui->numFree->value(),
+                                                                     ui->tol1Free->value(),
+                                                                     ui->tol2Free->value(),
+                                                                     ui->crv1Free->value(),
+                                                                     ui->crv2Free->value()));
     }
     if (ui->groupBoxCyl->isChecked()) {
-        segm.emplace_back(std::make_shared<MeshCore::MeshCurvatureCylindricalSegment>
-            (meshCurv.GetCurvature(), ui->numCyl->value(), ui->tol1Cyl->value(), ui->tol2Cyl->value(), ui->crvCyl->value()));
+        segm.emplace_back(
+            std::make_shared<MeshCore::MeshCurvatureCylindricalSegment>(meshCurv.GetCurvature(),
+                                                                        ui->numCyl->value(),
+                                                                        ui->tol1Cyl->value(),
+                                                                        ui->tol2Cyl->value(),
+                                                                        ui->crvCyl->value()));
     }
     if (ui->groupBoxSph->isChecked()) {
-        segm.emplace_back(std::make_shared<MeshCore::MeshCurvatureSphericalSegment>
-            (meshCurv.GetCurvature(), ui->numSph->value(), ui->tolSph->value(), ui->crvSph->value()));
+        segm.emplace_back(
+            std::make_shared<MeshCore::MeshCurvatureSphericalSegment>(meshCurv.GetCurvature(),
+                                                                      ui->numSph->value(),
+                                                                      ui->tolSph->value(),
+                                                                      ui->crvSph->value()));
     }
     if (ui->groupBoxPln->isChecked()) {
-        segm.emplace_back(std::make_shared<MeshCore::MeshCurvaturePlanarSegment>
-            (meshCurv.GetCurvature(), ui->numPln->value(), ui->tolPln->value()));
+        segm.emplace_back(
+            std::make_shared<MeshCore::MeshCurvaturePlanarSegment>(meshCurv.GetCurvature(),
+                                                                   ui->numPln->value(),
+                                                                   ui->tolPln->value()));
     }
     finder.FindSegments(segm);
 
@@ -107,16 +120,17 @@ void Segmentation::accept()
 
     std::string internalname = "Segments_";
     internalname += myMesh->getNameInDocument();
-    App::DocumentObjectGroup* group = static_cast<App::DocumentObjectGroup*>(document->addObject
-        ("App::DocumentObjectGroup", internalname.c_str()));
+    App::DocumentObjectGroup* group = static_cast<App::DocumentObjectGroup*>(
+        document->addObject("App::DocumentObjectGroup", internalname.c_str()));
     std::string labelname = "Segments ";
     labelname += myMesh->Label.getValue();
     group->Label.setValue(labelname);
-    for (const auto & it : segm) {
+    for (const auto& it : segm) {
         const std::vector<MeshCore::MeshSegment>& data = it->GetSegments();
-        for (const auto & jt : data) {
+        for (const auto& jt : data) {
             Mesh::MeshObject* segment = mesh->meshFromSegment(jt);
-            Mesh::Feature* feaSegm = static_cast<Mesh::Feature*>(group->addObject("Mesh::Feature", "Segment"));
+            Mesh::Feature* feaSegm =
+                static_cast<Mesh::Feature*>(group->addObject("Mesh::Feature", "Segment"));
             Mesh::MeshObject* feaMesh = feaSegm->Mesh.startEditing();
             feaMesh->swap(*segment);
             feaSegm->Mesh.finishEditing();
@@ -130,7 +144,7 @@ void Segmentation::accept()
     document->commitTransaction();
 }
 
-void Segmentation::changeEvent(QEvent *e)
+void Segmentation::changeEvent(QEvent* e)
 {
     if (e->type() == QEvent::LanguageChange) {
         ui->retranslateUi(this);
@@ -145,8 +159,7 @@ void Segmentation::changeEvent(QEvent *e)
 TaskSegmentation::TaskSegmentation(Mesh::Feature* mesh)
 {
     widget = new Segmentation(mesh);
-    taskbox = new Gui::TaskView::TaskBox(
-        QPixmap(), widget->windowTitle(), false, nullptr);
+    taskbox = new Gui::TaskView::TaskBox(QPixmap(), widget->windowTitle(), false, nullptr);
     taskbox->groupLayout()->addWidget(widget);
     Content.push_back(taskbox);
 }

@@ -11,12 +11,12 @@
     <message>
       <location filename="../../Command.cpp" line="180"/>
       <source>Bearing constraint</source>
-      <translation type="unfinished">Bearing constraint</translation>
+      <translation>Restrição de rolamento</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="181"/>
       <source>Creates a bearing constraint</source>
-      <translation type="unfinished">Creates a bearing constraint</translation>
+      <translation>Cria uma restrição de rolamento</translation>
     </message>
   </context>
   <context>
@@ -29,12 +29,12 @@
     <message>
       <location filename="../../Command.cpp" line="225"/>
       <source>Contact constraint</source>
-      <translation type="unfinished">Contact constraint</translation>
+      <translation>Restrição de contato</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="226"/>
       <source>Creates a contact constraint between faces</source>
-      <translation type="unfinished">Creates a contact constraint between faces</translation>
+      <translation>Cria uma restrição de contato entre faces</translation>
     </message>
   </context>
   <context>
@@ -52,7 +52,7 @@
     <message>
       <location filename="../../Command.cpp" line="280"/>
       <source>Creates a displacement boundary condition for a geometric entity</source>
-      <translation type="unfinished">Creates a displacement boundary condition for a geometric entity</translation>
+      <translation>Cria uma condição de limite de deslocamento para uma entidade geométrica</translation>
     </message>
   </context>
   <context>
@@ -70,7 +70,7 @@
     <message>
       <location filename="../../Command.cpp" line="328"/>
       <source>Creates a fixed boundary condition for a geometric entity</source>
-      <translation type="unfinished">Creates a fixed boundary condition for a geometric entity</translation>
+      <translation>Cria uma condição de limite fixo para uma entidade geométrica</translation>
     </message>
   </context>
   <context>
@@ -106,7 +106,7 @@
     <message>
       <location filename="../../Command.cpp" line="424"/>
       <source>Creates a force load applied to a geometric entity</source>
-      <translation type="unfinished">Creates a force load applied to a geometric entity</translation>
+      <translation>Cria uma carregamento de força aplicado a uma entidade geométrica</translation>
     </message>
   </context>
   <context>
@@ -119,12 +119,12 @@
     <message>
       <location filename="../../Command.cpp" line="476"/>
       <source>Gear constraint</source>
-      <translation type="unfinished">Gear constraint</translation>
+      <translation>Restrição de engrenagem</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="477"/>
       <source>Creates a gear constraint</source>
-      <translation type="unfinished">Creates a gear constraint</translation>
+      <translation>Cria uma restrição de engrenagem</translation>
     </message>
   </context>
   <context>
@@ -137,12 +137,12 @@
     <message>
       <location filename="../../Command.cpp" line="521"/>
       <source>Heat flux load</source>
-      <translation type="unfinished">Heat flux load</translation>
+      <translation>Carregamento de fluxo de calor</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="522"/>
       <source>Creates a heat flux load acting on a face</source>
-      <translation type="unfinished">Creates a heat flux load acting on a face</translation>
+      <translation>Cria um carregamento de fluxo de calor atuando em uma face</translation>
     </message>
   </context>
   <context>
@@ -155,12 +155,12 @@
     <message>
       <location filename="../../Command.cpp" line="575"/>
       <source>Initial temperature</source>
-      <translation type="unfinished">Initial temperature</translation>
+      <translation>Temperatura inicial</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="576"/>
       <source>Creates an initial temperature acting on a body</source>
-      <translation type="unfinished">Creates an initial temperature acting on a body</translation>
+      <translation>Cria uma temperatura inicial agindo em um corpo</translation>
     </message>
   </context>
   <context>
@@ -173,12 +173,12 @@
     <message>
       <location filename="../../Command.cpp" line="623"/>
       <source>Plane multi-point constraint</source>
-      <translation type="unfinished">Plane multi-point constraint</translation>
+      <translation>Restrição de plano multipontos</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="624"/>
       <source>Creates a plane multi-point constraint for a face</source>
-      <translation type="unfinished">Creates a plane multi-point constraint for a face</translation>
+      <translation>Cria uma restrição de plano multipontos para uma face</translation>
     </message>
   </context>
   <context>
@@ -196,7 +196,7 @@
     <message>
       <location filename="../../Command.cpp" line="672"/>
       <source>Creates a pressure load acting on a face</source>
-      <translation type="unfinished">Creates a pressure load acting on a face</translation>
+      <translation>Cria um carregamento de pressão agindo em uma face</translation>
     </message>
   </context>
   <context>
@@ -209,12 +209,12 @@
     <message>
       <location filename="../../Command.cpp" line="778"/>
       <source>Pulley constraint</source>
-      <translation type="unfinished">Pulley constraint</translation>
+      <translation>Restrição de polia</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="779"/>
       <source>Creates a pulley constraint</source>
-      <translation type="unfinished">Creates a pulley constraint</translation>
+      <translation>Cria uma restrição de polia</translation>
     </message>
   </context>
   <context>
@@ -227,12 +227,12 @@
     <message>
       <location filename="../../Command.cpp" line="725"/>
       <source>Spring</source>
-      <translation type="unfinished">Spring</translation>
+      <translation>Mola</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="726"/>
       <source>Creates a spring acting on a face</source>
-      <translation type="unfinished">Creates a spring acting on a face</translation>
+      <translation>Cria uma mola agindo em uma face</translation>
     </message>
   </context>
   <context>
@@ -250,7 +250,7 @@
     <message>
       <location filename="../../Command.cpp" line="829"/>
       <source>Creates a temperature/concentrated heat flux load acting on a face</source>
-      <translation type="unfinished">Creates a temperature/concentrated heat flux load acting on a face</translation>
+      <translation>Cria um carregamento de temperatura/fluxo de calor concentrado agindo em uma face</translation>
     </message>
   </context>
   <context>
@@ -268,7 +268,7 @@
     <message>
       <location filename="../../Command.cpp" line="878"/>
       <source>Create a local coordinate system on a face</source>
-      <translation type="unfinished">Create a local coordinate system on a face</translation>
+      <translation>Cria um sistema de coordenadas locais em uma face</translation>
     </message>
   </context>
   <context>
@@ -1022,11 +1022,11 @@
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcxImp.cpp" line="141"/>
-      <source>The specified executable 
+      <source>The specified executable
 '%1'
  does not exist!
 Specify another file please.</source>
-      <translation>O executável especificado 
+      <translation>O executável especificado
 '%1'
  não existe!
 Especifique outro arquivo, por favor.</translation>
@@ -1124,11 +1124,11 @@ serão mescladas para tornar os limites de volume invisíveis.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemElmerImp.cpp" line="100"/>
-      <source>The specified executable 
+      <source>The specified executable
 '%1'
  does not exist!
 Specify another file please.</source>
-      <translation>O executável especificado 
+      <translation>O executável especificado
 '%1'
  não existe!
 Especifique outro arquivo, por favor.</translation>
@@ -1249,8 +1249,8 @@ the constraint or material is applied.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="72"/>
-      <source>Let the application manage (create, delete) the working directories for all solver. Use temporary directories.</source>
-      <translation>Permita que o aplicativo gerencie (criar, excluir) os diretórios de trabalho para todos os solver. Use diretórios temporários.</translation>
+      <source>Let the application manage (create, delete) the working directories for all solvers. Use temporary directories.</source>
+      <translation type="unfinished">Let the application manage (create, delete) the working directories for all solvers. Use temporary directories.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="98"/>
@@ -1390,11 +1390,11 @@ adicionar um recipiente de análise</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGmshImp.cpp" line="77"/>
-      <source>The specified executable 
+      <source>The specified executable
 '%1'
  does not exist!
 Specify another file please.</source>
-      <translation>O executável especificado 
+      <translation>O executável especificado
 '%1'
  não existe!
 Especifique outro arquivo, por favor.</translation>
@@ -1435,8 +1435,8 @@ exported from FreeCAD.</source>
 Objeto de malha FEM: O resultado no arquivo VTK será omitido, apenas os
 dados da malha serão importados e o objeto de malha FEM FreeCAD será criado.
 
-Objeto resultado FreeCAD: Os dados importados serão convertidos em um 
-objeto resultado FEM FreeCAD. Nota: esta configuração precisa do componente nome 
+Objeto resultado FreeCAD: Os dados importados serão convertidos em um
+objeto resultado FEM FreeCAD. Nota: esta configuração precisa do componente nome
 exato, então só funciona com arquivos VTK própriamente exportados do FreeCAD.</translation>
     </message>
     <message>
@@ -1581,11 +1581,11 @@ Se desmarcado, eles serão classificados por seus nomes.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemMystranImp.cpp" line="79"/>
-      <source>The specified executable 
+      <source>The specified executable
 '%1'
  does not exist!
 Specify another file please.</source>
-      <translation>O executável especificado 
+      <translation>O executável especificado
 '%1'
  não existe!
 Especifique outro arquivo, por favor.</translation>
@@ -1693,11 +1693,11 @@ que "MAXKOI" precisa ser aumentada.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemZ88Imp.cpp" line="102"/>
-      <source>The specified z88r executable 
+      <source>The specified z88r executable
 '%1'
  does not exist!
 Specify another file please.</source>
-      <translation>O executável z88r especificado 
+      <translation>O executável z88r especificado
 '%1'
  não existe!
 Especifique outro arquivo, por favor.</translation>
@@ -3129,7 +3129,7 @@ Especifique outro arquivo, por favor.</translation>
       <location filename="../ui/ElectrostaticPotential.ui" line="104"/>
       <source>Imaginary part is only used for equations
 with a harmonic/oscillating driving force</source>
-      <translation>Parte imaginária é usada apenas para equações 
+      <translation>Parte imaginária é usada apenas para equações
 com forças atuantes harmônicas/oscilantes</translation>
     </message>
     <message>
@@ -3706,7 +3706,7 @@ Nota: para configuração apenas 2D para x é possível,
     <message>
       <location filename="../../TaskFemConstraintContact.cpp" line="457"/>
       <source>Contact constraint</source>
-      <translation type="unfinished">Contact constraint</translation>
+      <translation>Restrição de contato</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.cpp" line="612"/>
@@ -3731,12 +3731,12 @@ Nota: para configuração apenas 2D para x é possível,
     <message>
       <location filename="../../TaskFemConstraintHeatflux.cpp" line="424"/>
       <source>Heat flux load</source>
-      <translation type="unfinished">Heat flux load</translation>
+      <translation>Carregamento de fluxo de calor</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="296"/>
       <source>Plane multi-point constraint</source>
-      <translation type="unfinished">Plane multi-point constraint</translation>
+      <translation>Restrição de plano multipontos</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintPressure.cpp" line="295"/>

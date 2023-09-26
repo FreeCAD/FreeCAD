@@ -1,4 +1,4 @@
- /**************************************************************************
+/**************************************************************************
  *   Copyright (c) 2018 FreeCAD Developers                                 *
  *   Author: Bernd Hahnebach <bernd@bimstatik.ch>                          *
  *   Based on src/Mod/Fem/Gui/DlgSettingsFemElmer.h                        *
@@ -25,30 +25,31 @@
 #ifndef FEMGUI_DLGSETTINGSFEMMATERIALIMP_H
 #define FEMGUI_DLGSETTINGSFEMMATERIALIMP_H
 
-#include <memory>
 #include <Gui/PropertyPage.h>
+#include <memory>
 
 
-namespace FemGui {
+namespace FemGui
+{
 class Ui_DlgSettingsFemMaterialImp;
 
-class DlgSettingsFemMaterialImp : public Gui::Dialog::PreferencePage
+class DlgSettingsFemMaterialImp: public Gui::Dialog::PreferencePage
 {
     Q_OBJECT
 
 public:
-    explicit DlgSettingsFemMaterialImp( QWidget* parent = nullptr );
+    explicit DlgSettingsFemMaterialImp(QWidget* parent = nullptr);
     ~DlgSettingsFemMaterialImp() override;
 
 protected:
     void saveSettings() override;
     void loadSettings() override;
-    void changeEvent(QEvent *e) override;
+    void changeEvent(QEvent* e) override;
 
 private:
     std::unique_ptr<Ui_DlgSettingsFemMaterialImp> ui;
 };
 
-} // namespace FemGui
+}  // namespace FemGui
 
-#endif // FEMGUI_DLGSETTINGSFEMMATERIALIMP_H
+#endif  // FEMGUI_DLGSETTINGSFEMMATERIALIMP_H

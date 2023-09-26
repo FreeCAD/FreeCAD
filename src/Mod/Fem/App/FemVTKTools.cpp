@@ -24,38 +24,38 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <cmath>
-# include <cstdlib>
-# include <map>
-# include <memory>
-# include <Python.h>
+#include <Python.h>
+#include <cmath>
+#include <cstdlib>
+#include <map>
+#include <memory>
 
-# include <SMESH_Mesh.hxx>
-# include <SMESHDS_Mesh.hxx>
+#include <SMESHDS_Mesh.hxx>
+#include <SMESH_Mesh.hxx>
 
-# include <vtkCellArray.h>
-# include <vtkDataArray.h>
-# include <vtkDataSetReader.h>
-# include <vtkDataSetWriter.h>
-# include <vtkDoubleArray.h>
-# include <vtkHexahedron.h>
-# include <vtkIdList.h>
-# include <vtkPointData.h>
-# include <vtkPyramid.h>
-# include <vtkQuad.h>
-# include <vtkQuadraticTriangle.h>
-# include <vtkQuadraticQuad.h>
-# include <vtkQuadraticTetra.h>
-# include <vtkQuadraticPyramid.h>
-# include <vtkQuadraticWedge.h>
-# include <vtkQuadraticHexahedron.h>
-# include <vtkTetra.h>
-# include <vtkTriangle.h>
-# include <vtkUnstructuredGrid.h>
-# include <vtkWedge.h>
-# include <vtkXMLPUnstructuredGridReader.h>
-# include <vtkXMLUnstructuredGridReader.h>
-# include <vtkXMLUnstructuredGridWriter.h>
+#include <vtkCellArray.h>
+#include <vtkDataArray.h>
+#include <vtkDataSetReader.h>
+#include <vtkDataSetWriter.h>
+#include <vtkDoubleArray.h>
+#include <vtkHexahedron.h>
+#include <vtkIdList.h>
+#include <vtkPointData.h>
+#include <vtkPyramid.h>
+#include <vtkQuad.h>
+#include <vtkQuadraticHexahedron.h>
+#include <vtkQuadraticPyramid.h>
+#include <vtkQuadraticQuad.h>
+#include <vtkQuadraticTetra.h>
+#include <vtkQuadraticTriangle.h>
+#include <vtkQuadraticWedge.h>
+#include <vtkTetra.h>
+#include <vtkTriangle.h>
+#include <vtkUnstructuredGrid.h>
+#include <vtkWedge.h>
+#include <vtkXMLPUnstructuredGridReader.h>
+#include <vtkXMLUnstructuredGridReader.h>
+#include <vtkXMLUnstructuredGridWriter.h>
 #endif
 
 #include <App/Application.h>
@@ -66,31 +66,31 @@
 #include <Base/TimeInfo.h>
 #include <Base/Type.h>
 
-#include "FemVTKTools.h"
 #include "FemAnalysis.h"
 #include "FemResultObject.h"
+#include "FemVTKTools.h"
 
 
 namespace Fem
 {
 
-template<class TReader> vtkDataSet* readVTKFile(const char*fileName)
+template<class TReader>
+vtkDataSet* readVTKFile(const char* fileName)
 {
-    vtkSmartPointer<TReader> reader =
-      vtkSmartPointer<TReader>::New();
+    vtkSmartPointer<TReader> reader = vtkSmartPointer<TReader>::New();
     reader->SetFileName(fileName);
     reader->Update();
     auto output = reader->GetOutput();
-    if (output)
+    if (output) {
         output->Register(reader);
+    }
     return vtkDataSet::SafeDownCast(output);
 }
 
 template<class TWriter>
 void writeVTKFile(const char* filename, vtkSmartPointer<vtkUnstructuredGrid> dataset)
 {
-    vtkSmartPointer<TWriter> writer =
-      vtkSmartPointer<TWriter>::New();
+    vtkSmartPointer<TWriter> writer = vtkSmartPointer<TWriter>::New();
     writer->SetFileName(filename);
     writer->SetInputData(dataset);
     writer->Write();
@@ -104,11 +104,11 @@ void FemVTKTools::importVTKMesh(vtkSmartPointer<vtkDataSet> dataset, FemMesh* me
     Base::Console().Log("%d nodes/points and %d cells/elements found!\n", nPoints, nCells);
     Base::Console().Log("Build SMESH mesh out of the vtk mesh data.\n", nPoints, nCells);
 
-    //vtkSmartPointer<vtkCellArray> cells = dataset->GetCells();
-                                            // works only for vtkUnstructuredGrid
-    vtkSmartPointer<vtkIdList> idlist= vtkSmartPointer<vtkIdList>::New();
+    // vtkSmartPointer<vtkCellArray> cells = dataset->GetCells();
+    //  works only for vtkUnstructuredGrid
+    vtkSmartPointer<vtkIdList> idlist = vtkSmartPointer<vtkIdList>::New();
 
-    //Now fill the SMESH datastructure
+    // Now fill the SMESH datastructure
     SMESH_Mesh* smesh = mesh->getSMesh();
     SMESHDS_Mesh* meshds = smesh->GetMeshDS();
     meshds->ClearMesh();
@@ -124,10 +124,10 @@ void FemVTKTools::importVTKMesh(vtkSmartPointer<vtkDataSet> dataset, FemMesh* me
         vtkIdType* ids = idlist->GetPointer(0);
         switch (dataset->GetCellType(iCell)) {
             // 2D faces
-            case VTK_TRIANGLE:// tria3
+            case VTK_TRIANGLE:  // tria3
                 meshds->AddFaceWithID(ids[0] + 1, ids[1] + 1, ids[2] + 1, iCell + 1);
                 break;
-            case VTK_QUADRATIC_TRIANGLE:// tria6
+            case VTK_QUADRATIC_TRIANGLE:  // tria6
                 meshds->AddFaceWithID(ids[0] + 1,
                                       ids[1] + 1,
                                       ids[2] + 1,
@@ -136,10 +136,10 @@ void FemVTKTools::importVTKMesh(vtkSmartPointer<vtkDataSet> dataset, FemMesh* me
                                       ids[5] + 1,
                                       iCell + 1);
                 break;
-            case VTK_QUAD:// quad4
+            case VTK_QUAD:  // quad4
                 meshds->AddFaceWithID(ids[0] + 1, ids[1] + 1, ids[2] + 1, ids[3] + 1, iCell + 1);
                 break;
-            case VTK_QUADRATIC_QUAD:// quad8
+            case VTK_QUADRATIC_QUAD:  // quad8
                 meshds->AddFaceWithID(ids[0] + 1,
                                       ids[1] + 1,
                                       ids[2] + 1,
@@ -152,10 +152,10 @@ void FemVTKTools::importVTKMesh(vtkSmartPointer<vtkDataSet> dataset, FemMesh* me
                 break;
 
             // 3D volumes
-            case VTK_TETRA:// tetra4
+            case VTK_TETRA:  // tetra4
                 meshds->AddVolumeWithID(ids[0] + 1, ids[1] + 1, ids[2] + 1, ids[3] + 1, iCell + 1);
                 break;
-            case VTK_QUADRATIC_TETRA:// tetra10
+            case VTK_QUADRATIC_TETRA:  // tetra10
                 meshds->AddVolumeWithID(ids[0] + 1,
                                         ids[1] + 1,
                                         ids[2] + 1,
@@ -168,7 +168,7 @@ void FemVTKTools::importVTKMesh(vtkSmartPointer<vtkDataSet> dataset, FemMesh* me
                                         ids[9] + 1,
                                         iCell + 1);
                 break;
-            case VTK_HEXAHEDRON:// hexa8
+            case VTK_HEXAHEDRON:  // hexa8
                 meshds->AddVolumeWithID(ids[0] + 1,
                                         ids[1] + 1,
                                         ids[2] + 1,
@@ -179,7 +179,7 @@ void FemVTKTools::importVTKMesh(vtkSmartPointer<vtkDataSet> dataset, FemMesh* me
                                         ids[7] + 1,
                                         iCell + 1);
                 break;
-            case VTK_QUADRATIC_HEXAHEDRON:// hexa20
+            case VTK_QUADRATIC_HEXAHEDRON:  // hexa20
                 meshds->AddVolumeWithID(ids[0] + 1,
                                         ids[1] + 1,
                                         ids[2] + 1,
@@ -202,7 +202,7 @@ void FemVTKTools::importVTKMesh(vtkSmartPointer<vtkDataSet> dataset, FemMesh* me
                                         ids[19] + 1,
                                         iCell + 1);
                 break;
-            case VTK_WEDGE:// penta6
+            case VTK_WEDGE:  // penta6
                 meshds->AddVolumeWithID(ids[0] + 1,
                                         ids[1] + 1,
                                         ids[2] + 1,
@@ -211,7 +211,7 @@ void FemVTKTools::importVTKMesh(vtkSmartPointer<vtkDataSet> dataset, FemMesh* me
                                         ids[5] + 1,
                                         iCell + 1);
                 break;
-            case VTK_QUADRATIC_WEDGE:// penta15
+            case VTK_QUADRATIC_WEDGE:  // penta15
                 meshds->AddVolumeWithID(ids[0] + 1,
                                         ids[1] + 1,
                                         ids[2] + 1,
@@ -229,11 +229,15 @@ void FemVTKTools::importVTKMesh(vtkSmartPointer<vtkDataSet> dataset, FemMesh* me
                                         ids[14] + 1,
                                         iCell + 1);
                 break;
-            case VTK_PYRAMID:// pyra5
-                meshds->AddVolumeWithID(
-                    ids[0] + 1, ids[1] + 1, ids[2] + 1, ids[3] + 1, ids[4] + 1, iCell + 1);
+            case VTK_PYRAMID:  // pyra5
+                meshds->AddVolumeWithID(ids[0] + 1,
+                                        ids[1] + 1,
+                                        ids[2] + 1,
+                                        ids[3] + 1,
+                                        ids[4] + 1,
+                                        iCell + 1);
                 break;
-            case VTK_QUADRATIC_PYRAMID:// pyra13
+            case VTK_QUADRATIC_PYRAMID:  // pyra13
                 meshds->AddVolumeWithID(ids[0] + 1,
                                         ids[1] + 1,
                                         ids[2] + 1,
@@ -294,7 +298,7 @@ FemMesh* FemVTKTools::readVTKMesh(const char* filename, FemMesh* mesh)
         Base::Console().Error("file name extension is not supported\n");
         return nullptr;
     }
-    //Mesh should link to the part feature, in order to set up FemConstraint
+    // Mesh should link to the part feature, in order to set up FemConstraint
 
     Base::Console().Log("    %f: Done \n", Base::TimeInfo::diffTimeF(Start, Base::TimeInfo()));
     return mesh;
@@ -310,11 +314,10 @@ void exportFemMeshFaces(vtkSmartPointer<vtkUnstructuredGrid> grid,
     vtkSmartPointer<vtkCellArray> quadArray = vtkSmartPointer<vtkCellArray>::New();
     vtkSmartPointer<vtkCellArray> quadQuadArray = vtkSmartPointer<vtkCellArray>::New();
 
-    for (;aFaceIter->more();)
-    {
+    for (; aFaceIter->more();) {
         const SMDS_MeshFace* aFace = aFaceIter->next();
 
-        //triangle
+        // triangle
         if (aFace->NbNodes() == 3) {
             vtkSmartPointer<vtkTriangle> tria = vtkSmartPointer<vtkTriangle>::New();
             tria->GetPointIds()->SetId(0, aFace->GetNode(0)->GetID() - 1);
@@ -323,7 +326,7 @@ void exportFemMeshFaces(vtkSmartPointer<vtkUnstructuredGrid> grid,
 
             triangleArray->InsertNextCell(tria);
         }
-        //quad
+        // quad
         else if (aFace->NbNodes() == 4) {
             vtkSmartPointer<vtkQuad> quad = vtkSmartPointer<vtkQuad>::New();
             quad->GetPointIds()->SetId(0, aFace->GetNode(0)->GetID() - 1);
@@ -333,7 +336,7 @@ void exportFemMeshFaces(vtkSmartPointer<vtkUnstructuredGrid> grid,
 
             quadArray->InsertNextCell(quad);
         }
-        //quadratic triangle
+        // quadratic triangle
         else if (aFace->NbNodes() == 6) {
             vtkSmartPointer<vtkQuadraticTriangle> tria =
                 vtkSmartPointer<vtkQuadraticTriangle>::New();
@@ -345,7 +348,7 @@ void exportFemMeshFaces(vtkSmartPointer<vtkUnstructuredGrid> grid,
             tria->GetPointIds()->SetId(5, aFace->GetNode(5)->GetID() - 1);
             quadTriangleArray->InsertNextCell(tria);
         }
-        //quadratic quad
+        // quadratic quad
         else if (aFace->NbNodes() == 8) {
             vtkSmartPointer<vtkQuadraticQuad> quad = vtkSmartPointer<vtkQuadraticQuad>::New();
             quad->GetPointIds()->SetId(0, aFace->GetNode(0)->GetID() - 1);
@@ -363,17 +366,21 @@ void exportFemMeshFaces(vtkSmartPointer<vtkUnstructuredGrid> grid,
             throw std::runtime_error("Face not yet supported by FreeCAD's VTK mesh builder\n");
         }
     }
-    if (triangleArray->GetNumberOfCells() > 0)
+    if (triangleArray->GetNumberOfCells() > 0) {
         grid->SetCells(VTK_TRIANGLE, triangleArray);
+    }
 
-    if (quadArray->GetNumberOfCells() > 0)
+    if (quadArray->GetNumberOfCells() > 0) {
         grid->SetCells(VTK_QUAD, quadArray);
+    }
 
-    if (quadTriangleArray->GetNumberOfCells() > 0)
+    if (quadTriangleArray->GetNumberOfCells() > 0) {
         grid->SetCells(VTK_QUADRATIC_TRIANGLE, quadTriangleArray);
+    }
 
-    if (quadQuadArray->GetNumberOfCells() > 0)
+    if (quadQuadArray->GetNumberOfCells() > 0) {
         grid->SetCells(VTK_QUADRATIC_QUAD, quadQuadArray);
+    }
 
     Base::Console().Log("  End: VTK mesh builder faces.\n");
 }
@@ -392,11 +399,10 @@ void exportFemMeshCells(vtkSmartPointer<vtkUnstructuredGrid> grid,
     vtkSmartPointer<vtkCellArray> quadWedgeArray = vtkSmartPointer<vtkCellArray>::New();
     vtkSmartPointer<vtkCellArray> quadHexaArray = vtkSmartPointer<vtkCellArray>::New();
 
-    for (;aVolIter->more();)
-    {
+    for (; aVolIter->more();) {
         const SMDS_MeshVolume* aVol = aVolIter->next();
 
-        if (aVol->NbNodes() == 4) {// tetra4
+        if (aVol->NbNodes() == 4) {  // tetra4
             Base::Console().Log("    Volume tetra4\n");
             vtkSmartPointer<vtkTetra> cell = vtkSmartPointer<vtkTetra>::New();
             cell->GetPointIds()->SetId(0, aVol->GetNode(0)->GetID() - 1);
@@ -405,7 +411,7 @@ void exportFemMeshCells(vtkSmartPointer<vtkUnstructuredGrid> grid,
             cell->GetPointIds()->SetId(3, aVol->GetNode(3)->GetID() - 1);
             tetraArray->InsertNextCell(cell);
         }
-        else if (aVol->NbNodes() == 5) {// pyra5
+        else if (aVol->NbNodes() == 5) {  // pyra5
             Base::Console().Log("    Volume pyra5\n");
             vtkSmartPointer<vtkPyramid> cell = vtkSmartPointer<vtkPyramid>::New();
             cell->GetPointIds()->SetId(0, aVol->GetNode(0)->GetID() - 1);
@@ -415,7 +421,7 @@ void exportFemMeshCells(vtkSmartPointer<vtkUnstructuredGrid> grid,
             cell->GetPointIds()->SetId(4, aVol->GetNode(4)->GetID() - 1);
             pyramidArray->InsertNextCell(cell);
         }
-        else if (aVol->NbNodes() == 6) {// penta6
+        else if (aVol->NbNodes() == 6) {  // penta6
             Base::Console().Log("    Volume penta6\n");
             vtkSmartPointer<vtkWedge> cell = vtkSmartPointer<vtkWedge>::New();
             cell->GetPointIds()->SetId(0, aVol->GetNode(0)->GetID() - 1);
@@ -426,7 +432,7 @@ void exportFemMeshCells(vtkSmartPointer<vtkUnstructuredGrid> grid,
             cell->GetPointIds()->SetId(5, aVol->GetNode(5)->GetID() - 1);
             wedgeArray->InsertNextCell(cell);
         }
-        else if (aVol->NbNodes() == 8) {// hexa8
+        else if (aVol->NbNodes() == 8) {  // hexa8
             Base::Console().Log("    Volume hexa8\n");
             vtkSmartPointer<vtkHexahedron> cell = vtkSmartPointer<vtkHexahedron>::New();
             cell->GetPointIds()->SetId(0, aVol->GetNode(0)->GetID() - 1);
@@ -439,7 +445,7 @@ void exportFemMeshCells(vtkSmartPointer<vtkUnstructuredGrid> grid,
             cell->GetPointIds()->SetId(7, aVol->GetNode(7)->GetID() - 1);
             hexaArray->InsertNextCell(cell);
         }
-        else if (aVol->NbNodes() == 10) {// tetra10
+        else if (aVol->NbNodes() == 10) {  // tetra10
             Base::Console().Log("    Volume tetra10\n");
             vtkSmartPointer<vtkQuadraticTetra> tetra = vtkSmartPointer<vtkQuadraticTetra>::New();
             for (int i = 0; i < 10; i++) {
@@ -448,7 +454,7 @@ void exportFemMeshCells(vtkSmartPointer<vtkUnstructuredGrid> grid,
             quadTetraArray->InsertNextCell(tetra);
         }
 
-        else if (aVol->NbNodes() == 13) {// pyra13
+        else if (aVol->NbNodes() == 13) {  // pyra13
             Base::Console().Log("    Volume pyra13\n");
             vtkSmartPointer<vtkQuadraticPyramid> cell = vtkSmartPointer<vtkQuadraticPyramid>::New();
             for (int i = 0; i < 13; i++) {
@@ -457,7 +463,7 @@ void exportFemMeshCells(vtkSmartPointer<vtkUnstructuredGrid> grid,
             }
             quadPyramidArray->InsertNextCell(cell);
         }
-        else if (aVol->NbNodes() == 15) {// penta15
+        else if (aVol->NbNodes() == 15) {  // penta15
             Base::Console().Log("    Volume penta15\n");
             vtkSmartPointer<vtkQuadraticWedge> cell = vtkSmartPointer<vtkQuadraticWedge>::New();
             for (int i = 0; i < 15; i++) {
@@ -465,7 +471,7 @@ void exportFemMeshCells(vtkSmartPointer<vtkUnstructuredGrid> grid,
             }
             quadWedgeArray->InsertNextCell(cell);
         }
-        else if (aVol->NbNodes() == 20) {// hexa20
+        else if (aVol->NbNodes() == 20) {  // hexa20
             Base::Console().Log("    Volume hexa20\n");
             vtkSmartPointer<vtkQuadraticHexahedron> cell =
                 vtkSmartPointer<vtkQuadraticHexahedron>::New();
@@ -479,34 +485,43 @@ void exportFemMeshCells(vtkSmartPointer<vtkUnstructuredGrid> grid,
         }
     }
 
-    if (tetraArray->GetNumberOfCells() > 0)
+    if (tetraArray->GetNumberOfCells() > 0) {
         grid->SetCells(VTK_TETRA, tetraArray);
+    }
 
-    if (pyramidArray->GetNumberOfCells() > 0)
+    if (pyramidArray->GetNumberOfCells() > 0) {
         grid->SetCells(VTK_PYRAMID, pyramidArray);
+    }
 
-    if (wedgeArray->GetNumberOfCells() > 0)
+    if (wedgeArray->GetNumberOfCells() > 0) {
         grid->SetCells(VTK_WEDGE, wedgeArray);
+    }
 
-    if (hexaArray->GetNumberOfCells() > 0)
+    if (hexaArray->GetNumberOfCells() > 0) {
         grid->SetCells(VTK_HEXAHEDRON, hexaArray);
+    }
 
-    if (quadTetraArray->GetNumberOfCells() > 0)
+    if (quadTetraArray->GetNumberOfCells() > 0) {
         grid->SetCells(VTK_QUADRATIC_TETRA, quadTetraArray);
+    }
 
-    if (quadPyramidArray->GetNumberOfCells() > 0)
+    if (quadPyramidArray->GetNumberOfCells() > 0) {
         grid->SetCells(VTK_QUADRATIC_PYRAMID, quadPyramidArray);
+    }
 
-    if (quadWedgeArray->GetNumberOfCells() > 0)
+    if (quadWedgeArray->GetNumberOfCells() > 0) {
         grid->SetCells(VTK_QUADRATIC_WEDGE, quadWedgeArray);
+    }
 
-    if (quadHexaArray->GetNumberOfCells() > 0)
+    if (quadHexaArray->GetNumberOfCells() > 0) {
         grid->SetCells(VTK_QUADRATIC_HEXAHEDRON, quadHexaArray);
+    }
 
     Base::Console().Log("  End: VTK mesh builder volumes.\n");
 }
 
-void FemVTKTools::exportVTKMesh(const FemMesh* mesh, vtkSmartPointer<vtkUnstructuredGrid> grid,
+void FemVTKTools::exportVTKMesh(const FemMesh* mesh,
+                                vtkSmartPointer<vtkUnstructuredGrid> grid,
                                 float scale)
 {
 
@@ -521,9 +536,10 @@ void FemVTKTools::exportVTKMesh(const FemMesh* mesh, vtkSmartPointer<vtkUnstruct
     SMDS_NodeIteratorPtr aNodeIter = meshDS->nodesIterator();
 
     while (aNodeIter->more()) {
-        const SMDS_MeshNode* node = aNodeIter->next();// why float, not double?
-        double coords[3] = {
-            double(node->X() * scale), double(node->Y() * scale), double(node->Z() * scale)};
+        const SMDS_MeshNode* node = aNodeIter->next();  // why float, not double?
+        double coords[3] = {double(node->X() * scale),
+                            double(node->Y() * scale),
+                            double(node->Z() * scale)};
         points->InsertPoint(node->GetID() - 1, coords);
         // memory is allocated by VTK points size for max node id, not for point count
         // if the SMESH mesh has gaps in node numbering, points without any element
@@ -559,7 +575,7 @@ void FemVTKTools::writeVTKMesh(const char* filename, const FemMesh* mesh)
 
     vtkSmartPointer<vtkUnstructuredGrid> grid = vtkSmartPointer<vtkUnstructuredGrid>::New();
     exportVTKMesh(mesh, grid);
-    //vtkSmartPointer<vtkDataSet> dataset = vtkDataSet::SafeDownCast(grid);
+    // vtkSmartPointer<vtkDataSet> dataset = vtkDataSet::SafeDownCast(grid);
     Base::Console().Log("Start: writing mesh data ======================\n");
     if (f.hasExtension("vtu")) {
         writeVTKFile<vtkXMLUnstructuredGridWriter>(filename, grid);
@@ -571,7 +587,7 @@ void FemVTKTools::writeVTKMesh(const char* filename, const FemMesh* mesh)
         Base::Console().Error("file name extension is not supported to write VTK\n");
     }
 
-    Base::Console().Log("    %f: Done \n",Base::TimeInfo::diffTimeF(Start, Base::TimeInfo()));
+    Base::Console().Log("    %f: Done \n", Base::TimeInfo::diffTimeF(Start, Base::TimeInfo()));
 }
 
 
@@ -589,9 +605,10 @@ App::DocumentObject* getObjectByType(const Base::Type type)
     }
     if (obj->getTypeId() == FemAnalysis::getClassTypeId()) {
         std::vector<App::DocumentObject*> fem = (static_cast<FemAnalysis*>(obj))->Group.getValues();
-        for (const auto & it : fem) {
-            if (it->getTypeId().isDerivedFrom(type))
-                return static_cast<App::DocumentObject*>(it);// return the first of that type
+        for (const auto& it : fem) {
+            if (it->getTypeId().isDerivedFrom(type)) {
+                return static_cast<App::DocumentObject*>(it);  // return the first of that type
+            }
         }
     }
     return nullptr;
@@ -613,7 +630,7 @@ App::DocumentObject* createObjectByType(const Base::Type type)
         return newobj;
     }
     else {
-        return pcDoc->addObject(type.getName());// create in the active document
+        return pcDoc->addObject(type.getName());  // create in the active document
     }
 }
 
@@ -621,7 +638,8 @@ App::DocumentObject* createObjectByType(const Base::Type type)
 App::DocumentObject* FemVTKTools::readResult(const char* filename, App::DocumentObject* res)
 {
     Base::TimeInfo Start;
-    Base::Console().Log("Start: read FemResult with FemMesh from VTK file ======================\n");
+    Base::Console().Log(
+        "Start: read FemResult with FemMesh from VTK file ======================\n");
     Base::FileInfo f(filename);
 
     vtkSmartPointer<vtkDataSet> ds;
@@ -666,10 +684,11 @@ App::DocumentObject* FemVTKTools::readResult(const char* filename, App::Document
         // PropertyLink is the property type to store DocumentObject pointer
         App::PropertyLink* link =
             dynamic_cast<App::PropertyLink*>(result->getPropertyByName("Mesh"));
-        if (link)
+        if (link) {
             link->setValue(mesh);
+        }
 
-        //vtkSmartPointer<vtkPointData> pd = dataset->GetPointData();
+        // vtkSmartPointer<vtkPointData> pd = dataset->GetPointData();
         importFreeCADResult(dataset, result);
     }
 
@@ -681,14 +700,15 @@ App::DocumentObject* FemVTKTools::readResult(const char* filename, App::Document
 }
 
 
-void FemVTKTools::writeResult(const char* filename, const App::DocumentObject* res) {
+void FemVTKTools::writeResult(const char* filename, const App::DocumentObject* res)
+{
     if (!res) {
         App::Document* pcDoc = App::GetApplication().getActiveDocument();
         if (!pcDoc) {
             Base::Console().Message("No active document is found thus do nothing and return\n");
             return;
         }
-        res = pcDoc->getActiveObject();//type checking is done by caller
+        res = pcDoc->getActiveObject();  // type checking is done by caller
     }
     if (!res) {
         Base::Console().Error("Result object pointer is invalid and it is not active object");
@@ -713,7 +733,7 @@ void FemVTKTools::writeResult(const char* filename, const App::DocumentObject* r
     // result
     FemVTKTools::exportFreeCADResult(res, grid);
 
-    //vtkSmartPointer<vtkDataSet> dataset = vtkDataSet::SafeDownCast(grid);
+    // vtkSmartPointer<vtkDataSet> dataset = vtkDataSet::SafeDownCast(grid);
     if (f.hasExtension("vtu")) {
         writeVTKFile<vtkXMLUnstructuredGridWriter>(filename, grid);
     }
@@ -730,7 +750,8 @@ void FemVTKTools::writeResult(const char* filename, const App::DocumentObject* r
 }
 
 
-std::map<std::string, std::string> _getFreeCADMechResultVectorProperties() {
+std::map<std::string, std::string> _getFreeCADMechResultVectorProperties()
+{
     // see src/Mod/Fem/femobjects/_FemResultMechanical
     // App::PropertyVectorList will be a list of vectors in vtk
     std::map<std::string, std::string> resFCVecProp;
@@ -750,12 +771,13 @@ std::map<std::string, std::string> _getFreeCADMechResultVectorProperties() {
 // some scalar list are not needed on VTK file export but they are needed for internal VTK pipeline
 // TODO some filter to only export the needed values to VTK file but have all
 // in FreeCAD VTK pipeline
-std::map<std::string, std::string> _getFreeCADMechResultScalarProperties() {
+std::map<std::string, std::string> _getFreeCADMechResultScalarProperties()
+{
     // see src/Mod/Fem/femobjects/result_mechanical.py
     // App::PropertyFloatList will be a list of scalars in vtk
     std::map<std::string, std::string> resFCScalProp;
     resFCScalProp["DisplacementLengths"] =
-        "Displacement Magnitude";// can be plotted in Paraview as THE DISPLACEMENT MAGNITUDE
+        "Displacement Magnitude";  // can be plotted in Paraview as THE DISPLACEMENT MAGNITUDE
     resFCScalProp["MaxShear"] = "Tresca Stress";
     resFCScalProp["NodeStressXX"] = "Stress xx component";
     resFCScalProp["NodeStressYY"] = "Stress yy component";
@@ -782,12 +804,13 @@ std::map<std::string, std::string> _getFreeCADMechResultScalarProperties() {
     // how to generate them in paraview)
     // but there are needed anyway because the pipeline in FreeCAD needs the principal stress values
     // https://forum.freecad.org/viewtopic.php?f=18&t=33106&p=416006#p412800
-    resFCScalProp["PrincipalMax"] =
-        "Major Principal Stress";// can be plotted in Paraview as THE MAJOR PRINCIPAL STRESS MAGNITUDE
+    resFCScalProp["PrincipalMax"] = "Major Principal Stress";  // can be plotted in Paraview as THE
+                                                               // MAJOR PRINCIPAL STRESS MAGNITUDE
     resFCScalProp["PrincipalMed"] =
-        "Intermediate Principal Stress";// can be plotted in Paraview as THE INTERMEDIATE PRINCIPAL STRESS MAGNITUDE
-    resFCScalProp["PrincipalMin"] =
-        "Minor Principal Stress";// can be plotted in Paraview as THE MINOR PRINCIPAL STRESS MAGNITUDE
+        "Intermediate Principal Stress";  // can be plotted in Paraview as THE INTERMEDIATE
+                                          // PRINCIPAL STRESS MAGNITUDE
+    resFCScalProp["PrincipalMin"] = "Minor Principal Stress";  // can be plotted in Paraview as THE
+                                                               // MINOR PRINCIPAL STRESS MAGNITUDE
     resFCScalProp["vonMises"] = "von Mises Stress";
     resFCScalProp["Temperature"] = "Temperature";
     resFCScalProp["MohrCoulomb"] = "MohrCoulomb";
@@ -811,7 +834,7 @@ void FemVTKTools::importFreeCADResult(vtkSmartPointer<vtkDataSet> dataset,
     std::map<std::string, std::string> vectors = _getFreeCADMechResultVectorProperties();
     std::map<std::string, std::string> scalars = _getFreeCADMechResultScalarProperties();
 
-    double ts = 0.0;// t=0.0 for static simulation
+    double ts = 0.0;  // t=0.0 for static simulation
     static_cast<App::PropertyFloat*>(result->getPropertyByName("Time"))->setValue(ts);
 
     vtkSmartPointer<vtkPointData> pd = dataset->GetPointData();
@@ -833,9 +856,9 @@ void FemVTKTools::importFreeCADResult(vtkSmartPointer<vtkDataSet> dataset,
     Base::Console().Log("    NodeNumbers have been filled with values.\n");
 
     // vectors
-    for (const auto & it : vectors) {
-        int dim = 3;// Fixme: currently 3D only, here we could run into trouble,
-                    //        FreeCAD only supports dim 3D, I do not know about VTK
+    for (const auto& it : vectors) {
+        int dim = 3;  // Fixme: currently 3D only, here we could run into trouble,
+                      //        FreeCAD only supports dim 3D, I do not know about VTK
         vtkDataArray* vector_field = vtkDataArray::SafeDownCast(pd->GetArray(it.second.c_str()));
         if (vector_field && vector_field->GetNumberOfComponents() == dim) {
             App::PropertyVectorList* vector_list =
@@ -844,7 +867,7 @@ void FemVTKTools::importFreeCADResult(vtkSmartPointer<vtkDataSet> dataset,
                 std::vector<Base::Vector3d> vec(nPoints);
                 for (vtkIdType i = 0; i < nPoints; ++i) {
                     double* p = vector_field->GetTuple(
-                        i);// both vtkFloatArray and vtkDoubleArray return double* for GetTuple(i)
+                        i);  // both vtkFloatArray and vtkDoubleArray return double* for GetTuple(i)
                     vec[i] = (Base::Vector3d(p[0], p[1], p[2]));
                 }
                 // PropertyVectorList will not show up in PropertyEditor
@@ -859,17 +882,18 @@ void FemVTKTools::importFreeCADResult(vtkSmartPointer<vtkDataSet> dataset,
                 continue;
             }
         }
-        else
+        else {
             Base::Console().Message("    PropertyVectorList NOT found in vkt file data: %s\n",
                                     it.first.c_str());
+        }
     }
 
     // scalars
-    for (const auto & scalar : scalars) {
+    for (const auto& scalar : scalars) {
         vtkDataArray* vec = vtkDataArray::SafeDownCast(pd->GetArray(scalar.second.c_str()));
         if (nPoints && vec && vec->GetNumberOfComponents() == 1) {
-            App::PropertyFloatList* field =
-                static_cast<App::PropertyFloatList*>(result->getPropertyByName(scalar.first.c_str()));
+            App::PropertyFloatList* field = static_cast<App::PropertyFloatList*>(
+                result->getPropertyByName(scalar.first.c_str()));
             if (!field) {
                 Base::Console().Error("static_cast<App::PropertyFloatList*>((result->"
                                       "getPropertyByName(\"%s\")) failed.\n",
@@ -882,18 +906,21 @@ void FemVTKTools::importFreeCADResult(vtkSmartPointer<vtkDataSet> dataset,
             for (vtkIdType i = 0; i < vec->GetNumberOfTuples(); i++) {
                 double v = *(vec->GetTuple(i));
                 values[i] = v;
-                if (v > vmax)
+                if (v > vmax) {
                     vmax = v;
-                if (v < vmin)
+                }
+                if (v < vmin) {
                     vmin = v;
+                }
             }
             field->setValues(values);
             Base::Console().Log("    A PropertyFloatList has been filled with vales: %s\n",
                                 scalar.first.c_str());
         }
-        else
+        else {
             Base::Console().Message("    PropertyFloatList NOT found in vkt file data %s\n",
                                     scalar.first.c_str());
+        }
     }
 
     // stats
@@ -931,19 +958,21 @@ void FemVTKTools::exportFreeCADResult(const App::DocumentObject* result,
     double factor = 1.0;
 
     // vectors
-    for (const auto & it : vectors) {
-        const int dim = 3;//Fixme, detect dim, but FreeCAD PropertyVectorList ATM only has DIM of 3
+    for (const auto& it : vectors) {
+        const int dim =
+            3;  // Fixme, detect dim, but FreeCAD PropertyVectorList ATM only has DIM of 3
         App::PropertyVectorList* field = nullptr;
-        if (res->getPropertyByName(it.first.c_str()))
-            field =
-                static_cast<App::PropertyVectorList*>(res->getPropertyByName(it.first.c_str()));
-        else
+        if (res->getPropertyByName(it.first.c_str())) {
+            field = static_cast<App::PropertyVectorList*>(res->getPropertyByName(it.first.c_str()));
+        }
+        else {
             Base::Console().Error("    PropertyVectorList not found: %s\n", it.first.c_str());
+        }
 
         if (field && field->getSize() > 0) {
-            //if (nPoints != field->getSize())
-            //    Base::Console().Error("Size of PropertyVectorList = %d, not equal
-            //    to vtk mesh node count %d \n", field->getSize(), nPoints);
+            // if (nPoints != field->getSize())
+            //     Base::Console().Error("Size of PropertyVectorList = %d, not equal
+            //     to vtk mesh node count %d \n", field->getSize(), nPoints);
             const std::vector<Base::Vector3d>& vel = field->getValues();
             vtkSmartPointer<vtkDoubleArray> data = vtkSmartPointer<vtkDoubleArray>::New();
             data->SetNumberOfComponents(dim);
@@ -960,13 +989,15 @@ void FemVTKTools::exportFreeCADResult(const App::DocumentObject* result,
                 }
             }
 
-            if (it.first.compare("DisplacementVectors") == 0)
-                factor = 0.001;// to get meter
-            else
+            if (it.first.compare("DisplacementVectors") == 0) {
+                factor = 0.001;  // to get meter
+            }
+            else {
                 factor = 1.0;
+            }
 
             SMDS_NodeIteratorPtr aNodeIter = meshDS->nodesIterator();
-            for (const auto & jt : vel) {
+            for (const auto& jt : vel) {
                 const SMDS_MeshNode* node = aNodeIter->next();
                 double tuple[] = {jt.x * factor, jt.y * factor, jt.z * factor};
                 data->SetTuple(node->GetID() - 1, tuple);
@@ -985,17 +1016,20 @@ void FemVTKTools::exportFreeCADResult(const App::DocumentObject* result,
     }
 
     // scalars
-    for (const auto & scalar : scalars) {
+    for (const auto& scalar : scalars) {
         App::PropertyFloatList* field = nullptr;
-        if (res->getPropertyByName(scalar.first.c_str()))
-            field = static_cast<App::PropertyFloatList*>(res->getPropertyByName(scalar.first.c_str()));
-        else
+        if (res->getPropertyByName(scalar.first.c_str())) {
+            field =
+                static_cast<App::PropertyFloatList*>(res->getPropertyByName(scalar.first.c_str()));
+        }
+        else {
             Base::Console().Error("PropertyFloatList %s not found \n", scalar.first.c_str());
+        }
 
         if (field && field->getSize() > 0) {
-            //if (nPoints != field->getSize())
-            //    Base::Console().Error("Size of PropertyFloatList = %d, not equal to vtk mesh
-            //    node count %d \n", field->getSize(), nPoints);
+            // if (nPoints != field->getSize())
+            //     Base::Console().Error("Size of PropertyFloatList = %d, not equal to vtk mesh
+            //     node count %d \n", field->getSize(), nPoints);
             const std::vector<double>& vec = field->getValues();
             vtkSmartPointer<vtkDoubleArray> data = vtkSmartPointer<vtkDoubleArray>::New();
             data->SetNumberOfValues(nPoints);
@@ -1021,19 +1055,23 @@ void FemVTKTools::exportFreeCADResult(const App::DocumentObject* result,
                 || (scalar.first.compare("PrincipalMed") == 0)
                 || (scalar.first.compare("PrincipalMin") == 0)
                 || (scalar.first.compare("vonMises") == 0)
-                || (scalar.first.compare("NetworkPressure") == 0) )
-                factor = 1e6; // to get Pascal
-            else if (scalar.first.compare("DisplacementLengths") == 0)
-                factor = 0.001; // to get meter
-            else
+                || (scalar.first.compare("NetworkPressure") == 0)) {
+                factor = 1e6;  // to get Pascal
+            }
+            else if (scalar.first.compare("DisplacementLengths") == 0) {
+                factor = 0.001;  // to get meter
+            }
+            else {
                 factor = 1.0;
+            }
 
             SMDS_NodeIteratorPtr aNodeIter = meshDS->nodesIterator();
             for (double i : vec) {
                 const SMDS_MeshNode* node = aNodeIter->next();
                 // for the MassFlowRate the last vec entries can be a nullptr, thus check this
-                if (node)
+                if (node) {
                     data->SetValue(node->GetID() - 1, i * factor);
+                }
             }
 
             grid->GetPointData()->AddArray(data);
@@ -1052,4 +1090,4 @@ void FemVTKTools::exportFreeCADResult(const App::DocumentObject* result,
     Base::Console().Log("End: Create VTK result data from FreeCAD result data.\n");
 }
 
-} // namespace
+}  // namespace Fem

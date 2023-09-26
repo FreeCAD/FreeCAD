@@ -87,7 +87,8 @@ void DlgSettingsNavigation::saveSettings()
     ui->checkBoxDisableTilt->onSave();
     ui->checkBoxShowRotationCenter->onSave();
     ui->spinBoxZoomStep->onSave();
-    ui->checkBoxUseAutoRotation->onSave();
+    ui->checkBoxNavigationAnimations->onSave();
+    ui->spinBoxAnimationDuration->onSave();
     ui->qspinNewDocScale->onSave();
     ui->prefStepByTurn->onSave();
     ui->naviCubeCorner->onSave();
@@ -111,7 +112,7 @@ void DlgSettingsNavigation::saveSettings()
     hGrp = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/NaviCube");
     if (ui->naviCubeFontName->currentIndex()) {
-        hGrp->SetASCII("FontString", ui->naviCubeFontName->currentText().toLatin1());        
+        hGrp->SetASCII("FontString", ui->naviCubeFontName->currentText().toLatin1());
     } else {
         hGrp->RemoveASCII("FontString");
     }
@@ -124,7 +125,8 @@ void DlgSettingsNavigation::loadSettings()
     ui->checkBoxDisableTilt->onRestore();
     ui->checkBoxShowRotationCenter->onRestore();
     ui->spinBoxZoomStep->onRestore();
-    ui->checkBoxUseAutoRotation->onRestore();
+    ui->checkBoxNavigationAnimations->onRestore();
+    ui->spinBoxAnimationDuration->onRestore();
     ui->qspinNewDocScale->onRestore();
     ui->prefStepByTurn->onRestore();
     ui->naviCubeCorner->onRestore();
@@ -183,7 +185,7 @@ void DlgSettingsNavigation::loadSettings()
     QStringList familyNames = QFontDatabase::families(QFontDatabase::Any);
 #endif
     ui->naviCubeFontName->addItems(familyNames);
-    
+
     hGrp = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/NaviCube");
     int indexFamilyNames = familyNames.indexOf(

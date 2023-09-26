@@ -52,7 +52,7 @@ else:
 
 
 class CommandPathSanity:
-    def resolveOutputPath(self, job):
+    def resolveOutputFile(self, job):
         if job.PostProcessorOutputFile != "":
             filepath = job.PostProcessorOutputFile
         elif Path.Preferences.defaultOutputFile() != "":
@@ -100,6 +100,10 @@ class CommandPathSanity:
 
         Path.Log.debug("filepath: {}".format(filepath))
 
+        return filepath
+
+    def resolveOutputPath(self, filepath):
+
         # Make sure the filepath is fully qualified
         if os.path.basename(filepath) == filepath:
             filepath = f"{os.path.dirname(FreeCAD.ActiveDocument.FileName)}/{filepath}"
@@ -145,10 +149,11 @@ class CommandPathSanity:
         FreeCADGui.addIconPath(":/icons")
         self.squawkData = {"items": []}
         obj = FreeCADGui.Selection.getSelectionEx()[0].Object
-        self.outputpath = self.resolveOutputPath(obj)
+        self.outputFile = self.resolveOutputFile(obj)
+        self.outputpath = self.resolveOutputPath(self.outputFile)
         Path.Log.debug(f"outputstring: {self.outputpath}")
         data = self.__summarize(obj)
-        html = self.__report(data)
+        html = self.__report(data, obj)
         if html is not None:
             webbrowser.open(html)
         if FreeCAD.GuiUp:
@@ -202,7 +207,7 @@ class CommandPathSanity:
 
         return "{}_t.png".format(imagepath)
 
-    def __report(self, data):
+    def __report(self, data, obj):
         """
         generates an asciidoc file with the report information
         """
@@ -1184,296 +1189,31 @@ class CommandPathSanity:
 </html>
 """
 
-        reportTemplate = """
-= Setup Report for FreeCAD Job: {jobname}
-:toc:
-:icons: font
-:imagesdir: ""
-:data-uri:
-
-== Part Information
-
-|===
-{infoTable}
-|===
-
-
-== Run Summary
-
-|===
-{runTable}
-|===
-
-== Rough Stock
-
-|===
-{stockTable}
-|===
-
-== Tool Data
-
-{toolTables}
-
-== Output (Gcode)
-
-|===
-{outTable}
-|===
-
-== Fixtures and Workholding
-
-|===
-{fixtureTable}
-|===
-
-== Squawks
-
-|===
-{squawkTable}
-|===
-
-"""
-        # Generate the markup for the Part Information Section
-
-        infoTable = ""
-
-        PartLabel = translate("Path_Sanity", "Base Object(s)")
-        SequenceLabel = translate("Path_Sanity", "Job Sequence")
-        DescriptionLabel = translate("Path_Sanity", "Job Description")
-        JobTypeLabel = translate("Path_Sanity", "Job Type")
-        CADLabel = translate("Path_Sanity", "CAD File Name")
-        LastSaveLabel = translate("Path_Sanity", "Last Save Date")
-        CustomerLabel = translate("Path_Sanity", "Customer")
-        DesignerLabel = translate("Path_Sanity", "Designer")
-
-        d = data["designData"]
-        b = data["baseData"]
-
-        jobname = d["JobLabel"]
-
-        basestable = "!===\n"
-        for key, val in b["bases"].items():
-            basestable += "! " + key + " ! " + val + "\n"
-
-        basestable += "!==="
-
-        infoTable += (
-            "|*"
-            + PartLabel
-            + "* a| "
-            + basestable
-            + " .7+a|"
-            + "image::"
-            + b["baseimage"]
-            + "["
-            + PartLabel
-            + "]\n"
-        )
-        infoTable += "|*" + SequenceLabel + "*|" + d["Sequence"]
-        infoTable += "|*" + JobTypeLabel + "*|" + d["JobType"]
-        infoTable += "|*" + DescriptionLabel + "*|" + d["JobDescription"]
-        infoTable += "|*" + CADLabel + "*|" + d["FileName"]
-        infoTable += "|*" + LastSaveLabel + "*|" + d["LastModifiedDate"]
-        infoTable += "|*" + CustomerLabel + "*|" + d["Customer"]
-        infoTable += "|*" + DesignerLabel + "*|" + d["Designer"]
-
-        # Generate the markup for the Run Summary Section
-
-        runTable = ""
-        opLabel = translate("Path_Sanity", "Operation")
-        zMinLabel = translate("Path_Sanity", "Minimum Z Height")
-        zMaxLabel = translate("Path_Sanity", "Maximum Z Height")
-        cycleTimeLabel = translate("Path_Sanity", "Cycle Time")
-        coolantLabel = translate("Path_Sanity", "Coolant")
-        jobTotalLabel = translate("Path_Sanity", "TOTAL JOB")
-
-        d = data["runData"]
-
-        runTable += (
-            "|*"
-            + opLabel
-            + "*|*"
-            + zMinLabel
-            + "*|*"
-            + zMaxLabel
-            + "*|*"
-            + coolantLabel
-            + "*|*"
-            + cycleTimeLabel
-            + "*\n"
-        )
-
-        for i in d["items"]:
-            runTable += "|{}".format(i["opName"])
-            runTable += "|{}".format(i["minZ"])
-            runTable += "|{}".format(i["maxZ"])
-            runTable += "|{}".format(i["coolantMode"])
-            runTable += "|{}".format(i["cycleTime"])
-
-        runTable += (
-            "|*"
-            + jobTotalLabel
-            + "* |{} |{} |{}".format(d["jobMinZ"], d["jobMaxZ"], d["cycletotal"])
-        )
-
-        # Generate the markup for the Tool Data Section
-        toolTables = ""
-
-        toolLabel = translate("Path_Sanity", "Tool Number")
-        descriptionLabel = translate("Path_Sanity", "Description")
-        manufLabel = translate("Path_Sanity", "Manufacturer")
-        partNumberLabel = translate("Path_Sanity", "Part Number")
-        urlLabel = translate("Path_Sanity", "URL")
-        inspectionNotesLabel = translate("Path_Sanity", "Inspection Notes")
-        opLabel = translate("Path_Sanity", "Operation")
-        tcLabel = translate("Path_Sanity", "Tool Controller")
-        feedLabel = translate("Path_Sanity", "Feed Rate")
-        speedLabel = translate("Path_Sanity", "Spindle Speed")
-        shapeLabel = translate("Path_Sanity", "Tool Shape")
-        diameterLabel = translate("Path_Sanity", "Tool Diameter")
-
-        d = data["toolData"]
-
-        for key, value in d.items():
-            toolTables += "=== {}: T{}\n".format(toolLabel, key)
-
-            toolTables += "|===\n"
-
-            toolTables += "|*{}*| {} a| image::{}[{}]\n".format(
-                descriptionLabel, value["description"], value["imagepath"], key
-            )
-            toolTables += "|*{}* 2+| {}\n".format(manufLabel, value["manufacturer"])
-            toolTables += "|*{}* 2+| {}\n".format(partNumberLabel, value["partNumber"])
-            toolTables += "|*{}* 2+| {}\n".format(urlLabel, value["url"])
-            toolTables += "|*{}* 2+| {}\n".format(
-                inspectionNotesLabel, value["inspectionNotes"]
-            )
-            toolTables += "|*{}* 2+| {}\n".format(shapeLabel, value["shape"])
-            toolTables += "|*{}* 2+| {}\n".format(diameterLabel, value["diameter"])
-            toolTables += "|===\n"
-
-            toolTables += "|===\n"
-            toolTables += (
-                "|*"
-                + opLabel
-                + "*|*"
-                + tcLabel
-                + "*|*"
-                + feedLabel
-                + "*|*"
-                + speedLabel
-                + "*\n"
-            )
-            for o in value["ops"]:
-                toolTables += (
-                    "|"
-                    + o["Operation"]
-                    + "|"
-                    + o["ToolController"]
-                    + "|"
-                    + o["Feed"]
-                    + "|"
-                    + o["Speed"]
-                    + "\n"
-                )
-            toolTables += "|===\n"
-
-            toolTables += "\n"
-
-        # Generate the markup for the Rough Stock Section
-        stockTable = ""
-        xDimLabel = translate("Path_Sanity", "X Size")
-        yDimLabel = translate("Path_Sanity", "Y Size")
-        zDimLabel = translate("Path_Sanity", "Z Size")
-        materialLabel = translate("Path_Sanity", "Material")
-
-        d = data["stockData"]
-
-        stockTable += "|*{}*|{} .4+a|image::{}[stock]\n".format(
-            materialLabel, d["material"], d["stockImage"]
-        )
-        stockTable += "|*{}*|{}".format(xDimLabel, d["xLen"])
-        stockTable += "|*{}*|{}".format(yDimLabel, d["yLen"])
-        stockTable += "|*{}*|{}".format(zDimLabel, d["zLen"])
-
-        # Generate the markup for the Fixture Section
-
-        fixtureTable = ""
-        offsetsLabel = translate("Path_Sanity", "Work Offsets")
-        orderByLabel = translate("Path_Sanity", "Order By")
-        datumLabel = translate("Path_Sanity", "Part Datum")
-
-        d = data["fixtureData"]
-
-        fixtureTable += "|*{}*|{}\n".format(offsetsLabel, d["fixtures"])
-        fixtureTable += "|*{}*|{}\n".format(orderByLabel, d["orderBy"])
-        fixtureTable += "|*{}* a| image::{}[]".format(datumLabel, d["datumImage"])
-
-        # Generate the markup for the Output Section
-
-        outTable = ""
-        d = data["outputData"]
-
-        gcodeFileLabel = translate("Path_Sanity", "G-code File")
-        lastpostLabel = translate("Path_Sanity", "Last Post Process Date")
-        stopsLabel = translate("Path_Sanity", "Stops")
-        programmerLabel = translate("Path_Sanity", "Programmer")
-        machineLabel = translate("Path_Sanity", "Machine")
-        postLabel = translate("Path_Sanity", "Postprocessor")
-        flagsLabel = translate("Path_Sanity", "Post Processor Flags")
-        fileSizeLabel = translate("Path_Sanity", "File Size (kB)")
-        lineCountLabel = translate("Path_Sanity", "Line Count")
-
-        outTable += "|*{}*|{}\n".format(gcodeFileLabel, d["lastgcodefile"])
-        outTable += "|*{}*|{}\n".format(lastpostLabel, d["lastpostprocess"])
-        outTable += "|*{}*|{}\n".format(stopsLabel, d["optionalstops"])
-        outTable += "|*{}*|{}\n".format(programmerLabel, d["programmer"])
-        outTable += "|*{}*|{}\n".format(machineLabel, d["machine"])
-        outTable += "|*{}*|{}\n".format(postLabel, d["postprocessor"])
-        outTable += "|*{}*|{}\n".format(flagsLabel, d["postprocessorFlags"])
-        outTable += "|*{}*|{}\n".format(fileSizeLabel, d["filesize"])
-        outTable += "|*{}*|{}\n".format(lineCountLabel, d["linecount"])
-
-        # Generate the markup for the Squawk Section
-
-        noteLabel = translate("Path_Sanity", "Note")
-        operatorLabel = translate("Path_Sanity", "Operator")
-        dateLabel = translate("Path_Sanity", "Date")
-
-        squawkTable = "|*{}*|*{}*|*{}*\n".format(noteLabel, operatorLabel, dateLabel)
-
-        d = data["squawkData"]
-        for i in d["items"]:
-            squawkTable += "a|{}: {}".format(i["squawkType"], i["Note"])
-            squawkTable += "|{}".format(i["Operator"])
-            squawkTable += "|{}".format(i["Date"])
-            squawkTable += "\n"
-
-        # merge template and custom markup
-
-        report = reportTemplate.format(
-            jobname=jobname,
-            infoTable=infoTable,
-            runTable=runTable,
-            toolTables=toolTables,
-            stockTable=stockTable,
-            fixtureTable=fixtureTable,
-            outTable=outTable,
-            squawkTable=squawkTable,
-        )
 
         # Save the report
+        subsLookup = os.path.splitext(os.path.basename(obj.PostProcessorOutputFile))[0]
+        foundSub = False
 
-        reportraw = self.outputpath + data["outputData"]["outputfilename"] + ".asciidoc"
-        reporthtml = self.outputpath + data["outputData"]["outputfilename"] + ".html"
+        for elem in ["%D", "%d", "%M", "%j"]:
+            if elem in subsLookup:
+                foundSub = True
+                break
+
+        if foundSub:
+            filepath = self.resolveOutputFile(obj)
+            Path.Log.debug("filepath: {}".format(filepath))
+
+            # Make sure the filepath is fully qualified
+            if os.path.basename(filepath) == filepath:
+                filepath = f"{os.path.dirname(FreeCAD.ActiveDocument.FileName)}/{filepath}"
+            Path.Log.debug("filepath: {}".format(filepath))
+            base_name = os.path.splitext(filepath)[0]
+            reporthtml = base_name + ".html"
+        else:
+            reporthtml = self.outputpath + data["outputData"]["outputfilename"] + ".html"
+
+
         # Python 3.11 aware
-        with codecs.open(reportraw, encoding="utf-8", mode="w") as fd:
-            fd.write(report)
-            fd.close()
-            FreeCAD.Console.PrintMessage(
-                "asciidoc file written to {}\n".format(reportraw)
-            )
-
         with codecs.open(reporthtml, encoding="utf-8", mode="w") as fd:
             fd.write(reportHtmlTemplate)
             fd.close()

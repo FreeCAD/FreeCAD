@@ -3577,10 +3577,14 @@ StdCmdSelBack::StdCmdSelBack()
   :Command("Std_SelBack")
 {
   sGroup        = "View";
-  sMenuText     = QT_TR_NOOP("&Back");
-  sToolTipText  = QT_TR_NOOP("Go back to previous selection");
+  sMenuText     = QT_TR_NOOP("Selection Back");
+  static std::string toolTip = std::string("<p>")
+      + QT_TR_NOOP("Restore the previous Tree view selection. "
+      "Only works if Tree RecordSelection mode is switched on.")
+      + "</p>";
+  sToolTipText = toolTip.c_str();
   sWhatsThis    = "Std_SelBack";
-  sStatusTip    = QT_TR_NOOP("Go back to previous selection");
+  sStatusTip    = sToolTipText;
   sPixmap       = "sel-back";
   sAccel        = "S, B";
   eType         = AlterSelection;
@@ -3607,10 +3611,14 @@ StdCmdSelForward::StdCmdSelForward()
   :Command("Std_SelForward")
 {
   sGroup        = "View";
-  sMenuText     = QT_TR_NOOP("&Forward");
-  sToolTipText  = QT_TR_NOOP("Repeat the backed selection");
+  sMenuText     = QT_TR_NOOP("Selection Forward");
+  static std::string toolTip = std::string("<p>")
+      + QT_TR_NOOP("Restore the next Tree view selection. "
+      "Only works if Tree RecordSelection mode is switched on.")
+      + "</p>";
+  sToolTipText = toolTip.c_str();
   sWhatsThis    = "Std_SelForward";
-  sStatusTip    = QT_TR_NOOP("Repeat the backed selection");
+  sStatusTip    = sToolTipText;
   sPixmap       = "sel-forward";
   sAccel        = "S, F";
   eType         = AlterSelection;
@@ -3876,6 +3884,11 @@ public:
 
         addCommand(new StdTreeDrag(),!cmds.empty());
         addCommand(new StdTreeSelection(),!cmds.empty());
+
+        addCommand();
+
+        addCommand(new StdCmdSelBack());
+        addCommand(new StdCmdSelForward());
     }
     const char* className() const override {return "StdCmdTreeViewActions";}
 };

@@ -227,12 +227,12 @@
     <message>
       <location filename="../../Command.cpp" line="725"/>
       <source>Spring</source>
-      <translation type="unfinished">Spring</translation>
+      <translation>Feder</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="726"/>
       <source>Creates a spring acting on a face</source>
-      <translation type="unfinished">Creates a spring acting on a face</translation>
+      <translation>Erstellt eine Feder, die auf eine Fläche wirkt</translation>
     </message>
   </context>
   <context>
@@ -1022,11 +1022,14 @@
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcxImp.cpp" line="141"/>
-      <source>The specified executable 
+      <source>The specified executable
 '%1'
  does not exist!
 Specify another file please.</source>
-      <translation>Die angegebene ausführbare Datei '%1' existiert nicht. Bitte gib einen anderen Dateinamen an.</translation>
+      <translation>Die angegebene ausführbare Datei
+'%1'
+ existiert nicht!
+Bitte eine andere Datei angeben.</translation>
     </message>
   </context>
   <context>
@@ -1121,11 +1124,11 @@ verarbeiteten Mesh-Volume-Bereiche werden zusammengeführt, um die Volume-Grenze
     </message>
     <message>
       <location filename="../../DlgSettingsFemElmerImp.cpp" line="100"/>
-      <source>The specified executable 
+      <source>The specified executable
 '%1'
  does not exist!
 Specify another file please.</source>
-      <translation>Die angegebene ausführbare Datei 
+      <translation>Die angegebene ausführbare Datei
 '%1'
  existiert nicht!
 Bitte eine andere Datei angeben.</translation>
@@ -1246,8 +1249,8 @@ the constraint or material is applied.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="72"/>
-      <source>Let the application manage (create, delete) the working directories for all solver. Use temporary directories.</source>
-      <translation>Lasse die Anwendung die Arbeitsverzeichnisse für alle Solver verwalten (erstellen, löschen). Es werden temporäre Verzeichnisse verwenden.</translation>
+      <source>Let the application manage (create, delete) the working directories for all solvers. Use temporary directories.</source>
+      <translation type="unfinished">Let the application manage (create, delete) the working directories for all solvers. Use temporary directories.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="98"/>
@@ -1381,15 +1384,18 @@ adding an analysis container</source>
     <message>
       <location filename="../../DlgSettingsFemGmshImp.cpp" line="76"/>
       <source>File does not exist</source>
-      <translation>Datei nicht gefunden</translation>
+      <translation>Datei existiert nicht</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGmshImp.cpp" line="77"/>
-      <source>The specified executable 
+      <source>The specified executable
 '%1'
  does not exist!
 Specify another file please.</source>
-      <translation>Die angegebene ausführbare Datei '%1' existiert nicht. Bitte gib einen anderen Dateinamen an.</translation>
+      <translation>Die angegebene ausführbare Datei
+'%1'
+ existiert nicht!
+Bitte eine andere Datei angeben.</translation>
     </message>
   </context>
   <context>
@@ -1569,11 +1575,14 @@ Wenn deaktiviert, werden sie nach ihrem Namen sortiert.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemMystranImp.cpp" line="79"/>
-      <source>The specified executable 
+      <source>The specified executable
 '%1'
  does not exist!
 Specify another file please.</source>
-      <translation>Die angegebene ausführbare Datei '%1' existiert nicht. Bitte gib einen anderen Dateinamen an.</translation>
+      <translation>Die angegebene ausführbare Datei
+'%1'
+ existiert nicht!
+Bitte eine andere Datei angeben.</translation>
     </message>
   </context>
   <context>
@@ -1662,7 +1671,7 @@ You might need to increase this when using an
 iterative solver and you get the error message
 that "MAXKOI" needs to be increased.</source>
       <translation>Maximale Plätze im Zufallsvektor.
-(Anzahl der Knoten pro Element multipliziert 
+(Anzahl der Knoten pro Element multipliziert
 mit Anzahl der Finiten Elementen)
 
 Eventuell ist eine Erweiterung der Plätze nötig, wenn ein
@@ -1672,11 +1681,11 @@ iterativen Löser eingesetzt wird und die Fehlermeldung
     <message>
       <location filename="../../DlgSettingsFemZ88Imp.cpp" line="101"/>
       <source>File does not exist</source>
-      <translation>Datei existiert nicht</translation>
+      <translation>Datei nicht gefunden</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemZ88Imp.cpp" line="102"/>
-      <source>The specified z88r executable 
+      <source>The specified z88r executable
 '%1'
  does not exist!
 Specify another file please.</source>
@@ -2027,7 +2036,7 @@ Bitte eine andere Datei angeben.</translation>
       <location filename="../../TaskFemConstraintDisplacement.cpp" line="312"/>
       <location filename="../../TaskFemConstraintDisplacement.cpp" line="380"/>
       <source>Selected object is not a part!</source>
-      <translation>Ausgewähltes Objekt ist kein Part!</translation>
+      <translation>Ausgewähltes Objekt ist kein Teil!</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.cpp" line="345"/>
@@ -2056,7 +2065,7 @@ Bitte eine andere Datei angeben.</translation>
       <location filename="../../TaskFemConstraintFixed.cpp" line="117"/>
       <location filename="../../TaskFemConstraintFixed.cpp" line="186"/>
       <source>Selected object is not a part!</source>
-      <translation>Ausgewähltes Objekt ist kein Teilobjekt!</translation>
+      <translation>Ausgewähltes Objekt ist kein Part!</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFixed.cpp" line="151"/>
@@ -2149,17 +2158,17 @@ Bitte eine andere Datei angeben.</translation>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="623"/>
       <source>Only one planar face or edge can be selected!</source>
-      <translation>Nur eine flache Fläche oder Kante kann ausgewählt werden!</translation>
+      <translation>Es kann nur eine ebene Fläche oder eine Kante ausgewählt werden!</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="638"/>
       <source>Only planar faces can be picked for 3D</source>
-      <translation>Nur flache Flächen können für 3D ausgewählt werden</translation>
+      <translation>Es können nur ebene Flächen für 3D ausgewählt werden</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="645"/>
       <source>Only planar edges can be picked for 2D</source>
-      <translation>Nur flache Kanten können für 2D ausgewählt werden</translation>
+      <translation>Es können nur ebene Flächen für 2D ausgewählt werden</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="652"/>
@@ -2185,7 +2194,7 @@ Bitte eine andere Datei angeben.</translation>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="794"/>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="863"/>
       <source>Selected object is not a part!</source>
-      <translation>Ausgewähltes Objekt ist kein Teil!</translation>
+      <translation>Ausgewähltes Objekt ist kein Teilobjekt!</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="828"/>
@@ -3370,7 +3379,7 @@ Hinweis: hat keinen Effekt, wenn ein Volumen ausgewählt wurde</translation>
     <message>
       <location filename="../ui/MeshGroup.ui" line="47"/>
       <source>Label</source>
-      <translation>Bezeichnung</translation>
+      <translation>Beschriftung</translation>
     </message>
     <message>
       <location filename="../ui/MeshRegion.ui" line="14"/>
@@ -4048,7 +4057,7 @@ Siehe das nachfolgende Beschreibungsfeld für mögliche Variablen.</translation>
     <message>
       <location filename="../../SphereWidget.ui" line="22"/>
       <source>x</source>
-      <translation>х</translation>
+      <translation>x</translation>
     </message>
     <message>
       <location filename="../../SphereWidget.ui" line="32"/>
@@ -4253,7 +4262,7 @@ Siehe das nachfolgende Beschreibungsfeld für mögliche Variablen.</translation>
     <message>
       <location filename="../../TaskFemConstraintBearing.ui" line="205"/>
       <source>Location</source>
-      <translation>Ort</translation>
+      <translation>Lage</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintBearing.ui" line="219"/>
@@ -4576,7 +4585,7 @@ Normalenvektors der Fläche wird als Richtung verwendet</translation>
     <message>
       <location filename="../../TaskFemConstraintForce.ui" line="131"/>
       <source>Reverse direction</source>
-      <translation>Richtung umkehren</translation>
+      <translation>Umgekehrte Richtung</translation>
     </message>
   </context>
   <context>
@@ -4919,7 +4928,7 @@ für den Löser Elmer verwendet werden</translation>
     <message>
       <location filename="../../TaskPostDataAtPoint.ui" line="23"/>
       <source>x</source>
-      <translation>x</translation>
+      <translation>х</translation>
     </message>
     <message>
       <location filename="../../TaskPostDataAtPoint.ui" line="33"/>
@@ -6195,7 +6204,7 @@ Bitte wählen Sie zuerst einen Ergebnistyp.</translation>
     <message>
       <location filename="../../BoxWidget.ui" line="22"/>
       <source>x</source>
-      <translation>х</translation>
+      <translation>x</translation>
     </message>
     <message>
       <location filename="../../BoxWidget.ui" line="32"/>
@@ -6248,7 +6257,7 @@ Bitte wählen Sie zuerst einen Ergebnistyp.</translation>
     <message>
       <location filename="../../CylinderWidget.ui" line="58"/>
       <source>Center</source>
-      <translation>Zentrum</translation>
+      <translation>Mitte</translation>
     </message>
     <message>
       <location filename="../../CylinderWidget.ui" line="110"/>
@@ -6414,12 +6423,12 @@ Bitte wählen Sie zuerst einen Ergebnistyp.</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="352"/>
       <source>Gravity load</source>
-      <translation type="unfinished">Gravity load</translation>
+      <translation>Schwerkraft-Last</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="356"/>
       <source>Creates a gravity load</source>
-      <translation type="unfinished">Creates a gravity load</translation>
+      <translation>Erstellt eine aus der Schwerkraft resultierende Last</translation>
     </message>
   </context>
   <context>

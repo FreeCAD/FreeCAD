@@ -1348,12 +1348,12 @@
     <message>
       <location filename="../../DlgSettingsImportExport.ui" line="82"/>
       <source>Always export mesh as model type in 3MF format even if not a solid</source>
-      <translation type="unfinished">Always export mesh as model type in 3MF format even if not a solid</translation>
+      <translation>Beti esportatu amarauna eredu mota gisa 3MF formatuan, baita solidoa ez bada ere</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsImportExport.ui" line="85"/>
       <source>Export 3MF files as model type</source>
-      <translation type="unfinished">Export 3MF files as model type</translation>
+      <translation>Esportatu 3MF fitxategiak eredu mota gisa</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsImportExport.ui" line="114"/>

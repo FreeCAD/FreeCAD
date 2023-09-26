@@ -30,61 +30,13 @@ if App.GuiUp:
     import FreeCADGui as Gui
     from PySide import QtCore, QtGui, QtWidgets
 
+import UtilsAssembly
+
 # translate = App.Qt.translate
 
-__title__ = "Assembly Commands"
+__title__ = "Assembly Command Insert Link"
 __author__ = "Ondsel"
 __url__ = "https://www.freecad.org"
-
-
-def activeAssembly():
-    doc = Gui.ActiveDocument
-
-    if doc is None or doc.ActiveView is None:
-        return None
-
-    active_part = doc.ActiveView.getActiveObject("part")
-
-    if active_part is not None and active_part.Type == "Assembly":
-        return active_part
-
-    return None
-
-
-def isDocTemporary(doc):
-    # Guard against older versions of FreeCad which don't have the Temporary attribute
-    try:
-        docTemporary = doc.Temporary
-    except AttributeError:
-        docTemporary = False
-    return docTemporary
-
-
-class CommandCreateAssembly:
-    def __init__(self):
-        pass
-
-    def GetResources(self):
-        return {
-            "Pixmap": "Geoassembly",
-            "MenuText": QT_TRANSLATE_NOOP("Assembly_CreateAssembly", "Create Assembly"),
-            "Accel": "A",
-            "ToolTip": QT_TRANSLATE_NOOP(
-                "Assembly_CreateAssembly",
-                "Create an assembly object in the current document.",
-            ),
-            "CmdType": "ForEdit",
-        }
-
-    def IsActive(self):
-        return App.ActiveDocument is not None
-
-    def Activated(self):
-        App.setActiveTransaction("Create assembly")
-        assembly = App.ActiveDocument.addObject("App::Part", "Assembly")
-        assembly.Type = "Assembly"
-        Gui.ActiveDocument.ActiveView.setActiveObject("part", assembly)
-        App.closeActiveTransaction()
 
 
 class CommandInsertLink:
@@ -107,10 +59,10 @@ class CommandInsertLink:
         }
 
     def IsActive(self):
-        return activeAssembly() is not None
+        return UtilsAssembly.activeAssembly() is not None
 
     def Activated(self):
-        assembly = activeAssembly()
+        assembly = UtilsAssembly.activeAssembly()
         if not assembly:
             return
         view = Gui.activeDocument().activeView()
@@ -166,12 +118,20 @@ class TaskAssemblyInsertLink(QtCore.QObject):
         docList = App.listDocuments().values()
 
         for doc in docList:
-            if isDocTemporary(doc):
+            if UtilsAssembly.isDocTemporary(doc):
                 continue
 
+            # Build list of current assembly's parents, including the current assembly itself
+            parents = self.assembly.Parents
+            if parents:
+                root_parent, sub = parents[0]
+                parents_names, _ = UtilsAssembly.getObjsNamesAndElement(root_parent.Name, sub)
+            else:
+                parents_names = [self.assembly.Name]
+
             for obj in doc.findObjects("App::Part"):
-                # we don't want to link to itself
-                if obj != self.assembly:
+                # we don't want to link to itself or parents.
+                if obj.Name not in parents_names:
                     self.allParts.append(obj)
                     self.partsDoc.append(doc)
 
@@ -308,5 +268,4 @@ class TaskAssemblyInsertLink(QtCore.QObject):
 
 
 if App.GuiUp:
-    Gui.addCommand("Assembly_CreateAssembly", CommandCreateAssembly())
     Gui.addCommand("Assembly_InsertLink", CommandInsertLink())

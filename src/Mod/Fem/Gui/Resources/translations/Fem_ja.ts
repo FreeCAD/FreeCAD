@@ -1023,11 +1023,11 @@
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcxImp.cpp" line="141"/>
-      <source>The specified executable 
+      <source>The specified executable
 '%1'
  does not exist!
 Specify another file please.</source>
-      <translation>指定された実行可能ファイル 
+      <translation>指定された実行可能ファイル
 '%1'
  が存在しません!
 別のファイルを指定してください。</translation>
@@ -1124,11 +1124,11 @@ will be merged to make the volume boundaries invisible.</source>
     </message>
     <message>
       <location filename="../../DlgSettingsFemElmerImp.cpp" line="100"/>
-      <source>The specified executable 
+      <source>The specified executable
 '%1'
  does not exist!
 Specify another file please.</source>
-      <translation>指定された実行可能ファイル 
+      <translation>指定された実行可能ファイル
 '%1'
  が存在しません!
 別のファイルを指定してください。</translation>
@@ -1247,8 +1247,8 @@ the constraint or material is applied.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="72"/>
-      <source>Let the application manage (create, delete) the working directories for all solver. Use temporary directories.</source>
-      <translation>アプリケーションにすべてのソルバーの作業ディレクトリを管理 (作成、削除) させます。一時ディレクトリを使用してください。</translation>
+      <source>Let the application manage (create, delete) the working directories for all solvers. Use temporary directories.</source>
+      <translation type="unfinished">Let the application manage (create, delete) the working directories for all solvers. Use temporary directories.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="98"/>
@@ -1387,11 +1387,11 @@ adding an analysis container</source>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGmshImp.cpp" line="77"/>
-      <source>The specified executable 
+      <source>The specified executable
 '%1'
  does not exist!
 Specify another file please.</source>
-      <translation>指定された実行可能ファイル 
+      <translation>指定された実行可能ファイル
 '%1'
  が存在しません!
 別のファイルを指定してください。</translation>
@@ -1573,11 +1573,11 @@ If unchecked, they will be sorted by their name.</source>
     </message>
     <message>
       <location filename="../../DlgSettingsFemMystranImp.cpp" line="79"/>
-      <source>The specified executable 
+      <source>The specified executable
 '%1'
  does not exist!
 Specify another file please.</source>
-      <translation>指定された実行可能ファイル 
+      <translation>指定された実行可能ファイル
 '%1'
  が存在しません!
 別のファイルを指定してください。</translation>
@@ -1682,11 +1682,11 @@ that "MAXKOI" needs to be increased.</source>
     </message>
     <message>
       <location filename="../../DlgSettingsFemZ88Imp.cpp" line="102"/>
-      <source>The specified z88r executable 
+      <source>The specified z88r executable
 '%1'
  does not exist!
 Specify another file please.</source>
-      <translation type="unfinished">The specified z88r executable 
+      <translation type="unfinished">The specified z88r executable
 '%1'
  does not exist!
 Specify another file please.</translation>
@@ -3501,7 +3501,7 @@ Note: for 2D only setting for x is possible,
       <location filename="../ui/MeshGmsh.ui" line="66"/>
       <location filename="../ui/MeshGmsh.ui" line="110"/>
       <source>0 mm</source>
-      <translation>0 mm</translation>
+      <translation type="unfinished">0 mm</translation>
     </message>
     <message>
       <location filename="../ui/MeshGmsh.ui" line="91"/>
@@ -5302,7 +5302,7 @@ used for the Elmer solver</source>
     <message>
       <location filename="../../Workbench.cpp" line="66"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>メッシュ</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="67"/>

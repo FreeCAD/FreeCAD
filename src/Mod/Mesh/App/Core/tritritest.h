@@ -1,3 +1,4 @@
+// clang-format off
 /* Triangle/triangle intersection test routine,
  * by Tomas Moller, 1997.
  * See article "A Fast Triangle-Triangle Intersection Test",
@@ -722,3 +723,4 @@ int tri_tri_intersect_with_isectline(float V0[3],float V1[3],float V2[3],
   return 1;
 }
 
+// clang-format on
