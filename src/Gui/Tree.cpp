@@ -4184,11 +4184,6 @@ void DocumentItem::updateItemSelection(DocumentObjectItem* item) {
     App::DocumentObject* topParent = nullptr;
     item->getSubName(str, topParent);
     if (topParent) {
-        if (topParent->hasExtension(App::GeoFeatureGroupExtension::getExtensionClassTypeId())) {
-            // remove legacy selection, i.e. those without subname
-            Gui::Selection().rmvSelection(obj->getDocument()->getName(),
-                obj->getNameInDocument(), nullptr);
-        }
         if (!obj->redirectSubName(str, topParent, nullptr))
             str << obj->getNameInDocument() << '.';
         obj = topParent;
