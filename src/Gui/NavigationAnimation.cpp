@@ -88,6 +88,10 @@ void FixedTimeAnimation::initialize()
  */
 void FixedTimeAnimation::update(const QVariant& value)
 {
+    if (!navigation->getCamera()) {
+        return;
+    }
+
     float angle = value.toFloat() * angularVelocity;
     SbVec3f translation = value.toFloat() * linearVelocity;
 
@@ -129,6 +133,10 @@ void SpinningAnimation::initialize()
  */
 void SpinningAnimation::update(const QVariant& value)
 {
+    if (!navigation->getCamera()) {
+        return;
+    }
+
     SbRotation deltaRotation = SbRotation(rotationAxis, value.toFloat() - prevAngle);
     navigation->reorientCamera(navigation->getCamera(), deltaRotation);
 
