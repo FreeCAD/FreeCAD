@@ -4009,6 +4009,7 @@ namespace Gui {
 
 void CreateViewStdCommands()
 {
+    // NOLINTBEGIN
     CommandManager &rcCmdMgr = Application::Instance->commandManager();
 
     // views
@@ -4085,8 +4086,6 @@ void CreateViewStdCommands()
     rcCmdMgr.addCommand(new CmdViewMeasureClearAll());
     rcCmdMgr.addCommand(new CmdViewMeasureToggleAll());
     rcCmdMgr.addCommand(new StdCmdSelBoundingBox());
-    rcCmdMgr.addCommand(new StdCmdSelBack());
-    rcCmdMgr.addCommand(new StdCmdSelForward());
     rcCmdMgr.addCommand(new StdCmdTreeViewActions());
 
     auto hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
@@ -4094,6 +4093,7 @@ void CreateViewStdCommands()
         hGrp->SetASCII("GestureRollFwdCommand","Std_SelForward");
     if(hGrp->GetASCII("GestureRollBackCommand").empty())
         hGrp->SetASCII("GestureRollBackCommand","Std_SelBack");
+    // NOLINTEND
 }
 
 } // namespace Gui
