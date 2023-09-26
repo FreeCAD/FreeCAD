@@ -35,7 +35,7 @@ namespace MbD {
 		FullRow(std::vector<T> vec) : FullVector<T>(vec) {}
 		FullRow(int count) : FullVector<T>(count) {}
 		FullRow(int count, const T& value) : FullVector<T>(count, value) {}
-		FullRow(std::vector<T>::iterator begin, std::vector<T>::iterator end) : FullVector<T>(begin, end) {}
+		FullRow(typename std::vector<T>::const_iterator begin, typename std::vector<T>::const_iterator end) : FullVector<T>(begin, end) {}
 		FullRow(std::initializer_list<T> list) : FullVector<T>{ list } {}
 		FRowsptr<T> times(T a);
 		FRowsptr<T> negated();

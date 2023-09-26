@@ -9,7 +9,7 @@
 #pragma once
 
 #include "ConstraintIJ.h"
-#include "OrbitAngleZIecJec.h"
+#include "OrbitAnglezIecJec.h"
 
 namespace MbD {
 	class GearConstraintIJ : public ConstraintIJ
