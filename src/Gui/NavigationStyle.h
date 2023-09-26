@@ -52,7 +52,6 @@ class SbSphereSheetProjector;
 namespace Gui {
 
 class View3DInventorViewer;
-class NavigationAnimator;
 class AbstractMouseSelection;
 
 /**
@@ -123,8 +122,9 @@ public:
     void setAnimationEnabled(const SbBool enable);
     SbBool isAnimationEnabled() const;
 
+    void startAnimating(const SbVec3f& axis, float velocity);
+    void stopAnimating();
     SbBool isAnimating() const;
-    NavigationAnimator* getAnimator() const;
 
     void setSensitivity(float);
     float getSensitivity() const;
@@ -144,14 +144,11 @@ public:
     void setRotationCenter(const SbVec3f& cnt);
     SbVec3f getFocalPoint() const;
 
+    void updateAnimation();
     void redraw();
 
-    SoCamera* getCamera() const;
-    void setCameraOrientation(const SbRotation& orientation, SbBool moveToCenter = false);
-    void translateCamera(const SbVec3f& translation);
-    void reorientCamera(SoCamera* camera, const SbRotation& rotation);
-    void reorientCamera(SoCamera* camera, const SbRotation& rotation, const SbVec3f& rotationCenter);
-
+    void setCameraOrientation(const SbRotation& rot, SbBool moveTocenter=false);
+    void lookAtPoint(const SbVec3f&);
     void boxZoom(const SbBox2s& box);
     virtual void viewAll();
 
@@ -176,9 +173,6 @@ public:
     void setOrbitStyle(OrbitStyle style);
     OrbitStyle getOrbitStyle() const;
 
-    SbBool isViewing() const;
-    void setViewing(SbBool);
-
     SbVec3f getRotationCenter(SbBool&) const;
 
 protected:
@@ -189,12 +183,15 @@ protected:
     void interactiveCountDec();
     int getInteractiveCount() const;
 
+    SbBool isViewing() const;
+    void setViewing(SbBool);
     SbBool isSeekMode() const;
     void setSeekMode(SbBool enable);
     SbBool seekToPoint(const SbVec2s screenpos);
     void seekToPoint(const SbVec3f& scenepos);
     SbBool lookAtPoint(const SbVec2s screenpos);
 
+    void reorientCamera(SoCamera * camera, const SbRotation & rot);
     void panCamera(SoCamera * camera,
                    float vpaspect,
                    const SbPlane & panplane,
@@ -236,13 +233,13 @@ protected:
     } log;
 
     View3DInventorViewer* viewer{nullptr};
-    NavigationAnimator* animator;
     ViewerMode currentmode;
     SoMouseButtonEvent mouseDownConsumedEvent;
     SbVec2f lastmouseposition;
     SbVec2s globalPos;
     SbVec2s localPos;
     SbPlane panningplane;
+    SbTime prevRedrawTime;
     SbTime centerTime;
     SbBool lockrecenter;
     SbBool menuenabled;
@@ -264,17 +261,13 @@ protected:
     SbBool spinanimatingallowed;
     int spinsamplecounter;
     SbRotation spinincrement;
+    SbRotation spinRotation;
     SbSphereSheetProjector * spinprojector;
     //@}
 
 private:
-    friend class NavigationAnimator;
-
-    SbVec3f rotationCenter;
-    SbBool rotationCenterFound;
-    NavigationStyle::RotationCenterModes rotationCenterMode;
-    float sensitivity;
-    SbBool resetcursorpos;
+    struct NavigationStyleP* pimpl;
+    friend struct NavigationStyleP;
 };
 
 /** Sub-classes of this class appear in the preference dialog where users can
