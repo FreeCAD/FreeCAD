@@ -21,7 +21,7 @@ namespace MbD {
 		FullVector(std::vector<T> vec) : Array<T>(vec) {}
 		FullVector(int count) : Array<T>(count) {}
 		FullVector(int count, const T& value) : Array<T>(count, value) {}
-		FullVector(std::vector<T>::iterator begin, std::vector<T>::iterator end) : Array<T>(begin, end) {}
+		FullVector(typename std::vector<T>::iterator begin, typename std::vector<T>::iterator end) : Array<T>(begin, end) {}
 		FullVector(std::initializer_list<T> list) : Array<T>{ list } {}
 		double dot(std::shared_ptr<FullVector<T>> vec);
 		void atiplusNumber(int i, T value);

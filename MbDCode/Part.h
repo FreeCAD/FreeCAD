@@ -32,6 +32,7 @@ namespace MbD {
 		void initializeGlobally() override;
 		void setqX(FColDsptr x);
 		FColDsptr getqX();
+		void setaAap(FMatDsptr mat);
 		void setqE(FColDsptr x);
 		FColDsptr getqE();
 		void setqXdot(FColDsptr x);

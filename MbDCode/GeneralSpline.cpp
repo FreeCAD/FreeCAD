@@ -5,7 +5,7 @@
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
- 
+
 #include <functional>
 
 #include "GeneralSpline.h"
@@ -27,7 +27,7 @@ double MbD::GeneralSpline::getValue()
 Symsptr MbD::GeneralSpline::differentiateWRTx()
 {
 	auto self = clonesptr();
-	auto arg = std::static_pointer_cast<GeneralSpline>(self)->xx;
+	auto& arg = std::static_pointer_cast<GeneralSpline>(self)->xx;
 	auto deriv = std::make_shared<DifferentiatedGeneralSpline>(arg, self, 1);
 	return deriv;
 }
@@ -35,14 +35,14 @@ Symsptr MbD::GeneralSpline::differentiateWRTx()
 void MbD::GeneralSpline::arguments(Symsptr args)
 {
 	auto array = args->getTerms();
-	auto arg = array->at(0);
+	auto& arg = array->at(0);
 	int order = (int)array->at(1)->getValue();
-	int n = (array->size() - 2) / 2;
+	int n = ((int)array->size() - 2) / 2;
 	auto xarray = std::make_shared<std::vector<double>>(n);
 	auto yarray = std::make_shared<std::vector<double>>(n);
 	for (int i = 0; i < n; i++)
 	{
-		size_t ii = 2 * (i + 1);
+		size_t ii = 2 * ((size_t)i + 1);
 		xarray->at(i) = array->at(ii)->getValue();
 		yarray->at(i) = array->at(ii + 1)->getValue();
 	}
@@ -63,7 +63,7 @@ void MbD::GeneralSpline::computeDerivatives()
 {
 	//"See derivation in MbDTheory 9spline.fodt."
 	if (degree == 0) throw std::runtime_error("ToDo: Use ZeroDegreeSpline");
-	auto n = xs->size();
+	auto n = (int)xs->size();
 	auto p = degree;
 	auto np = n * p;
 	auto matrix = std::make_shared<SparseMatrix<double>>(np, np);
@@ -72,7 +72,7 @@ void MbD::GeneralSpline::computeDerivatives()
 	auto hmax = 0.0;
 	for (int i = 0; i < n - 1; i++)
 	{
-		auto h = xs->at(i + 1) - xs->at(i);
+		auto h = xs->at((size_t)i + 1) - xs->at(i);
 		hmax = std::max(hmax, std::abs(h));
 		hs->atiput(i, h);
 	}
@@ -94,7 +94,7 @@ void MbD::GeneralSpline::computeDerivatives()
 				matrix->atijput(offset + k - j, offset + k, dum);
 			}
 		}
-		bvector->atiput(offset, ys->at(i + 1) - ys->at(i));
+		bvector->atiput(offset, ys->at((size_t)i + 1) - ys->at(i));
 	}
 	if (isCyclic()) {
 		for (int j = 1; j < p + 1; j++)
@@ -127,7 +127,7 @@ void MbD::GeneralSpline::computeDerivatives()
 	}
 	for (int i = 0; i < n; i++)
 	{
-		auto derivsi = derivs->at(i);
+		auto& derivsi = derivs->at(i);
 		derivsi->equalArrayAt(derivsVector, (i - 1) * p + 1);
 		for (int j = 0; j < p; j++)
 		{
@@ -147,13 +147,13 @@ double MbD::GeneralSpline::derivativeAt(int n, double xxx)
 	//"d2ydx2(x) := d2ydx2i + d3ydx3i*hi + d4ydx4i*hi^2/2! +"
 	if (n > degree) return 0.0;
 	calcIndexAndDeltaFor(xxx);
-	auto derivsi = derivs->at(index);
+	auto& derivsi = derivs->at(index);
 	auto sum = 0.0;
 	for (int j = degree; j >= n + 1; j--)
 	{
-		sum = (sum + derivsi->at(j - 1)) * delta / (j - n);
+		sum = (sum + derivsi->at((size_t)j - 1)) * delta / (j - n);
 	}
-	return derivsi->at(n - 1) + sum;
+	return derivsi->at((size_t)n - 1) + sum;
 }
 
 void MbD::GeneralSpline::calcIndexAndDeltaFor(double xxx)
@@ -185,7 +185,7 @@ void MbD::GeneralSpline::calcNonCyclicIndexAndDelta()
 	}
 	else {
 		if (xvalue >= xLast) {
-			index = xs->size() - 1;
+			index = (int)xs->size() - 1;
 			delta = xvalue - xLast;
 		}
 		else {
@@ -196,8 +196,8 @@ void MbD::GeneralSpline::calcNonCyclicIndexAndDelta()
 
 void MbD::GeneralSpline::calcIndexAndDelta()
 {
-	if (!(index < xs->size() - 1) || !(xs->at(index) <= xvalue) || !(xvalue < xs->at(index + 1))) {
-		searchIndexFromto(0, xs->size());	//Using range.
+	if (!(index < xs->size() - 1) || !(xs->at(index) <= xvalue) || !(xvalue < xs->at((size_t)index + 1))) {
+		searchIndexFromto(0, (int)xs->size());	//Using range.
 	}
 	delta = xvalue - xs->at(index);
 }
@@ -209,7 +209,7 @@ void MbD::GeneralSpline::searchIndexFromto(int first, int last)
 		index = first;
 	}
 	else {
-		auto middle = std::floor((first + last) / 2);
+		auto middle = (int)std::floor((first + last) / 2);
 		if (xvalue < xs->at(middle)) {
 			searchIndexFromto(first, middle);
 		}
@@ -229,11 +229,11 @@ double MbD::GeneralSpline::y(double xxx)
 	//"y(x) := yi + dydxi*hi + d2ydx2i*hi^2/2! + d3ydx3i*hi^3/3! +"
 
 	calcIndexAndDeltaFor(xxx);
-	auto derivsi = derivs->at(index);
+	auto& derivsi = derivs->at(index);
 	auto sum = 0.0;
 	for (int j = degree; j >= 1; j--)
 	{
-		sum = (sum + derivsi->at(j - 1)) * delta / j;
+		sum = (sum + derivsi->at((size_t)j - 1)) * delta / j;
 	}
 	return ys->at(index) + sum;
 }

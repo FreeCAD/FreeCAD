@@ -336,7 +336,6 @@ void MbD::ASMTSpatialContainer::compareResults(AnalysisType type)
 	auto i = xs->size() - 1;
 	//Pos
 	if (!Numeric::equaltol(xs->at(i), inxs->at(i), lengthTol)) {
-		std::cout << i << " xs " << xs->at(i) << ", " << i<< lengthTol << std::endl;
 		std::cout << i << " xs " << xs->at(i) << ", " << inxs->at(i) << ", " << lengthTol << std::endl;
 	}
 	if (!Numeric::equaltol(ys->at(i), inys->at(i), lengthTol)) {

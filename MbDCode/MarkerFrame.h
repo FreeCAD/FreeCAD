@@ -34,7 +34,7 @@ namespace MbD {
 		void setPartFrame(PartFrame* partFrm);
 		PartFrame* getPartFrame();
 		void setrpmp(FColDsptr x);
-		void setaApm(FMatDsptr x);
+		void setaApm(FMatDsptr mat);
 		void addEndFrame(EndFrmsptr x);
 		void initializeLocally() override;
 		void initializeGlobally() override;
