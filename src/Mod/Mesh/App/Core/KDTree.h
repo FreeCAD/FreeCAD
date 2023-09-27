@@ -51,13 +51,14 @@ public:
     PointIndex FindExact(const Base::Vector3f& p) const;
     void FindInRange(const Base::Vector3f&, float, std::vector<PointIndex>&) const;
 
+    MeshKDTree(const MeshKDTree&) = delete;
+    MeshKDTree(MeshKDTree&&) = delete;
+    void operator=(const MeshKDTree&) = delete;
+    void operator=(MeshKDTree&&) = delete;
+
 private:
     class Private;
     Private* d;
-
-public:
-    MeshKDTree(const MeshKDTree&) = delete;
-    void operator=(const MeshKDTree&) = delete;
 };
 
 }  // namespace MeshCore

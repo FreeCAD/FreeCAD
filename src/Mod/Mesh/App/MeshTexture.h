@@ -90,7 +90,7 @@ private:
         }
         else {
             Base::Vector3f n;
-            float dist;
+            float dist {};
             return kdTree->FindNearest(p, max_dist, n, dist);
         }
     }

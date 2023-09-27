@@ -22,32 +22,32 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+#include <cstdlib>
 #include <QAction>
 #include <QMenu>
-#include <cstdlib>
 
 #include <Inventor/SbBox2s.h>
 #include <Inventor/SbLine.h>
 #include <Inventor/SbPlane.h>
 #include <Inventor/SoPickedPoint.h>
-#include <Inventor/VRMLnodes/SoVRMLGroup.h>
 #include <Inventor/actions/SoToVRML2Action.h>
 #include <Inventor/details/SoFaceDetail.h>
 #include <Inventor/events/SoMouseButtonEvent.h>
 #include <Inventor/nodes/SoBaseColor.h>
 #include <Inventor/nodes/SoCoordinate3.h>
 #include <Inventor/nodes/SoDrawStyle.h>
+#include <Inventor/nodes/SoLightModel.h>
 #include <Inventor/nodes/SoIndexedFaceSet.h>
 #include <Inventor/nodes/SoIndexedLineSet.h>
-#include <Inventor/nodes/SoLightModel.h>
 #include <Inventor/nodes/SoMaterial.h>
 #include <Inventor/nodes/SoMaterialBinding.h>
 #include <Inventor/nodes/SoOrthographicCamera.h>
 #include <Inventor/nodes/SoPerspectiveCamera.h>
 #include <Inventor/nodes/SoPolygonOffset.h>
-#include <Inventor/nodes/SoSeparator.h>
 #include <Inventor/nodes/SoShapeHints.h>
+#include <Inventor/nodes/SoSeparator.h>
 #include <Inventor/nodes/SoTransform.h>
+#include <Inventor/VRMLnodes/SoVRMLGroup.h>
 #endif
 
 #include <QFuture>
@@ -234,6 +234,7 @@ PROPERTY_SOURCE(MeshGui::ViewProviderMesh, Gui::ViewProviderGeometryObject)
 ViewProviderMesh::ViewProviderMesh()
     : highlightMode {HighlighMode::None}
 {
+    // NOLINTBEGIN
     static const char* osgroup = "Object Style";
 
     ADD_PROPERTY_TYPE(LineTransparency, (0), osgroup, App::Prop_None, "Set line transparency.");
@@ -334,6 +335,7 @@ ViewProviderMesh::ViewProviderMesh()
     }
 
     Coloring.setStatus(App::Property::Hidden, true);
+    // NOLINTEND
 }
 
 ViewProviderMesh::~ViewProviderMesh()
@@ -850,7 +852,7 @@ bool ViewProviderMesh::createToolMesh(const std::vector<SbVec2f>& rclPoly,
                                       const Base::Vector3f& rcNormal,
                                       std::vector<MeshCore::MeshGeomFacet>& aFaces)
 {
-    float fX, fY, fZ;
+    float fX {}, fY {}, fZ {};
     SbVec3f pt1, pt2, pt3, pt4;
     MeshGeomFacet face;
     std::vector<Base::Vector3f> top, bottom, polygon;
@@ -944,10 +946,10 @@ class MeshSplit
 {
 public:
     MeshSplit(ViewProviderMesh* mesh,
-              const std::vector<SbVec2f>& poly,
+              std::vector<SbVec2f> poly,
               const Gui::ViewVolumeProjection& proj)
         : mesh(mesh)
-        , poly(poly)
+        , poly(std::move(poly))
         , proj(proj)
     {}
     void cutMesh()
@@ -1001,7 +1003,7 @@ void ViewProviderMesh::clipMeshCallback(void* ud, SoEventCallback* n)
     view->removeEventCallback(SoMouseButtonEvent::getClassTypeId(), clipMeshCallback, ud);
     n->setHandled();
 
-    Gui::SelectionRole role;
+    Gui::SelectionRole role {};
     std::vector<SbVec2f> clPoly = view->getGLPolygon(&role);
     if (clPoly.size() < 3) {
         return;
@@ -1071,7 +1073,7 @@ void ViewProviderMesh::trimMeshCallback(void* ud, SoEventCallback* n)
     view->removeEventCallback(SoMouseButtonEvent::getClassTypeId(), trimMeshCallback, ud);
     n->setHandled();
 
-    Gui::SelectionRole role;
+    Gui::SelectionRole role {};
     std::vector<SbVec2f> clPoly = view->getGLPolygon(&role);
     if (clPoly.size() < 3) {
         return;
@@ -1141,7 +1143,7 @@ void ViewProviderMesh::partMeshCallback(void* ud, SoEventCallback* cb)
     view->removeEventCallback(SoMouseButtonEvent::getClassTypeId(), partMeshCallback, ud);
     cb->setHandled();
 
-    Gui::SelectionRole role;
+    Gui::SelectionRole role {};
     std::vector<SbVec2f> clPoly = view->getGLPolygon(&role);
     if (clPoly.size() < 3) {
         return;
@@ -1214,7 +1216,7 @@ void ViewProviderMesh::segmMeshCallback(void* ud, SoEventCallback* cb)
     view->removeEventCallback(SoMouseButtonEvent::getClassTypeId(), segmMeshCallback, ud);
     cb->setHandled();
 
-    Gui::SelectionRole role;
+    Gui::SelectionRole role {};
     std::vector<SbVec2f> clPoly = view->getGLPolygon(&role);
     if (clPoly.size() < 3) {
         return;
@@ -1291,7 +1293,7 @@ void ViewProviderMesh::selectGLCallback(void* ud, SoEventCallback* n)
     const SoEvent* ev = n->getEvent();
 
     SbVec2f pos = clPoly[0];
-    float pX, pY;
+    float pX {}, pY {};
     pos.getValue(pX, pY);
     const SbVec2s& sz = view->getSoRenderManager()->getViewportRegion().getViewportSizePixels();
     float fRatio = view->getSoRenderManager()->getViewportRegion().getViewportAspectRatio();
@@ -1423,7 +1425,7 @@ void ViewProviderMesh::boxZoom(const SbBox2s& box, const SbViewportRegion& vp, S
 {
     SbViewVolume vv = cam->getViewVolume(vp.getViewportAspectRatio());
 
-    short sizeX, sizeY;
+    short sizeX {}, sizeY {};
     box.getSize(sizeX, sizeY);
     SbVec2s size = vp.getViewportSizePixels();
 
@@ -1434,7 +1436,7 @@ void ViewProviderMesh::boxZoom(const SbBox2s& box, const SbViewportRegion& vp, S
     }
 
     // Get the new center in normalized pixel coordinates
-    short xmin, xmax, ymin, ymax;
+    short xmin {}, xmax {}, ymin {}, ymax {};
     box.getBounds(xmin, ymin, xmax, ymax);
     const SbVec2f center((float)((xmin + xmax) / 2) / (float)std::max((int)(size[0] - 1), 1),
                          (float)(size[1] - (ymin + ymax) / 2)
@@ -1525,7 +1527,7 @@ std::vector<Mesh::FacetIndex> ViewProviderMesh::getVisibleFacets(const SbViewpor
     mat->diffuseColor.setNum(count);
     SbColor* diffcol = mat->diffuseColor.startEditing();
     for (uint32_t i = 0; i < count; i++) {
-        float t;
+        float t {};
         diffcol[i].setPackedValue(i << 8, t);
     }
 
@@ -2464,8 +2466,10 @@ PROPERTY_SOURCE(MeshGui::ViewProviderIndexedFaceSet, MeshGui::ViewProviderMesh)
 
 ViewProviderIndexedFaceSet::ViewProviderIndexedFaceSet()
 {
+    // NOLINTBEGIN
     pcMeshCoord = nullptr;
     pcMeshFaces = nullptr;
+    // NOLINTEND
 }
 
 ViewProviderIndexedFaceSet::~ViewProviderIndexedFaceSet() = default;
@@ -2558,8 +2562,10 @@ PROPERTY_SOURCE(MeshGui::ViewProviderMeshObject, MeshGui::ViewProviderMesh)
 
 ViewProviderMeshObject::ViewProviderMeshObject()
 {
+    // NOLINTBEGIN
     pcMeshNode = nullptr;
     pcMeshShape = nullptr;
+    // NOLINTEND
 }
 
 ViewProviderMeshObject::~ViewProviderMeshObject() = default;

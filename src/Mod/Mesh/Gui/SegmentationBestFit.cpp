@@ -52,7 +52,6 @@ class PlaneFitParameter: public FitParameter
 {
 public:
     PlaneFitParameter() = default;
-    ~PlaneFitParameter() override = default;
     std::vector<float> getParameter(FitParameter::Points pts) const override
     {
         std::vector<float> values;
@@ -76,7 +75,6 @@ class CylinderFitParameter: public FitParameter
 {
 public:
     CylinderFitParameter() = default;
-    ~CylinderFitParameter() override = default;
     std::vector<float> getParameter(FitParameter::Points pts) const override
     {
         std::vector<float> values;
@@ -142,7 +140,6 @@ class SphereFitParameter: public FitParameter
 {
 public:
     SphereFitParameter() = default;
-    ~SphereFitParameter() override = default;
     std::vector<float> getParameter(FitParameter::Points pts) const override
     {
         std::vector<float> values;
@@ -169,60 +166,61 @@ ParametersDialog::ParametersDialog(std::vector<float>& val,
     : QDialog(parent)
     , values(val)
     , fitParameter(fitPar)
-    , parameter(par)
+    , parameter(std::move(par))
     , myMesh(mesh)
 {
     this->setWindowTitle(tr("Surface fit"));
 
-    QGridLayout* gridLayout;
+    QGridLayout* gridLayout {};
     gridLayout = new QGridLayout(this);
 
-    QGroupBox* groupBox;
+    QGroupBox* groupBox {};
     groupBox = new QGroupBox(this);
     groupBox->setTitle(tr("Parameters"));
     gridLayout->addWidget(groupBox, 0, 0, 1, 1);
 
-    QGroupBox* selectBox;
+    QGroupBox* selectBox {};
     selectBox = new QGroupBox(this);
     selectBox->setTitle(tr("Selection"));
     gridLayout->addWidget(selectBox, 1, 0, 1, 1);
 
-    QVBoxLayout* selectLayout;
+    QVBoxLayout* selectLayout {};
     selectLayout = new QVBoxLayout(selectBox);
 
-    QPushButton* regionButton;
+    QPushButton* regionButton {};
     regionButton = new QPushButton(this);
     regionButton->setText(tr("Region"));
     regionButton->setObjectName(QString::fromLatin1("region"));
     selectLayout->addWidget(regionButton);
 
-    QPushButton* singleButton;
+    QPushButton* singleButton {};
     singleButton = new QPushButton(this);
     singleButton->setText(tr("Triangle"));
     singleButton->setObjectName(QString::fromLatin1("single"));
     selectLayout->addWidget(singleButton);
 
-    QPushButton* clearButton;
+    QPushButton* clearButton {};
     clearButton = new QPushButton(this);
     clearButton->setText(tr("Clear"));
     clearButton->setObjectName(QString::fromLatin1("clear"));
     selectLayout->addWidget(clearButton);
 
-    QPushButton* computeButton;
+    QPushButton* computeButton {};
     computeButton = new QPushButton(this);
     computeButton->setText(tr("Compute"));
     computeButton->setObjectName(QString::fromLatin1("compute"));
     gridLayout->addWidget(computeButton, 2, 0, 1, 1);
 
-    QDialogButtonBox* buttonBox;
+    QDialogButtonBox* buttonBox {};
     buttonBox = new QDialogButtonBox(this);
     buttonBox->setOrientation(Qt::Horizontal);
     buttonBox->setStandardButtons(QDialogButtonBox::Cancel | QDialogButtonBox::Ok);
     gridLayout->addWidget(buttonBox, 3, 0, 1, 1);
 
     int index = 0;
-    QGridLayout* layout;
+    QGridLayout* layout {};
     layout = new QGridLayout(groupBox);
+    groupBox->setLayout(layout);
     for (const auto& it : parameter) {
         QLabel* label = new QLabel(groupBox);
         label->setText(it.first);
@@ -331,9 +329,9 @@ void ParametersDialog::reject()
 
 SegmentationBestFit::SegmentationBestFit(Mesh::Feature* mesh, QWidget* parent, Qt::WindowFlags fl)
     : QWidget(parent, fl)
+    , ui(new Ui_SegmentationBestFit)
     , myMesh(mesh)
 {
-    ui = new Ui_SegmentationBestFit;
     ui->setupUi(this);
     setupConnections();
 
@@ -453,7 +451,7 @@ void SegmentationBestFit::accept()
 
     std::vector<MeshCore::MeshSurfaceSegmentPtr> segm;
     if (ui->groupBoxCyl->isChecked()) {
-        MeshCore::AbstractSurfaceFit* fitter;
+        MeshCore::AbstractSurfaceFit* fitter {};
         if (cylinderParameter.size() == 7) {
             std::vector<float>& p = cylinderParameter;
             fitter = new MeshCore::CylinderSurfaceFit(Base::Vector3f(p[0], p[1], p[2]),
@@ -470,7 +468,7 @@ void SegmentationBestFit::accept()
                                                                              ui->tolCyl->value()));
     }
     if (ui->groupBoxSph->isChecked()) {
-        MeshCore::AbstractSurfaceFit* fitter;
+        MeshCore::AbstractSurfaceFit* fitter {};
         if (sphereParameter.size() == 4) {
             std::vector<float>& p = sphereParameter;
             fitter = new MeshCore::SphereSurfaceFit(Base::Vector3f(p[0], p[1], p[2]), p[3]);
@@ -485,7 +483,7 @@ void SegmentationBestFit::accept()
                                                                              ui->tolSph->value()));
     }
     if (ui->groupBoxPln->isChecked()) {
-        MeshCore::AbstractSurfaceFit* fitter;
+        MeshCore::AbstractSurfaceFit* fitter {};
         if (planeParameter.size() == 6) {
             std::vector<float>& p = planeParameter;
             fitter = new MeshCore::PlaneSurfaceFit(Base::Vector3f(p[0], p[1], p[2]),
@@ -545,7 +543,7 @@ void SegmentationBestFit::changeEvent(QEvent* e)
 
 TaskSegmentationBestFit::TaskSegmentationBestFit(Mesh::Feature* mesh)
 {
-    widget = new SegmentationBestFit(mesh);
+    widget = new SegmentationBestFit(mesh);  // NOLINT
     taskbox = new Gui::TaskView::TaskBox(QPixmap(), widget->windowTitle(), false, nullptr);
     taskbox->groupLayout()->addWidget(widget);
     Content.push_back(taskbox);

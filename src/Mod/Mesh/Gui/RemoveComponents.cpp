@@ -37,8 +37,8 @@ using namespace MeshGui;
 
 RemoveComponents::RemoveComponents(QWidget* parent, Qt::WindowFlags fl)
     : QWidget(parent, fl)
+    , ui(new Ui_RemoveComponents)
 {
-    ui = new Ui_RemoveComponents;
     ui->setupUi(this);
     setupConnections();
     ui->spSelectComp->setRange(1, INT_MAX);
@@ -198,7 +198,7 @@ void RemoveComponents::reject()
 RemoveComponentsDialog::RemoveComponentsDialog(QWidget* parent, Qt::WindowFlags fl)
     : QDialog(parent, fl)
 {
-    widget = new RemoveComponents(this);
+    widget = new RemoveComponents(this);  // NOLINT
     this->setWindowTitle(widget->windowTitle());
 
     QVBoxLayout* hboxLayout = new QVBoxLayout(this);
@@ -243,7 +243,7 @@ void RemoveComponentsDialog::clicked(QAbstractButton* btn)
 
 TaskRemoveComponents::TaskRemoveComponents()
 {
-    widget = new RemoveComponents();
+    widget = new RemoveComponents();  // NOLINT
     taskbox = new Gui::TaskView::TaskBox(QPixmap(), widget->windowTitle(), false, nullptr);
     taskbox->groupLayout()->addWidget(widget);
     Content.push_back(taskbox);

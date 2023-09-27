@@ -89,7 +89,7 @@ protected:
         Base::Vector3f _clCenter;
     };
 
-protected:
+private:
     const MeshKernel& _rclMesh;
     const MeshFacetArray& _rclFAry;
     const MeshPointArray& _rclPAry;
@@ -102,11 +102,12 @@ protected:
     std::vector<std::vector<Base::Vector3f>> _aclSampledFacets;  // sample points from each facet
     float _fSampleDistance;  // distance between two sampled points
     Wm4::Sphere3<float> _akSphere;
-    bool _bTooFewPoints {false};
 
 public:
     MeshSearchNeighbours(const MeshSearchNeighbours&) = delete;
+    MeshSearchNeighbours(MeshSearchNeighbours&&) = delete;
     void operator=(const MeshSearchNeighbours&) = delete;
+    void operator=(MeshSearchNeighbours&&) = delete;
 };
 
 inline bool MeshSearchNeighbours::CheckDistToFacet(const MeshFacet& rclF)
@@ -177,7 +178,7 @@ public:
     Base::Vector3f operator()(PointIndex index)
     {
         it.Set(index);
-        return *it;
+        return Base::Vector3f(it->x, it->y, it->z);
     }
 
 private:
@@ -206,8 +207,10 @@ public:
         }
     }
 
+    // NOLINTBEGIN
     Index nearest_index;
     float nearest_dist {FLOAT_MAX};
+    // NOLINTEND
 
 private:
     T it;

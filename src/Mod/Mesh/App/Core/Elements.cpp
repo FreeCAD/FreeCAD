@@ -55,7 +55,7 @@ PointIndex MeshPointArray::Get(const MeshPoint& rclPoint)
 
 PointIndex MeshPointArray::GetOrAddIndex(const MeshPoint& rclPoint)
 {
-    PointIndex ulIndex;
+    PointIndex ulIndex {};
 
     if ((ulIndex = Get(rclPoint)) == POINT_INDEX_MAX) {
         push_back(rclPoint);
@@ -111,7 +111,7 @@ MeshFacetArray::MeshFacetArray(MeshFacetArray&& ary) = default;
 
 void MeshFacetArray::Erase(_TIterator pIter)
 {
-    FacetIndex i, *pulN;
+    FacetIndex i {}, *pulN {};
     _TIterator pPass, pEnd;
     FacetIndex ulInd = pIter - begin();
     erase(pIter);
@@ -494,7 +494,7 @@ bool MeshGeomFacet::IsPointOf(const Base::Vector3f& rclPoint, float fDistance) c
     // force internal normal to be computed if not done yet
     Base::Vector3f clNorm(GetNormal()), clProjPt(rclPoint), clEdge;
     Base::Vector3f clP0(_aclPoints[0]), clP1(_aclPoints[1]), clP2(_aclPoints[2]);
-    float fLP, fLE;
+    float fLP {}, fLE {};
 
     clNorm.Normalize();
     clProjPt.ProjectToPlane(_aclPoints[0], clNorm);
@@ -616,8 +616,8 @@ void MeshGeomFacet::ProjectFacetToPlane(MeshGeomFacet& rclFacet) const
 void MeshGeomFacet::Enlarge(float fDist)
 {
     Base::Vector3f clM, clU, clV, clPNew[3];
-    float fA, fD;
-    PointIndex i, ulP1, ulP2, ulP3;
+    float fA {}, fD {};
+    PointIndex i {}, ulP1 {}, ulP2 {}, ulP3 {};
 
     for (i = 0; i < 3; i++) {
         ulP1 = i;
@@ -683,7 +683,7 @@ bool MeshGeomFacet::IsDegenerated(float epsilon) const
 
 bool MeshGeomFacet::IsDeformed(float fCosOfMinAngle, float fCosOfMaxAngle) const
 {
-    float fCosAngle;
+    float fCosAngle {};
     Base::Vector3f u, v;
 
     for (int i = 0; i < 3; i++) {
@@ -1047,8 +1047,10 @@ void MeshGeomFacet::SubSample(float fStep, std::vector<Base::Vector3f>& rclPoint
 
     float fDetABC = bx * cy;
 
-    for (float px = (fStep / 2.0f); px < fLenAB; px += fStep) {
-        for (float py = (fStep / 2.0f); py < cy; py += fStep) {
+    for (float px = (fStep / 2.0f); px < fLenAB; px += fStep)  // NOLINT
+    {
+        for (float py = (fStep / 2.0f); py < cy; py += fStep)  // NOLINT
+        {
             float u = (bx * cy + cx * py - px * cy - bx * py) / fDetABC;
             float v = (px * cy - cx * py) / fDetABC;
             float w = (bx * py) / fDetABC;
@@ -1146,9 +1148,9 @@ int MeshGeomFacet::IntersectWithFacet(const MeshGeomFacet& rclFacet,
         return 0;
     }
 
-    float V[3][3], U[3][3];
+    float V[3][3] {}, U[3][3] {};
     int coplanar = 0;
-    float isectpt1[3], isectpt2[3];
+    float isectpt1[3] {}, isectpt2[3] {};
 
     for (int i = 0; i < 3; i++) {
         V[i][0] = _aclPoints[i].x;
@@ -1313,7 +1315,7 @@ float MeshGeomFacet::CenterOfCircumCircle(Base::Vector3f& rclCenter) const
 
 unsigned short MeshGeomFacet::NearestEdgeToPoint(const Base::Vector3f& rclPt) const
 {
-    unsigned short usSide;
+    unsigned short usSide {};
 
     const Base::Vector3f& rcP1 = _aclPoints[0];
     const Base::Vector3f& rcP2 = _aclPoints[1];
@@ -1543,7 +1545,7 @@ float MeshGeomFacet::MinimumAngle() const
 
 bool MeshGeomFacet::IsPointOfSphere(const Base::Vector3f& rP) const
 {
-    float radius;
+    float radius {};
     Base::Vector3f center;
     radius = CenterOfCircumCircle(center);
     radius *= radius;
@@ -1554,7 +1556,7 @@ bool MeshGeomFacet::IsPointOfSphere(const Base::Vector3f& rP) const
 
 bool MeshGeomFacet::IsPointOfSphere(const MeshGeomFacet& rFacet) const
 {
-    float radius;
+    float radius {};
     Base::Vector3f center;
     radius = CenterOfCircumCircle(center);
     radius *= radius;
@@ -1575,7 +1577,7 @@ float MeshGeomFacet::AspectRatio() const
     Base::Vector3f d1 = _aclPoints[1] - _aclPoints[2];
     Base::Vector3f d2 = _aclPoints[2] - _aclPoints[0];
 
-    float l2, maxl2 = d0.Sqr();
+    float l2 {}, maxl2 = d0.Sqr();
     if ((l2 = d1.Sqr()) > maxl2) {
         maxl2 = l2;
     }

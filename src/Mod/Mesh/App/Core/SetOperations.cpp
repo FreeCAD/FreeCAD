@@ -96,14 +96,13 @@ void SetOperations::Do()
         return;
     }
 
-    unsigned long i;
-    for (i = 0; i < _cutMesh0.CountFacets(); i++) {
+    for (auto i = 0UL; i < _cutMesh0.CountFacets(); i++) {
         if (facetsCuttingEdge0.find(i) == facetsCuttingEdge0.end()) {
             _newMeshFacets[0].push_back(_cutMesh0.GetFacet(i));
         }
     }
 
-    for (i = 0; i < _cutMesh1.CountFacets(); i++) {
+    for (auto i = 0UL; i < _cutMesh1.CountFacets(); i++) {
         if (facetsCuttingEdge1.find(i) == facetsCuttingEdge1.end()) {
             _newMeshFacets[1].push_back(_cutMesh1.GetFacet(i));
         }
@@ -115,7 +114,7 @@ void SetOperations::Do()
     // Base::Sequencer().next();
     TriangulateMesh(_cutMesh1, 1);
 
-    float mult0, mult1;
+    float mult0 {}, mult1 {};
     switch (_operationType) {
         case Union:
             mult0 = -1.0f;
@@ -178,15 +177,12 @@ void SetOperations::Cut(std::set<FacetIndex>& facetsCuttingEdge0,
     MeshFacetGrid grid1(_cutMesh0, 20);
     MeshFacetGrid grid2(_cutMesh1, 20);
 
-    unsigned long ctGx1, ctGy1, ctGz1;
+    unsigned long ctGx1 {}, ctGy1 {}, ctGz1 {};
     grid1.GetCtGrids(ctGx1, ctGy1, ctGz1);
 
-    unsigned long gx1;
-    for (gx1 = 0; gx1 < ctGx1; gx1++) {
-        unsigned long gy1;
-        for (gy1 = 0; gy1 < ctGy1; gy1++) {
-            unsigned long gz1;
-            for (gz1 = 0; gz1 < ctGz1; gz1++) {
+    for (auto gx1 = 0UL; gx1 < ctGx1; gx1++) {
+        for (auto gy1 = 0UL; gy1 < ctGy1; gy1++) {
+            for (auto gz1 = 0UL; gz1 < ctGz1; gz1++) {
                 if (grid1.GetCtElements(gx1, gy1, gz1) > 0) {
                     std::vector<FacetIndex> vecFacets2;
                     grid2.Inside(grid1.GetBoundBox(gx1, gy1, gz1), vecFacets2);
@@ -213,8 +209,8 @@ void SetOperations::Cut(std::set<FacetIndex>& facetsCuttingEdge0,
                                     float minDist1 = _minDistanceToPoint,
                                           minDist2 = _minDistanceToPoint;
                                     MeshPoint np0 = p0, np1 = p1;
-                                    int i;
-                                    for (i = 0; i < 3; i++) {
+                                    for (int i = 0; i < 3; i++)  // NOLINT
+                                    {
                                         float d1 = (f1._aclPoints[i] - p0).Length();
                                         float d2 = (f1._aclPoints[i] - p1).Length();
                                         if (d1 < minDist1) {
@@ -228,7 +224,8 @@ void SetOperations::Cut(std::set<FacetIndex>& facetsCuttingEdge0,
                                     }  // for (int i = 0; i < 3; i++)
 
                                     // optimize cut line if distance to nearest point is too small
-                                    for (i = 0; i < 3; i++) {
+                                    for (int i = 0; i < 3; i++)  // NOLINT
+                                    {
                                         float d1 = (f2._aclPoints[i] - p0).Length();
                                         float d2 = (f2._aclPoints[i] - p1).Length();
                                         if (d1 < minDist1) {
@@ -310,8 +307,8 @@ void SetOperations::TriangulateMesh(const MeshKernel& cutMesh, int side)
 
         // facet corner points
         // const MeshFacet& mf = cutMesh._aclFacetArray[fidx];
-        int i;
-        for (i = 0; i < 3; i++) {
+        for (int i = 0; i < 3; i++)  // NOLINT
+        {
             pointsSet.insert(f._aclPoints[i]);
             points.push_back(f._aclPoints[i]);
         }
@@ -396,8 +393,7 @@ void SetOperations::TriangulateMesh(const MeshKernel& cutMesh, int side)
             }
 
 
-            int j;
-            for (j = 0; j < 3; j++) {
+            for (int j = 0; j < 3; j++) {
                 std::map<Edge, EdgeInfo>::iterator eit =
                     _edges.find(Edge(facet._aclPoints[j], facet._aclPoints[(j + 1) % 3]));
 
@@ -766,7 +762,7 @@ void MeshIntersection::connectLines(bool onlyclosed,
 
         // search for the next line on the begin/end of the polyline and add it
         std::list<Tuple>::iterator pFront, pEnd;
-        bool bFoundLine;
+        bool bFoundLine {};
         do {
             float fFrontMin = fMinEps, fEndMin = fMinEps;
             bool bFrontFirst = false, bEndFirst = false;

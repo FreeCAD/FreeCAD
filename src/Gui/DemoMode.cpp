@@ -91,7 +91,7 @@ void DemoMode::reset()
         view->getViewer()->stopAnimating();
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath
         ("User parameter:BaseApp/Preferences/View");
-    hGrp->Notify("UseNavigationAnimations");
+    hGrp->Notify("UseAutoRotation");
 }
 
 void DemoMode::accept()
@@ -265,6 +265,7 @@ void DemoMode::onAutoPlay()
     Gui::View3DInventor* view = activeView();
     if (view && !view->getViewer()->isAnimating()) {
         ui->playButton->setChecked(true);
+        startAnimation(view);
     }
 }
 
@@ -272,9 +273,8 @@ void DemoMode::startAnimation(Gui::View3DInventor* view)
 {
     if (!view->getViewer()->isAnimationEnabled())
         view->getViewer()->setAnimationEnabled(true);
-
-    view->getViewer()->startSpinningAnimation(getDirection(view),
-                                              getSpeed(ui->speedSlider->value()));
+    view->getViewer()->startAnimating(getDirection(view),
+        getSpeed(ui->speedSlider->value()));
 }
 
 void DemoMode::onTimerCheckToggled(bool on)

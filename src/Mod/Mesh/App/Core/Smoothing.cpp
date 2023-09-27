@@ -185,7 +185,7 @@ void LaplaceSmoothing::Umbrella(const MeshRefPointToPoints& vv_it,
         }
 
         size_t n_count = cv.size();
-        double w;
+        double w {};
         w = 1.0 / double(n_count);
 
         double delx = 0.0, dely = 0.0, delz = 0.0;
@@ -222,7 +222,7 @@ void LaplaceSmoothing::Umbrella(const MeshRefPointToPoints& vv_it,
         }
 
         size_t n_count = cv.size();
-        double w;
+        double w {};
         w = 1.0 / double(n_count);
 
         double delx = 0.0, dely = 0.0, delz = 0.0;
@@ -273,8 +273,8 @@ void TaubinSmoothing::Smooth(unsigned int iterations)
     // Theoretically Taubin does not shrink the surface
     iterations = (iterations + 1) / 2;  // two steps per iteration
     for (unsigned int i = 0; i < iterations; i++) {
-        Umbrella(vv_it, vf_it, lambda);
-        Umbrella(vv_it, vf_it, -(lambda + micro));
+        Umbrella(vv_it, vf_it, GetLambda());
+        Umbrella(vv_it, vf_it, -(GetLambda() + micro));
     }
 }
 
@@ -287,8 +287,8 @@ void TaubinSmoothing::SmoothPoints(unsigned int iterations,
     // Theoretically Taubin does not shrink the surface
     iterations = (iterations + 1) / 2;  // two steps per iteration
     for (unsigned int i = 0; i < iterations; i++) {
-        Umbrella(vv_it, vf_it, lambda, point_indices);
-        Umbrella(vv_it, vf_it, -(lambda + micro), point_indices);
+        Umbrella(vv_it, vf_it, GetLambda(), point_indices);
+        Umbrella(vv_it, vf_it, -(GetLambda() + micro), point_indices);
     }
 }
 

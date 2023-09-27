@@ -157,7 +157,7 @@ public:
     static std::vector<std::string> supportedMeshFormats();
     static MeshIO::Format getFormat(const char* FileName);
 
-protected:
+private:
     MeshKernel& _rclMesh; /**< reference to mesh data structure */
     Material* _material;
     std::vector<std::string> _groupNames;
@@ -256,7 +256,7 @@ protected:
     /** Writes an X3D file. */
     bool SaveX3DContent(std::ostream& rstrOut, bool exportViewpoints) const;
 
-protected:
+private:
     const MeshKernel& _rclMesh; /**< reference to mesh data structure */
     const Material* _material;
     Base::Matrix4D _transform;

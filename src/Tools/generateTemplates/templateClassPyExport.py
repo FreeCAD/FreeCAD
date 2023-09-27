@@ -121,6 +121,19 @@ public:
     /// implementer for the @i.Name@() method
     PyObject*  @i.Name@(PyObject *args, PyObject *kwd);
 -
+= elif i.NoArgs:
+    /// callback for the @i.Name@() method
+    static PyObject * staticCallback_@i.Name@ (PyObject *self, PyObject *args);
++ if i.Static:
+    /// implementer for the @i.Name@() method
+    static PyObject*  @i.Name@();
+= elif i.Class:
+    /// implementer for the @i.Name@() method
+    static PyObject*  @i.Name@(PyObject *self);
+= else:
+    /// implementer for the @i.Name@() method
+    PyObject*  @i.Name@();
+-
 = else:
     /// callback for the @i.Name@() method
     static PyObject * staticCallback_@i.Name@ (PyObject *self, PyObject *args);
@@ -389,6 +402,17 @@ PyMethodDef @self.export.Name@::Methods[] = {
         reinterpret_cast<PyCFunction>(reinterpret_cast<void (*) ()>( staticCallback_@i.Name@ )),
         METH_VARARGS|METH_KEYWORDS,
 -
+= elif i.NoArgs:
++ if i.Class:
+        reinterpret_cast<PyCFunction>(reinterpret_cast<void (*) ()>( staticCallback_@i.Name@ )),
+        METH_NOARGS|METH_CLASS,
+= elif i.Static:
+        reinterpret_cast<PyCFunction>(reinterpret_cast<void (*) ()>( staticCallback_@i.Name@ )),
+        METH_NOARGS|METH_STATIC,
+= else:
+        reinterpret_cast<PyCFunction>( staticCallback_@i.Name@ ),
+        METH_NOARGS,
+-
 = elif i.Class:
         reinterpret_cast<PyCFunction>(reinterpret_cast<void (*) ()>( staticCallback_@i.Name@ )),
         METH_VARARGS|METH_CLASS,
@@ -532,6 +556,8 @@ PyGetSetDef @self.export.Name@::GetterSetter[] = {
 // has to be implemented in @self.export.Name@Imp.cpp
 + if i.Keyword:
 PyObject * @self.export.Name@::staticCallback_@i.Name@ (PyObject *self, PyObject *args, PyObject * kwd)
+= elif i.NoArgs:
+PyObject * @self.export.Name@::staticCallback_@i.Name@ (PyObject *self, PyObject * Py_UNUSED(args))
 = else:
 PyObject * @self.export.Name@::staticCallback_@i.Name@ (PyObject *self, PyObject *args)
 -
@@ -567,6 +593,15 @@ PyObject * @self.export.Name@::staticCallback_@i.Name@ (PyObject *self, PyObject
         PyObject* ret = @self.export.Name@::@i.Name@(self, args, kwd);
 = else:
         PyObject* ret = static_cast<@self.export.Name@*>(self)->@i.Name@(args, kwd);
+-
+= elif i.NoArgs:
++ if i.Static:
+        (void)self;
+        PyObject* ret = @self.export.Name@::@i.Name@();
+= elif i.Class:
+        PyObject* ret = @self.export.Name@::@i.Name@(self);
+= else:
+        PyObject* ret = static_cast<@self.export.Name@*>(self)->@i.Name@();
 -
 = else:
 + if i.Static:
@@ -880,6 +915,12 @@ std::string @self.export.Name@::representation() const
 PyObject* @self.export.Name@::@i.Name@(PyObject *self, PyObject *args, PyObject *kwds)
 = else:
 PyObject* @self.export.Name@::@i.Name@(PyObject *args, PyObject *kwds)
+-
+= elif i.NoArgs:
++ if i.Class:
+PyObject* @self.export.Name@::@i.Name@(PyObject *self)
+= else:
+PyObject* @self.export.Name@::@i.Name@()
 -
 = else:
 + if i.Class:
@@ -1221,6 +1262,12 @@ int @self.export.Name@::finalization()
 PyObject* @self.export.Name@::@i.Name@(PyObject * /*self*/, PyObject * /*args*/, PyObject * /*kwds*/)
 = else:
 PyObject* @self.export.Name@::@i.Name@(PyObject * /*args*/, PyObject * /*kwds*/)
+-
+= elif i.NoArgs:
++ if i.Class:
+PyObject* @self.export.Name@::@i.Name@(PyObject * /*self*/)
+= else:
+PyObject* @self.export.Name@::@i.Name@()
 -
 = else:
 + if i.Class:

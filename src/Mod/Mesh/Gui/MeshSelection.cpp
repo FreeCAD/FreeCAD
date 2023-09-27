@@ -22,9 +22,9 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-#include <QBitmap>
 #include <algorithm>
 #include <climits>
+#include <QBitmap>
 
 #include <Inventor/SbBox2s.h>
 #include <Inventor/SoPickedPoint.h>
@@ -44,10 +44,10 @@
 #include <Gui/Utilities.h>
 #include <Gui/View3DInventor.h>
 #include <Gui/View3DInventorViewer.h>
-#include <Mod/Mesh/App/Core/Iterator.h>
-#include <Mod/Mesh/App/Core/MeshKernel.h>
-#include <Mod/Mesh/App/Core/TopoAlgorithm.h>
 #include <Mod/Mesh/App/MeshFeature.h>
+#include <Mod/Mesh/App/Core/MeshKernel.h>
+#include <Mod/Mesh/App/Core/Iterator.h>
+#include <Mod/Mesh/App/Core/TopoAlgorithm.h>
 
 #include "MeshSelection.h"
 #include "ViewProvider.h"
@@ -491,7 +491,7 @@ void MeshSelection::selectGLCallback(void* ud, SoEventCallback* n)
 
         if (self->onlyVisibleTriangles) {
             const SbVec2s& sz = view->getSoRenderManager()->getViewportRegion().getWindowSize();
-            short width, height;
+            short width {}, height {};
             sz.getValue(width, height);
             std::vector<SbVec2s> pixelPoly = view->getPolygon();
             SbBox2s rect;

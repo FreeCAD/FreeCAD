@@ -25,13 +25,11 @@
 #include <Base/GeometryPyCXX.h>
 #include <Base/VectorPy.h>
 
-// clang-format off
 #include "Facet.h"
 #include "FacetPy.h"
 #include "FacetPy.cpp"
 #include "EdgePy.h"
 #include "Mesh.h"
-// clang-format on
 
 
 using namespace Mesh;

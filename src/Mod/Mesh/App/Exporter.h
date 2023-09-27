@@ -27,9 +27,9 @@
 #include <ostream>
 #include <vector>
 
-#include "Core/IO/Writer3MF.h"
-#include "Core/MeshIO.h"
 #include "MeshFeature.h"
+#include "Core/MeshIO.h"
+#include "Core/IO/Writer3MF.h"
 
 
 namespace Mesh
@@ -61,6 +61,11 @@ public:
 
     virtual bool addMesh(const char* name, const MeshObject& mesh) = 0;
 
+    Exporter(const Exporter&) = delete;
+    Exporter(Exporter&&) = delete;
+    Exporter& operator=(const Exporter&) = delete;
+    Exporter& operator=(Exporter&&) = delete;
+
 protected:
     /// Does some simple escaping of characters for XML-type exports
     static std::string xmlEscape(const std::string& input);
@@ -77,6 +82,11 @@ public:
     MergeExporter(std::string fileName, MeshCore::MeshIO::Format fmt);
     ~MergeExporter() override;
 
+    MergeExporter(const MergeExporter&) = delete;
+    MergeExporter(MergeExporter&&) = delete;
+    MergeExporter& operator=(const MergeExporter&) = delete;
+    MergeExporter& operator=(MergeExporter&&) = delete;
+
     bool addMesh(const char* name, const MeshObject& mesh) override;
 
 private:
@@ -84,8 +94,10 @@ private:
     void write();
 
 protected:
+    // NOLINTBEGIN
     MeshObject mergingMesh;
     std::string fName;
+    // NOLINTEND
 };
 
 // ------------------------------------------------------------------------------------------------
@@ -101,6 +113,11 @@ protected:
 
 public:
     virtual ~AbstractFormatExtension() = default;
+
+    AbstractFormatExtension(const AbstractFormatExtension&) = delete;
+    AbstractFormatExtension(AbstractFormatExtension&&) = delete;
+    AbstractFormatExtension& operator=(const AbstractFormatExtension&) = delete;
+    AbstractFormatExtension& operator=(AbstractFormatExtension&&) = delete;
 };
 
 using AbstractFormatExtensionPtr = std::shared_ptr<AbstractFormatExtension>;
@@ -129,6 +146,11 @@ public:
     AbstractExtensionProducer() = default;
     virtual ~AbstractExtensionProducer() = default;
     virtual AbstractFormatExtensionPtr create() const = 0;
+
+    AbstractExtensionProducer(const AbstractExtensionProducer&) = delete;
+    AbstractExtensionProducer(AbstractExtensionProducer&&) = delete;
+    AbstractExtensionProducer& operator=(const AbstractExtensionProducer&) = delete;
+    AbstractExtensionProducer& operator=(AbstractExtensionProducer&&) = delete;
 };
 
 using AbstractExtensionProducerPtr = std::shared_ptr<AbstractExtensionProducer>;
@@ -186,6 +208,11 @@ public:
     Exporter3MF(std::string fileName, const std::vector<Extension3MFPtr>& = {});
     ~Exporter3MF() override;
 
+    Exporter3MF(const Exporter3MF&) = delete;
+    Exporter3MF(Exporter3MF&&) = delete;
+    Exporter3MF& operator=(const Exporter3MF&) = delete;
+    Exporter3MF& operator=(Exporter3MF&&) = delete;
+
     bool addMesh(const char* name, const MeshObject& mesh) override;
     /*!
      * \brief SetForceModel
@@ -221,6 +248,11 @@ public:
 
     /// Writes AMF footer
     ~ExporterAMF() override;
+
+    ExporterAMF(const ExporterAMF&) = delete;
+    ExporterAMF(ExporterAMF&&) = delete;
+    ExporterAMF& operator=(const ExporterAMF&) = delete;
+    ExporterAMF& operator=(ExporterAMF&&) = delete;
 
     bool addMesh(const char* name, const MeshObject& mesh) override;
 

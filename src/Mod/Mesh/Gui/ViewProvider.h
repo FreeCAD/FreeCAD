@@ -126,7 +126,8 @@ public:
     ViewProviderMesh();
     ~ViewProviderMesh() override;
 
-    // Display properties
+    // NOLINTBEGIN
+    //  Display properties
     App::PropertyPercent LineTransparency;
     App::PropertyFloatConstraint LineWidth;
     App::PropertyFloatConstraint PointSize;
@@ -135,6 +136,7 @@ public:
     App::PropertyBool Coloring;
     App::PropertyEnumeration Lighting;
     App::PropertyColor LineColor;
+    // NOLINTEND
 
     void attach(App::DocumentObject*) override;
     void updateData(const App::Property*) override;

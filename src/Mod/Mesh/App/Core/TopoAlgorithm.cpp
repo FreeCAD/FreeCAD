@@ -381,7 +381,7 @@ void MeshTopoAlgorithm::DelaunayFlip(float fMaxAngle)
             const MeshFacet& face_1 = _rclMesh._aclFacetArray[edge.first];
             const MeshFacet& face_2 = _rclMesh._aclFacetArray[edge.second];
             unsigned short side = face_2.Side(edge.first);
-            Base::Vector3f vertex = _rclMesh.GetPoint(face_2._aulPoints[(side + 1) % 3]);
+            MeshPoint vertex = _rclMesh.GetPoint(face_2._aulPoints[(side + 1) % 3]);
             if (Base::DistanceP2(center, vertex) < radius) {
                 SwapEdge(edge.first, edge.second);
                 for (int i = 0; i < 3; i++) {
@@ -504,14 +504,14 @@ void MeshTopoAlgorithm::AdjustEdgesToCurvatureDirection()
                 continue;
             }
 
-            PointIndex uPt3, uPt4;
+            PointIndex uPt3 {}, uPt4 {};
             unsigned short side = rFace1.Side(uPt1, uPt2);
             uPt3 = rFace1._aulPoints[(side + 2) % 3];
             side = rFace2.Side(uPt1, uPt2);
             uPt4 = rFace2._aulPoints[(side + 2) % 3];
 
             Wm4::Vector3<float> dir;
-            float fActCurvature;
+            float fActCurvature {};
             if (fabs(aMinCurv[uPt1]) > fabs(aMaxCurv[uPt1])) {
                 fActCurvature = aMinCurv[uPt1];
                 dir = aMaxCurvDir[uPt1];
@@ -1838,7 +1838,7 @@ void MeshComponents::SearchForComponents(TMode tMode,
                                          const std::vector<FacetIndex>& aSegment,
                                          std::vector<std::vector<FacetIndex>>& aclT) const
 {
-    FacetIndex ulStartFacet;
+    FacetIndex ulStartFacet {};
 
     if (_rclMesh.CountFacets() == 0) {
         return;

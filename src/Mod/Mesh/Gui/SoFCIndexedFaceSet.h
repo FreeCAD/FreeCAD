@@ -27,6 +27,7 @@
 #include <Inventor/fields/SoMFColor.h>
 #include <Inventor/fields/SoSFBool.h>
 #include <Inventor/nodes/SoIndexedFaceSet.h>
+#include <vector>
 #ifndef MESH_GLOBAL_H
 #include <Mod/Mesh/MeshGlobal.h>
 #endif
@@ -42,6 +43,7 @@ using GLfloat = float;
 namespace MeshGui
 {
 
+// NOLINTBEGIN
 class MeshRenderer
 {
 public:
@@ -142,6 +144,7 @@ private:
     MeshRenderer render;
     GLuint* selectBuf {nullptr};
 };
+// NOLINTEND
 
 }  // namespace MeshGui
 

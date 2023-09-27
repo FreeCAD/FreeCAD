@@ -79,11 +79,15 @@ protected:
     std::ostream& InternalFacetInfo(std::ostream& rclStream) const;
 
 
-protected:
+private:
     const MeshKernel& _rclMesh;  // const reference to mesh data structure
 
 public:
     MeshInfo() = delete;  // not accessible default constructor
+    MeshInfo(const MeshInfo&) = delete;
+    MeshInfo(MeshInfo&&) = delete;
+    MeshInfo& operator=(const MeshInfo&) = delete;
+    MeshInfo& operator=(MeshInfo&&) = delete;
 };
 
 

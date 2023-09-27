@@ -48,6 +48,7 @@
 #include <Mod/TechDraw/App/DrawViewMulti.h>
 #include <Mod/TechDraw/App/LineGroup.h>
 #include <Mod/TechDraw/App/Cosmetic.h>
+#include <Mod/TechDraw/App/CenterLine.h>
 
 #include "PreferencesGui.h"
 #include "QGIView.h"
@@ -360,7 +361,8 @@ std::vector<std::string> ViewProviderViewPart::getSelectedCosmetics(std::vector<
                 result.emplace_back(sub);
             }
         } else if (DU::getGeomTypeFromName(sub) == "Edge") {
-            if (DU::isCosmeticEdge(getViewObject(), sub)) {
+            if (DU::isCosmeticEdge(getViewObject(), sub)  ||
+                DU::isCenterLine(getViewObject(), sub)) {
                 result.emplace_back(sub);
             }
         }
@@ -380,9 +382,16 @@ void ViewProviderViewPart::deleteCosmeticElements(std::vector<std::string> remov
         }
         if (DU::getGeomTypeFromName(name) == "Edge") {
             CosmeticEdge* edge = getViewObject()->getCosmeticEdgeBySelection(name);
-            // if not edge, something has gone very wrong!
-            getViewObject()->removeCosmeticEdge(edge->getTagAsString());
-            continue;
+            if (edge) {
+                // if not edge, something has gone very wrong!
+                getViewObject()->removeCosmeticEdge(edge->getTagAsString());
+                continue;
+            }
+            CenterLine* line = getViewObject()->getCenterLineBySelection(name);
+            if (line) {
+                getViewObject()->removeCenterLine(line->getTagAsString());
+                continue;
+            }
         }
     }
 }

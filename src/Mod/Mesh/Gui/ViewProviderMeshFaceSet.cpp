@@ -35,13 +35,13 @@
 #include <App/Document.h>
 #include <Gui/Selection.h>
 #include <Gui/Window.h>
+#include <Mod/Mesh/App/MeshFeature.h>
 #include <Mod/Mesh/App/Core/Iterator.h>
 #include <Mod/Mesh/App/Core/MeshKernel.h>
-#include <Mod/Mesh/App/MeshFeature.h>
 
+#include "ViewProviderMeshFaceSet.h"
 #include "SoFCIndexedFaceSet.h"
 #include "SoFCMeshObject.h"
-#include "ViewProviderMeshFaceSet.h"
 
 
 using namespace MeshGui;
@@ -50,6 +50,7 @@ PROPERTY_SOURCE(MeshGui::ViewProviderMeshFaceSet, MeshGui::ViewProviderMesh)
 
 ViewProviderMeshFaceSet::ViewProviderMeshFaceSet()
 {
+    // NOLINTBEGIN
     directRendering = false;
     triangleCount = 2500000;
 
@@ -67,6 +68,7 @@ ViewProviderMeshFaceSet::ViewProviderMeshFaceSet()
     SoFCMaterialEngine* engine = new SoFCMaterialEngine();
     engine->diffuseColor.connectFrom(&pcShapeMaterial->diffuseColor);
     pcMeshFaces->updateGLArray.connectFrom(&engine->trigger);
+    // NOLINTEND
 }
 
 ViewProviderMeshFaceSet::~ViewProviderMeshFaceSet()
