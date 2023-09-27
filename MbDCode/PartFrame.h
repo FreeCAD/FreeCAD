@@ -42,6 +42,7 @@ namespace MbD {
 		void setqX(FColDsptr x);
 		FColDsptr getqX();
 		void setqE(FColDsptr x);
+		void setaAap(FMatDsptr mat);
 		FColDsptr getqE();
 		void setqXdot(FColDsptr x);
 		FColDsptr getqXdot();

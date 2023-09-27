@@ -29,7 +29,7 @@ namespace MbD {
 		Array(std::vector<T> vec) : std::vector<T>(vec) {}
 		Array(int count) : std::vector<T>(count) {}
 		Array(int count, const T& value) : std::vector<T>(count, value) {}
-		Array(typename std::vector<T>::const_iterator begin, typename std::vector<T>::const_iterator end) : std::vector<T>(begin, end) {}
+		Array(typename std::vector<T>::iterator begin, typename std::vector<T>::iterator end) : std::vector<T>(begin, end) {}
 		Array(std::initializer_list<T> list) : std::vector<T>{ list } {}
 		virtual void initialize();
 		void copyFrom(std::shared_ptr<Array<T>> x);

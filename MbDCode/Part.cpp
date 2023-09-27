@@ -61,6 +61,10 @@ FColDsptr Part::getqX() {
 	return partFrame->getqX();
 }
 
+void Part::setaAap(FMatDsptr mat) {
+	partFrame->setaAap(mat);
+}
+
 void Part::setqE(FColDsptr x) {
 	partFrame->setqE(x);
 }

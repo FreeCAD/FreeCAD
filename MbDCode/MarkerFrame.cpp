@@ -243,9 +243,9 @@ void MarkerFrame::setrpmp(FColDsptr x)
 	rpmp->copyFrom(x);
 }
 
-void MarkerFrame::setaApm(FMatDsptr x)
+void MarkerFrame::setaApm(FMatDsptr mat)
 {
-	aApm->copyFrom(x);
+	aApm->copyFrom(mat);
 }
 void MarkerFrame::addEndFrame(EndFrmsptr endFrm)
 {

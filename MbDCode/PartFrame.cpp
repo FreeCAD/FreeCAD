@@ -64,6 +64,11 @@ void PartFrame::setqE(FColDsptr x) {
 	qE->copyFrom(x);
 }
 
+void MbD::PartFrame::setaAap(FMatDsptr mat)
+{
+	qE = mat->asEulerParameters();
+}
+
 FColDsptr PartFrame::getqE() {
 	return qE;
 }
