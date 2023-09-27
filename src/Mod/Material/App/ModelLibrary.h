@@ -38,7 +38,7 @@ class Model;
 
 class MaterialsExport LibraryBase: public Base::BaseClass
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
     LibraryBase();
@@ -77,7 +77,7 @@ private:
 
 class MaterialsExport ModelLibrary: public LibraryBase
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
     ModelLibrary();

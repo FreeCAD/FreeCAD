@@ -41,7 +41,7 @@ typedef FolderTreeNode<Model> ModelTreeNode;
 
 class MaterialsExport ModelManager: public Base::BaseClass
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
     enum ModelFilter
