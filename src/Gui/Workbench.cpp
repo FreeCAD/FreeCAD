@@ -722,7 +722,6 @@ MenuItem* StdWorkbench::setupMenuBar() const
     auto macro = new MenuItem( menuBar );
     macro->setCommand("&Macro");
     *macro << "Std_DlgMacroRecord"
-           << "Std_MacroStopRecord"
            << "Std_DlgMacroExecute"
            << "Std_RecentMacros"
            << "Separator"
@@ -786,7 +785,7 @@ ToolBarItem* StdWorkbench::setupToolBars() const
     // Macro
     auto macro = new ToolBarItem( root );
     macro->setCommand("Macro");
-    *macro << "Std_DlgMacroRecord" << "Std_MacroStopRecord" << "Std_DlgMacroExecute"
+    *macro << "Std_DlgMacroRecord" << "Std_DlgMacroExecute"
            << "Std_DlgMacroExecuteDirect";
 
     // View
@@ -825,7 +824,7 @@ ToolBarItem* StdWorkbench::setupCommandBars() const
     // Special Ops
     auto macro = new ToolBarItem( root );
     macro->setCommand("Special Ops");
-    *macro << "Std_DlgParameter" << "Std_DlgPreferences" << "Std_DlgMacroRecord" << "Std_MacroStopRecord"
+    *macro << "Std_DlgParameter" << "Std_DlgPreferences" << "Std_DlgMacroRecord"
            << "Std_DlgMacroExecute" << "Std_DlgCustomize";
 
     return root;
