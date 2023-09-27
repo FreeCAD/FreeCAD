@@ -191,7 +191,7 @@ void CmdSpreadsheetImport::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     QString selectedFilter;
-    QString formatList = QObject::tr("All (*)");
+    QString formatList = QObject::tr("All (*);;CSV(*.CSV *.csv)");
     QString fileName = Gui::FileDialog::getOpenFileName(Gui::getMainWindow(),
                                                         QObject::tr("Import file"),
                                                         QString(),
@@ -251,7 +251,7 @@ void CmdSpreadsheetExport::activated(int iMsg)
         if (sheetView) {
             Sheet* sheet = sheetView->getSheet();
             QString selectedFilter;
-            QString formatList = QObject::tr("All (*)");
+            QString formatList = QObject::tr("All (*);;CSV(*.CSV *.csv)");
             QString fileName = Gui::FileDialog::getSaveFileName(Gui::getMainWindow(),
                                                                 QObject::tr("Export file"),
                                                                 QString(),
@@ -264,6 +264,12 @@ void CmdSpreadsheetExport::activated(int iMsg)
                     bool isValid = sheet->getCharsFromPrefs(delim, quote, escape, errMsg);
 
                     if (isValid) {
+                        
+                        // If the file name does not have a CSV extension, add the CSV extension.
+                        if (!fileName.endsWith(".CSV", Qt::CaseInsensitive)) {
+	                        fileName.append(".CSV")
+                        }
+                         
                         sheet->exportToFile(fileName.toStdString(), delim, quote, escape);
                     }
                     else {
