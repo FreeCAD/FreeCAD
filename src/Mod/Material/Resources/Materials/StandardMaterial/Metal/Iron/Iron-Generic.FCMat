@@ -1,0 +1,32 @@
+# File created by ConvertFCMat.py
+General:
+  UUID: "1826c364-d26a-43fb-8f61-288281236836"
+  AuthorAndLicense: "Uwe Stöhr"
+  Name: "Iron Generic"
+Inherits:
+  Steel:
+    UUID: "4b849c55-6b3a-4f75-a055-40c0d0324596"
+Models:
+  Father:
+    UUID: '9cdda8b6-b606-4778-8f13-3934d8668e67'
+    Father: "Metal"
+  MaterialStandard:
+    UUID: '1e2c0088-904a-4537-925f-64064c07d700'
+    KindOfMaterial: "Iron"
+  LinearElastic:
+    UUID: '7b561d1d-fb9b-44f6-9da9-56a4f74d7536'
+    Density: "7874 kg/m^3"
+    PoissonRatio: "0.29"
+    ShearModulus: "82.0 GPa"
+    UltimateTensileStrength: "497 MPa"
+    YieldStrength: "428 MPa"
+    YoungsModulus: "211 GPa"
+  Thermal:
+    UUID: '9959d007-a970-4ea7-bae4-3eb1b8b883c7'
+    SpecificHeat: "460.5 J/kg/K"
+    ThermalConductivity: "80.4 W/m/K"
+    ThermalExpansionCoefficient: "11.8 µm/m/K"
+  Electromagnetic:
+    UUID: 'b2eb5f48-74b3-4193-9fbb-948674f427f3'
+    ElectricalConductivity: "10.3 MS/m"
+    RelativePermeability: "5000.0"

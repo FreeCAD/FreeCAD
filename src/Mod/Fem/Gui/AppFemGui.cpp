@@ -25,8 +25,8 @@
 #include <Base/Console.h>
 #include <Base/PyObjectBase.h>
 #include <Gui/Application.h>
-#include <Gui/Language/Translator.h>
 #include <Gui/WidgetFactory.h>
+#include <Gui/Language/Translator.h>
 
 #include "DlgSettingsFemCcxImp.h"
 #include "DlgSettingsFemElmerImp.h"
@@ -34,18 +34,25 @@
 #include "DlgSettingsFemGeneralImp.h"
 #include "DlgSettingsFemGmshImp.h"
 #include "DlgSettingsFemInOutVtkImp.h"
-#include "DlgSettingsFemMaterialImp.h"
 #include "DlgSettingsFemMystranImp.h"
 #include "DlgSettingsFemZ88Imp.h"
 #include "PropertyFemMeshItem.h"
 #include "ViewProviderAnalysis.h"
+#include "ViewProviderFemMesh.h"
+#include "ViewProviderFemMeshShape.h"
+#include "ViewProviderFemMeshShapeNetgen.h"
+#include "ViewProviderSetElements.h"
+#include "ViewProviderSetFaces.h"
+#include "ViewProviderSetGeometry.h"
+#include "ViewProviderSetNodes.h"
+#include "ViewProviderSolver.h"
 #include "ViewProviderFemConstraint.h"
 #include "ViewProviderFemConstraintBearing.h"
 #include "ViewProviderFemConstraintContact.h"
 #include "ViewProviderFemConstraintDisplacement.h"
 #include "ViewProviderFemConstraintFixed.h"
-#include "ViewProviderFemConstraintFluidBoundary.h"
 #include "ViewProviderFemConstraintForce.h"
+#include "ViewProviderFemConstraintFluidBoundary.h"
 #include "ViewProviderFemConstraintGear.h"
 #include "ViewProviderFemConstraintHeatflux.h"
 #include "ViewProviderFemConstraintInitialTemperature.h"
@@ -56,15 +63,7 @@
 #include "ViewProviderFemConstraintSpring.h"
 #include "ViewProviderFemConstraintTemperature.h"
 #include "ViewProviderFemConstraintTransform.h"
-#include "ViewProviderFemMesh.h"
-#include "ViewProviderFemMeshShape.h"
-#include "ViewProviderFemMeshShapeNetgen.h"
 #include "ViewProviderResult.h"
-#include "ViewProviderSetElements.h"
-#include "ViewProviderSetFaces.h"
-#include "ViewProviderSetGeometry.h"
-#include "ViewProviderSetNodes.h"
-#include "ViewProviderSolver.h"
 #include "Workbench.h"
 
 #ifdef FC_USE_VTK
@@ -178,7 +177,6 @@ PyMOD_INIT_FUNC(FemGui)
     new Gui::PrefPageProducer<FemGui::DlgSettingsFemElmerImp>(QT_TRANSLATE_NOOP("QObject", "FEM"));
     new Gui::PrefPageProducer<FemGui::DlgSettingsFemMystranImp>(QT_TRANSLATE_NOOP("QObject", "FEM"));
     new Gui::PrefPageProducer<FemGui::DlgSettingsFemZ88Imp>(QT_TRANSLATE_NOOP("QObject", "FEM"));
-    new Gui::PrefPageProducer<FemGui::DlgSettingsFemMaterialImp>(QT_TRANSLATE_NOOP("QObject", "FEM"));
 
     // register preferences pages on Import-Export
     new Gui::PrefPageProducer<FemGui::DlgSettingsFemExportAbaqusImp>(QT_TRANSLATE_NOOP("QObject", "Import-Export"));

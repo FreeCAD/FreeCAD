@@ -1,0 +1,32 @@
+# File created by ConvertFCMat.py
+General:
+  UUID: "6c03899d-496e-4c60-a41b-3d66f2337fb9"
+  AuthorAndLicense: "Uwe Stöhr"
+  Name: "Copper Generic"
+Inherits:
+  Copper:
+    UUID: "524cad9b-b841-4037-9851-badeca7dcee2"
+Models:
+  Father:
+    UUID: '9cdda8b6-b606-4778-8f13-3934d8668e67'
+    Father: "Metal"
+  MaterialStandard:
+    UUID: '1e2c0088-904a-4537-925f-64064c07d700'
+    KindOfMaterial: "Copper"
+  LinearElastic:
+    UUID: '7b561d1d-fb9b-44f6-9da9-56a4f74d7536'
+    Density: "8960 kg/m^3"
+    PoissonRatio: "0.343"
+    ShearModulus: "46.0 GPa"
+    UltimateTensileStrength: "210 MPa"
+    YieldStrength: "33.3 MPa"
+    YoungsModulus: "119 GPa"
+  Thermal:
+    UUID: '9959d007-a970-4ea7-bae4-3eb1b8b883c7'
+    SpecificHeat: "385.0 J/kg/K"
+    ThermalConductivity: "398.0 W/m/K"
+    ThermalExpansionCoefficient: "16.5 µm/m/K"
+  Electromagnetic:
+    UUID: 'b2eb5f48-74b3-4193-9fbb-948674f427f3'
+    ElectricalConductivity: "59.59 MS/m"
+    RelativePermeability: "0.999994"

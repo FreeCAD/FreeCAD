@@ -1,0 +1,46 @@
+---
+# ***************************************************************************
+# *                                                                         *
+# *   Copyright (c) 2023 David Carter <dcarter@davidcarter.ca>              *
+# *                                                                         *
+# *   This program is free software; you can redistribute it and/or modify  *
+# *   it under the terms of the GNU Lesser General Public License (LGPL)    *
+# *   as published by the Free Software Foundation; either version 2 of     *
+# *   the License, or (at your option) any later version.                   *
+# *   for detail see the LICENCE text file.                                 *
+# *                                                                         *
+# *   This program is distributed in the hope that it will be useful,       *
+# *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+# *   GNU Library General Public License for more details.                  *
+# *                                                                         *
+# *   You should have received a copy of the GNU Library General Public     *
+# *   License along with this program; if not, write to the Free Software   *
+# *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
+# *   USA                                                                   *
+# *                                                                         *
+# ***************************************************************************
+
+Model:
+  Name: 'Material Standard'
+  UUID: '1e2c0088-904a-4537-925f-64064c07d700'
+  URL: ''
+  Description: "Describes the norm or standards referenced by this material"
+  DOI: ""
+  KindOfMaterial:
+    Type: 'String'
+    Units: ''
+    URL: ''
+    Description: " "
+  MaterialNumber:
+    Type: 'String'
+    Units: ''
+    URL: ''
+    Description: " "
+  StandardCode:
+    Type: 'String'
+    Units: ''
+    URL: ''
+    Description: >
+      This is a reference to a norm or standards system where this material
+      is referenced by a precise ID or number

@@ -1,0 +1,15 @@
+# File created by ConvertFCMat.py
+General:
+  UUID: "524cad9b-b841-4037-9851-badeca7dcee2"
+  AuthorAndLicense: "(c) 2023 David Carter"
+  Name: "Copper"
+  Description: "Defines the Copper appearance properties"
+AppearanceModels:
+  BasicRendering:
+    UUID: 'f006c7e4-35b7-43d5-bbf9-c5d572309e6e'
+    AmbientColor: "(0.3300, 0.2600, 0.2300, 1.0)"
+    DiffuseColor: "(0.5000, 0.1100, 0.0000, 1.0)"
+    EmissiveColor: "(0.0000, 0.0000, 0.0000, 1.0)"
+    Shininess: "0.9300"
+    SpecularColor: "(0.9500, 0.7300, 0.0000, 1.0)"
+    Transparency: "0.0"

@@ -1,0 +1,25 @@
+# File created by ConvertFCMat.py
+General:
+  UUID: "92589471-a6cb-4bbc-b748-d425a17dea7d"
+  AuthorAndLicense: "(c) 2013 Juergen Riegel (CC-BY 3.0)"
+  Name: "CalculiX-Steel"
+  Description: "Standard steel material for CalculiX sample calculations"
+Inherits:
+  Steel:
+    UUID: "4b849c55-6b3a-4f75-a055-40c0d0324596"
+Models:
+  Father:
+    UUID: '9cdda8b6-b606-4778-8f13-3934d8668e67'
+    Father: "Metal"
+  Density:
+    UUID: '454661e5-265b-4320-8e6f-fcf6223ac3af'
+    Density: "7900 kg/m^3"
+  IsotropicLinearElastic:
+    UUID: 'f6f9e48c-b116-4e82-ad7f-3659a9219c50'
+    PoissonRatio: "0.3"
+    YoungsModulus: "210000 MPa"
+  Thermal:
+    UUID: '9959d007-a970-4ea7-bae4-3eb1b8b883c7'
+    SpecificHeat: "590 J/kg/K"
+    ThermalConductivity: "43 W/m/K"
+    ThermalExpansionCoefficient: "0.000012 m/m/K"
