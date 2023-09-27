@@ -21,9 +21,14 @@
  ***************************************************************************/
 
 #include "PreCompiled.h"
+#ifndef _PreComp_
+# include <QApplication>
+#endif
 
 #include "Command.h"
+#include "Action.h"
 #include "Application.h"
+#include "BitmapFactory.h"
 #include "DlgMacroExecuteImp.h"
 #include "DlgMacroRecordImp.h"
 #include "Macro.h"
@@ -54,13 +59,27 @@ StdCmdDlgMacroRecord::StdCmdDlgMacroRecord()
 void StdCmdDlgMacroRecord::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    Gui::Dialog::DlgMacroRecordImp cDlg(getMainWindow());
-    cDlg.exec();
+    if (!getGuiApplication()->macroManager()->isOpen()){
+        Gui::Dialog::DlgMacroRecordImp cDlg(getMainWindow());
+        if (cDlg.exec() && getAction()) {
+            getAction()->setIcon(Gui::BitmapFactory().iconFromTheme("media-playback-stop"));
+            getAction()->setText(QCoreApplication::translate("StdCmdDlgMacroRecord", "S&top macro recording"));
+            getAction()->setToolTip(QCoreApplication::translate("StdCmdDlgMacroRecord", "Stop the macro recording session"));
+        }
+    }
+    else {
+        getGuiApplication()->macroManager()->commit();
+        if (getAction()) {
+            getAction()->setIcon(Gui::BitmapFactory().iconFromTheme("media-record"));
+            getAction()->setText(QString::fromLatin1(sMenuText));
+            getAction()->setToolTip(QString::fromLatin1(sToolTipText));
+        }
+    }
 }
 
 bool StdCmdDlgMacroRecord::isActive()
 {
-    return ! (getGuiApplication()->macroManager()->isOpen());
+    return true;
 }
 
 //===========================================================================
