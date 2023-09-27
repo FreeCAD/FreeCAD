@@ -1354,7 +1354,7 @@ void Document::Save (Base::Writer &writer) const
 
         ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Document");
         if (hGrp->GetBool("SaveThumbnail", true)) {
-            int size = hGrp->GetInt("ThumbnailSize", 128);
+            int size = hGrp->GetInt("ThumbnailSize", 256);
             size = Base::clamp<int>(size, 64, 512);
             std::list<MDIView*> mdi = getMDIViews();
             for (const auto & it : mdi) {
