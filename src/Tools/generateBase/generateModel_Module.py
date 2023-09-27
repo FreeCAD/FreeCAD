@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 #
-# Generated Fri Mar 31 16:59:53 2023 by generateDS.py.
+# Generated Wed Sep 27 11:00:46 2023 by generateDS.py.
 # Update it with: python generateDS.py -o generateModel_Module.py generateMetaModel_Module.xsd
 #
 # WARNING! All changes made in this file will be lost!
@@ -789,6 +789,7 @@ class Methode:
         Name="",
         Const=0,
         Keyword=0,
+        NoArgs=0,
         Class=0,
         Static=0,
         Documentation=None,
@@ -797,6 +798,7 @@ class Methode:
         self.Name = Name
         self.Const = Const
         self.Keyword = Keyword
+        self.NoArgs = NoArgs
         self.Class = Class
         self.Static = Static
         self.Documentation = Documentation
@@ -849,6 +851,12 @@ class Methode:
     def setKeyword(self, Keyword):
         self.Keyword = Keyword
 
+    def getNoargs(self):
+        return self.NoArgs
+
+    def setNoargs(self, NoArgs):
+        self.NoArgs = NoArgs
+
     def getClass(self):
         return self.Class
 
@@ -876,6 +884,8 @@ class Methode:
             outfile.write(' Const="%s"' % (self.getConst(),))
         if self.getKeyword() is not None:
             outfile.write(' Keyword="%s"' % (self.getKeyword(),))
+        if self.getNoargs() is not None:
+            outfile.write(' NoArgs="%s"' % (self.getNoargs(),))
         if self.getClass() is not None:
             outfile.write(' Class="%s"' % (self.getClass(),))
         if self.getStatic() is not None:
@@ -899,6 +909,8 @@ class Methode:
         outfile.write('Const = "%s",\n' % (self.getConst(),))
         showIndent(outfile, level)
         outfile.write('Keyword = "%s",\n' % (self.getKeyword(),))
+        showIndent(outfile, level)
+        outfile.write('NoArgs = "%s",\n' % (self.getNoargs(),))
         showIndent(outfile, level)
         outfile.write('Class = "%s",\n' % (self.getClass(),))
         showIndent(outfile, level)
@@ -948,6 +960,13 @@ class Methode:
                 self.Keyword = 0
             else:
                 raise ValueError("Bad boolean attribute (Keyword)")
+        if attrs.get("NoArgs"):
+            if attrs.get("NoArgs").value in ("true", "1"):
+                self.NoArgs = 1
+            elif attrs.get("NoArgs").value in ("false", "0"):
+                self.NoArgs = 0
+            else:
+                raise ValueError("Bad boolean attribute (NoArgs)")
         if attrs.get("Class"):
             if attrs.get("Class").value in ("true", "1"):
                 self.Class = 1
@@ -1549,12 +1568,7 @@ class Content:
     subclass = None
 
     def __init__(
-        self,
-        Property=None,
-        Feature=None,
-        DocObject=None,
-        GuiCommand=None,
-        PreferencesPage=None,
+        self, Property=None, Feature=None, DocObject=None, GuiCommand=None, PreferencesPage=None
     ):
         if Property is None:
             self.Property = []
@@ -2694,6 +2708,16 @@ class SaxGeneratemodelHandler(handler.ContentHandler):
                     self.reportError(
                         '"Keyword" attribute must be boolean ("true", "1", "false", "0")'
                     )
+            val = attrs.get("NoArgs", None)
+            if val is not None:
+                if val in ("true", "1"):
+                    obj.setNoargs(1)
+                elif val in ("false", "0"):
+                    obj.setNoargs(0)
+                else:
+                    self.reportError(
+                        '"NoArgs" attribute must be boolean ("true", "1", "false", "0")'
+                    )
             val = attrs.get("Class", None)
             if val is not None:
                 if val in ("true", "1"):
@@ -3062,11 +3086,7 @@ class SaxGeneratemodelHandler(handler.ContentHandler):
         locator = self.locator
         sys.stderr.write(
             "Doc: %s  Line: %d  Column: %d\n"
-            % (
-                locator.getSystemId(),
-                locator.getLineNumber(),
-                locator.getColumnNumber() + 1,
-            )
+            % (locator.getSystemId(), locator.getLineNumber(), locator.getColumnNumber() + 1)
         )
         sys.stderr.write(mesg)
         sys.stderr.write("\n")
