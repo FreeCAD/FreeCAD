@@ -37,7 +37,7 @@ namespace Materials
 
 class MaterialsExport ModelProperty: public Base::BaseClass
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
     ModelProperty();
@@ -130,7 +130,7 @@ private:
 
 class MaterialsExport Model: public Base::BaseClass
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
     enum ModelType

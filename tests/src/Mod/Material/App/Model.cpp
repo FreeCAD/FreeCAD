@@ -59,9 +59,12 @@ class MaterialTest : public ::testing::Test {
 
 TEST_F(MaterialTest, TestApplication)
 {
-    App::Application& application = App::GetApplication();
-    if (&application == nullptr)
+    try {
+        App::GetApplication();
+    }
+    catch (...) {
         ADD_FAILURE() << "Application failure\n";
+    }
 
     SUCCEED();
 }

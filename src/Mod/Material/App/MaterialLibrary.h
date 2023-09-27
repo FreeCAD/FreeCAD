@@ -25,6 +25,7 @@
 #include <Mod/Material/MaterialGlobal.h>
 
 #include <Base/BaseClass.h>
+#include <memory>
 #include <QDir>
 #include <QString>
 #include <QVariant>
@@ -39,7 +40,7 @@ class Material;
 
 class MaterialsExport MaterialLibrary: public LibraryBase
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
     MaterialLibrary();
@@ -77,7 +78,7 @@ protected:
 
 class MaterialsExport MaterialExternalLibrary: public MaterialLibrary
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
     MaterialExternalLibrary();
