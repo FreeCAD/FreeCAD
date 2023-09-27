@@ -108,6 +108,12 @@ void GESpMatFullPv::backSubstituteIntoDU()
 	double sum, duij, duii;
 	//answerX = rightHandSideB->copyEmpty();
 	assert(m == n);
+
+    // TODO: temp
+//    assert(n > 0);
+//    auto localLen = colOrder->numberOfElements();
+//    assert(n < localLen);
+
 	answerX = std::make_shared<FullColumn<double>>(m);
 	auto jn = colOrder->at(n);
 	answerX->at(jn) = rightHandSideB->at(m) / matrixA->at(m)->at(jn);

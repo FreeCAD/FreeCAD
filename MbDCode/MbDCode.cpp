@@ -26,17 +26,17 @@ void runSpMat();
 
 int main()
 {
-	ASMTAssembly::runFile("piston.asmt");
-	ASMTAssembly::runFile("00backhoe.asmt");
-	ASMTAssembly::runFile("circular.asmt");
-	ASMTAssembly::runFile("cirpendu.asmt");	//Under constrained. Testing ICKine.
-	ASMTAssembly::runFile("engine1.asmt");
-	ASMTAssembly::runFile("fourbar.asmt");
-	ASMTAssembly::runFile("fourbot.asmt");
-	ASMTAssembly::runFile("wobpump.asmt");
+//	ASMTAssembly::runFile("piston.asmt");
+//	ASMTAssembly::runFile("00backhoe.asmt");
+//	ASMTAssembly::runFile("circular.asmt");
+//	ASMTAssembly::runFile("cirpendu.asmt");	//Under constrained. Testing ICKine.
+//	ASMTAssembly::runFile("engine1.asmt");
+//	ASMTAssembly::runFile("fourbar.asmt");
+//	ASMTAssembly::runFile("fourbot.asmt");
+//	ASMTAssembly::runFile("wobpump.asmt");
 
 	auto cadSystem = std::make_shared<CADSystem>();
-	cadSystem->runOndselPiston();
+	// cadSystem->runOndselPiston();
 	cadSystem->runPiston();
 	runSpMat();
 }

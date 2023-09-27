@@ -103,13 +103,13 @@ void PosICNewtonRaphson::handleSingularMatrix()
 	}
 	else {
 		std::string str = typeid(*matrixSolver).name();
-		if (str == "class GESpMatParPvMarkoFast") {
+		if (str.find("GESpMatParPvMarkoFast") >= 0) {
 		matrixSolver = CREATE<GESpMatParPvPrecise>::With();
 		this->solveEquations();
 		}
 		else {
 			str = typeid(*matrixSolver).name();
-			if (str == "class GESpMatParPvPrecise") {
+			if (str.find("GESpMatParPvPrecise") >= 0) {
 				this->lookForRedundantConstraints();
 				matrixSolver = this->matrixSolverClassNew();
 			}

@@ -268,6 +268,7 @@ add_executable(new_target
         VelSolver.cpp
         ZRotation.cpp
         ZTranslation.cpp
+        ASMTAssembly.cpp
 )
 
 
