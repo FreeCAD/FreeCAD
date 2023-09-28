@@ -52,13 +52,13 @@ void SystemNewtonRaphson::basicSolveEquations()
 void SystemNewtonRaphson::handleSingularMatrix()
 {
 	std::string str = typeid(*matrixSolver).name();
-	if (str.find("GESpMatParPvMarkoFast") >= 0) {
+	if (str.find("GESpMatParPvMarkoFast") != std::string::npos) {
 		matrixSolver = CREATE<GESpMatParPvPrecise>::With();
 		this->solveEquations();
 	}
 	else {
 		str = typeid(*matrixSolver).name();
-		if (str.find("GESpMatParPvPrecise") >= 0) {
+		if (str.find("GESpMatParPvPrecise") != std::string::npos) {
 			str = "MbD: Singular Matrix Error. ";
 			system->logString(str);
 			matrixSolver = this->matrixSolverClassNew();

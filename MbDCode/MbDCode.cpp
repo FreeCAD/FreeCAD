@@ -35,11 +35,11 @@ int main()
 	//ASMTAssembly::runFile("fourbot.asmt");
 	//ASMTAssembly::runFile("wobpump.asmt");
 
-//	auto cadSystem = std::make_shared<CADSystem>();
-//	cadSystem->runOndselDoublePendulum();
-	////cadSystem->runOndselPiston();
-	//cadSystem->runPiston();
-	//runSpMat();
+	auto cadSystem = std::make_shared<CADSystem>();
+	cadSystem->runOndselDoublePendulum();
+	cadSystem->runOndselPiston();
+	cadSystem->runPiston();
+	runSpMat();
 }
 
 void runSpMat() {
