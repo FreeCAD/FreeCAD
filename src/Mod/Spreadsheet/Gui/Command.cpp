@@ -264,12 +264,12 @@ void CmdSpreadsheetExport::activated(int iMsg)
                     bool isValid = sheet->getCharsFromPrefs(delim, quote, escape, errMsg);
 
                     if (isValid) {
-                        
+
                         // If the file name does not have a CSV extension, add the CSV extension.
                         if (!fileName.endsWith(".CSV", Qt::CaseInsensitive)) {
-	                        fileName.append(".CSV")
+                            fileName.append(".CSV")
                         }
-                         
+
                         sheet->exportToFile(fileName.toStdString(), delim, quote, escape);
                     }
                     else {
