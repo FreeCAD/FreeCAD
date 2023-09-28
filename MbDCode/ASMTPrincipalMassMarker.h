@@ -8,17 +8,18 @@
  
 #pragma once
 
-#include "ASMTItem.h"
+#include "ASMTSpatialItem.h"
 
 namespace MbD {
-    class ASMTPrincipalMassMarker : public ASMTItem
+    class ASMTPrincipalMassMarker : public ASMTSpatialItem
     {
         //
     public:
         void parseASMT(std::vector<std::string>& lines) override;
+        void setMass(double mass);
+        void setDensity(double density);
+        void setMomentOfInertias(DiagMatDsptr momentOfInertias);
 
-		FColDsptr position3D;
-		FMatDsptr rotationMatrix;
 		double mass, density;
         DiagMatDsptr momentOfInertias;
 

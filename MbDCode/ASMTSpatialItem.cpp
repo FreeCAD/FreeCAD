@@ -10,6 +10,26 @@
 
 using namespace MbD;
 
+void MbD::ASMTSpatialItem::setPosition3D(FColDsptr vec)
+{
+	position3D = vec;
+}
+
+void MbD::ASMTSpatialItem::setRotationMatrix(FMatDsptr mat)
+{
+	rotationMatrix = mat;
+}
+
+void MbD::ASMTSpatialItem::setVelocity3D(FColDsptr vec)
+{
+	velocity3D = vec;
+}
+
+void MbD::ASMTSpatialItem::setOmega3D(FColDsptr vec)
+{
+	omega3D = vec;
+}
+
 void MbD::ASMTSpatialItem::readPosition3D(std::vector<std::string>& lines)
 {
 	assert(lines[0].find("Position3D") != std::string::npos);

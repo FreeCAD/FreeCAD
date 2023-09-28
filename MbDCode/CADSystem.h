@@ -27,6 +27,7 @@ namespace MbD {
 		void outputFor(AnalysisType type);
 		void logString(std::string& str);
 		void logString(double value);
+		void runOndselSinglePendulum();
 		void runOndselDoublePendulum();
 		void runOndselPiston();
 		void runPiston();

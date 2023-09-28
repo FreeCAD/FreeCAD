@@ -42,3 +42,33 @@ void MbD::ASMTSimulationParameters::parseASMT(std::vector<std::string>& lines)
 	lines.erase(lines.begin());
 
 }
+
+void MbD::ASMTSimulationParameters::settstart(double t)
+{
+	tstart = t;
+}
+
+void MbD::ASMTSimulationParameters::settend(double t)
+{
+	tend = t;
+}
+
+void MbD::ASMTSimulationParameters::sethmin(double h)
+{
+	hmin = h;
+}
+
+void MbD::ASMTSimulationParameters::sethmax(double h)
+{
+	hmax = h;
+}
+
+void MbD::ASMTSimulationParameters::sethout(double h)
+{
+	hout = h;
+}
+
+void MbD::ASMTSimulationParameters::seterrorTol(double tol)
+{
+	errorTol = tol;
+}

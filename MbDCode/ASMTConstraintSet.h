@@ -21,6 +21,7 @@ namespace MbD {
         virtual std::shared_ptr<Joint> mbdClassNew();
         void updateFromMbD() override;
         void compareResults(AnalysisType type) override;
+        void outputResults(AnalysisType type) override;
 
     };
 }

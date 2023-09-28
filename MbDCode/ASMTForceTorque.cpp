@@ -19,3 +19,8 @@ void MbD::ASMTForceTorque::compareResults(AnalysisType type)
 {
 	assert(false);
 }
+
+void MbD::ASMTForceTorque::outputResults(AnalysisType type)
+{
+	assert(false);
+}

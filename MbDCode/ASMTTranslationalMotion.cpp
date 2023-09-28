@@ -11,6 +11,9 @@
 #include "SymbolicParser.h"
 #include "BasicUserFunction.h"
 #include "Constant.h"
+#include "ASMTJoint.h"
+#include "ZTranslation.h"
+#include "ASMTTime.h"
 
 using namespace MbD;
 

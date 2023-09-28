@@ -12,6 +12,8 @@
 #include "BasicUserFunction.h"
 #include "CREATE.h"
 #include "Constant.h"
+#include "ASMTJoint.h"
+#include "ASMTTime.h"
 
 using namespace MbD;
 
@@ -63,4 +65,14 @@ void MbD::ASMTRotationalMotion::createMbD(std::shared_ptr<System> mbdSys, std::s
 std::shared_ptr<Joint> MbD::ASMTRotationalMotion::mbdClassNew()
 {
 	return CREATE<ZRotation>::With();
+}
+
+void MbD::ASMTRotationalMotion::setMotionJoint(std::string& str)
+{
+	motionJoint = str;
+}
+
+void MbD::ASMTRotationalMotion::setRotationZ(std::string& rotZ)
+{
+	rotationZ = rotZ;
 }

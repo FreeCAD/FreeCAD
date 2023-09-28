@@ -9,18 +9,32 @@
 #pragma once
 
 #include "ASMTSpatialItem.h"
-#include "ASMTRefPoint.h"
-#include "ASMTRefCurve.h"
-#include "ASMTRefSurface.h"
-#include "ASMTPrincipalMassMarker.h"
-#include "Units.h"
+//#include "ASMTRefPoint.h"
+//#include "ASMTRefCurve.h"
+//#include "ASMTRefSurface.h"
+//#include "ASMTPrincipalMassMarker.h"
+//#include "Units.h"
+//#include "ASMTPart.h"
+//#include "ASMTJoint.h"
+//#include "ASMTMotion.h"
 
 namespace MbD {
+    class ASMTRefPoint;
+    class ASMTRefCurve;
+    class ASMTRefSurface;
+    class ASMTPrincipalMassMarker;
+    class Units;
+    class ASMTPart;
+    class ASMTJoint;
+    class ASMTMotion;
+    class ASMTMarker;
+
     class ASMTSpatialContainer : public ASMTSpatialItem
     {
         //
     public:
         void initialize() override;
+        void setPrincipalMassMarker(std::shared_ptr<ASMTPrincipalMassMarker> aJ);
         void readRefPoints(std::vector<std::string>& lines);
         void readRefPoint(std::vector<std::string>& lines);
         void readRefCurves(std::vector<std::string>& lines);
@@ -53,6 +67,9 @@ namespace MbD {
         std::shared_ptr<ASMTSpatialContainer> part() override;
         void updateFromMbD() override;
         void compareResults(AnalysisType type) override;
+        void outputResults(AnalysisType type) override;
+        void addRefPoint(std::shared_ptr<ASMTRefPoint> refPoint);
+        void addMarker(std::shared_ptr<ASMTMarker> marker);
 
         std::shared_ptr<std::vector<std::shared_ptr<ASMTRefPoint>>> refPoints;
         std::shared_ptr<std::vector<std::shared_ptr<ASMTRefCurve>>> refCurves;

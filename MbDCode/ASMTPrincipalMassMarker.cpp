@@ -51,3 +51,18 @@ void MbD::ASMTPrincipalMassMarker::parseASMT(std::vector<std::string>& lines)
 	density = readDouble(lines[0]);
 	lines.erase(lines.begin());
 }
+
+void MbD::ASMTPrincipalMassMarker::setMass(double m)
+{
+	mass = m;
+}
+
+void MbD::ASMTPrincipalMassMarker::setDensity(double rho)
+{
+	density = rho;
+}
+
+void MbD::ASMTPrincipalMassMarker::setMomentOfInertias(DiagMatDsptr mat)
+{
+	momentOfInertias = mat;
+}

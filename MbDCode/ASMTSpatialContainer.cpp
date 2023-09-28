@@ -10,11 +10,20 @@
 #include "Units.h"
 #include "Part.h"
 #include "System.h"
+#include "ASMTRefPoint.h"
+#include "ASMTRefCurve.h"
+#include "ASMTRefSurface.h"
+#include "ASMTPrincipalMassMarker.h"
+
 
 using namespace MbD;
 
 void MbD::ASMTSpatialContainer::initialize()
 {
+	refPoints = std::make_shared<std::vector<std::shared_ptr<ASMTRefPoint>>>();
+	refCurves = std::make_shared<std::vector<std::shared_ptr<ASMTRefCurve>>>();
+	refSurfaces = std::make_shared<std::vector<std::shared_ptr<ASMTRefSurface>>>();
+
 	xs = std::make_shared<FullRow<double>>();
 	ys = std::make_shared<FullRow<double>>();
 	zs = std::make_shared<FullRow<double>>();
@@ -35,11 +44,16 @@ void MbD::ASMTSpatialContainer::initialize()
 	alpzs = std::make_shared<FullRow<double>>();
 }
 
+void MbD::ASMTSpatialContainer::setPrincipalMassMarker(std::shared_ptr<ASMTPrincipalMassMarker> aJ)
+{
+	principalMassMarker = aJ;
+}
+
 void MbD::ASMTSpatialContainer::readRefPoints(std::vector<std::string>& lines)
 {
 	assert(lines[0].find("RefPoints") != std::string::npos);
 	lines.erase(lines.begin());
-	refPoints = std::make_shared<std::vector<std::shared_ptr<ASMTRefPoint>>>();
+	refPoints->clear();
 	auto it = std::find_if(lines.begin(), lines.end(), [](const std::string& s) {
 		return s.find("RefCurves") != std::string::npos;
 		});
@@ -64,7 +78,7 @@ void MbD::ASMTSpatialContainer::readRefCurves(std::vector<std::string>& lines)
 {
 	assert(lines[0].find("RefCurves") != std::string::npos);
 	lines.erase(lines.begin());
-	refCurves = std::make_shared<std::vector<std::shared_ptr<ASMTRefCurve>>>();
+	refCurves->clear();
 	auto it = std::find_if(lines.begin(), lines.end(), [](const std::string& s) {
 		return s.find("RefSurfaces") != std::string::npos;
 		});
@@ -84,7 +98,7 @@ void MbD::ASMTSpatialContainer::readRefSurfaces(std::vector<std::string>& lines)
 {
 	assert(lines[0].find("RefSurfaces") != std::string::npos);
 	lines.erase(lines.begin());
-	refSurfaces = std::make_shared<std::vector<std::shared_ptr<ASMTRefSurface>>>();
+	refSurfaces->clear();
 	auto it = std::find_if(lines.begin(), lines.end(), [](const std::string& s) {
 		return s.find("Part") != std::string::npos;
 		});
@@ -325,6 +339,7 @@ void MbD::ASMTSpatialContainer::updateFromMbD()
 
 void MbD::ASMTSpatialContainer::compareResults(AnalysisType type)
 {
+	if (inxs == nullptr || inxs->empty()) return;
 	auto mbdUnts = mbdUnits();
 	auto factor = 1.0e-6;
 	auto lengthTol = mbdUnts->length * factor;
@@ -391,4 +406,26 @@ void MbD::ASMTSpatialContainer::compareResults(AnalysisType type)
 	if (!Numeric::equaltol(alpzs->at(i), inalpzs->at(i), alphaTol)) {
 		std::cout << i << " alpzs " << alpzs->at(i) << ", " << inalpzs->at(i) << ", " << alphaTol << std::endl;
 	}
+}
+
+void MbD::ASMTSpatialContainer::outputResults(AnalysisType type)
+{
+	if (inxs != nullptr && !inxs->empty()) return;
+	auto i = xs->size() - 1;
+	std::cout << i << " ";
+	std::cout << xs->at(i) << ", " << ys->at(i) << ", " << zs->at(i) << ", ";
+	std::cout << bryxs->at(i) << ", " << bryys->at(i) << ", " << bryzs->at(i) << std::endl;
+}
+
+void MbD::ASMTSpatialContainer::addRefPoint(std::shared_ptr<ASMTRefPoint> refPoint)
+{
+	refPoints->push_back(refPoint);
+	refPoint->owner = this;
+}
+
+void MbD::ASMTSpatialContainer::addMarker(std::shared_ptr<ASMTMarker> marker)
+{
+	auto refPoint = CREATE<ASMTRefPoint>::With();
+	addRefPoint(refPoint);
+	refPoint->addMarker(marker);
 }

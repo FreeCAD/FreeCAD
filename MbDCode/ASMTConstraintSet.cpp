@@ -58,6 +58,7 @@ void MbD::ASMTConstraintSet::updateFromMbD()
 
 void MbD::ASMTConstraintSet::compareResults(AnalysisType type)
 {
+	if (infxs == nullptr || infxs->empty()) return;
 	auto mbdUnts = mbdUnits();
 	auto factor = 1.0e-6;
 	auto forceTol = mbdUnts->force * factor;
@@ -69,4 +70,8 @@ void MbD::ASMTConstraintSet::compareResults(AnalysisType type)
 	//assert(Numeric::equaltol(txs->at(i), intxs->at(i), torqueTol));
 	//assert(Numeric::equaltol(tys->at(i), intys->at(i), torqueTol));
 	//assert(Numeric::equaltol(tzs->at(i), intzs->at(i), torqueTol));
+}
+
+void MbD::ASMTConstraintSet::outputResults(AnalysisType type)
+{
 }

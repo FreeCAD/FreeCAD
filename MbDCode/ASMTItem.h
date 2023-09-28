@@ -22,6 +22,7 @@ namespace MbD {
 		virtual std::shared_ptr<ASMTSpatialContainer> part();
 
 		virtual void initialize();
+		void setName(std::string& str);
 		virtual void parseASMT(std::vector<std::string>& lines);
 		FRowDsptr readRowOfDoubles(std::string& line);
 		FColDsptr readColumnOfDoubles(std::string& line);
@@ -36,6 +37,7 @@ namespace MbD {
 		virtual void createMbD(std::shared_ptr<System> mbdSys, std::shared_ptr<Units> mbdUnits);
 		virtual void updateFromMbD();
 		virtual void compareResults(AnalysisType type);
+		virtual void outputResults(AnalysisType type);
 		std::shared_ptr<Units> mbdUnits();
 		std::shared_ptr<Constant> sptrConstant(double value);
 

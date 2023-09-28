@@ -11,11 +11,17 @@
 
 using namespace MbD;
 
+void MbD::ASMTRefItem::addMarker(std::shared_ptr<ASMTMarker> marker)
+{
+	markers->push_back(marker);
+	marker->owner = this;
+}
+
 void MbD::ASMTRefItem::readMarkers(std::vector<std::string>& lines)
 {
 	assert(lines[0].find("Markers") != std::string::npos);
 	lines.erase(lines.begin());
-	markers = std::make_shared<std::vector<std::shared_ptr<ASMTMarker>>>();
+	markers->clear();
 	auto it = std::find_if(lines.begin(), lines.end(), [](const std::string& s) {
 		return s.find("RefPoint") != std::string::npos;
 		});

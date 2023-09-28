@@ -18,6 +18,16 @@ void MbD::ASMTItemIJ::initialize()
 	tzs = std::make_shared<FullRow<double>>();
 }
 
+void MbD::ASMTItemIJ::setMarkerI(std::string& mkrI)
+{
+	markerI = mkrI;
+}
+
+void MbD::ASMTItemIJ::setMarkerJ(std::string& mkrJ)
+{
+	markerJ = mkrJ;
+}
+
 void MbD::ASMTItemIJ::readMarkerI(std::vector<std::string>& lines)
 {
 	assert(lines[0].find("MarkerI") != std::string::npos);

@@ -9,7 +9,6 @@
 #pragma once
 
 #include "ASMTMotion.h"
-#include "ZTranslation.h"
 
 namespace MbD {
     class ASMTTranslationalMotion : public ASMTMotion

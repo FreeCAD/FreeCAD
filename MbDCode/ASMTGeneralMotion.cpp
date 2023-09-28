@@ -13,6 +13,8 @@
 #include "CREATE.h"
 #include "Constant.h"
 #include "EulerAngles.h"
+#include "FullMotion.h"
+#include "ASMTTime.h"
 
 using namespace MbD;
 

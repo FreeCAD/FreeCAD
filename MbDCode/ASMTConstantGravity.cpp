@@ -28,3 +28,8 @@ void MbD::ASMTConstantGravity::createMbD(std::shared_ptr<System> mbdSys, std::sh
 	mbdGravity->gXYZ = g->times(1.0 / mbdUnits->acceleration);
 	mbdSys->addForceTorque(mbdGravity);
 }
+
+void MbD::ASMTConstantGravity::setg(FColDsptr gravity)
+{
+	g = gravity;
+}

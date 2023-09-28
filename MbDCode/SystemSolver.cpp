@@ -153,6 +153,7 @@ void SystemSolver::runBasicCollision()
 
 void SystemSolver::runBasicKinematic()
 {
+	if (tstart == tend) return;
 	try {
 		basicIntegrator = CREATE<KineIntegrator>::With();
 		basicIntegrator->setSystem(this);

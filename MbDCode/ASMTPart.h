@@ -9,13 +9,10 @@
 #pragma once
 
 #include "ASMTSpatialContainer.h"
-#include "ASMTRefPoint.h"
-#include "ASMTRefCurve.h"
-#include "ASMTRefSurface.h"
-#include "ASMTPrincipalMassMarker.h"
-#include "PosVelAccData.h"
 
 namespace MbD {
+    class PosVelAccData;
+
     class ASMTPart : public ASMTSpatialContainer
     {
         //

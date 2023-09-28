@@ -34,6 +34,7 @@ void MbD::ExternalSystem::outputFor(AnalysisType type)
 	else if (asmtAssembly) {
 		asmtAssembly->updateFromMbD();
 		asmtAssembly->compareResults(type);
+		asmtAssembly->outputResults(type);
 	}
 	else {
 		assert(false);

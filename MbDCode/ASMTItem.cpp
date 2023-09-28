@@ -28,6 +28,11 @@ void MbD::ASMTItem::initialize()
 {
 }
 
+void MbD::ASMTItem::setName(std::string& str)
+{
+	name = str;
+}
+
 void MbD::ASMTItem::parseASMT(std::vector<std::string>& lines)
 {
 	assert(false);
@@ -137,6 +142,11 @@ void MbD::ASMTItem::updateFromMbD()
 }
 
 void MbD::ASMTItem::compareResults(AnalysisType type)
+{
+	assert(false);
+}
+
+void MbD::ASMTItem::outputResults(AnalysisType type)
 {
 	assert(false);
 }

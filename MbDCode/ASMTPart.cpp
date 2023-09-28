@@ -8,6 +8,8 @@
  
 #include "ASMTPart.h"
 #include "CREATE.h"
+#include "ASMTPrincipalMassMarker.h"
+
 
 using namespace MbD;
 

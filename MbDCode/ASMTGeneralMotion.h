@@ -9,7 +9,6 @@
 #pragma once
 
 #include "ASMTMotion.h"
-#include "FullMotion.h"
 
 namespace MbD {
     class ASMTGeneralMotion : public ASMTMotion

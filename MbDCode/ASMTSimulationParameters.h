@@ -16,6 +16,12 @@ namespace MbD {
 		//
 	public:
 		void parseASMT(std::vector<std::string>& lines) override;
+		void settstart(double tstart);
+		void settend(double tend);
+		void sethmin(double hmin);
+		void sethmax(double hmax);
+		void sethout(double hout);
+		void seterrorTol(double errorTol);
 
 		double tstart = 0.0, tend = 1.0, hmin = 1.0e-9, hmax = 1.0e9, hout = 0.1, errorTol = 1.0e-6;
 		double errorTolPosKine = 1.0e-6, errorTolAccKine = 1.0e-6, corAbsTol = 1.0e-6, corRelTol = 1.0e-6;

@@ -17,6 +17,7 @@ namespace MbD {
     public:
         void updateFromMbD() override;
         void compareResults(AnalysisType type) override;
+        void outputResults(AnalysisType type) override;
 
 
     };
