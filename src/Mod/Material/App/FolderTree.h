@@ -24,6 +24,8 @@
 
 #include <QString>
 #include <map>
+#include <memory>
+
 
 namespace Materials
 {
