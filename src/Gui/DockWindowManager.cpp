@@ -380,6 +380,20 @@ void DockWindowManager::setup(DockWindowItems* items)
         }
     }
 
+    // Don't always tabify after switching the workbench
+    static bool tabify = false;
+    if (!tabify) {
+        // tabify dock widgets for which "tabbed" is true and which have the same position
+        for (int i=0; i<4; i++) {
+            const QList<QDockWidget*>& dws = areas[i];
+            for (QList<QDockWidget*>::ConstIterator it = dws.begin(); it != dws.end(); ++it) {
+                if (*it != dws.front()) {
+                    getMainWindow()->tabifyDockWidget(dws.front(), *it);
+                    tabify = true;
+                }
+            }
+        }
+    }
 }
 
 void DockWindowManager::saveState()
