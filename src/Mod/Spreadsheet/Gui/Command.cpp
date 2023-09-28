@@ -267,7 +267,7 @@ void CmdSpreadsheetExport::activated(int iMsg)
 
                         // If the file name does not have a CSV extension, add the CSV extension.
                         if (!fileName.endsWith(".CSV", Qt::CaseInsensitive)) {
-                            fileName.append(".CSV")
+                            fileName.append(".CSV");
                         }
 
                         sheet->exportToFile(fileName.toStdString(), delim, quote, escape);
