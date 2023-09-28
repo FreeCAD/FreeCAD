@@ -6,7 +6,7 @@
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
  
-#include <corecrt_math_defines.h>
+#include "corecrt_math_defines.h"
 
 #include "AngleZIecJec.h"
 #include "Numeric.h"

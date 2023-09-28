@@ -30,9 +30,12 @@
 
 using namespace MbD;
 
-void MbD::ASMTAssembly::runFile(const char* chars)
+void MbD::ASMTAssembly::runFile(const char* fileName)
 {
-	std::ifstream stream(chars);
+	std::ifstream stream(fileName);
+    if(stream.fail()) {
+        throw std::invalid_argument("File not found.");
+    }
 	std::string line;
 	std::vector<std::string> lines;
 	while (std::getline(stream, line)) {

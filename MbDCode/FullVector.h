@@ -9,6 +9,7 @@
 #pragma once
 
 #include <ostream>
+#include <limits>
 
 #include "Array.h"
 

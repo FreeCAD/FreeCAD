@@ -6,9 +6,9 @@
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
  
-#include <corecrt_math_defines.h>
+#include "corecrt_math_defines.h"
 
-#include "OrbitAngleZIecJec.h"
+#include "OrbitAnglezIecJec.h"
 #include "Numeric.h"
 
 using namespace MbD;

@@ -34,3 +34,6 @@
 .vs
 x64/
 *.bak
+
+cmake-build-debug
+.idea

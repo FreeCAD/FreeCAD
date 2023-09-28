@@ -33,7 +33,7 @@ namespace MbD {
     {
         //
     public:
-        static void runFile(const char* chars);
+        static void runFile(const char* fileName);
         ASMTAssembly* root() override;
         void parseASMT(std::vector<std::string>& lines) override;
         void readNotes(std::vector<std::string>& lines);

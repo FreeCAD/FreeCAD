@@ -8,7 +8,7 @@
  
 #pragma once
 
-#include <corecrt_math_defines.h>
+#include "corecrt_math_defines.h"
 #include <memory>
 
 #include "RowTypeMatrix.h"
@@ -296,6 +296,13 @@ namespace MbD {
 		row2->atiput(2, 0.0);
 		return rotMat;
 	}
+    template<>
+    inline void FullMatrix<double>::zeroSelf()
+    {
+        for (int i = 0; i < this->size(); i++) {
+            this->at(i)->zeroSelf();
+        }
+    }
 	template<>
 	inline void FullMatrix<double>::identity() {
 		this->zeroSelf();
@@ -451,13 +458,6 @@ namespace MbD {
 	{
 		assert(false);
 		return 0.0;
-	}
-	template<>
-	inline void FullMatrix<double>::zeroSelf()
-	{
-		for (int i = 0; i < this->size(); i++) {
-			this->at(i)->zeroSelf();
-		}
 	}
 	template<typename T>
 	inline void FullMatrix<T>::zeroSelf()
