@@ -33,8 +33,6 @@
 #include <Gui/Command.h>
 #include <Gui/WaitCursor.h>
 
-#include <Mod/Material/App/ModelManager.h>
-
 #include "ModelSelect.h"
 #include "ui_ModelSelect.h"
 

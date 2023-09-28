@@ -22,6 +22,8 @@
 #ifndef MATERIAL_MODELUUIDS_H
 #define MATERIAL_MODELUUIDS_H
 
+#include <QString>
+
 namespace Materials
 {
 

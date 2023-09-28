@@ -28,7 +28,6 @@
 #include <Gui/MainWindow.h>
 
 #include <Mod/Material/App/Exceptions.h>
-#include <Mod/Material/App/Materials.h>
 
 #include "Array3D.h"
 #include "ArrayDelegate.h"
