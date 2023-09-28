@@ -31,6 +31,7 @@
 #include <QTreeView>
 
 #include <Mod/Material/App/Materials.h>
+#include <Mod/Material/App/ModelManager.h>
 
 namespace fs = boost::filesystem;
 

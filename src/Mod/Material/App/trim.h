@@ -22,6 +22,7 @@
 #ifndef MATERIAL_TRIM_H
 #define MATERIAL_TRIM_H
 
+#include <algorithm>
 #include <string>
 
 namespace Materials
