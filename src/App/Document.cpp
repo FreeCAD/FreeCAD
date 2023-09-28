@@ -1895,7 +1895,7 @@ bool Document::saveToFile(const char* filename) const
     signalStartSave(*this, filename);
 
     auto hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Document");
-    int compression = hGrp->GetInt("CompressionLevel",3);
+    int compression = hGrp->GetInt("CompressionLevel",7);
     compression = Base::clamp<int>(compression, Z_NO_COMPRESSION, Z_BEST_COMPRESSION);
 
     bool policy = App::GetApplication().GetParameterGroupByPath

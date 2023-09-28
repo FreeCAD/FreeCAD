@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
+  <PythonExport
+      Father="BaseClassPy"
+      Name="ModelPropertyPy"
+      Twin="ModelProperty"
+      TwinPointer="ModelProperty"
+      Include="Mod/Material/App/Model.h"
+      Namespace="Materials"
+      FatherInclude="Base/BaseClassPy.h"
+      FatherNamespace="Base"
+      Constructor="true"
+      Delete="true">
+    <Documentation>
+      <Author Licence="LGPL" Name="DavidCarter" EMail="dcarter@davidcarter.ca" />
+      <UserDocu>Material property descriptions.</UserDocu>
+    </Documentation>
+    <!-- <Methode Name="mirror">
+      <Documentation>
+        <UserDocu>Performs the symmetrical transformation of this geometric object</UserDocu>
+      </Documentation>
+    </Methode> -->
+    <Attribute Name="Name" ReadOnly="true">
+      <Documentation>
+        <UserDocu>Property name.</UserDocu>
+      </Documentation>
+      <Parameter Name="Name" Type="String"/>
+    </Attribute>
+    <Attribute Name="Type" ReadOnly="true">
+      <Documentation>
+        <UserDocu>Property type.</UserDocu>
+      </Documentation>
+      <Parameter Name="Type" Type="String"/>
+    </Attribute>
+    <Attribute Name="Units" ReadOnly="true">
+      <Documentation>
+        <UserDocu>Property units category.</UserDocu>
+      </Documentation>
+      <Parameter Name="Units" Type="String"/>
+    </Attribute>
+    <Attribute Name="URL" ReadOnly="true">
+      <Documentation>
+        <UserDocu>URL to a detailed description of the property.</UserDocu>
+      </Documentation>
+      <Parameter Name="URL" Type="String"/>
+    </Attribute>
+    <Attribute Name="Description" ReadOnly="true">
+      <Documentation>
+        <UserDocu>Property description.</UserDocu>
+      </Documentation>
+      <Parameter Name="Description" Type="String"/>
+    </Attribute>
+  </PythonExport>
+</GenerateModel>

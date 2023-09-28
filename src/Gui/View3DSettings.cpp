@@ -74,7 +74,7 @@ void View3DSettings::applySettings()
     OnChange(*hGrp,"CornerCoordSystem");
     OnChange(*hGrp,"CornerCoordSystemSize");
     OnChange(*hGrp,"ShowAxisCross");
-    OnChange(*hGrp,"UseNavigationAnimations");
+    OnChange(*hGrp,"UseAutoRotation");
     OnChange(*hGrp,"Gradient");
     OnChange(*hGrp,"RadialGradient");
     OnChange(*hGrp,"BackgroundColor");
@@ -287,9 +287,9 @@ void View3DSettings::OnChange(ParameterGrp::SubjectType &rCaller,ParameterGrp::M
             _viewer->setAxisCross(rGrp.GetBool("ShowAxisCross", false));
         }
     }
-    else if (strcmp(Reason,"UseNavigationAnimations") == 0) {
+    else if (strcmp(Reason,"UseAutoRotation") == 0) {
         for (auto _viewer : _viewers) {
-            _viewer->setAnimationEnabled(rGrp.GetBool("UseNavigationAnimations", true));
+            _viewer->setAnimationEnabled(rGrp.GetBool("UseAutoRotation", false));
         }
     }
     else if (strcmp(Reason,"Gradient") == 0 || strcmp(Reason,"RadialGradient") == 0) {

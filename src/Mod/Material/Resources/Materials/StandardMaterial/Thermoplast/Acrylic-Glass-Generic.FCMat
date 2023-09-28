@@ -1,0 +1,28 @@
+# File created by ConvertFCMat.py
+General:
+  UUID: "f255cd82-91d5-4e97-9032-1843128a2eaa"
+  AuthorAndLicense: "(c) 2016 Przemo Firszt (CC-BY 3.0)"
+  Name: "Acrylic Glass"
+  Description: "Poly(methyl methacrylate) (PMMA, acrylic, acrylic glass, trade names Plexiglas, Acrylite, Lucite, Perspex) a transparent thermoplastic often used in sheet form as a lightweight or shatter-resistant alternative to glass."
+  SourceURL: "http://www.matweb.com/search/DataSheet.aspx?MatGUID=632572aeef2a4224b5ac8fbd4f1b6f77"
+Models:
+  Father:
+    UUID: '9cdda8b6-b606-4778-8f13-3934d8668e67'
+    Father: "of the material, i.e. for PLA is Thermoplast, for Steel is Metal Thermoplast"
+  LinearElastic:
+    UUID: '7b561d1d-fb9b-44f6-9da9-56a4f74d7536'
+    CompressiveStrength: "103 MPa"
+    Density: "1160 kg/m^3"
+    PoissonRatio: "0.38"
+    ShearModulus: "1.08 GPa"
+    UltimateTensileStrength: "57.7 MPa"
+    YieldStrength: "73.7 MPa"
+    YoungsModulus: "2550 MPa"
+  Thermal:
+    UUID: '9959d007-a970-4ea7-bae4-3eb1b8b883c7'
+    SpecificHeat: "1480 J/kg/K"
+    ThermalConductivity: "0.193 W/m/K"
+    ThermalExpansionCoefficient: "0.000075 m/m/K"
+  Costs:
+    UUID: '881df808-8726-4c2e-be38-688bb6cce466'
+    ProductURL: "https://en.wikipedia.org/wiki/Poly(methyl_methacrylate)"
