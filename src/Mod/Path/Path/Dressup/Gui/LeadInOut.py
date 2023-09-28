@@ -559,7 +559,10 @@ class ObjectDressup:
                     queue = []
 
                 # Save all move commands
-                queue.append(curCommand)
+                # getLeadStart and getLeadEnd incorrectly treat missing axis words as being 0.
+                currXYZ = { k: currLocation[k] for k in "XYZ" if k in currLocation }
+                tmp = Path.Command(curCommand.Name, currXYZ | curCommand.Parameters)
+                queue.append(tmp)
 
             currLocation.update(curCommand.Parameters)
             prevCmd = curCommand
