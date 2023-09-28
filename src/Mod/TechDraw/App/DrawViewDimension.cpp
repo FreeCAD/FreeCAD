@@ -42,6 +42,10 @@
 # include <gp_Circ.hxx>
 # include <gp_Elips.hxx>
 # include <gp_Pnt.hxx>
+# include <gp_Pnt2d.hxx>
+# include <Geom_Plane.hxx>
+# include <Geom2d_Curve.hxx>
+# include <Geom2dAPI_ProjectPointOnCurve.hxx>
 # include <TopExp.hxx>
 # include <TopExp_Explorer.hxx>
 # include <TopoDS_Edge.hxx>
@@ -745,7 +749,29 @@ pointPair DrawViewDimension::getPointsEdgeVert(ReferenceVector references)
         if (!vertex || !edge) {
             throw Base::RuntimeError("Missing geometry for dimension (4)");
         }
-        return closestPoints(edge->getOCCEdge(), vertex->getOCCVertex());
+
+        //get curve from edge
+        double start, end; // curve parameters
+        const Handle(Geom_Surface) hplane = new Geom_Plane(gp_Ax3());
+        auto const occCurve = BRep_Tool::CurveOnPlane(edge->getOCCEdge()
+                                                      , hplane
+                                                      , TopLoc_Location()
+                                                      , start
+                                                      , end);
+        auto const occPoint = gp_Pnt2d(vertex->x(), vertex->y());
+        //project point on curve
+        auto projector = Geom2dAPI_ProjectPointOnCurve(occPoint, occCurve);
+        if (projector.NbPoints() > 0) {
+                auto p1 = Base::Vector3d(vertex->x(), vertex->y(), 0.0);
+                auto p2 = Base::Vector3d(projector.NearestPoint().X()
+                                         , projector.NearestPoint().Y()
+                                         , 0.0);
+                return pointPair(p1, p2);
+        }
+        else {
+                // unable to project
+                return closestPoints(edge->getOCCEdge(), vertex->getOCCVertex());
+        }
     }
 
     //this is a 3d object
