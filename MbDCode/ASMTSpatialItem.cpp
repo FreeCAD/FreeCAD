@@ -85,3 +85,31 @@ void MbD::ASMTSpatialItem::readOmega3D(std::vector<std::string>& lines)
 	}
 	lines.erase(lines.begin());
 }
+
+
+// Overloads to simplify syntax.
+void MbD::ASMTSpatialItem::setPosition3D(double a, double b, double c)
+{
+	position3D = std::make_shared<FullColumn<double>>(ListD{ a, b, c });
+}
+
+void MbD::ASMTSpatialItem::setVelocity3D(double a, double b, double c)
+{
+	velocity3D = std::make_shared<FullColumn<double>>(ListD{ a, b, c });
+}
+
+void MbD::ASMTSpatialItem::setOmega3D(double a, double b, double c)
+{
+	omega3D = std::make_shared<FullColumn<double>>(ListD{ a, b, c });
+}
+
+void MbD::ASMTSpatialItem::setRotationMatrix(double v11, double v12, double v13,
+	double v21, double v22, double v23,
+	double v31, double v32, double v33)
+{
+	rotationMatrix = std::make_shared<FullMatrix<double>>(ListListD{
+		{ v11, v12, v13 },
+		{ v21, v22, v23 },
+		{ v31, v32, v33 }
+		});
+}

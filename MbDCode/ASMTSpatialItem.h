@@ -33,6 +33,13 @@ namespace MbD {
 				{ 0, 0, 1 }
 			});
 
+		// Overloads to simplify syntax.
+		void setPosition3D(double a, double b, double c);
+		void setVelocity3D(double a, double b, double c);
+		void setOmega3D(double a, double b, double c);
+		void setRotationMatrix(double v11, double v12, double v13,
+			double v21, double v22, double v23,
+			double v31, double v32, double v33);
 	};
 }
 

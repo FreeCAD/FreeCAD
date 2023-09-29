@@ -35,11 +35,12 @@ namespace MbD {
 	{
 		//
 	public:
+		static void runSinglePendulumSimplified();
 		static void runSinglePendulum();
 		static void runFile(const char* chars);
 		void initialize() override;
 		ASMTAssembly* root() override;
-		void setNotes(std::string& str);
+		void setNotes(std::string str);
 		void parseASMT(std::vector<std::string>& lines) override;
 		void readNotes(std::vector<std::string>& lines);
 		void readParts(std::vector<std::string>& lines);

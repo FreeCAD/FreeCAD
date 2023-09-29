@@ -18,12 +18,12 @@ void MbD::ASMTItemIJ::initialize()
 	tzs = std::make_shared<FullRow<double>>();
 }
 
-void MbD::ASMTItemIJ::setMarkerI(std::string& mkrI)
+void MbD::ASMTItemIJ::setMarkerI(std::string mkrI)
 {
 	markerI = mkrI;
 }
 
-void MbD::ASMTItemIJ::setMarkerJ(std::string& mkrJ)
+void MbD::ASMTItemIJ::setMarkerJ(std::string mkrJ)
 {
 	markerJ = mkrJ;
 }

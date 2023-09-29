@@ -43,6 +43,100 @@
 
 using namespace MbD;
 
+
+void MbD::ASMTAssembly::runSinglePendulumSimplified()
+{
+	auto assembly = CREATE<ASMTAssembly>::With();
+
+	assembly->setNotes("");
+	assembly->setName("Assembly1");
+	assembly->setPosition3D(0, 0, 0);
+	assembly->setRotationMatrix(
+		1, 0, 0,
+		0, 1, 0,
+		0, 0, 1);
+	assembly->setVelocity3D(0, 0, 0);
+	assembly->setOmega3D(0, 0, 0);
+
+	auto massMarker = CREATE<ASMTPrincipalMassMarker>::With();
+	massMarker->setMass(0.0);
+	massMarker->setDensity(0.0);
+	massMarker->setMomentOfInertias(0, 0, 0);
+	massMarker->setPosition3D(0, 0, 0);
+	massMarker->setRotationMatrix(
+		1, 0, 0,
+		0, 1, 0,
+		0, 0, 1);
+	assembly->setPrincipalMassMarker(massMarker);
+
+	auto mkr = CREATE<ASMTMarker>::With();
+	mkr->setName("Marker1");
+	mkr->setPosition3D(0, 0, 0);
+	massMarker->setRotationMatrix(
+		1, 0, 0,
+		0, 1, 0,
+		0, 0, 1);
+	assembly->addMarker(mkr);
+
+	auto part = CREATE<ASMTPart>::With();
+	part->setName("Part1");
+	part->setPosition3D(-0.1, -0.1, -0.1);
+	part->setRotationMatrix(
+		1, 0, 0,
+		0, 1, 0,
+		0, 0, 1);
+	part->setVelocity3D(0, 0, 0);
+	part->setOmega3D(0, 0, 0);
+	assembly->addPart(part);
+
+	massMarker = CREATE<ASMTPrincipalMassMarker>::With();
+	massMarker->setMass(0.2);
+	massMarker->setDensity(10.0);
+	massMarker->setMomentOfInertias(8.3333333333333e-4, 0.016833333333333, 0.017333333333333);
+	massMarker->setPosition3D(0.5, 0.1, 0.05);
+	massMarker->setRotationMatrix(
+		1, 0, 0,
+		0, 1, 0,
+		0, 0, 1);
+	part->setPrincipalMassMarker(massMarker);
+
+	mkr = CREATE<ASMTMarker>::With();
+	mkr->setName("Marker1");
+	mkr->setPosition3D(0.1, 0.1, 0.1);
+	mkr->setRotationMatrix(
+		1, 0, 0,
+		0, 1, 0,
+		0, 0, 1);
+	part->addMarker(mkr);
+
+	auto joint = CREATE<ASMTRevoluteJoint>::With();
+	joint->setName("Joint1");
+	joint->setMarkerI("/Assembly1/Marker1");
+	joint->setMarkerJ("/Assembly1/Part1/Marker1");
+	assembly->addJoint(joint);
+
+	auto motion = CREATE<ASMTRotationalMotion>::With();
+	motion->setName("Motion1");
+	motion->setMotionJoint("/Assembly1/Joint1");
+	motion->setRotationZ("0.0");
+	assembly->addMotion(motion);
+
+	auto constantGravity = CREATE<ASMTConstantGravity>::With();
+	constantGravity->setg(0.0, 0.0, 0.0);
+	assembly->setConstantGravity(constantGravity);
+
+	auto simulationParameters = CREATE<ASMTSimulationParameters>::With();
+	simulationParameters->settstart(0.0);
+	simulationParameters->settend(0.0);	//tstart == tend Initial Conditions only.
+	simulationParameters->sethmin(1.0e-9);
+	simulationParameters->sethmax(1.0);
+	simulationParameters->sethout(0.04);
+	simulationParameters->seterrorTol(1.0e-6);
+	assembly->setSimulationParameters(simulationParameters);
+
+	assembly->runKINEMATIC();
+}
+
 void MbD::ASMTAssembly::runSinglePendulum()
 {
 	auto assembly = CREATE<ASMTAssembly>::With();
@@ -205,7 +299,7 @@ ASMTAssembly* MbD::ASMTAssembly::root()
 	return this;
 }
 
-void MbD::ASMTAssembly::setNotes(std::string& str)
+void MbD::ASMTAssembly::setNotes(std::string str)
 {
 	notes = str;
 }

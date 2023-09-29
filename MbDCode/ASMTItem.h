@@ -22,7 +22,7 @@ namespace MbD {
 		virtual std::shared_ptr<ASMTSpatialContainer> part();
 
 		virtual void initialize();
-		void setName(std::string& str);
+		void setName(std::string str);
 		virtual void parseASMT(std::vector<std::string>& lines);
 		FRowDsptr readRowOfDoubles(std::string& line);
 		FColDsptr readColumnOfDoubles(std::string& line);

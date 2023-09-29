@@ -66,3 +66,9 @@ void MbD::ASMTPrincipalMassMarker::setMomentOfInertias(DiagMatDsptr mat)
 {
 	momentOfInertias = mat;
 }
+
+// Overloads to simplify syntax.
+void MbD::ASMTPrincipalMassMarker::setMomentOfInertias(double a, double b, double c)
+{
+	momentOfInertias = std::make_shared<DiagonalMatrix<double>>(ListD{ a, b, c });
+}

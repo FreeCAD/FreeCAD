@@ -28,7 +28,7 @@ void MbD::ASMTItem::initialize()
 {
 }
 
-void MbD::ASMTItem::setName(std::string& str)
+void MbD::ASMTItem::setName(std::string str)
 {
 	name = str;
 }

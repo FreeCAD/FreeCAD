@@ -23,6 +23,8 @@ namespace MbD {
         void createMbD(std::shared_ptr<System> mbdSys, std::shared_ptr<Units> mbdUnits) override;
         void setg(FColDsptr g);
 
+        void setg(double a, double b, double c);
+
         FColDsptr g;
     };
 }

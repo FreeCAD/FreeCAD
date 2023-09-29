@@ -20,6 +20,9 @@ namespace MbD {
         void setDensity(double density);
         void setMomentOfInertias(DiagMatDsptr momentOfInertias);
 
+        // Overloads to simplify syntax.
+        void setMomentOfInertias(double a, double b, double c);
+
 		double mass, density;
         DiagMatDsptr momentOfInertias;
 
