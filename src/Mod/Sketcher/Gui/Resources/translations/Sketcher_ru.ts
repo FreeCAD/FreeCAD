@@ -1218,7 +1218,7 @@ as mirroring reference.</source>
     <message>
       <location filename="../../Command.cpp" line="844"/>
       <source>Wrong selection</source>
-      <translation>Неправильное выделение</translation>
+      <translation>Неправильный выбор</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="845"/>
@@ -1777,7 +1777,7 @@ invalid constraints, degenerated geometry, etc.</source>
     <message>
       <location filename="../../CommandConstraints.cpp" line="1808"/>
       <source>Add arc angle constraint</source>
-      <translation type="unfinished">Add arc angle constraint</translation>
+      <translation>Добавить ограничение угла дуги</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="1831"/>
@@ -2275,59 +2275,59 @@ invalid constraints, degenerated geometry, etc.</source>
       <translation>Ошибка автоограничения: Эскиз нерешаем после добавлении ограничения равенства.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="2244"/>
+      <location filename="../../../App/SketchObject.cpp" line="2263"/>
       <source>Unable to guess intersection of curves. Try adding a coincident constraint between the vertices of the curves you are intending to fillet.</source>
       <translation>Не удалось рассчитать пересечение кривых. Попробуйте добавить ограничение совпадения между вершинами кривых, которые вы намерены скруглить.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6427"/>
-      <location filename="../../../App/SketchObject.cpp" line="6635"/>
+      <location filename="../../../App/SketchObject.cpp" line="6446"/>
+      <location filename="../../../App/SketchObject.cpp" line="6654"/>
       <source>BSpline Geometry Index (GeoID) is out of bounds.</source>
       <translation>BSpline идентификатор геометрии (GeoID) находится вне границ.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6432"/>
+      <location filename="../../../App/SketchObject.cpp" line="6451"/>
       <source>You are requesting no change in knot multiplicity.</source>
       <translation>Вы не запрашиваете никаких изменений в множественности узлов.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6438"/>
-      <location filename="../../../App/SketchObject.cpp" line="6645"/>
+      <location filename="../../../App/SketchObject.cpp" line="6457"/>
+      <location filename="../../../App/SketchObject.cpp" line="6664"/>
       <source>The Geometry Index (GeoId) provided is not a B-spline curve.</source>
       <translation>Идентификатор геометрии (GeoId) не является B-сплайн кривой.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6447"/>
+      <location filename="../../../App/SketchObject.cpp" line="6466"/>
       <source>The knot index is out of bounds. Note that in accordance with OCC notation, the first knot has index 1 and not zero.</source>
       <translation>Индекс узла выходит за границы. Обратите внимание, что в соответствии с нотацией OCC первый узел имеет индекс 1, а не ноль.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6458"/>
+      <location filename="../../../App/SketchObject.cpp" line="6477"/>
       <source>The multiplicity cannot be increased beyond the degree of the B-spline.</source>
       <translation>Кратность не может быть увеличена сверх степени B-сплайна.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6466"/>
+      <location filename="../../../App/SketchObject.cpp" line="6485"/>
       <source>The multiplicity cannot be decreased beyond zero.</source>
       <translation>Кратность не может быть уменьшена ниже нуля.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6480"/>
+      <location filename="../../../App/SketchObject.cpp" line="6499"/>
       <source>OCC is unable to decrease the multiplicity within the maximum tolerance.</source>
       <translation>OCC неспособен уменьшить кратность в пределах максимального допуска.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6639"/>
+      <location filename="../../../App/SketchObject.cpp" line="6658"/>
       <source>Knot cannot have zero multiplicity.</source>
       <translation>Узел не может иметь нулевой кратности.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6656"/>
+      <location filename="../../../App/SketchObject.cpp" line="6675"/>
       <source>Knot multiplicity cannot be higher than the degree of the BSpline.</source>
       <translation>Кратность узла не может быть выше степени BSpline.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6662"/>
+      <location filename="../../../App/SketchObject.cpp" line="6681"/>
       <source>Knot cannot be inserted outside the BSpline parameter range.</source>
       <translation>Узел не может быть вставлен за пределы диапазона параметров BSpline.</translation>
     </message>
@@ -2348,7 +2348,7 @@ invalid constraints, degenerated geometry, etc.</source>
       <location filename="../../AppSketcherGui.cpp" line="145"/>
       <location filename="../../AppSketcherGui.cpp" line="147"/>
       <source>Sketcher</source>
-      <translation>Набросок</translation>
+      <translation>Sketcher</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="122"/>
@@ -2551,7 +2551,7 @@ invalid constraints, degenerated geometry, etc.</source>
       <location filename="../../CommandSketcherVirtualSpace.cpp" line="130"/>
       <location filename="../../CommandSketcherVirtualSpace.cpp" line="157"/>
       <source>Wrong selection</source>
-      <translation>Неправильный выбор</translation>
+      <translation>Неправильное выделение</translation>
     </message>
     <message>
       <location filename="../../CommandAlterGeometry.cpp" line="146"/>
@@ -4890,7 +4890,7 @@ However, no constraints linking to the endpoints were found.</source>
       <location filename="../../TaskSketcherElements.cpp" line="1646"/>
       <location filename="../../TaskSketcherElements.cpp" line="1652"/>
       <source>Construction</source>
-      <translation>Конструктор</translation>
+      <translation>Конструкция</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="995"/>
@@ -5415,7 +5415,7 @@ This is done by analyzing the sketch geometries and constraints.</source>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="1629"/>
       <source>Copy</source>
-      <translation>Копировать</translation>
+      <translation>Скопировать</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="1637"/>
@@ -6084,7 +6084,7 @@ Eigen Sparse QR algorithm is optimized for sparse matrices; usually faster</sour
     <message>
       <location filename="../../Workbench.cpp" line="39"/>
       <source>Sketcher</source>
-      <translation>Sketcher</translation>
+      <translation>Набросок</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="40"/>
@@ -6287,7 +6287,7 @@ The grid spacing change if it becomes smaller than this number of pixel.</source
       <translation>Sketch имеет частично избыточные ограничения!</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="9089"/>
+      <location filename="../../../App/SketchObject.cpp" line="9108"/>
       <source>Parabolas were migrated. Migrated files won't open in previous versions of FreeCAD!!
 </source>
       <translation>Параболы были перенесены. Перемещенные файлы не будут открыты в предыдущих версиях FreeCAD!!
@@ -6328,7 +6328,7 @@ The grid spacing change if it becomes smaller than this number of pixel.</source
       <location filename="../../DrawSketchHandlerSplitting.h" line="152"/>
       <location filename="../../DrawSketchHandlerTrimming.h" line="154"/>
       <source>Error</source>
-      <translation>Ошибки</translation>
+      <translation>Ошибка</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="2041"/>
@@ -6668,9 +6668,9 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
       <source>Constrain contextually based on your selection.
 Depending on your selection you might have several constraints available. You can cycle through them using M key.
 Left clicking on empty space will validate the current constraint. Right clicking or pressing Esc will cancel.</source>
-      <translation type="unfinished">Constrain contextually based on your selection.
-Depending on your selection you might have several constraints available. You can cycle through them using M key.
-Left clicking on empty space will validate the current constraint. Right clicking or pressing Esc will cancel.</translation>
+      <translation>Ограничьте контекстуально на основе вашего выбора.
+В зависимости от вашего выбора у вас может быть несколько доступных ограничений. Вы можете переключаться между ними, используя клавишу M.
+Щелчок левой кнопкой мыши по пустому пространству подтвердит текущее ограничение. Щелчок правой кнопкой мыши или нажатие Esc приведет к отмене.</translation>
     </message>
   </context>
   <context>

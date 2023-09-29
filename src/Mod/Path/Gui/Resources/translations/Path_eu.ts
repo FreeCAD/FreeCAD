@@ -6586,353 +6586,308 @@ Adibidez:
   <context>
     <name>Path_Sanity</name>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="122"/>
       <location filename="../../../Path/Main/Gui/Sanity.py" line="126"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="130"/>
       <source>Check the path job for common errors</source>
       <translation>Aztertu bide-lana errore arruntak bilatzeko</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="210"/>
-      <source>Setup Report for FreeCAD Job</source>
-      <translation type="unfinished">Setup Report for FreeCAD Job</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="211"/>
-      <source>Table of Contents</source>
-      <translation type="unfinished">Table of Contents</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="212"/>
-      <source>Part Information</source>
-      <translation type="unfinished">Part Information</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="213"/>
-      <source>Run Summary</source>
-      <translation type="unfinished">Run Summary</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="214"/>
-      <source>Rough Stock</source>
-      <translation type="unfinished">Rough Stock</translation>
-    </message>
-    <message>
       <location filename="../../../Path/Main/Gui/Sanity.py" line="215"/>
-      <source>Tool Data</source>
-      <translation type="unfinished">Tool Data</translation>
+      <source>Setup Report for FreeCAD Job</source>
+      <translation>Txosten-konfigurazioa FreeCAD lanerako</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/Sanity.py" line="216"/>
+      <source>Table of Contents</source>
+      <translation>Edukien aurkibidea</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="217"/>
+      <source>Part Information</source>
+      <translation>Zatiaren informazioa</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="218"/>
+      <source>Run Summary</source>
+      <translation>Exekutatu laburpena</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="219"/>
+      <source>Rough Stock</source>
+      <translation>Pieza gordin zimurra</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="220"/>
+      <source>Tool Data</source>
+      <translation>Tresna-datuak</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="221"/>
       <source>Output</source>
       <translation>Irteera</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="217"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="222"/>
       <source>Fixtures</source>
       <translation>Finkapenak</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="219"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="224"/>
       <source>Squawks</source>
-      <translation type="unfinished">Squawks</translation>
+      <translation>Irrintziak</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="220"/>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="1241"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="225"/>
       <source>Base Object(s)</source>
       <translation>Oinarri-objektua(k)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="221"/>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="1242"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="226"/>
       <source>Job Sequence</source>
       <translation>Lan-sekuentzia</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="222"/>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="1243"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="227"/>
       <source>Job Description</source>
       <translation>Lanaren deskribapena</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="223"/>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="1244"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="228"/>
       <source>Job Type</source>
       <translation>Lan mota</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="224"/>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="1245"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="229"/>
       <source>CAD File Name</source>
       <translation>CAD fitxategiaren izena</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="225"/>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="1246"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="230"/>
       <source>Last Save Date</source>
       <translation>Azken gordetze-data</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="226"/>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="1247"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="231"/>
       <source>Customer</source>
       <translation>Bezeroa</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="228"/>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="1249"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="233"/>
       <source>Designer</source>
       <translation>Diseinatzailea</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="233"/>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="509"/>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="1284"/>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="1329"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="238"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="514"/>
       <source>Operation</source>
       <translation>Eragiketa</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="234"/>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="1285"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="239"/>
       <source>Minimum Z Height</source>
       <translation>Z altuera minimoa</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="235"/>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="1286"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="240"/>
       <source>Maximum Z Height</source>
       <translation>Z altuera maximoa</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="237"/>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="1287"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="242"/>
       <source>Cycle Time</source>
       <translation>Ziklo-denbora</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="238"/>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="1288"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="243"/>
       <source>Coolant</source>
       <translation>Hozgarria</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="239"/>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="1290"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="244"/>
       <source>TOTAL JOB</source>
       <translation>LAN OSOA</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="241"/>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="1323"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="246"/>
       <source>Tool Number</source>
       <translation>Tresna-zenbakia</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="504"/>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="1324"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="509"/>
       <source>Description</source>
       <translation>Deskribapena</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="505"/>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="1325"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="510"/>
       <source>Manufacturer</source>
       <translation>Fabrikatzailea</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="506"/>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="1326"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="511"/>
       <source>Part Number</source>
       <translation>Pieza-zenbakia</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="507"/>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="1327"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="512"/>
       <source>URL</source>
       <translation>URLa</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="508"/>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="1328"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="513"/>
       <source>Inspection Notes</source>
       <translation>Ikuskatze-oharrak</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="510"/>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="1330"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="515"/>
       <source>Tool Controller</source>
       <translation>Tresna-kontrolagailua</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="511"/>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="1331"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="516"/>
       <source>Feed Rate</source>
       <translation>Elikatze-tasa</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="512"/>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="1332"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="517"/>
       <source>Spindle Speed</source>
       <translation>Hax-abiadura</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="513"/>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="1333"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="518"/>
       <source>Tool Shape</source>
       <translation>Tresna-forma</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="515"/>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="1335"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="520"/>
       <source>Tool Diameter</source>
       <translation>Tresna-diametroa</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="516"/>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="1386"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="521"/>
       <source>X Size</source>
       <translation>X tamaina</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="517"/>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="1387"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="522"/>
       <source>Y Size</source>
       <translation>Y tamaina</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="518"/>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="1388"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="523"/>
       <source>Z Size</source>
       <translation>Z tamaina</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="520"/>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="1390"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="525"/>
       <source>Material</source>
       <translation>Materiala</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="521"/>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="1403"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="526"/>
       <source>Work Offsets</source>
       <translation>Laneko desplazamenduak</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="522"/>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="1404"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="527"/>
       <source>Order By</source>
       <translation>Ordenatu honen arabera:</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="524"/>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="1406"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="529"/>
       <source>Part Datum</source>
       <translation>Piezaren zero puntua</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="525"/>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="1418"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="530"/>
       <source>G-code File</source>
       <translation>G-code fitxategia</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="526"/>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="1419"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="531"/>
       <source>Last Post Process Date</source>
       <translation>Post-prozesatzearen azken data</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="527"/>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="1420"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="532"/>
       <source>Stops</source>
       <translation>Geldiuneak</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="528"/>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="1421"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="533"/>
       <source>Programmer</source>
       <translation>Programatzailea</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="529"/>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="1422"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="534"/>
       <source>Machine</source>
       <translation>Makina</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="530"/>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="1423"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="535"/>
       <source>Postprocessor</source>
       <translation>Post-prozesatzailea</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="531"/>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="1424"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="536"/>
       <source>Post Processor Flags</source>
       <translation>Post-prozesatzailearen banderak</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="532"/>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="1425"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="537"/>
       <source>File Size (kB)</source>
       <translation>Fitxategi tamaina (kB)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="534"/>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="1427"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="539"/>
       <source>Line Count</source>
       <translation>Lerro kopurua</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="535"/>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="1440"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="540"/>
       <source>Note</source>
       <translation>Oharra</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="536"/>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="1441"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="541"/>
       <source>Operator</source>
       <translation>Eragilea</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="538"/>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="1443"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="543"/>
       <source>Date</source>
       <translation>Data</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="1592"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="1332"/>
       <source>Tool number {} is a legacy tool. Legacy tools not 
                         supported by Path-Sanity</source>
-      <translation type="unfinished">Tool number {} is a legacy tool. Legacy tools not 
-                        supported by Path-Sanity</translation>
+      <translation>{} zenbakidun tresna zaharra da. Path-Sanity tresnak 
+                        ez ditu tresna zaharrak onartzen</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="1603"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="1343"/>
       <source>Tool number {} used by multiple tools</source>
-      <translation type="unfinished">Tool number {} used by multiple tools</translation>
+      <translation>Tresna batek baino gehiagok erabiltzen du {} zenbakidun tresna </translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="1631"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="1371"/>
       <source>Tool Controller '{}' has no spindlespeed</source>
-      <translation type="unfinished">Tool Controller '{}' has no spindlespeed</translation>
+      <translation>'{}' tresna-kontrolagailuak ez du hax-abiadurarik</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="1659"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="1399"/>
       <source>Tool Controller '{}' is not used</source>
-      <translation type="unfinished">Tool Controller '{}' is not used</translation>
+      <translation>'{}' tresna-kontrolagailua ez da erabiltzen</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="1754"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="1494"/>
       <source>Consider Specifying the Stock Material</source>
-      <translation type="unfinished">Consider Specifying the Stock Material</translation>
+      <translation>Kontuan hartu pieza gordina zehaztu daitekeela</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="1845"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="1585"/>
       <source>The Job has not been post-processed</source>
-      <translation type="unfinished">The Job has not been post-processed</translation>
+      <translation>Lana ez da post-prozesatu</translation>
     </message>
   </context>
   <context>

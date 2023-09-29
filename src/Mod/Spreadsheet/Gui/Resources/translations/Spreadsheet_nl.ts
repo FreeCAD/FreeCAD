@@ -890,7 +890,7 @@ Wilt u doorgaan?</translation>
       <location filename="../../DlgBindSheet.cpp" line="276"/>
       <source>Error:
 </source>
-      <translation type="unfinished">Error:
+      <translation>Fout:
 </translation>
     </message>
     <message>
@@ -1010,7 +1010,7 @@ waarbij:
       <location filename="../../SheetTableView.cpp" line="139"/>
       <source>Insert %n non-contiguous rows</source>
       <translation type="unfinished">
-        <numerusform>Voeg %n afzonderlijke kolommen in</numerusform>
+        <numerusform>Voeg %n afzonderlijke rijen in</numerusform>
         <numerusform>Insert %n non-contiguous rows</numerusform>
       </translation>
     </message>

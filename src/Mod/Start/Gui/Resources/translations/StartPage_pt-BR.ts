@@ -96,7 +96,7 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="61"/>
       <source>Recent files</source>
-      <translation type="unfinished">Recent files</translation>
+      <translation>Arquivos recentes</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="62"/>
@@ -176,12 +176,12 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="98"/>
       <source>The &lt;a href="http://forum.freecad.org"&gt;FreeCAD forum&lt;/a&gt; is a great place to get help from other FreeCAD users and developers. The forum has many sections for different types of issues and discussion subjects. If in doubt, post in the more general &lt;a href="https://forum.freecad.org/viewforum.php?f=3"&gt;Help on using FreeCAD&lt;/a&gt; section.</source>
-      <translation type="unfinished">The &lt;a href="http://forum.freecad.org"&gt;FreeCAD forum&lt;/a&gt; is a great place to get help from other FreeCAD users and developers. The forum has many sections for different types of issues and discussion subjects. If in doubt, post in the more general &lt;a href="https://forum.freecad.org/viewforum.php?f=3"&gt;Help on using FreeCAD&lt;/a&gt; section.</translation>
+      <translation>O &lt;a href="http://forum.freecad.org"&gt; fórum do FreeCAD &lt;/a&gt; é um ótimo lugar para obter ajuda de outros usuários e desenvolvedores do FreeCAD. O fórum tem muitas seções para diferentes tipos de questões e assuntos de discussão. Em caso de dúvida, poste na seção mais geral "&lt;a href="https://forum.freecad.org/viewforum.php?f=3"&gt;Help on using FreeCAD&lt;/a&gt;".</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="102"/>
       <source>If it is the first time you are posting on the forum, be sure to &lt;a href="https://forum.freecad.org/viewtopic.php?f=3&amp;t=2264"&gt;read the guidelines&lt;/a&gt; first!</source>
-      <translation type="unfinished">If it is the first time you are posting on the forum, be sure to &lt;a href="https://forum.freecad.org/viewtopic.php?f=3&amp;t=2264"&gt;read the guidelines&lt;/a&gt; first!</translation>
+      <translation>Se é a primeira vez que você está postando no fórum, certifique-se de &lt;a href="https://forum.freecad.org/viewtopic.php?f=3&amp;t=2264"&gt;ler as diretrizes&lt;/a&gt; primeiro!</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="106"/>
@@ -196,7 +196,7 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="137"/>
       <source>The latest posts on the &lt;a href="https://forum.freecad.org"&gt;FreeCAD forum&lt;/a&gt;:</source>
-      <translation type="unfinished">The latest posts on the &lt;a href="https://forum.freecad.org"&gt;FreeCAD forum&lt;/a&gt;:</translation>
+      <translation>As últimas postagens no &lt;a href="https://forum.freecad.org"&gt;fórum do FreeCAD&lt;/a&gt;:</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="107"/>
@@ -329,7 +329,7 @@
       <translation>Mostrar o conteúdo da pasta de exemplos</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="318"/>
+      <location filename="../../DlgStartPreferences.ui" line="321"/>
       <source>Show additional folder</source>
       <translation>Mostrar uma pasta adicional</translation>
     </message>
@@ -344,7 +344,7 @@
       <translation>Se esta opção for ativada, as últimas mensagens do fórum do FreeCAD serão mostradas no separador Atividade</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="304"/>
+      <location filename="../../DlgStartPreferences.ui" line="307"/>
       <source>An optional custom folder to be displayed at the bottom of the first page.
 By using ";;" to separate paths, you can add several folders here</source>
       <translation>Uma pasta personalizada opcional a ser exibida na parte inferior da primeira página.
@@ -373,7 +373,7 @@ Usando ";;" para separar caminhos, você pode adicionar várias pastas aqui</tra
     <message>
       <location filename="../../DlgStartPreferences.ui" line="33"/>
       <source>Workbench to switch to after loading a file from the Start page, only used if Start is the start up workbench</source>
-      <translation type="unfinished">Workbench to switch to after loading a file from the Start page, only used if Start is the start up workbench</translation>
+      <translation>Bancada de trabalho para alternar após carregar um arquivo da página inicial, usado somente se Começar é a bancada de trabalho inicial</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="122"/>
@@ -396,138 +396,138 @@ Usando ";;" para separar caminhos, você pode adicionar várias pastas aqui</tra
       <translation>Mostrar miniaturas de arquivos</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="328"/>
+      <location filename="../../DlgStartPreferences.ui" line="331"/>
       <source>Fonts and colors</source>
       <translation>Fontes e cores</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="380"/>
+      <location filename="../../DlgStartPreferences.ui" line="383"/>
       <source>The background of the main start page area</source>
       <translation>O fundo da área principal</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="535"/>
+      <location filename="../../DlgStartPreferences.ui" line="538"/>
       <source>Background color</source>
       <translation>Cor de fundo</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="405"/>
+      <location filename="../../DlgStartPreferences.ui" line="408"/>
       <source>in FreeCAD</source>
       <translation>no FreeCAD</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="424"/>
+      <location filename="../../DlgStartPreferences.ui" line="427"/>
       <source>In external browser</source>
       <translation>No navegador externo</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="492"/>
+      <location filename="../../DlgStartPreferences.ui" line="495"/>
       <source>Background color down gradient</source>
       <translation>Gradiente de fundo para baixo</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="649"/>
+      <location filename="../../DlgStartPreferences.ui" line="652"/>
       <source>The color of the version text</source>
       <translation>A cor do texto da versão</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="617"/>
+      <location filename="../../DlgStartPreferences.ui" line="620"/>
       <source>Link color</source>
       <translation>Cor dos links</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="695"/>
+      <location filename="../../DlgStartPreferences.ui" line="698"/>
       <source>An optional image to display as background</source>
       <translation>Uma imagem opcional a ser mostrada como plano de fundo</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="624"/>
+      <location filename="../../DlgStartPreferences.ui" line="627"/>
       <source>If this is checked and a style sheet is specified in General preferences, it will be used and override the colors below</source>
       <translation>Se esta opção for ativada e uma folha de estilo for especificada nas preferências gerais, ela será usada e substituirá as cores abaixo</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="367"/>
+      <location filename="../../DlgStartPreferences.ui" line="370"/>
       <source>Page background color</source>
       <translation>Cor de fundo da página</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="675"/>
+      <location filename="../../DlgStartPreferences.ui" line="678"/>
       <source>The color of the text on the main pages</source>
       <translation>A cor do texto nas páginas principais</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="708"/>
+      <location filename="../../DlgStartPreferences.ui" line="711"/>
       <source>Background image</source>
       <translation>Imagem de fundo</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="360"/>
+      <location filename="../../DlgStartPreferences.ui" line="363"/>
       <source>Page text color</source>
       <translation>Cor do texto da página</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="597"/>
+      <location filename="../../DlgStartPreferences.ui" line="600"/>
       <source>The color of the links</source>
       <translation>A cor dos links</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="340"/>
+      <location filename="../../DlgStartPreferences.ui" line="343"/>
       <source>The background color of the boxes inside the pages</source>
       <translation>A cor de fundo das caixas dentro das páginas</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="528"/>
+      <location filename="../../DlgStartPreferences.ui" line="531"/>
       <source>Box background color</source>
       <translation>Cor de fundo das caixas</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="462"/>
+      <location filename="../../DlgStartPreferences.ui" line="465"/>
       <source>The background color behind the panels</source>
       <translation>A cor de fundo atrás dos painéis</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="508"/>
+      <location filename="../../DlgStartPreferences.ui" line="511"/>
       <source>The down gradient for the background color (currently unsupported)</source>
       <translation>A cor de baixo do gradiente de fundo (atualmente não suportado)</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="449"/>
+      <location filename="../../DlgStartPreferences.ui" line="452"/>
       <source>Open links</source>
       <translation>Abrir links</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="542"/>
+      <location filename="../../DlgStartPreferences.ui" line="545"/>
       <source>Background text color</source>
       <translation>Cor dos textos de fundo</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="482"/>
+      <location filename="../../DlgStartPreferences.ui" line="485"/>
       <source>Use FreeCAD style sheet</source>
       <translation>Usar a folha de estilos do FreeCAD</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="439"/>
+      <location filename="../../DlgStartPreferences.ui" line="442"/>
       <source>Font family</source>
       <translation>Família de fonte</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="551"/>
+      <location filename="../../DlgStartPreferences.ui" line="554"/>
       <source>The font family to use on the start page. Can be a font name or a comma-separated series of fallback fonts</source>
       <translation>A família de fontes a ser usada na página inicial. Pode ser um nome de fonte ou uma série de fontes separada por vírgulas</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="557"/>
+      <location filename="../../DlgStartPreferences.ui" line="560"/>
       <source>Arial,Helvetica,sans</source>
       <translation>Arial, Helvetica, sans</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="570"/>
+      <location filename="../../DlgStartPreferences.ui" line="573"/>
       <source>The base font size to use for all texts of the Start page</source>
       <translation>O tamanho de base da fonte a ser usada em todos os textos da página inicial</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="131"/>
-      <location filename="../../DlgStartPreferences.ui" line="573"/>
+      <location filename="../../DlgStartPreferences.ui" line="576"/>
       <source>px</source>
       <translation>px</translation>
     </message>

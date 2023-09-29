@@ -2270,59 +2270,59 @@ invalid constraints, degenerated geometry, etc.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../App/SketchObject.cpp" line="2244"/>
+        <location filename="../../../App/SketchObject.cpp" line="2263"/>
         <source>Unable to guess intersection of curves. Try adding a coincident constraint between the vertices of the curves you are intending to fillet.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../App/SketchObject.cpp" line="6427"/>
-        <location filename="../../../App/SketchObject.cpp" line="6635"/>
+        <location filename="../../../App/SketchObject.cpp" line="6446"/>
+        <location filename="../../../App/SketchObject.cpp" line="6654"/>
         <source>BSpline Geometry Index (GeoID) is out of bounds.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../App/SketchObject.cpp" line="6432"/>
+        <location filename="../../../App/SketchObject.cpp" line="6451"/>
         <source>You are requesting no change in knot multiplicity.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../App/SketchObject.cpp" line="6438"/>
-        <location filename="../../../App/SketchObject.cpp" line="6645"/>
+        <location filename="../../../App/SketchObject.cpp" line="6457"/>
+        <location filename="../../../App/SketchObject.cpp" line="6664"/>
         <source>The Geometry Index (GeoId) provided is not a B-spline curve.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../App/SketchObject.cpp" line="6447"/>
+        <location filename="../../../App/SketchObject.cpp" line="6466"/>
         <source>The knot index is out of bounds. Note that in accordance with OCC notation, the first knot has index 1 and not zero.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../App/SketchObject.cpp" line="6458"/>
+        <location filename="../../../App/SketchObject.cpp" line="6477"/>
         <source>The multiplicity cannot be increased beyond the degree of the B-spline.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../App/SketchObject.cpp" line="6466"/>
+        <location filename="../../../App/SketchObject.cpp" line="6485"/>
         <source>The multiplicity cannot be decreased beyond zero.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../App/SketchObject.cpp" line="6480"/>
+        <location filename="../../../App/SketchObject.cpp" line="6499"/>
         <source>OCC is unable to decrease the multiplicity within the maximum tolerance.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../App/SketchObject.cpp" line="6639"/>
+        <location filename="../../../App/SketchObject.cpp" line="6658"/>
         <source>Knot cannot have zero multiplicity.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../App/SketchObject.cpp" line="6656"/>
+        <location filename="../../../App/SketchObject.cpp" line="6675"/>
         <source>Knot multiplicity cannot be higher than the degree of the BSpline.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../App/SketchObject.cpp" line="6662"/>
+        <location filename="../../../App/SketchObject.cpp" line="6681"/>
         <source>Knot cannot be inserted outside the BSpline parameter range.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6244,7 +6244,7 @@ The grid spacing change if it becomes smaller than this number of pixel.</source
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../App/SketchObject.cpp" line="9089"/>
+        <location filename="../../../App/SketchObject.cpp" line="9108"/>
         <source>Parabolas were migrated. Migrated files won&apos;t open in previous versions of FreeCAD!!
 </source>
         <translation type="unfinished"></translation>
