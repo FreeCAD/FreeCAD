@@ -23,6 +23,7 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+# include <array>
 # include <QAction>
 # include <QDockWidget>
 # include <QMap>
@@ -337,18 +338,17 @@ void DockWindowManager::setup(DockWindowItems* items)
                                ->GetGroup("MainWindow")->GetGroup("DockWindows");
     QList<QDockWidget*> docked = d->_dockedWindows;
     const QList<DockWindowItem>& dws = items->dockWidgets();
-    QList<QDockWidget*> areas[4];
-    for (QList<DockWindowItem>::ConstIterator it = dws.begin(); it != dws.end(); ++it) {
-        QDockWidget* dw = findDockWidget(docked, it->name);
-        QByteArray dockName = it->name.toLatin1();
-        bool visible = hPref->GetBool(dockName.constData(), it->visibility);
+    for (const auto& it : dws) {
+        QDockWidget* dw = findDockWidget(docked, it.name);
+        QByteArray dockName = it.name.toLatin1();
+        bool visible = hPref->GetBool(dockName.constData(), it.visibility);
 
         if (!dw) {
-            QMap<QString, QPointer<QWidget> >::Iterator jt = d->_dockWindows.find(it->name);
+            QMap<QString, QPointer<QWidget> >::Iterator jt = d->_dockWindows.find(it.name);
             if (jt != d->_dockWindows.end()) {
-                dw = addDockWindow(jt.value()->objectName().toUtf8(), jt.value(), it->pos);
+                dw = addDockWindow(jt.value()->objectName().toUtf8(), jt.value(), it.pos);
                 jt.value()->show();
-                dw->toggleViewAction()->setData(it->name);
+                dw->toggleViewAction()->setData(it.name);
                 dw->setVisible(visible);
             }
         }
@@ -358,8 +358,27 @@ void DockWindowManager::setup(DockWindowItems* items)
             int index = docked.indexOf(dw);
             docked.removeAt(index);
         }
+    }
 
-        if (it->tabbed && dw) {
+    tabifyDockWidgets(items);
+}
+
+void DockWindowManager::tabifyDockWidgets(DockWindowItems* items)
+{
+    // Tabify dock widgets only once to avoid to override the current layout
+    // in case it was modified by the user. The user shouldn't be forced to
+    // restore a possibly changed layout after switching to another workbench.
+    static bool tabify = false;
+    if (tabify) {
+        return;
+    }
+
+    std::array<QList<QDockWidget*>, 4> areas;
+    const QList<DockWindowItem>& dws = items->dockWidgets();
+    QList<QDockWidget*> docked = d->_dockedWindows;
+    for (const auto& it : dws) {
+        QDockWidget* dw = findDockWidget(docked, it.name);
+        if (it.tabbed && dw) {
             Qt::DockWidgetArea pos = getMainWindow()->dockWidgetArea(dw);
             switch (pos) {
                 case Qt::LeftDockWidgetArea:
@@ -380,18 +399,18 @@ void DockWindowManager::setup(DockWindowItems* items)
         }
     }
 
-    // Don't always tabify after switching the workbench
-    static bool tabify = false;
-    if (!tabify) {
-        // tabify dock widgets for which "tabbed" is true and which have the same position
-        for (int i=0; i<4; i++) {
-            const QList<QDockWidget*>& dws = areas[i];
-            for (QList<QDockWidget*>::ConstIterator it = dws.begin(); it != dws.end(); ++it) {
-                if (*it != dws.front()) {
-                    getMainWindow()->tabifyDockWidget(dws.front(), *it);
-                    tabify = true;
-                }
+    // tabify dock widgets for which "tabbed" is true and which have the same position
+    for (auto& area : areas) {
+        for (auto it : area) {
+            if (it != area.front()) {
+                getMainWindow()->tabifyDockWidget(area.front(), it);
+                tabify = true;
             }
+        }
+
+        // activate the first of the tabbed dock widgets
+        if (area.size() > 1) {
+            area.front()->raise();
         }
     }
 }
