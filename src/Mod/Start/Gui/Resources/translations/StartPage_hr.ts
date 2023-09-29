@@ -329,7 +329,7 @@
       <translation>Prikaži sadržaj mape primjera</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="318"/>
+      <location filename="../../DlgStartPreferences.ui" line="321"/>
       <source>Show additional folder</source>
       <translation>Pokaži dodatne mape</translation>
     </message>
@@ -344,7 +344,7 @@
       <translation>Ako je to označeno, najnoviji postovi iz foruma FreeCAD prikazat će se na kartici aktivnosti</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="304"/>
+      <location filename="../../DlgStartPreferences.ui" line="307"/>
       <source>An optional custom folder to be displayed at the bottom of the first page.
 By using ";;" to separate paths, you can add several folders here</source>
       <translation>Izborna prilagođena mapa koja će se prikazati na dnu prve stranice.
@@ -396,138 +396,138 @@ Koristite ";;" da biste odvojili putove, ovdje možete dodati nekoliko mapa</tra
       <translation type="unfinished">Show file thumbnails</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="328"/>
+      <location filename="../../DlgStartPreferences.ui" line="331"/>
       <source>Fonts and colors</source>
       <translation>Pisma i boje</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="380"/>
+      <location filename="../../DlgStartPreferences.ui" line="383"/>
       <source>The background of the main start page area</source>
       <translation>Pozadina od područja glavne početne stranice</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="535"/>
+      <location filename="../../DlgStartPreferences.ui" line="538"/>
       <source>Background color</source>
       <translation>Boja pozadine</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="405"/>
+      <location filename="../../DlgStartPreferences.ui" line="408"/>
       <source>in FreeCAD</source>
       <translation>u FreeCAD</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="424"/>
+      <location filename="../../DlgStartPreferences.ui" line="427"/>
       <source>In external browser</source>
       <translation>U vanjskom pregledniku</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="492"/>
+      <location filename="../../DlgStartPreferences.ui" line="495"/>
       <source>Background color down gradient</source>
       <translation>Boja pozadine Nijansa boje dolje</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="649"/>
+      <location filename="../../DlgStartPreferences.ui" line="652"/>
       <source>The color of the version text</source>
       <translation>Boja teksta verzije</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="617"/>
+      <location filename="../../DlgStartPreferences.ui" line="620"/>
       <source>Link color</source>
       <translation>Boja poveznice</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="695"/>
+      <location filename="../../DlgStartPreferences.ui" line="698"/>
       <source>An optional image to display as background</source>
       <translation>Opcionalna slika koja se prikazuje kao pozadina</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="624"/>
+      <location filename="../../DlgStartPreferences.ui" line="627"/>
       <source>If this is checked and a style sheet is specified in General preferences, it will be used and override the colors below</source>
       <translation>Ako je to označeno, i ako su stilski predlošci naznačeni u općim postavkama, to će se koristiti i nadjačati boju ispod</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="367"/>
+      <location filename="../../DlgStartPreferences.ui" line="370"/>
       <source>Page background color</source>
       <translation>Boja pozadine stranice</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="675"/>
+      <location filename="../../DlgStartPreferences.ui" line="678"/>
       <source>The color of the text on the main pages</source>
       <translation>Boja teksta na glavnoj stranici</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="708"/>
+      <location filename="../../DlgStartPreferences.ui" line="711"/>
       <source>Background image</source>
       <translation>Pozadinska slika</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="360"/>
+      <location filename="../../DlgStartPreferences.ui" line="363"/>
       <source>Page text color</source>
       <translation>Boja teksta stranice</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="597"/>
+      <location filename="../../DlgStartPreferences.ui" line="600"/>
       <source>The color of the links</source>
       <translation>Boja poveznica (linkova)</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="340"/>
+      <location filename="../../DlgStartPreferences.ui" line="343"/>
       <source>The background color of the boxes inside the pages</source>
       <translation>Boja okvira pozadine unutar stranice</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="528"/>
+      <location filename="../../DlgStartPreferences.ui" line="531"/>
       <source>Box background color</source>
       <translation>Boja pozadine okvira</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="462"/>
+      <location filename="../../DlgStartPreferences.ui" line="465"/>
       <source>The background color behind the panels</source>
       <translation>Boja pozadine iza panela</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="508"/>
+      <location filename="../../DlgStartPreferences.ui" line="511"/>
       <source>The down gradient for the background color (currently unsupported)</source>
       <translation>Prijelaz na dolje za boju pozadine (trenutno se ne podržava)</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="449"/>
+      <location filename="../../DlgStartPreferences.ui" line="452"/>
       <source>Open links</source>
       <translation>Otvori poveznice</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="542"/>
+      <location filename="../../DlgStartPreferences.ui" line="545"/>
       <source>Background text color</source>
       <translation>Boja teksta pozadine</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="482"/>
+      <location filename="../../DlgStartPreferences.ui" line="485"/>
       <source>Use FreeCAD style sheet</source>
       <translation>Korištenje FreeCAD liste stila</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="439"/>
+      <location filename="../../DlgStartPreferences.ui" line="442"/>
       <source>Font family</source>
       <translation>Obitelj Fontova</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="551"/>
+      <location filename="../../DlgStartPreferences.ui" line="554"/>
       <source>The font family to use on the start page. Can be a font name or a comma-separated series of fallback fonts</source>
       <translation>Obitelj pisma (fonta) na početnoj stranici. Može biti naziv pisma ili niz pričuvni pisama odvojenih zarezom</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="557"/>
+      <location filename="../../DlgStartPreferences.ui" line="560"/>
       <source>Arial,Helvetica,sans</source>
       <translation>Arial, Helvetica, Sans</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="570"/>
+      <location filename="../../DlgStartPreferences.ui" line="573"/>
       <source>The base font size to use for all texts of the Start page</source>
       <translation>Veličina osnovnog pisma za sve tekstove na početnoj stranici</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="131"/>
-      <location filename="../../DlgStartPreferences.ui" line="573"/>
+      <location filename="../../DlgStartPreferences.ui" line="576"/>
       <source>px</source>
       <translation>px</translation>
     </message>

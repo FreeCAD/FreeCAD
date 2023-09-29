@@ -159,13 +159,13 @@
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="491"/>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="501"/>
       <source>The distance the dimension line is additionally extended</source>
-      <translation type="unfinished">The distance the dimension line is additionally extended</translation>
+      <translation>치수선의 길이가 늘어 났습니다.</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="531"/>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="541"/>
       <source>The distance the extension lines are additionally extended beyond the dimension line</source>
-      <translation type="unfinished">The distance the extension lines are additionally extended beyond the dimension line</translation>
+      <translation>치수선 보조선들의 길이가 치수선 위치를 넘어 가도록 증가 되었습니다</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="202"/>
@@ -176,7 +176,7 @@
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="219"/>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="229"/>
       <source>The line spacing for multi-line texts and labels (relative to the font size)</source>
-      <translation type="unfinished">The line spacing for multi-line texts and labels (relative to the font size)</translation>
+      <translation>여러행 글자 또는 레이블에서 문자행들 간격(폰트 크기에 비례한 적용)</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="222"/>
@@ -203,12 +203,12 @@
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="408"/>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="418"/>
       <source>A multiplier factor that affects the size of texts and markers</source>
-      <translation type="unfinished">A multiplier factor that affects the size of texts and markers</translation>
+      <translation>텍스트 나 마커 들의 크기 에 영향을 주는 축척계수</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="411"/>
       <source>Scale multiplier</source>
-      <translation type="unfinished">Scale multiplier</translation>
+      <translation>축척 계수</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="425"/>
@@ -247,7 +247,7 @@
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="551"/>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="561"/>
       <source>The distance between the dimension text and the dimension line</source>
-      <translation type="unfinished">The distance between the dimension text and the dimension line</translation>
+      <translation>치수선과 치수문자 사이의 간격</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="554"/>
@@ -293,7 +293,7 @@
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="354"/>
       <source>Tick-2</source>
-      <translation type="unfinished">Tick-2</translation>
+      <translation>확인-2</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="365"/>
@@ -303,7 +303,7 @@
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="485"/>
       <source>Dimension details</source>
-      <translation type="unfinished">Dimension details</translation>
+      <translation>치수 상세</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="494"/>
@@ -737,6 +737,11 @@ A Link array is more efficient when creating multiple copies, but it cannot be f
       <source>Font file</source>
       <translation>글꼴 파일</translation>
     </message>
+    <message>
+      <location filename="../ui/TaskShapeString.ui" line="183"/>
+      <source>Font files (*.ttf *.otf *.pfb)</source>
+      <translation type="unfinished">Font files (*.ttf *.otf *.pfb)</translation>
+    </message>
   </context>
   <context>
     <name>Form</name>
@@ -1143,7 +1148,7 @@ value by using the [ and ] keys while drawing</source>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="319"/>
       <source>Tick-2</source>
-      <translation type="unfinished">Tick-2</translation>
+      <translation>확인-2</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="327"/>
@@ -1486,74 +1491,74 @@ Note that this is not fully supported, and many object will be not editable with
       <translation>대체 SVG 패턴 위치</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftvisual.ui" line="186"/>
+      <location filename="../ui/preferences-draftvisual.ui" line="189"/>
       <source>Here you can specify a directory with custom SVG files containing &lt;pattern&gt; definitions to be added to the standard patterns</source>
       <translation>여기서 표준 패턴에 추가할 &lt;패턴&gt; 정의를 포함하는 사용자 정의 SVG 파일이 있는 디렉토리를 지정할 수 있습니다.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftvisual.ui" line="203"/>
+      <location filename="../ui/preferences-draftvisual.ui" line="206"/>
       <source>SVG pattern resolution</source>
       <translation>SVG 패턴 해상도</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftvisual.ui" line="223"/>
+      <location filename="../ui/preferences-draftvisual.ui" line="226"/>
       <source>The resolution to draw the patterns in. Default value is 128. Higher values give better resolutions, lower values make drawing faster</source>
       <translation>패턴을 그릴 해상도입니다. 기본값은 128입니다. 값이 클수록 해상도가 향상되고 값이 낮을수록 그리는 속도가 빨라집니다.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftvisual.ui" line="246"/>
+      <location filename="../ui/preferences-draftvisual.ui" line="249"/>
       <source>SVG pattern default size</source>
       <translation>SVG 패턴 기본 크기</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftvisual.ui" line="266"/>
+      <location filename="../ui/preferences-draftvisual.ui" line="269"/>
       <source>The default size for SVG patterns</source>
       <translation>SVG 패턴의 기본 크기</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftvisual.ui" line="292"/>
+      <location filename="../ui/preferences-draftvisual.ui" line="295"/>
       <source>Check this if you want to preserve colors of faces while doing downgrade and upgrade (splitFaces and makeShell only)</source>
       <translation>다운그레이드 및 업그레이드를 수행하는 동안 면의 색상을 유지하려면 이 항목을 선택합니다(splitFaces 및 makeShell만 해당).</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftvisual.ui" line="295"/>
+      <location filename="../ui/preferences-draftvisual.ui" line="298"/>
       <source>Preserve colors of faces during downgrade/upgrade</source>
       <translation type="unfinished">Preserve colors of faces during downgrade/upgrade</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftvisual.ui" line="312"/>
+      <location filename="../ui/preferences-draftvisual.ui" line="315"/>
       <source>Check this if you want the face names to derive from the originating object name and vice versa while doing downgrade/upgrade (splitFaces and makeShell only)</source>
       <translation type="unfinished">Check this if you want the face names to derive from the originating object name and vice versa while doing downgrade/upgrade (splitFaces and makeShell only)</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftvisual.ui" line="315"/>
+      <location filename="../ui/preferences-draftvisual.ui" line="318"/>
       <source>Preserve names of faces during downgrade/upgrade</source>
       <translation type="unfinished">Preserve names of faces during downgrade/upgrade</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftvisual.ui" line="333"/>
+      <location filename="../ui/preferences-draftvisual.ui" line="336"/>
       <source>Drawing view line definitions</source>
       <translation type="unfinished">Drawing view line definitions</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftvisual.ui" line="341"/>
+      <location filename="../ui/preferences-draftvisual.ui" line="344"/>
       <source>Dashed line definition</source>
       <translation>점선 정의</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftvisual.ui" line="361"/>
-      <location filename="../ui/preferences-draftvisual.ui" line="404"/>
-      <location filename="../ui/preferences-draftvisual.ui" line="447"/>
+      <location filename="../ui/preferences-draftvisual.ui" line="364"/>
+      <location filename="../ui/preferences-draftvisual.ui" line="407"/>
+      <location filename="../ui/preferences-draftvisual.ui" line="450"/>
       <source>An SVG linestyle definition</source>
       <translation>SVG 라인 스타일 정의</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftvisual.ui" line="384"/>
+      <location filename="../ui/preferences-draftvisual.ui" line="387"/>
       <source>Dashdot line definition</source>
       <translation>대시도트 선 정의</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftvisual.ui" line="427"/>
+      <location filename="../ui/preferences-draftvisual.ui" line="430"/>
       <source>Dotted line definition</source>
       <translation>점선 정의</translation>
     </message>
@@ -1690,7 +1695,7 @@ such as "Arial:Bold"</source>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="352"/>
       <source>Tick-2</source>
-      <translation type="unfinished">Tick-2</translation>
+      <translation>확인-2</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="364"/>
@@ -1769,6 +1774,11 @@ such as "Arial:Bold"</source>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="580"/>
+      <source>Font files (*.ttf *.otf *.pfb)</source>
+      <translation type="unfinished">Font files (*.ttf *.otf *.pfb)</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-drafttexts.ui" line="583"/>
       <source>Select a font file</source>
       <translation>글꼴 파일을 선택</translation>
     </message>
@@ -2803,21 +2813,21 @@ DXF R12 이후 템플릿 에서는 실패할 수도 있습니다.</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="557"/>
-      <location filename="../../WorkingPlane.py" line="830"/>
+      <location filename="../../WorkingPlane.py" line="1369"/>
       <location filename="../../draftguitools/gui_selectplane.py" line="374"/>
       <source>Top</source>
       <translation>평면</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="559"/>
-      <location filename="../../WorkingPlane.py" line="841"/>
+      <location filename="../../WorkingPlane.py" line="1380"/>
       <location filename="../../draftguitools/gui_selectplane.py" line="386"/>
       <source>Front</source>
       <translation>정면</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="561"/>
-      <location filename="../../WorkingPlane.py" line="852"/>
+      <location filename="../../WorkingPlane.py" line="1391"/>
       <location filename="../../draftguitools/gui_selectplane.py" line="398"/>
       <source>Side</source>
       <translation type="unfinished">Side</translation>
@@ -3249,14 +3259,14 @@ Try moving the DWG file to a directory path without spaces and non-english chara
 or try saving to a lower DWG version.</translation>
     </message>
     <message>
-      <location filename="../../WorkingPlane.py" line="722"/>
+      <location filename="../../WorkingPlane.py" line="1261"/>
       <location filename="../../draftmake/make_sketch.py" line="126"/>
       <location filename="../../draftmake/make_sketch.py" line="138"/>
       <source>All Shapes must be coplanar</source>
       <translation type="unfinished">All Shapes must be coplanar</translation>
     </message>
     <message>
-      <location filename="../../WorkingPlane.py" line="730"/>
+      <location filename="../../WorkingPlane.py" line="1269"/>
       <source>Selected Shapes must define a plane</source>
       <translation type="unfinished">Selected Shapes must define a plane</translation>
     </message>
@@ -4682,22 +4692,27 @@ The final angle will be the base angle plus this amount.</translation>
       <translation type="unfinished">Symmetry parameter:</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/shapestring.py" line="114"/>
-      <source>added 'Justification', 'JustificationReference', 'KeepLeftMargin', 'ScaleToSize' and 'Fuse' properties</source>
-      <translation type="unfinished">added 'Justification', 'JustificationReference', 'KeepLeftMargin', 'ScaleToSize' and 'Fuse' properties</translation>
+      <location filename="../../draftobjects/shapestring.py" line="119"/>
+      <source>added 'Fuse', 'Justification', 'JustificationReference', 'KeepLeftMargin', 'ObliqueAngle' and 'ScaleToSize'  properties</source>
+      <translation type="unfinished">added 'Fuse', 'Justification', 'JustificationReference', 'KeepLeftMargin', 'ObliqueAngle' and 'ScaleToSize'  properties</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/shapestring.py" line="116"/>
+      <location filename="../../draftobjects/shapestring.py" line="121"/>
       <source>changed 'Tracking' property type</source>
       <translation type="unfinished">changed 'Tracking' property type</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/shapestring.py" line="168"/>
+      <location filename="../../draftobjects/shapestring.py" line="173"/>
+      <source>ShapeString: oblique angle must be in the -80 to +80 degree range</source>
+      <translation type="unfinished">ShapeString: oblique angle must be in the -80 to +80 degree range</translation>
+    </message>
+    <message>
+      <location filename="../../draftobjects/shapestring.py" line="185"/>
       <source>ShapeString: string has no wires</source>
       <translation type="unfinished">ShapeString: string has no wires</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/shapestring.py" line="205"/>
+      <location filename="../../draftobjects/shapestring.py" line="219"/>
       <source>ShapeString: face creation failed for one character</source>
       <translation type="unfinished">ShapeString: face creation failed for one character</translation>
     </message>
@@ -7029,52 +7044,57 @@ It is a list of strings; each element in the list will be displayed in its own l
 It is a list of strings; each element in the list will be displayed in its own line.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/shapestring.py" line="55"/>
+      <location filename="../../draftobjects/shapestring.py" line="56"/>
       <source>Text string</source>
       <translation type="unfinished">Text string</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/shapestring.py" line="59"/>
+      <location filename="../../draftobjects/shapestring.py" line="60"/>
       <source>Font file name</source>
       <translation type="unfinished">Font file name</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/shapestring.py" line="63"/>
+      <location filename="../../draftobjects/shapestring.py" line="64"/>
       <source>Height of text</source>
       <translation type="unfinished">Height of text</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/shapestring.py" line="67"/>
+      <location filename="../../draftobjects/shapestring.py" line="68"/>
       <source>Horizontal and vertical alignment</source>
       <translation type="unfinished">Horizontal and vertical alignment</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/shapestring.py" line="75"/>
+      <location filename="../../draftobjects/shapestring.py" line="76"/>
       <source>Height reference used for justification</source>
       <translation type="unfinished">Height reference used for justification</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/shapestring.py" line="81"/>
+      <location filename="../../draftobjects/shapestring.py" line="82"/>
       <source>Keep left margin and leading white space when justification is left</source>
       <translation type="unfinished">Keep left margin and leading white space when justification is left</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/shapestring.py" line="85"/>
+      <location filename="../../draftobjects/shapestring.py" line="86"/>
       <source>Scale to ensure cap height is equal to size</source>
       <translation type="unfinished">Scale to ensure cap height is equal to size</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/shapestring.py" line="89"/>
+      <location filename="../../draftobjects/shapestring.py" line="90"/>
       <source>Inter-character spacing</source>
       <translation type="unfinished">Inter-character spacing</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/shapestring.py" line="93"/>
+      <location filename="../../draftobjects/shapestring.py" line="94"/>
+      <source>Oblique (slant) angle</source>
+      <translation type="unfinished">Oblique (slant) angle</translation>
+    </message>
+    <message>
+      <location filename="../../draftobjects/shapestring.py" line="98"/>
       <source>Fill letters with faces</source>
       <translation type="unfinished">Fill letters with faces</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/shapestring.py" line="97"/>
+      <location filename="../../draftobjects/shapestring.py" line="102"/>
       <source>Fuse faces if faces overlap, usually not required (can be very slow)</source>
       <translation type="unfinished">Fuse faces if faces overlap, usually not required (can be very slow)</translation>
     </message>

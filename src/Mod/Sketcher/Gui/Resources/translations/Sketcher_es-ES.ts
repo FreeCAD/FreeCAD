@@ -1780,7 +1780,7 @@ restricciones inválidas, geometrías degeneradas, etc.</translation>
     <message>
       <location filename="../../CommandConstraints.cpp" line="1808"/>
       <source>Add arc angle constraint</source>
-      <translation type="unfinished">Add arc angle constraint</translation>
+      <translation>Añadir restricción de ángulo de arco</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="1831"/>
@@ -2278,59 +2278,59 @@ restricciones inválidas, geometrías degeneradas, etc.</translation>
       <translation>Error de autorestricción: croquis sin solución después de aplicar restricciones de igualdad.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="2244"/>
+      <location filename="../../../App/SketchObject.cpp" line="2263"/>
       <source>Unable to guess intersection of curves. Try adding a coincident constraint between the vertices of the curves you are intending to fillet.</source>
       <translation>No se puede adivinar la intersección de curvas. Intente agregar una restricción coincidente entre los vértices de las curvas que pretende redondear.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6427"/>
-      <location filename="../../../App/SketchObject.cpp" line="6635"/>
+      <location filename="../../../App/SketchObject.cpp" line="6446"/>
+      <location filename="../../../App/SketchObject.cpp" line="6654"/>
       <source>BSpline Geometry Index (GeoID) is out of bounds.</source>
       <translation>Índice de geometría BSpline (GeoID) está fuera de restricciones.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6432"/>
+      <location filename="../../../App/SketchObject.cpp" line="6451"/>
       <source>You are requesting no change in knot multiplicity.</source>
       <translation>Usted esta solicitando no cambio en multiplicidad de nudo.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6438"/>
-      <location filename="../../../App/SketchObject.cpp" line="6645"/>
+      <location filename="../../../App/SketchObject.cpp" line="6457"/>
+      <location filename="../../../App/SketchObject.cpp" line="6664"/>
       <source>The Geometry Index (GeoId) provided is not a B-spline curve.</source>
       <translation>El índice de geometría (GeoID) proporcionado no es una curva B-spline.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6447"/>
+      <location filename="../../../App/SketchObject.cpp" line="6466"/>
       <source>The knot index is out of bounds. Note that in accordance with OCC notation, the first knot has index 1 and not zero.</source>
       <translation>El índice de nudo es fuera de los limites. Note que según en concordancia con notación de la OCC, el primer nudo tiene índice 1 y no 0.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6458"/>
+      <location filename="../../../App/SketchObject.cpp" line="6477"/>
       <source>The multiplicity cannot be increased beyond the degree of the B-spline.</source>
       <translation>La multiplicidad no puede incrementarse más allá del grado de la B-spline.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6466"/>
+      <location filename="../../../App/SketchObject.cpp" line="6485"/>
       <source>The multiplicity cannot be decreased beyond zero.</source>
       <translation>La multiplicidad no puede ser disminuida más allá de cero.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6480"/>
+      <location filename="../../../App/SketchObject.cpp" line="6499"/>
       <source>OCC is unable to decrease the multiplicity within the maximum tolerance.</source>
       <translation>OCC es incapaz de disminuir la multiplicidad dentro de la tolerancia máxima.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6639"/>
+      <location filename="../../../App/SketchObject.cpp" line="6658"/>
       <source>Knot cannot have zero multiplicity.</source>
       <translation>El nodo no puede tener una multiplicidad cero.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6656"/>
+      <location filename="../../../App/SketchObject.cpp" line="6675"/>
       <source>Knot multiplicity cannot be higher than the degree of the BSpline.</source>
       <translation>La multiplicidad del nodo no puede ser mayor que el grado de la BSpline.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6662"/>
+      <location filename="../../../App/SketchObject.cpp" line="6681"/>
       <source>Knot cannot be inserted outside the BSpline parameter range.</source>
       <translation>El nodo no puede ser insertado fuera del rango de parámetros de la B-Spline.</translation>
     </message>
@@ -6290,7 +6290,7 @@ El espaciado de la cuadrícula cambia si es menor que este número de píxeles.<
       <translation>El croquis contiene restricciones parcialmente redundantes!</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="9089"/>
+      <location filename="../../../App/SketchObject.cpp" line="9108"/>
       <source>Parabolas were migrated. Migrated files won't open in previous versions of FreeCAD!!
 </source>
       <translation>Parabolas ha sido migrado. Los archivos migrados no se abrirán en versiones anteriores de FreeCAD!!

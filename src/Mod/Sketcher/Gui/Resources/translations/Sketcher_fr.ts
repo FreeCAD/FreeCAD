@@ -403,7 +403,7 @@
     <message>
       <location filename="../../CommandConstraints.cpp" line="3372"/>
       <source>Constrain block</source>
-      <translation>Contraindre un blocage</translation>
+      <translation>Contrainte de blocage</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="3373"/>
@@ -1217,7 +1217,7 @@ as mirroring reference.</source>
     <message>
       <location filename="../../Command.cpp" line="844"/>
       <source>Wrong selection</source>
-      <translation>Sélection incorrecte</translation>
+      <translation>Mauvaise sélection</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="845"/>
@@ -1777,7 +1777,7 @@ les contraintes invalides, les géométries dégénérées, etc.</translation>
     <message>
       <location filename="../../CommandConstraints.cpp" line="1808"/>
       <source>Add arc angle constraint</source>
-      <translation type="unfinished">Add arc angle constraint</translation>
+      <translation>Ajouter une contrainte d'angle d'arc</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="1831"/>
@@ -2275,59 +2275,59 @@ les contraintes invalides, les géométries dégénérées, etc.</translation>
       <translation>Erreur de contrainte automatique : esquisse insoluble après l'application des contraintes d'égalité.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="2244"/>
+      <location filename="../../../App/SketchObject.cpp" line="2263"/>
       <source>Unable to guess intersection of curves. Try adding a coincident constraint between the vertices of the curves you are intending to fillet.</source>
       <translation>L'intersection des courbes n'a pas pu être trouvée. Essayez d’ajouter une contrainte de coïncidence entre les sommets des courbes sur lesquels vous souhaitez appliquer un congé.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6427"/>
-      <location filename="../../../App/SketchObject.cpp" line="6635"/>
+      <location filename="../../../App/SketchObject.cpp" line="6446"/>
+      <location filename="../../../App/SketchObject.cpp" line="6654"/>
       <source>BSpline Geometry Index (GeoID) is out of bounds.</source>
       <translation>L'Index de la géométrie de la B-spline (GeoID) est hors limites.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6432"/>
+      <location filename="../../../App/SketchObject.cpp" line="6451"/>
       <source>You are requesting no change in knot multiplicity.</source>
       <translation>Vous ne demandez aucun changement dans la multiplicité du nœud.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6438"/>
-      <location filename="../../../App/SketchObject.cpp" line="6645"/>
+      <location filename="../../../App/SketchObject.cpp" line="6457"/>
+      <location filename="../../../App/SketchObject.cpp" line="6664"/>
       <source>The Geometry Index (GeoId) provided is not a B-spline curve.</source>
       <translation>L’Index de la géométrie (GeoID) fourni n’est pas une courbe B-spline.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6447"/>
+      <location filename="../../../App/SketchObject.cpp" line="6466"/>
       <source>The knot index is out of bounds. Note that in accordance with OCC notation, the first knot has index 1 and not zero.</source>
       <translation>L’index du nœud est hors limites. Notez que, conformément à la notation OCC, le premier nœud a un indice de 1 et non pas de zéro.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6458"/>
+      <location filename="../../../App/SketchObject.cpp" line="6477"/>
       <source>The multiplicity cannot be increased beyond the degree of the B-spline.</source>
       <translation>La multiplicité ne peut pas être augmentée au-delà du degré de la B-spline.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6466"/>
+      <location filename="../../../App/SketchObject.cpp" line="6485"/>
       <source>The multiplicity cannot be decreased beyond zero.</source>
       <translation>La multiplicité ne peut pas être diminuée au-delà de zéro.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6480"/>
+      <location filename="../../../App/SketchObject.cpp" line="6499"/>
       <source>OCC is unable to decrease the multiplicity within the maximum tolerance.</source>
       <translation>OCC ne parvient pas à diminuer la multiplicité selon la tolérance maximale.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6639"/>
+      <location filename="../../../App/SketchObject.cpp" line="6658"/>
       <source>Knot cannot have zero multiplicity.</source>
       <translation>Le nœud ne peut pas avoir zéro de multiplicité.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6656"/>
+      <location filename="../../../App/SketchObject.cpp" line="6675"/>
       <source>Knot multiplicity cannot be higher than the degree of the BSpline.</source>
       <translation>La multiplicité du nœud ne peut pas être supérieure au degré de la courbe BSpline.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6662"/>
+      <location filename="../../../App/SketchObject.cpp" line="6681"/>
       <source>Knot cannot be inserted outside the BSpline parameter range.</source>
       <translation>Le nœud ne peut pas être inséré en dehors de la plage de paramètres de la B-spline.</translation>
     </message>
@@ -2551,7 +2551,7 @@ les contraintes invalides, les géométries dégénérées, etc.</translation>
       <location filename="../../CommandSketcherVirtualSpace.cpp" line="130"/>
       <location filename="../../CommandSketcherVirtualSpace.cpp" line="157"/>
       <source>Wrong selection</source>
-      <translation>Sélection invalide</translation>
+      <translation>Sélection incorrecte</translation>
     </message>
     <message>
       <location filename="../../CommandAlterGeometry.cpp" line="146"/>
@@ -4880,7 +4880,7 @@ Toutefois, aucune contrainte liée aux extrémités n'a été trouvée.</transla
     <message>
       <location filename="../../TaskSketcherElements.ui" line="81"/>
       <source>Settings</source>
-      <translation>Réglages</translation>
+      <translation>Paramètres</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="1590"/>
@@ -4894,7 +4894,7 @@ Toutefois, aucune contrainte liée aux extrémités n'a été trouvée.</transla
       <location filename="../../TaskSketcherElements.cpp" line="1646"/>
       <location filename="../../TaskSketcherElements.cpp" line="1652"/>
       <source>Construction</source>
-      <translation>Construction</translation>
+      <translation>Construction </translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="995"/>
@@ -5417,7 +5417,7 @@ Cela est fait en analysant les géométries et les contraintes de l'esquisse.</t
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="1629"/>
       <source>Copy</source>
-      <translation>Copie</translation>
+      <translation>Copier</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="1637"/>
@@ -6174,7 +6174,7 @@ L'algorithme Eigen Sparse QR est optimisé pour les matrices peu denses, génér
       <location filename="../../SketcherSettingsGrid.ui" line="83"/>
       <source>Distance between two subsequent grid lines.
 If 'Grid Auto Spacing' is enabled, will be used as base value.</source>
-      <translation>Distance entre deux lignes de grille successives.
+      <translation>Distance entre deux lignes successives de la grille.
 Si l'option "Espacement automatique de la grille" est activée, elle sera utilisée comme valeur de base.</translation>
     </message>
     <message>
@@ -6202,7 +6202,7 @@ L'espacement de la grille est modifié s'il devient inférieur à ce nombre de p
     <message>
       <location filename="../../SketcherSettingsGrid.ui" line="269"/>
       <source>Major grid lines</source>
-      <translation>Lignes pricipales de la grille</translation>
+      <translation>Lignes principales de la grille</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsGrid.ui" line="281"/>
@@ -6218,18 +6218,18 @@ L'espacement de la grille est modifié s'il devient inférieur à ce nombre de p
       <location filename="../../SketcherSettingsGrid.ui" line="175"/>
       <location filename="../../SketcherSettingsGrid.ui" line="313"/>
       <source>Line pattern</source>
-      <translation>Motif de ligne</translation>
+      <translation>Motif des lignes</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsGrid.ui" line="185"/>
       <source>Line pattern used for grid lines.</source>
-      <translation>Motif de ligne utilisé pour la grille.</translation>
+      <translation>Motif des lignes utilisé pour la grille.</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsGrid.ui" line="195"/>
       <location filename="../../SketcherSettingsGrid.ui" line="333"/>
       <source>Line width</source>
-      <translation>Largeur de ligne</translation>
+      <translation>Largeur des lignes</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsGrid.ui" line="205"/>
@@ -6240,12 +6240,12 @@ L'espacement de la grille est modifié s'il devient inférieur à ce nombre de p
       <location filename="../../SketcherSettingsGrid.ui" line="230"/>
       <location filename="../../SketcherSettingsGrid.ui" line="365"/>
       <source>Line color</source>
-      <translation>Couleur de ligne</translation>
+      <translation>Couleur des lignes</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsGrid.ui" line="323"/>
       <source>Line pattern used for grid division.</source>
-      <translation>Motif de ligne utilisé pour la division de la grille.</translation>
+      <translation>Motif des lignes utilisé pour la division de la grille.</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsGrid.ui" line="343"/>
@@ -6273,7 +6273,7 @@ L'espacement de la grille est modifié s'il devient inférieur à ce nombre de p
     <message>
       <location filename="../../Command.cpp" line="1124"/>
       <source>Distance between two subsequent grid lines.</source>
-      <translation>Distance entre 2 lignes consécutives de la grille.</translation>
+      <translation>Distance entre deux lignes consécutives de la grille.</translation>
     </message>
   </context>
   <context>
@@ -6289,7 +6289,7 @@ L'espacement de la grille est modifié s'il devient inférieur à ce nombre de p
       <translation>L'esquisse a des contraintes partiellement redondantes !</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="9089"/>
+      <location filename="../../../App/SketchObject.cpp" line="9108"/>
       <source>Parabolas were migrated. Migrated files won't open in previous versions of FreeCAD!!
 </source>
       <translation>Les paraboles ont été migrées. Les fichiers migrés ne pourront pas être ouverts par les versions précédentes de FreeCAD !!
@@ -6670,9 +6670,9 @@ Les points doivent être placés à moins d'un cinquième de l'espacement de la 
       <source>Constrain contextually based on your selection.
 Depending on your selection you might have several constraints available. You can cycle through them using M key.
 Left clicking on empty space will validate the current constraint. Right clicking or pressing Esc will cancel.</source>
-      <translation type="unfinished">Constrain contextually based on your selection.
-Depending on your selection you might have several constraints available. You can cycle through them using M key.
-Left clicking on empty space will validate the current constraint. Right clicking or pressing Esc will cancel.</translation>
+      <translation>Contrainte contextuellement basée sur votre sélection.
+Selon celle-ci, vous pourriez avoir plusieurs contraintes disponibles. Vous pouvez les parcourir à l'aide de la touche M.
+Un clic gauche dans un espace vide validera la contrainte en cours. Cliquez avec le bouton droit ou appuyez sur Échap pour annuler.</translation>
     </message>
   </context>
   <context>

@@ -148,7 +148,7 @@
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="382"/>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="392"/>
       <source>The color of lines and arrows</source>
-      <translation>La couleur des lignes et flèches</translation>
+      <translation>La couleur des lignes et des flèches</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="385"/>
@@ -214,7 +214,7 @@
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="425"/>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="435"/>
       <source>If it is checked it will show the unit next to the dimension value</source>
-      <translation>Si cette case est cochée, l'unité sera indiquée à côté de la valeur de la dimension</translation>
+      <translation>Si cette case est cochée, l'unité sera indiquée à côté de la valeur de la dimension.</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="428"/>
@@ -258,7 +258,7 @@
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="262"/>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="272"/>
       <source>If it is checked it will display the dimension line</source>
-      <translation>Si cette case est cochée, la ligne des dimensions sera affichée</translation>
+      <translation>Si cette case est cochée, la ligne des dimensions sera affichée.</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="291"/>
@@ -423,7 +423,7 @@ Changer la direction de l’axe lui-même dans l’éditeur de propriété.</tra
       <location filename="../ui/TaskPanel_CircularArray.ui" line="243"/>
       <source>If checked, the resulting objects in the array will be fused if they touch each other.
 This only works if "Link array" is off.</source>
-      <translation>Si coché, les objets résultants dans le réseau seront fusionnés s’ils se touchent.
+      <translation>Si cette case est cochée, les objets résultants dans le réseau seront fusionnés s’ils se touchent.
 Ceci ne fonctionne que si "Réseau lié" est désactivé.</translation>
     </message>
     <message>
@@ -435,8 +435,8 @@ Ceci ne fonctionne que si "Réseau lié" est désactivé.</translation>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="254"/>
       <source>If checked, the resulting object will be a "Link array" instead of a regular array.
 A Link array is more efficient when creating multiple copies, but it cannot be fused together.</source>
-      <translation>Si coché, l'objet résultant sera un "Réseau lié" au lieu d'un réseau normal.
-Un réseau lié est plus efficace lors de la création de plusieurs copies, mais il ne peut pas être fusionné.</translation>
+      <translation>Si cette case est cochée, l'objet résultant sera un "Réseau lié" au lieu d'un réseau normal.
+Un réseau lié est plus efficace lors de la création de plusieurs copies mais il ne peut pas être fusionné.</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="258"/>
@@ -555,7 +555,7 @@ Les valeurs négatives se traduiront par des copies produites dans la direction 
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="403"/>
       <source>If checked, the resulting objects in the array will be fused if they touch each other.
 This only works if "Link array" is off.</source>
-      <translation>Si coché, les objets résultants dans le réseau seront fusionnés s’ils se touchent.
+      <translation>Si cette case est cochée, les objets résultants dans le réseau seront fusionnés s’ils se touchent.
 Ceci ne fonctionne que si "Réseau lié" est désactivé.</translation>
     </message>
     <message>
@@ -567,8 +567,8 @@ Ceci ne fonctionne que si "Réseau lié" est désactivé.</translation>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="414"/>
       <source>If checked, the resulting object will be a "Link array" instead of a regular array.
 A Link array is more efficient when creating multiple copies, but it cannot be fused together.</source>
-      <translation>Si coché, l'objet résultant sera un "Réseau lié" au lieu d'un réseau normal.
-Un réseau lié est plus efficace lors de la création de plusieurs copies, mais il ne peut pas être fusionné.</translation>
+      <translation>Si la case est cochée, l'objet résultant sera un "Réseau lié" au lieu d'un réseau normal.
+Un réseau lié est plus efficace lors de la création de plusieurs copies mais il ne peut pas être fusionné.</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="418"/>
@@ -652,7 +652,7 @@ Changer la direction de l’axe lui-même dans l’éditeur de propriété.</tra
       <location filename="../ui/TaskPanel_PolarArray.ui" line="205"/>
       <source>If checked, the resulting objects in the array will be fused if they touch each other.
 This only works if "Link array" is off.</source>
-      <translation>Si coché, les objets résultants dans le réseau seront fusionnés s’ils se touchent.
+      <translation>Si cette case est cochée, les objets résultants dans le réseau seront fusionnés s’ils se touchent.
 Ceci ne fonctionne que si "Réseau lié" est désactivé.</translation>
     </message>
     <message>
@@ -664,7 +664,7 @@ Ceci ne fonctionne que si "Réseau lié" est désactivé.</translation>
       <location filename="../ui/TaskPanel_PolarArray.ui" line="216"/>
       <source>If checked, the resulting object will be a "Link array" instead of a regular array.
 A Link array is more efficient when creating multiple copies, but it cannot be fused together.</source>
-      <translation>Si coché, l'objet résultant sera un "Réseau lié" au lieu d'un réseau normal.
+      <translation>Si cette case est cochée, l'objet résultant sera un "Réseau lié" au lieu d'un réseau normal.
 Un réseau lié est plus efficace lors de la création de plusieurs copies mais il ne peut pas être fusionné.</translation>
     </message>
     <message>
@@ -736,6 +736,11 @@ Un réseau lié est plus efficace lors de la création de plusieurs copies mais 
       <location filename="../ui/TaskShapeString.ui" line="176"/>
       <source>Font file</source>
       <translation>Fichier de police</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskShapeString.ui" line="183"/>
+      <source>Font files (*.ttf *.otf *.pfb)</source>
+      <translation type="unfinished">Font files (*.ttf *.otf *.pfb)</translation>
     </message>
   </context>
   <context>
@@ -824,8 +829,7 @@ des boutons ci-dessus</translation>
       <source>If this is selected, the working plane will be
 centered on the current view when pressing one
 of the buttons above</source>
-      <translation>Si ceci est sélectionné, le plan de travail sera
-centré sur la vue en cours en appuyant sur un
+      <translation>Si ceci est sélectionné, le plan de travail sera centré sur la vue en cours en appuyant sur un
 des boutons ci-dessus</translation>
     </message>
     <message>
@@ -894,9 +898,8 @@ sera déplacé au centre de la vue</translation>
       <source>The distance at which a point can be snapped to
 when approaching the mouse. You can also change this
 value by using the [ and ] keys while drawing</source>
-      <translation>La distance à laquelle un point peut être aimanté 
-en approchant la souris. Vous pouvez également modifier cette valeur
-en utilisant les touches [ et ] lors du dessin</translation>
+      <translation>Distance à laquelle un point peut être aimanté lorsqu'on approche la souris.
+Vous pouvez également modifier cette valeur en utilisant les touches [ et ] pendant que vous dessinez.</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="223"/>
@@ -1142,7 +1145,7 @@ en utilisant les touches [ et ] lors du dessin</translation>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="314"/>
       <source>Tick</source>
-      <translation>Oblique </translation>
+      <translation>Cocher</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="319"/>
@@ -1295,7 +1298,8 @@ en utilisant les touches [ et ] lors du dessin</translation>
     <message>
       <location filename="../ui/preferences-draft.ui" line="120"/>
       <source>The number of decimals in internal coordinates operations (for ex. 3 = 0.001). Values between 6 and 8 are usually considered the best trade-off among FreeCAD users.</source>
-      <translation>Nombre de décimales pour les opérations internes sur les coordonnées (par ex. 3 = 0,001). Les valeurs entre 6 et 8 sont habituellement considérée comme le meilleurs compromis par les utilisateurs de FreeCAD.</translation>
+      <translation>Nombre de décimales pour les opérations internes sur les coordonnées (par ex. 3 = 0,001).
+Les valeurs entre 6 et 8 sont habituellement considérée comme le meilleurs compromis par les utilisateurs de FreeCAD.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="143"/>
@@ -1307,7 +1311,8 @@ en utilisant les touches [ et ] lors du dessin</translation>
       <source>This is the value used by functions that use a tolerance.
 Values with differences below this value will be treated as same. This value will be obsoleted soon so the precision level above controls both.</source>
       <translation>Ceci est la valeur utilisée par les fonction qui utilisent une tolérance.
-Les valeurs ayant des différences inférieures à cette valeur sont considérées comme identiques. Cette valeur sera bientôt rendue obsolète afin que le niveau de précision ci-dessus les contrôle toutes deux.</translation>
+Les valeurs ayant des différences inférieures à cette valeur sont considérées comme identiques.
+Cette valeur sera bientôt rendue obsolète afin que le niveau de précision ci-dessus les contrôle toutes deux.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="194"/>
@@ -1328,8 +1333,8 @@ Les valeurs ayant des différences inférieures à cette valeur sont considéré
       <location filename="../ui/preferences-draft.ui" line="230"/>
       <source>When drawing lines, set focus on Length instead of X coordinate.
 This allows to point the direction and type the distance.</source>
-      <translation>Lors du dessin de lignes, définir l’accent sur la Longueur plutôt que sur les coordonnées X.
-Ceci permet de pointer la direction et d’entrer la distance.</translation>
+      <translation>Lorsque vous dessinez des lignes, mettez l'accent sur la longueur plutôt que sur la coordonnée X.
+Cela permet d'indiquer la direction et de saisir la distance.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="234"/>
@@ -1351,7 +1356,8 @@ Si cette option est cochée, les objets de base seront sélectionnés à la plac
     <message>
       <location filename="../ui/preferences-draft.ui" line="264"/>
       <source>If this option is set, when creating Draft objects on top of an existing face of another object, the "Support" property of the Draft object will be set to the base object. This was the standard behaviour before FreeCAD 0.19</source>
-      <translation>Si cette option est définie, lors de la création d'objets Draft sur une face existante d'un autre objet, la propriété "Support" de l'objet Draft sera définie selon l'objet de base. C'est la comportement standard avant FreeCAD 0.19</translation>
+      <translation>Si cette option est activée, lors de la création d'objets Draft sur une face existante d'un autre objet,
+la propriété "Support" de l'objet Draft sera définie sur l'objet de base. C'était le comportement standard avant FreeCAD 0.19.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="267"/>
@@ -1362,7 +1368,8 @@ Si cette option est cochée, les objets de base seront sélectionnés à la plac
       <location filename="../ui/preferences-draft.ui" line="280"/>
       <source>If this is checked, objects will appear as filled by default.
 Otherwise, they will appear as wireframe</source>
-      <translation>Si cette case est cochée, les objets apparaîtront comme rempli par défaut. Dans le cas contraire, ils apparaîtront comme filaire</translation>
+      <translation>Si cette case est cochée, les objets apparaîtront comme rempli par défaut.
+Dans le cas contraire, ils apparaîtront comme filaire.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="284"/>
@@ -1374,7 +1381,7 @@ Otherwise, they will appear as wireframe</source>
       <source>If this is checked, copy mode will be kept across command,
 otherwise commands will always start in no-copy mode</source>
       <translation>Si cette case est cochée, le mode copie sera conservé après la commande,
-sinon les commandes démarreront toujours en mode sans copie</translation>
+sinon les commandes démarreront toujours en mode sans copie.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="304"/>
@@ -1386,7 +1393,8 @@ sinon les commandes démarreront toujours en mode sans copie</translation>
       <source>Force Draft Tools to create Part primitives instead of Draft objects.
 Note that this is not fully supported, and many object will be not editable with Draft Modifiers.</source>
       <translation>Forcer les outils Draft à créer des primitives Part au lieu d'objets Draft.
-Notez que ce n'est pas entièrement supporté et que de nombreux objets ne seront pas modifiables avec les modificateurs de Draft.</translation>
+Notez que ce n'est pas entièrement supporté et que de nombreux objets
+ne seront pas modifiables avec les modificateurs de Draft.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="324"/>
@@ -1396,7 +1404,7 @@ Notez que ce n'est pas entièrement supporté et que de nombreux objets ne seron
     <message>
       <location filename="../ui/preferences-draft.ui" line="341"/>
       <source>Prefix labels of Clones with:</source>
-      <translation>Préfixer les étiquettes des Clones avec :</translation>
+      <translation>Préfixer les étiquettes des clones avec :</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="372"/>
@@ -1476,7 +1484,7 @@ Notez que ce n'est pas entièrement supporté et que de nombreux objets ne seron
     <message>
       <location filename="../ui/preferences-draftvisual.ui" line="140"/>
       <source>If checked, a widget indicating the current working plane orientation appears during drawing operations</source>
-      <translation>Si coché, un widget indicant l’orientation actuelle du plan de travail apparaît au cours des opérations de dessin</translation>
+      <translation>Si la case est cochée, un widget indicant l’orientation en cours du plan de travail apparaît au cours des opérations de dessin.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftvisual.ui" line="143"/>
@@ -1486,77 +1494,77 @@ Notez que ce n'est pas entièrement supporté et que de nombreux objets ne seron
     <message>
       <location filename="../ui/preferences-draftvisual.ui" line="160"/>
       <source>Alternate SVG patterns location</source>
-      <translation>Emplacement des motifs SVG alternatifs</translation>
+      <translation>Emplacement d'autres motifs SVG</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftvisual.ui" line="186"/>
+      <location filename="../ui/preferences-draftvisual.ui" line="189"/>
       <source>Here you can specify a directory with custom SVG files containing &lt;pattern&gt; definitions to be added to the standard patterns</source>
       <translation>Ici, vous pouvez indiquer un répertoire avec des fichiers SVG personnalisés contenant des définitions de &lt;pattern&gt; à ajouter aux motifs standards</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftvisual.ui" line="203"/>
+      <location filename="../ui/preferences-draftvisual.ui" line="206"/>
       <source>SVG pattern resolution</source>
       <translation>Résolution des motifs SVG</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftvisual.ui" line="223"/>
+      <location filename="../ui/preferences-draftvisual.ui" line="226"/>
       <source>The resolution to draw the patterns in. Default value is 128. Higher values give better resolutions, lower values make drawing faster</source>
       <translation>La résolution pour dessiner les patrons. La valeur par défaut est 128. Des valeurs plus élevées donnent de meilleures résolutions, des valeurs plus basses rendent le dessin plus rapide</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftvisual.ui" line="246"/>
+      <location filename="../ui/preferences-draftvisual.ui" line="249"/>
       <source>SVG pattern default size</source>
       <translation>Taille par défaut des motifs SVG</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftvisual.ui" line="266"/>
+      <location filename="../ui/preferences-draftvisual.ui" line="269"/>
       <source>The default size for SVG patterns</source>
       <translation>Taille par défaut des motifs SVG</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftvisual.ui" line="292"/>
+      <location filename="../ui/preferences-draftvisual.ui" line="295"/>
       <source>Check this if you want to preserve colors of faces while doing downgrade and upgrade (splitFaces and makeShell only)</source>
       <translation>Cocher cette case si vous souhaitez préserver les couleurs des faces lorsque vous désagrégez et agrégez (uniquement splitFaces et makeShell)</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftvisual.ui" line="295"/>
+      <location filename="../ui/preferences-draftvisual.ui" line="298"/>
       <source>Preserve colors of faces during downgrade/upgrade</source>
       <translation>Préserver les couleurs des faces lorsque vous désagrégez/agrégez</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftvisual.ui" line="312"/>
+      <location filename="../ui/preferences-draftvisual.ui" line="315"/>
       <source>Check this if you want the face names to derive from the originating object name and vice versa while doing downgrade/upgrade (splitFaces and makeShell only)</source>
       <translation>Cocher cette case si vous voulez que les noms des faces dérivent du nom de l'objet d'origine et vice versa lorsque vous désagrégez et agrégez (uniquement splitFaces et makeShell)</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftvisual.ui" line="315"/>
+      <location filename="../ui/preferences-draftvisual.ui" line="318"/>
       <source>Preserve names of faces during downgrade/upgrade</source>
       <translation>Préserver les noms des faces lorsque vous désagrégez/agrégez</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftvisual.ui" line="333"/>
+      <location filename="../ui/preferences-draftvisual.ui" line="336"/>
       <source>Drawing view line definitions</source>
       <translation>Définitions des lignes de la vue du dessin</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftvisual.ui" line="341"/>
+      <location filename="../ui/preferences-draftvisual.ui" line="344"/>
       <source>Dashed line definition</source>
       <translation>Définition des lignes avec tirets</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftvisual.ui" line="361"/>
-      <location filename="../ui/preferences-draftvisual.ui" line="404"/>
-      <location filename="../ui/preferences-draftvisual.ui" line="447"/>
+      <location filename="../ui/preferences-draftvisual.ui" line="364"/>
+      <location filename="../ui/preferences-draftvisual.ui" line="407"/>
+      <location filename="../ui/preferences-draftvisual.ui" line="450"/>
       <source>An SVG linestyle definition</source>
-      <translation>Une définition de style de ligne SVG</translation>
+      <translation>Définition du style des lignes au format SVG</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftvisual.ui" line="384"/>
+      <location filename="../ui/preferences-draftvisual.ui" line="387"/>
       <source>Dashdot line definition</source>
       <translation>Définition des lignes en point-tirets</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftvisual.ui" line="427"/>
+      <location filename="../ui/preferences-draftvisual.ui" line="430"/>
       <source>Dotted line definition</source>
       <translation>Définition des lignes en pointillés</translation>
     </message>
@@ -1594,7 +1602,7 @@ comme "Arial:Bold"</translation>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="85"/>
       <source>Font size</source>
-      <translation>Taille de la police</translation>
+      <translation>Taille de police</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="98"/>
@@ -1691,7 +1699,7 @@ comme "Arial:Bold"</translation>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="347"/>
       <source>Tick</source>
-      <translation>Cocher</translation>
+      <translation>Oblique </translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="352"/>
@@ -1756,12 +1764,12 @@ comme "Arial:Bold"</translation>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="521"/>
       <source>Feet separator</source>
-      <translation type="unfinished">Feet separator</translation>
+      <translation>Séparateur pour les pieds (unité)</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="541"/>
       <source>Optional string to appear between the feet and inches values in dimensions</source>
-      <translation type="unfinished">Optional string to appear between the feet and inches values in dimensions</translation>
+      <translation>Chaîne optionnelle à afficher entre les valeurs en pieds et en pouces pour les dimensions</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="559"/>
@@ -1775,6 +1783,11 @@ comme "Arial:Bold"</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="580"/>
+      <source>Font files (*.ttf *.otf *.pfb)</source>
+      <translation type="unfinished">Font files (*.ttf *.otf *.pfb)</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-drafttexts.ui" line="583"/>
       <source>Select a font file</source>
       <translation>Sélectionnez un fichier de police</translation>
     </message>
@@ -1957,7 +1970,7 @@ Vous pouvez également le faire manuellement en installant l'atelier "dxf_librar
     <message>
       <location filename="../ui/preferences-dxf.ui" line="156"/>
       <source>If unchecked, texts and mtexts won't be imported</source>
-      <translation>Si non coché, les textes et les mtexts ne seront pas importés</translation>
+      <translation>Si cette case n'est pas cochée, les textes/méta-textes ne seront pas importés.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="159"/>
@@ -1967,7 +1980,7 @@ Vous pouvez également le faire manuellement en installant l'atelier "dxf_librar
     <message>
       <location filename="../ui/preferences-dxf.ui" line="172"/>
       <source>If unchecked, points won't be imported</source>
-      <translation>Si non coché, les points ne seront pas importés</translation>
+      <translation>Si cette case n'est pas cochée, les points ne seront pas importés.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="175"/>
@@ -1977,7 +1990,7 @@ Vous pouvez également le faire manuellement en installant l'atelier "dxf_librar
     <message>
       <location filename="../ui/preferences-dxf.ui" line="188"/>
       <source>If checked, paper space objects will be imported too</source>
-      <translation>Si cette case est cochée, les objets de l'espace papier seront également importés</translation>
+      <translation>Si cette case est cochée, les objets de l'espace papier seront également importés.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="191"/>
@@ -2113,7 +2126,7 @@ au lieu de la taille qu'ils ont dans le document DXF</translation>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="422"/>
       <source>If this is checked, DXF layers will be imported as Draft Layers</source>
-      <translation>Si cette case est cochée, les calques DXF seront importés sous forme de calques</translation>
+      <translation>Si cette case est cochée, les calques DXF seront importés sous forme de calques de Draft.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="425"/>
@@ -2190,12 +2203,12 @@ Ceci peut échouer avec les modèles ultérieurs à DXF R12.</translation>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="35"/>
       <source>Snapping</source>
-      <translation>Accrochage</translation>
+      <translation>Aimantation</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="43"/>
       <source>If this is checked, snapping is activated without the need to press the snap mod key</source>
-      <translation>Si cette case est cochée, l’aimantation est activée sans avoir à presser la touche du mode aimantation</translation>
+      <translation>Si cette case est cochée, l’aimantation est activée sans avoir à presser la touche du mode aimantation.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="46"/>
@@ -2236,12 +2249,12 @@ Ceci peut échouer avec les modèles ultérieurs à DXF R12.</translation>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="118"/>
       <source>Snap mod</source>
-      <translation>Mode d'accrochage</translation>
+      <translation>Mode d'aimantation</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="138"/>
       <source>The snap modifier key</source>
-      <translation>La touche de modification d'accrochage</translation>
+      <translation>La touche de modification d'aimantation</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="173"/>
@@ -2256,17 +2269,17 @@ Ceci peut échouer avec les modèles ultérieurs à DXF R12.</translation>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="228"/>
       <source>If checked, the Snap toolbar will be shown whenever you use snapping</source>
-      <translation>Si coché, la barre d'outils sautillante s'affichera chaque fois que vous utiliserez l'accrochage</translation>
+      <translation>Si cette case est cochée, la barre d'outils d'aimantation s'affichera chaque fois que vous utiliserez l'aimantation.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="231"/>
       <source>Show Draft Snap toolbar</source>
-      <translation>Montrer la barre d'outils d'accrochage</translation>
+      <translation>Montrer la barre d'outils d'aimantation</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="251"/>
       <source>Hide Draft snap toolbar after use</source>
-      <translation>Masquer la barre d'outils d'accrochage après emploi</translation>
+      <translation>Masquer la barre d'outils d'aimantation de Draft après emploi.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="272"/>
@@ -2276,7 +2289,7 @@ Ceci peut échouer avec les modèles ultérieurs à DXF R12.</translation>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="278"/>
       <source>If checked, a grid will appear when drawing</source>
-      <translation>Si cette case est cochée, une grille apparaîtra lors du dessin</translation>
+      <translation>Si cette case est cochée, une grille apparaîtra lors du dessin.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="281"/>
@@ -2286,7 +2299,7 @@ Ceci peut échouer avec les modèles ultérieurs à DXF R12.</translation>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="300"/>
       <source>If checked, the Draft grid will always be visible when the Draft workbench is active. Otherwise only when using a command</source>
-      <translation>Si coché, la grille de Draft s'affichera toujours lorsque l'atelier Draft sera actif. Sinon, uniquement en effectuant une commande</translation>
+      <translation>Si cette case est cochée, la grille de Draft s'affichera toujours lorsque l'atelier Draft sera actif. Sinon, elle ne sera visible que lors de l'utilisation d'une commande.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="303"/>
@@ -2296,7 +2309,7 @@ Ceci peut échouer avec les modèles ultérieurs à DXF R12.</translation>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="319"/>
       <source>If checked, an additional border is displayed around the grid, showing the main square size in the bottom left border</source>
-      <translation>Si coché, une bordure supplémentaire est affichée autour de la grille, montrant la taille du carré principal dans la bordure inférieure gauche</translation>
+      <translation>Si la case est cochée, une bordure supplémentaire est affichée autour de la grille, montrant la taille du carré principal dans la bordure inférieure gauche.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="322"/>
@@ -2306,7 +2319,7 @@ Ceci peut échouer avec les modèles ultérieurs à DXF R12.</translation>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="338"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If checked, the outline of a human figure is displayed at the bottom left corner of the grid. This option is only effective if the BIM workbench is installed and if &amp;quot;Show grid border&amp;quot; option is enabled.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Si coché, le contour d'une figure humaine est affiché en bas à gauche de la grille. Cette option n'est active que si l'atelier BIM est installé et si l'option &amp;quot;Afficher la bordure de la grille&amp;quot; est activée.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Si cette case est cochée, le contour d'une figure humaine est affiché en bas à gauche de la grille. Cette option n'est active que si l'atelier BIM est installé et si l'option &amp;quot;Afficher la bordure de la grille&amp;quot; est activée.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="341"/>
@@ -2471,7 +2484,7 @@ Ceci peut échouer avec les modèles ultérieurs à DXF R12.</translation>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="37"/>
       <source>Relative</source>
-      <translation>Relative</translation>
+      <translation>Relatif</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="59"/>
@@ -2591,7 +2604,7 @@ Ceci peut échouer avec les modèles ultérieurs à DXF R12.</translation>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="586"/>
       <source>Cycle Snap</source>
-      <translation>Fréquence d'aimantation</translation>
+      <translation>Priorité d'aimantation</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="630"/>
@@ -2806,21 +2819,21 @@ Ceci peut échouer avec les modèles ultérieurs à DXF R12.</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="557"/>
-      <location filename="../../WorkingPlane.py" line="830"/>
+      <location filename="../../WorkingPlane.py" line="1369"/>
       <location filename="../../draftguitools/gui_selectplane.py" line="374"/>
       <source>Top</source>
       <translation>Haut </translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="559"/>
-      <location filename="../../WorkingPlane.py" line="841"/>
+      <location filename="../../WorkingPlane.py" line="1380"/>
       <location filename="../../draftguitools/gui_selectplane.py" line="386"/>
       <source>Front</source>
       <translation>Devant</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="561"/>
-      <location filename="../../WorkingPlane.py" line="852"/>
+      <location filename="../../WorkingPlane.py" line="1391"/>
       <location filename="../../draftguitools/gui_selectplane.py" line="398"/>
       <source>Side</source>
       <translation>Côté</translation>
@@ -2951,7 +2964,8 @@ Décocher pour utiliser le système de coordonnées du plan de travail</translat
       <location filename="../../DraftGui.py" line="642"/>
       <source>Check this if the object should appear as filled, otherwise it will appear as wireframe.
 Not available if Draft preference option 'Use Part Primitives' is enabled</source>
-      <translation>Cocher ceci si l'objet doit apparaître comme rempli, sinon il apparaîtra comme filaire. Non disponible si l'option de préférence de Draft "Utiliser les primitives de Part" est activée</translation>
+      <translation>Cocher ceci si l'objet doit apparaître comme rempli, sinon il apparaîtra comme filaire.
+Non disponible si l'option de préférence de Draft "Utiliser les primitives de Part" est activée.</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="644"/>
@@ -2966,12 +2980,12 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</sourc
     <message>
       <location filename="../../DraftGui.py" line="649"/>
       <source>If checked, command will not finish until you press the command button again</source>
-      <translation>Si coché, la commande ne se terminera pas avant que vous appuyez à nouveau sur le bouton de commande</translation>
+      <translation>Si cette case est cochée, la commande ne se terminera pas avant que vous appuyez à nouveau sur le bouton de commande.</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="654"/>
       <source>If checked, an OCC-style offset will be performed instead of the classic offset</source>
-      <translation>Si cette case est cochée, un décalage de type OCC sera effectué au lieu du décalage classique</translation>
+      <translation>Si cette case est cochée, un décalage de type OCC sera effectué au lieu du décalage classique.</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="655"/>
@@ -3026,7 +3040,7 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</sourc
     <message>
       <location filename="../../DraftGui.py" line="671"/>
       <source>If checked, objects will be copied instead of moved. Preferences -&gt; Draft -&gt; Global copy mode to keep this mode in next commands</source>
-      <translation>Coché, les objets seront copiés plutôt que déplacés. Préférences-&gt; Draft -&gt; Paramètres généraux -&gt; Mode de copie globale pour garder ce mode dans les prochaines commandes</translation>
+      <translation>Si cette case est cochée, les objets seront copiés plutôt que déplacés. Préférences-&gt; Draft -&gt; Paramètres généraux -&gt; Mode de copie globale pour garder ce mode dans les prochaines commandes.</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="672"/>
@@ -3036,7 +3050,7 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</sourc
     <message>
       <location filename="../../DraftGui.py" line="673"/>
       <source>If checked, subelements will be modified instead of entire objects</source>
-      <translation>Coché, les sous-éléments seront modifiés plutôt que les objets en entier</translation>
+      <translation>Si cette case est cochée, les sous-éléments seront modifiés plutôt que les objets en entier.</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="674"/>
@@ -3250,14 +3264,14 @@ or try saving to a lower DWG version.</source>
 Essayez de déplacer le fichier DWG vers un chemin de répertoire sans espaces ni caractères non-anglophones, ou essayez de sauvegarder vers une version inférieure de DWG.</translation>
     </message>
     <message>
-      <location filename="../../WorkingPlane.py" line="722"/>
+      <location filename="../../WorkingPlane.py" line="1261"/>
       <location filename="../../draftmake/make_sketch.py" line="126"/>
       <location filename="../../draftmake/make_sketch.py" line="138"/>
       <source>All Shapes must be coplanar</source>
       <translation>Toutes les formes doivent être coplanaires</translation>
     </message>
     <message>
-      <location filename="../../WorkingPlane.py" line="730"/>
+      <location filename="../../WorkingPlane.py" line="1269"/>
       <source>Selected Shapes must define a plane</source>
       <translation>Les formes sélectionnées doivent définir un plan</translation>
     </message>
@@ -4680,22 +4694,27 @@ L'angle final sera l'angle de base plus cette quantité.</translation>
       <translation>Paramètre de symétrie :</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/shapestring.py" line="114"/>
-      <source>added 'Justification', 'JustificationReference', 'KeepLeftMargin', 'ScaleToSize' and 'Fuse' properties</source>
-      <translation>a ajouté les propriétés "Justification", "JustificationReference", "KeepLeftMargin", "ScaleToSize" et "Fusion"</translation>
+      <location filename="../../draftobjects/shapestring.py" line="119"/>
+      <source>added 'Fuse', 'Justification', 'JustificationReference', 'KeepLeftMargin', 'ObliqueAngle' and 'ScaleToSize'  properties</source>
+      <translation type="unfinished">added 'Fuse', 'Justification', 'JustificationReference', 'KeepLeftMargin', 'ObliqueAngle' and 'ScaleToSize'  properties</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/shapestring.py" line="116"/>
+      <location filename="../../draftobjects/shapestring.py" line="121"/>
       <source>changed 'Tracking' property type</source>
       <translation>a changé le type de la propriété "Tracking"</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/shapestring.py" line="168"/>
+      <location filename="../../draftobjects/shapestring.py" line="173"/>
+      <source>ShapeString: oblique angle must be in the -80 to +80 degree range</source>
+      <translation type="unfinished">ShapeString: oblique angle must be in the -80 to +80 degree range</translation>
+    </message>
+    <message>
+      <location filename="../../draftobjects/shapestring.py" line="185"/>
       <source>ShapeString: string has no wires</source>
       <translation>Formes à partir de texte : la chaîne de caractères n'a pas de polylignes</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/shapestring.py" line="205"/>
+      <location filename="../../draftobjects/shapestring.py" line="219"/>
       <source>ShapeString: face creation failed for one character</source>
       <translation>Formes à partir de texte : la création de face a échoué pour un caractère</translation>
     </message>
@@ -5614,12 +5633,12 @@ Installer l’extension de la bibliothèque dxf manuellement depuis le menu Outi
     <message>
       <location filename="../../draftguitools/gui_layers.py" line="280"/>
       <source>Draw style</source>
-      <translation>Style de dessin</translation>
+      <translation>Style de représentation</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_layers.py" line="281"/>
       <source>Line color</source>
-      <translation>Couleur de la ligne</translation>
+      <translation>Couleur des lignes</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_layers.py" line="282"/>
@@ -7028,52 +7047,57 @@ It is a list of strings; each element in the list will be displayed in its own l
 Il s'agit d'une liste de chaînes de caractères ; chaque élément de la liste sera affiché sur sa propre ligne.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/shapestring.py" line="55"/>
+      <location filename="../../draftobjects/shapestring.py" line="56"/>
       <source>Text string</source>
       <translation>Chaîne de texte</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/shapestring.py" line="59"/>
+      <location filename="../../draftobjects/shapestring.py" line="60"/>
       <source>Font file name</source>
       <translation>Nom du fichier de police</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/shapestring.py" line="63"/>
+      <location filename="../../draftobjects/shapestring.py" line="64"/>
       <source>Height of text</source>
       <translation>Hauteur du texte</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/shapestring.py" line="67"/>
+      <location filename="../../draftobjects/shapestring.py" line="68"/>
       <source>Horizontal and vertical alignment</source>
       <translation>Alignement horizontal et vertical</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/shapestring.py" line="75"/>
+      <location filename="../../draftobjects/shapestring.py" line="76"/>
       <source>Height reference used for justification</source>
       <translation>Hauteur de référence utilisée pour justifier</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/shapestring.py" line="81"/>
+      <location filename="../../draftobjects/shapestring.py" line="82"/>
       <source>Keep left margin and leading white space when justification is left</source>
       <translation>Garder la marge gauche et l'espace blanc principal lorsque la justification est à gauche</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/shapestring.py" line="85"/>
+      <location filename="../../draftobjects/shapestring.py" line="86"/>
       <source>Scale to ensure cap height is equal to size</source>
       <translation>Échelle pour s'assurer que la hauteur de la majuscule est égale à la taille</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/shapestring.py" line="89"/>
+      <location filename="../../draftobjects/shapestring.py" line="90"/>
       <source>Inter-character spacing</source>
       <translation>Espacement entre les caractères</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/shapestring.py" line="93"/>
+      <location filename="../../draftobjects/shapestring.py" line="94"/>
+      <source>Oblique (slant) angle</source>
+      <translation type="unfinished">Oblique (slant) angle</translation>
+    </message>
+    <message>
+      <location filename="../../draftobjects/shapestring.py" line="98"/>
       <source>Fill letters with faces</source>
       <translation>Remplir des lettres avec des faces</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/shapestring.py" line="97"/>
+      <location filename="../../draftobjects/shapestring.py" line="102"/>
       <source>Fuse faces if faces overlap, usually not required (can be very slow)</source>
       <translation>Fusionner les faces si les faces se chevauchent, généralement non nécessaire (peut être très lent)</translation>
     </message>
@@ -7618,12 +7642,14 @@ Cette propriété est en lecture seule, car le nombre dépend des points contenu
     <message>
       <location filename="../../draftobjects/shape2dview.py" line="127"/>
       <source>If this is True, only solid geometry is handled. This overrides the base object's Only Solids property</source>
-      <translation>Si ceci est vrai, seule la géométrie solide est prise en compte. Ceci écrase la propriété Solids uniquement de l'objet de base</translation>
+      <translation>Si ceci est vrai, seule la géométrie solide est prise en compte.
+Ceci écrase la propriété Solids uniquement de l'objet de base.</translation>
     </message>
     <message>
       <location filename="../../draftobjects/shape2dview.py" line="132"/>
       <source>If this is True, the contents are clipped to the borders of the section plane, if applicable. This overrides the base object's Clip property</source>
-      <translation>Si ceci est vrai, les contenus sont coupés aux bordures du plan de coupe, si possible. Ceci écrase la propriété Clip de l'objet de base</translation>
+      <translation>Si ceci est vrai, les contenus sont coupés aux bordures du plan de coupe, si possible.
+Ceci écrase la propriété Clip de l'objet de base.</translation>
     </message>
     <message>
       <location filename="../../draftobjects/shape2dview.py" line="137"/>
@@ -7985,7 +8011,7 @@ des propriétés du "premier angle" et du "dernier angle".</translation>
     <message>
       <location filename="../../draftobjects/draftlink.py" line="99"/>
       <source>Force sync pattern placements even when array elements are expanded</source>
-      <translation>Forcer le placement des motifs de synchronisation même lorsque les éléments du réseau sont étendus</translation>
+      <translation>Forcer le placement des motifs de synchronisation même lorsque les éléments du réseau sont étendus.</translation>
     </message>
     <message>
       <location filename="../../draftobjects/draftlink.py" line="112"/>
@@ -8032,7 +8058,7 @@ des propriétés du "premier angle" et du "dernier angle".</translation>
     <message>
       <location filename="../../draftviewproviders/view_draft_annotation.py" line="153"/>
       <source>Line width</source>
-      <translation>Largeur de ligne</translation>
+      <translation>Épaisseur de trait</translation>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_draft_annotation.py" line="160"/>
@@ -8057,7 +8083,7 @@ des propriétés du "premier angle" et du "dernier angle".</translation>
     <message>
       <location filename="../../draftviewproviders/view_layer.py" line="79"/>
       <source>If it is true, the objects contained within this layer will adopt the shape color of the layer</source>
-      <translation>Si ceci est vrai, les objets contenus dans ce calque adopteront la couleur de forme du calque</translation>
+      <translation>Si ceci est vrai, les objets contenus dans ce calque adopteront la couleur de forme du calque.</translation>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_layer.py" line="90"/>
@@ -8102,7 +8128,7 @@ des propriétés du "premier angle" et du "dernier angle".</translation>
     <message>
       <location filename="../../draftviewproviders/view_draft_annotation.py" line="132"/>
       <source>Font size</source>
-      <translation>Taille de police</translation>
+      <translation>Taille de la police</translation>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_dimension.py" line="125"/>

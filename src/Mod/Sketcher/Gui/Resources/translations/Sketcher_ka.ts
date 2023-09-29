@@ -158,7 +158,7 @@
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="1547"/>
       <source>Clone</source>
-      <translation>ასლი</translation>
+      <translation>კლონი</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="1549"/>
@@ -785,7 +785,7 @@ with respect to a line or a third point</source>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1401"/>
       <source>Create fillet</source>
-      <translation>მომრგვალების შექმნა</translation>
+      <translation>მომრგვალებული ნაზოლის შექმნა</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1402"/>
@@ -1019,7 +1019,7 @@ with respect to a line or a third point</source>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="498"/>
       <source>Decrease knot multiplicity</source>
-      <translation>კვანძის ჯერადობის შემცირება</translation>
+      <translation>კვანძის გამრავლებადობის შემცირება</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="499"/>
@@ -1110,7 +1110,7 @@ with respect to a line or a third point</source>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="350"/>
       <source>Increase knot multiplicity</source>
-      <translation>კვანძის ჯერადობის გაზრდა</translation>
+      <translation>კვანძის გამრავლებადობის გაზრდა</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="351"/>
@@ -1780,7 +1780,7 @@ invalid constraints, degenerated geometry, etc.</source>
     <message>
       <location filename="../../CommandConstraints.cpp" line="1808"/>
       <source>Add arc angle constraint</source>
-      <translation type="unfinished">Add arc angle constraint</translation>
+      <translation>რკალის კუთხის შეზღუდვის დამატება</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="1831"/>
@@ -2071,7 +2071,7 @@ invalid constraints, degenerated geometry, etc.</source>
       <location filename="../../DrawSketchHandlerFillet.h" line="174"/>
       <location filename="../../DrawSketchHandlerFillet.h" line="270"/>
       <source>Create fillet</source>
-      <translation>მომრგვალებული ნაზოლის შექმნა</translation>
+      <translation>მომრგვალების შექმნა</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerTrimming.h" line="143"/>
@@ -2121,12 +2121,12 @@ invalid constraints, degenerated geometry, etc.</source>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="388"/>
       <source>Increase knot multiplicity</source>
-      <translation>კვანძის გამრავლებადობის გაზრდა</translation>
+      <translation>კვანძის ჯერადობის გაზრდა</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="536"/>
       <source>Decrease knot multiplicity</source>
-      <translation>კვანძის გამრავლებადობის შემცირება</translation>
+      <translation>კვანძის ჯერადობის შემცირება</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="779"/>
@@ -2278,59 +2278,59 @@ invalid constraints, degenerated geometry, etc.</source>
       <translation>ავტომატური შეზღუდვის შეცდომა: თანასწორობის შეზღუდვების გადატარების შემდეგ ესკიზი ამოხსნადი არაა.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="2244"/>
+      <location filename="../../../App/SketchObject.cpp" line="2263"/>
       <source>Unable to guess intersection of curves. Try adding a coincident constraint between the vertices of the curves you are intending to fillet.</source>
       <translation>მრუდების კვეთის გამოცნობის შეცდომა. სცადეთ დაამატოთ დამთხვევების შეზღუდვები მრუდების წვეროებზე, რომლის მომრგვალებასაც ცდილობთ.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6427"/>
-      <location filename="../../../App/SketchObject.cpp" line="6635"/>
+      <location filename="../../../App/SketchObject.cpp" line="6446"/>
+      <location filename="../../../App/SketchObject.cpp" line="6654"/>
       <source>BSpline Geometry Index (GeoID) is out of bounds.</source>
       <translation>B-სპლაინის გეომეტრიის ინდექსი (GeoID) დაშვებულ ლიმიტებს გარეთაა.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6432"/>
+      <location filename="../../../App/SketchObject.cpp" line="6451"/>
       <source>You are requesting no change in knot multiplicity.</source>
       <translation>თქვენ არ ითხოვთ ცვლილებას კვანძის გაყოფადობაში.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6438"/>
-      <location filename="../../../App/SketchObject.cpp" line="6645"/>
+      <location filename="../../../App/SketchObject.cpp" line="6457"/>
+      <location filename="../../../App/SketchObject.cpp" line="6664"/>
       <source>The Geometry Index (GeoId) provided is not a B-spline curve.</source>
       <translation>გეომეტრიის მითითებული ინდექსი (GeoID) B-სპლაინის მრუდს არ წარმოადგენს.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6447"/>
+      <location filename="../../../App/SketchObject.cpp" line="6466"/>
       <source>The knot index is out of bounds. Note that in accordance with OCC notation, the first knot has index 1 and not zero.</source>
       <translation>კვანძის ინდექსი საზღვრებს გარეთაა. დაიმახსოვრეთ, რომ OCC ნოტაციების შესაბამისად, პირველი კვანძის ინდექსი 1-ია და არა 0.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6458"/>
+      <location filename="../../../App/SketchObject.cpp" line="6477"/>
       <source>The multiplicity cannot be increased beyond the degree of the B-spline.</source>
       <translation>სიმრავლე არ შეიძლება გაიზარდოს B-სპლაინის დონის მიღმა.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6466"/>
+      <location filename="../../../App/SketchObject.cpp" line="6485"/>
       <source>The multiplicity cannot be decreased beyond zero.</source>
       <translation>სიმრავლე არ შეიძლება შემცირდეს ნულს მიღმა.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6480"/>
+      <location filename="../../../App/SketchObject.cpp" line="6499"/>
       <source>OCC is unable to decrease the multiplicity within the maximum tolerance.</source>
       <translation>OCC-ს არ შეუძლია შეამციროს სიმრავლე მაქსიმალური ტოლერანტობის ფარგლებში.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6639"/>
+      <location filename="../../../App/SketchObject.cpp" line="6658"/>
       <source>Knot cannot have zero multiplicity.</source>
       <translation>კვანძებს არ შეიძლება ნულოვანი მამრავლი ჰქონდეს.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6656"/>
+      <location filename="../../../App/SketchObject.cpp" line="6675"/>
       <source>Knot multiplicity cannot be higher than the degree of the BSpline.</source>
       <translation>კვანძის მამრავლი არ შეიძლება B-სპლაინის დონეზე დიდი იყოს.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6662"/>
+      <location filename="../../../App/SketchObject.cpp" line="6681"/>
       <source>Knot cannot be inserted outside the BSpline parameter range.</source>
       <translation>კვანძის ჩასმა B-სპლაინის პარამეტრების დიაპაზონის გარეთ შეუძლებელია.</translation>
     </message>
@@ -2554,7 +2554,7 @@ invalid constraints, degenerated geometry, etc.</source>
       <location filename="../../CommandSketcherVirtualSpace.cpp" line="130"/>
       <location filename="../../CommandSketcherVirtualSpace.cpp" line="157"/>
       <source>Wrong selection</source>
-      <translation>არასწორი არჩევანი</translation>
+      <translation>არასწორი მონიშნული</translation>
     </message>
     <message>
       <location filename="../../CommandAlterGeometry.cpp" line="146"/>
@@ -3903,7 +3903,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
       <location filename="../../InsertDatum.ui" line="79"/>
       <source>Reference</source>
-      <translation>ბმა</translation>
+      <translation>მითითება</translation>
     </message>
   </context>
   <context>
@@ -4882,7 +4882,7 @@ However, no constraints linking to the endpoints were found.</source>
     <message>
       <location filename="../../TaskSketcherElements.ui" line="81"/>
       <source>Settings</source>
-      <translation>გამართვა</translation>
+      <translation>მორგება</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="1590"/>
@@ -4896,7 +4896,7 @@ However, no constraints linking to the endpoints were found.</source>
       <location filename="../../TaskSketcherElements.cpp" line="1646"/>
       <location filename="../../TaskSketcherElements.cpp" line="1652"/>
       <source>Construction</source>
-      <translation>კონსტრუქცია</translation>
+      <translation>მშენებლობა</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="995"/>
@@ -5414,7 +5414,7 @@ This is done by analyzing the sketch geometries and constraints.</source>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="1621"/>
       <source>Clone</source>
-      <translation>კლონი</translation>
+      <translation>ასლი</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="1629"/>
@@ -6293,7 +6293,7 @@ The grid spacing change if it becomes smaller than this number of pixel.</source
       <translation>ესკიზი ნაწილობრივ დამატებით შეზღუდვებს შეიცავს!</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="9089"/>
+      <location filename="../../../App/SketchObject.cpp" line="9108"/>
       <source>Parabolas were migrated. Migrated files won't open in previous versions of FreeCAD!!
 </source>
       <translation>პარაბოლები მიგრირებულია. მიგრირებული ფაილები FreeCAD-ის წინა ვერსიებში არ გაიხსნება!!
@@ -6674,9 +6674,9 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
       <source>Constrain contextually based on your selection.
 Depending on your selection you might have several constraints available. You can cycle through them using M key.
 Left clicking on empty space will validate the current constraint. Right clicking or pressing Esc will cancel.</source>
-      <translation type="unfinished">Constrain contextually based on your selection.
-Depending on your selection you might have several constraints available. You can cycle through them using M key.
-Left clicking on empty space will validate the current constraint. Right clicking or pressing Esc will cancel.</translation>
+      <translation>შეზღუდვა, რომელიც კონტექსტურად თქვენს მონიშნულზეა დამოკიდებული.
+თქვენს მონიშნულზე დამოკიდებულებით, შეიძლება რამდენიმე შეზღუდვა გქონდეთ ხელმისაწვდომი. მათ შორის გადართვა M ღილაკით შეგიძლიათ.
+თავისუფალ ადგილას მარცხენა ღილაკის დაწკაპუნება მიმდინარე შეზღუდვას გადაამოწმებს, მარჯვენა წკაპი ან Esc ღილაკი კი გააუქმებს მას.</translation>
     </message>
   </context>
   <context>

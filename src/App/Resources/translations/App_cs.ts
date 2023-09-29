@@ -14,7 +14,7 @@ které odkazují na stejný konfigurovatelný objekt</translation>
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../Application.cpp" line="444"/>
+      <location filename="../../Application.cpp" line="445"/>
       <source>Unnamed</source>
       <translation>Nepojmenovaný</translation>
     </message>

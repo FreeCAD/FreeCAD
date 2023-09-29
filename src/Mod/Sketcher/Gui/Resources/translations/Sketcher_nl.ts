@@ -140,17 +140,17 @@
     <message>
       <location filename="../../CommandConstraints.cpp" line="8458"/>
       <source>Constrain radius</source>
-      <translation>Straal bematen</translation>
+      <translation>Beperk de straal</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="8464"/>
       <source>Constrain diameter</source>
-      <translation>Bemaat de diameter</translation>
+      <translation>Beperk de diameter</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="8470"/>
       <source>Constrain auto radius/diameter</source>
-      <translation>Bemaat straal/diameter automatisch</translation>
+      <translation>Beperk automatisch de straal/diameter</translation>
     </message>
   </context>
   <context>
@@ -395,7 +395,7 @@
     <message>
       <location filename="../../CommandConstraints.cpp" line="8508"/>
       <source>Fix the angle of a line or the angle between two lines</source>
-      <translation>Bemaat de hoek van een lijn of de hoek tussen twee lijnen</translation>
+      <translation>Zet de hoek van een lijn of de hoek tussen twee lijnen vast</translation>
     </message>
   </context>
   <context>
@@ -429,12 +429,12 @@
     <message>
       <location filename="../../CommandConstraints.cpp" line="7658"/>
       <source>Constrain diameter</source>
-      <translation>Bemaat de diameter</translation>
+      <translation>Beperk de diameter</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="7659"/>
       <source>Fix the diameter of a circle or an arc</source>
-      <translation>Bemaat de diameter van een cirkel of een boog</translation>
+      <translation>Zet de diameter van een cirkel of een boog vast</translation>
     </message>
   </context>
   <context>
@@ -460,7 +460,7 @@
     <message>
       <location filename="../../CommandConstraints.cpp" line="4895"/>
       <source>Fix the horizontal distance between two points or line ends</source>
-      <translation>De horizontale afstand tussen twee punten of lijneinden bematen</translation>
+      <translation>De horizontale afstand tussen twee punten of lijneinden vastzetten</translation>
     </message>
   </context>
   <context>
@@ -473,7 +473,7 @@
     <message>
       <location filename="../../CommandConstraints.cpp" line="5199"/>
       <source>Fix the vertical distance between two points or line ends</source>
-      <translation>De verticale afstand tussen twee punten of lijneinden bematen</translation>
+      <translation>De verticale afstand tussen twee punten of lijneinden vastzetten</translation>
     </message>
   </context>
   <context>
@@ -560,7 +560,7 @@ on the selected vertex</source>
     <message>
       <location filename="../../CommandConstraints.cpp" line="7977"/>
       <source>Constrain auto radius/diameter</source>
-      <translation>Bemaat straal/diameter automatisch</translation>
+      <translation>Beperk automatisch de straal/diameter</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="7978"/>
@@ -1623,12 +1623,12 @@ ongeldige constraints, gedegenereerde geometrie, etc.</translation>
     <message>
       <location filename="../../CommandConstraints.cpp" line="3464"/>
       <source>Add 'Block' constraint</source>
-      <translation>Voeg 'Block' beperking toe</translation>
+      <translation>Voeg een 'Fixerende' beperking toe</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="3509"/>
       <source>Add block constraint</source>
-      <translation>Blok beperking toevoegen</translation>
+      <translation>Voeg een fixerende beperking toe</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="3639"/>
@@ -1712,52 +1712,52 @@ ongeldige constraints, gedegenereerde geometrie, etc.</translation>
       <location filename="../../CommandConstraints.cpp" line="1600"/>
       <location filename="../../CommandConstraints.cpp" line="1623"/>
       <source>Add 'Horizontal' constraints</source>
-      <translation type="unfinished">Add 'Horizontal' constraints</translation>
+      <translation>Voeg 'Horizontale' beperkingen toe</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="1575"/>
       <location filename="../../CommandConstraints.cpp" line="1607"/>
       <location filename="../../CommandConstraints.cpp" line="1630"/>
       <source>Add 'Vertical' constraints</source>
-      <translation type="unfinished">Add 'Vertical' constraints</translation>
+      <translation>Voeg "Verticale' beperkingen toe</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="1590"/>
       <location filename="../../CommandConstraints.cpp" line="1642"/>
       <source>Add Symmetry constraint</source>
-      <translation type="unfinished">Add Symmetry constraint</translation>
+      <translation>Voeg een symmetrische beperking toe</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="1613"/>
       <location filename="../../CommandConstraints.cpp" line="1778"/>
       <source>Add Symmetry constraints</source>
-      <translation type="unfinished">Add Symmetry constraints</translation>
+      <translation>Voeg symmetrische beperkingen toe</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="1647"/>
       <location filename="../../CommandConstraints.cpp" line="1659"/>
       <source>Add Distance constraints</source>
-      <translation type="unfinished">Add Distance constraints</translation>
+      <translation>Voeg een afstand beperking toe</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="1707"/>
       <source>Add Horizontal constraint</source>
-      <translation type="unfinished">Add Horizontal constraint</translation>
+      <translation>Voeg een horizontale beperking toe</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="1712"/>
       <source>Add Vertical constraint</source>
-      <translation type="unfinished">Add Vertical constraint</translation>
+      <translation>Voeg een verticale beperking toe</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="1716"/>
       <source>Add Block constraint</source>
-      <translation type="unfinished">Add Block constraint</translation>
+      <translation>Voeg een fixerende beperking toe</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="1731"/>
       <source>Add Angle constraint</source>
-      <translation type="unfinished">Add Angle constraint</translation>
+      <translation>Voeg een hoek beperking toe</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="1741"/>
@@ -1765,42 +1765,42 @@ ongeldige constraints, gedegenereerde geometrie, etc.</translation>
       <location filename="../../CommandConstraints.cpp" line="1851"/>
       <location filename="../../CommandConstraints.cpp" line="1889"/>
       <source>Add Equality constraint</source>
-      <translation type="unfinished">Add Equality constraint</translation>
+      <translation>Voeg een gelijkwaardigheid beperking toe</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="1752"/>
       <source>Add Equality constraints</source>
-      <translation type="unfinished">Add Equality constraints</translation>
+      <translation>Voeg gelijkwaardigheid beperkingen toe</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="1803"/>
       <source>Add Radius constraint</source>
-      <translation type="unfinished">Add Radius constraint</translation>
+      <translation>Voeg een straal beperking toe</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="1808"/>
       <source>Add arc angle constraint</source>
-      <translation type="unfinished">Add arc angle constraint</translation>
+      <translation>Voeg een booghoek beperking toe</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="1831"/>
       <source>Add concentric and length constraint</source>
-      <translation type="unfinished">Add concentric and length constraint</translation>
+      <translation>Voeg een concentriciteits en lengte beperking toe</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="2388"/>
       <source>Add DistanceX constraint</source>
-      <translation type="unfinished">Add DistanceX constraint</translation>
+      <translation>Voeg een afstandsbeperking in x-richting toe</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="2399"/>
       <source>Add DistanceY constraint</source>
-      <translation type="unfinished">Add DistanceY constraint</translation>
+      <translation>Voeg een afstandsbeperking in y-richting toe</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="4183"/>
       <source>Add point to circle Distance constraint</source>
-      <translation type="unfinished">Add point to circle Distance constraint</translation>
+      <translation>Voeg een punt-tot-cirkel afstandsbeperking toe</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="4727"/>
@@ -2278,59 +2278,59 @@ ongeldige constraints, gedegenereerde geometrie, etc.</translation>
       <translation>Autoconstrain error: Defecte schets tijdens aanleggen van gelijkheids-constraint.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="2244"/>
+      <location filename="../../../App/SketchObject.cpp" line="2263"/>
       <source>Unable to guess intersection of curves. Try adding a coincident constraint between the vertices of the curves you are intending to fillet.</source>
       <translation>Niet in staat om het snijpunt van de bochten te raden. Probeer een samenvallende beperking toe te voegen tussen de vertexen van de curven die u wilt afronden.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6427"/>
-      <location filename="../../../App/SketchObject.cpp" line="6635"/>
+      <location filename="../../../App/SketchObject.cpp" line="6446"/>
+      <location filename="../../../App/SketchObject.cpp" line="6654"/>
       <source>BSpline Geometry Index (GeoID) is out of bounds.</source>
       <translation>B-spline Geometrie Index (GeoID) buiten bereik.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6432"/>
+      <location filename="../../../App/SketchObject.cpp" line="6451"/>
       <source>You are requesting no change in knot multiplicity.</source>
       <translation>U vraagt geen verandering in de knoop multipliciteit.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6438"/>
-      <location filename="../../../App/SketchObject.cpp" line="6645"/>
+      <location filename="../../../App/SketchObject.cpp" line="6457"/>
+      <location filename="../../../App/SketchObject.cpp" line="6664"/>
       <source>The Geometry Index (GeoId) provided is not a B-spline curve.</source>
       <translation>De Geometrie Index (Geold) aangeleverd is geen B-spline lijn.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6447"/>
+      <location filename="../../../App/SketchObject.cpp" line="6466"/>
       <source>The knot index is out of bounds. Note that in accordance with OCC notation, the first knot has index 1 and not zero.</source>
       <translation>De knoop-index is buiten de grenzen. Merk op dat volgens de OCC-notatie de eerste knoop index 1 heeft en niet nul.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6458"/>
+      <location filename="../../../App/SketchObject.cpp" line="6477"/>
       <source>The multiplicity cannot be increased beyond the degree of the B-spline.</source>
       <translation>De multipliciteit mag niet groter zijn dan het aantal graden van de B-spline.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6466"/>
+      <location filename="../../../App/SketchObject.cpp" line="6485"/>
       <source>The multiplicity cannot be decreased beyond zero.</source>
       <translation>De multipliciteit kan niet lager zijn dan nul.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6480"/>
+      <location filename="../../../App/SketchObject.cpp" line="6499"/>
       <source>OCC is unable to decrease the multiplicity within the maximum tolerance.</source>
       <translation>OCC is niet in staat om de multipliciteit binnen de maximale tolerantie te verlagen.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6639"/>
+      <location filename="../../../App/SketchObject.cpp" line="6658"/>
       <source>Knot cannot have zero multiplicity.</source>
       <translation>Knooppunt kan geen multipliciteit van nul hebben.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6656"/>
+      <location filename="../../../App/SketchObject.cpp" line="6675"/>
       <source>Knot multiplicity cannot be higher than the degree of the BSpline.</source>
       <translation>Knooppunt multipliciteit kan niet hoger zijn dan de graad van de B-spline.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6662"/>
+      <location filename="../../../App/SketchObject.cpp" line="6681"/>
       <source>Knot cannot be inserted outside the BSpline parameter range.</source>
       <translation>Knooppunt kan niet worden toegevoegd buiten de parameters van de B-spline.</translation>
     </message>
@@ -2700,7 +2700,7 @@ ongeldige constraints, gedegenereerde geometrie, etc.</translation>
     <message>
       <location filename="../../CommandConstraints.cpp" line="3150"/>
       <source>Select one vertex from the sketch other than the origin.</source>
-      <translation>Kies een andere vertex uit de schets dan de oorsprong.</translation>
+      <translation>Selecteer een hoekpunt uit de schets, anders dan de oorsprong.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="3155"/>
@@ -2772,7 +2772,7 @@ ongeldige constraints, gedegenereerde geometrie, etc.</translation>
     <message>
       <location filename="../../CommandConstraints.cpp" line="4055"/>
       <source>Select exactly one line or one point and one line or two points from the sketch.</source>
-      <translation>Selecteer precies één lijn of een punt en een lijn of twee punten uit de schets.</translation>
+      <translation>Selecteer precies één lijn, of een punt en een lijn, of twee punten, uit de schets.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="4312"/>
@@ -2783,7 +2783,7 @@ ongeldige constraints, gedegenereerde geometrie, etc.</translation>
       <location filename="../../CommandConstraints.cpp" line="4351"/>
       <location filename="../../CommandConstraints.cpp" line="4580"/>
       <source>Select exactly one line or one point and one line or two points or two circles from the sketch.</source>
-      <translation>Selecteer precies één lijn of één punt en één lijn, of twee punten of twee cirkels van de schets.</translation>
+      <translation>Selecteer precies één lijn, of één punt en één lijn, of twee punten, of twee cirkels, van de schets.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="4473"/>
@@ -2844,7 +2844,7 @@ ongeldige constraints, gedegenereerde geometrie, etc.</translation>
       <location filename="../../CommandConstraints.cpp" line="5247"/>
       <location filename="../../CommandConstraints.cpp" line="5376"/>
       <source>Select exactly one line or up to two points from the sketch.</source>
-      <translation>Selecteer precies een lijn of tot twee punten uit de schets.</translation>
+      <translation>Selecteer precies één lijn, of maximaal twee punten, uit de schets.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="4977"/>
@@ -2881,7 +2881,7 @@ ongeldige constraints, gedegenereerde geometrie, etc.</translation>
       <location filename="../../CommandConstraints.cpp" line="5548"/>
       <location filename="../../CommandConstraints.cpp" line="9200"/>
       <source>Select at least two lines from the sketch.</source>
-      <translation>Kies tenminste twee lijnen van de schets.</translation>
+      <translation>Selecteer tenminste twee lijnen uit de schets.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="5564"/>
@@ -3712,7 +3712,7 @@ Geaccepteerde combinaties: twee curven; een eindpunt en een curve; twee eindpunt
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="62"/>
       <source>Point Coincidence</source>
-      <translation type="unfinished">Point Coincidence</translation>
+      <translation>Samenvallend punt</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="63"/>
@@ -4134,12 +4134,12 @@ Hiervoor is het nodig om de bewerkingsmodus opnieuw in te schakelen.</translatio
     <message>
       <location filename="../../SketcherSettings.ui" line="174"/>
       <source>Dimension Constraint</source>
-      <translation type="unfinished">Dimension Constraint</translation>
+      <translation>Maat beperking</translation>
     </message>
     <message>
       <location filename="../../SketcherSettings.ui" line="180"/>
       <source>Dimensioning constraints:</source>
-      <translation type="unfinished">Dimensioning constraints:</translation>
+      <translation>Maatvoering beperkingen:</translation>
     </message>
     <message>
       <location filename="../../SketcherSettings.ui" line="187"/>
@@ -4148,16 +4148,16 @@ Hiervoor is het nodig om de bewerkingsmodus opnieuw in te schakelen.</translatio
 'Separated tools': Individual tools for each dimensioning constraint.
 'Both': You will have both the 'Dimension' tool and the separated tools.
 This setting is only for the toolbar. Whichever you chose, all tools are always available in the menu and through shortcuts.</source>
-      <translation type="unfinished">Select the type of dimensioning constraints for your toolbar:
-'Single tool': A single tool for all dimensioning constraints in the toolbar : Distance, Distance X / Y, Angle, Radius. (Others in dropdown)
-'Separated tools': Individual tools for each dimensioning constraint.
-'Both': You will have both the 'Dimension' tool and the separated tools.
-This setting is only for the toolbar. Whichever you chose, all tools are always available in the menu and through shortcuts.</translation>
+      <translation>Selecteer het type maatvoering beperkingen voor uw werkbalk:
+'Enkel gereedschap': Een enkel hulpmiddel voor alle maatvoering beperkingen in de werkbalk: Afstand, Afstand X / Y, Hoek, Radius. (Overigen in dropdown)
+'Gescheiden gereedschappen': Individuele gereedschappen voor elke maatvoering beperking.
+'Beide': U krijgt zowel het 'Maatvoering' gereedschap als de gescheiden gereedschappen.
+Deze instelling is alleen voor de werkbalk. Welke keuze je ook maakt, alle tools zijn altijd beschikbaar in het menu en via snelkoppelingen.</translation>
     </message>
     <message>
       <location filename="../../SketcherSettings.ui" line="198"/>
       <source>Dimension tool diameter/radius mode:</source>
-      <translation type="unfinished">Dimension tool diameter/radius mode:</translation>
+      <translation>Maatvoering gereedschap diameter/straal modus:</translation>
     </message>
     <message>
       <location filename="../../SketcherSettings.ui" line="205"/>
@@ -4165,20 +4165,20 @@ This setting is only for the toolbar. Whichever you chose, all tools are always 
 'Auto': The tool will apply radius to arcs and diameter to circles.
 'Diameter': The tool will apply diameter to both arcs and circles.
 'Radius': The tool will apply radius to both arcs and circles.</source>
-      <translation type="unfinished">While using the Dimension tool you may chose how to handle circles and arcs:
-'Auto': The tool will apply radius to arcs and diameter to circles.
-'Diameter': The tool will apply diameter to both arcs and circles.
-'Radius': The tool will apply radius to both arcs and circles.</translation>
+      <translation>Bij het gebruik van het maatvoering gereedschap kun je kiezen hoe om te gaan met cirkels en bogen:
+'Auto': Het gereedschap past straal toe op bogen en diameter op cirkels.
+'Diameter': Het gereedschap zal de diameter toepassen op zowel bogen als cirkels.
+'Straal': Het gereedschap zal de straal toepassen op zowel bogen als cirkels.</translation>
     </message>
     <message>
       <location filename="../../SketcherSettings.cpp" line="133"/>
       <source>Single tool</source>
-      <translation type="unfinished">Single tool</translation>
+      <translation>Enkelvoudig gereedschap</translation>
     </message>
     <message>
       <location filename="../../SketcherSettings.cpp" line="134"/>
       <source>Separated tools</source>
-      <translation type="unfinished">Separated tools</translation>
+      <translation>Meervoudig gereedschap</translation>
     </message>
     <message>
       <location filename="../../SketcherSettings.cpp" line="135"/>
@@ -4505,7 +4505,7 @@ Ondersteunt alle eenheid systemen behalve 'US customary ' en 'Building US/Euro'.
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="218"/>
       <source>The current constraint creation tool will remain active after creation.</source>
-      <translation type="unfinished">The current constraint creation tool will remain active after creation.</translation>
+      <translation>Huidige beperking gereedschap zal actief blijven na de aanmaak.</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="221"/>
@@ -4525,7 +4525,7 @@ Ondersteunt alle eenheid systemen behalve 'US customary ' en 'Building US/Euro'.
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="95"/>
       <source>Show dimensional constraint name with format</source>
-      <translation type="unfinished">Show dimensional constraint name with format</translation>
+      <translation>Toon maatbeperking naam met lay-out</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="118"/>
@@ -4539,11 +4539,11 @@ Defaults to: %N = %V
 
 %N - name parameter
 %V - dimension value</source>
-      <translation type="unfinished">The format of the dimensional constraint string presentation.
-Defaults to: %N = %V
+      <translation>De lay-out van de tekst van de maatbeperking.
+Standaard: %N = %V
 
-%N - name parameter
-%V - dimension value</translation>
+%N - naam van de parameter
+%V - waarde van de maat</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="240"/>
@@ -4553,12 +4553,12 @@ Defaults to: %N = %V
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="275"/>
       <source>Cursor coordinates will use the system decimals setting instead of the short form.</source>
-      <translation type="unfinished">Cursor coordinates will use the system decimals setting instead of the short form.</translation>
+      <translation>Cursor coördinaten gebruiken voor decimalen de instellingen van het systeem in plaats van de korte vorm.</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="278"/>
       <source>Use system decimals setting for cursor coordinates</source>
-      <translation type="unfinished">Use system decimals setting for cursor coordinates</translation>
+      <translation>Gebruik de systeem instellingen van decimalen voor de cursor coördinaten</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="321"/>
@@ -4621,13 +4621,13 @@ Dit werkt alleen als "Camera positie herstellen na bewerken" is ingeschakeld.</t
       <location filename="../../SketcherSettingsDisplay.ui" line="423"/>
       <source>Open a sketch in Section View mode by default.
 Then objects are only visible behind the sketch plane.</source>
-      <translation type="unfinished">Open a sketch in Section View mode by default.
-Then objects are only visible behind the sketch plane.</translation>
+      <translation>Open een schets standaard in doorsnede modus.
+Dan zijn alleen achter het schets vlak objecten zichtbaaar.</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="427"/>
       <source>Open sketch in Section View mode</source>
-      <translation type="unfinished">Open sketch in Section View mode</translation>
+      <translation>Open de schets in doorsnede modus</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="449"/>
@@ -4637,7 +4637,7 @@ Then objects are only visible behind the sketch plane.</translation>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="468"/>
       <source>Applies current visibility automation settings to all sketches in open documents.</source>
-      <translation type="unfinished">Applies current visibility automation settings to all sketches in open documents.</translation>
+      <translation>Past de huidige zichtbaarheid automatisering instellingen toe op alle schetsen in open documenten.</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="471"/>
@@ -5035,7 +5035,7 @@ Er zijn echter geen beperkingen gevonden die verband houden met de eindpunten.</
     <message>
       <location filename="../../TaskSketcherMessages.cpp" line="147"/>
       <source>The sketch has unconstrained elements giving rise to those Degrees Of Freedom. Click to select the unconstrained elements.</source>
-      <translation type="unfinished">The sketch has unconstrained elements giving rise to those Degrees Of Freedom. Click to select the unconstrained elements.</translation>
+      <translation>De schets heeft onbegrensde elementen die aanleiding geven tot deze graden van vrijheid. Klik om de onbegrensde elementen te selecteren.</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherMessages.cpp" line="150"/>
@@ -5083,7 +5083,7 @@ Dit is puur gebaseerd op samenhang en oriëntatie van de hoekpunten in de schets
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="52"/>
       <source>Fixes found missing coincidences by adding extra coincident constrains</source>
-      <translation type="unfinished">Fixes found missing coincidences by adding extra coincident constrains</translation>
+      <translation>Repareert de gevonden ontbrekende samenvallende punten door extra samenvallende beperkingen toe te voegen</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="55"/>
@@ -5098,12 +5098,12 @@ Dit is puur gebaseerd op samenhang en oriëntatie van de hoekpunten in de schets
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="68"/>
       <source>Defines the X/Y tolerance inside which missing coincidences are searched.</source>
-      <translation type="unfinished">Defines the X/Y tolerance inside which missing coincidences are searched.</translation>
+      <translation>Definieert de X/Y-tolerantie waarin ontbrekende samenvallende punten worden gezocht.</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="75"/>
       <source>If checked, construction geometries are ignored in the search</source>
-      <translation type="unfinished">If checked, construction geometries are ignored in the search</translation>
+      <translation>Indien aangevinkt worden bouwgeometrieën genegeerd in de zoekopdracht</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="78"/>
@@ -5140,7 +5140,7 @@ Dit wordt gedaan door de geometrie en beperkingen van de schets te analyseren.</
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="115"/>
       <source>Finds invalid/malformed constrains in the sketch</source>
-      <translation type="unfinished">Finds invalid/malformed constrains in the sketch</translation>
+      <translation>Vindt foutieve/onjuiste beperkingen in de schets</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="125"/>
@@ -5185,7 +5185,7 @@ Dit wordt gedaan door de geometrie en beperkingen van de schets te analyseren.</
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="193"/>
       <source>Fixes found reversed external geometries by swapping their endpoints</source>
-      <translation type="unfinished">Fixes found reversed external geometries by swapping their endpoints</translation>
+      <translation>Repareert de omgekeerde externe geometriën door hun eindpunten te wisselen</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="196"/>
@@ -5200,7 +5200,7 @@ Dit wordt gedaan door de geometrie en beperkingen van de schets te analyseren.</
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="212"/>
       <source>Enables/updates constraint orientation locking</source>
-      <translation type="unfinished">Enables/updates constraint orientation locking</translation>
+      <translation>Vergrendeling van de beperkingensoriëntatie inschakelen/updaten</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="215"/>
@@ -5210,7 +5210,7 @@ Dit wordt gedaan door de geometrie en beperkingen van de schets te analyseren.</
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="222"/>
       <source>Disables constraint orientation locking</source>
-      <translation type="unfinished">Disables constraint orientation locking</translation>
+      <translation>Vergrendeling van de beperkingensoriëntatie uitschakelen</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="225"/>
@@ -5329,7 +5329,7 @@ Dit wordt gedaan door de geometrie en beperkingen van de schets te analyseren.</
       <location filename="../../ViewProviderSketch.cpp" line="3414"/>
       <source>%n DoF(s)</source>
       <translation type="unfinished">
-        <numerusform>%n vrijheidsgra(a)d(en)</numerusform>
+        <numerusform>%n vrijheidsgra(a)d(en) </numerusform>
         <numerusform>%n DoF(s)</numerusform>
       </translation>
     </message>
@@ -5435,7 +5435,7 @@ Dit wordt gedaan door de geometrie en beperkingen van de schets te analyseren.</
       <location filename="../../CommandConstraints.cpp" line="8465"/>
       <location filename="../../CommandConstraints.cpp" line="8467"/>
       <source>Fix the diameter of a circle or an arc</source>
-      <translation>Bemaat de diameter van een cirkel of een boog</translation>
+      <translation>Zet de diameter van een cirkel of een boog vast</translation>
     </message>
   </context>
   <context>
@@ -5453,7 +5453,7 @@ Dit wordt gedaan door de geometrie en beperkingen van de schets te analyseren.</
       <location filename="../../CommandConstraints.cpp" line="8459"/>
       <location filename="../../CommandConstraints.cpp" line="8461"/>
       <source>Fix the radius of a circle or an arc</source>
-      <translation>De straal van een cirkel of boog bematen</translation>
+      <translation>De straal van een cirkel of boog vastzetten</translation>
     </message>
   </context>
   <context>
@@ -5691,7 +5691,7 @@ Dit wordt gedaan door de geometrie en beperkingen van de schets te analyseren.</
     <message>
       <location filename="../../Command.cpp" line="593"/>
       <source>Select sketch</source>
-      <translation>Kies schets</translation>
+      <translation>Selecteer schets</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="594"/>
@@ -6082,12 +6082,12 @@ Eigen Sparse-QR-algoritme is geoptimaliseerd voor spaarzame matrices; meestal sn
     <message>
       <location filename="../../Workbench.cpp" line="37"/>
       <source>P&amp;rofiles</source>
-      <translation type="unfinished">P&amp;rofiles</translation>
+      <translation>P&amp;rofiles</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="38"/>
       <source>S&amp;ketch</source>
-      <translation type="unfinished">S&amp;ketch</translation>
+      <translation>S&amp;ketch</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="39"/>
@@ -6295,7 +6295,7 @@ De rasterafstand verandert als deze kleiner wordt dan dit aantal pixels.</transl
       <translation>De schets heeft deels overbodige beperkingen!</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="9089"/>
+      <location filename="../../../App/SketchObject.cpp" line="9108"/>
       <source>Parabolas were migrated. Migrated files won't open in previous versions of FreeCAD!!
 </source>
       <translation>Parabolen zijn geconverteerd. Geconverteerde bestanden kunnen niet in vorige versies van FreeCAD worden geopend!!
@@ -6351,7 +6351,7 @@ De rasterafstand verandert als deze kleiner wordt dan dit aantal pixels.</transl
     <message>
       <location filename="../../../App/SketchObjectPyImp.cpp" line="397"/>
       <source>The constraint has invalid index information and is malformed.</source>
-      <translation type="unfinished">The constraint has invalid index information and is malformed.</translation>
+      <translation>De beperking heeft ongeldige index informatie en is onjuist vormgegeven.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="260"/>
@@ -6367,7 +6367,7 @@ De rasterafstand verandert als deze kleiner wordt dan dit aantal pixels.</transl
       <location filename="../../CommandSketcherTools.cpp" line="834"/>
       <location filename="../../CommandSketcherTools.cpp" line="1054"/>
       <source>Invalid Constraint</source>
-      <translation type="unfinished">Invalid Constraint</translation>
+      <translation>Ongeldige beperking</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerArc.h" line="200"/>
@@ -6384,22 +6384,22 @@ De rasterafstand verandert als deze kleiner wordt dan dit aantal pixels.</transl
     <message>
       <location filename="../../DrawSketchHandlerArcOfHyperbola.h" line="256"/>
       <source>Cannot create arc of hyperbola from invalid angles, try again!</source>
-      <translation type="unfinished">Cannot create arc of hyperbola from invalid angles, try again!</translation>
+      <translation>Kan geen boog van de hyperbool maken met ongeldige hoeken, probeer opnieuw!</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerArcOfHyperbola.h" line="334"/>
       <source>Cannot create arc of hyperbola</source>
-      <translation type="unfinished">Cannot create arc of hyperbola</translation>
+      <translation>Kan geen boog van de hyperbool maken</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerArcOfParabola.h" line="261"/>
       <source>Cannot create arc of parabola</source>
-      <translation type="unfinished">Cannot create arc of parabola</translation>
+      <translation>Kan de boog van de parabool niet maken</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerBSpline.h" line="129"/>
       <source>Error adding B-Spline pole</source>
-      <translation type="unfinished">Error adding B-Spline pole</translation>
+      <translation>Fout bij het toevoegen van de B-Spline pool</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerBSpline.h" line="210"/>
@@ -6415,17 +6415,17 @@ De rasterafstand verandert als deze kleiner wordt dan dit aantal pixels.</transl
     <message>
       <location filename="../../DrawSketchHandlerBSpline.h" line="315"/>
       <source>Error deleting last pole</source>
-      <translation type="unfinished">Error deleting last pole</translation>
+      <translation>Fout bij het verwijderen van de laatste pool</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerBSplineByInterpolation.h" line="124"/>
       <source>Cannot add knot point</source>
-      <translation type="unfinished">Cannot add knot point</translation>
+      <translation>Kan het knooppunt niet toevoegen</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerBSplineByInterpolation.h" line="199"/>
       <source>Cannot add internal alignment points</source>
-      <translation type="unfinished">Cannot add internal alignment points</translation>
+      <translation>Kan de interne uitlijningspunten niet toevoegen</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerBSplineByInterpolation.h" line="313"/>
@@ -6604,12 +6604,12 @@ De punten moeten dichter dan een vijfde van de rastergrootte bij een rasterlijn 
     <message>
       <location filename="../../Command.cpp" line="1734"/>
       <source>Configure rendering order</source>
-      <translation type="unfinished">Configure rendering order</translation>
+      <translation>Configureren van de rendering volgorde</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1735"/>
       <source>Reorder the items in the list to configure rendering order.</source>
-      <translation type="unfinished">Reorder the items in the list to configure rendering order.</translation>
+      <translation>De items in de lijst opnieuw sorteren om de rendering volgorde te configureren.</translation>
     </message>
   </context>
   <context>
@@ -6676,9 +6676,8 @@ De punten moeten dichter dan een vijfde van de rastergrootte bij een rasterlijn 
       <source>Constrain contextually based on your selection.
 Depending on your selection you might have several constraints available. You can cycle through them using M key.
 Left clicking on empty space will validate the current constraint. Right clicking or pressing Esc will cancel.</source>
-      <translation type="unfinished">Constrain contextually based on your selection.
-Depending on your selection you might have several constraints available. You can cycle through them using M key.
-Left clicking on empty space will validate the current constraint. Right clicking or pressing Esc will cancel.</translation>
+      <translation>Beperk de samenhang gebaseerd op uw keuzes.
+Afhankelijk van uw keuzes zijn er mogelijk meerdere beperkingen beschikbaar. U kunt er doorheen bladeren met behulp van de M toets. Klik uw linker muis toets in een leeg vlak om de huidige beperking te valideren. Klik uw rechter muis toets, of klik Esc, om de bewerking af te breken.</translation>
     </message>
   </context>
   <context>
@@ -6686,12 +6685,12 @@ Left clicking on empty space will validate the current constraint. Right clickin
     <message>
       <location filename="../../CommandSketcherOverlay.cpp" line="363"/>
       <source>Show/hide circular helper for arcs</source>
-      <translation type="unfinished">Show/hide circular helper for arcs</translation>
+      <translation>Toon/verberg de ronde hulp voor bogen</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherOverlay.cpp" line="365"/>
       <source>Switches between showing and hiding the circular helper for all arcs</source>
-      <translation type="unfinished">Switches between showing and hiding the circular helper for all arcs</translation>
+      <translation>Schakelt tussen het tonen en verbergen van de ronde hulp voor alle bogen</translation>
     </message>
   </context>
   <context>
@@ -6712,12 +6711,12 @@ Left clicking on empty space will validate the current constraint. Right clickin
     <message>
       <location filename="../../CommandConstraints.cpp" line="7294"/>
       <source>Constrain radius</source>
-      <translation>Straal bematen</translation>
+      <translation>Beperk de straal</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="7295"/>
       <source>Fix the radius of a circle or an arc</source>
-      <translation>De straal van een cirkel of boog bematen</translation>
+      <translation>De straal van een cirkel of boog vastzetten</translation>
     </message>
   </context>
 </TS>

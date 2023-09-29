@@ -4633,7 +4633,7 @@ plus de 90 : rayon du trou plus grand à la base</translation>
     <message>
       <location filename="../../Workbench.cpp" line="60"/>
       <source>Toggle 3D</source>
-      <translation>Basculer en 3D</translation>
+      <translation>Basculer vers les mesures dans la 3D</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="61"/>
