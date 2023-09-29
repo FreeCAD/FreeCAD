@@ -8,7 +8,7 @@
  
 #pragma once
 
-#include<memory>
+#include <memory>
 
 #include "ExternalSystem.h"
 #include "System.h"

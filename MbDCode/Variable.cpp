@@ -28,7 +28,7 @@ void Variable::initialize()
 {
 }
 
-void Variable::setName(std::string& str)
+void Variable::setName(std::string str)
 {
 	name = str;
 }

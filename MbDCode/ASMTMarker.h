@@ -13,7 +13,7 @@
 #include "FullMatrix.h"
 
 namespace MbD {
-    class ASMTMarker : public ASMTSpatialItem
+    class EXPORT ASMTMarker : public ASMTSpatialItem
     {
         //
     public:

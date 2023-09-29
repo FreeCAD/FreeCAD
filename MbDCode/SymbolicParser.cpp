@@ -24,6 +24,7 @@
 #include "Negative.h"
 #include "Reciprocal.h"
 #include "GeneralSpline.h"
+#include "ArcSine.h"
 
 void MbD::SymbolicParser::initialize()
 {
@@ -214,7 +215,7 @@ void MbD::SymbolicParser::xLetter()
 	while (true) {
 		hereChar = source->get();
 		if (hereChar == EOF) break;
-		if (!std::isalnum(hereChar)) break;
+		if (!std::isalnum(hereChar) && hereChar != '_') break;
 		*buffer << hereChar;
 	}
 	tokenType = "word";
@@ -337,6 +338,9 @@ bool MbD::SymbolicParser::intrinsic()
 	Symsptr symfunc = nullptr;
 	if (peekForTypevalue("word", "abs")) {
 		symfunc = std::make_shared<Abs>();
+	}
+	else if (peekForTypevalue("word", "asin") || peekForTypevalue("word", "arcsin")) {
+		symfunc = std::make_shared<ArcSine>();
 	}
 	else if (peekForTypevalue("word", "arctan")) {
 		symfunc = std::make_shared<ArcTan>();

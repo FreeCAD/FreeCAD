@@ -12,7 +12,7 @@
 #include "ForceTorqueData.h"
 
 namespace MbD {
-    class ASMTMotion : public ASMTConstraintSet
+    class EXPORT ASMTMotion : public ASMTConstraintSet
     {
         //
     public:

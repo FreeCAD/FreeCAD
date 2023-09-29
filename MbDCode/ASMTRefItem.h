@@ -13,7 +13,7 @@
 
 namespace MbD {
 
-    class ASMTRefItem : public ASMTSpatialItem
+    class EXPORT ASMTRefItem : public ASMTSpatialItem
     {
         //
     public:

@@ -11,7 +11,7 @@
 #include "ASMTItem.h"
 
 namespace MbD {
-    class ASMTExtrusion : public ASMTItem
+    class EXPORT ASMTExtrusion : public ASMTItem
     {
         //
     public:

@@ -8,13 +8,14 @@
  
 #pragma once
 #include "CREATE.h"
+#include "APIExport.h"
 
 namespace MbD {
 	class ASMTAssembly;
 	class Units;
 	class ASMTSpatialContainer;
 
-	class ASMTItem
+	class EXPORT ASMTItem
 	{
 		//
 	public:

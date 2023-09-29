@@ -11,11 +11,12 @@
 #include "ASMTItem.h"
 
 namespace MbD {
-	class ASMTSpatialItem : public ASMTItem
+	class EXPORT ASMTSpatialItem : public ASMTItem
 	{
 		//
 	public:
 		void setPosition3D(FColDsptr position3D);
+		void setQuarternions(double q0, double q1, double q2, double q3);
 		void setRotationMatrix(FMatDsptr rotationMatrix);
 		void setVelocity3D(FColDsptr velocity3D);
 		void setOmega3D(FColDsptr omega3D);

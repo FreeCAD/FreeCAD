@@ -11,7 +11,7 @@
 #include "ASMTSpatialItem.h"
 
 namespace MbD {
-    class ASMTPrincipalMassMarker : public ASMTSpatialItem
+    class EXPORT ASMTPrincipalMassMarker : public ASMTSpatialItem
     {
         //
     public:

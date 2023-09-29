@@ -11,7 +11,7 @@
 #include "ASMTItem.h"
 
 namespace MbD {
-    class ASMTAnimationParameters : public ASMTItem
+    class EXPORT ASMTAnimationParameters : public ASMTItem
     {
         //
     public:

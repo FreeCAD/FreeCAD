@@ -11,7 +11,7 @@
 #include "ASMTRefItem.h"
 
 namespace MbD {
-    class ASMTRefCurve : public ASMTRefItem
+    class EXPORT ASMTRefCurve : public ASMTRefItem
     {
         //
     public:

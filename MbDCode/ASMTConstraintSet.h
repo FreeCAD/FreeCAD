@@ -13,7 +13,7 @@
 namespace MbD {
     class Joint;
 
-    class ASMTConstraintSet : public ASMTItemIJ
+    class EXPORT ASMTConstraintSet : public ASMTItemIJ
     {
         //
     public:

@@ -15,6 +15,13 @@ void MbD::ASMTSpatialItem::setPosition3D(FColDsptr vec)
 	position3D = vec;
 }
 
+void MbD::ASMTSpatialItem::setQuarternions(double q0, double q1, double q2, double q3)
+{
+	auto eulerParameters = CREATE<EulerParameters<double>>::With(ListD{ q1, q2, q3, q0 });
+	eulerParameters->calc();
+	rotationMatrix = eulerParameters->aA;
+}
+
 void MbD::ASMTSpatialItem::setRotationMatrix(FMatDsptr mat)
 {
 	rotationMatrix = mat;

@@ -12,7 +12,7 @@
 #include "FixedJoint.h"
 
 namespace MbD {
-    class ASMTFixedJoint : public ASMTJoint
+    class EXPORT ASMTFixedJoint : public ASMTJoint
     {
         //
     public:

@@ -12,7 +12,7 @@
 #include "CylindricalJoint.h"
 
 namespace MbD {
-    class ASMTCylindricalJoint : public ASMTJoint
+    class EXPORT ASMTCylindricalJoint : public ASMTJoint
     {
         //
     public:

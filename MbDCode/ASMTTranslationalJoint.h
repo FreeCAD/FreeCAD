@@ -12,7 +12,7 @@
 #include "TranslationalJoint.h"
 
 namespace MbD {
-    class ASMTTranslationalJoint : public ASMTJoint
+    class EXPORT ASMTTranslationalJoint : public ASMTJoint
     {
         //
     public:

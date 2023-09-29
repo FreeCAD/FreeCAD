@@ -12,7 +12,7 @@
 #include "SphericalJoint.h"
 
 namespace MbD {
-    class ASMTSphericalJoint : public ASMTJoint
+    class EXPORT ASMTSphericalJoint : public ASMTJoint
     {
         //
     public:

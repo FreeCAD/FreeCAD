@@ -12,7 +12,7 @@
 #include "RevoluteJoint.h"
 
 namespace MbD {
-    class ASMTRevoluteJoint : public ASMTJoint
+    class EXPORT ASMTRevoluteJoint : public ASMTJoint
     {
         //
     public:

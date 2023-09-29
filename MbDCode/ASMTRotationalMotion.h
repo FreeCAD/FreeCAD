@@ -12,7 +12,7 @@
 #include "ZRotation.h"
 
 namespace MbD {
-    class ASMTRotationalMotion : public ASMTMotion
+    class EXPORT ASMTRotationalMotion : public ASMTMotion
     {
         //
     public:

@@ -13,7 +13,7 @@
 namespace MbD {
     class PosVelAccData;
 
-    class ASMTPart : public ASMTSpatialContainer
+    class EXPORT ASMTPart : public ASMTSpatialContainer
     {
         //
     public:

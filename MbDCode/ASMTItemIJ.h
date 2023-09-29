@@ -11,7 +11,7 @@
 #include "ASMTItem.h"
 
 namespace MbD {
-    class ASMTItemIJ : public ASMTItem
+    class EXPORT ASMTItemIJ : public ASMTItem
     {
         //
     public:

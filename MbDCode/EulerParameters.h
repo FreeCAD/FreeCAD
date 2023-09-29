@@ -17,6 +17,11 @@ namespace MbD {
 	template<typename T>
 	class EulerParameters : public EulerArray<T>
 	{
+		//Quarternion = {q0, q1, q2, q3}
+		//EulerParameters = {qE1, qE2, qE3, qE4} is preferred because Smalltalk uses one-based indexing.
+		// q0 = qE4
+		//Note: It is tempting to use quarternions in C++ because of zero-based indexing.
+		//Note: But that will make it harder to compare computation results with Smalltalk
 		//aA aB aC pApE
 	public:
 		EulerParameters() : EulerArray<T>(4) {}

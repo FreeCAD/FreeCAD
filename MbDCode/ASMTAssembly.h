@@ -35,6 +35,7 @@ namespace MbD {
 	{
 		//
 	public:
+		static void runSinglePendulumSuperSimplified();
 		static void runSinglePendulumSimplified();
 		static void runSinglePendulum();
 		static void runFile(const char* chars);

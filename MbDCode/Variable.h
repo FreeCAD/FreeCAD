@@ -20,7 +20,7 @@ namespace MbD {
 		Variable(const char* str);
 		Variable(double val);
 		void initialize() override;
-		void setName(std::string& str);
+		void setName(std::string str);
 		const std::string& getName() const;
 		double getValue() override;
 		std::ostream& printOn(std::ostream& s) const override;
