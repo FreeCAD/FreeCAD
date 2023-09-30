@@ -24,45 +24,37 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-#include <Standard_Version.hxx>
-#include <STEPCAFControl_Reader.hxx>
-#include <Transfer_TransientProcess.hxx>
-#include <XSControl_TransferReader.hxx>
-#include <XSControl_WorkSession.hxx>
+#include <IGESControl_Controller.hxx>
+#include <IGESCAFControl_Writer.hxx>
+#include <IGESData_GlobalSection.hxx>
+#include <IGESData_IGESModel.hxx>
+#include <IGESToBRep_Actor.hxx>
 #endif
 
-#include "ReaderStep.h"
+#include "WriterIges.h"
 #include <Base/Exception.h>
-#include <Mod/Part/App/encodeFilename.h>
-#include <Mod/Part/App/ProgressIndicator.h>
+#include <App/Application.h>
+#include <Mod/Part/App/Interface.h>
 
 using namespace Import;
 
-ReaderStep::ReaderStep(const Base::FileInfo& file)  // NOLINT
+WriterIges::WriterIges(const Base::FileInfo& file)  // NOLINT
     : file {file}
 {}
 
-void ReaderStep::read(Handle(TDocStd_Document) hDoc)  // NOLINT
+void WriterIges::write(Handle(TDocStd_Document) hDoc) const  // NOLINT
 {
-    std::string utf8Name = file.filePath();
-    std::string name8bit = Part::encodeFilename(utf8Name);
-    STEPCAFControl_Reader aReader;
-    aReader.SetColorMode(true);
-    aReader.SetNameMode(true);
-    aReader.SetLayerMode(true);
-    aReader.SetSHUOMode(true);
-    if (aReader.ReadFile(name8bit.c_str()) != IFSelect_RetDone) {
-        throw Base::FileException("Cannot read STEP file");
+    IGESControl_Controller::Init();
+    IGESCAFControl_Writer writer;
+    IGESData_GlobalSection header = writer.Model()->GlobalSection();
+    header.SetAuthorName(new TCollection_HAsciiString(Part::Interface::writeIgesHeaderAuthor()));
+    header.SetCompanyName(new TCollection_HAsciiString(Part::Interface::writeIgesHeaderCompany()));
+    header.SetSendName(new TCollection_HAsciiString(Part::Interface::writeIgesHeaderProduct()));
+    writer.Model()->SetGlobalSection(header);
+    writer.Transfer(hDoc);
+    Standard_Boolean ret = writer.Write(name8bit.c_str());
+    if (!ret) {
+        std::string utf8Name = file.filePath();
+        throw Base::FileException("Cannot open file '%s'", utf8Name.c_str());
     }
-
-#if OCC_VERSION_HEX < 0x070500
-    Handle(Message_ProgressIndicator) pi = new Part::ProgressIndicator(100);
-    aReader.Reader().WS()->MapReader()->SetProgress(pi);
-    pi->NewScope(100, "Reading STEP file...");
-    pi->Show();
-#endif
-    aReader.Transfer(hDoc);
-#if OCC_VERSION_HEX < 0x070500
-    pi->EndScope();
-#endif
 }

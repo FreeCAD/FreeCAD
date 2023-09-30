@@ -21,48 +21,27 @@
  *                                                                         *
  **************************************************************************/
 
+#ifndef IMPORT_WRITER_IGES_H
+#define IMPORT_WRITER_IGES_H
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-#include <Standard_Version.hxx>
-#include <STEPCAFControl_Reader.hxx>
-#include <Transfer_TransientProcess.hxx>
-#include <XSControl_TransferReader.hxx>
-#include <XSControl_WorkSession.hxx>
-#endif
+#include <Mod/Import/ImportGlobal.h>
+#include <Base/FileInfo.h>
+#include <TDocStd_Document.hxx>
 
-#include "ReaderStep.h"
-#include <Base/Exception.h>
-#include <Mod/Part/App/encodeFilename.h>
-#include <Mod/Part/App/ProgressIndicator.h>
-
-using namespace Import;
-
-ReaderStep::ReaderStep(const Base::FileInfo& file)  // NOLINT
-    : file {file}
-{}
-
-void ReaderStep::read(Handle(TDocStd_Document) hDoc)  // NOLINT
+namespace Import
 {
-    std::string utf8Name = file.filePath();
-    std::string name8bit = Part::encodeFilename(utf8Name);
-    STEPCAFControl_Reader aReader;
-    aReader.SetColorMode(true);
-    aReader.SetNameMode(true);
-    aReader.SetLayerMode(true);
-    aReader.SetSHUOMode(true);
-    if (aReader.ReadFile(name8bit.c_str()) != IFSelect_RetDone) {
-        throw Base::FileException("Cannot read STEP file");
-    }
 
-#if OCC_VERSION_HEX < 0x070500
-    Handle(Message_ProgressIndicator) pi = new Part::ProgressIndicator(100);
-    aReader.Reader().WS()->MapReader()->SetProgress(pi);
-    pi->NewScope(100, "Reading STEP file...");
-    pi->Show();
-#endif
-    aReader.Transfer(hDoc);
-#if OCC_VERSION_HEX < 0x070500
-    pi->EndScope();
-#endif
-}
+class ImportExport WriterIges
+{
+public:
+    WriterIges(const Base::FileInfo& file);
+
+    void write(Handle(TDocStd_Document) hDoc) const;
+
+private:
+    std::string name8bit;
+    Base::FileInfo file;
+};
+}  // namespace Import
+
+#endif  // IMPORT_WRITER_IGES_H

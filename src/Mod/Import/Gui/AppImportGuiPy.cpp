@@ -45,12 +45,6 @@
 #pragma clang diagnostic ignored "-Wextra-semi"
 #endif
 
-#include <IGESCAFControl_Reader.hxx>
-#include <IGESCAFControl_Writer.hxx>
-#include <IGESControl_Controller.hxx>
-#include <IGESData_GlobalSection.hxx>
-#include <IGESData_IGESModel.hxx>
-#include <IGESToBRep_Actor.hxx>
 #include <Interface_Static.hxx>
 #include <OSD_Exception.hxx>
 #include <Standard_Version.hxx>
@@ -102,8 +96,10 @@
 #include <Gui/ViewProviderLink.h>
 #include <Mod/Import/App/ImportOCAF2.h>
 #include <Mod/Import/App/ReaderGltf.h>
-#include <Mod/Import/App/WriterGltf.h>
+#include <Mod/Import/App/ReaderIges.h>
 #include <Mod/Import/App/ReaderStep.h>
+#include <Mod/Import/App/WriterGltf.h>
+#include <Mod/Import/App/WriterIges.h>
 #include <Mod/Import/App/WriterStep.h>
 #include <Mod/Part/App/ImportIges.h>
 #include <Mod/Part/App/ImportStep.h>
@@ -464,39 +460,9 @@ private:
                 }
             }
             else if (file.hasExtension({"igs", "iges"})) {
-                Base::Reference<ParameterGrp> hGrp = App::GetApplication()
-                                                         .GetUserParameter()
-                                                         .GetGroup("BaseApp")
-                                                         ->GetGroup("Preferences")
-                                                         ->GetGroup("Mod/Part")
-                                                         ->GetGroup("IGES");
-
                 try {
-                    IGESControl_Controller::Init();
-                    IGESCAFControl_Reader aReader;
-                    // http://www.opencascade.org/org/forum/thread_20603/?forum=3
-                    aReader.SetReadVisible(
-                        hGrp->GetBool("SkipBlankEntities", true) ? Standard_True : Standard_False);
-                    aReader.SetColorMode(true);
-                    aReader.SetNameMode(true);
-                    aReader.SetLayerMode(true);
-                    if (aReader.ReadFile((const char*)name8bit.c_str()) != IFSelect_RetDone) {
-                        throw Py::Exception(PyExc_IOError, "cannot read IGES file");
-                    }
-
-#if OCC_VERSION_HEX < 0x070500
-                    Handle(Message_ProgressIndicator) pi = new Part::ProgressIndicator(100);
-                    aReader.WS()->MapReader()->SetProgress(pi);
-                    pi->NewScope(100, "Reading IGES file...");
-                    pi->Show();
-#endif
-                    aReader.Transfer(hDoc);
-#if OCC_VERSION_HEX < 0x070500
-                    pi->EndScope();
-#endif
-                    // http://opencascade.blogspot.de/2009/03/unnoticeable-memory-leaks-part-2.html
-                    Handle(IGESToBRep_Actor)::DownCast(aReader.WS()->TransferReader()->Actor())
-                        ->SetModel(new IGESData_IGESModel);
+                    Import::ReaderIges reader(file);
+                    reader.read(hDoc);
                 }
                 catch (OSD_Exception& e) {
                     Base::Console().Error("%s\n", e.GetMessageString());
@@ -710,22 +676,8 @@ private:
                 writer.write(hDoc);
             }
             else if (file.hasExtension({"igs", "iges"})) {
-                IGESControl_Controller::Init();
-                IGESCAFControl_Writer writer;
-                IGESData_GlobalSection header = writer.Model()->GlobalSection();
-                header.SetAuthorName(
-                    new TCollection_HAsciiString(Part::Interface::writeIgesHeaderAuthor()));
-                header.SetCompanyName(
-                    new TCollection_HAsciiString(Part::Interface::writeIgesHeaderCompany()));
-                header.SetSendName(
-                    new TCollection_HAsciiString(Part::Interface::writeIgesHeaderProduct()));
-                writer.Model()->SetGlobalSection(header);
-                writer.Transfer(hDoc);
-                Standard_Boolean ret = writer.Write((const char*)name8bit.c_str());
-                if (!ret) {
-                    PyErr_Format(PyExc_IOError, "Cannot open file '%s'", Utf8Name.c_str());
-                    throw Py::Exception();
-                }
+                Import::WriterIges writer(file);
+                writer.write(hDoc);
             }
             else if (file.hasExtension({"glb", "gltf"})) {
                 Import::WriterGltf writer(name8bit, file);
@@ -763,37 +715,8 @@ private:
                 reader.read(hDoc);
             }
             else if (file.hasExtension({"igs", "iges"})) {
-                Base::Reference<ParameterGrp> hGrp = App::GetApplication()
-                                                         .GetUserParameter()
-                                                         .GetGroup("BaseApp")
-                                                         ->GetGroup("Preferences")
-                                                         ->GetGroup("Mod/Part")
-                                                         ->GetGroup("IGES");
-                IGESControl_Controller::Init();
-                IGESCAFControl_Reader aReader;
-                // http://www.opencascade.org/org/forum/thread_20603/?forum=3
-                aReader.SetReadVisible(hGrp->GetBool("SkipBlankEntities", true) ? Standard_True
-                                                                                : Standard_False);
-                aReader.SetColorMode(true);
-                aReader.SetNameMode(true);
-                aReader.SetLayerMode(true);
-                if (aReader.ReadFile((Standard_CString)Name) != IFSelect_RetDone) {
-                    throw Py::Exception(PyExc_IOError, "cannot read IGES file");
-                }
-
-#if OCC_VERSION_HEX < 0x070500
-                Handle(Message_ProgressIndicator) pi = new Part::ProgressIndicator(100);
-                aReader.WS()->MapReader()->SetProgress(pi);
-                pi->NewScope(100, "Reading IGES file...");
-                pi->Show();
-#endif
-                aReader.Transfer(hDoc);
-#if OCC_VERSION_HEX < 0x070500
-                pi->EndScope();
-#endif
-                // http://opencascade.blogspot.de/2009/03/unnoticeable-memory-leaks-part-2.html
-                Handle(IGESToBRep_Actor)::DownCast(aReader.WS()->TransferReader()->Actor())
-                    ->SetModel(new IGESData_IGESModel);
+                Import::ReaderIges reader(file);
+                reader.read(hDoc);
             }
             else {
                 throw Py::Exception(PyExc_IOError, "no supported file format");
