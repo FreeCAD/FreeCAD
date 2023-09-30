@@ -901,7 +901,7 @@ Da li želiš da nastaviš?</translation>
       <location filename="../../DlgBindSheet.cpp" line="276"/>
       <source>Error:
 </source>
-      <translation type="unfinished">Error:
+      <translation>Greška:
 </translation>
     </message>
     <message>

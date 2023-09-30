@@ -1,0 +1,15 @@
+# File created by ConvertFCMat.py
+General:
+  UUID: "a74622cd-0e2d-4a96-b8c4-fefcc82ac694"
+  AuthorAndLicense: "(c) 2023 David Carter"
+  Name: "Plastic"
+  Description: "Defines the Plastic appearance properties"
+AppearanceModels:
+  BasicRendering:
+    UUID: 'f006c7e4-35b7-43d5-bbf9-c5d572309e6e'
+    AmbientColor: "(0.1000, 0.1000, 0.1000, 1.0)"
+    DiffuseColor: "(0.0000, 0.0000, 0.0000, 1.0)"
+    EmissiveColor: "(0.0000, 0.0000, 0.0000, 1.0)"
+    Shininess: "0.0078"
+    SpecularColor: "(0.0600, 0.0600, 0.0600, 1.0)"
+    Transparency: "0.0"

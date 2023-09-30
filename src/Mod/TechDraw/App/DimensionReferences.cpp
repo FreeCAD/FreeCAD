@@ -39,32 +39,37 @@
 #include "DimensionReferences.h"
 #include "DrawUtil.h"
 #include "DrawViewPart.h"
-#include "GeometryObject.h"
-
+#include "ShapeUtils.h"
 
 using namespace TechDraw;
 using DU = DrawUtil;
 
 TopoDS_Shape ReferenceEntry::getGeometry() const
 {
-//    Base::Console().Message("RE::getGeometry()\n");
+//    Base::Console().Message("RE::getGeometry() - obj: %s  sub: %s\n",
+//                            getObject()->getNameInDocument(), getSubName());
     if ( getObject()->isDerivedFrom(TechDraw::DrawViewPart::getClassTypeId()) ) {
-        auto dvp = static_cast<TechDraw::DrawViewPart*>(getObject());
-        std::string gType = geomType();
-        if (gType == "Vertex") {
-            auto vgeom = dvp->getVertex(getSubName());
-            return vgeom->getOCCVertex();
+        std::string gType;
+        try {
+            auto dvp = static_cast<TechDraw::DrawViewPart*>(getObject());
+            gType = geomType();
+            if (gType == "Vertex") {
+                auto vgeom = dvp->getVertex(getSubName());
+                return vgeom->getOCCVertex();
+            }
+            if (gType == "Edge") {
+                auto egeom = dvp->getEdge(getSubName());
+                return egeom->getOCCEdge();
+            }
+            if (gType == "Face") {
+                auto fgeom = dvp->getFace(getSubName());
+                return fgeom->toOccFace();
+            }
         }
-        if (gType == "Edge") {
-            auto egeom = dvp->getEdge(getSubName());
-            return egeom->getOCCEdge();
+        catch (...) {
+//            Base::Console().Message("RE::getGeometry - no shape for dimension reference - gType: %s\n", gType.c_str());
+            return {};
         }
-        if (gType == "Face") {
-            auto fgeom = dvp->getFace(getSubName());
-            return fgeom->toOccFace();
-        }
-        //Base::Console().Message("RE::getGeometry - returns null shape! - gType: %s\n", gType.c_str());
-        return {};
     }
 
     Part::TopoShape shape = Part::Feature::getTopoShape(getObject());
@@ -159,3 +164,12 @@ bool ReferenceEntry::is3d() const
     return !getObject()->isDerivedFrom(TechDraw::DrawViewPart::getClassTypeId());
 }
 
+//! check if this reference has valid geometry
+bool ReferenceEntry::isValid() const
+{
+    TopoDS_Shape geom = getGeometry();
+    if (geom.IsNull()) {
+        return false;
+    }
+    return true;
+}
