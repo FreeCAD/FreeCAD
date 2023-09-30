@@ -24,7 +24,6 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-#include <sstream>
 #include <Standard_Version.hxx>
 #include <TDF_Label.hxx>
 #include <TDF_TagSource.hxx>
@@ -60,9 +59,7 @@ void ReaderGltf::read(Handle(TDocStd_Document) hDoc)  // NOLINT
     TCollection_AsciiString filename(file.filePath().c_str());
     Standard_Boolean ret = aReader.Perform(filename, Message_ProgressRange());
     if (!ret) {
-        std::stringstream str;
-        str << "Cannot read from file '"
-            << "" << file.filePath() << "'";
+        throw Base::FileException("Cannot read from file: ", file);
     }
 
     Handle(XCAFDoc_ShapeTool) aShapeTool = XCAFDoc_DocumentTool::ShapeTool(hDoc->Main());
@@ -77,6 +74,7 @@ void ReaderGltf::read(Handle(TDocStd_Document) hDoc)  // NOLINT
     }
 
 #else
+    (void)hDoc;
     throw Base::RuntimeError("gITF support requires OCCT 7.5.0 or later");
 #endif
 }
