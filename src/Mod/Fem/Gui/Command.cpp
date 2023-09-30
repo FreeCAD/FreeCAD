@@ -1194,7 +1194,7 @@ CmdFemCompEmConstraints::CmdFemCompEmConstraints()
     sGroup = QT_TR_NOOP("Fem");
     sMenuText = QT_TR_NOOP("Electromagnetic boundary conditions");
     sToolTipText = QT_TR_NOOP("Electromagnetic boundary conditions");
-    sWhatsThis = "";
+    sWhatsThis = "FEM_CompEmConstraints";
     sStatusTip = sToolTipText;
 }
 
