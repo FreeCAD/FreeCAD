@@ -30,7 +30,6 @@
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wextra-semi"
 #endif
-#include <APIHeaderSection_MakeHeader.hxx>
 #include <IGESCAFControl_Reader.hxx>
 #include <IGESCAFControl_Writer.hxx>
 #include <IGESControl_Controller.hxx>
@@ -39,8 +38,6 @@
 #include <IGESToBRep_Actor.hxx>
 #include <Interface_Static.hxx>
 #include <OSD_Exception.hxx>
-#include <STEPCAFControl_Reader.hxx>
-#include <STEPCAFControl_Writer.hxx>
 #include <Standard_Version.hxx>
 #include <TColStd_IndexedDataMapOfStringString.hxx>
 #include <TDocStd_Document.hxx>
@@ -74,7 +71,9 @@
 
 #include "ImportOCAF2.h"
 #include "ReaderGltf.h"
+#include "ReaderStep.h"
 #include "WriterGltf.h"
+#include "WriterStep.h"
 
 namespace Import
 {
@@ -177,25 +176,8 @@ private:
 
             if (file.hasExtension({"stp", "step"})) {
                 try {
-                    STEPCAFControl_Reader aReader;
-                    aReader.SetColorMode(true);
-                    aReader.SetNameMode(true);
-                    aReader.SetLayerMode(true);
-                    if (aReader.ReadFile((Standard_CString)(name8bit.c_str()))
-                        != IFSelect_RetDone) {
-                        throw Py::Exception(PyExc_IOError, "cannot read STEP file");
-                    }
-
-#if OCC_VERSION_HEX < 0x070500
-                    Handle(Message_ProgressIndicator) pi = new Part::ProgressIndicator(100);
-                    aReader.Reader().WS()->MapReader()->SetProgress(pi);
-                    pi->NewScope(100, "Reading STEP file...");
-                    pi->Show();
-#endif
-                    aReader.Transfer(hDoc);
-#if OCC_VERSION_HEX < 0x070500
-                    pi->EndScope();
-#endif
+                    Import::ReaderStep reader(file);
+                    reader.read(hDoc);
                 }
                 catch (OSD_Exception& e) {
                     Base::Console().Error("%s\n", e.GetMessageString());
@@ -389,35 +371,8 @@ private:
 
             Base::FileInfo file(Utf8Name.c_str());
             if (file.hasExtension({"stp", "step"})) {
-                STEPCAFControl_Writer writer;
-                Part::Interface::writeStepAssembly(Part::Interface::Assembly::On);
-                writer.Transfer(hDoc, STEPControl_AsIs);
-
-                APIHeaderSection_MakeHeader makeHeader(writer.ChangeWriter().Model());
-                Base::Reference<ParameterGrp> hGrp = App::GetApplication()
-                                                         .GetUserParameter()
-                                                         .GetGroup("BaseApp")
-                                                         ->GetGroup("Preferences")
-                                                         ->GetGroup("Mod/Part")
-                                                         ->GetGroup("STEP");
-
-                // Don't set name because STEP doesn't support UTF-8
-                // https://forum.freecad.org/viewtopic.php?f=8&t=52967
-                makeHeader.SetAuthorValue(
-                    1,
-                    new TCollection_HAsciiString(hGrp->GetASCII("Author", "Author").c_str()));
-                makeHeader.SetOrganizationValue(
-                    1,
-                    new TCollection_HAsciiString(hGrp->GetASCII("Company").c_str()));
-                makeHeader.SetOriginatingSystem(
-                    new TCollection_HAsciiString(App::Application::getExecutableName().c_str()));
-                makeHeader.SetDescriptionValue(1, new TCollection_HAsciiString("FreeCAD Model"));
-                IFSelect_ReturnStatus ret = writer.Write(name8bit.c_str());
-                if (ret == IFSelect_RetError || ret == IFSelect_RetFail
-                    || ret == IFSelect_RetStop) {
-                    PyErr_Format(PyExc_IOError, "Cannot open file '%s'", Utf8Name.c_str());
-                    throw Py::Exception();
-                }
+                Import::WriterStep writer(file);
+                writer.write(hDoc);
             }
             else if (file.hasExtension({"igs", "iges"})) {
                 IGESControl_Controller::Init();

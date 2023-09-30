@@ -37,6 +37,8 @@ SET(Import_SRCS
     #ImportOCAFAssembly.h
     ReaderGltf.cpp
     ReaderGltf.h
+    ReaderStep.cpp
+    ReaderStep.h
     StepShapePy.xml
     StepShape.h
     StepShape.cpp
@@ -45,6 +47,8 @@ SET(Import_SRCS
     PreCompiled.h
     WriterGltf.cpp
     WriterGltf.h
+    WriterStep.cpp
+    WriterStep.h
     dxf/ImpExpDxf.cpp
     dxf/ImpExpDxf.h
     dxf/dxf.cpp
