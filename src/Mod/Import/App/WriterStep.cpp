@@ -25,6 +25,7 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 #include <APIHeaderSection_MakeHeader.hxx>
+#include <NCollection_Vector.hxx>
 #include <STEPCAFControl_Writer.hxx>
 #endif
 
