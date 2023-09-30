@@ -1251,9 +1251,9 @@
       <source>Measure the linear distance between two points;
 if edges or faces are picked, it will measure
 between two vertices of them.</source>
-      <translation>Mesurer la distance linéaire entre deux points ;
-Si des arêtes ou des faces sont sélectionnées,
-cela mesurera entre deux de leurs sommets.</translation>
+      <translation>Mesurer la distance linéaire entre deux points. Si des 
+arêtes ou des faces sont sélectionnées, cela mesurera
+entre deux de leurs sommets.</translation>
     </message>
   </context>
   <context>
@@ -1266,14 +1266,13 @@ cela mesurera entre deux de leurs sommets.</translation>
     <message>
       <location filename="../../Command.cpp" line="2198"/>
       <source>Refresh</source>
-      <translation>Actualiser</translation>
+      <translation>Rafraîchir</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2199"/>
       <source>Recalculate the dimensions
 if the measured points have moved.</source>
-      <translation>Recalculer les cotes
-si les points mesurés ont été déplacés.</translation>
+      <translation>Recalculer les mesures si les points mesurés ont été déplacés.</translation>
     </message>
   </context>
   <context>
@@ -1286,14 +1285,14 @@ si les points mesurés ont été déplacés.</translation>
     <message>
       <location filename="../../Command.cpp" line="2294"/>
       <source>Toggle 3D</source>
-      <translation>Basculer en 3D</translation>
+      <translation>Basculer vers les mesures dans la 3D</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2295"/>
       <source>Toggle on and off all direct dimensions,
 including angular.</source>
-      <translation>Basculer toutes les cotes directes,
-y compris angulaire.</translation>
+      <translation>Basculer toutes les mesures directes,
+y compris angulaires.</translation>
     </message>
   </context>
   <context>
@@ -1312,7 +1311,7 @@ y compris angulaire.</translation>
       <location filename="../../Command.cpp" line="2258"/>
       <source>Toggle on and off all currently visible dimensions,
 direct, orthogonal, and angular.</source>
-      <translation>Basculer toutes les cotes actuellement visibles,
+      <translation>Basculer toutes les mesures actuellement visibles,
 directes, orthogonales et angulaires.</translation>
     </message>
   </context>
@@ -1326,15 +1325,15 @@ directes, orthogonales et angulaires.</translation>
     <message>
       <location filename="../../Command.cpp" line="2325"/>
       <source>Toggle Delta</source>
-      <translation>Basculer en mode delta</translation>
+      <translation>Basculer vers les mesures selon le repère global</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2326"/>
       <source>Toggle on and off all orthogonal dimensions,
 meaning that a direct dimension will be decomposed
 into its X, Y, and Z components.</source>
-      <translation>Basculer toutes les cotes orthogonales,
-ce qui signifie qu’une cote directe sera 
+      <translation>Basculer toutes les mesures orthogonales,
+ce qui signifie qu’une mesure directe sera 
 décomposée en ses composantes X, Y et Z.</translation>
     </message>
   </context>
@@ -3481,7 +3480,7 @@ during file reading (slower but higher details).</source>
     <message>
       <location filename="../../DlgPartImportIges.ui" line="14"/>
       <source>IGES input file</source>
-      <translation>Fichier d'entrée IGES</translation>
+      <translation>Fichier source .IGES</translation>
     </message>
     <message>
       <location filename="../../DlgPartImportIges.ui" line="20"/>
@@ -3507,7 +3506,7 @@ during file reading (slower but higher details).</source>
     <message>
       <location filename="../../DlgPartImportStep.ui" line="14"/>
       <source>Step input file</source>
-      <translation>Fichier d'entrée STEP</translation>
+      <translation>Fichier source .STEP</translation>
     </message>
     <message>
       <location filename="../../DlgPartImportStep.ui" line="20"/>
@@ -4202,7 +4201,7 @@ during file reading (slower but higher details).</source>
     <message>
       <location filename="../../DlgSettingsMeasure.ui" line="20"/>
       <source>Measure</source>
-      <translation>Mesure</translation>
+      <translation>Mesures</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMeasure.ui" line="26"/>
@@ -4212,22 +4211,22 @@ during file reading (slower but higher details).</source>
     <message>
       <location filename="../../DlgSettingsMeasure.ui" line="51"/>
       <source>3D color</source>
-      <translation>Couleur 3D</translation>
+      <translation>Couleur des mesures dans la 3D</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMeasure.ui" line="88"/>
       <source>Delta color</source>
-      <translation>Couleur pour les dimensions delta</translation>
+      <translation>Couleur des mesures dans le repère global</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMeasure.ui" line="112"/>
       <source>Angular color</source>
-      <translation>Couleur angulaire</translation>
+      <translation>Couleur des mesures angulaires</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMeasure.ui" line="145"/>
       <source>Font size</source>
-      <translation>Taille de police</translation>
+      <translation>Taille de la police</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMeasure.ui" line="158"/>
@@ -4242,7 +4241,7 @@ during file reading (slower but higher details).</source>
     <message>
       <location filename="../../DlgSettingsMeasure.ui" line="189"/>
       <source>defaultFont</source>
-      <translation>defaultFont</translation>
+      <translation>Police par défaut</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMeasure.ui" line="202"/>

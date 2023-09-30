@@ -6820,7 +6820,7 @@ A 'Compound Filter' can be used to extract the remaining pieces.</source>
     <message>
       <location filename="../../DlgScale.cpp" line="206"/>
       <source>The document '%1' doesn't exist.</source>
-      <translation type="unfinished">The document '%1' doesn't exist.</translation>
+      <translation>Документ «%1» не существует.</translation>
     </message>
     <message>
       <location filename="../../DlgScale.cpp" line="254"/>

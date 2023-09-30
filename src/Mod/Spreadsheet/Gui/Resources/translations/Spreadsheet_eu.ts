@@ -901,7 +901,7 @@ Jarraitu?</translation>
       <location filename="../../DlgBindSheet.cpp" line="276"/>
       <source>Error:
 </source>
-      <translation type="unfinished">Error:
+      <translation>Errorea:
 </translation>
     </message>
     <message>

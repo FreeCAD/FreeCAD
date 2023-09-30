@@ -900,7 +900,7 @@ Czy chcesz kontynuować?</translation>
       <location filename="../../DlgBindSheet.cpp" line="276"/>
       <source>Error:
 </source>
-      <translation type="unfinished">Error:
+      <translation>Błąd:
 </translation>
     </message>
     <message>

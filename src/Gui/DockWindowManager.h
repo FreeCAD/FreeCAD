@@ -109,6 +109,7 @@ private Q_SLOTS:
 
 private:
     QDockWidget* findDockWidget(const QList<QDockWidget*>&, const QString&) const;
+    void tabifyDockWidgets(DockWindowItems*);
 
     DockWindowManager();
     ~DockWindowManager() override;

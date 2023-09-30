@@ -885,7 +885,7 @@ so that self intersection is avoided.</source>
       <location filename="../../Command.cpp" line="890"/>
       <location filename="../../SketchWorkflow.cpp" line="297"/>
       <source>Make copy</source>
-      <translation type="unfinished">Make copy</translation>
+      <translation>Δημιουργία αντιγράφου</translation>
     </message>
     <message>
       <location filename="../../SketchWorkflow.cpp" line="247"/>
@@ -1171,7 +1171,7 @@ Please select a body from below, or create a new body.</translation>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="391"/>
       <source>Rotation angle:</source>
-      <translation type="unfinished">Rotation angle:</translation>
+      <translation>Γωνία περιστροφής:</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="465"/>

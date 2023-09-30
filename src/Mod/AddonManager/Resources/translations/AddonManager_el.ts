@@ -528,12 +528,12 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     <message>
       <location filename="../../developer_mode_freecad_versions.ui" line="14"/>
       <source>Supported FreeCAD Versions</source>
-      <translation type="unfinished">Supported FreeCAD Versions</translation>
+      <translation>Υποστηριζόμενες Εκδόσεις FreeCAD</translation>
     </message>
     <message>
       <location filename="../../developer_mode_freecad_versions.ui" line="20"/>
       <source>Minimum FreeCAD Version Supported</source>
-      <translation type="unfinished">Minimum FreeCAD Version Supported</translation>
+      <translation>Ελάχιστη Υποστηριζόμενη Έκδοση FreeCAD</translation>
     </message>
     <message>
       <location filename="../../developer_mode_freecad_versions.ui" line="27"/>
@@ -544,7 +544,7 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     <message>
       <location filename="../../developer_mode_freecad_versions.ui" line="34"/>
       <source>Maximum FreeCAD Version Supported</source>
-      <translation type="unfinished">Maximum FreeCAD Version Supported</translation>
+      <translation>Μέγιστη Υποστηριζόμενη Έκδοση FreeCAD</translation>
     </message>
     <message>
       <location filename="../../developer_mode_freecad_versions.ui" line="48"/>
@@ -731,22 +731,22 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../PythonDependencyUpdateDialog.ui" line="59"/>
       <source>Package name</source>
-      <translation type="unfinished">Package name</translation>
+      <translation>Όνομα πακέτου</translation>
     </message>
     <message>
       <location filename="../../PythonDependencyUpdateDialog.ui" line="64"/>
       <source>Installed version</source>
-      <translation type="unfinished">Installed version</translation>
+      <translation>Εγκατεστημένη έκδοση</translation>
     </message>
     <message>
       <location filename="../../PythonDependencyUpdateDialog.ui" line="69"/>
       <source>Available version</source>
-      <translation type="unfinished">Available version</translation>
+      <translation>Διαθέσιμη έκδοση</translation>
     </message>
     <message>
       <location filename="../../PythonDependencyUpdateDialog.ui" line="74"/>
       <source>Used by</source>
-      <translation type="unfinished">Used by</translation>
+      <translation>Χρησιμοποιείται από</translation>
     </message>
     <message>
       <location filename="../../PythonDependencyUpdateDialog.ui" line="87"/>
@@ -756,7 +756,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../PythonDependencyUpdateDialog.ui" line="99"/>
       <source>Update all available</source>
-      <translation type="unfinished">Update all available</translation>
+      <translation>Ενημέρωση όλων των διαθέσιμων</translation>
     </message>
   </context>
   <context>
@@ -777,12 +777,12 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../update_all.ui" line="14"/>
       <source>Updating Addons</source>
-      <translation type="unfinished">Updating Addons</translation>
+      <translation>Ενημέρωση Πρόσθετων</translation>
     </message>
     <message>
       <location filename="../../update_all.ui" line="23"/>
       <source>Updating out-of-date addons...</source>
-      <translation type="unfinished">Updating out-of-date addons...</translation>
+      <translation>Ενημέρωση μη ενημερωμένων προσθέτων...</translation>
     </message>
   </context>
   <context>
@@ -1997,7 +1997,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../package_list.py" line="459"/>
       <source>Installed version</source>
-      <translation type="unfinished">Installed version</translation>
+      <translation>Εγκατεστημένη έκδοση</translation>
     </message>
     <message>
       <location filename="../../package_list.py" line="465"/>
@@ -2012,7 +2012,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../package_list.py" line="477"/>
       <source>Available version</source>
-      <translation type="unfinished">Available version</translation>
+      <translation>Διαθέσιμη έκδοση</translation>
     </message>
     <message>
       <location filename="../../package_list.py" line="747"/>

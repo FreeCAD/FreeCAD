@@ -346,7 +346,7 @@ static PyObject* _pyObjectFromVariant(const QVariant& value)
         return new PyObject();
     }
 
-    if (value.userType() == QMetaType::type("Base::Quantity")) {
+    if (value.userType() == qMetaTypeId<Base::Quantity>()) {
         return new Base::QuantityPy(new Base::Quantity(value.value<Base::Quantity>()));
     }
     else if (value.userType() == QMetaType::Double) {
