@@ -588,7 +588,6 @@ private:
 
         std::string Utf8Name = std::string(Name);
         PyMem_Free(Name);
-        std::string name8bit = Part::encodeFilename(Utf8Name);
 
         // determine export options
         Part::OCAF::ImportExportSettings settings;
@@ -680,7 +679,7 @@ private:
                 writer.write(hDoc);
             }
             else if (file.hasExtension({"glb", "gltf"})) {
-                Import::WriterGltf writer(name8bit, file);
+                Import::WriterGltf writer(file);
                 writer.write(hDoc);
             }
 

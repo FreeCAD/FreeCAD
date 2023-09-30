@@ -32,6 +32,7 @@
 #include "WriterStep.h"
 #include <Base/Exception.h>
 #include <App/Application.h>
+#include <Mod/Part/App/encodeFilename.h>
 #include <Mod/Part/App/Interface.h>
 
 using namespace Import;
@@ -42,6 +43,9 @@ WriterStep::WriterStep(const Base::FileInfo& file)  // NOLINT
 
 void WriterStep::write(Handle(TDocStd_Document) hDoc) const  // NOLINT
 {
+    std::string utf8Name = file.filePath();
+    std::string name8bit = Part::encodeFilename(utf8Name);
+
     STEPCAFControl_Writer writer;
     Part::Interface::writeStepAssembly(Part::Interface::Assembly::On);
     writer.Transfer(hDoc, STEPControl_AsIs);
@@ -67,7 +71,6 @@ void WriterStep::write(Handle(TDocStd_Document) hDoc) const  // NOLINT
     makeHeader.SetDescriptionValue(1, new TCollection_HAsciiString("FreeCAD Model"));
     IFSelect_ReturnStatus ret = writer.Write(name8bit.c_str());
     if (ret == IFSelect_RetError || ret == IFSelect_RetFail || ret == IFSelect_RetStop) {
-        std::string utf8Name = file.filePath();
-        throw Base::FileException("Cannot open file '%s'", utf8Name.c_str());
+        throw Base::FileException("Cannot open file: ", file);
     }
 }

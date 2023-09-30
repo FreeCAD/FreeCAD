@@ -34,6 +34,7 @@
 #include "WriterIges.h"
 #include <Base/Exception.h>
 #include <App/Application.h>
+#include <Mod/Part/App/encodeFilename.h>
 #include <Mod/Part/App/Interface.h>
 
 using namespace Import;
@@ -44,6 +45,9 @@ WriterIges::WriterIges(const Base::FileInfo& file)  // NOLINT
 
 void WriterIges::write(Handle(TDocStd_Document) hDoc) const  // NOLINT
 {
+    std::string utf8Name = file.filePath();
+    std::string name8bit = Part::encodeFilename(utf8Name);
+
     IGESControl_Controller::Init();
     IGESCAFControl_Writer writer;
     IGESData_GlobalSection header = writer.Model()->GlobalSection();
@@ -54,7 +58,6 @@ void WriterIges::write(Handle(TDocStd_Document) hDoc) const  // NOLINT
     writer.Transfer(hDoc);
     Standard_Boolean ret = writer.Write(name8bit.c_str());
     if (!ret) {
-        std::string utf8Name = file.filePath();
-        throw Base::FileException("Cannot open file '%s'", utf8Name.c_str());
+        throw Base::FileException("Cannot open file: ", file);
     }
 }
