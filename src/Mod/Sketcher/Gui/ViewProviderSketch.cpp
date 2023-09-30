@@ -2704,28 +2704,28 @@ void ViewProviderSketch::doBoxSelection(const SbVec2s& startPos, const SbVec2s& 
                     }
                 }
 
-                if (bpolyInside) {
-                    std::stringstream ss;
-                    ss << "Edge" << GeoId + 1;
-                    addSelection2(ss.str());
-                }
-                if (pnt0Inside) {
-                    std::stringstream ss;
-                    ss << "Vertex" << VertexId - 1;
-                    addSelection2(ss.str());
-                }
+            if (bpolyInside) {
+                std::stringstream ss;
+                ss << "Edge" << GeoId + 1;
+                addSelection2(ss.str());
+            }
+        }
+            if (pnt0Inside) {
+                std::stringstream ss;
+                ss << "Vertex" << VertexId - 1;
+                addSelection2(ss.str());
+            }
 
-                if (pnt1Inside) {
-                    std::stringstream ss;
-                    ss << "Vertex" << VertexId;
-                    addSelection2(ss.str());
-                }
+            if (pnt1Inside) {
+                std::stringstream ss;
+                ss << "Vertex" << VertexId;
+                addSelection2(ss.str());
+            }
 
-                if (polygon.Contains(Base::Vector2d(pnt2.x, pnt2.y))) {
-                    std::stringstream ss;
-                    ss << "Vertex" << VertexId + 1;
-                    addSelection2(ss.str());
-                }
+            if (polygon.Contains(Base::Vector2d(pnt2.x, pnt2.y))) {
+                std::stringstream ss;
+                ss << "Vertex" << VertexId + 1;
+                addSelection2(ss.str());
             }
         }
         else if ((*it)->is<Part::GeomArcOfParabola>()) {
@@ -2795,23 +2795,24 @@ void ViewProviderSketch::doBoxSelection(const SbVec2s& startPos, const SbVec2s& 
                     ss << "Edge" << GeoId + 1;
                     addSelection2(ss.str());
                 }
-                if (pnt0Inside) {
-                    std::stringstream ss;
-                    ss << "Vertex" << VertexId - 1;
-                    addSelection2(ss.str());
-                }
+            }
 
-                if (pnt1Inside) {
-                    std::stringstream ss;
-                    ss << "Vertex" << VertexId;
-                    addSelection2(ss.str());
-                }
+            if (pnt0Inside) {
+                std::stringstream ss;
+                ss << "Vertex" << VertexId - 1;
+                addSelection2(ss.str());
+            }
 
-                if (polygon.Contains(Base::Vector2d(pnt2.x, pnt2.y))) {
-                    std::stringstream ss;
-                    ss << "Vertex" << VertexId + 1;
-                    addSelection2(ss.str());
-                }
+            if (pnt1Inside) {
+                std::stringstream ss;
+                ss << "Vertex" << VertexId;
+                addSelection2(ss.str());
+            }
+
+            if (polygon.Contains(Base::Vector2d(pnt2.x, pnt2.y))) {
+                std::stringstream ss;
+                ss << "Vertex" << VertexId + 1;
+                addSelection2(ss.str());
             }
         }
         else if ((*it)->is<Part::GeomBSplineCurve>()) {
