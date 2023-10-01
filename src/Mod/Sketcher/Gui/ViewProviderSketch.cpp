@@ -562,10 +562,13 @@ void ViewProviderSketch::purgeHandler()
     Gui::Selection().clearSelection();
 
     // ensure that we are in sketch only selection mode
-    Gui::MDIView* mdi = Gui::Application::Instance->editDocument()->getActiveView();
-    Gui::View3DInventorViewer* viewer;
-    viewer = static_cast<Gui::View3DInventor*>(mdi)->getViewer();
-    viewer->setSelectionEnabled(false);
+    auto* view = dynamic_cast<Gui::View3DInventor*>(Gui::Application::Instance->editDocument()->getActiveView());
+
+    if(view) {
+        Gui::View3DInventorViewer* viewer;
+        viewer = static_cast<Gui::View3DInventor*>(view)->getViewer();
+        viewer->setSelectionEnabled(false);
+    }
 }
 
 void ViewProviderSketch::setAxisPickStyle(bool on)
