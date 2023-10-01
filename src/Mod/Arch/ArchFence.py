@@ -81,13 +81,13 @@ class _Fence(ArchComponent.Component):
 
         self.Type = "Fence"
 
-    def __getstate__(self):
+    def dumps(self):
         if hasattr(self, 'sectionFaceNumbers'):
             return self.sectionFaceNumbers
 
         return None
 
-    def __setstate__(self, state):
+    def loads(self, state):
         if state is not None and isinstance(state, tuple):
             self.sectionFaceNumbers = state[0]
 

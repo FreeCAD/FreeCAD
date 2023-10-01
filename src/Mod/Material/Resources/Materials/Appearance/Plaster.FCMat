@@ -1,0 +1,15 @@
+# File created by ConvertFCMat.py
+General:
+  UUID: "569dccb6-c64b-4dd0-9d3c-1b78f40ad1a5"
+  AuthorAndLicense: "(c) 2023 David Carter"
+  Name: "Plaster"
+  Description: "Defines the Plaster appearance properties"
+AppearanceModels:
+  BasicRendering:
+    UUID: 'f006c7e4-35b7-43d5-bbf9-c5d572309e6e'
+    AmbientColor: "(0.0500, 0.0500, 0.0500, 1.0)"
+    DiffuseColor: "(0.1167, 0.1167, 0.1167, 1.0)"
+    EmissiveColor: "(0.0000, 0.0000, 0.0000, 1.0)"
+    Shininess: "0.0078"
+    SpecularColor: "(0.0305, 0.0305, 0.0305, 1.0)"
+    Transparency: "0.0"

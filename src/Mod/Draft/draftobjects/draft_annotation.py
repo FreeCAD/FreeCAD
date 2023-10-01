@@ -82,11 +82,11 @@ class DraftAnnotation(object):
         if multiplier is not None:
             vobj.ScaleMultiplier = multiplier
 
-    def __getstate__(self):
+    def dumps(self):
 
         return
 
-    def __setstate__(self,state):
+    def loads(self,state):
 
         return
 

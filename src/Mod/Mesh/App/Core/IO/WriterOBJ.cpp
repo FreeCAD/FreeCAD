@@ -22,10 +22,10 @@
 
 #include "PreCompiled.h"
 
+#include "Core/Iterator.h"
 #include <Base/Console.h>
 #include <Base/Sequencer.h>
 #include <Base/Tools.h>
-#include "Core/Iterator.h"
 
 #include "WriterOBJ.h"
 
@@ -34,24 +34,25 @@ using namespace MeshCore;
 
 struct WriterOBJ::Color_Less
 {
-    bool operator()(const App::Color& x,
-                    const App::Color& y) const
+    bool operator()(const App::Color& x, const App::Color& y) const
     {
-        if (x.r != y.r)
+        if (x.r != y.r) {
             return x.r < y.r;
-        if (x.g != y.g)
+        }
+        if (x.g != y.g) {
             return x.g < y.g;
-        if (x.b != y.b)
+        }
+        if (x.b != y.b) {
             return x.b < y.b;
-        return false; // equal colors
+        }
+        return false;  // equal colors
     }
 };
 
 WriterOBJ::WriterOBJ(const MeshKernel& kernel, const Material* material)
-  : _kernel(kernel)
-  , _material(material)
-{
-}
+    : _kernel(kernel)
+    , _material(material)
+{}
 
 void WriterOBJ::SetGroups(const std::vector<Group>& g)
 {
@@ -61,8 +62,9 @@ void WriterOBJ::SetGroups(const std::vector<Group>& g)
 void WriterOBJ::SetTransform(const Base::Matrix4D& mat)
 {
     _transform = mat;
-    if (mat != Base::Matrix4D())
+    if (mat != Base::Matrix4D()) {
         apply_transform = true;
+    }
 }
 
 bool WriterOBJ::Save(std::ostream& out)
@@ -70,8 +72,9 @@ bool WriterOBJ::Save(std::ostream& out)
     const MeshPointArray& rPoints = _kernel.GetPoints();
     const MeshFacetArray& rFacets = _kernel.GetFacets();
 
-    if (!out || out.bad())
+    if (!out || out.bad()) {
         return false;
+    }
 
     Base::SequencerLauncher seq("saving...", _kernel.CountPoints() + _kernel.CountFacets());
     bool exportColorPerVertex = false;
@@ -80,7 +83,8 @@ bool WriterOBJ::Save(std::ostream& out)
     if (_material) {
         if (_material->binding == MeshIO::PER_FACE) {
             if (_material->diffuseColor.size() != rFacets.size()) {
-                Base::Console().Warning("Cannot export color information because there is a different number of faces and colors");
+                Base::Console().Warning("Cannot export color information because there is a "
+                                        "different number of faces and colors");
             }
             else {
                 exportColorPerFace = true;
@@ -88,7 +92,8 @@ bool WriterOBJ::Save(std::ostream& out)
         }
         else if (_material->binding == MeshIO::PER_VERTEX) {
             if (_material->diffuseColor.size() != rPoints.size()) {
-                Base::Console().Warning("Cannot export color information because there is a different number of points and colors");
+                Base::Console().Warning("Cannot export color information because there is a "
+                                        "different number of points and colors");
             }
             else {
                 exportColorPerVertex = true;
@@ -96,7 +101,8 @@ bool WriterOBJ::Save(std::ostream& out)
         }
         else if (_material->binding == MeshIO::OVERALL) {
             if (_material->diffuseColor.empty()) {
-                Base::Console().Warning("Cannot export color information because there is no color defined");
+                Base::Console().Warning(
+                    "Cannot export color information because there is no color defined");
             }
             else {
                 exportColorPerVertex = true;
@@ -137,27 +143,27 @@ bool WriterOBJ::Save(std::ostream& out)
             int g = static_cast<int>(c.g * 255.0f);
             int b = static_cast<int>(c.b * 255.0f);
 
-            out << "v " << pt.x << " " << pt.y << " " << pt.z << " " << r << " " << g << " " << b << '\n';
+            out << "v " << pt.x << " " << pt.y << " " << pt.z << " " << r << " " << g << " " << b
+                << '\n';
         }
         else {
             out << "v " << pt.x << " " << pt.y << " " << pt.z << '\n';
         }
-        seq.next(true); // allow to cancel
+        seq.next(true);  // allow to cancel
     }
     // Export normals
     MeshFacetIterator clIter(_kernel), clEnd(_kernel);
-    const MeshGeomFacet* pclFacet;
+    const MeshGeomFacet* pclFacet {};
 
     clIter.Begin();
     clEnd.End();
 
     while (clIter < clEnd) {
         pclFacet = &(*clIter);
-        out << "vn " << pclFacet->GetNormal().x << " "
-            << pclFacet->GetNormal().y << " "
+        out << "vn " << pclFacet->GetNormal().x << " " << pclFacet->GetNormal().y << " "
             << pclFacet->GetNormal().z << '\n';
         ++clIter;
-        seq.next(true); // allow to cancel
+        seq.next(true);  // allow to cancel
     }
 
     if (_groups.empty()) {
@@ -173,29 +179,31 @@ bool WriterOBJ::Save(std::ostream& out)
             App::Color prev;
             int faceIdx = 1;
             const std::vector<App::Color>& Kd = _material->diffuseColor;
-            for (MeshFacetArray::_TConstIterator it = rFacets.begin(); it != rFacets.end(); ++it, index++) {
+            for (MeshFacetArray::_TConstIterator it = rFacets.begin(); it != rFacets.end();
+                 ++it, index++) {
                 if (index == 0 || prev != Kd[index]) {
                     prev = Kd[index];
-                    std::vector<App::Color>::iterator c_it = std::find(colors.begin(), colors.end(), prev);
+                    std::vector<App::Color>::iterator c_it =
+                        std::find(colors.begin(), colors.end(), prev);
                     if (c_it != colors.end()) {
                         out << "usemtl material_" << (c_it - colors.begin()) << '\n';
                     }
                 }
-                out << "f " << it->_aulPoints[0]+1 << "//" << faceIdx << " "
-                            << it->_aulPoints[1]+1 << "//" << faceIdx << " "
-                            << it->_aulPoints[2]+1 << "//" << faceIdx << '\n';
-                seq.next(true); // allow to cancel
+                out << "f " << it->_aulPoints[0] + 1 << "//" << faceIdx << " "
+                    << it->_aulPoints[1] + 1 << "//" << faceIdx << " " << it->_aulPoints[2] + 1
+                    << "//" << faceIdx << '\n';
+                seq.next(true);  // allow to cancel
                 faceIdx++;
             }
         }
         else {
             // facet indices (no texture and normal indices)
             std::size_t faceIdx = 1;
-            for (const auto & it : rFacets) {
-                out << "f " << it._aulPoints[0]+1 << "//" << faceIdx << " "
-                            << it._aulPoints[1]+1 << "//" << faceIdx << " "
-                            << it._aulPoints[2]+1 << "//" << faceIdx << '\n';
-                seq.next(true); // allow to cancel
+            for (const auto& it : rFacets) {
+                out << "f " << it._aulPoints[0] + 1 << "//" << faceIdx << " "
+                    << it._aulPoints[1] + 1 << "//" << faceIdx << " " << it._aulPoints[2] + 1
+                    << "//" << faceIdx << '\n';
+                seq.next(true);  // allow to cancel
                 faceIdx++;
             }
         }
@@ -211,35 +219,36 @@ bool WriterOBJ::Save(std::ostream& out)
             App::Color prev;
             const std::vector<App::Color>& Kd = _material->diffuseColor;
 
-            for (const auto & gt : _groups) {
+            for (const auto& gt : _groups) {
                 out << "g " << Base::Tools::escapedUnicodeFromUtf8(gt.name.c_str()) << '\n';
                 for (FacetIndex it : gt.indices) {
                     const MeshFacet& f = rFacets[it];
                     if (first || prev != Kd[it]) {
                         first = false;
                         prev = Kd[it];
-                        std::vector<App::Color>::iterator c_it = std::find(colors.begin(), colors.end(), prev);
+                        std::vector<App::Color>::iterator c_it =
+                            std::find(colors.begin(), colors.end(), prev);
                         if (c_it != colors.end()) {
                             out << "usemtl material_" << (c_it - colors.begin()) << '\n';
                         }
                     }
 
-                    out << "f " << f._aulPoints[0]+1 << "//" << it + 1 << " "
-                                << f._aulPoints[1]+1 << "//" << it + 1 << " "
-                                << f._aulPoints[2]+1 << "//" << it + 1 << '\n';
-                    seq.next(true); // allow to cancel
+                    out << "f " << f._aulPoints[0] + 1 << "//" << it + 1 << " "
+                        << f._aulPoints[1] + 1 << "//" << it + 1 << " " << f._aulPoints[2] + 1
+                        << "//" << it + 1 << '\n';
+                    seq.next(true);  // allow to cancel
                 }
             }
         }
         else {
-            for (const auto & gt : _groups) {
+            for (const auto& gt : _groups) {
                 out << "g " << Base::Tools::escapedUnicodeFromUtf8(gt.name.c_str()) << '\n';
                 for (FacetIndex it : gt.indices) {
                     const MeshFacet& f = rFacets[it];
-                    out << "f " << f._aulPoints[0]+1 << "//" << it + 1 << " "
-                                << f._aulPoints[1]+1 << "//" << it + 1 << " "
-                                << f._aulPoints[2]+1 << "//" << it + 1 << '\n';
-                    seq.next(true); // allow to cancel
+                    out << "f " << f._aulPoints[0] + 1 << "//" << it + 1 << " "
+                        << f._aulPoints[1] + 1 << "//" << it + 1 << " " << f._aulPoints[2] + 1
+                        << "//" << it + 1 << '\n';
+                    seq.next(true);  // allow to cancel
                 }
             }
         }
@@ -250,8 +259,9 @@ bool WriterOBJ::Save(std::ostream& out)
 
 bool WriterOBJ::SaveMaterial(std::ostream& out)
 {
-    if (!out || out.bad())
+    if (!out || out.bad()) {
         return false;
+    }
 
     if (_material) {
         if (_material->binding == MeshIO::PER_FACE) {
@@ -265,7 +275,7 @@ bool WriterOBJ::SaveMaterial(std::ostream& out)
             out << "# Created by FreeCAD <http://www.freecad.org>: 'None'\n";
             out << "# Material Count: " << Kd.size() << '\n';
 
-            for (std::size_t i=0; i<Kd.size(); i++) {
+            for (std::size_t i = 0; i < Kd.size(); i++) {
                 out << '\n';
                 out << "newmtl material_" << i << '\n';
                 out << "    Ka 0.200000 0.200000 0.200000\n";

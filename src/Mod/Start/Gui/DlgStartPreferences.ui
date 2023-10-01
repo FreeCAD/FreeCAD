@@ -300,6 +300,9 @@
       </item>
       <item row="0" column="1">
        <widget class="Gui::PrefFileChooser" name="showAdditionalFolderFileChooser" native="true">
+        <property name="mode">
+         <enum>Gui::FileChooser::Directory</enum>
+        </property>
         <property name="toolTip">
          <string>An optional custom folder to be displayed at the bottom of the first page.
 By using &quot;;;&quot; to separate paths, you can add several folders here</string>

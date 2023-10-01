@@ -24,17 +24,17 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <QMessageBox>
-# include <Precision.hxx>
-# include <Inventor/SbRotation.h>
-# include <Inventor/SbVec3f.h>
-# include <Inventor/nodes/SoSeparator.h>
+#include <Inventor/SbRotation.h>
+#include <Inventor/SbVec3f.h>
+#include <Inventor/nodes/SoSeparator.h>
+#include <Precision.hxx>
+#include <QMessageBox>
 #endif
 
 #include "Gui/Control.h"
-#include <Mod/Fem/App/FemConstraintPulley.h>
-#include "ViewProviderFemConstraintPulley.h"
 #include "TaskFemConstraintPulley.h"
+#include "ViewProviderFemConstraintPulley.h"
+#include <Mod/Fem/App/FemConstraintPulley.h>
 
 
 using namespace FemGui;
@@ -51,14 +51,15 @@ ViewProviderFemConstraintPulley::~ViewProviderFemConstraintPulley() = default;
 
 bool ViewProviderFemConstraintPulley::setEdit(int ModNum)
 {
-    if (ModNum == ViewProvider::Default ) {
+    if (ModNum == ViewProvider::Default) {
         // When double-clicking on the item for this constraint the
         // object unsets and sets its edit mode without closing
         // the task panel
-        Gui::TaskView::TaskDialog *dlg = Gui::Control().activeDialog();
-        TaskDlgFemConstraintPulley *constrDlg = qobject_cast<TaskDlgFemConstraintPulley *>(dlg);
-        if (constrDlg && constrDlg->getConstraintView() != this)
-            constrDlg = nullptr; // another constraint left open its task panel
+        Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog();
+        TaskDlgFemConstraintPulley* constrDlg = qobject_cast<TaskDlgFemConstraintPulley*>(dlg);
+        if (constrDlg && constrDlg->getConstraintView() != this) {
+            constrDlg = nullptr;  // another constraint left open its task panel
+        }
         if (dlg && !constrDlg) {
             // This case will occur in the ShaftWizard application
             checkForWizard();
@@ -70,15 +71,19 @@ bool ViewProviderFemConstraintPulley::setEdit(int ModNum)
                 msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
                 msgBox.setDefaultButton(QMessageBox::Yes);
                 int ret = msgBox.exec();
-                if (ret == QMessageBox::Yes)
+                if (ret == QMessageBox::Yes) {
                     Gui::Control().reject();
-                else
+                }
+                else {
                     return false;
-            } else if (constraintDialog) {
+                }
+            }
+            else if (constraintDialog) {
                 // Another FemConstraint* dialog is already open inside the Shaft Wizard
                 // Ignore the request to open another dialog
                 return false;
-            } else {
+            }
+            else {
                 constraintDialog = new TaskFemConstraintPulley(this);
                 return true;
             }
@@ -88,15 +93,17 @@ bool ViewProviderFemConstraintPulley::setEdit(int ModNum)
         Gui::Selection().clearSelection();
 
         // start the edit dialog
-        if (constrDlg)
+        if (constrDlg) {
             Gui::Control().showDialog(constrDlg);
-        else
+        }
+        else {
             Gui::Control().showDialog(new TaskDlgFemConstraintPulley(this));
+        }
 
         return true;
     }
     else {
-        return ViewProviderDocumentObject::setEdit(ModNum); // clazy:exclude=skipped-base-method
+        return ViewProviderDocumentObject::setEdit(ModNum);  // clazy:exclude=skipped-base-method
     }
 }
 
@@ -115,8 +122,9 @@ void ViewProviderFemConstraintPulley::updateData(const App::Property* prop)
             Base::Vector3d axis = pcConstraint->Axis.getValue();
             double radius = pcConstraint->Radius.getValue();
             double dia = pcConstraint->Diameter.getValue();
-            if (dia < 2 * radius)
+            if (dia < 2 * radius) {
                 dia = 2 * radius;
+            }
             double forceAngle = pcConstraint->ForceAngle.getValue() / 180 * M_PI;
             double beltAngle = pcConstraint->BeltAngle.getValue();
             double rat1 = 0.8, rat2 = 0.2;
@@ -130,29 +138,33 @@ void ViewProviderFemConstraintPulley::updateData(const App::Property* prop)
             SbVec3f b(base.x, base.y, base.z);
             SbVec3f ax(axis.x, axis.y, axis.z);
 
-            createPlacement(pShapeSep, b, SbRotation(SbVec3f(0, 1, 0), ax));// child 0 and 1
+            createPlacement(pShapeSep, b, SbRotation(SbVec3f(0, 1, 0), ax));  // child 0 and 1
             pShapeSep->addChild(
-                createCylinder(pcConstraint->Height.getValue() * 0.8, dia / 2));// child 2
-            SoSeparator *sep = new SoSeparator();
+                createCylinder(pcConstraint->Height.getValue() * 0.8, dia / 2));  // child 2
+            SoSeparator* sep = new SoSeparator();
             createPlacement(sep,
-                            SbVec3f(dia / 2 * sin(forceAngle + beltAngle), 0,
+                            SbVec3f(dia / 2 * sin(forceAngle + beltAngle),
+                                    0,
                                     dia / 2 * cos(forceAngle + beltAngle)),
                             SbRotation(SbVec3f(0, 1, 0),
-                                       SbVec3f(sin(forceAngle + beltAngle + M_PI_2), 0,
+                                       SbVec3f(sin(forceAngle + beltAngle + M_PI_2),
+                                               0,
                                                cos(forceAngle + beltAngle + M_PI_2))));
             createPlacement(sep, SbVec3f(0, dia / 8 + dia / 2 * rat1, 0), SbRotation());
             sep->addChild(createArrow(dia / 8 + dia / 2 * rat1, dia / 8));
-            pShapeSep->addChild(sep);// child 3
+            pShapeSep->addChild(sep);  // child 3
             sep = new SoSeparator();
             createPlacement(sep,
-                            SbVec3f(-dia / 2 * sin(forceAngle - beltAngle), 0,
+                            SbVec3f(-dia / 2 * sin(forceAngle - beltAngle),
+                                    0,
                                     -dia / 2 * cos(forceAngle - beltAngle)),
                             SbRotation(SbVec3f(0, 1, 0),
-                                       SbVec3f(-sin(forceAngle - beltAngle - M_PI_2), 0,
+                                       SbVec3f(-sin(forceAngle - beltAngle - M_PI_2),
+                                               0,
                                                -cos(forceAngle - beltAngle - M_PI_2))));
             createPlacement(sep, SbVec3f(0, dia / 8 + dia / 2 * rat2, 0), SbRotation());
             sep->addChild(createArrow(dia / 8 + dia / 2 * rat2, dia / 8));
-            pShapeSep->addChild(sep);// child 4
+            pShapeSep->addChild(sep);  // child 4
         }
     }
     else if (prop == &pcConstraint->Diameter) {
@@ -160,8 +172,9 @@ void ViewProviderFemConstraintPulley::updateData(const App::Property* prop)
             // Change the symbol
             double radius = pcConstraint->Radius.getValue();
             double dia = pcConstraint->Diameter.getValue();
-            if (dia < 2 * radius)
+            if (dia < 2 * radius) {
                 dia = 2 * radius;
+            }
             double forceAngle = pcConstraint->ForceAngle.getValue() / 180 * M_PI;
             double beltAngle = pcConstraint->BeltAngle.getValue();
             double rat1 = 0.8, rat2 = 0.2;
@@ -172,27 +185,33 @@ void ViewProviderFemConstraintPulley::updateData(const App::Property* prop)
                 rat2 = f2 / (f1 + f2);
             }
 
-            const SoSeparator *sep = static_cast<SoSeparator *>(pShapeSep->getChild(2));
+            const SoSeparator* sep = static_cast<SoSeparator*>(pShapeSep->getChild(2));
             updateCylinder(sep, 0, pcConstraint->Height.getValue() * 0.8, dia / 2);
-            sep = static_cast<SoSeparator *>(pShapeSep->getChild(3));
-            updatePlacement(sep, 0,
-                            SbVec3f(dia / 2 * sin(forceAngle + beltAngle), 0,
+            sep = static_cast<SoSeparator*>(pShapeSep->getChild(3));
+            updatePlacement(sep,
+                            0,
+                            SbVec3f(dia / 2 * sin(forceAngle + beltAngle),
+                                    0,
                                     dia / 2 * cos(forceAngle + beltAngle)),
                             SbRotation(SbVec3f(0, 1, 0),
-                                       SbVec3f(sin(forceAngle + beltAngle + M_PI_2), 0,
+                                       SbVec3f(sin(forceAngle + beltAngle + M_PI_2),
+                                               0,
                                                cos(forceAngle + beltAngle + M_PI_2))));
             updatePlacement(sep, 2, SbVec3f(0, dia / 8 + dia / 2 * rat1, 0), SbRotation());
-            const SoSeparator *subsep = static_cast<SoSeparator *>(sep->getChild(4));
+            const SoSeparator* subsep = static_cast<SoSeparator*>(sep->getChild(4));
             updateArrow(subsep, 0, dia / 8 + dia / 2 * rat1, dia / 8);
-            sep = static_cast<SoSeparator *>(pShapeSep->getChild(4));
-            updatePlacement(sep, 0,
-                            SbVec3f(-dia / 2 * sin(forceAngle - beltAngle), 0,
+            sep = static_cast<SoSeparator*>(pShapeSep->getChild(4));
+            updatePlacement(sep,
+                            0,
+                            SbVec3f(-dia / 2 * sin(forceAngle - beltAngle),
+                                    0,
                                     -dia / 2 * cos(forceAngle - beltAngle)),
                             SbRotation(SbVec3f(0, 1, 0),
-                                       SbVec3f(-sin(forceAngle - beltAngle - M_PI_2), 0,
+                                       SbVec3f(-sin(forceAngle - beltAngle - M_PI_2),
+                                               0,
                                                -cos(forceAngle - beltAngle - M_PI_2))));
             updatePlacement(sep, 2, SbVec3f(0, dia / 8 + dia / 2 * rat2, 0), SbRotation());
-            subsep = static_cast<SoSeparator *>(sep->getChild(4));
+            subsep = static_cast<SoSeparator*>(sep->getChild(4));
             updateArrow(subsep, 0, dia / 8 + dia / 2 * rat2, dia / 8);
         }
     }
@@ -200,24 +219,31 @@ void ViewProviderFemConstraintPulley::updateData(const App::Property* prop)
         if (pShapeSep->getNumChildren() > 0) {
             double radius = pcConstraint->Radius.getValue();
             double dia = pcConstraint->Diameter.getValue();
-            if (dia < 2 * radius)
+            if (dia < 2 * radius) {
                 dia = 2 * radius;
+            }
             double forceAngle = pcConstraint->ForceAngle.getValue() / 180 * M_PI;
             double beltAngle = pcConstraint->BeltAngle.getValue();
 
-            const SoSeparator *sep = static_cast<SoSeparator *>(pShapeSep->getChild(3));
-            updatePlacement(sep, 0,
-                            SbVec3f(dia / 2 * sin(forceAngle + beltAngle), 0,
+            const SoSeparator* sep = static_cast<SoSeparator*>(pShapeSep->getChild(3));
+            updatePlacement(sep,
+                            0,
+                            SbVec3f(dia / 2 * sin(forceAngle + beltAngle),
+                                    0,
                                     dia / 2 * cos(forceAngle + beltAngle)),
                             SbRotation(SbVec3f(0, 1, 0),
-                                       SbVec3f(sin(forceAngle + beltAngle + M_PI_2), 0,
+                                       SbVec3f(sin(forceAngle + beltAngle + M_PI_2),
+                                               0,
                                                cos(forceAngle + beltAngle + M_PI_2))));
-            sep = static_cast<SoSeparator *>(pShapeSep->getChild(4));
-            updatePlacement(sep, 0,
-                            SbVec3f(-dia / 2 * sin(forceAngle - beltAngle), 0,
+            sep = static_cast<SoSeparator*>(pShapeSep->getChild(4));
+            updatePlacement(sep,
+                            0,
+                            SbVec3f(-dia / 2 * sin(forceAngle - beltAngle),
+                                    0,
                                     -dia / 2 * cos(forceAngle - beltAngle)),
                             SbRotation(SbVec3f(0, 1, 0),
-                                       SbVec3f(-sin(forceAngle - beltAngle - M_PI_2), 0,
+                                       SbVec3f(-sin(forceAngle - beltAngle - M_PI_2),
+                                               0,
                                                -cos(forceAngle - beltAngle - M_PI_2))));
         }
     }
@@ -225,8 +251,9 @@ void ViewProviderFemConstraintPulley::updateData(const App::Property* prop)
         if (pShapeSep->getNumChildren() > 0) {
             double radius = pcConstraint->Radius.getValue();
             double dia = pcConstraint->Diameter.getValue();
-            if (dia < 2 * radius)
+            if (dia < 2 * radius) {
                 dia = 2 * radius;
+            }
             double rat1 = 0.8, rat2 = 0.2;
             double f1 = pcConstraint->BeltForce1.getValue();
             double f2 = pcConstraint->BeltForce2.getValue();
@@ -235,13 +262,13 @@ void ViewProviderFemConstraintPulley::updateData(const App::Property* prop)
                 rat2 = f2 / (f1 + f2);
             }
 
-            const SoSeparator *sep = static_cast<SoSeparator *>(pShapeSep->getChild(3));
+            const SoSeparator* sep = static_cast<SoSeparator*>(pShapeSep->getChild(3));
             updatePlacement(sep, 2, SbVec3f(0, dia / 8 + dia / 2 * rat1, 0), SbRotation());
-            const SoSeparator *subsep = static_cast<SoSeparator *>(sep->getChild(4));
+            const SoSeparator* subsep = static_cast<SoSeparator*>(sep->getChild(4));
             updateArrow(subsep, 0, dia / 8 + dia / 2 * rat1, dia / 8);
-            sep = static_cast<SoSeparator *>(pShapeSep->getChild(4));
+            sep = static_cast<SoSeparator*>(pShapeSep->getChild(4));
             updatePlacement(sep, 2, SbVec3f(0, dia / 8 + dia / 2 * rat2, 0), SbRotation());
-            subsep = static_cast<SoSeparator *>(sep->getChild(4));
+            subsep = static_cast<SoSeparator*>(sep->getChild(4));
             updateArrow(subsep, 0, dia / 8 + dia / 2 * rat2, dia / 8);
         }
     }

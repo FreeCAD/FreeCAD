@@ -26,8 +26,8 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <QMessageBox>
-# include <sstream>
+#include <QMessageBox>
+#include <sstream>
 #endif
 
 #include <Gui/Command.h>
@@ -43,9 +43,10 @@ using namespace Gui;
 /* TRANSLATOR FemGui::TaskFemConstraintInitialTemperature */
 
 TaskFemConstraintInitialTemperature::TaskFemConstraintInitialTemperature(
-    ViewProviderFemConstraintInitialTemperature* ConstraintView, QWidget* parent)
-    : TaskFemConstraint(ConstraintView, parent, "FEM_ConstraintInitialTemperature"),
-      ui(new Ui_TaskFemConstraintInitialTemperature)
+    ViewProviderFemConstraintInitialTemperature* ConstraintView,
+    QWidget* parent)
+    : TaskFemConstraint(ConstraintView, parent, "FEM_ConstraintInitialTemperature")
+    , ui(new Ui_TaskFemConstraintInitialTemperature)
 {
     proxy = new QWidget(this);
     ui->setupUi(proxy);
@@ -102,7 +103,7 @@ void TaskDlgFemConstraintInitialTemperature::open()
             Gui::Command::Doc,
             ViewProviderFemConstraint::gethideMeshShowPartStr(
                 (static_cast<Fem::Constraint*>(ConstraintView->getObject()))->getNameInDocument())
-                .c_str());// OvG: Hide meshes and show parts
+                .c_str());  // OvG: Hide meshes and show parts
     }
 }
 
@@ -118,11 +119,11 @@ bool TaskDlgFemConstraintInitialTemperature::accept()
                                 name.c_str(),
                                 parameterTemperature->get_temperature().c_str());
 
-        std::string scale = parameterTemperature->getScale();// OvG: determine modified scale
+        std::string scale = parameterTemperature->getScale();  // OvG: determine modified scale
         Gui::Command::doCommand(Gui::Command::Doc,
                                 "App.ActiveDocument.%s.Scale = %s",
                                 name.c_str(),
-                                scale.c_str());// OvG: implement modified scale
+                                scale.c_str());  // OvG: implement modified scale
     }
     catch (const Base::Exception& e) {
         QMessageBox::warning(parameter, tr("Input error"), QString::fromLatin1(e.what()));
@@ -131,8 +132,9 @@ bool TaskDlgFemConstraintInitialTemperature::accept()
 
     try {
         Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
-        if (!ConstraintView->getObject()->isValid())
+        if (!ConstraintView->getObject()->isValid()) {
             throw Base::RuntimeError(ConstraintView->getObject()->getStatusString());
+        }
         Gui::Command::doCommand(Gui::Command::Gui, "Gui.activeDocument().resetEdit()");
         Gui::Command::commitCommand();
     }

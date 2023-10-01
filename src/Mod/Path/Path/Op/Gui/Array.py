@@ -148,10 +148,10 @@ class ObjectArray:
         self.setEditorModes(obj)
         obj.Proxy = self
 
-    def __getstate__(self):
+    def dumps(self):
         return None
 
-    def __setstate__(self, state):
+    def loads(self, state):
         return None
 
     def setEditorModes(self, obj):
@@ -431,10 +431,10 @@ class ViewProviderArray:
         self.Object = vobj.Object
         return
 
-    def __getstate__(self):
+    def dumps(self):
         return None
 
-    def __setstate__(self, state):
+    def loads(self, state):
         return None
 
     def claimChildren(self):

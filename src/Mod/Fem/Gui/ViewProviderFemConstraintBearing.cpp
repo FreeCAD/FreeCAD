@@ -24,17 +24,17 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <QMessageBox>
-# include <Inventor/SbRotation.h>
-# include <Inventor/SbVec3f.h>
-# include <Inventor/nodes/SoSeparator.h>
+#include <Inventor/SbRotation.h>
+#include <Inventor/SbVec3f.h>
+#include <Inventor/nodes/SoSeparator.h>
+#include <QMessageBox>
 #endif
 
-#include <Base/Console.h>
 #include "Gui/Control.h"
-#include <Mod/Fem/App/FemConstraintBearing.h>
-#include "ViewProviderFemConstraintBearing.h"
 #include "TaskFemConstraintBearing.h"
+#include "ViewProviderFemConstraintBearing.h"
+#include <Base/Console.h>
+#include <Mod/Fem/App/FemConstraintBearing.h>
 
 
 using namespace FemGui;
@@ -52,14 +52,15 @@ ViewProviderFemConstraintBearing::~ViewProviderFemConstraintBearing() = default;
 bool ViewProviderFemConstraintBearing::setEdit(int ModNum)
 {
 
-    if (ModNum == ViewProvider::Default ) {
+    if (ModNum == ViewProvider::Default) {
         // When double-clicking on the item for this constraint the
         // object unsets and sets its edit mode without closing
         // the task panel
-        Gui::TaskView::TaskDialog *dlg = Gui::Control().activeDialog();
-        TaskDlgFemConstraintBearing *constrDlg = qobject_cast<TaskDlgFemConstraintBearing *>(dlg);
-        if (constrDlg && constrDlg->getConstraintView() != this)
-            constrDlg = nullptr; // another constraint left open its task panel
+        Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog();
+        TaskDlgFemConstraintBearing* constrDlg = qobject_cast<TaskDlgFemConstraintBearing*>(dlg);
+        if (constrDlg && constrDlg->getConstraintView() != this) {
+            constrDlg = nullptr;  // another constraint left open its task panel
+        }
         if (dlg && !constrDlg) {
             // This case will occur in the ShaftWizard application
             checkForWizard();
@@ -71,15 +72,19 @@ bool ViewProviderFemConstraintBearing::setEdit(int ModNum)
                 msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
                 msgBox.setDefaultButton(QMessageBox::Yes);
                 int ret = msgBox.exec();
-                if (ret == QMessageBox::Yes)
+                if (ret == QMessageBox::Yes) {
                     Gui::Control().reject();
-                else
+                }
+                else {
                     return false;
-            } else if (constraintDialog) {
+                }
+            }
+            else if (constraintDialog) {
                 // Another FemConstraint* dialog is already open inside the Shaft Wizard
                 // Ignore the request to open another dialog
                 return false;
-            } else {
+            }
+            else {
                 constraintDialog = new TaskFemConstraintBearing(this);
                 return true;
             }
@@ -89,25 +94,28 @@ bool ViewProviderFemConstraintBearing::setEdit(int ModNum)
         Gui::Selection().clearSelection();
 
         // start the edit dialog
-        if (constrDlg)
+        if (constrDlg) {
             Gui::Control().showDialog(constrDlg);
-        else
+        }
+        else {
             Gui::Control().showDialog(new TaskDlgFemConstraintBearing(this));
+        }
 
         return true;
     }
     else {
-        return ViewProviderDocumentObject::setEdit(ModNum); // clazy:exclude=skipped-base-method
+        return ViewProviderDocumentObject::setEdit(ModNum);  // clazy:exclude=skipped-base-method
     }
 }
 
 void ViewProviderFemConstraintBearing::updateData(const App::Property* prop)
 {
     // Gets called whenever a property of the attached object changes
-    Fem::ConstraintBearing *pcConstraint = static_cast<Fem::ConstraintBearing *>(this->getObject());
+    Fem::ConstraintBearing* pcConstraint = static_cast<Fem::ConstraintBearing*>(this->getObject());
 
-    if (prop == &pcConstraint->References)
-        Base::Console().Error("\n"); // enable a breakpoint here
+    if (prop == &pcConstraint->References) {
+        Base::Console().Error("\n");  // enable a breakpoint here
+    }
 
     if (prop == &pcConstraint->BasePoint) {
         // Remove and recreate the symbol
@@ -126,7 +134,8 @@ void ViewProviderFemConstraintBearing::updateData(const App::Property* prop)
         createPlacement(pShapeSep, b, rot);
         pShapeSep->addChild(
             createFixed(radius / 2, radius / 2 * 1.5, pcConstraint->AxialFree.getValue()));
-    } else if (prop == &pcConstraint->AxialFree) {
+    }
+    else if (prop == &pcConstraint->AxialFree) {
         if (pShapeSep->getNumChildren() > 0) {
             // Change the symbol
             Base::Vector3d normal = pcConstraint->NormalDirection.getValue();

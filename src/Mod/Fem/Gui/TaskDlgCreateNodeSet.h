@@ -31,19 +31,26 @@
 
 
 // forward
-namespace Gui { namespace TaskView { class TaskSelectLinkProperty;}}
+namespace Gui
+{
+namespace TaskView
+{
+class TaskSelectLinkProperty;
+}
+}  // namespace Gui
 
 
-namespace FemGui {
+namespace FemGui
+{
 
 
 /// simulation dialog for the TaskView
-class TaskDlgCreateNodeSet : public Gui::TaskView::TaskDialog
+class TaskDlgCreateNodeSet: public Gui::TaskView::TaskDialog
 {
     Q_OBJECT
 
 public:
-    explicit TaskDlgCreateNodeSet(Fem::FemSetNodesObject *);
+    explicit TaskDlgCreateNodeSet(Fem::FemSetNodesObject*);
     ~TaskDlgCreateNodeSet() override;
 
 public:
@@ -58,17 +65,18 @@ public:
 
     /// returns for Close and Help button
     QDialogButtonBox::StandardButtons getStandardButtons() const override
-    { return QDialogButtonBox::Ok|QDialogButtonBox::Cancel; }
+    {
+        return QDialogButtonBox::Ok | QDialogButtonBox::Cancel;
+    }
 
 protected:
-    TaskCreateNodeSet             *param;
-    TaskObjectName                *name;
+    TaskCreateNodeSet* param;
+    TaskObjectName* name;
 
-    Fem::FemSetNodesObject        *FemSetNodesObject;
+    Fem::FemSetNodesObject* FemSetNodesObject;
 };
 
 
+}  // namespace FemGui
 
-} //namespace RobotGui
-
-#endif // ROBOTGUI_TASKDLGSIMULATE_H
+#endif  // ROBOTGUI_TASKDLGSIMULATE_H

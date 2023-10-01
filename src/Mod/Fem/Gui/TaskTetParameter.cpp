@@ -22,7 +22,7 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <QString>
+#include <QString>
 #endif
 
 #include <Gui/BitmapFactory.h>
@@ -37,9 +37,9 @@ using namespace FemGui;
 using namespace Gui;
 
 TaskTetParameter::TaskTetParameter(Fem::FemMeshShapeNetgenObject* pcObject, QWidget* parent)
-    : TaskBox(Gui::BitmapFactory().pixmap("FEM_CreateNodesSet"), tr("Tet Parameter"), true, parent),
-      pcObject(pcObject),
-      ui(new Ui_TaskTetParameter)
+    : TaskBox(Gui::BitmapFactory().pixmap("FEM_CreateNodesSet"), tr("Tet Parameter"), true, parent)
+    , pcObject(pcObject)
+    , ui(new Ui_TaskTetParameter)
 {
     // we need a separate container widget to add all controls to
     proxy = new QWidget(this);
@@ -56,25 +56,41 @@ TaskTetParameter::TaskTetParameter(Fem::FemMeshShapeNetgenObject* pcObject, QWid
     ui->spinBox_SegsPerRadius->setValue(pcObject->NbSegsPerRadius.getValue());
     ui->checkBox_Optimize->setChecked(pcObject->Optimize.getValue());
 
-    QObject::connect(ui->doubleSpinBox_MaxSize, qOverload<double>(&QDoubleSpinBox::valueChanged),
-                     this, &TaskTetParameter::maxSizeValueChanged);
-    QObject::connect(ui->comboBox_Fineness, qOverload<int>(&QComboBox::activated),
-                     this, &TaskTetParameter::SwitchMethod);
-    QObject::connect(ui->checkBox_SecondOrder, &QCheckBox::stateChanged,
-                     this, &TaskTetParameter::setQuadric);
-    QObject::connect(ui->doubleSpinBox_GrowthRate, qOverload<double>(&QDoubleSpinBox::valueChanged),
-                     this, &TaskTetParameter::setGrowthRate);
-    QObject::connect(ui->spinBox_SegsPerEdge, qOverload<int>(&QSpinBox::valueChanged),
-                     this, &TaskTetParameter::setSegsPerEdge);
-    QObject::connect(ui->spinBox_SegsPerRadius, qOverload<int>(&QSpinBox::valueChanged),
-                     this, &TaskTetParameter::setSegsPerRadius);
-    QObject::connect(ui->checkBox_Optimize, &QCheckBox::stateChanged,
-                     this, &TaskTetParameter::setOptimize);
+    QObject::connect(ui->doubleSpinBox_MaxSize,
+                     qOverload<double>(&QDoubleSpinBox::valueChanged),
+                     this,
+                     &TaskTetParameter::maxSizeValueChanged);
+    QObject::connect(ui->comboBox_Fineness,
+                     qOverload<int>(&QComboBox::activated),
+                     this,
+                     &TaskTetParameter::SwitchMethod);
+    QObject::connect(ui->checkBox_SecondOrder,
+                     &QCheckBox::stateChanged,
+                     this,
+                     &TaskTetParameter::setQuadric);
+    QObject::connect(ui->doubleSpinBox_GrowthRate,
+                     qOverload<double>(&QDoubleSpinBox::valueChanged),
+                     this,
+                     &TaskTetParameter::setGrowthRate);
+    QObject::connect(ui->spinBox_SegsPerEdge,
+                     qOverload<int>(&QSpinBox::valueChanged),
+                     this,
+                     &TaskTetParameter::setSegsPerEdge);
+    QObject::connect(ui->spinBox_SegsPerRadius,
+                     qOverload<int>(&QSpinBox::valueChanged),
+                     this,
+                     &TaskTetParameter::setSegsPerRadius);
+    QObject::connect(ui->checkBox_Optimize,
+                     &QCheckBox::stateChanged,
+                     this,
+                     &TaskTetParameter::setOptimize);
 
-    if(pcObject->FemMesh.getValue().getInfo().numNode == 0)
+    if (pcObject->FemMesh.getValue().getInfo().numNode == 0) {
         touched = true;
-    else
+    }
+    else {
         touched = false;
+    }
 
     setInfo();
 }
@@ -106,7 +122,7 @@ void TaskTetParameter::maxSizeValueChanged(double Value)
 
 void TaskTetParameter::setQuadric(int s)
 {
-    pcObject->SecondOrder.setValue(s!=0);
+    pcObject->SecondOrder.setValue(s != 0);
     touched = true;
 }
 
@@ -114,14 +130,12 @@ void TaskTetParameter::setGrowthRate(double v)
 {
     pcObject->GrowthRate.setValue(v);
     touched = true;
-
 }
 
 void TaskTetParameter::setSegsPerEdge(int v)
 {
     pcObject->NbSegsPerEdge.setValue(v);
     touched = true;
-
 }
 
 void TaskTetParameter::setSegsPerRadius(int v)
@@ -132,7 +146,7 @@ void TaskTetParameter::setSegsPerRadius(int v)
 
 void TaskTetParameter::setOptimize(int v)
 {
-    pcObject->Optimize.setValue(v!=0);
+    pcObject->Optimize.setValue(v != 0);
     touched = true;
 }
 
@@ -140,10 +154,10 @@ void TaskTetParameter::setOptimize(int v)
 void TaskTetParameter::setInfo()
 {
     Fem::FemMesh::FemMeshInfo info = pcObject->FemMesh.getValue().getInfo();
-    //Base::BoundBox3d bndBox = pcObject->FemMesh.getValue().getBoundBox();
-    ui->lineEdit_InfoNodes      ->setText(QString::number(info.numNode));
-    ui->lineEdit_InfoTriangle   ->setText(QString::number(info.numFaces));
-    ui->lineEdit_InfoTet        ->setText(QString::number(info.numTetr));
+    // Base::BoundBox3d bndBox = pcObject->FemMesh.getValue().getBoundBox();
+    ui->lineEdit_InfoNodes->setText(QString::number(info.numNode));
+    ui->lineEdit_InfoTriangle->setText(QString::number(info.numFaces));
+    ui->lineEdit_InfoTet->setText(QString::number(info.numTetr));
 }
 
 

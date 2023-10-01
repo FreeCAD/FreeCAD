@@ -1,0 +1,15 @@
+# File created by ConvertFCMat.py
+General:
+  UUID: "85257e2c-be3f-40a1-b03f-0bd4ba58ca08"
+  AuthorAndLicense: "(c) 2023 David Carter"
+  Name: "Gold"
+  Description: "Defines the Gold appearance properties"
+AppearanceModels:
+  BasicRendering:
+    UUID: 'f006c7e4-35b7-43d5-bbf9-c5d572309e6e'
+    AmbientColor: "(0.3000, 0.2306, 0.0953, 1.0)"
+    DiffuseColor: "(0.4000, 0.2760, 0.0000, 1.0)"
+    EmissiveColor: "(0.0000, 0.0000, 0.0000, 1.0)"
+    Shininess: "0.0625"
+    SpecularColor: "(0.9000, 0.8820, 0.7020, 1.0)"
+    Transparency: "0.0"

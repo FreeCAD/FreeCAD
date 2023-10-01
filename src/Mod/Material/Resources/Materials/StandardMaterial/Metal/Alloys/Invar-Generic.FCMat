@@ -1,0 +1,27 @@
+# File created by ConvertFCMat.py
+General:
+  UUID: "27745e16-2a10-4c8e-bd22-59971806909c"
+  AuthorAndLicense: "Uwe Stöhr"
+  Name: "Invar Generic"
+Models:
+  Father:
+    UUID: '9cdda8b6-b606-4778-8f13-3934d8668e67'
+    Father: "Metal"
+  MaterialStandard:
+    UUID: '1e2c0088-904a-4537-925f-64064c07d700'
+    KindOfMaterial: "Nickel Iron Alloy"
+  LinearElastic:
+    UUID: '7b561d1d-fb9b-44f6-9da9-56a4f74d7536'
+    Density: "8150 kg/m^3"
+    PoissonRatio: "0.29"
+    ShearModulus: "56.0 GPa"
+    UltimateTensileStrength: "600 MPa"
+    YoungsModulus: "140.0 GPa"
+  Thermal:
+    UUID: '9959d007-a970-4ea7-bae4-3eb1b8b883c7'
+    SpecificHeat: "515.0 J/kg/K"
+    ThermalConductivity: "13.5 W/m/K"
+    ThermalExpansionCoefficient: "1.25 µm/m/K"
+  Electromagnetic:
+    UUID: 'b2eb5f48-74b3-4193-9fbb-948674f427f3'
+    ElectricalConductivity: "1250000 S/m"

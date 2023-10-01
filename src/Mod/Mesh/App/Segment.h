@@ -46,22 +46,43 @@ public:
     void addIndices(const std::vector<FacetIndex>& inds);
     void removeIndices(const std::vector<FacetIndex>& inds);
     const std::vector<FacetIndex>& getIndices() const;
-    bool isEmpty() const { return _indices.empty(); }
+    bool isEmpty() const
+    {
+        return _indices.empty();
+    }
 
     Segment(const Segment&);
     Segment(Segment&&);
-    Segment& operator = (const Segment&);
-    Segment& operator = (Segment&&);
-    bool operator == (const Segment&) const;
+    Segment& operator=(const Segment&);
+    Segment& operator=(Segment&&);
+    bool operator==(const Segment&) const;
 
-    void setName(const std::string& n) { _name = n; }
-    const std::string& getName() const { return _name; }
+    void setName(const std::string& n)
+    {
+        _name = n;
+    }
+    const std::string& getName() const
+    {
+        return _name;
+    }
 
-    void setColor(const std::string& c) { _color = c; }
-    const std::string& getColor() const { return _color; }
+    void setColor(const std::string& c)
+    {
+        _color = c;
+    }
+    const std::string& getColor() const
+    {
+        return _color;
+    }
 
-    void save(bool on) { _save = on; }
-    bool isSaved() const { return _save; }
+    void save(bool on)
+    {
+        _save = on;
+    }
+    bool isSaved() const
+    {
+        return _save;
+    }
 
     // friends
     friend class MeshObject;
@@ -91,6 +112,7 @@ public:
         bool operator!=(const const_facet_iterator& fi) const;
         const_facet_iterator& operator++();
         const_facet_iterator& operator--();
+
     private:
         void dereference() const;
         const Segment* _segment;
@@ -100,12 +122,16 @@ public:
     };
 
     const_facet_iterator facets_begin() const
-    { return {this, _indices.begin()}; }
+    {
+        return {this, _indices.begin()};
+    }
     const_facet_iterator facets_end() const
-    { return {this, _indices.end()}; }
+    {
+        return {this, _indices.end()};
+    }
 };
 
-} // namespace Mesh
+}  // namespace Mesh
 
 
-#endif // MESH_SEGMENT_H
+#endif  // MESH_SEGMENT_H

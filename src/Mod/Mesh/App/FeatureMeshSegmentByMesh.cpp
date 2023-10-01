@@ -46,30 +46,36 @@ SegmentByMesh::SegmentByMesh()
 
 short SegmentByMesh::mustExecute() const
 {
-    if (Source.isTouched() || Tool.isTouched())
+    if (Source.isTouched() || Tool.isTouched()) {
         return 1;
-    if (Source.getValue() && Source.getValue()->isTouched())
+    }
+    if (Source.getValue() && Source.getValue()->isTouched()) {
         return 1;
-    if (Tool.getValue() && Tool.getValue()->isTouched())
+    }
+    if (Tool.getValue() && Tool.getValue()->isTouched()) {
         return 1;
+    }
     return 0;
 }
 
-App::DocumentObjectExecReturn *SegmentByMesh::execute()
+App::DocumentObjectExecReturn* SegmentByMesh::execute()
 {
-    Mesh::PropertyMeshKernel *kernel=nullptr;
+    Mesh::PropertyMeshKernel* kernel = nullptr;
     App::DocumentObject* mesh = Source.getValue();
     if (mesh) {
         App::Property* prop = mesh->getPropertyByName("Mesh");
-        if (prop && prop->getTypeId() == Mesh::PropertyMeshKernel::getClassTypeId())
+        if (prop && prop->getTypeId() == Mesh::PropertyMeshKernel::getClassTypeId()) {
             kernel = static_cast<Mesh::PropertyMeshKernel*>(prop);
+        }
     }
-    if (!kernel)
+    if (!kernel) {
         return new App::DocumentObjectExecReturn("No mesh specified.\n");
-    else if (mesh->isError())
+    }
+    else if (mesh->isError()) {
         return new App::DocumentObjectExecReturn("No valid mesh.\n");
+    }
 
-    Mesh::PropertyMeshKernel *toolmesh=nullptr;
+    Mesh::PropertyMeshKernel* toolmesh = nullptr;
     App::DocumentObject* tool = Tool.getValue();
     if (tool) {
         App::Property* prop = tool->getPropertyByName("Mesh");
@@ -86,12 +92,12 @@ App::DocumentObjectExecReturn *SegmentByMesh::execute()
 
     // the clipping plane
     Base::Vector3f cBase, cNormal;
-    cBase =   Base::convertTo<Base::Vector3f>(Base.getValue());
+    cBase = Base::convertTo<Base::Vector3f>(Base.getValue());
     cNormal = Base::convertTo<Base::Vector3f>(Normal.getValue());
 
 
     const MeshKernel& rMeshKernel = kernel->getValue().getKernel();
-    const MeshKernel& rToolMesh   = toolmesh->getValue().getKernel();
+    const MeshKernel& rToolMesh = toolmesh->getValue().getKernel();
 
     // check if the toolmesh is a solid
     if (!MeshEvalSolid(rToolMesh).Evaluate()) {
@@ -102,15 +108,17 @@ App::DocumentObjectExecReturn *SegmentByMesh::execute()
     std::vector<MeshGeomFacet> aFaces;
 
     MeshAlgorithm cAlg(rMeshKernel);
-    if (cNormal.Length() > 0.1f) // not a null vector
+    if (cNormal.Length() > 0.1f) {  // not a null vector
         cAlg.GetFacetsFromToolMesh(rToolMesh, cNormal, faces);
-    else
+    }
+    else {
         cAlg.GetFacetsFromToolMesh(rToolMesh, Base::Vector3f(0.0, 1.0f, 0.0f), faces);
+    }
 
     // if the clipping plane was set then we want only the visible facets
-    if ( cNormal.Length() > 0.1f ) { // not a null vector
-        // now we have too many facets since we have (invisible) facets near to the back clipping plane,
-        // so we need the nearest facet to the front clipping plane
+    if (cNormal.Length() > 0.1f) {  // not a null vector
+        // now we have too many facets since we have (invisible) facets near to the back clipping
+        // plane, so we need the nearest facet to the front clipping plane
         //
         float fDist = FLOAT_MAX;
         MeshCore::FacetIndex uIdx = MeshCore::FACET_INDEX_MAX;
@@ -119,17 +127,17 @@ App::DocumentObjectExecReturn *SegmentByMesh::execute()
         // get the nearest facet to the user (front clipping plane)
         for (MeshCore::FacetIndex it : faces) {
             cFIt.Set(it);
-            float dist = (float)fabs(cFIt->GetGravityPoint().DistanceToPlane( cBase, cNormal ));
-            if ( dist < fDist ) {
+            float dist = (float)fabs(cFIt->GetGravityPoint().DistanceToPlane(cBase, cNormal));
+            if (dist < fDist) {
                 fDist = dist;
                 uIdx = it;
             }
         }
 
         // succeeded
-        if ( uIdx != MeshCore::FACET_INDEX_MAX ) {
+        if (uIdx != MeshCore::FACET_INDEX_MAX) {
             // set VISIT-Flag to all outer facets
-            cAlg.SetFacetFlag( MeshFacet::VISIT );
+            cAlg.SetFacetFlag(MeshFacet::VISIT);
             cAlg.ResetFacetsFlag(faces, MeshFacet::VISIT);
 
             faces.clear();
@@ -141,8 +149,9 @@ App::DocumentObjectExecReturn *SegmentByMesh::execute()
         }
     }
 
-    for (MeshCore::FacetIndex it : faces)
-        aFaces.push_back( rMeshKernel.GetFacet(it) );
+    for (MeshCore::FacetIndex it : faces) {
+        aFaces.push_back(rMeshKernel.GetFacet(it));
+    }
 
     std::unique_ptr<MeshObject> pcKernel(new MeshObject);
     pcKernel->addFacets(aFaces);
@@ -150,4 +159,3 @@ App::DocumentObjectExecReturn *SegmentByMesh::execute()
 
     return App::DocumentObject::StdReturn;
 }
-

@@ -31,5 +31,6 @@
 # FreeCAD.addExportType("IGES files (*.iges *.igs)","ImportGui")
 FreeCAD.addImportType("PLMXML files (*.plmxml)", "PlmXmlParser")
 FreeCAD.addImportType("STEPZ Zip File Type (*.stpZ *.stpz)", "stepZ")
+FreeCAD.addImportType("glTF (*.gltf *.glb)", "ImportGui")
 FreeCAD.addExportType("STEPZ zip File Type (*.stpZ *.stpz)", "stepZ")
 FreeCAD.addExportType("glTF (*.gltf *.glb)", "ImportGui")

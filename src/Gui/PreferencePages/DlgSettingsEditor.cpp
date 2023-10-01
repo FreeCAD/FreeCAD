@@ -301,7 +301,9 @@ void DlgSettingsEditor::loadSettings()
     QStringList fixedFamilyNames;
     for (const auto &name : familyNames) {
         if (QFontDatabase().isFixedPitch(name)) {
-            fixedFamilyNames.append(name);
+            if (name.compare(QLatin1String("8514oem"), Qt::CaseInsensitive) != 0) {
+                fixedFamilyNames.append(name);
+            }
         }
     }
 #else
@@ -309,7 +311,9 @@ void DlgSettingsEditor::loadSettings()
     QStringList fixedFamilyNames;
     for (const auto &name : familyNames) {
         if (QFontDatabase::isFixedPitch(name)) {
-            fixedFamilyNames.append(name);
+            if (name.compare(QLatin1String("8514oem"), Qt::CaseInsensitive) != 0) {
+                fixedFamilyNames.append(name);
+            }
         }
     }
 #endif

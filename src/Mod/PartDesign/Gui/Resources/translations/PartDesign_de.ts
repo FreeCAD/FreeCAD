@@ -2994,7 +2994,7 @@ Nochmaliges Klicken beendet den Auswahl-Modus.</translation>
     <message>
       <location filename="../../TaskThicknessParameters.ui" line="24"/>
       <source>Select</source>
-      <translation>Wähle</translation>
+      <translation>Auswählen</translation>
     </message>
     <message>
       <location filename="../../TaskThicknessParameters.ui" line="34"/>

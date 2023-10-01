@@ -236,3 +236,11 @@ def findVertexNameInObject(vertex, obj):
         if vtx.Point == vertex.Point:
             return "Vertex" + str(i + 1)
     return ""
+
+
+def color_from_unsigned(c):
+    return [
+        float(int((c >> 24) & 0xFF) / 255),
+        float(int((c >> 16) & 0xFF) / 255),
+        float(int((c >> 8) & 0xFF) / 255),
+    ]

@@ -194,10 +194,10 @@ class StockFromBase(Stock):
         self.width = None
         self.height = None
 
-    def __getstate__(self):
+    def dumps(self):
         return None
 
-    def __setstate__(self, state):
+    def loads(self, state):
         return None
 
     def execute(self, obj):
@@ -260,10 +260,10 @@ class StockCreateBox(Stock):
 
         obj.Proxy = self
 
-    def __getstate__(self):
+    def dumps(self):
         return None
 
-    def __setstate__(self, state):
+    def loads(self, state):
         return None
 
     def execute(self, obj):
@@ -305,10 +305,10 @@ class StockCreateCylinder(Stock):
 
         obj.Proxy = self
 
-    def __getstate__(self):
+    def dumps(self):
         return None
 
-    def __setstate__(self, state):
+    def loads(self, state):
         return None
 
     def execute(self, obj):

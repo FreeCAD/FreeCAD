@@ -1,0 +1,15 @@
+# File created by ConvertFCMat.py
+General:
+  UUID: "591c4c4a-22ba-4a9a-869d-e5610107d69a"
+  AuthorAndLicense: "(c) 2023 David Carter"
+  Name: "Shiny Plastic"
+  Description: "Defines the Shiny Plastic appearance properties"
+AppearanceModels:
+  BasicRendering:
+    UUID: 'f006c7e4-35b7-43d5-bbf9-c5d572309e6e'
+    AmbientColor: "(0.0880, 0.0880, 0.0880, 1.0)"
+    DiffuseColor: "(0.0000, 0.0000, 0.0000, 1.0)"
+    EmissiveColor: "(0.0000, 0.0000, 0.0000, 1.0)"
+    Shininess: "1.0000"
+    SpecularColor: "(1.0000, 1.0000, 1.0000, 1.0)"
+    Transparency: "0.0"

@@ -6584,351 +6584,306 @@ Zum Beispiel:
   <context>
     <name>Path_Sanity</name>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="122"/>
       <location filename="../../../Path/Main/Gui/Sanity.py" line="126"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="130"/>
       <source>Check the path job for common errors</source>
       <translation>Path-Auftrag auf typische Fehler überprüfen</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="210"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="215"/>
       <source>Setup Report for FreeCAD Job</source>
       <translation type="unfinished">Setup Report for FreeCAD Job</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="211"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="216"/>
       <source>Table of Contents</source>
-      <translation type="unfinished">Table of Contents</translation>
+      <translation>Inhaltsverzeichnis</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="212"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="217"/>
       <source>Part Information</source>
-      <translation type="unfinished">Part Information</translation>
+      <translation>Bauteilinformationen</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="213"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="218"/>
       <source>Run Summary</source>
       <translation type="unfinished">Run Summary</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="214"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="219"/>
       <source>Rough Stock</source>
       <translation type="unfinished">Rough Stock</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="215"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="220"/>
       <source>Tool Data</source>
       <translation type="unfinished">Tool Data</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="216"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="221"/>
       <source>Output</source>
       <translation>Ausgabe</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="217"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="222"/>
       <source>Fixtures</source>
       <translation>Armaturen</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="219"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="224"/>
       <source>Squawks</source>
       <translation type="unfinished">Squawks</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="220"/>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="1241"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="225"/>
       <source>Base Object(s)</source>
       <translation>Basisobjekt(e)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="221"/>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="1242"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="226"/>
       <source>Job Sequence</source>
       <translation>Auftragsablauf</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="222"/>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="1243"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="227"/>
       <source>Job Description</source>
       <translation>Auftragsbeschreibung</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="223"/>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="1244"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="228"/>
       <source>Job Type</source>
       <translation>Auftragsart</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="224"/>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="1245"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="229"/>
       <source>CAD File Name</source>
       <translation>CAD-Dateiname</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="225"/>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="1246"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="230"/>
       <source>Last Save Date</source>
       <translation>Letztes Speicherdatum</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="226"/>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="1247"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="231"/>
       <source>Customer</source>
       <translation>Kunde</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="228"/>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="1249"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="233"/>
       <source>Designer</source>
       <translation>Konstrukteur</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="233"/>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="509"/>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="1284"/>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="1329"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="238"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="514"/>
       <source>Operation</source>
       <translation>Operation</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="234"/>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="1285"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="239"/>
       <source>Minimum Z Height</source>
       <translation>Minimale Z-Höhe</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="235"/>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="1286"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="240"/>
       <source>Maximum Z Height</source>
       <translation>Maximale Z-Höhe</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="237"/>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="1287"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="242"/>
       <source>Cycle Time</source>
       <translation>Durchlaufzeit</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="238"/>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="1288"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="243"/>
       <source>Coolant</source>
       <translation>Kühlmittel</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="239"/>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="1290"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="244"/>
       <source>TOTAL JOB</source>
       <translation>Gesamter Auftrag</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="241"/>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="1323"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="246"/>
       <source>Tool Number</source>
       <translation>Werkzeugnummer</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="504"/>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="1324"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="509"/>
       <source>Description</source>
       <translation>Beschreibung</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="505"/>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="1325"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="510"/>
       <source>Manufacturer</source>
       <translation>Hersteller</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="506"/>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="1326"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="511"/>
       <source>Part Number</source>
       <translation>Bauteilnummer</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="507"/>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="1327"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="512"/>
       <source>URL</source>
       <translation>URL</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="508"/>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="1328"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="513"/>
       <source>Inspection Notes</source>
       <translation>Anmerkungen zur Inspektion</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="510"/>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="1330"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="515"/>
       <source>Tool Controller</source>
       <translation>Werkzeugsteuerung</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="511"/>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="1331"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="516"/>
       <source>Feed Rate</source>
       <translation>Vorschubgeschwindigkeit</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="512"/>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="1332"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="517"/>
       <source>Spindle Speed</source>
       <translation>Spindeldrehzahl</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="513"/>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="1333"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="518"/>
       <source>Tool Shape</source>
       <translation>Werkzeugform</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="515"/>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="1335"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="520"/>
       <source>Tool Diameter</source>
       <translation>Werkzeugdurchmesser</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="516"/>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="1386"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="521"/>
       <source>X Size</source>
       <translation>X-Größe</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="517"/>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="1387"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="522"/>
       <source>Y Size</source>
       <translation>Y-Größe</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="518"/>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="1388"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="523"/>
       <source>Z Size</source>
       <translation>Z-Größe</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="520"/>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="1390"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="525"/>
       <source>Material</source>
       <translation>Material</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="521"/>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="1403"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="526"/>
       <source>Work Offsets</source>
       <translation>Nullpunktveschiebungen</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="522"/>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="1404"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="527"/>
       <source>Order By</source>
       <translation>Sortieren nach</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="524"/>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="1406"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="529"/>
       <source>Part Datum</source>
       <translation>Bauteil Datum</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="525"/>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="1418"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="530"/>
       <source>G-code File</source>
       <translation>G-Code Datei</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="526"/>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="1419"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="531"/>
       <source>Last Post Process Date</source>
       <translation>Letztes Postprozess-Datum</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="527"/>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="1420"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="532"/>
       <source>Stops</source>
       <translation>Haltepunkte</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="528"/>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="1421"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="533"/>
       <source>Programmer</source>
       <translation>Programmierer</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="529"/>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="1422"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="534"/>
       <source>Machine</source>
       <translation>Maschine</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="530"/>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="1423"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="535"/>
       <source>Postprocessor</source>
       <translation>Nachberarbeitungs-Programm</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="531"/>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="1424"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="536"/>
       <source>Post Processor Flags</source>
       <translation>Post-Prozessor-Flags</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="532"/>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="1425"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="537"/>
       <source>File Size (kB)</source>
       <translation>Dateigröße (kB)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="534"/>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="1427"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="539"/>
       <source>Line Count</source>
       <translation>Anzahl der Zeilen</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="535"/>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="1440"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="540"/>
       <source>Note</source>
       <translation>Notiz</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="536"/>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="1441"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="541"/>
       <source>Operator</source>
       <translation>Operator</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="538"/>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="1443"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="543"/>
       <source>Date</source>
       <translation>Datum</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="1592"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="1332"/>
       <source>Tool number {} is a legacy tool. Legacy tools not 
                         supported by Path-Sanity</source>
       <translation type="unfinished">Tool number {} is a legacy tool. Legacy tools not 
                         supported by Path-Sanity</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="1603"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="1343"/>
       <source>Tool number {} used by multiple tools</source>
       <translation type="unfinished">Tool number {} used by multiple tools</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="1631"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="1371"/>
       <source>Tool Controller '{}' has no spindlespeed</source>
       <translation type="unfinished">Tool Controller '{}' has no spindlespeed</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="1659"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="1399"/>
       <source>Tool Controller '{}' is not used</source>
       <translation type="unfinished">Tool Controller '{}' is not used</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="1754"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="1494"/>
       <source>Consider Specifying the Stock Material</source>
       <translation type="unfinished">Consider Specifying the Stock Material</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="1845"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="1585"/>
       <source>The Job has not been post-processed</source>
       <translation type="unfinished">The Job has not been post-processed</translation>
     </message>

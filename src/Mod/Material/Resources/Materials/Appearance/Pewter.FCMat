@@ -1,0 +1,15 @@
+# File created by ConvertFCMat.py
+General:
+  UUID: "a61853b9-ec9f-403e-9726-0a938731aecd"
+  AuthorAndLicense: "(c) 2023 David Carter"
+  Name: "Pewter"
+  Description: "Defines the Pewter appearance properties"
+AppearanceModels:
+  BasicRendering:
+    UUID: 'f006c7e4-35b7-43d5-bbf9-c5d572309e6e'
+    AmbientColor: "(0.1059, 0.0588, 0.1137, 1.0)"
+    DiffuseColor: "(0.4275, 0.4706, 0.5412, 1.0)"
+    EmissiveColor: "(0.0000, 0.0000, 0.0000, 1.0)"
+    Shininess: "0.0769"
+    SpecularColor: "(0.3333, 0.3333, 0.5216, 1.0)"
+    Transparency: "0.0"

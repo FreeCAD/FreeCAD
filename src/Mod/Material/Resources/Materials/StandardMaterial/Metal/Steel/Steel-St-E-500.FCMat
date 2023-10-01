@@ -1,0 +1,29 @@
+# File created by ConvertFCMat.py
+General:
+  UUID: "90fb6bd4-05db-4d44-ba89-280b5a060921"
+  AuthorAndLicense: "(c) 2014 M. Münch - GNU Lesser General Public License (LGPL)"
+  Name: "St E 500"
+Inherits:
+  Steel:
+    UUID: "4b849c55-6b3a-4f75-a055-40c0d0324596"
+Models:
+  Father:
+    UUID: '9cdda8b6-b606-4778-8f13-3934d8668e67'
+    Father: "Metal"
+  MaterialStandard:
+    UUID: '1e2c0088-904a-4537-925f-64064c07d700'
+    KindOfMaterial: "Fine grain steel"
+    MaterialNumber: "1.8907"
+    StandardCode: "DIN 17102"
+  LinearElastic:
+    UUID: '7b561d1d-fb9b-44f6-9da9-56a4f74d7536'
+    Density: "7800 kg/m^3"
+    PoissonRatio: "0.3"
+    ShearModulus: "81000 MPa"
+    UltimateStrain: "0"
+    UltimateTensileStrength: "610 MPa"
+    YieldStrength: "500 MPa"
+    YoungsModulus: "210000 MPa"
+  Thermal:
+    UUID: '9959d007-a970-4ea7-bae4-3eb1b8b883c7'
+    ThermalExpansionCoefficient: "0.000011 m/m/K"

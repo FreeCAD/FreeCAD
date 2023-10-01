@@ -186,7 +186,7 @@ SoGroup* TDragger::buildGeometry()
     cylinderSeparator->addChild(cylinder);
 
     //cone
-    float coneBottomRadius = 0.8;
+    float coneBottomRadius = 0.8F;
     float coneHeight = 2.5;
     auto coneSeparator = new SoSeparator();
     root->addChild(coneSeparator);
@@ -779,7 +779,7 @@ SoGroup* RDragger::buildGeometry()
     root->addChild(sphereTranslation);
 
     auto sphere = new SoSphere();
-    sphere->radius.setValue(0.8);
+    sphere->radius.setValue(0.8F);
     root->addChild(sphere);
 
     return root;

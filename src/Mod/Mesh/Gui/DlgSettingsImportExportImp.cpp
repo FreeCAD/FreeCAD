@@ -32,7 +32,8 @@
 using namespace MeshGui;
 
 DlgSettingsImportExport::DlgSettingsImportExport(QWidget* parent)
-  : PreferencePage(parent), ui(new Ui_DlgSettingsImportExport)
+    : PreferencePage(parent)
+    , ui(new Ui_DlgSettingsImportExport)
 {
     ui->setupUi(this);
     ui->exportAmfCompressed->setToolTip(tr("This parameter indicates whether ZIP compression\n"
@@ -47,8 +48,8 @@ DlgSettingsImportExport::~DlgSettingsImportExport()
 
 void DlgSettingsImportExport::saveSettings()
 {
-    ParameterGrp::handle handle = App::GetApplication().GetParameterGroupByPath
-        ("User parameter:BaseApp/Preferences/Mod/Mesh");
+    ParameterGrp::handle handle = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/Mod/Mesh");
     double value = ui->maxDeviationExport->value().getValue();
     handle->SetFloat("MaxDeviationExport", value);
 
@@ -65,8 +66,8 @@ void DlgSettingsImportExport::saveSettings()
 
 void DlgSettingsImportExport::loadSettings()
 {
-    ParameterGrp::handle handle = App::GetApplication().GetParameterGroupByPath
-        ("User parameter:BaseApp/Preferences/Mod/Mesh");
+    ParameterGrp::handle handle = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/Mod/Mesh");
     double value = ui->maxDeviationExport->value().getValue();
     value = handle->GetFloat("MaxDeviationExport", value);
     ui->maxDeviationExport->setValue(value);
@@ -82,7 +83,7 @@ void DlgSettingsImportExport::loadSettings()
 /**
  * Sets the strings of the subwidgets using the current language.
  */
-void DlgSettingsImportExport::changeEvent(QEvent *e)
+void DlgSettingsImportExport::changeEvent(QEvent* e)
 {
     if (e->type() == QEvent::LanguageChange) {
         ui->retranslateUi(this);
@@ -93,4 +94,3 @@ void DlgSettingsImportExport::changeEvent(QEvent *e)
 }
 
 #include "moc_DlgSettingsImportExportImp.cpp"
-

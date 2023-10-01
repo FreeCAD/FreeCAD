@@ -1,0 +1,23 @@
+# File created by ConvertFCMat.py
+General:
+  UUID: "0e669f57-de27-4915-9a02-124f36047972"
+  AuthorAndLicense: "(c) 2019 Uwe Stöhr (CC-BY 3.0)"
+  Name: "Polypropylene"
+  SourceURL: "http://www.matweb.com/search/DataSheet.aspx?MatGUID=a882a1c603374e278d062f106dfda95b"
+Models:
+  LinearElastic:
+    UUID: '7b561d1d-fb9b-44f6-9da9-56a4f74d7536'
+    CompressiveStrength: "10 MPa"
+    Density: "916 kg/m^3"
+    PoissonRatio: "0.44"
+    UltimateTensileStrength: "79.7 MPa"
+    YieldStrength: "32.8 MPa"
+    YoungsModulus: "1470 MPa"
+  Thermal:
+    UUID: '9959d007-a970-4ea7-bae4-3eb1b8b883c7'
+    SpecificHeat: "1920 J/kg/K"
+    ThermalConductivity: "0.249 W/m/K"
+    ThermalExpansionCoefficient: "0.000123 m/m/K"
+  Costs:
+    UUID: '881df808-8726-4c2e-be38-688bb6cce466'
+    ProductURL: "https://en.wikipedia.org/wiki/Polypropylene"

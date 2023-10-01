@@ -112,10 +112,10 @@ class _ViewProviderFixture:
         vobj.setEditorMode("Transparency", mode)
         vobj.setEditorMode("Visibility", mode)
 
-    def __getstate__(self):  # mandatory
+    def dumps(self):  # mandatory
         return None
 
-    def __setstate__(self, state):  # mandatory
+    def loads(self, state):  # mandatory
         return None
 
     def getIcon(self):  # optional

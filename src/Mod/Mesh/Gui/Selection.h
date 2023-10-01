@@ -31,10 +31,11 @@
 #include "MeshSelection.h"
 
 
-namespace MeshGui {
+namespace MeshGui
+{
 
 class Ui_Selection;
-class Selection : public QWidget
+class Selection: public QWidget
 {
     Q_OBJECT
 
@@ -57,6 +58,6 @@ private:
     Ui_Selection* ui;
 };
 
-}
+}  // namespace MeshGui
 
-#endif // MESHGUI_SELECTION_H
+#endif  // MESHGUI_SELECTION_H

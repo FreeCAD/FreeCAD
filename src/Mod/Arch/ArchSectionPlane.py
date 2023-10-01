@@ -281,6 +281,7 @@ def getSVG(source,
            linewidth=1,
            lineColor=(0.0, 0.0, 0.0),
            fontsize=1,
+           linespacing=None,
            showFill=False,
            fillColor=(1.0, 1.0, 1.0),
            techdraw=False,
@@ -504,6 +505,7 @@ def getSVG(source,
                                  scale=scale,
                                  linewidth=svgSymbolLineWidth,
                                  fontsize=fontsize,
+                                 linespacing=linespacing,
                                  direction=direction,
                                  color=lineColor,
                                  techdraw=techdraw,
@@ -526,6 +528,7 @@ def getSVG(source,
                                  scale=scale,
                                  linewidth=svgSymbolLineWidth,
                                  fontsize=fontsize,
+                                 linespacing=linespacing,
                                  direction=direction,
                                  color=lineColor,
                                  techdraw=techdraw,
@@ -558,6 +561,7 @@ def getSVG(source,
                                      scale=scale,
                                      linewidth=svgSymbolLineWidth,
                                      fontsize=fontsize,
+                                     linespacing=linespacing,
                                      fillstyle="none",
                                      direction=direction,
                                      color=lineColor,
@@ -902,11 +906,11 @@ class _SectionPlane:
 
         return obj.Shape.Faces[0].normalAt(0,0)
 
-    def __getstate__(self):
+    def dumps(self):
 
         return None
 
-    def __setstate__(self,state):
+    def loads(self,state):
 
         return None
 
@@ -1152,11 +1156,11 @@ class _ViewProviderSectionPlane:
                 self.txtfont.size = vobj.FontSize.Value
         return
 
-    def __getstate__(self):
+    def dumps(self):
 
         return None
 
-    def __setstate__(self,state):
+    def loads(self,state):
 
         return None
 

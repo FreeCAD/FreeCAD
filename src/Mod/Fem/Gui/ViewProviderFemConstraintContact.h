@@ -28,9 +28,10 @@
 
 #include "ViewProviderFemConstraint.h"
 
-namespace FemGui {
+namespace FemGui
+{
 
-class FemGuiExport ViewProviderFemConstraintContact : public FemGui::ViewProviderFemConstraint
+class FemGuiExport ViewProviderFemConstraintContact: public FemGui::ViewProviderFemConstraint
 {
     PROPERTY_HEADER_WITH_OVERRIDE(FemGui::ViewProviderFemConstraintContact);
 
@@ -42,6 +43,6 @@ public:
 protected:
     bool setEdit(int ModNum) override;
 };
-}
+}  // namespace FemGui
 
-#endif // GUI_VIEWPROVIDERFEMCONSTRAINTContact_H
+#endif  // GUI_VIEWPROVIDERFEMCONSTRAINTContact_H

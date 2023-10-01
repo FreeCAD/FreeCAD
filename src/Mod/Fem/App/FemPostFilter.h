@@ -28,11 +28,11 @@
 #include <vtkExtractGeometry.h>
 #include <vtkExtractVectorComponents.h>
 #include <vtkLineSource.h>
-#include <vtkVectorNorm.h>
 #include <vtkPointSource.h>
 #include <vtkProbeFilter.h>
 #include <vtkSmartPointer.h>
 #include <vtkTableBasedClipDataSet.h>
+#include <vtkVectorNorm.h>
 #include <vtkWarpVector.h>
 
 #include <App/PropertyUnits.h>
@@ -43,7 +43,7 @@
 namespace Fem
 {
 
-class FemExport FemPostFilter : public Fem::FemPostObject
+class FemExport FemPostFilter: public Fem::FemPostObject
 {
     PROPERTY_HEADER_WITH_OVERRIDE(Fem::FemPostFilter);
 
@@ -59,18 +59,20 @@ public:
 protected:
     vtkDataObject* getInputData();
 
-    //pipeline handling for derived filter
-    struct FilterPipeline {
-       vtkSmartPointer<vtkAlgorithm>                    source, target;
-       vtkSmartPointer<vtkProbeFilter>                  filterSource, filterTarget;
-       std::vector<vtkSmartPointer<vtkAlgorithm> >      algorithmStorage;
+    // pipeline handling for derived filter
+    struct FilterPipeline
+    {
+        vtkSmartPointer<vtkAlgorithm> source, target;
+        vtkSmartPointer<vtkProbeFilter> filterSource, filterTarget;
+        std::vector<vtkSmartPointer<vtkAlgorithm>> algorithmStorage;
     };
 
     void addFilterPipeline(const FilterPipeline& p, std::string name);
     void setActiveFilterPipeline(std::string name);
     FilterPipeline& getFilterPipeline(std::string name);
+
 private:
-    //handling of multiple pipelines which can be the filter
+    // handling of multiple pipelines which can be the filter
     std::map<std::string, FilterPipeline> m_pipelines;
     std::string m_activePipeline;
 };
@@ -93,14 +95,14 @@ public:
 
     App::PropertyVectorDistance Point1;
     App::PropertyVectorDistance Point2;
-    App::PropertyInteger        Resolution;
-    App::PropertyFloatList      XAxisData;
-    App::PropertyFloatList      YAxisData;
-    App::PropertyString         PlotData;
+    App::PropertyInteger Resolution;
+    App::PropertyFloatList XAxisData;
+    App::PropertyFloatList YAxisData;
+    App::PropertyString PlotData;
 
     const char* getViewProviderName() const override
     {
-       return "FemGui::ViewProviderFemPostDataAlongLine";
+        return "FemGui::ViewProviderFemPostDataAlongLine";
     }
     short int mustExecute() const override;
     void GetAxisData();
@@ -108,7 +110,8 @@ public:
 protected:
     App::DocumentObjectExecReturn* execute() override;
     void onChanged(const App::Property* prop) override;
-    void handleChangedPropertyType(Base::XMLReader& reader, const char* TypeName,
+    void handleChangedPropertyType(Base::XMLReader& reader,
+                                   const char* TypeName,
                                    App::Property* prop) override;
 
 private:
@@ -128,15 +131,15 @@ public:
     FemPostDataAtPointFilter();
     ~FemPostDataAtPointFilter() override;
 
-    App::PropertyVectorDistance   Center;
-    App::PropertyDistance         Radius;
-    App::PropertyString           FieldName;
-    App::PropertyFloatList        PointData;
-    App::PropertyString           Unit;
+    App::PropertyVectorDistance Center;
+    App::PropertyDistance Radius;
+    App::PropertyString FieldName;
+    App::PropertyFloatList PointData;
+    App::PropertyString Unit;
 
     const char* getViewProviderName() const override
     {
-       return "FemGui::ViewProviderFemPostDataAtPoint";
+        return "FemGui::ViewProviderFemPostDataAtPoint";
     }
     short int mustExecute() const override;
 
@@ -168,7 +171,7 @@ public:
 
     const char* getViewProviderName() const override
     {
-       return "FemGui::ViewProviderFemPostClip";
+        return "FemGui::ViewProviderFemPostClip";
     }
     short int mustExecute() const override;
     App::DocumentObjectExecReturn* execute() override;
@@ -286,7 +289,8 @@ private:
 
 // ***************************************************************************
 // warp vector filter
-class FemExport FemPostWarpVectorFilter : public FemPostFilter {
+class FemExport FemPostWarpVectorFilter: public FemPostFilter
+{
 
     PROPERTY_HEADER_WITH_OVERRIDE(Fem::FemPostWarpVectorFilter);
 
@@ -294,10 +298,11 @@ public:
     FemPostWarpVectorFilter();
     ~FemPostWarpVectorFilter() override;
 
-    App::PropertyFloat        Factor;
-    App::PropertyEnumeration  Vector;
+    App::PropertyFloat Factor;
+    App::PropertyEnumeration Vector;
 
-    const char* getViewProviderName() const override {
+    const char* getViewProviderName() const override
+    {
         return "FemGui::ViewProviderFemPostWarpVector";
     }
     short int mustExecute() const override;
@@ -307,11 +312,11 @@ protected:
     void onChanged(const App::Property* prop) override;
 
 private:
-    vtkSmartPointer<vtkWarpVector>   m_warp;
-    App::Enumeration                 m_vectorFields;
+    vtkSmartPointer<vtkWarpVector> m_warp;
+    App::Enumeration m_vectorFields;
 };
 
-} //namespace Fem
+}  // namespace Fem
 
 
-#endif // Fem_FemPostFilter_H
+#endif  // Fem_FemPostFilter_H

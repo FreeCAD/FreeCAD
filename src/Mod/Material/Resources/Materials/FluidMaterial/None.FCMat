@@ -1,0 +1,16 @@
+# File created by ConvertFCMat.py
+General:
+  UUID: "944a8018-09bf-48f6-a7b3-aa8f6a00a310"
+  Name: "None"
+  Description: "None"
+Models:
+  Fluid:
+    UUID: '1ae66d8c-1ba1-4211-ad12-b9917573b202'
+    Density: "0 kg/m^3"
+    DynamicViscosity: "0 kg/m/s"
+    KinematicViscosity: "0 m^2/s"
+  Thermal:
+    UUID: '9959d007-a970-4ea7-bae4-3eb1b8b883c7'
+    SpecificHeat: "0 J/kg/K"
+    ThermalConductivity: "0 W/m/K"
+    ThermalExpansionCoefficient: "0 1/K"

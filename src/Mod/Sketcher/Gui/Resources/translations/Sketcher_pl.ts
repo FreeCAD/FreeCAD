@@ -163,7 +163,7 @@
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="1549"/>
       <source>Creates a clone of the geometry taking as reference the last selected point</source>
-      <translation>Tworzy prostą kopię geometrii przyjmującej jako odniesienie ostatni wybrany punkt</translation>
+      <translation>Tworzy klon geometrii przyjmując za punkt odniesienia ostatni wybrany punkt</translation>
     </message>
   </context>
   <context>
@@ -1111,7 +1111,7 @@ w odniesieniu do linii lub trzeciego punktu</translation>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="350"/>
       <source>Increase knot multiplicity</source>
-      <translation>Zwiększ liczebność węzłów</translation>
+      <translation>Zwiększ liczbę węzłów</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="351"/>
@@ -1782,7 +1782,7 @@ nieprawidłowych wiązań, zdegenerowanej geometrii itp.</translation>
     <message>
       <location filename="../../CommandConstraints.cpp" line="1808"/>
       <source>Add arc angle constraint</source>
-      <translation type="unfinished">Add arc angle constraint</translation>
+      <translation>Dodaj wiązanie kąta łuku</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="1831"/>
@@ -2123,7 +2123,7 @@ nieprawidłowych wiązań, zdegenerowanej geometrii itp.</translation>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="388"/>
       <source>Increase knot multiplicity</source>
-      <translation>Zwiększ liczbę węzłów</translation>
+      <translation>Zwiększ liczebność węzłów</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="536"/>
@@ -2280,59 +2280,59 @@ nieprawidłowych wiązań, zdegenerowanej geometrii itp.</translation>
       <translation>Błąd wiązań automatycznych: Nierozwiązywalny szkic przy stosowaniu wiązania równości.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="2244"/>
+      <location filename="../../../App/SketchObject.cpp" line="2263"/>
       <source>Unable to guess intersection of curves. Try adding a coincident constraint between the vertices of the curves you are intending to fillet.</source>
       <translation>Nie można ustalić punktu przecięcia się krzywych. Spróbuj dodać wiązanie zbieżne pomiędzy wierzchołkami krzywych, które zamierzasz zaokrąglić.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6427"/>
-      <location filename="../../../App/SketchObject.cpp" line="6635"/>
+      <location filename="../../../App/SketchObject.cpp" line="6446"/>
+      <location filename="../../../App/SketchObject.cpp" line="6654"/>
       <source>BSpline Geometry Index (GeoID) is out of bounds.</source>
       <translation>Indeks geometrii krzywej złożonej (GeoID) jest poza wiązaniem.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6432"/>
+      <location filename="../../../App/SketchObject.cpp" line="6451"/>
       <source>You are requesting no change in knot multiplicity.</source>
       <translation>Żądasz niezmienności w wielokrotności węzłów.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6438"/>
-      <location filename="../../../App/SketchObject.cpp" line="6645"/>
+      <location filename="../../../App/SketchObject.cpp" line="6457"/>
+      <location filename="../../../App/SketchObject.cpp" line="6664"/>
       <source>The Geometry Index (GeoId) provided is not a B-spline curve.</source>
       <translation>Podany indeks geometrii krzywej złożonej (GeoId) nie jest łukiem krzywej złożonej.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6447"/>
+      <location filename="../../../App/SketchObject.cpp" line="6466"/>
       <source>The knot index is out of bounds. Note that in accordance with OCC notation, the first knot has index 1 and not zero.</source>
       <translation>Indeks węzłów jest poza wiązaniem. Zauważ, że zgodnie z zapisem OCC, pierwszy węzeł ma indeks 1, a nie zero.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6458"/>
+      <location filename="../../../App/SketchObject.cpp" line="6477"/>
       <source>The multiplicity cannot be increased beyond the degree of the B-spline.</source>
       <translation>Wielokrotność nie może być zwiększona poza stopień krzywej złożonej.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6466"/>
+      <location filename="../../../App/SketchObject.cpp" line="6485"/>
       <source>The multiplicity cannot be decreased beyond zero.</source>
       <translation>Wielokrotność nie może zostać zmniejszona poniżej zera.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6480"/>
+      <location filename="../../../App/SketchObject.cpp" line="6499"/>
       <source>OCC is unable to decrease the multiplicity within the maximum tolerance.</source>
       <translation>OCC nie jest w stanie zmniejszyć wielokrotności w ramach maksymalnej tolerancji.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6639"/>
+      <location filename="../../../App/SketchObject.cpp" line="6658"/>
       <source>Knot cannot have zero multiplicity.</source>
       <translation>Węzeł nie może mieć zerowej krotności.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6656"/>
+      <location filename="../../../App/SketchObject.cpp" line="6675"/>
       <source>Knot multiplicity cannot be higher than the degree of the BSpline.</source>
       <translation>Krotność węzłów nie może być większa niż stopień krzywej złożonej.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6662"/>
+      <location filename="../../../App/SketchObject.cpp" line="6681"/>
       <source>Knot cannot be inserted outside the BSpline parameter range.</source>
       <translation>Węzła nie można wstawić poza zakresem parametrów krzywej złożonej.</translation>
     </message>
@@ -2556,7 +2556,7 @@ nieprawidłowych wiązań, zdegenerowanej geometrii itp.</translation>
       <location filename="../../CommandSketcherVirtualSpace.cpp" line="130"/>
       <location filename="../../CommandSketcherVirtualSpace.cpp" line="157"/>
       <source>Wrong selection</source>
-      <translation>Niewłaściwy wybór</translation>
+      <translation>Nieprawidłowy wybór</translation>
     </message>
     <message>
       <location filename="../../CommandAlterGeometry.cpp" line="146"/>
@@ -4899,7 +4899,7 @@ Nie znaleziono jednak żadnych powiązań z punktami końcowymi.</translation>
       <location filename="../../TaskSketcherElements.cpp" line="1646"/>
       <location filename="../../TaskSketcherElements.cpp" line="1652"/>
       <source>Construction</source>
-      <translation>Konstrukcja</translation>
+      <translation>Konstrukcyjny</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="995"/>
@@ -5411,7 +5411,7 @@ Odbywa się to przez analizę geometrii szkicu i wiązań.</translation>
       <location filename="../../CommandSketcherTools.cpp" line="1622"/>
       <location filename="../../CommandSketcherTools.cpp" line="1625"/>
       <source>Creates a clone of the geometry taking as reference the last selected point</source>
-      <translation>Tworzy klon geometrii przyjmując za punkt odniesienia ostatni wybrany punkt</translation>
+      <translation>Tworzy prostą kopię geometrii przyjmującej jako odniesienie ostatni wybrany punkt</translation>
     </message>
   </context>
   <context>
@@ -6298,7 +6298,7 @@ Rozstaw siatki zmienia się, jeśli staje się mniejszy niż określona liczba p
       <translation>Szkic zawiera częściowo zbędne wiązania!</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="9089"/>
+      <location filename="../../../App/SketchObject.cpp" line="9108"/>
       <source>Parabolas were migrated. Migrated files won't open in previous versions of FreeCAD!!
 </source>
       <translation>Parabole zostały poddane migracji. Pliki po imporcie nie otworzą się w poprzednich wersjach programu FreeCAD!!</translation>
@@ -6679,9 +6679,10 @@ Przytrzymaj CTRL, aby włączyć "Przyciąganie pod kątem". Kąt zaczyna się o
       <source>Constrain contextually based on your selection.
 Depending on your selection you might have several constraints available. You can cycle through them using M key.
 Left clicking on empty space will validate the current constraint. Right clicking or pressing Esc will cancel.</source>
-      <translation type="unfinished">Constrain contextually based on your selection.
-Depending on your selection you might have several constraints available. You can cycle through them using M key.
-Left clicking on empty space will validate the current constraint. Right clicking or pressing Esc will cancel.</translation>
+      <translation>Zwiąż kontekstowo na podstawie dokonanego wyboru.
+W zależności od dokonanego wyboru dostępnych może być kilka rodzajów wiązań. Można je przeglądać za pomocą klawisza M.
+Kliknięcie lewym przyciskiem myszki na pustym miejscu spowoduje zatwierdzenie bieżącego wiązania.
+Kliknięcie prawym przyciskiem myszy lub naciśnięcie Esc spowoduje anulowanie.</translation>
     </message>
   </context>
   <context>

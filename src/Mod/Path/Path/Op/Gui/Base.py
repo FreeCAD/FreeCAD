@@ -135,8 +135,8 @@ class ViewProvider(object):
         if self.panel:
             self.panel.reject(False)
 
-    def __getstate__(self):
-        """__getstate__() ... callback before receiver is saved to a file.
+    def dumps(self):
+        """dumps() ... callback before receiver is saved to a file.
         Returns a dictionary with the receiver's resources as strings."""
         Path.Log.track()
         state = {}
@@ -146,9 +146,9 @@ class ViewProvider(object):
         state["OpPageClass"] = self.OpPageClass
         return state
 
-    def __setstate__(self, state):
-        """__setstate__(state) ... callback on restoring a saved instance, pendant to __getstate__()
-        state is the dictionary returned by __getstate__()."""
+    def loads(self, state):
+        """loads(state) ... callback on restoring a saved instance, pendant to dumps()
+        state is the dictionary returned by dumps()."""
         self.OpName = state["OpName"]
         self.OpIcon = state["OpIcon"]
         self.OpPageModule = state["OpPageModule"]

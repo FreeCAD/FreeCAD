@@ -1,0 +1,15 @@
+# File created by ConvertFCMat.py
+General:
+  UUID: "ae194589-02d4-4e9b-98a7-f523f660d510"
+  AuthorAndLicense: "(c) 2023 David Carter"
+  Name: "Bronze"
+  Description: "Defines the Bronze appearance properties"
+AppearanceModels:
+  BasicRendering:
+    UUID: 'f006c7e4-35b7-43d5-bbf9-c5d572309e6e'
+    AmbientColor: "(0.2125, 0.1275, 0.0540, 1.0)"
+    DiffuseColor: "(0.7140, 0.4284, 0.1814, 1.0)"
+    EmissiveColor: "(0.0000, 0.0000, 0.0000, 1.0)"
+    Shininess: "0.2000"
+    SpecularColor: "(0.3935, 0.2719, 0.1667, 1.0)"
+    Transparency: "0.0"

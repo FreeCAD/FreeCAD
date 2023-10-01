@@ -26,16 +26,16 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <Inventor/SbRotation.h>
-# include <Inventor/SbVec3f.h>
-# include <Inventor/nodes/SoMultipleCopy.h>
-# include <Inventor/nodes/SoSeparator.h>
+#include <Inventor/SbRotation.h>
+#include <Inventor/SbVec3f.h>
+#include <Inventor/nodes/SoMultipleCopy.h>
+#include <Inventor/nodes/SoSeparator.h>
 #endif
 
 #include "Mod/Fem/App/FemConstraintDisplacement.h"
-#include <Gui/Control.h>
-#include "ViewProviderFemConstraintDisplacement.h"
 #include "TaskFemConstraintDisplacement.h"
+#include "ViewProviderFemConstraintDisplacement.h"
+#include <Gui/Control.h>
 
 
 using namespace FemGui;
@@ -58,16 +58,18 @@ bool ViewProviderFemConstraintDisplacement::setEdit(int ModNum)
         // When double-clicking on the item for this constraint the
         // object unsets and sets its edit mode without closing
         // the task panel
-        Gui::TaskView::TaskDialog *dlg = Gui::Control().activeDialog();
-        TaskDlgFemConstraintDisplacement *constrDlg =
-            qobject_cast<TaskDlgFemConstraintDisplacement *>(dlg);
-        if (constrDlg && constrDlg->getConstraintView() != this)
-            constrDlg = nullptr; // another constraint left open its task panel
+        Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog();
+        TaskDlgFemConstraintDisplacement* constrDlg =
+            qobject_cast<TaskDlgFemConstraintDisplacement*>(dlg);
+        if (constrDlg && constrDlg->getConstraintView() != this) {
+            constrDlg = nullptr;  // another constraint left open its task panel
+        }
         if (dlg && !constrDlg) {
             if (constraintDialog) {
                 // Ignore the request to open another dialog
                 return false;
-            } else {
+            }
+            else {
                 constraintDialog = new TaskFemConstraintDisplacement(this);
                 return true;
             }
@@ -77,27 +79,29 @@ bool ViewProviderFemConstraintDisplacement::setEdit(int ModNum)
         Gui::Selection().clearSelection();
 
         // start the edit dialog
-        if (constrDlg)
+        if (constrDlg) {
             Gui::Control().showDialog(constrDlg);
-        else
+        }
+        else {
             Gui::Control().showDialog(new TaskDlgFemConstraintDisplacement(this));
+        }
         return true;
     }
     else {
-        return ViewProviderDocumentObject::setEdit(ModNum); // clazy:exclude=skipped-base-method
+        return ViewProviderDocumentObject::setEdit(ModNum);  // clazy:exclude=skipped-base-method
     }
 }
 
 #define HEIGHT (4)
 #define WIDTH (0.3)
-//#define USE_MULTIPLE_COPY
-//OvG: MULTICOPY fails to update scaled display on initial drawing - so disable
+// #define USE_MULTIPLE_COPY
+// OvG: MULTICOPY fails to update scaled display on initial drawing - so disable
 
 void ViewProviderFemConstraintDisplacement::updateData(const App::Property* prop)
 {
     // Gets called whenever a property of the attached object changes
-    Fem::ConstraintDisplacement *pcConstraint =
-        static_cast<Fem::ConstraintDisplacement *>(this->getObject());
+    Fem::ConstraintDisplacement* pcConstraint =
+        static_cast<Fem::ConstraintDisplacement*>(this->getObject());
     // OvG: Calculate scaled values once only
     float scaledwidth = WIDTH * pcConstraint->Scale.getValue();
     float scaledheight = HEIGHT * pcConstraint->Scale.getValue();
@@ -109,7 +113,7 @@ void ViewProviderFemConstraintDisplacement::updateData(const App::Property* prop
     bool rotzFree = pcConstraint->rotzFree.getValue();
 
 #ifdef USE_MULTIPLE_COPY
-    //OvG: always need access to cp for scaling
+    // OvG: always need access to cp for scaling
     SoMultipleCopy* cpx = new SoMultipleCopy();
     SoMultipleCopy* cpy = new SoMultipleCopy();
     SoMultipleCopy* cpz = new SoMultipleCopy();
@@ -119,22 +123,22 @@ void ViewProviderFemConstraintDisplacement::updateData(const App::Property* prop
     if (pShapeSep->getNumChildren() == 0) {
         // Set up the nodes
         cpx->matrix.setNum(0);
-        cpx->addChild((SoNode*)createDisplacement(scaledheight, scaledwidth)); //OvG: Scaling
+        cpx->addChild((SoNode*)createDisplacement(scaledheight, scaledwidth));  // OvG: Scaling
 
         cpy->matrix.setNum(0);
-        cpy->addChild((SoNode*)createDisplacement(scaledheight, scaledwidth)); //OvG: Scaling
+        cpy->addChild((SoNode*)createDisplacement(scaledheight, scaledwidth));  // OvG: Scaling
 
         cpz->matrix.setNum(0);
-        cpz->addChild((SoNode*)createDisplacement(scaledheight, scaledwidth)); //OvG: Scaling
+        cpz->addChild((SoNode*)createDisplacement(scaledheight, scaledwidth));  // OvG: Scaling
 
         cprotx->matrix.setNum(0);
-        cprotx->addChild((SoNode*)createRotation(scaledheight, scaledwidth)); //OvG: Scaling
+        cprotx->addChild((SoNode*)createRotation(scaledheight, scaledwidth));  // OvG: Scaling
 
         cproty->matrix.setNum(0);
-        cproty->addChild((SoNode*)createRotation(scaledheight, scaledwidth)); //OvG: Scaling
+        cproty->addChild((SoNode*)createRotation(scaledheight, scaledwidth));  // OvG: Scaling
 
         cprotz->matrix.setNum(0);
-        cprotz->addChild((SoNode*)createRotation(scaledheight, scaledwidth)); //OvG: Scaling
+        cprotz->addChild((SoNode*)createRotation(scaledheight, scaledwidth));  // OvG: Scaling
 
         pShapeSep->addChild(cpx);
         pShapeSep->addChild(cpy);
@@ -148,8 +152,9 @@ void ViewProviderFemConstraintDisplacement::updateData(const App::Property* prop
     if (prop == &pcConstraint->Points) {
         const std::vector<Base::Vector3d>& points = pcConstraint->Points.getValues();
         const std::vector<Base::Vector3d>& normals = pcConstraint->Normals.getValues();
-        if (points.size() != normals.size())
+        if (points.size() != normals.size()) {
             return;
+        }
         std::vector<Base::Vector3d>::const_iterator n = normals.begin();
 
 #ifdef USE_MULTIPLE_COPY
@@ -188,19 +193,19 @@ void ViewProviderFemConstraintDisplacement::updateData(const App::Property* prop
         Gui::coinRemoveAllChildren(pShapeSep);
 #endif
 
-        for (const auto & point : points) {
+        for (const auto& point : points) {
             SbVec3f base(point.x, point.y, point.z);
-            SbVec3f dirx(1, 0, 0);                   //OvG: Make relevant to global axes
-            SbVec3f diry(0, 1, 0);                   //OvG: Make relevant to global axes
-            SbVec3f dirz(0, 0, 1);                   //OvG: Make relevant to global axes
-            SbRotation rotx(SbVec3f(0, -1, 0), dirx);//OvG Tri-cones
+            SbVec3f dirx(1, 0, 0);                     // OvG: Make relevant to global axes
+            SbVec3f diry(0, 1, 0);                     // OvG: Make relevant to global axes
+            SbVec3f dirz(0, 0, 1);                     // OvG: Make relevant to global axes
+            SbRotation rotx(SbVec3f(0, -1, 0), dirx);  // OvG Tri-cones
             SbRotation roty(SbVec3f(0, -1, 0), diry);
             SbRotation rotz(SbVec3f(0, -1, 0), dirz);
 #ifdef USE_MULTIPLE_COPY
             SbMatrix mx;
             SbMatrix my;
             SbMatrix mz;
-            //OvG: Translation indication
+            // OvG: Translation indication
             if (!xFree) {
                 SbMatrix mx;
                 mx.setTransform(base, rotx, SbVec3f(1, 1, 1));
@@ -220,7 +225,7 @@ void ViewProviderFemConstraintDisplacement::updateData(const App::Property* prop
                 idz++;
             }
 
-            //OvG: Rotation indication
+            // OvG: Rotation indication
             if (!rotxFree) {
                 SbMatrix mrotx;
                 mrotx.setTransform(base, rotx, SbVec3f(1, 1, 1));
@@ -240,43 +245,43 @@ void ViewProviderFemConstraintDisplacement::updateData(const App::Property* prop
                 idrotz++;
             }
 #else
-            //OvG: Translation indication
+            // OvG: Translation indication
             if (!xFree) {
-                SoSeparator *sepx = new SoSeparator();
+                SoSeparator* sepx = new SoSeparator();
                 createPlacement(sepx, base, rotx);
-                createDisplacement(sepx, scaledheight, scaledwidth);//OvG: Scaling
+                createDisplacement(sepx, scaledheight, scaledwidth);  // OvG: Scaling
                 pShapeSep->addChild(sepx);
             }
             if (!yFree) {
-                SoSeparator *sepy = new SoSeparator();
+                SoSeparator* sepy = new SoSeparator();
                 createPlacement(sepy, base, roty);
-                createDisplacement(sepy, scaledheight, scaledwidth);//OvG: Scaling
+                createDisplacement(sepy, scaledheight, scaledwidth);  // OvG: Scaling
                 pShapeSep->addChild(sepy);
             }
             if (!zFree) {
-                SoSeparator *sepz = new SoSeparator();
+                SoSeparator* sepz = new SoSeparator();
                 createPlacement(sepz, base, rotz);
-                createDisplacement(sepz, scaledheight, scaledwidth);//OvG: Scaling
+                createDisplacement(sepz, scaledheight, scaledwidth);  // OvG: Scaling
                 pShapeSep->addChild(sepz);
             }
 
-            //OvG: Rotation indication
+            // OvG: Rotation indication
             if (!rotxFree) {
-                SoSeparator *sepx = new SoSeparator();
+                SoSeparator* sepx = new SoSeparator();
                 createPlacement(sepx, base, rotx);
-                createRotation(sepx, scaledheight, scaledwidth);//OvG: Scaling
+                createRotation(sepx, scaledheight, scaledwidth);  // OvG: Scaling
                 pShapeSep->addChild(sepx);
             }
             if (!rotyFree) {
-                SoSeparator *sepy = new SoSeparator();
+                SoSeparator* sepy = new SoSeparator();
                 createPlacement(sepy, base, roty);
-                createRotation(sepy, scaledheight, scaledwidth);//OvG: Scaling
+                createRotation(sepy, scaledheight, scaledwidth);  // OvG: Scaling
                 pShapeSep->addChild(sepy);
             }
             if (!rotzFree) {
-                SoSeparator *sepz = new SoSeparator();
+                SoSeparator* sepz = new SoSeparator();
                 createPlacement(sepz, base, rotz);
-                createRotation(sepz, scaledheight, scaledwidth);//OvG: Scaling
+                createRotation(sepz, scaledheight, scaledwidth);  // OvG: Scaling
                 pShapeSep->addChild(sepz);
             }
 #endif

@@ -24,8 +24,8 @@
 #ifndef GUI_TASKVIEW_TaskFemConstraintSpring_H
 #define GUI_TASKVIEW_TaskFemConstraintSpring_H
 
-#include <memory>
 #include <QObject>
+#include <memory>
 
 #include "TaskFemConstraintOnBoundary.h"
 #include "ViewProviderFemConstraintSpring.h"
@@ -33,8 +33,9 @@
 
 class Ui_TaskFemConstraintSpring;
 
-namespace FemGui {
-class TaskFemConstraintSpring : public TaskFemConstraintOnBoundary
+namespace FemGui
+{
+class TaskFemConstraintSpring: public TaskFemConstraintOnBoundary
 {
     Q_OBJECT
 
@@ -53,8 +54,8 @@ private Q_SLOTS:
     void removeFromSelection() override;
 
 protected:
-    bool event(QEvent *e) override;
-    void changeEvent(QEvent *e) override;
+    bool event(QEvent* e) override;
+    void changeEvent(QEvent* e) override;
     void clearButtons(const SelectionChangeModes notThis) override;
 
 private:
@@ -62,17 +63,17 @@ private:
     std::unique_ptr<Ui_TaskFemConstraintSpring> ui;
 };
 
-class TaskDlgFemConstraintSpring : public TaskDlgFemConstraint
+class TaskDlgFemConstraintSpring: public TaskDlgFemConstraint
 {
     Q_OBJECT
 
 public:
-    explicit TaskDlgFemConstraintSpring(ViewProviderFemConstraintSpring *ConstraintView);
+    explicit TaskDlgFemConstraintSpring(ViewProviderFemConstraintSpring* ConstraintView);
     void open() override;
     bool accept() override;
     bool reject() override;
 };
 
-} //namespace FemGui
+}  // namespace FemGui
 
-#endif // GUI_TASKVIEW_TaskFemConstraintSpring_H
+#endif  // GUI_TASKVIEW_TaskFemConstraintSpring_H

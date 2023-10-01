@@ -1,0 +1,25 @@
+# File created by ConvertFCMat.py
+General:
+  UUID: "8d02a797-5e0a-4e40-803a-75fc66de8de6"
+  Name: "Nitrogen"
+  Description: "Nitrogen properties at 20 Degrees Celsius and 1 atm"
+Models:
+  Father:
+    UUID: '9cdda8b6-b606-4778-8f13-3934d8668e67'
+    Father: "Gas"
+  Fluid:
+    UUID: '1ae66d8c-1ba1-4211-ad12-b9917573b202'
+    Density: "1.2506 kg/m^3"
+    DynamicViscosity: "17.58e-6 kg/m/s"
+    KinematicViscosity: "14.06e-6 m^2/s"
+    PrandtlNumber: "0.7"
+  Thermal:
+    UUID: '9959d007-a970-4ea7-bae4-3eb1b8b883c7'
+    SpecificHeat: "1.04 kJ/kg/K"
+    ThermalConductivity: "25.83e-3 W/m/K"
+    ThermalExpansionCoefficient: "3.43e-3 1/K"
+  Electromagnetic:
+    UUID: 'b2eb5f48-74b3-4193-9fbb-948674f427f3'
+    RelativePermittivity: "1.00058"
+    ElectricalConductivity: "1e-12 S/m"
+    RelativePermeability: "1.0"

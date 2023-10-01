@@ -265,6 +265,7 @@ void DemoMode::onAutoPlay()
     Gui::View3DInventor* view = activeView();
     if (view && !view->getViewer()->isAnimating()) {
         ui->playButton->setChecked(true);
+        startAnimation(view);
     }
 }
 
