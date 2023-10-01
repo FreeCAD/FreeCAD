@@ -283,14 +283,20 @@ void DrawSketchHandler::activate(ViewProviderSketch* vp)
     sketchgui = vp;
 
     // save the cursor at the time the DSH is activated
-    Gui::MDIView* view = Gui::getMainWindow()->activeWindow();
-    Gui::View3DInventorViewer* viewer = static_cast<Gui::View3DInventor*>(view)->getViewer();
-    oldCursor = viewer->getWidget()->cursor();
+    auto* view = dynamic_cast<Gui::View3DInventor*>(Gui::getMainWindow()->activeWindow());
 
-    updateCursor();
+    if (view) {
+        Gui::View3DInventorViewer* viewer = dynamic_cast<Gui::View3DInventor*>(view)->getViewer();
+        oldCursor = viewer->getWidget()->cursor();
 
-    this->preActivated();
-    this->activated();
+        updateCursor();
+
+        this->preActivated();
+        this->activated();
+    }
+    else {
+        sketchgui->purgeHandler();
+    }
 }
 
 void DrawSketchHandler::deactivate()
