@@ -1,0 +1,16 @@
+# File created by ConvertFCMat.py
+General:
+  UUID: "57507cd4-d22f-4d86-9794-fdb1ec8cd098"
+  AuthorAndLicense: "(c) 2019 Bernd Hahnebach (CC-BY 3.0)"
+  Name: "Reinforcement-Harry"
+  Description: "Reinforcement inside concrete for reinforcement material examples, from fib examples, 0.84 x 0.75 x 500 MPa = 315 MPa (https://forum.freecad.org/viewtopic.php?f=18&t=33106&start=200#p311705)"
+Inherits:
+  Steel:
+    UUID: "4b849c55-6b3a-4f75-a055-40c0d0324596"
+Models:
+  LinearElastic:
+    UUID: '7b561d1d-fb9b-44f6-9da9-56a4f74d7536'
+    Density: "7850 kg/m^3"
+    PoissonRatio: "0.3"
+    YieldStrength: "315 MPa"
+    YoungsModulus: "210000 MPa"

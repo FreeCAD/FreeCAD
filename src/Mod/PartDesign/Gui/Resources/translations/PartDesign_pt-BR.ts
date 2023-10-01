@@ -1503,7 +1503,7 @@ clique novamente para terminar a seleção</translation>
     <message>
       <location filename="../../TaskChamferParameters.ui" line="24"/>
       <source>Select</source>
-      <translation>Selecionar</translation>
+      <translation>Selecione</translation>
     </message>
     <message>
       <location filename="../../TaskChamferParameters.ui" line="34"/>
@@ -1624,7 +1624,7 @@ clique novamente para terminar a seleção</translation>
     <message>
       <location filename="../../TaskDraftParameters.ui" line="24"/>
       <source>Select</source>
-      <translation>Selecionar</translation>
+      <translation>Selecione</translation>
     </message>
     <message>
       <location filename="../../TaskDraftParameters.ui" line="34"/>
@@ -1671,7 +1671,7 @@ clique novamente para terminar a seleção</translation>
     <message>
       <location filename="../../TaskDressUpParameters.cpp" line="90"/>
       <source>Select</source>
-      <translation>Selecionar</translation>
+      <translation>Selecione</translation>
     </message>
     <message>
       <location filename="../../TaskDressUpParameters.cpp" line="262"/>
@@ -1829,7 +1829,7 @@ clique novamente para terminar a seleção</translation>
     <message>
       <location filename="../../TaskFilletParameters.ui" line="24"/>
       <source>Select</source>
-      <translation>Selecionar</translation>
+      <translation>Selecione</translation>
     </message>
     <message>
       <location filename="../../TaskFilletParameters.ui" line="34"/>
@@ -2993,7 +2993,7 @@ clique novamente para terminar a seleção</translation>
     <message>
       <location filename="../../TaskThicknessParameters.ui" line="24"/>
       <source>Select</source>
-      <translation>Selecionar</translation>
+      <translation>Selecione</translation>
     </message>
     <message>
       <location filename="../../TaskThicknessParameters.ui" line="34"/>

@@ -98,7 +98,7 @@
            <string>Compression level for FCStd files</string>
           </property>
           <property name="value">
-           <number>3</number>
+           <number>7</number>
           </property>
           <property name="prefEntry" stdset="0">
            <cstring>CompressionLevel</cstring>
@@ -393,7 +393,7 @@ Common sizes are 128, 256 and 512</string>
            <number>512</number>
           </property>
           <property name="value">
-           <number>128</number>
+           <number>256</number>
           </property>
           <property name="prefEntry" stdset="0">
            <cstring>ThumbnailSize</cstring>

@@ -25,6 +25,7 @@
 #define BASE_MATRIX_H
 
 #include <string>
+#include <array>
 
 #include "Vector3D.h"
 #ifndef FC_GLOBAL_H
@@ -175,6 +176,8 @@ public:
     { scale(Vector3d(scalexyz, scalexyz, scalexyz)); }
     /// Check for scaling factor
     ScaleType hasScale(double tol=0.0) const;
+    /// Decompose matrix into pure shear, scale, rotation and move
+    std::array<Matrix4D, 4> decompose() const;
     /// Rotate around the X axis (in transformed space) for the given value in radians
     void rotX         (double fAngle);
     /// Rotate around the Y axis (in transformed space) for the given value in radians

@@ -111,7 +111,7 @@
     <message>
       <location filename="../panels/DlgJobCreate.ui" line="23"/>
       <source>Template</source>
-      <translation type="unfinished">Template</translation>
+      <translation>Πρότυπο</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobCreate.ui" line="32"/>
@@ -370,12 +370,12 @@ For stock from the Base object's bounding box it means the extra material in all
     <message>
       <location filename="../panels/DlgToolEdit.ui" line="14"/>
       <source>Tool Editor</source>
-      <translation type="unfinished">Tool Editor</translation>
+      <translation>Επεξεργαστής Εργαλείων</translation>
     </message>
     <message>
       <location filename="../panels/PropertyCreate.ui" line="14"/>
       <source>Create Property</source>
-      <translation type="unfinished">Create Property</translation>
+      <translation>Δημιουργία Ιδιότητας</translation>
     </message>
     <message>
       <location filename="../panels/PropertyCreate.ui" line="20"/>
@@ -385,12 +385,12 @@ For stock from the Base object's bounding box it means the extra material in all
     <message>
       <location filename="../panels/PropertyCreate.ui" line="27"/>
       <source>Name of property. Can only contain letters, numbers, and underscores. MixedCase names will display with spaces "Mixed Case"</source>
-      <translation type="unfinished">Name of property. Can only contain letters, numbers, and underscores. MixedCase names will display with spaces "Mixed Case"</translation>
+      <translation>Όνομα ιδιότητας. Μπορεί να περιέχει μόνο γράμματα, αριθμούς και κάτω παύλες. Τα ονόματα με μικτά πεζά και κεφαλαία, όπως "MixedCase", θα εμφανίζονται με κενά "Mixed Case"</translation>
     </message>
     <message>
       <location filename="../panels/PropertyCreate.ui" line="34"/>
       <source>The category group the property belongs to.</source>
-      <translation type="unfinished">The category group the property belongs to.</translation>
+      <translation>Ομάδα κατηγορίας στην οποία ανήκει η ιδιότητα.</translation>
     </message>
     <message>
       <location filename="../panels/PropertyCreate.ui" line="51"/>
@@ -440,7 +440,7 @@ For stock from the Base object's bounding box it means the extra material in all
     <message>
       <location filename="../panels/ToolBitLibraryEdit.ui" line="14"/>
       <source>Library Manager</source>
-      <translation type="unfinished">Library Manager</translation>
+      <translation>Διαχειριστής Βιβλιοθήκης</translation>
     </message>
     <message>
       <location filename="../panels/ToolBitLibraryEdit.ui" line="35"/>
@@ -465,7 +465,7 @@ For stock from the Base object's bounding box it means the extra material in all
     <message>
       <location filename="../panels/ToolBitLibraryEdit.ui" line="119"/>
       <source>Add New Tool Table</source>
-      <translation type="unfinished">Add New Tool Table</translation>
+      <translation>Προσθήκη Νέου Πίνακα Εργαλείων</translation>
     </message>
     <message>
       <location filename="../panels/ToolBitLibraryEdit.ui" line="139"/>
@@ -480,12 +480,12 @@ For stock from the Base object's bounding box it means the extra material in all
     <message>
       <location filename="../panels/ToolBitLibraryEdit.ui" line="269"/>
       <source>Save the current Library</source>
-      <translation type="unfinished">Save the current Library</translation>
+      <translation>Αποθήκευση της τρέχουσας Βιβλιοθήκης</translation>
     </message>
     <message>
       <location filename="../panels/ToolBitLibraryEdit.ui" line="55"/>
       <source>Add Existing</source>
-      <translation type="unfinished">Add Existing</translation>
+      <translation>Προσθήκη Υπάρχουσας</translation>
     </message>
     <message>
       <location filename="../panels/ToolBitLibraryEdit.ui" line="75"/>
@@ -513,12 +513,12 @@ For stock from the Base object's bounding box it means the extra material in all
     <message>
       <location filename="../panels/DlgTCChooser.ui" line="29"/>
       <source>Tool Controller</source>
-      <translation type="unfinished">Tool Controller</translation>
+      <translation>Ελεγκτής Εργαλείων</translation>
     </message>
     <message>
       <location filename="../panels/DlgToolCopy.ui" line="23"/>
       <source>Copy Selected Tools</source>
-      <translation type="unfinished">Copy Selected Tools</translation>
+      <translation>Αντιγραφή Επιλεγμένων Εργαλείων</translation>
     </message>
     <message>
       <location filename="../panels/DlgToolCopy.ui" line="29"/>
@@ -536,12 +536,12 @@ For stock from the Base object's bounding box it means the extra material in all
     <message>
       <location filename="../../DlgProcessorChooser.ui" line="20"/>
       <source>Processor</source>
-      <translation type="unfinished">Processor</translation>
+      <translation>Επεξεργαστής</translation>
     </message>
     <message>
       <location filename="../../DlgProcessorChooser.ui" line="33"/>
       <source>Arguments</source>
-      <translation type="unfinished">Arguments</translation>
+      <translation>Παράμετροι</translation>
     </message>
   </context>
   <context>
@@ -564,7 +564,7 @@ For stock from the Base object's bounding box it means the extra material in all
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="50"/>
       <source>Create Cylinder</source>
-      <translation type="unfinished">Create Cylinder</translation>
+      <translation>Δημιουργία Κυλίνδρου</translation>
     </message>
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="60"/>
@@ -624,12 +624,12 @@ For stock from the Base object's bounding box it means the extra material in all
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="182"/>
       <source>Radius of the Cylinder</source>
-      <translation type="unfinished">Radius of the Cylinder</translation>
+      <translation>Ακτίνα του κυλίνδρου</translation>
     </message>
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="196"/>
       <source>Height of the Cylinder</source>
-      <translation type="unfinished">Height of the Cylinder</translation>
+      <translation>Ύψος του κυλίνδρου</translation>
     </message>
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="216"/>
@@ -749,7 +749,7 @@ Reset deletes all current items from the list and fills the list with all circul
     <message>
       <location filename="../panels/PageBaseHoleGeometryEdit.ui" line="33"/>
       <source>Feature</source>
-      <translation type="unfinished">Feature</translation>
+      <translation>Χαρακτηριστικό</translation>
     </message>
     <message>
       <location filename="../panels/PageBaseHoleGeometryEdit.ui" line="38"/>
@@ -964,7 +964,7 @@ Reset deletes all current items from the list and fills the list with all circul
       <location filename="../panels/PageOpWaterlineEdit.ui" line="29"/>
       <location filename="../panels/SetupGlobal.ui" line="180"/>
       <source>Tool Controller</source>
-      <translation type="unfinished">Tool Controller</translation>
+      <translation>Ελεγκτής Εργαλείων</translation>
     </message>
     <message>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="33"/>
@@ -2553,7 +2553,7 @@ If left empty no template will be preselected.</translation>
     <message>
       <location filename="../preferences/PathJob.ui" line="400"/>
       <source>Create Cylinder</source>
-      <translation type="unfinished">Create Cylinder</translation>
+      <translation>Δημιουργία Κυλίνδρου</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="405"/>
@@ -3380,7 +3380,7 @@ Should multiple tools or tool shapes with the same name exist in different direc
     <message>
       <location filename="../panels/SurfaceEdit.ui" line="263"/>
       <source>Tool Controller</source>
-      <translation type="unfinished">Tool Controller</translation>
+      <translation>Ελεγκτής Εργαλείων</translation>
     </message>
     <message>
       <location filename="../panels/SurfaceEdit.ui" line="280"/>
@@ -3700,12 +3700,12 @@ Should multiple tools or tool shapes with the same name exist in different direc
     <message>
       <location filename="../panels/PathEdit.ui" line="179"/>
       <source>Processor</source>
-      <translation type="unfinished">Processor</translation>
+      <translation>Επεξεργαστής</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="189"/>
       <source>Arguments</source>
-      <translation type="unfinished">Arguments</translation>
+      <translation>Παράμετροι</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="209"/>
@@ -3779,7 +3779,7 @@ FreeCAD has no knowledge of where a particular coordinate system exists within t
     <message>
       <location filename="../panels/PathEdit.ui" line="483"/>
       <source>Create Cylinder</source>
-      <translation type="unfinished">Create Cylinder</translation>
+      <translation>Δημιουργία Κυλίνδρου</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="488"/>
@@ -6588,351 +6588,306 @@ For example:
   <context>
     <name>Path_Sanity</name>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="122"/>
       <location filename="../../../Path/Main/Gui/Sanity.py" line="126"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="130"/>
       <source>Check the path job for common errors</source>
       <translation type="unfinished">Check the path job for common errors</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="210"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="215"/>
       <source>Setup Report for FreeCAD Job</source>
       <translation type="unfinished">Setup Report for FreeCAD Job</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="211"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="216"/>
       <source>Table of Contents</source>
       <translation type="unfinished">Table of Contents</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="212"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="217"/>
       <source>Part Information</source>
       <translation type="unfinished">Part Information</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="213"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="218"/>
       <source>Run Summary</source>
       <translation type="unfinished">Run Summary</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="214"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="219"/>
       <source>Rough Stock</source>
       <translation type="unfinished">Rough Stock</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="215"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="220"/>
       <source>Tool Data</source>
       <translation type="unfinished">Tool Data</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="216"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="221"/>
       <source>Output</source>
       <translation>Έξοδος</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="217"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="222"/>
       <source>Fixtures</source>
       <translation type="unfinished">Fixtures</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="219"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="224"/>
       <source>Squawks</source>
       <translation type="unfinished">Squawks</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="220"/>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="1241"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="225"/>
       <source>Base Object(s)</source>
       <translation type="unfinished">Base Object(s)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="221"/>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="1242"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="226"/>
       <source>Job Sequence</source>
       <translation type="unfinished">Job Sequence</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="222"/>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="1243"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="227"/>
       <source>Job Description</source>
       <translation type="unfinished">Job Description</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="223"/>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="1244"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="228"/>
       <source>Job Type</source>
       <translation type="unfinished">Job Type</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="224"/>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="1245"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="229"/>
       <source>CAD File Name</source>
       <translation type="unfinished">CAD File Name</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="225"/>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="1246"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="230"/>
       <source>Last Save Date</source>
       <translation type="unfinished">Last Save Date</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="226"/>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="1247"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="231"/>
       <source>Customer</source>
       <translation type="unfinished">Customer</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="228"/>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="1249"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="233"/>
       <source>Designer</source>
       <translation type="unfinished">Designer</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="233"/>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="509"/>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="1284"/>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="1329"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="238"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="514"/>
       <source>Operation</source>
       <translation type="unfinished">Operation</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="234"/>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="1285"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="239"/>
       <source>Minimum Z Height</source>
       <translation type="unfinished">Minimum Z Height</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="235"/>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="1286"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="240"/>
       <source>Maximum Z Height</source>
       <translation type="unfinished">Maximum Z Height</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="237"/>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="1287"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="242"/>
       <source>Cycle Time</source>
       <translation type="unfinished">Cycle Time</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="238"/>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="1288"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="243"/>
       <source>Coolant</source>
       <translation type="unfinished">Coolant</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="239"/>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="1290"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="244"/>
       <source>TOTAL JOB</source>
       <translation type="unfinished">TOTAL JOB</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="241"/>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="1323"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="246"/>
       <source>Tool Number</source>
       <translation type="unfinished">Tool Number</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="504"/>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="1324"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="509"/>
       <source>Description</source>
       <translation>Περιγραφή</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="505"/>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="1325"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="510"/>
       <source>Manufacturer</source>
       <translation type="unfinished">Manufacturer</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="506"/>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="1326"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="511"/>
       <source>Part Number</source>
       <translation type="unfinished">Part Number</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="507"/>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="1327"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="512"/>
       <source>URL</source>
       <translation>Διεύθυνση URL</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="508"/>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="1328"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="513"/>
       <source>Inspection Notes</source>
       <translation type="unfinished">Inspection Notes</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="510"/>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="1330"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="515"/>
       <source>Tool Controller</source>
-      <translation type="unfinished">Tool Controller</translation>
+      <translation>Ελεγκτής Εργαλείων</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="511"/>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="1331"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="516"/>
       <source>Feed Rate</source>
       <translation type="unfinished">Feed Rate</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="512"/>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="1332"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="517"/>
       <source>Spindle Speed</source>
       <translation type="unfinished">Spindle Speed</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="513"/>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="1333"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="518"/>
       <source>Tool Shape</source>
       <translation type="unfinished">Tool Shape</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="515"/>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="1335"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="520"/>
       <source>Tool Diameter</source>
       <translation type="unfinished">Tool Diameter</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="516"/>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="1386"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="521"/>
       <source>X Size</source>
       <translation type="unfinished">X Size</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="517"/>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="1387"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="522"/>
       <source>Y Size</source>
       <translation type="unfinished">Y Size</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="518"/>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="1388"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="523"/>
       <source>Z Size</source>
       <translation type="unfinished">Z Size</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="520"/>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="1390"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="525"/>
       <source>Material</source>
       <translation>Υλικό</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="521"/>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="1403"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="526"/>
       <source>Work Offsets</source>
       <translation type="unfinished">Work Offsets</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="522"/>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="1404"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="527"/>
       <source>Order By</source>
       <translation type="unfinished">Order By</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="524"/>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="1406"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="529"/>
       <source>Part Datum</source>
       <translation type="unfinished">Part Datum</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="525"/>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="1418"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="530"/>
       <source>G-code File</source>
       <translation type="unfinished">G-code File</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="526"/>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="1419"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="531"/>
       <source>Last Post Process Date</source>
       <translation type="unfinished">Last Post Process Date</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="527"/>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="1420"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="532"/>
       <source>Stops</source>
       <translation type="unfinished">Stops</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="528"/>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="1421"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="533"/>
       <source>Programmer</source>
       <translation type="unfinished">Programmer</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="529"/>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="1422"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="534"/>
       <source>Machine</source>
       <translation type="unfinished">Machine</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="530"/>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="1423"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="535"/>
       <source>Postprocessor</source>
       <translation type="unfinished">Postprocessor</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="531"/>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="1424"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="536"/>
       <source>Post Processor Flags</source>
       <translation type="unfinished">Post Processor Flags</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="532"/>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="1425"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="537"/>
       <source>File Size (kB)</source>
       <translation type="unfinished">File Size (kB)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="534"/>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="1427"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="539"/>
       <source>Line Count</source>
       <translation type="unfinished">Line Count</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="535"/>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="1440"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="540"/>
       <source>Note</source>
       <translation type="unfinished">Note</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="536"/>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="1441"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="541"/>
       <source>Operator</source>
       <translation>Τελεστής</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="538"/>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="1443"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="543"/>
       <source>Date</source>
       <translation type="unfinished">Date</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="1592"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="1332"/>
       <source>Tool number {} is a legacy tool. Legacy tools not 
                         supported by Path-Sanity</source>
       <translation type="unfinished">Tool number {} is a legacy tool. Legacy tools not 
                         supported by Path-Sanity</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="1603"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="1343"/>
       <source>Tool number {} used by multiple tools</source>
       <translation type="unfinished">Tool number {} used by multiple tools</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="1631"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="1371"/>
       <source>Tool Controller '{}' has no spindlespeed</source>
       <translation type="unfinished">Tool Controller '{}' has no spindlespeed</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="1659"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="1399"/>
       <source>Tool Controller '{}' is not used</source>
       <translation type="unfinished">Tool Controller '{}' is not used</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="1754"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="1494"/>
       <source>Consider Specifying the Stock Material</source>
       <translation type="unfinished">Consider Specifying the Stock Material</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="1845"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="1585"/>
       <source>The Job has not been post-processed</source>
       <translation type="unfinished">The Job has not been post-processed</translation>
     </message>

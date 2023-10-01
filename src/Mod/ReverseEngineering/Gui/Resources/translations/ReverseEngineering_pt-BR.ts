@@ -460,7 +460,7 @@
     <message>
       <location filename="../../SegmentationManual.ui" line="20"/>
       <source>Select</source>
-      <translation>Selecionar</translation>
+      <translation>Selecione</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="41"/>

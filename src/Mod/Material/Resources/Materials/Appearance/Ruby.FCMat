@@ -1,0 +1,15 @@
+# File created by ConvertFCMat.py
+General:
+  UUID: "953261a0-cc48-41f8-a3f9-7b20ae3f9b56"
+  AuthorAndLicense: "(c) 2023 David Carter"
+  Name: "Ruby"
+  Description: "Defines the Ruby appearance properties"
+AppearanceModels:
+  BasicRendering:
+    UUID: 'f006c7e4-35b7-43d5-bbf9-c5d572309e6e'
+    AmbientColor: "(0.1745, 0.0118, 0.0118, 1.0)"
+    DiffuseColor: "(0.6142, 0.0414, 0.0414, 1.0)"
+    EmissiveColor: "(0.0000, 0.0000, 0.0000, 1.0)"
+    Shininess: "0.6000"
+    SpecularColor: "(0.7278, 0.6279, 0.6279, 1.0)"
+    Transparency: "0.0"

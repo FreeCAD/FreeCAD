@@ -403,6 +403,12 @@ App::DocumentObjectExecReturn* DrawViewDimension::execute()
         }
     }
 
+    if (References3D.getValues().empty() && !checkReferences2D()) {
+        Base::Console().Warning("%s has invalid 2D References\n",
+                                getNameInDocument());
+        return new App::DocumentObjectExecReturn("Dimension object has invalid 2d references");
+    }
+
     //we have either or both valid References3D and References2D
     ReferenceVector references = getEffectiveReferences();
 
@@ -468,16 +474,15 @@ bool DrawViewDimension::okToProceed()
         return false;
     }
 
-    if (References3D.getValues().empty() && !checkReferences2D()) {
-        Base::Console().Warning("DVD::execute - %s has invalid 2D References\n",
-                                getNameInDocument());
-        return false;
-    }
+//    if (References3D.getValues().empty() && !checkReferences2D()) {
+//        Base::Console().Warning("DVD::okToProceed - %s has invalid 2D References\n",
+//                                getNameInDocument());
+//        return false;
+//    }
 
     return true;
 }
 
-////TODO: schema not report their multiValue status
 bool DrawViewDimension::isMultiValueSchema() const { return m_formatter->isMultiValueSchema(); }
 
 std::string DrawViewDimension::formatValue(qreal value, QString qFormatSpec, int partial,
@@ -1176,6 +1181,7 @@ DrawViewPart* DrawViewDimension::getViewPart() const
 //otherwise 2d references are returned. no checking is performed. Result is pairs of (object, subName)
 ReferenceVector DrawViewDimension::getEffectiveReferences() const
 {
+//    Base::Console().Message("DVD::getEffectiveReferences()\n");
     const std::vector<App::DocumentObject*>& objects3d = References3D.getValues();
     const std::vector<std::string>& subElements3d = References3D.getSubValues();
     const std::vector<App::DocumentObject*>& objects = References2D.getValues();
@@ -1355,22 +1361,34 @@ void DrawViewDimension::updateSavedGeometry()
 //    Base::Console().Message("DVD::updateSavedGeometry() - %s - savedGeometry: %d\n",
 //        getNameInDocument(), SavedGeometry.getValues().size());
     ReferenceVector references = getEffectiveReferences();
+    if (references.empty()) {
+        // no references to save
+        return;
+    }
     std::vector<TopoShape> newGeometry;
     const std::vector<TopoShape> oldGeometry = SavedGeometry.getValues();
     //need to clean up old geometry objects here?
 
+    size_t iOldGeom(0);
     for (auto& entry : references) {
         if (entry.getSubName().empty()) {
             // view only reference has no geometry.
             continue;
         }
-        newGeometry.push_back(entry.asTopoShape());
-//        Base::Console().Message("DVD::updateSavedGeometry - entry.isNull: %d\n", entry.asTopoShape().isNull());
+        if (entry.isValid()) {
+            newGeometry.push_back(entry.asTopoShape());
+        } else {
+        // use old geometry entry? null shape? have to put something in the vector
+        // so SavedGeometry and references stay in sync.
+            if (iOldGeom < oldGeometry.size()) {
+                newGeometry.push_back(oldGeometry.at(iOldGeom));
+            } else {
+                newGeometry.push_back(Part::TopoShape());
+            }
+        }
+        iOldGeom++;
     }
-    if (newGeometry.empty()) {
-        //clear out the old SavedGeometry
-        SavedGeometry.clear();
-    } else {
+    if (!newGeometry.empty()) {
         SavedGeometry.setValues(newGeometry);
     }
 }
@@ -1385,7 +1403,9 @@ bool DrawViewDimension::compareSavedGeometry()
     const std::vector<TopoShape> savedGeometry = SavedGeometry.getValues();
     if (savedGeometry.empty()) {
         // no saved geometry, so we have nothing to compare, so we don't know if there has been a change
-        return true;
+        // this should return false, since something != nothing
+//        Base::Console().Warning("%s has no saved reference geometry!\n", getNameInDocument());
+        return false;
     }
 
     ReferenceVector references = getEffectiveReferences();
@@ -1427,6 +1447,10 @@ bool DrawViewDimension::fixExactMatch()
         return false;
     }
     ReferenceVector references = getEffectiveReferences();
+    if (references.empty()) {
+        // could not get refs, something is wrong!
+        return false;
+    }
     std::vector< std::pair<int, std::string> > refsToFix2d;
     std::vector< std::pair<int, std::string> > refsToFix3d;
     bool success(true);
@@ -1435,6 +1459,10 @@ bool DrawViewDimension::fixExactMatch()
     for ( ; iRef < referenceCount; iRef++)  {
         std::string newReference("");
         TopoDS_Shape geomShape = references.at(iRef).getGeometry();
+        if (geomShape.IsNull()) {
+//            Base::Console().Message("DVD::fixExactMatch - no geometry found for reference: %d\n", iRef);
+            return false;
+        }
         if (references.at(iRef).is3d()) {
             if (geomShape.ShapeType() == TopAbs_VERTEX) {
                 newReference = recoverChangedVertex3d(iRef);
@@ -1482,7 +1510,8 @@ void DrawViewDimension::handleNoExactMatch()
 //    Base::Console().Message("%s - trying to match changed geometry - stage 2\n", getNameInDocument());
     // this is where we insert the clever logic to determine that the changed geometry
     // actually still represents the "front top left" edge.
-    updateSavedGeometry();
+    // after figuring out the new reference, save the geometry
+    // updateSavedGeometry();
     m_referencesCorrect = true;
 }
 
@@ -1516,6 +1545,11 @@ std::string DrawViewDimension::recoverChangedVertex2d(int iReference)
 {
 //    Base::Console().Message("DVD::recoverChangedVertex2d(%d)\n", iReference);
     double scale = getViewPart()->getScale();
+    std::vector<Part::TopoShape> savedAll = SavedGeometry.getValues();
+    if (savedAll.empty() ||
+        iReference >= savedAll.size()) {
+            return std::string();
+        }
     Part::TopoShape savedGeometryItem = SavedGeometry.getValues().at(iReference);
     std::vector<TechDraw::VertexPtr> gVertexAll = getViewPart()->getVertexGeometry();
     int iVertex = 0;

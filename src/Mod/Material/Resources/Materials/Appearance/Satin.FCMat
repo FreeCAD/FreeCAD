@@ -1,0 +1,15 @@
+# File created by ConvertFCMat.py
+General:
+  UUID: "951b54ae-86b6-46d2-b452-60bd6a3ba1bb"
+  AuthorAndLicense: "(c) 2023 David Carter"
+  Name: "Satin"
+  Description: "Defines the Satin appearance properties"
+AppearanceModels:
+  BasicRendering:
+    UUID: 'f006c7e4-35b7-43d5-bbf9-c5d572309e6e'
+    AmbientColor: "(0.0660, 0.0660, 0.0660, 1.0)"
+    DiffuseColor: "(0.0000, 0.0000, 0.0000, 1.0)"
+    EmissiveColor: "(0.0000, 0.0000, 0.0000, 1.0)"
+    Shininess: "0.0938"
+    SpecularColor: "(0.4400, 0.4400, 0.4400, 1.0)"
+    Transparency: "0.0"
