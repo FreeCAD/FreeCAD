@@ -83,34 +83,6 @@ bool StdCmdDlgMacroRecord::isActive()
 }
 
 //===========================================================================
-// Std_MacroStopRecord
-//===========================================================================
-DEF_STD_CMD_A(StdCmdMacroStopRecord)
-
-StdCmdMacroStopRecord::StdCmdMacroStopRecord()
-  : Command("Std_MacroStopRecord")
-{
-    sGroup        = "Macro";
-    sMenuText     = QT_TR_NOOP("S&top macro recording");
-    sToolTipText  = QT_TR_NOOP("Stop the macro recording session");
-    sWhatsThis    = "Std_MacroStopRecord";
-    sStatusTip    = QT_TR_NOOP("Stop the macro recording session");
-    sPixmap       = "media-playback-stop";
-    eType         = 0;
-}
-
-void StdCmdMacroStopRecord::activated(int iMsg)
-{
-    Q_UNUSED(iMsg);
-    getGuiApplication()->macroManager()->commit();
-}
-
-bool StdCmdMacroStopRecord::isActive()
-{
-    return getGuiApplication()->macroManager()->isOpen();
-}
-
-//===========================================================================
 // Std_DlgMacroExecute
 //===========================================================================
 DEF_STD_CMD_A(StdCmdDlgMacroExecute)
@@ -336,7 +308,6 @@ void CreateMacroCommands()
 {
     CommandManager &rcCmdMgr = Application::Instance->commandManager();
     rcCmdMgr.addCommand(new StdCmdDlgMacroRecord());
-    rcCmdMgr.addCommand(new StdCmdMacroStopRecord());
     rcCmdMgr.addCommand(new StdCmdDlgMacroExecute());
     rcCmdMgr.addCommand(new StdCmdDlgMacroExecuteDirect());
     rcCmdMgr.addCommand(new StdCmdMacroAttachDebugger());
