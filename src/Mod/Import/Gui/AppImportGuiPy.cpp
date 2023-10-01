@@ -589,16 +589,18 @@ private:
         std::string Utf8Name = std::string(Name);
         PyMem_Free(Name);
 
+        // clang-format off
         // determine export options
         Part::OCAF::ImportExportSettings settings;
 
         // still support old way
-        bool legacyExport =
-            (pylegacy == Py_None ? settings.getExportLegacy() : Base::asBoolean(pylegacy));
-        bool exportHidden = (pyexportHidden == Py_None ? settings.getExportHiddenObject()
-                                                       : Base::asBoolean(pyexportHidden));
+        bool legacyExport = (pylegacy         == Py_None ? settings.getExportLegacy()
+                                                         : Base::asBoolean(pylegacy));
+        bool exportHidden = (pyexportHidden   == Py_None ? settings.getExportHiddenObject()
+                                                         : Base::asBoolean(pyexportHidden));
         bool keepPlacement = (pykeepPlacement == Py_None ? settings.getExportKeepPlacement()
                                                          : Base::asBoolean(pykeepPlacement));
+        // clang-format on
 
         // new way
         if (pyoptions) {
@@ -616,18 +618,18 @@ private:
 
         try {
             Py::Sequence list(object);
-            Handle(XCAFApp_Application) hApp = XCAFApp_Application::GetApplication();
-            Handle(TDocStd_Document) hDoc;
-            hApp->NewDocument(TCollection_ExtendedString("MDTV-CAF"), hDoc);
-
             std::vector<App::DocumentObject*> objs;
             for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
                 PyObject* item = (*it).ptr();
                 if (PyObject_TypeCheck(item, &(App::DocumentObjectPy::Type))) {
-                    objs.push_back(
-                        static_cast<App::DocumentObjectPy*>(item)->getDocumentObjectPtr());
+                    auto pydoc = static_cast<App::DocumentObjectPy*>(item);
+                    objs.push_back(pydoc->getDocumentObjectPtr());
                 }
             }
+
+            Handle(XCAFApp_Application) hApp = XCAFApp_Application::GetApplication();
+            Handle(TDocStd_Document) hDoc;
+            hApp->NewDocument(TCollection_ExtendedString("MDTV-CAF"), hDoc);
 
             Import::ExportOCAF2 ocaf(hDoc, &getShapeColors);
             if (!legacyExport || !ocaf.canFallback(objs)) {
@@ -638,27 +640,9 @@ private:
                 ocaf.exportObjects(objs);
             }
             else {
-                bool keepExplicitPlacement = Standard_True;
+                bool keepExplicitPlacement = true;
                 ExportOCAFGui ocaf(hDoc, keepExplicitPlacement);
-                // That stuff is exporting a list of selected objects into FreeCAD Tree
-                std::vector<TDF_Label> hierarchical_label;
-                std::vector<TopLoc_Location> hierarchical_loc;
-                std::vector<App::DocumentObject*> hierarchical_part;
-                for (auto obj : objs) {
-                    ocaf.exportObject(obj, hierarchical_label, hierarchical_loc, hierarchical_part);
-                }
-
-                // Free Shapes must have absolute placement and not explicit
-                std::vector<TDF_Label> FreeLabels;
-                std::vector<int> part_id;
-                ocaf.getFreeLabels(hierarchical_label, FreeLabels, part_id);
-                // Got issue with the colors as they are coming from the View Provider they can't be
-                // determined into the App Code.
-                std::vector<std::vector<App::Color>> Colors;
-                ocaf.getPartColors(hierarchical_part, FreeLabels, part_id, Colors);
-                ocaf.reallocateFreeShape(hierarchical_part, FreeLabels, part_id, Colors);
-
-                XCAFDoc_DocumentTool::ShapeTool(hDoc->Main())->UpdateAssemblies();
+                ocaf.exportObjects(objs);
             }
 
             Base::FileInfo file(Utf8Name.c_str());

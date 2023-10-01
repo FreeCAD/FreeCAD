@@ -228,6 +228,17 @@ private:
     Base::SequencerLauncher* sequencer {nullptr};
 };
 
+class ImportExport ImportOCAFExt: public ImportOCAF2
+{
+public:
+    ImportOCAFExt(Handle(TDocStd_Document) hStdDoc, App::Document* doc, const std::string& name);
+
+    std::map<Part::Feature*, std::vector<App::Color>> partColors;
+
+private:
+    void applyFaceColors(Part::Feature* part, const std::vector<App::Color>& colors) override;
+};
+
 struct ImportExport ExportOCAFOptions
 {
     ExportOCAFOptions();
