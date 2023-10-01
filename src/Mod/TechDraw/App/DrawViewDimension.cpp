@@ -772,7 +772,9 @@ pointPair DrawViewDimension::getPointsEdgeVert(ReferenceVector references)
                 auto p2 = Base::Vector3d(projector.NearestPoint().X()
                                          , projector.NearestPoint().Y()
                                          , 0.0);
-                return pointPair(p1, p2);
+                pointPair result = pointPair(p1, p2);
+                result.setExtensionLine(closestPoints(edge->getOCCEdge(), vertex->getOCCVertex()));
+                return result;
         }
         else {
                 // unable to project
