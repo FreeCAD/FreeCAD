@@ -34,12 +34,11 @@ namespace Import
 class ImportExport WriterGltf
 {
 public:
-    WriterGltf(std::string name8bit, const Base::FileInfo& file);
+    explicit WriterGltf(const Base::FileInfo& file);
 
     void write(Handle(TDocStd_Document) hDoc) const;
 
 private:
-    std::string name8bit;
     Base::FileInfo file;
 };
 }  // namespace Import
