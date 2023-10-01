@@ -86,6 +86,7 @@
 #endif
 
 #include "ExportOCAFGui.h"
+#include "ImportOCAFGui.h"
 
 #include <App/Document.h>
 #include <App/DocumentObjectPy.h>
@@ -96,7 +97,6 @@
 #include <Gui/Document.h>
 #include <Gui/MainWindow.h>
 #include <Gui/ViewProviderLink.h>
-#include <Mod/Import/App/ImportOCAF2.h>
 #include <Mod/Import/App/ReaderGltf.h>
 #include <Mod/Import/App/ReaderIges.h>
 #include <Mod/Import/App/ReaderStep.h>
@@ -270,81 +270,6 @@ void OCAFBrowser::load(const TDF_Label& label, QTreeWidgetItem* item, const QStr
     }
 }
 
-class ImportOCAFExt: public Import::ImportOCAF2
-{
-public:
-    ImportOCAFExt(Handle(TDocStd_Document) h, App::Document* d, const std::string& name)
-        : ImportOCAF2(h, d, name)
-    {}
-
-private:
-    void applyFaceColors(Part::Feature* part, const std::vector<App::Color>& colors) override
-    {
-        auto vp = dynamic_cast<PartGui::ViewProviderPartExt*>(
-            Gui::Application::Instance->getViewProvider(part));
-        if (!vp) {
-            return;
-        }
-        if (colors.empty()) {
-            return;
-        }
-
-        if (colors.size() == 1) {
-            vp->ShapeColor.setValue(colors.front());
-            vp->Transparency.setValue(100 * colors.front().a);
-        }
-        else {
-            vp->DiffuseColor.setValues(colors);
-        }
-    }
-    void applyEdgeColors(Part::Feature* part, const std::vector<App::Color>& colors) override
-    {
-        auto vp = dynamic_cast<PartGui::ViewProviderPartExt*>(
-            Gui::Application::Instance->getViewProvider(part));
-        if (!vp) {
-            return;
-        }
-        if (colors.size() == 1) {
-            vp->LineColor.setValue(colors.front());
-        }
-        else {
-            vp->LineColorArray.setValues(colors);
-        }
-    }
-    void applyLinkColor(App::DocumentObject* obj, int index, App::Color color) override
-    {
-        auto vp =
-            dynamic_cast<Gui::ViewProviderLink*>(Gui::Application::Instance->getViewProvider(obj));
-        if (!vp) {
-            return;
-        }
-        if (index < 0) {
-            vp->OverrideMaterial.setValue(true);
-            vp->ShapeMaterial.setDiffuseColor(color);
-            return;
-        }
-        if (vp->OverrideMaterialList.getSize() <= index) {
-            vp->OverrideMaterialList.setSize(index + 1);
-        }
-        vp->OverrideMaterialList.set1Value(index, true);
-        App::Material mat(App::Material::DEFAULT);
-        if (vp->MaterialList.getSize() <= index) {
-            vp->MaterialList.setSize(index + 1, mat);
-        }
-        mat.diffuseColor = color;
-        vp->MaterialList.set1Value(index, mat);
-    }
-    void applyElementColors(App::DocumentObject* obj,
-                            const std::map<std::string, App::Color>& colors) override
-    {
-        auto vp = Gui::Application::Instance->getViewProvider(obj);
-        if (!vp) {
-            return;
-        }
-        (void)colors;
-    }
-};
-
 class Module: public Py::ExtensionModule<Module>
 {
 public:
@@ -413,8 +338,8 @@ private:
             Handle(XCAFApp_Application) hApp = XCAFApp_Application::GetApplication();
             Handle(TDocStd_Document) hDoc;
             hApp->NewDocument(TCollection_ExtendedString("MDTV-CAF"), hDoc);
-            ImportOCAFExt ocaf(hDoc, pcDoc, file.fileNamePure());
-            ocaf.setImportOptions(ImportOCAFExt::customImportOptions());
+            ImportOCAFGui ocaf(hDoc, pcDoc, file.fileNamePure());
+            ocaf.setImportOptions(ImportOCAFGui::customImportOptions());
             FC_TIME_INIT(t);
             FC_DURATION_DECL_INIT2(d1, d2);
 

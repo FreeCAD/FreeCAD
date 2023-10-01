@@ -32,6 +32,8 @@ SET(ImportGui_SRCS
     Command.cpp
     ExportOCAFGui.cpp
     ExportOCAFGui.h
+    ImportOCAFGui.cpp
+    ImportOCAFGui.h
     PreCompiled.cpp
     PreCompiled.h
     Workbench.cpp
