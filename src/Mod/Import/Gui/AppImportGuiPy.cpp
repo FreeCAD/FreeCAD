@@ -28,58 +28,20 @@
 #include <climits>
 #include <iostream>
 
-#include <QApplication>
-#include <QDialog>
-#include <QDialogButtonBox>
-#include <QHBoxLayout>
-#include <QPointer>
 #include <QString>
-#include <QStyle>
-#include <QTextStream>
-#include <QTreeWidget>
-#include <QTreeWidgetItem>
-#include <QVBoxLayout>
 
 #if defined(__clang__)
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wextra-semi"
 #endif
 
-#include <Interface_Static.hxx>
 #include <OSD_Exception.hxx>
 #include <Standard_Version.hxx>
 #include <TColStd_IndexedDataMapOfStringString.hxx>
-#include <TDF_AttributeIterator.hxx>
-#include <TDF_ChildIDIterator.hxx>
-#include <TDF_ChildIterator.hxx>
-#include <TDF_IDList.hxx>
-#include <TDF_Label.hxx>
-#include <TDF_ListIteratorOfIDList.hxx>
-#include <TDF_TagSource.hxx>
-#include <TDataStd.hxx>
-#include <TDataStd_Integer.hxx>
-#include <TDataStd_Name.hxx>
-#include <TDataStd_TreeNode.hxx>
 #include <TDataXtd_Shape.hxx>
 #include <TDocStd_Document.hxx>
-#include <TDocStd_Owner.hxx>
-#include <TNaming_NamedShape.hxx>
-#include <TNaming_UsedShapes.hxx>
-#include <Transfer_TransientProcess.hxx>
 #include <XCAFApp_Application.hxx>
-#include <XCAFDoc_Color.hxx>
-#include <XCAFDoc_ColorTool.hxx>
-#include <XCAFDoc_DocumentTool.hxx>
-#include <XCAFDoc_LayerTool.hxx>
-#include <XCAFDoc_Location.hxx>
-#include <XCAFDoc_ShapeMapTool.hxx>
-#include <XCAFDoc_ShapeTool.hxx>
-#include <XSControl_TransferReader.hxx>
-#include <XSControl_WorkSession.hxx>
 
-#if OCC_VERSION_HEX >= 0x070500
-#include <Message_ProgressRange.hxx>
-#endif
 #if defined(__clang__)
 #pragma clang diagnostic pop
 #endif
@@ -87,6 +49,7 @@
 
 #include "ExportOCAFGui.h"
 #include "ImportOCAFGui.h"
+#include "OCAFBrowser.h"
 
 #include <App/Document.h>
 #include <App/DocumentObjectPy.h>
@@ -117,158 +80,6 @@ FC_LOG_LEVEL_INIT("Import", true, true)
 
 namespace ImportGui
 {
-class OCAFBrowser
-{
-public:
-    explicit OCAFBrowser(Handle(TDocStd_Document) h)
-        : pDoc(h)
-    {
-        myGroupIcon = QApplication::style()->standardIcon(QStyle::SP_DirIcon);
-
-        TDataStd::IDList(myList);
-        myList.Append(TDataStd_TreeNode::GetDefaultTreeID());
-        myList.Append(TDataStd_Integer::GetID());
-        myList.Append(TDocStd_Owner::GetID());
-        myList.Append(TNaming_NamedShape::GetID());
-        myList.Append(TNaming_UsedShapes::GetID());
-        myList.Append(XCAFDoc_Color::GetID());
-        myList.Append(XCAFDoc_ColorTool::GetID());
-        myList.Append(XCAFDoc_LayerTool::GetID());
-        myList.Append(XCAFDoc_ShapeTool::GetID());
-        myList.Append(XCAFDoc_ShapeMapTool::GetID());
-        myList.Append(XCAFDoc_Location::GetID());
-    }
-
-    void load(QTreeWidget*);
-
-private:
-    void load(const TDF_Label& label, QTreeWidgetItem* item, const QString&);
-    std::string toString(const TCollection_ExtendedString& extstr) const
-    {
-        char* str = new char[extstr.LengthOfCString() + 1];
-        extstr.ToUTF8CString(str);
-        std::string text(str);
-        delete[] str;
-        return text;
-    }
-
-private:
-    QIcon myGroupIcon;
-    TDF_IDList myList;
-    Handle(TDocStd_Document) pDoc;
-};
-
-void OCAFBrowser::load(QTreeWidget* theTree)
-{
-    theTree->clear();
-
-    QTreeWidgetItem* root = new QTreeWidgetItem();
-    root->setText(0, QLatin1String("0"));
-    root->setIcon(0, myGroupIcon);
-    theTree->addTopLevelItem(root);
-
-    load(pDoc->GetData()->Root(), root, QString::fromLatin1("0"));
-}
-
-void OCAFBrowser::load(const TDF_Label& label, QTreeWidgetItem* item, const QString& s)
-{
-    label.Dump(std::cout);
-
-    Handle(TDataStd_Name) name;
-    if (label.FindAttribute(TDataStd_Name::GetID(), name)) {
-        QString text =
-            QString::fromLatin1("%1 %2").arg(s, QString::fromUtf8(toString(name->Get()).c_str()));
-        item->setText(0, text);
-    }
-
-
-    TDF_IDList localList;
-    TDF_AttributeIterator itr(label);
-    for (; itr.More(); itr.Next()) {
-        localList.Append(itr.Value()->ID());
-    }
-
-    for (TDF_ListIteratorOfIDList it(localList); it.More(); it.Next()) {
-        Handle(TDF_Attribute) attr;
-        if (label.FindAttribute(it.Value(), attr)) {
-            QTreeWidgetItem* child = new QTreeWidgetItem();
-            item->addChild(child);
-            if (it.Value() == TDataStd_Name::GetID()) {
-                QString text;
-                QTextStream str(&text);
-                str << attr->DynamicType()->Name();
-                str << " = " << toString(Handle(TDataStd_Name)::DownCast(attr)->Get()).c_str();
-                child->setText(0, text);
-            }
-            else if (it.Value() == TDF_TagSource::GetID()) {
-                QString text;
-                QTextStream str(&text);
-                str << attr->DynamicType()->Name();
-                str << " = " << Handle(TDF_TagSource)::DownCast(attr)->Get();
-                child->setText(0, text);
-            }
-            else if (it.Value() == TDataStd_Integer::GetID()) {
-                QString text;
-                QTextStream str(&text);
-                str << attr->DynamicType()->Name();
-                str << " = " << Handle(TDataStd_Integer)::DownCast(attr)->Get();
-                child->setText(0, text);
-            }
-            else if (it.Value() == TNaming_NamedShape::GetID()) {
-                TopoDS_Shape shape = Handle(TNaming_NamedShape)::DownCast(attr)->Get();
-                QString text;
-                QTextStream str(&text);
-                str << attr->DynamicType()->Name() << " = ";
-                if (!shape.IsNull()) {
-                    switch (shape.ShapeType()) {
-                        case TopAbs_COMPOUND:
-                            str << "COMPOUND PRIMITIVE";
-                            break;
-                        case TopAbs_COMPSOLID:
-                            str << "COMPSOLID PRIMITIVE";
-                            break;
-                        case TopAbs_SOLID:
-                            str << "SOLID PRIMITIVE";
-                            break;
-                        case TopAbs_SHELL:
-                            str << "SHELL PRIMITIVE";
-                            break;
-                        case TopAbs_FACE:
-                            str << "FACE PRIMITIVE";
-                            break;
-                        case TopAbs_WIRE:
-                            str << "WIRE PRIMITIVE";
-                            break;
-                        case TopAbs_EDGE:
-                            str << "EDGE PRIMITIVE";
-                            break;
-                        case TopAbs_VERTEX:
-                            str << "VERTEX PRIMITIVE";
-                            break;
-                        case TopAbs_SHAPE:
-                            str << "SHAPE PRIMITIVE";
-                            break;
-                    }
-                }
-                child->setText(0, text);
-            }
-            else {
-                child->setText(0, QLatin1String(attr->DynamicType()->Name()));
-            }
-        }
-    }
-
-
-    int i = 1;
-    for (TDF_ChildIterator it(label); it.More(); it.Next(), i++) {
-        QString text = QString::fromLatin1("%1:%2").arg(s).arg(i);
-        QTreeWidgetItem* child = new QTreeWidgetItem();
-        child->setText(0, text);
-        child->setIcon(0, myGroupIcon);
-        item->addChild(child);
-        load(it.Value(), child, text);
-    }
-}
 
 class Module: public Py::ExtensionModule<Module>
 {
@@ -609,34 +420,15 @@ private:
                 Import::ReaderIges reader(file);
                 reader.read(hDoc);
             }
+            else if (file.hasExtension({"glb", "gltf"})) {
+                Import::ReaderGltf reader(file);
+                reader.read(hDoc);
+            }
             else {
                 throw Py::Exception(PyExc_IOError, "no supported file format");
             }
 
-            static QPointer<QDialog> dlg = nullptr;
-            if (!dlg) {
-                dlg = new QDialog(Gui::getMainWindow());
-                QTreeWidget* tree = new QTreeWidget();
-                tree->setHeaderLabel(QString::fromLatin1("OCAF Browser"));
-
-                QVBoxLayout* layout = new QVBoxLayout;
-                layout->addWidget(tree);
-                dlg->setLayout(layout);
-
-                QDialogButtonBox* btn = new QDialogButtonBox(dlg);
-                btn->setStandardButtons(QDialogButtonBox::Close);
-                QObject::connect(btn, &QDialogButtonBox::rejected, dlg, &QDialog::reject);
-                QHBoxLayout* boxlayout = new QHBoxLayout;
-                boxlayout->addWidget(btn);
-                layout->addLayout(boxlayout);
-            }
-
-            dlg->setWindowTitle(QString::fromUtf8(file.fileName().c_str()));
-            dlg->setAttribute(Qt::WA_DeleteOnClose);
-            dlg->show();
-
-            OCAFBrowser browse(hDoc);
-            browse.load(dlg->findChild<QTreeWidget*>());
+            OCAFBrowser::showDialog(QString::fromStdString(file.fileName()), hDoc);
             hApp->Close(hDoc);
         }
         catch (Standard_Failure& e) {
