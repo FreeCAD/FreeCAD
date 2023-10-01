@@ -1004,6 +1004,19 @@ bool ImportOCAF2::createAssembly(App::Document* _doc,
 
 // ----------------------------------------------------------------------------
 
+ImportOCAFExt::ImportOCAFExt(Handle(TDocStd_Document) hStdDoc,
+                             App::Document* doc,
+                             const std::string& name)
+    : ImportOCAF2(hStdDoc, doc, name)
+{}
+
+void ImportOCAFExt::applyFaceColors(Part::Feature* part, const std::vector<App::Color>& colors)
+{
+    partColors[part] = colors;
+}
+
+// ----------------------------------------------------------------------------
+
 ExportOCAFOptions::ExportOCAFOptions()
 {
     defaultColor.setPackedValue(0xCCCCCC00);

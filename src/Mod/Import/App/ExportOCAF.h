@@ -57,8 +57,9 @@ namespace Import
 class ImportExport ExportOCAF
 {
 public:
-    ExportOCAF(Handle(TDocStd_Document) h, bool explicitPlacement);
+    ExportOCAF(Handle(TDocStd_Document) hDoc, bool explicitPlacement);
     virtual ~ExportOCAF();
+    void exportObjects(std::vector<App::DocumentObject*>& objs);
     int exportObject(App::DocumentObject* obj,
                      std::vector<TDF_Label>& hierarchical_label,
                      std::vector<TopLoc_Location>& hierarchical_loc,
