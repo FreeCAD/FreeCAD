@@ -265,3 +265,21 @@ TEST_F(ReaderTest, readNextStartEndElement)
     EXPECT_STREQ(Reader()->localName(), "node2");
     EXPECT_STREQ(Reader()->getAttribute("attr"), "2");
 }
+
+TEST_F(ReaderTest, charStreamBase64Encoded)
+{
+    // Arrange
+    static constexpr size_t bufferSize {100};
+    std::array<char, bufferSize> buffer {};
+    givenDataAsXMLStream("<data>RnJlZUNBRCByb2NrcyEg8J+qqPCfqqjwn6qo\n</data>");
+    Reader()->readElement("data");
+    Reader()->beginCharStream(Base::CharStreamFormat::Base64Encoded);
+
+    // Act
+    Reader()->charStream().getline(buffer.data(), bufferSize);
+    Reader()->endCharStream();
+
+    // Assert
+    // Conversion done using https://www.base64encode.org for testing purposes
+    EXPECT_EQ(std::string("FreeCAD rocks! 🪨🪨🪨"), std::string(buffer.data()));
+}
