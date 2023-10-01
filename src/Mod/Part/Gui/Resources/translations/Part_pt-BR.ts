@@ -2804,7 +2804,7 @@ the size of the resulting STEP file.</source>
       <location filename="../../DlgExtrusion.ui" line="71"/>
       <location filename="../../DlgExtrusion.cpp" line="230"/>
       <source>Select</source>
-      <translation>Selecionar</translation>
+      <translation>Selecione</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="78"/>

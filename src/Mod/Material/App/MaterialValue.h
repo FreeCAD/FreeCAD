@@ -175,7 +175,20 @@ public:
     const QVariant getValue(int row, int column);
 
 protected:
+#if QT_VERSION < QT_VERSION_CHECK(6,0,0)
     std::map<QVariant, std::vector<std::vector<QVariant>*>> _rowMap;
+#else
+    struct variant_comp
+    {
+        bool operator()(const QVariant& var1,
+                        const QVariant& var2) const
+        {
+            return QVariant::compare(var1, var2) == QPartialOrdering::Less;
+        }
+    };
+    std::map<QVariant, std::vector<std::vector<QVariant>*>, variant_comp> _rowMap;
+#endif
+
     bool _defaultSet;
 };
 

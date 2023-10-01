@@ -137,22 +137,22 @@
       <translation>Sortu esteka taldea</translation>
     </message>
     <message>
-      <location filename="../CommandLink.cpp" line="236"/>
+      <location filename="../CommandLink.cpp" line="241"/>
       <source>Make link</source>
       <translation>Sortu esteka</translation>
     </message>
     <message>
-      <location filename="../CommandLink.cpp" line="289"/>
+      <location filename="../CommandLink.cpp" line="294"/>
       <source>Make sub-link</source>
       <translation>Sortu azpiesteka</translation>
     </message>
     <message>
-      <location filename="../CommandLink.cpp" line="577"/>
+      <location filename="../CommandLink.cpp" line="582"/>
       <source>Import links</source>
       <translation>Inportatu estekak</translation>
     </message>
     <message>
-      <location filename="../CommandLink.cpp" line="618"/>
+      <location filename="../CommandLink.cpp" line="623"/>
       <source>Import all links</source>
       <translation>Inportatu esteka guztiak</translation>
     </message>
@@ -167,12 +167,12 @@
       <translation>Txertatu testu-dokumentua</translation>
     </message>
     <message>
-      <location filename="../CommandStructure.cpp" line="62"/>
+      <location filename="../CommandStructure.cpp" line="68"/>
       <source>Add a part</source>
       <translation>Gehitu zati bat</translation>
     </message>
     <message>
-      <location filename="../CommandStructure.cpp" line="103"/>
+      <location filename="../CommandStructure.cpp" line="115"/>
       <source>Add a group</source>
       <translation>Gehitu talde bat</translation>
     </message>
@@ -687,7 +687,7 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
       <source/>
-      <translation type="unfinished"/>
+      <translation>[empty string]</translation>
     </message>
   </context>
   <context>
@@ -777,37 +777,37 @@ while doing a left or right click and move the mouse up or down</source>
   <context>
     <name>Gui::Dialog::CameraDialog</name>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="273"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="282"/>
       <source>Camera settings</source>
       <translation>Kameraren ezarpenak</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="280"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="289"/>
       <source>Orientation</source>
       <translation>Orientazioa</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="294"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="303"/>
       <source>Q0</source>
       <translation>Q0</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="304"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="313"/>
       <source>Q1</source>
       <translation>Q1</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="314"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="323"/>
       <source>Q2</source>
       <translation>Q2</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="324"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="333"/>
       <source>Q3</source>
       <translation>Q3</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="333"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="342"/>
       <source>Current view</source>
       <translation>Uneko bista</translation>
     </message>
@@ -951,7 +951,7 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
       <source/>
-      <translation type="unfinished"/>
+      <translation>[empty string]</translation>
     </message>
   </context>
   <context>
@@ -1043,7 +1043,7 @@ Hau markatuta ez badago, propietateak izen bakarra izan behar du eta 'obj.Izena'
     </message>
     <message>
       <source/>
-      <translation type="unfinished"/>
+      <translation>[empty string]</translation>
     </message>
   </context>
   <context>
@@ -1230,7 +1230,7 @@ Hau markatuta ez badago, propietateak izen bakarra izan behar du eta 'obj.Izena'
     <name>Gui::Dialog::DlgCustomCommands</name>
     <message>
       <source/>
-      <translation type="unfinished"/>
+      <translation>[empty string]</translation>
     </message>
   </context>
   <context>
@@ -1332,7 +1332,7 @@ same time. The one with the highest priority will be triggered.</source>
     </message>
     <message>
       <source/>
-      <translation type="unfinished"/>
+      <translation>[empty string]</translation>
     </message>
   </context>
   <context>
@@ -1516,7 +1516,7 @@ same time. The one with the highest priority will be triggered.</source>
     </message>
     <message>
       <source/>
-      <translation type="unfinished"/>
+      <translation>[empty string]</translation>
     </message>
   </context>
   <context>
@@ -1657,7 +1657,7 @@ same time. The one with the highest priority will be triggered.</source>
     </message>
     <message>
       <source/>
-      <translation type="unfinished"/>
+      <translation>[empty string]</translation>
     </message>
   </context>
   <context>
@@ -1777,7 +1777,7 @@ same time. The one with the highest priority will be triggered.</source>
     <name>Gui::Dialog::DlgEditorSettings</name>
     <message>
       <source/>
-      <translation type="unfinished"/>
+      <translation>[empty string]</translation>
     </message>
   </context>
   <context>
@@ -1789,7 +1789,7 @@ same time. The one with the highest priority will be triggered.</source>
     </message>
     <message>
       <source/>
-      <translation type="unfinished"/>
+      <translation>[empty string]</translation>
     </message>
   </context>
   <context>
@@ -1816,22 +1816,22 @@ same time. The one with the highest priority will be triggered.</source>
     <message>
       <location filename="../DlgMacroExecute.ui" line="85"/>
       <source>Find file:</source>
-      <translation type="unfinished">Find file:</translation>
+      <translation>Aurkitu fitxategia:</translation>
     </message>
     <message>
       <location filename="../DlgMacroExecute.ui" line="92"/>
       <source>Case-insensitive search for filenames, regular expressions supported</source>
-      <translation type="unfinished">Case-insensitive search for filenames, regular expressions supported</translation>
+      <translation>Ftixategi-izenen bilaketa maiuskulak/minuskulak kontuan hartu gabe, adierazpen erregularrak onartzen dira</translation>
     </message>
     <message>
       <location filename="../DlgMacroExecute.ui" line="99"/>
       <source>Find in files:</source>
-      <translation type="unfinished">Find in files:</translation>
+      <translation>Aurkitu fitxategietan:</translation>
     </message>
     <message>
       <location filename="../DlgMacroExecute.ui" line="106"/>
       <source>Filter by case-insensitive file content, regular expressions supported</source>
-      <translation type="unfinished">Filter by case-insensitive file content, regular expressions supported</translation>
+      <translation>Iragazi fitxategi-edukien maiuskulak/minuskulak kontuan hartu gabe, adierazpen erregularrak onartzen dira</translation>
     </message>
     <message>
       <location filename="../DlgMacroExecute.ui" line="122"/>
@@ -2173,7 +2173,7 @@ Fitxategi-baimenen arazo bat ote da?</translation>
     </message>
     <message>
       <source/>
-      <translation type="unfinished"/>
+      <translation>[empty string]</translation>
     </message>
   </context>
   <context>
@@ -2429,7 +2429,7 @@ Zehaztu beste direktorio, mesedez.</translation>
     </message>
     <message>
       <source/>
-      <translation type="unfinished"/>
+      <translation>[empty string]</translation>
     </message>
   </context>
   <context>
@@ -2554,7 +2554,7 @@ Zehaztu beste direktorio, mesedez.</translation>
     </message>
     <message>
       <source/>
-      <translation type="unfinished"/>
+      <translation>[empty string]</translation>
     </message>
   </context>
   <context>
@@ -2688,7 +2688,7 @@ Zehaztu beste direktorio, mesedez.</translation>
     <name>Gui::Dialog::DlgReportView</name>
     <message>
       <source/>
-      <translation type="unfinished"/>
+      <translation>[empty string]</translation>
     </message>
   </context>
   <context>
@@ -3032,7 +3032,7 @@ muga-koadroaren tamainarekin biderkatuko den faktore bat da.</translation>
     </message>
     <message>
       <source/>
-      <translation type="unfinished"/>
+      <translation>[empty string]</translation>
     </message>
   </context>
   <context>
@@ -3306,7 +3306,7 @@ kolore-barraz aparte</translation>
     </message>
     <message>
       <source/>
-      <translation type="unfinished"/>
+      <translation>[empty string]</translation>
     </message>
   </context>
   <context>
@@ -3965,7 +3965,7 @@ Honako forma ere erabili dezakezu: Jon Inor &lt;jon@inor.com&gt;</translation>
     <name>Gui::Dialog::DlgSettingsNavigation</name>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="14"/>
-      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="238"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="331"/>
       <source>Navigation</source>
       <translation>Nabigazioa</translation>
     </message>
@@ -4060,34 +4060,59 @@ Honako forma ere erabili dezakezu: Jon Inor &lt;jon@inor.com&gt;</translation>
       <translation>Elementu guztietarako oinarri-kolorea</translation>
     </message>
     <message>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="235"/>
+      <source>Rotation center indicator</source>
+      <translation type="unfinished">Rotation center indicator</translation>
+    </message>
+    <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="244"/>
+      <source>Sphere size</source>
+      <translation type="unfinished">Sphere size</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="251"/>
+      <source>Color and transparency</source>
+      <translation type="unfinished">Color and transparency</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="264"/>
+      <source>The size of the rotation center indicator</source>
+      <translation type="unfinished">The size of the rotation center indicator</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="292"/>
+      <source>The color of the rotation center indicator</source>
+      <translation type="unfinished">The color of the rotation center indicator</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="337"/>
       <source>3D Navigation</source>
       <translation>3D nabigazioa</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="281"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="374"/>
       <source>List the mouse button configs for each chosen navigation setting.
 Select a set and then press the button to view said configurations.</source>
       <translation>Zerrendatu saguaren botoien konfigurazioak hautatutako nabigazio-ezarpen
 bakoitzerako. Hautatu multzo bat eta sakatu botoia konfigurazioak ikusteko.</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="285"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="378"/>
       <source>Mouse...</source>
       <translation>Sagua...</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="306"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="399"/>
       <source>Navigation settings set</source>
       <translation>Nabigazio-ezarpenen multzoa</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="316"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="409"/>
       <source>Orbit style</source>
       <translation>Orbita-estiloa</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="335"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="428"/>
       <source>Rotation orbit style.
 Trackball: moving the mouse horizontally will rotate the part around the y-axis
 Turntable: the part will be rotated around the z-axis (with constrained axes).
@@ -4099,116 +4124,116 @@ Tornu askea: Pieza Z ardatzaren inguruan biratuko da.
 </translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="345"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="438"/>
       <source>Turntable</source>
       <translation>Tornua</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="350"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="443"/>
       <source>Trackball</source>
       <translation>Trackball</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="355"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="448"/>
       <source>Free Turntable</source>
       <translation>Tornu librea</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="363"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="456"/>
       <source>Rotation mode</source>
       <translation>Biraketa modua</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="382"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="475"/>
       <source>Rotations in 3D will use current cursor position as center for rotation</source>
       <translation>3D moduko biraketek kurtsorearen uneko posizioa erabiliko dute biraketarako erdigune gisa</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="389"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="482"/>
       <source>Window center</source>
       <translation>Leihoaren zentroa</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="394"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="487"/>
       <source>Drag at cursor</source>
       <translation>Arrastatu kurtsorera</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="399"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="492"/>
       <source>Object center</source>
       <translation>Objektuaren zentroa</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="407"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="500"/>
       <source>Default camera orientation</source>
       <translation>Kameraren orientazio lehenetsia</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="426"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="519"/>
       <source>Default camera orientation when creating a new document or selecting the home view</source>
       <translation>Kameraren orientazio lehenetsia dokumentu bat sortzean edo bista nagusia hautatzean</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="433"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="526"/>
       <source>Camera zoom</source>
       <translation>Kamera-zooma</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="452"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="545"/>
       <source>Sets camera zoom for new documents.
 The value is the diameter of the sphere to fit on the screen.</source>
       <translation>Kameraren zooma ezartzen du dokumentu berrietarako.
 Balioa da pantailari doituko zaion esferaren diametroa.</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="456"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="549"/>
       <source>mm</source>
       <translation>mm</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="481"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="574"/>
       <source>Enable animated rotations</source>
       <translation>Gaitu biraketa animatuak</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="484"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="577"/>
       <source>Enable animation</source>
       <translation>Gaitu animazioa</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="500"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="593"/>
       <source>Zoom operations will be performed at position of mouse pointer</source>
       <translation>Zoom-eragiketak saguaren erakuslearen posizioan gauzatuko dira</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="503"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="596"/>
       <source>Zoom at cursor</source>
       <translation>Zooma kurtsorean</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="519"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="612"/>
       <source> Zoom step</source>
       <translation> Zoom-urratsa</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="537"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="630"/>
       <source>How much will be zoomed.
 Zoom step of '1' means a factor of 7.5 for every zoom step.</source>
       <translation>Zenbateko zooma egingo den.
 '1' mailako zoomak 7,5eko faktorea da zoom-maila bakoitzerako.</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="581"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="674"/>
       <source>Direction of zoom operations will be inverted</source>
       <translation>Zoom-eragiketen norabidea alderantzikatu egingo da.</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="584"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="677"/>
       <source>Invert zoom</source>
       <translation>Alderantzikatu zooma</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="600"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="693"/>
       <source>Prevents view tilting when pinch-zooming.
 Affects only gesture navigation style.
 Mouse tilting is not disabled by this setting.</source>
@@ -4217,67 +4242,57 @@ Keinu-nabigazioaren estiloari soilik eragiten dio.
 Ezarpen honek ez du desgaitzen sagu bidezko inklinazioa.</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="605"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="698"/>
       <source>Disable touchscreen tilt gesture</source>
       <translation>Desgaitu ukimen-pantailaren inklinazio keinua</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="621"/>
-      <source>Show the rotation center when dragging.</source>
-      <translation>Arrastatzean, erakutsi biraketa-zentroa.</translation>
-    </message>
-    <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="624"/>
-      <source>Enable rotation center indication</source>
-      <translation>Gaitu biraketa-zentroaren adierazlea</translation>
-    </message>
-    <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="150"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="159"/>
       <source>Isometric</source>
       <translation>Isometrikoa</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="151"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="160"/>
       <source>Dimetric</source>
       <translation>Dimetrikoa</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="152"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="161"/>
       <source>Trimetric</source>
       <translation>Trimetrikoa</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="153"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="162"/>
       <source>Top</source>
       <translation>Goikoa</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="154"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="163"/>
       <source>Front</source>
       <translation>Aurrekoa</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="155"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="164"/>
       <source>Left</source>
       <translation>Ezkerrekoa</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="156"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="165"/>
       <source>Right</source>
       <translation>Eskuinekoa</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="157"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="166"/>
       <source>Rear</source>
       <translation>Atzekoa</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="158"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="167"/>
       <source>Bottom</source>
       <translation>Azpikoa</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="159"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="168"/>
       <source>Custom</source>
       <translation>Pertsonalizatua</translation>
     </message>
@@ -4329,12 +4344,12 @@ espazioa baino gehiago behar dutenean</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsPythonConsole.ui" line="84"/>
       <source>Python profiler interval (milliseconds): </source>
-      <translation type="unfinished">Python profiler interval (milliseconds): </translation>
+      <translation>Python profilatzailearen tartea (milisegundoak): </translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsPythonConsole.ui" line="91"/>
       <source>The interval at which the profiler runs when there's Python code running (to keep the GUI responding). Set to 0 to disable.</source>
-      <translation type="unfinished">The interval at which the profiler runs when there's Python code running (to keep the GUI responding). Set to 0 to disable.</translation>
+      <translation>Profilatzaileak exekutatzeko erabiltzen duen denbora-tartea Python kodea exekutatzen ari denean (erabiltzaile-interfazea ez blokeatzeko). Ezarri 0 desgaitzeko.</translation>
     </message>
   </context>
   <context>
@@ -4463,27 +4478,27 @@ Balio handiagoak elementuak aukeratzea errazten du, baina elementu txikiak hauta
     <message>
       <location filename="../PreferencePages/DlgSettingsViewColor.ui" line="412"/>
       <source>Color Bar</source>
-      <translation type="unfinished">Color Bar</translation>
+      <translation>Kolore-barra</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsViewColor.ui" line="459"/>
       <source>Label text color</source>
-      <translation type="unfinished">Label text color</translation>
+      <translation>Etiketako testuaren kolorea</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsViewColor.ui" line="475"/>
       <source>Color Bar (used in Mesh and FEM Wbs) Label text color</source>
-      <translation type="unfinished">Color Bar (used in Mesh and FEM Wbs) Label text color</translation>
+      <translation>Kolore-barra (Amaraun eta FEM lan-mahaietan erabilia) Etiketako testuaren kolorea</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsViewColor.ui" line="495"/>
       <source>Label text size</source>
-      <translation type="unfinished">Label text size</translation>
+      <translation>Etiketako testuaren tamaina</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsViewColor.ui" line="502"/>
       <source>Color Bar (used in Mesh and FEM Wbs) Label Text Size</source>
-      <translation type="unfinished">Color Bar (used in Mesh and FEM Wbs) Label Text Size</translation>
+      <translation>Kolore-barra (Amaraun eta FEM lan-mahaietan erabilia) Etiketako testuaren tamaina</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsViewColor.ui" line="163"/>
@@ -4556,7 +4571,7 @@ Balio handiagoak elementuak aukeratzea errazten du, baina elementu txikiak hauta
     <name>Gui::Dialog::DlgTipOfTheDay</name>
     <message>
       <source/>
-      <translation type="unfinished"/>
+      <translation>[empty string]</translation>
     </message>
   </context>
   <context>
@@ -5520,7 +5535,7 @@ hautatutako objektuekin</translation>
     </message>
     <message>
       <source/>
-      <translation type="unfinished"/>
+      <translation>[empty string]</translation>
     </message>
   </context>
   <context>
@@ -5841,13 +5856,13 @@ Aldaketak gorde nahi dituzu?</translation>
   <context>
     <name>Gui::FileChooser</name>
     <message>
-      <location filename="../FileDialog.cpp" line="742"/>
-      <location filename="../FileDialog.cpp" line="744"/>
+      <location filename="../FileDialog.cpp" line="743"/>
+      <location filename="../FileDialog.cpp" line="745"/>
       <source>Select a file</source>
       <translation>Hautatu fitxategi bat</translation>
     </message>
     <message>
-      <location filename="../FileDialog.cpp" line="747"/>
+      <location filename="../FileDialog.cpp" line="748"/>
       <source>Select a directory</source>
       <translation>Hautatu direktorio bat</translation>
     </message>
@@ -5855,13 +5870,13 @@ Aldaketak gorde nahi dituzu?</translation>
   <context>
     <name>Gui::FileDialog</name>
     <message>
-      <location filename="../FileDialog.cpp" line="203"/>
+      <location filename="../FileDialog.cpp" line="204"/>
       <source>Save as</source>
       <translation>Gorde honela</translation>
     </message>
     <message>
-      <location filename="../FileDialog.cpp" line="279"/>
-      <location filename="../FileDialog.cpp" line="332"/>
+      <location filename="../FileDialog.cpp" line="280"/>
+      <location filename="../FileDialog.cpp" line="333"/>
       <source>Open</source>
       <translation>Ireki</translation>
     </message>
@@ -5869,12 +5884,12 @@ Aldaketak gorde nahi dituzu?</translation>
   <context>
     <name>Gui::FileOptionsDialog</name>
     <message>
-      <location filename="../FileDialog.cpp" line="441"/>
+      <location filename="../FileDialog.cpp" line="442"/>
       <source>Extended</source>
       <translation>Hedatua</translation>
     </message>
     <message>
-      <location filename="../FileDialog.cpp" line="481"/>
+      <location filename="../FileDialog.cpp" line="482"/>
       <source>All files (*.*)</source>
       <translation>Fitxategi guztiak (*.*)</translation>
     </message>
@@ -6002,7 +6017,7 @@ Aldaketak gorde nahi dituzu?</translation>
       <location filename="../CommandDoc.cpp" line="617"/>
       <location filename="../GraphvizView.cpp" line="448"/>
       <source>Graphviz format</source>
-      <translation type="unfinished">Graphviz format</translation>
+      <translation>Graphviz formatua</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="618"/>
@@ -6823,19 +6838,14 @@ Datuak gorde gabe irten nahi duzu?</translation>
   <context>
     <name>Gui::SelectModule</name>
     <message>
-      <location filename="../FileDialog.cpp" line="840"/>
+      <location filename="../FileDialog.cpp" line="841"/>
       <source>Select module</source>
       <translation>Hautatu modulua</translation>
     </message>
     <message>
-      <location filename="../FileDialog.cpp" line="842"/>
+      <location filename="../FileDialog.cpp" line="843"/>
       <source>Open %1 as</source>
       <translation>Ireki %1 honela:</translation>
-    </message>
-    <message>
-      <location filename="../FileDialog.cpp" line="894"/>
-      <source>Select</source>
-      <translation>Hautatu</translation>
     </message>
   </context>
   <context>
@@ -8242,7 +8252,7 @@ Jarraitu nahi duzu?</translation>
       <translation>Jakinarazpen ez intrusibo gehiegi dago irekita. Jakinarazpenei ez ikusiarena egiten ari zaie.</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1053"/>
+      <location filename="../Document.cpp" line="1054"/>
       <source>Identical physical path detected. It may cause unwanted overwrite of existing document!
 
 </source>
@@ -8251,44 +8261,44 @@ Jarraitu nahi duzu?</translation>
 </translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1054"/>
+      <location filename="../Document.cpp" line="1055"/>
       <source>Are you sure you want to continue?</source>
       <translation>Ziur zaude jarraitu nahi duzula?</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1073"/>
+      <location filename="../Document.cpp" line="1074"/>
       <source>Please check report view for more...</source>
       <translation>Begiratu txosten-bista gehiagorako...</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1076"/>
+      <location filename="../Document.cpp" line="1077"/>
       <source>Physical path:</source>
       <translation>Bide-izen fisikoa:</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1078"/>
-      <location filename="../Document.cpp" line="1084"/>
+      <location filename="../Document.cpp" line="1079"/>
+      <location filename="../Document.cpp" line="1085"/>
       <source>Document:</source>
       <translation>Dokumentua:</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1080"/>
-      <location filename="../Document.cpp" line="1086"/>
+      <location filename="../Document.cpp" line="1081"/>
+      <location filename="../Document.cpp" line="1087"/>
       <source>Path:</source>
       <translation>Bidea:</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1095"/>
+      <location filename="../Document.cpp" line="1096"/>
       <source>Identical physical path</source>
       <translation>Bide-izen fisiko berdina</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1103"/>
+      <location filename="../Document.cpp" line="1104"/>
       <source>Could not save document</source>
       <translation>Ezin da dokumentua gorde</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1104"/>
+      <location filename="../Document.cpp" line="1105"/>
       <source>There was an issue trying to save the file. This may be because some of the parent folders do not exist, or you do not have sufficient permissions, or for other reasons. Error details:
 
 "%1"
@@ -8301,102 +8311,102 @@ Would you like to save the file with a different name?</source>
 Fitxategia beste izen batekin gorde nahi al duzu?</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1114"/>
-      <location filename="../Document.cpp" line="1246"/>
-      <location filename="../Document.cpp" line="1329"/>
+      <location filename="../Document.cpp" line="1115"/>
+      <location filename="../Document.cpp" line="1247"/>
+      <location filename="../Document.cpp" line="1330"/>
       <source>Saving aborted</source>
       <translation>Gordetzea abortatu da</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1161"/>
+      <location filename="../Document.cpp" line="1162"/>
       <source>Save dependent files</source>
       <translation>Gorde mendeko fitxategiak</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1162"/>
+      <location filename="../Document.cpp" line="1163"/>
       <source>The file contains external dependencies. Do you want to save the dependent files, too?</source>
       <translation>Fitxategiak kanpoko mendekotasunak ditu. Mendeko fitxategiak ere gorde nahi al dituzu?</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1196"/>
-      <location filename="../Document.cpp" line="1240"/>
+      <location filename="../Document.cpp" line="1197"/>
+      <location filename="../Document.cpp" line="1241"/>
       <source>Saving document failed</source>
       <translation>Dokumentua ezin izan da gorde</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1210"/>
+      <location filename="../Document.cpp" line="1211"/>
       <source>Save document under new filename...</source>
       <translation>Gorde dokumentua beste fitxategi-izen batekin...</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1213"/>
-      <location filename="../Document.cpp" line="1314"/>
+      <location filename="../Document.cpp" line="1214"/>
+      <location filename="../Document.cpp" line="1315"/>
       <source>Save %1 Document</source>
       <translation>Gorde %1 dokumentua</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1215"/>
+      <location filename="../Document.cpp" line="1216"/>
       <source>Document</source>
       <translation>Dokumentua</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1259"/>
-      <location filename="../Document.cpp" line="1300"/>
+      <location filename="../Document.cpp" line="1260"/>
+      <location filename="../Document.cpp" line="1301"/>
       <source>Failed to save document</source>
       <translation>Dokumentua gordetzeak huts egin du</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1260"/>
+      <location filename="../Document.cpp" line="1261"/>
       <source>Documents contains cyclic dependencies. Do you still want to save them?</source>
       <translation>Dokumentuek mendekotasun ziklikoak dituzte. Gorde nahi dituzu ala ere?</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1311"/>
+      <location filename="../Document.cpp" line="1312"/>
       <source>Save a copy of the document under new filename...</source>
       <translation>Gorde dokumentuaren kopia bat fitxategi-izen berri batekin...</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1316"/>
+      <location filename="../Document.cpp" line="1317"/>
       <source>%1 document (*.FCStd)</source>
       <translation>%1 dokumentua (*.FCStd)</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1965"/>
+      <location filename="../Document.cpp" line="1966"/>
       <source>Document not closable</source>
       <translation>Dokumentua ezin da itxi</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1966"/>
+      <location filename="../Document.cpp" line="1967"/>
       <source>The document is not closable for the moment.</source>
       <translation>Dokumentua ezin da momentuz itxi.</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="2003"/>
+      <location filename="../Document.cpp" line="2004"/>
       <source>Document not saved</source>
       <translation>Dokumentua ez da gorde</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="2004"/>
+      <location filename="../Document.cpp" line="2005"/>
       <source>The document%1 could not be saved. Do you want to cancel closing it?</source>
       <translation>%1 dokumentua ezin izan da gorde. Hura ixtea bertan behera utzi nahi duzu?</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="2332"/>
+      <location filename="../Document.cpp" line="2333"/>
       <source>Undo</source>
       <translation>Desegin</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="2332"/>
+      <location filename="../Document.cpp" line="2333"/>
       <source>Redo</source>
       <translation>Berregin</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="2334"/>
+      <location filename="../Document.cpp" line="2335"/>
       <source>There are grouped transactions in the following documents with other preceding transactions</source>
       <translation>Transakzio taldekatuak daude aurretiko beste transakzio batzuk dituzten hurrengo dokumentuetan</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="2337"/>
+      <location filename="../Document.cpp" line="2338"/>
       <source>Choose 'Yes' to roll back all preceding transactions.
 Choose 'No' to roll back in the active document only.
 Choose 'Abort' to abort</source>
@@ -8479,12 +8489,12 @@ Mesedez, ireki nabigatzaile-leiho bat eta idatzi: http://localhost:%1.</translat
       <translation>Aukerak...</translation>
     </message>
     <message>
-      <location filename="../View3DInventorViewer.cpp" line="2256"/>
+      <location filename="../View3DInventorViewer.cpp" line="2267"/>
       <source>Out of memory</source>
       <translation>Memoria gutxiegi</translation>
     </message>
     <message>
-      <location filename="../View3DInventorViewer.cpp" line="2257"/>
+      <location filename="../View3DInventorViewer.cpp" line="2268"/>
       <source>Not enough memory available to display the data.</source>
       <translation>Ez dago nahiko memoriarik datuak bistaratzeko.</translation>
     </message>
@@ -8510,7 +8520,7 @@ Mesedez, ireki nabigatzaile-leiho bat eta idatzi: http://localhost:%1.</translat
       <translation>Mugitu oharpena</translation>
     </message>
     <message>
-      <location filename="../ViewProviderDragger.cpp" line="84"/>
+      <location filename="../ViewProviderDragger.cpp" line="85"/>
       <location filename="../ViewProviderLink.cpp" line="2596"/>
       <source>Transform</source>
       <translation>Transformatu</translation>
@@ -8576,14 +8586,14 @@ Mesedez, ireki nabigatzaile-leiho bat eta idatzi: http://localhost:%1.</translat
       <translation>%1 ez dago hutsik, bere edukiak ere ezabatu nahi dituzu?</translation>
     </message>
     <message>
-      <location filename="../SoFCCSysDragger.cpp" line="320"/>
+      <location filename="../SoFCCSysDragger.cpp" line="319"/>
       <source>Translation:</source>
       <translation>Translazioa:</translation>
     </message>
     <message>
       <location filename="../SoFCCSysDragger.cpp" line="588"/>
       <source>Translation XY:</source>
-      <translation type="unfinished">Translation XY:</translation>
+      <translation>XY traslazioa:</translation>
     </message>
     <message>
       <location filename="../SoFCCSysDragger.cpp" line="904"/>
@@ -8624,32 +8634,32 @@ Mesedez, ireki nabigatzaile-leiho bat eta idatzi: http://localhost:%1.</translat
       <translation>Esteka-taldea sortzeak huts egin du</translation>
     </message>
     <message>
-      <location filename="../CommandLink.cpp" line="257"/>
+      <location filename="../CommandLink.cpp" line="262"/>
       <source>Create link failed</source>
       <translation>Esteka sortzeak huts egin du</translation>
     </message>
     <message>
-      <location filename="../CommandLink.cpp" line="332"/>
+      <location filename="../CommandLink.cpp" line="337"/>
       <source>Failed to create relative link</source>
       <translation>Esteka erlatiboa sortzeak huts egin du</translation>
     </message>
     <message>
-      <location filename="../CommandLink.cpp" line="460"/>
+      <location filename="../CommandLink.cpp" line="465"/>
       <source>Unlink failed</source>
       <translation>Esteka askatzeak huts egin du</translation>
     </message>
     <message>
-      <location filename="../CommandLink.cpp" line="460"/>
+      <location filename="../CommandLink.cpp" line="465"/>
       <source>Replace link failed</source>
       <translation>Esteka ordezteak huts egin du</translation>
     </message>
     <message>
-      <location filename="../CommandLink.cpp" line="590"/>
+      <location filename="../CommandLink.cpp" line="595"/>
       <source>Failed to import links</source>
       <translation>Estekak inportatzeak huts egin du</translation>
     </message>
     <message>
-      <location filename="../CommandLink.cpp" line="629"/>
+      <location filename="../CommandLink.cpp" line="634"/>
       <source>Failed to import all links</source>
       <translation>Esteka guztiak inportatzeak huts egin du</translation>
     </message>
@@ -9359,14 +9369,14 @@ egindako aldaketak galdu egingo direla.</translation>
   <context>
     <name>StdCmdGroup</name>
     <message>
-      <location filename="../CommandStructure.cpp" line="92"/>
+      <location filename="../CommandStructure.cpp" line="98"/>
       <source>Create group</source>
       <translation>Sortu taldea</translation>
     </message>
     <message>
-      <location filename="../CommandStructure.cpp" line="93"/>
-      <source>Create a new group for ordering objects</source>
-      <translation>Sortu talde berria objektuak ordenatzeko</translation>
+      <location filename="../CommandStructure.cpp" line="100"/>
+      <source>A Group is a general purpose container to group objects in the Tree view, regardless of their data type. It is a simple folder to organize the objects in a model.</source>
+      <translation type="unfinished">A Group is a general purpose container to group objects in the Tree view, regardless of their data type. It is a simple folder to organize the objects in a model.</translation>
     </message>
   </context>
   <context>
@@ -9424,13 +9434,13 @@ egindako aldaketak galdu egingo direla.</translation>
   <context>
     <name>StdCmdLinkActions</name>
     <message>
-      <location filename="../CommandLink.cpp" line="874"/>
+      <location filename="../CommandLink.cpp" line="879"/>
       <source>Link actions</source>
       <translation>Esteka-ekintzak</translation>
     </message>
     <message>
-      <location filename="../CommandLink.cpp" line="875"/>
-      <location filename="../CommandLink.cpp" line="877"/>
+      <location filename="../CommandLink.cpp" line="880"/>
+      <location filename="../CommandLink.cpp" line="882"/>
       <source>Actions that apply to link objects</source>
       <translation>Esteka-objektuei aplikatzen zaizkien ekintzak</translation>
     </message>
@@ -9438,12 +9448,12 @@ egindako aldaketak galdu egingo direla.</translation>
   <context>
     <name>StdCmdLinkImport</name>
     <message>
-      <location filename="../CommandLink.cpp" line="540"/>
+      <location filename="../CommandLink.cpp" line="545"/>
       <source>Import links</source>
       <translation>Inportatu estekak</translation>
     </message>
     <message>
-      <location filename="../CommandLink.cpp" line="541"/>
+      <location filename="../CommandLink.cpp" line="546"/>
       <source>Import selected external link(s)</source>
       <translation>Inportatu hautatutako kanpo-esteka(k)</translation>
     </message>
@@ -9451,12 +9461,12 @@ egindako aldaketak galdu egingo direla.</translation>
   <context>
     <name>StdCmdLinkImportAll</name>
     <message>
-      <location filename="../CommandLink.cpp" line="604"/>
+      <location filename="../CommandLink.cpp" line="609"/>
       <source>Import all links</source>
       <translation>Inportatu esteka guztiak</translation>
     </message>
     <message>
-      <location filename="../CommandLink.cpp" line="605"/>
+      <location filename="../CommandLink.cpp" line="610"/>
       <source>Import all links of the active document</source>
       <translation>Inportatu dokumentu aktiboaren esteka guztiak</translation>
     </message>
@@ -9469,9 +9479,9 @@ egindako aldaketak galdu egingo direla.</translation>
       <translation>Sortu esteka</translation>
     </message>
     <message>
-      <location filename="../CommandLink.cpp" line="209"/>
-      <source>Create a link to the selected object(s)</source>
-      <translation>Sortu hautatutako objektu(ar)en esteka</translation>
+      <location filename="../CommandLink.cpp" line="210"/>
+      <source>A Link is an object that references or links to another object in the same document, or in another document.Unlike Clones, Links reference the original Shape directly,  making them more memory efficient which helps with the creation of complex assemblies.</source>
+      <translation type="unfinished">A Link is an object that references or links to another object in the same document, or in another document.Unlike Clones, Links reference the original Shape directly,  making them more memory efficient which helps with the creation of complex assemblies.</translation>
     </message>
   </context>
   <context>
@@ -9490,12 +9500,12 @@ egindako aldaketak galdu egingo direla.</translation>
   <context>
     <name>StdCmdLinkMakeRelative</name>
     <message>
-      <location filename="../CommandLink.cpp" line="271"/>
+      <location filename="../CommandLink.cpp" line="276"/>
       <source>Make sub-link</source>
       <translation>Sortu azpiesteka</translation>
     </message>
     <message>
-      <location filename="../CommandLink.cpp" line="272"/>
+      <location filename="../CommandLink.cpp" line="277"/>
       <source>Create a sub-object or sub-element link</source>
       <translation>Sortu azpiobjektu edo azpielementu baten esteka</translation>
     </message>
@@ -9503,12 +9513,12 @@ egindako aldaketak galdu egingo direla.</translation>
   <context>
     <name>StdCmdLinkReplace</name>
     <message>
-      <location filename="../CommandLink.cpp" line="492"/>
+      <location filename="../CommandLink.cpp" line="497"/>
       <source>Replace with link</source>
       <translation>Ordeztu estekarekin</translation>
     </message>
     <message>
-      <location filename="../CommandLink.cpp" line="493"/>
+      <location filename="../CommandLink.cpp" line="498"/>
       <source>Replace the selected object(s) with link</source>
       <translation>Ordeztu hautatutako objektua(k) estekarekin</translation>
     </message>
@@ -9516,13 +9526,13 @@ egindako aldaketak galdu egingo direla.</translation>
   <context>
     <name>StdCmdLinkSelectActions</name>
     <message>
-      <location filename="../CommandLink.cpp" line="848"/>
+      <location filename="../CommandLink.cpp" line="853"/>
       <source>Link navigation</source>
       <translation>Esteka-nabigazioa</translation>
     </message>
     <message>
-      <location filename="../CommandLink.cpp" line="849"/>
-      <location filename="../CommandLink.cpp" line="851"/>
+      <location filename="../CommandLink.cpp" line="854"/>
+      <location filename="../CommandLink.cpp" line="856"/>
       <source>Link navigation actions</source>
       <translation>Esteka-nabigazioaren ekintzak</translation>
     </message>
@@ -9530,12 +9540,12 @@ egindako aldaketak galdu egingo direla.</translation>
   <context>
     <name>StdCmdLinkSelectAllLinks</name>
     <message>
-      <location filename="../CommandLink.cpp" line="808"/>
+      <location filename="../CommandLink.cpp" line="813"/>
       <source>Select all links</source>
       <translation>Hautatu esteka guztiak</translation>
     </message>
     <message>
-      <location filename="../CommandLink.cpp" line="809"/>
+      <location filename="../CommandLink.cpp" line="814"/>
       <source>Select all links to the current selected object</source>
       <translation>Hautatu unean hautatutako objektuaren esteka guztiak</translation>
     </message>
@@ -9543,12 +9553,12 @@ egindako aldaketak galdu egingo direla.</translation>
   <context>
     <name>StdCmdLinkSelectLinked</name>
     <message>
-      <location filename="../CommandLink.cpp" line="645"/>
+      <location filename="../CommandLink.cpp" line="650"/>
       <source>Go to linked object</source>
       <translation>Joan estekatutako objektura</translation>
     </message>
     <message>
-      <location filename="../CommandLink.cpp" line="646"/>
+      <location filename="../CommandLink.cpp" line="651"/>
       <source>Select the linked object and switch to its owner document</source>
       <translation>Hautatu estekatutako objektua eta joan bere dokumentu jabera</translation>
     </message>
@@ -9556,12 +9566,12 @@ egindako aldaketak galdu egingo direla.</translation>
   <context>
     <name>StdCmdLinkSelectLinkedFinal</name>
     <message>
-      <location filename="../CommandLink.cpp" line="773"/>
+      <location filename="../CommandLink.cpp" line="778"/>
       <source>Go to the deepest linked object</source>
       <translation>Joan sakonen estekatutako objektura</translation>
     </message>
     <message>
-      <location filename="../CommandLink.cpp" line="774"/>
+      <location filename="../CommandLink.cpp" line="779"/>
       <source>Select the deepest linked object and switch to its owner document</source>
       <translation>Hautatu sakonen estekatutako objektua eta joan bere dokumentu jabera</translation>
     </message>
@@ -9569,12 +9579,12 @@ egindako aldaketak galdu egingo direla.</translation>
   <context>
     <name>StdCmdLinkUnlink</name>
     <message>
-      <location filename="../CommandLink.cpp" line="516"/>
+      <location filename="../CommandLink.cpp" line="521"/>
       <source>Unlink</source>
       <translation>Askatu</translation>
     </message>
     <message>
-      <location filename="../CommandLink.cpp" line="517"/>
+      <location filename="../CommandLink.cpp" line="522"/>
       <source>Strip on level of link</source>
       <translation>Biluztu estekaren maila</translation>
     </message>
@@ -9807,9 +9817,11 @@ egindako aldaketak galdu egingo direla.</translation>
       <translation>Sortu pieza</translation>
     </message>
     <message>
-      <location filename="../CommandStructure.cpp" line="52"/>
-      <source>Create a new part and make it active</source>
-      <translation>Sortu pieza berria eta hura aktibatu</translation>
+      <location filename="../CommandStructure.cpp" line="53"/>
+      <source>A Part is is a general purpose container to keep together a group of objects so that they act as a unit in the 3D view.
+It is meant to arrange objects that have a Part TopoShape, like Part Primitives, PartDesign Bodies, and other Parts.</source>
+      <translation type="unfinished">A Part is is a general purpose container to keep together a group of objects so that they act as a unit in the 3D view.
+It is meant to arrange objects that have a Part TopoShape, like Part Primitives, PartDesign Bodies, and other Parts.</translation>
     </message>
   </context>
   <context>
@@ -10111,45 +10123,17 @@ egindako aldaketak galdu egingo direla.</translation>
     </message>
   </context>
   <context>
-    <name>StdCmdSelBack</name>
-    <message>
-      <location filename="../CommandView.cpp" line="3580"/>
-      <source>&amp;Back</source>
-      <translation>A&amp;tzera</translation>
-    </message>
-    <message>
-      <location filename="../CommandView.cpp" line="3581"/>
-      <location filename="../CommandView.cpp" line="3583"/>
-      <source>Go back to previous selection</source>
-      <translation>Joan aurreko hautapenera</translation>
-    </message>
-  </context>
-  <context>
     <name>StdCmdSelBoundingBox</name>
     <message>
-      <location filename="../CommandView.cpp" line="3893"/>
+      <location filename="../CommandView.cpp" line="3906"/>
       <source>&amp;Bounding box</source>
       <translation>&amp;Muga-kutxa</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3894"/>
-      <location filename="../CommandView.cpp" line="3896"/>
+      <location filename="../CommandView.cpp" line="3907"/>
+      <location filename="../CommandView.cpp" line="3909"/>
       <source>Show selection bounding box</source>
       <translation>Erakutsi hautapenaren muga-kutxa</translation>
-    </message>
-  </context>
-  <context>
-    <name>StdCmdSelForward</name>
-    <message>
-      <location filename="../CommandView.cpp" line="3610"/>
-      <source>&amp;Forward</source>
-      <translation>A&amp;urrera</translation>
-    </message>
-    <message>
-      <location filename="../CommandView.cpp" line="3611"/>
-      <location filename="../CommandView.cpp" line="3613"/>
-      <source>Repeat the backed selection</source>
-      <translation>Errepikatu aurreko hautapena</translation>
     </message>
   </context>
   <context>
@@ -10463,13 +10447,13 @@ egindako aldaketak galdu egingo direla.</translation>
   <context>
     <name>StdCmdTreeViewActions</name>
     <message>
-      <location filename="../CommandView.cpp" line="3856"/>
+      <location filename="../CommandView.cpp" line="3864"/>
       <source>TreeView actions</source>
       <translation>Zuhaitz-bistako ekintzak</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3857"/>
-      <location filename="../CommandView.cpp" line="3859"/>
+      <location filename="../CommandView.cpp" line="3865"/>
+      <location filename="../CommandView.cpp" line="3867"/>
       <source>TreeView behavior options and actions</source>
       <translation>Zuhaitz-bistaren portaeraren aukerak eta ekintzak</translation>
     </message>
@@ -11009,13 +10993,13 @@ egindako aldaketak galdu egingo direla.</translation>
   <context>
     <name>StdRecallWorkingView</name>
     <message>
-      <location filename="../CommandView.cpp" line="3967"/>
+      <location filename="../CommandView.cpp" line="3980"/>
       <source>Recall working view</source>
       <translation>Berreskuratu laneko bista</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3968"/>
-      <location filename="../CommandView.cpp" line="3969"/>
+      <location filename="../CommandView.cpp" line="3981"/>
+      <location filename="../CommandView.cpp" line="3982"/>
       <source>Recall previously stored temporary working view</source>
       <translation>Berreskuratu aurretik gorde den aldi baterako laneko bista</translation>
     </message>
@@ -11023,13 +11007,13 @@ egindako aldaketak galdu egingo direla.</translation>
   <context>
     <name>StdStoreWorkingView</name>
     <message>
-      <location filename="../CommandView.cpp" line="3937"/>
+      <location filename="../CommandView.cpp" line="3950"/>
       <source>Store working view</source>
       <translation>Biltegiratu laneko bista</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3938"/>
-      <location filename="../CommandView.cpp" line="3939"/>
+      <location filename="../CommandView.cpp" line="3951"/>
+      <location filename="../CommandView.cpp" line="3952"/>
       <source>Store a document-specific temporary working view</source>
       <translation>Biltegiratu dokumentuan espezifikoa den aldi baterako laneko bista</translation>
     </message>
@@ -11037,13 +11021,13 @@ egindako aldaketak galdu egingo direla.</translation>
   <context>
     <name>StdTreeCollapseDocument</name>
     <message>
-      <location filename="../CommandView.cpp" line="3694"/>
+      <location filename="../CommandView.cpp" line="3702"/>
       <source>Collapse/Expand</source>
       <translation>Tolestu/hedatu</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3695"/>
-      <location filename="../CommandView.cpp" line="3697"/>
+      <location filename="../CommandView.cpp" line="3703"/>
+      <location filename="../CommandView.cpp" line="3705"/>
       <source>Expand active document and collapse all others</source>
       <translation>Hedatu dokumentu aktiboa eta tolestu beste guztiak</translation>
     </message>
@@ -11051,12 +11035,12 @@ egindako aldaketak galdu egingo direla.</translation>
   <context>
     <name>StdTreeDrag</name>
     <message>
-      <location filename="../CommandView.cpp" line="3823"/>
+      <location filename="../CommandView.cpp" line="3831"/>
       <source>Initiate dragging</source>
       <translation>Hasi arrastatzea</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3824"/>
+      <location filename="../CommandView.cpp" line="3832"/>
       <source>Initiate dragging of current selected tree items</source>
       <translation>Hasi unean hautatutako zuhaitz-elementuen arrastatzea</translation>
     </message>
@@ -11064,13 +11048,13 @@ egindako aldaketak galdu egingo direla.</translation>
   <context>
     <name>StdTreeMultiDocument</name>
     <message>
-      <location filename="../CommandView.cpp" line="3677"/>
+      <location filename="../CommandView.cpp" line="3685"/>
       <source>Multi document</source>
       <translation>Dokumentu anitza</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3678"/>
-      <location filename="../CommandView.cpp" line="3680"/>
+      <location filename="../CommandView.cpp" line="3686"/>
+      <location filename="../CommandView.cpp" line="3688"/>
       <source>Display all documents in the tree view</source>
       <translation>Bistaratu dokumentu guztiak zuhaitz-bistan</translation>
     </message>
@@ -11078,12 +11062,12 @@ egindako aldaketak galdu egingo direla.</translation>
   <context>
     <name>StdTreePreSelection</name>
     <message>
-      <location filename="../CommandView.cpp" line="3787"/>
+      <location filename="../CommandView.cpp" line="3795"/>
       <source>Pre-selection</source>
       <translation>Aurretiko hautapena</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3788"/>
+      <location filename="../CommandView.cpp" line="3796"/>
       <source>Preselect the object in 3D view when mouse over the tree item</source>
       <translation>Aurretik hautatu objektua 3D bistan sagua zuhaitz-elementuaren gainean dagoenean</translation>
     </message>
@@ -11091,12 +11075,12 @@ egindako aldaketak galdu egingo direla.</translation>
   <context>
     <name>StdTreeRecordSelection</name>
     <message>
-      <location filename="../CommandView.cpp" line="3805"/>
+      <location filename="../CommandView.cpp" line="3813"/>
       <source>Record selection</source>
       <translation>Grabatu hautapena</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3806"/>
+      <location filename="../CommandView.cpp" line="3814"/>
       <source>Record selection in tree view in order to go back/forward using navigation button</source>
       <translation>Grabatu zuhaitz-bistako hautapena aurrera/atzera egin ahal izateko nabigazio-botoia erabilita</translation>
     </message>
@@ -11118,13 +11102,13 @@ egindako aldaketak galdu egingo direla.</translation>
   <context>
     <name>StdTreeSingleDocument</name>
     <message>
-      <location filename="../CommandView.cpp" line="3660"/>
+      <location filename="../CommandView.cpp" line="3668"/>
       <source>Single document</source>
       <translation>Dokumentu bakarra</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3661"/>
-      <location filename="../CommandView.cpp" line="3663"/>
+      <location filename="../CommandView.cpp" line="3669"/>
+      <location filename="../CommandView.cpp" line="3671"/>
       <source>Only display the active document in the tree view</source>
       <translation>Bistaratu dokumentu aktiboa soilik zuhaitz-bistan</translation>
     </message>
@@ -11132,12 +11116,12 @@ egindako aldaketak galdu egingo direla.</translation>
   <context>
     <name>StdTreeSyncPlacement</name>
     <message>
-      <location filename="../CommandView.cpp" line="3769"/>
+      <location filename="../CommandView.cpp" line="3777"/>
       <source>Sync placement</source>
       <translation>Sinkronizatu kokapena</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3770"/>
+      <location filename="../CommandView.cpp" line="3778"/>
       <source>Auto adjust placement on drag and drop objects across coordinate systems</source>
       <translation>Automatikoki doitu kokapena objektuak koordenatu-sistema batetik bestera arrastatu eta jaregitean</translation>
     </message>
@@ -11145,12 +11129,12 @@ egindako aldaketak galdu egingo direla.</translation>
   <context>
     <name>StdTreeSyncSelection</name>
     <message>
-      <location filename="../CommandView.cpp" line="3751"/>
+      <location filename="../CommandView.cpp" line="3759"/>
       <source>Sync selection</source>
       <translation>Sinkronizatu hautapena</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3752"/>
+      <location filename="../CommandView.cpp" line="3760"/>
       <source>Auto expand tree item when the corresponding object is selected in 3D view</source>
       <translation>Automatikoki hedatu zuhaitz-elementua hari dagokion objektua 3D bistan hautatuta dagoenean</translation>
     </message>
@@ -11158,12 +11142,12 @@ egindako aldaketak galdu egingo direla.</translation>
   <context>
     <name>StdTreeSyncView</name>
     <message>
-      <location filename="../CommandView.cpp" line="3733"/>
+      <location filename="../CommandView.cpp" line="3741"/>
       <source>Sync view</source>
       <translation>Sinkronizatu bista</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3734"/>
+      <location filename="../CommandView.cpp" line="3742"/>
       <source>Auto switch to the 3D view containing the selected item</source>
       <translation>Automatikoki aldatu hautatutako elementua duen 3D bistara</translation>
     </message>
@@ -11398,7 +11382,7 @@ Dokumentua gorde nahi al duzu?</translation>
   <context>
     <name>Std_Group</name>
     <message>
-      <location filename="../CommandStructure.cpp" line="107"/>
+      <location filename="../CommandStructure.cpp" line="119"/>
       <source>Group</source>
       <translation>Taldea</translation>
     </message>
@@ -12096,12 +12080,12 @@ FreeCAD abiarazi ondoren</translation>
   <context>
     <name>NaviCubeDraggableCmd</name>
     <message>
-      <location filename="../NaviCube.cpp" line="1100"/>
+      <location filename="../NaviCube.cpp" line="1157"/>
       <source>Movable navigation cube</source>
       <translation>Nabigazio-kubo mugikorra</translation>
     </message>
     <message>
-      <location filename="../NaviCube.cpp" line="1101"/>
+      <location filename="../NaviCube.cpp" line="1158"/>
       <source>Drag and place NaviCube</source>
       <translation>Arrastatu eta kokatu nabigazio-kuboa</translation>
     </message>
@@ -12954,13 +12938,39 @@ Orain gaiak erabili daitezke interfazea osorik pertsonalizatzeko.</translation>
     <message>
       <location filename="../CommandDoc.cpp" line="605"/>
       <source>Export dependency graph...</source>
-      <translation type="unfinished">Export dependency graph...</translation>
+      <translation>Esportatu mendekotasun-grafikoa...</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="606"/>
       <location filename="../CommandDoc.cpp" line="607"/>
       <source>Export the dependency graph to a file</source>
-      <translation type="unfinished">Export the dependency graph to a file</translation>
+      <translation>Esportatu mendekotasun-grafikoa fitxategi batera</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdSelBack</name>
+    <message>
+      <location filename="../CommandView.cpp" line="3580"/>
+      <source>Selection Back</source>
+      <translation type="unfinished">Selection Back</translation>
+    </message>
+    <message>
+      <location filename="../CommandView.cpp" line="3582"/>
+      <source>Restore the previous Tree view selection. Only works if Tree RecordSelection mode is switched on.</source>
+      <translation type="unfinished">Restore the previous Tree view selection. Only works if Tree RecordSelection mode is switched on.</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdSelForward</name>
+    <message>
+      <location filename="../CommandView.cpp" line="3614"/>
+      <source>Selection Forward</source>
+      <translation type="unfinished">Selection Forward</translation>
+    </message>
+    <message>
+      <location filename="../CommandView.cpp" line="3616"/>
+      <source>Restore the next Tree view selection. Only works if Tree RecordSelection mode is switched on.</source>
+      <translation type="unfinished">Restore the next Tree view selection. Only works if Tree RecordSelection mode is switched on.</translation>
     </message>
   </context>
 </TS>

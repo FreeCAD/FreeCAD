@@ -329,7 +329,7 @@
       <translation>显示示例文件夹内容</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="318"/>
+      <location filename="../../DlgStartPreferences.ui" line="321"/>
       <source>Show additional folder</source>
       <translation>显示其他文件夹</translation>
     </message>
@@ -344,7 +344,7 @@
       <translation>如果选中此项，FreeCAD 论坛的最新帖子将会在活动选项卡上显示</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="304"/>
+      <location filename="../../DlgStartPreferences.ui" line="307"/>
       <source>An optional custom folder to be displayed at the bottom of the first page.
 By using ";;" to separate paths, you can add several folders here</source>
       <translation>一个可选的自定义文件夹，将显示在第一页的底部。
@@ -396,138 +396,138 @@ By using ";;" to separate paths, you can add several folders here</source>
       <translation type="unfinished">Show file thumbnails</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="328"/>
+      <location filename="../../DlgStartPreferences.ui" line="331"/>
       <source>Fonts and colors</source>
       <translation>字体和颜色</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="380"/>
+      <location filename="../../DlgStartPreferences.ui" line="383"/>
       <source>The background of the main start page area</source>
       <translation>开始页页面主背景</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="535"/>
+      <location filename="../../DlgStartPreferences.ui" line="538"/>
       <source>Background color</source>
       <translation>背景颜色</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="405"/>
+      <location filename="../../DlgStartPreferences.ui" line="408"/>
       <source>in FreeCAD</source>
       <translation>在 FreeCAD 中</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="424"/>
+      <location filename="../../DlgStartPreferences.ui" line="427"/>
       <source>In external browser</source>
       <translation>在外部浏览器中</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="492"/>
+      <location filename="../../DlgStartPreferences.ui" line="495"/>
       <source>Background color down gradient</source>
       <translation>背景颜色向下渐变</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="649"/>
+      <location filename="../../DlgStartPreferences.ui" line="652"/>
       <source>The color of the version text</source>
       <translation>版本文本的颜色</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="617"/>
+      <location filename="../../DlgStartPreferences.ui" line="620"/>
       <source>Link color</source>
       <translation>链接颜色</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="695"/>
+      <location filename="../../DlgStartPreferences.ui" line="698"/>
       <source>An optional image to display as background</source>
       <translation>可选的图像作为背景显示</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="624"/>
+      <location filename="../../DlgStartPreferences.ui" line="627"/>
       <source>If this is checked and a style sheet is specified in General preferences, it will be used and override the colors below</source>
       <translation>如果选中此项并且在常规首选项中指定了样式表，它将被使用并覆盖下面的颜色</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="367"/>
+      <location filename="../../DlgStartPreferences.ui" line="370"/>
       <source>Page background color</source>
       <translation>页面背景颜色</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="675"/>
+      <location filename="../../DlgStartPreferences.ui" line="678"/>
       <source>The color of the text on the main pages</source>
       <translation>主页文字的颜色</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="708"/>
+      <location filename="../../DlgStartPreferences.ui" line="711"/>
       <source>Background image</source>
       <translation>背景图片</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="360"/>
+      <location filename="../../DlgStartPreferences.ui" line="363"/>
       <source>Page text color</source>
       <translation>页面文本颜色</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="597"/>
+      <location filename="../../DlgStartPreferences.ui" line="600"/>
       <source>The color of the links</source>
       <translation>链接的颜色</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="340"/>
+      <location filename="../../DlgStartPreferences.ui" line="343"/>
       <source>The background color of the boxes inside the pages</source>
       <translation>页面内框的背景颜色</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="528"/>
+      <location filename="../../DlgStartPreferences.ui" line="531"/>
       <source>Box background color</source>
       <translation>框背景颜色</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="462"/>
+      <location filename="../../DlgStartPreferences.ui" line="465"/>
       <source>The background color behind the panels</source>
       <translation>面板背后的背景颜色</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="508"/>
+      <location filename="../../DlgStartPreferences.ui" line="511"/>
       <source>The down gradient for the background color (currently unsupported)</source>
       <translation>背景颜色的向下渐变(目前不支持)</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="449"/>
+      <location filename="../../DlgStartPreferences.ui" line="452"/>
       <source>Open links</source>
       <translation>打开链接</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="542"/>
+      <location filename="../../DlgStartPreferences.ui" line="545"/>
       <source>Background text color</source>
       <translation>背景文字颜色</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="482"/>
+      <location filename="../../DlgStartPreferences.ui" line="485"/>
       <source>Use FreeCAD style sheet</source>
       <translation>使用 FreeCAD 样式表</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="439"/>
+      <location filename="../../DlgStartPreferences.ui" line="442"/>
       <source>Font family</source>
       <translation>字体系列</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="551"/>
+      <location filename="../../DlgStartPreferences.ui" line="554"/>
       <source>The font family to use on the start page. Can be a font name or a comma-separated series of fallback fonts</source>
       <translation>在起始页上使用的字体系列。 可以是字体名称或逗号分隔的后备字体系列</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="557"/>
+      <location filename="../../DlgStartPreferences.ui" line="560"/>
       <source>Arial,Helvetica,sans</source>
       <translation>Arial,Helvetica,sans</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="570"/>
+      <location filename="../../DlgStartPreferences.ui" line="573"/>
       <source>The base font size to use for all texts of the Start page</source>
       <translation>用于开始页面所有文本的基本字体大小</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="131"/>
-      <location filename="../../DlgStartPreferences.ui" line="573"/>
+      <location filename="../../DlgStartPreferences.ui" line="576"/>
       <source>px</source>
       <translation>px</translation>
     </message>

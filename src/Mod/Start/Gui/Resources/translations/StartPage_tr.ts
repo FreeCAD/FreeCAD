@@ -329,7 +329,7 @@
       <translation>Örnekler klasörü içeriğini göster</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="318"/>
+      <location filename="../../DlgStartPreferences.ui" line="321"/>
       <source>Show additional folder</source>
       <translation>Ek klasörü görüntüle</translation>
     </message>
@@ -344,7 +344,7 @@
       <translation>Bu işaretliyse, FreeCAD forumundan en son gönderiler Etkinlik sekmesinde görüntülenecektir</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="304"/>
+      <location filename="../../DlgStartPreferences.ui" line="307"/>
       <source>An optional custom folder to be displayed at the bottom of the first page.
 By using ";;" to separate paths, you can add several folders here</source>
       <translation>İlk sayfanın altında görüntülenecek isteğe bağlı özel bir dizin.
@@ -396,138 +396,138 @@ Yolları ayırmak için ";;" (çift noktalı virgül) kullanarak birden fazla di
       <translation>Dosya resimlerini göster</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="328"/>
+      <location filename="../../DlgStartPreferences.ui" line="331"/>
       <source>Fonts and colors</source>
       <translation>Yazı tipleri ve renkler</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="380"/>
+      <location filename="../../DlgStartPreferences.ui" line="383"/>
       <source>The background of the main start page area</source>
       <translation>Ana Başlangıç sayfa alanının arka planı</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="535"/>
+      <location filename="../../DlgStartPreferences.ui" line="538"/>
       <source>Background color</source>
       <translation>Arka plan rengi</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="405"/>
+      <location filename="../../DlgStartPreferences.ui" line="408"/>
       <source>in FreeCAD</source>
       <translation>FreeCAD’de</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="424"/>
+      <location filename="../../DlgStartPreferences.ui" line="427"/>
       <source>In external browser</source>
       <translation>Harici tarayıcıda</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="492"/>
+      <location filename="../../DlgStartPreferences.ui" line="495"/>
       <source>Background color down gradient</source>
       <translation>Arkaplan rengi aşağı geçişi</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="649"/>
+      <location filename="../../DlgStartPreferences.ui" line="652"/>
       <source>The color of the version text</source>
       <translation>Sürüm metninin rengi</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="617"/>
+      <location filename="../../DlgStartPreferences.ui" line="620"/>
       <source>Link color</source>
       <translation>Bağlantı Rengi</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="695"/>
+      <location filename="../../DlgStartPreferences.ui" line="698"/>
       <source>An optional image to display as background</source>
       <translation>İsteğe bağlı bir resmi, arka plan olarak görüntüle</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="624"/>
+      <location filename="../../DlgStartPreferences.ui" line="627"/>
       <source>If this is checked and a style sheet is specified in General preferences, it will be used and override the colors below</source>
       <translation>Eğer bu işaretlenirse ve Genel tercihlerde bir biçim sayfası belirtilirse, bu kullanılır ve aşağıdaki renkleri üzerine yazar</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="367"/>
+      <location filename="../../DlgStartPreferences.ui" line="370"/>
       <source>Page background color</source>
       <translation>Sayfa arka plan rengi</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="675"/>
+      <location filename="../../DlgStartPreferences.ui" line="678"/>
       <source>The color of the text on the main pages</source>
       <translation>Ana sayfalardaki metin rengi</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="708"/>
+      <location filename="../../DlgStartPreferences.ui" line="711"/>
       <source>Background image</source>
       <translation>Arka plan resmi</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="360"/>
+      <location filename="../../DlgStartPreferences.ui" line="363"/>
       <source>Page text color</source>
       <translation>Sayfa metninin rengi</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="597"/>
+      <location filename="../../DlgStartPreferences.ui" line="600"/>
       <source>The color of the links</source>
       <translation>Bağlantıların rengi</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="340"/>
+      <location filename="../../DlgStartPreferences.ui" line="343"/>
       <source>The background color of the boxes inside the pages</source>
       <translation>Sayfa içindeki kutuları arka plan rengi</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="528"/>
+      <location filename="../../DlgStartPreferences.ui" line="531"/>
       <source>Box background color</source>
       <translation>Kutu arka plan rengi</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="462"/>
+      <location filename="../../DlgStartPreferences.ui" line="465"/>
       <source>The background color behind the panels</source>
       <translation>Panellerin gerisindeki arka plan rengi</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="508"/>
+      <location filename="../../DlgStartPreferences.ui" line="511"/>
       <source>The down gradient for the background color (currently unsupported)</source>
       <translation>Arka plan renginin aşağı eğimi (şu anda desteklenmiyor)</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="449"/>
+      <location filename="../../DlgStartPreferences.ui" line="452"/>
       <source>Open links</source>
       <translation>Bağlantıları aç</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="542"/>
+      <location filename="../../DlgStartPreferences.ui" line="545"/>
       <source>Background text color</source>
       <translation>Arka plan metninin rengi</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="482"/>
+      <location filename="../../DlgStartPreferences.ui" line="485"/>
       <source>Use FreeCAD style sheet</source>
       <translation>FreeCAD stili hesap tablosu kullan</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="439"/>
+      <location filename="../../DlgStartPreferences.ui" line="442"/>
       <source>Font family</source>
       <translation>Yazı tipi</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="551"/>
+      <location filename="../../DlgStartPreferences.ui" line="554"/>
       <source>The font family to use on the start page. Can be a font name or a comma-separated series of fallback fonts</source>
       <translation>Başlangıç sayfasında kullanılacak yazı tipi ailesi. Yazı tipi adı veya virgülle ayrılmış bir yazı tipi dizisi olabilir</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="557"/>
+      <location filename="../../DlgStartPreferences.ui" line="560"/>
       <source>Arial,Helvetica,sans</source>
       <translation>Arial,Helvetica,sans</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="570"/>
+      <location filename="../../DlgStartPreferences.ui" line="573"/>
       <source>The base font size to use for all texts of the Start page</source>
       <translation>Başlangıç sayfasının tüm metinleri için kullanılacak temel font boyutu</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="131"/>
-      <location filename="../../DlgStartPreferences.ui" line="573"/>
+      <location filename="../../DlgStartPreferences.ui" line="576"/>
       <source>px</source>
       <translation>px</translation>
     </message>

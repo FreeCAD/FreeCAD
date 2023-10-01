@@ -555,8 +555,8 @@ Negative values will result in copies produced in the negative direction.</sourc
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="403"/>
       <source>If checked, the resulting objects in the array will be fused if they touch each other.
 This only works if "Link array" is off.</source>
-      <translation>თუ ჩართულია, მოხდება მასივში მიღებული ობიექტების შერწყმა, თუ ისინი ერთმანეთს ეხებიან.
-მუშაობს მხოლოდ მაშინ, თუ "ბმულის მასივი" გამორთულია.</translation>
+      <translation>თუ ჩართულია, მიღებული ობიექტები მასივში შეერთდება, თუ ისინი ერთმანეთს ეხებიან.
+ეს მხოლოდ მაშინ მუშაობს, თუ "მასივების მიბმა" გამორთულია.</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="407"/>
@@ -573,7 +573,7 @@ A Link array is more efficient when creating multiple copies, but it cannot be f
     <message>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="418"/>
       <source>Link array</source>
-      <translation>ბმულების მასივი</translation>
+      <translation>მასივების მიბმა</translation>
     </message>
   </context>
   <context>
@@ -652,13 +652,13 @@ Change the direction of the axis itself in the property editor.</source>
       <location filename="../ui/TaskPanel_PolarArray.ui" line="205"/>
       <source>If checked, the resulting objects in the array will be fused if they touch each other.
 This only works if "Link array" is off.</source>
-      <translation>თუ ჩართულია, მიღებული ობიექტები მასივში შეერთდება, თუ ისინი ერთმანეთს ეხებიან.
-ეს მხოლოდ მაშინ მუშაობს, თუ "მასივების მიბმა" გამორთულია.</translation>
+      <translation>თუ ჩართულია, მოხდება მასივში მიღებული ობიექტების შერწყმა, თუ ისინი ერთმანეთს ეხებიან.
+მუშაობს მხოლოდ მაშინ, თუ "ბმულის მასივი" გამორთულია.</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_PolarArray.ui" line="209"/>
       <source>Fuse</source>
-      <translation>შერწყმა</translation>
+      <translation>შეერთება</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_PolarArray.ui" line="216"/>
@@ -670,7 +670,7 @@ A Link array is more efficient when creating multiple copies, but it cannot be f
     <message>
       <location filename="../ui/TaskPanel_PolarArray.ui" line="220"/>
       <source>Link array</source>
-      <translation>მასივების მიბმა</translation>
+      <translation>ბმულების მასივი</translation>
     </message>
   </context>
   <context>
@@ -736,6 +736,11 @@ A Link array is more efficient when creating multiple copies, but it cannot be f
       <location filename="../ui/TaskShapeString.ui" line="176"/>
       <source>Font file</source>
       <translation>ფონტის ფაილი</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskShapeString.ui" line="183"/>
+      <source>Font files (*.ttf *.otf *.pfb)</source>
+      <translation type="unfinished">Font files (*.ttf *.otf *.pfb)</translation>
     </message>
   </context>
   <context>
@@ -966,7 +971,7 @@ value by using the [ and ] keys while drawing</source>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="86"/>
       <source> px</source>
-      <translation> px</translation>
+      <translation> პქს</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="93"/>
@@ -1082,7 +1087,7 @@ value by using the [ and ] keys while drawing</source>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="357"/>
       <source>Text spacing</source>
-      <translation>სიმბოლოებს შორის დაშორება</translation>
+      <translation>ტექსტში დაშორებები</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="285"/>
@@ -1490,74 +1495,74 @@ Note that this is not fully supported, and many object will be not editable with
       <translation>SVG შაბლონების ალტერნატიული მდებარეობა</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftvisual.ui" line="186"/>
+      <location filename="../ui/preferences-draftvisual.ui" line="189"/>
       <source>Here you can specify a directory with custom SVG files containing &lt;pattern&gt; definitions to be added to the standard patterns</source>
       <translation>შეგიძლიათ მიუთითოთ საქაღალდე მორგებული SVG ფაილებით, რომლებიც შეიცავენ &lt;pattern&gt;-ის აღწერას, რომელიც სტანდარტულ შაბლონებს დაემატება</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftvisual.ui" line="203"/>
+      <location filename="../ui/preferences-draftvisual.ui" line="206"/>
       <source>SVG pattern resolution</source>
       <translation>SVG შაბლონის გარჩევადობა</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftvisual.ui" line="223"/>
+      <location filename="../ui/preferences-draftvisual.ui" line="226"/>
       <source>The resolution to draw the patterns in. Default value is 128. Higher values give better resolutions, lower values make drawing faster</source>
       <translation>შაბლონების დახატვის გარჩევადობა. ნაგულისხმევი მნიშვნელობა 128-ა. მაღალი მნიშვნელობები იძლევა უკეთეს გარჩევადობას, ქვედა მნიშვნელობები აჩქარებს დახატვას</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftvisual.ui" line="246"/>
+      <location filename="../ui/preferences-draftvisual.ui" line="249"/>
       <source>SVG pattern default size</source>
       <translation>SVG შაბლონების ნაგულისხმევი ზომა</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftvisual.ui" line="266"/>
+      <location filename="../ui/preferences-draftvisual.ui" line="269"/>
       <source>The default size for SVG patterns</source>
       <translation>SVG შაბლონების ნაგულისხმევი ზომა</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftvisual.ui" line="292"/>
+      <location filename="../ui/preferences-draftvisual.ui" line="295"/>
       <source>Check this if you want to preserve colors of faces while doing downgrade and upgrade (splitFaces and makeShell only)</source>
       <translation>ჩართეთ, თუ გნებავთ გნებავთ შეინარჩუნოთ ზედაპირების ფერები გაყოფისა და გაერთიანების დროს (მხოლოდ splitFaces და makeShell)</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftvisual.ui" line="295"/>
+      <location filename="../ui/preferences-draftvisual.ui" line="298"/>
       <source>Preserve colors of faces during downgrade/upgrade</source>
       <translation>დაშლა/შეერთებისას ზედაპირების ფერის შენარჩუნება</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftvisual.ui" line="312"/>
+      <location filename="../ui/preferences-draftvisual.ui" line="315"/>
       <source>Check this if you want the face names to derive from the originating object name and vice versa while doing downgrade/upgrade (splitFaces and makeShell only)</source>
       <translation>ჩართეთ, თუ გნებავთ, რომ განახლება/ვერსიის დაწევის ოპერაციის შესრულების დროს ზედაპირის სახელები ნაწარმოები იყოს მისი საწყისი ობიექტის სახელებიდან და პირიქით (მხოლოდ splitFaces და makeShell)</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftvisual.ui" line="315"/>
+      <location filename="../ui/preferences-draftvisual.ui" line="318"/>
       <source>Preserve names of faces during downgrade/upgrade</source>
       <translation>დაშლა/აწყობისას ზედაპირების სახელების შენახვა</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftvisual.ui" line="333"/>
+      <location filename="../ui/preferences-draftvisual.ui" line="336"/>
       <source>Drawing view line definitions</source>
       <translation>სახაზავი ხაზების განსაზღვრებები</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftvisual.ui" line="341"/>
+      <location filename="../ui/preferences-draftvisual.ui" line="344"/>
       <source>Dashed line definition</source>
       <translation>პუნქტირიანი ხაზის განსაზღვრა</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftvisual.ui" line="361"/>
-      <location filename="../ui/preferences-draftvisual.ui" line="404"/>
-      <location filename="../ui/preferences-draftvisual.ui" line="447"/>
+      <location filename="../ui/preferences-draftvisual.ui" line="364"/>
+      <location filename="../ui/preferences-draftvisual.ui" line="407"/>
+      <location filename="../ui/preferences-draftvisual.ui" line="450"/>
       <source>An SVG linestyle definition</source>
       <translation>SVG ხაზების სტილის აღწერა</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftvisual.ui" line="384"/>
+      <location filename="../ui/preferences-draftvisual.ui" line="387"/>
       <source>Dashdot line definition</source>
       <translation>შტრიხპუნქტირიანი ხაზის აღწერა</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftvisual.ui" line="427"/>
+      <location filename="../ui/preferences-draftvisual.ui" line="430"/>
       <source>Dotted line definition</source>
       <translation>წერტილებიანი ხაზისგანსაზთვრა</translation>
     </message>
@@ -1730,7 +1735,7 @@ such as "Arial:Bold"</source>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="431"/>
       <source>Text spacing</source>
-      <translation>ტექსტში დაშორებები</translation>
+      <translation>სიმბოლოებს შორის დაშორება</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="438"/>
@@ -1755,12 +1760,12 @@ such as "Arial:Bold"</source>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="521"/>
       <source>Feet separator</source>
-      <translation type="unfinished">Feet separator</translation>
+      <translation>ფუტების გამყოფი</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="541"/>
       <source>Optional string to appear between the feet and inches values in dimensions</source>
-      <translation type="unfinished">Optional string to appear between the feet and inches values in dimensions</translation>
+      <translation>არასავალდებული სტრიქონი, რომელიც ზომებში ფუტებსა და დუიმებს შრის გამოჩნდება</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="559"/>
@@ -1774,6 +1779,11 @@ such as "Arial:Bold"</source>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="580"/>
+      <source>Font files (*.ttf *.otf *.pfb)</source>
+      <translation type="unfinished">Font files (*.ttf *.otf *.pfb)</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-drafttexts.ui" line="583"/>
       <source>Select a font file</source>
       <translation>აირჩიეთ ფონტის ფაილი</translation>
     </message>
@@ -2805,21 +2815,21 @@ This might fail for post DXF R12 templates.</source>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="557"/>
-      <location filename="../../WorkingPlane.py" line="830"/>
+      <location filename="../../WorkingPlane.py" line="1369"/>
       <location filename="../../draftguitools/gui_selectplane.py" line="374"/>
       <source>Top</source>
       <translation>თავზე</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="559"/>
-      <location filename="../../WorkingPlane.py" line="841"/>
+      <location filename="../../WorkingPlane.py" line="1380"/>
       <location filename="../../draftguitools/gui_selectplane.py" line="386"/>
       <source>Front</source>
       <translation>წინა</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="561"/>
-      <location filename="../../WorkingPlane.py" line="852"/>
+      <location filename="../../WorkingPlane.py" line="1391"/>
       <location filename="../../draftguitools/gui_selectplane.py" line="398"/>
       <source>Side</source>
       <translation>გვერდი</translation>
@@ -3248,14 +3258,14 @@ or try saving to a lower DWG version.</source>
       <translation>შეცდომა DWG-ის კონვერტაციის დროს. სცადეთ გადაიტანოთ DWG ფაილი დირექტორიაში სახელით ჰარეეების და არაინგლისური სიმბოლოების გარეშე, ან სცადეთ შენახვა DWG-ის ფორმატის უფრო ძველ ვერსიაში.</translation>
     </message>
     <message>
-      <location filename="../../WorkingPlane.py" line="722"/>
+      <location filename="../../WorkingPlane.py" line="1261"/>
       <location filename="../../draftmake/make_sketch.py" line="126"/>
       <location filename="../../draftmake/make_sketch.py" line="138"/>
       <source>All Shapes must be coplanar</source>
       <translation>ყველა მოხაზულობა კომპლანარული უნდა იყოს</translation>
     </message>
     <message>
-      <location filename="../../WorkingPlane.py" line="730"/>
+      <location filename="../../WorkingPlane.py" line="1269"/>
       <source>Selected Shapes must define a plane</source>
       <translation>მონიშნული მოხაზულობები სიბრტყეს უნდა აღწერდნენ</translation>
     </message>
@@ -4680,22 +4690,27 @@ The final angle will be the base angle plus this amount.</source>
       <translation>სიმეტრიის პარამეტრი:</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/shapestring.py" line="114"/>
-      <source>added 'Justification', 'JustificationReference', 'KeepLeftMargin', 'ScaleToSize' and 'Fuse' properties</source>
-      <translation>დაემატა თვისებები 'Justification', 'JustificationReference', 'KeepLeftMargin', 'ScaleToSize' and 'Fuse'</translation>
+      <location filename="../../draftobjects/shapestring.py" line="119"/>
+      <source>added 'Fuse', 'Justification', 'JustificationReference', 'KeepLeftMargin', 'ObliqueAngle' and 'ScaleToSize'  properties</source>
+      <translation type="unfinished">added 'Fuse', 'Justification', 'JustificationReference', 'KeepLeftMargin', 'ObliqueAngle' and 'ScaleToSize'  properties</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/shapestring.py" line="116"/>
+      <location filename="../../draftobjects/shapestring.py" line="121"/>
       <source>changed 'Tracking' property type</source>
       <translation>თვისების ტიპი 'ტრეკინგი' შეიცვალა</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/shapestring.py" line="168"/>
+      <location filename="../../draftobjects/shapestring.py" line="173"/>
+      <source>ShapeString: oblique angle must be in the -80 to +80 degree range</source>
+      <translation type="unfinished">ShapeString: oblique angle must be in the -80 to +80 degree range</translation>
+    </message>
+    <message>
+      <location filename="../../draftobjects/shapestring.py" line="185"/>
       <source>ShapeString: string has no wires</source>
       <translation>ShapeString: სტრიქონს პოლიხაზები არ გააჩნია</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/shapestring.py" line="205"/>
+      <location filename="../../draftobjects/shapestring.py" line="219"/>
       <source>ShapeString: face creation failed for one character</source>
       <translation>ShapeString: ზედაპირის შექმნის შეცდომა ერთი სიმბოლოსთვის</translation>
     </message>
@@ -7024,52 +7039,57 @@ It is a list of strings; each element in the list will be displayed in its own l
 ეს არის სტრიქონების სია; ამ სიის თითოეული ელემენტი გამოჩნდება ახალ სტრიქონში.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/shapestring.py" line="55"/>
+      <location filename="../../draftobjects/shapestring.py" line="56"/>
       <source>Text string</source>
       <translation>ტექსტური სტრიქონი</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/shapestring.py" line="59"/>
+      <location filename="../../draftobjects/shapestring.py" line="60"/>
       <source>Font file name</source>
       <translation>ფონტის ფაილის სახელი</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/shapestring.py" line="63"/>
+      <location filename="../../draftobjects/shapestring.py" line="64"/>
       <source>Height of text</source>
       <translation>ტექსტის სიმაღლე</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/shapestring.py" line="67"/>
+      <location filename="../../draftobjects/shapestring.py" line="68"/>
       <source>Horizontal and vertical alignment</source>
       <translation>ჰორიზონტალური და ვერტიკალური სწორება</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/shapestring.py" line="75"/>
+      <location filename="../../draftobjects/shapestring.py" line="76"/>
       <source>Height reference used for justification</source>
       <translation>გასწორებისთვის გამოყენებული სიმაღლის მიმართვა</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/shapestring.py" line="81"/>
+      <location filename="../../draftobjects/shapestring.py" line="82"/>
       <source>Keep left margin and leading white space when justification is left</source>
       <translation>მარცხენა საზღვრისა და დასაწყისში არსებული გამოტოვებების შენარჩუნება, როცა სწორება მარცხნივ ხდება</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/shapestring.py" line="85"/>
+      <location filename="../../draftobjects/shapestring.py" line="86"/>
       <source>Scale to ensure cap height is equal to size</source>
       <translation>მასშტაბი დაფარვის სიმაღლის ზომასთან ტოლობაში დასარწმუნებლად</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/shapestring.py" line="89"/>
+      <location filename="../../draftobjects/shapestring.py" line="90"/>
       <source>Inter-character spacing</source>
       <translation>სიმბოლოებს შორის დაცილება</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/shapestring.py" line="93"/>
+      <location filename="../../draftobjects/shapestring.py" line="94"/>
+      <source>Oblique (slant) angle</source>
+      <translation type="unfinished">Oblique (slant) angle</translation>
+    </message>
+    <message>
+      <location filename="../../draftobjects/shapestring.py" line="98"/>
       <source>Fill letters with faces</source>
       <translation>სიმბოლოების ზედაპირებით შევსება</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/shapestring.py" line="97"/>
+      <location filename="../../draftobjects/shapestring.py" line="102"/>
       <source>Fuse faces if faces overlap, usually not required (can be very slow)</source>
       <translation>ზედაპირების შერწყმა, თუ ისინი იკვეთებიან. ჩვეულებრივ, საჭირო არაა (შეიძლება ძალიან ნელი იყოს)</translation>
     </message>

@@ -104,12 +104,12 @@ Wilt u dat de Addon Manager deze automatisch installeert? Kies &quot;Negeren&quo
     <message>
       <location filename="../../dependency_resolution_dialog.ui" line="55"/>
       <source>Required Python modules</source>
-      <translation type="unfinished">Required Python modules</translation>
+      <translation>Vereiste Python modules</translation>
     </message>
     <message>
       <location filename="../../dependency_resolution_dialog.ui" line="67"/>
       <source>Optional Python modules</source>
-      <translation type="unfinished">Optional Python modules</translation>
+      <translation>Optionele Python modules</translation>
     </message>
   </context>
   <context>
@@ -117,12 +117,12 @@ Wilt u dat de Addon Manager deze automatisch installeert? Kies &quot;Negeren&quo
     <message>
       <location filename="../../developer_mode.ui" line="14"/>
       <source>Addon Developer Tools</source>
-      <translation type="unfinished">Addon Developer Tools</translation>
+      <translation>Uitbreiding ontwikkelaar gereedschappen</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="25"/>
       <source>Path to Addon</source>
-      <translation type="unfinished">Path to Addon</translation>
+      <translation>Pad naar de uitbreiding</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="45"/>
@@ -144,7 +144,7 @@ Wilt u dat de Addon Manager deze automatisch installeert? Kies &quot;Negeren&quo
       <location filename="../../developer_mode.ui" line="77"/>
       <location filename="../../developer_mode.ui" line="160"/>
       <source>Explanation of what this Addon provides. Displayed in the Addon Manager. It is not necessary for this to state that this is a FreeCAD Addon.</source>
-      <translation type="unfinished">Explanation of what this Addon provides. Displayed in the Addon Manager. It is not necessary for this to state that this is a FreeCAD Addon.</translation>
+      <translation>Uitleg waar deze uitbreiding over gaat. Wordt weergegeven in de Addon Manager. Het is niet nodig om te vermelden dat dit een FreeCAD Addon is.</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="80"/>
@@ -169,7 +169,7 @@ Wilt u dat de Addon Manager deze automatisch installeert? Kies &quot;Negeren&quo
     <message>
       <location filename="../../developer_mode.ui" line="113"/>
       <source>Semantic (1.2.3-beta) or CalVer (2022.08.30) styles supported</source>
-      <translation type="unfinished">Semantic (1.2.3-beta) or CalVer (2022.08.30) styles supported</translation>
+      <translation>Semantic (1.2.3-beta) of CalVer (2022.08.30) stijlen worden ondersteund</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="120"/>
@@ -188,7 +188,7 @@ Wilt u dat de Addon Manager deze automatisch installeert? Kies &quot;Negeren&quo
       <location filename="../../developer_mode.ui" line="139"/>
       <location filename="../../developer_mode.ui" line="225"/>
       <source>Displayed in the Addon Manager&apos;s list of Addons. Should not include the word &quot;FreeCAD&quot;, and must be a valid directory name on all support operating systems.</source>
-      <translation type="unfinished">Displayed in the Addon Manager&apos;s list of Addons. Should not include the word &quot;FreeCAD&quot;, and must be a valid directory name on all support operating systems.</translation>
+      <translation>Wordt weergegeven in de Addon Manager&apos;s lijst met Addons. Zou het woord &quot;FreeCAD&quot; niet moeten bevatten, en moet een geldige mapnaam zijn op alle ondersteunende besturingssystemen.</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="153"/>
@@ -198,7 +198,7 @@ Wilt u dat de Addon Manager deze automatisch installeert? Kies &quot;Negeren&quo
     <message>
       <location filename="../../developer_mode.ui" line="166"/>
       <source>TIP: Since this is displayed within FreeCAD, in the Addon Manager, it is not necessary to take up space saying things like &quot;This is a FreeCAD Addon...&quot; -- just say what it does.</source>
-      <translation type="unfinished">TIP: Since this is displayed within FreeCAD, in the Addon Manager, it is not necessary to take up space saying things like &quot;This is a FreeCAD Addon...&quot; -- just say what it does.</translation>
+      <translation>TIP: Omdat dit wordt weergegeven in het programma FreeCAD, in de Addon Manager, is het niet nodig om ruimte te gebruiken om dingen te zeggen zoals &quot;dit is een FreeCAD Addon ...&quot; -- zeg gewoon wat het doet.</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="173"/>
@@ -218,7 +218,7 @@ Wilt u dat de Addon Manager deze automatisch installeert? Kies &quot;Negeren&quo
     <message>
       <location filename="../../developer_mode.ui" line="228"/>
       <source>Addon Name</source>
-      <translation type="unfinished">Addon Name</translation>
+      <translation>Naam van de uitbreiding</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="235"/>
@@ -248,7 +248,7 @@ Wilt u dat de Addon Manager deze automatisch installeert? Kies &quot;Negeren&quo
     <message>
       <location filename="../../developer_mode.ui" line="277"/>
       <source>Addon Contents</source>
-      <translation type="unfinished">Addon Contents</translation>
+      <translation>Inhoud van de uitbreiding</translation>
     </message>
   </context>
   <context>
@@ -912,7 +912,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../developer_mode_add_content.ui" line="297"/>
       <source>Semantic (1.2.3-beta) or CalVer (2022.08.30) styles supported</source>
-      <translation type="unfinished">Semantic (1.2.3-beta) or CalVer (2022.08.30) styles supported</translation>
+      <translation>Semantic (1.2.3-beta) of CalVer (2022.08.30) stijlen worden ondersteund</translation>
     </message>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="304"/>

@@ -737,6 +737,11 @@ Eine Verknüpfungsanordnung ist effizienter, wenn mehrere Kopien erstellt werden
       <source>Font file</source>
       <translation>Schriftartendatei</translation>
     </message>
+    <message>
+      <location filename="../ui/TaskShapeString.ui" line="183"/>
+      <source>Font files (*.ttf *.otf *.pfb)</source>
+      <translation type="unfinished">Font files (*.ttf *.otf *.pfb)</translation>
+    </message>
   </context>
   <context>
     <name>Form</name>
@@ -1487,74 +1492,74 @@ Beachten Sie, dass dies nicht vollständig unterstützt wird und viele Objekte m
       <translation>Ablageort alternativer SVG-Muster</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftvisual.ui" line="186"/>
+      <location filename="../ui/preferences-draftvisual.ui" line="189"/>
       <source>Here you can specify a directory with custom SVG files containing &lt;pattern&gt; definitions to be added to the standard patterns</source>
       <translation>Hier kann ein Verzeichnis mit benutzerdefinierten SVG-Dateien angeben werden, das &lt;pattern&gt;-Definitionen enthält, die zu den Standardmustern hinzugefügt werden sollen</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftvisual.ui" line="203"/>
+      <location filename="../ui/preferences-draftvisual.ui" line="206"/>
       <source>SVG pattern resolution</source>
       <translation>Auflösung des SVG-Musters</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftvisual.ui" line="223"/>
+      <location filename="../ui/preferences-draftvisual.ui" line="226"/>
       <source>The resolution to draw the patterns in. Default value is 128. Higher values give better resolutions, lower values make drawing faster</source>
       <translation>Die Auflösung, um die Muster zu zeichnen. Standardwert ist 128. Höhere Werte geben bessere Auflösungen, niedrigere Werte machen das Zeichnen schneller</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftvisual.ui" line="246"/>
+      <location filename="../ui/preferences-draftvisual.ui" line="249"/>
       <source>SVG pattern default size</source>
       <translation>Standardgröße des SVG-Musters</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftvisual.ui" line="266"/>
+      <location filename="../ui/preferences-draftvisual.ui" line="269"/>
       <source>The default size for SVG patterns</source>
       <translation>Die Standardgröße für SVG-Muster</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftvisual.ui" line="292"/>
+      <location filename="../ui/preferences-draftvisual.ui" line="295"/>
       <source>Check this if you want to preserve colors of faces while doing downgrade and upgrade (splitFaces and makeShell only)</source>
       <translation>Aktivieren Sie diese Option, wenn Sie die Farben von Flächen während des Downgrades und Upgrades beibehalten möchten (nur splitFaces und makeShell)</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftvisual.ui" line="295"/>
+      <location filename="../ui/preferences-draftvisual.ui" line="298"/>
       <source>Preserve colors of faces during downgrade/upgrade</source>
       <translation>Flächenfarben beim Downgrade/Upgrade erhalten</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftvisual.ui" line="312"/>
+      <location filename="../ui/preferences-draftvisual.ui" line="315"/>
       <source>Check this if you want the face names to derive from the originating object name and vice versa while doing downgrade/upgrade (splitFaces and makeShell only)</source>
       <translation>Aktivieren Sie diese Option, wenn Sie während eines Downgrade/Upgrade möchten, dass die Flächenbezeichnungen vom ursprünglichen Objektnamen und umgekehrt abgeleitet werden (nur splitFaces und makeShell)</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftvisual.ui" line="315"/>
+      <location filename="../ui/preferences-draftvisual.ui" line="318"/>
       <source>Preserve names of faces during downgrade/upgrade</source>
       <translation>Flächenfarben beim Downgrade/Upgrade erhalten</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftvisual.ui" line="333"/>
+      <location filename="../ui/preferences-draftvisual.ui" line="336"/>
       <source>Drawing view line definitions</source>
       <translation>Definition sichtbarer Linien der Zeichnung</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftvisual.ui" line="341"/>
+      <location filename="../ui/preferences-draftvisual.ui" line="344"/>
       <source>Dashed line definition</source>
       <translation>Gestrichelte Linien-Definition</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftvisual.ui" line="361"/>
-      <location filename="../ui/preferences-draftvisual.ui" line="404"/>
-      <location filename="../ui/preferences-draftvisual.ui" line="447"/>
+      <location filename="../ui/preferences-draftvisual.ui" line="364"/>
+      <location filename="../ui/preferences-draftvisual.ui" line="407"/>
+      <location filename="../ui/preferences-draftvisual.ui" line="450"/>
       <source>An SVG linestyle definition</source>
       <translation>Eine SVG-Linienart-Definition</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftvisual.ui" line="384"/>
+      <location filename="../ui/preferences-draftvisual.ui" line="387"/>
       <source>Dashdot line definition</source>
       <translation>Strich-Punkt-Linien-Definition</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftvisual.ui" line="427"/>
+      <location filename="../ui/preferences-draftvisual.ui" line="430"/>
       <source>Dotted line definition</source>
       <translation>Gepunktete-Linien-Definition</translation>
     </message>
@@ -1751,12 +1756,12 @@ such as "Arial:Bold"</source>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="521"/>
       <source>Feet separator</source>
-      <translation type="unfinished">Feet separator</translation>
+      <translation>Fuß-Trennzeichen</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="541"/>
       <source>Optional string to appear between the feet and inches values in dimensions</source>
-      <translation type="unfinished">Optional string to appear between the feet and inches values in dimensions</translation>
+      <translation>Eine optionale Zeichenkette, die zwischen die Fuß- und Zoll-Werte in Maßeinträgen eingefügt wird</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="559"/>
@@ -1770,6 +1775,11 @@ such as "Arial:Bold"</source>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="580"/>
+      <source>Font files (*.ttf *.otf *.pfb)</source>
+      <translation type="unfinished">Font files (*.ttf *.otf *.pfb)</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-drafttexts.ui" line="583"/>
       <source>Select a font file</source>
       <translation>Wählen Sie eine Schriftartdatei aus</translation>
     </message>
@@ -2802,21 +2812,21 @@ Dies kann bei neueren als DXF R12 Vorlagen fehlschlagen.</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="557"/>
-      <location filename="../../WorkingPlane.py" line="830"/>
+      <location filename="../../WorkingPlane.py" line="1369"/>
       <location filename="../../draftguitools/gui_selectplane.py" line="374"/>
       <source>Top</source>
       <translation>Oben</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="559"/>
-      <location filename="../../WorkingPlane.py" line="841"/>
+      <location filename="../../WorkingPlane.py" line="1380"/>
       <location filename="../../draftguitools/gui_selectplane.py" line="386"/>
       <source>Front</source>
       <translation>Vorne</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="561"/>
-      <location filename="../../WorkingPlane.py" line="852"/>
+      <location filename="../../WorkingPlane.py" line="1391"/>
       <location filename="../../draftguitools/gui_selectplane.py" line="398"/>
       <source>Side</source>
       <translation>Seite</translation>
@@ -2940,7 +2950,7 @@ Deaktivieren um das Koordinatensystem der aktuellen Arbeitsebene zu verwenden</t
     <message>
       <location filename="../../DraftGui.py" line="638"/>
       <source>Filled</source>
-      <translation>Befüllt</translation>
+      <translation>Füllen</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="642"/>
@@ -3119,7 +3129,7 @@ Nicht verfügbar, wenn die Option "Primitive Teile verwenden" aktiviert ist</tra
       <location filename="../../draftguitools/gui_offset.py" line="326"/>
       <location filename="../../draftguitools/gui_selectplane.py" line="527"/>
       <source>Offset</source>
-      <translation>Versetzen</translation>
+      <translation>Versatz</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="870"/>
@@ -3246,14 +3256,14 @@ or try saving to a lower DWG version.</source>
 Versuchen Sie, die DWG-Datei in einen Verzeichnispfad ohne Leerzeichen und nicht-englische Zeichen zu verschieben oder versuchen Sie, in einer niedrigeren DWG-Version zu speichern.</translation>
     </message>
     <message>
-      <location filename="../../WorkingPlane.py" line="722"/>
+      <location filename="../../WorkingPlane.py" line="1261"/>
       <location filename="../../draftmake/make_sketch.py" line="126"/>
       <location filename="../../draftmake/make_sketch.py" line="138"/>
       <source>All Shapes must be coplanar</source>
       <translation>Alle Formen müssen komplanar sein</translation>
     </message>
     <message>
-      <location filename="../../WorkingPlane.py" line="730"/>
+      <location filename="../../WorkingPlane.py" line="1269"/>
       <source>Selected Shapes must define a plane</source>
       <translation>Ausgewählte Formen müssen eine Ebene definieren</translation>
     </message>
@@ -4470,7 +4480,7 @@ Der endgültige Winkel ist der Basiswinkel plus dieser Betrag.</translation>
       <location filename="../../drafttaskpanels/task_polararray.py" line="258"/>
       <location filename="../../drafttaskpanels/task_polararray.py" line="434"/>
       <source>Polar array</source>
-      <translation>Polare Anordnung</translation>
+      <translation>Polare Reihe</translation>
     </message>
     <message>
       <location filename="../../drafttaskpanels/task_circulararray.py" line="208"/>
@@ -4630,7 +4640,7 @@ Der endgültige Winkel ist der Basiswinkel plus dieser Betrag.</translation>
       <location filename="../../drafttaskpanels/task_circulararray.py" line="290"/>
       <location filename="../../drafttaskpanels/task_circulararray.py" line="481"/>
       <source>Circular array</source>
-      <translation>Kreisförmige Reihe</translation>
+      <translation>Kreisförmige Anordnung</translation>
     </message>
     <message>
       <location filename="../../drafttaskpanels/task_circulararray.py" line="212"/>
@@ -4678,22 +4688,27 @@ Der endgültige Winkel ist der Basiswinkel plus dieser Betrag.</translation>
       <translation>Symmetrie-Parameter:</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/shapestring.py" line="114"/>
-      <source>added 'Justification', 'JustificationReference', 'KeepLeftMargin', 'ScaleToSize' and 'Fuse' properties</source>
-      <translation type="unfinished">added 'Justification', 'JustificationReference', 'KeepLeftMargin', 'ScaleToSize' and 'Fuse' properties</translation>
+      <location filename="../../draftobjects/shapestring.py" line="119"/>
+      <source>added 'Fuse', 'Justification', 'JustificationReference', 'KeepLeftMargin', 'ObliqueAngle' and 'ScaleToSize'  properties</source>
+      <translation type="unfinished">added 'Fuse', 'Justification', 'JustificationReference', 'KeepLeftMargin', 'ObliqueAngle' and 'ScaleToSize'  properties</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/shapestring.py" line="116"/>
+      <location filename="../../draftobjects/shapestring.py" line="121"/>
       <source>changed 'Tracking' property type</source>
       <translation type="unfinished">changed 'Tracking' property type</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/shapestring.py" line="168"/>
+      <location filename="../../draftobjects/shapestring.py" line="173"/>
+      <source>ShapeString: oblique angle must be in the -80 to +80 degree range</source>
+      <translation type="unfinished">ShapeString: oblique angle must be in the -80 to +80 degree range</translation>
+    </message>
+    <message>
+      <location filename="../../draftobjects/shapestring.py" line="185"/>
       <source>ShapeString: string has no wires</source>
       <translation>ShapeString: Die Zeichenfolge hat keine Linien</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/shapestring.py" line="205"/>
+      <location filename="../../draftobjects/shapestring.py" line="219"/>
       <source>ShapeString: face creation failed for one character</source>
       <translation>ShapeString: Flächenerstellung für ein Zeichen fehlgeschlagen</translation>
     </message>
@@ -6240,7 +6255,7 @@ Mit E oder Alt+Linksklick wird das Kontextmenü an unterstützten Knoten und Obj
     <message>
       <location filename="../../draftguitools/gui_circulararray.py" line="65"/>
       <source>Circular array</source>
-      <translation>Kreisförmige Anordnung</translation>
+      <translation>Kreisförmige Reihe</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_circulararray.py" line="68"/>
@@ -6866,7 +6881,7 @@ Der resultierende Klon kann in jeder seiner drei Richtungen skaliert werden.</tr
     <message>
       <location filename="../../draftguitools/gui_polararray.py" line="65"/>
       <source>Polar array</source>
-      <translation>Polare Reihe</translation>
+      <translation>Polare Anordnung</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_polararray.py" line="68"/>
@@ -6924,7 +6939,7 @@ Beispielsweise können ausgewählte Objekte in eines zusammengefügt werden, ein
     <message>
       <location filename="../../draftguitools/gui_offset.py" line="66"/>
       <source>Offset</source>
-      <translation>Versatz</translation>
+      <translation>Versetzen</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_offset.py" line="69"/>
@@ -7018,52 +7033,57 @@ It is a list of strings; each element in the list will be displayed in its own l
 Es ist eine Liste von Zeichenketten; jedes Element in der Liste wird in einer eigenen Zeile angezeigt.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/shapestring.py" line="55"/>
+      <location filename="../../draftobjects/shapestring.py" line="56"/>
       <source>Text string</source>
       <translation>Textzeichenkette</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/shapestring.py" line="59"/>
+      <location filename="../../draftobjects/shapestring.py" line="60"/>
       <source>Font file name</source>
       <translation>Dateiname Schriftart</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/shapestring.py" line="63"/>
+      <location filename="../../draftobjects/shapestring.py" line="64"/>
       <source>Height of text</source>
       <translation>Höhe des Textes</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/shapestring.py" line="67"/>
+      <location filename="../../draftobjects/shapestring.py" line="68"/>
       <source>Horizontal and vertical alignment</source>
-      <translation type="unfinished">Horizontal and vertical alignment</translation>
+      <translation>Horizontale und vertikale Ausrichtung</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/shapestring.py" line="75"/>
+      <location filename="../../draftobjects/shapestring.py" line="76"/>
       <source>Height reference used for justification</source>
       <translation type="unfinished">Height reference used for justification</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/shapestring.py" line="81"/>
+      <location filename="../../draftobjects/shapestring.py" line="82"/>
       <source>Keep left margin and leading white space when justification is left</source>
       <translation type="unfinished">Keep left margin and leading white space when justification is left</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/shapestring.py" line="85"/>
+      <location filename="../../draftobjects/shapestring.py" line="86"/>
       <source>Scale to ensure cap height is equal to size</source>
       <translation type="unfinished">Scale to ensure cap height is equal to size</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/shapestring.py" line="89"/>
+      <location filename="../../draftobjects/shapestring.py" line="90"/>
       <source>Inter-character spacing</source>
       <translation>Zwischenzeichenabstand</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/shapestring.py" line="93"/>
+      <location filename="../../draftobjects/shapestring.py" line="94"/>
+      <source>Oblique (slant) angle</source>
+      <translation type="unfinished">Oblique (slant) angle</translation>
+    </message>
+    <message>
+      <location filename="../../draftobjects/shapestring.py" line="98"/>
       <source>Fill letters with faces</source>
       <translation>Buchstaben mit Flächen ausfüllen</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/shapestring.py" line="97"/>
+      <location filename="../../draftobjects/shapestring.py" line="102"/>
       <source>Fuse faces if faces overlap, usually not required (can be very slow)</source>
       <translation type="unfinished">Fuse faces if faces overlap, usually not required (can be very slow)</translation>
     </message>

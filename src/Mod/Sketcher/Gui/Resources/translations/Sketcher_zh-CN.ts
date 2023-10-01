@@ -76,7 +76,7 @@
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1696"/>
       <source>Copy the geometry of another sketch</source>
-      <translation type="unfinished">Copy the geometry of another sketch</translation>
+      <translation>复制另一个草图的几何元素</translation>
     </message>
   </context>
   <context>
@@ -408,7 +408,7 @@
     <message>
       <location filename="../../CommandConstraints.cpp" line="3373"/>
       <source>Block the selected edge from moving</source>
-      <translation type="unfinished">Block the selected edge from moving</translation>
+      <translation>阻止选中的边移动</translation>
     </message>
   </context>
   <context>
@@ -513,8 +513,7 @@
       <location filename="../../CommandConstraints.cpp" line="3090"/>
       <source>Create both a horizontal and a vertical distance constraint
 on the selected vertex</source>
-      <translation type="unfinished">Create both a horizontal and a vertical distance constraint
-on the selected vertex</translation>
+      <translation>在选中的顶点上同时创建水平和垂直距离约束</translation>
     </message>
   </context>
   <context>
@@ -574,14 +573,13 @@ on the selected vertex</translation>
     <message>
       <location filename="../../CommandConstraints.cpp" line="9752"/>
       <source>Constrain refraction (Snell's law)</source>
-      <translation type="unfinished">Constrain refraction (Snell's law)</translation>
+      <translation>折射约束 (斯涅尔定律)</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="9753"/>
       <source>Create a refraction law (Snell's law)constraint between two endpoints of rays
 and an edge as an interface.</source>
-      <translation type="unfinished">Create a refraction law (Snell's law)constraint between two endpoints of rays
-and an edge as an interface.</translation>
+      <translation>通过指定两光线端点和一条边作为折射界面创建折射约束（斯涅尔定律）</translation>
     </message>
   </context>
   <context>
@@ -694,7 +692,7 @@ with respect to a line or a third point</source>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="666"/>
       <source>Create arc of ellipse</source>
-      <translation type="unfinished">Create arc of ellipse</translation>
+      <translation>创建椭圆弧线</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="667"/>
@@ -707,7 +705,7 @@ with respect to a line or a third point</source>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="695"/>
       <source>Create arc of hyperbola</source>
-      <translation type="unfinished">Create arc of hyperbola</translation>
+      <translation>创建双曲线弧线</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="696"/>
@@ -720,7 +718,7 @@ with respect to a line or a third point</source>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="723"/>
       <source>Create arc of parabola</source>
-      <translation type="unfinished">Create arc of parabola</translation>
+      <translation>创建抛物线弧线</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="724"/>
@@ -738,7 +736,7 @@ with respect to a line or a third point</source>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="937"/>
       <source>Create a B-spline by control points in the sketch.</source>
-      <translation type="unfinished">Create a B-spline by control points in the sketch.</translation>
+      <translation>通过草图中的控制点创建B样条曲线。</translation>
     </message>
   </context>
   <context>
@@ -881,7 +879,7 @@ with respect to a line or a third point</source>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="970"/>
       <source>Create a periodic B-spline by control points in the sketch.</source>
-      <translation type="unfinished">Create a periodic B-spline by control points in the sketch.</translation>
+      <translation>通过草图中的控制点创建封闭的B样条曲线。</translation>
     </message>
   </context>
   <context>
@@ -1136,12 +1134,12 @@ with respect to a line or a third point</source>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="958"/>
       <source>Join curves</source>
-      <translation type="unfinished">Join curves</translation>
+      <translation>连接曲线</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="959"/>
       <source>Join two curves at selected end points</source>
-      <translation type="unfinished">Join two curves at selected end points</translation>
+      <translation>在选定的端点处连接两条曲线</translation>
     </message>
   </context>
   <context>
@@ -1664,12 +1662,12 @@ invalid constraints, degenerated geometry, etc.</source>
       <location filename="../../CommandConstraints.cpp" line="4238"/>
       <location filename="../../CommandConstraints.cpp" line="4555"/>
       <source>Add circle to circle distance constraint</source>
-      <translation type="unfinished">Add circle to circle distance constraint</translation>
+      <translation>添加圆到圆距离约束</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="4283"/>
       <source>Add circle to line distance constraint</source>
-      <translation type="unfinished">Add circle to line distance constraint</translation>
+      <translation>添加圆到线距离约束</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="1674"/>
@@ -1691,71 +1689,71 @@ invalid constraints, degenerated geometry, etc.</source>
     <message>
       <location filename="../../CommandConstraints.cpp" line="1554"/>
       <source>Add lock constraint</source>
-      <translation type="unfinished">Add lock constraint</translation>
+      <translation>添加锁定约束</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="1549"/>
       <source>Add 'Distance to origin' constraint</source>
-      <translation type="unfinished">Add 'Distance to origin' constraint</translation>
+      <translation>添加“到原点的距离”约束</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="1566"/>
       <location filename="../../CommandConstraints.cpp" line="2197"/>
       <location filename="../../CommandConstraints.cpp" line="2410"/>
       <source>Add Distance constraint</source>
-      <translation type="unfinished">Add Distance constraint</translation>
+      <translation>添加距离约束</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="1571"/>
       <location filename="../../CommandConstraints.cpp" line="1600"/>
       <location filename="../../CommandConstraints.cpp" line="1623"/>
       <source>Add 'Horizontal' constraints</source>
-      <translation type="unfinished">Add 'Horizontal' constraints</translation>
+      <translation>添加“水平”约束</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="1575"/>
       <location filename="../../CommandConstraints.cpp" line="1607"/>
       <location filename="../../CommandConstraints.cpp" line="1630"/>
       <source>Add 'Vertical' constraints</source>
-      <translation type="unfinished">Add 'Vertical' constraints</translation>
+      <translation>添加“垂直”约束</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="1590"/>
       <location filename="../../CommandConstraints.cpp" line="1642"/>
       <source>Add Symmetry constraint</source>
-      <translation type="unfinished">Add Symmetry constraint</translation>
+      <translation>添加对称约束</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="1613"/>
       <location filename="../../CommandConstraints.cpp" line="1778"/>
       <source>Add Symmetry constraints</source>
-      <translation type="unfinished">Add Symmetry constraints</translation>
+      <translation>添加对称约束</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="1647"/>
       <location filename="../../CommandConstraints.cpp" line="1659"/>
       <source>Add Distance constraints</source>
-      <translation type="unfinished">Add Distance constraints</translation>
+      <translation>添加距离约束</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="1707"/>
       <source>Add Horizontal constraint</source>
-      <translation type="unfinished">Add Horizontal constraint</translation>
+      <translation>添加水平约束</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="1712"/>
       <source>Add Vertical constraint</source>
-      <translation type="unfinished">Add Vertical constraint</translation>
+      <translation>添加垂直约束</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="1716"/>
       <source>Add Block constraint</source>
-      <translation type="unfinished">Add Block constraint</translation>
+      <translation>添加锁定约束</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="1731"/>
       <source>Add Angle constraint</source>
-      <translation type="unfinished">Add Angle constraint</translation>
+      <translation>添加角度约束</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="1741"/>
@@ -1763,22 +1761,22 @@ invalid constraints, degenerated geometry, etc.</source>
       <location filename="../../CommandConstraints.cpp" line="1851"/>
       <location filename="../../CommandConstraints.cpp" line="1889"/>
       <source>Add Equality constraint</source>
-      <translation type="unfinished">Add Equality constraint</translation>
+      <translation>添加相等约束</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="1752"/>
       <source>Add Equality constraints</source>
-      <translation type="unfinished">Add Equality constraints</translation>
+      <translation>添加相等约束</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="1803"/>
       <source>Add Radius constraint</source>
-      <translation type="unfinished">Add Radius constraint</translation>
+      <translation>添加半径约束</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="1808"/>
       <source>Add arc angle constraint</source>
-      <translation type="unfinished">Add arc angle constraint</translation>
+      <translation>添加圆弧角度约束</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="1831"/>
@@ -1788,17 +1786,17 @@ invalid constraints, degenerated geometry, etc.</source>
     <message>
       <location filename="../../CommandConstraints.cpp" line="2388"/>
       <source>Add DistanceX constraint</source>
-      <translation type="unfinished">Add DistanceX constraint</translation>
+      <translation>添加x距离约束</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="2399"/>
       <source>Add DistanceY constraint</source>
-      <translation type="unfinished">Add DistanceY constraint</translation>
+      <translation>添加y距离约束</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="4183"/>
       <source>Add point to circle Distance constraint</source>
-      <translation type="unfinished">Add point to circle Distance constraint</translation>
+      <translation>添加点到圆距离约束</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="4727"/>
@@ -2099,7 +2097,7 @@ invalid constraints, degenerated geometry, etc.</source>
     <message>
       <location filename="../../DrawSketchHandlerPolygon.h" line="121"/>
       <source>Add hexagon</source>
-      <translation type="unfinished">Add hexagon</translation>
+      <translation>添加六边形</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="141"/>
@@ -2134,7 +2132,7 @@ invalid constraints, degenerated geometry, etc.</source>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="1055"/>
       <source>Join Curves</source>
-      <translation type="unfinished">Join Curves</translation>
+      <translation>连接曲线</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="823"/>
@@ -2149,12 +2147,12 @@ invalid constraints, degenerated geometry, etc.</source>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="1200"/>
       <source>Copy/clone/move geometry</source>
-      <translation type="unfinished">Copy/clone/move geometry</translation>
+      <translation>复制/克隆/移动几何体</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="1781"/>
       <source>Create copy of geometry</source>
-      <translation type="unfinished">Create copy of geometry</translation>
+      <translation>创建几何形状副本</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="2035"/>
@@ -2202,27 +2200,27 @@ invalid constraints, degenerated geometry, etc.</source>
     <message>
       <location filename="../../ViewProviderSketch.cpp" line="976"/>
       <source>Drag Point</source>
-      <translation type="unfinished">Drag Point</translation>
+      <translation>拖动点</translation>
     </message>
     <message>
       <location filename="../../ViewProviderSketch.cpp" line="1014"/>
       <source>Drag Curve</source>
-      <translation type="unfinished">Drag Curve</translation>
+      <translation>拖动曲线</translation>
     </message>
     <message>
       <location filename="../../ViewProviderSketch.cpp" line="1078"/>
       <source>Drag Constraint</source>
-      <translation type="unfinished">Drag Constraint</translation>
+      <translation>拖动约束</translation>
     </message>
     <message>
       <location filename="../../ViewProviderSketch.cpp" line="1275"/>
       <source>Modify sketch constraints</source>
-      <translation type="unfinished">Modify sketch constraints</translation>
+      <translation>修改草图约束</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerBSplineByInterpolation.h" line="111"/>
       <source>Add Knot Point</source>
-      <translation type="unfinished">Add Knot Point</translation>
+      <translation>添加节点</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerCarbonCopy.h" line="153"/>
@@ -2276,59 +2274,59 @@ invalid constraints, degenerated geometry, etc.</source>
       <translation>自动约束错误: 应用相等约束后草图无法求解。</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="2244"/>
+      <location filename="../../../App/SketchObject.cpp" line="2263"/>
       <source>Unable to guess intersection of curves. Try adding a coincident constraint between the vertices of the curves you are intending to fillet.</source>
       <translation>无法猜测曲线的交叉点。尝试在你打算做圆角的曲线顶点之间添加一个重合约束。</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6427"/>
-      <location filename="../../../App/SketchObject.cpp" line="6635"/>
+      <location filename="../../../App/SketchObject.cpp" line="6446"/>
+      <location filename="../../../App/SketchObject.cpp" line="6654"/>
       <source>BSpline Geometry Index (GeoID) is out of bounds.</source>
       <translation>贝赛尔样条几何图形索引(GeoID) 超出了界限。</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6432"/>
+      <location filename="../../../App/SketchObject.cpp" line="6451"/>
       <source>You are requesting no change in knot multiplicity.</source>
       <translation>你被要求不对多重性节点做任何修改。</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6438"/>
-      <location filename="../../../App/SketchObject.cpp" line="6645"/>
+      <location filename="../../../App/SketchObject.cpp" line="6457"/>
+      <location filename="../../../App/SketchObject.cpp" line="6664"/>
       <source>The Geometry Index (GeoId) provided is not a B-spline curve.</source>
       <translation>提供的几何图形索引 (GeoId) 不是贝赛尔样条曲线</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6447"/>
+      <location filename="../../../App/SketchObject.cpp" line="6466"/>
       <source>The knot index is out of bounds. Note that in accordance with OCC notation, the first knot has index 1 and not zero.</source>
       <translation>结指数超出界限。请注意, 按照 OCC 符号, 第一个节点的索引为1, 而不是0。</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6458"/>
+      <location filename="../../../App/SketchObject.cpp" line="6477"/>
       <source>The multiplicity cannot be increased beyond the degree of the B-spline.</source>
       <translation>无法重复增加到超过贝塞尔曲线的自由度。</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6466"/>
+      <location filename="../../../App/SketchObject.cpp" line="6485"/>
       <source>The multiplicity cannot be decreased beyond zero.</source>
       <translation>多重性不能小于0.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6480"/>
+      <location filename="../../../App/SketchObject.cpp" line="6499"/>
       <source>OCC is unable to decrease the multiplicity within the maximum tolerance.</source>
       <translation>OCC 无法在最大公差范围内减少多重性。</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6639"/>
+      <location filename="../../../App/SketchObject.cpp" line="6658"/>
       <source>Knot cannot have zero multiplicity.</source>
       <translation type="unfinished">Knot cannot have zero multiplicity.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6656"/>
+      <location filename="../../../App/SketchObject.cpp" line="6675"/>
       <source>Knot multiplicity cannot be higher than the degree of the BSpline.</source>
       <translation type="unfinished">Knot multiplicity cannot be higher than the degree of the BSpline.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6662"/>
+      <location filename="../../../App/SketchObject.cpp" line="6681"/>
       <source>Knot cannot be inserted outside the BSpline parameter range.</source>
       <translation>不能在B样条参数范围之外插入节点。</translation>
     </message>
@@ -2588,7 +2586,7 @@ invalid constraints, degenerated geometry, etc.</source>
     <message>
       <location filename="../../CommandConstraints.cpp" line="587"/>
       <source>Keep notifying me of constraint substitutions</source>
-      <translation type="unfinished">Keep notifying me of constraint substitutions</translation>
+      <translation>随时通知我是否有可替换的约束</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="666"/>
@@ -6288,7 +6286,7 @@ The grid spacing change if it becomes smaller than this number of pixel.</transl
       <translation type="unfinished">The Sketch has partially redundant constraints!</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="9089"/>
+      <location filename="../../../App/SketchObject.cpp" line="9108"/>
       <source>Parabolas were migrated. Migrated files won't open in previous versions of FreeCAD!!
 </source>
       <translation type="unfinished">Parabolas were migrated. Migrated files won't open in previous versions of FreeCAD!!
