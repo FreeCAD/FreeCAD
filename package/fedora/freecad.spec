@@ -105,6 +105,7 @@ BuildRequires:  libkdtree++-devel
 BuildRequires:  pcl-devel
 BuildRequires:  python3
 BuildRequires:  libglvnd-devel
+BuildRequires:  yaml-cpp-devel
 #BuildRequires:  zlib-devel
 
 # For appdata
