@@ -30,6 +30,8 @@ SET(ImportGui_SRCS
     AppImportGui.cpp
     AppImportGuiPy.cpp
     Command.cpp
+    ExportOCAFGui.cpp
+    ExportOCAFGui.h
     PreCompiled.cpp
     PreCompiled.h
     Workbench.cpp
