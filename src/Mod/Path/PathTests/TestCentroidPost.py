@@ -277,16 +277,15 @@ M99
 
         args = "--no-header --no-show-editor"
         gcode = postprocessor.export(postables, "gcode.tmp", args)
-        self.assertEqual(gcode.splitlines()[5], "M6 T2")
-        self.assertEqual(gcode.splitlines()[6], "M3 S3000")
+        self.assertEqual(gcode.splitlines()[5], "G43 H2")
+        self.assertEqual(gcode.splitlines()[6], "M6 T2")
+        self.assertEqual(gcode.splitlines()[7], "M3 S3000")
 
         # suppress TLO
         #
-        # The original centroid postprocessor does not have an
-        # --no-tlo option.  We end up with the original gcode.
-        #
         args = "--no-header --no-tlo --no-show-editor"
         gcode = postprocessor.export(postables, "gcode.tmp", args)
+        self.assertEqual(gcode.splitlines()[5], "G43 H2")
         self.assertEqual(gcode.splitlines()[6], "M3 S3000")
 
     def test090(self):
