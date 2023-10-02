@@ -51,7 +51,6 @@ Arguments for centroid:
     --feed-precision=1               ... number of digits of precision for feed rate.  Default=1
     --axis-precision=4               ... number of digits of precision for axis moves.  Default=4
     --inches                         ... Convert output for US imperial mode (G20)
-    --no-tlo                         ... Suppress tool length offset (G43) following tool changes
 """
 
 # These globals set common customization preferences
@@ -63,7 +62,6 @@ if FreeCAD.GuiUp:
 else:
     SHOW_EDITOR = False
 MODAL = False  # if true commands are suppressed if the same as previous line.
-USE_TLO = True  # if true G43 will be output following tool changes
 
 COMMAND_SPACE = " "
 LINENR = 100  # line number starting value
@@ -141,7 +139,6 @@ def processArguments(argstring):
     global UNIT_SPEED_FORMAT
     global UNIT_FORMAT
     global UNITS
-    global USE_TLO
 
     for arg in argstring.split():
         if arg == "--header":
@@ -168,8 +165,6 @@ def processArguments(argstring):
             UNITS = "G20"
             UNIT_SPEED_FORMAT = "in/min"
             UNIT_FORMAT = "in"
-        elif arg == "--no-tlo":
-            USE_TLO = False
 
 
 def export(objectslist, filename, argstring):
@@ -347,8 +342,6 @@ def parse(pathobj):
                 #     out += linenumber() + "(begin toolchange)\n"
                 for line in TOOL_CHANGE.splitlines(True):
                     out += linenumber() + line
-                if USE_TLO:
-                    out += linenumber() + "G43 H" + str(int(c.Parameters["T"])) + "\n"
 
             # if command == "message":
             #     if OUTPUT_COMMENTS is False:
