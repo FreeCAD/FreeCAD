@@ -20,15 +20,15 @@
 #***************************************************************************
 
 # add import/export types
-FreeCAD.addImportType("Industry Foundation Classes (*.ifc)","importIFC")
+FreeCAD.addImportType("Industry Foundation Classes (*.ifc *.IFC)","importIFC")
 FreeCAD.addExportType("Industry Foundation Classes (*.ifc)","exportIFC")
 FreeCAD.addExportType("Industry Foundation Classes - IFCJSON (*.ifcJSON)","exportIFC")
-FreeCAD.addImportType("Wavefront OBJ - Arch module (*.obj)","importOBJ")
+FreeCAD.addImportType("Wavefront OBJ - Arch module (*.obj *.OBJ)","importOBJ")
 FreeCAD.addExportType("Wavefront OBJ - Arch module (*.obj)","importOBJ")
 FreeCAD.addExportType("WebGL file (*.html)","importWebGL")
 FreeCAD.addExportType("JavaScript Object Notation (*.json)","importJSON")
-FreeCAD.addImportType("Collada (*.dae)","importDAE")
+FreeCAD.addImportType("Collada (*.dae *.DAE)","importDAE")
 FreeCAD.addExportType("Collada (*.dae)","importDAE")
-FreeCAD.addImportType("3D Studio mesh (*.3ds)","import3DS")
-FreeCAD.addImportType("SweetHome3D XML export (*.zip)","importSH3D")
-FreeCAD.addImportType("Shapefile (*.shp)","importSHP")
+FreeCAD.addImportType("3D Studio mesh (*.3ds *.3DS)","import3DS")
+FreeCAD.addImportType("SweetHome3D XML export (*.zip *.ZIP)","importSH3D")
+FreeCAD.addImportType("Shapefile (*.shp *.SHP)","importSHP")
