@@ -215,7 +215,7 @@ SbVec3f EditableDatumLabel::getTextCenterPoint() const
 {
     //Here we need the 3d point and not the 2d point as are the SoLabel points.
     // First we get the 2D point (on the sketch/image plane) of the middle of the text label.
-    SbVec3f point2D = label->textOffset;
+    SbVec3f point2D = label->getLabelTextCenter();
     // Get the translation and rotation values from the transform
     SbVec3f translation = transform->translation.getValue();
     SbRotation rotation = transform->rotation.getValue();
