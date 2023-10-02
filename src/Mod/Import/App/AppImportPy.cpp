@@ -278,11 +278,27 @@ private:
         try {
             Py::Sequence list(object);
             std::vector<App::DocumentObject*> objs;
+            std::map<Part::Feature*, std::vector<App::Color>> partColor;
             for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
                 PyObject* item = (*it).ptr();
                 if (PyObject_TypeCheck(item, &(App::DocumentObjectPy::Type))) {
                     auto pydoc = static_cast<App::DocumentObjectPy*>(item);
                     objs.push_back(pydoc->getDocumentObjectPtr());
+                }
+                else if (PyTuple_Check(item) && PyTuple_Size(item) == 2) {
+                    Py::Tuple tuple(*it);
+                    Py::Object item0 = tuple.getItem(0);
+                    Py::Object item1 = tuple.getItem(1);
+                    if (PyObject_TypeCheck(item0.ptr(), &(App::DocumentObjectPy::Type))) {
+                        auto pydoc = static_cast<App::DocumentObjectPy*>(item0.ptr());
+                        App::DocumentObject* obj = pydoc->getDocumentObjectPtr();
+                        objs.push_back(obj);
+                        if (Part::Feature* part = dynamic_cast<Part::Feature*>(obj)) {
+                            App::PropertyColorList colors;
+                            colors.setPyObject(item1.ptr());
+                            partColor[part] = colors.getValues();
+                        }
+                    }
                 }
             }
 
@@ -301,6 +317,7 @@ private:
             else {
                 bool keepExplicitPlacement = true;
                 ExportOCAFCmd ocaf(hDoc, keepExplicitPlacement);
+                ocaf.setPartColorsMap(partColor);
                 ocaf.exportObjects(objs);
             }
 
