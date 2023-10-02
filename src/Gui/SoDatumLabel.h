@@ -64,6 +64,9 @@ public:
     To draw on other planes, you need to attach a SoTransform to the SoDatumLabel (or parent).*/
     void setPoints(SbVec3f p1, SbVec3f p2);
 
+    /* returns the center point of the text of the label */
+    SbVec3f getLabelTextCenter();
+
     SoMFString string;
     SoSFColor  textColor;
     SoSFEnum   datumtype;
@@ -77,7 +80,6 @@ public:
     SoSFImage  image;
     SoSFFloat  lineWidth;
     bool       useAntialiasing;
-    SbVec3f textOffset;
 
 protected:
     ~SoDatumLabel() override = default;
@@ -92,6 +94,9 @@ private:
     void generateDiameterPrimitives(SoAction * action, const SbVec3f&, const SbVec3f&);
     void generateAnglePrimitives(SoAction * action, const SbVec3f&);
     void generateSymmetricPrimitives(SoAction * action, const SbVec3f&, const SbVec3f&);
+    SbVec3f getLabelTextCenterDistance(const SbVec3f&, const SbVec3f&);
+    SbVec3f getLabelTextCenterDiameter(const SbVec3f&, const SbVec3f&);
+    SbVec3f getLabelTextCenterAngle(const SbVec3f&);
 
 private:
     void drawImage();
