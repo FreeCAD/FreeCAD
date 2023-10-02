@@ -22,6 +22,8 @@ SET(Import_SRCS
     AppImportPy.cpp
     ExportOCAF.cpp
     ExportOCAF.h
+    ExportOCAF2.cpp
+    ExportOCAF2.h
     ImportOCAF.cpp
     ImportOCAF.h
     ImportOCAF2.cpp
@@ -40,6 +42,8 @@ SET(Import_SRCS
     StepShapePyImp.cpp
     PreCompiled.cpp
     PreCompiled.h
+    Tools.cpp
+    Tools.h
     WriterGltf.cpp
     WriterGltf.h
     WriterIges.cpp

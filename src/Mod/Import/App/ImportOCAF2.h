@@ -41,6 +41,7 @@
 
 #include "ExportOCAF.h"
 #include "ImportOCAF.h"
+#include "Tools.h"
 
 
 class TDF_Label;
@@ -58,22 +59,6 @@ class Feature;
 
 namespace Import
 {
-
-struct ShapeHasher
-{
-    std::size_t operator()(const TopoDS_Shape& s) const
-    {
-        return s.HashCode(INT_MAX);
-    }
-};
-
-struct LabelHasher
-{
-    std::size_t operator()(const TDF_Label& l) const
-    {
-        return TDF_LabelMapHasher::HashCode(l, INT_MAX);
-    }
-};
 
 struct ImportExport ImportOCAFOptions
 {
