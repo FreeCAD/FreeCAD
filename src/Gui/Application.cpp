@@ -344,7 +344,7 @@ namespace {
         std::stringstream str;
         str << "Image formats (";
         for (const auto& ext : supportedFormats) {
-            str << "*." << ext.constData() << " ";
+        str << "*." << ext.constData() << " *." << ext.toUpper().constData() << " ";
         }
         str << ")";
 

@@ -1306,8 +1306,6 @@ void Application::addImportType(const char* Type, const char* ModuleName)
         std::string::size_type len = next-pos-2;
         std::string type = item.filter.substr(pos+2,len);
         item.types.push_back(type);
-        std::transform(type.begin(), type.end(), type.begin(), ::toupper);
-        item.types.push_back(type);
         pos = item.filter.find("*.", next);
     }
 
