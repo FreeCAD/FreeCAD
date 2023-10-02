@@ -22,6 +22,32 @@ modeler made primarily to design real-life objects of any size.
 Parametric modeling allows you to easily modify your design by going back into 
 your model history to change its parameters. 
 
+* **Installation and set up**
+1. Clone the repository: 
+```bash
+git clone https://github.com/FreeCAD/FreeCAD.git
+cd FreeCAD
+
+```
+2. Set up virtual environment:
+```bash
+python -m venv freecad-env
+source freecad-env/bin/activate  # On Windows, use `freecad-env\Scripts\activate`
+
+```
+
+3. Follow operating system specific instructions to install the necessary dependencies
+for Windows, macOS, or Linux
+
+* **Geometric and dimensional relationships (parameters) in modeling** In the realm of 
+computer-aided design (CAD) and modeling, defining geometric and dimensional relationships, 
+often termed as "parameters", refers to the establishment of rules or constraints that
+ determine the shape, size, and relative positioning of elements within a design. 
+ These parameters are not just static values but can be variable inputs, allowing a 
+ model's geometry to change based on different inputs or conditions. This allows for iterative 
+ design, design consistency, scalability of parametric models, and automation/optimization
+ through algorithmic incorporation
+
 * **Create 3D from 2D and back** FreeCAD lets you to sketch geometry constrained
  2D shapes and use them as a base to build other objects. 
  It contains many components to adjust dimensions or extract design details from 
