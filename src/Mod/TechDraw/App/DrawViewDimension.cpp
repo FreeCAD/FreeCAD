@@ -474,12 +474,6 @@ bool DrawViewDimension::okToProceed()
         return false;
     }
 
-//    if (References3D.getValues().empty() && !checkReferences2D()) {
-//        Base::Console().Warning("DVD::okToProceed - %s has invalid 2D References\n",
-//                                getNameInDocument());
-//        return false;
-//    }
-
     return true;
 }
 
@@ -1451,11 +1445,16 @@ bool DrawViewDimension::fixExactMatch()
         // could not get refs, something is wrong!
         return false;
     }
+
+    if (SavedGeometry.getValues().empty()) {
+        // there is no saved geometry, so we can't repair anything.
+        return false;
+    }
     std::vector< std::pair<int, std::string> > refsToFix2d;
     std::vector< std::pair<int, std::string> > refsToFix3d;
     bool success(true);
-    int referenceCount = references.size();
-    int iRef = 0;
+    size_t referenceCount = references.size();
+    size_t iRef = 0;
     for ( ; iRef < referenceCount; iRef++)  {
         std::string newReference("");
         TopoDS_Shape geomShape = references.at(iRef).getGeometry();
