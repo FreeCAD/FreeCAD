@@ -90,7 +90,7 @@ std::ostream& Writer::beginCharStream(CharStreamFormat format)
     }
     charStreamFormat = format;
     if(format == CharStreamFormat::Base64Encoded) {
-        CharStream = create_base64_encoder(Stream(), Base::base64LineWidth);
+        CharStream = create_base64_encoder(Stream(), Base::base64DefaultBufferSize);
     } else {
         Stream() << "<![CDATA[";
         CharStream = std::make_unique<boost::iostreams::filtering_ostream>();

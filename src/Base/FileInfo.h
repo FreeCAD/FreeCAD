@@ -41,7 +41,6 @@ enum class CharStreamFormat {
     Raw,
     Base64Encoded
 };
-static constexpr int base64LineWidth {80};
 
 /** File name unification
   * This class handles everything related to file names

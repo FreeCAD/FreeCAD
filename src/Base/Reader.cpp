@@ -372,7 +372,7 @@ std::istream& Base::XMLReader::beginCharStream(CharStreamFormat format)
     CharStream = std::make_unique<boost::iostreams::filtering_istream>();
     auto* filteringStream = dynamic_cast<boost::iostreams::filtering_istream*>(CharStream.get());
     if(format == CharStreamFormat::Base64Encoded) {
-        filteringStream->push(base64_decoder(Base::base64LineWidth, Base64ErrorHandling::silent));
+        filteringStream->push(base64_decoder(Base::base64DefaultBufferSize, Base64ErrorHandling::silent));
     }
     filteringStream->push(boost::ref(*this));
     return *CharStream;

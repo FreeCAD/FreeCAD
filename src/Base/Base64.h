@@ -31,6 +31,7 @@ Copyright (C) 2019 Zheng Lei (realthunder.dev@gmail.com)
 #ifndef BASE_BASE64_H
 #define BASE_BASE64_H
 
+#include <array>
 #include <boost/iostreams/concepts.hpp>
 #include <boost/iostreams/device/file.hpp>
 #include <boost/iostreams/filtering_stream.hpp>
@@ -38,6 +39,10 @@ Copyright (C) 2019 Zheng Lei (realthunder.dev@gmail.com)
 #include <memory>
 #include <string>
 #include <vector>
+
+#include "FCGlobal.h"
+
+// NOLINTBEGIN(cppcoreguidelines-pro-bounds-pointer-arithmetic, cppcoreguidelines-pro-bounds-constant-array-index, cppcoreguidelines-avoid-magic-numbers, readability-magic-numbers)
 
 namespace Base
 {
@@ -47,6 +52,8 @@ enum class Base64ErrorHandling
     throws,
     silent
 };
+static constexpr int base64DefaultBufferSize {80};
+static constexpr size_t base64DecodeTableSize {256};
 
 /// Returns the max bytes of a encoded base64 string
 inline std::size_t base64_encode_size(std::size_t len)
@@ -76,7 +83,7 @@ BaseExport std::size_t base64_encode(char* out, void const* in, std::size_t len)
  * data. White space (space, tab, vtab, CR and LF) characters are mapped
  * to -2. Other invalid characters are mapped to -1.
  */
-BaseExport const signed char* base64_decode_table();
+BaseExport std::array<const signed char, base64DecodeTableSize> base64_decode_table();
 
 /** Decode the input base64 string into binary data
  * @param out: output buffer with minimum size of base64_encode(len)
@@ -136,25 +143,25 @@ inline std::size_t base64_decode(T& out, char const* in, std::size_t len)
 /** Decode base64 string into binary data
  * @param out: output binary data. Note that the data is not cleared before
  *             adding new content.
- * @param s: input base64 string
+ * @param str: input base64 string
  * @return Return the processed input length. Compare this with the
  * argument \c len to check for error.
  */
 template<typename T>
-inline std::size_t base64_decode(T& out, std::string const& s)
+inline std::size_t base64_decode(T& out, std::string const& str)
 {
-    return base64_decode(out, s.c_str(), s.size());
+    return base64_decode(out, str.c_str(), str.size());
 }
 
 /** Decode base64 string into binary data
  * @param out  adding new content.
- * @param s: input base64 string
+ * @param str: input base64 string
  * @return Return the decoded binary data.
  */
-inline std::string base64_decode(std::string const& s)
+inline std::string base64_decode(std::string const& str)
 {
     std::string out;
-    base64_decode(out, s.c_str(), s.size());
+    base64_decode(out, str.c_str(), str.size());
     return out;
 }
 
@@ -167,7 +174,7 @@ namespace bio = boost::iostreams;
 struct base64_encoder
 {
 
-    typedef char char_type;
+    using char_type = char;
     struct category: bio::multichar_output_filter_tag,
                      bio::closable_tag,
                      bio::optimally_buffered_tag
@@ -184,16 +191,16 @@ struct base64_encoder
 
     std::streamsize optimal_buffer_size() const
     {
-        return base64_decode_size(line_size);
+        return static_cast<std::streamsize>(base64_decode_size(line_size));
     }
 
     template<typename Device>
     void close(Device& dev)
     {
         if (pending_size) {
-            base64_encode(buffer, pending, pending_size);
+            base64_encode(buffer, pending.data(), pending_size);
         }
-        if (buffer.size()) {
+        if (!buffer.empty()) {
             bio::write(dev, buffer.c_str(), buffer.size());
             if (line_size) {
                 bio::put(dev, '\n');
@@ -206,27 +213,28 @@ struct base64_encoder
     }
 
     template<typename Device>
-    std::streamsize write(Device& dev, const char_type* s, std::streamsize n)
+    std::streamsize write(Device& dev, const char_type* str, std::streamsize n)
     {
         std::streamsize res = n;
 
-        if (pending_size) {
+        if (pending_size > 0) {
             while (n && pending_size < 3) {
-                pending[pending_size++] = *s++;
+                pending[pending_size] = *str++;
+                ++pending_size;
                 --n;
             }
             if (pending_size != 3) {
                 return res;
             }
 
-            base64_encode(buffer, pending, 3);
+            base64_encode(buffer, pending.data(), 3);
         }
         pending_size = n % 3;
         n = n / 3 * 3;
-        base64_encode(buffer, s, n);
-        s += n;
+        base64_encode(buffer, str, n);
+        str += n;
         for (unsigned i = 0; i < pending_size; ++i) {
-            pending[i] = s[i];
+            pending[i] = str[i];
         }
 
         const char* buf = buffer.c_str();
@@ -250,7 +258,7 @@ struct base64_encoder
     std::size_t line_size;
     std::size_t pos = 0;
     std::size_t pending_size = 0;
-    unsigned char pending[3];
+    std::array<unsigned char, 3> pending {};
     std::string buffer;
 };
 
@@ -261,7 +269,7 @@ struct base64_encoder
 struct base64_decoder
 {
 
-    typedef char char_type;
+    using char_type = char;
     struct category: bio::multichar_input_filter_tag, bio::optimally_buffered_tag
     {
     };
@@ -278,13 +286,15 @@ struct base64_decoder
 
     std::streamsize optimal_buffer_size() const
     {
-        return base64_encode_size(line_size != 0U ? line_size : 1024);
+        static constexpr int defaultBufferSize {1024};
+        return static_cast<std::streamsize>(
+            base64_encode_size(line_size != 0U ? line_size : defaultBufferSize));
     }
 
     template<typename Device>
-    std::streamsize read(Device& dev, char_type* s, std::streamsize n)
+    std::streamsize read(Device& dev, char_type* str, std::streamsize n)
     {
-        static const signed char* table = base64_decode_table();
+        static auto table = base64_decode_table();
 
         if (!n) {
             return 0;
@@ -294,7 +304,7 @@ struct base64_decoder
 
         for (;;) {
             while (pending_out < out_count) {
-                *s++ = char_array_3[pending_out++];
+                *str++ = char_array_3[pending_out++];
                 ++count;
                 if (--n == 0) {
                     return count;
@@ -306,8 +316,8 @@ struct base64_decoder
             }
 
             for (;;) {
-                int d = bio::get(dev);
-                if (d < 0) {
+                int newChar = bio::get(dev);
+                if (newChar < 0) {
                     eof = true;
                     if (pending_in <= 1) {
                         if (pending_in == 1 && errHandling == Base64ErrorHandling::throws) {
@@ -319,21 +329,23 @@ struct base64_decoder
                     pending_in = 4;
                 }
                 else {
-                    signed char c = table[d];
-                    if (c < 0) {
-                        if (c == -2 || errHandling == Base64ErrorHandling::silent) {
+                    signed char decodedChar = table[newChar];
+                    if (decodedChar < 0) {
+                        if (decodedChar == -2 || errHandling == Base64ErrorHandling::silent) {
                             continue;
                         }
                         throw BOOST_IOSTREAMS_FAILURE("Invalid character in base64 string");
                     }
-                    char_array_4[pending_in++] = (char)c;
+                    char_array_4[pending_in++] = (char)decodedChar;
                 }
                 if (pending_in == 4) {
                     pending_out = pending_in = 0;
-                    char_array_3[0] = (char_array_4[0] << 2) + ((char_array_4[1] & 0x30) >> 4);
-                    char_array_3[1] =
-                        ((char_array_4[1] & 0xf) << 4) + ((char_array_4[2] & 0x3c) >> 2);
-                    char_array_3[2] = ((char_array_4[2] & 0x3) << 6) + char_array_4[3];
+                    char_array_3[0] =
+                        static_cast<char>((char_array_4[0] << 2) + ((char_array_4[1] & 0x30) >> 4));
+                    char_array_3[1] = static_cast<char>(((char_array_4[1] & 0xf) << 4)
+                                                        + ((char_array_4[2] & 0x3c) >> 2));
+                    char_array_3[2] =
+                        static_cast<char>(((char_array_4[2] & 0x3) << 6) + char_array_4[3]);
                     break;
                 }
             }
@@ -342,10 +354,10 @@ struct base64_decoder
 
     std::size_t line_size;
     std::uint8_t pending_in = 0;
-    char char_array_4[4];
+    std::array<char, 4> char_array_4 {};
     std::uint8_t pending_out = 3;
     std::uint8_t out_count = 3;
-    char char_array_3[3];
+    std::array<char, 3> char_array_3 {};
     Base64ErrorHandling errHandling;
     bool eof = false;
 };
@@ -358,13 +370,13 @@ struct base64_decoder
  * @return A unique pointer to an output stream that can transforms the
  * input binary data to base64 strings.
  */
-inline std::unique_ptr<std::ostream> create_base64_encoder(std::ostream& out,
-                                                           std::size_t line_size = 80)
+inline std::unique_ptr<std::ostream>
+create_base64_encoder(std::ostream& out, std::size_t line_size = base64DefaultBufferSize)
 {
     std::unique_ptr<std::ostream> res(new bio::filtering_ostream);
-    auto* f = static_cast<bio::filtering_ostream*>(res.get());
-    f->push(base64_encoder(line_size));
-    f->push(out);
+    auto* filteringStream = dynamic_cast<bio::filtering_ostream*>(res.get());
+    filteringStream->push(base64_encoder(line_size));
+    filteringStream->push(out);
     return res;
 }
 
@@ -376,13 +388,13 @@ inline std::unique_ptr<std::ostream> create_base64_encoder(std::ostream& out,
  * @return A unique pointer to an output stream that can transforms the
  * input binary data to base64 strings.
  */
-inline std::unique_ptr<std::ostream> create_base64_encoder(const std::string& filepath,
-                                                           std::size_t line_size = 80)
+inline std::unique_ptr<std::ostream>
+create_base64_encoder(const std::string& filepath, std::size_t line_size = base64DefaultBufferSize)
 {
     std::unique_ptr<std::ostream> res(new bio::filtering_ostream);
-    bio::filtering_ostream* f = static_cast<bio::filtering_ostream*>(res.get());
-    f->push(base64_encoder(line_size));
-    f->push(bio::file_sink(filepath));
+    auto* filteringStream = dynamic_cast<bio::filtering_ostream*>(res.get());
+    filteringStream->push(base64_encoder(line_size));
+    filteringStream->push(bio::file_sink(filepath));
     return res;
 }
 
@@ -398,13 +410,13 @@ inline std::unique_ptr<std::ostream> create_base64_encoder(const std::string& fi
  */
 inline std::unique_ptr<std::istream>
 create_base64_decoder(std::istream& in,
-                      std::size_t line_size = 80,
+                      std::size_t line_size = base64DefaultBufferSize,
                       Base64ErrorHandling errHandling = Base64ErrorHandling::silent)
 {
     std::unique_ptr<std::istream> res(new bio::filtering_istream);
-    bio::filtering_istream* f = static_cast<bio::filtering_istream*>(res.get());
-    f->push(base64_decoder(line_size, errHandling));
-    f->push(in);
+    auto* filteringStream = dynamic_cast<bio::filtering_istream*>(res.get());
+    filteringStream->push(base64_decoder(line_size, errHandling));
+    filteringStream->push(in);
     return res;
 }
 
@@ -424,16 +436,18 @@ create_base64_decoder(std::istream& in,
  */
 inline std::unique_ptr<std::istream>
 create_base64_decoder(const std::string& filepath,
-                      std::size_t line_size = 80,
+                      std::size_t line_size = base64DefaultBufferSize,
                       Base64ErrorHandling errHandling = Base64ErrorHandling::silent)
 {
     std::unique_ptr<std::istream> res(new bio::filtering_istream);
-    auto* f = static_cast<bio::filtering_istream*>(res.get());
-    f->push(base64_decoder(line_size, errHandling));
-    f->push(bio::file_source(filepath));
+    auto* filteringStream = dynamic_cast<bio::filtering_istream*>(res.get());
+    filteringStream->push(base64_decoder(line_size, errHandling));
+    filteringStream->push(bio::file_source(filepath));
     return res;
 }
 
 }  // namespace Base
+
+// NOLINTEND(cppcoreguidelines-pro-bounds-pointer-arithmetic, cppcoreguidelines-pro-bounds-constant-array-index, cppcoreguidelines-avoid-magic-numbers, readability-magic-numbers)
 
 #endif

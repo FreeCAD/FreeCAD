@@ -24,29 +24,28 @@ freely, subject to the following restrictions:
 René Nyffenegger rene.nyffenegger@adp-gmbh.ch
 
 
-Copyright (C) 2019 Zheng Lei (realthunder.dev@gmail.com)
+Additional code Copyright (C) 2019 Zheng Lei (realthunder.dev@gmail.com)
+* Added support of in-line transformation using boost iostream for memory efficiency
 
-* Added support of in-line transformation using boost iostream for memory
-  efficiency
 */
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-#include <iostream>
 #include <string>
 #endif
 
 #include "Base64.h"
 
+// NOLINTBEGIN(cppcoreguidelines-pro-bounds-pointer-arithmetic, cppcoreguidelines-pro-bounds-constant-array-index, cppcoreguidelines-avoid-magic-numbers, readability-magic-numbers)
 
-static const std::string base64_chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-                                        "abcdefghijklmnopqrstuvwxyz"
-                                        "0123456789+/";
+static const std::array<char, 65> base64_chars {"ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+                                                "abcdefghijklmnopqrstuvwxyz"
+                                                "0123456789+/"};
 
 
-const signed char* Base::base64_decode_table()
+std::array<const signed char, Base::base64DecodeTableSize> Base::base64_decode_table()
 {
-    static const signed char _table[] = {
+    static std::array<const signed char, Base::base64DecodeTableSize> _table = {
         -1, -1, -1, -1, -1, -1, -1, -1, -1, -2, -2, -2, -1, -2, -1, -1,  //   0-15
         -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,  //  16-31
         -2, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 62, -1, -1, -1, 63,  //  32-47
@@ -70,30 +69,30 @@ const signed char* Base::base64_decode_table()
 std::size_t Base::base64_encode(char* out, void const* in, std::size_t in_len)
 {
     char* ret = out;
-    unsigned char const* bytes_to_encode = reinterpret_cast<unsigned char const*>(in);
-    int i = 0;
-    int j = 0;
-    unsigned char char_array_3[3];
-    unsigned char char_array_4[4];
+    auto const* bytes_to_encode = reinterpret_cast<unsigned char const*>(in); // NOLINT
+    int char3 {0};
+    int char4 {};
+    std::array<unsigned char,3> char_array_3{};
+    std::array<unsigned char,4> char_array_4{};
 
-    while (in_len--) {
-        char_array_3[i++] = *(bytes_to_encode++);
-        if (i == 3) {
+    while ((in_len--) != 0U) {
+        char_array_3[char3++] = *(bytes_to_encode++);
+        if (char3 == 3) {
             char_array_4[0] = (char_array_3[0] & 0xfc) >> 2;
             char_array_4[1] = ((char_array_3[0] & 0x03) << 4) + ((char_array_3[1] & 0xf0) >> 4);
             char_array_4[2] = ((char_array_3[1] & 0x0f) << 2) + ((char_array_3[2] & 0xc0) >> 6);
             char_array_4[3] = char_array_3[2] & 0x3f;
 
-            for (i = 0; (i < 4); i++) {
-                *ret++ = base64_chars[char_array_4[i]];
+            for (char3 = 0; (char3 < 4); char3++) {
+                *ret++ = base64_chars[char_array_4[char3]];
             }
-            i = 0;
+            char3 = 0;
         }
     }
 
-    if (i) {
-        for (j = i; j < 3; j++) {
-            char_array_3[j] = '\0';
+    if (char3 != 0) {
+        for (char4 = char3; char4 < 3; char4++) {
+            char_array_3[char4] = '\0';
         }
 
         char_array_4[0] = (char_array_3[0] & 0xfc) >> 2;
@@ -101,11 +100,11 @@ std::size_t Base::base64_encode(char* out, void const* in, std::size_t in_len)
         char_array_4[2] = ((char_array_3[1] & 0x0f) << 2) + ((char_array_3[2] & 0xc0) >> 6);
         char_array_4[3] = char_array_3[2] & 0x3f;
 
-        for (j = 0; (j < i + 1); j++) {
-            *ret++ = base64_chars[char_array_4[j]];
+        for (char4 = 0; (char4 < char3 + 1); char4++) {
+            *ret++ = base64_chars[char_array_4[char4]];
         }
 
-        while ((i++ < 3)) {
+        while ((char3++ < 3)) {
             *ret++ = '=';
         }
     }
@@ -116,47 +115,50 @@ std::size_t Base::base64_encode(char* out, void const* in, std::size_t in_len)
 std::pair<std::size_t, std::size_t>
 Base::base64_decode(void* _out, char const* in, std::size_t in_len)
 {
-    unsigned char* out = reinterpret_cast<unsigned char*>(_out);
+    auto* out = reinterpret_cast<unsigned char*>(_out); // NOLINT
     unsigned char* ret = out;
     char const* input = in;
-    int i = 0;
-    int j = 0;
-    unsigned char char_array_4[4], char_array_3[3];
+    int byteCounter1 {0};
+    int byteCounter2 {};
+    std::array<unsigned char, 4> char_array_4{};
+    std::array<unsigned char, 3> char_array_3{};
 
-    static const signed char* table = base64_decode_table();
+    static auto table = base64_decode_table();
 
-    while (in_len-- && *in != '=') {
-        const signed char v = table[(int)(*in++)];
-        if (v < 0) {
+    while (((in_len--) != 0U) && *in != '=') {
+        const signed char lookup = table[static_cast<unsigned char>(*in++)];
+        if (lookup < 0) {
             break;
         }
 
-        char_array_4[i++] = (unsigned char)v;
-        if (i == 4) {
+        char_array_4[byteCounter1++] = (unsigned char)lookup;
+        if (byteCounter1 == 4) {
             char_array_3[0] = (char_array_4[0] << 2) + ((char_array_4[1] & 0x30) >> 4);
             char_array_3[1] = ((char_array_4[1] & 0xf) << 4) + ((char_array_4[2] & 0x3c) >> 2);
             char_array_3[2] = ((char_array_4[2] & 0x3) << 6) + char_array_4[3];
 
-            for (i = 0; (i < 3); i++) {
-                *ret++ = char_array_3[i];
+            for (byteCounter1 = 0; (byteCounter1 < 3); byteCounter1++) {
+                *ret++ = char_array_3[byteCounter1];
             }
-            i = 0;
+            byteCounter1 = 0;
         }
     }
 
-    if (i) {
-        for (j = i; j < 4; j++) {
-            char_array_4[j] = 0;
+    if (byteCounter1 != 0) {
+        for (byteCounter2 = byteCounter1; byteCounter2 < 4; byteCounter2++) {
+            char_array_4[byteCounter2] = 0;
         }
 
         char_array_3[0] = (char_array_4[0] << 2) + ((char_array_4[1] & 0x30) >> 4);
         char_array_3[1] = ((char_array_4[1] & 0xf) << 4) + ((char_array_4[2] & 0x3c) >> 2);
         char_array_3[2] = ((char_array_4[2] & 0x3) << 6) + char_array_4[3];
 
-        for (j = 0; (j < i - 1); j++) {
-            *ret++ = char_array_3[j];
+        for (byteCounter2 = 0; (byteCounter2 < byteCounter1 - 1); byteCounter2++) {
+            *ret++ = char_array_3[byteCounter2];
         }
     }
 
     return std::make_pair((std::size_t)(ret - out), (std::size_t)(in - input));
 }
+
+// NOLINTEND(cppcoreguidelines-pro-bounds-pointer-arithmetic, cppcoreguidelines-pro-bounds-constant-array-index, cppcoreguidelines-avoid-magic-numbers, readability-magic-numbers)
