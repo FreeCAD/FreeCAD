@@ -67,11 +67,7 @@ void TaskSketcherTool::toolChanged(const std::string& toolname)
 
         this->groupLayout()->addWidget(widget.get());
 
-        if (toolname == "DSH_Point") {
-            setHeaderText(tr("Point parameters"));
-            setHeaderIcon(Gui::BitmapFactory().pixmap("Sketcher_CreatePoint"));
-        }
-        else if (toolname == "DSH_Line") {
+        if (toolname == "DSH_Line") {
             setHeaderText(tr("Line parameters"));
             setHeaderIcon(Gui::BitmapFactory().pixmap("Sketcher_CreateLine"));
         }

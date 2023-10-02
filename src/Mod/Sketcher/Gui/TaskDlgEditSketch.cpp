@@ -95,12 +95,10 @@ TaskDlgEditSketch::~TaskDlgEditSketch()
 
 void TaskDlgEditSketch::slotToolChanged(const std::string& toolname)
 {
+    bool hidden = toolname == "DSH_None" || toolname == "DSH_Point";
+    ToolSettings->setHidden(hidden);
 
-    if (toolname == "DSH_None") {
-        ToolSettings->setHidden(true);
-    }
-    else {
-        ToolSettings->setHidden(false);
+    if (toolname != "DSH_None") {
         ToolSettings->toolChanged(toolname);
     }
 }
