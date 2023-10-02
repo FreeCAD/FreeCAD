@@ -32,7 +32,7 @@
         <Documentation>
             <UserDocu>Return the visible feature of this body</UserDocu>
         </Documentation>
-		<Parameter Name="VisibleFeature" Type="Object" />
+    <Parameter Name="VisibleFeature" Type="Object" />
     </Attribute>
   </PythonExport>
 </GenerateModel>

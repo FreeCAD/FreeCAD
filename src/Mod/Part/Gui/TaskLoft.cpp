@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
@@ -29,15 +28,14 @@
 # include <QTreeWidget>
 # include <Precision.hxx>
 # include <ShapeAnalysis_FreeBounds.hxx>
-# include <TopoDS_Iterator.hxx>
 # include <TopoDS.hxx>
-# include <TopoDS_Edge.hxx>
+# include <TopoDS_Iterator.hxx>
 # include <TopTools_HSequenceOfShape.hxx>
 #endif
 
-#include "ui_TaskLoft.h"
-#include "TaskLoft.h"
-
+#include <App/Application.h>
+#include <App/Document.h>
+#include <App/DocumentObject.h>
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/Command.h>
@@ -45,13 +43,10 @@
 #include <Gui/Selection.h>
 #include <Gui/ViewProvider.h>
 
-#include <Base/Console.h>
-#include <Base/Interpreter.h>
-#include <App/Application.h>
-#include <App/Document.h>
-#include <App/DocumentObject.h>
-#include <App/Link.h>
 #include <Mod/Part/App/PartFeature.h>
+
+#include "TaskLoft.h"
+#include "ui_TaskLoft.h"
 
 
 using namespace PartGui;
@@ -61,12 +56,8 @@ class LoftWidget::Private
 public:
     Ui_TaskLoft ui;
     std::string document;
-    Private()
-    {
-    }
-    ~Private()
-    {
-    }
+    Private() = default;
+    ~Private() = default;
 };
 
 /* TRANSLATOR PartGui::LoftWidget */
@@ -82,10 +73,10 @@ LoftWidget::LoftWidget(QWidget* parent)
     d->ui.selector->setAvailableLabel(tr("Available profiles"));
     d->ui.selector->setSelectedLabel(tr("Selected profiles"));
 
-    connect(d->ui.selector->availableTreeWidget(), SIGNAL(currentItemChanged(QTreeWidgetItem*, QTreeWidgetItem*)),
-            this, SLOT(onCurrentItemChanged(QTreeWidgetItem*, QTreeWidgetItem*)));
-    connect(d->ui.selector->selectedTreeWidget(), SIGNAL(currentItemChanged(QTreeWidgetItem*, QTreeWidgetItem*)),
-            this, SLOT(onCurrentItemChanged(QTreeWidgetItem*, QTreeWidgetItem*)));
+    connect(d->ui.selector->availableTreeWidget(), &QTreeWidget::currentItemChanged,
+            this, &LoftWidget::onCurrentItemChanged);
+    connect(d->ui.selector->selectedTreeWidget(), &QTreeWidget::currentItemChanged,
+            this, &LoftWidget::onCurrentItemChanged);
 
     findShapes();
 }
@@ -105,8 +96,8 @@ void LoftWidget::findShapes()
 
     std::vector<App::DocumentObject*> objs = activeDoc->getObjectsOfType<App::DocumentObject>();
 
-    for (std::vector<App::DocumentObject*>::iterator it = objs.begin(); it!=objs.end(); ++it) {
-        Part::TopoShape topoShape = Part::Feature::getTopoShape(*it);
+    for (auto obj : objs) {
+        Part::TopoShape topoShape = Part::Feature::getTopoShape(obj);
         if (topoShape.isNull()) {
             continue;
         }
@@ -148,13 +139,13 @@ void LoftWidget::findShapes()
             shape.ShapeType() == TopAbs_WIRE ||
             shape.ShapeType() == TopAbs_EDGE ||
             shape.ShapeType() == TopAbs_VERTEX) {
-            QString label = QString::fromUtf8((*it)->Label.getValue());
-            QString name = QString::fromLatin1((*it)->getNameInDocument());
+            QString label = QString::fromUtf8(obj->Label.getValue());
+            QString name = QString::fromLatin1(obj->getNameInDocument());
             QTreeWidgetItem* child = new QTreeWidgetItem();
             child->setText(0, label);
             child->setToolTip(0, label);
             child->setData(0, Qt::UserRole, name);
-            Gui::ViewProvider* vp = activeGui->getViewProvider(*it);
+            Gui::ViewProvider* vp = activeGui->getViewProvider(obj);
             if (vp) child->setIcon(0, vp->getIcon());
             d->ui.selector->availableTreeWidget()->addTopLevelItem(child);
         }
@@ -217,7 +208,7 @@ bool LoftWidget::accept()
         doc->commitCommand();
     }
     catch (const Base::Exception& e) {
-        QMessageBox::warning(this, tr("Input error"), QString::fromLatin1(e.what()));
+        QMessageBox::warning(this, tr("Input error"), QCoreApplication::translate("Exception", e.what()));
         return false;
     }
 
@@ -264,9 +255,7 @@ TaskLoft::TaskLoft()
     Content.push_back(taskbox);
 }
 
-TaskLoft::~TaskLoft()
-{
-}
+TaskLoft::~TaskLoft() = default;
 
 void TaskLoft::open()
 {

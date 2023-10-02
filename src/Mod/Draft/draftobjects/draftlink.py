@@ -64,17 +64,17 @@ class DraftLink(DraftObject):
         if obj:
             self.attach(obj)
 
-    def __getstate__(self):
+    def dumps(self):
         """Return a tuple of all serializable objects or None."""
         return self.__dict__
 
-    def __setstate__(self, state):
+    def loads(self, state):
         """Set some internal properties for all restored objects."""
         if isinstance(state, dict):
             self.__dict__ = state
         else:
             self.use_link = False
-            super(DraftLink, self).__setstate__(state)
+            super(DraftLink, self).loads(state)
 
     def attach(self, obj):
         """Set up the properties when the object is attached."""
@@ -181,6 +181,9 @@ class DraftLink(DraftObject):
             else:
                 self.execute(obj)
 
+        # Object properties are updated when the document is opened.
+        self.props_changed_clear()
+
     def buildShape(self, obj, pl, pls):
         """Build the shape of the link object."""
         if self.use_link:
@@ -193,6 +196,8 @@ class DraftLink(DraftObject):
                     and getattr(obj, 'AlwaysSyncPlacement', False):
                 for pla,child in zip(pls,obj.ElementList):
                     child.Placement = pla
+        elif obj.Count != len(pls):
+            obj.Count = len(pls)
 
         if obj.Base:
             shape = getattr(obj.Base, 'Shape', None)
@@ -229,6 +234,8 @@ class DraftLink(DraftObject):
 
     def onChanged(self, obj, prop):
         """Execute when a property changes."""
+        self.props_changed_store(prop)
+
         if not getattr(self, 'use_link', False):
             return
 

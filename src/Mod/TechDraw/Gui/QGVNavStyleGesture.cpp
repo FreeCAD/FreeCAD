@@ -22,13 +22,13 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-#include <QApplication>
-#include <QGuiApplication>
-#include <QMouseEvent>
+# include <QGuiApplication>
+# include <QMouseEvent>
 #endif
 
-#include "QGVPage.h"
 #include "QGVNavStyleGesture.h"
+#include "QGVPage.h"
+
 
 using namespace TechDrawGui;
 

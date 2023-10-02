@@ -83,9 +83,7 @@ SoFCOffscreenRenderer::SoFCOffscreenRenderer (SoGLRenderAction *action)
 {
 }
 
-SoFCOffscreenRenderer::~SoFCOffscreenRenderer()
-{
-}
+SoFCOffscreenRenderer::~SoFCOffscreenRenderer() = default;
 
 void SoFCOffscreenRenderer::writeToImage (QImage& img) const
 {
@@ -107,7 +105,7 @@ void SoFCOffscreenRenderer::writeToImageFile(const char* filename, const char* c
     }
 
     Base::FileInfo file(filename);
-    if (file.hasExtension("JPG") || file.hasExtension("JPEG")) {
+    if (file.hasExtension({"JPG", "JPEG"})) {
         // writing comment in case of jpeg (Qt ignores setText() in case of jpeg)
         std::string com;
         if (strcmp(comment,"")==0)
@@ -121,7 +119,7 @@ void SoFCOffscreenRenderer::writeToImageFile(const char* filename, const char* c
         QByteArray ba;
         QBuffer buffer(&ba);
         buffer.open(QIODevice::WriteOnly);
-        image.save(&buffer, "JPG");
+        image.save(&buffer, "JPG", 90);
         writeJPEGComment(com, ba);
 
         QFile file(QString::fromUtf8(filename));
@@ -140,9 +138,9 @@ void SoFCOffscreenRenderer::writeToImageFile(const char* filename, const char* c
         bool supported = false;
         QByteArray format;
         QList<QByteArray> qtformats = QImageWriter::supportedImageFormats();
-        for (QList<QByteArray>::Iterator it = qtformats.begin(); it != qtformats.end(); ++it) {
-            if (file.hasExtension((*it).data())) {
-                format = *it;
+        for (const auto & it : qtformats) {
+            if (file.hasExtension(it.data())) {
+                format = it;
                 supported = true;
                 break;
             }
@@ -154,7 +152,7 @@ void SoFCOffscreenRenderer::writeToImageFile(const char* filename, const char* c
             // set keywords for PNG format
             if (file.hasExtension("PNG")) {
                 img.setText(QLatin1String("Title"), QString::fromUtf8(filename));
-                img.setText(QLatin1String("Author"), QLatin1String("FreeCAD (http://www.freecadweb.org)"));
+                img.setText(QLatin1String("Author"), QLatin1String("FreeCAD (http://www.freecad.org)"));
                 if (strcmp(comment,"")==0)
                     img.setText(QLatin1String("Description"), QLatin1String("Screenshot created by FreeCAD"));
                 else if (strcmp(comment,"$MIBA")==0)
@@ -194,7 +192,7 @@ void SoFCOffscreenRenderer::writeToImageFile(const char* filename, const char* c
             if (!writeToFile(filename, file.extension().c_str()))
                 throw Base::FileException("Error writing image file", filename);
         }
-        else if (file.hasExtension("EPS") || file.hasExtension("PS")) {
+        else if (file.hasExtension({"EPS", "PS"})) {
             // Any format which is supported by Coin only
 #ifdef FC_OS_WIN32
             FILE* fd = _wfopen(file.toStdWString().c_str(), L"w");
@@ -206,7 +204,7 @@ void SoFCOffscreenRenderer::writeToImageFile(const char* filename, const char* c
             if (!ok)
                 throw Base::FileException("Error writing image file", filename);
         }
-        else if (file.hasExtension("RGB") || file.hasExtension("SGI")) {
+        else if (file.hasExtension({"RGB", "SGI"})) {
             // Any format which is supported by Coin only
 #ifdef FC_OS_WIN32
             FILE* fd = _wfopen(file.toStdWString().c_str(), L"w");
@@ -228,17 +226,8 @@ QStringList SoFCOffscreenRenderer::getWriteImageFiletypeInfo()
     // get all supported formats by Coin3D
     int num = getNumWriteFiletypes();
     for (int i=0; i < num; i++) {
-#if   (COIN_MAJOR_VERSION < 2) // Coin3D <= 1.x
-        SbList<SbName> extlist;
-#elif (COIN_MAJOR_VERSION < 3) // Coin3D <= 2.x
-# if  (COIN_MINOR_VERSION < 3) // Coin3D <= 2.2.x
-        SbList<SbName> extlist;
-# else                         // Coin3D >= 2.3.x
+
         SbPList extlist;
-# endif
-#else                          // Coin3D >= 3.x
-        SbPList extlist;
-#endif
 
         SbString fullname, description;
         getWriteFiletypeInfo(i, extlist, fullname, description);
@@ -252,10 +241,10 @@ QStringList SoFCOffscreenRenderer::getWriteImageFiletypeInfo()
 
     // add now all further QImage formats
     QList<QByteArray> qtformats = QImageWriter::supportedImageFormats();
-    for (QList<QByteArray>::Iterator it = qtformats.begin(); it != qtformats.end(); ++it) {
+    for (const auto & it : qtformats) {
         // not supported? then append
-        if (!isWriteSupported((*it).data()) && formats.indexOf(QLatin1String(*it)) == -1)
-            formats << QLatin1String(*it);
+        if (!isWriteSupported(it.data()) && formats.indexOf(QLatin1String(it)) == -1)
+            formats << QLatin1String(it);
     }
 
     // now add PostScript and SGI RGB
@@ -749,8 +738,8 @@ QStringList SoQtOffscreenRenderer::getWriteImageFiletypeInfo() const
     QList<QByteArray> qtformats = QImageWriter::supportedImageFormats();
 
     QStringList formats;
-    for (QList<QByteArray>::Iterator it = qtformats.begin(); it != qtformats.end(); ++it) {
-        formats << QLatin1String(*it);
+    for (const auto & it : qtformats) {
+        formats << QLatin1String(it);
     }
     formats.sort();
     return formats;
@@ -758,180 +747,3 @@ QStringList SoQtOffscreenRenderer::getWriteImageFiletypeInfo() const
 
 #undef PRIVATE
 #undef PUBLIC
-
-// ---------------------------------------------------------------
-
-void SoQtOffscreenRendererPy::init_type()
-{
-    behaviors().name("SoQtOffscreenRenderer");
-    behaviors().doc("Python interface for SoQtOffscreenRenderer");
-    behaviors().set_tp_new(PyMake);
-
-    // you must have overwritten the virtual functions
-    behaviors().supportRepr();
-    behaviors().supportGetattr();
-    behaviors().supportSetattr();
-    behaviors().readyType();
-
-    add_varargs_method("setViewportRegion",&SoQtOffscreenRendererPy::setViewportRegion,"setViewportRegion(int, int)");
-    add_varargs_method("getViewportRegion",&SoQtOffscreenRendererPy::getViewportRegion,"getViewportRegion() -> tuple");
-    add_varargs_method("setBackgroundColor",&SoQtOffscreenRendererPy::setBackgroundColor,"setBackgroundColor(float, float, float, [float])");
-    add_varargs_method("getBackgroundColor",&SoQtOffscreenRendererPy::getBackgroundColor,"getBackgroundColor() -> tuple");
-    add_varargs_method("setNumPasses",&SoQtOffscreenRendererPy::setNumPasses,"setNumPasses(int)");
-    add_varargs_method("getNumPasses",&SoQtOffscreenRendererPy::getNumPasses,"getNumPasses() -> int");
-    add_varargs_method("setInternalTextureFormat",&SoQtOffscreenRendererPy::setInternalTextureFormat,"setInternalTextureFormat(int)");
-    add_varargs_method("getInternalTextureFormat",&SoQtOffscreenRendererPy::getInternalTextureFormat,"getInternalTextureFormat() -> int");
-    add_varargs_method("render",&SoQtOffscreenRendererPy::render,"render(node)");
-    add_varargs_method("writeToImage",&SoQtOffscreenRendererPy::writeToImage,"writeToImage(string)");
-    add_varargs_method("getWriteImageFiletypeInfo",&SoQtOffscreenRendererPy::getWriteImageFiletypeInfo,"getWriteImageFiletypeInfo() -> tuple");
-}
-
-PyObject *SoQtOffscreenRendererPy::PyMake(struct _typeobject * /*type*/, PyObject * args, PyObject * /*kwds*/)
-{
-    short w, h;
-    if (!PyArg_ParseTuple(args, "hh", &w, &h))
-        return nullptr;
-
-    return new SoQtOffscreenRendererPy(SbViewportRegion(w, h));
-}
-
-SoQtOffscreenRendererPy::SoQtOffscreenRendererPy(const SbViewportRegion& vpr)
-  : renderer(vpr)
-{
-}
-
-SoQtOffscreenRendererPy::~SoQtOffscreenRendererPy()
-{
-}
-
-Py::Object SoQtOffscreenRendererPy::repr()
-{
-    std::stringstream s;
-    s << "<SoQtOffscreenRenderer at " << this << ">";
-    return Py::String(s.str());
-}
-
-Py::Object SoQtOffscreenRendererPy::setViewportRegion(const Py::Tuple& args)
-{
-    short w, h;
-    if (!PyArg_ParseTuple(args.ptr(), "hh", &w, &h))
-        throw Py::Exception();
-
-    renderer.setViewportRegion(SbViewportRegion(w, h));
-    return Py::None();
-}
-
-Py::Object SoQtOffscreenRendererPy::getViewportRegion(const Py::Tuple& args)
-{
-    if (!PyArg_ParseTuple(args.ptr(), ""))
-        throw Py::Exception();
-
-    const SbViewportRegion& vpr = renderer.getViewportRegion();
-    SbVec2s size = vpr.getWindowSize();
-    return Py::TupleN(Py::Long(size[0]), Py::Long(size[1]));
-}
-
-Py::Object SoQtOffscreenRendererPy::setBackgroundColor(const Py::Tuple& args)
-{
-    float r, g, b, a = 1.0f;
-    if (!PyArg_ParseTuple(args.ptr(), "fff|f", &r, &g, &b, &a))
-        throw Py::Exception();
-
-    renderer.setBackgroundColor(SbColor4f(r, g, b, a));
-    return Py::None();
-}
-
-Py::Object SoQtOffscreenRendererPy::getBackgroundColor(const Py::Tuple& args)
-{
-    if (!PyArg_ParseTuple(args.ptr(), ""))
-        throw Py::Exception();
-
-    SbColor4f color = renderer.getBackgroundColor();
-    return Py::TupleN(Py::Float(color[0]), Py::Float(color[1]), Py::Float(color[2]), Py::Float(color[3]));
-}
-
-Py::Object SoQtOffscreenRendererPy::setNumPasses(const Py::Tuple& args)
-{
-    int num;
-    if (!PyArg_ParseTuple(args.ptr(), "i", &num))
-        throw Py::Exception();
-
-    renderer.setNumPasses(num);
-    return Py::None();
-}
-
-Py::Object SoQtOffscreenRendererPy::getNumPasses(const Py::Tuple& args)
-{
-    if (!PyArg_ParseTuple(args.ptr(), ""))
-        throw Py::Exception();
-
-    int num = renderer.getNumPasses();
-    return Py::Long(num);
-}
-
-Py::Object SoQtOffscreenRendererPy::setInternalTextureFormat(const Py::Tuple& args)
-{
-    unsigned int format;
-    if (!PyArg_ParseTuple(args.ptr(), "I", &format))
-        throw Py::Exception();
-
-    renderer.setInternalTextureFormat(format);
-    return Py::None();
-}
-
-Py::Object SoQtOffscreenRendererPy::getInternalTextureFormat(const Py::Tuple& args)
-{
-    if (!PyArg_ParseTuple(args.ptr(), ""))
-        throw Py::Exception();
-
-    unsigned long format = renderer.internalTextureFormat();
-    return Py::Long(format);
-}
-
-Py::Object SoQtOffscreenRendererPy::render(const Py::Tuple& args)
-{
-    PyObject* proxy;
-    if (!PyArg_ParseTuple(args.ptr(), "O", &proxy))
-        throw Py::Exception();
-
-    try {
-        void* ptr = nullptr;
-        Base::Interpreter().convertSWIGPointerObj("pivy.coin", "SoNode *", proxy, &ptr, 0);
-        SoNode* node = static_cast<SoNode*>(ptr);
-        bool ok = false;
-        if (node) {
-            ok = renderer.render(node);
-        }
-        return Py::Boolean(ok);
-    }
-    catch (const Base::Exception& e) {
-        e.setPyException();
-        throw Py::Exception();
-    }
-}
-
-Py::Object SoQtOffscreenRendererPy::writeToImage(const Py::Tuple& args)
-{
-    const char* filename;
-    if (!PyArg_ParseTuple(args.ptr(), "s", &filename))
-        throw Py::Exception();
-
-    QImage img;
-    renderer.writeToImage(img);
-    img.save(QString::fromUtf8(filename));
-    return Py::None();
-}
-
-Py::Object SoQtOffscreenRendererPy::getWriteImageFiletypeInfo(const Py::Tuple& args)
-{
-    if (!PyArg_ParseTuple(args.ptr(), ""))
-        throw Py::Exception();
-
-    QStringList list = renderer.getWriteImageFiletypeInfo();
-    Py::Tuple tuple(list.size());
-    for (int i = 0; i < list.size(); i++) {
-        tuple.setItem(i, Py::String(list[i].toStdString()));
-    }
-
-    return tuple;
-}

@@ -133,7 +133,7 @@
         </dc:creator>
         <dc:title>OpenSCAD_MeshBooleans</dc:title>
         <dc:date>12-01-2021</dc:date>
-        <dc:relation>http://www.freecadweb.org/wiki/index.php?title=Artwork</dc:relation>
+        <dc:relation>http://www.freecad.org/wiki/index.php?title=Artwork</dc:relation>
         <dc:publisher>
           <cc:Agent>
             <dc:title>FreeCAD</dc:title>

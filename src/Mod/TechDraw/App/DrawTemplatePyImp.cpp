@@ -21,15 +21,16 @@
  ***************************************************************************/
 
 #include "PreCompiled.h"
+
 #ifndef _PreComp_
 # include <sstream>
 #endif
 
 #include "DrawTemplate.h"
-
 // inclusion of the generated files (generated out of DrawTemplateSFPy.xml)
 #include <Mod/TechDraw/App/DrawTemplatePy.h>
 #include <Mod/TechDraw/App/DrawTemplatePy.cpp>
+
 
 using namespace TechDraw;
 
@@ -48,18 +49,18 @@ int DrawTemplatePy::setCustomAttributes(const char* attr, PyObject* obj)
 {
     // search in PropertyList
     App::Property *prop = getDrawTemplatePtr()->getPropertyByName(attr);
-    if (prop) {
-        // Read-only attributes must not be set over its Python interface
-        short Type =  getDrawTemplatePtr()->getPropertyType(prop);
-        if (Type & App::Prop_ReadOnly) {
-            std::stringstream s;
-            s << "Object attribute '" << attr << "' is read-only";
-            throw Py::AttributeError(s.str());
-        }
-
-        prop->setPyObject(obj);
-        return 1;
+    if (!prop) {
+        return 0;
     }
 
-    return 0;
+    // Read-only attributes must not be set over its Python interface
+    short Type =  getDrawTemplatePtr()->getPropertyType(prop);
+    if (Type & App::Prop_ReadOnly) {
+        std::stringstream s;
+        s << "Object attribute '" << attr << "' is read-only";
+        throw Py::AttributeError(s.str());
+    }
+
+    prop->setPyObject(obj);
+    return 1;
 }

@@ -41,6 +41,7 @@ class Document;
 
 namespace TechDraw {
 class DrawWeldSymbol;
+class DrawLeaderLine;
 class DrawTileWeld;
 class DrawView;
 }

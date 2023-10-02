@@ -22,13 +22,9 @@
 
 #include "PreCompiled.h"
 
-#ifndef _PreComp_
-#endif
-
 #include "DlgSettingsPathColor.h"
 #include "ui_DlgSettingsPathColor.h"
-#include <Gui/PrefWidgets.h>
-#include <Base/Console.h>
+
 
 using namespace PathGui;
 
@@ -60,7 +56,6 @@ void DlgSettingsPathColor::saveSettings()
     ui->DefaultRapidPathColor->onSave();
     ui->DefaultPathLineWidth->onSave();
     ui->DefaultPathMarkerColor->onSave();
-    ui->DefaultExtentsColor->onSave();
     ui->DefaultProbePathColor->onSave();
     ui->DefaultHighlightPathColor->onSave();
     ui->DefaultBBoxSelectionColor->onSave();
@@ -76,7 +71,6 @@ void DlgSettingsPathColor::loadSettings()
     ui->DefaultRapidPathColor->onRestore();
     ui->DefaultPathLineWidth->onRestore();
     ui->DefaultPathMarkerColor->onRestore();
-    ui->DefaultExtentsColor->onRestore();
     ui->DefaultProbePathColor->onRestore();
     ui->DefaultHighlightPathColor->onRestore();
     ui->DefaultBBoxSelectionColor->onRestore();

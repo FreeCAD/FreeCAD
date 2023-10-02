@@ -55,7 +55,7 @@ namespace Gui {
  * of a spin box.
  * \author Jürgen Riegel
  */
-class GuiExport InputField : public ExpressionLineEdit, public ExpressionBinding
+class GuiExport InputField : public ExpressionLineEdit, public ExpressionWidget
 {
     Q_OBJECT
 

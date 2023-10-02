@@ -20,12 +20,11 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef MESHGUI_DLG_EVALUATE_MESH_IMP_H
 #define MESHGUI_DLG_EVALUATE_MESH_IMP_H
 
 #include <map>
-#include <QPointer>
+
 #include <QDialog>
 
 #include <App/Application.h>
@@ -33,17 +32,21 @@
 #include <App/DocumentObserver.h>
 #include <Mod/Mesh/App/Types.h>
 
+
 class QAbstractButton;
 class QScrollArea;
 
-namespace Gui {
+namespace Gui
+{
 class View3DInventor;
 }
-namespace Mesh {
-  class Feature;
+namespace Mesh
+{
+class Feature;
 }
 
-namespace MeshGui {
+namespace MeshGui
+{
 class ViewProviderMeshDefects;
 
 /**
@@ -51,22 +54,22 @@ class ViewProviderMeshDefects;
  * module when the application is about to be closed.
  * @author Werner Mayer
  */
-class CleanupHandler : public QObject
+class CleanupHandler: public QObject
 {
     Q_OBJECT
 
 public:
     CleanupHandler();
 
-public Q_SLOTS:
+private:
     void cleanup();
 };
 
 /**
  * \author Werner Mayer
  */
-class DlgEvaluateMeshImp : public QDialog, public App::DocumentObserver
-{ 
+class DlgEvaluateMeshImp: public QDialog, public App::DocumentObserver
+{
     Q_OBJECT
 
 public:
@@ -85,45 +88,45 @@ private:
     /** The property of an observed object has changed */
     void slotChangedObject(const App::DocumentObject& Obj, const App::Property& Prop) override;
 
-protected Q_SLOTS:
-    void on_checkOrientationButton_clicked();
-    void on_analyzeOrientationButton_clicked();
-    void on_repairOrientationButton_clicked();
+    void setupConnections();
+    void onCheckOrientationButtonClicked();
+    void onAnalyzeOrientationButtonClicked();
+    void onRepairOrientationButtonClicked();
 
-    void on_checkDuplicatedFacesButton_clicked();
-    void on_analyzeDuplicatedFacesButton_clicked();
-    void on_repairDuplicatedFacesButton_clicked();
+    void onCheckDuplicatedFacesButtonClicked();
+    void onAnalyzeDuplicatedFacesButtonClicked();
+    void onRepairDuplicatedFacesButtonClicked();
 
-    void on_checkDuplicatedPointsButton_clicked();
-    void on_analyzeDuplicatedPointsButton_clicked();
-    void on_repairDuplicatedPointsButton_clicked();
+    void onCheckDuplicatedPointsButtonClicked();
+    void onAnalyzeDuplicatedPointsButtonClicked();
+    void onRepairDuplicatedPointsButtonClicked();
 
-    void on_checkNonmanifoldsButton_clicked();
-    void on_analyzeNonmanifoldsButton_clicked();
-    void on_repairNonmanifoldsButton_clicked();
+    void onCheckNonmanifoldsButtonClicked();
+    void onAnalyzeNonmanifoldsButtonClicked();
+    void onRepairNonmanifoldsButtonClicked();
 
-    void on_checkDegenerationButton_clicked();
-    void on_analyzeDegeneratedButton_clicked();
-    void on_repairDegeneratedButton_clicked();
+    void onCheckDegenerationButtonClicked();
+    void onAnalyzeDegeneratedButtonClicked();
+    void onRepairDegeneratedButtonClicked();
 
-    void on_checkIndicesButton_clicked();
-    void on_analyzeIndicesButton_clicked();
-    void on_repairIndicesButton_clicked();
+    void onCheckIndicesButtonClicked();
+    void onAnalyzeIndicesButtonClicked();
+    void onRepairIndicesButtonClicked();
 
-    void on_checkSelfIntersectionButton_clicked();
-    void on_analyzeSelfIntersectionButton_clicked();
-    void on_repairSelfIntersectionButton_clicked();
+    void onCheckSelfIntersectionButtonClicked();
+    void onAnalyzeSelfIntersectionButtonClicked();
+    void onRepairSelfIntersectionButtonClicked();
 
-    void on_checkFoldsButton_clicked();
-    void on_analyzeFoldsButton_clicked();
-    void on_repairFoldsButton_clicked();
+    void onCheckFoldsButtonClicked();
+    void onAnalyzeFoldsButtonClicked();
+    void onRepairFoldsButtonClicked();
 
-    void on_analyzeAllTogether_clicked();
-    void on_repairAllTogether_clicked();
+    void onAnalyzeAllTogetherClicked();
+    void onRepairAllTogetherClicked();
 
-    void on_refreshButton_clicked();
-    void on_meshNameButton_activated(int);
-    void on_buttonBox_clicked(QAbstractButton *);
+    void onRefreshButtonClicked();
+    void onMeshNameButtonActivated(int);
+    void onButtonBoxClicked(QAbstractButton*);
 
 protected:
     void refreshList();
@@ -132,7 +135,7 @@ protected:
     void addViewProvider(const char* vp, const std::vector<Mesh::ElementIndex>& indices);
     void removeViewProvider(const char* vp);
     void removeViewProviders();
-    void changeEvent(QEvent *e) override;
+    void changeEvent(QEvent* e) override;
 
 private:
     class Private;
@@ -143,12 +146,12 @@ private:
  * The DockEvaluateMeshImp class creates a single instance and embeds it into a dock window.
  * \author Werner Mayer
  */
-class DockEvaluateMeshImp : public DlgEvaluateMeshImp
-{ 
+class DockEvaluateMeshImp: public DlgEvaluateMeshImp  // NOLINT
+{
     Q_OBJECT
 
 protected:
-    explicit DockEvaluateMeshImp( QWidget* parent = nullptr, Qt::WindowFlags fl = Qt::WindowFlags() );
+    explicit DockEvaluateMeshImp(QWidget* parent = nullptr, Qt::WindowFlags fl = Qt::WindowFlags());
     ~DockEvaluateMeshImp() override;
     void closeEvent(QCloseEvent* e) override;
 
@@ -156,14 +159,14 @@ public:
     static DockEvaluateMeshImp* instance();
     static void destruct();
     static bool hasInstance();
-  
-    QSize sizeHint () const override;
+
+    QSize sizeHint() const override;
 
 private:
     QScrollArea* scrollArea;
     static DockEvaluateMeshImp* _instance;
 };
 
-} // namespace MeshGui
+}  // namespace MeshGui
 
-#endif // MESHGUI_DLG_EVALUATE_MESH_IMP_H
+#endif  // MESHGUI_DLG_EVALUATE_MESH_IMP_H

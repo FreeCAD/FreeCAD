@@ -20,17 +20,17 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef REENGUI_FITBSPLINESURFACE_H
 #define REENGUI_FITBSPLINESURFACE_H
 
-#include <Gui/TaskView/TaskView.h>
 #include <Gui/TaskView/TaskDialog.h>
-#include <App/DocumentObserver.h>
+#include <Gui/TaskView/TaskView.h>
 
-namespace ReenGui {
 
-class FitBSplineSurfaceWidget : public QWidget
+namespace ReenGui
+{
+
+class FitBSplineSurfaceWidget: public QWidget
 {
     Q_OBJECT
 
@@ -43,36 +43,37 @@ public:
 private:
     void restoreSettings();
     void saveSettings();
-    void changeEvent(QEvent *e) override;
+    void changeEvent(QEvent* e) override;
 
-private Q_SLOTS:
-    void on_makePlacement_clicked();
+private:
+    void onMakePlacementClicked();
 
 private:
     class Private;
     Private* d;
 };
 
-class TaskFitBSplineSurface : public Gui::TaskView::TaskDialog
+class TaskFitBSplineSurface: public Gui::TaskView::TaskDialog
 {
     Q_OBJECT
 
 public:
     explicit TaskFitBSplineSurface(const App::DocumentObjectT&);
-    ~TaskFitBSplineSurface() override;
 
 public:
     void open() override;
     bool accept() override;
 
     QDialogButtonBox::StandardButtons getStandardButtons() const override
-    { return QDialogButtonBox::Ok|QDialogButtonBox::Cancel; }
+    {
+        return QDialogButtonBox::Ok | QDialogButtonBox::Cancel;
+    }
 
 private:
     FitBSplineSurfaceWidget* widget;
     Gui::TaskView::TaskBox* taskbox;
 };
 
-} //namespace ReenGui
+}  // namespace ReenGui
 
-#endif // REENGUI_FITBSPLINESURFACE_H
+#endif  // REENGUI_FITBSPLINESURFACE_H

@@ -20,35 +20,29 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <sstream>
+#include <sstream>
 #endif
 
-#include <Base/Console.h>
-#include <Base/Writer.h>
-#include <Base/Reader.h>
-#include <Base/Exception.h>
-#include <Base/FileInfo.h>
-#include <Base/Stream.h>
 #include <Base/PlacementPy.h>
+#include <Base/Reader.h>
+#include <Base/Writer.h>
 
 #include "FemMeshProperty.h"
 #include "FemMeshPy.h"
 
+
 using namespace Fem;
 
-TYPESYSTEM_SOURCE(Fem::PropertyFemMesh , App::PropertyComplexGeoData)
+TYPESYSTEM_SOURCE(Fem::PropertyFemMesh, App::PropertyComplexGeoData)
 
-PropertyFemMesh::PropertyFemMesh() : _FemMesh(new FemMesh)
-{
-}
+PropertyFemMesh::PropertyFemMesh()
+    : _FemMesh(new FemMesh)
+{}
 
-PropertyFemMesh::~PropertyFemMesh()
-{
-}
+PropertyFemMesh::~PropertyFemMesh() = default;
 
 void PropertyFemMesh::setValuePtr(FemMesh* mesh)
 {
@@ -67,14 +61,14 @@ void PropertyFemMesh::setValue(const FemMesh& sh)
     hasSetValue();
 }
 
-const FemMesh &PropertyFemMesh::getValue()const
+const FemMesh& PropertyFemMesh::getValue() const
 {
     return *_FemMesh;
 }
 
 const Data::ComplexGeoData* PropertyFemMesh::getComplexData() const
 {
-    return (FemMesh*)_FemMesh;
+    return static_cast<FemMesh*>(_FemMesh);
 }
 
 Base::BoundBox3d PropertyFemMesh::getBoundingBox() const
@@ -82,7 +76,7 @@ Base::BoundBox3d PropertyFemMesh::getBoundingBox() const
     return _FemMesh->getBoundBox();
 }
 
-void PropertyFemMesh::setTransform(const Base::Matrix4D &rclTrf)
+void PropertyFemMesh::setTransform(const Base::Matrix4D& rclTrf)
 {
     _FemMesh->setTransform(rclTrf);
 }
@@ -92,28 +86,28 @@ Base::Matrix4D PropertyFemMesh::getTransform() const
     return _FemMesh->getTransform();
 }
 
-void PropertyFemMesh::transformGeometry(const Base::Matrix4D &rclMat)
+void PropertyFemMesh::transformGeometry(const Base::Matrix4D& rclMat)
 {
     aboutToSetValue();
     _FemMesh->transformGeometry(rclMat);
     hasSetValue();
 }
 
-PyObject *PropertyFemMesh::getPyObject()
+PyObject* PropertyFemMesh::getPyObject()
 {
     FemMeshPy* mesh = new FemMeshPy(&*_FemMesh);
     mesh->setConst();
     return mesh;
 }
 
-void PropertyFemMesh::setPyObject(PyObject *value)
+void PropertyFemMesh::setPyObject(PyObject* value)
 {
     if (PyObject_TypeCheck(value, &(FemMeshPy::Type))) {
-        FemMeshPy *pcObject = static_cast<FemMeshPy*>(value);
+        FemMeshPy* pcObject = static_cast<FemMeshPy*>(value);
         setValue(*pcObject->getFemMeshPtr());
     }
     else if (PyObject_TypeCheck(value, &(Base::PlacementPy::Type))) {
-        Base::PlacementPy *pcObject = static_cast<Base::PlacementPy*>(value);
+        Base::PlacementPy* pcObject = static_cast<Base::PlacementPy*>(value);
         transformGeometry(pcObject->getPlacementPtr()->toMatrix());
     }
     else {
@@ -123,41 +117,41 @@ void PropertyFemMesh::setPyObject(PyObject *value)
     }
 }
 
-App::Property *PropertyFemMesh::Copy() const
+App::Property* PropertyFemMesh::Copy() const
 {
-    PropertyFemMesh *prop = new PropertyFemMesh();
+    PropertyFemMesh* prop = new PropertyFemMesh();
     prop->_FemMesh = this->_FemMesh;
     return prop;
 }
 
-void PropertyFemMesh::Paste(const App::Property &from)
+void PropertyFemMesh::Paste(const App::Property& from)
 {
     aboutToSetValue();
     _FemMesh = dynamic_cast<const PropertyFemMesh&>(from)._FemMesh;
     hasSetValue();
 }
 
-unsigned int PropertyFemMesh::getMemSize () const
+unsigned int PropertyFemMesh::getMemSize() const
 {
     return _FemMesh->getMemSize();
 }
 
-void PropertyFemMesh::Save (Base::Writer &writer) const
+void PropertyFemMesh::Save(Base::Writer& writer) const
 {
     _FemMesh->Save(writer);
 }
 
-void PropertyFemMesh::Restore(Base::XMLReader &reader)
+void PropertyFemMesh::Restore(Base::XMLReader& reader)
 {
     _FemMesh->Restore(reader);
 }
 
-void PropertyFemMesh::SaveDocFile (Base::Writer &writer) const
+void PropertyFemMesh::SaveDocFile(Base::Writer& writer) const
 {
     _FemMesh->SaveDocFile(writer);
 }
 
-void PropertyFemMesh::RestoreDocFile(Base::Reader &reader )
+void PropertyFemMesh::RestoreDocFile(Base::Reader& reader)
 {
     aboutToSetValue();
     _FemMesh->RestoreDocFile(reader);

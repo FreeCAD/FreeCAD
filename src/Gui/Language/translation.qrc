@@ -1,5 +1,5 @@
 <RCC>
-    <qresource prefix="/translations"> 
+    <qresource prefix="/translations">
         <file>qt_de.qm</file>
         <file>qt_es-ES.qm</file>
         <file>qt_fr.qm</file>
@@ -11,58 +11,66 @@
         <file>qt_sv-SE.qm</file>
         <file>qt_uk.qm</file>
         <file>qt_zh-CN.qm</file>
+        <file>qtbase_ar.qm</file>
+        <file>qtbase_bg.qm</file>
+        <file>qtbase_ca.qm</file>
+        <file>qtbase_cs.qm</file>
+        <file>qtbase_da.qm</file>
         <file>qtbase_de.qm</file>
+        <file>qtbase_es.qm</file>
+        <file>qtbase_fa.qm</file>
         <file>qtbase_fi.qm</file>
         <file>qtbase_fr.qm</file>
+        <file>qtbase_gd.qm</file>
+        <file>qtbase_he.qm</file>
+        <file>qtbase_hr.qm</file>
         <file>qtbase_hu.qm</file>
         <file>qtbase_it.qm</file>
         <file>qtbase_ja.qm</file>
         <file>qtbase_ko.qm</file>
+        <file>qtbase_lv.qm</file>
+        <file>qtbase_nl.qm</file>
+        <file>qtbase_nn.qm</file>
         <file>qtbase_pl.qm</file>
+        <file>qtbase_pt_BR.qm</file>
         <file>qtbase_ru.qm</file>
         <file>qtbase_sk.qm</file>
+        <file>qtbase_tr.qm</file>
         <file>qtbase_uk.qm</file>
+        <file>qtbase_zh_CN.qm</file>
+        <file>qtbase_zh_TW.qm</file>
+        <file>qtmultimedia_ar.qm</file>
+        <file>qtmultimedia_bg.qm</file>
+        <file>qtmultimedia_ca.qm</file>
+        <file>qtmultimedia_cs.qm</file>
+        <file>qtmultimedia_da.qm</file>
+        <file>qtmultimedia_de.qm</file>
+        <file>qtmultimedia_es.qm</file>
+        <file>qtmultimedia_fa.qm</file>
+        <file>qtmultimedia_fi.qm</file>
+        <file>qtmultimedia_fr.qm</file>
+        <file>qtmultimedia_hr.qm</file>
+        <file>qtmultimedia_hu.qm</file>
+        <file>qtmultimedia_it.qm</file>
+        <file>qtmultimedia_ja.qm</file>
+        <file>qtmultimedia_ko.qm</file>
+        <file>qtmultimedia_nl.qm</file>
+        <file>qtmultimedia_nn.qm</file>
         <file>qtmultimedia_pl.qm</file>
-        <file>FreeCAD_af.qm</file>
-        <file>FreeCAD_de.qm</file>
-        <file>FreeCAD_fi.qm</file>
-        <file>FreeCAD_fr.qm</file>
-        <file>FreeCAD_hr.qm</file>
-        <file>FreeCAD_it.qm</file>
-        <file>FreeCAD_nl.qm</file>
-        <file>FreeCAD_no.qm</file>
-        <file>FreeCAD_pl.qm</file>
-        <file>FreeCAD_ru.qm</file>
-        <file>FreeCAD_uk.qm</file>
-        <file>FreeCAD_tr.qm</file>
-        <file>FreeCAD_sv-SE.qm</file>
-        <file>FreeCAD_zh-TW.qm</file>
-        <file>FreeCAD_pt-BR.qm</file>
-        <file>FreeCAD_cs.qm</file>
-        <file>FreeCAD_sk.qm</file>
-        <file>FreeCAD_es-ES.qm</file>
-        <file>FreeCAD_zh-CN.qm</file>
-        <file>FreeCAD_ja.qm</file>
-        <file>FreeCAD_ro.qm</file>
-        <file>FreeCAD_hu.qm</file>
-        <file>FreeCAD_pt-PT.qm</file>
-        <file>FreeCAD_sr.qm</file>
-        <file>FreeCAD_el.qm</file>
-        <file>FreeCAD_sl.qm</file>
-        <file>FreeCAD_eu.qm</file>
-        <file>FreeCAD_ca.qm</file>
-        <file>FreeCAD_gl.qm</file>
-        <file>FreeCAD_kab.qm</file>
-        <file>FreeCAD_ko.qm</file>
-        <file>FreeCAD_fil.qm</file>
-        <file>FreeCAD_id.qm</file>
-        <file>FreeCAD_lt.qm</file>
-        <file>FreeCAD_val-ES.qm</file>
-        <file>FreeCAD_ar.qm</file>
-        <file>FreeCAD_vi.qm</file>
-        <file>FreeCAD_es-AR.qm</file>
-        <file>FreeCAD_bg.qm</file>
-        <file>FreeCAD_ka.qm</file>
-        
+        <file>qtmultimedia_pt_BR.qm</file>
+        <file>qtmultimedia_ru.qm</file>
+        <file>qtmultimedia_sk.qm</file>
+        <file>qtmultimedia_tr.qm</file>
+        <file>qtmultimedia_uk.qm</file>
+        <file>qtmultimedia_zh_CN.qm</file>
+        <file>qtmultimedia_zh_TW.qm</file>
+        <file>qtwebengine_ca.qm</file>
+        <file>qtwebengine_de.qm</file>
+        <file>qtwebengine_es.qm</file>
+        <file>qtwebengine_ko.qm</file>
+        <file>qtwebengine_pl.qm</file>
+        <file>qtwebengine_ru.qm</file>
+        <file>qtwebengine_uk.qm</file>
+        <file>qtwebengine_zh_CN.qm</file>
     </qresource>
-</RCC> 
+</RCC>

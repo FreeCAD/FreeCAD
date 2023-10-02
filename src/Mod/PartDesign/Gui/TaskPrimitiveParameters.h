@@ -40,7 +40,7 @@ namespace Gui {
 class ViewProvider;
 }
 
-namespace PartDesignGui { 
+namespace PartDesignGui {
 class Ui_DlgPrimitives;
 class TaskBoxPrimitives : public Gui::TaskView::TaskBox,
                           public Gui::DocumentObserver

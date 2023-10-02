@@ -45,12 +45,13 @@ public:
     explicit DlgMacroRecordImp( QWidget* parent = nullptr, Qt::WindowFlags fl = Qt::WindowFlags() );
     ~DlgMacroRecordImp() override;
 
-protected Q_SLOTS:
-    void on_buttonStart_clicked();
-    void on_buttonStop_clicked();
-    void on_buttonCancel_clicked();
-    void on_pushButtonChooseDir_clicked();
-    void on_lineEditMacroPath_textChanged ( const QString & );
+protected:
+    void setupConnections();
+    void onButtonStartClicked();
+    void onButtonStopClicked();
+    void onButtonCloseClicked();
+    void onButtonChooseDirClicked();
+    void onMacroPathTextChanged ( const QString & );
 
 private:
     std::unique_ptr<Ui_DlgMacroRecord> ui;

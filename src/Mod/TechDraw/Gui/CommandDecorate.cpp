@@ -23,58 +23,40 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <QMessageBox>
-# include <QGraphicsView>
-# include <iostream>
-# include <string>
 # include <sstream>
-# include <cstdlib>
-# include <exception>
-#endif  //#ifndef _PreComp_
+#endif
 
-
-#include <Base/Tools.h>
 #include <App/Document.h>
 #include <App/DocumentObject.h>
+#include <Base/Tools.h>
 #include <Gui/Action.h>
 #include <Gui/Application.h>
-#include <Gui/BitmapFactory.h>
 #include <Gui/Command.h>
 #include <Gui/Control.h>
 #include <Gui/Document.h>
+#include <Gui/FileDialog.h>
+#include <Gui/MainWindow.h>
 #include <Gui/Selection.h>
 #include <Gui/SelectionObject.h>
-#include <Gui/MainWindow.h>
-#include <Gui/FileDialog.h>
 #include <Gui/ViewProvider.h>
-#include <Gui/WaitCursor.h>
-
-# include <Mod/Part/App/PartFeature.h>
-
-#include <Mod/TechDraw/App/DrawView.h>
-#include <Mod/TechDraw/App/DrawViewPart.h>
 #include <Mod/TechDraw/App/DrawHatch.h>
 #include <Mod/TechDraw/App/DrawGeomHatch.h>
 #include <Mod/TechDraw/App/DrawPage.h>
 #include <Mod/TechDraw/App/DrawUtil.h>
-#include <Mod/TechDraw/Gui/QGVPage.h>
+#include <Mod/TechDraw/App/DrawView.h>
+#include <Mod/TechDraw/App/DrawViewPart.h>
 
 #include "DrawGuiUtil.h"
-#include "MDIViewPage.h"
 #include "TaskGeomHatch.h"
 #include "TaskHatch.h"
-//#include "TaskLeaderLine.h"
-//#include "TaskRichAnno.h"
 #include "ViewProviderGeomHatch.h"
-#include "ViewProviderHatch.h"
 #include "ViewProviderPage.h"
 
-using namespace TechDrawGui;
-using namespace std;
 
+using namespace TechDrawGui;
 
 //internal functions
 bool _checkSelectionHatch(Gui::Command* cmd);
-
 
 //===========================================================================
 // TechDraw_Hatch
@@ -209,19 +191,22 @@ void CmdTechDrawGeometricHatch::activated(int iMsg)
     std::string PageName = page->getNameInDocument();
 
     std::string FeatName = getUniqueObjectName("GeomHatch");
-    std::stringstream featLabel;
-    featLabel << FeatName << "FX" << TechDraw::DrawUtil::getIndexFromName(subNames.at(0));
+
+    // TODO: the structured label for GeomHatch (and Hatch) should be retired.
+//    std::stringstream featLabel;
+//    featLabel << FeatName << "FX" << TechDraw::DrawUtil::getIndexFromName(subNames.at(0));
 
     openCommand(QT_TRANSLATE_NOOP("Command", "Create GeomHatch"));
     doCommand(Doc, "App.activeDocument().addObject('TechDraw::DrawGeomHatch', '%s')", FeatName.c_str());
-    doCommand(Doc, "App.activeDocument().%s.Label = '%s'", FeatName.c_str(), featLabel.str().c_str());
+//    doCommand(Doc, "App.activeDocument().%s.Label = '%s'", FeatName.c_str(), featLabel.str().c_str());
+    doCommand(Doc, "App.activeDocument().%s.translateLabel('DrawGeomHatch', 'GeomHatch', '%s')",
+              FeatName.c_str(), FeatName.c_str());
 
     auto geomhatch( static_cast<TechDraw::DrawGeomHatch *>(getDocument()->getObject(FeatName.c_str())) );
     geomhatch->Source.setValue(objFeat, subNames);
     Gui::ViewProvider* vp = Gui::Application::Instance->getDocument(getDocument())->getViewProvider(geomhatch);
     TechDrawGui::ViewProviderGeomHatch* hvp = dynamic_cast<TechDrawGui::ViewProviderGeomHatch*>(vp);
     if (!hvp) {
-        Base::Console().Log("ERROR - CommandDecorate - GeomHatch has no ViewProvider\n");
         return;
     }
 
@@ -274,8 +259,7 @@ void CmdTechDrawImage::activated(int iMsg)
     QString fileName = Gui::FileDialog::getOpenFileName(Gui::getMainWindow(),
         QString::fromUtf8(QT_TR_NOOP("Select an Image File")),
         QString(),
-        QString::fromUtf8(QT_TR_NOOP("Image (*.png *.jpg *.jpeg)")));
-
+        QString::fromUtf8(QT_TR_NOOP("Image files (*.jpg *.jpeg *.png *.bmp);;All files (*)")));
     if (fileName.isEmpty()) {
         return;
     }
@@ -284,6 +268,8 @@ void CmdTechDrawImage::activated(int iMsg)
     fileName = Base::Tools::escapeEncodeFilename(fileName);
     openCommand(QT_TRANSLATE_NOOP("Command", "Create Image"));
     doCommand(Doc, "App.activeDocument().addObject('TechDraw::DrawViewImage', '%s')", FeatName.c_str());
+    doCommand(Doc, "App.activeDocument().%s.translateLabel('DrawViewImage', 'Image', '%s')",
+              FeatName.c_str(), FeatName.c_str());
     doCommand(Doc, "App.activeDocument().%s.ImageFile = '%s'", FeatName.c_str(), fileName.toUtf8().constData());
     doCommand(Doc, "App.activeDocument().%s.addView(App.activeDocument().%s)", PageName.c_str(), FeatName.c_str());
     updateActive();

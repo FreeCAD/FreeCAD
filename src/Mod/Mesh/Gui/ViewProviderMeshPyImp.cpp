@@ -20,18 +20,16 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-
 #ifndef _PreComp_
-# include <sstream>
+#include <sstream>
 #endif
 
-#include <Mod/Mesh/Gui/ViewProvider.h>
-
+#include "ViewProvider.h"
 // inclusion of the generated files (generated out of ViewProviderMeshPy.xml)
 #include "ViewProviderMeshPy.h"
 #include "ViewProviderMeshPy.cpp"
+
 
 using namespace MeshGui;
 
@@ -44,11 +42,12 @@ std::string ViewProviderMeshPy::representation() const
     return str.str();
 }
 
-PyObject* ViewProviderMeshPy::setSelection(PyObject *args)
+PyObject* ViewProviderMeshPy::setSelection(PyObject* args)
 {
-    PyObject* obj;
-    if (!PyArg_ParseTuple(args, "O", &obj))
+    PyObject* obj {};
+    if (!PyArg_ParseTuple(args, "O", &obj)) {
         return nullptr;
+    }
 
     Py::Sequence list(obj);
     std::vector<Mesh::FacetIndex> selection;
@@ -64,11 +63,12 @@ PyObject* ViewProviderMeshPy::setSelection(PyObject *args)
     Py_Return;
 }
 
-PyObject* ViewProviderMeshPy::addSelection(PyObject *args)
+PyObject* ViewProviderMeshPy::addSelection(PyObject* args)
 {
-    PyObject* obj;
-    if (!PyArg_ParseTuple(args, "O", &obj))
+    PyObject* obj {};
+    if (!PyArg_ParseTuple(args, "O", &obj)) {
         return nullptr;
+    }
 
     Py::Sequence list(obj);
     std::vector<Mesh::FacetIndex> selection;
@@ -84,11 +84,12 @@ PyObject* ViewProviderMeshPy::addSelection(PyObject *args)
     Py_Return;
 }
 
-PyObject* ViewProviderMeshPy::removeSelection(PyObject *args)
+PyObject* ViewProviderMeshPy::removeSelection(PyObject* args)
 {
-    PyObject* obj;
-    if (!PyArg_ParseTuple(args, "O", &obj))
+    PyObject* obj {};
+    if (!PyArg_ParseTuple(args, "O", &obj)) {
         return nullptr;
+    }
 
     Py::Sequence list(obj);
     std::vector<Mesh::FacetIndex> selection;
@@ -104,31 +105,34 @@ PyObject* ViewProviderMeshPy::removeSelection(PyObject *args)
     Py_Return;
 }
 
-PyObject* ViewProviderMeshPy::invertSelection(PyObject *args)
+PyObject* ViewProviderMeshPy::invertSelection(PyObject* args)
 {
-    if (!PyArg_ParseTuple(args, ""))
+    if (!PyArg_ParseTuple(args, "")) {
         return nullptr;
+    }
 
     ViewProviderMesh* vp = getViewProviderMeshPtr();
     vp->invertSelection();
     Py_Return;
 }
 
-PyObject* ViewProviderMeshPy::clearSelection(PyObject *args)
+PyObject* ViewProviderMeshPy::clearSelection(PyObject* args)
 {
-    if (!PyArg_ParseTuple(args, ""))
+    if (!PyArg_ParseTuple(args, "")) {
         return nullptr;
+    }
 
     ViewProviderMesh* vp = getViewProviderMeshPtr();
     vp->clearSelection();
     Py_Return;
 }
 
-PyObject* ViewProviderMeshPy::highlightSegments(PyObject *args)
+PyObject* ViewProviderMeshPy::highlightSegments(PyObject* args)
 {
-    PyObject* list;
-    if (!PyArg_ParseTuple(args, "O", &list))
+    PyObject* list {};
+    if (!PyArg_ParseTuple(args, "O", &list)) {
         return nullptr;
+    }
 
     App::PropertyColorList colors;
     colors.setPyObject(list);
@@ -138,7 +142,7 @@ PyObject* ViewProviderMeshPy::highlightSegments(PyObject *args)
     Py_Return;
 }
 
-PyObject *ViewProviderMeshPy::getCustomAttributes(const char* /*attr*/) const
+PyObject* ViewProviderMeshPy::getCustomAttributes(const char* /*attr*/) const
 {
     return nullptr;
 }

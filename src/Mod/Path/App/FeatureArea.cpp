@@ -21,42 +21,43 @@
  ****************************************************************************/
 
 #include "PreCompiled.h"
-
 #ifndef _PreComp_
 # include <BRep_Builder.hxx>
+# include <Precision.hxx>
 # include <TopoDS_Compound.hxx>
 #endif
 
+#include <Base/Console.h> // for FC_LOG_LEVEL_INIT
+#include <Base/Placement.h>
+
 #include "FeatureArea.h"
 #include "FeatureAreaPy.h"
-#include <App/DocumentObjectPy.h>
-#include <Base/Placement.h>
-#include <Mod/Part/App/PartFeature.h>
 
-FC_LOG_LEVEL_INIT("Path.Area",true,true)
+
+FC_LOG_LEVEL_INIT("Path.Area", true, true)
 
 using namespace Path;
 
 PROPERTY_SOURCE(Path::FeatureArea, Part::Feature)
 
-PARAM_ENUM_STRING_DECLARE(static const char *Enums,AREA_PARAMS_ALL)
+PARAM_ENUM_STRING_DECLARE(static const char* Enums, AREA_PARAMS_ALL)
 
 FeatureArea::FeatureArea()
     :myInited(false)
 {
-    ADD_PROPERTY(Sources,(nullptr));
-    ADD_PROPERTY(WorkPlane,(TopoDS_Shape()));
+    ADD_PROPERTY(Sources, (nullptr));
+    ADD_PROPERTY(WorkPlane, (TopoDS_Shape()));
 
-    PARAM_PROP_ADD("Area",AREA_PARAMS_OPCODE);
-    PARAM_PROP_ADD("Area",AREA_PARAMS_BASE);
-    PARAM_PROP_ADD("Offset",AREA_PARAMS_OFFSET);
+    PARAM_PROP_ADD("Area", AREA_PARAMS_OPCODE);
+    PARAM_PROP_ADD("Area", AREA_PARAMS_BASE);
+    PARAM_PROP_ADD("Offset", AREA_PARAMS_OFFSET);
     PARAM_PROP_ADD("Offset", AREA_PARAMS_OFFSET_CONF);
-    PARAM_PROP_ADD("Pocket",AREA_PARAMS_POCKET);
-    PARAM_PROP_ADD("Pocket",AREA_PARAMS_POCKET_CONF);
-    PARAM_PROP_ADD("Section",AREA_PARAMS_SECTION);
-    PARAM_PROP_ADD("libarea",AREA_PARAMS_CAREA);
+    PARAM_PROP_ADD("Pocket", AREA_PARAMS_POCKET);
+    PARAM_PROP_ADD("Pocket", AREA_PARAMS_POCKET_CONF);
+    PARAM_PROP_ADD("Section", AREA_PARAMS_SECTION);
+    PARAM_PROP_ADD("libarea", AREA_PARAMS_CAREA);
 
-    PARAM_PROP_SET_ENUM(Enums,AREA_PARAMS_ALL);
+    PARAM_PROP_SET_ENUM(Enums, AREA_PARAMS_ALL);
     PocketMode.setValue((long)0);
 }
 

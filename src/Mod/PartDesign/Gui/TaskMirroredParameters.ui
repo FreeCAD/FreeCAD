@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Form</string>
+   <string notr="true">Form</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
@@ -85,6 +85,14 @@
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>buttonAddFeature</tabstop>
+  <tabstop>buttonRemoveFeature</tabstop>
+  <tabstop>listWidgetFeatures</tabstop>
+  <tabstop>comboPlane</tabstop>
+  <tabstop>buttonOK</tabstop>
+  <tabstop>checkBoxUpdateView</tabstop>
+ </tabstops>
  <resources/>
  <connections>
   <connection>

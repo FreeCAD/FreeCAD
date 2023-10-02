@@ -20,18 +20,17 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef DRAWINGGUI_VIEWPROVIDERVIEW_H
 #define DRAWINGGUI_VIEWPROVIDERVIEW_H
 
-#include <Gui/ViewProviderFeature.h>
 #include <Gui/ViewProviderDocumentObjectGroup.h>
 
 
-namespace DrawingGui {
+namespace DrawingGui
+{
 
 
-class DrawingGuiExport ViewProviderDrawingView : public Gui::ViewProviderDocumentObject
+class DrawingGuiExport ViewProviderDrawingView: public Gui::ViewProviderDocumentObject
 {
     PROPERTY_HEADER(DrawingGui::ViewProviderDrawingView);
 
@@ -42,9 +41,12 @@ public:
     virtual ~ViewProviderDrawingView();
 
 
-    virtual void attach(App::DocumentObject *);
+    virtual void attach(App::DocumentObject*);
     virtual void setDisplayMode(const char* ModeName);
-    virtual bool useNewSelectionModel(void) const {return false;}
+    virtual bool useNewSelectionModel(void) const
+    {
+        return false;
+    }
     /// returns a list of all possible modes
     virtual std::vector<std::string> getDisplayModes(void) const;
     virtual void updateData(const App::Property*);
@@ -63,7 +65,7 @@ public:
 
 using ViewProviderDrawingViewPython = Gui::ViewProviderPythonFeatureT<ViewProviderDrawingView>;
 
-class DrawingGuiExport ViewProviderDrawingClip : public Gui::ViewProviderDocumentObjectGroup
+class DrawingGuiExport ViewProviderDrawingClip: public Gui::ViewProviderDocumentObjectGroup
 {
     PROPERTY_HEADER(DrawingGui::ViewProviderDrawingClip);
 
@@ -74,9 +76,12 @@ public:
     virtual ~ViewProviderDrawingClip();
 
 
-    virtual void attach(App::DocumentObject *);
+    virtual void attach(App::DocumentObject*);
     virtual void setDisplayMode(const char* ModeName);
-    virtual bool useNewSelectionModel(void) const {return false;}
+    virtual bool useNewSelectionModel(void) const
+    {
+        return false;
+    }
     /// returns a list of all possible modes
     virtual std::vector<std::string> getDisplayModes(void) const;
     virtual void updateData(const App::Property*);
@@ -93,8 +98,7 @@ public:
     //@}
 };
 
-} // namespace DrawingGui
+}  // namespace DrawingGui
 
 
-#endif // DRAWINGGUI_VIEWPROVIDERVIEW_H
-
+#endif  // DRAWINGGUI_VIEWPROVIDERVIEW_H

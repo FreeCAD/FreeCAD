@@ -57,7 +57,7 @@ public:
 private Q_SLOTS:
     void onFactor(const double f);
     void onOccurrences(const uint n);
-    virtual void onUpdateView(bool);
+    void onUpdateView(bool) override;
     void onFeatureDeleted() override;
 
 protected:
@@ -83,7 +83,7 @@ class TaskDlgScaledParameters : public TaskDlgTransformedParameters
 
 public:
     explicit TaskDlgScaledParameters(ViewProviderScaled *ScaledView);
-    ~TaskDlgScaledParameters() override {}
+    ~TaskDlgScaledParameters() override = default;
 
 public:
     /// is called by the framework if the dialog is accepted (Ok)

@@ -57,10 +57,6 @@ Material::Material(const MaterialType MatType)
     setType(MatType);
 }
 
-Material::~Material() 
-{
-}
-
 void Material::set(const char* MatName)
 {
     if (strcmp("Brass",MatName) == 0 ) {

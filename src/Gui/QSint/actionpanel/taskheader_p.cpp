@@ -37,10 +37,10 @@ TaskHeader::TaskHeader(const QIcon &icon, const QString &title, bool expandable,
     myTitle->setIcon(icon);
     myTitle->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Preferred);
 
-    connect(myTitle, SIGNAL(clicked()), this, SLOT(fold()));
+    connect(myTitle, &ActionLabel::clicked, this, &TaskHeader::fold);
 
     QHBoxLayout *hbl = new QHBoxLayout();
-    hbl->setMargin(2);
+    hbl->setContentsMargins(2, 2, 2, 2);
     setLayout(hbl);
 
     hbl->addWidget(myTitle);
@@ -164,16 +164,20 @@ void TaskHeader::animate()
     m_opacity = qMax(0.1, m_opacity-0.05);
   }
 
-  QTimer::singleShot(100, this, SLOT(animate()));
+  QTimer::singleShot(100, this, &TaskHeader::animate);
   update();
 }
 
+#if QT_VERSION < QT_VERSION_CHECK(6,0,0)
 void TaskHeader::enterEvent ( QEvent * /*event*/ )
+#else
+void TaskHeader::enterEvent ( QEnterEvent * /*event*/ )
+#endif
 {
   m_over = true;
 
   if (isEnabled())
-    QTimer::singleShot(100, this, SLOT(animate()));
+    QTimer::singleShot(100, this, &TaskHeader::animate);
 
   update();
 }
@@ -183,7 +187,7 @@ void TaskHeader::leaveEvent ( QEvent * /*event*/ )
   m_over = false;
 
   if (isEnabled())
-    QTimer::singleShot(100, this, SLOT(animate()));
+    QTimer::singleShot(100, this, &TaskHeader::animate);
 
   update();
 }

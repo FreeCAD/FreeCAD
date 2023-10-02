@@ -58,8 +58,7 @@ public:
     explicit UrlHandler(QObject* parent = nullptr)
         : QObject(parent){
     }
-    ~UrlHandler() override {
-    }
+    ~UrlHandler() override = default;
     virtual void openUrl(App::Document*, const QUrl&) {
     }
 };
@@ -156,6 +155,17 @@ public:
     void saveWindowSettings();
     //@}
 
+    /** @name Menu
+     */
+    //@{
+    /// Set menu for dock windows.
+    void setDockWindowMenu(QMenu*);
+    /// Set menu for toolbars.
+    void setToolBarMenu(QMenu*);
+    /// Set menu for sub-windows
+    void setWindowsMenu(QMenu*);
+    //@}
+
     /** @name MIME data handling
      */
     //@{
@@ -190,9 +200,8 @@ public:
 
     void updateActions(bool delay = false);
 
-    enum StatusType {None, Err, Wrn, Pane, Msg, Log, Tmp};
+    enum StatusType {None, Err, Wrn, Pane, Msg, Log, Tmp, Critical};
     void showStatus(int type, const QString & message);
-
 
 public Q_SLOTS:
     /**
@@ -203,10 +212,6 @@ public Q_SLOTS:
      * Sets text to the pane in the status bar.
      */
     void setPaneText(int i, QString text);
-    /**
-     * Arranges all child windows in a horizontal tile pattern.
-     */
-    void arrangeIcons();
     /**
      * Arranges all child windows in a tile pattern.
      */
@@ -275,6 +280,19 @@ protected:
      * relevant user visible text.
      */
     void changeEvent(QEvent *e) override;
+
+private:
+    void setupDockWindows();
+    bool setupTreeView(const std::string&);
+    bool setupTaskView(const std::string&);
+    bool setupPropertyView(const std::string&);
+    bool setupSelectionView(const std::string&);
+    bool setupComboView(const std::string&);
+    bool setupDAGView(const std::string&);
+    bool setupReportView(const std::string&);
+    bool setupPythonConsole(const std::string&);
+
+    static void renderDevBuildWarning(QPainter &painter, const QPoint startPosition, const QSize maxSize);
 
 private Q_SLOTS:
     /**
@@ -354,14 +372,15 @@ public:
     /** Observes its parameter group. */
     void OnChange(Base::Subject<const char*> &rCaller, const char * sReason) override;
 
-    void SendLog(const std::string& msg, Base::LogStyle level) override;
+    void SendLog(const std::string& notifiername, const std::string& msg, Base::LogStyle level,
+                 Base::IntendedRecipient recipient, Base::ContentType content) override;
 
     /// name of the observer
     const char *Name() override {return "StatusBar";}
 
     friend class MainWindow;
 private:
-    QString msg, wrn, err;
+    QString msg, wrn, err, critical;
 };
 
 // -------------------------------------------------------------

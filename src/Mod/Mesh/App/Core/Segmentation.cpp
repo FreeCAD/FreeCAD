@@ -25,15 +25,14 @@
 #include <algorithm>
 #endif
 
-#include "Segmentation.h"
 #include "Algorithm.h"
 #include "Approximation.h"
+#include "Segmentation.h"
 
 using namespace MeshCore;
 
 void MeshSurfaceSegment::Initialize(FacetIndex)
-{
-}
+{}
 
 bool MeshSurfaceSegment::TestInitialFacet(FacetIndex) const
 {
@@ -41,8 +40,7 @@ bool MeshSurfaceSegment::TestInitialFacet(FacetIndex) const
 }
 
 void MeshSurfaceSegment::AddFacet(const MeshFacet&)
-{
-}
+{}
 
 void MeshSurfaceSegment::AddSegment(const std::vector<FacetIndex>& segm)
 {
@@ -53,20 +51,23 @@ void MeshSurfaceSegment::AddSegment(const std::vector<FacetIndex>& segm)
 
 MeshSegment MeshSurfaceSegment::FindSegment(FacetIndex index) const
 {
-    for (std::vector<MeshSegment>::const_iterator it = segments.begin(); it != segments.end(); ++it) {
-        if (std::find(it->begin(), it->end(), index) != it->end())
-            return *it;
+    for (const auto& segment : segments) {
+        if (std::find(segment.begin(), segment.end(), index) != segment.end()) {
+            return segment;
+        }
     }
 
-    return MeshSegment();
+    return {};
 }
 
 // --------------------------------------------------------
 
-MeshDistancePlanarSegment::MeshDistancePlanarSegment(const MeshKernel& mesh, unsigned long minFacets, float tol)
-  : MeshDistanceSurfaceSegment(mesh, minFacets, tol), fitter(new PlaneFit)
-{
-}
+MeshDistancePlanarSegment::MeshDistancePlanarSegment(const MeshKernel& mesh,
+                                                     unsigned long minFacets,
+                                                     float tol)
+    : MeshDistanceSurfaceSegment(mesh, minFacets, tol)
+    , fitter(new PlaneFit)
+{}
 
 MeshDistancePlanarSegment::~MeshDistancePlanarSegment()
 {
@@ -85,14 +86,16 @@ void MeshDistancePlanarSegment::Initialize(FacetIndex index)
     fitter->AddPoint(triangle._aclPoints[2]);
 }
 
-bool MeshDistancePlanarSegment::TestFacet (const MeshFacet& face) const
+bool MeshDistancePlanarSegment::TestFacet(const MeshFacet& face) const
 {
-    if (!fitter->Done())
+    if (!fitter->Done()) {
         fitter->Fit();
+    }
     MeshGeomFacet triangle = kernel.GetFacet(face);
-    for (int i=0; i<3; i++) {
-        if (fabs(fitter->GetDistanceToPlane(triangle._aclPoints[i])) > tolerance)
+    for (auto pnt : triangle._aclPoints) {
+        if (fabs(fitter->GetDistanceToPlane(pnt)) > tolerance) {
             return false;
+        }
     }
 
     return true;
@@ -108,15 +111,13 @@ void MeshDistancePlanarSegment::AddFacet(const MeshFacet& face)
 
 PlaneSurfaceFit::PlaneSurfaceFit()
     : fitter(new PlaneFit)
-{
-}
+{}
 
 PlaneSurfaceFit::PlaneSurfaceFit(const Base::Vector3f& b, const Base::Vector3f& n)
     : basepoint(b)
     , normal(n)
     , fitter(nullptr)
-{
-}
+{}
 
 PlaneSurfaceFit::~PlaneSurfaceFit()
 {
@@ -145,32 +146,39 @@ bool PlaneSurfaceFit::TestTriangle(const MeshGeomFacet&) const
 
 void PlaneSurfaceFit::AddTriangle(const MeshCore::MeshGeomFacet& tria)
 {
-    if (fitter)
+    if (fitter) {
         fitter->AddPoint(tria.GetGravityPoint());
+    }
 }
 
 bool PlaneSurfaceFit::Done() const
 {
-    if (!fitter)
+    if (!fitter) {
         return true;
-    else
+    }
+    else {
         return fitter->Done();
+    }
 }
 
 float PlaneSurfaceFit::Fit()
 {
-    if (!fitter)
+    if (!fitter) {
         return 0;
-    else
+    }
+    else {
         return fitter->Fit();
+    }
 }
 
 float PlaneSurfaceFit::GetDistanceToSurface(const Base::Vector3f& pnt) const
 {
-    if (!fitter)
+    if (!fitter) {
         return pnt.DistanceToPlane(basepoint, normal);
-    else
+    }
+    else {
         return fitter->GetDistanceToPlane(pnt);
+    }
 }
 
 std::vector<float> PlaneSurfaceFit::Parameters() const
@@ -195,10 +203,10 @@ std::vector<float> PlaneSurfaceFit::Parameters() const
 // --------------------------------------------------------
 
 CylinderSurfaceFit::CylinderSurfaceFit()
-    : fitter(new CylinderFit)
+    : radius(FLOAT_MAX)
+    , fitter(new CylinderFit)
 {
-    axis.Set(0,0,0);
-    radius = FLOAT_MAX;
+    axis.Set(0, 0, 0);
 }
 
 /*!
@@ -210,8 +218,7 @@ CylinderSurfaceFit::CylinderSurfaceFit(const Base::Vector3f& b, const Base::Vect
     , axis(a)
     , radius(r)
     , fitter(nullptr)
-{
-}
+{}
 
 CylinderSurfaceFit::~CylinderSurfaceFit()
 {
@@ -256,8 +263,9 @@ bool CylinderSurfaceFit::Done() const
 
 float CylinderSurfaceFit::Fit()
 {
-    if (!fitter)
+    if (!fitter) {
         return 0;
+    }
 
     float fit = fitter->Fit();
     if (fit < FLOAT_MAX) {
@@ -303,19 +311,17 @@ std::vector<float> CylinderSurfaceFit::Parameters() const
 // --------------------------------------------------------
 
 SphereSurfaceFit::SphereSurfaceFit()
-    : fitter(new SphereFit)
+    : radius(FLOAT_MAX)
+    , fitter(new SphereFit)
 {
-    center.Set(0,0,0);
-    radius = FLOAT_MAX;
+    center.Set(0, 0, 0);
 }
 
 SphereSurfaceFit::SphereSurfaceFit(const Base::Vector3f& c, float r)
     : center(c)
     , radius(r)
     , fitter(nullptr)
-{
-
-}
+{}
 
 SphereSurfaceFit::~SphereSurfaceFit()
 {
@@ -358,8 +364,9 @@ bool SphereSurfaceFit::Done() const
 
 float SphereSurfaceFit::Fit()
 {
-    if (!fitter)
+    if (!fitter) {
         return 0;
+    }
 
     float fit = fitter->Fit();
     if (fit < FLOAT_MAX) {
@@ -398,10 +405,9 @@ MeshDistanceGenericSurfaceFitSegment::MeshDistanceGenericSurfaceFitSegment(Abstr
                                                                            const MeshKernel& mesh,
                                                                            unsigned long minFacets,
                                                                            float tol)
-  : MeshDistanceSurfaceSegment(mesh, minFacets, tol)
-  , fitter(fit)
-{
-}
+    : MeshDistanceSurfaceSegment(mesh, minFacets, tol)
+    , fitter(fit)
+{}
 
 MeshDistanceGenericSurfaceFitSegment::~MeshDistanceGenericSurfaceFitSegment()
 {
@@ -417,21 +423,24 @@ void MeshDistanceGenericSurfaceFitSegment::Initialize(FacetIndex index)
 bool MeshDistanceGenericSurfaceFitSegment::TestInitialFacet(FacetIndex index) const
 {
     MeshGeomFacet triangle = kernel.GetFacet(index);
-    for (int i=0; i<3; i++) {
-        if (fabs(fitter->GetDistanceToSurface(triangle._aclPoints[i])) > tolerance)
+    for (auto pnt : triangle._aclPoints) {
+        if (fabs(fitter->GetDistanceToSurface(pnt)) > tolerance) {
             return false;
+        }
     }
     return fitter->TestTriangle(triangle);
 }
 
-bool MeshDistanceGenericSurfaceFitSegment::TestFacet (const MeshFacet& face) const
+bool MeshDistanceGenericSurfaceFitSegment::TestFacet(const MeshFacet& face) const
 {
-    if (!fitter->Done())
+    if (!fitter->Done()) {
         fitter->Fit();
+    }
     MeshGeomFacet triangle = kernel.GetFacet(face);
-    for (int i=0; i<3; i++) {
-        if (fabs(fitter->GetDistanceToSurface(triangle._aclPoints[i])) > tolerance)
+    for (auto ptIndex : triangle._aclPoints) {
+        if (fabs(fitter->GetDistanceToSurface(ptIndex)) > tolerance) {
             return false;
+        }
     }
 
     return fitter->TestTriangle(triangle);
@@ -450,60 +459,69 @@ std::vector<float> MeshDistanceGenericSurfaceFitSegment::Parameters() const
 
 // --------------------------------------------------------
 
-bool MeshCurvaturePlanarSegment::TestFacet (const MeshFacet &rclFacet) const
+bool MeshCurvaturePlanarSegment::TestFacet(const MeshFacet& rclFacet) const
 {
-    for (int i=0; i<3; i++) {
-        const CurvatureInfo& ci = info[rclFacet._aulPoints[i]];
-        if (fabs(ci.fMinCurvature) > tolerance)
+    for (PointIndex ptIndex : rclFacet._aulPoints) {
+        const CurvatureInfo& ci = GetInfo(ptIndex);
+        if (fabs(ci.fMinCurvature) > tolerance) {
             return false;
-        if (fabs(ci.fMaxCurvature) > tolerance)
+        }
+        if (fabs(ci.fMaxCurvature) > tolerance) {
             return false;
+        }
     }
 
     return true;
 }
 
-bool MeshCurvatureCylindricalSegment::TestFacet (const MeshFacet &rclFacet) const
+bool MeshCurvatureCylindricalSegment::TestFacet(const MeshFacet& rclFacet) const
 {
-    for (int i=0; i<3; i++) {
-        const CurvatureInfo& ci = info[rclFacet._aulPoints[i]];
+    for (PointIndex ptIndex : rclFacet._aulPoints) {
+        const CurvatureInfo& ci = GetInfo(ptIndex);
         float fMax = std::max<float>(fabs(ci.fMaxCurvature), fabs(ci.fMinCurvature));
         float fMin = std::min<float>(fabs(ci.fMaxCurvature), fabs(ci.fMinCurvature));
-        if (fMin > toleranceMin)
+        if (fMin > toleranceMin) {
             return false;
-        if (fabs(fMax - curvature) > toleranceMax)
+        }
+        if (fabs(fMax - curvature) > toleranceMax) {
             return false;
+        }
     }
 
     return true;
 }
 
-bool MeshCurvatureSphericalSegment::TestFacet (const MeshFacet &rclFacet) const
+bool MeshCurvatureSphericalSegment::TestFacet(const MeshFacet& rclFacet) const
 {
-    for (int i=0; i<3; i++) {
-        const CurvatureInfo& ci = info[rclFacet._aulPoints[i]];
-        if (ci.fMaxCurvature * ci.fMinCurvature < 0)
+    for (PointIndex ptIndex : rclFacet._aulPoints) {
+        const CurvatureInfo& ci = GetInfo(ptIndex);
+        if (ci.fMaxCurvature * ci.fMinCurvature < 0) {
             return false;
-        float diff;
+        }
+        float diff {};
         diff = fabs(ci.fMinCurvature) - curvature;
-        if (fabs(diff) > tolerance)
+        if (fabs(diff) > tolerance) {
             return false;
+        }
         diff = fabs(ci.fMaxCurvature) - curvature;
-        if (fabs(diff) > tolerance)
+        if (fabs(diff) > tolerance) {
             return false;
+        }
     }
 
     return true;
 }
 
-bool MeshCurvatureFreeformSegment::TestFacet (const MeshFacet &rclFacet) const
+bool MeshCurvatureFreeformSegment::TestFacet(const MeshFacet& rclFacet) const
 {
-    for (int i=0; i<3; i++) {
-        const CurvatureInfo& ci = info[rclFacet._aulPoints[i]];
-        if (fabs(ci.fMinCurvature-c2) > toleranceMin)
+    for (PointIndex ptIndex : rclFacet._aulPoints) {
+        const CurvatureInfo& ci = GetInfo(ptIndex);
+        if (fabs(ci.fMinCurvature - c2) > toleranceMin) {
             return false;
-        if (fabs(ci.fMaxCurvature-c1) > toleranceMax)
+        }
+        if (fabs(ci.fMaxCurvature - c1) > toleranceMax) {
             return false;
+        }
     }
 
     return true;
@@ -511,23 +529,24 @@ bool MeshCurvatureFreeformSegment::TestFacet (const MeshFacet &rclFacet) const
 
 // --------------------------------------------------------
 
-MeshSurfaceVisitor::MeshSurfaceVisitor (MeshSurfaceSegment& segm, std::vector<FacetIndex> &indices)
-  : indices(indices), segm(segm)
-{
-}
+MeshSurfaceVisitor::MeshSurfaceVisitor(MeshSurfaceSegment& segm, std::vector<FacetIndex>& indices)
+    : indices(indices)
+    , segm(segm)
+{}
 
-MeshSurfaceVisitor::~MeshSurfaceVisitor ()
-{
-}
-
-bool MeshSurfaceVisitor::AllowVisit (const MeshFacet& face, const MeshFacet&, 
-                                     FacetIndex, unsigned long, unsigned short)
+bool MeshSurfaceVisitor::AllowVisit(const MeshFacet& face,
+                                    const MeshFacet&,
+                                    FacetIndex,
+                                    unsigned long,
+                                    unsigned short)
 {
     return segm.TestFacet(face);
 }
 
-bool MeshSurfaceVisitor::Visit (const MeshFacet & face, const MeshFacet &,
-                                FacetIndex ulFInd, unsigned long)
+bool MeshSurfaceVisitor::Visit(const MeshFacet& face,
+                               const MeshFacet&,
+                               FacetIndex ulFInd,
+                               unsigned long)
 {
     indices.push_back(ulFInd);
     segm.AddFacet(face);
@@ -539,7 +558,7 @@ bool MeshSurfaceVisitor::Visit (const MeshFacet & face, const MeshFacet &,
 void MeshSegmentAlgorithm::FindSegments(std::vector<MeshSurfaceSegmentPtr>& segm)
 {
     // reset VISIT flags
-    FacetIndex startFacet;
+    FacetIndex startFacet {};
     MeshCore::MeshAlgorithm cAlgo(myKernel);
     cAlgo.ResetFacetFlag(MeshCore::MeshFacet::VISIT);
 
@@ -552,7 +571,7 @@ void MeshSegmentAlgorithm::FindSegments(std::vector<MeshSurfaceSegmentPtr>& segm
     cAlgo.CountFacetFlag(MeshCore::MeshFacet::VISIT);
     std::vector<FacetIndex> resetVisited;
 
-    for (std::vector<MeshSurfaceSegmentPtr>::iterator it = segm.begin(); it != segm.end(); ++it) {
+    for (auto& it : segm) {
         cAlgo.ResetFacetsFlag(resetVisited, MeshCore::MeshFacet::VISIT);
         resetVisited.clear();
 
@@ -560,17 +579,20 @@ void MeshSegmentAlgorithm::FindSegments(std::vector<MeshSurfaceSegmentPtr>& segm
         iCur = std::find_if(iBeg, iEnd, [flag](const MeshFacet& f) {
             return flag(f, MeshFacet::VISIT);
         });
-        if (iCur < iEnd)
+        if (iCur < iEnd) {
             startFacet = iCur - iBeg;
-        else
+        }
+        else {
             startFacet = FACET_INDEX_MAX;
+        }
         while (startFacet != FACET_INDEX_MAX) {
             // collect all facets of the same geometry
             std::vector<FacetIndex> indices;
-            (*it)->Initialize(startFacet);
-            if ((*it)->TestInitialFacet(startFacet))
+            it->Initialize(startFacet);
+            if (it->TestInitialFacet(startFacet)) {
                 indices.push_back(startFacet);
-            MeshSurfaceVisitor pv(**it, indices);
+            }
+            MeshSurfaceVisitor pv(*it, indices);
             myKernel.VisitNeighbourFacets(pv, startFacet);
 
             // add or discard the segment
@@ -578,17 +600,19 @@ void MeshSegmentAlgorithm::FindSegments(std::vector<MeshSurfaceSegmentPtr>& segm
                 resetVisited.push_back(startFacet);
             }
             else {
-                (*it)->AddSegment(indices);
+                it->AddSegment(indices);
             }
 
             // search for the next start facet
             iCur = std::find_if(iCur, iEnd, [flag](const MeshFacet& f) {
                 return flag(f, MeshFacet::VISIT);
             });
-            if (iCur < iEnd)
+            if (iCur < iEnd) {
                 startFacet = iCur - iBeg;
-            else
+            }
+            else {
                 startFacet = FACET_INDEX_MAX;
+            }
         }
     }
 }

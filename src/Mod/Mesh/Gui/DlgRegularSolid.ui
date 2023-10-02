@@ -822,10 +822,7 @@
      <item>
       <widget class="QPushButton" name="buttonClose">
        <property name="text">
-        <string>Cl&amp;ose</string>
-       </property>
-       <property name="shortcut">
-        <string>Alt+O</string>
+        <string>Close</string>
        </property>
        <property name="autoDefault">
         <bool>true</bool>

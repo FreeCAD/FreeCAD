@@ -21,19 +21,12 @@
  ***************************************************************************/
 
 #include "PreCompiled.h"
-#ifndef _PreComp_
-#endif
-
-#include <Base/Console.h>
-#include <Base/PyObjectBase.h>
-#include <Base/Vector3D.h>
 
 #include "DrawViewDimExtent.h"
-
 // inclusion of the generated files (generated out of DrawViewDimExtentPy.xml)
-#include <Base/VectorPy.h>
 #include <Mod/TechDraw/App/DrawViewDimExtentPy.h>
 #include <Mod/TechDraw/App/DrawViewDimExtentPy.cpp>
+
 
 using namespace TechDraw;
 
@@ -45,8 +38,7 @@ std::string DrawViewDimExtentPy::representation() const
 PyObject* DrawViewDimExtentPy::tbd(PyObject* args)
 {
     (void) args;
-    PyObject *pyText = nullptr;
-    return pyText;
+    return nullptr;
 }
 
 

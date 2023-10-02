@@ -1,0 +1,47 @@
+---
+# ***************************************************************************
+# *                                                                         *
+# *   Copyright (c) 2023 David Carter <dcarter@davidcarter.ca>              *
+# *                                                                         *
+# *   This program is free software; you can redistribute it and/or modify  *
+# *   it under the terms of the GNU Lesser General Public License (LGPL)    *
+# *   as published by the Free Software Foundation; either version 2 of     *
+# *   the License, or (at your option) any later version.                   *
+# *   for detail see the LICENCE text file.                                 *
+# *                                                                         *
+# *   This program is distributed in the hope that it will be useful,       *
+# *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+# *   GNU Library General Public License for more details.                  *
+# *                                                                         *
+# *   You should have received a copy of the GNU Library General Public     *
+# *   License along with this program; if not, write to the Free Software   *
+# *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
+# *   USA                                                                   *
+# *                                                                         *
+# ***************************************************************************
+
+Model:
+  Name: "Costs"
+  UUID: '881df808-8726-4c2e-be38-688bb6cce466'
+  URL: ''
+  Description: "default cost model"
+  DOI: ""
+  ProductURL:
+    Type: 'URL'
+    Units: ''
+    URL: 'https://de.wikipedia.org/wiki/Hyperlink'
+    Description: "Product URL, recommended are wikipedia links"
+  SpecificPrice:
+    Type: 'Float'
+    Units: ''
+    URL: ''
+    Description: >
+      Specific price in currency / mass. A currency is not supported by
+      FreeCAD unit system. Will be empty in all FreeCAD cards. Means the
+      user needs to put in himself.
+  Vendor:
+    Type: 'String'
+    Units: ''
+    URL: ''
+    Description: "Vendor of the material"

@@ -6,13 +6,13 @@ if(BUILD_ARCH)
   add_subdirectory(Arch)
 endif(BUILD_ARCH)
 
+if(BUILD_ASSEMBLY)
+  add_subdirectory(Assembly)
+endif(BUILD_ASSEMBLY)
+
 if(BUILD_CLOUD)
     add_subdirectory(Cloud)
 endif(BUILD_CLOUD)
-
-if(BUILD_COMPLETE)
-  add_subdirectory(Complete)
-endif(BUILD_COMPLETE)
 
 if(BUILD_DRAFT)
   add_subdirectory(Draft)
@@ -29,10 +29,6 @@ endif(BUILD_FEM)
 if(BUILD_IDF)
   add_subdirectory(Idf)
 endif(BUILD_IDF)
-
-if(BUILD_IMAGE)
-  add_subdirectory(Image)
-endif(BUILD_IMAGE)
 
 if(BUILD_IMPORT)
   add_subdirectory(Import)
@@ -81,10 +77,6 @@ endif(BUILD_PLOT)
 if(BUILD_POINTS)
   add_subdirectory(Points)
 endif(BUILD_POINTS)
-
-if(BUILD_RAYTRACING)
-  add_subdirectory(Raytracing)
-endif(BUILD_RAYTRACING)
 
 if(BUILD_REVERSEENGINEERING)
   add_subdirectory(ReverseEngineering)

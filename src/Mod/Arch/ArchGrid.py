@@ -19,7 +19,10 @@
 #*                                                                         *
 #***************************************************************************
 
-import FreeCAD, Part, math
+import math
+
+import FreeCAD
+import Part
 if FreeCAD.GuiUp:
     import FreeCADGui
     from PySide import QtCore, QtGui
@@ -35,7 +38,7 @@ else:
 
 __title__  = "FreeCAD Axis System"
 __author__ = "Yorik van Havre"
-__url__    = "https://www.freecadweb.org"
+__url__    = "https://www.freecad.org"
 
 ## @package ArchGrid
 #  \ingroup ARCH
@@ -44,12 +47,12 @@ __url__    = "https://www.freecadweb.org"
 #  This module provides tools to build grid systems
 
 
-def makeGrid(name="Grid"):
+def makeGrid(name=None):
 
-    '''makeGrid(): makes a grid object'''
+    '''makeGrid([name]): makes a grid object'''
 
     obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython","Grid")
-    obj.Label = translate("Arch",name)
+    obj.Label = name if name else translate("Arch","Grid")
     ArchGrid(obj)
     if FreeCAD.GuiUp:
         ViewProviderArchGrid(obj.ViewObject)
@@ -276,11 +279,11 @@ class ArchGrid:
         else:
             return [f.CenterOfMass for f in obj.Shape.Faces]
 
-    def __getstate__(self):
+    def dumps(self):
 
         return None
 
-    def __setstate__(self,state):
+    def loads(self,state):
 
         return None
 
@@ -298,26 +301,40 @@ class ViewProviderArchGrid:
         import Arch_rc
         return ":/icons/Arch_Grid.svg"
 
-    def setEdit(self,vobj,mode=0):
+    def attach(self, vobj):
+        self.Object = vobj.Object
+
+    def setEdit(self, vobj, mode):
+        if mode != 0:
+            return None
 
         taskd = ArchGridTaskPanel(vobj.Object)
         FreeCADGui.Control.showDialog(taskd)
         return True
 
-    def unsetEdit(self,vobj,mode):
+    def unsetEdit(self, vobj, mode):
+        if mode != 0:
+            return None
 
         FreeCADGui.Control.closeDialog()
-        return
+        return True
 
-    def doubleClicked(self,vobj):
+    def setupContextMenu(self, vobj, menu):
+        actionEdit = QtGui.QAction(translate("Arch", "Edit"),
+                                   menu)
+        QtCore.QObject.connect(actionEdit,
+                               QtCore.SIGNAL("triggered()"),
+                               self.edit)
+        menu.addAction(actionEdit)
 
-        self.setEdit(vobj)
+    def edit(self):
+        FreeCADGui.ActiveDocument.setEdit(self.Object, 0)
 
-    def __getstate__(self):
+    def dumps(self):
 
         return None
 
-    def __setstate__(self,state):
+    def loads(self,state):
 
         return None
 

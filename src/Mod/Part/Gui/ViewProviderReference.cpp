@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2004 Jrgen Riegel <juergen.riegel@web.de>               *
+ *   Copyright (c) 2004 Juergen Riegel <juergen.riegel@web.de>             *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -48,18 +48,6 @@ PROPERTY_SOURCE(PartGui::ViewProviderPartReference, Gui::ViewProviderGeometryObj
 // Construction/Destruction
 
 ViewProviderPartReference::ViewProviderPartReference()
-  : EdgeRoot(nullptr)
-  , FaceRoot(nullptr)
-  , VertexRoot(nullptr)
-  , pcLineMaterial(nullptr)
-  , pcPointMaterial(nullptr)
-  , pcLineStyle(nullptr)
-  , pcPointStyle(nullptr)
-  , pcControlPoints(nullptr)
-  , pShapeHints(nullptr)
-  , meshDeviation(0.01f)
-  , noPerVertexNormals(true)
-  , qualityNormals(false)
 {
     App::Material mat;
     mat.ambientColor.set(0.2f,0.2f,0.2f);

@@ -1,4 +1,4 @@
-﻿/***************************************************************************
+/***************************************************************************
  *   Copyright (c) 2004 Jürgen Riegel <juergen.riegel@web.de>              *
  *   Copyright (c) 2012 Luke Parry <l.parry@warwick.ac.uk>                 *
  *                                                                         *
@@ -24,13 +24,12 @@
 #ifndef DRAWINGGUI_VIEWPROVIDERDIMENSION_H
 #define DRAWINGGUI_VIEWPROVIDERDIMENSION_H
 
-#include <Mod/TechDraw/TechDrawGlobal.h>
-
 #include <App/PropertyUnits.h>
-
+#include <Mod/TechDraw/TechDrawGlobal.h>
 #include <Mod/TechDraw/App/DrawViewDimension.h>
 
 #include "ViewProviderDrawingView.h"
+
 
 namespace TechDrawGui {
 
@@ -46,6 +45,7 @@ public:
 
     App::PropertyFont   Font;
     App::PropertyLength Fontsize;
+    App::PropertyLength Arrowsize;
     App::PropertyLength LineWidth;
     App::PropertyColor  Color;
 
@@ -67,6 +67,7 @@ public:
 
     App::PropertyFloat GapFactorISO;
     App::PropertyFloat GapFactorASME;
+    App::PropertyFloat LineSpacingFactorISO;
 
     void attach(App::DocumentObject *) override;
     bool useNewSelectionModel() const override {return false;}
@@ -81,9 +82,11 @@ public:
     App::Color prefColor() const;
     std::string prefFont() const;
     double prefFontSize() const;
+    double prefArrowSize() const;
     double prefWeight() const;
     int prefStandardAndStyle() const;
     bool canDelete(App::DocumentObject* obj) const override;
+    void setPixmapForType();
 
 protected:
     void handleChangedPropertyType(Base::XMLReader &reader, const char *TypeName, App::Property * prop) override;

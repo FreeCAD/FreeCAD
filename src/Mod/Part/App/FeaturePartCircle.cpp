@@ -48,9 +48,7 @@ Circle::Circle()
     Angle2.setConstraints(&angleRange);
 }
 
-Circle::~Circle()
-{
-}
+Circle::~Circle() = default;
 
 short Circle::mustExecute() const
 {
@@ -61,11 +59,11 @@ short Circle::mustExecute() const
     return Part::Primitive::mustExecute();
 }
 
-App::DocumentObjectExecReturn *Circle::execute(void)
+App::DocumentObjectExecReturn *Circle::execute()
 {
     gp_Circ circle;
     circle.SetRadius(this->Radius.getValue());
-    
+
     BRepBuilderAPI_MakeEdge clMakeEdge(circle, Base::toRadians<double>(this->Angle1.getValue()),
                                                Base::toRadians<double>(this->Angle2.getValue()));
     const TopoDS_Edge& edge = clMakeEdge.Edge();

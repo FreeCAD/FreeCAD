@@ -4,18 +4,18 @@
   <context>
     <name>CmdMeshAddFacet</name>
     <message>
-      <location filename="../../Command.cpp" line="851"/>
+      <location filename="../../Command.cpp" line="720"/>
       <source>Mesh</source>
       <translation type="unfinished">Mesh</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="852"/>
+      <location filename="../../Command.cpp" line="721"/>
       <source>Add triangle</source>
       <translation>Lisää kolmio</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="853"/>
-      <location filename="../../Command.cpp" line="855"/>
+      <location filename="../../Command.cpp" line="722"/>
+      <location filename="../../Command.cpp" line="724"/>
       <source>Add triangle manually to a mesh</source>
       <translation>Lisää kolmio käsivaraisesti verkkopintaan</translation>
     </message>
@@ -23,18 +23,18 @@
   <context>
     <name>CmdMeshBoundingBox</name>
     <message>
-      <location filename="../../Command.cpp" line="1566"/>
+      <location filename="../../Command.cpp" line="1439"/>
       <source>Mesh</source>
       <translation type="unfinished">Mesh</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1567"/>
+      <location filename="../../Command.cpp" line="1440"/>
       <source>Boundings info...</source>
       <translation>Rajoituksista tietoa...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1568"/>
-      <location filename="../../Command.cpp" line="1570"/>
+      <location filename="../../Command.cpp" line="1441"/>
+      <location filename="../../Command.cpp" line="1443"/>
       <source>Shows the boundings of the selected mesh</source>
       <translation>Näytä valitun verkkopinnan rajat</translation>
     </message>
@@ -42,18 +42,18 @@
   <context>
     <name>CmdMeshBuildRegularSolid</name>
     <message>
-      <location filename="../../Command.cpp" line="1608"/>
+      <location filename="../../Command.cpp" line="1491"/>
       <source>Mesh</source>
       <translation type="unfinished">Mesh</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1609"/>
+      <location filename="../../Command.cpp" line="1492"/>
       <source>Regular solid...</source>
       <translation>Säännöllinen monitahokas...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1610"/>
-      <location filename="../../Command.cpp" line="1612"/>
+      <location filename="../../Command.cpp" line="1493"/>
+      <location filename="../../Command.cpp" line="1495"/>
       <source>Builds a regular solid</source>
       <translation>Luo säännöllisen monitahokkaan</translation>
     </message>
@@ -61,18 +61,18 @@
   <context>
     <name>CmdMeshCrossSections</name>
     <message>
-      <location filename="../../Command.cpp" line="1078"/>
+      <location filename="../../Command.cpp" line="961"/>
       <source>Mesh</source>
       <translation type="unfinished">Mesh</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1079"/>
+      <location filename="../../Command.cpp" line="962"/>
       <source>Cross-sections...</source>
       <translation>Poikkileikkaukset...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1080"/>
-      <location filename="../../Command.cpp" line="1081"/>
+      <location filename="../../Command.cpp" line="963"/>
+      <location filename="../../Command.cpp" line="964"/>
       <source>Cross-sections</source>
       <translation>Poikkileikkaukset</translation>
     </message>
@@ -80,45 +80,32 @@
   <context>
     <name>CmdMeshDecimating</name>
     <message>
-      <location filename="../../Command.cpp" line="1467"/>
+      <location filename="../../Command.cpp" line="1335"/>
       <source>Mesh</source>
       <translation type="unfinished">Mesh</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1468"/>
+      <location filename="../../Command.cpp" line="1336"/>
       <source>Decimation...</source>
       <translation>Desimaatio...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1469"/>
-      <location filename="../../Command.cpp" line="1470"/>
-      <location filename="../../Command.cpp" line="1471"/>
+      <location filename="../../Command.cpp" line="1337"/>
+      <location filename="../../Command.cpp" line="1338"/>
+      <location filename="../../Command.cpp" line="1339"/>
       <source>Decimates a mesh</source>
       <translation>Desimoi verkkopinta</translation>
     </message>
   </context>
   <context>
-    <name>CmdMeshDemolding</name>
-    <message>
-      <location filename="../../Command.cpp" line="134"/>
-      <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="135"/>
-      <source>Interactive demolding direction</source>
-      <translation>Interaktiivinen muotista irroituksen suunta</translation>
-    </message>
-  </context>
-  <context>
     <name>CmdMeshDifference</name>
     <message>
-      <location filename="../../Command.cpp" line="300"/>
+      <location filename="../../Command.cpp" line="165"/>
       <source>Mesh</source>
       <translation type="unfinished">Mesh</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="301"/>
+      <location filename="../../Command.cpp" line="166"/>
       <source>Difference</source>
       <translation>Erotus</translation>
     </message>
@@ -126,18 +113,18 @@
   <context>
     <name>CmdMeshEvaluateFacet</name>
     <message>
-      <location filename="../../Command.cpp" line="1201"/>
+      <location filename="../../Command.cpp" line="1090"/>
       <source>Mesh</source>
       <translation type="unfinished">Mesh</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1202"/>
+      <location filename="../../Command.cpp" line="1091"/>
       <source>Face info</source>
       <translation>Pinnan tiedot</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1203"/>
-      <location filename="../../Command.cpp" line="1205"/>
+      <location filename="../../Command.cpp" line="1092"/>
+      <location filename="../../Command.cpp" line="1094"/>
       <source>Information about face</source>
       <translation>Tietoa pinnasta</translation>
     </message>
@@ -145,18 +132,18 @@
   <context>
     <name>CmdMeshEvaluateSolid</name>
     <message>
-      <location filename="../../Command.cpp" line="1366"/>
+      <location filename="../../Command.cpp" line="1265"/>
       <source>Mesh</source>
       <translation type="unfinished">Mesh</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1367"/>
+      <location filename="../../Command.cpp" line="1266"/>
       <source>Check solid mesh</source>
       <translation>Tarkasta kiinteä verkkopinta</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1368"/>
-      <location filename="../../Command.cpp" line="1370"/>
+      <location filename="../../Command.cpp" line="1267"/>
+      <location filename="../../Command.cpp" line="1269"/>
       <source>Checks whether the mesh is a solid</source>
       <translation>Tarkastaa onko verkkopinta kiinteä</translation>
     </message>
@@ -164,18 +151,18 @@
   <context>
     <name>CmdMeshEvaluation</name>
     <message>
-      <location filename="../../Command.cpp" line="1158"/>
+      <location filename="../../Command.cpp" line="1045"/>
       <source>Mesh</source>
       <translation type="unfinished">Mesh</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1160"/>
+      <location filename="../../Command.cpp" line="1047"/>
       <source>Evaluate and repair mesh...</source>
       <translation>Arvioi ja korjaa verkkopinta...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1161"/>
-      <location filename="../../Command.cpp" line="1163"/>
+      <location filename="../../Command.cpp" line="1048"/>
+      <location filename="../../Command.cpp" line="1050"/>
       <source>Opens a dialog to analyze and repair a mesh</source>
       <translation>Avaa valintaikkunan jossa voit analysoida ja korjata verkkopinnan</translation>
     </message>
@@ -183,18 +170,18 @@
   <context>
     <name>CmdMeshExport</name>
     <message>
-      <location filename="../../Command.cpp" line="493"/>
+      <location filename="../../Command.cpp" line="376"/>
       <source>Mesh</source>
       <translation type="unfinished">Mesh</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="494"/>
+      <location filename="../../Command.cpp" line="377"/>
       <source>Export mesh...</source>
       <translation>Vie verkkopinta...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="495"/>
-      <location filename="../../Command.cpp" line="497"/>
+      <location filename="../../Command.cpp" line="378"/>
+      <location filename="../../Command.cpp" line="380"/>
       <source>Exports a mesh to file</source>
       <translation>Vie verkkopinnan tiedot tiedostoon</translation>
     </message>
@@ -202,18 +189,18 @@
   <context>
     <name>CmdMeshFillInteractiveHole</name>
     <message>
-      <location filename="../../Command.cpp" line="1678"/>
+      <location filename="../../Command.cpp" line="1574"/>
       <source>Mesh</source>
       <translation type="unfinished">Mesh</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1679"/>
+      <location filename="../../Command.cpp" line="1575"/>
       <source>Close hole</source>
       <translation>Sulje reikä</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1680"/>
-      <location filename="../../Command.cpp" line="1682"/>
+      <location filename="../../Command.cpp" line="1576"/>
+      <location filename="../../Command.cpp" line="1578"/>
       <source>Close holes interactively</source>
       <translation>Sulje reikiä vuorovaikutteisesti</translation>
     </message>
@@ -221,18 +208,18 @@
   <context>
     <name>CmdMeshFillupHoles</name>
     <message>
-      <location filename="../../Command.cpp" line="1639"/>
+      <location filename="../../Command.cpp" line="1523"/>
       <source>Mesh</source>
       <translation type="unfinished">Mesh</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1640"/>
+      <location filename="../../Command.cpp" line="1524"/>
       <source>Fill holes...</source>
       <translation>Täyttää reiät...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1641"/>
-      <location filename="../../Command.cpp" line="1643"/>
+      <location filename="../../Command.cpp" line="1525"/>
+      <location filename="../../Command.cpp" line="1527"/>
       <source>Fill holes of the mesh</source>
       <translation>Täytä verkkopinnan reiät</translation>
     </message>
@@ -240,18 +227,18 @@
   <context>
     <name>CmdMeshFlipNormals</name>
     <message>
-      <location filename="../../Command.cpp" line="1532"/>
+      <location filename="../../Command.cpp" line="1403"/>
       <source>Mesh</source>
       <translation type="unfinished">Mesh</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1533"/>
+      <location filename="../../Command.cpp" line="1404"/>
       <source>Flip normals</source>
       <translation>Käännä normaalit päinvastaisiksi</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1534"/>
-      <location filename="../../Command.cpp" line="1536"/>
+      <location filename="../../Command.cpp" line="1405"/>
+      <location filename="../../Command.cpp" line="1407"/>
       <source>Flips the normals of the mesh</source>
       <translation>Käännä verkkopinnan normaalit</translation>
     </message>
@@ -259,18 +246,18 @@
   <context>
     <name>CmdMeshFromGeometry</name>
     <message>
-      <location filename="../../Command.cpp" line="568"/>
+      <location filename="../../Command.cpp" line="459"/>
       <source>Mesh</source>
       <translation type="unfinished">Mesh</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="569"/>
+      <location filename="../../Command.cpp" line="460"/>
       <source>Create mesh from geometry...</source>
       <translation>Luo verkkopinta geometriasta...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="570"/>
-      <location filename="../../Command.cpp" line="572"/>
+      <location filename="../../Command.cpp" line="461"/>
+      <location filename="../../Command.cpp" line="463"/>
       <source>Create mesh from the selected geometry</source>
       <translation>Luo verkkopinta valitusta geometriasta</translation>
     </message>
@@ -278,17 +265,17 @@
   <context>
     <name>CmdMeshFromPartShape</name>
     <message>
-      <location filename="../../Command.cpp" line="627"/>
+      <location filename="../../Command.cpp" line="532"/>
       <source>Mesh</source>
       <translation type="unfinished">Mesh</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="628"/>
+      <location filename="../../Command.cpp" line="533"/>
       <source>Create mesh from shape...</source>
       <translation>Luo verkkotaso muodosta...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="629"/>
+      <location filename="../../Command.cpp" line="534"/>
       <source>Tessellate shape</source>
       <translation>Jaa muoto ruutuihin</translation>
     </message>
@@ -296,18 +283,18 @@
   <context>
     <name>CmdMeshHarmonizeNormals</name>
     <message>
-      <location filename="../../Command.cpp" line="1498"/>
+      <location filename="../../Command.cpp" line="1367"/>
       <source>Mesh</source>
       <translation type="unfinished">Mesh</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1499"/>
+      <location filename="../../Command.cpp" line="1368"/>
       <source>Harmonize normals</source>
       <translation>Yhdenmukaista normaalit</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1500"/>
-      <location filename="../../Command.cpp" line="1502"/>
+      <location filename="../../Command.cpp" line="1369"/>
+      <location filename="../../Command.cpp" line="1371"/>
       <source>Harmonizes the normals of the mesh</source>
       <translation>Yhdenmukaistaa verkkopinnan normaalit</translation>
     </message>
@@ -315,18 +302,18 @@
   <context>
     <name>CmdMeshImport</name>
     <message>
-      <location filename="../../Command.cpp" line="442"/>
+      <location filename="../../Command.cpp" line="323"/>
       <source>Mesh</source>
       <translation type="unfinished">Mesh</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="443"/>
+      <location filename="../../Command.cpp" line="324"/>
       <source>Import mesh...</source>
       <translation>Tuo verkkopinta...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="444"/>
-      <location filename="../../Command.cpp" line="446"/>
+      <location filename="../../Command.cpp" line="325"/>
+      <location filename="../../Command.cpp" line="327"/>
       <source>Imports a mesh from file</source>
       <translation>Tuo verkkopinta tiedostosta</translation>
     </message>
@@ -334,12 +321,12 @@
   <context>
     <name>CmdMeshIntersection</name>
     <message>
-      <location filename="../../Command.cpp" line="371"/>
+      <location filename="../../Command.cpp" line="244"/>
       <source>Mesh</source>
       <translation type="unfinished">Mesh</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="372"/>
+      <location filename="../../Command.cpp" line="245"/>
       <source>Intersection</source>
       <translation>Leikkaus</translation>
     </message>
@@ -347,17 +334,17 @@
   <context>
     <name>CmdMeshMerge</name>
     <message>
-      <location filename="../../Command.cpp" line="1792"/>
+      <location filename="../../Command.cpp" line="1690"/>
       <source>Mesh</source>
       <translation type="unfinished">Mesh</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1793"/>
+      <location filename="../../Command.cpp" line="1691"/>
       <source>Merge</source>
       <translation>Yhdistä</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1794"/>
+      <location filename="../../Command.cpp" line="1692"/>
       <source>Merges selected meshes into one</source>
       <translation>Yhdistä valitut verkkopinnat yhdeksi</translation>
     </message>
@@ -365,18 +352,18 @@
   <context>
     <name>CmdMeshPolyCut</name>
     <message>
-      <location filename="../../Command.cpp" line="898"/>
+      <location filename="../../Command.cpp" line="769"/>
       <source>Mesh</source>
       <translation type="unfinished">Mesh</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="899"/>
+      <location filename="../../Command.cpp" line="770"/>
       <source>Cut mesh</source>
       <translation>Leikkaa verkkopinta</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="900"/>
-      <location filename="../../Command.cpp" line="902"/>
+      <location filename="../../Command.cpp" line="771"/>
+      <location filename="../../Command.cpp" line="773"/>
       <source>Cuts a mesh with a picked polygon</source>
       <translation>Leikkaa verkkopinta valitulla monikulmiolla</translation>
     </message>
@@ -384,56 +371,37 @@
   <context>
     <name>CmdMeshPolySegm</name>
     <message>
-      <location filename="../../Command.cpp" line="742"/>
+      <location filename="../../Command.cpp" line="661"/>
       <source>Mesh</source>
       <translation type="unfinished">Mesh</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="743"/>
+      <location filename="../../Command.cpp" line="662"/>
       <source>Make segment</source>
       <translation>Tee lohko</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="744"/>
-      <location filename="../../Command.cpp" line="746"/>
+      <location filename="../../Command.cpp" line="663"/>
+      <location filename="../../Command.cpp" line="665"/>
       <source>Creates a mesh segment</source>
       <translation>Luo verkkopinnan lohkon</translation>
     </message>
   </context>
   <context>
-    <name>CmdMeshPolySelect</name>
-    <message>
-      <location filename="../../Command.cpp" line="798"/>
-      <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="799"/>
-      <source>Select mesh</source>
-      <translation>Valitse verkkopinta</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="800"/>
-      <location filename="../../Command.cpp" line="802"/>
-      <source>Select an area of the mesh</source>
-      <translation>Valitse verkkopinnan alue</translation>
-    </message>
-  </context>
-  <context>
     <name>CmdMeshPolySplit</name>
     <message>
-      <location filename="../../Command.cpp" line="1104"/>
+      <location filename="../../Command.cpp" line="988"/>
       <source>Mesh</source>
       <translation type="unfinished">Mesh</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1105"/>
+      <location filename="../../Command.cpp" line="989"/>
       <source>Split mesh</source>
       <translation>Jaa verkkopinta</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1106"/>
-      <location filename="../../Command.cpp" line="1108"/>
+      <location filename="../../Command.cpp" line="990"/>
+      <location filename="../../Command.cpp" line="992"/>
       <source>Splits a mesh into two meshes</source>
       <translation>Jakaa verkkopinnan kahdeksi verkkopinnaksi</translation>
     </message>
@@ -441,18 +409,18 @@
   <context>
     <name>CmdMeshPolyTrim</name>
     <message>
-      <location filename="../../Command.cpp" line="959"/>
+      <location filename="../../Command.cpp" line="834"/>
       <source>Mesh</source>
       <translation type="unfinished">Mesh</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="960"/>
+      <location filename="../../Command.cpp" line="835"/>
       <source>Trim mesh</source>
       <translation>Viimeistele verkkopinta</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="961"/>
-      <location filename="../../Command.cpp" line="963"/>
+      <location filename="../../Command.cpp" line="836"/>
+      <location filename="../../Command.cpp" line="838"/>
       <source>Trims a mesh with a picked polygon</source>
       <translation>Viimeistelee verkkopinnan valitulla monikulmiolla</translation>
     </message>
@@ -460,18 +428,18 @@
   <context>
     <name>CmdMeshRemeshGmsh</name>
     <message>
-      <location filename="../../Command.cpp" line="1289"/>
+      <location filename="../../Command.cpp" line="1184"/>
       <source>Mesh</source>
       <translation type="unfinished">Mesh</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1290"/>
+      <location filename="../../Command.cpp" line="1185"/>
       <source>Refinement...</source>
       <translation>Parannus...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1291"/>
-      <location filename="../../Command.cpp" line="1292"/>
+      <location filename="../../Command.cpp" line="1186"/>
+      <location filename="../../Command.cpp" line="1187"/>
       <source>Refine existing mesh</source>
       <translation>Paranna olemassa olevaa verkkoa</translation>
     </message>
@@ -479,18 +447,18 @@
   <context>
     <name>CmdMeshRemoveCompByHand</name>
     <message>
-      <location filename="../../Command.cpp" line="1322"/>
+      <location filename="../../Command.cpp" line="1218"/>
       <source>Mesh</source>
       <translation type="unfinished">Mesh</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1323"/>
+      <location filename="../../Command.cpp" line="1219"/>
       <source>Remove components by hand...</source>
       <translation>Poista osia käsin...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1324"/>
-      <location filename="../../Command.cpp" line="1326"/>
+      <location filename="../../Command.cpp" line="1220"/>
+      <location filename="../../Command.cpp" line="1222"/>
       <source>Mark a component to remove it from the mesh</source>
       <translation>Merkitse osa, joka poistetaan verkkopinnasta</translation>
     </message>
@@ -498,18 +466,18 @@
   <context>
     <name>CmdMeshRemoveComponents</name>
     <message>
-      <location filename="../../Command.cpp" line="1244"/>
+      <location filename="../../Command.cpp" line="1136"/>
       <source>Mesh</source>
       <translation type="unfinished">Mesh</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1245"/>
+      <location filename="../../Command.cpp" line="1137"/>
       <source>Remove components...</source>
       <translation>Poista osia...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1246"/>
-      <location filename="../../Command.cpp" line="1248"/>
+      <location filename="../../Command.cpp" line="1138"/>
+      <location filename="../../Command.cpp" line="1140"/>
       <source>Remove topologic independent components from the mesh</source>
       <translation>Poista topologisesti riippumattomia komponentteja verkkopinnasta</translation>
     </message>
@@ -517,17 +485,17 @@
   <context>
     <name>CmdMeshScale</name>
     <message>
-      <location filename="../../Command.cpp" line="1881"/>
+      <location filename="../../Command.cpp" line="1785"/>
       <source>Mesh</source>
       <translation type="unfinished">Mesh</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1882"/>
+      <location filename="../../Command.cpp" line="1786"/>
       <source>Scale...</source>
       <translation>Skaalaa...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1883"/>
+      <location filename="../../Command.cpp" line="1787"/>
       <source>Scale selected meshes</source>
       <translation>Skaalaa valitut verkkopinnat</translation>
     </message>
@@ -535,18 +503,18 @@
   <context>
     <name>CmdMeshSectionByPlane</name>
     <message>
-      <location filename="../../Command.cpp" line="1049"/>
+      <location filename="../../Command.cpp" line="930"/>
       <source>Mesh</source>
       <translation type="unfinished">Mesh</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1050"/>
+      <location filename="../../Command.cpp" line="931"/>
       <source>Create section from mesh and plane</source>
       <translation>Luo osio verkkopinnasta ja tasosta</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1051"/>
-      <location filename="../../Command.cpp" line="1052"/>
+      <location filename="../../Command.cpp" line="932"/>
+      <location filename="../../Command.cpp" line="933"/>
       <source>Section from mesh and plane</source>
       <translation>Lohko verkkopinnasta ja tasosta</translation>
     </message>
@@ -554,18 +522,18 @@
   <context>
     <name>CmdMeshSegmentation</name>
     <message>
-      <location filename="../../Command.cpp" line="1720"/>
+      <location filename="../../Command.cpp" line="1618"/>
       <source>Mesh</source>
       <translation type="unfinished">Mesh</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1721"/>
+      <location filename="../../Command.cpp" line="1619"/>
       <source>Create mesh segments...</source>
       <translation>Luo verkkopinnan lohkoja...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1722"/>
-      <location filename="../../Command.cpp" line="1724"/>
+      <location filename="../../Command.cpp" line="1620"/>
+      <location filename="../../Command.cpp" line="1622"/>
       <source>Create mesh segments</source>
       <translation>Luo verkkopinnan lohkoja</translation>
     </message>
@@ -573,18 +541,18 @@
   <context>
     <name>CmdMeshSegmentationBestFit</name>
     <message>
-      <location filename="../../Command.cpp" line="1756"/>
+      <location filename="../../Command.cpp" line="1654"/>
       <source>Mesh</source>
       <translation type="unfinished">Mesh</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1757"/>
+      <location filename="../../Command.cpp" line="1655"/>
       <source>Create mesh segments from best-fit surfaces...</source>
       <translation>Luo verkkopinnan segmentit parhaiten sopivista pinnoista...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1758"/>
-      <location filename="../../Command.cpp" line="1760"/>
+      <location filename="../../Command.cpp" line="1656"/>
+      <location filename="../../Command.cpp" line="1658"/>
       <source>Create mesh segments from best-fit surfaces</source>
       <translation>Luo verkkopinnan segmentit parhaiten sopivista pinnoista</translation>
     </message>
@@ -592,18 +560,18 @@
   <context>
     <name>CmdMeshSmoothing</name>
     <message>
-      <location filename="../../Command.cpp" line="1404"/>
+      <location filename="../../Command.cpp" line="1306"/>
       <source>Mesh</source>
       <translation type="unfinished">Mesh</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1405"/>
+      <location filename="../../Command.cpp" line="1307"/>
       <source>Smooth...</source>
       <translation>Siloita...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1406"/>
-      <location filename="../../Command.cpp" line="1408"/>
+      <location filename="../../Command.cpp" line="1308"/>
+      <location filename="../../Command.cpp" line="1310"/>
       <source>Smooth the selected meshes</source>
       <translation>Siloita valitut verkkopinnat</translation>
     </message>
@@ -611,74 +579,36 @@
   <context>
     <name>CmdMeshSplitComponents</name>
     <message>
-      <location filename="../../Command.cpp" line="1835"/>
+      <location filename="../../Command.cpp" line="1736"/>
       <source>Mesh</source>
       <translation type="unfinished">Mesh</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1836"/>
+      <location filename="../../Command.cpp" line="1737"/>
       <source>Split by components</source>
       <translation>Jaa osien avulla</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1837"/>
+      <location filename="../../Command.cpp" line="1738"/>
       <source>Split selected mesh into its components</source>
       <translation>Jaa valittu verkkopinta sen osiin</translation>
     </message>
   </context>
   <context>
-    <name>CmdMeshToolMesh</name>
-    <message>
-      <location filename="../../Command.cpp" line="174"/>
-      <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="175"/>
-      <source>Segment by tool mesh</source>
-      <translation>Lohko verkkopintatyökalulla</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="176"/>
-      <location filename="../../Command.cpp" line="178"/>
-      <source>Creates a segment from a given tool mesh</source>
-      <translation>Luo lohkon annetusta työkaluverkkopinnasta</translation>
-    </message>
-  </context>
-  <context>
-    <name>CmdMeshTransform</name>
-    <message>
-      <location filename="../../Command.cpp" line="94"/>
-      <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="95"/>
-      <source>Transform mesh</source>
-      <translation>Muunna verkkopinta</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="96"/>
-      <location filename="../../Command.cpp" line="98"/>
-      <source>Rotate or move a mesh</source>
-      <translation>Kierrä tai siirrä verkkopinta</translation>
-    </message>
-  </context>
-  <context>
     <name>CmdMeshTrimByPlane</name>
     <message>
-      <location filename="../../Command.cpp" line="1020"/>
+      <location filename="../../Command.cpp" line="899"/>
       <source>Mesh</source>
       <translation type="unfinished">Mesh</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1021"/>
+      <location filename="../../Command.cpp" line="900"/>
       <source>Trim mesh with a plane</source>
       <translation>Leikkaa vekkopintaan tasolla</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1022"/>
-      <location filename="../../Command.cpp" line="1023"/>
+      <location filename="../../Command.cpp" line="901"/>
+      <location filename="../../Command.cpp" line="902"/>
       <source>Trims a mesh with a plane</source>
       <translation>Leikkaa verkkopintaan tasolla</translation>
     </message>
@@ -686,12 +616,12 @@
   <context>
     <name>CmdMeshUnion</name>
     <message>
-      <location filename="../../Command.cpp" line="229"/>
+      <location filename="../../Command.cpp" line="86"/>
       <source>Mesh</source>
       <translation type="unfinished">Mesh</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="230"/>
+      <location filename="../../Command.cpp" line="87"/>
       <source>Union</source>
       <translation>Unioni</translation>
     </message>
@@ -699,18 +629,18 @@
   <context>
     <name>CmdMeshVertexCurvature</name>
     <message>
-      <location filename="../../Command.cpp" line="653"/>
+      <location filename="../../Command.cpp" line="558"/>
       <source>Mesh</source>
       <translation type="unfinished">Mesh</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="654"/>
+      <location filename="../../Command.cpp" line="559"/>
       <source>Curvature plot</source>
       <translation>Kaarevuuden merkitseminen</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="655"/>
-      <location filename="../../Command.cpp" line="657"/>
+      <location filename="../../Command.cpp" line="560"/>
+      <location filename="../../Command.cpp" line="562"/>
       <source>Calculates the curvature of the vertices of a mesh</source>
       <translation>Laskee verkkopinnan kärkipisteiden kaarevuuden</translation>
     </message>
@@ -718,18 +648,18 @@
   <context>
     <name>CmdMeshVertexCurvatureInfo</name>
     <message>
-      <location filename="../../Command.cpp" line="696"/>
+      <location filename="../../Command.cpp" line="613"/>
       <source>Mesh</source>
       <translation type="unfinished">Mesh</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="697"/>
+      <location filename="../../Command.cpp" line="614"/>
       <source>Curvature info</source>
       <translation>Kaarevuuden tiedot</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="698"/>
-      <location filename="../../Command.cpp" line="700"/>
+      <location filename="../../Command.cpp" line="615"/>
+      <location filename="../../Command.cpp" line="617"/>
       <source>Information about curvature</source>
       <translation>Tietoja kaarevuudesta</translation>
     </message>
@@ -737,161 +667,149 @@
   <context>
     <name>Command</name>
     <message>
-      <location filename="../../Command.cpp" line="111"/>
-      <location filename="../../Command.cpp" line="151"/>
-      <source>Mesh Create</source>
-      <translation type="unfinished">Mesh Create</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="190"/>
-      <source>Segment by tool mesh</source>
-      <translation>Lohko verkkopintatyökalulla</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="245"/>
+      <location filename="../../Command.cpp" line="103"/>
       <source>Mesh union</source>
       <translation>Verkkopintojen liitto</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="314"/>
+      <location filename="../../Command.cpp" line="180"/>
       <source>Mesh difference</source>
       <translation>Verkkopinnan ero</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="385"/>
+      <location filename="../../Command.cpp" line="259"/>
       <source>Mesh intersection</source>
       <translation>Verkkopintojen leikkaus</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="471"/>
+      <location filename="../../Command.cpp" line="355"/>
       <source>Import Mesh</source>
       <translation>Tuo verkkopinta</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="669"/>
+      <location filename="../../Command.cpp" line="575"/>
       <source>Mesh VertexCurvature</source>
       <translation>Verkkopinnan VertexKaarevuus</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1418"/>
-      <location filename="../../DlgSmoothing.cpp" line="174"/>
+      <location filename="../../DlgSmoothing.cpp" line="180"/>
       <source>Mesh Smoothing</source>
       <translation>Verkkopinnan pehmennys</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1509"/>
+      <location filename="../../Command.cpp" line="1379"/>
       <source>Harmonize mesh normals</source>
       <translation>Yhdenmukaista verkkopinnan normaalit</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1543"/>
+      <location filename="../../Command.cpp" line="1415"/>
       <source>Flip mesh normals</source>
       <translation>Vaihda verkkopinnan normaalit päinvastaisiksi</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1655"/>
+      <location filename="../../Command.cpp" line="1549"/>
       <source>Fill up holes</source>
       <translation>Täytä reiät</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1806"/>
+      <location filename="../../Command.cpp" line="1705"/>
       <source>Mesh merge</source>
       <translation>Verkkopinnan yhdistäminen</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1849"/>
+      <location filename="../../Command.cpp" line="1751"/>
       <source>Mesh split</source>
       <translation>Verkkopinnan jako</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1901"/>
+      <location filename="../../Command.cpp" line="1814"/>
       <source>Mesh scale</source>
       <translation>Verkkopinnan mittakaava</translation>
     </message>
     <message>
-      <location filename="../../DlgDecimating.cpp" line="147"/>
+      <location filename="../../DlgDecimating.cpp" line="160"/>
       <source>Mesh Decimating</source>
       <translation>Verkkopinnan desimalisointi</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="484"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="551"/>
       <source>Harmonize normals</source>
       <translation>Yhdenmukaista normaalit</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="587"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="662"/>
       <source>Remove non-manifolds</source>
       <translation>Poista epä-moninaisuudet</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="686"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="767"/>
       <source>Fix indices</source>
       <translation>Korjaa indeksit</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="752"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="837"/>
       <source>Remove degenerated faces</source>
       <translation>Poista vaurioituneet näkymäpinnat</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="819"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="909"/>
       <source>Remove duplicated faces</source>
       <translation>Poista monistuneet näkymäpinnat</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="884"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="979"/>
       <source>Remove duplicated points</source>
       <translation>Poista monistuneet (tuplautuneet) pisteet</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="968"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="1065"/>
       <source>Fix self-intersections</source>
       <translation>Korjaa itse-leikkauskohdat</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="1055"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="1144"/>
       <source>Remove folds</source>
       <translation>Poista kansiot</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="1095"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="1188"/>
       <source>Repair mesh</source>
       <translation>Korjaa verkkopinta</translation>
     </message>
     <message>
-      <location filename="../../RemoveComponents.cpp" line="131"/>
+      <location filename="../../RemoveComponents.cpp" line="162"/>
       <source>Delete selection</source>
       <translation>Poista valinta</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="881"/>
-      <location filename="../../ViewProvider.cpp" line="936"/>
+      <location filename="../../ViewProvider.cpp" line="958"/>
+      <location filename="../../ViewProvider.cpp" line="1019"/>
       <source>Cut</source>
       <translation>Leikkaa</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="890"/>
-      <location filename="../../ViewProvider.cpp" line="997"/>
+      <location filename="../../ViewProvider.cpp" line="968"/>
+      <location filename="../../ViewProvider.cpp" line="1089"/>
       <source>Trim</source>
       <translation>rajaa</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1074"/>
+      <location filename="../../ViewProvider.cpp" line="1176"/>
       <source>Split</source>
       <translation>Jaa osiin</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1138"/>
+      <location filename="../../ViewProvider.cpp" line="1249"/>
       <source>Segment</source>
       <translation>Segmentti</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1723"/>
+      <location filename="../../ViewProvider.cpp" line="1848"/>
       <source>Delete</source>
       <translation>Poista</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1830"/>
+      <location filename="../../ViewProvider.cpp" line="1977"/>
       <source>Fill hole</source>
       <translation>Täytä reikä</translation>
     </message>
@@ -920,7 +838,7 @@
     </message>
     <message>
       <location filename="../../DlgDecimating.ui" line="66"/>
-      <location filename="../../DlgDecimating.cpp" line="91"/>
+      <location filename="../../DlgDecimating.cpp" line="102"/>
       <source>Absolute number</source>
       <translation>Absoluuttinen määrä</translation>
     </message>
@@ -930,7 +848,7 @@
       <translation>Toleranssi</translation>
     </message>
     <message>
-      <location filename="../../DlgDecimating.cpp" line="85"/>
+      <location filename="../../DlgDecimating.cpp" line="96"/>
       <source>Absolute number (Maximum: %1)</source>
       <translation>Absoluuttinen luku (Maksimi: %1)</translation>
     </message>
@@ -1062,180 +980,166 @@
   <context>
     <name>MeshGui::DlgEvaluateMeshImp</name>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="151"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="141"/>
       <source>Settings...</source>
       <translation>Asetukset...</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="187"/>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="348"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="253"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="422"/>
       <source>No selection</source>
       <translation>Ei valintaa</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="375"/>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="376"/>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="377"/>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="378"/>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="379"/>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="380"/>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="381"/>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="382"/>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="383"/>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="384"/>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="385"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="452"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="453"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="454"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="455"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="456"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="457"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="458"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="459"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="460"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="461"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="462"/>
       <source>No information</source>
       <translation>Ei tietoja</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="447"/>
-      <source>Flipped normals found</source>
-      <translation>Käännettyjä pinnan normaaleja löytyi</translation>
-    </message>
-    <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="451"/>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="491"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="559"/>
       <source>Orientation</source>
       <translation>Suunta</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="452"/>
-      <source>Check failed due to folds on the surface.
-Please run the command to repair folds first</source>
-      <translation>Pinnassa on taitteita.
-Aja ensin komento jolla taitteet poistetaan</translation>
-    </message>
-    <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="460"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="527"/>
       <source>No flipped normals</source>
       <translation>Ei käännettyjä normaaleja</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="466"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="533"/>
       <source>%1 flipped normals</source>
       <translation>%1 käännettyä normaalia</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="546"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="619"/>
       <source>No non-manifolds</source>
       <translation>Epäreaalipintoja ei havaittu</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="553"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="627"/>
       <source>%1 non-manifolds</source>
       <translation>%1 kappaletta epäreaalipintoja</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="600"/>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="603"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="678"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="681"/>
       <source>Non-manifolds</source>
       <translation>Eireaalipinnat (non-manifolds)</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="603"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="681"/>
       <source>Cannot remove non-manifolds</source>
       <translation>Epäreaalipintoja ei pystytä poistamaan</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="641"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="722"/>
       <source>Invalid face indices</source>
       <translation>Virheellinen pinnan indeksi</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="648"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="729"/>
       <source>Invalid point indices</source>
       <translation>Virheellinen pisteen indeksi</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="655"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="736"/>
       <source>Multiple point indices</source>
       <translation>Useita pisteiden indeksejä</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="662"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="743"/>
       <source>Invalid neighbour indices</source>
       <translation>Virheelliset viereiset indeksit</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="669"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="750"/>
       <source>No invalid indices</source>
       <translation>Ei vääriä indeksejä</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="693"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="775"/>
       <source>Indices</source>
       <translation>Indeksit</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="728"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="813"/>
       <source>No degenerations</source>
       <translation>Ei surkastumia</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="734"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="819"/>
       <source>%1 degenerated faces</source>
       <translation>%1 kappaletta rappeutuneita tahkoja</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="759"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="846"/>
       <source>Degenerations</source>
       <translation>Rappeutumaa</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="794"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="884"/>
       <source>No duplicated faces</source>
       <translation>Ei päällekkäisiä tahkoja</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="800"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="890"/>
       <source>%1 duplicated faces</source>
       <translation>%1 päällekkäistä tahkoa</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="826"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="918"/>
       <source>Duplicated faces</source>
       <translation>Monistetut tahkot</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="860"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="955"/>
       <source>No duplicated points</source>
       <translation>Ei kahdennettuja pisteitä</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="866"/>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="891"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="961"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="988"/>
       <source>Duplicated points</source>
       <translation>Monistetut pisteet</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="932"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="1032"/>
       <source>No self-intersections</source>
       <translation>Ei itseleikkauksia</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="938"/>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="976"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="1038"/>
       <source>Self-intersections</source>
       <translation>Itseleikkauksia</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="1020"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="1109"/>
       <source>No folds on surface</source>
       <translation>Pinnassa ei ole taitteita</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="1036"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="1125"/>
       <source>%1 folds on surface</source>
       <translation>Pinnassa on %1 taitetta</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="1062"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="1153"/>
       <source>Folds</source>
       <translation>Taitteita</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="1194"/>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="1197"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="1287"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="1290"/>
       <source>Mesh repair</source>
       <translation>Verkkopinnan korjaus</translation>
     </message>
@@ -1380,26 +1284,21 @@ Aja ensin komento jolla taitteet poistetaan</translation>
     </message>
     <message>
       <location filename="../../DlgRegularSolid.ui" line="825"/>
-      <source>Cl&amp;ose</source>
+      <source>Close</source>
       <translation>Sulje</translation>
-    </message>
-    <message>
-      <location filename="../../DlgRegularSolid.ui" line="828"/>
-      <source>Alt+O</source>
-      <translation>Alt+O</translation>
     </message>
   </context>
   <context>
     <name>MeshGui::DlgRegularSolidImp</name>
     <message>
-      <location filename="../../DlgRegularSolidImp.cpp" line="128"/>
-      <location filename="../../DlgRegularSolidImp.cpp" line="213"/>
-      <location filename="../../DlgRegularSolidImp.cpp" line="221"/>
+      <location filename="../../DlgRegularSolidImp.cpp" line="124"/>
+      <location filename="../../DlgRegularSolidImp.cpp" line="209"/>
+      <location filename="../../DlgRegularSolidImp.cpp" line="217"/>
       <source>Create %1</source>
       <translation>Luo %1</translation>
     </message>
     <message>
-      <location filename="../../DlgRegularSolidImp.cpp" line="128"/>
+      <location filename="../../DlgRegularSolidImp.cpp" line="124"/>
       <source>No active document</source>
       <translation>Ei aktiivista dokumenttia</translation>
     </message>
@@ -1423,8 +1322,8 @@ Aja ensin komento jolla taitteet poistetaan</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsImportExport.ui" line="31"/>
-      <source>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;span style=" font-weight:600;"&gt;Tessellation&lt;/span&gt;&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;span style=" font-weight:400;"&gt;Defines the maximum deviation of the tessellated mesh to the surface. The smaller the value is the slower the render speed which results in increased detail/resolution.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;span style=" font-weight:600;"&gt;Testaus&lt;/span&gt;&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;span style=" font-weight:400;"&gt;Määrittää suurimman mahdollisen poikkeaman ruudutetusta verkkopinnasta ulkopintaan. Mitä pienempi arvo on, sitä hitaampi on renderöintinopeus, joka lisää yksityiskohtia/resoluutiota.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <source>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;span style=" font-weight:600;"&gt;Tessellation&lt;/span&gt;&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;span style=" font-weight:400;"&gt;Defines the maximum deviation of the tessellated mesh to the surface. The smaller the value is the slower the render speed which results in increased detail/resolution.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation type="unfinished">&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;span style=" font-weight:600;"&gt;Tessellation&lt;/span&gt;&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;span style=" font-weight:400;"&gt;Defines the maximum deviation of the tessellated mesh to the surface. The smaller the value is the slower the render speed which results in increased detail/resolution.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsImportExport.ui" line="34"/>
@@ -1447,20 +1346,30 @@ Aja ensin komento jolla taitteet poistetaan</translation>
       <translation>Vie AMF-tiedostot pakkaamista käyttäen</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsImportExport.ui" line="95"/>
+      <location filename="../../DlgSettingsImportExport.ui" line="82"/>
+      <source>Always export mesh as model type in 3MF format even if not a solid</source>
+      <translation type="unfinished">Always export mesh as model type in 3MF format even if not a solid</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsImportExport.ui" line="85"/>
+      <source>Export 3MF files as model type</source>
+      <translation type="unfinished">Export 3MF files as model type</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsImportExport.ui" line="114"/>
       <source>Width:</source>
       <translation>Leveys:</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsImportExport.ui" line="119"/>
+      <location filename="../../DlgSettingsImportExport.ui" line="138"/>
       <source>Height:</source>
       <translation>Korkeus:</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsImportExportImp.cpp" line="37"/>
+      <location filename="../../DlgSettingsImportExportImp.cpp" line="39"/>
       <source>This parameter indicates whether ZIP compression
 is used when writing a file in AMF format</source>
-      <translation>Tämä parametri ilmaisee, on ZIP pakkaaminen 
+      <translation>Tämä parametri ilmaisee, on ZIP pakkaaminen
 käytössä kirjoitettaessa tiedostoa AMF muodossa</translation>
     </message>
   </context>
@@ -1472,84 +1381,78 @@ käytössä kirjoitettaessa tiedostoa AMF muodossa</translation>
       <translation>Verkkopintanäkymä</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsMeshView.ui" line="26"/>
+      <location filename="../../DlgSettingsMeshView.ui" line="35"/>
       <source>Default appearance for new meshes</source>
       <translation>Uusien pintaverkkojen oletusulkoasu</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsMeshView.ui" line="46"/>
+      <location filename="../../DlgSettingsMeshView.ui" line="73"/>
       <source>Default mesh color</source>
       <translation>Pintaverkon oletusväri</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsMeshView.ui" line="53"/>
+      <location filename="../../DlgSettingsMeshView.ui" line="80"/>
       <source>Default color for new meshes</source>
       <translation>Uusien verkkopintojen oletusväri</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsMeshView.ui" line="89"/>
+      <location filename="../../DlgSettingsMeshView.ui" line="116"/>
       <source>Mesh transparency</source>
       <translation>Pintaverkon läpinäkyvyys</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsMeshView.ui" line="96"/>
-      <location filename="../../DlgSettingsMeshView.ui" line="162"/>
-      <source>%</source>
-      <translation>%</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettingsMeshView.ui" line="112"/>
+      <location filename="../../DlgSettingsMeshView.ui" line="142"/>
       <source>Default line color</source>
       <translation>Viivan oletusväri</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsMeshView.ui" line="119"/>
+      <location filename="../../DlgSettingsMeshView.ui" line="149"/>
       <source>Default line color for new meshes</source>
       <translation>Uusien verkkopintojen linjojen oletusväri</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsMeshView.ui" line="155"/>
+      <location filename="../../DlgSettingsMeshView.ui" line="185"/>
       <source>Line transparency</source>
       <translation>Viivan läpinäkyvyys</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsMeshView.ui" line="178"/>
+      <location filename="../../DlgSettingsMeshView.ui" line="211"/>
       <source>Backface color</source>
       <translation>Takapuolen väri</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsMeshView.ui" line="218"/>
+      <location filename="../../DlgSettingsMeshView.ui" line="251"/>
       <source>The bottom side of surface will be rendered the same way than top side.
 If not checked, it depends on the option "Enable backlight color"
 (preferences section Display -&gt; 3D View). Either the backlight color
 will be used or black.</source>
       <translation>Pinnan alareuna on renderöity samalla tavalla kuin yläpuolella.
 Jos ei ole valittuna, se riippuu vaihtoehdosta "Ota taustavalo väri käyttöön"
-(asetruksien osiossa Näyttö -&gt; 3D Näkymä). Joko taustavalon väriä 
+(asetruksien osiossa Näyttö -&gt; 3D Näkymä). Joko taustavalon väriä
 käytetään tai se on musta.</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsMeshView.ui" line="224"/>
+      <location filename="../../DlgSettingsMeshView.ui" line="257"/>
       <source>Two-side rendering</source>
       <translation>Kaksipuoleinen renderöinti</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsMeshView.ui" line="240"/>
+      <location filename="../../DlgSettingsMeshView.ui" line="273"/>
       <source>A bounding box will be displayed</source>
       <translation>Ponnahduslaatikko tullaan näyttämään</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsMeshView.ui" line="243"/>
+      <location filename="../../DlgSettingsMeshView.ui" line="276"/>
       <source>Show bounding-box for highlighted or selected meshes</source>
       <translation>Näytä rajaavalaatikko korostetulle tai valitulle</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsMeshView.ui" line="280"/>
+      <location filename="../../DlgSettingsMeshView.ui" line="313"/>
       <source>Smoothing</source>
       <translation>Tasoitus</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsMeshView.ui" line="292"/>
+      <location filename="../../DlgSettingsMeshView.ui" line="334"/>
       <source>If this option is set Phong shading is used, otherwise flat shading.
 Shading defines the appearance of surfaces.
 
@@ -1566,22 +1469,27 @@ sileämpään ulkonäköön.
 </translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsMeshView.ui" line="301"/>
+      <location filename="../../DlgSettingsMeshView.ui" line="343"/>
       <source>Define normal per vertex</source>
       <translation>Määritä yksi normaali kärkipistettä kohden</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsMeshView.ui" line="314"/>
-      <source>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;This is the smallest angle between two faces where normals get calculated to do flat shading.&lt;/p&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;If the angle between the normals of two neighbouring faces is less than the crease angle, the faces will be smoothshaded around their common edge.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;Tämä on pienin kulma kahden pinnan normaalien välillä jotta tasainen varjostus tehtäisiin pintojen välillä.&lt;/p&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;Jos vierekkäisten pintojen normaalien välinen kulma on on vähemmän kuin "rasvakulma" pinnat siloitetaan yhteisen reunansa mukaan.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <location filename="../../DlgSettingsMeshView.ui" line="356"/>
+      <source>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;This is the smallest angle between two faces where normals get calculated to do flat shading.&lt;/p&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;If the angle between the normals of two neighbouring faces is less than the crease angle, the faces will be smoothshaded around their common edge.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation type="unfinished">&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;This is the smallest angle between two faces where normals get calculated to do flat shading.&lt;/p&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;If the angle between the normals of two neighbouring faces is less than the crease angle, the faces will be smoothshaded around their common edge.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsMeshView.ui" line="317"/>
+      <location filename="../../DlgSettingsMeshView.ui" line="404"/>
+      <source>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;span style=" font-weight:600;"&gt;Hint&lt;/span&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;Defining the normals per vertex is also called &lt;span style=" font-style:italic;"&gt;Phong shading&lt;/span&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt; font-style:italic;"&gt;&lt;span style=" font-style:normal;"&gt;while defining the normals per face is called &lt;/span&gt;Flat shading&lt;span style=" font-style:normal;"&gt;.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation type="unfinished">&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;span style=" font-weight:600;"&gt;Hint&lt;/span&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;Defining the normals per vertex is also called &lt;span style=" font-style:italic;"&gt;Phong shading&lt;/span&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt; font-style:italic;"&gt;&lt;span style=" font-style:normal;"&gt;while defining the normals per face is called &lt;/span&gt;Flat shading&lt;span style=" font-style:normal;"&gt;.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsMeshView.ui" line="359"/>
       <source>Crease angle</source>
       <translation>Kahden yhteisen reunan omaavan pinnan normaalien välinen kulma</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsMeshView.ui" line="327"/>
+      <location filename="../../DlgSettingsMeshView.ui" line="369"/>
       <source>Crease angle is a threshold angle between two faces.
 
  If face angle ≥ crease angle, facet shading is used
@@ -1590,16 +1498,6 @@ sileämpään ulkonäköön.
 
  Jos näkymäpintojen kulma ≥ taittokulma, käytetään facet varjostusta
  Jos näkymäpintojen kulma &lt; taittokulma, käytetään sileä varjostusta</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettingsMeshView.ui" line="333"/>
-      <source> °</source>
-      <translation> °</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettingsMeshView.ui" line="362"/>
-      <source>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;span style=" font-weight:600;"&gt;Hint&lt;/span&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;Defining the normals per vertex is also called &lt;span style=" font-style:italic;"&gt;Phong shading&lt;/span&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt; font-style:italic;"&gt;&lt;span style=" font-style:normal;"&gt;while defining the normals per face is called &lt;/span&gt;Flat shading&lt;span style=" font-style:normal;"&gt;.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt; &lt;span style=" font-weight:600;"&gt;Vihje&lt;/span&gt; &lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt; Määrittely normaalit per piste kutsutaan myös &lt;span style=" font-style:italic;"&gt;Phong shading&lt;/span&gt; &lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt; font-style:italic;"&gt; &lt;span style=" font-style:normal;"&gt;samalla kun määritellään normaalien kohti edessä on nimeltään&lt;/span&gt; Flat &lt;span style=" font-style:normal;"&gt;shading.&lt;/span&gt; &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
   </context>
   <context>
@@ -1653,48 +1551,48 @@ sileämpään ulkonäköön.
   <context>
     <name>MeshGui::GmshWidget</name>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="109"/>
+      <location filename="../../RemeshGmsh.cpp" line="98"/>
       <source>Automatic</source>
       <translation>Automaattinen</translation>
     </message>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="110"/>
+      <location filename="../../RemeshGmsh.cpp" line="99"/>
       <source>Adaptive</source>
       <translation type="unfinished">Adaptive</translation>
     </message>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="112"/>
+      <location filename="../../RemeshGmsh.cpp" line="101"/>
       <source>Frontal</source>
       <translation>Etuosa</translation>
     </message>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="114"/>
+      <location filename="../../RemeshGmsh.cpp" line="103"/>
       <source>Frontal Quad</source>
       <translation>Etuosan nelikkö (quad)</translation>
     </message>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="115"/>
+      <location filename="../../RemeshGmsh.cpp" line="104"/>
       <source>Parallelograms</source>
       <translation>Suunnikkaat</translation>
     </message>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="186"/>
-      <location filename="../../RemeshGmsh.cpp" line="242"/>
+      <location filename="../../RemeshGmsh.cpp" line="195"/>
+      <location filename="../../RemeshGmsh.cpp" line="254"/>
       <source>Time:</source>
       <translation>Aika:</translation>
     </message>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="231"/>
+      <location filename="../../RemeshGmsh.cpp" line="241"/>
       <source>Running gmsh...</source>
       <translation>Suorittaa gmsh...</translation>
     </message>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="253"/>
+      <location filename="../../RemeshGmsh.cpp" line="265"/>
       <source>Failed to start</source>
       <translation>Käynnistäminen epäonnistui</translation>
     </message>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="260"/>
+      <location filename="../../RemeshGmsh.cpp" line="272"/>
       <source>Error</source>
       <translation>Virhe</translation>
     </message>
@@ -1702,22 +1600,22 @@ sileämpään ulkonäköön.
   <context>
     <name>MeshGui::MeshFaceAddition</name>
     <message>
-      <location filename="../../MeshEditor.cpp" line="379"/>
+      <location filename="../../MeshEditor.cpp" line="396"/>
       <source>Add triangle</source>
       <translation>Lisää kolmio</translation>
     </message>
     <message>
-      <location filename="../../MeshEditor.cpp" line="380"/>
+      <location filename="../../MeshEditor.cpp" line="397"/>
       <source>Flip normal</source>
       <translation>Käännä normaalit päinvastaisiksi</translation>
     </message>
     <message>
-      <location filename="../../MeshEditor.cpp" line="381"/>
+      <location filename="../../MeshEditor.cpp" line="398"/>
       <source>Clear</source>
       <translation>Tyhjennä</translation>
     </message>
     <message>
-      <location filename="../../MeshEditor.cpp" line="396"/>
+      <location filename="../../MeshEditor.cpp" line="414"/>
       <source>Finish</source>
       <translation>Valmis</translation>
     </message>
@@ -1725,7 +1623,7 @@ sileämpään ulkonäköön.
   <context>
     <name>MeshGui::MeshFillHole</name>
     <message>
-      <location filename="../../MeshEditor.cpp" line="729"/>
+      <location filename="../../MeshEditor.cpp" line="766"/>
       <source>Finish</source>
       <translation>Valmis</translation>
     </message>
@@ -1733,47 +1631,47 @@ sileämpään ulkonäköön.
   <context>
     <name>MeshGui::ParametersDialog</name>
     <message>
-      <location filename="../../SegmentationBestFit.cpp" line="159"/>
+      <location filename="../../SegmentationBestFit.cpp" line="172"/>
       <source>Surface fit</source>
       <translation>Ulkopinnan istuvuus</translation>
     </message>
     <message>
-      <location filename="../../SegmentationBestFit.cpp" line="166"/>
+      <location filename="../../SegmentationBestFit.cpp" line="179"/>
       <source>Parameters</source>
       <translation>Muuttujat</translation>
     </message>
     <message>
-      <location filename="../../SegmentationBestFit.cpp" line="171"/>
+      <location filename="../../SegmentationBestFit.cpp" line="184"/>
       <source>Selection</source>
       <translation>Valinta</translation>
     </message>
     <message>
-      <location filename="../../SegmentationBestFit.cpp" line="179"/>
+      <location filename="../../SegmentationBestFit.cpp" line="192"/>
       <source>Region</source>
       <translation>Alue</translation>
     </message>
     <message>
-      <location filename="../../SegmentationBestFit.cpp" line="185"/>
+      <location filename="../../SegmentationBestFit.cpp" line="198"/>
       <source>Triangle</source>
       <translation>Kolmio</translation>
     </message>
     <message>
-      <location filename="../../SegmentationBestFit.cpp" line="191"/>
+      <location filename="../../SegmentationBestFit.cpp" line="204"/>
       <source>Clear</source>
       <translation>Tyhjennä</translation>
     </message>
     <message>
-      <location filename="../../SegmentationBestFit.cpp" line="197"/>
+      <location filename="../../SegmentationBestFit.cpp" line="210"/>
       <source>Compute</source>
       <translation>Laske</translation>
     </message>
     <message>
-      <location filename="../../SegmentationBestFit.cpp" line="285"/>
+      <location filename="../../SegmentationBestFit.cpp" line="305"/>
       <source>No selection</source>
       <translation>Ei valintaa</translation>
     </message>
     <message>
-      <location filename="../../SegmentationBestFit.cpp" line="285"/>
+      <location filename="../../SegmentationBestFit.cpp" line="306"/>
       <source>Before fitting the surface select an area.</source>
       <translation>Ennen pinnan sovittamista valitse alue.</translation>
     </message>
@@ -2032,29 +1930,29 @@ sileämpään ulkonäköön.
       <translation>Pallo</translation>
     </message>
     <message>
-      <location filename="../../SegmentationBestFit.cpp" line="337"/>
-      <location filename="../../SegmentationBestFit.cpp" line="363"/>
+      <location filename="../../SegmentationBestFit.cpp" line="374"/>
+      <location filename="../../SegmentationBestFit.cpp" line="399"/>
       <source>Base</source>
       <translation>Perusta</translation>
     </message>
     <message>
-      <location filename="../../SegmentationBestFit.cpp" line="338"/>
+      <location filename="../../SegmentationBestFit.cpp" line="375"/>
       <source>Normal</source>
       <translation>Normaali</translation>
     </message>
     <message>
-      <location filename="../../SegmentationBestFit.cpp" line="364"/>
+      <location filename="../../SegmentationBestFit.cpp" line="400"/>
       <source>Axis</source>
       <translation>Akseli</translation>
     </message>
     <message>
-      <location filename="../../SegmentationBestFit.cpp" line="365"/>
-      <location filename="../../SegmentationBestFit.cpp" line="392"/>
+      <location filename="../../SegmentationBestFit.cpp" line="401"/>
+      <location filename="../../SegmentationBestFit.cpp" line="428"/>
       <source>Radius</source>
       <translation>Säde</translation>
     </message>
     <message>
-      <location filename="../../SegmentationBestFit.cpp" line="391"/>
+      <location filename="../../SegmentationBestFit.cpp" line="427"/>
       <source>Center</source>
       <translation>Keskikohta</translation>
     </message>
@@ -2088,12 +1986,12 @@ sileämpään ulkonäköön.
       <translation>Ota huomioon vain kolmiot joiden normaalit ovat näyttöön päin</translation>
     </message>
     <message>
-      <location filename="../../Selection.cpp" line="72"/>
+      <location filename="../../Selection.cpp" line="86"/>
       <source>Use a brush tool to select the area</source>
       <translation>Käytä sivellintyökalua valitaksesi alueen</translation>
     </message>
     <message>
-      <location filename="../../Selection.cpp" line="75"/>
+      <location filename="../../Selection.cpp" line="89"/>
       <source>Clears completely the selected area</source>
       <translation>Tyhjentää kokonaan valitun alueen</translation>
     </message>
@@ -2101,14 +1999,14 @@ sileämpään ulkonäköön.
   <context>
     <name>MeshGui::TaskRemoveComponents</name>
     <message>
-      <location filename="../../RemoveComponents.cpp" line="175"/>
-      <location filename="../../RemoveComponents.cpp" line="232"/>
+      <location filename="../../RemoveComponents.cpp" line="208"/>
+      <location filename="../../RemoveComponents.cpp" line="255"/>
       <source>Delete</source>
       <translation>Poista</translation>
     </message>
     <message>
-      <location filename="../../RemoveComponents.cpp" line="176"/>
-      <location filename="../../RemoveComponents.cpp" line="233"/>
+      <location filename="../../RemoveComponents.cpp" line="209"/>
+      <location filename="../../RemoveComponents.cpp" line="256"/>
       <source>Invert</source>
       <translation>Käännä</translation>
     </message>
@@ -2116,38 +2014,38 @@ sileämpään ulkonäköön.
   <context>
     <name>MeshInfoWatcher</name>
     <message>
-      <location filename="../../Workbench.cpp" line="74"/>
+      <location filename="../../Workbench.cpp" line="68"/>
       <source>Number of points:</source>
       <translation>Pisteiden määrä:</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="77"/>
+      <location filename="../../Workbench.cpp" line="71"/>
       <source>Number of facets:</source>
       <translation type="unfinished">Number of facets:</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="83"/>
+      <location filename="../../Workbench.cpp" line="77"/>
       <source>Minimum bound:</source>
       <translation type="unfinished">Minimum bound:</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="86"/>
+      <location filename="../../Workbench.cpp" line="80"/>
       <source>Maximum bound:</source>
       <translation type="unfinished">Maximum bound:</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="92"/>
+      <location filename="../../Workbench.cpp" line="87"/>
       <source>Mesh info box</source>
       <translation type="unfinished">Mesh info box</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="106"/>
+      <location filename="../../Workbench.cpp" line="101"/>
       <source>Mesh info</source>
       <translation type="unfinished">Mesh info</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="128"/>
-      <location filename="../../Workbench.cpp" line="130"/>
+      <location filename="../../Workbench.cpp" line="123"/>
+      <location filename="../../Workbench.cpp" line="124"/>
       <source>X: %1	Y: %2	Z: %3</source>
       <translation type="unfinished">X: %1	Y: %2	Z: %3</translation>
     </message>
@@ -2155,7 +2053,7 @@ sileämpään ulkonäköön.
   <context>
     <name>Mesh_BoundingBox</name>
     <message>
-      <location filename="../../Command.cpp" line="1584"/>
+      <location filename="../../Command.cpp" line="1463"/>
       <source>Boundings of %1:</source>
       <translation>Rajaukset %1:</translation>
     </message>
@@ -2163,36 +2061,36 @@ sileämpään ulkonäköön.
   <context>
     <name>Mesh_Union</name>
     <message>
-      <location filename="../../Command.cpp" line="275"/>
-      <location filename="../../Command.cpp" line="280"/>
-      <location filename="../../Command.cpp" line="346"/>
-      <location filename="../../Command.cpp" line="351"/>
-      <location filename="../../Command.cpp" line="417"/>
-      <location filename="../../Command.cpp" line="422"/>
+      <location filename="../../Command.cpp" line="138"/>
+      <location filename="../../Command.cpp" line="144"/>
+      <location filename="../../Command.cpp" line="217"/>
+      <location filename="../../Command.cpp" line="223"/>
+      <location filename="../../Command.cpp" line="296"/>
+      <location filename="../../Command.cpp" line="302"/>
       <source>OpenSCAD</source>
       <translation>openSCAD</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="276"/>
-      <location filename="../../Command.cpp" line="347"/>
-      <location filename="../../Command.cpp" line="418"/>
+      <location filename="../../Command.cpp" line="139"/>
+      <location filename="../../Command.cpp" line="218"/>
+      <location filename="../../Command.cpp" line="297"/>
       <source>Unknown error occurred while running OpenSCAD.</source>
       <translation>Tuntematon virhe ilmeni OpenSCAD: n käytössä.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="281"/>
-      <location filename="../../Command.cpp" line="352"/>
-      <location filename="../../Command.cpp" line="423"/>
+      <location filename="../../Command.cpp" line="145"/>
+      <location filename="../../Command.cpp" line="224"/>
+      <location filename="../../Command.cpp" line="303"/>
       <source>OpenSCAD cannot be found on your system.
 Please visit http://www.openscad.org/index.html to install it.</source>
-      <translation>OpenSCAD ei löydy järjestelmästäsi. Käy http://www.openscad.org/index.html 
-osoittweessa asentaaksesi ohjelman.</translation>
+      <translation>OpenSCAD:ia ei löydy järjestelmästäsi. Käy
+http://www.openscad.org/index.html asentaaksesi sen.</translation>
     </message>
   </context>
   <context>
     <name>QDockWidget</name>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="1240"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="1337"/>
       <source>Evaluate &amp; Repair Mesh</source>
       <translation>Arvioi &amp; korjaa verkkopinta</translation>
     </message>
@@ -2200,180 +2098,185 @@ osoittweessa asentaaksesi ohjelman.</translation>
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../AppMeshGui.cpp" line="164"/>
+      <location filename="../../AppMeshGui.cpp" line="161"/>
+      <source>Display</source>
+      <translation>Näyttö</translation>
+    </message>
+    <message>
+      <location filename="../../AppMeshGui.cpp" line="163"/>
       <source>Import-Export</source>
       <translation>Tuo/Vie</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="454"/>
+      <location filename="../../Command.cpp" line="336"/>
       <source>All Mesh Files</source>
       <translation>Kaikki verkkopinta-tiedostot</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="455"/>
-      <location filename="../../Command.cpp" line="512"/>
+      <location filename="../../Command.cpp" line="337"/>
+      <location filename="../../Command.cpp" line="397"/>
       <source>Binary STL</source>
       <translation>Binäärinen STL</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="456"/>
-      <location filename="../../Command.cpp" line="513"/>
-      <location filename="../../Command.cpp" line="514"/>
+      <location filename="../../Command.cpp" line="338"/>
+      <location filename="../../Command.cpp" line="398"/>
+      <location filename="../../Command.cpp" line="399"/>
       <source>ASCII STL</source>
       <translation>ASCII STL</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="457"/>
-      <location filename="../../Command.cpp" line="515"/>
+      <location filename="../../Command.cpp" line="339"/>
+      <location filename="../../Command.cpp" line="400"/>
       <source>Binary Mesh</source>
       <translation>Binäärinen Verkkopinta</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="458"/>
-      <location filename="../../Command.cpp" line="516"/>
+      <location filename="../../Command.cpp" line="340"/>
+      <location filename="../../Command.cpp" line="401"/>
       <source>Alias Mesh</source>
       <translation>Eli pintaverkkona</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="459"/>
-      <location filename="../../Command.cpp" line="518"/>
+      <location filename="../../Command.cpp" line="341"/>
+      <location filename="../../Command.cpp" line="403"/>
       <source>Object File Format</source>
       <translation>Valitse kohteen tiedostomuoto</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="460"/>
+      <location filename="../../Command.cpp" line="342"/>
       <source>Inventor V2.1 ASCII</source>
       <translation type="unfinished">Inventor V2.1 ASCII</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="461"/>
-      <location filename="../../Command.cpp" line="523"/>
+      <location filename="../../Command.cpp" line="343"/>
+      <location filename="../../Command.cpp" line="408"/>
       <source>Stanford Polygon</source>
       <translation>Stanford Monikulmio</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="462"/>
+      <location filename="../../Command.cpp" line="344"/>
       <source>NASTRAN</source>
       <translation type="unfinished">NASTRAN</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="463"/>
-      <location filename="../../Command.cpp" line="530"/>
+      <location filename="../../Command.cpp" line="345"/>
+      <location filename="../../Command.cpp" line="415"/>
       <source>All Files</source>
       <translation>Kaikki tiedostot</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="467"/>
+      <location filename="../../Command.cpp" line="349"/>
       <source>Import mesh</source>
       <translation>Tuo verkkopinta</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="517"/>
+      <location filename="../../Command.cpp" line="402"/>
       <source>Simple Model Format</source>
       <translation>Yksinkertaisen mallin muoto</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="519"/>
+      <location filename="../../Command.cpp" line="404"/>
       <source>Inventor V2.1 ascii</source>
       <translation>Inventor V2.1 ascii</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="520"/>
+      <location filename="../../Command.cpp" line="405"/>
       <source>X3D Extensible 3D</source>
       <translation>X3D laajennettava 3D</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="521"/>
+      <location filename="../../Command.cpp" line="406"/>
       <source>Compressed X3D</source>
       <translation>Pakattu X3D</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="522"/>
+      <location filename="../../Command.cpp" line="407"/>
       <source>WebGL/X3D</source>
       <translation>WebGL/X3D</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="524"/>
+      <location filename="../../Command.cpp" line="409"/>
       <source>VRML V2.0</source>
       <translation>VRML V2.0</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="525"/>
+      <location filename="../../Command.cpp" line="410"/>
       <source>Compressed VRML 2.0</source>
       <translation>Pakattu VRML 2.0</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="526"/>
+      <location filename="../../Command.cpp" line="411"/>
       <source>Nastran</source>
       <translation>Nastran</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="527"/>
+      <location filename="../../Command.cpp" line="412"/>
       <source>Python module def</source>
       <translation>Python modulin määrittely</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="528"/>
+      <location filename="../../Command.cpp" line="413"/>
       <source>Asymptote Format</source>
       <translation>Asymptoottinen Muoto</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="529"/>
+      <location filename="../../Command.cpp" line="414"/>
       <source>3D Manufacturing Format</source>
       <translation type="unfinished">3D Manufacturing Format</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="537"/>
+      <location filename="../../Command.cpp" line="424"/>
       <source>Export mesh</source>
       <translation>Vie verkkopinta</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="578"/>
+      <location filename="../../Command.cpp" line="470"/>
       <source>Meshing Tolerance</source>
       <translation>Verkkopinnoittumisen toleranssi</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="579"/>
+      <location filename="../../Command.cpp" line="471"/>
       <source>Enter tolerance for meshing geometry:</source>
       <translation>Anna verkkopintageometrian toleranssi:</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1381"/>
+      <location filename="../../Command.cpp" line="1281"/>
       <source>The mesh '%1' is not a solid.</source>
       <translation>Verkkopinta '%1' ei ole yhtenäinen.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1384"/>
+      <location filename="../../Command.cpp" line="1285"/>
       <source>The mesh '%1' is a solid.</source>
       <translation>Verkkopinta '%1' on yhtenäinen.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1386"/>
+      <location filename="../../Command.cpp" line="1288"/>
       <source>Solid Mesh</source>
       <translation>Eheä verkkopinta</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1589"/>
+      <location filename="../../Command.cpp" line="1472"/>
       <source>Boundings</source>
       <translation>Rajat</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1651"/>
+      <location filename="../../Command.cpp" line="1538"/>
       <source>Fill holes</source>
       <translation>Täyttää reiät</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1652"/>
+      <location filename="../../Command.cpp" line="1539"/>
       <source>Fill holes with maximum number of edges:</source>
       <translation>Täytä reiät suurimmalla mahdollisella määrällä reunoja:</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1896"/>
+      <location filename="../../Command.cpp" line="1802"/>
       <source>Scaling</source>
       <translation>Skaalaus</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1897"/>
+      <location filename="../../Command.cpp" line="1803"/>
       <source>Enter scaling factor:</source>
       <translation>Anna skaalauskerroin:</translation>
     </message>
@@ -2383,53 +2286,53 @@ osoittweessa asentaaksesi ohjelman.</translation>
       <translation>[Pisteet: %1, Reunat: %2, Ulkopinnat: %3]</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="741"/>
+      <location filename="../../ViewProvider.cpp" line="804"/>
       <source>Display components</source>
       <translation>Näytä osat</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="747"/>
+      <location filename="../../ViewProvider.cpp" line="812"/>
       <source>Display segments</source>
       <translation>Näytä segmentit</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="753"/>
+      <location filename="../../ViewProvider.cpp" line="820"/>
       <source>Display colors</source>
       <translation type="unfinished">Display colors</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderCurvature.cpp" line="514"/>
-      <location filename="../../ViewProvider.cpp" line="1574"/>
+      <location filename="../../ViewProvider.cpp" line="1679"/>
+      <location filename="../../ViewProviderCurvature.cpp" line="522"/>
       <source>Leave info mode</source>
       <translation>Poistu Tieto tilasta</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1633"/>
+      <location filename="../../ViewProvider.cpp" line="1746"/>
       <source>Index: %1</source>
       <translation>Indeksi: %1</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1656"/>
+      <location filename="../../ViewProvider.cpp" line="1772"/>
       <source>Leave hole-filling mode</source>
       <translation>Jätä reiäntäyttötila</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1702"/>
+      <location filename="../../ViewProvider.cpp" line="1822"/>
       <source>Leave removal mode</source>
       <translation>Jätä poistotila</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1703"/>
+      <location filename="../../ViewProvider.cpp" line="1823"/>
       <source>Delete selected faces</source>
       <translation>Tuhoa valitut tahkot</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1704"/>
+      <location filename="../../ViewProvider.cpp" line="1824"/>
       <source>Clear selected faces</source>
       <translation>Puhdista valitut tahkot</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderCurvature.cpp" line="511"/>
+      <location filename="../../ViewProviderCurvature.cpp" line="519"/>
       <source>Annotation</source>
       <translation>Huomautus</translation>
     </message>
@@ -2437,52 +2340,52 @@ osoittweessa asentaaksesi ohjelman.</translation>
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="../../Workbench.cpp" line="45"/>
+      <location filename="../../Workbench.cpp" line="43"/>
       <source>Analyze</source>
       <translation>Analysoi</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="46"/>
+      <location filename="../../Workbench.cpp" line="44"/>
       <source>Boolean</source>
       <translation>Boolen operaatio</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="47"/>
+      <location filename="../../Workbench.cpp" line="45"/>
       <source>&amp;Meshes</source>
       <translation>&amp;Verkkopinta</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="48"/>
+      <location filename="../../Workbench.cpp" line="46"/>
       <source>Cutting</source>
-      <translation>Leikataan</translation>
+      <translation>Leikkuu</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="49"/>
+      <location filename="../../Workbench.cpp" line="47"/>
       <source>Mesh tools</source>
       <translation>Verkkopintatyökalut</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="50"/>
+      <location filename="../../Workbench.cpp" line="48"/>
       <source>Mesh modify</source>
       <translation type="unfinished">Mesh modify</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="51"/>
+      <location filename="../../Workbench.cpp" line="49"/>
       <source>Mesh boolean</source>
       <translation type="unfinished">Mesh boolean</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="52"/>
+      <location filename="../../Workbench.cpp" line="50"/>
       <source>Mesh cutting</source>
       <translation type="unfinished">Mesh cutting</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="53"/>
+      <location filename="../../Workbench.cpp" line="51"/>
       <source>Mesh segmentation</source>
       <translation>Verkkopinnan lohkominen</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="54"/>
+      <location filename="../../Workbench.cpp" line="52"/>
       <source>Mesh analyze</source>
       <translation type="unfinished">Mesh analyze</translation>
     </message>

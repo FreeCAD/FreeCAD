@@ -20,35 +20,44 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
-#include "Mesh.h"
-#include "Edge.h"
-#include <Mod/Mesh/App/EdgePy.h>
-#include <Mod/Mesh/App/EdgePy.cpp>
-
 #include <Base/Converter.h>
-#include <Base/VectorPy.h>
 #include <Base/GeometryPyCXX.h>
+#include <Base/VectorPy.h>
+
+#include "Edge.h"
+#include "EdgePy.h"
+#include "EdgePy.cpp"
+
 
 using namespace Mesh;
 
 // returns a string which represent the object e.g. when printed in python
 std::string EdgePy::representation() const
 {
+    // clang-format off
     EdgePy::PointerType ptr = getEdgePtr();
     std::stringstream str;
     str << "Edge (";
-    str << "(" << ptr->_aclPoints[0].x << ", " << ptr->_aclPoints[0].y << ", " << ptr->_aclPoints[0].z << ", Idx=" << ptr->PIndex[0] << "), ";
-    str << "(" << ptr->_aclPoints[1].x << ", " << ptr->_aclPoints[1].y << ", " << ptr->_aclPoints[1].z << ", Idx=" << ptr->PIndex[1] << "), ";
-    str << "Idx=" << ptr->Index << ", (" << ptr->NIndex[0] << ", " << ptr->NIndex[1] << ")";
+    str << "(" << ptr->_aclPoints[0].x << ", "
+               << ptr->_aclPoints[0].y << ", "
+               << ptr->_aclPoints[0].z << ", Idx="
+               << ptr->PIndex[0] << "), ";
+    str << "(" << ptr->_aclPoints[1].x << ", "
+               << ptr->_aclPoints[1].y << ", "
+               << ptr->_aclPoints[1].z << ", Idx="
+               << ptr->PIndex[1] << "), ";
+    str << "Idx=" << ptr->Index << ", ("
+                  << ptr->NIndex[0] << ", "
+                  << ptr->NIndex[1] << ")";
     str << ")";
- 
+    // clang-format on
+
     return str.str();
 }
 
-PyObject *EdgePy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // Python wrapper
+PyObject* EdgePy::PyMake(struct _typeobject*, PyObject*, PyObject*)  // Python wrapper
 {
     // create a new instance of EdgePy and the Twin object
     return new EdgePy(new Edge);
@@ -59,28 +68,38 @@ int EdgePy::PyInit(PyObject* args, PyObject* /*kwds*/)
 {
     PyObject* pt1 = nullptr;
     PyObject* pt2 = nullptr;
-    if (!PyArg_ParseTuple(args, "|O!O!", &Base::VectorPy::Type, &pt1
-                                       , &Base::VectorPy::Type, &pt2))
+    if (!PyArg_ParseTuple(args,
+                          "|O!O!",
+                          &Base::VectorPy::Type,
+                          &pt1,
+                          &Base::VectorPy::Type,
+                          &pt2)) {
         return -1;
+    }
 
-    if (pt1)
-        getEdgePtr()->_aclPoints[0] = Base::convertTo<Base::Vector3f>(Py::Vector(pt1, false).toVector());
-    if (pt2)
-        getEdgePtr()->_aclPoints[1] = Base::convertTo<Base::Vector3f>(Py::Vector(pt2, false).toVector());
+    if (pt1) {
+        getEdgePtr()->_aclPoints[0] =
+            Base::convertTo<Base::Vector3f>(Py::Vector(pt1, false).toVector());
+    }
+    if (pt2) {
+        getEdgePtr()->_aclPoints[1] =
+            Base::convertTo<Base::Vector3f>(Py::Vector(pt2, false).toVector());
+    }
     return 0;
 }
 
 Py::Long EdgePy::getIndex() const
 {
-    return Py::Long((long) getEdgePtr()->Index);
+    return Py::Long((long)getEdgePtr()->Index);
 }
 
-PyObject*  EdgePy::intersectWithEdge(PyObject *args)
+PyObject* EdgePy::intersectWithEdge(PyObject* args)
 {
     PyObject* object;
-    if (!PyArg_ParseTuple(args, "O!", &EdgePy::Type, &object))
+    if (!PyArg_ParseTuple(args, "O!", &EdgePy::Type, &object)) {
         return nullptr;
-    EdgePy  *edge = static_cast<EdgePy*>(object);
+    }
+    EdgePy* edge = static_cast<EdgePy*>(object);
     EdgePy::PointerType edge_ptr = edge->getEdgePtr();
     EdgePy::PointerType this_ptr = this->getEdgePtr();
     Base::Vector3f p;
@@ -102,41 +121,44 @@ PyObject*  EdgePy::intersectWithEdge(PyObject *args)
     }
 }
 
-PyObject*  EdgePy::isParallel(PyObject *args)
+PyObject* EdgePy::isParallel(PyObject* args)
 {
-    PyObject* object;
-    if (!PyArg_ParseTuple(args, "O!", &EdgePy::Type, &object))
+    PyObject* object {};
+    if (!PyArg_ParseTuple(args, "O!", &EdgePy::Type, &object)) {
         return nullptr;
-    EdgePy  *edge = static_cast<EdgePy*>(object);
+    }
+    EdgePy* edge = static_cast<EdgePy*>(object);
     EdgePy::PointerType edge_ptr = edge->getEdgePtr();
     EdgePy::PointerType this_ptr = this->getEdgePtr();
     bool ok = this_ptr->IsParallel(*edge_ptr);
     return Py::new_reference_to(Py::Boolean(ok));
 }
 
-PyObject*  EdgePy::isCollinear(PyObject *args)
+PyObject* EdgePy::isCollinear(PyObject* args)
 {
-    PyObject* object;
-    if (!PyArg_ParseTuple(args, "O!", &EdgePy::Type, &object))
+    PyObject* object {};
+    if (!PyArg_ParseTuple(args, "O!", &EdgePy::Type, &object)) {
         return nullptr;
-    EdgePy  *edge = static_cast<EdgePy*>(object);
+    }
+    EdgePy* edge = static_cast<EdgePy*>(object);
     EdgePy::PointerType edge_ptr = edge->getEdgePtr();
     EdgePy::PointerType this_ptr = this->getEdgePtr();
     bool ok = this_ptr->IsCollinear(*edge_ptr);
     return Py::new_reference_to(Py::Boolean(ok));
 }
 
-PyObject* EdgePy::unbound(PyObject *args)
+PyObject* EdgePy::unbound(PyObject* args)
 {
-    if (!PyArg_ParseTuple(args, ""))
+    if (!PyArg_ParseTuple(args, "")) {
         return nullptr;
+    }
     getEdgePtr()->unbound();
     Py_Return;
 }
 
 Py::Boolean EdgePy::getBound() const
 {
-    return Py::Boolean(getEdgePtr()->isBound());
+    return {getEdgePtr()->isBound()};
 }
 
 Py::List EdgePy::getPoints() const
@@ -144,11 +166,11 @@ Py::List EdgePy::getPoints() const
     EdgePy::PointerType edge = this->getEdgePtr();
 
     Py::List pts;
-    for (int i=0; i<2; i++) {
+    for (const auto& pnt : edge->_aclPoints) {
         Py::Tuple pt(3);
-        pt.setItem(0, Py::Float(edge->_aclPoints[i].x));
-        pt.setItem(1, Py::Float(edge->_aclPoints[i].y));
-        pt.setItem(2, Py::Float(edge->_aclPoints[i].z));
+        pt.setItem(0, Py::Float(pnt.x));
+        pt.setItem(1, Py::Float(pnt.y));
+        pt.setItem(2, Py::Float(pnt.z));
         pts.append(pt);
     }
 
@@ -160,7 +182,7 @@ Py::Tuple EdgePy::getPointIndices() const
     EdgePy::PointerType edge = this->getEdgePtr();
 
     Py::Tuple idxTuple(2);
-    for (int i=0; i<2; i++) {
+    for (int i = 0; i < 2; i++) {
         idxTuple.setItem(i, Py::Long(edge->PIndex[i]));
     }
     return idxTuple;
@@ -171,7 +193,7 @@ Py::Tuple EdgePy::getNeighbourIndices() const
     EdgePy::PointerType edge = this->getEdgePtr();
 
     Py::Tuple idxTuple(2);
-    for (int i=0; i<2; i++) {
+    for (int i = 0; i < 2; i++) {
         idxTuple.setItem(i, Py::Long(edge->NIndex[i]));
     }
     return idxTuple;
@@ -183,12 +205,12 @@ Py::Float EdgePy::getLength() const
     return Py::Float(Base::Distance(edge->_aclPoints[0], edge->_aclPoints[1]));
 }
 
-PyObject *EdgePy::getCustomAttributes(const char* /*attr*/) const
+PyObject* EdgePy::getCustomAttributes(const char* /*attr*/) const
 {
     return nullptr;
 }
 
-int EdgePy::setCustomAttributes(const char* /*attr*/, PyObject * /*obj*/)
+int EdgePy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
 {
-    return 0; 
+    return 0;
 }

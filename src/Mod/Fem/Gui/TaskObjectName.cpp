@@ -20,67 +20,55 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <QString>
-# include <QSlider>
+#include <QString>
 #endif
 
-
-#include "ui_TaskObjectName.h"
-#include "TaskObjectName.h"
-#include <Gui/Application.h>
-#include <Gui/Document.h>
 #include <App/DocumentObject.h>
 #include <Gui/BitmapFactory.h>
-#include <Gui/ViewProvider.h>
-#include <Gui/WaitCursor.h>
-#include <Base/Console.h>
-#include <Gui/Selection.h>
+#include <Gui/Document.h>
+
+#include "TaskObjectName.h"
+#include "ui_TaskObjectName.h"
 
 
 using namespace FemGui;
 using namespace Gui;
 
-TaskObjectName::TaskObjectName(App::DocumentObject *pcObject,QWidget *parent)
-    : TaskBox(Gui::BitmapFactory().pixmap("FEM_CreateNodesSet"),
-      tr("TaskObjectName"),
-      true,
-      parent),
-      pcObject(pcObject)
+TaskObjectName::TaskObjectName(App::DocumentObject* pcObject, QWidget* parent)
+    : TaskBox(Gui::BitmapFactory().pixmap("FEM_CreateNodesSet"), tr("TaskObjectName"), true, parent)
+    , pcObject(pcObject)
+    , ui(new Ui_TaskObjectName)
 {
     // we need a separate container widget to add all controls to
     proxy = new QWidget(this);
-    ui = new Ui_TaskObjectName();
     ui->setupUi(proxy);
     QMetaObject::connectSlotsByName(this);
 
     this->groupLayout()->addWidget(proxy);
 
-    QObject::connect(ui->lineEdit_ObjectName,SIGNAL(textChanged (const QString&)),this,SLOT(TextChanged(const QString&)));
+    QObject::connect(ui->lineEdit_ObjectName,
+                     &QLineEdit::textChanged,
+                     this,
+                     &TaskObjectName::TextChanged);
 
-    if(strcmp(pcObject->Label.getValue(),"") != 0)
+    if (strcmp(pcObject->Label.getValue(), "") != 0) {
         ui->lineEdit_ObjectName->setText(QString::fromUtf8(pcObject->Label.getValue()));
-    else
+    }
+    else {
         ui->lineEdit_ObjectName->setText(QString::fromLatin1(pcObject->getNameInDocument()));
-
+    }
 }
 
-
-void TaskObjectName::TextChanged (const QString & text)
+void TaskObjectName::TextChanged(const QString& text)
 {
     name = text.toUtf8().constData();
-    //pcObject->Label.setValue(text.toUtf8());
+    // pcObject->Label.setValue(text.toUtf8());
 }
 
-
-
-TaskObjectName::~TaskObjectName()
-{
-    delete ui;
-}
+TaskObjectName::~TaskObjectName() = default;
 
 
 #include "moc_TaskObjectName.cpp"

@@ -23,10 +23,9 @@
 #ifndef TECHDRAWGUI_TASKACTIVEVIEW_H
 #define TECHDRAWGUI_TASKACTIVEVIEW_H
 
-#include <Mod/TechDraw/TechDrawGlobal.h>
-
 #include <Gui/TaskView/TaskDialog.h>
 #include <Gui/TaskView/TaskView.h>
+#include <Mod/TechDraw/TechDrawGlobal.h>
 
 
 class QPushButton;
@@ -52,7 +51,7 @@ class TechDrawGuiExport TaskActiveView : public QWidget
 
 public:
     TaskActiveView(TechDraw::DrawPage* pageFeat);
-    ~TaskActiveView();
+    ~TaskActiveView() override;
 
 public Q_SLOTS:
 
@@ -65,7 +64,7 @@ public:
     void enableTaskButtons(bool b);
 
 protected:
-    void changeEvent(QEvent *e);
+    void changeEvent(QEvent *e) override;
 
     void blockButtons(bool b);
     void setUiPrimary(void);

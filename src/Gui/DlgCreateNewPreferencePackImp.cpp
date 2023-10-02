@@ -25,6 +25,8 @@
 #ifndef _PreComp_
 # include <QMessageBox>
 # include <QPushButton>
+# include <QRegularExpression>
+# include <QRegularExpressionMatch>
 #endif
 
 #include "DlgCreateNewPreferencePackImp.h"
@@ -46,17 +48,16 @@ DlgCreateNewPreferencePackImp::DlgCreateNewPreferencePackImp(QWidget* parent)
 {
     ui->setupUi(this);
 
-    QRegExp validNames(QString::fromUtf8("[^/\\\\?%*:|\"<>]+"));
-    _nameValidator.setRegExp(validNames);
+    QRegularExpression validNames(QString::fromUtf8(R"([^/\\?%*:|"<>]+)"));
+    _nameValidator.setRegularExpression(validNames);
     ui->lineEdit->setValidator(&_nameValidator);
     ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
     connect(ui->treeWidget, &QTreeWidget::itemChanged, this, &DlgCreateNewPreferencePackImp::onItemChanged);
+    connect(ui->lineEdit, &QLineEdit::textEdited, this, &DlgCreateNewPreferencePackImp::onLineEditTextEdited);
 }
 
 
-DlgCreateNewPreferencePackImp::~DlgCreateNewPreferencePackImp()
-{
-}
+DlgCreateNewPreferencePackImp::~DlgCreateNewPreferencePackImp() = default;
 
 void DlgCreateNewPreferencePackImp::setPreferencePackTemplates(const std::vector<Gui::PreferencePackManager::TemplateFile>& availableTemplates)
 {
@@ -145,7 +146,7 @@ void DlgCreateNewPreferencePackImp::onItemChanged(QTreeWidgetItem* item, int col
     }
 }
 
-void DlgCreateNewPreferencePackImp::on_lineEdit_textEdited(const QString& text)
+void DlgCreateNewPreferencePackImp::onLineEditTextEdited(const QString& text)
 {
     ui->buttonBox->button(QDialogButtonBox::Ok)->setDisabled(text.isEmpty());
 }
@@ -155,7 +156,7 @@ void Gui::Dialog::DlgCreateNewPreferencePackImp::accept()
     // Ensure that the chosen name is either unique, or that the user actually wants to overwrite the old one
     if (auto chosenName = ui->lineEdit->text().toStdString();
         std::find(_existingPackNames.begin(), _existingPackNames.end(), chosenName) != _existingPackNames.end()) {
-        auto result = QMessageBox::warning(this, tr("Pack already exists"), 
+        auto result = QMessageBox::warning(this, tr("Pack already exists"),
                                            tr("A preference pack with that name already exists. Do you want to overwrite it?"),
                                            QMessageBox::Yes | QMessageBox::Cancel);
         if (result == QMessageBox::Cancel)

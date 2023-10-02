@@ -20,21 +20,16 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #include "Base/GeometryPyCXX.h"
 #include "Base/Vector3D.h"
 #include "Base/VectorPy.h"
 
-#include "Voronoi.h"
-#include "VoronoiCell.h"
-#include "VoronoiCellPy.h"
-#include "VoronoiEdge.h"
-#include "VoronoiEdgePy.h"
 #include "VoronoiPy.h"
 #include "VoronoiPy.cpp"
-#include "VoronoiVertex.h"
+#include "VoronoiCellPy.h"
+#include "VoronoiEdgePy.h"
 #include "VoronoiVertexPy.h"
 
 

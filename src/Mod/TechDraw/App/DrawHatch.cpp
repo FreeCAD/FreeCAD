@@ -20,47 +20,36 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <iomanip>
 # include <sstream>
-#include <Precision.hxx>
-#include <cmath>
-
 #endif
-
-#include <iomanip>
-
-# include <QFile>
-# include <QFileInfo>
 
 #include <App/Application.h>
 #include <App/Document.h>
 #include <Base/Console.h>
-#include <Base/Exception.h>
 #include <Base/FileInfo.h>
 #include <Base/Parameter.h>
-#include <Base/UnitsApi.h>
 
-#include "Preferences.h"
-#include "DrawViewPart.h"
-#include "DrawUtil.h"
 #include "DrawHatch.h"
+#include "DrawHatchPy.h"  // generated from DrawHatchPy.xml
+#include "DrawUtil.h"
+#include "DrawViewPart.h"
+#include "Preferences.h"
 
-#include <Mod/TechDraw/App/DrawHatchPy.h>  // generated from DrawHatchPy.xml
 
 using namespace TechDraw;
-using namespace std;
+using DU = DrawUtil;
 
 PROPERTY_SOURCE(TechDraw::DrawHatch, App::DocumentObject)
-
 
 DrawHatch::DrawHatch(void)
 {
     static const char *vgroup = "Hatch";
 
-    ADD_PROPERTY_TYPE(Source, (nullptr), vgroup, (App::PropertyType)(App::Prop_None), "The View + Face to be hatched");
+    ADD_PROPERTY_TYPE(Source, (nullptr), vgroup, App::PropertyType::Prop_None, "The View + Face to be hatched");
     Source.setScope(App::LinkScope::Global);
     ADD_PROPERTY_TYPE(HatchPattern, (prefSvgHatch()), vgroup, App::Prop_None, "The hatch pattern file for this area");
     ADD_PROPERTY_TYPE(SvgIncluded, (""), vgroup, App::Prop_None,
@@ -71,32 +60,15 @@ DrawHatch::DrawHatch(void)
 
 void DrawHatch::onChanged(const App::Property* prop)
 {
-    if (!isRestoring()) {
-        if (prop == &Source) {
-            DrawHatch::execute();
-        }
-        App::Document* doc = getDocument();
-        if ((prop == &HatchPattern) && doc) {
-            if (!HatchPattern.isEmpty()) {
-                replaceFileIncluded(HatchPattern.getValue());
-            }
-        }
+    if (isRestoring()) {
+        App::DocumentObject::onChanged(prop);
+        return;
+    }
+
+    if (prop == &HatchPattern) {
+        replaceFileIncluded(HatchPattern.getValue());
     }
     App::DocumentObject::onChanged(prop);
-}
-
-short DrawHatch::mustExecute() const
-{
-    short result = 0;
-    if (!isRestoring()) {
-        result  =  (Source.isTouched()  ||
-                    HatchPattern.isTouched());
-    }
-
-    if (result) {
-        return result;
-    }
-    return App::DocumentObject::mustExecute();
 }
 
 App::DocumentObjectExecReturn *DrawHatch::execute(void)
@@ -126,38 +98,29 @@ PyObject *DrawHatch::getPyObject(void)
 
 bool DrawHatch::faceIsHatched(int i, std::vector<TechDraw::DrawHatch*> hatchObjs)
 {
-    bool result = false;
-    bool found = false;
     for (auto& h:hatchObjs) {
         const std::vector<std::string> &sourceNames = h->Source.getSubValues();
         for (auto& s : sourceNames) {
             int fdx = TechDraw::DrawUtil::getIndexFromName(s);
             if (fdx == i) {
-                result = true;
-                found = true;
-                break;
+                return true;  // Found something
             }
         }
-        if (found) {
-            break;
-        }
     }
-    return result;
+    return false;  // Found nothing
 }
 
 //does this hatch affect face i
 bool DrawHatch::affectsFace(int i)
 {
-    bool result = false;
     const std::vector<std::string> &sourceNames = Source.getSubValues();
     for (auto& s : sourceNames) {
         int fdx = TechDraw::DrawUtil::getIndexFromName(s);
-            if (fdx == i) {
-                result = true;
-                break;
-            }
+        if (fdx == i) {
+            return true;  // Found something
+        }
     }
-    return result;
+    return false;  // Found nothing
 }
 
 //remove a subElement(Face) from Source PropertyLinkSub
@@ -195,66 +158,25 @@ bool DrawHatch::empty(void)
     return sourceNames.empty();
 }
 
-void DrawHatch::replaceFileIncluded(std::string newSvgFile)
+void DrawHatch::replaceFileIncluded(std::string newHatchFileName)
 {
-//    Base::Console().Message("DH::replaceSvgHatch(%s)\n", newSvgFile.c_str());
-    if (SvgIncluded.isEmpty()) {
-        setupFileIncluded();
+//    Base::Console().Message("DH::replaceFileIncluded(%s)\n", newHatchFileName.c_str());
+    if (newHatchFileName.empty()) {
+        return;
+    }
+
+    Base::FileInfo tfi(newHatchFileName);
+    if (tfi.isReadable()) {
+        SvgIncluded.setValue(newHatchFileName.c_str());
     } else {
-        std::string tempName = SvgIncluded.getExchangeTempFile();
-        DrawUtil::copyFile(newSvgFile, tempName);
-        SvgIncluded.setValue(tempName.c_str());
+        throw Base::RuntimeError("Could not read the new svg file");
     }
-}
-
-void DrawHatch::onDocumentRestored()
-{
-//if this is a restore, we should be checking for SvgIncluded empty,
-// if it is, set it up from hatchPattern,
-// else, don't do anything
-//    Base::Console().Message("DH::onDocumentRestored()\n");
-    if (SvgIncluded.isEmpty()) {
-        if (!HatchPattern.isEmpty()) {
-            std::string svgFileName = HatchPattern.getValue();
-            Base::FileInfo tfi(svgFileName);
-            if (tfi.isReadable()) {
-                if (SvgIncluded.isEmpty()) {
-                    setupFileIncluded();
-                }
-            }
-        }
-    }
-
-    App::DocumentObject::onDocumentRestored();
 }
 
 void DrawHatch::setupObject()
 {
-    //by this point DH should have a name and belong to a document
-    setupFileIncluded();
-
-    App::DocumentObject::setupObject();
-}
-
-void DrawHatch::setupFileIncluded(void)
-{
-//    Base::Console().Message("DH::setupFileIncluded()\n");
-    App::Document* doc = getDocument();
-    std::string special = getNameInDocument();
-    special += "Hatch.fill";
-    std::string dir = doc->TransientDir.getValue();
-    std::string svgName = dir + special;
-
-    if (SvgIncluded.isEmpty()) {
-        DrawUtil::copyFile(std::string(), svgName);
-        SvgIncluded.setValue(svgName.c_str());
-    }
-
-    if (!HatchPattern.isEmpty()) {
-        std::string exchName = SvgIncluded.getExchangeTempFile();
-        DrawUtil::copyFile(HatchPattern.getValue(), exchName);
-        SvgIncluded.setValue(exchName.c_str(), special.c_str());
-    }
+//    Base::Console().Message("DH::setupObject()\n");
+    replaceFileIncluded(HatchPattern.getValue());
 }
 
 void DrawHatch::unsetupObject(void)
@@ -270,30 +192,21 @@ void DrawHatch::unsetupObject(void)
 
 bool DrawHatch::isSvgHatch(void) const
 {
-    bool result = false;
     Base::FileInfo fi(HatchPattern.getValue());
-    if ((fi.extension() == "svg") ||
-        (fi.extension() == "SVG")) {
-        result = true;
-    }
-    return result;
+    return fi.hasExtension("svg");
 }
 
 bool DrawHatch::isBitmapHatch(void) const
 {
-    bool result = false;
     Base::FileInfo fi(HatchPattern.getValue());
-    if ((fi.extension() == "bmp") ||
-        (fi.extension() == "BMP") ||
-        (fi.extension() == "png") ||
-        (fi.extension() == "PNG") ||
-        (fi.extension() == "jpg") ||
-        (fi.extension() == "JPG") ||
-        (fi.extension() == "jpeg") ||
-        (fi.extension() == "JPEG") ) {
-        result = true;
-    }
-    return result;
+    return fi.hasExtension({"bmp", "png", "jpg", "jpeg"});
+}
+
+//! get a translated label string from the context (ex TaskActiveView), the base name (ex ActiveView) and
+//! the unique name within the document (ex ActiveView001), and use it to update the Label property.
+void DrawHatch::translateLabel(std::string context, std::string baseName, std::string uniqueName)
+{
+    Label.setValue(DU::translateArbitrary(context, baseName, uniqueName));
 }
 
 //standard preference getters
@@ -304,10 +217,8 @@ std::string DrawHatch::prefSvgHatch(void)
 
 App::Color DrawHatch::prefSvgHatchColor(void)
 {
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
-        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Colors");
     App::Color fcColor;
-    fcColor.setPackedValue(hGrp->GetUnsigned("Hatch", 0x00FF0000));
+    fcColor.setPackedValue(Preferences::getPreferenceGroup("Colors")->GetUnsigned("Hatch", 0x00FF0000));
     return fcColor;
 }
 

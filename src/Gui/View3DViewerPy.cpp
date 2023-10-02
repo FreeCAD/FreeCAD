@@ -30,6 +30,7 @@
 #include <Base/Interpreter.h>
 #include <Base/MatrixPy.h>
 
+#include "PythonWrapper.h"
 #include "View3DViewerPy.h"
 #include "View3DInventorViewer.h"
 
@@ -85,10 +86,16 @@ void View3DInventorViewerPy::init_type()
         "resetEditingRoot(updateLinks=True): restore the editing ViewProvider's root node");
     add_varargs_method("setBackgroundColor", &View3DInventorViewerPy::setBackgroundColor,
         "setBackgroundColor(r,g,b): sets the background color of the current viewer.");
+    add_varargs_method("setGradientBackground", &View3DInventorViewerPy::setGradientBackground,
+        "setGradientBackground(str): sets the background gradient of the current viewer.");
+    add_varargs_method("setGradientBackgroundColor", &View3DInventorViewerPy::setGradientBackgroundColor,
+        "setGradientBackgroundColor(tuple,tuple,[tuple]): sets the gradient colors of the current viewer.");
     add_varargs_method("setRedirectToSceneGraph", &View3DInventorViewerPy::setRedirectToSceneGraph,
         "setRedirectToSceneGraph(bool): enables or disables to redirect events directly to the scene graph.");
     add_varargs_method("isRedirectedToSceneGraph", &View3DInventorViewerPy::isRedirectedToSceneGraph,
         "isRedirectedToSceneGraph() -> bool: check whether event redirection is enabled.");
+    add_varargs_method("grabFramebuffer", &View3DInventorViewerPy::grabFramebuffer,
+        "grabFramebuffer() -> QImage: renders and returns a 32-bit RGB image of the framebuffer.");
     add_varargs_method("setEnabledNaviCube", &View3DInventorViewerPy::setEnabledNaviCube,
         "setEnabledNaviCube(bool): enables or disables the navi cube of the viewer.");
     add_varargs_method("isEnabledNaviCube", &View3DInventorViewerPy::isEnabledNaviCube,
@@ -106,8 +113,8 @@ View3DInventorViewerPy::View3DInventorViewerPy(View3DInventorViewer *vi)
 View3DInventorViewerPy::~View3DInventorViewerPy()
 {
     Base::PyGILStateLocker lock;
-    for (std::list<PyObject*>::iterator it = callbacks.begin(); it != callbacks.end(); ++it)
-        Py_DECREF(*it);
+    for (auto it : callbacks)
+        Py_DECREF(it);
 }
 
 
@@ -149,7 +156,7 @@ Py::Object View3DInventorViewerPy::getattr(const char * attr)
     else {
         Py::Object obj = Py::PythonExtension<View3DInventorViewerPy>::getattr(attr);
         if (PyCFunction_Check(obj.ptr())) {
-            PyCFunctionObject* op = reinterpret_cast<PyCFunctionObject*>(obj.ptr());
+            auto op = reinterpret_cast<PyCFunctionObject*>(obj.ptr());
             if (!pycxx_handler)
                 pycxx_handler = op->m_ml->ml_meth;
             op->m_ml->ml_meth = method_varargs_ext_handler;
@@ -179,7 +186,7 @@ Py::Object View3DInventorViewerPy::getSoRenderManager(const Py::Tuple& args)
     try {
         SoRenderManager* manager = _viewer->getSoRenderManager();
         PyObject* proxy = nullptr;
-        proxy = Base::Interpreter().createSWIGPointerObj("pivy.coin", "SoRenderManager *", (void*)manager, 0);
+        proxy = Base::Interpreter().createSWIGPointerObj("pivy.coin", "SoRenderManager *", static_cast<void*>(manager), 0);
         return Py::Object(proxy, true);
     }
     catch (const Base::Exception& e) {
@@ -195,7 +202,7 @@ Py::Object View3DInventorViewerPy::getSceneGraph(const Py::Tuple& args)
     try {
         SoNode* scene = _viewer->getSceneGraph();
         PyObject* proxy = nullptr;
-        proxy = Base::Interpreter().createSWIGPointerObj("pivy.coin", "SoSeparator *", (void*)scene, 1);
+        proxy = Base::Interpreter().createSWIGPointerObj("pivy.coin", "SoSeparator *", static_cast<void*>(scene), 1);
         scene->ref();
         return Py::Object(proxy, true);
     }
@@ -213,7 +220,7 @@ Py::Object View3DInventorViewerPy::setSceneGraph(const Py::Tuple& args)
     void* ptr = nullptr;
     try {
         Base::Interpreter().convertSWIGPointerObj("pivy.coin", "SoNode *", proxy, &ptr, 0);
-        SoNode* node = static_cast<SoNode*>(ptr);
+        auto node = static_cast<SoNode*>(ptr);
         _viewer->setSceneGraph(node);
         return Py::None();
     }
@@ -230,7 +237,7 @@ Py::Object View3DInventorViewerPy::getSoEventManager(const Py::Tuple& args)
     try {
         SoEventManager* manager = _viewer->getSoEventManager();
         PyObject* proxy = nullptr;
-        proxy = Base::Interpreter().createSWIGPointerObj("pivy.coin", "SoEventManager *", (void*)manager, 0);
+        proxy = Base::Interpreter().createSWIGPointerObj("pivy.coin", "SoEventManager *", static_cast<void*>(manager), 0);
         return Py::Object(proxy, true);
     }
     catch (const Base::Exception& e) {
@@ -429,15 +436,99 @@ Py::Object View3DInventorViewerPy::resetEditingRoot(const Py::Tuple& args)
     }
 }
 
-Py::Object View3DInventorViewerPy::setBackgroundColor(const Py::Tuple& args)
+Py::Object View3DInventorViewerPy::setGradientBackground(const Py::Tuple& args)
 {
-    float r,g,b = 0.0;
-    if (!PyArg_ParseTuple(args.ptr(), "fff", &r, &g, &b)) {
+    const char* background;
+    if (!PyArg_ParseTuple(args.ptr(), "s", &background)) {
         throw Py::Exception();
     }
     try {
-        SbColor col(r,g,b);
-        _viewer->setGradientBackgroundColor(col,col);
+        View3DInventorViewer::Background gradient = View3DInventorViewer::Background::NoGradient;
+        if (strcmp(background, "LINEAR") == 0) {
+            gradient = View3DInventorViewer::Background::LinearGradient;
+        }
+        else if (strcmp(background, "RADIAL") == 0) {
+            gradient = View3DInventorViewer::Background::RadialGradient;
+        }
+
+        _viewer->setGradientBackground(gradient);
+        _viewer->redraw();
+        return Py::None();
+    }
+    catch (const Base::Exception& e) {
+        throw Py::RuntimeError(e.what());
+    }
+    catch (const std::exception& e) {
+        throw Py::RuntimeError(e.what());
+    }
+    catch(...) {
+        throw Py::RuntimeError("Unknown C++ exception");
+    }
+}
+
+Py::Object View3DInventorViewerPy::setGradientBackgroundColor(const Py::Tuple& args)
+{
+    PyObject* col1;
+    PyObject* col2;
+    PyObject* col3 = nullptr;
+    if (!PyArg_ParseTuple(args.ptr(), "O!O!|O!",
+                          &PyTuple_Type, &col1,
+                          &PyTuple_Type, &col2,
+                          &PyTuple_Type, &col3)) {
+        throw Py::Exception();
+    }
+
+    auto tupleToColor = [](PyObject* col) {
+        SbColor color;
+        Py::Tuple tuple(col);
+        for (int i=0; i<3; i++) {
+            color[i] = static_cast<float>(Py::Float(tuple[i]));
+        }
+
+        return color;
+    };
+
+    try {
+        SbColor midColor(-1, -1, -1);
+        SbColor fromColor = tupleToColor(col1);
+        SbColor toColor = tupleToColor(col2);
+        if (col3) {
+            midColor = tupleToColor(col3);
+        }
+
+        _viewer->setGradientBackgroundColor(fromColor, toColor, midColor);
+        _viewer->redraw();
+        return Py::None();
+    }
+    catch (const Base::Exception& e) {
+        throw Py::RuntimeError(e.what());
+    }
+    catch (const std::exception& e) {
+        throw Py::RuntimeError(e.what());
+    }
+    catch(...) {
+        throw Py::RuntimeError("Unknown C++ exception");
+    }
+}
+
+Py::Object View3DInventorViewerPy::setBackgroundColor(const Py::Tuple& args)
+{
+    float red, green, blue = 0.0;
+    if (!PyArg_ParseTuple(args.ptr(), "fff", &red, &green, &blue)) {
+        throw Py::Exception();
+    }
+    try {
+        SbColor col(red, green, blue);
+        _viewer->setGradientBackgroundColor(col, col);
+
+        QColor qtcolor;
+        qtcolor.setRedF(red);
+        qtcolor.setGreenF(green);
+        qtcolor.setBlueF(blue);
+        if (qtcolor.isValid()) {
+            _viewer->setBackgroundColor(qtcolor);
+        }
+        _viewer->redraw();
         return Py::None();
     }
     catch (const Base::Exception& e) {
@@ -466,6 +557,17 @@ Py::Object View3DInventorViewerPy::isRedirectedToSceneGraph(const Py::Tuple& arg
         throw Py::Exception();
     bool ok = _viewer->isRedirectedToSceneGraph();
     return Py::Boolean(ok);
+}
+
+Py::Object View3DInventorViewerPy::grabFramebuffer(const Py::Tuple& args)
+{
+    if (!PyArg_ParseTuple(args.ptr(), ""))
+        throw Py::Exception();
+    QImage img = _viewer->grabFramebuffer();
+
+    PythonWrapper wrap;
+    wrap.loadGuiModule();
+    return wrap.fromQImage(img.mirrored());
 }
 
 Py::Object View3DInventorViewerPy::setEnabledNaviCube(const Py::Tuple& args)

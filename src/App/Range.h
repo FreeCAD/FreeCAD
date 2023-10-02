@@ -50,7 +50,7 @@ struct AppExport CellAddress {
     };
 
     explicit CellAddress(int row = -1, int col = -1, bool absRow=false, bool absCol=false)
-        : _row(row), _col(col), _absRow(absRow), _absCol(absCol) 
+        : _row(row), _col(col), _absRow(absRow), _absCol(absCol)
     { }
 
     explicit CellAddress(const char * address) {
@@ -162,7 +162,7 @@ public:
 
     CellAddress operator*() const { return CellAddress(row_curr, col_curr); }
 
-    inline bool operator<(const Range & other) const { 
+    inline bool operator<(const Range & other) const {
         if(from() < other.from())
             return true;
         if(from() > other.from())

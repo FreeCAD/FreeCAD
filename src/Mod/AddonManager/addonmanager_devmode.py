@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
 # ***************************************************************************
 # *                                                                         *
 # *   Copyright (c) 2022 FreeCAD Project Association                        *
@@ -24,28 +25,31 @@
 
 import os
 import datetime
+import subprocess
 
 import FreeCAD
 import FreeCADGui
 
-from PySide2.QtWidgets import (
+from PySide.QtWidgets import (
     QFileDialog,
     QListWidgetItem,
     QDialog,
     QSizePolicy,
+    QMessageBox,
 )
-from PySide2.QtGui import (
+from PySide.QtGui import (
     QIcon,
     QPixmap,
 )
-from PySide2.QtCore import Qt
-from addonmanager_git import GitManager
+from PySide.QtCore import Qt
+from addonmanager_git import GitManager, NoGitFound
 
 from addonmanager_devmode_add_content import AddContent
 from addonmanager_devmode_validators import NameValidator, VersionValidator
 from addonmanager_devmode_predictor import Predictor
 from addonmanager_devmode_people_table import PeopleTable
 from addonmanager_devmode_licenses_table import LicensesTable
+import addonmanager_utilities as utils
 
 translate = FreeCAD.Qt.translate
 
@@ -58,11 +62,18 @@ ContentIndexRole = Qt.UserRole + 1
 class AddonGitInterface:
     """Wrapper to handle the git calls needed by this class"""
 
-    git_manager = GitManager()
+    git_manager = None
 
     def __init__(self, path):
-        self.path = path
         self.git_exists = False
+        if not AddonGitInterface.git_manager:
+            try:
+                AddonGitInterface.git_manager = GitManager()
+            except NoGitFound:
+                FreeCAD.Console.PrintLog("No git found, Addon Manager Developer Mode disabled.")
+                return
+
+        self.path = path
         if os.path.exists(os.path.join(path, ".git")):
             self.git_exists = True
             self.branch = AddonGitInterface.git_manager.current_branch(self.path)
@@ -77,26 +88,26 @@ class AddonGitInterface:
 
     @property
     def committers(self):
-        """The commiters to this repo, in the last ten commits"""
+        """The committers to this repo, in the last ten commits"""
         if self.git_exists:
             return AddonGitInterface.git_manager.get_last_committers(self.path, 10)
         return []
 
     @property
     def authors(self):
-        """The commiters to this repo, in the last ten commits"""
+        """The committers to this repo, in the last ten commits"""
         if self.git_exists:
             return AddonGitInterface.git_manager.get_last_authors(self.path, 10)
         return []
 
-#pylint: disable=too-many-instance-attributes
+
+# pylint: disable=too-many-instance-attributes
+
 
 class DeveloperMode:
     """The main Developer Mode dialog, for editing package.xml metadata graphically."""
 
     def __init__(self):
-
-
         # In the UI we want to show a translated string for the person type, but the underlying
         # string must be the one expected by the metadata parser, in English
         self.person_type_translation = {
@@ -114,12 +125,8 @@ class DeveloperMode:
         small_size_policy.setHorizontalStretch(1)
         self.people_table.widget.setSizePolicy(large_size_policy)
         self.licenses_table.widget.setSizePolicy(small_size_policy)
-        self.dialog.peopleAndLicenseshorizontalLayout.addWidget(
-            self.people_table.widget
-        )
-        self.dialog.peopleAndLicenseshorizontalLayout.addWidget(
-            self.licenses_table.widget
-        )
+        self.dialog.peopleAndLicenseshorizontalLayout.addWidget(self.people_table.widget)
+        self.dialog.peopleAndLicenseshorizontalLayout.addWidget(self.licenses_table.widget)
         self.pref = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Addons")
         self.current_mod: str = ""
         self.git_interface = None
@@ -130,6 +137,7 @@ class DeveloperMode:
 
         self.dialog.displayNameLineEdit.setValidator(NameValidator())
         self.dialog.versionLineEdit.setValidator(VersionValidator())
+        self.dialog.minPythonLineEdit.setValidator(VersionValidator())
 
         self.dialog.addContentItemToolButton.setIcon(
             QIcon.fromTheme("add", QIcon(":/icons/list-add.svg"))
@@ -138,7 +146,7 @@ class DeveloperMode:
             QIcon.fromTheme("remove", QIcon(":/icons/list-remove.svg"))
         )
 
-    def show(self, parent=None, path=None):
+    def show(self, parent=None, path: str = None):
         """Show the main dev mode dialog"""
         if parent:
             self.dialog.setParent(parent)
@@ -159,9 +167,11 @@ class DeveloperMode:
         result = self.dialog.exec()
         if result == QDialog.Accepted:
             self._sync_metadata_to_ui()
+            now = datetime.date.today()
+            self.metadata.Date = str(now)
             self.metadata.write(os.path.join(self.current_mod, "package.xml"))
 
-    def _populate_dialog(self, path_to_repo):
+    def _populate_dialog(self, path_to_repo: str):
         """Populate this dialog using the best available parsing of the contents of the repo at
         path_to_repo. This is a multi-layered process that starts with any existing package.xml
         file or other known metadata files, and proceeds through examining the contents of the
@@ -201,6 +211,7 @@ class DeveloperMode:
         self.dialog.displayNameLineEdit.setText(self.metadata.Name)
         self.dialog.descriptionTextEdit.setPlainText(self.metadata.Description)
         self.dialog.versionLineEdit.setText(self.metadata.Version)
+        self.dialog.minPythonLineEdit.setText(self.metadata.PythonMin)
 
         self._populate_urls_from_metadata(self.metadata)
         self._populate_contents_from_metadata(self.metadata)
@@ -235,6 +246,8 @@ class DeveloperMode:
                 self.dialog.readmeURLLineEdit.setText(url["location"])
             elif url["type"] == "documentation":
                 self.dialog.documentationURLLineEdit.setText(url["location"])
+            elif url["type"] == "discussion":
+                self.dialog.discussionURLLineEdit.setText(url["location"])
 
     def _populate_contents_from_metadata(self, metadata):
         """Use the passed metadata object to populate the contents list"""
@@ -248,27 +261,17 @@ class DeveloperMode:
                 if item.Name:
                     info.append(translate("AddonsInstaller", "Name") + ": " + item.Name)
                 if item.Classname:
-                    info.append(
-                        translate("AddonsInstaller", "Class") + ": " + item.Classname
-                    )
+                    info.append(translate("AddonsInstaller", "Class") + ": " + item.Classname)
                 if item.Description:
                     info.append(
-                        translate("AddonsInstaller", "Description")
-                        + ": "
-                        + item.Description
+                        translate("AddonsInstaller", "Description") + ": " + item.Description
                     )
                 if item.Subdirectory:
                     info.append(
-                        translate("AddonsInstaller", "Subdirectory")
-                        + ": "
-                        + item.Subdirectory
+                        translate("AddonsInstaller", "Subdirectory") + ": " + item.Subdirectory
                     )
                 if item.File:
-                    info.append(
-                        translate("AddonsInstaller", "Files")
-                        + ": "
-                        + ", ".join(item.File)
-                    )
+                    info.append(translate("AddonsInstaller", "Files") + ": " + ", ".join(item.File))
                 contents_string += ", ".join(info)
 
                 item = QListWidgetItem(contents_string)
@@ -310,7 +313,7 @@ class DeveloperMode:
         predictor = Predictor()
         self.metadata = predictor.predict_metadata(self.current_mod)
 
-    def _scan_for_git_info(self, path):
+    def _scan_for_git_info(self, path: str):
         """Look for branch availability"""
         self.git_interface = AddonGitInterface(path)
         if self.git_interface.git_exists:
@@ -330,26 +333,22 @@ class DeveloperMode:
         self.dialog.bugtrackerURLLineEdit.clear()
         self.dialog.readmeURLLineEdit.clear()
         self.dialog.documentationURLLineEdit.clear()
+        self.dialog.discussionURLLineEdit.clear()
+        self.dialog.minPythonLineEdit.clear()
         self.dialog.iconDisplayLabel.setPixmap(QPixmap())
         self.dialog.iconPathLineEdit.clear()
 
     def _setup_dialog_signals(self):
         """Set up the signal and slot connections for the main dialog."""
 
-        self.dialog.addonPathBrowseButton.clicked.connect(
-            self._addon_browse_button_clicked
-        )
-        self.dialog.pathToAddonComboBox.editTextChanged.connect(
-            self._addon_combo_text_changed
-        )
+        self.dialog.addonPathBrowseButton.clicked.connect(self._addon_browse_button_clicked)
+        self.dialog.pathToAddonComboBox.editTextChanged.connect(self._addon_combo_text_changed)
+        self.dialog.detectMinPythonButton.clicked.connect(self._detect_min_python_clicked)
+        self.dialog.iconBrowseButton.clicked.connect(self._browse_for_icon_clicked)
 
         self.dialog.addContentItemToolButton.clicked.connect(self._add_content_clicked)
-        self.dialog.removeContentItemToolButton.clicked.connect(
-            self._remove_content_clicked
-        )
-        self.dialog.contentsListWidget.itemSelectionChanged.connect(
-            self._content_selection_changed
-        )
+        self.dialog.removeContentItemToolButton.clicked.connect(self._remove_content_clicked)
+        self.dialog.contentsListWidget.itemSelectionChanged.connect(self._content_selection_changed)
         self.dialog.contentsListWidget.itemDoubleClicked.connect(self._edit_content)
 
         self.dialog.versionToTodayButton.clicked.connect(self._set_to_today_clicked)
@@ -357,7 +356,7 @@ class DeveloperMode:
         # Finally, populate the combo boxes, etc.
         self._populate_combo()
 
-        # Disable all of the "Remove" buttons until something is selected
+        # Disable all the "Remove" buttons until something is selected
         self.dialog.removeContentItemToolButton.setDisabled(True)
 
     def _sync_metadata_to_ui(self):
@@ -368,17 +367,13 @@ class DeveloperMode:
             self.metadata = FreeCAD.Metadata()
 
         self.metadata.Name = self.dialog.displayNameLineEdit.text()
-        self.metadata.Description = (
-            self.dialog.descriptionTextEdit.document().toPlainText()
-        )
+        self.metadata.Description = self.dialog.descriptionTextEdit.document().toPlainText()
         self.metadata.Version = self.dialog.versionLineEdit.text()
         self.metadata.Icon = self.dialog.iconPathLineEdit.text()
 
         urls = []
         if self.dialog.websiteURLLineEdit.text():
-            urls.append(
-                {"location": self.dialog.websiteURLLineEdit.text(), "type": "website"}
-            )
+            urls.append({"location": self.dialog.websiteURLLineEdit.text(), "type": "website"})
         if self.dialog.repositoryURLLineEdit.text():
             urls.append(
                 {
@@ -395,9 +390,7 @@ class DeveloperMode:
                 }
             )
         if self.dialog.readmeURLLineEdit.text():
-            urls.append(
-                {"location": self.dialog.readmeURLLineEdit.text(), "type": "readme"}
-            )
+            urls.append({"location": self.dialog.readmeURLLineEdit.text(), "type": "readme"})
         if self.dialog.documentationURLLineEdit.text():
             urls.append(
                 {
@@ -405,9 +398,21 @@ class DeveloperMode:
                     "type": "documentation",
                 }
             )
+        if self.dialog.discussionURLLineEdit.text():
+            urls.append(
+                {
+                    "location": self.dialog.discussionURLLineEdit.text(),
+                    "type": "discussion",
+                }
+            )
         self.metadata.Urls = urls
 
-        # Content, people, and licenses should already be sync'ed
+        if self.dialog.minPythonLineEdit.text():
+            self.metadata.PythonMin = self.dialog.minPythonLineEdit.text()
+        else:
+            self.metadata.PythonMin = "0.0.0"  # Code for "unset"
+
+        # Content, people, and licenses should already be synchronized
 
     ###############################################################################################
     #                                         DIALOG SLOTS
@@ -478,7 +483,7 @@ class DeveloperMode:
                 if entry and entry not in recent_mod_paths and os.path.exists(entry):
                     recent_mod_paths.append(entry)
 
-            # Remove the whole thing so we can recreate it from scratch
+            # Remove the whole thing, so we can recreate it from scratch
             self.pref.RemGroup("recentModsList")
 
         if recent_mod_paths:
@@ -544,3 +549,150 @@ class DeveloperMode:
         day = datetime.date.today().day
         version_string = f"{year}.{month:>02}.{day:>02}"
         self.dialog.versionLineEdit.setText(version_string)
+
+    def _detect_min_python_clicked(self):
+        if not self._ensure_vermin_loaded():
+            FreeCAD.Console.PrintWarning(
+                translate(
+                    "AddonsInstaller",
+                    "No Vermin, cancelling operation.",
+                    "NOTE: Vermin is a Python package and proper noun - do not translate",
+                )
+                + "\n"
+            )
+            return
+        FreeCAD.Console.PrintMessage(
+            translate("AddonsInstaller", "Scanning Addon for Python version compatibility")
+            + "...\n"
+        )
+        # pylint: disable=import-outside-toplevel
+        import vermin
+
+        required_minor_version = 0
+        for dir_path, _, filenames in os.walk(self.current_mod):
+            for filename in filenames:
+                if filename.endswith(".py"):
+                    with open(os.path.join(dir_path, filename), encoding="utf-8") as f:
+                        contents = f.read()
+                        version_strings = vermin.version_strings(vermin.detect(contents))
+                        version = version_strings.split(",")
+                        if len(version) >= 2:
+                            # Only care about Py3, and only if there is a dot in the version:
+                            if "." in version[1]:
+                                py3 = version[1].split(".")
+                                major = int(py3[0].strip())
+                                minor = int(py3[1].strip())
+                                if major == 3:
+                                    FreeCAD.Console.PrintLog(
+                                        f"Detected Python 3.{minor} required by {filename}\n"
+                                    )
+                                    required_minor_version = max(required_minor_version, minor)
+        self.dialog.minPythonLineEdit.setText(f"3.{required_minor_version}")
+        QMessageBox.information(
+            self.dialog,
+            translate("AddonsInstaller", "Minimum Python Version Detected"),
+            translate(
+                "AddonsInstaller",
+                "Vermin auto-detected a required version of Python 3.{}",
+            ).format(required_minor_version),
+            QMessageBox.Ok,
+        )
+
+    def _ensure_vermin_loaded(self) -> bool:
+        try:
+            # pylint: disable=import-outside-toplevel,unused-import
+            import vermin
+        except ImportError:
+            # pylint: disable=line-too-long
+            response = QMessageBox.question(
+                self.dialog,
+                translate("AddonsInstaller", "Install Vermin?"),
+                translate(
+                    "AddonsInstaller",
+                    "Auto-detecting the required version of Python for this Addon requires Vermin (https://pypi.org/project/vermin/). OK to install?",
+                ),
+                QMessageBox.Yes | QMessageBox.Cancel,
+            )
+            if response == QMessageBox.Cancel:
+                return False
+            FreeCAD.Console.PrintMessage(
+                translate("AddonsInstaller", "Attempting to install Vermin from PyPi") + "...\n"
+            )
+            python_exe = utils.get_python_exe()
+            vendor_path = os.path.join(FreeCAD.getUserAppDataDir(), "AdditionalPythonPackages")
+            if not os.path.exists(vendor_path):
+                os.makedirs(vendor_path)
+
+            proc = subprocess.run(
+                [
+                    python_exe,
+                    "-m",
+                    "pip",
+                    "install",
+                    "--disable-pip-version-check",
+                    "--target",
+                    vendor_path,
+                    "vermin",
+                ],
+                capture_output=True,
+                check=True,
+            )
+            FreeCAD.Console.PrintMessage(proc.stdout.decode())
+            if proc.returncode != 0:
+                QMessageBox.critical(
+                    self.dialog,
+                    translate("AddonsInstaller", "Installation failed"),
+                    translate(
+                        "AddonsInstaller",
+                        "Failed to install Vermin -- check Report View for details.",
+                        "'Vermin' is the name of a Python package, do not translate",
+                    ),
+                    QMessageBox.Cancel,
+                )
+                return False
+        try:
+            # pylint: disable=import-outside-toplevel
+            import vermin
+        except ImportError:
+            QMessageBox.critical(
+                self.dialog,
+                translate("AddonsInstaller", "Installation failed"),
+                translate(
+                    "AddonsInstaller",
+                    "Failed to import vermin after installation -- cannot scan Addon.",
+                    "'vermin' is the name of a Python package, do not translate",
+                ),
+                QMessageBox.Cancel,
+            )
+            return False
+        return True
+
+    def _browse_for_icon_clicked(self):
+        """Callback: when the "Browse..." button for the icon field is clicked"""
+        new_icon_path, _ = QFileDialog.getOpenFileName(
+            parent=self.dialog,
+            caption=translate(
+                "AddonsInstaller",
+                "Select an icon file for this package",
+            ),
+            dir=self.current_mod,
+        )
+
+        if not new_icon_path:
+            return
+
+        base_path = self.current_mod.replace("/", os.path.sep)
+        icon_path = new_icon_path.replace("/", os.path.sep)
+        if base_path[-1] != os.path.sep:
+            base_path += os.path.sep
+
+        if not icon_path.startswith(base_path):
+            FreeCAD.Console.PrintError(
+                translate("AddonsInstaller", "{} is not a subdirectory of {}").format(
+                    new_icon_path, self.current_mod
+                )
+                + "\n"
+            )
+            return
+        self.metadata.Icon = new_icon_path[len(base_path) :]
+        self._populate_icon_from_metadata(self.metadata)

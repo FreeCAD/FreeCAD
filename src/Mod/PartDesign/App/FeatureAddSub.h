@@ -37,9 +37,9 @@ class PartDesignExport FeatureAddSub : public PartDesign::Feature
 public:
     enum Type {
         Additive = 0,
-        Subtractive 
+        Subtractive
     };
-    
+
     FeatureAddSub();
 
     Type getAddSubType();
@@ -52,7 +52,7 @@ public:
     App::PropertyBool Refine;
 
 protected:
-    Type addSubType;
+    Type addSubType{Additive};
 
     TopoDS_Shape refineShapeIfActive(const TopoDS_Shape&) const;
 };

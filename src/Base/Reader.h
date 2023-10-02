@@ -33,6 +33,8 @@
 #include <xercesc/sax2/Attributes.hpp>
 #include <xercesc/sax2/DefaultHandler.hpp>
 
+#include <boost/iostreams/concepts.hpp>
+
 #include "FileInfo.h"
 
 
@@ -127,6 +129,13 @@ public:
     XMLReader(const char* FileName, std::istream&);
     ~XMLReader() override;
 
+    /** @name boost iostream device interface */
+    //@{
+    using category = boost::iostreams::source_tag;
+    using char_type = char;
+    std::streamsize read(char_type* s, std::streamsize n);
+    //@}
+
     bool isValid() const { return _valid; }
     bool isVerbose() const { return _verbose; }
     void setVerbose(bool on) { _verbose = on; }
@@ -157,6 +166,20 @@ public:
     void readEndElement(const char* ElementName=nullptr, int level=-1);
     /// read until characters are found
     void readCharacters();
+
+    /** Obtain an input stream for reading characters
+     *
+     *  @return Return a input stream for reading characters. The stream will be
+     *  auto destroyed when you call with readElement() or readEndElement(), or
+     *  you can end it explicitly with endCharStream().
+     */
+    std::istream &beginCharStream();
+    /// Manually end the current character stream
+    void endCharStream();
+    /// Obtain the current character stream
+    std::istream &charStream();
+    //@}
+
     /// read binary file
     void readBinFile(const char*);
     //@}
@@ -191,11 +214,11 @@ public:
     //@}
 
     /// Schema Version of the document
-    int DocumentSchema;
+    int DocumentSchema{0};
     /// Version of FreeCAD that wrote this document
     std::string ProgramVersion;
     /// Version of the file format
-    int FileVersion;
+    int FileVersion{0};
 
     /// sets simultaneously the global and local PartialRestore bits
     void setPartialRestore(bool on);
@@ -255,10 +278,11 @@ protected:
     //@}
 
 
-    int Level;
+    int Level{0};
     std::string LocalName;
     std::string Characters;
-    unsigned int CharacterCount;
+    unsigned int CharacterCount{0};
+    std::streamsize CharacterOffset{-1};
 
     std::map<std::string,std::string> AttrMap;
     using AttrMapType = std::map<std::string,std::string>;
@@ -273,18 +297,20 @@ protected:
         EndElement,
         StartCDATA,
         EndCDATA
-    }   ReadType;
+    }   ReadType{None};
 
 
     FileInfo _File;
     XERCES_CPP_NAMESPACE_QUALIFIER SAX2XMLReader* parser;
     XERCES_CPP_NAMESPACE_QUALIFIER XMLPScanToken token;
-    bool _valid;
-    bool _verbose;
+    bool _valid{false};
+    bool _verbose{true};
 
     std::vector<std::string> FileNames;
 
     std::bitset<32> StatusBits;
+
+    std::unique_ptr<std::istream> CharStream;
 };
 
 class BaseExport Reader : public std::istream

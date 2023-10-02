@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>PartGui::DlgImportStep</class>
+ <widget class="QWidget" name="PartGui::DlgImportStep">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>445</width>
+    <height>292</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>STEP</string>
+  </property>
+  <layout class="QGridLayout" name="gridLayout_4">
+   <item row="1" column="0">
+    <widget class="QGroupBox" name="GroupBox2">
+     <property name="title">
+      <string>Import</string>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout">
+      <item>
+       <widget class="Gui::PrefCheckBox" name="checkBoxMergeCompound">
+        <property name="toolTip">
+         <string>If checked, no Compound merge will be done
+during file reading (slower but higher details).</string>
+        </property>
+        <property name="text">
+         <string>Enable STEP Compound merge</string>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>ReadShapeCompoundMode</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Import/hSTEP</cstring>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="Gui::PrefCheckBox" name="checkBoxUseLinkGroup">
+        <property name="toolTip">
+         <string>Select this to use App::LinkGroup as group container, or else use App::Part.</string>
+        </property>
+        <property name="text">
+         <string>Use LinkGroup</string>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>UseLinkGroup</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Import</cstring>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="Gui::PrefCheckBox" name="checkBoxImportHiddenObj">
+        <property name="toolTip">
+         <string>Select this to import invisible objects.</string>
+        </property>
+        <property name="text">
+         <string>Import invisible objects</string>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>ImportHiddenObject</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Import</cstring>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="Gui::PrefCheckBox" name="checkBoxReduceObjects">
+        <property name="toolTip">
+         <string>Reduce number of objects using Link array</string>
+        </property>
+        <property name="text">
+         <string>Reduce number of objects</string>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>ReduceObjects</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Import</cstring>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="Gui::PrefCheckBox" name="checkBoxExpandCompound">
+        <property name="toolTip">
+         <string>Expand compound shape with multiple solids</string>
+        </property>
+        <property name="text">
+         <string>Expand compound shape</string>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>ExpandCompound</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Import</cstring>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="Gui::PrefCheckBox" name="checkBoxShowProgress">
+        <property name="toolTip">
+         <string>Show progress bar when importing</string>
+        </property>
+        <property name="text">
+         <string>Show progress bar when importing</string>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>ShowProgress</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Import</cstring>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="Gui::PrefCheckBox" name="checkBoxUseBaseName">
+        <property name="toolTip">
+         <string>Do not use instance name. Useful for some legacy STEP file with non-meaningful auto generated instance names.</string>
+        </property>
+        <property name="text">
+         <string>Ignore instance names</string>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>UseBaseName</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Import</cstring>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout">
+        <item>
+         <widget class="QLabel" name="label_5">
+          <property name="text">
+           <string>Mode</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="Gui::PrefComboBox" name="comboBoxImportMode">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>ImportMode</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Import</cstring>
+          </property>
+          <item>
+           <property name="text">
+            <string>Single document</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Assembly per document</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Assembly per document in sub-directory</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Object per document</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Object per document in sub-directory</string>
+           </property>
+          </item>
+         </widget>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>Gui::PrefCheckBox</class>
+   <extends>QCheckBox</extends>
+   <header>Gui/PrefWidgets.h</header>
+  </customwidget>
+  <customwidget>
+   <class>Gui::PrefComboBox</class>
+   <extends>QComboBox</extends>
+   <header>Gui/PrefWidgets.h</header>
+  </customwidget>
+ </customwidgets>
+ <tabstops>
+  <tabstop>checkBoxMergeCompound</tabstop>
+  <tabstop>checkBoxUseLinkGroup</tabstop>
+  <tabstop>checkBoxImportHiddenObj</tabstop>
+  <tabstop>checkBoxReduceObjects</tabstop>
+  <tabstop>checkBoxExpandCompound</tabstop>
+  <tabstop>checkBoxShowProgress</tabstop>
+  <tabstop>checkBoxUseBaseName</tabstop>
+  <tabstop>comboBoxImportMode</tabstop>
+ </tabstops>
+ <resources/>
+ <connections/>
+</ui>

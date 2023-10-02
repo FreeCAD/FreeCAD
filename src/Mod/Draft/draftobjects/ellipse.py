@@ -63,6 +63,11 @@ class Ellipse(DraftObject):
         obj.MakeFace = utils.get_param("fillmode",True)
 
     def execute(self, obj):
+        if self.props_changed_placement_only():
+            obj.positionBySupport()
+            self.props_changed_clear()
+            return
+
         import Part
         plm = obj.Placement
         if obj.MajorRadius.Value < obj.MinorRadius.Value:
@@ -91,6 +96,10 @@ class Ellipse(DraftObject):
                 obj.Area = shape.Area
             obj.Placement = plm
         obj.positionBySupport()
+        self.props_changed_clear()
+
+    def onChanged(self, obj, prop):
+        self.props_changed_store(prop)
 
 
 # Alias for compatibility with v0.18 and earlier

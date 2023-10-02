@@ -395,7 +395,7 @@ PyObject* BezierCurvePy::interpolate(PyObject * args)
         int nb_pts = constraints.size();
         if (nb_pts < 2)
             Standard_Failure::Raise("not enough points given");
-        
+
         TColStd_Array1OfReal params(1, nb_pts);
         if (par) {
             Py::Sequence plist(par);
@@ -413,7 +413,7 @@ PyObject* BezierCurvePy::interpolate(PyObject * args)
                 params(idx+1) = (double)idx/((double)nb_pts-1);
             }
         }
-        
+
         int num_poles = 0;
         for (Py::Sequence::iterator it1 = constraints.begin(); it1 != constraints.end(); ++it1) {
             Py::Sequence row(*it1);

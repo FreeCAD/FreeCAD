@@ -23,7 +23,7 @@
 
 __title__ = "FreeCAD FEM solver Elmer equation object Electricforce"
 __author__ = "Wilfried Hortschitz"
-__url__ = "https://www.freecadweb.org"
+__url__ = "https://www.freecad.org"
 
 ## \addtogroup FEM
 #  @{
@@ -33,6 +33,7 @@ from ... import equationbase
 from . import linear
 
 SOLVER_EXEC_METHODS = ["After Timestep", "Always"]
+
 
 def create(doc, name="Electricforce"):
     return femutils.createObject(

@@ -50,14 +50,15 @@ FC_LOG_LEVEL_INIT("ViewProviderPythonFeature", true, true)
 
 
 using namespace Gui;
-namespace bp = boost::placeholders;
+namespace sp = std::placeholders;
 
 
 // ----------------------------------------------------------------------------
 
 ViewProviderPythonFeatureImp::ViewProviderPythonFeatureImp(
         ViewProviderDocumentObject* vp, App::PropertyPythonObject &proxy)
-  : object(vp), Proxy(proxy), has__object__(false)
+  : object(vp)
+  , Proxy(proxy)
 {
 }
 
@@ -96,7 +97,7 @@ QIcon ViewProviderPythonFeatureImp::getIcon() const
     try {
         Py::Object ret(Base::pyCall(py_getIcon.ptr()));
         if(ret.isNone())
-            return QIcon();
+            return {};
 
         if(ret.isString()) {
             std::string content = Py::String(ret).as_std_string("utf-8");
@@ -118,8 +119,8 @@ QIcon ViewProviderPythonFeatureImp::getIcon() const
                 QList<QByteArray> lines = ary.split('\n');
                 QByteArray buffer;
                 buffer.reserve(ary.size()+lines.size());
-                for (QList<QByteArray>::iterator it = lines.begin(); it != lines.end(); ++it) {
-                    QByteArray trim = it->trimmed();
+                for (const auto & line : lines) {
+                    QByteArray trim = line.trimmed();
                     if (!trim.isEmpty()) {
                         buffer.append(trim);
                         buffer.append('\n');
@@ -148,7 +149,7 @@ QIcon ViewProviderPythonFeatureImp::getIcon() const
         }
     }
 
-    return QIcon();
+    return {};
 }
 
 bool ViewProviderPythonFeatureImp::claimChildren(std::vector<App::DocumentObject*> &children) const
@@ -212,7 +213,7 @@ bool ViewProviderPythonFeatureImp::getElement(const SoDetail *det, std::string &
         // Note: As there is no ref'counting mechanism for the SoDetail class we must
         // pass '0' as the last parameter so that the Python object does not 'own'
         // the detail object.
-        pivy = Base::Interpreter().createSWIGPointerObj("pivy.coin", "SoDetail *", (void*)det, 0);
+        pivy = Base::Interpreter().createSWIGPointerObj("pivy.coin", "SoDetail *", const_cast<void*>(static_cast<const void*>(det)), 0);
         Py::Tuple args(1);
         args.setItem(0, Py::Object(pivy, true));
         Py::String name(Base::pyCall(py_getElement.ptr(),args.ptr()));
@@ -242,7 +243,7 @@ ViewProviderPythonFeatureImp::getElementPicked(const SoPickedPoint *pp, std::str
     Base::PyGILStateLocker lock;
     try {
         PyObject* pivy = nullptr;
-        pivy = Base::Interpreter().createSWIGPointerObj("pivy.coin", "SoPickedPoint *", (void*)pp, 0);
+        pivy = Base::Interpreter().createSWIGPointerObj("pivy.coin", "SoPickedPoint *", const_cast<void*>(static_cast<const void*>(pp)), 0);
         Py::Tuple args(1);
         args.setItem(0, Py::Object(pivy, true));
         Py::Object ret(Base::pyCall(py_getElementPicked.ptr(),args.ptr()));
@@ -278,7 +279,7 @@ bool ViewProviderPythonFeatureImp::getDetail(const char* name, SoDetail *&det) c
         Py::Object pydet(Base::pyCall(py_getDetail.ptr(),args.ptr()));
         void* ptr = nullptr;
         Base::Interpreter().convertSWIGPointerObj("pivy.coin", "SoDetail *", pydet.ptr(), &ptr, 0);
-        SoDetail* detail = static_cast<SoDetail*>(ptr);
+        auto detail = static_cast<SoDetail*>(ptr);
         det = detail ? detail->copy() : nullptr;
         return true;
     }
@@ -306,7 +307,7 @@ ViewProviderPythonFeatureImp::ValueT ViewProviderPythonFeatureImp::getDetailPath
     auto length = path->getLength();
     try {
         PyObject* pivy = nullptr;
-        pivy = Base::Interpreter().createSWIGPointerObj("pivy.coin", "SoFullPath *", (void*)path, 1);
+        pivy = Base::Interpreter().createSWIGPointerObj("pivy.coin", "SoFullPath *", static_cast<void*>(path), 1);
         path->ref();
         Py::Tuple args(3);
         args.setItem(0, Py::String(name));
@@ -319,7 +320,7 @@ ViewProviderPythonFeatureImp::ValueT ViewProviderPythonFeatureImp::getDetailPath
             return Accepted;
         void* ptr = nullptr;
         Base::Interpreter().convertSWIGPointerObj("pivy.coin", "SoDetail *", pyDet.ptr(), &ptr, 0);
-        SoDetail* detail = static_cast<SoDetail*>(ptr);
+        auto detail = static_cast<SoDetail*>(ptr);
         det = detail ? detail->copy() : nullptr;
         if(det)
             return Accepted;
@@ -343,7 +344,7 @@ ViewProviderPythonFeatureImp::ValueT ViewProviderPythonFeatureImp::getDetailPath
 
 std::vector<Base::Vector3d> ViewProviderPythonFeatureImp::getSelectionShape(const char* /*Element*/) const
 {
-    return std::vector<Base::Vector3d>();
+    return {};
 }
 
 ViewProviderPythonFeatureImp::ValueT
@@ -668,8 +669,8 @@ ViewProviderPythonFeatureImp::onDelete(const std::vector<std::string> & sub)
     try {
         Py::Tuple seq(sub.size());
         int index=0;
-        for (std::vector<std::string>::const_iterator it = sub.begin(); it != sub.end(); ++it) {
-            seq.setItem(index++, Py::String(*it));
+        for (const auto & it : sub) {
+            seq.setItem(index++, Py::String(it));
         }
 
         if (has__object__) {

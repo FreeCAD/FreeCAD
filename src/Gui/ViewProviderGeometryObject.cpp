@@ -53,21 +53,19 @@ using namespace Gui;
 
 PROPERTY_SOURCE(Gui::ViewProviderGeometryObject, Gui::ViewProviderDragger)
 
-const App::PropertyIntegerConstraint::Constraints intPercent = {0, 100, 1};
+const App::PropertyIntegerConstraint::Constraints intPercent = {0, 100, 5};
 
 ViewProviderGeometryObject::ViewProviderGeometryObject()
-    : pcBoundSwitch(nullptr)
-    , pcBoundColor(nullptr)
 {
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
     bool randomColor = hGrp->GetBool("RandomColor", false);
     float r, g, b;
 
     if (randomColor){
-        float fMax = (float)RAND_MAX;
-        r = (float)rand()/fMax;
-        g = (float)rand()/fMax;
-        b = (float)rand()/fMax;
+        auto fMax = (float)RAND_MAX;
+        r = (float)rand() / fMax;
+        g = (float)rand() / fMax;
+        b = (float)rand() / fMax;
     }
     else {
         unsigned long shcol = hGrp->GetUnsigned("DefaultShapeColor", 3435973887UL); // light gray (204,204,204)
@@ -175,7 +173,7 @@ void ViewProviderGeometryObject::updateData(const App::Property* prop)
         pcBoundingBox->maxBounds.setValue(box.MaxX, box.MaxY, box.MaxZ);
     }
     else if (prop->isDerivedFrom(App::PropertyPlacement::getClassTypeId())) {
-        App::GeoFeature* geometry = dynamic_cast<App::GeoFeature*>(getObject());
+        auto geometry = dynamic_cast<App::GeoFeature*>(getObject());
         if (geometry && prop == &geometry->Placement) {
             const App::PropertyComplexGeoData* data = geometry->getPropertyOfGeometry();
             if (data) {
@@ -191,7 +189,7 @@ void ViewProviderGeometryObject::updateData(const App::Property* prop)
 
 SoPickedPointList ViewProviderGeometryObject::getPickedPoints(const SbVec2s& pos, const View3DInventorViewer& viewer,bool pickAll) const
 {
-    SoSeparator* root = new SoSeparator;
+    auto root = new SoSeparator;
     root->ref();
     root->addChild(viewer.getHeadlight());
     root->addChild(viewer.getSoRenderManager()->getCamera());
@@ -210,7 +208,7 @@ SoPickedPointList ViewProviderGeometryObject::getPickedPoints(const SbVec2s& pos
 
 SoPickedPoint* ViewProviderGeometryObject::getPickedPoint(const SbVec2s& pos, const View3DInventorViewer& viewer) const
 {
-    SoSeparator* root = new SoSeparator;
+    auto root = new SoSeparator;
     root->ref();
     root->addChild(viewer.getHeadlight());
     root->addChild(viewer.getSoRenderManager()->getCamera());
@@ -251,14 +249,14 @@ void ViewProviderGeometryObject::showBoundingBox(bool show)
         r = ((bbcol >> 24) & 0xff) / 255.0; g = ((bbcol >> 16) & 0xff) / 255.0; b = ((bbcol >> 8) & 0xff) / 255.0;
 
         pcBoundSwitch = new SoSwitch();
-        SoSeparator* pBoundingSep = new SoSeparator();
-        SoDrawStyle* lineStyle = new SoDrawStyle;
+        auto pBoundingSep = new SoSeparator();
+        auto lineStyle = new SoDrawStyle;
         lineStyle->lineWidth = 2.0f;
         pBoundingSep->addChild(lineStyle);
 
         pcBoundColor->rgb.setValue(r, g, b);
         pBoundingSep->addChild(pcBoundColor);
-        SoFont* font = new SoFont();
+        auto font = new SoFont();
         font->size.setValue(getBoundBoxFontSize());
         pBoundingSep->addChild(font);
 
@@ -288,7 +286,7 @@ void ViewProviderGeometryObject::setSelectable(bool selectable)
     SoPathList & pathList = sa.getPaths();
 
     for (int i=0;i<pathList.getLength();i++) {
-        SoFCSelection *selNode = dynamic_cast<SoFCSelection*>(pathList[i]->getTail());
+        auto selNode = dynamic_cast<SoFCSelection*>(pathList[i]->getTail());
         if (selectable) {
             if (selNode) {
                 selNode->selectionMode = SoFCSelection::SEL_ON;

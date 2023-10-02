@@ -19,12 +19,21 @@
 #*                                                                         *
 #***************************************************************************
 
-from __future__ import print_function
 __title__  = "FreeCAD SweetHome3D Importer"
 __author__ = "Yorik van Havre"
-__url__    = "https://www.freecadweb.org"
+__url__    = "https://www.freecad.org"
 
-import os,zipfile,xml.sax,FreeCAD,Part,Draft,Arch,Mesh,tempfile,math
+import math
+import os
+import tempfile
+import xml.sax
+import zipfile
+
+import FreeCAD
+import Arch
+import Draft
+import Mesh
+import Part
 
 ## @package importSH3D
 #  \ingroup ARCH
@@ -40,9 +49,9 @@ if open.__module__ in ['__builtin__','io']:
 
 def open(filename):
     "called when freecad wants to open a file"
-    docname = (os.path.splitext(os.path.basename(filename))[0]).encode("utf8")
+    docname = os.path.splitext(os.path.basename(filename))[0]
     doc = FreeCAD.newDocument(docname)
-    doc.Label = decode(docname)
+    doc.Label = docname
     FreeCAD.ActiveDocument = doc
     read(filename)
     return doc
@@ -57,19 +66,6 @@ def insert(filename,docname):
     FreeCAD.ActiveDocument = doc
     read(filename)
     return doc
-
-
-def decode(name):
-    "decodes encoded strings"
-    try:
-        decodedName = (name.decode("utf8"))
-    except UnicodeDecodeError:
-        try:
-            decodedName = (name.decode("latin1"))
-        except UnicodeDecodeError:
-            FreeCAD.Console.PrintError(translate("Arch","Error: Couldn't determine character encoding"))
-            decodedName = name
-    return decodedName
 
 
 def read(filename):
@@ -105,7 +101,7 @@ def read(filename):
 class SH3DHandler(xml.sax.ContentHandler):
 
     def __init__(self,z):
-        
+
         super().__init__()
         self.makeIndividualWalls = False
         self.z = z
@@ -146,7 +142,7 @@ class SH3DHandler(xml.sax.ContentHandler):
             mat.rotateX(math.pi/2)
             mat.rotateZ(math.pi)
             if DEBUG: print("Creating furniture: ",name)
-            if "angle" in attributes.keys():
+            if "angle" in attributes:
                 mat.rotateZ(float(attributes["angle"]))
             m.transform(mat)
             os.remove(tf)
@@ -190,13 +186,13 @@ class SH3DHandler(xml.sax.ContentHandler):
                 shape = shape.removeSplitter()
             if shape:
                 if DEBUG: print("Creating window: ",name)
-                if "angle" in attributes.keys():
+                if "angle" in attributes:
                     shape.rotate(shape.BoundBox.Center,FreeCAD.Vector(0,0,1),math.degrees(float(attributes["angle"])))
                     sub.rotate(shape.BoundBox.Center,FreeCAD.Vector(0,0,1),math.degrees(float(attributes["angle"])))
                 p = shape.BoundBox.Center.negative()
                 p = p.add(FreeCAD.Vector(float(attributes["x"])*10,float(attributes["y"])*10,0))
                 p = p.add(FreeCAD.Vector(0,0,shape.BoundBox.Center.z-shape.BoundBox.ZMin))
-                if "elevation" in attributes.keys():
+                if "elevation" in attributes:
                     p = p.add(FreeCAD.Vector(0,0,float(attributes["elevation"])*10))
                 shape.translate(p)
                 sub.translate(p)

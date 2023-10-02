@@ -1,4 +1,5 @@
-#   (c) Juergen Riegel (FreeCAD@juergen-riegel.net) 2011      LGPL        *
+#**************************************************************************
+#   Copyright (c) 2011 Juergen Riegel <FreeCAD@juergen-riegel.net>        *
 #                                                                         *
 #   This file is part of the FreeCAD CAx development system.              *
 #                                                                         *
@@ -27,6 +28,7 @@ from FreeCAD import Base
 App = FreeCAD
 
 from parttests.regression_tests import RegressionTests
+from parttests.TopoShapeListTest import TopoShapeListTest
 
 #---------------------------------------------------------------------------
 # define the test cases to test the FreeCAD Part module
@@ -174,6 +176,48 @@ class PartTestBSplineCurve(unittest.TestCase):
         #closing doc
         FreeCAD.closeDocument("PartTest")
 
+class PartTestCurveToNurbs(unittest.TestCase):
+    def testCircleToNurbs(self):
+        mat = Base.Matrix()
+        mat.rotateX(1)
+        mat.rotateY(1)
+        mat.rotateZ(1)
+
+        circle = Part.Circle()
+        circle.Radius = 5
+
+        circle.transform(mat)
+        nurbs = circle.toNurbs()
+        self.assertEqual(circle.value(0), nurbs.value(0))
+
+        arc = circle.trim(0, 2)
+        nurbs = arc.toNurbs()
+        self.assertEqual(circle.value(0), nurbs.value(0))
+
+        spline = circle.toBSpline()
+        self.assertAlmostEqual(circle.value(0).distanceToPoint(spline.value(0)), 0)
+
+    def testEllipseToNurbs(self):
+        mat = Base.Matrix()
+        mat.rotateX(1)
+        mat.rotateY(1)
+        mat.rotateZ(1)
+
+        ellipse = Part.Ellipse()
+        ellipse.MajorRadius = 5
+        ellipse.MinorRadius = 3
+
+        ellipse.transform(mat)
+        nurbs = ellipse.toNurbs()
+        self.assertEqual(ellipse.value(0), nurbs.value(0))
+
+        arc = ellipse.trim(0, 2)
+        nurbs = arc.toNurbs()
+        self.assertEqual(ellipse.value(0), nurbs.value(0))
+
+        spline = ellipse.toBSpline()
+        self.assertAlmostEqual(ellipse.value(0).distanceToPoint(spline.value(0)), 0)
+
 class PartTestBSplineSurface(unittest.TestCase):
     def testTorusToSpline(self):
         to = Part.Toroid()
@@ -218,6 +262,8 @@ class PartTestNormals(unittest.TestCase):
 
 class PartTestShapeRotate(unittest.TestCase):
     def testPlacement(self):
+        tol = 1e-12
+
         box = Part.makeBox(1, 1, 1)
         box.Placement.Base = Base.Vector(10, 10, 10)
         box.rotate((0, 0, 0), (0, 0, 1), 90)
@@ -227,17 +273,17 @@ class PartTestShapeRotate(unittest.TestCase):
 
         p2 = Base.Placement()
         p2.Rotation.Angle = math.radians(90)
-        self.assertTrue(box.Placement.isSame(p2 * p1))
+        self.assertTrue(box.Placement.isSame(p2 * p1, tol))
 
-        p5 = p1.copy()
-        p5.rotate((0, 0, 0), (0, 0, 1), 90)
-        self.assertTrue(p5.isSame(p1 * p2))
-        self.assertFalse(box.Placement.isSame(p5))
+        p3 = p1.copy()
+        p3.rotate((0, 0, 0), (0, 0, 1), 90)
+        self.assertTrue(p3.isSame(p1 * p2, tol))
+        self.assertFalse(box.Placement.isSame(p3, tol))
 
-        p5 = p1.copy()
-        p5.rotate((0, 0, 0), (0, 0, 1), 90, True)
-        self.assertTrue(p5.isSame(p2 * p1))
-        self.assertTrue(box.Placement.isSame(p5))
+        p4 = p1.copy()
+        p4.rotate((0, 0, 0), (0, 0, 1), 90, True)
+        self.assertTrue(p4.isSame(p2 * p1, tol))
+        self.assertTrue(box.Placement.isSame(p4, tol))
 
 class PartTestCircle2D(unittest.TestCase):
     def testValidCircle(self):
@@ -785,3 +831,60 @@ class PartTestShapeFix(unittest.TestCase):
         fix.fixGap3d(1, False)
         fix.fixGap2d(1, False)
         fix.fixTails()
+
+class PartBOPTestContainer(unittest.TestCase):
+    def setUp(self):
+        self.Doc = FreeCAD.newDocument()
+
+    def testMakeFuse(self):
+        box = self.Doc.addObject("Part::Box", "Box")
+        cyl = self.Doc.addObject("Part::Cylinder", "Cylinder")
+        part = self.Doc.addObject("App::Part", "Part")
+        part.addObject(box)
+        part.addObject(cyl)
+        from BOPTools import BOPFeatures
+        bp = BOPFeatures.BOPFeatures(self.Doc)
+        fuse = bp.make_multi_fuse([cyl.Name, box.Name])
+        self.assertEqual(part, fuse.getParent())
+
+    def testMakeCut(self):
+        box = self.Doc.addObject("Part::Box", "Box")
+        cyl = self.Doc.addObject("Part::Cylinder", "Cylinder")
+        part = self.Doc.addObject("App::Part", "Part")
+        part.addObject(box)
+        part.addObject(cyl)
+        from BOPTools import BOPFeatures
+        bp = BOPFeatures.BOPFeatures(self.Doc)
+        fuse = bp.make_cut([cyl.Name, box.Name])
+        self.assertEqual(part, fuse.getParent())
+
+    def testMakeCommon(self):
+        box = self.Doc.addObject("Part::Box", "Box")
+        cyl = self.Doc.addObject("Part::Cylinder", "Cylinder")
+        part = self.Doc.addObject("App::Part", "Part")
+        part.addObject(box)
+        part.addObject(cyl)
+        from BOPTools import BOPFeatures
+        bp = BOPFeatures.BOPFeatures(self.Doc)
+        fuse = bp.make_multi_common([cyl.Name, box.Name])
+        self.assertEqual(part, fuse.getParent())
+
+    def tearDown(self):
+        FreeCAD.closeDocument(self.Doc.Name)
+
+class BSplineCurve2d(unittest.TestCase):
+    def setUp(self):
+        vec2 = FreeCAD.Base.Vector2d
+        self.pts = [vec2(0, 0), vec2(1, 0)]
+        self.bs = Part.Geom2d.BSplineCurve2d()
+
+    def testInterpolate(self):
+        self.bs.interpolate(Points=self.pts)
+
+    def testApproximate(self):
+        self.bs.approximate(Points=self.pts)
+
+class GeometryCurve(unittest.TestCase):
+    def testProject(self):
+        line = Part.Line()
+        line.projectPoint(FreeCAD.Vector())

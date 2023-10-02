@@ -55,10 +55,8 @@ typedef struct {
 } PyBaseProxy;
 
 // Constructor
-PyObjectBase::PyObjectBase(void* p,PyTypeObject *T)
-  : _pcTwinPointer(p)
-  , baseProxy(nullptr)
-  , attrDict(nullptr)
+PyObjectBase::PyObjectBase(void* voidp, PyTypeObject *T)
+  : _pcTwinPointer(voidp)
 {
 #if PY_VERSION_HEX < 0x030b0000
     Py_TYPE(this) = T;
@@ -284,7 +282,7 @@ PyMethodDef PyObjectBase::Methods[] = {
 
 PyObject* PyObjectBase::__getattro(PyObject * obj, PyObject *attro)
 {
-    const char *attr;
+    const char *attr{};
     attr = PyUnicode_AsUTF8(attro);
 
     // For the __class__ attribute get it directly as with
@@ -348,7 +346,7 @@ PyObject* PyObjectBase::__getattro(PyObject * obj, PyObject *attro)
 
 int PyObjectBase::__setattro(PyObject *obj, PyObject *attro, PyObject *value)
 {
-    const char *attr;
+    const char *attr{};
     attr = PyUnicode_AsUTF8(attro);
 
     //Hint: In general we don't allow to delete attributes (i.e. value=0). However, if we want to allow
@@ -393,7 +391,7 @@ PyObject *PyObjectBase::_getattr(const char *attr)
         // Note: We must return the type object here,
         // so that our own types feel as really Python objects
         Py_INCREF(Py_TYPE(this));
-        return (PyObject *)(Py_TYPE(this));
+        return reinterpret_cast<PyObject *>(Py_TYPE(this));
     }
     else if (streq(attr, "__members__")) {
         // Use __dict__ instead as __members__ is deprecated
@@ -411,7 +409,7 @@ PyObject *PyObjectBase::_getattr(const char *attr)
     }
     else {
         // As fallback solution use Python's default method to get generic attributes
-        PyObject *w, *res;
+        PyObject *w{}, *res{};
         w = PyUnicode_InternFromString(attr);
         if (w) {
             res = PyObject_GenericGetAttr(this, w);
@@ -430,7 +428,7 @@ int PyObjectBase::_setattr(const char *attr, PyObject *value)
 {
     if (streq(attr,"softspace"))
         return -1; // filter out softspace
-    PyObject *w;
+    PyObject *w{};
     // As fallback solution use Python's default method to get generic attributes
     w = PyUnicode_InternFromString(attr); // new reference
     if (w) {

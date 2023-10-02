@@ -20,26 +20,11 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
-#ifndef _PreComp_
-#endif
-
 #include "TrajectoryCompound.h"
-//#include <App/DocumentObjectPy.h>
-//#include <Base/Placement.h>
-#include <Mod/Part/App/edgecluster.h>
-#include <Mod/Part/App/PartFeature.h>
-#include <TopoDS.hxx>
-#include <TopoDS_Edge.hxx>
-#include <TopoDS_Vertex.hxx>
-#include <BRep_Tool.hxx>
-#include <BRepAdaptor_Curve.hxx>
-#include <CPnts_AbscissaPoint.hxx>
-#include <TopExp.hxx>
 #include "Waypoint.h"
-#include "Trajectory.h"
+
 
 using namespace Robot;
 using namespace App;
@@ -50,42 +35,41 @@ PROPERTY_SOURCE(Robot::TrajectoryCompound, Robot::TrajectoryObject)
 TrajectoryCompound::TrajectoryCompound()
 {
 
-    ADD_PROPERTY_TYPE( Source,      (nullptr)   , "Compound",Prop_None,"list of trajectories to combine");
-
+    ADD_PROPERTY_TYPE(Source, (nullptr), "Compound", Prop_None, "list of trajectories to combine");
 }
 
-TrajectoryCompound::~TrajectoryCompound()
+App::DocumentObjectExecReturn* TrajectoryCompound::execute()
 {
-}
-
-App::DocumentObjectExecReturn *TrajectoryCompound::execute(void)
-{
-    const std::vector<DocumentObject*> &Tracs = Source.getValues();
+    const std::vector<DocumentObject*>& Tracs = Source.getValues();
     Robot::Trajectory result;
 
-    for (std::vector<DocumentObject*>::const_iterator it= Tracs.begin();it!=Tracs.end();++it) {
-        if ((*it)->getTypeId().isDerivedFrom(Robot::TrajectoryObject::getClassTypeId())){
-            const std::vector<Waypoint*> &wps = static_cast<Robot::TrajectoryObject*>(*it)->Trajectory.getValue().getWaypoints();
-            for (std::vector<Waypoint*>::const_iterator it2= wps.begin();it2!=wps.end();++it2) {
-                result.addWaypoint(**it2);
+    for (auto it : Tracs) {
+        if (it->getTypeId().isDerivedFrom(Robot::TrajectoryObject::getClassTypeId())) {
+            const std::vector<Waypoint*>& wps =
+                static_cast<Robot::TrajectoryObject*>(it)->Trajectory.getValue().getWaypoints();
+            for (auto wp : wps) {
+                result.addWaypoint(*wp);
             }
-        }else
-            return new App::DocumentObjectExecReturn("Not all objects in compound are trajectories!");
+        }
+        else {
+            return new App::DocumentObjectExecReturn(
+                "Not all objects in compound are trajectories!");
+        }
     }
 
     Trajectory.setValue(result);
-    
+
     return App::DocumentObject::StdReturn;
 }
 
 
-//short TrajectoryCompound::mustExecute(void) const
+// short TrajectoryCompound::mustExecute(void) const
 //{
-//    return 0;
-//}
+//     return 0;
+// }
 
-//void TrajectoryCompound::onChanged(const Property* prop)
+// void TrajectoryCompound::onChanged(const Property* prop)
 //{
-// 
-//    App::GeoFeature::onChanged(prop);
-//}
+//
+//     App::GeoFeature::onChanged(prop);
+// }

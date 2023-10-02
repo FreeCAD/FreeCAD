@@ -138,7 +138,7 @@ protected:
   ~SoFCColorBarBase () override;
 
 private:
-  float _boxWidth;
+  float _boxWidth{-1.0F};
   SbVec2s _windowSize;
 };
 

@@ -201,14 +201,14 @@
 					in the u parametric direction, and between V1 and V2 in the v
 					parametric direction.
 					U1, U2, V1, and V2 can be outside the bounds of this surface.
-					
+
 					-- U1 and U2 isoparametric Bezier curves, segmented between
 					   V1 and V2, become the two bounds of the surface in the v
 					   parametric direction (0. and 1. u isoparametric curves).
 					-- V1 and V2 isoparametric Bezier curves, segmented between
 					   U1 and U2, become the two bounds of the surface in the u
 					   parametric direction (0. and 1. v isoparametric curves).
-					
+
 					The poles and weights tables are modified, but the degree of
 					this surface in the u and v parametric directions does not
 					change.U1 can be greater than U2, and V1 can be greater than V2.

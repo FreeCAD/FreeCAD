@@ -76,7 +76,7 @@ PyMethodDef UnitsApi::Methods[] = {
 
 PyObject* UnitsApi::sParseQuantity(PyObject * /*self*/, PyObject *args)
 {
-    char *pstr;
+    char *pstr{};
     if (!PyArg_ParseTuple(args, "et", "utf-8", &pstr))
         return nullptr;
 
@@ -100,14 +100,15 @@ PyObject* UnitsApi::sListSchemas(PyObject * /*self*/, PyObject *args)
         int num = static_cast<int>(UnitSystem::NumUnitSystemTypes);
         Py::Tuple tuple(num);
         for (int i=0; i<num; i++) {
-            tuple.setItem(i, Py::String(UnitsApi::getDescription(static_cast<UnitSystem>(i))));
+            const auto description {UnitsApi::getDescription(static_cast<UnitSystem>(i)).toStdString()};
+            tuple.setItem(i, Py::String(description.c_str()));
         }
 
         return Py::new_reference_to(tuple);
     }
 
     PyErr_Clear();
-    int index;
+    int index{};
     if (PyArg_ParseTuple(args, "i", &index)) {
         int num = static_cast<int>(UnitSystem::NumUnitSystemTypes);
         if (index < 0 || index >= num) {
@@ -115,7 +116,8 @@ PyObject* UnitsApi::sListSchemas(PyObject * /*self*/, PyObject *args)
             return nullptr;
         }
 
-        return Py_BuildValue("s", UnitsApi::getDescription(static_cast<UnitSystem>(index)));
+        const auto description {UnitsApi::getDescription(static_cast<UnitSystem>(index)).toStdString()};
+        return Py_BuildValue("s", description.c_str());
     }
 
     PyErr_SetString(PyExc_TypeError, "int or empty argument list expected");
@@ -133,7 +135,7 @@ PyObject* UnitsApi::sGetSchema(PyObject * /*self*/, PyObject *args)
 PyObject* UnitsApi::sSetSchema(PyObject * /*self*/, PyObject *args)
 {
     PyErr_Clear();
-    int index;
+    int index{};
     if (PyArg_ParseTuple(args, "i", &index)) {
         int num = static_cast<int>(UnitSystem::NumUnitSystemTypes);
         if (index < 0 || index >= num) {
@@ -147,8 +149,8 @@ PyObject* UnitsApi::sSetSchema(PyObject * /*self*/, PyObject *args)
 
 PyObject* UnitsApi::sSchemaTranslate(PyObject * /*self*/, PyObject *args)
 {
-    PyObject* q;
-    int index;
+    PyObject* q{};
+    int index{};
     if (!PyArg_ParseTuple(args, "O!i", &(QuantityPy::Type), &q, &index))
         return nullptr;
 
@@ -161,7 +163,7 @@ PyObject* UnitsApi::sSchemaTranslate(PyObject * /*self*/, PyObject *args)
         return nullptr;
     }
 
-    double factor;
+    double factor{};
     QString uus;
     QString uss = schema->schemaTranslate(quant, factor, uus);
 
@@ -175,12 +177,12 @@ PyObject* UnitsApi::sSchemaTranslate(PyObject * /*self*/, PyObject *args)
 
 PyObject* UnitsApi::sToNumber(PyObject * /*self*/, PyObject *args)
 {
-    double value;
+    double value{};
     char* format = "g";
-    int decimals;
+    int decimals{};
 
     do {
-        PyObject* q;
+        PyObject* q{};
         if (PyArg_ParseTuple(args, "O!|si", &(QuantityPy::Type), &q, &format, &decimals)) {
             value = static_cast<QuantityPy*>(q)->getQuantityPtr()->getValue();
             break;
@@ -201,7 +203,7 @@ PyObject* UnitsApi::sToNumber(PyObject * /*self*/, PyObject *args)
         return nullptr;
     }
 
-    bool ok;
+    bool ok{};
     QuantityFormat qf;
     qf.format = QuantityFormat::toFormat(format[0], &ok);
     qf.precision = decimals;

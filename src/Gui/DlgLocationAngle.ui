@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Form</string>
+   <string notr="true">Form</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
@@ -94,42 +94,42 @@
      </property>
      <item>
       <property name="text">
-       <string>1 °</string>
+       <string notr="true">1 °</string>
       </property>
      </item>
      <item>
       <property name="text">
-       <string>2 °</string>
+       <string notr="true">2 °</string>
       </property>
      </item>
      <item>
       <property name="text">
-       <string>5 °</string>
+       <string notr="true">5 °</string>
       </property>
      </item>
      <item>
       <property name="text">
-       <string>10 °</string>
+       <string notr="true">10 °</string>
       </property>
      </item>
      <item>
       <property name="text">
-       <string>20 °</string>
+       <string notr="true">20 °</string>
       </property>
      </item>
      <item>
       <property name="text">
-       <string>45 °</string>
+       <string notr="true">45 °</string>
       </property>
      </item>
      <item>
       <property name="text">
-       <string>90 °</string>
+       <string notr="true">90 °</string>
       </property>
      </item>
      <item>
       <property name="text">
-       <string>180 °</string>
+       <string notr="true">180 °</string>
       </property>
      </item>
     </widget>

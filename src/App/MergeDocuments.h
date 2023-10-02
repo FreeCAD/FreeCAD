@@ -53,10 +53,10 @@ public:
     const std::map<std::string, std::string> &getNameMap() const {return nameMap;}
 
 private:
-    bool guiup;
-    bool verbose;
-    zipios::ZipInputStream* stream;
-    App::Document* appdoc;
+    bool guiup{false};
+    bool verbose{true};
+    zipios::ZipInputStream* stream{nullptr};
+    App::Document* appdoc{nullptr};
     std::vector<App::DocumentObject*> objects;
     std::map<std::string, std::string> nameMap;
     using Connection = boost::signals2::connection;

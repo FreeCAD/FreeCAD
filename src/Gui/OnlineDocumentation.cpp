@@ -65,13 +65,9 @@ static const unsigned char navicon_data[] = {
     0x9c,0x3d,0x00,0x00,0x9f,0xfd,0x00,0x00,0x80,0xfd,0x00,0x00,0xff,0x7d,
     0x00,0x00,0xfe,0x01,0x00,0x00,0xff,0x7f,0x00,0x00};
 
-PythonOnlineHelp::PythonOnlineHelp()
-{
-}
+PythonOnlineHelp::PythonOnlineHelp() = default;
 
-PythonOnlineHelp::~PythonOnlineHelp()
-{
-}
+PythonOnlineHelp::~PythonOnlineHelp() = default;
 
 QByteArray PythonOnlineHelp::loadResource(const QString& filename) const
 {
@@ -287,9 +283,9 @@ void HttpServer::incomingConnection(qintptr socket)
     // communication with the client is done over this QTcpSocket. QTcpSocket
     // works asynchronously, this means that all the communication is done
     // in the two slots readClient() and discardClient().
-    QTcpSocket* s = new QTcpSocket(this);
-    connect(s, SIGNAL(readyRead()), this, SLOT(readClient()));
-    connect(s, SIGNAL(disconnected()), this, SLOT(discardClient()));
+    auto s = new QTcpSocket(this);
+    connect(s, &QTcpSocket::readyRead, this, &HttpServer::readClient);
+    connect(s, &QTcpSocket::disconnected, this, &HttpServer::discardClient);
     s->setSocketDescriptor(socket);
 }
 
@@ -311,7 +307,7 @@ void HttpServer::readClient()
     // This slot is called when the client sent data to the server. The
     // server looks if it was a GET request and  sends back the
     // corresponding HTML document from the ZIP file.
-    QTcpSocket* socket = (QTcpSocket*)sender();
+    auto socket = static_cast<QTcpSocket*>(sender());
     if (socket->canReadLine()) {
         QString httpRequestHeader = QString::fromLatin1(socket->readLine());
         QStringList lst = httpRequestHeader.simplified().split(QLatin1String(" "));
@@ -345,7 +341,7 @@ void HttpServer::readClient()
 
 void HttpServer::discardClient()
 {
-    QTcpSocket* socket = (QTcpSocket*)sender();
+    auto socket = static_cast<QTcpSocket*>(sender());
     socket->deleteLater();
 }
 

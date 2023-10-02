@@ -53,13 +53,13 @@ public:
     ~ViewProviderBody() override;
 
     App::PropertyEnumeration DisplayModeBody;
-    
+
     void attach(App::DocumentObject *) override;
 
-    bool doubleClicked(void) override;
+    bool doubleClicked() override;
     void setupContextMenu(QMenu* menu, QObject* receiver, const char* member) override;
 
-    std::vector< std::string > getDisplayModes(void) const override;
+    std::vector< std::string > getDisplayModes() const override;
     void setDisplayMode(const char* ModeName) override;
     void setOverrideMode(const std::string& mode) override;
 
@@ -72,7 +72,7 @@ public:
 
     /// Update the sizes of origin and datums
     void updateOriginDatumSize ();
-    
+
     /**
      * Return the bounding box of visible features
      * @note datums are counted as their base point only

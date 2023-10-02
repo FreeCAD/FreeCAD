@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
-    <PythonExport 
-        Father="BaseClassPy" 
-        Name="VoronoiPy" 
+    <PythonExport
+        Father="BaseClassPy"
+        Name="VoronoiPy"
         PythonName="Path.Voronoi.Diagram"
-        Twin="Voronoi" 
-        TwinPointer="Voronoi" 
-        Include="Mod/Path/App/Voronoi.h" 
-        Namespace="Path" 
-        FatherInclude="Base/BaseClassPy.h" 
+        Twin="Voronoi"
+        TwinPointer="Voronoi"
+        Include="Mod/Path/App/Voronoi.h"
+        Namespace="Path"
+        FatherInclude="Base/BaseClassPy.h"
         FatherNamespace="Base"
         Constructor="true"
         Delete="true">

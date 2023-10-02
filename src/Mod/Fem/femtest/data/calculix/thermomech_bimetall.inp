@@ -7070,7 +7070,7 @@ Evolumes
 ** Initial temperature constraint
 *INITIAL CONDITIONS,TYPE=TEMPERATURE
 ** ConstraintInitialTemperature
-Nall,273
+Nall,273.0
 
 ***********************************************************
 ** Sections
@@ -7096,11 +7096,11 @@ ConstraintFixed,3
 ** Fixed temperature constraint applied
 ** ConstraintTemperatureHot
 *BOUNDARY
-ConstraintTemperatureHot,11,11,373
+ConstraintTemperatureHot,11,11,373.0
 
 ** ConstraintTemperatureNormal
 *BOUNDARY
-ConstraintTemperatureNormal,11,11,273
+ConstraintTemperatureNormal,11,11,273.0
 
 
 ***********************************************************

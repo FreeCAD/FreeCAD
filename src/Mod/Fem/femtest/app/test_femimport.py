@@ -23,7 +23,7 @@
 
 __title__ = "Import FEM unit tests"
 __author__ = "Bernd Hahnebach"
-__url__ = "https://www.freecadweb.org"
+__url__ = "https://www.freecad.org"
 
 import unittest
 
@@ -154,6 +154,7 @@ class TestObjectExistance(unittest.TestCase):
 
         expected_vtk_obj_types = [
             "Fem::FemPostClipFilter",
+            "Fem::FemPostContoursFilter",
             "Fem::FemPostCutFilter",
             "Fem::FemPostDataAlongLineFilter",
             "Fem::FemPostDataAtPointFilter",

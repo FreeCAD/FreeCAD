@@ -22,65 +22,31 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-#include <BRep_Builder.hxx>
-#include <TopoDS_Compound.hxx>
-#include <TopoDS_Shape.hxx>
-#include <TopoDS_Edge.hxx>
-#include <TopoDS.hxx>
-#include <BRepAdaptor_Curve.hxx>
-#include <Precision.hxx>
-
-#include <QGraphicsScene>
-#include <QGraphicsSceneMouseEvent>
-#include <QGraphicsItem>
-#include <QPainter>
-#include <QPainterPath>
-#include <QPaintDevice>
-#include <QSvgGenerator>
-#include <QRegExp>
-#include <QTextDocument>
-#include <QTextDocumentFragment>
-#include <QTextFrame>
-#include <QTextBlock>
-#include <QTextCursor>
-#include <QDialog>
-
-
 # include <cmath>
+
+# include <QDialog>
+# include <QGraphicsItem>
+# include <QGraphicsSceneMouseEvent>
+# include <QPainter>
+# include <QRegularExpression>
+# include <QRegularExpressionMatch>
+# include <QTextBlock>
+# include <QTextCursor>
+# include <QTextDocumentFragment>
 #endif
 
 #include <App/Application.h>
-#include <App/Material.h>
-#include <Base/Console.h>
-#include <Base/Exception.h>
-#include <Base/Parameter.h>
-#include <Base/Tools.h>
-#include <Base/UnitsApi.h>
-#include <Gui/Command.h>
-
-#include <Mod/Part/App/PartFeature.h>
-
-//#include <Mod/TechDraw/App/Preferences.h>
 #include <Mod/TechDraw/App/DrawRichAnno.h>
-#include <Mod/TechDraw/App/DrawUtil.h>
-#include <Mod/TechDraw/App/Geometry.h>
-
-#include "Rez.h"
-#include "ZVALUE.h"
-#include "PreferencesGui.h"
-#include "QGIArrow.h"
-#include "ViewProviderRichAnno.h"
-#include "MDIViewPage.h"
-#include "DrawGuiUtil.h"
-#include "QGVPage.h"
-#include "QGIPrimPath.h"
-#include "QGEPath.h"
-#include "QGMText.h"
-#include "QGCustomText.h"
-#include "QGCustomRect.h"
 
 #include "QGIRichAnno.h"
 #include "mrichtextedit.h"
+#include "PreferencesGui.h"
+#include "QGCustomRect.h"
+#include "QGCustomText.h"
+#include "Rez.h"
+#include "ViewProviderRichAnno.h"
+#include "ZVALUE.h"
+
 
 using namespace TechDraw;
 using namespace TechDrawGui;
@@ -88,7 +54,7 @@ using namespace TechDrawGui;
 
 //**************************************************************
 QGIRichAnno::QGIRichAnno() :
-    m_isExporting(false), m_hasHover(false)
+    m_isExportingPdf(false), m_isExportingSvg(false), m_hasHover(false)
 {
     setHandlesChildEvents(false);
     setAcceptHoverEvents(false);
@@ -112,31 +78,27 @@ QGIRichAnno::QGIRichAnno() :
 
 }
 
-//void QGIRichAnno::select(bool state)
-//{
-//    setSelected(state);
-//    draw();
-//}
-
-//void QGIRichAnno::hover(bool state)
-//{
-//    m_hasHover = state;
-//    draw();
-//}
-
 void QGIRichAnno::updateView(bool update)
 {
 //    Base::Console().Message("QGIRA::updateView() - %s\n", getViewName());
     Q_UNUSED(update);
     auto annoFeat( dynamic_cast<TechDraw::DrawRichAnno*>(getViewObject()) );
     if (!annoFeat) {
-        Base::Console().Log("QGIRA::updateView - no feature!\n");
         return;
     }
 
     auto vp = static_cast<ViewProviderRichAnno*>(getViewProvider(getViewObject()));
-    if (!vp)
+    if (!vp) {
         return;
+    }
+
+    //allow/prevent dragging
+    if (getViewObject()->isLocked()) {
+        setFlag(QGraphicsItem::ItemIsMovable, false);
+    } else {
+        setFlag(QGraphicsItem::ItemIsMovable, true);
+    }
+
     if (annoFeat->X.isTouched() ||
         annoFeat->Y.isTouched()) {
         float x = Rez::guiX(annoFeat->X.getValue());
@@ -183,93 +145,121 @@ void QGIRichAnno::setTextItem()
 //    Base::Console().Message("QGIRA::setTextItem() - %s\n", getViewName());
     TechDraw::DrawRichAnno* annoFeat = getFeature();
     QString inHtml = QString::fromUtf8(annoFeat->AnnoText.getValue());
+    QRectF inRect = m_text->boundingRect();
+    double fontSize = m_text->font().pointSizeF();
 
-    //don't do this multiplication if exporting to SVG as other apps interpret
-    //font sizes differently from QGraphicsTextItem (?)
-    if (!getExporting()) {
-        //convert point font sizes to (Rez, mm) font sizes
-        QRegExp rxFontSize(QString::fromUtf8("font-size:([0-9]*)pt;"));
-        double mmPerPoint = 0.353;
-        double sizeConvert = Rez::getRezFactor() * mmPerPoint;
-        int pos = 0;
-        QStringList findList;
-        QStringList replList;
-        while ((pos = rxFontSize.indexIn(inHtml, pos)) != -1) {
-            QString found = rxFontSize.cap(0);
-            findList << found;
-            QString qsOldSize = rxFontSize.cap(1);
+    QRegularExpression rxFontSize(QString::fromUtf8("font-size:([0-9]*)pt;"));
+    QRegularExpressionMatch match;
+    double mmPerPoint = 0.353;                  // 25.4 mm/in / 72 points/inch
+    double cssPxPerPoint = 16.0 / 12.0;         // CSS says 12 pt text is 16 px high
+    double sceneUnitsPerPoint = Rez::getRezFactor() * mmPerPoint;      // scene units per point: 3.53
+    int pos = 0;
+    QStringList findList;
+    QStringList replList;
+    while ((pos = inHtml.indexOf(rxFontSize, pos, &match)) != -1) {
+        QString found = match.captured(0);
+        findList << found;
+        QString qsOldSize = match.captured(1);
 
-            QString repl = found;
-            double newSize = qsOldSize.toDouble();
-            newSize = newSize * sizeConvert;
-            QString qsNewSize = QString::number(newSize, 'f', 2);
-            repl.replace(qsOldSize, qsNewSize);
-            replList << repl;
-            pos += rxFontSize.matchedLength();
-        }
-        QString outHtml = inHtml;
-        int iRepl = 0;
-        //TODO: check list for duplicates?
-        for ( ; iRepl < findList.size(); iRepl++) {
-            outHtml = outHtml.replace(findList[iRepl], replList[iRepl]);
-        }
-
-        m_text->setTextWidth(Rez::guiX(annoFeat->MaxWidth.getValue()));
-        m_text->setHtml(outHtml);
-//        setLineSpacing(50);    //this has no effect on the display?!
-//        m_text->update();
-
-        if (annoFeat->ShowFrame.getValue()) {
-            QRectF r = m_text->boundingRect().adjusted(1, 1,-1, -1);
-            m_rect->setPen(rectPen());
-            m_rect->setBrush(Qt::NoBrush);
-            m_rect->setRect(r);
-            m_rect->show();
+        QString repl = found;
+        double newSize = qsOldSize.toDouble();      // in points
+        // The font size in the QGraphicsTextItem html is interpreted differently
+        // in svg rendering compared to the screen or pdf?
+        if (getExportingSvg()) {
+            // scale point size to CSS pixels
+            newSize = newSize * cssPxPerPoint;
         } else {
-            m_rect->hide();
+            // scale point size to scene units
+            newSize = newSize * sceneUnitsPerPoint;
         }
+        QString qsNewSize = QString::number(newSize, 'f', 2);
+        repl.replace(qsOldSize, qsNewSize);
+        replList << repl;
+        pos += match.capturedLength();
+    }
+    QString outHtml = inHtml;
+    int iRepl = 0;
+    //TODO: check list for duplicates?
+    for ( ; iRepl < findList.size(); iRepl++) {
+        outHtml = outHtml.replace(findList[iRepl], replList[iRepl]);
+    }
+
+    prepareGeometryChange();
+    double actualWidth = m_text->textWidth();
+    m_text->setTextWidth(Rez::guiX(annoFeat->MaxWidth.getValue()));
+    m_text->setHtml(outHtml);
+    if (getExportingSvg()) {
+        m_text->setTextWidth(actualWidth);
+        // lines are correctly spaced on screen or in pdf, but svg needs this
+        setLineSpacing(100);
+    }
+
+    if (annoFeat->ShowFrame.getValue()) {
+        QRectF outRect = m_text->boundingRect().adjusted(1, 1,-1, -1);
+        m_rect->setPen(rectPen());
+        m_rect->setBrush(Qt::NoBrush);
+        m_rect->setRect(outRect);
+        if (getExportingSvg()) {
+            // the original text bounding rect is closer to the right size vs
+            // the bounding rect after the text size is changed
+            m_rect->setRect(inRect);
+        }
+        m_rect->centerAt(0.0, 0.0);
+        m_rect->show();
     } else {
-        // don't force line wrap & strip formatting that doesn't export well!
-        double realWidth = m_text->boundingRect().width();
-        m_text->setTextWidth(realWidth);
-
-        QFont f = prefFont();
-        double ptSize = prefPointSize();
-        f.setPointSizeF(ptSize);
-        m_text->setFont(f);
-
-        QString plainText = QTextDocumentFragment::fromHtml( inHtml ).toPlainText();
-        m_text->setPlainText(plainText);
-        setLineSpacing(100);       //this doesn't appear in the generated Svg, but does space the lines!
         m_rect->hide();
-        m_rect->update();
     }
 
     m_text->centerAt(0.0, 0.0);
-    m_rect->centerAt(0.0, 0.0);
-}
-
-void QGIRichAnno::setLineSpacing(int lineSpacing)
-{
-    //this line spacing should be px, but seems to be %? in any event, it does
-    //space out the lines.
-    QTextBlock block = m_text->document()->begin();
-    for (; block.isValid(); block = block.next()) {
-        QTextCursor tc = QTextCursor(block);
-        QTextBlockFormat fmt = block.blockFormat();
-//        fmt.setTopMargin(lineSpacing);            //no effect???
-        fmt.setBottomMargin(lineSpacing);           //spaces out the lines!
-        tc.setBlockFormat(fmt);
-//        }
+    if (getExportingSvg()) {
+        // m_text position will be wrong in svg, but m_rect will be correct, so
+        // we adjust the position of m_text
+        // double spaced default font size in px
+        double verticalAdjust = cssPxPerPoint * fontSize * 2.0;
+        QPointF textPos(m_rect->pos().x() + 1.0, m_rect->pos().y() + verticalAdjust);
+        m_text->setPos(textPos);
     }
 }
 
-//void QGIRichAnno::drawBorder()
-//{
-//////Leaders have no border!
-////    QGIView::drawBorder();   //good for debugging
-//}
+// attempt to space the lines correctly after the font sizes are changed to match
+// the Svg rendering of the QGraphicsTextItem.
+void QGIRichAnno::setLineSpacing(int lineSpacing)
+{
+    // left to itself, Qt appears to space the lines according to this formula
+    // DeltaY(in mm) = (1 + 2*pointSize + margin) which vastly under spaces the
+    // lines
+    m_text->document()->setUseDesignMetrics(true);
 
+    QTextBlock block = m_text->document()->begin();
+    for (; block.isValid(); block = block.next()) {
+        QTextCursor tc = QTextCursor(block);
+        QTextBlockFormat fmt = tc.blockFormat();
+        QTextCharFormat cFmt = tc.charFormat();
+        // this is already converted to pixels in setTextItem
+        //
+        double cssPixelSize = cFmt.font().pointSizeF();
+        // css Pixels are treated as if they were points in the conversion to Svg
+        double textHeightSU = Rez::guiX(cssPixelSize * 25.4 / 72.0);  // actual height of text in scene units
+        double pointSize = cssPixelSize * 72.0 / 96.0;
+        double deltaYSU = 1.0 + 2.0 * pointSize;    // how far Qt will space lines (based on samples)
+        double linegap = 0.4 * cssPixelSize;  // 20% gaps above and below
+        // margins will be included in Qt's calculation of spacing
+
+        double margin = linegap * pointSize / 10.0;
+        QTextBlockFormat spacerFmt = QTextBlockFormat();
+        if (block.previous().isValid()) {
+            // there is a block before this one, so add a top margin
+            spacerFmt.setTopMargin(margin);
+        }
+        if (block.next().isValid()) {
+            // there is another block after this, so add a bottom margin
+            spacerFmt.setBottomMargin(margin);
+        }
+        double requiredSpacing = (textHeightSU / (deltaYSU - 1.0)) * lineSpacing;
+        spacerFmt.setLineHeight(requiredSpacing, QTextBlockFormat::ProportionalHeight);
+        tc.mergeBlockFormat(spacerFmt);
+    }
+}
 
 TechDraw::DrawRichAnno* QGIRichAnno::getFeature()
 {
@@ -295,20 +285,21 @@ void QGIRichAnno::paint ( QPainter * painter, const QStyleOptionGraphicsItem * o
 
 QPen QGIRichAnno::rectPen() const
 {
-    QPen pen;
     const auto sym( dynamic_cast<TechDraw::DrawRichAnno*>(getViewObject()) );
-    if (!sym)
-        return pen;
+    if (!sym) {
+        return QPen();
+    }
     auto vp = static_cast<ViewProviderRichAnno*>(getViewProvider(getViewObject()));
-    if (!vp)
-        return pen;
+    if (!vp) {
+        return QPen();
+    }
 
     double rectWeight = Rez::guiX(vp->LineWidth.getValue());
-    Qt::PenStyle rectStyle = (Qt::PenStyle) vp->LineStyle.getValue();
+    Qt::PenStyle rectStyle = static_cast<Qt::PenStyle>(vp->LineStyle.getValue());
     App::Color temp = vp->LineColor.getValue();
     QColor rectColor = temp.asValue<QColor>();
 
-    pen = QPen(rectStyle);
+    QPen pen = QPen(rectStyle);
     pen.setWidthF(rectWeight);
     pen.setColor(rectColor);
     return pen;
@@ -317,18 +308,6 @@ QPen QGIRichAnno::rectPen() const
 QFont QGIRichAnno::prefFont()
 {
     return PreferencesGui::labelFontQFont();
-}
-
-double QGIRichAnno::prefPointSize()
-{
-//    Base::Console().Message("QGIRA::prefPointSize()\n");
-    double fontSize = Preferences::dimFontSizeMM();
-    //this conversion is only approximate. the factor changes for different fonts.
-//    double mmToPts = 2.83;  //theoretical value
-    double mmToPts = 2.00;  //practical value. seems to be reasonable for common fonts.
-
-    double ptsSize = round(fontSize * mmToPts);
-    return ptsSize;
 }
 
 void QGIRichAnno::mouseDoubleClickEvent(QGraphicsSceneMouseEvent* event) {
@@ -349,8 +328,8 @@ void QGIRichAnno::mouseDoubleClickEvent(QGraphicsSceneMouseEvent* event) {
     QGridLayout gridLayout(&dialog);
     gridLayout.addWidget(&richEdit, 0, 0, 1, 1);
 
-    connect(&richEdit, SIGNAL(saveText(QString)), &dialog, SLOT(accept()));
-    connect(&richEdit, SIGNAL(editorFinished(void)), &dialog, SLOT(reject()));
+    connect(&richEdit, &MRichTextEdit::saveText, &dialog, &QDialog::accept);
+    connect(&richEdit, &MRichTextEdit::editorFinished, &dialog, &QDialog::reject);
 
     if (dialog.exec()) {
         QString newText = richEdit.toHtml();

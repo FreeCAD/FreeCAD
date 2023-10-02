@@ -24,7 +24,7 @@
 
 __title__ = "Result import and export for VTK file format"
 __author__ = "Qingfeng Xia, Bernd Hahnebach"
-__url__ = "https://www.freecadweb.org"
+__url__ = "https://www.freecad.org"
 
 ## @package importVTKResults
 #  \ingroup FEM
@@ -39,12 +39,7 @@ import Fem
 
 
 # ********* generic FreeCAD import and export methods *********
-if open.__module__ == "__builtin__":
-    # because we'll redefine open below (Python2)
-    pyopen = open
-elif open.__module__ == "io":
-    # because we'll redefine open below (Python3)
-    pyopen = open
+pyopen = open
 
 
 def open(

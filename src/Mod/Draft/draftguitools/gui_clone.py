@@ -110,9 +110,9 @@ class Clone(gui_base_original.Modifier):
                 Gui.Selection.addSelection(objects[-(1 + i)])
         self.finish()
 
-    def finish(self, close=False):
+    def finish(self):
         """Terminate the operation of the tool."""
-        super(Clone, self).finish(close=False)
+        super(Clone, self).finish()
         if self.moveAfterCloning:
             todo.ToDo.delay(Gui.runCommand, "Draft_Move")
 

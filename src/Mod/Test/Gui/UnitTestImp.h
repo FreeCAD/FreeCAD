@@ -31,10 +31,11 @@
 
 class QTreeWidgetItem;
 
-namespace TestGui {
+namespace TestGui
+{
 class Ui_UnitTest;
 
-class UnitTestDialog : public QDialog
+class UnitTestDialog: public QDialog
 {
     Q_OBJECT
 
@@ -44,6 +45,7 @@ public:
     void setUnitTest(const QString& unit);
     void clearUnitTests();
     QString getUnitTest() const;
+    bool runCurrentTest();
     void setStatusText(const QString& text);
     void setProgressFraction(float fraction, const QString& = QString());
     void clearErrorList();
@@ -64,19 +66,19 @@ protected:
     ~UnitTestDialog() override;
     void setProgressColor(const QColor& col);
 
-public Q_SLOTS:
-    void on_treeViewFailure_itemDoubleClicked (QTreeWidgetItem * item, int column);
-    void on_helpButton_clicked();
-    void on_aboutButton_clicked();
-    void on_startButton_clicked();
+private:
+    void onTreeViewFailureItemDoubleClicked(QTreeWidgetItem* item, int column);
+    void onHelpButtonClicked();
+    void onAboutButtonClicked();
+    void onStartButtonClicked();
+    void setupConnections();
 
 private:
     std::unique_ptr<Ui_UnitTest> ui;
     static UnitTestDialog* _instance;
 };
 
-} // namespace TestGui
+}  // namespace TestGui
 
 
-#endif // TESTGUI_UNITTESTIMP_H
-
+#endif  // TESTGUI_UNITTESTIMP_H

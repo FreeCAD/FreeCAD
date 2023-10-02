@@ -41,9 +41,7 @@ FemAnalysis::FemAnalysis()
     ADD_PROPERTY_TYPE(Uid, (id), 0, App::Prop_None, "UUID of the Analysis");
 }
 
-FemAnalysis::~FemAnalysis()
-{
-}
+FemAnalysis::~FemAnalysis() = default;
 
 void FemAnalysis::handleChangedPropertyName(Base::XMLReader& reader,
                                             const char* TypeName,
@@ -64,17 +62,20 @@ PROPERTY_SOURCE_ABSTRACT(Fem::DocumentObject, App::DocumentObject)
 
 // Python feature ---------------------------------------------------------
 
-namespace App {
+namespace App
+{
 /// @cond DOXERR
 PROPERTY_SOURCE_TEMPLATE(Fem::FemAnalysisPython, Fem::FemAnalysis)
-template<> const char* Fem::FemAnalysisPython::getViewProviderName() const {
+template<>
+const char* Fem::FemAnalysisPython::getViewProviderName() const
+{
     return "FemGui::ViewProviderFemAnalysisPython";
 }
 
 // template<> void Fem::FemAnalysisPython::Restore(Base::XMLReader& reader) {
 //     FemAnalysis::Restore(reader);
 // }
-//template<> PyObject* Fem::FemAnalysisPython::getPyObject(void) {
+// template<> PyObject* Fem::FemAnalysisPython::getPyObject(void) {
 //    if (PythonObject.is(Py::_None())) {
 //        // ref counter is set to 1
 //        PythonObject = Py::Object(new App::DocumentObjectPy(this),true);
@@ -85,17 +86,22 @@ template<> const char* Fem::FemAnalysisPython::getViewProviderName() const {
 
 // explicit template instantiation
 template class FemExport FeaturePythonT<Fem::FemAnalysis>;
-}
+}  // namespace App
 
 // ---------------------------------------------------------
 
-namespace App {
+namespace App
+{
 /// @cond DOXERR
 PROPERTY_SOURCE_TEMPLATE(Fem::FeaturePython, Fem::DocumentObject)
-template<> const char* Fem::FeaturePython::getViewProviderName() const {
+template<>
+const char* Fem::FeaturePython::getViewProviderName() const
+{
     return "Gui::ViewProviderPythonFeature";
 }
-template<> PyObject* Fem::FeaturePython::getPyObject() {
+template<>
+PyObject* Fem::FeaturePython::getPyObject()
+{
     if (PythonObject.is(Py::_None())) {
         // ref counter is set to 1
         PythonObject = Py::Object(new App::FeaturePythonPyT<App::DocumentObjectPy>(this), true);
@@ -105,4 +111,4 @@ template<> PyObject* Fem::FeaturePython::getPyObject() {
 // explicit template instantiation
 template class FemExport FeaturePythonT<Fem::DocumentObject>;
 /// @endcond
-}
+}  // namespace App

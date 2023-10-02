@@ -24,7 +24,7 @@
 
 __title__ = "FreeCAD FEM solver CalculiX writer"
 __author__ = "Przemo Firszt, Bernd Hahnebach"
-__url__ = "https://www.freecadweb.org"
+__url__ = "https://www.freecad.org"
 
 ## \addtogroup FEM
 #  @{
@@ -61,7 +61,7 @@ from .. import writerbase
 from femtools import constants
 
 
-# Interesting forum topic: https://forum.freecadweb.org/viewtopic.php?&t=48451
+# Interesting forum topic: https://forum.freecad.org/viewtopic.php?&t=48451
 # TODO somehow set units at beginning and every time a value is retrieved use this identifier
 # this would lead to support of unit system, force might be retrieved in base writer!
 
@@ -96,8 +96,8 @@ units_information = """*********************************************************
 # {0:.13G} or {:.13G} should be used on all places writing floating points to ccx
 # All floating points fields read from ccx are F20.0 FORTRAN input fields.
 # see in dload.f in ccx's source
-# https://forum.freecadweb.org/viewtopic.php?f=18&p=516518#p516433
-# https://forum.freecadweb.org/viewtopic.php?f=18&t=22759&#p176578
+# https://forum.freecad.org/viewtopic.php?f=18&p=516518#p516433
+# https://forum.freecad.org/viewtopic.php?f=18&t=22759&#p176578
 # example "{:.13G}".format(math.sqrt(2.)*-1e100) and count chars
 # a property type is best checked in FreeCAD objects definition
 # see femobjects package for Python objects or in objects App

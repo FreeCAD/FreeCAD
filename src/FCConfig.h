@@ -51,16 +51,7 @@
 #   if HAVE_CONFIG_H
 #   include <config.h>
 #   endif // HAVE_CONFIG_H
-//# define HAVE_INT8_T
-//# define HAVE_UINT8_T
-//# define HAVE_INT16_T
-//# define HAVE_UINT16_T
-//# define HAVE_INT32_T
-//# define HAVE_UINT32_T
-//# define HAVE_INT64_T
-//# define HAVE_UINT64_T
-//# define HAVE_INTPTR_T
-//# define HAVE_UINTPTR_T
+
 #   endif
 #elif defined(__MWERKS__) && defined(__INTEL__)
 #   ifndef FC_OS_WIN32
@@ -93,28 +84,9 @@
 #   define HAVE_INTPTR_T
 #   define HAVE_UINTPTR_T
 #endif
-//#elif defined(sun) || defined(__sun) || defined(__sun__)
-//# if defined(__SVR4)
-//#     define _FC_OS_SOLARIS
-//# else
-//#     define _FC_OS_SUN_
-//# endif
-//#elif defined(hpux) || defined(__hpux) || defined(__hpux__)
-//# define FC_OS_HPUX_
-//#elif defined(__FreeBSD__)
-//# define FC_OS_FREEBSD
-//#elif defined(__NetBSD__)
-//# define FC_OS_NETBSD
-//#elif defined(__OpenBSD__)
-//# define FC_OS_OPENBSD
-//#elif defined(sgi) || defined(__sgi)
-//# define FC_OS_IRIX
-//#elif defined(_AIX)
-//# define FC_OS_AIX
-//#elif defined(__GNU__)
-//# define FC_OS_GNU
+
 #else
-#   error "FreeCAD is not ported to this OS yet. For help see www.freecadweb.org"
+#   error "FreeCAD is not ported to this OS yet. For help see www.freecad.org"
 #endif
 
 #ifdef FC_OS_WIN32
@@ -203,7 +175,6 @@ typedef unsigned __int64    uint64_t;
 #ifdef FC_OS_LINUX
 #   define LIN
 #   define LININTEL
-//#       define NO_CXX_EXCEPTION
 #endif
 
 #define CSFDB
@@ -230,9 +201,13 @@ typedef unsigned __int64    uint64_t;
 // Qt
 
 // Make sure to explicitly use the correct conversion
-#define QT_NO_CAST_FROM_ASCII
-#undef  QT3_SUPPORT
-#define QT_NO_KEYWORDS
+#ifndef QT_NO_CAST_FROM_ASCII
+# define QT_NO_CAST_FROM_ASCII
+#endif
+
+#ifndef QT_NO_KEYWORDS
+# define QT_NO_KEYWORDS
+#endif
 
 #if defined (FC_OS_WIN32) || defined(FC_OS_CYGWIN)
 # ifndef QT_DLL
@@ -260,14 +235,6 @@ typedef unsigned __int64    uint64_t;
 #endif
 
 //**************************************************************************
-// SoQt
-#if defined (FC_OS_WIN32) || defined(FC_OS_CYGWIN)
-# ifndef SOQT_DLL
-#   define SOQT_DLL
-# endif
-#endif
-
-//**************************************************************************
 // Quarter
 #if defined (FC_OS_WIN32) || defined(FC_OS_CYGWIN)
 # ifndef QUARTER_INTERNAL
@@ -277,14 +244,12 @@ typedef unsigned __int64    uint64_t;
 # endif
 #endif
 
-// stops inclusion of the QT 3 header through the SoQT header...
-//#define __Qt3All__
-
 //**************************************************************************
 // Boost
 #ifndef BOOST_SIGNALS_NO_DEPRECATION_WARNING
 #define BOOST_SIGNALS_NO_DEPRECATION_WARNING
 #endif
+
 
 //**************************************************************************
 // Exception handling
@@ -307,18 +272,15 @@ typedef unsigned __int64    uint64_t;
 #include <FCGlobal.h>
 
 //**************************************************************************
-// here get the warnings of too long specifiers disabled (needed for VC6)
+// point at which warnings of overly long specifiers disabled (needed for VC6)
 #ifdef _MSC_VER
 #   pragma warning( disable : 4251 )
-//#   pragma warning( disable : 4503 )
-//#   pragma warning( disable : 4786 )  // specifier longer then 255 chars
-//#   pragma warning( disable : 4290 )  // not implemented throw specification
 #   pragma warning( disable : 4996 )  // suppress deprecated warning for e.g. open()
 #if defined(WIN64) || defined(_WIN64) || defined(__WIN64__)
 #   pragma warning( disable : 4244 )
 #   pragma warning( disable : 4267 )
 #endif
-//#	define _PreComp_                  // use precompiled header
+
 #endif
 
 #endif //FC_CONFIG_H

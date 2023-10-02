@@ -106,8 +106,13 @@
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="266"/>
-      <source>maximum fragment size</source>
-      <translation>kích thước đoạn tối đa</translation>
+      <source>Maximum fragment size</source>
+      <translation type="unfinished">Maximum fragment size</translation>
+    </message>
+    <message>
+      <location filename="../ui/openscadprefs-base.ui" line="385"/>
+      <source>Convexity</source>
+      <translation type="unfinished">Convexity</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="286"/>
@@ -119,11 +124,6 @@
       <location filename="../ui/openscadprefs-base.ui" line="289"/>
       <source>angular (fa)</source>
       <translation>góc (fa)</translation>
-    </message>
-    <message>
-      <location filename="../ui/openscadprefs-base.ui" line="299"/>
-      <source>°</source>
-      <translation>°</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="328"/>
@@ -140,11 +140,6 @@
       <location filename="../ui/openscadprefs-base.ui" line="359"/>
       <source>mm</source>
       <translation>mm</translation>
-    </message>
-    <message>
-      <location filename="../ui/openscadprefs-base.ui" line="385"/>
-      <source>convexity</source>
-      <translation>lồi lõm</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="422"/>
@@ -187,301 +182,331 @@
       <translation type="unfinished">It looks like you may be using a sandboxed version of FreeCAD.</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="101"/>
+      <location filename="../../OpenSCADCommands.py" line="92"/>
       <source>Unable to explode %s</source>
-      <translation>Không thể kéo dài thêm %s</translation>
+      <translation type="unfinished">Unable to explode %s</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="148"/>
+      <location filename="../../OpenSCADCommands.py" line="139"/>
       <source>Convert Edges to Faces</source>
-      <translation>Chuyển đổi các cạnh sang bề mặt</translation>
+      <translation type="unfinished">Convert Edges to Faces</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="308"/>
+      <location filename="../../OpenSCADCommands.py" line="299"/>
       <source>Please select 3 objects first</source>
-      <translation>Hãy chọn 3 đối tượng trước</translation>
+      <translation type="unfinished">Please select 3 objects first</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="340"/>
-      <location filename="../../OpenSCADCommands.py" line="363"/>
+      <location filename="../../OpenSCADCommands.py" line="331"/>
+      <location filename="../../OpenSCADCommands.py" line="362"/>
       <source>Add</source>
       <translation>Thêm mới</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="341"/>
-      <location filename="../../OpenSCADCommands.py" line="367"/>
+      <location filename="../../OpenSCADCommands.py" line="366"/>
       <source>Clear</source>
       <translation>Xóa</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="342"/>
-      <location filename="../../OpenSCADCommands.py" line="364"/>
+      <location filename="../../OpenSCADCommands.py" line="363"/>
       <source>Load</source>
       <translation type="unfinished">Load</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="343"/>
-      <location filename="../../OpenSCADCommands.py" line="365"/>
+      <location filename="../../OpenSCADCommands.py" line="364"/>
       <source>Save</source>
       <translation type="unfinished">Save</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="344"/>
-      <location filename="../../OpenSCADCommands.py" line="366"/>
+      <location filename="../../OpenSCADCommands.py" line="332"/>
+      <location filename="../../OpenSCADCommands.py" line="365"/>
       <source>Refresh</source>
       <translation>Làm mới</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="345"/>
-      <location filename="../../OpenSCADCommands.py" line="368"/>
+      <location filename="../../OpenSCADCommands.py" line="333"/>
+      <source>Clear code</source>
+      <translation type="unfinished">Clear code</translation>
+    </message>
+    <message>
+      <location filename="../../OpenSCADCommands.py" line="334"/>
+      <source>Open...</source>
+      <translation>Mở...</translation>
+    </message>
+    <message>
+      <location filename="../../OpenSCADCommands.py" line="335"/>
+      <source>Save...</source>
+      <translation type="unfinished">Save...</translation>
+    </message>
+    <message>
+      <location filename="../../OpenSCADCommands.py" line="336"/>
+      <location filename="../../OpenSCADCommands.py" line="367"/>
       <source>as Mesh</source>
-      <translation>như lưới</translation>
+      <translation type="unfinished">as Mesh</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="358"/>
-      <location filename="../../OpenSCADCommands.py" line="369"/>
+      <location filename="../../OpenSCADCommands.py" line="349"/>
+      <location filename="../../OpenSCADCommands.py" line="368"/>
       <source>Add OpenSCAD Element</source>
-      <translation>Thêm phần tử OpenSCAD</translation>
+      <translation type="unfinished">Add OpenSCAD Element</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="443"/>
-      <location filename="../../OpenSCADCommands.py" line="472"/>
+      <location filename="../../OpenSCADCommands.py" line="424"/>
+      <source>Open file</source>
+      <translation type="unfinished">Open file</translation>
+    </message>
+    <message>
+      <location filename="../../OpenSCADCommands.py" line="426"/>
+      <location filename="../../OpenSCADCommands.py" line="440"/>
+      <source>OpenSCAD Files</source>
+      <translation type="unfinished">OpenSCAD Files</translation>
+    </message>
+    <message>
+      <location filename="../../OpenSCADCommands.py" line="438"/>
+      <source>Save file</source>
+      <translation type="unfinished">Save file</translation>
+    </message>
+    <message>
+      <location filename="../../OpenSCADCommands.py" line="452"/>
+      <location filename="../../OpenSCADCommands.py" line="481"/>
       <source>Perform</source>
-      <translation>Thực hiện</translation>
+      <translation type="unfinished">Perform</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="469"/>
-      <location filename="../../OpenSCADCommands.py" line="473"/>
+      <location filename="../../OpenSCADCommands.py" line="478"/>
+      <location filename="../../OpenSCADCommands.py" line="482"/>
       <source>Mesh Boolean</source>
-      <translation>Lưới Boolean</translation>
+      <translation type="unfinished">Mesh Boolean</translation>
     </message>
     <message>
-      <location filename="../../importCSG.py" line="549"/>
-      <location filename="../../importCSG.py" line="1385"/>
-      <source>Unsupported Function</source>
-      <translation>Chức năng không được hỗ trợ</translation>
+      <location filename="../../OpenSCADCommands.py" line="483"/>
+      <source>Minkowski sum</source>
+      <translation type="unfinished">Minkowski sum</translation>
     </message>
     <message>
-      <location filename="../../importCSG.py" line="549"/>
-      <location filename="../../importCSG.py" line="1385"/>
-      <source>Press OK</source>
-      <translation>Nhấn OK</translation>
-    </message>
-    <message>
-      <location filename="../../OpenSCADUtils.py" line="710"/>
+      <location filename="../../OpenSCADUtils.py" line="654"/>
       <source>OpenSCAD file contains both 2D and 3D shapes. That is not supported in this importer, all shapes must have the same dimensionality.</source>
       <translation type="unfinished">OpenSCAD file contains both 2D and 3D shapes. That is not supported in this importer, all shapes must have the same dimensionality.</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADUtils.py" line="722"/>
-      <source>Error all shapes must be either 2D or both must be 3D</source>
-      <translation>Lỗi tất cả các hình dạng phải là 2D hoặc cả hai phải là 3D</translation>
-    </message>
-  </context>
-  <context>
-    <name>OpenSCAD_AddOpenSCADElement</name>
-    <message>
-      <location filename="../../OpenSCADCommands.py" line="516"/>
-      <source>Add OpenSCAD Element...</source>
-      <translation>Thêm phần tử OpenSCAD...</translation>
+      <location filename="../../OpenSCADUtils.py" line="665"/>
+      <source>Error: either all shapes must be 2D or all shapes must be 3D</source>
+      <translation type="unfinished">Error: either all shapes must be 2D or all shapes must be 3D</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="520"/>
-      <source>Add an OpenSCAD element by entering OpenSCAD code and executing the OpenSCAD binary</source>
-      <translation>Thêm một phần tử OpenSCAD bằng cách nhập mã OpenSCAD và thực thi nhị phân OpenSCAD</translation>
-    </message>
-  </context>
-  <context>
-    <name>OpenSCAD_ColorCodeShape</name>
-    <message>
-      <location filename="../../OpenSCADCommands.py" line="125"/>
-      <source>Color Shapes</source>
-      <translation>Hình dạng màu sắc</translation>
+      <location filename="../../importCSG.py" line="537"/>
+      <location filename="../../importCSG.py" line="1416"/>
+      <source>Unsupported Function</source>
+      <translation type="unfinished">Unsupported Function</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="128"/>
-      <source>Color Shapes by validity and type</source>
-      <translation>Phân loại hình dạng màu theo giá trị và kiểu</translation>
-    </message>
-  </context>
-  <context>
-    <name>OpenSCAD_Edgestofaces</name>
-    <message>
-      <location filename="../../OpenSCADCommands.py" line="145"/>
-      <source>Convert Edges To Faces</source>
-      <translation>Chuyển đổi các cạnh sang thành mặt</translation>
-    </message>
-  </context>
-  <context>
-    <name>OpenSCAD_ExpandPlacements</name>
-    <message>
-      <location filename="../../OpenSCADCommands.py" line="290"/>
-      <source>Expand Placements</source>
-      <translation>Mở rộng vị trí</translation>
-    </message>
-    <message>
-      <location filename="../../OpenSCADCommands.py" line="293"/>
-      <source>Expand all placements downwards the FeatureTree</source>
-      <translation>Mở rộng tất cả các vị trí xuống dưới FeatureTree</translation>
+      <location filename="../../importCSG.py" line="537"/>
+      <location filename="../../importCSG.py" line="1416"/>
+      <source>Press OK</source>
+      <translation>Nhấn OK</translation>
     </message>
   </context>
   <context>
     <name>OpenSCAD_ExplodeGroup</name>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="109"/>
+      <location filename="../../OpenSCADCommands.py" line="100"/>
       <source>Explode Group</source>
-      <translation>Nhóm tháo rời</translation>
+      <translation type="unfinished">Explode Group</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="112"/>
+      <location filename="../../OpenSCADCommands.py" line="103"/>
       <source>Remove fusion, apply placement to children, and color randomly</source>
-      <translation>Loại bỏ sáp nhập, áp dụng vị trí cho sản phẩm và tô màu một cách ngẫu nhiên</translation>
+      <translation type="unfinished">Remove fusion, apply placement to children, and color randomly</translation>
     </message>
   </context>
   <context>
-    <name>OpenSCAD_Hull</name>
+    <name>OpenSCAD_ColorCodeShape</name>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="551"/>
-      <source>Hull</source>
-      <translation>Vỏ bọc</translation>
+      <location filename="../../OpenSCADCommands.py" line="116"/>
+      <source>Color Shapes</source>
+      <translation type="unfinished">Color Shapes</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="554"/>
-      <source>Perform Hull</source>
-      <translation>Xây dựng Vỏ bọc</translation>
-    </message>
-  </context>
-  <context>
-    <name>OpenSCAD_IncreaseToleranceFeature</name>
-    <message>
-      <location filename="../../OpenSCADCommands.py" line="273"/>
-      <source>Increase Tolerance Feature</source>
-      <translation>Tính năng tăng dung sai</translation>
-    </message>
-    <message>
-      <location filename="../../OpenSCADCommands.py" line="276"/>
-      <source>Create Feature that allows to increase the tolerance</source>
-      <translation>Tạo tính năng cho phép tăng dung sai</translation>
+      <location filename="../../OpenSCADCommands.py" line="119"/>
+      <source>Color Shapes by validity and type</source>
+      <translation type="unfinished">Color Shapes by validity and type</translation>
     </message>
   </context>
   <context>
-    <name>OpenSCAD_MeshBoolean</name>
+    <name>OpenSCAD_Edgestofaces</name>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="531"/>
-      <source>Mesh Boolean...</source>
-      <translation>Lưới Boolean...</translation>
-    </message>
-    <message>
-      <location filename="../../OpenSCADCommands.py" line="535"/>
-      <source>Export objects as meshes and use OpenSCAD to perform a boolean operation</source>
-      <translation>Xuất các đối tượng dưới dạng lưới và sử dụng OpenSCAD để thực hiện thao tác boolean</translation>
-    </message>
-  </context>
-  <context>
-    <name>OpenSCAD_Minkowski</name>
-    <message>
-      <location filename="../../OpenSCADCommands.py" line="570"/>
-      <source>Minkowski</source>
-      <translation>Minkowski</translation>
-    </message>
-    <message>
-      <location filename="../../OpenSCADCommands.py" line="573"/>
-      <source>Perform Minkowski</source>
-      <translation>Thực hiện Minkowski</translation>
-    </message>
-  </context>
-  <context>
-    <name>OpenSCAD_MirrorMeshFeature</name>
-    <message>
-      <location filename="../../OpenSCADCommands.py" line="194"/>
-      <source>Mirror Mesh Feature...</source>
-      <translation>Chức năng mirror lưới...</translation>
-    </message>
-    <message>
-      <location filename="../../OpenSCADCommands.py" line="197"/>
-      <source>Create Mirror Mesh Feature</source>
-      <translation>Tạo lưới mirror</translation>
+      <location filename="../../OpenSCADCommands.py" line="136"/>
+      <source>Convert Edges To Faces</source>
+      <translation type="unfinished">Convert Edges To Faces</translation>
     </message>
   </context>
   <context>
     <name>OpenSCAD_RefineShapeFeature</name>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="164"/>
+      <location filename="../../OpenSCADCommands.py" line="155"/>
       <source>Refine Shape Feature</source>
-      <translation>Tính năng tinh chỉnh hình dạng</translation>
+      <translation type="unfinished">Refine Shape Feature</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="167"/>
+      <location filename="../../OpenSCADCommands.py" line="158"/>
       <source>Create Refine Shape Feature</source>
-      <translation>Tạo tính năng tinh chỉnh hình dạng</translation>
+      <translation type="unfinished">Create Refine Shape Feature</translation>
     </message>
   </context>
   <context>
-    <name>OpenSCAD_RemoveSubtree</name>
+    <name>OpenSCAD_MirrorMeshFeature</name>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="323"/>
-      <source>Remove Objects and their Children</source>
-      <translation>Loại bỏ các đối tượng và sản phẩm của chúng</translation>
+      <location filename="../../OpenSCADCommands.py" line="185"/>
+      <source>Mirror Mesh Feature...</source>
+      <translation type="unfinished">Mirror Mesh Feature...</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="326"/>
-      <source>Removes the selected objects and all children that are not referenced from other objects</source>
-      <translation>Loại bỏ các đối tượng đã chọn và tất cả sản phẩm không được tham chiếu từ các đối tượng khác</translation>
-    </message>
-  </context>
-  <context>
-    <name>OpenSCAD_ReplaceObject</name>
-    <message>
-      <location filename="../../OpenSCADCommands.py" line="311"/>
-      <source>Replace Object</source>
-      <translation>Thay thế đối tượng</translation>
-    </message>
-    <message>
-      <location filename="../../OpenSCADCommands.py" line="314"/>
-      <source>Replace an object in the Feature Tree. Please select old, new, and parent object</source>
-      <translation>Thay thế một đối tượng trong cây tính năng. Vui lòng chọn đối tượng cũ, mới và gốc</translation>
-    </message>
-  </context>
-  <context>
-    <name>OpenSCAD_ResizeMeshFeature</name>
-    <message>
-      <location filename="../../OpenSCADCommands.py" line="253"/>
-      <source>Resize Mesh Feature...</source>
-      <translation>Thay đổi kích cỡ lưới...</translation>
-    </message>
-    <message>
-      <location filename="../../OpenSCADCommands.py" line="257"/>
-      <source>Create Resize Mesh Feature</source>
-      <translation>Tạo chức năng thay đổi kích cỡ lưới</translation>
+      <location filename="../../OpenSCADCommands.py" line="188"/>
+      <source>Create Mirror Mesh Feature</source>
+      <translation type="unfinished">Create Mirror Mesh Feature</translation>
     </message>
   </context>
   <context>
     <name>OpenSCAD_ScaleMeshFeature</name>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="223"/>
+      <location filename="../../OpenSCADCommands.py" line="214"/>
       <source>Scale Mesh Feature...</source>
-      <translation>Chức năng phóng to lưới...</translation>
+      <translation type="unfinished">Scale Mesh Feature...</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="227"/>
+      <location filename="../../OpenSCADCommands.py" line="218"/>
       <source>Create Scale Mesh Feature</source>
-      <translation>Tạo chức năng phóng to lưới</translation>
+      <translation type="unfinished">Create Scale Mesh Feature</translation>
     </message>
   </context>
   <context>
-    <name>Workbech</name>
+    <name>OpenSCAD_ResizeMeshFeature</name>
     <message>
-      <location filename="../../InitGui.py" line="156"/>
-      <source>OpenSCAD Part tools</source>
-      <translation>Công cụ phần OpenSCAD</translation>
+      <location filename="../../OpenSCADCommands.py" line="244"/>
+      <source>Resize Mesh Feature...</source>
+      <translation type="unfinished">Resize Mesh Feature...</translation>
+    </message>
+    <message>
+      <location filename="../../OpenSCADCommands.py" line="248"/>
+      <source>Create Resize Mesh Feature</source>
+      <translation type="unfinished">Create Resize Mesh Feature</translation>
+    </message>
+  </context>
+  <context>
+    <name>OpenSCAD_IncreaseToleranceFeature</name>
+    <message>
+      <location filename="../../OpenSCADCommands.py" line="264"/>
+      <source>Increase Tolerance Feature</source>
+      <translation type="unfinished">Increase Tolerance Feature</translation>
+    </message>
+    <message>
+      <location filename="../../OpenSCADCommands.py" line="267"/>
+      <source>Create Feature that allows increasing the tolerance</source>
+      <translation type="unfinished">Create Feature that allows increasing the tolerance</translation>
+    </message>
+  </context>
+  <context>
+    <name>OpenSCAD_ExpandPlacements</name>
+    <message>
+      <location filename="../../OpenSCADCommands.py" line="281"/>
+      <source>Expand Placements</source>
+      <translation type="unfinished">Expand Placements</translation>
+    </message>
+    <message>
+      <location filename="../../OpenSCADCommands.py" line="284"/>
+      <source>Expand all placements downwards in the Tree view</source>
+      <translation type="unfinished">Expand all placements downwards in the Tree view</translation>
+    </message>
+  </context>
+  <context>
+    <name>OpenSCAD_ReplaceObject</name>
+    <message>
+      <location filename="../../OpenSCADCommands.py" line="302"/>
+      <source>Replace Object</source>
+      <translation type="unfinished">Replace Object</translation>
+    </message>
+    <message>
+      <location filename="../../OpenSCADCommands.py" line="305"/>
+      <source>Replace an object in the Tree view. Please select old, new, and parent object</source>
+      <translation type="unfinished">Replace an object in the Tree view. Please select old, new, and parent object</translation>
+    </message>
+  </context>
+  <context>
+    <name>OpenSCAD_RemoveSubtree</name>
+    <message>
+      <location filename="../../OpenSCADCommands.py" line="314"/>
+      <source>Remove Objects and their Children</source>
+      <translation type="unfinished">Remove Objects and their Children</translation>
+    </message>
+    <message>
+      <location filename="../../OpenSCADCommands.py" line="317"/>
+      <source>Removes the selected objects and all children that are not referenced from other objects</source>
+      <translation type="unfinished">Removes the selected objects and all children that are not referenced from other objects</translation>
+    </message>
+  </context>
+  <context>
+    <name>OpenSCAD_AddOpenSCADElement</name>
+    <message>
+      <location filename="../../OpenSCADCommands.py" line="526"/>
+      <source>Add OpenSCAD Element...</source>
+      <translation type="unfinished">Add OpenSCAD Element...</translation>
+    </message>
+    <message>
+      <location filename="../../OpenSCADCommands.py" line="530"/>
+      <source>Add an OpenSCAD element by entering OpenSCAD code and executing the OpenSCAD binary</source>
+      <translation type="unfinished">Add an OpenSCAD element by entering OpenSCAD code and executing the OpenSCAD binary</translation>
+    </message>
+  </context>
+  <context>
+    <name>OpenSCAD_MeshBoolean</name>
+    <message>
+      <location filename="../../OpenSCADCommands.py" line="541"/>
+      <source>Mesh Boolean...</source>
+      <translation type="unfinished">Mesh Boolean...</translation>
+    </message>
+    <message>
+      <location filename="../../OpenSCADCommands.py" line="545"/>
+      <source>Export objects as meshes and use OpenSCAD to perform a boolean operation</source>
+      <translation type="unfinished">Export objects as meshes and use OpenSCAD to perform a boolean operation</translation>
+    </message>
+  </context>
+  <context>
+    <name>OpenSCAD_Hull</name>
+    <message>
+      <location filename="../../OpenSCADCommands.py" line="561"/>
+      <source>Hull</source>
+      <translation>Vỏ bọc</translation>
+    </message>
+    <message>
+      <location filename="../../OpenSCADCommands.py" line="564"/>
+      <source>Use OpenSCAD to create a hull</source>
+      <translation type="unfinished">Use OpenSCAD to create a hull</translation>
     </message>
   </context>
   <context>
     <name>Workbench</name>
     <message>
       <location filename="../../InitGui.py" line="152"/>
-      <source>OpenSCADTools</source>
-      <translation>Công cụ OpenSCAD</translation>
+      <source>OpenSCAD Tools</source>
+      <translation type="unfinished">OpenSCAD Tools</translation>
+    </message>
+    <message>
+      <location filename="../../InitGui.py" line="156"/>
+      <source>Frequently-used Part WB tools</source>
+      <translation type="unfinished">Frequently-used Part WB tools</translation>
+    </message>
+  </context>
+  <context>
+    <name>OpenSCAD_Minkowski</name>
+    <message>
+      <location filename="../../OpenSCADCommands.py" line="580"/>
+      <source>Minkowski sum</source>
+      <translation type="unfinished">Minkowski sum</translation>
+    </message>
+    <message>
+      <location filename="../../OpenSCADCommands.py" line="583"/>
+      <source>Use OpenSCAD to create a Minkowski sum</source>
+      <translation type="unfinished">Use OpenSCAD to create a Minkowski sum</translation>
     </message>
   </context>
 </TS>

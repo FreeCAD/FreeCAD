@@ -4,18 +4,18 @@
   <context>
     <name>CmdPointsConvert</name>
     <message>
-      <location filename="../../Command.cpp" line="189"/>
+      <location filename="../../Command.cpp" line="206"/>
       <source>Points</source>
       <translation>Noktalar</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="190"/>
+      <location filename="../../Command.cpp" line="207"/>
       <source>Convert to points...</source>
       <translation>Noktalarına dönüştür...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="191"/>
-      <location filename="../../Command.cpp" line="193"/>
+      <location filename="../../Command.cpp" line="208"/>
+      <location filename="../../Command.cpp" line="210"/>
       <source>Convert to points</source>
       <translation>Noktalarına dönüştür</translation>
     </message>
@@ -23,18 +23,18 @@
   <context>
     <name>CmdPointsExport</name>
     <message>
-      <location filename="../../Command.cpp" line="112"/>
+      <location filename="../../Command.cpp" line="120"/>
       <source>Points</source>
       <translation>Noktalar</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="113"/>
+      <location filename="../../Command.cpp" line="121"/>
       <source>Export points...</source>
       <translation>Noktaları dışarı aktar...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="114"/>
-      <location filename="../../Command.cpp" line="116"/>
+      <location filename="../../Command.cpp" line="122"/>
+      <location filename="../../Command.cpp" line="124"/>
       <source>Exports a point cloud</source>
       <translation>Bir nokta bulutunu dışarı aktarır</translation>
     </message>
@@ -61,18 +61,18 @@
   <context>
     <name>CmdPointsMerge</name>
     <message>
-      <location filename="../../Command.cpp" line="326"/>
+      <location filename="../../Command.cpp" line="342"/>
       <source>Points</source>
       <translation>Noktalar</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="327"/>
+      <location filename="../../Command.cpp" line="343"/>
       <source>Merge point clouds</source>
       <translation>Nokta bulutlarını birleştir</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="328"/>
-      <location filename="../../Command.cpp" line="330"/>
+      <location filename="../../Command.cpp" line="344"/>
+      <location filename="../../Command.cpp" line="346"/>
       <source>Merge several point clouds into one</source>
       <translation>Birkaç nokta bulutlarını tek bir tanede birleştir</translation>
     </message>
@@ -80,18 +80,18 @@
   <context>
     <name>CmdPointsPolyCut</name>
     <message>
-      <location filename="../../Command.cpp" line="281"/>
+      <location filename="../../Command.cpp" line="294"/>
       <source>Points</source>
       <translation>Noktalar</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="282"/>
+      <location filename="../../Command.cpp" line="295"/>
       <source>Cut point cloud</source>
       <translation>Nokta bulutunu kes</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="283"/>
-      <location filename="../../Command.cpp" line="285"/>
+      <location filename="../../Command.cpp" line="296"/>
+      <location filename="../../Command.cpp" line="298"/>
       <source>Cuts a point cloud with a picked polygon</source>
       <translation>Seçili çokgen ile nokta kümesi keser</translation>
     </message>
@@ -99,18 +99,18 @@
   <context>
     <name>CmdPointsStructure</name>
     <message>
-      <location filename="../../Command.cpp" line="369"/>
+      <location filename="../../Command.cpp" line="405"/>
       <source>Points</source>
       <translation>Noktalar</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="370"/>
+      <location filename="../../Command.cpp" line="406"/>
       <source>Structured point cloud</source>
       <translation>Yapısal nokta bulutu</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="371"/>
-      <location filename="../../Command.cpp" line="373"/>
+      <location filename="../../Command.cpp" line="407"/>
+      <location filename="../../Command.cpp" line="409"/>
       <source>Convert points to structured point cloud</source>
       <translation>Noktaları yapılandırılmış nokta bulutuna dönüştürme</translation>
     </message>
@@ -118,18 +118,18 @@
   <context>
     <name>CmdPointsTransform</name>
     <message>
-      <location filename="../../Command.cpp" line="152"/>
+      <location filename="../../Command.cpp" line="167"/>
       <source>Points</source>
       <translation>Noktalar</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="153"/>
+      <location filename="../../Command.cpp" line="168"/>
       <source>Transform Points</source>
       <translation>Noktaları dönüştür</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="154"/>
-      <location filename="../../Command.cpp" line="156"/>
+      <location filename="../../Command.cpp" line="169"/>
+      <location filename="../../Command.cpp" line="171"/>
       <source>Test to transform a point cloud</source>
       <translation>Bir nokta kümesini dönüştürme denemesi</translation>
     </message>
@@ -137,23 +137,23 @@
   <context>
     <name>Command</name>
     <message>
-      <location filename="../../Command.cpp" line="88"/>
+      <location filename="../../Command.cpp" line="92"/>
       <source>Import points</source>
       <translation>Noktaları içeri aktar</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="168"/>
+      <location filename="../../Command.cpp" line="183"/>
       <source>Transform points</source>
       <translation>Noktaları dönüştürün</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="214"/>
+      <location filename="../../Command.cpp" line="240"/>
       <source>Convert to points</source>
       <translation>Noktalarına dönüştür</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="467"/>
-      <location filename="../../ViewProvider.cpp" line="626"/>
+      <location filename="../../ViewProvider.cpp" line="485"/>
+      <location filename="../../ViewProvider.cpp" line="653"/>
       <source>Cut points</source>
       <translation>Noktaları kes</translation>
     </message>
@@ -209,16 +209,6 @@
       <location filename="../../DlgPointsRead.ui" line="146"/>
       <source>Number separator:</source>
       <translation>Sayı ayıracı:</translation>
-    </message>
-    <message>
-      <location filename="../../DlgPointsRead.ui" line="157"/>
-      <source>,</source>
-      <translation>,</translation>
-    </message>
-    <message>
-      <location filename="../../DlgPointsRead.ui" line="162"/>
-      <source>;</source>
-      <translation>;</translation>
     </message>
     <message>
       <location filename="../../DlgPointsRead.ui" line="167"/>
@@ -297,33 +287,28 @@
       <source>Number of previewed lines:</source>
       <translation>Gözden geçirilmiş doğru sayısı</translation>
     </message>
-    <message>
-      <location filename="../../DlgPointsRead.ui" line="348"/>
-      <source>100</source>
-      <translation>100</translation>
-    </message>
   </context>
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../Command.cpp" line="81"/>
-      <location filename="../../Command.cpp" line="129"/>
+      <location filename="../../Command.cpp" line="84"/>
+      <location filename="../../Command.cpp" line="141"/>
       <source>Point formats</source>
       <translation>Nokta biçimleri</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="81"/>
-      <location filename="../../Command.cpp" line="129"/>
+      <location filename="../../Command.cpp" line="84"/>
+      <location filename="../../Command.cpp" line="141"/>
       <source>All Files</source>
       <translation>Tüm Dosyalar</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="208"/>
+      <location filename="../../Command.cpp" line="227"/>
       <source>Distance</source>
       <translation>Uzaklık</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="209"/>
+      <location filename="../../Command.cpp" line="228"/>
       <source>Enter maximum distance:</source>
       <translation>Maksimum uzaklığı girin:</translation>
     </message>
@@ -331,12 +316,12 @@
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="../../Workbench.cpp" line="37"/>
+      <location filename="../../Workbench.cpp" line="34"/>
       <source>Points tools</source>
       <translation>Noktalar aracı</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="38"/>
+      <location filename="../../Workbench.cpp" line="35"/>
       <source>&amp;Points</source>
       <translation>&amp;Noktalar</translation>
     </message>

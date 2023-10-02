@@ -21,7 +21,7 @@
 
 __title__ = "Fem Tools for results"
 __author__ = "Bernd Hahnebach"
-__url__ = "https://www.freecadweb.org"
+__url__ = "https://www.freecad.org"
 
 ## \addtogroup FEM
 #  @{
@@ -35,7 +35,7 @@ from femtools.femutils import is_of_type
 
 
 def purge_results(analysis):
-    """Removes all result objects and result meshes from an analysis group
+    """Removes all result objects and result meshes from an analysis group.
 
     Parameters
     ----------
@@ -70,7 +70,7 @@ def purge_results(analysis):
 
 
 def reset_mesh_deformation(resultobj):
-    """Resets result mesh deformation
+    """Resets result mesh deformation.
 
     Parameters
     ----------
@@ -112,7 +112,7 @@ def show_displacement(resultobj, displacement_factor=0.0):
 
 
 def show_result(resultobj, result_type="Sabs", limit=None):
-    """Sets mesh color using selected type of results
+    """Sets mesh color using selected type of results.
 
     Parameters
     ----------
@@ -214,7 +214,7 @@ def get_stats(res_obj, result_type):
 #  - MFlow - MassFlowRate
 #  - NPress - NetworkPressure
 def get_all_stats(res_obj):
-    """Returns all stats for provided result type
+    """Returns all stats for provided result type.
 
     - U1, U2, U3 - deformation
     - Uabs - absolute deformation
@@ -233,14 +233,12 @@ def get_all_stats(res_obj):
     the methods _getFreeCADMechResultVectorProperties()
     and _getFreeCADMechResultScalarProperties()
     as well as forum topic
-    https://forum.freecadweb.org/viewtopic.php?f=18&t=33106&start=30#p277434
+    https://forum.freecad.org/viewtopic.php?f=18&t=33106&start=30#p277434
 
     Parameters
     ----------
     resultobj : Fem::ResultMechanical
         FreeCAD FEM mechanical result object
-
-
     """
 
     m = res_obj.Stats
@@ -263,7 +261,7 @@ def get_all_stats(res_obj):
 
 
 def fill_femresult_stats(res_obj):
-    """Fills a FreeCAD FEM mechanical result object with stats data
+    """Fills a FreeCAD FEM mechanical result object with stats data.
 
     Parameters
     ----------
@@ -386,7 +384,7 @@ def add_von_mises(res_obj):
 def add_principal_stress_std(res_obj):
     # saved into PrincipalMax, PrincipalMed, PrincipalMin
     # TODO may be use only one container for principal stresses in result object
-    # https://forum.freecadweb.org/viewtopic.php?f=18&t=33106&p=416006#p416006
+    # https://forum.freecad.org/viewtopic.php?f=18&t=33106&p=416006#p416006
     # but which one is better
     prinstress1 = []
     prinstress2 = []
@@ -401,7 +399,9 @@ def add_principal_stress_std(res_obj):
         res_obj.NodeStressYZ
     )
     for Sxx, Syy, Szz, Sxy, Sxz, Syz in iterator:
-        prin1, prin2, prin3, shear = calculate_principal_stress_std((Sxx, Syy, Szz, Sxy, Sxz, Syz))
+        prin1, prin2, prin3, shear = calculate_principal_stress_std(
+            (Sxx, Syy, Szz, Sxy, Sxz, Syz)
+        )
         prinstress1.append(prin1)
         prinstress2.append(prin2)
         prinstress3.append(prin3)
@@ -414,14 +414,16 @@ def add_principal_stress_std(res_obj):
 
     #
     # Add critical strain ratio using the Stress Modified Critical Strain (SMCS) criterion
-    #   Forum Discussion: https://forum.freecadweb.org/viewtopic.php?f=18&t=35893#p303392
+    #   Forum Discussion: https://forum.freecad.org/viewtopic.php?f=18&t=35893#p303392
     #   Background: https://www.vtt.fi/inf/julkaisut/muut/2017/VTT-R-01177-17.pdf
     #
     #   critical strain ratio = peeq / critical_strain (>1.0 indicates ductile rupture)
     #       peeq = equivalent plastic strain
     #       critical strain = alpha * np.exp(-beta * T)
-    #           alpha and beta are material parameters, where alpha can be related to unixial test data (user input) and
-    #           beta is normally kept fixed at 1.5, unless available from extensive research experiments
+    #           alpha and beta are material parameters,
+    #           where alpha can be related to unixial test data (user input) and
+    #           beta is normally kept fixed at 1.5,
+    #           unless available from extensive research experiments
     #           T = pressure / von Mises stress (stress triaxiality)
     #
 
@@ -430,37 +432,47 @@ def add_principal_stress_std(res_obj):
         stress_strain = MatMechNon.YieldPoints
         if stress_strain:
             i = -1
-            while stress_strain[i] == "": i -= 1
+            while stress_strain[i] == "":
+                i -= 1
             critical_uniaxial_strain = float(stress_strain[i].split(",")[1])
-            alpha = np.sqrt(np.e) * critical_uniaxial_strain  # stress triaxiality T = 1/3 for uniaxial test
+            # stress triaxiality T = 1/3 for uniaxial test
+            alpha = np.sqrt(np.e) * critical_uniaxial_strain
             beta = 1.5
             if res_obj.Peeq:
-                res_obj.CriticalStrainRatio = calculate_csr(prinstress1, prinstress2, prinstress3, alpha, beta,
-                                                            res_obj)
+                res_obj.CriticalStrainRatio = calculate_csr(
+                    prinstress1,
+                    prinstress2,
+                    prinstress3,
+                    alpha,
+                    beta,
+                    res_obj
+                )
 
     return res_obj
 
 
 def calculate_csr(ps1, ps2, ps3, alpha, beta, res_obj):
-    #
-    # calculate critical strain ratio
-    #   Forum Discussion: https://forum.freecadweb.org/viewtopic.php?f=18&t=35893#p303392
-    #   Background: https://www.vtt.fi/inf/julkaisut/muut/2017/VTT-R-01177-17.pdf
-    #
-    #   critical strain ratio = peeq / critical_strain (>1.0 indicates ductile rupture)
-    #       peeq = equivalent plastic strain
-    #       critical strain = alpha * np.exp(-beta * T)
-    #           alpha and beta are material parameters, where alpha can be related to unixial test data (user input) and
-    #           beta is normally kept fixed at 1.5, unless available from extensive research experiments
-    #           T = pressure / von Mises stress (stress triaxiality)
-    #
-    #
+    """Calculate critical strain ratio.
+
+    Forum Discussion: https://forum.freecad.org/viewtopic.php?f=18&t=35893#p303392
+    Background: https://www.vtt.fi/inf/julkaisut/muut/2017/VTT-R-01177-17.pdf
+
+    critical strain ratio = peeq / critical_strain (>1.0 indicates ductile rupture)
+        peeq = equivalent plastic strain
+        critical strain = alpha * np.exp(-beta * T)
+            alpha and beta are material parameters,
+            where alpha can be related to unixial test data (user input) and
+            beta is normally kept fixed at 1.5,
+            unless available from extensive research experiments
+            T = pressure / von Mises stress (stress triaxiality)
+    """
     csr = []  # critical strain ratio
     nsr = len(ps1)  # number of stress results
     for i in range(nsr):
         p = (ps1[i] + ps2[i] + ps3[i]) / 3.0  # pressure
-        svm = np.sqrt(1.5 * (ps1[i] - p) ** 2 + 1.5 * (ps2[i] - p) ** 2 + 1.5 * (
-                    ps3[i] - p) ** 2)  # von Mises stress: https://en.wikipedia.org/wiki/Von_Mises_yield_criterion
+        svm = np.sqrt(
+            1.5 * (ps1[i] - p) ** 2 + 1.5 * (ps2[i] - p) ** 2 + 1.5 * (ps3[i] - p) ** 2
+        )  # von Mises stress: https://en.wikipedia.org/wiki/Von_Mises_yield_criterion
         if svm != 0.:
             T = p / svm  # stress triaxiality
         else:
@@ -469,11 +481,9 @@ def calculate_csr(ps1, ps2, ps3, alpha, beta, res_obj):
         csr.append(abs(res_obj.Peeq[i]) / critical_strain)  # critical strain ratio
     return csr
 
-def get_concrete_nodes(res_obj):
-    #
-    # determine concrete / non-concrete nodes
-    #
 
+def get_concrete_nodes(res_obj):
+    """Determine concrete / non-concrete nodes."""
     from femmesh.meshtools import get_femnodes_by_refshape
     femmesh = res_obj.Mesh.FemMesh
     nsr = femmesh.NodeCount  # nsr number of stress results
@@ -524,7 +534,7 @@ def add_principal_stress_reinforced(res_obj):
     #
     # saved into PS1Vector, PS2Vector, PS3Vector
     # TODO may be use only one container for principal stresses in result object
-    # https://forum.freecadweb.org/viewtopic.php?f=18&t=33106&p=416006#p416006
+    # https://forum.freecad.org/viewtopic.php?f=18&t=33106&p=416006#p416006
     # but which one is better
     prinstress1 = []
     prinstress2 = []
@@ -634,7 +644,7 @@ def compact_result(res_obj):
     """
     compacts result.Mesh and appropriate result.NodeNumbers
     """
-    # as workaround for https://www.freecadweb.org/tracker/view.php?id=2873
+    # as workaround for https://www.freecad.org/tracker/view.php?id=2873
 
     # get compact mesh data
     from femmesh.meshtools import compact_mesh
@@ -657,21 +667,27 @@ def compact_result(res_obj):
 
 
 def calculate_von_mises(stress_tensor):
-    # Von mises stress: http://en.wikipedia.org/wiki/Von_Mises_yield_criterion
-    # simplification: https://forum.freecadweb.org/viewtopic.php?f=18&t=33974&p=296542#p296542
-    # stress_tensor ... (Sxx, Syy, Szz, Sxy, Sxz, Syz)
+    """Calculate Von mises stress.
+    See http://en.wikipedia.org/wiki/Von_Mises_yield_criterion
+    Simplification: https://forum.freecad.org/viewtopic.php?f=18&t=33974&p=296542#p296542
+
+    stress_tensor ... (Sxx, Syy, Szz, Sxy, Sxz, Syz)
+    """
     normal = stress_tensor[:3]
     shear = stress_tensor[3:]
     pressure = np.average(normal)
-    return np.sqrt(1.5 * np.linalg.norm(normal - pressure) ** 2 + 3.0 * np.linalg.norm(shear) ** 2)
+    von_mises = np.sqrt(
+        1.5 * np.linalg.norm(normal - pressure) ** 2 + 3.0 * np.linalg.norm(shear) ** 2
+    )
+    return von_mises
 
 
 def calculate_principal_stress_std(
     stress_tensor
 ):
     # if NaN is inside the array, which can happen on Calculix frd result files return NaN
-    # https://forum.freecadweb.org/viewtopic.php?f=22&t=33911&start=10#p284229
-    # https://forum.freecadweb.org/viewtopic.php?f=18&t=32649#p274291
+    # https://forum.freecad.org/viewtopic.php?f=22&t=33911&start=10#p284229
+    # https://forum.freecad.org/viewtopic.php?f=18&t=32649#p274291
     for s in stress_tensor:
         if isnan(s) is True:
             return (float("NaN"), float("NaN"), float("NaN"), float("NaN"))
@@ -686,7 +702,7 @@ def calculate_principal_stress_std(
         [s11, s12, s31],
         [s12, s22, s23],
         [s31, s23, s33]
-    ])  # https://forum.freecadweb.org/viewtopic.php?f=18&t=24637&start=10#p240408
+    ])  # https://forum.freecad.org/viewtopic.php?f=18&t=24637&start=10#p240408
 
     eigvals = list(np.linalg.eigvalsh(sigma))
     eigvals.sort()
@@ -696,14 +712,15 @@ def calculate_principal_stress_std(
 
 
 def calculate_principal_stress_reinforced(stress_tensor):
-    #
-    #           - calculate principal stress vectors and values
-    #           - for total stresses use stress_tensor[0], stress_tensor[1], stress_tensor[2]
-    #             on the diagonal of the stress tensor
-    #
-    # difference to the original method:
-    # https://forum.freecadweb.org/viewtopic.php?f=18&t=33106&start=90#p296539
-    #
+    """Calculate principal stress vectors and values.
+
+    For total stresses use:
+    stress_tensor[0], stress_tensor[1], stress_tensor[2]
+    on the diagonal of the stress tensor
+
+    Difference with the original method:
+    https://forum.freecad.org/viewtopic.php?f=18&t=33106&start=90#p296539
+    """
 
     s11 = stress_tensor[0]  # Sxx
     s22 = stress_tensor[1]  # Syy
@@ -715,7 +732,7 @@ def calculate_principal_stress_reinforced(stress_tensor):
         [s11, s12, s31],
         [s12, s22, s23],
         [s31, s23, s33]
-    ])  # https://forum.freecadweb.org/viewtopic.php?f=18&t=24637&start=10#p240408
+    ])  # https://forum.freecad.org/viewtopic.php?f=18&t=24637&start=10#p240408
 
     eigenvalues, eigenvectors = np.linalg.eig(sigma)
 
@@ -742,13 +759,17 @@ def calculate_principal_stress_reinforced(stress_tensor):
 
 
 def calculate_rho(stress_tensor, fy):
-    #
-    #   Calculation of Reinforcement Ratios and
-    #   Concrete Stresses according to http://heronjournal.nl/53-4/3.pdf
-    #           - See post:
-    #             https://forum.freecadweb.org/viewtopic.php?f=18&t=28821
-    #                   fy: factored yield strength of reinforcement bars
-    #
+    """Calculation of Reinforcement Ratios and Concrete Stresses
+    (in accordance with http://heronjournal.nl/53-4/3.pdf)
+
+    Parameters
+    ----------
+    - fy: factored yield strength of reinforcement bars
+
+    See post:
+    https://forum.freecad.org/viewtopic.php?f=18&t=28821
+
+    """
 
     rmin = 1.0e9
     eqmin = 14
@@ -764,45 +785,45 @@ def calculate_rho(stress_tensor, fy):
     rhoy = np.zeros(15)
     rhoz = np.zeros(15)
 
-    #    i1=sxx+syy+szz NOT USED
-    #    i2=sxx*syy+syy*szz+szz*sxx-sxy**2-sxz**2-syz**2 NOT USED
+    # i1=sxx+syy+szz NOT USED
+    # i2=sxx*syy+syy*szz+szz*sxx-sxy**2-sxz**2-syz**2 NOT USED
     i3 = (sxx * syy * szz + 2 * sxy * sxz * syz - sxx * syz ** 2
           - syy * sxz ** 2 - szz * sxy ** 2)
 
-    #    Solution (5)
+    # Solution (5)
     d = (sxx * syy - sxy ** 2)
     if d != 0.:
         rhoz[0] = i3 / d / fy
 
-    #    Solution (6)
+    # Solution (6)
     d = (sxx * szz - sxz ** 2)
     if d != 0.:
         rhoy[1] = i3 / d / fy
 
-    #    Solution (7)
+    # Solution (7)
     d = (syy * szz - syz ** 2)
     if d != 0.:
         rhox[2] = i3 / d / fy
 
-    #    Solution (9)
+    # Solution (9)
     if sxx != 0.:
         fc = sxz * sxy / sxx - syz
         fxy = sxy ** 2 / sxx
         fxz = sxz ** 2 / sxx
 
-        #    Solution (9+)
+        # Solution (9+)
         rhoy[3] = syy - fxy + fc
         rhoy[3] /= fy
         rhoz[3] = szz - fxz + fc
         rhoz[3] /= fy
 
-        #    Solution (9-)
+        # Solution (9-)
         rhoy[4] = syy - fxy - fc
         rhoy[4] /= fy
         rhoz[4] = szz - fxz - fc
         rhoz[4] /= fy
 
-    #   Solution (10)
+    # Solution (10)
     if syy != 0.:
         fc = syz * sxy / syy - sxz
         fxy = sxy ** 2 / syy
@@ -893,12 +914,14 @@ def calculate_rho(stress_tensor, fy):
 
 
 def calculate_mohr_coulomb(prin1, prin3, phi, fck):
-    #
-    #             Calculation of Mohr Coulomb yield criterion to judge
-    #             concrete curshing and shear failure
-    #                   phi: angle of internal friction
-    #                   fck: factored compressive strength of the matrix material (usually concrete)
-    #
+    """Calculation of Mohr Coulomb yield criterion to judge
+    concrete crushing and shear failure.
+
+    Parameters
+    ----------
+    - phi: angle of internal friction
+    - fck: factored compressive strength of the matrix material (usually concrete)
+    """
 
     coh = fck * (1 - np.sin(phi)) / 2 / np.cos(phi)
 
@@ -912,7 +935,7 @@ def calculate_mohr_coulomb(prin1, prin3, phi, fck):
 
 
 def calculate_disp_abs(displacements):
-    # see https://forum.freecadweb.org/viewtopic.php?f=18&t=33106&start=100#p296657
+    # see https://forum.freecad.org/viewtopic.php?f=18&t=33106&start=100#p296657
     return [np.linalg.norm(nd) for nd in displacements]
 
 ##  @}

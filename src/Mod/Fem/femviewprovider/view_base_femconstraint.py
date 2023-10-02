@@ -24,7 +24,7 @@
 
 __title__ = "FreeCAD FEM base constraint ViewProvider"
 __author__ = "Markus Hovorka, Bernd Hahnebach"
-__url__ = "https://www.freecadweb.org"
+__url__ = "https://www.freecad.org"
 
 ## @package view_base_femconstraint
 #  \ingroup FEM

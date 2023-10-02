@@ -113,9 +113,7 @@ SmSwitchboard::SmSwitchboard(int numchildren)
 /*!
   Destructor.
 */
-SmSwitchboard::~SmSwitchboard() // virtual, protected
-{
-}
+SmSwitchboard::~SmSwitchboard() = default;// virtual, protected
 
 // Documented in superclass.
 void
@@ -125,7 +123,7 @@ SmSwitchboard::doAction(SoAction * action)
   if (action->isOfType(SoGetBoundingBoxAction::getClassTypeId())) {
     // calculate center of bbox if bboxaction. This makes the
     // switchboard node behave exactly like a group node
-    SoGetBoundingBoxAction * bbaction = (SoGetBoundingBoxAction*) action;
+    auto bbaction = (SoGetBoundingBoxAction*) action;
     // Initialize accumulation variables.
     SbVec3f acccenter(0.0f, 0.0f, 0.0f);
     int numcenters = 0;

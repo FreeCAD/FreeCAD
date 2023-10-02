@@ -35,12 +35,24 @@ SET(Import_SRCS
     ImportOCAF2.h
     #ImportOCAFAssembly.cpp
     #ImportOCAFAssembly.h
+    ReaderGltf.cpp
+    ReaderGltf.h
+    ReaderIges.cpp
+    ReaderIges.h
+    ReaderStep.cpp
+    ReaderStep.h
     StepShapePy.xml
     StepShape.h
     StepShape.cpp
     StepShapePyImp.cpp
     PreCompiled.cpp
     PreCompiled.h
+    WriterGltf.cpp
+    WriterGltf.h
+    WriterIges.cpp
+    WriterIges.h
+    WriterStep.cpp
+    WriterStep.h
     dxf/ImpExpDxf.cpp
     dxf/ImpExpDxf.h
     dxf/dxf.cpp
@@ -65,9 +77,9 @@ SET(SCL_Resources
     SCL/Aufspannung.stp
     SCL/gasket1.p21
     SCL/Product1.stp
-    automotive_design.py     # AP214e3
-    ifc2x3.py                # IFC
-    ifc4.py                  # IFC 4
+    SCL_output/automotive_design.py     # AP214e3
+    SCL_output/ifc2x3.py                # IFC
+    SCL_output/ifc4.py                  # IFC 4
     PlmXmlParser.py
 )
 SOURCE_GROUP("SCL" FILES ${SCL_Resources})

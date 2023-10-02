@@ -19,9 +19,12 @@
 #*                                                                         *
 #***************************************************************************
 
-import six
+import math
 
-import FreeCAD, Part, Draft, math, ArchCommands
+import FreeCAD
+import ArchCommands
+import Draft
+import Part
 from FreeCAD import Vector
 if FreeCAD.GuiUp:
     import FreeCADGui, re
@@ -42,7 +45,7 @@ else:
 
 __title__  = "FreeCAD Axis System"
 __author__ = "Yorik van Havre"
-__url__    = "https://www.freecadweb.org"
+__url__    = "https://www.freecad.org"
 
 ## @package ArchAxis
 #  \ingroup ARCH
@@ -52,16 +55,16 @@ __url__    = "https://www.freecadweb.org"
 #  An axis is a collection of planar axes with a number/tag
 
 
-def makeAxis(num=5,size=1000,name="Axes"):
+def makeAxis(num=5,size=1000,name=None):
 
-    '''makeAxis(num,size): makes an Axis set
+    '''makeAxis([num],[size],[name]): makes an Axis set
     based on the given number of axes and interval distances'''
 
     if not FreeCAD.ActiveDocument:
         FreeCAD.Console.PrintError("No active document. Aborting\n")
         return
     obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython","Axis")
-    obj.Label = translate("Arch",name)
+    obj.Label = name if name else translate("Arch","Axes")
     _Axis(obj)
     if FreeCAD.GuiUp:
         _ViewProviderAxis(obj.ViewObject)
@@ -177,11 +180,11 @@ class _Axis:
         if prop in ["Angles","Distances","Placement"]:
             obj.touch()
 
-    def __getstate__(self):
+    def dumps(self):
 
         return None
 
-    def __setstate__(self,state):
+    def loads(self,state):
 
         return None
 
@@ -271,7 +274,7 @@ class _ViewProviderAxis:
         return []
 
     def attach(self, vobj):
-
+        self.Object = vobj.Object
         self.bubbles = None
         self.bubbletexts = []
         self.bubbledata = []
@@ -533,8 +536,6 @@ class _ViewProviderAxis:
                                 tx = coin.SoAsciiText()
                                 tx.justification = coin.SoText2.LEFT
                                 t = vobj.Object.Labels[i]
-                                if six.PY2 and isinstance(t,six.text_type):
-                                    t = t.encode("utf8")
                                 tx.string.setValue(t)
                                 if hasattr(vobj,"FontSize"):
                                     fs = vobj.FontSize.Value
@@ -566,10 +567,7 @@ class _ViewProviderAxis:
                ('C',100),('XC',90),('L',50),('XL',40),
                ('X',10),('IX',9),('V',5),('IV',4),('I',1))
         if hasattr(vobj.Object,"CustomNumber") and vobj.Object.CustomNumber:
-            if six.PY2:
-                return vobj.Object.CustomNumber.encode("utf8")
-            else:
-                return vobj.Object.CustomNumber
+            return vobj.Object.CustomNumber
         elif hasattr(vobj,"NumberingStyle"):
             if vobj.NumberingStyle == "1,2,3":
                 return str(num+1)
@@ -615,7 +613,9 @@ class _ViewProviderAxis:
 
         return self.bubbledata
 
-    def setEdit(self,vobj,mode=0):
+    def setEdit(self, vobj, mode):
+        if mode == 1 or mode == 2:
+            return None
 
         taskd = _AxisTaskPanel()
         taskd.obj = vobj.Object
@@ -623,20 +623,46 @@ class _ViewProviderAxis:
         FreeCADGui.Control.showDialog(taskd)
         return True
 
-    def unsetEdit(self,vobj,mode):
+    def unsetEdit(self, vobj, mode):
+        if mode == 1 or mode == 2:
+            return None
 
         FreeCADGui.Control.closeDialog()
-        return
+        return True
 
-    def doubleClicked(self,vobj):
+    def setupContextMenu(self, vobj, menu):
+        actionEdit = QtGui.QAction(translate("Arch", "Edit"),
+                                   menu)
+        QtCore.QObject.connect(actionEdit,
+                               QtCore.SIGNAL("triggered()"),
+                               self.edit)
+        menu.addAction(actionEdit)
 
-        self.setEdit(vobj)
+        # The default Part::FeaturePython context menu contains a `Set colors`
+        # option. This option makes no sense for Axis objects. We therefore
+        # override this menu and have to add our own `Transform` item.
+        # To override the default menu this function must return `True`.
+        action_transform = QtGui.QAction(FreeCADGui.getIcon("Std_TransformManip.svg"),
+                                         translate("Command", "Transform"), # Context `Command` instead of `Arch`.
+                                         menu)
+        QtCore.QObject.connect(action_transform,
+                               QtCore.SIGNAL("triggered()"),
+                               self.transform)
+        menu.addAction(action_transform)
 
-    def __getstate__(self):
+        return True
+
+    def edit(self):
+        FreeCADGui.ActiveDocument.setEdit(self.Object, 0)
+
+    def transform(self):
+        FreeCADGui.ActiveDocument.setEdit(self.Object, 1)
+
+    def dumps(self):
 
         return None
 
-    def __setstate__(self,state):
+    def loads(self,state):
 
         return None
 

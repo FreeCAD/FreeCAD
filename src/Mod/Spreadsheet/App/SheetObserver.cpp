@@ -21,76 +21,79 @@
  ***************************************************************************/
 
 #include "PreCompiled.h"
-#include "SheetObserver.h"
+
 #include "PropertySheet.h"
+#include "SheetObserver.h"
+
 
 using namespace Spreadsheet;
 using namespace App;
 
 /**
-  * The SheetObserver constructor.
-  *
-  * @param document The Document we are observing
-  * @param _sheet   The sheet owning this observer.
-  *
-  */
+ * The SheetObserver constructor.
+ *
+ * @param document The Document we are observing
+ * @param _sheet   The sheet owning this observer.
+ *
+ */
 
-SheetObserver::SheetObserver(App::Document * document, PropertySheet *_sheet)
+SheetObserver::SheetObserver(App::Document* document, PropertySheet* _sheet)
     : DocumentObserver(document)
-    , refCount(1)
     , sheet(_sheet)
-{
-}
+{}
 
 /**
-  * Invalidate cells that depend on this document object.
-  *
-  */
+ * Invalidate cells that depend on this document object.
+ *
+ */
 
-void SheetObserver::slotCreatedObject(const DocumentObject &Obj)
+void SheetObserver::slotCreatedObject(const DocumentObject& Obj)
 {
     sheet->invalidateDependants(&Obj);
 }
 
 /**
-  * Invalidate cells that depend on this document object.
-  *
-  */
+ * Invalidate cells that depend on this document object.
+ *
+ */
 
-void SheetObserver::slotDeletedObject(const DocumentObject &Obj)
+void SheetObserver::slotDeletedObject(const DocumentObject& Obj)
 {
     sheet->invalidateDependants(&Obj);
     sheet->deletedDocumentObject(&Obj);
 }
 
 /**
-  * Invoke the sheets recomputeDependants when a change to a Property occurs.
-  *
-  */
+ * Invoke the sheets recomputeDependants when a change to a Property occurs.
+ *
+ */
 
-void SheetObserver::slotChangedObject(const DocumentObject &Obj, const Property &Prop)
+void SheetObserver::slotChangedObject(const DocumentObject& Obj, const Property& Prop)
 {
-    if (&Prop == &Obj.Label)
+    if (&Prop == &Obj.Label) {
         sheet->renamedDocumentObject(&Obj);
+    }
     else {
-        const char * name = Obj.getPropertyName(&Prop);
+        const char* name = Obj.getPropertyName(&Prop);
 
-        if (!name)
+        if (!name) {
             return;
+        }
 
-        if (isUpdating.find(name) != isUpdating.end())
+        if (isUpdating.find(name) != isUpdating.end()) {
             return;
+        }
 
         isUpdating.insert(name);
-        sheet->recomputeDependants(&Obj,Prop.getName());
+        sheet->recomputeDependants(&Obj, Prop.getName());
         isUpdating.erase(name);
     }
 }
 
 /**
-  * Increase reference count.
-  *
-  */
+ * Increase reference count.
+ *
+ */
 
 void SheetObserver::ref()
 {
@@ -98,13 +101,12 @@ void SheetObserver::ref()
 }
 
 /**
-  * Decrease reference count.
-  *
-  */
+ * Decrease reference count.
+ *
+ */
 
 bool SheetObserver::unref()
 {
     refCount--;
     return refCount;
 }
-

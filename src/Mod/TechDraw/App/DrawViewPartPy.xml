@@ -73,6 +73,16 @@
         <UserDocu>tag = makeCosmeticCircleArc(center, radius, start, end) - add a CosmeticEdge at center with radius radius(View coordinates) from start angle to end angle. Returns tag of new CosmeticEdge.</UserDocu>
       </Documentation>
     </Methode>
+    <Methode Name="makeCosmeticCircle3d">
+      <Documentation>
+        <UserDocu>tag = makeCosmeticCircle3d(center, radius) - add a CosmeticEdge at center (3d point) with radius. Returns tag of new CosmeticEdge.</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="makeCosmeticCircleArc3d">
+      <Documentation>
+        <UserDocu>tag = makeCosmeticCircleArc3d(center, radius, start, end) - add a CosmeticEdge at center (3d point) with radius from start angle to end angle. Returns tag of new CosmeticEdge.</UserDocu>
+      </Documentation>
+    </Methode>
     <Methode Name="getCosmeticEdge">
       <Documentation>
         <UserDocu>ce = getCosmeticEdge(id) - returns CosmeticEdge with unique id.</UserDocu>
@@ -148,7 +158,15 @@
         <UserDocu>getVertexBySelection(vertexName). Returns Part.TopoShape.</UserDocu>
       </Documentation>
     </Methode>
-    <Methode Name="requestPaint">
+    <Methode Name="projectPoint">
+      <Documentation>
+        <UserDocu>projectPoint(vector3d point, [bool invert]). Returns the projection of point in the
+        projection coordinate system of this DrawViewPart. Optionally inverts the Y coordinate of the
+        result.</UserDocu>
+      </Documentation>
+    </Methode>
+
+<Methode Name="requestPaint">
       <Documentation>
         <UserDocu>requestPaint(). Redraw the graphic for this View.</UserDocu>
       </Documentation>

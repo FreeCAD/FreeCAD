@@ -132,7 +132,7 @@ class PolarArray(gui_base.GuiCommandBase):
                                           self.callback_click)
         if Gui.Control.activeDialog():
             Gui.Control.closeDialog()
-            super(PolarArray, self).finish()
+            self.finish()
 
 
 Gui.addCommand('Draft_PolarArray', PolarArray())

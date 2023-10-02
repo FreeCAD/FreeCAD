@@ -37,7 +37,6 @@
 # include <QPrintPreviewDialog>
 # include <QSpacerItem>
 # include <QStyle>
-# include <QTextCodec>
 # include <QTextCursor>
 # include <QTextDocument>
 # include <QTextStream>
@@ -51,6 +50,8 @@
 #include "Macro.h"
 #include "MainWindow.h"
 #include "PythonEditor.h"
+#include "PythonTracing.h"
+#include "WaitCursor.h"
 
 #include <Base/Exception.h>
 #include <Base/Interpreter.h>
@@ -61,12 +62,12 @@ using namespace Gui;
 namespace Gui {
 class EditorViewP {
 public:
-    QPlainTextEdit* textEdit;
+    TextEdit* textEdit;
     SearchBar* searchBar;
     QString fileName;
     EditorView::DisplayName displayName;
     QTimer*  activityTimer;
-    uint timeStamp;
+    qint64 timeStamp;
     bool lock;
     bool aboutToClose;
     QStringList undos;
@@ -84,8 +85,9 @@ TYPESYSTEM_SOURCE_ABSTRACT(Gui::EditorView, Gui::MDIView)
  *  Constructs a EditorView which is a child of 'parent', with the
  *  name 'name'.
  */
-EditorView::EditorView(QPlainTextEdit* editor, QWidget* parent)
-    : MDIView(nullptr,parent,Qt::WindowFlags()), WindowParameter( "Editor" )
+EditorView::EditorView(TextEdit* editor, QWidget* parent)
+    : MDIView(nullptr, parent, Qt::WindowFlags())
+    , WindowParameter( "Editor" )
 {
     d = new EditorViewP;
     d->lock = false;
@@ -101,20 +103,20 @@ EditorView::EditorView(QPlainTextEdit* editor, QWidget* parent)
 
     // update editor actions on request
     Gui::MainWindow* mw = Gui::getMainWindow();
-    connect(editor, SIGNAL(undoAvailable(bool)), mw, SLOT(updateEditorActions()));
-    connect(editor, SIGNAL(redoAvailable(bool)), mw, SLOT(updateEditorActions()));
-    connect(editor, SIGNAL(copyAvailable(bool)), mw, SLOT(updateEditorActions()));
+    connect(editor, &QPlainTextEdit::undoAvailable, mw, &MainWindow::updateEditorActions);
+    connect(editor, &QPlainTextEdit::redoAvailable, mw, &MainWindow::updateEditorActions);
+    connect(editor, &QPlainTextEdit::copyAvailable, mw, &MainWindow::updateEditorActions);
 
-    connect(editor, SIGNAL(showSearchBar()), d->searchBar, SLOT(activate()));
-    connect(editor, SIGNAL(findNext()), d->searchBar, SLOT(findNext()));
-    connect(editor, SIGNAL(findPrevious()), d->searchBar, SLOT(findPrevious()));
+    connect(editor, &TextEdit::showSearchBar, d->searchBar, &SearchBar::activate);
+    connect(editor, &TextEdit::findNext, d->searchBar, &SearchBar::findNext);
+    connect(editor, &TextEdit::findPrevious, d->searchBar, &SearchBar::findPrevious);
 
     // Create the layout containing the workspace and a tab bar
-    QFrame* hbox = new QFrame(this);
+    auto hbox = new QFrame(this);
     hbox->setFrameShape(QFrame::StyledPanel);
     hbox->setFrameShadow(QFrame::Sunken);
-    QVBoxLayout* layout = new QVBoxLayout();
-    layout->setMargin(1);
+    auto layout = new QVBoxLayout();
+    layout->setContentsMargins(1, 1, 1, 1);
     layout->addWidget(d->textEdit);
     layout->addWidget(d->searchBar);
     d->textEdit->setParent(hbox);
@@ -132,16 +134,16 @@ EditorView::EditorView(QPlainTextEdit* editor, QWidget* parent)
     hPrefGrp->NotifyAll();
 
     d->activityTimer = new QTimer(this);
-    connect(d->activityTimer, SIGNAL(timeout()),
-            this, SLOT(checkTimestamp()) );
-    connect(d->textEdit->document(), SIGNAL(modificationChanged(bool)),
-            this, SLOT(setWindowModified(bool)));
-    connect(d->textEdit->document(), SIGNAL(undoAvailable(bool)),
-            this, SLOT(undoAvailable(bool)));
-    connect(d->textEdit->document(), SIGNAL(redoAvailable(bool)),
-            this, SLOT(redoAvailable(bool)));
-    connect(d->textEdit->document(), SIGNAL(contentsChange(int, int, int)),
-            this, SLOT(contentsChange(int, int, int)));
+    connect(d->activityTimer, &QTimer::timeout,
+            this, &EditorView::checkTimestamp);
+    connect(d->textEdit->document(), &QTextDocument::modificationChanged,
+            this, &EditorView::setWindowModified);
+    connect(d->textEdit->document(), &QTextDocument::undoAvailable,
+            this, &EditorView::undoAvailable);
+    connect(d->textEdit->document(), &QTextDocument::redoAvailable,
+            this, &EditorView::redoAvailable);
+    connect(d->textEdit->document(), &QTextDocument::contentsChange,
+            this, &EditorView::contentsChange);
 }
 
 /** Destroys the object and frees any allocated resources */
@@ -192,11 +194,11 @@ void EditorView::OnChange(Base::Subject<const char*> &rCaller,const char* rcReas
 void EditorView::checkTimestamp()
 {
     QFileInfo fi(d->fileName);
-    uint timeStamp =  fi.lastModified().toTime_t();
+    qint64 timeStamp =  fi.lastModified().toSecsSinceEpoch();
     if (timeStamp != d->timeStamp) {
         switch( QMessageBox::question( this, tr("Modified file"),
                 tr("%1.\n\nThis has been modified outside of the source editor. Do you want to reload it?").arg(d->fileName),
-                QMessageBox::Yes|QMessageBox::Default, QMessageBox::No|QMessageBox::Escape) )
+                QMessageBox::Yes | QMessageBox::No, QMessageBox::Yes) )
         {
             case QMessageBox::Yes:
                 // updates time stamp and timer
@@ -204,6 +206,8 @@ void EditorView::checkTimestamp()
                 return;
             case QMessageBox::No:
                 d->timeStamp = timeStamp;
+                break;
+            default:
                 break;
         }
     }
@@ -319,8 +323,7 @@ bool EditorView::canClose()
     switch( QMessageBox::question(this, tr("Unsaved document"),
                                     tr("The document has been modified.\n"
                                        "Do you want to save your changes?"),
-                                     QMessageBox::Yes|QMessageBox::Default, QMessageBox::No,
-                                     QMessageBox::Cancel|QMessageBox::Escape))
+                                     QMessageBox::Yes | QMessageBox::No | QMessageBox::Cancel, QMessageBox::Cancel))
     {
         case QMessageBox::Yes:
             return saveFile();
@@ -370,7 +373,7 @@ bool EditorView::open(const QString& fileName)
     file.close();
 
     QFileInfo fi(fileName);
-    d->timeStamp =  fi.lastModified().toTime_t();
+    d->timeStamp =  fi.lastModified().toSecsSinceEpoch();
     d->activityTimer->setSingleShot(true);
     d->activityTimer->start(3000);
 
@@ -451,8 +454,8 @@ void EditorView::printPreview()
 {
     QPrinter printer(QPrinter::ScreenResolution);
     QPrintPreviewDialog dlg(&printer, this);
-    connect(&dlg, SIGNAL(paintRequested (QPrinter *)),
-            this, SLOT(print(QPrinter *)));
+    connect(&dlg, &QPrintPreviewDialog::paintRequested,
+            this, qOverload<QPrinter *>(&EditorView::print));
     dlg.exec();
 }
 
@@ -470,6 +473,8 @@ void EditorView::printPdf()
         QString::fromLatin1("%1 (*.pdf)").arg(tr("PDF file")));
     if (!filename.isEmpty()) {
         QPrinter printer(QPrinter::ScreenResolution);
+        // setPdfVersion sets the printied PDF Version to comply with PDF/A-1b, more details under: https://www.kdab.com/creating-pdfa-documents-qt/
+        printer.setPdfVersion(QPagedPaintDevice::PdfVersion_A1b);
         printer.setOutputFormat(QPrinter::PdfFormat);
         printer.setOutputFileName(filename);
         d->textEdit->document()->print(&printer);
@@ -523,13 +528,15 @@ bool EditorView::saveFile()
     if (!file.open(QFile::WriteOnly))
         return false;
     QTextStream ts(&file);
-    ts.setCodec(QTextCodec::codecForName("UTF-8"));
+#if QT_VERSION < 0x060000
+    ts.setCodec("UTF-8");
+#endif
     ts << d->textEdit->document()->toPlainText();
     file.close();
     d->textEdit->document()->setModified(false);
 
     QFileInfo fi(d->fileName);
-    d->timeStamp =  fi.lastModified().toTime_t();
+    d->timeStamp =  fi.lastModified().toSecsSinceEpoch();
     return true;
 }
 
@@ -589,12 +596,14 @@ TYPESYSTEM_SOURCE_ABSTRACT(Gui::PythonEditorView, Gui::EditorView)
 PythonEditorView::PythonEditorView(PythonEditor* editor, QWidget* parent)
   : EditorView(editor, parent), _pye(editor)
 {
-    connect(this, SIGNAL(changeFileName(const QString&)),
-            editor, SLOT(setFileName(const QString&)));
+    connect(this, &PythonEditorView::changeFileName,
+            editor, &PythonEditor::setFileName);
+    watcher = new PythonTracingWatcher(this);
 }
 
 PythonEditorView::~PythonEditorView()
 {
+    delete watcher;
 }
 
 /**
@@ -607,7 +616,7 @@ bool PythonEditorView::onMsg(const char* pMsg,const char** ppReturn)
         return true;
     }
     else if (strcmp(pMsg,"StartDebug")==0) {
-        QTimer::singleShot(300, this, SLOT(startDebug()));
+        QTimer::singleShot(300, this, &PythonEditorView::startDebug);
         return true;
     }
     else if (strcmp(pMsg,"ToggleBreakpoint")==0) {
@@ -641,6 +650,8 @@ void PythonEditorView::executeScript()
     if (EditorView::onHasMsg("Save"))
         EditorView::onMsg("Save", nullptr);
     try {
+        WaitCursor wc;
+        PythonTracingLocker tracelock(watcher->getTrace());
         Application::Instance->macroManager()->run(Gui::MacroManager::File,fileName().toUtf8());
     }
     catch (const Base::SystemExitException&) {

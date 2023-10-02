@@ -23,46 +23,24 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-#include <sstream>
 #include <QApplication>
-#include <QString>
-#include <QDir>
-#include <QFileInfo>
-#include <QLineEdit>
 #include <QMessageBox>
-#include <QPointer>
-#include <Standard_math.hxx>
-#include <TopoDS_Shape.hxx>
-#include <TopoDS_Edge.hxx>
-#include <Geom_BezierCurve.hxx>
-#include <Geom_BSplineCurve.hxx>
-#include <TopExp_Explorer.hxx>
-#include <TopoDS.hxx>
-#include <Inventor/events/SoMouseButtonEvent.h>
-#endif
+#include <sstream>
 
-#include <Base/Console.h>
-#include <App/Document.h>
-#include <Gui/Application.h>
-#include <Gui/BitmapFactory.h>
-#include <Gui/Command.h>
-#include <Gui/Control.h>
-#include <Gui/Document.h>
-#include <Gui/FileDialog.h>
-#include <Gui/MainWindow.h>
-#include <Gui/Selection.h>
-#include <Gui/SelectionFilter.h>
-#include <Gui/SelectionObject.h>
-#include <Gui/View3DInventor.h>
-#include <Gui/View3DInventorViewer.h>
-#include <Gui/WaitCursor.h>
-
-#include <App/PropertyStandard.h>
-#include <App/PropertyUnits.h>
-#include <App/PropertyLinks.h>
-#include "Mod/Part/App/PartFeature.h"
 #include <BRepAdaptor_Curve.hxx>
 #include <GeomAPI_ProjectPointOnCurve.hxx>
+#include <TopoDS_Edge.hxx>
+#include <TopoDS_Shape.hxx>
+#endif
+
+#include "Mod/Part/App/PartFeature.h"
+#include <App/Document.h>
+#include <Gui/Application.h>
+#include <Gui/Command.h>
+#include <Gui/Control.h>
+#include <Gui/MainWindow.h>
+#include <Gui/SelectionFilter.h>
+#include <Gui/SelectionObject.h>
 
 
 //===========================================================================
@@ -71,76 +49,76 @@
 DEF_STD_CMD(CmdSurfaceCut)
 
 CmdSurfaceCut::CmdSurfaceCut()
-  :Command("Surface_Cut")
+    : Command("Surface_Cut")
 {
-    sAppModule    = "Surface";
-    sGroup        = QT_TR_NOOP("Surface");
-    sMenuText     = QT_TR_NOOP("Surface Cut function");
-    sToolTipText  = QT_TR_NOOP("Cuts a shape with another Shape.\n"
-                               "It returns a modified version of the first shape");
-    sWhatsThis    = "Surface_Cut";
-    sStatusTip    = sToolTipText;
-    sPixmap       = "Surface_Cut";
+    sAppModule = "Surface";
+    sGroup = QT_TR_NOOP("Surface");
+    sMenuText = QT_TR_NOOP("Surface Cut function");
+    sToolTipText = QT_TR_NOOP("Cuts a shape with another Shape.\n"
+                              "It returns a modified version of the first shape");
+    sWhatsThis = "Surface_Cut";
+    sStatusTip = sToolTipText;
+    sPixmap = "Surface_Cut";
     // sAccel        = "CTRL+H";
 }
 
 void CmdSurfaceCut::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-/*    std::vector<Gui::SelectionObject> Sel = getSelection().getSelectionEx(0, Part::Feature::getClassTypeId());
-    if (Sel.size() != 2) {
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Invalid selection"),
-            QObject::tr("Select two shapes please."));
-        return;
-    }
+    /*    std::vector<Gui::SelectionObject> Sel = getSelection().getSelectionEx(0,
+       Part::Feature::getClassTypeId()); if (Sel.size() != 2) {
+            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Invalid selection"),
+                QObject::tr("Select two shapes please."));
+            return;
+        }
 
-    bool askUser = false;
-    for (std::vector<Gui::SelectionObject>::iterator it = Sel.begin(); it != Sel.end(); ++it) {
-        App::DocumentObject* obj = it->getObject();
-        if (obj->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
-            const TopoDS_Shape& shape = static_cast<Part::Feature*>(obj)->Shape.getValue();
-            if (!PartGui::checkForSolids(shape) && !askUser) {
-                int ret = QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Non-solids selected"),
-                    QObject::tr("The use of non-solids for boolean operations may lead to unexpected results.\n"
-                                "Do you want to continue?"), QMessageBox::Yes, QMessageBox::No);
-                if (ret == QMessageBox::No)
-                    return;
-                askUser = true;
+        bool askUser = false;
+        for (std::vector<Gui::SelectionObject>::iterator it = Sel.begin(); it != Sel.end(); ++it) {
+            App::DocumentObject* obj = it->getObject();
+            if (obj->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
+                const TopoDS_Shape& shape = static_cast<Part::Feature*>(obj)->Shape.getValue();
+                if (!PartGui::checkForSolids(shape) && !askUser) {
+                    int ret = QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Non-solids
+       selected"), QObject::tr("The use of non-solids for boolean operations may lead to unexpected
+       results.\n" "Do you want to continue?"), QMessageBox::Yes, QMessageBox::No); if (ret ==
+       QMessageBox::No) return; askUser = true;
+                }
             }
         }
-    }
 
-    std::string FeatName = getUniqueObjectName("Cut");
-    std::string BaseName  = Sel[0].getFeatName();
-    std::string ToolName  = Sel[1].getFeatName();
+        std::string FeatName = getUniqueObjectName("Cut");
+        std::string BaseName  = Sel[0].getFeatName();
+        std::string ToolName  = Sel[1].getFeatName();
 
-    openCommand(QT_TRANSLATE_NOOP("Command", "Part Cut"));
-    doCommand(Doc,"App.activeDocument().addObject(\"Part::Cut\",\"%s\")",FeatName.c_str());
-    doCommand(Doc,"App.activeDocument().%s.Base = App.activeDocument().%s",FeatName.c_str(),BaseName.c_str());
-    doCommand(Doc,"App.activeDocument().%s.Tool = App.activeDocument().%s",FeatName.c_str(),ToolName.c_str());
-    doCommand(Gui,"Gui.activeDocument().hide('%s')",BaseName.c_str());
-    doCommand(Gui,"Gui.activeDocument().hide('%s')",ToolName.c_str());
-    copyVisual(FeatName.c_str(), "ShapeColor", BaseName.c_str());
-    copyVisual(FeatName.c_str(), "DisplayMode", BaseName.c_str());
-    updateActive();
-    commitCommand();*/
+        openCommand(QT_TRANSLATE_NOOP("Command", "Part Cut"));
+        doCommand(Doc,"App.activeDocument().addObject(\"Part::Cut\",\"%s\")",FeatName.c_str());
+        doCommand(Doc,"App.activeDocument().%s.Base =
+       App.activeDocument().%s",FeatName.c_str(),BaseName.c_str());
+        doCommand(Doc,"App.activeDocument().%s.Tool =
+       App.activeDocument().%s",FeatName.c_str(),ToolName.c_str());
+        doCommand(Gui,"Gui.activeDocument().hide('%s')",BaseName.c_str());
+        doCommand(Gui,"Gui.activeDocument().hide('%s')",ToolName.c_str());
+        copyVisual(FeatName.c_str(), "ShapeColor", BaseName.c_str());
+        copyVisual(FeatName.c_str(), "DisplayMode", BaseName.c_str());
+        updateActive();
+        commitCommand();*/
 }
 
 
 DEF_STD_CMD_A(CmdSurfaceFilling)
 
 CmdSurfaceFilling::CmdSurfaceFilling()
-  :Command("Surface_Filling")
+    : Command("Surface_Filling")
 {
-    sAppModule    = "Surface";
-    sGroup        = QT_TR_NOOP("Surface");
-    sMenuText     = QT_TR_NOOP("Filling...");
-    sToolTipText  = QT_TR_NOOP("Creates a surface from a series of picked boundary edges.\n"
-                               "Additionally, the surface may be constrained by non-boundary edges\n"
-                               "and non-boundary vertices.");
-    sStatusTip    = sToolTipText;
-    sWhatsThis    = "Surface_Filling";
-    sPixmap       = "Surface_Filling";
+    sAppModule = "Surface";
+    sGroup = QT_TR_NOOP("Surface");
+    sMenuText = QT_TR_NOOP("Filling...");
+    sToolTipText = QT_TR_NOOP("Creates a surface from a series of picked boundary edges.\n"
+                              "Additionally, the surface may be constrained by non-boundary edges\n"
+                              "and non-boundary vertices.");
+    sStatusTip = sToolTipText;
+    sWhatsThis = "Surface_Filling";
+    sPixmap = "Surface_Filling";
 }
 
 void CmdSurfaceFilling::activated(int iMsg)
@@ -166,13 +144,13 @@ DEF_STD_CMD_A(CmdSurfaceGeomFillSurface)
 CmdSurfaceGeomFillSurface::CmdSurfaceGeomFillSurface()
     : Command("Surface_GeomFillSurface")
 {
-    sAppModule    = "Surface";
-    sGroup        = QT_TR_NOOP("Surface");
-    sMenuText     = QT_TR_NOOP("Fill boundary curves");
-    sToolTipText  = QT_TR_NOOP("Creates a surface from two, three or four boundary edges.");
-    sWhatsThis    = "Surface_GeomFillSurface";
-    sStatusTip    = sToolTipText;
-    sPixmap       = "Surface_GeomFillSurface";
+    sAppModule = "Surface";
+    sGroup = QT_TR_NOOP("Surface");
+    sMenuText = QT_TR_NOOP("Fill boundary curves");
+    sToolTipText = QT_TR_NOOP("Creates a surface from two, three or four boundary edges.");
+    sWhatsThis = "Surface_GeomFillSurface";
+    sStatusTip = sToolTipText;
+    sPixmap = "Surface_GeomFillSurface";
 }
 
 bool CmdSurfaceGeomFillSurface::isActive()
@@ -186,83 +164,54 @@ void CmdSurfaceGeomFillSurface::activated(int iMsg)
     std::string FeatName = getUniqueObjectName("Surface");
 
     openCommand(QT_TRANSLATE_NOOP("Command", "Create surface"));
-    doCommand(Doc, "App.ActiveDocument.addObject(\"Surface::GeomFillSurface\",\"%s\")", FeatName.c_str());
+    doCommand(Doc,
+              "App.ActiveDocument.addObject(\"Surface::GeomFillSurface\",\"%s\")",
+              FeatName.c_str());
     doCommand(Doc, "Gui.ActiveDocument.setEdit('%s',0)", FeatName.c_str());
 }
-
-
 
 
 DEF_STD_CMD_A(CmdSurfaceCurveOnMesh)
 
 CmdSurfaceCurveOnMesh::CmdSurfaceCurveOnMesh()
-  : Command("Surface_CurveOnMesh")
+    : Command("Surface_CurveOnMesh")
 {
-    sAppModule    = "MeshPart";
-    sGroup        = QT_TR_NOOP("Surface");
-    sMenuText     = QT_TR_NOOP("Curve on mesh...");
-    sToolTipText  = QT_TR_NOOP("Creates an approximated curve on top of a mesh.\n"
-                               "This command only works with a 'mesh' object.");
-    sWhatsThis    = "Surface_CurveOnMesh";
-    sStatusTip    = sToolTipText;
-    sPixmap       = "Surface_CurveOnMesh";
+    sAppModule = "MeshPart";
+    sGroup = QT_TR_NOOP("Surface");
+    sMenuText = QT_TR_NOOP("Curve on mesh...");
+    sToolTipText = QT_TR_NOOP("Creates an approximated curve on top of a mesh.\n"
+                              "This command only works with a 'mesh' object.");
+    sWhatsThis = "Surface_CurveOnMesh";
+    sStatusTip = sToolTipText;
+    sPixmap = "Surface_CurveOnMesh";
 }
-
 
 
 void CmdSurfaceCurveOnMesh::activated(int)
 {
-    doCommand(Doc, "import MeshPartGui, FreeCADGui\n"
-                   "FreeCADGui.runCommand('MeshPart_CurveOnMesh')\n");
+    doCommand(Doc,
+              "import MeshPartGui, FreeCADGui\n"
+              "FreeCADGui.runCommand('MeshPart_CurveOnMesh')\n");
 }
 
 bool CmdSurfaceCurveOnMesh::isActive()
 {
-    if (Gui::Control().activeDialog())
+    if (Gui::Control().activeDialog()) {
         return false;
+    }
 
     // Check for the selected mesh feature (all Mesh types)
     Base::Type meshType = Base::Type::fromName("Mesh::Feature");
     App::Document* doc = App::GetApplication().getActiveDocument();
-    if (doc && doc->countObjectsOfType(meshType) > 0)
+    if (doc && doc->countObjectsOfType(meshType) > 0) {
         return true;
+    }
 
     return false;
 }
 
 //===========================================================================
-// CmdBlendSurface THIS IS THE BLEND SURFACE COMMAND
-//===========================================================================
-DEF_STD_CMD_A(CmdBlendSurface)
-
-CmdBlendSurface::CmdBlendSurface()
-    : Command("Surface_BlendSurface")
-{
-    sAppModule = "Surface";
-    sGroup = QT_TR_NOOP("Surface");
-    sMenuText = QT_TR_NOOP("Blend Surface");
-    sToolTipText = QT_TR_NOOP("This is the blend Surface feature");
-    sStatusTip = sToolTipText;
-    sWhatsThis = "BlendSurface";
-    sPixmap = "BlendSurface";
-}
-
-void CmdBlendSurface::activated(int)
-{
-
-}
-
-bool CmdBlendSurface::isActive()
-{
-    return true;
-}
-
-
-
-
-
-//===========================================================================
-// CmdBlendCurve THIS IS THE BLEND CURVE COMMAND
+// CmdBlendCurve : Blend Curve Command
 //===========================================================================
 DEF_STD_CMD_A(CmdBlendCurve)
 
@@ -275,43 +224,17 @@ CmdBlendCurve::CmdBlendCurve()
     sToolTipText = QT_TR_NOOP("Join two edges with high continuity");
     sStatusTip = sToolTipText;
     sWhatsThis = "BlendCurve";
-    sPixmap = "BlendCurve";
+    sPixmap = "Surface_BlendCurve";
 }
 
 void CmdBlendCurve::activated(int)
 {
-    // To do add pickpoints to parameters
     std::string docName = App::GetApplication().getActiveDocument()->getName();
     std::string objName[2];
     std::string edge[2];
     std::string featName = getUniqueObjectName("BlendCurve");
-    std::vector<Gui::SelectionObject> sel = getSelection().getSelectionEx(0, Part::Feature::getClassTypeId());
-    //std::vector<Base::Vector3d> pickedPoints = sel[0].getPickedPoints();
-    //App::DocumentObject *obj1 = sel[0].getObject();
-    //App::DocumentObject *obj2 = sel[1].getObject();
-    //std::vector<std::string> edge1SubName =  sel[0].getSubNames();
-    //std::vector<std::string> edge2SubName =  sel[1].getSubNames();
-
-    //TopoDS_Shape edge1 = static_cast<Part::Feature *>(obj1)
-    //                         ->Shape.getShape()
-    //                         .getSubShape(edge1SubName[0].c_str());
-    //if (edge1.IsNull() || edge1.ShapeType() != TopAbs_EDGE)
-    //    return;
-    //TopoDS_Shape edge2 = static_cast<Part::Feature *>(obj2)
-    //                         ->Shape.getShape()
-    //                         .getSubShape(edge2SubName[0].c_str());
-    //if (edge2.IsNull() || edge2.ShapeType() != TopAbs_EDGE)
-    //    return;
-
-    //const TopoDS_Edge &e1 = TopoDS::Edge(edge1);
-    //BRepAdaptor_Curve adapt1(e1);
-    //gp_Pnt pnt1(pickedPoints[0].x, pickedPoints[0].y, pickedPoints[0].z);
-
-    //GeomAdaptor_Curve geomCurve = adapt1.Curve();
-    //GeomAPI_ProjectPointOnCurve geomAPI(pnt1, geomCurve.Curve());
-    //double par = geomAPI.LowerDistanceParameter();
-
-    //edge2.Curve.closestParameter(vec, par)
+    std::vector<Gui::SelectionObject> sel =
+        getSelection().getSelectionEx(nullptr, Part::Feature::getClassTypeId());
 
     objName[0] = sel[0].getFeatName();
     edge[0] = sel[0].getSubNames()[0];
@@ -325,9 +248,21 @@ void CmdBlendCurve::activated(int)
         edge[1] = sel[1].getSubNames()[0];
     }
     openCommand(QT_TRANSLATE_NOOP("Command", "Blend Curve"));
-    doCommand(Doc, "App.ActiveDocument.addObject(\"Surface::FeatureBlendCurve\",\"%s\")", featName.c_str());
-    doCommand(Doc, "App.ActiveDocument.%s.StartEdge = (App.getDocument('%s').getObject('%s'),['%s'])", featName.c_str(), docName.c_str(), objName[0].c_str(), edge[0].c_str());
-    doCommand(Doc, "App.ActiveDocument.%s.EndEdge = (App.getDocument('%s').getObject('%s'),['%s'])", featName.c_str(), docName.c_str(), objName[1].c_str(), edge[1].c_str());
+    doCommand(Doc,
+              "App.ActiveDocument.addObject(\"Surface::FeatureBlendCurve\",\"%s\")",
+              featName.c_str());
+    doCommand(Doc,
+              "App.ActiveDocument.%s.StartEdge = (App.getDocument('%s').getObject('%s'),['%s'])",
+              featName.c_str(),
+              docName.c_str(),
+              objName[0].c_str(),
+              edge[0].c_str());
+    doCommand(Doc,
+              "App.ActiveDocument.%s.EndEdge = (App.getDocument('%s').getObject('%s'),['%s'])",
+              featName.c_str(),
+              docName.c_str(),
+              objName[1].c_str(),
+              edge[1].c_str());
     updateActive();
     commitCommand();
 }
@@ -338,44 +273,45 @@ bool CmdBlendCurve::isActive()
     return edgeFilter.match();
 }
 
-
-
-
-
 DEF_STD_CMD_A(CmdSurfaceExtendFace)
 
 CmdSurfaceExtendFace::CmdSurfaceExtendFace()
-  : Command("Surface_ExtendFace")
+    : Command("Surface_ExtendFace")
 {
-    sAppModule    = "Surface";
-    sGroup        = QT_TR_NOOP("Surface");
-    sMenuText     = QT_TR_NOOP("Extend face");
-    sToolTipText  = QT_TR_NOOP("Extrapolates the selected face or surface at its boundaries\n"
-                               "with its local U and V parameters.");
-    sWhatsThis    = "Surface_ExtendFace";
-    sStatusTip    = sToolTipText;
-    sPixmap       = "Surface_ExtendFace";
+    sAppModule = "Surface";
+    sGroup = QT_TR_NOOP("Surface");
+    sMenuText = QT_TR_NOOP("Extend face");
+    sToolTipText = QT_TR_NOOP("Extrapolates the selected face or surface at its boundaries\n"
+                              "with its local U and V parameters.");
+    sWhatsThis = "Surface_ExtendFace";
+    sStatusTip = sToolTipText;
+    sPixmap = "Surface_ExtendFace";
 }
 
 void CmdSurfaceExtendFace::activated(int)
 {
     Gui::SelectionFilter faceFilter("SELECT Part::Feature SUBELEMENT Face COUNT 1");
     if (faceFilter.match()) {
-        const std::vector<std::string> &sub = faceFilter.Result[0][0].getSubNames();
+        const std::vector<std::string>& sub = faceFilter.Result[0][0].getSubNames();
         if (sub.size() == 1) {
             openCommand(QT_TRANSLATE_NOOP("Command", "Extend surface"));
             std::string FeatName = getUniqueObjectName("Surface");
             std::string supportString = faceFilter.Result[0][0].getAsPropertyLinkSubString();
-            doCommand(Doc, "App.ActiveDocument.addObject(\"Surface::Extend\",\"%s\")", FeatName.c_str());
-            doCommand(Doc, "App.ActiveDocument.%s.Face = %s", FeatName.c_str(), supportString.c_str());
+            doCommand(Doc,
+                      "App.ActiveDocument.addObject(\"Surface::Extend\",\"%s\")",
+                      FeatName.c_str());
+            doCommand(Doc,
+                      "App.ActiveDocument.%s.Face = %s",
+                      FeatName.c_str(),
+                      supportString.c_str());
             updateActive();
             commitCommand();
         }
     }
     else {
         QMessageBox::warning(Gui::getMainWindow(),
-            qApp->translate("Surface_ExtendFace", "Wrong selection"),
-            qApp->translate("Surface_ExtendFace", "Select a single face"));
+                             qApp->translate("Surface_ExtendFace", "Wrong selection"),
+                             qApp->translate("Surface_ExtendFace", "Select a single face"));
     }
 }
 
@@ -387,15 +323,15 @@ bool CmdSurfaceExtendFace::isActive()
 DEF_STD_CMD_A(CmdSurfaceSections)
 
 CmdSurfaceSections::CmdSurfaceSections()
-  :Command("Surface_Sections")
+    : Command("Surface_Sections")
 {
-    sAppModule    = "Surface";
-    sGroup        = QT_TR_NOOP("Surface");
-    sMenuText     = QT_TR_NOOP("Sections...");
-    sToolTipText  = QT_TR_NOOP("Creates a surface from a series of sectional edges.");
-    sStatusTip    = sToolTipText;
-    sWhatsThis    = "Surface_Sections";
-    sPixmap       = "Surface_Sections";
+    sAppModule = "Surface";
+    sGroup = QT_TR_NOOP("Surface");
+    sMenuText = QT_TR_NOOP("Sections...");
+    sToolTipText = QT_TR_NOOP("Creates a surface from a series of sectional edges.");
+    sStatusTip = sToolTipText;
+    sWhatsThis = "Surface_Sections";
+    sPixmap = "Surface_Sections";
 }
 
 void CmdSurfaceSections::activated(int iMsg)
@@ -415,15 +351,14 @@ bool CmdSurfaceSections::isActive()
 
 void CreateSurfaceCommands()
 {
-    Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
-/*
-    rcCmdMgr.addCommand(new CmdSurfaceCut());
-*/
+    Gui::CommandManager& rcCmdMgr = Gui::Application::Instance->commandManager();
+    /*
+        rcCmdMgr.addCommand(new CmdSurfaceCut());
+    */
     rcCmdMgr.addCommand(new CmdSurfaceFilling());
     rcCmdMgr.addCommand(new CmdSurfaceGeomFillSurface());
     rcCmdMgr.addCommand(new CmdSurfaceSections());
     rcCmdMgr.addCommand(new CmdSurfaceExtendFace());
     rcCmdMgr.addCommand(new CmdSurfaceCurveOnMesh());
     rcCmdMgr.addCommand(new CmdBlendCurve());
-    rcCmdMgr.addCommand(new CmdBlendSurface());
 }

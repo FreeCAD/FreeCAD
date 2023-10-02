@@ -20,31 +20,23 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
-#ifndef _PreComp_
-#endif
-
-#include <QString>
-#include <QSlider>
-#include "ui_TaskRobotControl.h"
-#include "TaskRobotControl.h"
-#include <Gui/Application.h>
-#include <Gui/Document.h>
 #include <Gui/BitmapFactory.h>
-#include <Gui/ViewProvider.h>
-#include <Gui/WaitCursor.h>
-#include <Base/Console.h>
-#include <Gui/Selection.h>
+
+#include "TaskRobotControl.h"
+#include "ui_TaskRobotControl.h"
 
 
 using namespace RobotGui;
 using namespace Gui;
 
-TaskRobotControl::TaskRobotControl(Robot::RobotObject *pcRobotObject,QWidget *parent)
-    : TaskBox(Gui::BitmapFactory().pixmap("Robot_CreateRobot"),tr("TaskRobotControl"),true, parent),
-    pcRobot(pcRobotObject)
+TaskRobotControl::TaskRobotControl(Robot::RobotObject* pcRobotObject, QWidget* parent)
+    : TaskBox(Gui::BitmapFactory().pixmap("Robot_CreateRobot"),
+              tr("TaskRobotControl"),
+              true,
+              parent)
+    , pcRobot(pcRobotObject)
 {
     // we need a separate container widget to add all controls to
     proxy = new QWidget(this);
@@ -54,12 +46,12 @@ TaskRobotControl::TaskRobotControl(Robot::RobotObject *pcRobotObject,QWidget *pa
 
     this->groupLayout()->addWidget(proxy);
 
-    if(pcRobotObject)
+    if (pcRobotObject) {
         setRobot(pcRobotObject);
-
+    }
 }
 
-void TaskRobotControl::setRobot(Robot::RobotObject *pcRobotObject)
+void TaskRobotControl::setRobot(Robot::RobotObject* pcRobotObject)
 {
     pcRobot = pcRobotObject;
 }

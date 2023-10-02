@@ -158,7 +158,7 @@ public:
      * These all function as per documentation in Enumeration
      */
     //@{
-    /** setting the enumaration string list
+    /** setting the enumeration string list
      * The list is a NULL terminated array of pointers to a const char* string
      * \code
      * const char enums[] = {"Black","White","Other",NULL}
@@ -166,7 +166,7 @@ public:
      */
     void setEnums(const char** plEnums);
 
-    /** setting the enumaration string as vector of strings
+    /** setting the enumeration string as vector of strings
      * This makes the enumeration custom.
      */
     void setEnums(const std::vector<std::string> &Enums);
@@ -310,7 +310,7 @@ public:
     void setPyObject(PyObject *) override;
 
 protected:
-    const Constraints* _ConstStruct;
+    const Constraints* _ConstStruct{nullptr};
 };
 
 /** Percent property
@@ -613,7 +613,7 @@ public:
     void setPyObject(PyObject *) override;
 
 protected:
-    const Constraints* _ConstStruct;
+    const Constraints* _ConstStruct{nullptr};
 };
 
 
@@ -725,7 +725,7 @@ protected:
 };
 
 /** UUID properties
- * This property handles unique identifieers
+ * This property handles unique identifiers
  */
 class AppExport PropertyUUID: public Property
 {

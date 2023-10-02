@@ -20,27 +20,24 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <QMessageBox>
-# include <QStyleFactory>
+#include <QFontMetrics>
+#include <QMessageBox>
 #endif
 
-#include <Base/PyObjectBase.h>
 #include <Base/Interpreter.h>
 #include <Gui/MainWindow.h>
+
 #include "UnitTestImp.h"
 #include "ui_UnitTest.h"
-#include "UnitTestPy.h"
 
 
 using namespace TestGui;
 
-
 /* TRANSLATOR TestGui::UnitTestDialog */
 
-UnitTestDialog* UnitTestDialog::_instance=nullptr;
+UnitTestDialog* UnitTestDialog::_instance = nullptr;
 
 /**
  * Creates and returns the one and only instance of this dialog.
@@ -48,18 +45,19 @@ UnitTestDialog* UnitTestDialog::_instance=nullptr;
 UnitTestDialog* UnitTestDialog::instance()
 {
     // not initialized?
-    if (!_instance)
+    if (!_instance) {
         _instance = new UnitTestDialog(Gui::getMainWindow());
+    }
     return _instance;
 }
 
 /**
  * Destructs the instance of this dialog.
  */
-void UnitTestDialog::destruct ()
+void UnitTestDialog::destruct()
 {
     if (_instance) {
-        UnitTestDialog *pTmp = _instance;
+        UnitTestDialog* pTmp = _instance;
         _instance = nullptr;
         delete pTmp;
     }
@@ -81,11 +79,13 @@ bool UnitTestDialog::hasInstance()
  *  true to construct a modal dialog.
  */
 UnitTestDialog::UnitTestDialog(QWidget* parent, Qt::WindowFlags f)
-  : QDialog(parent, f)
-  , ui(new Ui_UnitTest)
+    : QDialog(parent, f)
+    , ui(new Ui_UnitTest)
 {
     ui->setupUi(this);
-    setProgressColor(QColor(40,210,43)); // a darker green
+    setupConnections();
+
+    setProgressColor(QColor(40, 210, 43));  // a darker green
     ui->progressBar->setAlignment(Qt::AlignCenter);
 
     // red items
@@ -97,8 +97,17 @@ UnitTestDialog::UnitTestDialog(QWidget* parent, Qt::WindowFlags f)
 /**
  *  Destroys the object and frees any allocated resources
  */
-UnitTestDialog::~UnitTestDialog()
+UnitTestDialog::~UnitTestDialog() = default;
+
+void UnitTestDialog::setupConnections()
 {
+    connect(ui->treeViewFailure,
+            &QTreeWidget::itemDoubleClicked,
+            this,
+            &UnitTestDialog::onTreeViewFailureItemDoubleClicked);
+    connect(ui->helpButton, &QPushButton::clicked, this, &UnitTestDialog::onHelpButtonClicked);
+    connect(ui->aboutButton, &QPushButton::clicked, this, &UnitTestDialog::onAboutButtonClicked);
+    connect(ui->startButton, &QPushButton::clicked, this, &UnitTestDialog::onStartButtonClicked);
 }
 
 /**
@@ -106,23 +115,22 @@ UnitTestDialog::~UnitTestDialog()
  */
 void UnitTestDialog::setProgressColor(const QColor& col)
 {
-    QString qss = QString::fromLatin1(
-        "QProgressBar {\n"
-        "    border: 2px solid grey;\n"
-        "    border-radius: 5px;\n"
-        "}\n"
-        "\n"
-        "QProgressBar::chunk {\n"
-        "    background-color: %1;\n"
-        "}"
-    ).arg(col.name());
+    QString qss = QString::fromLatin1("QProgressBar {\n"
+                                      "    border: 2px solid grey;\n"
+                                      "    border-radius: 5px;\n"
+                                      "}\n"
+                                      "\n"
+                                      "QProgressBar::chunk {\n"
+                                      "    background-color: %1;\n"
+                                      "}")
+                      .arg(col.name());
     ui->progressBar->setStyleSheet(qss);
 }
 
 /**
  * Opens a dialog to display a detailed description about the error.
  */
-void UnitTestDialog::on_treeViewFailure_itemDoubleClicked(QTreeWidgetItem * item, int column)
+void UnitTestDialog::onTreeViewFailureItemDoubleClicked(QTreeWidgetItem* item, int column)
 {
     Q_UNUSED(column);
 
@@ -136,7 +144,7 @@ void UnitTestDialog::on_treeViewFailure_itemDoubleClicked(QTreeWidgetItem * item
     // truncate the visible text when it's too long
     if (text.count(QLatin1Char('\n')) > 20) {
         QStringList lines = text.split(QLatin1Char('\n'));
-        lines.erase(lines.begin()+20, lines.end());
+        lines.erase(lines.begin() + 20, lines.end());
         text = lines.join(QLatin1String("\n"));
     }
     if (text.size() > 1000) {
@@ -150,41 +158,44 @@ void UnitTestDialog::on_treeViewFailure_itemDoubleClicked(QTreeWidgetItem * item
 /**
  * Shows the help dialog.
  */
-void UnitTestDialog::on_helpButton_clicked()
+void UnitTestDialog::onHelpButtonClicked()
 {
-    QMessageBox::information(this, tr("Help"), tr(
-        "Enter the name of a callable object which, when called, will return a TestCase.\n"
-        "Click 'start', and the test thus produced will be run.\n\n"
-        "Double click on an error in the tree view to see more information about it, "
-        "including the stack trace."));
+    QMessageBox::information(
+        this,
+        tr("Help"),
+        tr("Enter the name of a callable object which, when called, will return a TestCase.\n"
+           "Click 'start', and the test thus produced will be run.\n\n"
+           "Double click on an error in the tree view to see more information about it, "
+           "including the stack trace."));
 }
 
 /**
  * Shows the about dialog.
  */
-void UnitTestDialog::on_aboutButton_clicked()
+void UnitTestDialog::onAboutButtonClicked()
 {
-    QMessageBox::information(this, tr("About FreeCAD UnitTest"), tr(
-        "Copyright (c) Werner Mayer\n\n"
-        "FreeCAD UnitTest is part of FreeCAD and supports writing Unit Tests for "
-        "ones own modules."));
+    QMessageBox::information(
+        this,
+        tr("About FreeCAD UnitTest"),
+        tr("Copyright (c) Werner Mayer\n\n"
+           "FreeCAD UnitTest is part of FreeCAD and supports writing Unit Tests for "
+           "ones own modules."));
 }
 
 /**
  * Runs the unit tests.
  */
-void UnitTestDialog::on_startButton_clicked()
+void UnitTestDialog::onStartButtonClicked()
 {
     reset();
-    setProgressColor(QColor(40,210,43)); // a darker green
+    setProgressColor(QColor(40, 210, 43));  // a darker green
     ui->startButton->setDisabled(true);
     try {
-        Base::Interpreter().runString(
-            "import qtunittest, gc\n"
-            "__qt_test__=qtunittest.QtTestRunner(0,\"\")\n"
-            "__qt_test__.runClicked()\n"
-            "del __qt_test__\n"
-            "gc.collect()\n");
+        Base::Interpreter().runString("import qtunittest, gc\n"
+                                      "__qt_test__=qtunittest.QtTestRunner(0,\"\")\n"
+                                      "__qt_test__.runClicked()\n"
+                                      "del __qt_test__\n"
+                                      "gc.collect()\n");
     }
     catch (const Base::PyException& e) {
         std::string msg = e.what();
@@ -228,10 +239,10 @@ void UnitTestDialog::reset()
 {
     ui->progressBar->reset();
     ui->treeViewFailure->clear();
-    ui->textLabelRunCt->setText (QString::fromLatin1("<font color=\"#0000ff\">0</font>"));
+    ui->textLabelRunCt->setText(QString::fromLatin1("<font color=\"#0000ff\">0</font>"));
     ui->textLabelFailCt->setText(QString::fromLatin1("<font color=\"#0000ff\">0</font>"));
-    ui->textLabelErrCt->setText (QString::fromLatin1("<font color=\"#0000ff\">0</font>"));
-    ui->textLabelRemCt->setText (QString::fromLatin1("<font color=\"#0000ff\">0</font>"));
+    ui->textLabelErrCt->setText(QString::fromLatin1("<font color=\"#0000ff\">0</font>"));
+    ui->textLabelRemCt->setText(QString::fromLatin1("<font color=\"#0000ff\">0</font>"));
 }
 
 /**
@@ -240,9 +251,10 @@ void UnitTestDialog::reset()
 void UnitTestDialog::addUnitTest(const QString& unit)
 {
     int ct = ui->comboTests->count();
-    for (int i=0; i<ct; i++) {
-        if (ui->comboTests->itemText(i) == unit)
+    for (int i = 0; i < ct; i++) {
+        if (ui->comboTests->itemText(i) == unit) {
             return;
+        }
     }
 
     ui->comboTests->addItem(unit);
@@ -254,7 +266,7 @@ void UnitTestDialog::addUnitTest(const QString& unit)
 void UnitTestDialog::setUnitTest(const QString& unit)
 {
     addUnitTest(unit);
-    for (int i=0; i<ui->comboTests->count(); i++) {
+    for (int i = 0; i < ui->comboTests->count(); i++) {
         if (ui->comboTests->itemText(i) == unit) {
             ui->comboTests->setCurrentIndex(i);
             break;
@@ -279,11 +291,26 @@ QString UnitTestDialog::getUnitTest() const
 }
 
 /**
+ * Runs the currently selected test and closes the dialog afterwards.
+ * It returns true if all tests have passed and false otherwise.
+ */
+bool UnitTestDialog::runCurrentTest()
+{
+    clearErrorList();
+    onStartButtonClicked();
+    int count = ui->treeViewFailure->topLevelItemCount();
+    reject();
+    return (count == 0);
+}
+
+/**
  * Sets the text in the status bar.
  */
 void UnitTestDialog::setStatusText(const QString& text)
 {
-    ui->textLabelStatus->setText(text);
+    QFontMetrics fm(font());
+    int labelWidth = ui->textLabelStatus->width() - 10;
+    ui->textLabelStatus->setText(fm.elidedText(text, Qt::ElideMiddle, labelWidth));
 }
 
 /**
@@ -293,7 +320,7 @@ void UnitTestDialog::setStatusText(const QString& text)
  */
 void UnitTestDialog::setProgressFraction(float fraction, const QString& color)
 {
-    if (fraction==0.0f) {
+    if (fraction == 0.0f) {
         ui->progressBar->setRange(0, 100);
     }
     else {
@@ -301,7 +328,7 @@ void UnitTestDialog::setProgressFraction(float fraction, const QString& color)
             setProgressColor(Qt::red);
         }
 
-        ui->progressBar->setValue((int)(100*fraction));
+        ui->progressBar->setValue((int)(100 * fraction));
     }
 }
 
@@ -320,7 +347,7 @@ void UnitTestDialog::clearErrorList()
 void UnitTestDialog::insertError(const QString& failure, const QString& details)
 {
     QTreeWidgetItem* item = new QTreeWidgetItem(ui->treeViewFailure);
-    item->setText(0,failure);
+    item->setText(0, failure);
     item->setForeground(0, Qt::red);
     item->setData(0, Qt::UserRole, QVariant(details));
 }

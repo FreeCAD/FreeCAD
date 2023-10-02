@@ -57,7 +57,7 @@ public:
    explicit NullShapeException(const char * sMessage);
    explicit NullShapeException(const std::string& sMessage);
    /// Destruction
-   ~NullShapeException() throw() override {}
+   ~NullShapeException() noexcept override = default;
 };
 
 /* A special sub-class to indicate boolean failures
@@ -70,7 +70,7 @@ public:
    explicit BooleanException(const char * sMessage);
    explicit BooleanException(const std::string& sMessage);
    /// Destruction
-   ~BooleanException() throw() override {}
+   ~BooleanException() noexcept override = default;
 };
 
 class PartExport ShapeSegment : public Data::Segment
@@ -79,7 +79,7 @@ class PartExport ShapeSegment : public Data::Segment
 
 public:
     ShapeSegment(const TopoDS_Shape &ShapeIn):Shape(ShapeIn){}
-    ShapeSegment(){}
+    ShapeSegment() = default;
     std::string getName() const override;
 
     TopoDS_Shape Shape;
@@ -136,15 +136,17 @@ private:
     void getFacesFromDomains(const std::vector<Domain>& domains, std::vector<Base::Vector3d>& vertices, std::vector<Facet>& faces) const;
 
 public:
+    /// Get the standard accuracy to be used with getPoints, getLines or getFaces
+    double getAccuracy() const override;
     /** Get points from object with given accuracy */
     void getPoints(std::vector<Base::Vector3d> &Points,
         std::vector<Base::Vector3d> &Normals,
-        float Accuracy, uint16_t flags=0) const override;
+        double Accuracy, uint16_t flags=0) const override;
     /** Get lines from object with given accuracy */
     void getLines(std::vector<Base::Vector3d> &Points,std::vector<Line> &lines,
-        float Accuracy, uint16_t flags=0) const override;
+        double Accuracy, uint16_t flags=0) const override;
     void getFaces(std::vector<Base::Vector3d> &Points,std::vector<Facet> &faces,
-        float Accuracy, uint16_t flags=0) const override;
+        double Accuracy, uint16_t flags=0) const override;
     void setFaces(const std::vector<Base::Vector3d> &Points,
                   const std::vector<Facet> &faces, double tolerance=1.0e-06);
     void getDomains(std::vector<Domain>&) const;
@@ -152,6 +154,9 @@ public:
 
     /** @name Subelement management */
     //@{
+    /// Unlike \ref getTypeAndIndex() this function only handles the supported
+    /// element types.
+    static std::pair<std::string, unsigned long> getElementTypeAndIndex(const char* Name);
     /** Sub type list
      *  List of different subelement types
      *  it is NOT a list of the subelements itself
@@ -210,7 +215,7 @@ public:
     void exportStep(const char *FileName) const;
     void exportBrep(const char *FileName) const;
     void exportBrep(std::ostream&) const;
-    void exportBinary(std::ostream&);
+    void exportBinary(std::ostream&) const;
     void exportStl (const char *FileName, double deflection) const;
     void exportFaceSet(double, double, const std::vector<App::Color>&, std::ostream&) const;
     void exportLineSet(std::ostream&) const;
@@ -226,6 +231,8 @@ public:
     bool findPlane(gp_Pln &pln, double tol=-1) const;
     /// Returns true if the expansion of the shape is infinite, false otherwise
     bool isInfinite() const;
+    /// Checks whether the shape is a planar face
+    bool isPlanar(double tol = 1.0e-7) const;
     //@}
 
     /** @name Boolean operation*/
@@ -319,7 +326,7 @@ public:
     TopoDS_Shape makeShell(const TopoDS_Shape&) const;
     //@}
 
-    /** @name Element name mapping aware shape maker 
+    /** @name Element name mapping aware shape maker
      *
      * To be complete in next batch of patches
      */

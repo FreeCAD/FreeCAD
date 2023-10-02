@@ -23,17 +23,19 @@
 #ifndef PARTGUI_DLGFILLETEDGES_H
 #define PARTGUI_DLGFILLETEDGES_H
 
+#include <QDialog>
+#include <QItemDelegate>
+#include <QStandardItemModel>
+
+#include <Gui/Selection.h>
 #include <Gui/TaskView/TaskDialog.h>
 #include <Gui/TaskView/TaskView.h>
-#include <Gui/Selection.h>
-#include <QDialog>
-#include <QStandardItemModel>
-#include <QItemDelegate>
+
 
 namespace Base {
     class Quantity;
 }
-namespace Part { 
+namespace Part {
     class FilletBase;
     class Fillet;
     class Chamfer;
@@ -56,7 +58,7 @@ public:
     void setModelData(QWidget *editor, QAbstractItemModel *model,
                       const QModelIndex &index) const override;
 
-    void updateEditorGeometry(QWidget *editor, 
+    void updateEditorGeometry(QWidget *editor,
         const QStyleOptionViewItem &option, const QModelIndex &index) const override;
 };
 
@@ -101,15 +103,16 @@ private:
     void onSelectEdge(const QString& subelement, int type);
     void onSelectEdgesOfFace(const QString& subelement, int type);
 
-private Q_SLOTS:
-    void on_shapeObject_activated(int);
-    void on_selectEdges_toggled(bool);
-    void on_selectFaces_toggled(bool);
-    void on_selectAllButton_clicked();
-    void on_selectNoneButton_clicked();
-    void on_filletType_activated(int);
-    void on_filletStartRadius_valueChanged(const Base::Quantity&);
-    void on_filletEndRadius_valueChanged(const Base::Quantity&);
+private:
+    void setupConnections();
+    void onShapeObjectActivated(int);
+    void onSelectEdgesToggled(bool);
+    void onSelectFacesToggled(bool);
+    void onSelectAllButtonClicked();
+    void onSelectNoneButtonClicked();
+    void onFilletTypeActivated(int);
+    void onFilletStartRadiusValueChanged(const Base::Quantity&);
+    void onFilletEndRadiusValueChanged(const Base::Quantity&);
     void toggleCheckState(const QModelIndex&);
     void onHighlightEdges();
 

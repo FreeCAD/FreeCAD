@@ -38,7 +38,7 @@
 
 
 using namespace PartDesignGui;
-namespace bp = boost::placeholders;
+namespace sp = std::placeholders;
 
 WorkflowManager * WorkflowManager::_instance = nullptr;
 
@@ -48,12 +48,14 @@ WorkflowManager::WorkflowManager() {
         slotFinishRestoreDocument ( *doc );
    }
 
+    //NOLINTBEGIN
     connectNewDocument = App::GetApplication().signalNewDocument.connect(
-            boost::bind( &WorkflowManager::slotNewDocument, this, bp::_1 ) );
+            std::bind( &WorkflowManager::slotNewDocument, this, sp::_1 ) );
     connectFinishRestoreDocument = App::GetApplication().signalFinishRestoreDocument.connect(
-            boost::bind( &WorkflowManager::slotFinishRestoreDocument, this, bp::_1 ) );
+            std::bind( &WorkflowManager::slotFinishRestoreDocument, this, sp::_1 ) );
     connectDeleteDocument = App::GetApplication().signalDeleteDocument.connect(
-            boost::bind( &WorkflowManager::slotDeleteDocument, this, bp::_1 ) );
+            std::bind( &WorkflowManager::slotDeleteDocument, this, sp::_1 ) );
+    //NOLINTEND
 }
 
 WorkflowManager::~WorkflowManager() {

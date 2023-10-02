@@ -27,6 +27,7 @@
 #define GUI_TASKVIEW_TaskFemConstraintInitialTemperature_H
 
 #include <QObject>
+#include <memory>
 
 #include "TaskFemConstraint.h"
 #include "ViewProviderFemConstraintInitialTemperature.h"
@@ -34,37 +35,38 @@
 
 class Ui_TaskFemConstraintInitialTemperature;
 
-namespace FemGui {
-class TaskFemConstraintInitialTemperature : public TaskFemConstraint
+namespace FemGui
+{
+class TaskFemConstraintInitialTemperature: public TaskFemConstraint
 {
     Q_OBJECT
 
 public:
-    explicit TaskFemConstraintInitialTemperature(ViewProviderFemConstraintInitialTemperature *ConstraintView,QWidget *parent = nullptr);
+    explicit TaskFemConstraintInitialTemperature(
+        ViewProviderFemConstraintInitialTemperature* ConstraintView,
+        QWidget* parent = nullptr);
     ~TaskFemConstraintInitialTemperature() override;
-    double get_temperature()const;
+    std::string get_temperature() const;
 
 protected:
-    void changeEvent(QEvent *e) override;
+    void changeEvent(QEvent* e) override;
 
 private:
-    //void onSelectionChanged(const Gui::SelectionChanges& msg);
-    void updateUI();
-    Ui_TaskFemConstraintInitialTemperature* ui;
-
+    std::unique_ptr<Ui_TaskFemConstraintInitialTemperature> ui;
 };
 
-class TaskDlgFemConstraintInitialTemperature : public TaskDlgFemConstraint
+class TaskDlgFemConstraintInitialTemperature: public TaskDlgFemConstraint
 {
     Q_OBJECT
 
 public:
-    explicit TaskDlgFemConstraintInitialTemperature(ViewProviderFemConstraintInitialTemperature *ConstraintView);
+    explicit TaskDlgFemConstraintInitialTemperature(
+        ViewProviderFemConstraintInitialTemperature* ConstraintView);
     void open() override;
     bool accept() override;
     bool reject() override;
 };
 
-} //namespace FemGui
+}  // namespace FemGui
 
-#endif // GUI_TASKVIEW_TaskFemConstraintInitialTemperature_H
+#endif  // GUI_TASKVIEW_TaskFemConstraintInitialTemperature_H

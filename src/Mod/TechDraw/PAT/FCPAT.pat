@@ -13,7 +13,7 @@
 45,0,0,0,4.0
 *Diagonal5, 45 diagonal L, Solid, 4.0 mm separation
 -45,0,0,0,4.0
-*Square, square grid, Solid, 5.0 mm separation 
+*Square, square grid, Solid, 5.0 mm separation
 90,1,1,0,5.0
 0,0,0,1,5.0
 *Horizontal5, horizontal lines, Solid 5.0 separation

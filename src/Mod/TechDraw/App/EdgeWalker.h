@@ -28,11 +28,9 @@
 #ifndef TECHDRAW_EDGEWALKER_H
 #define TECHDRAW_EDGEWALKER_H
 
-#include <Mod/TechDraw/TechDrawGlobal.h>
-
 #include <vector>
-#include <boost_graph_adjacency_list.hpp>
 
+#include <boost/graph/adjacency_list.hpp>
 #include <boost/graph/graph_traits.hpp>
 #include <boost/graph/planar_face_traversal.hpp>
 #include <boost/property_map/property_map.hpp>

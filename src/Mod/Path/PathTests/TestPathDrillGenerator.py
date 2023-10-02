@@ -20,15 +20,14 @@
 # *                                                                         *
 # ***************************************************************************
 
-import Path
 import FreeCAD
-import Generators.drill_generator as generator
-import PathScripts.PathLog as PathLog
-import PathTests.PathTestUtils as PathTestUtils
 import Part
+import Path
+import Path.Base.Generator.drill as generator
+import PathTests.PathTestUtils as PathTestUtils
 
-PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
-PathLog.trackModule(PathLog.thisModule())
+Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
+Path.Log.trackModule(Path.Log.thisModule())
 
 
 class TestPathDrillGenerator(PathTestUtils.PathTestBase):

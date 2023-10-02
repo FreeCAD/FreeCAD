@@ -22,33 +22,24 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-#include <cassert>
-#include <QGraphicsScene>
-#include <QGraphicsSceneHoverEvent>
-#include <qmath.h>
-#include <QMouseEvent>
-#include <QPaintDevice>
-#include <QPainter>
-#include <QPrinter>
-#include <QRectF>
-#include <QSvgGenerator>
-#include <QStyleOptionGraphicsItem>
+# include <cassert>
+
+# include <QGraphicsSceneHoverEvent>
+# include <QPainter>
+# include <QRectF>
+# include <QStyleOptionGraphicsItem>
 #endif
 
-#include <App/Application.h>
-#include <App/Material.h>
 #include <Base/Console.h>
 #include <Base/Parameter.h>
-
-#include "DrawGuiUtil.h"
-#include "PreferencesGui.h"
-#include "QGICMark.h"
-#include "QGIView.h"
-#include "Rez.h"
-#include "ZVALUE.h"
+#include <Mod/TechDraw/App/Preferences.h>
 
 #include "QGCustomText.h"
+#include "PreferencesGui.h"
+#include "QGICMark.h"
+#include "ZVALUE.h"
 
+using namespace TechDraw;
 using namespace TechDrawGui;
 
 QGCustomText::QGCustomText(QGraphicsItem* parent) :
@@ -244,9 +235,7 @@ QColor QGCustomText::getSelectColor()
 
 Base::Reference<ParameterGrp> QGCustomText::getParmGroup()
 {
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
-        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Colors");
-    return hGrp;
+    return Preferences::getPreferenceGroup("Colors");
 }
 
 void QGCustomText::makeMark(double x, double y)

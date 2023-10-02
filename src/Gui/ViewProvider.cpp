@@ -88,12 +88,7 @@ void coinRemoveAllChildren(SoGroup *group) {
 PROPERTY_SOURCE_ABSTRACT(Gui::ViewProvider, App::TransactionalObject)
 
 ViewProvider::ViewProvider()
-    : pcAnnotation(nullptr)
-    , pyViewObject(nullptr)
-    , overrideMode("As Is")
-    , _iActualMode(-1)
-    , _iEditMode(-1)
-    , viewOverrideMode(-1)
+    : overrideMode("As Is")
 {
     setStatus(UpdateData, true);
 
@@ -197,14 +192,14 @@ void highlight(const HighlightMode& high)
 void ViewProvider::eventCallback(void * ud, SoEventCallback * node)
 {
     const SoEvent * ev = node->getEvent();
-    Gui::View3DInventorViewer* viewer = static_cast<Gui::View3DInventorViewer*>(node->getUserData());
-    ViewProvider *self = static_cast<ViewProvider*>(ud);
+    auto viewer = static_cast<Gui::View3DInventorViewer*>(node->getUserData());
+    auto self = static_cast<ViewProvider*>(ud);
     assert(self);
 
     try {
         // Keyboard events
         if (ev->getTypeId().isDerivedFrom(SoKeyboardEvent::getClassTypeId())) {
-            SoKeyboardEvent * ke = (SoKeyboardEvent *)ev;
+            auto ke = static_cast<const SoKeyboardEvent *>(ev);
             const SbBool press = ke->getState() == SoButtonEvent::DOWN ? true : false;
             switch (ke->getKey()) {
             case SoKeyboardEvent::ESCAPE:
@@ -221,7 +216,7 @@ void ViewProvider::eventCallback(void * ud, SoEventCallback * node)
                         // react only on key release
                         // Let first selection mode terminate
                         Gui::Document* doc = Gui::Application::Instance->activeDocument();
-                        Gui::View3DInventor* view = static_cast<Gui::View3DInventor*>(doc->getActiveView());
+                        auto view = static_cast<Gui::View3DInventor*>(doc->getActiveView());
                         if (view)
                         {
                             Gui::View3DInventorViewer* viewer = view->getViewer();
@@ -231,10 +226,12 @@ void ViewProvider::eventCallback(void * ud, SoEventCallback * node)
                             }
                         }
 
-                        Gui::TimerFunction* func = new Gui::TimerFunction();
+                        auto func = new Gui::TimerFunction();
                         func->setAutoDelete(true);
-                        func->setFunction(std::bind(&Document::resetEdit, doc));
-                        QTimer::singleShot(0, func, SLOT(timeout()));
+                        func->setFunction([doc]() {
+                            doc->resetEdit();
+                        });
+                        func->singleShot(0);
                     }
                 }
                 else if (press) {
@@ -251,7 +248,7 @@ void ViewProvider::eventCallback(void * ud, SoEventCallback * node)
         // switching the mouse buttons
         else if (ev->getTypeId().isDerivedFrom(SoMouseButtonEvent::getClassTypeId())) {
 
-            const SoMouseButtonEvent * const event = (const SoMouseButtonEvent *) ev;
+            const auto event = (const SoMouseButtonEvent *) ev;
             const int button = event->getButton();
             const SbBool press = event->getState() == SoButtonEvent::DOWN ? true : false;
 
@@ -260,7 +257,7 @@ void ViewProvider::eventCallback(void * ud, SoEventCallback * node)
                 node->setHandled();
         }
         else if (ev->getTypeId().isDerivedFrom(SoMouseWheelEvent::getClassTypeId())) {
-            const SoMouseWheelEvent * const event = (const SoMouseWheelEvent *) ev;
+            const auto event = (const SoMouseWheelEvent *) ev;
 
             if (self->mouseWheelEvent(event->getDelta(), event->getPosition(), viewer))
                 node->setHandled();
@@ -363,12 +360,14 @@ void ViewProvider::setTransformation(const SbMatrix &rcMatrix)
 
 SbMatrix ViewProvider::convert(const Base::Matrix4D &rcMatrix)
 {
+    //NOLINTBEGIN
     double dMtrx[16];
     rcMatrix.getGLMatrix(dMtrx);
-    return SbMatrix(dMtrx[0], dMtrx[1], dMtrx[2],  dMtrx[3],
+    return SbMatrix(dMtrx[0], dMtrx[1], dMtrx[2],  dMtrx[3], // clazy:exclude=rule-of-two-soft
                     dMtrx[4], dMtrx[5], dMtrx[6],  dMtrx[7],
                     dMtrx[8], dMtrx[9], dMtrx[10], dMtrx[11],
                     dMtrx[12],dMtrx[13],dMtrx[14], dMtrx[15]);
+    //NOLINTEND
 }
 
 Base::Matrix4D ViewProvider::convert(const SbMatrix &smat)
@@ -410,9 +409,8 @@ SoNode* ViewProvider::getDisplayMaskMode(const char* type) const
 std::vector<std::string> ViewProvider::getDisplayMaskModes() const
 {
     std::vector<std::string> types;
-    for (std::map<std::string, int>::const_iterator it = _sDisplayMaskModes.begin();
-         it != _sDisplayMaskModes.end(); ++it)
-        types.push_back( it->first );
+    for (const auto & it : _sDisplayMaskModes)
+        types.push_back( it.first );
     return types;
 }
 
@@ -587,7 +585,7 @@ using Edge = boost::graph_traits<Graph>::edge_descriptor;
 void addNodes(Graph& graph, std::map<SoNode*, Vertex>& vertexNodeMap, SoNode* node)
 {
     if (node->getTypeId().isDerivedFrom(SoGroup::getClassTypeId())) {
-        SoGroup* group = static_cast<SoGroup*>(node);
+        auto group = static_cast<SoGroup*>(node);
         Vertex groupV = vertexNodeMap[group];
 
         for (int i=0; i<group->getNumChildren(); i++) {
@@ -811,7 +809,7 @@ std::string ViewProvider::dropObjectEx(App::DocumentObject* obj, App::DocumentOb
             return ext->extensionDropObjectEx(obj, owner, subname, elements);
     }
     dropObject(obj);
-    return std::string();
+    return {};
 }
 
 int ViewProvider::replaceObject(App::DocumentObject* oldValue, App::DocumentObject* newValue)
@@ -953,7 +951,7 @@ int ViewProvider::partialRender(const std::vector<std::string> &elements, bool c
         }
     }
     int count = 0;
-    SoFullPath *path = static_cast<SoFullPath*>(new SoPath);
+    auto path = static_cast<SoFullPath*>(new SoPath);
     path->ref();
     SoSelectionElementAction action;
     action.setSecondary(true);

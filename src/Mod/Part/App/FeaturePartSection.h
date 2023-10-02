@@ -39,7 +39,7 @@ public:
     Section();
 
     App::PropertyBool Approximation;
-    
+
     /** @name methods override Feature */
     //@{
     /// recalculate the Feature

@@ -1,23 +1,23 @@
-#***************************************************************************
-#*   Copyright (c) 2011, 2012 Jose Luis Cercos Pita <jlcercos@gmail.com>   *
-#*                                                                         *
-#*   This program is free software; you can redistribute it and/or modify  *
-#*   it under the terms of the GNU Lesser General Public License (LGPL)    *
-#*   as published by the Free Software Foundation; either version 2 of     *
-#*   the License, or (at your option) any later version.                   *
-#*   for detail see the LICENCE text file.                                 *
-#*                                                                         *
-#*   This program is distributed in the hope that it will be useful,       *
-#*   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-#*   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-#*   GNU Library General Public License for more details.                  *
-#*                                                                         *
-#*   You should have received a copy of the GNU Library General Public     *
-#*   License along with this program; if not, write to the Free Software   *
-#*   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
-#*   USA                                                                   *
-#*                                                                         *
-#***************************************************************************
+# ***************************************************************************
+# *   Copyright (c) 2011, 2012 Jose Luis Cercos Pita <jlcercos@gmail.com>   *
+# *                                                                         *
+# *   This program is free software; you can redistribute it and/or modify  *
+# *   it under the terms of the GNU Lesser General Public License (LGPL)    *
+# *   as published by the Free Software Foundation; either version 2 of     *
+# *   the License, or (at your option) any later version.                   *
+# *   for detail see the LICENCE text file.                                 *
+# *                                                                         *
+# *   This program is distributed in the hope that it will be useful,       *
+# *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+# *   GNU Library General Public License for more details.                  *
+# *                                                                         *
+# *   You should have received a copy of the GNU Library General Public     *
+# *   License along with this program; if not, write to the Free Software   *
+# *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
+# *   USA                                                                   *
+# *                                                                         *
+# ***************************************************************************
 
 import FreeCAD
 
@@ -28,11 +28,12 @@ import sys
 
 try:
     import matplotlib
-    matplotlib.use('Qt5Agg')
+
+    matplotlib.use("Qt5Agg")
 
     # Force matplotlib to use PySide backend by temporarily unloading PyQt
-    if 'PyQt5.QtCore' in sys.modules:
-        del sys.modules['PyQt5.QtCore']
+    if "PyQt5.QtCore" in sys.modules:
+        del sys.modules["PyQt5.QtCore"]
         import matplotlib.pyplot as plt
         import PyQt5.QtCore
     else:
@@ -43,12 +44,14 @@ try:
 
     from matplotlib.figure import Figure
 except ImportError:
-    FreeCAD.Console.PrintWarning('matplotlib not found, so Plot module can not be loaded\n')
+    FreeCAD.Console.PrintWarning(
+        "The 'matplotlib' Python package was not found. Plot module cannot be loaded\n"
+    )
     raise ImportError("matplotlib not installed")
 
 
 def getMainWindow():
-    """ Return the FreeCAD main window. """
+    """Return the FreeCAD main window."""
     toplevel = PySide.QtGui.QApplication.topLevelWidgets()
     for i in toplevel:
         if i.metaObject().className() == "Gui::MainWindow":
@@ -57,7 +60,7 @@ def getMainWindow():
 
 
 def getMdiArea():
-    """ Return FreeCAD MdiArea. """
+    """Return FreeCAD MdiArea."""
     mw = getMainWindow()
     if not mw:
         return None
@@ -69,7 +72,7 @@ def getMdiArea():
 
 
 def getPlot():
-    """ Return the selected Plot document if exist. """
+    """Return the selected Plot document if exist."""
     # Get active tab
     mdi = getMdiArea()
     if not mdi:
@@ -85,7 +88,7 @@ def getPlot():
 
 
 def closePlot():
-    """ closePlot(): Close the active plot window. """
+    """closePlot(): Close the active plot window."""
     # Get active tab
     mdi = getMdiArea()
     if not mdi:
@@ -193,7 +196,7 @@ def legend(status=True, pos=None, fontsize=None):
             l = axes.legend(handles, names, bbox_to_anchor=pos)
             plt.legPos = pos
         else:
-            l = axes.legend(handles, names, loc='best')
+            l = axes.legend(handles, names, loc="best")
             # Update canvas in order to compute legend data
             plt.canvas.draw()
             # Get resultant position
@@ -204,7 +207,8 @@ def legend(status=True, pos=None, fontsize=None):
             fl = l.get_frame()
             plt.legPos = (
                 (fl._x + fl._width - fax.x0) / fax.width,
-                (fl._y + fl._height - fax.y0) / fax.height)
+                (fl._y + fl._height - fax.y0) / fax.height,
+            )
         # Set fontsize
         for t in l.get_texts():
             t.set_fontsize(plt.legSiz)
@@ -269,7 +273,7 @@ def ylabel(string):
 
 
 def axesList():
-    """Return the plot axes sets list. """
+    """Return the plot axes sets list."""
     plt = getPlot()
     if not plt:
         return []
@@ -284,7 +288,7 @@ def axes():
     return plt.axes
 
 
-def addNewAxes(rect=None, frameon=True, patchcolor='none'):
+def addNewAxes(rect=None, frameon=True, patchcolor="none"):
     """Add new axes to plot, setting it as the active one.
 
     Keyword arguments:
@@ -299,10 +303,10 @@ def addNewAxes(rect=None, frameon=True, patchcolor='none'):
     if rect is None:
         rect = plt.axes.get_position()
     ax = fig.add_axes(rect, frameon=frameon)
-    ax.xaxis.set_ticks_position('bottom')
-    ax.spines['top'].set_color('none')
-    ax.yaxis.set_ticks_position('left')
-    ax.spines['right'].set_color('none')
+    ax.xaxis.set_ticks_position("bottom")
+    ax.spines["top"].set_color("none")
+    ax.yaxis.set_ticks_position("left")
+    ax.spines["right"].set_color("none")
     ax.patch.set_facecolor(patchcolor)
     plt.axesList.append(ax)
     plt.setActiveAxes(-1)
@@ -338,8 +342,7 @@ def save(path, figsize=None, dpi=None):
 
 
 def addNavigationToolbar():
-    """Add the matplotlib QT navigation toolbar to the plot.
-    """
+    """Add the matplotlib QT navigation toolbar to the plot."""
     plt = getPlot()
     if not plt:
         return
@@ -353,8 +356,7 @@ def addNavigationToolbar():
 
 
 def delNavigationToolbar():
-    """Remove the matplotlib QT navigation toolbar from the plot.
-    """
+    """Remove the matplotlib QT navigation toolbar from the plot."""
     plt = getPlot()
     if not plt:
         return
@@ -369,7 +371,7 @@ def delNavigationToolbar():
     plt.mpl_toolbar = None
 
 
-class Line():
+class Line:
     def __init__(self, axes, x, y, name):
         """Construct a new plot serie.
 
@@ -384,7 +386,7 @@ class Line():
         self.y = y
         self.name = name
         self.lid = len(axes.lines)
-        self.line, = axes.plot(x, y)
+        (self.line,) = axes.plot(x, y)
 
     def setp(self, prop, value):
         """Change a line property value.
@@ -405,10 +407,7 @@ class Line():
 
 
 class Plot(PySide.QtGui.QWidget):
-    def __init__(self,
-                 winTitle="plot",
-                 parent=None,
-                 flags=PySide.QtCore.Qt.WindowFlags(0)):
+    def __init__(self, winTitle="plot", parent=None, flags=PySide.QtCore.Qt.WindowFlags(0)):
         """Construct a new plot widget.
 
         Keyword arguments:
@@ -425,10 +424,10 @@ class Plot(PySide.QtGui.QWidget):
         # Get axes
         self.axes = self.fig.add_subplot(111)
         self.axesList = [self.axes]
-        self.axes.xaxis.set_ticks_position('bottom')
-        self.axes.spines['top'].set_color('none')
-        self.axes.yaxis.set_ticks_position('left')
-        self.axes.spines['right'].set_color('none')
+        self.axes.xaxis.set_ticks_position("bottom")
+        self.axes.spines["top"].set_color("none")
+        self.axes.yaxis.set_ticks_position("left")
+        self.axes.spines["right"].set_color("none")
         # Add the navigation toolbar by default
         self.mpl_toolbar = NavigationToolbar(self.canvas, self)
         # Setup layout
@@ -451,7 +450,7 @@ class Plot(PySide.QtGui.QWidget):
         Keyword arguments:
         x -- X values
         y -- Y values
-        name -- Serie name (for legend). """
+        name -- Serie name (for legend)."""
         l = Line(self.axes, x, y, name)
         self.series.append(l)
         # Update window

@@ -22,16 +22,23 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <QIcon>
-# include <QUrl>
+#include <QAbstractNativeEventFilter>
+#include <QApplication>
+#include <QIcon>
+#include <QUrl>
+#include <string>
+#endif
+
+#ifdef Q_OS_WIN32
+#include <Windows.h>
 #endif
 
 #include <Base/Console.h>
 #include <Base/Interpreter.h>
 #include <Base/PyObjectBase.h>
 #include <Gui/Application.h>
-#include <Gui/MainWindow.h>
 #include <Gui/Language/Translator.h>
+#include <Gui/MainWindow.h>
 
 #include "BrowserView.h"
 #include "Workbench.h"
@@ -44,40 +51,39 @@ void loadWebResource()
 {
     // add resources and reloads the translators
     Q_INIT_RESOURCE(Web);
+    Q_INIT_RESOURCE(Web_translation);
     Gui::Translator::instance()->refresh();
 }
 
-namespace WebGui {
-class Module : public Py::ExtensionModule<Module>
+namespace WebGui
+{
+class Module: public Py::ExtensionModule<Module>
 {
 public:
-    Module() : Py::ExtensionModule<Module>("WebGui")
+    Module()
+        : Py::ExtensionModule<Module>("WebGui")
     {
-        add_varargs_method("openBrowser",&Module::openBrowser
-        );
-        add_varargs_method("openBrowserHTML",&Module::openBrowserHTML
-        );
-        add_varargs_method("openBrowserWindow",&Module::openBrowserWindow
-        );
-        add_varargs_method("open",&Module::openBrowser,
-            "open(htmlcode,baseurl,[title,iconpath])\n"
-            "Load a local (X)HTML file."
-        );
-        add_varargs_method("insert",&Module::openBrowser,
-            "insert(string)\n"
-            "Load a local (X)HTML file."
-        );
-        initialize("This module is the WebGui module."); // register with Python
+        add_varargs_method("openBrowser", &Module::openBrowser);
+        add_varargs_method("openBrowserHTML", &Module::openBrowserHTML);
+        add_varargs_method("openBrowserWindow", &Module::openBrowserWindow);
+        add_varargs_method("open",
+                           &Module::openBrowser,
+                           "open(htmlcode,baseurl,[title,iconpath])\n"
+                           "Load a local (X)HTML file.");
+        add_varargs_method("insert",
+                           &Module::openBrowser,
+                           "insert(string)\n"
+                           "Load a local (X)HTML file.");
+        initialize("This module is the WebGui module.");  // register with Python
     }
-
-    ~Module() override {}
 
 private:
     Py::Object openBrowser(const Py::Tuple& args)
     {
         const char* url;
-        if (!PyArg_ParseTuple(args.ptr(), "s",&url))
+        if (!PyArg_ParseTuple(args.ptr(), "s", &url)) {
             throw Py::Exception();
+        }
 
         WebGui::BrowserView* pcBrowserView;
 
@@ -86,8 +92,9 @@ private:
         pcBrowserView->resize(400, 300);
         pcBrowserView->load(url);
         Gui::getMainWindow()->addWindow(pcBrowserView);
-        if (!Gui::getMainWindow()->activeWindow())
+        if (!Gui::getMainWindow()->activeWindow()) {
             Gui::getMainWindow()->setActiveWindow(pcBrowserView);
+        }
 
         return Py::None();
     }
@@ -98,8 +105,15 @@ private:
         const char* BaseUrl;
         const char* IconPath;
         char* TabName = nullptr;
-        if (! PyArg_ParseTuple(args.ptr(), "ss|ets", &HtmlCode, &BaseUrl, "utf-8", &TabName, &IconPath))
+        if (!PyArg_ParseTuple(args.ptr(),
+                              "ss|ets",
+                              &HtmlCode,
+                              &BaseUrl,
+                              "utf-8",
+                              &TabName,
+                              &IconPath)) {
             throw Py::Exception();
+        }
 
         std::string EncodedName = "Browser";
         if (TabName) {
@@ -110,13 +124,15 @@ private:
         WebGui::BrowserView* pcBrowserView = nullptr;
         pcBrowserView = new WebGui::BrowserView(Gui::getMainWindow());
         pcBrowserView->resize(400, 300);
-        pcBrowserView->setHtml(QString::fromUtf8(HtmlCode),QUrl(QString::fromLatin1(BaseUrl)));
+        pcBrowserView->setHtml(QString::fromUtf8(HtmlCode), QUrl(QString::fromLatin1(BaseUrl)));
         pcBrowserView->setWindowTitle(QString::fromUtf8(EncodedName.c_str()));
-        if (IconPath)
+        if (IconPath) {
             pcBrowserView->setWindowIcon(QIcon(QString::fromUtf8(IconPath)));
+        }
         Gui::getMainWindow()->addWindow(pcBrowserView);
-        if (!Gui::getMainWindow()->activeWindow())
+        if (!Gui::getMainWindow()->activeWindow()) {
             Gui::getMainWindow()->setActiveWindow(pcBrowserView);
+        }
 
         return Py::None();
     }
@@ -124,8 +140,9 @@ private:
     Py::Object openBrowserWindow(const Py::Tuple& args)
     {
         char* TabName = nullptr;
-        if (!PyArg_ParseTuple(args.ptr(), "|et", "utf-8", &TabName))
+        if (!PyArg_ParseTuple(args.ptr(), "|et", "utf-8", &TabName)) {
             throw Py::Exception();
+        }
 
         std::string EncodedName = "Browser";
         if (TabName) {
@@ -138,8 +155,9 @@ private:
         pcBrowserView->resize(400, 300);
         pcBrowserView->setWindowTitle(QString::fromUtf8(EncodedName.c_str()));
         Gui::getMainWindow()->addWindow(pcBrowserView);
-        if (!Gui::getMainWindow()->activeWindow())
+        if (!Gui::getMainWindow()->activeWindow()) {
             Gui::getMainWindow()->setActiveWindow(pcBrowserView);
+        }
 
         return Py::asObject(pcBrowserView->getPyObject());
     }
@@ -150,7 +168,33 @@ PyObject* initModule()
     return Base::Interpreter().addModule(new Module);
 }
 
-} // namespace WebGui
+class NativeEventFilter: public QAbstractNativeEventFilter
+{
+public:
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+    bool nativeEventFilter(const QByteArray& eventType, void* message, qintptr* result) override
+#else
+    bool nativeEventFilter(const QByteArray& eventType, void* message, long* result) override
+#endif
+    {
+        Q_UNUSED(eventType)
+        Q_UNUSED(result)
+
+        // Fixes bug #9364: WM_INPUTLANGCHANGEREQUEST seems to freeze FreeCAD
+#ifdef Q_OS_WIN32
+        MSG* msg = (MSG*)(message);
+        if (msg->message == WM_INPUTLANGCHANGEREQUEST) {
+            Base::Console().Log("Ignore WM_INPUTLANGCHANGEREQUEST\n");
+            return true;
+        }
+#else
+        Q_UNUSED(message)
+#endif
+        return false;
+    }
+};
+
+}  // namespace WebGui
 
 
 /* Python entry */
@@ -169,7 +213,11 @@ PyMOD_INIT_FUNC(WebGui)
     WebGui::BrowserView::init();
     WebGui::Workbench::init();
 
-     // add resources and reloads the translators
+#ifdef Q_OS_WIN32
+    qApp->installNativeEventFilter(new WebGui::NativeEventFilter);
+#endif
+
+    // add resources and reloads the translators
     loadWebResource();
 
     PyMOD_Return(mod);

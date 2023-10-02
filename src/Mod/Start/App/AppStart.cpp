@@ -23,20 +23,20 @@
 #include "PreCompiled.h"
 
 #include <Base/Console.h>
-#include <Base/PyObjectBase.h>
 #include <Base/Interpreter.h>
+#include <Base/PyObjectBase.h>
 
 
-namespace Start {
-class Module : public Py::ExtensionModule<Module>
+namespace Start
+{
+class Module: public Py::ExtensionModule<Module>
 {
 public:
-    Module() : Py::ExtensionModule<Module>("Start")
+    Module()
+        : Py::ExtensionModule<Module>("Start")
     {
-        initialize("This module is the Start module."); // register with Python
+        initialize("This module is the Start module.");  // register with Python
     }
-
-    ~Module() override {}
 
 private:
 };
@@ -46,7 +46,7 @@ PyObject* initModule()
     return Base::Interpreter().addModule(new Module);
 }
 
-} // namespace Start
+}  // namespace Start
 
 /* Python entry */
 PyMOD_INIT_FUNC(Start)

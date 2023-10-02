@@ -23,14 +23,15 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <QApplication>
-# include <QMessageBox>
-# include <QTextStream>
+#include <QApplication>
+#include <QMessageBox>
+#include <QTextStream>
 #endif
 
 #include <Gui/Document.h>
 #include <Gui/MainWindow.h>
 
+#include "ViewProviderAnalysis.h"
 #include "ViewProviderSolver.h"
 
 
@@ -43,44 +44,18 @@ ViewProviderSolver::ViewProviderSolver()
     sPixmap = "FEM_SolverStandard";
 }
 
-ViewProviderSolver::~ViewProviderSolver()
-{
-
-}
+ViewProviderSolver::~ViewProviderSolver() = default;
 
 std::vector<std::string> ViewProviderSolver::getDisplayModes() const
 {
-    return { "Solver" };
+    return {"Solver"};
 }
 
 bool ViewProviderSolver::onDelete(const std::vector<std::string>&)
 {
-    // warn the user if the object has childs
-
+    // warn the user if the object has unselected children
     auto objs = claimChildren();
-    if (!objs.empty())
-    {
-        // generate dialog
-        QString bodyMessage;
-        QTextStream bodyMessageStream(&bodyMessage);
-        bodyMessageStream << qApp->translate("Std_Delete",
-            "The solver is not empty, therefore the\nfollowing referencing objects might be lost:");
-        bodyMessageStream << '\n';
-        for (auto ObjIterator : objs)
-            bodyMessageStream << '\n' << QString::fromUtf8(ObjIterator->Label.getValue());
-        bodyMessageStream << "\n\n" << QObject::tr("Are you sure you want to continue?");
-        // show and evaluate the dialog
-        int DialogResult = QMessageBox::warning(Gui::getMainWindow(),
-            qApp->translate("Std_Delete", "Object dependencies"), bodyMessage,
-            QMessageBox::Yes, QMessageBox::No);
-        if (DialogResult == QMessageBox::Yes)
-            return true;
-        else
-            return false;
-    }
-    else {
-        return true;
-    }
+    return ViewProviderFemAnalysis::checkSelectedChildren(objs, this->getDocument(), "solver");
 }
 
 bool ViewProviderSolver::canDelete(App::DocumentObject* obj) const
@@ -95,11 +70,12 @@ bool ViewProviderSolver::canDelete(App::DocumentObject* obj) const
 
 // Python feature -----------------------------------------------------------------------
 
-namespace Gui {
+namespace Gui
+{
 /// @cond DOXERR
 PROPERTY_SOURCE_TEMPLATE(FemGui::ViewProviderSolverPython, FemGui::ViewProviderSolver)
 /// @endcond
 
 // explicit template instantiation
 template class FemGuiExport ViewProviderPythonFeatureT<ViewProviderSolver>;
-}
+}  // namespace Gui

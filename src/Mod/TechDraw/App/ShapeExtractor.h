@@ -23,14 +23,14 @@
 #ifndef ShapeExtractor_h_
 #define ShapeExtractor_h_
 
-#include <Mod/TechDraw/TechDrawGlobal.h>
-
 #include <TopoDS_Shape.hxx>
 
 #include <App/DocumentObject.h>
 #include <App/Link.h>
 #include <Base/Type.h>
 #include <Base/Vector3D.h>
+
+#include <Mod/TechDraw/TechDrawGlobal.h>
 
 
 namespace TechDraw
@@ -39,11 +39,12 @@ namespace TechDraw
 class TechDrawExport ShapeExtractor
 {
 public:
-    static TopoDS_Shape getShapes(const std::vector<App::DocumentObject*> links);
-    static std::vector<TopoDS_Shape> getShapes2d(const std::vector<App::DocumentObject*> links);
+    static TopoDS_Shape getShapes(const std::vector<App::DocumentObject*> links, bool include2d = true);
+    static std::vector<TopoDS_Shape> getShapes2d(const std::vector<App::DocumentObject*> links, bool overridePref = false);
     static std::vector<TopoDS_Shape> getXShapes(const App::Link* xLink);
     static std::vector<TopoDS_Shape> getShapesFromObject(const App::DocumentObject* docObj);
     static TopoDS_Shape getShapesFused(const std::vector<App::DocumentObject*> links);
+    static TopoDS_Shape getShapeFromXLink(const App::Link* xLink);
 
     static bool is2dObject(App::DocumentObject* obj);
     static bool isEdgeType(App::DocumentObject* obj);

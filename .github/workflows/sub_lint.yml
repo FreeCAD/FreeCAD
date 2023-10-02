@@ -1,0 +1,774 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+# ***************************************************************************
+# *                                                                         *
+# *   Copyright (c) 2023 0penBrain.                                         *
+# *                                                                         *
+# *   This file is part of FreeCAD.                                         *
+# *                                                                         *
+# *   FreeCAD is free software: you can redistribute it and/or modify it    *
+# *   under the terms of the GNU Lesser General Public License as           *
+# *   published by the Free Software Foundation, either version 2.1 of the  *
+# *   License, or (at your option) any later version.                       *
+# *                                                                         *
+# *   FreeCAD is distributed in the hope that it will be useful, but        *
+# *   WITHOUT ANY WARRANTY; without even the implied warranty of            *
+# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU      *
+# *   Lesser General Public License for more details.                       *
+# *                                                                         *
+# *   You should have received a copy of the GNU Lesser General Public      *
+# *   License along with FreeCAD. If not, see                               *
+# *   <https://www.gnu.org/licenses/>.                                      *
+# *                                                                         *
+# ***************************************************************************
+
+# This is the lint workflow for CI of FreeCAD
+
+name: Lint
+
+on:
+  workflow_call:
+    inputs:
+      artifactBasename:
+        type: string
+        required: true
+      changedFiles:
+        type: string
+        required: true
+      changedCppFiles:
+        type: string
+        required: true
+      changedPythonFiles:
+        type: string
+        required: true
+      checkLineendings:
+        default: false
+        type: boolean
+        required: false
+      lineendingsFailSilent:
+        default: true
+        type: boolean
+        required: false
+      checkWhitespace:
+        default: true
+        type: boolean
+        required: false
+      whitespaceFailSilent:
+        default: true
+        type: boolean
+        required: false
+      checkTabs:
+        default: true
+        type: boolean
+        required: false
+      tabsFailSilent:
+        default: true
+        type: boolean
+        required: false
+      checkQtConnections:
+        default: true
+        type: boolean
+        required: false
+      qtConnectionsFailSilent:
+        default: true
+        type: boolean
+        required: false
+      checkCpplint:
+        default: true
+        type: boolean
+        required: false
+      cpplintFilters:
+        default: -build/c++11,-build/header_guard,-build/include,-build/include_alpha,-build/include_order,-build/include_subdir,-build/include_what_you_use,-build/namespaces,-legal/copyright,-readability/braces,-readability-braces-around-statements,-readability/casting,-readability/namespace,-readability/todo,-runtime/indentation_namespace,-runtime/int,-runtime/references,-whitespace/blank_line,-whitespace/braces,-whitespace/comma,-whitespace/comments,-whitespace/end_of_line,-whitespace/indent,-whitespace/line_length,-whitespace/newline,-whitespace/operators,-whitespace/parens,-whitespace/semicolon,-whitespace/tab,-whitespace/todo
+        type: string
+        required: false
+      cpplintLineLength:
+        default: 120
+        type: string
+        required: false
+      cpplintFailSilent:
+        default: true
+        type: boolean
+        required: false
+      checkPylint:
+        default: true
+        type: boolean
+        required: false
+      pylintDisable:
+        default: C0302,C0303 # Trailing whitespaces (C0303) are already checked
+        type: string
+        required: false
+      pylintFailSilent:
+        default: true
+        type: boolean
+        required: false
+      checkBlack:
+        default: true
+        type: boolean
+        required: false
+      blackFailSilent:
+        default: true
+        type: boolean
+        required: false
+      checkClangFormat:
+        default: false
+        type: boolean
+        required: false
+      clangStyle:
+        default: file # for .clang-format file
+        type: string
+        required: false
+      clangFormatFailSilent:
+        default: true
+        type: boolean
+        required: false
+      checkSpelling:
+        default: true
+        type: boolean
+        required: false
+      listIgnoredMisspelling:
+        default: .github/codespellignore
+        type: string
+        required: false
+      spellingIgnore:
+        default: ./.git,*.po,*.ts,*.svg,./ChangeLog.txt,./src/3rdParty,./src/Mod/Assembly/App/opendcm,./src/CXX,./src/zipios++,./src/Base/swig*,./src/Mod/Robot/App/kdl_cp,./src/Mod/Import/App/SCL*,./src/WindowsInstaller,./src/Doc/FreeCAD.uml,./build/
+        type: string
+        required: false
+      codespellFailSilent:
+        default: true
+        type: boolean
+        required: false
+      checkClangTidy:
+        default: true
+        type: boolean
+        required: false
+      clangTidyChecks:
+        default: # empty to use the .clang-tidy file
+        type: string
+        required: false
+      clangTidyFailSilent:
+        default: true # warnings or notes will never fail the CI, only errors
+        type: boolean
+        required: false
+      checkClazy: # for the Message codes see: https://invent.kde.org/sdk/clazy#list-of-checks
+        default: true
+        type: boolean
+        required: false
+      clazyChecks:
+        default: level1
+        type: string
+        required: false
+      clazyFailSilent:
+        default: true # warnings or notes will never fail the CI, only errors
+        type: boolean
+        required: false
+      checkClazyQT6:
+        default: true
+        type: boolean
+        required: false
+      clazyQT6Checks:
+        default: qt6-deprecated-api-fixes,qt6-header-fixes,qt6-qhash-signature,qt6-fwd-fixes,missing-qobject-macro # for QT6 Porting https://invent.kde.org/sdk/clazy#list-of-checks
+        type: string
+        required: false
+      QT6Branch: # branch to check for QT6 Porting
+        default: master
+        type: string
+        required: false
+      clazyQT6FailSilent:
+        default: true # warnings or notes will never fail the CI, only errors
+        type: boolean
+        required: false
+    outputs:
+      reportFile:
+        value: ${{ jobs.Lint.outputs.reportFile }}
+
+jobs:
+
+  Lint:
+    if: inputs.changedFiles != ''
+    runs-on: ubuntu-latest
+    env:
+      logdir: /tmp/logs/
+      fixesdir: /tmp/fixes/
+      reportdir: /tmp/report/
+      reportfilename: ${{ inputs.artifactBasename }}-report.md
+    defaults:
+      run:
+        shell: bash
+    outputs:
+      reportFile: ${{ steps.Init.outputs.reportFile }}
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v3
+      - name: Make needed directories, files and initializations
+        id: Init
+        run: |
+          mkdir -p ${{ env.logdir }}
+          mkdir -p ${{ env.fixesdir }}
+          mkdir -p ${{ env.reportdir }}
+          echo "reportFile=${{ env.reportfilename }}" >> $GITHUB_OUTPUT
+    # Run generic lints
+      - name: Check for non Unix line ending
+        if: inputs.checkLineendings && always()
+        continue-on-error: ${{ inputs.lineendingsFailSilent }}
+        run: |
+          lineendings=0
+          for file in ${{ inputs.changedFiles }}
+          do
+            # Check for DOS or MAC line endings
+            if [[ $(file -b $file) =~ "with CR" ]]
+            then
+              echo "::warning file=$file,title=$file::File has non Unix line endings"
+              echo "$file has non Unix line endings" >> ${{ env.logdir }}lineendings.log
+              ((lineendings=lineendings+1))
+            fi
+          done
+          echo "Found $lineendings line ending errors"
+          # Write the report
+          if [ $lineendings -gt 0 ]
+          then
+            echo "<details><summary>:information_source: Found $lineendings problems with line endings</summary>" >> ${{env.reportdir}}${{ env.reportfilename }}
+            echo "" >> ${{env.reportdir}}${{ env.reportfilename }}
+            echo '```' >> ${{env.reportdir}}${{ env.reportfilename }}
+            cat ${{ env.logdir }}lineendings.log >> ${{env.reportdir}}${{ env.reportfilename }}
+            echo '```' >> ${{env.reportdir}}${{ env.reportfilename }}
+            echo "</details>" >> ${{env.reportdir}}${{ env.reportfilename }}
+          else
+            echo ":heavy_check_mark: No line ending problem found  " >> ${{env.reportdir}}${{ env.reportfilename }}
+          fi
+          echo "" >> ${{env.reportdir}}${{ env.reportfilename }}
+          # Exit the step with appropriate code
+          [ $lineendings -eq 0 ]
+      - name: Check for trailing whitespaces
+        if: inputs.checkWhitespace && always()
+        continue-on-error: ${{ inputs.whitespaceFailSilent }}
+        run: |
+          whitespaceErrors=0
+          exclude="*[.md]"
+          for file in ${{ inputs.changedFiles }}
+          do
+            # Check for trailing whitespaces
+            grep -nIHE --exclude="$exclude" " $" $file | sed -e "s/$/<-- trailing whitespace/" >> ${{ env.logdir }}whitespace.log || true
+          done
+          # Write the Log to the console with the Problem Matchers
+          if [ -f ${{ env.logdir }}whitespace.log ]
+          then
+            echo "::add-matcher::${{ runner.workspace }}/FreeCAD/.github/problemMatcher/grepMatcherWarning.json"
+            cat ${{ env.logdir }}whitespace.log
+            echo "::remove-matcher owner=grepMatcher-warning::"
+            whitespaceErrors=$(wc -l < ${{ env.logdir }}whitespace.log)
+          fi
+          echo "Found $whitespaceErrors whitespace errors"
+          # Write the report
+          if [ $whitespaceErrors -gt 0 ]
+          then
+            echo "<details><summary>:information_source: Found $whitespaceErrors trailing whitespace</summary>" >> ${{env.reportdir}}${{ env.reportfilename }}
+            echo "" >> ${{env.reportdir}}${{ env.reportfilename }}
+            echo '```' >> ${{env.reportdir}}${{ env.reportfilename }}
+            cat ${{ env.logdir }}whitespace.log >> ${{env.reportdir}}${{ env.reportfilename }}
+            echo '```' >> ${{env.reportdir}}${{ env.reportfilename }}
+            echo "</details>" >> ${{env.reportdir}}${{ env.reportfilename }}
+          else
+            echo ":heavy_check_mark: No trailing whitespace found  " >> ${{env.reportdir}}${{ env.reportfilename }}
+          fi
+          echo "" >> ${{env.reportdir}}${{ env.reportfilename }}
+          # Exit the step with appropriate code
+          [ $whitespaceErrors -eq 0 ]
+      - name: Check for Tab usage
+        if: inputs.checkTabs && always()
+        continue-on-error: ${{ inputs.tabsFailSilent }}
+        run: |
+          tabErrors=0
+          exclude="*[.md]"
+          # Check for Tab usage
+          for file in ${{ steps.changed-files.outputs.all_changed_files }}
+          do
+            grep -nIHE --exclude="$exclude" $'\t' $file | sed -e "s/$/ <-- contains tab/" >> ${{ env.logdir }}tab.log || true
+          done
+          # Write the Log to the console with the Problem Matchers
+          if [ -f ${{ env.logdir }}tab.log ]
+          then
+            echo "::add-matcher::${{ runner.workspace }}/FreeCAD/.github/problemMatcher/grepMatcherWarning.json"
+            cat ${{ env.logdir }}tab.log
+            echo "::remove-matcher owner=grepMatcher-warning::"
+            tabErrors=$(wc -l < ${{ env.logdir }}tab.log)
+          fi
+          echo "Found $tabErrors tab errors"
+          # Write the report
+          if [ $tabErrors -gt 0 ]; then
+            echo "<details><summary>:information_source: Found $tabErrors tabs, better to use spaces</summary>" >> ${{env.reportdir}}${{ env.reportfilename }}
+            echo "" >> ${{env.reportdir}}${{ env.reportfilename }}
+            echo '```' >> ${{env.reportdir}}${{ env.reportfilename }}
+            cat ${{ env.logdir }}tab.log >> ${{env.reportdir}}${{ env.reportfilename }}
+            echo '```' >> ${{env.reportdir}}${{ env.reportfilename }}
+            echo "</details>" >> ${{env.reportdir}}${{ env.reportfilename }}
+          else
+            echo ":heavy_check_mark: No tabs found" >> ${{env.reportdir}}${{ env.reportfilename }}
+          fi
+          echo "" >> ${{env.reportdir}}${{ env.reportfilename }}
+          # Exit the step with appropriate code
+          [ $tabErrors -eq 0 ]
+    # Run Python lints
+      - name: Pylint
+        if: inputs.checkPylint && inputs.changedPythonFiles != '' && always()
+        continue-on-error: ${{ inputs.pylintFailSilent }}
+        run: |
+          pylintErrors=0
+          pylintWarnings=0
+          pylintRefactorings=0
+          pylintConventions=0
+          pip install pylint
+          # List enabled pylint checks
+          pylint --list-msgs-enabled > ${{ env.logdir }}pylint-enabled-checks.log
+          # Run pylint on all python files
+          set +e
+          pylint --disable=${{ inputs.pylintDisable }} ${{ inputs.changedPythonFiles }} > ${{ env.logdir }}pylint.log
+          exitCode=$?
+          set -e
+          # If pylint has run successfully, write the Log to the console with the Problem Matchers
+          if [ -f ${{ env.logdir }}pylint.log ]
+          then
+            echo "::add-matcher::${{ runner.workspace }}/FreeCAD/.github/problemMatcher/pylintError.json"
+            echo "::add-matcher::${{ runner.workspace }}/FreeCAD/.github/problemMatcher/pylintWarning.json"
+            cat ${{ env.logdir }}pylint.log
+            echo "::remove-matcher owner=pylint-error::"
+            echo "::remove-matcher owner=pylint-warning::"
+            pylintErrors=$( grep -oP '(?<=error      \|)\d+' ${{ env.logdir }}pylint.log) || true # grep returns 0 if no match is found
+            pylintWarnings=$( grep -oP '(?<=warning    \|)\d+' ${{ env.logdir }}pylint.log) || true
+            pylintRefactorings=$( grep -oP '(?<=refactor   \|)\d+' ${{ env.logdir }}pylint.log) || true
+            pylintConventions=$( grep -oP '(?<=convention \|)\d+' ${{ env.logdir }}pylint.log) || true
+          fi
+          echo "Found $pylintErrors errors, $pylintWarnings warnings, $pylintRefactorings refactorings, $pylintConventions conventions"
+          # Write the report
+          if [ $pylintErrors -gt 0 ]
+          then
+            echo "<details><summary>:fire: Pylint found :fire: $pylintErrors errors, :warning: $pylintWarnings warnings, :construction: $pylintRefactorings refactorings and :pencil2: $pylintConventions conventions</summary>" >> ${{env.reportdir}}${{ env.reportfilename }}
+          elif [ $pylintWarnings -gt 0 ]
+          then
+            echo "<details><summary>:warning: Pylint found :warning: $pylintWarnings warnings, :construction: $pylintRefactorings refactorings and :pencil2: $pylintConventions conventions</summary>" >> ${{env.reportdir}}${{ env.reportfilename }}
+          elif [ $pylintRefactorings -gt 0 ]
+          then
+            echo "<details><summary>:construction: Pylint found :construction: $pylintRefactorings refactorings and :pencil2: $pylintConventions conventions</summary>" >> ${{env.reportdir}}${{ env.reportfilename }}
+          elif [ $pylintConventions -gt 0 ]
+          then
+            echo "<details><summary>:pencil2: Pylint found :pencil2: $pylintConventions conventions</summary>" >> ${{env.reportdir}}${{ env.reportfilename }}
+          else
+            echo "<details><summary>:heavy_check_mark: No pylint errors found </summary>  " >> ${{env.reportdir}}${{ env.reportfilename }}
+          fi
+          echo "" >> ${{env.reportdir}}${{ env.reportfilename }}
+          # List enabled checks in the report
+          echo "<details><summary>:information_source: Enabled checks</summary>" >> ${{env.reportdir}}${{ env.reportfilename }}
+          echo "" >> ${{env.reportdir}}${{ env.reportfilename }}
+          echo '```' >> ${{env.reportdir}}${{ env.reportfilename }}
+          cat ${{ env.logdir }}pylint-enabled-checks.log >> ${{env.reportdir}}${{ env.reportfilename }}
+          echo '```' >> ${{env.reportdir}}${{ env.reportfilename }}
+          echo "</details>" >> ${{env.reportdir}}${{ env.reportfilename }}
+          echo "" >> ${{env.reportdir}}${{ env.reportfilename }}
+          echo '```' >> ${{env.reportdir}}${{ env.reportfilename }}
+          cat ${{ env.logdir }}pylint.log >> ${{env.reportdir}}${{ env.reportfilename }}
+          echo '```' >> ${{env.reportdir}}${{ env.reportfilename }}
+          echo "</details>" >> ${{env.reportdir}}${{ env.reportfilename }}
+          echo "" >> ${{env.reportdir}}${{ env.reportfilename }}
+          # Exit the step with appropriate code
+          [ $pylintErrors -eq 0 ]
+      - name: Black (Python)
+        if: inputs.checkBlack && inputs.changedPythonFiles != '' && always()
+        continue-on-error: ${{ inputs.blackFailSilent }}
+        run: |
+          blackReformats=0
+          blackFails=0
+          pip install black
+          set +e
+          black --check ${{ inputs.changedPythonFiles }} &> ${{ env.logdir }}black.log
+          exitCode=$?
+          set -e
+          # If black has run successfully, write the Log to the console with the Problem Matchers
+          if [ -f ${{ env.logdir }}black.log ]
+          then
+            echo "::add-matcher::${{ runner.workspace }}/FreeCAD/.github/problemMatcher/blackWarning.json"
+            cat ${{ env.logdir }}black.log
+            echo "::remove-matcher owner=black-warning::"
+            blackReformats=$( grep -oP '\d+(?= fil.+ would be reformatted)' ${{ env.logdir }}black.log) || true # grep returns 0 if no match is found
+            blackFails=$( grep -oP '\d+(?= fil.+ would fail to reformat)' ${{ env.logdir }}black.log) || true
+          fi
+          echo "Found $blackReformats files would be reformatted and $blackFails files would fail to reformat"
+          # Write the report
+          if [ $blackReformats -gt 0 ] || [ $blackFails -gt 0 ] #FIXME purpose of testing $blackFails as we don't use it then
+          then
+            echo "<details><summary>:pencil2: Black would reformat $blackReformats files</summary>" >> ${{env.reportdir}}${{ env.reportfilename }}
+          else
+            echo "<details><summary>:heavy_check_mark: Black would reformat no file</summary>" >> ${{env.reportdir}}${{ env.reportfilename }}
+          fi
+          echo "" >> ${{env.reportdir}}${{ env.reportfilename }}
+          echo '```' >> ${{env.reportdir}}${{ env.reportfilename }}
+          cat ${{ env.logdir }}black.log >> ${{env.reportdir}}${{ env.reportfilename }}
+          echo '```' >> ${{env.reportdir}}${{ env.reportfilename }}
+          echo "</details>" >> ${{env.reportdir}}${{ env.reportfilename }}
+          echo "" >> ${{env.reportdir}}${{ env.reportfilename }}
+          # Exit the step with appropriate code
+          [ $exitCode -eq 0 ]
+    # Run C++ lints
+      - name: Install FreeCAD dependencies
+        if: inputs.changedCppFiles != '' && always()
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends               \
+                            doxygen                                     \
+                            graphviz                                    \
+                            imagemagick                                 \
+                            libboost-date-time-dev                      \
+                            libboost-dev                                \
+                            libboost-filesystem-dev                     \
+                            libboost-graph-dev                          \
+                            libboost-iostreams-dev                      \
+                            libboost-program-options-dev                \
+                            libboost-python-dev                         \
+                            libboost-regex-dev                          \
+                            libboost-serialization-dev                  \
+                            libboost-thread-dev                         \
+                            libcoin-dev                                 \
+                            libeigen3-dev                               \
+                            libgts-bin                                  \
+                            libgts-dev                                  \
+                            libkdtree++-dev                             \
+                            libmedc-dev                                 \
+                            libocct-data-exchange-dev                   \
+                            libocct-ocaf-dev                            \
+                            libocct-visualization-dev                   \
+                            libopencv-dev                               \
+                            libproj-dev                                 \
+                            libpyside2-dev                              \
+                            libqt5opengl5-dev                           \
+                            libqt5svg5-dev                              \
+                            libqt5x11extras5-dev                        \
+                            libqt5xmlpatterns5-dev                      \
+                            libshiboken2-dev                            \
+                            libspnav-dev                                \
+                            libvtk7-dev                                 \
+                            libx11-dev                                  \
+                            libxerces-c-dev                             \
+                            libyaml-cpp-dev                             \
+                            libzipios++-dev                             \
+                            netgen                                      \
+                            netgen-headers                              \
+                            occt-draw                                   \
+                            pyqt5-dev-tools                             \
+                            pyside2-tools                               \
+                            python3-dev                                 \
+                            python3-git                                 \
+                            python3-markdown                            \
+                            python3-matplotlib                          \
+                            python3-packaging                           \
+                            python3-pivy                                \
+                            python3-ply                                 \
+                            python3-pyside2.qtcore                      \
+                            python3-pyside2.qtgui                       \
+                            python3-pyside2.qtnetwork                   \
+                            python3-pyside2.qtsvg                       \
+                            python3-pyside2.qtwebengine                 \
+                            python3-pyside2.qtwebenginecore             \
+                            python3-pyside2.qtwebenginewidgets          \
+                            python3-pyside2.qtwebchannel                \
+                            python3-pyside2.qtwidgets                   \
+                            qtbase5-dev                                 \
+                            qttools5-dev                                \
+                            qtwebengine5-dev                            \
+                            shiboken2                                   \
+                            swig                                        \
+                            ccache                                      \
+                            xvfb
+      - name: Run CMake # This is needed for Clang tools to work correctly
+        if: inputs.changedCppFiles != '' && always()
+        run: |
+          mkdir build && cmake -S ./ -B ./build/ -D CMAKE_EXPORT_COMPILE_COMMANDS:BOOL=TRUE
+      - name: Check old Qt string-based connections (https://wiki.qt.io/New_Signal_Slot_Syntax)
+        if: inputs.checkQtConnections && inputs.changedCppFiles != '' && always()
+        continue-on-error: ${{ inputs.qtConnectionsFailSilent }}
+        run: |
+          qtconnectionSyntax=0
+          exclude="*[.md,.log,.ts,.git]"
+          # Check all files for QT string-based connections
+          for file in ${{ inputs.changedFiles }} #TODO does this makes sense in Python files ?
+          do
+            grep -nIHE --exclude="$exclude" $' SIGNAL| SLOT' $file | sed -e "s/$/ <--Consider using Functor-Based Connections/" >> ${{ env.logdir }}qtConnections.log || true #TODO seems to trigger false positives
+          done
+          # Write the Log to the console with the Problem Matchers
+          if [ -f ${{ env.logdir }}qtConnections.log ]; then
+            echo "::add-matcher::${{ runner.workspace }}/FreeCAD/.github/problemMatcher/grepMatcherWarning.json"
+            cat ${{ env.logdir }}qtConnections.log
+            echo "::remove-matcher owner=grepMatcher-warning::"
+            qtconnectionSyntax=$(wc -l < ${{ env.logdir }}qtConnections.log)
+          fi
+          echo "Found $qtconnectionSyntax QT string-based connections"
+          # Write the report
+          if [ $qtconnectionSyntax -gt 0 ]; then
+            echo "<details><summary>:information_source: Found $qtconnectionSyntax QT string-based connections :arrow_right: consider using QT functor-Based Connections</summary>" >> ${{env.reportdir}}${{ env.reportfilename }}
+            echo "" >> ${{env.reportdir}}${{ env.reportfilename }}
+            # documentation link
+            echo "For more information see: https://wiki.qt.io/New_Signal_Slot_Syntax or https://github.com/FreeCAD/FreeCAD/issues/6166" >> ${{env.reportdir}}${{ env.reportfilename }}
+            echo '```' >> ${{env.reportdir}}${{ env.reportfilename }}
+            cat ${{ env.logdir }}qtConnections.log >> ${{env.reportdir}}${{ env.reportfilename }}
+            echo '```' >> ${{env.reportdir}}${{ env.reportfilename }}
+            echo "</details>" >> ${{env.reportdir}}${{ env.reportfilename }}
+          else
+            echo ":heavy_check_mark: No string-based connections found  " >> ${{env.reportdir}}${{ env.reportfilename }}
+          fi
+          echo "" >> ${{env.reportdir}}${{ env.reportfilename }}
+          # Exit the step with appropriate code
+          [ $qtconnectionSyntax -eq 0 ]
+      - name: Cpplint
+        if: inputs.checkCpplint && inputs.changedCppFiles != '' && always()
+        continue-on-error: ${{ inputs.cpplintFailSilent }}
+        run: |
+          cpplintErrors=0
+          pip install cpplint
+          # Run cpplint
+          for file in ${{ inputs.changedCppFiles }}
+          do
+            cpplint --filter=${{ inputs.cpplintFilters }} --linelength=${{ inputs.cpplintLineLength }} $file &>> ${{ env.logdir }}cpplint.log || true
+          done
+          # If cpplint has run successfully, write the Log to the console with the Problem Matchers
+          if [ ${{ env.logdir }}cpplint.log ]
+          then
+            echo "::add-matcher::${{ runner.workspace }}/FreeCAD/.github/problemMatcher/cpplint.json"
+            cat ${{ env.logdir }}cpplint.log
+            echo "::remove-matcher owner=cpplint::"
+            cpplintErrors=$(grep -nIHE "\[[0-9]\]$" ${{ env.logdir }}cpplint.log | wc -l ) || true
+          fi
+          echo "Found $cpplintErrors cpplint errors"
+          # Write the report
+          if [ $cpplintErrors -gt 0 ]
+          then
+            echo "<details><summary>:warning: CppLint found $cpplintErrors errors / warnings</summary>" >> ${{env.reportdir}}${{ env.reportfilename }}
+          else
+            echo "<details><summary>:heavy_check_mark: No cpplint errors found </summary>  " >> ${{env.reportdir}}${{ env.reportfilename }}
+          fi
+          echo "" >> ${{env.reportdir}}${{ env.reportfilename }}
+          echo '```' >> ${{env.reportdir}}${{ env.reportfilename }}
+          cat ${{ env.logdir }}cpplint.log >> ${{env.reportdir}}${{ env.reportfilename }}
+          echo '```' >> ${{env.reportdir}}${{ env.reportfilename }}
+          echo "</details>" >> ${{env.reportdir}}${{ env.reportfilename }}
+          echo "" >> ${{env.reportdir}}${{ env.reportfilename }}
+          # Exit the step with appropriate code
+          [ $cpplintErrors -eq 0 ]
+      - name: Clang-format
+        if: inputs.checkClangFormat && inputs.changedCppFiles != '' && always()
+        continue-on-error: ${{ inputs.clangFormatFailSilent }}
+        run: |
+          clangFormatErrors=0
+          # Run clang-format on all cpp files
+          clang-format --dry-run --ferror-limit=1 --verbose --style=${{ inputs.clangStyle }} ${{ inputs.changedCppFiles }} &>> ${{ env.logdir }}clang-format.log  || true
+          # If clang-format has run successfully, write the Log to the console with the Problem Matchers
+          if [ -f ${{ env.logdir }}clang-format.log ]
+          then
+            echo "::add-matcher::${{ runner.workspace }}/FreeCAD/.github/problemMatcher/clang.json"
+            cat ${{ env.logdir }}clang-format.log
+            echo "::remove-matcher owner=clang::"
+            clangFormatErrors=$(grep -nIHE "\[-Wclang-format-violations]$" ${{ env.logdir }}clang-format.log | wc -l ) || true
+          fi
+          echo "Found $clangFormatErrors clang-format errors"
+          # Write the report
+          if [ $clangFormatErrors -gt 0 ]
+          then
+            echo "<details><summary>:pencil2: Clang-format would reformat $clangFormatErrors files</summary>" >> ${{env.reportdir}}${{ env.reportfilename }}
+          else
+            echo "<details><summary>:heavy_check_mark: Clang-format would reformat no file</summary>  " >> ${{env.reportdir}}${{ env.reportfilename }}
+          fi
+          echo "" >> ${{env.reportdir}}${{ env.reportfilename }}
+          echo '```' >> ${{env.reportdir}}${{ env.reportfilename }}
+          cat ${{ env.logdir }}clang-format.log >> ${{env.reportdir}}${{ env.reportfilename }}
+          echo '```' >> ${{env.reportdir}}${{ env.reportfilename }}
+          echo "</details>" >> ${{env.reportdir}}${{ env.reportfilename }}
+          echo "" >> ${{env.reportdir}}${{ env.reportfilename }}
+          # Exit the step with appropriate code
+          [ $clangFormatErrors -eq 0 ]
+      - name: Codespell
+        if: inputs.checkSpelling && always()
+        continue-on-error: ${{ inputs.codespellFailSilent }}
+        run: |
+          pip install codespell
+          wget https://raw.githubusercontent.com/codespell-project/codespell/master/codespell_lib/data/dictionary.txt
+          #wget https://raw.githubusercontent.com/codespell-project/codespell/master/codespell_lib/data/dictionary_rare.txt
+          set +e
+          misspellings=$( { codespell --quiet-level 3 --summary --count --ignore-words ${{ inputs.listIgnoredMisspelling }} --skip ${{ inputs.spellingIgnore }} -D dictionary.txt ${{ inputs.changedFiles }} > ${{ env.logdir }}codespell.log ; } 2>&1 )
+          set -e
+          # If codespell has run successfully, write the Log to the console with the Problem Matchers
+          if [ -f ${{ env.logdir }}codespell.log ]
+          then
+            echo "::add-matcher::${{ runner.workspace }}/FreeCAD/.github/problemMatcher/codespell.json"
+            cat ${{ env.logdir }}codespell.log
+            echo "::remove-matcher owner=codespell::"
+          fi
+          echo "Found $misspellings misspellings"
+          # Write the report
+          if [ $misspellings -gt 0 ]
+          then
+            echo "<details><summary>:pencil2: Codespell found $misspellings misspellings</summary>" >> ${{env.reportdir}}${{ env.reportfilename }}
+          else
+            echo "<details><summary>:heavy_check_mark: Codespell found no misspellings</summary>" >> ${{env.reportdir}}${{ env.reportfilename }}
+          fi
+          echo "" >> ${{env.reportdir}}${{ env.reportfilename }}
+          echo "To ignore false positives, append the word to the [.github/codespellignore](https://github.com/FreeCAD/FreeCAD/blob/master/.github/codespellignore) file (lowercase)" >> ${{env.reportdir}}${{ env.reportfilename }}
+          echo '```' >> ${{env.reportdir}}${{ env.reportfilename }}
+          cat ${{ env.logdir }}codespell.log >> ${{env.reportdir}}${{ env.reportfilename }}
+          echo '```' >> ${{env.reportdir}}${{ env.reportfilename }}
+          echo "</details>" >> ${{env.reportdir}}${{ env.reportfilename }}
+          echo "" >> ${{env.reportdir}}${{ env.reportfilename }}
+          # Exit the step with appropriate code
+          [ $misspellings -eq 0 ]
+      - name: Clang-tidy
+        if: inputs.checkClangTidy && inputs.changedCppFiles != '' && always()
+        continue-on-error: ${{ inputs.clangTidyFailSilent }}
+        run: |
+          clangTidyErrors=0
+          clangTidyWarnings=0
+          clangTidyNotes=0
+          sudo apt-get install -y --no-install-recommends clang-tidy
+          #TODO: check where this "clang-tidy.yaml" goes ; shall this be put in the fixes ?
+          clang-tidy --quiet --format-style=${{ inputs.clangStyle }} --export-fixes=clang-tidy.yaml -checks=${{ inputs.clangTidyChecks }} -p build/ --explain-config &>> ${{ env.logdir }}clang-tidy-enabled-checks.log
+          # Run clang-tidy on all cpp files
+          set +e
+          clang-tidy --quiet --format-style=${{ inputs.clangStyle }} --export-fixes=clang-tidy.yaml -checks=${{ inputs.clangTidyChecks }} -p build/ ${{ inputs.changedCppFiles }} &>> ${{ env.logdir }}clang-tidy.log
+          exitCode=$?
+          set -e
+          # If clang-tidy has run successfully, write the Log to the console with the Problem Matchers
+          if [ -f ${{ env.logdir }}clang-tidy.log ]
+          then
+            echo "::add-matcher::${{ runner.workspace }}/FreeCAD/.github/problemMatcher/clang.json"
+            cat ${{ env.logdir }}clang-tidy.log
+            echo "::remove-matcher owner=clang::"
+            clangTidyErrors=$(grep -nIHE "^(.+):([0-9]+):([0-9]+): error: .+$" ${{ env.logdir }}clang-tidy.log | wc -l ) || true
+            clangTidyWarnings=$(grep -nIHE "^(.+):([0-9]+):([0-9]+): warning: .+$" ${{ env.logdir }}clang-tidy.log | wc -l ) || true
+            clangTidyNotes=$(grep -nIHE "^(.+):([0-9]+):([0-9]+): note: .+$" ${{ env.logdir }}clang-tidy.log | wc -l ) || true
+          fi
+          echo "Found $clangTidyErrors errors, $clangTidyWarnings warnings, $clangTidyNotes notes"
+          # Write the report
+          if [ $clangTidyErrors -gt 0 ]
+          then
+            echo "<details><summary>:fire: Clang-Tidy found :fire: $clangTidyErrors errors, :warning: $clangTidyWarnings warnings and :pencil2: $clangTidyNotes notes</summary>" >> ${{env.reportdir}}${{ env.reportfilename }}
+          elif [ $clangTidyWarnings -gt 0 ]
+          then
+            echo "<details><summary>:warning: Clang-Tidy found :warning: $clangTidyWarnings warnings and :pencil2: $clangTidyNotes notes</summary>" >> ${{env.reportdir}}${{ env.reportfilename }}
+          elif [ $clangTidyNotes -gt 0 ]
+          then
+            echo "<details><summary>:pencil2: Clang-Tidy found :pencil2: $clangTidyNotes notes</summary>" >> ${{env.reportdir}}${{ env.reportfilename }}
+          else
+            echo "<details><summary>:heavy_check_mark: Clang-Tidy found no errors, warnings or notes</summary>" >> ${{env.reportdir}}${{ env.reportfilename }}
+          fi
+          echo "" >> ${{env.reportdir}}${{ env.reportfilename }}
+          # List enabled checks in the report
+          echo "<details><summary>:information_source: Enabled checks</summary>" >> ${{env.reportdir}}${{ env.reportfilename }}
+          echo "" >> ${{env.reportdir}}${{ env.reportfilename }}
+          echo '```' >> ${{env.reportdir}}${{ env.reportfilename }}
+          cat ${{ env.logdir }}clang-tidy-enabled-checks.log >> ${{env.reportdir}}${{ env.reportfilename }}
+          echo '```' >> ${{env.reportdir}}${{ env.reportfilename }}
+          echo "</details>" >> ${{env.reportdir}}${{ env.reportfilename }}
+          echo "" >> ${{env.reportdir}}${{ env.reportfilename }}
+          echo '```' >> ${{env.reportdir}}${{ env.reportfilename }}
+          cat ${{ env.logdir }}clang-tidy.log >> ${{env.reportdir}}${{ env.reportfilename }}
+          echo '```' >> ${{env.reportdir}}${{ env.reportfilename }}
+          echo "</details>" >> ${{env.reportdir}}${{ env.reportfilename }}
+          echo "" >> ${{env.reportdir}}${{ env.reportfilename }}
+          # Exit the step with appropriate code
+          [ $clangTidyErrors -eq 0 ]
+      - name: Clazy
+        if: inputs.checkClazy && inputs.changedCppFiles != '' && always()
+        continue-on-error: ${{ inputs.clazyFailSilent }}
+        run: |
+          clazyErrors=0
+          clazyWarnings=0
+          clazyNotes=0
+          sudo apt-get install -y --no-install-recommends clazy
+          #TODO: check where this "clazy.yaml" goes ; shall this be put in the fixes ?
+          # Run clazy on all cpp files
+          clazy-standalone --export-fixes=clazy.yaml -checks=${{ inputs.clazyChecks }} -p build/ ${{ inputs.changedCppFiles }} &>> ${{ env.logdir }}clazy.log  || true
+          # If clazy has run successfully, write the Log to the console with the Problem Matchers
+          if [ -f ${{ env.logdir }}clazy.log ]
+          then
+            echo "::add-matcher::${{ runner.workspace }}/FreeCAD/.github/problemMatcher/clang.json"
+            cat ${{ env.logdir }}clazy.log
+            echo "::remove-matcher owner=clang::"
+            clazyErrors=$(grep -nIHE "^(.+):([0-9]+):([0-9]+): error: .+$" ${{ env.logdir }}clazy.log | wc -l ) || true
+            clazyWarnings=$(grep -nIHE "^(.+):([0-9]+):([0-9]+): warning: .+$" ${{ env.logdir }}clazy.log | wc -l ) || true
+            clazyNotes=$(grep -nIHE "^(.+):([0-9]+):([0-9]+): note: .+$" ${{ env.logdir }}clazy.log | wc -l ) || true
+          fi
+          echo "Found $clazyErrors errors, $clazyWarnings warnings, $clazyNotes notes"
+          # Write the report
+          if [ "$clazyErrors" -gt 0 ]
+          then
+            echo "<details><summary>:fire: Clazy found :fire: $clazyErrors errors, :warning: $clazyWarnings warnings and :pencil2: $clazyNotes notes</summary>" >> ${{env.reportdir}}${{ env.reportfilename }}
+          elif [ "$clazyWarnings" -gt 0 ]
+          then
+            echo "<details><summary>:warning: Clazy found :warning: $clazyWarnings warnings and :pencil2: $clazyNotes notes</summary>" >> ${{env.reportdir}}${{ env.reportfilename }}
+          elif [ "$clazyNotes" -gt 0 ]
+          then
+            echo "<details><summary>:pencil2: Clazy found :pencil2: $clazyNotes notes</summary>" >> ${{env.reportdir}}${{ env.reportfilename }}
+          else
+            echo "<details><summary>:heavy_check_mark: Clazy found no errors, warnings or notes</summary>" >> ${{env.reportdir}}${{ env.reportfilename }}
+          fi
+          echo "" >> ${{env.reportdir}}${{ env.reportfilename }}
+          echo "[List of checks](https://github.com/KDE/clazy#list-of-checks), [This explains some of the clazy warnings](https://www.kdab.com/uncovering-32-qt-best-practices-compile-time-clazy/)  " >> ${{env.reportdir}}${{ env.reportfilename }}
+          echo '```' >> ${{env.reportdir}}${{ env.reportfilename }}
+          cat ${{ env.logdir }}clazy.log >> ${{env.reportdir}}${{ env.reportfilename }}
+          echo '```' >> ${{env.reportdir}}${{ env.reportfilename }}
+          echo "</details>" >> ${{env.reportdir}}${{ env.reportfilename }}
+          echo "" >> ${{env.reportdir}}${{ env.reportfilename }}
+          # Exit the step with appropriate code
+          [ $clazyErrors -eq 0 ]
+      - name: Clazy-QT6
+        if: inputs.checkClazyQT6 && inputs.changedCppFiles != '' && github.ref == inputs.QT6Branch && always()
+        continue-on-error: ${{ inputs.clazyQT6FailSilent }}
+        run: |
+          clazyQT6Errors=0
+          clazyQT6Warnings=0
+          clazyQT6Notes=0
+          sudo apt-get install -y --no-install-recommends clazy
+          #TODO: check where this "clazyQT6.yaml" goes ; shall this be put in the fixes ?
+          # Run clazy checks for Qt6 on all cpp files
+          clazy-standalone --export-fixes=clazyQT6.yaml -checks=${{ inputs.clazyQT6Checks }} -p build/ ${{ inputs.changedCppFiles }} &>> ${{ env.logdir }}clazyQT6.log  || true
+          # If clazy has run successfully, write the Log to the console with the Problem Matchers
+          if [ -f ${{ env.logdir }}clazyQT6.log ]
+          then
+            echo "::add-matcher::${{ runner.workspace }}/FreeCAD/.github/problemMatcher/clang.json"
+            cat ${{ env.logdir }}clazyQT6.log
+            echo "::remove-matcher owner=clang::"
+            clazyQT6Errors=$(grep -nIHE "^(.+):([0-9]+):([0-9]+): error: .+$" ${{ env.logdir }}clazyQT6.log | wc -l ) || true
+            clazyQT6Warnings=$(grep -nIHE "^(.+):([0-9]+):([0-9]+): warning: .+$" ${{ env.logdir }}clazyQT6.log | wc -l ) || true
+            clazyQT6Notes=$(grep -nIHE "^(.+):([0-9]+):([0-9]+): note: .+$" ${{ env.logdir }}clazyQT6.log | wc -l ) || true
+          fi
+          echo "Found $clazyQT6Errors errors, $clazyQT6Warnings warnings, $clazyQT6Notes notes"
+          # Write the report
+          if [ "$clazyQT6Errors" -gt 0 ]
+          then
+            echo "<details><summary>:fire: Clazy found :fire: $clazyQT6Errors errors, :warning: $clazyQT6Warnings warnings and :pencil2: $clazyQT6Notes notes for porting to QT6</summary>" >> ${{env.reportdir}}${{ env.reportfilename }}
+          elif [ "$clazyQT6Warnings" -gt 0 ]
+          then
+            echo "<details><summary>:warning: Clazy found :warning: $clazyQT6Warnings warnings and :pencil2: $clazyQT6Notes notes for porting to QT6</summary>" >> ${{env.reportdir}}${{ env.reportfilename }}
+          elif [ "$clazyNotes" -gt 0 ]
+          then
+            echo "<details><summary>:pencil2: Clazy found :pencil2: $clazyQT6Notes notes for porting to QT6</summary>" >> ${{env.reportdir}}${{ env.reportfilename }}
+          else
+            echo "<details><summary>:heavy_check_mark: Clazy found no errors, warnings or notes for porting to QT6</summary>" >> ${{env.reportdir}}${{ env.reportfilename }}
+          fi
+          echo "" >> ${{env.reportdir}}${{ env.reportfilename }}
+          echo '```' >> ${{env.reportdir}}${{ env.reportfilename }}
+          cat ${{ env.logdir }}clazyQT6.log >> ${{env.reportdir}}${{ env.reportfilename }}
+          echo '```' >> ${{env.reportdir}}${{ env.reportfilename }}
+          echo "</details>" >> ${{env.reportdir}}${{ env.reportfilename }}
+          echo "" >> ${{env.reportdir}}${{ env.reportfilename }}
+          # Exit the step with appropriate code
+          [ $clazyQT6Errors -eq 0 ]
+      - name: Upload logs and fixes
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: ${{ inputs.artifactBasename }}-Logs
+          path: |
+            ${{ env.logdir }}
+            ${{ env.fixesdir }}
+      - name: Upload report
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: ${{ env.reportfilename }}
+          path: |
+            ${{env.reportdir}}${{ env.reportfilename }}

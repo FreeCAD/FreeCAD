@@ -67,7 +67,9 @@ private:
     QButtonGroup* bg;
 };
 
-class Ui_DlgImportExportStep;
+class DlgExportStep;
+class DlgImportStep;
+class DlgExportHeaderStep;
 class DlgImportExportStep : public Gui::Dialog::PreferencePage
 {
     Q_OBJECT
@@ -82,7 +84,9 @@ protected:
     void changeEvent(QEvent *e) override;
 
 private:
-    std::unique_ptr<Ui_DlgImportExportStep> ui;
+    DlgExportStep* exportStep;
+    DlgImportStep* importStep;
+    DlgExportHeaderStep* headerStep;
 };
 
 } // namespace Gui

@@ -39,14 +39,14 @@ def array(objectslist, arg1, arg2, arg3, arg4=None, arg5=None, arg6=None):
     """
     This function creates an array of independent objects.
     Use make_array() to create a parametric array object.
-    
+
     Creates an array of the given objects (that can be an object or a list
     of objects).
 
     In case of rectangular array, xnum of iterations in the x direction
     at xvector distance between iterations, and same for y and z directions
     with yvector and ynum and zvector and znum.
-    
+
     In case of polar array, center is a vector, totalangle is the angle
     to cover (in degrees) and totalnum is the number of objects, including
     the original.
@@ -69,7 +69,7 @@ def array(objectslist, arg1, arg2, arg3, arg4=None, arg5=None, arg6=None):
 
 
 def rectArray(objectslist,xvector,yvector,xnum,ynum):
-    utils.type_check([(xvector, App.Vector), 
+    utils.type_check([(xvector, App.Vector),
                         (yvector, App.Vector),
                         (xnum,int), (ynum,int)],
                         "rectArray")

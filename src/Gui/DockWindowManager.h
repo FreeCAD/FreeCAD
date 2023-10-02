@@ -86,6 +86,8 @@ public:
     /// returned from @ref addDockWindow. If you want to access the QDockWidget
     /// you get it with parentWidget() of the returned widget.
     QWidget* getDockWindow(const char* name) const;
+    /// Returns the QDockWidget container
+    QDockWidget* getDockContainer(const char* name) const;
     /// Returns a list of all widgets which set to a QDockWidget.
     QList<QWidget*> getDockWindows() const;
     /// If the corresponding dock widget isn't visible then activate it
@@ -107,6 +109,7 @@ private Q_SLOTS:
 
 private:
     QDockWidget* findDockWidget(const QList<QDockWidget*>&, const QString&) const;
+    void tabifyDockWidgets(DockWindowItems*);
 
     DockWindowManager();
     ~DockWindowManager() override;

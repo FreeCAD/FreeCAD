@@ -1,0 +1,31 @@
+# File created by ConvertFCMat.py
+General:
+  UUID: "f8013463-8008-4063-818c-ab6884cfa015"
+  AuthorAndLicense: "vlk"
+  Name: "Ti-6Al-4V (Grade 5)"
+Models:
+  Father:
+    UUID: '9cdda8b6-b606-4778-8f13-3934d8668e67'
+    Father: "Metal"
+  MaterialStandard:
+    UUID: '1e2c0088-904a-4537-925f-64064c07d700'
+    KindOfMaterial: "Titanium"
+    MaterialNumber: "3.7165"
+  LinearElastic:
+    UUID: '7b561d1d-fb9b-44f6-9da9-56a4f74d7536'
+    Density: "4430 kg/m^3"
+    PoissonRatio: "0.330"
+    ShearModulus: "44 GPa"
+    UltimateTensileStrength: "975.5 MPa"
+    YieldStrength: "910 MPa"
+    YoungsModulus: "114 GPa"
+    Hardness: "35 HRC"
+  Thermal:
+    UUID: '9959d007-a970-4ea7-bae4-3eb1b8b883c7'
+    SpecificHeat: "553.0 J/kg/K"
+    ThermalConductivity: "6.7 W/m/K"
+    ThermalExpansionCoefficient: "8.6 µm/m/K"
+  Electromagnetic:
+    UUID: 'b2eb5f48-74b3-4193-9fbb-948674f427f3'
+    ElectricalConductivity: "580012.8 S/m"
+    RelativePermeability: "1.00005"

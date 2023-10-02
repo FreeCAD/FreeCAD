@@ -77,14 +77,11 @@ DlgSettingsColorGradientImp::DlgSettingsColorGradientImp(const App::ColorGradien
 /**
  *  Destroys the object and frees any allocated resources
  */
-DlgSettingsColorGradientImp::~DlgSettingsColorGradientImp()
-{
-    // no need to delete child widgets, Qt does it all for us
-}
+DlgSettingsColorGradientImp::~DlgSettingsColorGradientImp() = default;
 
 void DlgSettingsColorGradientImp::setupConnections()
 {
-    QButtonGroup* group = new QButtonGroup(this);
+    auto group = new QButtonGroup(this);
     group->setExclusive(true);
     group->addButton(ui->radioButtonFlow);
     group->addButton(ui->radioButtonZero);

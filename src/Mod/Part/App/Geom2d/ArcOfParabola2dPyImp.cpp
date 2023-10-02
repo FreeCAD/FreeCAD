@@ -70,7 +70,7 @@ int ArcOfParabola2dPy::PyInit(PyObject* args, PyObject* /*kwds*/)
             return 0;
         }
         catch (Standard_Failure& e) {
-    
+
             PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
             return -1;
         }
@@ -79,7 +79,7 @@ int ArcOfParabola2dPy::PyInit(PyObject* args, PyObject* /*kwds*/)
             return -1;
         }
     }
-    
+
     // All checks failed
     PyErr_SetString(PyExc_TypeError,
         "ArcOfParabola2d constructor expects an parabola curve and a parameter range");
@@ -111,5 +111,5 @@ PyObject *ArcOfParabola2dPy::getCustomAttributes(const char* ) const
 
 int ArcOfParabola2dPy::setCustomAttributes(const char* , PyObject *)
 {
-    return 0; 
+    return 0;
 }

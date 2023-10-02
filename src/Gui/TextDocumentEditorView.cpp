@@ -53,9 +53,9 @@ TextDocumentEditorView::TextDocumentEditorView(
 
     // update editor actions on request
     Gui::MainWindow* mw = Gui::getMainWindow();
-    connect(editor, SIGNAL(undoAvailable(bool)), mw, SLOT(updateEditorActions()));
-    connect(editor, SIGNAL(redoAvailable(bool)), mw, SLOT(updateEditorActions()));
-    connect(editor, SIGNAL(copyAvailable(bool)), mw, SLOT(updateEditorActions()));
+    connect(editor, &QPlainTextEdit::undoAvailable, mw, &MainWindow::updateEditorActions);
+    connect(editor, &QPlainTextEdit::redoAvailable, mw, &MainWindow::updateEditorActions);
+    connect(editor, &QPlainTextEdit::copyAvailable, mw, &MainWindow::updateEditorActions);
 }
 
 TextDocumentEditorView::~TextDocumentEditorView()
@@ -97,8 +97,8 @@ bool TextDocumentEditorView::event(QEvent *event)
 
 void TextDocumentEditorView::setupEditor()
 {
-    connect(getEditor()->document(), SIGNAL(modificationChanged(bool)),
-            this, SLOT(setWindowModified(bool)));
+    connect(getEditor()->document(), &QTextDocument::modificationChanged,
+            this, &TextDocumentEditorView::setWindowModified);
     setWindowTitle(QString::fromUtf8(textDocument->Label.getValue())
             + QString::fromLatin1("[*]"));
     getEditor()->setPlainText(
@@ -107,10 +107,12 @@ void TextDocumentEditorView::setupEditor()
 
 void TextDocumentEditorView::setupConnection()
 {
+    //NOLINTBEGIN
     textConnection = textDocument->connectText(
-            boost::bind(&TextDocumentEditorView::sourceChanged, this));
+            std::bind(&TextDocumentEditorView::sourceChanged, this));
     labelConnection = textDocument->connectLabel(
-            boost::bind(&TextDocumentEditorView::labelChanged, this));
+            std::bind(&TextDocumentEditorView::labelChanged, this));
+    //NOLINTEND
 }
 
 void TextDocumentEditorView::sourceChanged()

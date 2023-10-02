@@ -23,7 +23,7 @@
 
 __title__ = "FreeCAD FEM solver calculix ccx tools task panel for the document object"
 __author__ = "Bernd Hahnebach"
-__url__ = "https://www.freecadweb.org"
+__url__ = "https://www.freecad.org"
 
 ## @package task_solver_ccxtools
 #  \ingroup FEM
@@ -73,6 +73,14 @@ class _TaskPanel:
         self.Timer.start(300)
 
         self.fem_console_message = ""
+
+        self.CCX_pipeline = None
+        self.CCX_mesh_visibility = False
+
+        # store visibility of possibly existing mesh object
+        CCX_mesh = self.fea.analysis.Document.getObject("CCX_Results_Mesh")
+        if CCX_mesh is not None:
+            self.CCX_mesh_visibility = CCX_mesh.ViewObject.Visibility
 
         # Connect Signals and Slots
         QtCore.QObject.connect(
@@ -189,7 +197,7 @@ class _TaskPanel:
             self.femConsoleMessage("CalculiX stdout is empty", "#FF0000")
             return False
 
-        # https://forum.freecadweb.org/viewtopic.php?f=18&t=39195
+        # https://forum.freecad.org/viewtopic.php?f=18&t=39195
         # convert QByteArray to a binary string an decode it to "utf-8"
         out = out.data().decode()  # "utf-8" can be omitted
         out = os.linesep.join([s for s in out.splitlines() if s])
@@ -258,9 +266,9 @@ class _TaskPanel:
         self.fea.inp_file_name = self.fea.inp_file_name
 
         # check if ccx is greater than 2.10, if not do not read results
-        # https://forum.freecadweb.org/viewtopic.php?f=18&t=23548#p183829 Point 3
-        # https://forum.freecadweb.org/viewtopic.php?f=18&t=23548&start=20#p183909
-        # https://forum.freecadweb.org/viewtopic.php?f=18&t=23548&start=30#p185027
+        # https://forum.freecad.org/viewtopic.php?f=18&t=23548#p183829 Point 3
+        # https://forum.freecad.org/viewtopic.php?f=18&t=23548&start=20#p183909
+        # https://forum.freecad.org/viewtopic.php?f=18&t=23548&start=30#p185027
         # https://github.com/FreeCAD/FreeCAD/commit/3dd1c9f
         majorVersion, minorVersion = self.fea.get_ccx_version()
         if majorVersion == 2 and minorVersion <= 10:
@@ -282,6 +290,11 @@ class _TaskPanel:
 
         QApplication.restoreOverrideCursor()
         self.form.l_time.setText("Time: {0:4.1f}: ".format(time.time() - self.Start))
+
+        # restore mesh object visibility
+        CCX_mesh = self.fea.analysis.Document.getObject("ResultMesh")
+        if CCX_mesh is not None:
+            CCX_mesh.ViewObject.Visibility = self.CCX_mesh_visibility
 
     def choose_working_dir(self):
         wd = QtGui.QFileDialog.getExistingDirectory(None, "Choose CalculiX working directory",
@@ -343,7 +356,7 @@ class _TaskPanel:
     def runCalculix(self):
         if self.fea.ccx_binary_present is False:
             self.femConsoleMessage(
-                "CalculiX can not be started. No or wrong CalculiX binary: {}"
+                "CalculiX can not be started. Missing or incorrect CalculiX binary: {}"
                 .format(self.fea.ccx_binary)
             )
             # TODO deactivate the run button

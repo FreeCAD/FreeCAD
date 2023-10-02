@@ -23,7 +23,8 @@ using std::string ;
     the same path only the one in the first added collection will
     be accessible.
 */
-class CollectionCollection : public FileCollection {
+class BaseExport CollectionCollection: public FileCollection
+{
 public:
   /** \anchor collcoll_inst_anchor
       This static method provides a singleton instance of a CollectionCollection.

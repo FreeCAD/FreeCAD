@@ -1,13 +1,13 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
-  <PythonExport 
-    Father="DocumentObjectExtensionPy" 
-    Name="LinkBaseExtensionPy" 
-    TwinPointer="LinkBaseExtension" 
-    Twin="LinkBaseExtension" 
-    Include="App/Link.h" 
-    Namespace="App" 
-    FatherInclude="App/DocumentObjectExtensionPy.h" 
+  <PythonExport
+    Father="DocumentObjectExtensionPy"
+    Name="LinkBaseExtensionPy"
+    TwinPointer="LinkBaseExtension"
+    Twin="LinkBaseExtension"
+    Include="App/Link.h"
+    Namespace="App"
+    FatherInclude="App/DocumentObjectExtensionPy.h"
     FatherNamespace="App">
     <Documentation>
       <Author Licence="LGPL" Name="Zheng, Lei" EMail="realthunder.dev@gmail.com" />
@@ -23,7 +23,7 @@ This methode is here to implement what I called Property Design
 Pattern. The extension operates on a predefined set of properties,
 but it relies on the extended object to supply the actual property by
 calling this methode. You can choose a sub set of functionality of
-this extension by supplying only some of the supported properties. 
+this extension by supplying only some of the supported properties.
 
 The 'key' are names used to refer to properties supported by this
 extension, and 'val' is the actual name of the property of your
@@ -72,7 +72,7 @@ setLink({index:(obj,subName,subElements),...}): set link element of a link group
 
 obj (DocumentObject): the object to link to. If this is None, then the link is cleared
 
-subName (String): Dot separated object path. 
+subName (String): Dot separated object path.
 
 subElements (String|tuple(String)): non-object sub-elements, e.g. Face1, Edge2.
         </UserDocu>

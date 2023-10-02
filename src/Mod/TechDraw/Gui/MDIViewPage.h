@@ -23,14 +23,12 @@
 #ifndef TECHDRAWGUI_MDIVIEWPAGE_H
 #define TECHDRAWGUI_MDIVIEWPAGE_H
 
-#include <Mod/TechDraw/TechDrawGlobal.h>
-
-#include <QPointF>
 #include <QPrinter>
 
 #include <Gui/MDIView.h>
 #include <Gui/MDIViewPy.h>
 #include <Gui/Selection.h>
+#include <Mod/TechDraw/TechDrawGlobal.h>
 
 #include "ViewProviderPage.h"
 
@@ -49,7 +47,7 @@ class DrawView;
 
 namespace TechDrawGui
 {
-
+class PagePrinter;
 class ViewProviderPage;
 class QGVPage;
 class QGSPage;
@@ -65,7 +63,6 @@ public:
     ~MDIViewPage() override;
 
     void addChildrenToPage();
-
 
     /// Observer message from the Tree Selection mechanism
     void onSelectionChanged(const Gui::SelectionChanges& msg) override;
@@ -87,10 +84,15 @@ public:
     static void printAllPages();
     static void printAll(QPrinter* printer,
                          App::Document* doc);
+    static void printAllPdf(QPrinter* printer,
+                            App::Document* doc);
 
-    void saveSVG(std::string file);
-    void saveDXF(std::string file);
-    void savePDF(std::string file);
+    void saveSVG(std::string fileName);
+    void saveDXF(std::string fileName);
+    void savePDF(std::string fileName);
+
+    void zoomIn();
+    void zoomOut();
 
     void setDocumentObject(const std::string&);
     void setDocumentName(const std::string&);
@@ -105,6 +107,7 @@ public:
     void contextMenuEvent(QContextMenuEvent *event) override;
 
     void setScene(QGSPage* scene, QGVPage* view);
+    void fixSceneDependencies();
 
 public Q_SLOTS:
     void viewAll() override;
@@ -149,9 +152,7 @@ private:
     QList<QGraphicsItem*> m_qgSceneSelected;        //items in selection order
 
     void getPaperAttributes();
-    QPageLayout::Orientation m_orientation;
-    QPageSize::PageSizeId m_paperSize;
-    double m_pagewidth, m_pageheight;
+    PagePrinter* m_pagePrinter;
 
 };
 

@@ -1,0 +1,107 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+# ***************************************************************************
+# *                                                                         *
+# *   Copyright (c) 2023 The FreeCAD Project Association                    *
+# *                                                                         *
+# *   This file is part of FreeCAD.                                         *
+# *                                                                         *
+# *   FreeCAD is free software: you can redistribute it and/or modify it    *
+# *   under the terms of the GNU Lesser General Public License as           *
+# *   published by the Free Software Foundation, either version 2.1 of the  *
+# *   License, or (at your option) any later version.                       *
+# *                                                                         *
+# *   FreeCAD is distributed in the hope that it will be useful, but        *
+# *   WITHOUT ANY WARRANTY; without even the implied warranty of            *
+# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU      *
+# *   Lesser General Public License for more details.                       *
+# *                                                                         *
+# *   You should have received a copy of the GNU Lesser General Public      *
+# *   License along with FreeCAD. If not, see                               *
+# *   <https://www.gnu.org/licenses/>.                                      *
+# *                                                                         *
+# ***************************************************************************
+
+# !!! Each step running a single test shall have an'id' defined so its report will be output
+
+name: Run all C++ Tests
+description: "Run all C++ tests, generating logs and reports for each"
+
+inputs:
+  reportdir:
+    description: "Report directory where logs will be stored"
+    required: true
+  builddir:
+    description: "Build directory where tests are located"
+    required: true
+  reportFile:
+    description: "Path for report file"
+    required: true
+
+runs:
+  using: "composite"
+  steps:
+      - name: C++ core tests
+        id: core
+        uses: ./.github/workflows/actions/runCPPTests/runSingleTest
+        with:
+          testCommand: ${{ inputs.builddir }}/tests/Tests_run --gtest_output=json:${{ inputs.reportdir }}core_gtest_results.json
+          testLogFile: ${{ inputs.reportdir }}core_gtest_test_log.txt
+          testName: Core
+      - name: C++ Material tests
+        id: material
+        uses: ./.github/workflows/actions/runCPPTests/runSingleTest
+        with:
+          testCommand: ${{ inputs.builddir }}/tests/Material_tests_run --gtest_output=json:${{ inputs.reportdir }}material_gtest_results.json
+          testLogFile: ${{ inputs.reportdir }}material_gtest_test_log.txt
+          testName: Material
+      - name: C++ Mesh tests
+        id: mesh
+        uses: ./.github/workflows/actions/runCPPTests/runSingleTest
+        with:
+          testCommand: ${{ inputs.builddir }}/tests/Mesh_tests_run --gtest_output=json:${{ inputs.reportdir }}mesh_gtest_results.json
+          testLogFile: ${{ inputs.reportdir }}mesh_gtest_test_log.txt
+          testName: Mesh
+      - name: C++ Part tests
+        id: part
+        uses: ./.github/workflows/actions/runCPPTests/runSingleTest
+        with:
+          testCommand: ${{ inputs.builddir }}/tests/Part_tests_run --gtest_output=json:${{ inputs.reportdir }}part_gtest_results.json
+          testLogFile: ${{ inputs.reportdir }}Part_gtest_test_log.txt
+          testName: Part
+      - name: C++ Points tests
+        id: points
+        uses: ./.github/workflows/actions/runCPPTests/runSingleTest
+        with:
+          testCommand: ${{ inputs.builddir }}/tests/Points_tests_run --gtest_output=json:${{ inputs.reportdir }}points_gtest_results.json
+          testLogFile: ${{ inputs.reportdir }}points_gtest_test_log.txt
+          testName: Points
+      - name: C++ Sketcher tests
+        id: sketcher
+        uses: ./.github/workflows/actions/runCPPTests/runSingleTest
+        with:
+          testCommand: ${{ inputs.builddir }}/tests/Sketcher_tests_run --gtest_output=json:${{ inputs.reportdir }}sketcher_gtest_results.json
+          testLogFile: ${{ inputs.reportdir }}sketcher_gtest_test_log.txt
+          testName: Sketcher
+      - name: Compose summary report based on test results
+        if: always()
+        shell: bash
+        run: |
+          # Print global result
+          if [ ${{ job.status }} != "success" ]
+          then
+            echo "<details><summary>:fire: C++ tests failed</summary>" >> ${{ inputs.reportFile }}
+          else
+            echo "<details><summary>:heavy_check_mark: C++ tests succeeded</summary>" >> ${{ inputs.reportFile }}
+          fi
+          echo "" >> ${{ inputs.reportFile }}
+          echo "<blockquote>" >> ${{ inputs.reportFile }}
+          #Extract individual results
+          cat > /tmp/data << "EOD"
+          ${{ toJSON(steps) }}
+          EOD
+          echo "$(jq -r ".[].outputs.reportText" /tmp/data)" >> ${{ inputs.reportFile }}
+          # Close report
+          echo "</blockquote>" >> ${{ inputs.reportFile }}
+          echo "</details>" >> ${{ inputs.reportFile }}
+          echo "" >> ${{ inputs.reportFile }}
+

@@ -30,11 +30,12 @@
 #include "PropertyContainer.h"
 #include "Property.h"
 #include "DocumentObject.h"
+#include <Base/PyWrapParseTupleAndKeywords.h>
 
 #include <boost/iostreams/device/array.hpp>
 #include <boost/iostreams/stream.hpp>
 
-// inclution of the generated files (generated out of PropertyContainerPy.xml)
+// inclusion of the generated files (generated out of PropertyContainerPy.xml)
 #include "PropertyContainerPy.h"
 #include "PropertyContainerPy.cpp"
 
@@ -45,7 +46,7 @@ using namespace App;
 // returns a string which represent the object e.g. when printed in python
 std::string PropertyContainerPy::representation() const
 {
-    return std::string("<property container>");
+    return {"<property container>"};
 }
 
 PyObject*  PropertyContainerPy::getPropertyByName(PyObject *args)
@@ -247,7 +248,7 @@ PyObject*  PropertyContainerPy::setPropertyStatus(PyObject *args)
         bool value = true;
         if (item.isString()) {
             const auto &statusMap = getStatusMap();
-            auto v = (std::string)Py::String(item);
+            auto v = static_cast<std::string>(Py::String(item));
             if(v.size()>1 && v[0] == '-') {
                 value = false;
                 v = v.substr(1);
@@ -442,8 +443,8 @@ PyObject*  PropertyContainerPy::getEnumerationsOfProperty(PyObject *args)
 
     std::vector<std::string> enumerations = enumProp->getEnumVector();
     Py::List ret;
-    for (std::vector<std::string>::const_iterator it = enumerations.begin(); it != enumerations.end(); ++it) {
-        ret.append(Py::String(*it));
+    for (const auto & it : enumerations) {
+        ret.append(Py::String(it));
     }
     return Py::new_reference_to(ret);
 }
@@ -466,10 +467,11 @@ PyObject* PropertyContainerPy::dumpPropertyContent(PyObject *args, PyObject *kwd
 {
     int compression = 3;
     const char* property;
-    static char* kwds_def[] = {"Property", "Compression", nullptr};
+    static const std::array<const char *, 3> kwds_def {"Property", "Compression", nullptr};
     PyErr_Clear();
-    if (!PyArg_ParseTupleAndKeywords(args, kwds, "s|i", kwds_def, &property, &compression))
+    if (!Base::Wrapped_ParseTupleAndKeywords(args, kwds, "s|i", kwds_def, &property, &compression)) {
         return nullptr;
+    }
 
     Property* prop = getPropertyContainerPtr()->getPropertyByName(property);
     if (!prop) {
@@ -583,8 +585,8 @@ PyObject *PropertyContainerPy::getCustomAttributes(const char* attr) const
         getPropertyContainerPtr()->getPropertyMap(Map);
 
         Py::Dict dict;
-        for (std::map<std::string,App::Property*>::iterator it = Map.begin(); it != Map.end(); ++it) {
-            dict.setItem(it->first, Py::String(""));
+        for (const auto & it : Map) {
+            dict.setItem(it.first, Py::String(""));
         }
         return Py::new_reference_to(dict);
     }

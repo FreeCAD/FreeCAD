@@ -39,7 +39,7 @@ def get_information():
         "constraints": ["displacement", "force"],
         "solvers": ["calculix", "ccxtools"],
         "material": "solid",
-        "equation": "buckling"
+        "equations": ["buckling"]
     }
 
 
@@ -52,7 +52,7 @@ setup()
 
 
 See forum topic post:
-https://forum.freecadweb.org/viewtopic.php?f=18&t=20217&start=110#p510526
+https://forum.freecad.org/viewtopic.php?f=18&t=20217&start=110#p510526
 
 Simple supported I-beam with a fork support modelled with shell elements.
 Loaded with constant bending moment.
@@ -113,7 +113,7 @@ def setup(doc=None, solvertype="ccxtools"):
         solver_obj.WorkingDir = u""
     else:
         FreeCAD.Console.PrintWarning(
-            "Not known or not supported solver type: {}. "
+            "Unknown or unsupported solver type: {}. "
             "No solver object was created.\n".format(solvertype)
         )
     if solvertype == "calculix" or solvertype == "ccxtools":

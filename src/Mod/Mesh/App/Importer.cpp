@@ -21,20 +21,19 @@
  ***************************************************************************/
 
 #include "PreCompiled.h"
-#ifndef _PreComp_
-#endif
+
+#include <App/Document.h>
 
 #include "Importer.h"
 #include "MeshFeature.h"
-#include <App/Document.h>
+
 
 using namespace Mesh;
 
 
 Importer::Importer(App::Document* doc)
-  : document(doc)
-{
-}
+    : document(doc)
+{}
 
 void Importer::load(const std::string& fileName)
 {
@@ -47,14 +46,14 @@ void Importer::load(const std::string& fileName)
         if (segmct > 1) {
             createMeshFromSegments(file.fileNamePure(), mat, mesh);
         }
-        else if (mat.binding == MeshCore::MeshIO::PER_VERTEX && 
-                 mat.diffuseColor.size() == mesh.countPoints()) {
+        else if (mat.binding == MeshCore::MeshIO::PER_VERTEX
+                 && mat.diffuseColor.size() == mesh.countPoints()) {
             Feature* feature = createMesh(file.fileNamePure(), mesh);
             addVertexColors(feature, mat.diffuseColor);
             feature->purgeTouched();
         }
-        else if (mat.binding == MeshCore::MeshIO::PER_FACE && 
-                 mat.diffuseColor.size() == mesh.countFacets()) {
+        else if (mat.binding == MeshCore::MeshIO::PER_FACE
+                 && mat.diffuseColor.size() == mesh.countFacets()) {
             Feature* feature = createMesh(file.fileNamePure(), mesh);
             addFaceColors(feature, mat.diffuseColor);
             feature->purgeTouched();
@@ -76,30 +75,35 @@ void Importer::addFaceColors(Feature* feature, const std::vector<App::Color>& co
     addColors(feature, "FaceColors", colors);
 }
 
-void Importer::addColors(Feature* feature, const std::string& property, const std::vector<App::Color>& colors)
+void Importer::addColors(Feature* feature,
+                         const std::string& property,
+                         const std::vector<App::Color>& colors)
 {
-    App::PropertyColorList* prop = static_cast<App::PropertyColorList*>
-        (feature->addDynamicProperty("App::PropertyColorList", property.c_str()));
+    App::PropertyColorList* prop = static_cast<App::PropertyColorList*>(
+        feature->addDynamicProperty("App::PropertyColorList", property.c_str()));
     if (prop) {
         prop->setValues(colors);
     }
 }
 
-void Importer::createMeshFromSegments(const std::string& name, MeshCore::Material& mat, MeshObject& mesh)
+void Importer::createMeshFromSegments(const std::string& name,
+                                      MeshCore::Material& mat,
+                                      MeshObject& mesh)
 {
     unsigned long segmct = mesh.countSegments();
-    for (unsigned long i=0; i<segmct; i++) {
+    for (unsigned long i = 0; i < segmct; i++) {
         const Segment& group = mesh.getSegment(i);
         std::string groupName = group.getName();
-        if (groupName.empty())
+        if (groupName.empty()) {
             groupName = name;
+        }
 
         std::unique_ptr<MeshObject> segm(mesh.meshFromSegment(group.getIndices()));
         Feature* feature = createMesh(groupName, *segm);
 
         // if colors are set per face
-        if (mat.binding == MeshCore::MeshIO::PER_FACE &&
-            mat.diffuseColor.size() == mesh.countFacets()) {
+        if (mat.binding == MeshCore::MeshIO::PER_FACE
+            && mat.diffuseColor.size() == mesh.countFacets()) {
 
             std::vector<App::Color> diffuseColor;
             diffuseColor.reserve(group.getIndices().size());
@@ -115,8 +119,8 @@ void Importer::createMeshFromSegments(const std::string& name, MeshCore::Materia
 
 Feature* Importer::createMesh(const std::string& name, MeshObject& mesh)
 {
-    Mesh::Feature *pcFeature = static_cast<Mesh::Feature *>
-        (document->addObject("Mesh::Feature", name.c_str()));
+    Mesh::Feature* pcFeature =
+        static_cast<Mesh::Feature*>(document->addObject("Mesh::Feature", name.c_str()));
     pcFeature->Label.setValue(name);
     pcFeature->Mesh.swapMesh(mesh);
     return pcFeature;

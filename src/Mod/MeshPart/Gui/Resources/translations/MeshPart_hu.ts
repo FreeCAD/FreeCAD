@@ -4,17 +4,17 @@
   <context>
     <name>CmdMeshPartCrossSections</name>
     <message>
-      <location filename="../../Command.cpp" line="276"/>
+      <location filename="../../Command.cpp" line="280"/>
       <source>MeshPart</source>
       <translation>RészekKapcsolása</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="277"/>
+      <location filename="../../Command.cpp" line="281"/>
       <source>Cross-sections...</source>
       <translation>Keresztmetszet...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="278"/>
+      <location filename="../../Command.cpp" line="282"/>
       <source>Cross-sections</source>
       <translation>Keresztmetszet</translation>
     </message>
@@ -22,17 +22,17 @@
   <context>
     <name>CmdMeshPartCurveOnMesh</name>
     <message>
-      <location filename="../../Command.cpp" line="312"/>
+      <location filename="../../Command.cpp" line="316"/>
       <source>Mesh</source>
       <translation>Háló</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="313"/>
+      <location filename="../../Command.cpp" line="317"/>
       <source>Curve on mesh...</source>
       <translation>Görbe a hálón...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="314"/>
+      <location filename="../../Command.cpp" line="318"/>
       <source>Creates an approximated curve on top of a mesh.
 This command only works with a 'mesh' object.</source>
       <translation>Közelítő ívet hoz létre a háló tetején.
@@ -42,17 +42,17 @@ Ez a parancs csak 'háló' objektummal működik.</translation>
   <context>
     <name>CmdMeshPartMesher</name>
     <message>
-      <location filename="../../Command.cpp" line="59"/>
+      <location filename="../../Command.cpp" line="58"/>
       <source>Mesh</source>
       <translation>Háló</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="60"/>
+      <location filename="../../Command.cpp" line="59"/>
       <source>Create mesh from shape...</source>
       <translation>Hálós test létrehozása alakzatból...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="61"/>
+      <location filename="../../Command.cpp" line="60"/>
       <source>Tessellate shape</source>
       <translation>Mozaik alakja</translation>
     </message>
@@ -78,18 +78,18 @@ Ez a parancs csak 'háló' objektummal működik.</translation>
   <context>
     <name>CmdMeshPartTrimByPlane</name>
     <message>
-      <location filename="../../Command.cpp" line="84"/>
+      <location filename="../../Command.cpp" line="83"/>
       <source>Mesh</source>
       <translation>Háló</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="85"/>
+      <location filename="../../Command.cpp" line="84"/>
       <source>Trim mesh with a plane</source>
       <translation>Egy síkkal metszi a hálótestet</translation>
     </message>
     <message>
+      <location filename="../../Command.cpp" line="85"/>
       <location filename="../../Command.cpp" line="86"/>
-      <location filename="../../Command.cpp" line="87"/>
       <source>Trims a mesh with a plane</source>
       <translation>Egy síkkal metsz egy hálótestet</translation>
     </message>
@@ -97,12 +97,12 @@ Ez a parancs csak 'háló' objektummal működik.</translation>
   <context>
     <name>Command</name>
     <message>
-      <location filename="../../Command.cpp" line="129"/>
+      <location filename="../../Command.cpp" line="134"/>
       <source>Trim with plane</source>
       <translation>Síkkal metsz</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="215"/>
+      <location filename="../../Command.cpp" line="217"/>
       <source>Section with plane</source>
       <translation>Síkkal szakaszt</translation>
     </message>
@@ -170,7 +170,7 @@ Ez a parancs csak 'háló' objektummal működik.</translation>
       <translation>Csatlakoztassa az éleket, ha a távolság kisebb, mint</translation>
     </message>
     <message>
-      <location filename="../../CrossSections.cpp" line="345"/>
+      <location filename="../../CrossSections.cpp" line="384"/>
       <source>Failure</source>
       <translation>Hiba</translation>
     </message>
@@ -178,32 +178,32 @@ Ez a parancs csak 'háló' objektummal működik.</translation>
   <context>
     <name>MeshPartGui::CurveOnMeshHandler</name>
     <message>
-      <location filename="../../CurveOnMesh.cpp" line="364"/>
+      <location filename="../../CurveOnMesh.cpp" line="362"/>
       <source>Create</source>
       <translation>Létrehozás</translation>
     </message>
     <message>
-      <location filename="../../CurveOnMesh.cpp" line="366"/>
+      <location filename="../../CurveOnMesh.cpp" line="364"/>
       <source>Close wire</source>
       <translation>Drótháló lezárása</translation>
     </message>
     <message>
-      <location filename="../../CurveOnMesh.cpp" line="368"/>
+      <location filename="../../CurveOnMesh.cpp" line="366"/>
       <source>Clear</source>
       <translation>Törlés</translation>
     </message>
     <message>
-      <location filename="../../CurveOnMesh.cpp" line="369"/>
+      <location filename="../../CurveOnMesh.cpp" line="367"/>
       <source>Cancel</source>
       <translation>Mégse</translation>
     </message>
     <message>
-      <location filename="../../CurveOnMesh.cpp" line="615"/>
+      <location filename="../../CurveOnMesh.cpp" line="626"/>
       <source>Wrong mesh picked</source>
       <translation>Rossz háló választva</translation>
     </message>
     <message>
-      <location filename="../../CurveOnMesh.cpp" line="655"/>
+      <location filename="../../CurveOnMesh.cpp" line="667"/>
       <source>No point was picked</source>
       <translation>Nem lett pont kiválasztva</translation>
     </message>
@@ -340,7 +340,7 @@ felületeltérés szorozva az aktuális hálószakasz hosszával (él)</translat
 These groups will be exported for mesh output formats supporting
 this feature (e.g. the format OBJ).</source>
       <translation>A hálószegmensek az objektum felületek színe szerint lesznek csoportosítva.
-Ezek a csoportok a hálókimeneti formátumokhoz lesznek exportálva, amelyek 
+Ezek a csoportok a hálókimeneti formátumokhoz lesznek exportálva, amelyek
 támogatják ezt a tulajdonságot (pl. OBJ formátum).</translation>
     </message>
     <message>
@@ -486,64 +486,45 @@ A value in the range of 0.2-10.</source>
       <translation>A panel nyitva hagyása</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.cpp" line="63"/>
+      <location filename="../../Tessellation.cpp" line="62"/>
       <source>Gmsh</source>
       <translation>Gmsh ( http://gmsh.info/ )</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.cpp" line="214"/>
-      <location filename="../../Tessellation.cpp" line="220"/>
+      <location filename="../../Tessellation.cpp" line="235"/>
+      <location filename="../../Tessellation.cpp" line="241"/>
       <source>No active document</source>
       <translation>Nincs aktív dokumentum</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.cpp" line="248"/>
+      <location filename="../../Tessellation.cpp" line="272"/>
       <source>You have selected a body without tip.
 Either set the tip of the body or select a different shape, please.</source>
       <translation>Kiválasztott egy csúcs nélküli testet.
 Kérem állítsa be a test csúcsát, vagy válasszon egy másik alakzatot.</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.cpp" line="252"/>
+      <location filename="../../Tessellation.cpp" line="278"/>
       <source>You have selected a shape without faces.
 Select a different shape, please.</source>
       <translation>Felületek nélküli alakzatot választott.
 Válasszon másik alakzatot.</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.cpp" line="256"/>
+      <location filename="../../Tessellation.cpp" line="282"/>
       <source>Select a shape for meshing, first.</source>
       <translation>Válassza ki a formát kapcsolás előtt.</translation>
     </message>
   </context>
   <context>
-    <name>MeshPart_FlatteningCommand</name>
-    <message>
-      <location filename="../../MeshFlatteningCommand.py" line="47"/>
-      <source>Unwrap Mesh</source>
-      <translation>Háló kicsomagolása</translation>
-    </message>
-    <message>
-      <location filename="../../MeshFlatteningCommand.py" line="50"/>
-      <location filename="../../MeshFlatteningCommand.py" line="82"/>
-      <source>Find a flat representation of a mesh.</source>
-      <translation>Háló sík ábrázolásának keresése.</translation>
-    </message>
-    <message>
-      <location filename="../../MeshFlatteningCommand.py" line="79"/>
-      <source>Unwrap Face</source>
-      <translation>Felület kicsomagolása</translation>
-    </message>
-  </context>
-  <context>
     <name>MeshPart_Section</name>
     <message>
-      <location filename="../../Command.cpp" line="205"/>
+      <location filename="../../Command.cpp" line="206"/>
       <source>Select plane</source>
       <translation>Sík kijelölése</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="206"/>
+      <location filename="../../Command.cpp" line="207"/>
       <source>Please select a plane at which you section the mesh.</source>
       <translation>Kérjük válasszon egy síkot, mellyel a szakaszolja a hálótestet.</translation>
     </message>
@@ -551,12 +532,12 @@ Válasszon másik alakzatot.</translation>
   <context>
     <name>MeshPart_TrimByPlane</name>
     <message>
-      <location filename="../../Command.cpp" line="96"/>
+      <location filename="../../Command.cpp" line="95"/>
       <source>Select plane</source>
       <translation>Sík kijelölése</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="97"/>
+      <location filename="../../Command.cpp" line="96"/>
       <source>Please select a plane at which you trim the mesh.</source>
       <translation>Kérjük válasszon egy síkot, mellyel kimetszi a hálótestet.</translation>
     </message>
@@ -571,17 +552,17 @@ Válasszon másik alakzatot.</translation>
       <translation>Jelölje ki a megtartani kívánt oldalt.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="105"/>
+      <location filename="../../Command.cpp" line="106"/>
       <source>Below</source>
       <translation>Alá</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="106"/>
+      <location filename="../../Command.cpp" line="108"/>
       <source>Above</source>
       <translation>Fölé</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="107"/>
+      <location filename="../../Command.cpp" line="110"/>
       <source>Split</source>
       <translation>Feloszt</translation>
     </message>
@@ -592,6 +573,32 @@ Válasszon másik alakzatot.</translation>
       <location filename="../../Workbench.cpp" line="36"/>
       <source>MeshPart</source>
       <translation>RészekKapcsolása</translation>
+    </message>
+  </context>
+  <context>
+    <name>MeshPart_CreateFlatMesh</name>
+    <message>
+      <location filename="../../MeshFlatteningCommand.py" line="49"/>
+      <source>Unwrap Mesh</source>
+      <translation>Háló kiterítése</translation>
+    </message>
+    <message>
+      <location filename="../../MeshFlatteningCommand.py" line="52"/>
+      <source>Find a flat representation of a mesh.</source>
+      <translation>Háló sík ábrázolásának keresése.</translation>
+    </message>
+  </context>
+  <context>
+    <name>MeshPart_CreateFlatFace</name>
+    <message>
+      <location filename="../../MeshFlatteningCommand.py" line="88"/>
+      <source>Unwrap Face</source>
+      <translation>Felület kiterítése</translation>
+    </message>
+    <message>
+      <location filename="../../MeshFlatteningCommand.py" line="91"/>
+      <source>Find a flat representation of a face.</source>
+      <translation>Felület sík ábrázolásának keresése.</translation>
     </message>
   </context>
 </TS>

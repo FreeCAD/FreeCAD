@@ -56,9 +56,8 @@ using namespace PartGui;
 
 PROPERTY_SOURCE(PartGui::ViewProviderCurveNet,PartGui::ViewProviderPart)
 
-       
+
 ViewProviderCurveNet::ViewProviderCurveNet()
-  : bInEdit(false),bMovePointMode(false),EdgeRoot(nullptr),VertexRoot(nullptr)
 {
     LineWidth.setValue(4.0f);
     PointSize.setValue(0.05f);
@@ -72,10 +71,7 @@ ViewProviderCurveNet::ViewProviderCurveNet()
     */
 }
 
-ViewProviderCurveNet::~ViewProviderCurveNet()
-{
-
-}
+ViewProviderCurveNet::~ViewProviderCurveNet() = default;
 
 void ViewProviderCurveNet::attach(App::DocumentObject *pcFeat)
 {
@@ -86,8 +82,8 @@ void ViewProviderCurveNet::attach(App::DocumentObject *pcFeat)
     SoSeparator* ModeRoot = new SoSeparator();
     EdgeRoot = new SoSeparator();
     ModeRoot->addChild(EdgeRoot);
-    EdgeRoot->addChild(pcLineStyle);  
-    EdgeRoot->addChild(pcLineMaterial);  
+    EdgeRoot->addChild(pcLineStyle);
+    EdgeRoot->addChild(pcLineMaterial);
 
     // setup the root and material for the vertexes
     VertexRoot = new SoSeparator();
@@ -163,7 +159,7 @@ bool ViewProviderCurveNet::handleEvent(const SoEvent * const ev, Gui::View3DInve
 
     // Keyboard events
     if (ev->getTypeId().isDerivedFrom(SoKeyboardEvent::getClassTypeId())) {
-        SoKeyboardEvent * ke = (SoKeyboardEvent *)ev;
+        const SoKeyboardEvent * ke = static_cast<const SoKeyboardEvent *>(ev);
         switch (ke->getKey()) {
             case SoKeyboardEvent::LEFT_ALT:
             case SoKeyboardEvent::RIGHT_ALT:
@@ -179,7 +175,7 @@ bool ViewProviderCurveNet::handleEvent(const SoEvent * const ev, Gui::View3DInve
 
     // switching the mouse buttons
     if (ev->getTypeId().isDerivedFrom(SoMouseButtonEvent::getClassTypeId())) {
-        const SoMouseButtonEvent * const event = (const SoMouseButtonEvent *) ev;
+        const SoMouseButtonEvent * const event = static_cast<const SoMouseButtonEvent *>(ev);
         const int button = event->getButton();
         const SbBool press = event->getState() == SoButtonEvent::DOWN ? true : false;
 
@@ -190,12 +186,12 @@ bool ViewProviderCurveNet::handleEvent(const SoEvent * const ev, Gui::View3DInve
                     Base::Console().Log("ViewProviderCurveNet::handleEvent() press left\n");
 
                     bool bIsNode =  false;
-                    for (std::list<Node>::iterator It = NodeList.begin();It != NodeList.end(); It++)
+                    for (const auto & It : NodeList)
                     {
-                        if (It->pcHighlight->isHighlighted())
+                        if (It.pcHighlight->isHighlighted())
                         {
                             bIsNode = true;
-                            PointToMove = *It;
+                            PointToMove = It;
                             break;
                         }
                     }
@@ -225,7 +221,7 @@ bool ViewProviderCurveNet::handleEvent(const SoEvent * const ev, Gui::View3DInve
                         VertexRoot->addChild(TransRoot);
 
                         NodeList.push_back(n);
-      
+
                         return true;
                     }
                 }
@@ -246,7 +242,7 @@ bool ViewProviderCurveNet::handleEvent(const SoEvent * const ev, Gui::View3DInve
         //    const SoLocation2Event * const event = (const SoLocation2Event *) ev;
 
         if (bMovePointMode && Viewer.pickPoint(pos,point,norm) ){
-            PointToMove.pcTransform->translation.setValue(point);     
+            PointToMove.pcTransform->translation.setValue(point);
             return true;
         }
     }
@@ -263,8 +259,8 @@ Standard_Boolean ViewProviderCurveNet::computeEdges(SoSeparator* root, const Top
     SoSeparator *EdgeRoot = new SoSeparator();
     root->addChild(EdgeRoot);
 
-    EdgeRoot->addChild(pcLineStyle);  
-    EdgeRoot->addChild(pcLineMaterial);  
+    EdgeRoot->addChild(pcLineStyle);
+    EdgeRoot->addChild(pcLineMaterial);
 
     for (ex.Init(myShape, TopAbs_EDGE); ex.More(); ex.Next())
     {
@@ -314,7 +310,7 @@ Standard_Boolean ViewProviderCurveNet::computeVertices(SoSeparator* root, const 
 
     for (ex.Init(myShape, TopAbs_VERTEX); ex.More(); ex.Next())
     {
-        // get the shape 
+        // get the shape
         const TopoDS_Vertex& aVertex = TopoDS::Vertex(ex.Current());
         gp_Pnt gpPt = BRep_Tool::Pnt (aVertex);
 

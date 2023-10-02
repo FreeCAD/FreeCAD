@@ -41,6 +41,8 @@ DlgParameterFind::DlgParameterFind(DlgParameterImp* parent)
   , dialog(parent)
 {
     ui->setupUi(this);
+    setupConnections();
+
     QPushButton* btn = ui->buttonBox->button(QDialogButtonBox::Ok);
     if (btn) {
         btn->setText(tr("Find Next"));
@@ -57,7 +59,19 @@ DlgParameterFind::~DlgParameterFind()
     delete ui;
 }
 
-void DlgParameterFind::on_lineEdit_textChanged(const QString& text)
+void DlgParameterFind::setupConnections()
+{
+    connect(ui->lineEdit, &QLineEdit::textChanged,
+            this, &DlgParameterFind::onLineEditTextChanged);
+    connect(ui->checkGroups, &QCheckBox::toggled,
+            this, &DlgParameterFind::onCheckGroupsToggled);
+    connect(ui->checkNames, &QCheckBox::toggled,
+            this, &DlgParameterFind::onCheckNamesToggled);
+    connect(ui->checkValues, &QCheckBox::toggled,
+            this, &DlgParameterFind::onCheckValuesToggled);
+}
+
+void DlgParameterFind::onLineEditTextChanged(const QString& text)
 {
     QPushButton* btn = ui->buttonBox->button(QDialogButtonBox::Ok);
     if (btn) {
@@ -68,7 +82,7 @@ void DlgParameterFind::on_lineEdit_textChanged(const QString& text)
     }
 }
 
-void DlgParameterFind::on_checkGroups_toggled(bool)
+void DlgParameterFind::onCheckGroupsToggled(bool)
 {
     QPushButton* btn = ui->buttonBox->button(QDialogButtonBox::Ok);
     if (btn) {
@@ -80,7 +94,7 @@ void DlgParameterFind::on_checkGroups_toggled(bool)
     }
 }
 
-void DlgParameterFind::on_checkNames_toggled(bool)
+void DlgParameterFind::onCheckNamesToggled(bool)
 {
     QPushButton* btn = ui->buttonBox->button(QDialogButtonBox::Ok);
     if (btn) {
@@ -92,7 +106,7 @@ void DlgParameterFind::on_checkNames_toggled(bool)
     }
 }
 
-void DlgParameterFind::on_checkValues_toggled(bool)
+void DlgParameterFind::onCheckValuesToggled(bool)
 {
     QPushButton* btn = ui->buttonBox->button(QDialogButtonBox::Ok);
     if (btn) {
@@ -120,7 +134,7 @@ bool DlgParameterFind::matches(QTreeWidgetItem* item, const Options& opt) const
     }
 
     if (opt.name || opt.value) {
-        ParameterGroupItem* group = static_cast<ParameterGroupItem*>(item);
+        auto group = static_cast<ParameterGroupItem*>(item);
         Base::Reference<ParameterGrp> hGrp = group->_hcGrp;
 
         auto boolMap = hGrp->GetBoolMap();
@@ -235,7 +249,7 @@ QTreeWidgetItem* DlgParameterFind::findItem(QTreeWidgetItem* root, const Options
 
 void DlgParameterFind::accept()
 {
-    ParameterGroup* groupTree = dialog->findChild<ParameterGroup*>();
+    auto groupTree = dialog->findChild<ParameterGroup*>();
     if (groupTree) {
         Options opt;
         opt.text = ui->lineEdit->text();

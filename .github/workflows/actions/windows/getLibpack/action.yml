@@ -1,0 +1,76 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+# ***************************************************************************
+# *                                                                         *
+# *   Copyright (c) 2023 0penBrain.                                         *
+# *                                                                         *
+# *   This file is part of FreeCAD.                                         *
+# *                                                                         *
+# *   FreeCAD is free software: you can redistribute it and/or modify it    *
+# *   under the terms of the GNU Lesser General Public License as           *
+# *   published by the Free Software Foundation, either version 2.1 of the  *
+# *   License, or (at your option) any later version.                       *
+# *                                                                         *
+# *   FreeCAD is distributed in the hope that it will be useful, but        *
+# *   WITHOUT ANY WARRANTY; without even the implied warranty of            *
+# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU      *
+# *   Lesser General Public License for more details.                       *
+# *                                                                         *
+# *   You should have received a copy of the GNU Lesser General Public      *
+# *   License along with FreeCAD. If not, see                               *
+# *   <https://www.gnu.org/licenses/>.                                      *
+# *                                                                         *
+# ***************************************************************************
+
+# This action aims at speeding up CI and reduce dependency to external resources
+# by creating a cache of Libpack needed files then using it for CI runs rather
+# than downloading every time.
+#
+# If it needs to be updated to another version, the process it to change
+# 'downloadpath' and 'version' inputs below then delete the existing cache
+# from Github interface so a new one is generated using new values.
+
+name: getLibpack
+description: "Windows: tries to get a cached version of Libpack and create one if fails"
+
+inputs:
+  libpackdir:
+    description: "Directory where libpack files shall be stored"
+    required: true
+# Below inputs shall generally not be provided as they won't be used if a cached version exists
+# They are mainly used because Github do not support adding env variables in a composite action
+  libpackdownloadurl:
+    description: "URL where to download libpack"
+    required: false
+    default: https://github.com/FreeCAD/FreeCAD-LibPack/releases/download/2.10/LibPack-0.21-V2.10.7z
+  libpackname:
+    description: "Libpack name (once downloaded)"
+    required: false
+    default: LibPack-0.21-V2.10
+
+runs:
+  using: "composite"
+  steps:
+    - name: Create destination directory
+      shell: bash
+      run: |
+        mkdir -p ${{ inputs.libpackdir }}
+    - name: Get cached version
+      uses: actions/cache/restore@v3
+      id: getCached
+      with:
+        path: ${{ inputs.libpackdir }}
+        key: libpackforwin
+    - name: Download libpack
+      shell: bash
+      if: steps.getCached.outputs.cache-hit != 'true'
+      run: |
+        curl -L -o libpack.7z ${{ inputs.libpackdownloadurl }}
+        7z x libpack.7z -o"libpacktemp" -r -y
+        mv libpacktemp/${{ inputs.libpackname }}/* ${{ inputs.libpackdir }}
+        rm -rf libpacktemp
+    - name: Save version to cache
+      if: steps.getCached.outputs.cache-hit != 'true'
+      uses: actions/cache/save@v3
+      with:
+        path: ${{ inputs.libpackdir }}
+        key: ${{ steps.getCached.outputs.cache-primary-key }}

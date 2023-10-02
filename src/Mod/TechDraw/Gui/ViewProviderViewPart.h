@@ -55,6 +55,7 @@ public:
     App::PropertyBool   ShowSectionLine;
     App::PropertyEnumeration   SectionLineStyle;
     App::PropertyColor  SectionLineColor;
+    App::PropertyBool   SectionLineMarks;
     App::PropertyEnumeration   HighlightLineStyle;
     App::PropertyColor  HighlightLineColor;
     App::PropertyFloat  HighlightAdjust;
@@ -68,16 +69,17 @@ public:
     bool canDelete(App::DocumentObject* obj) const override;
     bool setEdit(int ModNum) override;
     bool doubleClicked(void) override;
-
-public:
     void onChanged(const App::Property *prop) override;
     void handleChangedPropertyType(Base::XMLReader &reader, const char *TypeName, App::Property * prop) override;
     App::Color prefSectionColor(void);
     App::Color prefHighlightColor(void);
     int prefHighlightStyle(void);
 
-
     std::vector<App::DocumentObject*> claimChildren(void) const override;
+    void fixSceneDependencies();
+
+    std::vector<std::string> getSelectedCosmetics(std::vector<std::string> subNames);
+    void deleteCosmeticElements(std::vector<std::string> removables);
 
     TechDraw::DrawViewPart* getViewObject() const override;
     TechDraw::DrawViewPart* getViewPart() const;

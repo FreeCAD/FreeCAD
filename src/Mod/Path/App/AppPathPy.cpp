@@ -21,39 +21,33 @@
  ***************************************************************************/
 
 #include "PreCompiled.h"
+#ifndef _PreComp_
+# include <BRep_Tool.hxx>
+# include <BRepAdaptor_Curve.hxx>
+# include <gp_Circ.hxx>
+# include <gp_Dir.hxx>
+# include <gp_Pnt.hxx>
+# include <TopoDS_Edge.hxx>
+# include <TopoDS_Shape.hxx>
+# include <TopoDS_Vertex.hxx>
+# include <TopExp_Explorer.hxx>
+#endif
 
-#include <CXX/Extensions.hxx>
-#include <CXX/Objects.hxx>
-
-#include <Base/Console.h>
-#include <Base/VectorPy.h>
-#include <Base/FileInfo.h>
-#include <Base/Interpreter.h>
-#include <Base/Stream.h>
+#include <App/Application.h>
 #include <App/Document.h>
 #include <App/DocumentObjectPy.h>
-#include <App/Application.h>
-
+#include <Base/Console.h>
+#include <Base/FileInfo.h>
+#include <Base/Interpreter.h>
+#include <Base/PyWrapParseTupleAndKeywords.h>
+#include <Base/Stream.h>
+#include <Base/VectorPy.h>
 #include <Mod/Part/App/OCCError.h>
-#include <Mod/Part/App/TopoShape.h>
 #include <Mod/Part/App/TopoShapePy.h>
-#include <Mod/Part/App/PartPyCXX.h>
-#include <TopoDS.hxx>
-#include <TopoDS_Shape.hxx>
-#include <TopoDS_Edge.hxx>
-#include <TopoDS_Vertex.hxx>
-#include <TopoDS_Iterator.hxx>
-#include <TopExp_Explorer.hxx>
-#include <gp_Lin.hxx>
-#include <BRep_Tool.hxx>
-#include <BRepAdaptor_Curve.hxx>
 
-#include "CommandPy.h"
-#include "PathPy.h"
-#include "Path.h"
-#include "FeaturePath.h"
-#include "FeaturePathCompound.h"
 #include "Area.h"
+#include "PathPy.h"
+#include "FeaturePath.h"
 
 
 #define PATH_CATCH catch (Standard_Failure &e)                      \
@@ -90,7 +84,7 @@
         PyErr_SetString(Base::PyExc_FC_GeneralError,e);         \
     } throw Py::Exception();
 
-namespace Path {
+namespace PathApp {
   class VoronoiModule : public Py::ExtensionModule<VoronoiModule>
   {
   public:
@@ -106,7 +100,7 @@ namespace Path {
       VoronoiModule voronoi;
   public:
 
-      Module() : Py::ExtensionModule<Module>("Path")
+      Module() : Py::ExtensionModule<Module>("PathApp")
       {
           add_varargs_method("write",&Module::write,
               "write(object,filename): Exports a given path object to a GCode file"
@@ -162,7 +156,7 @@ namespace Path {
           if (PyObject_TypeCheck(pObj, &(App::DocumentObjectPy::Type))) {
               App::DocumentObject* obj = static_cast<App::DocumentObjectPy*>(pObj)->getDocumentObjectPtr();
               if (obj->getTypeId().isDerivedFrom(Base::Type::fromName("Path::Feature"))) {
-                  const Toolpath& path = static_cast<Path::Feature*>(obj)->Path.getValue();
+                  const Path::Toolpath& path = static_cast<Path::Feature*>(obj)->Path.getValue();
                   std::string gcode = path.toGCode();
                   Base::ofstream ofile(file);
                   ofile << gcode;
@@ -204,7 +198,7 @@ namespace Path {
               std::stringstream buffer;
               buffer << filestr.rdbuf();
               std::string gcode = buffer.str();
-              Toolpath path;
+              Path::Toolpath path;
               path.setFromGCode(gcode);
               Path::Feature *object = static_cast<Path::Feature *>(pcDoc->addObject("Path::Feature",file.fileNamePure().c_str()));
               object->Path.setValue(path);
@@ -222,14 +216,14 @@ namespace Path {
       {
           PyObject *pcObj;
           char *name = "Path";
-          if (!PyArg_ParseTuple(args.ptr(), "O!|s", &(PathPy::Type), &pcObj, &name))
+          if (!PyArg_ParseTuple(args.ptr(), "O!|s", &(Path::PathPy::Type), &pcObj, &name))
               throw Py::Exception();
 
           try {
               App::Document *pcDoc = App::GetApplication().getActiveDocument();
               if (!pcDoc)
                   pcDoc = App::GetApplication().newDocument();
-              PathPy* pPath = static_cast<PathPy*>(pcObj);
+              Path::PathPy* pPath = static_cast<Path::PathPy*>(pcObj);
               Path::Feature *pcFeature = static_cast<Path::Feature*>(pcDoc->addObject("Path::Feature", name));
               Path::Toolpath* pa = pPath->getToolpathPtr();
               if (!pa) {
@@ -313,7 +307,7 @@ namespace Path {
                           }
                           ExpEdges.Next();
                       }
-                      return Py::asObject(new PathPy(new Path::Toolpath(result)));
+                      return Py::asObject(new Path::PathPy(new Path::Toolpath(result)));
                   } else {
                       throw Py::TypeError("the given shape must be a wire");
                   }
@@ -332,13 +326,14 @@ namespace Path {
           PyObject *pShapes=nullptr;
           PyObject *start=nullptr;
           PyObject *return_end=Py_False;
-          static char* kwd_list[] = {"shapes", "start", "return_end",
+          static const std::array<const char *, 22> kwd_list {"shapes", "start", "return_end",
                   PARAM_FIELD_STRINGS(ARG,AREA_PARAMS_PATH), nullptr};
-          if (!PyArg_ParseTupleAndKeywords(args.ptr(), kwds.ptr(),
+          if (!Base::Wrapped_ParseTupleAndKeywords(args.ptr(), kwds.ptr(),
                   "O|O!O!" PARAM_PY_KWDS(AREA_PARAMS_PATH),
                   kwd_list, &pShapes, &(Base::VectorPy::Type), &start, &PyBool_Type, &return_end,
-                  PARAM_REF(PARAM_FARG,AREA_PARAMS_PATH)))
+                  PARAM_REF(PARAM_FARG,AREA_PARAMS_PATH))) {
               throw Py::Exception();
+          }
 
           std::list<TopoDS_Shape> shapes;
           if (PyObject_TypeCheck(pShapes, &(Part::TopoShapePy::Type)))
@@ -365,13 +360,13 @@ namespace Path {
 
           try {
               gp_Pnt pend;
-              std::unique_ptr<Toolpath> path(new Toolpath);
-              Area::toPath(*path,shapes,start?&pstart:nullptr, &pend,
+              std::unique_ptr<Path::Toolpath> path(new Path::Toolpath);
+              Path::Area::toPath(*path,shapes,start?&pstart:nullptr, &pend,
                       PARAM_PY_FIELDS(PARAM_FARG,AREA_PARAMS_PATH));
               if (!Base::asBoolean(return_end))
-                  return Py::asObject(new PathPy(path.release()));
+                  return Py::asObject(new Path::PathPy(path.release()));
               Py::Tuple tuple(2);
-              tuple.setItem(0, Py::asObject(new PathPy(path.release())));
+              tuple.setItem(0, Py::asObject(new Path::PathPy(path.release())));
               tuple.setItem(1, Py::asObject(new Base::VectorPy(Base::Vector3d(pend.X(),pend.Y(),pend.Z()))));
               return tuple;
           } PATH_CATCH
@@ -383,10 +378,10 @@ namespace Path {
           PARAM_PY_DECLARE_INIT(PARAM_FARG,AREA_PARAMS_SORT)
           PyObject *pShapes=nullptr;
           PyObject *start=nullptr;
-          static char* kwd_list[] = {"shapes", "start",
+          static const std::array<const char *, 12> kwd_list {"shapes", "start",
                   PARAM_FIELD_STRINGS(ARG,AREA_PARAMS_ARC_PLANE),
                   PARAM_FIELD_STRINGS(ARG,AREA_PARAMS_SORT), nullptr};
-          if (!PyArg_ParseTupleAndKeywords(args.ptr(), kwds.ptr(),
+          if (!Base::Wrapped_ParseTupleAndKeywords(args.ptr(), kwds.ptr(),
                   "O|O!"
                   PARAM_PY_KWDS(AREA_PARAMS_ARC_PLANE)
                   PARAM_PY_KWDS(AREA_PARAMS_SORT),
@@ -419,8 +414,8 @@ namespace Path {
           }
 
           try {
-              bool need_arc_plane = arc_plane==Area::ArcPlaneAuto;
-              std::list<TopoDS_Shape> wires = Area::sortWires(shapes, start != nullptr, &pstart,
+              bool need_arc_plane = arc_plane == Path::Area::ArcPlaneAuto;
+              std::list<TopoDS_Shape> wires = Path::Area::sortWires(shapes, start != nullptr, &pstart,
                       &pend, nullptr, &arc_plane, PARAM_PY_FIELDS(PARAM_FARG,AREA_PARAMS_SORT));
               Py::List list;
               for(auto &wire : wires) {

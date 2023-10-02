@@ -46,7 +46,7 @@ SO_NODE_ABSTRACT_SOURCE(SoFCColorBarBase)
 /*!
   Constructor.
 */
-SoFCColorBarBase::SoFCColorBarBase() : _boxWidth(-1.0f), _windowSize(0,0)
+SoFCColorBarBase::SoFCColorBarBase() : _windowSize(0,0)
 {
     SO_NODE_CONSTRUCTOR(SoFCColorBarBase);
 }
@@ -54,10 +54,7 @@ SoFCColorBarBase::SoFCColorBarBase() : _boxWidth(-1.0f), _windowSize(0,0)
 /*!
   Destructor.
 */
-SoFCColorBarBase::~SoFCColorBarBase()
-{
-    //delete THIS;
-}
+SoFCColorBarBase::~SoFCColorBarBase() = default;
 
 // doc from parent
 void SoFCColorBarBase::initClass()
@@ -94,13 +91,13 @@ float SoFCColorBarBase::getBoundingWidth(const SbVec2s& size)
     }
 
     // These are the same camera settings for front nodes as defined in the 3d view
-    SoOrthographicCamera* cam = new SoOrthographicCamera;
+    auto cam = new SoOrthographicCamera;
     cam->position = SbVec3f(0, 0, 5); // the 5 is just a value > 0
     cam->height = 10; // sets the coordinate range of the screen to [-5, +5]
     cam->nearDistance = 0;
     cam->farDistance = 10;
 
-    SoGroup* group = new SoGroup();
+    auto group = new SoGroup();
     group->ref();
     group->addChild(cam);
     group->addChild(this);
@@ -126,15 +123,23 @@ float SoFCColorBarBase::getBounds(const SbVec2s& size, float& fMinX, float&fMinY
     // The cam height is set in SoFCColorBarBase::getBoundingWidth to 10.
     // Therefore the normalized coordinates are in the range [-5, +5] x [-5ratio, +5ratio] if ratio > 1
     //  and [-5ratio, +5ratio] x [-5, +5] if ratio < 1.
-    // We don't want the whole height covered by the color bar (to have e.g space to the axis cross)
-    // thus we take as base 4.
-    float baseYValue = 4.0f;
+    // We don't want the whole height covered by the color bar (to have e.g space to the axis cross
+    // and the Navigation Cube) thus we take as base 3 or if the height reduces significantly it is 2.5.
+
+    float baseYValue;
+    if (fRatio > 3.0f) {
+        baseYValue = 2.5f;
+    }
+    else {
+        baseYValue = 3.0f;
+    }
     float barWidth = 0.5f;
 
-    // we want the color bar at the rightmost position, therefore we take 5 as base
-    fMinX = 5.0f * fRatio; // must be scaled with the ratio to assure it stays at the right
+    // we want the color bar at the rightmost position, therefore we take 4.95 as base
+    fMinX = 4.95f * fRatio; // must be scaled with the ratio to assure it stays at the right
+
     fMaxX = fMinX + barWidth;
-    fMinY = -baseYValue;
+    fMinY = -baseYValue - 0.6f; // Extend shortened bar towards axis cross
     fMaxY = baseYValue; // bar has the height of almost whole window height
 
     if (fRatio < 1.0f) {
@@ -157,9 +162,9 @@ namespace Gui {
 class SoFCColorBarProxyObject : public QObject
 {
 public:
-    SoFCColorBarProxyObject(SoFCColorBar* b)
+    explicit SoFCColorBarProxyObject(SoFCColorBar* b)
         : QObject(nullptr), bar(b) {}
-    ~SoFCColorBarProxyObject() override {}
+    ~SoFCColorBarProxyObject() override = default;
     void customEvent(QEvent *) override
     {
         bar->customize(bar->getActiveBar());
@@ -190,18 +195,15 @@ SoFCColorBar::SoFCColorBar()
     _colorBars.push_back( new SoFCColorGradient );
     _colorBars.push_back( new SoFCColorLegend );
 
-    for (std::vector<SoFCColorBarBase*>::const_iterator it = _colorBars.begin(); it != _colorBars.end(); ++it)
-        pColorMode->addChild( *it );
+    for (auto it : _colorBars)
+        pColorMode->addChild(it);
     pColorMode->whichChild = 0;
 }
 
 /*!
   Destructor.
 */
-SoFCColorBar::~SoFCColorBar()
-{
-    //delete THIS;
-}
+SoFCColorBar::~SoFCColorBar() = default;
 
 // doc from parent
 void SoFCColorBar::initClass()
@@ -227,14 +229,14 @@ void SoFCColorBar::setViewportSize( const SbVec2s& size )
 
 void SoFCColorBar::setRange( float fMin, float fMax, int prec )
 {
-    for (std::vector<SoFCColorBarBase*>::const_iterator it = _colorBars.begin(); it != _colorBars.end(); ++it)
-        (*it)->setRange(fMin, fMax, prec);
+    for (auto it : _colorBars)
+        it->setRange(fMin, fMax, prec);
 }
 
 void SoFCColorBar::setOutsideGrayed (bool bVal)
 {
-    for (std::vector<SoFCColorBarBase*>::const_iterator it = _colorBars.begin(); it != _colorBars.end(); ++it)
-        (*it)->setOutsideGrayed(bVal);
+    for (auto it : _colorBars)
+        it->setOutsideGrayed(bVal);
 }
 
 bool SoFCColorBar::isVisible (float fVal) const
@@ -276,7 +278,7 @@ void SoFCColorBar::eventCallback(void * /*userdata*/, SoEventCallback * node)
 {
     const SoEvent * event = node->getEvent();
     if (event->getTypeId().isDerivedFrom(SoMouseButtonEvent::getClassTypeId())) {
-        const SoMouseButtonEvent*  e = static_cast<const SoMouseButtonEvent*>(event);
+        const auto e = static_cast<const SoMouseButtonEvent*>(event);
         if ((e->getButton() == SoMouseButtonEvent::BUTTON2)) {
             if (e->getState() == SoButtonEvent::UP) {
                 // do nothing here
@@ -291,7 +293,7 @@ void SoFCColorBar::handleEvent (SoHandleEventAction *action)
 
     // check for mouse button events
     if (event->getTypeId().isDerivedFrom(SoMouseButtonEvent::getClassTypeId())) {
-        const SoMouseButtonEvent*  e = static_cast<const SoMouseButtonEvent*>(event);
+        const auto e = static_cast<const SoMouseButtonEvent*>(event);
 
         // check if the cursor is near to the color bar
         if (!action->getPickedPoint())
@@ -318,10 +320,10 @@ void SoFCColorBar::handleEvent (SoHandleEventAction *action)
                 SoFCColorBarBase* current = getActiveBar();
                 QMenu menu;
                 int i=0;
-                for (std::vector<SoFCColorBarBase*>::const_iterator it = _colorBars.begin(); it != _colorBars.end(); ++it) {
-                    QAction* item = menu.addAction(QLatin1String((*it)->getColorBarName()));
+                for (auto it : _colorBars) {
+                    QAction* item = menu.addAction(QObject::tr(it->getColorBarName()));
                     item->setCheckable(true);
-                    item->setChecked((*it) == current);
+                    item->setChecked(it == current);
                     item->setData(QVariant(i++));
                 }
 

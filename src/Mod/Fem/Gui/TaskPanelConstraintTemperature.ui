@@ -49,7 +49,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>25</string>
+    <string notr="true">25</string>
    </property>
    <property name="alignment">
     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>

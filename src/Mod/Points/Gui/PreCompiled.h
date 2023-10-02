@@ -20,53 +20,38 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef POINTSGUI_PRECOMPILED_H
 #define POINTSGUI_PRECOMPILED_H
 
 #include <FCConfig.h>
 
-#ifdef FC_OS_WIN32
-# ifndef NOMINMAX
-# define NOMINMAX
-# endif
-#endif
-
 #ifdef _PreComp_
-
-// standard
-#include <cstdio>
-#include <cassert>
 
 // STL
 #include <algorithm>
-#include <iostream>
-#include <list>
-#include <map>
-#include <queue>
-#include <set>
-#include <sstream>
-#include <stack>
-#include <string>
-#include <vector>
-#include <bitset>
+#include <limits>
+#include <memory>
 
-#ifdef FC_OS_WIN32
-# include <windows.h>
-#endif
+// boost
+#include <boost/math/special_functions/fpclassify.hpp>
 
-
-// Qt Toolkit
-#ifndef __QtAll__
-# include <Gui/QtAll.h>
-#endif
+// Qt
+#include <QDialog>
+#include <QInputDialog>
 
 // Inventor
-#ifndef __InventorAll__
-# include <Gui/InventorAll.h>
-#endif
-
+#include <Inventor/SbVec2f.h>
+#include <Inventor/errors/SoDebugError.h>
+#include <Inventor/events/SoMouseButtonEvent.h>
+#include <Inventor/nodes/SoCamera.h>
+#include <Inventor/nodes/SoCoordinate3.h>
+#include <Inventor/nodes/SoDrawStyle.h>
+#include <Inventor/nodes/SoIndexedPointSet.h>
+#include <Inventor/nodes/SoMaterial.h>
+#include <Inventor/nodes/SoMaterialBinding.h>
+#include <Inventor/nodes/SoNormal.h>
+#include <Inventor/nodes/SoPointSet.h>
 
 #endif  //_PreComp_
 
-#endif // POINTSGUI_PRECOMPILED_H
+#endif  // POINTSGUI_PRECOMPILED_H

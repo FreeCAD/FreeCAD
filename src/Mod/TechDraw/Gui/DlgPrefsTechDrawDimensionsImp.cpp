@@ -22,19 +22,14 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
-#include <App/Application.h>
-
-#include <Base/Parameter.h>
-#include <Base/Console.h>
 #include <Base/Tools.h>
 
-#include "DrawGuiUtil.h"
-#include "PreferencesGui.h"
 #include "DlgPrefsTechDrawDimensionsImp.h"
 #include "ui_DlgPrefsTechDrawDimensions.h"
+#include "DrawGuiUtil.h"
+#include "PreferencesGui.h"
 
 
 using namespace TechDrawGui;
@@ -79,10 +74,11 @@ void DlgPrefsTechDrawDimensionsImp::loadSettings()
     //Quantity widgets do not use preset value since they are based on
     //QAbstractSpinBox
     double fontDefault = Preferences::dimFontSizeMM();
+    double arrowDefault = Preferences::dimArrowSize();
     ui->plsb_FontSize->setValue(fontDefault);
 //    double arrowDefault = 5.0;
 //    plsb_ArrowSize->setValue(arrowDefault);
-    ui->plsb_ArrowSize->setValue(fontDefault);
+    ui->plsb_ArrowSize->setValue(arrowDefault);
 
     ui->pcbStandardAndStyle->onRestore();
     ui->cbGlobalDecimals->onRestore();

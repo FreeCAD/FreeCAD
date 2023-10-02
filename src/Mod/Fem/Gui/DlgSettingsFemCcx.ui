@@ -306,12 +306,6 @@
           <property name="maximum">
            <number>40</number>
           </property>
-          <property name="singleStep">
-           <number>1</number>
-          </property>
-          <property name="value">
-           <number>1</number>
-          </property>
           <property name="prefEntry" stdset="0">
            <cstring>AnalysisNumCPUs</cstring>
           </property>

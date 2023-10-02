@@ -22,7 +22,7 @@
 
 __title__ = "BasicShapes.ViewProviderShapes"
 __author__ = "Werner Mayer"
-__url__ = "http://www.freecadweb.org"
+__url__ = "http://www.freecad.org"
 __doc__ = "Basic shapes"
 
 
@@ -68,10 +68,10 @@ class ViewProviderTube:
     def getIcon(self):
         return ":/icons/parametric/Part_Tube_Parametric.svg"
 
-    def __getstate__(self):
+    def dumps(self):
         return None
 
-    def __setstate__(self,state):
+    def loads(self,state):
         return None
 
 

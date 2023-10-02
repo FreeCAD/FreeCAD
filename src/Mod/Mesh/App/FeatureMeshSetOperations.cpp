@@ -20,21 +20,9 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-#ifndef _PreComp_
-#endif
 
-#include <Base/Console.h>
-#include <Base/Exception.h>
-#include <Base/Sequencer.h>
-
-#include "Core/MeshKernel.h"
-#include "Core/Algorithm.h"
-#include "Core/Evaluation.h"
 #include "Core/Iterator.h"
-#include "Core/Visitor.h"
-
 #include "Core/SetOperations.h"
 
 #include "FeatureMeshSetOperations.h"
@@ -48,65 +36,78 @@ PROPERTY_SOURCE(Mesh::SetOperations, Mesh::Feature)
 
 SetOperations::SetOperations()
 {
-    ADD_PROPERTY(Source1  ,(nullptr));
-    ADD_PROPERTY(Source2  ,(nullptr));
+    ADD_PROPERTY(Source1, (nullptr));
+    ADD_PROPERTY(Source2, (nullptr));
     ADD_PROPERTY(OperationType, ("union"));
 }
 
 short SetOperations::mustExecute() const
 {
     if (Source1.getValue() && Source2.getValue()) {
-        if (Source1.isTouched())
+        if (Source1.isTouched()) {
             return 1;
-        if (Source2.isTouched())
+        }
+        if (Source2.isTouched()) {
             return 1;
-        if (OperationType.isTouched())
+        }
+        if (OperationType.isTouched()) {
             return 1;
+        }
     }
 
     return 0;
 }
 
-App::DocumentObjectExecReturn *SetOperations::execute()
+App::DocumentObjectExecReturn* SetOperations::execute()
 {
-    Mesh::Feature *mesh1  = dynamic_cast<Mesh::Feature*>(Source1.getValue());
-    Mesh::Feature *mesh2  = dynamic_cast<Mesh::Feature*>(Source2.getValue());
+    Mesh::Feature* mesh1 = dynamic_cast<Mesh::Feature*>(Source1.getValue());
+    Mesh::Feature* mesh2 = dynamic_cast<Mesh::Feature*>(Source2.getValue());
 
     if (mesh1 && mesh2) {
         const MeshObject& meshKernel1 = mesh1->Mesh.getValue();
         const MeshObject& meshKernel2 = mesh2->Mesh.getValue();
 
-        std::unique_ptr<MeshObject> pcKernel(new MeshObject()); // Result Meshkernel
+        std::unique_ptr<MeshObject> pcKernel(new MeshObject());  // Result Meshkernel
 
-        MeshCore::SetOperations::OperationType type;
+        MeshCore::SetOperations::OperationType type {};
         string ot(OperationType.getValue());
-        if (ot == "union")
+        if (ot == "union") {
             type = MeshCore::SetOperations::Union;
-        else if (ot == "intersection")
+        }
+        else if (ot == "intersection") {
             type = MeshCore::SetOperations::Intersect;
-        else if (ot == "difference")
+        }
+        else if (ot == "difference") {
             type = MeshCore::SetOperations::Difference;
-        else if (ot == "inner")
+        }
+        else if (ot == "inner") {
             type = MeshCore::SetOperations::Inner;
-        else if (ot == "outer")
+        }
+        else if (ot == "outer") {
             type = MeshCore::SetOperations::Outer;
-        else
+        }
+        else {
             throw Base::ValueError("Operation type must either be 'union' or 'intersection'"
                                    " or 'difference' or 'inner' or 'outer'");
+        }
 
-        MeshCore::SetOperations setOp(meshKernel1.getKernel(), meshKernel2.getKernel(), 
-            pcKernel->getKernel(), type, 1.0e-5f);
+        MeshCore::SetOperations setOp(meshKernel1.getKernel(),
+                                      meshKernel2.getKernel(),
+                                      pcKernel->getKernel(),
+                                      type,
+                                      1.0e-5f);
         setOp.Do();
         Mesh.setValuePtr(pcKernel.release());
     }
     else {
         // Error mesh property
-        if (!mesh1)
+        if (!mesh1) {
             throw Base::ValueError("First input mesh not set");
-        if (!mesh2)
+        }
+        if (!mesh2) {
             throw Base::ValueError("Second input mesh not set");
+        }
     }
 
     return App::DocumentObject::StdReturn;
 }
-

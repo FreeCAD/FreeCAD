@@ -5,16 +5,16 @@
 #include <QMessageBox>
 #include <QVector>
 
+#include <App/Application.h>
 #include <Base/Factory.h>
 #include <Base/Interpreter.h>
-#include <App/Application.h>
 #include <Gui/Application.h>
 #include <Gui/MainWindow.h>
 
 
 PyMODINIT_FUNC FreeCAD_init()
 {
-    static QVector<char *> argv;
+    static QVector<char*> argv;
 #if defined(_DEBUG)
     argv << "FreeCADApp_d.dll" << 0;
 #else
@@ -32,7 +32,7 @@ PyMODINIT_FUNC FreeCAD_init()
 
     Gui::MainWindow* mw = new Gui::MainWindow(qApp->activeWindow());
     mw->show();
-    
+
     app->initOpenInventor();
     app->runInitGuiScript();
 }
@@ -40,14 +40,12 @@ PyMODINIT_FUNC FreeCAD_init()
 /* A test function for the plugin to load a mesh and call "getVal()" */
 PyMODINIT_FUNC FreeCAD_test(const char* path)
 {
-    try
-    {   // Use FreeCADGui here, not Gui
+    try {  // Use FreeCADGui here, not Gui
         Base::Interpreter().runString("FreeCADGui.activateWorkbench(\"MeshWorkbench\")");
         Base::Interpreter().runString("import Mesh");
         Base::Interpreter().runStringArg("Mesh.insert(u\"%s\", \"%s\")", path, "Document");
     }
-    catch (const Base::Exception& e)
-    {
+    catch (const Base::Exception& e) {
         QMessageBox::warning(0, "Exception", e.what());
     }
 }

@@ -20,15 +20,10 @@
  *                                                                         *
  ***************************************************************************/
 
- 
-
-
 #ifndef _PageGroup_h_
 #define _PageGroup_h_
 
-
 #include <App/DocumentObjectGroup.h>
-#include <App/PropertyStandard.h>
 #include <App/PropertyLinks.h>
 #include <Mod/Drawing/DrawingGlobal.h>
 
@@ -36,10 +31,9 @@
 namespace Drawing
 {
 
-
 /** Base class of all View Features in the drawing module
  */
-class DrawingExport PageGroup : public App::DocumentObjectGroup
+class DrawingExport PageGroup: public App::DocumentObjectGroup
 {
     PROPERTY_HEADER(Drawing::PageGroup);
 
@@ -51,14 +45,14 @@ public:
     App::PropertyLinkList Pages;
 
     /// returns the type name of the ViewProvider
-    virtual const char* getViewProviderName(void) const {
+    virtual const char* getViewProviderName(void) const
+    {
         return "DrawingGui::ViewProviderDrawing";
     }
 };
 
 
-} //namespace Drawing
-
+}  // namespace Drawing
 
 
 #endif

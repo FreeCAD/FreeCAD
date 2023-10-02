@@ -20,25 +20,20 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <iomanip>
 # include <sstream>
 #endif
 
-#include <iomanip>
-
 #include <Base/Console.h>
-#include <Base/Exception.h>
-#include <Base/FileInfo.h>
 #include <Base/Interpreter.h>
 
 #include "DrawViewDraft.h"
 
-using namespace TechDraw;
-using namespace std;
 
+using namespace TechDraw;
 
 //===========================================================================
 // DrawViewDraft
@@ -129,16 +124,14 @@ App::DocumentObjectExecReturn *DrawViewDraft::execute()
 
 std::string DrawViewDraft::getSVGHead()
 {
-    std::string head = std::string("<svg\\n") +
-                       std::string("	xmlns=\"http://www.w3.org/2000/svg\" version=\"1.1\"\\n") +
-                       std::string("	xmlns:freecad=\"http://www.freecadweb.org/wiki/index.php?title=Svg_Namespace\">\\n");
-    return head;
+    return std::string("<svg\\n") +
+           std::string("	xmlns=\"http://www.w3.org/2000/svg\" version=\"1.1\"\\n") +
+           std::string("	xmlns:freecad=\"http://www.freecad.org/wiki/index.php?title=Svg_Namespace\">\\n");
 }
 
 std::string DrawViewDraft::getSVGTail()
 {
-    std::string tail = "\\n</svg>";
-    return tail;
+    return "\\n</svg>";
 }
 
 // Python Drawing feature ---------------------------------------------------------

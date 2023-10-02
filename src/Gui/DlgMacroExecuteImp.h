@@ -26,6 +26,7 @@
 
 #include <QDialog>
 #include <memory>
+#include "PythonTracing.h"
 #include "Window.h"
 
 class QTreeWidgetItem;
@@ -49,28 +50,32 @@ public:
 
     void accept() override;
 
-public Q_SLOTS:
-    void on_fileChooser_fileNameChanged(const QString&);
-    void on_createButton_clicked();
-    void on_deleteButton_clicked();
-    void on_editButton_clicked();
-    void on_renameButton_clicked();
-    void on_duplicateButton_clicked();
-    void on_toolbarButton_clicked();
-    void on_addonsButton_clicked();
+private:
+    void setupConnections();
+    void onFileChooserFileNameChanged(const QString&);
+    void onCreateButtonClicked();
+    void onDeleteButtonClicked();
+    void onEditButtonClicked();
+    void onRenameButtonClicked();
+    void onDuplicateButtonClicked();
+    void onToolbarButtonClicked();
+    void onAddonsButtonClicked();
 
-protected Q_SLOTS:
-    void on_userMacroListBox_currentItemChanged(QTreeWidgetItem*);
-    void on_systemMacroListBox_currentItemChanged(QTreeWidgetItem*);
-    void on_tabMacroWidget_currentChanged(int index);
+    void onUserMacroListBoxCurrentItemChanged(QTreeWidgetItem*);
+    void onSystemMacroListBoxCurrentItemChanged(QTreeWidgetItem*);
+    void onTabMacroWidgetCurrentChanged(int index);
+    void onLineEditFindTextChanged(const QString&);
+    void onLineEditFindInFilesTextChanged(const QString&);
 
 protected:
     void fillUpList();
+    QStringList filterFiles(const QString&);
 
 protected:
     QString macroPath;
 
 private:
+    std::unique_ptr<PythonTracingWatcher> watcher;
     std::unique_ptr<Ui_DlgMacroExecute> ui;
 };
 

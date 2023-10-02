@@ -27,8 +27,9 @@
 # include <QApplication>
 # include <QClipboard>
 # include <QDateTime>
+# include <QMessageBox>
 # include <QTextStream>
-# include <QTreeWidgetItem> 
+# include <QTreeWidgetItem>
 #endif
 
 #include <boost/regex.hpp>
@@ -149,15 +150,25 @@ void StdCmdOpen::activated(int iMsg)
     }
     else {
         for (SelectModule::Dict::iterator it = dict.begin(); it != dict.end(); ++it) {
+
+            // Set flag indicating that this load/restore has been initiated by the user (not by a macro)
+            getGuiApplication()->setStatus(Gui::Application::UserInitiatedOpenDocument, true);
+
             getGuiApplication()->open(it.key().toUtf8(), it.value().toLatin1());
+
+            getGuiApplication()->setStatus(Gui::Application::UserInitiatedOpenDocument, false);
 
             App::Document *doc = App::GetApplication().getActiveDocument();
 
-            if(doc && doc->testStatus(App::Document::PartialRestore))
-                QMessageBox::critical(getMainWindow(), QObject::tr("Error"), QObject::tr("There were errors while loading the file. Some data might have been modified or not recovered at all. Look in the report view for more specific information about the objects involved."));
+            if(doc && doc->testStatus(App::Document::PartialRestore)) {
+                QMessageBox::critical(getMainWindow(), QObject::tr("Error"),
+                                      QObject::tr("There were errors while loading the file. Some data might have been modified or not recovered at all. Look in the report view for more specific information about the objects involved."));
+            }
 
-            if(doc && doc->testStatus(App::Document::RestoreError))
-                QMessageBox::critical(getMainWindow(), QObject::tr("Error"), QObject::tr("There were serious errors while loading the file. Some data might have been modified or not recovered at all. Saving the project will most likely result in loss of data."));
+            if(doc && doc->testStatus(App::Document::RestoreError)) {
+                QMessageBox::critical(getMainWindow(), QObject::tr("Error"),
+                                      QObject::tr("There were serious errors while loading the file. Some data might have been modified or not recovered at all. Saving the project will most likely result in loss of data."));
+            }
         }
     }
 }
@@ -235,8 +246,8 @@ void StdCmdImport::activated(int iMsg)
         if (emptyDoc) {
             // only do a view fit if the document was empty before. See also parameter 'AutoFitToView' in importFrom()
             std::list<Gui::MDIView*> views = getActiveGuiDocument()->getMDIViewsOfType(Gui::View3DInventor::getClassTypeId());
-            for (std::list<MDIView*>::iterator it = views.begin(); it != views.end(); ++it) {
-                (*it)->viewAll();
+            for (const auto & view : views) {
+                view->viewAll();
             }
         }
     }
@@ -271,7 +282,7 @@ StdCmdExport::StdCmdExport()
 
 /**
 Create a default filename from a user-specified format string
- 
+
 Format options are:
 %F - the basename of the .FCStd file (or the label, if it is not saved yet)
 %Lx - the label of the selected object(s), separated by character 'x'
@@ -306,7 +317,7 @@ QString createDefaultExportBasename()
     QString docFilename = QString::fromUtf8(App::GetApplication().getActiveDocument()->getFileName());
     QFileInfo fi(docFilename);
     QString fcstdBasename = fi.completeBaseName();
-    if (fcstdBasename.isEmpty()) 
+    if (fcstdBasename.isEmpty())
         fcstdBasename = QString::fromStdString(App::GetApplication().getActiveDocument()->Label.getStrValue());
 
     // %L - the label of the selected object(s)
@@ -347,7 +358,7 @@ QString createDefaultExportBasename()
                 auto formatChar = exportFormatString.at(i);
                 QChar separatorChar = QLatin1Char('-');
                 // If this format type requires an additional char, read that now (or default to
-                // '-' if the format string ends) 
+                // '-' if the format string ends)
                 if (formatChar == QLatin1Char('L') ||
                     formatChar == QLatin1Char('P')) {
                     if (i < exportFormatString.size() - 1) {
@@ -373,8 +384,8 @@ QString createDefaultExportBasename()
                     defaultFilename.append(localISO8601);
                 }
                 else {
-                    FC_WARN("When parsing default export filename format string, %" 
-                        << QString(formatChar).toStdString() 
+                    FC_WARN("When parsing default export filename format string, %"
+                        << QString(formatChar).toStdString()
                         << " is not a known format string.");
                 }
             }
@@ -400,8 +411,8 @@ void StdCmdExport::activated(int iMsg)
     auto selection = Gui::Selection().getObjectsOfType(App::DocumentObject::getClassTypeId());
     if (selection.empty()) {
         QMessageBox::warning(Gui::getMainWindow(),
-            QString::fromUtf8(QT_TR_NOOP("No selection")),
-            QString::fromUtf8(QT_TR_NOOP("Select the objects to export before choosing Export.")));
+            QCoreApplication::translate("StdCmdExport", "No selection"),
+            QCoreApplication::translate("StdCmdExport", "Select the objects to export before choosing Export."));
         return;
     }
 
@@ -414,7 +425,7 @@ void StdCmdExport::activated(int iMsg)
             filterList << QString::fromStdString(filter.first);
     }
     QString formatList = filterList.join(QLatin1String(";;"));
-    Base::Reference<ParameterGrp> hPath = 
+    Base::Reference<ParameterGrp> hPath =
         App::GetApplication().GetUserParameter().GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("General");
     QString selectedFilter = QString::fromStdString(hPath->GetASCII("FileExportFilter"));
     if (!lastExportFilterUsed.isEmpty())
@@ -481,7 +492,7 @@ void StdCmdExport::activated(int iMsg)
         // there is one.
         QFileInfo defaultExportFI(defaultFilename);
         QFileInfo thisExportFI(fileName);
-        if (filenameWasGenerated && 
+        if (filenameWasGenerated &&
             thisExportFI.completeBaseName() == defaultExportFI.completeBaseName())
             lastExportUsedGeneratedFilename = true;
         else
@@ -571,12 +582,53 @@ void StdCmdDependencyGraph::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     App::Document* doc = App::GetApplication().getActiveDocument();
-    Gui::GraphvizView* view = new Gui::GraphvizView(*doc);
+    auto view = new Gui::GraphvizView(*doc);
     view->setWindowTitle(qApp->translate("Std_DependencyGraph","Dependency graph"));
     getMainWindow()->addWindow(view);
 }
 
 bool StdCmdDependencyGraph::isActive()
+{
+    return (getActiveGuiDocument() ? true : false);
+}
+
+//===========================================================================
+// Std_ExportDependencyGraph
+//===========================================================================
+
+DEF_STD_CMD_A(StdCmdExportDependencyGraph)
+
+StdCmdExportDependencyGraph::StdCmdExportDependencyGraph()
+  : Command("Std_ExportDependencyGraph")
+{
+    sGroup        = "Tools";
+    sMenuText     = QT_TR_NOOP("Export dependency graph...");
+    sToolTipText  = QT_TR_NOOP("Export the dependency graph to a file");
+    sStatusTip    = QT_TR_NOOP("Export the dependency graph to a file");
+    sWhatsThis    = "Std_ExportDependencyGraph";
+    eType         = 0;
+  //sPixmap       = "Std_ExportDependencyGraph";
+}
+
+void StdCmdExportDependencyGraph::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    App::Document* doc = App::GetApplication().getActiveDocument();
+    QString format = QString::fromLatin1("%1 (*.gv)").arg(Gui::GraphvizView::tr("Graphviz format"));
+    QString fn = Gui::FileDialog::getSaveFileName(Gui::getMainWindow(), Gui::GraphvizView::tr("Export graph"), QString(), format);
+    if (!fn.isEmpty()) {
+        QFile file(fn);
+        if (file.open(QFile::WriteOnly)) {
+            std::stringstream str;
+            doc->exportGraphviz(str);
+            QByteArray buffer = QByteArray::fromStdString(str.str());
+            file.write(buffer);
+            file.close();
+        }
+    }
+}
+
+bool StdCmdExportDependencyGraph::isActive()
 {
     return (getActiveGuiDocument() ? true : false);
 }
@@ -603,8 +655,7 @@ void StdCmdNew::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     QString cmd;
-    cmd = QString::fromLatin1("App.newDocument(\"%1\")")
-        .arg(qApp->translate("StdCmdNew","Unnamed"));
+    cmd = QString::fromLatin1("App.newDocument()");
     runCommand(Command::Doc,cmd.toUtf8());
     doCommand(Command::Gui,"Gui.activeDocument().activeView().viewDefaultOrientation()");
 
@@ -1193,7 +1244,7 @@ void StdCmdDuplicateSelection::activated(int iMsg)
     if (doc) {
         bool proceed = true;
         if(hasXLink && !doc->isSaved()) {
-            int ret = QMessageBox::question(getMainWindow(),
+            auto ret = QMessageBox::question(getMainWindow(),
                 qApp->translate("Std_DuplicateSelection","Object dependencies"),
                 qApp->translate("Std_DuplicateSelection",
                 "To link to external objects, the document must be saved at least once.\n"
@@ -1342,7 +1393,7 @@ void StdCmdDelete::activated(int iMsg)
                 if(more)
                     bodyMessageStream << "\n...";
 
-                int ret = QMessageBox::warning(Gui::getMainWindow(),
+                auto ret = QMessageBox::warning(Gui::getMainWindow(),
                     qApp->translate("Std_Delete", "Object dependencies"), bodyMessage,
                     QMessageBox::Yes, QMessageBox::No);
                 if (ret == QMessageBox::Yes)
@@ -1432,7 +1483,7 @@ void StdCmdRefresh::activated(int iMsg)
             doCommand(Doc,"App.activeDocument().recompute(None,True,True)");
         }
         catch (Base::Exception& /*e*/) {
-            int ret = QMessageBox::warning(getMainWindow(), QObject::tr("Dependency error"),
+            auto ret = QMessageBox::warning(getMainWindow(), QObject::tr("Dependency error"),
                 qApp->translate("Std_Refresh", "The document contains dependency cycles.\n"
                             "Please check the Report View for more details.\n\n"
                             "Do you still want to proceed?"),
@@ -1495,11 +1546,22 @@ void StdCmdPlacement::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     std::vector<App::DocumentObject*> sel = Gui::Selection().getObjectsOfType(App::GeoFeature::getClassTypeId());
-    Gui::Dialog::TaskPlacement* plm = new Gui::Dialog::TaskPlacement();
+    auto plm = new Gui::Dialog::TaskPlacement();
     if (!sel.empty()) {
         App::Property* prop = sel.front()->getPropertyByName("Placement");
-        if (prop && prop->getTypeId() == App::PropertyPlacement::getClassTypeId())
+        if (prop && prop->getTypeId() == App::PropertyPlacement::getClassTypeId()) {
             plm->setPlacement(static_cast<App::PropertyPlacement*>(prop)->getValue());
+
+            std::vector<Gui::SelectionObject> selection;
+            selection.reserve(sel.size());
+            std::transform(sel.cbegin(), sel.cend(), std::back_inserter(selection), [](App::DocumentObject* obj) {
+                return Gui::SelectionObject(obj);
+            });
+
+            plm->setPropertyName(QLatin1String("Placement"));
+            plm->setSelection(selection);
+            plm->bindObject();
+        }
     }
     Gui::Control().showDialog(plm);
 }
@@ -1565,8 +1627,8 @@ void StdCmdAlignment::activated(int iMsg)
     std::vector<App::DocumentObject*> sel = Gui::Selection().getObjectsOfType
         (App::GeoFeature::getClassTypeId());
     ManualAlignment* align = ManualAlignment::instance();
-    QObject::connect(align, SIGNAL(emitCanceled()), align, SLOT(deleteLater()));
-    QObject::connect(align, SIGNAL(emitFinished()), align, SLOT(deleteLater()));
+    QObject::connect(align, &ManualAlignment::emitCanceled, align, &QObject::deleteLater);
+    QObject::connect(align, &ManualAlignment::emitFinished, align, &QObject::deleteLater);
 
     // Get the fixed and moving meshes
     FixedGroup fixedGroup;
@@ -1585,7 +1647,7 @@ void StdCmdAlignment::activated(int iMsg)
     Base::Vector3d upDir(0,1,0), viewDir(0,0,-1);
     Gui::Document* doc = Application::Instance->activeDocument();
     if (doc) {
-        View3DInventor* mdi = qobject_cast<View3DInventor*>(doc->getActiveView());
+        auto mdi = qobject_cast<View3DInventor*>(doc->getActiveView());
         if (mdi) {
             View3DInventorViewer* viewer = mdi->getViewer();
             SoCamera* camera = viewer->getSoRenderManager()->getCamera();
@@ -1660,16 +1722,12 @@ class StdCmdExpression : public Gui::Command
 {
 public:
     StdCmdExpression() : Command("Std_Expressions")
-                       , pcActionCopyAll(nullptr)
-                       , pcActionCopySel(nullptr)
-                       , pcActionCopyActive(nullptr)
-                       , pcActionPaste(nullptr)
     {
         sGroup        = "Edit";
         sMenuText     = QT_TR_NOOP("Expression actions");
-        sToolTipText  = QT_TR_NOOP("Expression actions");
+        sToolTipText  = QT_TR_NOOP("Actions that apply to expressions");
         sWhatsThis    = "Std_Expressions";
-        sStatusTip    = QT_TR_NOOP("Expression actions");
+        sStatusTip    = QT_TR_NOOP("Actions that apply to expressions");
         eType         = ForEdit;
     }
 
@@ -1706,7 +1764,7 @@ protected:
     }
 
     Gui::Action * createAction() override {
-        ActionGroup* pcAction = new ActionGroup(this, getMainWindow());
+        auto pcAction = new ActionGroup(this, getMainWindow());
         pcAction->setDropDownMenu(true);
         applyCommandData(this->className(), pcAction);
 
@@ -1866,10 +1924,10 @@ protected:
         return true;
     }
 
-    QAction *pcActionCopyAll;
-    QAction *pcActionCopySel;
-    QAction *pcActionCopyActive;
-    QAction *pcActionPaste;
+    QAction *pcActionCopyAll{nullptr};
+    QAction *pcActionCopySel{nullptr};
+    QAction *pcActionCopyActive{nullptr};
+    QAction *pcActionPaste{nullptr};
 };
 
 namespace Gui {
@@ -1884,6 +1942,7 @@ void CreateDocCommands()
     rcCmdMgr.addCommand(new StdCmdExport());
     rcCmdMgr.addCommand(new StdCmdMergeProjects());
     rcCmdMgr.addCommand(new StdCmdDependencyGraph());
+    rcCmdMgr.addCommand(new StdCmdExportDependencyGraph());
 
     rcCmdMgr.addCommand(new StdCmdSave());
     rcCmdMgr.addCommand(new StdCmdSaveAs());

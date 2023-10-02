@@ -44,8 +44,7 @@ TaskSelectLinkProperty::TaskSelectLinkProperty(const char *sFilter,App::Property
     proxy = new QWidget(this);
     ui = new Ui_TaskSelectLinkProperty();
     ui->setupUi(proxy);
-
-    QMetaObject::connectSlotsByName(this);
+    setupConnections();
 
     this->groupLayout()->addWidget(proxy);
     Gui::Selection().Attach(this);
@@ -84,6 +83,18 @@ TaskSelectLinkProperty::~TaskSelectLinkProperty()
     Gui::Selection().Detach(this);
 }
 
+void TaskSelectLinkProperty::setupConnections()
+{
+    connect(ui->Remove, &QToolButton::clicked,
+            this, &TaskSelectLinkProperty::onRemoveClicked);
+    connect(ui->Add, &QToolButton::clicked,
+            this, &TaskSelectLinkProperty::onAddClicked);
+    connect(ui->Invert, &QToolButton::clicked,
+            this, &TaskSelectLinkProperty::onInvertClicked);
+    connect(ui->Help, &QToolButton::clicked,
+            this, &TaskSelectLinkProperty::onHelpClicked);
+}
+
 void TaskSelectLinkProperty::changeEvent(QEvent *e)
 {
     TaskBox::changeEvent(e);
@@ -118,9 +129,9 @@ void TaskSelectLinkProperty::activate()
             std::string ObjName = StartObject->getNameInDocument();
             std::string DocName = StartObject->getDocument()->getName();
 
-            for (std::vector<std::string>::const_iterator it = StartValueBuffer.begin();it!=StartValueBuffer.end();++it)
+            for (const auto & it : StartValueBuffer)
             {
-                Gui::Selection().addSelection(DocName.c_str(),ObjName.c_str(),it->c_str());
+                Gui::Selection().addSelection(DocName.c_str(),ObjName.c_str(),it.c_str());
             }
         }
         
@@ -129,10 +140,10 @@ void TaskSelectLinkProperty::activate()
     else if (LinkList) {
         // save the start values for a cnacel operation (reject())
         const std::vector<App::DocumentObject*> &Values = LinkList->getValues();
-        for(std::vector<App::DocumentObject*>::const_iterator it = Values.begin();it!=Values.end();++it)
+        for(const auto & Value : Values)
         {
-            std::string ObjName = (*it)->getNameInDocument();
-            std::string DocName = (*it)->getDocument()->getName();
+            std::string ObjName = Value->getNameInDocument();
+            std::string DocName = Value->getDocument()->getName();
             Gui::Selection().addSelection(DocName.c_str(),ObjName.c_str());
         }
     }
@@ -142,7 +153,7 @@ void TaskSelectLinkProperty::activate()
 
 bool TaskSelectLinkProperty::accept()
 {
-    // set the proptery with the selection
+    // set the property with the selection
     sendSelection2Property();
 
     // clear selection and remove gate (return to normal operation)
@@ -174,8 +185,8 @@ void TaskSelectLinkProperty::sendSelection2Property()
     else if (LinkList) {
         std::vector<Gui::SelectionObject> sel = Gui::Selection().getSelectionEx();
         std::vector<App::DocumentObject*> temp;
-        for (std::vector<Gui::SelectionObject>::iterator it=sel.begin();it!=sel.end();++it)
-            temp.push_back(it->getObject());
+        for (auto & it : sel)
+            temp.push_back(it.getObject());
         
         LinkList->setValues(temp);
     }
@@ -208,12 +219,12 @@ void TaskSelectLinkProperty::OnChange(Gui::SelectionSingleton::SubjectType &rCal
         Reason.Type == SelectionChanges::ClrSelection) {
             ui->listWidget->clear();
             std::vector<Gui::SelectionSingleton::SelObj> sel = Gui::Selection().getSelection();
-            for (std::vector<Gui::SelectionSingleton::SelObj>::const_iterator it=sel.begin();it!=sel.end();++it){
+            for (const auto & it : sel){
                 std::string temp;
-                temp += it->FeatName;
-                if (strcmp(it->SubName, "") != 0){
+                temp += it.FeatName;
+                if (strcmp(it.SubName, "") != 0){
                     temp += "::";
-                    temp += it->SubName;
+                    temp += it.SubName;
                 }
                 new QListWidgetItem(QString::fromLatin1(temp.c_str()), ui->listWidget);
             }
@@ -222,19 +233,19 @@ void TaskSelectLinkProperty::OnChange(Gui::SelectionSingleton::SubjectType &rCal
 }
 /// @endcond
 
-void TaskSelectLinkProperty::on_Remove_clicked(bool)
+void TaskSelectLinkProperty::onRemoveClicked(bool)
 {
 }
 
-void TaskSelectLinkProperty::on_Add_clicked(bool)
+void TaskSelectLinkProperty::onAddClicked(bool)
 {
 }
 
-void TaskSelectLinkProperty::on_Invert_clicked(bool)
+void TaskSelectLinkProperty::onInvertClicked(bool)
 {
 }
 
-void TaskSelectLinkProperty::on_Help_clicked(bool)
+void TaskSelectLinkProperty::onHelpClicked(bool)
 {
 }
 

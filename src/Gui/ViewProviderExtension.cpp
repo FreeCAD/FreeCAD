@@ -42,10 +42,7 @@ ViewProviderExtension::ViewProviderExtension()
     initExtensionType(Gui::ViewProviderExtension::getExtensionClassTypeId());
 }
 
-ViewProviderExtension::~ViewProviderExtension()
-{
-
-}
+ViewProviderExtension::~ViewProviderExtension() = default;
 
 const ViewProviderDocumentObject* ViewProviderExtension::getExtendedViewProvider() const{
 

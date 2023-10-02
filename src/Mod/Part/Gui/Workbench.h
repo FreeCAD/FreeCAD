@@ -49,4 +49,4 @@ protected:
 } // namespace PartGui
 
 
-#endif // PART_WORKBENCH_H 
+#endif // PART_WORKBENCH_H

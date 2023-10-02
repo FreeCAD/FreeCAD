@@ -23,7 +23,7 @@
 
 __title__ = "FreeCAD Points command definitions"
 __author__ = "Werner Mayer"
-__url__ = "https://www.freecadweb.org"
+__url__ = "https://www.freecad.org"
 
 ## @package commands
 #  \ingroup Points
@@ -31,6 +31,7 @@ __url__ = "https://www.freecadweb.org"
 
 import FreeCAD
 import Points
+
 
 def make_points_from_geometry(geometries, distance):
     for geom in geometries:
@@ -54,7 +55,9 @@ def make_points_from_geometry(geometries, distance):
         points.Points = kernel
         points.Placement = plm
 
-        if len(points_and_normals[1]) > 0 and len(points_and_normals[0]) == len(points_and_normals[1]):
+        if len(points_and_normals[1]) > 0 and len(points_and_normals[0]) == len(
+            points_and_normals[1]
+        ):
             points.addProperty("Points::PropertyNormalList", "Normal")
             points.Normal = points_and_normals[1]
 

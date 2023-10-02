@@ -90,19 +90,19 @@ def CreateSprocket(w, P, N, Dr):
     p6 = [-x2,y2]
     p7 = [-x3,y3]
     p8 = [-x4,y4]
-    
+
     w.move(p4) # vectors are lists [x,y]
     w.arc(p3, F, 0)
     w.line(p2)
     w.arc(p1, E, 1)
     w.arc(p0, R, 1)
-    
+
     # ---- Mirror -----
     w.arc(p5, R, 1)
     w.arc(p6, E, 1)
     w.line(p7)
     w.arc(p8, F, 0)
-    
+
     # ---- Polar Array ----
     alpha = -radians(360/N)
     for n in range(1,N):

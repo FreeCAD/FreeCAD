@@ -46,16 +46,16 @@ public:
         Prism,
         Wedge
     };
-    
+
     FeaturePrimitive();
-    
+
     const char* getViewProviderName() const override {
         return "PartDesignGui::ViewProviderPrimitive";
     }
     Type         getPrimitiveType() {return primitiveType;}
     void onChanged(const App::Property* prop) override;
     PyObject* getPyObject() override;
-    
+
     /// Do nothing, just to suppress warning, must be redefined in derived classes
     App::DocumentObjectExecReturn* execute() override {
         return PartDesign::FeatureAddSub::execute();
@@ -64,7 +64,7 @@ protected:
     void handleChangedPropertyName(Base::XMLReader &reader, const char* TypeName, const char* PropName) override;
     //make the boolean ops with the primitives provided by the derived features
     App::DocumentObjectExecReturn* execute(const TopoDS_Shape& primitiveShape);
-    Type primitiveType = Box;   
+    Type primitiveType = Box;
 };
 
 class PartDesignExport Box : public PartDesign::FeaturePrimitive {
@@ -72,24 +72,24 @@ class PartDesignExport Box : public PartDesign::FeaturePrimitive {
     PROPERTY_HEADER_WITH_OVERRIDE(PartDesign::Box);
 
 public:
-    
+
     Box();
-    
+
     App::PropertyLength Length,Height,Width;
-    
+
     /** @name methods override feature */
     //@{
     /// recalculate the Feature
     App::DocumentObjectExecReturn *execute() override;
     short mustExecute() const override;
-    
+
 protected:
-    
+
 };
 
 class PartDesignExport AdditiveBox : public Box {
     PROPERTY_HEADER_WITH_OVERRIDE(PartDesign::AdditiveBox);
-    
+
     AdditiveBox() {
         addSubType = FeatureAddSub::Additive;
     }
@@ -97,7 +97,7 @@ class PartDesignExport AdditiveBox : public Box {
 
 class PartDesignExport SubtractiveBox : public Box {
     PROPERTY_HEADER_WITH_OVERRIDE(PartDesign::SubtractiveBox);
-    
+
     SubtractiveBox() {
         addSubType = FeatureAddSub::Subtractive;
     }
@@ -109,13 +109,13 @@ class PartDesignExport Cylinder : public PartDesign::FeaturePrimitive, public Pa
     PROPERTY_HEADER_WITH_OVERRIDE(PartDesign::Cylinder);
 
 public:
-    
+
     Cylinder();
-    
+
     App::PropertyLength Radius;
     App::PropertyLength Height;
     App::PropertyAngle Angle;
-    
+
     /** @name methods override feature */
     //@{
     /// recalculate the Feature
@@ -125,7 +125,7 @@ public:
 
 class PartDesignExport AdditiveCylinder : public Cylinder {
     PROPERTY_HEADER_WITH_OVERRIDE(PartDesign::AdditiveCylinder);
-    
+
     AdditiveCylinder() {
         addSubType = FeatureAddSub::Additive;
     }
@@ -133,7 +133,7 @@ class PartDesignExport AdditiveCylinder : public Cylinder {
 
 class PartDesignExport SubtractiveCylinder : public Cylinder {
     PROPERTY_HEADER_WITH_OVERRIDE(PartDesign::SubtractiveCylinder);
-    
+
     SubtractiveCylinder() {
         addSubType = FeatureAddSub::Subtractive;
     }
@@ -145,27 +145,27 @@ class PartDesignExport Sphere : public PartDesign::FeaturePrimitive {
     PROPERTY_HEADER_WITH_OVERRIDE(PartDesign::Sphere);
 
 public:
-    
+
     Sphere();
-    
+
     App::PropertyLength Radius;
     App::PropertyAngle Angle1;
     App::PropertyAngle Angle2;
     App::PropertyAngle Angle3;
-    
+
     /** @name methods override feature */
     //@{
     /// recalculate the Feature
     App::DocumentObjectExecReturn *execute() override;
     short mustExecute() const override;
-    
+
 protected:
-    
+
 };
 
 class PartDesignExport AdditiveSphere : public Sphere {
     PROPERTY_HEADER_WITH_OVERRIDE(PartDesign::AdditiveSphere);
-    
+
     AdditiveSphere() {
         addSubType = FeatureAddSub::Additive;
     }
@@ -173,7 +173,7 @@ class PartDesignExport AdditiveSphere : public Sphere {
 
 class PartDesignExport SubtractiveSphere : public Sphere {
     PROPERTY_HEADER_WITH_OVERRIDE(PartDesign::SubtractiveSphere);
-    
+
     SubtractiveSphere() {
         addSubType = FeatureAddSub::Subtractive;
     }
@@ -184,27 +184,27 @@ class PartDesignExport Cone : public PartDesign::FeaturePrimitive {
     PROPERTY_HEADER_WITH_OVERRIDE(PartDesign::Cone);
 
 public:
-    
+
     Cone();
-    
+
     App::PropertyLength Radius1;
     App::PropertyLength Radius2;
     App::PropertyLength Height;
     App::PropertyAngle  Angle;
-    
+
     /** @name methods override feature */
     //@{
     /// recalculate the Feature
     App::DocumentObjectExecReturn *execute() override;
     short mustExecute() const override;
-    
+
 protected:
-    
+
 };
 
 class PartDesignExport AdditiveCone : public Cone {
     PROPERTY_HEADER_WITH_OVERRIDE(PartDesign::AdditiveCone);
-    
+
     AdditiveCone() {
         addSubType = FeatureAddSub::Additive;
     }
@@ -212,7 +212,7 @@ class PartDesignExport AdditiveCone : public Cone {
 
 class PartDesignExport SubtractiveCone : public Cone {
     PROPERTY_HEADER_WITH_OVERRIDE(PartDesign::SubtractiveCone);
-    
+
     SubtractiveCone() {
         addSubType = FeatureAddSub::Subtractive;
     }
@@ -224,29 +224,29 @@ class PartDesignExport Ellipsoid : public PartDesign::FeaturePrimitive {
     PROPERTY_HEADER_WITH_OVERRIDE(PartDesign::Ellipsoid);
 
 public:
-    
+
     Ellipsoid();
-    
+
     App::PropertyLength Radius1;
     App::PropertyLength Radius2;
     App::PropertyLength Radius3;
     App::PropertyAngle Angle1;
     App::PropertyAngle Angle2;
     App::PropertyAngle Angle3;
-    
+
     /** @name methods override feature */
     //@{
     /// recalculate the Feature
     App::DocumentObjectExecReturn *execute() override;
     short mustExecute() const override;
-    
+
 protected:
-    
+
 };
 
 class PartDesignExport AdditiveEllipsoid : public Ellipsoid {
     PROPERTY_HEADER_WITH_OVERRIDE(PartDesign::AdditiveEllipsoid);
-    
+
     AdditiveEllipsoid() {
         addSubType = FeatureAddSub::Additive;
     }
@@ -254,7 +254,7 @@ class PartDesignExport AdditiveEllipsoid : public Ellipsoid {
 
 class PartDesignExport SubtractiveEllipsoid : public Ellipsoid {
     PROPERTY_HEADER_WITH_OVERRIDE(PartDesign::SubtractiveEllipsoid);
-    
+
     SubtractiveEllipsoid() {
         addSubType = FeatureAddSub::Subtractive;
     }
@@ -266,28 +266,28 @@ class PartDesignExport Torus : public PartDesign::FeaturePrimitive {
     PROPERTY_HEADER_WITH_OVERRIDE(PartDesign::Torus);
 
 public:
-    
+
     Torus();
-    
+
     App::PropertyLength Radius1;
     App::PropertyLength Radius2;
     App::PropertyAngle Angle1;
     App::PropertyAngle Angle2;
     App::PropertyAngle Angle3;
-    
+
     /** @name methods override feature */
     //@{
     /// recalculate the Feature
     App::DocumentObjectExecReturn *execute() override;
     short mustExecute() const override;
-    
+
 protected:
-    
+
 };
 
 class PartDesignExport AdditiveTorus : public Torus {
     PROPERTY_HEADER_WITH_OVERRIDE(PartDesign::AdditiveTorus);
-    
+
     AdditiveTorus() {
         addSubType = FeatureAddSub::Additive;
     }
@@ -295,7 +295,7 @@ class PartDesignExport AdditiveTorus : public Torus {
 
 class PartDesignExport SubtractiveTorus : public Torus {
     PROPERTY_HEADER_WITH_OVERRIDE(PartDesign::SubtractiveTorus);
-    
+
     SubtractiveTorus() {
         addSubType = FeatureAddSub::Subtractive;
     }
@@ -312,7 +312,7 @@ public:
     App::PropertyIntegerConstraint Polygon;
     App::PropertyLength Circumradius;
     App::PropertyLength Height;
-    
+
     /** @name methods override feature */
     //@{
     /// recalculate the Feature
@@ -322,7 +322,7 @@ public:
 
 class PartDesignExport AdditivePrism : public Prism {
     PROPERTY_HEADER_WITH_OVERRIDE(PartDesign::AdditivePrism);
-    
+
     AdditivePrism() {
         addSubType = FeatureAddSub::Additive;
     }
@@ -330,7 +330,7 @@ class PartDesignExport AdditivePrism : public Prism {
 
 class PartDesignExport SubtractivePrism : public Prism {
     PROPERTY_HEADER_WITH_OVERRIDE(PartDesign::SubtractivePrism);
-    
+
     SubtractivePrism() {
         addSubType = FeatureAddSub::Subtractive;
     }
@@ -342,9 +342,9 @@ class PartDesignExport Wedge : public PartDesign::FeaturePrimitive {
     PROPERTY_HEADER_WITH_OVERRIDE(PartDesign::Wedge);
 
 public:
-    
+
     Wedge();
-    
+
     App::PropertyDistance Xmin;
     App::PropertyDistance Ymin;
     App::PropertyDistance Zmin;
@@ -355,20 +355,20 @@ public:
     App::PropertyDistance Zmax;
     App::PropertyDistance Z2max;
     App::PropertyDistance X2max;
-    
+
     /** @name methods override feature */
     //@{
     /// recalculate the Feature
     App::DocumentObjectExecReturn *execute() override;
     short mustExecute() const override;
-    
+
 protected:
-    
+
 };
 
 class PartDesignExport AdditiveWedge : public Wedge {
     PROPERTY_HEADER_WITH_OVERRIDE(PartDesign::AdditiveWedge);
-    
+
     AdditiveWedge() {
         addSubType = FeatureAddSub::Additive;
     }
@@ -376,7 +376,7 @@ class PartDesignExport AdditiveWedge : public Wedge {
 
 class PartDesignExport SubtractiveWedge : public Wedge {
     PROPERTY_HEADER_WITH_OVERRIDE(PartDesign::SubtractiveWedge);
-    
+
     SubtractiveWedge() {
         addSubType = FeatureAddSub::Subtractive;
     }

@@ -22,52 +22,52 @@
 
 #include "PreCompiled.h"
 
+#include <SMESH_Version.h>
+
 #include <Base/Console.h>
 #include <Base/Interpreter.h>
 #include <CXX/Extensions.hxx>
 
-#include <SMESH_Version.h>
-#include "FemMeshPy.h"
-#include "FemMesh.h"
-#include "FemMeshProperty.h"
 #include "FemAnalysis.h"
+#include "FemConstraintBearing.h"
+#include "FemConstraintContact.h"
+#include "FemConstraintDisplacement.h"
+#include "FemConstraintFixed.h"
+#include "FemConstraintFluidBoundary.h"
+#include "FemConstraintForce.h"
+#include "FemConstraintGear.h"
+#include "FemConstraintHeatflux.h"
+#include "FemConstraintInitialTemperature.h"
+#include "FemConstraintPlaneRotation.h"
+#include "FemConstraintPressure.h"
+#include "FemConstraintPulley.h"
+#include "FemConstraintSpring.h"
+#include "FemConstraintTemperature.h"
+#include "FemConstraintTransform.h"
+#include "FemMesh.h"
 #include "FemMeshObject.h"
-#include "FemMeshShapeObject.h"
+#include "FemMeshProperty.h"
+#include "FemMeshPy.h"
 #include "FemMeshShapeNetgenObject.h"
-
+#include "FemMeshShapeObject.h"
+#include "FemResultObject.h"
 #include "FemSetElementsObject.h"
 #include "FemSetFacesObject.h"
 #include "FemSetGeometryObject.h"
 #include "FemSetNodesObject.h"
-
-#include "HypothesisPy.h"
-#include "FemConstraintBearing.h"
-#include "FemConstraintFixed.h"
-#include "FemConstraintForce.h"
-#include "FemConstraintPressure.h"
-#include "FemConstraintGear.h"
-#include "FemConstraintPulley.h"
-#include "FemConstraintDisplacement.h"
-#include "FemConstraintTemperature.h"
-#include "FemConstraintHeatflux.h"
-#include "FemConstraintInitialTemperature.h"
-#include "FemConstraintPlaneRotation.h"
-#include "FemConstraintContact.h"
-#include "FemConstraintFluidBoundary.h"
-#include "FemConstraintTransform.h"
-#include "FemConstraintSpring.h"
-
-#include "FemResultObject.h"
 #include "FemSolverObject.h"
+#include "HypothesisPy.h"
 
 #ifdef FC_USE_VTK
-#include "FemPostPipeline.h"
 #include "FemPostFilter.h"
 #include "FemPostFunction.h"
+#include "FemPostPipeline.h"
 #include "PropertyPostDataObject.h"
 #endif
 
-namespace Fem {
+
+namespace Fem
+{
 extern PyObject* initModule();
 }
 
@@ -77,15 +77,16 @@ PyMOD_INIT_FUNC(Fem)
     // load dependent module
     try {
         Base::Interpreter().loadModule("Part");
-        //Base::Interpreter().loadModule("Mesh");
+        // Base::Interpreter().loadModule("Mesh");
     }
-    catch(const Base::Exception& e) {
+    catch (const Base::Exception& e) {
         PyErr_SetString(PyExc_ImportError, e.what());
         PyMOD_Return(nullptr);
     }
     PyObject* femModule = Fem::initModule();
     Base::Console().Log("Loading Fem module... done\n");
 
+    // clang-format off
     Fem::StdMeshers_Arithmetic1DPy              ::init_type(femModule);
     Fem::StdMeshers_AutomaticLengthPy           ::init_type(femModule);
     Fem::StdMeshers_NotConformAllowedPy         ::init_type(femModule);
@@ -179,6 +180,7 @@ PyMOD_INIT_FUNC(Fem)
     Fem::FemPostPipeline                      ::init();
     Fem::FemPostFilter                        ::init();
     Fem::FemPostClipFilter                    ::init();
+    Fem::FemPostContoursFilter                ::init();
     Fem::FemPostCutFilter                     ::init();
     Fem::FemPostDataAlongLineFilter           ::init();
     Fem::FemPostDataAtPointFilter             ::init();
@@ -187,11 +189,14 @@ PyMOD_INIT_FUNC(Fem)
 
     Fem::FemPostFunction                      ::init();
     Fem::FemPostFunctionProvider              ::init();
+    Fem::FemPostBoxFunction                   ::init();
+    Fem::FemPostCylinderFunction              ::init();
     Fem::FemPostPlaneFunction                 ::init();
     Fem::FemPostSphereFunction                ::init();
 
     Fem::PropertyPostDataObject               ::init();
 #endif
+    // clang-format on
 
     PyMOD_Return(femModule);
 }

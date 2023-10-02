@@ -24,35 +24,18 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <Standard_math.hxx>
-# include <Precision.hxx>
-
-# include <Inventor/nodes/SoSeparator.h>
-# include <Inventor/nodes/SoTranslation.h>
-# include <Inventor/nodes/SoRotation.h>
-# include <Inventor/nodes/SoMultipleCopy.h>
-# include <Inventor/nodes/SoCylinder.h>
-# include <Inventor/nodes/SoSphere.h>
-# include <Inventor/nodes/SoCube.h>
-# include <Inventor/nodes/SoText3.h>
-# include <Inventor/nodes/SoFont.h>
-# include <Inventor/nodes/SoMaterial.h>
-# include <Inventor/nodes/SoMaterialBinding.h>
-# include <Inventor/nodes/SoScale.h>
-
-# include <cmath>
+#include <Inventor/SbRotation.h>
+#include <Inventor/nodes/SoMaterial.h>
+#include <Inventor/nodes/SoSeparator.h>
+#include <cmath>
 #endif
-
-#include <Gui/Command.h>
 
 #include "Mod/Fem/App/FemConstraintTransform.h"
 #include "TaskFemConstraintTransform.h"
 #include "ViewProviderFemConstraintTransform.h"
-#include <Base/Console.h>
 #include <Gui/Control.h>
 
 
@@ -63,30 +46,29 @@ PROPERTY_SOURCE(FemGui::ViewProviderFemConstraintTransform, FemGui::ViewProvider
 ViewProviderFemConstraintTransform::ViewProviderFemConstraintTransform()
 {
     sPixmap = "FEM_ConstraintTransform";
-    //
-    //ADD_PROPERTY(FaceColor,(0.0f,0.2f,0.8f));
 }
 
-ViewProviderFemConstraintTransform::~ViewProviderFemConstraintTransform()
-{
-}
+ViewProviderFemConstraintTransform::~ViewProviderFemConstraintTransform() = default;
 
-//FIXME setEdit needs a careful review
+// FIXME setEdit needs a careful review
 bool ViewProviderFemConstraintTransform::setEdit(int ModNum)
 {
     if (ModNum == ViewProvider::Default) {
         // When double-clicking on the item for this constraint the
         // object unsets and sets its edit mode without closing
         // the task panel
-        Gui::TaskView::TaskDialog *dlg = Gui::Control().activeDialog();
-        TaskDlgFemConstraintTransform *constrDlg = qobject_cast<TaskDlgFemConstraintTransform *>(dlg);
-        if (constrDlg && constrDlg->getConstraintView() != this)
-            constrDlg = nullptr; // another constraint left open its task panel
+        Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog();
+        TaskDlgFemConstraintTransform* constrDlg =
+            qobject_cast<TaskDlgFemConstraintTransform*>(dlg);
+        if (constrDlg && constrDlg->getConstraintView() != this) {
+            constrDlg = nullptr;  // another constraint left open its task panel
+        }
         if (dlg && !constrDlg) {
             if (constraintDialog) {
                 // Ignore the request to open another dialog
                 return false;
-            } else {
+            }
+            else {
                 constraintDialog = new TaskFemConstraintTransform(this);
                 return true;
             }
@@ -96,10 +78,12 @@ bool ViewProviderFemConstraintTransform::setEdit(int ModNum)
         Gui::Selection().clearSelection();
 
         // start the edit dialog
-        if (constrDlg)
+        if (constrDlg) {
             Gui::Control().showDialog(constrDlg);
-        else
+        }
+        else {
             Gui::Control().showDialog(new TaskDlgFemConstraintTransform(this));
+        }
         return true;
     }
     else {
@@ -110,161 +94,165 @@ bool ViewProviderFemConstraintTransform::setEdit(int ModNum)
 #define HEIGHTAXIS (20)
 #define RADIUSAXIS (0.8)
 #define ARROWLENGTH (3)
-#define ARROWHEADRADIUS (ARROWLENGTH/3)
+#define ARROWHEADRADIUS (ARROWLENGTH / 3)
 #define LENGTHDISC (0.25)
 #define RADIUSDISC (0.8)
 
 void ViewProviderFemConstraintTransform::updateData(const App::Property* prop)
 {
     // Gets called whenever a property of the attached object changes
-    Fem::ConstraintTransform* pcConstraint = static_cast<Fem::ConstraintTransform*>(this->getObject());
-    float scaledradiusaxis = RADIUSAXIS * pcConstraint->Scale.getValue(); //OvG: Calculate scaled values once only
+    Fem::ConstraintTransform* pcConstraint =
+        static_cast<Fem::ConstraintTransform*>(this->getObject());
+    float scaledradiusaxis =
+        RADIUSAXIS * pcConstraint->Scale.getValue();  // OvG: Calculate scaled values once only
     float scaledheightaxis = HEIGHTAXIS * pcConstraint->Scale.getValue();
-    float scaledheadradiusA = ARROWHEADRADIUS * pcConstraint->Scale.getValue(); //OvG: Calculate scaled values once only
+    float scaledheadradiusA =
+        ARROWHEADRADIUS * pcConstraint->Scale.getValue();  // OvG: Calculate scaled values once only
     float scaledlengthA = ARROWLENGTH * pcConstraint->Scale.getValue();
     std::string transform_type = pcConstraint->TransformType.getValueAsString();
     if (transform_type == "Rectangular") {
 
-    if (strcmp(prop->getName(),"Points") == 0) {
-        const std::vector<Base::Vector3d>& points = pcConstraint->Points.getValues();
-        const std::vector<Base::Vector3d>& normals = pcConstraint->Normals.getValues();
-        if (points.size() != normals.size())
-            return;
-        std::vector<Base::Vector3d>::const_iterator n = normals.begin();
-
-        // Points and Normals are always updated together
-        Gui::coinRemoveAllChildren(pShapeSep);
-
-        for (std::vector<Base::Vector3d>::const_iterator p = points.begin(); p != points.end(); p++) {
-            SbVec3f base(p->x, p->y, p->z);
-            SbVec3f basex(p->x, p->y, p->z);
-            SbVec3f basey(p->x, p->y, p->z);
-
-            double x_axis_x = 1;
-            double x_axis_y = 0;
-            double x_axis_z = 0;
-
-            double y_axis_x = 0;
-            double y_axis_y = 1;
-            double y_axis_z = 0;
-
-            double z_axis_x = 0;
-            double z_axis_y = 0;
-            double z_axis_z = 1;
-
-            double rot_x = (pcConstraint->X_rot.getValue() * (M_PI /180));
-            double rot_y = (pcConstraint->Y_rot.getValue() * (M_PI /180));
-            double rot_z = (pcConstraint->Z_rot.getValue() * (M_PI /180));
-
-            double x_axis_x_p;
-            double x_axis_y_p;
-            double x_axis_z_p;
-
-            double y_axis_x_p;
-            double y_axis_y_p;
-            double y_axis_z_p;
-
-            double z_axis_x_p;
-            double z_axis_y_p;
-            double z_axis_z_p;
-
-            if (rot_x != 0) {
-                x_axis_z_p = x_axis_z * cos(rot_x) - x_axis_y * sin(rot_x);
-                x_axis_y_p = x_axis_y * cos(rot_x) + x_axis_z * sin(rot_x);
-                x_axis_z = x_axis_z_p;
-                x_axis_y = x_axis_y_p;
-
-                y_axis_z_p = y_axis_z * cos(rot_x) - y_axis_y * sin(rot_x);
-                y_axis_y_p = y_axis_y * cos(rot_x) + y_axis_z * sin(rot_x);
-                y_axis_z = y_axis_z_p;
-                y_axis_y = y_axis_y_p;
-
-                z_axis_z_p = z_axis_z * cos(rot_x) - z_axis_y * sin(rot_x);
-                z_axis_y_p = z_axis_y * cos(rot_x) + z_axis_z * sin(rot_x);
-                z_axis_z = z_axis_z_p;
-                z_axis_y = z_axis_y_p;
+        if (prop == &pcConstraint->Points) {
+            const std::vector<Base::Vector3d>& points = pcConstraint->Points.getValues();
+            const std::vector<Base::Vector3d>& normals = pcConstraint->Normals.getValues();
+            if (points.size() != normals.size()) {
+                return;
             }
-            if (rot_y != 0) {
-                x_axis_z_p = x_axis_z * cos(rot_y) + x_axis_x * sin(rot_y);
-                x_axis_x_p = x_axis_x * cos(rot_y) - x_axis_z * sin(rot_y);
-                x_axis_z = x_axis_z_p;
-                x_axis_x = x_axis_x_p;
+            std::vector<Base::Vector3d>::const_iterator n = normals.begin();
 
-                y_axis_z_p = y_axis_z * cos(rot_y) + y_axis_x * sin(rot_y);
-                y_axis_x_p = y_axis_x * cos(rot_y) - y_axis_z * sin(rot_y);
-                y_axis_z = y_axis_z_p;
-                y_axis_x = y_axis_x_p;
+            // Points and Normals are always updated together
+            Gui::coinRemoveAllChildren(pShapeSep);
 
-                z_axis_z_p = z_axis_z * cos(rot_y) + z_axis_x * sin(rot_y);
-                z_axis_x_p = z_axis_x * cos(rot_y) - z_axis_z * sin(rot_y);
-                z_axis_z = z_axis_z_p;
-                z_axis_x = z_axis_x_p;
+            for (const auto& point : points) {
+                SbVec3f base(point.x, point.y, point.z);
+                SbVec3f basex(point.x, point.y, point.z);
+                SbVec3f basey(point.x, point.y, point.z);
+
+                double x_axis_x = 1;
+                double x_axis_y = 0;
+                double x_axis_z = 0;
+
+                double y_axis_x = 0;
+                double y_axis_y = 1;
+                double y_axis_z = 0;
+
+                double z_axis_x = 0;
+                double z_axis_y = 0;
+                double z_axis_z = 1;
+
+                double rot_x = (pcConstraint->X_rot.getValue() * (M_PI / 180));
+                double rot_y = (pcConstraint->Y_rot.getValue() * (M_PI / 180));
+                double rot_z = (pcConstraint->Z_rot.getValue() * (M_PI / 180));
+
+                double x_axis_x_p;
+                double x_axis_y_p;
+                double x_axis_z_p;
+
+                double y_axis_x_p;
+                double y_axis_y_p;
+                double y_axis_z_p;
+
+                double z_axis_x_p;
+                double z_axis_y_p;
+                double z_axis_z_p;
+
+                if (rot_x != 0) {
+                    x_axis_z_p = x_axis_z * cos(rot_x) - x_axis_y * sin(rot_x);
+                    x_axis_y_p = x_axis_y * cos(rot_x) + x_axis_z * sin(rot_x);
+                    x_axis_z = x_axis_z_p;
+                    x_axis_y = x_axis_y_p;
+
+                    y_axis_z_p = y_axis_z * cos(rot_x) - y_axis_y * sin(rot_x);
+                    y_axis_y_p = y_axis_y * cos(rot_x) + y_axis_z * sin(rot_x);
+                    y_axis_z = y_axis_z_p;
+                    y_axis_y = y_axis_y_p;
+
+                    z_axis_z_p = z_axis_z * cos(rot_x) - z_axis_y * sin(rot_x);
+                    z_axis_y_p = z_axis_y * cos(rot_x) + z_axis_z * sin(rot_x);
+                    z_axis_z = z_axis_z_p;
+                    z_axis_y = z_axis_y_p;
+                }
+                if (rot_y != 0) {
+                    x_axis_z_p = x_axis_z * cos(rot_y) + x_axis_x * sin(rot_y);
+                    x_axis_x_p = x_axis_x * cos(rot_y) - x_axis_z * sin(rot_y);
+                    x_axis_z = x_axis_z_p;
+                    x_axis_x = x_axis_x_p;
+
+                    y_axis_z_p = y_axis_z * cos(rot_y) + y_axis_x * sin(rot_y);
+                    y_axis_x_p = y_axis_x * cos(rot_y) - y_axis_z * sin(rot_y);
+                    y_axis_z = y_axis_z_p;
+                    y_axis_x = y_axis_x_p;
+
+                    z_axis_z_p = z_axis_z * cos(rot_y) + z_axis_x * sin(rot_y);
+                    z_axis_x_p = z_axis_x * cos(rot_y) - z_axis_z * sin(rot_y);
+                    z_axis_z = z_axis_z_p;
+                    z_axis_x = z_axis_x_p;
+                }
+                if (rot_z != 0) {
+                    x_axis_x_p = x_axis_x * cos(rot_z) + x_axis_y * sin(rot_z);
+                    x_axis_y_p = x_axis_y * cos(rot_z) - x_axis_x * sin(rot_z);
+                    x_axis_x = x_axis_x_p;
+                    x_axis_y = x_axis_y_p;
+
+                    y_axis_x_p = y_axis_x * cos(rot_z) + y_axis_y * sin(rot_z);
+                    y_axis_y_p = y_axis_y * cos(rot_z) - y_axis_x * sin(rot_z);
+                    y_axis_x = y_axis_x_p;
+                    y_axis_y = y_axis_y_p;
+
+                    z_axis_x_p = z_axis_x * cos(rot_z) + z_axis_y * sin(rot_z);
+                    z_axis_y_p = z_axis_y * cos(rot_z) - z_axis_x * sin(rot_z);
+                    z_axis_x = z_axis_x_p;
+                    z_axis_y = z_axis_y_p;
+                }
+
+                SbVec3f dirz(z_axis_x, z_axis_y, z_axis_z);
+                SbRotation rot(SbVec3f(0, 1, 0), dirz);
+
+                SbVec3f dirx(x_axis_x, x_axis_y, x_axis_z);
+                SbRotation rotx(SbVec3f(0, 1, 0), dirx);
+
+                SbVec3f diry(y_axis_x, y_axis_y, y_axis_z);
+                SbRotation roty(SbVec3f(0, 1, 0), diry);
+
+                base = base + dirz * scaledlengthA * 0.75f;
+                basex = basex + dirx * scaledlengthA * 0.65f;
+                basey = basey + diry * scaledlengthA * 0.65f;
+
+                SoSeparator* sep = new SoSeparator();
+
+                SoMaterial* myMaterial = new SoMaterial;
+                myMaterial->diffuseColor.set1Value(0, SbColor(0, 0, 1));  // RGB
+                sep->addChild(myMaterial);
+
+                createPlacement(sep, base, rot);
+                createArrow(sep, scaledlengthA * 0.75, scaledheadradiusA * 0.9);  // OvG: Scaling
+                pShapeSep->addChild(sep);
+
+                SoSeparator* sepx = new SoSeparator();
+
+                SoMaterial* myMaterialx = new SoMaterial;
+                myMaterialx->diffuseColor.set1Value(0, SbColor(1, 0, 0));  // RGB
+                sepx->addChild(myMaterialx);
+
+                createPlacement(sepx, basex, rotx);
+                createArrow(sepx, scaledlengthA * 0.65, scaledheadradiusA * 0.65);  // OvG: Scaling
+                pShapeSep->addChild(sepx);
+
+                SoSeparator* sepy = new SoSeparator();
+
+                SoMaterial* myMaterialy = new SoMaterial;
+                myMaterialy->diffuseColor.set1Value(0, SbColor(0, 1, 0));  // RGB
+                sepy->addChild(myMaterialy);
+
+                createPlacement(sepy, basey, roty);
+                createArrow(sepy, scaledlengthA * 0.65, scaledheadradiusA * 0.65);  // OvG: Scaling
+                pShapeSep->addChild(sepy);
+
+                n++;
             }
-            if (rot_z != 0) {
-                x_axis_x_p = x_axis_x * cos(rot_z) + x_axis_y * sin(rot_z);
-                x_axis_y_p = x_axis_y * cos(rot_z) - x_axis_x * sin(rot_z);
-                x_axis_x = x_axis_x_p;
-                x_axis_y = x_axis_y_p;
-
-                y_axis_x_p = y_axis_x * cos(rot_z) + y_axis_y * sin(rot_z);
-                y_axis_y_p = y_axis_y * cos(rot_z) - y_axis_x * sin(rot_z);
-                y_axis_x = y_axis_x_p;
-                y_axis_y = y_axis_y_p;
-
-                z_axis_x_p = z_axis_x * cos(rot_z) + z_axis_y * sin(rot_z);
-                z_axis_y_p = z_axis_y * cos(rot_z) - z_axis_x * sin(rot_z);
-                z_axis_x = z_axis_x_p;
-                z_axis_y = z_axis_y_p;
-            }
-
-            SbVec3f dirz(z_axis_x, z_axis_y ,z_axis_z);
-            SbRotation rot(SbVec3f(0, 1, 0), dirz);
-
-            SbVec3f dirx(x_axis_x, x_axis_y ,x_axis_z);
-            SbRotation rotx(SbVec3f(0, 1, 0), dirx);
-
-            SbVec3f diry(y_axis_x, y_axis_y ,y_axis_z);
-            SbRotation roty(SbVec3f(0, 1, 0), diry);
-
-            base = base + dirz * scaledlengthA * 0.75f;
-            basex = basex + dirx * scaledlengthA * 0.65f;
-            basey = basey + diry * scaledlengthA * 0.65f;
-
-            SoSeparator* sep = new SoSeparator();
-
-            SoMaterial* myMaterial = new SoMaterial;
-            myMaterial->diffuseColor.set1Value(0,SbColor(0,0,1));//RGB
-            sep->addChild(myMaterial);
-
-            createPlacement(sep, base, rot);
-            createArrow(sep, scaledlengthA*0.75 , scaledheadradiusA*0.9); //OvG: Scaling
-            pShapeSep->addChild(sep);
-
-            SoSeparator* sepx = new SoSeparator();
-
-            SoMaterial* myMaterialx = new SoMaterial;
-            myMaterialx->diffuseColor.set1Value(0,SbColor(1,0,0));//RGB
-            sepx->addChild(myMaterialx);
-
-            createPlacement(sepx, basex, rotx);
-            createArrow(sepx, scaledlengthA*0.65 , scaledheadradiusA*0.65); //OvG: Scaling
-            pShapeSep->addChild(sepx);
-
-            SoSeparator* sepy = new SoSeparator();
-
-            SoMaterial* myMaterialy = new SoMaterial;
-            myMaterialy->diffuseColor.set1Value(0,SbColor(0,1,0));//RGB
-            sepy->addChild(myMaterialy);
-
-            createPlacement(sepy, basey, roty);
-            createArrow(sepy, scaledlengthA*0.65 , scaledheadradiusA*0.65); //OvG: Scaling
-            pShapeSep->addChild(sepy);
-
-            n++;
         }
-
     }
-    } else if (transform_type == "Cylindrical") {
+    else if (transform_type == "Cylindrical") {
 
         // Points and Normals are always updated together
         Gui::coinRemoveAllChildren(pShapeSep);
@@ -272,8 +260,9 @@ void ViewProviderFemConstraintTransform::updateData(const App::Property* prop)
         const std::vector<Base::Vector3d>& points = pcConstraint->Points.getValues();
         const std::vector<Base::Vector3d>& normals = pcConstraint->Normals.getValues();
 
-        if (points.size() != normals.size())
+        if (points.size() != normals.size()) {
             return;
+        }
         std::vector<Base::Vector3d>::const_iterator n = normals.begin();
 
         if (!points.empty()) {
@@ -282,30 +271,30 @@ void ViewProviderFemConstraintTransform::updateData(const App::Property* prop)
 
             SbVec3f b(base.x, base.y, base.z);
             SbVec3f ax(axis.x, axis.y, axis.z);
-            SbRotation rots(SbVec3f(0,-1,0), ax);
+            SbRotation rots(SbVec3f(0, -1, 0), ax);
 
-            b = b - ax * scaledheightaxis/2;
+            b = b - ax * scaledheightaxis / 2;
             SoSeparator* sepAx = new SoSeparator();
             SoMaterial* myMaterial = new SoMaterial;
-            myMaterial->diffuseColor.set1Value(0,SbColor(0,0,1));//RGB
+            myMaterial->diffuseColor.set1Value(0, SbColor(0, 0, 1));  // RGB
             sepAx->addChild(myMaterial);
             createPlacement(sepAx, b, rots);
             createArrow(sepAx, scaledheightaxis, scaledradiusaxis);
             pShapeSep->addChild(sepAx);
         }
 
-        for (std::vector<Base::Vector3d>::const_iterator p = points.begin(); p != points.end(); p++) {
-            SbVec3f base(p->x, p->y, p->z);
+        for (const auto& point : points) {
+            SbVec3f base(point.x, point.y, point.z);
             SbVec3f dir(n->x, n->y, n->z);
-            base = base + dir * scaledlengthA; //OvG: Scaling
+            base = base + dir * scaledlengthA;  // OvG: Scaling
             SbRotation rot(SbVec3f(0, 1, 0), dir);
 
             SoSeparator* sep = new SoSeparator();
             SoMaterial* myMaterials = new SoMaterial;
-            myMaterials->diffuseColor.set1Value(0,SbColor(1,0,0));//RGB
+            myMaterials->diffuseColor.set1Value(0, SbColor(1, 0, 0));  // RGB
             sep->addChild(myMaterials);
             createPlacement(sep, base, rot);
-            createArrow(sep, scaledlengthA , scaledheadradiusA); //OvG: Scaling
+            createArrow(sep, scaledlengthA, scaledheadradiusA);  // OvG: Scaling
             pShapeSep->addChild(sep);
             n++;
         }

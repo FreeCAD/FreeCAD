@@ -22,62 +22,43 @@
 
 #include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <Inventor/nodes/SoDrawStyle.h>
-#endif
-
 #include <Mod/Fem/App/FemPostFilter.h>
 
-#include "ViewProviderFemPostFilter.h"
 #include "TaskPostBoxes.h"
+#include "ViewProviderFemPostFilter.h"
 
 
 using namespace FemGui;
 
+// ***************************************************************************
+// in the following, the different filters sorted alphabetically
+// ***************************************************************************
 
-PROPERTY_SOURCE(FemGui::ViewProviderFemPostClip, FemGui::ViewProviderFemPostObject)
 
-ViewProviderFemPostClip::ViewProviderFemPostClip() {
-
-    sPixmap = "FEM_PostFilterClipRegion";
-}
-
-ViewProviderFemPostClip::~ViewProviderFemPostClip() {
-
-}
-
-void ViewProviderFemPostClip::setupTaskDialog(TaskDlgPost* dlg) {
-
-    //add the function box
-    dlg->appendBox(new TaskPostClip(dlg->getView(),
-        &static_cast<Fem::FemPostClipFilter*>(dlg->getView()->getObject())->Function));
-
-    //add the display options
-    FemGui::ViewProviderFemPostObject::setupTaskDialog(dlg);
-}
-
+// ***************************************************************************
+// data along line filter
 PROPERTY_SOURCE(FemGui::ViewProviderFemPostDataAlongLine, FemGui::ViewProviderFemPostObject)
 
-ViewProviderFemPostDataAlongLine::ViewProviderFemPostDataAlongLine() {
-
+ViewProviderFemPostDataAlongLine::ViewProviderFemPostDataAlongLine()
+{
     sPixmap = "FEM_PostFilterDataAlongLine";
 }
 
-ViewProviderFemPostDataAlongLine::~ViewProviderFemPostDataAlongLine() {
+ViewProviderFemPostDataAlongLine::~ViewProviderFemPostDataAlongLine() = default;
 
-}
-
-void ViewProviderFemPostDataAlongLine::setupTaskDialog(TaskDlgPost* dlg) {
-
-    //add the function box
+void ViewProviderFemPostDataAlongLine::setupTaskDialog(TaskDlgPost* dlg)
+{
+    // add the function box
     dlg->appendBox(new TaskPostDataAlongLine(dlg->getView()));
-
 }
 
+
+// ***************************************************************************
+// data at point filter
 PROPERTY_SOURCE(FemGui::ViewProviderFemPostDataAtPoint, FemGui::ViewProviderFemPostObject)
 
-ViewProviderFemPostDataAtPoint::ViewProviderFemPostDataAtPoint() {
-
+ViewProviderFemPostDataAtPoint::ViewProviderFemPostDataAtPoint()
+{
     sPixmap = "FEM_PostFilterDataAtPoint";
 }
 
@@ -86,83 +67,125 @@ void ViewProviderFemPostDataAtPoint::show()
     Gui::ViewProviderDocumentObject::show();
 }
 
-void ViewProviderFemPostDataAtPoint::onSelectionChanged(const Gui::SelectionChanges &)
+void ViewProviderFemPostDataAtPoint::onSelectionChanged(const Gui::SelectionChanges&)
 {
     // do not do anything here
     // For DataAtPoint the color bar must not be refreshed when it is selected
     // because a single point does not make sense with a color range.
 }
 
-ViewProviderFemPostDataAtPoint::~ViewProviderFemPostDataAtPoint() {
+ViewProviderFemPostDataAtPoint::~ViewProviderFemPostDataAtPoint() = default;
 
-}
-
-void ViewProviderFemPostDataAtPoint::setupTaskDialog(TaskDlgPost* dlg) {
-
-    //add the function box
+void ViewProviderFemPostDataAtPoint::setupTaskDialog(TaskDlgPost* dlg)
+{
+    // add the function box
     dlg->appendBox(new TaskPostDataAtPoint(dlg->getView()));
-
 }
 
 
-PROPERTY_SOURCE(FemGui::ViewProviderFemPostScalarClip, FemGui::ViewProviderFemPostObject)
+// ***************************************************************************
+// clip filter
+PROPERTY_SOURCE(FemGui::ViewProviderFemPostClip, FemGui::ViewProviderFemPostObject)
 
-ViewProviderFemPostScalarClip::ViewProviderFemPostScalarClip() {
+ViewProviderFemPostClip::ViewProviderFemPostClip()
+{
 
-    sPixmap = "FEM_PostFilterClipScalar";
+    sPixmap = "FEM_PostFilterClipRegion";
 }
 
-ViewProviderFemPostScalarClip::~ViewProviderFemPostScalarClip() {
+ViewProviderFemPostClip::~ViewProviderFemPostClip() = default;
 
-}
+void ViewProviderFemPostClip::setupTaskDialog(TaskDlgPost* dlg)
+{
 
-void ViewProviderFemPostScalarClip::setupTaskDialog(TaskDlgPost* dlg) {
+    // add the function box
+    dlg->appendBox(new TaskPostClip(
+        dlg->getView(),
+        &static_cast<Fem::FemPostClipFilter*>(dlg->getView()->getObject())->Function));
 
-    //add the function box
-    dlg->appendBox(new TaskPostScalarClip(dlg->getView()));
-
-    //add the display options
-    FemGui::ViewProviderFemPostObject::setupTaskDialog(dlg);
-}
-
-PROPERTY_SOURCE(FemGui::ViewProviderFemPostWarpVector, FemGui::ViewProviderFemPostObject)
-
-ViewProviderFemPostWarpVector::ViewProviderFemPostWarpVector() {
-
-    sPixmap = "FEM_PostFilterWarp";
-}
-
-ViewProviderFemPostWarpVector::~ViewProviderFemPostWarpVector() {
-
-}
-
-void ViewProviderFemPostWarpVector::setupTaskDialog(TaskDlgPost* dlg) {
-
-    //add the function box
-    dlg->appendBox(new TaskPostWarpVector(dlg->getView()));
-
-    //add the display options
+    // add the display options
     FemGui::ViewProviderFemPostObject::setupTaskDialog(dlg);
 }
 
 
+// ***************************************************************************
+// contours filter
+PROPERTY_SOURCE(FemGui::ViewProviderFemPostContours, FemGui::ViewProviderFemPostObject)
+
+ViewProviderFemPostContours::ViewProviderFemPostContours()
+{
+    sPixmap = "FEM_PostFilterContours";
+}
+
+ViewProviderFemPostContours::~ViewProviderFemPostContours() = default;
+
+void ViewProviderFemPostContours::setupTaskDialog(TaskDlgPost* dlg)
+{
+    // the filter-specific task panel
+    dlg->appendBox(new TaskPostContours(dlg->getView()));
+}
+
+
+// ***************************************************************************
+// cut filter
 PROPERTY_SOURCE(FemGui::ViewProviderFemPostCut, FemGui::ViewProviderFemPostObject)
 
-ViewProviderFemPostCut::ViewProviderFemPostCut() {
-
+ViewProviderFemPostCut::ViewProviderFemPostCut()
+{
     sPixmap = "FEM_PostFilterCutFunction";
 }
 
-ViewProviderFemPostCut::~ViewProviderFemPostCut() {
+ViewProviderFemPostCut::~ViewProviderFemPostCut() = default;
 
-}
-
-void ViewProviderFemPostCut::setupTaskDialog(TaskDlgPost* dlg) {
-
-    //add the function box
-    dlg->appendBox(new TaskPostCut(dlg->getView(),
+void ViewProviderFemPostCut::setupTaskDialog(TaskDlgPost* dlg)
+{
+    // add the function box
+    dlg->appendBox(new TaskPostCut(
+        dlg->getView(),
         &static_cast<Fem::FemPostCutFilter*>(dlg->getView()->getObject())->Function));
 
-    //add the display options
+    // add the display options
+    FemGui::ViewProviderFemPostObject::setupTaskDialog(dlg);
+}
+
+
+// ***************************************************************************
+// scalar clip filter
+PROPERTY_SOURCE(FemGui::ViewProviderFemPostScalarClip, FemGui::ViewProviderFemPostObject)
+
+ViewProviderFemPostScalarClip::ViewProviderFemPostScalarClip()
+{
+    sPixmap = "FEM_PostFilterClipScalar";
+}
+
+ViewProviderFemPostScalarClip::~ViewProviderFemPostScalarClip() = default;
+
+void ViewProviderFemPostScalarClip::setupTaskDialog(TaskDlgPost* dlg)
+{
+    // add the function box
+    dlg->appendBox(new TaskPostScalarClip(dlg->getView()));
+
+    // add the display options
+    FemGui::ViewProviderFemPostObject::setupTaskDialog(dlg);
+}
+
+
+// ***************************************************************************
+// warp vector filter
+PROPERTY_SOURCE(FemGui::ViewProviderFemPostWarpVector, FemGui::ViewProviderFemPostObject)
+
+ViewProviderFemPostWarpVector::ViewProviderFemPostWarpVector()
+{
+    sPixmap = "FEM_PostFilterWarp";
+}
+
+ViewProviderFemPostWarpVector::~ViewProviderFemPostWarpVector() = default;
+
+void ViewProviderFemPostWarpVector::setupTaskDialog(TaskDlgPost* dlg)
+{
+    // add the function box
+    dlg->appendBox(new TaskPostWarpVector(dlg->getView()));
+
+    // add the display options
     FemGui::ViewProviderFemPostObject::setupTaskDialog(dlg);
 }

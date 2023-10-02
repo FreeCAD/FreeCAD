@@ -76,9 +76,7 @@ TaskShapeBinder::TaskShapeBinder(ViewProviderShapeBinder* view, bool newObj, QWi
     updateUI();
 }
 
-TaskShapeBinder::~TaskShapeBinder()
-{
-}
+TaskShapeBinder::~TaskShapeBinder() = default;
 
 void TaskShapeBinder::updateUI()
 {
@@ -222,8 +220,8 @@ void TaskShapeBinder::removeFromListWidget(QListWidget* widget, QString itemstr)
 {
     QList<QListWidgetItem*> items = widget->findItems(itemstr, Qt::MatchExactly);
     if (!items.empty()) {
-        for (QList<QListWidgetItem*>::const_iterator i = items.cbegin(); i != items.cend(); i++) {
-            QListWidgetItem* it = widget->takeItem(widget->row(*i));
+        for (auto item : items) {
+            QListWidgetItem* it = widget->takeItem(widget->row(item));
             delete it;
         }
     }
@@ -289,7 +287,7 @@ bool TaskShapeBinder::referenceSelected(const SelectionChanges& msg) const
         if (strcmp(msg.pObjectName, fname) == 0)
             return false;
 
-        //change the references 
+        //change the references
         std::string subName(msg.pSubName);
 
         Part::Feature* selectedObj = nullptr;
@@ -391,10 +389,7 @@ TaskDlgShapeBinder::TaskDlgShapeBinder(ViewProviderShapeBinder* view, bool newOb
     Content.push_back(parameter);
 }
 
-TaskDlgShapeBinder::~TaskDlgShapeBinder()
-{
-
-}
+TaskDlgShapeBinder::~TaskDlgShapeBinder() = default;
 
 bool TaskDlgShapeBinder::accept()
 {
@@ -410,7 +405,7 @@ bool TaskDlgShapeBinder::accept()
         }
     }
     catch (const Base::Exception& e) {
-        QMessageBox::warning(parameter, tr("Input error"), QString::fromUtf8(e.what()));
+        QMessageBox::warning(parameter, tr("Input error"), QApplication::translate("Exception", e.what()));
         return false;
     }
 

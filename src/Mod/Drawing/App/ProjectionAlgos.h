@@ -20,14 +20,15 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef _ProjectionAlgos_h_
 #define _ProjectionAlgos_h_
 
-#include <Mod/Drawing/DrawingGlobal.h>
-#include <Base/Vector3D.h>
 #include <TopoDS_Shape.hxx>
 #include <string>
+
+#include <Base/Vector3D.h>
+#include <Mod/Drawing/DrawingGlobal.h>
+
 
 class BRepAdaptor_Curve;
 
@@ -40,44 +41,47 @@ class DrawingExport ProjectionAlgos
 {
 public:
     /// Constructor
-    ProjectionAlgos(const TopoDS_Shape &Input,const Base::Vector3d &Dir);
+    ProjectionAlgos(const TopoDS_Shape& Input, const Base::Vector3d& Dir);
     virtual ~ProjectionAlgos();
 
     void execute(void);
 
-    enum ExtractionType {
+    enum ExtractionType
+    {
         Plain = 0,
         WithHidden = 1,
         WithSmooth = 2
     };
-    using XmlAttributes = std::map<std::string,std::string>;
+    using XmlAttributes = std::map<std::string, std::string>;
 
-    std::string getSVG(ExtractionType type, double tolerance=0.05,
-                       XmlAttributes V_style=XmlAttributes(),
-                       XmlAttributes V0_style=XmlAttributes(),
-                       XmlAttributes V1_style=XmlAttributes(),
-                       XmlAttributes H_style=XmlAttributes(),
-                       XmlAttributes H0_style=XmlAttributes(),
-                       XmlAttributes H1_style=XmlAttributes());
-    std::string getDXF(ExtractionType type, double scale, double tolerance);//added by Dan Falck 2011/09/25
+    std::string getSVG(ExtractionType type,
+                       double tolerance = 0.05,
+                       XmlAttributes V_style = XmlAttributes(),
+                       XmlAttributes V0_style = XmlAttributes(),
+                       XmlAttributes V1_style = XmlAttributes(),
+                       XmlAttributes H_style = XmlAttributes(),
+                       XmlAttributes H0_style = XmlAttributes(),
+                       XmlAttributes H1_style = XmlAttributes());
+    std::string
+    getDXF(ExtractionType type, double scale, double tolerance);  // added by Dan Falck 2011/09/25
 
 
-    const TopoDS_Shape &Input;
-    const Base::Vector3d &Direction;
+    const TopoDS_Shape& Input;
+    const Base::Vector3d& Direction;
 
-    TopoDS_Shape V ;// hard edge visibly
-    TopoDS_Shape V1;// Smoth edges visibly
-    TopoDS_Shape VN;// contour edges visibly
-    TopoDS_Shape VO;// contours apparents visibly
-    TopoDS_Shape VI;// isoparamtriques   visibly
-    TopoDS_Shape H ;// hard edge       invisibly
-    TopoDS_Shape H1;// Smoth edges  invisibly
-    TopoDS_Shape HN;// contour edges invisibly
-    TopoDS_Shape HO;// contours apparents invisibly
-    TopoDS_Shape HI;// isoparamtriques   invisibly
+    TopoDS_Shape V;   // hard edge visibly
+    TopoDS_Shape V1;  // Smoth edges visibly
+    TopoDS_Shape VN;  // contour edges visibly
+    TopoDS_Shape VO;  // contours apparents visibly
+    TopoDS_Shape VI;  // isoparamtriques   visibly
+    TopoDS_Shape H;   // hard edge       invisibly
+    TopoDS_Shape H1;  // Smoth edges  invisibly
+    TopoDS_Shape HN;  // contour edges invisibly
+    TopoDS_Shape HO;  // contours apparents invisibly
+    TopoDS_Shape HI;  // isoparamtriques   invisibly
 };
 
-} //namespace Drawing
+}  // namespace Drawing
 
 
 #endif

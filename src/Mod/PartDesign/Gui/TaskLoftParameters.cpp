@@ -55,18 +55,18 @@ TaskLoftParameters::TaskLoftParameters(ViewProviderLoft *LoftView, bool /*newObj
     ui->setupUi(proxy);
     QMetaObject::connectSlotsByName(this);
 
-    connect(ui->buttonProfileBase, SIGNAL(toggled(bool)),
-            this, SLOT(onProfileButton(bool)));
-    connect(ui->buttonRefAdd, SIGNAL(toggled(bool)),
-            this, SLOT(onRefButtonAdd(bool)));
-    connect(ui->buttonRefRemove, SIGNAL(toggled(bool)),
-            this, SLOT(onRefButtonRemove(bool)));
-    connect(ui->checkBoxRuled, SIGNAL(toggled(bool)),
-            this, SLOT(onRuled(bool)));
-    connect(ui->checkBoxClosed, SIGNAL(toggled(bool)),
-            this, SLOT(onClosed(bool)));
-    connect(ui->checkBoxUpdateView, SIGNAL(toggled(bool)),
-            this, SLOT(onUpdateView(bool)));
+    connect(ui->buttonProfileBase, &QToolButton::toggled,
+            this, &TaskLoftParameters::onProfileButton);
+    connect(ui->buttonRefAdd, &QToolButton::toggled,
+            this, &TaskLoftParameters::onRefButtonAdd);
+    connect(ui->buttonRefRemove, &QToolButton::toggled,
+            this, &TaskLoftParameters::onRefButtonRemove);
+    connect(ui->checkBoxRuled, &QCheckBox::toggled,
+            this, &TaskLoftParameters::onRuled);
+    connect(ui->checkBoxClosed, &QCheckBox::toggled,
+            this, &TaskLoftParameters::onClosed);
+    connect(ui->checkBoxUpdateView, &QCheckBox::toggled,
+            this, &TaskLoftParameters::onUpdateView);
 
     // Create context menu
     QAction* remove = new QAction(tr("Remove"), this);
@@ -77,10 +77,10 @@ TaskLoftParameters::TaskLoftParameters(ViewProviderLoft *LoftView, bool /*newObj
 #endif
     ui->listWidgetReferences->addAction(remove);
     ui->listWidgetReferences->setContextMenuPolicy(Qt::ActionsContextMenu);
-    connect(remove, SIGNAL(triggered()), this, SLOT(onDeleteSection()));
+    connect(remove, &QAction::triggered, this, &TaskLoftParameters::onDeleteSection);
 
-    connect(ui->listWidgetReferences->model(),
-        SIGNAL(rowsMoved(QModelIndex, int, int, QModelIndex, int)), this, SLOT(indexesMoved()));
+    connect(ui->listWidgetReferences->model(), &QAbstractListModel::rowsMoved,
+            this, &TaskLoftParameters::indexesMoved);
 
     this->groupLayout()->addWidget(proxy);
 
@@ -122,14 +122,12 @@ TaskLoftParameters::TaskLoftParameters(ViewProviderLoft *LoftView, bool /*newObj
     updateUI();
 }
 
-TaskLoftParameters::~TaskLoftParameters()
-{
-}
+TaskLoftParameters::~TaskLoftParameters() = default;
 
 void TaskLoftParameters::updateUI()
 {
     // we must assure the changed loft is kept visible on section changes,
-    // see https://forum.freecadweb.org/viewtopic.php?f=3&t=63252
+    // see https://forum.freecad.org/viewtopic.php?f=3&t=63252
     PartDesign::Loft* loft = static_cast<PartDesign::Loft*>(vp->getObject());
     vp->makeTemporaryVisible(!loft->Sections.getValues().empty());
 }
@@ -226,8 +224,8 @@ void TaskLoftParameters::removeFromListWidget(QListWidget* widget, QString name)
 
     QList<QListWidgetItem*> items = widget->findItems(name, Qt::MatchExactly);
     if (!items.empty()) {
-        for (QList<QListWidgetItem*>::const_iterator it = items.cbegin(); it != items.cend(); ++it) {
-            QListWidgetItem* item = widget->takeItem(widget->row(*it));
+        for (auto it : items) {
+            QListWidgetItem* item = widget->takeItem(widget->row(it));
             delete item;
         }
     }
@@ -373,9 +371,7 @@ TaskDlgLoftParameters::TaskDlgLoftParameters(ViewProviderLoft *LoftView,bool new
     Content.push_back(parameter);
 }
 
-TaskDlgLoftParameters::~TaskDlgLoftParameters()
-{
-}
+TaskDlgLoftParameters::~TaskDlgLoftParameters() = default;
 
 bool TaskDlgLoftParameters::accept()
 {

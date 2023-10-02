@@ -180,21 +180,21 @@ const SoEvent* GesturesDevice::translateEvent(QEvent* event)
 {
     if (event->type() == QEvent::Gesture
             || event->type() == QEvent::GestureOverride) {
-        QGestureEvent* gevent = static_cast<QGestureEvent*>(event);
+        auto gevent = static_cast<QGestureEvent*>(event);
 
-        QPinchGesture* zg = static_cast<QPinchGesture*>(gevent->gesture(Qt::PinchGesture));
+        auto zg = static_cast<QPinchGesture*>(gevent->gesture(Qt::PinchGesture));
         if(zg){
             gevent->setAccepted(Qt::PinchGesture,true);//prefer it over pan
             return new SoGesturePinchEvent(zg,this->widget);
         }
 
-        QPanGesture* pg = static_cast<QPanGesture*>(gevent->gesture(Qt::PanGesture));
+        auto pg = static_cast<QPanGesture*>(gevent->gesture(Qt::PanGesture));
         if(pg){
             gevent->setAccepted(Qt::PanGesture,true);
             return new SoGesturePanEvent(pg,this->widget);
         }
 
-        QSwipeGesture* sg = static_cast<QSwipeGesture*>(gevent->gesture(Qt::SwipeGesture));
+        auto sg = static_cast<QSwipeGesture*>(gevent->gesture(Qt::SwipeGesture));
         if(sg){
             gevent->setAccepted(Qt::SwipeGesture,true);
             return new SoGesturePanEvent(pg,this->widget);

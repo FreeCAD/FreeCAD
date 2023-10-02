@@ -85,6 +85,8 @@ public:
     virtual void zoom(double factor);
     virtual void stopZoom();
     virtual double mouseZoomFactor(QPoint p);
+    virtual void zoomIn();
+    virtual void zoomOut();
 
     virtual void startPan(QPoint p);
     virtual void pan(QPoint p);
@@ -98,6 +100,7 @@ public:
 protected:
     virtual void initialize();
     virtual void setAnchor();
+
     QGVPage* m_viewer;
     int m_currentmode;
 
@@ -119,6 +122,8 @@ protected:
 
     KeyCombination m_keyCombo;
     QCursor m_saveCursor;
+    int m_wheelDeltaCounter;
+    int m_mouseDeltaCounter;
 
 private:
 

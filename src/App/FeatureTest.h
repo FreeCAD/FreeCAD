@@ -153,6 +153,36 @@ public:
     //@}
 };
 
+class FeatureTestRow : public DocumentObject
+{
+    PROPERTY_HEADER_WITH_OVERRIDE(App::FeatureTestRow);
+
+public:
+    FeatureTestRow();
+
+    // Standard Properties (PropertyStandard.h)
+    App::PropertyString  Row;
+    App::PropertyBool    Silent;
+    App::PropertyInteger Value;
+
+    /** @name methods override Feature */
+    //@{
+    DocumentObjectExecReturn *execute() override;
+    //@}
+};
+
+class FeatureTestAbsAddress : public DocumentObject
+{
+    PROPERTY_HEADER_WITH_OVERRIDE(App::FeatureTestAbsAddress);
+
+public:
+    FeatureTestAbsAddress();
+    DocumentObjectExecReturn *execute() override;
+
+    App::PropertyString Address;
+    App::PropertyBool Valid;
+};
+
 class FeatureTestPlacement : public DocumentObject
 {
     PROPERTY_HEADER_WITH_OVERRIDE(App::FeatureTestPlacement);

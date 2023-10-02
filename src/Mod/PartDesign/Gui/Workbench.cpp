@@ -37,7 +37,7 @@
 #include "WorkflowManager.h"
 
 using namespace PartDesignGui;
-namespace bp = boost::placeholders;
+namespace sp = std::placeholders;
 
 #if 0 // needed for Qt's lupdate utility
     qApp->translate("Workbench", "&Sketch");
@@ -442,11 +442,13 @@ void Workbench::activated()
     if(App::GetApplication().GetUserParameter().GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/PartDesign")->GetBool("SwitchToTask", true))
         Gui::Control().showTaskView();
 
+    //NOLINTBEGIN
     // Let us be notified when a document is activated, so that we can update the ActivePartObject
-    activeDoc = Gui::Application::Instance->signalActiveDocument.connect(boost::bind(&Workbench::slotActiveDocument, this, bp::_1));
-    createDoc = App::GetApplication().signalNewDocument.connect(boost::bind(&Workbench::slotNewDocument, this, bp::_1));
-    finishDoc = App::GetApplication().signalFinishRestoreDocument.connect(boost::bind(&Workbench::slotFinishRestoreDocument, this, bp::_1));
-    deleteDoc = App::GetApplication().signalDeleteDocument.connect(boost::bind(&Workbench::slotDeleteDocument, this, bp::_1));
+    activeDoc = Gui::Application::Instance->signalActiveDocument.connect(std::bind(&Workbench::slotActiveDocument, this, sp::_1));
+    createDoc = App::GetApplication().signalNewDocument.connect(std::bind(&Workbench::slotNewDocument, this, sp::_1));
+    finishDoc = App::GetApplication().signalFinishRestoreDocument.connect(std::bind(&Workbench::slotFinishRestoreDocument, this, sp::_1));
+    deleteDoc = App::GetApplication().signalDeleteDocument.connect(std::bind(&Workbench::slotDeleteDocument, this, sp::_1));
+    //NOLINTEND
 }
 
 void Workbench::deactivated()
@@ -476,11 +478,12 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     sketch->setCommand("&Sketch");
 
     *sketch << "PartDesign_NewSketch"
-            << "Sketcher_LeaveSketch"
-            << "Sketcher_ViewSketch"
+            << "Sketcher_EditSketch"
             << "Sketcher_MapSketch"
             << "Sketcher_ReorientSketch"
-            << "Sketcher_ValidateSketch";
+            << "Sketcher_ValidateSketch"
+            << "Sketcher_MergeSketches"
+            << "Sketcher_MirrorSketch";
 
     Gui::MenuItem* part = new Gui::MenuItem;
     root->insertItem(item, part);
@@ -608,6 +611,7 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
           << "PartDesign_NewSketch"
           << "Sketcher_EditSketch"
           << "Sketcher_MapSketch"
+          << "Sketcher_ValidateSketch"
           << "Separator"
           << "PartDesign_Point"
           << "PartDesign_Line"

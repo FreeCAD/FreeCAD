@@ -22,23 +22,24 @@
 //this file originally part of Drawing workbench
 //migrated to TechDraw workbench 2022-01-26 by Wandererfan
 
-
 #ifndef TechDrawProjectionAlgos_h_
 #define TechDrawProjectionAlgos_h_
 
+#include <map>
+#include <string>
+#include <TopoDS_Shape.hxx>
+
+#include <Base/Vector3D.h>
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
-#include <map>
-
-#include <TopoDS_Shape.hxx>
-#include <Base/Vector3D.h>
-#include <string>
 
 class BRepAdaptor_Curve;
 
 namespace TechDraw
 {
 
+  const TopoDS_Shape& build3dCurves(const TopoDS_Shape& shape);
+  
 /** Algo class for projecting shapes and creating SVG output of it
  */
 class TechDrawExport ProjectionAlgos

@@ -28,11 +28,12 @@
 #include <Gui/Application.h>
 #include <Gui/WidgetFactory.h>
 #include <Gui/Language/Translator.h>
-#include "ViewProviderPath.h"
+
 #include "DlgSettingsPathColor.h"
+#include "ViewProviderArea.h"
+#include "ViewProviderPath.h"
 #include "ViewProviderPathCompound.h"
 #include "ViewProviderPathShape.h"
-#include "ViewProviderArea.h"
 
 
 // use a different name to CreateCommand()
@@ -42,6 +43,7 @@ void loadPathResource()
 {
     // add resources and reloads the translators
     Q_INIT_RESOURCE(Path);
+    Q_INIT_RESOURCE(Path_translation);
     Gui::Translator::instance()->refresh();
 }
 
@@ -85,7 +87,7 @@ PyMOD_INIT_FUNC(PathGui)
     loadPathResource();
 
     // register preferences pages
-    new Gui::PrefPageProducer<PathGui::DlgSettingsPathColor> ("Path");
+    new Gui::PrefPageProducer<PathGui::DlgSettingsPathColor> (QT_TRANSLATE_NOOP("QObject","Path"));
 
     PyMOD_Return(mod);
 }

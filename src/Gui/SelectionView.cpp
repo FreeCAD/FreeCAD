@@ -62,7 +62,7 @@ SelectionView::SelectionView(Gui::Document* pcDocument, QWidget *parent)
 
     QVBoxLayout* vLayout = new QVBoxLayout(this);
     vLayout->setSpacing(0);
-    vLayout->setMargin (0);
+    vLayout->setContentsMargins(0, 0, 0, 0);
 
     QLineEdit* searchBox = new QLineEdit(this);
     searchBox->setPlaceholderText(tr("Search"));
@@ -100,21 +100,18 @@ SelectionView::SelectionView(Gui::Document* pcDocument, QWidget *parent)
 
     resize(200, 200);
 
-    connect(clearButton, SIGNAL(clicked()), searchBox, SLOT(clear()));
-    connect(searchBox, SIGNAL(textChanged(QString)), this, SLOT(search(QString)));
-    connect(searchBox, SIGNAL(editingFinished()), this, SLOT(validateSearch()));
-    connect(selectionView, SIGNAL(itemDoubleClicked(QListWidgetItem*)), this, SLOT(toggleSelect(QListWidgetItem*)));
-    connect(selectionView, SIGNAL(itemEntered(QListWidgetItem*)), this, SLOT(preselect(QListWidgetItem*)));
-    connect(pickList, SIGNAL(itemDoubleClicked(QListWidgetItem*)), this, SLOT(toggleSelect(QListWidgetItem*)));
-    connect(pickList, SIGNAL(itemEntered(QListWidgetItem*)), this, SLOT(preselect(QListWidgetItem*)));
-    connect(selectionView, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(onItemContextMenu(QPoint)));
-    connect(enablePickList, SIGNAL(stateChanged(int)), this, SLOT(onEnablePickList()));
-
+    connect(clearButton, &QToolButton::clicked, searchBox, &QLineEdit::clear);
+    connect(searchBox, &QLineEdit::textChanged, this, &SelectionView::search);
+    connect(searchBox, &QLineEdit::editingFinished, this, &SelectionView::validateSearch);
+    connect(selectionView, &QListWidget::itemDoubleClicked, this, &SelectionView::toggleSelect);
+    connect(selectionView, &QListWidget::itemEntered, this, &SelectionView::preselect);
+    connect(pickList, &QListWidget::itemDoubleClicked, this, &SelectionView::toggleSelect);
+    connect(pickList, &QListWidget::itemEntered, this, &SelectionView::preselect);
+    connect(selectionView, &QListWidget::customContextMenuRequested, this, &SelectionView::onItemContextMenu);
+    connect(enablePickList, &QCheckBox::stateChanged, this, &SelectionView::onEnablePickList);
 }
 
-SelectionView::~SelectionView()
-{
-}
+SelectionView::~SelectionView() = default;
 
 void SelectionView::leaveEvent(QEvent *)
 {
@@ -203,21 +200,21 @@ void SelectionView::onSelectionChanged(const SelectionChanges &Reason)
         // remove all items
         selectionView->clear();
         std::vector<SelectionSingleton::SelObj> objs = Gui::Selection().getSelection(Reason.pDocName, ResolveMode::NoResolve);
-        for (std::vector<SelectionSingleton::SelObj>::iterator it = objs.begin(); it != objs.end(); ++it) {
+        for (const auto & it : objs) {
             // save as user data
             QStringList list;
-            list << QString::fromLatin1(it->DocName);
-            list << QString::fromLatin1(it->FeatName);
+            list << QString::fromLatin1(it.DocName);
+            list << QString::fromLatin1(it.FeatName);
 
             // build name
-            str << it->DocName;
+            str << it.DocName;
             str << "#";
-            str << it->FeatName;
-            App::Document* doc = App::GetApplication().getDocument(it->DocName);
-            App::DocumentObject* obj = doc->getObject(it->FeatName);
-            if (it->SubName && it->SubName[0] != '\0') {
+            str << it.FeatName;
+            App::Document* doc = App::GetApplication().getDocument(it.DocName);
+            App::DocumentObject* obj = doc->getObject(it.FeatName);
+            if (it.SubName && it.SubName[0] != '\0') {
                 str << ".";
-                str << it->SubName;
+                str << it.SubName;
                 auto subObj = obj->getSubObject(Reason.pSubName);
                 if(subObj)
                     obj = subObj;
@@ -281,20 +278,20 @@ void SelectionView::search(const QString& text)
         if (doc) {
             objects = doc->getObjects();
             selectionView->clear();
-            for (std::vector<App::DocumentObject*>::iterator it = objects.begin(); it != objects.end(); ++it) {
-                QString label = QString::fromUtf8((*it)->Label.getValue());
+            for (auto it : objects) {
+                QString label = QString::fromUtf8(it->Label.getValue());
                 if (label.contains(text,Qt::CaseInsensitive)) {
-                    searchList.push_back(*it);
+                    searchList.push_back(it);
                     // save as user data
                     QString selObject;
                     QTextStream str(&selObject);
                     QStringList list;
                     list << QString::fromLatin1(doc->getName());
-                    list << QString::fromLatin1((*it)->getNameInDocument());
+                    list << QString::fromLatin1(it->getNameInDocument());
                     // build name
                     str << QString::fromUtf8(doc->Label.getValue());
                     str << "#";
-                    str << (*it)->getNameInDocument();
+                    str << it->getNameInDocument();
                     str << " (";
                     str << label;
                     str << ")";
@@ -313,8 +310,8 @@ void SelectionView::validateSearch()
         App::Document* doc = App::GetApplication().getActiveDocument();
         if (doc) {
             Gui::Selection().clearSelection();
-            for (std::vector<App::DocumentObject*>::iterator it = searchList.begin(); it != searchList.end(); ++it) {
-                Gui::Selection().addSelection(doc->getName(),(*it)->getNameInDocument(),nullptr);
+            for (auto it : searchList) {
+                Gui::Selection().addSelection(doc->getName(),it->getNameInDocument(),nullptr);
             }
         }
     }
@@ -334,7 +331,7 @@ void SelectionView::select(QListWidgetItem* item)
         //Gui::Selection().clearSelection();
         Gui::Command::runCommand(Gui::Command::Gui,"Gui.Selection.clearSelection()");
         //Gui::Selection().addSelection(elements[0].toLatin1(),elements[1].toLatin1(),0);
-        QString cmd = QString::fromLatin1("Gui.Selection.addSelection(App.getDocument(\"%1\").getObject(\"%2\"))").arg(elements[0],elements[1]);
+        QString cmd = QString::fromLatin1(R"(Gui.Selection.addSelection(App.getDocument("%1").getObject("%2")))").arg(elements[0],elements[1]);
         Gui::Command::runCommand(Gui::Command::Gui,cmd.toLatin1());
     }catch(Base::Exception &e) {
         e.ReportException();
@@ -351,7 +348,7 @@ void SelectionView::deselect()
         return;
 
     //Gui::Selection().rmvSelection(elements[0].toLatin1(),elements[1].toLatin1(),0);
-    QString cmd = QString::fromLatin1("Gui.Selection.removeSelection(App.getDocument(\"%1\").getObject(\"%2\"))").arg(elements[0],elements[1]);
+    QString cmd = QString::fromLatin1(R"(Gui.Selection.removeSelection(App.getDocument("%1").getObject("%2")))").arg(elements[0],elements[1]);
     try {
         Gui::Command::runCommand(Gui::Command::Gui,cmd.toLatin1());
     }catch(Base::Exception &e) {
@@ -458,7 +455,7 @@ void SelectionView::touch()
     QStringList elements = item->data(Qt::UserRole).toStringList();
     if (elements.size() < 2)
         return;
-    QString cmd = QString::fromLatin1("App.getDocument(\"%1\").getObject(\"%2\").touch()").arg(elements[0],elements[1]);
+    QString cmd = QString::fromLatin1(R"(App.getDocument("%1").getObject("%2").touch())").arg(elements[0],elements[1]);
     try {
         Gui::Command::runCommand(Gui::Command::Doc,cmd.toLatin1());
     }catch(Base::Exception &e) {
@@ -476,19 +473,19 @@ void SelectionView::toPython()
         return;
 
     try {
-        QString cmd = QString::fromLatin1("obj = App.getDocument(\"%1\").getObject(\"%2\")").arg(elements[0], elements[1]);
+        QString cmd = QString::fromLatin1(R"(obj = App.getDocument("%1").getObject("%2"))").arg(elements[0], elements[1]);
         Gui::Command::runCommand(Gui::Command::Gui,cmd.toLatin1());
         if (elements.length() > 2) {
             App::Document* doc = App::GetApplication().getDocument(elements[0].toLatin1());
             App::DocumentObject* obj = doc->getObject(elements[1].toLatin1());
             QString property = getProperty(obj);
 
-            cmd = QString::fromLatin1("shp = App.getDocument(\"%1\").getObject(\"%2\").%3")
+            cmd = QString::fromLatin1(R"(shp = App.getDocument("%1").getObject("%2").%3)")
                     .arg(elements[0], elements[1], property);
             Gui::Command::runCommand(Gui::Command::Gui,cmd.toLatin1());
 
             if (supportPart(obj, elements[2])) {
-                cmd = QString::fromLatin1("elt = App.getDocument(\"%1\").getObject(\"%2\").%3.%4")
+                cmd = QString::fromLatin1(R"(elt = App.getDocument("%1").getObject("%2").%3.%4)")
                         .arg(elements[0], elements[1], property, elements[2]);
                 Gui::Command::runCommand(Gui::Command::Gui,cmd.toLatin1());
             }
@@ -513,7 +510,7 @@ void SelectionView::showPart()
         if (!module.isEmpty() && !property.isEmpty() && supportPart(obj, elements[2])) {
             try {
                 Gui::Command::addModule(Gui::Command::Gui, module.toLatin1());
-                QString cmd = QString::fromLatin1("%1.show(App.getDocument(\"%2\").getObject(\"%3\").%4.%5)")
+                QString cmd = QString::fromLatin1(R"(%1.show(App.getDocument("%2").getObject("%3").%4.%5))")
                         .arg(module, elements[0], elements[1], property, elements[2]);
                 Gui::Command::runCommand(Gui::Command::Gui,cmd.toLatin1());
             }
@@ -587,28 +584,35 @@ void SelectionView::onItemContextMenu(const QPoint& point)
     if (!item)
         return;
     QMenu menu;
-    QAction *selectAction = menu.addAction(tr("Select only"),this,SLOT(select()));
+    QAction *selectAction = menu.addAction(tr("Select only"), this, [&]{
+        this->select(nullptr);
+    });
     selectAction->setIcon(QIcon::fromTheme(QString::fromLatin1("view-select")));
     selectAction->setToolTip(tr("Selects only this object"));
-    QAction *deselectAction = menu.addAction(tr("Deselect"),this,SLOT(deselect()));
+
+    QAction *deselectAction = menu.addAction(tr("Deselect"), this, &SelectionView::deselect);
     deselectAction->setIcon(QIcon::fromTheme(QString::fromLatin1("view-unselectable")));
     deselectAction->setToolTip(tr("Deselects this object"));
-    QAction *zoomAction = menu.addAction(tr("Zoom fit"),this,SLOT(zoom()));
+
+    QAction *zoomAction = menu.addAction(tr("Zoom fit"), this, &SelectionView::zoom);
     zoomAction->setIcon(QIcon::fromTheme(QString::fromLatin1("zoom-fit-best")));
     zoomAction->setToolTip(tr("Selects and fits this object in the 3D window"));
-    QAction *gotoAction = menu.addAction(tr("Go to selection"),this,SLOT(treeSelect()));
+
+    QAction *gotoAction = menu.addAction(tr("Go to selection"), this, &SelectionView::treeSelect);
     gotoAction->setToolTip(tr("Selects and locates this object in the tree view"));
-    QAction *touchAction = menu.addAction(tr("Mark to recompute"),this,SLOT(touch()));
+
+    QAction *touchAction = menu.addAction(tr("Mark to recompute"), this, &SelectionView::touch);
     touchAction->setIcon(QIcon::fromTheme(QString::fromLatin1("view-refresh")));
     touchAction->setToolTip(tr("Mark this object to be recomputed"));
-    QAction *toPythonAction = menu.addAction(tr("To python console"),this,SLOT(toPython()));
+
+    QAction *toPythonAction = menu.addAction(tr("To python console"), this, &SelectionView::toPython);
     toPythonAction->setIcon(QIcon::fromTheme(QString::fromLatin1("applications-python")));
     toPythonAction->setToolTip(tr("Reveals this object and its subelements in the python console."));
 
     QStringList elements = item->data(Qt::UserRole).toStringList();
     if (elements.length() > 2) {
         // subshape-specific entries
-        QAction *showPart = menu.addAction(tr("Duplicate subshape"),this,SLOT(showPart()));
+        QAction *showPart = menu.addAction(tr("Duplicate subshape"), this, &SelectionView::showPart);
         showPart->setIcon(QIcon(QString::fromLatin1(":/icons/ClassBrowser/member.svg")));
         showPart->setToolTip(tr("Creates a standalone copy of this subshape in the document"));
     }

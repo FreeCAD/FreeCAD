@@ -26,14 +26,15 @@
 
 #include "PreCompiled.h"
 
-#include "QDomNodeModel.h"
-
-#include <QDomNode>
 #include <QDomDocument>
-#include <QUrl>
-#include <QVector>
+#include <QDomNode>
+#if QT_VERSION < QT_VERSION_CHECK(6,0,0)
+#include "QDomNodeModel.h"
 #include <QSourceLocation>
+#include <QUrl>
 #include <QVariant>
+#include <QVector>
+
 
 class PrivateDomNodeWrapper: public QDomNode
 {
@@ -359,3 +360,4 @@ QXmlNodeModelIndex QDomNodeModel::nextFromSimpleAxis ( SimpleAxis axis, const QX
 
     return QXmlNodeModelIndex();
 }
+#endif

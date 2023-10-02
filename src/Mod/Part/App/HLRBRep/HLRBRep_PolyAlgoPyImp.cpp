@@ -28,11 +28,13 @@
 # include <gp_Pnt.hxx>
 # include <HLRAlgo_Projector.hxx>
 # include <Standard_Version.hxx>
+
+# include <boost/math/special_functions/fpclassify.hpp>
 #endif
 
 #include <Base/GeometryPyCXX.h>
+#include <Base/PyWrapParseTupleAndKeywords.h>
 #include <Base/VectorPy.h>
-#include <boost/math/special_functions/fpclassify.hpp>
 
 #include "HLRBRep/HLRBRep_PolyAlgoPy.h"
 #include "HLRBRep/HLRBRep_PolyAlgoPy.cpp"
@@ -74,7 +76,7 @@ int HLRBRep_PolyAlgoPy::PyInit(PyObject* args, PyObject* /*kwds*/)
 // returns a string which represents the object e.g. when printed in python
 std::string HLRBRep_PolyAlgoPy::representation() const
 {
-    return std::string("<HLRBRep_PolyAlgo object>");
+    return {"<HLRBRep_PolyAlgo object>"};
 }
 
 PyObject* HLRBRep_PolyAlgoPy::setProjector(PyObject *args, PyObject *kwds)
@@ -84,12 +86,12 @@ PyObject* HLRBRep_PolyAlgoPy::setProjector(PyObject *args, PyObject *kwds)
     PyObject* xd = nullptr;
     double focus = std::numeric_limits<double>::quiet_NaN();
 
-    static char *kwlist[] = {"Origin", "ZDir", "XDir", nullptr};
-    if (PyArg_ParseTupleAndKeywords(args, kwds, "|O!O!O!d", kwlist,
-                                    &Base::VectorPy::Type, &ps,
-                                    &Base::VectorPy::Type, &zd,
-                                    &Base::VectorPy::Type, &xd,
-                                    &focus)) {
+    static const std::array<const char *, 4> kwlist {"Origin", "ZDir", "XDir", nullptr};
+    if (Base::Wrapped_ParseTupleAndKeywords(args, kwds, "|O!O!O!d", kwlist,
+                                            &Base::VectorPy::Type, &ps,
+                                            &Base::VectorPy::Type, &zd,
+                                            &Base::VectorPy::Type, &xd,
+                                            &focus)) {
         gp_Ax2 ax2;
         if (ps && zd && xd) {
             Base::Vector3d p = Py::Vector(ps,false).toVector();

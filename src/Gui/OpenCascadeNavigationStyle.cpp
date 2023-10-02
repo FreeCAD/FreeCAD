@@ -38,13 +38,9 @@ using namespace Gui;
 
 TYPESYSTEM_SOURCE(Gui::OpenCascadeNavigationStyle, Gui::UserNavigationStyle)
 
-OpenCascadeNavigationStyle::OpenCascadeNavigationStyle()
-{
-}
+OpenCascadeNavigationStyle::OpenCascadeNavigationStyle() = default;
 
-OpenCascadeNavigationStyle::~OpenCascadeNavigationStyle()
-{
-}
+OpenCascadeNavigationStyle::~OpenCascadeNavigationStyle() = default;
 
 const char* OpenCascadeNavigationStyle::mouseButtons(ViewerMode mode)
 {
@@ -105,13 +101,13 @@ SbBool OpenCascadeNavigationStyle::processSoEvent(const SoEvent * const ev)
 
     // Keyboard handling
     if (type.isDerivedFrom(SoKeyboardEvent::getClassTypeId())) {
-        const SoKeyboardEvent * const event = static_cast<const SoKeyboardEvent *>(ev);
+        auto const event = static_cast<const SoKeyboardEvent *>(ev);
         processed = processKeyboardEvent(event);
     }
 
     // Mouse Button / Spaceball Button handling
     if (type.isDerivedFrom(SoMouseButtonEvent::getClassTypeId())) {
-        const SoMouseButtonEvent * const event = (const SoMouseButtonEvent *) ev;
+        const auto event = (const SoMouseButtonEvent *) ev;
         const int button = event->getButton();
         const SbBool press = event->getState() == SoButtonEvent::DOWN ? true : false;
 
@@ -206,7 +202,7 @@ SbBool OpenCascadeNavigationStyle::processSoEvent(const SoEvent * const ev)
     // Mouse Movement handling
     if (type.isDerivedFrom(SoLocation2Event::getClassTypeId())) {
         this->lockrecenter = true;
-        const SoLocation2Event * const event = (const SoLocation2Event *) ev;
+        const auto event = (const SoLocation2Event *) ev;
         if (this->currentmode == NavigationStyle::ZOOMING) {
             // OCCT uses horizontal mouse position, not vertical
             // this->zoomByCursor(posn, prevnormalized);
@@ -234,7 +230,7 @@ SbBool OpenCascadeNavigationStyle::processSoEvent(const SoEvent * const ev)
 
     // Spaceball & Joystick handling
     if (type.isDerivedFrom(SoMotion3Event::getClassTypeId())) {
-        const SoMotion3Event * const event = static_cast<const SoMotion3Event *>(ev);
+        const auto event = static_cast<const SoMotion3Event *>(ev);
         if (event)
             this->processMotionEvent(event);
         processed = true;
@@ -255,6 +251,9 @@ SbBool OpenCascadeNavigationStyle::processSoEvent(const SoEvent * const ev)
         newmode = NavigationStyle::PANNING;
         break;
     case CTRLDOWN|BUTTON2DOWN:
+        if (newmode != NavigationStyle::DRAGGING) {
+            saveCursorPosition(ev);
+        }
         newmode = NavigationStyle::DRAGGING;
         break;
     case BUTTON2DOWN:

@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
@@ -38,9 +37,10 @@
 # include <TopTools_HSequenceOfShape.hxx>
 #endif
 
-#include "ui_TaskSweep.h"
-#include "TaskSweep.h"
-
+#include <App/Application.h>
+#include <App/Document.h>
+#include <App/DocumentObject.h>
+#include <App/Link.h>
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/Command.h>
@@ -50,14 +50,10 @@
 #include <Gui/SelectionObject.h>
 #include <Gui/ViewProvider.h>
 #include <Gui/WaitCursor.h>
-
-#include <Base/Console.h>
-#include <Base/Interpreter.h>
-#include <App/Application.h>
-#include <App/Document.h>
-#include <App/DocumentObject.h>
-#include <App/Link.h>
 #include <Mod/Part/App/PartFeature.h>
+
+#include "TaskSweep.h"
+#include "ui_TaskSweep.h"
 
 
 using namespace PartGui;
@@ -68,12 +64,8 @@ public:
     Ui_TaskSweep ui;
     QString buttonText;
     std::string document;
-    Private()
-    {
-    }
-    ~Private()
-    {
-    }
+    Private() = default;
+    ~Private() = default;
 
     class EdgeSelection : public Gui::SelectionFilterGate
     {
@@ -140,10 +132,12 @@ SweepWidget::SweepWidget(QWidget* parent)
     d->ui.selector->setSelectedLabel(tr("Selected profiles"));
     d->ui.labelPath->clear();
 
-    connect(d->ui.selector->availableTreeWidget(), SIGNAL(currentItemChanged(QTreeWidgetItem*, QTreeWidgetItem*)),
-            this, SLOT(onCurrentItemChanged(QTreeWidgetItem*, QTreeWidgetItem*)));
-    connect(d->ui.selector->selectedTreeWidget(), SIGNAL(currentItemChanged(QTreeWidgetItem*, QTreeWidgetItem*)),
-            this, SLOT(onCurrentItemChanged(QTreeWidgetItem*, QTreeWidgetItem*)));
+    connect(d->ui.buttonPath, &QPushButton::toggled,
+            this, &SweepWidget::onButtonPathToggled);
+    connect(d->ui.selector->availableTreeWidget(), &QTreeWidget::currentItemChanged,
+            this, &SweepWidget::onCurrentItemChanged);
+    connect(d->ui.selector->selectedTreeWidget(), &QTreeWidget::currentItemChanged,
+            this, &SweepWidget::onCurrentItemChanged);
 
     findShapes();
 }
@@ -164,8 +158,8 @@ void SweepWidget::findShapes()
 
     std::vector<App::DocumentObject*> objs = activeDoc->getObjectsOfType<App::DocumentObject>();
 
-    for (std::vector<App::DocumentObject*>::iterator it = objs.begin(); it!=objs.end(); ++it) {
-        Part::TopoShape topoShape = Part::Feature::getTopoShape(*it);
+    for (auto obj : objs) {
+        Part::TopoShape topoShape = Part::Feature::getTopoShape(obj);
         if (topoShape.isNull()) {
             continue;
         }
@@ -207,14 +201,14 @@ void SweepWidget::findShapes()
             shape.ShapeType() == TopAbs_WIRE ||
             shape.ShapeType() == TopAbs_EDGE ||
             shape.ShapeType() == TopAbs_VERTEX) {
-            QString label = QString::fromUtf8((*it)->Label.getValue());
-            QString name = QString::fromLatin1((*it)->getNameInDocument());
-            
+            QString label = QString::fromUtf8(obj->Label.getValue());
+            QString name = QString::fromLatin1(obj->getNameInDocument());
+
             QTreeWidgetItem* child = new QTreeWidgetItem();
             child->setText(0, label);
             child->setToolTip(0, label);
             child->setData(0, Qt::UserRole, name);
-            Gui::ViewProvider* vp = activeGui->getViewProvider(*it);
+            Gui::ViewProvider* vp = activeGui->getViewProvider(obj);
             if (vp) child->setIcon(0, vp->getIcon());
             d->ui.selector->availableTreeWidget()->addTopLevelItem(child);
         }
@@ -234,8 +228,8 @@ bool SweepWidget::isPathValid(const Gui::SelectionObject& sel) const
     if (!sub.empty()) {
         try {
             BRepBuilderAPI_MakeWire mkWire;
-            for (std::vector<std::string>::const_iterator it = sub.begin(); it != sub.end(); ++it) {
-                TopoDS_Shape subshape = shape.getSubShape(it->c_str());
+            for (const auto & it : sub) {
+                TopoDS_Shape subshape = shape.getSubShape(it.c_str());
                 mkWire.Add(TopoDS::Edge(subshape));
             }
             pathShape = mkWire.Wire();
@@ -302,8 +296,8 @@ bool SweepWidget::accept()
             for (std::vector<std::string>::const_iterator it = subnames.begin(); it != subnames.end(); ++it) {
                 subShapes.push_back(Part::Feature::getTopoShape(docobj, subnames[0].c_str(), true /*need element*/));
             }
-            for (std::vector<Part::TopoShape>::iterator it = subShapes.begin(); it != subShapes.end(); ++it) {
-                TopoDS_Shape dsShape = (*it).getShape();
+            for (const auto & it : subShapes) {
+                TopoDS_Shape dsShape = it.getShape();
                 if (dsShape.IsNull() || dsShape.ShapeType() != TopAbs_EDGE) { //only edge selection allowed
                     ok = false;
                 }
@@ -380,7 +374,7 @@ bool SweepWidget::accept()
         doc->commitCommand();
     }
     catch (const Base::Exception& e) {
-        QMessageBox::warning(this, tr("Input error"), QString::fromLatin1(e.what()));
+        QMessageBox::warning(this, tr("Input error"), QCoreApplication::translate("Exception", e.what()));
         return false;
     }
 
@@ -406,12 +400,12 @@ void SweepWidget::onCurrentItemChanged(QTreeWidgetItem* current, QTreeWidgetItem
     }
 }
 
-void SweepWidget::on_buttonPath_toggled(bool on)
+void SweepWidget::onButtonPathToggled(bool on)
 {
     if (on) {
         QList<QWidget*> c = this->findChildren<QWidget*>();
-        for (QList<QWidget*>::iterator it = c.begin(); it != c.end(); ++it)
-            (*it)->setEnabled(false);
+        for (auto it : c)
+            it->setEnabled(false);
         d->buttonText = d->ui.buttonPath->text();
         d->ui.buttonPath->setText(tr("Done"));
         d->ui.buttonPath->setEnabled(true);
@@ -423,8 +417,8 @@ void SweepWidget::on_buttonPath_toggled(bool on)
     }
     else {
         QList<QWidget*> c = this->findChildren<QWidget*>();
-        for (QList<QWidget*>::iterator it = c.begin(); it != c.end(); ++it)
-            (*it)->setEnabled(true);
+        for (auto it : c)
+            it->setEnabled(true);
         d->ui.buttonPath->setText(d->buttonText);
         d->ui.labelPath->clear();
         Gui::Selection().rmvSelectionGate();
@@ -496,7 +490,7 @@ void TaskSweep::clicked(int id)
         }
 
         label->show();
-        QTimer::singleShot(3000, label, SLOT(hide()));
+        QTimer::singleShot(3000, label, &Gui::StatusWidget::hide);
     }
 }
 

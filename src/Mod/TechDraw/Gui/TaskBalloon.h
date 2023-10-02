@@ -24,10 +24,18 @@
 #ifndef GUI_TASKVIEW_TASKBALLOON_H
 #define GUI_TASKVIEW_TASKBALLOON_H
 
-#include <Mod/TechDraw/TechDrawGlobal.h>
-
 #include <Gui/TaskView/TaskDialog.h>
 #include <Gui/TaskView/TaskView.h>
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
+namespace Gui
+{
+class Document;
+}
+namespace App
+{
+class Document;
+}
 
 namespace TechDrawGui
 {
@@ -64,6 +72,10 @@ private:
     std::unique_ptr<Ui_TaskBalloon> ui;
     QGIViewBalloon *m_parent;
     ViewProviderBalloon* m_balloonVP;
+
+    std::string m_balloonName;
+    App::Document* m_appDocument;
+    Gui::Document* m_guiDocument;
 };
 
 class TaskDlgBalloon : public Gui::TaskView::TaskDialog

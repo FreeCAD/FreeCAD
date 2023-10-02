@@ -1,6 +1,5 @@
-#/***************************************************************************
-# *   Copyright (c) Victor Titov (DeepSOIC)                                 *
-# *                                           (vv.titov@gmail.com) 2019     *
+# /***************************************************************************
+# *   Copyright (c) 2019 Victor Titov (DeepSOIC) <vv.titov@gmail.com>       *
 # *                                                                         *
 # *   This file is part of the FreeCAD CAx development system.              *
 # *                                                                         *
@@ -25,31 +24,35 @@ from Show.SceneDetail import SceneDetail
 import FreeCAD as App
 import FreeCADGui as Gui
 
+
 class ClipPlane(SceneDetail):
     """ClipPlane(document, enable = None, placement = None, offset = 0.0):
     TempoVis plugin for applying clipping plane to whole project except edit root.
-    enable can be 0 for disable, 1 for enable, and -1 for toggle 
+    enable can be 0 for disable, 1 for enable, and -1 for toggle
     (FIXME: toggle value support is a hack for while we can't read out the current state)."""
-    
-    class_id = 'SDClipPlane'
-    key = ''
-    
-    def __init__(self, document, enable = None, placement = None, offset = 0.0):
+
+    class_id = "SDClipPlane"
+    key = ""
+
+    def __init__(self, document, enable=None, placement=None, offset=0.0):
         self.doc = document
         if enable is not None:
             if placement is not None and offset != 0.0:
                 placement = placement.copy()
-                dir = placement.Rotation.multVec(App.Vector(0,0,1))
-                placement.Base = placement.Base + dir*offset
+                dir = placement.Rotation.multVec(App.Vector(0, 0, 1))
+                placement.Base = placement.Base + dir * offset
             self.data = (enable, placement)
-        
+
     def scene_value(self):
-        return (0, None) #hack. For until there is a way to easily query the plane, this should be good enough.
-    
+        return (
+            0,
+            None,
+        )  # hack. For until there is a way to easily query the plane, this should be good enough.
+
     def apply_data(self, val):
         enable, pla = val
         if enable != 0:
-            self._viewer().toggleClippingPlane(enable, pla= pla)
+            self._viewer().toggleClippingPlane(enable, pla=pla)
         else:
             self._viewer().toggleClippingPlane(enable)
 
@@ -59,6 +62,6 @@ class ClipPlane(SceneDetail):
         else:
             gdoc = Gui.getDocument(self.doc.Name)
         v = gdoc.activeView()
-        if not hasattr(v, 'toggleClippingPlane'):
-            v = gdoc.mdiViewsOfType('Gui::View3DInventor')[0]
+        if not hasattr(v, "toggleClippingPlane"):
+            v = gdoc.mdiViewsOfType("Gui::View3DInventor")[0]
         return v

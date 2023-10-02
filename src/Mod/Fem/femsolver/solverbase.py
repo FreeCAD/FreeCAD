@@ -24,7 +24,7 @@
 
 __title__ = "FreeCAD FEM solver base object"
 __author__ = "Markus Hovorka"
-__url__ = "https://www.freecadweb.org"
+__url__ = "https://www.freecad.org"
 
 ## \addtogroup FEM
 #  @{

@@ -72,7 +72,7 @@ void WidgetFactoryInst::destruct ()
  */
 QWidget* WidgetFactoryInst::createWidget (const char* sName, QWidget* parent) const
 {
-    QWidget* w = (QWidget*)Produce(sName);
+    auto w = static_cast<QWidget*>(Produce(sName));
 
     // this widget class is not registered
     if (!w) {
@@ -114,7 +114,7 @@ QWidget* WidgetFactoryInst::createWidget (const char* sName, QWidget* parent) co
  */
 Gui::Dialog::PreferencePage* WidgetFactoryInst::createPreferencePage (const char* sName, QWidget* parent) const
 {
-    Gui::Dialog::PreferencePage* w = (Gui::Dialog::PreferencePage*)Produce(sName);
+    auto w = (Gui::Dialog::PreferencePage*)Produce(sName);
 
     // this widget class is not registered
     if (!w) {
@@ -164,7 +164,7 @@ QWidget* WidgetFactoryInst::createPrefWidget(const char* sName, QWidget* parent,
     w->setParent(parent);
 
     try {
-        PrefWidget* pw = dynamic_cast<PrefWidget*>(w);
+        auto pw = dynamic_cast<PrefWidget*>(w);
         if (pw) {
             pw->setEntryName(sPref);
             pw->restorePreferences();
@@ -210,14 +210,12 @@ PrefPageUiProducer::PrefPageUiProducer (const char* filename, const char* group)
     Gui::Dialog::DlgPreferencesImp::addPage(filename, group);
 }
 
-PrefPageUiProducer::~PrefPageUiProducer()
-{
-}
+PrefPageUiProducer::~PrefPageUiProducer() = default;
 
 void* PrefPageUiProducer::Produce () const
 {
     QWidget* page = new Gui::Dialog::PreferenceUiForm(fn);
-    return (void*)page;
+    return static_cast<void*>(page);
 }
 
 // ----------------------------------------------------
@@ -285,7 +283,7 @@ PreferencePagePython::PreferencePagePython(const Py::Object& p, QWidget* parent)
             QWidget* form = qobject_cast<QWidget*>(object);
             if (form) {
                 this->setWindowTitle(form->windowTitle());
-                QVBoxLayout *layout = new QVBoxLayout;
+                auto layout = new QVBoxLayout;
                 layout->addWidget(form);
                 setLayout(layout);
             }
@@ -361,7 +359,7 @@ ContainerDialog::ContainerDialog( QWidget* templChild )
     buttonOk->setDefault( true );
 
     MyDialogLayout->addWidget( buttonOk, 1, 0 );
-    QSpacerItem* spacer = new QSpacerItem( 210, 20, QSizePolicy::Expanding, QSizePolicy::Minimum );
+    auto spacer = new QSpacerItem( 210, 20, QSizePolicy::Expanding, QSizePolicy::Minimum );
     MyDialogLayout->addItem( spacer, 1, 1 );
 
     buttonCancel = new QPushButton(this);
@@ -377,14 +375,12 @@ ContainerDialog::ContainerDialog( QWidget* templChild )
     resize( QSize(307, 197).expandedTo(minimumSizeHint()) );
 
     // signals and slots connections
-    connect( buttonOk, SIGNAL( clicked() ), this, SLOT( accept() ) );
-    connect( buttonCancel, SIGNAL( clicked() ), this, SLOT( reject() ) );
+    connect( buttonOk, &QPushButton::clicked, this, &QDialog::accept);
+    connect( buttonCancel, &QPushButton::clicked, this, &QDialog::reject);
 }
 
 /** Destroys the object and frees any allocated resources */
-ContainerDialog::~ContainerDialog()
-{
-}
+ContainerDialog::~ContainerDialog() = default;
 
 // ----------------------------------------------------
 
@@ -409,8 +405,8 @@ PyResource::PyResource() : myDlg(nullptr)
 PyResource::~PyResource()
 {
     delete myDlg;
-    for (std::vector<SignalConnect*>::iterator it = mySignals.begin(); it != mySignals.end(); ++it) {
-        SignalConnect* sc = *it;
+    for (auto it : mySignals) {
+        SignalConnect* sc = it;
         delete sc;
     }
 }
@@ -461,11 +457,10 @@ void PyResource::load(const char* name)
 
     QWidget* w=nullptr;
     try {
-        UiLoader loader;
-        loader.setLanguageChangeEnabled(true);
+        auto loader = UiLoader::newInstance();
         QFile file(fn);
         if (file.open(QFile::ReadOnly))
-            w = loader.load(&file, QApplication::activeWindow());
+            w = loader->load(&file, QApplication::activeWindow());
         file.close();
     }
     catch (...) {
@@ -476,7 +471,7 @@ void PyResource::load(const char* name)
         throw Base::ValueError("Invalid widget.");
 
     if (w->inherits("QDialog")) {
-        myDlg = (QDialog*)w;
+        myDlg = static_cast<QDialog*>(w);
     }
     else {
         myDlg = new ContainerDialog(w);
@@ -510,7 +505,7 @@ bool PyResource::connect(const char* sender, const char* signal, PyObject* cb)
     }
 
     if (objS) {
-        SignalConnect* sc = new SignalConnect(this, cb);
+        auto sc = new SignalConnect(this, cb);
         mySignals.push_back(sc);
         return QObject::connect(objS, sigStr.toLatin1(), sc, SLOT ( onExecute() )  );
     }
@@ -562,9 +557,9 @@ Py::Object PyResource::value(const Py::Tuple& args)
     }
 
     Py::Object item = Py::None();
-    switch (v.type())
+    switch (v.userType())
     {
-    case QVariant::StringList:
+    case QMetaType::QStringList:
         {
             QStringList str = v.toStringList();
             int nSize = str.count();
@@ -574,21 +569,21 @@ Py::Object PyResource::value(const Py::Tuple& args)
             }
             item = slist;
         }   break;
-    case QVariant::ByteArray:
+    case QMetaType::QByteArray:
         break;
-    case QVariant::String:
+    case QMetaType::QString:
         item = Py::String(v.toString().toLatin1());
         break;
-    case QVariant::Double:
+    case QMetaType::Double:
         item = Py::Float(v.toDouble());
         break;
-    case QVariant::Bool:
-        item = Py::Boolean(v.toBool() ? 1 : 0);
+    case QMetaType::Bool:
+        item = Py::Boolean(v.toBool());
         break;
-    case QVariant::UInt:
+    case QMetaType::UInt:
         item = Py::Long(static_cast<unsigned long>(v.toUInt()));
         break;
-    case QVariant::Int:
+    case QMetaType::Int:
         item = Py::Int(v.toInt());
         break;
     default:

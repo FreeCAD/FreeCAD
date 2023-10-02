@@ -23,25 +23,18 @@
 #include "PreCompiled.h"
 
 #include <Base/Console.h>
-#include <Base/PyObjectBase.h>
 #include <Base/Interpreter.h>
 
+#include "AreaPy.h"
 #include "Command.h"
 #include "CommandPy.h"
-#include "Path.h"
-#include "PathPy.h"
-#include "Tool.h"
-#include "Tooltable.h"
-#include "ToolPy.h"
-#include "TooltablePy.h"
-#include "PropertyPath.h"
+#include "FeatureArea.h"
 #include "FeaturePath.h"
-#include "PropertyTool.h"
-#include "PropertyTooltable.h"
 #include "FeaturePathCompound.h"
 #include "FeaturePathShape.h"
-#include "AreaPy.h"
-#include "FeatureArea.h"
+#include "Path.h"
+#include "PathPy.h"
+#include "PropertyPath.h"
 #include "Voronoi.h"
 #include "VoronoiCell.h"
 #include "VoronoiCellPy.h"
@@ -52,12 +45,12 @@
 #include "VoronoiVertexPy.h"
 
 
-namespace Path {
+namespace PathApp {
   extern PyObject* initModule();
 }
 
 /* Python entry */
-PyMOD_INIT_FUNC(Path)
+PyMOD_INIT_FUNC(PathApp)
 {
     // load dependent module
     try {
@@ -68,7 +61,7 @@ PyMOD_INIT_FUNC(Path)
         PyMOD_Return(nullptr);
     }
 
-    PyObject* pathModule = Path::initModule();
+    PyObject* pathModule = PathApp::initModule();
     Base::Console().Log("Loading Path module... done\n");
 
     Py::Object module(pathModule);
@@ -76,8 +69,6 @@ PyMOD_INIT_FUNC(Path)
     // Add Types to module
     Base::Interpreter().addType(&Path::CommandPy        ::Type, pathModule, "Command");
     Base::Interpreter().addType(&Path::PathPy           ::Type, pathModule, "Path");
-    Base::Interpreter().addType(&Path::ToolPy           ::Type, pathModule, "Tool");
-    Base::Interpreter().addType(&Path::TooltablePy      ::Type, pathModule, "Tooltable");
     Base::Interpreter().addType(&Path::AreaPy           ::Type, pathModule, "Area");
 
     PyObject* voronoiModule(module.getAttr("Voronoi").ptr());
@@ -91,13 +82,9 @@ PyMOD_INIT_FUNC(Path)
     // This function is responsible for adding inherited slots from a type's base class.
     Path::Command                ::init();
     Path::Toolpath               ::init();
-    Path::Tool                   ::init();
-    Path::Tooltable              ::init();
     Path::PropertyPath           ::init();
     Path::Feature                ::init();
     Path::FeaturePython          ::init();
-    Path::PropertyTool           ::init();
-    Path::PropertyTooltable      ::init();
     Path::FeatureCompound        ::init();
     Path::FeatureCompoundPython  ::init();
     Path::FeatureShape           ::init();

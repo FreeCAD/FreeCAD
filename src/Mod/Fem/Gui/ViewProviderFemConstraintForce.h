@@ -30,7 +30,8 @@
 namespace FemGui
 {
 
-class FemGuiExport ViewProviderFemConstraintForce : public FemGui::ViewProviderFemConstraintOnBoundary
+class FemGuiExport ViewProviderFemConstraintForce
+    : public FemGui::ViewProviderFemConstraintOnBoundary
 {
     PROPERTY_HEADER_WITH_OVERRIDE(FemGui::ViewProviderFemConstraintForce);
 
@@ -49,7 +50,7 @@ private:
     Base::Vector3f forceDirection;
 };
 
-} //namespace FemGui
+}  // namespace FemGui
 
 
-#endif // GUI_VIEWPROVIDERFEMCONSTRAINTFORCE_H
+#endif  // GUI_VIEWPROVIDERFEMCONSTRAINTFORCE_H

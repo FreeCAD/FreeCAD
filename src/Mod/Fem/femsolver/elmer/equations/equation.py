@@ -23,7 +23,7 @@
 
 __title__ = "FreeCAD FEM solver Elmer equation base object"
 __author__ = "Markus Hovorka"
-__url__ = "https://www.freecadweb.org"
+__url__ = "https://www.freecad.org"
 
 ## \addtogroup FEM
 #  @{
@@ -47,7 +47,7 @@ class Proxy(equationbase.BaseProxy):
             "Base",
             (
                 "Number of your choice\n"
-                "The equation with lowest number\n"
+                "The equation with highest number\n"
                 "will be solved first."
             )
         )

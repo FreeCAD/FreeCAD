@@ -24,52 +24,53 @@
 #define FEMGUI_TaskAnalysisInfo_H
 
 #include <Gui/TaskView/TaskView.h>
-#include <Mod/Fem/App/FemSetNodesObject.h>
 
 
 class Ui_TaskAnalysisInfo;
 class SoEventCallback;
 
-namespace Base {
-    class Polygon2d;
+namespace Base
+{
+class Polygon2d;
 }
-namespace App {
-    class Property;
+namespace App
+{
+class Property;
 }
 
-namespace Gui {
+namespace Gui
+{
 class ViewProvider;
 class ViewVolumeProjection;
+}  // namespace Gui
+
+namespace Fem
+{
+class FemAnalysis;
 }
 
-namespace Fem{
-    class FemAnalysis;
-}
-
-namespace FemGui {
+namespace FemGui
+{
 
 class ViewProviderFemMesh;
 
 
-class TaskAnalysisInfo : public Gui::TaskView::TaskBox
+class TaskAnalysisInfo: public Gui::TaskView::TaskBox
 {
     Q_OBJECT
 
 public:
-    explicit TaskAnalysisInfo(Fem::FemAnalysis *pcObject,QWidget *parent = nullptr);
+    explicit TaskAnalysisInfo(Fem::FemAnalysis* pcObject, QWidget* parent = nullptr);
     ~TaskAnalysisInfo() override;
 
-private Q_SLOTS:
-    void SwitchMethod(int Value);
-
 protected:
-    Fem::FemAnalysis *pcObject;
+    Fem::FemAnalysis* pcObject;
 
 private:
     QWidget* proxy;
-    Ui_TaskAnalysisInfo* ui;
+    std::unique_ptr<Ui_TaskAnalysisInfo> ui;
 };
 
-} //namespace FEMGUI_TaskAnalysisInfo_H
+}  // namespace FemGui
 
-#endif // GUI_TASKVIEW_TaskAnalysisInfo_H
+#endif  // GUI_TASKVIEW_TaskAnalysisInfo_H

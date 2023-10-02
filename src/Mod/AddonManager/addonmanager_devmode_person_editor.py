@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
 # ***************************************************************************
 # *                                                                         *
 # *   Copyright (c) 2022 FreeCAD Project Association                        *
@@ -25,7 +26,7 @@
 import os
 from typing import Tuple  # Needed until Py 3.9, when tuple supports this directly
 
-from PySide2.QtWidgets import QDialog
+from PySide.QtWidgets import QDialog
 
 import FreeCAD
 import FreeCADGui
@@ -45,9 +46,7 @@ class PersonEditor:
         self.dialog.comboBox.addItem(
             translate("AddonsInstaller", "Maintainer"), userData="maintainer"
         )
-        self.dialog.comboBox.addItem(
-            translate("AddonsInstaller", "Author"), userData="author"
-        )
+        self.dialog.comboBox.addItem(translate("AddonsInstaller", "Author"), userData="author")
 
     def exec(self) -> Tuple[str, str, str]:
         """Run the dialog, and return a tuple of the person's record type, their name, and their
@@ -60,17 +59,13 @@ class PersonEditor:
                 self.dialog.nameLineEdit.text(),
                 self.dialog.emailLineEdit.text(),
             )
-        return (None, None, None)
+        return "", "", ""
 
-    def setup(
-        self, person_type: str = "maintainer", name: str = "", email: str = ""
-    ) -> None:
+    def setup(self, person_type: str = "maintainer", name: str = "", email: str = "") -> None:
         """Configure the dialog"""
         index = self.dialog.comboBox.findData(person_type)
         if index == -1:
-            FreeCAD.Console.PrintWarning(
-                f"Internal Error: unrecognized person type {person_type}"
-            )
+            FreeCAD.Console.PrintWarning(f"Internal Error: unrecognized person type {person_type}")
             index = 0
         self.dialog.comboBox.setCurrentIndex(index)
         self.dialog.nameLineEdit.setText(name)

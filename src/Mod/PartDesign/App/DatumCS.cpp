@@ -52,9 +52,7 @@ CoordinateSystem::CoordinateSystem()
     Shape.setValue(builder.Shape());
 }
 
-CoordinateSystem::~CoordinateSystem()
-{
-}
+CoordinateSystem::~CoordinateSystem() = default;
 
 Base::Vector3d CoordinateSystem::getXAxis()
 {
@@ -71,7 +69,7 @@ Base::Vector3d CoordinateSystem::getYAxis()
     rot.multVec(Base::Vector3d(0,1,0), normal);
     return normal;
 }
- 
+
 Base::Vector3d CoordinateSystem::getZAxis()
 {
     Base::Rotation rot = Placement.getValue().getRotation();
@@ -80,7 +78,7 @@ Base::Vector3d CoordinateSystem::getZAxis()
     return normal;
 }
 
-App::DocumentObject *CoordinateSystem::getSubObject(const char *subname, 
+App::DocumentObject *CoordinateSystem::getSubObject(const char *subname,
         PyObject **pyObj, Base::Matrix4D *pmat, bool transform, int) const
 {
     if(pmat && transform)

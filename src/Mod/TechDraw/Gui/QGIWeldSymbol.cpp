@@ -22,52 +22,30 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-  #include <BRep_Builder.hxx>
-  #include <TopoDS_Compound.hxx>
-  # include <TopoDS_Shape.hxx>
-  # include <TopoDS_Edge.hxx>
-  # include <TopoDS.hxx>
-  # include <BRepAdaptor_Curve.hxx>
-  # include <Precision.hxx>
-
-  # include <QGraphicsScene>
-  # include <QPainter>
-  # include <QPainterPath>
-  # include <QPaintDevice>
-  # include <QSvgGenerator>
-
-  # include <cmath>
+# include <cmath>
+# include <QGraphicsScene>
+# include <QPainterPath>
 #endif
 
-#include <App/Application.h>
-#include <App/Material.h>
 #include <Base/Console.h>
-#include <Base/Exception.h>
-#include <Base/Parameter.h>
 #include <Base/Tools.h>
-#include <Base/UnitsApi.h>
-#include <Gui/Command.h>
 
-#include <Mod/Part/App/PartFeature.h>
-
-#include <Mod/TechDraw/App/DrawWeldSymbol.h>
 #include <Mod/TechDraw/App/DrawLeaderLine.h>
 #include <Mod/TechDraw/App/DrawTile.h>
 #include <Mod/TechDraw/App/DrawTileWeld.h>
-#include <Mod/TechDraw/App/DrawUtil.h>
-#include <Mod/TechDraw/App/Geometry.h>
-//#include <Mod/TechDraw/App/Preferences.h>
-
-#include "ZVALUE.h"
-#include "PreferencesGui.h"
-#include "ViewProviderWeld.h"
-#include "QGIPrimPath.h"
-#include "QGITile.h"
-#include "QGILeaderLine.h"
-#include "QGIVertex.h"
-#include "QGCustomText.h"
+#include <Mod/TechDraw/App/DrawWeldSymbol.h>
 
 #include "QGIWeldSymbol.h"
+#include "PreferencesGui.h"
+#include "QGCustomText.h"
+#include "QGILeaderLine.h"
+#include "QGIPrimPath.h"
+#include "QGITile.h"
+#include "QGIVertex.h"
+
+#include "ViewProviderWeld.h"
+#include "ZVALUE.h"
+
 
 using namespace TechDraw;
 using namespace TechDrawGui;
@@ -80,6 +58,9 @@ QGIWeldSymbol::QGIWeldSymbol(QGILeaderLine* myParent) :
     m_arrowFeat(nullptr),
     m_otherFeat(nullptr),
     m_qgLead(myParent),
+    m_tailText(nullptr),
+    m_fieldFlag(nullptr),
+    m_allAround(nullptr),
     m_blockDraw(false)
 {
     setFiltersChildEvents(true);    //qt5
@@ -525,16 +506,24 @@ QRectF QGIWeldSymbol::customBoundingRect() const
 {
     QRectF result;
 
-    QRectF childRect = mapFromItem(m_tailText, m_tailText->boundingRect()).boundingRect();
-    result = result.united(childRect);
-    childRect = mapFromItem(m_fieldFlag, m_fieldFlag->boundingRect()).boundingRect();
-    result = result.united(childRect);
-    childRect = mapFromItem(m_allAround, m_allAround->boundingRect()).boundingRect();
-    result = result.united(childRect);
+    if (m_tailText) {
+        QRectF childRect = mapFromItem(m_tailText, m_tailText->boundingRect()).boundingRect();
+        result = result.united(childRect);
+    }
+
+    if (m_fieldFlag) {
+        QRectF childRect = mapFromItem(m_fieldFlag, m_fieldFlag->boundingRect()).boundingRect();
+        result = result.united(childRect);
+    }
+
+    if (m_allAround) {
+        QRectF childRect = mapFromItem(m_allAround, m_allAround->boundingRect()).boundingRect();
+        result = result.united(childRect);
+    }
 
     std::vector<QGITile*> qgTiles = getQGITiles();
     for (auto& t: qgTiles) {
-        childRect = mapFromItem(t, t->boundingRect()).boundingRect();
+        QRectF childRect = mapFromItem(t, t->boundingRect()).boundingRect();
         result = result.united(childRect);
     }
     return result;

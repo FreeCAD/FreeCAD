@@ -16,6 +16,9 @@ Addon Manager:
 WB Arch:
 - 'src/Mod/Arch/**/*'
 
+WB Assembly:
+- 'src/Mod/Assembly/**/*'
+
 WB Draft:
 - 'src/Mod/Draft/**/*'
 
@@ -31,7 +34,7 @@ WB MeshPart:
 WB OpenSCAD:
 - 'src/Mod/OpenSCAD/**/*'
 
-WB Part:  
+WB Part:
 - 'src/Mod/Part/**/*'
 
 WB PartDesign:

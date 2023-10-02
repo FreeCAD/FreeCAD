@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
 # ***************************************************************************
 # *                                                                         *
 # *   Copyright (c) 2022 FreeCAD Project Association                        *
@@ -24,29 +25,34 @@
 
 import keyword
 
-from PySide2.QtGui import (
+from PySide.QtGui import (
     QValidator,
 )
 
-# QRegularExpressionValidator was only added at the very end of the PySide2
+# QRegularExpressionValidator was only added at the very end of the PySide
 # development cycle, so make sure to support the older QRegExp version as well.
 try:
-    from PySide2.QtGui import (
+    from PySide.QtGui import (
         QRegularExpressionValidator,
     )
-    from PySide2.QtCore import QRegularExpression
+    from PySide.QtCore import QRegularExpression
+
     RegexWrapper = QRegularExpression
     RegexValidatorWrapper = QRegularExpressionValidator
 except ImportError:
-    from PySide2.QtGui import (
+    QRegularExpressionValidator = None
+    QRegularExpression = None
+    from PySide.QtGui import (
         QRegExpValidator,
     )
-    from PySide2.QtCore import QRegExp
+    from PySide.QtCore import QRegExp
+
     RegexWrapper = QRegExp
     RegexValidatorWrapper = QRegExpValidator
 
 
-#pylint: disable=too-few-public-methods
+# pylint: disable=too-few-public-methods
+
 
 class NameValidator(QValidator):
     """Simple validator to exclude characters that are not valid in filenames."""
@@ -73,7 +79,7 @@ class PythonIdentifierValidator(QValidator):
     """Validates whether input is a valid Python identifier."""
 
     def validate(self, value: str, _: int):
-        """ The function that does the validation. """
+        """The function that does the validation."""
         if not value:
             return QValidator.Intermediate
 
@@ -81,9 +87,7 @@ class PythonIdentifierValidator(QValidator):
             return QValidator.Invalid  # Includes an illegal character of some sort
 
         if keyword.iskeyword(value):
-            return (
-                QValidator.Intermediate
-            )  # They can keep typing and it might become valid
+            return QValidator.Intermediate  # They can keep typing and it might become valid
 
         return QValidator.Acceptable
 
@@ -130,7 +134,6 @@ class CalVerValidator(RegexValidatorWrapper):
         else:
             self.setRegExp(CalVerValidator.calver_re)
 
-
     @classmethod
     def check(cls, value: str) -> bool:
         """Returns true if value validates, and false if not"""
@@ -160,4 +163,4 @@ class VersionValidator(QValidator):
             return semver_result
         if calver_result[0] == QValidator.Intermediate:
             return calver_result
-        return (QValidator.Invalid, value, position)
+        return QValidator.Invalid, value, position

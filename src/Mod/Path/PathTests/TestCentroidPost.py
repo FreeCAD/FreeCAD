@@ -25,15 +25,13 @@ from importlib import reload
 
 import FreeCAD
 
-# import Part
 import Path
-import PathScripts.PathLog as PathLog
 import PathTests.PathTestUtils as PathTestUtils
-from PathScripts.post import centroid_post as postprocessor
+from Path.Post.scripts import centroid_post as postprocessor
 
 
-PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
-PathLog.trackModule(PathLog.thisModule())
+Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
+Path.Log.trackModule(Path.Log.thisModule())
 
 
 class TestCentroidPost(PathTestUtils.PathTestBase):
@@ -279,16 +277,15 @@ M99
 
         args = "--no-header --no-show-editor"
         gcode = postprocessor.export(postables, "gcode.tmp", args)
-        self.assertEqual(gcode.splitlines()[5], "M6 T2")
-        self.assertEqual(gcode.splitlines()[6], "M3 S3000")
+        self.assertEqual(gcode.splitlines()[5], "G43 H2")
+        self.assertEqual(gcode.splitlines()[6], "M6 T2")
+        self.assertEqual(gcode.splitlines()[7], "M3 S3000")
 
         # suppress TLO
         #
-        # The original centroid postprocessor does not have an
-        # --no-tlo option.  We end up with the original gcode.
-        #
         args = "--no-header --no-tlo --no-show-editor"
         gcode = postprocessor.export(postables, "gcode.tmp", args)
+        self.assertEqual(gcode.splitlines()[5], "G43 H2")
         self.assertEqual(gcode.splitlines()[6], "M3 S3000")
 
     def test090(self):

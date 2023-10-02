@@ -20,43 +20,41 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef POINTS_PRECOMPILED_H
 #define POINTS_PRECOMPILED_H
 
 #include <FCConfig.h>
 
-// here get the warnings of too long specifiers disabled (needed for VC6)
+// point at which warnings of overly long specifiers disabled (needed for VC6)
 #ifdef _MSC_VER
-# pragma warning( disable : 4181 )
-# pragma warning( disable : 4305 )
-# pragma warning( disable : 4522 )
+#pragma warning(disable : 4181)
+#pragma warning(disable : 4305)
+#pragma warning(disable : 4522)
 #endif
 
 #ifdef _PreComp_
 
 // standard
 #include <cstdio>
-#include <cassert>
 
 // STL
 #include <algorithm>
+#include <cmath>
 #include <iostream>
-#include <fstream>
-#include <list>
-#include <map>
-#include <queue>
+#include <memory>
 #include <set>
 #include <sstream>
-#include <stack>
-#include <string>
 #include <vector>
-#include <bitset>
-#include <cfloat>
-#include <cmath>
-#include <cstdlib>
 
-#endif //_PreComp_
+// boost
+#include <boost/algorithm/string.hpp>
+#include <boost/lexical_cast.hpp>
+#include <boost/math/special_functions/fpclassify.hpp>
+#include <boost/regex.hpp>
+
+// Qt
+#include <QtConcurrentMap>
+
+#endif  //_PreComp_
 
 #endif
-

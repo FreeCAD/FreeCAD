@@ -20,29 +20,30 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef MESHPARTGUI_TESSELLATION_H
 #define MESHPARTGUI_TESSELLATION_H
 
+#include <QPointer>
+#include <memory>
+
 #include <Gui/TaskView/TaskDialog.h>
 #include <Gui/TaskView/TaskView.h>
-#include <Gui/Selection.h>
-#include <App/DocumentObserver.h>
 #include <Mod/Mesh/Gui/RemeshGmsh.h>
-#include <memory>
-#include <QPointer>
 
-namespace App {
+
+namespace App
+{
 class Document;
 class SubObjectT;
-}
-namespace MeshPartGui {
+}  // namespace App
+namespace MeshPartGui
+{
 
 /**
  * Non-modal dialog to mesh a shape.
  * @author Werner Mayer
  */
-class Mesh2ShapeGmsh : public MeshGui::GmshWidget
+class Mesh2ShapeGmsh: public MeshGui::GmshWidget
 {
     Q_OBJECT
 
@@ -65,15 +66,25 @@ private:
 };
 
 class Ui_Tessellation;
-class Tessellation : public QWidget
+class Tessellation: public QWidget
 {
     Q_OBJECT
 
-    enum {
+    enum
+    {
         Standard,
         Mefisto,
         Netgen,
         Gmsh
+    };
+
+    enum
+    {
+        VeryCoarse = 0,
+        Coarse = 1,
+        Moderate = 2,
+        Fine = 3,
+        VeryFine = 4
     };
 
 public:
@@ -82,7 +93,7 @@ public:
     bool accept();
 
 protected:
-    void changeEvent(QEvent *e) override;
+    void changeEvent(QEvent* e) override;
     void process(int method, App::Document* doc, const std::list<App::SubObjectT>&);
     void saveParameters(int method);
     void setFaceColors(int method, App::Document* doc, App::DocumentObject* obj);
@@ -92,12 +103,13 @@ protected:
     QString getNetgenParameters() const;
     std::vector<App::Color> getUniqueColors(const std::vector<App::Color>& colors) const;
 
-private Q_SLOTS:
+private:
+    void setupConnections();
     void meshingMethod(int id);
-    void on_estimateMaximumEdgeLength_clicked();
-    void on_comboFineness_currentIndexChanged(int);
-    void on_checkSecondOrder_toggled(bool);
-    void on_checkQuadDominated_toggled(bool);
+    void onEstimateMaximumEdgeLengthClicked();
+    void onComboFinenessCurrentIndexChanged(int);
+    void onCheckSecondOrderToggled(bool);
+    void onCheckQuadDominatedToggled(bool);
     void gmshProcessed();
 
 private:
@@ -106,13 +118,12 @@ private:
     std::unique_ptr<Ui_Tessellation> ui;
 };
 
-class TaskTessellation : public Gui::TaskView::TaskDialog
+class TaskTessellation: public Gui::TaskView::TaskDialog
 {
     Q_OBJECT
 
 public:
     TaskTessellation();
-    ~TaskTessellation() override;
 
 public:
     void open() override;
@@ -121,12 +132,14 @@ public:
     bool reject() override;
 
     QDialogButtonBox::StandardButtons getStandardButtons() const override
-    { return QDialogButtonBox::Ok|QDialogButtonBox::Cancel; }
+    {
+        return QDialogButtonBox::Ok | QDialogButtonBox::Cancel;
+    }
 
 private:
     Tessellation* widget;
 };
 
-} // namespace MeshPartGui
+}  // namespace MeshPartGui
 
-#endif // MESHPARTGUI_TESSELLATION_H
+#endif  // MESHPARTGUI_TESSELLATION_H

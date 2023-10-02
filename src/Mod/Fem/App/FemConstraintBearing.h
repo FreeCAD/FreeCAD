@@ -21,20 +21,19 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef FEM_CONSTRAINTBEARING_H
 #define FEM_CONSTRAINTBEARING_H
 
 #include <App/DocumentObject.h>
 #include <App/PropertyLinks.h>
-#include <App/PropertyGeo.h>
 
 #include "FemConstraint.h"
+
 
 namespace Fem
 {
 
-class FemExport ConstraintBearing : public Fem::Constraint
+class FemExport ConstraintBearing: public Fem::Constraint
 {
     PROPERTY_HEADER_WITH_OVERRIDE(Fem::ConstraintBearing);
 
@@ -55,10 +54,11 @@ public:
     App::PropertyVector Axis;
 
     /// recalculate the object
-    App::DocumentObjectExecReturn *execute() override;
+    App::DocumentObjectExecReturn* execute() override;
 
     /// returns the type name of the ViewProvider
-    const char* getViewProviderName() const override {
+    const char* getViewProviderName() const override
+    {
         return "FemGui::ViewProviderFemConstraintBearing";
     }
 
@@ -66,7 +66,7 @@ protected:
     void onChanged(const App::Property* prop) override;
 };
 
-} //namespace Fem
+}  // namespace Fem
 
 
-#endif // FEM_CONSTRAINTBEARING_H
+#endif  // FEM_CONSTRAINTBEARING_H

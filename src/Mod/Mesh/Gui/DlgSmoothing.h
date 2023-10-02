@@ -33,16 +33,18 @@
 
 class QButtonGroup;
 
-namespace MeshGui {
+namespace MeshGui
+{
 
 class Selection;
 class Ui_DlgSmoothing;
-class DlgSmoothing : public QWidget
+class DlgSmoothing: public QWidget
 {
     Q_OBJECT
 
 public:
-    enum Smooth {
+    enum Smooth
+    {
         None,
         Taubin,
         Laplace,
@@ -57,9 +59,9 @@ public:
     Smooth method() const;
     bool smoothSelection() const;
 
-private Q_SLOTS:
-    void method_clicked(int);
-    void on_checkBoxSelection_toggled(bool);
+private:
+    void methodClicked(int);
+    void onCheckBoxSelectionToggled(bool);
 
 Q_SIGNALS:
     void toggledSelection(bool);
@@ -72,7 +74,7 @@ private:
 /**
  * Embed the panel into a dialog.
  */
-class MeshGuiExport SmoothingDialog : public QDialog
+class MeshGuiExport SmoothingDialog: public QDialog
 {
     Q_OBJECT
 
@@ -81,15 +83,25 @@ public:
     ~SmoothingDialog() override;
 
     int iterations() const
-    { return widget->iterations(); }
+    {
+        return widget->iterations();
+    }
     double lambdaStep() const
-    { return widget->lambdaStep(); }
+    {
+        return widget->lambdaStep();
+    }
     double microStep() const
-    { return widget->microStep(); }
+    {
+        return widget->microStep();
+    }
     DlgSmoothing::Smooth method() const
-    { return widget->method(); }
+    {
+        return widget->method();
+    }
     bool smoothSelection() const
-    { return widget->smoothSelection(); }
+    {
+        return widget->smoothSelection();
+    }
 
 private:
     DlgSmoothing* widget;
@@ -98,27 +110,30 @@ private:
 /**
  * Embed the panel into a task dialog.
  */
-class TaskSmoothing : public Gui::TaskView::TaskDialog
+class TaskSmoothing: public Gui::TaskView::TaskDialog
 {
     Q_OBJECT
 
 public:
     TaskSmoothing();
-    ~TaskSmoothing() override;
 
 public:
     bool accept() override;
 
     QDialogButtonBox::StandardButtons getStandardButtons() const override
-    { return QDialogButtonBox::Ok | QDialogButtonBox::Cancel; }
+    {
+        return QDialogButtonBox::Ok | QDialogButtonBox::Cancel;
+    }
     bool isAllowedAlterDocument() const override
-    { return true; }
+    {
+        return true;
+    }
 
 private:
     DlgSmoothing* widget;
     Selection* selection;
 };
 
-}
+}  // namespace MeshGui
 
-#endif // MESHGUI_DLGSMOOTHING_H
+#endif  // MESHGUI_DLGSMOOTHING_H

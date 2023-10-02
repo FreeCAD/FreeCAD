@@ -11,40 +11,22 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Form</string>
+   <string notr="true">Form</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
-    <layout class="QHBoxLayout" name="horizontalLayout">
-     <item>
-      <widget class="QToolButton" name="buttonRefAdd">
-       <property name="toolTip">
-        <string>Click button to enter selection mode,
+    <widget class="QToolButton" name="buttonRefSel">
+     <property name="toolTip">
+      <string>Click button to enter selection mode,
 click again to end selection</string>
-       </property>
-       <property name="text">
-        <string>Add face</string>
-       </property>
-       <property name="checkable">
-        <bool>true</bool>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QToolButton" name="buttonRefRemove">
-       <property name="toolTip">
-        <string>Click button to enter selection mode,
-click again to end selection</string>
-       </property>
-       <property name="text">
-        <string>Remove face</string>
-       </property>
-       <property name="checkable">
-        <bool>true</bool>
-       </property>
-      </widget>
-     </item>
-    </layout>
+     </property>
+     <property name="text">
+      <string>Select</string>
+     </property>
+     <property name="checkable">
+      <bool>true</bool>
+     </property>
+    </widget>
    </item>
    <item>
     <widget class="QListWidget" name="listWidgetReferences">
@@ -161,14 +143,13 @@ click again to end selection</string>
   </customwidget>
  </customwidgets>
  <tabstops>
+  <tabstop>buttonRefSel</tabstop>
+  <tabstop>listWidgetReferences</tabstop>
   <tabstop>Value</tabstop>
   <tabstop>modeComboBox</tabstop>
   <tabstop>joinComboBox</tabstop>
   <tabstop>checkIntersection</tabstop>
   <tabstop>checkReverse</tabstop>
-  <tabstop>buttonRefAdd</tabstop>
-  <tabstop>buttonRefRemove</tabstop>
-  <tabstop>listWidgetReferences</tabstop>
  </tabstops>
  <resources/>
  <connections/>

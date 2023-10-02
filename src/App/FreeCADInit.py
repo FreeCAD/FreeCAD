@@ -63,16 +63,6 @@ def setupSearchPaths(PathExtension):
     # new paths must be prepended to avoid to load a wrong version of a library
     try:
         os.environ["PATH"] = PathEnvironment + os.environ["PATH"]
-    except UnicodeDecodeError:
-        # See #0002238. FIXME: check again once ported to Python 3.x
-        Log('UnicodeDecodeError was raised when concatenating unicode string with PATH. Try to remove non-ascii paths...\n')
-        path = os.environ["PATH"].split(os.pathsep)
-        cleanpath=[]
-        for i in path:
-            if test_ascii(i):
-                cleanpath.append(i)
-        os.environ["PATH"] = PathEnvironment + os.pathsep.join(cleanpath)
-        Log('done\n')
     except UnicodeEncodeError:
         Log('UnicodeEncodeError was raised when concatenating unicode string with PATH. Try to replace non-ascii chars...\n')
         os.environ["PATH"] = PathEnvironment.encode(errors='replace') + os.environ["PATH"]
@@ -171,7 +161,15 @@ def InitApplications():
     sys.path = [ModDir] + libpaths + [ExtDir] + sys.path
 
     # The AddonManager may install additional Python packages in
-    # this path:
+    # these paths:
+    import platform
+    major,minor,_ = platform.python_version_tuple()
+    vendor_path = os.path.join(
+        FreeCAD.getUserAppDataDir(), "AdditionalPythonPackages",f"py{major}{minor}"
+    )
+    if os.path.isdir(vendor_path):
+        sys.path.append(vendor_path)
+
     additional_packages_path = os.path.join(FreeCAD.getUserAppDataDir(),"AdditionalPythonPackages")
     if os.path.isdir(additional_packages_path):
         sys.path.append(additional_packages_path)
@@ -180,8 +178,8 @@ def InitApplications():
         InstallFile = os.path.join(Dir,"Init.py")
         if (os.path.exists(InstallFile)):
             try:
-                with open(file=InstallFile, encoding="utf-8") as f:
-                    exec(f.read())
+                with open(InstallFile, 'rt', encoding='utf-8') as f:
+                    exec(compile(f.read(), InstallFile, 'exec'))
             except Exception as inst:
                 Log('Init:      Initializing ' + Dir + '... failed\n')
                 Log('-'*100+'\n')
@@ -194,6 +192,32 @@ def InitApplications():
         else:
             Log('Init:      Initializing ' + Dir + '(Init.py not found)... ignore\n')
 
+    def processMetadataFile(MetadataFile):
+        meta = FreeCAD.Metadata(MetadataFile)
+        if not meta.supportsCurrentFreeCAD():
+            Msg(f'NOTICE: {meta.Name} does not support this version of FreeCAD, so is being skipped\n')
+            return None
+        content = meta.Content
+        if "workbench" in content:
+            workbenches = content["workbench"]
+            for workbench in workbenches:
+                if not workbench.supportsCurrentFreeCAD():
+                    Msg(f'NOTICE: {meta.Name} content item {workbench.Name} does not support this version of FreeCAD, so is being skipped\n')
+                    return None
+                subdirectory = workbench.Name if not workbench.Subdirectory else workbench.Subdirectory
+                subdirectory = subdirectory.replace("/",os.path.sep)
+                subdirectory = os.path.join(Dir, subdirectory)
+                #classname = workbench.Classname
+                sys.path.insert(0,subdirectory)
+                PathExtension.append(subdirectory)
+                RunInitPy(subdirectory)
+
+    def tryProcessMetadataFile(MetadataFile):
+        try:
+            processMetadataFile(MetadataFile)
+        except Exception as exc:
+            Err(str(exc))
+
     for Dir in ModDict.values():
         if ((Dir != '') & (Dir != 'CVS') & (Dir != '__init__.py')):
             stopFile = os.path.join(Dir, "ADDON_DISABLED")
@@ -204,26 +228,7 @@ def InitApplications():
             PathExtension.append(Dir)
             MetadataFile = os.path.join(Dir, "package.xml")
             if os.path.exists(MetadataFile):
-                meta = FreeCAD.Metadata(MetadataFile)
-                if not meta.supportsCurrentFreeCAD():
-                    Msg(f'NOTICE: {meta.Name} does not support this version of FreeCAD, so is being skipped\n')
-                    continue
-                content = meta.Content
-                if "workbench" in content:
-                    workbenches = content["workbench"]
-                    for workbench in workbenches:
-                        if not workbench.supportsCurrentFreeCAD():
-                            Msg(f'NOTICE: {meta.Name} content item {workbench.Name} does not support this version of FreeCAD, so is being skipped\n')
-                            continue
-                        subdirectory = workbench.Name if not workbench.Subdirectory else workbench.Subdirectory
-                        subdirectory = subdirectory.replace("/",os.path.sep)
-                        subdirectory = os.path.join(Dir, subdirectory)
-                        #classname = workbench.Classname
-                        sys.path.insert(0,subdirectory)
-                        PathExtension.append(subdirectory)
-                        RunInitPy(subdirectory)
-                else:
-                    pass # The package content says there are no workbenches here, so just skip
+                tryProcessMetadataFile(MetadataFile)
             else:
                 RunInitPy(Dir)
 
@@ -294,7 +299,9 @@ Log = FreeCAD.Console.PrintLog
 Msg = FreeCAD.Console.PrintMessage
 Err = FreeCAD.Console.PrintError
 Wrn = FreeCAD.Console.PrintWarning
-test_ascii = lambda s: all(ord(c) < 128 for c in s)
+Crt = FreeCAD.Console.PrintCritical
+Ntf = FreeCAD.Console.PrintNotification
+Tnf = FreeCAD.Console.PrintTranslatedNotification
 
 #store the cmake variales
 App.__cmake__ = cmake;
@@ -350,8 +357,6 @@ class FCADLogger(object):
         By default any tag has a log level of 2 for release, and 3 for debug
         build.
     '''
-
-    _string_type = str if sys.version_info[0] >= 3 else basestring
 
     _levels = { 'Error':0, 'error':0,
                 'Warning':1, 'warn':1,
@@ -521,7 +526,7 @@ class FCADLogger(object):
                      string.format()
         '''
 
-        if (args or kargs) and isinstance(msg,self.__class__._string_type):
+        if (args or kargs) and isinstance(msg,str):
             if not kargs:
                 msg = msg.format(*args)
             else:
@@ -800,7 +805,9 @@ App.Units.Gauss         = App.Units.Quantity('G')
 
 App.Units.Weber         = App.Units.Quantity('Wb')
 
-App.Units.Oersted       = App.Units.Quantity('Oe')
+# disable Oersted because people need to input e.g. a field strength of
+# 1 ampere per meter -> 1 A/m and not get the recalculation to Oersted
+# App.Units.Oersted       = App.Units.Quantity('Oe')
 
 App.Units.PicoFarad     = App.Units.Quantity('pF')
 App.Units.NanoFarad     = App.Units.Quantity('nF')
@@ -835,61 +842,63 @@ App.Units.Gon           = App.Units.Quantity('gon')
 App.Units.AngularMinute = App.Units.Quantity().AngularMinute
 App.Units.AngularSecond = App.Units.Quantity().AngularSecond
 
-App.Units.Length        = App.Units.Unit(1)
-App.Units.Area          = App.Units.Unit(2)
-App.Units.Volume        = App.Units.Unit(3)
-App.Units.Mass          = App.Units.Unit(0,1)
+
+# SI base units
 # (length, weight, time, current, temperature, amount of substance, luminous intensity, angle)
+App.Units.AmountOfSubstance           = App.Units.Unit(0,0,0,0,0,1)
+App.Units.ElectricCurrent             = App.Units.Unit(0,0,0,1)
+App.Units.Length                      = App.Units.Unit(1)
+App.Units.LuminousIntensity           = App.Units.Unit(0,0,0,0,0,0,1)
+App.Units.Mass                        = App.Units.Unit(0,1)
+App.Units.Temperature                 = App.Units.Unit(0,0,0,0,1)
+App.Units.TimeSpan                    = App.Units.Unit(0,0,1)
 
-# Angle
-App.Units.Angle            = App.Units.Unit(0,0,0,0,0,0,0,1)
-App.Units.AngleOfFriction  = App.Units.Unit(0,0,0,0,0,0,0,1)
+# all other combined units
+App.Units.Acceleration                = App.Units.Unit(1,0,-2)
+App.Units.Angle                       = App.Units.Unit(0,0,0,0,0,0,0,1)
+App.Units.AngleOfFriction             = App.Units.Unit(0,0,0,0,0,0,0,1)
+App.Units.Area                        = App.Units.Unit(2)
+App.Units.CompressiveStrength         = App.Units.Unit(-1,1,-2)
+App.Units.CurrentDensity              = App.Units.Unit(-2,0,0,1)
+App.Units.Density                     = App.Units.Unit(-3,1)
+App.Units.DissipationRate             = App.Units.Unit(2,0,-3)
+App.Units.DynamicViscosity            = App.Units.Unit(-1,1,-1)
+App.Units.Frequency                   = App.Units.Unit(0,0,-1)
+App.Units.MagneticFluxDensity         = App.Units.Unit(0,1,-2,-1)
+App.Units.Magnetization               = App.Units.Unit(-1,0,0,1)
+App.Units.ElectricalCapacitance       = App.Units.Unit(-2,-1,4,2)
+App.Units.ElectricalConductance       = App.Units.Unit(-2,-1,3,2)
+App.Units.ElectricalConductivity      = App.Units.Unit(-3,-1,3,2)
+App.Units.ElectricalInductance        = App.Units.Unit(2,1,-2,-2)
+App.Units.ElectricalResistance        = App.Units.Unit(2,1,-3,-2)
+App.Units.ElectricCharge              = App.Units.Unit(0,0,1,1)
+App.Units.ElectricPotential           = App.Units.Unit(2,1,-3,-1)
+App.Units.Force                       = App.Units.Unit(1,1,-2)
+App.Units.HeatFlux                    = App.Units.Unit(0,1,-3,0,0)
+App.Units.InverseArea                 = App.Units.Unit(-2)
+App.Units.InverseLength               = App.Units.Unit(-1)
+App.Units.InverseVolume               = App.Units.Unit(-3)
+App.Units.KinematicViscosity          = App.Units.Unit(2,0,-1)
+App.Units.Pressure                    = App.Units.Unit(-1,1,-2)
+App.Units.Power                       = App.Units.Unit(2,1,-3)
+App.Units.ShearModulus                = App.Units.Unit(-1,1,-2)
+App.Units.SpecificEnergy              = App.Units.Unit(2,0,-2)
+App.Units.SpecificHeat                = App.Units.Unit(2,0,-2,0,-1)
+App.Units.Stiffness                   = App.Units.Unit(0,1,-2)
+App.Units.Stress                      = App.Units.Unit(-1,1,-2)
+App.Units.ThermalConductivity         = App.Units.Unit(1,1,-3,0,-1)
+App.Units.ThermalExpansionCoefficient = App.Units.Unit(0,0,0,0,-1)
+App.Units.ThermalTransferCoefficient  = App.Units.Unit(0,1,-3,0,-1)
+App.Units.UltimateTensileStrength     = App.Units.Unit(-1,1,-2)
+App.Units.Velocity                    = App.Units.Unit(1,0,-1)
+App.Units.VacuumPermittivity          = App.Units.Unit(-3,-1,4,2)
+App.Units.Volume                      = App.Units.Unit(3)
+App.Units.VolumeFlowRate              = App.Units.Unit(3,0,-1)
+App.Units.VolumetricThermalExpansionCoefficient = App.Units.Unit(0,0,0,0,-1)
+App.Units.Work                        = App.Units.Unit(2,1,-2)
+App.Units.YieldStrength               = App.Units.Unit(-1,1,-2)
+App.Units.YoungsModulus               = App.Units.Unit(-1,1,-2)
 
-App.Units.Density       = App.Units.Unit(-3,1)
-
-App.Units.TimeSpan      = App.Units.Unit(0,0,1)
-App.Units.Frequency     = App.Units.Unit(0,0,-1)
-App.Units.Velocity      = App.Units.Unit(1,0,-1)
-App.Units.Acceleration  = App.Units.Unit(1,0,-2)
-App.Units.Temperature   = App.Units.Unit(0,0,0,0,1)
-
-App.Units.ElectricCurrent       = App.Units.Unit(0,0,0,1)
-App.Units.ElectricPotential     = App.Units.Unit(2,1,-3,-1)
-App.Units.ElectricCharge        = App.Units.Unit(0,0,1,1)
-App.Units.MagneticFluxDensity   = App.Units.Unit(0,1,-2,-1)
-App.Units.ElectricalCapacitance = App.Units.Unit(-2,-1,4,2)
-App.Units.ElectricalInductance  = App.Units.Unit(2,1,-2,-2)
-App.Units.ElectricalConductance = App.Units.Unit(-2,-1,3,2)
-App.Units.ElectricalResistance  = App.Units.Unit(2,1,-3,-2)
-App.Units.ElectricalConductivity = App.Units.Unit(-3,-1,3,2)
-App.Units.AmountOfSubstance = App.Units.Unit(0,0,0,0,0,1)
-App.Units.LuminousIntensity = App.Units.Unit(0,0,0,0,0,0,1)
-
-# Pressure
-App.Units.CompressiveStrength     = App.Units.Unit(-1,1,-2)
-App.Units.Pressure                = App.Units.Unit(-1,1,-2)
-App.Units.ShearModulus            = App.Units.Unit(-1,1,-2)
-App.Units.Stress                  = App.Units.Unit(-1,1,-2)
-App.Units.UltimateTensileStrength = App.Units.Unit(-1,1,-2)
-App.Units.YieldStrength           = App.Units.Unit(-1,1,-2)
-App.Units.YoungsModulus           = App.Units.Unit(-1,1,-2)
-
-App.Units.Force         = App.Units.Unit(1,1,-2)
-App.Units.Work          = App.Units.Unit(2,1,-2)
-App.Units.Power         = App.Units.Unit(2,1,-3)
-
-App.Units.Stiffness     = App.Units.Unit(0,1,-2)
-
-App.Units.SpecificEnergy               = App.Units.Unit(2,0,-2)
-App.Units.ThermalConductivity          = App.Units.Unit(1,1,-3,0,-1)
-App.Units.ThermalExpansionCoefficient  = App.Units.Unit(0,0,0,0,-1)
-App.Units.VolumetricThermalExpansionCoefficient  = App.Units.Unit(0,0,0,0,-1)
-App.Units.SpecificHeat                 = App.Units.Unit(2,0,-2,0,-1)
-App.Units.ThermalTransferCoefficient   = App.Units.Unit(0,1,-3,0,-1)
-App.Units.HeatFlux                     = App.Units.Unit(0,1,-3,0,0)
-App.Units.DynamicViscosity             = App.Units.Unit(-1,1,-1)
-App.Units.KinematicViscosity           = App.Units.Unit(2,0,-1)
-App.Units.VacuumPermittivity           = App.Units.Unit(-3,-1,4,2)
 
 # Add an enum for the different unit schemes
 from enum import IntEnum
@@ -936,8 +945,18 @@ class PropertyType(IntEnum):
 
 App.PropertyType = PropertyType
 
+class ReturnType(IntEnum):
+    PyObject = 0
+    DocObject = 1
+    DocAndPyObject = 2
+    Placement = 3
+    Matrix = 4
+    LinkAndPlacement = 5
+    LinkAndMatrix = 6
+
+App.ReturnType = ReturnType
+
 # clean up namespace
 del(InitApplications)
-del(test_ascii)
 
 Log ('Init: App::FreeCADInit.py done\n')

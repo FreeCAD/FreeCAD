@@ -1,6 +1,7 @@
 <RCC>
-    <qresource> 
+    <qresource>
         <file>icons/preview-rendered.svg</file>
         <file>icons/preview-vector.svg</file>
+        <file>ui/materials-editor.ui</file>
     </qresource>
-</RCC> 
+</RCC>

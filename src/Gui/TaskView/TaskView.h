@@ -158,15 +158,21 @@ public:
     void clearActionStyle();
     void restoreActionStyle();
 
+    QSize minimumSizeHint() const override;
+
 protected Q_SLOTS:
     void accept();
     void reject();
     void helpRequested();
     void clicked (QAbstractButton * button);
 
+private:
+    void triggerMinimumSizeHint();
+    void adjustMinimumSizeHint();
+
 protected:
-    void keyPressEvent(QKeyEvent*) override;
-    bool event(QEvent*) override;
+    void keyPressEvent(QKeyEvent* event) override;
+    bool event(QEvent* event) override;
 
     void addTaskWatcher();
     void removeTaskWatcher();

@@ -96,7 +96,7 @@
 // need to support METH_STATIC and METH_CLASS
 
 #define PYCXX_ADD_NOARGS_METHOD( PYNAME, NAME, docs ) \
-    add_method( #PYNAME, (PyCFunction)PYCXX_NOARGS_METHOD_NAME( NAME ), METH_NOARGS, docs )
+    add_method( #PYNAME, (PyCFunction)(void (*) (void))PYCXX_NOARGS_METHOD_NAME( NAME ), METH_NOARGS, docs )
 #define PYCXX_ADD_VARARGS_METHOD( PYNAME, NAME, docs ) \
     add_method( #PYNAME, (PyCFunction)(void (*) (void))PYCXX_VARARGS_METHOD_NAME( NAME ), METH_VARARGS, docs )
 #define PYCXX_ADD_KEYWORDS_METHOD( PYNAME, NAME, docs ) \

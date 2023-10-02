@@ -27,6 +27,7 @@
 #include <memory>
 #include <QDialog>
 #include <boost/filesystem.hpp>
+#include <FCGlobal.h>
 
 
 class QTreeWidgetItem;
@@ -39,9 +40,9 @@ class Ui_DlgPreferencePackManagement;
 
 /**
  * \class DlgCreateNewPreferencePackImp
- * 
- * A dialog to request a preferencePack name and a set of preferencePack templates. 
- * 
+ *
+ * A dialog to request a preferencePack name and a set of preferencePack templates.
+ *
  * \author Chris Hennes
  */
 class GuiExport DlgPreferencePackManagementImp : public QDialog
@@ -51,7 +52,7 @@ class GuiExport DlgPreferencePackManagementImp : public QDialog
 public:
 
     DlgPreferencePackManagementImp(QWidget* parent = nullptr);
-    ~DlgPreferencePackManagementImp();
+    ~DlgPreferencePackManagementImp() override;
 
 Q_SIGNALS:
     void packVisibilityChanged();

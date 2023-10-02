@@ -62,8 +62,8 @@ Transaction::Transaction(int id)
 Transaction::~Transaction()
 {
     auto &index = _Objects.get<0>();
-    for (auto It= index.begin();It!=index.end();++It) {
-        if (It->second->status == TransactionObject::New) {
+    for (const auto & It : index) {
+        if (It.second->status == TransactionObject::New) {
             // If an object has been removed from the document the transaction
             // status is 'New'. The 'pcNameInDocument' member serves as criterion
             // to check whether the object is part of the document or not.
@@ -75,8 +75,8 @@ Transaction::~Transaction()
             // to cause a memory leak. This usually is the case when the removal
             // of an object is not undone or when an addition is undone.
 
-            if (!It->first->isAttachedToDocument()) {
-                if (It->first->getTypeId().isDerivedFrom(DocumentObject::getClassTypeId())) {
+            if (!It.first->isAttachedToDocument()) {
+                if (It.first->getTypeId().isDerivedFrom(DocumentObject::getClassTypeId())) {
                     // #0003323: Crash when clearing transaction list
                     // It can happen that when clearing the transaction list several objects
                     // are destroyed with dependencies which can lead to dangling pointers.
@@ -85,13 +85,13 @@ Transaction::~Transaction()
                     // possible dangling pointers.
                     // An alternative solution is to call breakDependency inside
                     // Document::_removeObject. Make this change in v0.18.
-                    const DocumentObject* obj = static_cast<const DocumentObject*>(It->first);
+                    const DocumentObject* obj = static_cast<const DocumentObject*>(It.first);
                     const_cast<DocumentObject*>(obj)->setStatus(ObjectStatus::Destroy, true);
                 }
-                delete It->first;
+                delete It.first;
             }
         }
-        delete It->second;
+        delete It.second;
     }
 }
 
@@ -194,9 +194,12 @@ void Transaction::addObjectNew(TransactionalObject *Obj)
     auto pos = index.find(Obj);
     if (pos != index.end()) {
         if (pos->second->status == TransactionObject::Del) {
-            delete pos->second;
-            delete pos->first;
+            // first remove the item from the container before deleting it
+            auto second = pos->second;
+            auto first = pos->first;
             index.erase(pos);
+            delete second;
+            delete first;
         }
         else {
             pos->second->status = TransactionObject::New;
@@ -269,10 +272,7 @@ TYPESYSTEM_SOURCE_ABSTRACT(App::TransactionObject, Base::Persistence)
  * A constructor.
  * A more elaborate description of the constructor.
  */
-TransactionObject::TransactionObject()
-  : status(New)
-{
-}
+TransactionObject::TransactionObject() = default;
 
 /**
  * A destructor.

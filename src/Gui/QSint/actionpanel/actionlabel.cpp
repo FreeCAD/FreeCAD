@@ -105,8 +105,7 @@ QSize ActionLabel::sizeHint() const
     h += 4;
     w += 8;
 
-    QSize sizeHint = (style()->sizeFromContents(QStyle::CT_PushButton, &opt, QSize(w, h), this).
-                  expandedTo(QApplication::globalStrut()));
+    QSize sizeHint = style()->sizeFromContents(QStyle::CT_PushButton, &opt, QSize(w, h), this);
 
     return sizeHint;
 }

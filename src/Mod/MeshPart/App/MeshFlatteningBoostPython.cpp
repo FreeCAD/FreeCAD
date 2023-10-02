@@ -20,65 +20,63 @@
  *                                                                         *
  ***************************************************************************/
 
-
-
 #include "PreCompiled.h"
-#include <Base/Interpreter.h>
-#include <Mod/Part/App/TopoShapeFacePy.h>
-#include <Mod/Part/App/TopoShapeEdgePy.h>
+#ifndef _PreComp_
+#include <TopoDS.hxx>
+#include <TopoDS_Edge.hxx>
+#include <TopoDS_Face.hxx>
+#include <map>
+#include <memory>
+#include <stdexcept>
+#include <vector>
+#endif
 
+// boost is purposely not in the precompiled headers, see
+// https://github.com/FreeCAD/FreeCAD/pull/7979#issuecomment-1358123252
+#include <Base/Interpreter.h>
 #include <Eigen/Core>
 #include <Eigen/Geometry>
 #include <Eigen/Sparse>
+#include <Mod/Part/App/TopoShapeEdgePy.h>
+#include <Mod/Part/App/TopoShapeFacePy.h>
 #include <boost/python.hpp>
-#include <boost/python/module.hpp>
-#include <boost/python/class.hpp>
-#include <boost/python/wrapper.hpp>
 #include <boost/python/call.hpp>
+#include <boost/python/class.hpp>
 #include <boost/python/copy_const_reference.hpp>
+#include <boost/python/module.hpp>
 #include <boost/python/return_value_policy.hpp>
-
-#include <memory>
-#include <vector>
-#include <tuple>
-#include <map>
-#include <stdexcept>
+#include <boost/python/wrapper.hpp>
 
 #include "MeshFlattening.h"
 #include "MeshFlatteningLscmRelax.h"
 #include "MeshFlatteningNurbs.h"
 
-#include <TopoDS_Face.hxx>
-#include <TopoDS_Edge.hxx>
-#include <TopoDS.hxx>
-#include <ShapeFix_Edge.hxx>
 
-
-
+// clang-format off
 namespace py = boost::python;
 
 const TopoDS_Face& getTopoDSFace(const py::object& face)
 {
     if (PyObject_TypeCheck(face.ptr(), &(Part::TopoShapeFacePy::Type)))
     {
-        const Part::TopoShapeFacePy* f = static_cast<Part::TopoShapeFacePy*>(face.ptr());
-        const TopoDS_Face& myFace = TopoDS::Face(f->getTopoShapePtr()->getShape());
+        const Part::TopoShapeFacePy* fpy = static_cast<Part::TopoShapeFacePy*>(face.ptr());
+        const TopoDS_Face& myFace = TopoDS::Face(fpy->getTopoShapePtr()->getShape());
         return myFace;
     }
-    else
-        throw std::invalid_argument("must be a face");
+
+    throw std::invalid_argument("must be a face");
 }
 
 const TopoDS_Edge& getTopoDSEdge(py::object* edge)
 {
     if (PyObject_TypeCheck(edge->ptr(), &(Part::TopoShapeEdgePy::Type)))
     {
-        const Part::TopoShapeEdgePy* e = static_cast<Part::TopoShapeEdgePy*>(edge->ptr());
-        const TopoDS_Edge& myEdge = TopoDS::Edge(e->getTopoShapePtr()->getShape());
+        const Part::TopoShapeEdgePy* epy = static_cast<Part::TopoShapeEdgePy*>(edge->ptr());
+        const TopoDS_Edge& myEdge = TopoDS::Edge(epy->getTopoShapePtr()->getShape());
         return myEdge;
     }
-    else
-        throw std::invalid_argument("must be an edge");
+
+    throw std::invalid_argument("must be an edge");
 }
 
 Py::Object makeEdge(const TopoDS_Edge& edge)
@@ -89,7 +87,7 @@ Py::Object makeEdge(const TopoDS_Edge& edge)
 std::shared_ptr<FaceUnwrapper> FaceUnwrapper_face(const py::object& face)
 {
     const TopoDS_Face& myFace = getTopoDSFace(face);
-    return std::shared_ptr<FaceUnwrapper>(new FaceUnwrapper(myFace));
+    return std::make_shared<FaceUnwrapper>(myFace);
 }
 
 std::shared_ptr<FaceUnwrapper> FaceUnwrapper_mesh(const py::object& points,
@@ -153,7 +151,7 @@ boost::python::list getFlatBoundaryNodesPy(FaceUnwrapper& instance)
     std::vector<ColMat<double, 3>> mat_array = instance.getFlatBoundaryNodes();
 
     boost::python::list ary;
-    for (auto mat : mat_array) {
+    for (auto& mat : mat_array) {
         boost::python::list plist;
         auto cols = mat.cols();
         auto rows = mat.rows();
@@ -199,7 +197,7 @@ struct eigen_matrix
 BOOST_PYTHON_MODULE(flatmesh)
 {
     //m.doc() = "functions to unwrapp faces/ meshes";
-    
+
     py::class_<lscmrelax::LscmRelax>("LscmRelax")
         .def(py::init<ColMat<double, 3>, ColMat<long, 3>, std::vector<long>>())
         .def("lscm", &lscmrelax::LscmRelax::lscm)
@@ -264,3 +262,4 @@ BOOST_PYTHON_MODULE(flatmesh)
     fm::eigen_matrix<ColMat<long,   1>>::to_python_converter();
     fm::eigen_matrix<ColMat<long,   3>>::to_python_converter();
 }
+// clang-format on

@@ -65,6 +65,7 @@
         <file>icons/tools/Part_ColorFace.svg</file>
         <file>icons/tools/Part_Element_Copy.svg</file>
         <file>icons/tools/Part_Extrude.svg</file>
+        <file>icons/tools/Part_Scale.svg</file>
         <file>icons/tools/Part_Fillet.svg</file>
         <file>icons/tools/Part_Loft.svg</file>
         <file>icons/tools/Part_MakeFace.svg</file>
@@ -95,47 +96,5 @@
         <file>icons/Part_SectionCut.svg</file>
         <file>icons/PartWorkbench.svg</file>
         <file>icons/preferences-part_design.svg</file>
-    </qresource>
-    <qresource>
-        <file>translations/Part_af.qm</file>
-        <file>translations/Part_ar.qm</file>
-        <file>translations/Part_ca.qm</file>
-        <file>translations/Part_cs.qm</file>
-        <file>translations/Part_de.qm</file>
-        <file>translations/Part_el.qm</file>
-        <file>translations/Part_es-ES.qm</file>
-        <file>translations/Part_eu.qm</file>
-        <file>translations/Part_fi.qm</file>
-        <file>translations/Part_fil.qm</file>
-        <file>translations/Part_fr.qm</file>
-        <file>translations/Part_gl.qm</file>
-        <file>translations/Part_hr.qm</file>
-        <file>translations/Part_hu.qm</file>
-        <file>translations/Part_id.qm</file>
-        <file>translations/Part_it.qm</file>
-        <file>translations/Part_ja.qm</file>
-        <file>translations/Part_kab.qm</file>
-        <file>translations/Part_ko.qm</file>
-        <file>translations/Part_lt.qm</file>
-        <file>translations/Part_nl.qm</file>
-        <file>translations/Part_no.qm</file>
-        <file>translations/Part_pl.qm</file>
-        <file>translations/Part_pt-BR.qm</file>
-        <file>translations/Part_pt-PT.qm</file>
-        <file>translations/Part_ro.qm</file>
-        <file>translations/Part_ru.qm</file>
-        <file>translations/Part_sk.qm</file>
-        <file>translations/Part_sl.qm</file>
-        <file>translations/Part_sr.qm</file>
-        <file>translations/Part_sv-SE.qm</file>
-        <file>translations/Part_tr.qm</file>
-        <file>translations/Part_uk.qm</file>
-        <file>translations/Part_val-ES.qm</file>
-        <file>translations/Part_vi.qm</file>
-        <file>translations/Part_zh-CN.qm</file>
-        <file>translations/Part_zh-TW.qm</file>
-        <file>translations/Part_es-AR.qm</file>
-        <file>translations/Part_bg.qm</file>
-        <file>translations/Part_ka.qm</file>
     </qresource>
 </RCC>

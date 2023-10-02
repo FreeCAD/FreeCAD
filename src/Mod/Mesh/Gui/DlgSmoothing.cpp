@@ -22,37 +22,49 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <QButtonGroup>
-# include <QDialogButtonBox>
+#include <QButtonGroup>
+#include <QDialogButtonBox>
 #endif
+
+#include <Gui/Command.h>
+#include <Gui/Selection.h>
+#include <Gui/WaitCursor.h>
+#include <Mod/Mesh/App/MeshFeature.h>
+#include <Mod/Mesh/App/Core/Smoothing.h>
 
 #include "DlgSmoothing.h"
 #include "ui_DlgSmoothing.h"
 #include "Selection.h"
 
-#include <Gui/WaitCursor.h>
-#include <Gui/Command.h>
-#include <Gui/Selection.h>
-#include <Mod/Mesh/App/MeshFeature.h>
-#include <Mod/Mesh/App/Core/Smoothing.h>
 
 using namespace MeshGui;
 
 /* TRANSLATOR MeshGui::DlgSmoothing */
 
 DlgSmoothing::DlgSmoothing(QWidget* parent)
-    : QWidget(parent), ui(new Ui_DlgSmoothing())
+    : QWidget(parent)
+    , ui(new Ui_DlgSmoothing())
 {
+    // clang-format off
     ui->setupUi(this);
-    bg = new QButtonGroup(this);
+    bg = new QButtonGroup(this); //NOLINT
     bg->addButton(ui->radioButtonTaubin, 0);
     bg->addButton(ui->radioButtonLaplace, 1);
-    connect(bg, SIGNAL(buttonClicked(int)),
-            this, SLOT(method_clicked(int)));
+
+    connect(ui->checkBoxSelection, &QCheckBox::toggled,
+            this, &DlgSmoothing::onCheckBoxSelectionToggled);
+#if QT_VERSION < QT_VERSION_CHECK(5,15,0)
+    connect(bg, qOverload<int>(&QButtonGroup::buttonClicked),
+            this, &DlgSmoothing::methodClicked);
+#else
+    connect(bg, qOverload<int>(&QButtonGroup::idClicked),
+            this, &DlgSmoothing::methodClicked);
+#endif
 
     ui->labelLambda->setText(QString::fromUtf8("\xce\xbb"));
     ui->labelMu->setText(QString::fromUtf8("\xce\xbc"));
     this->resize(this->sizeHint());
+    // clang-format on
 }
 
 /*
@@ -64,7 +76,7 @@ DlgSmoothing::~DlgSmoothing()
     delete ui;
 }
 
-void DlgSmoothing::method_clicked(int id)
+void DlgSmoothing::methodClicked(int id)
 {
     if (bg->button(id) == ui->radioButtonTaubin) {
         ui->labelMu->setEnabled(true);
@@ -93,10 +105,12 @@ double DlgSmoothing::microStep() const
 
 DlgSmoothing::Smooth DlgSmoothing::method() const
 {
-    if (ui->radioButtonTaubin->isChecked())
+    if (ui->radioButtonTaubin->isChecked()) {
         return DlgSmoothing::Taubin;
-    else if (ui->radioButtonLaplace->isChecked())
+    }
+    else if (ui->radioButtonLaplace->isChecked()) {
         return DlgSmoothing::Laplace;
+    }
     return DlgSmoothing::None;
 }
 
@@ -105,7 +119,7 @@ bool DlgSmoothing::smoothSelection() const
     return ui->checkBoxSelection->isChecked();
 }
 
-void DlgSmoothing::on_checkBoxSelection_toggled(bool on)
+void DlgSmoothing::onCheckBoxSelectionToggled(bool on)
 {
     Q_EMIT toggledSelection(on);
 }
@@ -113,27 +127,23 @@ void DlgSmoothing::on_checkBoxSelection_toggled(bool on)
 // ------------------------------------------------
 
 SmoothingDialog::SmoothingDialog(QWidget* parent, Qt::WindowFlags fl)
-  : QDialog(parent, fl)
+    : QDialog(parent, fl)
 {
     widget = new DlgSmoothing(this);
     this->setWindowTitle(widget->windowTitle());
 
     QVBoxLayout* hboxLayout = new QVBoxLayout(this);
     QDialogButtonBox* buttonBox = new QDialogButtonBox(this);
-    buttonBox->setStandardButtons(QDialogButtonBox::Cancel|QDialogButtonBox::Ok);
-    
-    connect(buttonBox, SIGNAL(accepted()),
-            this, SLOT(accept()));
-    connect(buttonBox, SIGNAL(rejected()),
-            this, SLOT(reject()));
+    buttonBox->setStandardButtons(QDialogButtonBox::Cancel | QDialogButtonBox::Ok);
+
+    connect(buttonBox, &QDialogButtonBox::accepted, this, &QDialog::accept);
+    connect(buttonBox, &QDialogButtonBox::rejected, this, &QDialog::reject);
 
     hboxLayout->addWidget(widget);
     hboxLayout->addWidget(buttonBox);
 }
 
-SmoothingDialog::~SmoothingDialog()
-{
-}
+SmoothingDialog::~SmoothingDialog() = default;
 
 // ---------------------------------------
 
@@ -141,41 +151,37 @@ SmoothingDialog::~SmoothingDialog()
 
 TaskSmoothing::TaskSmoothing()
 {
-    widget = new DlgSmoothing();
-    Gui::TaskView::TaskBox* taskbox = new Gui::TaskView::TaskBox(
-        QPixmap(), widget->windowTitle(), false, nullptr);
+    widget = new DlgSmoothing();  // NOLINT
+    Gui::TaskView::TaskBox* taskbox =
+        new Gui::TaskView::TaskBox(QPixmap(), widget->windowTitle(), false, nullptr);
     taskbox->groupLayout()->addWidget(widget);
     Content.push_back(taskbox);
 
-    selection = new Selection();
-    selection->setObjects(Gui::Selection().getSelectionEx(nullptr, Mesh::Feature::getClassTypeId()));
+    selection = new Selection();  // NOLINT
+    selection->setObjects(
+        Gui::Selection().getSelectionEx(nullptr, Mesh::Feature::getClassTypeId()));
     Gui::Selection().clearSelection();
     Gui::TaskView::TaskBox* tasksel = new Gui::TaskView::TaskBox();
     tasksel->groupLayout()->addWidget(selection);
     tasksel->hide();
     Content.push_back(tasksel);
 
-    connect(widget, SIGNAL(toggledSelection(bool)),
-            tasksel, SLOT(setVisible(bool)));
-}
-
-TaskSmoothing::~TaskSmoothing()
-{
-    // automatically deleted in the sub-class
+    connect(widget, &DlgSmoothing::toggledSelection, tasksel, &QWidget::setVisible);
 }
 
 bool TaskSmoothing::accept()
 {
     std::vector<App::DocumentObject*> meshes = selection->getObjects();
-    if (meshes.empty())
+    if (meshes.empty()) {
         return true;
+    }
 
     Gui::WaitCursor wc;
     Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Mesh Smoothing"));
 
     bool hasSelection = false;
-    for (std::vector<App::DocumentObject*>::const_iterator it = meshes.begin(); it != meshes.end(); ++it) {
-        Mesh::Feature* mesh = static_cast<Mesh::Feature*>(*it);
+    for (auto it : meshes) {
+        Mesh::Feature* mesh = static_cast<Mesh::Feature*>(it);
         std::vector<Mesh::FacetIndex> selection;
         if (widget->smoothSelection()) {
             // clear the selection before editing the mesh to avoid
@@ -184,44 +190,42 @@ bool TaskSmoothing::accept()
             mm->getFacetsFromSelection(selection);
             selection = mm->getPointsFromFacets(selection);
             mm->clearFacetSelection();
-            if (!selection.empty())
+            if (!selection.empty()) {
                 hasSelection = true;
+            }
         }
         Mesh::MeshObject* mm = mesh->Mesh.startEditing();
         switch (widget->method()) {
-            case MeshGui::DlgSmoothing::Taubin:
-                {
-                    MeshCore::TaubinSmoothing s(mm->getKernel());
-                    s.SetLambda(widget->lambdaStep());
-                    s.SetMicro(widget->microStep());
-                    if (widget->smoothSelection()) {
-                        s.SmoothPoints(widget->iterations(), selection);
-                    }
-                    else {
-                        s.Smooth(widget->iterations());
-                    }
-                }   break;
-            case MeshGui::DlgSmoothing::Laplace:
-                {
-                    MeshCore::LaplaceSmoothing s(mm->getKernel());
-                    s.SetLambda(widget->lambdaStep());
-                    if (widget->smoothSelection()) {
-                        s.SmoothPoints(widget->iterations(), selection);
-                    }
-                    else {
-                        s.Smooth(widget->iterations());
-                    }
-                }   break;
-            case MeshGui::DlgSmoothing::MedianFilter:
-                {
-                    MeshCore::MedianFilterSmoothing s(mm->getKernel());
-                    if (widget->smoothSelection()) {
-                        s.SmoothPoints(widget->iterations(), selection);
-                    }
-                    else {
-                        s.Smooth(widget->iterations());
-                    }
-                }   break;
+            case MeshGui::DlgSmoothing::Taubin: {
+                MeshCore::TaubinSmoothing s(mm->getKernel());
+                s.SetLambda(widget->lambdaStep());
+                s.SetMicro(widget->microStep());
+                if (widget->smoothSelection()) {
+                    s.SmoothPoints(widget->iterations(), selection);
+                }
+                else {
+                    s.Smooth(widget->iterations());
+                }
+            } break;
+            case MeshGui::DlgSmoothing::Laplace: {
+                MeshCore::LaplaceSmoothing s(mm->getKernel());
+                s.SetLambda(widget->lambdaStep());
+                if (widget->smoothSelection()) {
+                    s.SmoothPoints(widget->iterations(), selection);
+                }
+                else {
+                    s.Smooth(widget->iterations());
+                }
+            } break;
+            case MeshGui::DlgSmoothing::MedianFilter: {
+                MeshCore::MedianFilterSmoothing s(mm->getKernel());
+                if (widget->smoothSelection()) {
+                    s.SmoothPoints(widget->iterations(), selection);
+                }
+                else {
+                    s.Smooth(widget->iterations());
+                }
+            } break;
             default:
                 break;
         }

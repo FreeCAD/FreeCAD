@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2013      Luke Parry <l.parry@warwick.ac.uk>            *
+ *   Copyright (c) 2013 Luke Parry <l.parry@warwick.ac.uk>                 *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -37,8 +37,6 @@ public:
     {
         initialize("This module is the Measure module."); // register with Python
     }
-
-    ~Module() override {}
 
 private:
 };

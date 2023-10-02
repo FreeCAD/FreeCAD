@@ -46,7 +46,7 @@ class SensorManager : public QObject {
   typedef QObject inherited;
 public:
   SensorManager();
-  ~SensorManager();
+  ~SensorManager() override;
 
 public Q_SLOTS:
   void idleTimeout();

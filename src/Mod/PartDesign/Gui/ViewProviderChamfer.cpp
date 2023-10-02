@@ -36,6 +36,11 @@ const std::string & ViewProviderChamfer::featureName() const {
     return name;
 }
 
+void ViewProviderChamfer::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
+{
+    addDefaultAction(menu, QObject::tr("Edit chamfer"));
+    PartDesignGui::ViewProvider::setupContextMenu(menu, receiver, member);
+}
 
 TaskDlgFeatureParameters *ViewProviderChamfer::getEditDialog() {
     return new TaskDlgChamferParameters (this);

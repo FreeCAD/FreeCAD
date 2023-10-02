@@ -1,10 +1,9 @@
-
-
 # shell and operating system
-import os,sys,FileTools
-#sys.path.append( "..\Tools" )
+import os, sys, FileTools
 
-#import FileTools
+# sys.path.append( "..\Tools" )
+
+# import FileTools
 
 # line separator
 ls = os.linesep
@@ -13,21 +12,21 @@ ps = os.pathsep
 # dir separator
 ds = os.sep
 
-#====================================================================
+# ====================================================================
 # script assumes to run in src/Doc
-#os.chdir("e:/Develop/FreeCADWin/src/Doc")
-LogFile = open("MakeDoc.log",'w')
+# os.chdir("e:/Develop/FreeCADWin/src/Doc")
+LogFile = open("MakeDoc.log", "w")
 if not os.path.isdir("../../doc"):
     os.mkdir("../../doc")
-#if not os.path.isdir("../../Doc/res"):
+# if not os.path.isdir("../../Doc/res"):
 #    os.mkdir("../../Doc/res")
-#FileTools.cpfile("index.html","../../doc/index.html")
-#FileTools.cpfile("FreeCAD.css","../../doc/res/FreeCAD.css")
+# FileTools.cpfile("index.html","../../doc/index.html")
+# FileTools.cpfile("FreeCAD.css","../../doc/res/FreeCAD.css")
 
-#====================================================================
-sys.stdout.write ('Running source documentation ...')
+# ====================================================================
+sys.stdout.write("Running source documentation ...")
 # running doxygen with the parameters from the config file
-param = "doxygen fcbt"+ds+"BuildDocDoxy.cfg"
+param = "doxygen fcbt" + ds + "BuildDocDoxy.cfg"
 LogFile.write(param)
 print(param)
 text = os.popen(param).read()
@@ -35,9 +34,9 @@ LogFile.write(text)
 if not os.path.isdir("../../doc/SourceDocumentation"):
     os.mkdir("../../doc/SourceDocumentation")
 
-#====================================================================
-sys.stdout.write( ' done\n  Generate HTML ...')
-FileTools.cpall("html","../../doc/SourceDocumentation")
+# ====================================================================
+sys.stdout.write(" done\n  Generate HTML ...")
+FileTools.cpall("html", "../../doc/SourceDocumentation")
 
 """
 #====================================================================
@@ -146,13 +145,11 @@ FileTools.cpall("Online","../../Doc/Online")
 sys.stdout.write (' done\n  Clean up temporary files ...')
 LogFile.close()
 """
-#====================================================================
+# ====================================================================
 FileTools.rmall("html")
 
-#====================================================================
-sys.stdout.write (' done\nDocumentation done!\n')
+# ====================================================================
+sys.stdout.write(" done\nDocumentation done!\n")
 
 
-
-
-#print text
+# print text

@@ -80,13 +80,10 @@ TaskDlgDatumParameters::TaskDlgDatumParameters(ViewProviderDatum *ViewProvider)
     Content.push_back(parameter);
 }
 
-TaskDlgDatumParameters::~TaskDlgDatumParameters()
-{
-
-}
+TaskDlgDatumParameters::~TaskDlgDatumParameters() = default;
 
 bool TaskDlgDatumParameters::reject() {
-    
+
     return PartGui::TaskDlgAttacher::reject();
 }
 

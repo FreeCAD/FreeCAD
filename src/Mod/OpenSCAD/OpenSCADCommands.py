@@ -21,7 +21,7 @@
 
 __title__ = "FreeCAD OpenSCAD Workbench - GUI Commands"
 __author__ = "Sebastian Hoogen"
-__url__ = ["https://www.freecadweb.org"]
+__url__ = ["https://www.freecad.org"]
 
 '''
 This Script includes the GUI Commands of the OpenSCAD module
@@ -37,16 +37,7 @@ if FreeCAD.GuiUp:
 else:
     gui = False
 
-if gui:
-    try:
-        _encoding = QtGui.QApplication.UnicodeUTF8
-        def translate(context, text):
-            "convenience function for Qt translator"
-            return QtGui.QApplication.translate(context, text, None, _encoding)
-    except AttributeError:
-        def translate(context, text):
-            "convenience function for Qt translator"
-            return QtGui.QApplication.translate(context, text, None)
+translate = FreeCAD.Qt.translate
 
 class ExplodeGroup:
     "Ungroup Objects"
@@ -98,7 +89,7 @@ class ExplodeGroup:
                                 else:
                                     oo.ViewObject.DiffuseColor=color
                 else:
-                    FreeCAD.Console.PrintError(translate('OpenSCAD', 'Unable to explode %s') % obj.Name +u'\n')
+                    FreeCAD.Console.PrintError(translate('OpenSCAD', 'Unable to explode %s') % obj.Name + '\n')
 
         for obj in FreeCADGui.Selection.getSelection():
             if len(obj.InList) == 0: # allowed only for for top level objects
@@ -150,7 +141,8 @@ class RefineShapeFeature:
         return FreeCADGui.Selection.countObjectsOfType('Part::Feature') > 0
 
     def Activated(self):
-        import Part,OpenSCADFeatures
+        import Part
+        import OpenSCADFeatures
         selection=FreeCADGui.Selection.getSelectionEx()
         for selobj in selection:
             newobj=selobj.Document.addObject("Part::FeaturePython",'refine')
@@ -259,7 +251,8 @@ class IncreaseToleranceFeature:
         return FreeCADGui.Selection.countObjectsOfType('Part::Feature') > 0
 
     def Activated(self):
-        import Part,OpenSCADFeatures
+        import Part
+        import OpenSCADFeatures
         selection=FreeCADGui.Selection.getSelectionEx()
         for selobj in selection:
             newobj=selobj.Document.addObject("Part::FeaturePython",'tolerance')
@@ -271,7 +264,7 @@ class IncreaseToleranceFeature:
     def GetResources(self):
         return {'Pixmap'  : 'OpenSCAD_IncreaseToleranceFeature',
                 'MenuText': QtCore.QT_TRANSLATE_NOOP('OpenSCAD_IncreaseToleranceFeature', 'Increase Tolerance Feature'),
-                'ToolTip' : QtCore.QT_TRANSLATE_NOOP('OpenSCAD_IncreaseToleranceFeature', 'Create Feature that allows to increase the tolerance')}
+                'ToolTip' : QtCore.QT_TRANSLATE_NOOP('OpenSCAD_IncreaseToleranceFeature', 'Create Feature that allows increasing the tolerance')}
 
 class ExpandPlacements:
     '''This should aid interactive repair in the future
@@ -288,7 +281,7 @@ class ExpandPlacements:
     def GetResources(self):
         return {'Pixmap'  : 'OpenSCAD_ExpandPlacements',
                 'MenuText': QtCore.QT_TRANSLATE_NOOP('OpenSCAD_ExpandPlacements', 'Expand Placements'),
-                'ToolTip' : QtCore.QT_TRANSLATE_NOOP('OpenSCAD_ExpandPlacements', 'Expand all placements downwards the FeatureTree')}
+                'ToolTip' : QtCore.QT_TRANSLATE_NOOP('OpenSCAD_ExpandPlacements', 'Expand all placements downwards in the Tree view')}
 
 class ReplaceObject:
     def IsActive(self):
@@ -305,17 +298,18 @@ class ReplaceObject:
                 tuple((len(obj.InList)) for obj in objs) in ((0,1),(1,0)):
             replaceobj.replaceobjfromselection(objs)
         else:
-            FreeCAD.Console.PrintError(translate('OpenSCAD', 'Please select 3 objects first')+u'\n')
+            FreeCAD.Console.PrintError(translate('OpenSCAD', 'Please select 3 objects first')+ '\n')
     def GetResources(self):
         return {'Pixmap'  : 'OpenSCAD_ReplaceObject',
                 'MenuText': QtCore.QT_TRANSLATE_NOOP('OpenSCAD_ReplaceObject', 'Replace Object'),
-                'ToolTip' : QtCore.QT_TRANSLATE_NOOP('OpenSCAD_ReplaceObject', 'Replace an object in the Feature Tree. Please select old, new, and parent object')}
+                'ToolTip' : QtCore.QT_TRANSLATE_NOOP('OpenSCAD_ReplaceObject', 'Replace an object in the Tree view. Please select old, new, and parent object')}
 
 class RemoveSubtree:
     def IsActive(self):
         return FreeCADGui.Selection.countObjectsOfType('Part::Feature') > 0
     def Activated(self):
-        import OpenSCADUtils,FreeCADGui
+        import OpenSCADUtils
+        import FreeCADGui
         OpenSCADUtils.removesubtree(FreeCADGui.Selection.getSelection())
 
     def GetResources(self):
@@ -338,16 +332,16 @@ class AddSCADWidget(QtGui.QWidget):
         self.textMsg.setMaximumHeight(h)
         self.textMsg.resize(self.textMsg.width(),h)
         self.buttonadd = QtGui.QPushButton(translate('OpenSCAD','Add'))
-        self.buttonclear = QtGui.QPushButton(translate('OpenSCAD','Clear'))
-        self.buttonload = QtGui.QPushButton(translate('OpenSCAD','Load'))
-        self.buttonsave = QtGui.QPushButton(translate('OpenSCAD','Save'))
         self.buttonrefresh = QtGui.QPushButton(translate('OpenSCAD','Refresh'))
+        self.buttonclear = QtGui.QPushButton(translate('OpenSCAD','Clear code'))
+        self.buttonload = QtGui.QPushButton(translate('OpenSCAD','Open...'))
+        self.buttonsave = QtGui.QPushButton(translate('OpenSCAD','Save...'))
         self.checkboxmesh = QtGui.QCheckBox(translate('OpenSCAD','as Mesh'))
         layouth=QtGui.QHBoxLayout()
         layouth.addWidget(self.buttonadd)
+        layouth.addWidget(self.buttonrefresh)
         layouth.addWidget(self.buttonload)
         layouth.addWidget(self.buttonsave)
-        layouth.addWidget(self.buttonrefresh)
         layouth.addWidget(self.buttonclear)
         layout= QtGui.QVBoxLayout()
         layout.addLayout(layouth)
@@ -357,7 +351,15 @@ class AddSCADWidget(QtGui.QWidget):
         self.setLayout(layout)
         self.setWindowTitle(translate('OpenSCAD','Add OpenSCAD Element'))
         self.textEdit.setText(u'cube();')
-        self.buttonclear.clicked.connect(self.textEdit.clear)
+
+        def undoable_clear():
+            """Clears the textEdit in a way that allows undo of the action"""
+            self.textEdit.setFocus()
+            self.textEdit.selectAll()
+            keypress = QtGui.QKeyEvent(QtGui.QKeyEvent.KeyPress, QtCore.Qt.Key_Delete, QtCore.Qt.NoModifier)
+            QtGui.QGuiApplication.sendEvent(self.textEdit, keypress)
+
+        self.buttonclear.clicked.connect(undoable_clear)
 
     def retranslateUi(self, widget=None):
         self.buttonadd.setText(translate('OpenSCAD','Add'))
@@ -391,7 +393,8 @@ class AddSCADTask:
     def addelement(self):
         scadstr=self.form.textEdit.toPlainText()
         asmesh=self.form.checkboxmesh.checkState()
-        import OpenSCADUtils, os
+        import OpenSCADUtils
+        import os
         extension= 'stl' if asmesh else 'csg'
         try:
             tmpfilename=OpenSCADUtils.callopenscadstring(scadstr,extension)
@@ -415,26 +418,36 @@ class AddSCADTask:
         self.form.textMsg.setPlainText('')
         doc=FreeCAD.activeDocument()
         if doc :
-           for obj in doc.Objects :
-               doc.removeObject(obj.Name)
+            for obj in doc.Objects :
+                doc.removeObject(obj.Name)
         self.addelement()
 
     def loadelement(self):
-        filename, filter = QtGui.QFileDialog.getOpenFileName(parent=self.form, caption='Open file', dir='.', filter='OpenSCAD Files (*.scad)',selectedFilter='',option=0)
+        filename, _ = QtGui.QFileDialog.getOpenFileName(
+            parent=self.form,
+            caption=translate("OpenSCAD", "Open file"),
+            dir='.',
+            filter=translate("OpenSCAD", "OpenSCAD Files") + " (*.scad *.csg)"
+        )
 
         if filename:
-           print('filename :'+filename)
-           with open(filename,'r') as fp :
-              data = fp.read()
-              self.form.textEdit.setText(data)
+            print('filename :'+filename)
+            with open(filename,'r') as fp :
+                data = fp.read()
+                self.form.textEdit.setText(data)
 
     def saveelement(self) :
-        filename, filter = QtGui.QFileDialog.getSaveFileName(parent=self.form, caption='Open file', dir='.', filter='OpenSCAD Files (*.scad)',selectedFilter='',option=0)
+        filename, _ = QtGui.QFileDialog.getSaveFileName(
+            parent=self.form,
+            caption=translate("OpenSCAD", "Save file"),
+            dir='.',
+            filter=translate("OpenSCAD", "OpenSCAD Files") + " (*.scad *.csg)"
+        )
 
         if filename:
-           Text = self.form.textEdit.toPlainText()
-           with open(filename,'w') as fp :
-              fp.write(Text)
+            Text = self.form.textEdit.toPlainText()
+            with open(filename,'w') as fp :
+                fp.write(Text)
 
 class OpenSCADMeshBooleanWidget(QtGui.QWidget):
     def __init__(self,*args):
@@ -457,7 +470,7 @@ class OpenSCADMeshBooleanWidget(QtGui.QWidget):
         self.rb_hull = QtGui.QRadioButton("Hull")
         self.rb_group.addButton(self.rb_hull)
         self.rb_group_box_layout.addWidget(self.rb_hull)
-        self.rb_minkowski = QtGui.QRadioButton("Minkowski")
+        self.rb_minkowski = QtGui.QRadioButton("Minkowski sum")
         self.rb_group.addButton(self.rb_minkowski)
         self.rb_group_box_layout.addWidget(self.rb_minkowski)
         layouth=QtGui.QHBoxLayout()
@@ -471,6 +484,7 @@ class OpenSCADMeshBooleanWidget(QtGui.QWidget):
     def retranslateUi(self, widget=None):
         self.buttonadd.setText(translate('OpenSCAD','Perform'))
         self.setWindowTitle(translate('OpenSCAD','Mesh Boolean'))
+        self.rb_minkowski.setText(translate('OpenSCAD','Minkowski sum'))
 
 class OpenSCADMeshBooleanTask:
     def __init__(self):
@@ -534,10 +548,11 @@ class OpenSCADMeshBoolean:
 
 class Hull:
     def IsActive(self):
-        return len(FreeCADGui.Selection.getSelection()) >= 2
+        return len(FreeCADGui.Selection.getSelection()) >= 1
 
     def Activated(self):
-        import Part,OpenSCADFeatures
+        import Part
+        import OpenSCADFeatures
         import importCSG
         selection=FreeCADGui.Selection.getSelectionEx()
         objList = []
@@ -549,14 +564,15 @@ class Hull:
     def GetResources(self):
         return {'Pixmap'  : 'OpenSCAD_Hull',
                 'MenuText': QtCore.QT_TRANSLATE_NOOP('OpenSCAD_Hull', 'Hull'),
-                'ToolTip' : QtCore.QT_TRANSLATE_NOOP('OpenSCAD_Hull', 'Perform Hull')}
+                'ToolTip' : QtCore.QT_TRANSLATE_NOOP('OpenSCAD_Hull', 'Use OpenSCAD to create a hull')}
 
 class Minkowski:
     def IsActive(self):
-        return len(FreeCADGui.Selection.getSelection()) >= 2
+        return len(FreeCADGui.Selection.getSelection()) >= 1
 
     def Activated(self):
-        import Part,OpenSCADFeatures
+        import Part
+        import OpenSCADFeatures
         import importCSG
         selection=FreeCADGui.Selection.getSelectionEx()
         objList = []
@@ -567,8 +583,8 @@ class Minkowski:
         FreeCAD.ActiveDocument.recompute()
     def GetResources(self):
         return {'Pixmap'  : 'OpenSCAD_Minkowski',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP('OpenSCAD_Minkowski', 'Minkowski'),
-                'ToolTip' : QtCore.QT_TRANSLATE_NOOP('OpenSCAD_Minkowski', 'Perform Minkowski')}
+                'MenuText': QtCore.QT_TRANSLATE_NOOP('OpenSCAD_Minkowski', 'Minkowski sum'),
+                'ToolTip' : QtCore.QT_TRANSLATE_NOOP('OpenSCAD_Minkowski', 'Use OpenSCAD to create a Minkowski sum')}
 
 FreeCADGui.addCommand('OpenSCAD_ColorCodeShape',ColorCodeShape())
 FreeCADGui.addCommand('OpenSCAD_ExplodeGroup',ExplodeGroup())

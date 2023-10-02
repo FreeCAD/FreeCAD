@@ -10,9 +10,12 @@ endif(MSVC)
 
 include_directories(
     ${PYTHON_INCLUDE_DIRS}
+    ${OCC_INCLUDE_DIR}
     ${CMAKE_CURRENT_SOURCE_DIR}
     ${CMAKE_SOURCE_DIR}/src/Mod/Import/App/dxf
 )
+
+link_directories(${OCC_LIBRARY_DIR})
 
 
 if(NOT FREECAD_USE_PYBIND11)

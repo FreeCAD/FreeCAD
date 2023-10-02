@@ -27,7 +27,7 @@ import FreeCAD, Part
 
 __title__ = "JoinFeatures module (legacy)"
 __author__ = "DeepSOIC"
-__url__ = "http://www.freecadweb.org"
+__url__ = "http://www.freecad.org"
 __doc__ = "Legacy JoinFeatures module provided for ability to load projects made with \
 FreeCAD v0.16. Do not use. Use BOPTools.JoinFeatures instead."
 
@@ -142,10 +142,10 @@ class _ViewProviderPartJoinFeature:
     def unsetEdit(self, vobj, mode):
         return
 
-    def __getstate__(self):
+    def dumps(self):
         return None
 
-    def __setstate__(self, state):
+    def loads(self, state):
         return None
 
     def claimChildren(self):

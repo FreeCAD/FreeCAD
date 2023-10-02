@@ -27,24 +27,15 @@
 #endif
 
 #include <Base/Exception.h>
-#include <Base/Console.h>
-#include <Base/Interpreter.h>
 #include <Base/FileInfo.h>
-#include <Base/Vector3D.h>
-#include <Base/Tools2D.h>
-
-#include <App/Application.h>
-
-#include "Geometry.h"
-
-#include <iostream>
-#include <iterator>
+#include <Base/Interpreter.h>
 
 #include "DrawParametricTemplate.h"
-#include <Mod/TechDraw/App/DrawParametricTemplatePy.h>
+#include "DrawParametricTemplatePy.h"
+#include "Geometry.h"
+
 
 using namespace TechDraw;
-using namespace std;
 
 PROPERTY_SOURCE(TechDraw::DrawParametricTemplate, TechDraw::DrawTemplate)
 
@@ -74,12 +65,12 @@ unsigned int DrawParametricTemplate::getMemSize() const
 }
 
 double DrawParametricTemplate::getWidth() const {
-  throw Base::NotImplementedError("Need to Implement");
+    throw Base::NotImplementedError("Need to Implement");
 }
 
 
 double DrawParametricTemplate::getHeight() const {
-  throw Base::NotImplementedError("Need to Implement");
+    throw Base::NotImplementedError("Need to Implement");
 }
 
 
@@ -97,21 +88,22 @@ void DrawParametricTemplate::onChanged(const App::Property* prop)
 App::DocumentObjectExecReturn *DrawParametricTemplate::execute()
 {
     std::string temp = Template.getValue();
-    if (!temp.empty()) {
-        Base::FileInfo tfi(temp);
-        if (!tfi.isReadable()) {
-            // if there is a old absolute template file set use a redirect
-            return App::DocumentObject::StdReturn;
-        }
-        try {
-            Base::Interpreter().runFile(temp.c_str(), true);
-        }
-    catch(const Base::Exception& e) {
-        PyErr_SetString(PyExc_ImportError, e.what());
+    if (temp.empty()) {
         return App::DocumentObject::StdReturn;
     }
+
+    Base::FileInfo tfi(temp);
+    if (!tfi.isReadable()) {
+        // if there is a old absolute template file set use a redirect
+        return App::DocumentObject::StdReturn;
     }
 
+    try {
+        Base::Interpreter().runFile(temp.c_str(), true);
+    }
+    catch(const Base::Exception& e) {
+        PyErr_SetString(PyExc_ImportError, e.what());
+    }
     return App::DocumentObject::StdReturn;
 }
 

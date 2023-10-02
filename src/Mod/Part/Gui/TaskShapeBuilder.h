@@ -20,15 +20,15 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef PARTGUI_TASKSHAPEBUILDER_H
 #define PARTGUI_TASKSHAPEBUILDER_H
 
-#include <Gui/TaskView/TaskView.h>
-#include <Gui/TaskView/TaskDialog.h>
 #include <Gui/Selection.h>
+#include <Gui/TaskView/TaskDialog.h>
+#include <Gui/TaskView/TaskView.h>
 
-namespace PartGui { 
+
+namespace PartGui {
 
 class ShapeBuilderWidget : public QWidget,
                            public Gui::SelectionObserver
@@ -42,9 +42,9 @@ public:
     bool accept();
     bool reject();
 
-private Q_SLOTS:
-    void on_createButton_clicked();
-    void on_selectButton_clicked();
+private:
+    void onCreateButtonClicked();
+    void onSelectButtonClicked();
     void switchMode(int);
 
 private:

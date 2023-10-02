@@ -77,7 +77,7 @@ private:
     tEdgeVector m_edges;
 
     tMapPntEdge m_vertices;
-    bool m_done;
+    bool m_done{false};
 
     tEdgeVector::const_iterator m_edgeIter;
 

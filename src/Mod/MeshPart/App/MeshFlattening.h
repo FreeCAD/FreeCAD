@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef MESHFLATTENING
 #define MESHFLATTENING
 
@@ -29,19 +28,15 @@
 // - unwrap faces which are nurbs and return nurbs (no cuts, meshing internally)
 // 	- TODO: map any curves from origin to flattened faces
 
-#include "MeshFlatteningNurbs.h"
-#include <BRepTools.hxx>
 #include <TopoDS_Face.hxx>
 #include <vector>
 
 #include <Eigen/Geometry>
-#include <Eigen/IterativeLinearSolvers>
-#include <Eigen/SparseCore>
-#include <Eigen/QR>
 
-#include <vector>
+#include "MeshFlatteningNurbs.h"
 
 
+// clang-format off
 using Vector3 = Eigen::Vector3d;
 using Vector2 = Eigen::Vector2d;
 
@@ -61,7 +56,7 @@ std::vector<ColMat<double, 3>> getBoundaries(ColMat<double, 3> vertices, ColMat<
 class FaceUnwrapper{
 	nurbs::NurbsBase2D nu;
 public:
-	FaceUnwrapper(){}
+    FaceUnwrapper() = default;
 	FaceUnwrapper(const TopoDS_Face & face);
         FaceUnwrapper(ColMat<double, 3> xyz_nodes, ColMat<long, 3> tris);
 	void findFlatNodes(int steps, double val);
@@ -81,5 +76,6 @@ public:
 	spMat A; // mapping between nurbs(poles) and mesh(vertices) computed with nurbs-basis-functions and uv_mesh
 
 };
+// clang-format on
 
-#endif // MESHFLATTENING
+#endif  // MESHFLATTENING

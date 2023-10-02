@@ -47,4 +47,4 @@ for example, by creating a reference to the new class named the same
 as the older class.
 
 For more information see the thread:
-[[Discussion] Splitting Draft tools into their own modules](https://forum.freecadweb.org/viewtopic.php?f=23&t=38593&start=10#p341298)
+[[Discussion] Splitting Draft tools into their own modules](https://forum.freecad.org/viewtopic.php?f=23&t=38593&start=10#p341298)

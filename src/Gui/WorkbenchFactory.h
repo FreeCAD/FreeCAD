@@ -56,8 +56,8 @@ public:
 private:
   static WorkbenchFactoryInst* _pcSingleton;
 
-  WorkbenchFactoryInst(){}
-  ~WorkbenchFactoryInst() override{}
+  WorkbenchFactoryInst() = default;
+  ~WorkbenchFactoryInst() override = default;
 };
 
 inline GuiExport WorkbenchFactoryInst& WorkbenchFactory()
@@ -76,11 +76,9 @@ template <class CLASS>
 class WorkbenchProducer: public Base::AbstractProducer
 {
 public:
-  WorkbenchProducer ()
-  {
-  }
+  WorkbenchProducer()   = default;
 
-  ~WorkbenchProducer () override{}
+  ~WorkbenchProducer () override = default;
 
   void* Produce () const override
   {

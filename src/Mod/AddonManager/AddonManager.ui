@@ -68,7 +68,7 @@
        <item>
         <widget class="QToolButton" name="buttonPauseUpdate">
          <property name="toolTip">
-          <string>Pause cache update</string>
+          <string>Stop the cache update</string>
          </property>
          <property name="text">
           <string/>
@@ -130,7 +130,7 @@
         <string>View and update Python package dependencies</string>
        </property>
        <property name="text">
-        <string>Update dependencies</string>
+        <string>Python dependencies...</string>
        </property>
       </widget>
      </item>

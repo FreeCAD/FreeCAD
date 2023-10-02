@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop-application">
+  <id>org.freecad.FreeCAD</id>
+  <project_license>LGPL-2.1</project_license>
+  <metadata_license>CC0-1.0</metadata_license>
+  <developer_name>The FreeCAD Team</developer_name>
+  <launchable type="desktop-id">org.freecad.FreeCAD.desktop</launchable>
+  <name>FreeCAD</name>
+  <summary>An open source parametric 3D CAD modeler</summary>
+  <description>
+    <p>
+      FreeCAD is an open-source parametric 3D modeler made 
+      primarily to design real-life objects of any size. 
+      Parametric modeling allows you to easily modify your 
+      design by going back into your model history and 
+      changing its parameters. It is designed to fit a 
+      wide range of uses including product design, mechanical 
+      engineering, architecture and 3D printing.
+    </p>
+    <p>
+      FreeCAD allows you to sketch geometry constrained 
+      2D shapes and use them as a base to build other objects. 
+      It contains many components to adjust dimensions or 
+      extract design details from 3D models to create high 
+      quality production-ready drawings. it is a multiplatfom 
+      (Windows, Mac and Linux), highly customizable using the 
+      Python language. It reads and writes to many open file 
+      formats such as STEP, IGES, STL, SVG, DXF, OBJ, IFC, 
+      DAE and many others, making it possible to seamlessly 
+      integrate it into your workflow. 
+    </p>
+    <p>
+      FreeCAD includes a modern Finite Element Analysis (FEA) 
+      tools, experimental CFD, BIM, Geodata workbenches, 
+      a Path (CNC) workbench, a robot simulation module that 
+      allows you to study robot movements and many more, and
+      a rich collection of plugins and macros installable
+      directly from within the application.
+    </p>
+  </description>
+  <screenshots>
+    <screenshot type="default">
+      <caption>Part Design</caption>
+      <image>https://wiki.freecad.org/images/7/72/Freecad016_screenshot1.jpg</image>
+    </screenshot>
+    <screenshot>
+      <caption>An assembly</caption>
+      <image>https://wiki.freecad.org/images/f/f7/FreeCAD_highlight_3_0.19.jpg</image>
+    </screenshot>
+    <screenshot>
+      <caption>Arch Workbench</caption>
+      <image>https://wiki.freecad.org/images/c/c3/Arch_tutorial_43.jpg</image>
+    </screenshot>
+    <screenshot>
+      <caption>Part Design</caption>
+      <image>https://wiki.freecad.org/images/f/f4/Freecad-document-01.jpg</image>
+    </screenshot>
+  </screenshots>
+  <keywords>
+    <!-- copied from https://www.freecad.org/ HTML: <meta name="keywords" [...] />  -->
+    <keyword>engineering</keyword>
+    <keyword translate="no">opencascade</keyword>
+    <keyword >architecture</keyword>
+    <keyword translate="no">cad</keyword>
+    <keyword translate="no">bim</keyword>
+    <keyword translate="no">fem</keyword>
+    <keyword translate="no">3d</keyword>
+    <keyword translate="no">3d-printing</keyword>
+    <keyword translate="no">coin</keyword>
+    <keyword translate="no">parametric-modeler</keyword>
+  </keywords>
+  <url type="homepage">https://www.freecad.org/</url>
+  <url type="bugtracker">https://github.com/FreeCAD/FreeCAD/issues</url>
+  <url type="faq">https://wiki.freecad.org/Frequently_asked_questions</url>
+  <url type="help">https://wiki.freecad.org/User_hub</url>
+  <url type="donation">https://www.freecad.org/sponsor.php</url>
+  <url type="translate">https://crowdin.com/project/freecad</url>
+  <url type="vcs-browser">https://github.com/FreeCAD/FreeCAD</url>
+  <url type="contribute">https://github.com/FreeCAD/FreeCAD/blob/master/CONTRIBUTING.md</url>
+  <update_contact>yorik_AT_uncreated.net</update_contact>
+  <content_rating type="oars-1.1"/>
+  <releases>
+    <release version="@PACKAGE_VERSION@" date="@APPDATA_RELEASE_DATE@"/>
+  </releases>
+</component>

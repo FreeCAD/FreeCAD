@@ -31,20 +31,18 @@ namespace RobotGui
 
 class RobotGuiExport ViewProviderTrajectoryCompound: public ViewProviderTrajectory
 {
-    PROPERTY_HEADER(RobotGui::ViewProviderTrajectoryCompound);
+    PROPERTY_HEADER_WITH_OVERRIDE(RobotGui::ViewProviderTrajectoryCompound);
 
 public:
-        
-    /// grouping handling 
-    std::vector<App::DocumentObject*> claimChildren(void)const;
+    /// grouping handling
+    std::vector<App::DocumentObject*> claimChildren() const override;
 
 protected:
-    virtual bool setEdit(int ModNum);
-    virtual void unsetEdit(int ModNum);
-
+    bool setEdit(int ModNum) override;
+    void unsetEdit(int ModNum) override;
 };
 
-} //namespace RobotGui
+}  // namespace RobotGui
 
 
-#endif // ROBOT_ViewProviderTrajectoryCompound_H
+#endif  // ROBOT_ViewProviderTrajectoryCompound_H

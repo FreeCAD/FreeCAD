@@ -65,7 +65,7 @@ Gui::GuiNativeEvent::tdx_drv_handler(io_connect_t connection,
     //printf("tdx_drv_handler\n");
     //printf("connection: %X\n", connection);
     //printf("messageType %c%c%c%c\n", messageType/0x1000000, messageType/0x10000, messageType/0x100, messageType);
-    ConnexionDeviceStatePtr msg = (ConnexionDeviceStatePtr)messageArgument;
+    auto msg = (ConnexionDeviceStatePtr)messageArgument;
 
     switch(messageType) {
     case kConnexionMsgDeviceState:
@@ -145,16 +145,16 @@ Gui::GuiNativeEvent::~GuiNativeEvent()
 
 void Gui::GuiNativeEvent::initSpaceball(QMainWindow *window)
 {
-	Q_UNUSED(window)
+    Q_UNUSED(window)
     OSStatus err;
     /* make sure the framework is installed */
-    if (InstallConnexionHandlers == NULL)
+    if (SetConnexionHandlers == NULL)
     {
         Base::Console().Log("3Dconnexion framework not found!\n");
         return;
     }
     /* install 3dx message handler in order to receive driver events */
-    err = InstallConnexionHandlers(tdx_drv_handler, 0L, 0L);
+    err = SetConnexionHandlers(tdx_drv_handler, 0L, 0L, false);
     assert(err == 0);
     if (err)
     {

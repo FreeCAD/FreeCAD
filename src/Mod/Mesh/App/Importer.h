@@ -26,12 +26,14 @@
 #include <string>
 #include <vector>
 
-namespace App {
+namespace App
+{
 class Document;
 class Color;
-}
+}  // namespace App
 
-namespace MeshCore {
+namespace MeshCore
+{
 struct Material;
 }
 namespace Mesh
@@ -43,8 +45,6 @@ class Importer
 {
 public:
     explicit Importer(App::Document*);
-    ~Importer() = default;
-
     void load(const std::string& fileName);
 
 private:
@@ -58,6 +58,6 @@ private:
     App::Document* document;
 };
 
-} // namespace Mesh
+}  // namespace Mesh
 
-#endif // MESH_IMPORTER_H
+#endif  // MESH_IMPORTER_H

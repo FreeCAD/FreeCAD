@@ -55,6 +55,7 @@
 #include <App/FeaturePythonPyImp.h>
 #include <App/Link.h>
 #include <App/GeoFeatureGroupExtension.h>
+#include <App/ElementNamingUtils.h>
 #include <Base/Exception.h>
 #include <Base/Placement.h>
 #include <Base/Rotation.h>
@@ -65,9 +66,8 @@
 #include "PartPyCXX.h"
 #include "TopoShapePy.h"
 
-
 using namespace Part;
-namespace bp = boost::placeholders;
+namespace sp = std::placeholders;
 
 FC_LOG_LEVEL_INIT("Part",true,true)
 
@@ -79,9 +79,7 @@ Feature::Feature()
     ADD_PROPERTY(Shape, (TopoDS_Shape()));
 }
 
-Feature::~Feature()
-{
-}
+Feature::~Feature() = default;
 
 short Feature::mustExecute() const
 {
@@ -116,12 +114,12 @@ PyObject *Feature::getPyObject()
     return Py::new_reference_to(PythonObject);
 }
 
-App::DocumentObject *Feature::getSubObject(const char *subname, 
+App::DocumentObject *Feature::getSubObject(const char *subname,
         PyObject **pyObj, Base::Matrix4D *pmat, bool transform, int depth) const
 {
     // having '.' inside subname means it is referencing some children object,
     // instead of any sub-element from ourself
-    if(subname && !Data::ComplexGeoData::isMappedElement(subname) && strchr(subname,'.')) 
+    if(subname && !Data::isMappedElement(subname) && strchr(subname,'.'))
         return App::DocumentObject::getSubObject(subname,pyObj,pmat,transform,depth);
 
     Base::Matrix4D _mat;
@@ -130,25 +128,19 @@ App::DocumentObject *Feature::getSubObject(const char *subname,
         mat *= Placement.getValue().toMatrix();
 
     if(!pyObj) {
-#if 0
-        if(subname==0 || *subname==0 || Shape.getShape().hasSubShape(subname))
-            return const_cast<Feature*>(this);
-        return nullptr;
-#else
         // TopoShape::hasSubShape is kind of slow, let's cut outself some slack here.
         return const_cast<Feature*>(this);
-#endif
     }
 
     try {
         TopoShape ts(Shape.getShape());
         bool doTransform = mat!=ts.getTransform();
-        if(doTransform) 
+        if(doTransform)
             ts.setShape(ts.getShape().Located(TopLoc_Location()));
         if(subname && *subname && !ts.isNull())
             ts = ts.getSubShape(subname);
         if(doTransform && !ts.isNull()) {
-            static int sCopy = -1; 
+            static int sCopy = -1;
             if(sCopy<0) {
                 ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
                         "User parameter:BaseApp/Preferences/Mod/Part/General");
@@ -177,7 +169,7 @@ App::DocumentObject *Feature::getSubObject(const char *subname,
     catch(Standard_Failure &e) {
         // FIXME: Do not handle the exception here because it leads to a flood of irrelevant and
         // annoying error messages.
-        // For example: https://forum.freecadweb.org/viewtopic.php?f=19&t=42216
+        // For example: https://forum.freecad.org/viewtopic.php?f=19&t=42216
         // Instead either raise a sub-class of Base::Exception and let it handle by the calling
         // instance or do simply nothing. For now the error message is degraded to a log message.
         std::ostringstream str;
@@ -189,16 +181,16 @@ App::DocumentObject *Feature::getSubObject(const char *subname,
         if (msg) {str << msg;}
         else     {str << "No OCCT Exception Message";}
         str << ": " << getFullName();
-        if (subname) 
+        if (subname)
             str << '.' << subname;
         FC_LOG(str.str());
         return nullptr;
     }
 }
 
-TopoDS_Shape Feature::getShape(const App::DocumentObject *obj, const char *subname, 
-        bool needSubElement, Base::Matrix4D *pmat, App::DocumentObject **powner, 
-        bool resolveLink, bool transform) 
+TopoDS_Shape Feature::getShape(const App::DocumentObject *obj, const char *subname,
+        bool needSubElement, Base::Matrix4D *pmat, App::DocumentObject **powner,
+        bool resolveLink, bool transform)
 {
     return getTopoShape(obj,subname,needSubElement,pmat,powner,resolveLink,transform,true).getShape();
 }
@@ -213,12 +205,14 @@ struct ShapeCache {
         if(inited)
             return;
         inited = true;
+        //NOLINTBEGIN
         App::GetApplication().signalDeleteDocument.connect(
-                boost::bind(&ShapeCache::slotDeleteDocument, this, bp::_1));
+                std::bind(&ShapeCache::slotDeleteDocument, this, sp::_1));
         App::GetApplication().signalDeletedObject.connect(
-                boost::bind(&ShapeCache::slotClear, this, bp::_1));
+                std::bind(&ShapeCache::slotClear, this, sp::_1));
         App::GetApplication().signalChangedObject.connect(
-                boost::bind(&ShapeCache::slotChanged, this, bp::_1,bp::_2));
+                std::bind(&ShapeCache::slotChanged, this, sp::_1,sp::_2));
+        //NOLINTEND
     }
 
     void slotDeleteDocument(const App::Document &doc) {
@@ -229,8 +223,8 @@ struct ShapeCache {
         const char *propName = prop.getName();
         if(!App::Property::isValidName(propName))
             return;
-        if(strcmp(propName,"Shape")==0 
-                || strcmp(propName,"Group")==0 
+        if(strcmp(propName,"Shape")==0
+                || strcmp(propName,"Group")==0
                 || strstr(propName,"Touched"))
             slotClear(obj);
     }
@@ -271,11 +265,13 @@ void Feature::clearShapeCache() {
     _ShapeCache.cache.clear();
 }
 
-static TopoShape _getTopoShape(const App::DocumentObject *obj, const char *subname, 
-        bool needSubElement, Base::Matrix4D *pmat, App::DocumentObject **powner, 
+static TopoShape _getTopoShape(const App::DocumentObject *obj, const char *subname,
+        bool needSubElement, Base::Matrix4D *pmat, App::DocumentObject **powner,
         bool resolveLink, bool noElementMap, std::vector<App::DocumentObject*> &linkStack)
 
 {
+    (void) noElementMap;
+
     TopoShape shape;
 
     if(!obj)
@@ -286,7 +282,7 @@ static TopoShape _getTopoShape(const App::DocumentObject *obj, const char *subna
     if(powner) *powner = nullptr;
 
     std::string _subname;
-    auto subelement = Data::ComplexGeoData::findElementName(subname);
+    auto subelement = Data::findElementName(subname);
     if(!needSubElement && subname) {
         // strip out element name if not needed
         if(subelement && *subelement) {
@@ -296,25 +292,16 @@ static TopoShape _getTopoShape(const App::DocumentObject *obj, const char *subna
     }
 
     if(_ShapeCache.getShape(obj,shape,subname)) {
-        if(noElementMap) {
-            // shape.resetElementMap();
-            // shape.Tag = 0;
-            // shape.Hasher.reset();
-        }
     }
 
     App::DocumentObject *linked = nullptr;
     App::DocumentObject *owner = nullptr;
     Base::Matrix4D linkMat;
-    // App::StringHasherRef hasher;
-    // long tag;
     {
         Base::PyGILStateLocker lock;
         owner = obj->getSubObject(subname,shape.isNull()?&pyobj:nullptr,&mat,false);
         if(!owner)
             return shape;
-        // tag = owner->getID();
-        // hasher = owner->getDocument()->getStringHasher();
         linked = owner->getLinkedObject(true,&linkMat,false);
         if(pmat) {
             if(resolveLink && obj!=owner)
@@ -324,7 +311,7 @@ static TopoShape _getTopoShape(const App::DocumentObject *obj, const char *subna
         }
         if(!linked)
             linked = owner;
-        if(powner) 
+        if(powner)
             *powner = resolveLink?linked:owner;
 
         if(!shape.isNull())
@@ -335,11 +322,6 @@ static TopoShape _getTopoShape(const App::DocumentObject *obj, const char *subna
             if(!shape.isNull()) {
                 if(obj->getDocument() != linked->getDocument())
                     _ShapeCache.setShape(obj,shape,subname);
-                if(noElementMap) {
-                    // shape.resetElementMap();
-                    // shape.Tag = 0;
-                    // shape.Hasher.reset();
-                }
                 Py_DECREF(pyobj);
                 return shape;
             }
@@ -363,19 +345,14 @@ static TopoShape _getTopoShape(const App::DocumentObject *obj, const char *subna
                 _ShapeCache.setShape(obj,shape,subname);
         }
         if(!shape.isNull()) {
-            if(noElementMap) {
-                // shape.resetElementMap();
-                // shape.Tag = 0;
-                // shape.Hasher.reset();
-            }
             return shape;
         }
     }
 
     auto link = owner->getExtensionByType<App::LinkBaseExtension>(true);
-    if(owner!=linked 
-            && (!link || (!link->_ChildCache.getSize() 
-                            && link->getSubElements().size()<=1))) 
+    if(owner!=linked
+            && (!link || (!link->_ChildCache.getSize()
+                            && link->getSubElements().size()<=1)))
     {
         // if there is a linked object, and there is no child cache (which is used
         // for special handling of plain group), obtain shape from the linked object
@@ -386,7 +363,6 @@ static TopoShape _getTopoShape(const App::DocumentObject *obj, const char *subna
             shape.transformShape(mat*linkMat,false,true);
         else
             shape.transformShape(linkMat,false,true);
-        // shape.reTagElementMap(tag,hasher);
 
     } else {
 
@@ -406,8 +382,6 @@ static TopoShape _getTopoShape(const App::DocumentObject *obj, const char *subna
             linked = link->getTrueLinkedObject(false,&baseMat);
             if(linked && linked!=owner) {
                 baseShape = Feature::getTopoShape(linked,nullptr,false,nullptr,nullptr,false,false);
-                // if(!link->getShowElementValue())
-                //     baseShape.reTagElementMap(owner->getID(),owner->getDocument()->getStringHasher());
             }
         }
         for(auto &sub : owner->getSubObjects()) {
@@ -441,10 +415,9 @@ static TopoShape _getTopoShape(const App::DocumentObject *obj, const char *subna
                     continue;
             }else{
                 if(link && !link->getShowElementValue())
-                    shape = baseShape.makeTransform(mat,(TopoShape::indexPostfix()+childName).c_str());
+                    shape = baseShape.makeTransform(mat,(Data::POSTFIX_INDEX + childName).c_str());
                 else {
                     shape = baseShape.makeTransform(mat);
-                //     shape.reTagElementMap(subObj->getID(),subObj->getDocument()->getStringHasher());
                 }
             }
             shapes.push_back(shape);
@@ -453,11 +426,9 @@ static TopoShape _getTopoShape(const App::DocumentObject *obj, const char *subna
         if(!linkStack.empty() && linkStack.back()==owner)
             linkStack.pop_back();
 
-        if(shapes.empty()) 
+        if(shapes.empty())
             return shape;
 
-        // shape.Tag = tag;
-        // shape.Hasher = hasher;
         shape.makeCompound(shapes);
     }
 
@@ -466,25 +437,19 @@ static TopoShape _getTopoShape(const App::DocumentObject *obj, const char *subna
     if(owner!=obj) {
         scaled = shape.transformShape(mat,false,true);
         if(owner->getDocument()!=obj->getDocument()) {
-            // shape.reTagElementMap(obj->getID(),obj->getDocument()->getStringHasher());
             _ShapeCache.setShape(obj,shape,subname);
         }else if(scaled)
             _ShapeCache.setShape(obj,shape,subname);
     }
-    if(noElementMap) {
-        // shape.resetElementMap();
-        // shape.Tag = 0;
-        // shape.Hasher.reset();
-    }
     return shape;
 }
 
-TopoShape Feature::getTopoShape(const App::DocumentObject *obj, const char *subname, 
-        bool needSubElement, Base::Matrix4D *pmat, App::DocumentObject **powner, 
+TopoShape Feature::getTopoShape(const App::DocumentObject *obj, const char *subname,
+        bool needSubElement, Base::Matrix4D *pmat, App::DocumentObject **powner,
         bool resolveLink, bool transform, bool noElementMap)
 {
-    if(!obj || !obj->getNameInDocument()) 
-        return TopoShape();
+    if(!obj || !obj->getNameInDocument())
+        return {};
 
     std::vector<App::DocumentObject*> linkStack;
 
@@ -493,7 +458,7 @@ TopoShape Feature::getTopoShape(const App::DocumentObject *obj, const char *subn
     // to false. So we manually apply the top level transform if asked.
 
     Base::Matrix4D mat;
-    auto shape = _getTopoShape(obj, subname, needSubElement, &mat, 
+    auto shape = _getTopoShape(obj, subname, needSubElement, &mat,
             powner, resolveLink, noElementMap, linkStack);
 
     Base::Matrix4D topMat;
@@ -544,9 +509,13 @@ void Feature::onChanged(const App::Property* prop)
             Base::Placement p;
             // shape must not be null to override the placement
             if (!this->Shape.getValue().IsNull()) {
-                p.fromMatrix(this->Shape.getShape().getTransform());
-                if (p != this->Placement.getValue())
-                    this->Placement.setValue(p);
+                try {
+                    p.fromMatrix(this->Shape.getShape().getTransform());
+                    if (p != this->Placement.getValue())
+                        this->Placement.setValue(p);
+                }
+                catch (const Base::ValueError&) {
+                }
             }
         }
     }
@@ -628,12 +597,12 @@ ShapeHistory Feature::joinHistory(const ShapeHistory& oldH, const ShapeHistory& 
     ShapeHistory join;
     join.type = oldH.type;
 
-    for (ShapeHistory::MapList::const_iterator it = oldH.shapeMap.begin(); it != oldH.shapeMap.end(); ++it) {
-        int old_shape_index = it->first;
-        if (it->second.empty())
+    for (const auto & it : oldH.shapeMap) {
+        int old_shape_index = it.first;
+        if (it.second.empty())
             join.shapeMap[old_shape_index] = ShapeHistory::List();
-        for (ShapeHistory::List::const_iterator jt = it->second.begin(); jt != it->second.end(); ++jt) {
-            ShapeHistory::MapList::const_iterator kt = newH.shapeMap.find(*jt);
+        for (const auto& jt : it.second) {
+            const auto& kt = newH.shapeMap.find(jt);
             if (kt != newH.shapeMap.end()) {
                 ShapeHistory::List& ary = join.shapeMap[old_shape_index];
                 ary.insert(ary.end(), kt->second.begin(), kt->second.end());
@@ -697,15 +666,6 @@ template<> PyObject* Part::FeaturePython::getPyObject() {
 template class PartExport FeaturePythonT<Part::Feature>;
 }
 
-// ----------------------------------------------------------------
-/*
-#include <GProp_GProps.hxx>
-#include <BRepGProp.hxx>
-#include <gce_MakeLin.hxx>
-#include <BRepIntCurveSurface_Inter.hxx>
-#include <IntCurveSurface_IntersectionPoint.hxx>
-#include <gce_MakeDir.hxx>
-*/
 std::vector<Part::cutFaces> Part::findAllFacesCutBy(
         const TopoDS_Shape& shape, const TopoDS_Shape& face, const gp_Dir& dir)
 {
@@ -763,37 +723,6 @@ bool Part::checkIntersection(const TopoDS_Shape& first, const TopoDS_Shape& seco
         return false; // no intersection
     if (quick && !first_bb.IsOut(second_bb))
         return true; // assumed intersection
-
-    // Try harder
-
-    // This has been disabled because of:
-    // https://www.freecadweb.org/tracker/view.php?id=3065
-
-    //extrema method
-    /*BRepExtrema_DistShapeShape extrema(first, second);
-    if (!extrema.IsDone())
-      return true;
-    if (extrema.Value() > Precision::Confusion())
-      return false;
-    if (extrema.InnerSolution())
-      return true;
-
-    //here we should have touching shapes.
-    if (touch_is_intersection)
-    {
-
-    //non manifold condition. 1 has to be a face
-    for (int index = 1; index < extrema.NbSolution() + 1; ++index)
-    {
-        if (extrema.SupportTypeShape1(index) == BRepExtrema_IsInFace || extrema.SupportTypeShape2(index) == BRepExtrema_IsInFace)
-            return true;
-        }
-      return false;
-    }
-    else
-      return false;*/
-
-    //boolean method.
 
     if (touch_is_intersection) {
         // If both shapes fuse to a single solid, then they intersect

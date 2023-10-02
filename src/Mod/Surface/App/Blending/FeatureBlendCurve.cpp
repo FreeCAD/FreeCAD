@@ -25,83 +25,132 @@
 #ifndef _PreComp_
 #include <BRepAdaptor_Curve.hxx>
 #include <BRepBuilderAPI_MakeEdge.hxx>
-#include <Base/Tools.h>
-#include <Geom_Curve.hxx>
-#include <Precision.hxx>
 #include <Standard_Version.hxx>
 #include <TopoDS.hxx>
 #include <gp_Pnt.hxx>
 #endif
-#include "FeatureBlendCurve.h"
+
 #include "Mod/Surface/App/Blending/BlendCurve.h"
 #include "Mod/Surface/App/Blending/BlendPoint.h"
+#include <Base/Tools.h>
+
+#include "FeatureBlendCurve.h"
+
 
 using namespace Surface;
 
-const App::PropertyFloatConstraint::Constraints StartParameterConstraint = {0.0, 1.0, 0.05};
-const App::PropertyFloatConstraint::Constraints EndParameterConstraint = {0.0, 1.0, 0.05};
-const App::PropertyIntegerConstraint::Constraints StartContinuityConstraint = {0, 25, 1};
-const App::PropertyIntegerConstraint::Constraints EndContinuityConstraint = {0, 25, 1};
+const App::PropertyFloatConstraint::Constraints ParameterConstraint = {0.0, 1.0, 0.05};
+const App::PropertyIntegerConstraint::Constraints ContinuityConstraint = {0, 25, 1};
+const App::PropertyFloatConstraint::Constraints SizeConstraint = {-100.0, 100.0, 0.1};
 
 PROPERTY_SOURCE(Surface::FeatureBlendCurve, Part::Spline)
 
-FeatureBlendCurve::FeatureBlendCurve() : lockOnChangeMutex(false)
+FeatureBlendCurve::FeatureBlendCurve()
 {
-    ADD_PROPERTY_TYPE(StartEdge, (nullptr), "FirstEdge", App::Prop_None, "");
-    ADD_PROPERTY_TYPE(StartContinuity, (2), "FirstEdge", App::Prop_None, "");
-    StartContinuity.setConstraints(&StartContinuityConstraint);
-    ADD_PROPERTY_TYPE(StartParameter, (0.0f), "FirstEdge", App::Prop_None, "");
-    StartParameter.setConstraints(&StartParameterConstraint);
-    ADD_PROPERTY_TYPE(StartSize, (1.0f), "FirstEdge", App::Prop_None, "");
+    ADD_PROPERTY_TYPE(StartEdge,
+                      (nullptr),
+                      "FirstEdge",
+                      App::Prop_None,
+                      "Edge support of the start point");
+    ADD_PROPERTY_TYPE(StartContinuity,
+                      (2),
+                      "FirstEdge",
+                      App::Prop_None,
+                      "Geometric continuity at start point");
+    StartContinuity.setConstraints(&ContinuityConstraint);
+    ADD_PROPERTY_TYPE(StartParameter,
+                      (0.0f),
+                      "FirstEdge",
+                      App::Prop_None,
+                      "Parameter of start point along edge");
+    StartParameter.setConstraints(&ParameterConstraint);
+    ADD_PROPERTY_TYPE(StartSize,
+                      (1.0f),
+                      "FirstEdge",
+                      App::Prop_None,
+                      "Size of derivatives at start point");
+    StartSize.setConstraints(&SizeConstraint);
 
-    ADD_PROPERTY_TYPE(EndEdge, (nullptr), "SecondEdge", App::Prop_None, "");
-    ADD_PROPERTY_TYPE(EndContinuity, (2), "SecondEdge", App::Prop_None, "");
-    EndContinuity.setConstraints(&EndContinuityConstraint);
-    ADD_PROPERTY_TYPE(EndParameter, (0.0f), "SecondEdge", App::Prop_None, "");
-    EndParameter.setConstraints(&EndParameterConstraint);
-    ADD_PROPERTY_TYPE(EndSize, (1.0f), "SecondEdge", App::Prop_None, "");
+    ADD_PROPERTY_TYPE(EndEdge,
+                      (nullptr),
+                      "SecondEdge",
+                      App::Prop_None,
+                      "Edge support of the end point");
+    ADD_PROPERTY_TYPE(EndContinuity,
+                      (2),
+                      "SecondEdge",
+                      App::Prop_None,
+                      "Geometric continuity at end point");
+    EndContinuity.setConstraints(&ContinuityConstraint);
+    ADD_PROPERTY_TYPE(EndParameter,
+                      (0.0f),
+                      "SecondEdge",
+                      App::Prop_None,
+                      "Parameter of end point along edge");
+    EndParameter.setConstraints(&ParameterConstraint);
+    ADD_PROPERTY_TYPE(EndSize,
+                      (1.0f),
+                      "SecondEdge",
+                      App::Prop_None,
+                      "Size of derivatives at end point");
+    EndSize.setConstraints(&SizeConstraint);
+
     Handle(Geom_BezierCurve) maxDegreeCurve;
     maxDegree = maxDegreeCurve->MaxDegree();
 }
 
 short FeatureBlendCurve::mustExecute() const
 {
-    if (StartEdge.isTouched())
+    if (StartEdge.isTouched()) {
         return 1;
-    if (StartParameter.isTouched())
+    }
+    if (StartParameter.isTouched()) {
         return 1;
-    if (StartContinuity.isTouched())
+    }
+    if (StartContinuity.isTouched()) {
         return 1;
-    if (StartSize.isTouched())
+    }
+    if (StartSize.isTouched()) {
         return 1;
-    if (EndEdge.isTouched())
+    }
+    if (EndEdge.isTouched()) {
         return 1;
-    if (EndParameter.isTouched())
+    }
+    if (EndParameter.isTouched()) {
         return 1;
-    if (EndContinuity.isTouched())
+    }
+    if (EndContinuity.isTouched()) {
         return 1;
-    if (EndSize.isTouched())
+    }
+    if (EndSize.isTouched()) {
         return 1;
+    }
     return 0;
 }
 
-BlendPoint FeatureBlendCurve::GetBlendPoint(App::PropertyLinkSub &link, App::PropertyFloatConstraint &param, App::PropertyIntegerConstraint &continuity)
+BlendPoint FeatureBlendCurve::GetBlendPoint(App::PropertyLinkSub& link,
+                                            App::PropertyFloatConstraint& param,
+                                            App::PropertyIntegerConstraint& continuity)
 {
     auto linked = link.getValue();
 
     TopoDS_Shape axEdge;
     if (link.getSubValues().size() > 0 && link.getSubValues()[0].length() > 0) {
-        axEdge = Feature::getTopoShape(linked, link.getSubValues()[0].c_str(), true /*need element*/).getShape();
+        axEdge =
+            Feature::getTopoShape(linked, link.getSubValues()[0].c_str(), true /*need element*/)
+                .getShape();
     }
     else {
         axEdge = Feature::getShape(linked);
     }
 
-    if (axEdge.IsNull())
+    if (axEdge.IsNull()) {
         throw Base::ValueError("DirLink shape is null");
-    if (axEdge.ShapeType() != TopAbs_EDGE)
+    }
+    if (axEdge.ShapeType() != TopAbs_EDGE) {
         throw Base::TypeError("DirLink shape is not an edge");
-    const TopoDS_Edge &e = TopoDS::Edge(axEdge);
+    }
+    const TopoDS_Edge& e = TopoDS::Edge(axEdge);
     BRepAdaptor_Curve adapt(e);
     double fp = adapt.FirstParameter();
     double lp = adapt.LastParameter();
@@ -126,7 +175,7 @@ BlendPoint FeatureBlendCurve::GetBlendPoint(App::PropertyLinkSub &link, App::Pro
     return bp;
 }
 
-App::DocumentObjectExecReturn *FeatureBlendCurve::execute(void)
+App::DocumentObjectExecReturn* FeatureBlendCurve::execute()
 {
     BlendPoint bp1 = GetBlendPoint(StartEdge, StartParameter, StartContinuity);
     BlendPoint bp2 = GetBlendPoint(EndEdge, EndParameter, EndContinuity);
@@ -154,26 +203,25 @@ double FeatureBlendCurve::RelativeToRealParameters(double relativeValue, double 
 }
 
 
-void FeatureBlendCurve::onChanged(const App::Property *prop)
+void FeatureBlendCurve::onChanged(const App::Property* prop)
 {
-    // using a mutex and lock to protect a recursive calling when setting the new values
-    if (lockOnChangeMutex)
-        return;
-    Base::StateLocker lock(lockOnChangeMutex);
-
     if (prop == &StartContinuity) {
-        auto changedStartProp = dynamic_cast<const App::PropertyInteger *>(prop);
-
-        if (changedStartProp->getValue() > (maxDegree - 2 - EndContinuity.getValue())) {
-
-            StartContinuity.setValue(maxDegree - 2 - EndContinuity.getValue());
+        long maxValue = maxDegree - 2 - EndContinuity.getValue();
+        if (StartContinuity.getValue() > maxValue) {
+            StartContinuity.setValue(maxValue);
         }
     }
     else if (prop == &EndContinuity) {
-        auto changedEndProp = dynamic_cast<const App::PropertyInteger *>(prop);
-
-        if (changedEndProp->getValue() > (maxDegree - 2 - StartContinuity.getValue())) {
-            EndContinuity.setValue(maxDegree - 2 - StartContinuity.getValue());
+        long maxValue = maxDegree - 2 - StartContinuity.getValue();
+        if (EndContinuity.getValue() > maxValue) {
+            EndContinuity.setValue(maxValue);
+        }
+    }
+    if (prop == &StartContinuity || prop == &StartParameter || prop == &StartSize
+        || prop == &EndContinuity || prop == &EndParameter || prop == &EndSize) {
+        if (!isRestoring()) {
+            App::DocumentObjectExecReturn* ret = recompute();
+            delete ret;
         }
     }
     Part::Spline::onChanged(prop);

@@ -21,42 +21,33 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <Standard_math.hxx>
-
-# include <QAction>
-# include <QApplication>
-# include <QDockWidget>
-# include <QMenu>
-# include <QStackedWidget>
-
-# include <Inventor/nodes/SoSeparator.h>
-# include <Inventor/nodes/SoBaseColor.h>
-# include <Inventor/nodes/SoFontStyle.h>
-# include <Inventor/nodes/SoText2.h>
-# include <Inventor/nodes/SoTranslation.h>
-# include <Inventor/nodes/SoRotation.h>
-# include <Inventor/nodes/SoMaterial.h>
-# include <Inventor/nodes/SoCylinder.h>
-# include <Inventor/nodes/SoCone.h>
-# include <Inventor/nodes/SoCube.h>
-# include <Inventor/nodes/SoShapeHints.h>
-# include <Inventor/nodes/SoComplexity.h>
+#include <Inventor/nodes/SoBaseColor.h>
+#include <Inventor/nodes/SoCone.h>
+#include <Inventor/nodes/SoCube.h>
+#include <Inventor/nodes/SoCylinder.h>
+#include <Inventor/nodes/SoFontStyle.h>
+#include <Inventor/nodes/SoRotation.h>
+#include <Inventor/nodes/SoSeparator.h>
+#include <Inventor/nodes/SoShapeHints.h>
+#include <Inventor/nodes/SoText2.h>
+#include <Inventor/nodes/SoTranslation.h>
+#include <QAction>
+#include <QDockWidget>
+#include <QMenu>
+#include <QStackedWidget>
 #endif
 
-#include "ViewProviderFemConstraint.h"
-#include "TaskFemConstraint.h"
-
-#include "Gui/Control.h"
-#include "Gui/MainWindow.h"
 #include "Gui/Command.h"
-#include "Gui/Application.h"
+#include "Gui/Control.h"
 #include "Gui/Document.h"
+#include "Gui/MainWindow.h"
 
-#include <Base/Console.h>
+#include "TaskFemConstraint.h"
+#include "ViewProviderFemConstraint.h"
+
 
 using namespace FemGui;
 
@@ -65,12 +56,12 @@ PROPERTY_SOURCE(FemGui::ViewProviderFemConstraint, Gui::ViewProviderGeometryObje
 
 ViewProviderFemConstraint::ViewProviderFemConstraint()
 {
-    ADD_PROPERTY(TextColor,(0.0f,0.0f,0.0f));
-    ADD_PROPERTY(FaceColor,(1.0f,0.0f,0.2f));
-    ADD_PROPERTY(ShapeColor,(1.0f,0.0f,0.2f));
-    ADD_PROPERTY(FontSize,(18));
-    ADD_PROPERTY(DistFactor,(1.0));
-    ADD_PROPERTY(Mirror,(false));
+    ADD_PROPERTY(TextColor, (0.0f, 0.0f, 0.0f));
+    ADD_PROPERTY(FaceColor, (1.0f, 0.0f, 0.2f));
+    ADD_PROPERTY(ShapeColor, (1.0f, 0.0f, 0.2f));
+    ADD_PROPERTY(FontSize, (18));
+    ADD_PROPERTY(DistFactor, (1.0));
+    ADD_PROPERTY(Mirror, (false));
 
     pFont = new SoFontStyle();
     pFont->ref();
@@ -132,22 +123,25 @@ std::vector<std::string> ViewProviderFemConstraint::getDisplayModes() const
 
 void ViewProviderFemConstraint::setDisplayMode(const char* ModeName)
 {
-    if (strcmp(ModeName, "Base") == 0)
+    if (strcmp(ModeName, "Base") == 0) {
         setDisplayMaskMode("Base");
+    }
     ViewProviderDocumentObject::setDisplayMode(ModeName);
 }
 
-std::vector<App::DocumentObject*> ViewProviderFemConstraint::claimChildren()const
+std::vector<App::DocumentObject*> ViewProviderFemConstraint::claimChildren() const
 {
-    return std::vector<App::DocumentObject*>();
+    return {};
 }
 
 void ViewProviderFemConstraint::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
 {
     QAction* act;
-    act = menu->addAction(QObject::tr("Edit constraint"), receiver, member);
+    act = menu->addAction(QObject::tr("Edit analysis feature"), receiver, member);
     act->setData(QVariant((int)ViewProvider::Default));
-    ViewProviderDocumentObject::setupContextMenu(menu, receiver, member); // clazy:exclude=skipped-base-method
+    ViewProviderDocumentObject::setupContextMenu(menu,
+                                                 receiver,
+                                                 member);  // clazy:exclude=skipped-base-method
 }
 
 void ViewProviderFemConstraint::onChanged(const App::Property* prop)
@@ -157,25 +151,26 @@ void ViewProviderFemConstraint::onChanged(const App::Property* prop)
     }
     else if (prop == &TextColor) {
         const App::Color& c = TextColor.getValue();
-        pTextColor->rgb.setValue(c.r,c.g,c.b);
+        pTextColor->rgb.setValue(c.r, c.g, c.b);
     }
     else if (prop == &FaceColor) {
         const App::Color& c = FaceColor.getValue();
-        pMaterials->rgb.setValue(c.r,c.g,c.b);
+        pMaterials->rgb.setValue(c.r, c.g, c.b);
     }
     else if (prop == &FontSize) {
         pFont->size = FontSize.getValue();
     }
     else {
-        ViewProviderDocumentObject::onChanged(prop); // clazy:exclude=skipped-base-method
+        ViewProviderDocumentObject::onChanged(prop);  // clazy:exclude=skipped-base-method
     }
 }
 
-//OvG: Visibility automation show parts and hide meshes on activation of a constraint
+// OvG: Visibility automation show parts and hide meshes on activation of a constraint
 std::string ViewProviderFemConstraint::gethideMeshShowPartStr(const std::string showConstr)
 {
     return "for amesh in App.activeDocument().Objects:\n\
-    if \""+showConstr+"\" == amesh.Name:\n\
+    if \""
+        + showConstr + "\" == amesh.Name:\n\
         amesh.ViewObject.Visibility = True\n\
     elif \"Mesh\" in amesh.TypeId:\n\
         amesh.ViewObject.Visibility = False\n";
@@ -188,7 +183,9 @@ std::string ViewProviderFemConstraint::gethideMeshShowPartStr()
 
 bool ViewProviderFemConstraint::setEdit(int ModNum)
 {
-    Gui::Command::doCommand(Gui::Command::Doc,"%s",ViewProviderFemConstraint::gethideMeshShowPartStr().c_str());
+    Gui::Command::doCommand(Gui::Command::Doc,
+                            "%s",
+                            ViewProviderFemConstraint::gethideMeshShowPartStr().c_str());
     return Gui::ViewProviderGeometryObject::setEdit(ModNum);
 }
 
@@ -205,9 +202,10 @@ void ViewProviderFemConstraint::unsetEdit(int ModNum)
 
         // Notify the Shaft Wizard that we have finished editing
         // See WizardShaft.py on why we do it this way
-        Gui::Command::runCommand(Gui::Command::Doc, "Gui.runCommand('PartDesign_WizardShaftCallBack')");
-
-    } else {
+        Gui::Command::runCommand(Gui::Command::Doc,
+                                 "Gui.runCommand('PartDesign_WizardShaftCallBack')");
+    }
+    else {
         if (ModNum == ViewProvider::Default) {
             // when pressing ESC make sure to close the dialog
             Gui::Control().closeDialog();
@@ -267,7 +265,9 @@ void getLocalCoordinateSystem(const SbVec3f& z, SbVec3f& y, SbVec3f& x)
 */
 #define PLACEMENT_CHILDREN 2
 
-void ViewProviderFemConstraint::createPlacement(SoSeparator* sep, const SbVec3f &base, const SbRotation &r)
+void ViewProviderFemConstraint::createPlacement(SoSeparator* sep,
+                                                const SbVec3f& base,
+                                                const SbRotation& r)
 {
     SoTranslation* trans = new SoTranslation();
     trans->translation.setValue(base);
@@ -277,21 +277,26 @@ void ViewProviderFemConstraint::createPlacement(SoSeparator* sep, const SbVec3f 
     sep->addChild(rot);
 }
 
-void ViewProviderFemConstraint::updatePlacement(const SoSeparator* sep, const int idx, const SbVec3f &base, const SbRotation &r)
+void ViewProviderFemConstraint::updatePlacement(const SoSeparator* sep,
+                                                const int idx,
+                                                const SbVec3f& base,
+                                                const SbRotation& r)
 {
     SoTranslation* trans = static_cast<SoTranslation*>(sep->getChild(idx));
     trans->translation.setValue(base);
-    SoRotation* rot = static_cast<SoRotation*>(sep->getChild(idx+1));
+    SoRotation* rot = static_cast<SoRotation*>(sep->getChild(idx + 1));
     rot->rotation.setValue(r);
 }
 
 #define CONE_CHILDREN 2
 
-void ViewProviderFemConstraint::createCone(SoSeparator* sep, const double height, const double radius)
+void ViewProviderFemConstraint::createCone(SoSeparator* sep,
+                                           const double height,
+                                           const double radius)
 {
     // Adjust cone so that the tip is on base
     SoTranslation* trans = new SoTranslation();
-    trans->translation.setValue(SbVec3f(0,-height/2,0));
+    trans->translation.setValue(SbVec3f(0, -height / 2, 0));
     sep->addChild(trans);
     SoCone* cone = new SoCone();
     cone->height.setValue(height);
@@ -307,19 +312,24 @@ SoSeparator* ViewProviderFemConstraint::createCone(const double height, const do
     return sep;
 }
 
-void ViewProviderFemConstraint::updateCone(const SoNode* node, const int idx, const double height, const double radius)
+void ViewProviderFemConstraint::updateCone(const SoNode* node,
+                                           const int idx,
+                                           const double height,
+                                           const double radius)
 {
     const SoSeparator* sep = static_cast<const SoSeparator*>(node);
     SoTranslation* trans = static_cast<SoTranslation*>(sep->getChild(idx));
-    trans->translation.setValue(SbVec3f(0,-height/2,0));
-    SoCone* cone = static_cast<SoCone*>(sep->getChild(idx+1));
+    trans->translation.setValue(SbVec3f(0, -height / 2, 0));
+    SoCone* cone = static_cast<SoCone*>(sep->getChild(idx + 1));
     cone->height.setValue(height);
     cone->bottomRadius.setValue(radius);
 }
 
 #define CYLINDER_CHILDREN 1
 
-void ViewProviderFemConstraint::createCylinder(SoSeparator* sep, const double height, const double radius)
+void ViewProviderFemConstraint::createCylinder(SoSeparator* sep,
+                                               const double height,
+                                               const double radius)
 {
     SoCylinder* cyl = new SoCylinder();
     cyl->height.setValue(height);
@@ -335,7 +345,10 @@ SoSeparator* ViewProviderFemConstraint::createCylinder(const double height, cons
     return sep;
 }
 
-void ViewProviderFemConstraint::updateCylinder(const SoNode* node, const int idx, const double height, const double radius)
+void ViewProviderFemConstraint::updateCylinder(const SoNode* node,
+                                               const int idx,
+                                               const double height,
+                                               const double radius)
 {
     const SoSeparator* sep = static_cast<const SoSeparator*>(node);
     SoCylinder* cyl = static_cast<SoCylinder*>(sep->getChild(idx));
@@ -345,7 +358,10 @@ void ViewProviderFemConstraint::updateCylinder(const SoNode* node, const int idx
 
 #define CUBE_CHILDREN 1
 
-void ViewProviderFemConstraint::createCube(SoSeparator* sep, const double width, const double length, const double height)
+void ViewProviderFemConstraint::createCube(SoSeparator* sep,
+                                           const double width,
+                                           const double length,
+                                           const double height)
 {
     SoCube* cube = new SoCube();
     cube->width.setValue(width);
@@ -354,14 +370,19 @@ void ViewProviderFemConstraint::createCube(SoSeparator* sep, const double width,
     sep->addChild(cube);
 }
 
-SoSeparator* ViewProviderFemConstraint::createCube(const double width, const double length, const double height)
+SoSeparator*
+ViewProviderFemConstraint::createCube(const double width, const double length, const double height)
 {
     SoSeparator* sep = new SoSeparator();
     createCube(sep, width, length, height);
     return sep;
 }
 
-void ViewProviderFemConstraint::updateCube(const SoNode* node, const int idx, const double width, const double length, const double height)
+void ViewProviderFemConstraint::updateCube(const SoNode* node,
+                                           const int idx,
+                                           const double width,
+                                           const double length,
+                                           const double height)
 {
     const SoSeparator* sep = static_cast<const SoSeparator*>(node);
     SoCube* cube = static_cast<SoCube*>(sep->getChild(idx));
@@ -372,11 +393,13 @@ void ViewProviderFemConstraint::updateCube(const SoNode* node, const int idx, co
 
 #define ARROW_CHILDREN (CONE_CHILDREN + PLACEMENT_CHILDREN + CYLINDER_CHILDREN)
 
-void ViewProviderFemConstraint::createArrow(SoSeparator* sep, const double length, const double radius)
+void ViewProviderFemConstraint::createArrow(SoSeparator* sep,
+                                            const double length,
+                                            const double radius)
 {
-    createCone(sep, radius, radius/2);
-    createPlacement(sep, SbVec3f(0, -radius/2-(length-radius)/2, 0), SbRotation());
-    createCylinder(sep, length-radius, radius/5);
+    createCone(sep, radius, radius / 2);
+    createPlacement(sep, SbVec3f(0, -radius / 2 - (length - radius) / 2, 0), SbRotation());
+    createCylinder(sep, length - radius, radius / 5);
 }
 
 SoSeparator* ViewProviderFemConstraint::createArrow(const double length, const double radius)
@@ -386,21 +409,29 @@ SoSeparator* ViewProviderFemConstraint::createArrow(const double length, const d
     return sep;
 }
 
-void ViewProviderFemConstraint::updateArrow(const SoNode* node, const int idx, const double length, const double radius)
+void ViewProviderFemConstraint::updateArrow(const SoNode* node,
+                                            const int idx,
+                                            const double length,
+                                            const double radius)
 {
     const SoSeparator* sep = static_cast<const SoSeparator*>(node);
-    updateCone(sep, idx, radius, radius/2);
-    updatePlacement(sep, idx+CONE_CHILDREN, SbVec3f(0, -radius/2-(length-radius)/2, 0), SbRotation());
-    updateCylinder(sep, idx+CONE_CHILDREN+PLACEMENT_CHILDREN, length-radius, radius/5);
+    updateCone(sep, idx, radius, radius / 2);
+    updatePlacement(sep,
+                    idx + CONE_CHILDREN,
+                    SbVec3f(0, -radius / 2 - (length - radius) / 2, 0),
+                    SbRotation());
+    updateCylinder(sep, idx + CONE_CHILDREN + PLACEMENT_CHILDREN, length - radius, radius / 5);
 }
 
 #define SPRING_CHILDREN (CUBE_CHILDREN + PLACEMENT_CHILDREN + CYLINDER_CHILDREN)
 
-void ViewProviderFemConstraint::createSpring(SoSeparator* sep, const double length, const double width)
+void ViewProviderFemConstraint::createSpring(SoSeparator* sep,
+                                             const double length,
+                                             const double width)
 {
-    createCube(sep, width, width, length/2);
-    createPlacement(sep, SbVec3f(0, -length/2, 0), SbRotation());
-    createCylinder(sep, length/2, width/4);
+    createCube(sep, width, width, length / 2);
+    createPlacement(sep, SbVec3f(0, -length / 2, 0), SbRotation());
+    createCylinder(sep, length / 2, width / 4);
 }
 
 SoSeparator* ViewProviderFemConstraint::createSpring(const double length, const double width)
@@ -410,87 +441,134 @@ SoSeparator* ViewProviderFemConstraint::createSpring(const double length, const 
     return sep;
 }
 
-void ViewProviderFemConstraint::updateSpring(const SoNode* node, const int idx, const double length, const double width)
+void ViewProviderFemConstraint::updateSpring(const SoNode* node,
+                                             const int idx,
+                                             const double length,
+                                             const double width)
 {
     const SoSeparator* sep = static_cast<const SoSeparator*>(node);
-    updateCube(sep, idx, width, width, length/2);
-    updatePlacement(sep, idx+CUBE_CHILDREN, SbVec3f(0, -length/2, 0), SbRotation());
-    updateCylinder(sep, idx+CUBE_CHILDREN+PLACEMENT_CHILDREN, length/2, width/4);
+    updateCube(sep, idx, width, width, length / 2);
+    updatePlacement(sep, idx + CUBE_CHILDREN, SbVec3f(0, -length / 2, 0), SbRotation());
+    updateCylinder(sep, idx + CUBE_CHILDREN + PLACEMENT_CHILDREN, length / 2, width / 4);
 }
 
 #define FIXED_CHILDREN (CONE_CHILDREN + PLACEMENT_CHILDREN + CUBE_CHILDREN)
 
-void ViewProviderFemConstraint::createFixed(SoSeparator* sep, const double height, const double width, const bool gap)
+void ViewProviderFemConstraint::createFixed(SoSeparator* sep,
+                                            const double height,
+                                            const double width,
+                                            const bool gap)
 {
-    createCone(sep, height-width/4, height-width/4);
-    createPlacement(sep, SbVec3f(0, -(height-width/4)/2-width/8 - (gap ? 1.0 : 0.1) * width/8, 0), SbRotation());
-    createCube(sep, width, width, width/4);
+    createCone(sep, height - width / 4, height - width / 4);
+    createPlacement(
+        sep,
+        SbVec3f(0, -(height - width / 4) / 2 - width / 8 - (gap ? 1.0 : 0.1) * width / 8, 0),
+        SbRotation());
+    createCube(sep, width, width, width / 4);
 }
 
-SoSeparator* ViewProviderFemConstraint::createFixed(const double height, const double width, const bool gap)
+SoSeparator*
+ViewProviderFemConstraint::createFixed(const double height, const double width, const bool gap)
 {
     SoSeparator* sep = new SoSeparator();
     createFixed(sep, height, width, gap);
     return sep;
 }
 
-void ViewProviderFemConstraint::updateFixed(const SoNode* node, const int idx, const double height, const double width, const bool gap)
+void ViewProviderFemConstraint::updateFixed(const SoNode* node,
+                                            const int idx,
+                                            const double height,
+                                            const double width,
+                                            const bool gap)
 {
     const SoSeparator* sep = static_cast<const SoSeparator*>(node);
-    updateCone(sep, idx, height-width/4, height-width/4);
-    updatePlacement(sep, idx+CONE_CHILDREN, SbVec3f(0, -(height-width/4)/2-width/8 - (gap ? 1.0 : 0.0) * width/8, 0), SbRotation());
-    updateCube(sep, idx+CONE_CHILDREN+PLACEMENT_CHILDREN, width, width, width/4);
+    updateCone(sep, idx, height - width / 4, height - width / 4);
+    updatePlacement(
+        sep,
+        idx + CONE_CHILDREN,
+        SbVec3f(0, -(height - width / 4) / 2 - width / 8 - (gap ? 1.0 : 0.0) * width / 8, 0),
+        SbRotation());
+    updateCube(sep, idx + CONE_CHILDREN + PLACEMENT_CHILDREN, width, width, width / 4);
 }
 
-void ViewProviderFemConstraint::createDisplacement(SoSeparator* sep, const double height, const double width, const bool gap)
+void ViewProviderFemConstraint::createDisplacement(SoSeparator* sep,
+                                                   const double height,
+                                                   const double width,
+                                                   const bool gap)
 {
     createCone(sep, height, width);
-    createPlacement(sep, SbVec3f(0, -(height)/2-width/8 - (gap ? 1.0 : 0.1) * width/8, 0), SbRotation());
+    createPlacement(sep,
+                    SbVec3f(0, -(height) / 2 - width / 8 - (gap ? 1.0 : 0.1) * width / 8, 0),
+                    SbRotation());
 }
 
-SoSeparator* ViewProviderFemConstraint::createDisplacement(const double height, const double width, const bool gap)
+SoSeparator* ViewProviderFemConstraint::createDisplacement(const double height,
+                                                           const double width,
+                                                           const bool gap)
 {
     SoSeparator* sep = new SoSeparator();
     createDisplacement(sep, height, width, gap);
     return sep;
 }
 
-void ViewProviderFemConstraint::updateDisplacement(const SoNode* node, const int idx, const double height, const double width, const bool gap)
+void ViewProviderFemConstraint::updateDisplacement(const SoNode* node,
+                                                   const int idx,
+                                                   const double height,
+                                                   const double width,
+                                                   const bool gap)
 {
     const SoSeparator* sep = static_cast<const SoSeparator*>(node);
     updateCone(sep, idx, height, width);
-    updatePlacement(sep, idx+CONE_CHILDREN, SbVec3f(0, -(height)/2-width/8 - (gap ? 1.0 : 0.0) * width/8, 0), SbRotation());
+    updatePlacement(sep,
+                    idx + CONE_CHILDREN,
+                    SbVec3f(0, -(height) / 2 - width / 8 - (gap ? 1.0 : 0.0) * width / 8, 0),
+                    SbRotation());
 }
 
-void ViewProviderFemConstraint::createRotation(SoSeparator* sep, const double height, const double width, const bool gap)
+void ViewProviderFemConstraint::createRotation(SoSeparator* sep,
+                                               const double height,
+                                               const double width,
+                                               const bool gap)
 {
-    createCylinder(sep, width/2, height/2);
-    createPlacement(sep, SbVec3f(0, -(height)*2-width/8 - (gap ? 1.0 : 0.1) * width/8, 0), SbRotation());
+    createCylinder(sep, width / 2, height / 2);
+    createPlacement(sep,
+                    SbVec3f(0, -(height)*2 - width / 8 - (gap ? 1.0 : 0.1) * width / 8, 0),
+                    SbRotation());
 }
 
-SoSeparator* ViewProviderFemConstraint::createRotation(const double height, const double width, const bool gap)
+SoSeparator*
+ViewProviderFemConstraint::createRotation(const double height, const double width, const bool gap)
 {
     SoSeparator* sep = new SoSeparator();
     createRotation(sep, height, width, gap);
     return sep;
 }
 
-void ViewProviderFemConstraint::updateRotation(const SoNode* node, const int idx, const double height, const double width, const bool gap)
+void ViewProviderFemConstraint::updateRotation(const SoNode* node,
+                                               const int idx,
+                                               const double height,
+                                               const double width,
+                                               const bool gap)
 {
     const SoSeparator* sep = static_cast<const SoSeparator*>(node);
-    updateCylinder(sep, idx, height/2, width/2);
-    updatePlacement(sep, idx+CYLINDER_CHILDREN, SbVec3f(0, -(height)*2-width/8 - (gap ? 1.0 : 0.0) * width/8, 0), SbRotation());
+    updateCylinder(sep, idx, height / 2, width / 2);
+    updatePlacement(sep,
+                    idx + CYLINDER_CHILDREN,
+                    SbVec3f(0, -(height)*2 - width / 8 - (gap ? 1.0 : 0.0) * width / 8, 0),
+                    SbRotation());
 }
 
 QObject* ViewProviderFemConstraint::findChildByName(const QObject* parent, const QString& name)
 {
-    for (QObjectList::const_iterator o = parent->children().begin(); o != parent->children().end(); o++) {
-        if ((*o)->objectName() == name)
-            return *o;
-        if (!(*o)->children().empty()) {
-            QObject* result = findChildByName(*o, name);
-            if (result)
+    for (auto o : parent->children()) {
+        if (o->objectName() == name) {
+            return o;
+        }
+        if (!o->children().empty()) {
+            QObject* result = findChildByName(o, name);
+            if (result) {
                 return result;
+            }
         }
     }
 
@@ -499,29 +577,38 @@ QObject* ViewProviderFemConstraint::findChildByName(const QObject* parent, const
 
 void ViewProviderFemConstraint::checkForWizard()
 {
-    wizardWidget= nullptr;
+    wizardWidget = nullptr;
     wizardSubLayout = nullptr;
     Gui::MainWindow* mw = Gui::getMainWindow();
-    if (!mw)
+    if (!mw) {
         return;
+    }
     QDockWidget* dw = mw->findChild<QDockWidget*>(QString::fromLatin1("Combo View"));
-    if (!dw)
+    if (!dw) {
         return;
+    }
     QWidget* cw = dw->findChild<QWidget*>(QString::fromLatin1("Combo View"));
-    if (!cw)
+    if (!cw) {
         return;
+    }
     QTabWidget* tw = cw->findChild<QTabWidget*>(QString::fromLatin1("combiTab"));
-    if (!tw)
+    if (!tw) {
         return;
-    QStackedWidget* sw = tw->findChild<QStackedWidget*>(QString::fromLatin1("qt_tabwidget_stackedwidget"));
-    if (!sw)
+    }
+    QStackedWidget* sw =
+        tw->findChild<QStackedWidget*>(QString::fromLatin1("qt_tabwidget_stackedwidget"));
+    if (!sw) {
         return;
+    }
     QScrollArea* sa = sw->findChild<QScrollArea*>();
-    if (!sa)
+    if (!sa) {
         return;
-    QWidget* wd = sa->widget(); // This is the reason why we cannot use findChildByName() right away!!!
-    if (!wd)
+    }
+    QWidget* wd =
+        sa->widget();  // This is the reason why we cannot use findChildByName() right away!!!
+    if (!wd) {
         return;
+    }
     QObject* wiz = findChildByName(wd, QString::fromLatin1("ShaftWizard"));
     if (wiz) {
         wizardWidget = static_cast<QVBoxLayout*>(wiz);
@@ -532,11 +619,12 @@ void ViewProviderFemConstraint::checkForWizard()
 
 // Python feature -----------------------------------------------------------------------
 
-namespace Gui {
+namespace Gui
+{
 /// @cond DOXERR
 PROPERTY_SOURCE_TEMPLATE(FemGui::ViewProviderFemConstraintPython, FemGui::ViewProviderFemConstraint)
 /// @endcond
 
 // explicit template instantiation
 template class FemGuiExport ViewProviderPythonFeatureT<ViewProviderFemConstraint>;
-}
+}  // namespace Gui

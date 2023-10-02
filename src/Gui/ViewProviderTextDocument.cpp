@@ -72,9 +72,11 @@ ViewProviderTextDocument::ViewProviderTextDocument()
 
 void ViewProviderTextDocument::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
 {
-    Gui::ActionFunction* func = new Gui::ActionFunction(menu);
+    auto func = new Gui::ActionFunction(menu);
     QAction* act = menu->addAction(QObject::tr("Edit text"));
-    func->trigger(act, std::bind(&ViewProviderTextDocument::doubleClicked, this));
+    func->trigger(act, [this](){
+        this->doubleClicked();
+    });
 
     ViewProviderDocumentObject::setupContextMenu(menu, receiver, member);
 }
@@ -108,11 +110,11 @@ void ViewProviderTextDocument::onChanged(const App::Property* prop)
         else if (prop == &SyntaxHighlighter) {
             long value = SyntaxHighlighter.getValue();
             if (value == 1) {
-                PythonSyntaxHighlighter* pythonSyntax = new PythonSyntaxHighlighter(editorWidget);
+                auto pythonSyntax = new PythonSyntaxHighlighter(editorWidget);
                 pythonSyntax->setDocument(editorWidget->document());
             }
             else {
-                QSyntaxHighlighter* shl = editorWidget->findChild<QSyntaxHighlighter*>();
+                auto shl = editorWidget->findChild<QSyntaxHighlighter*>();
                 if (shl)
                     shl->deleteLater();
             }

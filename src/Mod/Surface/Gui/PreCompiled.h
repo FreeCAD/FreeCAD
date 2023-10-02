@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef GUI_PRECOMPILED_H
 #define GUI_PRECOMPILED_H
 
@@ -28,31 +27,27 @@
 
 #ifdef _PreComp_
 
-// standard
-#include <cstdio>
-#include <cassert>
-
 // STL
-#include <algorithm>
-#include <iostream>
-#include <list>
-#include <map>
-#include <queue>
-#include <set>
 #include <sstream>
-#include <stack>
-#include <string>
-#include <vector>
 
-#ifdef FC_OS_WIN32
-# include <windows.h>
-#endif
+// Qt
+#include <QAction>
+#include <QApplication>
+#include <QMenu>
+#include <QMessageBox>
+#include <QTimer>
 
-// Qt Toolkit
-#ifndef __QtAll__
-# include <Gui/QtAll.h>
-#endif
+// OpenCasCade
+#include <BRepAdaptor_Curve.hxx>
+#include <GeomAPI_ProjectPointOnCurve.hxx>
+#include <GeomAbs_Shape.hxx>
+#include <TopExp.hxx>
+#include <TopTools_IndexedDataMapOfShapeListOfShape.hxx>
+#include <TopTools_IndexedMapOfShape.hxx>
+#include <TopTools_ListIteratorOfListOfShape.hxx>
+#include <TopoDS_Edge.hxx>
+#include <TopoDS_Shape.hxx>
 
 #endif  //_PreComp_
 
-#endif // GUI_PRECOMPILED_H
+#endif  // GUI_PRECOMPILED_H

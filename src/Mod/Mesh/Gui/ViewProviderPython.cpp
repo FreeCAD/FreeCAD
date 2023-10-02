@@ -21,15 +21,17 @@
  ***************************************************************************/
 
 
+// clang-format off
 #include "PreCompiled.h"
 #include "ViewProviderPython.h"
+// clang-format on
 
-namespace Gui {
+namespace Gui
+{
 /// @cond DOXERR
 PROPERTY_SOURCE_TEMPLATE(MeshGui::ViewProviderPython, MeshGui::ViewProviderMeshFaceSet)
 /// @endcond
 
 // explicit template instantiation
 template class MeshGuiExport ViewProviderPythonFeatureT<MeshGui::ViewProviderMeshFaceSet>;
-}
-
+}  // namespace Gui

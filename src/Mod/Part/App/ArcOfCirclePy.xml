@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
-  <PythonExport 
+  <PythonExport
       Father="ArcOfConicPy"
-      Name="ArcOfCirclePy" 
+      Name="ArcOfCirclePy"
       PythonName="Part.ArcOfCircle"
-      Twin="GeomArcOfCircle" 
-      TwinPointer="GeomArcOfCircle" 
-      Include="Mod/Part/App/Geometry.h" 
-      Namespace="Part" 
+      Twin="GeomArcOfCircle"
+      TwinPointer="GeomArcOfCircle"
+      Include="Mod/Part/App/Geometry.h"
+      Namespace="Part"
       FatherInclude="Mod/Part/App/ArcOfConicPy.h"
       FatherNamespace="Part"
       Constructor="true">

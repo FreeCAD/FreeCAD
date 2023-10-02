@@ -44,9 +44,7 @@ PythonStdout::PythonStdout(PythonConsole *pc)
 {
 }
 
-PythonStdout::~PythonStdout()
-{
-}
+PythonStdout::~PythonStdout() = default;
 
 Py::Object PythonStdout::getattr(const char *name)
 {
@@ -110,9 +108,7 @@ PythonStderr::PythonStderr(PythonConsole *pc)
 {
 }
 
-PythonStderr::~PythonStderr()
-{
-}
+PythonStderr::~PythonStderr() = default;
 
 Py::Object PythonStderr::getattr(const char *name)
 {
@@ -163,7 +159,7 @@ Py::Object PythonStderr::isatty()
 void OutputStdout::init_type()
 {
     behaviors().name("OutputStdout");
-    behaviors().doc("Redirection of stdout to FreeCAD's output window");
+    behaviors().doc("Redirection of stdout to FreeCAD's report view");
     // you must have overwritten the virtual functions
     behaviors().supportRepr();
     add_varargs_method("write",&OutputStdout::write,"write()");
@@ -171,13 +167,9 @@ void OutputStdout::init_type()
     add_noargs_method("isatty",&OutputStdout::isatty,"isatty()");
 }
 
-OutputStdout::OutputStdout()
-{
-}
+OutputStdout::OutputStdout() = default;
 
-OutputStdout::~OutputStdout()
-{
-}
+OutputStdout::~OutputStdout() = default;
 
 Py::Object OutputStdout::getattr(const char *name)
 {
@@ -228,7 +220,7 @@ Py::Object OutputStdout::isatty()
 void OutputStderr::init_type()
 {
     behaviors().name("OutputStderr");
-    behaviors().doc("Redirection of stdout to FreeCAD's output window");
+    behaviors().doc("Redirection of stdout to FreeCAD's report view");
     // you must have overwritten the virtual functions
     behaviors().supportRepr();
     add_varargs_method("write",&OutputStderr::write,"write()");
@@ -236,13 +228,9 @@ void OutputStderr::init_type()
     add_noargs_method("isatty",&OutputStderr::isatty,"isatty()");
 }
 
-OutputStderr::OutputStderr()
-{
-}
+OutputStderr::OutputStderr() = default;
 
-OutputStderr::~OutputStderr()
-{
-}
+OutputStderr::~OutputStderr() = default;
 
 Py::Object OutputStderr::getattr(const char *name)
 {
@@ -296,6 +284,7 @@ void PythonStdin::init_type()
     behaviors().doc("Redirection of stdin to FreeCAD to open an input dialog");
     // you must have overwritten the virtual functions
     behaviors().supportRepr();
+    behaviors().supportGetattr();
     add_varargs_method("readline",&PythonStdin::readline,"readline()");
 }
 
@@ -304,9 +293,7 @@ PythonStdin::PythonStdin(PythonConsole *pc)
 {
 }
 
-PythonStdin::~PythonStdin()
-{
-}
+PythonStdin::~PythonStdin() = default;
 
 Py::Object PythonStdin::repr()
 {
@@ -314,6 +301,14 @@ Py::Object PythonStdin::repr()
     std::ostringstream s_out;
     s_out << "PythonStdin";
     return Py::String(s_out.str());
+}
+
+Py::Object PythonStdin::getattr(const char *name)
+{
+    if (strcmp(name, "closed") == 0) {
+        return Py::Boolean(false);
+    }
+    return getattr_methods(name);
 }
 
 Py::Object PythonStdin::readline(const Py::Tuple& /*args*/)

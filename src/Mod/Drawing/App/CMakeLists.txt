@@ -59,6 +59,18 @@ SOURCE_GROUP("Mod" FILES ${Drawing_SRCS})
 SOURCE_GROUP("Features" FILES ${Features_SRCS})
 SOURCE_GROUP("Algorithms" FILES ${DrawingAlgos_SRCS})
 
+SET(DrawingComplete_SRCS
+    ${Drawing_SRCS}
+    ${DrawingAlgos_SRCS}
+    ${Features_SRCS}
+)
+
+if(FREECAD_USE_PCH)
+    add_definitions(-D_PreComp_)
+    GET_MSVC_PRECOMPILED_SOURCE("PreCompiled.cpp" PCH_SRCS ${DrawingComplete_SRCS})
+    ADD_MSVC_PRECOMPILED_HEADER(Drawing PreCompiled.h PreCompiled.cpp PCH_SRCS)
+endif(FREECAD_USE_PCH)
+
 add_library(Drawing SHARED ${Drawing_SRCS} ${Features_SRCS} ${DrawingAlgos_SRCS})
 target_link_libraries(Drawing ${Drawing_LIBS})
 

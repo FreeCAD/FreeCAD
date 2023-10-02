@@ -1,5 +1,6 @@
 # ***************************************************************************
 # *   Copyright (c) 2009, 2010 Ken Cline <cline@frii.com>                   *
+# *   Copyright (c) 2023 FreeCAD Project Association                        *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -34,12 +35,13 @@ YZ, and XZ planes.
 #  in FreeCAD and a couple of utility functions.
 
 import math
-from sys import float_info
 import lazy_loader.lazy_loader as lz
 
 import FreeCAD
 import DraftVecUtils
 from FreeCAD import Vector
+from draftutils import utils
+from draftutils.messages import _wrn
 from draftutils.translate import translate
 
 DraftGeomUtils = lz.LazyLoader("DraftGeomUtils", globals(), "DraftGeomUtils")
@@ -48,339 +50,306 @@ FreeCADGui = lz.LazyLoader("FreeCADGui", globals(), "FreeCADGui")
 
 __title__ = "FreeCAD Working Plane utility"
 __author__ = "Ken Cline"
-__url__ = "https://www.freecadweb.org"
+__url__ = "https://www.freecad.org"
 
 
-class Plane:
-    """A WorkPlane object.
+class PlaneBase:
+    """PlaneBase is the base class for the Plane class and the PlaneGui class.
 
     Parameters
     ----------
-    u: Base::Vector3, optional
-        An axis (vector) that helps define the working plane.
-        It defaults to `(1, 0, 0)`, or the +X axis.
+    u: Base.Vector or WorkingPlane.PlaneBase, optional
+        Defaults to Vector(1, 0, 0).
+        If a WP is provided:
+            A copy of the WP is created, all other parameters are then ignored.
+        If a vector is provided:
+            Unit vector for the `u` attribute (+X axis).
 
-    v: Base::Vector3, optional
-        An axis (vector) that helps define the working plane.
-        It defaults to `(0, 1, 0)`, or the +Y axis.
+    v: Base.Vector, optional
+        Defaults to Vector(0, 1, 0).
+        Unit vector for the `v` attribute (+Y axis).
 
-    w: Base::Vector3, optional
-        An axis that is supposed to be perpendicular to `u` and `v`;
-        it is redundant.
-        It defaults to `(0, 0, 1)`, or the +Z axis.
+    w: Base.Vector, optional
+        Defaults to Vector(0, 0, 1).
+        Unit vector for the `axis` attribute (+Z axis).
 
-    pos: Base::Vector3, optional
-        A point through which the plane goes through.
-        It defaults to the origin `(0, 0, 0)`.
+    pos: Base.Vector, optional
+        Defaults to Vector(0, 0, 0).
+        Vector for the `position` attribute (origin).
 
-    Attributes
-    ----------
-    doc: App::Document
-        The active document. Reset view when `doc` changes.
-
-    weak: bool
-        It is `True` if the plane has been defined by `setup()`
-        or has been reset. A weak plane can be changed
-        (it is the "auto" mode), while a strong plane will keep
-        its position until weakened (it is "locked")
-
-    u: Base::Vector3
-        An axis (vector) that helps define the working plane.
-
-    v: Base::Vector3
-        An axis (vector) that helps define the working plane.
-
-    axis: Base::Vector3
-        A vector that is supposed to be perpendicular to `u` and `v`;
-        it is helpful although redundant.
-
-    position: Base::Vector3
-        A point, which the plane goes through,
-        that helps define the working plane.
-
-    stored: bool
-        A placeholder for a stored state.
+    Note that the u, v and w vectors are not checked for validity.
     """
 
     def __init__(self,
                  u=Vector(1, 0, 0), v=Vector(0, 1, 0), w=Vector(0, 0, 1),
                  pos=Vector(0, 0, 0)):
 
-        # keep track of active document.  Reset view when doc changes.
-        self.doc = None
-        self.weak = True
-        self.u = u
-        self.v = v
-        self.axis = w
-        self.position = pos
-        # a placeholder for a stored state
-        self.stored = None
+        if isinstance(u, PlaneBase):
+            self.match(u)
+            return
+        self.u = Vector(u)
+        self.v = Vector(v)
+        self.axis = Vector(w)
+        self.position = Vector(pos)
 
     def __repr__(self):
-        """Show the string representation of the object."""
         text = "Workplane"
         text += " x=" + str(DraftVecUtils.rounded(self.u))
         text += " y=" + str(DraftVecUtils.rounded(self.v))
         text += " z=" + str(DraftVecUtils.rounded(self.axis))
+        text += " pos=" + str(DraftVecUtils.rounded(self.position))
         return text
 
     def copy(self):
-        """Return a new plane that is a copy of the present object."""
-        p = plane(u=self.u, v=self.v, w=self.axis, pos=self.position)
-        p.weak = self.weak
-        return p
+        """Return a new WP that is a copy of the present object."""
+        wp = PlaneBase()
+        self.match(source=self, target=wp)
+        return wp
 
-    def offsetToPoint(self, p, direction=None):
-        """Return the signed distance from a point to the plane.
+    def _copy_value(self, val):
+        """Return a copy of a value, primarily required for vectors."""
+        return val.__class__(val)
 
-        Parameters
-        ----------
-        p : Base::Vector3
-            The external point to consider.
-
-        direction : Base::Vector3, optional
-            The unit vector that indicates the direction of the distance.
-
-            It defaults to `None`, which then uses the `plane.axis` (normal)
-            value, meaning that the measured distance is perpendicular
-            to the plane.
-
-        Returns
-        -------
-        float
-            The distance from the point to the plane.
-
-        Notes
-        -----
-        The signed distance `d`, from `p` to the plane, is such that
-        ::
-            x = p + d*direction,
-
-        where `x` is a point that lies on the plane.
-
-        The `direction` is a unit vector that specifies the direction
-        in which the distance is measured.
-        It defaults to `plane.axis`,
-        meaning that it is the perpendicular distance.
-
-        A picture will help explain the computation
-        ::
-                                            p
-                                          //|
-                                        / / |
-                                    d /  /  | axis
-                                    /   /   |
-                                  /    /    |
-            -------- plane -----x-----c-----a--------
-
-        The points are as follows
-
-         * `p` is an arbitrary point outside the plane.
-         * `c` is a known point on the plane,
-           for example, `plane.position`.
-         * `x` is the intercept on the plane from `p` in
-           the desired `direction`.
-         * `a` is the perpendicular intercept on the plane,
-           i.e. along `plane.axis`.
-
-        The distance is calculated through the dot product
-        of the vector `pc` (going from point `p` to point `c`,
-        both of which are known) with the unit vector `direction`
-        (which is provided or defaults to `plane.axis`).
-        ::
-            d = pc . direction
-            d = (c - p) . direction
-
-        **Warning:** this implementation doesn't calculate the entire
-        distance `|xp|`, only the distance `|pc|` projected onto `|xp|`.
-
-        Trigonometric relationships
-        ---------------------------
-        In 2D the distances can be calculated by trigonometric relationships
-        ::
-            |ap| = |cp| cos(apc) = |xp| cos(apx)
-
-        Then the desired distance is `d = |xp|`
-        ::
-            |xp| = |cp| cos(apc) / cos(apx)
-
-        The cosines can be obtained from the definition of the dot product
-        ::
-            A . B = |A||B| cos(angleAB)
-
-        If one vector is a unit vector
-        ::
-            A . uB = |A| cos(angleAB)
-            cp . axis = |cp| cos(apc)
-
-        and if both vectors are unit vectors
-        ::
-            uA . uB = cos(angleAB).
-            direction . axis = cos(apx)
-
-        Then
-        ::
-            d = (cp . axis) / (direction . axis)
-
-        **Note:** for 2D these trigonometric operations
-        produce the full `|xp|` distance.
-        """
-        if direction is None:
-            direction = self.axis
-        return direction.dot(self.position.sub(p))
-
-    def projectPoint(self, p, direction=None, force_projection=True):
-        """Project a point onto the plane, by default orthogonally.
+    def match(self, source, target=None):
+        """Match the main properties of two working planes.
 
         Parameters
         ----------
-        p : Base::Vector3
-            The point to project.
-        direction : Base::Vector3, optional
-            The unit vector that indicates the direction of projection.
-
-            It defaults to `None`, which then uses the `plane.axis` (normal)
-            value, meaning that the point is projected perpendicularly
-            to the plane.
-        force_projection: Bool, optional
-            Forces the projection if the deviation between the direction and
-            the normal is less than float epsilon from the orthogonality.
-            The direction of projection is modified to a float epsilon
-            deviation between the direction and the orthogonal.
-            It defaults to True.
-
-        Returns
-        -------
-        Base::Vector3
-            The projected vector, scaled to the appropriate distance.
-        """
-
-        axis = Vector(self.axis).normalize()
-        if direction is None:
-            dir = axis
-        else:
-            dir = Vector(direction).normalize()
-
-        cos = dir.dot(axis)
-        delta_ax_proj = (p - self.position).dot(axis)
-        # check the only conflicting case: direction orthogonal to axis
-        if abs(cos) <= float_info.epsilon:
-            if force_projection:
-                cos = math.copysign(float_info.epsilon, delta_ax_proj)
-                dir = axis.cross(dir).cross(axis) - cos*axis
-            else:
-                return None
-
-        proj = p - delta_ax_proj/cos*dir
-
-        return proj
-
-    def projectPointOld(self, p, direction=None):
-        """Project a point onto the plane. OBSOLETE.
-
-        Parameters
-        ----------
-        p : Base::Vector3
-            The point to project.
-        direction : Base::Vector3, optional
-            The unit vector that indicates the direction of projection.
-
-            It defaults to `None`, which then uses the `plane.axis` (normal)
-            value, meaning that the point is projected perpendicularly
-            to the plane.
-
-        Returns
-        -------
-        Base::Vector3
-            The projected point,
-            or the original point if the angle between the `direction`
-            and the `plane.axis` is 90 degrees.
-        """
-        if not direction:
-            direction = self.axis
-        t = Vector(direction)
-        # t.normalize()
-        a = round(t.getAngle(self.axis), DraftVecUtils.precision())
-        pp = round((math.pi)/2, DraftVecUtils.precision())
-        if a == pp:
-            return p
-        t.multiply(self.offsetToPoint(p, direction))
-        return p.add(t)
-
-    def alignToPointAndAxis(self, point, axis, offset=0, upvec=None):
-        """Align the working plane to a point and an axis (vector).
-
-        Set `v` as the cross product of `axis` with `(1, 0, 0)` or `+X`,
-        and `u` as `v` rotated -90 degrees around the `axis`.
-        Also set `weak` to `False`.
-
-        Parameters
-        ----------
-        point : Base::Vector3
-            The new `position` of the plane, adjusted by
-            the `offset`.
-        axis : Base::Vector3
-            A vector whose unit vector will be used as the new `axis`
-            of the plane.
-            If it is very close to the `X` or `-X` axes,
-            it will use this axis exactly, and will adjust `u` and `v`
-            to `+Y` and `+Z`, or `-Y` and `+Z`, respectively.
-        offset : float, optional
-            Defaults to zero. A value which will be used to offset
-            the plane in the direction of its `axis`.
-        upvec : Base::Vector3, optional
+        source: WP object
+            WP to copy properties from.
+        target: WP object, optional
             Defaults to `None`.
-            If it exists, its unit vector will be used as `v`,
-            and will set `u` as the cross product of `v` with `axis`.
+            WP to copy properties to. If `None` the present object is used.
         """
-        self.doc = FreeCAD.ActiveDocument
-        self.axis = axis
-        self.axis.normalize()
-        if axis.getAngle(Vector(1, 0, 0)) < 0.00001:
-            self.axis = Vector(1, 0, 0)
-            self.u = Vector(0, 1, 0)
-            self.v = Vector(0, 0, 1)
-        elif axis.getAngle(Vector(-1, 0, 0)) < 0.00001:
-            self.axis = Vector(-1, 0, 0)
-            self.u = Vector(0, -1, 0)
-            self.v = Vector(0, 0, 1)
-        elif upvec:
-            self.u = upvec.cross(self.axis)
+        if target is None:
+            target = self
+        for prop in self._get_prop_list():
+            setattr(target, prop, self._copy_value(getattr(source, prop)))
+
+    def get_parameters(self):
+        """Return a data dictionary with the main properties of the WP."""
+        data = {}
+        for prop in self._get_prop_list():
+            data[prop] = self._copy_value(getattr(self, prop))
+        return data
+
+    def set_parameters(self, data):
+        """Set the main properties of the WP according to a data dictionary."""
+        for prop in self._get_prop_list():
+            setattr(self, prop, self._copy_value(data[prop]))
+
+    def align_to_3_points(self, p1, p2, p3, offset=0):
+        """Align the WP to 3 points with an optional offset.
+
+        The points must define a plane.
+
+        Parameters
+        ----------
+        p1: Base.Vector
+            New WP `position`.
+        p2: Base.Vector
+            Point on the +X axis. (p2 - p1) defines the WP `u` axis.
+        p3: Base.Vector
+            Defines the plane.
+        offset: float, optional
+            Defaults to zero.
+            Offset along the WP `axis`.
+
+        Returns
+        -------
+        `True`/`False`
+            `True` if successful.
+        """
+        return self.align_to_edge_or_wire(Part.makePolygon([p1, p2, p3]), offset)
+
+    def align_to_edges_vertexes(self, shapes, offset=0):
+        """Align the WP to the endpoints of edges and/or the points of vertexes
+        with an optional offset.
+
+        The points must define a plane.
+
+        The first 2 points define the WP `position` and `u` axis.
+
+        Parameters
+        ----------
+        shapes: iterable
+            One or more edges and/or vertexes.
+        offset: float, optional
+            Defaults to zero.
+            Offset along the WP `axis`.
+
+        Returns
+        -------
+        `True`/`False`
+            `True` if successful.
+        """
+        points = [vert.Point for shape in shapes for vert in shape.Vertexes]
+        if len(points) < 2:
+            return False
+        return self.align_to_edge_or_wire(Part.makePolygon(points), offset)
+
+    def align_to_edge_or_wire(self, shape, offset=0):
+        """Align the WP to an edge or wire with an optional offset.
+
+        The shape must define a plane.
+
+        If the shape is an edge with a `Center` then that defines the WP
+        `position`. The vector between the center and its start point then
+        defines the WP `u` axis.
+
+        In other cases the start point of the first edge defines the WP
+        `position` and the 1st derivative at that point the WP `u` axis.
+
+        Parameters
+        ----------
+        shape: Part.Edge or Part.Wire
+            Edge or wire.
+        offset: float, optional
+            Defaults to zero.
+            Offset along the WP `axis`.
+
+        Returns
+        -------
+        `True`/`False`
+            `True` if successful.
+        """
+        tol = 1e-7
+        plane = shape.findPlane()
+        if plane is None:
+            return False
+        self.axis = plane.Axis
+        if shape.ShapeType == "Edge" and hasattr(shape.Curve, "Center"):
+            pos = shape.Curve.Center
+            vec = shape.Vertexes[0].Point - pos
+            if vec.Length > tol:
+                self.u = vec
+                self.u.normalize()
+                self.v = self.axis.cross(self.u)
+            else:
+                self.u, self.v, _ = self._axes_from_rotation(plane.Rotation)
+        elif shape.Edges[0].Length > tol:
+            pos = shape.Vertexes[0].Point
+            self.u = shape.Edges[0].derivative1At(0)
             self.u.normalize()
             self.v = self.axis.cross(self.u)
-            self.v.normalize()
         else:
-            self.v = axis.cross(Vector(1, 0, 0))
-            self.v.normalize()
-            self.u = DraftVecUtils.rotate(self.v, -math.pi/2, self.axis)
-            self.u.normalize()
-        offsetVector = Vector(axis)
-        offsetVector.multiply(offset)
-        self.position = point.add(offsetVector)
-        self.weak = False
-        # Console.PrintMessage("(position = " + str(self.position) + ")\n")
-        # Console.PrintMessage(self.__repr__() + "\n")
+            pos = shape.Vertexes[0].Point
+            self.u, self.v, _ = self._axes_from_rotation(plane.Rotation)
+        self.position = pos + (self.axis * offset)
+        return True
 
-    def alignToPointAndAxis_SVG(self, point, axis, offset=0):
-        """Align the working plane to a point and an axis (vector).
+    def align_to_face(self, shape, offset=0):
+        """Align the WP to a face with an optional offset.
+
+        The face must be planar.
+
+        The center of gravity of the face defines the WP `position` and the
+        normal of the face the WP `axis`. The WP `u` and `v` vectors are
+        determined by the DraftGeomUtils.uv_vectors_from_face function.
+        See there.
+
+        Parameters
+        ----------
+        shape: Part.Face
+            Face.
+        offset: float, optional
+            Defaults to zero.
+            Offset along the WP `axis`.
+
+        Returns
+        -------
+        `True`/`False`
+            `True` if successful.
+        """
+        if shape.Surface.isPlanar() is False:
+            return False
+        place = DraftGeomUtils.placement_from_face(shape)
+        self.u, self.v, self.axis = self._axes_from_rotation(place.Rotation)
+        self.position = place.Base + (self.axis * offset)
+        return True
+
+    def align_to_placement(self, place, offset=0):
+        """Align the WP to a placement with an optional offset.
+
+        Parameters
+        ----------
+        place: Base.Placement
+            Placement.
+        offset: float, optional
+            Defaults to zero.
+            Offset along the WP `axis`.
+
+        Returns
+        -------
+        `True`
+        """
+        self.u, self.v, self.axis = self._axes_from_rotation(place.Rotation)
+        self.position = place.Base + (self.axis * offset)
+        return True
+
+    def align_to_point_and_axis(self, point, axis, offset=0, upvec=Vector(1, 0, 0)):
+        """Align the WP to a point and an axis with an optional offset and an
+        optional up-vector.
+
+        If the axis and up-vector are parallel the FreeCAD.Rotation algorithm
+        will replace the up-vector: Vector(0, 0, 1) is tried first, then
+        Vector(0, 1, 0), and finally Vector(1, 0, 0).
+
+        Parameters
+        ----------
+        point: Base.Vector
+            New WP `position`.
+        axis: Base.Vector
+            New WP `axis`.
+        offset: float, optional
+            Defaults to zero.
+            Offset along the WP `axis`.
+        upvec: Base.Vector, optional
+            Defaults to Vector(1, 0, 0).
+            Up-vector.
+
+        Returns
+        -------
+        `True`
+        """
+        tol = 1e-7
+        if axis.Length < tol:
+            return False
+        if upvec.Length < tol:
+            return False
+        axis = Vector(axis).normalize()
+        upvec = Vector(upvec).normalize()
+        if axis.isEqual(upvec, tol) or axis.isEqual(upvec.negative(), tol):
+            upvec = axis
+        rot = FreeCAD.Rotation(Vector(), upvec, axis, "ZYX")
+        self.u, self.v, _ = self._axes_from_rotation(rot)
+        self.axis = axis
+        self.position = point + (self.axis * offset)
+        return True
+
+    def align_to_point_and_axis_svg(self, point, axis, offset=0):
+        """Align the WP to a point and an axis with an optional offset.
 
         It aligns `u` and `v` based on the magnitude of the components
         of `axis`.
-        Also set `weak` to `False`.
 
         Parameters
         ----------
-        point : Base::Vector3
+        point: Base.Vector
             The new `position` of the plane, adjusted by
             the `offset`.
-        axis : Base::Vector3
+        axis: Base.Vector
             A vector whose unit vector will be used as the new `axis`
             of the plane.
             The magnitudes of the `x`, `y`, `z` components of the axis
             determine the orientation of `u` and `v` of the plane.
-        offset : float, optional
+        offset: float, optional
             Defaults to zero. A value which will be used to offset
             the plane in the direction of its `axis`.
+
+        Returns
+        -------
+        `True`
 
         Cases
         -----
@@ -421,9 +390,7 @@ class Plane:
              ::
                  u = -1 axis.cross(+Y)
         """
-        self.doc = FreeCAD.ActiveDocument
-        self.axis = axis
-        self.axis.normalize()
+        self.axis = Vector(axis).normalize()
         ref_vec = Vector(0.0, 1.0, 0.0)
 
         if ((abs(axis.x) > abs(axis.y)) and (abs(axis.y) > abs(axis.z))):
@@ -473,195 +440,356 @@ class Plane:
         offsetVector = Vector(axis)
         offsetVector.multiply(offset)
         self.position = point.add(offsetVector)
+
+        return True
+
+    def get_global_coords(self, point, as_vector=False):
+        """Translate a point or vector from the local (WP) coordinate system to
+        the global coordinate system.
+
+        Parameters
+        ----------
+        point: Base.Vector
+            Point.
+        as_vector: bool, optional
+            Defaults to `False`.
+            If `True` treat point as a vector.
+
+        Returns
+        -------
+        Base.Vector
+        """
+        pos = Vector() if as_vector else self.position
+        mtx = FreeCAD.Matrix(self.u, self.v, self.axis, pos)
+        return mtx.multVec(point)
+
+    def get_local_coords(self, point, as_vector=False):
+        """Translate a point or vector from the global coordinate system to
+        the local (WP) coordinate system.
+
+        Parameters
+        ----------
+        point: Base.Vector
+            Point.
+        as_vector: bool, optional
+            Defaults to `False`.
+            If `True` treat point as a vector.
+
+        Returns
+        -------
+        Base.Vector
+        """
+        pos = Vector() if as_vector else self.position
+        mtx = FreeCAD.Matrix(self.u, self.v, self.axis, pos)
+        return mtx.inverse().multVec(point)
+
+    def get_closest_axis(self, vec):
+        """Return a string indicating the positive or negative WP axis closest
+        to a vector.
+
+        Parameters
+        ----------
+        vec: Base.Vector
+            Vector.
+
+        Returns
+        -------
+        str
+            `"x"`, `"y"` or `"z"`.
+        """
+        xyz = list(self.get_local_coords(vec, as_vector=True))
+        x, y, z = [abs(coord) for coord in xyz]
+        if x >= y and x >= z:
+            return "x"
+        elif y >= x and y >= z:
+            return "y"
+        else:
+            return "z"
+
+    def get_placement(self):
+        """Return a placement calculated from the WP."""
+        return FreeCAD.Placement(self.position, FreeCAD.Rotation(self.u, self.v, self.axis, "ZYX"))
+
+    def is_global(self):
+        """Return `True` if the WP matches the global coordinate system exactly."""
+        return self.u == Vector(1, 0, 0) \
+            and self.v == Vector(0, 1, 0) \
+            and self.axis == Vector(0, 0, 1) \
+            and self.position == Vector()
+
+    def is_ortho(self):
+        """Return `True` if all WP axes are  parallel to a global axis."""
+        rot = FreeCAD.Rotation(self.u, self.v, self.axis, "ZYX")
+        ypr = [round(ang, 6) for ang in rot.getYawPitchRoll()]
+        return all([ang%90 == 0 for ang in ypr])
+
+    def project_point(self, point, direction=None, force_projection=True):
+        """Project a point onto the WP and return the global coordinates of the
+        projected point.
+
+        Parameters
+        ----------
+        point: Base.Vector
+            Point to project.
+        direction: Base.Vector, optional
+            Defaults to `None` in which case the WP `axis` is used.
+            Direction of projection.
+        force_projection: bool, optional
+            Defaults to `True`.
+            See DraftGeomUtils.project_point_on_plane
+
+        Returns
+        -------
+        Base.Vector
+        """
+        return DraftGeomUtils.project_point_on_plane(point,
+                                                     self.position,
+                                                     self.axis,
+                                                     direction,
+                                                     force_projection)
+
+    def set_to_top(self, offset=0):
+        """Sets the WP to the top position with an optional offset."""
+        self.u = Vector(1, 0, 0)
+        self.v = Vector(0, 1, 0)
+        self.axis = Vector(0, 0, 1)
+        self.position = self.axis * offset
+
+    def set_to_front(self, offset=0):
+        """Sets the WP to the front position with an optional offset."""
+        self.u = Vector(1, 0, 0)
+        self.v = Vector(0, 0, 1)
+        self.axis = Vector(0, -1, 0)
+        self.position = self.axis * offset
+
+    def set_to_side(self, offset=0):
+        """Sets the WP to the right side position with an optional offset."""
+        self.u = Vector(0, 1, 0)
+        self.v = Vector(0, 0, 1)
+        self.axis = Vector(1, 0, 0)
+        self.position = self.axis * offset
+
+    def _axes_from_rotation(self, rot):
+        """Return a tuple with the `u`, `v` and `axis` vectors from a Base.Rotation."""
+        mtx = rot.toMatrix()
+        return mtx.col(0), mtx.col(1), mtx.col(2)
+
+    def _axes_from_view_rotation(self, rot):
+        """Return a tuple with the `u`, `v` and `axis` vectors from a Base.Rotation
+        derived from a view. The Yaw, Pitch and Roll angles are rounded if they are
+        near multiples of 45 degrees.
+        """
+        ypr = [round(ang, 3) for ang in rot.getYawPitchRoll()]
+        if all([ang%45 == 0 for ang in ypr]):
+            rot.setEulerAngles("YawPitchRoll", *ypr)
+        return self._axes_from_rotation(rot)
+
+    def _get_prop_list(self):
+        return ["u",
+                "v",
+                "axis",
+                "position"]
+
+
+class Plane(PlaneBase):
+    """The old Plane class.
+
+    Parameters
+    ----------
+    u: Base.Vector or WorkingPlane.Plane, optional
+        Defaults to Vector(1, 0, 0).
+        If a WP is provided:
+            A copy of the WP is created, all other parameters are then ignored.
+        If a vector is provided:
+            Unit vector for the `u` attribute (+X axis).
+
+    v: Base.Vector, optional
+        Defaults to Vector(0, 1, 0).
+        Unit vector for the `v` attribute (+Y axis).
+
+    w: Base.Vector, optional
+        Defaults to Vector(0, 0, 1).
+        Unit vector for the `axis` attribute (+Z axis).
+
+    pos: Base.Vector, optional
+        Defaults to Vector(0, 0, 0).
+        Vector for the `position` attribute (origin).
+
+    Note that the u, v and w vectors are not checked for validity.
+
+    Other attributes
+    ----------------
+    weak: bool
+        A weak WP is in "Auto" mode and will adapt to the current view.
+
+    stored: None/list
+        A placeholder for a stored state.
+    """
+
+    def __init__(self,
+                 u=Vector(1, 0, 0), v=Vector(0, 1, 0), w=Vector(0, 0, 1),
+                 pos=Vector(0, 0, 0),
+                 weak=True):
+
+        if isinstance(u, Plane):
+            self.match(u)
+            return
+        super().__init__(u, v, w, pos)
+        self.weak = weak
+        # a placeholder for a stored state
+        self.stored = None
+
+    def copy(self):
+        """See PlaneBase.copy."""
+        wp = Plane()
+        self.match(source=self, target=wp)
+        return wp
+
+    def offsetToPoint(self, point, direction=None):
+        """Return the signed distance from a point to the plane. The direction
+        argument is ignored.
+
+        The returned value is the negative of the local Z coordinate of the point.
+        """
+        return -DraftGeomUtils.distance_to_plane(point, self.position, self.axis)
+
+    def projectPoint(self, point, direction=None, force_projection=True):
+        """See PlaneBase.project_point."""
+        return super().project_point(point, direction, force_projection)
+
+    def alignToPointAndAxis(self, point, axis, offset=0, upvec=None):
+        """See PlaneBase.align_to_point_and_axis."""
+        if upvec is None:
+            upvec = Vector(1, 0, 0)
+        super().align_to_point_and_axis(point, axis, offset, upvec)
         self.weak = False
-        # Console.PrintMessage("(position = " + str(self.position) + ")\n")
-        # Console.PrintMessage(self.__repr__() + "\n")
+        return True
+
+    def alignToPointAndAxis_SVG(self, point, axis, offset=0):
+        """See PlaneBase.align_to_point_and_axis_svg."""
+        super().align_to_point_and_axis_svg(point, axis, offset)
+        self.weak = False
+        return True
 
     def alignToCurve(self, shape, offset=0):
-        """Align plane to curve. NOT YET IMPLEMENTED.
+        """Align the WP to a curve. NOT IMPLEMENTED.
 
         Parameters
         ----------
-        shape : Part.Shape
-            A curve that will serve to align the plane.
-            It can be an `'Edge'` or `'Wire'`.
-        offset : float
-            Defaults to zero. A value which will be used to offset
-            the plane in the direction of its `axis`.
+        shape: Part.Shape
+            Edge or Wire.
+        offset: float, optional
+            Defaults to zero.
+            Offset along the WP `axis`.
 
         Returns
         -------
-        False
-            Returns `False` if the shape is null.
-            Currently it always returns `False`.
+        `False`
         """
-        if shape.isNull():
-            return False
-        elif shape.ShapeType == 'Edge':
-            # ??? TODO: process curve here.  look at shape.edges[0].Curve
-            return False
-        elif shape.ShapeType == 'Wire':
-            # ??? TODO: determine if edges define a plane
-            return False
-        else:
-            return False
+        return False
 
-    def alignToEdges(self, edges):
-        """Align plane to two edges.
+    def alignToEdges(self, shapes, offset=0):
+        """Align the WP to edges with an optional offset.
 
-        Uses the two points of the first edge to define the direction
-        of the unit vector `u`, the other two points of the other edge
-        to define the other unit vector `v`, and then the cross product
-        of `u` with `v` to define the `axis`.
+        The eges must define a plane.
+
+        The endpoints of the first edge defines the WP `position` and `u` axis.
 
         Parameters
         ----------
-        edges : list
-            A list of two edges.
+        shapes: iterable
+            Two edges.
+        offset: float, optional
+            Defaults to zero.
+            Offset along the WP `axis`.
 
         Returns
         -------
-        False
-            Return `False` if `edges` is a list of more than 2 elements.
+        `True`/`False`
+            `True` if successful.
         """
-        # use a list of edges to find a plane position
-        if len(edges) > 2:
+        if super().align_to_edges_vertexes(shapes, offset) is False:
             return False
-        # for axes systems, we suppose the 2 first edges are parallel
-        # ??? TODO: exclude other cases first
-        v1 = edges[0].Vertexes[-1].Point.sub(edges[0].Vertexes[0].Point)
-        v2 = edges[1].Vertexes[0].Point.sub(edges[0].Vertexes[0].Point)
-        v3 = v1.cross(v2)
-        v1.normalize()
-        v2.normalize()
-        v3.normalize()
-        # print(v1,v2,v3)
-        self.u = v1
-        self.v = v2
-        self.axis = v3
+        self.weak = False
+        return True
 
     def alignToFace(self, shape, offset=0, parent=None):
-        """Align the plane to a face.
+        """Align the WP to a face with an optional offset.
 
-        It uses the center of mass of the face as `position`,
-        and its normal in the center of the face as `axis`,
-        then calls `alignToPointAndAxis(position, axis, offset)`.
+        The face must be planar.
 
-        If the face is a quadrilateral, then it adjusts the position
-        of the plane according to its reported X direction and Y direction.
+        The center of gravity of the face defines the WP `position` and the
+        normal of the face the WP `axis`. The WP `u` and `v` vectors are
+        determined by the DraftGeomUtils.uv_vectors_from_face function.
+        See there.
 
-        Also set `weak` to `False`.
-
-        Parameter
-        --------
-        shape : Part.Face
-            A shape of type `'Face'`.
-
-        offset : float
-            Defaults to zero. A value which will be used to offset
-            the plane in the direction of its `axis`.
-
-        parent : object
-            Defaults to None. The ParentGeoFeatureGroup of the object
-            the face belongs to.
+        Parameters
+        ----------
+        shape: Part.Face
+            Face.
+        offset: float, optional
+            Defaults to zero.
+            Offset along the WP `axis`.
+        parent: object
+            Defaults to `None`.
+            The ParentGeoFeatureGroup of the object the face belongs to.
 
         Returns
         -------
-        bool
-            `True` if the operation was successful, and `False` if the shape
-            is not a `'Face'`.
-
-        See Also
-        --------
-        alignToPointAndAxis
+        `True`/`False`
+            `True` if successful.
         """
-        # Set face to the unique selected face, if found
-        if shape.ShapeType == 'Face':
+        if shape.ShapeType == "Face" and shape.Surface.isPlanar():
+            place = DraftGeomUtils.placement_from_face(shape)
             if parent:
-                place = parent.getGlobalPlacement()
-            else:
-                place = FreeCAD.Placement()
-            rot = place.Rotation
-
-            cen = place.multVec(shape.CenterOfMass)
-            nor = rot.multVec(shape.normalAt(0, 0))
-            self.alignToPointAndAxis(cen, nor, offset)
-
-            pmr = shape.ParameterRange # (uMin, uMax, vMin, vMax)
-            u = shape.valueAt(pmr[1], 0).sub(shape.valueAt(pmr[0], 0))
-            v = shape.valueAt(0, pmr[3]).sub(shape.valueAt(0, pmr[2]))
-            self.u = rot.multVec(u).normalize()
-            self.v = rot.multVec(v).normalize()
-
-            if shape.Orientation == "Reversed":
-                self.u, self.v = self.v, self.u
-
-            # If self.u or self.v matches a wrong global axis, rotate them:
-            if DraftVecUtils.equals(self.v, Vector(0, 0, -1)):
-                self.u, self.v = self.u.negative(), self.v.negative()
-            elif DraftVecUtils.equals(self.u, Vector(0, 0, 1)):
-                self.u, self.v = self.v.negative(), self.u
-            elif DraftVecUtils.equals(self.u, Vector(0, 0, -1)):
-                self.u, self.v = self.v, self.u.negative()
-
+                place = parent.getGlobalPlacement() * place
+            super().align_to_placement(place, offset)
             self.weak = False
             return True
         else:
             return False
 
     def alignTo3Points(self, p1, p2, p3, offset=0):
-        """Align the plane to three points.
+        """Align the plane to a temporary face created from three points.
 
-        It makes a closed quadrilateral face with the three points,
-        and then calls `alignToFace(shape, offset)`.
-
-        Parameter
-        ---------
-        p1 : Base::Vector3
-            The first point.
-        p2 : Base::Vector3
-            The second point.
-        p3 : Base::Vector3
-            The third point.
-
-        offset : float
-            Defaults to zero. A value which will be used to offset
-            the plane in the direction of its `axis`.
+        Parameters
+        ----------
+        p1: Base.Vector
+            First point.
+        p2: Base.Vector
+            Second point.
+        p3: Base.Vector
+            Third point.
+        offset: float, optional
+            Defaults to zero.
+            Offset along the WP `axis`
 
         Returns
         -------
-        bool
-            `True` if the operation was successful, and `False` otherwise.
+        `True`/`False`
+            `True` if successful.
         """
-        import Part
         w = Part.makePolygon([p1, p2, p3, p1])
         f = Part.Face(w)
         return self.alignToFace(f, offset)
 
     def alignToSelection(self, offset=0):
-        """Align the plane to a selection if it defines a plane.
+        """Align the plane to a selection with an optional offset.
 
-        If the selection uniquely defines a plane it will be used.
+        The selection must define a plane.
 
         Parameter
         ---------
-        offset : float
-            Defaults to zero. A value which will be used to offset
-            the plane in the direction of its `axis`.
+        offset: float, optional
+            Defaults to zero.
+            Offset along the WP `axis`
 
         Returns
         -------
-        bool
-            `True` if the operation was successful, and `False` otherwise.
-            It returns `False` if the selection has no elements,
-            or if the object is not derived from `'Part::Feature'`
-            or if the object doesn't have a `Shape`.
-
-        See Also
-        --------
-        alignToFace, alignToCurve
+        `True`/`False`
+            `True` if successful.
         """
-        sel_ex = FreeCADGui.Selection.getSelectionEx(FreeCAD.ActiveDocument.Name)
+        sel_ex = FreeCADGui.Selection.getSelectionEx()
         if not sel_ex:
             return False
 
@@ -675,13 +803,13 @@ class Plane:
                 if isinstance(geom, Part.Shape):
                     geom_is_shape = True
             if not geom_is_shape:
-                FreeCAD.Console.PrintError(translate(
+                _wrn(translate(
                     "draft",
                     "Object without Part.Shape geometry:'{}'".format(
                         obj.ObjectName)) + "\n")
                 return False
             if geom.isNull():
-                FreeCAD.Console.PrintError(translate(
+                _wrn(translate(
                     "draft",
                     "Object with null Part.Shape geometry:'{}'".format(
                         obj.ObjectName)) + "\n")
@@ -696,7 +824,7 @@ class Plane:
         normal = None
         for n in range(len(shapes)):
             if not DraftGeomUtils.is_planar(shapes[n]):
-                FreeCAD.Console.PrintError(translate(
+                _wrn(translate(
                    "draft", "'{}' object is not planar".format(names[n])) + "\n")
                 return False
             if not normal:
@@ -707,7 +835,7 @@ class Plane:
         if normal:
             for n in range(len(shapes)):
                 if not DraftGeomUtils.are_coplanar(shapes[shape_ref], shapes[n]):
-                    FreeCAD.Console.PrintError(translate(
+                    _wrn(translate(
                         "draft", "{} and {} aren't coplanar".format(
                         names[shape_ref],names[n])) + "\n")
                     return False
@@ -717,7 +845,7 @@ class Plane:
             if len(points) >= 3:
                 poly = Part.makePolygon(points)
                 if not DraftGeomUtils.is_planar(poly):
-                    FreeCAD.Console.PrintError(translate(
+                    _wrn(translate(
                         "draft", "All Shapes must be coplanar") + "\n")
                     return False
                 normal = DraftGeomUtils.get_normal(poly)
@@ -725,13 +853,13 @@ class Plane:
                 normal = None
 
         if not normal:
-            FreeCAD.Console.PrintError(translate(
+            _wrn(translate(
                 "draft", "Selected Shapes must define a plane") + "\n")
             return False
 
         # set center of mass
-        ctr_mass = FreeCAD.Vector(0,0,0)
-        ctr_pts = FreeCAD.Vector(0,0,0)
+        ctr_mass = Vector(0,0,0)
+        ctr_pts = Vector(0,0,0)
         mass = 0
         for shape in shapes:
             if hasattr(shape, "CenterOfMass"):
@@ -745,8 +873,8 @@ class Plane:
         else:
             ctr_mass = ctr_pts/len(shapes)
 
-        self.alignToPointAndAxis(ctr_mass, normal, offset)
-
+        super().align_to_point_and_axis(ctr_mass, normal, offset)
+        self.weak = False
         return True
 
     def setup(self, direction=None, point=None, upvec=None, force=False):
@@ -780,7 +908,7 @@ class Plane:
         To do
         -----
         When the interface is not loaded it should fail and print
-        a message, `FreeCAD.Console.PrintError()`.
+        a message, `_wrn()`.
         """
         if self.weak or force:
             if direction and point:
@@ -795,11 +923,11 @@ class Plane:
                     coin_up = coin.SbVec3f(0, 1, 0)
                     upvec = Vector(rot.multVec(coin_up).getValue())
                     vdir = view.getViewDirection()
-                    # The angle is between 0 and 180 degrees.
-                    angle = vdir.getAngle(self.axis)
-                    # don't change the plane if the axis is already
-                    # antiparallel to the current view
-                    if abs(math.pi - angle) > Part.Precision.angular():
+                    # don't change the plane if the axis and v vector
+                    # are already correct:
+                    tol = Part.Precision.angular()
+                    if abs(math.pi - vdir.getAngle(self.axis)) > tol \
+                            or abs(math.pi - upvec.getAngle(self.v)) > tol:
                         self.alignToPointAndAxis(Vector(0, 0, 0),
                                                  vdir.negative(), 0, upvec)
                 except Exception:
@@ -812,9 +940,8 @@ class Plane:
     def reset(self):
         """Reset the plane.
 
-        Set the `doc` attribute to `None`, and `weak` to `True`.
+        Set `weak` to `True`.
         """
-        self.doc = None
         self.weak = True
 
     def setTop(self):
@@ -863,7 +990,7 @@ class Plane:
             A placement, comprised of a `Base` (`Base::Vector3`),
             and a `Rotation` (`Base::Rotation`).
         """
-        m = DraftVecUtils.getPlaneRotation(self.u, self.v, self.axis)
+        m = DraftVecUtils.getPlaneRotation(self.u, self.v)
         p = FreeCAD.Placement(m)
         # Arch active container
         if FreeCAD.GuiUp:
@@ -892,17 +1019,10 @@ class Plane:
             and a `Rotation` (`Base::Rotation`).
         """
         if rotated:
-            m = FreeCAD.Matrix(
-                self.u.x, self.axis.x, -self.v.x, self.position.x,
-                self.u.y, self.axis.y, -self.v.y, self.position.y,
-                self.u.z, self.axis.z, -self.v.z, self.position.z,
-                0.0, 0.0, 0.0, 1.0)
+            m = DraftVecUtils.getPlaneRotation(self.u, self.axis)
         else:
-            m = FreeCAD.Matrix(
-                self.u.x, self.v.x, self.axis.x, self.position.x,
-                self.u.y, self.v.y, self.axis.y, self.position.y,
-                self.u.z, self.v.z, self.axis.z, self.position.z,
-                0.0, 0.0, 0.0, 1.0)
+            m = DraftVecUtils.getPlaneRotation(self.u, self.v)
+        m.move(self.position)
         p = FreeCAD.Placement(m)
         # Arch active container if based on App Part
         # if FreeCAD.GuiUp:
@@ -1319,88 +1439,21 @@ class Plane:
 plane = Plane
 
 
+# Compatibility function (V0.22, 2023):
 def getPlacementFromPoints(points):
-    """Return a placement from a list of 3 or 4 points.
+    """Return a placement from a list of 3 or 4 points. The 4th point is no longer used.
 
-    With these points a temporary `plane` is defined.
-
-    Then it returns the `Base::Placement` returned from `plane.getPlacement()`.
-
-    Parameters
-    ----------
-    points : list of Base::Vector3
-        A list with 3 or 4 points to create a temporary plane
-        from which to extract the placement.
-
-        The first point is the plane's `position`.
-        The other two points are used to define the `u` and `v` axes,
-        as originating from the first point.
-
-        If the fourth point exists, it is used to define the plane's `axis`
-        as originating from the first point.
-        If no fourth point is provided, the cross product bewtween
-        the previously defined `u` and `v` is used as `axis`.
-
-    Return
-    ------
-    Base::Placement
-        A placement obtained from the temporary plane
-        defined by `points`,
-        or `None` is it fails to use the points.
-
-    See Also
-    --------
-    getPlacement
+    Calls DraftGeomUtils.placement_from_points(). See there.
     """
-    pl = plane()
-    try:
-        pl.position = points[0]
-        pl.u = (points[1].sub(points[0]).normalize())
-        pl.v = (points[2].sub(points[0]).normalize())
-        if len(points) == 4:
-            pl.axis = (points[3].sub(points[0]).normalize())
-        else:
-            pl.axis = ((pl.u).cross(pl.v)).normalize()
-    except Exception:
-        return None
-    p = pl.getPlacement()
-    del pl
-    return p
+    utils.use_instead("DraftGeomUtils.placement_from_points")
+    return DraftGeomUtils.placement_from_points(*points[:3])
 
 
+# Compatibility function (V0.22, 2023):
 def getPlacementFromFace(face, rotated=False):
     """Return a placement from a face.
 
-    It creates a temporary `plane` and uses `alignToFace(face)`
-    to set its orientation.
-
-    Then it returns the `Base::Placement` returned
-    from `plane.getPlacement(rotated)`.
-
-    Parameter
-    ---------
-    face : Part.Face
-        A shape of type `'Face'`.
-    rotated : bool, optional
-        It defaults to `False`. If it is `True`, the temporary plane
-        switches `axis` with `-v` to produce a rotated placement.
-
-    Returns
-    -------
-    Base::Placement
-        A placement obtained from the temporary plane
-        defined by `face`,
-        or `None` if it fails to use `face`.
-
-    See Also
-    --------
-    alignToFace, getPlacement
+    Calls DraftGeomUtils.placement_from_face(). See there.
     """
-    pl = plane()
-    try:
-        pl.alignToFace(face)
-    except Exception:
-        return None
-    p = pl.getPlacement(rotated)
-    del pl
-    return p
+    utils.use_instead("DraftGeomUtils.placement_from_face")
+    return DraftGeomUtils.placement_from_face(face, rotated=rotated)

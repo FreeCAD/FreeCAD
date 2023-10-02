@@ -20,24 +20,12 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
-#ifndef _PreComp_
-#endif
-
-/// Here the FreeCAD includes sorted by Base,App,Gui......
-#include <Base/Console.h>
-#include <Base/Parameter.h>
-#include <Base/Exception.h>
-#include <Base/Sequencer.h>
-#include <App/Application.h>
-#include <App/Document.h>
 #include <App/DocumentObject.h>
-#include <Gui/Selection.h>
-
-#include <Mod/Drawing/App/FeatureView.h>
 #include <Mod/Drawing/App/FeatureClip.h>
+#include <Mod/Drawing/App/FeatureView.h>
+
 #include "ViewProviderView.h"
 
 
@@ -54,10 +42,9 @@ ViewProviderDrawingView::ViewProviderDrawingView()
 }
 
 ViewProviderDrawingView::~ViewProviderDrawingView()
-{
-}
+{}
 
-void ViewProviderDrawingView::attach(App::DocumentObject *pcFeat)
+void ViewProviderDrawingView::attach(App::DocumentObject* pcFeat)
 {
     // call parent attach method
     ViewProviderDocumentObject::attach(pcFeat);
@@ -79,15 +66,17 @@ void ViewProviderDrawingView::show(void)
     ViewProviderDocumentObject::show();
 
     App::DocumentObject* obj = getObject();
-    if (!obj || obj->isRestoring())
+    if (!obj || obj->isRestoring()) {
         return;
+    }
     if (obj->getTypeId().isDerivedFrom(Drawing::FeatureView::getClassTypeId())) {
         // The 'Visible' property is marked as 'Output'. To update the drawing on recompute
         // the parent page object is touched.
         static_cast<Drawing::FeatureView*>(obj)->Visible.setValue(true);
         std::vector<App::DocumentObject*> inp = obj->getInList();
-        for (std::vector<App::DocumentObject*>::iterator it = inp.begin(); it != inp.end(); ++it)
+        for (std::vector<App::DocumentObject*>::iterator it = inp.begin(); it != inp.end(); ++it) {
             (*it)->touch();
+        }
     }
 }
 
@@ -96,15 +85,17 @@ void ViewProviderDrawingView::hide(void)
     ViewProviderDocumentObject::hide();
 
     App::DocumentObject* obj = getObject();
-    if (!obj || obj->isRestoring())
+    if (!obj || obj->isRestoring()) {
         return;
+    }
     if (obj->getTypeId().isDerivedFrom(Drawing::FeatureView::getClassTypeId())) {
         // The 'Visible' property is marked as 'Output'. To update the drawing on recompute
         // the parent page object is touched.
         static_cast<Drawing::FeatureView*>(obj)->Visible.setValue(false);
         std::vector<App::DocumentObject*> inp = obj->getInList();
-        for (std::vector<App::DocumentObject*>::iterator it = inp.begin(); it != inp.end(); ++it)
+        for (std::vector<App::DocumentObject*>::iterator it = inp.begin(); it != inp.end(); ++it) {
             (*it)->touch();
+        }
     }
 }
 
@@ -124,19 +115,20 @@ void ViewProviderDrawingView::finishRestoring()
 }
 
 void ViewProviderDrawingView::updateData(const App::Property*)
-{
-}
+{}
 
 // Python viewprovider -----------------------------------------------------------------------
 
-namespace Gui {
+namespace Gui
+{
 /// @cond DOXERR
-PROPERTY_SOURCE_TEMPLATE(DrawingGui::ViewProviderDrawingViewPython, DrawingGui::ViewProviderDrawingView)
+PROPERTY_SOURCE_TEMPLATE(DrawingGui::ViewProviderDrawingViewPython,
+                         DrawingGui::ViewProviderDrawingView)
 /// @endcond
 
 // explicit template instantiation
 template class DrawingGuiExport ViewProviderPythonFeatureT<DrawingGui::ViewProviderDrawingView>;
-}
+}  // namespace Gui
 
 
 // ----------------------------------------------------------------------------
@@ -152,10 +144,9 @@ ViewProviderDrawingClip::ViewProviderDrawingClip()
 }
 
 ViewProviderDrawingClip::~ViewProviderDrawingClip()
-{
-}
+{}
 
-void ViewProviderDrawingClip::attach(App::DocumentObject *pcFeat)
+void ViewProviderDrawingClip::attach(App::DocumentObject* pcFeat)
 {
     // call parent attach method
     ViewProviderDocumentObject::attach(pcFeat);
@@ -178,15 +169,17 @@ void ViewProviderDrawingClip::show(void)
     ViewProviderDocumentObjectGroup::show();
 
     App::DocumentObject* obj = getObject();
-    if (!obj || obj->isRestoring())
+    if (!obj || obj->isRestoring()) {
         return;
+    }
     if (obj->getTypeId().isDerivedFrom(Drawing::FeatureClip::getClassTypeId())) {
         // The 'Visible' property is marked as 'Output'. To update the drawing on recompute
         // the parent page object is touched.
         static_cast<Drawing::FeatureClip*>(obj)->Visible.setValue(true);
         std::vector<App::DocumentObject*> inp = obj->getInList();
-        for (std::vector<App::DocumentObject*>::iterator it = inp.begin(); it != inp.end(); ++it)
+        for (std::vector<App::DocumentObject*>::iterator it = inp.begin(); it != inp.end(); ++it) {
             (*it)->touch();
+        }
     }
 }
 
@@ -195,15 +188,17 @@ void ViewProviderDrawingClip::hide(void)
     ViewProviderDocumentObjectGroup::hide();
 
     App::DocumentObject* obj = getObject();
-    if (!obj || obj->isRestoring())
+    if (!obj || obj->isRestoring()) {
         return;
+    }
     if (obj->getTypeId().isDerivedFrom(Drawing::FeatureClip::getClassTypeId())) {
         // The 'Visible' property is marked as 'Output'. To update the drawing on recompute
         // the parent page object is touched.
         static_cast<Drawing::FeatureClip*>(obj)->Visible.setValue(false);
         std::vector<App::DocumentObject*> inp = obj->getInList();
-        for (std::vector<App::DocumentObject*>::iterator it = inp.begin(); it != inp.end(); ++it)
+        for (std::vector<App::DocumentObject*>::iterator it = inp.begin(); it != inp.end(); ++it) {
             (*it)->touch();
+        }
     }
 }
 
@@ -223,5 +218,4 @@ void ViewProviderDrawingClip::finishRestoring()
 }
 
 void ViewProviderDrawingClip::updateData(const App::Property*)
-{
-}
+{}

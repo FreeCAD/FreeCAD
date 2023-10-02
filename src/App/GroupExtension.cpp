@@ -31,7 +31,7 @@
 
 
 using namespace App;
-namespace bp = boost::placeholders;
+namespace sp = std::placeholders;
 
 EXTENSION_PROPERTY_SOURCE(App::GroupExtension, App::DocumentObjectExtension)
 
@@ -182,34 +182,41 @@ DocumentObject *GroupExtension::getObject(const char *Name) const
 
 bool GroupExtension::hasObject(const DocumentObject* obj, bool recursive) const
 {
-
-    if(obj == getExtendedObject())
+    if (obj == getExtendedObject()) {
         return false;
-
-    const std::vector<DocumentObject*>& grp = Group.getValues();
-    for (auto child : grp) {
-
-        if(!child)
-            continue;
-
-        if (child == obj) {
-            return true;
-        } else if (child == getExtendedObject()) {
-            Base::RuntimeError("Cyclic dependencies detected: Search cannot be performed");
-        } else if ( recursive && child->hasExtension(GroupExtension::getExtensionClassTypeId()) ) {
-
-            App::GroupExtension *subGroup = static_cast<App::GroupExtension *> (
-                                    child->getExtension(GroupExtension::getExtensionClassTypeId()));
-            std::vector<const GroupExtension*> history;
-            history.push_back(this);
-
-            if (subGroup->recursiveHasObject (obj, subGroup, history)) {
-                return true;
-            }
-        }
     }
 
-    return false;
+    try {
+        const std::vector<DocumentObject*>& grp = Group.getValues();
+        for (auto child : grp) {
+
+            if (!child)
+                continue;
+
+            if (child == obj) {
+                return true;
+            }
+            else if (child == getExtendedObject()) {
+                throw Base::RuntimeError("Cyclic dependencies detected: Search cannot be performed");
+            }
+            else if ( recursive && child->hasExtension(GroupExtension::getExtensionClassTypeId()) ) {
+                App::GroupExtension *subGroup = static_cast<App::GroupExtension *> (
+                                        child->getExtension(GroupExtension::getExtensionClassTypeId()));
+                std::vector<const GroupExtension*> history;
+                history.push_back(this);
+
+                if (subGroup->recursiveHasObject (obj, subGroup, history)) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+    catch (const Base::RuntimeError& e) {
+        e.ReportException();
+        return false;
+    }
 }
 
 bool GroupExtension::recursiveHasObject(const DocumentObject* obj, const GroupExtension* group, 
@@ -235,8 +242,9 @@ bool GroupExtension::recursiveHasObject(const DocumentObject* obj, const GroupEx
 
             auto ext = child->getExtensionByType<GroupExtension>();
             
-            if(std::find(history.begin(), history.end(), ext) != history.end())
-                Base::RuntimeError("Cyclic dependencies detected: Search cannot be performed");
+            if (std::find(history.begin(), history.end(), ext) != history.end()) {
+                throw Base::RuntimeError("Cyclic dependencies detected: Search cannot be performed");
+            }
 
             if (recursiveHasObject(obj, ext, history)) {
                 return true;
@@ -260,9 +268,9 @@ std::vector<DocumentObject*> GroupExtension::getObjectsOfType(const Base::Type& 
 {
     std::vector<DocumentObject*> type;
     const std::vector<DocumentObject*>& grp = Group.getValues();
-    for (std::vector<DocumentObject*>::const_iterator it = grp.begin(); it != grp.end(); ++it) {
-        if ( (*it)->getTypeId().isDerivedFrom(typeId))
-            type.push_back(*it);
+    for (auto it : grp) {
+        if (it->getTypeId().isDerivedFrom(typeId))
+            type.push_back(it);
     }
 
     return type;
@@ -272,8 +280,8 @@ int GroupExtension::countObjectsOfType(const Base::Type& typeId) const
 {
     int type=0;
     const std::vector<DocumentObject*>& grp = Group.getValues();
-    for (std::vector<DocumentObject*>::const_iterator it = grp.begin(); it != grp.end(); ++it) {
-        if ( (*it)->getTypeId().isDerivedFrom(typeId))
+    for (auto it : grp) {
+        if ( it->getTypeId().isDerivedFrom(typeId))
             type++;
     }
 
@@ -344,8 +352,10 @@ void GroupExtension::extensionOnChanged(const Property* p) {
         _Conns.clear();
         for(auto obj : Group.getValue()) {
             if(obj && obj->getNameInDocument()) {
-                _Conns[obj] = obj->signalChanged.connect(boost::bind(
-                            &GroupExtension::slotChildChanged,this,bp::_1, bp::_2));
+                //NOLINTBEGIN
+                _Conns[obj] = obj->signalChanged.connect(std::bind(
+                            &GroupExtension::slotChildChanged,this,sp::_1, sp::_2));
+                //NOLINTEND
             }
         }
     }

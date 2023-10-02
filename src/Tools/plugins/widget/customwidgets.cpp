@@ -21,16 +21,18 @@
  ***************************************************************************/
 
 
-#include <QtGui>
 #include <QApplication>
 #include <QColorDialog>
 #include <QCursor>
 #include <QFileDialog>
 #include <QHeaderView>
 #include <QMessageBox>
+#include <QRegularExpression>
+#include <QRegularExpressionMatch>
 #include <QStyleOptionButton>
 #include <QStylePainter>
 #include <QToolTip>
+#include <QtGui>
 #include <cfloat>
 
 #include "customwidgets.h"
@@ -38,31 +40,22 @@
 using namespace Gui;
 
 
-UrlLabel::UrlLabel ( QWidget * parent, Qt::WindowFlags f )
-  : QLabel("TextLabel", parent, f)
+UrlLabel::UrlLabel(QWidget* parent, Qt::WindowFlags f)
+    : QLabel("TextLabel", parent, f)
 {
     _url = "http://localhost";
     setToolTip(this->_url);
-}
-
-UrlLabel::~UrlLabel()
-{
-}
-
-void UrlLabel::enterEvent ( QEvent * )
-{
     setCursor(Qt::PointingHandCursor);
 }
 
-void UrlLabel::leaveEvent ( QEvent * )
-{
-    setCursor(Qt::ArrowCursor);
-}
+UrlLabel::~UrlLabel()
+{}
 
-void UrlLabel::mouseReleaseEvent ( QMouseEvent * )
+void UrlLabel::mouseReleaseEvent(QMouseEvent*)
 {
-    QMessageBox::information(this, "Browser", 
-        QString("This starts your browser with url %1").arg(_url));
+    QMessageBox::information(this,
+                             "Browser",
+                             QString("This starts your browser with url %1").arg(_url));
 }
 
 QString UrlLabel::url() const
@@ -76,8 +69,8 @@ void UrlLabel::setUrl(const QString& u)
     setToolTip(this->_url);
 }
 
-LocationWidget::LocationWidget (QWidget * parent)
-  : QWidget(parent)
+LocationWidget::LocationWidget(QWidget* parent)
+    : QWidget(parent)
 {
     box = new QGridLayout();
 
@@ -115,12 +108,11 @@ LocationWidget::LocationWidget (QWidget * parent)
 }
 
 LocationWidget::~LocationWidget()
-{
-}
+{}
 
 QSize LocationWidget::sizeHint() const
 {
-    return QSize(150,100);
+    return QSize(150, 100);
 }
 
 void LocationWidget::changeEvent(QEvent* e)
@@ -137,58 +129,66 @@ void LocationWidget::retranslateUi()
     yLabel->setText(QApplication::translate("Gui::LocationWidget", "Y:"));
     zLabel->setText(QApplication::translate("Gui::LocationWidget", "Z:"));
     dLabel->setText(QApplication::translate("Gui::LocationWidget", "Direction:"));
-} 
+}
 
-FileChooser::FileChooser( QWidget *parent )
-  : QWidget( parent ), md( File ), _filter( QString() )
+FileChooser::FileChooser(QWidget* parent)
+    : QWidget(parent)
+    , md(File)
+    , _filter(QString())
 {
-    QHBoxLayout *layout = new QHBoxLayout( this );
-    layout->setMargin( 0 );
-    layout->setSpacing( 6 );
+    QHBoxLayout* layout = new QHBoxLayout(this);
+    layout->setContentsMargins(0, 0, 0, 0);
+    layout->setSpacing(6);
 
-    lineEdit = new QLineEdit( this );
-    layout->addWidget( lineEdit );
+    lineEdit = new QLineEdit(this);
+    layout->addWidget(lineEdit);
 
-    connect(lineEdit, SIGNAL(textChanged(const QString &)),
-            this, SIGNAL(fileNameChanged(const QString &)));
+    connect(lineEdit, &QLineEdit::textChanged, this, &FileChooser::fileNameChanged);
 
-    button = new QPushButton( "...", this );
+    button = new QPushButton("...", this);
 #if QT_VERSION >= QT_VERSION_CHECK(5, 11, 0)
     button->setFixedWidth(2 * button->fontMetrics().horizontalAdvance(" ... "));
 #else
-    button->setFixedWidth(2*button->fontMetrics().width( " ... " ));
+    button->setFixedWidth(2 * button->fontMetrics().width(" ... "));
 #endif
-    layout->addWidget( button );
+    layout->addWidget(button);
 
-    connect(button, SIGNAL(clicked()), this, SLOT(chooseFile()));
+    connect(button, &QPushButton::clicked, this, &FileChooser::chooseFile);
 
-    setFocusProxy( lineEdit );
+    setFocusProxy(lineEdit);
 }
 
 FileChooser::~FileChooser()
-{
-}
+{}
 
 QString FileChooser::fileName() const
 {
     return lineEdit->text();
 }
 
-void FileChooser::setFileName( const QString &fn )
+void FileChooser::setFileName(const QString& fn)
 {
-    lineEdit->setText( fn );
+    lineEdit->setText(fn);
 }
 
 void FileChooser::chooseFile()
 {
     QFileDialog::Options dlgOpt = QFileDialog::DontUseNativeDialog;
     QString fn;
-    if ( mode() == File ) {
-        fn = QFileDialog::getOpenFileName(this, tr("Select a file"),
-        lineEdit->text(), _filter,0,dlgOpt);
-    } else {
+    if (mode() == File) {
+        fn = QFileDialog::getOpenFileName(this,
+                                          tr("Select a file"),
+                                          lineEdit->text(),
+                                          _filter,
+                                          0,
+                                          dlgOpt);
+    }
+    else {
         QFileDialog::Options option = QFileDialog::ShowDirsOnly | dlgOpt;
-        fn = QFileDialog::getExistingDirectory( this, tr( "Select a directory" ), lineEdit->text(),option );
+        fn = QFileDialog::getExistingDirectory(this,
+                                               tr("Select a directory"),
+                                               lineEdit->text(),
+                                               option);
     }
 
     if (!fn.isEmpty()) {
@@ -202,7 +202,7 @@ FileChooser::Mode FileChooser::mode() const
     return md;
 }
 
-void FileChooser::setMode( Mode m )
+void FileChooser::setMode(Mode m)
 {
     md = m;
 }
@@ -212,20 +212,20 @@ QString FileChooser::filter() const
     return _filter;
 }
 
-void FileChooser::setFilter ( const QString& filter )
+void FileChooser::setFilter(const QString& filter)
 {
     _filter = filter;
 }
 
-void FileChooser::setButtonText( const QString& txt )
+void FileChooser::setButtonText(const QString& txt)
 {
-    button->setText( txt );
+    button->setText(txt);
 #if QT_VERSION >= QT_VERSION_CHECK(5, 11, 0)
     int w1 = 2 * button->fontMetrics().horizontalAdvance(txt);
     int w2 = 2 * button->fontMetrics().horizontalAdvance(" ... ");
 #else
     int w1 = 2 * button->fontMetrics().width(txt);
-    int w2 = 2*button->fontMetrics().width(" ... ");
+    int w2 = 2 * button->fontMetrics().width(" ... ");
 #endif
     button->setFixedWidth((w1 > w2 ? w1 : w2));
 }
@@ -237,44 +237,42 @@ QString FileChooser::buttonText() const
 
 // ------------------------------------------------------------------------------
 
-PrefFileChooser::PrefFileChooser ( QWidget * parent )
-  : FileChooser(parent)
-{
-}
+PrefFileChooser::PrefFileChooser(QWidget* parent)
+    : FileChooser(parent)
+{}
 
 PrefFileChooser::~PrefFileChooser()
-{
-}
+{}
 
-QByteArray PrefFileChooser::entryName () const
+QByteArray PrefFileChooser::entryName() const
 {
     return m_sPrefName;
 }
 
-QByteArray PrefFileChooser::paramGrpPath () const
+QByteArray PrefFileChooser::paramGrpPath() const
 {
     return m_sPrefGrp;
 }
 
-void PrefFileChooser::setEntryName ( const QByteArray& name )
+void PrefFileChooser::setEntryName(const QByteArray& name)
 {
     m_sPrefName = name;
 }
 
-void PrefFileChooser::setParamGrpPath ( const QByteArray& name )
+void PrefFileChooser::setParamGrpPath(const QByteArray& name)
 {
     m_sPrefGrp = name;
 }
 
 // --------------------------------------------------------------------
 
-AccelLineEdit::AccelLineEdit ( QWidget * parent )
-  : QLineEdit(parent)
+AccelLineEdit::AccelLineEdit(QWidget* parent)
+    : QLineEdit(parent)
 {
     setText(tr("none"));
 }
 
-void AccelLineEdit::keyPressEvent ( QKeyEvent * e)
+void AccelLineEdit::keyPressEvent(QKeyEvent* e)
 {
     QString txt;
     setText(tr("none"));
@@ -282,72 +280,67 @@ void AccelLineEdit::keyPressEvent ( QKeyEvent * e)
     int key = e->key();
     Qt::KeyboardModifiers state = e->modifiers();
 
-    if ( key == Qt::Key_Control )
+    if (key == Qt::Key_Control) {
         return;
-    else if ( key == Qt::Key_Shift )
+    }
+    else if (key == Qt::Key_Shift) {
         return;
-    else if ( key == Qt::Key_Alt )
+    }
+    else if (key == Qt::Key_Alt) {
         return;
-    else if ( state == Qt::NoModifier && key == Qt::Key_Backspace )
-        return; // clears the edit field
+    }
+    else if (state == Qt::NoModifier && key == Qt::Key_Backspace) {
+        return;  // clears the edit field
+    }
 
-    switch( state )
-    {
-    case Qt::ControlModifier:
-        {
-            QKeySequence keyseq(Qt::CTRL+key);
+    switch (state) {
+        case Qt::ControlModifier: {
+            QKeySequence keyseq(Qt::CTRL + key);
             txt += keyseq.toString(QKeySequence::NativeText);
             setText(txt);
-        }   break;
-    case Qt::AltModifier:
-        {
-            QKeySequence keyseq(Qt::ALT+key);
+        } break;
+        case Qt::AltModifier: {
+            QKeySequence keyseq(Qt::ALT + key);
             txt += keyseq.toString(QKeySequence::NativeText);
             setText(txt);
-        }   break;
-    case Qt::ShiftModifier:
-        {
-            QKeySequence keyseq(Qt::SHIFT+key);
+        } break;
+        case Qt::ShiftModifier: {
+            QKeySequence keyseq(Qt::SHIFT + key);
             txt += keyseq.toString(QKeySequence::NativeText);
             setText(txt);
-        }   break;
-    case Qt::ControlModifier+Qt::AltModifier:
-        {
-            QKeySequence keyseq(Qt::CTRL+Qt::ALT+key);
+        } break;
+        case Qt::ControlModifier + Qt::AltModifier: {
+            QKeySequence keyseq(Qt::CTRL + Qt::ALT + key);
             txt += keyseq.toString(QKeySequence::NativeText);
             setText(txt);
-        }   break;
-    case Qt::ControlModifier+Qt::ShiftModifier:
-        {
-            QKeySequence keyseq(Qt::CTRL+Qt::SHIFT+key);
+        } break;
+        case Qt::ControlModifier + Qt::ShiftModifier: {
+            QKeySequence keyseq(Qt::CTRL + Qt::SHIFT + key);
             txt += keyseq.toString(QKeySequence::NativeText);
             setText(txt);
-        }   break;
-    case Qt::ShiftModifier+Qt::AltModifier:
-        {
-            QKeySequence keyseq(Qt::SHIFT+Qt::ALT+key);
+        } break;
+        case Qt::ShiftModifier + Qt::AltModifier: {
+            QKeySequence keyseq(Qt::SHIFT + Qt::ALT + key);
             txt += keyseq.toString(QKeySequence::NativeText);
             setText(txt);
-        }   break;
-    case Qt::ControlModifier+Qt::AltModifier+Qt::ShiftModifier:
-        {
-            QKeySequence keyseq(Qt::CTRL+Qt::ALT+Qt::SHIFT+key);
+        } break;
+        case Qt::ControlModifier + Qt::AltModifier + Qt::ShiftModifier: {
+            QKeySequence keyseq(Qt::CTRL + Qt::ALT + Qt::SHIFT + key);
             txt += keyseq.toString(QKeySequence::NativeText);
             setText(txt);
-        }   break;
-    default:
-        {
+        } break;
+        default: {
             QKeySequence keyseq(key);
             txt += keyseq.toString(QKeySequence::NativeText);
             setText(txt);
-        }   break;
+        } break;
     }
 }
 
 // ------------------------------------------------------------------------------
 
 ActionSelector::ActionSelector(QWidget* parent)
-  : QWidget(parent)
+    : QWidget(parent)
 {
     addButton = new QPushButton(this);
     addButton->setMinimumSize(QSize(30, 30));
@@ -429,27 +422,24 @@ ActionSelector::ActionSelector(QWidget* parent)
 }
 
 ActionSelector::~ActionSelector()
-{
-}
+{}
 
 // --------------------------------------------------------------------
 
-InputField::InputField (QWidget * parent)
-  : QLineEdit(parent),
-    Value(0),
-    Maximum(INT_MAX),
-    Minimum(-INT_MAX),
-    StepSize(1.0),
-    HistorySize(5)
-{
-}
+InputField::InputField(QWidget* parent)
+    : QLineEdit(parent)
+    , Value(0)
+    , Maximum(INT_MAX)
+    , Minimum(-INT_MAX)
+    , StepSize(1.0)
+    , HistorySize(5)
+{}
 
 InputField::~InputField()
-{
-}
+{}
 
 /** Sets the preference path to \a path. */
-void InputField::setParamGrpPath( const QByteArray& path )
+void InputField::setParamGrpPath(const QByteArray& path)
 {
     m_sPrefGrp = path;
 }
@@ -474,36 +464,36 @@ double InputField::getQuantity() const
 }
 
 /// get the value of the singleStep property
-double InputField::singleStep(void)const
+double InputField::singleStep(void) const
 {
     return StepSize;
 }
 
-/// set the value of the singleStep property 
+/// set the value of the singleStep property
 void InputField::setSingleStep(double s)
 {
     StepSize = s;
 }
 
 /// get the value of the maximum property
-double InputField::maximum(void)const
+double InputField::maximum(void) const
 {
     return Maximum;
 }
 
-/// set the value of the maximum property 
+/// set the value of the maximum property
 void InputField::setMaximum(double m)
 {
     Maximum = m;
 }
 
 /// get the value of the minimum property
-double InputField::minimum(void)const
+double InputField::minimum(void) const
 {
     return Minimum;
 }
 
-/// set the value of the minimum property 
+/// set the value of the minimum property
 void InputField::setMinimum(double m)
 {
     Minimum = m;
@@ -521,12 +511,12 @@ QString InputField::getUnitText(void)
 }
 
 // get the value of the minimum property
-int InputField::historySize(void)const
+int InputField::historySize(void) const
 {
     return HistorySize;
 }
 
-// set the value of the minimum property 
+// set the value of the minimum property
 void InputField::setHistorySize(int i)
 {
     HistorySize = i;
@@ -534,30 +524,27 @@ void InputField::setHistorySize(int i)
 
 // --------------------------------------------------------------------
 
-namespace Base {
-
-Unit::Unit()
+namespace Base
 {
 
-}
+Unit::Unit()
+{}
 
 Unit::Unit(const QString& u)
     : unit(u)
-{
-
-}
+{}
 
 bool Unit::isEmpty() const
 {
     return unit.isEmpty();
 }
 
-bool Unit::operator ==(const Unit& that)
+bool Unit::operator==(const Unit& that)
 {
     return this->unit == that.unit;
 }
 
-bool Unit::operator !=(const Unit& that)
+bool Unit::operator!=(const Unit& that)
 {
     return this->unit != that.unit;
 }
@@ -567,44 +554,39 @@ const QString& Unit::getString() const
     return unit;
 }
 
-int QuantityFormat::defaultDenominator = 8; // for 1/8"
+int QuantityFormat::defaultDenominator = 8;  // for 1/8"
 
 
 QuantityFormat::QuantityFormat()
-  : option(OmitGroupSeparator | RejectGroupSeparator)
-  , format(Fixed)
-  , precision(4)
-  , denominator(defaultDenominator)
-{
-}
+    : option(OmitGroupSeparator | RejectGroupSeparator)
+    , format(Fixed)
+    , precision(4)
+    , denominator(defaultDenominator)
+{}
 
 Quantity::Quantity()
     : value(0)
     , unit()
-{
-
-}
+{}
 
 Quantity::Quantity(double v, const Unit& u)
     : value(v)
     , unit(u)
-{
-
-}
+{}
 
 Quantity Quantity::parse(const QString& str)
 {
     bool ok;
     QString txt = str;
     QString unit;
-    while (!txt.isEmpty() && txt[txt.length()-1].isLetter()) {
-        unit.prepend(txt[txt.length()-1]);
+    while (!txt.isEmpty() && txt[txt.length() - 1].isLetter()) {
+        unit.prepend(txt[txt.length() - 1]);
         txt.chop(1);
     }
 
     double v = QLocale::system().toDouble(txt, &ok);
-    //if (!ok && !txt.isEmpty())
-    //    throw Base::Exception();
+    // if (!ok && !txt.isEmpty())
+    //     throw Base::Exception();
     return Quantity(v, Unit(unit));
 }
 
@@ -657,33 +639,33 @@ QString Quantity::getUserString(double& factor, QString& unitString) const
     return QString::fromUtf8("%1 %2").arg(Ln, unit.getString());
 }
 
-}
+}  // namespace Base
 
-namespace Gui {
+namespace Gui
+{
 
 class QuantitySpinBoxPrivate
 {
 public:
-    QuantitySpinBoxPrivate() :
-      validInput(true),
-      pendingEmit(false),
-      unitValue(0),
-      maximum(INT_MAX),
-      minimum(-INT_MAX),
-      singleStep(1.0)
-    {
-    }
+    QuantitySpinBoxPrivate()
+        : validInput(true)
+        , pendingEmit(false)
+        , unitValue(0)
+        , maximum(INT_MAX)
+        , minimum(-INT_MAX)
+        , singleStep(1.0)
+    {}
     ~QuantitySpinBoxPrivate()
-    {
-    }
+    {}
 
-    QString stripped(const QString &t, int *pos) const
+    QString stripped(const QString& t, int* pos) const
     {
         QString text = t;
         const int s = text.size();
         text = text.trimmed();
-        if (pos)
+        if (pos) {
             (*pos) -= (s - text.size());
+        }
         return text;
     }
 
@@ -729,46 +711,49 @@ public:
         const bool minus = min <= 0;
 
         switch (len) {
-        case 0:
-            state = max != min ? QValidator::Intermediate : QValidator::Invalid;
-            goto end;
-        case 1:
-            if (copy.at(0) == locale.decimalPoint()) {
-                state = QValidator::Intermediate;
-                copy.prepend(QLatin1Char('0'));
-                pos++;
-                len++;
+            case 0:
+                state = max != min ? QValidator::Intermediate : QValidator::Invalid;
                 goto end;
-            }
-            else if (copy.at(0) == QLatin1Char('+')) {
-                // the quantity parser doesn't allow numbers of the form '+1.0'
-                state = QValidator::Invalid;
-                goto end;
-            }
-            else if (copy.at(0) == QLatin1Char('-')) {
-                if (minus)
+            case 1:
+                if (copy.at(0) == locale.decimalPoint()) {
                     state = QValidator::Intermediate;
-                else
+                    copy.prepend(QLatin1Char('0'));
+                    pos++;
+                    len++;
+                    goto end;
+                }
+                else if (copy.at(0) == QLatin1Char('+')) {
+                    // the quantity parser doesn't allow numbers of the form '+1.0'
                     state = QValidator::Invalid;
-                goto end;
-            }
-            break;
-        case 2:
-            if (copy.at(1) == locale.decimalPoint()
-                && (plus && copy.at(0) == QLatin1Char('+'))) {
-                state = QValidator::Intermediate;
-                goto end;
-            }
-            if (copy.at(1) == locale.decimalPoint()
-                && (minus && copy.at(0) == QLatin1Char('-'))) {
-                state = QValidator::Intermediate;
-                copy.insert(1, QLatin1Char('0'));
-                pos++;
-                len++;
-                goto end;
-            }
-            break;
-        default: break;
+                    goto end;
+                }
+                else if (copy.at(0) == QLatin1Char('-')) {
+                    if (minus) {
+                        state = QValidator::Intermediate;
+                    }
+                    else {
+                        state = QValidator::Invalid;
+                    }
+                    goto end;
+                }
+                break;
+            case 2:
+                if (copy.at(1) == locale.decimalPoint()
+                    && (plus && copy.at(0) == QLatin1Char('+'))) {
+                    state = QValidator::Intermediate;
+                    goto end;
+                }
+                if (copy.at(1) == locale.decimalPoint()
+                    && (minus && copy.at(0) == QLatin1Char('-'))) {
+                    state = QValidator::Intermediate;
+                    copy.insert(1, QLatin1Char('0'));
+                    pos++;
+                    len++;
+                    goto end;
+                }
+                break;
+            default:
+                break;
         }
 
         {
@@ -778,7 +763,7 @@ public:
             }
             else if (len > 1) {
                 bool decOccurred = false;
-                for (int i = 0; i<copy.size(); i++) {
+                for (int i = 0; i < copy.size(); i++) {
                     if (copy.at(i) == locale.decimalPoint()) {
                         // Disallow multiple decimal points within the same numeric substring
                         if (decOccurred) {
@@ -797,10 +782,12 @@ public:
             bool ok = false;
             double value = min;
 
-            if (locale.negativeSign() != QLatin1Char('-'))
+            if (locale.negativeSign() != QLatin1Char('-')) {
                 copy.replace(locale.negativeSign(), QLatin1Char('-'));
-            if (locale.positiveSign() != QLatin1Char('+'))
+            }
+            if (locale.positiveSign() != QLatin1Char('+')) {
                 copy.replace(locale.positiveSign(), QLatin1Char('+'));
+            }
 
             try {
                 QString copy2 = copy;
@@ -833,7 +820,8 @@ public:
                     state = QValidator::Acceptable;
                 }
             }
-            else if (max == min) { // when max and min is the same the only non-Invalid input is max (or min)
+            else if (max == min) {  // when max and min is the same the only non-Invalid input is
+                                    // max (or min)
                 state = QValidator::Invalid;
             }
             else {
@@ -845,7 +833,7 @@ public:
                 }
             }
         }
-end:
+    end:
         if (state != QValidator::Acceptable) {
             res.setValue(max > 0 ? min : max);
         }
@@ -867,42 +855,39 @@ end:
     double minimum;
     double singleStep;
 };
-}
+}  // namespace Gui
 
-QuantitySpinBox::QuantitySpinBox(QWidget *parent)
-    : QAbstractSpinBox(parent),
-      d_ptr(new QuantitySpinBoxPrivate())
+QuantitySpinBox::QuantitySpinBox(QWidget* parent)
+    : QAbstractSpinBox(parent)
+    , d_ptr(new QuantitySpinBoxPrivate())
 {
     d_ptr->locale = locale();
     this->setContextMenuPolicy(Qt::DefaultContextMenu);
-    QObject::connect(lineEdit(), SIGNAL(textChanged(QString)),
-                     this, SLOT(userInput(QString)));
-    QObject::connect(this, SIGNAL(editingFinished()),
-                     this, SLOT(handlePendingEmit()));
+    connect(lineEdit(), &QLineEdit::textChanged, this, &QuantitySpinBox::userInput);
+    connect(this, &QuantitySpinBox::editingFinished, this, &QuantitySpinBox::handlePendingEmit);
 }
 
 QuantitySpinBox::~QuantitySpinBox()
-{
-}
+{}
 
-void QuantitySpinBox::resizeEvent(QResizeEvent * event)
+void QuantitySpinBox::resizeEvent(QResizeEvent* event)
 {
     QAbstractSpinBox::resizeEvent(event);
 }
 
-void Gui::QuantitySpinBox::keyPressEvent(QKeyEvent *event)
+void Gui::QuantitySpinBox::keyPressEvent(QKeyEvent* event)
 {
     QAbstractSpinBox::keyPressEvent(event);
 }
 
 
-void QuantitySpinBox::updateText(const Base::Quantity &quant)
+void QuantitySpinBox::updateText(const Base::Quantity& quant)
 {
     Q_D(QuantitySpinBox);
 
     double dFactor;
     QString txt = getUserString(quant, dFactor, d->unitStr);
-    d->unitValue = quant.getValue()/dFactor;
+    d->unitValue = quant.getValue() / dFactor;
     lineEdit()->setText(txt);
     handlePendingEmit();
 }
@@ -924,10 +909,12 @@ void QuantitySpinBox::setValue(const Base::Quantity& value)
     Q_D(QuantitySpinBox);
     d->quantity = value;
     // check limits
-    if (d->quantity.getValue() > d->maximum)
+    if (d->quantity.getValue() > d->maximum) {
         d->quantity.setValue(d->maximum);
-    if (d->quantity.getValue() < d->minimum)
+    }
+    if (d->quantity.getValue() < d->minimum) {
         d->quantity.setValue(d->minimum);
+    }
 
     d->unit = value.getUnit();
 
@@ -947,7 +934,7 @@ bool QuantitySpinBox::hasValidInput() const
 }
 
 // Gets called after call of 'validateAndInterpret'
-void QuantitySpinBox::userInput(const QString & text)
+void QuantitySpinBox::userInput(const QString& text)
 {
     Q_D(QuantitySpinBox);
 
@@ -1004,7 +991,7 @@ Base::Unit QuantitySpinBox::unit() const
     return d->unit;
 }
 
-void QuantitySpinBox::setUnit(const Base::Unit &unit)
+void QuantitySpinBox::setUnit(const Base::Unit& unit)
 {
     Q_D(QuantitySpinBox);
 
@@ -1096,7 +1083,8 @@ void QuantitySpinBox::clearSchema()
     updateText(d->quantity);
 }
 
-QString QuantitySpinBox::getUserString(const Base::Quantity& val, double& factor, QString& unitString) const
+QString
+QuantitySpinBox::getUserString(const Base::Quantity& val, double& factor, QString& unitString) const
 {
     return val.getUserString(factor, unitString);
 }
@@ -1109,10 +1097,12 @@ QString QuantitySpinBox::getUserString(const Base::Quantity& val) const
 QAbstractSpinBox::StepEnabled QuantitySpinBox::stepEnabled() const
 {
     Q_D(const QuantitySpinBox);
-    if (isReadOnly()/* || !d->validInput*/)
+    if (isReadOnly() /* || !d->validInput*/) {
         return StepNone;
-    if (wrapping())
+    }
+    if (wrapping()) {
         return StepEnabled(StepUpEnabled | StepDownEnabled);
+    }
     StepEnabled ret = StepNone;
     if (d->quantity.getValue() < d->maximum) {
         ret |= StepUpEnabled;
@@ -1130,10 +1120,12 @@ void QuantitySpinBox::stepBy(int steps)
 
     double step = d->singleStep * steps;
     double val = d->unitValue + step;
-    if (val > d->maximum)
+    if (val > d->maximum) {
         val = d->maximum;
-    else if (val < d->minimum)
+    }
+    else if (val < d->minimum) {
         val = d->minimum;
+    }
 
     lineEdit()->setText(QString::fromUtf8("%L1 %2").arg(val).arg(d->unitStr));
     updateFromCache(true);
@@ -1161,14 +1153,13 @@ QSize QuantitySpinBox::sizeHint() const
     w = fm.width(s);
 #endif
 
-    w += 2; // cursor blinking space
+    w += 2;  // cursor blinking space
     w += iconHeight;
 
     QStyleOptionSpinBox opt;
     initStyleOption(&opt);
     QSize hint(w, h);
-    QSize size = style()->sizeFromContents(QStyle::CT_SpinBox, &opt, hint, this)
-                        .expandedTo(QApplication::globalStrut());
+    QSize size = style()->sizeFromContents(QStyle::CT_SpinBox, &opt, hint, this);
     return size;
 }
 
@@ -1192,18 +1183,17 @@ QSize QuantitySpinBox::minimumSizeHint() const
     w = fm.width(s);
 #endif
 
-    w += 2; // cursor blinking space
+    w += 2;  // cursor blinking space
     w += iconHeight;
 
     QStyleOptionSpinBox opt;
     initStyleOption(&opt);
     QSize hint(w, h);
-    QSize size = style()->sizeFromContents(QStyle::CT_SpinBox, &opt, hint, this)
-                        .expandedTo(QApplication::globalStrut());
+    QSize size = style()->sizeFromContents(QStyle::CT_SpinBox, &opt, hint, this);
     return size;
 }
 
-void QuantitySpinBox::showEvent(QShowEvent * event)
+void QuantitySpinBox::showEvent(QShowEvent* event)
 {
     Q_D(QuantitySpinBox);
 
@@ -1211,23 +1201,24 @@ void QuantitySpinBox::showEvent(QShowEvent * event)
 
     bool selected = lineEdit()->hasSelectedText();
     updateText(d->quantity);
-    if (selected)
+    if (selected) {
         selectNumber();
+    }
 }
 
-void QuantitySpinBox::hideEvent(QHideEvent * event)
+void QuantitySpinBox::hideEvent(QHideEvent* event)
 {
     handlePendingEmit();
     QAbstractSpinBox::hideEvent(event);
 }
 
-void QuantitySpinBox::closeEvent(QCloseEvent * event)
+void QuantitySpinBox::closeEvent(QCloseEvent* event)
 {
     handlePendingEmit();
     QAbstractSpinBox::closeEvent(event);
 }
 
-bool QuantitySpinBox::event(QEvent * event)
+bool QuantitySpinBox::event(QEvent* event)
 {
     // issue #0004059: Tooltips for Gui::QuantitySpinBox not showing
     // Here we must not try to show the tooltip of the icon label
@@ -1253,21 +1244,21 @@ bool QuantitySpinBox::event(QEvent * event)
     return QAbstractSpinBox::event(event);
 }
 
-void QuantitySpinBox::focusInEvent(QFocusEvent * event)
+void QuantitySpinBox::focusInEvent(QFocusEvent* event)
 {
     bool hasSel = lineEdit()->hasSelectedText();
     QAbstractSpinBox::focusInEvent(event);
 
-    if (event->reason() == Qt::TabFocusReason ||
-        event->reason() == Qt::BacktabFocusReason  ||
-        event->reason() == Qt::ShortcutFocusReason) {
+    if (event->reason() == Qt::TabFocusReason || event->reason() == Qt::BacktabFocusReason
+        || event->reason() == Qt::ShortcutFocusReason) {
 
-        if (!hasSel)
+        if (!hasSel) {
             selectNumber();
+        }
     }
 }
 
-void QuantitySpinBox::focusOutEvent(QFocusEvent * event)
+void QuantitySpinBox::focusOutEvent(QFocusEvent* event)
 {
     Q_D(QuantitySpinBox);
 
@@ -1292,27 +1283,16 @@ void QuantitySpinBox::clear()
 
 void QuantitySpinBox::selectNumber()
 {
-    QString str = lineEdit()->text();
-    unsigned int i = 0;
-
-    QChar d = locale().decimalPoint();
-    QChar g = locale().groupSeparator();
-    QChar n = locale().negativeSign();
-
-    for (QString::iterator it = str.begin(); it != str.end(); ++it) {
-        if (it->isDigit())
-            i++;
-        else if (*it == d)
-            i++;
-        else if (*it == g)
-            i++;
-        else if (*it == n)
-            i++;
-        else // any non-number character
-            break;
+    QString expr = QString::fromLatin1("^([%1%2]?[0-9\\%3]*)\\%4?([0-9]+(%5[%1%2]?[0-9]+)?)")
+                       .arg(locale().negativeSign())
+                       .arg(locale().positiveSign())
+                       .arg(locale().groupSeparator())
+                       .arg(locale().decimalPoint())
+                       .arg(locale().exponential());
+    auto rmatch = QRegularExpression(expr).match(lineEdit()->text());
+    if (rmatch.hasMatch()) {
+        lineEdit()->setSelection(0, rmatch.capturedLength());
     }
-
-    lineEdit()->setSelection(0, i);
 }
 
 QString QuantitySpinBox::textFromValue(const Base::Quantity& value) const
@@ -1326,7 +1306,7 @@ QString QuantitySpinBox::textFromValue(const Base::Quantity& value) const
     return str;
 }
 
-Base::Quantity QuantitySpinBox::valueFromText(const QString &text) const
+Base::Quantity QuantitySpinBox::valueFromText(const QString& text) const
 {
     Q_D(const QuantitySpinBox);
 
@@ -1342,7 +1322,7 @@ Base::Quantity QuantitySpinBox::valueFromText(const QString &text) const
     return quant;
 }
 
-QValidator::State QuantitySpinBox::validate(QString &text, int &pos) const
+QValidator::State QuantitySpinBox::validate(QString& text, int& pos) const
 {
     Q_D(const QuantitySpinBox);
 
@@ -1351,38 +1331,36 @@ QValidator::State QuantitySpinBox::validate(QString &text, int &pos) const
     return state;
 }
 
-void QuantitySpinBox::fixup(QString &input) const
+void QuantitySpinBox::fixup(QString& input) const
 {
     input.remove(locale().groupSeparator());
 }
 
 // ------------------------------------------------------------------------------
 
-PrefUnitSpinBox::PrefUnitSpinBox ( QWidget * parent )
-  : QuantitySpinBox(parent)
-{
-}
+PrefUnitSpinBox::PrefUnitSpinBox(QWidget* parent)
+    : QuantitySpinBox(parent)
+{}
 
 PrefUnitSpinBox::~PrefUnitSpinBox()
-{
-}
+{}
 
-QByteArray PrefUnitSpinBox::entryName () const
+QByteArray PrefUnitSpinBox::entryName() const
 {
     return m_sPrefName;
 }
 
-QByteArray PrefUnitSpinBox::paramGrpPath () const
+QByteArray PrefUnitSpinBox::paramGrpPath() const
 {
     return m_sPrefGrp;
 }
 
-void PrefUnitSpinBox::setEntryName ( const QByteArray& name )
+void PrefUnitSpinBox::setEntryName(const QByteArray& name)
 {
     m_sPrefName = name;
 }
 
-void PrefUnitSpinBox::setParamGrpPath ( const QByteArray& name )
+void PrefUnitSpinBox::setParamGrpPath(const QByteArray& name)
 {
     m_sPrefGrp = name;
 }
@@ -1391,12 +1369,10 @@ void PrefUnitSpinBox::setParamGrpPath ( const QByteArray& name )
 
 PrefQuantitySpinBox::PrefQuantitySpinBox(QWidget* parent)
     : QuantitySpinBox(parent)
-{
-}
+{}
 
 PrefQuantitySpinBox::~PrefQuantitySpinBox()
-{
-}
+{}
 
 QByteArray PrefQuantitySpinBox::entryName() const
 {
@@ -1420,18 +1396,16 @@ void PrefQuantitySpinBox::setParamGrpPath(const QByteArray& name)
 
 // --------------------------------------------------------------------
 
-CommandIconView::CommandIconView ( QWidget * parent )
-  : QListWidget(parent)
+CommandIconView::CommandIconView(QWidget* parent)
+    : QListWidget(parent)
 {
-    connect(this, SIGNAL (currentItemChanged(QListWidgetItem *, QListWidgetItem *)), 
-            this, SLOT (onSelectionChanged(QListWidgetItem *, QListWidgetItem *)) );
+    connect(this, &QListWidget::currentItemChanged, this, &CommandIconView::onSelectionChanged);
 }
 
-CommandIconView::~CommandIconView ()
-{
-}
+CommandIconView::~CommandIconView()
+{}
 
-void CommandIconView::startDrag ( Qt::DropActions /*supportedActions*/ )
+void CommandIconView::startDrag(Qt::DropActions /*supportedActions*/)
 {
     QList<QListWidgetItem*> items = selectedItems();
     QByteArray itemData;
@@ -1440,160 +1414,175 @@ void CommandIconView::startDrag ( Qt::DropActions /*supportedActions*/ )
     QPixmap pixmap;
     dataStream << items.count();
     for (QList<QListWidgetItem*>::ConstIterator it = items.begin(); it != items.end(); ++it) {
-        if (it == items.begin())
+        if (it == items.begin()) {
             pixmap = ((*it)->data(Qt::UserRole)).value<QPixmap>();
+        }
         dataStream << (*it)->text();
     }
 
-    QMimeData *mimeData = new QMimeData;
+    QMimeData* mimeData = new QMimeData;
     mimeData->setData("text/x-action-items", itemData);
 
-    QDrag *drag = new QDrag(this);
+    QDrag* drag = new QDrag(this);
     drag->setMimeData(mimeData);
-    drag->setHotSpot(QPoint(pixmap.width()/2, pixmap.height()/2));
+    drag->setHotSpot(QPoint(pixmap.width() / 2, pixmap.height() / 2));
     drag->setPixmap(pixmap);
     drag->exec(Qt::MoveAction);
 }
 
-void CommandIconView::onSelectionChanged(QListWidgetItem * item, QListWidgetItem *)
+void CommandIconView::onSelectionChanged(QListWidgetItem* item, QListWidgetItem*)
 {
-    if (item)
+    if (item) {
         emitSelectionChanged(item->toolTip());
+    }
 }
 
 // ------------------------------------------------------------------------------
 
-namespace Gui {
+namespace Gui
+{
 
-class UnsignedValidator : public QValidator
+class UnsignedValidator: public QValidator
 {
 public:
-    UnsignedValidator( QObject * parent );
-    UnsignedValidator( uint minimum, uint maximum, QObject * parent );
+    UnsignedValidator(QObject* parent);
+    UnsignedValidator(uint minimum, uint maximum, QObject* parent);
     ~UnsignedValidator();
 
-    QValidator::State validate( QString &, int & ) const;
+    QValidator::State validate(QString&, int&) const;
 
-    void setBottom( uint );
-    void setTop( uint );
-    virtual void setRange( uint bottom, uint top );
+    void setBottom(uint);
+    void setTop(uint);
+    virtual void setRange(uint bottom, uint top);
 
-    uint bottom() const { return b; }
-    uint top() const { return t; }
+    uint bottom() const
+    {
+        return b;
+    }
+    uint top() const
+    {
+        return t;
+    }
 
 private:
     uint b, t;
 };
 
-UnsignedValidator::UnsignedValidator( QObject * parent )
-  : QValidator( parent )
+UnsignedValidator::UnsignedValidator(QObject* parent)
+    : QValidator(parent)
 {
-    b =  0;
-    t =  UINT_MAX;
+    b = 0;
+    t = UINT_MAX;
 }
 
-UnsignedValidator::UnsignedValidator( uint minimum, uint maximum, QObject * parent )
-  : QValidator( parent )
+UnsignedValidator::UnsignedValidator(uint minimum, uint maximum, QObject* parent)
+    : QValidator(parent)
 {
     b = minimum;
     t = maximum;
 }
 
 UnsignedValidator::~UnsignedValidator()
-{
+{}
 
-}
-
-QValidator::State UnsignedValidator::validate( QString & input, int & ) const
+QValidator::State UnsignedValidator::validate(QString& input, int&) const
 {
-    QString stripped;// = input.stripWhiteSpace();
-    if ( stripped.isEmpty() )
+    QString stripped;  // = input.stripWhiteSpace();
+    if (stripped.isEmpty()) {
         return Intermediate;
+    }
     bool ok;
-    uint entered = input.toUInt( &ok );
-    if ( !ok )
+    uint entered = input.toUInt(&ok);
+    if (!ok) {
         return Invalid;
-    else if ( entered < b )
+    }
+    else if (entered < b) {
         return Intermediate;
-    else if ( entered > t )
+    }
+    else if (entered > t) {
         return Invalid;
-//  else if ( entered < b || entered > t )
-//	  return Invalid;
-    else
+    }
+    //  else if ( entered < b || entered > t )
+    //	  return Invalid;
+    else {
         return Acceptable;
+    }
 }
 
-void UnsignedValidator::setRange( uint minimum, uint maximum )
+void UnsignedValidator::setRange(uint minimum, uint maximum)
 {
     b = minimum;
     t = maximum;
 }
 
-void UnsignedValidator::setBottom( uint bottom )
+void UnsignedValidator::setBottom(uint bottom)
 {
-    setRange( bottom, top() );
+    setRange(bottom, top());
 }
 
-void UnsignedValidator::setTop( uint top )
+void UnsignedValidator::setTop(uint top)
 {
-    setRange( bottom(), top );
+    setRange(bottom(), top);
 }
 
 class UIntSpinBoxPrivate
 {
 public:
-    UnsignedValidator * mValidator;
+    UnsignedValidator* mValidator;
 
-    UIntSpinBoxPrivate() : mValidator(0)
-    {
-    }
-    uint mapToUInt( int v ) const
+    UIntSpinBoxPrivate()
+        : mValidator(0)
+    {}
+    uint mapToUInt(int v) const
     {
         uint ui;
-        if ( v == INT_MIN ) {
+        if (v == INT_MIN) {
             ui = 0;
         }
-        else if ( v == INT_MAX ) {
+        else if (v == INT_MAX) {
             ui = UINT_MAX;
         }
-        else if ( v < 0 ) {
-            v -= INT_MIN; ui = (uint)v;
+        else if (v < 0) {
+            v -= INT_MIN;
+            ui = (uint)v;
         }
         else {
-            ui = (uint)v; ui -= INT_MIN;
+            ui = (uint)v;
+            ui -= INT_MIN;
         }
         return ui;
     }
-    int mapToInt( uint v ) const
+    int mapToInt(uint v) const
     {
         int in;
-        if ( v == UINT_MAX ) {
+        if (v == UINT_MAX) {
             in = INT_MAX;
         }
-        else if ( v == 0 ) {
+        else if (v == 0) {
             in = INT_MIN;
         }
-        else if ( v > INT_MAX ) {
-            v += INT_MIN; in = (int)v;
+        else if (v > INT_MAX) {
+            v += INT_MIN;
+            in = (int)v;
         }
         else {
-            in = v; in += INT_MIN;
+            in = v;
+            in += INT_MIN;
         }
         return in;
     }
 };
 
-} // namespace Gui
+}  // namespace Gui
 
 // -------------------------------------------------------------
 
-UIntSpinBox::UIntSpinBox (QWidget* parent)
-  : QSpinBox (parent)
+UIntSpinBox::UIntSpinBox(QWidget* parent)
+    : QSpinBox(parent)
 {
     d = new UIntSpinBoxPrivate;
-    d->mValidator =  new UnsignedValidator(this->minimum(), this->maximum(), this);
-    connect(this, SIGNAL(valueChanged(int)),
-            this, SLOT(valueChange(int)));
+    d->mValidator = new UnsignedValidator(this->minimum(), this->maximum(), this);
+    connect(this, qOverload<int>(&QSpinBox::valueChanged), this, &UIntSpinBox::valueChange);
     setRange(0, 99);
     setValue(0);
     updateValidator();
@@ -1602,7 +1591,8 @@ UIntSpinBox::UIntSpinBox (QWidget* parent)
 UIntSpinBox::~UIntSpinBox()
 {
     delete d->mValidator;
-    delete d; d = 0;
+    delete d;
+    d = 0;
 }
 
 void UIntSpinBox::setRange(uint minVal, uint maxVal)
@@ -1613,7 +1603,7 @@ void UIntSpinBox::setRange(uint minVal, uint maxVal)
     updateValidator();
 }
 
-QValidator::State UIntSpinBox::validate (QString & input, int & pos) const
+QValidator::State UIntSpinBox::validate(QString& input, int& pos) const
 {
     return d->mValidator->validate(input, pos);
 }
@@ -1630,7 +1620,7 @@ void UIntSpinBox::setValue(uint value)
 
 void UIntSpinBox::valueChange(int value)
 {
-    valueChanged(d->mapToUInt(value));
+    unsignedChanged(d->mapToUInt(value));
 }
 
 uint UIntSpinBox::minimum() const
@@ -1641,8 +1631,9 @@ uint UIntSpinBox::minimum() const
 void UIntSpinBox::setMinimum(uint minVal)
 {
     uint maxVal = maximum();
-    if (maxVal < minVal)
+    if (maxVal < minVal) {
         maxVal = minVal;
+    }
     setRange(minVal, maxVal);
 }
 
@@ -1654,12 +1645,13 @@ uint UIntSpinBox::maximum() const
 void UIntSpinBox::setMaximum(uint maxVal)
 {
     uint minVal = minimum();
-    if (minVal > maxVal)
+    if (minVal > maxVal) {
         minVal = maxVal;
+    }
     setRange(minVal, maxVal);
 }
 
-QString UIntSpinBox::textFromValue (int v) const
+QString UIntSpinBox::textFromValue(int v) const
 {
     uint val = d->mapToUInt(v);
     QString s;
@@ -1667,7 +1659,7 @@ QString UIntSpinBox::textFromValue (int v) const
     return s;
 }
 
-int UIntSpinBox::valueFromText (const QString & text) const
+int UIntSpinBox::valueFromText(const QString& text) const
 {
     bool ok;
     QString s = text;
@@ -1680,7 +1672,7 @@ int UIntSpinBox::valueFromText (const QString & text) const
     return d->mapToInt(newVal);
 }
 
-void UIntSpinBox::updateValidator() 
+void UIntSpinBox::updateValidator()
 {
     d->mValidator->setRange(this->minimum(), this->maximum());
 }
@@ -1688,42 +1680,37 @@ void UIntSpinBox::updateValidator()
 // --------------------------------------------------------------------
 
 IntSpinBox::IntSpinBox(QWidget* parent)
-  : QSpinBox(parent)
-{
-}
+    : QSpinBox(parent)
+{}
 
 IntSpinBox::~IntSpinBox()
-{
-
-}
+{}
 
 // --------------------------------------------------------------------
 
-PrefSpinBox::PrefSpinBox ( QWidget * parent )
-  : QSpinBox(parent)
-{
-}
+PrefSpinBox::PrefSpinBox(QWidget* parent)
+    : QSpinBox(parent)
+{}
 
 PrefSpinBox::~PrefSpinBox()
-{
-}
+{}
 
-QByteArray PrefSpinBox::entryName () const
+QByteArray PrefSpinBox::entryName() const
 {
     return m_sPrefName;
 }
 
-QByteArray PrefSpinBox::paramGrpPath () const
+QByteArray PrefSpinBox::paramGrpPath() const
 {
     return m_sPrefGrp;
 }
 
-void PrefSpinBox::setEntryName ( const QByteArray& name )
+void PrefSpinBox::setEntryName(const QByteArray& name)
 {
     m_sPrefName = name;
 }
 
-void PrefSpinBox::setParamGrpPath ( const QByteArray& name )
+void PrefSpinBox::setParamGrpPath(const QByteArray& name)
 {
     m_sPrefGrp = name;
 }
@@ -1731,41 +1718,37 @@ void PrefSpinBox::setParamGrpPath ( const QByteArray& name )
 // --------------------------------------------------------------------
 
 DoubleSpinBox::DoubleSpinBox(QWidget* parent)
-  : QDoubleSpinBox(parent)
-{
-}
+    : QDoubleSpinBox(parent)
+{}
 
 DoubleSpinBox::~DoubleSpinBox()
-{
-}
+{}
 
 // --------------------------------------------------------------------
 
-PrefDoubleSpinBox::PrefDoubleSpinBox ( QWidget * parent )
-  : QDoubleSpinBox(parent)
-{
-}
+PrefDoubleSpinBox::PrefDoubleSpinBox(QWidget* parent)
+    : QDoubleSpinBox(parent)
+{}
 
 PrefDoubleSpinBox::~PrefDoubleSpinBox()
-{
-}
+{}
 
-QByteArray PrefDoubleSpinBox::entryName () const
+QByteArray PrefDoubleSpinBox::entryName() const
 {
     return m_sPrefName;
 }
 
-QByteArray PrefDoubleSpinBox::paramGrpPath () const
+QByteArray PrefDoubleSpinBox::paramGrpPath() const
 {
     return m_sPrefGrp;
 }
 
-void PrefDoubleSpinBox::setEntryName ( const QByteArray& name )
+void PrefDoubleSpinBox::setEntryName(const QByteArray& name)
 {
     m_sPrefName = name;
 }
 
-void PrefDoubleSpinBox::setParamGrpPath ( const QByteArray& name )
+void PrefDoubleSpinBox::setParamGrpPath(const QByteArray& name)
 {
     m_sPrefGrp = name;
 }
@@ -1773,17 +1756,19 @@ void PrefDoubleSpinBox::setParamGrpPath ( const QByteArray& name )
 // -------------------------------------------------------------
 
 ColorButton::ColorButton(QWidget* parent)
-    : QPushButton( parent ), _allowChange(true), _drawFrame(true)
+    : QPushButton(parent)
+    , _allowChange(true)
+    , _allowTransparency(false)
+    , _drawFrame(true)
 {
-    _col = palette().color(QPalette::Active,QPalette::Midlight);
-    connect( this, SIGNAL( clicked() ), SLOT( onChooseColor() ));
+    _col = palette().color(QPalette::Active, QPalette::Midlight);
+    connect(this, &ColorButton::clicked, this, &ColorButton::onChooseColor);
 }
 
 ColorButton::~ColorButton()
-{
-}
+{}
 
-void ColorButton::setColor( const QColor& c )
+void ColorButton::setColor(const QColor& c)
 {
     _col = c;
     update();
@@ -1804,6 +1789,16 @@ bool ColorButton::allowChangeColor() const
     return _allowChange;
 }
 
+void ColorButton::setAllowTransparency(bool ok)
+{
+    _allowTransparency = ok;
+}
+
+bool ColorButton::allowTransparency() const
+{
+    return _allowTransparency;
+}
+
 void ColorButton::setDrawFrame(bool ok)
 {
     _drawFrame = ok;
@@ -1814,27 +1809,29 @@ bool ColorButton::drawFrame() const
     return _drawFrame;
 }
 
-void ColorButton::paintEvent ( QPaintEvent * e )
+void ColorButton::paintEvent(QPaintEvent* e)
 {
     // first paint the complete button
     QPushButton::paintEvent(e);
 
     // repaint the rectangle area
-    QPalette::ColorGroup group = isEnabled() ? hasFocus() ? QPalette::Active : QPalette::Inactive : QPalette::Disabled;
-    QColor pen = palette().color(group,QPalette::ButtonText);
+    QPalette::ColorGroup group =
+        isEnabled() ? hasFocus() ? QPalette::Active : QPalette::Inactive : QPalette::Disabled;
+    QColor pen = palette().color(group, QPalette::ButtonText);
     {
         QPainter paint(this);
-        paint.setPen( pen );
+        paint.setPen(pen);
 
         if (_drawFrame) {
             paint.setBrush(QBrush(_col));
-            paint.drawRect(5, 5, width()-10, height()-10);
-        } else {
-            paint.fillRect(5, 5, width()-10, height()-10, QBrush(_col));
+            paint.drawRect(5, 5, width() - 10, height() - 10);
+        }
+        else {
+            paint.fillRect(5, 5, width() - 10, height() - 10, QBrush(_col));
         }
     }
 
-    // overpaint the rectangle to paint icon and text 
+    // overpaint the rectangle to paint icon and text
     QStyleOptionButton opt;
     opt.init(this);
     opt.text = text();
@@ -1847,233 +1844,221 @@ void ColorButton::paintEvent ( QPaintEvent * e )
 
 void ColorButton::onChooseColor()
 {
-    if (!_allowChange)
+    if (!_allowChange) {
         return;
-    QColor c = QColorDialog::getColor( _col, this );
-    if ( c.isValid() )
-    {
-        setColor( c );
+    }
+    QColor c = QColorDialog::getColor(_col, this);
+    if (c.isValid()) {
+        setColor(c);
         Q_EMIT changed();
     }
 }
 
 // ------------------------------------------------------------------------------
 
-PrefColorButton::PrefColorButton ( QWidget * parent )
-  : ColorButton(parent)
-{
-}
+PrefColorButton::PrefColorButton(QWidget* parent)
+    : ColorButton(parent)
+{}
 
 PrefColorButton::~PrefColorButton()
-{
-}
+{}
 
-QByteArray PrefColorButton::entryName () const
+QByteArray PrefColorButton::entryName() const
 {
     return m_sPrefName;
 }
 
-QByteArray PrefColorButton::paramGrpPath () const
+QByteArray PrefColorButton::paramGrpPath() const
 {
     return m_sPrefGrp;
 }
 
-void PrefColorButton::setEntryName ( const QByteArray& name )
+void PrefColorButton::setEntryName(const QByteArray& name)
 {
     m_sPrefName = name;
 }
 
-void PrefColorButton::setParamGrpPath ( const QByteArray& name )
+void PrefColorButton::setParamGrpPath(const QByteArray& name)
 {
     m_sPrefGrp = name;
 }
 
 // --------------------------------------------------------------------
 
-PrefLineEdit::PrefLineEdit ( QWidget * parent )
-  : QLineEdit(parent)
-{
-}
+PrefLineEdit::PrefLineEdit(QWidget* parent)
+    : QLineEdit(parent)
+{}
 
 PrefLineEdit::~PrefLineEdit()
-{
-}
+{}
 
-QByteArray PrefLineEdit::entryName () const
+QByteArray PrefLineEdit::entryName() const
 {
     return m_sPrefName;
 }
 
-QByteArray PrefLineEdit::paramGrpPath () const
+QByteArray PrefLineEdit::paramGrpPath() const
 {
     return m_sPrefGrp;
 }
 
-void PrefLineEdit::setEntryName ( const QByteArray& name )
+void PrefLineEdit::setEntryName(const QByteArray& name)
 {
     m_sPrefName = name;
 }
 
-void PrefLineEdit::setParamGrpPath ( const QByteArray& name )
+void PrefLineEdit::setParamGrpPath(const QByteArray& name)
 {
     m_sPrefGrp = name;
 }
 
 // --------------------------------------------------------------------
 
-PrefComboBox::PrefComboBox ( QWidget * parent )
-  : QComboBox(parent)
+PrefComboBox::PrefComboBox(QWidget* parent)
+    : QComboBox(parent)
 {
     setEditable(false);
 }
 
 PrefComboBox::~PrefComboBox()
-{
-}
+{}
 
-QByteArray PrefComboBox::entryName () const
+QByteArray PrefComboBox::entryName() const
 {
     return m_sPrefName;
 }
 
-QByteArray PrefComboBox::paramGrpPath () const
+QByteArray PrefComboBox::paramGrpPath() const
 {
     return m_sPrefGrp;
 }
 
-void PrefComboBox::setEntryName ( const QByteArray& name )
+void PrefComboBox::setEntryName(const QByteArray& name)
 {
     m_sPrefName = name;
 }
 
-void PrefComboBox::setParamGrpPath ( const QByteArray& name )
+void PrefComboBox::setParamGrpPath(const QByteArray& name)
 {
     m_sPrefGrp = name;
 }
 
 // --------------------------------------------------------------------
 
-PrefCheckBox::PrefCheckBox ( QWidget * parent )
-  : QCheckBox(parent)
+PrefCheckBox::PrefCheckBox(QWidget* parent)
+    : QCheckBox(parent)
 {
-  setText("CheckBox");
+    setText("CheckBox");
 }
 
 PrefCheckBox::~PrefCheckBox()
-{
-}
+{}
 
-QByteArray PrefCheckBox::entryName () const
+QByteArray PrefCheckBox::entryName() const
 {
     return m_sPrefName;
 }
 
-QByteArray PrefCheckBox::paramGrpPath () const
+QByteArray PrefCheckBox::paramGrpPath() const
 {
     return m_sPrefGrp;
 }
 
-void PrefCheckBox::setEntryName ( const QByteArray& name )
+void PrefCheckBox::setEntryName(const QByteArray& name)
 {
     m_sPrefName = name;
 }
 
-void PrefCheckBox::setParamGrpPath ( const QByteArray& name )
+void PrefCheckBox::setParamGrpPath(const QByteArray& name)
 {
     m_sPrefGrp = name;
 }
 
 // --------------------------------------------------------------------
 
-PrefRadioButton::PrefRadioButton ( QWidget * parent )
-  : QRadioButton(parent)
+PrefRadioButton::PrefRadioButton(QWidget* parent)
+    : QRadioButton(parent)
 {
     setText("RadioButton");
 }
 
 PrefRadioButton::~PrefRadioButton()
-{
-}
+{}
 
-QByteArray PrefRadioButton::entryName () const
+QByteArray PrefRadioButton::entryName() const
 {
     return m_sPrefName;
 }
 
-QByteArray PrefRadioButton::paramGrpPath () const
+QByteArray PrefRadioButton::paramGrpPath() const
 {
     return m_sPrefGrp;
 }
 
-void PrefRadioButton::setEntryName ( const QByteArray& name )
+void PrefRadioButton::setEntryName(const QByteArray& name)
 {
     m_sPrefName = name;
 }
 
-void PrefRadioButton::setParamGrpPath ( const QByteArray& name )
+void PrefRadioButton::setParamGrpPath(const QByteArray& name)
 {
     m_sPrefGrp = name;
 }
 
 // --------------------------------------------------------------------
 
-PrefSlider::PrefSlider ( QWidget * parent )
-  : QSlider(parent)
-{
-}
+PrefSlider::PrefSlider(QWidget* parent)
+    : QSlider(parent)
+{}
 
 PrefSlider::~PrefSlider()
-{
-}
+{}
 
-QByteArray PrefSlider::entryName () const
+QByteArray PrefSlider::entryName() const
 {
     return m_sPrefName;
 }
 
-QByteArray PrefSlider::paramGrpPath () const
+QByteArray PrefSlider::paramGrpPath() const
 {
     return m_sPrefGrp;
 }
 
-void PrefSlider::setEntryName ( const QByteArray& name )
+void PrefSlider::setEntryName(const QByteArray& name)
 {
     m_sPrefName = name;
 }
 
-void PrefSlider::setParamGrpPath ( const QByteArray& name )
+void PrefSlider::setParamGrpPath(const QByteArray& name)
 {
     m_sPrefGrp = name;
 }
 
 // --------------------------------------------------------------------
 
-PrefFontBox::PrefFontBox ( QWidget * parent )
-  : QFontComboBox(parent)
-{
-}
+PrefFontBox::PrefFontBox(QWidget* parent)
+    : QFontComboBox(parent)
+{}
 
 PrefFontBox::~PrefFontBox()
-{
-}
+{}
 
-QByteArray PrefFontBox::entryName () const
+QByteArray PrefFontBox::entryName() const
 {
     return m_sPrefName;
 }
 
-QByteArray PrefFontBox::paramGrpPath () const
+QByteArray PrefFontBox::paramGrpPath() const
 {
     return m_sPrefGrp;
 }
 
-void PrefFontBox::setEntryName ( const QByteArray& name )
+void PrefFontBox::setEntryName(const QByteArray& name)
 {
     m_sPrefName = name;
 }
 
-void PrefFontBox::setParamGrpPath ( const QByteArray& name )
+void PrefFontBox::setParamGrpPath(const QByteArray& name)
 {
     m_sPrefGrp = name;
 }
-

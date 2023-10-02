@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
-  <PythonExport 
+  <PythonExport
       Father="Conic2dPy"
       Name="Circle2dPy"
       PythonName="Part.Geom2d.Circle2d"
       Twin="Geom2dCircle"
       TwinPointer="Geom2dCircle"
       Include="Mod/Part/App/Geometry2d.h"
-      Namespace="Part" 
+      Namespace="Part"
       FatherInclude="Mod/Part/App/Geom2d/Conic2dPy.h"
       FatherNamespace="Part"
       Constructor="true">

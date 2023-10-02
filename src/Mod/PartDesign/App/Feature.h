@@ -62,7 +62,7 @@ public:
 
     /// Returns the body the feature is in, or none
     Body* getFeatureBody() const;
-    
+
     /**
      * Returns the BaseFeature property's object (if any)
      * @param silent if couldn't determine the base feature and silent == true,
@@ -81,16 +81,21 @@ public:
         return "PartDesignGui::ViewProvider";
     }
 
+
+    App::DocumentObject *getSubObject(const char *subname, 
+        PyObject **pyObj, Base::Matrix4D *pmat, bool transform, int depth) const override;
+
+
 protected:
 
     /**
      * Get a solid of the given shape. If no solid is found an exception is raised.
      */
-    static TopoDS_Shape getSolid(const TopoDS_Shape&);    
-    static int countSolids(const TopoDS_Shape&, TopAbs_ShapeEnum type = TopAbs_SOLID );    
+    static TopoDS_Shape getSolid(const TopoDS_Shape&);
+    static int countSolids(const TopoDS_Shape&, TopAbs_ShapeEnum type = TopAbs_SOLID );
 
     /// Grab any point from the given face
-    static const gp_Pnt getPointFromFace(const TopoDS_Face& f);    
+    static const gp_Pnt getPointFromFace(const TopoDS_Face& f);
     /// Make a shape from a base plane (convenience method)
     static gp_Pln makePlnFromPlane(const App::DocumentObject* obj);
     static TopoDS_Shape makeShapeFromPlane(const App::DocumentObject* obj);

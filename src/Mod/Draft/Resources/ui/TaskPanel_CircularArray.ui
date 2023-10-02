@@ -41,7 +41,7 @@
       <item row="0" column="0">
        <widget class="QLabel" name="label_icon">
         <property name="text">
-         <string>(Placeholder for the icon)</string>
+         <string notr="true">(Placeholder for the icon)</string>
         </property>
        </widget>
       </item>
@@ -114,6 +114,9 @@ It must be at least 2.</string>
           </property>
           <property name="minimum">
            <number>2</number>
+          </property>
+          <property name="maximum">
+           <number>1000000</number>
           </property>
           <property name="value">
            <number>3</number>

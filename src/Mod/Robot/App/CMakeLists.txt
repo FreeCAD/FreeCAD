@@ -75,6 +75,12 @@ SET(Robot_SRCS
     ${Python_SRCS}
 )
 
+if(FREECAD_USE_PCH)
+    add_definitions(-D_PreComp_)
+    GET_MSVC_PRECOMPILED_SOURCE("PreCompiled.cpp" PCH_SRCS ${Robot_SRCS})
+    ADD_MSVC_PRECOMPILED_HEADER(Robot PreCompiled.h PreCompiled.cpp PCH_SRCS)
+endif(FREECAD_USE_PCH)
+
 # FIXME: The bundled KDL has some extensions which makes it incompatible
 # to an installed KDL. To fix the issue two things must be done:
 # * revert the changes (and look for an alternative)

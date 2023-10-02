@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
-    <PythonExport 
-        Father="PersistencePy" 
-        Name="CommandPy" 
-        Twin="Command" 
-        TwinPointer="Command" 
-        Include="Mod/Path/App/Command.h" 
-        Namespace="Path" 
-        FatherInclude="Base/PersistencePy.h" 
+    <PythonExport
+        Father="PersistencePy"
+        Name="CommandPy"
+        Twin="Command"
+        TwinPointer="Command"
+        Include="Mod/Path/App/Command.h"
+        Namespace="Path"
+        FatherInclude="Base/PersistencePy.h"
         FatherNamespace="Base"
         Constructor="true"
         Delete="true">
@@ -15,7 +15,7 @@
             <Author Licence="LGPL" Name="Yorik van Havre" EMail="yorik@uncreated.net" />
             <UserDocu>Command([name],[parameters]): Represents a basic Gcode command
 name (optional) is the name of the command, ex. G1
-parameters (optional) is a dictionary containing string:number 
+parameters (optional) is a dictionary containing string:number
 pairs, or a placement, or a vector</UserDocu>
         </Documentation>
         <Attribute Name="Name" ReadOnly="false">

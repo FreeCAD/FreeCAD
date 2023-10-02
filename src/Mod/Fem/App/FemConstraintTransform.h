@@ -29,7 +29,7 @@
 namespace Fem
 {
 
-class FemExport ConstraintTransform : public Fem::Constraint
+class FemExport ConstraintTransform: public Fem::Constraint
 {
     PROPERTY_HEADER_WITH_OVERRIDE(Fem::ConstraintTransform);
 
@@ -44,25 +44,27 @@ public:
     App::PropertyVectorList Normals;
     App::PropertyVector BasePoint;
     App::PropertyVector Axis;
-    App::PropertyFloat X_rot;
-    App::PropertyFloat Y_rot;
-    App::PropertyFloat Z_rot;
+    App::PropertyAngle X_rot;
+    App::PropertyAngle Y_rot;
+    App::PropertyAngle Z_rot;
     App::PropertyEnumeration TransformType;
-    //etc
-/* */
+    // etc
+    /* */
 
     /// recalculate the object
-    App::DocumentObjectExecReturn *execute() override;
+    App::DocumentObjectExecReturn* execute() override;
 
     /// returns the type name of the ViewProvider
     const char* getViewProviderName() const override;
 
 protected:
+    void handleChangedPropertyType(Base::XMLReader& reader,
+                                   const char* TypeName,
+                                   App::Property* prop) override;
     void onChanged(const App::Property* prop) override;
-
 };
 
-} //namespace Fem
+}  // namespace Fem
 
 
-#endif // FEM_CONSTRAINTTransform_H
+#endif  // FEM_CONSTRAINTTransform_H

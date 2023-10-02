@@ -23,12 +23,11 @@
 #ifndef DrawViewDraft_h_
 #define DrawViewDraft_h_
 
-#include <Mod/TechDraw/TechDrawGlobal.h>
-
 #include <App/DocumentObject.h>
 #include <App/FeaturePython.h>
 #include <App/PropertyLinks.h>
 #include <Base/BoundBox.h>
+#include <Mod/TechDraw/TechDrawGlobal.h>
 
 #include "DrawViewSymbol.h"
 
@@ -43,7 +42,7 @@ class TechDrawExport DrawViewDraft : public TechDraw::DrawViewSymbol
 public:
     /// Constructor
     DrawViewDraft();
-    ~DrawViewDraft() = default;
+    ~DrawViewDraft() override = default;
 
     App::PropertyLink         Source;
     App::PropertyFloat        LineWidth;

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>TaskTrajectoryDressUpParameter</class>
+ <class>RobotGui::TaskTrajectoryDressUpParameter</class>
  <widget class="QWidget" name="TaskTrajectoryDressUpParameter">
   <property name="geometry">
    <rect>
@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Form</string>
+   <string notr="true">Form</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
@@ -133,7 +133,7 @@
      <item>
       <widget class="QLineEdit" name="lineEditPlacement">
        <property name="text">
-        <string>(0,0,0),(0,0,0)</string>
+        <string notr="true">(0,0,0),(0,0,0)</string>
        </property>
        <property name="readOnly">
         <bool>true</bool>
@@ -146,7 +146,7 @@
         <bool>false</bool>
        </property>
        <property name="text">
-        <string>...</string>
+        <string notr="true">...</string>
        </property>
       </widget>
      </item>

@@ -1,20 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
-  <PythonExport 
-      Father="BaseClassPy" 
-      Name="AreaPy" 
-      Twin="Area" 
-      TwinPointer="Area" 
-      Include="Mod/Path/App/Area.h" 
-      Namespace="Path" 
-      FatherInclude="Base/BaseClassPy.h" 
+  <PythonExport
+      Father="BaseClassPy"
+      Name="AreaPy"
+      Twin="Area"
+      TwinPointer="Area"
+      Include="Mod/Path/App/Area.h"
+      Namespace="Path"
+      FatherInclude="Base/BaseClassPy.h"
       FatherNamespace="Base"
       Constructor="true"
       Delete="true">
     <Documentation>
       <Author Licence="LGPL" Name="Zheng, Lei" EMail="realthunder.dev@gmail.com" />
-      <UserDocu>FreeCAD python wrapper of libarea\n
-Path.Area(key=value ...)\n
+      <UserDocu>FreeCAD python wrapper of libarea
+
+Path.Area(key=value ...)
+
 The constructor accepts the same parameters as setParams(...) to configure the object
 All arguments are optional.</UserDocu>
     </Documentation>
@@ -25,7 +27,8 @@ All arguments are optional.</UserDocu>
     </Methode>
     <Methode Name="setPlane">
       <Documentation>
-          <UserDocu>setPlane(shape): Set the working plane.\n
+          <UserDocu>setPlane(shape): Set the working plane.
+
 The supplied shape does not need to be planar. Area will try to find planar
 sub-shape (face, wire or edge). If more than one planar sub-shape is found, it
 will prefer the top plane parallel to XY0 plane. If no working plane are set,
@@ -35,9 +38,13 @@ same algorithm</UserDocu>
     </Methode>
     <Methode Name="getShape" Keyword='true'>
       <Documentation>
-          <UserDocu>getShape(index=-1,rebuild=False): Return the resulting shape\n
-\n* index (-1): the index of the section. -1 means all sections. No effect on planar shape.\n
-\n* rebuild: clean the internal cache and rebuild</UserDocu>
+          <UserDocu>getShape(index=-1,rebuild=False): Return the resulting shape
+
+
+* index (-1): the index of the section. -1 means all sections. No effect on planar shape.
+
+
+* rebuild: clean the internal cache and rebuild</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="makeOffset" Keyword='true'>
@@ -51,6 +58,21 @@ same algorithm</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="makeSections" Keyword="true">
+      <Documentation>
+          <UserDocu></UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="getClearedArea">
+      <Documentation>
+          <UserDocu></UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="getRestArea">
+      <Documentation>
+          <UserDocu></UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="toTopoShape">
       <Documentation>
           <UserDocu></UserDocu>
       </Documentation>

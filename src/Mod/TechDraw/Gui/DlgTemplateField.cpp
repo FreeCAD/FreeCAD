@@ -20,11 +20,11 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-#include <Base/Console.h>
+
 #include "DlgTemplateField.h"
-#include <Mod/TechDraw/Gui/ui_DlgTemplateField.h>
+#include "ui_DlgTemplateField.h"
+
 
 using namespace TechDrawGui;
 
@@ -59,8 +59,7 @@ void DlgTemplateField::setFieldContent(std::string content)
 
 QString DlgTemplateField::getFieldContent()
 {
-    QString result = ui->leInput->text();
-    return result;
+    return ui->leInput->text();
 }
 
 void DlgTemplateField::accept()

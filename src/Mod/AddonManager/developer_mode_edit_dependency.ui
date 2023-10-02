@@ -51,7 +51,7 @@
         </font>
        </property>
        <property name="text">
-        <string>NOTE: If &quot;Other...&quot; is selected, the package is not in the ALLOWED_PYTHON_PACKAGES.txt file, and will not be automatically installed by the Addon Manager. Submit a PR at &lt;a href=https://github.com/FreeCAD/FreeCAD-addons&quot;&gt;https://github.com/FreeCAD/FreeCAD-addons&lt;/a&gt; to request addition of a package.</string>
+        <string>NOTE: If &quot;Other...&quot; is selected, the package is not in the ALLOWED_PYTHON_PACKAGES.txt file, and will not be automatically installed by the Addon Manager. Submit a PR at &lt;a href=&quot;https://github.com/FreeCAD/FreeCAD-addons&quot;&gt;https://github.com/FreeCAD/FreeCAD-addons&lt;/a&gt; to request addition of a package.</string>
        </property>
        <property name="wordWrap">
         <bool>true</bool>
@@ -66,7 +66,7 @@
    <item row="2" column="0" colspan="2">
     <widget class="QCheckBox" name="optionalCheckBox">
      <property name="toolTip">
-      <string>If this is an optional dependency, the Addon Manager will offer to install it (when possible), but will not block installation if the user chooses not to, or cannot, instal the package.</string>
+      <string>If this is an optional dependency, the Addon Manager will offer to install it (when possible), but will not block installation if the user chooses not to, or cannot, install the package.</string>
      </property>
      <property name="text">
       <string>Optional</string>

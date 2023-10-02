@@ -23,10 +23,11 @@
 #ifndef PARTGUI_DLGREVOLUTION_H
 #define PARTGUI_DLGREVOLUTION_H
 
-#include <Gui/Selection.h>
 #include <Gui/InputVector.h>
+#include <Gui/Selection.h>
 #include <Gui/TaskView/TaskDialog.h>
 #include <Gui/TaskView/TaskView.h>
+
 
 namespace PartGui {
 
@@ -58,12 +59,13 @@ protected:
     void changeEvent(QEvent *e) override;
     void keyPressEvent(QKeyEvent*) override;
 
-private Q_SLOTS:
-    void on_selectLine_clicked();
-    void on_btnX_clicked();
-    void on_btnY_clicked();
-    void on_btnZ_clicked();
-    void on_txtAxisLink_textChanged(QString);
+private:
+    void setupConnections();
+    void onSelectLineClicked();
+    void onButtonXClicked();
+    void onButtonYClicked();
+    void onButtonZClicked();
+    void onAxisLinkTextChanged(QString);
 
 private:
     void findShapes();
@@ -87,7 +89,6 @@ class TaskRevolution : public Gui::TaskView::TaskDialog
 
 public:
     TaskRevolution();
-    ~TaskRevolution() override;
 
 public:
     bool accept() override;

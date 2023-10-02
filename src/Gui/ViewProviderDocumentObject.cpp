@@ -58,8 +58,6 @@ using namespace Gui;
 PROPERTY_SOURCE(Gui::ViewProviderDocumentObject, Gui::ViewProvider)
 
 ViewProviderDocumentObject::ViewProviderDocumentObject()
-  : pcObject(nullptr)
-  , pcDocument(nullptr)
 {
     static const char *dogroup = "Display Options";
     static const char *sgroup = "Selection";
@@ -271,8 +269,10 @@ void ViewProviderDocumentObject::addDefaultAction(QMenu* menu, const QString& te
 {
     QAction* act = menu->addAction(text);
     act->setData(QVariant((int)ViewProvider::Default));
-    Gui::ActionFunction* func = new Gui::ActionFunction(menu);
-    func->trigger(act, std::bind(&ViewProviderDocumentObject::startDefaultEditMode, this));
+    auto func = new Gui::ActionFunction(menu);
+    func->trigger(act, [this](){
+        this->startDefaultEditMode();
+    });
 }
 
 void ViewProviderDocumentObject::setModeSwitch() {
@@ -320,8 +320,8 @@ void ViewProviderDocumentObject::updateView()
     // Hide the object temporarily to speed up the update
     bool vis = ViewProvider::isShow();
     if (vis) ViewProvider::hide();
-    for (std::map<std::string, App::Property*>::iterator it = Map.begin(); it != Map.end(); ++it) {
-        updateData(it->second);
+    for (const auto & it : Map) {
+        updateData(it.second);
     }
     if (vis && Visibility.getValue()) ViewProvider::show();
 }
@@ -343,8 +343,9 @@ void ViewProviderDocumentObject::attach(App::DocumentObject *pcObj)
 
     // We must collect the const char* of the strings and give it to PropertyEnumeration,
     // but we are still responsible for them, i.e. the property class must not delete the literals.
-    for (std::vector<std::string>::iterator it = aDisplayModesArray.begin(); it != aDisplayModesArray.end(); ++it) {
-        aDisplayEnumsArray.push_back( it->c_str() );
+    //for (auto it = aDisplayModesArray.begin(); it != aDisplayModesArray.end(); ++it) {
+    for (const auto & it : aDisplayModesArray) {
+        aDisplayEnumsArray.push_back( it.c_str() );
     }
     aDisplayEnumsArray.push_back(nullptr); // null termination
     DisplayMode.setEnums(&(aDisplayEnumsArray[0]));
@@ -452,8 +453,8 @@ SoNode* ViewProviderDocumentObject::findFrontRootOfType(const SoType& type) cons
 
     // search in all view providers for the node type
     std::vector<App::DocumentObject*> obj = pAppDoc->getObjects();
-    for (std::vector<App::DocumentObject*>::iterator it = obj.begin(); it != obj.end(); ++it) {
-        const ViewProvider* vp = pGuiDoc->getViewProvider(*it);
+    for (auto & it : obj) {
+        const ViewProvider* vp = pGuiDoc->getViewProvider(it);
         // Ignore 'this' view provider. It could also happen that vp is 0, e.g. when
         // several objects have been added to the App::Document before notifying the
         // Gui::Document

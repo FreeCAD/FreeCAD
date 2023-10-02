@@ -23,50 +23,62 @@
 #ifndef MESHPARTGUI_CROSSSECTIONS_H
 #define MESHPARTGUI_CROSSSECTIONS_H
 
-#include <Gui/TaskView/TaskDialog.h>
-#include <Gui/TaskView/TaskView.h>
-#include <Base/BoundBox.h>
 #include <QDialog>
 #include <QPointer>
 
-namespace Gui {
+#include <Base/BoundBox.h>
+#include <Gui/TaskView/TaskDialog.h>
+#include <Gui/TaskView/TaskView.h>
+
+
+namespace Gui
+{
 class View3DInventor;
 }
 
-namespace MeshPartGui {
+namespace MeshPartGui
+{
 
 class ViewProviderCrossSections;
 class Ui_CrossSections;
-class CrossSections : public QDialog
+class CrossSections: public QDialog
 {
     Q_OBJECT
 
-    enum Plane { XY, XZ, YZ };
+    enum Plane
+    {
+        XY,
+        XZ,
+        YZ
+    };
 
 public:
-    explicit CrossSections(const Base::BoundBox3d& bb, QWidget* parent = nullptr, Qt::WindowFlags fl = Qt::WindowFlags());
+    explicit CrossSections(const Base::BoundBox3d& bb,
+                           QWidget* parent = nullptr,
+                           Qt::WindowFlags fl = Qt::WindowFlags());
     ~CrossSections() override;
     void accept() override;
     void apply();
 
 protected:
-    void changeEvent(QEvent *e) override;
+    void changeEvent(QEvent* e) override;
     void keyPressEvent(QKeyEvent*) override;
 
-private Q_SLOTS:
-    void on_xyPlane_clicked();
-    void on_xzPlane_clicked();
-    void on_yzPlane_clicked();
-    void on_position_valueChanged(double);
-    void on_distance_valueChanged(double);
-    void on_countSections_valueChanged(int);
-    void on_checkBothSides_toggled(bool);
-    void on_sectionsBox_toggled(bool);
+private:
+    void setupConnections();
+    void xyPlaneClicked();
+    void xzPlaneClicked();
+    void yzPlaneClicked();
+    void positionValueChanged(double);
+    void distanceValueChanged(double);
+    void countSectionsValueChanged(int);
+    void checkBothSidesToggled(bool);
+    void sectionsBoxToggled(bool);
 
 private:
     std::vector<double> getPlanes() const;
     void calcPlane(Plane, double);
-    void calcPlanes(Plane/*, double, bool, int*/);
+    void calcPlanes(Plane /*, double, bool, int*/);
     void makePlanes(Plane, const std::vector<double>&, double[4]);
     Plane plane() const;
 
@@ -77,26 +89,27 @@ private:
     QPointer<Gui::View3DInventor> view;
 };
 
-class TaskCrossSections : public Gui::TaskView::TaskDialog
+class TaskCrossSections: public Gui::TaskView::TaskDialog
 {
     Q_OBJECT
 
 public:
     explicit TaskCrossSections(const Base::BoundBox3d& bb);
-    ~TaskCrossSections() override;
 
 public:
     bool accept() override;
     void clicked(int id) override;
 
     QDialogButtonBox::StandardButtons getStandardButtons() const override
-    { return QDialogButtonBox::Ok | QDialogButtonBox::Apply | QDialogButtonBox::Cancel; }
+    {
+        return QDialogButtonBox::Ok | QDialogButtonBox::Apply | QDialogButtonBox::Cancel;
+    }
 
 private:
     CrossSections* widget;
     Gui::TaskView::TaskBox* taskbox;
 };
 
-} // namespace MeshPartGui
+}  // namespace MeshPartGui
 
-#endif // MESHPARTGUI_CROSSSECTIONS_H
+#endif  // MESHPARTGUI_CROSSSECTIONS_H

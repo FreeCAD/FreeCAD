@@ -20,33 +20,28 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
-#ifndef _PreComp_
-#endif
-
-#include "ui_TaskTrajectory.h"
-#include "TaskTrajectory.h"
 #include <Gui/Application.h>
-#include <Gui/Document.h>
 #include <Gui/BitmapFactory.h>
-#include <Gui/ViewProvider.h>
-#include <Gui/WaitCursor.h>
-#include <Base/Console.h>
-#include <Gui/Selection.h>
+#include <Gui/Document.h>
+
+#include "TaskTrajectory.h"
+#include "ui_TaskTrajectory.h"
 
 
 using namespace RobotGui;
 using namespace Gui;
 
-TaskTrajectory::TaskTrajectory(Robot::RobotObject *pcRobotObject,Robot::TrajectoryObject *pcTrajectoryObject,QWidget *parent)
-    : TaskBox(Gui::BitmapFactory().pixmap("document-new"),tr("Trajectory"),true, parent),
-      sim(pcTrajectoryObject->Trajectory.getValue(),pcRobotObject->getRobot()),
-      pcRobot(pcRobotObject),
-      Run(false),
-      block(false),
-      timePos(0.0)
+TaskTrajectory::TaskTrajectory(Robot::RobotObject* pcRobotObject,
+                               Robot::TrajectoryObject* pcTrajectoryObject,
+                               QWidget* parent)
+    : TaskBox(Gui::BitmapFactory().pixmap("document-new"), tr("Trajectory"), true, parent)
+    , sim(pcTrajectoryObject->Trajectory.getValue(), pcRobotObject->getRobot())
+    , pcRobot(pcRobotObject)
+    , Run(false)
+    , block(false)
+    , timePos(0.0)
 {
     // we need a separate container widget to add all controls to
     proxy = new QWidget(this);
@@ -56,7 +51,7 @@ TaskTrajectory::TaskTrajectory(Robot::RobotObject *pcRobotObject,Robot::Trajecto
 
     this->groupLayout()->addWidget(proxy);
 
-      // set Tool
+    // set Tool
     sim.Tool = pcRobotObject->Tool.getValue();
 
     ui->trajectoryTable->setSortingEnabled(false);
@@ -66,43 +61,71 @@ TaskTrajectory::TaskTrajectory(Robot::RobotObject *pcRobotObject,Robot::Trajecto
     duration = trac.getDuration();
     ui->timeSpinBox->setMaximum(duration);
 
-    for(unsigned int i=0;i<trac.getSize();i++){
+    for (unsigned int i = 0; i < trac.getSize(); i++) {
         Robot::Waypoint pt = trac.getWaypoint(i);
-        switch(pt.Type){
-            case Robot::Waypoint::UNDEF: ui->trajectoryTable->setItem(i, 0, new QTableWidgetItem(QString::fromLatin1("UNDEF")));break;
-            case Robot::Waypoint::CIRC:  ui->trajectoryTable->setItem(i, 0, new QTableWidgetItem(QString::fromLatin1("CIRC")));break;
-            case Robot::Waypoint::PTP:   ui->trajectoryTable->setItem(i, 0, new QTableWidgetItem(QString::fromLatin1("PTP")));break;
-            case Robot::Waypoint::LINE:  ui->trajectoryTable->setItem(i, 0, new QTableWidgetItem(QString::fromLatin1("LIN")));break;
-            default: ui->trajectoryTable->setItem(i, 0, new QTableWidgetItem(QString::fromLatin1("UNDEF")));break;
+        switch (pt.Type) {
+            case Robot::Waypoint::UNDEF:
+                ui->trajectoryTable->setItem(i,
+                                             0,
+                                             new QTableWidgetItem(QString::fromLatin1("UNDEF")));
+                break;
+            case Robot::Waypoint::CIRC:
+                ui->trajectoryTable->setItem(i,
+                                             0,
+                                             new QTableWidgetItem(QString::fromLatin1("CIRC")));
+                break;
+            case Robot::Waypoint::PTP:
+                ui->trajectoryTable->setItem(i,
+                                             0,
+                                             new QTableWidgetItem(QString::fromLatin1("PTP")));
+                break;
+            case Robot::Waypoint::LINE:
+                ui->trajectoryTable->setItem(i,
+                                             0,
+                                             new QTableWidgetItem(QString::fromLatin1("LIN")));
+                break;
+            default:
+                ui->trajectoryTable->setItem(i,
+                                             0,
+                                             new QTableWidgetItem(QString::fromLatin1("UNDEF")));
+                break;
         }
-        ui->trajectoryTable->setItem(i, 1, new QTableWidgetItem(QString::fromUtf8(pt.Name.c_str())));
-        if(pt.Cont)
+        ui->trajectoryTable->setItem(i,
+                                     1,
+                                     new QTableWidgetItem(QString::fromUtf8(pt.Name.c_str())));
+        if (pt.Cont) {
             ui->trajectoryTable->setItem(i, 2, new QTableWidgetItem(QString::fromLatin1("|")));
-        else
+        }
+        else {
             ui->trajectoryTable->setItem(i, 2, new QTableWidgetItem(QString::fromLatin1("-")));
+        }
         ui->trajectoryTable->setItem(i, 3, new QTableWidgetItem(QString::number(pt.Velocity)));
         ui->trajectoryTable->setItem(i, 4, new QTableWidgetItem(QString::number(pt.Acceleration)));
-
     }
 
-    QObject::connect(ui->ButtonStepStart    ,SIGNAL(clicked()),this,SLOT(start()));
-    QObject::connect(ui->ButtonStepStop     ,SIGNAL(clicked()),this,SLOT(stop()));
-    QObject::connect(ui->ButtonStepRun      ,SIGNAL(clicked()),this,SLOT(run()));
-    QObject::connect(ui->ButtonStepBack     ,SIGNAL(clicked()),this,SLOT(back()));
-    QObject::connect(ui->ButtonStepForward  ,SIGNAL(clicked()),this,SLOT(forward()));
-    QObject::connect(ui->ButtonStepEnd      ,SIGNAL(clicked()),this,SLOT(end()));
+    // clang-format off
+    QObject::connect(ui->ButtonStepStart    , &QPushButton::clicked, this, &TaskTrajectory::start);
+    QObject::connect(ui->ButtonStepStop     , &QPushButton::clicked, this, &TaskTrajectory::stop);
+    QObject::connect(ui->ButtonStepRun      , &QPushButton::clicked, this, &TaskTrajectory::run);
+    QObject::connect(ui->ButtonStepBack     , &QPushButton::clicked, this, &TaskTrajectory::back);
+    QObject::connect(ui->ButtonStepForward  , &QPushButton::clicked, this, &TaskTrajectory::forward);
+    QObject::connect(ui->ButtonStepEnd      , &QPushButton::clicked, this, &TaskTrajectory::end);
 
 
     // set up timer
     timer = new QTimer( this );
     timer->setInterval(100);
-    QObject::connect(timer      ,SIGNAL(timeout ()),this,SLOT(timerDone()));
+    QObject::connect(timer, &QTimer::timeout, this, &TaskTrajectory::timerDone);
 
-    QObject::connect( ui->timeSpinBox       ,SIGNAL(valueChanged(double)), this, SLOT(valueChanged(double)) );
-    QObject::connect( ui->timeSlider        ,SIGNAL(valueChanged(int)   ), this, SLOT(valueChanged(int)) );
+    QObject::connect(ui->timeSpinBox, qOverload<double>(&QDoubleSpinBox::valueChanged),
+                     this, qOverload<double>(&TaskTrajectory::valueChanged));
+    QObject::connect(ui->timeSlider, qOverload<int>(&QSlider::valueChanged),
+                     this, qOverload<int>(&TaskTrajectory::valueChanged));
+    // clang-format on
 
     // get the view provider
-    ViewProv = dynamic_cast<ViewProviderRobotObject*>(Gui::Application::Instance->activeDocument()->getViewProvider(pcRobotObject) );
+    ViewProv = dynamic_cast<ViewProviderRobotObject*>(
+        Gui::Application::Instance->activeDocument()->getViewProvider(pcRobotObject));
 
     setTo();
 }
@@ -110,21 +133,20 @@ TaskTrajectory::TaskTrajectory(Robot::RobotObject *pcRobotObject,Robot::Trajecto
 TaskTrajectory::~TaskTrajectory()
 {
     delete ui;
-   
 }
 
 void TaskTrajectory::viewTool(const Base::Placement& pos)
 {
-    double A,B,C;
-    pos.getRotation().getYawPitchRoll(A,B,C);
+    double A, B, C;
+    pos.getRotation().getYawPitchRoll(A, B, C);
 
     QString result = QString::fromLatin1("Pos:(%1, %2, %3, %4, %5, %6)")
-        .arg(pos.getPosition().x,0,'f',1)
-        .arg(pos.getPosition().y,0,'f',1)
-        .arg(pos.getPosition().z,0,'f',1)
-        .arg(A,0,'f',1)
-        .arg(B,0,'f',1)
-        .arg(C,0,'f',1);
+                         .arg(pos.getPosition().x, 0, 'f', 1)
+                         .arg(pos.getPosition().y, 0, 'f', 1)
+                         .arg(pos.getPosition().z, 0, 'f', 1)
+                         .arg(A, 0, 'f', 1)
+                         .arg(B, 0, 'f', 1)
+                         .arg(C, 0, 'f', 1);
 
     ui->label_Pos->setText(result);
 }
@@ -133,13 +155,26 @@ void TaskTrajectory::setTo()
 {
     sim.Tool = pcRobot->Tool.getValue();
 
-    if(timePos < 0.0001)
+    if (timePos < 0.0001) {
         sim.reset();
-    else{
+    }
+    else {
         sim.setToTime(timePos);
     }
-    ViewProv->setAxisTo(sim.Axis[0],sim.Axis[1],sim.Axis[2],sim.Axis[3],sim.Axis[4],sim.Axis[5],sim.Rob.getTcp());
-    Q_EMIT axisChanged(sim.Axis[0],sim.Axis[1],sim.Axis[2],sim.Axis[3],sim.Axis[4],sim.Axis[5],sim.Rob.getTcp());
+    ViewProv->setAxisTo(sim.Axis[0],
+                        sim.Axis[1],
+                        sim.Axis[2],
+                        sim.Axis[3],
+                        sim.Axis[4],
+                        sim.Axis[5],
+                        sim.Rob.getTcp());
+    Q_EMIT axisChanged(sim.Axis[0],
+                       sim.Axis[1],
+                       sim.Axis[2],
+                       sim.Axis[3],
+                       sim.Axis[4],
+                       sim.Axis[5],
+                       sim.Rob.getTcp());
     viewTool(sim.Rob.getTcp());
 }
 
@@ -147,9 +182,8 @@ void TaskTrajectory::start()
 {
     timePos = 0.0f;
     ui->timeSpinBox->setValue(timePos);
-    ui->timeSlider->setValue(int((timePos/duration)*1000));
+    ui->timeSlider->setValue(int((timePos / duration) * 1000));
     setTo();
-
 }
 void TaskTrajectory::stop()
 {
@@ -162,51 +196,50 @@ void TaskTrajectory::run()
     Run = true;
 }
 void TaskTrajectory::back()
-{
-}
+{}
 void TaskTrajectory::forward()
-{
-}
+{}
 void TaskTrajectory::end()
 {
     timePos = duration;
     ui->timeSpinBox->setValue(timePos);
-    ui->timeSlider->setValue(int((timePos/duration)*1000));
+    ui->timeSlider->setValue(int((timePos / duration) * 1000));
     setTo();
 }
 
 void TaskTrajectory::timerDone()
 {
-    if(timePos < duration){
+    if (timePos < duration) {
         timePos += .1f;
         ui->timeSpinBox->setValue(timePos);
-        ui->timeSlider->setValue(int((timePos/duration)*1000));
+        ui->timeSlider->setValue(int((timePos / duration) * 1000));
         setTo();
         timer->start();
-    }else{
+    }
+    else {
         timer->stop();
         Run = false;
     }
 }
 
-void TaskTrajectory::valueChanged ( int value )
+void TaskTrajectory::valueChanged(int value)
 {
-    if(!block){
-        timePos = duration*(value/1000.0);
-        block=true;
+    if (!block) {
+        timePos = duration * (value / 1000.0);
+        block = true;
         ui->timeSpinBox->setValue(timePos);
-        block=false;
+        block = false;
         setTo();
     }
 }
 
-void TaskTrajectory::valueChanged ( double value )
+void TaskTrajectory::valueChanged(double value)
 {
-    if(!block){
+    if (!block) {
         timePos = value;
-        block=true;
-        ui->timeSlider->setValue(int((timePos/duration)*1000));
-        block=false;
+        block = true;
+        ui->timeSlider->setValue(int((timePos / duration) * 1000));
+        block = false;
         setTo();
     }
 }

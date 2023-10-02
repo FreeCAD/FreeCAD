@@ -23,10 +23,9 @@
 #ifndef TechDraw_DrawWeldSymbol_h_
 #define TechDraw_DrawWeldSymbol_h_
 
+#include <App/DocumentObject.h>
+#include <App/FeaturePython.h>
 #include <Mod/TechDraw/TechDrawGlobal.h>
-
-# include <App/DocumentObject.h>
-# include <App/FeaturePython.h>
 
 #include "DrawView.h"
 
@@ -42,7 +41,7 @@ class TechDrawExport DrawWeldSymbol : public TechDraw::DrawView
 
 public:
     DrawWeldSymbol();
-    ~DrawWeldSymbol() = default;
+    ~DrawWeldSymbol() override = default;
 
     App::PropertyLink         Leader;
     App::PropertyBool         AllAround;

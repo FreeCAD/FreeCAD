@@ -39,14 +39,12 @@ class ViewProvider;
 
 namespace PartDesignGui {
 
-
-
 class TaskRevolutionParameters : public TaskSketchBasedParameters
 {
     Q_OBJECT
 
 public:
-    explicit TaskRevolutionParameters(ViewProvider* RevolutionView,QWidget *parent = nullptr);
+    explicit TaskRevolutionParameters(ViewProvider* RevolutionView, QWidget* parent = nullptr);
     ~TaskRevolutionParameters() override;
 
     void apply() override;
@@ -69,10 +67,8 @@ private Q_SLOTS:
 
 protected:
     void onSelectionChanged(const Gui::SelectionChanges& msg) override;
-    void changeEvent(QEvent *e) override;
-    bool updateView() const;
+    void changeEvent(QEvent *event) override;
     void getReferenceAxis(App::DocumentObject *&obj, std::vector<std::string> &sub) const;
-    double getAngle() const;
     bool getMidplane() const;
     bool getReversed() const;
 
@@ -88,8 +84,8 @@ private:
     void updateUI();
 
 private:
-    QWidget* proxy;
     std::unique_ptr<Ui_TaskRevolutionParameters> ui;
+    QWidget *proxy;
 
     /**
      * @brief axesInList is the list of links corresponding to axis combo; must
@@ -99,7 +95,7 @@ private:
      * It is a list of pointers, because properties prohibit assignment. Use new
      * when adding stuff, and delete when removing stuff.
      */
-    std::vector<App::PropertyLinkSub*> axesInList;
+    std::vector<std::unique_ptr<App::PropertyLinkSub>> axesInList;
 };
 
 /// simulation dialog for the TaskView
@@ -111,7 +107,9 @@ public:
     explicit TaskDlgRevolutionParameters(PartDesignGui::ViewProvider *RevolutionView);
 
     ViewProvider* getRevolutionView() const
-    { return vp; }
+    {
+        return vp;
+    }
 };
 
 } //namespace PartDesignGui

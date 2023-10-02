@@ -23,44 +23,45 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+#include <sstream>
 #endif
 
-#include "Utils.h"
-#include <sstream>
-#include <cstdlib>
-#include <boost/regex.hpp>
-#include <Base/Exception.h>
 #include "Sheet.h"
+#include "Utils.h"
+
 
 /**
-  * Encode \a col as a string.
-  *
-  * @param col Column given as a 0-based column position.
-  *
-  * @returns String with column position, with "A" being the first column, "B" being the second and so on.
-  *
-  */
+ * Encode \a col as a string.
+ *
+ * @param col Column given as a 0-based column position.
+ *
+ * @returns String with column position, with "A" being the first column, "B" being the second and
+ * so on.
+ *
+ */
 
 std::string Spreadsheet::columnName(int col)
 {
     std::stringstream s;
 
-    if (col < 26)
+    if (col < 26) {
         s << ((char)('A' + col));
-    else
-        s << ((char)('A' + (col - 26) / 26 )) << ((char)('A' + (col - 26) % 26));
+    }
+    else {
+        s << ((char)('A' + (col - 26) / 26)) << ((char)('A' + (col - 26) % 26));
+    }
 
     return s.str();
 }
 
 /**
-  * Encode \a row as a string.
-  *
-  * @param row Row given as a 0-based row position.
-  *
-  * @returns String with row position, with "1" being the first row.
-  *
-  */
+ * Encode \a row as a string.
+ *
+ * @param row Row given as a 0-based row position.
+ *
+ * @returns String with row position, with "1" being the first row.
+ *
+ */
 
 std::string Spreadsheet::rowName(int row)
 {
@@ -72,7 +73,8 @@ std::string Spreadsheet::rowName(int row)
 }
 
 
-void Spreadsheet::createRectangles(std::set<std::pair<int, int> > & cells, std::map<std::pair<int, int>, std::pair<int, int> > & rectangles)
+void Spreadsheet::createRectangles(std::set<std::pair<int, int>>& cells,
+                                   std::map<std::pair<int, int>, std::pair<int, int>>& rectangles)
 {
     while (!cells.empty()) {
         int row, col;
@@ -84,8 +86,9 @@ void Spreadsheet::createRectangles(std::set<std::pair<int, int> > & cells, std::
         col = (*cells.begin()).second;
 
         // Expand right first
-        while (cells.find(std::make_pair(row, col + cols)) != cells.end())
+        while (cells.find(std::make_pair(row, col + cols)) != cells.end()) {
             ++cols;
+        }
 
         // Expand left
         while (cells.find(std::make_pair(row, col + cols)) != cells.end()) {
@@ -93,11 +96,12 @@ void Spreadsheet::createRectangles(std::set<std::pair<int, int> > & cells, std::
             ++cols;
         }
 
-        // Try to expand cell up (the complete row above from [col,col + cols> needs to be in the cells variable)
+        // Try to expand cell up (the complete row above from [col,col + cols> needs to be in the
+        // cells variable)
         bool ok = true;
         while (ok) {
             for (int i = col; i < col + cols; ++i) {
-                if ( cells.find(std::make_pair(row - 1, i)) == cells.end()) {
+                if (cells.find(std::make_pair(row - 1, i)) == cells.end()) {
                     ok = false;
                     break;
                 }
@@ -107,17 +111,19 @@ void Spreadsheet::createRectangles(std::set<std::pair<int, int> > & cells, std::
                 row--;
                 rows++;
             }
-            else
+            else {
                 break;
+            }
         }
 
-        // Try to expand down (the complete row below from [col,col + cols> needs to be in the cells variable)
+        // Try to expand down (the complete row below from [col,col + cols> needs to be in the cells
+        // variable)
         ok = true;
         while (ok) {
             for (int i = col; i < col + cols; ++i) {
-                if ( cells.find(std::make_pair(orgRow + 1, i)) == cells.end()) {
-                   ok = false;
-                   break;
+                if (cells.find(std::make_pair(orgRow + 1, i)) == cells.end()) {
+                    ok = false;
+                    break;
                 }
             }
             if (ok) {
@@ -125,21 +131,24 @@ void Spreadsheet::createRectangles(std::set<std::pair<int, int> > & cells, std::
                 orgRow++;
                 rows++;
             }
-            else
+            else {
                 break;
+            }
         }
 
         // Remove entries from cell set for this rectangle
-        for (int r = row; r < row + rows; ++r)
-            for (int c = col; c < col + cols; ++c)
+        for (int r = row; r < row + rows; ++r) {
+            for (int c = col; c < col + cols; ++c) {
                 cells.erase(std::make_pair(r, c));
+            }
+        }
 
         // Insert into output variable
         rectangles[std::make_pair(row, col)] = std::make_pair(rows, cols);
     }
 }
 
-std::string Spreadsheet::quote(const std::string &input)
+std::string Spreadsheet::quote(const std::string& input)
 {
     std::stringstream output;
 
@@ -149,29 +158,29 @@ std::string Spreadsheet::quote(const std::string &input)
     output << "<<";
     while (cur != end) {
         switch (*cur) {
-        case '\t':
-            output << "\\t";
-            break;
-        case '\n':
-            output << "\\n";
-            break;
-        case '\r':
-            output << "\\r";
-            break;
-        case '\\':
-            output << "\\\\";
-            break;
-        case '\'':
-            output << "\\'";
-            break;
-        case '"':
-            output << "\\\"";
-            break;
-        case '>':
-            output << "\\>";
-            break;
-        default:
-            output << *cur;
+            case '\t':
+                output << "\\t";
+                break;
+            case '\n':
+                output << "\\n";
+                break;
+            case '\r':
+                output << "\\r";
+                break;
+            case '\\':
+                output << "\\\\";
+                break;
+            case '\'':
+                output << "\\'";
+                break;
+            case '"':
+                output << "\\\"";
+                break;
+            case '>':
+                output << "\\>";
+                break;
+            default:
+                output << *cur;
         }
         ++cur;
     }
@@ -180,7 +189,7 @@ std::string Spreadsheet::quote(const std::string &input)
     return output.str();
 }
 
-std::string Spreadsheet::unquote(const std::string & input)
+std::string Spreadsheet::unquote(const std::string& input)
 {
     assert(input.size() >= 4);
 
@@ -194,32 +203,34 @@ std::string Spreadsheet::unquote(const std::string & input)
     while (cur != end) {
         if (escaped) {
             switch (*cur) {
-            case 't':
-                output += '\t';
-                break;
-            case 'n':
-                output += '\n';
-                break;
-            case 'r':
-                output += '\r';
-                break;
-            case '\\':
-                output += '\\';
-                break;
-            case '\'':
-                output += '\'';
-                break;
-            case '"':
-                output += '"';
-                break;
+                case 't':
+                    output += '\t';
+                    break;
+                case 'n':
+                    output += '\n';
+                    break;
+                case 'r':
+                    output += '\r';
+                    break;
+                case '\\':
+                    output += '\\';
+                    break;
+                case '\'':
+                    output += '\'';
+                    break;
+                case '"':
+                    output += '"';
+                    break;
             }
             escaped = false;
         }
         else {
-            if (*cur == '\\')
+            if (*cur == '\\') {
                 escaped = true;
-            else
+            }
+            else {
                 output += *cur;
+            }
         }
         ++cur;
     }

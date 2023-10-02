@@ -24,10 +24,10 @@
 #define BASE_IINPUTSOURCE_H
 
 #include <iosfwd>
+#include <memory>
 
 #include <xercesc/util/BinInputStream.hpp>
 #include <xercesc/sax/InputSource.hpp>
-#include <QTextCodec>
 #ifndef FC_GLOBAL_H
 #include <FCGlobal.h>
 #endif
@@ -54,13 +54,13 @@ public :
   XMLSize_t readBytes( XMLByte* const toFill, const XMLSize_t maxToRead ) override;
   const XMLCh* getContentType() const override {return nullptr;}
 
-private :
   // -----------------------------------------------------------------------
   //  Unimplemented constructors and operators
   // -----------------------------------------------------------------------
-  StdInputStream(const StdInputStream&);
-  StdInputStream& operator=(const StdInputStream&);
+  StdInputStream(const StdInputStream&) = delete;
+  StdInputStream& operator=(const StdInputStream&) = delete;
 
+private :
   // -----------------------------------------------------------------------
   //  Private data members
   //
@@ -69,8 +69,8 @@ private :
   //      per platform.
   // -----------------------------------------------------------------------
   std::istream            &stream;
-  XERCES_CPP_NAMESPACE_QUALIFIER MemoryManager* const    fMemoryManager;
-  QTextCodec::ConverterState state;
+  struct TextCodec;
+  std::unique_ptr<TextCodec> codec;
 };
 
 
@@ -82,10 +82,10 @@ public :
 
   XERCES_CPP_NAMESPACE_QUALIFIER BinInputStream* makeStream() const override;
 
-private:
-  StdInputSource(const StdInputSource&);
-  StdInputSource& operator=(const StdInputSource&);
+  StdInputSource(const StdInputSource&) = delete;
+  StdInputSource& operator=(const StdInputSource&) = delete;
 
+private:
   std::istream   &stream;
 };
 

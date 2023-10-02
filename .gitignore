@@ -10,11 +10,13 @@
 *.lib
 *.pch
 *.vcproj
+*.kdev4
 *.exp
 *.dep
 *.manifest
 *.o
 *.orig
+*.output
 qrc_*.cpp
 BuildLog.htm
 cmake_install.cmake
@@ -35,8 +37,10 @@ install_manifest.txt
 /Mod/
 /ZERO_CHECK.dir/
 /build/
+/cmake-build*/
 /src/Tools/offlinedoc/localwiki/
 /src/Tools/offlinedoc/*.txt
+/conda/environment.yml
 OpenSCAD_rc.py
 tags
 

@@ -1,0 +1,24 @@
+[Desktop Entry]
+Name=FreeCAD
+Name[de]=FreeCAD
+Name[ko]=FreeCAD
+Name[pl]=FreeCAD
+Name[ru]=FreeCAD
+Comment=Feature based Parametric Modeler
+Comment[de]=Feature-basierter parametrischer Modellierer
+Comment[ko]=형상 기반 파라메트릭 모델링 도구
+Comment[pl]=Modeler parametryczny oparty na cechach
+Comment[ru]=Система автоматизированного проектирования
+GenericName=CAD Application
+GenericName[de]=CAD-Anwendung
+GenericName[ko]=CAD 응용프로그램
+GenericName[pl]=Aplikacja CAD
+GenericName[ru]=Система автоматизированного проектирования
+Exec=FreeCAD - --single-instance %F
+Terminal=false
+Type=Application
+Icon=org.freecad.FreeCAD
+Categories=Graphics;Science;Education;Engineering;X-CNC;
+StartupNotify=true
+StartupWMClass=FreeCAD
+MimeType=application/x-extension-fcstd;model/obj;image/vnd.dwg;image/vnd.dxf;model/vnd.collada+xml;application/iges;model/iges;model/step;model/step+zip;model/stl;application/vnd.shp;model/vrml;

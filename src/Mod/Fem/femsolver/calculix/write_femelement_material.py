@@ -23,7 +23,7 @@
 
 __title__ = "FreeCAD FEM calculix write inpfile materials"
 __author__ = "Bernd Hahnebach"
-__url__ = "https://www.freecadweb.org"
+__url__ = "https://www.freecad.org"
 
 
 import FreeCAD

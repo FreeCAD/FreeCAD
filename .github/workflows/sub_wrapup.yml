@@ -1,0 +1,117 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+# ***************************************************************************
+# *                                                                         *
+# *   Copyright (c) 2023 0penBrain.                                         *
+# *                                                                         *
+# *   This file is part of FreeCAD.                                         *
+# *                                                                         *
+# *   FreeCAD is free software: you can redistribute it and/or modify it    *
+# *   under the terms of the GNU Lesser General Public License as           *
+# *   published by the Free Software Foundation, either version 2.1 of the  *
+# *   License, or (at your option) any later version.                       *
+# *                                                                         *
+# *   FreeCAD is distributed in the hope that it will be useful, but        *
+# *   WITHOUT ANY WARRANTY; without even the implied warranty of            *
+# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU      *
+# *   Lesser General Public License for more details.                       *
+# *                                                                         *
+# *   You should have received a copy of the GNU Lesser General Public      *
+# *   License along with FreeCAD. If not, see                               *
+# *   <https://www.gnu.org/licenses/>.                                      *
+# *                                                                         *
+# ***************************************************************************
+
+# This is a generic wrapup workflow that only aims at gathering reports and ...
+# ... presenting them as a unified summary
+#
+# It expects steps to be summarized to be presented a JSON input formatted ...
+# ... as the "needs" context of Github :
+# https://docs.github.com/en/actions/learn-github-actions/contexts#needs-context
+# In addition to standard "result", each step shall have a string entry in "outputs" ...
+# ... named "reportFile" containing the name of the corresponding report. The ...
+# ... report file shall be available in an artifact with the same name.
+
+name: WrapUp
+on:
+  workflow_call:
+    inputs:
+      previousSteps:
+        type: string
+        required: true
+
+jobs:
+
+  WrapUp:
+    runs-on: ubuntu-latest
+    env:
+      artifactsDownloadDir: /tmp/artifacts/
+    defaults:
+      run:
+        shell: bash
+
+    steps:
+      - name: Make needed directories, files and initializations
+        run: |
+          mkdir -p ${{ env.artifactsDownloadDir }}
+      - name: Download artifacts
+        uses: actions/download-artifact@v3
+        with:
+          path: ${{ env.artifactsDownloadDir }}
+      - name: Save input data to file
+        run: |
+          cat > data << "EOD"
+          ${{ inputs.previousSteps }}
+          EOD
+      - name: Compute the report
+        run: |
+          echo "usedArtifacts<<EOD" >> $GITHUB_ENV
+          for step in $(jq -r "keys_unsorted | .[]" data)
+          do
+            echo "Processing step $step"
+            result=$(jq -r ".\"$step\".result" data)
+            icon=":heavy_check_mark:"
+            if [ $result == 'failure' ]
+            then
+              icon=":x:"
+            elif [ $result == 'cancelled' ]
+            then
+              icon=":no_entry_sign:"
+            elif [ $result == 'skipped' ]
+            then
+              icon=":white_check_mark:"
+            fi
+            echo "### $icon $step step" >> report.md
+            if [ $result == 'skipped' ]
+            then
+             echo "Step was skipped, no report was generated" | tee -a report.md
+             continue
+            elif [ $result == 'cancelled' ]
+            then
+              echo "Step was cancelled when executing, report may be incomplete" | tee -a report.md
+            fi
+            report=$(jq -r ".\"$step\".outputs.reportFile" data)
+            if [ $report ]
+            then
+              echo "Report for step $step is $report"
+              echo "$report" >> $GITHUB_ENV
+              if [ $(find ${{ env.artifactsDownloadDir }} -type f -name $report | wc -l) -eq 1 ]
+              then
+                find ${{ env.artifactsDownloadDir }} -type f -name $report -exec cat {} \; >> report.md
+              else
+                echo "No or several files found for report $report, not printing" | tee -a report.md
+                echo "Below files found :"
+                find ${{ env.artifactsDownloadDir }} -type f -name $report
+              fi
+            else
+              echo "Report file was not set by step $step" | tee -a report.md
+            fi
+            echo "" >> report.md
+          done
+          echo "EOD" >> $GITHUB_ENV
+          cat report.md >> $GITHUB_STEP_SUMMARY
+      - name: Delete used artifacts
+        continue-on-error: true
+        uses: geekyeggo/delete-artifact@v2
+        with:
+          name: |
+            ${{ env.usedArtifacts }}

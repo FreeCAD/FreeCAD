@@ -53,6 +53,7 @@ public:
     bool onBeforeChangeLabel(std::string &newLabel);
     void onChanged(const Property* prop);
     void onDocumentRestored();
+    void unsetupObject();
     std::string getViewProviderName();
     PyObject *getPyObject();
 
@@ -85,7 +86,7 @@ public:
 
 private:
     App::DocumentObject* object;
-    bool has__object__;
+    bool has__object__{false};
 
 #define FC_PY_FEATURE_PYTHON \
     FC_PY_ELEMENT(execute)\
@@ -94,6 +95,7 @@ private:
     FC_PY_ELEMENT(onBeforeChangeLabel)\
     FC_PY_ELEMENT(onChanged)\
     FC_PY_ELEMENT(onDocumentRestored)\
+    FC_PY_ELEMENT(unsetupObject)\
     FC_PY_ELEMENT(getViewProviderName)\
     FC_PY_ELEMENT(getSubObject)\
     FC_PY_ELEMENT(getSubObjects)\
@@ -173,7 +175,7 @@ public:
         // cannot move this to the initializer list to avoid warning
         imp = new FeaturePythonImp(this);
     }
-    virtual ~FeaturePythonT() {
+    ~FeaturePythonT() override {
         delete imp;
     }
 
@@ -340,6 +342,10 @@ protected:
     void onDocumentRestored() override {
         imp->onDocumentRestored();
         FeatureT::onDocumentRestored();
+    }
+    void unsetupObject() override {
+        imp->unsetupObject();
+        FeatureT::unsetupObject();
     }
 
 public:

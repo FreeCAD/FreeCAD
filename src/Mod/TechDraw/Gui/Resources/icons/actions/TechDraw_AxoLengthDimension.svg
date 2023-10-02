@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   version="1.1"
+   id="svg5821"
+   height="64px"
+   width="64px">
+  <defs
+     id="defs5823">
+    <linearGradient
+       id="linearGradient3026">
+      <stop
+         style="stop-color:#c4a000;stop-opacity:1"
+         offset="0"
+         id="stop3028" />
+      <stop
+         style="stop-color:#fce94f;stop-opacity:1"
+         offset="1"
+         id="stop3030" />
+    </linearGradient>
+    <linearGradient
+       id="linearGradient3014">
+      <stop
+         style="stop-color:#c4a000;stop-opacity:1"
+         offset="0"
+         id="stop3016" />
+      <stop
+         style="stop-color:#fce94f;stop-opacity:1"
+         offset="1"
+         id="stop3018" />
+    </linearGradient>
+    <linearGradient
+       id="linearGradient6349">
+      <stop
+         id="stop6351"
+         offset="0"
+         style="stop-color:#000000;stop-opacity:1;" />
+      <stop
+         id="stop6353"
+         offset="1"
+         style="stop-color:#000000;stop-opacity:0;" />
+    </linearGradient>
+    <linearGradient
+       id="linearGradient3377">
+      <stop
+         id="stop3379"
+         offset="0"
+         style="stop-color:#0019a3;stop-opacity:1;" />
+      <stop
+         id="stop3381"
+         offset="1"
+         style="stop-color:#0069ff;stop-opacity:1;" />
+    </linearGradient>
+    <linearGradient
+       gradientTransform="matrix(-1,0,0,1,2199.356,0)"
+       gradientUnits="userSpaceOnUse"
+       y2="1190.875"
+       x2="1267.9062"
+       y1="1190.875"
+       x1="901.1875"
+       id="linearGradient3383"
+       xlink:href="#linearGradient3377" />
+    <radialGradient
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(-1.4307499,-1.3605156e-7,-1.202713e-8,0.1264801,2674.7488,1244.2826)"
+       r="194.40614"
+       fy="1424.4465"
+       fx="1103.6399"
+       cy="1424.4465"
+       cx="1103.6399"
+       id="radialGradient6355"
+       xlink:href="#linearGradient6349" />
+    <linearGradient
+       gradientUnits="userSpaceOnUse"
+       y2="16"
+       x2="31"
+       y1="50"
+       x1="35"
+       id="linearGradient3899"
+       xlink:href="#linearGradient3893" />
+    <linearGradient
+       id="linearGradient3893">
+      <stop
+         id="stop3895"
+         offset="0"
+         style="stop-color:#d3d7cf;stop-opacity:1" />
+      <stop
+         id="stop3897"
+         offset="1"
+         style="stop-color:#ffffff;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient
+       xlink:href="#linearGradient3014"
+       id="linearGradient4075"
+       gradientUnits="userSpaceOnUse"
+       x1="43.288891"
+       y1="40.227509"
+       x2="25.445223"
+       y2="28.399185"
+       gradientTransform="matrix(0.79379811,0.51612921,-0.5053281,0.80071737,36.935227,-10.31149)" />
+    <linearGradient
+       gradientUnits="userSpaceOnUse"
+       y2="4.7365441"
+       x2="21.564972"
+       y1="10.393398"
+       x1="39.949749"
+       id="linearGradient3907-7"
+       xlink:href="#linearGradient3893-4"
+       gradientTransform="matrix(0.70710678,0.70710678,-0.70710678,0.70710678,34.704127,-9.9426796)" />
+    <linearGradient
+       id="linearGradient3893-4">
+      <stop
+         id="stop3895-0"
+         offset="0"
+         style="stop-color:#d3d7cf;stop-opacity:1" />
+      <stop
+         id="stop3897-9"
+         offset="1"
+         style="stop-color:#ffffff;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient
+       y2="4.7365441"
+       x2="21.564972"
+       y1="10.393398"
+       x1="39.949749"
+       gradientTransform="rotate(45,2.9067431,-25.399527)"
+       gradientUnits="userSpaceOnUse"
+       id="linearGradient2592"
+       xlink:href="#linearGradient3026" />
+    <linearGradient
+       y2="4.7365441"
+       x2="21.564972"
+       y1="10.393398"
+       x1="39.949749"
+       gradientTransform="rotate(45,2.9067431,-25.399527)"
+       gradientUnits="userSpaceOnUse"
+       id="linearGradient2614"
+       xlink:href="#linearGradient3026" />
+    <radialGradient
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(1,0,0,0.36236392,0,18.561168)"
+       r="17.582031"
+       fy="29.109344"
+       fx="-12.099726"
+       cy="29.109344"
+       cx="-12.099726"
+       id="radialGradient2643"
+       xlink:href="#linearGradient3026" />
+    <linearGradient
+       gradientTransform="translate(-8.8768642,-21.6292)"
+       gradientUnits="userSpaceOnUse"
+       y2="45.847584"
+       x2="58.249027"
+       y1="45.847584"
+       x1="10.628253"
+       id="linearGradient1587"
+       xlink:href="#linearGradient3026" />
+    <linearGradient
+       y2="45.847584"
+       x2="58.249027"
+       y1="45.847584"
+       x1="10.628253"
+       gradientTransform="translate(-10.511801,-23.988397)"
+       gradientUnits="userSpaceOnUse"
+       id="linearGradient2339"
+       xlink:href="#linearGradient3026" />
+  </defs>
+  <metadata
+     id="metadata5826">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+        <dc:creator>
+          <cc:Agent>
+            <dc:title>[WandererFan]</dc:title>
+          </cc:Agent>
+        </dc:creator>
+        <dc:title>TechDraw_Dimension</dc:title>
+        <dc:date>2016-04-27</dc:date>
+        <dc:relation>http://www.freecad.org/wiki/index.php?title=Artwork</dc:relation>
+        <dc:publisher>
+          <cc:Agent>
+            <dc:title>FreeCAD</dc:title>
+          </cc:Agent>
+        </dc:publisher>
+        <dc:identifier>FreeCAD/src/Mod/TechDraw/Gui/Resources/icons/TechDraw_Dimension.svg</dc:identifier>
+        <dc:rights>
+          <cc:Agent>
+            <dc:title>FreeCAD LGPL2+</dc:title>
+          </cc:Agent>
+        </dc:rights>
+        <cc:license
+           rdf:resource="https://www.gnu.org/licenses/lgpl-3.0.en.html">https://www.gnu.org/copyleft/lesser.html</cc:license>
+        <dc:contributor>
+          <cc:Agent>
+            <dc:title>[agryson] Alexander Gryson</dc:title>
+          </cc:Agent>
+        </dc:contributor>
+        <dc:subject>
+          <rdf:Bag>
+            <rdf:li>arrow</rdf:li>
+            <rdf:li>double arrow</rdf:li>
+            <rdf:li>diagonal</rdf:li>
+          </rdf:Bag>
+        </dc:subject>
+        <dc:description>Double arrow at an angle between two diagonal lines</dc:description>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     transform="translate(2.0532964,6.9603974)"
+     id="g2395">
+    <path
+       style="fill:url(#linearGradient2339);fill-opacity:1;stroke:#302b00;stroke-width:2;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="M 1.116452,30.859187 H 23.283739 L 23.045821,1.4353944 28.997493,1.3164354 29.235411,28.0748 40.168497,9.3164362 44.833924,12.554354 29.949166,36.572942 1.116452,36.691901 Z"
+       id="path1575" />
+    <g
+       id="g2384"
+       transform="translate(0.59479557,-1.070632)">
+      <path
+         id="path3770-1"
+         d="m 46.16829,19.406804 3.175193,2.064518 -11.117219,17.615783 -3.175192,-2.064519 c 0.86541,3.950541 0.937023,7.384951 0.720164,9.502516 l -0.216858,2.117563 1.804454,-1.085304 c 1.804454,-1.085306 4.908034,-2.4552 8.805414,-3.308964 l -3.175193,-2.064518 11.117218,-17.615782 3.175193,2.064518 C 56.416054,22.682074 56.344441,19.247664 56.5613,17.130099 l 0.216857,-2.117563 -1.804453,1.085304 c -1.804455,1.085307 -4.908035,2.4552 -8.805414,3.308964 z"
+         style="color:#000000;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:medium;line-height:normal;font-family:sans-serif;text-indent:0;text-align:start;text-decoration:none;text-decoration-line:none;letter-spacing:normal;word-spacing:normal;text-transform:none;writing-mode:lr-tb;direction:ltr;baseline-shift:baseline;text-anchor:start;display:inline;overflow:visible;visibility:visible;fill:url(#linearGradient4075);fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:2;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;enable-background:accumulate" />
+      <path
+         id="path3864"
+         d="m 54.142071,17.645379 -6.207159,2.739789"
+         style="fill:none;stroke:#fce94f;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+      <path
+         id="path3864-4"
+         d="M 36.781892,44.923666 36.720553,38.61818"
+         style="fill:none;stroke:#fce94f;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+      <path
+         id="path3866"
+         d="M 54.973704,16.09784 35.269787,47.251482"
+         style="fill:none;stroke:#fce94f;stroke-width:2;stroke-linecap:round;stroke-linejoin:miter;stroke-opacity:1" />
+      <path
+         id="path3868"
+         d="m 49.343483,21.471322 3.10358,-1.369893"
+         style="fill:none;stroke:#fce94f;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+      <path
+         id="path3868-8"
+         d="m 38.226264,39.087105 0.07161,3.434409"
+         style="fill:none;stroke:#fce94f;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+      <path
+         id="path3770-9"
+         d="m 46.273973,18.800417 3.402354,2.179571 -11.987638,18.712942 -3.402353,-2.179572 c 0.917088,4.186444 0.983587,7.827993 0.744389,10.074063 l -0.239196,2.246067 1.940373,-1.156282 c 1.940373,-1.156285 5.276227,-2.618264 9.462671,-3.535351 l -3.402354,-2.179571 11.987636,-18.712941 3.402354,2.179571 C 57.265122,22.24247 57.198622,18.600921 57.437819,16.354851 l 0.239197,-2.246068 -1.940373,1.156282 c -1.940374,1.156286 -5.276227,2.618264 -9.46267,3.535352 z"
+         style="color:#000000;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:medium;line-height:normal;font-family:sans-serif;text-indent:0;text-align:start;text-decoration:none;text-decoration-line:none;letter-spacing:normal;word-spacing:normal;text-transform:none;writing-mode:lr-tb;direction:ltr;baseline-shift:baseline;text-anchor:start;display:inline;overflow:visible;visibility:visible;fill:none;stroke:#302b00;stroke-width:2;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;enable-background:accumulate" />
+    </g>
+  </g>
+</svg>

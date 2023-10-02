@@ -53,14 +53,14 @@ protected:
 private:
     WaitCursorP(); // Disable constructor
     static WaitCursorP* _instance;
-    bool isOn;
-    WaitCursor::FilterEventsFlags flags;
+    bool isOn{false};
+    WaitCursor::FilterEventsFlags flags{WaitCursor::AllEvents};
 };
 } // namespace Gui
 
 WaitCursorP* WaitCursorP::_instance = nullptr;
 
-WaitCursorP::WaitCursorP() : QObject(nullptr), isOn(false), flags(WaitCursor::AllEvents)
+WaitCursorP::WaitCursorP() : QObject(nullptr)
 {
 }
 
@@ -107,10 +107,10 @@ bool WaitCursorP::isModalDialog(QObject* o) const
             parent = QWidget::find(window->winId());
     }
     while (parent) {
-        QMessageBox* dlg = qobject_cast<QMessageBox*>(parent);
+        auto dlg = qobject_cast<QMessageBox*>(parent);
         if (dlg && dlg->isModal())
             return true;
-        QProgressDialog* pd = qobject_cast<QProgressDialog*>(parent);
+        auto pd = qobject_cast<QProgressDialog*>(parent);
         if (pd)
             return true;
         parent = parent->parentWidget();

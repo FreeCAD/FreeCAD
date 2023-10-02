@@ -22,13 +22,13 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-#include <QListWidget>
+# include <QListWidget>
 #endif
 
 #include <App/Application.h>
-#include <Mod/TechDraw/Gui/ui_SymbolChooser.h>
 
 #include "SymbolChooser.h"
+#include "ui_SymbolChooser.h"
 
 
 using namespace Gui;
@@ -43,10 +43,10 @@ SymbolChooser::SymbolChooser(QWidget *parent,
     m_source(source)
 {
     ui->setupUi(this);
-    connect(ui->fcSymbolDir, SIGNAL(fileNameChanged(const QString&)),
-            this, SLOT(onDirectoryChanged(const QString&)));
-    connect(ui->lwSymbols, SIGNAL(itemClicked(QListWidgetItem*)),    //double click?
-            this, SLOT(onItemClicked(QListWidgetItem*)));
+    connect(ui->fcSymbolDir, &FileChooser::fileNameChanged,
+            this, &SymbolChooser::onDirectoryChanged);
+    connect(ui->lwSymbols, &QListWidget::itemClicked,    //double click?
+            this, &SymbolChooser::onItemClicked);
 
     setUiPrimary();
 }

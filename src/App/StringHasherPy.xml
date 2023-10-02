@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
+    <PythonExport 
+        Father="BaseClassPy" 
+        Name="StringHasherPy" 
+        Twin="StringHasher" 
+        TwinPointer="StringHasher" 
+        Include="App/StringHasher.h" 
+        FatherInclude="Base/BaseClassPy.h" 
+        Namespace="App" 
+        FatherNamespace="Base"
+        Constructor="true"
+        Reference="true">
+        <Documentation>
+            <Author Licence="LGPL" Name="Zheng, Lei" EMail="realthunder.dev@gmail.com" />
+            <DeveloperDocu>This is the StringHasher class</DeveloperDocu>
+            <UserDocu>This is the StringHasher class</UserDocu>
+        </Documentation>
+        <Methode Name="getID">
+            <Documentation>
+                <UserDocu>
+getID(txt|id, base64=False) -> StringID
+
+If the input is text, return a StringID object that is unique within this hasher. This
+StringID object is reference counted. The hasher may only save hash ID's that are used.
+
+If the input is an integer, then the hasher will try to find the StringID object stored
+with the same integer value. 
+
+base64: indicate if the input 'txt' is base64 encoded binary data
+                </UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="isSame" Const="true">
+            <Documentation>
+                <UserDocu>Check if two hasher are the same</UserDocu>
+            </Documentation>
+        </Methode>
+        <Attribute Name="Count" ReadOnly="true">
+            <Documentation>
+                <UserDocu>Return count of used hashes</UserDocu>
+            </Documentation>
+            <Parameter Name="Count" Type="Int" />
+        </Attribute>
+        <Attribute Name="Size" ReadOnly="true">
+            <Documentation>
+                <UserDocu>Return the size of the hashes</UserDocu>
+            </Documentation>
+            <Parameter Name="Size" Type="Int"/>
+        </Attribute>
+        <Attribute Name="SaveAll">
+            <Documentation>
+                <UserDocu>Whether to save all string hashes regardless of its use count</UserDocu>
+            </Documentation>
+            <Parameter Name="SaveAll" Type="Boolean"/>
+        </Attribute>
+        <Attribute Name="Threshold">
+            <Documentation>
+                <UserDocu>Data length exceed this threshold will be hashed before storing</UserDocu>
+            </Documentation>
+            <Parameter Name="Threshold" Type="Int"/>
+        </Attribute>
+        <Attribute Name="Table" ReadOnly="true">
+            <Documentation>
+                <UserDocu>Return the entire string table as Int->String dictionary</UserDocu>
+            </Documentation>
+            <Parameter Name="Table" Type="Dict"/>
+        </Attribute>
+    </PythonExport>
+</GenerateModel>
+

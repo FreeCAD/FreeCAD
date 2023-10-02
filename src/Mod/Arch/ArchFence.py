@@ -81,13 +81,13 @@ class _Fence(ArchComponent.Component):
 
         self.Type = "Fence"
 
-    def __getstate__(self):
+    def dumps(self):
         if hasattr(self, 'sectionFaceNumbers'):
-            return (self.sectionFaceNumbers)
+            return self.sectionFaceNumbers
 
         return None
 
-    def __setstate__(self, state):
+    def loads(self, state):
         if state is not None and isinstance(state, tuple):
             self.sectionFaceNumbers = state[0]
 
@@ -158,15 +158,9 @@ class _Fence(ArchComponent.Component):
         # We want to center the posts on the path. So move them the half width in
         transformationVector = FreeCAD.Vector(0, - postWidth / 2, 0)
 
-        placements = patharray.placements_on_path(rotation, pathwire,
-                                                  obj.NumberOfSections + 1,
-                                                  transformationVector, True)
-
-        # The placement of the last object is always the second entry in the list.
-        # So we move it to the end
-        placements.append(placements.pop(1))
-
-        return placements
+        return patharray.placements_on_path(rotation, pathwire,
+                                            obj.NumberOfSections + 1,
+                                            transformationVector, True)
 
     def calculatePosts(self, obj, postPlacements):
         posts = []

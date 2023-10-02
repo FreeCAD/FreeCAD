@@ -34,7 +34,6 @@ using namespace Attacher;
 EXTENSION_PROPERTY_SOURCE(Part::AttachExtension, App::DocumentObjectExtension)
 
 AttachExtension::AttachExtension()
-   :  _attacher(nullptr)
 {
     EXTENSION_ADD_PROPERTY_TYPE(AttacherType, ("Attacher::AttachEngine3D"), "Attachment",(App::PropertyType)(App::Prop_None),"Class name of attach engine object driving the attachment.");
     this->AttacherType.setStatus(App::Property::Status::Hidden, true);
@@ -275,7 +274,7 @@ App::PropertyPlacement& AttachExtension::getPlacement() const {
 }
 
 PyObject* AttachExtension::getExtensionPyObject() {
-    
+
     if (ExtensionPythonObject.is(Py::_None())){
         // ref counter is set to 1
         ExtensionPythonObject = Py::Object(new AttachExtensionPy(this),true);

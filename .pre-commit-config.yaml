@@ -1,0 +1,61 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
+# See https://pre-commit.com for more information
+# See https://pre-commit.com/hooks.html for more hooks
+files: |
+    (?x)^(
+        src/Tools|
+        tests/src|
+        src/Mod/AddonManager|
+        src/Mod/Assembly|
+        src/Mod/Cloud|
+        src/Mod/Drawing|
+        src/Mod/Fem/App|
+        src/Mod/Fem/Gui|
+        src/Mod/Import|
+        src/Mod/Inspection|
+        src/Mod/JtReader|
+        src/Mod/Mesh|
+        src/Mod/MeshPart|
+        src/Mod/Plot|
+        src/Mod/Points|
+        src/Mod/ReverseEngineering|
+        src/Mod/Robot|
+        src/Mod/Show|
+        src/Mod/Sketcher|
+        src/Mod/Spreadsheet|
+        src/Mod/Start|
+        src/Mod/Surface|
+        src/Mod/Test|
+        src/Mod/Tux|
+        src/Mod/Web
+    )
+exclude: |
+    (?x)^(
+        .*vcproj.*|
+        .*vcxproj.*|
+        src/Mod/Import/App/SCL|
+        src/Mod/Import/App/SCL_output|
+        src/Mod/Mesh/App/TestData|
+        src/Mod/Mesh/App/WildMagic4|
+        src/Mod/Robot/App/kdl_cp|
+        src/Mod/Robot/Lib
+    )
+repos:
+-   repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v3.4.0
+    hooks:
+    -   id: trailing-whitespace
+    -   id: end-of-file-fixer
+    -   id: check-yaml
+    -   id: check-added-large-files
+    -   id: mixed-line-ending
+-   repo: https://github.com/psf/black
+    rev: 22.12.0
+    hooks:
+        -   id: black
+            args: ['--line-length', '100']
+-   repo: https://github.com/pre-commit/mirrors-clang-format
+    rev: v15.0.7
+    hooks:
+        -   id: clang-format

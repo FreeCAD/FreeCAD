@@ -24,6 +24,7 @@
 
 #ifndef _PreComp_
 # include <sstream>
+# include <QEvent>
 # include <QFile>
 # include <QPointer>
 #endif
@@ -68,6 +69,9 @@ void ControlPy::init_type()
     add_varargs_method("activeDialog",&ControlPy::activeDialog,
                         "check if a dialog is active in the task panel\n"
                         "activeDialog() --> bool");
+    add_varargs_method("activeTaskDialog",&ControlPy::activeTaskDialog,
+                        "return the active task dialog if there is one\n"
+                        "activeTaskDialog() --> TaskDialog or None");
     add_varargs_method("closeDialog",&ControlPy::closeDialog,
                         "close the active dialog\n"
                         "closeDialog()");
@@ -94,13 +98,9 @@ void ControlPy::init_type()
                         "showModelView()");
 }
 
-ControlPy::ControlPy()
-{
-}
+ControlPy::ControlPy() = default;
 
-ControlPy::~ControlPy()
-{
-}
+ControlPy::~ControlPy() = default;
 
 Py::Object ControlPy::repr()
 {
@@ -118,7 +118,7 @@ Py::Object ControlPy::showDialog(const Py::Tuple& args)
     Gui::TaskView::TaskDialog* act = Gui::Control().activeDialog();
     if (act)
         throw Py::RuntimeError("Active task dialog found");
-    TaskDialogPython* dlg = new TaskDialogPython(Py::Object(arg0));
+    auto dlg = new TaskDialogPython(Py::Object(arg0));
     Gui::Control().showDialog(dlg);
     return Py::None();
 }
@@ -129,6 +129,14 @@ Py::Object ControlPy::activeDialog(const Py::Tuple& args)
         throw Py::Exception();
     Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog();
     return Py::Boolean(dlg != nullptr);
+}
+
+Py::Object ControlPy::activeTaskDialog(const Py::Tuple& args)
+{
+    if (!PyArg_ParseTuple(args.ptr(), ""))
+        throw Py::Exception();
+    Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog();
+    return (dlg ? Py::asObject(new TaskDialogPy(dlg)) : Py::None());
 }
 
 Py::Object ControlPy::closeDialog(const Py::Tuple& args)
@@ -148,7 +156,7 @@ Py::Object ControlPy::addTaskWatcher(const Py::Tuple& args)
     std::vector<Gui::TaskView::TaskWatcher*> watcher;
     Py::Sequence list(arg0);
     for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
-        TaskWatcherPython* w = new TaskWatcherPython(*it);
+        auto w = new TaskWatcherPython(*it);
         watcher.push_back(w);
     }
 
@@ -216,14 +224,14 @@ TaskWatcherPython::TaskWatcherPython(const Py::Object& o)
     QString title;
     if (watcher.hasAttr(std::string("title"))) {
         Py::String name(watcher.getAttr(std::string("title")));
-        std::string s = (std::string)name;
+        std::string s = static_cast<std::string>(name);
         title = QString::fromUtf8(s.c_str());
     }
 
     QPixmap icon;
     if (watcher.hasAttr(std::string("icon"))) {
         Py::String name(watcher.getAttr(std::string("icon")));
-        std::string s = (std::string)name;
+        std::string s = static_cast<std::string>(name);
         icon = BitmapFactory().pixmap(s.c_str());
     }
 
@@ -234,7 +242,7 @@ TaskWatcherPython::TaskWatcherPython(const Py::Object& o)
         CommandManager &mgr = Gui::Application::Instance->commandManager();
         for (Py::Sequence::iterator it = cmds.begin(); it != cmds.end(); ++it) {
             Py::String name(*it);
-            std::string s = (std::string)name;
+            std::string s = static_cast<std::string>(name);
             Command *c = mgr.getCommandByName(s.c_str());
             if (c)
                 c->addTo(tb);
@@ -267,7 +275,7 @@ TaskWatcherPython::TaskWatcherPython(const Py::Object& o)
 
     if (watcher.hasAttr(std::string("filter"))) {
         Py::String name(watcher.getAttr(std::string("filter")));
-        std::string s = (std::string)name;
+        std::string s = static_cast<std::string>(name);
         this->setFilter(s.c_str());
     }
 }
@@ -306,57 +314,209 @@ bool TaskWatcherPython::shouldShow()
 
 // ------------------------------------------------------------------
 
-TaskDialogPython::TaskDialogPython(const Py::Object& o) : dlg(o)
+void TaskDialogPy::init_type()
 {
-    if (dlg.hasAttr(std::string("ui"))) {
-        UiLoader loader;
-        loader.setLanguageChangeEnabled(true);
-        QString fn, icon;
-        Py::String ui(dlg.getAttr(std::string("ui")));
-        std::string path = (std::string)ui;
-        fn = QString::fromUtf8(path.c_str());
+    behaviors().name("TaskDialog");
+    behaviors().doc("Task dialog");
+    // you must have overwritten the virtual functions
+    behaviors().supportRepr();
+    behaviors().supportGetattr();
+    behaviors().supportSetattr();
+    add_varargs_method("getDialogContent",&TaskDialogPy::getDialogContent,
+                       "Returns the widgets of the task dialog -> list");
+    add_varargs_method("getStandardButtons",&TaskDialogPy::getStandardButtons,
+                       "Get the standard buttons of the box -> flags");
+    add_varargs_method("setEscapeButtonEnabled",&TaskDialogPy::setEscapeButtonEnabled,
+                       "Defines whether the task dialog can be rejected by pressing Esc");
+    add_varargs_method("isEscapeButtonEnabled",&TaskDialogPy::isEscapeButtonEnabled,
+                       "Checks if the task dialog can be rejected by pressing Esc -> bool");
+    add_varargs_method("setAutoCloseOnTransactionChange",&TaskDialogPy::setAutoCloseOnTransactionChange,
+                       "Defines whether a task dialog must be closed if the document changes the\n"
+                       "active transaction");
+    add_varargs_method("isAutoCloseOnTransactionChange",&TaskDialogPy::isAutoCloseOnTransactionChange,
+                       "Checks if the task dialog will be closed when the active transaction has changed -> bool");
+    add_varargs_method("getDocumentName",&TaskDialogPy::getDocumentName,
+                       "Get the name of the document the task dialog is attached to -> str");
+    add_varargs_method("isAllowedAlterDocument",&TaskDialogPy::isAllowedAlterDocument,
+                       "Indicates whether this task dialog allows other commands to modify\n"
+                       "the document while it is open -> bool");
+    add_varargs_method("isAllowedAlterView",&TaskDialogPy::isAllowedAlterView,
+                       "Indicates whether this task dialog allows other commands to modify\n"
+                       "the 3d view while it is open -> bool");
+    add_varargs_method("isAllowedAlterSelection",&TaskDialogPy::isAllowedAlterSelection,
+                       "Indicates whether this task dialog allows other commands to modify\n"
+                       "the selection while it is open -> bool");
+    add_varargs_method("needsFullSpace",&TaskDialogPy::needsFullSpace,
+                       "Indicates whether the task dialog fully requires the available space -> bool");
+    add_varargs_method("accept",&TaskDialogPy::accept,
+                       "Accept the task dialog");
+    add_varargs_method("reject",&TaskDialogPy::reject,
+                       "Reject the task dialog");
+}
 
-        QFile file(fn);
-        QWidget* form = nullptr;
-        if (file.open(QFile::ReadOnly))
-            form = loader.load(&file, nullptr);
-        file.close();
-        if (form) {
-            Gui::TaskView::TaskBox* taskbox = new Gui::TaskView::TaskBox(
-                QPixmap(icon), form->windowTitle(), true, nullptr);
-            taskbox->groupLayout()->addWidget(form);
-            Content.push_back(taskbox);
-        }
-        else {
-            Base::Console().Error("Failed to load UI file from '%s'\n",
-                (const char*)fn.toUtf8());
-        }
+TaskDialogPy::TaskDialogPy(TaskDialog* dlg)
+  : dialog(dlg)
+{
+}
+
+TaskDialogPy::~TaskDialogPy() = default;
+
+Py::Object TaskDialogPy::repr()
+{
+    std::string s;
+    std::ostringstream s_out;
+    s_out << "Task Dialog";
+    return Py::String(s_out.str());
+}
+
+Py::Object TaskDialogPy::getattr(const char * attr)
+{
+    if (!dialog) {
+        std::ostringstream s_out;
+        s_out << "Cannot access attribute '" << attr << "' of deleted object";
+        throw Py::RuntimeError(s_out.str());
     }
-    else if (dlg.hasAttr(std::string("form"))) {
-        Py::Object f(dlg.getAttr(std::string("form")));
-        Py::List widgets;
-        if (f.isList()) {
-            widgets = f;
-        }
-        else {
-            widgets.append(f);
-        }
+    return BaseType::getattr(attr);
+}
 
-        Gui::PythonWrapper wrap;
-        if (wrap.loadCoreModule()) {
-            for (Py::List::iterator it = widgets.begin(); it != widgets.end(); ++it) {
-                QObject* object = wrap.toQObject(*it);
-                if (object) {
-                    QWidget* form = qobject_cast<QWidget*>(object);
-                    if (form) {
-                        Gui::TaskView::TaskBox* taskbox = new Gui::TaskView::TaskBox(
-                            form->windowIcon().pixmap(32), form->windowTitle(), true, nullptr);
-                        taskbox->groupLayout()->addWidget(form);
-                        Content.push_back(taskbox);
-                    }
+int TaskDialogPy::setattr(const char *attr, const Py::Object &value)
+{
+    if (!dialog) {
+        std::ostringstream s_out;
+        s_out << "Cannot access attribute '" << attr << "' of deleted object";
+        throw Py::RuntimeError(s_out.str());
+    }
+    return BaseType::setattr(attr, value);
+}
+
+Py::Object TaskDialogPy::getDialogContent(const Py::Tuple& args)
+{
+    if (!PyArg_ParseTuple(args.ptr(), ""))
+        throw Py::Exception();
+
+    PythonWrapper wrap;
+    wrap.loadWidgetsModule();
+
+    Py::List list;
+    auto widgets = dialog->getDialogContent();
+    for (auto it : widgets) {
+        list.append(wrap.fromQWidget(it));
+    }
+
+    return list;
+}
+
+Py::Object TaskDialogPy::getStandardButtons(const Py::Tuple& args)
+{
+    if (!PyArg_ParseTuple(args.ptr(), ""))
+        throw Py::Exception();
+    auto buttons = dialog->getStandardButtons();
+    return Py::Long(static_cast<int>(buttons));
+}
+
+Py::Object TaskDialogPy::setEscapeButtonEnabled(const Py::Tuple& args)
+{
+    Py::Boolean value(args[0]);
+    dialog->setEscapeButtonEnabled(static_cast<bool>(value));
+    return Py::None();
+}
+
+Py::Object TaskDialogPy::isEscapeButtonEnabled(const Py::Tuple& args)
+{
+    if (!PyArg_ParseTuple(args.ptr(), ""))
+        throw Py::Exception();
+    return Py::Boolean(dialog->isEscapeButtonEnabled());
+}
+
+Py::Object TaskDialogPy::setAutoCloseOnTransactionChange(const Py::Tuple& args)
+{
+    Py::Boolean value(args[0]);
+    dialog->setAutoCloseOnTransactionChange(static_cast<bool>(value));
+    return Py::None();
+}
+
+Py::Object TaskDialogPy::isAutoCloseOnTransactionChange(const Py::Tuple& args)
+{
+    if (!PyArg_ParseTuple(args.ptr(), ""))
+        throw Py::Exception();
+    return Py::Boolean(dialog->isAutoCloseOnTransactionChange());
+}
+
+Py::Object TaskDialogPy::getDocumentName(const Py::Tuple& args)
+{
+    if (!PyArg_ParseTuple(args.ptr(), ""))
+        throw Py::Exception();
+    return Py::String(dialog->getDocumentName());
+}
+
+Py::Object TaskDialogPy::isAllowedAlterDocument(const Py::Tuple& args)
+{
+    if (!PyArg_ParseTuple(args.ptr(), ""))
+        throw Py::Exception();
+    return Py::Boolean(dialog->isAllowedAlterDocument());
+}
+
+Py::Object TaskDialogPy::isAllowedAlterView(const Py::Tuple& args)
+{
+    if (!PyArg_ParseTuple(args.ptr(), ""))
+        throw Py::Exception();
+    return Py::Boolean(dialog->isAllowedAlterView());
+}
+
+Py::Object TaskDialogPy::isAllowedAlterSelection(const Py::Tuple& args)
+{
+    if (!PyArg_ParseTuple(args.ptr(), ""))
+        throw Py::Exception();
+    return Py::Boolean(dialog->isAllowedAlterSelection());
+}
+
+Py::Object TaskDialogPy::needsFullSpace(const Py::Tuple& args)
+{
+    if (!PyArg_ParseTuple(args.ptr(), ""))
+        throw Py::Exception();
+    return Py::Boolean(dialog->needsFullSpace());
+}
+
+namespace {
+auto clickButton = [](QDialogButtonBox* buttonBox, QDialogButtonBox::ButtonRole role) {
+    if (buttonBox) {
+        QList<QAbstractButton*> list = buttonBox->buttons();
+        for (auto pb : list) {
+            if (buttonBox->buttonRole(pb) == role) {
+                if (pb->isEnabled()) {
+                    pb->click();
+                    break;
                 }
             }
         }
+    }
+};
+}
+
+Py::Object TaskDialogPy::accept(const Py::Tuple& args)
+{
+    if (!PyArg_ParseTuple(args.ptr(), ""))
+        throw Py::Exception();
+    auto buttonBox = TaskDialogAttorney::getButtonBox(dialog);
+    clickButton(buttonBox, QDialogButtonBox::AcceptRole);
+    return Py::None();
+}
+
+Py::Object TaskDialogPy::reject(const Py::Tuple& args)
+{
+    if (!PyArg_ParseTuple(args.ptr(), ""))
+        throw Py::Exception();
+    auto buttonBox = TaskDialogAttorney::getButtonBox(dialog);
+    clickButton(buttonBox, QDialogButtonBox::RejectRole);
+    return Py::None();
+}
+
+// ------------------------------------------------------------------
+
+TaskDialogPython::TaskDialogPython(const Py::Object& o) : dlg(o)
+{
+    if (!tryLoadUiFile()) {
+        tryLoadForm();
     }
 }
 
@@ -373,6 +533,74 @@ TaskDialogPython::~TaskDialogPython()
     // By guarding them with QPointer their pointers will be set to null
     // so that the destructor of the base class can reliably call 'delete'.
     Content.insert(Content.begin(), guarded.begin(), guarded.end());
+}
+
+bool TaskDialogPython::tryLoadUiFile()
+{
+    if (dlg.hasAttr(std::string("ui"))) {
+        auto loader = UiLoader::newInstance();
+        QString fn, icon;
+        Py::String ui(dlg.getAttr(std::string("ui")));
+        std::string path = static_cast<std::string>(ui);
+        fn = QString::fromUtf8(path.c_str());
+
+        QFile file(fn);
+        QWidget* form = nullptr;
+        if (file.open(QFile::ReadOnly))
+            form = loader->load(&file, nullptr);
+        file.close();
+        if (form) {
+            appendForm(form, QPixmap(icon));
+        }
+        else {
+            Base::Console().Error("Failed to load UI file from '%s'\n",
+                (const char*)fn.toUtf8());
+        }
+
+        return true;
+    }
+
+    return false;
+}
+
+bool TaskDialogPython::tryLoadForm()
+{
+    if (dlg.hasAttr(std::string("form"))) {
+        Py::Object f(dlg.getAttr(std::string("form")));
+        Py::List widgets;
+        if (f.isList()) {
+            widgets = f;
+        }
+        else {
+            widgets.append(f);
+        }
+
+        Gui::PythonWrapper wrap;
+        if (wrap.loadCoreModule()) {
+            for (Py::List::iterator it = widgets.begin(); it != widgets.end(); ++it) {
+                QObject* object = wrap.toQObject(*it);
+                if (object) {
+                    QWidget* form = qobject_cast<QWidget*>(object);
+                    if (form) {
+                        appendForm(form, form->windowIcon().pixmap(32));
+                    }
+                }
+            }
+        }
+
+        return true;
+    }
+
+    return false;
+}
+
+void TaskDialogPython::appendForm(QWidget* form, const QPixmap& icon)
+{
+    form->installEventFilter(this);
+    auto taskbox = new Gui::TaskView::TaskBox(
+        icon, form->windowTitle(), true, nullptr);
+    taskbox->groupLayout()->addWidget(form);
+    Content.push_back(taskbox);
 }
 
 void TaskDialogPython::clearForm()
@@ -478,6 +706,27 @@ void TaskDialogPython::helpRequested()
     }
 }
 
+bool TaskDialogPython::eventFilter(QObject *watched, QEvent *event)
+{
+    if (event->type() == QEvent::LanguageChange) {
+        Base::PyGILStateLocker lock;
+        try {
+            if (dlg.hasAttr(std::string("changeEvent"))) {
+                Py::Callable method(dlg.getAttr(std::string("changeEvent")));
+                Py::Tuple args{1};
+                args.setItem(0, Py::Long(static_cast<int>(event->type())));
+                method.apply(args);
+            }
+        }
+        catch (Py::Exception&) {
+            Base::PyException e; // extract the Python error text
+            e.ReportException();
+        }
+    }
+
+    return TaskDialog::eventFilter(watched, event);
+}
+
 QDialogButtonBox::StandardButtons TaskDialogPython::getStandardButtons() const
 {
     Base::PyGILStateLocker lock;
@@ -487,7 +736,7 @@ QDialogButtonBox::StandardButtons TaskDialogPython::getStandardButtons() const
             Py::Tuple args;
             Py::Int ret(method.apply(args));
             int value = (int)ret;
-            return QDialogButtonBox::StandardButtons(value);
+            return {value};
         }
     }
     catch (Py::Exception&) {

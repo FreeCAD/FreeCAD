@@ -41,7 +41,7 @@ def get_information():
         "constraints": ["fixed", "force"],
         "solvers": ["calculix", "ccxtools", "elmer", "mystran"],
         "material": "solid",
-        "equation": "mechanical"
+        "equations": ["mechanical"]
     }
 
 
@@ -54,7 +54,7 @@ setup()
 
 
 See forum topic post:
-https://forum.freecadweb.org/viewtopic.php?f=18&t=60320&start=10#p517884
+https://forum.freecad.org/viewtopic.php?f=18&t=60320&start=10#p517884
 This version here uses some real value for the Young's Modulus
 The CalculiX steel is used
 plate 10 mm x 10 mm * 0.3 mm
@@ -129,7 +129,7 @@ def setup(doc=None, solvertype="ccxtools"):
         solver_obj = ObjectsFem.makeSolverZ88(doc, "SolverZ88")
     else:
         FreeCAD.Console.PrintWarning(
-            "Not known or not supported solver type: {}. "
+            "Unknown or unsupported solver type: {}. "
             "No solver object was created.\n".format(solvertype)
         )
 

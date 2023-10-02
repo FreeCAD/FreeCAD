@@ -56,10 +56,10 @@ class Rectangle(gui_base_original.Creator):
 
     def Activated(self):
         """Execute when the command is called."""
-        super(Rectangle, self).Activated(name="Rectangle")
+        super().Activated(name="Rectangle")
         if self.ui:
             self.refpoint = None
-            self.ui.pointUi(title=translate("draft", self.featureName), icon="Draft_Rectangle")
+            self.ui.pointUi(title=translate("draft", "Rectangle"), icon="Draft_Rectangle")
             self.ui.extUi()
             if utils.getParam("UsePartPrimitives", False):
                 self.fillstate = self.ui.hasFill.isChecked()
@@ -68,34 +68,37 @@ class Rectangle(gui_base_original.Creator):
             self.rect = trackers.rectangleTracker()
             _msg(translate("draft", "Pick first point"))
 
-    def finish(self, closed=False, cont=False):
+    def finish(self, cont=False):
         """Terminate the operation.
 
-        The arguments of this function are not used and should be removed.
+        Parameters
+        ----------
+        cont: bool or None, optional
+            Restart (continue) the command if `True`, or if `None` and
+            `ui.continueMode` is `True`.
         """
-        super(Rectangle, self).finish()
+        super().finish()
         if self.ui:
             if hasattr(self, "fillstate"):
                 self.ui.hasFill.setChecked(self.fillstate)
                 del self.fillstate
             self.rect.off()
             self.rect.finalize()
-            if self.ui.continueMode:
-                self.Activated()
+        if cont or (cont is None and self.ui and self.ui.continueMode):
+            self.Activated()
 
     def createObject(self):
         """Create the final object in the current document."""
-        plane = App.DraftWorkingPlane
         p1 = self.node[0]
         p3 = self.node[-1]
         diagonal = p3.sub(p1)
-        p2 = p1.add(DraftVecUtils.project(diagonal, plane.v))
-        p4 = p1.add(DraftVecUtils.project(diagonal, plane.u))
+        p2 = p1.add(DraftVecUtils.project(diagonal, self.wp.v))
+        p4 = p1.add(DraftVecUtils.project(diagonal, self.wp.u))
         length = p4.sub(p1).Length
-        if abs(DraftVecUtils.angle(p4.sub(p1), plane.u, plane.axis)) > 1:
+        if abs(DraftVecUtils.angle(p4.sub(p1), self.wp.u, self.wp.axis)) > 1:
             length = -length
         height = p2.sub(p1).Length
-        if abs(DraftVecUtils.angle(p2.sub(p1), plane.v, plane.axis)) > 1:
+        if abs(DraftVecUtils.angle(p2.sub(p1), self.wp.v, self.wp.axis)) > 1:
             height = -height
         try:
             # The command to run is built as a series of text strings
@@ -143,7 +146,7 @@ class Rectangle(gui_base_original.Creator):
                             _cmd_list)
         except Exception:
             _err("Draft: error delaying commit")
-        self.finish(cont=True)
+        self.finish(cont=None)
 
     def action(self, arg):
         """Handle the 3D scene events.
@@ -160,10 +163,7 @@ class Rectangle(gui_base_original.Creator):
             if arg["Key"] == "ESCAPE":
                 self.finish()
         elif arg["Type"] == "SoLocation2Event":  # mouse movement detection
-            (self.point,
-             ctrlPoint, info) = gui_tool_utils.getPoint(self, arg,
-                                                        mobile=True,
-                                                        noTracker=True)
+            self.point, ctrlPoint, info = gui_tool_utils.getPoint(self, arg, noTracker=True)
             self.rect.update(self.point)
             gui_tool_utils.redraw3DView()
         elif (arg["Type"] == "SoMouseButtonEvent"
@@ -171,16 +171,15 @@ class Rectangle(gui_base_original.Creator):
               and arg["Button"] == "BUTTON1"):
 
             if arg["Position"] == self.pos:
-                self.finish()
+                self.finish(cont=None)
+                return
 
             if (not self.node) and (not self.support):
                 gui_tool_utils.getSupport(arg)
-                (self.point,
-                 ctrlPoint, info) = gui_tool_utils.getPoint(self, arg,
-                                                            mobile=True,
-                                                            noTracker=True)
+                self.point, ctrlPoint, info = gui_tool_utils.getPoint(self, arg, noTracker=True)
             if self.point:
                 self.ui.redraw()
+                self.pos = arg["Position"]
                 self.appendPoint(self.point)
 
     def numericInput(self, numx, numy, numz):

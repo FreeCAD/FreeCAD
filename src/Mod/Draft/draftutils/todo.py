@@ -34,9 +34,8 @@ to execute the instructions stored in internal lists.
 # \ingroup draftutils
 # \brief Provides the ToDo static class to run commands with a time delay.
 
-import six
-import sys
 import traceback
+import sys
 import PySide.QtCore as QtCore
 
 import FreeCAD as App
@@ -46,7 +45,7 @@ from draftutils.messages import _msg, _wrn, _err, _log
 
 __title__ = "FreeCAD Draft Workbench, Todo class"
 __author__ = "Yorik van Havre <yorik@uncreated.net>"
-__url__ = ["http://www.freecadweb.org"]
+__url__ = ["http://www.freecad.org"]
 
 _DEBUG = 0
 _DEBUG_inner = 0
@@ -153,9 +152,6 @@ class ToDo:
 
         if ToDo.commitlist:
             for name, func in ToDo.commitlist:
-                if six.PY2:
-                    if isinstance(name, six.text_type):
-                        name = name.encode("utf8")
                 if _DEBUG_inner:
                     _msg("Debug: committing.\n"
                          "name: {}\n".format(name))

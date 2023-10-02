@@ -129,53 +129,11 @@
         <file>panels/ToolBitEditor.ui</file>
         <file>panels/ToolBitLibraryEdit.ui</file>
         <file>panels/ToolBitSelector.ui</file>
-        <file>panels/ToolEditor.ui</file>
-        <file>panels/ToolLibraryEditor.ui</file>
         <file>panels/TaskPathCamoticsSim.ui</file>
         <file>panels/TaskPathSimulator.ui</file>
         <file>panels/ZCorrectEdit.ui</file>
         <file>preferences/Advanced.ui</file>
         <file>preferences/PathDressupHoldingTags.ui</file>
         <file>preferences/PathJob.ui</file>
-        <file>translations/Path_af.qm</file>
-        <file>translations/Path_ar.qm</file>
-        <file>translations/Path_ca.qm</file>
-        <file>translations/Path_cs.qm</file>
-        <file>translations/Path_de.qm</file>
-        <file>translations/Path_el.qm</file>
-        <file>translations/Path_es-ES.qm</file>
-        <file>translations/Path_eu.qm</file>
-        <file>translations/Path_fi.qm</file>
-        <file>translations/Path_fil.qm</file>
-        <file>translations/Path_fr.qm</file>
-        <file>translations/Path_gl.qm</file>
-        <file>translations/Path_hr.qm</file>
-        <file>translations/Path_hu.qm</file>
-        <file>translations/Path_id.qm</file>
-        <file>translations/Path_it.qm</file>
-        <file>translations/Path_ja.qm</file>
-        <file>translations/Path_kab.qm</file>
-        <file>translations/Path_ko.qm</file>
-        <file>translations/Path_lt.qm</file>
-        <file>translations/Path_nl.qm</file>
-        <file>translations/Path_no.qm</file>
-        <file>translations/Path_pl.qm</file>
-        <file>translations/Path_pt-BR.qm</file>
-        <file>translations/Path_pt-PT.qm</file>
-        <file>translations/Path_ro.qm</file>
-        <file>translations/Path_ru.qm</file>
-        <file>translations/Path_sk.qm</file>
-        <file>translations/Path_sl.qm</file>
-        <file>translations/Path_sr.qm</file>
-        <file>translations/Path_sv-SE.qm</file>
-        <file>translations/Path_tr.qm</file>
-        <file>translations/Path_uk.qm</file>
-        <file>translations/Path_val-ES.qm</file>
-        <file>translations/Path_vi.qm</file>
-        <file>translations/Path_zh-CN.qm</file>
-        <file>translations/Path_zh-TW.qm</file>
-        <file>translations/Path_es-AR.qm</file>
-        <file>translations/Path_bg.qm</file>
-        <file>translations/Path_ka.qm</file>
     </qresource>
 </RCC>

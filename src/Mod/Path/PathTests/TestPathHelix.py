@@ -22,13 +22,13 @@
 
 import Draft
 import FreeCAD
-import PathScripts.PathHelix as PathHelix
-import PathScripts.PathJob as PathJob
-import PathScripts.PathLog as PathLog
+import Path
+import Path.Main.Job as PathJob
+import Path.Op.Helix as PathHelix
 import PathTests.PathTestUtils as PathTestUtils
 
-PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
-# PathLog.trackModule(PathLog.thisModule())
+Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
+# Path.Log.trackModule(Path.Log.thisModule())
 
 
 class TestPathHelix(PathTestUtils.PathTestBase):
@@ -78,7 +78,7 @@ class TestPathHelix(PathTestUtils.PathTestBase):
                 model = base[0]
                 for sub in base[1]:
                     pos = proxy.holePosition(op, model, sub)
-                    # PathLog.track(deg, pos, pos.Length)
+                    # Path.Log.track(deg, pos, pos.Length)
                     self.assertRoughly(
                         round(pos.Length / 10, 0), proxy.holeDiameter(op, model, sub)
                     )
@@ -104,7 +104,7 @@ class TestPathHelix(PathTestUtils.PathTestBase):
                 model = base[0]
                 for sub in base[1]:
                     pos = proxy.holePosition(op, model, sub)
-                    # PathLog.track(deg, pos, pos.Length)
+                    # Path.Log.track(deg, pos, pos.Length)
                     self.assertRoughly(
                         round(pos.Length / 10, 0), proxy.holeDiameter(op, model, sub)
                     )
@@ -130,7 +130,7 @@ class TestPathHelix(PathTestUtils.PathTestBase):
                 model = base[0]
                 for sub in base[1]:
                     pos = proxy.holePosition(op, model, sub)
-                    # PathLog.track(deg, pos, pos.Length)
+                    # Path.Log.track(deg, pos, pos.Length)
                     self.assertRoughly(
                         round(pos.Length / 10, 0), proxy.holeDiameter(op, model, sub)
                     )

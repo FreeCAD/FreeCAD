@@ -53,7 +53,7 @@ Positive Werte lassen den Radius wachsen, negative lassen ihn schrumpfen.</trans
       <location filename="../../../App/FeatureHelix.cpp" line="94"/>
       <source>The growth of the helix' radius per turn.
 Non-zero values turn the helix into a conical spiral.</source>
-      <translation>Das Wachstum des Wendelradius pro Windung.
+      <translation>Die Aufweitung des Wendelradius pro Windung.
 Werte außer Null wandeln die Wendel in eine konische Spirale.</translation>
     </message>
     <message>
@@ -80,21 +80,66 @@ so that self intersection is avoided.</source>
       <translation>Wenn falsch, schlägt das Werkzeug einen Anfangswert für die Ganghöhe (Steigung) vor, der auf dem Profil-Begrenzungsrahmen basiert,
 damit eine Selbstdurchdringung vermieden wird.</translation>
     </message>
+    <message>
+      <location filename="../../../InvoluteGearFeature.py" line="98"/>
+      <source>Number of gear teeth</source>
+      <translation>Anzahl der Zähne</translation>
+    </message>
+    <message>
+      <location filename="../../../InvoluteGearFeature.py" line="101"/>
+      <source>Modules of the gear</source>
+      <translation>Modul des Zahnrades</translation>
+    </message>
+    <message>
+      <location filename="../../../InvoluteGearFeature.py" line="104"/>
+      <source>Pressure angle of gear teeth</source>
+      <translation>Eingriffswinkel der Zähne</translation>
+    </message>
+    <message>
+      <location filename="../../../InvoluteGearFeature.py" line="108"/>
+      <source>True=2 curves with each 3 control points False=1 curve with 4 control points.</source>
+      <translation>True=2 Kurven mit je 3 Kontrollpunkten, False=1 Kurve mit 4 Kontrollpunkten.</translation>
+    </message>
+    <message>
+      <location filename="../../../InvoluteGearFeature.py" line="111"/>
+      <source>True=external Gear False=internal Gear</source>
+      <translation>True=Außenverzahnung, False=Innenverzahnung</translation>
+    </message>
+    <message>
+      <location filename="../../../InvoluteGearFeature.py" line="115"/>
+      <source>The height of the tooth from the pitch circle up to its tip, normalized by the module.</source>
+      <translation>Die Zahnhöhe vom Teilkreis bis zum Kopfkreis, normalisiert durch den Modul.</translation>
+    </message>
+    <message>
+      <location filename="../../../InvoluteGearFeature.py" line="119"/>
+      <source>The height of the tooth from the pitch circle down to its root, normalized by the module.</source>
+      <translation>Die Zahnhöhe vom Teikreis bis zum Fußkreis, normalisiert durch den Modul.</translation>
+    </message>
+    <message>
+      <location filename="../../../InvoluteGearFeature.py" line="123"/>
+      <source>The radius of the fillet at the root of the tooth, normalized by the module.</source>
+      <translation>Der Radius der Ausrundung an der Wurzel des Zahnfußes, normalisiert durch den Modul.</translation>
+    </message>
+    <message>
+      <location filename="../../../InvoluteGearFeature.py" line="127"/>
+      <source>The distance by which the reference profile is shifted outwards, normalized by the module.</source>
+      <translation>Der Abstand, um den das Referenzprofil nach außen verschoben ist, normiert durch den Modul.</translation>
+    </message>
   </context>
   <context>
     <name>CmdPartDesignAdditiveHelix</name>
     <message>
-      <location filename="../../Command.cpp" line="1745"/>
+      <location filename="../../Command.cpp" line="1430"/>
       <source>PartDesign</source>
-      <translation>Teile-Konstruktion</translation>
+      <translation>PartDesign</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1746"/>
+      <location filename="../../Command.cpp" line="1431"/>
       <source>Additive helix</source>
       <translation>Wendel</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1747"/>
+      <location filename="../../Command.cpp" line="1432"/>
       <source>Sweep a selected sketch along a helix</source>
       <translation>Eine gewählte Skizze entlang einer Wendel austragen</translation>
     </message>
@@ -102,17 +147,17 @@ damit eine Selbstdurchdringung vermieden wird.</translation>
   <context>
     <name>CmdPartDesignAdditiveLoft</name>
     <message>
-      <location filename="../../Command.cpp" line="1644"/>
+      <location filename="../../Command.cpp" line="1329"/>
       <source>PartDesign</source>
-      <translation>Teile-Konstruktion</translation>
+      <translation>PartDesign</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1645"/>
+      <location filename="../../Command.cpp" line="1330"/>
       <source>Additive loft</source>
       <translation>Ausformung</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1646"/>
+      <location filename="../../Command.cpp" line="1331"/>
       <source>Loft a selected profile through other profile sections</source>
       <translation>Loft eines ausgewählten Profils durch andere Profilabschnitte</translation>
     </message>
@@ -120,17 +165,17 @@ damit eine Selbstdurchdringung vermieden wird.</translation>
   <context>
     <name>CmdPartDesignAdditivePipe</name>
     <message>
-      <location filename="../../Command.cpp" line="1542"/>
+      <location filename="../../Command.cpp" line="1227"/>
       <source>PartDesign</source>
-      <translation>Teile-Konstruktion</translation>
+      <translation>PartDesign</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1543"/>
+      <location filename="../../Command.cpp" line="1228"/>
       <source>Additive pipe</source>
       <translation>Rohr</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1544"/>
+      <location filename="../../Command.cpp" line="1229"/>
       <source>Sweep a selected sketch along a path or to other profiles</source>
       <translation>Trägt eine ausgewählte Skizze entlang eines Pfades oder zu weiteren Profilen aus</translation>
     </message>
@@ -140,7 +185,7 @@ damit eine Selbstdurchdringung vermieden wird.</translation>
     <message>
       <location filename="../../CommandBody.cpp" line="85"/>
       <source>PartDesign</source>
-      <translation>Teile-Konstruktion</translation>
+      <translation>PartDesign</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="86"/>
@@ -156,17 +201,17 @@ damit eine Selbstdurchdringung vermieden wird.</translation>
   <context>
     <name>CmdPartDesignBoolean</name>
     <message>
-      <location filename="../../Command.cpp" line="2638"/>
+      <location filename="../../Command.cpp" line="2343"/>
       <source>PartDesign</source>
-      <translation>Teile-Konstruktion</translation>
+      <translation>PartDesign</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2639"/>
+      <location filename="../../Command.cpp" line="2344"/>
       <source>Boolean operation</source>
       <translation>Boolesche Operation</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2640"/>
+      <location filename="../../Command.cpp" line="2345"/>
       <source>Boolean operation with two or more bodies</source>
       <translation>Boolsche Operation mit zwei oder mehr Körpern</translation>
     </message>
@@ -174,17 +219,17 @@ damit eine Selbstdurchdringung vermieden wird.</translation>
   <context>
     <name>CmdPartDesignCS</name>
     <message>
-      <location filename="../../Command.cpp" line="245"/>
+      <location filename="../../Command.cpp" line="246"/>
       <source>PartDesign</source>
-      <translation>Teile-Konstruktion</translation>
+      <translation>PartDesign</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="246"/>
+      <location filename="../../Command.cpp" line="247"/>
       <source>Create a local coordinate system</source>
       <translation>Lokales Koordinatensystem erstellen</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="247"/>
+      <location filename="../../Command.cpp" line="248"/>
       <source>Create a new local coordinate system</source>
       <translation>Neues lokales Koordinatensystem erstellen</translation>
     </message>
@@ -192,17 +237,17 @@ damit eine Selbstdurchdringung vermieden wird.</translation>
   <context>
     <name>CmdPartDesignChamfer</name>
     <message>
-      <location filename="../../Command.cpp" line="2038"/>
+      <location filename="../../Command.cpp" line="1724"/>
       <source>PartDesign</source>
-      <translation>Teile-Konstruktion</translation>
+      <translation>PartDesign</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2039"/>
+      <location filename="../../Command.cpp" line="1725"/>
       <source>Chamfer</source>
       <translation>Fase</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2040"/>
+      <location filename="../../Command.cpp" line="1726"/>
       <source>Chamfer the selected edges of a shape</source>
       <translation>Die gewählten Kanten einer Form abschrägen</translation>
     </message>
@@ -210,17 +255,17 @@ damit eine Selbstdurchdringung vermieden wird.</translation>
   <context>
     <name>CmdPartDesignClone</name>
     <message>
-      <location filename="../../Command.cpp" line="427"/>
+      <location filename="../../Command.cpp" line="428"/>
       <source>PartDesign</source>
-      <translation>Teile-Konstruktion</translation>
+      <translation>PartDesign</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="428"/>
+      <location filename="../../Command.cpp" line="429"/>
       <source>Create a clone</source>
       <translation>Klon erzeugen</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="429"/>
+      <location filename="../../Command.cpp" line="430"/>
       <source>Create a new clone</source>
       <translation>Neuen Klon erstellen</translation>
     </message>
@@ -228,17 +273,17 @@ damit eine Selbstdurchdringung vermieden wird.</translation>
   <context>
     <name>CmdPartDesignDraft</name>
     <message>
-      <location filename="../../Command.cpp" line="2067"/>
+      <location filename="../../Command.cpp" line="1753"/>
       <source>PartDesign</source>
-      <translation>Teile-Konstruktion</translation>
+      <translation>PartDesign</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2068"/>
+      <location filename="../../Command.cpp" line="1754"/>
       <source>Draft</source>
       <translation>Formschräge</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2069"/>
+      <location filename="../../Command.cpp" line="1755"/>
       <source>Make a draft on a face</source>
       <translation>Versieht eine Fläche mit einer Formschräge</translation>
     </message>
@@ -246,17 +291,17 @@ damit eine Selbstdurchdringung vermieden wird.</translation>
   <context>
     <name>CmdPartDesignDuplicateSelection</name>
     <message>
-      <location filename="../../CommandBody.cpp" line="602"/>
+      <location filename="../../CommandBody.cpp" line="606"/>
       <source>PartDesign</source>
-      <translation>Teile-Konstruktion</translation>
+      <translation>PartDesign</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="603"/>
+      <location filename="../../CommandBody.cpp" line="607"/>
       <source>Duplicate selected object</source>
       <translation>Ausgewähltes Objekt duplizieren</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="604"/>
+      <location filename="../../CommandBody.cpp" line="608"/>
       <source>Duplicates the selected object and adds it to the active body</source>
       <translation>Dupliziert das ausgewählte Objekt und fügt es dem aktiven Körper hinzu</translation>
     </message>
@@ -264,17 +309,17 @@ damit eine Selbstdurchdringung vermieden wird.</translation>
   <context>
     <name>CmdPartDesignFillet</name>
     <message>
-      <location filename="../../Command.cpp" line="2010"/>
+      <location filename="../../Command.cpp" line="1696"/>
       <source>PartDesign</source>
-      <translation>Teile-Konstruktion</translation>
+      <translation>PartDesign</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2011"/>
+      <location filename="../../Command.cpp" line="1697"/>
       <source>Fillet</source>
       <translation>Verrundung</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2012"/>
+      <location filename="../../Command.cpp" line="1698"/>
       <source>Make a fillet on an edge, face or body</source>
       <translation>Kante, Fläche oder Körper verrunden</translation>
     </message>
@@ -282,17 +327,17 @@ damit eine Selbstdurchdringung vermieden wird.</translation>
   <context>
     <name>CmdPartDesignGroove</name>
     <message>
-      <location filename="../../Command.cpp" line="1475"/>
+      <location filename="../../Command.cpp" line="1160"/>
       <source>PartDesign</source>
-      <translation>Teile-Konstruktion</translation>
+      <translation>PartDesign</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1476"/>
+      <location filename="../../Command.cpp" line="1161"/>
       <source>Groove</source>
       <translation>Nut</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1477"/>
+      <location filename="../../Command.cpp" line="1162"/>
       <source>Groove a selected sketch</source>
       <translation>Erzeuge Nut mit der ausgewählten Skizze</translation>
     </message>
@@ -300,17 +345,17 @@ damit eine Selbstdurchdringung vermieden wird.</translation>
   <context>
     <name>CmdPartDesignHole</name>
     <message>
-      <location filename="../../Command.cpp" line="1369"/>
+      <location filename="../../Command.cpp" line="1054"/>
       <source>PartDesign</source>
-      <translation>Teile-Konstruktion</translation>
+      <translation>PartDesign</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1370"/>
+      <location filename="../../Command.cpp" line="1055"/>
       <source>Hole</source>
       <translation>Bohrung</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1371"/>
+      <location filename="../../Command.cpp" line="1056"/>
       <source>Create a hole with the selected sketch</source>
       <translation>Erzeuge Bohrung mit ausgewählter Skizze</translation>
     </message>
@@ -318,17 +363,17 @@ damit eine Selbstdurchdringung vermieden wird.</translation>
   <context>
     <name>CmdPartDesignLine</name>
     <message>
-      <location filename="../../Command.cpp" line="189"/>
+      <location filename="../../Command.cpp" line="190"/>
       <source>PartDesign</source>
-      <translation>Teile-Konstruktion</translation>
+      <translation>PartDesign</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="190"/>
+      <location filename="../../Command.cpp" line="191"/>
       <source>Create a datum line</source>
       <translation>Bezugslinie erstellen</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="191"/>
+      <location filename="../../Command.cpp" line="192"/>
       <source>Create a new datum line</source>
       <translation>Erstellen einer neuen Bezugslinie</translation>
     </message>
@@ -336,17 +381,17 @@ damit eine Selbstdurchdringung vermieden wird.</translation>
   <context>
     <name>CmdPartDesignLinearPattern</name>
     <message>
-      <location filename="../../Command.cpp" line="2336"/>
+      <location filename="../../Command.cpp" line="2041"/>
       <source>PartDesign</source>
-      <translation>Teile-Konstruktion</translation>
+      <translation>PartDesign</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2337"/>
+      <location filename="../../Command.cpp" line="2042"/>
       <source>LinearPattern</source>
       <translation>Lineares Muster</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2338"/>
+      <location filename="../../Command.cpp" line="2043"/>
       <source>Create a linear pattern feature</source>
       <translation>Lineares Muster erzeugen</translation>
     </message>
@@ -354,17 +399,17 @@ damit eine Selbstdurchdringung vermieden wird.</translation>
   <context>
     <name>CmdPartDesignMigrate</name>
     <message>
-      <location filename="../../CommandBody.cpp" line="308"/>
+      <location filename="../../CommandBody.cpp" line="312"/>
       <source>PartDesign</source>
-      <translation>Teile-Konstruktion</translation>
+      <translation>PartDesign</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="309"/>
+      <location filename="../../CommandBody.cpp" line="313"/>
       <source>Migrate</source>
       <translation>Migrieren</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="310"/>
+      <location filename="../../CommandBody.cpp" line="314"/>
       <source>Migrate document to the modern PartDesign workflow</source>
       <translation>Migriere Dokument zum modernen PartDesign-Arbeitsablauf</translation>
     </message>
@@ -372,17 +417,17 @@ damit eine Selbstdurchdringung vermieden wird.</translation>
   <context>
     <name>CmdPartDesignMirrored</name>
     <message>
-      <location filename="../../Command.cpp" line="2274"/>
+      <location filename="../../Command.cpp" line="1979"/>
       <source>PartDesign</source>
-      <translation>Teile-Konstruktion</translation>
+      <translation>PartDesign</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2275"/>
+      <location filename="../../Command.cpp" line="1980"/>
       <source>Mirrored</source>
       <translation>Spiegeln</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2276"/>
+      <location filename="../../Command.cpp" line="1981"/>
       <source>Create a mirrored feature</source>
       <translation>Erzeuge gespiegeltes Objekt</translation>
     </message>
@@ -390,17 +435,17 @@ damit eine Selbstdurchdringung vermieden wird.</translation>
   <context>
     <name>CmdPartDesignMoveFeature</name>
     <message>
-      <location filename="../../CommandBody.cpp" line="658"/>
+      <location filename="../../CommandBody.cpp" line="662"/>
       <source>PartDesign</source>
-      <translation>Teile-Konstruktion</translation>
+      <translation>PartDesign</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="659"/>
+      <location filename="../../CommandBody.cpp" line="663"/>
       <source>Move object to other body</source>
       <translation>Objekt in anderen Körper verschieben</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="660"/>
+      <location filename="../../CommandBody.cpp" line="664"/>
       <source>Moves the selected object to another body</source>
       <translation>Verschiebt das ausgewählte Objekt in anderen Körper</translation>
     </message>
@@ -408,17 +453,17 @@ damit eine Selbstdurchdringung vermieden wird.</translation>
   <context>
     <name>CmdPartDesignMoveFeatureInTree</name>
     <message>
-      <location filename="../../CommandBody.cpp" line="825"/>
+      <location filename="../../CommandBody.cpp" line="829"/>
       <source>PartDesign</source>
-      <translation>Teile-Konstruktion</translation>
+      <translation>PartDesign</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="826"/>
+      <location filename="../../CommandBody.cpp" line="830"/>
       <source>Move object after other object</source>
       <translation>Objekt hinter ein anderes Objekt verschieben</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="827"/>
+      <location filename="../../CommandBody.cpp" line="831"/>
       <source>Moves the selected object and insert it after another object</source>
       <translation>Verschiebt das ausgewählte Objekt und fügt es hinter einem anderen Objekt ein</translation>
     </message>
@@ -426,17 +471,17 @@ damit eine Selbstdurchdringung vermieden wird.</translation>
   <context>
     <name>CmdPartDesignMoveTip</name>
     <message>
-      <location filename="../../CommandBody.cpp" line="523"/>
+      <location filename="../../CommandBody.cpp" line="527"/>
       <source>PartDesign</source>
-      <translation>Teile-Konstruktion</translation>
+      <translation>PartDesign</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="524"/>
+      <location filename="../../CommandBody.cpp" line="528"/>
       <source>Set tip</source>
       <translation>Arbeitsposition festlegen</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="525"/>
+      <location filename="../../CommandBody.cpp" line="529"/>
       <source>Move the tip of the body</source>
       <translation>Arbeitsposition im Strukturbaum verschieben</translation>
     </message>
@@ -444,17 +489,17 @@ damit eine Selbstdurchdringung vermieden wird.</translation>
   <context>
     <name>CmdPartDesignMultiTransform</name>
     <message>
-      <location filename="../../Command.cpp" line="2514"/>
+      <location filename="../../Command.cpp" line="2219"/>
       <source>PartDesign</source>
-      <translation>Teile-Konstruktion</translation>
+      <translation>PartDesign</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2515"/>
+      <location filename="../../Command.cpp" line="2220"/>
       <source>Create MultiTransform</source>
       <translation>Mehrfach-Transformation erstellen</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2516"/>
+      <location filename="../../Command.cpp" line="2221"/>
       <source>Create a multitransform feature</source>
       <translation>Erstellen einer Mehrfach-Transformation</translation>
     </message>
@@ -462,17 +507,17 @@ damit eine Selbstdurchdringung vermieden wird.</translation>
   <context>
     <name>CmdPartDesignNewSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="485"/>
+      <location filename="../../Command.cpp" line="502"/>
       <source>PartDesign</source>
-      <translation>Teile-Konstruktion</translation>
+      <translation>PartDesign</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="486"/>
+      <location filename="../../Command.cpp" line="503"/>
       <source>Create sketch</source>
-      <translation>Skizze erstellen</translation>
+      <translation>Skizzen erstellen</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="487"/>
+      <location filename="../../Command.cpp" line="504"/>
       <source>Create a new sketch</source>
       <translation>Neue Skizze erstellen</translation>
     </message>
@@ -480,17 +525,17 @@ damit eine Selbstdurchdringung vermieden wird.</translation>
   <context>
     <name>CmdPartDesignPad</name>
     <message>
-      <location filename="../../Command.cpp" line="1305"/>
+      <location filename="../../Command.cpp" line="990"/>
       <source>PartDesign</source>
-      <translation>Teile-Konstruktion</translation>
+      <translation>PartDesign</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1306"/>
+      <location filename="../../Command.cpp" line="991"/>
       <source>Pad</source>
       <translation>Aufpolsterung</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1307"/>
+      <location filename="../../Command.cpp" line="992"/>
       <source>Pad a selected sketch</source>
       <translation>Ausgewählte Skizze extrudieren</translation>
     </message>
@@ -498,17 +543,17 @@ damit eine Selbstdurchdringung vermieden wird.</translation>
   <context>
     <name>CmdPartDesignPlane</name>
     <message>
-      <location filename="../../Command.cpp" line="161"/>
+      <location filename="../../Command.cpp" line="162"/>
       <source>PartDesign</source>
-      <translation>Teile-Konstruktion</translation>
+      <translation>PartDesign</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="162"/>
+      <location filename="../../Command.cpp" line="163"/>
       <source>Create a datum plane</source>
       <translation>Bezugsebene erstellen</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="163"/>
+      <location filename="../../Command.cpp" line="164"/>
       <source>Create a new datum plane</source>
       <translation>Erstellen einer neuen Bezugsebene</translation>
     </message>
@@ -516,17 +561,17 @@ damit eine Selbstdurchdringung vermieden wird.</translation>
   <context>
     <name>CmdPartDesignPocket</name>
     <message>
-      <location filename="../../Command.cpp" line="1337"/>
+      <location filename="../../Command.cpp" line="1022"/>
       <source>PartDesign</source>
-      <translation>Teile-Konstruktion</translation>
+      <translation>PartDesign</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1338"/>
+      <location filename="../../Command.cpp" line="1023"/>
       <source>Pocket</source>
       <translation>Tasche</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1339"/>
+      <location filename="../../Command.cpp" line="1024"/>
       <source>Create a pocket with the selected sketch</source>
       <translation>Vertiefung  mit skizziertem Querschnitt erzeugen</translation>
     </message>
@@ -534,17 +579,17 @@ damit eine Selbstdurchdringung vermieden wird.</translation>
   <context>
     <name>CmdPartDesignPoint</name>
     <message>
-      <location filename="../../Command.cpp" line="217"/>
+      <location filename="../../Command.cpp" line="218"/>
       <source>PartDesign</source>
-      <translation>Teile-Konstruktion</translation>
+      <translation>PartDesign</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="218"/>
+      <location filename="../../Command.cpp" line="219"/>
       <source>Create a datum point</source>
       <translation>Bezugspunkt erstellen</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="219"/>
+      <location filename="../../Command.cpp" line="220"/>
       <source>Create a new datum point</source>
       <translation>Erstellen eines neuen Bezugspunkts</translation>
     </message>
@@ -552,17 +597,17 @@ damit eine Selbstdurchdringung vermieden wird.</translation>
   <context>
     <name>CmdPartDesignPolarPattern</name>
     <message>
-      <location filename="../../Command.cpp" line="2400"/>
+      <location filename="../../Command.cpp" line="2105"/>
       <source>PartDesign</source>
-      <translation>Teile-Konstruktion</translation>
+      <translation>PartDesign</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2401"/>
+      <location filename="../../Command.cpp" line="2106"/>
       <source>PolarPattern</source>
       <translation>Polares Muster</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2402"/>
+      <location filename="../../Command.cpp" line="2107"/>
       <source>Create a polar pattern feature</source>
       <translation>Erzeugen eines polaren Musters</translation>
     </message>
@@ -570,17 +615,17 @@ damit eine Selbstdurchdringung vermieden wird.</translation>
   <context>
     <name>CmdPartDesignRevolution</name>
     <message>
-      <location filename="../../Command.cpp" line="1416"/>
+      <location filename="../../Command.cpp" line="1101"/>
       <source>PartDesign</source>
-      <translation>Teile-Konstruktion</translation>
+      <translation>PartDesign</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1417"/>
+      <location filename="../../Command.cpp" line="1102"/>
       <source>Revolution</source>
       <translation>Drehteil</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1418"/>
+      <location filename="../../Command.cpp" line="1103"/>
       <source>Revolve a selected sketch</source>
       <translation>Rotiere die ausgewählte Skizze</translation>
     </message>
@@ -588,17 +633,17 @@ damit eine Selbstdurchdringung vermieden wird.</translation>
   <context>
     <name>CmdPartDesignScaled</name>
     <message>
-      <location filename="../../Command.cpp" line="2465"/>
+      <location filename="../../Command.cpp" line="2170"/>
       <source>PartDesign</source>
-      <translation>Teile-Konstruktion</translation>
+      <translation>PartDesign</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2466"/>
+      <location filename="../../Command.cpp" line="2171"/>
       <source>Scaled</source>
       <translation>skaliert</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2467"/>
+      <location filename="../../Command.cpp" line="2172"/>
       <source>Create a scaled feature</source>
       <translation>Erstellen eines skalierten Objekts</translation>
     </message>
@@ -606,17 +651,17 @@ damit eine Selbstdurchdringung vermieden wird.</translation>
   <context>
     <name>CmdPartDesignShapeBinder</name>
     <message>
-      <location filename="../../Command.cpp" line="277"/>
+      <location filename="../../Command.cpp" line="278"/>
       <source>PartDesign</source>
-      <translation>Teile-Konstruktion</translation>
+      <translation>PartDesign</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="278"/>
+      <location filename="../../Command.cpp" line="279"/>
       <source>Create a shape binder</source>
       <translation>Formbinder erstellen</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="279"/>
+      <location filename="../../Command.cpp" line="280"/>
       <source>Create a new shape binder</source>
       <translation>Neuen Formbinder erstellen</translation>
     </message>
@@ -624,13 +669,13 @@ damit eine Selbstdurchdringung vermieden wird.</translation>
   <context>
     <name>CmdPartDesignSubShapeBinder</name>
     <message>
-      <location filename="../../Command.cpp" line="343"/>
+      <location filename="../../Command.cpp" line="344"/>
       <source>PartDesign</source>
-      <translation>Teile-Konstruktion</translation>
+      <translation>PartDesign</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="344"/>
       <location filename="../../Command.cpp" line="345"/>
+      <location filename="../../Command.cpp" line="346"/>
       <source>Create a sub-object(s) shape binder</source>
       <translation>Formbinder für Teilobjekt erstellen</translation>
     </message>
@@ -638,17 +683,17 @@ damit eine Selbstdurchdringung vermieden wird.</translation>
   <context>
     <name>CmdPartDesignSubtractiveHelix</name>
     <message>
-      <location filename="../../Command.cpp" line="1822"/>
+      <location filename="../../Command.cpp" line="1507"/>
       <source>PartDesign</source>
-      <translation>Teile-Konstruktion</translation>
+      <translation>PartDesign</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1823"/>
+      <location filename="../../Command.cpp" line="1508"/>
       <source>Subtractive helix</source>
       <translation>Wendel</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1824"/>
+      <location filename="../../Command.cpp" line="1509"/>
       <source>Sweep a selected sketch along a helix and remove it from the body</source>
       <translation>Eine gewählte Skizze entlang einer Wendel austragen und vom Körper abziehen</translation>
     </message>
@@ -656,17 +701,17 @@ damit eine Selbstdurchdringung vermieden wird.</translation>
   <context>
     <name>CmdPartDesignSubtractiveLoft</name>
     <message>
-      <location filename="../../Command.cpp" line="1695"/>
+      <location filename="../../Command.cpp" line="1380"/>
       <source>PartDesign</source>
-      <translation>Teile-Konstruktion</translation>
+      <translation>PartDesign</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1696"/>
+      <location filename="../../Command.cpp" line="1381"/>
       <source>Subtractive loft</source>
       <translation>Ausformung</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1697"/>
+      <location filename="../../Command.cpp" line="1382"/>
       <source>Loft a selected profile through other profile sections and remove it from the body</source>
       <translation>Loft eines ausgewählten Profils durch andere Profilabschnitte und entfernt Sie es aus dem Körper</translation>
     </message>
@@ -674,17 +719,17 @@ damit eine Selbstdurchdringung vermieden wird.</translation>
   <context>
     <name>CmdPartDesignSubtractivePipe</name>
     <message>
-      <location filename="../../Command.cpp" line="1593"/>
+      <location filename="../../Command.cpp" line="1278"/>
       <source>PartDesign</source>
-      <translation>Teile-Konstruktion</translation>
+      <translation>PartDesign</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1594"/>
+      <location filename="../../Command.cpp" line="1279"/>
       <source>Subtractive pipe</source>
       <translation>Rohr</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1595"/>
+      <location filename="../../Command.cpp" line="1280"/>
       <source>Sweep a selected sketch along a path or to other profiles and remove it from the body</source>
       <translation>Trägt eine ausgewählte Skizze entlang eines Pfades oder zu weiteren Profilen aus und zieht das Ergebnis vom bestehenden Körper ab</translation>
     </message>
@@ -692,17 +737,17 @@ damit eine Selbstdurchdringung vermieden wird.</translation>
   <context>
     <name>CmdPartDesignThickness</name>
     <message>
-      <location filename="../../Command.cpp" line="2125"/>
+      <location filename="../../Command.cpp" line="1821"/>
       <source>PartDesign</source>
-      <translation>Teile-Konstruktion</translation>
+      <translation>PartDesign</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2126"/>
+      <location filename="../../Command.cpp" line="1822"/>
       <source>Thickness</source>
       <translation>Dicke</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2127"/>
+      <location filename="../../Command.cpp" line="1823"/>
       <source>Make a thick solid</source>
       <translation>Aufgedickten Festkörper erzeugen</translation>
     </message>
@@ -712,7 +757,7 @@ damit eine Selbstdurchdringung vermieden wird.</translation>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="68"/>
       <source>PartDesign</source>
-      <translation>Teile-Konstruktion</translation>
+      <translation>PartDesign</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="69"/>
@@ -766,7 +811,7 @@ damit eine Selbstdurchdringung vermieden wird.</translation>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="243"/>
       <source>PartDesign</source>
-      <translation>Teile-Konstruktion</translation>
+      <translation>PartDesign</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="244"/>
@@ -818,99 +863,99 @@ damit eine Selbstdurchdringung vermieden wird.</translation>
   <context>
     <name>Command</name>
     <message>
-      <location filename="../../Command.cpp" line="298"/>
+      <location filename="../../Command.cpp" line="299"/>
       <source>Edit ShapeBinder</source>
       <translation>Bearbeite Formbinder</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="307"/>
+      <location filename="../../Command.cpp" line="308"/>
       <source>Create ShapeBinder</source>
       <translation>Formbinder erstellen</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="390"/>
+      <location filename="../../Command.cpp" line="391"/>
       <source>Create SubShapeBinder</source>
       <translation>Formbinder für Teilobjekt erstellen</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="445"/>
+      <location filename="../../Command.cpp" line="446"/>
       <source>Create Clone</source>
       <translation>Klon erstellen</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="642"/>
-      <location filename="../../Command.cpp" line="1205"/>
+      <location filename="../../Command.cpp" line="890"/>
+      <location filename="../../SketchWorkflow.cpp" line="297"/>
       <source>Make copy</source>
       <translation>Kopie erstellen</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="666"/>
+      <location filename="../../SketchWorkflow.cpp" line="247"/>
       <source>Create a Sketch on Face</source>
       <translation>Skizze auf einer Fläche erstellen</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="687"/>
+      <location filename="../../SketchWorkflow.cpp" line="487"/>
       <source>Create a new Sketch</source>
       <translation>Neue Skizze erstellen</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2564"/>
+      <location filename="../../Command.cpp" line="2269"/>
       <source>Convert to MultiTransform feature</source>
       <translation>Wandle in Mehrfachtransformation um</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2656"/>
+      <location filename="../../Command.cpp" line="2361"/>
       <source>Create Boolean</source>
       <translation>Boolean erstellen</translation>
     </message>
     <message>
-      <location filename="../../DlgActiveBody.cpp" line="104"/>
       <location filename="../../CommandBody.cpp" line="189"/>
+      <location filename="../../DlgActiveBody.cpp" line="102"/>
       <source>Add a Body</source>
       <translation>Einen Körper hinzufügen</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="426"/>
+      <location filename="../../CommandBody.cpp" line="430"/>
       <source>Migrate legacy part design features to Bodies</source>
       <translation>Migrieren Sie alte Teildesignfunktionen in Körper</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="571"/>
+      <location filename="../../CommandBody.cpp" line="575"/>
       <source>Move tip to selected feature</source>
       <translation>Arbeitsposition zum gewählten Objekt verschieben</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="616"/>
+      <location filename="../../CommandBody.cpp" line="620"/>
       <source>Duplicate a PartDesign object</source>
       <translation>Ein PartDesign-Objekt duplizieren</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="739"/>
+      <location filename="../../CommandBody.cpp" line="743"/>
       <source>Move an object</source>
       <translation>Objekt verschieben</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="890"/>
+      <location filename="../../CommandBody.cpp" line="894"/>
       <source>Move an object inside tree</source>
       <translation>Objekt innerhalb des Baumes verschieben</translation>
     </message>
     <message>
-      <location filename="../../TaskMultiTransformParameters.cpp" line="292"/>
+      <location filename="../../TaskMultiTransformParameters.cpp" line="294"/>
       <source>Mirrored</source>
       <translation>Spiegeln</translation>
     </message>
     <message>
-      <location filename="../../TaskMultiTransformParameters.cpp" line="320"/>
+      <location filename="../../TaskMultiTransformParameters.cpp" line="322"/>
       <source>Make LinearPattern</source>
       <translation>Lineares Muster erstellen</translation>
     </message>
     <message>
-      <location filename="../../TaskMultiTransformParameters.cpp" line="358"/>
+      <location filename="../../TaskMultiTransformParameters.cpp" line="360"/>
       <source>PolarPattern</source>
       <translation>Polares Muster</translation>
     </message>
     <message>
-      <location filename="../../TaskMultiTransformParameters.cpp" line="386"/>
+      <location filename="../../TaskMultiTransformParameters.cpp" line="388"/>
       <source>Scaled</source>
       <translation>skaliert</translation>
     </message>
@@ -1015,44 +1060,25 @@ damit eine Selbstdurchdringung vermieden wird.</translation>
       <source>External gear:</source>
       <translation>Außenrad:</translation>
     </message>
-  </context>
-  <context>
-    <name>PartDesign::Groove</name>
     <message>
-      <location filename="../../../App/FeatureGroove.cpp" line="101"/>
-      <source>The requested feature cannot be created. The reason may be that:
-  - the active Body does not contain a base shape, so there is no
-  material to be removed;
-  - the selected sketch does not belong to the active Body.</source>
-      <translation>Das gewünschte Merkmal kann nicht erzeugt werden. Der Grund kann sein:
-- Der aktive Körper enthält keine Basisform, so dass kein Material entfernt werden kann;
-- Die gewählte Skizze gehört nicht zum aktiven Körper.</translation>
+      <location filename="../../../InvoluteGearFeature.ui" line="179"/>
+      <source>Addendum Coefficient</source>
+      <translation>Kopfhöhenfaktor</translation>
     </message>
-  </context>
-  <context>
-    <name>PartDesign::Hole</name>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="1646"/>
-      <source>The requested feature cannot be created. The reason may be that:
-  - the active Body does not contain a base shape, so there is no
-  material to be removed;
-  - the selected sketch does not belong to the active Body.</source>
-      <translation>Das gewünschte Merkmal kann nicht erzeugt werden. Der Grund kann sein:
-- Der aktive Körper enthält keine Basisform, so dass kein Material entfernt werden kann;
-- Die gewählte Skizze gehört nicht zum aktiven Körper.</translation>
+      <location filename="../../../InvoluteGearFeature.ui" line="199"/>
+      <source>Dedendum Coefficient</source>
+      <translation>Fußhöhenfaktor</translation>
     </message>
-  </context>
-  <context>
-    <name>PartDesign::Pocket</name>
     <message>
-      <location filename="../../../App/FeaturePocket.cpp" line="101"/>
-      <source>The requested feature cannot be created. The reason may be that:
-  - the active Body does not contain a base shape, so there is no
-  material to be removed;
-  - the selected sketch does not belong to the active Body.</source>
-      <translation>Das gewünschte Merkmal kann nicht erzeugt werden. Der Grund kann sein:
-- Der aktive Körper enthält keine Basisform, so dass kein Material entfernt werden kann;
-- Die gewählte Skizze gehört nicht zum aktiven Körper.</translation>
+      <location filename="../../../InvoluteGearFeature.ui" line="219"/>
+      <source>Root Fillet Coefficient</source>
+      <translation>Fußrundungsfaktor</translation>
+    </message>
+    <message>
+      <location filename="../../../InvoluteGearFeature.ui" line="239"/>
+      <source>Profile Shift Coefficient</source>
+      <translation>Profilverschiebungskoeffizient</translation>
     </message>
   </context>
   <context>
@@ -1209,12 +1235,12 @@ Wenn Null, ist er gleich Radius2</translation>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="1023"/>
       <source>Radius in local xy-plane</source>
-      <translation>Radius in lokaler XY-Ebene</translation>
+      <translation>Radius auf lokaler XY-Ebene</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="1046"/>
       <source>Radius in local xz-plane</source>
-      <translation>Radius in lokaler XZ-Ebene</translation>
+      <translation>Radius auf lokaler XZ-Ebene</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="1091"/>
@@ -1303,7 +1329,7 @@ Wenn Null, ist er gleich Radius2</translation>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="1879"/>
       <source>From three points</source>
-      <translation>Aus drei Punkten</translation>
+      <translation>Von drei Punkten</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="1907"/>
@@ -1313,7 +1339,7 @@ Wenn Null, ist er gleich Radius2</translation>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="1927"/>
       <source>Minor radius:</source>
-      <translation>Nebenradius:</translation>
+      <translation>Innenradius:</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="2005"/>
@@ -1386,11 +1412,6 @@ Wenn Null, ist er gleich Radius2</translation>
   <context>
     <name>PartDesignGui::TaskBooleanParameters</name>
     <message>
-      <location filename="../../TaskBooleanParameters.ui" line="14"/>
-      <source>Form</source>
-      <translation>Form</translation>
-    </message>
-    <message>
       <location filename="../../TaskBooleanParameters.ui" line="22"/>
       <source>Add body</source>
       <translation>Körper hinzufügen</translation>
@@ -1408,7 +1429,7 @@ Wenn Null, ist er gleich Radius2</translation>
     <message>
       <location filename="../../TaskBooleanParameters.ui" line="53"/>
       <source>Cut</source>
-      <translation>Differenz</translation>
+      <translation>Ausschneiden</translation>
     </message>
     <message>
       <location filename="../../TaskBooleanParameters.ui" line="58"/>
@@ -1423,7 +1444,7 @@ Wenn Null, ist er gleich Radius2</translation>
     <message>
       <location filename="../../TaskBooleanParameters.cpp" line="81"/>
       <source>Remove</source>
-      <translation>Entfernen</translation>
+      <translation>Löschen</translation>
     </message>
   </context>
   <context>
@@ -1434,39 +1455,39 @@ Wenn Null, ist er gleich Radius2</translation>
       <translation>Parameter des Grundkörpers</translation>
     </message>
     <message>
-      <location filename="../../TaskPrimitiveParameters.cpp" line="718"/>
+      <location filename="../../TaskPrimitiveParameters.cpp" line="760"/>
       <source>Cone radii are equal</source>
       <translation>Kegelradien sind gleich</translation>
     </message>
     <message>
-      <location filename="../../TaskPrimitiveParameters.cpp" line="719"/>
+      <location filename="../../TaskPrimitiveParameters.cpp" line="761"/>
       <source>The radii for cones must not be equal!</source>
       <translation>Die Radien für Kegel dürfen nicht gleich sein!</translation>
     </message>
     <message>
-      <location filename="../../TaskPrimitiveParameters.cpp" line="794"/>
-      <location filename="../../TaskPrimitiveParameters.cpp" line="799"/>
-      <location filename="../../TaskPrimitiveParameters.cpp" line="804"/>
+      <location filename="../../TaskPrimitiveParameters.cpp" line="836"/>
+      <location filename="../../TaskPrimitiveParameters.cpp" line="841"/>
+      <location filename="../../TaskPrimitiveParameters.cpp" line="846"/>
       <source>Invalid wedge parameters</source>
       <translation>Ungültige Keil-Parameter</translation>
     </message>
     <message>
-      <location filename="../../TaskPrimitiveParameters.cpp" line="795"/>
+      <location filename="../../TaskPrimitiveParameters.cpp" line="837"/>
       <source>X min must not be equal to X max!</source>
       <translation>X min darf nicht gleich X max sein!</translation>
     </message>
     <message>
-      <location filename="../../TaskPrimitiveParameters.cpp" line="800"/>
+      <location filename="../../TaskPrimitiveParameters.cpp" line="842"/>
       <source>Y min must not be equal to Y max!</source>
       <translation>Y min darf nicht gleich Y max sein!</translation>
     </message>
     <message>
-      <location filename="../../TaskPrimitiveParameters.cpp" line="805"/>
+      <location filename="../../TaskPrimitiveParameters.cpp" line="847"/>
       <source>Z min must not be equal to Z max!</source>
       <translation>Z min darf nicht gleich Z max sein!</translation>
     </message>
     <message>
-      <location filename="../../TaskPrimitiveParameters.cpp" line="843"/>
+      <location filename="../../TaskPrimitiveParameters.cpp" line="885"/>
       <source>Create primitive</source>
       <translation>Grundkörper erstellen</translation>
     </message>
@@ -1474,114 +1495,91 @@ Wenn Null, ist er gleich Radius2</translation>
   <context>
     <name>PartDesignGui::TaskChamferParameters</name>
     <message>
-      <location filename="../../TaskChamferParameters.ui" line="14"/>
-      <source>Form</source>
-      <translation>Form</translation>
-    </message>
-    <message>
-      <location filename="../../TaskChamferParameters.ui" line="22"/>
-      <location filename="../../TaskChamferParameters.ui" line="36"/>
-      <location filename="../../TaskChamferParameters.cpp" line="170"/>
+      <location filename="../../TaskChamferParameters.ui" line="20"/>
       <source>Click button to enter selection mode,
 click again to end selection</source>
       <translation>Klicken Sie auf den Button um in den Auswahl-Modus zu gelangen.
 Nochmaliges Klicken beendet den Auswahl-Modus.</translation>
     </message>
     <message>
-      <location filename="../../TaskChamferParameters.ui" line="26"/>
-      <source>Add</source>
-      <translation>Hinzufügen</translation>
+      <location filename="../../TaskChamferParameters.ui" line="24"/>
+      <source>Select</source>
+      <translation>Auswählen</translation>
     </message>
     <message>
-      <location filename="../../TaskChamferParameters.ui" line="40"/>
-      <source>Remove</source>
-      <translation>Entfernen</translation>
-    </message>
-    <message>
-      <location filename="../../TaskChamferParameters.ui" line="52"/>
+      <location filename="../../TaskChamferParameters.ui" line="34"/>
       <source>- select an item to highlight it
 - double-click on an item to see the chamfers</source>
       <translation>- Wählen Sie ein Element um es zu markieren
 - Doppelklicken Sie auf ein Element, um die Fasen zu sehen</translation>
     </message>
     <message>
-      <location filename="../../TaskChamferParameters.ui" line="67"/>
+      <location filename="../../TaskChamferParameters.ui" line="49"/>
       <source>Type</source>
       <translation>Typ</translation>
     </message>
     <message>
-      <location filename="../../TaskChamferParameters.ui" line="75"/>
+      <location filename="../../TaskChamferParameters.ui" line="57"/>
       <source>Equal distance</source>
-      <translation>Gleiche Distanz</translation>
+      <translation>Gleicher Abstand</translation>
+    </message>
+    <message>
+      <location filename="../../TaskChamferParameters.ui" line="62"/>
+      <source>Two distances</source>
+      <translation>Zwei Abstände</translation>
+    </message>
+    <message>
+      <location filename="../../TaskChamferParameters.ui" line="67"/>
+      <source>Distance and angle</source>
+      <translation>Abstand und Winkel</translation>
     </message>
     <message>
       <location filename="../../TaskChamferParameters.ui" line="80"/>
-      <source>Two distances</source>
-      <translation>Zwei Distanzen</translation>
-    </message>
-    <message>
-      <location filename="../../TaskChamferParameters.ui" line="85"/>
-      <source>Distance and angle</source>
-      <translation>Distanz und Winkel</translation>
-    </message>
-    <message>
-      <location filename="../../TaskChamferParameters.ui" line="98"/>
       <source>Flip direction</source>
       <translation>Richtung umkehren</translation>
     </message>
     <message>
-      <location filename="../../TaskChamferParameters.ui" line="119"/>
+      <location filename="../../TaskChamferParameters.ui" line="101"/>
       <source>Size</source>
       <translation>Größe</translation>
     </message>
     <message>
-      <location filename="../../TaskChamferParameters.ui" line="138"/>
+      <location filename="../../TaskChamferParameters.ui" line="120"/>
       <source>Use All Edges</source>
       <translation>Alle Kanten verwenden</translation>
     </message>
     <message>
-      <location filename="../../TaskChamferParameters.ui" line="165"/>
+      <location filename="../../TaskChamferParameters.ui" line="147"/>
       <source>Size 2</source>
-      <translation>Größe 2</translation>
+      <translation>Abstand 2</translation>
     </message>
     <message>
-      <location filename="../../TaskChamferParameters.ui" line="198"/>
+      <location filename="../../TaskChamferParameters.ui" line="180"/>
       <source>Angle</source>
       <translation>Winkel</translation>
     </message>
     <message>
-      <location filename="../../TaskChamferParameters.cpp" line="180"/>
-      <location filename="../../TaskChamferParameters.cpp" line="182"/>
-      <location filename="../../TaskChamferParameters.cpp" line="257"/>
-      <location filename="../../TaskChamferParameters.cpp" line="259"/>
-      <source>There must be at least one item</source>
-      <translation>Es muss mindestens ein Element vorhanden sein</translation>
-    </message>
-    <message>
-      <location filename="../../TaskChamferParameters.cpp" line="225"/>
-      <source>Selection error</source>
-      <translation>Auswahlfehler</translation>
-    </message>
-    <message>
-      <location filename="../../TaskChamferParameters.cpp" line="225"/>
-      <source>At least one item must be kept.</source>
-      <translation>Es muss mindestens ein Element behalten werden.</translation>
+      <location filename="../../TaskChamferParameters.cpp" line="323"/>
+      <source>Empty chamfer created !
+</source>
+      <translation>Leere Fase erzeugt !
+</translation>
     </message>
   </context>
   <context>
     <name>PartDesignGui::TaskDlgBooleanParameters</name>
     <message>
-      <location filename="../../TaskBooleanParameters.cpp" line="352"/>
+      <location filename="../../TaskBooleanParameters.cpp" line="347"/>
       <source>Empty body list</source>
       <translation>Leere Körperliste</translation>
     </message>
     <message>
-      <location filename="../../TaskBooleanParameters.cpp" line="353"/>
+      <location filename="../../TaskBooleanParameters.cpp" line="348"/>
       <source>The body list cannot be empty</source>
       <translation>Die Körperliste darf nicht leer sein</translation>
     </message>
     <message>
-      <location filename="../../TaskBooleanParameters.cpp" line="364"/>
+      <location filename="../../TaskBooleanParameters.cpp" line="360"/>
       <source>Boolean: Accept: Input error</source>
       <translation>Boolean: Akzeptieren: Eingabefehler</translation>
     </message>
@@ -1589,12 +1587,12 @@ Nochmaliges Klicken beendet den Auswahl-Modus.</translation>
   <context>
     <name>PartDesignGui::TaskDlgDatumParameters</name>
     <message>
-      <location filename="../../TaskDatumParameters.cpp" line="104"/>
+      <location filename="../../TaskDatumParameters.cpp" line="101"/>
       <source>Incompatible reference set</source>
       <translation>Inkompatible Referenzen</translation>
     </message>
     <message>
-      <location filename="../../TaskDatumParameters.cpp" line="105"/>
+      <location filename="../../TaskDatumParameters.cpp" line="102"/>
       <source>There is no attachment mode that fits the current set of references. If you choose to continue, the feature will remain where it is now, and will not be moved as the references change. Continue?</source>
       <translation>Es gibt keinen Anhang-Modus, das zu dem aktuellen Set von Referenzen passt. Wenn du fortsetzen willst, bleibt die Funktion dort, wo sie jetzt ist, und wird nicht verschoben, wenn sich die Referenzen ändern. Fortsetzen?</translation>
     </message>
@@ -1602,7 +1600,7 @@ Nochmaliges Klicken beendet den Auswahl-Modus.</translation>
   <context>
     <name>PartDesignGui::TaskDlgFeatureParameters</name>
     <message>
-      <location filename="../../TaskFeatureParameters.cpp" line="133"/>
+      <location filename="../../TaskFeatureParameters.cpp" line="130"/>
       <source>Input error</source>
       <translation>Eingabefehler</translation>
     </message>
@@ -1610,7 +1608,7 @@ Nochmaliges Klicken beendet den Auswahl-Modus.</translation>
   <context>
     <name>PartDesignGui::TaskDlgShapeBinder</name>
     <message>
-      <location filename="../../TaskShapeBinder.cpp" line="331"/>
+      <location filename="../../TaskShapeBinder.cpp" line="408"/>
       <source>Input error</source>
       <translation>Eingabefehler</translation>
     </message>
@@ -1618,142 +1616,122 @@ Nochmaliges Klicken beendet den Auswahl-Modus.</translation>
   <context>
     <name>PartDesignGui::TaskDraftParameters</name>
     <message>
-      <location filename="../../TaskDraftParameters.ui" line="14"/>
-      <source>Form</source>
-      <translation>Form</translation>
-    </message>
-    <message>
-      <location filename="../../TaskDraftParameters.ui" line="22"/>
-      <location filename="../../TaskDraftParameters.ui" line="36"/>
-      <location filename="../../TaskDraftParameters.cpp" line="137"/>
+      <location filename="../../TaskDraftParameters.ui" line="20"/>
       <source>Click button to enter selection mode,
 click again to end selection</source>
-      <translation>Klicken Sie auf den Button um in den Auswahl-Modus zu gelangen.
-Nochmaliges Klicken beendet den Auswahl-Modus.</translation>
+      <translation>Klicken Sie auf die Schaltfläche, um den Auswahlmodus zu betreten,
+erneut klicken um die Auswahl zu beenden</translation>
     </message>
     <message>
-      <location filename="../../TaskDraftParameters.ui" line="26"/>
-      <source>Add face</source>
-      <translation>Fläche hinzufügen</translation>
+      <location filename="../../TaskDraftParameters.ui" line="24"/>
+      <source>Select</source>
+      <translation>Auswählen</translation>
     </message>
     <message>
-      <location filename="../../TaskDraftParameters.ui" line="40"/>
-      <source>Remove face</source>
-      <translation>Fläche entfernen</translation>
-    </message>
-    <message>
-      <location filename="../../TaskDraftParameters.ui" line="52"/>
+      <location filename="../../TaskDraftParameters.ui" line="34"/>
       <source>- select an item to highlight it
 - double-click on an item to see the drafts</source>
       <translation>- Wählen Sie ein Element um es zu markieren
 - Doppelklicken Sie auf ein Element, um die Formschräge zu sehen</translation>
     </message>
     <message>
-      <location filename="../../TaskDraftParameters.ui" line="65"/>
+      <location filename="../../TaskDraftParameters.ui" line="47"/>
       <source>Draft angle</source>
       <translation>Formschrägenwinkel</translation>
     </message>
     <message>
-      <location filename="../../TaskDraftParameters.ui" line="98"/>
+      <location filename="../../TaskDraftParameters.ui" line="80"/>
       <source>Neutral plane</source>
       <translation>Neutrale Ebene</translation>
     </message>
     <message>
-      <location filename="../../TaskDraftParameters.ui" line="115"/>
+      <location filename="../../TaskDraftParameters.ui" line="97"/>
       <source>Pull direction</source>
       <translation>Zugrichtung</translation>
     </message>
     <message>
-      <location filename="../../TaskDraftParameters.ui" line="130"/>
+      <location filename="../../TaskDraftParameters.ui" line="112"/>
       <source>Reverse pull direction</source>
       <translation>Entformungsrichtung umkehren</translation>
     </message>
     <message>
-      <location filename="../../TaskDraftParameters.cpp" line="147"/>
-      <location filename="../../TaskDraftParameters.cpp" line="149"/>
-      <location filename="../../TaskDraftParameters.cpp" line="273"/>
-      <location filename="../../TaskDraftParameters.cpp" line="275"/>
-      <source>There must be at least one item</source>
-      <translation>Es muss mindestens ein Element vorhanden sein</translation>
-    </message>
-    <message>
-      <location filename="../../TaskDraftParameters.cpp" line="241"/>
-      <source>Selection error</source>
-      <translation>Auswahlfehler</translation>
-    </message>
-    <message>
-      <location filename="../../TaskDraftParameters.cpp" line="241"/>
-      <source>At least one item must be kept.</source>
-      <translation>Es muss mindestens ein Element behalten werden.</translation>
+      <location filename="../../TaskDraftParameters.cpp" line="281"/>
+      <source>Empty draft created !
+</source>
+      <translation>Leerer Entwurf erstellt !
+</translation>
     </message>
   </context>
   <context>
     <name>PartDesignGui::TaskDressUpParameters</name>
     <message>
-      <location filename="../../TaskDressUpParameters.cpp" line="276"/>
+      <location filename="../../TaskDressUpParameters.cpp" line="84"/>
+      <source>Preview</source>
+      <translation>Vorschau</translation>
+    </message>
+    <message>
+      <location filename="../../TaskDressUpParameters.cpp" line="90"/>
+      <source>Select</source>
+      <translation>Auswählen</translation>
+    </message>
+    <message>
+      <location filename="../../TaskDressUpParameters.cpp" line="262"/>
       <source>Add all edges</source>
       <translation>Alle Kanten hinzufügen</translation>
     </message>
     <message>
-      <location filename="../../TaskDressUpParameters.cpp" line="284"/>
+      <location filename="../../TaskDressUpParameters.cpp" line="269"/>
       <source>Adds all edges to the list box (active only when in add selection mode).</source>
       <translation>Fügt alle Kanten in das Listenfeld hinzu (aktiv nur im Auswahlmodus Hinzufügen).</translation>
     </message>
     <message>
-      <location filename="../../TaskDressUpParameters.cpp" line="293"/>
+      <location filename="../../TaskDressUpParameters.cpp" line="277"/>
       <source>Remove</source>
       <translation>Entfernen</translation>
-    </message>
-    <message>
-      <location filename="../../TaskDressUpParameters.cpp" line="303"/>
-      <location filename="../../TaskDressUpParameters.cpp" line="305"/>
-      <source>There must be at least one item</source>
-      <translation>Es muss mindestens ein Element vorhanden sein</translation>
     </message>
   </context>
   <context>
     <name>PartDesignGui::TaskExtrudeParameters</name>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="53"/>
-      <location filename="../../TaskExtrudeParameters.cpp" line="723"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="897"/>
       <source>No face selected</source>
       <translation>Keine Fläche ausgewählt</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="156"/>
-      <location filename="../../TaskExtrudeParameters.cpp" line="737"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="153"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="735"/>
       <source>Face</source>
       <translation>Fläche</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="360"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="357"/>
       <source>Sketch normal</source>
       <translation>Skizzennormale</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="362"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="359"/>
       <source>Face normal</source>
       <translation>Flächennormale</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="365"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="362"/>
       <source>Select reference...</source>
       <translation>Referenz auswählen...</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="369"/>
-      <location filename="../../TaskExtrudeParameters.cpp" line="371"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="366"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="368"/>
       <source>Custom direction</source>
       <translation>Benutzerdefinierte Richtung</translation>
+    </message>
+    <message>
+      <location filename="../../TaskExtrudeParameters.cpp" line="892"/>
+      <source>Click on a face in the model</source>
+      <translation>Klicken Sie auf eine Fläche im Modell</translation>
     </message>
   </context>
   <context>
     <name>PartDesignGui::TaskFeaturePick</name>
-    <message>
-      <location filename="../../TaskFeaturePick.ui" line="14"/>
-      <source>Form</source>
-      <translation>Form</translation>
-    </message>
     <message>
       <location filename="../../TaskFeaturePick.ui" line="23"/>
       <source>Allow used features</source>
@@ -1843,72 +1821,44 @@ Nochmaliges Klicken beendet den Auswahl-Modus.</translation>
   <context>
     <name>PartDesignGui::TaskFilletParameters</name>
     <message>
-      <location filename="../../TaskFilletParameters.ui" line="14"/>
-      <source>Form</source>
-      <translation>Form</translation>
-    </message>
-    <message>
-      <location filename="../../TaskFilletParameters.ui" line="22"/>
-      <location filename="../../TaskFilletParameters.ui" line="36"/>
-      <location filename="../../TaskFilletParameters.cpp" line="124"/>
+      <location filename="../../TaskFilletParameters.ui" line="20"/>
       <source>Click button to enter selection mode,
 click again to end selection</source>
-      <translation>Klicken Sie auf den Button um in den Auswahl-Modus zu gelangen.
-Nochmaliges Klicken beendet den Auswahl-Modus.</translation>
+      <translation>Klicken Sie auf die Schaltfläche, um den Auswahlmodus zu betreten,
+erneut klicken um die Auswahl zu beenden</translation>
     </message>
     <message>
-      <location filename="../../TaskFilletParameters.ui" line="26"/>
-      <source>Add</source>
-      <translation>Hinzufügen</translation>
+      <location filename="../../TaskFilletParameters.ui" line="24"/>
+      <source>Select</source>
+      <translation>Auswählen</translation>
     </message>
     <message>
-      <location filename="../../TaskFilletParameters.ui" line="40"/>
-      <source>Remove</source>
-      <translation>Entfernen</translation>
-    </message>
-    <message>
-      <location filename="../../TaskFilletParameters.ui" line="52"/>
+      <location filename="../../TaskFilletParameters.ui" line="34"/>
       <source>- select an item to highlight it
 - double-click on an item to see the fillets</source>
       <translation>- Wählen Sie ein Element um es zu markieren
 - Doppelklicken Sie auf ein Element, um die Verrundung zu sehen</translation>
     </message>
     <message>
-      <location filename="../../TaskFilletParameters.ui" line="65"/>
+      <location filename="../../TaskFilletParameters.ui" line="47"/>
       <source>Radius:</source>
       <translation>Radius:</translation>
     </message>
     <message>
-      <location filename="../../TaskFilletParameters.ui" line="81"/>
+      <location filename="../../TaskFilletParameters.ui" line="63"/>
       <source>Use All Edges</source>
       <translation>Alle Kanten verwenden</translation>
     </message>
     <message>
-      <location filename="../../TaskFilletParameters.cpp" line="134"/>
-      <location filename="../../TaskFilletParameters.cpp" line="136"/>
-      <location filename="../../TaskFilletParameters.cpp" line="211"/>
-      <location filename="../../TaskFilletParameters.cpp" line="213"/>
-      <source>There must be at least one item</source>
-      <translation>Es muss mindestens ein Element vorhanden sein</translation>
-    </message>
-    <message>
-      <location filename="../../TaskFilletParameters.cpp" line="179"/>
-      <source>Selection error</source>
-      <translation>Auswahlfehler</translation>
-    </message>
-    <message>
-      <location filename="../../TaskFilletParameters.cpp" line="179"/>
-      <source>At least one item must be kept.</source>
-      <translation>Es muss mindestens ein Element behalten werden.</translation>
+      <location filename="../../TaskFilletParameters.cpp" line="193"/>
+      <source>Empty fillet created !
+</source>
+      <translation>Leere Abrundung erstellt !
+</translation>
     </message>
   </context>
   <context>
     <name>PartDesignGui::TaskHelixParameters</name>
-    <message>
-      <location filename="../../TaskHelixParameters.ui" line="14"/>
-      <source>Form</source>
-      <translation>Form</translation>
-    </message>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="22"/>
       <source>Status:</source>
@@ -2014,7 +1964,7 @@ Nochmaliges Klicken beendet den Auswahl-Modus.</translation>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="233"/>
       <source>Radial growth:</source>
-      <translation>Radiales Wachstum:</translation>
+      <translation>Radiale Aufweitung:</translation>
     </message>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="255"/>
@@ -2047,7 +1997,17 @@ Nochmaliges Klicken beendet den Auswahl-Modus.</translation>
       <translation>Konstruktionslinie %1</translation>
     </message>
     <message>
-      <location filename="../../TaskHelixParameters.cpp" line="333"/>
+      <location filename="../../TaskHelixParameters.cpp" line="281"/>
+      <source>Warning: helix might be self intersecting</source>
+      <translation>Warnung: Helix könnte sich selbst durchdringen</translation>
+    </message>
+    <message>
+      <location filename="../../TaskHelixParameters.cpp" line="286"/>
+      <source>Error: helix touches itself</source>
+      <translation>Fehler: Helix berührt sich selbst</translation>
+    </message>
+    <message>
+      <location filename="../../TaskHelixParameters.cpp" line="334"/>
       <source>Error: unsupported mode</source>
       <translation>Fehler: nicht unterstützter Modus</translation>
     </message>
@@ -2066,62 +2026,47 @@ Nochmaliges Klicken beendet den Auswahl-Modus.</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.cpp" line="49"/>
-      <source>Cheesehead (deprecated)</source>
-      <translation>Zylindersenkung (veraltet)</translation>
+      <source>Counterdrill</source>
+      <translation>Bohrsenkung</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="50"/>
-      <source>Countersink socket screw (deprecated)</source>
-      <translation>Senkung (veraltet)</translation>
-    </message>
-    <message>
-      <location filename="../../TaskHoleParameters.cpp" line="51"/>
-      <source>Cap screw (deprecated)</source>
-      <translation>Zylinderschraube (veraltet)</translation>
-    </message>
-    <message>
-      <location filename="../../TaskHoleParameters.cpp" line="55"/>
+      <location filename="../../TaskHoleParameters.cpp" line="53"/>
       <source>Hole parameters</source>
       <translation>Bohrungsparameter</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="65"/>
+      <location filename="../../TaskHoleParameters.cpp" line="63"/>
       <source>None</source>
-      <translation>Nichts</translation>
+      <translation>Ohne</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="66"/>
+      <location filename="../../TaskHoleParameters.cpp" line="64"/>
       <source>ISO metric regular profile</source>
       <translation>Metrisches ISO Regelgewinde</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="67"/>
+      <location filename="../../TaskHoleParameters.cpp" line="65"/>
       <source>ISO metric fine profile</source>
       <translation>Metrisches ISO Feingewinde</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="68"/>
+      <location filename="../../TaskHoleParameters.cpp" line="66"/>
       <source>UTS coarse profile</source>
       <translation>UTS Grobprofil</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="69"/>
+      <location filename="../../TaskHoleParameters.cpp" line="67"/>
       <source>UTS fine profile</source>
       <translation>UTS Feinprofil</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="70"/>
+      <location filename="../../TaskHoleParameters.cpp" line="68"/>
       <source>UTS extra fine profile</source>
       <translation>UTS extra Feinprofil</translation>
     </message>
   </context>
   <context>
     <name>PartDesignGui::TaskLinearPatternParameters</name>
-    <message>
-      <location filename="../../TaskLinearPatternParameters.ui" line="14"/>
-      <source>Form</source>
-      <translation>Form</translation>
-    </message>
     <message>
       <location filename="../../TaskLinearPatternParameters.ui" line="22"/>
       <source>Add feature</source>
@@ -2135,7 +2080,7 @@ Nochmaliges Klicken beendet den Auswahl-Modus.</translation>
     <message>
       <location filename="../../TaskLinearPatternParameters.ui" line="44"/>
       <source>List can be reordered by dragging</source>
-      <translation>Liste kann durch Ziehen neu sortiert werden</translation>
+      <translation>Die Liste kann durch Ziehen neu sortiert werden</translation>
     </message>
     <message>
       <location filename="../../TaskLinearPatternParameters.ui" line="56"/>
@@ -2145,46 +2090,57 @@ Nochmaliges Klicken beendet den Auswahl-Modus.</translation>
     <message>
       <location filename="../../TaskLinearPatternParameters.ui" line="68"/>
       <source>Reverse direction</source>
-      <translation>Umgekehrte Richtung</translation>
+      <translation>Richtung umkehren</translation>
     </message>
     <message>
       <location filename="../../TaskLinearPatternParameters.ui" line="77"/>
+      <source>Mode</source>
+      <translation>Modus</translation>
+    </message>
+    <message>
+      <location filename="../../TaskLinearPatternParameters.ui" line="85"/>
+      <source>Overall Length</source>
+      <translation>Gesamtlänge</translation>
+    </message>
+    <message>
+      <location filename="../../TaskLinearPatternParameters.ui" line="90"/>
+      <location filename="../../TaskLinearPatternParameters.ui" line="153"/>
+      <source>Offset</source>
+      <translation>Versetzen</translation>
+    </message>
+    <message>
+      <location filename="../../TaskLinearPatternParameters.ui" line="115"/>
       <source>Length</source>
       <translation>Länge</translation>
     </message>
     <message>
-      <location filename="../../TaskLinearPatternParameters.ui" line="101"/>
+      <location filename="../../TaskLinearPatternParameters.ui" line="178"/>
       <source>Occurrences</source>
       <translation>Vorkommen</translation>
     </message>
     <message>
-      <location filename="../../TaskLinearPatternParameters.ui" line="115"/>
+      <location filename="../../TaskLinearPatternParameters.ui" line="192"/>
       <source>OK</source>
       <translation>OK</translation>
     </message>
     <message>
-      <location filename="../../TaskLinearPatternParameters.ui" line="124"/>
+      <location filename="../../TaskLinearPatternParameters.ui" line="201"/>
       <source>Update view</source>
-      <translation>Ansicht aktualisieren</translation>
+      <translation>Ansicht aktualisieren </translation>
     </message>
     <message>
-      <location filename="../../TaskLinearPatternParameters.cpp" line="105"/>
+      <location filename="../../TaskLinearPatternParameters.cpp" line="108"/>
       <source>Remove</source>
       <translation>Entfernen</translation>
     </message>
     <message>
-      <location filename="../../TaskLinearPatternParameters.cpp" line="333"/>
+      <location filename="../../TaskLinearPatternParameters.cpp" line="382"/>
       <source>Error</source>
-      <translation>Fehlermeldungen</translation>
+      <translation>Fehler</translation>
     </message>
   </context>
   <context>
     <name>PartDesignGui::TaskLoftParameters</name>
-    <message>
-      <location filename="../../TaskLoftParameters.ui" line="14"/>
-      <source>Form</source>
-      <translation>Form</translation>
-    </message>
     <message>
       <location filename="../../TaskLoftParameters.ui" line="20"/>
       <source>Ruled surface</source>
@@ -2218,7 +2174,7 @@ Nochmaliges Klicken beendet den Auswahl-Modus.</translation>
     <message>
       <location filename="../../TaskLoftParameters.ui" line="103"/>
       <source>List can be reordered by dragging</source>
-      <translation>Liste kann durch Ziehen neu sortiert werden</translation>
+      <translation>Die Liste kann durch Ziehen neu sortiert werden</translation>
     </message>
     <message>
       <location filename="../../TaskLoftParameters.ui" line="120"/>
@@ -2239,11 +2195,6 @@ Nochmaliges Klicken beendet den Auswahl-Modus.</translation>
   <context>
     <name>PartDesignGui::TaskMirroredParameters</name>
     <message>
-      <location filename="../../TaskMirroredParameters.ui" line="14"/>
-      <source>Form</source>
-      <translation>Form</translation>
-    </message>
-    <message>
       <location filename="../../TaskMirroredParameters.ui" line="22"/>
       <source>Add feature</source>
       <translation>Element hinzufügen</translation>
@@ -2256,7 +2207,7 @@ Nochmaliges Klicken beendet den Auswahl-Modus.</translation>
     <message>
       <location filename="../../TaskMirroredParameters.ui" line="44"/>
       <source>List can be reordered by dragging</source>
-      <translation>Liste kann durch Ziehen neu sortiert werden</translation>
+      <translation>Die Liste kann durch Ziehen neu sortiert werden</translation>
     </message>
     <message>
       <location filename="../../TaskMirroredParameters.ui" line="56"/>
@@ -2279,18 +2230,13 @@ Nochmaliges Klicken beendet den Auswahl-Modus.</translation>
       <translation>Entfernen</translation>
     </message>
     <message>
-      <location filename="../../TaskMirroredParameters.cpp" line="245"/>
+      <location filename="../../TaskMirroredParameters.cpp" line="244"/>
       <source>Error</source>
       <translation>Fehlermeldungen</translation>
     </message>
   </context>
   <context>
     <name>PartDesignGui::TaskMultiTransformParameters</name>
-    <message>
-      <location filename="../../TaskMultiTransformParameters.ui" line="14"/>
-      <source>Form</source>
-      <translation>Form</translation>
-    </message>
     <message>
       <location filename="../../TaskMultiTransformParameters.ui" line="22"/>
       <source>Add feature</source>
@@ -2304,7 +2250,7 @@ Nochmaliges Klicken beendet den Auswahl-Modus.</translation>
     <message>
       <location filename="../../TaskMultiTransformParameters.ui" line="44"/>
       <source>List can be reordered by dragging</source>
-      <translation>Liste kann durch Ziehen neu sortiert werden</translation>
+      <translation>Die Liste kann durch Ziehen neu sortiert werden</translation>
     </message>
     <message>
       <location filename="../../TaskMultiTransformParameters.ui" line="54"/>
@@ -2317,52 +2263,52 @@ Nochmaliges Klicken beendet den Auswahl-Modus.</translation>
       <translation>Ansicht aktualisieren</translation>
     </message>
     <message>
-      <location filename="../../TaskMultiTransformParameters.cpp" line="73"/>
+      <location filename="../../TaskMultiTransformParameters.cpp" line="75"/>
       <source>Remove</source>
       <translation>Entfernen</translation>
     </message>
     <message>
-      <location filename="../../TaskMultiTransformParameters.cpp" line="86"/>
+      <location filename="../../TaskMultiTransformParameters.cpp" line="89"/>
       <source>Edit</source>
       <translation>Bearbeiten</translation>
     </message>
     <message>
-      <location filename="../../TaskMultiTransformParameters.cpp" line="90"/>
+      <location filename="../../TaskMultiTransformParameters.cpp" line="93"/>
       <source>Delete</source>
       <translation>Löschen</translation>
     </message>
     <message>
-      <location filename="../../TaskMultiTransformParameters.cpp" line="94"/>
+      <location filename="../../TaskMultiTransformParameters.cpp" line="97"/>
       <source>Add mirrored transformation</source>
       <translation>Spiegelung hinzufügen</translation>
     </message>
     <message>
-      <location filename="../../TaskMultiTransformParameters.cpp" line="98"/>
+      <location filename="../../TaskMultiTransformParameters.cpp" line="101"/>
       <source>Add linear pattern</source>
       <translation>Lineares Muster hinzufügen</translation>
     </message>
     <message>
-      <location filename="../../TaskMultiTransformParameters.cpp" line="102"/>
+      <location filename="../../TaskMultiTransformParameters.cpp" line="105"/>
       <source>Add polar pattern</source>
       <translation>Polares Muster hinzufügen</translation>
     </message>
     <message>
-      <location filename="../../TaskMultiTransformParameters.cpp" line="106"/>
+      <location filename="../../TaskMultiTransformParameters.cpp" line="109"/>
       <source>Add scaled transformation</source>
       <translation>Skalierte Transformation hinzufügen</translation>
     </message>
     <message>
-      <location filename="../../TaskMultiTransformParameters.cpp" line="110"/>
+      <location filename="../../TaskMultiTransformParameters.cpp" line="113"/>
       <source>Move up</source>
       <translation>Nach oben verschieben</translation>
     </message>
     <message>
-      <location filename="../../TaskMultiTransformParameters.cpp" line="114"/>
+      <location filename="../../TaskMultiTransformParameters.cpp" line="117"/>
       <source>Move down</source>
       <translation>Nach unten verschieben</translation>
     </message>
     <message>
-      <location filename="../../TaskMultiTransformParameters.cpp" line="141"/>
+      <location filename="../../TaskMultiTransformParameters.cpp" line="144"/>
       <source>Right-click to add</source>
       <translation>Hinzufügen mittels Rechtsklick</translation>
     </message>
@@ -2385,38 +2331,33 @@ Nochmaliges Klicken beendet den Auswahl-Modus.</translation>
       <translation>Richtung der Aufpolsterung umdrehen</translation>
     </message>
     <message>
-      <location filename="../../TaskPadParameters.cpp" line="72"/>
+      <location filename="../../TaskPadParameters.cpp" line="70"/>
       <source>Dimension</source>
-      <translation>Abmessung</translation>
+      <translation>Höhe (Länge)</translation>
     </message>
     <message>
-      <location filename="../../TaskPadParameters.cpp" line="73"/>
+      <location filename="../../TaskPadParameters.cpp" line="71"/>
       <source>To last</source>
       <translation>Zur Letzten</translation>
     </message>
     <message>
-      <location filename="../../TaskPadParameters.cpp" line="74"/>
+      <location filename="../../TaskPadParameters.cpp" line="72"/>
       <source>To first</source>
       <translation>Bis zur dichtesten Objektbegrenzung</translation>
     </message>
     <message>
-      <location filename="../../TaskPadParameters.cpp" line="75"/>
+      <location filename="../../TaskPadParameters.cpp" line="73"/>
       <source>Up to face</source>
       <translation>Bis zu Oberfläche</translation>
     </message>
     <message>
-      <location filename="../../TaskPadParameters.cpp" line="76"/>
+      <location filename="../../TaskPadParameters.cpp" line="74"/>
       <source>Two dimensions</source>
       <translation>Zwei Längen</translation>
     </message>
   </context>
   <context>
     <name>PartDesignGui::TaskPadPocketParameters</name>
-    <message>
-      <location filename="../../TaskPadPocketParameters.ui" line="14"/>
-      <source>Form</source>
-      <translation>Form</translation>
-    </message>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="22"/>
       <source>Type</source>
@@ -2425,7 +2366,7 @@ Nochmaliges Klicken beendet den Auswahl-Modus.</translation>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="30"/>
       <source>Dimension</source>
-      <translation>Abmessung</translation>
+      <translation>Tiefe (Länge)</translation>
     </message>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="38"/>
@@ -2433,150 +2374,145 @@ Nochmaliges Klicken beendet den Auswahl-Modus.</translation>
       <translation>Länge</translation>
     </message>
     <message>
-      <location filename="../../TaskPadPocketParameters.ui" line="58"/>
+      <location filename="../../TaskPadPocketParameters.ui" line="75"/>
       <source>Offset to face</source>
       <translation>Abstand zur Fläche</translation>
     </message>
     <message>
-      <location filename="../../TaskPadPocketParameters.ui" line="77"/>
+      <location filename="../../TaskPadPocketParameters.ui" line="141"/>
       <source>Direction</source>
       <translation>Richtung</translation>
     </message>
     <message>
-      <location filename="../../TaskPadPocketParameters.ui" line="85"/>
+      <location filename="../../TaskPadPocketParameters.ui" line="149"/>
       <source>Direction/edge:</source>
       <translation>Richtung/Kante:</translation>
     </message>
     <message>
-      <location filename="../../TaskPadPocketParameters.ui" line="92"/>
+      <location filename="../../TaskPadPocketParameters.ui" line="156"/>
       <source>Set a direction or select an edge
 from the model as reference</source>
       <translation>Eine Ausrichtung vorgeben oder eine Kante
 des Modells als Referenz auswählen</translation>
     </message>
     <message>
-      <location filename="../../TaskPadPocketParameters.ui" line="97"/>
+      <location filename="../../TaskPadPocketParameters.ui" line="161"/>
       <source>Sketch normal</source>
       <translation>Skizzennormale</translation>
     </message>
     <message>
-      <location filename="../../TaskPadPocketParameters.ui" line="102"/>
+      <location filename="../../TaskPadPocketParameters.ui" line="166"/>
       <source>Select reference...</source>
       <translation>Referenz auswählen...</translation>
     </message>
     <message>
-      <location filename="../../TaskPadPocketParameters.ui" line="107"/>
+      <location filename="../../TaskPadPocketParameters.ui" line="171"/>
       <source>Custom direction</source>
       <translation>Benutzerdefinierte Richtung</translation>
     </message>
     <message>
-      <location filename="../../TaskPadPocketParameters.ui" line="117"/>
+      <location filename="../../TaskPadPocketParameters.ui" line="181"/>
       <source>Show direction</source>
       <translation>Richtung anzeigen</translation>
     </message>
     <message>
-      <location filename="../../TaskPadPocketParameters.ui" line="127"/>
+      <location filename="../../TaskPadPocketParameters.ui" line="191"/>
       <source>Use custom vector for pad direction, otherwise
 the sketch plane's normal vector will be used</source>
       <translation>Benutzerdefinierten Vektor für die Richtung der Aufpolsterung verwenden, andernfalls wird
 der Normalenvektor der Skizze verwendet</translation>
     </message>
     <message>
-      <location filename="../../TaskPadPocketParameters.ui" line="140"/>
+      <location filename="../../TaskPadPocketParameters.ui" line="204"/>
       <source>x</source>
       <translation>x</translation>
     </message>
     <message>
-      <location filename="../../TaskPadPocketParameters.ui" line="147"/>
+      <location filename="../../TaskPadPocketParameters.ui" line="211"/>
       <source>x-component of direction vector</source>
       <translation>X-Komponente des Richtungsvektors</translation>
     </message>
     <message>
-      <location filename="../../TaskPadPocketParameters.ui" line="169"/>
+      <location filename="../../TaskPadPocketParameters.ui" line="233"/>
       <source>y</source>
       <translation>y</translation>
     </message>
     <message>
-      <location filename="../../TaskPadPocketParameters.ui" line="176"/>
+      <location filename="../../TaskPadPocketParameters.ui" line="240"/>
       <source>y-component of direction vector</source>
       <translation>Y-Komponente des Richtungsvektors</translation>
     </message>
     <message>
-      <location filename="../../TaskPadPocketParameters.ui" line="198"/>
+      <location filename="../../TaskPadPocketParameters.ui" line="262"/>
       <source>z</source>
       <translation>z</translation>
     </message>
     <message>
-      <location filename="../../TaskPadPocketParameters.ui" line="205"/>
+      <location filename="../../TaskPadPocketParameters.ui" line="269"/>
       <source>z-component of direction vector</source>
       <translation>Z-Komponente des Richtungsvektors</translation>
     </message>
     <message>
-      <location filename="../../TaskPadPocketParameters.ui" line="236"/>
+      <location filename="../../TaskPadPocketParameters.ui" line="300"/>
       <source>If unchecked, the length will be
 measured along the specified direction</source>
       <translation>Wenn abgewählt, wird die Länge
 entlang der angegebenen Richtung gemessen</translation>
     </message>
     <message>
-      <location filename="../../TaskPadPocketParameters.ui" line="240"/>
+      <location filename="../../TaskPadPocketParameters.ui" line="304"/>
       <source>Length along sketch normal</source>
-      <translation>Länge entlang der Skizzennormalen</translation>
+      <translation>Länge entlang der Skizzennormale</translation>
     </message>
     <message>
-      <location filename="../../TaskPadPocketParameters.ui" line="253"/>
+      <location filename="../../TaskPadPocketParameters.ui" line="124"/>
       <source>Applies length symmetrically to sketch plane</source>
       <translation>Längen symmetrisch zur Skizzenebene</translation>
     </message>
     <message>
-      <location filename="../../TaskPadPocketParameters.ui" line="256"/>
+      <location filename="../../TaskPadPocketParameters.ui" line="127"/>
       <source>Symmetric to plane</source>
       <translation>Symmetrisch zu einer Ebene</translation>
     </message>
     <message>
-      <location filename="../../TaskPadPocketParameters.ui" line="263"/>
+      <location filename="../../TaskPadPocketParameters.ui" line="134"/>
       <source>Reversed</source>
       <translation>Umgekehrt</translation>
     </message>
     <message>
-      <location filename="../../TaskPadPocketParameters.ui" line="272"/>
-      <location filename="../../TaskPadPocketParameters.ui" line="317"/>
+      <location filename="../../TaskPadPocketParameters.ui" line="316"/>
+      <location filename="../../TaskPadPocketParameters.ui" line="340"/>
       <source>Angle to taper the extrusion</source>
       <translation>Winkel zum Abschrägen der Extrusion</translation>
     </message>
     <message>
-      <location filename="../../TaskPadPocketParameters.ui" line="275"/>
+      <location filename="../../TaskPadPocketParameters.ui" line="319"/>
       <source>Taper angle</source>
       <translation>Schrägungswinkel</translation>
     </message>
     <message>
-      <location filename="../../TaskPadPocketParameters.ui" line="296"/>
+      <location filename="../../TaskPadPocketParameters.ui" line="58"/>
       <source>2nd length</source>
       <translation>Zweite Länge</translation>
     </message>
     <message>
-      <location filename="../../TaskPadPocketParameters.ui" line="320"/>
+      <location filename="../../TaskPadPocketParameters.ui" line="343"/>
       <source>2nd taper angle</source>
       <translation>2. Schrägungswinkel</translation>
     </message>
     <message>
-      <location filename="../../TaskPadPocketParameters.ui" line="341"/>
-      <source>Face</source>
-      <translation>Fläche</translation>
+      <location filename="../../TaskPadPocketParameters.ui" line="102"/>
+      <source>Select face</source>
+      <translation>Fläche auswählen</translation>
     </message>
     <message>
-      <location filename="../../TaskPadPocketParameters.ui" line="360"/>
+      <location filename="../../TaskPadPocketParameters.ui" line="369"/>
       <source>Update view</source>
-      <translation>Ansicht aktualisieren</translation>
+      <translation>Ansicht aktualisieren </translation>
     </message>
   </context>
   <context>
     <name>PartDesignGui::TaskPipeOrientation</name>
-    <message>
-      <location filename="../../TaskPipeOrientation.ui" line="14"/>
-      <source>Form</source>
-      <translation>Form</translation>
-    </message>
     <message>
       <location filename="../../TaskPipeOrientation.ui" line="22"/>
       <source>Orientation mode</source>
@@ -2653,23 +2589,18 @@ entlang der angegebenen Richtung gemessen</translation>
       <translation>Z</translation>
     </message>
     <message>
-      <location filename="../../TaskPipeParameters.cpp" line="541"/>
+      <location filename="../../TaskPipeParameters.cpp" line="534"/>
       <source>Section orientation</source>
       <translation>Ausrichtung des Abschnitts</translation>
     </message>
     <message>
-      <location filename="../../TaskPipeParameters.cpp" line="567"/>
+      <location filename="../../TaskPipeParameters.cpp" line="560"/>
       <source>Remove</source>
       <translation>Entfernen</translation>
     </message>
   </context>
   <context>
     <name>PartDesignGui::TaskPipeParameters</name>
-    <message>
-      <location filename="../../TaskPipeParameters.ui" line="14"/>
-      <source>Form</source>
-      <translation>Form</translation>
-    </message>
     <message>
       <location filename="../../TaskPipeParameters.ui" line="20"/>
       <source>Profile</source>
@@ -2717,34 +2648,29 @@ entlang der angegebenen Richtung gemessen</translation>
       <translation>Kante entfernen</translation>
     </message>
     <message>
-      <location filename="../../TaskPipeParameters.cpp" line="69"/>
+      <location filename="../../TaskPipeParameters.cpp" line="68"/>
       <source>Pipe parameters</source>
       <translation>Rohr-Parameter</translation>
     </message>
     <message>
-      <location filename="../../TaskPipeParameters.cpp" line="85"/>
+      <location filename="../../TaskPipeParameters.cpp" line="84"/>
       <source>Remove</source>
       <translation>Entfernen</translation>
     </message>
     <message>
-      <location filename="../../TaskPipeParameters.cpp" line="425"/>
-      <location filename="../../TaskPipeParameters.cpp" line="527"/>
+      <location filename="../../TaskPipeParameters.cpp" line="422"/>
+      <location filename="../../TaskPipeParameters.cpp" line="520"/>
       <source>Input error</source>
       <translation>Eingabefehler</translation>
     </message>
     <message>
-      <location filename="../../TaskPipeParameters.cpp" line="425"/>
+      <location filename="../../TaskPipeParameters.cpp" line="422"/>
       <source>No active body</source>
       <translation>Kein aktiver Körper</translation>
     </message>
   </context>
   <context>
     <name>PartDesignGui::TaskPipeScaling</name>
-    <message>
-      <location filename="../../TaskPipeScaling.ui" line="14"/>
-      <source>Form</source>
-      <translation>Form</translation>
-    </message>
     <message>
       <location filename="../../TaskPipeScaling.ui" line="22"/>
       <source>Transform mode</source>
@@ -2758,7 +2684,7 @@ entlang der angegebenen Richtung gemessen</translation>
     <message>
       <location filename="../../TaskPipeScaling.ui" line="41"/>
       <source>Multisection</source>
-      <translation>Mehrere Abschnitte</translation>
+      <translation>Mehrere Schnitte</translation>
     </message>
     <message>
       <location filename="../../TaskPipeScaling.ui" line="64"/>
@@ -2773,15 +2699,15 @@ entlang der angegebenen Richtung gemessen</translation>
     <message>
       <location filename="../../TaskPipeScaling.ui" line="102"/>
       <source>List can be reordered by dragging</source>
-      <translation>Liste kann durch Ziehen neu sortiert werden</translation>
+      <translation>Die Liste kann durch Ziehen neu sortiert werden</translation>
     </message>
     <message>
-      <location filename="../../TaskPipeParameters.cpp" line="809"/>
+      <location filename="../../TaskPipeParameters.cpp" line="802"/>
       <source>Section transformation</source>
       <translation>Abschnitt Transformation</translation>
     </message>
     <message>
-      <location filename="../../TaskPipeParameters.cpp" line="825"/>
+      <location filename="../../TaskPipeParameters.cpp" line="818"/>
       <source>Remove</source>
       <translation>Entfernen</translation>
     </message>
@@ -2791,7 +2717,7 @@ entlang der angegebenen Richtung gemessen</translation>
     <message>
       <location filename="../../TaskPocketParameters.cpp" line="40"/>
       <source>Pocket parameters</source>
-      <translation>Parameter der Vertiefung</translation>
+      <translation>Parameter der Tasche</translation>
     </message>
     <message>
       <location filename="../../TaskPocketParameters.cpp" line="43"/>
@@ -2804,38 +2730,33 @@ entlang der angegebenen Richtung gemessen</translation>
       <translation>Kehrt die Richtung der Tasche um</translation>
     </message>
     <message>
-      <location filename="../../TaskPocketParameters.cpp" line="73"/>
+      <location filename="../../TaskPocketParameters.cpp" line="71"/>
       <source>Dimension</source>
-      <translation>Abmessung</translation>
+      <translation>Tiefenmaß</translation>
     </message>
     <message>
-      <location filename="../../TaskPocketParameters.cpp" line="74"/>
+      <location filename="../../TaskPocketParameters.cpp" line="72"/>
       <source>Through all</source>
       <translation>Durch alles</translation>
     </message>
     <message>
-      <location filename="../../TaskPocketParameters.cpp" line="75"/>
+      <location filename="../../TaskPocketParameters.cpp" line="73"/>
       <source>To first</source>
       <translation>Bis zur dichtesten Objektbegrenzung</translation>
     </message>
     <message>
-      <location filename="../../TaskPocketParameters.cpp" line="76"/>
+      <location filename="../../TaskPocketParameters.cpp" line="74"/>
       <source>Up to face</source>
       <translation>Bis zu Oberfläche</translation>
     </message>
     <message>
-      <location filename="../../TaskPocketParameters.cpp" line="77"/>
+      <location filename="../../TaskPocketParameters.cpp" line="75"/>
       <source>Two dimensions</source>
       <translation>Zwei Längen</translation>
     </message>
   </context>
   <context>
     <name>PartDesignGui::TaskPolarPatternParameters</name>
-    <message>
-      <location filename="../../TaskPolarPatternParameters.ui" line="14"/>
-      <source>Form</source>
-      <translation>Form</translation>
-    </message>
     <message>
       <location filename="../../TaskPolarPatternParameters.ui" line="22"/>
       <source>Add feature</source>
@@ -2849,7 +2770,7 @@ entlang der angegebenen Richtung gemessen</translation>
     <message>
       <location filename="../../TaskPolarPatternParameters.ui" line="44"/>
       <source>List can be reordered by dragging</source>
-      <translation>Liste kann durch Ziehen neu sortiert werden</translation>
+      <translation>Die Liste kann durch Ziehen neu sortiert werden</translation>
     </message>
     <message>
       <location filename="../../TaskPolarPatternParameters.ui" line="56"/>
@@ -2859,43 +2780,63 @@ entlang der angegebenen Richtung gemessen</translation>
     <message>
       <location filename="../../TaskPolarPatternParameters.ui" line="68"/>
       <source>Reverse direction</source>
-      <translation>Umgekehrte Richtung</translation>
+      <translation>Richtung umkehren</translation>
     </message>
     <message>
       <location filename="../../TaskPolarPatternParameters.ui" line="77"/>
+      <source>Mode</source>
+      <translation>Modus</translation>
+    </message>
+    <message>
+      <location filename="../../TaskPolarPatternParameters.ui" line="85"/>
+      <source>Overall Angle</source>
+      <translation>Gesamtwinkel</translation>
+    </message>
+    <message>
+      <location filename="../../TaskPolarPatternParameters.ui" line="90"/>
+      <source>Offset Angle</source>
+      <translation>Versatzwinkel</translation>
+    </message>
+    <message>
+      <location filename="../../TaskPolarPatternParameters.ui" line="115"/>
       <source>Angle</source>
       <translation>Winkel</translation>
     </message>
     <message>
-      <location filename="../../TaskPolarPatternParameters.ui" line="107"/>
+      <location filename="../../TaskPolarPatternParameters.ui" line="159"/>
+      <source>Offset</source>
+      <translation>Versetzen</translation>
+    </message>
+    <message>
+      <location filename="../../TaskPolarPatternParameters.ui" line="190"/>
       <source>Occurrences</source>
       <translation>Vorkommen</translation>
     </message>
     <message>
-      <location filename="../../TaskPolarPatternParameters.ui" line="121"/>
+      <location filename="../../TaskPolarPatternParameters.ui" line="204"/>
       <source>OK</source>
       <translation>OK</translation>
     </message>
     <message>
-      <location filename="../../TaskPolarPatternParameters.ui" line="130"/>
+      <location filename="../../TaskPolarPatternParameters.ui" line="213"/>
       <source>Update view</source>
-      <translation>Ansicht aktualisieren</translation>
+      <translation>Ansicht aktualisieren </translation>
     </message>
     <message>
-      <location filename="../../TaskPolarPatternParameters.cpp" line="112"/>
+      <location filename="../../TaskPolarPatternParameters.cpp" line="114"/>
       <source>Remove</source>
       <translation>Entfernen</translation>
     </message>
     <message>
-      <location filename="../../TaskPolarPatternParameters.cpp" line="333"/>
+      <location filename="../../TaskPolarPatternParameters.cpp" line="377"/>
       <source>Error</source>
-      <translation>Fehlermeldungen</translation>
+      <translation>Fehler</translation>
     </message>
   </context>
   <context>
     <name>PartDesignGui::TaskPrimitiveParameters</name>
     <message>
-      <location filename="../../TaskPrimitiveParameters.cpp" line="893"/>
+      <location filename="../../TaskPrimitiveParameters.cpp" line="935"/>
       <source>Attachment</source>
       <translation>Anhang</translation>
     </message>
@@ -2903,32 +2844,27 @@ entlang der angegebenen Richtung gemessen</translation>
   <context>
     <name>PartDesignGui::TaskRevolutionParameters</name>
     <message>
-      <location filename="../../TaskRevolutionParameters.ui" line="14"/>
-      <source>Form</source>
-      <translation>Form</translation>
-    </message>
-    <message>
       <location filename="../../TaskRevolutionParameters.ui" line="22"/>
       <source>Axis:</source>
       <translation>Achse:</translation>
     </message>
     <message>
       <location filename="../../TaskRevolutionParameters.ui" line="30"/>
-      <location filename="../../TaskRevolutionParameters.cpp" line="139"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="137"/>
       <source>Base X axis</source>
-      <translation>Basis X-Achse</translation>
+      <translation>Basis-X-Achse</translation>
     </message>
     <message>
       <location filename="../../TaskRevolutionParameters.ui" line="35"/>
-      <location filename="../../TaskRevolutionParameters.cpp" line="140"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="138"/>
       <source>Base Y axis</source>
       <translation>Basis Y-Achse</translation>
     </message>
     <message>
       <location filename="../../TaskRevolutionParameters.ui" line="40"/>
-      <location filename="../../TaskRevolutionParameters.cpp" line="141"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="139"/>
       <source>Base Z axis</source>
-      <translation>Basis Z-Achse</translation>
+      <translation>Basis-Z-Achse</translation>
     </message>
     <message>
       <location filename="../../TaskRevolutionParameters.ui" line="45"/>
@@ -2942,7 +2878,7 @@ entlang der angegebenen Richtung gemessen</translation>
     </message>
     <message>
       <location filename="../../TaskRevolutionParameters.ui" line="55"/>
-      <location filename="../../TaskRevolutionParameters.cpp" line="148"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="146"/>
       <source>Select reference...</source>
       <translation>Referenz auswählen...</translation>
     </message>
@@ -2954,7 +2890,7 @@ entlang der angegebenen Richtung gemessen</translation>
     <message>
       <location filename="../../TaskRevolutionParameters.ui" line="101"/>
       <source>Symmetric to plane</source>
-      <translation>Symmetrisch zu einer Ebene</translation>
+      <translation>Symmetrisch zur Ebene</translation>
     </message>
     <message>
       <location filename="../../TaskRevolutionParameters.ui" line="108"/>
@@ -2964,21 +2900,16 @@ entlang der angegebenen Richtung gemessen</translation>
     <message>
       <location filename="../../TaskRevolutionParameters.ui" line="122"/>
       <source>Update view</source>
-      <translation>Ansicht aktualisieren</translation>
+      <translation>Ansicht aktualisieren </translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.cpp" line="49"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="50"/>
       <source>Revolution parameters</source>
       <translation>Drehteil-Parameter</translation>
     </message>
   </context>
   <context>
     <name>PartDesignGui::TaskScaledParameters</name>
-    <message>
-      <location filename="../../TaskScaledParameters.ui" line="14"/>
-      <source>Form</source>
-      <translation>Form</translation>
-    </message>
     <message>
       <location filename="../../TaskScaledParameters.ui" line="22"/>
       <source>Add feature</source>
@@ -3018,11 +2949,6 @@ entlang der angegebenen Richtung gemessen</translation>
   <context>
     <name>PartDesignGui::TaskShapeBinder</name>
     <message>
-      <location filename="../../TaskShapeBinder.ui" line="14"/>
-      <source>Form</source>
-      <translation>Form</translation>
-    </message>
-    <message>
       <location filename="../../TaskShapeBinder.ui" line="22"/>
       <source>Object</source>
       <translation>Objekt</translation>
@@ -3038,15 +2964,20 @@ entlang der angegebenen Richtung gemessen</translation>
       <translation>Geometrie entfernen</translation>
     </message>
     <message>
-      <location filename="../../TaskShapeBinder.cpp" line="59"/>
+      <location filename="../../TaskShapeBinder.cpp" line="60"/>
       <source>Datum shape parameters</source>
-      <translation>Bezugsparameter</translation>
+      <translation>Bezugsform-Parameter</translation>
+    </message>
+    <message>
+      <location filename="../../TaskShapeBinder.cpp" line="130"/>
+      <source>Remove</source>
+      <translation>Entfernen</translation>
     </message>
   </context>
   <context>
     <name>PartDesignGui::TaskSketchBasedParameters</name>
     <message>
-      <location filename="../../TaskSketchBasedParameters.cpp" line="160"/>
+      <location filename="../../TaskSketchBasedParameters.cpp" line="161"/>
       <source>Face</source>
       <translation>Fläche</translation>
     </message>
@@ -3054,99 +2985,76 @@ entlang der angegebenen Richtung gemessen</translation>
   <context>
     <name>PartDesignGui::TaskThicknessParameters</name>
     <message>
-      <location filename="../../TaskThicknessParameters.ui" line="14"/>
-      <source>Form</source>
-      <translation>Form</translation>
-    </message>
-    <message>
-      <location filename="../../TaskThicknessParameters.ui" line="22"/>
-      <location filename="../../TaskThicknessParameters.ui" line="36"/>
-      <location filename="../../TaskThicknessParameters.cpp" line="136"/>
+      <location filename="../../TaskThicknessParameters.ui" line="20"/>
       <source>Click button to enter selection mode,
 click again to end selection</source>
       <translation>Klicken Sie auf den Button um in den Auswahl-Modus zu gelangen.
 Nochmaliges Klicken beendet den Auswahl-Modus.</translation>
     </message>
     <message>
-      <location filename="../../TaskThicknessParameters.ui" line="26"/>
-      <source>Add face</source>
-      <translation>Fläche hinzufügen</translation>
+      <location filename="../../TaskThicknessParameters.ui" line="24"/>
+      <source>Select</source>
+      <translation>Auswählen</translation>
     </message>
     <message>
-      <location filename="../../TaskThicknessParameters.ui" line="40"/>
-      <source>Remove face</source>
-      <translation>Fläche entfernen</translation>
-    </message>
-    <message>
-      <location filename="../../TaskThicknessParameters.ui" line="52"/>
+      <location filename="../../TaskThicknessParameters.ui" line="34"/>
       <source>- select an item to highlight it
 - double-click on an item to see the features</source>
       <translation>- Wählen Sie ein Element um es zu markieren
 - Doppelklicken Sie auf ein Element, um das Merkmal zu sehen</translation>
     </message>
     <message>
-      <location filename="../../TaskThicknessParameters.ui" line="65"/>
+      <location filename="../../TaskThicknessParameters.ui" line="47"/>
       <source>Thickness</source>
       <translation>Dicke</translation>
     </message>
     <message>
-      <location filename="../../TaskThicknessParameters.ui" line="94"/>
+      <location filename="../../TaskThicknessParameters.ui" line="76"/>
       <source>Mode</source>
       <translation>Modus</translation>
     </message>
     <message>
-      <location filename="../../TaskThicknessParameters.ui" line="102"/>
+      <location filename="../../TaskThicknessParameters.ui" line="84"/>
       <source>Skin</source>
       <translation>Oberfläche</translation>
     </message>
     <message>
-      <location filename="../../TaskThicknessParameters.ui" line="107"/>
+      <location filename="../../TaskThicknessParameters.ui" line="89"/>
       <source>Pipe</source>
       <translation>Rohr</translation>
     </message>
     <message>
-      <location filename="../../TaskThicknessParameters.ui" line="112"/>
+      <location filename="../../TaskThicknessParameters.ui" line="94"/>
       <source>Recto Verso</source>
       <translation>Recto Verso</translation>
     </message>
     <message>
-      <location filename="../../TaskThicknessParameters.ui" line="120"/>
+      <location filename="../../TaskThicknessParameters.ui" line="102"/>
       <source>Join Type</source>
       <translation>Verbindungstyp</translation>
     </message>
     <message>
-      <location filename="../../TaskThicknessParameters.ui" line="128"/>
+      <location filename="../../TaskThicknessParameters.ui" line="110"/>
       <source>Arc</source>
       <translation>Kreisbogen</translation>
     </message>
     <message>
-      <location filename="../../TaskThicknessParameters.ui" line="133"/>
-      <location filename="../../TaskThicknessParameters.ui" line="143"/>
+      <location filename="../../TaskThicknessParameters.ui" line="115"/>
+      <location filename="../../TaskThicknessParameters.ui" line="125"/>
       <source>Intersection</source>
       <translation>Schnitt</translation>
     </message>
     <message>
-      <location filename="../../TaskThicknessParameters.ui" line="150"/>
+      <location filename="../../TaskThicknessParameters.ui" line="132"/>
       <source>Make thickness inwards</source>
       <translation>Dicke nach innen auftragen</translation>
     </message>
     <message>
-      <location filename="../../TaskThicknessParameters.cpp" line="146"/>
-      <location filename="../../TaskThicknessParameters.cpp" line="148"/>
-      <location filename="../../TaskThicknessParameters.cpp" line="213"/>
-      <location filename="../../TaskThicknessParameters.cpp" line="215"/>
-      <source>There must be at least one item</source>
-      <translation>Es muss mindestens ein Element vorhanden sein</translation>
-    </message>
-    <message>
-      <location filename="../../TaskThicknessParameters.cpp" line="181"/>
-      <source>Selection error</source>
-      <translation>Auswahlfehler</translation>
-    </message>
-    <message>
-      <location filename="../../TaskThicknessParameters.cpp" line="181"/>
-      <source>At least one item must be kept.</source>
-      <translation>Es muss mindestens ein Element behalten werden.</translation>
+      <location filename="../../TaskThicknessParameters.cpp" line="248"/>
+      <source>Empty thickness created !
+</source>
+      <translation>Leere Wandstärke erzeugt !
+</translation>
     </message>
   </context>
   <context>
@@ -3204,23 +3112,23 @@ Nochmaliges Klicken beendet den Auswahl-Modus.</translation>
     <message>
       <location filename="../../TaskTransformedParameters.cpp" line="304"/>
       <source>Base XY plane</source>
-      <translation>Basis XY-Ebene</translation>
+      <translation>XY-Basis-Ebene</translation>
     </message>
     <message>
       <location filename="../../TaskTransformedParameters.cpp" line="305"/>
       <source>Base YZ plane</source>
-      <translation>Basis YZ-Ebene</translation>
+      <translation>YZ-Basis-Ebene</translation>
     </message>
     <message>
       <location filename="../../TaskTransformedParameters.cpp" line="306"/>
       <source>Base XZ plane</source>
-      <translation>Basis XZ-Ebene</translation>
+      <translation>XZ-Basis-Ebene</translation>
     </message>
   </context>
   <context>
     <name>PartDesignGui::ViewProviderBody</name>
     <message>
-      <location filename="../../ViewProviderBody.cpp" line="133"/>
+      <location filename="../../ViewProviderBody.cpp" line="135"/>
       <source>Toggle active body</source>
       <translation>Aktiven Körper umschalten</translation>
     </message>
@@ -3275,7 +3183,7 @@ Nochmaliges Klicken beendet den Auswahl-Modus.</translation>
   <context>
     <name>PartDesignGui::ViewProviderLinearPattern</name>
     <message>
-      <location filename="../../ViewProviderLinearPattern.h" line="38"/>
+      <location filename="../../ViewProviderLinearPattern.h" line="37"/>
       <source>LinearPattern parameters</source>
       <translation>Parameter des linearen Musters</translation>
     </message>
@@ -3283,7 +3191,7 @@ Nochmaliges Klicken beendet den Auswahl-Modus.</translation>
   <context>
     <name>PartDesignGui::ViewProviderMultiTransform</name>
     <message>
-      <location filename="../../ViewProviderMultiTransform.h" line="38"/>
+      <location filename="../../ViewProviderMultiTransform.h" line="37"/>
       <source>MultiTransform parameters</source>
       <translation>Parameter der Mehrfach-Transformation</translation>
     </message>
@@ -3291,7 +3199,7 @@ Nochmaliges Klicken beendet den Auswahl-Modus.</translation>
   <context>
     <name>PartDesignGui::ViewProviderPolarPattern</name>
     <message>
-      <location filename="../../ViewProviderPolarPattern.h" line="38"/>
+      <location filename="../../ViewProviderPolarPattern.h" line="37"/>
       <source>PolarPattern parameters</source>
       <translation>PolarMuster-Parameter</translation>
     </message>
@@ -3299,9 +3207,9 @@ Nochmaliges Klicken beendet den Auswahl-Modus.</translation>
   <context>
     <name>PartDesignGui::ViewProviderScaled</name>
     <message>
-      <location filename="../../ViewProviderScaled.h" line="38"/>
+      <location filename="../../ViewProviderScaled.h" line="37"/>
       <source>Scaled parameters</source>
-      <translation>Skalierte Parameter</translation>
+      <translation>Parameter der Skalierung</translation>
     </message>
   </context>
   <context>
@@ -3315,9 +3223,9 @@ Nochmaliges Klicken beendet den Auswahl-Modus.</translation>
   <context>
     <name>PartDesignGuii::ViewProviderMirrored</name>
     <message>
-      <location filename="../../ViewProviderMirrored.h" line="38"/>
+      <location filename="../../ViewProviderMirrored.h" line="37"/>
       <source>Mirrored parameters</source>
-      <translation>Gespiegelte Parameter</translation>
+      <translation>Parameter der Spiegelung</translation>
     </message>
   </context>
   <context>
@@ -3407,27 +3315,14 @@ Nochmaliges Klicken beendet den Auswahl-Modus.</translation>
     </message>
   </context>
   <context>
-    <name>PartDesign_InvoluteGear</name>
-    <message>
-      <location filename="../../../InvoluteGearFeature.py" line="57"/>
-      <source>Involute gear...</source>
-      <translation>Evolventenrad...</translation>
-    </message>
-    <message>
-      <location filename="../../../InvoluteGearFeature.py" line="61"/>
-      <source>Creates or edit the involute gear definition.</source>
-      <translation>Erstellt oder bearbeitet die Definition eines Evolventenzahnrades.</translation>
-    </message>
-  </context>
-  <context>
     <name>PartDesign_MoveFeature</name>
     <message>
-      <location filename="../../CommandBody.cpp" line="728"/>
+      <location filename="../../CommandBody.cpp" line="732"/>
       <source>Select body</source>
       <translation>Körper wählen</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="729"/>
+      <location filename="../../CommandBody.cpp" line="733"/>
       <source>Select a body from the list</source>
       <translation>Einen Körper aus der Liste wählen</translation>
     </message>
@@ -3435,230 +3330,205 @@ Nochmaliges Klicken beendet den Auswahl-Modus.</translation>
   <context>
     <name>PartDesign_MoveFeatureInTree</name>
     <message>
-      <location filename="../../CommandBody.cpp" line="881"/>
+      <location filename="../../CommandBody.cpp" line="885"/>
       <source>Select feature</source>
       <translation>Element auswählen</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="882"/>
+      <location filename="../../CommandBody.cpp" line="886"/>
       <source>Select a feature from the list</source>
       <translation>Ein Objekt aus der Liste wählen</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="953"/>
+      <location filename="../../CommandBody.cpp" line="957"/>
       <source>Move tip</source>
       <translation>Arbeitsposition versetzen</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="954"/>
+      <location filename="../../CommandBody.cpp" line="958"/>
       <source>The moved feature appears after the currently set tip.</source>
       <translation>Das bewegte Objekt erscheint hinter der aktuell gesetzten Arbeitsposition.</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="955"/>
+      <location filename="../../CommandBody.cpp" line="959"/>
       <source>Do you want the last feature to be the new tip?</source>
       <translation>Soll das letzte Objekt die neue Arbeitsposition sein?</translation>
     </message>
   </context>
   <context>
-    <name>PartDesign_Sprocket</name>
-    <message>
-      <location filename="../../../SprocketFeature.py" line="62"/>
-      <source>Sprocket...</source>
-      <translation>Kettenrad...</translation>
-    </message>
-    <message>
-      <location filename="../../../SprocketFeature.py" line="66"/>
-      <source>Creates or edit the sprocket definition.</source>
-      <translation>Erstellt oder bearbeitet die Kettenraddefinition.</translation>
-    </message>
-  </context>
-  <context>
     <name>QObject</name>
     <message>
-      <location filename="../../Command.cpp" line="138"/>
+      <location filename="../../Command.cpp" line="139"/>
       <source>Invalid selection</source>
       <translation>Ungültige Auswahl</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="138"/>
+      <location filename="../../Command.cpp" line="139"/>
       <source>There are no attachment modes that fit selected objects. Select something else.</source>
       <translation>Es gibt keine Anhang-Modi, die zu den ausgewählten Objekte passen. Wähle etwas anderes.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="144"/>
-      <location filename="../../Command.cpp" line="147"/>
-      <location filename="../../Command.cpp" line="149"/>
+      <location filename="../../Command.cpp" line="145"/>
+      <location filename="../../Command.cpp" line="148"/>
+      <location filename="../../Command.cpp" line="150"/>
       <source>Error</source>
       <translation>Fehlermeldungen</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="144"/>
+      <location filename="../../Command.cpp" line="145"/>
       <source>There is no active body. Please make a body active before inserting a datum entity.</source>
       <translation>Kein aktiver Körper. Bitte aktiviere einen Körper vor dem Einfügen eines Bezugs.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="408"/>
+      <location filename="../../Command.cpp" line="409"/>
       <source>Sub-Shape Binder</source>
       <translation>Formbinder für Teilobjekt</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="590"/>
+      <location filename="../../SketchWorkflow.cpp" line="650"/>
       <source>Several sub-elements selected</source>
       <translation>Mehrere Unter-Elemente selektiert</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="591"/>
+      <location filename="../../SketchWorkflow.cpp" line="651"/>
       <source>You have to select a single face as support for a sketch!</source>
       <translation>Sie müssen eine einzelne Fläche als Auflage für eine Skizze auswählen!</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="601"/>
+      <location filename="../../SketchWorkflow.cpp" line="654"/>
       <source>No support face selected</source>
       <translation>Keine Fläche als Auflage selektiert</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="602"/>
+      <location filename="../../SketchWorkflow.cpp" line="655"/>
       <source>You have to select a face as support for a sketch!</source>
       <translation>Sie müssen eine Fläche als Auflage für eine Skizze auswählen!</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="611"/>
+      <location filename="../../SketchWorkflow.cpp" line="658"/>
       <source>No planar support</source>
       <translation>Keine ebene Auflage</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="612"/>
+      <location filename="../../SketchWorkflow.cpp" line="659"/>
       <source>You need a planar face as support for a sketch!</source>
       <translation>Sie benötigen eine ebene Fläche als Auflage für eine Skizze!</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="797"/>
+      <location filename="../../SketchWorkflow.cpp" line="662"/>
       <source>No valid planes in this document</source>
       <translation>Keine gültigen Ebenen in diesem Dokument</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="798"/>
+      <location filename="../../SketchWorkflow.cpp" line="663"/>
       <source>Please create a plane first or select a face to sketch on</source>
       <translation>Zum Erzeugen einer Skizze zuerst eine Ebene im Koordinatensystem oder auf einem Körper wählen</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="811"/>
-      <location filename="../../Command.cpp" line="1226"/>
-      <location filename="../../Command.cpp" line="2225"/>
-      <location filename="../../ViewProviderPrimitive.cpp" line="73"/>
+      <location filename="../../Command.cpp" line="911"/>
+      <location filename="../../Command.cpp" line="1930"/>
+      <location filename="../../SketchWorkflow.cpp" line="591"/>
+      <location filename="../../ViewProvider.cpp" line="95"/>
+      <location filename="../../ViewProviderBoolean.cpp" line="78"/>
       <location filename="../../ViewProviderDatum.cpp" line="246"/>
-      <location filename="../../ViewProvider.cpp" line="98"/>
-      <location filename="../../ViewProviderShapeBinder.cpp" line="98"/>
-      <location filename="../../ViewProviderHole.cpp" line="79"/>
-      <location filename="../../ViewProviderBoolean.cpp" line="80"/>
+      <location filename="../../ViewProviderHole.cpp" line="77"/>
+      <location filename="../../ViewProviderPrimitive.cpp" line="68"/>
+      <location filename="../../ViewProviderShapeBinder.cpp" line="95"/>
       <source>A dialog is already open in the task panel</source>
       <translation>Es ist bereits ein Dialog in der Aufgabenleiste geöffnet</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="812"/>
-      <location filename="../../Command.cpp" line="1227"/>
-      <location filename="../../Command.cpp" line="2226"/>
-      <location filename="../../ViewProviderPrimitive.cpp" line="74"/>
+      <location filename="../../Command.cpp" line="912"/>
+      <location filename="../../Command.cpp" line="1931"/>
+      <location filename="../../SketchWorkflow.cpp" line="592"/>
+      <location filename="../../ViewProvider.cpp" line="96"/>
+      <location filename="../../ViewProviderBoolean.cpp" line="79"/>
       <location filename="../../ViewProviderDatum.cpp" line="247"/>
-      <location filename="../../ViewProvider.cpp" line="99"/>
-      <location filename="../../ViewProviderShapeBinder.cpp" line="99"/>
-      <location filename="../../ViewProviderHole.cpp" line="80"/>
-      <location filename="../../ViewProviderBoolean.cpp" line="81"/>
+      <location filename="../../ViewProviderHole.cpp" line="78"/>
+      <location filename="../../ViewProviderPrimitive.cpp" line="69"/>
+      <location filename="../../ViewProviderShapeBinder.cpp" line="96"/>
       <source>Do you want to close this dialog?</source>
       <translation>Möchten Sie diesen Dialog zu schließen?</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1106"/>
+      <location filename="../../Command.cpp" line="791"/>
       <source>Cannot use this command as there is no solid to subtract from.</source>
       <translation>Dieser Befehl kann nicht verwendet werden, da kein Festkörper vorhanden ist, von dem etwas abgezogen werden kann.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1107"/>
+      <location filename="../../Command.cpp" line="792"/>
       <source>Ensure that the body contains a feature before attempting a subtractive command.</source>
       <translation>Bitte sicherstellen, dass der Körper ein Objekt enthält, bevor ein subtraktiver Befehl angewendet wird.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1128"/>
+      <location filename="../../Command.cpp" line="813"/>
       <source>Cannot use selected object. Selected object must belong to the active body</source>
       <translation>Ausgewähltes Objekt kann nicht verwendet werden. Ausgewähltes Objekt muss zum aktiven Körper gehören</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1129"/>
+      <location filename="../../Command.cpp" line="814"/>
       <source>Consider using a ShapeBinder or a BaseFeature to reference external geometry in a body.</source>
       <translation>Ziehe die Benutzung eines Formbinders oder eines BasisMerkmals in Betracht um externe Geometrie in einem Körper zu referenzieren.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1151"/>
+      <location filename="../../Command.cpp" line="836"/>
       <source>No sketch to work on</source>
       <translation>Fehlende Skizze</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1152"/>
+      <location filename="../../Command.cpp" line="837"/>
       <source>No sketch is available in the document</source>
       <translation>Keine Skizze im Dokument vorhanden</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1890"/>
-      <location filename="../../Command.cpp" line="1894"/>
-      <location filename="../../Command.cpp" line="1920"/>
-      <location filename="../../Command.cpp" line="1950"/>
+      <location filename="../../Command.cpp" line="1579"/>
+      <location filename="../../Command.cpp" line="1605"/>
       <source>Wrong selection</source>
       <translation>Falsche Auswahl</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1891"/>
-      <source>Select an edge, face, or body.</source>
-      <translation>Kante, Fläche oder Körper auswählen.</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="1895"/>
+      <location filename="../../Command.cpp" line="1580"/>
       <source>Select an edge, face, or body from a single body.</source>
       <translation>Kante, Fläche oder Körper eines einzelnen Körpers auswählen.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1899"/>
-      <location filename="../../Command.cpp" line="2252"/>
+      <location filename="../../Command.cpp" line="1584"/>
+      <location filename="../../Command.cpp" line="1957"/>
       <source>Selection is not in Active Body</source>
       <translation>Auswahl ist nicht im aktiven Körper</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1900"/>
+      <location filename="../../Command.cpp" line="1585"/>
       <source>Select an edge, face, or body from an active body.</source>
       <translation>Kante, Fläche oder Körper eines aktiven Körpers auswählen.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1910"/>
+      <location filename="../../Command.cpp" line="1595"/>
       <source>Wrong object type</source>
       <translation>Falscher Objekt-Typ</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1911"/>
+      <location filename="../../Command.cpp" line="1596"/>
       <source>%1 works only on parts.</source>
       <translation>%1 funktioniert nur bei Teilen.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1921"/>
+      <location filename="../../Command.cpp" line="1606"/>
       <source>Shape of the selected Part is empty</source>
       <translation>Gewähltes Teil ist hohl</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1951"/>
-      <source> not possible on selected faces/edges.</source>
-      <translation> Auf gewählter Fläche oder Kante nicht möglich</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="2243"/>
+      <location filename="../../Command.cpp" line="1948"/>
       <source>No valid features in this document</source>
       <translation>Keine gültigen Elemente in diesem Dokument</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2244"/>
+      <location filename="../../Command.cpp" line="1949"/>
       <source>Please create a feature first.</source>
       <translation>Bitte zuerst ein Element erstellen.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2253"/>
+      <location filename="../../Command.cpp" line="1958"/>
       <source>Please select only one feature in an active body.</source>
       <translation>Bitte nur ein Element in einem aktiven Körper auswählen.</translation>
     </message>
@@ -3732,93 +3602,98 @@ This may lead to unexpected results.</source>
       <translation>Ein Körper kann nicht auf mehr als einem Element basieren.</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="339"/>
+      <location filename="../../CommandBody.cpp" line="197"/>
+      <source>Body</source>
+      <translation>Körper</translation>
+    </message>
+    <message>
+      <location filename="../../CommandBody.cpp" line="343"/>
       <source>Nothing to migrate</source>
       <translation>Nichts zu migrieren</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="340"/>
+      <location filename="../../CommandBody.cpp" line="344"/>
       <source>No PartDesign features found that don't belong to a body. Nothing to migrate.</source>
       <translation>Keine PartDesign-Elemente gefunden, die nicht zu einem Körper gehören. Nichts zu migrieren.</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="488"/>
+      <location filename="../../CommandBody.cpp" line="492"/>
       <source>Sketch plane cannot be migrated</source>
       <translation>Skizzen-Ebene kann nicht migriert werden</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="489"/>
+      <location filename="../../CommandBody.cpp" line="493"/>
       <source>Please edit '%1' and redefine it to use a Base or Datum plane as the sketch plane.</source>
       <translation>Bitte ändern Sie '%1' und verwenden eine Basis- oder Bezugsebene als Zeichnungsebene.</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="551"/>
       <location filename="../../CommandBody.cpp" line="555"/>
-      <location filename="../../CommandBody.cpp" line="560"/>
-      <location filename="../../CommandBody.cpp" line="853"/>
-      <location filename="../../CommandBody.cpp" line="860"/>
+      <location filename="../../CommandBody.cpp" line="559"/>
+      <location filename="../../CommandBody.cpp" line="564"/>
+      <location filename="../../CommandBody.cpp" line="857"/>
+      <location filename="../../CommandBody.cpp" line="864"/>
       <source>Selection error</source>
       <translation>Auswahlfehler</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="552"/>
+      <location filename="../../CommandBody.cpp" line="556"/>
       <source>Select exactly one PartDesign feature or a body.</source>
       <translation>Wählen Sie genau ein PartDesign-Objekt oder einen Körper.</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="556"/>
+      <location filename="../../CommandBody.cpp" line="560"/>
       <source>Couldn't determine a body for the selected feature '%s'.</source>
       <translation>Einen Körper für das ausgewählte Objekt '%s' konnte nicht bestimmt werden.</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="561"/>
+      <location filename="../../CommandBody.cpp" line="565"/>
       <source>Only a solid feature can be the tip of a body.</source>
       <translation>Nur ein Festkörperobjekt kann als Arbeitsposition eines Körpers festgelegt werden.</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="679"/>
-      <location filename="../../CommandBody.cpp" line="701"/>
-      <location filename="../../CommandBody.cpp" line="716"/>
+      <location filename="../../CommandBody.cpp" line="683"/>
+      <location filename="../../CommandBody.cpp" line="705"/>
+      <location filename="../../CommandBody.cpp" line="720"/>
       <source>Features cannot be moved</source>
       <translation>Objekte können nicht verschoben werden</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="680"/>
+      <location filename="../../CommandBody.cpp" line="684"/>
       <source>Some of the selected features have dependencies in the source body</source>
       <translation>Einige der gewählten Objekte sind vom Quell-Körper abhängig</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="702"/>
+      <location filename="../../CommandBody.cpp" line="706"/>
       <source>Only features of a single source Body can be moved</source>
       <translation>Nur Objekte eines einzigen Ursprungskörpers können verschoben werden</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="717"/>
+      <location filename="../../CommandBody.cpp" line="721"/>
       <source>There are no other bodies to move to</source>
       <translation>Es gibt keine anderen Körper zu verschieben</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="854"/>
+      <location filename="../../CommandBody.cpp" line="858"/>
       <source>Impossible to move the base feature of a body.</source>
       <translation>Es ist nicht möglich, das Basis-Objekt des Körpers zu verschieben.</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="861"/>
+      <location filename="../../CommandBody.cpp" line="865"/>
       <source>Select one or more features from the same body.</source>
       <translation>Auswählen eines oder mehrerer Objekte desselben Körpers.</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="874"/>
+      <location filename="../../CommandBody.cpp" line="878"/>
       <source>Beginning of the body</source>
       <translation>Anfang des Körpers</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="939"/>
+      <location filename="../../CommandBody.cpp" line="943"/>
       <source>Dependency violation</source>
       <translation>Abhängigkeitsverletzung</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="940"/>
+      <location filename="../../CommandBody.cpp" line="944"/>
       <source>Early feature must not depend on later feature.
 
 </source>
@@ -3837,29 +3712,29 @@ This may lead to unexpected results.</source>
       <translation>Es ist nicht möglich, ein abzuziehendes Objekt ohne ein Basisobjekt zu erstellen</translation>
     </message>
     <message>
+      <location filename="../../TaskRevolutionParameters.cpp" line="123"/>
       <location filename="../../TaskTransformedParameters.cpp" line="287"/>
-      <location filename="../../TaskRevolutionParameters.cpp" line="124"/>
       <source>Vertical sketch axis</source>
       <translation>Vertikale Skizzenachse</translation>
     </message>
     <message>
+      <location filename="../../TaskRevolutionParameters.cpp" line="124"/>
       <location filename="../../TaskTransformedParameters.cpp" line="288"/>
-      <location filename="../../TaskRevolutionParameters.cpp" line="125"/>
       <source>Horizontal sketch axis</source>
       <translation>Horizontale Skizzenachse</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.cpp" line="127"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="126"/>
       <source>Construction line %1</source>
       <translation>Konstruktionslinie %1</translation>
     </message>
     <message>
-      <location filename="../../TaskSketchBasedParameters.cpp" line="76"/>
+      <location filename="../../TaskSketchBasedParameters.cpp" line="77"/>
       <source>Face</source>
       <translation>Fläche</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="122"/>
+      <location filename="../../Utils.cpp" line="138"/>
       <source>In order to use PartDesign you need an active Body object in the document. Please make one active (double click) or create one.
 
 If you have a legacy document with PartDesign objects without Body, use the migrate function in PartDesign to put them into a Body.</source>
@@ -3868,54 +3743,53 @@ If you have a legacy document with PartDesign objects without Body, use the migr
 Wenn ein älteres Dokument mit PartDesign-Objekten ohne Körper vorliegt, wird die PartDesign-Funktion Migrieren verwendet, um sie in einen Körper abzulegen.</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="169"/>
+      <location filename="../../Utils.cpp" line="186"/>
       <source>Active Body Required</source>
       <translation>Aktiver Körper erforderlich</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="170"/>
+      <location filename="../../Utils.cpp" line="187"/>
       <source>To create a new PartDesign object, there must be an active Body object in the document. Please make one active (double click) or create a new Body.</source>
       <translation>Um ein neues PartDesign-Objekt zu erstellen, muss ein aktiver Körper in diesem Dokument vorhanden sein.
 Bitte aktivieren (Doppelklick) Sie einen oder erstellen einen neuen Körper.</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="205"/>
+      <location filename="../../Utils.cpp" line="222"/>
       <source>Feature is not in a body</source>
       <translation>Objekt ist nicht Teil eines Körpers</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="206"/>
+      <location filename="../../Utils.cpp" line="223"/>
       <source>In order to use this feature it needs to belong to a body object in the document.</source>
       <translation>Um diese Funktion verwenden zu können, muss es Teil eines Körpers im Dokument sein.</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="238"/>
+      <location filename="../../Utils.cpp" line="255"/>
       <source>Feature is not in a part</source>
       <translation>Objekt ist nicht Teil einer Baugruppe</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="239"/>
+      <location filename="../../Utils.cpp" line="256"/>
       <source>In order to use this feature it needs to belong to a part object in the document.</source>
       <translation>Um diese Funktion verwenden zu können, muss es Teil einer Baugruppe im Dokument sein.</translation>
     </message>
     <message>
+      <location filename="../../ViewProvider.cpp" line="62"/>
       <location filename="../../ViewProviderDressUp.cpp" line="50"/>
-      <location filename="../../ViewProvider.cpp" line="65"/>
-      <location filename="../../ViewProviderShapeBinder.cpp" line="204"/>
-      <location filename="../../ViewProviderTransformed.cpp" line="65"/>
-      <location filename="../../ViewProviderMultiTransform.cpp" line="42"/>
+      <location filename="../../ViewProviderShapeBinder.cpp" line="201"/>
+      <location filename="../../ViewProviderTransformed.cpp" line="76"/>
       <source>Edit %1</source>
       <translation>%1 bearbeiten</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="78"/>
+      <location filename="../../ViewProvider.cpp" line="75"/>
       <source>Set colors...</source>
-      <translation>Legen Sie Farben fest...</translation>
+      <translation>Farben festlegen...</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderBoolean.cpp" line="64"/>
+      <location filename="../../ViewProviderBoolean.cpp" line="62"/>
       <source>Edit boolean</source>
-      <translation>Boolesche Operation ändern</translation>
+      <translation>Boolesche Operation bearbeiten</translation>
     </message>
     <message>
       <location filename="../../ViewProviderDatum.cpp" line="110"/>
@@ -3943,112 +3817,112 @@ Bitte aktivieren (Doppelklick) Sie einen oder erstellen einen neuen Körper.</tr
     <message>
       <location filename="../../ViewProviderDatum.cpp" line="225"/>
       <source>Edit datum</source>
-      <translation>Bezug ändern</translation>
+      <translation>Bezug bearbeiten</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderDressUp.cpp" line="71"/>
+      <location filename="../../ViewProviderDressUp.cpp" line="74"/>
       <source>Feature error</source>
       <translation>Objekt-Fehler</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderDressUp.cpp" line="72"/>
+      <location filename="../../ViewProviderDressUp.cpp" line="75"/>
       <source>%1 misses a base feature.
 This feature is broken and can't be edited.</source>
       <translation>%1 vermisst ein Basis-Objekt.
 Dieses Objekt ist beschädigt und kann nicht bearbeitet werden.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderGroove.cpp" line="48"/>
+      <location filename="../../ViewProviderGroove.cpp" line="46"/>
       <source>Edit groove</source>
       <translation>Nut bearbeiten</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderHole.cpp" line="63"/>
+      <location filename="../../ViewProviderHole.cpp" line="61"/>
       <source>Edit hole</source>
       <translation>Bohrung bearbeiten</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderLoft.cpp" line="70"/>
+      <location filename="../../ViewProviderLoft.cpp" line="66"/>
       <source>Edit loft</source>
       <translation>Ausformung bearbeiten</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderPad.cpp" line="48"/>
+      <location filename="../../ViewProviderPad.cpp" line="46"/>
       <source>Edit pad</source>
       <translation>Extrusion bearbeiten</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderPipe.cpp" line="78"/>
+      <location filename="../../ViewProviderPipe.cpp" line="74"/>
       <source>Edit pipe</source>
       <translation>Rohr bearbeiten</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderPocket.cpp" line="50"/>
+      <location filename="../../ViewProviderPocket.cpp" line="48"/>
       <source>Edit pocket</source>
       <translation>Tasche bearbeiten</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderPrimitive.cpp" line="59"/>
+      <location filename="../../ViewProviderPrimitive.cpp" line="54"/>
       <source>Edit primitive</source>
       <translation>Grundkörper bearbeiten</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderRevolution.cpp" line="48"/>
+      <location filename="../../ViewProviderRevolution.cpp" line="46"/>
       <source>Edit revolution</source>
       <translation>Drehteil bearbeiten</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderShapeBinder.cpp" line="199"/>
+      <location filename="../../ViewProviderShapeBinder.cpp" line="196"/>
       <source>Edit shape binder</source>
       <translation>Formbinder bearbeiten</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderShapeBinder.cpp" line="308"/>
+      <location filename="../../ViewProviderShapeBinder.cpp" line="305"/>
       <source>Synchronize</source>
       <translation>Synchronisieren</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderShapeBinder.cpp" line="310"/>
+      <location filename="../../ViewProviderShapeBinder.cpp" line="307"/>
       <source>Select bound object</source>
       <translation>Begrenztes Objekt auswählen</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderTransformed.cpp" line="169"/>
+      <location filename="../../ViewProviderTransformed.cpp" line="179"/>
       <source>One transformed shape does not intersect support</source>
       <translation>Eine Transformation überschneidet die Basis nicht</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderTransformed.cpp" line="171"/>
+      <location filename="../../ViewProviderTransformed.cpp" line="181"/>
       <source>%1 transformed shapes do not intersect support</source>
       <translation>%1 Transformationen überschneiden die Basis nicht</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderTransformed.cpp" line="181"/>
+      <location filename="../../ViewProviderTransformed.cpp" line="191"/>
       <source>Transformation succeeded</source>
       <translation>Transformation erfolgreich</translation>
     </message>
     <message>
-      <location filename="../../WorkflowManager.cpp" line="138"/>
+      <location filename="../../WorkflowManager.cpp" line="140"/>
       <source>The document "%1" you are editing was designed with an old version of PartDesign workbench.</source>
       <translation>Das Dokument "%1" welches Sie editieren, wurde mit der alten Version des PartDesign Workbench erstellt.</translation>
     </message>
     <message>
-      <location filename="../../WorkflowManager.cpp" line="141"/>
+      <location filename="../../WorkflowManager.cpp" line="143"/>
       <source>Do you want to migrate in order to use modern PartDesign features?</source>
       <translation>Möchten Sie migrieren, um neuere PartDesign-Funktionen zu nutzen?</translation>
     </message>
     <message>
-      <location filename="../../WorkflowManager.cpp" line="144"/>
+      <location filename="../../WorkflowManager.cpp" line="146"/>
       <source>The document "%1" seems to be either in the middle of the migration process from legacy PartDesign or have a slightly broken structure.</source>
       <translation>Das Dokument "%1" scheint entweder inmitten des Migrationsprozesses aus einem älteren PartDesign zu stammen oder hat eine defekte Struktur.</translation>
     </message>
     <message>
-      <location filename="../../WorkflowManager.cpp" line="148"/>
+      <location filename="../../WorkflowManager.cpp" line="150"/>
       <source>Do you want to make the migration automatically?</source>
       <translation>Möchten Sie die Migrierung automatisch durchführen?</translation>
     </message>
     <message>
-      <location filename="../../WorkflowManager.cpp" line="150"/>
+      <location filename="../../WorkflowManager.cpp" line="152"/>
       <source>Note: If you choose to migrate you won't be able to edit the file with an older FreeCAD version.
 If you refuse to migrate you won't be able to use new PartDesign features like Bodies and Parts. As a result you also won't be able to use your parts in the assembly workbench.
 Although you will be able to migrate any moment later with 'Part Design -&gt; Migrate'.</source>
@@ -4057,14 +3931,59 @@ Wenn Du die Migration ablehnst, kannst Du keine neuen PartDesign-Funktionen wie 
 Du kannst die Teile später jederzeit mit 'Part Design -&gt; Migrieren...' migrieren.</translation>
     </message>
     <message>
-      <location filename="../../WorkflowManager.cpp" line="159"/>
+      <location filename="../../WorkflowManager.cpp" line="161"/>
       <source>Migrate manually</source>
       <translation>Manuell migrieren</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderHelix.cpp" line="55"/>
+      <location filename="../../ViewProviderHelix.cpp" line="51"/>
       <source>Edit helix</source>
       <translation>Wendel bearbeiten</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderChamfer.cpp" line="41"/>
+      <source>Edit chamfer</source>
+      <translation>Fase bearbeiten</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderDraft.cpp" line="42"/>
+      <source>Edit draft</source>
+      <translation>Abschrägung bearbeiten</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderFillet.cpp" line="41"/>
+      <source>Edit fillet</source>
+      <translation>Verrundung bearbeiten</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderLinearPattern.cpp" line="39"/>
+      <source>Edit linear pattern</source>
+      <translation>Lineares Muster bearbeiten</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderMirrored.cpp" line="39"/>
+      <source>Edit mirrored</source>
+      <translation>Spiegelung bearbeiten</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderMultiTransform.cpp" line="48"/>
+      <source>Edit multi-transform</source>
+      <translation>Mehrfach-Transformation bearbeiten</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderPolarPattern.cpp" line="38"/>
+      <source>Edit polar pattern</source>
+      <translation>Polares Muster bearbeiten</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderScaled.cpp" line="39"/>
+      <source>Edit scaled</source>
+      <translation>Skalierte Transformation bearbeiten</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderThickness.cpp" line="41"/>
+      <source>Edit thickness</source>
+      <translation>Dicke bearbeiten</translation>
     </message>
   </context>
   <context>
@@ -4258,11 +4177,6 @@ Du kannst die Teile später jederzeit mit 'Part Design -&gt; Migrieren...' migri
   <context>
     <name>TaskHole</name>
     <message>
-      <location filename="../../../FeatureHole/TaskHole.ui" line="14"/>
-      <source>Form</source>
-      <translation>Form</translation>
-    </message>
-    <message>
       <location filename="../../../FeatureHole/TaskHole.ui" line="24"/>
       <source>Position</source>
       <translation>Position</translation>
@@ -4376,7 +4290,7 @@ Du kannst die Teile später jederzeit mit 'Part Design -&gt; Migrieren...' migri
     <message>
       <location filename="../../../FeatureHole/TaskHole.ui" line="546"/>
       <source>Countersink angle</source>
-      <translation>Winkel einer kegelförmigen Senkung</translation>
+      <translation>Winkel der Kegelsenkung</translation>
     </message>
     <message>
       <location filename="../../../FeatureHole/TaskHole.ui" line="564"/>
@@ -4394,7 +4308,7 @@ Du kannst die Teile später jederzeit mit 'Part Design -&gt; Migrieren...' migri
     <message>
       <location filename="../../TaskHoleParameters.ui" line="26"/>
       <source>&lt;b&gt;Threading and size&lt;/b&gt;</source>
-      <translation>&lt;b&gt;Gewinde und Größe&lt;/b&gt;</translation>
+      <translation>&lt;b&gt;Gewindart und -Größe&lt;/b&gt;</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="39"/>
@@ -4483,20 +4397,20 @@ Nur für Bohrungen ohne Gewinde verfügbar</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="251"/>
-      <location filename="../../TaskHoleParameters.cpp" line="586"/>
+      <location filename="../../TaskHoleParameters.cpp" line="618"/>
       <source>Standard</source>
       <translation>Standard</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="256"/>
-      <location filename="../../TaskHoleParameters.cpp" line="587"/>
-      <location filename="../../TaskHoleParameters.cpp" line="598"/>
+      <location filename="../../TaskHoleParameters.cpp" line="619"/>
+      <location filename="../../TaskHoleParameters.cpp" line="630"/>
       <source>Close</source>
-      <translation>Schließen</translation>
+      <translation>Eng</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="261"/>
-      <location filename="../../TaskHoleParameters.cpp" line="588"/>
+      <location filename="../../TaskHoleParameters.cpp" line="620"/>
       <source>Wide</source>
       <translation>Weit</translation>
     </message>
@@ -4531,7 +4445,7 @@ Nur für Bohrungen ohne Gewinde verfügbar</translation>
       <location filename="../../TaskHoleParameters.ui" line="350"/>
       <location filename="../../TaskHoleParameters.ui" line="404"/>
       <source>Dimension</source>
-      <translation>Abmessung</translation>
+      <translation>Tiefenmaß</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="355"/>
@@ -4556,11 +4470,11 @@ Nur für Bohrungen ohne Gewinde verfügbar</translation>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="433"/>
       <source>&lt;b&gt;Hole cut&lt;/b&gt;</source>
-      <translation>&lt;b&gt;Bohrloch&lt;/b&gt;</translation>
+      <translation>&lt;b&gt;Senkung&lt;/b&gt;</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="446"/>
-      <location filename="../../TaskHoleParameters.ui" line="609"/>
+      <location filename="../../TaskHoleParameters.ui" line="613"/>
       <source>Type</source>
       <translation>Typ</translation>
     </message>
@@ -4580,48 +4494,55 @@ Nur für Bohrungen ohne Gewinde verfügbar</translation>
       <translation>Benutzerdefinierte Werte</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.ui" line="561"/>
+      <location filename="../../TaskHoleParameters.ui" line="539"/>
+      <source>For countersinks this is the depth of
+the screw's top below the surface</source>
+      <translation>Für Kegelsenkungen ist dies die Höhe des
+Schraubenkopfes unter der Oberfläche</translation>
+    </message>
+    <message>
+      <location filename="../../TaskHoleParameters.ui" line="565"/>
       <source>Countersink angle</source>
-      <translation>Winkel einer kegelförmigen Senkung</translation>
+      <translation>Winkel der Kegelsenkung</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.ui" line="593"/>
+      <location filename="../../TaskHoleParameters.ui" line="597"/>
       <source>&lt;b&gt;Drill point&lt;/b&gt;</source>
-      <translation>&lt;b&gt;Bohrspitze&lt;/b&gt;</translation>
+      <translation>&lt;b&gt;Bohrungsgrund&lt;/b&gt;</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.ui" line="625"/>
+      <location filename="../../TaskHoleParameters.ui" line="629"/>
       <source>Flat</source>
       <translation>Flach</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.ui" line="641"/>
+      <location filename="../../TaskHoleParameters.ui" line="645"/>
       <source>Angled</source>
-      <translation>Winkelig</translation>
-    </message>
-    <message>
-      <location filename="../../TaskHoleParameters.ui" line="676"/>
-      <source>The size of the drill point will be taken into
-account for the depth of blind holes</source>
-      <translation>Die Größe der Bohrspitze wird für die Tiefe der Sackbohrung mit berücksichtigt</translation>
+      <translation>Konisch</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="680"/>
+      <source>The size of the drill point will be taken into
+account for the depth of blind holes</source>
+      <translation>Die Größe der Bohrerspitze wird für die Tiefe eines Sacklochs berücksichtigt</translation>
+    </message>
+    <message>
+      <location filename="../../TaskHoleParameters.ui" line="684"/>
       <source>Take into account for depth</source>
       <translation>Für die Tiefe berücksichtigen</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.ui" line="687"/>
+      <location filename="../../TaskHoleParameters.ui" line="691"/>
       <source>&lt;b&gt;Misc&lt;/b&gt;</source>
       <translation>&lt;b&gt;Sonstiges&lt;/b&gt;</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.ui" line="700"/>
+      <location filename="../../TaskHoleParameters.ui" line="704"/>
       <source>Tapered</source>
       <translation>Kegelförmig</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.ui" line="713"/>
+      <location filename="../../TaskHoleParameters.ui" line="717"/>
       <source>Taper angle for the hole
 90 degree: straight hole
 under 90: smaller hole radius at the bottom
@@ -4632,22 +4553,22 @@ unter 90: kleinerer Bohrungsradius an der Unterseite
 über 90: größerer Bohrungsradius an der Unterseite</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.ui" line="738"/>
+      <location filename="../../TaskHoleParameters.ui" line="742"/>
       <source>Reverses the hole direction</source>
       <translation>Kehrt die Bohrungsrichtung um</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.ui" line="741"/>
+      <location filename="../../TaskHoleParameters.ui" line="745"/>
       <source>Reversed</source>
       <translation>Umgekehrt</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="597"/>
+      <location filename="../../TaskHoleParameters.cpp" line="629"/>
       <source>Normal</source>
       <translation>Normal</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="599"/>
+      <location filename="../../TaskHoleParameters.cpp" line="631"/>
       <source>Loose</source>
       <translation>Ungebunden</translation>
     </message>
@@ -4655,72 +4576,9 @@ unter 90: kleinerer Bohrungsradius an der Unterseite
   <context>
     <name>TaskTransformedMessages</name>
     <message>
-      <location filename="../../TaskTransformedMessages.ui" line="14"/>
-      <source>Form</source>
-      <translation>Form</translation>
-    </message>
-    <message>
       <location filename="../../TaskTransformedMessages.ui" line="25"/>
       <source>No message</source>
       <translation>Keine Meldung</translation>
-    </message>
-  </context>
-  <context>
-    <name>WizardShaft</name>
-    <message>
-      <location filename="../../../WizardShaft/WizardShaft.py" line="186"/>
-      <location filename="../../../WizardShaft/WizardShaft.py" line="211"/>
-      <source>Shaft design wizard...</source>
-      <translation>Entwurfsassistent für Wellen...</translation>
-    </message>
-    <message>
-      <location filename="../../../WizardShaft/WizardShaft.py" line="187"/>
-      <location filename="../../../WizardShaft/WizardShaft.py" line="212"/>
-      <source>Start the shaft design wizard</source>
-      <translation>Entwurfsassistent für Wellen starten</translation>
-    </message>
-  </context>
-  <context>
-    <name>WizardShaftTable</name>
-    <message>
-      <location filename="../../../WizardShaft/WizardShaftTable.py" line="43"/>
-      <source>Length [mm]</source>
-      <translation>Länge [mm]</translation>
-    </message>
-    <message>
-      <location filename="../../../WizardShaft/WizardShaftTable.py" line="44"/>
-      <source>Diameter [mm]</source>
-      <translation>Durchmesser [mm]</translation>
-    </message>
-    <message>
-      <location filename="../../../WizardShaft/WizardShaftTable.py" line="45"/>
-      <source>Inner diameter [mm]</source>
-      <translation>Innendurchmesser [mm]</translation>
-    </message>
-    <message>
-      <location filename="../../../WizardShaft/WizardShaftTable.py" line="46"/>
-      <source>Constraint type</source>
-      <translation>Beziehungstyp</translation>
-    </message>
-    <message>
-      <location filename="../../../WizardShaft/WizardShaftTable.py" line="47"/>
-      <source>Start edge type</source>
-      <translation>Art der Anfangskante</translation>
-    </message>
-    <message>
-      <location filename="../../../WizardShaft/WizardShaftTable.py" line="48"/>
-      <source>Start edge size</source>
-      <translation>Größe der Anfangskante</translation>
-    </message>
-    <message>
-      <location filename="../../../WizardShaft/WizardShaftTable.py" line="49"/>
-      <source>End edge type</source>
-      <translation>Art der Endkante</translation>
-    </message>
-    <message>
-      <location filename="../../../WizardShaft/WizardShaftTable.py" line="53"/>
-      <source>End edge size</source>
-      <translation>Größe der Endkante</translation>
     </message>
   </context>
   <context>
@@ -4799,6 +4657,937 @@ unter 90: kleinerer Bohrungsradius an der Unterseite
       <location filename="../../Workbench.cpp" line="62"/>
       <source>Part Design Modeling</source>
       <translation>Part Design - Modellierung</translation>
+    </message>
+  </context>
+  <context>
+    <name>PartDesign_InvoluteGear</name>
+    <message>
+      <location filename="../../../InvoluteGearFeature.py" line="58"/>
+      <source>Involute gear...</source>
+      <translation>Evolventenrad...</translation>
+    </message>
+    <message>
+      <location filename="../../../InvoluteGearFeature.py" line="62"/>
+      <source>Creates or edit the involute gear definition.</source>
+      <translation>Erstellt oder bearbeitet die Definition eines Evolventenzahnrades.</translation>
+    </message>
+  </context>
+  <context>
+    <name>PartDesign_Sprocket</name>
+    <message>
+      <location filename="../../../SprocketFeature.py" line="62"/>
+      <source>Sprocket...</source>
+      <translation>Kettenrad...</translation>
+    </message>
+    <message>
+      <location filename="../../../SprocketFeature.py" line="66"/>
+      <source>Creates or edit the sprocket definition.</source>
+      <translation>Erstellt oder bearbeitet die Definition eines Kettenrades.</translation>
+    </message>
+  </context>
+  <context>
+    <name>WizardShaftTable</name>
+    <message>
+      <location filename="../../../WizardShaft/WizardShaftTable.py" line="45"/>
+      <source>Length [mm]</source>
+      <translation>Länge [mm]</translation>
+    </message>
+    <message>
+      <location filename="../../../WizardShaft/WizardShaftTable.py" line="46"/>
+      <source>Diameter [mm]</source>
+      <translation>Durchmesser [mm]</translation>
+    </message>
+    <message>
+      <location filename="../../../WizardShaft/WizardShaftTable.py" line="47"/>
+      <source>Inner diameter [mm]</source>
+      <translation>Innendurchmesser [mm]</translation>
+    </message>
+    <message>
+      <location filename="../../../WizardShaft/WizardShaftTable.py" line="48"/>
+      <source>Constraint type</source>
+      <translation>Art der Randbedingung</translation>
+    </message>
+    <message>
+      <location filename="../../../WizardShaft/WizardShaftTable.py" line="49"/>
+      <source>Start edge type</source>
+      <translation>Art der Anfangskante</translation>
+    </message>
+    <message>
+      <location filename="../../../WizardShaft/WizardShaftTable.py" line="50"/>
+      <source>Start edge size</source>
+      <translation>Größe der Anfangskante</translation>
+    </message>
+    <message>
+      <location filename="../../../WizardShaft/WizardShaftTable.py" line="51"/>
+      <source>End edge type</source>
+      <translation>Art der Endkante</translation>
+    </message>
+    <message>
+      <location filename="../../../WizardShaft/WizardShaftTable.py" line="55"/>
+      <source>End edge size</source>
+      <translation>Größe der Endkante</translation>
+    </message>
+    <message>
+      <location filename="../../../WizardShaft/WizardShaftTable.py" line="64"/>
+      <source>Shaft wizard</source>
+      <translation>Wellen-Assistent</translation>
+    </message>
+    <message>
+      <location filename="../../../WizardShaft/WizardShaftTable.py" line="72"/>
+      <source>Section 1</source>
+      <translation>Abschnitt 1</translation>
+    </message>
+    <message>
+      <location filename="../../../WizardShaft/WizardShaftTable.py" line="72"/>
+      <source>Section 2</source>
+      <translation>Abschnitt 2</translation>
+    </message>
+    <message>
+      <location filename="../../../WizardShaft/WizardShaftTable.py" line="76"/>
+      <source>Add column</source>
+      <translation>Spalte hinzufügen</translation>
+    </message>
+    <message>
+      <location filename="../../../WizardShaft/WizardShaftTable.py" line="122"/>
+      <source>Section %s</source>
+      <translation>Abschnitt %s</translation>
+    </message>
+  </context>
+  <context>
+    <name>TaskWizardShaft</name>
+    <message>
+      <location filename="../../../WizardShaft/WizardShaft.py" line="57"/>
+      <source>All</source>
+      <translation>Alles</translation>
+    </message>
+    <message>
+      <location filename="../../../WizardShaft/WizardShaft.py" line="104"/>
+      <source>Missing module</source>
+      <translation>Fehlendes Modul</translation>
+    </message>
+    <message>
+      <location filename="../../../WizardShaft/WizardShaft.py" line="105"/>
+      <source>You may have to install the Plot add-on</source>
+      <translation>Möglicherweise müssen Sie das Plot-Add-on installieren</translation>
+    </message>
+  </context>
+  <context>
+    <name>PartDesign_WizardShaft</name>
+    <message>
+      <location filename="../../../WizardShaft/WizardShaft.py" line="189"/>
+      <source>Shaft design wizard...</source>
+      <translation>Entwurfsassistent für Wellen...</translation>
+    </message>
+    <message>
+      <location filename="../../../WizardShaft/WizardShaft.py" line="190"/>
+      <source>Start the shaft design wizard</source>
+      <translation>Entwurfsassistent für Wellen starten</translation>
+    </message>
+  </context>
+  <context>
+    <name>PartDesign_WizardShaftCallBack</name>
+    <message>
+      <location filename="../../../WizardShaft/WizardShaft.py" line="214"/>
+      <source>Shaft design wizard...</source>
+      <translation>Entwurfsassistent für Wellen...</translation>
+    </message>
+    <message>
+      <location filename="../../../WizardShaft/WizardShaft.py" line="215"/>
+      <source>Start the shaft design wizard</source>
+      <translation>Entwurfsassistent für Wellen starten</translation>
+    </message>
+  </context>
+  <context>
+    <name>Exception</name>
+    <message>
+      <location filename="../../../App/Body.cpp" line="401"/>
+      <source>Linked object is not a PartDesign feature</source>
+      <translation>Das verknüpfte Objekt ist kein PartDesign-Formelement</translation>
+    </message>
+    <message>
+      <location filename="../../../App/Body.cpp" line="408"/>
+      <source>Tip shape is empty</source>
+      <translation>Form der "Spitze" ist leer</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureBase.cpp" line="62"/>
+      <source>BaseFeature link is not set</source>
+      <translation>Es ist kein Link auf ein BaseFeature gesetzt</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureBase.cpp" line="65"/>
+      <source>BaseFeature must be a Part::Feature</source>
+      <translation>Das BaseFeature muss ein Part::Feature sein</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureBase.cpp" line="69"/>
+      <source>BaseFeature has an empty shape</source>
+      <translation>Das BaseFeature enthält eine leere Form</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureBoolean.cpp" line="78"/>
+      <source>Cannot do boolean cut without BaseFeature</source>
+      <translation>Eine boolesche Differenz (Beschnitt) ohne BaseFeature ist nicht möglich</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureBoolean.cpp" line="92"/>
+      <location filename="../../../App/FeatureBoolean.cpp" line="112"/>
+      <source>Cannot do boolean with anything but Part::Feature and its derivatives</source>
+      <translation>Boolesche Verknüpfungen können nur mit Part::Feature-Objekten und ihren Derivaten durchgeführt werden</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureBoolean.cpp" line="99"/>
+      <source>Cannot do boolean operation with invalid base shape</source>
+      <translation>Boolesche Verknüpfungen können nicht mit ungültigem base shape durchgeführt werden</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureBoolean.cpp" line="105"/>
+      <source>Cannot do boolean on feature which is not in a body</source>
+      <translation>Eine boolesche Verknüpfung kann nicht an einem Formelement ausgeführt werden, das sich nicht in einem Körper befindet</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureBoolean.cpp" line="119"/>
+      <source>Base shape is null</source>
+      <translation>Grundform ist NULL</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureBoolean.cpp" line="122"/>
+      <source>Tool shape is null</source>
+      <translation>Werkzeugform ist NULL</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureBoolean.cpp" line="127"/>
+      <source>Fusion of tools failed</source>
+      <translation>Fusion der Werkzeuge fehlgeschlagen</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureBoolean.cpp" line="132"/>
+      <location filename="../../../App/FeatureGroove.cpp" line="161"/>
+      <location filename="../../../App/FeatureHole.cpp" line="1900"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="293"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="311"/>
+      <location filename="../../../App/FeaturePad.cpp" line="217"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="394"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="414"/>
+      <location filename="../../../App/FeaturePocket.cpp" line="222"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="103"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="123"/>
+      <source>Resulting shape is not a solid</source>
+      <translation>Die resultierende Form ist kein Festkörper</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureBoolean.cpp" line="136"/>
+      <source>Cut out failed</source>
+      <translation>Ausschnitt fehlgeschlagen</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureBoolean.cpp" line="141"/>
+      <source>Common operation failed</source>
+      <translation>Vereinigung fehlgeschlagen</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureBoolean.cpp" line="152"/>
+      <location filename="../../../App/FeatureChamfer.cpp" line="223"/>
+      <location filename="../../../App/FeatureDraft.cpp" line="323"/>
+      <location filename="../../../App/FeatureFillet.cpp" line="137"/>
+      <location filename="../../../App/FeatureGroove.cpp" line="168"/>
+      <location filename="../../../App/FeatureHole.cpp" line="1908"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="296"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="314"/>
+      <location filename="../../../App/FeaturePad.cpp" line="221"/>
+      <location filename="../../../App/FeaturePad.cpp" line="230"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="398"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="418"/>
+      <location filename="../../../App/FeaturePocket.cpp" line="191"/>
+      <location filename="../../../App/FeaturePocket.cpp" line="226"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="107"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="127"/>
+      <source>Result has multiple solids: that is not currently supported.</source>
+      <translation>Das Ergebnis enthält mehrere Festkörper: Dies wird derzeit leider nicht unterstützt.</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureChamfer.cpp" line="203"/>
+      <source>Failed to create chamfer</source>
+      <translation>Fase konnte nicht erstellt werden</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureChamfer.cpp" line="207"/>
+      <location filename="../../../App/FeatureDraft.cpp" line="319"/>
+      <location filename="../../../App/FeatureFillet.cpp" line="120"/>
+      <source>Resulting shape is null</source>
+      <translation>Die resultierende Form ist nichts. Null. Nienete. Nada. Da bleibt nichts übrig. Überhaupt gar nichts</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureChamfer.cpp" line="218"/>
+      <location filename="../../../App/FeatureFillet.cpp" line="131"/>
+      <source>Resulting shape is invalid</source>
+      <translation>Die resultierende Form ist ungültig</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureChamfer.cpp" line="289"/>
+      <source>Size must be greater than zero</source>
+      <translation>Abstand muss größer als Null sein</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureChamfer.cpp" line="298"/>
+      <source>Size2 must be greater than zero</source>
+      <translation>Abstand2 muss größer als Null sein</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureChamfer.cpp" line="303"/>
+      <source>Angle must be greater than 0 and less than 180</source>
+      <translation>Der Winkel muss größer als 0° und kleiner als 180° sein</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureDraft.cpp" line="315"/>
+      <source>Failed to create draft</source>
+      <translation>Abschrägung konnte nicht erstellt werden</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureFillet.cpp" line="93"/>
+      <source>Fillet radius must be greater than zero</source>
+      <translation>Verrundungsradius muss größer als Null sein</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureFillet.cpp" line="116"/>
+      <source>Failed to create fillet</source>
+      <translation>Verrundung konnte nicht erstellt werden</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureGroove.cpp" line="78"/>
+      <source>Angle of groove too large</source>
+      <translation>Winkel der Nut zu groß</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureGroove.cpp" line="82"/>
+      <source>Angle of groove too small</source>
+      <translation>Winkel der Nut zu klein</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureGroove.cpp" line="101"/>
+      <location filename="../../../App/FeatureHole.cpp" line="1669"/>
+      <source>The requested feature cannot be created. The reason may be that:
+  - the active Body does not contain a base shape, so there is no
+  material to be removed;
+  - the selected sketch does not belong to the active Body.</source>
+      <translation>Das gewünschte Merkmal kann nicht erzeugt werden. Der Grund kann sein:
+- Der aktive Körper enthält keine Basisform, so dass kein Material entfernt werden kann;
+- Die gewählte Skizze gehört nicht zum aktiven Körper.</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureGroove.cpp" line="118"/>
+      <location filename="../../../App/FeatureRevolution.cpp" line="118"/>
+      <source>Creating a face from sketch failed</source>
+      <translation>Es konnte keine Fläche aus der Skizze erstellt werden</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureGroove.cpp" line="140"/>
+      <location filename="../../../App/FeatureRevolution.cpp" line="140"/>
+      <source>Revolve axis intersects the sketch</source>
+      <translation>Die Drehachse schneidet die Skizze</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureGroove.cpp" line="156"/>
+      <source>Cut out of base feature failed</source>
+      <translation>Das Ausschneiden des Basis-Formelements ist fehlgeschlagen</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureGroove.cpp" line="173"/>
+      <location filename="../../../App/FeatureRevolution.cpp" line="165"/>
+      <source>Could not revolve the sketch!</source>
+      <translation>Konnte die Skizze nicht drehen!</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureGroove.cpp" line="180"/>
+      <location filename="../../../App/FeatureRevolution.cpp" line="172"/>
+      <source>Could not create face from sketch.
+Intersecting sketch entities in a sketch are not allowed.</source>
+      <translation>Konnte keine Fläche aus der Skizze erstellen.
+Skizzenobjekte dürfen einander nicht schneiden.</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureHelix.cpp" line="127"/>
+      <source>Error: Pitch too small</source>
+      <translation>Fehler: Die Steigung ist zu gering</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureHelix.cpp" line="129"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="143"/>
+      <source>Error: height too small!</source>
+      <translation>Fehler: Höhe zu klein!</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureHelix.cpp" line="135"/>
+      <source>Error: pitch too small!</source>
+      <translation>Fehler: Die Steigung ist zu gering!</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureHelix.cpp" line="137"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="145"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="151"/>
+      <source>Error: turns too small!</source>
+      <translation>Fehler: Die Anzahl der Windungen ist zu klein!</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureHelix.cpp" line="155"/>
+      <source>Error: either height or growth must not be zero!</source>
+      <translation>Fehler: Entweder die Höhe oder die Zuwachsrate darf nicht Null sein!</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureHelix.cpp" line="169"/>
+      <source>Error: unsupported mode</source>
+      <translation>Fehler: nicht unterstützter Modus</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureHelix.cpp" line="181"/>
+      <source>Error: No valid sketch or face</source>
+      <translation>Fehler: Keine gültige Skizze oder Fläche</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureHelix.cpp" line="190"/>
+      <source>Error: Face must be planar</source>
+      <translation>Fehler: Fläche muss eben sein</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureHelix.cpp" line="256"/>
+      <source>Error: Could not build</source>
+      <translation>Fehler: Konnte leider keine Helix erstellen</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureHelix.cpp" line="296"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="330"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="360"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2145"/>
+      <source>Error: Result is not a solid</source>
+      <translation>Fehler: Ergebnis ist kein Festkörper</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureHelix.cpp" line="310"/>
+      <source>Error: There is nothing to subtract</source>
+      <translation>Fehler: Es gibt nichts zum Abziehen</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureHelix.cpp" line="314"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="334"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="364"/>
+      <source>Error: Result has multiple solids</source>
+      <translation>Fehler: Ergebnis besteht aus mehreren Festkörpern</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureHelix.cpp" line="324"/>
+      <source>Error: Adding the helix failed</source>
+      <translation>Fehler: Konnte Wendel nicht hinzufügen</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureHelix.cpp" line="347"/>
+      <source>Error: Intersecting the helix failed</source>
+      <translation>Fehler: Überschneidung mit der Helix ist leider fehlgeschlagen</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureHelix.cpp" line="354"/>
+      <source>Error: Subtracting the helix failed</source>
+      <translation>Fehler: Konnte Wendel nicht abziehen</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureHelix.cpp" line="376"/>
+      <source>Error: Could not create face from sketch</source>
+      <translation>Fehler: Konnte keine Fläche aus Skizze erzeugen</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureHole.cpp" line="1687"/>
+      <source>Hole error: Creating a face from sketch failed</source>
+      <translation>Fehler bei Bohrung: Es konnte keine Fläche aus der Skizze erstellt werden</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureHole.cpp" line="1712"/>
+      <source>Hole error: Unsupported length specification</source>
+      <translation>Bohrungsfehler: Nicht unterstützte Längenangabe</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureHole.cpp" line="1715"/>
+      <source>Hole error: Invalid hole depth</source>
+      <translation>Lochfehler: Ungültige Lochtiefe</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureHole.cpp" line="1738"/>
+      <source>Hole error: Invalid taper angle</source>
+      <translation>Bohrungsfehler: Ungültiger Kegelwinkel</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureHole.cpp" line="1759"/>
+      <source>Hole error: Hole cut diameter too small</source>
+      <translation>Lochfehler: Lochdurchmesser zu klein</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureHole.cpp" line="1763"/>
+      <source>Hole error: Hole cut depth must be less than hole depth</source>
+      <translation>Bohrungsfehler: Die Senkungstiefe muss kleiner als die Bohrungstiefe sein</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureHole.cpp" line="1767"/>
+      <source>Hole error: Hole cut depth must be greater or equal to zero</source>
+      <translation>Bohrungsfehler: Die Senkungstiefe muss größer oder gleich null sein</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureHole.cpp" line="1789"/>
+      <source>Hole error: Invalid countersink</source>
+      <translation>Lochfehler: Ungültige Senkung</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureHole.cpp" line="1822"/>
+      <source>Hole error: Invalid drill point angle</source>
+      <translation>Lochfehler: Ungültiger Spitzenwinkel</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureHole.cpp" line="1832"/>
+      <source>Hole error: Invalid drill point</source>
+      <translation>Fehler bei Bohrung: Ungültiger Bohrpunkt</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureHole.cpp" line="1866"/>
+      <source>Hole error: Could not revolve sketch</source>
+      <translation>Fehler bei Bohrung: Konnte die Skizze nicht drehen</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureHole.cpp" line="1870"/>
+      <source>Hole error: Resulting shape is empty</source>
+      <translation>Bohrungsfehler: Die resultierende Form ist leer</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureHole.cpp" line="1880"/>
+      <source>Error: Adding the thread failed</source>
+      <translation>Fehler: Konnte das Gewinde nicht hinzufügen</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureHole.cpp" line="1892"/>
+      <location filename="../../../App/FeatureTransformed.cpp" line="283"/>
+      <location filename="../../../App/FeatureTransformed.cpp" line="298"/>
+      <source>Boolean operation failed</source>
+      <translation>Boolesche Operation fehlgeschlagen</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureHole.cpp" line="1919"/>
+      <location filename="../../../App/FeaturePocket.cpp" line="242"/>
+      <source>Could not create face from sketch.
+Intersecting sketch entities or multiple faces in a sketch are not allowed for making a pocket up to a face.</source>
+      <translation>Es konnte keine Fläche aus der Skizze erstellt werden.
+Beim Erstellen von Taschen bis zu einer Fläche sind nur einzelne Flächen in der Skizze erlaubt. Mehrere Flächen oder sich überschneidende Skizzenobjekte können nicht auf ein Mal bearbeitet werden.</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureHole.cpp" line="2025"/>
+      <source>Thread type out of range</source>
+      <translation>Gewindetyp außerhalb des Bereichs</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureHole.cpp" line="2028"/>
+      <source>Thread size out of range</source>
+      <translation>Gewindegröße außerhalb des Bereichs</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureHole.cpp" line="2120"/>
+      <source>Error: Thread could not be built</source>
+      <translation>Fehler: Gewinde konnte nicht gebaut werden</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureLoft.cpp" line="135"/>
+      <source>Loft: At least one section is needed</source>
+      <translation>Fehler bei Ausformung: Mindestens ein Abschnitt wird benötigt</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureLoft.cpp" line="140"/>
+      <source>Loft: Could not obtain profile shape</source>
+      <translation>Fehler bei Ausformung: Konnte keine Profilform generieren</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureLoft.cpp" line="153"/>
+      <source>Loft: When using points for profile/sections, the sketch should have a single point</source>
+      <translation>Fehler bei Ausformung: Wenn Punkte für Profile oder Querschnitte verwendet werden, sollte die Skizze nur einen einzigen Punkt haben</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureLoft.cpp" line="161"/>
+      <source>Loft: All sections need to be part features</source>
+      <translation>Fehler bei Ausformung: Alle Querschnitte müssen zu einem Teil gehören</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureLoft.cpp" line="166"/>
+      <source>Loft: Could not obtain section shape</source>
+      <translation>Fehler bei Ausformung: Konnte für einen Querschnitt keine Form generieren</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureLoft.cpp" line="182"/>
+      <source>Loft: A section doesn't contain any wires nor is a single vertex</source>
+      <translation>Ausformung: Ein Querschnitt enthält weder Linien noch einen einzelnen Knotenpunkt</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureLoft.cpp" line="184"/>
+      <source>Loft: Only the profile and the last section can be vertices</source>
+      <translation>Fehler bei Ausformung: Nur das Profil und der letzte Querschnitt können Scheitelpunkte sein</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureLoft.cpp" line="186"/>
+      <source>Loft: For closed lofts only the profile can be a vertex</source>
+      <translation>Fehler bei Ausformung: Für geschlossene Schrägen kann nur das Profil ein Scheitelpunkt sein</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureLoft.cpp" line="193"/>
+      <source>Loft: all loft sections need to have the same amount of inner wires</source>
+      <translation>Fehler bei Ausformung: Alle Querschnitte müssen die gleiche Anzahl an Verbindungslinien haben</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureLoft.cpp" line="232"/>
+      <source>Loft could not be built</source>
+      <translation>Ausformung konnte nicht erstellt werden</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureLoft.cpp" line="265"/>
+      <source>Loft: Result is not a solid</source>
+      <translation>Ausformung: Das Ergebnis ist kein Festkörper</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureLoft.cpp" line="278"/>
+      <source>Loft: There is nothing to subtract from</source>
+      <translation>Ausformung: Es gibt nichts, von dem etwas abgezogen werden kann</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureLoft.cpp" line="288"/>
+      <source>Loft: Adding the loft failed</source>
+      <translation>Ausformung: Hinzufügen der Ausformung fehlgeschlagen</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureLoft.cpp" line="306"/>
+      <source>Loft: Subtracting the loft failed</source>
+      <translation>Ausformung: Abziehen der Ausformung fehlgeschlagen</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureLoft.cpp" line="330"/>
+      <source>Loft: A fatal error occurred when making the loft</source>
+      <translation>Ausformung: Ein schwerwiegender Fehler ist beim Erstellen der Ausformung aufgetreten</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeaturePad.cpp" line="125"/>
+      <source>Pad: Creation failed because direction is orthogonal to sketch's normal vector</source>
+      <translation>Pad: Erstellen fehlgeschlagen, weil die Richtung senkrecht auf dem Normalenvektor der Skizze steht</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeaturePad.cpp" line="136"/>
+      <source>Pad: Creating a face from sketch failed</source>
+      <translation>Pad: Es konnte keine Fläche aus der Skizze erstellt werden</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeaturePad.cpp" line="200"/>
+      <source>Pad: Resulting shape is empty</source>
+      <translation>Pad: Die resultierende Form ist leer</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeaturePad.cpp" line="211"/>
+      <source>Pad: Fusion with base feature failed</source>
+      <translation>Pad: Vereinigung mit Basis-Formelement ist fehlgeschlagen</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeaturePad.cpp" line="243"/>
+      <source>Could not create face from sketch.
+Intersecting sketch entities or multiple faces in a sketch are not allowed.</source>
+      <translation>Konnte keine Fläche aus der Skizze erstellen.
+Skizzenobjekte dürfen einander nicht schneiden und auch mehrfache Flächen sind nicht erlaubt.</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeaturePipe.cpp" line="172"/>
+      <source>Pipe: Could not obtain profile shape</source>
+      <translation>Fehler bei Rohr: Konnte keine Profilform generieren</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeaturePipe.cpp" line="177"/>
+      <source>No spine linked</source>
+      <translation>Keine Leitkurve verknüpft</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeaturePipe.cpp" line="190"/>
+      <source>No auxiliary spine linked.</source>
+      <translation>Keine Hilfs-Leitkurve verknüpft.</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeaturePipe.cpp" line="211"/>
+      <source>Pipe: Only one isolated point is needed if using a sketch with isolated points for section</source>
+      <translation>Fehler bei Rohr: Nur ein einzelner Punkt wird benötigt, wenn eine Skizze mit isolierten Punkten für den Querschnitt verwendet wird</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeaturePipe.cpp" line="217"/>
+      <source>Pipe: At least one section is needed when using a single point for profile</source>
+      <translation>Fehler bei Rohr: Mindestens ein Querschnitt wird benötigt, wenn ein einzelner Punkt für das Profil verwendet wird</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeaturePipe.cpp" line="231"/>
+      <source>Pipe: All sections need to be part features</source>
+      <translation>Fehler bei Rohr: Alle Querschnitte müssen zu einem Teil gehören</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeaturePipe.cpp" line="237"/>
+      <source>Pipe: Could not obtain section shape</source>
+      <translation>Fehler bei Rohr: Konnte für einen Querschnitt keine Form generieren</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeaturePipe.cpp" line="246"/>
+      <source>Pipe: Only the profile and last section can be vertices</source>
+      <translation>Fehler bei Rohr: Nur das Profil und der letzte Querschnitt können Scheitelpunkte sein</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeaturePipe.cpp" line="255"/>
+      <source>Multisections need to have the same amount of inner wires as the base section</source>
+      <translation>Mehrere Querschnitte müssen die gleiche Anzahl an Liniensegmenten haben wie der Basisquerschnitt</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeaturePipe.cpp" line="282"/>
+      <source>Path must not be a null shape</source>
+      <translation>Jetzt benötigen wir noch einen Pfad. Ohne Pfad geht nix. Wo soll das Rohr verlaufen? 
+Im Original: "Der Pfad darf keine Nullform sein." wenn Ihnen das besser hilft</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeaturePipe.cpp" line="317"/>
+      <source>Pipe could not be built</source>
+      <translation>Rohr konnte nicht erstellt werden</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeaturePipe.cpp" line="363"/>
+      <source>Result is not a solid</source>
+      <translation>Das Ergebnis ist kein Festkörper</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeaturePipe.cpp" line="378"/>
+      <source>Pipe: There is nothing to subtract from</source>
+      <translation>Fehler bei Rohr: Es gibt nichts zum Abziehen</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeaturePipe.cpp" line="389"/>
+      <source>Adding the pipe failed</source>
+      <translation>Das Rohr konnte nicht hinzugefügt werden</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeaturePipe.cpp" line="409"/>
+      <source>Subtracting the pipe failed</source>
+      <translation>Das Rohr konnte nicht abgezogen werden</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeaturePipe.cpp" line="433"/>
+      <source>A fatal error occurred when making the pipe</source>
+      <translation>Fehler bei Rohr: Ein ganz fürchterlicher, schwerwiegender Fehler ist beim Erstellen der Schräge aufgetreten</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeaturePipe.cpp" line="556"/>
+      <source>Invalid element in spine.</source>
+      <translation>Die Leitkurve enthält ein ungültiges Element.</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeaturePipe.cpp" line="559"/>
+      <source>Element in spine is neither an edge nor a wire.</source>
+      <translation>Ein Element der Leitkurve ist weder eine Kante noch ein Draht.</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeaturePipe.cpp" line="572"/>
+      <source>Spine is not connected.</source>
+      <translation>Die Leitkurve ist nicht verbunden.</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeaturePipe.cpp" line="576"/>
+      <source>Spine is neither an edge nor a wire.</source>
+      <translation>Die Leitkurve ist weder eine Kante noch ein Draht.</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeaturePipe.cpp" line="580"/>
+      <source>Invalid spine.</source>
+      <translation>Ungültige Leitkurve.</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeaturePocket.cpp" line="132"/>
+      <source>Pocket: Creation failed because direction is orthogonal to sketch's normal vector</source>
+      <translation>Tasche: Erstellen fehlgeschlagen, weil die Richtung senkrecht auf dem Normalenvektor der Skizze steht</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeaturePocket.cpp" line="143"/>
+      <source>Pocket: Creating a face from sketch failed</source>
+      <translation>Tasche: Es konnte keine Fläche aus der Skizze erstellt werden</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeaturePocket.cpp" line="149"/>
+      <source>Pocket: Extruding up to a face is only possible if the sketch is located on a face</source>
+      <translation>Tasche: Das Extrudieren bis zu einer Fläche ist nur möglich, wenn sich die Skizze auf einer Fläche befindet</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeaturePocket.cpp" line="184"/>
+      <source>Pocket: Up to face: Could not get SubShape!</source>
+      <translation>Tasche: Bis zu Oberfläche: Konnte kein SubShape ermitteln!</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeaturePocket.cpp" line="208"/>
+      <source>Pocket: Resulting shape is empty</source>
+      <translation>Tasche: Die resultierende Form ist leer</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeaturePocket.cpp" line="217"/>
+      <source>Pocket: Cut out of base feature failed</source>
+      <translation>Tasche: Das Ausschneiden des Basis-Formelements ist fehlgeschlagen</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="89"/>
+      <source>Cannot subtract primitive feature without base feature</source>
+      <translation>Das Grundkörper-Formelement kann ohne Basis-Formelement nicht abgezogen werden</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="98"/>
+      <source>Adding the primitive failed</source>
+      <translation>Der Grundkörper konnte nicht hinzugefügt werden</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="118"/>
+      <source>Subtracting the primitive failed</source>
+      <translation>Der Grundkörper konnte nicht abgezogen werden</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="198"/>
+      <source>Length of box too small</source>
+      <translation>Die Länge des Quaders ist zu gering</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="200"/>
+      <source>Width of box too small</source>
+      <translation>Die Breite des Quaders ist zu gering</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="202"/>
+      <source>Height of box too small</source>
+      <translation>Die Höhe des Quaders ist zu gering</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="248"/>
+      <source>Radius of cylinder too small</source>
+      <translation>Der Radius des Zylinders ist zu klein</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="250"/>
+      <source>Height of cylinder too small</source>
+      <translation>Die Höhe des Zylinders ist zu gering</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="252"/>
+      <source>Rotation angle of cylinder too small</source>
+      <translation>Der Drehwinkel des Zylinders ist zu klein</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="305"/>
+      <source>Radius of sphere too small</source>
+      <translation>Der Radius der Kugel ist zu klein</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="354"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="356"/>
+      <source>Radius of cone cannot be negative</source>
+      <translation>Der Radius des Kegels darf nicht negativ sein</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="358"/>
+      <source>The radii for cones must not be equal</source>
+      <translation>Die Radien der Kegel dürfen nicht gleich sein</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="360"/>
+      <source>Height of cone too small</source>
+      <translation>Die Höhe des Kegels ist zu gering</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="417"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="419"/>
+      <source>Radius of ellipsoid too small</source>
+      <translation>Der Radius des Ellipsoids ist zu klein</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="501"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="503"/>
+      <source>Radius of torus too small</source>
+      <translation>Der Radius des Torus ist zu klein</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="566"/>
+      <source>Polygon of prism is invalid, must have 3 or more sides</source>
+      <translation>Das Vieleck des Prismas ist ungültig; es muss 3 oder mehr Seiten haben</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="568"/>
+      <source>Circumradius of the polygon, of the prism, is too small</source>
+      <translation>Umkreis des Polygons des Prismas ist zu klein</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="570"/>
+      <source>Height of prism is too small</source>
+      <translation>Die Höhe des Prismas ist zu gering</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="651"/>
+      <source>delta x of wedge too small</source>
+      <translation>Das delta x des Keils ist zu klein</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="654"/>
+      <source>delta y of wedge too small</source>
+      <translation>Das delta x des Keils ist zu klein</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="657"/>
+      <source>delta z of wedge too small</source>
+      <translation>Das delta z des Keils ist zu klein</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="660"/>
+      <source>delta z2 of wedge is negative</source>
+      <translation>Das delta z2 des Keils ist negativ</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="663"/>
+      <source>delta x2 of wedge is negative</source>
+      <translation>Das delta x2 des Keils ist negativ</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureRevolution.cpp" line="77"/>
+      <source>Angle of revolution too large</source>
+      <translation>Drehwinkel ist zu groß</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureRevolution.cpp" line="81"/>
+      <source>Angle of revolution too small</source>
+      <translation>Drehwinkel ist zu klein</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureRevolution.cpp" line="157"/>
+      <source>Fusion with base feature failed</source>
+      <translation>Vereinigung mit Basis-Formelement ist fehlgeschlagen</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureTransformed.cpp" line="94"/>
+      <source>Transformation feature Linked object is not a Part object</source>
+      <translation>Das mit dem Transformations-Formelement verknüpfte (Linked-) Objekt ist kein Part-Objekt</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureTransformed.cpp" line="97"/>
+      <source>No originals linked to the transformed feature.</source>
+      <translation>Es sind keine Originale mit dem transformierten Formelement verknüpft.</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureTransformed.cpp" line="204"/>
+      <source>Cannot transform invalid support shape</source>
+      <translation>Ungültige Stützform kann nicht transformiert werden</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureTransformed.cpp" line="233"/>
+      <source>Transformation failed</source>
+      <translation>Transformation fehlgeschlagen</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureTransformed.cpp" line="261"/>
+      <source>Shape of additive/subtractive feature is empty</source>
+      <translation>Die Form des hinzuzufügenden/abzuziehenden Formelements ist leer</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureTransformed.cpp" line="269"/>
+      <source>Only additive and subtractive features can be transformed</source>
+      <translation>Es können nur additive und subtraktive Formelemente transformiert werden</translation>
     </message>
   </context>
 </TS>

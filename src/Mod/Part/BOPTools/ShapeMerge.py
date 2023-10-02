@@ -22,7 +22,7 @@
 
 __title__="BOPTools.ShapeMerge module"
 __author__ = "DeepSOIC"
-__url__ = "http://www.freecadweb.org"
+__url__ = "http://www.freecad.org"
 __doc__ = "Tools for merging shapes with shared elements. Useful for final processing of results of Part.Shape.generalFuse()."
 
 import Part
@@ -77,6 +77,7 @@ def splitIntoGroupsBySharing(list_of_shapes, element_extractor, split_connection
         shape_elements.difference_update(split_connections)
         #search if shape is connected to any groups
         connected_to = []
+        not_in_connected_to = []
         for iGroup in range(len(groups)):
             connected = False
             for element in shape_elements:
@@ -84,6 +85,10 @@ def splitIntoGroupsBySharing(list_of_shapes, element_extractor, split_connection
                     connected_to.append(iGroup)
                     connected = True
                     break
+            else:
+                # `break` not invoked, so `connected` is false
+                not_in_connected_to.append(iGroup)
+
         # test if we need to join groups
         if len(connected_to)>1:
             #shape bridges a gap between some groups. Join them into one.
@@ -96,9 +101,10 @@ def splitIntoGroupsBySharing(list_of_shapes, element_extractor, split_connection
                 supergroup[1].update( groups[iGroup][1] )# merge lists of elements
             groups_new.append(supergroup)
 
-            for iGroup in range(len(groups)):
-                if not iGroup in connected_to: #fixme: inefficient!
-                    groups_new.append(groups[iGroup])
+            l_groups = len(groups)
+            groups_new.extend([groups[i_group] \
+                               for i_group in not_in_connected_to \
+                               if i_group < l_groups])
             groups = groups_new
             connected_to = [0]
 

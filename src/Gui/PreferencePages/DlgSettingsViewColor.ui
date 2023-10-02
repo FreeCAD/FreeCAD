@@ -1,0 +1,593 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Gui::Dialog::DlgSettingsViewColor</class>
+ <widget class="QWidget" name="Gui::Dialog::DlgSettingsViewColor">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>405</width>
+    <height>400</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Colors</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <widget class="QGroupBox" name="groupBoxColor">
+     <property name="toolTip">
+      <string>Background color for the model view</string>
+     </property>
+     <property name="title">
+      <string>Background color</string>
+     </property>
+     <layout class="QGridLayout">
+      <property name="leftMargin">
+       <number>9</number>
+      </property>
+      <property name="topMargin">
+       <number>9</number>
+      </property>
+      <property name="rightMargin">
+       <number>9</number>
+      </property>
+      <property name="bottomMargin">
+       <number>9</number>
+      </property>
+      <property name="spacing">
+       <number>6</number>
+      </property>
+      <item row="2" column="1">
+       <spacer name="spacer">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>40</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item row="0" column="0">
+       <layout class="QVBoxLayout" name="verticalLayout_3">
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_2">
+          <item>
+           <widget class="Gui::PrefRadioButton" name="radioButtonSimple">
+            <property name="toolTip">
+             <string>Background will have selected color</string>
+            </property>
+            <property name="text">
+             <string>Simple color</string>
+            </property>
+            <property name="prefEntry" stdset="0">
+             <cstring>Simple</cstring>
+            </property>
+            <property name="prefPath" stdset="0">
+             <cstring>View</cstring>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="Gui::PrefRadioButton" name="radioButtonGradient">
+            <property name="toolTip">
+             <string>Background will have selected color gradient</string>
+            </property>
+            <property name="text">
+             <string>Linear gradient</string>
+            </property>
+            <property name="checked">
+             <bool>true</bool>
+            </property>
+            <property name="prefEntry" stdset="0">
+             <cstring>Gradient</cstring>
+            </property>
+            <property name="prefPath" stdset="0">
+             <cstring>View</cstring>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="Gui::PrefRadioButton" name="rbRadialGradient">
+            <property name="toolTip">
+             <string>Background will have selected color gradient</string>
+            </property>
+            <property name="text">
+             <string>Radial gradient</string>
+            </property>
+            <property name="checked">
+             <bool>false</bool>
+            </property>
+            <property name="prefEntry" stdset="0">
+             <cstring>RadialGradient</cstring>
+            </property>
+            <property name="prefPath" stdset="0">
+             <cstring>View</cstring>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <widget class="Gui::PrefColorButton" name="SelectionColor_Background">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="toolTip">
+           <string>Background will have selected color</string>
+          </property>
+          <property name="text">
+           <string/>
+          </property>
+          <property name="color" stdset="0">
+           <color>
+            <red>20</red>
+            <green>20</green>
+            <blue>163</blue>
+           </color>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>BackgroundColor</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>View</cstring>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <layout class="QGridLayout" name="_4">
+          <property name="leftMargin">
+           <number>0</number>
+          </property>
+          <property name="topMargin">
+           <number>0</number>
+          </property>
+          <property name="rightMargin">
+           <number>0</number>
+          </property>
+          <property name="bottomMargin">
+           <number>0</number>
+          </property>
+          <property name="spacing">
+           <number>6</number>
+          </property>
+          <item row="1" column="0">
+           <widget class="QToolButton" name="SwitchGradientColors">
+            <property name="toolTip">
+             <string>Switches the colors of the gradient</string>
+            </property>
+            <property name="text">
+             <string>Switch</string>
+            </property>
+            <property name="icon">
+             <iconset>
+              <normaloff>:/icons/button_sort.svg</normaloff>:/icons/button_sort.svg</iconset>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="QLabel" name="color1Label">
+            <property name="text">
+             <string>Top:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="2">
+           <widget class="Gui::PrefColorButton" name="backgroundColorFrom">
+            <property name="text">
+             <string/>
+            </property>
+            <property name="color" stdset="0">
+             <color>
+              <red>51</red>
+              <green>51</green>
+              <blue>101</blue>
+             </color>
+            </property>
+            <property name="prefEntry" stdset="0">
+             <cstring>BackgroundColor2</cstring>
+            </property>
+            <property name="prefPath" stdset="0">
+             <cstring>View</cstring>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="QLabel" name="color2Label">
+            <property name="text">
+             <string>Middle:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="2">
+           <widget class="Gui::PrefColorButton" name="backgroundColorMid">
+            <property name="text">
+             <string/>
+            </property>
+            <property name="color" stdset="0">
+             <color>
+              <red>111</red>
+              <green>111</green>
+              <blue>147</blue>
+             </color>
+            </property>
+            <property name="prefEntry" stdset="0">
+             <cstring>BackgroundColor4</cstring>
+            </property>
+            <property name="prefPath" stdset="0">
+             <cstring>View</cstring>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="3">
+           <widget class="Gui::PrefCheckBox" name="checkMidColor">
+            <property name="toolTip">
+             <string>Color gradient will get selected color as middle color</string>
+            </property>
+            <property name="text">
+             <string>Middle color</string>
+            </property>
+            <property name="prefEntry" stdset="0">
+             <cstring>UseBackgroundColorMid</cstring>
+            </property>
+            <property name="prefPath" stdset="0">
+             <cstring>View</cstring>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="1">
+           <widget class="QLabel" name="color3Label">
+            <property name="text">
+             <string>Bottom:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="2">
+           <widget class="Gui::PrefColorButton" name="backgroundColorTo">
+            <property name="text">
+             <string/>
+            </property>
+            <property name="color" stdset="0">
+             <color>
+              <red>151</red>
+              <green>151</green>
+              <blue>170</blue>
+             </color>
+            </property>
+            <property name="prefEntry" stdset="0">
+             <cstring>BackgroundColor3</cstring>
+            </property>
+            <property name="prefPath" stdset="0">
+             <cstring>View</cstring>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="groupBoxTree">
+     <property name="title">
+      <string>Tree view</string>
+     </property>
+     <layout class="QGridLayout">
+      <property name="leftMargin">
+       <number>9</number>
+      </property>
+      <property name="topMargin">
+       <number>9</number>
+      </property>
+      <property name="rightMargin">
+       <number>9</number>
+      </property>
+      <property name="bottomMargin">
+       <number>9</number>
+      </property>
+      <property name="spacing">
+       <number>6</number>
+      </property>
+      <item row="0" column="0">
+       <layout class="QGridLayout">
+        <property name="leftMargin">
+         <number>0</number>
+        </property>
+        <property name="topMargin">
+         <number>0</number>
+        </property>
+        <property name="rightMargin">
+         <number>0</number>
+        </property>
+        <property name="bottomMargin">
+         <number>0</number>
+        </property>
+        <property name="spacing">
+         <number>6</number>
+        </property>
+        <item row="0" column="0">
+         <widget class="QLabel" name="label_2">
+          <property name="minimumSize">
+           <size>
+            <width>240</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="toolTip">
+           <string/>
+          </property>
+          <property name="text">
+           <string>Object being edited</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="Gui::PrefColorButton" name="TreeEditColor">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="toolTip">
+           <string>Background color for objects in tree view that are currently edited</string>
+          </property>
+          <property name="color" stdset="0">
+           <color>
+            <red>255</red>
+            <green>255</green>
+            <blue>0</blue>
+           </color>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>TreeEditColor</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>TreeView</cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="0">
+         <widget class="QLabel" name="label_3">
+          <property name="text">
+           <string>Active container</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="1">
+         <widget class="Gui::PrefColorButton" name="TreeActiveColor">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="toolTip">
+           <string>Background color for active containers in tree view</string>
+          </property>
+          <property name="color" stdset="0">
+           <color>
+            <red>230</red>
+            <green>230</green>
+            <blue>255</blue>
+           </color>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>TreeActiveColor</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>TreeView</cstring>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item row="0" column="1">
+       <spacer name="spacer_5">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>183</width>
+          <height>23</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="groupColorBar">
+     <property name="title">
+      <string>Color Bar</string>
+     </property>
+     <layout class="QGridLayout">
+      <property name="leftMargin">
+       <number>9</number>
+      </property>
+      <property name="topMargin">
+       <number>9</number>
+      </property>
+      <property name="rightMargin">
+       <number>9</number>
+      </property>
+      <property name="bottomMargin">
+       <number>9</number>
+      </property>
+      <property name="spacing">
+       <number>6</number>
+      </property>
+      <item row="0" column="0">
+       <layout class="QGridLayout">
+        <property name="leftMargin">
+         <number>0</number>
+        </property>
+        <property name="topMargin">
+         <number>0</number>
+        </property>
+        <property name="rightMargin">
+         <number>0</number>
+        </property>
+        <property name="bottomMargin">
+         <number>0</number>
+        </property>
+        <property name="spacing">
+         <number>6</number>
+        </property>
+        <item row="0" column="0">
+         <widget class="QLabel" name="label_CbLabelColor">
+          <property name="minimumSize">
+           <size>
+            <width>240</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="toolTip">
+           <string/>
+          </property>
+          <property name="text">
+           <string>Label text color</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="Gui::PrefColorButton" name="CbLabelColor">
+          <property name="enabled">
+           <bool>true</bool>
+          </property>
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="toolTip">
+           <string>Color Bar (used in Mesh and FEM Wbs) Label text color</string>
+          </property>
+          <property name="color" stdset="0">
+           <color>
+            <red>255</red>
+            <green>255</green>
+            <blue>255</blue>
+           </color>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>CbLabelColor</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>View</cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="0">
+         <widget class="QLabel" name="label_CbLabelTextSize">
+          <property name="text">
+           <string>Label text size</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="1">
+       <widget class="Gui::PrefSpinBox" name="CbLabelTextSize">
+        <property name="toolTip">
+         <string>Color Bar (used in Mesh and FEM Wbs) Label Text Size</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignLeft|Qt::AlignVCenter</set>
+        </property>
+        <property name="minimum">
+         <number>4</number>
+        </property>
+        <property name="maximum">
+         <number>36</number>
+        </property>
+        <property name="value">
+         <number>13</number>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>CbLabelTextSize</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>View</cstring>
+        </property>
+       </widget>
+        </item>
+       </layout>
+      </item>
+      <item row="0" column="1">
+       <spacer name="spacer_6">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>20</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <spacer name="spacer_7">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>20</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+  </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>Gui::ColorButton</class>
+   <extends>QPushButton</extends>
+   <header>Gui/Widgets.h</header>
+  </customwidget>
+  <customwidget>
+   <class>Gui::PrefColorButton</class>
+   <extends>Gui::ColorButton</extends>
+   <header>Gui/PrefWidgets.h</header>
+  </customwidget>
+  <customwidget>
+   <class>Gui::PrefRadioButton</class>
+   <extends>QRadioButton</extends>
+   <header>Gui/PrefWidgets.h</header>
+  </customwidget>
+  <customwidget>
+   <class>Gui::PrefCheckBox</class>
+   <extends>QCheckBox</extends>
+   <header>Gui/PrefWidgets.h</header>
+  </customwidget>
+  <customwidget>
+   <class>Gui::PrefSpinBox</class>
+   <extends>QSpinBox</extends>
+   <header>Gui/PrefWidgets.h</header>
+  </customwidget>
+ </customwidgets>
+ <tabstops>
+  <tabstop>SelectionColor_Background</tabstop>
+  <tabstop>backgroundColorFrom</tabstop>
+  <tabstop>backgroundColorTo</tabstop>
+  <tabstop>checkMidColor</tabstop>
+  <tabstop>backgroundColorMid</tabstop>
+ </tabstops>
+ <resources/>
+ <connections/>
+</ui>

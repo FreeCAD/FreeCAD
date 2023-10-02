@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Eivind Kvedalen (eivind@kvedalen.name) 2015             *
+ *   Copyright (c) 2015 Eivind Kvedalen <eivind@kvedalen.name>             *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -24,46 +24,49 @@
 #define SHEETMODEL_H
 
 #include <QAbstractTableModel>
-#include <Mod/Spreadsheet/App/Utils.h>
+
 #include <App/Range.h>
 
-namespace Spreadsheet {
+
+namespace Spreadsheet
+{
 class Sheet;
 }
 
-namespace SpreadsheetGui {
+namespace SpreadsheetGui
+{
 
-class SheetModel : public QAbstractTableModel
+class SheetModel: public QAbstractTableModel
 {
     Q_OBJECT
 public:
-    explicit SheetModel(Spreadsheet::Sheet * _sheet, QObject *parent = nullptr);
+    explicit SheetModel(Spreadsheet::Sheet* _sheet, QObject* parent = nullptr);
     ~SheetModel() override;
-    
-    explicit SheetModel(QObject *parent);
-    int rowCount(const QModelIndex &parent = QModelIndex()) const override ;
-    int columnCount(const QModelIndex &parent = QModelIndex()) const override;
-    QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
+
+    explicit SheetModel(QObject* parent);
+    int rowCount(const QModelIndex& parent = QModelIndex()) const override;
+    int columnCount(const QModelIndex& parent = QModelIndex()) const override;
+    QVariant data(const QModelIndex& index, int role = Qt::DisplayRole) const override;
     QVariant headerData(int section, Qt::Orientation orientation, int role) const override;
-    bool setData(const QModelIndex &index, const QVariant &value, int role) override;
-    Qt::ItemFlags flags(const QModelIndex &) const override;
+    bool setData(const QModelIndex& index, const QVariant& value, int role) override;
+    Qt::ItemFlags flags(const QModelIndex&) const override;
 
 private Q_SLOTS:
     void setCellData(QModelIndex index, QString str);
 
 private:
     void cellUpdated(App::CellAddress address);
-    void rangeUpdated(const App::Range &range);
+    void rangeUpdated(const App::Range& range);
 
     boost::signals2::scoped_connection cellUpdatedConnection;
     boost::signals2::scoped_connection rangeUpdatedConnection;
-    Spreadsheet::Sheet * sheet;
+    Spreadsheet::Sheet* sheet;
     QColor aliasBgColor;
     QColor textFgColor;
     QColor positiveFgColor;
     QColor negativeFgColor;
 };
 
-}
+}  // namespace SpreadsheetGui
 
-#endif // SHEETMODEL_H
+#endif  // SHEETMODEL_H

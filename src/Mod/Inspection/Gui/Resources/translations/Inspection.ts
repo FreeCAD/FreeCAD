@@ -4,17 +4,17 @@
 <context>
     <name>CmdInspectElement</name>
     <message>
-        <location filename="../../Command.cpp" line="75"/>
+        <location filename="../../Command.cpp" line="74"/>
         <source>Inspection</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="76"/>
+        <location filename="../../Command.cpp" line="75"/>
         <source>Inspection...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="77"/>
+        <location filename="../../Command.cpp" line="76"/>
         <source>Get distance information</source>
         <translation type="unfinished"></translation>
     </message>
@@ -22,18 +22,18 @@
 <context>
     <name>CmdVisualInspection</name>
     <message>
-        <location filename="../../Command.cpp" line="49"/>
+        <location filename="../../Command.cpp" line="48"/>
         <source>Inspection</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="50"/>
+        <location filename="../../Command.cpp" line="49"/>
         <source>Visual inspection...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../../Command.cpp" line="50"/>
         <location filename="../../Command.cpp" line="51"/>
-        <location filename="../../Command.cpp" line="52"/>
         <source>Visual inspection</source>
         <translation type="unfinished"></translation>
     </message>
@@ -41,7 +41,7 @@
 <context>
     <name>Command</name>
     <message>
-        <location filename="../../VisualInspection.cpp" line="230"/>
+        <location filename="../../VisualInspection.cpp" line="237"/>
         <source>Visual Inspection</source>
         <translation type="unfinished"></translation>
     </message>
@@ -94,38 +94,38 @@
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../../ViewProviderInspection.cpp" line="405"/>
+        <location filename="../../ViewProviderInspection.cpp" line="483"/>
         <source>Remove annotations</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ViewProviderInspection.cpp" line="406"/>
+        <location filename="../../ViewProviderInspection.cpp" line="484"/>
         <source>Do you want to remove all annotations?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ViewProviderInspection.cpp" line="458"/>
+        <location filename="../../ViewProviderInspection.cpp" line="542"/>
         <source>Annotation</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ViewProviderInspection.cpp" line="461"/>
+        <location filename="../../ViewProviderInspection.cpp" line="545"/>
         <source>Leave info mode</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ViewProviderInspection.cpp" line="582"/>
+        <location filename="../../ViewProviderInspection.cpp" line="680"/>
         <source>Distance: &gt; %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ViewProviderInspection.cpp" line="585"/>
+        <location filename="../../ViewProviderInspection.cpp" line="684"/>
         <source>Distance: &lt; %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ViewProviderInspection.cpp" line="604"/>
-        <location filename="../../ViewProviderInspection.cpp" line="620"/>
+        <location filename="../../ViewProviderInspection.cpp" line="704"/>
+        <location filename="../../ViewProviderInspection.cpp" line="721"/>
         <source>Distance: %1</source>
         <translation type="unfinished"></translation>
     </message>

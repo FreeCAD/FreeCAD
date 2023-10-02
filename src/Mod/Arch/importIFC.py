@@ -28,9 +28,7 @@ Internally it uses IfcOpenShell, which must be installed before using.
 #
 #  This module provides tools to import IFC files.
 
-from __future__ import print_function
 
-import six
 import os
 import math
 import time
@@ -51,7 +49,7 @@ if FreeCAD.GuiUp:
 
 __title__  = "FreeCAD IFC importer - Enhanced IfcOpenShell-only version"
 __author__ = ("Yorik van Havre", "Jonathan Wiedemann", "Bernd Hahnebach")
-__url__    = "https://www.freecadweb.org"
+__url__    = "https://www.freecad.org"
 
 DEBUG = False  # Set to True to see debug messages. Otherwise, totally silent
 ZOOMOUT = True  # Set to False to not zoom extents after import
@@ -143,48 +141,8 @@ structuralifcobjects = (
     "IfcStructuralPlanarAction"
 )
 
-
-def getPreferences():
-    """Retrieve the IFC preferences available in import and export.
-
-    MERGE_MODE_ARCH:
-        0 = parametric arch objects
-        1 = non-parametric arch objects
-        2 = Part shapes
-        3 = One compound per storey
-    """
-    p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
-
-    if FreeCAD.GuiUp and p.GetBool("ifcShowDialog", False):
-        Gui.showPreferences("Import-Export", 0)
-
-    preferences = {
-        'DEBUG': p.GetBool("ifcDebug", False),
-        'PREFIX_NUMBERS': p.GetBool("ifcPrefixNumbers", False),
-        'SKIP': p.GetString("ifcSkip", "").split(","),
-        'SEPARATE_OPENINGS': p.GetBool("ifcSeparateOpenings", False),
-        'ROOT_ELEMENT': p.GetString("ifcRootElement", "IfcProduct"),
-        'GET_EXTRUSIONS': p.GetBool("ifcGetExtrusions", False),
-        'MERGE_MATERIALS': p.GetBool("ifcMergeMaterials", False),
-        'MERGE_MODE_ARCH': p.GetInt("ifcImportModeArch", 0),
-        'MERGE_MODE_STRUCT': p.GetInt("ifcImportModeStruct", 1),
-        'CREATE_CLONES': p.GetBool("ifcCreateClones", True),
-        'IMPORT_PROPERTIES': p.GetBool("ifcImportProperties", False),
-        'SPLIT_LAYERS': p.GetBool("ifcSplitLayers", False),  # wall layer, not layer for visual props
-        'FITVIEW_ONIMPORT': p.GetBool("ifcFitViewOnImport", False),
-        'ALLOW_INVALID': p.GetBool("ifcAllowInvalid", False),
-        'REPLACE_PROJECT': p.GetBool("ifcReplaceProject", False),
-        'MULTICORE': p.GetInt("ifcMulticore", 0),
-        'IMPORT_LAYER': p.GetBool("ifcImportLayer", True)
-    }
-
-    if preferences['MERGE_MODE_ARCH'] > 0:
-        preferences['SEPARATE_OPENINGS'] = False
-        preferences['GET_EXTRUSIONS'] = False
-    if not preferences['SEPARATE_OPENINGS']:
-        preferences['SKIP'].append("IfcOpeningElement")
-
-    return preferences
+# backwards compatibility
+getPreferences = importIFCHelper.getPreferences
 
 
 def export(exportList, filename, colors=None, preferences=None):
@@ -206,7 +164,6 @@ def open(filename, skip=[], only=[], root=None):
     Most of the work is done in the `insert` function.
     """
     docname = os.path.splitext(os.path.basename(filename))[0]
-    docname = importIFCHelper.decode(docname, utf=True)
     doc = FreeCAD.newDocument(docname)
     doc.Label = docname
     doc = insert(filename, doc.Name, skip, only, root)
@@ -248,16 +205,22 @@ def insert(srcfile, docname, skip=[], only=[], root=None, preferences=None):
     except ModuleNotFoundError:
         _err("IfcOpenShell was not found on this system. "
              "IFC support is disabled.\n"
-             "Visit https://wiki.freecadweb.org/IfcOpenShell "
+             "Visit https://wiki.freecad.org/IfcOpenShell "
              "to learn about installing it.")
         return
 
     starttime = time.time()  # in seconds
 
     if preferences is None:
-        preferences = getPreferences()
+        preferences = importIFCHelper.getPreferences()
 
     if preferences["MULTICORE"] and not hasattr(srcfile, "by_guid"):
+        # override with BIM IFC importer if present
+        try:
+            import BimIfcImport
+            return BimIfcImport.insert(srcfile, docname, preferences)
+        except:
+            pass
         return importIFCmulticore.insert(srcfile, docname, preferences)
 
     try:
@@ -285,7 +248,7 @@ def insert(srcfile, docname, skip=[], only=[], root=None, preferences=None):
     else:
         if preferences['DEBUG']:
             _msg("Opening '{}'... ".format(srcfile), end="")
-        filename = importIFCHelper.decode(srcfile, utf=True)
+        filename = srcfile
         filesize = os.path.getsize(filename) * 1E-6  # in megabytes
         ifcfile = ifcopenshell.open(filename)
 
@@ -343,7 +306,7 @@ def insert(srcfile, docname, skip=[], only=[], root=None, preferences=None):
     # For the following tables it might be better to use inverse attributes
     # to find the properties, otherwise a lot of loops
     # and if testing is needed.
-    # See https://forum.freecadweb.org/viewtopic.php?f=39&t=37892
+    # See https://forum.freecad.org/viewtopic.php?f=39&t=37892
     prodrepr = importIFCHelper.buildRelProductRepresentation(ifcfile)
     additions = importIFCHelper.buildRelAdditions(ifcfile)
     groups = importIFCHelper.buildRelGroups(ifcfile)
@@ -360,7 +323,7 @@ def insert(srcfile, docname, skip=[], only=[], root=None, preferences=None):
         while only:
             currentid = only.pop()
             ids.append(currentid)
-            if currentid in additions.keys():
+            if currentid in additions:
                 only.extend(additions[currentid])
         products = [ifcfile[currentid] for currentid in ids]
 
@@ -383,7 +346,7 @@ def insert(srcfile, docname, skip=[], only=[], root=None, preferences=None):
             projectImporter = importIFCHelper.ProjectImporter(ifcfile, objects)
             projectImporter.execute()
         else:
-            # https://forum.freecadweb.org/viewtopic.php?f=39&t=40624
+            # https://forum.freecad.org/viewtopic.php?f=39&t=40624
             print("No IfcProject found in the ifc file. Nothing imported")
             return doc
 
@@ -407,7 +370,7 @@ def insert(srcfile, docname, skip=[], only=[], root=None, preferences=None):
                 lays = product.Representation.Representations[0].LayerAssignments
                 if len(lays) > 0:
                     layer_name = lays[0].Name
-                    if layer_name not in list(layers.keys()):
+                    if layer_name not in layers:
                         layers[layer_name] = [pid]
                     else:
                         layers[layer_name].append(pid)
@@ -431,8 +394,6 @@ def insert(srcfile, docname, skip=[], only=[], root=None, preferences=None):
         name = str(ptype[3:])
         if product.Name:
             name = product.Name
-            if six.PY2:
-                name = name.encode("utf8")
         if preferences['PREFIX_NUMBERS']:
             name = "ID" + str(pid) + " " + name
         obj = None
@@ -649,7 +610,7 @@ def insert(srcfile, docname, skip=[], only=[], root=None, preferences=None):
                                     baseobj.Dir = ex[1]
                                 if FreeCAD.GuiUp:
                                     baseface.ViewObject.hide()
-                        if (not baseobj):
+                        if not baseobj:
                             baseobj = doc.addObject("Part::Feature",name+"_body")
                             baseobj.Shape = shape
         else:
@@ -871,9 +832,6 @@ def insert(srcfile, docname, skip=[], only=[], root=None, preferences=None):
                             if l.is_a("IfcPropertySingleValue"):
                                 if preferences['DEBUG']:
                                     print("property name",l.Name,type(l.Name))
-                                if six.PY2:
-                                    catname = catname.encode("utf8")
-                                    lname = lname.encode("utf8")
                                 ifc_spreadsheet.set(str('A'+str(n)), catname)
                                 ifc_spreadsheet.set(str('B'+str(n)), lname)
                                 if l.NominalValue:
@@ -883,10 +841,7 @@ def insert(srcfile, docname, skip=[], only=[], root=None, preferences=None):
                                         # print("l.NominalValue.Unit",l.NominalValue.Unit,type(l.NominalValue.Unit))
                                     ifc_spreadsheet.set(str('C'+str(n)), l.NominalValue.is_a())
                                     if l.NominalValue.is_a() in ['IfcLabel','IfcText','IfcIdentifier','IfcDescriptiveMeasure']:
-                                        if six.PY2:
-                                            ifc_spreadsheet.set(str('D'+str(n)), "'" + str(l.NominalValue.wrappedValue.encode("utf8")))
-                                        else:
-                                            ifc_spreadsheet.set(str('D'+str(n)), "'" + str(l.NominalValue.wrappedValue))
+                                        ifc_spreadsheet.set(str('D'+str(n)), "'" + str(l.NominalValue.wrappedValue))
                                     else:
                                         ifc_spreadsheet.set(str('D'+str(n)), str(l.NominalValue.wrappedValue))
                                     if hasattr(l.NominalValue,'Unit'):
@@ -966,7 +921,7 @@ def insert(srcfile, docname, skip=[], only=[], root=None, preferences=None):
                     # of the (twodimensional) direction vector for TrueNorth shall be greater than zero.
                     (x, y) = modelRC.TrueNorth.DirectionRatios[:2]
                     obj.Declination = ((math.degrees(math.atan2(y,x))-90+180) % 360)-180
-                    if (FreeCAD.GuiUp):
+                    if FreeCAD.GuiUp:
                         obj.ViewObject.CompassRotation.Value = obj.Declination
 
         try:
@@ -988,7 +943,7 @@ def insert(srcfile, docname, skip=[], only=[], root=None, preferences=None):
             if ifcfile[host].is_a("IfcStructuralAnalysisModel"):
                 compound = []
                 for c in children:
-                    if c in structshapes.keys():
+                    if c in structshapes:
                         compound.append(structshapes[c])
                         del structshapes[c]
                 if compound:
@@ -1014,11 +969,11 @@ def insert(srcfile, docname, skip=[], only=[], root=None, preferences=None):
                 # print(host, ' --> ', children)
                 obj = doc.addObject("App::DocumentObjectGroup","AnalysisModel")
                 objects[host] = obj
-                if host in objects.keys():
+                if host in objects:
                     cobs = []
                     childs_to_delete = []
                     for child in children:
-                        if child in objects.keys():
+                        if child in objects:
                             cobs.append(objects[child])
                             childs_to_delete.append(child)
                     for c in childs_to_delete:
@@ -1050,13 +1005,11 @@ def insert(srcfile, docname, skip=[], only=[], root=None, preferences=None):
             else:
                 if preferences['DEBUG']: print("no group name specified for entity: #", ifcfile[host].id(), ", entity type is used!")
                 grp_name = ifcfile[host].is_a() + "_" + str(ifcfile[host].id())
-            if six.PY2:
-                grp_name = grp_name.encode("utf8")
             grp = doc.addObject("App::DocumentObjectGroup",grp_name)
             grp.Label = grp_name
             objects[host] = grp
             for child in children:
-                if child in objects.keys():
+                if child in objects:
                     grp.addObject(objects[child])
                     swallowed.append(child)
                 else:
@@ -1072,12 +1025,12 @@ def insert(srcfile, docname, skip=[], only=[], root=None, preferences=None):
             if ifcfile[host].is_a("IfcBuildingStorey"):
                 compound = []
                 for c in children:
-                    if c in shapes.keys():
+                    if c in shapes:
                         compound.append(shapes[c])
                         del shapes[c]
-                    if c in additions.keys():
+                    if c in additions:
                         for c2 in additions[c]:
-                            if c2 in shapes.keys():
+                            if c2 in shapes:
                                 compound.append(shapes[c2])
                                 del shapes[c2]
                 if compound:
@@ -1101,7 +1054,7 @@ def insert(srcfile, docname, skip=[], only=[], root=None, preferences=None):
 
         if preferences['SEPARATE_OPENINGS']:
             for subtraction in subtractions:
-                if (subtraction[0] in objects.keys()) and (subtraction[1] in objects.keys()):
+                if (subtraction[0] in objects) and (subtraction[1] in objects):
                     if preferences['DEBUG'] and first:
                         print("")
                         first = False
@@ -1112,13 +1065,13 @@ def insert(srcfile, docname, skip=[], only=[], root=None, preferences=None):
         # additions
 
         for host,children in additions.items():
-            if host not in objects.keys():
+            if host not in objects:
                 # print(host, 'not used')
                 # print(ifcfile[host])
                 continue
             cobs = []
             for child in children:
-                if child in objects.keys() \
+                if child in objects \
                         and child not in swallowed:  # don't add objects already in groups
                     cobs.append(objects[child])
             if not cobs:
@@ -1167,8 +1120,10 @@ def insert(srcfile, docname, skip=[], only=[], root=None, preferences=None):
         if preferences['DEBUG']: print(count,"/",len(annotations),"object #"+str(aid),":",annotation.is_a(),end="")
 
         if aid in skip:
+            if preferences['DEBUG']: print(", skipped.")
             continue  # user given id skip list
         if annotation.is_a() in preferences['SKIP']:
+            if preferences['DEBUG']: print(", skipped.")
             continue  # preferences-set type skip list
 
         anno = importIFCHelper.createAnnotation(annotation,doc,ifcscale,preferences)
@@ -1176,12 +1131,14 @@ def insert(srcfile, docname, skip=[], only=[], root=None, preferences=None):
         # placing in container if needed
 
         if anno:
-            if aid in remaining.keys():
+            if aid in remaining:
                 remaining[aid].addObject(anno)
             else:
                 for host,children in additions.items():
-                    if (aid in children) and (host in objects.keys()):
+                    if (aid in children) and (host in objects):
                         Arch.addComponents(anno,objects[host])
+
+        if preferences['DEBUG']: print("")  # add newline for 2D objects debug prints
 
     doc.recompute()
 
@@ -1205,10 +1162,8 @@ def insert(srcfile, docname, skip=[], only=[], root=None, preferences=None):
         name = "Material"
         if material.Name:
             name = material.Name
-            if six.PY2:
-                name = name.encode("utf8")
         # mdict["Name"] = name on duplicate material names in IFC this could result in crash
-        # https://forum.freecadweb.org/viewtopic.php?f=23&t=63260
+        # https://forum.freecad.org/viewtopic.php?f=23&t=63260
         # thus use "Description"
         mdict["Description"] = name
 
@@ -1234,15 +1189,26 @@ def insert(srcfile, docname, skip=[], only=[], root=None, preferences=None):
         if preferences["MERGE_MATERIALS"]:
             for added_mat in added_mats:
                 if (
-                    "Description" in added_mat.Material
-                    and "DiffuseColor" in added_mat.Material
-                    and "DiffuseColor" in mdict  # Description has been set thus it is in mdict
+                    "Description" in added_mat.Material  # Description has been set thus it is in mdict
                     and added_mat.Material["Description"] == mdict["Description"]
-                    and added_mat.Material["DiffuseColor"] == mdict["DiffuseColor"]
                 ):
-                    matobj = added_mat
-                    add_material = False
-                    break
+                    if (
+                        (
+                            "DiffuseColor" in added_mat.Material
+                            and "DiffuseColor" in mdict
+                            and added_mat.Material["DiffuseColor"] == mdict["DiffuseColor"]
+                        )  # color in added mat with the same matname and new mat is the same
+                        or
+                        (
+                            "DiffuseColor" not in added_mat.Material
+                            and "DiffuseColor" not in mdict
+                        )  # there is no color in added mat with the same matname and new mat
+                        # on model imported from ArchiCAD color was not found for all IFC material objects,
+                        # thus DiffuseColor was not set for created materials, workaround to merge these too
+                    ):
+                        matobj = added_mat
+                        add_material = False
+                        break
 
         # add a new material object
         if add_material is True:
@@ -1261,7 +1227,7 @@ def insert(srcfile, docname, skip=[], only=[], root=None, preferences=None):
                             # all viewers use the shape color whereas in FreeCAD the shape color will be
                             # overwritten by the material color (if there is a material with a color).
                             # In such a case FreeCAD shows a different color than all common ifc viewers
-                            # https://forum.freecadweb.org/viewtopic.php?f=39&t=38440
+                            # https://forum.freecad.org/viewtopic.php?f=39&t=38440
                             col = objects[o].ViewObject.ShapeColor[:3]
                             dig = 5
                             ma_color = sh_color = round(col[0], dig), round(col[1], dig), round(col[2], dig)

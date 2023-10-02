@@ -20,39 +20,33 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-
 #ifndef _PreComp_
-# include <QApplication>
+#include <QApplication>
 #endif
+
+#include <Gui/Application.h>
+#include <Gui/Document.h>
+#include <Gui/TaskView/TaskSelectLinkProperty.h>
 
 #include "TaskDlgTrajectoryCompound.h"
 
-#include <Gui/TaskView/TaskSelectLinkProperty.h>
-#include <Gui/Document.h>
-#include <Gui/Application.h>
-
 
 using namespace RobotGui;
-
 
 //**************************************************************************
 //**************************************************************************
 // TaskDialog
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-TaskDlgTrajectoryCompound::TaskDlgTrajectoryCompound(Robot::TrajectoryCompound *obj)
-    : TaskDialog(),TrajectoryCompound(obj)
+TaskDlgTrajectoryCompound::TaskDlgTrajectoryCompound(Robot::TrajectoryCompound* obj)
+    : TaskDialog()
+    , TrajectoryCompound(obj)
 {
-    select = new Gui::TaskView::TaskSelectLinkProperty("SELECT Robot::TrajectoryObject COUNT 1..",&(obj->Source));
+    select = new Gui::TaskView::TaskSelectLinkProperty("SELECT Robot::TrajectoryObject COUNT 1..",
+                                                       &(obj->Source));
 
     Content.push_back(select);
-}
-
-TaskDlgTrajectoryCompound::~TaskDlgTrajectoryCompound()
-{
-
 }
 
 //==== calls from the TaskView ===============================================================
@@ -61,20 +55,23 @@ TaskDlgTrajectoryCompound::~TaskDlgTrajectoryCompound()
 void TaskDlgTrajectoryCompound::open()
 {
     select->activate();
-
 }
 
 
 bool TaskDlgTrajectoryCompound::accept()
 {
-    if(select->isSelectionValid()){
+    if (select->isSelectionValid()) {
         select->accept();
         TrajectoryCompound->execute();
         Gui::Document* doc = Gui::Application::Instance->activeDocument();
-        if(doc) doc->resetEdit();
+        if (doc) {
+            doc->resetEdit();
+        }
         return true;
-    }else
+    }
+    else {
         QApplication::beep();
+    }
 
     return false;
 }
@@ -84,14 +81,14 @@ bool TaskDlgTrajectoryCompound::reject()
     select->reject();
     TrajectoryCompound->execute();
     Gui::Document* doc = Gui::Application::Instance->activeDocument();
-    if(doc) doc->resetEdit();
+    if (doc) {
+        doc->resetEdit();
+    }
     return true;
 }
 
 void TaskDlgTrajectoryCompound::helpRequested()
-{
-
-}
+{}
 
 
 #include "moc_TaskDlgTrajectoryCompound.cpp"

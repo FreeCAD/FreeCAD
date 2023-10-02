@@ -41,7 +41,7 @@ class TaskFeatureParameters : public Gui::TaskView::TaskBox,
 public:
     TaskFeatureParameters(PartDesignGui::ViewProvider* vp, QWidget *parent,
                               const std::string& pixmapname, const QString& parname);
-    ~TaskFeatureParameters() override {}
+    ~TaskFeatureParameters() override = default;
 
     /// save field history
     virtual void saveHistory() {}

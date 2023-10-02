@@ -38,7 +38,7 @@ public:
     /// destructor
     ~ViewProviderSphereParametric() override;
 
-    std::vector<std::string> getDisplayModes(void) const override;
+    std::vector<std::string> getDisplayModes() const override;
 
 protected:
 
@@ -53,7 +53,7 @@ public:
     ViewProviderEllipsoid();
     /// destructor
     ~ViewProviderEllipsoid() override;
-    std::vector<std::string> getDisplayModes(void) const override;
+    std::vector<std::string> getDisplayModes() const override;
 };
 
 } // namespace PartGui

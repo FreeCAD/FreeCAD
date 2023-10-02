@@ -28,13 +28,15 @@
 #include <Mod/Mesh/MeshGlobal.h>
 #endif
 
-namespace MeshGui {
+
+namespace MeshGui
+{
 
 /**
  * Display data of a mesh kernel.
  * \author Werner Mayer
  */
-class MeshGuiExport PropertyMeshKernelItem : public Gui::PropertyEditor::PropertyItem
+class MeshGuiExport PropertyMeshKernelItem: public Gui::PropertyEditor::PropertyItem
 {
     Q_OBJECT
     Q_PROPERTY(int Points READ countPoints CONSTANT)
@@ -42,9 +44,13 @@ class MeshGuiExport PropertyMeshKernelItem : public Gui::PropertyEditor::Propert
     Q_PROPERTY(int Faces READ countFaces CONSTANT)
     PROPERTYITEM_HEADER
 
-    QWidget* createEditor(QWidget* parent, const QObject* receiver, const char* method) const override;
-    void setEditorData(QWidget *editor, const QVariant& data) const override;
-    QVariant editorData(QWidget *editor) const override;
+    // clang-format off
+    QWidget* createEditor(QWidget* parent,
+                          const QObject* receiver,
+                          const char* method) const override;
+    // clang-format on
+    void setEditorData(QWidget* editor, const QVariant& data) const override;
+    QVariant editorData(QWidget* editor) const override;
 
     int countPoints() const;
     int countEdges() const;
@@ -65,8 +71,7 @@ private:
     Gui::PropertyEditor::PropertyIntegerItem* m_f;
 };
 
-} // namespace MeshGui
+}  // namespace MeshGui
 
 
-#endif // MESHGUI_PROPERTYEDITOR_MESH_H
-
+#endif  // MESHGUI_PROPERTYEDITOR_MESH_H

@@ -63,14 +63,14 @@ DlgActivateWindowImp::DlgActivateWindowImp(QWidget* parent, Qt::WindowFlags fl)
 
     QWidget* activeWnd = getMainWindow()->activeWindow();
 
-    for (QList<QWidget*>::Iterator it = windows.begin(); it != windows.end(); ++it) {
-        QTreeWidgetItem* item = new QTreeWidgetItem(ui->treeWidget);
-        QString title = (*it)->windowTitle();
+    for (QWidget* it : windows) {
+        auto item = new QTreeWidgetItem(ui->treeWidget);
+        QString title = it->windowTitle();
         title.replace(QLatin1String("[*]"), QLatin1String(""));
-        if ((*it)->isWindowModified())
+        if (it->isWindowModified())
             title += QLatin1String("*");
         item->setText(0, title);
-        if (*it == activeWnd)
+        if (it == activeWnd)
             active = item;
     }
 
@@ -95,7 +95,7 @@ void DlgActivateWindowImp::accept()
 
     if (item) {
         int index = ui->treeWidget->indexOfTopLevelItem(item);
-        getMainWindow()->setActiveWindow((MDIView*)windows.at(index));
+        getMainWindow()->setActiveWindow(static_cast<MDIView*>(windows.at(index)));
     }
 
     QDialog::accept();

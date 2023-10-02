@@ -23,9 +23,11 @@
 #ifndef MESHGUI_VIEWPROVIDER_MESH_CURVATURE_H
 #define MESHGUI_VIEWPROVIDER_MESH_CURVATURE_H
 
-#include <Base/Observer.h>
 #include <App/DocumentObserver.h>
+#include <Base/Observer.h>
+
 #include "ViewProvider.h"
+
 
 class SoSeparator;
 class SbVec3f;
@@ -38,26 +40,30 @@ class SoPath;
 class SoLocateHighlight;
 class SoTransformerManip;
 
-namespace Gui {
-  class SoFCColorBar;
-  class View3DInventorViewer;
+namespace Gui
+{
+class SoFCColorBar;
+class View3DInventorViewer;
+}  // namespace Gui
+
+namespace Mesh
+{
+class PropertyCurvatureList;
 }
 
-namespace Mesh {
-  class PropertyCurvatureList;
-}
+namespace MeshGui
+{
 
-namespace MeshGui {
-
-/** The ViewProviderMeshCurvature class is associated to the mesh curvature feature. It allows to display the most known types of
- * curvatures, such as Gaussian curvature, mean curvature, minimum and maximum curvature.
- * Moreover a color bar is also added to the scene.
+/** The ViewProviderMeshCurvature class is associated to the mesh curvature feature. It allows to
+ * display the most known types of curvatures, such as Gaussian curvature, mean curvature, minimum
+ * and maximum curvature. Moreover a color bar is also added to the scene.
  *
  * @author Werner Mayer
  */
-class MeshGuiExport ViewProviderMeshCurvature : public Gui::ViewProviderDocumentObject,
-                                                public App::DocumentObserver,
-                                                public Base::Observer<int> {
+class MeshGuiExport ViewProviderMeshCurvature: public Gui::ViewProviderDocumentObject,
+                                               public App::DocumentObserver,
+                                               public Base::Observer<int>
+{
     using inherited = Gui::ViewProviderDocumentObject;
 
     PROPERTY_HEADER_WITH_OVERRIDE(MeshGui::ViewProviderMeshCurvature);
@@ -66,11 +72,17 @@ public:
     ViewProviderMeshCurvature();
     ~ViewProviderMeshCurvature() override;
 
+    // NOLINTBEGIN
     App::PropertyMaterial TextureMaterial;
+    // NOLINTEND
 
-    /// Extracts the mesh data from the feature \a pcFeature and creates an Inventor node \a SoNode with these data. 
+    /// Extracts the mesh data from the feature \a pcFeature and creates an Inventor node \a SoNode
+    /// with these data.
     void attach(App::DocumentObject* pcFeature) override;
-    bool useNewSelectionModel() const override {return false;}
+    bool useNewSelectionModel() const override
+    {
+        return false;
+    }
     /// Sets the viewing mode
     void setDisplayMode(const char* ModeName) override;
     /// get the default display mode
@@ -81,8 +93,9 @@ public:
     void updateData(const App::Property*) override;
     /// Returns a pixmap for the associated feature type
     QIcon getIcon() const override;
-    /// Once the color bar settinhs has been changed this method gets called to update the feature's representation
-    void OnChange(Base::Subject<int> &rCaller,int rcReason) override;
+    /// Once the color bar settinhs has been changed this method gets called to update the feature's
+    /// representation
+    void OnChange(Base::Subject<int>& rCaller, int rcReason) override;
     /// Returns a color bar
     SoSeparator* getFrontRoot() const override;
     /// Hide the object in the view
@@ -91,7 +104,7 @@ public:
     void show() override;
 
 public:
-    static void curvatureInfoCallback(void * ud, SoEventCallback * n);
+    static void curvatureInfoCallback(void* ud, SoEventCallback* n);
 
 protected:
     void onChanged(const App::Property* prop) override;
@@ -100,23 +113,22 @@ protected:
     void touchShapeNode();
 
 private:
-    void init(const Mesh::PropertyCurvatureList *prop);
+    void init(const Mesh::PropertyCurvatureList* prop);
 
     void slotChangedObject(const App::DocumentObject& Obj, const App::Property& Prop) override;
 
-protected:
-    SoMaterial       * pcColorMat;
-    SoGroup          * pcLinkRoot;
+private:
+    SoMaterial* pcColorMat;
+    SoGroup* pcLinkRoot;
     Gui::SoFCColorBar* pcColorBar;
-    SoDrawStyle      * pcColorStyle;
-    SoSeparator      * pcColorRoot;
+    SoDrawStyle* pcColorStyle;
+    SoSeparator* pcColorRoot;
 
 private:
     static bool addflag;
 };
 
-} // namespace MeshGui
+}  // namespace MeshGui
 
 
-#endif // MESHGUI_VIEWPROVIDER_MESH_CURVATURE_H
-
+#endif  // MESHGUI_VIEWPROVIDER_MESH_CURVATURE_H

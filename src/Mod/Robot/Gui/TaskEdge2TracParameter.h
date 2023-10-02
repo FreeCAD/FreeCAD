@@ -20,40 +20,36 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef GUI_TASKVIEW_TaskEdge2TracParameter_H
 #define GUI_TASKVIEW_TaskEdge2TracParameter_H
 
 #include <Gui/TaskView/TaskView.h>
-#include <Gui/Selection.h>
-
 #include <Mod/Robot/App/Edge2TracObject.h>
-#include <Mod/Robot/App/TrajectoryObject.h>
 
 
-class Ui_TaskEdge2TracParameter;
-
-namespace App {
+namespace App
+{
 class Property;
 }
 
-namespace Gui {
+namespace Gui
+{
 class ViewProvider;
 }
 
-namespace RobotGui { 
+namespace RobotGui
+{
 
-
-
-class TaskEdge2TracParameter : public Gui::TaskView::TaskBox
+class Ui_TaskEdge2TracParameter;
+class TaskEdge2TracParameter: public Gui::TaskView::TaskBox
 {
     Q_OBJECT
 
 public:
-    explicit TaskEdge2TracParameter(Robot::Edge2TracObject *pcObject,QWidget *parent = nullptr);
+    explicit TaskEdge2TracParameter(Robot::Edge2TracObject* pcObject, QWidget* parent = nullptr);
     ~TaskEdge2TracParameter() override;
 
-    void setEdgeAndClusterNbr(int NbrEdges,int NbrClusters);
+    void setEdgeAndClusterNbr(int NbrEdges, int NbrClusters);
 
 private Q_SLOTS:
     void hideShow();
@@ -61,17 +57,17 @@ private Q_SLOTS:
     void orientationToggled(bool Value);
 
 protected:
-    Robot::Edge2TracObject *pcObject;
-    App::DocumentObject *HideShowObj;
+    Robot::Edge2TracObject* pcObject;
+    App::DocumentObject* HideShowObj;
 
     void setHideShowObject();
-private:
 
+private:
 private:
     QWidget* proxy;
     Ui_TaskEdge2TracParameter* ui;
 };
 
-} //namespace PartDesignGui
+}  // namespace RobotGui
 
-#endif // GUI_TASKVIEW_TASKAPPERANCE_H
+#endif  // GUI_TASKVIEW_TASKAPPERANCE_H

@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
 # ***************************************************************************
 # *                                                                         *
 # *   Copyright (c) 2022 FreeCAD Project Association                        *
@@ -24,9 +25,9 @@
 
 import os
 
-from PySide2.QtWidgets import QTableWidgetItem
-from PySide2.QtGui import QIcon
-from PySide2.QtCore import Qt
+from PySide.QtWidgets import QTableWidgetItem
+from PySide.QtGui import QIcon
+from PySide.QtCore import Qt
 
 import FreeCAD
 import FreeCADGui
@@ -35,7 +36,7 @@ from addonmanager_devmode_person_editor import PersonEditor
 
 translate = FreeCAD.Qt.translate
 
-#pylint: disable=too-few-public-methods
+# pylint: disable=too-few-public-methods
 
 
 class PeopleTable:
@@ -46,9 +47,7 @@ class PeopleTable:
             os.path.join(os.path.dirname(__file__), "developer_mode_people_table.ui")
         )
 
-        self.widget.addButton.setIcon(
-            QIcon.fromTheme("add", QIcon(":/icons/list-add.svg"))
-        )
+        self.widget.addButton.setIcon(QIcon.fromTheme("add", QIcon(":/icons/list-add.svg")))
         self.widget.removeButton.setIcon(
             QIcon.fromTheme("remove", QIcon(":/icons/list-remove.svg"))
         )

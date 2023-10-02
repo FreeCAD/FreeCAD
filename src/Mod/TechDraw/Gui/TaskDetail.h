@@ -23,11 +23,10 @@
 #ifndef TECHDRAWGUI_TASKDETAIL_H
 #define TECHDRAWGUI_TASKDETAIL_H
 
-#include <Mod/TechDraw/TechDrawGlobal.h>
-
 #include <Base/Vector3D.h>
 #include <Gui/TaskView/TaskDialog.h>
 #include <Gui/TaskView/TaskView.h>
+#include <Mod/TechDraw/TechDrawGlobal.h>
 
 
 //TODO: make this a proper enum
@@ -63,7 +62,7 @@ class TaskDetail : public QWidget
 public:
     explicit TaskDetail(TechDraw::DrawViewPart* baseFeat);
     explicit TaskDetail(TechDraw::DrawViewDetail* detailFeat);
-    ~TaskDetail() = default;
+    ~TaskDetail() override = default;
 
     virtual bool accept();
     virtual bool reject();

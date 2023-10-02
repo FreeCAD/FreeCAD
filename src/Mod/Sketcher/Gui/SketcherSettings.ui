@@ -15,16 +15,9 @@
   </property>
   <layout class="QGridLayout" name="gridLayout">
    <item row="0" column="0">
-    <widget class="QGroupBox" name="placeholder">
-     <property name="title">
-      <string>Sketcher</string>
-     </property>
-    </widget>
-   </item>
-   <item row="1" column="0">
     <widget class="QGroupBox" name="groupBox_2">
      <property name="title">
-      <string>Sketcher solver</string>
+      <string>Task Panel Widgets</string>
      </property>
      <layout class="QGridLayout" name="gridLayout_4">
       <item row="0" column="0">
@@ -34,7 +27,7 @@
 'Advanced solver control' to adjust solver settings</string>
         </property>
         <property name="text">
-         <string>Show section 'Advanced solver control' in task dialog</string>
+         <string>Show section 'Advanced solver control'</string>
         </property>
         <property name="prefEntry" stdset="0">
          <cstring>ShowSolverAdvancedWidget</cstring>
@@ -47,7 +40,7 @@
      </layout>
     </widget>
    </item>
-   <item row="2" column="0">
+   <item row="1" column="0">
     <widget class="QGroupBox" name="groupBox_4">
      <property name="title">
       <string>Dragging performance</string>
@@ -76,7 +69,7 @@ Requires to re-enter edit mode to take effect.</string>
      </layout>
     </widget>
    </item>
-   <item row="3" column="0">
+   <item row="2" column="0">
     <widget class="QGroupBox" name="groupBox_5">
      <property name="enabled">
       <bool>true</bool>
@@ -163,6 +156,56 @@ Requires to re-enter edit mode to take effect.</string>
         </property>
         <property name="prefPath" stdset="0">
          <cstring>Mod/Sketcher/General</cstring>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="3" column="0">
+    <widget class="QGroupBox" name="groupBox_6">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Expanding" vsizetype="Minimum">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="title">
+      <string>Dimension Constraint</string>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_general">
+      <item row="0" column="0">
+       <widget class="QLabel" name="dimensioningLabel">
+        <property name="text">
+         <string>Dimensioning constraints:</string>
+        </property>
+       </widget>
+      </item>
+	  <item row="0" column="1">
+       <widget class="QComboBox" name="dimensioningMode">
+        <property name="toolTip">
+         <string>Select the type of dimensioning constraints for your toolbar:
+'Single tool': A single tool for all dimensioning constraints in the toolbar : Distance, Distance X / Y, Angle, Radius. (Others in dropdown)
+'Separated tools': Individual tools for each dimensioning constraint.
+'Both': You will have both the 'Dimension' tool and the separated tools.
+This setting is only for the toolbar. Whichever you chose, all tools are always available in the menu and through shortcuts.</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="radiusDiameterLabel">
+        <property name="text">
+         <string>Dimension tool diameter/radius mode:</string>
+        </property>
+       </widget>
+      </item>
+	  <item row="1" column="1">
+       <widget class="QComboBox" name="radiusDiameterMode">
+        <property name="toolTip">
+         <string>While using the Dimension tool you may chose how to handle circles and arcs:
+'Auto': The tool will apply radius to arcs and diameter to circles.
+'Diameter': The tool will apply diameter to both arcs and circles.
+'Radius': The tool will apply radius to both arcs and circles.</string>
         </property>
        </widget>
       </item>

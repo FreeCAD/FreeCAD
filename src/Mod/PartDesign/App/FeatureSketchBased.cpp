@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <Bnd_Box.hxx>
@@ -450,11 +449,11 @@ void ProfileBased::getFaceFromLinkSub(TopoDS_Face& upToFace, const App::Property
 
 void ProfileBased::getUpToFace(TopoDS_Face& upToFace,
                               const TopoDS_Shape& support,
-                              const TopoDS_Face& supportface,
                               const TopoDS_Shape& sketchshape,
                               const std::string& method,
                               const gp_Dir& dir)
 {
+
     if ((method == "UpToLast") || (method == "UpToFirst")) {
         // Check for valid support object
         if (support.IsNull())
@@ -462,7 +461,7 @@ void ProfileBased::getUpToFace(TopoDS_Face& upToFace,
 
         std::vector<Part::cutFaces> cfaces = Part::findAllFacesCutBy(support, sketchshape, dir);
         if (cfaces.empty())
-            throw Base::ValueError("SketchBased: Up to face: No faces found in this direction");
+            throw Base::ValueError("SketchBased: No faces found in this direction");
 
         // Find nearest/furthest face
         std::vector<Part::cutFaces>::const_iterator it, it_near, it_far;
@@ -522,20 +521,23 @@ void ProfileBased::getUpToFace(TopoDS_Face& upToFace,
         }
     }
 
-    // Check that the upToFace does not intersect the sketch face and
-    // is not parallel to the extrusion direction (for simplicity, supportface is used instead of sketchshape)
-    BRepAdaptor_Surface adapt1(TopoDS::Face(supportface));
-    BRepAdaptor_Surface adapt2(TopoDS::Face(upToFace));
-
-    if (adapt2.GetType() == GeomAbs_Plane) {
-        if (adapt1.Plane().Axis().IsNormal(adapt2.Plane().Axis(), Precision::Confusion()))
-            throw Base::ValueError("SketchBased: Up to face: Must not be parallel to extrusion direction!");
-    }
-
-    // We must measure from sketchshape, not supportface, here
+    // Check that the upToFace is either not parallel to the extrusion direction
+    // and that upToFace is not too near
+    if (upToFace.IsNull())
+        throw Base::ValueError("SketchBased: The UpTo-Face is null!");
+    BRepAdaptor_Surface upToFaceSurface(TopoDS::Face(upToFace));
     BRepExtrema_DistShapeShape distSS(sketchshape, upToFace);
-    if (distSS.Value() < Precision::Confusion())
-        throw Base::ValueError("SketchBased: Up to face: Must not intersect sketch!");
+    if (upToFaceSurface.GetType() == GeomAbs_Plane) {
+        // Check that the upToFace is not parallel to the extrusion direction
+        if (dir.IsNormal(upToFaceSurface.Plane().Axis().Direction(), Precision::Confusion()))
+            throw Base::ValueError(
+                "SketchBased: The UpTo-Face must not be parallel to the extrusion direction!");
+
+        // Check the distance if the upToFace is normal to the extrusion direction
+        if (dir.IsParallel(upToFaceSurface.Plane().Axis().Direction(), Precision::Confusion()))
+            if (distSS.Value() < Precision::Confusion())
+                throw Base::ValueError("SketchBased: The UpTo-Face is too close to the sketch");
+    }
 }
 
 void ProfileBased::addOffsetToFace(TopoDS_Face& upToFace, const gp_Dir& dir, double offset)
@@ -543,8 +545,8 @@ void ProfileBased::addOffsetToFace(TopoDS_Face& upToFace, const gp_Dir& dir, dou
     // Move the face in the extrusion direction
     // TODO: For non-planar faces, we could consider offsetting the surface
     if (fabs(offset) > Precision::Confusion()) {
-        BRepAdaptor_Surface adapt2(TopoDS::Face(upToFace));
-        if (adapt2.GetType() == GeomAbs_Plane) {
+        BRepAdaptor_Surface upToFaceSurface(TopoDS::Face(upToFace));
+        if (upToFaceSurface.GetType() == GeomAbs_Plane) {
             gp_Trsf mov;
             mov.SetTranslation(offset * gp_Vec(dir));
             TopLoc_Location loc(mov);
@@ -747,49 +749,49 @@ void ProfileBased::remapSupportShape(const TopoDS_Shape & newShape)
     shape.setShape(sh);
 
     std::vector<App::DocumentObject*> refs = this->getInList();
-    for (std::vector<App::DocumentObject*>::iterator it = refs.begin(); it != refs.end(); ++it) {
+    for (auto ref : refs) {
         std::vector<App::Property*> props;
-        (*it)->getPropertyList(props);
-        for (std::vector<App::Property*>::iterator jt = props.begin(); jt != props.end(); ++jt) {
-            if (!(*jt)->isDerivedFrom(App::PropertyLinkSub::getClassTypeId()))
+        ref->getPropertyList(props);
+        for (auto prop : props) {
+            if (!prop->isDerivedFrom(App::PropertyLinkSub::getClassTypeId()))
                 continue;
-            App::PropertyLinkSub* link = static_cast<App::PropertyLinkSub*>(*jt);
+            App::PropertyLinkSub* link = static_cast<App::PropertyLinkSub*>(prop);
             if (link->getValue() != this)
                 continue;
             std::vector<std::string> subValues = link->getSubValues();
             std::vector<std::string> newSubValues;
 
-            for (std::vector<std::string>::iterator it = subValues.begin(); it != subValues.end(); ++it) {
+            for (auto & subValue : subValues) {
                 std::string shapetype;
-                if (it->compare(0, 4, "Face") == 0) {
+                if (subValue.compare(0, 4, "Face") == 0) {
                     shapetype = "Face";
                 }
-                else if (it->compare(0, 4, "Edge") == 0) {
+                else if (subValue.compare(0, 4, "Edge") == 0) {
                     shapetype = "Edge";
                 }
-                else if (it->compare(0, 6, "Vertex") == 0) {
+                else if (subValue.compare(0, 6, "Vertex") == 0) {
                     shapetype = "Vertex";
                 }
                 else {
-                    newSubValues.push_back(*it);
+                    newSubValues.push_back(subValue);
                     continue;
                 }
 
                 bool success = false;
                 TopoDS_Shape element;
                 try {
-                    element = shape.getSubShape(it->c_str());
+                    element = shape.getSubShape(subValue.c_str());
                 }
                 catch (Standard_Failure&) {
                     // This shape doesn't even exist, so no chance to do some tests
-                    newSubValues.push_back(*it);
+                    newSubValues.push_back(subValue);
                     continue;
                 }
                 try {
                     // as very first test check if old face and new face are parallel planes
-                    TopoDS_Shape newElement = Part::TopoShape(newShape).getSubShape(it->c_str());
+                    TopoDS_Shape newElement = Part::TopoShape(newShape).getSubShape(subValue.c_str());
                     if (isParallelPlane(element, newElement)) {
-                        newSubValues.push_back(*it);
+                        newSubValues.push_back(subValue);
                         success = true;
                     }
                 }
@@ -822,7 +824,7 @@ void ProfileBased::remapSupportShape(const TopoDS_Shape & newShape)
 
                 // the new shape couldn't be found so keep the old sub-name
                 if (!success)
-                    newSubValues.push_back(*it);
+                    newSubValues.push_back(subValue);
             }
 
             link->setValue(this, newSubValues);

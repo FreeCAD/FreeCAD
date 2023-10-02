@@ -22,22 +22,24 @@
  ***************************************************************************/
 
 #include "PreCompiled.h"
+#ifndef _PreComp_
 #include <QAction>
 #include <QMenu>
 #include <QMessageBox>
 #include <QTimer>
 #include <TopExp.hxx>
 #include <TopTools_IndexedMapOfShape.hxx>
+#endif
 
 #include <App/Document.h>
-#include <Gui/ViewProvider.h>
-#include <Gui/Application.h>
-#include <Gui/Document.h>
-#include <Gui/Command.h>
-#include <Gui/SelectionObject.h>
 #include <Base/Console.h>
-#include <Gui/Control.h>
+#include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
+#include <Gui/Command.h>
+#include <Gui/Control.h>
+#include <Gui/Document.h>
+#include <Gui/SelectionObject.h>
+#include <Gui/Widgets.h>
 #include <Mod/Part/Gui/ViewProvider.h>
 
 #include "TaskGeomFillSurface.h"
@@ -48,9 +50,12 @@ using namespace SurfaceGui;
 
 PROPERTY_SOURCE(SurfaceGui::ViewProviderGeomFillSurface, PartGui::ViewProviderSpline)
 
-namespace SurfaceGui {
+namespace SurfaceGui
+{
 
-void ViewProviderGeomFillSurface::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
+void ViewProviderGeomFillSurface::setupContextMenu(QMenu* menu,
+                                                   QObject* receiver,
+                                                   const char* member)
 {
     QAction* act;
     act = menu->addAction(QObject::tr("Edit filling"), receiver, member);
@@ -60,20 +65,21 @@ void ViewProviderGeomFillSurface::setupContextMenu(QMenu* menu, QObject* receive
 
 bool ViewProviderGeomFillSurface::setEdit(int ModNum)
 {
-    if (ModNum == ViewProvider::Default ) {
+    if (ModNum == ViewProvider::Default) {
         // When double-clicking on the item for this sketch the
         // object unsets and sets its edit mode without closing
         // the task panel
 
-        Surface::GeomFillSurface* obj =  static_cast<Surface::GeomFillSurface*>(this->getObject());
+        Surface::GeomFillSurface* obj = static_cast<Surface::GeomFillSurface*>(this->getObject());
 
         Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog();
 
         // start the edit dialog
         if (dlg) {
             TaskGeomFillSurface* tDlg = qobject_cast<TaskGeomFillSurface*>(dlg);
-            if (tDlg)
+            if (tDlg) {
                 tDlg->setEditedObject(obj);
+            }
             Gui::Control().showDialog(dlg);
         }
         else {
@@ -90,7 +96,7 @@ void ViewProviderGeomFillSurface::unsetEdit(int ModNum)
 {
     if (ModNum == ViewProvider::Default) {
         // when pressing ESC make sure to close the dialog
-        QTimer::singleShot(0, &Gui::Control(), SLOT(closeDialog()));
+        QTimer::singleShot(0, &Gui::Control(), &Gui::ControlSingleton::closeDialog);
     }
     else {
         PartGui::ViewProviderSpline::unsetEdit(ModNum);
@@ -110,7 +116,7 @@ void ViewProviderGeomFillSurface::highlightReferences(bool on)
         Part::Feature* base = dynamic_cast<Part::Feature*>(it.first);
         if (base) {
             PartGui::ViewProviderPartExt* svp = dynamic_cast<PartGui::ViewProviderPartExt*>(
-                        Gui::Application::Instance->getViewProvider(base));
+                Gui::Application::Instance->getViewProvider(base));
             if (svp) {
                 if (on) {
                     std::vector<App::Color> colors;
@@ -120,8 +126,8 @@ void ViewProviderGeomFillSurface::highlightReferences(bool on)
 
                     for (const auto& jt : it.second) {
                         std::size_t idx = static_cast<std::size_t>(std::stoi(jt.substr(4)) - 1);
-                        assert (idx < colors.size());
-                        colors[idx] = App::Color(1.0,0.0,1.0); // magenta
+                        assert(idx < colors.size());
+                        colors[idx] = App::Color(1.0, 0.0, 1.0);  // magenta
                     }
 
                     svp->setHighlightedEdges(colors);
@@ -136,18 +142,17 @@ void ViewProviderGeomFillSurface::highlightReferences(bool on)
 
 // ----------------------------------------------------------------------------
 
-class GeomFillSurface::EdgeSelection : public Gui::SelectionFilterGate
+class GeomFillSurface::EdgeSelection: public Gui::SelectionFilterGate
 {
 public:
     EdgeSelection(bool appendEdges, Surface::GeomFillSurface* editedObject)
         : Gui::SelectionFilterGate(nullPointer())
         , appendEdges(appendEdges)
         , editedObject(editedObject)
-    {
-    }
+    {}
     /**
-      * Allow the user to pick only edges.
-      */
+     * Allow the user to pick only edges.
+     */
     bool allow(App::Document* pDoc, App::DocumentObject* pObj, const char* sSubName) override;
 
 private:
@@ -155,27 +160,34 @@ private:
     Surface::GeomFillSurface* editedObject;
 };
 
-bool GeomFillSurface::EdgeSelection::allow(App::Document* , App::DocumentObject* pObj, const char* sSubName)
+bool GeomFillSurface::EdgeSelection::allow(App::Document*,
+                                           App::DocumentObject* pObj,
+                                           const char* sSubName)
 {
     // don't allow references to itself
-    if (pObj == editedObject)
+    if (pObj == editedObject) {
         return false;
-    if (!pObj->isDerivedFrom(Part::Feature::getClassTypeId()))
+    }
+    if (!pObj->isDerivedFrom(Part::Feature::getClassTypeId())) {
         return false;
+    }
 
-    if (!sSubName || sSubName[0] == '\0')
+    if (!sSubName || sSubName[0] == '\0') {
         return false;
+    }
 
     std::string element(sSubName);
-    if (element.substr(0,4) != "Edge")
+    if (element.substr(0, 4) != "Edge") {
         return false;
+    }
 
     auto links = editedObject->BoundaryList.getSubListValues();
     for (const auto& it : links) {
         if (it.first == pObj) {
             for (const auto& jt : it.second) {
-                if (jt == sSubName)
+                if (jt == sSubName) {
                     return !appendEdges;
+                }
             }
         }
     }
@@ -189,20 +201,28 @@ GeomFillSurface::GeomFillSurface(ViewProviderGeomFillSurface* vp, Surface::GeomF
 {
     ui = new Ui_GeomFillSurface();
     ui->setupUi(this);
+    setupConnections();
+
     selectionMode = None;
     this->vp = vp;
     checkCommand = true;
     setEditedObject(obj);
 
+    // Set up button group
+    buttonGroup = new Gui::ButtonGroup(this);
+    buttonGroup->setExclusive(true);
+    buttonGroup->addButton(ui->buttonEdgeAdd, (int)SelectionMode::Append);
+    buttonGroup->addButton(ui->buttonEdgeRemove, (int)SelectionMode::Remove);
+
     // Create context menu
     QAction* remove = new QAction(tr("Remove"), this);
     remove->setShortcut(QString::fromLatin1("Del"));
     ui->listWidget->addAction(remove);
-    connect(remove, SIGNAL(triggered()), this, SLOT(onDeleteEdge()));
+    connect(remove, &QAction::triggered, this, &GeomFillSurface::onDeleteEdge);
 
     QAction* orientation = new QAction(tr("Flip orientation"), this);
     ui->listWidget->addAction(orientation);
-    connect(orientation, SIGNAL(triggered()), this, SLOT(onFlipOrientation()));
+    connect(orientation, &QAction::triggered, this, &GeomFillSurface::onFlipOrientation);
 
     ui->listWidget->setContextMenuPolicy(Qt::ActionsContextMenu);
 }
@@ -216,24 +236,52 @@ GeomFillSurface::~GeomFillSurface()
     delete ui;
 }
 
+void GeomFillSurface::setupConnections()
+{
+    connect(ui->fillType_stretch,
+            &QRadioButton::clicked,
+            this,
+            &GeomFillSurface::onFillTypeStretchClicked);
+    connect(ui->fillType_coons,
+            &QRadioButton::clicked,
+            this,
+            &GeomFillSurface::onFillTypeCoonsClicked);
+    connect(ui->fillType_curved,
+            &QRadioButton::clicked,
+            this,
+            &GeomFillSurface::onFillTypeCurvedClicked);
+    connect(ui->buttonEdgeAdd,
+            &QToolButton::toggled,
+            this,
+            &GeomFillSurface::onButtonEdgeAddToggled);
+    connect(ui->buttonEdgeRemove,
+            &QToolButton::toggled,
+            this,
+            &GeomFillSurface::onButtonEdgeRemoveToggled);
+    connect(ui->listWidget,
+            &QListWidget::itemDoubleClicked,
+            this,
+            &GeomFillSurface::onListWidgetItemDoubleClicked);
+}
+
 // stores object pointer, its old fill type and adjusts radio buttons according to it.
 void GeomFillSurface::setEditedObject(Surface::GeomFillSurface* obj)
 {
     editedObject = obj;
-    GeomFill_FillingStyle curtype = static_cast<GeomFill_FillingStyle>(editedObject->FillType.getValue());
-    switch(curtype)
-    {
-    case GeomFill_StretchStyle:
-        ui->fillType_stretch->setChecked(true);
-        break;
-    case GeomFill_CoonsStyle:
-        ui->fillType_coons->setChecked(true);
-        break;
-    case GeomFill_CurvedStyle:
-        ui->fillType_curved->setChecked(true);
-        break;
-    default:
-        break;
+    GeomFill_FillingStyle curtype =
+        static_cast<GeomFill_FillingStyle>(editedObject->FillType.getValue());
+    switch (curtype) {
+        case GeomFill_StretchStyle:
+            ui->fillType_stretch->setChecked(true);
+            break;
+        case GeomFill_CoonsStyle:
+            ui->fillType_coons->setChecked(true);
+            break;
+        case GeomFill_CurvedStyle:
+            ui->fillType_curved->setChecked(true);
+            break;
+        default:
+            break;
     }
 
     auto objects = editedObject->BoundaryList.getValues();
@@ -250,16 +298,17 @@ void GeomFillSurface::setEditedObject(Surface::GeomFillSurface* obj)
     for (; it != objects.end() && jt != element.end(); ++it, ++jt, ++index) {
         QListWidgetItem* item = new QListWidgetItem(ui->listWidget);
         if (index < boolean.size()) {
-            if (boolean[index])
+            if (boolean[index]) {
                 item->setIcon(rotateLeft);
-            else
+            }
+            else {
                 item->setIcon(rotateRight);
+            }
         }
         ui->listWidget->addItem(item);
 
-        QString text = QString::fromLatin1("%1.%2")
-                .arg(QString::fromUtf8((*it)->Label.getValue()),
-                     QString::fromStdString(*jt));
+        QString text = QString::fromLatin1("%1.%2").arg(QString::fromUtf8((*it)->Label.getValue()),
+                                                        QString::fromStdString(*jt));
         item->setText(text);
 
         QList<QVariant> data;
@@ -272,7 +321,7 @@ void GeomFillSurface::setEditedObject(Surface::GeomFillSurface* obj)
     attachDocument(Gui::Application::Instance->getDocument(doc));
 }
 
-void GeomFillSurface::changeEvent(QEvent *e)
+void GeomFillSurface::changeEvent(QEvent* e)
 {
     if (e->type() == QEvent::LanguageChange) {
         ui->retranslateUi(this);
@@ -331,29 +380,31 @@ bool GeomFillSurface::accept()
     int count = ui->listWidget->count();
     if (count > 4) {
         QMessageBox::warning(this,
-            tr("Too many edges"),
-            tr("The tool requires two, three or four edges"));
+                             tr("Too many edges"),
+                             tr("The tool requires two, three or four edges"));
         return false;
     }
     else if (count < 2) {
         QMessageBox::warning(this,
-            tr("Too less edges"),
-            tr("The tool requires two, three or four edges"));
+                             tr("Too less edges"),
+                             tr("The tool requires two, three or four edges"));
         return false;
     }
 
-    if (editedObject->mustExecute())
+    if (editedObject->mustExecute()) {
         editedObject->recomputeFeature();
+    }
     if (!editedObject->isValid()) {
-        QMessageBox::warning(this, tr("Invalid object"),
-            QString::fromLatin1(editedObject->getStatusString()));
+        QMessageBox::warning(this,
+                             tr("Invalid object"),
+                             QString::fromLatin1(editedObject->getStatusString()));
         return false;
     }
 
     this->vp->highlightReferences(false);
 
     Gui::Command::commitCommand();
-    Gui::Command::doCommand(Gui::Command::Gui,"Gui.ActiveDocument.resetEdit()");
+    Gui::Command::doCommand(Gui::Command::Gui, "Gui.ActiveDocument.resetEdit()");
     Gui::Command::updateActive();
     return true;
 }
@@ -365,29 +416,30 @@ bool GeomFillSurface::reject()
     Gui::Selection().rmvSelectionGate();
 
     Gui::Command::abortCommand();
-    Gui::Command::doCommand(Gui::Command::Gui,"Gui.ActiveDocument.resetEdit()");
+    Gui::Command::doCommand(Gui::Command::Gui, "Gui.ActiveDocument.resetEdit()");
     Gui::Command::updateActive();
     return true;
 }
 
-void GeomFillSurface::on_fillType_stretch_clicked()
+void GeomFillSurface::onFillTypeStretchClicked()
 {
     changeFillType(GeomFill_StretchStyle);
 }
 
-void GeomFillSurface::on_fillType_coons_clicked()
+void GeomFillSurface::onFillTypeCoonsClicked()
 {
     changeFillType(GeomFill_CoonsStyle);
 }
 
-void GeomFillSurface::on_fillType_curved_clicked()
+void GeomFillSurface::onFillTypeCurvedClicked()
 {
     changeFillType(GeomFill_CurvedStyle);
 }
 
 void GeomFillSurface::changeFillType(GeomFill_FillingStyle fillType)
 {
-    GeomFill_FillingStyle curtype = static_cast<GeomFill_FillingStyle>(editedObject->FillType.getValue());
+    GeomFill_FillingStyle curtype =
+        static_cast<GeomFill_FillingStyle>(editedObject->FillType.getValue());
     if (curtype != fillType) {
         checkOpenCommand();
         editedObject->FillType.setValue(static_cast<long>(fillType));
@@ -398,22 +450,33 @@ void GeomFillSurface::changeFillType(GeomFill_FillingStyle fillType)
     }
 }
 
-void GeomFillSurface::on_buttonEdgeAdd_clicked()
+void GeomFillSurface::onButtonEdgeAddToggled(bool checked)
 {
-    selectionMode = Append;
-    Gui::Selection().addSelectionGate(new EdgeSelection(true, editedObject));
+    if (checked) {
+        selectionMode = Append;
+        Gui::Selection().addSelectionGate(new EdgeSelection(true, editedObject));
+    }
+    else if (selectionMode == Append) {
+        exitSelectionMode();
+    }
 }
 
-void GeomFillSurface::on_buttonEdgeRemove_clicked()
+void GeomFillSurface::onButtonEdgeRemoveToggled(bool checked)
 {
-    selectionMode = Remove;
-    Gui::Selection().addSelectionGate(new EdgeSelection(false, editedObject));
+    if (checked) {
+        selectionMode = Remove;
+        Gui::Selection().addSelectionGate(new EdgeSelection(false, editedObject));
+    }
+    else if (selectionMode == Remove) {
+        exitSelectionMode();
+    }
 }
 
 void GeomFillSurface::onSelectionChanged(const Gui::SelectionChanges& msg)
 {
-    if (selectionMode == None)
+    if (selectionMode == None) {
         return;
+    }
 
     if (msg.Type == Gui::SelectionChanges::AddSelection) {
         checkOpenCommand();
@@ -423,9 +486,9 @@ void GeomFillSurface::onSelectionChanged(const Gui::SelectionChanges& msg)
             ui->listWidget->addItem(item);
 
             Gui::SelectionObject sel(msg);
-            QString text = QString::fromLatin1("%1.%2")
-                    .arg(QString::fromUtf8(sel.getObject()->Label.getValue()),
-                         QString::fromLatin1(msg.pSubName));
+            QString text = QString::fromLatin1("%1.%2").arg(
+                QString::fromUtf8(sel.getObject()->Label.getValue()),
+                QString::fromLatin1(msg.pSubName));
             item->setText(text);
 
             QList<QVariant> data;
@@ -451,7 +514,7 @@ void GeomFillSurface::onSelectionChanged(const Gui::SelectionChanges& msg)
             data << QByteArray(msg.pDocName);
             data << QByteArray(msg.pObjectName);
             data << QByteArray(msg.pSubName);
-            for (int i=0; i<ui->listWidget->count(); i++) {
+            for (int i = 0; i < ui->listWidget->count(); i++) {
                 QListWidgetItem* item = ui->listWidget->item(i);
                 if (item && item->data(Qt::UserRole) == data) {
                     row = i;
@@ -471,12 +534,13 @@ void GeomFillSurface::onSelectionChanged(const Gui::SelectionChanges& msg)
             // remove the element of the bitset at position 'row'
             const boost::dynamic_bitset<>& old_booleans = editedObject->ReversedList.getValues();
             boost::dynamic_bitset<> new_booleans = old_booleans >> 1;
-            new_booleans.resize(objects.size()-1);
+            new_booleans.resize(objects.size() - 1);
 
             // double-check in case 'old_booleans' is out of sync
             if (new_booleans.size() < old_booleans.size()) {
-                for (int i=0; i<row; i++)
+                for (int i = 0; i < row; i++) {
                     new_booleans[i] = old_booleans[i];
+                }
             }
 
             for (; it != objects.end() && jt != element.end(); ++it, ++jt) {
@@ -492,7 +556,7 @@ void GeomFillSurface::onSelectionChanged(const Gui::SelectionChanges& msg)
         }
 
         editedObject->recomputeFeature();
-        QTimer::singleShot(50, this, SLOT(clearSelection()));
+        QTimer::singleShot(50, this, &GeomFillSurface::clearSelection);
     }
 }
 
@@ -519,12 +583,13 @@ void GeomFillSurface::onDeleteEdge()
         // remove the element of the bitset at position 'row'
         const boost::dynamic_bitset<>& old_booleans = editedObject->ReversedList.getValues();
         boost::dynamic_bitset<> new_booleans = old_booleans >> 1;
-        new_booleans.resize(objects.size()-1);
+        new_booleans.resize(objects.size() - 1);
 
         // double-check in case 'old_booleans' is out of sync
         if (new_booleans.size() < old_booleans.size()) {
-            for (int i=0; i<row; i++)
+            for (int i = 0; i < row; i++) {
                 new_booleans[i] = old_booleans[i];
+            }
         }
 
         for (; it != objects.end() && jt != element.end(); ++it, ++jt) {
@@ -564,7 +629,7 @@ void GeomFillSurface::flipOrientation(QListWidgetItem* item)
     }
 }
 
-void GeomFillSurface::on_listWidget_itemDoubleClicked(QListWidgetItem* item)
+void GeomFillSurface::onListWidgetItemDoubleClicked(QListWidgetItem* item)
 {
     if (item) {
         flipOrientation(item);
@@ -579,22 +644,26 @@ void GeomFillSurface::onFlipOrientation()
     }
 }
 
+void GeomFillSurface::exitSelectionMode()
+{
+    selectionMode = None;
+    Gui::Selection().clearSelection();
+    Gui::Selection().rmvSelectionGate();
+}
+
 // ----------------------------------------------------------------------------
 
-TaskGeomFillSurface::TaskGeomFillSurface(ViewProviderGeomFillSurface* vp, Surface::GeomFillSurface* obj)
+TaskGeomFillSurface::TaskGeomFillSurface(ViewProviderGeomFillSurface* vp,
+                                         Surface::GeomFillSurface* obj)
 {
     widget = new GeomFillSurface(vp, obj);
     widget->setWindowTitle(QObject::tr("Surface"));
-    taskbox = new Gui::TaskView::TaskBox(
-        Gui::BitmapFactory().pixmap("Surface_BSplineSurface"),
-        widget->windowTitle(), true, nullptr);
+    taskbox = new Gui::TaskView::TaskBox(Gui::BitmapFactory().pixmap("Surface_BSplineSurface"),
+                                         widget->windowTitle(),
+                                         true,
+                                         nullptr);
     taskbox->groupLayout()->addWidget(widget);
     Content.push_back(taskbox);
-}
-
-TaskGeomFillSurface::~TaskGeomFillSurface()
-{
-    // automatically deleted in the sub-class
 }
 
 void TaskGeomFillSurface::setEditedObject(Surface::GeomFillSurface* obj)
@@ -617,6 +686,6 @@ bool TaskGeomFillSurface::reject()
     return widget->reject();
 }
 
-}
+}  // namespace SurfaceGui
 
 #include "moc_TaskGeomFillSurface.cpp"

@@ -30,12 +30,12 @@ namespace SurfaceGui
 
 class ViewProviderBlendCurve: public PartGui::ViewProviderSpline
 {
-    PROPERTY_HEADER(SurfaceGui::ViewProviderBlendCurve);
+    PROPERTY_HEADER_WITH_OVERRIDE(SurfaceGui::ViewProviderBlendCurve);
 
 public:
-    QIcon getIcon() const;
+    QIcon getIcon() const override;
 };
 
-}//namespace SurfaceGui
+}  // namespace SurfaceGui
 
-#endif// SURFACEGUI_VIEWPROVIDEREXTEND_H
+#endif  // SURFACEGUI_VIEWPROVIDEREXTEND_H

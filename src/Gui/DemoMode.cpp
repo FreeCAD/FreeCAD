@@ -47,17 +47,18 @@ DemoMode::DemoMode(QWidget* /*parent*/, Qt::WindowFlags fl)
 {
     // create widgets
     ui->setupUi(this);
+    setupConnections();
     ui->playButton->setCheckable(true);
 
     timer = new QTimer(this);
     timer->setInterval(1000 * ui->timeout->value());
-    connect(timer, SIGNAL(timeout()), this, SLOT(onAutoPlay()));
+    connect(timer, &QTimer::timeout, this, &DemoMode::onAutoPlay);
     oldvalue = ui->angleSlider->value();
 
     wasHidden = false;
     showHideTimer = new QTimer(this);
     showHideTimer->setInterval(5000);
-    connect(showHideTimer, SIGNAL(timeout()), this, SLOT(hide()));
+    connect(showHideTimer, &QTimer::timeout, this, &DemoMode::hide);
 }
 
 /** Destroys the object and frees any allocated resources */
@@ -66,9 +67,25 @@ DemoMode::~DemoMode()
     delete ui;
 }
 
+void DemoMode::setupConnections()
+{
+    connect(ui->playButton, &QPushButton::clicked,
+            this, &DemoMode::onPlayButtonToggled);
+    connect(ui->fullscreen, &QCheckBox::toggled,
+            this, &DemoMode::onFullscreenToggled);
+    connect(ui->timerCheck, &QCheckBox::toggled,
+            this, &DemoMode::onTimerCheckToggled);
+    connect(ui->speedSlider, &QSlider::valueChanged,
+            this, &DemoMode::onSpeedSliderValueChanged);
+    connect(ui->angleSlider, &QSlider::valueChanged,
+            this, &DemoMode::onAngleSliderValueChanged);
+    connect(ui->timeout, qOverload<int>(&QSpinBox::valueChanged),
+            this, &DemoMode::onTimeoutValueChanged);
+}
+
 void DemoMode::reset()
 {
-    on_fullscreen_toggled(false);
+    onFullscreenToggled(false);
     Gui::View3DInventor* view = activeView();
     if (view)
         view->getViewer()->stopAnimating();
@@ -152,14 +169,14 @@ SbVec3f DemoMode::getDirection(Gui::View3DInventor* view) const
     return vec;
 }
 
-void DemoMode::on_angleSlider_valueChanged(int v)
+void DemoMode::onAngleSliderValueChanged(int v)
 {
     Gui::View3DInventor* view = activeView();
     if (view) {
         SoCamera* cam = view->getViewer()->getSoRenderManager()->getCamera();
         if (!cam)
             return;
-        float angle = Base::toRadians<float>(/*90-v*/v - this->oldvalue);
+        auto angle = Base::toRadians<float>(/*90-v*/v - this->oldvalue);
         SbRotation rot(SbVec3f(-1, 0, 0), angle);
         reorientCamera(cam ,rot);
         this->oldvalue = v;
@@ -185,7 +202,7 @@ void DemoMode::reorientCamera(SoCamera * cam, const SbRotation & rot)
     cam->position = focalpoint - cam->focalDistance.getValue() * direction;
 }
 
-void DemoMode::on_speedSlider_valueChanged(int v)
+void DemoMode::onSpeedSliderValueChanged(int v)
 {
     Q_UNUSED(v);
     Gui::View3DInventor* view = activeView();
@@ -194,7 +211,7 @@ void DemoMode::on_speedSlider_valueChanged(int v)
     }
 }
 
-void DemoMode::on_playButton_toggled(bool pressed)
+void DemoMode::onPlayButtonToggled(bool pressed)
 {
     Gui::View3DInventor* view = activeView();
     if (view) {
@@ -218,7 +235,7 @@ void DemoMode::on_playButton_toggled(bool pressed)
     }
 }
 
-void DemoMode::on_fullscreen_toggled(bool on)
+void DemoMode::onFullscreenToggled(bool on)
 {
     Gui::View3DInventor* view = activeView();
     if (view) {
@@ -238,7 +255,7 @@ void DemoMode::on_fullscreen_toggled(bool on)
     }
 }
 
-void DemoMode::on_timeout_valueChanged(int v)
+void DemoMode::onTimeoutValueChanged(int v)
 {
     timer->setInterval(v * 1000);
 }
@@ -248,6 +265,7 @@ void DemoMode::onAutoPlay()
     Gui::View3DInventor* view = activeView();
     if (view && !view->getViewer()->isAnimating()) {
         ui->playButton->setChecked(true);
+        startAnimation(view);
     }
 }
 
@@ -259,7 +277,7 @@ void DemoMode::startAnimation(Gui::View3DInventor* view)
         getSpeed(ui->speedSlider->value()));
 }
 
-void DemoMode::on_timerCheck_toggled(bool on)
+void DemoMode::onTimerCheckToggled(bool on)
 {
     if (on)
         timer->start();

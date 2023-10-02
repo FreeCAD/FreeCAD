@@ -54,6 +54,13 @@ class ArchWorkbench(FreeCADGui.Workbench):
         import Arch_rc
         import Arch
 
+        # Load Reinforcement WB translations
+        try:
+            import RebarTools
+            RebarTools.load_translations()
+        except Exception:
+            pass
+
         from ArchStructure import _ArchStructureGroupCommand
         from ArchAxis import _ArchAxisGroupCommand
         from ArchPanel import CommandPanelGroup
@@ -153,6 +160,7 @@ class ArchWorkbench(FreeCADGui.Workbench):
         self.draft_modification_commands = it.get_draft_modification_commands()
         self.draft_utility_commands = it.get_draft_utility_commands_menu()
         self.draft_context_commands = it.get_draft_context_commands()
+        self.draft_snap_commands = it.get_draft_snap_commands()
 
         # Set up toolbars
         it.init_toolbar(self,
@@ -167,6 +175,9 @@ class ArchWorkbench(FreeCADGui.Workbench):
         it.init_toolbar(self,
                         QT_TRANSLATE_NOOP("Workbench", "Draft modification tools"),
                         self.draft_modification_commands)
+        it.init_toolbar(self,
+                        QT_TRANSLATE_NOOP("Workbench", "Draft snap"),
+                        self.draft_snap_commands)
 
         # Set up menus
         it.init_menu(self,
@@ -199,14 +210,14 @@ class ArchWorkbench(FreeCADGui.Workbench):
         # Set up preferences pages
         if hasattr(FreeCADGui, "draftToolBar"):
             if not hasattr(FreeCADGui.draftToolBar, "loadedArchPreferences"):
-                FreeCADGui.addPreferencePage(":/ui/preferences-arch.ui", QT_TRANSLATE_NOOP("Arch", "Arch"))
-                FreeCADGui.addPreferencePage(":/ui/preferences-archdefaults.ui", QT_TRANSLATE_NOOP("Arch", "Arch"))
+                FreeCADGui.addPreferencePage(":/ui/preferences-arch.ui", QT_TRANSLATE_NOOP("QObject", "Arch"))
+                FreeCADGui.addPreferencePage(":/ui/preferences-archdefaults.ui", QT_TRANSLATE_NOOP("QObject", "Arch"))
                 FreeCADGui.draftToolBar.loadedArchPreferences = True
             if not hasattr(FreeCADGui.draftToolBar, "loadedPreferences"):
-                FreeCADGui.addPreferencePage(":/ui/preferences-draft.ui", QT_TRANSLATE_NOOP("Draft", "Draft"))
-                FreeCADGui.addPreferencePage(":/ui/preferences-draftsnap.ui", QT_TRANSLATE_NOOP("Draft", "Draft"))
-                FreeCADGui.addPreferencePage(":/ui/preferences-draftvisual.ui", QT_TRANSLATE_NOOP("Draft", "Draft"))
-                FreeCADGui.addPreferencePage(":/ui/preferences-drafttexts.ui", QT_TRANSLATE_NOOP("Draft", "Draft"))
+                FreeCADGui.addPreferencePage(":/ui/preferences-draft.ui", QT_TRANSLATE_NOOP("QObject", "Draft"))
+                FreeCADGui.addPreferencePage(":/ui/preferences-draftsnap.ui", QT_TRANSLATE_NOOP("QObject", "Draft"))
+                FreeCADGui.addPreferencePage(":/ui/preferences-draftvisual.ui", QT_TRANSLATE_NOOP("QObject", "Draft"))
+                FreeCADGui.addPreferencePage(":/ui/preferences-drafttexts.ui", QT_TRANSLATE_NOOP("QObject", "Draft"))
                 FreeCADGui.draftToolBar.loadedPreferences = True
 
         FreeCAD.Console.PrintLog('Loading Arch workbench, done.\n')
@@ -242,8 +253,8 @@ FreeCADGui.addWorkbench(ArchWorkbench)
 # are independent of the loading of the workbench and can be loaded at startup
 import Arch_rc
 from PySide.QtCore import QT_TRANSLATE_NOOP
-FreeCADGui.addPreferencePage(":/ui/preferences-ifc.ui", QT_TRANSLATE_NOOP("Draft", "Import-Export"))
-FreeCADGui.addPreferencePage(":/ui/preferences-ifc-export.ui", QT_TRANSLATE_NOOP("Draft", "Import-Export"))
-FreeCADGui.addPreferencePage(":/ui/preferences-dae.ui", QT_TRANSLATE_NOOP("Draft", "Import-Export"))
+FreeCADGui.addPreferencePage(":/ui/preferences-ifc.ui", QT_TRANSLATE_NOOP("QObject", "Import-Export"))
+FreeCADGui.addPreferencePage(":/ui/preferences-ifc-export.ui", QT_TRANSLATE_NOOP("QObject", "Import-Export"))
+FreeCADGui.addPreferencePage(":/ui/preferences-dae.ui", QT_TRANSLATE_NOOP("QObject", "Import-Export"))
 
 FreeCAD.__unit_test__ += ["TestArch"]

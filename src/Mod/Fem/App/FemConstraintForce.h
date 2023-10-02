@@ -21,20 +21,16 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef FEM_CONSTRAINTFORCE_H
 #define FEM_CONSTRAINTFORCE_H
 
-#include <App/DocumentObject.h>
-#include <App/PropertyLinks.h>
-#include <App/PropertyGeo.h>
-
 #include "FemConstraint.h"
+
 
 namespace Fem
 {
 
-class FemExport ConstraintForce : public Fem::Constraint
+class FemExport ConstraintForce: public Fem::Constraint
 {
     PROPERTY_HEADER_WITH_OVERRIDE(Fem::ConstraintForce);
 
@@ -50,10 +46,11 @@ public:
     App::PropertyVector DirectionVector;
 
     /// recalculate the object
-    App::DocumentObjectExecReturn *execute() override;
+    App::DocumentObjectExecReturn* execute() override;
 
     /// returns the type name of the ViewProvider
-    const char* getViewProviderName() const override {
+    const char* getViewProviderName() const override
+    {
         return "FemGui::ViewProviderFemConstraintForce";
     }
 
@@ -64,7 +61,7 @@ private:
     Base::Vector3d naturalDirectionVector;
 };
 
-} //namespace Fem
+}  // namespace Fem
 
 
-#endif // FEM_CONSTRAINTFORCE_H
+#endif  // FEM_CONSTRAINTFORCE_H

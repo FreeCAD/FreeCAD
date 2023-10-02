@@ -29,6 +29,7 @@
 #include <Base/FileInfo.h>
 #include <Base/Interpreter.h>
 #include <Base/Parameter.h>
+#include <Base/PyWrapParseTupleAndKeywords.h>
 #include <Base/Sequencer.h>
 
 #include "Application.h"
@@ -210,12 +211,22 @@ PyObject* Application::sLoadFile(PyObject * /*self*/, PyObject *args)
             }
         }
 
+        // path could contain characters that need escaping, such as quote signs
+        // therefore use its representation in the Python code string
+        PyObject *pathObj = PyUnicode_FromString(path);
+        PyObject *pathReprObj = PyObject_Repr(pathObj);
+        const char *pathRepr = PyUnicode_AsUTF8(pathReprObj);
+
         std::stringstream str;
         str << "import " << module << std::endl;
         if (fi.hasExtension("FCStd"))
-            str << module << ".openDocument('" << path << "')" << std::endl;
+            str << module << ".openDocument(" << pathRepr << ")" << std::endl;
         else
-            str << module << ".insert('" << path << "','" << doc << "')" << std::endl;
+            str << module << ".insert(" << pathRepr << ",'" << doc << "')" << std::endl;
+
+        Py_DECREF(pathObj);
+        Py_DECREF(pathReprObj);
+
         Base::Interpreter().runString(str.str().c_str());
         Py_Return;
     }
@@ -240,10 +251,11 @@ PyObject* Application::sOpenDocument(PyObject * /*self*/, PyObject *args, PyObje
 {
     char* Name;
     PyObject *hidden = Py_False;
-    static char *kwlist[] = {"name", "hidden", nullptr};
-    if (!PyArg_ParseTupleAndKeywords(args, kwd, "et|O!", kwlist,
-                "utf-8", &Name, &PyBool_Type, &hidden))
+    static const std::array<const char *, 3> kwlist {"name", "hidden", nullptr};
+    if (!Base::Wrapped_ParseTupleAndKeywords(args, kwd, "et|O!", kwlist,
+                "utf-8", &Name, &PyBool_Type, &hidden)) {
         return nullptr;
+    }
     std::string EncodedName = std::string(Name);
     PyMem_Free(Name);
     try {
@@ -267,10 +279,11 @@ PyObject* Application::sNewDocument(PyObject * /*self*/, PyObject *args, PyObjec
     char *usrName = nullptr;
     PyObject *hidden = Py_False;
     PyObject *temp = Py_False;
-    static char *kwlist[] = {"name", "label", "hidden", "temp", nullptr};
-    if (!PyArg_ParseTupleAndKeywords(args, kwd, "|etetO!O!", kwlist,
-                "utf-8", &docName, "utf-8", &usrName, &PyBool_Type, &hidden, &PyBool_Type, &temp))
+    static const std::array<const char *, 5> kwlist {"name", "label", "hidden", "temp", nullptr};
+    if (!Base::Wrapped_ParseTupleAndKeywords(args, kwd, "|etetO!O!", kwlist,
+                "utf-8", &docName, "utf-8", &usrName, &PyBool_Type, &hidden, &PyBool_Type, &temp)) {
         return nullptr;
+    }
 
     PY_TRY {
         App::Document* doc = GetApplication().newDocument(docName, usrName, !Base::asBoolean(hidden), Base::asBoolean(temp));
@@ -435,8 +448,8 @@ PyObject* Application::sDumpConfig(PyObject * /*self*/, PyObject *args)
         return nullptr;
 
     PyObject *dict = PyDict_New();
-    for (auto It= GetApplication()._mConfig.begin(); It != GetApplication()._mConfig.end(); ++It) {
-        PyDict_SetItemString(dict,It->first.c_str(), PyUnicode_FromString(It->second.c_str()));
+    for (const auto & It : GetApplication()._mConfig) {
+        PyDict_SetItemString(dict, It.first.c_str(), PyUnicode_FromString(It.second.c_str()));
     }
     return dict;
 }
@@ -467,6 +480,9 @@ PyObject* Application::sGetVersion(PyObject * /*self*/, PyObject *args)
     list.append(Py::String(it != cfg.end() ? it->second : ""));
 
     it = cfg.find("BuildVersionMinor");
+    list.append(Py::String(it != cfg.end() ? it->second : ""));
+
+    it = cfg.find("BuildVersionPoint");
     list.append(Py::String(it != cfg.end() ? it->second : ""));
 
     it = cfg.find("BuildRevision");
@@ -523,8 +539,8 @@ PyObject* Application::sGetImportType(PyObject * /*self*/, PyObject *args)
     if (psKey) {
         Py::List list;
         std::vector<std::string> modules = GetApplication().getImportModules(psKey);
-        for (std::vector<std::string>::iterator it = modules.begin(); it != modules.end(); ++it) {
-            list.append(Py::String(*it));
+        for (const auto & it : modules) {
+            list.append(Py::String(it));
         }
 
         return Py::new_reference_to(list);
@@ -532,20 +548,20 @@ PyObject* Application::sGetImportType(PyObject * /*self*/, PyObject *args)
     else {
         Py::Dict dict;
         std::vector<std::string> types = GetApplication().getImportTypes();
-        for (std::vector<std::string>::iterator it = types.begin(); it != types.end(); ++it) {
-            std::vector<std::string> modules = GetApplication().getImportModules(it->c_str());
+        for (const auto & it : types) {
+            std::vector<std::string> modules = GetApplication().getImportModules(it.c_str());
             if (modules.empty()) {
-                dict.setItem(it->c_str(), Py::None());
+                dict.setItem(it.c_str(), Py::None());
             }
             else if (modules.size() == 1) {
-                dict.setItem(it->c_str(), Py::String(modules.front()));
+                dict.setItem(it.c_str(), Py::String(modules.front()));
             }
             else {
                 Py::List list;
-                for (std::vector<std::string>::iterator jt = modules.begin(); jt != modules.end(); ++jt) {
-                    list.append(Py::String(*jt));
+                for (const auto & jt : modules) {
+                    list.append(Py::String(jt));
                 }
-                dict.setItem(it->c_str(), list);
+                dict.setItem(it.c_str(), list);
             }
         }
 
@@ -587,8 +603,8 @@ PyObject* Application::sGetExportType(PyObject * /*self*/, PyObject *args)
     if (psKey) {
         Py::List list;
         std::vector<std::string> modules = GetApplication().getExportModules(psKey);
-        for (std::vector<std::string>::iterator it = modules.begin(); it != modules.end(); ++it) {
-            list.append(Py::String(*it));
+        for (const auto & it : modules) {
+            list.append(Py::String(it));
         }
 
         return Py::new_reference_to(list);
@@ -596,20 +612,20 @@ PyObject* Application::sGetExportType(PyObject * /*self*/, PyObject *args)
     else {
         Py::Dict dict;
         std::vector<std::string> types = GetApplication().getExportTypes();
-        for (std::vector<std::string>::iterator it = types.begin(); it != types.end(); ++it) {
-            std::vector<std::string> modules = GetApplication().getExportModules(it->c_str());
+        for (const auto & it : types) {
+            std::vector<std::string> modules = GetApplication().getExportModules(it.c_str());
             if (modules.empty()) {
-                dict.setItem(it->c_str(), Py::None());
+                dict.setItem(it.c_str(), Py::None());
             }
             else if (modules.size() == 1) {
-                dict.setItem(it->c_str(), Py::String(modules.front()));
+                dict.setItem(it.c_str(), Py::String(modules.front()));
             }
             else {
                 Py::List list;
-                for (std::vector<std::string>::iterator jt = modules.begin(); jt != modules.end(); ++jt) {
-                    list.append(Py::String(*jt));
+                for (const auto & jt : modules) {
+                    list.append(Py::String(jt));
                 }
-                dict.setItem(it->c_str(), list);
+                dict.setItem(it.c_str(), list);
             }
         }
 
@@ -832,7 +848,7 @@ PyObject *Application::sCheckLinkDepth(PyObject * /*self*/, PyObject *args)
         return nullptr;
 
     PY_TRY {
-        return Py::new_reference_to(Py::Int(GetApplication().checkLinkDepth(depth,false)));
+        return Py::new_reference_to(Py::Int(GetApplication().checkLinkDepth(depth, MessageOption::Throw)));
     }PY_CATCH;
 }
 
@@ -845,21 +861,20 @@ PyObject *Application::sGetLinksTo(PyObject * /*self*/, PyObject *args)
         return nullptr;
 
     PY_TRY {
+        Base::PyTypeCheck(&pyobj, &DocumentObjectPy::Type, "Expect the first argument of type App.DocumentObject or None");
         DocumentObject *obj = nullptr;
-        if(pyobj!=Py_None) {
-            if(!PyObject_TypeCheck(pyobj,&DocumentObjectPy::Type)) {
-                PyErr_SetString(PyExc_TypeError, "Expect the first argument of type document object");
-                return nullptr;
-            }
+        if (pyobj)
             obj = static_cast<DocumentObjectPy*>(pyobj)->getDocumentObjectPtr();
-        }
+
         auto links = GetApplication().getLinksTo(obj,options,count);
         Py::Tuple ret(links.size());
         int i=0;
         for(auto o : links)
             ret.setItem(i++,Py::Object(o->getPyObject(),true));
+
         return Py::new_reference_to(ret);
-    }PY_CATCH;
+    }
+    PY_CATCH;
 }
 
 PyObject *Application::sGetDependentObjects(PyObject * /*self*/, PyObject *args)

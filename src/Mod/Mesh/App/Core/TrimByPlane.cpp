@@ -21,25 +21,26 @@
  ***************************************************************************/
 
 #include "PreCompiled.h"
+#ifndef _PreComp_
 #include <algorithm>
+#endif
 
-#include "TrimByPlane.h"
 #include "Grid.h"
 #include "Iterator.h"
+#include "TrimByPlane.h"
+
 
 using namespace MeshCore;
 
-MeshTrimByPlane::MeshTrimByPlane(MeshKernel &rclM)
-  : myMesh(rclM)
-{
-}
+MeshTrimByPlane::MeshTrimByPlane(MeshKernel& rclM)
+    : myMesh(rclM)
+{}
 
-MeshTrimByPlane::~MeshTrimByPlane()
-{
-}
-
-void MeshTrimByPlane::CheckFacets(const MeshFacetGrid& rclGrid, const Base::Vector3f& base, const Base::Vector3f& normal,
-                                  std::vector<FacetIndex> &trimFacets, std::vector<FacetIndex>& removeFacets) const
+void MeshTrimByPlane::CheckFacets(const MeshFacetGrid& rclGrid,
+                                  const Base::Vector3f& base,
+                                  const Base::Vector3f& normal,
+                                  std::vector<FacetIndex>& trimFacets,
+                                  std::vector<FacetIndex>& removeFacets) const
 {
     // Go through the grid and check for each cell if its bounding box intersects the plane.
     // If the box is completely below the plane all facets will be kept, if it's above the
@@ -52,7 +53,7 @@ void MeshTrimByPlane::CheckFacets(const MeshFacetGrid& rclGrid, const Base::Vect
             // save all elements in checkElements
             clGridIter.GetElements(checkElements);
         }
-        else if (clBBox3d.CalcPoint(0).DistanceToPlane(base, normal) > 0.0f) {
+        else if (clBBox3d.CalcPoint(Base::BoundBox3f::TLB).DistanceToPlane(base, normal) > 0.0f) {
             // save all elements in removeFacets
             clGridIter.GetElements(removeFacets);
         }
@@ -60,17 +61,18 @@ void MeshTrimByPlane::CheckFacets(const MeshFacetGrid& rclGrid, const Base::Vect
 
     // remove double elements
     std::sort(checkElements.begin(), checkElements.end());
-    checkElements.erase(std::unique(checkElements.begin(), checkElements.end()), checkElements.end());
+    checkElements.erase(std::unique(checkElements.begin(), checkElements.end()),
+                        checkElements.end());
 
-    trimFacets.reserve(checkElements.size()/2); // reserve some memory
-    for (auto it = checkElements.begin(); it != checkElements.end(); ++it) {
-        MeshGeomFacet clFacet = myMesh.GetFacet(*it);
+    trimFacets.reserve(checkElements.size() / 2);  // reserve some memory
+    for (FacetIndex element : checkElements) {
+        MeshGeomFacet clFacet = myMesh.GetFacet(element);
         if (clFacet.IntersectWithPlane(base, normal)) {
-            trimFacets.push_back(*it);
-            removeFacets.push_back(*it);
+            trimFacets.push_back(element);
+            removeFacets.push_back(element);
         }
         else if (clFacet._aclPoints[0].DistanceToPlane(base, normal) > 0.0f) {
-            removeFacets.push_back(*it);
+            removeFacets.push_back(element);
         }
     }
 
@@ -79,8 +81,11 @@ void MeshTrimByPlane::CheckFacets(const MeshFacetGrid& rclGrid, const Base::Vect
     removeFacets.erase(std::unique(removeFacets.begin(), removeFacets.end()), removeFacets.end());
 }
 
-void MeshTrimByPlane::CreateOneFacet(const Base::Vector3f& base, const Base::Vector3f& normal, unsigned short shift,
-                                     const MeshGeomFacet& facet, std::vector<MeshGeomFacet>& trimmedFacets) const
+void MeshTrimByPlane::CreateOneFacet(const Base::Vector3f& base,
+                                     const Base::Vector3f& normal,
+                                     unsigned short shift,
+                                     const MeshGeomFacet& facet,
+                                     std::vector<MeshGeomFacet>& trimmedFacets) const
 {
     unsigned short nul = shift % 3;
     unsigned short one = (shift + 1) % 3;
@@ -104,8 +109,11 @@ void MeshTrimByPlane::CreateOneFacet(const Base::Vector3f& base, const Base::Vec
     trimmedFacets.push_back(create);
 }
 
-void MeshTrimByPlane::CreateTwoFacet(const Base::Vector3f& base, const Base::Vector3f& normal, unsigned short shift,
-                                     const MeshGeomFacet& facet, std::vector<MeshGeomFacet>& trimmedFacets) const
+void MeshTrimByPlane::CreateTwoFacet(const Base::Vector3f& base,
+                                     const Base::Vector3f& normal,
+                                     unsigned short shift,
+                                     const MeshGeomFacet& facet,
+                                     std::vector<MeshGeomFacet>& trimmedFacets) const
 {
     unsigned short nul = shift % 3;
     unsigned short one = (shift + 1) % 3;
@@ -134,12 +142,14 @@ void MeshTrimByPlane::CreateTwoFacet(const Base::Vector3f& base, const Base::Vec
     trimmedFacets.push_back(create);
 }
 
-void MeshTrimByPlane::TrimFacets(const std::vector<FacetIndex>& trimFacets, const Base::Vector3f& base,
-                                 const Base::Vector3f& normal, std::vector<MeshGeomFacet>& trimmedFacets)
+void MeshTrimByPlane::TrimFacets(const std::vector<FacetIndex>& trimFacets,
+                                 const Base::Vector3f& base,
+                                 const Base::Vector3f& normal,
+                                 std::vector<MeshGeomFacet>& trimmedFacets)
 {
     trimmedFacets.reserve(2 * trimFacets.size());
-    for (auto it = trimFacets.begin(); it != trimFacets.end(); ++it) {
-        MeshGeomFacet facet = myMesh.GetFacet(*it);
+    for (FacetIndex index : trimFacets) {
+        MeshGeomFacet facet = myMesh.GetFacet(index);
         float dist1 = facet._aclPoints[0].DistanceToPlane(base, normal);
         float dist2 = facet._aclPoints[1].DistanceToPlane(base, normal);
         float dist3 = facet._aclPoints[2].DistanceToPlane(base, normal);

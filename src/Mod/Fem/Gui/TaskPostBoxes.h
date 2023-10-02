@@ -23,11 +23,10 @@
 #ifndef GUI_TASKVIEW_TaskPostDisplay_H
 #define GUI_TASKVIEW_TaskPostDisplay_H
 
-#include <App/DocumentObserver.h>
 #include <Gui/DocumentObserver.h>
-#include <Gui/ViewProviderDocumentObject.h>
 #include <Gui/TaskView/TaskDialog.h>
 #include <Gui/TaskView/TaskView.h>
+#include <Gui/ViewProviderDocumentObject.h>
 
 #include "ViewProviderFemPostFunction.h"
 
@@ -35,6 +34,7 @@
 class QComboBox;
 class Ui_TaskPostDisplay;
 class Ui_TaskPostClip;
+class Ui_TaskPostContours;
 class Ui_TaskPostDataAlongLine;
 class Ui_TaskPostDataAtPoint;
 class Ui_TaskPostScalarClip;
@@ -51,10 +51,13 @@ class SoEventCallback;
 class SoMarkerSet;
 
 
-namespace FemGui {
+namespace FemGui
+{
 
+// ***************************************************************************
+// point marker
 class ViewProviderPointMarker;
-class PointMarker : public QObject
+class PointMarker: public QObject
 {
     Q_OBJECT
 
@@ -72,14 +75,13 @@ protected:
     void customEvent(QEvent* e) override;
 
 private:
-    Gui::View3DInventorViewer *view;
-    ViewProviderPointMarker *vp;
+    Gui::View3DInventorViewer* view;
+    ViewProviderPointMarker* vp;
     std::string m_name;
     std::string ObjectInvisible();
 };
 
-
-class FemGuiExport ViewProviderPointMarker : public Gui::ViewProviderDocumentObject
+class FemGuiExport ViewProviderPointMarker: public Gui::ViewProviderDocumentObject
 {
     PROPERTY_HEADER_WITH_OVERRIDE(FemGui::ViewProviderPointMarker);
 
@@ -88,13 +90,15 @@ public:
     ~ViewProviderPointMarker() override;
 
 protected:
-    SoCoordinate3    * pCoords;
+    SoCoordinate3* pCoords;
     friend class PointMarker;
 };
 
 
+// ***************************************************************************
+// data marker
 class ViewProviderDataMarker;
-class DataMarker : public QObject
+class DataMarker: public QObject
 {
     Q_OBJECT
 
@@ -112,14 +116,14 @@ protected:
     void customEvent(QEvent* e) override;
 
 private:
-    Gui::View3DInventorViewer *view;
-    ViewProviderDataMarker *vp;
+    Gui::View3DInventorViewer* view;
+    ViewProviderDataMarker* vp;
     std::string m_name;
     std::string ObjectInvisible();
 };
 
 
-class FemGuiExport ViewProviderDataMarker : public Gui::ViewProviderDocumentObject
+class FemGuiExport ViewProviderDataMarker: public Gui::ViewProviderDocumentObject
 {
     PROPERTY_HEADER_WITH_OVERRIDE(FemGui::ViewProviderDataMarker);
 
@@ -128,35 +132,48 @@ public:
     ~ViewProviderDataMarker() override;
 
 protected:
-    SoCoordinate3    * pCoords;
-    SoMarkerSet      * pMarker;
+    SoCoordinate3* pCoords;
+    SoMarkerSet* pMarker;
     friend class DataMarker;
 };
 
-class TaskPostBox : public Gui::TaskView::TaskBox {
 
+// ***************************************************************************
+// main task dialog
+class TaskPostBox: public Gui::TaskView::TaskBox
+{
     Q_OBJECT
 
 public:
-    TaskPostBox(Gui::ViewProviderDocumentObject* view, const QPixmap &icon, const QString &title, QWidget *parent = nullptr);
+    TaskPostBox(Gui::ViewProviderDocumentObject* view,
+                const QPixmap& icon,
+                const QString& title,
+                QWidget* parent = nullptr);
     ~TaskPostBox() override;
 
     virtual void applyPythonCode() = 0;
-    virtual bool isGuiTaskOnly() {return false;} //return true if only gui properties are manipulated
+    virtual bool isGuiTaskOnly()
+    {
+        return false;
+    }  // return true if only gui properties are manipulated
 
 protected:
-    App::DocumentObject* getObject() const {
+    App::DocumentObject* getObject() const
+    {
         return *m_object;
     }
     template<typename T>
-    T* getTypedObject() const {
+    T* getTypedObject() const
+    {
         return m_object.get<T>();
     }
-    Gui::ViewProviderDocumentObject* getView() const {
+    Gui::ViewProviderDocumentObject* getView() const
+    {
         return *m_view;
     }
     template<typename T>
-    T* getTypedView() const {
+    T* getTypedView() const
+    {
         return m_view.get<T>();
     }
 
@@ -169,22 +186,24 @@ protected:
 
 private:
     App::DocumentObjectWeakPtrT m_object;
-    Gui::ViewProviderWeakPtrT   m_view;
+    Gui::ViewProviderWeakPtrT m_view;
 };
 
 
-/// simulation dialog for the TaskView
-class TaskDlgPost : public Gui::TaskView::TaskDialog
+// ***************************************************************************
+// simulation dialog for the TaskView
+class TaskDlgPost: public Gui::TaskView::TaskDialog
 {
     Q_OBJECT
 
 public:
-    explicit TaskDlgPost(Gui::ViewProviderDocumentObject *view);
+    explicit TaskDlgPost(Gui::ViewProviderDocumentObject* view);
     ~TaskDlgPost() override;
     void connectSlots();
 
     void appendBox(TaskPostBox* box);
-    Gui::ViewProviderDocumentObject* getView() const {
+    Gui::ViewProviderDocumentObject* getView() const
+    {
         return *m_view;
     }
 
@@ -199,7 +218,9 @@ public:
     bool reject() override;
     /// is called by the framework if the user presses the help button
     bool isAllowedAlterDocument() const override
-    { return false; }
+    {
+        return false;
+    }
     void modifyStandardButtons(QDialogButtonBox*) override;
 
     /// returns for Close and Help button
@@ -209,27 +230,33 @@ protected:
     void recompute();
 
 protected:
-    Gui::ViewProviderWeakPtrT   m_view;
-    std::vector<TaskPostBox*>   m_boxes;
+    Gui::ViewProviderWeakPtrT m_view;
+    std::vector<TaskPostBox*> m_boxes;
 };
 
 
-class TaskPostDisplay : public TaskPostBox
+// ***************************************************************************
+// box to set the coloring
+class TaskPostDisplay: public TaskPostBox
 {
     Q_OBJECT
 
 public:
-    explicit TaskPostDisplay(Gui::ViewProviderDocumentObject* view, QWidget *parent = nullptr);
+    explicit TaskPostDisplay(Gui::ViewProviderDocumentObject* view, QWidget* parent = nullptr);
     ~TaskPostDisplay() override;
 
     void applyPythonCode() override;
-    bool isGuiTaskOnly() override {return true;}
+    bool isGuiTaskOnly() override
+    {
+        return true;
+    }
 
-private Q_SLOTS:
-    void on_Representation_activated(int i);
-    void on_Field_activated(int i);
-    void on_VectorMode_activated(int i);
-    void on_Transparency_valueChanged(int i);
+private:
+    void setupConnections();
+    void onRepresentationActivated(int i);
+    void onFieldActivated(int i);
+    void onVectorModeActivated(int i);
+    void onTransparencyValueChanged(int i);
     void slotAddedFunction();
 
 private:
@@ -238,8 +265,10 @@ private:
 };
 
 
-class TaskPostFunction : public TaskPostBox {
-
+// ***************************************************************************
+// functions
+class TaskPostFunction: public TaskPostBox
+{
     Q_OBJECT
 
 public:
@@ -250,57 +279,37 @@ public:
 };
 
 
-class TaskPostClip : public TaskPostBox {
+// ***************************************************************************
+// in the following, the different filters sorted alphabetically
+// ***************************************************************************
 
+
+// ***************************************************************************
+// data along line filter
+class TaskPostDataAlongLine: public TaskPostBox
+{
     Q_OBJECT
 
 public:
-    TaskPostClip(Gui::ViewProviderDocumentObject* view, App::PropertyLink* function, QWidget* parent = nullptr);
-    ~TaskPostClip() override;
-
-    void applyPythonCode() override;
-
-private Q_SLOTS:
-    void on_CreateButton_triggered(QAction*);
-    void on_FunctionBox_currentIndexChanged(int idx);
-    void on_InsideOut_toggled(bool val);
-    void on_CutCells_toggled(bool val);
-
-Q_SIGNALS:
-    void emitAddedFunction();
-
-private:
-    void collectImplicitFunctions();
-
-  //App::PropertyLink* m_functionProperty;
-    QWidget* proxy;
-    std::unique_ptr<Ui_TaskPostClip> ui;
-    FunctionWidget* fwidget;
-};
-
-
-class TaskPostDataAlongLine: public TaskPostBox {
-
-    Q_OBJECT
-
-public:
-    explicit TaskPostDataAlongLine(Gui::ViewProviderDocumentObject* view, QWidget* parent = nullptr);
+    explicit TaskPostDataAlongLine(Gui::ViewProviderDocumentObject* view,
+                                   QWidget* parent = nullptr);
     ~TaskPostDataAlongLine() override;
 
     void applyPythonCode() override;
-    static void pointCallback(void * ud, SoEventCallback * n);
+    static void pointCallback(void* ud, SoEventCallback* n);
 
-private Q_SLOTS:
-    void on_SelectPoints_clicked();
-    void on_CreatePlot_clicked();
-    void on_Representation_activated(int i);
-    void on_Field_activated(int i);
-    void on_VectorMode_activated(int i);
+private:
+    void setupConnectionsStep1();
+    void setupConnectionsStep2();
+    void onSelectPointsClicked();
+    void onCreatePlotClicked();
+    void onRepresentationActivated(int i);
+    void onFieldActivated(int i);
+    void onVectorModeActivated(int i);
     void point2Changed(double);
     void point1Changed(double);
     void resolutionChanged(int val);
     void onChange(double x1, double y1, double z1, double x2, double y2, double z2);
-
 
 private:
     std::string Plot();
@@ -310,8 +319,10 @@ private:
 };
 
 
-class TaskPostDataAtPoint: public TaskPostBox {
-
+// ***************************************************************************
+// data at point filter
+class TaskPostDataAtPoint: public TaskPostBox
+{
     Q_OBJECT
 
 public:
@@ -319,28 +330,120 @@ public:
     ~TaskPostDataAtPoint() override;
 
     void applyPythonCode() override;
-    static void pointCallback(void * ud, SoEventCallback * n);
+    static void pointCallback(void* ud, SoEventCallback* n);
 
-private Q_SLOTS:
-    void on_SelectPoint_clicked();
-    void on_Field_activated(int i);
+private:
+    void setupConnections();
+    void onSelectPointClicked();
+    void onFieldActivated(int i);
     void centerChanged(double);
     void onChange(double x, double y, double z);
 
 private:
     std::string toString(double val) const;
     void showValue(double value, const char* unit);
-
-
-private:
     std::string ObjectVisible();
     QWidget* proxy;
     std::unique_ptr<Ui_TaskPostDataAtPoint> ui;
 };
 
 
-class TaskPostScalarClip : public TaskPostBox {
+// ***************************************************************************
+// clip filter
+class TaskPostClip: public TaskPostBox
+{
+    Q_OBJECT
 
+public:
+    TaskPostClip(Gui::ViewProviderDocumentObject* view,
+                 App::PropertyLink* function,
+                 QWidget* parent = nullptr);
+    ~TaskPostClip() override;
+
+    void applyPythonCode() override;
+
+private:
+    void setupConnections();
+    void onCreateButtonTriggered(QAction*);
+    void onFunctionBoxCurrentIndexChanged(int idx);
+    void onInsideOutToggled(bool val);
+    void onCutCellsToggled(bool val);
+
+Q_SIGNALS:
+    void emitAddedFunction();
+
+private:
+    void collectImplicitFunctions();
+
+    // App::PropertyLink* m_functionProperty;
+    QWidget* proxy;
+    std::unique_ptr<Ui_TaskPostClip> ui;
+    FunctionWidget* fwidget;
+};
+
+
+// ***************************************************************************
+// contours filter
+class TaskPostContours: public TaskPostBox
+{
+    Q_OBJECT
+
+public:
+    explicit TaskPostContours(Gui::ViewProviderDocumentObject* view, QWidget* parent = nullptr);
+    ~TaskPostContours() override;
+
+    void applyPythonCode() override;
+
+private:
+    void onFieldsChanged(int idx);
+    void onVectorModeChanged(int idx);
+    void onNumberOfContoursChanged(int number);
+    void onNoColorChanged(bool state);
+
+private:
+    QWidget* proxy;
+    std::unique_ptr<Ui_TaskPostContours> ui;
+    bool blockVectorUpdate = false;
+    void updateFields();
+};
+
+
+// ***************************************************************************
+// cut filter
+class TaskPostCut: public TaskPostBox
+{
+    Q_OBJECT
+
+public:
+    TaskPostCut(Gui::ViewProviderDocumentObject* view,
+                App::PropertyLink* function,
+                QWidget* parent = nullptr);
+    ~TaskPostCut() override;
+
+    void applyPythonCode() override;
+
+private:
+    void setupConnections();
+    void onCreateButtonTriggered(QAction*);
+    void onFunctionBoxCurrentIndexChanged(int idx);
+
+Q_SIGNALS:
+    void emitAddedFunction();
+
+private:
+    void collectImplicitFunctions();
+
+    // App::PropertyLink* m_functionProperty;
+    QWidget* proxy;
+    std::unique_ptr<Ui_TaskPostCut> ui;
+    FunctionWidget* fwidget;
+};
+
+
+// ***************************************************************************
+// scalar clip filter
+class TaskPostScalarClip: public TaskPostBox
+{
     Q_OBJECT
 
 public:
@@ -349,11 +452,12 @@ public:
 
     void applyPythonCode() override;
 
-private Q_SLOTS:
-    void on_Slider_valueChanged(int v);
-    void on_Value_valueChanged(double v);
-    void on_Scalar_currentIndexChanged(int idx);
-    void on_InsideOut_toggled(bool val);
+private:
+    void setupConnections();
+    void onSliderValueChanged(int v);
+    void onValueValueChanged(double v);
+    void onScalarCurrentIndexChanged(int idx);
+    void onInsideOutToggled(bool val);
 
 private:
     QWidget* proxy;
@@ -361,8 +465,10 @@ private:
 };
 
 
-class TaskPostWarpVector : public TaskPostBox {
-
+// ***************************************************************************
+// warp vector filter
+class TaskPostWarpVector: public TaskPostBox
+{
     Q_OBJECT
 
 public:
@@ -371,45 +477,19 @@ public:
 
     void applyPythonCode() override;
 
-private Q_SLOTS:
-    void on_Slider_valueChanged(int v);
-    void on_Value_valueChanged(double v);
-    void on_Max_valueChanged(double);
-    void on_Min_valueChanged(double);
-    void on_Vector_currentIndexChanged(int idx);
+private:
+    void setupConnections();
+    void onSliderValueChanged(int v);
+    void onValueValueChanged(double v);
+    void onMaxValueChanged(double);
+    void onMinValueChanged(double);
+    void onVectorCurrentIndexChanged(int idx);
 
 private:
     QWidget* proxy;
     std::unique_ptr<Ui_TaskPostWarpVector> ui;
 };
 
+}  // namespace FemGui
 
-class TaskPostCut : public TaskPostBox {
-
-    Q_OBJECT
-
-public:
-    TaskPostCut(Gui::ViewProviderDocumentObject* view, App::PropertyLink* function, QWidget* parent = nullptr);
-    ~TaskPostCut() override;
-
-    void applyPythonCode() override;
-
-private Q_SLOTS:
-    void on_CreateButton_triggered(QAction*);
-    void on_FunctionBox_currentIndexChanged(int idx);
-
-Q_SIGNALS:
-    void emitAddedFunction();
-
-private:
-    void collectImplicitFunctions();
-
-  //App::PropertyLink* m_functionProperty;
-    QWidget* proxy;
-    std::unique_ptr<Ui_TaskPostCut> ui;
-    FunctionWidget* fwidget;
-};
-
-} //namespace FemGui
-
-#endif // GUI_TASKVIEW_TaskPostDisplay_H
+#endif  // GUI_TASKVIEW_TaskPostDisplay_H

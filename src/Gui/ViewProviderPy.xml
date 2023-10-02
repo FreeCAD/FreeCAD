@@ -15,195 +15,268 @@
         </Documentation>
         <Methode Name="addProperty">
             <Documentation>
-                <UserDocu>addProperty(type, name, group, doc, attr=0, ro=False, hd=False) -> ViewProvider\n
-Add a generic property.\n
-type : str\n    Property type.
-name : str\n    Property name. Optional.
-group : str\n    Property group. Optional.
-attr : int\n    Property attributes.
-ro : bool\n    Read only property.
-hd : bool\n    Hidden property.</UserDocu>
+                <UserDocu>addProperty(type, name, group, doc, attr=0, ro=False, hd=False) -> ViewProvider
+
+Add a generic property.
+
+type : str
+    Property type.
+name : str
+    Property name. Optional.
+group : str
+    Property group. Optional.
+attr : int
+    Property attributes.
+ro : bool
+    Read only property.
+hd : bool
+    Hidden property.</UserDocu>
             </Documentation>
         </Methode>
         <Methode Name="removeProperty">
             <Documentation>
-                <UserDocu>removeProperty(name) -> bool\n
+                <UserDocu>removeProperty(name) -> bool
+
 Remove a generic property.
-Only user-defined properties can be removed, not built-in ones.\n
-name : str\n    Property name.</UserDocu>
+Only user-defined properties can be removed, not built-in ones.
+
+name : str
+    Property name.</UserDocu>
             </Documentation>
         </Methode>
         <Methode Name="supportedProperties">
             <Documentation>
-                <UserDocu>supportedProperties() -> list\n
+                <UserDocu>supportedProperties() -> list
+
 A list of supported property types.</UserDocu>
             </Documentation>
         </Methode>
         <Methode Name="show">
             <Documentation>
-                <UserDocu>show() -> None\n
+                <UserDocu>show() -> None
+
 Show the object.</UserDocu>
             </Documentation>
         </Methode>
         <Methode Name="hide">
             <Documentation>
-                <UserDocu>show() -> None\n
+                <UserDocu>show() -> None
+
 Hide the object.</UserDocu>
             </Documentation>
         </Methode>
         <Methode Name="isVisible">
             <Documentation>
-                <UserDocu>isVisible() -> bool\n
+                <UserDocu>isVisible() -> bool
+
 Check if the object is visible.</UserDocu>
             </Documentation>
         </Methode>
         <Methode Name="canDragObject">
             <Documentation>
-                <UserDocu>canDragObject(obj) -> bool\n
+                <UserDocu>canDragObject(obj=None) -> bool
+
 Check whether the child object can be removed by dragging.
-If 'obj' is not given, check without filter by any particular object.\n
-obj : App.DocumentObject\n    Object to be dragged. Optional.</UserDocu>
+If 'obj' is not given, check without filter by any particular object.
+
+obj : App.DocumentObject
+    Object to be dragged.</UserDocu>
             </Documentation>
         </Methode>
         <Methode Name="dragObject">
             <Documentation>
-                <UserDocu>dragObject(obj) -> None\n
-Remove a child object by dropping.\n
-obj : App.DocumentObject\n    Object to be dragged.</UserDocu>
+                <UserDocu>dragObject(obj) -> None
+
+Remove a child object by dropping.
+
+obj : App.DocumentObject
+    Object to be dragged.</UserDocu>
             </Documentation>
         </Methode>
         <Methode Name="canDropObject" Keyword="true">
             <Documentation>
-                <UserDocu>canDropObject(obj, owner, subname, elem) -> bool\n
+                <UserDocu>canDropObject(obj=None, owner=None, subname, elem=None) -> bool
+
 Check whether the child object can be added by dropping.
-If 'obj' is not given, check without filter by any particular object.\n
-obj : App.DocumentObject\n    Object to be dropped. Optional.
-owner : App.DocumentObject\n    Parent object of the dropping object. Optional.
-subname : str\n    Subname reference to the dropping object. Optional.
-elem : sequence of str\n    Non-objects subelements selected when the object is
-    being dropped. Optional.</UserDocu>
+If 'obj' is not given, check without filter by any particular object.
+
+obj : App.DocumentObject
+    Object to be dropped.
+owner : App.DocumentObject
+    Parent object of the dropping object.
+subname : str
+    Subname reference to the dropping object. Optional.
+elem : sequence of str
+    Non-objects subelements selected when the object is
+    being dropped.</UserDocu>
             </Documentation>
         </Methode>
         <Methode Name="dropObject" Keyword="true">
             <Documentation>
-                <UserDocu>dropObject(obj, owner, subname, elem) -> str\n
-Add a child object by dropping.\n
-obj : App.DocumentObject\n    Object to be dropped.
-owner : App.DocumentObject\n    Parent object of the dropping object. Optional.
-subname : str\n    Subname reference to the dropping object. Optional.
-elem : sequence of str\n    Non-objects subelements selected when the object is
-    being dropped. Optional.</UserDocu>
+                <UserDocu>dropObject(obj, owner=None, subname, elem=None) -> str
+
+Add a child object by dropping.
+
+obj : App.DocumentObject
+    Object to be dropped.
+owner : App.DocumentObject
+    Parent object of the dropping object.
+subname : str
+    Subname reference to the dropping object. Optional.
+elem : sequence of str
+    Non-objects subelements selected when the object is
+    being dropped.</UserDocu>
 </Documentation>
         </Methode>
         <Methode Name="canDragAndDropObject">
             <Documentation>
-                <UserDocu>canDragAndDropObject(obj) -> bool\n
+                <UserDocu>canDragAndDropObject(obj) -> bool
+
 Check whether the child object can be removed from
-other parent and added here by drag and drop.\n
-obj : App.DocumentObject\n    Object to be dragged and dropped.</UserDocu>
+other parent and added here by drag and drop.
+
+obj : App.DocumentObject
+    Object to be dragged and dropped.</UserDocu>
             </Documentation>
         </Methode>
         <Methode Name="replaceObject">
             <Documentation>
-                <UserDocu>replaceObject(oldObj, newObj) -> int\n
+                <UserDocu>replaceObject(oldObj, newObj) -> int
+
 Replace a child object.
-Returns 1 if succeeded, 0 if not found, -1 if not supported.\n
-oldObj : App.DocumentObject\n    Old object.
-newObj : App.DocumentObject\n    New object.</UserDocu>
+Returns 1 if succeeded, 0 if not found, -1 if not supported.
+
+oldObj : App.DocumentObject
+    Old object.
+newObj : App.DocumentObject
+    New object.</UserDocu>
             </Documentation>
         </Methode>
         <Methode Name="doubleClicked">
             <Documentation>
-                <UserDocu>doubleClicked() -> bool\n
+                <UserDocu>doubleClicked() -> bool
+
 Trigger double clicking the corresponding tree item of this view object.</UserDocu>
             </Documentation>
         </Methode>
         <Methode Name="addDisplayMode">
             <Documentation>
-                <UserDocu>addDisplayMode(obj, mode) -> None\n
-Add a new display mode to the view provider.\n
-obj : coin.SoNode\n    Display mode.
-mode : str\n    Name of the display mode.</UserDocu>
+                <UserDocu>addDisplayMode(obj, mode) -> None
+
+Add a new display mode to the view provider.
+
+obj : coin.SoNode
+    Display mode.
+mode : str
+    Name of the display mode.</UserDocu>
             </Documentation>
         </Methode>
         <Methode Name="listDisplayModes">
             <Documentation>
-                <UserDocu>listDisplayModes() -> list\n
+                <UserDocu>listDisplayModes() -> list
+
 Show a list of all display modes.</UserDocu>
             </Documentation>
         </Methode>
         <Methode Name="toString">
             <Documentation>
-                <UserDocu>toString() -> str\n
+                <UserDocu>toString() -> str
+
 Return a string representation of the Inventor node.</UserDocu>
             </Documentation>
         </Methode>
         <Methode Name="setTransformation">
             <Documentation>
-                <UserDocu>setTransformation(trans) -> None\n
-Set a transformation on the Inventor node.\n
+                <UserDocu>setTransformation(trans) -> None
+
+Set a transformation on the Inventor node.
+
 trans : Base.Placement, Base.Matrix</UserDocu>
             </Documentation>
         </Methode>
         <Methode Name="claimChildren" Const="true">
             <Documentation>
-                <UserDocu>claimChildren() -> list\n
+                <UserDocu>claimChildren() -> list
+
 Returns list of objects that are to be grouped in tree under this object.</UserDocu>
             </Documentation>
         </Methode>
         <Methode Name="partialRender">
             <Documentation>
-                <UserDocu>partialRender(sub=None, clear=False) -> int\n
-Render only part of the object.\n
-sub: None, str, sequence of str\n    Refer to the subelement. If it is None then reset the partial rendering.
-clear: bool\n    True to add, or False to remove the subelement(s) for rendering.</UserDocu>
+                <UserDocu>partialRender(sub=None, clear=False) -> int
+
+Render only part of the object.
+
+sub: None, str, sequence of str
+    Refer to the subelement. If it is None then reset the partial rendering.
+clear: bool
+    True to add, or False to remove the subelement(s) for rendering.</UserDocu>
             </Documentation>
         </Methode>
         <Methode Name="getElementColors">
             <Documentation>
-                <UserDocu>getElementColors(elementName) -> dict\n
+                <UserDocu>getElementColors(elementName) -> dict
+
 Get a dictionary of the form {elementName : (r,g,b,a)}.
-If no element name is given a dictionary with all the elements is returned.\n
-elementName : str\n    Name of the element. Optional.</UserDocu>
+If no element name is given a dictionary with all the elements is returned.
+
+elementName : str
+    Name of the element. Optional.</UserDocu>
             </Documentation>
         </Methode>
         <Methode Name="setElementColors">
             <Documentation>
-                <UserDocu>setElementColors(colors) -> None\n
-Set element colors.\n
-colors: dict\n    Color dictionary of the form {elementName:(r,g,b,a)}.</UserDocu>
+                <UserDocu>setElementColors(colors) -> None
+
+Set element colors.
+
+colors: dict
+    Color dictionary of the form {elementName:(r,g,b,a)}.</UserDocu>
             </Documentation>
         </Methode>
         <Methode Name="getElementPicked" Const="true">
             <Documentation>
-                <UserDocu>getElementPicked(pickPoint) -> str\n
-Return the picked subelement.\n
+                <UserDocu>getElementPicked(pickPoint) -> str
+
+Return the picked subelement.
+
 pickPoint : coin.SoPickedPoint</UserDocu>
             </Documentation>
         </Methode>
         <Methode Name="getDetailPath" Const="true">
             <Documentation>
-                <UserDocu>getDetailPath(subelement, path, append=True) -> coin.SoDetail or None\n
-Return Coin detail and path of an subelement.\n
-subname: str\n    Dot separated string reference to the sub element.
-pPath: coin.SoPath\n    Output coin path leading to the returned element detail.
-append: bool\n    If True, path will be first appended with the root node and the mode
+                <UserDocu>getDetailPath(subelement, path, append=True) -> coin.SoDetail or None
+
+Return Coin detail and path of an subelement.
+
+subname: str
+    Dot separated string reference to the sub element.
+pPath: coin.SoPath
+    Output coin path leading to the returned element detail.
+append: bool
+    If True, path will be first appended with the root node and the mode
     switch node of this view provider.</UserDocu>
             </Documentation>
         </Methode>
         <Methode Name="signalChangeIcon" Const="true">
             <Documentation>
-                <UserDocu>signalChangeIcon() -> None\n
+                <UserDocu>signalChangeIcon() -> None
+
 Trigger icon changed signal.</UserDocu>
             </Documentation>
         </Methode>
         <Methode Name="getBoundingBox">
             <Documentation>
-                <UserDocu>getBoundingBox(subName, transform=True, view) -> Base.BoundBox\n
-Obtain the bounding box of this view object.\n
-subName : str\n    Name referring a sub-object. Optional.
-transform: bool\n    Whether to apply the transformation matrix of this view provider.
-view: View3DInventorPy\n    Default to active view. Optional.</UserDocu>
+                <UserDocu>getBoundingBox(subName, transform=True, view) -> Base.BoundBox
+
+Obtain the bounding box of this view object.
+
+subName : str
+    Name referring a sub-object. Optional.
+transform: bool
+    Whether to apply the transformation matrix of this view provider.
+view: View3DInventorPy
+    Default to active view. Optional.</UserDocu>
             </Documentation>
         </Methode>
         <Attribute Name="Annotation" ReadOnly="false">
@@ -256,7 +329,7 @@ view: View3DInventorPy\n    Default to active view. Optional.</UserDocu>
     </Attribute>
     <Attribute Name="DropPrefix" ReadOnly="true" >
       <Documentation>
-          <UserDocu>Subname referecing the sub-object for holding dropped object.</UserDocu>
+          <UserDocu>Subname referencing the sub-object for holding dropped object.</UserDocu>
       </Documentation>
       <Parameter Name="DropPrefix" Type="String" />
     </Attribute>

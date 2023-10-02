@@ -53,13 +53,9 @@ using namespace Part;
 
 TYPESYSTEM_SOURCE(Part::PropertyPartShape , App::PropertyComplexGeoData)
 
-PropertyPartShape::PropertyPartShape()
-{
-}
+PropertyPartShape::PropertyPartShape() = default;
 
-PropertyPartShape::~PropertyPartShape()
-{
-}
+PropertyPartShape::~PropertyPartShape() = default;
 
 void PropertyPartShape::setValue(const TopoShape& sh)
 {
@@ -75,7 +71,7 @@ void PropertyPartShape::setValue(const TopoDS_Shape& sh)
     hasSetValue();
 }
 
-const TopoDS_Shape& PropertyPartShape::getValue(void)const
+const TopoDS_Shape& PropertyPartShape::getValue() const
 {
     return _Shape.getShape();
 }
@@ -133,7 +129,7 @@ void PropertyPartShape::transformGeometry(const Base::Matrix4D &rclTrf)
     hasSetValue();
 }
 
-PyObject *PropertyPartShape::getPyObject(void)
+PyObject *PropertyPartShape::getPyObject()
 {
     Base::PyObjectBase* prop = static_cast<Base::PyObjectBase*>(_Shape.getPyObject());
     if (prop)
@@ -154,7 +150,7 @@ void PropertyPartShape::setPyObject(PyObject *value)
     }
 }
 
-App::Property *PropertyPartShape::Copy(void) const
+App::Property *PropertyPartShape::Copy() const
 {
     PropertyPartShape *prop = new PropertyPartShape();
     prop->_Shape = this->_Shape;
@@ -173,7 +169,7 @@ void PropertyPartShape::Paste(const App::Property &from)
     hasSetValue();
 }
 
-unsigned int PropertyPartShape::getMemSize (void) const
+unsigned int PropertyPartShape::getMemSize () const
 {
     return _Shape.getMemSize();
 }
@@ -271,7 +267,7 @@ void PropertyPartShape::saveToFile(Base::Writer &writer) const
     static Base::FileInfo fi(App::Application::getTempFileName());
 
     TopoDS_Shape myShape = _Shape.getShape();
-    if (!BRepTools_Write(myShape,(Standard_CString)fi.filePath().c_str())) {
+    if (!BRepTools_Write(myShape,static_cast<Standard_CString>(fi.filePath().c_str()))) {
         // Note: Do NOT throw an exception here because if the tmp. file could
         // not be created we should not abort.
         // We only print an error message but continue writing the next files to the
@@ -323,7 +319,7 @@ void PropertyPartShape::loadFromFile(Base::Reader &reader)
     // If it's still empty after reading the (non-empty) file there must occurred an error.
     TopoDS_Shape shape;
     if (ulSize > 0) {
-        if (!BRepTools::Read(shape, (Standard_CString)fi.filePath().c_str(), builder)) {
+        if (!BRepTools::Read(shape, static_cast<Standard_CString>(fi.filePath().c_str()), builder)) {
             // Note: Do NOT throw an exception here because if the tmp. created file could
             // not be read it's NOT an indication for an invalid input stream 'reader'.
             // We only print an error message but continue reading the next files from the
@@ -412,13 +408,9 @@ void PropertyPartShape::RestoreDocFile(Base::Reader &reader)
 
 TYPESYSTEM_SOURCE(Part::PropertyShapeHistory , App::PropertyLists)
 
-PropertyShapeHistory::PropertyShapeHistory()
-{
-}
+PropertyShapeHistory::PropertyShapeHistory() = default;
 
-PropertyShapeHistory::~PropertyShapeHistory()
-{
-}
+PropertyShapeHistory::~PropertyShapeHistory() = default;
 
 void PropertyShapeHistory::setValue(const ShapeHistory& sh)
 {
@@ -435,7 +427,7 @@ void PropertyShapeHistory::setValues(const std::vector<ShapeHistory>& values)
     hasSetValue();
 }
 
-PyObject *PropertyShapeHistory::getPyObject(void)
+PyObject *PropertyShapeHistory::getPyObject()
 {
     return Py::new_reference_to(Py::None());
 }
@@ -460,7 +452,7 @@ void PropertyShapeHistory::RestoreDocFile(Base::Reader &)
 {
 }
 
-App::Property *PropertyShapeHistory::Copy(void) const
+App::Property *PropertyShapeHistory::Copy() const
 {
     PropertyShapeHistory *p= new PropertyShapeHistory();
     p->_lValueList = _lValueList;
@@ -478,13 +470,9 @@ void PropertyShapeHistory::Paste(const Property &from)
 
 TYPESYSTEM_SOURCE(Part::PropertyFilletEdges , App::PropertyLists)
 
-PropertyFilletEdges::PropertyFilletEdges()
-{
-}
+PropertyFilletEdges::PropertyFilletEdges() = default;
 
-PropertyFilletEdges::~PropertyFilletEdges()
-{
-}
+PropertyFilletEdges::~PropertyFilletEdges() = default;
 
 void PropertyFilletEdges::setValue(int id, double r1, double r2)
 {
@@ -503,7 +491,7 @@ void PropertyFilletEdges::setValues(const std::vector<FilletElement>& values)
     hasSetValue();
 }
 
-PyObject *PropertyFilletEdges::getPyObject(void)
+PyObject *PropertyFilletEdges::getPyObject()
 {
     Py::List list(getSize());
     std::vector<FilletElement>::const_iterator it;
@@ -559,8 +547,8 @@ void PropertyFilletEdges::SaveDocFile (Base::Writer &writer) const
     Base::OutputStream str(writer.Stream());
     uint32_t uCt = (uint32_t)getSize();
     str << uCt;
-    for (std::vector<FilletElement>::const_iterator it = _lValueList.begin(); it != _lValueList.end(); ++it) {
-        str << it->edgeid << it->radius1 << it->radius2;
+    for (const auto & it : _lValueList) {
+        str << it.edgeid << it.radius1 << it.radius2;
     }
 }
 
@@ -570,13 +558,13 @@ void PropertyFilletEdges::RestoreDocFile(Base::Reader &reader)
     uint32_t uCt=0;
     str >> uCt;
     std::vector<FilletElement> values(uCt);
-    for (std::vector<FilletElement>::iterator it = values.begin(); it != values.end(); ++it) {
-        str >> it->edgeid >> it->radius1 >> it->radius2;
+    for (auto & it : values) {
+        str >> it.edgeid >> it.radius1 >> it.radius2;
     }
     setValues(values);
 }
 
-App::Property *PropertyFilletEdges::Copy(void) const
+App::Property *PropertyFilletEdges::Copy() const
 {
     PropertyFilletEdges *p= new PropertyFilletEdges();
     p->_lValueList = _lValueList;

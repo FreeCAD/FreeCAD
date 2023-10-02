@@ -20,24 +20,26 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef DRAWINGGUI_VIEWPROVIDERPAGE_H
 #define DRAWINGGUI_VIEWPROVIDERPAGE_H
 
 #include <QPointer>
-#include <Gui/ViewProviderFeature.h>
+
 #include <Gui/ViewProviderDocumentObjectGroup.h>
 
 #include "DrawingView.h"
 
-namespace Drawing{
-    class FeaturePage;
+
+namespace Drawing
+{
+class FeaturePage;
 }
 
-namespace DrawingGui {
+namespace DrawingGui
+{
 
 
-class DrawingGuiExport ViewProviderDrawingPage : public Gui::ViewProviderDocumentObjectGroup
+class DrawingGuiExport ViewProviderDrawingPage: public Gui::ViewProviderDocumentObjectGroup
 {
     PROPERTY_HEADER(DrawingGui::ViewProviderDrawingPage);
 
@@ -47,13 +49,16 @@ public:
     /// destructor
     virtual ~ViewProviderDrawingPage();
 
-    App::PropertyFloat         HintScale;
-    App::PropertyFloat         HintOffsetX;
-    App::PropertyFloat         HintOffsetY;
+    App::PropertyFloat HintScale;
+    App::PropertyFloat HintOffsetX;
+    App::PropertyFloat HintOffsetY;
 
-    virtual void attach(App::DocumentObject *);
+    virtual void attach(App::DocumentObject*);
     virtual void setDisplayMode(const char* ModeName);
-    virtual bool useNewSelectionModel(void) const {return false;}
+    virtual bool useNewSelectionModel(void) const
+    {
+        return false;
+    }
     /// returns a list of all possible modes
     virtual std::vector<std::string> getDisplayModes(void) const;
     /// Hides the view provider
@@ -65,7 +70,7 @@ public:
     virtual bool doubleClicked(void);
     void setupContextMenu(QMenu*, QObject*, const char*);
     virtual void updateData(const App::Property*);
-    virtual bool onDelete(const std::vector<std::string> &);
+    virtual bool onDelete(const std::vector<std::string>&);
 
     Drawing::FeaturePage* getPageObject() const;
 
@@ -77,8 +82,7 @@ private:
     QPointer<DrawingView> view;
 };
 
-} // namespace DrawingGui
+}  // namespace DrawingGui
 
 
-#endif // DRAWINGGUI_VIEWPROVIDERPAGE_H
-
+#endif  // DRAWINGGUI_VIEWPROVIDERPAGE_H

@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
 # ***************************************************************************
 # *                                                                         *
 # *   Copyright (c) 2022 FreeCAD Project Association                        *
@@ -29,22 +30,26 @@ from typing import Optional, Tuple
 import FreeCAD
 import FreeCADGui
 
-from PySide2.QtWidgets import QFileDialog, QDialog
-from PySide2.QtGui import QDesktopServices
-from PySide2.QtCore import QUrl, QFile, QIODevice
+from PySide.QtWidgets import QFileDialog, QDialog
+from PySide.QtGui import QDesktopServices
+from PySide.QtCore import QUrl, QFile, QIODevice
 
 try:
-    from PySide2.QtGui import (
+    from PySide.QtGui import (
         QRegularExpressionValidator,
     )
-    from PySide2.QtCore import QRegularExpression
+    from PySide.QtCore import QRegularExpression
+
     RegexWrapper = QRegularExpression
     RegexValidatorWrapper = QRegularExpressionValidator
 except ImportError:
-    from PySide2.QtGui import (
+    QRegularExpressionValidator = None
+    QRegularExpression = None
+    from PySide.QtGui import (
         QRegExpValidator,
     )
-    from PySide2.QtCore import QRegExp
+    from PySide.QtCore import QRegExp
+
     RegexWrapper = QRegExp
     RegexValidatorWrapper = QRegExpValidator
 
@@ -112,9 +117,7 @@ class LicenseSelector:
         )
         self.pref = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Addons")
         for short_code, details in LicenseSelector.licenses.items():
-            self.dialog.comboBox.addItem(
-                f"{short_code}: {details[0]}", userData=short_code
-            )
+            self.dialog.comboBox.addItem(f"{short_code}: {details[0]}", userData=short_code)
         self.dialog.comboBox.addItem(self.other_label)
         self.dialog.otherLineEdit.hide()
         self.dialog.otherLabel.hide()
@@ -129,9 +132,7 @@ class LicenseSelector:
         short_code = self.pref.GetString("devModeLastSelectedLicense", "LGPLv2.1")
         self.set_license(short_code)
 
-    def exec(
-        self, short_code: str = None, license_path: str = ""
-    ) -> Optional[Tuple[str, str]]:
+    def exec(self, short_code: str = None, license_path: str = "") -> Optional[Tuple[str, str]]:
         """The main method for executing this dialog, as a modal that returns a tuple of the
         license's "short code" and optionally the path to the license file. Returns a tuple
         of None,None if the user cancels the operation."""
@@ -147,7 +148,7 @@ class LicenseSelector:
                 new_short_code = self.dialog.otherLineEdit.text()
             self.pref.SetString("devModeLastSelectedLicense", new_short_code)
             return new_short_code, new_license_path
-        return None, None
+        return None
 
     def set_license(self, short_code):
         """Set the currently-selected license."""
@@ -247,10 +248,7 @@ class LicenseSelector:
 
                 string_data = str(byte_data, encoding="utf-8")
 
-                if (
-                    "<%%YEAR%%>" in string_data
-                    or "<%%COPYRIGHT HOLDER%%>" in string_data
-                ):
+                if "<%%YEAR%%>" in string_data or "<%%COPYRIGHT HOLDER%%>" in string_data:
                     info_dlg = FreeCADGui.PySideUic.loadUi(
                         os.path.join(
                             os.path.dirname(__file__),
@@ -274,6 +272,4 @@ class LicenseSelector:
                 with open(license_path, "w", encoding="utf-8") as f:
                     f.write(string_data)
             else:
-                FreeCAD.Console.PrintError(
-                    f"Cannot create license file of type {short_code}\n"
-                )
+                FreeCAD.Console.PrintError(f"Cannot create license file of type {short_code}\n")

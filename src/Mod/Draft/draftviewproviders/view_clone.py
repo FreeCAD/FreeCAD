@@ -27,7 +27,6 @@
 
 ## \addtogroup draftviewproviders
 # @{
-import draftutils.groups as groups
 
 
 class ViewProviderClone:
@@ -39,40 +38,17 @@ class ViewProviderClone:
     def getIcon(self):
         return ":/icons/Draft_Clone.svg"
 
-    def __getstate__(self):
+    def dumps(self):
         return None
 
-    def __setstate__(self, state):
+    def loads(self, state):
         return None
 
     def getDisplayModes(self, vobj):
-        modes=[]
-        return modes
+        return []
 
     def setDisplayMode(self, mode):
         return mode
-
-    def resetColors(self, vobj):
-        colors = []
-        for o in groups.get_group_contents(vobj.Object.Objects):
-            if o.isDerivedFrom("Part::Feature"):
-                if len(o.ViewObject.DiffuseColor) > 1:
-                    colors.extend(o.ViewObject.DiffuseColor)
-                else:
-                    c = o.ViewObject.ShapeColor
-                    c = (c[0],c[1],c[2],o.ViewObject.Transparency/100.0)
-                    colors += [c] * len(o.Shape.Faces) # TODO: verify this line
-            elif o.hasExtension("App::GeoFeatureGroupExtension"):
-                for so in vobj.Object.Group:
-                    if so.isDerivedFrom("Part::Feature"):
-                        if len(so.ViewObject.DiffuseColor) > 1:
-                            colors.extend(so.ViewObject.DiffuseColor)
-                        else:
-                            c = so.ViewObject.ShapeColor
-                            c = (c[0],c[1],c[2],so.ViewObject.Transparency/100.0)
-                            colors += [c] * len(so.Shape.Faces)
-        if colors:
-            vobj.DiffuseColor = colors
 
 
 # Alias for compatibility with v0.18 and earlier

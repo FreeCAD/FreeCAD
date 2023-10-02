@@ -20,39 +20,38 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <cfloat>
-# include <qcheckbox.h>
-# include <qcombobox.h>
-# include <qmessagebox.h>
+#include <cfloat>
+#include <qmessagebox.h>
 #endif
 
-#include <Base/PyObjectBase.h>
-#include <Base/Interpreter.h>
-#include <Base/UnitsApi.h>
 #include <App/Document.h>
+#include <Base/Interpreter.h>
+#include <Base/PyObjectBase.h>
+#include <Base/UnitsApi.h>
 #include <Gui/Application.h>
 #include <Gui/Command.h>
 #include <Gui/Document.h>
-#include <Gui/MainWindow.h>
-#include <Gui/PrefWidgets.h>
 #include <Gui/WaitCursor.h>
 
 #include "DlgRegularSolidImp.h"
 #include "ui_DlgRegularSolid.h"
 
+
 using namespace MeshGui;
 
 /* TRANSLATOR MeshGui::DlgRegularSolidImp */
 
+// clang-format off
 DlgRegularSolidImp::DlgRegularSolidImp(QWidget* parent, Qt::WindowFlags fl)
-  : QDialog( parent, fl )
-  , ui(new Ui_DlgRegularSolid)
+    : QDialog(parent, fl)
+    , ui(new Ui_DlgRegularSolid)
 {
     ui->setupUi(this);
+    connect(ui->createSolidButton, &QPushButton::clicked,
+            this, &DlgRegularSolidImp::onCreateSolidButtonClicked);
     Gui::Command::doCommand(Gui::Command::Doc, "import Mesh,BuildRegularGeoms");
 
     // set limits
@@ -102,10 +101,7 @@ DlgRegularSolidImp::DlgRegularSolidImp(QWidget* parent, Qt::WindowFlags fl)
 /**
  *  Destroys the object and frees any allocated resources
  */
-DlgRegularSolidImp::~DlgRegularSolidImp()
-{
-    // no need to delete child widgets, Qt does it all for us
-}
+DlgRegularSolidImp::~DlgRegularSolidImp() = default;
 
 void DlgRegularSolidImp::changeEvent(QEvent *e)
 {
@@ -118,7 +114,7 @@ void DlgRegularSolidImp::changeEvent(QEvent *e)
 /**
  * Builds a mesh solid from the currently active solid type.
  */
-void DlgRegularSolidImp::on_createSolidButton_clicked()
+void DlgRegularSolidImp::onCreateSolidButtonClicked()
 {
     try {
         Gui::WaitCursor wc;
@@ -222,5 +218,6 @@ void DlgRegularSolidImp::on_createSolidButton_clicked()
             QString::fromLatin1(e.what()));
     }
 }
+// clang-format on
 
 #include "moc_DlgRegularSolidImp.cpp"

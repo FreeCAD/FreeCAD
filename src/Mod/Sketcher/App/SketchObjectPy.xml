@@ -11,129 +11,354 @@
     FatherNamespace="Part">
     <Documentation>
       <Author Licence="LGPL" Name="Juergen Riegel" EMail="FreeCAD@juergen-riegel.net" />
-      <UserDocu>With this objects you can handle sketches</UserDocu>
+      <UserDocu>Represents a sketch object</UserDocu>
     </Documentation>
     <Methode Name="solve">
       <Documentation>
-        <UserDocu>solve the actual set of geometry and constraints</UserDocu>
+        <UserDocu>
+Solve the sketch and update the geometry.
+
+solve()
+
+    Returns:
+        0 in case of success, otherwise the following codes in this order of
+        priority:
+        -4 if over-constrained,
+        -3 if conflicting constraints,
+        -5 if malformed constraints
+        -1 if solver error,
+        -2 if redundant constraints.
+        </UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="addGeometry">
       <Documentation>
-        <UserDocu>add a geometric object to the sketch</UserDocu>
+        <UserDocu>
+Add geometric objects to the sketch.
+
+addGeometry(geo:Geometry, isConstruction=False) -> int
+    Add a single geometric object to the sketch.
+
+    Args:
+        geo: The geometry to add. e.g. a Part.LineSegement
+        isConstruction: Whether the added geometry is a "construction geometry".
+            Defaults to `False`, i.e. by omitting, a regular geometry is added.
+
+    Returns:
+        The zero-based index of the newly added geometry.
+
+addGeometry(geo:List(Geometry), isConstruction=False) -> Tuple(int)
+    Add many geometric objects to the sketch.
+
+    Args:
+        geo: The geometry to add.
+        isConstruction: see above.
+
+    Returns:
+        A tuple of zero-based indices of all newly added geometry.
+        </UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="delGeometry">
       <Documentation>
-        <UserDocu>delete a geometric object from the sketch</UserDocu>
+        <UserDocu>
+Delete a geometric object from the sketch.
+
+delGeometry(geoId:int)
+
+    Args:
+        geoId: The zero-based index of the geometry to delete.
+            Any internal alignment geometry thereof will be deleted, too.
+        </UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="delGeometries">
       <Documentation>
-        <UserDocu>delete a list of geometric objects from the sketch, including any internal alignment geometry thereof</UserDocu>
+        <UserDocu>
+Delete a list of geometric objects from the sketch.
+
+delGeometries(geoIds:List(int))
+
+    Args:
+        geoId: A list of zero-based indices of the geometry to delete.
+            Any internal alignment geometry thereof will be deleted, too.
+        </UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="deleteAllGeometry">
         <Documentation>
-            <UserDocu>delete all the geometry objects and constraints from the sketch except external geometry</UserDocu>
+            <UserDocu>
+Delete all the geometry objects from the sketch, except external geometry.
+
+deleteAllGeometry()
+            </UserDocu>
         </Documentation>
     </Methode>
     <Methode Name="deleteAllConstraints">
         <Documentation>
-            <UserDocu>delete all the constraints from the sketch</UserDocu>
+            <UserDocu>
+Delete all the constraints from the sketch.
+
+deleteAllConstraints()
+            </UserDocu>
         </Documentation>
     </Methode>
     <Methode Name="toggleConstruction">
       <Documentation>
-        <UserDocu>switch a geometry to a construction line</UserDocu>
+        <UserDocu>
+Toggles a geometry between regular and construction.
+
+toggleConstruction(geoId:int)
+
+    Args:
+        geoId: The zero-based index of the geometry to toggle.
+        </UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="setConstruction">
       <Documentation>
-        <UserDocu>set construction mode of a geometry on or off</UserDocu>
+        <UserDocu>
+Set construction mode of a geometry.
+
+setConstruction(geoId:int, state:bool)
+
+    Args:
+        geoId: The zero-based index of the geometry to configure.
+        state: `True` configures the geometry to "construction geometry",
+            `False` configures it to regular geometry.
+        </UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="getConstruction">
       <Documentation>
-        <UserDocu>returns the construction mode of a geometry</UserDocu>
+        <UserDocu>
+Determine whether the given geometry is a "construction geometry".
+
+getConstruction(geoId:int)
+
+    Args:
+        geoId: The zero-based index of the geometry to query.
+
+    Returns:
+        `True` if the geometry is "construction geometry" and
+        `False` if it s a regular geometry.
+        </UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="addConstraint">
       <Documentation>
-        <UserDocu>add a constraint to the sketch</UserDocu>
+        <UserDocu>
+Add constraints to the sketch.
+
+addConstraint(constraint:Constraint) -> int
+    Add a single constraint to the sketch and solves it.
+
+    Returns:
+        The zero-based index of the newly added constraint.
+
+addConstraint(constraints:List(Constraint)) -> Tuple(int)
+    Add many constraints to the sketch without solving.
+
+    Returns:
+        A tuple of zero-based indices of all newly added constraints.
+        </UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="delConstraint">
       <Documentation>
-        <UserDocu>delete a constraint from the sketch</UserDocu>
+        <UserDocu>
+Delete a constraint from the sketch.
+
+delConstraint(constraintIndex:int)
+
+    Args:
+        constraintIndex: The zero-based index of the constraint to delete.
+        </UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="renameConstraint">
       <Documentation>
-        <UserDocu>Rename a constraint of the sketch</UserDocu>
+        <UserDocu>
+Rename a constraint in the sketch.
+
+renameConstraint(constraintIndex:int, name:str)
+
+    Args:
+        constraintIndex: The zero-based index of the constraint to rename.
+        name: The new name for the constraint.
+            An empty string makes the constraint "unnamed" again.
+        </UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="getIndexByName" Const="true">
       <Documentation>
         <UserDocu>
-Get the index of the constraint by name.
-If there is no such constraint an exception is raised.
+Get the index of a constraint by name.
+
+getIndexByName(name:str)
+
+    Args:
+        name: The name for the constraint to look up.
+            If there is no such constraint an exception is raised.
         </UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="carbonCopy">
         <Documentation>
-            <UserDocu>copy another sketch's geometry and constraints</UserDocu>
+            <UserDocu>
+Copy another sketch's geometry and constraints into this sketch.
+
+carbonCopy(objName:str, asConstruction=True)
+
+    Args:
+        ObjName: The name of the sketch object to copy from.
+        asConstruction: Whether to copy the geometry as "construction geometry".
+            </UserDocu>
         </Documentation>
     </Methode>
     <Methode Name="addExternal">
       <Documentation>
-        <UserDocu>add a link to an external geometry to use it in a constraint</UserDocu>
+        <UserDocu>
+Add a link to an external geometry.
+
+addExternal(objName:str, subName:str)
+
+    Args:
+        objName: The name of the document object to reference.
+        subName: The name of the sub-element of the object's shape to link as
+            "external geometry".
+        </UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="delExternal">
       <Documentation>
-        <UserDocu>delete a external geometry link from the sketch</UserDocu>
+        <UserDocu>
+Delete an external geometry link from the sketch.
+
+delExternal(extGeoId:int)
+
+    Args:
+        extGeoId: The zero-based index of the external geometry to remove.
+        </UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="delConstraintOnPoint">
       <Documentation>
-        <UserDocu>delete coincident constraints associated with a sketch point</UserDocu>
+        <UserDocu>
+Delete coincident constraints associated with a sketch point.
+
+delConstraintOnPoint(vertexId:int)
+
+    Args:
+        vertexId: A zero-based index of the shape's vertices.
+
+delConstraintOnPoint(geoId:int, pointPos:int)
+
+    Args:
+        geoId: The zero-based index of the geometry that contains the point.
+        pointPos: Enum denoting which point on the geometry is meant:
+            1: the start of a line or bounded curve.
+            2: the end of a line or bounded curve.
+            3: the center of a circle or ellipse.
+        </UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="setDatum">
       <Documentation>
-        <UserDocu>set the Datum of a Distance or Angle constraint</UserDocu>
+        <UserDocu>
+Set the value of a datum constraint (e.g. Distance or Angle)
+
+setDatum(constraint, value)
+
+    Args:
+        constraint (int or str): The index or name of the constraint to set.
+        value (float or Quantity): The value to set for the constraint. When
+            using floats, values for linear dimensions are interpreted as
+            millimeter, angular ones as radians.
+        </UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="getDatum" Const="true">
       <Documentation>
-        <UserDocu>Get the value of a datum constraint</UserDocu>
+        <UserDocu>
+Get the value of a datum constraint (e.g. Distance or Angle)
+
+getDatum(constraint) -> Quantity
+
+    Args:
+        constraint (int or str): The index or name of the constraint to query.
+
+    Returns:
+        The value of the constraint.
+        </UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="setDriving">
       <Documentation>
-        <UserDocu>set the Driving status of a datum constraint</UserDocu>
+        <UserDocu>
+Set the Driving status of a datum constraint.
+
+setDriving(constraintIndex:int, state:bool)
+
+    Args:
+        constraintIndex: The zero-based index of the constraint to configure.
+        state: `True` sets the constraint to driving,
+            `False` configures it as non-driving, i.e. reference.
+        </UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="setDatumsDriving">
       <Documentation>
-        <UserDocu>set the Driving status of datum constraints</UserDocu>
+        <UserDocu>
+Set the Driving status of all datum constraints.
+
+setDatumsDriving(state:bool)
+
+    Args:
+        state: `True` set all datum constraints to driving,
+            `False` configures them as non-driving, i.e. reference.
+        </UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="moveDatumsToEnd">
       <Documentation>
-        <UserDocu>Moves all datum constraints to the end of the constraint list</UserDocu>
+        <UserDocu>
+Moves all datum constraints to the end of the constraint list.
+
+moveDatumsToEnd()
+
+    Warning: This method reorders the constraint indices. Previously hold
+        numeric references to constraints may reference different constraints
+        after this operation.
+        </UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="getDriving" Const="true">
       <Documentation>
-        <UserDocu>Get the Driving status of a datum constraint</UserDocu>
+        <UserDocu>
+Get the Driving status of a datum constraint.
+
+getDriving(constraintIndex:int)
+
+    Args:
+        constraintIndex: The zero-based index of the constraint to query.
+
+    Returns:
+        `True` if the constraint is driving,
+        `False` if it is non-driving, i.e. reference.
+        </UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="toggleDriving">
       <Documentation>
-        <UserDocu>toggle the Driving status of a datum constraint</UserDocu>
+        <UserDocu>
+Toggle the Driving status of a datum constraint.
+
+toggleDriving(constraintIndex:int)
+
+    Args:
+        constraintIndex: The zero-based index of the constraint to toggle.
+        </UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="setVirtualSpace">
@@ -153,17 +378,44 @@ If there is no such constraint an exception is raised.
     </Methode>
     <Methode Name="setActive">
         <Documentation>
-            <UserDocu>sets the constraint on/off (enforced or not)</UserDocu>
+            <UserDocu>
+Activates or deactivates a constraint (enforce it or not).
+
+setActive(constraintIndex:int, state:bool)
+
+    Args:
+        constraintIndex: The zero-based index of the constraint to configure.
+        state: `True` sets the constraint to active i.e. enforced,
+            `False` configures it as inactive, i.e. not enforced.
+            </UserDocu>
         </Documentation>
     </Methode>
     <Methode Name="getActive" Const="true">
         <Documentation>
-            <UserDocu>Get the constraint status (enforced or not)</UserDocu>
+            <UserDocu>
+Get whether a constraint is active, i.e. enforced, or not.
+
+getActive(constraintIndex:int)
+
+    Args:
+        constraintIndex: The zero-based index of the constraint to query.
+
+    Returns:
+        `True` if the constraint is active, i.e. enforced,
+        `False` if it is inactive, i.e. not enforced.
+            </UserDocu>
         </Documentation>
     </Methode>
     <Methode Name="toggleActive">
         <Documentation>
-            <UserDocu>toggle the active status of constraint (enforced or not)</UserDocu>
+            <UserDocu>
+Toggle the constraint between active (enforced) and inactive.
+
+toggleActive(constraintIndex:int)
+
+    Args:
+        constraintIndex: The zero-based index of the constraint to toggle.
+            </UserDocu>
         </Documentation>
     </Methode>
     <Methode Name="movePoint">
@@ -220,6 +472,11 @@ If there is no such constraint an exception is raised.
     <Methode Name="split">
       <Documentation>
         <UserDocu>split a curve with a given id at a given reference point</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="join">
+      <Documentation>
+        <UserDocu>join two curves at the given end points</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="addSymmetric">
@@ -414,7 +671,13 @@ If there is no such constraint an exception is raised.
             </UserDocu>
         </Documentation>
     </Methode>
-
+    <Methode Name="toPythonCommands">
+        <Documentation>
+            <UserDocu>
+                Prints the commands that should be executed to recreate the Geometry and Constraints of the present sketch (excluding any External Geometry).
+            </UserDocu>
+        </Documentation>
+    </Methode>
     <Attribute Name="MissingPointOnPointConstraints" ReadOnly="false">
         <Documentation>
             <UserDocu>
@@ -482,6 +745,46 @@ If there is no such constraint an exception is raised.
         </UserDocu>
       </Documentation>
       <Parameter Name="GeometryFacadeList" Type="List"/>
+    </Attribute>
+    <Attribute Name="DoF" ReadOnly="true">
+      <Documentation>
+        <UserDocu>
+          Return the DoFs of the current solved sketch
+        </UserDocu>
+      </Documentation>
+      <Parameter Name="DoF" Type="Long"/>
+    </Attribute>
+    <Attribute Name="ConflictingConstraints" ReadOnly="true">
+      <Documentation>
+        <UserDocu>
+          Return a list of integers indicating the constraints detected as conflicting
+        </UserDocu>
+      </Documentation>
+      <Parameter Name="ConflictingConstraints" Type="List"/>
+    </Attribute>
+    <Attribute Name="RedundantConstraints" ReadOnly="true">
+      <Documentation>
+        <UserDocu>
+          Return a list of integers indicating the constraints detected as redundant
+        </UserDocu>
+      </Documentation>
+      <Parameter Name="RedundantConstraints" Type="List"/>
+    </Attribute>
+    <Attribute Name="PartiallyRedundantConstraints" ReadOnly="true">
+      <Documentation>
+        <UserDocu>
+          Return a list of integers indicating the constraints detected as partially redundant
+        </UserDocu>
+      </Documentation>
+      <Parameter Name="PartiallyRedundantConstraints" Type="List"/>
+    </Attribute>
+    <Attribute Name="MalformedConstraints" ReadOnly="true">
+      <Documentation>
+        <UserDocu>
+          Return a list of integers indicating the constraints detected as malformed
+        </UserDocu>
+      </Documentation>
+      <Parameter Name="MalformedConstraints" Type="List"/>
     </Attribute>
     <Methode Name="setGeometryId">
       <Documentation>

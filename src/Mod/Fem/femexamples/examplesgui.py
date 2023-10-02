@@ -23,7 +23,7 @@
 # ***************************************************************************
 
 """
-https://forum.freecadweb.org/viewtopic.php?f=10&t=48427
+https://forum.freecad.org/viewtopic.php?f=10&t=48427
 """
 
 import os
@@ -43,7 +43,7 @@ class FemExamples(QtGui.QWidget):
 
     def __del__(self,):
         # need as fix for qt event error
-        # --> see http://forum.freecadweb.org/viewtopic.php?f=18&t=10732&start=10#p86493
+        # --> see http://forum.freecad.org/viewtopic.php?f=18&t=10732&start=10#p86493
         return
 
     def init_ui(self):
@@ -86,7 +86,9 @@ class FemExamples(QtGui.QWidget):
                 self.files_name[info["name"]] = f
                 meshtypes.add(info["meshtype"])
                 mesheles.add(info["meshelement"])
-                equations.add(info["equation"])
+                file_equations = info["equations"]
+                for equation in file_equations:
+                    equations.add(equation)
                 materials.add(info["material"])
                 file_solvers = info["solvers"]
                 for solver in file_solvers:
@@ -105,8 +107,8 @@ class FemExamples(QtGui.QWidget):
         all_examples = QtGui.QTreeWidgetItem(self.view, ["All"])
         for example, info in files_info.items():
             QtGui.QTreeWidgetItem(all_examples, [info["name"]])
-
         self.view.addTopLevelItem(all_examples)
+
         all_constraints = QtGui.QTreeWidgetItem(self.view, ["Constraints"])
         for constraint in constraints:
             constraint_item = QtGui.QTreeWidgetItem(all_constraints, [constraint])
@@ -114,16 +116,15 @@ class FemExamples(QtGui.QWidget):
                 file_constraints = info["constraints"]
                 if constraint in file_constraints:
                     QtGui.QTreeWidgetItem(constraint_item, [info["name"]])
-
         self.view.addTopLevelItem(all_constraints)
 
         all_equations = QtGui.QTreeWidgetItem(self.view, ["Equations"])
         for equation in equations:
             equation_item = QtGui.QTreeWidgetItem(all_equations, [equation])
             for example, info in files_info.items():
-                if info["equation"] == equation:
+                file_equations = info["equations"]
+                if equation in file_equations:
                     QtGui.QTreeWidgetItem(equation_item, [info["name"]])
-
         self.view.addTopLevelItem(all_equations)
 
         all_materials = QtGui.QTreeWidgetItem(self.view, ["Materials"])
@@ -132,7 +133,6 @@ class FemExamples(QtGui.QWidget):
             for example, info in files_info.items():
                 if info["material"] == material:
                     QtGui.QTreeWidgetItem(material_item, [info["name"]])
-
         self.view.addTopLevelItem(all_materials)
 
         all_meshtypes = QtGui.QTreeWidgetItem(self.view, ["MeshTypes"])
@@ -141,7 +141,6 @@ class FemExamples(QtGui.QWidget):
             for example, info in files_info.items():
                 if info["meshtype"] == mesh:
                     QtGui.QTreeWidgetItem(mesh_item, [info["name"]])
-
         self.view.addTopLevelItem(all_meshtypes)
 
         all_mesheles = QtGui.QTreeWidgetItem(self.view, ["MeshElements"])
@@ -150,7 +149,6 @@ class FemExamples(QtGui.QWidget):
             for example, info in files_info.items():
                 if info["meshelement"] == mesh:
                     QtGui.QTreeWidgetItem(mesh_item, [info["name"]])
-
         self.view.addTopLevelItem(all_mesheles)
 
         all_solvers = QtGui.QTreeWidgetItem(self.view, ["Solvers"])
@@ -160,7 +158,6 @@ class FemExamples(QtGui.QWidget):
                 file_solvers = info["solvers"]
                 if solver in file_solvers:
                     QtGui.QTreeWidgetItem(solver_item, [info["name"]])
-
         self.view.addTopLevelItem(all_solvers)
 
         self.view.setHeaderHidden(True)

@@ -35,14 +35,14 @@ class Voronoi;
 class PathExport VoronoiEdge
   : public Base::BaseClass
 {
-  TYPESYSTEM_HEADER();
+  TYPESYSTEM_HEADER_WITH_OVERRIDE();
 public:
 
   VoronoiEdge(Voronoi::diagram_type *dia = nullptr, long index = Voronoi::InvalidIndex);
   VoronoiEdge(Voronoi::diagram_type *dia, const Voronoi::diagram_type::edge_type *edge);
-  ~VoronoiEdge();
+  ~VoronoiEdge() override;
 
-  bool isBound(void) const;
+  bool isBound() const;
 
   Base::Reference<Voronoi::diagram_type> dia;
   long index;

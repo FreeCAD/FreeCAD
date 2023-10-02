@@ -1,0 +1,15 @@
+# File created by ConvertFCMat.py
+General:
+  UUID: "cddfa21f-0715-49dd-b35b-951c076fa52c"
+  AuthorAndLicense: "(c) 2023 David Carter"
+  Name: "Jade"
+  Description: "Defines the Jade appearance properties"
+AppearanceModels:
+  BasicRendering:
+    UUID: 'f006c7e4-35b7-43d5-bbf9-c5d572309e6e'
+    AmbientColor: "(0.1350, 0.2225, 0.1575, 1.0)"
+    DiffuseColor: "(0.5400, 0.8900, 0.6300, 1.0)"
+    EmissiveColor: "(0.0000, 0.0000, 0.0000, 1.0)"
+    Shininess: "0.1000"
+    SpecularColor: "(0.3162, 0.3162, 0.3162, 1.0)"
+    Transparency: "0.0"

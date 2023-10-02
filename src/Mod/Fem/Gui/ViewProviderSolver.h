@@ -20,14 +20,12 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef FEM_ViewProviderSolver_H
 #define FEM_ViewProviderSolver_H
 
-#include <Gui/ViewProviderGeometryObject.h>
-#include <Gui/ViewProviderBuilder.h>
 #include <Gui/ViewProviderPythonFeature.h>
 #include <Mod/Fem/FemGlobal.h>
+
 
 class SoCoordinate3;
 class SoDrawStyle;
@@ -39,9 +37,7 @@ class SoMaterialBinding;
 namespace FemGui
 {
 
-
-
-class FemGuiExport ViewProviderSolver : public Gui::ViewProviderDocumentObject
+class FemGuiExport ViewProviderSolver: public Gui::ViewProviderDocumentObject
 {
     PROPERTY_HEADER_WITH_OVERRIDE(FemGui::ViewProviderSolver);
 
@@ -53,7 +49,8 @@ public:
     ~ViewProviderSolver() override;
 
     // shows solid in the tree
-    bool isShow() const override {
+    bool isShow() const override
+    {
         return Visibility.getValue();
     }
     /// A list of all possible display modes
@@ -66,7 +63,7 @@ public:
 
 using ViewProviderSolverPython = Gui::ViewProviderPythonFeatureT<ViewProviderSolver>;
 
-} //namespace FemGui
+}  // namespace FemGui
 
 
-#endif // FEM_ViewProviderSolver_H
+#endif  // FEM_ViewProviderSolver_H

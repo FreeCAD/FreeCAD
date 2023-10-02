@@ -44,16 +44,13 @@ using namespace Gui::Dialog;
 UndoDialog::UndoDialog( QWidget* parent )
   : QMenu( parent )
 {
-    connect(this, SIGNAL(aboutToShow()), this, SLOT(onFetchInfo()));
+    connect(this, &QMenu::aboutToShow, this, &UndoDialog::onFetchInfo);
 }
 
 /**
  *  Destroys the object and frees any allocated resources.
  */
-UndoDialog::~UndoDialog()
-{
-    // no need to delete child widgets, Qt does it all for us
-}
+UndoDialog::~UndoDialog() = default;
 
 /**
  *  This method fetches the undo / redo information from the
@@ -66,15 +63,16 @@ void UndoDialog::onFetchInfo()
     MDIView* mdi =  getMainWindow()->activeWindow();
     if (mdi) {
         QStringList vecUndos = mdi->undoActions();
-        for (QStringList::Iterator i = vecUndos.begin(); i != vecUndos.end(); ++i)
-            addAction(*i, this, SLOT(onSelected()));
+        for (QStringList::Iterator i = vecUndos.begin(); i != vecUndos.end(); ++i) {
+            addAction(*i, this, &UndoDialog::onSelected);
+        }
     }
 }
 
 /** Closes the dialog and sends the message 'Undo' to the currently active MDI view. */
 void UndoDialog::onSelected()
 {
-    QAction* a = static_cast<QAction*>(sender());
+    auto a = static_cast<QAction*>(sender());
     QList<QAction*> acts = this->actions();
     for (QList<QAction*>::Iterator it = acts.begin(); it != acts.end(); ++it) {
         Gui::Application::Instance->sendMsgToActiveView("Undo");
@@ -92,16 +90,13 @@ void UndoDialog::onSelected()
 RedoDialog::RedoDialog( QWidget* parent )
   : QMenu( parent )
 {
-    connect(this, SIGNAL(aboutToShow()), this, SLOT(onFetchInfo()));
+    connect(this, &QMenu::aboutToShow, this, &RedoDialog::onFetchInfo);
 }
 
 /**
  *  Destroys the object and frees any allocated resources.
  */
-RedoDialog::~RedoDialog()
-{
-    // no need to delete child widgets, Qt does it all for us
-}
+RedoDialog::~RedoDialog() = default;
 
 /**
  *  This method fetches the undo / redo information from the
@@ -114,15 +109,16 @@ void RedoDialog::onFetchInfo()
     MDIView* mdi = getMainWindow()->activeWindow();
     if (mdi) {
         QStringList vecRedos = mdi->redoActions();
-        for (QStringList::Iterator i = vecRedos.begin(); i != vecRedos.end(); ++i)
-            addAction(*i, this, SLOT(onSelected()));
+        for (QStringList::Iterator i = vecRedos.begin(); i != vecRedos.end(); ++i) {
+            addAction(*i, this, &RedoDialog::onSelected);
+        }
     }
 }
 
 /** Closes the dialog and sends the message 'Redo' to the currently active MDI view. */
 void RedoDialog::onSelected()
 {
-    QAction* a = static_cast<QAction*>(sender());
+    auto a = static_cast<QAction*>(sender());
     QList<QAction*> acts = this->actions();
     for (QList<QAction*>::Iterator it = acts.begin(); it != acts.end(); ++it) {
         Gui::Application::Instance->sendMsgToActiveView("Redo");

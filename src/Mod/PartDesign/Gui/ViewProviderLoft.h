@@ -44,17 +44,17 @@ public:
     /// destructor
     ~ViewProviderLoft() override;
 
-    /// grouping handling 
-    std::vector<App::DocumentObject*> claimChildren(void)const override;
+    /// grouping handling
+    std::vector<App::DocumentObject*> claimChildren() const override;
     void setupContextMenu(QMenu*, QObject*, const char*) override;
 
     bool onDelete(const std::vector<std::string> &) override;
     void highlightProfile(bool on);
     void highlightSection(bool on);
     void highlightReferences(Reference mode, bool on);
-    
+
 protected:
-    QIcon getIcon(void) const override;
+    QIcon getIcon() const override;
     bool setEdit(int ModNum) override;
     void unsetEdit(int ModNum) override;
     TaskDlgFeatureParameters* getEditDialog() override;

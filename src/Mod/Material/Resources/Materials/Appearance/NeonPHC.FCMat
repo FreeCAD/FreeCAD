@@ -1,0 +1,15 @@
+# File created by ConvertFCMat.py
+General:
+  UUID: "add2d6b2-c8fb-4777-a80a-52bae97300ae"
+  AuthorAndLicense: "(c) 2023 David Carter"
+  Name: "Neon PHC"
+  Description: "Defines the Neon PHC appearance properties"
+AppearanceModels:
+  BasicRendering:
+    UUID: 'f006c7e4-35b7-43d5-bbf9-c5d572309e6e'
+    AmbientColor: "(1.0000, 1.0000, 1.0000, 1.0)"
+    DiffuseColor: "(1.0000, 1.0000, 1.0000, 1.0)"
+    EmissiveColor: "(0.0000, 0.9000, 0.4140, 1.0)"
+    Shininess: "0.0500"
+    SpecularColor: "(0.6200, 0.6200, 0.6200, 1.0)"
+    Transparency: "0.0"

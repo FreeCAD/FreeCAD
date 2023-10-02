@@ -22,105 +22,107 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <algorithm>
-# include <functional>
+#include <algorithm>
+#include <functional>
 #endif
 
 #include <QFuture>
 #include <QFutureWatcher>
 #include <QtConcurrentMap>
 
-//#define OPTIMIZE_CURVATURE
+#include <Base/Sequencer.h>
+#include <Base/Tools.h>
+
+// #define OPTIMIZE_CURVATURE
 #ifdef OPTIMIZE_CURVATURE
 #include <Eigen/Eigenvalues>
 #else
-#include <Mod/Mesh/App/WildMagic4/Wm4Vector3.h>
 #include <Mod/Mesh/App/WildMagic4/Wm4MeshCurvature.h>
 #endif
 
-#include "Curvature.h"
-#include "Algorithm.h"
 #include "Approximation.h"
-#include "MeshKernel.h"
+#include "Curvature.h"
 #include "Iterator.h"
+#include "MeshKernel.h"
 #include "Tools.h"
-#include <Base/Sequencer.h>
-#include <Base/Tools.h>
+
 
 using namespace MeshCore;
 namespace sp = std::placeholders;
 
 MeshCurvature::MeshCurvature(const MeshKernel& kernel)
-  : myKernel(kernel), myMinPoints(20), myRadius(0.5f)
+    : myKernel(kernel)
+    , myMinPoints(20)
+    , myRadius(0.5f)
 {
     mySegment.resize(kernel.CountFacets());
     std::generate(mySegment.begin(), mySegment.end(), Base::iotaGen<FacetIndex>(0));
 }
 
-MeshCurvature::MeshCurvature(const MeshKernel& kernel, const std::vector<FacetIndex>& segm)
-  : myKernel(kernel), myMinPoints(20), myRadius(0.5f), mySegment(segm)
-{
-}
+MeshCurvature::MeshCurvature(const MeshKernel& kernel, std::vector<FacetIndex> segm)
+    : myKernel(kernel)
+    , myMinPoints(20)
+    , myRadius(0.5f)
+    , mySegment(std::move(segm))
+{}
 
 void MeshCurvature::ComputePerFace(bool parallel)
 {
-    Base::Vector3f rkDir0, rkDir1, rkPnt;
-    Base::Vector3f rkNormal;
     myCurvature.clear();
     MeshRefPointToFacets search(myKernel);
     FacetCurvature face(myKernel, search, myRadius, myMinPoints);
 
     if (!parallel) {
         Base::SequencerLauncher seq("Curvature estimation", mySegment.size());
-        for (std::vector<FacetIndex>::iterator it = mySegment.begin(); it != mySegment.end(); ++it) {
-            CurvatureInfo info = face.Compute(*it);
+        for (FacetIndex it : mySegment) {
+            CurvatureInfo info = face.Compute(it);
             myCurvature.push_back(info);
             seq.next();
         }
     }
     else {
-        QFuture<CurvatureInfo> future = QtConcurrent::mapped
-            (mySegment, std::bind(&FacetCurvature::Compute, &face, sp::_1));
+        // NOLINTBEGIN
+        QFuture<CurvatureInfo> future =
+            QtConcurrent::mapped(mySegment, std::bind(&FacetCurvature::Compute, &face, sp::_1));
+        // NOLINTEND
         QFutureWatcher<CurvatureInfo> watcher;
         watcher.setFuture(future);
         watcher.waitForFinished();
-        for (QFuture<CurvatureInfo>::const_iterator it = future.begin(); it != future.end(); ++it) {
-            myCurvature.push_back(*it);
+        for (const auto& it : future) {
+            myCurvature.push_back(it);
         }
     }
 }
 
 #ifdef OPTIMIZE_CURVATURE
-namespace MeshCore {
-void GenerateComplementBasis (Eigen::Vector3f& rkU, Eigen::Vector3f& rkV,
-                              const Eigen::Vector3f& rkW)
+namespace MeshCore
+{
+void GenerateComplementBasis(Eigen::Vector3f& rkU, Eigen::Vector3f& rkV, const Eigen::Vector3f& rkW)
 {
     float fInvLength;
 
-    if (fabs(rkW[0]) >= fabs(rkW[1]))
-    {
+    if (fabs(rkW[0]) >= fabs(rkW[1])) {
         // W.x or W.z is the largest magnitude component, swap them
-        fInvLength = 1.0/sqrt(rkW[0]*rkW[0] + rkW[2]*rkW[2]);
-        rkU[0] = -rkW[2]*fInvLength;
-        rkU[1] =  0.0;
-        rkU[2] = +rkW[0]*fInvLength;
-        rkV[0] = rkW[1]*rkU[2];
-        rkV[1] =  rkW[2]*rkU[0] - rkW[0]*rkU[2];
-        rkV[2] = -rkW[1]*rkU[0];
+        fInvLength = 1.0 / sqrt(rkW[0] * rkW[0] + rkW[2] * rkW[2]);
+        rkU[0] = -rkW[2] * fInvLength;
+        rkU[1] = 0.0;
+        rkU[2] = +rkW[0] * fInvLength;
+        rkV[0] = rkW[1] * rkU[2];
+        rkV[1] = rkW[2] * rkU[0] - rkW[0] * rkU[2];
+        rkV[2] = -rkW[1] * rkU[0];
     }
-    else
-    {
+    else {
         // W.y or W.z is the largest magnitude component, swap them
-        fInvLength = 1.0/sqrt(rkW[1]*rkW[1] + rkW[2]*rkW[2]);
-        rkU[0] =  0.0;
-        rkU[1] = +rkW[2]*fInvLength;
-        rkU[2] = -rkW[1]*fInvLength;
-        rkV[0] =  rkW[1]*rkU[2] - rkW[2]*rkU[1];
-        rkV[1] = -rkW[0]*rkU[2];
-        rkV[2] =  rkW[0]*rkU[1];
+        fInvLength = 1.0 / sqrt(rkW[1] * rkW[1] + rkW[2] * rkW[2]);
+        rkU[0] = 0.0;
+        rkU[1] = +rkW[2] * fInvLength;
+        rkU[2] = -rkW[1] * fInvLength;
+        rkV[0] = rkW[1] * rkU[2] - rkW[2] * rkU[1];
+        rkV[1] = -rkW[0] * rkU[2];
+        rkV[2] = rkW[0] * rkU[1];
     }
 }
-}
+}  // namespace MeshCore
 
 void MeshCurvature::ComputePerVertex()
 {
@@ -136,7 +138,7 @@ void MeshCurvature::ComputePerVertex()
 
     std::vector<Eigen::Vector3f> akNormal(numPoints);
     std::vector<Eigen::Vector3f> akVertex(numPoints);
-    for (unsigned long i=0; i<numPoints; i++) {
+    for (unsigned long i = 0; i < numPoints; i++) {
         Base::Vector3f n = pt2f.GetNormal(i);
         akNormal[i][0] = n.x;
         akNormal[i][1] = n.y;
@@ -147,12 +149,12 @@ void MeshCurvature::ComputePerVertex()
         akVertex[i][2] = p.z;
     }
 
-    // One could iterate over the triangles and then for each vertex of a triangle compute the derivates.
-    // One could also iterate over the points and then for each adjacent point calculate the derivates.
-    // Both methods must lead to the same values in the above matrices.
+    // One could iterate over the triangles and then for each vertex of a triangle compute the
+    // derivates. One could also iterate over the points and then for each adjacent point calculate
+    // the derivates. Both methods must lead to the same values in the above matrices.
     //
     // Iterate over the vertexes
-    for (unsigned long i=0; i<numPoints; i++) {
+    for (unsigned long i = 0; i < numPoints; i++) {
         Eigen::Matrix3f akDNormal;
         akDNormal.setZero();
         Eigen::Matrix3f akWWTrn;
@@ -169,14 +171,12 @@ void MeshCurvature::ComputePerVertex()
             // Compute edge from V0 to V1, project to tangent plane of vertex,
             // and compute difference of adjacent normals.
             Eigen::Vector3f kE = akVertex[iV1] - akVertex[iV0];
-            Eigen::Vector3f kW = kE - (kE.dot(akNormal[iV0]))*akNormal[iV0];
+            Eigen::Vector3f kW = kE - (kE.dot(akNormal[iV0])) * akNormal[iV0];
             Eigen::Vector3f kD = akNormal[iV1] - akNormal[iV0];
-            for (int iRow = 0; iRow < 3; iRow++)
-            {
-                for (int iCol = 0; iCol < 3; iCol++)
-                {
-                    akWWTrn(iRow,iCol) += 2*kW[iRow]*kW[iCol];
-                    akDWTrn(iRow,iCol) += 2*kD[iRow]*kW[iCol];
+            for (int iRow = 0; iRow < 3; iRow++) {
+                for (int iCol = 0; iCol < 3; iCol++) {
+                    akWWTrn(iRow, iCol) += 2 * kW[iRow] * kW[iCol];
+                    akDWTrn(iRow, iCol) += 2 * kD[iRow] * kW[iCol];
                 }
             }
         }
@@ -184,16 +184,15 @@ void MeshCurvature::ComputePerVertex()
         // Add in N*N^T to W*W^T for numerical stability.  In theory 0*0^T gets
         // added to D*W^T, but of course no update needed in the implementation.
         // Compute the matrix of normal derivatives.
-        for (int iRow = 0; iRow < 3; iRow++)
-        {
-            for (int iCol = 0; iCol < 3; iCol++)
-            {
-                akWWTrn(iRow,iCol) = 0.5*akWWTrn(iRow,iCol) + akNormal[i][iRow]*akNormal[i][iCol];
-                akDWTrn(iRow,iCol) *= 0.5;
+        for (int iRow = 0; iRow < 3; iRow++) {
+            for (int iCol = 0; iCol < 3; iCol++) {
+                akWWTrn(iRow, iCol) =
+                    0.5 * akWWTrn(iRow, iCol) + akNormal[i][iRow] * akNormal[i][iCol];
+                akDWTrn(iRow, iCol) *= 0.5;
             }
         }
 
-        akDNormal = akDWTrn*akWWTrn.inverse();
+        akDNormal = akDWTrn * akWWTrn.inverse();
 
         // If N is a unit-length normal at a vertex, let U and V be unit-length
         // tangents so that {U, V, N} is an orthonormal set.  Define the matrix
@@ -217,67 +216,68 @@ void MeshCurvature::ComputePerVertex()
         Eigen::Vector3f kU, kV;
         Eigen::Vector3f kN = akNormal[i];
         float len = kN.squaredNorm();
-        if (len == 0)
-            continue; // skip
-        MeshCore::GenerateComplementBasis(kU,kV,kN);
+        if (len == 0) {
+            continue;  // skip
+        }
+        MeshCore::GenerateComplementBasis(kU, kV, kN);
 
         // Compute S = J^T * dN/dX * J.  In theory S is symmetric, but
         // because we have estimated dN/dX, we must slightly adjust our
         // calculations to make sure S is symmetric.
-        float fS01 = kU.dot(akDNormal*kV);
-        float fS10 = kV.dot(akDNormal*kU);
-        float fSAvr = 0.5*(fS01+fS10);
+        float fS01 = kU.dot(akDNormal * kV);
+        float fS10 = kV.dot(akDNormal * kU);
+        float fSAvr = 0.5 * (fS01 + fS10);
         Eigen::Matrix2f kS;
-        kS(0,0) = kU.dot(akDNormal*kU);
-        kS(0,1) = fSAvr;
-        kS(1,0) = fSAvr;
-        kS(1,1) = kV.dot(akDNormal*kV);
+        kS(0, 0) = kU.dot(akDNormal * kU);
+        kS(0, 1) = fSAvr;
+        kS(1, 0) = fSAvr;
+        kS(1, 1) = kV.dot(akDNormal * kV);
 
         // compute the eigenvalues of S (min and max curvatures)
-        float fTrace = kS(0,0) + kS(1,1);
-        float fDet = kS(0,0)*kS(1,1) - kS(0,1)*kS(1,0);
-        float fDiscr = fTrace*fTrace - (4.0)*fDet;
+        float fTrace = kS(0, 0) + kS(1, 1);
+        float fDet = kS(0, 0) * kS(1, 1) - kS(0, 1) * kS(1, 0);
+        float fDiscr = fTrace * fTrace - (4.0) * fDet;
         float fRootDiscr = sqrt(fabs(fDiscr));
-        minCurvature = (0.5)*(fTrace - fRootDiscr);
-        maxCurvature = (0.5)*(fTrace + fRootDiscr);
+        minCurvature = (0.5) * (fTrace - fRootDiscr);
+        maxCurvature = (0.5) * (fTrace + fRootDiscr);
 
         // compute the eigenvectors of S
-        Eigen::Vector2f kW0(kS(0,1),minCurvature-kS(0,0));
-        Eigen::Vector2f kW1(minCurvature-kS(1,1),kS(1,0));
-        if (kW0.squaredNorm() >= kW1.squaredNorm())
-        {
+        Eigen::Vector2f kW0(kS(0, 1), minCurvature - kS(0, 0));
+        Eigen::Vector2f kW1(minCurvature - kS(1, 1), kS(1, 0));
+        if (kW0.squaredNorm() >= kW1.squaredNorm()) {
             float len = kW0.squaredNorm();
-            if (len > 0 && len != 1)
+            if (len > 0 && len != 1) {
                 kW0.normalize();
-            Eigen::Vector3f v = kU*kW0[0] + kV*kW0[1];
-            minDirection.Set(v[0],v[1],v[2]);
+            }
+            Eigen::Vector3f v = kU * kW0[0] + kV * kW0[1];
+            minDirection.Set(v[0], v[1], v[2]);
         }
-        else
-        {
+        else {
             float len = kW1.squaredNorm();
-            if (len > 0 && len != 1)
+            if (len > 0 && len != 1) {
                 kW1.normalize();
-            Eigen::Vector3f v = kU*kW1[0] + kV*kW1[1];
-            minDirection.Set(v[0],v[1],v[2]);
+            }
+            Eigen::Vector3f v = kU * kW1[0] + kV * kW1[1];
+            minDirection.Set(v[0], v[1], v[2]);
         }
 
-        kW0 = Eigen::Vector2f(kS(0,1),maxCurvature-kS(0,0));
-        kW1 = Eigen::Vector2f(maxCurvature-kS(1,1),kS(1,0));
-        if (kW0.squaredNorm() >= kW1.squaredNorm())
-        {
+        kW0 = Eigen::Vector2f(kS(0, 1), maxCurvature - kS(0, 0));
+        kW1 = Eigen::Vector2f(maxCurvature - kS(1, 1), kS(1, 0));
+        if (kW0.squaredNorm() >= kW1.squaredNorm()) {
             float len = kW0.squaredNorm();
-            if (len > 0 && len != 1)
+            if (len > 0 && len != 1) {
                 kW0.normalize();
-            Eigen::Vector3f v = kU*kW0[0] + kV*kW0[1];
-            maxDirection.Set(v[0],v[1],v[2]);
+            }
+            Eigen::Vector3f v = kU * kW0[0] + kV * kW0[1];
+            maxDirection.Set(v[0], v[1], v[2]);
         }
-        else
-        {
+        else {
             float len = kW1.squaredNorm();
-            if (len > 0 && len != 1)
+            if (len > 0 && len != 1) {
                 kW1.normalize();
-            Eigen::Vector3f v = kU*kW1[0] + kV*kW1[1];
-            maxDirection.Set(v[0],v[1],v[2]);
+            }
+            Eigen::Vector3f v = kU * kW1[0] + kV * kW1[1];
+            maxDirection.Set(v[0], v[1], v[2]);
         }
 
         CurvatureInfo ci;
@@ -294,7 +294,7 @@ void MeshCurvature::ComputePerVertex()
     myCurvature.clear();
 
     // get all points
-    std::vector< Wm4::Vector3<double> > aPnts;
+    std::vector<Wm4::Vector3<double>> aPnts;
     aPnts.reserve(myKernel.CountPoints());
     MeshPointIterator cPIt(myKernel);
     for (cPIt.Init(); cPIt.More(); cPIt.Next()) {
@@ -304,20 +304,24 @@ void MeshCurvature::ComputePerVertex()
 
     // get all point connections
     std::vector<int> aIdx;
-    aIdx.reserve(3*myKernel.CountFacets());
+    aIdx.reserve(3 * myKernel.CountFacets());
     const MeshFacetArray& raFts = myKernel.GetFacets();
-    for (MeshFacetArray::const_iterator jt = raFts.begin(); jt != raFts.end(); ++jt) {
-        for (int i=0; i<3; i++) {
-            aIdx.push_back((int)jt->_aulPoints[i]);
+    for (const auto& it : raFts) {
+        for (PointIndex point : it._aulPoints) {
+            aIdx.push_back(int(point));
         }
     }
 
     // in case of an empty mesh no curvature can be calculated
-    if (myKernel.CountPoints() == 0 || myKernel.CountFacets() == 0)
+    if (myKernel.CountPoints() == 0 || myKernel.CountFacets() == 0) {
         return;
+    }
 
     // compute vertex based curvatures
-    Wm4::MeshCurvature<double> meshCurv(myKernel.CountPoints(), &(aPnts[0]), myKernel.CountFacets(), &(aIdx[0]));
+    Wm4::MeshCurvature<double> meshCurv(myKernel.CountPoints(),
+                                        &(aPnts[0]),
+                                        myKernel.CountFacets(),
+                                        &(aIdx[0]));
 
     // get curvature information now
     const Wm4::Vector3<double>* aMaxCurvDir = meshCurv.GetMaxDirections();
@@ -326,27 +330,34 @@ void MeshCurvature::ComputePerVertex()
     const double* aMinCurv = meshCurv.GetMinCurvatures();
 
     myCurvature.reserve(myKernel.CountPoints());
-    for (unsigned long i=0; i<myKernel.CountPoints(); i++) {
+    for (unsigned long i = 0; i < myKernel.CountPoints(); i++) {
         CurvatureInfo ci;
-        ci.cMaxCurvDir = Base::Vector3f((float)aMaxCurvDir[i].X(), (float)aMaxCurvDir[i].Y(), (float)aMaxCurvDir[i].Z());
-        ci.cMinCurvDir = Base::Vector3f((float)aMinCurvDir[i].X(), (float)aMinCurvDir[i].Y(), (float)aMinCurvDir[i].Z());
+        ci.cMaxCurvDir = Base::Vector3f((float)aMaxCurvDir[i].X(),
+                                        (float)aMaxCurvDir[i].Y(),
+                                        (float)aMaxCurvDir[i].Z());
+        ci.cMinCurvDir = Base::Vector3f((float)aMinCurvDir[i].X(),
+                                        (float)aMinCurvDir[i].Y(),
+                                        (float)aMinCurvDir[i].Z());
         ci.fMaxCurvature = (float)aMaxCurv[i];
         ci.fMinCurvature = (float)aMinCurv[i];
         myCurvature.push_back(ci);
     }
 }
-#endif // OPTIMIZE_CURVATURE
+#endif  // OPTIMIZE_CURVATURE
 
 // --------------------------------------------------------
 
-namespace MeshCore {
-class FitPointCollector : public MeshCollector
+namespace MeshCore
+{
+class FitPointCollector: public MeshCollector
 {
 public:
-    explicit FitPointCollector(std::set<PointIndex>& ind) : indices(ind){}
+    explicit FitPointCollector(std::set<PointIndex>& ind)
+        : indices(ind)
+    {}
     void Append(const MeshCore::MeshKernel& kernel, FacetIndex index) override
     {
-        PointIndex ulP1, ulP2, ulP3;
+        PointIndex ulP1 {}, ulP2 {}, ulP3 {};
         kernel.GetFacetPoints(index, ulP1, ulP2, ulP3);
         indices.insert(ulP1);
         indices.insert(ulP2);
@@ -356,14 +367,19 @@ public:
 private:
     std::set<PointIndex>& indices;
 };
-}
+}  // namespace MeshCore
 
 // --------------------------------------------------------
 
-FacetCurvature::FacetCurvature(const MeshKernel& kernel, const MeshRefPointToFacets& search, float r, unsigned long pt)
-  : myKernel(kernel), mySearch(search), myMinPoints(pt), myRadius(r)
-{
-}
+FacetCurvature::FacetCurvature(const MeshKernel& kernel,
+                               const MeshRefPointToFacets& search,
+                               float r,
+                               unsigned long pt)
+    : myKernel(kernel)
+    , mySearch(search)
+    , myMinPoints(pt)
+    , myRadius(r)
+{}
 
 CurvatureInfo FacetCurvature::Compute(FacetIndex index) const
 {
@@ -377,31 +393,31 @@ CurvatureInfo FacetCurvature::Compute(FacetIndex index) const
     FitPointCollector collect(point_indices);
 
     float searchDist = myRadius;
-    int attempts=0;
+    int attempts = 0;
     do {
         mySearch.Neighbours(index, searchDist, collect);
-        if (point_indices.empty())
+        if (point_indices.empty()) {
             break;
+        }
         float min_points = myMinPoints;
         float use_points = point_indices.size();
-        searchDist = searchDist * sqrt(min_points/use_points);
-    }
-    while((point_indices.size() < myMinPoints) && (attempts++ < 3));
+        searchDist = searchDist * sqrt(min_points / use_points);
+    } while ((point_indices.size() < myMinPoints) && (attempts++ < 3));
 
     std::vector<Base::Vector3f> fitPoints;
     const MeshPointArray& verts = myKernel.GetPoints();
     fitPoints.reserve(point_indices.size());
-    for (std::set<PointIndex>::iterator it = point_indices.begin(); it != point_indices.end(); ++it) {
-        fitPoints.push_back(verts[*it] - face_gravity);
+    for (PointIndex it : point_indices) {
+        fitPoints.push_back(verts[it] - face_gravity);
     }
 
-    float fMin, fMax;
+    float fMin {}, fMax {};
     if (fitPoints.size() >= myMinPoints) {
         SurfaceFit surf_fit;
         surf_fit.AddPoints(fitPoints);
         surf_fit.Fit();
         rkNormal = surf_fit.GetNormal();
-        double dMin, dMax, dDistance;
+        double dMin {}, dMax {}, dDistance {};
         if (surf_fit.GetCurvatureInfo(0.0, 0.0, 0.0, dMin, dMax, rkDir1, rkDir0, dDistance)) {
             fMin = (float)dMin;
             fMax = (float)dMax;
@@ -436,8 +452,8 @@ CurvatureInfo FacetCurvature::Compute(FacetIndex index) const
     if (rkNormal * face_normal < 0.0) {
         // Note: Changing the normal directions is similar to flipping over the object.
         // In this case we must adjust the curvature information as well.
-        std::swap(info.cMaxCurvDir,info.cMinCurvDir);
-        std::swap(info.fMaxCurvature,info.fMinCurvature);
+        std::swap(info.cMaxCurvDir, info.cMinCurvDir);
+        std::swap(info.fMaxCurvature, info.fMinCurvature);
         info.fMaxCurvature *= (-1.0);
         info.fMinCurvature *= (-1.0);
     }

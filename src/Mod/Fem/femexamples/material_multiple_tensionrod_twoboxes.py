@@ -43,7 +43,7 @@ def get_information():
         "constraints": ["fixed", "pressure"],
         "solvers": ["calculix", "ccxtools"],
         "material": "multimaterial",
-        "equation": "mechanical"
+        "equations": ["mechanical"]
     }
 
 
@@ -114,7 +114,7 @@ def setup(doc=None, solvertype="ccxtools"):
         solver_obj.WorkingDir = u""
     else:
         FreeCAD.Console.PrintWarning(
-            "Not known or not supported solver type: {}. "
+            "Unknown or unsupported solver type: {}. "
             "No solver object was created.\n".format(solvertype)
         )
     if solvertype == "calculix" or solvertype == "ccxtools":

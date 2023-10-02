@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
-  <PythonExport 
-      Father="TopoShapePy" 
-      Name="TopoShapeVertexPy" 
-      Twin="TopoShape" 
-      TwinPointer="TopoShape" 
-      Include="Mod/Part/App/TopoShape.h" 
+  <PythonExport
+      Father="TopoShapePy"
+      Name="TopoShapeVertexPy"
+      Twin="TopoShape"
+      TwinPointer="TopoShape"
+      Include="Mod/Part/App/TopoShape.h"
   	  Constructor="true"
-      Namespace="Part" 
-      FatherInclude="Mod/Part/App/TopoShapePy.h" 
+      Namespace="Part"
+      FatherInclude="Mod/Part/App/TopoShapePy.h"
       FatherNamespace="Part">
     <Documentation>
       <Author Licence="LGPL" Name="Juergen Riegel" EMail="Juergen.Riegel@web.de" />

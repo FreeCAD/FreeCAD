@@ -27,6 +27,7 @@
 #define GUI_TASKVIEW_TaskFemConstraintPressure_H
 
 #include <QObject>
+#include <memory>
 
 #include "TaskFemConstraintOnBoundary.h"
 #include "ViewProviderFemConstraintPressure.h"
@@ -34,17 +35,19 @@
 
 class Ui_TaskFemConstraintPressure;
 
-namespace FemGui {
-class TaskFemConstraintPressure : public TaskFemConstraintOnBoundary
+namespace FemGui
+{
+class TaskFemConstraintPressure: public TaskFemConstraintOnBoundary
 {
     Q_OBJECT
 
 public:
-    explicit TaskFemConstraintPressure(ViewProviderFemConstraintPressure *ConstraintView,QWidget *parent = nullptr);
+    explicit TaskFemConstraintPressure(ViewProviderFemConstraintPressure* ConstraintView,
+                                       QWidget* parent = nullptr);
     ~TaskFemConstraintPressure() override;
     const std::string getReferences() const override;
-    double get_Pressure()const;
-    bool get_Reverse()const;
+    double get_Pressure() const;
+    bool get_Reverse() const;
 
 private Q_SLOTS:
     void onReferenceDeleted();
@@ -53,27 +56,26 @@ private Q_SLOTS:
     void removeFromSelection() override;
 
 protected:
-    bool event(QEvent *e) override;
-    void changeEvent(QEvent *e) override;
+    bool event(QEvent* e) override;
+    void changeEvent(QEvent* e) override;
     void clearButtons(const SelectionChangeModes notThis) override;
 
 private:
     void updateUI();
-    Ui_TaskFemConstraintPressure* ui;
-
+    std::unique_ptr<Ui_TaskFemConstraintPressure> ui;
 };
 
-class TaskDlgFemConstraintPressure : public TaskDlgFemConstraint
+class TaskDlgFemConstraintPressure: public TaskDlgFemConstraint
 {
     Q_OBJECT
 
 public:
-    explicit TaskDlgFemConstraintPressure(ViewProviderFemConstraintPressure *ConstraintView);
+    explicit TaskDlgFemConstraintPressure(ViewProviderFemConstraintPressure* ConstraintView);
     void open() override;
     bool accept() override;
     bool reject() override;
 };
 
-} //namespace FemGui
+}  // namespace FemGui
 
-#endif // GUI_TASKVIEW_TaskFemConstraintPressure_H
+#endif  // GUI_TASKVIEW_TaskFemConstraintPressure_H

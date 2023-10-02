@@ -58,9 +58,7 @@ DlgOnlineHelpImp::DlgOnlineHelpImp( QWidget* parent )
 /**
  *  Destroys the object and frees any allocated resources
  */
-DlgOnlineHelpImp::~DlgOnlineHelpImp()
-{
-}
+DlgOnlineHelpImp::~DlgOnlineHelpImp() = default;
 
 /**
  * Returns the start page for the HelpView. If none is defined the default 
@@ -97,7 +95,7 @@ void DlgOnlineHelpImp::changeEvent(QEvent *e)
     }
 }
 
-void DlgOnlineHelpImp::on_lineEditDownload_fileNameSelected( const QString& url )
+void DlgOnlineHelpImp::onLineEditDownloadFileNameSelected( const QString& url )
 {
     QDir dir(url);
     if (dir.exists() && dir.count() == 0) {

@@ -517,6 +517,237 @@ def mirror(point, edge):
         return None
 
 
+def mirror_matrix(mtx, pos, nor):
+    """Return a mirrored copy of a matrix.
+
+    Parameters
+    ----------
+    mtx: Base::Matrix
+        Matrix.
+    pos: Base::Vector3
+        Point on mirror plane.
+    nor: Base::Vector3
+        Normal of mirror plane.
+
+    Returns
+    -------
+    Base::Matrix
+    """
+    # Code by Jolbas:
+    # https://forum.freecad.org/viewtopic.php?p=702793#p702793
+    mtx_copy = App.Matrix(mtx)
+    mtx_copy.move(-pos)
+    mtx_copy.scale(-1)
+    mtx_copy = App.Rotation(nor, 180) * mtx_copy
+    mtx_copy.move(pos)
+    return mtx_copy
+
+
+def uv_vectors_from_face(face, vec_z=App.Vector(0, 0, 1), tol=-1):
+    """Return the u and v vectors of a planar face.
+
+    It is up to the calling function to ensure the face is planar.
+
+    If the u vector matches +/-vec_z, or the v vector matches -vec_z, the
+    vectors are rotated to ensure the v vector matches +vec_z.
+
+    Parameters
+    ----------
+    face: Part.Face
+        Face.
+    vec_z: Base::Vector3, optional
+        Defaults to Vector(0, 0, 1).
+        Z axis vector used for reference.
+        Is replaced by Vector(0, 0, 1) if it matches the +/-normal of the face.
+    tol: float, optional
+        Defaults to -1.
+        Internal tolerance. 1e-7 is used if tol <=0.
+
+    Returns
+    -------
+    tuple
+        U and v vector (Base::Vector3).
+    """
+    err = 1e-7 if tol <= 0 else tol
+    if not vec_z.isEqual(App.Vector(0, 0, 1), err):
+        nor = face.normalAt(0, 0)
+        if vec_z.isEqual(nor, err) or vec_z.isEqual(nor.negative(), err):
+            vec_z = App.Vector(0, 0, 1)
+    vec_u, vec_v = face.tangentAt(0, 0)
+    if face.Orientation == "Reversed":
+        vec_u, vec_v = vec_v, vec_u
+    if vec_v.isEqual(vec_z.negative(), err):
+        vec_u, vec_v = vec_u.negative(), vec_v.negative()
+    elif vec_u.isEqual(vec_z, err):
+        vec_u, vec_v = vec_v.negative(), vec_u
+    elif vec_u.isEqual(vec_z.negative(), err):
+        vec_u, vec_v = vec_v, vec_u.negative()
+    return vec_u, vec_v
+
+
+def placement_from_face(face, vec_z=App.Vector(0, 0, 1), rotated=False, tol=-1):
+    """Return a placement from the center of gravity, and the u and v vectors of a planar face.
+
+    It is up to the calling function to ensure the face is planar.
+
+    Parameters
+    ----------
+    face: Part.Face
+        Face.
+    vec_z: Base::Vector3, optional
+        Defaults to Vector(0, 0, 1).
+        Z axis vector used for reference.
+        Is replaced by Vector(0, 0, 1) if it matches the +/-normal of the face.
+    rotated: bool, optional
+        Defaults to `False`.
+        If `False` the v vector of the face defines the Y axis of the placement.
+        If `True` the -v vector of the face defines the Z axis of the placement
+        (used by Arch_Window).
+        The u vector defines the X axis in both cases.
+    tol: float, optional
+        Defaults to -1.
+        Internal tolerance. 1e-7 is used if tol <=0.
+
+    Returns
+    -------
+    Base::Placement
+
+    See also
+    --------
+    DraftGeomUtils.uv_vectors_from_face
+    """
+    pt_pos = face.CenterOfGravity
+    vec_u, vec_v = uv_vectors_from_face(face, vec_z, tol)
+    if rotated:
+        return App.Placement(pt_pos, App.Rotation(vec_u, App.Vector(), vec_v.negative(), "XZY"))
+    else:
+        return App.Placement(pt_pos, App.Rotation(vec_u, vec_v, App.Vector(), "XYZ"))
+
+
+def placement_from_points(pt_pos, pt_x, pt_y, as_vectors=False, tol=-1):
+    """Return a placement from 3 points defining an origin, an X axis and a Y axis.
+
+    If the vectors calculated from the arguments are too short or parallel,
+    the returned placement will have a default rotation.
+
+    Parameters
+    ----------
+    pt_pos: Base::Vector3
+        Origin (Base of Placement).
+    pt_x: Base::Vector3
+        Point on positive X axis. Or X axis vector if as_vectors is `True`.
+    pt_y: Base::Vector3
+        Point on positive Y axis. Or Y axis vector if as_vectors is `True`.
+    as_vectors: bool, optional
+        Defaults to `False`.
+        If `True` treat pt_x and pt_y as axis vectors.
+    tol: float, optional
+        Defaults to -1.
+        Internal tolerance. 1e-7 is used if tol <=0.
+
+    Returns
+    -------
+    Base::Placement
+
+    See also
+    --------
+    DraftGeomUtils.getRotation
+    DraftVecUtils.getRotation
+    """
+    err = 1e-7 if tol <= 0 else tol
+    if as_vectors is False:
+        vec_u = pt_x - pt_pos
+        vec_v = pt_y - pt_pos
+    else:
+        vec_u = App.Vector(pt_x)
+        vec_v = App.Vector(pt_y)
+
+    if vec_u.Length < err or vec_v.Length < err:
+        rot = App.Rotation()
+    else:
+        vec_u.normalize()
+        vec_v.normalize()
+        if vec_u.isEqual(vec_v, err) or vec_u.isEqual(vec_v.negative(), err):
+            rot = App.Rotation()
+        else:
+            rot = App.Rotation(vec_u, vec_v, App.Vector(), "XYZ")
+
+    return App.Placement(pt_pos, rot)
+
+
+# Code separated from WorkingPlane.py (offsetToPoint function).
+# Note that the return value of this function has the opposite sign.
+def distance_to_plane(point, base, normal):
+    """Return the signed distance from a plane to a point.
+
+    The distance is positive if the point lies on the +normal side of the plane.
+
+    Parameters
+    ----------
+    point: Base::Vector3
+        Point to project.
+    base: Base::Vector3
+        Point on plane.
+    normal: Base::Vector3
+        Normal of plane.
+
+    Returns
+    -------
+    float
+    """
+    return (point - base).dot(normal)
+
+
+# Code separated from WorkingPlane.py (projectPoint function).
+# See: https://github.com/FreeCAD/FreeCAD/pull/5307
+def project_point_on_plane(point, base, normal, direction=None, force_projection=False, tol=-1):
+    """Project a point onto a plane.
+
+    Parameters
+    ----------
+    point: Base::Vector3
+        Point to project.
+    base: Base::Vector3
+        Point on plane.
+    normal: Base::Vector3
+        Normal of plane.
+    direction: Base::Vector3, optional
+        Defaults to `None` in which case the normal is used.
+        Direction of projection.
+    force_projection: Bool, optional
+        Defaults to `False`.
+        If `True` forces the projection if the deviation between the direction
+        and the normal is less than tol from the orthogonality. The direction
+        of projection is then modified to a tol deviation between the direction
+        and the orthogonal.
+    tol: float, optional
+        Defaults to -1.
+        Internal tolerance. 1e-7 is used if tol <=0.
+
+    Returns
+    -------
+    Base::Vector3 or `None`
+    """
+    err = 1e-7 if tol <= 0 else tol
+    normal = App.Vector(normal).normalize()
+    if direction is None:
+        direction = normal
+    else:
+        direction = App.Vector(direction).normalize()
+
+    cos = direction.dot(normal)
+    delta_ax_proj = (point - base).dot(normal)
+    # check the only conflicting case: direction orthogonal to normal
+    if abs(cos) < err:
+        if force_projection:
+            cos = math.copysign(err, delta_ax_proj)
+            direction = normal.cross(direction).cross(normal) - cos * normal
+        else:
+            return None
+
+    return point - delta_ax_proj / cos * direction
+
+
 #compatibility layer
 
 getSplineNormal = get_spline_normal

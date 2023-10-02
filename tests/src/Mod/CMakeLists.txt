@@ -1,0 +1,5 @@
+add_subdirectory(Material)
+add_subdirectory(Mesh)
+add_subdirectory(Part)
+add_subdirectory(Points)
+add_subdirectory(Sketcher)

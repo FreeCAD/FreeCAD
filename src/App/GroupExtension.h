@@ -127,8 +127,8 @@ public:
 
 private:
     void removeObjectFromDocument(DocumentObject*);
-    //this version if has object stores the already searched objects to prevent infinite recursion
-    //in case of a cyclic group graph
+    // This function stores the already searched objects to prevent infinite recursion in case of a cyclic group graph
+    // It throws an exception of type Base::RuntimeError if a cyclic dependency is detected.
     bool recursiveHasObject(const DocumentObject* obj, const GroupExtension* group, std::vector<const GroupExtension*> history) const;
 
     // for tracking children visibility
@@ -143,7 +143,7 @@ class GroupExtensionPythonT : public ExtensionT {
 public:
     
     GroupExtensionPythonT() = default;
-    virtual ~GroupExtensionPythonT() = default;
+    ~GroupExtensionPythonT() override = default;
  
     //override the documentobjectextension functions to make them available in python 
     bool allowObject(DocumentObject* obj)  override {

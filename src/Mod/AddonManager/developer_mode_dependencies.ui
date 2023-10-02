@@ -69,14 +69,14 @@
      <item>
       <widget class="QToolButton" name="addDependencyToolButton">
        <property name="text">
-        <string>...</string>
+        <string notr="true">...</string>
        </property>
       </widget>
      </item>
      <item>
       <widget class="QToolButton" name="removeDependencyToolButton">
        <property name="text">
-        <string>...</string>
+        <string notr="true">...</string>
        </property>
       </widget>
      </item>

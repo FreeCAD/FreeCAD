@@ -1,24 +1,24 @@
-/***************************************************************************
- *   Copyright (c) 2021 Chris Hennes <chennes@pioneerlibrarysystem.org>    *
- *                                                                         *
- *   This file is part of the FreeCAD CAx development system.              *
- *                                                                         *
- *   This library is free software; you can redistribute it and/or         *
- *   modify it under the terms of the GNU Library General Public           *
- *   License as published by the Free Software Foundation; either          *
- *   version 2 of the License, or (at your option) any later version.      *
- *                                                                         *
- *   This library  is distributed in the hope that it will be useful,      *
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
- *   GNU Library General Public License for more details.                  *
- *                                                                         *
- *   You should have received a copy of the GNU Library General Public     *
- *   License along with this library; see the file LICENSE.html. If not,   *
- *   write to the Free Software Foundation, Inc., 59 Temple Place,         *
- *   Suite 330, Boston, MA  02111-1307, USA                                *
- *                                                                         *
- ***************************************************************************/
+/**************************************************************************
+*                                                                         *
+*   Copyright (c) 2022 FreeCAD Project Association                        *
+*                                                                         *
+*   This file is part of FreeCAD.                                         *
+*                                                                         *
+*   FreeCAD is free software: you can redistribute it and/or modify it    *
+*   under the terms of the GNU Lesser General Public License as           *
+*   published by the Free Software Foundation, either version 2.1 of the  *
+*   License, or (at your option) any later version.                       *
+*                                                                         *
+*   FreeCAD is distributed in the hope that it will be useful, but        *
+*   WITHOUT ANY WARRANTY; without even the implied warranty of            *
+*   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU      *
+*   Lesser General Public License for more details.                       *
+*                                                                         *
+*   You should have received a copy of the GNU Lesser General Public      *
+*   License along with FreeCAD. If not, see                               *
+*   <https://www.gnu.org/licenses/>.                                      *
+*                                                                         *
+**************************************************************************/
 
 #include "PreCompiled.h"
 
@@ -61,6 +61,25 @@ int MetadataPy::PyInit(PyObject *args, PyObject * /*kwd*/)
     if (PyArg_ParseTuple(args, "")) {
         setTwinPointer(new Metadata());
         return 0;
+    }
+
+    // Data may be passed directly in as a bytes-like object buffer
+    PyErr_Clear();
+    Py_buffer dataBuffer;
+    if (PyArg_ParseTuple(args, "y*", &dataBuffer)) {
+        try {
+            // NB: This is making a copy of the buffer for simplicity, but that shouldn't be
+            // necessary. Use either a string_view or a span to avoid the copy in the future.
+            auto md = new Metadata(
+                std::string(static_cast<const char*>(dataBuffer.buf), dataBuffer.len)
+            );
+            setTwinPointer(md);
+            return 0;
+        }
+        catch (const Base::XMLBaseException&) {
+            // If the XML read failed, this might have been a path to a file, rather than a
+            // bytes-like object. Fall through to the next case.
+        }
     }
 
     // Main class constructor -- takes a file path, loads the metadata from it
@@ -139,10 +158,25 @@ void MetadataPy::setVersion(Py::Object args)
     const char *name = nullptr;
     if (!PyArg_Parse(args.ptr(), "z", &name))
         throw Py::Exception();
-    if (name && name[0] != '\0') 
+    if (name && name[0] != '\0')
         getMetadataPtr()->setVersion(App::Meta::Version(std::string(name)));
     else
         getMetadataPtr()->setVersion(App::Meta::Version());
+}
+
+Py::Object MetadataPy::getDate() const
+{
+    return Py::String(getMetadataPtr()->date());
+}
+
+void MetadataPy::setDate(Py::Object args)
+{
+    const char *date = nullptr;
+    if (!PyArg_Parse(args.ptr(), "z", &date))
+        throw Py::Exception();
+    if (date) getMetadataPtr()->setDate(date);
+    else
+        getMetadataPtr()->setDate("");
 }
 
 Py::Object MetadataPy::getDescription() const
@@ -156,6 +190,19 @@ void MetadataPy::setDescription(Py::Object args)
     if (!PyArg_Parse(args.ptr(), "s", &description))
         throw Py::Exception();
     getMetadataPtr()->setDescription(description);
+}
+
+Py::Object MetadataPy::getType() const
+{
+    return Py::String(getMetadataPtr()->type());
+}
+
+void MetadataPy::setType(Py::Object args)
+{
+    const char *type = nullptr;
+    if (!PyArg_Parse(args.ptr(), "s", &type))
+        throw Py::Exception();
+    getMetadataPtr()->setType(type);
 }
 
 Py::Object MetadataPy::getMaintainer() const
@@ -325,6 +372,8 @@ Py::Object MetadataPy::getUrls() const
             case Meta::UrlType::bugtracker: pyUrl["type"] = Py::String("bugtracker"); break;
             case Meta::UrlType::readme: pyUrl["type"] = Py::String("readme"); break;
             case Meta::UrlType::documentation: pyUrl["type"] = Py::String("documentation"); break;
+            case Meta::UrlType::discussion: pyUrl["type"] = Py::String("discussion"); break;
+            default: pyUrl["type"] = Py::String("unknown"); break;
         }
         if (url.type == Meta::UrlType::repository)
             pyUrl["branch"] = Py::String(url.branch);
@@ -362,6 +411,9 @@ void MetadataPy::setUrls(Py::Object args)
         }
         else if (typeAsString == "documentation") {
             newUrl.type = Meta::UrlType::documentation;
+        }
+        else if (typeAsString == "discussion") {
+            newUrl.type = Meta::UrlType::discussion;
         }
         else {
             PyErr_SetString(Base::PyExc_FC_GeneralError, "Unrecognized URL type");
@@ -842,6 +894,21 @@ void MetadataPy::setFreeCADMax(Py::Object args)
         getMetadataPtr()->setFreeCADMax(App::Meta::Version(version));
     else
         getMetadataPtr()->setFreeCADMax(App::Meta::Version());
+}
+
+Py::Object MetadataPy::getPythonMin() const
+{
+    return Py::String(getMetadataPtr()->pythonmin().str());
+}
+
+void MetadataPy::setPythonMin(Py::Object args)
+{
+    char *version = nullptr;
+    PyObject *p = args.ptr();
+    if (!PyArg_Parse(p, "z", &version)) throw Py::Exception();
+    if (version) getMetadataPtr()->setPythonMin(App::Meta::Version(version));
+    else
+        getMetadataPtr()->setPythonMin(App::Meta::Version());
 }
 
 PyObject *MetadataPy::getFirstSupportedFreeCADVersion(PyObject *p)

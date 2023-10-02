@@ -21,47 +21,41 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
 # include <sstream>
-# include <QRegExp>
-# include <QTextStream>
 # include <QMessageBox>
-# include <Precision.hxx>
+# include <QRegularExpression>
+# include <QRegularExpressionMatch>
 # include <Standard_Failure.hxx>
 #endif
 
-#include <Base/Console.h>
-#include <Base/Interpreter.h>
 #include <App/Application.h>
 #include <App/Document.h>
-#include <Gui/DocumentObserver.h>
-#include <App/Origin.h>
+#include <App/ObjectIdentifier.h>
 #include <App/OriginFeature.h>
 #include <App/Part.h>
-#include <App/ObjectIdentifier.h>
-#include <App/PropertyExpressionEngine.h>
 #include <Gui/Application.h>
-#include <Gui/Document.h>
 #include <Gui/BitmapFactory.h>
-#include <Gui/ViewProvider.h>
-#include <Gui/WaitCursor.h>
-#include <Gui/Selection.h>
 #include <Gui/CommandT.h>
-#include <Mod/Part/Gui/TaskAttacher.h>
-#include <Mod/Part/Gui/AttacherTexts.h>
+#include <Gui/Document.h>
+#include <Gui/DocumentObserver.h>
+#include <Gui/Selection.h>
+#include <Gui/ViewProvider.h>
 #include <Mod/Part/App/AttachExtension.h>
 #include <Mod/Part/App/DatumFeature.h>
+#include <Mod/Part/Gui/AttacherTexts.h>
+#include <Mod/Part/Gui/TaskAttacher.h>
 
-#include "ui_TaskAttacher.h"
 #include "TaskAttacher.h"
+#include "ui_TaskAttacher.h"
+
 
 using namespace PartGui;
 using namespace Gui;
 using namespace Attacher;
-namespace bp = boost::placeholders;
+namespace sp = std::placeholders;
 
 /* TRANSLATOR PartDesignGui::TaskAttacher */
 
@@ -129,32 +123,38 @@ TaskAttacher::TaskAttacher(Gui::ViewProviderDocumentObject *ViewProvider, QWidge
     ui->setupUi(proxy);
     QMetaObject::connectSlotsByName(this);
 
-    connect(ui->attachmentOffsetX, SIGNAL(valueChanged(double)), this, SLOT(onAttachmentOffsetXChanged(double)));
-    connect(ui->attachmentOffsetY, SIGNAL(valueChanged(double)), this, SLOT(onAttachmentOffsetYChanged(double)));
-    connect(ui->attachmentOffsetZ, SIGNAL(valueChanged(double)), this, SLOT(onAttachmentOffsetZChanged(double)));
-    connect(ui->attachmentOffsetYaw, SIGNAL(valueChanged(double)), this, SLOT(onAttachmentOffsetYawChanged(double)));
-    connect(ui->attachmentOffsetPitch, SIGNAL(valueChanged(double)), this, SLOT(onAttachmentOffsetPitchChanged(double)));
-    connect(ui->attachmentOffsetRoll, SIGNAL(valueChanged(double)), this, SLOT(onAttachmentOffsetRollChanged(double)));
-    connect(ui->checkBoxFlip, SIGNAL(toggled(bool)),
-            this, SLOT(onCheckFlip(bool)));
-    connect(ui->buttonRef1, SIGNAL(clicked(bool)),
-            this, SLOT(onButtonRef1(bool)));
-    connect(ui->lineRef1, SIGNAL(textEdited(QString)),
-            this, SLOT(onRefName1(QString)));
-    connect(ui->buttonRef2, SIGNAL(clicked(bool)),
-            this, SLOT(onButtonRef2(bool)));
-    connect(ui->lineRef2, SIGNAL(textEdited(QString)),
-            this, SLOT(onRefName2(QString)));
-    connect(ui->buttonRef3, SIGNAL(clicked(bool)),
-            this, SLOT(onButtonRef3(bool)));
-    connect(ui->lineRef3, SIGNAL(textEdited(QString)),
-            this, SLOT(onRefName3(QString)));
-    connect(ui->buttonRef4, SIGNAL(clicked(bool)),
-            this, SLOT(onButtonRef4(bool)));
-    connect(ui->lineRef4, SIGNAL(textEdited(QString)),
-            this, SLOT(onRefName4(QString)));
-    connect(ui->listOfModes,SIGNAL(itemSelectionChanged()),
-            this, SLOT(onModeSelect()));
+    connect(ui->attachmentOffsetX, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            this, &TaskAttacher::onAttachmentOffsetXChanged);
+    connect(ui->attachmentOffsetY, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            this, &TaskAttacher::onAttachmentOffsetYChanged);
+    connect(ui->attachmentOffsetZ, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            this, &TaskAttacher::onAttachmentOffsetZChanged);
+    connect(ui->attachmentOffsetYaw, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            this, &TaskAttacher::onAttachmentOffsetYawChanged);
+    connect(ui->attachmentOffsetPitch, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            this, &TaskAttacher::onAttachmentOffsetPitchChanged);
+    connect(ui->attachmentOffsetRoll, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            this, &TaskAttacher::onAttachmentOffsetRollChanged);
+    connect(ui->checkBoxFlip, &QCheckBox::toggled,
+            this, &TaskAttacher::onCheckFlip);
+    connect(ui->buttonRef1, &QPushButton::clicked,
+            this, &TaskAttacher::onButtonRef1);
+    connect(ui->lineRef1, &QLineEdit::textEdited,
+            this, &TaskAttacher::onRefName1);
+    connect(ui->buttonRef2, &QPushButton::clicked,
+            this, &TaskAttacher::onButtonRef2);
+    connect(ui->lineRef2, &QLineEdit::textEdited,
+            this, &TaskAttacher::onRefName2);
+    connect(ui->buttonRef3, &QPushButton::clicked,
+            this, &TaskAttacher::onButtonRef3);
+    connect(ui->lineRef3, &QLineEdit::textEdited,
+            this, &TaskAttacher::onRefName3);
+    connect(ui->buttonRef4, &QPushButton::clicked,
+            this, &TaskAttacher::onButtonRef4);
+    connect(ui->lineRef4, &QLineEdit::textEdited,
+            this, &TaskAttacher::onRefName4);
+    connect(ui->listOfModes, &QListWidget::itemSelectionChanged,
+            this, &TaskAttacher::onModeSelect);
 
     this->groupLayout()->addWidget(proxy);
 
@@ -224,9 +224,11 @@ TaskAttacher::TaskAttacher(Gui::ViewProviderDocumentObject *ViewProvider, QWidge
     selectMapMode(eMapMode(pcAttach->MapMode.getValue()));
     updatePreview();
 
+    //NOLINTBEGIN
     // connect object deletion with slot
-    auto bnd1 = boost::bind(&TaskAttacher::objectDeleted, this, bp::_1);
-    auto bnd2 = boost::bind(&TaskAttacher::documentDeleted, this, bp::_1);
+    auto bnd1 = std::bind(&TaskAttacher::objectDeleted, this, sp::_1);
+    auto bnd2 = std::bind(&TaskAttacher::documentDeleted, this, sp::_1);
+    //NOLINTEND
     Gui::Document* document = Gui::Application::Instance->getDocument(ViewProvider->getObject()->getDocument());
     connectDelObject = document->signalDeletedObject.connect(bnd1);
     connectDelDocument = document->signalDeleteDocument.connect(bnd2);
@@ -261,9 +263,9 @@ void TaskAttacher::documentDeleted(const Gui::Document&)
 const QString makeHintText(std::set<eRefType> hint)
 {
     QString result;
-    for (std::set<eRefType>::const_iterator t = hint.begin(); t != hint.end(); t++) {
+    for (auto t : hint) {
         QString tText;
-        tText = AttacherGui::getShapeTypeText(*t);
+        tText = AttacherGui::getShapeTypeText(t);
         result += QString::fromLatin1(result.size() == 0 ? "" : "/") + tText;
     }
 
@@ -313,7 +315,7 @@ bool TaskAttacher::updatePreview()
     try{
         attached = pcAttach->positionBySupport();
     } catch (Base::Exception &err){
-        errMessage = QString::fromLatin1(err.what());
+        errMessage = QCoreApplication::translate("Exception", err.what());
     } catch (Standard_Failure &err){
         errMessage = tr("OCC error: %1").arg(QString::fromLatin1(err.GetMessageString()));
     } catch (...) {
@@ -366,7 +368,7 @@ void TaskAttacher::onSelectionChanged(const Gui::SelectionChanges& msg)
         App::DocumentObject* selObj = ViewProvider->getObject()->getDocument()->getObject(msg.pObjectName);
         if (!selObj || selObj == ViewProvider->getObject())//prevent self-referencing
             return;
-        
+
         std::string subname = msg.pSubName;
 
         // Remove subname for planes and datum features
@@ -414,7 +416,7 @@ void TaskAttacher::onSelectionChanged(const Gui::SelectionChanges& msg)
         }
         catch(Base::Exception& e) {
             //error = true;
-            ui->message->setText(QString::fromLatin1(e.what()));
+            ui->message->setText(QCoreApplication::translate("Exception", e.what()));
             ui->message->setStyleSheet(QString::fromLatin1("QLabel{color: red;}"));
         }
 
@@ -623,34 +625,43 @@ void TaskAttacher::onRefName(const QString& text, unsigned idx)
     } else {
         // TODO: check validity of the text that was entered: Does subElement actually reference to an element on the obj?
 
-        // We must expect that "text" is the translation of "Face", "Edge" or "Vertex" followed by an ID.
-        QRegExp rx;
-        std::stringstream ss;
+        auto getSubshapeName = [](const QString& part) -> std::string {
+            // We must expect that "text" is the translation of "Face", "Edge" or "Vertex" followed by an ID.
+            QRegularExpression rx;
+            QRegularExpressionMatch match;
+            std::stringstream ss;
 
-        rx.setPattern(QString::fromLatin1("^") + tr("Face") + QString::fromLatin1("(\\d+)$"));
-        if (parts[1].indexOf(rx) >= 0) {
-            int faceId = rx.cap(1).toInt();
-            ss << "Face" << faceId;
-        } else {
-            rx.setPattern(QString::fromLatin1("^") + tr("Edge") + QString::fromLatin1("(\\d+)$"));
-            if (parts[1].indexOf(rx) >= 0) {
-                int lineId = rx.cap(1).toInt();
-                ss << "Edge" << lineId;
-            } else {
-                rx.setPattern(QString::fromLatin1("^") + tr("Vertex") + QString::fromLatin1("(\\d+)$"));
-                if (parts[1].indexOf(rx) >= 0) {
-                    int vertexId = rx.cap(1).toInt();
-                    ss << "Vertex" << vertexId;
-                } else {
-                    //none of Edge/Vertex/Face. May be empty string.
-                    //Feed in whatever user supplied, even if invalid.
-                    ss << parts[1].toLatin1().constData();
-                }
+            rx.setPattern(QString::fromLatin1("^") + tr("Face") + QString::fromLatin1("(\\d+)$"));
+            if (part.indexOf(rx, 0, &match) >= 0) {
+                int faceId = match.captured(1).toInt();
+                ss << "Face" << faceId;
+                return ss.str();
             }
-        }
 
-        line->setProperty("RefName", QByteArray(ss.str().c_str()));
-        subElement = ss.str();
+            rx.setPattern(QString::fromLatin1("^") + tr("Edge") + QString::fromLatin1("(\\d+)$"));
+            if (part.indexOf(rx, 0, &match) >= 0) {
+                int lineId = match.captured(1).toInt();
+                ss << "Edge" << lineId;
+                return ss.str();
+            }
+
+            rx.setPattern(QString::fromLatin1("^") + tr("Vertex") + QString::fromLatin1("(\\d+)$"));
+            if (part.indexOf(rx, 0, &match) >= 0) {
+                int vertexId = match.captured(1).toInt();
+                ss << "Vertex" << vertexId;
+                return ss.str();
+            }
+
+            //none of Edge/Vertex/Face. May be empty string.
+            //Feed in whatever user supplied, even if invalid.
+            ss << part.toLatin1().constData();
+            return ss.str();
+        };
+
+        auto name = getSubshapeName(parts[1]);
+
+        line->setProperty("RefName", QByteArray(name.c_str()));
+        subElement = name;
     }
 
     Part::AttachExtension* pcAttach = ViewProvider->getObject()->getExtensionByType<Part::AttachExtension>();
@@ -1000,7 +1011,7 @@ void TaskAttacher::visibilityAutomation(bool opening_not_closing)
         std::string editSubName;
         auto sels = Gui::Selection().getSelection(nullptr, Gui::ResolveMode::NoResolve, true);
         if(!sels.empty() && sels[0].pResolvedObject
-                       && sels[0].pResolvedObject->getLinkedObject()==editObj) 
+                       && sels[0].pResolvedObject->getLinkedObject()==editObj)
         {
             editObj = sels[0].pObject;
             editSubName = sels[0].SubName;
@@ -1053,10 +1064,7 @@ TaskDlgAttacher::TaskDlgAttacher(Gui::ViewProviderDocumentObject *ViewProvider, 
     }
 }
 
-TaskDlgAttacher::~TaskDlgAttacher()
-{
-
-}
+TaskDlgAttacher::~TaskDlgAttacher() = default;
 
 //==== calls from the TaskView ===============================================================
 
@@ -1106,7 +1114,7 @@ bool TaskDlgAttacher::accept()
         document->commitCommand();
     }
     catch (const Base::Exception& e) {
-        QMessageBox::warning(parameter, tr("Datum dialog: Input error"), QString::fromLatin1(e.what()));
+        QMessageBox::warning(parameter, tr("Datum dialog: Input error"), QCoreApplication::translate("Exception", e.what()));
         return false;
     }
 

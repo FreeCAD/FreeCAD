@@ -26,6 +26,7 @@
         <file>media-record.svg</file>
         <file>media-playback-stop.svg</file>
         <file>preferences-display.svg</file>
+        <file>preferences-python.svg</file>
         <file>preferences-general.svg</file>
         <file>preferences-import-export.svg</file>
         <file>preferences-workbenches.svg</file>
@@ -74,6 +75,8 @@
         <file>edit-undo.svg</file>
         <file>edit-edit.svg</file>
         <file>edit-cleartext.svg</file>
+        <file>info.svg</file>
+        <file>critical-info.svg</file>
         <file>tree-item-drag.svg</file>
         <file>tree-goto-sel.svg</file>
         <file>tree-rec-sel.svg</file>
@@ -88,6 +91,11 @@
         <file>sel-forward.svg</file>
         <file>sel-instance.svg</file>
         <file>sel-bbox.svg</file>
+        <file>vertex-selection.svg</file>
+        <file>edge-selection.svg</file>
+        <file>face-selection.svg</file>
+        <file>clear-selection.svg</file>
+        <file>selection-filter.svg</file>
         <file>help-browser.svg</file>
         <file>preferences-system.svg</file>
         <file>process-stop.svg</file>
@@ -98,6 +106,8 @@
         <file>accessories-text-editor.svg</file>
         <file>accessories-calculator.svg</file>
         <file>internet-web-browser.svg</file>
+        <file>InTray.svg</file>
+        <file>InTray_missed_notifications.svg</file>
         <file>view-select.svg</file>
         <file>view-unselectable.svg</file>
         <file>view-refresh.svg</file>
@@ -167,6 +177,7 @@
         <file>Std_PrintPdf.svg</file>
         <file>Std_RandomColor.svg</file>
         <file>Std_RecentFiles.svg</file>
+        <file>Std_RecentMacros.svg</file>
         <file>Std_Revert.svg</file>
         <file>Std_SaveAll.svg</file>
         <file>Std_SaveCopy.svg</file>
@@ -250,6 +261,10 @@
         <file>Std_UserEditModeTransform.svg</file>
         <file>Std_UserEditModeCutting.svg</file>
         <file>Std_UserEditModeColor.svg</file>
+        <file>Warning.svg</file>
+        <file>image-open.svg</file>
+        <file>image-plane.svg</file>
+        <file>image-scaling.svg</file>
     </qresource>
     <!-- Demonstrating support for an embedded icon theme -->
     <!-- See also http://permalink.gmane.org/gmane.comp.lib.qt.general/26374 -->

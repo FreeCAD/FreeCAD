@@ -23,17 +23,8 @@
 
 #include "PreCompiled.h"
 
-#ifndef _PreComp_
-#include <BRepAdaptor_Curve.hxx>
-#include <BRepAdaptor_Surface.hxx>
-#include <Precision.hxx>
-#include <TopoDS.hxx>
-#include <gp_Lin.hxx>
-#include <gp_Pln.hxx>
-#include <gp_Pnt.hxx>
-#endif
-
 #include "FemConstraintPressure.h"
+
 
 using namespace Fem;
 
@@ -41,19 +32,23 @@ PROPERTY_SOURCE(Fem::ConstraintPressure, Fem::Constraint)
 
 ConstraintPressure::ConstraintPressure()
 {
-    ADD_PROPERTY(Pressure,(0.0));
-    ADD_PROPERTY(Reversed,(0));
-    ADD_PROPERTY_TYPE(Points,(Base::Vector3d()),"ConstraintPressure",
-        App::PropertyType(App::Prop_ReadOnly|App::Prop_Output),
-        "Points where arrows are drawn");
-    ADD_PROPERTY_TYPE(Normals,(Base::Vector3d()),"ConstraintPressure",
-        App::PropertyType(App::Prop_ReadOnly|App::Prop_Output),
-        "Normals where symbols are drawn");
+    ADD_PROPERTY(Pressure, (0.0));
+    ADD_PROPERTY(Reversed, (0));
+    ADD_PROPERTY_TYPE(Points,
+                      (Base::Vector3d()),
+                      "ConstraintPressure",
+                      App::PropertyType(App::Prop_ReadOnly | App::Prop_Output),
+                      "Points where arrows are drawn");
+    ADD_PROPERTY_TYPE(Normals,
+                      (Base::Vector3d()),
+                      "ConstraintPressure",
+                      App::PropertyType(App::Prop_ReadOnly | App::Prop_Output),
+                      "Normals where symbols are drawn");
     Points.setValues(std::vector<Base::Vector3d>());
     Normals.setValues(std::vector<Base::Vector3d>());
 }
 
-App::DocumentObjectExecReturn *ConstraintPressure::execute()
+App::DocumentObjectExecReturn* ConstraintPressure::execute()
 {
     return Constraint::execute();
 }
@@ -77,7 +72,8 @@ void ConstraintPressure::onChanged(const App::Property* prop)
             Scale.setValue(scale);
             Points.touch();
         }
-    } else if (prop == &Reversed) {
+    }
+    else if (prop == &Reversed) {
         Points.touch();
     }
 }

@@ -21,19 +21,12 @@
  ***************************************************************************/
 
 #include "PreCompiled.h"
-#ifndef _PreComp_
-#endif
-
-#include <Base/Console.h>
-#include <Base/PyObjectBase.h>
-#include <Base/Vector3D.h>
 
 #include "DrawTileWeld.h"
-
 // inclusion of the generated files (generated out of DrawTileWeldPy.xml)
-#include <Base/VectorPy.h>
 #include <Mod/TechDraw/App/DrawTileWeldPy.h>
 #include <Mod/TechDraw/App/DrawTileWeldPy.cpp>
+
 
 using namespace TechDraw;
 

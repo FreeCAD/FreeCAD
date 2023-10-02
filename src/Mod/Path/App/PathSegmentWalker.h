@@ -22,10 +22,12 @@
 #ifndef PATHSEGMENTWALKER_H
 #define PATHSEGMENTWALKER_H
 
-#include <Base/Vector3D.h>
-#include <Mod/Path/App/Path.h>
-
 #include <deque>
+
+#include <Base/Vector3D.h>
+
+#include "Path.h"
+
 
 namespace Path
 {
@@ -50,7 +52,7 @@ class PathExport PathSegmentVisitor
 };
 
 /**
- * PathSegmentWalker processes a path a splits all movement commands into straight segments and calls the
+ * PathSegmentWalker processes a path and splits all movement commands into straight segments and calls the
  * appropriate member of the provided PathSegmentVisitor.
  * All non-movement commands are processed accordingly if they affect the movement commands.
  */
@@ -64,6 +66,7 @@ public:
 
 private:
     const Toolpath &tp;
+    int retract_mode;
 };
 
 

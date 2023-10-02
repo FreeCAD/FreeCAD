@@ -20,50 +20,49 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef ROBOT_TrajectoryObject_H
 #define ROBOT_TrajectoryObject_H
 
 #include <App/GeoFeature.h>
-#include <App/PropertyFile.h>
 #include <App/PropertyGeo.h>
 
-#include "Trajectory.h"
 #include "PropertyTrajectory.h"
+#include "Trajectory.h"
+
 
 namespace Robot
 {
 
-class RobotExport TrajectoryObject : public App::GeoFeature
+class RobotExport TrajectoryObject: public App::GeoFeature
 {
-    PROPERTY_HEADER(Robot::TrajectoryObject);
+    PROPERTY_HEADER_WITH_OVERRIDE(Robot::TrajectoryObject);
 
 public:
     /// Constructor
-    TrajectoryObject(void);
-    virtual ~TrajectoryObject();
+    TrajectoryObject();
 
     /// returns the type name of the ViewProvider
-    virtual const char* getViewProviderName(void) const {
+    const char* getViewProviderName() const override
+    {
         return "RobotGui::ViewProviderTrajectory";
     }
-    virtual App::DocumentObjectExecReturn *execute(void) {
+    App::DocumentObjectExecReturn* execute() override
+    {
         return App::DocumentObject::StdReturn;
     }
-    virtual short mustExecute(void) const;
-    virtual PyObject *getPyObject(void);
+    short mustExecute() const override;
+    PyObject* getPyObject() override;
 
-	App::PropertyPlacement Base;
-	PropertyTrajectory     Trajectory;
+    App::PropertyPlacement Base;
+    PropertyTrajectory Trajectory;
 
 
 protected:
     /// get called by the container when a property has changed
-    virtual void onChanged (const App::Property* prop);
-
+    void onChanged(const App::Property* prop) override;
 };
 
-} //namespace Robot
+}  // namespace Robot
 
 
-#endif // ROBOT_ROBOTOBJECT_H
+#endif  // ROBOT_ROBOTOBJECT_H

@@ -22,12 +22,11 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #include "DlgPrefsTechDrawHLRImp.h"
 #include "ui_DlgPrefsTechDrawHLR.h"
-#include <Gui/PrefWidgets.h>
+
 
 using namespace TechDrawGui;
 
@@ -59,7 +58,9 @@ void DlgPrefsTechDrawHLRImp::saveSettings()
 
 void DlgPrefsTechDrawHLRImp::loadSettings()
 {
+    // set defaults for HLR
     ui->pcbSeamViz->onRestore();
+
     ui->pcbSmoothViz->onRestore();
     ui->pcbHardViz->onRestore();
     ui->pcbPolygon->onRestore();

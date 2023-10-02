@@ -27,63 +27,60 @@
 #include <FCConfig.h>
 
 
-// here get the warnings of too long specifiers disabled (needed for VC6)
+// point at which warnings of overly long specifiers disabled (needed for VC6)
 #ifdef _MSC_VER
-# pragma warning(disable : 4005)
-# pragma warning(disable : 4251)
-# pragma warning(disable : 4503)
-# pragma warning(disable : 4786)  // specifier longer then 255 chars
+#pragma warning(disable : 4005)
+#pragma warning(disable : 4251)
+#pragma warning(disable : 4503)
+#pragma warning(disable : 4786)  // specifier longer then 255 chars
 #endif
 
 #ifdef _PreComp_
 
 // standard
-#include <list>
-#include <iostream>
 #include <cassert>
+#include <iostream>
+#include <list>
 
 // STL
-#include <vector>
 #include <map>
-#include <string>
 #include <set>
+#include <string>
+#include <vector>
 
 #ifndef FC_OS_WIN32
-# include <windows.h>
+#include <windows.h>
 #endif
 
 // OpenCasCade Base
-#include "OpenCascadeAll.h"
+#include <Mod/Part/App/OpenCascadeAll.h>
 
 // OpenCascade View
+#include <BRepPrimAPI_MakeBox.hxx>
+#include <BRepPrimAPI_MakeSphere.hxx>
+#include <BRepTools.hxx>
+#include <BRep_Tool.hxx>
 #include <Geom_Axis2Placement.hxx>
-#include <TDF_Label.hxx>
-#include <TDF_TagSource.hxx>
-#include <TDataStd_Real.hxx>
-#include <TDataStd_Name.hxx>
-#include <TDF_Label.hxx>
-#include <TDF_TagSource.hxx>
+#include <Geom_SphericalSurface.hxx>
 #include <TDF_ChildIterator.hxx>
-#include <TDataStd_Real.hxx>
-#include <TDataStd_Integer.hxx>
-#include <TDataStd_TreeNode.hxx>
+#include <TDF_Label.hxx>
+#include <TDF_TagSource.hxx>
 #include <TDataStd_ChildNodeIterator.hxx>
+#include <TDataStd_Integer.hxx>
+#include <TDataStd_Name.hxx>
+#include <TDataStd_Real.hxx>
+#include <TDataStd_TreeNode.hxx>
+#include <TNaming_Builder.hxx>
+#include <TNaming_NamedShape.hxx>
+#include <TNaming_Tool.hxx>
+#include <TopExp_Explorer.hxx>
+#include <TopLoc_Location.hxx>
+#include <TopoDS.hxx>
+#include <TopoDS_Face.hxx>
+#include <TopoDS_Shape.hxx>
 #include <gp_Pnt.hxx>
 #include <gp_Sphere.hxx>
 #include <gp_Trsf.hxx>
-#include <TopoDS_Face.hxx>
-#include <TopoDS.hxx>
-#include <TopExp_Explorer.hxx>
-#include <TopLoc_Location.hxx>
-#include <TNaming_Tool.hxx>
-#include <BRep_Tool.hxx>
-#include <BRepPrimAPI_MakeSphere.hxx>
-#include <Geom_SphericalSurface.hxx>
-#include <TNaming_NamedShape.hxx>
-#include <BRepTools.hxx>
-#include <BRepPrimAPI_MakeBox.hxx>
-#include <TopoDS_Shape.hxx>
-#include <TNaming_Builder.hxx>
 
 #ifndef FC_OS_WIN32
 #include <Graphic3d_GraphicDevice.hxx>
@@ -93,10 +90,10 @@
 
 // Qt Toolkit
 #ifndef __QtAll__
-# include <Gui/QtAll.h>
+#include <Gui/QtAll.h>
 #endif
 
 
-#endif //_PreComp_
+#endif  //_PreComp_
 
-#endif // __PRECOMPILED_GUI__
+#endif  // __PRECOMPILED_GUI__

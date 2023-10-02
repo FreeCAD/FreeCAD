@@ -47,15 +47,13 @@ TYPESYSTEM_SOURCE(Part::PropertyGeometryList, App::PropertyLists)
 // Construction/Destruction
 
 
-PropertyGeometryList::PropertyGeometryList()
-{
-
-}
+PropertyGeometryList::PropertyGeometryList() = default;
 
 PropertyGeometryList::~PropertyGeometryList()
 {
-    for (std::vector<Geometry*>::iterator it = _lValueList.begin(); it != _lValueList.end(); ++it)
-        if (*it) delete *it;
+    for (auto it : _lValueList) {
+        if (it) delete it;
+    }
 }
 
 void PropertyGeometryList::setSize(int newSize)
@@ -75,8 +73,8 @@ void PropertyGeometryList::setValue(const Geometry* lValue)
     if (lValue) {
         aboutToSetValue();
         Geometry* newVal = lValue->clone();
-        for (unsigned int i = 0; i < _lValueList.size(); i++)
-            delete _lValueList[i];
+        for (auto it : _lValueList)
+            delete it;
         _lValueList.resize(1);
         _lValueList[0] = newVal;
         hasSetValue();
@@ -109,7 +107,7 @@ void PropertyGeometryList::set1Value(int idx, std::unique_ptr<Geometry> &&lValue
     if(idx>=(int)_lValueList.size())
         throw Base::IndexError("Index out of bound");
     aboutToSetValue();
-    if(idx < 0) 
+    if(idx < 0)
         _lValueList.push_back(lValue.release());
     else {
         delete _lValueList[idx];
@@ -164,6 +162,28 @@ void PropertyGeometryList::setPyObject(PyObject *value)
     }
 }
 
+void PropertyGeometryList::trySaveGeometry(Geometry * geom, Base::Writer &writer) const
+{
+    // Not all geometry classes implement Save() and throw an exception instead
+    try {
+        geom->Save(writer);
+    }
+    catch (const Base::NotImplementedError& e) {
+        Base::Console().Warning(std::string("PropertyGeometryList"), "Not yet implemented: %s\n", e.what());
+    }
+}
+
+void PropertyGeometryList::tryRestoreGeometry(Geometry * geom, Base::XMLReader &reader)
+{
+    // Not all geometry classes implement Restore() and throw an exception instead
+    try {
+        geom->Restore(reader);
+    }
+    catch (const Base::NotImplementedError& e) {
+        Base::Console().Warning(std::string("PropertyGeometryList"), "Not yet implemented: %s\n", e.what());
+    }
+}
+
 void PropertyGeometryList::Save(Writer &writer) const
 {
     writer.Stream() << writer.ind() << "<GeometryList count=\"" << getSize() <<"\">" << endl;
@@ -172,7 +192,7 @@ void PropertyGeometryList::Save(Writer &writer) const
         writer.Stream() << writer.ind() << "<Geometry  type=\""
                         << _lValueList[i]->getTypeId().getName() << "\">" << endl;;
         writer.incInd();
-        _lValueList[i]->Save(writer);
+        trySaveGeometry(_lValueList[i], writer);
         writer.decInd();
         writer.Stream() << writer.ind() << "</Geometry>" << endl;
     }
@@ -192,8 +212,8 @@ void PropertyGeometryList::Restore(Base::XMLReader &reader)
     for (int i = 0; i < count; i++) {
         reader.readElement("Geometry");
         const char* TypeName = reader.getAttribute("type");
-        Geometry *newG = (Geometry *)Base::Type::fromName(TypeName).createInstance();
-        newG->Restore(reader);
+        Geometry *newG = static_cast<Geometry *>(Base::Type::fromName(TypeName).createInstance());
+        tryRestoreGeometry(newG, reader);
 
         if(reader.testStatus(Base::XMLReader::ReaderStatus::PartialRestoreInObject)) {
             Base::Console().Error("Geometry \"%s\" within a PropertyGeometryList was subject to a partial restore.\n",reader.localName());

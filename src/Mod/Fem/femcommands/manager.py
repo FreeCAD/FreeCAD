@@ -24,7 +24,7 @@
 
 __title__ = "FreeCAD FEM command base class"
 __author__ = "Przemo Firszt, Bernd Hahnebach"
-__url__ = "https://www.freecadweb.org"
+__url__ = "https://www.freecad.org"
 
 ## @package manager
 #  \ingroup FEM
@@ -32,6 +32,7 @@ __url__ = "https://www.freecadweb.org"
 
 import FreeCAD
 
+from femtools.femutils import expandParentObject
 from femtools.femutils import is_of_type
 
 if FreeCAD.GuiUp:
@@ -146,12 +147,16 @@ class CommandManager(object):
     def Activated(self):
         if self.do_activated == "add_obj_on_gui_noset_edit":
             self.add_obj_on_gui_noset_edit(self.__class__.__name__.lstrip("_"))
+        elif self.do_activated == "add_obj_on_gui_expand_noset_edit":
+            self.add_obj_on_gui_expand_noset_edit(self.__class__.__name__.lstrip("_"))
         elif self.do_activated == "add_obj_on_gui_set_edit":
             self.add_obj_on_gui_set_edit(self.__class__.__name__.lstrip("_"))
         elif self.do_activated == "add_obj_on_gui_selobj_noset_edit":
             self.add_obj_on_gui_selobj_noset_edit(self.__class__.__name__.lstrip("_"))
         elif self.do_activated == "add_obj_on_gui_selobj_set_edit":
             self.add_obj_on_gui_selobj_set_edit(self.__class__.__name__.lstrip("_"))
+        elif self.do_activated == "add_obj_on_gui_selobj_expand_noset_edit":
+            self.add_obj_on_gui_selobj_expand_noset_edit(self.__class__.__name__.lstrip("_"))
         # in all other cases Activated is implemented it the command class
 
     def results_present(self):
@@ -225,6 +230,7 @@ class CommandManager(object):
         sel = FreeCADGui.Selection.getSelection()
         if len(sel) == 1 and sel[0].isDerivedFrom("Fem::FemMeshObject"):
             self.selobj = sel[0]
+            self.selobj2 = None
             return True
         elif len(sel) == 2:
             if sel[0].isDerivedFrom("Fem::FemMeshObject"):
@@ -337,6 +343,34 @@ class CommandManager(object):
         # no clear selection is done
         FreeCAD.ActiveDocument.recompute()
 
+    def add_obj_on_gui_expand_noset_edit(self, objtype):
+        # like add_obj_on_gui_noset_edit but the parent object
+        # is expanded in the tree to see the added obj
+        # the added obj is also selected to enable direct additions to it
+        FreeCAD.ActiveDocument.openTransaction(
+            "Create Fem{}"
+            .format(objtype)
+        )
+        FreeCADGui.addModule(
+            "ObjectsFem"
+        )
+        FreeCADGui.addModule(
+            "FemGui"
+        )
+        # expand parent obj in tree view if selected
+        expandParentObject()
+        # add the object
+        FreeCADGui.doCommand(
+            "addedObj = FemGui.getActiveAnalysis().addObject(ObjectsFem."
+            "make{}(FreeCAD.ActiveDocument))[0]"
+            .format(objtype)
+        )
+        # select only added object
+        FreeCADGui.Selection.clearSelection()
+        FreeCADGui.doCommand("addedObjDocObj = FreeCAD.ActiveDocument.getObject(addedObj.Name)")
+        FreeCADGui.doCommand("FreeCADGui.Selection.addSelection(addedObjDocObj)")
+        FreeCAD.ActiveDocument.recompute()
+
     def add_obj_on_gui_selobj_set_edit(self, objtype):
         FreeCAD.ActiveDocument.openTransaction(
             "Create Fem{}"
@@ -370,4 +404,23 @@ class CommandManager(object):
             .format(objtype, self.selobj.Name)
         )
         FreeCADGui.Selection.clearSelection()
+        FreeCAD.ActiveDocument.recompute()
+
+    def add_obj_on_gui_selobj_expand_noset_edit(self, objtype):
+        # like add_obj_on_gui_selobj_noset_edit but the selection is kept
+        # and the selobj is expanded in the tree to see the added obj
+        FreeCAD.ActiveDocument.openTransaction(
+            "Create Fem{}"
+            .format(objtype)
+        )
+        FreeCADGui.addModule(
+            "ObjectsFem"
+        )
+        FreeCADGui.doCommand(
+            "ObjectsFem.make{}("
+            "FreeCAD.ActiveDocument, FreeCAD.ActiveDocument.{})"
+            .format(objtype, self.selobj.Name)
+        )
+        # expand selobj in tree view
+        expandParentObject()
         FreeCAD.ActiveDocument.recompute()

@@ -23,30 +23,21 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <Standard_math.hxx>
-# include <Precision.hxx>
-
-# include <Inventor/nodes/SoSeparator.h>
-# include <Inventor/nodes/SoTranslation.h>
-# include <Inventor/nodes/SoRotation.h>
-# include <Inventor/nodes/SoMultipleCopy.h>
-# include <Inventor/nodes/SoCube.h>
-# include <Inventor/nodes/SoText3.h>
-# include <Inventor/nodes/SoFont.h>
-# include <Inventor/nodes/SoMaterial.h>
-# include <Inventor/nodes/SoMaterialBinding.h>
-# include <Inventor/nodes/SoScale.h>
+#include <Inventor/nodes/SoCube.h>
+#include <Inventor/nodes/SoMaterial.h>
+#include <Inventor/nodes/SoRotation.h>
+#include <Inventor/nodes/SoSeparator.h>
+#include <Inventor/nodes/SoTranslation.h>
 #endif
 
 #include "Mod/Fem/App/FemConstraintContact.h"
 #include "TaskFemConstraintContact.h"
 #include "ViewProviderFemConstraintContact.h"
-#include <Base/Console.h>
 #include <Gui/Control.h>
+
 
 using namespace FemGui;
 
@@ -55,30 +46,31 @@ PROPERTY_SOURCE(FemGui::ViewProviderFemConstraintContact, FemGui::ViewProviderFe
 ViewProviderFemConstraintContact::ViewProviderFemConstraintContact()
 {
     sPixmap = "FEM_ConstraintContact";
-    //Note change "Contact" in line above to new constraint name, make sure it is the same as in taskFem* cpp file
-    ADD_PROPERTY(FaceColor,(0.2f,0.3f,0.2f));
+    // Note change "Contact" in line above to new constraint name, make sure it is the same as in
+    // taskFem* cpp file
+    ADD_PROPERTY(FaceColor, (0.2f, 0.3f, 0.2f));
 }
 
-ViewProviderFemConstraintContact::~ViewProviderFemConstraintContact()
-{
-}
+ViewProviderFemConstraintContact::~ViewProviderFemConstraintContact() = default;
 
-//FIXME setEdit needs a careful review
+// FIXME setEdit needs a careful review
 bool ViewProviderFemConstraintContact::setEdit(int ModNum)
 {
     if (ModNum == ViewProvider::Default) {
         // When double-clicking on the item for this constraint the
         // object unsets and sets its edit mode without closing
         // the task panel
-        Gui::TaskView::TaskDialog *dlg = Gui::Control().activeDialog();
-        TaskDlgFemConstraintContact *constrDlg = qobject_cast<TaskDlgFemConstraintContact *>(dlg);
-        if (constrDlg && constrDlg->getConstraintView() != this)
-            constrDlg = nullptr; // another constraint left open its task panel
+        Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog();
+        TaskDlgFemConstraintContact* constrDlg = qobject_cast<TaskDlgFemConstraintContact*>(dlg);
+        if (constrDlg && constrDlg->getConstraintView() != this) {
+            constrDlg = nullptr;  // another constraint left open its task panel
+        }
         if (dlg && !constrDlg) {
             if (constraintDialog) {
                 // Ignore the request to open another dialog
                 return false;
-            } else {
+            }
+            else {
                 constraintDialog = new TaskFemConstraintContact(this);
                 return true;
             }
@@ -88,14 +80,16 @@ bool ViewProviderFemConstraintContact::setEdit(int ModNum)
         Gui::Selection().clearSelection();
 
         // start the edit dialog
-        if (constrDlg)
+        if (constrDlg) {
             Gui::Control().showDialog(constrDlg);
-        else
+        }
+        else {
             Gui::Control().showDialog(new TaskDlgFemConstraintContact(this));
+        }
         return true;
     }
     else {
-        return ViewProviderDocumentObject::setEdit(ModNum); // clazy:exclude=skipped-base-method
+        return ViewProviderDocumentObject::setEdit(ModNum);  // clazy:exclude=skipped-base-method
     }
 }
 
@@ -103,61 +97,65 @@ bool ViewProviderFemConstraintContact::setEdit(int ModNum)
 #define LENGTH (1.5)
 #define WIDTH (0.5)
 
-//#define USE_MULTIPLE_COPY  //OvG: MULTICOPY fails to update scaled display on initial drawing - so disable
+// #define USE_MULTIPLE_COPY  //OvG: MULTICOPY fails to update scaled display on initial drawing -
+// so disable
 
 void ViewProviderFemConstraintContact::updateData(const App::Property* prop)
 {
     // Gets called whenever a property of the attached object changes
     Fem::ConstraintContact* pcConstraint = static_cast<Fem::ConstraintContact*>(this->getObject());
-    float scaledlength = LENGTH * pcConstraint->Scale.getValue(); //OvG: Calculate scaled values once only
+    float scaledlength =
+        LENGTH * pcConstraint->Scale.getValue();  // OvG: Calculate scaled values once only
     float scaledheight = HEIGHT * pcConstraint->Scale.getValue();
     float scaledwidth = WIDTH * pcConstraint->Scale.getValue();
 
-    if (strcmp(prop->getName(),"Points") == 0) {
+    if (prop == &pcConstraint->Points) {
         const std::vector<Base::Vector3d>& points = pcConstraint->Points.getValues();
         const std::vector<Base::Vector3d>& normals = pcConstraint->Normals.getValues();
-        if (points.size() != normals.size())
+        if (points.size() != normals.size()) {
             return;
+        }
         std::vector<Base::Vector3d>::const_iterator n = normals.begin();
 
         // Points and Normals are always updated together
         Gui::coinRemoveAllChildren(pShapeSep);
 
-        for (std::vector<Base::Vector3d>::const_iterator p = points.begin(); p != points.end(); p++) {
-            //Define base and normal directions
-            SbVec3f base(p->x, p->y, p->z);
-            SbVec3f dir(n->x, n->y, n->z);//normal
+        for (const auto& point : points) {
+            // Define base and normal directions
+            SbVec3f base(point.x, point.y, point.z);
+            SbVec3f dir(n->x, n->y, n->z);  // normal
 
-            ///Visual indication
-            //define separator
+            /// Visual indication
+            // define separator
             SoSeparator* sep = new SoSeparator();
 
-            //first move to correct position
+            // first move to correct position
             SoTranslation* trans = new SoTranslation();
-            SbVec3f newPos=base+scaledheight*dir*0.12f;
+            SbVec3f newPos = base + scaledheight * dir * 0.12f;
             trans->translation.setValue(newPos);
             sep->addChild(trans);
 
-            //adjust orientation
+            // adjust orientation
             SoRotation* rot = new SoRotation();
-            rot->rotation.setValue(SbRotation(SbVec3f(0,1,0),dir));
+            rot->rotation.setValue(SbRotation(SbVec3f(0, 1, 0), dir));
             sep->addChild(rot);
 
-            //define color of shape
+            // define color of shape
             SoMaterial* myMaterial = new SoMaterial;
-            myMaterial->diffuseColor.set1Value(0,SbColor(1,1,1));//RGB
-            //myMaterial->diffuseColor.set1Value(1,SbColor(0,0,1));//possible to adjust sides separately
+            myMaterial->diffuseColor.set1Value(0, SbColor(1, 1, 1));  // RGB
+            // myMaterial->diffuseColor.set1Value(1,SbColor(0,0,1));//possible to adjust sides
+            // separately
             sep->addChild(myMaterial);
 
-            //draw a cube
+            // draw a cube
             SoCube* cbe = new SoCube();
-            cbe->depth.setValue(scaledlength*0.5);
-            cbe->height.setValue(scaledheight*0.25);
-            cbe->width.setValue(scaledwidth*0.75);
+            cbe->depth.setValue(scaledlength * 0.5);
+            cbe->height.setValue(scaledheight * 0.25);
+            cbe->width.setValue(scaledwidth * 0.75);
             sep->addChild(cbe);
-            //translate position
+            // translate position
             SoTranslation* trans2 = new SoTranslation();
-            trans2->translation.setValue(SbVec3f(0,0,0));
+            trans2->translation.setValue(SbVec3f(0, 0, 0));
             sep->addChild(trans2);
 
             pShapeSep->addChild(sep);

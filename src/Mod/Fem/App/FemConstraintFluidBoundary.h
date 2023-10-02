@@ -21,16 +21,11 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef FEM_FLUIDBOUNDARY_H
 #define FEM_FLUIDBOUNDARY_H
 
-#include <App/DocumentObject.h>
-#include <App/PropertyStandard.h>
-#include <App/PropertyLinks.h>
-#include <App/PropertyGeo.h>
-
 #include "FemConstraint.h"
+
 
 namespace Fem
 {
@@ -60,14 +55,15 @@ public:
     App::PropertyBool Reversed;
     // Read-only (calculated values). These trigger changes in the ViewProvider
     App::PropertyVectorList Points;
-    App::PropertyVectorList Normals; // needed to draw diff BoundaryType
+    App::PropertyVectorList Normals;  // needed to draw diff BoundaryType
     App::PropertyVector DirectionVector;
 
     /// recalculate the object
-    App::DocumentObjectExecReturn *execute() override;
+    App::DocumentObjectExecReturn* execute() override;
 
     /// returns the type name of the ViewProvider
-    const char* getViewProviderName() const override {
+    const char* getViewProviderName() const override
+    {
         return "FemGui::ViewProviderFemConstraintFluidBoundary";
     }
 
@@ -78,7 +74,7 @@ private:
     Base::Vector3d naturalDirectionVector;
 };
 
-} //namespace Fem
+}  // namespace Fem
 
 
-#endif // FEM_FLUIDBOUNDARY_H
+#endif  // FEM_FLUIDBOUNDARY_H

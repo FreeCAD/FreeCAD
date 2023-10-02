@@ -81,7 +81,11 @@ class DraftObject(object):
             obj.Proxy = self
         self.Type = tp
 
-    def __getstate__(self):
+    def onDocumentRestored(self,obj):
+        # Object properties are updated when the document is opened.
+        self.props_changed_clear()
+
+    def dumps(self):
         """Return a tuple of all serializable objects or None.
 
         When saving the document this object gets stored
@@ -98,7 +102,7 @@ class DraftObject(object):
         """
         return self.Type
 
-    def __setstate__(self, state):
+    def loads(self, state):
         """Set some internal properties for all restored objects.
 
         When a document is restored this method is used to set some properties
@@ -154,6 +158,64 @@ class DraftObject(object):
             Name of the property that was modified.
         """
         pass
+
+    def props_changed_store(self, prop):
+        """Store the name of the property that will be changed in the
+        self.props_changed list.
+
+        The function should be called at the start of onChanged or onBeforeChange.
+
+        The list is used to detect Placement-only changes. In such cases the
+        Shape of an object does not need to be updated. Not updating the Shape
+        avoids Uno/Redo issues for the Windows version and is also more efficient.
+        """
+        if not hasattr(self, "props_changed"):
+            self.props_changed = [prop]
+        else:
+            self.props_changed.append(prop)
+
+    def props_changed_clear(self):
+        """Remove the self.props_changed attribute if it exists.
+
+        The function should be called just before execute returns.
+        """
+        if hasattr(self, "props_changed"):
+            delattr(self, "props_changed")
+
+    def props_changed_placement_only(self, obj=None):
+        """Return `True` if the self.props_changed list, after removing `Shape`
+        and `_LinkTouched` items, only contains `Placement` items.
+
+        Parameters
+        ----------
+        obj : the scripted object. Need only be supplied if the Shape of obj
+            is, or can be, derived from other objects.
+
+        """
+        if not hasattr(self, "props_changed"):
+            return False
+
+        # For an attached object whose Shape depends on one or more source
+        # objects the situation can occur that when those source objects
+        # change its Placement is also changed, but for no apparent reason:
+        # the new Placement is identical to the old. For such an object a
+        # `placement_only` change cannot be detected reliably and therefore
+        # this function should return `False`.
+        # https://github.com/FreeCAD/FreeCAD/issues/8771
+        if obj is not None \
+                and obj.OutList \
+                and hasattr(obj, "Support") \
+                and hasattr(obj, "MapMode") \
+                and obj.Support \
+                and obj.MapMode != "Deactivated":
+            return False
+
+        props = set(self.props_changed)
+        if "Shape" in props:
+            props.remove("Shape")
+        if "_LinkTouched" in props:
+            props.remove("_LinkTouched")
+        return props == {"Placement"}
 
 
 # Alias for compatibility with v0.18 and earlier

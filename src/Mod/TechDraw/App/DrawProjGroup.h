@@ -23,15 +23,14 @@
 #ifndef TECHDRAW_FEATUREVIEWGROUP_H_
 #define TECHDRAW_FEATUREVIEWGROUP_H_
 
-#include <Mod/TechDraw/TechDrawGlobal.h>
-
 #include <string>
-# include <QRectF>
+#include <QRectF>
 
 #include <App/DocumentObject.h>
 #include <App/PropertyLinks.h>
 #include <Base/BoundBox.h>
 #include <Base/Vector3D.h>
+#include <Mod/TechDraw/TechDrawGlobal.h>
 
 #include "DrawViewCollection.h"
 
@@ -56,7 +55,7 @@ class TechDrawExport DrawProjGroup : public TechDraw::DrawViewCollection
 public:
     /// Constructor
     DrawProjGroup();
-    ~DrawProjGroup() = default;
+    ~DrawProjGroup() override = default;
 
     App::PropertyLinkList   Source;
     App::PropertyXLinkList  XSource;
@@ -79,7 +78,8 @@ public:
 
     /// Check if container has a view of a specific type
     bool hasProjection(const char *viewProjType) const;
-
+    ///check if it is safe to delete item
+    bool canDelete(const char *viewProjType) const;
     App::DocumentObject * getProjObj(const char *viewProjType) const;
     DrawProjGroupItem* getProjItem(const char *viewProjType) const;
 
@@ -152,7 +152,7 @@ protected:
 
     /// Annoying helper - keep in sync with DrawProjGroupItem::TypeEnums
     /*!
-     * \todo {See note regarding App::PropertyEnumeration on my wiki page http://freecadweb.org/wiki/User:Ian.rees}
+     * \todo {See note regarding App::PropertyEnumeration on my wiki page http://freecad.org/wiki/User:Ian.rees}
      * \return true iff 'in' is a valid name for an orthographic/isometric view
      */
     bool checkViewProjType(const char *in);

@@ -23,18 +23,12 @@
 #ifndef PARTGUI_SOBREPEDGESET_H
 #define PARTGUI_SOBREPEDGESET_H
 
-#include <Inventor/fields/SoSFInt32.h>
-#include <Inventor/fields/SoMFInt32.h>
-#include <Inventor/fields/SoSFNode.h>
-#include <Inventor/fields/SoSubField.h>
-#include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoIndexedLineSet.h>
-#include <Inventor/elements/SoLazyElement.h>
-#include <Inventor/elements/SoReplacedElement.h>
-#include <vector>
 #include <memory>
+#include <vector>
 #include <Gui/SoFCSelectionContext.h>
 #include <Mod/Part/PartGlobal.h>
+
 
 class SoCoordinateElement;
 class SoGLCoordinateElement;
@@ -52,7 +46,7 @@ public:
     SoBrepEdgeSet();
 
 protected:
-    ~SoBrepEdgeSet() override {}
+    ~SoBrepEdgeSet() override = default;
     void GLRender(SoGLRenderAction *action) override;
     void GLRenderBelowPath(SoGLRenderAction * action) override;
     void doAction(SoAction* action) override;
@@ -78,7 +72,7 @@ private:
     SelContextPtr selContext;
     SelContextPtr selContext2;
     Gui::SoFCSelectionCounter selCounter;
-    uint32_t packedColor;
+    uint32_t packedColor{0};
 };
 
 } // namespace PartGui

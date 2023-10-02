@@ -1,0 +1,250 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+# ***************************************************************************
+# *                                                                         *
+# *   Copyright (c) 2023 0penBrain.                                         *
+# *                                                                         *
+# *   This file is part of FreeCAD.                                         *
+# *                                                                         *
+# *   FreeCAD is free software: you can redistribute it and/or modify it    *
+# *   under the terms of the GNU Lesser General Public License as           *
+# *   published by the Free Software Foundation, either version 2.1 of the  *
+# *   License, or (at your option) any later version.                       *
+# *                                                                         *
+# *   FreeCAD is distributed in the hope that it will be useful, but        *
+# *   WITHOUT ANY WARRANTY; without even the implied warranty of            *
+# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU      *
+# *   Lesser General Public License for more details.                       *
+# *                                                                         *
+# *   You should have received a copy of the GNU Lesser General Public      *
+# *   License along with FreeCAD. If not, see                               *
+# *   <https://www.gnu.org/licenses/>.                                      *
+# *                                                                         *
+# ***************************************************************************
+
+# This is a build and test workflow for CI of FreeCAD.
+# This workflow aims at building and testing FreeCAD on Ubuntu 20.04 using GCC.
+
+name: Build Ubuntu 20.04
+
+on:
+  workflow_call:
+    inputs:
+      artifactBasename:
+        type: string
+        required: true
+      testOnBuildDir:
+        default: false
+        type: boolean
+        required: false
+      allowedToFail:
+        default: false
+        type: boolean
+        required: false
+    outputs:
+      reportFile:
+        value: ${{ jobs.Build.outputs.reportFile }}
+
+jobs:
+
+  Build:
+    runs-on: ubuntu-20.04
+    continue-on-error: ${{ inputs.allowedToFail }}
+    env:
+      CCACHE_DIR: ${{ github.workspace }}/ccache
+      CCACHE_CONFIGPATH: ${{ github.workspace }}/ccache/config
+      CCACHE_MAXSIZE: 1G
+      CCACHE_COMPILERCHECK: "%compiler% -dumpfullversion -dumpversion" # default:mtime
+      CCACHE_COMPRESS: true
+      CCACHE_COMPRESSLEVEL: 1
+      CC: /usr/bin/gcc
+      CXX: /usr/bin/g++
+      #CC: /usr/bin/clang
+      #CXX: /usr/bin/clang++
+      builddir: ${{ github.workspace }}/build/
+      logdir: /tmp/logs/
+      reportdir: /tmp/report/
+      reportfilename: ${{ inputs.artifactBasename }}-report.md
+    defaults:
+      run:
+        shell: bash
+    outputs:
+      reportFile: ${{ steps.Init.outputs.reportFile }}
+
+    steps:
+      - name: Checking out source code
+        uses: actions/checkout@v3
+      - name: Install FreeCAD dependencies
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends               \
+                            doxygen                                     \
+                            graphviz                                    \
+                            imagemagick                                 \
+                            libboost-date-time-dev                      \
+                            libboost-dev                                \
+                            libboost-filesystem-dev                     \
+                            libboost-graph-dev                          \
+                            libboost-iostreams-dev                      \
+                            libboost-program-options-dev                \
+                            libboost-python-dev                         \
+                            libboost-regex-dev                          \
+                            libboost-serialization-dev                  \
+                            libboost-thread-dev                         \
+                            libcoin-dev                                 \
+                            libeigen3-dev                               \
+                            libgts-bin                                  \
+                            libgts-dev                                  \
+                            libkdtree++-dev                             \
+                            libmedc-dev                                 \
+                            libocct-data-exchange-dev                   \
+                            libocct-ocaf-dev                            \
+                            libocct-visualization-dev                   \
+                            libopencv-dev                               \
+                            libproj-dev                                 \
+                            libpyside2-dev                              \
+                            libqt5opengl5-dev                           \
+                            libqt5svg5-dev                              \
+                            libqt5x11extras5-dev                        \
+                            libqt5xmlpatterns5-dev                      \
+                            libshiboken2-dev                            \
+                            libspnav-dev                                \
+                            libvtk7-dev                                 \
+                            libx11-dev                                  \
+                            libxerces-c-dev                             \
+                            libyaml-cpp-dev                             \
+                            libzipios++-dev                             \
+                            netgen                                      \
+                            netgen-headers                              \
+                            occt-draw                                   \
+                            pyqt5-dev-tools                             \
+                            pyside2-tools                               \
+                            python3-dev                                 \
+                            python3-git                                 \
+                            python3-markdown                            \
+                            python3-matplotlib                          \
+                            python3-packaging                           \
+                            python3-pivy                                \
+                            python3-ply                                 \
+                            python3-pyside2.qtcore                      \
+                            python3-pyside2.qtgui                       \
+                            python3-pyside2.qtnetwork                   \
+                            python3-pyside2.qtsvg                       \
+                            python3-pyside2.qtwebengine                 \
+                            python3-pyside2.qtwebenginecore             \
+                            python3-pyside2.qtwebenginewidgets          \
+                            python3-pyside2.qtwebchannel                \
+                            python3-pyside2.qtwidgets                   \
+                            qtbase5-dev                                 \
+                            qttools5-dev                                \
+                            qtwebengine5-dev                            \
+                            shiboken2                                   \
+                            swig                                        \
+                            ccache                                      \
+                            xvfb
+      - name: Make needed directories, files and initializations
+        id: Init
+        run: |
+          mkdir -p ${{ env.CCACHE_DIR }}
+          mkdir -p ${{ env.CCACHE_CONFIGPATH }}
+          mkdir -p ${{ env.builddir }}
+          mkdir -p ${{ env.logdir }}
+          mkdir -p ${{ env.reportdir }}
+          echo "reportFile=${{ env.reportfilename }}" >> $GITHUB_OUTPUT
+      - name: Generate cache key
+        id: genCacheKey
+        uses: ./.github/workflows/actions/linux/generateCacheKey
+        with:
+          compiler: ${{ env.CXX }}
+      - name: Restore Compiler Cache
+        uses: pat-s/always-upload-cache@v3
+        with:
+          path: ${{ env.CCACHE_DIR }}
+          key: FC-${{ steps.genCacheKey.outputs.cacheKey }}-${{ github.ref }}-${{ github.run_id }}
+          restore-keys: |
+            FC-${{ steps.genCacheKey.outputs.cacheKey }}-${{ github.ref }}-
+            FC-${{ steps.genCacheKey.outputs.cacheKey }}-
+      - name: Print CCache statistics before build, reset stats and print config
+        run: |
+          ccache -s
+          ccache -z
+          ccache -p
+      - name: CMake Configure
+        uses: ./.github/workflows/actions/linux/configure
+        with:
+          builddir: ${{ env.builddir }}
+          logFile: ${{ env.logdir }}Cmake.log
+          errorFile: ${{ env.logdir }}CmakeErrors.log
+          reportFile: ${{env.reportdir}}${{ env.reportfilename }}
+      - name: CMake Build
+        uses: ./.github/workflows/actions/linux/build
+        with:
+          builddir: ${{ env.builddir }}
+          logFile: ${{ env.logdir }}Build.log
+          errorFile: ${{ env.logdir }}BuildErrors.log
+          reportFile: ${{env.reportdir}}${{ env.reportfilename }}
+      - name: Print ccache statistics after Build
+        run: |
+          ccache -s
+      - name: FreeCAD CLI tests on build dir
+        if: inputs.testOnBuildDir
+        timeout-minutes: 10
+        uses: ./.github/workflows/actions/runPythonTests
+        with:
+          testDescription: "CLI tests on build dir"
+          testCommand: ${{ env.builddir }}bin/FreeCADCmd -t 0
+          logFile: ${{ env.logdir }}TestCLIBuild.log
+          reportFile: ${{env.reportdir}}${{ env.reportfilename }}
+      - name: FreeCAD GUI tests on build dir
+        if: inputs.testOnBuildDir
+        timeout-minutes: 15
+        uses: ./.github/workflows/actions/runPythonTests
+        with:
+          testDescription: "GUI tests on build dir"
+          testCommand: xvfb-run ${{ env.builddir }}/bin/FreeCAD -t 0
+          logFile: ${{ env.logdir }}TestGUIBuild.log
+          reportFile: ${{env.reportdir}}${{ env.reportfilename }}
+      - name: C++ tests
+        timeout-minutes: 1
+        uses: ./.github/workflows/actions/runCPPTests/runAllTests
+        with:
+          reportdir: ${{ env.reportdir }}
+          builddir: ${{ env.builddir }}
+          reportFile: ${{ env.reportdir }}${{ env.reportfilename }}
+      - name: CMake Install
+        uses: ./.github/workflows/actions/linux/install
+        with:
+          builddir: ${{ env.builddir }}
+          logFile: ${{ env.logdir }}Install.log
+          errorFile: ${{ env.logdir }}InstallErrors.log
+          reportFile: ${{env.reportdir}}${{ env.reportfilename }}
+      - name: FreeCAD CLI tests on install
+        timeout-minutes: 10
+        uses: ./.github/workflows/actions/runPythonTests
+        with:
+          testDescription: "CLI tests on install"
+          testCommand: FreeCADCmd -t 0
+          logFile: ${{ env.logdir }}TestCLIInstall.log
+          reportFile: ${{env.reportdir}}${{ env.reportfilename }}
+      - name: FreeCAD GUI tests on install
+        timeout-minutes: 15
+        uses: ./.github/workflows/actions/runPythonTests
+        with:
+          testDescription: "GUI tests on install"
+          testCommand: xvfb-run FreeCAD -t 0
+          logFile: ${{ env.logdir }}TestGUIInstall.log
+          reportFile: ${{env.reportdir}}${{ env.reportfilename }}
+      - name: Upload logs
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: ${{ inputs.artifactBasename }}-Logs
+          path: |
+            ${{ env.logdir }}
+            /var/crash/*FreeCAD*
+      - name: Upload report
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: ${{ env.reportfilename }}
+          path: |
+            ${{env.reportdir}}${{ env.reportfilename }}

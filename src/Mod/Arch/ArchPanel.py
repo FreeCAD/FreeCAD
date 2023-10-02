@@ -19,7 +19,14 @@
 #*                                                                         *
 #***************************************************************************
 
-import FreeCAD,Draft,ArchComponent,DraftVecUtils,ArchCommands,math, Part
+import math
+
+import FreeCAD
+import ArchCommands
+import ArchComponent
+import Draft
+import DraftVecUtils
+import Part
 from FreeCAD import Vector
 if FreeCAD.GuiUp:
     import FreeCADGui
@@ -29,7 +36,7 @@ if FreeCAD.GuiUp:
     import draftguitools.gui_trackers as DraftTrackers
 else:
     # \cond
-    def translate(ctxt,txt,utf8_decode=False):
+    def translate(ctxt,txt):
         return txt
     def QT_TRANSLATE_NOOP(ctxt,txt):
         return txt
@@ -45,7 +52,7 @@ else:
 
 __title__  = "FreeCAD Panel"
 __author__ = "Yorik van Havre"
-__url__    = "https://www.freecadweb.org"
+__url__    = "https://www.freecad.org"
 
 #           Description                 l    w    t
 
@@ -61,9 +68,9 @@ Presets = [None,
 
 
 
-def makePanel(baseobj=None,length=0,width=0,thickness=0,placement=None,name="Panel"):
+def makePanel(baseobj=None,length=0,width=0,thickness=0,placement=None,name=None):
 
-    '''makePanel([obj],[length],[width],[thickness],[placement]): creates a
+    '''makePanel([baseobj],[length],[width],[thickness],[placement],[name]): creates a
     panel element based on the given profile object and the given
     extrusion thickness. If no base object is given, you can also specify
     length and width for a simple cubic object.'''
@@ -72,7 +79,7 @@ def makePanel(baseobj=None,length=0,width=0,thickness=0,placement=None,name="Pan
         FreeCAD.Console.PrintError("No active document. Aborting\n")
         return
     obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython","Panel")
-    obj.Label = translate("Arch",name)
+    obj.Label = name if name else translate("Arch","Panel")
     _Panel(obj)
     if FreeCAD.GuiUp:
         _ViewProviderPanel(obj.ViewObject)
@@ -89,47 +96,27 @@ def makePanel(baseobj=None,length=0,width=0,thickness=0,placement=None,name="Pan
     return obj
 
 
-def makePanelView(panel,page=None,name="PanelView"):
+def makePanelCut(panel,name=None):
 
-    """makePanelView(panel,[page]) : Creates a Drawing view of the given panel
-    in the given or active Page object (a new page will be created if none exists)."""
-
-    if not page:
-        for o in FreeCAD.ActiveDocument.Objects:
-            if o.isDerivedFrom("Drawing::FeaturePage"):
-                page = o
-                break
-        if not page:
-            page = FreeCAD.ActiveDocument.addObject("Drawing::FeaturePage",translate("Arch","Page"))
-            page.Template = Draft.getParam("template",FreeCAD.getResourceDir()+'Mod/Drawing/Templates/A3_Landscape.svg')
-    view = FreeCAD.ActiveDocument.addObject("Drawing::FeatureViewPython",name)
-    page.addObject(view)
-    PanelView(view)
-    view.Source = panel
-    view.Label = translate("Arch","View of")+" "+panel.Label
-    return view
-
-
-def makePanelCut(panel,name="PanelView"):
-
-    """makePanelCut(panel) : Creates a 2D view of the given panel
+    """makePanelCut(panel,[name]) : Creates a 2D view of the given panel
     in the 3D space, positioned at the origin."""
 
-    view = FreeCAD.ActiveDocument.addObject("Part::FeaturePython",name)
+    view = FreeCAD.ActiveDocument.addObject("Part::FeaturePython","PanelCut")
+    view.Label = name if name else translate("Arch","View of")+" "+panel.Label
     PanelCut(view)
     view.Source = panel
-    view.Label = translate("Arch","View of")+" "+panel.Label
     if FreeCAD.GuiUp:
         ViewProviderPanelCut(view.ViewObject)
     return view
 
 
-def makePanelSheet(panels=[],name="PanelSheet"):
+def makePanelSheet(panels=[],name=None):
 
-    """makePanelSheet([panels]) : Creates a sheet with the given panel cuts
+    """makePanelSheet([panels],[name]) : Creates a sheet with the given panel cuts
     in the 3D space, positioned at the origin."""
 
-    sheet = FreeCAD.ActiveDocument.addObject("Part::FeaturePython",name)
+    sheet = FreeCAD.ActiveDocument.addObject("Part::FeaturePython","PanelSheet")
+    sheet.Label = name if name else translate("Arch","PanelSheet")
     PanelSheet(sheet)
     if panels:
         sheet.Group = panels
@@ -219,11 +206,11 @@ class CommandPanel:
 
         w = QtGui.QWidget()
         ui = FreeCADGui.UiLoader()
-        w.setWindowTitle(translate("Arch","Panel options", utf8_decode=True))
+        w.setWindowTitle(translate("Arch","Panel options"))
         grid = QtGui.QGridLayout(w)
 
         # presets box
-        labelp = QtGui.QLabel(translate("Arch","Preset", utf8_decode=True))
+        labelp = QtGui.QLabel(translate("Arch","Preset"))
         valuep = QtGui.QComboBox()
         fpresets = [" "]
         for p in Presets[1:]:
@@ -233,32 +220,32 @@ class CommandPanel:
         grid.addWidget(valuep,0,1,1,1)
 
         # length
-        label1 = QtGui.QLabel(translate("Arch","Length", utf8_decode=True))
+        label1 = QtGui.QLabel(translate("Arch","Length"))
         self.vLength = ui.createWidget("Gui::InputField")
         self.vLength.setText(FreeCAD.Units.Quantity(self.Length,FreeCAD.Units.Length).UserString)
         grid.addWidget(label1,1,0,1,1)
         grid.addWidget(self.vLength,1,1,1,1)
 
         # width
-        label2 = QtGui.QLabel(translate("Arch","Width", utf8_decode=True))
+        label2 = QtGui.QLabel(translate("Arch","Width"))
         self.vWidth = ui.createWidget("Gui::InputField")
         self.vWidth.setText(FreeCAD.Units.Quantity(self.Width,FreeCAD.Units.Length).UserString)
         grid.addWidget(label2,2,0,1,1)
         grid.addWidget(self.vWidth,2,1,1,1)
 
         # height
-        label3 = QtGui.QLabel(translate("Arch","Thickness", utf8_decode=True))
+        label3 = QtGui.QLabel(translate("Arch","Thickness"))
         self.vHeight = ui.createWidget("Gui::InputField")
         self.vHeight.setText(FreeCAD.Units.Quantity(self.Thickness,FreeCAD.Units.Length).UserString)
         grid.addWidget(label3,3,0,1,1)
         grid.addWidget(self.vHeight,3,1,1,1)
 
         # horizontal button
-        value5 = QtGui.QPushButton(translate("Arch","Rotate", utf8_decode=True))
+        value5 = QtGui.QPushButton(translate("Arch","Rotate"))
         grid.addWidget(value5,4,0,1,2)
 
         # continue button
-        label4 = QtGui.QLabel(translate("Arch","Con&tinue", utf8_decode=True))
+        label4 = QtGui.QLabel(translate("Arch","Con&tinue"))
         value4 = QtGui.QCheckBox()
         value4.setObjectName("ContinueCmd")
         value4.setLayoutDirection(QtCore.Qt.RightToLeft)
@@ -816,116 +803,12 @@ class _ViewProviderPanel(ArchComponent.ViewProviderComponent):
         ArchComponent.ViewProviderComponent.updateData(self,obj,prop)
 
 
-class PanelView:
-
-    "A Drawing view for Arch Panels"
-
-    def __init__(self, obj):
-
-        obj.Proxy = self
-
-        # setProperties of ArchComponent will be overwritten
-        # thus setProperties from ArchComponent will be explicit called to get the properties
-        ArchComponent.ViewProviderComponent.setProperties(self, vobj)
-
-        self.setProperties(obj)
-        obj.X = 10
-        obj.Y = 10
-
-    def setProperties(self,obj):
-
-        pl = obj.PropertiesList
-        if not "Source" in pl:
-            obj.addProperty("App::PropertyLink","Source","PanelView",QT_TRANSLATE_NOOP("App::Property","The linked object"))
-        if not "LineWidth" in pl:
-            obj.addProperty("App::PropertyFloat","LineWidth","PanelView",QT_TRANSLATE_NOOP("App::Property","The line width of the rendered objects"))
-            obj.LineWidth = 0.35
-        if not "LineColor" in pl:
-            obj.addProperty("App::PropertyColor","LineColor","PanelView",QT_TRANSLATE_NOOP("App::Property","The color of the panel outline"))
-            obj.LineColor = (0.0,0.0,0.0)
-        if not "FontSize" in pl:
-            obj.addProperty("App::PropertyLength","FontSize","PanelView",QT_TRANSLATE_NOOP("App::Property","The size of the tag text"))
-        if not "TextColor" in pl:
-            obj.addProperty("App::PropertyColor","TextColor","PanelView",QT_TRANSLATE_NOOP("App::Property","The color of the tag text"))
-            obj.TextColor = (0.0,0.0,1.0)
-        if not "TextX" in pl:
-            obj.addProperty("App::PropertyFloat","TextX","PanelView",QT_TRANSLATE_NOOP("App::Property","The X offset of the tag text"))
-            obj.TextX = 10
-        if not "TextY" in pl:
-            obj.addProperty("App::PropertyFloat","TextY","PanelView",QT_TRANSLATE_NOOP("App::Property","The Y offset of the tag text"))
-            obj.TextY = 10
-        if not "FontName" in pl:
-            obj.addProperty("App::PropertyString","FontName","PanelView",QT_TRANSLATE_NOOP("App::Property","The font of the tag text"))
-            obj.FontName = "sans"
-        self.Type = "PanelView"
-
-    def onDocumentRestored(self,obj):
-
-        self.setProperties(obj)
-
-    def execute(self, obj):
-
-        if obj.Source:
-            if hasattr(obj.Source.Proxy,"BaseProfile"):
-                p = obj.Source.Proxy.BaseProfile
-                n = obj.Source.Proxy.ExtrusionVector
-                import TechDraw
-                svg1 = ""
-                svg2 = ""
-                result = ""
-                svg1 = TechDraw.projectToSVG(p,DraftVecUtils.neg(n))
-                if svg1:
-                    w = str(obj.LineWidth/obj.Scale) #don't let linewidth be influenced by the scale...
-                    svg1 = svg1.replace('stroke-width="0.35"','stroke-width="'+w+'"')
-                    svg1 = svg1.replace('stroke-width="1"','stroke-width="'+w+'"')
-                    svg1 = svg1.replace('stroke-width:0.01','stroke-width:'+w)
-                    svg1 = svg1.replace('scale(1,-1)','scale('+str(obj.Scale)+',-'+str(obj.Scale)+')')
-                if obj.Source.Tag:
-                    svg2 = '<text id="tag'+obj.Name+'"'
-                    svg2 += ' fill="'+Draft.getrgb(obj.TextColor)+'"'
-                    svg2 += ' font-size="'+str(obj.FontSize)+'"'
-                    svg2 += ' style="text-anchor:start;text-align:left;'
-                    svg2 += ' font-family:'+obj.FontName+'" '
-                    svg2 += ' transform="translate(' + str(obj.TextX) + ',' + str(obj.TextY) + ')">'
-                    svg2 += '<tspan>'+obj.Source.Tag+'</tspan></text>\n'
-                result += '<g id="' + obj.Name + '"'
-                result += ' transform="'
-                result += 'rotate('+str(obj.Rotation)+','+str(obj.X)+','+str(obj.Y)+') '
-                result += 'translate('+str(obj.X)+','+str(obj.Y)+')'
-                result += '">\n  '
-                result += svg1
-                result += svg2
-                result += '</g>'
-                obj.ViewResult = result
-
-    def onChanged(self, obj, prop):
-
-        pass
-
-    def __getstate__(self):
-
-        return None
-
-    def __setstate__(self,state):
-
-        return None
-
-    def getDisplayModes(self,vobj):
-
-        modes=["Default"]
-        return modes
-
-    def setDisplayMode(self,mode):
-
-        return mode
-
-
-class PanelCut(Draft._DraftObject):
+class PanelCut(Draft.DraftObject):
 
     "A flat, 2D view of an Arch Panel"
 
     def __init__(self, obj):
-        Draft._DraftObject.__init__(self,obj)
+        Draft.DraftObject.__init__(self,obj)
         obj.Proxy = self
 
         # setProperties of ArchComponent will be overwritten
@@ -971,7 +854,8 @@ class PanelCut(Draft._DraftObject):
             base = None
             n = None
             if Draft.getType(obj.Source) == "Panel":
-                import Part,DraftGeomUtils
+                import DraftGeomUtils
+                import Part
                 baseobj = None
                 if obj.Source.CloneOf:
                     baseobj = obj.Source.CloneOf.Base
@@ -1117,13 +1001,13 @@ class PanelCut(Draft._DraftObject):
         return (outl, inl, tag)
 
 
-class ViewProviderPanelCut(Draft._ViewProviderDraft):
+class ViewProviderPanelCut(Draft.ViewProviderDraft):
 
     "a view provider for the panel cut object"
 
     def __init__(self,vobj):
 
-        Draft._ViewProviderDraft.__init__(self,vobj)
+        Draft.ViewProviderDraft.__init__(self,vobj)
         self.setProperties(vobj)
 
     def setProperties(self,vobj):
@@ -1140,7 +1024,7 @@ class ViewProviderPanelCut(Draft._ViewProviderDraft):
 
     def attach(self,vobj):
 
-        Draft._ViewProviderDraft.attach(self,vobj)
+        Draft.ViewProviderDraft.attach(self,vobj)
         from pivy import coin
         self.coords = coin.SoCoordinate3()
         self.lineset = coin.SoLineSet()
@@ -1190,22 +1074,27 @@ class ViewProviderPanelCut(Draft._ViewProviderDraft):
             if hasattr(vobj,"LineColor"):
                 c = vobj.LineColor
                 self.color.rgb.setValue(c[0],c[1],c[2])
-        Draft._ViewProviderDraft.onChanged(self,vobj,prop)
+        Draft.ViewProviderDraft.onChanged(self,vobj,prop)
 
     def updateData(self,obj,prop):
 
         if prop in ["Shape"]:
             self.onChanged(obj.ViewObject,"Margin")
-        Draft._ViewProviderDraft.updateData(self,obj,prop)
+        Draft.ViewProviderDraft.updateData(self,obj,prop)
 
+    def doubleClicked(self,vobj):
 
-class PanelSheet(Draft._DraftObject):
+        # See setEdit in ViewProviderDraft.
+        FreeCADGui.runCommand("Std_TransformManip")
+        return True
+
+class PanelSheet(Draft.DraftObject):
 
     "A collection of Panel cuts under a sheet"
 
     def __init__(self, obj):
 
-        Draft._DraftObject.__init__(self,obj)
+        Draft.DraftObject.__init__(self,obj)
         obj.Proxy = self
         self.setProperties(obj)
 
@@ -1375,13 +1264,13 @@ class PanelSheet(Draft._DraftObject):
         return outp
 
 
-class ViewProviderPanelSheet(Draft._ViewProviderDraft):
+class ViewProviderPanelSheet(Draft.ViewProviderDraft):
 
     "a view provider for the panel sheet object"
 
     def __init__(self,vobj):
 
-        Draft._ViewProviderDraft.__init__(self,vobj)
+        Draft.ViewProviderDraft.__init__(self,vobj)
         self.setProperties(vobj)
         vobj.PatternSize = 0.0035
 
@@ -1401,25 +1290,27 @@ class ViewProviderPanelSheet(Draft._ViewProviderDraft):
 
     def getIcon(self):
 
-        return ":/icons/Draft_Drawing.svg"
+        return ":/icons/Arch_Panel_Sheet_Tree.svg"
 
-    def setEdit(self,vobj,mode):
+    def setEdit(self, vobj, mode):
+        if mode == 1 or mode == 2:
+            return None
 
-        if mode == 0:
-            taskd = SheetTaskPanel(vobj.Object)
-            taskd.update()
-            FreeCADGui.Control.showDialog(taskd)
-            return True
-        return False
+        taskd = SheetTaskPanel(vobj.Object)
+        taskd.update()
+        FreeCADGui.Control.showDialog(taskd)
+        return True
 
-    def unsetEdit(self,vobj,mode):
+    def unsetEdit(self, vobj, mode):
+        if mode == 1 or mode == 2:
+            return None
 
         FreeCADGui.Control.closeDialog()
-        return False
+        return True
 
     def attach(self,vobj):
 
-        Draft._ViewProviderDraft.attach(self,vobj)
+        Draft.ViewProviderDraft.attach(self,vobj)
         from pivy import coin
         self.coords = coin.SoCoordinate3()
         self.lineset = coin.SoLineSet()
@@ -1467,7 +1358,7 @@ class ViewProviderPanelSheet(Draft._ViewProviderDraft):
                     vobj.Pattern = "woodgrain"
                 else:
                     vobj.Pattern = "None"
-        Draft._ViewProviderDraft.onChanged(self,vobj,prop)
+        Draft.ViewProviderDraft.onChanged(self,vobj,prop)
 
 
     def updateData(self,obj,prop):
@@ -1482,7 +1373,7 @@ class ViewProviderPanelSheet(Draft._ViewProviderDraft):
                     vT  = DraftVecUtils.rotate(FreeCAD.Vector(0,s,0),-math.radians(obj.GrainDirection.Value))
                     self.texcoords.directionS.setValue(vS.x,vS.y,vS.z)
                     self.texcoords.directionT.setValue(vT.x,vT.y,vT.z)
-        Draft._ViewProviderDraft.updateData(self,obj,prop)
+        Draft.ViewProviderDraft.updateData(self,obj,prop)
 
 
 class SheetTaskPanel(ArchComponent.ComponentTaskPanel):

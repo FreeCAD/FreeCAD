@@ -23,11 +23,12 @@
 #include "PreCompiled.h"
 
 #include <Base/Console.h>
-#include <Base/PyObjectBase.h>
 #include <Base/Interpreter.h>
- 
+#include <Base/PyObjectBase.h>
 
-namespace MeshPart {
+
+namespace MeshPart
+{
 extern PyObject* initModule();
 }
 
@@ -37,9 +38,9 @@ PyMOD_INIT_FUNC(MeshPart)
     // load dependent module
     try {
         Base::Interpreter().loadModule("Part");
-        //Base::Interpreter().loadModule("Mesh");
+        // Base::Interpreter().loadModule("Mesh");
     }
-    catch(const Base::Exception& e) {
+    catch (const Base::Exception& e) {
         PyErr_SetString(PyExc_ImportError, e.what());
         PyMOD_Return(nullptr);
     }

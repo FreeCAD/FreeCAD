@@ -1,27 +1,26 @@
-
-#***************************************************************************
-#*                                                                         *
-#*   (c) Yorik van Havre (yorik@uncreated.net 2015                         *
-#*                                                                         *
-#*   This file is part of the FreeCAD CAx development system.              *
-#*                                                                         *
-#*   This program is free software; you can redistribute it and/or modify  *
-#*   it under the terms of the GNU Lesser General Public License (LGPL)    *
-#*   as published by the Free Software Foundation; either version 2 of     *
-#*   the License, or (at your option) any later version.                   *
-#*   for detail see the LICENCE text file.                                 *
-#*                                                                         *
-#*   FreeCAD is distributed in the hope that it will be useful,            *
-#*   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-#*   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-#*   GNU Lesser General Public License for more details.                   *
-#*                                                                         *
-#*   You should have received a copy of the GNU Library General Public     *
-#*   License along with FreeCAD; if not, write to the Free Software        *
-#*   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
-#*   USA                                                                   *
-#*                                                                         *
-#***************************************************************************/
+# ***************************************************************************
+# *                                                                         *
+# *   (c) Yorik van Havre (yorik@uncreated.net 2015                         *
+# *                                                                         *
+# *   This file is part of the FreeCAD CAx development system.              *
+# *                                                                         *
+# *   This program is free software; you can redistribute it and/or modify  *
+# *   it under the terms of the GNU Lesser General Public License (LGPL)    *
+# *   as published by the Free Software Foundation; either version 2 of     *
+# *   the License, or (at your option) any later version.                   *
+# *   for detail see the LICENCE text file.                                 *
+# *                                                                         *
+# *   FreeCAD is distributed in the hope that it will be useful,            *
+# *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+# *   GNU Lesser General Public License for more details.                   *
+# *                                                                         *
+# *   You should have received a copy of the GNU Library General Public     *
+# *   License along with FreeCAD; if not, write to the Free Software        *
+# *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
+# *   USA                                                                   *
+# *                                                                         *
+# ***************************************************************************/
 
 """An SVG patterns generator, able to generate different variants of a pattern
 definition, by modifying scale, line thickness and color. The module can generate
@@ -29,7 +28,7 @@ definition, by modifying scale, line thickness and color. The module can generat
 be used as image textures."""
 
 # list of available patterns
-    
+# fmt: off
 Patterns = {
     "simple":        "M0,0 L10,10",
     "line":          "M0,5 L10,5",
@@ -132,142 +131,174 @@ AutocadPatterns = {
     "TRIANG":"", # small triangles
     "ZIGZAG":""
     }
+# fmt: on
 
-def buildPattern(name,scale=5,thickness=1,color="#000000"):
-    
+
+def buildPattern(name, scale=5, thickness=1, color="#000000"):
+
     """buildPattern(name,scale=5,thickness=1,color="#000000")
     builds an SVG <pattern> fragment from a name and path data"""
-    
-    name,scale,thickness = decodeName(name,scale,thickness)
-    if not (name in Patterns.keys()):
+
+    name, scale, thickness = decodeName(name, scale, thickness)
+    if not (name in Patterns):
         return None
-    pname = name + "_" + str(scale).replace(".","") + "_" + str(thickness).replace(".","")
+    pname = name + "_" + str(scale).replace(".", "") + "_" + str(thickness).replace(".", "")
     data = Patterns[name]
-    template='''<pattern id="$name" patternUnits="userSpaceOnUse" 
+    template = """<pattern id="$name" patternUnits="userSpaceOnUse"
     patternTransform="matrix($scale,0,0,$scale,0,0)" x="0" y="0" width="10" height="10">
     <g style="fill:none; stroke:$color; stroke-width:$thickness"><path d="$path"/>
-    </g></pattern>'''
-    t = template.replace("$name",pname)
-    t = t.replace("$scale",str(scale))
-    t = t.replace("$thickness",str(thickness))
-    t = t.replace("$color",color)
-    t = t.replace("$path",data)
-    t = t.replace("\n","")
+    </g></pattern>"""
+    t = template.replace("$name", pname)
+    t = t.replace("$scale", str(scale))
+    t = t.replace("$thickness", str(thickness))
+    t = t.replace("$color", color)
+    t = t.replace("$path", data)
+    t = t.replace("\n", "")
     return t
 
 
-def buildTextureImage(name,scale=5,thickness=1,color="#000000",size=64):
-    
+def buildTextureImage(name, scale=5, thickness=1, color="#000000", size=64):
+
     """buildTextureImage(name,scale,thickness,color="#000000",size=64)
     builds a 64x64 SVG image filled with the given texture"""
-    
-    name,scale,thickness = decodeName(name,scale,thickness)
-    if not (name in Patterns.keys()):
+
+    name, scale, thickness = decodeName(name, scale, thickness)
+    if not (name in Patterns):
         return None
     s = str(size)
-    template = '''<svg xmlns="http://www.w3.org/2000/svg" version="1.1" 
-    width="'''+s+'''" height="'''+s+'''"><defs>$pattern</defs><rect x="0" 
-    y="$0" width="'''+s+'''" height="'''+s+'''" style="fill:url(#$name); 
-    stroke:none; stroke-width:none"/></svg>'''
-    pat = buildPattern(name,scale,thickness,color)
-    t = template.replace("\n","")
-    t = t.replace("$pattern",pat+"\n")
-    t = t.replace("$name",name+"_"+str(scale).replace(".","")+"_"+str(thickness).replace(".",""))
+    template = (
+        '''<svg xmlns="http://www.w3.org/2000/svg" version="1.1"
+    width="'''
+        + s
+        + '''" height="'''
+        + s
+        + '''"><defs>$pattern</defs><rect x="0"
+    y="$0" width="'''
+        + s
+        + '''" height="'''
+        + s
+        + """" style="fill:url(#$name);
+    stroke:none; stroke-width:none"/></svg>"""
+    )
+    pat = buildPattern(name, scale, thickness, color)
+    t = template.replace("\n", "")
+    t = t.replace("$pattern", pat + "\n")
+    t = t.replace(
+        "$name", name + "_" + str(scale).replace(".", "") + "_" + str(thickness).replace(".", "")
+    )
     return t
 
 
-def buildSwatch(name,scale=5,thickness=1,color="#000000",size=64):
-    
+def buildSwatch(name, scale=5, thickness=1, color="#000000", size=64):
+
     """buildSwatch(name,scale,thickness,color="#000000",size=64)
     builds a 64x64 SVG image filled with the given texture, a
     white background and a border, to serve as a sample"""
-    
-    name,scale,thickness = decodeName(name,scale,thickness)
-    if not (name in Patterns.keys()):
+
+    name, scale, thickness = decodeName(name, scale, thickness)
+    if not (name in Patterns):
         return None
     s = str(size)
-    template = '''<svg xmlns="http://www.w3.org/2000/svg" version="1.1" 
-    width="'''+s+'''" height="'''+s+'''"><defs>$pattern</defs><rect x="0" 
-    y="$0" width="'''+s+'''" height="'''+s+'''" style="fill:#FFFFFF; 
-    stroke:none; stroke-width:none"/><rect x="0" y="$0" width="'''+s+'''" 
-    height="'''+s+'''" style="fill:url(#$name); stroke:#000000; 
-    stroke-width:2"/></svg>'''
-    pat = buildPattern(name,scale,thickness,color)
-    t = template.replace("\n","")
-    t = t.replace("$pattern",pat+"\n")
-    t = t.replace("$name",name+"_"+str(scale).replace(".","")+"_"+str(thickness).replace(".",""))
+    template = (
+        '''<svg xmlns="http://www.w3.org/2000/svg" version="1.1"
+    width="'''
+        + s
+        + '''" height="'''
+        + s
+        + '''"><defs>$pattern</defs><rect x="0"
+    y="$0" width="'''
+        + s
+        + '''" height="'''
+        + s
+        + '''" style="fill:#FFFFFF;
+    stroke:none; stroke-width:none"/><rect x="0" y="$0" width="'''
+        + s
+        + '''"
+    height="'''
+        + s
+        + """" style="fill:url(#$name); stroke:#000000;
+    stroke-width:2"/></svg>"""
+    )
+    pat = buildPattern(name, scale, thickness, color)
+    t = template.replace("\n", "")
+    t = t.replace("$pattern", pat + "\n")
+    t = t.replace(
+        "$name", name + "_" + str(scale).replace(".", "") + "_" + str(thickness).replace(".", "")
+    )
     return t
 
 
-def buildFileSwatch(name,scale=5,thickness=1,color="#000000",size=64,png=False):
+def buildFileSwatch(name, scale=5, thickness=1, color="#000000", size=64, png=False):
 
     """buildFileSwatch(name,scale,thickness,color="#000000",size=64,png=False)
     builds a 64x64 SVG image filled with the given texture, a
     white background and a border, to serve as a sample. The image
     is saved as a temp file, the filepath is returned"""
-    s = buildSwatch(name,scale,thickness,color,size)
+    s = buildSwatch(name, scale, thickness, color, size)
     if s:
         import tempfile
+
         tf = tempfile.mkstemp(suffix=".svg")[1]
-        f = open(tf,"wb")
+        f = open(tf, "wb")
         f.write(s)
         f.close()
         if png:
             # we use imagemagick's convert because Qt4 doesn't support SVG patterns...
             import os
+
             if os.system("convert -version") == 0:
-                ptf = os.path.splitext(tf)[0]+".png"
-                os.system('convert "'+tf+'" "'+ptf+'"')
+                ptf = os.path.splitext(tf)[0] + ".png"
+                os.system('convert "' + tf + '" "' + ptf + '"')
                 return ptf
         else:
             return tf
     return None
 
 
-def saveTestImage(filename,scales=[2.5,5],thicknesses=[0.1,0.2,1]):
-    
+def saveTestImage(filename, scales=[2.5, 5], thicknesses=[0.1, 0.2, 1]):
+
     """saveTestImage(filename,scales=[2.5,5],thicknesses=[0.1,0.2,1])
     builds a test SVG file showing all available patterns at given scales and thicknesses"""
-    
+
     maxcols = 6
     row = 0
     col = 0
-    pats = '\n'
-    cont = '\n'
-    template = '''<svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="$width" 
-    height="$height"><defs>$patterns</defs>$content</svg>'''
+    pats = "\n"
+    cont = "\n"
+    template = """<svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="$width"
+    height="$height"><defs>$patterns</defs>$content</svg>"""
     for name in Patterns.keys():
         for thickness in thicknesses:
             for scale in scales:
-                pats += buildPattern(name,scale,thickness)
-                pats += '\n'                
-                subtemplate='''<rect x="$xpos" y="$ypos" width="64" height="64"
-                style="fill:url(#$pattern); stroke:#000000; stroke-width:2"/>'''
-                st = subtemplate.replace("$xpos",str(64*col + 8*col + 8))
-                st = st.replace("$ypos",str(64*row + 8*row + 8))
-                st = st.replace("$pattern",name+"_"+str(scale)+"_"+str(thickness))
-                st = st.replace("\n","")
+                pats += buildPattern(name, scale, thickness)
+                pats += "\n"
+                subtemplate = """<rect x="$xpos" y="$ypos" width="64" height="64"
+                style="fill:url(#$pattern); stroke:#000000; stroke-width:2"/>"""
+                st = subtemplate.replace("$xpos", str(64 * col + 8 * col + 8))
+                st = st.replace("$ypos", str(64 * row + 8 * row + 8))
+                st = st.replace("$pattern", name + "_" + str(scale) + "_" + str(thickness))
+                st = st.replace("\n", "")
                 cont += st
-                cont += '\n'
-                if col == maxcols-1:
+                cont += "\n"
+                if col == maxcols - 1:
                     col = 0
                     row += 1
                 else:
                     col += 1
-    t = template.replace("\n","")
-    t = t.replace("$patterns",pats)
-    t = t.replace("$content",cont)
-    t = t.replace("$width",str(8+maxcols*72))
-    t = t.replace("$height",str(80+row*72))
-    f = open(filename,"wb")
+    t = template.replace("\n", "")
+    t = t.replace("$patterns", pats)
+    t = t.replace("$content", cont)
+    t = t.replace("$width", str(8 + maxcols * 72))
+    t = t.replace("$height", str(80 + row * 72))
+    f = open(filename, "wb")
     f.write(t)
     f.close()
-    
-    
-def decodeName(name,scale,thickness):
-    
+
+
+def decodeName(name, scale, thickness):
+
     """decodeName(name,scale,thickness) : decodes names written in the form 'name_5_1'"""
-    
+
     name = name.split("_")
     if len(name) > 1:
         try:
@@ -279,11 +310,11 @@ def decodeName(name,scale,thickness):
             thickness = float(name[2])
         except Exception:
             pass
-    return name[0],scale,thickness
+    return name[0], scale, thickness
 
 
 def getPatternNames():
-    
+
     """getPatternNames : returns available pattern names"""
-    
+
     return Patterns.keys()

@@ -21,14 +21,14 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef DRAWINGGUI_DLGPREFSTECHDRAWIMPADVANCED_H
 #define DRAWINGGUI_DLGPREFSTECHDRAWIMPADVANCED_H
 
+#include <Gui/PropertyPage.h>
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
-#include <Gui/PropertyPage.h>
 #include <memory>
+
 
 namespace TechDrawGui {
 class Ui_DlgPrefsTechDrawAdvancedImp;

@@ -28,24 +28,18 @@ conectedToolbars = []
 timer = QtCore.QTimer()
 mw = Gui.getMainWindow()
 
+
 def pythonToolbars():
-    """Manage Python based toolbars in Arch and Draft workbench."""
+    """Manage Python based toolbar in BIM workbench."""
 
     active = Gui.activeWorkbench().__class__.__name__
 
-    if active == "DraftWorkbench" or active == "ArchWorkbench" or active == "BIMWorkbench":
-        if hasattr(Gui, "draftToolBar"):
-            try:
-                Gui.draftToolBar.Activated()
-            except Exception:
-                m = "Persistent toolbars: draftToolBar toolbar not managed.\n"
-                App.Console.PrintMessage(m)
-        if hasattr(Gui, "Snapper"):
-            try:
-                Gui.Snapper.show()
-            except Exception:
-                m = "Persistent toolbars: Snapper toolbar not managed.\n"
-                App.Console.PrintMessage(m)
+    if active == "BIMWorkbench" and hasattr(Gui, "Snapper"):
+        try:
+            Gui.Snapper.show()
+        except Exception:
+            m = "Persistent toolbars: Snapper toolbar not managed.\n"
+            App.Console.PrintMessage(m)
     else:
         pass
 
@@ -92,10 +86,12 @@ def onRestore(active):
 
         # Reduce flickering.
         for i in toolbars:
-            if (i not in topRestore and
-                    i not in leftRestore and
-                    i not in rightRestore and
-                    i not in bottomRestore):
+            if (
+                i not in topRestore
+                and i not in leftRestore
+                and i not in rightRestore
+                and i not in bottomRestore
+            ):
 
                 area = mw.toolBarArea(toolbars[i])
 

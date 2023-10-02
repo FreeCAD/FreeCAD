@@ -25,7 +25,7 @@
 
 __title__ = "FreeCAD FEM solver Elmer equation object Flux"
 __author__ = "Markus Hovorka, Uwe Stöhr"
-__url__ = "https://www.freecadweb.org"
+__url__ = "https://www.freecad.org"
 
 ## \addtogroup FEM
 #  @{
@@ -36,6 +36,7 @@ from . import linear
 
 COEFFICIENTS = ["Heat Conductivity", "None"]
 VARIABLES = ["Potential", "Temperature"]
+
 
 def create(doc, name="Flux"):
     return femutils.createObject(

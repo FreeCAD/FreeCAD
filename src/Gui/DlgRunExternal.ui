@@ -84,7 +84,7 @@
         <item>
          <widget class="QPushButton" name="chooseProgram">
           <property name="text">
-           <string>...</string>
+           <string notr="true">...</string>
           </property>
          </widget>
         </item>

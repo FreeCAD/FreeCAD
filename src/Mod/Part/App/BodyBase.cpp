@@ -47,8 +47,8 @@ BodyBase* BodyBase::findBodyOf(const App::DocumentObject* f)
     App::Document* doc = f->getDocument();
     if (doc) {
         std::vector<App::DocumentObject*> bodies = doc->getObjectsOfType(BodyBase::getClassTypeId());
-        for (std::vector<App::DocumentObject*>::const_iterator b = bodies.begin(); b != bodies.end(); b++) {
-            BodyBase* body = static_cast<BodyBase*>(*b);
+        for (auto it : bodies) {
+            BodyBase* body = static_cast<BodyBase*>(it);
             if (body->hasObject(f))
                 return body;
         }
@@ -80,7 +80,7 @@ bool BodyBase::isAfter(const App::DocumentObject *feature, const App::DocumentOb
 }
 
 void BodyBase::onBeforeChange (const App::Property* prop) {
-    
+
     //Tip can't point outside the body, hence no base feature tip
     /*// If we are changing the base feature and tip point to it reset it
     if ( prop == &BaseFeature && BaseFeature.getValue() == Tip.getValue() && BaseFeature.getValue() ) {

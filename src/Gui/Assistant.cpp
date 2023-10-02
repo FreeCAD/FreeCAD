@@ -69,10 +69,10 @@ bool Assistant::startAssistant()
 {
     if (!proc) {
         proc = new QProcess();
-        connect(proc, SIGNAL(readyReadStandardOutput()),
-                this, SLOT(readyReadStandardOutput()));
-        connect(proc, SIGNAL(readyReadStandardError()),
-                this, SLOT(readyReadStandardError()));
+        connect(proc, &QProcess::readyReadStandardOutput,
+                this, &Assistant::readyReadStandardOutput);
+        connect(proc, &QProcess::readyReadStandardError,
+                this, &Assistant::readyReadStandardError);
     }
 
     if (proc->state() != QProcess::Running) {
@@ -83,7 +83,11 @@ bool Assistant::startAssistant()
 #elif defined(Q_OS_MAC)
         QString app = QCoreApplication::applicationDirPath() + QDir::separator();
 #else
+#if QT_VERSION < QT_VERSION_CHECK(6,0,0)
         QString app = QLibraryInfo::location(QLibraryInfo::BinariesPath) + QDir::separator();
+#else
+        QString app = QLibraryInfo::path(QLibraryInfo::BinariesPath) + QDir::separator();
+#endif
 #endif
         app += QLatin1String("assistant");
 

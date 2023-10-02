@@ -58,7 +58,7 @@ class Fillet(gui_base_original.Creator):
         self.featureName = "Fillet"
 
     def GetResources(self):
-        """Set icon, menu and tooltip.""" 
+        """Set icon, menu and tooltip."""
         return {'Pixmap': 'Draft_Fillet',
                 'Accel':'F,I',
                 'MenuText': QT_TRANSLATE_NOOP("Draft_Fillet", "Fillet"),
@@ -76,7 +76,7 @@ class Fillet(gui_base_original.Creator):
             tooltip = translate("draft", "Radius of fillet")
 
             # Call the task panel defined in DraftGui to enter a radius.
-            self.ui.taskUi(title=translate("Draft", self.featureName), icon="Draft_Fillet")
+            self.ui.taskUi(title=translate("Draft", "Fillet"), icon="Draft_Fillet")
             self.ui.radiusUi()
             self.ui.sourceCmd = self
             self.ui.labelRadius.setText(label)
@@ -188,7 +188,7 @@ class Fillet(gui_base_original.Creator):
         self.commit(translate("draft", "Create fillet"),
                     _cmd_list)
 
-    def finish(self, close=False):
+    def finish(self, cont=False):
         """Terminate the operation."""
         super(Fillet, self).finish()
         if self.ui:

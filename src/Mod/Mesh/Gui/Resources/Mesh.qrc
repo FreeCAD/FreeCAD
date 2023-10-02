@@ -44,46 +44,4 @@
         <file>icons/RegularSolids/Mesh_Sphere.svg</file>
         <file>icons/RegularSolids/Mesh_Torus.svg</file>
     </qresource>
-    <qresource>
-        <file>translations/Mesh_af.qm</file>
-        <file>translations/Mesh_de.qm</file>
-        <file>translations/Mesh_fi.qm</file>
-        <file>translations/Mesh_fr.qm</file>
-        <file>translations/Mesh_hr.qm</file>
-        <file>translations/Mesh_it.qm</file>
-        <file>translations/Mesh_nl.qm</file>
-        <file>translations/Mesh_no.qm</file>
-        <file>translations/Mesh_pl.qm</file>
-        <file>translations/Mesh_ru.qm</file>
-        <file>translations/Mesh_uk.qm</file>
-        <file>translations/Mesh_tr.qm</file>
-        <file>translations/Mesh_sv-SE.qm</file>
-        <file>translations/Mesh_zh-TW.qm</file>
-        <file>translations/Mesh_pt-BR.qm</file>
-        <file>translations/Mesh_cs.qm</file>
-        <file>translations/Mesh_sk.qm</file>
-        <file>translations/Mesh_es-ES.qm</file>
-        <file>translations/Mesh_zh-CN.qm</file>
-        <file>translations/Mesh_ja.qm</file>
-        <file>translations/Mesh_ro.qm</file>
-        <file>translations/Mesh_hu.qm</file>
-        <file>translations/Mesh_pt-PT.qm</file>
-        <file>translations/Mesh_sr.qm</file>
-        <file>translations/Mesh_el.qm</file>
-        <file>translations/Mesh_sl.qm</file>
-        <file>translations/Mesh_eu.qm</file>
-        <file>translations/Mesh_ca.qm</file>
-        <file>translations/Mesh_gl.qm</file>
-        <file>translations/Mesh_kab.qm</file>
-        <file>translations/Mesh_ko.qm</file>
-        <file>translations/Mesh_fil.qm</file>
-        <file>translations/Mesh_id.qm</file>
-        <file>translations/Mesh_lt.qm</file>
-        <file>translations/Mesh_val-ES.qm</file>
-        <file>translations/Mesh_ar.qm</file>
-        <file>translations/Mesh_vi.qm</file>
-        <file>translations/Mesh_es-AR.qm</file>
-        <file>translations/Mesh_bg.qm</file>
-        <file>translations/Mesh_ka.qm</file>
-    </qresource>
-</RCC> 
+</RCC>

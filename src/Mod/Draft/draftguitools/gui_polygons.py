@@ -59,14 +59,14 @@ class Polygon(gui_base_original.Creator):
 
     def Activated(self):
         """Execute when the command is called."""
-        super(Polygon, self).Activated(name="Polygon")
+        super().Activated(name="Polygon")
         if self.ui:
             self.step = 0
             self.center = None
             self.rad = None
             self.tangents = []
             self.tanpoints = []
-            self.ui.pointUi(title=translate("draft", self.featureName), icon="Draft_Polygon")
+            self.ui.pointUi(title=translate("draft", "Polygon"), icon="Draft_Polygon")
             self.ui.extUi()
             self.ui.isRelative.hide()
             self.ui.numFaces.show()
@@ -77,14 +77,21 @@ class Polygon(gui_base_original.Creator):
             self.call = self.view.addEventCallback("SoEvent", self.action)
             _msg(translate("draft", "Pick center point"))
 
-    def finish(self, closed=False, cont=False):
-        """Terminate the operation."""
-        super(Polygon, self).finish(self)
+    def finish(self, cont=False):
+        """Terminate the operation.
+
+        Parameters
+        ----------
+        cont: bool or None, optional
+            Restart (continue) the command if `True`, or if `None` and
+            `ui.continueMode` is `True`.
+        """
+        super().finish(self)
         if self.ui:
             self.arctrack.finalize()
             self.doc.recompute()
-            if self.ui.continueMode:
-                self.Activated()
+        if cont or (cont is None and self.ui and self.ui.continueMode):
+            self.Activated()
 
     def action(self, arg):
         """Handle the 3D scene events.
@@ -108,7 +115,7 @@ class Polygon(gui_base_original.Creator):
             # this is to make sure radius is what you see on screen
             if self.center and DraftVecUtils.dist(self.point, self.center) > 0:
                 viewdelta = DraftVecUtils.project(self.point.sub(self.center),
-                                                  App.DraftWorkingPlane.axis)
+                                                  self.wp.axis)
                 if not DraftVecUtils.isNull(viewdelta):
                     self.point = self.point.add(viewdelta.negative())
             if self.step == 0:  # choose center
@@ -242,7 +249,7 @@ class Polygon(gui_base_original.Creator):
                          'FreeCAD.ActiveDocument.recompute()']
             self.commit(translate("draft", "Create Polygon"),
                         _cmd_list)
-        self.finish(cont=True)
+        self.finish(cont=None)
 
     def numericInput(self, numx, numy, numz):
         """Validate the entry fields in the user interface.

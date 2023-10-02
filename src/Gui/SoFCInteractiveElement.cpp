@@ -43,13 +43,11 @@ void SoFCInteractiveElement::init(SoState * /*state*/)
   this->interactiveMode = false;
 }
 
-SoFCInteractiveElement::~SoFCInteractiveElement()
-{
-}
+SoFCInteractiveElement::~SoFCInteractiveElement() = default;
 
 void SoFCInteractiveElement::set(SoState * const state, SoNode * const node, SbBool mode)
 {
-  SoFCInteractiveElement * elem = (SoFCInteractiveElement *)
+    auto elem = (SoFCInteractiveElement *)
     SoReplacedElement::getElement(state, classStackIndex, node);
   elem->setElt(mode);
 }
@@ -86,20 +84,18 @@ void SoGLWidgetElement::init(SoState * state)
   this->window = nullptr;
 }
 
-SoGLWidgetElement::~SoGLWidgetElement()
-{
-}
+SoGLWidgetElement::~SoGLWidgetElement() = default;
 
 void SoGLWidgetElement::set(SoState * state, QtGLWidget * window)
 {
-  SoGLWidgetElement * elem = static_cast<SoGLWidgetElement *>
+    auto elem = static_cast<SoGLWidgetElement *>
         (SoElement::getElement(state, classStackIndex));
   elem->window = window;
 }
 
 void SoGLWidgetElement::get(SoState * state, QtGLWidget *& window)
 {
-    const SoGLWidgetElement* that =  static_cast<const SoGLWidgetElement *>
+    const auto that =  static_cast<const SoGLWidgetElement *>
         (SoElement::getConstElement(state, classStackIndex));
     window = that->window;
 }
@@ -141,20 +137,18 @@ void SoGLRenderActionElement::init(SoState * state)
   this->glRenderAction = nullptr;
 }
 
-SoGLRenderActionElement::~SoGLRenderActionElement()
-{
-}
+SoGLRenderActionElement::~SoGLRenderActionElement() = default;
 
 void SoGLRenderActionElement::set(SoState * state, SoGLRenderAction * action)
 {
-  SoGLRenderActionElement * elem = static_cast<SoGLRenderActionElement *>
+    auto elem = static_cast<SoGLRenderActionElement *>
         (SoElement::getElement(state, classStackIndex));
   elem->glRenderAction = action;
 }
 
 void SoGLRenderActionElement::get(SoState * state, SoGLRenderAction * & action)
 {
-    const SoGLRenderActionElement* that =  static_cast<const SoGLRenderActionElement *>
+    const auto that =  static_cast<const SoGLRenderActionElement *>
         (SoElement::getConstElement(state, classStackIndex));
     action = that->glRenderAction;
 }
@@ -186,7 +180,7 @@ SO_NODE_SOURCE(SoGLWidgetNode)
 /*!
   Constructor.
 */
-SoGLWidgetNode::SoGLWidgetNode() : window(nullptr)
+SoGLWidgetNode::SoGLWidgetNode()
 {
     SO_NODE_CONSTRUCTOR(SoGLWidgetNode);
 }
@@ -194,9 +188,7 @@ SoGLWidgetNode::SoGLWidgetNode() : window(nullptr)
 /*!
   Destructor.
 */
-SoGLWidgetNode::~SoGLWidgetNode()
-{
-}
+SoGLWidgetNode::~SoGLWidgetNode() = default;
 
 // Doc from superclass.
 void SoGLWidgetNode::initClass()
@@ -235,20 +227,18 @@ void SoGLVBOActivatedElement::init(SoState * state)
   this->active = false;
 }
 
-SoGLVBOActivatedElement::~SoGLVBOActivatedElement()
-{
-}
+SoGLVBOActivatedElement::~SoGLVBOActivatedElement() = default;
 
 void SoGLVBOActivatedElement::set(SoState * state, SbBool active)
 {
-  SoGLVBOActivatedElement * elem = static_cast<SoGLVBOActivatedElement *>
+    auto elem = static_cast<SoGLVBOActivatedElement *>
         (SoElement::getElement(state, classStackIndex));
   elem->active = active;
 }
 
 void SoGLVBOActivatedElement::get(SoState * state, SbBool& active)
 {
-    const SoGLVBOActivatedElement* self =  static_cast<const SoGLVBOActivatedElement *>
+    const auto self =  static_cast<const SoGLVBOActivatedElement *>
         (SoElement::getConstElement(state, classStackIndex));
     active = self->active;
     if(active) {

@@ -55,7 +55,7 @@ PyObject *AxisPy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // Pytho
 // constructor method
 int AxisPy::PyInit(PyObject* args, PyObject* /*kwd*/)
 {
-    PyObject* o;
+    PyObject* o{};
     if (PyArg_ParseTuple(args, "")) {
         return 0;
     }
@@ -68,7 +68,7 @@ int AxisPy::PyInit(PyObject* args, PyObject* /*kwd*/)
     }
 
     PyErr_Clear();
-    PyObject* d;
+    PyObject* d{};
     if (PyArg_ParseTuple(args, "O!O!", &(Base::VectorPy::Type), &o,
                                       &(Base::VectorPy::Type), &d)) {
         // NOTE: The first parameter defines the base (origin) and the second the direction.
@@ -83,7 +83,7 @@ int AxisPy::PyInit(PyObject* args, PyObject* /*kwd*/)
 
 PyObject* AxisPy::move(PyObject * args)
 {
-    PyObject *vec;
+    PyObject *vec{};
     if (!PyArg_ParseTuple(args, "O!", &(VectorPy::Type), &vec))
         return nullptr;
     getAxisPtr()->move(static_cast<VectorPy*>(vec)->value());
@@ -92,7 +92,7 @@ PyObject* AxisPy::move(PyObject * args)
 
 PyObject* AxisPy::multiply(PyObject * args)
 {
-    PyObject *plm;
+    PyObject *plm{};
     if (!PyArg_ParseTuple(args, "O!", &(PlacementPy::Type), &plm))
         return nullptr;
     Axis mult = (*getAxisPtr()) * (*static_cast<PlacementPy*>(plm)->getPlacementPtr());
@@ -116,7 +116,7 @@ PyObject* AxisPy::reversed(PyObject * args)
 
 Py::Object AxisPy::getBase() const
 {
-    return Py::Vector(getAxisPtr()->getBase());
+    return Py::Vector(getAxisPtr()->getBase()); // NOLINT
 }
 
 void AxisPy::setBase(Py::Object arg)
@@ -126,7 +126,7 @@ void AxisPy::setBase(Py::Object arg)
 
 Py::Object AxisPy::getDirection() const
 {
-    return Py::Vector(getAxisPtr()->getDirection());
+    return Py::Vector(getAxisPtr()->getDirection()); // NOLINT
 }
 
 void AxisPy::setDirection(Py::Object arg)

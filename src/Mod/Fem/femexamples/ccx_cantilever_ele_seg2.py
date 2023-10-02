@@ -39,7 +39,7 @@ def get_information():
         "constraints": ["fixed", "force"],
         "solvers": ["calculix", "ccxtools", "mystran"],
         "material": "solid",
-        "equation": "mechanical"
+        "equations": ["mechanical"]
     }
 
 
@@ -52,7 +52,7 @@ setup()
 
 
 See forum topic post (for seg3):
-https://forum.freecadweb.org/viewtopic.php?f=18&t=16044
+https://forum.freecad.org/viewtopic.php?f=18&t=16044
 
 CalculiX cantilever modeled with seg2 beam elements
 

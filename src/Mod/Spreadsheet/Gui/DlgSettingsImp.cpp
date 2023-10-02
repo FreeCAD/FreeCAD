@@ -20,37 +20,29 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-#ifndef _PreComp_
-# include <QApplication>
-#endif
+
+#include <Gui/Application.h>
 
 #include "DlgSettingsImp.h"
 #include "ui_DlgSettings.h"
-#include <Gui/Application.h>
-#include <Gui/PrefWidgets.h>
-#include <Base/Console.h>
+
 
 using namespace SpreadsheetGui;
 
 /* TRANSLATOR SpreadsheetGui::DlgSettingsImp */
 
-DlgSettingsImp::DlgSettingsImp( QWidget* parent )
-  : PreferencePage( parent )
-  , ui(new Ui_DlgSettings)
+DlgSettingsImp::DlgSettingsImp(QWidget* parent)
+    : PreferencePage(parent)
+    , ui(new Ui_DlgSettings)
 {
     ui->setupUi(this);
-
 }
 
-/** 
+/**
  *  Destroys the object and frees any allocated resources
  */
-DlgSettingsImp::~DlgSettingsImp()
-{
-    // no need to delete child widgets, Qt does it all for us
-}
+DlgSettingsImp::~DlgSettingsImp() = default;
 
 void DlgSettingsImp::saveSettings()
 {
@@ -58,11 +50,14 @@ void DlgSettingsImp::saveSettings()
     /** use whatever the user has entered here
      *  we'll check for validity during import/export
      */
-    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Spreadsheet");
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/Mod/Spreadsheet");
     QString delimiter = ui->delimiterComboBox->currentText();
     hGrp->SetASCII("ImportExportDelimiter", delimiter.toStdString().c_str());
     ui->quoteCharLineEdit->onSave();
     ui->escapeCharLineEdit->onSave();
+    ui->formatString->onSave();
+    ui->checkBoxShowAlias->onSave();
 }
 
 void DlgSettingsImp::loadSettings()
@@ -71,21 +66,26 @@ void DlgSettingsImp::loadSettings()
      *  we'll recognize a few tokens: comma, semicolon, tab, and \t
      */
 
-    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Spreadsheet");
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/Mod/Spreadsheet");
     QString delimiter = QString::fromStdString(hGrp->GetASCII("ImportExportDelimiter", "tab"));
     int idx = ui->delimiterComboBox->findText(delimiter, Qt::MatchFixedString);
-    if(idx != -1){
+    if (idx != -1) {
         ui->delimiterComboBox->setCurrentIndex(idx);
-    } else if(delimiter.compare(QLatin1String("\\t"), Qt::CaseInsensitive) == 0){
+    }
+    else if (delimiter.compare(QLatin1String("\\t"), Qt::CaseInsensitive) == 0) {
         idx = ui->delimiterComboBox->findText(QLatin1String("tab"), Qt::MatchFixedString);
         ui->delimiterComboBox->setCurrentIndex(idx);
-    } else if(delimiter.compare(QLatin1String("semicolon"), Qt::CaseInsensitive) == 0){
+    }
+    else if (delimiter.compare(QLatin1String("semicolon"), Qt::CaseInsensitive) == 0) {
         idx = ui->delimiterComboBox->findText(QLatin1String(";"), Qt::MatchFixedString);
         ui->delimiterComboBox->setCurrentIndex(idx);
-    } else if(delimiter.compare(QLatin1String("comma"), Qt::CaseInsensitive) == 0){
+    }
+    else if (delimiter.compare(QLatin1String("comma"), Qt::CaseInsensitive) == 0) {
         idx = ui->delimiterComboBox->findText(QLatin1String(","), Qt::MatchFixedString);
         ui->delimiterComboBox->setCurrentIndex(idx);
-    } else {
+    }
+    else {
         ui->delimiterComboBox->addItem(delimiter);
         idx = ui->delimiterComboBox->findText(delimiter, Qt::MatchFixedString);
         ui->delimiterComboBox->setCurrentIndex(idx);
@@ -93,12 +93,14 @@ void DlgSettingsImp::loadSettings()
 
     ui->quoteCharLineEdit->onRestore();
     ui->escapeCharLineEdit->onRestore();
+    ui->formatString->onRestore();
+    ui->checkBoxShowAlias->onRestore();
 }
 
 /**
  * Sets the strings of the subwidgets using the current language.
  */
-void DlgSettingsImp::changeEvent(QEvent *e)
+void DlgSettingsImp::changeEvent(QEvent* e)
 {
     if (e->type() == QEvent::LanguageChange) {
         ui->retranslateUi(this);

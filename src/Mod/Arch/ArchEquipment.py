@@ -22,9 +22,11 @@
 
 __title__  = "FreeCAD Equipment"
 __author__ = "Yorik van Havre"
-__url__    = "https://www.freecadweb.org"
+__url__    = "https://www.freecad.org"
 
-import FreeCAD,ArchComponent,DraftVecUtils
+import FreeCAD
+import ArchComponent
+import DraftVecUtils
 if FreeCAD.GuiUp:
     import FreeCADGui
     from PySide import QtGui
@@ -47,20 +49,20 @@ else:
 #  or hydraulic appliances in a building
 
 
-def makeEquipment(baseobj=None,placement=None,name="Equipment"):
+def makeEquipment(baseobj=None,placement=None,name=None):
 
-    "makeEquipment([baseobj,placement,name]): creates an equipment object from the given base object."
+    "makeEquipment([baseobj],[placement],[name]): creates an equipment object from the given base object."
     if not FreeCAD.ActiveDocument:
         FreeCAD.Console.PrintError("No active document. Aborting\n")
         return
     obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython","Equipment")
+    obj.Label = name if name else translate("Arch","Equipment")
     _Equipment(obj)
     if baseobj:
         if baseobj.isDerivedFrom("Mesh::Feature"):
             obj.Mesh = baseobj
         else:
             obj.Base = baseobj
-    obj.Label = translate("Arch",name)
     if placement:
         obj.Placement = placement
     if FreeCAD.GuiUp:
@@ -76,7 +78,10 @@ def createMeshView(obj,direction=FreeCAD.Vector(0,0,-1),outeronly=False,largesto
     outeronly is True, only the outer contour is taken into consideration, discarding the inner
     holes. If largestonly is True, only the largest segment of the given mesh will be used."""
 
-    import Mesh, math, Part, DraftGeomUtils
+    import math
+    import DraftGeomUtils
+    import Mesh
+    import Part
     if not obj.isDerivedFrom("Mesh::Feature"):
         return
     mesh = obj.Mesh
@@ -167,7 +172,7 @@ class _CommandEquipment:
         return {'Pixmap'  : 'Arch_Equipment',
                 'MenuText': QT_TRANSLATE_NOOP("Arch_Equipment","Equipment"),
                 'Accel': "E, Q",
-                'ToolTip': QT_TRANSLATE_NOOP("Arch_Equipment","Creates an equipment object from a selected object (Part or Mesh)")}
+                'ToolTip': QT_TRANSLATE_NOOP("Arch_Equipment","Creates an equipment from a selected object (Part or Mesh)")}
 
     def IsActive(self):
 
@@ -280,12 +285,12 @@ class _Equipment(ArchComponent.Component):
             # IFC2x3 does know a IfcFurnishingElement
             obj.IfcType = "Furnishing Element"
         else:
-            obj.IfcType = "Undefined"
+            obj.IfcType = "Building Element Proxy"
         # Add features in the SketchArch External Add-on, if present
         self.addSketchArchFeatures(obj)
 
     def addSketchArchFeatures(self,obj,linkObj=None,mode=None):
-        ''' 
+        '''
            To add features in the SketchArch External Add-on, if present (https://github.com/paullee0/FreeCAD_SketchArch)
            -  import ArchSketchObject module, and
            -  set properties that are common to ArchObjects (including Links) and ArchSketch
@@ -348,7 +353,7 @@ class _Equipment(ArchComponent.Component):
         self.executeSketchArchFeatures(obj)
 
     def executeSketchArchFeatures(self, obj, linkObj=None, index=None, linkElement=None):
-        ''' 
+        '''
            To execute features in the SketchArch External Add-on  (https://github.com/paullee0/FreeCAD_SketchArch)
            -  import ArchSketchObject module, and
            -  execute features that are common to ArchObjects (including Links) and ArchSketch
@@ -360,7 +365,7 @@ class _Equipment(ArchComponent.Component):
         try:
             import ArchSketchObject
             # Execute SketchArch Feature - Intuitive Automatic Placement for Arch Windows/Doors, Equipment etc.
-            # see https://forum.freecadweb.org/viewtopic.php?f=23&t=50802
+            # see https://forum.freecad.org/viewtopic.php?f=23&t=50802
             ArchSketchObject.updateAttachmentOffset(obj, linkObj)
         except:
             pass
@@ -368,7 +373,7 @@ class _Equipment(ArchComponent.Component):
     def appLinkExecute(self, obj, linkObj, index, linkElement):
         '''
             Default Link Execute method() -
-            See https://forum.freecadweb.org/viewtopic.php?f=22&t=42184&start=10#p361124
+            See https://forum.freecad.org/viewtopic.php?f=22&t=42184&start=10#p361124
             @realthunder added support to Links to run Linked Scripted Object's methods()
         '''
 
@@ -377,7 +382,7 @@ class _Equipment(ArchComponent.Component):
 
         # Execute features in the SketchArch External Add-on, if present
         self.executeSketchArchFeatures(obj, linkObj)
- 
+
     def computeAreas(self,obj):
         return
 

@@ -20,15 +20,13 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef MESH_EDGE_H
 #define MESH_EDGE_H
 
-#include <Base/Matrix.h>
-#include <Base/Vector3D.h>
 #include <Base/Handle.h>
 
 #include <Mod/Mesh/App/Core/Elements.h>
+
 
 namespace Mesh
 {
@@ -40,24 +38,29 @@ class MeshObject;
  * convenient access to the Mesh data structure. This class should not be used
  * for programming algorithms in C++. Use Mesh Core classes instead!
  */
-class MeshExport Edge : public MeshCore::MeshGeomEdge
+class MeshExport Edge: public MeshCore::MeshGeomEdge
 {
 public:
     Edge();
     Edge(const Edge& f);
+    Edge(Edge&& f);
     ~Edge();
 
-    bool isBound() const {return Index != -1;}
+    bool isBound() const
+    {
+        return Index != -1;
+    }
     void unbound();
-    void operator = (const Edge& f);
+    Edge& operator=(const Edge& f);
+    Edge& operator=(Edge&& f);
 
-    int Index;
+    int Index {-1};
     MeshCore::PointIndex PIndex[2];
     MeshCore::FacetIndex NIndex[2];
     Base::Reference<const MeshObject> Mesh;
 };
 
-} // namespace Mesh
+}  // namespace Mesh
 
 
-#endif // MESH_EDGE_H
+#endif  // MESH_EDGE_H

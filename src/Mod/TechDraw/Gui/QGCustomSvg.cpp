@@ -22,14 +22,13 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-#include <QPainter>
-#include <QRectF>
-#include <QStyleOptionGraphicsItem>
+# include <QPainter>
+# include <QRectF>
+# include <QStyleOptionGraphicsItem>
 #endif
 
-#include <Base/Console.h>
-
 #include "QGCustomSvg.h"
+
 
 using namespace TechDrawGui;
 
@@ -67,6 +66,14 @@ void QGCustomSvg::centerAt(double cX, double cY)
 bool QGCustomSvg::load(QByteArray *svgBytes)
 {
     bool success = m_svgRender->load(*svgBytes);
+    prepareGeometryChange();
+    setSharedRenderer(m_svgRender);
+    return(success);
+}
+
+bool QGCustomSvg::load(QString filename)
+{
+    bool success = m_svgRender->load(filename);
     prepareGeometryChange();
     setSharedRenderer(m_svgRender);
     return(success);

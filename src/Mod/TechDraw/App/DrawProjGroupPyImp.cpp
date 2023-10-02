@@ -27,12 +27,12 @@
 
 #include "DrawProjGroup.h"
 #include "DrawProjGroupItem.h"
-
 // inclusion of the generated files (generated out of DrawProjGroupPy.xml)
 #include <Mod/TechDraw/App/DrawProjGroupPy.h>
 #include <Mod/TechDraw/App/DrawProjGroupPy.cpp>
 #include <Mod/TechDraw/App/DrawProjGroupItemPy.h>
 #include <Base/VectorPy.h>
+
 
 using namespace TechDraw;
 

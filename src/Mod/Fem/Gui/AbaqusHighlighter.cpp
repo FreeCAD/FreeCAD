@@ -20,14 +20,13 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <QRegExp>
-# include <QTextCharFormat>
+#include <QTextCharFormat>
 #endif
 
 #include "AbaqusHighlighter.h"
+
 
 using namespace FemGui;
 
@@ -36,29 +35,36 @@ using namespace FemGui;
  */
 AbaqusHighlighter::AbaqusHighlighter(QObject* parent)
     : SyntaxHighlighter(parent)
-{
-}
+{}
 
 /** Destroys this object. */
-AbaqusHighlighter::~AbaqusHighlighter()
-{
-}
+AbaqusHighlighter::~AbaqusHighlighter() = default;
 
 void AbaqusHighlighter::highlightBlock(const QString& text)
 {
     // Find a syntax file for the Abaqus format here
     // http://notepad-plus.sourceforge.net/commun/userDefinedLang/userDefineLang_Abaqus.xml
     //
-    enum { NormalState = -1, Definition, BeforeKey, InideKey, BeforeValue, InsideValue, Text, Number };
+    enum
+    {
+        NormalState = -1,
+        Definition,
+        BeforeKey,
+        InideKey,
+        BeforeValue,
+        InsideValue,
+        Text,
+        Number
+    };
 
     int state = NormalState;
     int start = 0;
 
-    QColor keywordColor(102, 0, 227); // this->colorByType(SyntaxHighlighter::Keyword)
-    QColor defnameColor(0, 119, 255); // this->colorByType(SyntaxHighlighter::Defname)
-    QColor operateColor(153, 0, 102); // this->colorByType(SyntaxHighlighter::Operator)
-    QColor valueColor(0, 0, 0); // this->colorByType(SyntaxHighlighter::String)
-    QColor numberColor(0, 127, 127); // this->colorByType(SyntaxHighlighter::Number)
+    QColor keywordColor(102, 0, 227);  // this->colorByType(SyntaxHighlighter::Keyword)
+    QColor defnameColor(0, 119, 255);  // this->colorByType(SyntaxHighlighter::Defname)
+    QColor operateColor(153, 0, 102);  // this->colorByType(SyntaxHighlighter::Operator)
+    QColor valueColor(0, 0, 0);        // this->colorByType(SyntaxHighlighter::String)
+    QColor numberColor(0, 127, 127);   // this->colorByType(SyntaxHighlighter::Number)
     QColor commentColor = this->colorByType(SyntaxHighlighter::Comment);
 
     for (int i = 0; i < text.length(); ++i) {

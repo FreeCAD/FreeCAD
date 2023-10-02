@@ -63,6 +63,12 @@ enum GetLinkOption {
     GetLinkExternal = 8,
 };
 
+enum class MessageOption {
+    Quiet, /**< Suppress error. */
+    Error, /**< Print an error message. */
+    Throw, /**< Throw an exception. */
+};
+
 
 /** The Application
  *  The root of the whole application
@@ -326,7 +332,7 @@ public:
     Base::Reference<ParameterGrp>                     GetParameterGroupByPath(const char* sName);
 
     ParameterManager *                                GetParameterSet(const char* sName) const;
-    const std::map<std::string, ParameterManager *> &  GetParameterSetList() const;
+    const std::map<std::string,Base::Reference<ParameterManager>> &  GetParameterSetList() const;
     void AddParameterSet(const char* sName);
     void RemoveParameterSet(const char* sName);
     //@}
@@ -420,14 +426,15 @@ public:
     /** Check for link recursion depth
      *
      * @param depth: current depth
-     * @param no_throw: whether to throw exception
+     * @param option: whether to throw exception, print an error message or quieten any output.
+     * In the latter case the caller must check the returned value.
      *
      * @return Return the maximum remaining depth.
      *
      * The function uses an internal count of all objects in all documents as
      * the limit of recursion depth.
      */
-    int checkLinkDepth(int depth, bool no_throw=true);
+    int checkLinkDepth(int depth, MessageOption option = MessageOption::Error);
 
     /** Return the links to a given object
      *
@@ -496,8 +503,8 @@ private:
 
     /** @name member for parameter */
     //@{
-    static ParameterManager *_pcSysParamMngr;
-    static ParameterManager *_pcUserParamMngr;
+    static Base::Reference<ParameterManager> _pcSysParamMngr;
+    static Base::Reference<ParameterManager> _pcUserParamMngr;
     //@}
 
     //---------------------------------------------------------------------
@@ -598,9 +605,9 @@ private:
     std::vector<FileTypeItem> _mExportTypes;
     std::map<std::string,Document*> DocMap;
     mutable std::map<std::string,Document*> DocFileMap;
-    std::map<std::string,ParameterManager *> mpcPramManager;
+    std::map<std::string,Base::Reference<ParameterManager>> mpcPramManager;
     std::map<std::string,std::string> &_mConfig;
-    App::Document* _pActiveDoc;
+    App::Document* _pActiveDoc{nullptr};
 
     std::deque<std::string> _pendingDocs;
     std::deque<std::string> _pendingDocsReopen;
@@ -610,19 +617,19 @@ private:
     // missing object
     std::map<std::string,std::set<std::string> > _docReloadAttempts;
 
-    bool _isRestoring;
-    bool _allowPartial;
-    bool _isClosingAll;
+    bool _isRestoring{false};
+    bool _allowPartial{false};
+    bool _isClosingAll{false};
 
     // for estimate max link depth
-    int _objCount;
+    int _objCount{-1};
 
     friend class AutoTransaction;
 
     std::string _activeTransactionName;
-    int _activeTransactionID;
-    int _activeTransactionGuard;
-    bool _activeTransactionTmpName;
+    int _activeTransactionID{0};
+    int _activeTransactionGuard{0};
+    bool _activeTransactionTmpName{false};
 
     static Base::ConsoleObserverStd  *_pConsoleObserverStd;
     static Base::ConsoleObserverFile *_pConsoleObserverFile;

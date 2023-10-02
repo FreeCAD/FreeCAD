@@ -23,7 +23,7 @@
 
 __title__ = "FreeCAD FEM calculix write inpfile step equation"
 __author__ = "Bernd Hahnebach"
-__url__ = "https://www.freecadweb.org"
+__url__ = "https://www.freecad.org"
 
 
 import FreeCAD
@@ -78,7 +78,7 @@ def write_step_equation(f, ccxwriter):
     elif ccxwriter.analysis_type == "buckling":
         analysis_type = "*BUCKLE"
     # analysis line --> solver type
-    # https://forum.freecadweb.org/viewtopic.php?f=18&t=43178
+    # https://forum.freecad.org/viewtopic.php?f=18&t=43178
     if ccxwriter.solver_obj.MatrixSolverType == "default":
         pass
     elif ccxwriter.solver_obj.MatrixSolverType == "spooles":

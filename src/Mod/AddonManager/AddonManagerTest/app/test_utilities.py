@@ -1,24 +1,23 @@
-# -*- coding: utf-8 -*-
-
+# SPDX-License-Identifier: LGPL-2.1-or-later
 # ***************************************************************************
-# *   Copyright (c) 2022 FreeCAD Project Association                        *
 # *                                                                         *
-# *   This file is part of the FreeCAD CAx development system.              *
+# *   Copyright (c) 2022-2023 FreeCAD Project Association                   *
 # *                                                                         *
-# *   This library is free software; you can redistribute it and/or         *
-# *   modify it under the terms of the GNU Lesser General Public            *
-# *   License as published by the Free Software Foundation; either          *
-# *   version 2.1 of the License, or (at your option) any later version.    *
+# *   This file is part of FreeCAD.                                         *
 # *                                                                         *
-# *   This library is distributed in the hope that it will be useful,       *
-# *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU     *
+# *   FreeCAD is free software: you can redistribute it and/or modify it    *
+# *   under the terms of the GNU Lesser General Public License as           *
+# *   published by the Free Software Foundation, either version 2.1 of the  *
+# *   License, or (at your option) any later version.                       *
+# *                                                                         *
+# *   FreeCAD is distributed in the hope that it will be useful, but        *
+# *   WITHOUT ANY WARRANTY; without even the implied warranty of            *
+# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU      *
 # *   Lesser General Public License for more details.                       *
 # *                                                                         *
 # *   You should have received a copy of the GNU Lesser General Public      *
-# *   License along with this library; if not, write to the Free Software   *
-# *   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA         *
-# *   02110-1301  USA                                                       *
+# *   License along with FreeCAD. If not, see                               *
+# *   <https://www.gnu.org/licenses/>.                                      *
 # *                                                                         *
 # ***************************************************************************
 
@@ -41,7 +40,9 @@ class TestUtilities(unittest.TestCase):
     MODULE = "test_utilities"  # file name without extension
 
     def setUp(self):
-        self.test_dir = os.path.join(FreeCAD.getHomePath(), "Mod", "AddonManager", "AddonManagerTest", "data")
+        self.test_dir = os.path.join(
+            FreeCAD.getHomePath(), "Mod", "AddonManager", "AddonManagerTest", "data"
+        )
 
     def test_recognized_git_location(self):
         recognized_urls = [
@@ -51,12 +52,8 @@ class TestUtilities(unittest.TestCase):
             "https://salsa.debian.org/science-team/freecad",
         ]
         for url in recognized_urls:
-            repo = Addon(
-                "Test Repo", url, Addon.Status.NOT_INSTALLED, "branch"
-            )
-            self.assertTrue(
-                recognized_git_location(repo), f"{url} was unexpectedly not recognized"
-            )
+            repo = Addon("Test Repo", url, Addon.Status.NOT_INSTALLED, "branch")
+            self.assertTrue(recognized_git_location(repo), f"{url} was unexpectedly not recognized")
 
         unrecognized_urls = [
             "https://google.com",
@@ -65,12 +62,8 @@ class TestUtilities(unittest.TestCase):
             "https://github.com.malware.com/",
         ]
         for url in unrecognized_urls:
-            repo = Addon(
-                "Test Repo", url, Addon.Status.NOT_INSTALLED, "branch"
-            )
-            self.assertFalse(
-                recognized_git_location(repo), f"{url} was unexpectedly recognized"
-            )
+            repo = Addon("Test Repo", url, Addon.Status.NOT_INSTALLED, "branch")
+            self.assertFalse(recognized_git_location(repo), f"{url} was unexpectedly recognized")
 
     def test_get_readme_url(self):
         github_urls = [
@@ -90,18 +83,14 @@ class TestUtilities(unittest.TestCase):
         for url in github_urls:
             branch = "branchname"
             expected_result = f"{url}/raw/{branch}/README.md"
-            repo = Addon(
-                "Test Repo", url, Addon.Status.NOT_INSTALLED, branch
-            )
+            repo = Addon("Test Repo", url, Addon.Status.NOT_INSTALLED, branch)
             actual_result = get_readme_url(repo)
             self.assertEqual(actual_result, expected_result)
 
         for url in gitlab_urls:
             branch = "branchname"
             expected_result = f"{url}/-/raw/{branch}/README.md"
-            repo = Addon(
-                "Test Repo", url, Addon.Status.NOT_INSTALLED, branch
-            )
+            repo = Addon("Test Repo", url, Addon.Status.NOT_INSTALLED, branch)
             actual_result = get_readme_url(repo)
             self.assertEqual(actual_result, expected_result)
 

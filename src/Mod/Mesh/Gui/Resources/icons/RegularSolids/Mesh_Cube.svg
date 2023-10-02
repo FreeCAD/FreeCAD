@@ -244,7 +244,7 @@
           </cc:Agent>
         </dc:publisher>
         <dc:identifier>FreeCAD/src/Mod/Mesh/Gui/Resources/icons/RegularSolids/Mesh_Cube.svg</dc:identifier>
-        <dc:relation>http://www.freecadweb.org/wiki/index.php?title=Artwork</dc:relation>
+        <dc:relation>http://www.freecad.org/wiki/index.php?title=Artwork</dc:relation>
         <dc:subject>
           <rdf:Bag>
             <rdf:li>mesh</rdf:li>

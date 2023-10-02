@@ -16,7 +16,7 @@
     <message>
       <location filename="../../Command.cpp" line="74"/>
       <source>Go back to the previous page</source>
-      <translation>Tornar a la pàgina anterior</translation>
+      <translation>Torna a la pàgina anterior</translation>
     </message>
   </context>
   <context>
@@ -34,7 +34,7 @@
     <message>
       <location filename="../../Command.cpp" line="103"/>
       <source>Go to the next page</source>
-      <translation>Anar a la pàgina següent</translation>
+      <translation>Ves a la pàgina següent</translation>
     </message>
   </context>
   <context>
@@ -48,7 +48,7 @@
       <location filename="../../Command.cpp" line="131"/>
       <location filename="../../Command.cpp" line="132"/>
       <source>Refresh web page</source>
-      <translation>Actualitzar la pàgina web</translation>
+      <translation>Actualitza la pàgina web</translation>
     </message>
   </context>
   <context>
@@ -76,7 +76,7 @@
       <location filename="../../Command.cpp" line="159"/>
       <location filename="../../Command.cpp" line="160"/>
       <source>Stop loading</source>
-      <translation>Aturar la carrega</translation>
+      <translation>Atura la càrrega</translation>
     </message>
   </context>
   <context>
@@ -90,7 +90,7 @@
       <location filename="../../Command.cpp" line="189"/>
       <location filename="../../Command.cpp" line="190"/>
       <source>Zoom in</source>
-      <translation>Ampliar</translation>
+      <translation>Apropa</translation>
     </message>
   </context>
   <context>
@@ -104,7 +104,7 @@
       <location filename="../../Command.cpp" line="218"/>
       <location filename="../../Command.cpp" line="219"/>
       <source>Zoom out</source>
-      <translation>Allunyar</translation>
+      <translation>Allunya</translation>
     </message>
   </context>
   <context>
@@ -117,24 +117,24 @@
     <message>
       <location filename="../../Command.cpp" line="47"/>
       <source>Open website...</source>
-      <translation>Obrir web...</translation>
+      <translation>Obre el lloc web...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="48"/>
       <source>Opens a website in FreeCAD</source>
-      <translation>Obra una pàgina web a FreeCAD</translation>
+      <translation>Obre un lloc web al FreeCAD</translation>
     </message>
   </context>
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../BrowserView.cpp" line="785"/>
-      <location filename="../../AppWebGui.cpp" line="85"/>
+      <location filename="../../AppWebGui.cpp" line="91"/>
+      <location filename="../../BrowserView.cpp" line="865"/>
       <source>Browser</source>
       <translation>Navegador</translation>
     </message>
     <message>
-      <location filename="../../BrowserView.cpp" line="597"/>
+      <location filename="../../BrowserView.cpp" line="668"/>
       <source>File does not exist!</source>
       <translation>El fitxer no existeix!</translation>
     </message>
@@ -142,42 +142,42 @@
   <context>
     <name>WebGui::BrowserView</name>
     <message>
-      <location filename="../../BrowserView.cpp" line="585"/>
-      <location filename="../../BrowserView.cpp" line="590"/>
-      <location filename="../../BrowserView.cpp" line="593"/>
+      <location filename="../../BrowserView.cpp" line="643"/>
+      <location filename="../../BrowserView.cpp" line="650"/>
+      <location filename="../../BrowserView.cpp" line="659"/>
       <source>Error</source>
       <translation>Error</translation>
     </message>
     <message>
-      <location filename="../../BrowserView.cpp" line="590"/>
+      <location filename="../../BrowserView.cpp" line="651"/>
       <source>There were errors while loading the file. Some data might have been modified or not recovered at all. Look in the report view for more specific information about the objects involved.</source>
-      <translation>Hi hagué errors quan es carregava el fitxer. Algunes dades s'han pogut modificar o no s'han recuperat. Cerqueu a la vista d'informes per a obtindre informació més específica sobre els objectes implicats.</translation>
+      <translation>S'han produït errors en carregar el fitxer. Algunes dades es poden haver modificat o no s'han recuperat. Consulteu la vista d'informe per a obtenir informació més específica sobre els objectes implicats.</translation>
     </message>
     <message>
-      <location filename="../../BrowserView.cpp" line="593"/>
+      <location filename="../../BrowserView.cpp" line="660"/>
       <source>There were serious errors while loading the file. Some data might have been modified or not recovered at all. Saving the project will most likely result in loss of data.</source>
-      <translation>Hi ha hagut greus errors en carregar l'arxiu. Pot ser que s'hagin modificat dades o no s'hagin recuperat. Guardar el projecte molt probablement resulti en pèrdua de dades.</translation>
+      <translation>Hi ha hagut errors greus en carregar el fitxer. Pot ser que s'hagin modificat dades o no s'hagin recuperat. Desar el projecte probablement provocarà la pèrdua de dades.</translation>
     </message>
     <message>
-      <location filename="../../BrowserView.cpp" line="753"/>
+      <location filename="../../BrowserView.cpp" line="833"/>
       <source>Loading %1...</source>
-      <translation>Carregant 1%...</translation>
+      <translation>S'està carregant %1...</translation>
     </message>
   </context>
   <context>
     <name>WebGui::WebView</name>
     <message>
-      <location filename="../../BrowserView.cpp" line="351"/>
+      <location filename="../../BrowserView.cpp" line="370"/>
       <source>Open in External Browser</source>
-      <translation>Obrir en un Navegador Extern</translation>
+      <translation>Obre en un navegador extern</translation>
     </message>
     <message>
-      <location filename="../../BrowserView.cpp" line="355"/>
+      <location filename="../../BrowserView.cpp" line="373"/>
       <source>Open in new window</source>
-      <translation>Obrir en una finestra nova</translation>
+      <translation>Obre en una finestra nova</translation>
     </message>
     <message>
-      <location filename="../../BrowserView.cpp" line="387"/>
+      <location filename="../../BrowserView.cpp" line="431"/>
       <source>View source</source>
       <translation>Visualitza la font</translation>
     </message>
@@ -185,7 +185,7 @@
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="../../Workbench.cpp" line="37"/>
+      <location filename="../../Workbench.cpp" line="36"/>
       <source>Navigation</source>
       <translation>Navegació</translation>
     </message>

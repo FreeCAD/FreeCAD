@@ -22,8 +22,8 @@
 
 #include "PreCompiled.h"
 
-#include <App/FeaturePythonPyImp.h>
 #include <App/DocumentObjectPy.h>
+#include <App/FeaturePythonPyImp.h>
 
 #include "FemResultObject.h"
 
@@ -47,38 +47,41 @@ FemResultObject::FemResultObject()
     Time.setStatus(App::Property::ReadOnly, true);
 }
 
-FemResultObject::~FemResultObject()
-{
-}
+FemResultObject::~FemResultObject() = default;
 
 short FemResultObject::mustExecute() const
 {
     return 0;
 }
 
-PyObject *FemResultObject::getPyObject()
+PyObject* FemResultObject::getPyObject()
 {
-    if (PythonObject.is(Py::_None())){
+    if (PythonObject.is(Py::_None())) {
         // ref counter is set to 1
-        PythonObject = Py::Object(new DocumentObjectPy(this),true);
+        PythonObject = Py::Object(new DocumentObjectPy(this), true);
     }
     return Py::new_reference_to(PythonObject);
 }
 
 // Python feature ---------------------------------------------------------
 
-namespace App {
+namespace App
+{
 /// @cond DOXERR
 PROPERTY_SOURCE_TEMPLATE(Fem::FemResultObjectPython, Fem::FemResultObject)
-template<> const char* Fem::FemResultObjectPython::getViewProviderName() const {
+template<>
+const char* Fem::FemResultObjectPython::getViewProviderName() const
+{
     return "FemGui::ViewProviderResultPython";
 }
 /// @endcond
 
-template<> PyObject* Fem::FemResultObjectPython::getPyObject() {
+template<>
+PyObject* Fem::FemResultObjectPython::getPyObject()
+{
     if (PythonObject.is(Py::_None())) {
         // ref counter is set to 1
-        PythonObject = Py::Object(new App::FeaturePythonPyT<App::DocumentObjectPy>(this),true);
+        PythonObject = Py::Object(new App::FeaturePythonPyT<App::DocumentObjectPy>(this), true);
     }
     return Py::new_reference_to(PythonObject);
 }
@@ -86,4 +89,4 @@ template<> PyObject* Fem::FemResultObjectPython::getPyObject() {
 // explicit template instantiation
 template class FemExport FeaturePythonT<Fem::FemResultObject>;
 
-}
+}  // namespace App

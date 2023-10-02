@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Gui::Dialog::DlgSettingsPythonConsole</class>
+ <widget class="QWidget" name="Gui::Dialog::DlgSettingsPythonConsole">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>654</width>
+    <height>259</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Python console</string>
+  </property>
+  <layout class="QGridLayout" name="gridLayout_2">
+   <item row="0" column="0">
+    <widget class="QGroupBox" name="GroupBox11">
+     <property name="title">
+      <string>Settings</string>
+     </property>
+     <layout class="QGridLayout" name="gridLayout">
+      <item row="0" column="0">
+       <widget class="Gui::PrefCheckBox" name="PythonWordWrap">
+        <property name="toolTip">
+         <string>Words will be wrapped when they exceed available
+horizontal space in Python console</string>
+        </property>
+        <property name="text">
+         <string>Enable word wrap</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>PythonWordWrap</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>PythonConsole</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="Gui::PrefCheckBox" name="PythonBlockCursor">
+        <property name="toolTip">
+         <string>The cursor shape will be a block</string>
+        </property>
+        <property name="text">
+         <string>Enable block cursor</string>
+        </property>
+        <property name="checked">
+         <bool>false</bool>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>PythonBlockCursor</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>PythonConsole</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="Gui::PrefCheckBox" name="PythonSaveHistory">
+        <property name="toolTip">
+         <string>Saves Python history across sessions</string>
+        </property>
+        <property name="text">
+         <string>Save history</string>
+        </property>
+        <property name="checked">
+         <bool>false</bool>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>SavePythonHistory</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>PythonConsole</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="0">
+       <widget class="QLabel" name="labelProfilerInterval">
+        <property name="text">
+         <string>Python profiler interval (milliseconds): </string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="1">
+       <widget class="Gui::PrefSpinBox" name="ProfilerInterval">
+        <property name="toolTip">
+         <string>The interval at which the profiler runs when there's Python code running (to keep the GUI responding). Set to 0 to disable.</string>
+        </property>
+        <property name="minimum">
+         <number>0</number>
+        </property>
+        <property name="maximum">
+         <number>5000</number>
+        </property>
+        <property name="value">
+         <number>200</number>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>ProfilerInterval</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>PythonConsole</cstring>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="1" column="0">
+    <spacer name="verticalSpacer">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>63</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+  </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>Gui::PrefCheckBox</class>
+   <extends>QCheckBox</extends>
+   <header>Gui/PrefWidgets.h</header>
+  </customwidget>
+  <customwidget>
+   <class>Gui::PrefSpinBox</class>
+   <extends>QSpinBox</extends>
+   <header>Gui/PrefWidgets.h</header>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>

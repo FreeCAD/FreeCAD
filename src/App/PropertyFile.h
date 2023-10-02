@@ -50,6 +50,7 @@ public:
     const char* getEditorName() const override
     { return "Gui::PropertyEditor::PropertyFileItem"; }
 
+    void setPyObject(PyObject *) override;
     virtual void setFilter(const std::string filter);
     virtual std::string getFilter() const;
 
@@ -86,7 +87,7 @@ public:
     { return "Gui::PropertyEditor::PropertyTransientFileItem"; }
     PyObject *getPyObject() override;
     void setPyObject(PyObject *) override;
-    
+
     void Save (Base::Writer &writer) const override;
     void Restore(Base::XMLReader &reader) override;
 
@@ -116,6 +117,9 @@ public:
 
     bool isEmpty() const {return _cValue.empty();}
 
+    void setFilter(std::string filter);
+    std::string getFilter() const;
+
 protected:
     // get the transient path if the property is in a DocumentObject
     std::string getDocTransientPath() const;
@@ -126,6 +130,9 @@ protected:
     mutable std::string _cValue;
     mutable std::string _BaseFileName;
     mutable std::string _OriginalName;
+
+private:
+    std::string m_filter;
 };
 
 

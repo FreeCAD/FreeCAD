@@ -21,7 +21,6 @@
  ***************************************************************************/
 
 #include "PreCompiled.h"
-
 #ifndef _PreComp_
 #include <Inventor/events/SoButtonEvent.h>
 #endif
@@ -36,21 +35,21 @@
 #include <Gui/View3DInventorViewer.h>
 #include <Mod/Inspection/App/InspectionFeature.h>
 
-#include "VisualInspection.h"
 #include "ViewProviderInspection.h"
+#include "VisualInspection.h"
 
 
 DEF_STD_CMD_A(CmdVisualInspection)
 
 CmdVisualInspection::CmdVisualInspection()
-  : Command("Inspection_VisualInspection")
+    : Command("Inspection_VisualInspection")
 {
-    sAppModule    = "Inspection";
-    sGroup        = QT_TR_NOOP("Inspection");
-    sMenuText     = QT_TR_NOOP("Visual inspection...");
-    sToolTipText  = QT_TR_NOOP("Visual inspection");
-    sStatusTip    = QT_TR_NOOP("Visual inspection");
-    sWhatsThis    = "Inspection_VisualInspection";
+    sAppModule = "Inspection";
+    sGroup = QT_TR_NOOP("Inspection");
+    sMenuText = QT_TR_NOOP("Visual inspection...");
+    sToolTipText = QT_TR_NOOP("Visual inspection");
+    sStatusTip = QT_TR_NOOP("Visual inspection");
+    sWhatsThis = "Inspection_VisualInspection";
 }
 
 void CmdVisualInspection::activated(int)
@@ -59,7 +58,7 @@ void CmdVisualInspection::activated(int)
     dlg.exec();
 }
 
-bool CmdVisualInspection::isActive(void)
+bool CmdVisualInspection::isActive()
 {
     return App::GetApplication().getActiveDocument();
 }
@@ -69,15 +68,15 @@ bool CmdVisualInspection::isActive(void)
 DEF_STD_CMD_A(CmdInspectElement)
 
 CmdInspectElement::CmdInspectElement()
-  : Command("Inspection_InspectElement")
+    : Command("Inspection_InspectElement")
 {
-    sAppModule    = "Inspection";
-    sGroup        = QT_TR_NOOP("Inspection");
-    sMenuText     = QT_TR_NOOP("Inspection...");
-    sToolTipText  = QT_TR_NOOP("Get distance information");
-    sWhatsThis    = "Inspection_InspectElement";
-    sStatusTip    = sToolTipText;
-    sPixmap       = "inspect_pipette";
+    sAppModule = "Inspection";
+    sGroup = QT_TR_NOOP("Inspection");
+    sMenuText = QT_TR_NOOP("Inspection...");
+    sToolTipText = QT_TR_NOOP("Get distance information");
+    sWhatsThis = "Inspection_InspectElement";
+    sStatusTip = sToolTipText;
+    sPixmap = "inspect_pipette";
 }
 
 void CmdInspectElement::activated(int)
@@ -90,17 +89,19 @@ void CmdInspectElement::activated(int)
         viewer->setRedirectToSceneGraphEnabled(true);
         viewer->setRedirectToSceneGraph(true);
         viewer->setSelectionEnabled(false);
-        viewer->setEditingCursor(QCursor(Gui::BitmapFactory().pixmapFromSvg("inspect_pipette",QSize(32,32)),4,29));
+        viewer->setEditingCursor(
+            QCursor(Gui::BitmapFactory().pixmapFromSvg("inspect_pipette", QSize(32, 32)), 4, 29));
         viewer->addEventCallback(SoButtonEvent::getClassTypeId(),
-            InspectionGui::ViewProviderInspection::inspectCallback);
-     }
+                                 InspectionGui::ViewProviderInspection::inspectCallback);
+    }
 }
 
-bool CmdInspectElement::isActive(void)
+bool CmdInspectElement::isActive()
 {
     App::Document* doc = App::GetApplication().getActiveDocument();
-    if (!doc || doc->countObjectsOfType(Inspection::Feature::getClassTypeId()) == 0)
+    if (!doc || doc->countObjectsOfType(Inspection::Feature::getClassTypeId()) == 0) {
         return false;
+    }
 
     Gui::MDIView* view = Gui::getMainWindow()->activeWindow();
     if (view && view->isDerivedFrom(Gui::View3DInventor::getClassTypeId())) {
@@ -111,9 +112,9 @@ bool CmdInspectElement::isActive(void)
     return false;
 }
 
-void CreateInspectionCommands(void)
+void CreateInspectionCommands()
 {
-    Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
+    Gui::CommandManager& rcCmdMgr = Gui::Application::Instance->commandManager();
     rcCmdMgr.addCommand(new CmdVisualInspection());
     rcCmdMgr.addCommand(new CmdInspectElement());
 }

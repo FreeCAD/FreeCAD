@@ -111,5 +111,5 @@ PyObject *Conic2dPy::getCustomAttributes(const char* ) const
 
 int Conic2dPy::setCustomAttributes(const char* , PyObject *)
 {
-    return 0; 
+    return 0;
 }

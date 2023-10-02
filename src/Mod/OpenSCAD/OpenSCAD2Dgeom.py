@@ -21,7 +21,7 @@
 
 __title__ = "FreeCAD OpenSCAD Workbench - 2D helper functions"
 __author__ = "Sebastian Hoogen"
-__url__ = ["https://www.freecadweb.org"]
+__url__ = ["https://www.freecad.org"]
 
 '''
 This Script includes python functions to convert imported dxf geometry to Faces
@@ -145,7 +145,7 @@ class Overlappingfaces():
                 subdict=isinsidedict.copy()
                 del subdict[parent]
                 for child in children:
-                        printtreechild(subdict,facenum,child)
+                    printtreechild(subdict,facenum,child)
 
         rootitems=[fi for fi in range(facenum) if Overlappingfaces.hasnoparentstatic(isinsidedict,fi)]
         for rootitem in rootitems:
@@ -169,13 +169,13 @@ class Overlappingfaces():
                 obj=doc.addObject("Part::Cut","facesfromedges_%d" % faceindex)
                 obj.Base= addshape(faceindex) #we only do subtraction
                 if len(directchildren) == 1:
-                        obj.Tool = addfeature(directchildren[0],subdict)
+                    obj.Tool = addfeature(directchildren[0],subdict)
                 else:
-                        obj.Tool = doc.addObject("Part::MultiFuse",\
-                                "facesfromedges_union")
-                        obj.Tool.Shapes = [addfeature(child,subdict)\
-                                for child in directchildren]
-                        obj.Tool.ViewObject.hide()
+                    obj.Tool = doc.addObject("Part::MultiFuse",\
+                            "facesfromedges_union")
+                    obj.Tool.Shapes = [addfeature(child,subdict)\
+                            for child in directchildren]
+                    obj.Tool.ViewObject.hide()
             obj.ViewObject.hide()
             return obj
 
@@ -282,7 +282,7 @@ def endpointdistance(edges):
     it expects the edges to be traversed forward starting from Vertex 0'''
     numedges=len(edges)
     if numedges == 1 and len(edges[0].Vertexes) == 1:
-            return 0.0,0.0,0.0
+        return 0.0,0.0,0.0
     outerdistance = edges[0].Vertexes[0].Point.sub(\
         edges[-1].Vertexes[-1].Point).Length
     if numedges > 1:
@@ -298,7 +298,7 @@ def endpointdistancedebuglist(debuglist):
     it expects a 'not reversed' flag for every edge'''
     numedges=len(debuglist)
     if numedges == 1 and len(debuglist[0][0].Vertexes) == 1:
-            return 0.0,0.0,0.0
+        return 0.0,0.0,0.0
     outerdistance = debuglist[0][0].Vertexes[(not debuglist[0][1])*-1].\
             Point.sub(debuglist[-1][0].Vertexes[(debuglist[-1][1])*-1].\
             Point).Length
@@ -312,7 +312,8 @@ def endpointdistancedebuglist(debuglist):
 
 def edgestowires(edgelist,eps=0.001):
     '''takes list of edges and returns a list of wires'''
-    import Part, Draft
+    import Part
+    import Draft
     # TODO remove double edges
     wirelist=[]
     #for path in findConnectedEdges(edgelist,eps=eps):
@@ -476,7 +477,8 @@ def superWireReverse(debuglist,closed=False):
     return Part.Wire(newedges)
 
 def importDXFface(filename,layer=None,doc=None):
-    import FreeCAD,importDXF
+    import FreeCAD
+    import importDXF
     importDXF.readPreferences()
     importDXF.getDXFlibs()
     importDXF.dxfMakeBlocks = False
@@ -494,15 +496,17 @@ def importDXFface(filename,layer=None,doc=None):
     for shapeobj in groupobj[0].Group:
         edges.extend(shapeobj.Shape.Edges)
     faces = edgestofaces(edges)
-        # in order to allow multiple import with the same layer name
-        # we need to remove used objects from the layer group
-        #shapeobj.Document.removeObject(shapeobj.Name)
-    #groupobj[0].Document.removeObject(groupobj[0].Name)
+    # in order to allow multiple import with the same layer name
+    # we need to remove used objects from the layer group
+    container = None
     for layer in layers: #remove everything that has been imported
+        if container is None:
+            container = layer.getParentGroup()
         removeOp = getattr(layer, "removeObjectsFromDocument", None)
         if callable(removeOp):
             layer.removeObjectsFromDocument()
-        #for obj in layer.Group:
-        #    obj.Document.removeObject(obj.Name)
+        for obj in layer.Group:
+            obj.Document.removeObject(obj.Name)
         layer.Document.removeObject(layer.Name)
+    container.Document.removeObject(container.Name)
     return faces

@@ -42,9 +42,7 @@ FeatureReference::FeatureReference()
     ADD_PROPERTY(Reference, (nullptr));
 }
 
-FeatureReference::~FeatureReference()
-{
-}
+FeatureReference::~FeatureReference() = default;
 
 short FeatureReference::mustExecute() const
 {

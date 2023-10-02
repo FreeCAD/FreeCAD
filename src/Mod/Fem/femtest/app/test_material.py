@@ -23,7 +23,7 @@
 
 __title__ = "Material FEM unit tests"
 __author__ = "Bernd Hahnebach"
-__url__ = "https://www.freecadweb.org"
+__url__ = "https://www.freecad.org"
 
 import unittest
 from os.path import join
@@ -77,7 +77,7 @@ class TestMaterialUnits(unittest.TestCase):
             self.assertTrue(
                 checkparamunit(param),
                 "Unit of quantity material parameter {} "
-                "is not known by FreeCAD unit system."
+                "is unknown to the FreeCAD unit system."
                 .format(param)
             )
 

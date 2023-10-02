@@ -23,12 +23,11 @@
 
 __title__ = "FreeCAD FEM calculix constraint fluidsection"
 __author__ = "Bernd Hahnebach"
-__url__ = "https://www.freecadweb.org"
+__url__ = "https://www.freecad.org"
 
 
 import codecs
 import os
-import six
 from os.path import join
 
 import FreeCAD
@@ -61,8 +60,7 @@ def handle_fluidsection_liquid_inlet_outlet(inpfile, ccxwriter):
     def get_fluidsection_inoutlet_obj_if_setdata(matgeoset):
         if (
             matgeoset["ccx_elset"]
-            # use six to be sure to be Python 2.7 and 3.x compatible
-            and not isinstance(matgeoset["ccx_elset"], six.string_types)
+            and not isinstance(matgeoset["ccx_elset"], str)
             and "fluidsection_obj" in matgeoset  # fluid mesh
         ):
             fluidsec_obj = matgeoset["fluidsection_obj"]

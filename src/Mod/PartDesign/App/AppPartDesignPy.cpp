@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2008 Jürgen Riegel (juergen.riegel@web.de)              *
+ *   Copyright (c) 2008 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -39,8 +39,6 @@ public:
         );
         initialize("This module is the PartDesign module."); // register with Python
     }
-
-    ~Module() override {}
 
 private:
     Py::Object makeFilletArc(const Py::Tuple& args)

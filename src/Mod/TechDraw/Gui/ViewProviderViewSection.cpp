@@ -30,19 +30,24 @@
 # endif
 #endif
 
-#include <App/Application.h>
 #include <App/DocumentObject.h>
 #include <Base/Parameter.h>
 #include <Gui/Control.h>
 #include <Gui/Selection.h>
 
+#include <Mod/TechDraw/App/DrawComplexSection.h>
 #include <Mod/TechDraw/App/DrawGeomHatch.h>
 #include <Mod/TechDraw/App/DrawHatch.h>
+#include <Mod/TechDraw/App/Preferences.h>
+
 
 #include "TaskSectionView.h"
+#include "TaskComplexSection.h"
 #include "ViewProviderViewSection.h"
 #include "QGIView.h"
 
+
+using namespace TechDraw;
 using namespace TechDrawGui;
 
 PROPERTY_SOURCE(TechDrawGui::ViewProviderViewSection, TechDrawGui::ViewProviderViewPart)
@@ -97,7 +102,8 @@ void ViewProviderViewSection::updateData(const App::Property* prop)
     if (prop == &(getViewObject()->FileHatchPattern)   ||
         prop == &(getViewObject()->CutSurfaceDisplay)    ||
         prop == &(getViewObject()->NameGeomPattern)    ||
-        prop == &(getViewObject()->HatchScale)   ) {
+        prop == &(getViewObject()->HatchScale)  ||
+        prop == &(getViewObject()->HatchRotation) ) {
         updateGraphic();
     }
 
@@ -123,6 +129,12 @@ bool ViewProviderViewSection::setEdit(int ModNum)
     }
     // clear the selection (convenience)
     Gui::Selection().clearSelection();
+
+    auto dcs = dynamic_cast<TechDraw::DrawComplexSection*>(getViewObject());
+    if (dcs) {
+        Gui::Control().showDialog(new TaskDlgComplexSection(dcs));
+        return true;
+    }
     Gui::Control().showDialog(new TaskDlgSectionView(getViewObject()));
     return true;
 }
@@ -133,20 +145,15 @@ bool ViewProviderViewSection::doubleClicked()
     return true;
 }
 
-
 void ViewProviderViewSection::getParameters()
 {
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
-        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Colors");
-    App::Color cutColor = App::Color((uint32_t) hGrp->GetUnsigned("CutSurfaceColor", 0xD3D3D3FF));
+    App::Color cutColor = App::Color((uint32_t) Preferences::getPreferenceGroup("Colors")->GetUnsigned("CutSurfaceColor", 0xD3D3D3FF));
     CutSurfaceColor.setValue(cutColor);
 
 //    App::Color hatchColor = App::Color((uint32_t) hGrp->GetUnsigned("SectionHatchColor", 0x00000000));
 //    HatchColor.setValue(hatchColor);
 
-    hGrp = App::GetApplication().GetUserParameter()
-        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/PAT");
-    double lineWeight = hGrp->GetFloat("GeomWeight", 0.1);
+    double lineWeight = Preferences::getPreferenceGroup("PAT")->GetFloat("GeomWeight", 0.1);
     WeightPattern.setValue(lineWeight);
 }
 

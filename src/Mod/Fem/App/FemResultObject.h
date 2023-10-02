@@ -24,7 +24,6 @@
 #define Fem_FemResultObject_H
 
 #include <App/DocumentObject.h>
-#include <App/PropertyStandard.h>
 #include <App/FeaturePython.h>
 #include <Mod/Fem/FemGlobal.h>
 
@@ -32,7 +31,7 @@
 namespace Fem
 {
 /// Father of all result data in a Fem Analysis
-class FemExport FemResultObject : public App::DocumentObject
+class FemExport FemResultObject: public App::DocumentObject
 {
     PROPERTY_HEADER_WITH_OVERRIDE(Fem::FemResultObject);
 
@@ -51,20 +50,22 @@ public:
     /// Displacement vectors of analysis
 
     /// returns the type name of the ViewProvider
-    const char* getViewProviderName() const override {
+    const char* getViewProviderName() const override
+    {
         return "FemGui::ViewProviderResult";
     }
-    App::DocumentObjectExecReturn *execute() override {
+    App::DocumentObjectExecReturn* execute() override
+    {
         return App::DocumentObject::StdReturn;
     }
     short mustExecute() const override;
-    PyObject *getPyObject() override;
+    PyObject* getPyObject() override;
 };
 
 using FemResultObjectPython = App::FeaturePythonT<FemResultObject>;
 
 
-} //namespace Fem
+}  // namespace Fem
 
 
-#endif // Fem_FemResultObject_H
+#endif  // Fem_FemResultObject_H

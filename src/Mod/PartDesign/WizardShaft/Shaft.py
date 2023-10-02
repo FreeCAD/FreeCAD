@@ -44,14 +44,14 @@ class Shaft:
     sigmaNstr = ["sigmax","sigmay","sigmaz"] # Normal/shear stresses
     sigmaBstr = ["taut","sigmabz", "sigmaby"] # Torsion/bending stresses
     # For diagram labeling
-    Qstrings = (("Normal force [x]",  "x", "mm", "N_x",  "N"), 
-                        ("Shear force [y]",  "x",  "mm",  "Q_y",  "N"), 
+    Qstrings = (("Normal force [x]",  "x", "mm", "N_x",  "N"),
+                        ("Shear force [y]",  "x",  "mm",  "Q_y",  "N"),
                         ("Shear force [z]",  "x",  "mm",  "Q_z",  "N"))
-    Mstrings = (("Torque [x]",  "x", "mm", "M_t",  "Nm"), 
-                        ("Bending moment [z]",  "x",  "mm",  "M_{b,z}",  "Nm"), 
+    Mstrings = (("Torque [x]",  "x", "mm", "M_t",  "Nm"),
+                        ("Bending moment [z]",  "x",  "mm",  "M_{b,z}",  "Nm"),
                         ("Bending moment [y]",  "x",  "mm",  "M_{b,y}",  "Nm"))
-    wstrings = (("",  "",  "",  "",  ""), 
-                        ("Translation [y]",  "x",  "mm",  "w_y",  "mm"), 
+    wstrings = (("",  "",  "",  "",  ""),
+                        ("Translation [y]",  "x",  "mm",  "w_y",  "mm"),
                         ("Translation [z]",  "x",  "mm",  "w_z",  "mm"))
     sigmaNstrings =  (("Normal stress [x]",  "x", "mm", "\\sigma_x",  u"N/mm²"),
                         ("Shear stress [y]",  "x",  "mm",  "\\sigma_y",  u"N/mm²"),
@@ -94,18 +94,18 @@ class Shaft:
                 self.segments[index].constraint.References = [( self.feature.feature,  "Face%u" % (2 * (index+1) + 1) )]
             else:
                 # Remove reference since it is now in the middle of the shaft (which is not allowed)
-                self.segments[index].constraint.References = [(None,  "")]           
+                self.segments[index].constraint.References = [(None,  "")]
 
     def updateSegment(self, index, length = None, diameter = None, innerdiameter = None):
         oldLength = self.segments[index].length
-            
+
         if length is not None:
             self.segments[index].length = length
         if diameter is not None:
             self.segments[index].diameter = diameter
         if innerdiameter is not None:
             self.segments[index].innerdiameter = innerdiameter
-        
+
         self.feature.updateSegment(index, oldLength, self.segments[index].length, self.segments[index].diameter, self.segments[index].innerdiameter)
         self.equilibrium()
         self.updateDiagrams()
@@ -116,14 +116,14 @@ class Shaft:
             if (self.segments[index].constraintType != "None") and (self.segments[index].constraintType != constraintType):
                 self.doc.removeObject(self.segments[index].constraint.Name)
                 self.segments[index].constraint = None
-            
-            self.segments[index].constraintType = constraintType   
-            
+
+            self.segments[index].constraintType = constraintType
+
             # Create constraint if it does not exist yet or has changed
             if self.segments[index].constraint is None:
                 if (constraintType == "Force"):
                     # TODO: Create a reference point and put the force onto it
-                    constraint = self.doc.addObject("Fem::ConstraintForce","ShaftConstraintForce") 
+                    constraint = self.doc.addObject("Fem::ConstraintForce","ShaftConstraintForce")
                     constraint.Force = 1000.0
                     self.segments[index].constraint = constraint
                 elif (constraintType == "Fixed"):
@@ -136,26 +136,26 @@ class Shaft:
                     self.segments[index].constraint = constraint
                 elif (constraintType == "Bearing"):
                     # TODO: Use robust reference as soon as it is available for the cylindrical face reference
-                    constraint = self.doc.addObject("Fem::ConstraintBearing","ShaftConstraintBearing")                    
-                    constraint.References = [( self.feature.feature,  "Face%u" % (2 * (index+1)) )]         
+                    constraint = self.doc.addObject("Fem::ConstraintBearing","ShaftConstraintBearing")
+                    constraint.References = [( self.feature.feature,  "Face%u" % (2 * (index+1)) )]
                     constraint.AxialFree = True
-                    self.segments[index].constraint = constraint                    
+                    self.segments[index].constraint = constraint
                 elif (constraintType == "Pulley"):
                     constraint= self.doc.addObject("Fem::ConstraintPulley","ShaftConstraintPulley")
-                    constraint.References = [( self.feature.feature,  "Face%u" % (2 * (index+1)) )]               
-                    self.segments[index].constraint = constraint                    
+                    constraint.References = [( self.feature.feature,  "Face%u" % (2 * (index+1)) )]
+                    self.segments[index].constraint = constraint
                 elif (constraintType == "Gear"):
-                    constraint = self.doc.addObject("Fem::ConstraintGear","ShaftConstraintGear")       
-                    constraint.References = [( self.feature.feature,  "Face%u" % (2 * (index+1)) )]               
-                    self.segments[index].constraint = constraint                      
-            
+                    constraint = self.doc.addObject("Fem::ConstraintGear","ShaftConstraintGear")
+                    constraint.References = [( self.feature.feature,  "Face%u" % (2 * (index+1)) )]
+                    self.segments[index].constraint = constraint
+
         self.equilibrium()
         self.updateDiagrams()
-        
+
     def editConstraint(self,  index):
         if (self.segments[index].constraint is not None):
             FreeCADGui.activeDocument().setEdit(self.segments[index].constraint.Name)
-        
+
     def getConstraint(self,  index):
         return self.segments[index].constraint
 
@@ -193,7 +193,7 @@ class Shaft:
         # FIXME: This is impossible without robust references anchored in the sketch!!!
         return
 
-    def updateDiagrams(self):                            
+    def updateDiagrams(self):
         for ax in range(3):
             if self.F[ax] is not None:
                 if self.F[ax].name in self.diagrams:
@@ -211,7 +211,7 @@ class Shaft:
                 if self.sigmaB[ax].name in self.diagrams:
                     self.diagrams[self.sigmaB[ax].name].update(self.sigmaB[ax], self.getLengthTo(len(self.segments)) / 1000.0)
 
-    def showDiagram(self,  which):                
+    def showDiagram(self,  which):
         if which in self.Fstr:
             ax = self.Fstr.index(which)
             text = self.Qstrings[ax]
@@ -277,13 +277,13 @@ class Shaft:
                 return
             self.diagrams[self.sigmaB[ax].name] = Diagram()
             self.diagrams[self.sigmaB[ax].name].create(text[0], self.sigmaB[ax], self.getLengthTo(len(self.segments)) / 1000.0, text[1], text[2], 1000.0, text[3], text[4], 1.0E-6, 20)
-    
+
     def addTo(self,  dict,  location,  value):
         if location not in dict:
             dict[location] = value
         else:
             dict[location] += value
-    
+
     def equilibrium(self):
         # Build equilibrium equations
         try:
@@ -291,20 +291,20 @@ class Shaft:
         except ImportError:
             FreeCAD.Console.PrintMessage("numpy is not installed on your system\n")
             raise ImportError("numpy not installed")
-                
+
         # Initialization of structures. All three axes are handled separately so everything is 3-fold
         # dictionaries of (location : outer force/moment) with reverse sign, which means that the segment functions for the section force and section moment
-        # created from them will have signs as by the convention in 
+        # created from them will have signs as by the convention in
         # http://www.umwelt-campus.de/ucb/fileadmin/users/90_t.preussler/dokumente/Skripte/TEMECH/TMI/Ebene_Balkenstatik.pdf (page 10)
         # (see also example on page 19)
-        forces = [{0.0:0.0},  {0.0:0.0},  {0.0:0.0}] 
+        forces = [{0.0:0.0},  {0.0:0.0},  {0.0:0.0}]
         moments = [{0.0:0.0},  {0.0:0.0},  {0.0:0.0}]
         # Boundary conditions for shaft bending line
         tangents = [[],  [],  []] # Tangents to shaft bending line
         translations = [[],  [],  []] # Shaft displacement
-        # Variable names, e.g. Fx, Mz. Because the system must be exactly determined, not more than two independent variables for each 
+        # Variable names, e.g. Fx, Mz. Because the system must be exactly determined, not more than two independent variables for each
         # force/moment per axis are possible (if there are more no solution is calculated)
-        variableNames = [[""],  [""], [""]] 
+        variableNames = [[""],  [""], [""]]
         # # dictionary of (variableName : location) giving the x-coordinate at which the force/moment represented by the variable acts on the shaft
         locations = {}
         # Coefficients of the equilibrium equations in the form a = b * F1 + c * F2 and d = e * M1 + f * M2
@@ -315,58 +315,58 @@ class Shaft:
         for i in range(len(self.segments)):
             cType = self.segments[i].constraintType
             constraint = self.segments[i].constraint
-            
+
             if cType == "Fixed":
                 # Fixed segment
                 if i == 0:
                     # At beginning of shaft
-                    location = 0                    
+                    location = 0
                 elif i == len(self.segments) - 1:
                     # At end of shaft
-                    location = self.getLengthTo(len(self.segments)) / 1000.0 # convert to meters                    
+                    location = self.getLengthTo(len(self.segments)) / 1000.0 # convert to meters
                 else:
                     # TODO: Better error message
                     FreeCAD.Console.PrintMessage("Fixed constraint must be at beginning or end of shaft\n")
                     return
-                    
-                for ax in range(3):        
+
+                for ax in range(3):
                     # Create a new reaction force
                     variableNames[ax].append("%s%u" % (self.Fstr[ax], i))
                     coefficientsF[ax].append(1)
-                    # Register location of reaction force             
+                    # Register location of reaction force
                     locations["%s%u" % (self.Fstr[ax], i)] = location
                     # Boundary conditions for the translations
                     tangents[ax].append((location,  0.0))
                     translations[ax].append((location,  0.0))
                 coefficientsM[0].append(0) # Reaction force contributes no moment around x axis
                 coefficientsM[1].append(location) # Reaction force contributes a positive moment around z axis
-                coefficientsM[2].append(-location) # Reaction force contributes a negative moment around y axis  
-                
+                coefficientsM[2].append(-location) # Reaction force contributes a negative moment around y axis
+
                 for ax in range(3):
                     # Create a new reaction moment
                     variableNames[ax].append("%s%u" % (self.Mstr[ax], i))
                     coefficientsF[ax].append(0)
-                    coefficientsM[ax].append(1)                                   
+                    coefficientsM[ax].append(1)
                     locations["%s%u" % (self.Mstr[ax], i)] = location
-                    
+
             elif cType == "Force":
                 # Static force (currently force on midpoint of segment only)
-                force = constraint.DirectionVector.multiply(constraint.Force)                
+                force = constraint.DirectionVector.multiply(constraint.Force)
                 # TODO: Extract value of the location from geometry
                 location = (self.getLengthTo(i) + self.segments[i].length/2.0)  / 1000.0
                 # The force itself
-                for ax in range(3): 
+                for ax in range(3):
                     if abs(force[ax]) > 0.0:
                         coefficientsF[ax][0] = coefficientsF[ax][0] - force[ax] # neg. because this coefficient is on the LHS of the equilibrium equation
                         self.addTo(forces[ax],  location,  -force[ax]) # neg. to fulfill the convention mentioned above
-                # Moments created by the force (by definition no moment is created by the force in x-direction)                
+                # Moments created by the force (by definition no moment is created by the force in x-direction)
                 if abs(force[1]) > 0.0:
                     coefficientsM[1][0] = coefficientsM[1][0] - force[1] * location # moment around z-axis
                     self.addTo(moments[1],  location,  0)
                 if abs(force[2]) > 0.0:
                     coefficientsM[2][0] = coefficientsM[2][0] + force[2] * location # moment around y-axis
                     self.addTo(moments[2],  location,  0) # No outer moment acts here!
-                    
+
             elif cType == "Bearing":
                  location = constraint.BasePoint.x / 1000.0 # TODO: This assumes that the shaft feature starts with the first segment at (0,0,0)  and its axis corresponds to the x-axis
                  # Bearing reaction forces. TODO: the bearing is assumed to not induce any reaction moments
@@ -380,28 +380,28 @@ class Shaft:
                  if constraint.AxialFree == False:
                     coefficientsM[0].append(0)             # Reaction force contributes no moment around x axis
                  coefficientsM[1].append(location) # Reaction force contributes a positive moment around z axis
-                 coefficientsM[2].append(-location) # Reaction force contributes a negative moment around y axis                 
-                
+                 coefficientsM[2].append(-location) # Reaction force contributes a negative moment around y axis
+
             elif cType == "Gear":
-                force = constraint.DirectionVector.multiply(constraint.Force) 
+                force = constraint.DirectionVector.multiply(constraint.Force)
                 location = constraint.BasePoint.x / 1000.0
-                lever = [0,  constraint.Diameter/2.0/1000.0 * math.sin(constraint.ForceAngle / 180.0 * math.pi),  
+                lever = [0,  constraint.Diameter/2.0/1000.0 * math.sin(constraint.ForceAngle / 180.0 * math.pi),
                                     constraint.Diameter/2.0 /1000.0* math.cos(constraint.ForceAngle / 180.0 * math.pi)]
-                
+
                 # Effect of the gear force
                 for ax in range(3):
                     if abs(force[ax]) > 0.0:
                         # Effect of the force
                         coefficientsF[ax][0] = coefficientsF[ax][0] - force[ax]
                         self.addTo(forces[ax],  location,  -force[ax])
-                # Moments created by the force (by definition no moment is created by the force in x-direction)                
+                # Moments created by the force (by definition no moment is created by the force in x-direction)
                 if abs(force[1]) > 0.0:
                     coefficientsM[1][0] = coefficientsM[1][0] - force[1] * location # moment around z-axis
                     self.addTo(moments[1],  location,  0)
                 if abs(force[2]) > 0.0:
                     coefficientsM[2][0] = coefficientsM[2][0] + force[2] * location # moment around y-axis
                     self.addTo(moments[2],  location,  0) # No outer moment acts here!
-                
+
                 # Moments created by the force and lever
                 if abs(force[0]) > 0.0:
                     momenty = force[0] * lever[2]
@@ -409,7 +409,7 @@ class Shaft:
                     coefficientsM[1][0] = coefficientsM[1][0] + momentz # moment around z-axis
                     self.addTo(moments[1],  location,  momentz)
                     coefficientsM[2][0] = coefficientsM[2][0] - momenty # moment around y-axis
-                    self.addTo(moments[2],  location,  -momenty)         
+                    self.addTo(moments[2],  location,  -momenty)
                 if abs(force[1]) > 0.0:
                     moment = force[1] * lever[2]
                     coefficientsM[0][0] = coefficientsM[0][0] + moment
@@ -423,26 +423,26 @@ class Shaft:
                 forceAngle2 = (constraint.ForceAngle - constraint.BeltAngle + 90.0) / 180.0 * math.pi
                 #FreeCAD.Console.PrintMessage("BeltForce1: %f, BeltForce2: %f\n" % (constraint.BeltForce1,  constraint.BeltForce2))
                 #FreeCAD.Console.PrintMessage("Angle1: %f, Angle2: %f\n" % (forceAngle1,  forceAngle2))
-                force = [0,  -constraint.BeltForce1 * math.sin(forceAngle1) - constraint.BeltForce2 * math.sin(forceAngle2), 
+                force = [0,  -constraint.BeltForce1 * math.sin(forceAngle1) - constraint.BeltForce2 * math.sin(forceAngle2),
                                    constraint.BeltForce1 * math.cos(forceAngle1) + constraint.BeltForce2 * math.cos(forceAngle2)]
-                location = constraint.BasePoint.x / 1000.0                
-                
+                location = constraint.BasePoint.x / 1000.0
+
                 # Effect of the pulley forces
                 for ax in range(3):
                     if abs(force[ax]) > 0.0:
                         # Effect of the force
                         coefficientsF[ax][0] = coefficientsF[ax][0] - force[ax]
                         self.addTo(forces[ax],  location,  -force[ax])
-                # Moments created by the force (by definition no moment is created by the force in x-direction)                
+                # Moments created by the force (by definition no moment is created by the force in x-direction)
                 if abs(force[1] ) > 0.0:
                     coefficientsM[1][0] = coefficientsM[1][0] - force[1] * location # moment around z-axis
                     self.addTo(moments[1],  location,  0)
                 if abs(force[2]) > 0.0:
                     coefficientsM[2][0] = coefficientsM[2][0] + force[2] * location # moment around y-axis
                     self.addTo(moments[2],  location,  0) # No outer moment acts here!
-                
+
                 # Torque
-                moment = constraint.Force * (1 if constraint.IsDriven is True else -1) 
+                moment = constraint.Force * (1 if constraint.IsDriven is True else -1)
                 coefficientsM[0][0] = coefficientsM[0][0] + moment
                 self.addTo(moments[0],  location,  moment)
 
@@ -450,9 +450,9 @@ class Shaft:
         areamoments = [None,  None,  None]
         bendingmoments = [None,  None,  None]
         torquemoments = [None,  None,  None]
-        
+
         for ax in range(3):
-            FreeCAD.Console.PrintMessage("Axis: %u\n" %  ax) 
+            FreeCAD.Console.PrintMessage("Axis: %u\n" %  ax)
             self.printEquilibrium(variableNames[ax], coefficientsF[ax])
             self.printEquilibrium(variableNames[ax], coefficientsM[ax])
 
@@ -461,7 +461,7 @@ class Shaft:
                 FreeCAD.Console.PrintMessage("Matrix is singular, no solution possible\n")
                 self.parent.updateButtons(ax,  False)
                 continue
-                
+
             # Handle special cases. Note that the code above should ensure that coefficientsF and coefficientsM always have same length
             solution = [None,  None]
             if len(coefficientsF[ax]) == 2:
@@ -473,10 +473,10 @@ class Shaft:
                         FreeCAD.Console.PrintMessage("System is statically undetermined. No solution possible.\n")
                         self.parent.updateButtons(ax,  False)
                         continue
-            else:            
-                # Build matrix and vector for linear algebra solving algorithm           
+            else:
+                # Build matrix and vector for linear algebra solving algorithm
                # TODO: This could easily be done manually... there are only 2 variables and 6 coefficients
-                A = np.array([coefficientsF[ax][1:], coefficientsM[ax][1:]])                           
+                A = np.array([coefficientsF[ax][1:], coefficientsM[ax][1:]])
                 b = np.array([coefficientsF[ax][0], coefficientsM[ax][0]])
                 try:
                     solution = np.linalg.solve(A, b) # A * solution = b
@@ -500,12 +500,12 @@ class Shaft:
             FreeCAD.Console.PrintMessage("\n")
             FreeCAD.Console.PrintMessage(moments[ax])
             FreeCAD.Console.PrintMessage("\n")
-            
+
             # Forces
             self.F[ax] = SegmentFunction(self.Fstr[ax])
             self.F[ax].buildFromDict("x", forces[ax])
             self.parent.updateButton(1,  ax,  not self.F[ax].isZero())
-            self.F[ax].output()        
+            self.F[ax].output()
             # Moments
             if ax == 0:
                 self.M[0] = SegmentFunction(self.Mstr[0])
@@ -513,21 +513,21 @@ class Shaft:
             elif ax == 1:
                 self.M[1] = self.F[1].integrated().negate()
                 self.M[1].name = self.Mstr[1]
-                self.M[1].addSegments(moments[1]) # takes care of boundary conditions       
+                self.M[1].addSegments(moments[1]) # takes care of boundary conditions
             elif ax == 2:
-                self.M[2] = self.F[2].integrated()        
+                self.M[2] = self.F[2].integrated()
                 self.M[2].name = self.Mstr[2]
-                self.M[2].addSegments(moments[2]) # takes care of boundary conditions       
+                self.M[2].addSegments(moments[2]) # takes care of boundary conditions
             self.parent.updateButton(2,  ax,  not self.M[ax].isZero())
             self.M[ax].output()
-            
-            # Areas and area moments            
+
+            # Areas and area moments
             location = 0.0
             areas[ax] = IntervalFunction() # A [m²]
             areamoments[ax] = IntervalFunction() # I [m⁴]
             bendingmoments[ax] = IntervalFunction() # W_b [m³]
-            torquemoments[ax] = IntervalFunction() # W_t [m³]           
-            
+            torquemoments[ax] = IntervalFunction() # W_t [m³]
+
             for i in range(len(self.segments)):
                 od = self.segments[i].diameter/1000.0
                 id = self.segments[i].innerdiameter/1000.0
@@ -538,7 +538,7 @@ class Shaft:
                 bendingmoments[ax].addInterval(location,  length,  areamoment / (od / 2.0))
                 torquemoments[ax].addInterval(location,  length,  2 * (areamoment / (od / 2.0)))
                 location += length
-            
+
             # Bending line
             if ax > 0:
                 if len(tangents[ax])+ len(translations[ax]) == 2:
@@ -547,8 +547,8 @@ class Shaft:
                     self.w[ax].name= self.wstr[ax]
                     self.parent.updateButton(3,  ax,  not self.w[ax].isZero())
                 else:
-                    self.parent.updateButton(3,  ax,  False)                
-            
+                    self.parent.updateButton(3,  ax,  False)
+
             # Normal/shear stresses and torque/bending stresses
             self.sigmaN[ax] = StressFunction(self.F[ax],  areas[ax])
             self.sigmaN[ax].name = self.sigmaNstr[ax]
@@ -561,7 +561,7 @@ class Shaft:
             self.parent.updateButton(5,  ax,  not self.sigmaB[ax].isZero())
 
     def printEquilibrium(self, var, coeff):
-        # Auxiliary method for debugging purposes        
+        # Auxiliary method for debugging purposes
         for i in range(len(var)):
             if i == 0:
                 FreeCAD.Console.PrintMessage("%f = " % coeff[i])

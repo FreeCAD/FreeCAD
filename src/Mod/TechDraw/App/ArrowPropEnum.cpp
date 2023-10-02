@@ -22,23 +22,22 @@
 
 #include "PreCompiled.h"
 
-#ifndef _PreComp_
-#endif
-
 #include "ArrowPropEnum.h"
+
 
 namespace TechDraw {
 
 const int   ArrowPropEnum::ArrowCount = 8;
-const char* ArrowPropEnum::ArrowTypeEnums[]= { "Filled Arrow",
-                               "Open Arrow",
-                               "Tick",
-                               "Dot",
-                               "Open Circle",
-                               "Fork",
-                               "Filled Triangle",
-                               "None",
-                               nullptr};
+const char* ArrowPropEnum::ArrowTypeEnums[]= {
+    QT_TRANSLATE_NOOP("ArrowPropEnum", "Filled Arrow"),
+    QT_TRANSLATE_NOOP("ArrowPropEnum", "Open Arrow"),
+    QT_TRANSLATE_NOOP("ArrowPropEnum", "Tick"),
+    QT_TRANSLATE_NOOP("ArrowPropEnum", "Dot"),
+    QT_TRANSLATE_NOOP("ArrowPropEnum", "Open Circle"),
+    QT_TRANSLATE_NOOP("ArrowPropEnum", "Fork"),
+    QT_TRANSLATE_NOOP("ArrowPropEnum", "Filled Triangle"),
+    QT_TRANSLATE_NOOP("ArrowPropEnum", "None"),
+    nullptr};
 
 const std::vector<std::string> ArrowPropEnum::ArrowTypeIcons = { ":icons/arrowfilled.svg",
                                             ":icons/arrowopen.svg",

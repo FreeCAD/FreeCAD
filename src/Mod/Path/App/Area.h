@@ -23,22 +23,20 @@
 #ifndef PATH_AREA_H
 #define PATH_AREA_H
 
-#include <QCoreApplication>
 #include <chrono>
+#include <list>
 #include <memory>
 #include <vector>
-#include <list>
-#include <TopoDS.hxx>
-#include <gp_Pln.hxx>
-#include <gp_Circ.hxx>
-#include <gp_GTrsf.hxx>
 
-#include <Base/Console.h>
-#include <Mod/Part/App/TopoShape.h>
-#include <Mod/Part/App/PartPyCXX.h>
+#include <TopoDS.hxx>
+
 #include <Mod/Path/PathGlobal.h>
-#include "Path.h"
+#include <Mod/Part/App/PartPyCXX.h>
+#include <Mod/Part/App/TopoShape.h>
+
 #include "AreaParams.h"
+#include "Path.h"
+
 
 class CArea;
 class CCurve;
@@ -243,6 +241,10 @@ public:
         PARAM_ARGS_DEF(PARAM_FARG, AREA_PARAMS_SECTION_EXTRA),
         const std::vector<double>& heights = std::vector<double>(),
         const TopoDS_Shape& plane = TopoDS_Shape());
+
+    std::shared_ptr<Area> getClearedArea(double tipDiameter, double diameter);
+    std::shared_ptr<Area> getRestArea(std::vector<std::shared_ptr<Area>> clearedAreas, double diameter);
+    TopoDS_Shape toTopoShape();
 
     /** Config this Area object */
     void setParams(const AreaParams& params);

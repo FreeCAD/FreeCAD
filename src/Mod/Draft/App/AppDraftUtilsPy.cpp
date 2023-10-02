@@ -20,15 +20,11 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-#ifndef _PreComp_
-# include <Python.h>
-#endif
 
 #include <Base/Console.h>
 #include <Base/Interpreter.h>
-#include <App/Application.h>
+
 
 namespace DraftUtils {
 class Module : public Py::ExtensionModule<Module>
@@ -45,8 +41,6 @@ public:
         );
         initialize("The DraftUtils module contains utility functions for the Draft module."); // register with Python
     }
-
-    ~Module() override {}
 
 private:
     Py::Object readDXF(const Py::Tuple& /*args*/)

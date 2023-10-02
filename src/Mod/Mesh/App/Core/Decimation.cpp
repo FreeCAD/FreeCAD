@@ -20,30 +20,18 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-#ifndef _PreComp_
-#endif
 
 #include "Decimation.h"
 #include "MeshKernel.h"
-#include "Algorithm.h"
-#include "Iterator.h"
-#include "TopoAlgorithm.h"
-#include <Base/Tools.h>
 #include "Simplify.h"
 
 
 using namespace MeshCore;
 
 MeshSimplify::MeshSimplify(MeshKernel& mesh)
-  : myKernel(mesh)
-{
-}
-
-MeshSimplify::~MeshSimplify()
-{
-}
+    : myKernel(mesh)
+{}
 
 void MeshSimplify::simplify(float tolerance, float reduction)
 {
@@ -64,14 +52,16 @@ void MeshSimplify::simplify(float tolerance, float reduction)
         Simplify::Triangle t;
         t.deleted = 0;
         t.dirty = 0;
-        for (int j = 0; j < 4; j++)
-            t.err[j] = 0.0;
-        for (int j = 0; j < 3; j++)
+        for (double& j : t.err) {
+            j = 0.0;
+        }
+        for (int j = 0; j < 3; j++) {
             t.v[j] = facets[i]._aulPoints[j];
+        }
         alg.triangles.push_back(t);
     }
 
-    int target_count = static_cast<int>(static_cast<float>(facets.size()) * (1.0f-reduction));
+    int target_count = static_cast<int>(static_cast<float>(facets.size()) * (1.0f - reduction));
 
     // Simplification starts
     alg.simplify_mesh(target_count, tolerance);
@@ -79,23 +69,24 @@ void MeshSimplify::simplify(float tolerance, float reduction)
     // Simplification done
     MeshPointArray new_points;
     new_points.reserve(alg.vertices.size());
-    for (std::size_t i = 0; i < alg.vertices.size(); i++) {
-        new_points.push_back(alg.vertices[i].p);
+    for (const auto& vertex : alg.vertices) {
+        new_points.push_back(vertex.p);
     }
 
     std::size_t numFacets = 0;
-    for (std::size_t i = 0; i < alg.triangles.size(); i++) {
-        if (!alg.triangles[i].deleted)
+    for (const auto& triangle : alg.triangles) {
+        if (!triangle.deleted) {
             numFacets++;
+        }
     }
     MeshFacetArray new_facets;
     new_facets.reserve(numFacets);
-    for (std::size_t i = 0; i < alg.triangles.size(); i++) {
-        if (!alg.triangles[i].deleted) {
+    for (const auto& triangle : alg.triangles) {
+        if (!triangle.deleted) {
             MeshFacet face;
-            face._aulPoints[0] = alg.triangles[i].v[0];
-            face._aulPoints[1] = alg.triangles[i].v[1];
-            face._aulPoints[2] = alg.triangles[i].v[2];
+            face._aulPoints[0] = triangle.v[0];
+            face._aulPoints[1] = triangle.v[1];
+            face._aulPoints[2] = triangle.v[2];
             new_facets.push_back(face);
         }
     }
@@ -122,10 +113,12 @@ void MeshSimplify::simplify(int targetSize)
         Simplify::Triangle t;
         t.deleted = 0;
         t.dirty = 0;
-        for (int j = 0; j < 4; j++)
-            t.err[j] = 0.0;
-        for (int j = 0; j < 3; j++)
+        for (double& j : t.err) {
+            j = 0.0;
+        }
+        for (int j = 0; j < 3; j++) {
             t.v[j] = facets[i]._aulPoints[j];
+        }
         alg.triangles.push_back(t);
     }
 
@@ -135,23 +128,24 @@ void MeshSimplify::simplify(int targetSize)
     // Simplification done
     MeshPointArray new_points;
     new_points.reserve(alg.vertices.size());
-    for (std::size_t i = 0; i < alg.vertices.size(); i++) {
-        new_points.push_back(alg.vertices[i].p);
+    for (const auto& vertex : alg.vertices) {
+        new_points.push_back(vertex.p);
     }
 
     std::size_t numFacets = 0;
-    for (std::size_t i = 0; i < alg.triangles.size(); i++) {
-        if (!alg.triangles[i].deleted)
+    for (const auto& triangle : alg.triangles) {
+        if (!triangle.deleted) {
             numFacets++;
+        }
     }
     MeshFacetArray new_facets;
     new_facets.reserve(numFacets);
-    for (std::size_t i = 0; i < alg.triangles.size(); i++) {
-        if (!alg.triangles[i].deleted) {
+    for (const auto& triangle : alg.triangles) {
+        if (!triangle.deleted) {
             MeshFacet face;
-            face._aulPoints[0] = alg.triangles[i].v[0];
-            face._aulPoints[1] = alg.triangles[i].v[1];
-            face._aulPoints[2] = alg.triangles[i].v[2];
+            face._aulPoints[0] = triangle.v[0];
+            face._aulPoints[1] = triangle.v[1];
+            face._aulPoints[2] = triangle.v[2];
             new_facets.push_back(face);
         }
     }

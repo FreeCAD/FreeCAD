@@ -9,14 +9,13 @@ if (NOT IS_SUB_PROJECT)
     set(CMAKE_INCLUDE_CURRENT_DIR ON)
     set(CMAKE_AUTOMOC ON)
 
-    find_package(Qt5Widgets REQUIRED)
-    find_package(Qt5Designer REQUIRED)
+    find_package(Qt${FREECAD_QT_MAJOR_VERSION} COMPONENTS Core Designer Widgets REQUIRED)
 endif()
 
 include_directories(
-    ${Qt5Core_INCLUDE_DIRS}
-    ${Qt5Widgets_INCLUDE_DIRS}
-    ${Qt5Designer_INCLUDE_DIRS}
+    ${Qt${FREECAD_QT_MAJOR_VERSION}Core_INCLUDE_DIRS}
+    ${Qt${FREECAD_QT_MAJOR_VERSION}Widgets_INCLUDE_DIRS}
+    ${Qt${FREECAD_QT_MAJOR_VERSION}Designer_INCLUDE_DIRS}
 )
 
 add_library(FreeCAD_widgets SHARED
@@ -27,8 +26,8 @@ add_library(FreeCAD_widgets SHARED
 )
 
 set(FreeCAD_widgets_LIBS
-    ${Qt5Widgets_LIBRARIES}
-    ${Qt5Designer_LIBRARIES}
+    ${Qt${FREECAD_QT_MAJOR_VERSION}Widgets_LIBRARIES}
+    ${Qt${FREECAD_QT_MAJOR_VERSION}Designer_LIBRARIES}
 )
 
 if(MSVC)
@@ -57,7 +56,7 @@ target_compile_options(FreeCAD_widgets PRIVATE ${COMPILE_OPTIONS})
 
 
 # Get the install location of a plugin to determine the path to designer plguins
-get_target_property(QMAKE_EXECUTABLE Qt5::qmake LOCATION)
+get_target_property(QMAKE_EXECUTABLE Qt${FREECAD_QT_MAJOR_VERSION}::qmake LOCATION)
 exec_program(${QMAKE_EXECUTABLE} ARGS "-query QT_INSTALL_PLUGINS" RETURN_VALUE return_code OUTPUT_VARIABLE DEFAULT_QT_PLUGINS_DIR )
 set(DESIGNER_PLUGIN_LOCATION ${DEFAULT_QT_PLUGINS_DIR}/designer CACHE PATH "Path where the plugin will be installed to")
 

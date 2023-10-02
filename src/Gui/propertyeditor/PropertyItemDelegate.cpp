@@ -49,9 +49,7 @@ PropertyItemDelegate::PropertyItemDelegate(QObject* parent)
 {
 }
 
-PropertyItemDelegate::~PropertyItemDelegate()
-{
-}
+PropertyItemDelegate::~PropertyItemDelegate() = default;
 
 QSize PropertyItemDelegate::sizeHint(const QStyleOptionViewItem & option, const QModelIndex & index) const
 {
@@ -64,7 +62,7 @@ void PropertyItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
 {
     QStyleOptionViewItem option = opt;
 
-    PropertyItem *property = static_cast<PropertyItem*>(index.internalPointer());
+    auto property = static_cast<PropertyItem*>(index.internalPointer());
 
     if (property && property->isSeparator()) {
         QColor color = option.palette.color(QPalette::BrightText);
@@ -127,14 +125,14 @@ bool PropertyItemDelegate::editorEvent (QEvent * event, QAbstractItemModel* mode
 bool PropertyItemDelegate::eventFilter(QObject *o, QEvent *ev)
 {
     if (ev->type() == QEvent::FocusOut) {
-        PropertyEditor *parentEditor = qobject_cast<PropertyEditor*>(this->parent());
+        auto parentEditor = qobject_cast<PropertyEditor*>(this->parent());
         auto widget = qobject_cast<QWidget*>(o);
         if (widget && parentEditor && parentEditor->activeEditor
                    && widget != parentEditor->activeEditor) {
             // All the attempts to ignore the focus-out event has been approved to not work
             // reliably because there are still cases that cannot be handled.
             // So, the best for now is to always ignore this event.
-            // See https://forum.freecadweb.org/viewtopic.php?p=579530#p579530 why this is not
+            // See https://forum.freecad.org/viewtopic.php?p=579530#p579530 why this is not
             // possible.
             return false;
         }
@@ -148,11 +146,11 @@ QWidget * PropertyItemDelegate::createEditor (QWidget * parent, const QStyleOpti
     if (!index.isValid())
         return nullptr;
 
-    PropertyItem *childItem = static_cast<PropertyItem*>(index.internalPointer());
+    auto childItem = static_cast<PropertyItem*>(index.internalPointer());
     if (!childItem)
         return nullptr;
 
-    PropertyEditor *parentEditor = qobject_cast<PropertyEditor*>(this->parent());
+    auto parentEditor = qobject_cast<PropertyEditor*>(this->parent());
     if(parentEditor)
         parentEditor->closeEditor();
 
@@ -222,7 +220,7 @@ void PropertyItemDelegate::setEditorData(QWidget *editor, const QModelIndex &ind
     if (!index.isValid())
         return;
     QVariant data = index.data(Qt::EditRole);
-    PropertyItem *childItem = static_cast<PropertyItem*>(index.internalPointer());
+    auto childItem = static_cast<PropertyItem*>(index.internalPointer());
     editor->blockSignals(true);
     if (expressionEditor == editor)
         childItem->setExpressionEditorData(editor, data);
@@ -238,7 +236,7 @@ void PropertyItemDelegate::setModelData(QWidget* editor, QAbstractItemModel* mod
 {
     if (!index.isValid() || !changed || userEditor)
         return;
-    PropertyItem *childItem = static_cast<PropertyItem*>(index.internalPointer());
+    auto childItem = static_cast<PropertyItem*>(index.internalPointer());
     QVariant data;
     if(expressionEditor == editor)
         data = childItem->expressionEditorData(editor);

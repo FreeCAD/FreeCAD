@@ -22,35 +22,16 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-#include <cmath>
-#include <QAction>
-#include <QApplication>
-#include <QContextMenuEvent>
-#include <QFile>
-#include <QFileInfo>
-#include <QGraphicsScene>
-#include <QMenu>
-#include <QMouseEvent>
-#include <QGraphicsSceneHoverEvent>
-#include <QPainterPathStroker>
-#include <QPainter>
-#include <QPainterPath>
-#include <QTextOption>
+# include <cmath>
 #endif
 
-#include <qmath.h>
-
-#include <Base/Console.h>
-#include <App/Material.h>
-
-#include <Mod/TechDraw/App/DrawGeomHatch.h>
 #include <Mod/TechDraw/App/DrawViewSection.h>
 
-
-#include "ZVALUE.h"
-#include "ViewProviderViewSection.h"
-#include "QGIFace.h"
 #include "QGIViewSection.h"
+#include "QGIFace.h"
+#include "ViewProviderViewSection.h"
+#include "ZVALUE.h"
+
 
 using namespace TechDrawGui;
 
@@ -117,7 +98,8 @@ void QGIViewSection::drawSectionFace()
             newFace->setFillMode(QGIFace::SvgFill);
             newFace->setHatchColor(sectionVp->HatchColor.getValue());
             newFace->setHatchScale(section->HatchScale.getValue());
-//                std::string hatchSpec = section->FileHatchPattern.getValue();
+            newFace->setHatchRotation(section->HatchRotation.getValue());
+            newFace->setHatchOffset(section->HatchOffset.getValue());
             std::string hatchSpec = section->SvgIncluded.getValue();
             newFace->setHatchFile(hatchSpec);
         } else if (section->CutSurfaceDisplay.isValue("PatHatch")) {
@@ -126,6 +108,8 @@ void QGIViewSection::drawSectionFace()
             newFace->setHatchColor(sectionVp->GeomHatchColor.getValue());
             newFace->setHatchScale(section->HatchScale.getValue());
             newFace->setLineWeight(sectionVp->WeightPattern.getValue());
+            newFace->setHatchRotation(section->HatchRotation.getValue());
+            newFace->setHatchOffset(section->HatchOffset.getValue());
             std::vector<TechDraw::LineSet> lineSets = section->getDrawableLines(i);
             if (!lineSets.empty()) {
                 newFace->clearLineSets();
@@ -154,11 +138,3 @@ void QGIViewSection::updateView(bool update)
     draw();
     QGIView::updateView(update);
 }
-
-void QGIViewSection::drawSectionLine(TechDraw::DrawViewSection* s, bool b)
-{
-    Q_UNUSED(b);
-    Q_UNUSED(s);
-   //override QGIVP::drawSectionLine
-}
-

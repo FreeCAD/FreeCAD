@@ -22,29 +22,27 @@
 
 #include "PreCompiled.h"
 
-#ifndef _PreComp_
-#endif
+#include <App/Range.h>
+#include <Base/Reader.h>
+#include <Base/Writer.h>
 
 #include "PropertyColumnWidths.h"
-#include <Base/Writer.h>
-#include <Base/Reader.h>
-#include <App/Range.h>
+#include "PropertyColumnWidthsPy.h"
 #include "Utils.h"
-#include <PropertyColumnWidthsPy.h>
+
 
 using namespace Spreadsheet;
 
 const int PropertyColumnWidths::defaultWidth = 100;
 const int PropertyColumnWidths::defaultHeaderWidth = 50;
 
-TYPESYSTEM_SOURCE(Spreadsheet::PropertyColumnWidths , App::Property)
+TYPESYSTEM_SOURCE(Spreadsheet::PropertyColumnWidths, App::Property)
 
-PropertyColumnWidths::PropertyColumnWidths()
-{
-}
+PropertyColumnWidths::PropertyColumnWidths() = default;
 
-PropertyColumnWidths::PropertyColumnWidths(const PropertyColumnWidths &other)
-  : Property(), std::map<int, int>(other)
+PropertyColumnWidths::PropertyColumnWidths(const PropertyColumnWidths& other)
+    : Property()
+    , std::map<int, int>(other)
 {
     std::map<int, int>::const_iterator i = other.begin();
 
@@ -54,19 +52,20 @@ PropertyColumnWidths::PropertyColumnWidths(const PropertyColumnWidths &other)
     }
 }
 
-App::Property *PropertyColumnWidths::Copy() const
+App::Property* PropertyColumnWidths::Copy() const
 {
-    PropertyColumnWidths * prop = new PropertyColumnWidths(*this);
+    PropertyColumnWidths* prop = new PropertyColumnWidths(*this);
 
     return prop;
 }
 
-void PropertyColumnWidths::Paste(const App::Property &from)
+void PropertyColumnWidths::Paste(const App::Property& from)
 {
     setValues(dynamic_cast<const PropertyColumnWidths&>(from).getValues());
 }
 
-void PropertyColumnWidths::setValues(const std::map<int,int> &values) {
+void PropertyColumnWidths::setValues(const std::map<int, int>& values)
+{
     aboutToSetValue();
 
     std::map<int, int>::const_iterator i;
@@ -92,12 +91,12 @@ void PropertyColumnWidths::setValues(const std::map<int,int> &values) {
 }
 
 /**
-  * Set the width (in pixels) of column \a col to \a width.
-  *
-  * @param col   Column to set
-  * @param width Width in pixels
-  *
-  */
+ * Set the width (in pixels) of column \a col to \a width.
+ *
+ * @param col   Column to set
+ * @param width Width in pixels
+ *
+ */
 
 void PropertyColumnWidths::setValue(int col, int width)
 {
@@ -109,21 +108,22 @@ void PropertyColumnWidths::setValue(int col, int width)
     }
 }
 
-void PropertyColumnWidths::Save(Base::Writer &writer) const
+void PropertyColumnWidths::Save(Base::Writer& writer) const
 {
-        // Save column information
+    // Save column information
     writer.Stream() << writer.ind() << "<ColumnInfo Count=\"" << size() << "\">" << std::endl;
-    writer.incInd(); // indentation for 'ColumnInfo'
+    writer.incInd();  // indentation for 'ColumnInfo'
     std::map<int, int>::const_iterator coli = begin();
     while (coli != end()) {
-        writer.Stream() << writer.ind() << "<Column name=\"" << columnName(coli->first) << "\" width=\"" << coli->second << "\" />" << std::endl;
+        writer.Stream() << writer.ind() << "<Column name=\"" << columnName(coli->first)
+                        << "\" width=\"" << coli->second << "\" />" << std::endl;
         ++coli;
     }
-    writer.decInd(); // indentation for 'ColumnInfo'
+    writer.decInd();  // indentation for 'ColumnInfo'
     writer.Stream() << writer.ind() << "</ColumnInfo>" << std::endl;
 }
 
-void PropertyColumnWidths::Restore(Base::XMLReader &reader)
+void PropertyColumnWidths::Restore(Base::XMLReader& reader)
 {
     int Cnt;
 
@@ -133,7 +133,7 @@ void PropertyColumnWidths::Restore(Base::XMLReader &reader)
     for (int i = 0; i < Cnt; i++) {
         reader.readElement("Column");
         const char* name = reader.hasAttribute("name") ? reader.getAttribute("name") : nullptr;
-        const char * width = reader.hasAttribute("width") ? reader.getAttribute("width") : nullptr;
+        const char* width = reader.hasAttribute("width") ? reader.getAttribute("width") : nullptr;
 
         try {
             if (name && width) {
@@ -146,16 +146,15 @@ void PropertyColumnWidths::Restore(Base::XMLReader &reader)
         catch (...) {
             // Something is wrong, skip this column
         }
-
     }
     reader.readEndElement("ColumnInfo");
 }
 
-PyObject *PropertyColumnWidths::getPyObject()
+PyObject* PropertyColumnWidths::getPyObject()
 {
-    if (PythonObject.is(Py::_None())){
+    if (PythonObject.is(Py::_None())) {
         // ref counter is set to 1
-        PythonObject = Py::Object(new PropertyColumnWidthsPy(this),true);
+        PythonObject = Py::Object(new PropertyColumnWidthsPy(this), true);
     }
     return Py::new_reference_to(PythonObject);
 }
@@ -168,5 +167,5 @@ void PropertyColumnWidths::clear()
         dirty.insert(i->first);
         ++i;
     }
-    std::map<int,int>::clear();
+    std::map<int, int>::clear();
 }

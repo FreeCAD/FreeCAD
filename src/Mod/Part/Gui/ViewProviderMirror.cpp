@@ -184,7 +184,7 @@ std::vector<App::DocumentObject*> ViewProviderMirror::claimChildren() const
 bool ViewProviderMirror::onDelete(const std::vector<std::string> &)
 {
     // get the input shape
-    Part::Mirroring* pMirroring = static_cast<Part::Mirroring*>(getObject()); 
+    Part::Mirroring* pMirroring = static_cast<Part::Mirroring*>(getObject());
     App::DocumentObject *pSource = pMirroring->Source.getValue();
     if (pSource)
         Gui::Application::Instance->showViewProvider(pSource);
@@ -226,9 +226,7 @@ ViewProviderFillet::ViewProviderFillet()
     sPixmap = "Part_Fillet";
 }
 
-ViewProviderFillet::~ViewProviderFillet()
-{
-}
+ViewProviderFillet::~ViewProviderFillet() = default;
 
 void ViewProviderFillet::updateData(const App::Property* prop)
 {
@@ -321,7 +319,7 @@ std::vector<App::DocumentObject*> ViewProviderFillet::claimChildren() const
 bool ViewProviderFillet::onDelete(const std::vector<std::string> &)
 {
     // get the input shape
-    Part::Fillet* pFillet = static_cast<Part::Fillet*>(getObject()); 
+    Part::Fillet* pFillet = static_cast<Part::Fillet*>(getObject());
     App::DocumentObject *pBase = pFillet->Base.getValue();
     if (pBase)
         Gui::Application::Instance->showViewProvider(pBase);
@@ -338,9 +336,7 @@ ViewProviderChamfer::ViewProviderChamfer()
     sPixmap = "Part_Chamfer";
 }
 
-ViewProviderChamfer::~ViewProviderChamfer()
-{
-}
+ViewProviderChamfer::~ViewProviderChamfer() = default;
 
 void ViewProviderChamfer::updateData(const App::Property* prop)
 {
@@ -433,7 +429,7 @@ std::vector<App::DocumentObject*> ViewProviderChamfer::claimChildren() const
 bool ViewProviderChamfer::onDelete(const std::vector<std::string> &)
 {
     // get the input shape
-    Part::Chamfer* pChamfer = static_cast<Part::Chamfer*>(getObject()); 
+    Part::Chamfer* pChamfer = static_cast<Part::Chamfer*>(getObject());
     App::DocumentObject *pBase = pChamfer->Base.getValue();
     if (pBase)
         Gui::Application::Instance->showViewProvider(pBase);
@@ -450,9 +446,7 @@ ViewProviderRevolution::ViewProviderRevolution()
     sPixmap = "Part_Revolve";
 }
 
-ViewProviderRevolution::~ViewProviderRevolution()
-{
-}
+ViewProviderRevolution::~ViewProviderRevolution() = default;
 
 std::vector<App::DocumentObject*> ViewProviderRevolution::claimChildren() const
 {
@@ -464,7 +458,7 @@ std::vector<App::DocumentObject*> ViewProviderRevolution::claimChildren() const
 bool ViewProviderRevolution::onDelete(const std::vector<std::string> &)
 {
     // get the input shape
-    Part::Revolution* pRevolve = static_cast<Part::Revolution*>(getObject()); 
+    Part::Revolution* pRevolve = static_cast<Part::Revolution*>(getObject());
     App::DocumentObject *pBase = pRevolve->Source.getValue();
     if (pBase)
         Gui::Application::Instance->showViewProvider(pBase);
@@ -481,9 +475,7 @@ ViewProviderLoft::ViewProviderLoft()
     sPixmap = "Part_Loft";
 }
 
-ViewProviderLoft::~ViewProviderLoft()
-{
-}
+ViewProviderLoft::~ViewProviderLoft() = default;
 
 std::vector<App::DocumentObject*> ViewProviderLoft::claimChildren() const
 {
@@ -504,9 +496,7 @@ ViewProviderSweep::ViewProviderSweep()
     sPixmap = "Part_Sweep";
 }
 
-ViewProviderSweep::~ViewProviderSweep()
-{
-}
+ViewProviderSweep::~ViewProviderSweep() = default;
 
 std::vector<App::DocumentObject*> ViewProviderSweep::claimChildren() const
 {
@@ -531,9 +521,7 @@ ViewProviderOffset::ViewProviderOffset()
     sPixmap = "Part_Offset";
 }
 
-ViewProviderOffset::~ViewProviderOffset()
-{
-}
+ViewProviderOffset::~ViewProviderOffset() = default;
 
 void ViewProviderOffset::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
 {
@@ -592,7 +580,7 @@ std::vector<App::DocumentObject*> ViewProviderOffset::claimChildren() const
 bool ViewProviderOffset::onDelete(const std::vector<std::string> &)
 {
     // get the support and Sketch
-    Part::Offset* offset = static_cast<Part::Offset*>(getObject()); 
+    Part::Offset* offset = static_cast<Part::Offset*>(getObject());
     App::DocumentObject* source = offset->Source.getValue();
     if (source){
         Gui::Application::Instance->getViewProvider(source)->show();
@@ -615,9 +603,7 @@ ViewProviderThickness::ViewProviderThickness()
     sPixmap = "Part_Thickness";
 }
 
-ViewProviderThickness::~ViewProviderThickness()
-{
-}
+ViewProviderThickness::~ViewProviderThickness() = default;
 
 void ViewProviderThickness::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
 {
@@ -659,7 +645,7 @@ void ViewProviderThickness::unsetEdit(int ModNum)
 {
     if (ModNum == ViewProvider::Default) {
         // when pressing ESC make sure to close the dialog
-        QTimer::singleShot(0, &Gui::Control(), SLOT(closeDialog()));
+        QTimer::singleShot(0, &Gui::Control(), &Gui::ControlSingleton::closeDialog);
     }
     else {
         PartGui::ViewProviderPart::unsetEdit(ModNum);
@@ -676,7 +662,7 @@ std::vector<App::DocumentObject*> ViewProviderThickness::claimChildren() const
 bool ViewProviderThickness::onDelete(const std::vector<std::string> &)
 {
     // get the support and Sketch
-    Part::Thickness* thickness = static_cast<Part::Thickness*>(getObject()); 
+    Part::Thickness* thickness = static_cast<Part::Thickness*>(getObject());
     App::DocumentObject* source = thickness->Faces.getValue();
     if (source){
         Gui::Application::Instance->getViewProvider(source)->show();
@@ -694,9 +680,7 @@ ViewProviderRefine::ViewProviderRefine()
     sPixmap = "Part_Refine_Shape";
 }
 
-ViewProviderRefine::~ViewProviderRefine()
-{
-}
+ViewProviderRefine::~ViewProviderRefine() = default;
 
 // ---------------------------------------
 
@@ -708,6 +692,4 @@ ViewProviderReverse::ViewProviderReverse()
     //sPixmap = "Part_Reverse_Shape";
 }
 
-ViewProviderReverse::~ViewProviderReverse()
-{
-}
+ViewProviderReverse::~ViewProviderReverse() = default;

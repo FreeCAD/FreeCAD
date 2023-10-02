@@ -22,70 +22,72 @@
  ***************************************************************************/
 
 #include "PreCompiled.h"
+#ifndef _PreComp_
 #include <QAction>
-#include <QMenu>
 #include <QMessageBox>
 #include <QTimer>
+
 #include <GeomAbs_Shape.hxx>
 #include <TopExp.hxx>
-#include <TopTools_IndexedMapOfShape.hxx>
 #include <TopTools_IndexedDataMapOfShapeListOfShape.hxx>
+#include <TopTools_IndexedMapOfShape.hxx>
 #include <TopTools_ListIteratorOfListOfShape.hxx>
+#endif
 
 #include <App/Document.h>
-#include <Gui/ViewProvider.h>
 #include <Gui/Application.h>
-#include <Gui/Document.h>
 #include <Gui/Command.h>
+#include <Gui/Document.h>
 #include <Gui/SelectionObject.h>
-#include <Base/Console.h>
-#include <Gui/Control.h>
-#include <Gui/BitmapFactory.h>
+#include <Gui/Widgets.h>
 #include <Mod/Part/Gui/ViewProvider.h>
 
+#include "TaskFilling.h"
 #include "TaskFillingEdge.h"
 #include "ui_TaskFillingEdge.h"
-#include "TaskFilling.h"
 
 
 using namespace SurfaceGui;
 
-namespace SurfaceGui {
+namespace SurfaceGui
+{
 
-class FillingEdgePanel::ShapeSelection : public Gui::SelectionFilterGate
+class FillingEdgePanel::ShapeSelection: public Gui::SelectionFilterGate
 {
 public:
     ShapeSelection(FillingEdgePanel::SelectionMode& mode, Surface::Filling* editedObject)
         : Gui::SelectionFilterGate(nullPointer())
         , mode(mode)
         , editedObject(editedObject)
-    {
-    }
+    {}
     ~ShapeSelection() override
     {
         mode = FillingEdgePanel::None;
     }
     /**
-      * Allow the user to pick only edges.
-      */
+     * Allow the user to pick only edges.
+     */
     bool allow(App::Document*, App::DocumentObject* pObj, const char* sSubName) override
     {
         // don't allow references to itself
-        if (pObj == editedObject)
+        if (pObj == editedObject) {
             return false;
-        if (!pObj->isDerivedFrom(Part::Feature::getClassTypeId()))
+        }
+        if (!pObj->isDerivedFrom(Part::Feature::getClassTypeId())) {
             return false;
+        }
 
-        if (!sSubName || sSubName[0] == '\0')
+        if (!sSubName || sSubName[0] == '\0') {
             return false;
+        }
 
         switch (mode) {
-        case FillingEdgePanel::AppendEdge:
-            return allowEdge(true, pObj, sSubName);
-        case FillingEdgePanel::RemoveEdge:
-            return allowEdge(false, pObj, sSubName);
-        default:
-            return false;
+            case FillingEdgePanel::AppendEdge:
+                return allowEdge(true, pObj, sSubName);
+            case FillingEdgePanel::RemoveEdge:
+                return allowEdge(false, pObj, sSubName);
+            default:
+                return false;
         }
     }
 
@@ -93,15 +95,17 @@ private:
     bool allowEdge(bool appendEdges, App::DocumentObject* pObj, const char* sSubName)
     {
         std::string element(sSubName);
-        if (element.substr(0,4) != "Edge")
+        if (element.substr(0, 4) != "Edge") {
             return false;
+        }
 
         auto links = editedObject->UnboundEdges.getSubListValues();
         for (const auto& it : links) {
             if (it.first == pObj) {
                 for (const auto& jt : it.second) {
-                    if (jt == sSubName)
+                    if (jt == sSubName) {
                         return !appendEdges;
+                    }
                 }
             }
         }
@@ -120,6 +124,7 @@ FillingEdgePanel::FillingEdgePanel(ViewProviderFilling* vp, Surface::Filling* ob
 {
     ui = new Ui_TaskFillingEdge();
     ui->setupUi(this);
+    setupConnections();
 
     selectionMode = None;
     this->vp = vp;
@@ -131,7 +136,7 @@ FillingEdgePanel::FillingEdgePanel(ViewProviderFilling* vp, Surface::Filling* ob
     action->setShortcut(QString::fromLatin1("Del"));
     action->setShortcutContext(Qt::WidgetShortcut);
     ui->listUnbound->addAction(action);
-    connect(action, SIGNAL(triggered()), this, SLOT(onDeleteUnboundEdge()));
+    connect(action, &QAction::triggered, this, &FillingEdgePanel::onDeleteUnboundEdge);
     ui->listUnbound->setContextMenuPolicy(Qt::ActionsContextMenu);
 }
 
@@ -143,6 +148,36 @@ FillingEdgePanel::~FillingEdgePanel()
     // no need to delete child widgets, Qt does it all for us
     delete ui;
     Gui::Selection().rmvSelectionGate();
+}
+
+void FillingEdgePanel::setupConnections()
+{
+    connect(ui->buttonUnboundEdgeAdd,
+            &QToolButton::toggled,
+            this,
+            &FillingEdgePanel::onButtonUnboundEdgeAddToggled);
+    connect(ui->buttonUnboundEdgeRemove,
+            &QToolButton::toggled,
+            this,
+            &FillingEdgePanel::onButtonUnboundEdgeRemoveToggled);
+    connect(ui->listUnbound,
+            &QListWidget::itemDoubleClicked,
+            this,
+            &FillingEdgePanel::onListUnboundItemDoubleClicked);
+    connect(ui->buttonUnboundAccept,
+            &QPushButton::clicked,
+            this,
+            &FillingEdgePanel::onButtonUnboundAcceptClicked);
+    connect(ui->buttonUnboundIgnore,
+            &QPushButton::clicked,
+            this,
+            &FillingEdgePanel::onButtonUnboundIgnoreClicked);
+}
+
+void FillingEdgePanel::appendButtons(Gui::ButtonGroup* buttonGroup)
+{
+    buttonGroup->addButton(ui->buttonUnboundEdgeAdd, int(SelectionMode::AppendEdge));
+    buttonGroup->addButton(ui->buttonUnboundEdgeRemove, int(SelectionMode::RemoveEdge));
 }
 
 // stores object pointer, its old fill type and adjusts radio buttons according to it.
@@ -170,7 +205,7 @@ void FillingEdgePanel::setEditedObject(Surface::Filling* fea)
     }
 
     App::Document* doc = editedObject->getDocument();
-    for (std::size_t i=0; i<count; i++) {
+    for (std::size_t i = 0; i < count; i++) {
         App::DocumentObject* obj = objects[i];
         std::string edge = edges[i];
         std::string face = faces[i];
@@ -178,9 +213,8 @@ void FillingEdgePanel::setEditedObject(Surface::Filling* fea)
         QListWidgetItem* item = new QListWidgetItem(ui->listUnbound);
         ui->listUnbound->addItem(item);
 
-        QString text = QString::fromLatin1("%1.%2")
-                .arg(QString::fromUtf8(obj->Label.getValue()),
-                     QString::fromStdString(edge));
+        QString text = QString::fromLatin1("%1.%2").arg(QString::fromUtf8(obj->Label.getValue()),
+                                                        QString::fromStdString(edge));
         item->setText(text);
 
         // The user data field of a list widget item
@@ -203,7 +237,7 @@ void FillingEdgePanel::setEditedObject(Surface::Filling* fea)
     attachDocument(Gui::Application::Instance->getDocument(doc));
 }
 
-void FillingEdgePanel::changeEvent(QEvent *e)
+void FillingEdgePanel::changeEvent(QEvent* e)
 {
     if (e->type() == QEvent::LanguageChange) {
         ui->retranslateUi(this);
@@ -219,7 +253,8 @@ void FillingEdgePanel::open()
 
     // highlight the boundary edges
     this->vp->highlightReferences(ViewProviderFilling::Edge,
-        editedObject->UnboundEdges.getSubListValues(), true);
+                                  editedObject->UnboundEdges.getSubListValues(),
+                                  true);
 
     Gui::Selection().clearSelection();
 }
@@ -255,7 +290,8 @@ void FillingEdgePanel::slotDeletedObject(const Gui::ViewProviderDocumentObject& 
     // referenced part objects. The dialog will be deleted later.
     if (this->vp == &Obj) {
         this->vp->highlightReferences(ViewProviderFilling::Edge,
-            editedObject->UnboundEdges.getSubListValues(), false);
+                                      editedObject->UnboundEdges.getSubListValues(),
+                                      false);
     }
 }
 
@@ -264,23 +300,27 @@ bool FillingEdgePanel::accept()
     selectionMode = None;
     Gui::Selection().rmvSelectionGate();
 
-    if (editedObject->mustExecute())
+    if (editedObject->mustExecute()) {
         editedObject->recomputeFeature();
+    }
     if (!editedObject->isValid()) {
-        QMessageBox::warning(this, tr("Invalid object"),
-            QString::fromLatin1(editedObject->getStatusString()));
+        QMessageBox::warning(this,
+                             tr("Invalid object"),
+                             QString::fromLatin1(editedObject->getStatusString()));
         return false;
     }
 
     this->vp->highlightReferences(ViewProviderFilling::Edge,
-        editedObject->UnboundEdges.getSubListValues(), false);
+                                  editedObject->UnboundEdges.getSubListValues(),
+                                  false);
     return true;
 }
 
 bool FillingEdgePanel::reject()
 {
     this->vp->highlightReferences(ViewProviderFilling::Edge,
-        editedObject->UnboundEdges.getSubListValues(), false);
+                                  editedObject->UnboundEdges.getSubListValues(),
+                                  false);
 
     selectionMode = None;
     Gui::Selection().rmvSelectionGate();
@@ -288,21 +328,31 @@ bool FillingEdgePanel::reject()
     return true;
 }
 
-void FillingEdgePanel::on_buttonUnboundEdgeAdd_clicked()
+void FillingEdgePanel::onButtonUnboundEdgeAddToggled(bool checked)
 {
-    // 'selectionMode' is passed by reference and changed when the filter is deleted
-    Gui::Selection().addSelectionGate(new ShapeSelection(selectionMode, editedObject));
-    selectionMode = AppendEdge;
+    if (checked) {
+        // 'selectionMode' is passed by reference and changed when the filter is deleted
+        Gui::Selection().addSelectionGate(new ShapeSelection(selectionMode, editedObject));
+        selectionMode = AppendEdge;
+    }
+    else if (selectionMode == AppendEdge) {
+        exitSelectionMode();
+    }
 }
 
-void FillingEdgePanel::on_buttonUnboundEdgeRemove_clicked()
+void FillingEdgePanel::onButtonUnboundEdgeRemoveToggled(bool checked)
 {
-    // 'selectionMode' is passed by reference and changed when the filter is deleted
-    Gui::Selection().addSelectionGate(new ShapeSelection(selectionMode, editedObject));
-    selectionMode = RemoveEdge;
+    if (checked) {
+        // 'selectionMode' is passed by reference and changed when the filter is deleted
+        Gui::Selection().addSelectionGate(new ShapeSelection(selectionMode, editedObject));
+        selectionMode = RemoveEdge;
+    }
+    else if (selectionMode == RemoveEdge) {
+        exitSelectionMode();
+    }
 }
 
-void FillingEdgePanel::on_listUnbound_itemDoubleClicked(QListWidgetItem* item)
+void FillingEdgePanel::onListUnboundItemDoubleClicked(QListWidgetItem* item)
 {
     Gui::Selection().clearSelection();
     Gui::Selection().rmvSelectionGate();
@@ -326,7 +376,10 @@ void FillingEdgePanel::on_listUnbound_itemDoubleClicked(QListWidgetItem* item)
                 TopTools_IndexedMapOfShape faces;
                 TopExp::MapShapes(shape.getShape(), TopAbs_FACE, faces);
                 TopTools_IndexedDataMapOfShapeListOfShape edge2Face;
-                TopExp::MapShapesAndAncestors(shape.getShape(), TopAbs_EDGE, TopAbs_FACE, edge2Face);
+                TopExp::MapShapesAndAncestors(shape.getShape(),
+                                              TopAbs_EDGE,
+                                              TopAbs_FACE,
+                                              edge2Face);
                 const TopTools_ListOfShape& adj_faces = edge2Face.FindFromKey(edge);
                 if (adj_faces.Extent() > 0) {
                     int n = adj_faces.Extent();
@@ -335,9 +388,12 @@ void FillingEdgePanel::on_listUnbound_itemDoubleClicked(QListWidgetItem* item)
                     // fill up the combo boxes
                     modifyBoundary(true);
                     ui->comboBoxUnboundFaces->addItem(tr("None"), QByteArray(""));
-                    ui->comboBoxUnboundCont->addItem(QString::fromLatin1("C0"), static_cast<int>(GeomAbs_C0));
-                    ui->comboBoxUnboundCont->addItem(QString::fromLatin1("G1"), static_cast<int>(GeomAbs_G1));
-                    ui->comboBoxUnboundCont->addItem(QString::fromLatin1("G2"), static_cast<int>(GeomAbs_G2));
+                    ui->comboBoxUnboundCont->addItem(QString::fromLatin1("C0"),
+                                                     static_cast<int>(GeomAbs_C0));
+                    ui->comboBoxUnboundCont->addItem(QString::fromLatin1("G1"),
+                                                     static_cast<int>(GeomAbs_G1));
+                    ui->comboBoxUnboundCont->addItem(QString::fromLatin1("G2"),
+                                                     static_cast<int>(GeomAbs_G2));
                     TopTools_ListIteratorOfListOfShape it(adj_faces);
                     for (; it.More(); it.Next()) {
                         const TopoDS_Shape& F = it.Value();
@@ -370,8 +426,9 @@ void FillingEdgePanel::on_listUnbound_itemDoubleClicked(QListWidgetItem* item)
 
 void FillingEdgePanel::onSelectionChanged(const Gui::SelectionChanges& msg)
 {
-    if (selectionMode == None)
+    if (selectionMode == None) {
         return;
+    }
 
     if (msg.Type == Gui::SelectionChanges::AddSelection) {
         checkOpenCommand();
@@ -380,9 +437,9 @@ void FillingEdgePanel::onSelectionChanged(const Gui::SelectionChanges& msg)
             ui->listUnbound->addItem(item);
 
             Gui::SelectionObject sel(msg);
-            QString text = QString::fromLatin1("%1.%2")
-                    .arg(QString::fromUtf8(sel.getObject()->Label.getValue()),
-                         QString::fromLatin1(msg.pSubName));
+            QString text = QString::fromLatin1("%1.%2").arg(
+                QString::fromUtf8(sel.getObject()->Label.getValue()),
+                QString::fromLatin1(msg.pSubName));
             item->setText(text);
 
             QList<QVariant> data;
@@ -413,7 +470,8 @@ void FillingEdgePanel::onSelectionChanged(const Gui::SelectionChanges& msg)
             }
 
             this->vp->highlightReferences(ViewProviderFilling::Edge,
-                editedObject->UnboundEdges.getSubListValues(), true);
+                                          editedObject->UnboundEdges.getSubListValues(),
+                                          true);
         }
         else if (selectionMode == RemoveEdge) {
             Gui::SelectionObject sel(msg);
@@ -423,10 +481,10 @@ void FillingEdgePanel::onSelectionChanged(const Gui::SelectionChanges& msg)
             data << QByteArray(msg.pSubName);
 
             // only the three first elements must match
-            for (int i=0; i<ui->listUnbound->count(); i++) {
+            for (int i = 0; i < ui->listUnbound->count(); i++) {
                 QListWidgetItem* item = ui->listUnbound->item(i);
                 QList<QVariant> userdata = item->data(Qt::UserRole).toList();
-                if (userdata.mid(0,3) == data) {
+                if (userdata.mid(0, 3) == data) {
                     ui->listUnbound->takeItem(i);
                     delete item;
                     break;
@@ -434,7 +492,8 @@ void FillingEdgePanel::onSelectionChanged(const Gui::SelectionChanges& msg)
             }
 
             this->vp->highlightReferences(ViewProviderFilling::Edge,
-                editedObject->UnboundEdges.getSubListValues(), false);
+                                          editedObject->UnboundEdges.getSubListValues(),
+                                          false);
             App::DocumentObject* obj = sel.getObject();
             std::string sub = msg.pSubName;
             auto objects = editedObject->UnboundEdges.getValues();
@@ -467,11 +526,12 @@ void FillingEdgePanel::onSelectionChanged(const Gui::SelectionChanges& msg)
                 }
             }
             this->vp->highlightReferences(ViewProviderFilling::Edge,
-                editedObject->UnboundEdges.getSubListValues(), true);
+                                          editedObject->UnboundEdges.getSubListValues(),
+                                          true);
         }
 
         editedObject->recomputeFeature();
-        QTimer::singleShot(50, this, SLOT(clearSelection()));
+        QTimer::singleShot(50, this, &FillingEdgePanel::clearSelection);
     }
 }
 
@@ -494,7 +554,8 @@ void FillingEdgePanel::onDeleteUnboundEdge()
         auto it = objects.begin();
         auto jt = element.begin();
         this->vp->highlightReferences(ViewProviderFilling::Edge,
-            editedObject->UnboundEdges.getSubListValues(), false);
+                                      editedObject->UnboundEdges.getSubListValues(),
+                                      false);
         for (; it != objects.end() && jt != element.end(); ++it, ++jt) {
             if (*it == obj && *jt == sub) {
                 std::size_t index = std::distance(objects.begin(), it);
@@ -520,20 +581,22 @@ void FillingEdgePanel::onDeleteUnboundEdge()
             }
         }
         this->vp->highlightReferences(ViewProviderFilling::Edge,
-            editedObject->UnboundEdges.getSubListValues(), true);
+                                      editedObject->UnboundEdges.getSubListValues(),
+                                      true);
 
         editedObject->recomputeFeature();
     }
 }
 
-void FillingEdgePanel::on_buttonUnboundAccept_clicked()
+void FillingEdgePanel::onButtonUnboundAcceptClicked()
 {
     QListWidgetItem* item = ui->listUnbound->currentItem();
     if (item) {
         QList<QVariant> data;
         data = item->data(Qt::UserRole).toList();
 
-        QVariant face = ui->comboBoxUnboundFaces->itemData(ui->comboBoxUnboundFaces->currentIndex());
+        QVariant face =
+            ui->comboBoxUnboundFaces->itemData(ui->comboBoxUnboundFaces->currentIndex());
         QVariant cont = ui->comboBoxUnboundCont->itemData(ui->comboBoxUnboundCont->currentIndex());
         if (data.size() == 5) {
             data[3] = face;
@@ -571,7 +634,7 @@ void FillingEdgePanel::on_buttonUnboundAccept_clicked()
     editedObject->recomputeFeature();
 }
 
-void FillingEdgePanel::on_buttonUnboundIgnore_clicked()
+void FillingEdgePanel::onButtonUnboundIgnoreClicked()
 {
     modifyBoundary(false);
     ui->comboBoxUnboundFaces->clear();
@@ -590,6 +653,13 @@ void FillingEdgePanel::modifyBoundary(bool on)
     ui->buttonUnboundAccept->setEnabled(on);
     ui->buttonUnboundIgnore->setEnabled(on);
 }
+}  // namespace SurfaceGui
+
+void FillingEdgePanel::exitSelectionMode()
+{
+    // 'selectionMode' is passed by reference to the filter and changed when the filter is deleted
+    Gui::Selection().clearSelection();
+    Gui::Selection().rmvSelectionGate();
 }
 
 #include "moc_TaskFillingEdge.cpp"

@@ -22,13 +22,14 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-#include <QApplication>
-#include <QGuiApplication>
-#include <QMouseEvent>
+# include <QApplication>
+# include <QGuiApplication>
+# include <QMouseEvent>
 #endif
 
-#include "QGVPage.h"
 #include "QGVNavStyleTouchpad.h"
+#include "QGVPage.h"
+
 
 using namespace TechDrawGui;
 
@@ -47,18 +48,18 @@ void QGVNavStyleTouchpad::handleKeyPressEvent(QKeyEvent *event)
 {
 //    Q_UNUSED(event)
     if (event->key() == Qt::Key_PageUp) {
-        setAnchor();
-        zoom(1.0 + zoomStep);
+        zoomIn();
         event->accept();
         return;
     }
 
     if (event->key() == Qt::Key_PageDown) {
-        setAnchor();
-        zoom(1.0 - zoomStep);
+        zoomOut();
         event->accept();
         return;
     }
+
+    QGVNavStyle::handleKeyPressEvent(event);
 }
 
 void QGVNavStyleTouchpad::handleKeyReleaseEvent(QKeyEvent *event)
@@ -95,19 +96,25 @@ void QGVNavStyleTouchpad::handleMouseMoveEvent(QMouseEvent *event)
             startPan(event->pos());
         }
         event->accept();
+        return;
     }
 
     if (QGuiApplication::keyboardModifiers().testFlag(Qt::ControlModifier) &&
         QGuiApplication::keyboardModifiers().testFlag(Qt::ShiftModifier) ) {
         //if control and shift are down, then we are zooming
         if (zoomingActive) {
-            setAnchor();
             zoom(mouseZoomFactor(event->pos()));
         } else {
             startZoom(event->pos());
         }
         event->accept();
+        return;
     }
+
+    // if the mouse moves, but we are not zooming or panning, then we should make
+    // sure that zoom and pan are turned off.
+    stopPan();
+    stopZoom();
 }
 
 void QGVNavStyleTouchpad::setAnchor()

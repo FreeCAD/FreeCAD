@@ -115,9 +115,17 @@ void ViewProviderGeomHatch::onChanged(const App::Property* p)
     Gui::ViewProviderDocumentObject::onChanged(p);
 }
 
-//for feature properties - but each letter/digit in property editor triggers this!
+//for feature properties
 void ViewProviderGeomHatch::updateData(const App::Property* prop)
 {
+    if ( prop == &(getViewObject()->FilePattern) ||
+            prop == &(getViewObject()->NamePattern) ) {
+        TechDraw::DrawViewPart* parent = getViewObject()->getSourceView();
+        if (parent) {
+            parent->requestPaint();
+        }
+    }
+
     Gui::ViewProviderDocumentObject::updateData(prop);
 }
 

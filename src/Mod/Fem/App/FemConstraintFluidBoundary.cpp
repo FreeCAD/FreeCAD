@@ -21,29 +21,23 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-#include <gp_Pnt.hxx>
-#include <gp_Pln.hxx>
-#include <gp_Lin.hxx>
-#include <TopoDS.hxx>
-#include <BRepAdaptor_Surface.hxx>
-#include <BRepAdaptor_Curve.hxx>
 #include <Precision.hxx>
 #endif
 
+#include <Base/Console.h>
+
 #include "FemConstraintFluidBoundary.h"
 
-#include <Mod/Part/App/PartFeature.h>
-#include <Base/Console.h>
 
 using namespace Fem;
 
 PROPERTY_SOURCE(Fem::ConstraintFluidBoundary, Fem::Constraint)
 
-// see forum topic: https://forum.freecadweb.org/viewtopic.php?&p=407901
+// clang-format off
+// see forum topic: https://forum.freecad.org/viewtopic.php?&p=407901
 
 // also defined in TaskFemConstraintFluidBoundary.cpp and FoamCaseBuilder/BasicBuilder.py, update simultaneously
 // the second (index 1) item is the default enum, as index 0 causes compiling error
@@ -65,10 +59,12 @@ static const char* ThermalBoundaryTypes[] = {"fixedValue","zeroGradient", "fixed
 static const char* ThermalBoundaryHelpTexts[] = {"fixed Temperature [K]", "no heat transfer ()", "fixed value heat flux [K/m]",
             "mixed fixedGradient and fixedValue", "fixed heat flux [W/m2]", "Heat transfer coeff [W/(M2)/K]", "conjugate heat transfer with solid", NULL};
 */
+// clang-format on
 
 ConstraintFluidBoundary::ConstraintFluidBoundary()
 {
-    /// momemtum boundary: pressure and velocity
+    // clang-format off
+    /// momentum boundary: pressure and velocity
     ADD_PROPERTY_TYPE(BoundaryType,(1),"FluidBoundary",(App::PropertyType)(App::Prop_None),
                       "Basic boundary type like inlet, wall, outlet,etc");
     BoundaryType.setEnums(BoundaryTypes);
@@ -111,9 +107,10 @@ ConstraintFluidBoundary::ConstraintFluidBoundary()
     ADD_PROPERTY_TYPE(Normals,(Base::Vector3d()),"FluidBoundary",App::PropertyType(App::Prop_ReadOnly|App::Prop_Output),
                       "Normals where symbols are drawn");
     Normals.setValues(std::vector<Base::Vector3d>());
+    // clang-format on
 }
 
-App::DocumentObjectExecReturn *ConstraintFluidBoundary::execute()
+App::DocumentObjectExecReturn* ConstraintFluidBoundary::execute()
 {
     return Constraint::execute();
 }
@@ -135,40 +132,47 @@ void ConstraintFluidBoundary::onChanged(const App::Property* prop)
         else if (boundaryType == "freestream") {
             Subtype.setEnums(FreestreamSubtypes);
         }
-        else if(boundaryType == "inlet") {
+        else if (boundaryType == "inlet") {
             Subtype.setEnums(InletSubtypes);
         }
-        else if(boundaryType == "outlet") {
+        else if (boundaryType == "outlet") {
             Subtype.setEnums(OutletSubtypes);
         }
         else {
             Base::Console().Message(boundaryType.c_str());
             Base::Console().Message(" Error: this boundaryType is not defined\n");
         }
-        Subtype.setValue(1); // must set a default (0 or 1) as freestream has only 2 subtypes
+
+        // must set a default (0 or 1) as freestream has only 2 subtypes
+        Subtype.setValue(1);
         // need to trigger ViewProvider::updateData() for redraw in 3D view after this method
     }
 
-    //naturalDirectionVector is a private member of this class
+    // naturalDirectionVector is a private member of this class
     if (prop == &References) {
         std::vector<Base::Vector3d> points;
         std::vector<Base::Vector3d> normals;
-        int scale = 1; //OvG: Enforce use of scale
+        int scale = 1;  // OvG: Enforce use of scale
         if (getPoints(points, normals, &scale)) {
             Points.setValues(points);
             Normals.setValues(normals);
-            Scale.setValue(scale); //OvG: Scale
-            Points.touch(); // This triggers ViewProvider::updateData()
+            Scale.setValue(scale);  // OvG: Scale
+            Points.touch();         // This triggers ViewProvider::updateData()
         }
-    } else if (prop == &Direction) {
-        Base::Vector3d direction = getDirection(Direction);  // Fem::Constraint
-        if (direction.Length() < Precision::Confusion())  // if Direct has no link provided return Base::Vector3d(0,0,0);
+    }
+    else if (prop == &Direction) {
+        Base::Vector3d direction = getDirection(Direction);
+        // if Direct has no link provided return Base::Vector3d(0,0,0);
+        if (direction.Length() < Precision::Confusion()) {
             return;
+        }
         naturalDirectionVector = direction;
-        if (Reversed.getValue())
+        if (Reversed.getValue()) {
             direction = -direction;
+        }
         DirectionVector.setValue(direction);
-    } else if (prop == &Reversed) {
+    }
+    else if (prop == &Reversed) {
         // if the direction is invalid try to compute it again
         if (naturalDirectionVector.Length() < Precision::Confusion()) {
             naturalDirectionVector = getDirection(Direction);
@@ -176,16 +180,20 @@ void ConstraintFluidBoundary::onChanged(const App::Property* prop)
         if (naturalDirectionVector.Length() >= Precision::Confusion()) {
             if (Reversed.getValue() && (DirectionVector.getValue() == naturalDirectionVector)) {
                 DirectionVector.setValue(-naturalDirectionVector);
-            } else if (!Reversed.getValue() && (DirectionVector.getValue() != naturalDirectionVector)) {
+            }
+            else if (!Reversed.getValue()
+                     && (DirectionVector.getValue() != naturalDirectionVector)) {
                 DirectionVector.setValue(naturalDirectionVector);
             }
         }
-    } else if (prop == &NormalDirection) {
+    }
+    else if (prop == &NormalDirection) {
         // Set a default direction if no direction reference has been given
         if (!Direction.getValue()) {
             Base::Vector3d direction = NormalDirection.getValue();
-            if (Reversed.getValue())
+            if (Reversed.getValue()) {
                 direction = -direction;
+            }
             DirectionVector.setValue(direction);
             naturalDirectionVector = direction;
         }

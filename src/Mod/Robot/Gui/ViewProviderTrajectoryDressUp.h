@@ -29,23 +29,22 @@
 namespace RobotGui
 {
 
-class RobotGuiExport ViewProviderTrajectoryDressUp : public ViewProviderTrajectory
+class RobotGuiExport ViewProviderTrajectoryDressUp: public ViewProviderTrajectory
 {
-    PROPERTY_HEADER(RobotGui::ViewProviderTrajectoryDressUp);
+    PROPERTY_HEADER_WITH_OVERRIDE(RobotGui::ViewProviderTrajectoryDressUp);
 
 public:
-    //virtual bool doubleClicked(void);
+    // virtual bool doubleClicked(void);
 
     /// grouping handling
-    std::vector<App::DocumentObject*> claimChildren(void)const;
+    std::vector<App::DocumentObject*> claimChildren() const override;
 
 protected:
-    virtual bool setEdit(int ModNum);
-    virtual void unsetEdit(int ModNum);
-
+    bool setEdit(int ModNum) override;
+    void unsetEdit(int ModNum) override;
 };
 
-} //namespace RobotGui
+}  // namespace RobotGui
 
 
-#endif // ROBOT_ViewProviderTrajectoryDressUp_H
+#endif  // ROBOT_ViewProviderTrajectoryDressUp_H

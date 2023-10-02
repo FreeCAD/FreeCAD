@@ -21,35 +21,25 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <sstream>
+#include <iomanip>
+#include <sstream>
+#include <boost_regex.hpp>
 #endif
 
-#include <iomanip>
-
-#include <boost/regex.hpp>
-
-#include <App/Application.h>
 #include <App/Property.h>
-#include <App/PropertyStandard.h>
-#include <App/PropertyUnits.h>
 #include <Base/Console.h>
-#include <Base/Exception.h>
-#include <Base/FileInfo.h>
-#include <Base/Parameter.h>
-
-#include "Preferences.h"
-#include "DrawViewSpreadsheet.h"
-
 #include <Mod/Spreadsheet/App/Cell.h>
 #include <Mod/Spreadsheet/App/Sheet.h>
 
-using namespace TechDraw;
-using namespace std;
+#include "DrawUtil.h"
+#include "Preferences.h"
 
+#include "DrawViewSpreadsheet.h"
+
+using namespace TechDraw;
 
 //===========================================================================
 // DrawViewSpreadsheet
@@ -121,23 +111,17 @@ App::DocumentObjectExecReturn *DrawViewSpreadsheet::execute()
     return TechDraw::DrawView::execute();
 }
 
-std::vector<std::string> DrawViewSpreadsheet::getAvailColumns()
+std::vector <std::string> DrawViewSpreadsheet::getAvailColumns()
 {
-    // build a list of available columns: A, B, C, ... AA, AB, ... ZY, ZZ.
-    std::string alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-    std::vector<std::string> availcolumns;
-    for (int i=0; i<26; ++i) {              //A:Z
-        std::stringstream s;
-        s << alphabet[i];
-        availcolumns.push_back(s.str());
-    }
-    for (int i=0; i<26; ++i) {             //AA:ZZ
-        for (int j=0; j<26; ++j) {
-            std::stringstream s;
-            s << alphabet[i] << alphabet[j];
-            availcolumns.push_back(s.str());
-        }
-    }
+    // builds a list of available columns: A, B, ... Y, Z, AA, AB, ... ZY, ZZ.
+    const std::string alphabet [] {"A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"};
+
+    std::vector <std::string> availcolumns { std::begin (alphabet), std::end (alphabet) };
+
+    for (const std::string &left : alphabet)
+        for (const std::string &right : alphabet)
+            availcolumns.push_back(left + right);
+
     return availcolumns;
 }
 
@@ -145,7 +129,7 @@ std::string DrawViewSpreadsheet::getSVGHead()
 {
     return std::string("<svg\n") +
            std::string("	xmlns=\"http://www.w3.org/2000/svg\" version=\"1.1\"\n") +
-           std::string("	xmlns:freecad=\"http://www.freecadweb.org/wiki/index.php?title=Svg_Namespace\">\n");
+           std::string("	xmlns:freecad=\"http://www.freecad.org/wiki/index.php?title=Svg_Namespace\">\n");
 }
 
 std::string DrawViewSpreadsheet::getSVGTail()
@@ -174,7 +158,8 @@ std::string DrawViewSpreadsheet::getSheetImage()
     std::string sColStart, sColEnd;
     if (boost::regex_search(scellstart, what, re)) {
         if (what.size() < 3) {
-            Base::Console().Error("%s - start cell (%s) is invalid\n", getNameInDocument(), CellStart.getValue());
+            Base::Console().Error("%s - start cell (%s) is invalid\n", getNameInDocument(),
+                                  CellStart.getValue());
             return std::string();
         }
 
@@ -209,7 +194,7 @@ std::string DrawViewSpreadsheet::getSheetImage()
         }
     }
 
-    std::vector<std::string> availcolumns = getAvailColumns();
+    const std::vector <std::string> availcolumns = getAvailColumns();
 
     //validate range start column in sheet's available columns
     int iAvailColStart = colInList(availcolumns, sColStart);
@@ -248,14 +233,13 @@ std::string DrawViewSpreadsheet::getSheetImage()
         validRowNumbers.push_back(iRow);
     }
 
-    // create the Svg code
-
+    // create the SVG code
     std::stringstream result;
     result << getSVGHead();
 
     std::string ViewName = Label.getValue();
     App::Color c = TextColor.getValue();
-    result  << "<g id=\"" << ViewName << "\">" << endl;
+    result << "<g id=\"" << ViewName << "\">" << std::endl;
 
     // fill the cells
     float rowoffset = 0.0;
@@ -266,10 +250,12 @@ std::string DrawViewSpreadsheet::getSheetImage()
     Spreadsheet::Sheet* sheet = static_cast<Spreadsheet::Sheet*>(link);
     std::vector<std::string> skiplist;
 
-    for (std::vector<std::string>::const_iterator col = validColNames.begin(); col != validColNames.end(); ++col) {
+    for (std::vector<std::string>::const_iterator col = validColNames.begin();
+         col != validColNames.end(); ++col) {
         // create a group for each column
-        result << "  <g id=\"" << ViewName << "_col" << (*col) << "\">" << endl;
-        for (std::vector<int>::const_iterator row = validRowNumbers.begin(); row != validRowNumbers.end(); ++row) {
+        result << "  <g id=\"" << ViewName << "_col" << (*col) << "\">" << std::endl;
+        for (std::vector<int>::const_iterator row = validRowNumbers.begin();
+             row != validRowNumbers.end(); ++row) {
             // get cell size
             std::stringstream srow;
             srow << (*row);
@@ -287,9 +273,13 @@ std::string DrawViewSpreadsheet::getSheetImage()
                     prop->isDerivedFrom(App::PropertyFloat::getClassTypeId()) ||
                     prop->isDerivedFrom(App::PropertyInteger::getClassTypeId())
                 ) {
-                    field << cell->getFormattedQuantity();
+                    std::string temp = cell->getFormattedQuantity();    //writable
+                    DrawUtil::encodeXmlSpecialChars(temp);
+                    field << temp;
                 } else if (prop->isDerivedFrom(App::PropertyString::getClassTypeId())) {
-                    field << static_cast<App::PropertyString*>(prop)->getValue();
+                    std::string temp = static_cast<App::PropertyString*>(prop)->getValue();
+                    DrawUtil::encodeXmlSpecialChars(temp);
+                    field << temp;
                 } else {
                     Base::Console().Error("DVSS: Unknown property type\n");
                 }
@@ -313,11 +303,11 @@ std::string DrawViewSpreadsheet::getSheetImage()
                 if (cell->getStyle(st)) {
                     for (std::set<std::string>::const_iterator i = st.begin(); i != st.end(); ++i) {
                          if ((*i) == "bold")
-                            textstyle = textstyle + "font-weight: bold; ";
+                            textstyle += "font-weight: bold; ";
                         else if ((*i) == "italic")
-                            textstyle = textstyle + "font-style: italic; ";
+                            textstyle += "font-style: italic; ";
                         else if ((*i) == "underline")
-                            textstyle = textstyle + "text-decoration: underline; ";
+                            textstyle += "text-decoration: underline; ";
                     }
                 }
                 if (cell->getSpans(rowspan, colspan)) {
@@ -325,9 +315,9 @@ std::string DrawViewSpreadsheet::getSheetImage()
                         for (int j=0; j<rowspan; ++j) {
                             App::CellAddress nextcell(address.row()+j, address.col()+i);
                             if (i > 0)
-                                cellwidth = cellwidth + sheet->getColumnWidth(nextcell.col());
+                                cellwidth += sheet->getColumnWidth(nextcell.col());
                             if (j > 0)
-                                cellheight = cellheight + sheet->getRowHeight(nextcell.row());
+                                cellheight += sheet->getRowHeight(nextcell.row());
                             if ( (i > 0) || (j > 0) )
                                 skiplist.push_back(nextcell.toString());
                         }
@@ -337,31 +327,39 @@ std::string DrawViewSpreadsheet::getSheetImage()
             }
             // skip cell if found in skiplist
             if (std::find(skiplist.begin(), skiplist.end(), address.toString()) == skiplist.end()) {
-                result << "    <rect x=\"" << coloffset << "\" y=\"" << rowoffset << "\" width=\"" << cellwidth
-                       << "\" height=\"" << cellheight << "\" style=\"fill:" << bcolor << ";stroke-width:"
-                       << LineWidth.getValue()/getScale() << ";stroke:" << c.asHexString() << ";\" />" << endl;
+                result << "    <rect x=\"" << coloffset << "\" y=\"" << rowoffset << "\" width=\""
+                       << cellwidth << "\" height=\"" << cellheight << "\" style=\"fill:" << bcolor
+                       << ";stroke-width:" << LineWidth.getValue() / getScale()
+                       << ";stroke:" << c.asHexString() << ";\" />" << std::endl;
                 if (alignment & Spreadsheet::Cell::ALIGNMENT_LEFT)
-                    result << "    <text style=\"" << textstyle << "\" x=\"" << coloffset + TextSize.getValue()/2 << "\" y=\"" << rowoffset + 0.75 * cellheight << "\" font-family=\"" ;
+                    result << "    <text style=\"" << textstyle << "\" x=\""
+                           << coloffset + TextSize.getValue() / 2 << "\" y=\""
+                           << rowoffset + 0.75 * cellheight << "\" font-family=\"";
                 if (alignment & Spreadsheet::Cell::ALIGNMENT_HCENTER)
-                    result << "    <text text-anchor=\"middle\" style=\"" << textstyle << "\" x=\"" << coloffset + cellwidth/2 << "\" y=\"" << rowoffset + 0.75 * cellheight << "\" font-family=\"" ;
+                    result << "    <text text-anchor=\"middle\" style=\"" << textstyle << "\" x=\""
+                           << coloffset + cellwidth / 2 << "\" y=\""
+                           << rowoffset + 0.75 * cellheight << "\" font-family=\"";
                 if (alignment & Spreadsheet::Cell::ALIGNMENT_RIGHT)
-                    result << "    <text text-anchor=\"end\" style=\"" << textstyle << "\" x=\"" << coloffset + (cellwidth - TextSize.getValue()/2) << "\" y=\"" << rowoffset + 0.75 * cellheight << "\" font-family=\"" ;
-                if ((alignment & Spreadsheet::Cell::ALIGNMENT_LEFT) ||
-                    (alignment & Spreadsheet::Cell::ALIGNMENT_HCENTER) ||
-                    (alignment & Spreadsheet::Cell::ALIGNMENT_RIGHT)) {
-                    result << Font.getValue() << "\"" << " font-size=\"" << TextSize.getValue() << "\""
-                           << " fill=\"" << fcolor << "\">" << celltext << "</text>" << endl;
+                    result << "    <text text-anchor=\"end\" style=\"" << textstyle << "\" x=\""
+                           << coloffset + (cellwidth - TextSize.getValue() / 2) << "\" y=\""
+                           << rowoffset + 0.75 * cellheight << "\" font-family=\"";
+                if ((alignment & Spreadsheet::Cell::ALIGNMENT_LEFT)
+                    || (alignment & Spreadsheet::Cell::ALIGNMENT_HCENTER)
+                    || (alignment & Spreadsheet::Cell::ALIGNMENT_RIGHT)) {
+                    result << Font.getValue() << "\""
+                           << " font-size=\"" << TextSize.getValue() << "\""
+                           << " fill=\"" << fcolor << "\">" << celltext << "</text>" << std::endl;
                 }
             }
-            rowoffset = rowoffset + sheet->getRowHeight(address.row());
+            rowoffset += sheet->getRowHeight(address.row());
         }
-        result << "  </g>" << endl;
+        result << "  </g>" << std::endl;
         rowoffset = 0.0;
-        coloffset = coloffset + cellwidth;
+        coloffset += cellwidth;
     }
 
     // close the containing group
-    result << "</g>" << endl;
+    result << "</g>" << std::endl;
 
     result << getSVGTail();
 

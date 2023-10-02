@@ -22,23 +22,15 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-#include <cassert>
-#include <QGraphicsScene>
-#include <QMenu>
-#include <QMouseEvent>
-#include <QGraphicsSceneHoverEvent>
-#include <QStyleOptionGraphicsItem>
-#include <QPainterPathStroker>
-#include <QPainter>
-#include <QPainterPath>
+# include <cassert>
+
+# include <QPainterPath>
+# include <QPainterPathStroker>
 #endif
 
-#include <App/Application.h>
-#include <Base/Parameter.h>
-#include <Base/Console.h>
-
-#include "PreferencesGui.h"
 #include "QGIDimLines.h"
+#include "PreferencesGui.h"
+
 
 using namespace TechDrawGui;
 using namespace TechDraw;

@@ -21,7 +21,7 @@
 
 __title__  = "FreeCAD Profile"
 __author__ = "Yorik van Havre"
-__url__    = "https://www.freecadweb.org"
+__url__    = "https://www.freecad.org"
 
 ## @package ArchProfile
 #  \ingroup ARCH
@@ -30,10 +30,12 @@ __url__    = "https://www.freecadweb.org"
 #  This module provides tools to build base profiles
 #  for Arch Structure elements
 
-
-import FreeCAD, Draft, os
-from FreeCAD import Vector
 import csv
+import os
+
+import FreeCAD
+import Draft
+from FreeCAD import Vector
 
 if FreeCAD.GuiUp:
     import FreeCADGui
@@ -121,7 +123,7 @@ class Arch_Profile:
         return {'Pixmap'  : 'Arch_Profile',
                 'MenuText': QT_TRANSLATE_NOOP("Arch_Profile","Profile"),
                 'Accel': "P, F",
-                'ToolTip': QT_TRANSLATE_NOOP("Arch_Profile","Creates a profile object")}
+                'ToolTip': QT_TRANSLATE_NOOP("Arch_Profile","Creates a profile")}
 
     def IsActive(self):
 
@@ -236,24 +238,25 @@ class _Profile(Draft._DraftObject):
         self.Profile = profile
         Draft._DraftObject.__init__(self,obj,"Profile")
 
-    def __getstate__(self):
+    def dumps(self):
         if hasattr(self,"Profile"):
             return self.Profile
 
-    def __setstate__(self,state):
+    def loads(self,state):
         if isinstance(state,list):
             self.Profile = state
-            
+        self.Type = "Profile"
+
     def cleanProperties(self, obj):
-    
+
         '''Remove all Profile properties'''
-        
+
         obj.removeProperty("Width")
         obj.removeProperty("Height")
         obj.removeProperty("WebThickness")
         obj.removeProperty("FlangeThickness")
         obj.removeProperty("OutDiameter")
-        obj.removeProperty("Thickness")    
+        obj.removeProperty("Thickness")
 
 
 class _ProfileC(_Profile):
@@ -400,8 +403,8 @@ class _ProfileU(_Profile):
         #p.reverse()
         obj.Shape = p
         obj.Placement = pl
-        
-        
+
+
 class _ProfileL(_Profile):
 
     '''A parametric L profile. Profile data: [width, height, thickness]'''
@@ -427,8 +430,8 @@ class _ProfileL(_Profile):
         #p.reverse()
         obj.Shape = p
         obj.Placement = pl
-        
-        
+
+
 class _ProfileT(_Profile):
 
     '''A parametric T profile. Profile data: [width, height, web thickness, flange thickness]'''
@@ -457,7 +460,7 @@ class _ProfileT(_Profile):
         #p.reverse()
         obj.Shape = p
         obj.Placement = pl
-        
+
 
 class ViewProviderProfile(Draft._ViewProviderDraft):
 
@@ -472,17 +475,20 @@ class ViewProviderProfile(Draft._ViewProviderDraft):
         import Arch_rc
         return ":/icons/Arch_Profile.svg"
 
-    def setEdit(self,vobj,mode):
+    def setEdit(self, vobj, mode):
+        if mode == 1 or mode == 2:
+            return None
 
         taskd = ProfileTaskPanel(vobj.Object)
         FreeCADGui.Control.showDialog(taskd)
         return True
 
-    def unsetEdit(self,vobj,mode):
+    def unsetEdit(self, vobj, mode):
+        if mode == 1 or mode == 2:
+            return None
 
         FreeCADGui.Control.closeDialog()
-        FreeCAD.ActiveDocument.recompute()
-        return
+        return True
 
 
 class ProfileTaskPanel:
@@ -510,7 +516,7 @@ class ProfileTaskPanel:
         elif isinstance(self.obj.Proxy,_ProfileT):
             self.type = "T"
         else:
-            self.type = "Undefined"
+            self.type = "Building Element Proxy"
         self.form = QtGui.QWidget()
         layout = QtGui.QVBoxLayout(self.form)
         self.comboCategory = QtGui.QComboBox(self.form)
@@ -570,7 +576,7 @@ class ProfileTaskPanel:
         self.Profile = self.currentpresets[idx]
 
     def accept(self):
-        
+
         self.obj.Label = self.Profile[2]
         if self.Profile:
             if self.Profile[3]=="C":
@@ -589,9 +595,14 @@ class ProfileTaskPanel:
                 _ProfileT(self.obj, self.Profile)
             else:
                 print("Profile not supported")
-                
+
             FreeCAD.ActiveDocument.recompute()
             FreeCADGui.ActiveDocument.resetEdit()
+        return True
+
+    def reject(self):
+
+        FreeCADGui.ActiveDocument.resetEdit()
         return True
 
     def retranslateUi(self, TaskPanel):

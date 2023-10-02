@@ -64,12 +64,19 @@ void Handled::unref() const
     }
 }
 
+int Handled::unrefNoDelete() const
+{
+    int res = _lRefCount->deref();
+    assert(res>=0);
+    return res;
+}
+
 int Handled::getRefCount() const
 {
     return static_cast<int>(*_lRefCount);
 }
 
-const Handled& Handled::operator = (const Handled&)
+Handled& Handled::operator = (const Handled&)
 {
     // we must not assign _lRefCount
     return *this;

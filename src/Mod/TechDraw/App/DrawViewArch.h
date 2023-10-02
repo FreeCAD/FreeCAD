@@ -23,11 +23,10 @@
 #ifndef DrawViewArch_h_
 #define DrawViewArch_h_
 
-#include <Mod/TechDraw/TechDrawGlobal.h>
-
 #include <App/DocumentObject.h>
 #include <App/PropertyLinks.h>
 #include <Base/BoundBox.h>
+#include <Mod/TechDraw/TechDrawGlobal.h>
 
 #include "DrawViewSymbol.h"
 
@@ -42,7 +41,7 @@ class TechDrawExport DrawViewArch : public TechDraw::DrawViewSymbol
 public:
     /// Constructor
     DrawViewArch();
-    ~DrawViewArch() = default;
+    ~DrawViewArch() override = default;
 
     App::PropertyLink         Source;
     App::PropertyBool         AllOn;
@@ -54,6 +53,8 @@ public:
     App::PropertyFloat        FontSize;
     App::PropertyFloat        CutLineWidth;
     App::PropertyBool         JoinArch;
+    App::PropertyFloat        LineSpacing;
+
 
     /** @name methods override Feature */
     //@{

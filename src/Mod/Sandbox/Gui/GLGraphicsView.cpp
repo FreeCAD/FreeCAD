@@ -48,7 +48,6 @@
 #include <QResizeEvent>
 #include <QTimer>
 #include <QVBoxLayout>
-#include <QGLWidget>
 #include <QGraphicsView>
 #include <QPaintEngine>
 #include <QGraphicsItem>
@@ -57,6 +56,7 @@
 #include <QUrl>
 
 #include "GLGraphicsView.h"
+#include <App/Application.h>
 #include <Gui/Document.h>
 #include <Gui/ViewProvider.h>
 
@@ -110,20 +110,6 @@ void GraphicsView::resizeEvent(QResizeEvent *event)
             QRect(QPoint(0, 0), event->size()));
     QGraphicsView::resizeEvent(event);
 }
-
-
-//QDialog *dialog = new QDialog(0, Qt::Window | Qt::CustomizeWindowHint | Qt::WindowTitleHint);
-
-////dialog->setWindowOpacity(0.8);
-//dialog->setWindowTitle(tr("Title"));
-//dialog->setLayout(new QVBoxLayout);
-//dialog->layout()->addWidget(new QLabel(tr("Use mouse wheel to zoom model, and click and drag to rotate model")));
-//dialog->layout()->addWidget(new QLabel(tr("Move the sun around to change the light position")));
-//dialog->layout()->addWidget(new QSpinBox);
-
-//QGraphicsScene* scene = _viewer->scene();
-//QGraphicsProxyWidget* g1 = scene->addWidget(dialog);
-//g1->setWindowFlags(Qt::Window | Qt::CustomizeWindowHint | Qt::WindowTitleHint);
 
 
 // ----------------------------------------------------------------------------
@@ -189,7 +175,7 @@ SceneEventFilter::~SceneEventFilter()
 /*!
   Adds a device for event translation
  */
-void 
+void
 SceneEventFilter::registerInputDevice(SIM::Coin3D::Quarter::InputDevice * device)
 {
     PRIVATE(this)->devices += device;
@@ -198,7 +184,7 @@ SceneEventFilter::registerInputDevice(SIM::Coin3D::Quarter::InputDevice * device
 /*!
   Removes a device from event translation
  */
-void 
+void
 SceneEventFilter::unregisterInputDevice(SIM::Coin3D::Quarter::InputDevice * device)
 {
     int i = PRIVATE(this)->devices.indexOf(device);
@@ -218,16 +204,7 @@ SceneEventFilter::eventFilter(QObject *, QEvent * qevent)
     // Convert the scene event back to a standard event
     std::unique_ptr<QEvent> sceneev;
     switch (qevent->type()) {
-    //GraphicsSceneContextMenu = 159,
-    //GraphicsSceneHoverEnter = 160,
-    //GraphicsSceneHoverMove = 161,
-    //GraphicsSceneHoverLeave = 162,
-    //GraphicsSceneHelp = 163,
-    //GraphicsSceneDragEnter = 164,
-    //GraphicsSceneDragMove = 165,
-    //GraphicsSceneDragLeave = 166,
-    //GraphicsSceneDrop = 167,
-    //GraphicsSceneMove  = 182,
+
     case QEvent::GraphicsSceneMouseMove:
         {
             QGraphicsSceneMouseEvent* ev = static_cast<QGraphicsSceneMouseEvent*>(qevent);
@@ -262,10 +239,12 @@ SceneEventFilter::eventFilter(QObject *, QEvent * qevent)
         }
     case QEvent::GraphicsSceneWheel:
         {
+#if QT_VERSION < QT_VERSION_CHECK(6,0,0)
             QGraphicsSceneWheelEvent* ev = static_cast<QGraphicsSceneWheelEvent*>(qevent);
             sceneev.reset(new QWheelEvent(ev->pos().toPoint(), ev->delta(), ev->buttons(),
                 ev->modifiers(), ev->orientation()));
             qevent = sceneev.get();
+#endif
             break;
         }
     case QEvent::GraphicsSceneResize:
@@ -374,21 +353,20 @@ GraphicsScene::GraphicsScene()
         pos += QPointF(0, 10 + rect.height());
     }
 
+#if QT_VERSION < QT_VERSION_CHECK(6,0,0)
     m_time.start();
+#endif
     sorendermanager = new SoRenderManager;
 
     sorendermanager->setAutoClipping(SoRenderManager::VARIABLE_NEAR_PLANE);
-  //sorendermanager->setRenderCallback(QuarterWidgetP::rendercb, this);
+
     sorendermanager->setBackgroundColor(SbColor4f(0.0f, 0.0f, 0.0f, 0.0f));
     sorendermanager->activate();
-  //sorendermanager->addPreRenderCallback(QuarterWidgetP::prerendercb, PRIVATE(this));
-  //sorendermanager->addPostRenderCallback(QuarterWidgetP::postrendercb, PRIVATE(this));
 
     soeventmanager = new SoEventManager;
     soeventmanager->setNavigationState(SoEventManager::MIXED_NAVIGATION);
 
     eventfilter = new SceneEventFilter(this);
-    //this->installEventFilter(eventfilter);
 
     connect(this, SIGNAL(sceneRectChanged(const QRectF&)),
             this, SLOT(onSceneRectChanged(const QRectF&)));
@@ -433,7 +411,6 @@ GraphicsScene::addStateMachine(SoScXMLStateMachine * statemachine)
     em->addSoScXMLStateMachine(statemachine);
     statemachine->setSceneGraphRoot(this->getSoRenderManager()->getSceneGraph());
     statemachine->setActiveCamera(this->getSoRenderManager()->getCamera());
-  //statemachine->addStateChangeCallback(QuarterWidgetP::statechangecb, PRIVATE(this));
 }
 
 void
@@ -464,12 +441,7 @@ GraphicsScene::setNavigationModeFile(const QUrl & url)
     else if (url.scheme() == QLatin1String("file"))
         filename = url.toLocalFile();
     else if (url.isEmpty()) {
-        //if (PRIVATE(this)->currentStateMachine) {
-        //    this->removeStateMachine(PRIVATE(this)->currentStateMachine);
-        //    delete PRIVATE(this)->currentStateMachine;
-        //    PRIVATE(this)->currentStateMachine = NULL;
-        //    PRIVATE(this)->navigationModeFile = url;
-        //}
+
         return;
     }
     else {
@@ -499,43 +471,16 @@ GraphicsScene::setNavigationModeFile(const QUrl & url)
 
     if (stateMachine && stateMachine->isOfType(SoScXMLStateMachine::getClassTypeId())) {
         SoScXMLStateMachine * newsm = static_cast<SoScXMLStateMachine *>(stateMachine);
-        //if (PRIVATE(this)->currentStateMachine) {
-            //this->removeStateMachine(PRIVATE(this)->currentStateMachine);
-            //delete PRIVATE(this)->currentStateMachine;
-        //}
+
         this->addStateMachine(newsm);
         newsm->initialize();
-      //PRIVATE(this)->currentStateMachine = newsm;
     }
     else {
         if (stateMachine)
             delete stateMachine;
-        //qDebug() << filename;
-        //qDebug() << "Unable to load" << url;
+
         return;
     }
-#if 0
-    //If we have gotten this far, we have successfully loaded the
-    //navigation file, so we set the property
-    PRIVATE(this)->navigationModeFile = url;
-
-    if (QUrl(DEFAULT_NAVIGATIONFILE) == PRIVATE(this)->navigationModeFile ) {
-
-        // set up default cursors for the examiner navigation states
-        //FIXME: It may be overly restrictive to not do this for arbitrary
-        //navigation systems? - BFG 20090117
-        this->setStateCursor("interact", Qt::ArrowCursor);
-        this->setStateCursor("idle", Qt::OpenHandCursor);
-#if QT_VERSION >= 0x040200
-        this->setStateCursor("rotate", Qt::ClosedHandCursor);
-#endif
-        this->setStateCursor("pan", Qt::SizeAllCursor);
-        this->setStateCursor("zoom", Qt::SizeVerCursor);
-        this->setStateCursor("dolly", Qt::SizeVerCursor);
-        this->setStateCursor("seek", Qt::CrossCursor);
-        this->setStateCursor("spin", Qt::OpenHandCursor);
-    }
-#endif
 }
 
 SoNode* GraphicsScene::getSceneGraph() const
@@ -631,77 +576,22 @@ void GraphicsScene::drawBackground(QPainter *painter, const QRectF &)
         return;
     }
 
+#if 0
     glViewport(0, 0, width(), height());
 /**/
     glClearColor(m_backgroundColor.redF(), m_backgroundColor.greenF(), m_backgroundColor.blueF(), 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-    //glDepthRange(0.1,1.0); //
-#if 0
-    glMatrixMode(GL_PROJECTION);
-    glPushMatrix();
-    glLoadIdentity();
-    //gluPerspective(70, width() / height(), 0.01, 1000);
-
-    glMatrixMode(GL_MODELVIEW);
-    glPushMatrix();
-    glLoadIdentity();
 #endif
-    //const float pos[] = { m_lightItem->x() - width() / 2, height() / 2 - m_lightItem->y(), 512, 0 };
-    //glLightfv(GL_LIGHT0, GL_POSITION, pos);
-    //glColor4f(m_modelColor.redF(), m_modelColor.greenF(), m_modelColor.blueF(), 1.0f);
 
+
+#if QT_VERSION < QT_VERSION_CHECK(6,0,0)
     const int delta = m_time.elapsed() - m_lastTime;
     m_lastTime += delta;
-
-    //glTranslatef(0, 0, -m_distance);
-    //glRotatef(m_rotation.x, 1, 0, 0);
-    //glRotatef(m_rotation.y, 0, 1, 0);
-    //glRotatef(m_rotation.z, 0, 0, 1);
-
-    //glEnable(GL_MULTISAMPLE);
-    //m_model->render(m_wireframeEnabled, m_normalsEnabled);
-    //glDisable(GL_MULTISAMPLE);
-#if 0
-    glPopMatrix();
-
-    glMatrixMode(GL_PROJECTION);
-    glPopMatrix();
-/**/
-/**/
-    glPushAttrib(GL_ALL_ATTRIB_BITS);
-    glViewport(0, 0, width(), height());
-        glEnable(GL_DEPTH_TEST);
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-        glDepthRange(0.1,1.0);
-
-    glMatrixMode(GL_PROJECTION);
-    glPushMatrix();
-    glLoadIdentity();
-
-    glMatrixMode(GL_MODELVIEW);
-    glPushMatrix();
-    glLoadIdentity();
 #endif
+
 
     sorendermanager->render(true/*PRIVATE(this)->clearwindow*/,
                             false/*PRIVATE(this)->clearzbuffer*/);
-#if 0
-    glPopMatrix();
-    glMatrixMode(GL_PROJECTION);
-    glPopMatrix();
-
-    glPopAttrib();
-
-    glViewport(0, 0, width(), height());
-    glColor3f(1,1,1);
-    glLineWidth(4);
-    glBegin(GL_LINES);
-        glVertex3i(0, 0, 0);
-        glVertex3i(400, 400, 0);
-    glEnd();
-#endif
-/**/
 
     painter->save();
     painter->fillRect(40,40,40,60,Qt::lightGray);
@@ -732,12 +622,6 @@ void GraphicsScene::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
     if (event->isAccepted())
         return;
     if (event->buttons() & Qt::LeftButton) {
-        //const QPointF delta = event->scenePos() - event->lastScenePos();
-        //const Point3d angularImpulse = Point3d(delta.y(), delta.x(), 0) * 0.1;
-
-        //m_rotation += angularImpulse;
-        //m_accumulatedMomentum += angularImpulse;
-
         event->accept();
         update();
     }
@@ -749,8 +633,9 @@ void GraphicsScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
     if (event->isAccepted())
         return;
 
+#if QT_VERSION < QT_VERSION_CHECK(6,0,0)
     m_mouseEventTime = m_time.elapsed();
-    //m_angularMomentum = m_accumulatedMomentum = Point3d();
+#endif
     event->accept();
 }
 
@@ -760,8 +645,6 @@ void GraphicsScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
     if (event->isAccepted())
         return;
 
-    //const int delta = m_time.elapsed() - m_mouseEventTime;
-    //m_angularMomentum = m_accumulatedMomentum * (1000.0 / qMax(1, delta));
     event->accept();
     update();
 }
@@ -771,8 +654,6 @@ void GraphicsScene::wheelEvent(QGraphicsSceneWheelEvent *event)
     QGraphicsScene::wheelEvent(event);
     if (event->isAccepted())
         return;
-
-    //m_distance *= qPow(1.2, -event->delta() / 120);
     event->accept();
     update();
 }
@@ -783,10 +664,12 @@ GraphicsView3D::GraphicsView3D(Gui::Document* doc, QWidget* parent)
   : Gui::MDIView(doc, parent), m_scene(new GraphicsScene()), m_view(new GraphicsView)
 {
     m_view->installEventFilter(m_scene->getEventFilter());
-    QGLFormat f;
+#if 0
+    QtGLFormat f;
     f.setSampleBuffers(true);
     f.setSamples(8);
     m_view->setViewport(new QGLWidget(f));
+#endif
     m_view->setViewportUpdateMode(QGraphicsView::FullViewportUpdate);
     m_view->setScene(m_scene);
     m_scene->setNavigationModeFile(QUrl(QString::fromLatin1("coin:///scxml/navigation/examiner.xml")));
@@ -816,179 +699,15 @@ GraphicsView3D::~GraphicsView3D()
 void GraphicsView3D::OnChange(ParameterGrp::SubjectType &rCaller,ParameterGrp::MessageType Reason)
 {
     const ParameterGrp& rGrp = static_cast<ParameterGrp&>(rCaller);
-#if 0
-    if (strcmp(Reason,"HeadlightColor") == 0) {
-        unsigned long headlight = rGrp.GetUnsigned("HeadlightColor",ULONG_MAX); // default color (white)
-        float transparency;
-        SbColor headlightColor;
-        headlightColor.setPackedValue((uint32_t)headlight, transparency);
-        _viewer->getHeadlight()->color.setValue(headlightColor);
-    }
-    else if (strcmp(Reason,"HeadlightDirection") == 0) {
-        std::string pos = rGrp.GetASCII("HeadlightDirection");
-        QString flt = QString::fromLatin1("([-+]?[0-9]+\\.?[0-9]+)");
-        QRegExp rx(QString::fromLatin1("^\\(%1,%1,%1\\)$").arg(flt));
-        if (rx.indexIn(QLatin1String(pos.c_str())) > -1) {
-            float x = rx.cap(1).toFloat();
-            float y = rx.cap(2).toFloat();
-            float z = rx.cap(3).toFloat();
-            _viewer->getHeadlight()->direction.setValue(x,y,z);
-        }
-    }
-    else if (strcmp(Reason,"HeadlightIntensity") == 0) {
-        long value = rGrp.GetInt("HeadlightIntensity", 100);
-        _viewer->getHeadlight()->intensity.setValue((float)value/100.0f);
-    }
-    else if (strcmp(Reason,"EnableBacklight") == 0) {
-        _viewer->setBacklight(rGrp.GetBool("EnableBacklight", false));
-    }
-    else if (strcmp(Reason,"BacklightColor") == 0) {
-        unsigned long backlight = rGrp.GetUnsigned("BacklightColor",ULONG_MAX); // default color (white)
-        float transparency;
-        SbColor backlightColor;
-        backlightColor.setPackedValue((uint32_t)backlight, transparency);
-        _viewer->getBacklight()->color.setValue(backlightColor);
-    }
-    else if (strcmp(Reason,"BacklightDirection") == 0) {
-        std::string pos = rGrp.GetASCII("BacklightDirection");
-        QString flt = QString::fromLatin1("([-+]?[0-9]+\\.?[0-9]+)");
-        QRegExp rx(QString::fromLatin1("^\\(%1,%1,%1\\)$").arg(flt));
-        if (rx.indexIn(QLatin1String(pos.c_str())) > -1) {
-            float x = rx.cap(1).toFloat();
-            float y = rx.cap(2).toFloat();
-            float z = rx.cap(3).toFloat();
-            _viewer->getBacklight()->direction.setValue(x,y,z);
-        }
-    }
-    else if (strcmp(Reason,"BacklightIntensity") == 0) {
-        long value = rGrp.GetInt("BacklightIntensity", 100);
-        _viewer->getBacklight()->intensity.setValue((float)value/100.0f);
-    }
-    else if (strcmp(Reason,"EnablePreselection") == 0) {
-        const ParameterGrp& rclGrp = ((ParameterGrp&)rCaller);
-        SoFCEnableHighlightAction cAct(rclGrp.GetBool("EnablePreselection", true));
-        cAct.apply(_viewer->getSceneGraph());
-    }
-    else if (strcmp(Reason,"EnableSelection") == 0) {
-        const ParameterGrp& rclGrp = ((ParameterGrp&)rCaller);
-        SoFCEnableSelectionAction cAct(rclGrp.GetBool("EnableSelection", true));
-        cAct.apply(_viewer->getSceneGraph());
-    }
-    else if (strcmp(Reason,"HighlightColor") == 0) {
-        float transparency;
-        SbColor highlightColor(0.8f, 0.1f, 0.1f);
-        unsigned long highlight = (unsigned long)(highlightColor.getPackedValue());
-        highlight = rGrp.GetUnsigned("HighlightColor", highlight);
-        highlightColor.setPackedValue((uint32_t)highlight, transparency);
-        SoSFColor col; col.setValue(highlightColor);
-        SoFCHighlightColorAction cAct(col);
-        cAct.apply(_viewer->getSceneGraph());
-    }
-    else if (strcmp(Reason,"SelectionColor") == 0) {
-        float transparency;
-        SbColor selectionColor(0.1f, 0.8f, 0.1f);
-        unsigned long selection = (unsigned long)(selectionColor.getPackedValue());
-        selection = rGrp.GetUnsigned("SelectionColor", selection);
-        selectionColor.setPackedValue((uint32_t)selection, transparency);
-        SoSFColor col; col.setValue(selectionColor);
-        SoFCSelectionColorAction cAct(col);
-        cAct.apply(_viewer->getSceneGraph());
-    }
-    else if (strcmp(Reason,"NavigationStyle") == 0) {
-        // check whether the simple or the full mouse model is used
-        std::string model = rGrp.GetASCII("NavigationStyle",CADNavigationStyle::getClassTypeId().getName());
-        Base::Type type = Base::Type::fromName(model.c_str());
-        _viewer->setNavigationType(type);
-    }
-    else if (strcmp(Reason,"OrbitStyle") == 0) {
-        int style = rGrp.GetInt("OrbitStyle",1);
-        _viewer->navigationStyle()->setOrbitStyle(NavigationStyle::OrbitStyle(style));
-    }
-    else if (strcmp(Reason,"Sensitivity") == 0) {
-        float val = rGrp.GetFloat("Sensitivity",2.0f);
-        _viewer->navigationStyle()->setSensitivity(val);
-    }
-    else if (strcmp(Reason,"ResetCursorPosition") == 0) {
-        bool on = rGrp.GetBool("ResetCursorPosition",false);
-        _viewer->navigationStyle()->setResetCursorPosition(on);
-    }
-    else if (strcmp(Reason,"InvertZoom") == 0) {
-        bool on = rGrp.GetBool("InvertZoom", true);
-        _viewer->navigationStyle()->setZoomInverted(on);
-    }
-    else if (strcmp(Reason,"ZoomAtCursor") == 0) {
-        bool on = rGrp.GetBool("ZoomAtCursor", true);
-        _viewer->navigationStyle()->setZoomAtCursor(on);
-    }
-    else if (strcmp(Reason,"ZoomStep") == 0) {
-        float val = rGrp.GetFloat("ZoomStep", 0.0f);
-        _viewer->navigationStyle()->setZoomStep(val);
-    }
-    else if (strcmp(Reason,"EyeDistance") == 0) {
-        _viewer->getSoRenderManager()->setStereoOffset(rGrp.GetFloat("EyeDistance",5.0));
-    }
-    else if (strcmp(Reason,"CornerCoordSystem") == 0) {
-        _viewer->setFeedbackVisibility(rGrp.GetBool("CornerCoordSystem",true));
-    }
-    else if (strcmp(Reason,"UseAutoRotation") == 0) {
-        _viewer->setAnimationEnabled(rGrp.GetBool("UseAutoRotation",false));
-    }
-    else if (strcmp(Reason,"Gradient") == 0) {
-        _viewer->setGradientBackground((rGrp.GetBool("Gradient",true)));
-    }
-    else if (strcmp(Reason,"ShowFPS") == 0) {
-        _viewer->setEnabledFPSCounter(rGrp.GetBool("ShowFPS",false));
-    }
-    else if (strcmp(Reason,"Orthographic") == 0) {
-        // check whether a perspective or orthogrphic camera should be set
-        if (rGrp.GetBool("Orthographic", true))
-            _viewer->setCameraType(SoOrthographicCamera::getClassTypeId());
-        else
-            _viewer->setCameraType(SoPerspectiveCamera::getClassTypeId());
-    }
-    else if (strcmp(Reason, "DimensionsVisible") == 0)
-    {
-      if (rGrp.GetBool("DimensionsVisible", true))
-        _viewer->turnAllDimensionsOn();
-      else
-        _viewer->turnAllDimensionsOff();
-    }
-    else if (strcmp(Reason, "Dimensions3dVisible") == 0)
-    {
-      if (rGrp.GetBool("Dimensions3dVisible", true))
-        _viewer->turn3dDimensionsOn();
-      else
-        _viewer->turn3dDimensionsOff();
-    }
-    else if (strcmp(Reason, "DimensionsDeltaVisible") == 0)
-    {
-      if (rGrp.GetBool("DimensionsDeltaVisible", true))
-        _viewer->turnDeltaDimensionsOn();
-      else
-        _viewer->turnDeltaDimensionsOff();
-    }
-    else
-#endif
+
     if (strcmp(Reason, "BackgroundColor") == 0)
     {
         unsigned long col1 = rGrp.GetUnsigned("BackgroundColor",3940932863UL);
-        //unsigned long col2 = rGrp.GetUnsigned("BackgroundColor2",859006463UL); // default color (dark blue)
-        //unsigned long col3 = rGrp.GetUnsigned("BackgroundColor3",2880160255UL); // default color (blue/grey)
-        //unsigned long col4 = rGrp.GetUnsigned("BackgroundColor4",1869583359UL); // default color (blue/grey)
+
         float r1,g1,b1;
-        //float r2,g2,b2;
-        //float r3,g3,b3;
-        //float r4,g4,b4;
+
         r1 = ((col1 >> 24) & 0xff) / 255.0; g1 = ((col1 >> 16) & 0xff) / 255.0; b1 = ((col1 >> 8) & 0xff) / 255.0;
-        //r2 = ((col2 >> 24) & 0xff) / 255.0; g2 = ((col2 >> 16) & 0xff) / 255.0; b2 = ((col2 >> 8) & 0xff) / 255.0;
-        //r3 = ((col3 >> 24) & 0xff) / 255.0; g3 = ((col3 >> 16) & 0xff) / 255.0; b3 = ((col3 >> 8) & 0xff) / 255.0;
-        //r4 = ((col4 >> 24) & 0xff) / 255.0; g4 = ((col4 >> 16) & 0xff) / 255.0; b4 = ((col4 >> 8) & 0xff) / 255.0;
         m_scene->setBackgroundColor(QColor::fromRgbF(r1, g1, b1));
-        //if (rGrp.GetBool("UseBackgroundColorMid",false) == false)
-        //    _viewer->setGradientBackgroundColor(SbColor(r2, g2, b2), SbColor(r3, g3, b3));
-        //else
-        //    _viewer->setGradientBackgroundColor(SbColor(r2, g2, b2), SbColor(r3, g3, b3), SbColor(r4, g4, b4));
     }
 }
-
 #include "moc_GLGraphicsView.cpp"

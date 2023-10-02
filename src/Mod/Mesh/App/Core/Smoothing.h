@@ -20,12 +20,14 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef MESH_SMOOTHING_H
 #define MESH_SMOOTHING_H
 
+#include <cfloat>
 #include <vector>
+
 #include "Definitions.h"
+
 
 namespace MeshCore
 {
@@ -38,20 +40,27 @@ class MeshRefFacetToFacets;
 class MeshExport AbstractSmoothing
 {
 public:
-    enum Component { 
-        Tangential,         ///< Smooth tangential direction
-        Normal,             ///< Smooth normal direction
-        TangentialNormal    ///< Smooth tangential and normal direction
+    enum Component
+    {
+        Tangential,       ///< Smooth tangential direction
+        Normal,           ///< Smooth normal direction
+        TangentialNormal  ///< Smooth tangential and normal direction
     };
 
-    enum Continuity { 
-        C0, 
-        C1, 
-        C2 
+    enum Continuity
+    {
+        C0,
+        C1,
+        C2
     };
 
     explicit AbstractSmoothing(MeshKernel&);
     virtual ~AbstractSmoothing();
+    AbstractSmoothing(const AbstractSmoothing&) = delete;
+    AbstractSmoothing(AbstractSmoothing&&) = delete;
+    AbstractSmoothing& operator=(const AbstractSmoothing&) = delete;
+    AbstractSmoothing& operator=(AbstractSmoothing&&) = delete;
+
     void initialize(Component comp, Continuity cont);
 
     /** Smooth the triangle mesh. */
@@ -59,58 +68,68 @@ public:
     virtual void SmoothPoints(unsigned int, const std::vector<PointIndex>&) = 0;
 
 protected:
+    // NOLINTBEGIN
     MeshKernel& kernel;
 
-    Component   component;
-    Continuity  continuity;
+    Component component {Normal};
+    Continuity continuity {C0};
+    // NOLINTEND
 };
 
-class MeshExport PlaneFitSmoothing : public AbstractSmoothing
+class MeshExport PlaneFitSmoothing: public AbstractSmoothing
 {
 public:
     explicit PlaneFitSmoothing(MeshKernel&);
-    ~PlaneFitSmoothing() override;
-    void SetMaximum(float max) {
+    void SetMaximum(float max)
+    {
         maximum = max;
     }
     void Smooth(unsigned int) override;
     void SmoothPoints(unsigned int, const std::vector<PointIndex>&) override;
 
 private:
-    float maximum;
+    float maximum {FLT_MAX};
 };
 
-class MeshExport LaplaceSmoothing : public AbstractSmoothing
+class MeshExport LaplaceSmoothing: public AbstractSmoothing
 {
 public:
     explicit LaplaceSmoothing(MeshKernel&);
-    ~LaplaceSmoothing() override;
     void Smooth(unsigned int) override;
     void SmoothPoints(unsigned int, const std::vector<PointIndex>&) override;
-    void SetLambda(double l) { lambda = l;}
+    void SetLambda(double l)
+    {
+        lambda = l;
+    }
+    double GetLambda() const
+    {
+        return lambda;
+    }
 
 protected:
+    void Umbrella(const MeshRefPointToPoints&, const MeshRefPointToFacets&, double);
     void Umbrella(const MeshRefPointToPoints&,
-                  const MeshRefPointToFacets&, double);
-    void Umbrella(const MeshRefPointToPoints&,
-                  const MeshRefPointToFacets&, double,
+                  const MeshRefPointToFacets&,
+                  double,
                   const std::vector<PointIndex>&);
 
-protected:
-    double lambda;
+private:
+    double lambda {0.6307};
 };
 
-class MeshExport TaubinSmoothing : public LaplaceSmoothing
+class MeshExport TaubinSmoothing: public LaplaceSmoothing
 {
 public:
     explicit TaubinSmoothing(MeshKernel&);
-    ~TaubinSmoothing() override;
     void Smooth(unsigned int) override;
     void SmoothPoints(unsigned int, const std::vector<PointIndex>&) override;
-    void SetMicro(double m) { micro = m;}
+    void SetMicro(double m)
+    {
+        micro = m;
+    }
 
-protected:
-    double micro;
+private:
+    double micro {0.0424};
 };
 
 /*!
@@ -118,12 +137,12 @@ protected:
  * Smoothing based on median filter from the paper:
  * Mesh Median Filter for Smoothing 3-D Polygonal Surfaces
  */
-class MeshExport MedianFilterSmoothing : public AbstractSmoothing
+class MeshExport MedianFilterSmoothing: public AbstractSmoothing
 {
 public:
     explicit MedianFilterSmoothing(MeshKernel&);
-    ~MedianFilterSmoothing() override;
-    void SetWeight(int w) {
+    void SetWeight(int w)
+    {
         weights = w;
     }
     void Smooth(unsigned int) override;
@@ -135,10 +154,10 @@ private:
                       const std::vector<PointIndex>&);
 
 private:
-    int weights;
+    int weights {1};
 };
 
-} // namespace MeshCore
+}  // namespace MeshCore
 
 
-#endif  // MESH_SMOOTHING_H 
+#endif  // MESH_SMOOTHING_H

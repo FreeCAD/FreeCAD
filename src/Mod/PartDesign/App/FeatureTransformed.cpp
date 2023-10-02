@@ -91,10 +91,10 @@ Part::Feature* Transformed::getBaseObject(bool silent) const {
         if(firstOriginal->isDerivedFrom(Part::Feature::getClassTypeId())) {
             rv = static_cast<Part::Feature*>(firstOriginal);
         } else {
-            err = "Transformation feature Linked object is not a Part object";
+            err = QT_TRANSLATE_NOOP("Exception", "Transformation feature Linked object is not a Part object");
         }
     } else {
-        err = "No originals linked to the transformed feature.";
+        err = QT_TRANSLATE_NOOP("Exception", "No originals linked to the transformed feature.");
     }
 
     if (!silent && err) {
@@ -201,7 +201,7 @@ App::DocumentObjectExecReturn *Transformed::execute()
 
     const Part::TopoShape& supportTopShape = supportFeature->Shape.getShape();
     if (supportTopShape.getShape().IsNull())
-        return new App::DocumentObjectExecReturn("Cannot transform invalid support shape");
+        return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Cannot transform invalid support shape"));
 
     // create an untransformed copy of the support shape
     Part::TopoShape supportShape(supportTopShape);
@@ -229,8 +229,9 @@ App::DocumentObjectExecReturn *Transformed::execute()
             TopoDS_Shape shape = copy.Shape();
 
             BRepBuilderAPI_Transform mkTrf(shape, *transformIter, false); // No need to copy, now
-            if (!mkTrf.IsDone())
-                return shapeTools;
+            if (!mkTrf.IsDone()) {
+                throw Base::CADKernelError(QT_TRANSLATE_NOOP("Exception", "Transformation failed"));
+            }
             shape = mkTrf.Shape();
 
             shapes.emplace_back(shape);
@@ -247,17 +248,17 @@ App::DocumentObjectExecReturn *Transformed::execute()
     // Original separately. This way it is easier to discover what feature causes a fuse/cut
     // to fail. The downside is that performance suffers when there are many originals. But it seems
     // safe to assume that in most cases there are few originals and many transformations
-    for (std::vector<App::DocumentObject*>::const_iterator o = originals.begin(); o != originals.end(); ++o)
+    for (auto original : originals)
     {
         // Extract the original shape and determine whether to cut or to fuse
         Part::TopoShape fuseShape;
         Part::TopoShape cutShape;
 
-        if ((*o)->getTypeId().isDerivedFrom(PartDesign::FeatureAddSub::getClassTypeId())) {
-            PartDesign::FeatureAddSub* feature = static_cast<PartDesign::FeatureAddSub*>(*o);
+        if (original->getTypeId().isDerivedFrom(PartDesign::FeatureAddSub::getClassTypeId())) {
+            PartDesign::FeatureAddSub* feature = static_cast<PartDesign::FeatureAddSub*>(original);
             feature->getAddSubShape(fuseShape, cutShape);
             if (fuseShape.isNull() && cutShape.isNull())
-                return new App::DocumentObjectExecReturn("Shape of addsub feature is empty");
+                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Shape of additive/subtractive feature is empty"));
             gp_Trsf trsf = feature->getLocation().Transformation().Multiplied(trsfInv);
             if (!fuseShape.isNull())
                 fuseShape = fuseShape.makeTransform(trsf);
@@ -265,7 +266,7 @@ App::DocumentObjectExecReturn *Transformed::execute()
                 cutShape = cutShape.makeTransform(trsf);
         }
         else {
-            return new App::DocumentObjectExecReturn("Only additive and subtractive features can be transformed");
+            return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Only additive and subtractive features can be transformed"));
         }
 
         TopoDS_Shape current = support;
@@ -273,35 +274,31 @@ App::DocumentObjectExecReturn *Transformed::execute()
             TopTools_ListOfShape shapeArguments;
             shapeArguments.Append(current);
             TopTools_ListOfShape shapeTools = getTransformedCompShape(fuseShape.getShape());
-            if (shapeTools.Size() == 0)
-                return new App::DocumentObjectExecReturn("Transformation failed", (*o));
-            std::unique_ptr<BRepAlgoAPI_BooleanOperation> mkBool(new BRepAlgoAPI_Fuse());
-            mkBool->SetArguments(shapeArguments);
-            mkBool->SetTools(shapeTools);
-            mkBool->Build();
-            if (!mkBool->IsDone()) {
-                std::stringstream error;
-                error << "Boolean operation failed";
-                return new App::DocumentObjectExecReturn(error.str());
+            if (!shapeTools.IsEmpty()) {
+                std::unique_ptr<BRepAlgoAPI_BooleanOperation> mkBool(new BRepAlgoAPI_Fuse());
+                mkBool->SetArguments(shapeArguments);
+                mkBool->SetTools(shapeTools);
+                mkBool->Build();
+                if (!mkBool->IsDone()) {
+                    return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Boolean operation failed"));
+                }
+                current = mkBool->Shape();
             }
-            current = mkBool->Shape();
         }
         if (!cutShape.isNull()) {
             TopTools_ListOfShape shapeArguments;
             shapeArguments.Append(current);
             TopTools_ListOfShape shapeTools = getTransformedCompShape(cutShape.getShape());
-            if (shapeTools.Size() == 0)
-                return new App::DocumentObjectExecReturn("Transformation failed", (*o));
-            std::unique_ptr<BRepAlgoAPI_BooleanOperation> mkBool(new BRepAlgoAPI_Cut());
-            mkBool->SetArguments(shapeArguments);
-            mkBool->SetTools(shapeTools);
-            mkBool->Build();
-            if (!mkBool->IsDone()) {
-                std::stringstream error;
-                error << "Boolean operation failed";
-                return new App::DocumentObjectExecReturn(error.str());
+            if (!shapeTools.IsEmpty()) {
+                std::unique_ptr<BRepAlgoAPI_BooleanOperation> mkBool(new BRepAlgoAPI_Cut());
+                mkBool->SetArguments(shapeArguments);
+                mkBool->SetTools(shapeTools);
+                mkBool->Build();
+                if (!mkBool->IsDone()) {
+                    return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Boolean operation failed"));
+                }
+                current = mkBool->Shape();
             }
-            current = mkBool->Shape();
         }
 
         support = current; // Use result of this operation for fuse/cut of next original

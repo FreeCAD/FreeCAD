@@ -341,7 +341,7 @@ void SoStringLabel::GLRender(SoGLRenderAction *action)
 
     // text color
     SbColor color = this->textColor.getValue();
-    glColor4f(color[0], color[1], color[2],1);
+    glColor4f(color[0], color[1], color[2], 1);
     const SbMatrix & mat = SoModelMatrixElement::get(state);
     const SbMatrix & projmatrix = (mat * SoViewingMatrixElement::get(state) *
                                    SoProjectionMatrixElement::get(state));
@@ -407,7 +407,7 @@ void SoFrameLabel::drawImage()
         return;
     }
 
-    QFont font(QString::fromLatin1(name.getValue()), size.getValue());
+    QFont font(QString::fromLatin1(QByteArray(name.getValue())), size.getValue());
     QFontMetrics fm(font);
     int w = 0;
     int h = fm.height() * num;
@@ -481,10 +481,8 @@ TranslateManip::TranslateManip()
 {
     SO_NODE_CONSTRUCTOR(TranslateManip);
 
-    SoTranslate2Dragger *myDrag = new SoTranslate2Dragger;
+    auto myDrag = new SoTranslate2Dragger;
     setDragger(myDrag);
 }
 
-TranslateManip::~TranslateManip()
-{
-}
+TranslateManip::~TranslateManip() = default;

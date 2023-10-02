@@ -7,11 +7,11 @@
     <x>0</x>
     <y>0</y>
     <width>262</width>
-    <height>270</height>
+    <height>293</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Form</string>
+   <string notr="true">Form</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_3">
    <item>
@@ -126,6 +126,16 @@
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>checkBoxRuled</tabstop>
+  <tabstop>checkBoxClosed</tabstop>
+  <tabstop>buttonProfileBase</tabstop>
+  <tabstop>profileBaseEdit</tabstop>
+  <tabstop>buttonRefAdd</tabstop>
+  <tabstop>buttonRefRemove</tabstop>
+  <tabstop>listWidgetReferences</tabstop>
+  <tabstop>checkBoxUpdateView</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>

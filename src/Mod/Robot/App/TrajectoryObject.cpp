@@ -20,15 +20,13 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
-#ifndef _PreComp_
-#endif
-
-#include "TrajectoryObject.h"
 #include <App/DocumentObjectPy.h>
 #include <Base/Placement.h>
+
+#include "TrajectoryObject.h"
+
 
 using namespace Robot;
 using namespace App;
@@ -39,27 +37,30 @@ PROPERTY_SOURCE(Robot::TrajectoryObject, App::GeoFeature)
 TrajectoryObject::TrajectoryObject()
 {
 
-    ADD_PROPERTY_TYPE(Base,       (Base::Placement()), "Trajectory", Prop_None, "Base frame of the trajectory");
-    ADD_PROPERTY_TYPE(Trajectory, (Robot::Trajectory()), "Trajectory", Prop_None, "Trajectory object");
-
+    ADD_PROPERTY_TYPE(Base,
+                      (Base::Placement()),
+                      "Trajectory",
+                      Prop_None,
+                      "Base frame of the trajectory");
+    ADD_PROPERTY_TYPE(Trajectory,
+                      (Robot::Trajectory()),
+                      "Trajectory",
+                      Prop_None,
+                      "Trajectory object");
 }
 
-TrajectoryObject::~TrajectoryObject()
-{
-}
-
-short TrajectoryObject::mustExecute(void) const
+short TrajectoryObject::mustExecute() const
 {
     return 0;
 }
 
-PyObject *TrajectoryObject::getPyObject()
+PyObject* TrajectoryObject::getPyObject()
 {
-    if (PythonObject.is(Py::_None())){
+    if (PythonObject.is(Py::_None())) {
         // ref counter is set to 1
-        PythonObject = Py::Object(new DocumentObjectPy(this),true);
+        PythonObject = Py::Object(new DocumentObjectPy(this), true);
     }
-    return Py::new_reference_to(PythonObject); 
+    return Py::new_reference_to(PythonObject);
 }
 
 void TrajectoryObject::onChanged(const Property* prop)

@@ -28,6 +28,7 @@
 #endif
 
 #include <Base/GeometryPyCXX.h>
+#include <Base/PyWrapParseTupleAndKeywords.h>
 
 #include "Geom2d/Circle2dPy.h"
 #include "Geom2d/Circle2dPy.cpp"
@@ -56,8 +57,8 @@ int Circle2dPy::PyInit(PyObject* args, PyObject* kwds)
     // circle and distance for offset
     PyObject *pCirc;
     double dist;
-    static char* keywords_cd[] = {"Circle","Distance",nullptr};
-    if (PyArg_ParseTupleAndKeywords(args, kwds, "O!d", keywords_cd, &(Circle2dPy::Type), &pCirc, &dist)) {
+    static const std::array<const char *, 3> keywords_cd {"Circle","Distance",nullptr};
+    if (Base::Wrapped_ParseTupleAndKeywords(args, kwds, "O!d", keywords_cd, &(Circle2dPy::Type), &pCirc, &dist)) {
         Circle2dPy* pcCircle = static_cast<Circle2dPy*>(pCirc);
         Handle(Geom2d_Circle) circle = Handle(Geom2d_Circle)::DownCast
             (pcCircle->getGeom2dCirclePtr()->handle());
@@ -74,9 +75,9 @@ int Circle2dPy::PyInit(PyObject* args, PyObject* kwds)
 
     // center and radius
     PyObject *pV1, *pV2, *pV3;
-    static char* keywords_cnr[] = {"Center","Radius",nullptr};
+    static const std::array<const char *, 3> keywords_cnr {"Center","Radius",nullptr};
     PyErr_Clear();
-    if (PyArg_ParseTupleAndKeywords(args, kwds, "O!d", keywords_cnr,
+    if (Base::Wrapped_ParseTupleAndKeywords(args, kwds, "O!d", keywords_cnr,
                                         Base::Vector2dPy::type_object(), &pV1,
                                         &dist)) {
         Base::Vector2d v1 = Py::toVector2d(pV1);
@@ -91,9 +92,9 @@ int Circle2dPy::PyInit(PyObject* args, PyObject* kwds)
         return 0;
     }
 
-    static char* keywords_c[] = {"Circle",nullptr};
+    static const std::array<const char *, 2> keywords_c {"Circle",nullptr};
     PyErr_Clear();
-    if (PyArg_ParseTupleAndKeywords(args, kwds, "O!", keywords_c, &(Circle2dPy::Type), &pCirc)) {
+    if (Base::Wrapped_ParseTupleAndKeywords(args, kwds, "O!", keywords_c, &(Circle2dPy::Type), &pCirc)) {
         Circle2dPy* pcCircle = static_cast<Circle2dPy*>(pCirc);
         Handle(Geom2d_Circle) circ1 = Handle(Geom2d_Circle)::DownCast
             (pcCircle->getGeom2dCirclePtr()->handle());
@@ -103,12 +104,12 @@ int Circle2dPy::PyInit(PyObject* args, PyObject* kwds)
         return 0;
     }
 
-    static char* keywords_ppp[] = {"Point1","Point2","Point3",nullptr};
+    static const std::array<const char *, 4> keywords_ppp {"Point1","Point2","Point3",nullptr};
     PyErr_Clear();
-    if (PyArg_ParseTupleAndKeywords(args, kwds, "O!O!O!", keywords_ppp,
-                                         Base::Vector2dPy::type_object(), &pV1,
-                                         Base::Vector2dPy::type_object(), &pV2,
-                                         Base::Vector2dPy::type_object(), &pV3)) {
+    if (Base::Wrapped_ParseTupleAndKeywords(args, kwds, "O!O!O!", keywords_ppp,
+                                            Base::Vector2dPy::type_object(), &pV1,
+                                            Base::Vector2dPy::type_object(), &pV2,
+                                            Base::Vector2dPy::type_object(), &pV3)) {
         Base::Vector2d v1 = Py::toVector2d(pV1);
         Base::Vector2d v2 = Py::toVector2d(pV2);
         Base::Vector2d v3 = Py::toVector2d(pV3);
@@ -126,9 +127,9 @@ int Circle2dPy::PyInit(PyObject* args, PyObject* kwds)
     }
 
     // default circle
-    static char* keywords_n[] = {nullptr};
+    static const std::array<const char *, 1> keywords_n = {nullptr};
     PyErr_Clear();
-    if (PyArg_ParseTupleAndKeywords(args, kwds, "", keywords_n)) {
+    if (Base::Wrapped_ParseTupleAndKeywords(args, kwds, "", keywords_n) != 0) {
         Handle(Geom2d_Circle) circle = Handle(Geom2d_Circle)::DownCast(getGeom2dCirclePtr()->handle());
         circle->SetRadius(1.0);
         return 0;
@@ -164,7 +165,7 @@ PyObject* Circle2dPy::getCircleCenter(PyObject *args)
 Py::Float Circle2dPy::getRadius() const
 {
     Handle(Geom2d_Circle) circle = Handle(Geom2d_Circle)::DownCast(getGeom2dCirclePtr()->handle());
-    return Py::Float(circle->Radius()); 
+    return Py::Float(circle->Radius());
 }
 
 void  Circle2dPy::setRadius(Py::Float arg)
@@ -180,5 +181,5 @@ PyObject *Circle2dPy::getCustomAttributes(const char* ) const
 
 int Circle2dPy::setCustomAttributes(const char* , PyObject *)
 {
-    return 0; 
+    return 0;
 }

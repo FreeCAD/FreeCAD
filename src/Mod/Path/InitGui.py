@@ -59,17 +59,10 @@ class PathWorkbench(Workbench):
         global PathCommandGroup
 
         # Add preferences pages - before loading PathGui to properly order pages of Path group
-        from PathScripts import PathPreferencesPathJob, PathPreferencesPathDressup
+        import Path.Dressup.Gui.Preferences as PathPreferencesPathDressup
+        import Path.Main.Gui.PreferencesJob as PathPreferencesPathJob
 
         translate = FreeCAD.Qt.translate
-
-        FreeCADGui.addPreferencePage(PathPreferencesPathJob.JobPreferencesPage, "Path")
-        FreeCADGui.addPreferencePage(
-            PathPreferencesPathDressup.DressupPreferencesPage, "Path"
-        )
-
-        # Check enablement of experimental features
-        from PathScripts import PathPreferences
 
         # load the builtin modules
         import Path
@@ -79,11 +72,11 @@ class PathWorkbench(Workbench):
 
         FreeCADGui.addLanguagePath(":/translations")
         FreeCADGui.addIconPath(":/icons")
-        from PathScripts import PathGuiInit
-        from PathScripts import PathJobCmd
+        import Path.GuiInit
 
-        from PathScripts import PathToolBitCmd
-        from PathScripts import PathToolBitLibraryCmd
+        from Path.Main.Gui import JobCmd as PathJobCmd
+        from Path.Tool.Gui import BitCmd as PathToolBitCmd
+        from Path.Tool.Gui import BitLibraryCmd as PathToolBitLibraryCmd
 
         from PySide.QtCore import QT_TRANSLATE_NOOP
 
@@ -91,10 +84,15 @@ class PathWorkbench(Workbench):
         import subprocess
         from packaging.version import Version, parse
 
-        PathGuiInit.Startup()
+        FreeCADGui.addPreferencePage(PathPreferencesPathJob.JobPreferencesPage, QT_TRANSLATE_NOOP("QObject", "Path"))
+        FreeCADGui.addPreferencePage(
+            PathPreferencesPathDressup.DressupPreferencesPage, QT_TRANSLATE_NOOP("QObject", "Path")
+        )
+
+        Path.GuiInit.Startup()
 
         # build commands list
-        projcmdlist = ["Path_Job", "Path_Post"]
+        projcmdlist = ["Path_Job", "Path_Post", "Path_Sanity"]
         toolcmdlist = [
             "Path_Inspect",
             "Path_Simulator",
@@ -134,12 +132,8 @@ class PathWorkbench(Workbench):
         # remotecmdlist = ["Path_Remote"]
         specialcmdlist = []
 
-        if PathPreferences.toolsUseLegacyTools():
-            toolcmdlist.append("Path_ToolLibraryEdit")
-            toolbitcmdlist = []
-        else:
-            toolcmdlist.extend(PathToolBitLibraryCmd.BarList)
-            toolbitcmdlist = PathToolBitLibraryCmd.MenuList
+        toolcmdlist.extend(PathToolBitLibraryCmd.BarList)
+        toolbitcmdlist = PathToolBitLibraryCmd.MenuList
 
         engravecmdgroup = ["Path_EngraveTools"]
         FreeCADGui.addCommand(
@@ -151,14 +145,13 @@ class PathWorkbench(Workbench):
         )
 
         threedcmdgroup = threedopcmdlist
-        if PathPreferences.experimentalFeaturesEnabled():
-            projcmdlist.append("Path_Sanity")
+        if Path.Preferences.experimentalFeaturesEnabled():
             prepcmdlist.append("Path_Shape")
             extracmdlist.extend(["Path_Area", "Path_Area_Workplane"])
             specialcmdlist.append("Path_ThreadMilling")
             twodopcmdlist.append("Path_Slot")
 
-        if PathPreferences.advancedOCLFeaturesEnabled():
+        if Path.Preferences.advancedOCLFeaturesEnabled():
             try:
                 r = subprocess.run(
                     ["camotics", "--version"], capture_output=True, text=True
@@ -171,9 +164,12 @@ class PathWorkbench(Workbench):
                 pass
 
             try:
-                import ocl  # pylint: disable=unused-variable
-                from PathScripts import PathSurfaceGui
-                from PathScripts import PathWaterlineGui
+                try:
+                    import ocl  # pylint: disable=unused-variable
+                except ImportError:
+                    import opencamlib as ocl
+                from Path.Op.Gui import Surface
+                from Path.Op.Gui import Waterline
 
                 threedopcmdlist.extend(["Path_Surface", "Path_Waterline"])
                 threedcmdgroup = ["Path_3dTools"]
@@ -185,7 +181,7 @@ class PathWorkbench(Workbench):
                     ),
                 )
             except ImportError:
-                if not PathPreferences.suppressOpenCamLibWarning():
+                if not Path.Preferences.suppressOpenCamLibWarning():
                     FreeCAD.Console.PrintError("OpenCamLib is not working!\n")
 
         self.appendToolbar(QT_TRANSLATE_NOOP("Workbench", "Project Setup"), projcmdlist)
@@ -258,21 +254,21 @@ class PathWorkbench(Workbench):
 
         self.dressupcmds = dressupcmdlist
 
-        curveAccuracy = PathPreferences.defaultLibAreaCurveAccuracy()
+        curveAccuracy = Path.Preferences.defaultLibAreaCurveAccuracy()
         if curveAccuracy:
             Path.Area.setDefaultParams(Accuracy=curveAccuracy)
 
         # keep this one the last entry in the preferences
-        import PathScripts.PathPreferencesAdvanced as PathPreferencesAdvanced
-        from PathScripts.PathPreferences import preferences
+        import Path.Base.Gui.PreferencesAdvanced as PathPreferencesAdvanced
+        from Path.Preferences import preferences
 
         FreeCADGui.addPreferencePage(
-            PathPreferencesAdvanced.AdvancedPreferencesPage, "Path"
+            PathPreferencesAdvanced.AdvancedPreferencesPage, QT_TRANSLATE_NOOP("QObject", "Path")
         )
         Log("Loading Path workbench... done\n")
 
         # Warn user if current schema doesn't use minute for time in velocity
-        if not PathPreferences.suppressVelocity():
+        if not Path.Preferences.suppressVelocity():
             velString = FreeCAD.Units.Quantity(
                 1, FreeCAD.Units.Velocity
             ).getUserPreferred()[2][3:]
@@ -282,7 +278,7 @@ class PathWorkbench(Workbench):
 
                 msg = translate(
                     "Path",
-                    "The currently selected unit schema: \n     '{}'\n Does not use 'minutes' for velocity values. \n \nCNC machines require feed rate to be expressed in \nunit/minute. To ensure correct gcode: \nSelect a minute-based schema in preferences.\nFor example:\n    'Metric, Small Parts & CNC'\n    'US Customary'\n    'Imperial Decimal'",
+                    "The currently selected unit schema: \n     '{}'\n Does not use 'minutes' for velocity values. \n \nCNC machines require feed rate to be expressed in \nunit/minute. To ensure correct G-code: \nSelect a minute-based schema in preferences.\nFor example:\n    'Metric, Small Parts & CNC'\n    'US Customary'\n    'Imperial Decimal'",
                 ).format(current_schema)
                 header = translate("Path", "Warning")
                 msgbox = QtGui.QMessageBox(QtGui.QMessageBox.Warning, header, msg)
@@ -324,7 +320,7 @@ class PathWorkbench(Workbench):
                         "", ["Path_ExportTemplate"] + self.toolbitctxmenu
                     )
                 menuAppended = True
-            if isinstance(obj.Proxy, PathScripts.PathOp.ObjectOp):
+            if isinstance(obj.Proxy, Path.Op.Base.ObjectOp):
                 self.appendContextMenu(
                     "", ["Path_OperationCopy", "Path_OpActiveToggle"]
                 )
@@ -341,7 +337,7 @@ class PathWorkbench(Workbench):
                     for cmd in self.dressupcmds:
                         self.appendContextMenu("", [cmd])
                     menuAppended = True
-            if isinstance(obj.Proxy, PathScripts.PathToolBit.ToolBit):
+            if isinstance(obj.Proxy, Path.Tool.Bit.ToolBit):
                 self.appendContextMenu("", ["Path_ToolBitSave", "Path_ToolBitSaveAs"])
                 menuAppended = True
         if menuAppended:

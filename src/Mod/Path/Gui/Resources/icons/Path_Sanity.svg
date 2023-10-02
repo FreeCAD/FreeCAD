@@ -8,7 +8,7 @@
         <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
         <dc:title/>
         <dc:title>Path_Sanity</dc:title>
-      <dc:date>2016-05-15</dc:date><dc:relation>http://www.freecadweb.org/wiki/index.php?title=Artwork</dc:relation><dc:publisher><cc:Agent><dc:title>FreeCAD</dc:title></cc:Agent></dc:publisher><dc:identifier>FreeCAD/src/Mod/Path/Gui/Resources/icons/Path_Sanity.svg</dc:identifier><dc:rights><cc:Agent><dc:title>FreeCAD LGPL2+</dc:title></cc:Agent></dc:rights><cc:license>https://www.gnu.org/copyleft/lesser.html</cc:license><dc:contributor><cc:Agent><dc:title>[agryson] Alexander Gryson</dc:title></cc:Agent></dc:contributor></cc:Work>
+      <dc:date>2016-05-15</dc:date><dc:relation>http://www.freecad.org/wiki/index.php?title=Artwork</dc:relation><dc:publisher><cc:Agent><dc:title>FreeCAD</dc:title></cc:Agent></dc:publisher><dc:identifier>FreeCAD/src/Mod/Path/Gui/Resources/icons/Path_Sanity.svg</dc:identifier><dc:rights><cc:Agent><dc:title>FreeCAD LGPL2+</dc:title></cc:Agent></dc:rights><cc:license>https://www.gnu.org/copyleft/lesser.html</cc:license><dc:contributor><cc:Agent><dc:title>[agryson] Alexander Gryson</dc:title></cc:Agent></dc:contributor></cc:Work>
     </rdf:RDF>
   </metadata>
   <defs id="defs7">

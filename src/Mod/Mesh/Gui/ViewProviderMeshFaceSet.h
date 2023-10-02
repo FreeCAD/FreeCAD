@@ -25,7 +25,8 @@
 
 #include <Mod/Mesh/Gui/ViewProvider.h>
 
-namespace MeshGui {
+namespace MeshGui
+{
 class SoFCIndexedFaceSet;
 
 /**
@@ -46,7 +47,7 @@ class SoFCIndexedFaceSet;
  * For more details @see SoFCMeshNode and SoFCMeshFaceSet.
  * @author Werner Mayer
  */
-class MeshGuiExport ViewProviderMeshFaceSet : public ViewProviderMesh
+class MeshGuiExport ViewProviderMeshFaceSet: public ViewProviderMesh
 {
     PROPERTY_HEADER_WITH_OVERRIDE(MeshGui::ViewProviderMeshFaceSet);
 
@@ -54,7 +55,7 @@ public:
     ViewProviderMeshFaceSet();
     ~ViewProviderMeshFaceSet() override;
 
-    void attach(App::DocumentObject *pcFeat) override;
+    void attach(App::DocumentObject* pcFeat) override;
     void updateData(const App::Property*) override;
 
 protected:
@@ -65,14 +66,13 @@ protected:
 private:
     bool directRendering;
     unsigned long triangleCount;
-    SoCoordinate3       * pcMeshCoord;
-    SoFCIndexedFaceSet  * pcMeshFaces;
-    SoFCMeshObjectNode  * pcMeshNode;
-    SoFCMeshObjectShape * pcMeshShape;
+    SoCoordinate3* pcMeshCoord;
+    SoFCIndexedFaceSet* pcMeshFaces;
+    SoFCMeshObjectNode* pcMeshNode;
+    SoFCMeshObjectShape* pcMeshShape;
 };
 
-} // namespace MeshGui
+}  // namespace MeshGui
 
 
-#endif // MESHGUI_VIEWPROVIDERMESHFACESET_H
-
+#endif  // MESHGUI_VIEWPROVIDERMESHFACESET_H

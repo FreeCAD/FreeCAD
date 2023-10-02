@@ -20,21 +20,12 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
-#ifndef _PreComp_
-#  include <QPixmap>
-#endif
-
-
-
 #include "TaskWatcher.h"
-#include <Gui/SelectionObject.h>
 
 
 using namespace RobotGui;
-
 
 //**************************************************************************
 //**************************************************************************
@@ -44,32 +35,24 @@ using namespace RobotGui;
 TaskWatcherRobot::TaskWatcherRobot()
     : Gui::TaskView::TaskWatcher("SELECT Robot::RobotObject COUNT 1")
 {
-    rob  = new TaskRobot6Axis(nullptr);
-    ctr  = new TaskRobotControl(nullptr);
+    rob = new TaskRobot6Axis(nullptr);
+    ctr = new TaskRobotControl(nullptr);
 
     Content.push_back(rob);
     Content.push_back(ctr);
-
-}
-
-TaskWatcherRobot::~TaskWatcherRobot()
-{
-
 }
 
 //==== calls from the TaskView ===============================================================
 
 bool TaskWatcherRobot::shouldShow()
 {
-    if(match()){
-        rob->setRobot((Robot::RobotObject *)Result[0][0].getObject());
-        ctr->setRobot((Robot::RobotObject *)Result[0][0].getObject());
+    if (match()) {
+        rob->setRobot((Robot::RobotObject*)Result[0][0].getObject());
+        ctr->setRobot((Robot::RobotObject*)Result[0][0].getObject());
         return true;
     }
     return false;
 }
-
-
 
 
 #include "moc_TaskWatcher.cpp"

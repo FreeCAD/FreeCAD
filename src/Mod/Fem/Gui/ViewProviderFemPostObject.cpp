@@ -23,25 +23,27 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <functional>
-# include <Inventor/nodes/SoCoordinate3.h>
-# include <Inventor/nodes/SoDrawStyle.h>
-# include <Inventor/nodes/SoIndexedFaceSet.h>
-# include <Inventor/nodes/SoIndexedLineSet.h>
-# include <Inventor/nodes/SoIndexedPointSet.h>
-# include <Inventor/nodes/SoIndexedTriangleStripSet.h>
-# include <Inventor/nodes/SoMaterial.h>
-# include <Inventor/nodes/SoNormal.h>
-# include <Inventor/nodes/SoSeparator.h>
-# include <Inventor/nodes/SoShapeHints.h>
+#include <Inventor/nodes/SoCoordinate3.h>
+#include <Inventor/nodes/SoDrawStyle.h>
+#include <Inventor/nodes/SoIndexedFaceSet.h>
+#include <Inventor/nodes/SoIndexedLineSet.h>
+#include <Inventor/nodes/SoIndexedPointSet.h>
+#include <Inventor/nodes/SoIndexedTriangleStripSet.h>
+#include <Inventor/nodes/SoMaterial.h>
+#include <Inventor/nodes/SoNormal.h>
+#include <Inventor/nodes/SoSeparator.h>
+#include <Inventor/nodes/SoShapeHints.h>
+#include <functional>
 
-# include <vtkCellArray.h>
-# include <vtkCellData.h>
-# include <vtkPointData.h>
+#include <vtkCellArray.h>
+#include <vtkCellData.h>
+#include <vtkDoubleArray.h>
+#include <vtkImplicitFunction.h>
+#include <vtkPointData.h>
 
-# include <QApplication>
-# include <QMessageBox>
-# include <QTextStream>
+#include <QApplication>
+#include <QMessageBox>
+#include <QTextStream>
 #endif
 
 #include <App/Document.h>
@@ -54,10 +56,13 @@
 #include <Gui/SelectionObject.h>
 #include <Gui/SoFCColorBar.h>
 #include <Gui/TaskView/TaskDialog.h>
+#include <Gui/View3DInventor.h>
+#include <Gui/View3DInventorViewer.h>
 #include <Mod/Fem/App/FemPostFilter.h>
 
-#include "ViewProviderFemPostObject.h"
 #include "TaskPostBoxes.h"
+#include "ViewProviderAnalysis.h"
+#include "ViewProviderFemPostObject.h"
 
 
 using namespace FemGui;
@@ -71,7 +76,8 @@ using vtkIdTypePtr = vtkIdType*;
 
 // ----------------------------------------------------------------------------
 
-namespace {
+namespace
+{
 /*
  * The class FemPostObjectSelectionObserver notifies a ViewProviderFemPostObject
  *  only if its selection status has changed
@@ -79,20 +85,25 @@ namespace {
 class FemPostObjectSelectionObserver
 {
 public:
-    static FemPostObjectSelectionObserver& instance() {
+    static FemPostObjectSelectionObserver& instance()
+    {
         static FemPostObjectSelectionObserver inst;
         return inst;
     }
-    void registerFemPostObject(ViewProviderFemPostObject* vp) {
+    void registerFemPostObject(ViewProviderFemPostObject* vp)
+    {
         views.insert(vp);
     }
-    void unregisterFemPostObject(ViewProviderFemPostObject* vp) {
+    void unregisterFemPostObject(ViewProviderFemPostObject* vp)
+    {
         auto it = views.find(vp);
-        if (it != views.end())
+        if (it != views.end()) {
             views.erase(it);
+        }
     }
 
-    void selectionChanged(const Gui::SelectionChanges& msg) {
+    void selectionChanged(const Gui::SelectionChanges& msg)
+    {
         Gui::SelectionObject obj(msg);
         auto findVP = std::find_if(views.begin(), views.end(), [&obj](const auto& vp) {
             return obj.getObject() == vp->getObject();
@@ -104,14 +115,19 @@ public:
     }
 
 private:
-    FemPostObjectSelectionObserver() {
+    FemPostObjectSelectionObserver()
+    {
+        // NOLINTBEGIN
         this->connectSelection = Gui::Selection().signalSelectionChanged.connect(
             std::bind(&FemPostObjectSelectionObserver::selectionChanged, this, sp::_1));
+        // NOLINTEND
     }
 
     ~FemPostObjectSelectionObserver() = default;
+
+public:
     FemPostObjectSelectionObserver(const FemPostObjectSelectionObserver&) = delete;
-    FemPostObjectSelectionObserver& operator= (const FemPostObjectSelectionObserver&) = delete;
+    FemPostObjectSelectionObserver& operator=(const FemPostObjectSelectionObserver&) = delete;
 
 private:
     std::set<ViewProviderFemPostObject*> views;
@@ -119,22 +135,30 @@ private:
     Connection connectSelection;
 };
 
-}
+}  // namespace
 
 // ----------------------------------------------------------------------------
 
 PROPERTY_SOURCE(FemGui::ViewProviderFemPostObject, Gui::ViewProviderDocumentObject)
 
-ViewProviderFemPostObject::ViewProviderFemPostObject() : m_blockPropertyChanges(false)
+ViewProviderFemPostObject::ViewProviderFemPostObject()
 {
-    //initialize the properties
-    ADD_PROPERTY_TYPE(Field, ((long)0), "Coloring", App::Prop_None, "Select the field used for calculating the color");
-    ADD_PROPERTY_TYPE(VectorMode, ((long)0), "Coloring", App::Prop_None, "Select what to show for a vector field");
+    // initialize the properties
+    ADD_PROPERTY_TYPE(Field,
+                      ((long)0),
+                      "Coloring",
+                      App::Prop_None,
+                      "Select the field used for calculating the color");
+    ADD_PROPERTY_TYPE(VectorMode,
+                      ((long)0),
+                      "Coloring",
+                      App::Prop_None,
+                      "Select what to show for a vector field");
     ADD_PROPERTY(Transparency, (0));
 
     sPixmap = "fem-femmesh-from-shape";
 
-    //create the subnodes which do the visualization work
+    // create the subnodes which do the visualization work
     m_shapeHints = new SoShapeHints();
     m_shapeHints->ref();
     m_shapeHints->shapeType = SoShapeHints::UNKNOWN_SHAPE_TYPE;
@@ -161,8 +185,8 @@ ViewProviderFemPostObject::ViewProviderFemPostObject() : m_blockPropertyChanges(
     m_drawStyle->ref();
     m_drawStyle->lineWidth.setValue(2);
     m_drawStyle->pointSize.setValue(3);
-    m_seperator = new SoSeparator();
-    m_seperator->ref();
+    m_separator = new SoSeparator();
+    m_separator->ref();
 
     // simple color bar
     m_colorRoot = new SoSeparator();
@@ -174,7 +198,7 @@ ViewProviderFemPostObject::ViewProviderFemPostObject() : m_blockPropertyChanges(
     m_colorBar->Attach(this);
     m_colorBar->ref();
 
-    //create the vtk algorithms we use for visualisation
+    // create the vtk algorithms we use for visualisation
     m_outline = vtkSmartPointer<vtkOutlineCornerFilter>::New();
     m_points = vtkSmartPointer<vtkVertexGlyphFilter>::New();
     m_pointsSurface = vtkSmartPointer<vtkVertexGlyphFilter>::New();
@@ -207,7 +231,7 @@ ViewProviderFemPostObject::~ViewProviderFemPostObject()
     m_triangleStrips->unref();
     m_markers->unref();
     m_lines->unref();
-    m_seperator->unref();
+    m_separator->unref();
     m_material->unref();
     m_colorBar->Detach(this);
     m_colorBar->unref();
@@ -220,17 +244,18 @@ void ViewProviderFemPostObject::attach(App::DocumentObject* pcObj)
     ViewProviderDocumentObject::attach(pcObj);
 
     // face nodes
-    m_seperator->addChild(m_shapeHints);
-    m_seperator->addChild(m_drawStyle);
-    m_seperator->addChild(m_materialBinding);
-    m_seperator->addChild(m_material);
-    m_seperator->addChild(m_coordinates);
-    m_seperator->addChild(m_markers);
-    m_seperator->addChild(m_lines);
-    m_seperator->addChild(m_faces);
+    m_separator->addChild(m_shapeHints);
+    m_separator->addChild(m_drawStyle);
+    m_separator->addChild(m_materialBinding);
+    m_separator->addChild(m_material);
+    m_separator->addChild(m_coordinates);
+    m_separator->addChild(m_markers);
+    m_separator->addChild(m_lines);
+    m_separator->addChild(m_faces);
 
     // Check for an already existing color bar
-    Gui::SoFCColorBar* pcBar = ((Gui::SoFCColorBar*)findFrontRootOfType(Gui::SoFCColorBar::getClassTypeId()));
+    Gui::SoFCColorBar* pcBar =
+        ((Gui::SoFCColorBar*)findFrontRootOfType(Gui::SoFCColorBar::getClassTypeId()));
     if (pcBar) {
         float fMin = m_colorBar->getMinValue();
         float fMax = m_colorBar->getMaxValue();
@@ -247,35 +272,41 @@ void ViewProviderFemPostObject::attach(App::DocumentObject* pcObj)
 
     m_colorRoot->addChild(m_colorBar);
 
-    //all
-    addDisplayMaskMode(m_seperator, "Default");
+    // all
+    addDisplayMaskMode(m_separator, "Default");
     setDisplayMaskMode("Default");
 
     (void)setupPipeline();
 }
 
-SoSeparator* ViewProviderFemPostObject::getFrontRoot() const {
-
+SoSeparator* ViewProviderFemPostObject::getFrontRoot() const
+{
     return m_colorRoot;
 }
 
-
 void ViewProviderFemPostObject::setDisplayMode(const char* ModeName)
 {
-    if (strcmp("Outline", ModeName) == 0)
+    if (strcmp("Outline", ModeName) == 0) {
         m_currentAlgorithm = m_outline;
-    else if (strcmp("Surface with Edges", ModeName) == 0)
+    }
+    else if (strcmp("Surface with Edges", ModeName) == 0) {
         m_currentAlgorithm = m_surfaceEdges;
-    else if (strcmp("Surface", ModeName) == 0)
+    }
+    else if (strcmp("Surface", ModeName) == 0) {
         m_currentAlgorithm = m_surface;
-    else if (strcmp("Wireframe", ModeName) == 0)
+    }
+    else if (strcmp("Wireframe", ModeName) == 0) {
         m_currentAlgorithm = m_wireframe;
-    else if (strcmp("Wireframe (surface only)", ModeName) == 0)
+    }
+    else if (strcmp("Wireframe (surface only)", ModeName) == 0) {
         m_currentAlgorithm = m_wireframeSurface;
-    else if (strcmp("Nodes", ModeName) == 0)
+    }
+    else if (strcmp("Nodes", ModeName) == 0) {
         m_currentAlgorithm = m_points;
-    else if (strcmp("Nodes (surface only)", ModeName) == 0)
+    }
+    else if (strcmp("Nodes (surface only)", ModeName) == 0) {
         m_currentAlgorithm = m_pointsSurface;
+    }
 
     updateVtk();
 
@@ -287,7 +318,7 @@ std::vector<std::string> ViewProviderFemPostObject::getDisplayModes() const
     std::vector<std::string> StrList;
     StrList.emplace_back("Outline");
     StrList.emplace_back("Nodes");
-    //StrList.push_back("Nodes (surface only)"); somehow this filter does not work
+    // StrList.emplace_back("Nodes (surface only)"); somehow this filter does not work
     StrList.emplace_back("Surface");
     StrList.emplace_back("Surface with Edges");
     StrList.emplace_back("Wireframe");
@@ -295,25 +326,29 @@ std::vector<std::string> ViewProviderFemPostObject::getDisplayModes() const
     return StrList;
 }
 
-void ViewProviderFemPostObject::updateVtk() {
+void ViewProviderFemPostObject::updateVtk()
+{
 
-    if (!setupPipeline())
+    if (!setupPipeline()) {
         return;
+    }
 
     m_currentAlgorithm->Update();
     updateProperties();
     update3D();
 }
 
-void ViewProviderFemPostObject::updateProperties() {
+void ViewProviderFemPostObject::updateProperties()
+{
 
     m_blockPropertyChanges = true;
     vtkPolyData* poly = m_currentAlgorithm->GetOutput();
 
-    //coloring
+    // coloring
     std::string val;
-    if (Field.hasEnums() && Field.getValue() >= 0)
+    if (Field.hasEnums() && Field.getValue() >= 0) {
         val = Field.getValueAsString();
+    }
 
     std::vector<std::string> colorArrays;
     colorArrays.emplace_back("None");
@@ -321,13 +356,15 @@ void ViewProviderFemPostObject::updateProperties() {
     vtkPointData* point = poly->GetPointData();
     for (int i = 0; i < point->GetNumberOfArrays(); ++i) {
         std::string FieldName = point->GetArrayName(i);
-        if (FieldName != "Texture Coordinates")
+        if (FieldName != "Texture Coordinates") {
             colorArrays.push_back(FieldName);
+        }
     }
 
     vtkCellData* cell = poly->GetCellData();
-    for (int i = 0; i < cell->GetNumberOfArrays(); ++i)
+    for (int i = 0; i < cell->GetNumberOfArrays(); ++i) {
         colorArrays.emplace_back(cell->GetArrayName(i));
+    }
 
     App::Enumeration empty;
     Field.setValue(empty);
@@ -335,33 +372,40 @@ void ViewProviderFemPostObject::updateProperties() {
     Field.setValue(m_coloringEnum);
 
     std::vector<std::string>::iterator it = std::find(colorArrays.begin(), colorArrays.end(), val);
-    if (!val.empty() && it != colorArrays.end())
+    if (!val.empty() && it != colorArrays.end()) {
         Field.setValue(val.c_str());
+    }
 
     Field.purgeTouched();
 
-    //Vector mode
-    if (VectorMode.hasEnums() && VectorMode.getValue() >= 0)
+    // Vector mode
+    if (VectorMode.hasEnums() && VectorMode.getValue() >= 0) {
         val = VectorMode.getValueAsString();
+    }
 
     colorArrays.clear();
-    if (Field.getValue() == 0)
+    if (Field.getValue() == 0) {
         colorArrays.emplace_back("Not a vector");
+    }
     else {
-        int array = Field.getValue() - 1; //0 is none
-        vtkPolyData* pd = m_currentAlgorithm->GetOutput();
-        vtkDataArray* data = pd->GetPointData()->GetArray(array);
+        int array = Field.getValue() - 1;  // 0 is none
+        vtkDataArray* data = point->GetArray(array);
+        if (!data) {
+            return;
+        }
 
-        if (data->GetNumberOfComponents() == 1)
+        if (data->GetNumberOfComponents() == 1) {
             colorArrays.emplace_back("Not a vector");
+        }
         else {
             colorArrays.emplace_back("Magnitude");
             if (data->GetNumberOfComponents() >= 2) {
                 colorArrays.emplace_back("X");
                 colorArrays.emplace_back("Y");
             }
-            if (data->GetNumberOfComponents() >= 3)
+            if (data->GetNumberOfComponents() >= 3) {
                 colorArrays.emplace_back("Z");
+            }
         }
     }
 
@@ -370,13 +414,15 @@ void ViewProviderFemPostObject::updateProperties() {
     VectorMode.setValue(m_vectorEnum);
 
     it = std::find(colorArrays.begin(), colorArrays.end(), val);
-    if (!val.empty() && it != colorArrays.end())
+    if (!val.empty() && it != colorArrays.end()) {
         VectorMode.setValue(val.c_str());
+    }
 
     m_blockPropertyChanges = false;
 }
 
-void ViewProviderFemPostObject::update3D() {
+void ViewProviderFemPostObject::update3D()
+{
 
     vtkPolyData* pd = m_currentAlgorithm->GetOutput();
 
@@ -405,7 +451,7 @@ void ViewProviderFemPostObject::update3D() {
         m_faces->coordIndex.startEditing();
         int soidx = 0;
         cells = pd->GetPolys();
-        for (cells->InitTraversal(); cells->GetNextCell(npts, indx); ) {
+        for (cells->InitTraversal(); cells->GetNextCell(npts, indx);) {
 
             for (int i = 0; i < npts; i++) {
                 m_faces->coordIndex.set1Value(soidx, static_cast<int>(indx[i]));
@@ -417,8 +463,9 @@ void ViewProviderFemPostObject::update3D() {
         m_faces->coordIndex.setNum(soidx);
         m_faces->coordIndex.finishEditing();
     }
-    else
+    else {
         m_faces->coordIndex.setNum(0);
+    }
 
     // write out tstrips if any
     if (pd->GetNumberOfStrips() > 0) {
@@ -426,7 +473,7 @@ void ViewProviderFemPostObject::update3D() {
         int soidx = 0;
         cells = pd->GetStrips();
         m_triangleStrips->coordIndex.startEditing();
-        for (cells->InitTraversal(); cells->GetNextCell(npts, indx); ) {
+        for (cells->InitTraversal(); cells->GetNextCell(npts, indx);) {
 
             for (int i = 0; i < npts; i++) {
                 m_triangleStrips->coordIndex.set1Value(soidx, static_cast<int>(indx[i]));
@@ -438,8 +485,9 @@ void ViewProviderFemPostObject::update3D() {
         m_triangleStrips->coordIndex.setNum(soidx);
         m_triangleStrips->coordIndex.finishEditing();
     }
-    else
+    else {
         m_triangleStrips->coordIndex.setNum(0);
+    }
 
     // write out lines if any
     if (pd->GetNumberOfLines() > 0) {
@@ -447,7 +495,7 @@ void ViewProviderFemPostObject::update3D() {
         int soidx = 0;
         cells = pd->GetLines();
         m_lines->coordIndex.startEditing();
-        for (cells->InitTraversal(); cells->GetNextCell(npts, indx); ) {
+        for (cells->InitTraversal(); cells->GetNextCell(npts, indx);) {
             for (int i = 0; i < npts; i++) {
                 m_lines->coordIndex.set1Value(soidx, static_cast<int>(indx[i]));
                 ++soidx;
@@ -458,8 +506,9 @@ void ViewProviderFemPostObject::update3D() {
         m_lines->coordIndex.setNum(soidx);
         m_lines->coordIndex.finishEditing();
     }
-    else
+    else {
         m_lines->coordIndex.setNum(0);
+    }
 
     // write out verts if any
     if (pd->GetNumberOfVerts() > 0) {
@@ -468,22 +517,26 @@ void ViewProviderFemPostObject::update3D() {
         cells = pd->GetVerts();
         m_markers->coordIndex.startEditing();
         m_markers->coordIndex.setNum(pd->GetNumberOfVerts());
-        for (cells->InitTraversal(); cells->GetNextCell(npts, indx); ) {
+        for (cells->InitTraversal(); cells->GetNextCell(npts, indx);) {
             m_markers->coordIndex.set1Value(soidx, static_cast<int>(indx[0]));
             ++soidx;
         }
         m_markers->coordIndex.finishEditing();
     }
-    else
+    else {
         m_markers->coordIndex.setNum(0);
+    }
 }
 
-void ViewProviderFemPostObject::WritePointData(vtkPoints* points, vtkDataArray* normals, vtkDataArray* tcoords) {
-
+void ViewProviderFemPostObject::WritePointData(vtkPoints* points,
+                                               vtkDataArray* normals,
+                                               vtkDataArray* tcoords)
+{
     Q_UNUSED(tcoords);
 
-    if (!points)
+    if (!points) {
         return;
+    }
 
     m_coordinates->point.setNum(points->GetNumberOfPoints());
     SbVec3f* pnts = m_coordinates->point.startEditing();
@@ -527,14 +580,16 @@ void ViewProviderFemPostObject::updateMaterial()
     WriteColorData(true);
 }
 
-void ViewProviderFemPostObject::WriteColorData(bool ResetColorBarRange) {
-
-    if (!setupPipeline())
+void ViewProviderFemPostObject::WriteColorData(bool ResetColorBarRange)
+{
+    if (!setupPipeline()) {
         return;
+    }
 
     if (Field.getEnumVector().empty() || Field.getValue() == 0) {
         m_material->diffuseColor.setValue(SbColor(0.8, 0.8, 0.8));
-        m_material->transparency.setValue(0.);
+        float trans = float(Transparency.getValue()) / 100.0;
+        m_material->transparency.setValue(trans);
         m_materialBinding->value = SoMaterialBinding::OVERALL;
         m_materialBinding->touch();
         // since there is no field, set the range to the default
@@ -543,15 +598,21 @@ void ViewProviderFemPostObject::WriteColorData(bool ResetColorBarRange) {
         return;
     };
 
-    int array = Field.getValue() - 1; //0 is none
+    int array = Field.getValue() - 1;  // 0 is none
     vtkPolyData* pd = m_currentAlgorithm->GetOutput();
     vtkDataArray* data = pd->GetPointData()->GetArray(array);
+    if (!data) {
+        return;
+    }
 
-    int component = VectorMode.getValue() - 1; //0 is either "Not a vector" or magnitude, for -1 is correct for magnitude. x y and z are one number too high
-    if (strcmp(VectorMode.getValueAsString(), "Not a vector") == 0)
+    int component = VectorMode.getValue() - 1;  // 0 is either "Not a vector" or magnitude,
+                                                // for -1 is correct for magnitude.
+                                                // x y and z are one number too high
+    if (strcmp(VectorMode.getValueAsString(), "Not a vector") == 0) {
         component = 0;
+    }
 
-    //build the lookuptable
+    // build the lookuptable
     if (ResetColorBarRange) {
         double range[2];
         data->GetRange(range, component);
@@ -572,8 +633,9 @@ void ViewProviderFemPostObject::WriteColorData(bool ResetColorBarRange) {
             value = data->GetComponent(i, component);
         }
         else {
-            for (int j = 0; j < data->GetNumberOfComponents(); ++j)
+            for (int j = 0; j < data->GetNumberOfComponents(); ++j) {
                 value += std::pow(data->GetComponent(i, j), 2);
+            }
 
             value = std::sqrt(value);
         }
@@ -592,8 +654,8 @@ void ViewProviderFemPostObject::WriteColorData(bool ResetColorBarRange) {
     m_triangleStrips->touch();
 }
 
-void ViewProviderFemPostObject::WriteTransparency() {
-
+void ViewProviderFemPostObject::WriteTransparency()
+{
     float trans = float(Transparency.getValue()) / 100.0;
     m_material->transparency.setValue(trans);
 
@@ -602,42 +664,155 @@ void ViewProviderFemPostObject::WriteTransparency() {
     m_triangleStrips->touch();
 }
 
-void ViewProviderFemPostObject::updateData(const App::Property* p) {
-
-    if (strcmp(p->getName(), "Data") == 0) {
+void ViewProviderFemPostObject::updateData(const App::Property* p)
+{
+    Fem::FemPostObject* postObject = static_cast<Fem::FemPostObject*>(getObject());
+    if (p == &postObject->Data) {
         updateVtk();
     }
 }
 
-bool ViewProviderFemPostObject::setupPipeline() {
+void ViewProviderFemPostObject::filterArtifacts(vtkDataSet* dset)
+{
+    // The problem is that in the surface view the boundary regions of the volumes
+    // calculated by the different CPU cores is always visible, independent of the
+    // transparency setting. Elmer is not to blame because this is a property of the
+    // partial VTK file reader. So this can happen with various inputs
+    // since FreeCAD can also be used to view VTK files without the need to perform
+    // an analysis. Therefore it is impossible to know in advance when a filter
+    // is necessary or not.
+    // Only for pure CCX analyses we know that no filtering is necessary. However,
+    // the effort to catch this case is not worth it since the filtering is
+    // only as time-consuming as enabling the surface filter. In fact, it is like
+    // performing the surface filter twice.
 
-    vtkDataObject* data = static_cast<Fem::FemPostObject*>(getObject())->Data.getValue();
+    // We need to set the filter clipping plane below the z-minimum of the data.
+    // We can either do this by checking the VTK data or by getting the info from
+    // the 3D view. We use here the latter because this is much faster.
 
-    if (!data)
+    // since we will set the filter according to the visible bounding box
+    // assure the object is visible
+    bool visibility = this->Visibility.getValue();
+    if (!visibility) {
+        this->Visibility.setValue(true);
+    }
+    m_blockPropertyChanges = true;
+
+    Gui::Document* doc = this->getDocument();
+    Gui::View3DInventor* view =
+        qobject_cast<Gui::View3DInventor*>(doc->getViewOfViewProvider(this));
+
+    if (view) {
+        Gui::View3DInventorViewer* viewer = view->getViewer();
+        SbBox3f boundingBox;
+        boundingBox = viewer->getBoundingBox();
+        if (boundingBox.hasVolume()) {
+            // setup
+            vtkSmartPointer<vtkImplicitFunction> m_implicit;
+            auto m_plane = vtkSmartPointer<vtkPlane>::New();
+            m_implicit = m_plane;
+            m_plane->SetNormal(0., 0., 1.);
+            auto extractor = vtkSmartPointer<vtkTableBasedClipDataSet>::New();
+            float dx, dy, dz;
+            boundingBox.getSize(dx, dy, dz);
+            // Set plane below the minimum to assure there are
+            // no boundary cells (touching the function) and for Warp filters
+            // the user might change the warp factor a lot. Thus set
+            // 10 times dz to be safe even for unrealistic warp deformations
+            m_plane->SetOrigin(0., 0., -10 * dz);
+            extractor->SetClipFunction(m_implicit);
+            extractor->SetInputData(dset);
+            extractor->Update();
+            auto extractorResult = extractor->GetOutputDataObject(0);
+            if (extractorResult) {
+                m_surface->SetInputData(extractorResult);
+            }
+            else {
+                m_surface->SetInputData(dset);
+            }
+        }
+        else {
+            // for the case that there are only 2D objects
+            m_surface->SetInputData(dset);
+        }
+    }
+    // restore initial vsibility
+    if (!visibility) {
+        this->Visibility.setValue(visibility);
+    }
+    m_blockPropertyChanges = false;
+}
+
+bool ViewProviderFemPostObject::setupPipeline()
+{
+    if (m_blockPropertyChanges) {
         return false;
+    }
 
-    m_outline->SetInputData(data);
-    m_surface->SetInputData(data);
-    m_wireframe->SetInputData(data);
-    m_points->SetInputData(data);
+    auto postObject = static_cast<Fem::FemPostObject*>(getObject());
+
+    vtkDataObject* data = postObject->Data.getValue();
+    if (!data) {
+        return false;
+    }
+
+    // check all fields if there is a real/imaginary one and if so
+    // add a field with an absolute value
+    vtkSmartPointer<vtkDataObject> SPdata = data;
+    vtkDataSet* dset = vtkDataSet::SafeDownCast(SPdata);
+    if (!dset) {
+        return false;
+    }
+    std::string FieldName;
+    auto numFields = dset->GetPointData()->GetNumberOfArrays();
+    for (int i = 0; i < numFields; ++i) {
+        FieldName = std::string(dset->GetPointData()->GetArrayName(i));
+        addAbsoluteField(dset, FieldName);
+    }
+
+    m_outline->SetInputData(dset);
+    m_points->SetInputData(dset);
+    m_wireframe->SetInputData(dset);
+
+    // Filtering artifacts is necessary for partial VTU files (*.pvtu) independent of the
+    // current Elmer CPU core settings because the user might load an external file.
+    // It is only necessary for the surface filter.
+    // The problem is that when opening an existing FreeCAD file, we get no information how the
+    // Data of the postObject was once created. The vtkDataObject type does not provide this info.
+    // Therefore the only way is the hack to filter only if the used Elmer CPU cores are > 1.
+    auto hGrp = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/Mod/Fem/Elmer");
+    bool FilterMultiCPUResults = hGrp->GetBool("FilterMultiCPUResults", true);
+    int UseNumberOfCores = hGrp->GetInt("UseNumberOfCores", 1);
+    // filtering is only necessary for pipelines and warp filters
+    if (FilterMultiCPUResults && (UseNumberOfCores > 1)
+        && ((postObject->getTypeId() == Base::Type::fromName("Fem::FemPostPipeline"))
+            || (postObject->getTypeId() == Base::Type::fromName("Fem::FemPostWarpVectorFilter")))) {
+        filterArtifacts(dset);
+    }
+    else {
+        m_surface->SetInputData(dset);
+    }
 
     return true;
 }
 
-
-void ViewProviderFemPostObject::onChanged(const App::Property* prop) {
-
-    if (m_blockPropertyChanges)
+void ViewProviderFemPostObject::onChanged(const App::Property* prop)
+{
+    if (m_blockPropertyChanges) {
         return;
+    }
 
     bool ResetColorBarRange;
 
     // the point filter delivers a single value thus recoloring the bar is senseless
     if (static_cast<Fem::FemPostObject*>(getObject())->getTypeId()
-         == Base::Type::fromName("Fem::FemPostDataAtPointFilter"))
+        == Base::Type::fromName("Fem::FemPostDataAtPointFilter")) {
         ResetColorBarRange = false;
-    else
+    }
+    else {
         ResetColorBarRange = true;
+    }
 
     if (prop == &Field && setupPipeline()) {
         updateProperties();
@@ -655,27 +830,33 @@ void ViewProviderFemPostObject::onChanged(const App::Property* prop) {
     ViewProviderDocumentObject::onChanged(prop);
 }
 
-bool ViewProviderFemPostObject::doubleClicked() {
-    // work around for a problem in VTK implementation: https://forum.freecadweb.org/viewtopic.php?t=10587&start=130#p125688
+bool ViewProviderFemPostObject::doubleClicked()
+{
+    // work around for a problem in VTK implementation:
+    // https://forum.freecad.org/viewtopic.php?t=10587&start=130#p125688
     // check if backlight is enabled
-    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
+    ParameterGrp::handle hGrp =
+        App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
     bool isBackLightEnabled = hGrp->GetBool("EnableBacklight", false);
-    if (!isBackLightEnabled)
-        Base::Console().Error("Backlight is not enabled. Due to a VTK implementation problem you really should consider to enable backlight in FreeCAD display preferences if you work with VTK post processing.\n");
+    if (!isBackLightEnabled) {
+        Base::Console().Error("Backlight is not enabled. Due to a VTK implementation problem you "
+                              "really should consider to enable backlight in FreeCAD display "
+                              "preferences if you work with VTK post processing.\n");
+    }
     // set edit
     Gui::Application::Instance->activeDocument()->setEdit(this, (int)ViewProvider::Default);
     return true;
 }
 
-
-bool ViewProviderFemPostObject::setEdit(int ModNum) {
-
+bool ViewProviderFemPostObject::setEdit(int ModNum)
+{
     if (ModNum == ViewProvider::Default || ModNum == 1) {
 
         Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog();
         TaskDlgPost* postDlg = qobject_cast<TaskDlgPost*>(dlg);
-        if (postDlg && postDlg->getView() != this)
-            postDlg = nullptr; // another pad left open its task panel
+        if (postDlg && postDlg->getView() != this) {
+            postDlg = nullptr;  // another pad left open its task panel
+        }
         if (dlg && !postDlg) {
             QMessageBox msgBox;
             msgBox.setText(QObject::tr("A dialog is already open in the task panel"));
@@ -683,15 +864,18 @@ bool ViewProviderFemPostObject::setEdit(int ModNum) {
             msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
             msgBox.setDefaultButton(QMessageBox::Yes);
             int ret = msgBox.exec();
-            if (ret == QMessageBox::Yes)
+            if (ret == QMessageBox::Yes) {
                 Gui::Control().reject();
-            else
+            }
+            else {
                 return false;
+            }
         }
 
         // start the edit dialog
-        if (postDlg)
+        if (postDlg) {
             Gui::Control().showDialog(postDlg);
+        }
         else {
             postDlg = new TaskDlgPost(this);
             setupTaskDialog(postDlg);
@@ -706,16 +890,16 @@ bool ViewProviderFemPostObject::setEdit(int ModNum) {
     }
 }
 
-void ViewProviderFemPostObject::setupTaskDialog(TaskDlgPost* dlg) {
-
+void ViewProviderFemPostObject::setupTaskDialog(TaskDlgPost* dlg)
+{
     dlg->appendBox(new TaskPostDisplay(this));
 }
 
-void ViewProviderFemPostObject::unsetEdit(int ModNum) {
-
+void ViewProviderFemPostObject::unsetEdit(int ModNum)
+{
     if (ModNum == ViewProvider::Default) {
         // and update the pad
-        //getSketchObject()->getDocument()->recompute();
+        // getSketchObject()->getDocument()->recompute();
 
         // when pressing ESC make sure to close the dialog
         Gui::Control().closeDialog();
@@ -725,7 +909,8 @@ void ViewProviderFemPostObject::unsetEdit(int ModNum) {
     }
 }
 
-void ViewProviderFemPostObject::hide() {
+void ViewProviderFemPostObject::hide()
+{
     Gui::ViewProviderDocumentObject::hide();
     m_colorStyle->style = SoDrawStyle::INVISIBLE;
     // The object is now hidden but the color bar is wrong
@@ -736,17 +921,18 @@ void ViewProviderFemPostObject::hide() {
 
     // get all objects in the document
     auto docGui = Gui::Application::Instance->activeDocument();
-    if (!docGui)
+    if (!docGui) {
         return;
+    }
     auto doc = docGui->getDocument();
-    std::vector<App::DocumentObject *> ObjectsList = doc->getObjects();
-    App::DocumentObject *firstVisiblePostObject = nullptr;
+    std::vector<App::DocumentObject*> ObjectsList = doc->getObjects();
+    App::DocumentObject* firstVisiblePostObject = nullptr;
     // step through the objects
-    for (auto it = ObjectsList.begin(); it != ObjectsList.end(); ++it) {
-        if ((*it)->getTypeId().isDerivedFrom(Fem::FemPostObject::getClassTypeId())) {
-            if (!firstVisiblePostObject && (*it)->Visibility.getValue()
-                && !(*it)->isDerivedFrom(Fem::FemPostDataAtPointFilter::getClassTypeId())) {
-                firstVisiblePostObject = *it;
+    for (auto it : ObjectsList) {
+        if (it->getTypeId().isDerivedFrom(Fem::FemPostObject::getClassTypeId())) {
+            if (!firstVisiblePostObject && it->Visibility.getValue()
+                && !it->isDerivedFrom(Fem::FemPostDataAtPointFilter::getClassTypeId())) {
+                firstVisiblePostObject = it;
                 break;
             }
         }
@@ -754,13 +940,15 @@ void ViewProviderFemPostObject::hide() {
     // refresh found object
     if (firstVisiblePostObject) {
         auto viewProvider = docGui->getViewProvider(firstVisiblePostObject);
-        auto FEMviewProvider = static_cast<FemGui::ViewProviderFemPostObject *>(viewProvider);
-        if (FEMviewProvider)
+        auto FEMviewProvider = static_cast<FemGui::ViewProviderFemPostObject*>(viewProvider);
+        if (FEMviewProvider) {
             FEMviewProvider->WriteColorData(true);
+        }
     }
 }
 
-void ViewProviderFemPostObject::show() {
+void ViewProviderFemPostObject::show()
+{
     Gui::ViewProviderDocumentObject::show();
     m_colorStyle->style = SoDrawStyle::FILLED;
     // we must update the color bar except for data point filters
@@ -768,39 +956,17 @@ void ViewProviderFemPostObject::show() {
     WriteColorData(true);
 }
 
-void ViewProviderFemPostObject::OnChange(Base::Subject< int >& /*rCaller*/, int /*rcReason*/) {
+void ViewProviderFemPostObject::OnChange(Base::Subject<int>& /*rCaller*/, int /*rcReason*/)
+{
     bool ResetColorBarRange = false;
     WriteColorData(ResetColorBarRange);
 }
 
 bool ViewProviderFemPostObject::onDelete(const std::vector<std::string>&)
 {
-    // warn the user if the object has childs
-
+    // warn the user if the object has unselected children
     auto objs = claimChildren();
-    if (!objs.empty())
-    {
-        // generate dialog
-        QString bodyMessage;
-        QTextStream bodyMessageStream(&bodyMessage);
-        bodyMessageStream << qApp->translate("Std_Delete",
-            "The pipeline is not empty, therefore the\nfollowing referencing objects might be lost:");
-        bodyMessageStream << '\n';
-        for (auto ObjIterator : objs)
-            bodyMessageStream << '\n' << QString::fromUtf8(ObjIterator->Label.getValue());
-        bodyMessageStream << "\n\n" << QObject::tr("Are you sure you want to continue?");
-        // show and evaluate the dialog
-        int DialogResult = QMessageBox::warning(Gui::getMainWindow(),
-            qApp->translate("Std_Delete", "Object dependencies"), bodyMessage,
-            QMessageBox::Yes, QMessageBox::No);
-        if (DialogResult == QMessageBox::Yes)
-            return true;
-        else
-            return false;
-    }
-    else {
-        return true;
-    }
+    return ViewProviderFemAnalysis::checkSelectedChildren(objs, this->getDocument(), "pipeline");
 }
 
 bool ViewProviderFemPostObject::canDelete(App::DocumentObject* obj) const
@@ -812,14 +978,86 @@ bool ViewProviderFemPostObject::canDelete(App::DocumentObject* obj) const
     return true;
 }
 
-void ViewProviderFemPostObject::onSelectionChanged(const Gui::SelectionChanges &sel)
+void ViewProviderFemPostObject::onSelectionChanged(const Gui::SelectionChanges& sel)
 {
     // If a FemPostObject is selected in the document tree we must refresh its
     // color bar.
     // But don't do this if the object is invisible because other objects with a
     // color bar might be visible and the color bar is then wrong.
     if (sel.Type == Gui::SelectionChanges::AddSelection) {
-        if (this->getObject()->Visibility.getValue())
+        if (this->getObject()->Visibility.getValue()) {
             updateMaterial();
+        }
+    }
+}
+
+// if there is a real and an imaginary field, an absolute field is added
+void ViewProviderFemPostObject::addAbsoluteField(vtkDataSet* dset, std::string FieldName)
+{
+    // real field names have the suffix " re", given by Elmer
+    // if the field does not have this suffix, we can return
+    auto suffix = FieldName.substr(FieldName.size() - 3, FieldName.size() - 1);
+    if (strcmp(suffix.c_str(), " re") != 0) {
+        return;
+    }
+
+    // absolute fields might have already been created, then do nothing
+    auto strAbsoluteFieldName = FieldName.substr(0, FieldName.size() - 2) + "abs";
+    vtkDataArray* testArray = dset->GetPointData()->GetArray(strAbsoluteFieldName.c_str());
+    if (testArray) {
+        return;
+    }
+
+    // safety check
+    vtkDataArray* realDdata = dset->GetPointData()->GetArray(FieldName.c_str());
+    if (!realDdata) {
+        return;
+    }
+
+    // now check if the imaginary counterpart exists
+    auto strImaginaryFieldName = FieldName.substr(0, FieldName.size() - 2) + "im";
+    vtkDataArray* imagDdata = dset->GetPointData()->GetArray(strImaginaryFieldName.c_str());
+    if (!imagDdata) {
+        return;
+    }
+
+    // create a new array and copy over the real data
+    // since one cannot directly access the values of a vtkDataSet
+    // we need to copy them over in a loop
+    vtkSmartPointer<vtkDoubleArray> absoluteData = vtkSmartPointer<vtkDoubleArray>::New();
+    absoluteData->SetNumberOfComponents(realDdata->GetNumberOfComponents());
+    auto numTuples = realDdata->GetNumberOfTuples();
+    absoluteData->SetNumberOfTuples(numTuples);
+    double tuple[] = {0, 0, 0};
+    for (vtkIdType i = 0; i < numTuples; ++i) {
+        absoluteData->SetTuple(i, tuple);
+    }
+    // name the array
+    auto strAbsFieldName = FieldName.substr(0, FieldName.size() - 2) + "abs";
+    absoluteData->SetName(strAbsFieldName.c_str());
+
+    // add array to data set
+    dset->GetPointData()->AddArray(absoluteData);
+
+    // step through all mesh points and calculate them
+    double realValue = 0;
+    double imaginaryValue = 0;
+    double absoluteValue = 0;
+    for (int i = 0; i < dset->GetNumberOfPoints(); ++i) {
+        if (absoluteData->GetNumberOfComponents() == 1) {
+            realValue = realDdata->GetComponent(i, 0);
+            imaginaryValue = imagDdata->GetComponent(i, 0);
+            absoluteValue = sqrt(pow(realValue, 2) + pow(imaginaryValue, 2));
+            absoluteData->SetComponent(i, 0, absoluteValue);
+        }
+        // if field is a vector
+        else {
+            for (int j = 0; j < absoluteData->GetNumberOfComponents(); ++j) {
+                realValue = realDdata->GetComponent(i, j);
+                imaginaryValue = imagDdata->GetComponent(i, j);
+                absoluteValue = sqrt(pow(realValue, 2) + pow(imaginaryValue, 2));
+                absoluteData->SetComponent(i, j, absoluteValue);
+            }
+        }
     }
 }

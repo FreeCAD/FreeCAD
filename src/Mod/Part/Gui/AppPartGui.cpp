@@ -1,13 +1,26 @@
 /***************************************************************************
- *                                                                         *
- *   This program is free software; you can redistribute it and/or modify  *
- *   it under the terms of the GNU Library General Public License as       *
- *   published by the Free Software Foundation; either version 2 of the    *
- *   License, or (at your option) any later version.                       *
- *   for detail see the LICENCE text file.                                 *
- *   Juergen Riegel 2002                                                   *
- *                                                                         *
- ***************************************************************************/
+*   Copyright (c) 2002 Juergen Riegel <juergen.riegel@web.de>             *
+*                                                                         *
+*   This file is part of the FreeCAD CAx development system.              *
+*                                                                         *
+*   This program is free software; you can redistribute it and/or modify  *
+*   it under the terms of the GNU Lesser General Public License (LGPL)    *
+*   as published by the Free Software Foundation; either version 2 of     *
+*   the License, or (at your option) any later version.                   *
+*   for detail see the LICENCE text file.                                 *
+*                                                                         *
+*   FreeCAD is distributed in the hope that it will be useful,            *
+*   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+*   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+*   GNU Lesser General Public License for more details.                   *
+*                                                                         *
+*   You should have received a copy of the GNU Library General Public     *
+*   License along with FreeCAD; if not, write to the Free Software        *
+*   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
+*   USA                                                                   *
+*                                                                         *
+***************************************************************************/
+
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
@@ -37,6 +50,7 @@
 #include "ViewProvider.h"
 #include "ViewProvider2DObject.h"
 #include "ViewProviderAttachExtension.h"
+#include "ViewProviderGridExtension.h"
 #include "ViewProviderBoolean.h"
 #include "ViewProviderBox.h"
 #include "ViewProviderCircleParametric.h"
@@ -47,6 +61,7 @@
 #include "ViewProviderEllipseParametric.h"
 #include "ViewProviderExt.h"
 #include "ViewProviderExtrusion.h"
+#include "ViewProviderScale.h"
 #include "ViewProviderHelixParametric.h"
 #include "ViewProviderPrimitive.h"
 #include "ViewProviderPython.h"
@@ -73,6 +88,7 @@ void loadPartResource()
 {
     // add resources and reloads the translators
     Q_INIT_RESOURCE(Part);
+    Q_INIT_RESOURCE(Part_translation);
     Gui::Translator::instance()->refresh();
 }
 
@@ -84,8 +100,6 @@ public:
     {
         initialize("This module is the PartGui module."); // register with Python
     }
-
-    ~Module() override {}
 
 private:
 };
@@ -142,6 +156,8 @@ PyMOD_INIT_FUNC(PartGui)
     PartGui::SoFCControlPoints                      ::initClass();
     PartGui::ViewProviderAttachExtension            ::init();
     PartGui::ViewProviderAttachExtensionPython      ::init();
+    PartGui::ViewProviderGridExtension              ::init();
+    PartGui::ViewProviderGridExtensionPython        ::init();
     PartGui::ViewProviderSplineExtension            ::init();
     PartGui::ViewProviderSplineExtensionPython      ::init();
     PartGui::ViewProviderPartExt                    ::init();
@@ -156,6 +172,7 @@ PyMOD_INIT_FUNC(PartGui)
     PartGui::ViewProviderImport                     ::init();
     PartGui::ViewProviderCurveNet                   ::init();
     PartGui::ViewProviderExtrusion                  ::init();
+    PartGui::ViewProviderScale                      ::init();
     PartGui::ViewProvider2DObject                   ::init();
     PartGui::ViewProvider2DObjectPython             ::init();
     PartGui::ViewProvider2DObjectGrid               ::init();

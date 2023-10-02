@@ -20,13 +20,14 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef DRAWINGGUI_TASKDIALOG
 #define DRAWINGGUI_TASKDIALOG
 
 #include <QWidget>
+
 #include <Gui/TaskView/TaskDialog.h>
 #include <Gui/TaskView/TaskView.h>
+
 
 class QCheckBox;
 
@@ -36,7 +37,7 @@ namespace DrawingGui
 /**
  * Embed the panel into a task dialog.
  */
-class TaskProjection : public Gui::TaskView::TaskDialog
+class TaskProjection: public Gui::TaskView::TaskDialog
 {
     Q_OBJECT
 
@@ -48,9 +49,13 @@ public:
     bool accept();
 
     virtual QDialogButtonBox::StandardButtons getStandardButtons() const
-    { return QDialogButtonBox::Ok | QDialogButtonBox::Cancel; }
+    {
+        return QDialogButtonBox::Ok | QDialogButtonBox::Cancel;
+    }
     virtual bool isAllowedAlterDocument(void) const
-    { return true; }
+    {
+        return true;
+    }
 
 private:
     QWidget* widget;
@@ -58,8 +63,7 @@ private:
     Gui::TaskView::TaskBox* taskbox;
 };
 
-} //namespace DrawingGui
+}  // namespace DrawingGui
 
 
-
-#endif // DRAWINGGUI_TASKDIALOG
+#endif  // DRAWINGGUI_TASKDIALOG

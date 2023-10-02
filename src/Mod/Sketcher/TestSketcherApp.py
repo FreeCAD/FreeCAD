@@ -1,5 +1,6 @@
-#   (c) Juergen Riegel (FreeCAD@juergen-riegel.net) 2011      LGPL        *
-#   (c) Emmanuel O'Brien 2021  LGPL                                       *
+# **************************************************************************
+#   Copyright (c) 2011 Juergen Riegel <FreeCAD@juergen-riegel.net>        *
+#   Copyright (c) 2021 Emmanuel O'Brien                                   *
 #                                                                         *
 #   This file is part of the FreeCAD CAx development system.              *
 #                                                                         *
@@ -18,7 +19,7 @@
 #   License along with FreeCAD; if not, write to the Free Software        *
 #   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
 #   USA                                                                   *
-#**************************************************************************
+# **************************************************************************
 
 # Broken-out test modules
 from SketcherTests.TestSketcherSolver import TestSketcherSolver

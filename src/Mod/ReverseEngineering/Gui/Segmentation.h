@@ -20,33 +20,40 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef REVERSEENGINEERINGGUI_SEGMENTATION_H
 #define REVERSEENGINEERINGGUI_SEGMENTATION_H
 
-#include <QWidget>
-#include <Gui/TaskView/TaskDialog.h>
-#include <Gui/TaskView/TaskView.h>
-#include <App/DocumentObserver.h>
 #include <memory>
 
-// forward declarations
-namespace Mesh { class Feature; }
+#include <QWidget>
 
-namespace ReverseEngineeringGui {
+#include <Gui/TaskView/TaskDialog.h>
+#include <Gui/TaskView/TaskView.h>
+
+
+// forward declarations
+namespace Mesh
+{
+class Feature;
+}
+
+namespace ReverseEngineeringGui
+{
 class Ui_Segmentation;
 
-class Segmentation : public QWidget
+class Segmentation: public QWidget
 {
     Q_OBJECT
 
 public:
-    explicit Segmentation(Mesh::Feature* mesh, QWidget* parent = nullptr, Qt::WindowFlags fl = Qt::WindowFlags());
+    explicit Segmentation(Mesh::Feature* mesh,
+                          QWidget* parent = nullptr,
+                          Qt::WindowFlags fl = Qt::WindowFlags());
     ~Segmentation() override;
     void accept();
 
 protected:
-    void changeEvent(QEvent *e) override;
+    void changeEvent(QEvent* e) override;
 
 private:
     std::unique_ptr<Ui_Segmentation> ui;
@@ -56,23 +63,24 @@ private:
 /**
  * Embed the panel into a task dialog.
  */
-class TaskSegmentation : public Gui::TaskView::TaskDialog
+class TaskSegmentation: public Gui::TaskView::TaskDialog
 {
 public:
     explicit TaskSegmentation(Mesh::Feature* mesh);
-    ~TaskSegmentation() override;
 
 public:
     bool accept() override;
 
     QDialogButtonBox::StandardButtons getStandardButtons() const override
-    { return QDialogButtonBox::Ok | QDialogButtonBox::Cancel; }
+    {
+        return QDialogButtonBox::Ok | QDialogButtonBox::Cancel;
+    }
 
 private:
     Segmentation* widget;
     Gui::TaskView::TaskBox* taskbox;
 };
 
-}
+}  // namespace ReverseEngineeringGui
 
-#endif // REVERSEENGINEERINGGUI_SEGMENTATION_H
+#endif  // REVERSEENGINEERINGGUI_SEGMENTATION_H

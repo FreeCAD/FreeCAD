@@ -23,44 +23,43 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
-#ifndef _PreComp_
-#include <BRepAdaptor_Curve.hxx>
-#include <BRepAdaptor_Surface.hxx>
-#include <Precision.hxx>
-#include <TopoDS.hxx>
-#include <gp_Lin.hxx>
-#include <gp_Pln.hxx>
-#include <gp_Pnt.hxx>
-#endif
-
 #include "FemConstraintTemperature.h"
+
 
 using namespace Fem;
 
 PROPERTY_SOURCE(Fem::ConstraintTemperature, Fem::Constraint)
 
-static const char* ConstraintTypes[] = {"CFlux","Temperature", nullptr};
+static const char* ConstraintTypes[] = {"CFlux", "Temperature", nullptr};
 
 ConstraintTemperature::ConstraintTemperature()
 {
-    ADD_PROPERTY(Temperature,(300.0));
-    ADD_PROPERTY(CFlux,(0.0));
-    ADD_PROPERTY_TYPE(ConstraintType,(1),"ConstraintTemperature",(App::PropertyType)(App::Prop_None),
+    ADD_PROPERTY(Temperature, (300.0));
+    ADD_PROPERTY(CFlux, (0.0));
+    ADD_PROPERTY_TYPE(ConstraintType,
+                      (1),
+                      "ConstraintTemperature",
+                      (App::PropertyType)(App::Prop_None),
                       "Type of constraint, temperature or concentrated heat flux");
     ConstraintType.setEnums(ConstraintTypes);
 
-    ADD_PROPERTY_TYPE(Points,(Base::Vector3d()),"ConstraintTemperature",App::PropertyType(App::Prop_ReadOnly|App::Prop_Output),
+    ADD_PROPERTY_TYPE(Points,
+                      (Base::Vector3d()),
+                      "ConstraintTemperature",
+                      App::PropertyType(App::Prop_ReadOnly | App::Prop_Output),
                       "Points where symbols are drawn");
-    ADD_PROPERTY_TYPE(Normals,(Base::Vector3d()),"ConstraintTemperature",App::PropertyType(App::Prop_ReadOnly|App::Prop_Output),
-                                                                             "Normals where symbols are drawn");
+    ADD_PROPERTY_TYPE(Normals,
+                      (Base::Vector3d()),
+                      "ConstraintTemperature",
+                      App::PropertyType(App::Prop_ReadOnly | App::Prop_Output),
+                      "Normals where symbols are drawn");
     Points.setValues(std::vector<Base::Vector3d>());
     Normals.setValues(std::vector<Base::Vector3d>());
 }
 
-App::DocumentObjectExecReturn *ConstraintTemperature::execute()
+App::DocumentObjectExecReturn* ConstraintTemperature::execute()
 {
     return Constraint::execute();
 }
@@ -68,6 +67,25 @@ App::DocumentObjectExecReturn *ConstraintTemperature::execute()
 const char* ConstraintTemperature::getViewProviderName() const
 {
     return "FemGui::ViewProviderFemConstraintTemperature";
+}
+
+void ConstraintTemperature::handleChangedPropertyType(Base::XMLReader& reader,
+                                                      const char* TypeName,
+                                                      App::Property* prop)
+{
+    // property Temperature had App::PropertyFloat and was changed to App::PropertyTemperature
+    if (prop == &Temperature && strcmp(TypeName, "App::PropertyFloat") == 0) {
+        App::PropertyFloat TemperatureProperty;
+        // restore the PropertyFloat to be able to set its value
+        TemperatureProperty.Restore(reader);
+        Temperature.setValue(TemperatureProperty.getValue());
+    }
+    // property CFlux had App::PropertyFloat and was changed to App::PropertyPower
+    else if (prop == &CFlux && strcmp(TypeName, "App::PropertyFloat") == 0) {
+        App::PropertyFloat CFluxProperty;
+        CFluxProperty.Restore(reader);
+        CFlux.setValue(CFluxProperty.getValue());
+    }
 }
 
 void ConstraintTemperature::onChanged(const App::Property* prop)
@@ -79,12 +97,12 @@ void ConstraintTemperature::onChanged(const App::Property* prop)
     if (prop == &References) {
         std::vector<Base::Vector3d> points;
         std::vector<Base::Vector3d> normals;
-        int scale = 1; //OvG: Enforce use of scale
+        int scale = 1;  // OvG: Enforce use of scale
         if (getPoints(points, normals, &scale)) {
             Points.setValues(points);
             Normals.setValues(normals);
-            Scale.setValue(scale); //OvG: Scale
-            Points.touch(); // This triggers ViewProvider::updateData()
+            Scale.setValue(scale);  // OvG: Scale
+            Points.touch();         // This triggers ViewProvider::updateData()
         }
     }
 }

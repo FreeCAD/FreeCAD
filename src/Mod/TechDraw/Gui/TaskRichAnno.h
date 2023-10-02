@@ -23,11 +23,10 @@
 #ifndef TECHDRAWGUI_TASKRICHANNO_H
 #define TECHDRAWGUI_TASKRICHANNO_H
 
-#include <Mod/TechDraw/TechDrawGlobal.h>
-
 #include <Base/Vector3D.h>
 #include <Gui/TaskView/TaskDialog.h>
 #include <Gui/TaskView/TaskView.h>
+#include <Mod/TechDraw/TechDrawGlobal.h>
 
 
 class MRichTextEdit;
@@ -59,7 +58,7 @@ public:
     TaskRichAnno(TechDraw::DrawView* baseFeat,
                  TechDraw::DrawPage* page);
     explicit TaskRichAnno(TechDrawGui::ViewProviderRichAnno* annoVP);
-    ~TaskRichAnno() = default;
+    ~TaskRichAnno() override = default;
 
     virtual bool accept();
     virtual bool reject();

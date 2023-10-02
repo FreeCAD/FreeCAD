@@ -27,9 +27,10 @@
 #include <QDialog>
 #include <memory>
 
-namespace MeshGui {
+namespace MeshGui
+{
 class Ui_DlgRegularSolid;
-class DlgRegularSolidImp : public QDialog
+class DlgRegularSolidImp: public QDialog
 {
     Q_OBJECT
 
@@ -37,16 +38,16 @@ public:
     explicit DlgRegularSolidImp(QWidget* parent = nullptr, Qt::WindowFlags fl = Qt::WindowFlags());
     ~DlgRegularSolidImp() override;
 
-public Q_SLOTS:
-    void on_createSolidButton_clicked();
+private:
+    void onCreateSolidButtonClicked();
 
 protected:
-    void changeEvent(QEvent *e) override;
+    void changeEvent(QEvent* e) override;
 
 private:
     std::unique_ptr<Ui_DlgRegularSolid> ui;
 };
 
-}
+}  // namespace MeshGui
 
-#endif // MESHGUI_DLGREGULARSOLID_IMP_H
+#endif  // MESHGUI_DLGREGULARSOLID_IMP_H

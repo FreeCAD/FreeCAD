@@ -21,67 +21,56 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
-#include <TopoDS.hxx>
-#include <TopoDS_Edge.hxx>
-#include <TopoDS_Face.hxx>
-#include <TopoDS_Wire.hxx>
-#include <TopoDS_Compound.hxx>
-#include <gp_Trsf.hxx>
-#include <gp_Vec.hxx>
-#include <BRep_Builder.hxx>
-#include <BRepBuilderAPI_Transform.hxx>
-#include <BRepTools.hxx>
+# include <BRep_Builder.hxx>
+# include <BRepBuilderAPI_Transform.hxx>
+# include <gp_Trsf.hxx>
+# include <gp_Vec.hxx>
+# include <TopoDS.hxx>
+# include <TopoDS_Compound.hxx>
+# include <TopoDS_Edge.hxx>
+# include <TopoDS_Face.hxx>
+# include <TopoDS_Wire.hxx>
 #endif
 
-#include <Mod/TechDraw/TechDrawGlobal.h>
-
-#include <boost/regex.hpp>
-
-#include <CXX/Extensions.hxx>
-#include <CXX/Objects.hxx>
-
-#include <Base/Console.h>
-#include <Base/PyObjectBase.h>
-#include <Base/Exception.h>
-#include <Base/GeometryPyCXX.h>
-#include <Base/Vector3D.h>
-#include <Base/VectorPy.h>
+#include <boost_regex.hpp>
 
 #include <App/DocumentObject.h>
 #include <App/DocumentObjectPy.h>
-
+#include <Base/Console.h>
+#include <Base/Exception.h>
+#include <Base/PyWrapParseTupleAndKeywords.h>
+#include <Base/Vector3D.h>
+#include <Base/VectorPy.h>
+#include <Mod/Import/App/dxf/ImpExpDxf.h>
+#include <Mod/Part/App/OCCError.h>
 #include <Mod/Part/App/TopoShape.h>
-#include <Mod/Part/App/TopoShapePy.h>
+#include <Mod/Part/App/TopoShapeCompoundPy.h>
 #include <Mod/Part/App/TopoShapeEdgePy.h>
 #include <Mod/Part/App/TopoShapeFacePy.h>
+#include <Mod/Part/App/TopoShapePy.h>
 #include <Mod/Part/App/TopoShapeWirePy.h>
-#include <Mod/Part/App/TopoShapeCompoundPy.h>
-#include <Mod/Part/App/OCCError.h>
+#include <Mod/TechDraw/TechDrawGlobal.h>
 
-#include <Mod/Import/App/dxf/ImpExpDxf.h>
-
-#include "DrawProjectSplit.h"
-#include "DrawViewPart.h"
-#include "DrawViewPartPy.h"
-#include "DrawViewAnnotation.h"
-#include "DrawViewDimension.h"
+#include "DimensionGeometry.h"
+#include "DrawDimHelper.h"
+#include "DrawGeomHatch.h"
 #include "DrawPage.h"
 #include "DrawPagePy.h"
-#include "Geometry.h"
-#include "GeometryObject.h"
-#include "EdgeWalker.h"
-#include "DrawUtil.h"
+#include "DrawProjectSplit.h"
 #include "DrawProjGroup.h"
 #include "DrawProjGroupItem.h"
-#include "DrawDimHelper.h"
-#include "HatchLine.h"
-#include "DrawGeomHatch.h"
-
-#include "TechDrawExport.h"
+#include "DrawUtil.h"
+#include "DrawViewAnnotation.h"
+#include "DrawViewDimension.h"
+#include "DrawViewPart.h"
+#include "DrawViewPartPy.h"
+#include "EdgeWalker.h"
+#include "Geometry.h"
+#include "GeometryObject.h"
 #include "ProjectionAlgos.h"
+#include "TechDrawExport.h"
 
 
 namespace TechDraw {
@@ -99,6 +88,7 @@ using Import::ImpExpDxfWrite;
 using TechDraw::ProjectionAlgos;
 
 using namespace std;
+using namespace Part;
 
 namespace TechDraw {
 
@@ -190,6 +180,13 @@ public:
             "string = removeSvgTags(string) -- Removes the opening and closing svg tags\n"
             "and other metatags from a svg code, making it embeddable"
         );
+        add_varargs_method("exportSVGEdges", &Module::exportSVGEdges,
+            "string = exportSVGEdges(TopoShape) -- export an SVG string of the shape\n"
+        );
+        add_varargs_method("build3dCurves", &Module::build3dCurves,
+            "TopoShape = build3dCurves(TopoShape) -- convert the edges to a 3D curve\n"
+	    "which is useful for shapes obtained Part.HLRBRep.Algo"
+        );
         initialize("This is a module for making drawings"); // register with Python
     }
     ~Module() override {}
@@ -254,7 +251,6 @@ private:
         }
 
         if (edgeList.empty()) {
-            Base::Console().Log("LOG - edgeWalker: input is empty\n");
             return Py::None();
         }
 
@@ -278,12 +274,13 @@ private:
             throw Py::Exception();
         }
 
-        if(sortedWires.empty()) {
+        if (sortedWires.empty()) {
             Base::Console().Warning("ATDP::edgeWalker: Wire detection failed\n");
             return Py::None();
-        } else {
-            for (auto& w:sortedWires) {
-                PyObject* wire = new TopoShapeWirePy(new TopoShape(w));
+        }
+        else {
+            for (auto& w : sortedWires) {
+                PyObject* wire = new TopoShapeWirePy(new Part::TopoShape(w));
                 result.append(Py::asObject(wire));
             }
         }
@@ -380,7 +377,6 @@ private:
         }
 
         if (edgeList.empty()) {
-            Base::Console().Log("LOG - ATDP::findShapeOutline: input is empty\n");
             return Py::None();
         }
 
@@ -424,31 +420,31 @@ private:
             if (PyObject_TypeCheck(viewObj, &(TechDraw::DrawViewPartPy::Type))) {
                 obj = static_cast<App::DocumentObjectPy*>(viewObj)->getDocumentObjectPtr();
                 dvp = static_cast<TechDraw::DrawViewPart*>(obj);
-                TechDraw::GeometryObject* gObj = dvp->getGeometryObject();
-                TopoDS_Shape shape = TechDraw::mirrorShape(gObj->getVisHard());
+                TechDraw::GeometryObjectPtr gObj = dvp->getGeometryObject();
+                TopoDS_Shape shape = ShapeUtils::mirrorShape(gObj->getVisHard());
                 ss << dxfOut.exportEdges(shape);
-                shape = TechDraw::mirrorShape(gObj->getVisOutline());
+                shape = ShapeUtils::mirrorShape(gObj->getVisOutline());
                 ss << dxfOut.exportEdges(shape);
                 if (dvp->SmoothVisible.getValue()) {
-                    shape = TechDraw::mirrorShape(gObj->getVisSmooth());
+                    shape = ShapeUtils::mirrorShape(gObj->getVisSmooth());
                     ss << dxfOut.exportEdges(shape);
                 }
                 if (dvp->SeamVisible.getValue()) {
-                    shape = TechDraw::mirrorShape(gObj->getVisSeam());
+                    shape = ShapeUtils::mirrorShape(gObj->getVisSeam());
                     ss << dxfOut.exportEdges(shape);
                 }
                 if (dvp->HardHidden.getValue()) {
-                    shape = TechDraw::mirrorShape(gObj->getHidHard());
+                    shape = ShapeUtils::mirrorShape(gObj->getHidHard());
                     ss << dxfOut.exportEdges(shape);
-                    shape = TechDraw::mirrorShape(gObj->getHidOutline());
+                    shape = ShapeUtils::mirrorShape(gObj->getHidOutline());
                     ss << dxfOut.exportEdges(shape);
                 }
                 if (dvp->SmoothHidden.getValue()) {
-                    shape = TechDraw::mirrorShape(gObj->getHidSmooth());
+                    shape = ShapeUtils::mirrorShape(gObj->getHidSmooth());
                     ss << dxfOut.exportEdges(shape);
                 }
                 if (dvp->SeamHidden.getValue()) {
-                    shape = TechDraw::mirrorShape(gObj->getHidSeam());
+                    shape = ShapeUtils::mirrorShape(gObj->getHidSeam());
                     ss << dxfOut.exportEdges(shape);
                 }
                 // ss now contains all edges as Dxf
@@ -482,7 +478,7 @@ private:
             if (PyObject_TypeCheck(viewObj, &(TechDraw::DrawViewPartPy::Type))) {
                 obj = static_cast<App::DocumentObjectPy*>(viewObj)->getDocumentObjectPtr();
                 dvp = static_cast<TechDraw::DrawViewPart*>(obj);
-                TechDraw::GeometryObject* gObj = dvp->getGeometryObject();
+                TechDraw::GeometryObjectPtr gObj = dvp->getGeometryObject();
                 //visible group begin "<g ... >"
                 ss << grpHead1;
 //                double thick = dvp->LineWidth.getValue();
@@ -546,8 +542,8 @@ private:
     {
         if(!dvp->hasGeometry())
             return;
-        TechDraw::GeometryObject* gObj = dvp->getGeometryObject();
-        TopoDS_Shape shape = TechDraw::mirrorShape(gObj->getVisHard());
+        TechDraw::GeometryObjectPtr gObj = dvp->getGeometryObject();
+        TopoDS_Shape shape = ShapeUtils::mirrorShape(gObj->getVisHard());
         double offX = 0.0;
         double offY = 0.0;
         if (dvp->isDerivedFrom(TechDraw::DrawProjGroupItem::getClassTypeId())) {
@@ -569,40 +565,40 @@ private:
         BRepBuilderAPI_Transform mkTrf(shape, xLate);
         shape = mkTrf.Shape();
         writer.exportShape(shape);
-        shape = TechDraw::mirrorShape(gObj->getVisOutline());
+        shape = ShapeUtils::mirrorShape(gObj->getVisOutline());
         mkTrf.Perform(shape);
         shape = mkTrf.Shape();
         writer.exportShape(shape);
         if (dvp->SmoothVisible.getValue()) {
-            shape = TechDraw::mirrorShape(gObj->getVisSmooth());
+            shape = ShapeUtils::mirrorShape(gObj->getVisSmooth());
             mkTrf.Perform(shape);
             shape = mkTrf.Shape();
             writer.exportShape(shape);
         }
         if (dvp->SeamVisible.getValue()) {
-            shape = TechDraw::mirrorShape(gObj->getVisSeam());
+            shape = ShapeUtils::mirrorShape(gObj->getVisSeam());
             mkTrf.Perform(shape);
             shape = mkTrf.Shape();
             writer.exportShape(shape);
         }
         if (dvp->HardHidden.getValue()) {
-            shape = TechDraw::mirrorShape(gObj->getHidHard());
+            shape = ShapeUtils::mirrorShape(gObj->getHidHard());
             mkTrf.Perform(shape);
             shape = mkTrf.Shape();
             writer.exportShape(shape);
-            shape = TechDraw::mirrorShape(gObj->getHidOutline());
+            shape = ShapeUtils::mirrorShape(gObj->getHidOutline());
             mkTrf.Perform(shape);
             shape = mkTrf.Shape();
             writer.exportShape(shape);
         }
         if (dvp->SmoothHidden.getValue()) {
-            shape = TechDraw::mirrorShape(gObj->getHidSmooth());
+            shape = ShapeUtils::mirrorShape(gObj->getHidSmooth());
             mkTrf.Perform(shape);
             shape = mkTrf.Shape();
             writer.exportShape(shape);
         }
         if (dvp->SeamHidden.getValue()) {
-            shape = TechDraw::mirrorShape(gObj->getHidSeam());
+            shape = ShapeUtils::mirrorShape(gObj->getHidSeam());
             mkTrf.Perform(shape);
             shape = mkTrf.Shape();
             writer.exportShape(shape);
@@ -610,13 +606,13 @@ private:
         //add the cosmetic edges also
         std::vector<TechDraw::BaseGeomPtr> geoms = dvp->getEdgeGeometry();
         std::vector<TopoDS_Edge> cosmeticEdges;
-        for (auto& g: geoms) {
-            if (g->hlrVisible && g->cosmetic) {
-                cosmeticEdges.push_back(g->occEdge);
+        for (auto& g : geoms) {
+            if (g->getHlrVisible() && g->getCosmetic()) {
+                cosmeticEdges.push_back(g->getOCCEdge());
             }
         }
         if (!cosmeticEdges.empty()) {
-            shape = TechDraw::mirrorShape(DrawUtil::vectorToCompound(cosmeticEdges));
+            shape = ShapeUtils::mirrorShape(DrawUtil::vectorToCompound(cosmeticEdges));
             mkTrf.Perform(shape);
             shape = mkTrf.Shape();
             writer.exportShape(shape);
@@ -738,13 +734,13 @@ private:
                             Base::Vector3d textLocn(dvd->X.getValue() + parentX, dvd->Y.getValue() + parentY, 0.0);
                             Base::Vector3d lineLocn(dvd->X.getValue() + parentX, dvd->Y.getValue() + parentY, 0.0);
                             pointPair pts = dvd->getLinearPoints();
-                            Base::Vector3d dimLine = pts.first - pts.second;
+                            Base::Vector3d dimLine = pts.first() - pts.second();
                             Base::Vector3d norm(-dimLine.y, dimLine.x, 0.0);
                             norm.Normalize();
                             lineLocn = lineLocn + (norm * gap);
-                            Base::Vector3d extLine1Start = Base::Vector3d(pts.first.x, -pts.first.y, 0.0) +
+                            Base::Vector3d extLine1Start = Base::Vector3d(pts.first().x, - pts.first().y, 0.0) +
                                                            Base::Vector3d(parentX, parentY, 0.0);
-                            Base::Vector3d extLine2Start = Base::Vector3d(pts.second.x, -pts.second.y, 0.0) +
+                            Base::Vector3d extLine2Start = Base::Vector3d(pts.second().x, - pts.second().y, 0.0) +
                                                            Base::Vector3d(parentX, parentY, 0.0);
                             if (dvd->Type.isValue("DistanceX") ) {
                                 type = 1;
@@ -756,12 +752,12 @@ private:
                             Base::Vector3d textLocn(dvd->X.getValue() + parentX, dvd->Y.getValue() + parentY, 0.0);
                             Base::Vector3d lineLocn(dvd->X.getValue() + parentX, dvd->Y.getValue() + parentY, 0.0);
                             anglePoints pts = dvd->getAnglePoints();
-                            Base::Vector3d end1 = pts.ends.first;
+                            Base::Vector3d end1 = pts.first();
                             end1.y = -end1.y;
-                            Base::Vector3d end2 = pts.ends.second;
+                            Base::Vector3d end2 = pts.second();
                             end2.y = -end2.y;
 
-                            Base::Vector3d apex = pts.vertex;
+                            Base::Vector3d apex = pts.vertex();
                             apex.y = -apex.y;
                             apex = apex + parentPos;
 
@@ -779,7 +775,7 @@ private:
                             Base::Vector3d center = pts.center;
                             center.y = -center.y;
                             center = center + parentPos;
-                            Base::Vector3d lineDir = (arrowPts.first - arrowPts.second).Normalize();
+                            Base::Vector3d lineDir = (arrowPts.first() - arrowPts.second()).Normalize();
                             Base::Vector3d arcPoint = center + lineDir * pts.radius;
                             writer.exportRadialDim(center, textLocn, arcPoint, dimText);
                         } else if(dvd->Type.isValue("Diameter")){
@@ -789,7 +785,7 @@ private:
                             Base::Vector3d center = pts.center;
                             center.y = -center.y;
                             center = center + parentPos;
-                            Base::Vector3d lineDir = (arrowPts.first - arrowPts.second).Normalize();
+                            Base::Vector3d lineDir = (arrowPts.first() - arrowPts.second()).Normalize();
                             Base::Vector3d end1 = center + lineDir * pts.radius;
                             Base::Vector3d end2 = center - lineDir * pts.radius;
                             writer.exportDiametricDim(textLocn, end1, end2, dimText);
@@ -825,13 +821,13 @@ private:
 
         TopoShapePy* pShape = static_cast<TopoShapePy*>(pcObjShape);
         if (!pShape) {
-            Base::Console().Error("TechDraw::findCentroid - input shape is null\n");
+            Base::Console().Error("ShapeUtils::findCentroid - input shape is null\n");
             return Py::None();
         }
 
         const TopoDS_Shape& shape = pShape->getTopoShapePtr()->getShape();
         Base::Vector3d dir = static_cast<Base::VectorPy*>(pcObjDir)->value();
-        Base::Vector3d centroid = TechDraw::findCentroidVec(shape, dir);
+        Base::Vector3d centroid = ShapeUtils::findCentroidVec(shape, dir);
         PyObject* result = nullptr;
         result = new Base::VectorPy(new Base::Vector3d(centroid));
         return Py::asObject(result);
@@ -1027,9 +1023,9 @@ private:
             TopoDS_Compound comp;
             builder.MakeCompound(comp);
             try {
-                for (auto& lsr:lsresult) {
+                for (auto& lsr : lsresult) {
                     std::vector<TopoDS_Edge> edgeList = lsr.getEdges();
-                    for (auto& edge:edgeList) {
+                    for (auto& edge : edgeList) {
                         if (!edge.IsNull()) {
                             builder.Add(comp, edge);
                         }
@@ -1105,7 +1101,9 @@ private:
 
     Py::Object projectToSVG(const Py::Tuple& args, const Py::Dict& keys)
         {
-            static char* argNames[] = {"topoShape", "direction", "type", "tolerance", "vStyle", "v0Style", "v1Style", "hStyle", "h0Style", "h1Style", nullptr};
+            static const std::array<const char *, 11> argNames{"topoShape", "direction", "type", "tolerance", "vStyle",
+                                                               "v0Style", "v1Style", "hStyle", "h0Style", "h1Style",
+                                                               nullptr};
             PyObject *pcObjShape = nullptr;
             PyObject *pcObjDir = nullptr;
             const char *extractionTypePy = nullptr;
@@ -1126,7 +1124,7 @@ private:
 
             // Get the arguments
 
-            if (!PyArg_ParseTupleAndKeywords(
+            if (!Base::Wrapped_ParseTupleAndKeywords(
                     args.ptr(), keys.ptr(),
                     "O!|O!sfOOOOOO",
                     argNames,
@@ -1134,9 +1132,9 @@ private:
                     &(Base::VectorPy::Type), &pcObjDir,
                     &extractionTypePy, &tol,
                     &vStylePy, &v0StylePy, &v1StylePy,
-                    &hStylePy, &h0StylePy, &h1StylePy))
-
+                    &hStylePy, &h0StylePy, &h1StylePy)) {
                 throw Py::Exception();
+            }
 
             // Convert all arguments into the right format
 
@@ -1233,6 +1231,35 @@ private:
         return result;
     }
 
+    Py::Object exportSVGEdges(const Py::Tuple& args)
+    {
+        PyObject *pcObjShape(nullptr);
+
+        if (!PyArg_ParseTuple(args.ptr(), "O!",
+			      &(TopoShapePy::Type), &pcObjShape))
+            throw Py::Exception();
+
+        TopoShapePy* pShape = static_cast<TopoShapePy*>(pcObjShape);
+	SVGOutput output;
+	Py::String result(output.exportEdges(pShape->getTopoShapePtr()->getShape()));
+
+	return result;
+    }
+
+    Py::Object build3dCurves(const Py::Tuple& args)
+    {
+        PyObject *pcObjShape(nullptr);
+
+        if (!PyArg_ParseTuple(args.ptr(), "O!",
+			      &(TopoShapePy::Type), &pcObjShape))
+            throw Py::Exception();
+
+        TopoShapePy* pShape = static_cast<TopoShapePy*>(pcObjShape);
+	const TopoShape& nShape =
+	    TechDraw::build3dCurves(pShape->getTopoShapePtr()->getShape());
+	
+	return Py::Object(new TopoShapePy(new TopoShape(nShape)));
+    }
  };
 
  PyObject* initModule()

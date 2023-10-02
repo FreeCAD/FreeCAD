@@ -20,40 +20,34 @@
  *                                                                         *
  ***************************************************************************/
 
-
-
+// clang-format off
 #ifdef _MSC_VER
-    #define strdup _strdup
+# define strdup _strdup
 #endif
 
 #include "PreCompiled.h"
-#include <Mod/Part/App/TopoShapeFacePy.h>
-#include <Mod/Part/App/TopoShapeEdgePy.h>
+#ifndef _PreComp_
+# include <stdexcept>
+# include <vector>
 
-#include <Eigen/Core>
-#include <Eigen/Geometry>
-#include <Eigen/Sparse>
+# include <TopoDS.hxx>
+# include <TopoDS_Edge.hxx>
+# include <TopoDS_Face.hxx>
+#endif
+
+// necessary for the feature despite not all are necessary for compilation
+#include <pybind11/eigen.h>
+#include <pybind11/numpy.h>
+#include <pybind11/operators.h>
 #include <pybind11/pybind11.h>
 #include <pybind11/stl.h>
-#include <pybind11/operators.h>
-#include <pybind11/numpy.h>
-#include <pybind11/eigen.h>
 
-#include <memory>
-#include <vector>
-#include <tuple>
-#include <map>
-#include <stdexcept>
+#include <Mod/Part/App/TopoShapeFacePy.h>
+#include <Mod/Part/App/TopoShapeEdgePy.h>
 
 #include "MeshFlattening.h"
 #include "MeshFlatteningLscmRelax.h"
 #include "MeshFlatteningNurbs.h"
-
-#include <TopoDS_Face.hxx>
-#include <TopoDS_Edge.hxx>
-#include <TopoDS.hxx>
-#include <ShapeFix_Edge.hxx>
-
 
 
 namespace py = pybind11;
@@ -110,7 +104,7 @@ ColMat<double, 3> interpolateFlatFacePy(FaceUnwrapper& instance, py::object* fac
 PYBIND11_MODULE(flatmesh, m)
 {
     m.doc() = "functions to unwrapp faces/ meshes";
-    
+
     py::class_<lscmrelax::LscmRelax>(m, "LscmRelax")
         .def(py::init<ColMat<double, 3>, ColMat<long, 3>, std::vector<long>>())
         .def("lscm", &lscmrelax::LscmRelax::lscm)
@@ -167,5 +161,6 @@ PYBIND11_MODULE(flatmesh, m)
         .def_readonly("ze_nodes", &FaceUnwrapper::ze_nodes)
         .def_readonly("ze_poles", &FaceUnwrapper::ze_poles)
         .def_readonly("A", &FaceUnwrapper::A);
-        
+
 };
+// clang-format on

@@ -25,7 +25,7 @@
 
 #include <Gui/TaskView/TaskDialog.h>
 #include <Gui/TaskView/TaskView.h>
-#include <boost_signals2.hpp>
+
 
 class QTreeWidgetItem;
 
@@ -56,10 +56,8 @@ private:
 protected:
     void changeEvent(QEvent *e) override;
 
-public Q_SLOTS:
-    void on_swapButton_clicked();
-
-private Q_SLOTS:
+private:
+    void onSwapButtonClicked();
     void currentItemChanged(QTreeWidgetItem*, QTreeWidgetItem*);
 
 private:
@@ -75,7 +73,6 @@ class TaskBooleanOperation : public Gui::TaskView::TaskDialog
 
 public:
     TaskBooleanOperation();
-    ~TaskBooleanOperation() override;
 
 public:
     void clicked(int) override;

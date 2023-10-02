@@ -36,13 +36,7 @@ using namespace Base;
  * A constructor.
  * A more elaborate description of the constructor.
  */
-ClassTemplate::ClassTemplate()
-  : enumPtr(nullptr)
-  , enumVar(TVal1)
-  , publicVar(0)
-  , handler(nullptr)
-{
-}
+ClassTemplate::ClassTemplate() = default;
 
 /**
  * A destructor.

@@ -20,16 +20,16 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-
 #ifndef _PreComp_
 # include <Precision.hxx>
 #endif
 
 #include <Mod/PartDesign/App/FeaturePad.h>
+
 #include "ui_TaskPadPocketParameters.h"
 #include "TaskPadParameters.h"
+
 
 using namespace PartDesignGui;
 using namespace Gui;
@@ -62,9 +62,7 @@ TaskPadParameters::TaskPadParameters(ViewProviderPad *PadView, QWidget *parent, 
     }
 }
 
-TaskPadParameters::~TaskPadParameters()
-{
-}
+TaskPadParameters::~TaskPadParameters() = default;
 
 void TaskPadParameters::translateModeList(int index)
 {
@@ -103,6 +101,8 @@ void TaskPadParameters::onModeChanged(int index)
         pcPad->Type.setValue("UpToFirst");
         break;
     case Modes::ToFace:
+        // Note: ui->checkBoxReversed is purposely enabled because the selected face
+        // could be a circular one around the sketch
         pcPad->Type.setValue("UpToFace");
         if (ui->lineFaceName->text().isEmpty()) {
             ui->buttonFace->setChecked(true);

@@ -20,13 +20,13 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef DRAWING_EXPORT_H
 #define DRAWING_EXPORT_H
 
-#include <string>
-#include <TopoDS_Edge.hxx>
 #include <Mod/Drawing/DrawingGlobal.h>
+#include <TopoDS_Edge.hxx>
+#include <string>
+
 
 class TopoDS_Shape;
 class BRepAdaptor_Curve;
@@ -43,7 +43,7 @@ public:
     TopoDS_Edge asBSpline(const BRepAdaptor_Curve&, int maxDegree) const;
 };
 
-class DrawingExport SVGOutput : public DrawingOutput
+class DrawingExport SVGOutput: public DrawingOutput
 {
 public:
     SVGOutput();
@@ -58,7 +58,7 @@ private:
 };
 
 /* dxf output section - Dan Falck 2011/09/25  */
-class DrawingExport DXFOutput : public DrawingOutput
+class DrawingExport DXFOutput: public DrawingOutput
 {
 public:
     DXFOutput();
@@ -72,6 +72,6 @@ private:
     void printGeneric(const BRepAdaptor_Curve&, int id, std::ostream&);
 };
 
-} //namespace Drawing
+}  // namespace Drawing
 
-#endif // DRAWING_EXPORT_H
+#endif  // DRAWING_EXPORT_H

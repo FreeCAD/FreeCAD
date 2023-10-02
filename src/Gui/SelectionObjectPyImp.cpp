@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2009 Jürgen Riegel (FreeCAD@juergen-riegel.net)         *
+ *   Copyright (c) 2009 Jürgen Riegel <FreeCAD@juergen-riegel.net>         *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -70,7 +70,7 @@ PyObject* SelectionObjectPy::isObjectTypeOf(PyObject * args)
 
 Py::String SelectionObjectPy::getObjectName() const
 {
-    return Py::String(getSelectionObjectPtr()->getFeatName());
+    return {getSelectionObjectPtr()->getFeatName()};
 }
 
 Py::Tuple SelectionObjectPy::getSubElementNames() const
@@ -79,25 +79,25 @@ Py::Tuple SelectionObjectPy::getSubElementNames() const
 
     Py::Tuple temp(objs.size());
     Py::sequence_index_type index = 0;
-    for(std::vector<std::string>::const_iterator it= objs.begin();it!=objs.end();++it)
-        temp.setItem(index++, Py::String(*it));
+    for(const auto & obj : objs)
+        temp.setItem(index++, Py::String(obj));
 
     return temp;
 }
 
 Py::String SelectionObjectPy::getFullName() const
 {
-    return Py::String(getSelectionObjectPtr()->getAsPropertyLinkSubString());
+    return {getSelectionObjectPtr()->getAsPropertyLinkSubString()};
 }
 
 Py::String SelectionObjectPy::getTypeName() const
 {
-    return Py::String(getSelectionObjectPtr()->getTypeName());
+    return {getSelectionObjectPtr()->getTypeName()};
 }
 
 Py::String SelectionObjectPy::getDocumentName() const
 {
-    return Py::String(getSelectionObjectPtr()->getDocName());
+    return {getSelectionObjectPtr()->getDocName()};
 }
 
 Py::Object SelectionObjectPy::getDocument() const
@@ -134,15 +134,15 @@ Py::Tuple SelectionObjectPy::getSubObjects() const
 
     Py::Tuple temp(subObjs.size());
     Py::sequence_index_type index = 0;
-    for(std::vector<PyObject *>::const_iterator it= subObjs.begin();it!=subObjs.end();++it)
-        temp.setItem(index++, Py::asObject(*it));
+    for(const auto & subObj : subObjs)
+        temp.setItem(index++, Py::asObject(subObj));
 
     return temp;
 }
 
 Py::Boolean SelectionObjectPy::getHasSubObjects() const
 {
-    return Py::Boolean(getSelectionObjectPtr()->hasSubNames());
+    return {getSelectionObjectPtr()->hasSubNames()};
 }
 
 Py::Tuple SelectionObjectPy::getPickedPoints() const
@@ -151,8 +151,8 @@ Py::Tuple SelectionObjectPy::getPickedPoints() const
 
     Py::Tuple temp(points.size());
     Py::sequence_index_type index = 0;
-    for(std::vector<Base::Vector3d>::const_iterator it= points.begin();it!=points.end();++it)
-        temp.setItem(index++, Py::Vector(*it));
+    for(const auto & point : points)
+        temp.setItem(index++, Py::Vector(point));
 
     return temp;
 }

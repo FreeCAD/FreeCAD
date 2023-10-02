@@ -1,6 +1,5 @@
 #***************************************************************************
-#*                                                                         *
-#*   Copyright (c) 2013 - Juergen Riegel <FreeCAD@juergen-riegel.net>      *  
+#*   Copyright (c) 2013 Juergen Riegel <FreeCAD@juergen-riegel.net>        *
 #*                                                                         *
 #*   This program is free software; you can redistribute it and/or modify  *
 #*   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -19,5 +18,30 @@
 #*   USA                                                                   *
 #*                                                                         *
 #***************************************************************************
+"""Initialization of the Material Workbench graphical interface."""
+
+import FreeCAD as App
+import FreeCADGui as Gui
+import os
 
 
+class MaterialWorkbench(Gui.Workbench):
+    """Part workbench object."""
+
+    def __init__(self):
+        self.__class__.Icon = os.path.join(App.getResourceDir(),
+                                           "Mod", "Material",
+                                           "Resources", "icons",
+                                           "MaterialWorkbench.svg")
+        self.__class__.MenuText = "Material"
+        self.__class__.ToolTip = "Material workbench"
+
+    def Initialize(self):
+        # load the module
+        import MatGui
+
+    def GetClassName(self):
+        return "MatGui::Workbench"
+
+
+Gui.addWorkbench(MaterialWorkbench())

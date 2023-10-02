@@ -36,7 +36,7 @@ class Ui_DlgSettingsObjectColor;
  * @author Werner Mayer
  */
 class DlgSettingsObjectColor : public Gui::Dialog::PreferencePage
-{ 
+{
   Q_OBJECT
 
 public:

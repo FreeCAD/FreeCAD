@@ -71,14 +71,13 @@ def make_clone(obj, delta=None, forcedraft=False):
     if (len(obj) == 1) and obj[0].isDerivedFrom("Part::Part2DObject"):
         cl = App.ActiveDocument.addObject("Part::Part2DObjectPython","Clone2D")
         cl.Label = prefix + obj[0].Label + " (2D)"
-
     elif (len(obj) == 1) and (hasattr(obj[0],"CloneOf") or (utils.get_type(obj[0]) == "BuildingPart")) and (not forcedraft):
         # arch objects can be clones
         import Arch
         if utils.get_type(obj[0]) == "BuildingPart":
             cl = Arch.makeComponent()
         else:
-            try: # new-style maek function
+            try: # new-style make function
                 cl = getattr(Arch, "make_" + obj[0].Proxy.Type.lower())()
             except Exception:
                 try: # old-style make function
@@ -100,32 +99,39 @@ def make_clone(obj, delta=None, forcedraft=False):
             except Exception:
                 pass
             if App.GuiUp:
-                gui_utils.format_object(cl,base)
-                cl.ViewObject.DiffuseColor = base.ViewObject.DiffuseColor
-                if utils.get_type(obj[0]) in ["Window","BuildingPart"]:
-                    ToDo.delay(Arch.recolorize,cl)
-            gui_utils.select(cl)
+                gui_utils.format_object(cl, base)
+                # Workaround to trigger update of DiffuseColor:
+                ToDo.delay(reapply_diffuse_color, cl.ViewObject)
+                gui_utils.select(cl)
             return cl
+
     # fall back to Draft clone mode
     if not cl:
         cl = App.ActiveDocument.addObject("Part::FeaturePython","Clone")
         cl.addExtension("Part::AttachExtensionPython")
         cl.Label = prefix + obj[0].Label
     Clone(cl)
-    if App.GuiUp:
-        ViewProviderClone(cl.ViewObject)
     cl.Objects = obj
     if delta:
         cl.Placement.move(delta)
     elif (len(obj) == 1) and hasattr(obj[0],"Placement"):
         cl.Placement = obj[0].Placement
-    gui_utils.format_object(cl,obj[0])
     if hasattr(cl,"LongName") and hasattr(obj[0],"LongName"):
         cl.LongName = obj[0].LongName
-    if App.GuiUp and (len(obj) > 1):
-        cl.ViewObject.Proxy.resetColors(cl.ViewObject)
-    gui_utils.select(cl)
+    if App.GuiUp:
+        ViewProviderClone(cl.ViewObject)
+        gui_utils.format_object(cl, obj[0])
+        # Workaround to trigger update of DiffuseColor:
+        ToDo.delay(reapply_diffuse_color, cl.ViewObject)
+        gui_utils.select(cl)
     return cl
+
+
+def reapply_diffuse_color(vobj):
+    try:
+        vobj.DiffuseColor = vobj.DiffuseColor
+    except:
+        pass
 
 
 clone = make_clone

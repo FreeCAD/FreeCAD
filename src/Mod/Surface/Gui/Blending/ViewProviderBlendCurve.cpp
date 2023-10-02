@@ -22,8 +22,8 @@
 
 #include "PreCompiled.h"
 
-#include <Gui/BitmapFactory.h>
 #include "ViewProviderBlendCurve.h"
+#include <Gui/BitmapFactory.h>
 
 PROPERTY_SOURCE(SurfaceGui::ViewProviderBlendCurve, PartGui::ViewProviderSpline)
 
@@ -32,7 +32,7 @@ namespace SurfaceGui
 
 QIcon ViewProviderBlendCurve::getIcon() const
 {
-    return Gui::BitmapFactory().pixmap("BlendCurve");
+    return Gui::BitmapFactory().pixmap("Surface_BlendCurve");
 }
 
-}//namespace SurfaceGui
+}  // namespace SurfaceGui

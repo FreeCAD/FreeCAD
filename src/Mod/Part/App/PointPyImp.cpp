@@ -45,20 +45,20 @@ std::string PointPy::representation() const
 {
     std::stringstream str;
     Base::Vector3d coords = getGeomPointPtr()->getPoint();
-    str << "<Point (" << coords.x << "," << coords.y << "," << coords.z << ") >"; 
+    str << "<Point (" << coords.x << "," << coords.y << "," << coords.z << ") >";
     return str.str();
 }
 
 PyObject *PointPy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // Python wrapper
 {
-    // create a new instance of PointPy and the Twin object 
+    // create a new instance of PointPy and the Twin object
     return new PointPy(new GeomPoint);
 }
 
 // constructor method
 int PointPy::PyInit(PyObject* args, PyObject* /*kwd*/)
 {
-    
+
     if (PyArg_ParseTuple(args, "")) {
         // default point
         return 0;
@@ -190,5 +190,5 @@ PyObject *PointPy::getCustomAttributes(const char* /*attr*/) const
 
 int PointPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
 {
-    return 0; 
+    return 0;
 }

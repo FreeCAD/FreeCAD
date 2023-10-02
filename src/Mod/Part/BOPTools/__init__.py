@@ -21,7 +21,7 @@
 # ***************************************************************************/
 
 __title__ = "BOPTools package"
-__url__ = "http://www.freecadweb.org"
+__url__ = "http://www.freecad.org"
 __doc__ = """BOPTools Package (part of FreeCAD). Routines that power Connect, Embed, Cutout,
 BooleanFragments, Slice and XOR features of Part Workbench. Useful for other custom
 BOP-like operations"""
@@ -62,16 +62,3 @@ def addCommands():
     JoinFeatures.addCommands()
     SplitFeatures.addCommands()
 
-def generalFuseIsAvailable():
-    """generalFuseIsAvailable(): returns True if FreeCAD's Part.Shape.generalFuse is functional.
-    True if Part.OCC_VERSION >= 7.0.0."""
-    import Part
-    if not hasattr(Part, "OCC_VERSION"):
-        return False
-    else:
-        ver_string = Part.OCC_VERSION
-        import re
-        match = re.match(r"([0-9]+)\.([0-9]+)\.([0-9]+)",ver_string)
-        major,minor,rev = match.groups()
-        major = int(major); minor = int(minor); rev = int(rev)
-        return (major,minor,rev)>=(7,0,0)

@@ -27,6 +27,7 @@
 #endif
 
 #include <Base/GeometryPyCXX.h>
+#include <Base/PyWrapParseTupleAndKeywords.h>
 #include <Base/VectorPy.h>
 
 #include "HyperbolaPy.h"
@@ -46,25 +47,25 @@ std::string HyperbolaPy::representation() const
 
 PyObject *HyperbolaPy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // Python wrapper
 {
-    // create a new instance of HyperbolaPy and the Twin object 
+    // create a new instance of HyperbolaPy and the Twin object
     return new HyperbolaPy(new GeomHyperbola);
 }
 
 // constructor method
 int HyperbolaPy::PyInit(PyObject* args, PyObject* kwds)
 {
-    char* keywords_n[] = {nullptr};
-    if (PyArg_ParseTupleAndKeywords(args, kwds, "", keywords_n)) {
+    static const std::array<const char *, 1> keywords_n {nullptr};
+    if (Base::Wrapped_ParseTupleAndKeywords(args, kwds, "", keywords_n)) {
         Handle(Geom_Hyperbola) hyperbola = Handle(Geom_Hyperbola)::DownCast(getGeomHyperbolaPtr()->handle());
         hyperbola->SetMajorRadius(2.0);
         hyperbola->SetMinorRadius(1.0);
         return 0;
     }
 
-    char* keywords_e[] = {"Hyperbola",nullptr};
+    static const std::array<const char *, 2> keywords_e {"Hyperbola", nullptr};
     PyErr_Clear();
     PyObject *pHypr;
-    if (PyArg_ParseTupleAndKeywords(args, kwds, "O!",keywords_e, &(HyperbolaPy::Type), &pHypr)) {
+    if (Base::Wrapped_ParseTupleAndKeywords(args, kwds, "O!",keywords_e, &(HyperbolaPy::Type), &pHypr)) {
         HyperbolaPy* pHyperbola = static_cast<HyperbolaPy*>(pHypr);
         Handle(Geom_Hyperbola) Hypr1 = Handle(Geom_Hyperbola)::DownCast
             (pHyperbola->getGeomHyperbolaPtr()->handle());
@@ -74,13 +75,13 @@ int HyperbolaPy::PyInit(PyObject* args, PyObject* kwds)
         return 0;
     }
 
-    char* keywords_ssc[] = {"S1","S2","Center",nullptr};
+    static const std::array<const char *, 4> keywords_ssc{"S1", "S2", "Center", nullptr};
     PyErr_Clear();
     PyObject *pV1, *pV2, *pV3;
-    if (PyArg_ParseTupleAndKeywords(args, kwds, "O!O!O!", keywords_ssc,
-                                         &(Base::VectorPy::Type), &pV1,
-                                         &(Base::VectorPy::Type), &pV2,
-                                         &(Base::VectorPy::Type), &pV3)) {
+    if (Base::Wrapped_ParseTupleAndKeywords(args, kwds, "O!O!O!", keywords_ssc,
+                                            &(Base::VectorPy::Type), &pV1,
+                                             &(Base::VectorPy::Type), &pV2,
+                                            &(Base::VectorPy::Type), &pV3)) {
         Base::Vector3d v1 = static_cast<Base::VectorPy*>(pV1)->value();
         Base::Vector3d v2 = static_cast<Base::VectorPy*>(pV2)->value();
         Base::Vector3d v3 = static_cast<Base::VectorPy*>(pV3)->value();
@@ -97,11 +98,11 @@ int HyperbolaPy::PyInit(PyObject* args, PyObject* kwds)
         return 0;
     }
 
-    char* keywords_cmm[] = {"Center","MajorRadius","MinorRadius",nullptr};
+    static const std::array<const char *, 4> keywords_cmm {"Center","MajorRadius","MinorRadius",nullptr};
     PyErr_Clear();
     PyObject *pV;
     double major, minor;
-    if (PyArg_ParseTupleAndKeywords(args, kwds, "O!dd", keywords_cmm,
+    if (Base::Wrapped_ParseTupleAndKeywords(args, kwds, "O!dd", keywords_cmm,
                                         &(Base::VectorPy::Type), &pV,
                                         &major, &minor)) {
         Base::Vector3d c = static_cast<Base::VectorPy*>(pV)->value();
@@ -128,7 +129,7 @@ int HyperbolaPy::PyInit(PyObject* args, PyObject* kwds)
 Py::Float HyperbolaPy::getMajorRadius() const
 {
     Handle(Geom_Hyperbola) hyperbola = Handle(Geom_Hyperbola)::DownCast(getGeomHyperbolaPtr()->handle());
-    return Py::Float(hyperbola->MajorRadius()); 
+    return Py::Float(hyperbola->MajorRadius());
 }
 
 void HyperbolaPy::setMajorRadius(Py::Float arg)
@@ -140,7 +141,7 @@ void HyperbolaPy::setMajorRadius(Py::Float arg)
 Py::Float HyperbolaPy::getMinorRadius() const
 {
     Handle(Geom_Hyperbola) hyperbola = Handle(Geom_Hyperbola)::DownCast(getGeomHyperbolaPtr()->handle());
-    return Py::Float(hyperbola->MinorRadius()); 
+    return Py::Float(hyperbola->MinorRadius());
 }
 
 void HyperbolaPy::setMinorRadius(Py::Float arg)
@@ -152,7 +153,7 @@ void HyperbolaPy::setMinorRadius(Py::Float arg)
 Py::Float HyperbolaPy::getFocal() const
 {
     Handle(Geom_Hyperbola) hyperbola = Handle(Geom_Hyperbola)::DownCast(getGeomHyperbolaPtr()->handle());
-    return Py::Float(hyperbola->Focal()); 
+    return Py::Float(hyperbola->Focal());
 }
 
 Py::Object HyperbolaPy::getFocus1() const
@@ -176,5 +177,5 @@ PyObject *HyperbolaPy::getCustomAttributes(const char* /*attr*/) const
 
 int HyperbolaPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
 {
-    return 0; 
+    return 0;
 }

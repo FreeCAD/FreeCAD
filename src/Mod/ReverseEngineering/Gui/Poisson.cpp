@@ -20,28 +20,18 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-
 #ifndef _PreComp_
-# include <QMessageBox>
-# include <QTextStream>
+#include <QMessageBox>
 #endif
 
-#include "ui_Poisson.h"
-#include "Poisson.h"
-
-#include <Gui/Application.h>
+#include <App/Document.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/Command.h>
-#include <Gui/Document.h>
-#include <Gui/Selection.h>
-#include <Gui/ViewProvider.h>
 #include <Gui/WaitCursor.h>
 
-#include <Base/Interpreter.h>
-#include <App/Application.h>
-#include <App/Document.h>
+#include "Poisson.h"
+#include "ui_Poisson.h"
 
 
 using namespace ReenGui;
@@ -51,18 +41,14 @@ class PoissonWidget::Private
 public:
     Ui_PoissonWidget ui;
     App::DocumentObjectT obj;
-    Private()
-    {
-    }
-    ~Private()
-    {
-    }
+    Private() = default;
+    ~Private() = default;
 };
 
 /* TRANSLATOR ReenGui::PoissonWidget */
 
 PoissonWidget::PoissonWidget(const App::DocumentObjectT& obj, QWidget* parent)
-  : d(new Private())
+    : d(new Private())
 {
     Q_UNUSED(parent);
     d->ui.setupUi(this);
@@ -80,21 +66,17 @@ bool PoissonWidget::accept()
         QString document = QString::fromStdString(d->obj.getDocumentPython());
         QString object = QString::fromStdString(d->obj.getObjectPython());
 
-        QString argument = QString::fromLatin1(
-            "Points=%1.Points, "
-            "OctreeDepth=%2, "
-            "SolverDivide=%3, "
-            "SamplesPerNode=%4"
-            )
-            .arg(object)
-            .arg(d->ui.octreeDepth->value())
-            .arg(d->ui.solverDivide->value())
-            .arg(d->ui.samplesPerNode->value())
-            ;
+        QString argument = QString::fromLatin1("Points=%1.Points, "
+                                               "OctreeDepth=%2, "
+                                               "SolverDivide=%3, "
+                                               "SamplesPerNode=%4")
+                               .arg(object)
+                               .arg(d->ui.octreeDepth->value())
+                               .arg(d->ui.solverDivide->value())
+                               .arg(d->ui.samplesPerNode->value());
         QString command = QString::fromLatin1("%1.addObject(\"Mesh::Feature\", \"Poisson\").Mesh = "
-            "ReverseEngineering.poissonReconstruction(%2)")
-            .arg(document, argument)
-            ;
+                                              "ReverseEngineering.poissonReconstruction(%2)")
+                              .arg(document, argument);
 
         Gui::WaitCursor wc;
         Gui::Command::addModule(Gui::Command::App, "ReverseEngineering");
@@ -112,7 +94,7 @@ bool PoissonWidget::accept()
     return true;
 }
 
-void PoissonWidget::changeEvent(QEvent *e)
+void PoissonWidget::changeEvent(QEvent* e)
 {
     QWidget::changeEvent(e);
     if (e->type() == QEvent::LanguageChange) {
@@ -126,20 +108,18 @@ void PoissonWidget::changeEvent(QEvent *e)
 TaskPoisson::TaskPoisson(const App::DocumentObjectT& obj)
 {
     widget = new PoissonWidget(obj);
-    taskbox = new Gui::TaskView::TaskBox(
-        Gui::BitmapFactory().pixmap("actions/FitSurface"),
-        widget->windowTitle(), true, nullptr);
+    taskbox = new Gui::TaskView::TaskBox(Gui::BitmapFactory().pixmap("actions/FitSurface"),
+                                         widget->windowTitle(),
+                                         true,
+                                         nullptr);
     taskbox->groupLayout()->addWidget(widget);
     Content.push_back(taskbox);
 }
 
-TaskPoisson::~TaskPoisson()
-{
-}
+TaskPoisson::~TaskPoisson() = default;
 
 void TaskPoisson::open()
-{
-}
+{}
 
 bool TaskPoisson::accept()
 {

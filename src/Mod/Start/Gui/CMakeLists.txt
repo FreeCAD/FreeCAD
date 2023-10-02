@@ -14,20 +14,20 @@ set(StartGui_LIBS
 
 set(StartGui_UIC_SRCS
     DlgStartPreferences.ui
+    DlgStartPreferencesAdvanced.ui
 )
 
-if(BUILD_QT5)
-    qt5_add_resources(Start_QRC_SRCS Resources/Start.qrc)
-    qt5_wrap_ui(StartGui_UIC_HDRS ${StartGui_UIC_SRCS})
-else()
-    qt4_add_resources(Start_QRC_SRCS Resources/Start.qrc)
-    qt4_wrap_ui(StartGui_UIC_HDRS ${StartGui_UIC_SRCS})
-endif()
+set (Start_TR_QRC ${CMAKE_CURRENT_BINARY_DIR}/Resources/Start_translation.qrc)
+qt_find_and_add_translation(QM_SRCS "Resources/translations/*_*.ts"
+    ${CMAKE_CURRENT_BINARY_DIR}/Resources/translations)
+qt_create_resource_file(${Start_TR_QRC} ${QM_SRCS})
+qt_add_resources(Start_QRC_SRCS Resources/Start.qrc ${Start_TR_QRC})
 
 SET(StartGui_SRCS
     ${Start_QRC_SRCS}
     ${StartGui_UIC_SRCS}
     DlgStartPreferences.ui
+    DlgStartPreferencesAdvanced.ui
     DlgStartPreferencesImp.cpp
     DlgStartPreferencesImp.h
     AppStartGui.cpp
@@ -41,6 +41,12 @@ SET(StartGui_SRCS
 SET(StartGuiIcon_SVG
     Resources/icons/StartWorkbench.svg
 )
+
+if(FREECAD_USE_PCH)
+    add_definitions(-D_PreComp_)
+    GET_MSVC_PRECOMPILED_SOURCE("PreCompiled.cpp" PCH_SRCS ${StartGui_SRCS})
+    ADD_MSVC_PRECOMPILED_HEADER(StartGui PreCompiled.h PreCompiled.cpp PCH_SRCS)
+endif(FREECAD_USE_PCH)
 
 add_library(StartGui SHARED ${StartGui_SRCS} ${StartGuiIcon_SVG})
 target_link_libraries(StartGui ${StartGui_LIBS})

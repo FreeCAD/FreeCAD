@@ -1,0 +1,81 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+# ***************************************************************************
+# *                                                                         *
+# *   Copyright (c) 2023 0penBrain.                                         *
+# *                                                                         *
+# *   This file is part of FreeCAD.                                         *
+# *                                                                         *
+# *   FreeCAD is free software: you can redistribute it and/or modify it    *
+# *   under the terms of the GNU Lesser General Public License as           *
+# *   published by the Free Software Foundation, either version 2.1 of the  *
+# *   License, or (at your option) any later version.                       *
+# *                                                                         *
+# *   FreeCAD is distributed in the hope that it will be useful, but        *
+# *   WITHOUT ANY WARRANTY; without even the implied warranty of            *
+# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU      *
+# *   Lesser General Public License for more details.                       *
+# *                                                                         *
+# *   You should have received a copy of the GNU Lesser General Public      *
+# *   License along with FreeCAD. If not, see                               *
+# *   <https://www.gnu.org/licenses/>.                                      *
+# *                                                                         *
+# ***************************************************************************
+
+name: runPythonTests
+description: "Run Python tests, generate log and report"
+
+inputs:
+  testDescription:
+    description: "Test description text, will be used on report"
+    required: true
+  testCommand:
+    description: "Test command to be run"
+    required: true
+  logFile:
+    description: "Path for log file"
+    required: true
+  reportFile:
+    description: "Path for report file"
+    required: true
+
+runs:
+  using: "composite"
+  steps:
+    - name: Run tests
+      id: runTests
+      shell: bash
+      run: |
+        stdbuf -oL -eL ${{ inputs.testCommand }} |& sed -Ee "/[[:blank:]]*\([[:digit:]]{1,3} %\)[[:blank:]]*/d" | tee -a ${{ inputs.logFile }}
+    - name: Write report
+      shell: bash
+      if: always()
+      run: |
+        sed -ne "/^\(FAILED\|ERROR\):/,/^[[:blank:]]*$/bF; /^Traceback/,/^[^[:blank:]]/{/^Traceback/bT; /^[^[:blank:]]/G; bT}; b; :T w ${{ inputs.logFile }}_tracebacks" -e "b; :F w ${{ inputs.logFile }}_failedtests" ${{ inputs.logFile }}
+        icon=""
+        if [ $( cat ${{ inputs.logFile }}_tracebacks | wc -l ) -gt 0 ]
+        then
+          icon=" :fire:"
+        fi
+        if [ ${{ steps.runTests.outcome }} == 'success' ]
+        then
+          echo "<details><summary>:heavy_check_mark: ${{ inputs.testDescription }} succeeded$icon</summary>" >> ${{ inputs.reportFile }}
+        else
+          echo "<details><summary>:fire: ${{ inputs.testDescription }} failed$icon</summary>" >> ${{ inputs.reportFile }}
+          echo "" >> ${{ inputs.reportFile }}
+          echo "Failed tests" >> ${{ inputs.reportFile }}
+          echo "" >> ${{ inputs.reportFile }}
+          echo '```' >> ${{ inputs.reportFile }}
+          cat ${{ inputs.logFile }}_failedtests >> ${{ inputs.reportFile }}
+          echo '```' >> ${{ inputs.reportFile }}
+        fi
+        echo "" >> ${{ inputs.reportFile }}
+        if [ $( cat ${{ inputs.logFile }}_tracebacks | wc -l ) -gt 0 ]
+        then
+          echo "Uncaught tracebacks -- these tracebacks appeared during test but didn't fail a test --" >> ${{ inputs.reportFile }}
+          echo "" >> ${{ inputs.reportFile }}
+          echo '```' >> ${{ inputs.reportFile }}
+          cat ${{ inputs.logFile }}_tracebacks >> ${{ inputs.reportFile }}
+          echo '```' >> ${{ inputs.reportFile }}
+        fi
+        echo "</details>">> ${{ inputs.reportFile }}
+        echo "" >> ${{ inputs.reportFile }}

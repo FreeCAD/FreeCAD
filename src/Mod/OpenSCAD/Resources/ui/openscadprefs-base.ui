@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>575</width>
-    <height>629</height>
+    <width>577</width>
+    <height>636</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -45,7 +45,7 @@
          </widget>
         </item>
         <item>
-         <widget class="Gui::PrefFileChooser" name="gui::preffilechooser">
+         <widget class="Gui::PrefFileChooser" name="gui::preffilechooser" native="true">
           <property name="minimumSize">
            <size>
             <width>300</width>
@@ -229,12 +229,15 @@
          </widget>
         </item>
         <item>
-         <widget class="Gui::PrefFileChooser" name="gui::preffilechooser">
+         <widget class="Gui::PrefFileChooser" name="gui::preffilechooser" native="true">
           <property name="minimumSize">
            <size>
             <width>300</width>
             <height>0</height>
            </size>
+          </property>
+          <property name="mode">
+           <enum>Gui::FileChooser::Directory</enum>
           </property>
           <property name="toolTip">
            <string>The path to the directory for transferring files to and from OpenSCAD</string>
@@ -263,7 +266,7 @@
         <item>
          <widget class="QLabel" name="label">
           <property name="text">
-           <string>maximum fragment size</string>
+           <string>Maximum fragment size</string>
           </property>
          </widget>
         </item>
@@ -286,7 +289,7 @@
            <string>Minimum angle for a fragment</string>
           </property>
           <property name="text">
-           <string>angular (fa)</string>
+           <string>angle (fa)</string>
           </property>
          </widget>
         </item>
@@ -296,7 +299,7 @@
            <string>Minimum angle for a fragment</string>
           </property>
           <property name="suffix">
-           <string>°</string>
+           <string notr="true">°</string>
           </property>
           <property name="minimum">
            <double>0.010000000000000</double>
@@ -382,7 +385,7 @@
         <item>
          <widget class="QLabel" name="label_2">
           <property name="text">
-           <string>convexity</string>
+           <string>Convexity</string>
           </property>
          </widget>
         </item>
@@ -453,7 +456,7 @@
           </property>
          </widget>
         </item>
-       <item row="1" column="2">
+        <item row="1" column="2">
          <widget class="Gui::PrefDoubleSpinBox" name="doubleSpinBox_2a">
           <property name="toolTip">
            <string>Deflection</string>
@@ -475,7 +478,7 @@
           </property>
          </widget>
         </item>
-        </layout>
+       </layout>
       </item>
      </layout>
     </widget>

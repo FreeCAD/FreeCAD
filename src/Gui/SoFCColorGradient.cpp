@@ -24,9 +24,11 @@
 
 #ifndef _PreComp_
 # include <sstream>
+# include <QCoreApplication>
 # include <Inventor/fields/SoMFString.h>
 # include <Inventor/nodes/SoBaseColor.h>
 # include <Inventor/nodes/SoCoordinate3.h>
+# include <Inventor/nodes/SoFont.h>
 # include <Inventor/nodes/SoIndexedFaceSet.h>
 # include <Inventor/nodes/SoMaterial.h>
 # include <Inventor/nodes/SoText2.h>
@@ -34,6 +36,7 @@
 # include <Inventor/nodes/SoTransparencyType.h>
 #endif
 
+#include <Base/Parameter.h>
 #include "SoFCColorGradient.h"
 #include "SoTextLabel.h"
 #include "DlgSettingsColorGradientImp.h"
@@ -49,7 +52,7 @@ SO_NODE_SOURCE(SoFCColorGradient)
 /*!
   Constructor.
 */
-SoFCColorGradient::SoFCColorGradient() : _bbox(5.0f, -4.0f, 5.5f, 4.0f), _precision(3)
+SoFCColorGradient::SoFCColorGradient() : _bbox(5.0f, -4.0f, 5.5f, 4.0f)
 {
     SO_NODE_CONSTRUCTOR(SoFCColorGradient);
     coords = new SoCoordinate3;
@@ -83,6 +86,11 @@ void SoFCColorGradient::finish()
     atexit_cleanup();
 }
 
+const char* SoFCColorGradient::getColorBarName() const
+{
+    return QT_TRANSLATE_NOOP("QObject", "Color Gradient");
+}
+
 void SoFCColorGradient::setMarkerLabel(const SoMFString& label)
 {
     coinRemoveAllChildren(labels);
@@ -92,20 +100,28 @@ void SoFCColorGradient::setMarkerLabel(const SoMFString& label)
         SbVec2f maxPt = _bbox.getMax();
         SbVec2f minPt = _bbox.getMin();
         float fStep = (maxPt[1] - minPt[1]) / ((float)num - 1);
-        SoTransform* trans = new SoTransform;
+        auto trans = new SoTransform;
+
+        ParameterGrp::handle hGrp = Gui::WindowParameter::getDefaultParameter()->GetGroup("View");
+        auto LabelTextSize = hGrp->GetInt("CbLabelTextSize", 13);
+        auto LabelTextColor =
+            App::Color((uint32_t)hGrp->GetUnsigned("CbLabelColor", 0xffffffff));
+        auto textFont = new SoFont;
+        auto color = new SoBaseColor;
+        textFont->name.setValue("Helvetica,Arial,Times New Roman");
+        textFont->size.setValue(LabelTextSize);
         trans->translation.setValue(maxPt[0] + 0.1f, maxPt[1] - 0.05f + fStep, 0.0f);
+        color->rgb.setValue(LabelTextColor.r,LabelTextColor.g,LabelTextColor.b);
         labels->addChild(trans);
+        labels->addChild(color);
+        labels->addChild(textFont);
 
         for (int i = 0; i < num; i++) {
-            SoTransform* trans = new SoTransform;
-            SoBaseColor* color = new SoBaseColor;
-            SoText2    * text2 = new SoColorBarLabel;
-
+            auto trans = new SoTransform;
+            auto text2 = new SoColorBarLabel;
             trans->translation.setValue(0, -fStep, 0);
-            color->rgb.setValue(0, 0, 0);
             text2->string.setValue(label[i]);
             labels->addChild(trans);
-            labels->addChild(color);
             labels->addChild(text2);
         }
     }
@@ -253,7 +269,7 @@ void SoFCColorGradient::rebuildGradient()
 
     // for uCtColors colors we need 2*(uCtColors-1) facets and therefore an array with
     // 8*(uCtColors-1) face indices
-    SoIndexedFaceSet* faceset = new SoIndexedFaceSet;
+    auto faceset = new SoIndexedFaceSet;
     faceset->coordIndex.setNum(8 * (uCtColors - 1));
     for (int j = 0; j < uCtColors - 1; j++) {
         faceset->coordIndex.set1Value(8 * j, 2 * j);
@@ -267,9 +283,9 @@ void SoFCColorGradient::rebuildGradient()
     }
 
     // set an own transparency type for this color bar only
-    SoTransparencyType* ttype = new SoTransparencyType;
+    auto ttype = new SoTransparencyType;
     ttype->value = SoGLRenderAction::DELAYED_BLEND;
-    SoMaterial* mat = new SoMaterial;
+    auto mat = new SoMaterial;
     //mat->transparency = 0.3f;
     mat->diffuseColor.setNum(2 * uCtColors);
     for (int k = 0; k < uCtColors; k++) {
@@ -278,7 +294,7 @@ void SoFCColorGradient::rebuildGradient()
         mat->diffuseColor.set1Value(2 * k + 1, col.r, col.g, col.b);
     }
 
-    SoMaterialBinding* matBinding = new SoMaterialBinding;
+    auto matBinding = new SoMaterialBinding;
     matBinding->value = SoMaterialBinding::PER_VERTEX_INDEXED;
 
     // first clear the children

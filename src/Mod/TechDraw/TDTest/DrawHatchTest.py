@@ -1,7 +1,6 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-from __future__ import print_function
 
 import FreeCAD
 import os
@@ -50,8 +49,6 @@ class DrawHatchTest(unittest.TestCase):
         hatch.HatchPattern = (
             hatchFileSpec
         )
-        print("adding hatch to page")
-        self.page.addView(hatch)
         print("finished hatch")
         FreeCAD.ActiveDocument.recompute()
 

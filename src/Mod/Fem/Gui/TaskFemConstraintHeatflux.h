@@ -27,6 +27,7 @@
 #define GUI_TASKVIEW_TaskFemConstraintHeatflux_H
 
 #include <QObject>
+#include <memory>
 
 #include "TaskFemConstraintOnBoundary.h"
 #include "ViewProviderFemConstraintHeatflux.h"
@@ -34,13 +35,15 @@
 
 class Ui_TaskFemConstraintHeatflux;
 
-namespace FemGui {
-class TaskFemConstraintHeatflux : public TaskFemConstraintOnBoundary
+namespace FemGui
+{
+class TaskFemConstraintHeatflux: public TaskFemConstraintOnBoundary
 {
     Q_OBJECT
 
 public:
-    explicit TaskFemConstraintHeatflux(ViewProviderFemConstraintHeatflux *ConstraintView,QWidget *parent = nullptr);
+    explicit TaskFemConstraintHeatflux(ViewProviderFemConstraintHeatflux* ConstraintView,
+                                       QWidget* parent = nullptr);
     ~TaskFemConstraintHeatflux() override;
     double getAmbientTemp() const;
     /*double getFaceTemp(void) const;*/
@@ -60,26 +63,26 @@ private Q_SLOTS:
     void removeFromSelection() override;
 
 protected:
-    bool event(QEvent *e) override;
-    void changeEvent(QEvent *e) override;
+    bool event(QEvent* e) override;
+    void changeEvent(QEvent* e) override;
     void clearButtons(const SelectionChangeModes notThis) override;
 
 private:
     void updateUI();
-    Ui_TaskFemConstraintHeatflux* ui;
+    std::unique_ptr<Ui_TaskFemConstraintHeatflux> ui;
 };
 
-class TaskDlgFemConstraintHeatflux : public TaskDlgFemConstraint
+class TaskDlgFemConstraintHeatflux: public TaskDlgFemConstraint
 {
     Q_OBJECT
 
 public:
-    explicit TaskDlgFemConstraintHeatflux(ViewProviderFemConstraintHeatflux *ConstraintView);
+    explicit TaskDlgFemConstraintHeatflux(ViewProviderFemConstraintHeatflux* ConstraintView);
     void open() override;
     bool accept() override;
     bool reject() override;
 };
 
-} //namespace FemGui
+}  // namespace FemGui
 
-#endif // GUI_TASKVIEW_TaskFemConstraintHeatflux_H
+#endif  // GUI_TASKVIEW_TaskFemConstraintHeatflux_H

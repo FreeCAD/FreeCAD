@@ -20,50 +20,64 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef IMPORT_ImportOCAFAssembly_H
 #define IMPORT_ImportOCAFAssembly_H
 
-#include <Quantity_Color.hxx>
-#include <TopoDS_Shape.hxx>
 #include <climits>
-#include <string>
-#include <set>
 #include <map>
+#include <set>
+#include <string>
 #include <vector>
+
+#include <TopoDS_Shape.hxx>
+
 #include <App/Material.h>
+#include <Mod/Import/ImportGlobal.h>
+
 
 class TDF_Label;
 class TopLoc_Location;
 
-namespace App {
+namespace App
+{
 class Document;
 class DocumentObject;
-}
-namespace Part {
+}  // namespace App
+namespace Part
+{
 class Feature;
 }
 
-namespace Import {
+namespace Import
+{
 
 class ImportExport ImportOCAFAssembly
 {
 public:
-    ImportOCAFAssembly(Handle(TDocStd_Document) h, App::Document* d, const std::string& name, App::DocumentObject *target);
+    ImportOCAFAssembly(Handle(TDocStd_Document) h,
+                       App::Document* d,
+                       const std::string& name,
+                       App::DocumentObject* target);
     virtual ~ImportOCAFAssembly();
     void loadShapes();
     void loadAssembly();
 
 protected:
     std::string getName(const TDF_Label& label);
-    App::DocumentObject *targetObj;
+    App::DocumentObject* targetObj;
 
 
 private:
-    void loadShapes(const TDF_Label& label, const TopLoc_Location&, const std::string& partname, const std::string& assembly, bool isRef, int dep);
+    void loadShapes(const TDF_Label& label,
+                    const TopLoc_Location&,
+                    const std::string& partname,
+                    const std::string& assembly,
+                    bool isRef,
+                    int dep);
     void createShape(const TDF_Label& label, const TopLoc_Location&, const std::string&);
     void createShape(const TopoDS_Shape& label, const TopLoc_Location&, const std::string&);
-    virtual void applyColors(Part::Feature*, const std::vector<App::Color>&){}
+    virtual void applyColors(Part::Feature*, const std::vector<App::Color>&)
+    {}
 
 private:
     Handle(TDocStd_Document) pDoc;
@@ -76,6 +90,6 @@ private:
 };
 
 
-} // namespace Import {
+}  // namespace Import
 
-#endif //IMPORT_ImportOCAFAssembly_H
+#endif  // IMPORT_ImportOCAFAssembly_H

@@ -1,37 +1,91 @@
+#***************************************************************************
+#*   Copyright (c) 2020 Yorik van Havre <yorik@uncreated.net>              *
+#*                                                                         *
+#*   This program is free software; you can redistribute it and/or modify  *
+#*   it under the terms of the GNU Lesser General Public License (LGPL)    *
+#*   as published by the Free Software Foundation; either version 2 of     *
+#*   the License, or (at your option) any later version.                   *
+#*   for detail see the LICENCE text file.                                 *
+#*                                                                         *
+#*   This program is distributed in the hope that it will be useful,       *
+#*   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+#*   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+#*   GNU Library General Public License for more details.                  *
+#*                                                                         *
+#*   You should have received a copy of the GNU Library General Public     *
+#*   License along with this program; if not, write to the Free Software   *
+#*   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
+#*   USA                                                                   *
+#*                                                                         *
+#***************************************************************************
+
 """View providers and UI elements for the Ifc classes."""
 
-import FreeCAD, ArchIFC
+import FreeCAD
+import ArchIFC
 
 if FreeCAD.GuiUp:
     import FreeCADGui
-    from PySide import QtGui
+    from PySide import QtCore, QtGui
+    from draftutils.translate import translate
+else:
+    def translate(ctxt,txt):
+        return txt
 
 class IfcContextView:
     """A default view provider for IfcContext objects."""
 
-    def setEdit(self, viewObject, mode):
-        """Method called when the document requests the object to enter edit mode.
+    def attach(self, vobj):
+        self.Object = vobj.Object
 
-        Opens the IfcContextUi as the task panel.
+    def setEdit(self, vobj, mode):
+        if mode == 1 or mode == 2:
+            return None
 
-        Edit mode is entered when a user double clicks on an object in the tree
-        view, or when they use the menu option [Edit -> Toggle Edit Mode].
-
-        Parameters
-        ----------
-        mode: int or str
-            The edit mode the document has requested. Set to 0 when requested via
-            a double click or [Edit -> Toggle Edit Mode].
-
-        Returns
-        -------
-        bool
-            If edit mode was entered.
-        """
-
-        # What does mode do?
-        FreeCADGui.Control.showDialog(IfcContextUI(viewObject.Object))
+        FreeCADGui.Control.showDialog(IfcContextUI(vobj.Object))
         return True
+
+    def unsetEdit(self, vobj, mode):
+        if mode == 1 or mode == 2:
+            return None
+
+        FreeCADGui.Control.closeDialog()
+        return True
+
+    def setupContextMenu(self, vobj, menu):
+        actionEdit = QtGui.QAction(translate("Arch", "Edit"),
+                                   menu)
+        QtCore.QObject.connect(actionEdit,
+                               QtCore.SIGNAL("triggered()"),
+                               self.edit)
+        menu.addAction(actionEdit)
+
+        # The default Part::FeaturePython context menu contains a `Set colors`
+        # option. This option does not makes sense here. We therefore
+        # override this menu and have to add our own `Transform` item.
+        # To override the default menu this function must return `True`.
+        actionTransform = QtGui.QAction(FreeCADGui.getIcon("Std_TransformManip.svg"),
+                                        translate("Command", "Transform"), # Context `Command` instead of `Arch`.
+                                        menu)
+        QtCore.QObject.connect(actionTransform,
+                               QtCore.SIGNAL("triggered()"),
+                               self.transform)
+        menu.addAction(actionTransform)
+
+        return True
+
+    def edit(self):
+        FreeCADGui.ActiveDocument.setEdit(self.Object, 0)
+
+    def transform(self):
+        FreeCADGui.ActiveDocument.setEdit(self.Object, 1)
+
+    def dumps(self):
+        return None
+
+    def loads(self,state):
+        return None
+
 
 class IfcContextUI:
     """A default task panel for editing context objects."""
@@ -54,6 +108,11 @@ class IfcContextUI:
         for lineEdit in self.lineEditObjects:
             data[lineEdit.objectName()] = lineEdit.text()
         ArchIFC.IfcRoot.setObjIfcComplexAttributeValue(self, self.object, "RepresentationContexts", data)
+        FreeCADGui.ActiveDocument.resetEdit()
+        return True
+
+    def reject(self):
+        FreeCADGui.ActiveDocument.resetEdit()
         return True
 
     def createBaseLayout(self):
@@ -93,7 +152,7 @@ class IfcContextUI:
         """
         data = ArchIFC.IfcRoot.getObjIfcComplexAttribute(self, self.object, "RepresentationContexts")
         for lineEdit in self.lineEditObjects:
-            if lineEdit.objectName() in data.keys():
+            if lineEdit.objectName() in data:
                 lineEdit.setText(data[lineEdit.objectName()])
 
     def createFormEntry(self, name, label):

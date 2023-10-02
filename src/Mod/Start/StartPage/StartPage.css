@@ -1,198 +1,389 @@
+/*
+ * !!! WARNING !!!
+ * DO NOT change lines that have comment labels right beside them
+ * these lines are marked with "don't change this line"
+ * they get replaced by StartPage.py according to the preferences
+*/
+
+/* --- MAIN --- */
+
+html {
+    height: 100%;
+    color: BGTCOLOR;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
 body {
+    height: 100%;
     background: BACKGROUND;
     color: BGTCOLOR;
     font-family: FONTFAMILY;
     font-size: FONTSIZE;
+    overflow: hidden;
 }
-a, a:link, a:visited {
+
+a,
+a:link,
+a:visited {
     text-decoration: none;
     color: LINKCOLOR;
     font-weight: bold;
 }
+
 h1 {
     width: 100%;
     text-align: center;
 }
+
 h2 {
     text-align: center;
     clear: both;
+    padding-top: 5px;
 }
-hr {
-    height: 20px;
-    border: none;
+
+img, a {
+    -webkit-user-drag: none;
 }
+
 .hidden {
-    display: none;
+    display: none !important;
 }
+
+#main-container {
+    display: flex;
+    flex-direction: column;
+    height: calc(100% - 40px);
+    margin: 20px;
+    background: BASECOLOR;
+    border-radius: 15px;
+}
+
+#title-bar {
+    display: flex;
+    flex-direction: row-reverse;
+    align-items: center;
+    width: 100%;
+    height: 5.5em;
+    min-height: 5.5em;
+    background: BASECOLOR;
+    border-radius: 15px;
+    z-index: 2;
+}
+
+.welcome {
+    display: flex;
+    align-items: center;
+    color: TEXTCOLOR;
+    font-size: 1.4em;
+    margin-left: 25px;
+    font-weight: bold;
+}
+
+.welcome img {
+    width: 28px;
+    height: 28px;
+    margin-right: 10px;
+}
+
 .version {
-    font-size: 0.8em;
-    float: right;
-    padding-right: 10px;
+    font-size: 1em;
+    margin-right: 25px;
 }
+
 .settingsicon {
-    width: 16px;
-    height: 16px;
-    margin-left: 20px;
-    vertical-align:middle;
+    width: 22px;
+    height: 22px;
+    margin-left: 10px;
+    vertical-align: middle;
 }
-.container {
-    margin: 2%
+
+@media only screen and (max-width: 1100px) {
+    .welcome {
+        display: none;
+    }
+
+    .version {
+        display: none;
+    }
 }
+
+/* --- TABS --- */
+
 ul.tabs {
-    margin: 9px 0;
+    display: flex;
+    position: absolute;
+    top: 2em;
+    left: 50%;
+    transform: translateX(calc(-50% - 1em));
 }
+
 ul.tabs li {
     list-style: none;
-    display: inline;
 }
+
 ul.tabs li a {
+    display: flex;
+    align-items: center;
+    border-radius: 8px;
+    padding: 6px 12px;
+    margin: 0 3px;
     color: TEXTCOLOR;
-    background-color: BOXCOLOR;
-    padding: 8px 14px 8px 14px;
     text-decoration: none;
-    font-size: 1em;
-    font-weight: bold;
-    text-transform: uppercase;
-    border:1px solid BOXCOLOR;
-    border-radius: 3px 3px 0px 0px;
-    box-shadow: #445 0 -5px 5px;
     outline: 0;
+    font-size: 1.3em;
 }
+
+ul.tabs li a img {
+    margin-right: 5px;
+}
+
 ul.tabs li a:hover {
-    background-color: TEXTCOLOR;
-    color: BASECOLOR;
-    border-color: TEXTCOLOR;
+    background-color: BOXCOLOR;
 }
-ul.tabs li a.active, ul.tabs li a.active:hover {
-    color: TEXTCOLOR;
-    background-color: BASECOLOR;
-    border-bottom: 1px solid BASECOLOR;
-    border-color: BASECOLOR;
+
+ul.tabs li a.active,
+ul.tabs li a.active:hover {
+    background-color: BOXCOLOR;
+    font-weight: bold;
 }
+
 .panel {
-    background: BASECOLOR;
+    display: flex;
+    flex-direction: column;
     color: TEXTCOLOR;
     padding: 15px;
-    clear: both;
-    margin-bottom: 10px;
-    border-radius: 0px 3px 3px 3px;
+    padding-top: 0;
     overflow: auto;
-    box-shadow: SHADOW 0 2px 5px;
 }
+
+.footnote {
+    /* don't change this line */
+    display: block; /* footnote tips display */
+    color: BGTCOLOR;
+    text-align: center;
+    clear: both;
+    padding-top: 10px;
+}
+
+/* --- DOCUMENTS TAB --- */
+
+.thumbnails ul {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin: 0;
+    padding: 0;
+}
+
 ul.icons {
     clear: both;
 }
-.icon {
+
+.file-card {
     list-style: none;
     display: inline;
-    float: left;
-    padding: 5px 0px 15px 10px;
-    width: 138px;
-    height: 200px;
+    padding: 10px;
+    width: 130px;
+    height: THUMBCARDSIZE;
     background: BOXCOLOR;
-    border-radius: 3px;
+    border: solid 2px BOXCOLOR;
+    border-radius: 8px;
     margin: 10px;
-    box-shadow: SHADOW 0 0px 6px;
     word-wrap: break-word;
+    text-align: center;
 }
-.icon h4 {
-    margin: 3px 0;
-    max-width: 90%;
+
+.file-card h4 {
+    margin: 5px 0;
 }
-.icon img {
-    width: 128px;
-    height: 128px;
+
+.file-card img {
+    /* don't change this line */
+    display: block; /* thumb icons display */
+    margin: auto;
+    width: THUMBSIZE;
+    height: THUMBSIZE;
+    border-radius: 4px;
 }
-.icon p {
+
+.file-card p {
     margin: 0;
 }
+
 .caption {
     clear: both;
-}
-a .caption, a .caption:link, a .caption:visited {
-    color: TEXTCOLOR;
-    text-decoration-color: TEXTCOLOR;
 }
 
 .caption p {
     font-weight: normal;
 }
 
-.docbox a:hover {
-    text-decoration: underline;
+a .caption,
+a .caption:link,
+a .caption:visited {
+    color: TEXTCOLOR;
+    text-decoration-color: TEXTCOLOR;
 }
-.docbox {
+
+.quickstart-button-card {
+    list-style: none;
+    display: flex;
+    align-items: center;
     float: left;
+    padding: 5px 10px;
+    width: 18em;
+    height: 5em;
+    background: BOXCOLOR;
+    border: solid 2px BOXCOLOR;
+    border-radius: 8px;
+    margin: 10px;
+    word-wrap: break-word;
+}
+
+.quickstart-button-card a {
+    display: flex;
+}
+
+.quickstart-button-card h3 {
+    max-width: 90%;
+    margin: 3px 0;
+    margin-bottom: 5px;
+    text-align: left;
+}
+
+.quickstart-button-card img {
+    width: 60px;
+    height: 60px;
+    margin-right: 10px;
+}
+
+.quickstart-button-card p {
+    margin: 0;
+}
+
+.notes {
+    /* don't change this line */
+    display: none; /* notes display */
+    width: 100%;
+}
+
+#notepad {
+    width: calc(100% - 30px);
+    min-height: 300px;
+    margin: 10px;
+    color: TEXTCOLOR;
+    background: BOXCOLOR;
+    border: none;
+    padding: 10px;
+    border-radius: 8px;
+}
+
+#notepad:focus {
+    outline: none;
+}
+
+/* --- HELP TAB --- */
+
+#help-tab-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.docbox {
     padding: 10px;
     max-width: 360px;
     background: BOXCOLOR;
-    border-radius: 3px;
+    border-radius: 8px;
     margin: 10px;
-    box-shadow: SHADOW 0 0px 6px;
 }
+
 .docbox h2 {
     text-align: center;
 }
+
+.docbox h3 {
+    display: flex;
+    align-items: center;
+}
+
 .docbox img {
     max-width: 24px;
     max-height: 24px;
+    margin-right:10px;
 }
+
+.docbox a:hover {
+    text-decoration: underline;
+}
+
+.workbenches li,
+.addonslist li {
+    display: flex;
+    align-items: center;
+    width: 50%;
+    float: left;
+    margin-bottom: 5px;
+}
+
+.workbenches li img {
+    margin-right: 5px;
+}
+
+ul.workbenches,
+ul.addonslist {
+    overflow: hidden;
+    padding: 10px;
+}
+
+/* --- ACTIVITY TAB --- */
+
 .forum img {
     max-width: 100% !important;
     max-height: 100% !important;
 }
+
 .allwidth {
     max-width: 98%;
 }
-h3 a {
-    height: 32px;
-    vertical-align: middle;
-    padding-bottom: 18px;
-    padding-left: 5px;
-}
+
 #commits ul {
     margin: 30px 0;
 }
-#commits ul li, .forum ul li {
+
+#commits ul li,
+.forum ul li {
     margin-bottom: 10px;
 }
-.footnote {
-    text-align: center;
-    display: block; /* footnote tips display */
-    clear: both;
-    padding-top: 10px;
-}
-ul.workbenches, ul.addonslist {
-    overflow: hidden;
-    padding: 10px;
-}
-ul.workbenches li, ul.addonslist li {
-    list-style: none;
-    float: left;
-    display: inline;
-    width: 50%;
-}
+
 .forum {
-    display: none; /* forum display */ /* don't change this line */
+    /* don't change this line */
+    display: none; /* forum display */
 }
+
 .forum pre {
     white-space: pre-wrap;
 }
-.thumbnails {
-    float: left;
-    width: 100%; /* thumbs display */ /* don't change this line */
+
+/* --- SCROLLBAR STYLE --- */
+
+::-webkit-scrollbar {
+    width: 20px;
+    background: BASECOLOR;
+    padding: 2px;
 }
-.notes {
-    display: none; /* notes display */ /* don't change this line */
-    float: right;
-    width: 30%;
-}
-#notepad {
-    width: 100%;
-    height: 100%;
-    color: TEXTCOLOR;
+
+::-webkit-scrollbar-thumb {
     background: BOXCOLOR;
-    border: none;
-    padding: 5px;
-    border-radius: 3px;
+    -webkit-border-radius: 999px;
+    background-clip: content-box;
+    border: 6px solid transparent;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: TEXTCOLOR;
+    background-clip: content-box;
+    border: 6px solid transparent;
 }

@@ -45,7 +45,7 @@ std::string OffsetCurvePy::representation() const
 
 PyObject *OffsetCurvePy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // Python wrapper
 {
-    // create a new instance of OffsetCurvePy and the Twin object 
+    // create a new instance of OffsetCurvePy and the Twin object
     return new OffsetCurvePy(new GeomOffsetCurve);
 }
 
@@ -55,8 +55,8 @@ int OffsetCurvePy::PyInit(PyObject* args, PyObject* /*kwd*/)
     PyObject* pGeom;
     PyObject* pDir;
     double offset;
-    if (!PyArg_ParseTuple(args, "O!dO!", 
-                            &(GeometryPy::Type), &pGeom, 
+    if (!PyArg_ParseTuple(args, "O!dO!",
+                            &(GeometryPy::Type), &pGeom,
                             &offset,
                             &(Base::VectorPy::Type),&pDir))
         return -1;
@@ -158,5 +158,5 @@ PyObject *OffsetCurvePy::getCustomAttributes(const char* /*attr*/) const
 
 int OffsetCurvePy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
 {
-    return 0; 
+    return 0;
 }

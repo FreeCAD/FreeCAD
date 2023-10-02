@@ -23,10 +23,10 @@
 #ifndef TECHDRAWGUI_TASKSURFACEFINISHSYMBOLS_H
 #define TECHDRAWGUI_TASKSURFACEFINISHSYMBOLS_H
 
-#include <Mod/TechDraw/TechDrawGlobal.h>
-
 #include <Gui/TaskView/TaskDialog.h>
 #include <Gui/TaskView/TaskView.h>
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 
 class QComboBox;
 class QLineEdit;
@@ -79,7 +79,7 @@ class TaskSurfaceFinishSymbols : public QWidget
 
 public:
     explicit TaskSurfaceFinishSymbols(TechDraw::DrawViewPart* view);
-    ~TaskSurfaceFinishSymbols() = default;
+    ~TaskSurfaceFinishSymbols() override = default;
 
     virtual bool accept();
     virtual bool reject();

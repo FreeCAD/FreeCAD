@@ -36,9 +36,57 @@
 #include "DocumentPy.h"
 #include "DocumentPy.cpp"
 #include <boost/regex.hpp>
+#include <Base/PyWrapParseTupleAndKeywords.h>
 
 using namespace App;
 
+
+PyObject*  DocumentPy::addProperty(PyObject *args, PyObject *kwd)
+{
+    char *sType,*sName=nullptr,*sGroup=nullptr,*sDoc=nullptr;
+    short attr=0;
+    std::string sDocStr;
+    PyObject *ro = Py_False, *hd = Py_False;
+    PyObject* enumVals = nullptr;
+    static char *kwlist[] = {"type","name","group","doc","attr","read_only","hidden","enum_vals",nullptr};
+    if (!PyArg_ParseTupleAndKeywords(
+            args, kwd, "ss|sethO!O!O", kwlist, &sType, &sName, &sGroup, "utf-8",
+            &sDoc, &attr, &PyBool_Type, &ro, &PyBool_Type, &hd, &enumVals))
+        return nullptr;
+
+    if (sDoc) {
+        sDocStr = sDoc;
+        PyMem_Free(sDoc);
+    }
+
+    Property *prop = getDocumentPtr()->
+        addDynamicProperty(sType,sName,sGroup,sDocStr.c_str(),attr,
+                           Base::asBoolean(ro), Base::asBoolean(hd));
+
+    // enum support
+    auto* propEnum = dynamic_cast<App::PropertyEnumeration*>(prop);
+    if (propEnum) {
+        if (enumVals && PySequence_Check(enumVals)) {
+            std::vector<std::string> enumValsAsVector;
+            for (Py_ssize_t i = 0; i < PySequence_Length(enumVals); ++i) {
+                enumValsAsVector.emplace_back(PyUnicode_AsUTF8(PySequence_GetItem(enumVals,i)));
+            }
+            propEnum->setEnums(enumValsAsVector);
+        }
+    }
+
+    return Py::new_reference_to(this);
+}
+
+PyObject*  DocumentPy::removeProperty(PyObject *args)
+{
+    char *sName;
+    if (!PyArg_ParseTuple(args, "s", &sName))
+        return nullptr;
+
+    bool ok = getDocumentPtr()->removeDynamicProperty(sName);
+    return Py_BuildValue("O", (ok ? Py_True : Py_False));
+}
 
 // returns a string which represent the object e.g. when printed in python
 std::string DocumentPy::representation() const
@@ -207,14 +255,16 @@ PyObject*  DocumentPy::exportGraphviz(PyObject * args)
 
 PyObject*  DocumentPy::addObject(PyObject *args, PyObject *kwd)
 {
-    char *sType,*sName=nullptr,*sViewType=nullptr;
-    PyObject* obj=nullptr;
-    PyObject* view=nullptr;
-    PyObject *attach=Py_False;
-    static char *kwlist[] = {"type","name","objProxy","viewProxy","attach","viewType",nullptr};
-    if (!PyArg_ParseTupleAndKeywords(args,kwd,"s|sOOO!s",
-                kwlist, &sType,&sName,&obj,&view,&PyBool_Type,&attach,&sViewType))
+    char *sType, *sName = nullptr, *sViewType = nullptr;
+    PyObject *obj = nullptr;
+    PyObject *view = nullptr;
+    PyObject *attach = Py_False;
+    static const std::array<const char *, 7> kwlist{"type", "name", "objProxy", "viewProxy", "attach", "viewType",
+                                                    nullptr};
+    if (!Base::Wrapped_ParseTupleAndKeywords(args, kwd, "s|sOOO!s",
+                                             kwlist, &sType, &sName, &obj, &view, &PyBool_Type, &attach, &sViewType)) {
         return nullptr;
+    }
 
     DocumentObject *pcFtr = nullptr;
 
@@ -363,16 +413,11 @@ PyObject*  DocumentPy::importLinks(PyObject *args)
             objs.push_back(static_cast<DocumentObjectPy*>(seq[i].ptr())->getDocumentObjectPtr());
         }
     }
-    else if (obj == Py_None) {
-        // do nothing here
-    }
-    else if (!PyObject_TypeCheck(obj,&DocumentObjectPy::Type)) {
-        PyErr_SetString(PyExc_TypeError,
-            "Expect first argument to be either a document object or sequence of document objects");
-        return nullptr;
-    }
     else {
-        objs.push_back(static_cast<DocumentObjectPy*>(obj)->getDocumentObjectPtr());
+        Base::PyTypeCheck(&obj, &DocumentObjectPy::Type,
+            "Expect first argument to be either a document object, sequence of document objects or None");
+        if (obj)
+            objs.push_back(static_cast<DocumentObjectPy*>(obj)->getDocumentObjectPtr());
     }
 
     if (objs.empty())
@@ -385,7 +430,8 @@ PyObject*  DocumentPy::importLinks(PyObject *args)
         for (size_t i=0;i<ret.size();++i)
             tuple.setItem(i,Py::Object(ret[i]->getPyObject(),true));
         return Py::new_reference_to(tuple);
-    } PY_CATCH
+    }
+    PY_CATCH
 }
 
 PyObject*  DocumentPy::moveObject(PyObject *args)
@@ -445,7 +491,7 @@ PyObject*  DocumentPy::commitTransaction(PyObject * args)
 }
 
 Py::Boolean DocumentPy::getHasPendingTransaction() const {
-    return Py::Boolean(getDocumentPtr()->hasPendingTransaction());
+    return {getDocumentPtr()->hasPendingTransaction()};
 }
 
 PyObject*  DocumentPy::undo(PyObject * args)
@@ -587,7 +633,7 @@ PyObject* DocumentPy::getObject(PyObject *args)
         PyErr_SetString(PyExc_TypeError, "a string or integer is required");
         return nullptr;
     }
-    while (0);
+    while (false);
 
     if (obj)
         return obj->getPyObject();
@@ -604,9 +650,9 @@ PyObject*  DocumentPy::getObjectsByLabel(PyObject *args)
     Py::List list;
     std::string name = sName;
     std::vector<DocumentObject*> objs = getDocumentPtr()->getObjects();
-    for (std::vector<DocumentObject*>::iterator it = objs.begin(); it != objs.end(); ++it) {
-        if (name == (*it)->Label.getValue())
-            list.append(Py::asObject((*it)->getPyObject()));
+    for (auto obj : objs) {
+        if (name == obj->Label.getValue())
+            list.append(Py::asObject(obj->getPyObject()));
     }
 
     return Py::new_reference_to(list);
@@ -615,10 +661,10 @@ PyObject*  DocumentPy::getObjectsByLabel(PyObject *args)
 PyObject*  DocumentPy::findObjects(PyObject *args, PyObject *kwds)
 {
     const char *sType = "App::DocumentObject", *sName = nullptr, *sLabel = nullptr;
-    static char *kwlist[] = {"Type", "Name", "Label", nullptr};
-    if (!PyArg_ParseTupleAndKeywords(args, kwds, "|sss",
-                kwlist, &sType, &sName, &sLabel))
+    static const std::array<const char *, 4> kwlist{"Type", "Name", "Label", nullptr};
+    if (!Base::Wrapped_ParseTupleAndKeywords(args, kwds, "|sss", kwlist, &sType, &sName, &sLabel)) {
         return nullptr;
+    }
 
     Base::Type type = Base::Type::getTypeIfDerivedFrom(sType, App::DocumentObject::getClassTypeId(), true);
     if (type.isBad()) {
@@ -660,8 +706,8 @@ PyObject*  DocumentPy::supportedTypes(PyObject *args)
     std::vector<Base::Type> ary;
     Base::Type::getAllDerivedFrom(App::DocumentObject::getClassTypeId(), ary);
     Py::List res;
-    for (std::vector<Base::Type>::iterator it = ary.begin(); it != ary.end(); ++it)
-        res.append(Py::String(it->getName()));
+    for (const auto & it : ary)
+        res.append(Py::String(it.getName()));
     return Py::new_reference_to(res);
 }
 
@@ -670,9 +716,9 @@ Py::List DocumentPy::getObjects() const
     std::vector<DocumentObject*> objs = getDocumentPtr()->getObjects();
     Py::List res;
 
-    for (std::vector<DocumentObject*>::const_iterator It = objs.begin();It != objs.end();++It)
+    for (auto obj : objs)
         //Note: Here we must force the Py::Object to own this Python object as getPyObject() increments the counter
-        res.append(Py::Object((*It)->getPyObject(), true));
+        res.append(Py::Object(obj->getPyObject(), true));
 
     return res;
 }
@@ -682,9 +728,9 @@ Py::List DocumentPy::getTopologicalSortedObjects() const
     std::vector<DocumentObject*> objs = getDocumentPtr()->topologicalSort();
     Py::List res;
 
-    for (std::vector<DocumentObject*>::const_iterator It = objs.begin(); It != objs.end(); ++It)
+    for (auto obj : objs)
         //Note: Here we must force the Py::Object to own this Python object as getPyObject() increments the counter
-        res.append(Py::Object((*It)->getPyObject(), true));
+        res.append(Py::Object(obj->getPyObject(), true));
 
     return res;
 }
@@ -694,9 +740,9 @@ Py::List DocumentPy::getRootObjects() const
     std::vector<DocumentObject*> objs = getDocumentPtr()->getRootObjects();
     Py::List res;
 
-    for (std::vector<DocumentObject*>::const_iterator It = objs.begin(); It != objs.end(); ++It)
+    for (auto obj : objs)
         //Note: Here we must force the Py::Object to own this Python object as getPyObject() increments the counter
-        res.append(Py::Object((*It)->getPyObject(), true));
+        res.append(Py::Object(obj->getPyObject(), true));
 
     return res;
 }
@@ -732,8 +778,8 @@ Py::List DocumentPy::getUndoNames() const
     std::vector<std::string> vList = getDocumentPtr()->getAvailableUndoNames();
     Py::List res;
 
-    for (std::vector<std::string>::const_iterator It = vList.begin();It!=vList.end();++It)
-        res.append(Py::String(*It));
+    for (const auto & It : vList)
+        res.append(Py::String(It));
 
     return res;
 }
@@ -743,8 +789,8 @@ Py::List DocumentPy::getRedoNames() const
     std::vector<std::string> vList = getDocumentPtr()->getAvailableRedoNames();
     Py::List res;
 
-    for (std::vector<std::string>::const_iterator It = vList.begin();It!=vList.end();++It)
-        res.append(Py::String(*It));
+    for (const auto & It : vList)
+        res.append(Py::String(It));
 
     return res;
 }
@@ -753,17 +799,17 @@ Py::String  DocumentPy::getDependencyGraph() const
 {
     std::stringstream out;
     getDocumentPtr()->exportGraphviz(out);
-    return Py::String(out.str());
+    return {out.str()};
 }
 
 Py::String DocumentPy::getName() const
 {
-    return Py::String(getDocumentPtr()->getName());
+    return {getDocumentPtr()->getName()};
 }
 
 Py::Boolean DocumentPy::getRecomputesFrozen() const
 {
-    return Py::Boolean(getDocumentPtr()->testStatus(Document::Status::SkipRecompute));
+    return {getDocumentPtr()->testStatus(Document::Status::SkipRecompute)};
 }
 
 void DocumentPy::setRecomputesFrozen(Py::Boolean arg)
@@ -861,22 +907,21 @@ PyObject* DocumentPy::getLinksTo(PyObject *args)
         return nullptr;
 
     PY_TRY {
+        Base::PyTypeCheck(&pyobj, &DocumentObjectPy::Type, "Expect the first argument of type document object");
         DocumentObject *obj = nullptr;
-        if (pyobj!=Py_None) {
-            if (!PyObject_TypeCheck(pyobj,&DocumentObjectPy::Type)) {
-                PyErr_SetString(PyExc_TypeError, "Expect the first argument of type document object");
-                return nullptr;
-            }
+        if (pyobj)
             obj = static_cast<DocumentObjectPy*>(pyobj)->getDocumentObjectPtr();
-        }
+
         std::set<DocumentObject *> links;
         getDocumentPtr()->getLinksTo(links,obj,options,count);
         Py::Tuple ret(links.size());
         int i=0;
         for (auto o : links)
             ret.setItem(i++,Py::Object(o->getPyObject(),true));
+
         return Py::new_reference_to(ret);
-    } PY_CATCH
+    }
+    PY_CATCH
 }
 
 Py::List DocumentPy::getInList() const
@@ -916,35 +961,35 @@ PyObject *DocumentPy::getDependentDocuments(PyObject *args) {
 
 Py::Boolean DocumentPy::getRestoring() const
 {
-    return Py::Boolean(getDocumentPtr()->testStatus(Document::Status::Restoring));
+    return {getDocumentPtr()->testStatus(Document::Status::Restoring)};
 }
 
 Py::Boolean DocumentPy::getPartial() const
 {
-    return Py::Boolean(getDocumentPtr()->testStatus(Document::Status::PartialDoc));
+    return {getDocumentPtr()->testStatus(Document::Status::PartialDoc)};
 }
 
 Py::Boolean DocumentPy::getImporting() const
 {
-    return Py::Boolean(getDocumentPtr()->testStatus(Document::Status::Importing));
+    return {getDocumentPtr()->testStatus(Document::Status::Importing)};
 }
 
 Py::Boolean DocumentPy::getRecomputing() const
 {
-    return Py::Boolean(getDocumentPtr()->testStatus(Document::Status::Recomputing));
+    return {getDocumentPtr()->testStatus(Document::Status::Recomputing)};
 }
 
 Py::Boolean DocumentPy::getTransacting() const
 {
-    return Py::Boolean(getDocumentPtr()->isPerformingTransaction());
+    return {getDocumentPtr()->isPerformingTransaction()};
 }
 
 Py::String DocumentPy::getOldLabel() const
 {
-    return Py::String(getDocumentPtr()->getOldLabel());
+    return {getDocumentPtr()->getOldLabel()};
 }
 
 Py::Boolean DocumentPy::getTemporary() const
 {
-    return Py::Boolean(getDocumentPtr()->testStatus(Document::TempDoc));
+    return {getDocumentPtr()->testStatus(Document::TempDoc)};
 }

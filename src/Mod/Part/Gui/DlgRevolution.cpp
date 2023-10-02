@@ -20,27 +20,19 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <QMessageBox>
-# include <gp_Dir.hxx>
-# include <gp_Lin.hxx>
-# include <gp_Pnt.hxx>
-# include <BRepAdaptor_Curve.hxx>
 # include <BRep_Tool.hxx>
+# include <BRepAdaptor_Curve.hxx>
+# include <Precision.hxx>
+# include <ShapeExtend_Explorer.hxx>
 # include <TopExp_Explorer.hxx>
 # include <TopoDS.hxx>
 # include <TopoDS_Edge.hxx>
-# include <ShapeExtend_Explorer.hxx>
 # include <TopTools_HSequenceOfShape.hxx>
-# include <Inventor/system/inttypes.h>
-# include <Precision.hxx>
 #endif
 
-#include "ui_DlgRevolution.h"
-#include "DlgRevolution.h"
-#include "../App/PartFeature.h"
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/DocumentObject.h>
@@ -53,11 +45,10 @@
 #include <Gui/Utilities.h>
 #include <Gui/ViewProvider.h>
 #include <Gui/WaitCursor.h>
-#include <Mod/Part/App/Tools.h>
 #include <Mod/Part/App/FeatureRevolution.h>
-#include <Base/Console.h>
-#include <Base/UnitsApi.h>
 
+#include "DlgRevolution.h"
+#include "ui_DlgRevolution.h"
 
 
 using namespace PartGui;
@@ -109,6 +100,7 @@ DlgRevolution::DlgRevolution(QWidget* parent, Qt::WindowFlags fl)
   , filter(nullptr)
 {
     ui->setupUi(this);
+    setupConnections();
 
     ui->xPos->setRange(-DBL_MAX,DBL_MAX);
     ui->yPos->setRange(-DBL_MAX,DBL_MAX);
@@ -134,18 +126,32 @@ DlgRevolution::DlgRevolution(QWidget* parent, Qt::WindowFlags fl)
     sel.applyFrom(Gui::Selection().getObjectsOfType(App::Link::getClassTypeId()));
     sel.applyFrom(Gui::Selection().getObjectsOfType(App::Part::getClassTypeId()));
 
-    connect(ui->txtAxisLink, SIGNAL(textChanged(QString)), this, SLOT(on_txtAxisLink_textChanged(QString)));
+    connect(ui->txtAxisLink, &QLineEdit::textChanged, this, &DlgRevolution::onAxisLinkTextChanged);
 
     autoSolid();
 }
 
-/*  
+/*
  *  Destroys the object and frees any allocated resources
  */
 DlgRevolution::~DlgRevolution()
 {
     // no need to delete child widgets, Qt does it all for us
     Gui::Selection().rmvSelectionGate();
+}
+
+void DlgRevolution::setupConnections()
+{
+    connect(ui->selectLine, &QPushButton::clicked,
+            this, &DlgRevolution::onSelectLineClicked);
+    connect(ui->btnX, &QPushButton::clicked,
+            this, &DlgRevolution::onButtonXClicked);
+    connect(ui->btnY, &QPushButton::clicked,
+            this, &DlgRevolution::onButtonYClicked);
+    connect(ui->btnZ, &QPushButton::clicked,
+            this, &DlgRevolution::onButtonZClicked);
+    connect(ui->txtAxisLink, &QLineEdit::textChanged,
+            this, &DlgRevolution::onAxisLinkTextChanged);
 }
 
 Base::Vector3d DlgRevolution::getDirection() const
@@ -241,8 +247,8 @@ std::vector<App::DocumentObject*> DlgRevolution::getShapesToRevolve() const
         throw Base::RuntimeError("Document lost");
 
     std::vector<App::DocumentObject*> objects;
-    for (int i = 0; i < items.size(); i++) {
-        App::DocumentObject* obj = doc->getObject(items[i]->data(0, Qt::UserRole).toString().toLatin1());
+    for (auto item : items) {
+        App::DocumentObject* obj = doc->getObject(item->data(0, Qt::UserRole).toString().toLatin1());
         if (!obj)
             throw Base::RuntimeError("Object not found");
         objects.push_back(obj);
@@ -271,7 +277,7 @@ bool DlgRevolution::validate()
         axisLinkHasAngle = angle_edge != 1e100;
     } catch(Base::Exception &err) {
         QMessageBox::critical(this, windowTitle(),
-            tr("Revolution axis link is invalid.\n\n%1").arg(QString::fromUtf8(err.what())));
+            tr("Revolution axis link is invalid.\n\n%1").arg(QCoreApplication::translate("Exception", err.what())));
         ui->txtAxisLink->setFocus();
         return false;
     } catch(Standard_Failure &err) {
@@ -281,7 +287,7 @@ bool DlgRevolution::validate()
         return false;
     } catch(...) {
         QMessageBox::critical(this, windowTitle(),
-            tr("Revolution axis link is invalid.\n\n%1").arg(QString::fromUtf8("Unknown error")));
+            tr("Revolution axis link is invalid.\n\n%1").arg(tr("Unknown error")));
         ui->txtAxisLink->setFocus();
         return false;
     }
@@ -335,8 +341,8 @@ void DlgRevolution::findShapes()
 
     std::vector<App::DocumentObject*> objs = activeDoc->getObjectsOfType<App::DocumentObject>();
 
-    for (std::vector<App::DocumentObject*>::iterator it = objs.begin(); it!=objs.end(); ++it) {
-        Part::TopoShape topoShape = Part::Feature::getTopoShape(*it);
+    for (auto obj : objs) {
+        Part::TopoShape topoShape = Part::Feature::getTopoShape(obj);
         if (topoShape.isNull()) {
             continue;
         }
@@ -350,9 +356,9 @@ void DlgRevolution::findShapes()
         if (xp.More()) continue; // compound solids not allowed
         // So allowed are: vertex, edge, wire, face, shell and compound
         QTreeWidgetItem* item = new QTreeWidgetItem(ui->treeWidget);
-        item->setText(0, QString::fromUtf8((*it)->Label.getValue()));
-        item->setData(0, Qt::UserRole, QString::fromLatin1((*it)->getNameInDocument()));
-        Gui::ViewProvider* vp = activeGui->getViewProvider(*it);
+        item->setText(0, QString::fromUtf8(obj->Label.getValue()));
+        item->setData(0, Qt::UserRole, QString::fromLatin1(obj->getNameInDocument()));
+        Gui::ViewProvider* vp = activeGui->getViewProvider(obj);
         if (vp) item->setIcon(0, vp->getIcon());
     }
 }
@@ -392,8 +398,8 @@ void DlgRevolution::accept()
         else {
             symmetric = QString::fromLatin1("False");}
 
-        for (QList<QTreeWidgetItem *>::iterator it = items.begin(); it != items.end(); ++it) {
-            shape = (*it)->data(0, Qt::UserRole).toString();
+        for (auto item : items) {
+            shape = item->data(0, Qt::UserRole).toString();
             type = QString::fromLatin1("Part::Revolution");
             name = QString::fromLatin1(activeDoc->getUniqueObjectName("Revolve").c_str());
             Base::Vector3d axis = this->getDirection();
@@ -434,7 +440,7 @@ void DlgRevolution::accept()
         activeDoc->recompute();
     } catch (Base::Exception &err) {
         QMessageBox::critical(this, windowTitle(),
-            tr("Creating Revolve failed.\n\n%1").arg(QString::fromUtf8(err.what())));
+            tr("Creating Revolve failed.\n\n%1").arg(QCoreApplication::translate("Exception", err.what())));
         return;
     } catch (...){
         QMessageBox::critical(this, windowTitle(),
@@ -445,7 +451,7 @@ void DlgRevolution::accept()
     QDialog::accept();
 }
 
-void DlgRevolution::on_selectLine_clicked()
+void DlgRevolution::onSelectLineClicked()
 {
     if (!filter) {
         filter = new EdgeSelection();
@@ -458,28 +464,28 @@ void DlgRevolution::on_selectLine_clicked()
     }
 }
 
-void DlgRevolution::on_btnX_clicked()
+void DlgRevolution::onButtonXClicked()
 {
     setDirection(Base::Vector3d(1,0,0));
     if (!ui->xDir->isEnabled())
         ui->txtAxisLink->clear();
 }
 
-void DlgRevolution::on_btnY_clicked()
+void DlgRevolution::onButtonYClicked()
 {
     setDirection(Base::Vector3d(0,1,0));
     if (!ui->xDir->isEnabled())
         ui->txtAxisLink->clear();
 }
 
-void DlgRevolution::on_btnZ_clicked()
+void DlgRevolution::onButtonZClicked()
 {
     setDirection(Base::Vector3d(0,0,1));
     if (!ui->xDir->isEnabled())
         ui->txtAxisLink->clear();
 }
 
-void DlgRevolution::on_txtAxisLink_textChanged(QString)
+void DlgRevolution::onAxisLinkTextChanged(QString)
 {
     bool en = true;
     try{
@@ -569,11 +575,6 @@ TaskRevolution::TaskRevolution()
         widget->windowTitle(), true, nullptr);
     taskbox->groupLayout()->addWidget(widget);
     Content.push_back(taskbox);
-}
-
-TaskRevolution::~TaskRevolution()
-{
-    // automatically deleted in the sub-class
 }
 
 bool TaskRevolution::accept()

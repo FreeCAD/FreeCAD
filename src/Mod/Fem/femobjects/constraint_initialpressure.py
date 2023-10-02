@@ -23,7 +23,7 @@
 
 __title__ = "FreeCAD FEM constraint initial pressure document object"
 __author__ = "Uwe Stöhr"
-__url__ = "https://www.freecadweb.org"
+__url__ = "https://www.freecad.org"
 
 ## @package constraint_initialpressure
 #  \ingroup FEM
@@ -52,5 +52,4 @@ class ConstraintInitialPressure(base_fempythonobject.BaseFemPythonObject):
                 "Initial Pressure"
             )
             # App::PropertyPressure is in kPa and we initialize 1 bar
-            obj.Pressure = 100 
-
+            obj.Pressure = 100

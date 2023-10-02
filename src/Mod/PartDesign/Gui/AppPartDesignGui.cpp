@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2008 Jürgen Riegel (juergen.riegel@web.de)              *
+ *   Copyright (c) 2008 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -64,14 +64,15 @@
 
 
 // use a different name to CreateCommand()
-void CreatePartDesignCommands(void);
-void CreatePartDesignBodyCommands(void);
-void CreatePartDesignPrimitiveCommands(void);
+void CreatePartDesignCommands();
+void CreatePartDesignBodyCommands();
+void CreatePartDesignPrimitiveCommands();
 
 void loadPartDesignResource()
 {
     // add resources and reloads the translators
     Q_INIT_RESOURCE(PartDesign);
+    Q_INIT_RESOURCE(PartDesign_translation);
     Gui::Translator::instance()->refresh();
 }
 
@@ -83,8 +84,6 @@ public:
     {
         initialize("This module is the PartDesignGui module."); // register with Python
     }
-
-    ~Module() override {}
 
 private:
 };

@@ -24,7 +24,6 @@
 #define FEM_PROPERTYPOSTDATASET_H
 
 #include <vtkDataObject.h>
-#include <vtkDataSet.h>
 #include <vtkSmartPointer.h>
 
 #include <App/Property.h>
@@ -37,7 +36,7 @@ namespace Fem
 /** The vtk data set property class.
  * @author Stefan Tröger
  */
-class FemExport PropertyPostDataObject : public App::Property
+class FemExport PropertyPostDataObject: public App::Property
 {
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
@@ -56,30 +55,30 @@ public:
     /// check if we hold a dataset or a dataobject (which would mean a composite data structure)
     bool isDataSet();
     bool isComposite();
-    int  getDataType();
+    int getDataType();
     //@}
 
     /** @name Python interface */
     //@{
     PyObject* getPyObject() override;
-    void setPyObject(PyObject *value) override;
+    void setPyObject(PyObject* value) override;
     //@}
 
     /** @name Save/restore */
     //@{
-    void Save (Base::Writer &writer) const override;
-    void Restore(Base::XMLReader &reader) override;
+    void Save(Base::Writer& writer) const override;
+    void Restore(Base::XMLReader& reader) override;
 
-    void SaveDocFile (Base::Writer &writer) const override;
-    void RestoreDocFile(Base::Reader &reader) override;
+    void SaveDocFile(Base::Writer& writer) const override;
+    void RestoreDocFile(Base::Reader& reader) override;
 
-    App::Property *Copy() const override;
-    void Paste(const App::Property &from) override;
-    unsigned int getMemSize () const override;
+    App::Property* Copy() const override;
+    void Paste(const App::Property& from) override;
+    unsigned int getMemSize() const override;
     //@}
 
     /// Get valid paths for this property; used by auto completer
-    void getPaths(std::vector<App::ObjectIdentifier> & paths) const override;
+    void getPaths(std::vector<App::ObjectIdentifier>& paths) const override;
 
 private:
     static void scaleDataObject(vtkDataObject*, double s);
@@ -89,7 +88,7 @@ protected:
     vtkSmartPointer<vtkDataObject> m_dataObject;
 };
 
-} //namespace FEM
+}  // namespace Fem
 
 
-#endif // FEM_PROPERTYPOSTDATASET_H
+#endif  // FEM_PROPERTYPOSTDATASET_H

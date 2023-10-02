@@ -29,28 +29,29 @@
 #include <Base/Persistence.h>
 #include <Base/Placement.h>
 #include <Base/Vector3D.h>
+#include <Mod/Path/PathGlobal.h>
 
 namespace Path
 {
     /** The representation of a cnc command in a path */
     class PathExport Command : public Base::Persistence
     {
-    TYPESYSTEM_HEADER();
-    
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
+
     public:
         //constructors
         Command();
         Command(const char* name,
                 const std::map<std::string,double>& parameters);
-        ~Command();
+        ~Command() override;
         // from base class
-        virtual unsigned int getMemSize (void) const;
-        virtual void Save (Base::Writer &/*writer*/) const;
-        virtual void Restore(Base::XMLReader &/*reader*/);
-        
+        unsigned int getMemSize () const override;
+        void Save (Base::Writer &/*writer*/) const override;
+        void Restore(Base::XMLReader &/*reader*/) override;
+
         // specific methods
         Base::Placement getPlacement (const Base::Vector3d pos = Base::Vector3d()) const; // returns a placement from the x,y,z,a,b,c parameters
-        Base::Vector3d getCenter (void) const; // returns a 3d vector from the i,j,k parameters
+        Base::Vector3d getCenter () const; // returns a 3d vector from the i,j,k parameters
         void setCenter(const Base::Vector3d&, bool clockwise=true); // sets the center coordinates and the command name
         std::string toGCode (int precision=6, bool padzero=true) const; // returns a GCode string representation of the command
         void setFromGCode (const std::string&); // sets the parameters from the contents of the given GCode string
@@ -70,7 +71,7 @@ namespace Path
         std::string Name;
         std::map<std::string,double> Parameters;
     };
-    
+
 } //namespace Path
 
 #endif // PATH_COMMAND_H

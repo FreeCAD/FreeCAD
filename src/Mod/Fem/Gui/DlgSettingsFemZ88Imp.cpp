@@ -24,7 +24,7 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <QMessageBox>
+#include <QMessageBox>
 #endif
 
 #include <Gui/Application.h>
@@ -41,14 +41,13 @@ DlgSettingsFemZ88Imp::DlgSettingsFemZ88Imp(QWidget* parent)
 {
     ui->setupUi(this);
 
-    connect(ui->fc_z88_binary_path, &Gui::PrefFileChooser::fileNameChanged,
-            this, &DlgSettingsFemZ88Imp::onfileNameChanged);
+    connect(ui->fc_z88_binary_path,
+            &Gui::PrefFileChooser::fileNameChanged,
+            this,
+            &DlgSettingsFemZ88Imp::onfileNameChanged);
 }
 
-DlgSettingsFemZ88Imp::~DlgSettingsFemZ88Imp()
-{
-    // no need to delete child widgets, Qt does it all for us
-}
+DlgSettingsFemZ88Imp::~DlgSettingsFemZ88Imp() = default;
 
 void DlgSettingsFemZ88Imp::saveSettings()
 {
@@ -75,14 +74,17 @@ void DlgSettingsFemZ88Imp::loadSettings()
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/Mod/Fem/Z88");
     int index = hGrp->GetInt("Solver", 0);
-    if (index > -1)
+    if (index > -1) {
         ui->cmb_solver->setCurrentIndex(index);
+    }
     int places = hGrp->GetInt("MaxGS", 100000000);
-    if (places > -1)
+    if (places > -1) {
         ui->sb_Z88_MaxGS->setValue(places);
+    }
     places = hGrp->GetInt("MaxKOI", 2800000);
-    if (places > -1)
+    if (places > -1) {
         ui->sb_Z88_MaxKOI->setValue(places);
+    }
 }
 
 /**
@@ -101,8 +103,9 @@ void DlgSettingsFemZ88Imp::changeEvent(QEvent* e)
 void DlgSettingsFemZ88Imp::onfileNameChanged(QString FileName)
 {
     if (!QFileInfo::exists(FileName)) {
-        QMessageBox::critical(this, tr("File does not exist"),
-                              tr("The specified z88r executable \n'%1'\n does not exist!\n"
+        QMessageBox::critical(this,
+                              tr("File does not exist"),
+                              tr("The specified z88r executable\n'%1'\n does not exist!\n"
                                  "Specify another file please.")
                                   .arg(FileName));
         return;
@@ -113,14 +116,14 @@ void DlgSettingsFemZ88Imp::onfileNameChanged(QString FileName)
     auto strName = FileName.toStdString();
 #if defined(FC_OS_WIN32)
     if (strName.substr(strName.length() - 8) != "z88r.exe") {
-        QMessageBox::critical(this, tr("Wrong file"),
-                             tr("You must specify the path to the z88r.exe!"));
+        QMessageBox::critical(this,
+                              tr("Wrong file"),
+                              tr("You must specify the path to the z88r.exe!"));
         return;
     }
 #elif defined(FC_OS_LINUX) || defined(FC_OS_CYGWIN) || defined(FC_OS_MACOSX) || defined(FC_OS_BSD)
     if (strName.substr(strName.length() - 4) != "z88r") {
-        QMessageBox::critical(this, tr("Wrong file"),
-                              tr("You must specify the path to the z88r!"));
+        QMessageBox::critical(this, tr("Wrong file"), tr("You must specify the path to the z88r!"));
         return;
     }
 #endif

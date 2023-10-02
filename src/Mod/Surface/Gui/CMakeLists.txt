@@ -24,11 +24,7 @@ set(SurfaceGui_LIBS
     FreeCADGui
 )
 
-if (BUILD_QT5)
-    qt5_add_resources(SurfaceGui_QRC_SRCS Resources/Surface.qrc)
-else()
-    qt4_add_resources(SurfaceGui_QRC_SRCS Resources/Surface.qrc)
-endif()
+qt_add_resources(SurfaceGui_QRC_SRCS Resources/Surface.qrc)
 
 SET(SurfaceGui_UIC_SRCS
     TaskFilling.ui
@@ -42,12 +38,6 @@ SET(BlendingGui_SRCS
     Blending/ViewProviderBlendCurve.cpp
     Blending/ViewProviderBlendCurve.h
 )
-
-if (BUILD_QT5)
-    qt5_wrap_ui(SurfaceGui_UIC_HDRS ${SurfaceGui_UIC_SRCS})
-else()
-    qt4_wrap_ui(SurfaceGui_UIC_HDRS ${SurfaceGui_UIC_SRCS})
-endif()
 
 SET(SurfaceGui_SRCS
     ${SurfaceGui_QRC_SRCS}
@@ -79,6 +69,12 @@ SET(SurfaceGuiIcon_SVG
     Resources/icons/Surface_Workbench.svg
 )
 
+if(FREECAD_USE_PCH)
+    add_definitions(-D_PreComp_)
+    GET_MSVC_PRECOMPILED_SOURCE("PreCompiled.cpp" PCH_SRCS ${SurfaceGui_SRCS})
+    ADD_MSVC_PRECOMPILED_HEADER(SurfaceGui PreCompiled.h PreCompiled.cpp PCH_SRCS)
+endif(FREECAD_USE_PCH)
+
 link_directories(${OCC_LIBRARY_DIR})
 add_library(SurfaceGui SHARED ${SurfaceGui_SRCS} ${SurfaceGuiIcon_SVG})
 target_link_libraries(SurfaceGui ${SurfaceGui_LIBS})
@@ -90,4 +86,3 @@ fc_copy_sources(SurfaceGui "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/Sur
 
 install(TARGETS SurfaceGui DESTINATION ${CMAKE_INSTALL_LIBDIR})
 INSTALL(FILES ${SurfaceGuiIcon_SVG} DESTINATION "${CMAKE_INSTALL_DATADIR}/Mod/Surface/Resources/icons")
-

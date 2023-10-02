@@ -45,10 +45,10 @@ namespace Gui
       //! @return is whether we have a match or not.
       virtual bool goFilter(const Vertex &vertexIn, const Graph &graphIn, const GraphLinkContainer &linkIn) const = 0;
       QString name;
-      bool enabled;
-      Type type;
+      bool enabled = true;
+      Type type = Type::Exclusion;
     };
-    
+
     /*! Hide all children of app::origin that are not
      * used by subsequent features
      */
@@ -58,7 +58,7 @@ namespace Gui
       FilterOrigin();
       bool goFilter(const Vertex &vertexIn, const Graph &graphIn, const GraphLinkContainer &linkIn) const override;
     };
-    
+
     /*! Hide nodes of type*/
     class FilterTyped : public FilterBase
     {

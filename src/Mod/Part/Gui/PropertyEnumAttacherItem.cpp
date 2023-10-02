@@ -40,15 +40,13 @@ using namespace PartGui;
 
 PROPERTYITEM_SOURCE(PartGui::PropertyEnumAttacherItem)
 
-PropertyEnumAttacherItem::PropertyEnumAttacherItem()
-{
-}
+PropertyEnumAttacherItem::PropertyEnumAttacherItem() = default;
 
 QWidget* PropertyEnumAttacherItem::createEditor(QWidget* parent, const QObject* receiver, const char* method) const
 {
     Gui::LabelButton* modeEditor = new Gui::LabelButton(parent);
     QObject::connect(modeEditor, SIGNAL(valueChanged(const QVariant &)), receiver, method);
-    QObject::connect(modeEditor, SIGNAL(buttonClicked()), this, SLOT(openTask()));
+    QObject::connect(modeEditor, &Gui::LabelButton::buttonClicked, this, &PropertyEnumAttacherItem::openTask);
     modeEditor->setDisabled(isReadOnly());
     return modeEditor;
 }

@@ -138,7 +138,7 @@ App::DocumentObjectExecReturn *RuledSurface::execute()
         if (S2.ShapeType() != TopAbs_EDGE && S2.ShapeType() != TopAbs_WIRE)
             return new App::DocumentObjectExecReturn("Linked shape is neither edge nor wire.");
 
-        // https://forum.freecadweb.org/viewtopic.php?f=8&t=24052
+        // https://forum.freecad.org/viewtopic.php?f=8&t=24052
         //
         // if both shapes are sub-elements of one common shape then the fill algorithm
         // leads to problems if the shape has set a placement
@@ -409,8 +409,8 @@ App::DocumentObjectExecReturn *Sweep::execute()
         try {
             if (!subedge.empty()) {
                 BRepBuilderAPI_MakeWire mkWire;
-                for (std::vector<std::string>::const_iterator it = subedge.begin(); it != subedge.end(); ++it) {
-                    TopoDS_Shape subshape = Feature::getTopoShape(spine, it->c_str(), true /*need element*/).getShape();
+                for (const auto & it : subedge) {
+                    TopoDS_Shape subshape = Feature::getTopoShape(spine, it.c_str(), true /*need element*/).getShape();
                     mkWire.Add(TopoDS::Edge(subshape));
                 }
                 path = mkWire.Wire();
@@ -494,7 +494,7 @@ App::DocumentObjectExecReturn *Sweep::execute()
             }
             // There is a weird behaviour of BRepOffsetAPI_MakePipeShell when trying to add the wire as is.
             // If we re-create the wire then everything works fine.
-            // http://forum.freecadweb.org/viewtopic.php?f=10&t=2673&sid=fbcd2ff4589f0b2f79ed899b0b990648#p20268
+            // http://forum.freecad.org/viewtopic.php?f=10&t=2673&sid=fbcd2ff4589f0b2f79ed899b0b990648#p20268
             if (shape.ShapeType() == TopAbs_FACE) {
                 TopoDS_Wire faceouterWire = ShapeAnalysis::OuterWire(TopoDS::Face(shape));
                 profiles.Append(faceouterWire);
@@ -564,21 +564,21 @@ App::DocumentObjectExecReturn *Sweep::execute()
 
 // ----------------------------------------------------------------------------
 
-const char* Part::Thickness::ModeEnums[]= {"Skin","Pipe", "RectoVerso",nullptr};
-const char* Part::Thickness::JoinEnums[]= {"Arc","Tangent", "Intersection",nullptr};
+const char *Part::Thickness::ModeEnums[] = {"Skin", "Pipe", "RectoVerso", nullptr};
+const char *Part::Thickness::JoinEnums[] = {"Arc", "Tangent", "Intersection", nullptr};
 
 PROPERTY_SOURCE(Part::Thickness, Part::Feature)
 
 Thickness::Thickness()
 {
-    ADD_PROPERTY_TYPE(Faces,(nullptr),"Thickness",App::Prop_None,"Faces to be removed");
-    ADD_PROPERTY_TYPE(Value,(1.0),"Thickness",App::Prop_None,"Thickness value");
-    ADD_PROPERTY_TYPE(Mode,(long(0)),"Thickness",App::Prop_None,"Mode");
+    ADD_PROPERTY_TYPE(Faces, (nullptr), "Thickness", App::Prop_None, "Faces to be removed");
+    ADD_PROPERTY_TYPE(Value, (1.0), "Thickness", App::Prop_None, "Thickness value");
+    ADD_PROPERTY_TYPE(Mode, (long(0)), "Thickness", App::Prop_None, "Mode");
     Mode.setEnums(ModeEnums);
-    ADD_PROPERTY_TYPE(Join,(long(0)),"Thickness",App::Prop_None,"Join type");
+    ADD_PROPERTY_TYPE(Join, (long(0)), "Thickness", App::Prop_None, "Join type");
     Join.setEnums(JoinEnums);
-    ADD_PROPERTY_TYPE(Intersection,(false),"Thickness",App::Prop_None,"Intersection");
-    ADD_PROPERTY_TYPE(SelfIntersection,(false),"Thickness",App::Prop_None,"Self Intersection");
+    ADD_PROPERTY_TYPE(Intersection, (false), "Thickness", App::Prop_None, "Intersection");
+    ADD_PROPERTY_TYPE(SelfIntersection, (false), "Thickness", App::Prop_None, "Self Intersection");
 
     // Value should have length as unit
     Value.setUnit(Base::Unit::Length);
@@ -635,8 +635,8 @@ App::DocumentObjectExecReturn *Thickness::execute()
 
     TopTools_ListOfShape closingFaces;
     const std::vector<std::string>& subStrings = Faces.getSubValues();
-    for (std::vector<std::string>::const_iterator it = subStrings.begin(); it != subStrings.end(); ++it) {
-        TopoDS_Face face = TopoDS::Face(shape.getSubShape(it->c_str()));
+    for (const auto & it : subStrings) {
+        TopoDS_Face face = TopoDS::Face(shape.getSubShape(it.c_str()));
         closingFaces.Append(face);
     }
 

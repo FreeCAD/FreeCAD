@@ -25,12 +25,11 @@ set(RobotGui_LIBS
     FreeCADGui
 )
 
-if(BUILD_QT5)
-    qt5_add_resources(RobotResource_SRCS Resources/Robot.qrc)
-else()
-    qt4_add_resources(RobotResource_SRCS Resources/Robot.qrc)
-endif()
-
+set (Robot_TR_QRC ${CMAKE_CURRENT_BINARY_DIR}/Resources/Robot_translation.qrc)
+qt_find_and_add_translation(QM_SRCS "Resources/translations/*_*.ts"
+    ${CMAKE_CURRENT_BINARY_DIR}/Resources/translations)
+qt_create_resource_file(${Robot_TR_QRC} ${QM_SRCS})
+qt_add_resources(RobotResource_SRCS Resources/Robot.qrc ${Robot_TR_QRC})
 SOURCE_GROUP("Resources" FILES ${RobotResource_SRCS})
 
 set(RobotGui_UIC_SRCS
@@ -42,12 +41,6 @@ set(RobotGui_UIC_SRCS
     TaskEdge2TracParameter.ui
     TaskTrajectoryDressUpParameter.ui
 )
-
-if(BUILD_QT5)
-    qt5_wrap_ui(RobotGui_UIC_HDRS ${RobotGui_UIC_SRCS})
-else()
-    qt4_wrap_ui(RobotGui_UIC_HDRS ${RobotGui_UIC_SRCS})
-endif()
 
 SET(RobotGui_SRCS_Module
     AppRobotGui.cpp
@@ -130,10 +123,15 @@ SET(RobotGui_SRCS
     ${RobotGui_SRCS_TaskDlg}
 )
 
+if(FREECAD_USE_PCH)
+    add_definitions(-D_PreComp_)
+    GET_MSVC_PRECOMPILED_SOURCE("PreCompiled.cpp" PCH_SRCS ${RobotGui_SRCS})
+    ADD_MSVC_PRECOMPILED_HEADER(RobotGui PreCompiled.h PreCompiled.cpp PCH_SRCS)
+endif(FREECAD_USE_PCH)
+
 SET(RobotGuiIcon_SVG
     Resources/icons/RobotWorkbench.svg
 )
-
 
 add_library(RobotGui SHARED ${RobotGui_SRCS} ${RobotGuiIcon_SVG})
 target_link_libraries(RobotGui ${RobotGui_LIBS})

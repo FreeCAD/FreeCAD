@@ -25,12 +25,11 @@
 
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
-#include <QByteArray>
 #include <QGraphicsItem>
 #include <QGraphicsPixmapItem>
+#include <QPixmap>
 #include <QPointF>
 #include <QSize>
-#include <QPixmap>
 
 
 QT_BEGIN_NAMESPACE

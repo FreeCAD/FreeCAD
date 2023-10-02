@@ -23,12 +23,12 @@
 #ifndef TechDraw_DrawRichAnno_h_
 #define TechDraw_DrawRichAnno_h_
 
+#include <App/DocumentObject.h>
+#include <App/FeaturePython.h>
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
-# include <App/DocumentObject.h>
-# include <App/FeaturePython.h>
-
 #include "DrawView.h"
+
 
 namespace TechDraw
 {
@@ -39,7 +39,7 @@ class TechDrawExport DrawRichAnno : public TechDraw::DrawView
 
 public:
     DrawRichAnno();
-    ~DrawRichAnno() = default;
+    ~DrawRichAnno() override = default;
 
     App::PropertyLink         AnnoParent;
     App::PropertyString       AnnoText;

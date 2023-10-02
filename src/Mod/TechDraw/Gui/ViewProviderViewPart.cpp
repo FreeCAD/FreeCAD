@@ -47,14 +47,21 @@
 #include <Mod/TechDraw/App/DrawViewDimension.h>
 #include <Mod/TechDraw/App/DrawViewMulti.h>
 #include <Mod/TechDraw/App/LineGroup.h>
+#include <Mod/TechDraw/App/Cosmetic.h>
+#include <Mod/TechDraw/App/CenterLine.h>
 
 #include "PreferencesGui.h"
 #include "QGIView.h"
 #include "TaskDetail.h"
 #include "ViewProviderViewPart.h"
+#include "ViewProviderPage.h"
+#include "QGIViewDimension.h"
+#include "QGIViewBalloon.h"
+#include "QGSPage.h"
 
 using namespace TechDrawGui;
 using namespace TechDraw;
+using DU = DrawUtil;
 
 PROPERTY_SOURCE(TechDrawGui::ViewProviderViewPart, TechDrawGui::ViewProviderDrawingView)
 
@@ -76,6 +83,7 @@ ViewProviderViewPart::ViewProviderViewPart()
     static const char *group = "Lines";
     static const char *dgroup = "Decoration";
     static const char *hgroup = "Highlight";
+    static const char *sgroup = "Section Line";
 
     //default line weights
 
@@ -91,11 +99,8 @@ ViewProviderViewPart::ViewProviderViewPart()
     weight = TechDraw::LineGroup::getDefaultWidth("Extra");
     ADD_PROPERTY_TYPE(ExtraWidth, (weight), group, App::Prop_None, "The thickness of LineGroup Extra lines, if enabled");
 
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp")->
-                                                    GetGroup("Preferences")->GetGroup("Mod/TechDraw/Decorations");
-
-    double defScale = hGrp->GetFloat("CenterMarkScale", 0.50);
-    bool   defShowCenters = hGrp->GetBool("ShowCenterMarks", false);
+    double defScale = Preferences::getPreferenceGroup("Decorations")->GetFloat("CenterMarkScale", 0.50);
+    bool   defShowCenters = Preferences::getPreferenceGroup("Decorations")->GetBool("ShowCenterMarks", false);
 
     //decorations
     ADD_PROPERTY_TYPE(HorizCenterLine ,(false), dgroup, App::Prop_None, "Show a horizontal centerline through view");
@@ -104,12 +109,14 @@ ViewProviderViewPart::ViewProviderViewPart()
     ADD_PROPERTY_TYPE(CenterScale, (defScale), dgroup, App::Prop_None, "Center mark size adjustment, if enabled");
 
     //properties that affect Section Line
-    ADD_PROPERTY_TYPE(ShowSectionLine ,(true)    ,dgroup, App::Prop_None, "Show/hide section line if applicable");
+    ADD_PROPERTY_TYPE(ShowSectionLine ,(true)    ,sgroup, App::Prop_None, "Show/hide section line if applicable");
     SectionLineStyle.setEnums(LineStyleEnums);
-    ADD_PROPERTY_TYPE(SectionLineStyle, (PreferencesGui::sectionLineStyle()), dgroup, App::Prop_None,
+    ADD_PROPERTY_TYPE(SectionLineStyle, (PreferencesGui::sectionLineStyle()), sgroup, App::Prop_None,
                         "Set section line style if applicable");
-    ADD_PROPERTY_TYPE(SectionLineColor, (prefSectionColor()), dgroup, App::Prop_None,
+    ADD_PROPERTY_TYPE(SectionLineColor, (prefSectionColor()), sgroup, App::Prop_None,
                         "Set section line color if applicable");
+    ADD_PROPERTY_TYPE(SectionLineMarks, (PreferencesGui::sectionLineMarks()), sgroup, App::Prop_None,
+                        "Show marks at direction changes for ComplexSection");
 
     //properties that affect Detail Highlights
     HighlightLineStyle.setEnums(LineStyleEnums);
@@ -129,6 +136,16 @@ ViewProviderViewPart::~ViewProviderViewPart()
 
 void ViewProviderViewPart::onChanged(const App::Property* prop)
 {
+    if (auto part = getViewPart(); part && part->isDerivedFrom(TechDraw::DrawViewDetail::getClassTypeId()) &&
+        prop == &(HighlightAdjust)) {
+        auto detail = static_cast<DrawViewDetail*>(getViewPart());
+        auto baseDvp = dynamic_cast<DrawViewPart*>(detail->BaseView.getValue());
+        if (baseDvp) {
+            baseDvp->requestPaint();
+        }
+        return;
+    }
+
     if (prop == &(LineWidth)   ||
         prop == &(HiddenWidth) ||
         prop == &(IsoWidth) ||
@@ -139,6 +156,7 @@ void ViewProviderViewPart::onChanged(const App::Property* prop)
         prop == &(ShowSectionLine)  ||
         prop == &(SectionLineStyle) ||
         prop == &(SectionLineColor) ||
+        prop == &(SectionLineMarks) ||
         prop == &(HighlightLineStyle) ||
         prop == &(HighlightLineColor) ||
         prop == &(HorizCenterLine)  ||
@@ -156,6 +174,7 @@ void ViewProviderViewPart::onChanged(const App::Property* prop)
 
 void ViewProviderViewPart::attach(App::DocumentObject *pcFeat)
 {
+//    Base::Console().Message("VPVP::attach(%s)\n", pcFeat->getNameInDocument());
     TechDraw::DrawViewMulti* dvm = dynamic_cast<TechDraw::DrawViewMulti*>(pcFeat);
     TechDraw::DrawViewDetail* dvd = dynamic_cast<TechDraw::DrawViewDetail*>(pcFeat);
     if (dvm) {
@@ -211,6 +230,7 @@ std::vector<App::DocumentObject*> ViewProviderViewPart::claimChildren() const
         return std::vector<App::DocumentObject*>();
     }
 }
+
 bool ViewProviderViewPart::setEdit(int ModNum)
 {
     if (ModNum != ViewProvider::Default ) {
@@ -223,6 +243,10 @@ bool ViewProviderViewPart::setEdit(int ModNum)
     TechDraw::DrawViewPart* dvp = getViewObject();
     TechDraw::DrawViewDetail* dvd = dynamic_cast<TechDraw::DrawViewDetail*>(dvp);
     if (dvd) {
+        if (!dvd->BaseView.getValue()) {
+            Base::Console().Error("DrawViewDetail - %s - has no BaseView!\n", dvd->getNameInDocument());
+            return false;
+        }
         // clear the selection (convenience)
         Gui::Selection().clearSelection();
         Gui::Control().showDialog(new TaskDlgDetail(dvd));
@@ -283,53 +307,93 @@ void ViewProviderViewPart::handleChangedPropertyType(Base::XMLReader &reader, co
     }
 }
 
-bool ViewProviderViewPart::onDelete(const std::vector<std::string> &)
+bool ViewProviderViewPart::onDelete(const std::vector<std::string> & subNames)
 {
-    // we cannot delete if the view has a section or detail view
+//    Base::Console().Message("VPVP::onDelete() - subs: %d\n", subNames.size());
+    // if a cosmetic subelement is in the list of selected subNames then we treat this
+    // as a delete of the subelement and not a delete of the DVP
+    std::vector<std::string> removables = getSelectedCosmetics(subNames);
+    if (!removables.empty()) {
+        // we have cosmetics, so remove them and tell Std_Delete not to remove the DVP
+        deleteCosmeticElements(removables);
+        getViewObject()->recomputeFeature();
+        return false;
+    }
 
+    // we cannot delete if the view has a section or detail view
     QString bodyMessage;
     QTextStream bodyMessageStream(&bodyMessage);
 
     // get child views
     auto viewSection = getViewObject()->getSectionRefs();
     auto viewDetail = getViewObject()->getDetailRefs();
-    auto viewLeader = getViewObject()->getLeaders();
 
-    if (!viewSection.empty()) {
+    if (!viewSection.empty() || !viewDetail.empty()) {
         bodyMessageStream << qApp->translate("Std_Delete",
-            "You cannot delete this view because it has a section view that would become broken.");
+            "You cannot delete this view because it has one or more dependent views that would become broken.");
         QMessageBox::warning(Gui::getMainWindow(),
             qApp->translate("Std_Delete", "Object dependencies"), bodyMessage,
             QMessageBox::Ok);
         return false;
     }
-    else if (!viewDetail.empty()) {
-        bodyMessageStream << qApp->translate("Std_Delete",
-            "You cannot delete this view because it has a detail view that would become broken.");
-        QMessageBox::warning(Gui::getMainWindow(),
-            qApp->translate("Std_Delete", "Object dependencies"), bodyMessage,
-            QMessageBox::Ok);
-        return false;
-    }
-    else if (!viewLeader.empty()) {
-        bodyMessageStream << qApp->translate("Std_Delete",
-            "You cannot delete this view because it has a leader line that would become broken.");
-        QMessageBox::warning(Gui::getMainWindow(),
-            qApp->translate("Std_Delete", "Object dependencies"), bodyMessage,
-            QMessageBox::Ok);
-        return false;
-    }
-    else {
-        return true;
-    }
+    return true;
 }
 
 bool ViewProviderViewPart::canDelete(App::DocumentObject *obj) const
 {
+//    Base::Console().Message("VPVP::canDelete()\n");
     // deletions of part objects (detail view, View etc.) are valid
     // that it cannot be deleted if it has a child view is handled in the onDelete() function
     Q_UNUSED(obj)
     return true;
+}
+
+//! extract the names of cosmetic subelements from the list of all selected elements
+std::vector<std::string> ViewProviderViewPart::getSelectedCosmetics(std::vector<std::string> subNames)
+{
+//    Base::Console().Message("VPVP::getSelectedCosmetics(%d removables)\n", subNames.size());
+
+    std::vector<std::string> result;
+    // pick out any cosmetic vertices or edges in the selection
+    for (auto& sub : subNames) {
+        if (DU::getGeomTypeFromName(sub) == "Vertex") {
+            if (DU::isCosmeticVertex(getViewObject(), sub)) {
+                result.emplace_back(sub);
+            }
+        } else if (DU::getGeomTypeFromName(sub) == "Edge") {
+            if (DU::isCosmeticEdge(getViewObject(), sub)  ||
+                DU::isCenterLine(getViewObject(), sub)) {
+                result.emplace_back(sub);
+            }
+        }
+    }
+    return result;
+}
+
+//! delete cosmetic elements for a list of subelement names
+void ViewProviderViewPart::deleteCosmeticElements(std::vector<std::string> removables)
+{
+//    Base::Console().Message("VPVP::deleteCosmeticElements(%d removables)\n", removables.size());
+    for (auto& name : removables) {
+        if (DU::getGeomTypeFromName(name) == "Vertex") {
+            CosmeticVertex* vert = getViewObject()->getCosmeticVertexBySelection(name);
+            getViewObject()->removeCosmeticVertex(vert->getTagAsString());
+            continue;
+        }
+        if (DU::getGeomTypeFromName(name) == "Edge") {
+            CosmeticEdge* edge = getViewObject()->getCosmeticEdgeBySelection(name);
+            if (edge) {
+                // if not edge, something has gone very wrong!
+                getViewObject()->removeCosmeticEdge(edge->getTagAsString());
+                continue;
+            }
+            CenterLine* line = getViewObject()->getCenterLineBySelection(name);
+            if (line) {
+                getViewObject()->removeCenterLine(line->getTagAsString());
+                continue;
+            }
+        }
+    }
 }
 
 App::Color ViewProviderViewPart::prefSectionColor()
@@ -339,18 +403,41 @@ App::Color ViewProviderViewPart::prefSectionColor()
 
 App::Color ViewProviderViewPart::prefHighlightColor()
 {
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
-        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Decorations");
     App::Color fcColor;
-    fcColor.setPackedValue(hGrp->GetUnsigned("HighlightColor", 0x00000000));
+    fcColor.setPackedValue(Preferences::getPreferenceGroup("Decorations")->GetUnsigned("HighlightColor", 0x00000000));
     return fcColor;
 }
 
 int ViewProviderViewPart::prefHighlightStyle()
 {
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
-        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Decorations");
-    return hGrp->GetInt("HighlightStyle", 2);
+    return Preferences::getPreferenceGroup("Decorations")->GetInt("HighlightStyle", 2);
 }
 
+// it can happen that Dimensions/Balloons/etc can lose their parent item if the
+// the parent is deleted, then undo is invoked.  The linkages on the App side are
+// handled by the undo mechanism, but the QGraphicsScene parentage is not reset.
+// TODO: does this need to be implemented for Leaderlines and ???? others?
+void ViewProviderViewPart::fixSceneDependencies()
+{
+//    Base::Console().Message("VPVP::fixSceneDependencies()\n");
+    auto scene = getViewProviderPage()->getQGSPage();
+    auto partQView = getQView();
 
+    auto dimensions =  getViewPart()->getDimensions();
+    for (auto& dim : dimensions) {
+        auto dimQView = dynamic_cast<QGIViewDimension *>(scene->findQViewForDocObj(dim));
+        if (dimQView && dimQView->parentItem() != partQView) {
+            // need to add the dim QView to this QGIViewPart
+            scene->addDimToParent(dimQView, partQView);
+        }
+    }
+
+    auto balloons = getViewPart()->getBalloons();
+    for (auto& bal : balloons) {
+        auto balQView = dynamic_cast<QGIViewBalloon*>(scene->findQViewForDocObj(bal));
+        if (balQView && balQView->parentItem() != partQView) {
+            // need to add the balloon QView to this QGIViewPart
+            scene->addBalloonToParent(balQView, partQView);
+        }
+    }
+}

@@ -32,6 +32,7 @@
 #include <FCGlobal.h>
 
 class QButtonGroup;
+class QDialogButtonBox;
 class QGridLayout;
 class QGroupBox;
 class QHBoxLayout;
@@ -256,10 +257,10 @@ public:
      * the file.
      */
     //@{
-    static Dict exportHandler(const QString& fn, const QString& filter=QString());
-    static Dict exportHandler(const QStringList& fn, const QString& filter=QString());
-    static Dict importHandler(const QString& fn, const QString& filter=QString());
-    static Dict importHandler(const QStringList& fn, const QString& filter=QString());
+    static Dict exportHandler(const QString& fileName, const QString& filter=QString());
+    static Dict exportHandler(const QStringList& fileNames, const QString& filter=QString());
+    static Dict importHandler(const QString& fileName, const QString& filter=QString());
+    static Dict importHandler(const QStringList& fileNames, const QString& filter=QString());
     //@}
 
     void accept() override;
@@ -269,7 +270,7 @@ private Q_SLOTS:
     void onButtonClicked();
 
 private:
-    QPushButton *okButton;
+    QDialogButtonBox *buttonBox;
     QButtonGroup* group;
     QGridLayout *gridLayout;
     QHBoxLayout *hboxLayout;

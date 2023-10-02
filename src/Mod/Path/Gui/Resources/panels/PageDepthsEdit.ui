@@ -14,7 +14,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Form</string>
+   <string notr="true">Form</string>
   </property>
   <property name="windowIcon">
    <iconset resource="../Path.qrc">
@@ -43,7 +43,7 @@
    <item row="0" column="2">
     <widget class="Gui::QuantitySpinBox" name="startDepth">
      <property name="toolTip">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Start Depth of the operation. The highest point in Z-axis the operation needs to process.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      <string>Start Depth of the operation. The highest point in Z-axis the operation needs to process.</string>
      </property>
      <property name="minimum" stdset="0">
       <double>-999999999.000000000000000</double>
@@ -56,10 +56,10 @@
    <item row="0" column="3">
     <widget class="QToolButton" name="startDepthSet">
      <property name="toolTip">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Transfer the Z value of the selected feature as the Start Depth for the operation.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      <string>Transfer the Z value of the selected feature as the Start Depth for the operation.</string>
      </property>
      <property name="text">
-      <string>...</string>
+      <string notr="true">...</string>
      </property>
      <property name="icon">
       <iconset>
@@ -89,7 +89,7 @@
    <item row="1" column="2">
     <widget class="Gui::QuantitySpinBox" name="finalDepth">
      <property name="toolTip">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The depth of the operation which corresponds to the lowest value in Z-axis the operation needs to process.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      <string>The depth of the operation which corresponds to the lowest value in Z-axis the operation needs to process.</string>
      </property>
      <property name="minimum" stdset="0">
       <double>-999999999.000000000000000</double>
@@ -102,10 +102,10 @@
    <item row="1" column="3">
     <widget class="QToolButton" name="finalDepthSet">
      <property name="toolTip">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Transfer the Z value of the selected feature as the Final Depth for the operation.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      <string>Transfer the Z value of the selected feature as the Final Depth for the operation.</string>
      </property>
      <property name="text">
-      <string>...</string>
+      <string notr="true">...</string>
      </property>
      <property name="icon">
       <iconset>
@@ -135,7 +135,7 @@
    <item row="2" column="2">
     <widget class="Gui::QuantitySpinBox" name="stepDown">
      <property name="toolTip">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The depth in Z-axis the operation moves downwards between layers.&lt;/p&gt;&lt;p&gt;This value depends on the tool being used, the material to be cut, available cooling and many other factors. Please consult the tool manufacturers data sheets for the proper value.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      <string>The depth in Z-axis the operation moves downwards between layers. This value depends on the tool being used, the material to be cut, available cooling and many other factors. Please consult the tool manufacturers data sheets for the proper value.</string>
      </property>
      <property name="minimum" stdset="0">
       <double>-999999999.000000000000000</double>
@@ -167,7 +167,7 @@
    <item row="3" column="2">
     <widget class="Gui::QuantitySpinBox" name="finishDepth">
      <property name="toolTip">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Depth of the final cut of the operation. Can be used to produce a cleaner finish.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      <string>Depth of the final cut of the operation. Can be used to produce a cleaner finish.</string>
      </property>
      <property name="minimum" stdset="0">
       <double>-999999999.000000000000000</double>

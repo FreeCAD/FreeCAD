@@ -35,7 +35,7 @@ DlgCustomizeSpNavSettings::DlgCustomizeSpNavSettings(QWidget *parent) :
   , ui(new Ui_DlgCustomizeSpNavSettings)
   , init(false)
 {
-    GUIApplicationNativeEventAware *app = qobject_cast<GUIApplicationNativeEventAware *>(QApplication::instance());
+    auto app = qobject_cast<GUIApplicationNativeEventAware *>(QApplication::instance());
 
     if (!app)
         return;
@@ -47,18 +47,71 @@ DlgCustomizeSpNavSettings::DlgCustomizeSpNavSettings(QWidget *parent) :
     }
     this->init = true;
     ui->setupUi(this);
+    setupConnections();
     initialize();
 }
 
-DlgCustomizeSpNavSettings::~DlgCustomizeSpNavSettings()
+DlgCustomizeSpNavSettings::~DlgCustomizeSpNavSettings() = default;
+
+void DlgCustomizeSpNavSettings::setupConnections()
 {
+    connect(ui->CBDominant, &QCheckBox::clicked,
+            this, &DlgCustomizeSpNavSettings::on_CBDominant_clicked);
+    connect(ui->CBFlipYZ, &QCheckBox::clicked,
+            this, &DlgCustomizeSpNavSettings::on_CBFlipYZ_clicked);
+    connect(ui->CBRotations, &QCheckBox::clicked,
+            this, &DlgCustomizeSpNavSettings::on_CBRotations_clicked);
+    connect(ui->CBTranslations, &QCheckBox::clicked,
+            this, &DlgCustomizeSpNavSettings::on_CBTranslations_clicked);
+    connect(ui->SliderGlobal, &QSlider::sliderReleased,
+            this, &DlgCustomizeSpNavSettings::on_SliderGlobal_sliderReleased);
+    connect(ui->CBEnablePanLR, &QCheckBox::clicked,
+            this, &DlgCustomizeSpNavSettings::on_CBEnablePanLR_clicked);
+    connect(ui->CBReversePanLR, &QCheckBox::clicked,
+            this, &DlgCustomizeSpNavSettings::on_CBReversePanLR_clicked);
+    connect(ui->SliderPanLR, &QSlider::sliderReleased,
+            this, &DlgCustomizeSpNavSettings::on_SliderPanLR_sliderReleased);
+    connect(ui->CBEnablePanUD, &QCheckBox::clicked,
+            this, &DlgCustomizeSpNavSettings::on_CBEnablePanUD_clicked);
+    connect(ui->CBReversePanUD, &QCheckBox::clicked,
+            this, &DlgCustomizeSpNavSettings::on_CBReversePanUD_clicked);
+    connect(ui->SliderPanUD, &QSlider::sliderReleased,
+            this, &DlgCustomizeSpNavSettings::on_SliderPanUD_sliderReleased);
+    connect(ui->CBEnableZoom, &QCheckBox::clicked,
+            this, &DlgCustomizeSpNavSettings::on_CBEnableZoom_clicked);
+    connect(ui->CBReverseZoom, &QCheckBox::clicked,
+            this, &DlgCustomizeSpNavSettings::on_CBReverseZoom_clicked);
+    connect(ui->SliderZoom, &QSlider::sliderReleased,
+            this, &DlgCustomizeSpNavSettings::on_SliderZoom_sliderReleased);
+    connect(ui->CBEnableTilt, &QCheckBox::clicked,
+            this, &DlgCustomizeSpNavSettings::on_CBEnableTilt_clicked);
+    connect(ui->CBReverseTilt, &QCheckBox::clicked,
+            this, &DlgCustomizeSpNavSettings::on_CBReverseTilt_clicked);
+    connect(ui->SliderTilt, &QSlider::sliderReleased,
+            this, &DlgCustomizeSpNavSettings::on_SliderTilt_sliderReleased);
+    connect(ui->CBEnableRoll, &QCheckBox::clicked,
+            this, &DlgCustomizeSpNavSettings::on_CBEnableRoll_clicked);
+    connect(ui->CBReverseRoll, &QCheckBox::clicked,
+            this, &DlgCustomizeSpNavSettings::on_CBReverseRoll_clicked);
+    connect(ui->SliderRoll, &QSlider::sliderReleased,
+            this, &DlgCustomizeSpNavSettings::on_SliderRoll_sliderReleased);
+    connect(ui->CBEnableSpin, &QCheckBox::clicked,
+            this, &DlgCustomizeSpNavSettings::on_CBEnableSpin_clicked);
+    connect(ui->CBReverseSpin, &QCheckBox::clicked,
+            this, &DlgCustomizeSpNavSettings::on_CBReverseSpin_clicked);
+    connect(ui->SliderSpin, &QSlider::sliderReleased,
+            this, &DlgCustomizeSpNavSettings::on_SliderSpin_sliderReleased);
+    connect(ui->ButtonDefaultSpNavMotions, &QPushButton::clicked,
+            this, &DlgCustomizeSpNavSettings::on_ButtonDefaultSpNavMotions_clicked);
+    connect(ui->ButtonCalibrate, &QPushButton::clicked,
+            this, &DlgCustomizeSpNavSettings::on_ButtonCalibrate_clicked);
 }
 
 void DlgCustomizeSpNavSettings::setMessage(const QString& message)
 {
-    QLabel *messageLabel = new QLabel(message,this);
-    QVBoxLayout *layout = new QVBoxLayout();
-    QHBoxLayout *layout2 = new QHBoxLayout();
+    auto messageLabel = new QLabel(message,this);
+    auto layout = new QVBoxLayout();
+    auto layout2 = new QHBoxLayout();
     layout2->addStretch();
     layout2->addWidget(messageLabel);
     layout2->addStretch();

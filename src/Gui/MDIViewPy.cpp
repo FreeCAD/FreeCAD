@@ -238,17 +238,17 @@ Py::Object MDIViewPy::setActiveObject(const Py::Tuple& args)
     if (!PyArg_ParseTuple(args.ptr(), "s|Os", &name, &docObject, &subname))
         throw Py::Exception();
 
-    if (_view) {
-        if (docObject == Py_None) {
-            _view->setActiveObject(nullptr, name);
-        }
-        else {
-            if (!PyObject_TypeCheck(docObject, &App::DocumentObjectPy::Type))
-                throw Py::TypeError("Expect the second argument to be a document object or None");
-
-            App::DocumentObject* obj = static_cast<App::DocumentObjectPy*>(docObject)->getDocumentObjectPtr();
+    try {
+        Base::PyTypeCheck(&docObject, &App::DocumentObjectPy::Type,
+            "Expect the second argument to be a document object or None");
+        if (_view) {
+            App::DocumentObject* obj = docObject ?
+                static_cast<App::DocumentObjectPy*>(docObject)->getDocumentObjectPtr() : nullptr;
             _view->setActiveObject(obj, name, subname);
         }
+    }
+    catch (const Base::Exception& e) {
+        throw Py::Exception(e.getPyExceptionType(), e.what());
     }
 
     return Py::None();
@@ -256,26 +256,37 @@ Py::Object MDIViewPy::setActiveObject(const Py::Tuple& args)
 
 Py::Object MDIViewPy::getActiveObject(const Py::Tuple& args)
 {
-    const char* name;
-    PyObject *resolve = Py_True;
-    if (!PyArg_ParseTuple(args.ptr(), "s|O!", &name, &PyBool_Type, &resolve))
+    const char* name{};
+    PyObject *resolve = Py_True; // NOLINT
+    if (!PyArg_ParseTuple(args.ptr(), "s|O!", &name, &PyBool_Type, &resolve)) {
         throw Py::Exception();
+    }
 
     App::DocumentObject *parent = nullptr;
     std::string subname;
     App::DocumentObject* obj = nullptr;
-    if (_view)
+    if (_view) {
         obj = _view->getActiveObject<App::DocumentObject*>(name,&parent,&subname);
-    if (!obj)
+    }
+
+    if (Base::asBoolean(resolve)) {
+        if (obj) {
+            return Py::asObject(obj->getPyObject());
+        }
+
         return Py::None();
+    }
 
-    if (Base::asBoolean(resolve))
-        return Py::asObject(obj->getPyObject());
+    // NOLINTBEGIN(cppcoreguidelines-slicing)
+    if (obj) {
+        return Py::TupleN(
+                Py::asObject(obj->getPyObject()),
+                Py::asObject(parent->getPyObject()),
+                Py::String(subname.c_str()));
+    }
 
-    return Py::TupleN(
-            Py::asObject(obj->getPyObject()),
-            Py::asObject(parent->getPyObject()),
-            Py::String(subname.c_str()));
+    return Py::TupleN(Py::None(), Py::None(), Py::String());
+    // NOLINTEND(cppcoreguidelines-slicing)
 }
 
 Py::Object MDIViewPy::cast_to_base(const Py::Tuple&)

@@ -30,7 +30,7 @@ types of objects it contains, helper for executing a simulation.
 
 __title__ = "FEM analysis tools"
 __author__ = "Markus Hovorka, Bernd Hahnebach"
-__url__ = "https://www.freecadweb.org"
+__url__ = "https://www.freecad.org"
 
 
 from . import femutils
@@ -40,7 +40,7 @@ def get_member(analysis, t):
     """ Return list of all members of *analysis* of type *t*.
 
     Search *analysis* for members of type *t*. This method checks the custom
-    python typesytem (BaseType class property) used by the Fem module if
+    python typesystem (BaseType class property) used by the Fem module if
     possible. If the object does not use the python typesystem the usual
     isDerivedFrom from the C++ dynamic type system is used.
 
@@ -51,7 +51,7 @@ def get_member(analysis, t):
      Inheritance of Fem types is not checked. If *obj* uses Fems typesystem the
      type is just checked for equality. If the type doesn't match
      ``obj.isDerivedFrom`` is called as usual. See
-     https://forum.freecadweb.org/viewtopic.php?f=10&t=32625
+     https://forum.freecad.org/viewtopic.php?f=10&t=32625
     """
     if analysis is None:
         raise ValueError("Analysis must not be None")
@@ -68,7 +68,7 @@ def get_single_member(analysis, t):
     """ Return one object of type *t* and part of *analysis*.
 
     Search *analysis* for members of type *t* and return the first one that's
-    found. This method checks the custom python typesytem (BaseType class
+    found. This method checks the custom python typesystem (BaseType class
     property) used by the Fem module if possible. If the object doesn't use the
     python typesystem the usual isDerivedFrom from the C++ dynamic type system
     is used.
@@ -80,7 +80,7 @@ def get_single_member(analysis, t):
      Inheritance of Fem types is not checked. If *obj* uses Fems typesystem the
      type is just checked for equality. If the type doesn't match
      ``obj.isDerivedFrom`` is called as usual. See
-     https://forum.freecadweb.org/viewtopic.php?f=10&t=32625
+     https://forum.freecad.org/viewtopic.php?f=10&t=32625
     """
     objs = get_member(analysis, t)
     return objs[0] if objs else None
@@ -115,7 +115,7 @@ def get_several_member(analysis, t):
      Inheritance of Fem types is not checked. If *obj* uses Fems typesystem the
      type is just checked for equality. If the type doesn't match
      ``obj.isDerivedFrom`` is called as usual. See
-     https://forum.freecadweb.org/viewtopic.php?f=10&t=32625
+     https://forum.freecad.org/viewtopic.php?f=10&t=32625
     """
     # if no member is found, an empty list is returned
     objs = get_member(analysis, t)

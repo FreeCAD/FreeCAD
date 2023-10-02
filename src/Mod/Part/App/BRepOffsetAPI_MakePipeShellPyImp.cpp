@@ -32,6 +32,7 @@
 #endif
 
 #include <Base/GeometryPyCXX.h>
+#include <Base/PyWrapParseTupleAndKeywords.h>
 #include <Base/VectorPy.h>
 
 #include "BRepOffsetAPI_MakePipeShellPy.h"
@@ -46,7 +47,7 @@ using namespace Part;
 
 PyObject *BRepOffsetAPI_MakePipeShellPy::PyMake(struct _typeobject *, PyObject *args, PyObject *)  // Python wrapper
 {
-    // create a new instance of BRepOffsetAPI_MakePipeShellPy and the Twin object 
+    // create a new instance of BRepOffsetAPI_MakePipeShellPy and the Twin object
     PyObject* obj;
     if (!PyArg_ParseTuple(args, "O!",&(TopoShapePy::Type),&obj))
         return nullptr;
@@ -68,7 +69,7 @@ int BRepOffsetAPI_MakePipeShellPy::PyInit(PyObject* /*args*/, PyObject* /*kwd*/)
 // returns a string which represents the object e.g. when printed in python
 std::string BRepOffsetAPI_MakePipeShellPy::representation() const
 {
-    return std::string("<BRepOffsetAPI_MakePipeShell object>");
+    return {"<BRepOffsetAPI_MakePipeShell object>"};
 }
 
 PyObject* BRepOffsetAPI_MakePipeShellPy::setFrenetMode(PyObject *args)
@@ -182,11 +183,9 @@ PyObject* BRepOffsetAPI_MakePipeShellPy::setAuxiliarySpine(PyObject *args)
 PyObject* BRepOffsetAPI_MakePipeShellPy::add(PyObject *args, PyObject *kwds)
 {
     PyObject *prof, *curv=Py_False, *keep=Py_False;
-    static char* keywords_pro[] = {"Profile","WithContact","WithCorrection",nullptr};
-    if (PyArg_ParseTupleAndKeywords(args,kwds, "O!|O!O!", keywords_pro
-                                        ,&Part::TopoShapePy::Type,&prof
-                                        ,&PyBool_Type,&curv
-                                        ,&PyBool_Type,&keep)) {
+    static const std::array<const char *, 4> keywords_pro{"Profile", "WithContact", "WithCorrection", nullptr};
+    if (Base::Wrapped_ParseTupleAndKeywords(args, kwds, "O!|O!O!", keywords_pro, &Part::TopoShapePy::Type, &prof,
+                                            &PyBool_Type, &curv, &PyBool_Type, &keep)) {
         try {
             const TopoDS_Shape& s = static_cast<Part::TopoShapePy*>(prof)->getTopoShapePtr()->getShape();
             this->getBRepOffsetAPI_MakePipeShellPtr()->Add(s, Base::asBoolean(curv), Base::asBoolean(keep));
@@ -200,12 +199,11 @@ PyObject* BRepOffsetAPI_MakePipeShellPy::add(PyObject *args, PyObject *kwds)
 
     PyErr_Clear();
     PyObject *loc;
-    static char* keywords_loc[] = {"Profile","Location","WithContact","WithCorrection",nullptr};
-    if (PyArg_ParseTupleAndKeywords(args,kwds, "O!O!|O!O!", keywords_loc
-                                        ,&Part::TopoShapePy::Type,&prof
-                                        ,&Part::TopoShapeVertexPy::Type,&loc
-                                        ,&PyBool_Type,&curv
-                                        ,&PyBool_Type,&keep)) {
+    static const std::array<const char *, 5> keywords_loc{"Profile", "Location", "WithContact", "WithCorrection",
+                                                          nullptr};
+    if (Base::Wrapped_ParseTupleAndKeywords(args, kwds, "O!O!|O!O!", keywords_loc, &Part::TopoShapePy::Type, &prof,
+                                            &Part::TopoShapeVertexPy::Type, &loc, &PyBool_Type, &curv, &PyBool_Type,
+                                            &keep)) {
         try {
             const TopoDS_Shape& s = static_cast<Part::TopoShapePy*>(prof)->getTopoShapePtr()->getShape();
             const TopoDS_Vertex& v = TopoDS::Vertex(static_cast<Part::TopoShapePy*>(loc)->getTopoShapePtr()->getShape());
@@ -459,7 +457,7 @@ PyObject* BRepOffsetAPI_MakePipeShellPy::simulate(PyObject *args)
         return nullptr;
 
     try {
-        TopTools_ListOfShape list; 
+        TopTools_ListOfShape list;
         this->getBRepOffsetAPI_MakePipeShellPtr()->Simulate(nbsec, list);
 
         Py::List shapes;
@@ -484,5 +482,5 @@ PyObject *BRepOffsetAPI_MakePipeShellPy::getCustomAttributes(const char* ) const
 
 int BRepOffsetAPI_MakePipeShellPy::setCustomAttributes(const char* , PyObject *)
 {
-    return 0; 
+    return 0;
 }

@@ -48,8 +48,6 @@ TaskBoxPosition::TaskBoxPosition(QWidget *parent)
     QMetaObject::connectSlotsByName(this);
 
     this->groupLayout()->addWidget(proxy);
-
-    //QObject::connect(ui->horizontalSlider_Axis1,SIGNAL(sliderMoved(int)),this,SLOT(changeSliderA1(int)));
 }
 
 TaskBoxPosition::~TaskBoxPosition()
@@ -75,8 +73,6 @@ TaskBoxAngle::TaskBoxAngle(QWidget *parent)
     QMetaObject::connectSlotsByName(this);
 
     this->groupLayout()->addWidget(proxy);
-
-    //QObject::connect(ui->horizontalSlider_Axis1,SIGNAL(sliderMoved(int)),this,SLOT(changeSliderA1(int)));
 }
 
 TaskBoxAngle::~TaskBoxAngle()
@@ -95,34 +91,15 @@ TaskBoxAngle::~TaskBoxAngle()
 TaskDlgRelocation::TaskDlgRelocation()
     : TaskDialog()
 {
- /*   rob  = new TaskRobot6Axis(pcRobotObject);
-    ctr  = new TaskRobotControl(pcRobotObject);
-
-    trac = new TaskTrajectory(pcRobotObject,pcTrajectoryObject);
-    msg  = new TaskRobotMessages(pcRobotObject);
-
-
-    QObject::connect(trac ,SIGNAL(axisChanged(float,float,float,float,float,float,const Base::Placement &)),
-                     rob  ,SLOT  (setAxis(float,float,float,float,float,float,const Base::Placement &)));
-
-    Content.push_back(rob);
-    Content.push_back(ctr);
-    Content.push_back(trac);
-    Content.push_back(msg);*/
 }
 
-TaskDlgRelocation::~TaskDlgRelocation()
-{
-
-}
+TaskDlgRelocation::~TaskDlgRelocation() = default;
 
 //==== calls from the TaskView ===============================================================
 
 
 void TaskDlgRelocation::open()
 {
-    //msg->hideGroupBox();
-    //ctr->hideGroupBox();
 }
 
 void TaskDlgRelocation::clicked(int)

@@ -22,21 +22,21 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-#include <cmath>
-#include <QPainter>
-#include <QPainterPath>
-#include <QStyleOptionGraphicsItem>
+# include <cmath>
+
+# include <QPainter>
+# include <QPainterPath>
+# include <QStyleOptionGraphicsItem>
 #endif
 
-#include <App/Application.h>
-#include <App/Material.h>
-#include <Base/Console.h>
 #include <Base/Parameter.h>
-
-#include "PreferencesGui.h"
+#include <Mod/TechDraw/App/Preferences.h>
 
 #include "QGICenterLine.h"
+#include "PreferencesGui.h"
 
+
+using namespace TechDraw;
 using namespace TechDrawGui;
 
 QGICenterLine::QGICenterLine()
@@ -78,9 +78,7 @@ QColor QGICenterLine::getCenterColor()
 
 Qt::PenStyle QGICenterLine::getCenterStyle()
 {
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp")->
-                                         GetGroup("Preferences")->GetGroup("Mod/TechDraw/Decorations");
-    Qt::PenStyle centerStyle = static_cast<Qt::PenStyle> (hGrp->GetInt("CenterLine", 2));
+    Qt::PenStyle centerStyle = static_cast<Qt::PenStyle> (Preferences::getPreferenceGroup("Decorations")->GetInt("CenterLine", 2));
     return centerStyle;
 }
 

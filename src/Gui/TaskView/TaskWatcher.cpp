@@ -50,11 +50,10 @@ TaskWatcher::TaskWatcher(const char* Filter)
 
 TaskWatcher::~TaskWatcher()
 {
-    for (std::vector<QWidget*>::iterator it=Content.begin();it!=Content.end();++it){
-        delete(*it);
-        *it = 0;
+    for (auto it : Content) {
+        delete it;
+        it = nullptr;
     }
-
 }
 
 //==== implementer ===========================================================================
@@ -82,7 +81,7 @@ TaskWatcherCommands::TaskWatcherCommands(const char* Filter,const char* commands
 {
     if (commands) {
         CommandManager &mgr = Gui::Application::Instance->commandManager();
-        Gui::TaskView::TaskBox *tb = new Gui::TaskView::TaskBox
+        auto tb = new Gui::TaskView::TaskBox
             (BitmapFactory().pixmap(pixmap), tr(name), true, nullptr);
 
         for (const char** i=commands;*i;i++) {
@@ -145,9 +144,7 @@ TaskWatcherCommandsEmptySelection::TaskWatcherCommandsEmptySelection(const char*
 {
 }
 
-TaskWatcherCommandsEmptySelection::~TaskWatcherCommandsEmptySelection()
-{
-}
+TaskWatcherCommandsEmptySelection::~TaskWatcherCommandsEmptySelection() = default;
 
 //==== implementer ===========================================================================
 

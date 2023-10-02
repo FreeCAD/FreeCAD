@@ -60,15 +60,15 @@ public:
     unsigned int getMemSize() const override;
     void Save(Base::Writer &/*writer*/) const override;
     void Restore(Base::XMLReader &/*reader*/) override;
-    /// returns a cloned object 
+    /// returns a cloned object
     virtual Geometry2d *clone() const = 0;
 
 protected:
     Geometry2d();
 
-private:
-    Geometry2d(const Geometry2d&);
-    Geometry2d& operator = (const Geometry2d&);
+public:
+    Geometry2d(const Geometry2d&) = delete;
+    Geometry2d& operator = (const Geometry2d&) = delete;
 };
 
 class PartExport Geom2dPoint : public Geometry2d
@@ -369,7 +369,7 @@ public:
     Geom2dHyperbola(const Handle(Geom2d_Hyperbola)&);
     ~Geom2dHyperbola() override;
     Geometry2d *clone() const override;
-    
+
     double getMajorRadius() const;
     void setMajorRadius(double Radius);
     double getMinorRadius() const;
@@ -424,7 +424,7 @@ public:
     Geom2dParabola(const Handle(Geom2d_Parabola)&);
     ~Geom2dParabola() override;
     Geometry2d *clone() const override;
-    
+
     double getFocal() const;
     void setFocal(double length);
 

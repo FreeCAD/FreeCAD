@@ -21,13 +21,15 @@
  ***************************************************************************/
 
 #include "PreCompiled.h"
+
+#include <Gui/Command.h>
+#include <Gui/Selection.h>
+#include <Gui/WaitCursor.h>
+#include <Mod/Mesh/App/MeshFeature.h>
+
 #include "DlgDecimating.h"
 #include "ui_DlgDecimating.h"
 
-#include <Gui/WaitCursor.h>
-#include <Gui/Command.h>
-#include <Gui/Selection.h>
-#include <Mod/Mesh/App/MeshFeature.h>
 
 using namespace MeshGui;
 
@@ -35,27 +37,28 @@ using namespace MeshGui;
 
 DlgDecimating::DlgDecimating(QWidget* parent, Qt::WindowFlags fl)
     : QWidget(parent, fl)
-    , numberOfTriangles(0)
     , ui(new Ui_DlgDecimating)
 {
     ui->setupUi(this);
+    connect(ui->checkAbsoluteNumber,
+            &QCheckBox::toggled,
+            this,
+            &DlgDecimating::onCheckAbsoluteNumberToggled);
     ui->spinBoxReduction->setMinimumWidth(60);
-    ui->checkAbsolueNumber->setEnabled(false);
-    on_checkAbsolueNumber_toggled(false);
+    ui->checkAbsoluteNumber->setEnabled(false);
+    onCheckAbsoluteNumberToggled(false);
 }
 
-DlgDecimating::~DlgDecimating()
-{
-}
+DlgDecimating::~DlgDecimating() = default;
 
 bool DlgDecimating::isAbsoluteNumber() const
 {
-    return ui->checkAbsolueNumber->isChecked();
+    return ui->checkAbsoluteNumber->isChecked();
 }
 
 int DlgDecimating::targetNumberOfTriangles() const
 {
-    if (ui->checkAbsolueNumber->isChecked()) {
+    if (ui->checkAbsoluteNumber->isChecked()) {
         return ui->spinBoxReduction->value();
     }
     else {
@@ -66,31 +69,45 @@ int DlgDecimating::targetNumberOfTriangles() const
 void DlgDecimating::setNumberOfTriangles(int num)
 {
     numberOfTriangles = num;
-    ui->checkAbsolueNumber->setEnabled(num > 0);
-    if (num <= 0)
-        ui->checkAbsolueNumber->setChecked(false);
+    ui->checkAbsoluteNumber->setEnabled(num > 0);
+    if (num <= 0) {
+        ui->checkAbsoluteNumber->setChecked(false);
+    }
 }
 
-void DlgDecimating::on_checkAbsolueNumber_toggled(bool on)
+void DlgDecimating::onCheckAbsoluteNumberToggled(bool on)
 {
     ui->sliderReduction->setDisabled(on);
     ui->groupBoxTolerance->setDisabled(on);
 
     if (on) {
-        disconnect(ui->sliderReduction, SIGNAL(valueChanged(int)), ui->spinBoxReduction, SLOT(setValue(int)));
-        disconnect(ui->spinBoxReduction, SIGNAL(valueChanged(int)), ui->sliderReduction, SLOT(setValue(int)));
+        disconnect(ui->sliderReduction,
+                   qOverload<int>(&QSlider::valueChanged),
+                   ui->spinBoxReduction,
+                   &QSpinBox::setValue);
+        disconnect(ui->spinBoxReduction,
+                   qOverload<int>(&QSpinBox::valueChanged),
+                   ui->sliderReduction,
+                   &QSlider::setValue);
         ui->spinBoxReduction->setRange(1, numberOfTriangles);
         ui->spinBoxReduction->setValue(numberOfTriangles * (1.0 - reduction()));
         ui->spinBoxReduction->setSuffix(QString());
-        ui->checkAbsolueNumber->setText(tr("Absolute number (Maximum: %1)").arg(numberOfTriangles));
+        ui->checkAbsoluteNumber->setText(
+            tr("Absolute number (Maximum: %1)").arg(numberOfTriangles));
     }
     else {
         ui->spinBoxReduction->setRange(0, 100);
         ui->spinBoxReduction->setValue(ui->sliderReduction->value());
         ui->spinBoxReduction->setSuffix(QString::fromLatin1("%"));
-        ui->checkAbsolueNumber->setText(tr("Absolute number"));
-        connect(ui->sliderReduction, SIGNAL(valueChanged(int)), ui->spinBoxReduction, SLOT(setValue(int)));
-        connect(ui->spinBoxReduction, SIGNAL(valueChanged(int)), ui->sliderReduction, SLOT(setValue(int)));
+        ui->checkAbsoluteNumber->setText(tr("Absolute number"));
+        connect(ui->sliderReduction,
+                qOverload<int>(&QSlider::valueChanged),
+                ui->spinBoxReduction,
+                &QSpinBox::setValue);
+        connect(ui->spinBoxReduction,
+                qOverload<int>(&QSpinBox::valueChanged),
+                ui->sliderReduction,
+                &QSlider::setValue);
     }
 }
 
@@ -108,7 +125,7 @@ double DlgDecimating::reduction() const
     double max = static_cast<double>(ui->sliderReduction->maximum());
     double min = static_cast<double>(ui->sliderReduction->minimum());
     double val = static_cast<double>(ui->sliderReduction->value());
-    return (val - min)/(max - min);
+    return (val - min) / (max - min);
 }
 
 // ---------------------------------------
@@ -117,9 +134,9 @@ double DlgDecimating::reduction() const
 
 TaskDecimating::TaskDecimating()
 {
-    widget = new DlgDecimating();
-    Gui::TaskView::TaskBox* taskbox = new Gui::TaskView::TaskBox(
-        QPixmap(), widget->windowTitle(), false, nullptr);
+    widget = new DlgDecimating();  // NOLINT
+    Gui::TaskView::TaskBox* taskbox =
+        new Gui::TaskView::TaskBox(QPixmap(), widget->windowTitle(), false, nullptr);
     taskbox->groupLayout()->addWidget(widget);
     Content.push_back(taskbox);
 
@@ -131,16 +148,12 @@ TaskDecimating::TaskDecimating()
     }
 }
 
-TaskDecimating::~TaskDecimating()
-{
-    // automatically deleted in the sub-class
-}
-
 bool TaskDecimating::accept()
 {
     std::vector<Mesh::Feature*> meshes = Gui::Selection().getObjectsOfType<Mesh::Feature>();
-    if (meshes.empty())
+    if (meshes.empty()) {
         return true;
+    }
     Gui::Selection().clearSelection();
 
     Gui::WaitCursor wc;
@@ -150,15 +163,17 @@ bool TaskDecimating::accept()
     float reduction = widget->reduction();
     bool absolute = widget->isAbsoluteNumber();
     int targetSize = 0;
-    if (absolute)
+    if (absolute) {
         targetSize = widget->targetNumberOfTriangles();
-    for (std::vector<Mesh::Feature*>::const_iterator it = meshes.begin(); it != meshes.end(); ++it) {
-        Mesh::Feature* mesh = *it;
+    }
+    for (auto mesh : meshes) {
         Mesh::MeshObject* mm = mesh->Mesh.startEditing();
-        if (absolute)
+        if (absolute) {
             mm->decimate(targetSize);
-        else
+        }
+        else {
             mm->decimate(tolerance, reduction);
+        }
         mesh->Mesh.finishEditing();
     }
 

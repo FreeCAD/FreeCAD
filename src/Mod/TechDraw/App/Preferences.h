@@ -23,12 +23,13 @@
 #ifndef Preferences_h_
 #define Preferences_h_
 
-#include <App/Material.h>
-
-#include <Mod/TechDraw/TechDrawGlobal.h>
-
 #include <string>
 
+#include <Base/Parameter.h>
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
+
+class QColor;
 class QString;
 
 namespace App
@@ -40,49 +41,72 @@ namespace TechDraw
 {
 
 //getters for parameters used in multiple places.
-class TechDrawExport Preferences {
+class TechDrawExport Preferences
+{
 
 public:
-static std::string labelFont();
-static QString     labelFontQString();
-static double      labelFontSizeMM();
-static double      dimFontSizeMM();
+    static Base::Reference<ParameterGrp> getPreferenceGroup(const char* Name);
 
-static App::Color  normalColor();
-static App::Color  selectColor();
-static App::Color  preselectColor();
-static App::Color  vertexColor();
-static double      vertexScale();
+    static std::string labelFont();
+    static QString labelFontQString();
+    static double labelFontSizeMM();
+    static double dimFontSizeMM();
+    static double dimArrowSize();
 
-static bool        useGlobalDecimals();
-static bool        keepPagesUpToDate();
+    static App::Color normalColor();
+    static App::Color selectColor();
+    static App::Color preselectColor();
+    static App::Color vertexColor();
+    static double vertexScale();
+    static int scaleType();
+    static double scale();
+    static bool useGlobalDecimals();
+    static bool keepPagesUpToDate();
 
-static int         projectionAngle();
-static int         lineGroup();
+    static int projectionAngle();
+    static int lineGroup();
 
-static int         balloonArrow();
+    static int balloonArrow();
+    static double balloonKinkLength();
+    static int balloonShape();
 
-static QString     defaultTemplate();
-static QString     defaultTemplateDir();
-static std::string lineGroupFile();
+    static QString defaultTemplate();
+    static QString defaultTemplateDir();
+    static std::string lineGroupFile();
 
-static const double DefaultFontSizeInMM;
+    static const double DefaultFontSizeInMM;
+    static const double DefaultArrowSize;
 
-static std::string  formatSpec();
-static int          altDecimals();
+    static std::string formatSpec();
+    static int altDecimals();
 
-static int         mattingStyle();
+    static int mattingStyle();
 
-static std::string svgFile();
-static std::string patFile();
+    static std::string svgFile();
+    static std::string patFile();
 
-static std::string bitmapFill();
+    static std::string bitmapFill();
 
-static double      GapISO();
-static double      GapASME();
+    static double GapISO();
+    static double GapASME();
 
-static bool        reportProgress();
+    static bool reportProgress();
+
+    static bool lightOnDark();
+    static void lightOnDark(bool state);
+    static bool monochrome();
+    static void monochrome(bool state);
+    static App::Color lightTextColor();
+    static App::Color lightenColor(App::Color orig);
+    static App::Color getAccessibleColor(App::Color orig);
+
+    static bool autoCorrectDimRefs();
+    static int scrubCount();
+
+    static double svgHatchFactor();
+    static bool SectionUsePreviousCut();
 };
 
-} //end namespace TechDraw
+
+}//end namespace TechDraw
 #endif

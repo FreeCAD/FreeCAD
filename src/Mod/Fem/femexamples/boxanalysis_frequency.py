@@ -37,7 +37,7 @@ def get_information():
         "constraints": [],
         "solvers": ["calculix", "ccxtools"],
         "material": "solid",
-        "equation": "frequency"
+        "equations": ["frequency"]
     }
 
 

@@ -71,7 +71,7 @@ public:
    */
   void customize(SoFCColorBarBase*) override;
   /** Returns the name of the color bar. */
-  const char* getColorBarName() const override { return "Color Gradient"; }
+  const char* getColorBarName() const override;
 
 protected:
   /**
@@ -103,7 +103,7 @@ private:
   SoCoordinate3* coords;
   SoSeparator* labels;
   SbBox2f _bbox;
-  int _precision;
+  int _precision{3};
   App::ColorGradient _cColGrad;
 };
 

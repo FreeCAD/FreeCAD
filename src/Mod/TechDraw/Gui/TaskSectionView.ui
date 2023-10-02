@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>370</width>
-    <height>368</height>
+    <height>508</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -82,7 +82,7 @@
        </property>
       </widget>
      </item>
-    <item row="2" column="2">
+     <item row="2" column="2">
       <widget class="QComboBox" name="cmbScaleType">
        <property name="minimumSize">
         <size>
@@ -118,7 +118,7 @@
       </widget>
      </item>
      <item row="3" column="2">
-      <widget class="Gui::QuantitySpinBox" name="sbScale">
+      <widget class="Gui::QuantitySpinBox" name="sbScale" native="true">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
          <horstretch>0</horstretch>
@@ -140,16 +140,16 @@
        <property name="toolTip">
         <string>Scale factor for the section view</string>
        </property>
-       <property name="keyboardTracking">
+       <property name="keyboardTracking" stdset="0">
         <bool>false</bool>
        </property>
-       <property name="minimum">
+       <property name="minimum" stdset="0">
         <double>0.000000000000000</double>
        </property>
-       <property name="maximum">
+       <property name="maximum" stdset="0">
         <double>999.000000000000000</double>
        </property>
-       <property name="value">
+       <property name="value" stdset="0">
         <double>1.000000000000000</double>
        </property>
        <property name="decimals" stdset="0">
@@ -157,21 +157,23 @@
        </property>
       </widget>
      </item>
-     </layout>
+    </layout>
    </item>
    <item>
-    <widget class="Line" name="line">
-     <property name="orientation">
-      <enum>Qt::Horizontal</enum>
+    <widget class="QGroupBox" name="gbOrientation">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Preferred" vsizetype="MinimumExpanding">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
      </property>
-    </widget>
-   </item>
-   <item>
-    <widget class="QGroupBox" name="groupBox_2">
      <property name="title">
-      <string>Section Orientation</string>
+      <string>Set View Direction</string>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_2">
+      <item>
+       <layout class="QHBoxLayout" name="viewDirectionLayout"/>
+      </item>
       <item>
        <layout class="QGridLayout" name="gridLayout_3">
         <item row="0" column="0">
@@ -183,7 +185,7 @@
            </size>
           </property>
           <property name="toolTip">
-           <string>Looking up</string>
+           <string>Preset view direction looking up.</string>
           </property>
           <property name="statusTip">
            <string/>
@@ -219,7 +221,7 @@
            </size>
           </property>
           <property name="toolTip">
-           <string>Looking down</string>
+           <string>Preset view direction looking down.</string>
           </property>
           <property name="text">
            <string/>
@@ -249,7 +251,7 @@
            </size>
           </property>
           <property name="toolTip">
-           <string>Looking left</string>
+           <string>Preset view direction looking left.</string>
           </property>
           <property name="text">
            <string/>
@@ -279,7 +281,7 @@
            </size>
           </property>
           <property name="toolTip">
-           <string>Looking right</string>
+           <string>Preset view direction looking right.</string>
           </property>
           <property name="text">
            <string/>
@@ -302,25 +304,21 @@
         </item>
        </layout>
       </item>
+      <item>
+       <layout class="QVBoxLayout" name="compassLayout"/>
+      </item>
      </layout>
     </widget>
    </item>
    <item>
-    <widget class="Line" name="line_2">
-     <property name="orientation">
-      <enum>Qt::Horizontal</enum>
-     </property>
-    </widget>
-   </item>
-   <item>
-    <widget class="QGroupBox" name="groupBox">
+    <widget class="QGroupBox" name="gbPlane">
      <property name="toolTip">
       <string>Position from the 3D origin of the object in the view</string>
      </property>
      <property name="title">
       <string>Section Plane Location</string>
      </property>
-     <layout class="QVBoxLayout" name="verticalLayout">
+     <layout class="QVBoxLayout" name="verticalLayoutPlane">
       <item>
        <layout class="QGridLayout" name="gridLayout_2">
         <item row="0" column="0">
@@ -356,7 +354,7 @@
          </spacer>
         </item>
         <item row="0" column="2">
-         <widget class="Gui::QuantitySpinBox" name="sbOrgX">
+         <widget class="Gui::QuantitySpinBox" name="sbOrgX" native="true">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
             <horstretch>0</horstretch>
@@ -369,7 +367,7 @@
             <height>22</height>
            </size>
           </property>
-          <property name="keyboardTracking">
+          <property name="keyboardTracking" stdset="0">
            <bool>false</bool>
           </property>
           <property name="unit" stdset="0">
@@ -397,7 +395,7 @@
          </widget>
         </item>
         <item row="1" column="2">
-         <widget class="Gui::QuantitySpinBox" name="sbOrgY">
+         <widget class="Gui::QuantitySpinBox" name="sbOrgY" native="true">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
             <horstretch>0</horstretch>
@@ -410,7 +408,7 @@
             <height>22</height>
            </size>
           </property>
-          <property name="keyboardTracking">
+          <property name="keyboardTracking" stdset="0">
            <bool>false</bool>
           </property>
           <property name="unit" stdset="0">
@@ -438,7 +436,7 @@
          </widget>
         </item>
         <item row="2" column="2">
-         <widget class="Gui::QuantitySpinBox" name="sbOrgZ">
+         <widget class="Gui::QuantitySpinBox" name="sbOrgZ" native="true">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
             <horstretch>0</horstretch>
@@ -451,11 +449,54 @@
             <height>22</height>
            </size>
           </property>
-          <property name="keyboardTracking">
+          <property name="keyboardTracking" stdset="0">
            <bool>false</bool>
           </property>
           <property name="unit" stdset="0">
            <string notr="true"/>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="gbUpdate">
+     <property name="title">
+      <string>Preview</string>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayoutUpdate">
+      <item>
+       <layout class="QGridLayout" name="gridLayout_5">
+        <item row="0" column="1">
+         <widget class="QPushButton" name="pbUpdateNow">
+          <property name="toolTip">
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Rebuild display now.  May be slow for complex models.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          </property>
+          <property name="text">
+           <string>Update Now</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="0">
+         <widget class="QCheckBox" name="cbLiveUpdate">
+          <property name="toolTip">
+           <string>Check to update display after every property change.</string>
+          </property>
+          <property name="text">
+           <string>Live Update</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="0">
+         <widget class="QLabel" name="lPendingUpdates">
+          <property name="enabled">
+           <bool>true</bool>
+          </property>
+          <property name="text">
+           <string/>
           </property>
          </widget>
         </item>

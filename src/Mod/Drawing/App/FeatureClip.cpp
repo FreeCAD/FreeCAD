@@ -20,27 +20,18 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-
 #ifndef _PreComp_
-# include <sstream>
-#endif
-
-
-#include <Base/Exception.h>
-#include <Base/Console.h>
-#include <Base/FileInfo.h>
-#include <App/Application.h>
-#include <boost/regex.hpp>
 #include <iostream>
+#include <sstream>
+#endif
 
 #include "FeatureClip.h"
 #include "FeatureView.h"
 
+
 using namespace Drawing;
 using namespace std;
-
 
 //===========================================================================
 // FeaturePage
@@ -48,25 +39,50 @@ using namespace std;
 
 PROPERTY_SOURCE(Drawing::FeatureClip, App::DocumentObjectGroup)
 
-FeatureClip::FeatureClip(void) 
+FeatureClip::FeatureClip(void)
 {
-    static const char *group = "Drawing view";
+    static const char* group = "Drawing view";
     App::PropertyType hidden = (App::PropertyType)(App::Prop_Hidden);
-    ADD_PROPERTY_TYPE(ViewResult ,(""),group,hidden,"Resulting SVG view of this clip");
-    ADD_PROPERTY_TYPE(X          ,(10),group,App::Prop_None  ,"The left margin of the view area of this clip");
-    ADD_PROPERTY_TYPE(Y          ,(10),group,App::Prop_None  ,"The top margin of the view area of this clip");
-    ADD_PROPERTY_TYPE(Height     ,(10),group,App::Prop_None  ,"The height of the view area of this clip");
-    ADD_PROPERTY_TYPE(Width      ,(10),group,App::Prop_None  ,"The width of the view area of this clip");
-    ADD_PROPERTY_TYPE(ShowFrame  ,(0),group,App::Prop_None,"Specifies if the clip frame appears on the page or not");
-    // The 'Visible' property is handled by the view provider exclusively. It has the 'Output' flag set to
-    // avoid to call the execute() method. The view provider touches the page object, instead.
-    App::PropertyType propType = static_cast<App::PropertyType>(App::Prop_Hidden|App::Prop_Output);
-    ADD_PROPERTY_TYPE(Visible, (true),group,propType,"Control whether frame is visible in page object");
+    ADD_PROPERTY_TYPE(ViewResult, (""), group, hidden, "Resulting SVG view of this clip");
+    ADD_PROPERTY_TYPE(X,
+                      (10),
+                      group,
+                      App::Prop_None,
+                      "The left margin of the view area of this clip");
+    ADD_PROPERTY_TYPE(Y,
+                      (10),
+                      group,
+                      App::Prop_None,
+                      "The top margin of the view area of this clip");
+    ADD_PROPERTY_TYPE(Height,
+                      (10),
+                      group,
+                      App::Prop_None,
+                      "The height of the view area of this clip");
+    ADD_PROPERTY_TYPE(Width,
+                      (10),
+                      group,
+                      App::Prop_None,
+                      "The width of the view area of this clip");
+    ADD_PROPERTY_TYPE(ShowFrame,
+                      (0),
+                      group,
+                      App::Prop_None,
+                      "Specifies if the clip frame appears on the page or not");
+    // The 'Visible' property is handled by the view provider exclusively. It has the 'Output' flag
+    // set to avoid to call the execute() method. The view provider touches the page object,
+    // instead.
+    App::PropertyType propType =
+        static_cast<App::PropertyType>(App::Prop_Hidden | App::Prop_Output);
+    ADD_PROPERTY_TYPE(Visible,
+                      (true),
+                      group,
+                      propType,
+                      "Control whether frame is visible in page object");
 }
 
 FeatureClip::~FeatureClip()
-{
-}
+{}
 
 /// get called by the container when a Property was changed
 void FeatureClip::onChanged(const App::Property* prop)
@@ -74,7 +90,7 @@ void FeatureClip::onChanged(const App::Property* prop)
     App::DocumentObjectGroup::onChanged(prop);
 }
 
-App::DocumentObjectExecReturn *FeatureClip::execute(void)
+App::DocumentObjectExecReturn* FeatureClip::execute(void)
 {
     ostringstream svg;
 
@@ -88,7 +104,7 @@ App::DocumentObjectExecReturn *FeatureClip::execute(void)
     // show clip frame on the page if needed
 
     if (ShowFrame.getValue()) {
-        svg << "<rect fill=\"None\" stroke=\"#ff0000\" stroke-width=\"1px\"" 
+        svg << "<rect fill=\"None\" stroke=\"#ff0000\" stroke-width=\"1px\""
             << " x=\"" << X.getValue() << "\""
             << " y=\"" << Y.getValue() << "\""
             << " width=\"" << Width.getValue() << "\""
@@ -99,10 +115,10 @@ App::DocumentObjectExecReturn *FeatureClip::execute(void)
     svg << "<g clip-path=\"url(#" << Label.getValue() << ")\">" << endl;
 
     // get through the children and collect all the views
-    const std::vector<App::DocumentObject*> &Grp = Group.getValues();
-    for (std::vector<App::DocumentObject*>::const_iterator It= Grp.begin();It!=Grp.end();++It) {
+    const vector<App::DocumentObject*>& Grp = Group.getValues();
+    for (vector<App::DocumentObject*>::const_iterator It = Grp.begin(); It != Grp.end(); ++It) {
         if ((*It)->getTypeId().isDerivedFrom(Drawing::FeatureView::getClassTypeId())) {
-            Drawing::FeatureView *View = static_cast<Drawing::FeatureView *>(*It);
+            Drawing::FeatureView* View = static_cast<Drawing::FeatureView*>(*It);
             svg << View->ViewResult.getValue() << endl;
         }
     }

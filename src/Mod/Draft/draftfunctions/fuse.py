@@ -38,11 +38,11 @@ if App.GuiUp:
 
 def fuse(object1, object2):
     """fuse(oject1, object2)
-    
-    Returns an object made from the union of the 2 given objects. 
+
+    Returns an object made from the union of the 2 given objects.
     If the objects are coplanar, a special Draft Wire is used, otherwise we use
     a standard Part fuse.
-    
+
     """
     if not App.ActiveDocument:
         App.Console.PrintError("No active document. Aborting\n")

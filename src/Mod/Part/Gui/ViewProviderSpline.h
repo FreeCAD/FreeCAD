@@ -50,7 +50,7 @@ protected:
     void showControlPointsOfEdge(const TopoDS_Edge&);
     void showControlPointsOfFace(const TopoDS_Face&);
 
-    SoSwitch     *pcControlPoints;
+    SoSwitch     *pcControlPoints{nullptr};
 };
 
 class PartGuiExport ViewProviderSpline : public ViewProviderPartExt

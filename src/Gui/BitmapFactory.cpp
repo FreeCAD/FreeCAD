@@ -136,8 +136,8 @@ void BitmapFactoryInst::restoreCustomPaths()
     Base::Reference<ParameterGrp> group = App::GetApplication().GetParameterGroupByPath
         ("User parameter:BaseApp/Preferences/Bitmaps");
     std::vector<std::string> paths = group->GetASCIIs("CustomPath");
-    for (std::vector<std::string>::iterator it = paths.begin(); it != paths.end(); ++it) {
-        addPath(QString::fromUtf8(it->c_str()));
+    for (auto & path : paths) {
+        addPath(QString::fromUtf8(path.c_str()));
     }
 }
 
@@ -239,7 +239,7 @@ bool BitmapFactoryInst::loadPixmap(const QString& filename, QPixmap& icon) const
 QPixmap BitmapFactoryInst::pixmap(const char* name) const
 {
     if (!name || *name == '\0')
-        return QPixmap();
+        return {};
 
     // as very first test check whether the pixmap is in the cache
     QMap<std::string, QPixmap>::Iterator it = d->xpmCache.find(name);
@@ -469,12 +469,12 @@ QPixmap BitmapFactoryInst::merge(const QPixmap& p1, const QPixmap& p2, bool vert
     QBitmap mask2 = p2.mask();
     mask.fill( Qt::color0 );
 
-    QPainter* pt1 = new QPainter(&res);
+    auto* pt1 = new QPainter(&res);
     pt1->drawPixmap(0, 0, p1);
     pt1->drawPixmap(x, y, p2);
     delete pt1;
 
-    QPainter* pt2 = new QPainter(&mask);
+    auto* pt2 = new QPainter(&mask);
     pt2->drawPixmap(0, 0, mask1);
     pt2->drawPixmap(x, y, mask2);
     delete pt2;

@@ -30,32 +30,37 @@
 class Ui_TaskTetParameter;
 class SoEventCallback;
 
-namespace Base {
+namespace Base
+{
 class Polygon2d;
 }
-namespace App {
+namespace App
+{
 class Property;
 }
 
-namespace Gui {
+namespace Gui
+{
 class ViewProvider;
 class ViewVolumeProjection;
-}
-namespace Fem{
-    class FemMeshShapeNetgenObject;
+}  // namespace Gui
+namespace Fem
+{
+class FemMeshShapeNetgenObject;
 }
 
-namespace FemGui {
+namespace FemGui
+{
 
 class ViewProviderFemMeshShapeNetgen;
 
 
-class TaskTetParameter : public Gui::TaskView::TaskBox
+class TaskTetParameter: public Gui::TaskView::TaskBox
 {
     Q_OBJECT
 
 public:
-    explicit TaskTetParameter(Fem::FemMeshShapeNetgenObject *pcObject,QWidget *parent = nullptr);
+    explicit TaskTetParameter(Fem::FemMeshShapeNetgenObject* pcObject, QWidget* parent = nullptr);
     ~TaskTetParameter() override;
 
     void setInfo();
@@ -71,13 +76,13 @@ private Q_SLOTS:
     void setOptimize(int v);
 
 protected:
-    Fem::FemMeshShapeNetgenObject *pcObject;
+    Fem::FemMeshShapeNetgenObject* pcObject;
 
 private:
     QWidget* proxy;
-    Ui_TaskTetParameter* ui;
+    std::unique_ptr<Ui_TaskTetParameter> ui;
 };
 
-} //namespace FemGui
+}  // namespace FemGui
 
-#endif // FEMGUI_TaskTetParameter_H
+#endif  // FEMGUI_TaskTetParameter_H

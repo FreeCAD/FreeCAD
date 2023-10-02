@@ -4,7 +4,7 @@
 General.NumThreads = X;
 
 // open brep geometry
-Merge "/tmp/tmp0TVZbM.brep";
+Merge "tmp0TVZbM.brep";
 
 // group data
 Physical Surface("Face1") = {1};
@@ -41,17 +41,16 @@ Mesh  3;
 Coherence Mesh; // Remove duplicate vertices
 
 // save
-Mesh.Format = 2;
 // Ignore Physical definitions and save all elements;
 Mesh.SaveAll = 1;
-Save "/tmp/tmpjVhNNb.unv";
+Save "tmpjVhNNb.unv";
 
 
 // **********************************************************************
 // Gmsh documentation:
 // https://gmsh.info/doc/texinfo/gmsh.html#Mesh
 //
-// We do not check if something went wrong, like negative jacobians etc. You can run Gmsh manually yourself: 
+// We do not check if something went wrong, like negative jacobians etc. You can run Gmsh manually yourself:
 //
 // to see full Gmsh log, run in bash:
 // /usr/bin/gmsh - /tmp/tmputZ_uU.geo

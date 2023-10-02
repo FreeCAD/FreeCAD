@@ -46,14 +46,14 @@ std::string LinePy::representation() const
 
 PyObject *LinePy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // Python wrapper
 {
-    // create a new instance of LinePy and the Twin object 
+    // create a new instance of LinePy and the Twin object
     return new LinePy(new GeomLine);
 }
 
 // constructor method
 int LinePy::PyInit(PyObject* args, PyObject* /*kwd*/)
 {
-    
+
     if (PyArg_ParseTuple(args, "")) {
         // default line
         return 0;
@@ -102,7 +102,7 @@ int LinePy::PyInit(PyObject* args, PyObject* /*kwd*/)
             return 0;
         }
         catch (Standard_Failure& e) {
-    
+
             PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
             return -1;
         }
@@ -225,5 +225,5 @@ PyObject *LinePy::getCustomAttributes(const char* /*attr*/) const
 
 int LinePy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
 {
-    return 0; 
+    return 0;
 }

@@ -49,7 +49,7 @@ public:
    explicit AttachEngineException(const char * sMessage);
    explicit AttachEngineException(const std::string& sMessage);
    /// Destruction
-   ~AttachEngineException() throw() override {}
+   ~AttachEngineException() noexcept override = default;
 };
 
 /**
@@ -118,14 +118,14 @@ public:
 protected:
     void extensionOnChanged(const App::Property* /*prop*/) override;
     virtual void extHandleChangedPropertyName(Base::XMLReader &reader, const char* TypeName, const char* PropName);
-    
+
     App::PropertyPlacement& getPlacement() const;
 
 public:
     void updateAttacherVals();
 
 private:
-    Attacher::AttachEngine* _attacher;
+    Attacher::AttachEngine* _attacher = nullptr;
     mutable int _active = -1;
 };
 

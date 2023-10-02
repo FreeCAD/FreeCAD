@@ -1,4 +1,4 @@
-#**************************************************************************
+# **************************************************************************
 #   Copyright (c) 2018 Werner Mayer <wmayer[at]users.sourceforge.net>     *
 #                                                                         *
 #   This file is part of the FreeCAD CAx development system.              *
@@ -18,12 +18,13 @@
 #   License along with FreeCAD; if not, write to the Free Software        *
 #   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
 #   USA                                                                   *
-#**************************************************************************
+# **************************************************************************
 
 import FreeCAD, os, sys, unittest, WebGui
 
+
 class WebGuiTestCases(unittest.TestCase):
     def testHtmlCase(self):
-        bytestr=b'<b>Fran\xc3\xa7ais</b>'
-        browser=WebGui.openBrowserWindow('Browser')
+        bytestr = b"<b>Fran\xc3\xa7ais</b>"
+        browser = WebGui.openBrowserWindow("Browser")
         browser.setHtml(bytestr.decode("utf8"), FreeCAD.getResourceDir())

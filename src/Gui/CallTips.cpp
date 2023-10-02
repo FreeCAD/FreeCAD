@@ -27,6 +27,8 @@
 # include <QKeyEvent>
 # include <QLabel>
 # include <QPlainTextEdit>
+# include <QRegularExpression>
+# include <QRegularExpressionMatch>
 # include <QTextCursor>
 # include <QToolTip>
 #endif
@@ -85,8 +87,7 @@ CallTipsList::CallTipsList(QPlainTextEdit* parent)
     pal.setColor(QPalette::Inactive, QPalette::HighlightedText, pal.color(QPalette::Active, QPalette::HighlightedText));
     parent->setPalette( pal );
 
-    connect(this, SIGNAL(itemActivated(QListWidgetItem *)),
-            this, SLOT(callTipItemActivated(QListWidgetItem *)));
+    connect(this, &QListWidget::itemActivated, this, &CallTipsList::callTipItemActivated);
 
     hideKeys.append(Qt::Key_Space);
     hideKeys.append(Qt::Key_Exclam);
@@ -119,9 +120,7 @@ CallTipsList::CallTipsList(QPlainTextEdit* parent)
     compKeys.append(Qt::Key_BraceRight);
 }
 
-CallTipsList::~CallTipsList()
-{
-}
+CallTipsList::~CallTipsList() = default;
 
 void CallTipsList::keyboardSearch(const QString& wordPrefix)
 {
@@ -277,7 +276,7 @@ QMap<QString, CallTip> CallTipsList::extractTips(const QString& context) const
 
         // If we have an instance of PyObjectBase then determine whether it's valid or not
         if (PyObject_IsInstance(inst.ptr(), typeobj) == 1) {
-            Base::PyObjectBase* baseobj = static_cast<Base::PyObjectBase*>(inst.ptr());
+            auto baseobj = static_cast<Base::PyObjectBase*>(inst.ptr());
             validObject = baseobj->isValid();
         }
         else {
@@ -300,14 +299,14 @@ QMap<QString, CallTip> CallTipsList::extractTips(const QString& context) const
         // names. So, we add these names to the list, too.
         PyObject* appdoctypeobj = Base::getTypeAsObject(&App::DocumentPy::Type);
         if (PyObject_IsSubclass(type.ptr(), appdoctypeobj) == 1) {
-            App::DocumentPy* docpy = (App::DocumentPy*)(inst.ptr());
-            App::Document* document = docpy->getDocumentPtr();
+            auto docpy = static_cast<App::DocumentPy*>(inst.ptr());
+            auto document = docpy->getDocumentPtr();
             // Make sure that the C++ object is alive
             if (document) {
                 std::vector<App::DocumentObject*> objects = document->getObjects();
                 Py::List list;
-                for (std::vector<App::DocumentObject*>::iterator it = objects.begin(); it != objects.end(); ++it)
-                    list.append(Py::String((*it)->getNameInDocument()));
+                for (const auto & object : objects)
+                    list.append(Py::String(object->getNameInDocument()));
                 extractTipsFromObject(inst, list, tips);
             }
         }
@@ -316,15 +315,15 @@ QMap<QString, CallTip> CallTipsList::extractTips(const QString& context) const
         // names. So, we add these names to the list, too.
         PyObject* guidoctypeobj = Base::getTypeAsObject(&Gui::DocumentPy::Type);
         if (PyObject_IsSubclass(type.ptr(), guidoctypeobj) == 1) {
-            Gui::DocumentPy* docpy = (Gui::DocumentPy*)(inst.ptr());
+            auto docpy = static_cast<Gui::DocumentPy*>(inst.ptr());
             if (docpy->getDocumentPtr()) {
                 App::Document* document = docpy->getDocumentPtr()->getDocument();
                 // Make sure that the C++ object is alive
                 if (document) {
                     std::vector<App::DocumentObject*> objects = document->getObjects();
                     Py::List list;
-                    for (std::vector<App::DocumentObject*>::iterator it = objects.begin(); it != objects.end(); ++it)
-                        list.append(Py::String((*it)->getNameInDocument()));
+                    for (const auto & object : objects)
+                        list.append(Py::String(object->getNameInDocument()));
                     extractTipsFromObject(inst, list, tips);
                 }
             }
@@ -352,12 +351,12 @@ void CallTipsList::extractTipsFromObject(Py::Object& obj, Py::List& list, QMap<Q
             // for Py2 but silently accepts it for Py3.
             //
             // FIXME: Add methods of extension to the current instance and not its type object
-            // https://forum.freecadweb.org/viewtopic.php?f=22&t=18105
-            // https://forum.freecadweb.org/viewtopic.php?f=3&t=20009&p=154447#p154447
-            // https://forum.freecadweb.org/viewtopic.php?f=10&t=12534&p=155290#p155290
+            // https://forum.freecad.org/viewtopic.php?f=22&t=18105
+            // https://forum.freecad.org/viewtopic.php?f=3&t=20009&p=154447#p154447
+            // https://forum.freecad.org/viewtopic.php?f=10&t=12534&p=155290#p155290
             //
-            // https://forum.freecadweb.org/viewtopic.php?f=39&t=33874&p=286759#p286759
-            // https://forum.freecadweb.org/viewtopic.php?f=39&t=33874&start=30#p286772
+            // https://forum.freecad.org/viewtopic.php?f=39&t=33874&p=286759#p286759
+            // https://forum.freecad.org/viewtopic.php?f=39&t=33874&start=30#p286772
             Py::Object attr = obj.getAttr(name);
             if (!attr.ptr()) {
                 Base::Console().Log("Python attribute '%s' returns null!\n", name.c_str());
@@ -426,7 +425,7 @@ void CallTipsList::extractTipsFromObject(Py::Object& obj, Py::List& list, QMap<Q
 
 void CallTipsList::extractTipsFromProperties(Py::Object& obj, QMap<QString, CallTip>& tips) const
 {
-    App::PropertyContainerPy* cont = (App::PropertyContainerPy*)(obj.ptr());
+    auto cont = static_cast<App::PropertyContainerPy*>(obj.ptr());
     App::PropertyContainer* container = cont->getPropertyContainerPtr();
     // Make sure that the C++ object is alive
     if (!container)
@@ -434,15 +433,15 @@ void CallTipsList::extractTipsFromProperties(Py::Object& obj, QMap<QString, Call
     std::map<std::string,App::Property*> Map;
     container->getPropertyMap(Map);
 
-    for (std::map<std::string,App::Property*>::const_iterator It=Map.begin();It!=Map.end();++It) {
+    for (const auto & It : Map) {
         CallTip tip;
-        QString str = QString::fromLatin1(It->first.c_str());
+        QString str = QString::fromLatin1(It.first.c_str());
         tip.name = str;
         tip.type = CallTip::Property;
-        QString longdoc = QString::fromUtf8(container->getPropertyDocumentation(It->second));
+        QString longdoc = QString::fromUtf8(container->getPropertyDocumentation(It.second));
         // a point, mesh or shape property
-        if (It->second->isDerivedFrom(Base::Type::fromName("App::PropertyComplexGeoData"))) {
-            Py::Object data(It->second->getPyObject(), true);
+        if (It.second->isDerivedFrom(Base::Type::fromName("App::PropertyComplexGeoData"))) {
+            Py::Object data(It.second->getPyObject(), true);
             if (data.hasAttr("__doc__")) {
                 Py::Object help = data.getAttr("__doc__");
                 if (help.isString()) {
@@ -594,7 +593,7 @@ bool CallTipsList::eventFilter(QObject * watched, QEvent * event)
     // This is a trick to avoid to hide the tooltip window after the defined time span
     // of 10 seconds. We just filter out all timer events to keep the label visible.
     if (watched->inherits("QLabel")) {
-        QLabel* label = qobject_cast<QLabel*>(watched);
+        auto label = qobject_cast<QLabel*>(watched);
         // Ignore the timer events to prevent from being closed
         if (label->windowFlags() & Qt::ToolTip && event->type() == QEvent::Timer)
             return true;
@@ -605,7 +604,7 @@ bool CallTipsList::eventFilter(QObject * watched, QEvent * event)
     }
     else if (isVisible() && watched == textEdit) {
         if (event->type() == QEvent::KeyPress) {
-            QKeyEvent* ke = (QKeyEvent*)event;
+            auto ke = static_cast<QKeyEvent*>(event);
             if (ke->key() == Qt::Key_Up || ke->key() == Qt::Key_Down) {
                 keyPressEvent(ke);
                 return true;
@@ -648,7 +647,7 @@ bool CallTipsList::eventFilter(QObject * watched, QEvent * event)
             }
         }
         else if (event->type() == QEvent::KeyRelease) {
-            QKeyEvent* ke = (QKeyEvent*)event;
+            auto ke = static_cast<QKeyEvent*>(event);
             if (ke->key() == Qt::Key_Up || ke->key() == Qt::Key_Down ||
                 ke->key() == Qt::Key_PageUp || ke->key() == Qt::Key_PageDown) {
                 QList<QListWidgetItem *> items = selectedItems();
@@ -687,14 +686,14 @@ void CallTipsList::callTipItemActivated(QListWidgetItem *item)
     if (!sel.isEmpty()) {
         // in case the cursor moved too far on the right side
         const QChar underscore =  QLatin1Char('_');
-        const QChar ch = sel.at(sel.count()-1);
+        const QChar ch = sel.at(sel.size()-1);
         if (!ch.isLetterOrNumber() && ch != underscore)
             cursor.movePosition(QTextCursor::Left, QTextCursor::KeepAnchor);
     }
     cursor.insertText( text );
 
     // get CallTip from item's UserRole-data
-    CallTip callTip = item->data(Qt::UserRole).value<CallTip>();
+    auto callTip = item->data(Qt::UserRole).value<CallTip>();
 
     // if call completion enabled and we've something callable (method or class constructor) ...
     if (this->doCallCompletion
@@ -706,9 +705,9 @@ void CallTipsList::callTipItemActivated(QListWidgetItem *item)
        * Try to find out if call needs arguments.
        * For this we search the description for appropriate hints ...
        */
-      QRegExp argumentMatcher( QRegExp::escape( callTip.name ) + QLatin1String("\\s*\\(\\s*\\w+.*\\)") );
-      argumentMatcher.setMinimal( true ); //< set regex non-greedy!
-      if (argumentMatcher.indexIn( callTip.description ) != -1)
+      QRegularExpression argumentMatcher( QRegularExpression::escape( callTip.name ) + QLatin1String(R"(\s*\(\s*\w+.*\))") );
+      argumentMatcher.setPatternOptions( QRegularExpression::InvertedGreedinessOption ); //< set regex non-greedy!
+      if (argumentMatcher.match( callTip.description ).hasMatch())
       {
         // if arguments are needed, we just move the cursor one left, to between the parentheses.
         cursor.movePosition( QTextCursor::Left, QTextCursor::MoveAnchor, 1 );
@@ -733,16 +732,16 @@ QString CallTipsList::stripWhiteSpace(const QString& str) const
     int minspace=INT_MAX;
     int line=0;
     for (QStringList::iterator it = lines.begin(); it != lines.end(); ++it, ++line) {
-        if (it->count() > 0 && line > 0) {
+        if (it->size() > 0 && line > 0) {
             int space = 0;
-            for (int i=0; i<it->count(); i++) {
+            for (int i=0; i<it->size(); i++) {
                 if ((*it)[i] == QLatin1Char('\t'))
                     space++;
                 else
                     break;
             }
 
-            if (it->count() > space)
+            if (it->size() > space)
                 minspace = std::min<int>(minspace, space);
         }
     }
@@ -755,7 +754,7 @@ QString CallTipsList::stripWhiteSpace(const QString& str) const
             if (line == 0 && !it->isEmpty()) {
                 strippedlines << *it;
             }
-            else if (it->count() > 0 && line > 0) {
+            else if (it->size() > 0 && line > 0) {
                 strippedlines << it->mid(minspace);
             }
         }

@@ -20,17 +20,17 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
-#include <Base/VectorPy.h>
 #include <Base/PlacementPy.h>
-#include "Mod/Robot/App/Trajectory.h"
 
+// clang-format off
 // inclusion of the generated files (generated out of TrajectoryPy.xml)
 #include <Mod/Robot/App/TrajectoryPy.h>
 #include <Mod/Robot/App/TrajectoryPy.cpp>
 #include <Mod/Robot/App/WaypointPy.h>
+// clang-format on
+
 
 using namespace Robot;
 
@@ -48,24 +48,26 @@ std::string TrajectoryPy::representation() const
     return str.str();
 }
 
-PyObject *TrajectoryPy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // Python wrapper
+PyObject* TrajectoryPy::PyMake(struct _typeobject*, PyObject*, PyObject*)  // Python wrapper
 {
-    // create a new instance of TrajectoryPy and the Twin object 
+    // create a new instance of TrajectoryPy and the Twin object
     return new TrajectoryPy(new Trajectory);
 }
 
 // constructor method
 int TrajectoryPy::PyInit(PyObject* args, PyObject* /*kwd*/)
 {
-    PyObject *pcObj=nullptr;
-    if (!PyArg_ParseTuple(args, "|O!", &(PyList_Type), &pcObj))
+    PyObject* pcObj = nullptr;
+    if (!PyArg_ParseTuple(args, "|O!", &(PyList_Type), &pcObj)) {
         return -1;
+    }
 
     if (pcObj) {
         Py::List list(pcObj);
         for (Py::List::iterator it = list.begin(); it != list.end(); ++it) {
             if (PyObject_TypeCheck((*it).ptr(), &(Robot::WaypointPy::Type))) {
-                Robot::Waypoint &wp = *static_cast<Robot::WaypointPy*>((*it).ptr())->getWaypointPtr();
+                Robot::Waypoint& wp =
+                    *static_cast<Robot::WaypointPy*>((*it).ptr())->getWaypointPtr();
                 getTrajectoryPtr()->addWaypoint(wp);
             }
         }
@@ -75,13 +77,13 @@ int TrajectoryPy::PyInit(PyObject* args, PyObject* /*kwd*/)
 }
 
 
-PyObject* TrajectoryPy::insertWaypoints(PyObject * args)
+PyObject* TrajectoryPy::insertWaypoints(PyObject* args)
 {
 
     PyObject* o;
     if (PyArg_ParseTuple(args, "O!", &(Base::PlacementPy::Type), &o)) {
-        Base::Placement *plm = static_cast<Base::PlacementPy*>(o)->getPlacementPtr();
-        getTrajectoryPtr()->addWaypoint(Robot::Waypoint("Pt",*plm));
+        Base::Placement* plm = static_cast<Base::PlacementPy*>(o)->getPlacementPtr();
+        getTrajectoryPtr()->addWaypoint(Robot::Waypoint("Pt", *plm));
         getTrajectoryPtr()->generateTrajectory();
 
         return new TrajectoryPy(new Robot::Trajectory(*getTrajectoryPtr()));
@@ -89,12 +91,12 @@ PyObject* TrajectoryPy::insertWaypoints(PyObject * args)
 
     PyErr_Clear();
     if (PyArg_ParseTuple(args, "O!", &(Robot::WaypointPy::Type), &o)) {
-        Robot::Waypoint &wp = *static_cast<Robot::WaypointPy*>(o)->getWaypointPtr();
+        Robot::Waypoint& wp = *static_cast<Robot::WaypointPy*>(o)->getWaypointPtr();
         getTrajectoryPtr()->addWaypoint(wp);
         getTrajectoryPtr()->generateTrajectory();
-       
+
         return new TrajectoryPy(new Robot::Trajectory(*getTrajectoryPtr()));
-        //Py_Return;
+        // Py_Return;
     }
 
     PyErr_Clear();
@@ -102,47 +104,49 @@ PyObject* TrajectoryPy::insertWaypoints(PyObject * args)
         Py::List list(o);
         for (Py::List::iterator it = list.begin(); it != list.end(); ++it) {
             if (PyObject_TypeCheck((*it).ptr(), &(Robot::WaypointPy::Type))) {
-                Robot::Waypoint &wp = *static_cast<Robot::WaypointPy*>((*it).ptr())->getWaypointPtr();
+                Robot::Waypoint& wp =
+                    *static_cast<Robot::WaypointPy*>((*it).ptr())->getWaypointPtr();
                 getTrajectoryPtr()->addWaypoint(wp);
             }
         }
         getTrajectoryPtr()->generateTrajectory();
-       
+
         return new TrajectoryPy(new Robot::Trajectory(*getTrajectoryPtr()));
     }
 
     Py_Error(PyExc_TypeError, "Wrong parameters - waypoint or placement expected");
-
 }
 
-PyObject* TrajectoryPy::position(PyObject * args)
+PyObject* TrajectoryPy::position(PyObject* args)
 {
     double pos;
-    if (!PyArg_ParseTuple(args, "d", &pos))
+    if (!PyArg_ParseTuple(args, "d", &pos)) {
         return nullptr;
+    }
 
     return (new Base::PlacementPy(new Base::Placement(getTrajectoryPtr()->getPosition(pos))));
 }
 
-PyObject* TrajectoryPy::velocity(PyObject * args)
+PyObject* TrajectoryPy::velocity(PyObject* args)
 {
     double pos;
-    if (!PyArg_ParseTuple(args, "d", &pos))
+    if (!PyArg_ParseTuple(args, "d", &pos)) {
         return nullptr;
+    }
 
-     // return velocity as float
+    // return velocity as float
     return Py::new_reference_to(Py::Float(getTrajectoryPtr()->getVelocity(pos)));
 }
 
-PyObject* TrajectoryPy::deleteLast(PyObject *args)
+PyObject* TrajectoryPy::deleteLast(PyObject* args)
 {
-    int n=1;
-    if (!PyArg_ParseTuple(args, "|i", &n))
+    int n = 1;
+    if (!PyArg_ParseTuple(args, "|i", &n)) {
         return nullptr;
+    }
     getTrajectoryPtr()->deleteLast(n);
     return new TrajectoryPy(new Robot::Trajectory(*getTrajectoryPtr()));
- }
-
+}
 
 
 Py::Float TrajectoryPy::getDuration() const
@@ -153,8 +157,10 @@ Py::Float TrajectoryPy::getDuration() const
 Py::List TrajectoryPy::getWaypoints() const
 {
     Py::List list;
-    for(unsigned int i = 0; i < getTrajectoryPtr()->getSize(); i++)
-        list.append(Py::asObject(new Robot::WaypointPy(new Robot::Waypoint(getTrajectoryPtr()->getWaypoint(i)))));
+    for (unsigned int i = 0; i < getTrajectoryPtr()->getSize(); i++) {
+        list.append(Py::asObject(
+            new Robot::WaypointPy(new Robot::Waypoint(getTrajectoryPtr()->getWaypoint(i)))));
+    }
 
     return list;
 }
@@ -165,20 +171,15 @@ Py::Float TrajectoryPy::getLength() const
 }
 
 
-
 void TrajectoryPy::setWaypoints(Py::List)
-{
-   
-}
+{}
 
-PyObject *TrajectoryPy::getCustomAttributes(const char* /*attr*/) const
+PyObject* TrajectoryPy::getCustomAttributes(const char* /*attr*/) const
 {
     return nullptr;
 }
 
 int TrajectoryPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
 {
-    return 0; 
+    return 0;
 }
-
-

@@ -22,32 +22,26 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-#include <QGraphicsScene>
-#include <QGraphicsSceneHoverEvent>
-#include <QKeyEvent>
-#include <QMouseEvent>
-#include <QPainter>
-#include <QPainterPath>
-#include <QPainterPathStroker>
-#include <QStyleOptionGraphicsItem>
-#include <QVector2D>
+# include <QGraphicsScene>
+# include <QGraphicsSceneHoverEvent>
+# include <QKeyEvent>
+# include <QPainterPath>
+# include <QPainterPathStroker>
 #endif
 
-#include <App/Application.h>
 #include <Base/Console.h>
-#include <Base/Parameter.h>
-
 #include <Mod/TechDraw/App/DrawLeaderLine.h>
 #include <Mod/TechDraw/App/DrawUtil.h>
 
+#include "QGEPath.h"
 #include "PreferencesGui.h"
-#include "Rez.h"
-#include "ZVALUE.h"
+#include "QGILeaderLine.h"
 #include "QGIPrimPath.h"
 #include "QGIVertex.h"
 #include "QGIView.h"
-#include "QGILeaderLine.h"
-#include "QGEPath.h"
+#include "Rez.h"
+#include "ZVALUE.h"
+
 
 using namespace TechDrawGui;
 using namespace TechDraw;
@@ -222,25 +216,25 @@ void QGEPath::showMarkers(std::vector<QPointF> points)
         v->setFlag(QGraphicsItem::ItemIsFocusable, true);
         v->setParentItem(this);
         QObject::connect(
-            v, SIGNAL(dragFinished(QPointF, int)),
-            this     , SLOT  (onDragFinished(QPointF, int))
+            v, &QGMarker::dragFinished,
+            this, &QGEPath::onDragFinished
            );
         QObject::connect(
-            v, SIGNAL(dragging(QPointF, int)),
-            this     , SLOT  (onDragging(QPointF, int))
+            v, &QGMarker::dragging,
+            this, &QGEPath::onDragging
            );
         QObject::connect(
-            v, SIGNAL(doubleClick(QPointF, int)),
-            this     , SLOT  (onDoubleClick(QPointF, int))
+            v, &QGMarker::doubleClick,
+            this, &QGEPath::onDoubleClick
            );
         QObject::connect(
-            v, SIGNAL(endEdit()),
-            this     , SLOT  (onEndEdit())
+            v, &QGMarker::endEdit,
+            this, &QGEPath::onEndEdit
            );
 //TODO: double r = getMarkerSize();
 //      v->setRadius(r);
         v->setRadius(50.0);
-        v->setNormalColor(QColor(Qt::black));
+        v->setNormalColor(PreferencesGui::getAccessibleQColor(QColor(Qt::black)));
         v->setZValue(ZVALUE::VERTEX);
         v->setPos(p);
         v->show();

@@ -29,19 +29,19 @@
 // Robot
 #ifndef RobotExport
 #ifdef Robot_EXPORTS
-#  define RobotExport      FREECAD_DECL_EXPORT
+#define RobotExport FREECAD_DECL_EXPORT
 #else
-#  define RobotExport      FREECAD_DECL_IMPORT
+#define RobotExport FREECAD_DECL_IMPORT
 #endif
 #endif
 
 // RobotGui
 #ifndef RobotGuiExport
 #ifdef RobotGui_EXPORTS
-#  define RobotGuiExport   FREECAD_DECL_EXPORT
+#define RobotGuiExport FREECAD_DECL_EXPORT
 #else
-#  define RobotGuiExport   FREECAD_DECL_IMPORT
+#define RobotGuiExport FREECAD_DECL_IMPORT
 #endif
 #endif
 
-#endif //ROBOT_GLOBAL_H
+#endif  // ROBOT_GLOBAL_H

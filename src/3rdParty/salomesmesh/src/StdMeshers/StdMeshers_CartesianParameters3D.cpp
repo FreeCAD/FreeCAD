@@ -191,7 +191,7 @@ void StdMeshers_CartesianParameters3D::SetGrid(std::vector<double>& coords, int 
 //purpose  : Set grid spacing along the three axes
 //=======================================================================
 
-void StdMeshers_CartesianParameters3D::SetGridSpacing(std::vector<string>& xSpaceFuns,
+void StdMeshers_CartesianParameters3D::SetGridSpacing(std::vector<std::string>& xSpaceFuns,
                                                       std::vector<double>& xInternalPoints,
                                                       const int            axis)
 {
@@ -783,7 +783,7 @@ std::ostream & StdMeshers_CartesianParameters3D::SaveTo(std::ostream & save)
 
 //=======================================================================
 //function : LoadFrom
-//purpose  : resore my parameters from a stream
+//purpose  : restore my parameters from a stream
 //=======================================================================
 
 std::istream & StdMeshers_CartesianParameters3D::LoadFrom(std::istream & load)

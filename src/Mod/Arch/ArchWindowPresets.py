@@ -40,7 +40,8 @@ def makeWindowPreset(windowtype,width,height,h1,h2,h3,w1,w2,o1,o2,placement=None
 
     def makeSketch(windowtype,width,height,h1,h2,h3,w1,w2,o1,o2):
 
-        import Part,Sketcher
+        import Part
+        import Sketcher
         width = float(width)
         height = float(height)
         h1 = float(h1)
@@ -50,6 +51,11 @@ def makeWindowPreset(windowtype,width,height,h1,h2,h3,w1,w2,o1,o2,placement=None
         w2 = float(w2)
         o1 = float(o1)
         o2 = float(o2)
+        # h1, h2, w1, w2 cannot be null (for now)
+        # TODO allow these to be null (don't create the component if so)
+        if h1*h2*w1*w2 == 0:
+            FreeCAD.Console.PrintError("H1, H2, W1 and W2 parameters cannot be zero. Aborting\n")
+            return
         # small spacing to avoid wrong auto-wires in sketch
         tol = h1/10
         # glass size divider
@@ -87,7 +93,7 @@ def makeWindowPreset(windowtype,width,height,h1,h2,h3,w1,w2,o1,o2,placement=None
             s.addConstraint(Sketcher.Constraint('Vertical',idx+7))
 
         def simpleFrame(s,width,height,h1,h2,tol):
-            
+
             "creates a simple frame with constraints"
 
             p1 = Vector(h1+tol,h1+tol,0)

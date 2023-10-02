@@ -20,9 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-
 #ifndef _PreComp_
 # include <Standard_math.hxx>
 #endif
@@ -30,6 +28,7 @@
 #include <Base/Vector3D.h>
 
 #include "Voronoi.h"
+
 
 using namespace Base;
 using namespace Path;
@@ -180,7 +179,7 @@ long Voronoi::numVertices() const {
 void Voronoi::construct()
 {
   vd->clear();
-  construct_voronoi(vd->points.begin(), vd->points.end(), vd->segments.begin(), vd->segments.end(), (voronoi_diagram_type*)vd);
+  construct_voronoi(vd->points.begin(), vd->points.end(), vd->segments.begin(), vd->segments.end(), static_cast<voronoi_diagram_type*>(vd));
   vd->reIndex();
 }
 

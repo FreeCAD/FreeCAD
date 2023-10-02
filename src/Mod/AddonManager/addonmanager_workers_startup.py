@@ -1,22 +1,24 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
 # ***************************************************************************
 # *                                                                         *
-# *   Copyright (c) 2022 FreeCAD Project Association                        *
+# *   Copyright (c) 2022-2023 FreeCAD Project Association                   *
 # *   Copyright (c) 2019 Yorik van Havre <yorik@uncreated.net>              *
 # *                                                                         *
-# *   This library is free software; you can redistribute it and/or         *
-# *   modify it under the terms of the GNU Lesser General Public            *
-# *   License as published by the Free Software Foundation; either          *
-# *   version 2.1 of the License, or (at your option) any later version.    *
+# *   This file is part of FreeCAD.                                         *
 # *                                                                         *
-# *   This library is distributed in the hope that it will be useful,       *
-# *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU     *
+# *   FreeCAD is free software: you can redistribute it and/or modify it    *
+# *   under the terms of the GNU Lesser General Public License as           *
+# *   published by the Free Software Foundation, either version 2.1 of the  *
+# *   License, or (at your option) any later version.                       *
+# *                                                                         *
+# *   FreeCAD is distributed in the hope that it will be useful, but        *
+# *   WITHOUT ANY WARRANTY; without even the implied warranty of            *
+# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU      *
 # *   Lesser General Public License for more details.                       *
 # *                                                                         *
 # *   You should have received a copy of the GNU Lesser General Public      *
-# *   License along with this library; if not, write to the Free Software   *
-# *   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA         *
-# *   02110-1301  USA                                                       *
+# *   License along with FreeCAD. If not, see                               *
+# *   <https://www.gnu.org/licenses/>.                                      *
 # *                                                                         *
 # ***************************************************************************
 
@@ -33,7 +35,7 @@ import threading
 import time
 from typing import List
 
-from PySide2 import QtCore
+from PySide import QtCore
 
 import FreeCAD
 import addonmanager_utilities as utils
@@ -41,11 +43,12 @@ from addonmanager_macro import Macro
 from Addon import Addon
 import NetworkManager
 from addonmanager_git import initialize_git, GitFailed
+from addonmanager_metadata import MetadataReader
 
 translate = FreeCAD.Qt.translate
 
 # Workers only have one public method by design
-# pylint: disable=too-few-public-methods
+# pylint: disable=c-extension-no-member,too-few-public-methods,too-many-instance-attributes
 
 
 class CreateAddonListWorker(QtCore.QThread):
@@ -159,9 +162,7 @@ class CreateAddonListWorker(QtCore.QThread):
         for addon in addon_list:
             if " " in addon:
                 addon_and_branch = addon.split(" ")
-                custom_addons.append(
-                    {"url": addon_and_branch[0], "branch": addon_and_branch[1]}
-                )
+                custom_addons.append({"url": addon_and_branch[0], "branch": addon_and_branch[1]})
             else:
                 custom_addons.append({"url": addon, "branch": "master"})
         for addon in custom_addons:
@@ -174,7 +175,15 @@ class CreateAddonListWorker(QtCore.QThread):
                 name = addon["url"].split("/")[-1]
                 if name in self.package_names:
                     # We already have something with this name, skip this one
+                    FreeCAD.Console.PrintWarning(
+                        translate("AddonsInstaller", "WARNING: Duplicate addon {} ignored").format(
+                            name
+                        )
+                    )
                     continue
+                FreeCAD.Console.PrintLog(
+                    f"Adding custom location {addon['url']} with branch {addon['branch']}\n"
+                )
                 self.package_names.append(name)
                 addondir = os.path.join(self.moddir, name)
                 if os.path.exists(addondir) and os.listdir(addondir):
@@ -185,7 +194,7 @@ class CreateAddonListWorker(QtCore.QThread):
                 md_file = os.path.join(addondir, "package.xml")
                 if os.path.isfile(md_file):
                     repo.load_metadata_file(md_file)
-                    repo.installed_version = repo.metadata.Version
+                    repo.installed_version = repo.metadata.version
                     repo.updated_timestamp = os.path.getmtime(md_file)
                     repo.verify_url_and_branch(addon["url"], addon["branch"])
 
@@ -228,7 +237,7 @@ class CreateAddonListWorker(QtCore.QThread):
             md_file = os.path.join(addondir, "package.xml")
             if os.path.isfile(md_file):
                 repo.load_metadata_file(md_file)
-                repo.installed_version = repo.metadata.Version
+                repo.installed_version = repo.metadata.version
                 repo.updated_timestamp = os.path.getmtime(md_file)
                 repo.verify_url_and_branch(url, branch)
 
@@ -240,9 +249,7 @@ class CreateAddonListWorker(QtCore.QThread):
                 repo.obsolete = True
             self.addon_repo.emit(repo)
 
-            self.status_message.emit(
-                translate("AddonsInstaller", "Workbenches list was updated.")
-            )
+            self.status_message.emit(translate("AddonsInstaller", "Workbenches list was updated."))
 
     def _retrieve_macros_from_git(self):
         """Retrieve macros from FreeCAD-macros.git
@@ -327,11 +334,12 @@ class CreateAddonListWorker(QtCore.QThread):
             )
             FreeCAD.Console.PrintMessage(f"{macro_cache_location}\n")
             FreeCAD.Console.PrintMessage(
-                translate("AddonsInstaller", "Attempting to do a clean checkout...")
-                + "\n"
+                translate("AddonsInstaller", "Attempting to do a clean checkout...") + "\n"
             )
             try:
-                os.chdir(os.path.join(macro_cache_location,"..")) # Make sure we are not IN this directory
+                os.chdir(
+                    os.path.join(macro_cache_location, "..")
+                )  # Make sure we are not IN this directory
                 shutil.rmtree(macro_cache_location, onerror=self._remove_readonly)
                 self.git_manager.clone(
                     "https://github.com/FreeCAD/FreeCAD-macros.git",
@@ -431,7 +439,7 @@ class LoadPackagesFromCacheWorker(QtCore.QThread):
     def run(self):
         """Rarely called directly: create an instance and call start() on it instead to
         launch in a new thread"""
-        with open(self.cache_file, "r", encoding="utf-8") as f:
+        with open(self.cache_file, encoding="utf-8") as f:
             data = f.read()
             if data:
                 dict_data = json.loads(data)
@@ -445,14 +453,11 @@ class LoadPackagesFromCacheWorker(QtCore.QThread):
                     if os.path.isfile(repo_metadata_cache_path):
                         try:
                             repo.load_metadata_file(repo_metadata_cache_path)
-                            repo.installed_version = repo.metadata.Version
-                            repo.updated_timestamp = os.path.getmtime(
-                                repo_metadata_cache_path
-                            )
-                        except Exception:
-                            FreeCAD.Console.PrintLog(
-                                f"Failed loading {repo_metadata_cache_path}\n"
-                            )
+                            repo.installed_version = repo.metadata.version
+                            repo.updated_timestamp = os.path.getmtime(repo_metadata_cache_path)
+                        except Exception as e:
+                            FreeCAD.Console.PrintLog(f"Failed loading {repo_metadata_cache_path}\n")
+                            FreeCAD.Console.PrintLog(str(e) + "\n")
                     self.addon_repo.emit(repo)
 
 
@@ -469,7 +474,7 @@ class LoadMacrosFromCacheWorker(QtCore.QThread):
         """Rarely called directly: create an instance and call start() on it instead to
         launch in a new thread"""
 
-        with open(self.cache_file, "r", encoding="utf-8") as f:
+        with open(self.cache_file, encoding="utf-8") as f:
             data = f.read()
             dict_data = json.loads(data)
             for item in dict_data:
@@ -598,9 +603,7 @@ class UpdateChecker:
                             wb.set_status(Addon.Status.NO_UPDATE_AVAILABLE)
                     except GitFailed:
                         FreeCAD.Console.PrintWarning(
-                            translate(
-                                "AddonsInstaller", "git status failed for {}"
-                            ).format(wb.name)
+                            translate("AddonsInstaller", "git status failed for {}").format(wb.name)
                             + "\n"
                         )
                         wb.set_status(Addon.Status.CANNOT_CHECK)
@@ -631,12 +634,12 @@ class UpdateChecker:
                 return
             package.updated_timestamp = os.path.getmtime(installed_metadata_file)
             try:
-                installed_metadata = FreeCAD.Metadata(installed_metadata_file)
-                package.installed_version = installed_metadata.Version
-                # Packages are considered up-to-date if the metadata version matches. Authors
-                # should update their version string when they want the addon manager to alert
-                # users of a new version.
-                if package.metadata.Version != installed_metadata.Version:
+                installed_metadata = MetadataReader.from_file(installed_metadata_file)
+                package.installed_version = installed_metadata.version
+                # Packages are considered up-to-date if the metadata version matches.
+                # Authors should update their version string when they want the addon
+                # manager to alert users of a new version.
+                if package.metadata.version != installed_metadata.version:
                     package.set_status(Addon.Status.UPDATE_AVAILABLE)
                 else:
                     package.set_status(Addon.Status.NO_UPDATE_AVAILABLE)
@@ -656,9 +659,7 @@ class UpdateChecker:
         # Make sure this macro has its code downloaded:
         try:
             if not macro_wrapper.macro.parsed and macro_wrapper.macro.on_git:
-                macro_wrapper.macro.fill_details_from_file(
-                    macro_wrapper.macro.src_filename
-                )
+                macro_wrapper.macro.fill_details_from_file(macro_wrapper.macro.src_filename)
             elif not macro_wrapper.macro.parsed and macro_wrapper.macro.on_wiki:
                 mac = macro_wrapper.macro.name.replace(" ", "_")
                 mac = mac.replace("&", "%26")
@@ -680,9 +681,7 @@ class UpdateChecker:
         hasher2 = hashlib.sha1()
         hasher1.update(macro_wrapper.macro.code.encode("utf-8"))
         new_sha1 = hasher1.hexdigest()
-        test_file_one = os.path.join(
-            FreeCAD.getUserMacroDir(True), macro_wrapper.macro.filename
-        )
+        test_file_one = os.path.join(FreeCAD.getUserMacroDir(True), macro_wrapper.macro.filename)
         test_file_two = os.path.join(
             FreeCAD.getUserMacroDir(True), "Macro_" + macro_wrapper.macro.filename
         )
@@ -809,9 +808,7 @@ class CacheMacroCodeWorker(QtCore.QThread):
         if QtCore.QThread.currentThread().isInterruptionRequested():
             return
 
-        self.progress_made.emit(
-            len(self.repos) - self.repo_queue.qsize(), len(self.repos)
-        )
+        self.progress_made.emit(len(self.repos) - self.repo_queue.qsize(), len(self.repos))
 
         try:
             next_repo = self.repo_queue.get_nowait()
@@ -872,18 +869,12 @@ class GetMacroDetailsWorker(QtCore.QThread):
         """Rarely called directly: create an instance and call start() on it instead to
         launch in a new thread"""
 
-        self.status_message.emit(
-            translate("AddonsInstaller", "Retrieving macro description...")
-        )
+        self.status_message.emit(translate("AddonsInstaller", "Retrieving macro description..."))
         if not self.macro.parsed and self.macro.on_git:
-            self.status_message.emit(
-                translate("AddonsInstaller", "Retrieving info from git")
-            )
+            self.status_message.emit(translate("AddonsInstaller", "Retrieving info from git"))
             self.macro.fill_details_from_file(self.macro.src_filename)
         if not self.macro.parsed and self.macro.on_wiki:
-            self.status_message.emit(
-                translate("AddonsInstaller", "Retrieving info from wiki")
-            )
+            self.status_message.emit(translate("AddonsInstaller", "Retrieving info from wiki"))
             mac = self.macro.name.replace(" ", "_")
             mac = mac.replace("&", "%26")
             mac = mac.replace("+", "%2B")

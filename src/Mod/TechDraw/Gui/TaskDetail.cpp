@@ -22,45 +22,29 @@
 
 #include "PreCompiled.h"
 
-#ifndef _PreComp_
-#include <QGraphicsScene>
-#include <QStatusBar>
-#endif // #ifndef _PreComp_
-
+#include <App/Document.h>
 #include <Base/Console.h>
 #include <Base/Tools.h>
-#include <Base/Quantity.h>
 #include <Base/UnitsApi.h>
-
-#include <App/Document.h>
-
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/Command.h>
-#include <Gui/Control.h>
 #include <Gui/Document.h>
-#include <Gui/MainWindow.h>
 #include <Gui/Selection.h>
 #include <Gui/ViewProvider.h>
-#include <Gui/WaitCursor.h>
-
 #include <Mod/TechDraw/App/DrawPage.h>
-#include <Mod/TechDraw/App/DrawUtil.h>
-#include <Mod/TechDraw/App/DrawView.h>
-#include <Mod/TechDraw/App/DrawViewPart.h>
 #include <Mod/TechDraw/App/DrawProjGroup.h>
 #include <Mod/TechDraw/App/DrawProjGroupItem.h>
 #include <Mod/TechDraw/App/DrawViewDetail.h>
+#include <Mod/TechDraw/App/DrawViewPart.h>
 
-#include <Mod/TechDraw/Gui/ui_TaskDetail.h>
-
-#include "QGSPage.h"
-#include "QGIView.h"
-#include "QGIGhostHighlight.h"
-#include "ViewProviderPage.h"
-#include "Rez.h"
-
+#include "ui_TaskDetail.h"
 #include "TaskDetail.h"
+#include "QGIGhostHighlight.h"
+#include "QGSPage.h"
+#include "Rez.h"
+#include "ViewProviderPage.h"
+
 
 using namespace TechDrawGui;
 using namespace TechDraw;
@@ -114,29 +98,29 @@ TaskDetail::TaskDetail(TechDraw::DrawViewPart* baseFeat):
     setUiFromFeat();
     setWindowTitle(QObject::tr("New Detail View"));
 
-    connect(ui->pbDragger, SIGNAL(clicked(bool)),
-            this, SLOT(onDraggerClicked(bool)));
+    connect(ui->pbDragger, &QPushButton::clicked,
+            this, &TaskDetail::onDraggerClicked);
 
     // the UI file uses keyboardTracking = false so that a recomputation
     // will only be triggered when the arrow keys of the spinboxes are used
-    connect(ui->qsbX, SIGNAL(valueChanged(double)),
-            this, SLOT(onXEdit()));
-    connect(ui->qsbY, SIGNAL(valueChanged(double)),
-            this, SLOT(onYEdit()));
-    connect(ui->qsbRadius, SIGNAL(valueChanged(double)),
-            this, SLOT(onRadiusEdit()));
-    connect(ui->cbScaleType, SIGNAL(currentIndexChanged(int)),
-        this, SLOT(onScaleTypeEdit()));
-    connect(ui->qsbScale, SIGNAL(valueChanged(double)),
-        this, SLOT(onScaleEdit()));
-    connect(ui->leReference, SIGNAL(editingFinished()),
-        this, SLOT(onReferenceEdit()));
+    connect(ui->qsbX, qOverload<double>(&QuantitySpinBox::valueChanged),
+            this, &TaskDetail::onXEdit);
+    connect(ui->qsbY, qOverload<double>(&QuantitySpinBox::valueChanged),
+            this, &TaskDetail::onYEdit);
+    connect(ui->qsbRadius, qOverload<double>(&QuantitySpinBox::valueChanged),
+            this, &TaskDetail::onRadiusEdit);
+    connect(ui->cbScaleType, qOverload<int>(&QComboBox::currentIndexChanged),
+            this, &TaskDetail::onScaleTypeEdit);
+    connect(ui->qsbScale, qOverload<double>(&QuantitySpinBox::valueChanged),
+            this, &TaskDetail::onScaleEdit);
+    connect(ui->leReference, &QLineEdit::editingFinished,
+            this, &TaskDetail::onReferenceEdit);
 
     m_ghost = new QGIGhostHighlight();
     m_vpp->getQGSPage()->addItem(m_ghost);
     m_ghost->hide();
-    connect(m_ghost, SIGNAL(positionChange(QPointF)),
-            this, SLOT(onHighlightMoved(QPointF)));
+    connect(m_ghost, &QGIGhostHighlight::positionChange,
+            this, &TaskDetail::onHighlightMoved);
 }
 
 //edit constructor
@@ -194,29 +178,29 @@ TaskDetail::TaskDetail(TechDraw::DrawViewDetail* detailFeat):
     setUiFromFeat();
     setWindowTitle(QObject::tr("Edit Detail View"));
 
-    connect(ui->pbDragger, SIGNAL(clicked(bool)),
-            this, SLOT(onDraggerClicked(bool)));
+    connect(ui->pbDragger, &QPushButton::clicked,
+            this, &TaskDetail::onDraggerClicked);
 
     // the UI file uses keyboardTracking = false so that a recomputation
     // will only be triggered when the arrow keys of the spinboxes are used
-    connect(ui->qsbX, SIGNAL(valueChanged(double)),
-            this, SLOT(onXEdit()));
-    connect(ui->qsbY, SIGNAL(valueChanged(double)),
-            this, SLOT(onYEdit()));
-    connect(ui->qsbRadius, SIGNAL(valueChanged(double)),
-            this, SLOT(onRadiusEdit()));
-    connect(ui->cbScaleType, SIGNAL(currentIndexChanged(int)),
-        this, SLOT(onScaleTypeEdit()));
-    connect(ui->qsbScale, SIGNAL(valueChanged(double)),
-        this, SLOT(onScaleEdit()));
-    connect(ui->leReference, SIGNAL(editingFinished()),
-        this, SLOT(onReferenceEdit()));
+    connect(ui->qsbX, qOverload<double>(&QuantitySpinBox::valueChanged),
+            this, &TaskDetail::onXEdit);
+    connect(ui->qsbY, qOverload<double>(&QuantitySpinBox::valueChanged),
+            this, &TaskDetail::onYEdit);
+    connect(ui->qsbRadius, qOverload<double>(&QuantitySpinBox::valueChanged),
+            this, &TaskDetail::onRadiusEdit);
+    connect(ui->cbScaleType, qOverload<int>(&QComboBox::currentIndexChanged),
+            this, &TaskDetail::onScaleTypeEdit);
+    connect(ui->qsbScale, qOverload<double>(&QuantitySpinBox::valueChanged),
+            this, &TaskDetail::onScaleEdit);
+    connect(ui->leReference, &QLineEdit::editingFinished,
+            this, &TaskDetail::onReferenceEdit);
 
     m_ghost = new QGIGhostHighlight();
     m_vpp->getQGSPage()->addItem(m_ghost);
     m_ghost->hide();
-    connect(m_ghost, SIGNAL(positionChange(QPointF)),
-            this, SLOT(onHighlightMoved(QPointF)));
+    connect(m_ghost, &QGIGhostHighlight::positionChange,
+            this, &TaskDetail::onHighlightMoved);
 }
 
 void TaskDetail::updateTask()
@@ -450,10 +434,16 @@ void TaskDetail::createDetail()
 //    Base::Console().Message("TD::createDetail()\n");
     Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Create Detail View"));
 
-    m_detailName = m_doc->getUniqueObjectName("Detail");
+    const std::string objectName{"Detail"};
+    std::string m_detailName = m_doc->getUniqueObjectName(objectName.c_str());
+    std::string generatedSuffix {m_detailName.substr(objectName.length())};
 
     Gui::Command::doCommand(Command::Doc, "App.activeDocument().addObject('TechDraw::DrawViewDetail', '%s')",
                             m_detailName.c_str());
+
+    Gui::Command::doCommand(Command::Doc, "App.activeDocument().%s.translateLabel('DrawViewDetail', 'Detail', '%s')",
+              m_detailName.c_str(), m_detailName.c_str());
+
     App::DocumentObject *docObj = m_doc->getObject(m_detailName.c_str());
     TechDraw::DrawViewDetail* dvd = dynamic_cast<TechDraw::DrawViewDetail *>(docObj);
     if (!dvd) {
@@ -547,8 +537,7 @@ QPointF TaskDetail::getAnchorScene()
     Base::Vector3d xyScene = Rez::guiX(basePos);
     Base::Vector3d anchorOffsetScene = Rez::guiX(anchorPos) * scale;
     Base::Vector3d netPos = xyScene + anchorOffsetScene;
-    QPointF qAnchor(netPos.x, netPos.y);
-    return qAnchor;
+    return QPointF(netPos.x, netPos.y);
 }
 
 // protects against stale pointers

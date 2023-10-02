@@ -38,9 +38,9 @@ PartExport extern PyObject* PartExceptionOCCConstructionError;
 PartExport extern PyObject* PartExceptionOCCDimensionError;
 
 
-#define PY_TRY	try 
+#define PY_TRY	try
 
-/// see docu of PY_TRY 
+/// see docu of PY_TRY
 #  define _PY_CATCH_OCC(R)                                          \
     catch (Standard_Failure &e)                                     \
     {                                                               \

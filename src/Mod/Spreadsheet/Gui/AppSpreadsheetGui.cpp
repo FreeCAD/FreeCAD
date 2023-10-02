@@ -22,71 +22,65 @@
  ***************************************************************************/
 
 #include "PreCompiled.h"
-#ifndef _PreComp_
-# include <QIcon>
-# include <QImage>
-# include <QFileInfo>
-#endif
 
-#include <CXX/Extensions.hxx>
-#include <CXX/Objects.hxx>
-
+#include <App/Application.h>
+#include <App/Document.h>
 #include <Base/Console.h>
 #include <Base/Exception.h>
 #include <Base/FileInfo.h>
 #include <Base/Interpreter.h>
-#include <App/Application.h>
-#include <App/Document.h>
-#include <Gui/MainWindow.h>
-#include <Gui/Document.h>
 #include <Gui/Application.h>
-#include <Gui/BitmapFactory.h>
-#include <Gui/WidgetFactory.h>
 #include <Gui/Language/Translator.h>
+#include <Gui/MainWindow.h>
+#include <Gui/WidgetFactory.h>
 #include <Mod/Spreadsheet/App/Sheet.h>
-#include "DlgSettingsImp.h"
-#include "Workbench.h"
-#include "ViewProviderSpreadsheet.h"
-#include "SpreadsheetView.h"
 
+#include "DlgSettingsImp.h"
+#include "SheetTableViewAccessibleInterface.h"
+#include "SpreadsheetView.h"
+#include "ViewProviderSpreadsheet.h"
+#include "Workbench.h"
 
 // use a different name to CreateCommand()
-void CreateSpreadsheetCommands(void);
+void CreateSpreadsheetCommands();
 
 void loadSpreadsheetResource()
 {
     // add resources and reloads the translators
     Q_INIT_RESOURCE(Spreadsheet);
+    Q_INIT_RESOURCE(Spreadsheet_translation);
     Gui::Translator::instance()->refresh();
 }
 
-namespace SpreadsheetGui {
-class Module : public Py::ExtensionModule<Module>
+namespace SpreadsheetGui
+{
+class Module: public Py::ExtensionModule<Module>
 {
 public:
-    Module() : Py::ExtensionModule<Module>("SpreadsheetGui")
+    Module()
+        : Py::ExtensionModule<Module>("SpreadsheetGui")
     {
-        add_varargs_method("open",&Module::open
-        );
-        initialize("This module is the SpreadsheetGui module."); // register with Python
+        add_varargs_method("open", &Module::open);
+        initialize("This module is the SpreadsheetGui module.");  // register with Python
     }
-
-    ~Module() override {}
 
 private:
     Py::Object open(const Py::Tuple& args)
     {
         char* Name;
-        const char* DocName=nullptr;
-        if (!PyArg_ParseTuple(args.ptr(), "et|s","utf-8",&Name,&DocName))
+        const char* DocName = nullptr;
+        if (!PyArg_ParseTuple(args.ptr(), "et|s", "utf-8", &Name, &DocName)) {
             throw Py::Exception();
+        }
         std::string EncodedName = std::string(Name);
         PyMem_Free(Name);
 
         try {
             Base::FileInfo file(EncodedName);
-            App::Document *pcDoc = App::GetApplication().newDocument(DocName ? DocName : QT_TR_NOOP("Unnamed"));
-            Spreadsheet::Sheet *pcSheet = static_cast<Spreadsheet::Sheet *>(pcDoc->addObject("Spreadsheet::Sheet", file.fileNamePure().c_str()));
+            App::Document* pcDoc =
+                App::GetApplication().newDocument(DocName ? DocName : QT_TR_NOOP("Unnamed"));
+            Spreadsheet::Sheet* pcSheet = static_cast<Spreadsheet::Sheet*>(
+                pcDoc->addObject("Spreadsheet::Sheet", file.fileNamePure().c_str()));
 
             pcSheet->importFromFile(EncodedName, '\t', '"', '\\');
             pcSheet->execute();
@@ -104,8 +98,7 @@ PyObject* initModule()
     return Base::Interpreter().addModule(new Module);
 }
 
-} // namespace SpreadsheetGui
-
+}  // namespace SpreadsheetGui
 
 /* Python entry */
 PyMOD_INIT_FUNC(SpreadsheetGui)
@@ -118,6 +111,8 @@ PyMOD_INIT_FUNC(SpreadsheetGui)
     // instantiating the commands
     CreateSpreadsheetCommands();
 
+    QAccessible::installFactory(SpreadsheetGui::SheetTableViewAccessibleInterface::ifactory);
+
     SpreadsheetGui::ViewProviderSheet::init();
     SpreadsheetGui::ViewProviderSheetPython::init();
     SpreadsheetGui::Workbench::init();
@@ -125,7 +120,8 @@ PyMOD_INIT_FUNC(SpreadsheetGui)
     SpreadsheetGui::SheetViewPy::init_type();
 
     // register preference page
-    new Gui::PrefPageProducer<SpreadsheetGui::DlgSettingsImp> ("Spreadsheet");
+    new Gui::PrefPageProducer<SpreadsheetGui::DlgSettingsImp>(
+        QT_TRANSLATE_NOOP("QObject", "Spreadsheet"));
 
     // add resources and reloads the translators
     loadSpreadsheetResource();

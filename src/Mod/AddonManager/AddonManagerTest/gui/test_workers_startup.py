@@ -1,24 +1,23 @@
-# -*- coding: utf-8 -*-
-
+# SPDX-License-Identifier: LGPL-2.1-or-later
 # ***************************************************************************
-# *   Copyright (c) 2022 FreeCAD Project Association                        *
 # *                                                                         *
-# *   This file is part of the FreeCAD CAx development system.              *
+# *   Copyright (c) 2022-2023 FreeCAD Project Association                   *
 # *                                                                         *
-# *   This library is free software; you can redistribute it and/or         *
-# *   modify it under the terms of the GNU Lesser General Public            *
-# *   License as published by the Free Software Foundation; either          *
-# *   version 2.1 of the License, or (at your option) any later version.    *
+# *   This file is part of FreeCAD.                                         *
 # *                                                                         *
-# *   This library is distributed in the hope that it will be useful,       *
-# *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU     *
+# *   FreeCAD is free software: you can redistribute it and/or modify it    *
+# *   under the terms of the GNU Lesser General Public License as           *
+# *   published by the Free Software Foundation, either version 2.1 of the  *
+# *   License, or (at your option) any later version.                       *
+# *                                                                         *
+# *   FreeCAD is distributed in the hope that it will be useful, but        *
+# *   WITHOUT ANY WARRANTY; without even the implied warranty of            *
+# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU      *
 # *   Lesser General Public License for more details.                       *
 # *                                                                         *
 # *   You should have received a copy of the GNU Lesser General Public      *
-# *   License along with this library; if not, write to the Free Software   *
-# *   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA         *
-# *   02110-1301  USA                                                       *
+# *   License along with FreeCAD. If not, see                               *
+# *   <https://www.gnu.org/licenses/>.                                      *
 # *                                                                         *
 # ***************************************************************************
 
@@ -27,11 +26,9 @@ import unittest
 import os
 import tempfile
 
-from addonmanager_git import initialize_git
-
 import FreeCAD
 
-from PySide2 import QtCore
+from PySide import QtCore
 
 import NetworkManager
 from Addon import Addon
@@ -39,18 +36,16 @@ from addonmanager_workers_startup import (
     CreateAddonListWorker,
     LoadPackagesFromCacheWorker,
     LoadMacrosFromCacheWorker,
-    CheckSingleUpdateWorker,
 )
 
-from addonmanager_workers_installation import (
-    InstallWorkbenchWorker,
-)
+run_slow_tests = False
 
 
 class TestWorkersStartup(unittest.TestCase):
 
     MODULE = "test_workers_startup"  # file name without extension
 
+    @unittest.skipUnless(run_slow_tests, "This integration test is slow and uses the network")
     def setUp(self):
         """Set up the test"""
         self.test_dir = os.path.join(
@@ -59,12 +54,8 @@ class TestWorkersStartup(unittest.TestCase):
 
         self.saved_mod_directory = Addon.mod_directory
         self.saved_cache_directory = Addon.cache_directory
-        Addon.mod_directory = os.path.join(
-            tempfile.gettempdir(), "FreeCADTesting", "Mod"
-        )
-        Addon.cache_directory = os.path.join(
-            tempfile.gettempdir(), "FreeCADTesting", "Cache"
-        )
+        Addon.mod_directory = os.path.join(tempfile.gettempdir(), "FreeCADTesting", "Mod")
+        Addon.cache_directory = os.path.join(tempfile.gettempdir(), "FreeCADTesting", "Cache")
 
         os.makedirs(Addon.mod_directory, mode=0o777, exist_ok=True)
         os.makedirs(Addon.cache_directory, mode=0o777, exist_ok=True)
@@ -85,9 +76,7 @@ class TestWorkersStartup(unittest.TestCase):
         self.package_cache = {}
         self.macro_cache = []
 
-        self.package_cache_filename = os.path.join(
-            Addon.cache_directory, "packages.json"
-        )
+        self.package_cache_filename = os.path.join(Addon.cache_directory, "packages.json")
         self.macro_cache_filename = os.path.join(Addon.cache_directory, "macros.json")
 
         # Store the user's preference for whether git is enabled or disabled
@@ -131,7 +120,6 @@ class TestWorkersStartup(unittest.TestCase):
                 f.write(json.dumps(self.macro_cache, indent="  "))
 
         original_macro_counter = self.macro_counter
-        original_workbench_counter = self.workbench_counter
         original_addon_list = self.addon_list.copy()
         self.macro_counter = 0
         self.workbench_counter = 0
@@ -139,9 +127,7 @@ class TestWorkersStartup(unittest.TestCase):
 
         # Now try loading the same data from the cache we just created
         worker = LoadPackagesFromCacheWorker(self.package_cache_filename)
-        worker.override_metadata_cache_path(
-            os.path.join(Addon.cache_directory, "PackageMetadata")
-        )
+        worker.override_metadata_cache_path(os.path.join(Addon.cache_directory, "PackageMetadata"))
         worker.addon_repo.connect(self._addon_added)
 
         worker.start()

@@ -48,23 +48,23 @@ public:
     /// constructor
     ViewProviderGeomHatch();
     /// destructor
-    virtual ~ViewProviderGeomHatch();
+    ~ViewProviderGeomHatch() override;
 
     App::PropertyFloat       WeightPattern;
     App::PropertyColor       ColorPattern;
 
-    virtual void updateData(const App::Property*) override;
-    virtual void onChanged(const App::Property *prop) override;
-    virtual bool setEdit(int ModNum) override;
-    virtual bool doubleClicked(void) override;
-    virtual bool useNewSelectionModel(void) const override {return false;}
+    void updateData(const App::Property*) override;
+    void onChanged(const App::Property *prop) override;
+    bool setEdit(int ModNum) override;
+    bool doubleClicked(void) override;
+    bool useNewSelectionModel(void) const override {return false;}
     void updateGraphic(void);
     void getParameters(void);
-    virtual bool canDelete(App::DocumentObject* obj) const override;
+    bool canDelete(App::DocumentObject* obj) const override;
 
     TechDraw::DrawGeomHatch* getViewObject() const;
 
-    virtual Gui::MDIView *getMDIView() const override;
+    Gui::MDIView *getMDIView() const override;
 };
 
 } // namespace TechDrawGui

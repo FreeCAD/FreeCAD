@@ -21,12 +21,13 @@
  ***************************************************************************/
 
 #include "PreCompiled.h"
-
 #ifndef _PreComp_
-#include <cmath>
-#include <QTreeWidget>
+# include <cmath>
+# include <QTreeWidget>
 #endif // #ifndef _PreComp_
 
+#include <App/Document.h>
+#include <App/DocumentObject.h>
 #include <Base/Console.h>
 
 #include <Gui/Application.h>
@@ -35,20 +36,12 @@
 #include <Gui/Document.h>
 #include <Gui/Selection.h>
 #include <Gui/ViewProvider.h>
-
-#include <App/Application.h>
-#include <App/Document.h>
-#include <App/DocumentObject.h>
-
-#include <Mod/Part/App/PartFeature.h>
-
 #include <Mod/TechDraw/App/DrawPage.h>
-#include <Mod/TechDraw/App/DrawViewPart.h>
 #include <Mod/TechDraw/App/DrawViewDimension.h>
-#include <Mod/TechDraw/App/DrawUtil.h>
 
 #include "TaskLinkDim.h"
-#include <Mod/TechDraw/Gui/ui_TaskLinkDim.h>
+#include "ui_TaskLinkDim.h"
+
 
 using namespace Gui;
 using namespace TechDraw;
@@ -65,10 +58,10 @@ TaskLinkDim::TaskLinkDim(std::vector<App::DocumentObject*> parts, std::vector<st
     ui->selector->setAvailableLabel(tr("Available"));
     ui->selector->setSelectedLabel(tr("Selected"));
 
-    connect(ui->selector->availableTreeWidget(), SIGNAL(currentItemChanged(QTreeWidgetItem*, QTreeWidgetItem*)),
-            this, SLOT(onCurrentItemChanged(QTreeWidgetItem*, QTreeWidgetItem*)));
-    connect(ui->selector->selectedTreeWidget(), SIGNAL(currentItemChanged(QTreeWidgetItem*, QTreeWidgetItem*)),
-            this, SLOT(onCurrentItemChanged(QTreeWidgetItem*, QTreeWidgetItem*)));
+    connect(ui->selector->availableTreeWidget(), &QTreeWidget::currentItemChanged,
+            this, &TaskLinkDim::onCurrentItemChanged);
+    connect(ui->selector->selectedTreeWidget(), &QTreeWidget::currentItemChanged,
+            this, &TaskLinkDim::onCurrentItemChanged);
 
     loadAvailDims();
 
@@ -100,13 +93,13 @@ void TaskLinkDim::loadAvailDims()
     std::vector<App::DocumentObject*>::iterator itView = pageViews.begin();
     std::string result;
     int selRefType = TechDraw::DrawViewDimension::getRefTypeSubElements(m_subs);
-    int found = 0;
+    //int found = 0;
     for (; itView != pageViews.end(); itView++) {
         if ((*itView)->isDerivedFrom(TechDraw::DrawViewDimension::getClassTypeId())) {
             TechDraw::DrawViewDimension* dim = static_cast<TechDraw::DrawViewDimension*>((*itView));
             int dimRefType = dim->getRefType();
             if (dimRefType == selRefType) {                                     //potential matches
-                found++;
+    //            found++;
                 if (dim->has3DReferences()) {
                     if (dimReferencesSelection(dim))  {
                         loadToTree(dim, true, guiDoc);

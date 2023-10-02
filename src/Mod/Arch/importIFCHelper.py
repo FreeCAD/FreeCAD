@@ -21,13 +21,16 @@
 """Helper functions that are used by IFC importer and exporter."""
 import sys
 import math
-import six
 
 import FreeCAD
 import Arch
 import ArchIFC
 
+if FreeCAD.GuiUp:
+    import FreeCADGui as Gui
+
 from draftutils.messages import _msg, _wrn
+
 
 PREDEFINED_RGB = {"black": (0, 0, 0),
                   "red": (1.0, 0, 0),
@@ -41,16 +44,6 @@ PREDEFINED_RGB = {"black": (0, 0, 0),
 
 DEBUG_prod_repr = False
 DEBUG_prod_colors = False
-
-
-def decode(filename, utf=False):
-    """Turn unicode into strings, only for Python 2."""
-    if six.PY2 and isinstance(filename, six.text_type):
-        # This is a workaround since ifcopenshell 0.6 currently
-        # can't handle unicode filenames
-        encoding = "utf8" if utf else sys.getfilesystemencoding()
-        filename = filename.encode(encoding)
-    return filename
 
 
 def dd2dms(dd):
@@ -78,6 +71,49 @@ def dms2dd(degrees, minutes, seconds, milliseconds=0):
     """
     dd = float(degrees) + float(minutes)/60 + float(seconds)/3600
     return dd
+
+
+def getPreferences():
+    """Retrieve the IFC preferences available in import and export.
+
+    MERGE_MODE_ARCH:
+        0 = parametric arch objects
+        1 = non-parametric arch objects
+        2 = Part shapes
+        3 = One compound per storey
+    """
+    p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
+
+    if FreeCAD.GuiUp and p.GetBool("ifcShowDialog", False):
+        Gui.showPreferences("Import-Export", 0)
+
+    preferences = {
+        'DEBUG': p.GetBool("ifcDebug", False),
+        'PREFIX_NUMBERS': p.GetBool("ifcPrefixNumbers", False),
+        'SKIP': p.GetString("ifcSkip", "").split(","),
+        'SEPARATE_OPENINGS': p.GetBool("ifcSeparateOpenings", False),
+        'ROOT_ELEMENT': p.GetString("ifcRootElement", "IfcProduct"),
+        'GET_EXTRUSIONS': p.GetBool("ifcGetExtrusions", False),
+        'MERGE_MATERIALS': p.GetBool("ifcMergeMaterials", False),
+        'MERGE_MODE_ARCH': p.GetInt("ifcImportModeArch", 0),
+        'MERGE_MODE_STRUCT': p.GetInt("ifcImportModeStruct", 1),
+        'CREATE_CLONES': p.GetBool("ifcCreateClones", True),
+        'IMPORT_PROPERTIES': p.GetBool("ifcImportProperties", False),
+        'SPLIT_LAYERS': p.GetBool("ifcSplitLayers", False),  # wall layer, not layer for visual props
+        'FITVIEW_ONIMPORT': p.GetBool("ifcFitViewOnImport", False),
+        'ALLOW_INVALID': p.GetBool("ifcAllowInvalid", False),
+        'REPLACE_PROJECT': p.GetBool("ifcReplaceProject", False),
+        'MULTICORE': p.GetInt("ifcMulticore", 0),
+        'IMPORT_LAYER': p.GetBool("ifcImportLayer", True)
+    }
+
+    if preferences['MERGE_MODE_ARCH'] > 0:
+        preferences['SEPARATE_OPENINGS'] = False
+        preferences['GET_EXTRUSIONS'] = False
+    if not preferences['SEPARATE_OPENINGS']:
+        preferences['SKIP'].append("IfcOpeningElement")
+
+    return preferences
 
 
 class ProjectImporter:
@@ -242,7 +278,7 @@ def buildRelMattable(ifcfile):
 
     for r in ifcfile.by_type("IfcRelAssociatesMaterial"):
         # the related object might not exist
-        # https://forum.freecadweb.org/viewtopic.php?f=39&t=58607
+        # https://forum.freecad.org/viewtopic.php?f=39&t=58607
         if r.RelatedObjects:
             for o in r.RelatedObjects:
                 if r.RelatingMaterial.is_a("IfcMaterial"):
@@ -290,7 +326,7 @@ def buildRelColors(ifcfile, prodrepr):
 
         # Nova
         # FIXME: style_entity_id = { style_entity_id: product_id } not material_id ???
-        # see https://forum.freecadweb.org/viewtopic.php?f=39&t=37940&start=10#p329491
+        # see https://forum.freecad.org/viewtopic.php?f=39&t=37940&start=10#p329491
         # last code change in these color code https://github.com/FreeCAD/FreeCAD/commit/2d1f6ab1
         '''
         if r.Item:
@@ -348,6 +384,10 @@ def buildRelProductColors(ifcfile, prodrepr):
     i = 0
 
     for p in prodrepr.keys():
+        # see method getColorFromProduct()
+        # it is a method for the redundant code inside this loop
+        # which can be used to get the color from a product directly
+
         # Representation item, see `IfcRepresentationItem` documentation.
         # All kinds of geometric or topological representation items
         # `IfcExtrudedAreaSolid`, `IfcMappedItem`, `IfcFacetedBrep`,
@@ -408,6 +448,20 @@ def getColorFromMaterial(material):
     return None
 
 
+def color2colorRGB(color_data):
+
+    if color_data is None:
+        return None
+
+    color_rgb = [
+        int(round(color_data[0]*255, 0)),
+        int(round(color_data[1]*255, 0)),
+        int(round(color_data[2]*255, 0))
+    ]  # int(159.99) would return 159 not 160, thus round
+
+    return color_rgb
+
+
 def getColorFromStyledItem(styled_item):
     """Get color from the IfcStyledItem.
 
@@ -458,7 +512,7 @@ def getColorFromStyledItem(styled_item):
     else:
         # never seen an ifc with more than one Styles in IfcStyledItem
         # the above seams to only apply for IFC2x3, IFC4 can have them
-        # see https://forum.freecadweb.org/viewtopic.php?f=39&t=33560&p=437056#p437056
+        # see https://forum.freecad.org/viewtopic.php?f=39&t=33560&p=437056#p437056
 
         # Get the `IfcPresentationStyleAssignment`, there should only be one,
         if styled_item.Styles[0].is_a('IfcPresentationStyleAssignment'):
@@ -572,7 +626,7 @@ def getIfcPropertySets(ifcfile, pid):
     psets = {}
     for rel in ifcfile[pid].IsDefinedBy:
         # the following if condition is needed in IFC2x3 only
-        # https://forum.freecadweb.org/viewtopic.php?f=39&t=37892#p322884
+        # https://forum.freecad.org/viewtopic.php?f=39&t=37892#p322884
         if rel.is_a('IfcRelDefinesByProperties'):
             props = []
             if rel.RelatingPropertyDefinition.is_a("IfcPropertySet"):
@@ -587,20 +641,14 @@ def getIfcProperties(ifcfile, pid, psets, d):
     for pset in psets.keys():
         # print("reading pset: ",pset)
         psetname = ifcfile[pset].Name
-        if six.PY2:
-            psetname = psetname.encode("utf8")
         for prop in psets[pset]:
             e = ifcfile[prop]
             pname = e.Name
-            if six.PY2:
-                pname = pname.encode("utf8")
             if e.is_a("IfcPropertySingleValue"):
                 if e.NominalValue:
                     ptype = e.NominalValue.is_a()
                     if ptype in ['IfcLabel','IfcText','IfcIdentifier','IfcDescriptiveMeasure']:
                         pvalue = e.NominalValue.wrappedValue
-                        if six.PY2:
-                            pvalue = pvalue.encode("utf8")
                     else:
                         pvalue = str(e.NominalValue.wrappedValue)
                     if hasattr(e.NominalValue,'Unit'):
@@ -928,8 +976,8 @@ def createFromProperties(propsets,ifcfile,parametrics):
     if appset:
         oname = None
         otype = None
-        if "FreeCADType" in appset.keys():
-            if "FreeCADName" in appset.keys():
+        if "FreeCADType" in appset:
+            if "FreeCADName" in appset:
                 obj = FreeCAD.ActiveDocument.addObject(appset["FreeCADType"],appset["FreeCADName"])
                 if "FreeCADAppObject" in appset:
                     mod,cla = appset["FreeCADAppObject"].split(".")
@@ -1030,6 +1078,7 @@ def createAnnotation(annotation,doc,ifcscale,preferences):
     """creates an annotation object"""
 
     anno = None
+    aid =  annotation.id()
     if annotation.is_a("IfcGrid"):
         axes = []
         uvwaxes = ()
@@ -1058,10 +1107,8 @@ def createAnnotation(annotation,doc,ifcscale,preferences):
             grid_placement = None
             if annotation.Name:
                 name = annotation.Name
-                if six.PY2:
-                    name = name.encode("utf8")
             if annotation.ObjectPlacement:
-                # https://forum.freecadweb.org/viewtopic.php?f=39&t=40027
+                # https://forum.freecad.org/viewtopic.php?f=39&t=40027
                 grid_placement = getPlacement(annotation.ObjectPlacement,scaling=1)
             if preferences['PREFIX_NUMBERS']:
                 name = "ID" + str(aid) + " " + name
@@ -1073,8 +1120,6 @@ def createAnnotation(annotation,doc,ifcscale,preferences):
         name = "Annotation"
         if annotation.Name:
             name = annotation.Name
-            if six.PY2:
-                name = name.encode("utf8")
         if "annotation" not in name.lower():
             name = "Annotation " + name
         if preferences['PREFIX_NUMBERS']: name = "ID" + str(aid) + " " + name

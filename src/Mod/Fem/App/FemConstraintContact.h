@@ -30,7 +30,7 @@
 namespace Fem
 {
 
-class FemExport ConstraintContact : public Fem::Constraint
+class FemExport ConstraintContact: public Fem::Constraint
 {
     PROPERTY_HEADER_WITH_OVERRIDE(Fem::ConstraintContact);
 
@@ -42,32 +42,31 @@ public:
     App::PropertyVectorList Points;
     App::PropertyVectorList Normals;
 
-/*Note*/
-    //Constraint parameters
+    /*Note*/
+    // Constraint parameters
     /******
      * Add the constraint parameters here, the variables or data
      * that needs to be eventually send over to the calculix input file.
      * This is only the definitions of the variables
      ******/
-    //ex.
+    // ex.
     App::PropertyFloat Slope;
     App::PropertyFloat Friction;
 
-    //etc
-/* */
+    // etc
+    /* */
 
     /// recalculate the object
-    App::DocumentObjectExecReturn *execute() override;
+    App::DocumentObjectExecReturn* execute() override;
 
     /// returns the type name of the ViewProvider
     const char* getViewProviderName() const override;
 
 protected:
     void onChanged(const App::Property* prop) override;
-
 };
 
-} //namespace Fem
+}  // namespace Fem
 
 
-#endif // FEM_CONSTRAINTCONTACT_H
+#endif  // FEM_CONSTRAINTCONTACT_H

@@ -1,38 +1,38 @@
 a.new{ color:#ba0000; text-decoration:none; }
 
-#toc { 
+#toc {
     /*border:1px solid #2f6fab;*/
     border:1px solid #aaaaaa;
     background-color:#f9f9f9;
     padding:5px;
 }
 .tocindent {
-	margin-left: 2em;
+    margin-left: 2em;
 }
 .tocline {
-	margin-bottom: 0px;
+    margin-bottom: 0px;
 }
 .toctoggle, .editsection {
-	font-size: smaller;
+    font-size: smaller;
 }
 
 /* images */
-div.floatright { 
-    float: right; 
+div.floatright {
+    float: right;
     margin: 0;
     position:relative;
     border: 0.5em solid White;
     border-width: 0.5em 0 0.8em 1.4em;
 }
-div.floatright p { font-style: italic;} 
-div.floatleft { 
-    float: left; 
+div.floatright p { font-style: italic;}
+div.floatleft {
+    float: left;
     margin: 0.3em 0.5em 0.5em 0;
     position:relative;
     border: 0.5em solid White;
     border-width: 0.5em 1.4em 0.8em 0;
 }
-div.floatleft p { font-style: italic; } 
+div.floatleft p { font-style: italic; }
 /* thumbnails */
 div.thumb {
     margin-bottom: 0.5em;
@@ -67,10 +67,10 @@ div.tleft {
 
 /* table standards */
 table.rimage {
-    float:right; 
-    width:1pt; 
+    float:right;
+    width:1pt;
     position:relative;
-    margin-left:1em; 
+    margin-left:1em;
     margin-bottom:1em;
     text-align:center;
 }
@@ -103,7 +103,7 @@ li#f-privacy {
     display: none;
 }
 
-ul { 
+ul {
     list-style-type: square;
 }
 
@@ -122,11 +122,11 @@ h1, h2, h3, h4, h5, h6
 
 p, .documentDescription {
     /*margin: 1em 0 ! important;*/
-    line-height: 1.2em;    
+    line-height: 1.2em;
 }
 
 .tocindent p {
-	margin: 0 0 0 0 ! important;
+    margin: 0 0 0 0 ! important;
 }
 
 pre {
@@ -135,8 +135,8 @@ pre {
     font-size: 95%;
     overflow: auto;
     padding: 5px;
-	background : #F9F9F9;
-	color : black;
+    background : #F9F9F9;
+    color : black;
 }
 
 table.listing,
@@ -167,8 +167,8 @@ a:link, a:visited {
 }
 
 #content {
-	background : white;
-	color : black;
+    background : white;
+    color : black;
 }
 
 #column-content {
@@ -181,14 +181,14 @@ a:link, a:visited {
 }
 /* MSIE/Win doesn't understand 'inherit' */
 /*a, a.external, a.new, a.stub {
-	color: black ! important;
-	text-decoration: none ! important;
+    color: black ! important;
+    text-decoration: none ! important;
 }
 */
 /* Continue ... */
 /*a, a.external, a.new, a.stub {
-	color: inherit ! important;
-	text-decoration: inherit ! important;
+    color: inherit ! important;
+    text-decoration: inherit ! important;
 }
 */
 img { border: none; }
@@ -208,7 +208,7 @@ div.townBox {
 }
 div.townBox dl {
     padding: 0;
-    margin: 0 0 0.3em 0; 
+    margin: 0 0 0.3em 0;
     font-size: 96%;
 }
 div.townBox dl dt {
@@ -229,7 +229,7 @@ table.gallery {
         background-color:#ffffff;
 }
 
-table.gallery tr { 
+table.gallery tr {
         vertical-align:top;
 }
 
@@ -244,12 +244,12 @@ div.gallerybox div.thumb {
         text-align: center;
         border: 1px solid #cccccc;
         margin: 2px;
-}       
+}
 
 div.gallerytext {
         font-size: 94%;
         padding: 2px 4px;
-}       
+}
 
 /*
 ** Diff rendering

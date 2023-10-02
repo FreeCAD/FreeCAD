@@ -35,7 +35,7 @@ class Ui_DlgSettings3DViewPart;
  * \author Jürgen Riegel
  */
 class DlgSettings3DViewPart : public Gui::Dialog::PreferencePage
-{ 
+{
     Q_OBJECT
 
 public:
@@ -47,8 +47,8 @@ protected:
     void loadSettings() override;
     void changeEvent(QEvent *e) override;
 
-private Q_SLOTS:
-    void on_maxDeviation_valueChanged(double);
+private:
+    void onMaxDeviationValueChanged(double);
 
 private:
     std::unique_ptr<Ui_DlgSettings3DViewPart> ui;

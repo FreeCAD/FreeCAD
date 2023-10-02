@@ -24,7 +24,7 @@ import PathTests.PathTestUtils as PathTestUtils
 import math
 
 from FreeCAD import Vector
-from PathScripts.PathDressupHoldingTags import Tag
+from Path.Dressup.Tags import Tag
 
 
 class TestHoldingTags(PathTestUtils.PathTestBase):

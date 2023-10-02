@@ -39,7 +39,7 @@ using namespace Part;
 extern const char* gce_ErrorStatusText(gce_ErrorType et);
 
 // returns a string which represents the object e.g. when printed in python
-std::string ArcOfHyperbola2dPy::representation(void) const
+std::string ArcOfHyperbola2dPy::representation() const
 {
     return "<ArcOfHyperbola2d object>";
 }
@@ -70,7 +70,7 @@ int ArcOfHyperbola2dPy::PyInit(PyObject* args, PyObject* /*kwds*/)
             return 0;
         }
         catch (Standard_Failure& e) {
-    
+
             PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
             return -1;
         }
@@ -79,14 +79,14 @@ int ArcOfHyperbola2dPy::PyInit(PyObject* args, PyObject* /*kwds*/)
             return -1;
         }
     }
-    
+
     // All checks failed
     PyErr_SetString(PyExc_TypeError,
         "ArcOfHyperbola constructor expects an hyperbola curve and a parameter range");
     return -1;
 }
 
-Py::Float ArcOfHyperbola2dPy::getMajorRadius(void) const
+Py::Float ArcOfHyperbola2dPy::getMajorRadius() const
 {
     return Py::Float(getGeom2dArcOfHyperbolaPtr()->getMajorRadius());
 }
@@ -96,7 +96,7 @@ void  ArcOfHyperbola2dPy::setMajorRadius(Py::Float arg)
     getGeom2dArcOfHyperbolaPtr()->setMajorRadius((double)arg);
 }
 
-Py::Float ArcOfHyperbola2dPy::getMinorRadius(void) const
+Py::Float ArcOfHyperbola2dPy::getMinorRadius() const
 {
     return Py::Float(getGeom2dArcOfHyperbolaPtr()->getMinorRadius());
 }
@@ -106,7 +106,7 @@ void  ArcOfHyperbola2dPy::setMinorRadius(Py::Float arg)
     getGeom2dArcOfHyperbolaPtr()->setMinorRadius((double)arg);
 }
 
-Py::Object ArcOfHyperbola2dPy::getHyperbola(void) const
+Py::Object ArcOfHyperbola2dPy::getHyperbola() const
 {
     Handle(Geom2d_TrimmedCurve) trim = Handle(Geom2d_TrimmedCurve)::DownCast
         (getGeom2dArcOfHyperbolaPtr()->handle());
@@ -121,5 +121,5 @@ PyObject *ArcOfHyperbola2dPy::getCustomAttributes(const char* ) const
 
 int ArcOfHyperbola2dPy::setCustomAttributes(const char* , PyObject *)
 {
-    return 0; 
+    return 0;
 }

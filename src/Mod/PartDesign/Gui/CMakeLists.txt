@@ -15,6 +15,7 @@ include_directories(
     ${PYTHON_INCLUDE_DIRS}
     ${XercesC_INCLUDE_DIRS}
     ${EIGEN3_INCLUDE_DIR}
+    ${CMAKE_SOURCE_DIR}/src/3rdParty/json/single_include/nlohmann/
 )
 link_directories(${OCC_LIBRARY_DIR})
 
@@ -29,11 +30,11 @@ set(PartDesignGui_LIBS
     FreeCADGui
 )
 
-if(BUILD_QT5)
-    qt5_add_resources(PartDesignGui_SRCS Resources/PartDesign.qrc)
-else()
-    qt4_add_resources(PartDesignGui_SRCS Resources/PartDesign.qrc)
-endif()
+set (PartDesign_TR_QRC ${CMAKE_CURRENT_BINARY_DIR}/Resources/PartDesign_translation.qrc)
+qt_find_and_add_translation(QM_SRCS "Resources/translations/*_*.ts"
+    ${CMAKE_CURRENT_BINARY_DIR}/Resources/translations)
+qt_create_resource_file(${PartDesign_TR_QRC} ${QM_SRCS})
+qt_add_resources(PartDesignGui_SRCS Resources/PartDesign.qrc ${PartDesign_TR_QRC})
 
 set(PartDesignGui_UIC_SRCS
     TaskFeaturePick.ui
@@ -61,12 +62,6 @@ set(PartDesignGui_UIC_SRCS
     DlgActiveBody.ui
     TaskHelixParameters.ui
 )
-
-if(BUILD_QT5)
-    qt5_wrap_ui(PartDesignGui_UIC_HDRS ${PartDesignGui_UIC_SRCS})
-else()
-    qt4_wrap_ui(PartDesignGui_UIC_HDRS ${PartDesignGui_UIC_SRCS})
-endif()
 
 SET(PartDesignGuiViewProvider_SRCS
     ViewProvider.cpp
@@ -228,6 +223,8 @@ SET(PartDesignGuiModule_SRCS
     Resources/PartDesign.qrc
     PreCompiled.cpp
     PreCompiled.h
+    SketchWorkflow.cpp
+    SketchWorkflow.h
     Utils.cpp
     Utils.h
     Workbench.cpp

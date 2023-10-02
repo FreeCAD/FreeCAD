@@ -24,12 +24,12 @@
 #define SURFACEGUI_VIEWPROVIDEREXTEND_H
 
 #include <Mod/Part/Gui/ViewProviderSpline.h>
-#include <Mod/Surface/App/FeatureExtend.h>
+
 
 namespace SurfaceGui
 {
 
-class ViewProviderExtend : public PartGui::ViewProviderSpline
+class ViewProviderExtend: public PartGui::ViewProviderSpline
 {
     PROPERTY_HEADER_WITH_OVERRIDE(SurfaceGui::ViewProviderExtend);
 
@@ -37,6 +37,6 @@ public:
     QIcon getIcon() const override;
 };
 
-} //namespace SurfaceGui
+}  // namespace SurfaceGui
 
-#endif // SURFACEGUI_VIEWPROVIDEREXTEND_H
+#endif  // SURFACEGUI_VIEWPROVIDEREXTEND_H

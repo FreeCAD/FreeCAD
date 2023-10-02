@@ -20,31 +20,27 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <QMessageBox>
+#include <QMessageBox>
 #endif
-
-#include "TaskDlgMeshShapeNetgen.h"
 
 #include <Base/Console.h>
 #include <Base/Exception.h>
-#include <Gui/TaskView/TaskSelectLinkProperty.h>
 #include <Gui/Application.h>
-#include <Gui/Document.h>
 #include <Gui/Command.h>
+#include <Gui/Document.h>
 #include <Gui/MainWindow.h>
 #include <Gui/WaitCursor.h>
+#include <Mod/Fem/App/FemMeshShapeNetgenObject.h>
 
+#include "TaskDlgMeshShapeNetgen.h"
+#include "TaskTetParameter.h"
 #include "ViewProviderFemMeshShapeNetgen.h"
 
-#include <Mod/Fem/App/FemMeshShapeNetgenObject.h>
-#include "TaskTetParameter.h"
 
 using namespace FemGui;
-
 
 //**************************************************************************
 //**************************************************************************
@@ -52,7 +48,9 @@ using namespace FemGui;
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 TaskDlgMeshShapeNetgen::TaskDlgMeshShapeNetgen(FemGui::ViewProviderFemMeshShapeNetgen* obj)
-    : TaskDialog(), param(nullptr), ViewProviderFemMeshShapeNetgen(obj)
+    : TaskDialog()
+    , param(nullptr)
+    , ViewProviderFemMeshShapeNetgen(obj)
 {
     FemMeshShapeNetgenObject = dynamic_cast<Fem::FemMeshShapeNetgenObject*>(obj->getObject());
     if (FemMeshShapeNetgenObject) {
@@ -61,10 +59,7 @@ TaskDlgMeshShapeNetgen::TaskDlgMeshShapeNetgen(FemGui::ViewProviderFemMeshShapeN
     }
 }
 
-TaskDlgMeshShapeNetgen::~TaskDlgMeshShapeNetgen()
-{
-
-}
+TaskDlgMeshShapeNetgen::~TaskDlgMeshShapeNetgen() = default;
 
 //==== calls from the TaskView ===============================================================
 
@@ -81,8 +76,7 @@ void TaskDlgMeshShapeNetgen::open()
 void TaskDlgMeshShapeNetgen::clicked(int button)
 {
     try {
-        if (QDialogButtonBox::Apply == button && param->touched)
-        {
+        if (QDialogButtonBox::Apply == button && param->touched) {
             Gui::WaitCursor wc;
             // May throw an exception which we must handle here
             FemMeshShapeNetgenObject->execute();
@@ -98,13 +92,14 @@ void TaskDlgMeshShapeNetgen::clicked(int button)
 bool TaskDlgMeshShapeNetgen::accept()
 {
     try {
-        if (param->touched)
-        {
+        if (param->touched) {
             Gui::WaitCursor wc;
             bool ret = FemMeshShapeNetgenObject->recomputeFeature();
             if (!ret) {
                 wc.restoreCursor();
-                QMessageBox::critical(Gui::getMainWindow(), tr("Meshing failure"),
+                QMessageBox::critical(
+                    Gui::getMainWindow(),
+                    tr("Meshing failure"),
                     QString::fromStdString(FemMeshShapeNetgenObject->getStatusString()));
                 return true;
             }
@@ -116,7 +111,7 @@ bool TaskDlgMeshShapeNetgen::accept()
             Gui::Application::Instance->hideViewProvider(obj);
         }
 
-        //FemSetNodesObject->Label.setValue(name->name);
+        // FemSetNodesObject->Label.setValue(name->name);
         Gui::Command::doCommand(Gui::Command::Gui, "Gui.activeDocument().resetEdit()");
         Gui::Command::commitCommand();
 
@@ -131,11 +126,11 @@ bool TaskDlgMeshShapeNetgen::accept()
 
 bool TaskDlgMeshShapeNetgen::reject()
 {
-    //FemSetNodesObject->execute();
-    //    //Gui::Document* doc = Gui::Application::Instance->activeDocument();
-    //    //if(doc)
-    //    //    doc->resetEdit();
-    //param->MeshViewProvider->resetHighlightNodes();
+    // FemSetNodesObject->execute();
+    //     //Gui::Document* doc = Gui::Application::Instance->activeDocument();
+    //     //if(doc)
+    //     //    doc->resetEdit();
+    // param->MeshViewProvider->resetHighlightNodes();
     Gui::Command::abortCommand();
     Gui::Command::doCommand(Gui::Command::Gui, "Gui.activeDocument().resetEdit()");
 
@@ -143,8 +138,6 @@ bool TaskDlgMeshShapeNetgen::reject()
 }
 
 void TaskDlgMeshShapeNetgen::helpRequested()
-{
-
-}
+{}
 
 #include "moc_TaskDlgMeshShapeNetgen.cpp"

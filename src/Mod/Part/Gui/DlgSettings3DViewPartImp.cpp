@@ -20,46 +20,45 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
+#ifndef _PreComp_
+# include <QMessageBox>
+#endif
 
-#include <QMessageBox>
-#include "ViewProvider.h"
-#include "DlgSettings3DViewPartImp.h"
-#include "ui_DlgSettings3DViewPart.h"
-
-#include <Gui/PrefWidgets.h>
-#include <Gui/Application.h>
-#include <Gui/Document.h>
 #include <App/Application.h>
 #include <App/Document.h>
-#include <Base/Console.h>
+#include <Gui/Application.h>
+#include <Gui/Document.h>
+
+#include "DlgSettings3DViewPartImp.h"
+#include "ui_DlgSettings3DViewPart.h"
+#include "ViewProvider.h"
+
 
 using namespace PartGui;
 
 /**
- *  Constructs a DlgSettings3DViewPart which is a child of 'parent', with the 
- *  name 'name' and widget flags set to 'f' 
+ *  Constructs a DlgSettings3DViewPart which is a child of 'parent', with the
+ *  name 'name' and widget flags set to 'f'
  */
 DlgSettings3DViewPart::DlgSettings3DViewPart(QWidget* parent)
   : PreferencePage(parent), ui(new Ui_DlgSettings3DViewPart), checkValue(false)
 {
     ui->setupUi(this);
+    connect(ui->maxDeviation, qOverload<double>(&QDoubleSpinBox::valueChanged),
+            this, &DlgSettings3DViewPart::onMaxDeviationValueChanged);
     ParameterGrp::handle hPart = App::GetApplication().GetParameterGroupByPath
         ("User parameter:BaseApp/Preferences/Mod/Part");
     double lowerLimit = hPart->GetFloat("MinimumDeviation", ui->maxDeviation->minimum());
     ui->maxDeviation->setMinimum(lowerLimit);
 }
 
-/** 
+/**
  *  Destroys the object and frees any allocated resources
  */
-DlgSettings3DViewPart::~DlgSettings3DViewPart()
-{
-    // no need to delete child widgets, Qt does it all for us
-}
+DlgSettings3DViewPart::~DlgSettings3DViewPart() = default;
 
-void DlgSettings3DViewPart::on_maxDeviation_valueChanged(double v)
+void DlgSettings3DViewPart::onMaxDeviationValueChanged(double v)
 {
     if (!this->isVisible())
         return;
@@ -78,11 +77,11 @@ void DlgSettings3DViewPart::saveSettings()
 
     // search for Part view providers and apply the new settings
     std::vector<App::Document*> docs = App::GetApplication().getDocuments();
-    for (std::vector<App::Document*>::iterator it = docs.begin(); it != docs.end(); ++it) {
-        Gui::Document* doc = Gui::Application::Instance->getDocument(*it);
+    for (auto it : docs) {
+        Gui::Document* doc = Gui::Application::Instance->getDocument(it);
         std::vector<Gui::ViewProvider*> views = doc->getViewProvidersOfType(ViewProviderPart::getClassTypeId());
-        for (std::vector<Gui::ViewProvider*>::iterator jt = views.begin(); jt != views.end(); ++jt) {
-            static_cast<ViewProviderPart*>(*jt)->reload();
+        for (auto view : views) {
+            static_cast<ViewProviderPart*>(view)->reload();
         }
     }
 }

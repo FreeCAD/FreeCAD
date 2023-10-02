@@ -54,28 +54,8 @@ IF (COIN3D_FOUND)
             ${CMAKE_BINARY_DIR}/src/Doc
         )
         IF( EXISTS ${COIN3D_DOC_TAGFILE})
-          SET( COIN3D_DOC_FOUND "YES"
-          )
-        #ELSE( EXISTS ${COIN3D_DOC_TAGFILE})
-        #  find_program(WGET_PROG wget
-        #  )
-        #  IF( EXISTS ${WGET_PROG})
-        #    execute_process(COMMAND ${WGET_PROG} 
-        #                    -P ${CMAKE_BINARY_DIR}/src/Doc 
-        #                    ${COIN3D_DOC_PATH}/coin.tag
-        #    )
-        #    find_file(COIN3D_DOC_TAGFILE coin.tag 
-        #        ${CMAKE_BINARY_DIR}/src/Doc
-        #    )
-        #    IF( EXISTS ${COIN3D_DOC_TAGFILE})
-        #      SET( COIN3D_DOC_FOUND "YES"
-        #      )
-        #    ENDIF( EXISTS ${COIN3D_DOC_TAGFILE})
-        #
-        #  ENDIF( EXISTS ${WGET_PROG})
-
+          SET( COIN3D_DOC_FOUND "YES" )
         ENDIF( EXISTS ${COIN3D_DOC_TAGFILE})
-
       ENDIF( EXISTS ${COIN3D_DOC_PATH})
     ENDIF(APPLE)
   ENDIF(WIN32)

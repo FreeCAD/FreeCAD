@@ -20,68 +20,65 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <memory>
+#include <memory>
 #endif
-
-
-#include <CXX/Extensions.hxx>
-#include <CXX/Objects.hxx>
-
-#include <Base/Console.h>
-#include <Base/Interpreter.h>
-#include <Base/FileInfo.h>
 
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/DocumentObject.h>
 #include <App/DocumentObjectPy.h>
 #include <App/Property.h>
+#include <Base/Console.h>
+#include <Base/FileInfo.h>
+#include <Base/Interpreter.h>
 
 #include "Points.h"
-#include "PointsPy.h"
 #include "PointsAlgos.h"
-#include "Structured.h"
+#include "PointsPy.h"
 #include "Properties.h"
+#include "Structured.h"
 
-namespace Points {
-class Module : public Py::ExtensionModule<Module>
+
+namespace Points
+{
+class Module: public Py::ExtensionModule<Module>
 {
 public:
-    Module() : Py::ExtensionModule<Module>("Points")
+    Module()
+        : Py::ExtensionModule<Module>("Points")
     {
-        add_varargs_method("open", &Module::open
-        );
-        add_varargs_method("insert", &Module::importer
-        );
-        add_varargs_method("export", &Module::exporter
-        );
-        add_varargs_method("show", &Module::show,
-            "show(points,[string]) -- Add the points to the active document or create one if no document exists."
-        );
-        initialize("This module is the Points module."); // register with Python
+        add_varargs_method("open", &Module::open);
+        add_varargs_method("insert", &Module::importer);
+        add_varargs_method("export", &Module::exporter);
+        add_varargs_method("show",
+                           &Module::show,
+                           "show(points,[string]) -- Add the points to the active document or "
+                           "create one if no document exists.");
+        initialize("This module is the Points module.");  // register with Python
     }
 
-    ~Module() override {}
-
 private:
-    std::tuple<bool, bool, float> readE57Settings() const
+    std::tuple<bool, bool, double> readE57Settings() const
     {
-        Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
-            .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/Points/E57");
+        Base::Reference<ParameterGrp> hGrp = App::GetApplication()
+                                                 .GetUserParameter()
+                                                 .GetGroup("BaseApp")
+                                                 ->GetGroup("Preferences")
+                                                 ->GetGroup("Mod/Points/E57");
         bool useColor = hGrp->GetBool("UseColor", true);
         bool checkState = hGrp->GetBool("CheckInvalidState", true);
-        float minDistance = hGrp->GetFloat("MinDistance", -1.);
+        double minDistance = hGrp->GetFloat("MinDistance", -1.);
 
         return std::make_tuple(useColor, checkState, minDistance);
     }
     Py::Object open(const Py::Tuple& args)
     {
         char* Name;
-        if (!PyArg_ParseTuple(args.ptr(), "et", "utf-8", &Name))
+        if (!PyArg_ParseTuple(args.ptr(), "et", "utf-8", &Name)) {
             throw Py::Exception();
+        }
         std::string EncodedName = std::string(Name);
         PyMem_Free(Name);
 
@@ -90,22 +87,25 @@ private:
             Base::FileInfo file(EncodedName.c_str());
 
             // extract ending
-            if (file.extension().empty())
+            if (file.extension().empty()) {
                 throw Py::RuntimeError("No file extension");
+            }
 
             std::unique_ptr<Reader> reader;
             if (file.hasExtension("asc")) {
-                reader.reset(new AscReader);
+                reader = std::make_unique<AscReader>();
             }
             else if (file.hasExtension("e57")) {
                 auto setting = readE57Settings();
-                reader.reset(new E57Reader(std::get<0>(setting), std::get<1>(setting), std::get<2>(setting)));
+                reader = std::make_unique<E57Reader>(std::get<0>(setting),
+                                                     std::get<1>(setting),
+                                                     std::get<2>(setting));
             }
             else if (file.hasExtension("ply")) {
-                reader.reset(new PlyReader);
+                reader = std::make_unique<PlyReader>();
             }
             else if (file.hasExtension("pcd")) {
-                reader.reset(new PcdReader);
+                reader = std::make_unique<PcdReader>();
             }
             else {
                 throw Py::RuntimeError("Unsupported file extension");
@@ -113,7 +113,7 @@ private:
 
             reader->read(EncodedName);
 
-            App::Document* pcDoc = App::GetApplication().newDocument("Unnamed");
+            App::Document* pcDoc = App::GetApplication().newDocument();
 
             Points::Feature* pcFeature = nullptr;
             if (reader->hasProperties()) {
@@ -121,13 +121,13 @@ private:
                 if (reader->isStructured()) {
                     pcFeature = new Points::StructuredCustom();
 
-                    App::PropertyInteger* width = static_cast<App::PropertyInteger*>
-                        (pcFeature->getPropertyByName("Width"));
+                    App::PropertyInteger* width =
+                        static_cast<App::PropertyInteger*>(pcFeature->getPropertyByName("Width"));
                     if (width) {
                         width->setValue(reader->getWidth());
                     }
-                    App::PropertyInteger* height = static_cast<App::PropertyInteger*>
-                        (pcFeature->getPropertyByName("Height"));
+                    App::PropertyInteger* height =
+                        static_cast<App::PropertyInteger*>(pcFeature->getPropertyByName("Height"));
                     if (height) {
                         height->setValue(reader->getHeight());
                     }
@@ -139,24 +139,26 @@ private:
                 pcFeature->Points.setValue(reader->getPoints());
                 // add gray values
                 if (reader->hasIntensities()) {
-                    Points::PropertyGreyValueList* prop = static_cast<Points::PropertyGreyValueList*>
-                        (pcFeature->addDynamicProperty("Points::PropertyGreyValueList", "Intensity"));
+                    Points::PropertyGreyValueList* prop =
+                        static_cast<Points::PropertyGreyValueList*>(
+                            pcFeature->addDynamicProperty("Points::PropertyGreyValueList",
+                                                          "Intensity"));
                     if (prop) {
                         prop->setValues(reader->getIntensities());
                     }
                 }
                 // add colors
                 if (reader->hasColors()) {
-                    App::PropertyColorList* prop = static_cast<App::PropertyColorList*>
-                        (pcFeature->addDynamicProperty("App::PropertyColorList", "Color"));
+                    App::PropertyColorList* prop = static_cast<App::PropertyColorList*>(
+                        pcFeature->addDynamicProperty("App::PropertyColorList", "Color"));
                     if (prop) {
                         prop->setValues(reader->getColors());
                     }
                 }
                 // add normals
                 if (reader->hasNormals()) {
-                    Points::PropertyNormalList* prop = static_cast<Points::PropertyNormalList*>
-                        (pcFeature->addDynamicProperty("Points::PropertyNormalList", "Normal"));
+                    Points::PropertyNormalList* prop = static_cast<Points::PropertyNormalList*>(
+                        pcFeature->addDynamicProperty("Points::PropertyNormalList", "Normal"));
                     if (prop) {
                         prop->setValues(reader->getNormals());
                     }
@@ -196,8 +198,9 @@ private:
     {
         char* Name;
         const char* DocName;
-        if (!PyArg_ParseTuple(args.ptr(), "ets", "utf-8", &Name, &DocName))
+        if (!PyArg_ParseTuple(args.ptr(), "ets", "utf-8", &Name, &DocName)) {
             throw Py::Exception();
+        }
         std::string EncodedName = std::string(Name);
         PyMem_Free(Name);
 
@@ -206,22 +209,25 @@ private:
             Base::FileInfo file(EncodedName.c_str());
 
             // extract ending
-            if (file.extension().empty())
+            if (file.extension().empty()) {
                 throw Py::RuntimeError("No file extension");
+            }
 
             std::unique_ptr<Reader> reader;
             if (file.hasExtension("asc")) {
-                reader.reset(new AscReader);
+                reader = std::make_unique<AscReader>();
             }
             else if (file.hasExtension("e57")) {
                 auto setting = readE57Settings();
-                reader.reset(new E57Reader(std::get<0>(setting), std::get<1>(setting), std::get<2>(setting)));
+                reader = std::make_unique<E57Reader>(std::get<0>(setting),
+                                                     std::get<1>(setting),
+                                                     std::get<2>(setting));
             }
             else if (file.hasExtension("ply")) {
-                reader.reset(new PlyReader);
+                reader = std::make_unique<PlyReader>();
             }
             else if (file.hasExtension("pcd")) {
-                reader.reset(new PcdReader);
+                reader = std::make_unique<PcdReader>();
             }
             else {
                 throw Py::RuntimeError("Unsupported file extension");
@@ -240,13 +246,13 @@ private:
                 if (reader->isStructured()) {
                     pcFeature = new Points::StructuredCustom();
 
-                    App::PropertyInteger* width = static_cast<App::PropertyInteger*>
-                        (pcFeature->getPropertyByName("Width"));
+                    App::PropertyInteger* width =
+                        static_cast<App::PropertyInteger*>(pcFeature->getPropertyByName("Width"));
                     if (width) {
                         width->setValue(reader->getWidth());
                     }
-                    App::PropertyInteger* height = static_cast<App::PropertyInteger*>
-                        (pcFeature->getPropertyByName("Height"));
+                    App::PropertyInteger* height =
+                        static_cast<App::PropertyInteger*>(pcFeature->getPropertyByName("Height"));
                     if (height) {
                         height->setValue(reader->getHeight());
                     }
@@ -258,24 +264,26 @@ private:
                 pcFeature->Points.setValue(reader->getPoints());
                 // add gray values
                 if (reader->hasIntensities()) {
-                    Points::PropertyGreyValueList* prop = static_cast<Points::PropertyGreyValueList*>
-                        (pcFeature->addDynamicProperty("Points::PropertyGreyValueList", "Intensity"));
+                    Points::PropertyGreyValueList* prop =
+                        static_cast<Points::PropertyGreyValueList*>(
+                            pcFeature->addDynamicProperty("Points::PropertyGreyValueList",
+                                                          "Intensity"));
                     if (prop) {
                         prop->setValues(reader->getIntensities());
                     }
                 }
                 // add colors
                 if (reader->hasColors()) {
-                    App::PropertyColorList* prop = static_cast<App::PropertyColorList*>
-                        (pcFeature->addDynamicProperty("App::PropertyColorList", "Color"));
+                    App::PropertyColorList* prop = static_cast<App::PropertyColorList*>(
+                        pcFeature->addDynamicProperty("App::PropertyColorList", "Color"));
                     if (prop) {
                         prop->setValues(reader->getColors());
                     }
                 }
                 // add normals
                 if (reader->hasNormals()) {
-                    Points::PropertyNormalList* prop = static_cast<Points::PropertyNormalList*>
-                        (pcFeature->addDynamicProperty("Points::PropertyNormalList", "Normal"));
+                    Points::PropertyNormalList* prop = static_cast<Points::PropertyNormalList*>(
+                        pcFeature->addDynamicProperty("Points::PropertyNormalList", "Normal"));
                     if (prop) {
                         prop->setValues(reader->getNormals());
                     }
@@ -287,8 +295,8 @@ private:
                 pcFeature->purgeTouched();
             }
             else {
-                Points::Feature* pcFeature = static_cast<Points::Feature*>
-                    (pcDoc->addObject("Points::Feature", file.fileNamePure().c_str()));
+                Points::Feature* pcFeature = static_cast<Points::Feature*>(
+                    pcDoc->addObject("Points::Feature", file.fileNamePure().c_str()));
                 pcFeature->Points.setValue(reader->getPoints());
                 pcDoc->recomputeFeature(pcFeature);
                 pcFeature->purgeTouched();
@@ -306,8 +314,9 @@ private:
         PyObject* object;
         char* Name;
 
-        if (!PyArg_ParseTuple(args.ptr(), "Oet", &object, "utf-8", &Name))
+        if (!PyArg_ParseTuple(args.ptr(), "Oet", &object, "utf-8", &Name)) {
             throw Py::Exception();
+        }
 
         std::string encodedName = std::string(Name);
         PyMem_Free(Name);
@@ -315,15 +324,17 @@ private:
         Base::FileInfo file(encodedName);
 
         // extract ending
-        if (file.extension().empty())
+        if (file.extension().empty()) {
             throw Py::RuntimeError("No file extension");
+        }
 
         Py::Sequence list(object);
         Base::Type pointsId = Base::Type::fromName("Points::Feature");
         for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
             PyObject* item = (*it).ptr();
             if (PyObject_TypeCheck(item, &(App::DocumentObjectPy::Type))) {
-                App::DocumentObject* obj = static_cast<App::DocumentObjectPy*>(item)->getDocumentObjectPtr();
+                App::DocumentObject* obj =
+                    static_cast<App::DocumentObjectPy*>(item)->getDocumentObjectPtr();
                 if (obj->getTypeId().isDerivedFrom(pointsId)) {
                     // get relative placement
                     Points::Feature* fea = static_cast<Points::Feature*>(obj);
@@ -332,44 +343,45 @@ private:
                     const PointKernel& kernel = fea->Points.getValue();
                     std::unique_ptr<Writer> writer;
                     if (file.hasExtension("asc")) {
-                        writer.reset(new AscWriter(kernel));
+                        writer = std::make_unique<AscWriter>(kernel);
                     }
                     else if (file.hasExtension("ply")) {
-                        writer.reset(new PlyWriter(kernel));
+                        writer = std::make_unique<PlyWriter>(kernel);
                     }
                     else if (file.hasExtension("pcd")) {
-                        writer.reset(new PcdWriter(kernel));
+                        writer = std::make_unique<PcdWriter>(kernel);
                     }
                     else {
                         throw Py::RuntimeError("Unsupported file extension");
                     }
 
                     // get additional properties if there
-                    App::PropertyInteger* width = dynamic_cast<App::PropertyInteger*>
-                        (fea->getPropertyByName("Width"));
+                    App::PropertyInteger* width =
+                        dynamic_cast<App::PropertyInteger*>(fea->getPropertyByName("Width"));
                     if (width) {
                         writer->setWidth(width->getValue());
                     }
-                    App::PropertyInteger* height = dynamic_cast<App::PropertyInteger*>
-                        (fea->getPropertyByName("Height"));
+                    App::PropertyInteger* height =
+                        dynamic_cast<App::PropertyInteger*>(fea->getPropertyByName("Height"));
                     if (height) {
                         writer->setHeight(height->getValue());
                     }
                     // get gray values
-                    Points::PropertyGreyValueList* grey = dynamic_cast<Points::PropertyGreyValueList*>
-                        (fea->getPropertyByName("Intensity"));
+                    Points::PropertyGreyValueList* grey =
+                        dynamic_cast<Points::PropertyGreyValueList*>(
+                            fea->getPropertyByName("Intensity"));
                     if (grey) {
                         writer->setIntensities(grey->getValues());
                     }
                     // get colors
-                    App::PropertyColorList* col = dynamic_cast<App::PropertyColorList*>
-                        (fea->getPropertyByName("Color"));
+                    App::PropertyColorList* col =
+                        dynamic_cast<App::PropertyColorList*>(fea->getPropertyByName("Color"));
                     if (col) {
                         writer->setColors(col->getValues());
                     }
                     // get normals
-                    Points::PropertyNormalList* nor = dynamic_cast<Points::PropertyNormalList*>
-                        (fea->getPropertyByName("Normal"));
+                    Points::PropertyNormalList* nor =
+                        dynamic_cast<Points::PropertyNormalList*>(fea->getPropertyByName("Normal"));
                     if (nor) {
                         writer->setNormals(nor->getValues());
                     }
@@ -380,7 +392,8 @@ private:
                     break;
                 }
                 else {
-                    Base::Console().Message("'%s' is not a point object, export will be ignored.\n", obj->Label.getValue());
+                    Base::Console().Message("'%s' is not a point object, export will be ignored.\n",
+                                            obj->Label.getValue());
                 }
             }
         }
@@ -392,17 +405,21 @@ private:
     {
         PyObject* pcObj;
         char* name = "Points";
-        if (!PyArg_ParseTuple(args.ptr(), "O!|s", &(PointsPy::Type), &pcObj, &name))
+        if (!PyArg_ParseTuple(args.ptr(), "O!|s", &(PointsPy::Type), &pcObj, &name)) {
             throw Py::Exception();
+        }
 
         try {
             App::Document* pcDoc = App::GetApplication().getActiveDocument();
-            if (!pcDoc)
+            if (!pcDoc) {
                 pcDoc = App::GetApplication().newDocument();
+            }
             PointsPy* pPoints = static_cast<PointsPy*>(pcObj);
-            Points::Feature* pcFeature = static_cast<Points::Feature*>(pcDoc->addObject("Points::Feature", name));
+            Points::Feature* pcFeature =
+                static_cast<Points::Feature*>(pcDoc->addObject("Points::Feature", name));
             // copy the data
             pcFeature->Points.setValue(*(pPoints->getPointKernelPtr()));
+            return Py::asObject(pcFeature->getPyObject());
         }
         catch (const Base::Exception& e) {
             throw Py::RuntimeError(e.what());
@@ -417,4 +434,4 @@ PyObject* initModule()
     return Base::Interpreter().addModule(new Module);
 }
 
-} // namespace Points
+}  // namespace Points

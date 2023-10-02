@@ -28,7 +28,7 @@
 #endif
 
 #include <App/Application.h>
-#include <App/ComplexGeoData.h>
+#include <App/ElementNamingUtils.h>
 #include <App/Document.h>
 #include <App/DocumentObject.h>
 #include <App/Link.h>
@@ -88,7 +88,7 @@ bool StdCmdLinkMakeGroup::isActive() {
 
 Action * StdCmdLinkMakeGroup::createAction()
 {
-    ActionGroup* pcAction = new ActionGroup(this, getMainWindow());
+    auto pcAction = new ActionGroup(this, getMainWindow());
     pcAction->setDropDownMenu(true);
     applyCommandData(this->className(), pcAction);
 
@@ -109,7 +109,7 @@ void StdCmdLinkMakeGroup::languageChange()
 
     if (!_pcAction)
         return;
-    ActionGroup* pcAction = qobject_cast<ActionGroup*>(_pcAction);
+    auto pcAction = qobject_cast<ActionGroup*>(_pcAction);
     QList<QAction*> acts = pcAction->actions();
     acts[0]->setText(QObject::tr("Simple group"));
     acts[1]->setText(QObject::tr("Group with links"));
@@ -206,7 +206,12 @@ StdCmdLinkMake::StdCmdLinkMake()
 {
     sGroup        = "Link";
     sMenuText     = QT_TR_NOOP("Make link");
-    sToolTipText  = QT_TR_NOOP("Create a link to the selected object(s)");
+    static std::string toolTip = std::string("<p>")
+        + QT_TR_NOOP("A Link is an object that references or links to another object in the same "
+        "document, or in another document.Unlike Clones, Links reference the original Shape directly, "
+        " making them more memory efficient which helps with the creation of complex assemblies.")
+        + "</p>";
+    sToolTipText = toolTip.c_str();
     sWhatsThis    = "Std_LinkMake";
     sStatusTip    = sToolTipText;
     eType         = AlterDoc;
@@ -214,7 +219,7 @@ StdCmdLinkMake::StdCmdLinkMake()
 }
 
 bool StdCmdLinkMake::isActive() {
-    return !!App::GetApplication().getActiveDocument();
+    return App::GetApplication().getActiveDocument();
 }
 
 void StdCmdLinkMake::activated(int) {
@@ -294,8 +299,8 @@ void StdCmdLinkMakeRelative::activated(int) {
             if(!sel.pObject || !sel.pObject->getNameInDocument())
                 continue;
             auto key = std::make_pair(sel.pObject,
-                    Data::ComplexGeoData::noElementName(sel.SubName));
-            auto element = Data::ComplexGeoData::findElementName(sel.SubName);
+                    Data::noElementName(sel.SubName));
+            auto element = Data::findElementName(sel.SubName);
             auto &info = linkInfo[key];
             info.first = sel.pResolvedObject;
             if(element && element[0])
@@ -872,12 +877,13 @@ public:
     {
         sGroup        = "View";
         sMenuText     = QT_TR_NOOP("Link actions");
-        sToolTipText  = QT_TR_NOOP("Link actions");
+        sToolTipText  = QT_TR_NOOP("Actions that apply to link objects");
         sWhatsThis    = "Std_LinkMakeRelative";
-        sStatusTip    = QT_TR_NOOP("Link actions");
+        sStatusTip    = QT_TR_NOOP("Actions that apply to link objects");
         eType         = AlterDoc;
         bCanLog       = false;
 
+        addCommand(new StdCmdLinkMake());
         addCommand(new StdCmdLinkMakeRelative());
         addCommand(new StdCmdLinkReplace());
         addCommand(new StdCmdLinkUnlink());
@@ -898,7 +904,6 @@ namespace Gui {
 void CreateLinkCommands()
 {
     CommandManager &rcCmdMgr = Application::Instance->commandManager();
-    rcCmdMgr.addCommand(new StdCmdLinkMake());
     rcCmdMgr.addCommand(new StdCmdLinkActions());
     rcCmdMgr.addCommand(new StdCmdLinkMakeGroup());
     rcCmdMgr.addCommand(new StdCmdLinkSelectActions());

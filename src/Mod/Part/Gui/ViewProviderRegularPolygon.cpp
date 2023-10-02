@@ -33,17 +33,13 @@ using namespace std;
 
 PROPERTY_SOURCE(PartGui::ViewProviderRegularPolygon, PartGui::ViewProviderPrimitive)
 
-       
+
 ViewProviderRegularPolygon::ViewProviderRegularPolygon()
 {
   sPixmap = "Part_Polygon_Parametric";
 }
 
-ViewProviderRegularPolygon::~ViewProviderRegularPolygon()
-{
-
-}
-
+ViewProviderRegularPolygon::~ViewProviderRegularPolygon() = default;
 
 
 // **********************************************************************************

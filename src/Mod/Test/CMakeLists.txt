@@ -5,6 +5,7 @@ SET(Test_SRCS
     BaseTests.py
     Document.py
     Metadata.py
+    StringHasher.py
     Menu.py
     TestApp.py
     TestGui.py
@@ -39,7 +40,7 @@ fc_copy_sources(Test "${CMAKE_BINARY_DIR}/Mod/Test" ${Test_SRCS} ${TestData_SRCS
 
 INSTALL(
     FILES
-        ${Test_SRCS} 
+        ${Test_SRCS}
     DESTINATION
         Mod/Test
 )

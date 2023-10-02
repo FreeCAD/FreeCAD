@@ -54,24 +54,24 @@ class QIODevice;
 class QVariant;
 class QSvgIOHandlerPrivate;
 
-class QSvgIOHandler : public QImageIOHandler
+class QSvgIOHandler: public QImageIOHandler
 {
 public:
     QSvgIOHandler();
     ~QSvgIOHandler();
     virtual bool canRead() const;
     virtual QByteArray name() const;
-    virtual bool read(QImage *image);
-    static bool canRead(QIODevice *device);
+    virtual bool read(QImage* image);
+    static bool canRead(QIODevice* device);
     virtual QVariant option(ImageOption option) const;
-    virtual void setOption(ImageOption option, const QVariant & value);
+    virtual void setOption(ImageOption option, const QVariant& value);
     virtual bool supportsOption(ImageOption option) const;
 
 private:
-    QSvgIOHandlerPrivate *d;
+    QSvgIOHandlerPrivate* d;
 };
 
 QT_END_NAMESPACE
 
-#endif // QT_NO_SVGRENDERER
-#endif // QSVGIOHANDLER_H
+#endif  // QT_NO_SVGRENDERER
+#endif  // QSVGIOHANDLER_H

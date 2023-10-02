@@ -22,14 +22,7 @@
 
 #include "PreCompiled.h"
 
-#ifndef _PreComp_
-
-#endif
-
-#include <App/Document.h>
 #include <Base/Console.h>
-#include <Gui/Application.h>
-#include <Gui/Document.h>
 #include <Gui/MainWindow.h>
 #include <Gui/MDIView.h>
 #include <Gui/View3DInventor.h>
@@ -40,31 +33,19 @@
 using namespace TechDrawGui;
 using namespace Gui;
 
-void Grabber3d::quickView(const QColor bgColor,
+void Grabber3d::quickView(View3DInventor* view3d,
+                          const QColor bgColor,
                           QImage &image)
 {
 //    Base::Console().Message("G3d::quickView());
-    //get a 3d view
     if (!Gui::getMainWindow()) {
+        //this should already be checked in the caller
         Base::Console().Warning("G3d::quickView - no Main Window - returning\n");
         return;
     }
-    Gui::MainWindow* mainWindow = Gui::getMainWindow();
-    Gui::MDIView* mdiView = Gui::getMainWindow()->activeWindow();
-    View3DInventor* view3d = qobject_cast<View3DInventor*>(mdiView);
-    if (!view3d) {
-        //the active window is not a 3D view, so try to find one
-        auto mdiWindows = mainWindow->windows();
-        for (auto& mdi : mdiWindows) {
-            auto mdiView = qobject_cast<View3DInventor*>(mdi);
-            if (mdiView) {
-                view3d = mdiView;
-                break;
-            }
-        }
-    }
 
     if (!view3d) {
+        //this should also already be checked in the caller
         Base::Console().Warning("G3d::quickView - no 3D view for ActiveView - returning\n");
         return;
     }

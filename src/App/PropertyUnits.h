@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef APP_PROPERTYUNITS_H
 #define APP_PROPERTYUNITS_H
 
@@ -29,10 +28,10 @@
 
 #include "PropertyStandard.h"
 
+
 namespace Base {
 class Writer;
 }
-
 
 namespace App
 {
@@ -85,7 +84,7 @@ class AppExport PropertyQuantityConstraint : public PropertyQuantity
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
-    PropertyQuantityConstraint():_ConstStruct(nullptr){}
+    PropertyQuantityConstraint() = default;
     ~PropertyQuantityConstraint() override = default;
 
     /// Constraint methods
@@ -114,10 +113,13 @@ public:
     const char* getEditorName() const override;
     void setPyObject(PyObject *) override;
 
-
-protected:
-    const Constraints* _ConstStruct;
+private:
+    const Constraints* _ConstStruct{nullptr};
 };
+
+// ------------------------------------------------------
+// now all properties
+// ------------------------------------------------------
 
 /** Acceleration property
  * This is a property for representing acceleration. It is basically a float
@@ -130,6 +132,19 @@ class AppExport PropertyAcceleration: public PropertyQuantity
 public:
     PropertyAcceleration();
     ~PropertyAcceleration() override = default;
+};
+
+/** AmountOfSubstance property
+ * This is a property for representing number of molecules. It is basically a
+ * float property. On the Gui it has a quantity like mole.
+ */
+class AppExport PropertyAmountOfSubstance: public PropertyQuantity
+{
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
+
+public:
+    PropertyAmountOfSubstance();
+    ~PropertyAmountOfSubstance() override = default;
 };
 
 /** Angle property
@@ -159,6 +174,59 @@ public:
     ~PropertyArea() override = default;
 };
 
+/** CompressiveStrength property
+ * This is a property for representing compressive strength. It is basically a
+ * float property. On the Gui it has a quantity like Pa.
+ */
+class AppExport PropertyCompressiveStrength: public PropertyQuantity
+{
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
+
+public:
+    PropertyCompressiveStrength();
+    ~PropertyCompressiveStrength() override = default;
+};
+
+/** CurrentDensity property
+ * This is a property for electric current densities. It is basically a float
+ * property. On the Gui it has a quantity of Ampere/m^2.
+ */
+class AppExport PropertyCurrentDensity: public PropertyQuantity
+{
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
+
+public:
+    PropertyCurrentDensity();
+    ~PropertyCurrentDensity() override = default;
+};
+
+/** Density property
+ * This is a property for representing density. It is basically a float
+ * property which must not be negative. On the Gui it has a quantity like
+ * kg/m^3.
+ */
+class AppExport PropertyDensity: public PropertyQuantity
+{
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
+
+public:
+    PropertyDensity();
+    ~PropertyDensity() override = default;
+};
+
+/** DissipationRate property
+ * This is a property for representing turbulent dissipation rate. It basically
+ * a float property. On the Gui it has a quantity like m^2/s^3.
+ */
+class AppExport PropertyDissipationRate: public PropertyQuantity
+{
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
+
+public:
+    PropertyDissipationRate();
+    ~PropertyDissipationRate() override = default;
+};
+
 /** Distance property
  * This is a property for representing distances. It is basically a float
  * property. On the Gui it has a quantity like m or mm.
@@ -170,6 +238,111 @@ class AppExport PropertyDistance: public PropertyQuantity
 public:
     PropertyDistance();
     ~PropertyDistance() override = default;
+};
+
+/** DynamicViscosity property
+ * This is a property for representing dynamic viscosity. It is basically a float
+ * property which must not be negative. On the Gui it has a quantity like Pa*s.
+ */
+class AppExport PropertyDynamicViscosity: public PropertyQuantity
+{
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
+
+public:
+    PropertyDynamicViscosity();
+    ~PropertyDynamicViscosity() override = default;
+};
+
+/** ElectricalCapacitance property
+ * This is a property for representing capacitance. It is basically a float
+ * property. On the Gui it has a quantity like F.
+ */
+class AppExport PropertyElectricalCapacitance: public PropertyQuantity
+{
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
+
+public:
+    PropertyElectricalCapacitance();
+    ~PropertyElectricalCapacitance() override = default;
+};
+
+/** ElectricalConductance property
+ * This is a property for representing electrical conductance. It is basically a
+ * float property. On the Gui it has a quantity like S.
+ */
+class AppExport PropertyElectricalConductance: public PropertyQuantity
+{
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
+
+public:
+    PropertyElectricalConductance();
+    ~PropertyElectricalConductance() override = default;
+};
+
+/** ElectricalConductivity property
+ * This is a property for representing electrical conductivity. It is basically
+ * a float property. On the Gui it has a quantity like S/m.
+ */
+class AppExport PropertyElectricalConductivity: public PropertyQuantity
+{
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
+
+public:
+    PropertyElectricalConductivity();
+    ~PropertyElectricalConductivity() override = default;
+};
+
+/** ElectricalInductance property
+ * This is a property for representing electrical inductance. It is basically a
+ * float property. On the Gui it has a quantity like H.
+ */
+class AppExport PropertyElectricalInductance: public PropertyQuantity
+{
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
+
+public:
+    PropertyElectricalInductance();
+    ~PropertyElectricalInductance() override = default;
+};
+
+/** ElectricalResistance property
+ * This is a property for representing electrical resistance. It is basically a
+ * float property. On the Gui it has a quantity like Ohm.
+ */
+
+class AppExport PropertyElectricalResistance: public PropertyQuantity
+{
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
+
+public:
+    PropertyElectricalResistance();
+    ~PropertyElectricalResistance() override = default;
+};
+
+/** ElectricCharge property
+ * This is a property for representing electric charge. It is basically a float
+ * property. On the Gui it has a quantity like C.
+ */
+class AppExport PropertyElectricCharge: public PropertyQuantity
+{
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
+
+public:
+    PropertyElectricCharge();
+    ~PropertyElectricCharge() override = default;
+};
+
+/** ElectricCurrent property
+ * This is a property for representing electric currents. It is basically a
+ * float property. On the Gui it has a quantity like A.
+ */
+class AppExport PropertyElectricCurrent: public PropertyQuantity
+{
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
+
+public:
+    PropertyElectricCurrent();
+    ~PropertyElectricCurrent() override = default;
 };
 
 /** ElectricPotential property
@@ -211,6 +384,71 @@ public:
     ~PropertyForce() override = default;
 };
 
+/** HeatFlux property
+ * This is a property for representing heat flux. It is basically a float
+ * property. On the Gui it has a quantity like W/m^2.
+ */
+class AppExport PropertyHeatFlux: public PropertyQuantity
+{
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
+
+public:
+    PropertyHeatFlux();
+    ~PropertyHeatFlux() override = default;
+};
+
+/** InverseArea property
+ * This is a property for representing the reciprocal of area. It is basically a float
+ * property which must not be negative. On the Gui it has a quantity like 1/m^2.
+ */
+class AppExport PropertyInverseArea: public PropertyQuantity
+{
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
+
+public:
+    PropertyInverseArea();
+    ~PropertyInverseArea() override = default;
+};
+
+/** InverseLength property
+ * This is a property for representing the reciprocal of length. It is basically a float
+ * property which must not be negative. On the Gui it has a quantity like 1/m.
+ */
+class AppExport PropertyInverseLength: public PropertyQuantity
+{
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
+
+public:
+    PropertyInverseLength();
+    ~PropertyInverseLength() override = default;
+};
+
+/** InverseVolume property
+ * This is a property for representing the reciprocal of volume. It is basically a float
+*  property. which must not be negative. On the Gui it has a quantity like 1/m^3.
+ */
+class AppExport PropertyInverseVolume: public PropertyQuantity
+{
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
+
+public:
+    PropertyInverseVolume();
+    ~PropertyInverseVolume() override = default;
+};
+
+/** KinematicViscosity property
+ * This is a property for representing kinematic viscosity. It is basically a float
+ * property which must not be negative. On the Gui it has a quantity like m^2/s.
+ */
+class AppExport PropertyKinematicViscosity: public PropertyQuantity
+{
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
+
+public:
+    PropertyKinematicViscosity();
+    ~PropertyKinematicViscosity() override = default;
+};
+
 /** Length property
  * This is a property for representing lengths. It is basically a float
  * property which must not be negative. On the Gui it has a quantity like m or mm.
@@ -224,9 +462,87 @@ public:
     ~PropertyLength() override = default;
 };
 
+/** LuminousIntensity property
+ * This is a property for representing luminous intensity. It is basically a
+ * float property. On the Gui it has a quantity like cd.
+ */
+class AppExport PropertyLuminousIntensity: public PropertyQuantity
+{
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
+
+public:
+    PropertyLuminousIntensity();
+    ~PropertyLuminousIntensity() override = default;
+};
+
+/** MagneticFieldStrength property
+ * This is a property for representing magnetic field strength. It is basically
+ * a float property. On the Gui it has a quantity like A/m.
+ */
+class AppExport PropertyMagneticFieldStrength: public PropertyQuantity
+{
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
+
+public:
+    PropertyMagneticFieldStrength();
+    ~PropertyMagneticFieldStrength() override = default;
+};
+
+/** MagneticFlux property
+ * This is a property for representing magnetic flux. It is basically a float
+ * property. On the Gui it has a quantity like Wb.
+ */
+class AppExport PropertyMagneticFlux: public PropertyQuantity
+{
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
+
+public:
+    PropertyMagneticFlux();
+    ~PropertyMagneticFlux() override = default;
+};
+
+/** MagneticFluxDensity property
+ * This is a property for representing magnetic flux density. It is basically a
+ * float property. On the Gui it has a quantity like G or T.
+ */
+class AppExport PropertyMagneticFluxDensity: public PropertyQuantity
+{
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
+
+public:
+    PropertyMagneticFluxDensity();
+    ~PropertyMagneticFluxDensity() override = default;
+};
+
+ /** Magnetization property
+ * This is a property for representing magnetizations. It is basically a float
+ * property. On the Gui it has a quantity like A/m.
+ */
+    class AppExport PropertyMagnetization: public PropertyQuantity
+{
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
+
+public:
+    PropertyMagnetization();
+    ~PropertyMagnetization() override = default;
+};
+
+/** Mass property
+ * This is a property for representing mass. It is basically a float
+ * property. On the Gui it has a quantity like kg.
+ */
+class AppExport PropertyMass: public PropertyQuantity
+{
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
+
+public:
+    PropertyMass();
+    ~PropertyMass() override = default;
+};
+
 /** Pressure property
- * This is a property for representing acceleration. It is basically a float
- * property. On the Gui it has a quantity like m/s^2.
+ * This is a property for representing pressure. It basically a float
+ * property. On the Gui it has a quantity like Pa.
  */
 class AppExport PropertyPressure: public PropertyQuantity
 {
@@ -235,6 +551,58 @@ class AppExport PropertyPressure: public PropertyQuantity
 public:
     PropertyPressure();
     ~PropertyPressure() override = default;
+};
+
+/** Power property
+ * This is a property for representing power. It is basically a float
+ * property. On the Gui it has a quantity like W.
+ */
+class AppExport PropertyPower: public PropertyQuantity
+{
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
+
+public:
+    PropertyPower();
+    ~PropertyPower() override = default;
+};
+
+/** ShearModulus property
+ * This is a property for representing shear modulus. It is basically a float
+ * property. On the Gui it has a quantity like Pa.
+ */
+class AppExport PropertyShearModulus: public PropertyQuantity
+{
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
+
+public:
+    PropertyShearModulus();
+    ~PropertyShearModulus() override = default;
+};
+
+/** SpecificEnergy property
+ * This is a property for representing specific energy. It is basically a float
+ * property. On the Gui it has a quantity like m^2/s^2 or J/kg.
+ */
+class AppExport PropertySpecificEnergy: public PropertyQuantity
+{
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
+
+public:
+    PropertySpecificEnergy();
+    ~PropertySpecificEnergy() override = default;
+};
+
+/** SpecificHeat property
+ * This is a property for representing specific heat capacity. It is basically a
+ * float property. On the Gui it has a quantity like J/kg/K.
+ */
+class AppExport PropertySpecificHeat: public PropertyQuantity
+{
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
+
+public:
+    PropertySpecificHeat();
+    ~PropertySpecificHeat() override = default;
 };
 
 /** Speed property
@@ -263,6 +631,97 @@ public:
     ~PropertyStiffness() override = default;
 };
 
+/** Stress property
+ * This is a property for representing . It is basically a float
+ * property. On the Gui it has a quantity like Pa.
+ */
+class AppExport PropertyStress: public PropertyQuantity
+{
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
+
+public:
+    PropertyStress();
+    ~PropertyStress() override = default;
+};
+
+/** Temperature property
+ * This is a property for representing temperatures. It is basically a float
+ * property which must not be negative. On the Gui it has a quantity like K.
+ */
+class AppExport PropertyTemperature: public PropertyQuantity
+{
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
+
+public:
+    PropertyTemperature();
+    ~PropertyTemperature() override = default;
+};
+
+/** ThermalConductivity property
+ * This is a property for representing thermal conductivity. It is basically a
+ * float property. On the Gui it has a quantity like W/m/K.
+ */
+class AppExport PropertyThermalConductivity: public PropertyQuantity
+{
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
+
+public:
+    PropertyThermalConductivity();
+    ~PropertyThermalConductivity() override = default;
+};
+
+/** ThermalExpansionCoefficient property
+ * This is a property for representing a coefficient of thermal expansion. It
+ * basically a float property. On the Gui it has a quantity like 1/K.
+ */
+class AppExport PropertyThermalExpansionCoefficient: public PropertyQuantity
+{
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
+
+public:
+    PropertyThermalExpansionCoefficient();
+    ~PropertyThermalExpansionCoefficient() override = default;
+};
+
+/** ThermalTransferCoefficient property
+ * This is a property for representing heat transfer coefficient. It is
+ * basically a float property. On the Gui it has a quantity like W/m^2/K.
+ */
+class AppExport PropertyThermalTransferCoefficient: public PropertyQuantity
+{
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
+
+public:
+    PropertyThermalTransferCoefficient();
+    ~PropertyThermalTransferCoefficient() override = default;
+};
+
+/** TimeSpan property
+ * This is a property for representing time intervals. It is basically a float
+ * property. On the Gui it has a quantity like s.
+ */
+class AppExport PropertyTime: public PropertyQuantity
+{
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
+
+public:
+    PropertyTime();
+    ~PropertyTime() override = default;
+};
+
+/** UltimateTensileStrength property
+ * This is a property for representing ultimate tensile strength. It is
+ * basically a float property. On the Gui it has a quantity like Pa.
+ */
+class AppExport PropertyUltimateTensileStrength: public PropertyQuantity
+{
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
+
+public:
+    PropertyUltimateTensileStrength();
+    ~PropertyUltimateTensileStrength() override = default;
+};
+
 /** VacuumPermittivity property
  * This is a property for representing vacuum permittivity. It is basically a float
  * property. On the Gui it has a quantity like s^4*A^2 / (m^3*kg).
@@ -276,6 +735,19 @@ public:
     ~PropertyVacuumPermittivity() override = default;
 };
 
+/** Velocity property
+ * This is a property for representing velocities. It is basically a float
+ * property. On the Gui it has a quantity like m/s.
+ */
+class AppExport PropertyVelocity: public PropertyQuantity
+{
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
+
+public:
+    PropertyVelocity();
+    ~PropertyVelocity() override = default;
+};
+
 /** Volume property
  * This is a property for representing volumes. It is basically a float
  * property which must not be negative. On the Gui it has a quantity like m^3 or mm^3.
@@ -287,6 +759,71 @@ class AppExport PropertyVolume: public PropertyQuantityConstraint
 public:
     PropertyVolume();
     ~PropertyVolume() override = default;
+};
+
+/** VolumeFlowRate property
+ * This is a property for representing volumetric flow rate. It is basically a
+ * float property. On the Gui it has a quantity like l/s.
+ */
+class AppExport PropertyVolumeFlowRate: public PropertyQuantity
+{
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
+
+public:
+    PropertyVolumeFlowRate();
+    ~PropertyVolumeFlowRate() override = default;
+};
+
+/** VolumetricThermalExpansionCoefficient property
+ * This is a property for representing . It is basically a float
+ * property. On the Gui it has a quantity like 1/K.
+ */
+class AppExport PropertyVolumetricThermalExpansionCoefficient: public PropertyQuantity
+{
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
+
+public:
+    PropertyVolumetricThermalExpansionCoefficient();
+    ~PropertyVolumetricThermalExpansionCoefficient() override = default;
+};
+
+/** Work property
+ * This is a property for representing work. It is basically a float
+ * property. On the Gui it has a quantity like Nm.
+ */
+class AppExport PropertyWork: public PropertyQuantity
+{
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
+
+public:
+    PropertyWork();
+    ~PropertyWork() override = default;
+};
+
+/** YieldStrength property
+ * This is a property for representing yield strength. It is basically a float
+ * property. On the Gui it has a quantity like Pa.
+ */
+class AppExport PropertyYieldStrength: public PropertyQuantity
+{
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
+
+public:
+    PropertyYieldStrength();
+    ~PropertyYieldStrength() override = default;
+};
+
+/** YoungsModulus property
+ * This is a property for representing Young's modulus. It is basically a float
+ * property. On the Gui it has a quantity like Pa.
+ */
+class AppExport PropertyYoungsModulus: public PropertyQuantity
+{
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
+
+public:
+    PropertyYoungsModulus();
+    ~PropertyYoungsModulus() override = default;
 };
 
 }// namespace App

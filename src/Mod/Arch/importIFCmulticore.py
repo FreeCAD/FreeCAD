@@ -20,8 +20,6 @@
 # ***************************************************************************
 """FreeCAD IFC importer - Multicore version"""
 
-from __future__ import print_function
-
 import sys
 import time
 import os
@@ -29,7 +27,6 @@ import os
 import FreeCAD
 import Draft
 import Arch
-import importIFC
 import importIFCHelper
 from FreeCAD import Base
 import ArchIFC
@@ -77,7 +74,7 @@ def insert(filename,docname=None,preferences=None):
 
     # setup ifcopenshell
     if not preferences:
-        preferences = importIFC.getPreferences()
+        preferences = importIFCHelper.getPreferences()
     settings = ifcopenshell.geom.settings()
     settings.set(settings.USE_BREP_DATA,True)
     settings.set(settings.SEW_SHELLS,True)

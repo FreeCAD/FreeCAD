@@ -16,11 +16,8 @@ SET(Start_SRCS
     StartConfiguration.h
 )
 
-
-
 add_library(Start SHARED ${Start_SRCS})
 target_link_libraries(Start ${Start_LIBS})
-
 
 SET_BIN_DIR(Start Start /Mod/Start)
 SET_PYTHON_PREFIX_SUFFIX(Start)

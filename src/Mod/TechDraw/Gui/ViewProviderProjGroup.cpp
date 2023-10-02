@@ -59,14 +59,6 @@ ViewProviderProjGroup::~ViewProviderProjGroup()
 {
 }
 
-std::vector<std::string> ViewProviderProjGroup::getDisplayModes() const
-{
-    // get the modes of the father
-    std::vector<std::string> StrList = ViewProviderDrawingView::getDisplayModes();
-    StrList.emplace_back("Drawing");
-    return StrList;
-}
-
 void ViewProviderProjGroup::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
 {
     Q_UNUSED(menu);

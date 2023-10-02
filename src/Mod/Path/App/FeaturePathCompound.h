@@ -20,47 +20,42 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef PATH_FeatureCompound_H
 #define PATH_FeatureCompound_H
 
-#include <App/GeoFeature.h>
-#include <App/PropertyFile.h>
-#include <App/PropertyGeo.h>
-#include <App/PropertyUnits.h>
+#include <App/PropertyLinks.h>
 
-#include "Path.h"
 #include "FeaturePath.h"
-#include "PropertyPath.h"
+
 
 namespace Path
 {
 
 class PathExport FeatureCompound : public Path::Feature
 {
-    PROPERTY_HEADER(Path::Feature);
+    PROPERTY_HEADER_WITH_OVERRIDE(Path::Feature);
 
 public:
     /// Constructor
-    FeatureCompound(void);
-    virtual ~FeatureCompound();
+    FeatureCompound();
+    ~FeatureCompound() override;
 
     App::PropertyLinkList     Group;
     App::PropertyBool         UsePlacements;
 
     /// returns the type name of the ViewProvider
-    virtual const char* getViewProviderName(void) const {
+    const char* getViewProviderName() const override {
         return "PathGui::ViewProviderPathCompound";
     }
-    virtual App::DocumentObjectExecReturn *execute(void);
-    
+    App::DocumentObjectExecReturn *execute() override;
+
     /// Checks whether the object \a obj is part of this group.
     bool hasObject(const DocumentObject* obj) const;
     /// Adds an object to this group.
     void addObject(DocumentObject* obj);
     /// Removes an object from this group.
     void removeObject(DocumentObject* obj);
-    virtual PyObject *getPyObject(void);
+    PyObject *getPyObject() override;
 
 };
 

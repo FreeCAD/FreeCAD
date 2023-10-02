@@ -28,9 +28,10 @@
 
 #include "ViewProviderFemConstraint.h"
 
-namespace FemGui {
+namespace FemGui
+{
 
-class FemGuiExport ViewProviderFemConstraintPlaneRotation : public FemGui::ViewProviderFemConstraint
+class FemGuiExport ViewProviderFemConstraintPlaneRotation: public FemGui::ViewProviderFemConstraint
 {
     PROPERTY_HEADER_WITH_OVERRIDE(FemGui::ViewProviderFemConstraintPlaneRotation);
 
@@ -43,6 +44,6 @@ protected:
     bool setEdit(int ModNum) override;
 };
 
-}
+}  // namespace FemGui
 
-#endif // GUI_VIEWPROVIDERFEMCONSTRAINTPLANEROTATION_H
+#endif  // GUI_VIEWPROVIDERFEMCONSTRAINTPLANEROTATION_H

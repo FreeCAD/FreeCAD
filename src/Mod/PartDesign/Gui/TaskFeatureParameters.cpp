@@ -83,10 +83,7 @@ TaskDlgFeatureParameters::TaskDlgFeatureParameters(PartDesignGui::ViewProvider *
     assert(vp);
 }
 
-TaskDlgFeatureParameters::~TaskDlgFeatureParameters()
-{
-
-}
+TaskDlgFeatureParameters::~TaskDlgFeatureParameters() = default;
 
 bool TaskDlgFeatureParameters::accept() {
     App::DocumentObject* feature = vp->getObject();
@@ -97,7 +94,7 @@ bool TaskDlgFeatureParameters::accept() {
             TaskFeatureParameters *param = qobject_cast<TaskFeatureParameters *> (wgt);
             if(!param)
                 continue;
-            
+
             param->saveHistory ();
             param->apply ();
         }

@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   version="1.1"
+   id="svg2726"
+   height="64px"
+   width="64px">
+  <defs
+     id="defs2728">
+    <linearGradient
+       id="linearGradient3782">
+      <stop
+         id="stop3784"
+         offset="0"
+         style="stop-color:#06989a;stop-opacity:1" />
+      <stop
+         id="stop3786"
+         offset="1"
+         style="stop-color:#34e0e2;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient
+       id="linearGradient3144">
+      <stop
+         id="stop3146"
+         offset="0"
+         style="stop-color:#ffffff;stop-opacity:1;" />
+      <stop
+         id="stop3148"
+         offset="1"
+         style="stop-color:#ffffff;stop-opacity:0;" />
+    </linearGradient>
+    <radialGradient
+       r="34.345188"
+       fy="672.79736"
+       fx="225.26402"
+       cy="672.79736"
+       cx="225.26402"
+       gradientTransform="matrix(1,0,0,0.6985294,0,202.82863)"
+       gradientUnits="userSpaceOnUse"
+       id="radialGradient3850"
+       xlink:href="#linearGradient3144" />
+    <radialGradient
+       r="34.345188"
+       fy="672.79736"
+       fx="225.26402"
+       cy="672.79736"
+       cx="225.26402"
+       gradientTransform="matrix(1,0,0,0.6985294,0,202.82863)"
+       gradientUnits="userSpaceOnUse"
+       id="radialGradient3850-4"
+       xlink:href="#linearGradient3144-1" />
+    <linearGradient
+       id="linearGradient3144-1">
+      <stop
+         id="stop3146-2"
+         offset="0"
+         style="stop-color:#ffffff;stop-opacity:1;" />
+      <stop
+         id="stop3148-2"
+         offset="1"
+         style="stop-color:#ffffff;stop-opacity:0;" />
+    </linearGradient>
+    <radialGradient
+       r="34.345188"
+       fy="672.79736"
+       fx="225.26402"
+       cy="672.79736"
+       cx="225.26402"
+       gradientTransform="matrix(1,0,0,0.6985294,0,202.82863)"
+       gradientUnits="userSpaceOnUse"
+       id="radialGradient4247"
+       xlink:href="#linearGradient3144-1" />
+    <linearGradient
+       gradientUnits="userSpaceOnUse"
+       y2="13"
+       x2="30"
+       y1="56"
+       x1="36"
+       id="linearGradient3788"
+       xlink:href="#linearGradient3782" />
+  </defs>
+  <g
+     id="layer1">
+    <g
+       transform="matrix(0.1621282,0,0,0.1621282,6.3605986,-66.108806)"
+       id="g4289">
+      <path
+         id="rect3942-4-9"
+         transform="matrix(6.1679584,0,0,6.1679584,-39.231908,407.75637)"
+         d="M 15,4.9999997 5.0000001,15 22,32 5.0000001,49 15,59 32,42 49,59 59,49 42,32 59,15 49,4.9999997 32,22 z"
+         style="color:#000000;fill:url(#linearGradient3788);fill-opacity:1;fill-rule:nonzero;stroke:#042a2a;stroke-width:2;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate" />
+      <path
+         id="rect3942-4-9-1"
+         d="m 53.287469,457.10004 -43.175709,43.1757 104.85529,104.8553 -104.85529,104.85529 43.175709,43.17571 104.855291,-104.85529 104.8553,104.85529 43.1757,-43.17571 -104.85529,-104.85529 104.85529,-104.8553 -43.1757,-43.1757 -104.8553,104.85529 z"
+         style="color:#000000;fill:none;stroke:#34e0e2;stroke-width:12.33591689000000000;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate" />
+    </g>
+  </g>
+  <metadata
+     id="metadata6439">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+        <cc:license
+           rdf:resource="" />
+        <dc:date>Mon Mar 12 17:20:03 2012 -0300</dc:date>
+        <dc:creator>
+          <cc:Agent>
+            <dc:title>[Yorik van Havre]</dc:title>
+          </cc:Agent>
+        </dc:creator>
+        <dc:rights>
+          <cc:Agent>
+            <dc:title>FreeCAD LGPL2+</dc:title>
+          </cc:Agent>
+        </dc:rights>
+        <dc:publisher>
+          <cc:Agent>
+            <dc:title>FreeCAD</dc:title>
+          </cc:Agent>
+        </dc:publisher>
+        <dc:identifier>FreeCAD/src/Mod/Draft/Resources/icons/Draft_Snap_Intersection.svg</dc:identifier>
+        <dc:relation>http://www.freecad.org/wiki/index.php?title=Artwork</dc:relation>
+        <dc:contributor>
+          <cc:Agent>
+            <dc:title>[agryson] Alexander Gryson</dc:title>
+          </cc:Agent>
+        </dc:contributor>
+        <dc:subject>
+          <rdf:Bag>
+            <rdf:li>cross</rdf:li>
+            <rdf:li>multiply</rdf:li>
+            <rdf:li>multiplication</rdf:li>
+            <rdf:li>intersection</rdf:li>
+          </rdf:Bag>
+        </dc:subject>
+        <dc:description>An angled cross, similar to a multiplication sign</dc:description>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+</svg>

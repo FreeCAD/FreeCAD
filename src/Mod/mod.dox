@@ -13,7 +13,7 @@
     in a mix of C++ and Python.
 
  */
- 
+
  /** \defgroup CWORKBENCHES C++ workbenches
  * \ingroup WORKBENCHES
  * \brief These workbenches are programmed primarily in C++, but most provide a Python API as well.

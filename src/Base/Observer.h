@@ -191,7 +191,7 @@ public:
    */
   Observer<_MessageType> * Get(const char *Name)
   {
-    const char* OName;
+    const char* OName = nullptr;
     for(typename std::set<Observer<_MessageType> * >::iterator Iter=_ObserverSet.begin();Iter!=_ObserverSet.end();++Iter)
     {
       OName = (*Iter)->Name();   // get the name
@@ -215,6 +215,16 @@ protected:
   /// Vector of attached observers
   std::set<Observer <_MessageType> *> _ObserverSet;
 };
+
+// Workaround for MSVC
+#if defined (FreeCADBase_EXPORTS) && defined(_MSC_VER)
+#  define Base_EXPORT
+#else
+#  define Base_EXPORT  BaseExport
+#endif
+
+extern template class Base_EXPORT Observer<const char*>;
+extern template class Base_EXPORT Subject<const char*>;
 
 
 } //namespace Base

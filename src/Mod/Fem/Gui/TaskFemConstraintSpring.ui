@@ -7,11 +7,11 @@
     <x>0</x>
     <y>0</y>
     <width>300</width>
-    <height>191</height>
+    <height>217</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Form</string>
+   <string notr="true">Form</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
@@ -59,40 +59,17 @@
    </item>
    <item>
     <widget class="QListWidget" name="lw_references">
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-       <horstretch>0</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
-     </property>
-     <property name="baseSize">
+     <property name="maximumSize">
       <size>
-       <width>0</width>
-       <height>0</height>
+       <width>16777215</width>
+       <height>75</height>
       </size>
      </property>
     </widget>
    </item>
    <item>
     <layout class="QGridLayout" name="gridLayout_2">
-     <item row="0" column="0">
-      <widget class="QLabel" name="label_1">
-       <property name="text">
-        <string>Normal Stiffness</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="1">
-      <widget class="Gui::InputField" name="if_norm">
-       <property name="text">
-        <string>0 </string>
-       </property>
-       <property name="unit" stdset="0">
-        <string notr="true"/>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="0">
+     <item row="2" column="0">
       <widget class="QLabel" name="label_2">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
@@ -105,16 +82,39 @@
        </property>
       </widget>
      </item>
-     <item row="1" column="1">
-      <widget class="Gui::InputField" name="if_tan">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
+     <item row="2" column="1">
+      <widget class="Gui::QuantitySpinBox" name="if_tan">
        <property name="unit" stdset="0">
         <string notr="true"/>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="0">
+      <widget class="QLabel" name="label_1">
+       <property name="text">
+        <string>Normal Stiffness</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="Gui::QuantitySpinBox" name="if_norm">
+       <property name="unit" stdset="0">
+        <string notr="true"/>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="0">
+      <widget class="QLabel" name="label">
+       <property name="text">
+        <string>Stiffness for Elmer</string>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="1">
+      <widget class="QComboBox" name="ElmerStiffnessCB">
+       <property name="toolTip">
+        <string>What stiffness should be
+used for the Elmer solver</string>
        </property>
       </widget>
      </item>
@@ -124,9 +124,9 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>Gui::InputField</class>
-   <extends>QLineEdit</extends>
-   <header>Gui/InputField.h</header>
+   <class>Gui::QuantitySpinBox</class>
+   <extends>QWidget</extends>
+   <header>Gui/QuantitySpinBox.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

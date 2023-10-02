@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
-	<PythonExport 
-		Father="GeometrySurfacePy" 
-		Name="ConePy" 
+	<PythonExport
+		Father="GeometrySurfacePy"
+		Name="ConePy"
         PythonName="Part.Cone"
-		Twin="GeomCone" 
-		TwinPointer="GeomCone" 
-		Include="Mod/Part/App/Geometry.h" 
-		Namespace="Part" 
-		FatherInclude="Mod/Part/App/GeometrySurfacePy.h" 
+		Twin="GeomCone"
+		TwinPointer="GeomCone"
+		Include="Mod/Part/App/Geometry.h"
+		Namespace="Part"
+		FatherInclude="Mod/Part/App/GeometrySurfacePy.h"
 		FatherNamespace="Part"
 		Constructor="true">
 		<Documentation>

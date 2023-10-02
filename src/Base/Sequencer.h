@@ -24,9 +24,6 @@
 #ifndef BASE_SEQUENCER_H
 #define BASE_SEQUENCER_H
 
-#include <memory>
-#include <CXX/Extensions.hxx>
-
 #include "Exception.h"
 
 
@@ -239,13 +236,15 @@ protected:
     virtual void resetData();
 
 protected:
-    size_t nProgress; /**< Stores the current amount of progress.*/
-    size_t nTotalSteps; /**< Stores the total number of steps */
+    //NOLINTBEGIN
+    size_t nProgress{0}; /**< Stores the current amount of progress.*/
+    size_t nTotalSteps{0}; /**< Stores the total number of steps */
+    //NOLINTEND
 
 private:
-    bool _bLocked; /**< Lock/unlock sequencer. */
-    bool _bCanceled; /**< Is set to true if the last pending operation was canceled */
-    int _nLastPercentage; /**< Progress in percent. */
+    bool _bLocked{false}; /**< Lock/unlock sequencer. */
+    bool _bCanceled{false}; /**< Is set to true if the last pending operation was canceled */
+    int _nLastPercentage{-1}; /**< Progress in percent. */
 };
 
 /** This special sequencer might be useful if you want to suppress any indication
@@ -373,9 +372,8 @@ public:
     void setProgress(size_t);
     bool wasCanceled() const;
 
-private:
-    SequencerLauncher(const SequencerLauncher&);
-    void operator=(const SequencerLauncher&);
+    SequencerLauncher(const SequencerLauncher&) = delete;
+    void operator=(const SequencerLauncher&) = delete;
 };
 
 /** Access to the only SequencerBase instance */
@@ -383,27 +381,6 @@ inline SequencerBase& Sequencer ()
 {
     return SequencerBase::Instance();
 }
-
-class BaseExport ProgressIndicatorPy : public Py::PythonExtension<ProgressIndicatorPy>
-{
-public:
-    static void init_type();    // announce properties and methods
-
-    ProgressIndicatorPy();
-    ~ProgressIndicatorPy() override;
-
-    Py::Object repr() override;
-
-    Py::Object start(const Py::Tuple&);
-    Py::Object next(const Py::Tuple&);
-    Py::Object stop(const Py::Tuple&);
-
-private:
-    static PyObject *PyMake(struct _typeobject *, PyObject *, PyObject *);
-
-private:
-    std::unique_ptr<SequencerLauncher> _seq;
-};
 
 } // namespace Base
 

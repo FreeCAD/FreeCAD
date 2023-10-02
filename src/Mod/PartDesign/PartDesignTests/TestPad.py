@@ -36,7 +36,7 @@ class TestPad(unittest.TestCase):
         self.Pad.Profile = self.PadSketch
         self.Doc.recompute()
         self.assertEqual(len(self.Pad.Shape.Faces), 6)
-        
+
     def testSketchOnPlane(self):
         self.Body = self.Doc.addObject('PartDesign::Body','Body')
         self.PadSketch = self.Doc.addObject('Sketcher::SketchObject','SketchPad')

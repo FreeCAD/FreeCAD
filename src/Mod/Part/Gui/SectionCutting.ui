@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>230</width>
-    <height>427</height>
+    <height>514</height>
    </rect>
   </property>
   <property name="maximumSize">
@@ -19,12 +19,12 @@
   <property name="windowTitle">
    <string>Permanent Section Cutting</string>
   </property>
-  <layout class="QGridLayout" name="gridLayout_5">
+  <layout class="QGridLayout" name="gridLayout_6">
    <item row="0" column="0" colspan="3">
     <widget class="QGroupBox" name="groupBoxX">
      <property name="maximumSize">
       <size>
-       <width>215</width>
+       <width>16777215</width>
        <height>16777215</height>
       </size>
      </property>
@@ -98,7 +98,7 @@
     <widget class="QGroupBox" name="groupBoxY">
      <property name="maximumSize">
       <size>
-       <width>215</width>
+       <width>16777215</width>
        <height>16777215</height>
       </size>
      </property>
@@ -166,7 +166,7 @@
     <widget class="QGroupBox" name="groupBoxZ">
      <property name="maximumSize">
       <size>
-       <width>215</width>
+       <width>16777215</width>
        <height>16777215</height>
       </size>
      </property>
@@ -275,11 +275,11 @@
           <height>16777215</height>
          </size>
         </property>
-        <property name="color" stdset="0">
+        <property name="color">
          <color>
-          <red>204</red>
-          <green>204</green>
-          <blue>204</blue>
+          <red>203</red>
+          <green>203</green>
+          <blue>203</blue>
          </color>
         </property>
         <property name="prefEntry" stdset="0">
@@ -291,7 +291,7 @@
        </widget>
       </item>
       <item row="0" column="2">
-       <widget class="Gui::PrefCheckBox" name="AutoCutfaceColor">
+       <widget class="Gui::PrefCheckBox" name="autoCutfaceColorCB">
         <property name="minimumSize">
          <size>
           <width>0</width>
@@ -301,7 +301,8 @@
         <property name="toolTip">
          <string>If checked, the color and transparency
 will be taken from the cut objects.
-Works only if all objects have the same values.</string>
+Works only properly if all objects
+have the same values.</string>
         </property>
         <property name="text">
          <string>Auto</string>
@@ -334,12 +335,12 @@ Works only if all objects have the same values.</string>
        </widget>
       </item>
       <item row="1" column="1" colspan="2">
-       <widget class="Gui::PrefSlider" name="CutTransparency">
+       <widget class="Gui::PrefSlider" name="CutTransparencyHS">
         <property name="enabled">
          <bool>false</bool>
         </property>
         <property name="toolTip">
-         <string>0 %</string>
+         <string notr="true">0 %</string>
         </property>
         <property name="maximum">
          <number>100</number>
@@ -347,10 +348,10 @@ Works only if all objects have the same values.</string>
         <property name="orientation">
          <enum>Qt::Horizontal</enum>
         </property>
-        <property name="prefEntry">
+        <property name="prefEntry" stdset="0">
          <cstring>DefaultShapeTransparency</cstring>
         </property>
-        <property name="prefPath">
+        <property name="prefPath" stdset="0">
          <cstring>View</cstring>
         </property>
        </widget>
@@ -358,7 +359,150 @@ Works only if all objects have the same values.</string>
      </layout>
     </widget>
    </item>
-   <item row="4" column="0">
+   <item row="4" column="0" colspan="3">
+    <widget class="QGroupBox" name="groupBoxIntersecting">
+     <property name="maximumSize">
+      <size>
+       <width>16777215</width>
+       <height>16777215</height>
+      </size>
+     </property>
+     <property name="toolTip">
+      <string>Allows to cut objects intersecting each other
+for the price that all cut objects
+will get the same color</string>
+     </property>
+     <property name="title">
+      <string>Cut intersecting objects</string>
+     </property>
+     <property name="checkable">
+      <bool>true</bool>
+     </property>
+     <property name="checked">
+      <bool>false</bool>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_5">
+      <item row="0" column="0">
+       <widget class="QLabel" name="label_9">
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="toolTip">
+         <string>Color of cut face</string>
+        </property>
+        <property name="text">
+         <string>Color</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="Gui::PrefColorButton" name="BFragColor">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>50</width>
+          <height>20</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>16777215</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <property name="toolTip">
+         <string>Color for all objects</string>
+        </property>
+        <property name="color">
+         <color>
+          <red>203</red>
+          <green>203</green>
+          <blue>203</blue>
+         </color>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>DefaultShapeColor</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>View</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="2">
+       <widget class="Gui::PrefCheckBox" name="autoBFColorCB">
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="toolTip">
+         <string>If checked, the color and transparency
+will be taken from the cut objects.
+Works only properly if all objects
+have the same values.</string>
+        </property>
+        <property name="text">
+         <string>Auto</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>TwoSideRendering</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Part</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="label_8">
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="toolTip">
+         <string>Transparency of cut face</string>
+        </property>
+        <property name="text">
+         <string>Transparency</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1" colspan="2">
+       <widget class="Gui::PrefSlider" name="BFragTransparencyHS">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="toolTip">
+         <string notr="true">0 %</string>
+        </property>
+        <property name="maximum">
+         <number>100</number>
+        </property>
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>DefaultShapeTransparency</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>View</cstring>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="5" column="0">
     <widget class="QPushButton" name="RefreshCutPB">
      <property name="enabled">
       <bool>true</bool>
@@ -371,7 +515,7 @@ Works only if all objects have the same values.</string>
      </property>
     </widget>
    </item>
-   <item row="4" column="1">
+   <item row="5" column="1">
     <spacer name="horizontalSpacer_6">
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
@@ -384,7 +528,7 @@ Works only if all objects have the same values.</string>
      </property>
     </spacer>
    </item>
-   <item row="4" column="2">
+   <item row="5" column="2">
     <widget class="QDialogButtonBox" name="buttonBox">
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
@@ -394,7 +538,7 @@ Works only if all objects have the same values.</string>
      </property>
     </widget>
    </item>
-   <item row="5" column="0" colspan="3">
+   <item row="6" column="0" colspan="3">
     <widget class="QCheckBox" name="keepOnlyCutCB">
      <property name="toolTip">
       <string>When the dialog is closed,
@@ -405,7 +549,7 @@ only created cuts will be visible</string>
      </property>
     </widget>
    </item>
-   <item row="6" column="2">
+   <item row="7" column="1">
     <spacer name="verticalSpacer">
      <property name="orientation">
       <enum>Qt::Vertical</enum>
@@ -472,9 +616,9 @@ only created cuts will be visible</string>
    </hints>
   </connection>
   <connection>
-   <sender>AutoCutfaceColor</sender>
+   <sender>autoCutfaceColorCB</sender>
    <signal>toggled(bool)</signal>
-   <receiver>CutTransparency</receiver>
+   <receiver>CutTransparencyHS</receiver>
    <slot>setDisabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
@@ -488,7 +632,7 @@ only created cuts will be visible</string>
    </hints>
   </connection>
   <connection>
-   <sender>AutoCutfaceColor</sender>
+   <sender>autoCutfaceColorCB</sender>
    <signal>toggled(bool)</signal>
    <receiver>CutColor</receiver>
    <slot>setDisabled(bool)</slot>
@@ -500,6 +644,38 @@ only created cuts will be visible</string>
     <hint type="destinationlabel">
      <x>119</x>
      <y>311</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>autoBFColorCB</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>BFragColor</receiver>
+   <slot>setDisabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>182</x>
+     <y>427</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>119</x>
+     <y>427</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>autoBFColorCB</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>BFragTransparencyHS</receiver>
+   <slot>setDisabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>182</x>
+     <y>427</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>150</x>
+     <y>454</y>
     </hint>
    </hints>
   </connection>

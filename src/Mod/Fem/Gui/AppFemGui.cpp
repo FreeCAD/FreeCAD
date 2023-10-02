@@ -34,7 +34,6 @@
 #include "DlgSettingsFemGeneralImp.h"
 #include "DlgSettingsFemGmshImp.h"
 #include "DlgSettingsFemInOutVtkImp.h"
-#include "DlgSettingsFemMaterialImp.h"
 #include "DlgSettingsFemMystranImp.h"
 #include "DlgSettingsFemZ88Imp.h"
 #include "PropertyFemMeshItem.h"
@@ -75,18 +74,20 @@
 #endif
 
 
- // use a different name to CreateCommand()
+// use a different name to CreateCommand()
 void CreateFemCommands();
 
 void loadFemResource()
 {
     // add resources and reloads the translators
     Q_INIT_RESOURCE(Fem);
+    Q_INIT_RESOURCE(Fem_translation);
     Gui::Translator::instance()->refresh();
 }
 
-namespace FemGui {
-    extern PyObject* initModule();
+namespace FemGui
+{
+extern PyObject* initModule();
 }
 
 
@@ -104,6 +105,7 @@ PyMOD_INIT_FUNC(FemGui)
     // instantiating the commands
     CreateFemCommands();
 
+    // clang-format off
     // addition objects
     FemGui::Workbench                                           ::init();
 
@@ -152,6 +154,7 @@ PyMOD_INIT_FUNC(FemGui)
     FemGui::ViewProviderFemPostObject                           ::init();
     FemGui::ViewProviderFemPostPipeline                         ::init();
     FemGui::ViewProviderFemPostClip                             ::init();
+    FemGui::ViewProviderFemPostContours                         ::init();
     FemGui::ViewProviderFemPostCut                              ::init();
     FemGui::ViewProviderFemPostDataAlongLine                    ::init();
     FemGui::ViewProviderFemPostDataAtPoint                      ::init();
@@ -160,6 +163,8 @@ PyMOD_INIT_FUNC(FemGui)
 
     FemGui::ViewProviderFemPostFunction                         ::init();
     FemGui::ViewProviderFemPostFunctionProvider                 ::init();
+    FemGui::ViewProviderFemPostBoxFunction                      ::init();
+    FemGui::ViewProviderFemPostCylinderFunction                 ::init();
     FemGui::ViewProviderFemPostPlaneFunction                    ::init();
     FemGui::ViewProviderFemPostSphereFunction                   ::init();
 #endif
@@ -172,7 +177,6 @@ PyMOD_INIT_FUNC(FemGui)
     new Gui::PrefPageProducer<FemGui::DlgSettingsFemElmerImp>(QT_TRANSLATE_NOOP("QObject", "FEM"));
     new Gui::PrefPageProducer<FemGui::DlgSettingsFemMystranImp>(QT_TRANSLATE_NOOP("QObject", "FEM"));
     new Gui::PrefPageProducer<FemGui::DlgSettingsFemZ88Imp>(QT_TRANSLATE_NOOP("QObject", "FEM"));
-    new Gui::PrefPageProducer<FemGui::DlgSettingsFemMaterialImp>(QT_TRANSLATE_NOOP("QObject", "FEM"));
 
     // register preferences pages on Import-Export
     new Gui::PrefPageProducer<FemGui::DlgSettingsFemExportAbaqusImp>(QT_TRANSLATE_NOOP("QObject", "Import-Export"));
@@ -180,6 +184,7 @@ PyMOD_INIT_FUNC(FemGui)
 
     // add resources and reloads the translators
     loadFemResource();
+    // clang-format on
 
     PyMOD_Return(mod);
 }

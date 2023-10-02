@@ -21,21 +21,18 @@
  ***************************************************************************/
 
 #include "PreCompiled.h"
-
-
 #ifndef _PreComp_
 # include <boost/algorithm/string.hpp>
 #endif
 
 #include <Base/Exception.h>
-#include <Base/Vector3D.h>
-#include <Base/VectorPy.h>
 #include <Base/PlacementPy.h>
-#include "Mod/Path/App/Command.h"
+#include <Base/PyWrapParseTupleAndKeywords.h>
 
 // files generated out of CommandPy.xml
 #include "CommandPy.h"
 #include "CommandPy.cpp"
+
 
 using namespace Path;
 
@@ -56,11 +53,11 @@ std::string CommandPy::representation() const
     return str.str();
 }
 
-// 
+//
 // Py::Dict parameters_copy_dict is now a class member to avoid delete/create/copy on every read access from python code
 // Now the pre-filled Py::Dict is returned which is more consistent with normal python behaviour.
 // It should be cleared whenever the c++ Parameters object is changed eg setParameters() or other objects invalidate its content, eg setPlacement()
-// https://forum.freecadweb.org/viewtopic.php?f=15&t=50583
+// https://forum.freecad.org/viewtopic.php?f=15&t=50583
 
 PyObject *CommandPy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // Python wrapper
 {
@@ -73,8 +70,8 @@ int CommandPy::PyInit(PyObject* args, PyObject* kwd)
 {
     PyObject *parameters = nullptr;
     char *name = "";
-    static char *kwlist[] = {"name", "parameters", nullptr};
-    if ( PyArg_ParseTupleAndKeywords(args, kwd, "|sO!", kwlist, &name, &PyDict_Type, &parameters) ) {
+    static const std::array<const char *, 3> kwlist {"name", "parameters", nullptr};
+    if (Base::Wrapped_ParseTupleAndKeywords(args, kwd, "|sO!", kwlist, &name, &PyDict_Type, &parameters)) {
         std::string sname(name);
         boost::to_upper(sname);
         try {
@@ -117,7 +114,8 @@ int CommandPy::PyInit(PyObject* args, PyObject* kwd)
     }
     PyErr_Clear(); // set by PyArg_ParseTuple()
 
-    if ( PyArg_ParseTupleAndKeywords(args, kwd, "|sO!", kwlist, &name, &(Base::PlacementPy::Type), &parameters) ) {
+    if (Base::Wrapped_ParseTupleAndKeywords(args, kwd, "|sO!", kwlist, &name, &(Base::PlacementPy::Type),
+                                            &parameters)) {
         std::string sname(name);
         boost::to_upper(sname);
         try {
@@ -153,8 +151,8 @@ void CommandPy::setName(Py::String arg)
 
 Py::Dict CommandPy::getParameters() const
 {
-    // dict now a class member , https://forum.freecadweb.org/viewtopic.php?f=15&t=50583
-    if (parameters_copy_dict.length()==0) {    
+    // dict now a class member , https://forum.freecad.org/viewtopic.php?f=15&t=50583
+    if (parameters_copy_dict.length()==0) {
       for(std::map<std::string,double>::iterator i = getCommandPtr()->Parameters.begin(); i != getCommandPtr()->Parameters.end(); ++i) {
           parameters_copy_dict.setItem(i->first, Py::Float(i->second));
       }

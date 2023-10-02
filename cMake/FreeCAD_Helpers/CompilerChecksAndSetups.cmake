@@ -46,8 +46,6 @@ macro(CompilerChecksAndSetups)
         set(CMAKE_CXX_STANDARD 20)
     elseif(${BUILD_ENABLE_CXX_STD} MATCHES "C\\+\\+17")
         set(CMAKE_CXX_STANDARD 17)
-    elseif(${BUILD_ENABLE_CXX_STD} MATCHES "C\\+\\+14")
-        set(CMAKE_CXX_STANDARD 14)
     endif()
 
     # Log the compiler and version
@@ -55,7 +53,7 @@ macro(CompilerChecksAndSetups)
 
     if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_COMPILER_IS_CLANGXX)
         include(${CMAKE_SOURCE_DIR}/cMake/ConfigureChecks.cmake)
-        configure_file(${CMAKE_SOURCE_DIR}/config.h.cmake ${CMAKE_CURRENT_BINARY_DIR}/config.h)
+        configure_file(${CMAKE_SOURCE_DIR}/src/config.h.cmake ${CMAKE_CURRENT_BINARY_DIR}/config.h)
         add_definitions(-DHAVE_CONFIG_H)
 
         # For now only set pedantic option for clang
@@ -100,4 +98,7 @@ macro(CompilerChecksAndSetups)
         add_definitions(-DBOOST_PP_VARIADICS=1)
         message(STATUS "Force BOOST_PP_VARIADICS=1 for clang")
     endif()
+
+    set (COMPILE_DEFINITIONS ${COMPILE_DEFINITIONS} BOOST_NO_CXX98_FUNCTION_BASE)
+
 endmacro(CompilerChecksAndSetups)

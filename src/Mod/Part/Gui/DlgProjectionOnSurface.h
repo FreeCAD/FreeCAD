@@ -22,20 +22,19 @@
 #ifndef PARTGUI_DLGPROJECTIONONSURFACE_H
 #define PARTGUI_DLGPROJECTIONONSURFACE_H
 
-#include <QWidget>
-#include <QDoubleSpinBox>
-
-#include <Gui/TaskView/TaskDialog.h>
-#include <Gui/TaskView/TaskView.h>
-
-#include "../App/PartFeature.h"
-#include <App/DocumentObserver.h>
-
-#include "TopoDS_Shape.hxx"
+#include "gp_Dir.hxx"
 #include "TopoDS_Edge.hxx"
 #include "TopoDS_Face.hxx"
+#include "TopoDS_Shape.hxx"
 #include "TopoDS_Wire.hxx"
-#include "gp_Dir.hxx"
+
+#include <QDoubleSpinBox>
+#include <QWidget>
+#include <App/DocumentObserver.h>
+#include <Gui/TaskView/TaskDialog.h>
+#include <Gui/TaskView/TaskView.h>
+#include <Mod/Part/App/PartFeature.h>
+
 
 namespace PartGui {
 
@@ -58,21 +57,21 @@ public:
     void apply();
     void reject();
 
-private Q_SLOTS:
-
-  void on_pushButtonAddFace_clicked();
-  void on_pushButtonAddEdge_clicked();
-  void on_pushButtonGetCurrentCamDir_clicked();
-  void on_pushButtonDirX_clicked();
-  void on_pushButtonDirY_clicked();
-  void on_pushButtonDirZ_clicked();
-  void on_pushButtonAddProjFace_clicked();
-  void on_radioButtonShowAll_clicked();
-  void on_radioButtonFaces_clicked();
-  void on_radioButtonEdges_clicked();
-  void on_doubleSpinBoxExtrudeHeight_valueChanged(double arg1);
-  void on_pushButtonAddWire_clicked();
-  void on_doubleSpinBoxSolidDepth_valueChanged(double arg1);
+private:
+    void setupConnections();
+    void onPushButtonAddFaceClicked();
+    void onPushButtonAddEdgeClicked();
+    void onPushButtonGetCurrentCamDirClicked();
+    void onPushButtonDirXClicked();
+    void onPushButtonDirYClicked();
+    void onPushButtonDirZClicked();
+    void onPushButtonAddProjFaceClicked();
+    void onRadioButtonShowAllClicked();
+    void onRadioButtonFacesClicked();
+    void onRadioButtonEdgesClicked();
+    void onDoubleSpinBoxExtrudeHeightValueChanged(double arg1);
+    void onPushButtonAddWireClicked();
+    void onDoubleSpinBoxSolidDepthValueChanged(double arg1);
 
 private:
 
@@ -133,7 +132,7 @@ private:
     std::string m_currentShowType;
 
     std::vector<QWidget*> m_guiObjectVec;
-    
+
     const QString m_projectionObjectName;
     Part::Feature* m_projectionObject;
     App::Document* m_partDocument;
@@ -141,7 +140,7 @@ private:
 
     class EdgeSelection;
     EdgeSelection* filterEdge;
-    
+
     class FaceSelection;
     FaceSelection* filterFace;
 };
@@ -152,7 +151,6 @@ class TaskProjectionOnSurface : public Gui::TaskView::TaskDialog
 
 public:
   TaskProjectionOnSurface();
-  ~TaskProjectionOnSurface() override;
 
 public:
   bool accept() override;

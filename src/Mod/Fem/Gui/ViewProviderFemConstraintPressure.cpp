@@ -21,55 +21,53 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <Standard_math.hxx>
-# include <Precision.hxx>
-
-# include <Inventor/nodes/SoSeparator.h>
-# include <Inventor/nodes/SoTranslation.h>
-# include <Inventor/nodes/SoRotation.h>
-# include <Inventor/nodes/SoMultipleCopy.h>
+#include <Inventor/SbRotation.h>
+#include <Inventor/SbVec3f.h>
+#include <Inventor/nodes/SoMultipleCopy.h>
+#include <Inventor/nodes/SoSeparator.h>
 #endif
 
 #include "Mod/Fem/App/FemConstraintPressure.h"
+#include <Gui/Control.h>
+
 #include "TaskFemConstraintPressure.h"
 #include "ViewProviderFemConstraintPressure.h"
-#include <Base/Console.h>
-#include <Gui/Control.h>
+
 
 using namespace FemGui;
 
-PROPERTY_SOURCE(FemGui::ViewProviderFemConstraintPressure, FemGui::ViewProviderFemConstraintOnBoundary)
+PROPERTY_SOURCE(FemGui::ViewProviderFemConstraintPressure,
+                FemGui::ViewProviderFemConstraintOnBoundary)
 
 ViewProviderFemConstraintPressure::ViewProviderFemConstraintPressure()
 {
     sPixmap = "FEM_ConstraintPressure";
-    ADD_PROPERTY(FaceColor,(0.0f,0.2f,0.8f));
+    ADD_PROPERTY(FaceColor, (0.0f, 0.2f, 0.8f));
 }
 
-ViewProviderFemConstraintPressure::~ViewProviderFemConstraintPressure()
-{
-}
+ViewProviderFemConstraintPressure::~ViewProviderFemConstraintPressure() = default;
 
-//FIXME setEdit needs a careful review
+// FIXME setEdit needs a careful review
 bool ViewProviderFemConstraintPressure::setEdit(int ModNum)
 {
     if (ModNum == ViewProvider::Default) {
         // When double-clicking on the item for this constraint the
         // object unsets and sets its edit mode without closing
         // the task panel
-        Gui::TaskView::TaskDialog *dlg = Gui::Control().activeDialog();
-        TaskDlgFemConstraintPressure *constrDlg = qobject_cast<TaskDlgFemConstraintPressure *>(dlg);
-        if (constrDlg && constrDlg->getConstraintView() != this)
-            constrDlg = nullptr; // another constraint left open its task panel
+        Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog();
+        TaskDlgFemConstraintPressure* constrDlg = qobject_cast<TaskDlgFemConstraintPressure*>(dlg);
+        if (constrDlg && constrDlg->getConstraintView() != this) {
+            constrDlg = nullptr;  // another constraint left open its task panel
+        }
         if (dlg && !constrDlg) {
             if (constraintDialog) {
                 // Ignore the request to open another dialog
                 return false;
-            } else {
+            }
+            else {
                 constraintDialog = new TaskFemConstraintPressure(this);
                 return true;
             }
@@ -79,40 +77,45 @@ bool ViewProviderFemConstraintPressure::setEdit(int ModNum)
         Gui::Selection().clearSelection();
 
         // start the edit dialog
-        if (constrDlg)
+        if (constrDlg) {
             Gui::Control().showDialog(constrDlg);
-        else
+        }
+        else {
             Gui::Control().showDialog(new TaskDlgFemConstraintPressure(this));
+        }
         return true;
     }
     else {
-        return ViewProviderDocumentObject::setEdit(ModNum); // clazy:exclude=skipped-base-method
+        return ViewProviderDocumentObject::setEdit(ModNum);  // clazy:exclude=skipped-base-method
     }
 }
 
 #define ARROWLENGTH (4)
-#define ARROWHEADRADIUS (ARROWLENGTH/3.0f)
-//#define USE_MULTIPLE_COPY //OvG: MULTICOPY fails to update scaled arrows on initial drawing - so disable
+#define ARROWHEADRADIUS (ARROWLENGTH / 3.0f)
+// #define USE_MULTIPLE_COPY //OvG: MULTICOPY fails to update scaled arrows on initial drawing - so
+// disable
 
 void ViewProviderFemConstraintPressure::updateData(const App::Property* prop)
 {
     // Gets called whenever a property of the attached object changes
-    Fem::ConstraintPressure* pcConstraint = static_cast<Fem::ConstraintPressure*>(this->getObject());
-    float scaledheadradius = ARROWHEADRADIUS * pcConstraint->Scale.getValue(); //OvG: Calculate scaled values once only
+    Fem::ConstraintPressure* pcConstraint =
+        static_cast<Fem::ConstraintPressure*>(this->getObject());
+    float scaledheadradius =
+        ARROWHEADRADIUS * pcConstraint->Scale.getValue();  // OvG: Calculate scaled values once only
     float scaledlength = ARROWLENGTH * pcConstraint->Scale.getValue();
 
 #ifdef USE_MULTIPLE_COPY
-    //OvG: always need access to cp for scaling
+    // OvG: always need access to cp for scaling
     SoMultipleCopy* cp = new SoMultipleCopy();
     if (pShapeSep->getNumChildren() == 0) {
         // Set up the nodes
         cp->matrix.setNum(0);
-        cp->addChild((SoNode*)createArrow(scaledlength , scaledheadradius)); //OvG: Scaling
+        cp->addChild((SoNode*)createArrow(scaledlength, scaledheadradius));  // OvG: Scaling
         pShapeSep->addChild(cp);
     }
 #endif
 
-    if (strcmp(prop->getName(),"Points") == 0) {
+    if (prop == &pcConstraint->Points) {
         const std::vector<Base::Vector3d>& points = pcConstraint->Points.getValues();
         const std::vector<Base::Vector3d>& normals = pcConstraint->Normals.getValues();
         if (points.size() != normals.size()) {
@@ -121,7 +124,7 @@ void ViewProviderFemConstraintPressure::updateData(const App::Property* prop)
         std::vector<Base::Vector3d>::const_iterator n = normals.begin();
 
 #ifdef USE_MULTIPLE_COPY
-        cp = static_cast<SoMultipleCopy*>(pShapeSep->getChild(0)); //OvG: Use top cp
+        cp = static_cast<SoMultipleCopy*>(pShapeSep->getChild(0));  // OvG: Use top cp
         cp->matrix.setNum(points.size());
         SbMatrix* matrices = cp->matrix.startEditing();
         int idx = 0;
@@ -130,26 +133,27 @@ void ViewProviderFemConstraintPressure::updateData(const App::Property* prop)
         Gui::coinRemoveAllChildren(pShapeSep);
 #endif
 
-        for (std::vector<Base::Vector3d>::const_iterator p = points.begin(); p != points.end(); p++) {
-            SbVec3f base(p->x, p->y, p->z);
+        for (const auto& point : points) {
+            SbVec3f base(point.x, point.y, point.z);
             SbVec3f dir(n->x, n->y, n->z);
             double rev;
             if (pcConstraint->Reversed.getValue()) {
-                base = base + dir * scaledlength; //OvG: Scaling
+                base = base + dir * scaledlength;  // OvG: Scaling
                 rev = 1;
-            } else {
+            }
+            else {
                 rev = -1;
             }
             SbRotation rot(SbVec3f(0, rev, 0), dir);
 #ifdef USE_MULTIPLE_COPY
             SbMatrix m;
-            m.setTransform(base, rot, SbVec3f(1,1,1));
+            m.setTransform(base, rot, SbVec3f(1, 1, 1));
             matrices[idx] = m;
             idx++;
 #else
             SoSeparator* sep = new SoSeparator();
             createPlacement(sep, base, rot);
-            createArrow(sep, scaledlength , scaledheadradius); //OvG: Scaling
+            createArrow(sep, scaledlength, scaledheadradius);  // OvG: Scaling
             pShapeSep->addChild(sep);
 #endif
             n++;

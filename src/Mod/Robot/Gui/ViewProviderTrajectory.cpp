@@ -20,43 +20,28 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-
 #ifndef _PreComp_
-# include <Inventor/SoDB.h>
-# include <Inventor/SoInput.h>
-# include <Inventor/SbVec3f.h>
-# include <Inventor/nodes/SoSeparator.h>
-# include <Inventor/nodes/SoTransform.h>
-# include <Inventor/nodes/SoSphere.h>
-# include <Inventor/nodes/SoRotation.h>
-# include <Inventor/actions/SoSearchAction.h>
-# include <Inventor/draggers/SoJackDragger.h>
-# include <Inventor/VRMLnodes/SoVRMLTransform.h>
-# include <Inventor/nodes/SoBaseColor.h>
-# include <Inventor/nodes/SoCoordinate3.h>
-# include <Inventor/nodes/SoDrawStyle.h>
-# include <Inventor/nodes/SoFaceSet.h>
-# include <Inventor/nodes/SoLineSet.h>
-# include <Inventor/nodes/SoMarkerSet.h>
-# include <Inventor/nodes/SoShapeHints.h>
-# include <QFile>
-# include <QAction>
-# include <QMenu>
+#include <QAction>
+#include <QMenu>
+#include <sstream>
+
+#include <Inventor/nodes/SoBaseColor.h>
+#include <Inventor/nodes/SoCoordinate3.h>
+#include <Inventor/nodes/SoDrawStyle.h>
+#include <Inventor/nodes/SoLineSet.h>
+#include <Inventor/nodes/SoMarkerSet.h>
+#include <Inventor/nodes/SoSeparator.h>
 #endif
+
+#include <App/Application.h>
+#include <App/Document.h>
+#include <Gui/Inventor/MarkerBitmaps.h>
+#include <Mod/Robot/App/TrajectoryObject.h>
 
 #include "ViewProviderTrajectory.h"
 
-#include <Mod/Robot/App/TrajectoryObject.h>
-#include <Mod/Robot/App/Trajectory.h>
-#include <App/Document.h>
-#include <Base/FileInfo.h>
-#include <Base/Stream.h>
-#include <Base/Console.h>
-#include <App/Application.h>
-#include <Gui/Inventor/MarkerBitmaps.h>
-#include <sstream>
+
 using namespace Gui;
 using namespace RobotGui;
 using namespace Robot;
@@ -66,10 +51,10 @@ PROPERTY_SOURCE(RobotGui::ViewProviderTrajectory, Gui::ViewProviderGeometryObjec
 ViewProviderTrajectory::ViewProviderTrajectory()
 {
 
-	pcTrajectoryRoot = new Gui::SoFCSelection();
+    pcTrajectoryRoot = new Gui::SoFCSelection();
     pcTrajectoryRoot->highlightMode = Gui::SoFCSelection::OFF;
     pcTrajectoryRoot->selectionMode = Gui::SoFCSelection::SEL_OFF;
-    //pcRobotRoot->style = Gui::SoFCSelection::BOX;
+    // pcRobotRoot->style = Gui::SoFCSelection::BOX;
     pcTrajectoryRoot->ref();
 
     pcCoords = new SoCoordinate3();
@@ -81,8 +66,6 @@ ViewProviderTrajectory::ViewProviderTrajectory()
 
     pcLines = new SoLineSet;
     pcLines->ref();
-
-
 }
 
 ViewProviderTrajectory::~ViewProviderTrajectory()
@@ -91,26 +74,29 @@ ViewProviderTrajectory::~ViewProviderTrajectory()
     pcCoords->unref();
     pcDrawStyle->unref();
     pcLines->unref();
-
 }
 
-void ViewProviderTrajectory::attach(App::DocumentObject *pcObj)
+void ViewProviderTrajectory::attach(App::DocumentObject* pcObj)
 {
     ViewProviderGeometryObject::attach(pcObj);
 
     // Draw trajectory lines
     SoSeparator* linesep = new SoSeparator;
-    SoBaseColor * basecol = new SoBaseColor;
-    basecol->rgb.setValue( 1.0f, 0.5f, 0.0f );
+    SoBaseColor* basecol = new SoBaseColor;
+    basecol->rgb.setValue(1.0f, 0.5f, 0.0f);
     linesep->addChild(basecol);
     linesep->addChild(pcCoords);
     linesep->addChild(pcLines);
 
     // Draw markers
-    SoBaseColor * markcol = new SoBaseColor;
-    markcol->rgb.setValue( 1.0f, 1.0f, 0.0f );
+    SoBaseColor* markcol = new SoBaseColor;
+    markcol->rgb.setValue(1.0f, 1.0f, 0.0f);
     SoMarkerSet* marker = new SoMarkerSet;
-    marker->markerIndex=Gui::Inventor::MarkerBitmaps::getMarkerIndex("CROSS", App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View")->GetInt("MarkerSize", 5));
+    marker->markerIndex = Gui::Inventor::MarkerBitmaps::getMarkerIndex(
+        "CROSS",
+        App::GetApplication()
+            .GetParameterGroupByPath("User parameter:BaseApp/Preferences/View")
+            ->GetInt("MarkerSize", 5));
     linesep->addChild(markcol);
     linesep->addChild(marker);
 
@@ -120,14 +106,14 @@ void ViewProviderTrajectory::attach(App::DocumentObject *pcObj)
     pcTrajectoryRoot->objectName = pcObj->getNameInDocument();
     pcTrajectoryRoot->documentName = pcObj->getDocument()->getName();
     pcTrajectoryRoot->subElementName = "Main";
-
 }
 
 void ViewProviderTrajectory::setDisplayMode(const char* ModeName)
 {
-    if ( strcmp("Waypoints",ModeName)==0 )
+    if (strcmp("Waypoints", ModeName) == 0) {
         setDisplayMaskMode("Waypoints");
-    ViewProviderGeometryObject::setDisplayMode( ModeName );
+    }
+    ViewProviderGeometryObject::setDisplayMode(ModeName);
 }
 
 std::vector<std::string> ViewProviderTrajectory::getDisplayModes() const
@@ -141,22 +127,20 @@ void ViewProviderTrajectory::updateData(const App::Property* prop)
 {
     Robot::TrajectoryObject* pcTracObj = static_cast<Robot::TrajectoryObject*>(pcObject);
     if (prop == &pcTracObj->Trajectory) {
-        const Trajectory &trak = pcTracObj->Trajectory.getValue();
+        const Trajectory& trak = pcTracObj->Trajectory.getValue();
 
         pcCoords->point.deleteValues(0);
         pcCoords->point.setNum(trak.getSize());
 
-        for(unsigned int i=0;i<trak.getSize();++i){
+        for (unsigned int i = 0; i < trak.getSize(); ++i) {
             Base::Vector3d pos = trak.getWaypoint(i).EndPos.getPosition();
-            pcCoords->point.set1Value(i,pos.x,pos.y,pos.z);
-
+            pcCoords->point.set1Value(i, pos.x, pos.y, pos.z);
         }
         pcLines->numVertices.set1Value(0, trak.getSize());
     }
     else if (prop == &pcTracObj->Base) {
         Base::Placement loc = *(&pcTracObj->Base.getValue());
     }
-
 }
 
 void ViewProviderTrajectory::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
@@ -164,4 +148,3 @@ void ViewProviderTrajectory::setupContextMenu(QMenu* menu, QObject* receiver, co
     QAction* act = menu->addAction(QObject::tr("Modify"), receiver, member);
     act->setData(QVariant((int)ViewProvider::Default));
 }
-

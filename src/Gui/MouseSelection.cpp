@@ -38,7 +38,7 @@
 
 using namespace Gui;
 
-AbstractMouseSelection::AbstractMouseSelection() : _pcView3D(nullptr)
+AbstractMouseSelection::AbstractMouseSelection()
 {
     m_iXold = 0;
     m_iYold = 0;
@@ -86,7 +86,7 @@ int AbstractMouseSelection::handleEvent(const SoEvent* const ev, const SbViewpor
     y = h-y; // the origin is at the left bottom corner (instead of left top corner)
 
     if (ev->getTypeId().isDerivedFrom(SoMouseButtonEvent::getClassTypeId())) {
-        const SoMouseButtonEvent* const event = (const SoMouseButtonEvent*) ev;
+        const auto event = (const SoMouseButtonEvent*) ev;
         const SbBool press = event->getState() == SoButtonEvent::DOWN ? true : false;
 
         if (press) {
@@ -204,9 +204,7 @@ void PolyPickerSelection::draw()
     _pcView3D->redraw();
 }
 
-PolyPickerSelection::~PolyPickerSelection()
-{
-}
+PolyPickerSelection::~PolyPickerSelection() = default;
 
 int PolyPickerSelection::popupMenu()
 {
@@ -357,9 +355,7 @@ PolyClipSelection::PolyClipSelection()
     selectionBits.set(2);
 }
 
-PolyClipSelection::~PolyClipSelection()
-{
-}
+PolyClipSelection::~PolyClipSelection() = default;
 
 int PolyClipSelection::popupMenu()
 {
@@ -404,14 +400,9 @@ int PolyClipSelection::popupMenu()
 
 // -----------------------------------------------------------------------------------
 
-FreehandSelection::FreehandSelection()
-{
-}
+FreehandSelection::FreehandSelection() = default;
 
-FreehandSelection::~FreehandSelection()
-{
-
-}
+FreehandSelection::~FreehandSelection() = default;
 
 void FreehandSelection::setClosed(bool on)
 {
@@ -565,9 +556,7 @@ RubberbandSelection::RubberbandSelection()
     rubberband.setColor(1.0, 1.0, 0.0, 0.5);
 }
 
-RubberbandSelection::~RubberbandSelection()
-{
-}
+RubberbandSelection::~RubberbandSelection() = default;
 
 void RubberbandSelection::setColor(float r, float g, float b, float a)
 {
@@ -665,19 +654,13 @@ RectangleSelection::RectangleSelection() : RubberbandSelection()
     rubberband.setColor(0.0,0.0,1.0,1.0);
 }
 
-RectangleSelection::~RectangleSelection()
-{
-}
+RectangleSelection::~RectangleSelection() = default;
 
 // -----------------------------------------------------------------------------------
 
-BoxZoomSelection::BoxZoomSelection()
-{
-}
+BoxZoomSelection::BoxZoomSelection() = default;
 
-BoxZoomSelection::~BoxZoomSelection()
-{
-}
+BoxZoomSelection::~BoxZoomSelection() = default;
 
 void BoxZoomSelection::terminate(bool abort)
 {

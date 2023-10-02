@@ -21,18 +21,19 @@
  ***************************************************************************/
 
 #include "PreCompiled.h"
-#ifndef _PreComp_
-# include <QEvent>
-# include <QKeyEvent>
-#endif
 
-#include <QCoreApplication>
+#ifndef _PreComp_
+#include <QApplication>
+#include <QEvent>
+#include <QKeyEvent>
+#endif
 
 #include "LineEdit.h"
 
+
 using namespace SpreadsheetGui;
 
-LineEdit::LineEdit(QWidget *parent)
+LineEdit::LineEdit(QWidget* parent)
     : Gui::ExpressionLineEdit(parent, false, '=', true)
     , lastKeyPressed(0)
 {
@@ -45,12 +46,12 @@ bool LineEdit::eventFilter(QObject* object, QEvent* event)
     if (event && event->type() == QEvent::KeyPress) {
         QKeyEvent* keyEvent = static_cast<QKeyEvent*>(event);
         if (keyEvent->key() == Qt::Key_Tab) {
-            // Special tab handling -- must be done via a QApplication event filter, otherwise the widget
-            // system will always grab the tab events
+            // Special tab handling -- must be done via a QApplication event filter, otherwise the
+            // widget system will always grab the tab events
             if (completerActive()) {
                 hideCompleter();
                 event->accept();
-                return true; // To make sure this tab press doesn't do anything else
+                return true;  // To make sure this tab press doesn't do anything else
             }
             else {
                 lastKeyPressed = keyEvent->key();
@@ -58,24 +59,25 @@ bool LineEdit::eventFilter(QObject* object, QEvent* event)
             }
         }
     }
-    return false; // We don't usually actually "handle" the tab event, we just keep track of it
+    return false;  // We don't usually actually "handle" the tab event, we just keep track of it
 }
 
-bool LineEdit::event(QEvent *event)
+bool LineEdit::event(QEvent* event)
 {
     if (event && event->type() == QEvent::FocusIn) {
         qApp->installEventFilter(this);
     }
     else if (event && event->type() == QEvent::FocusOut) {
         qApp->removeEventFilter(this);
-        if (lastKeyPressed)
+        if (lastKeyPressed) {
             Q_EMIT finishedWithKey(lastKeyPressed, lastModifiers);
+        }
         lastKeyPressed = 0;
     }
     else if (event && event->type() == QEvent::KeyPress && !completerActive()) {
-        QKeyEvent * kevent = static_cast<QKeyEvent*>(event);
+        QKeyEvent* kevent = static_cast<QKeyEvent*>(event);
         lastKeyPressed = kevent->key();
-        lastModifiers = kevent->modifiers(); 
+        lastModifiers = kevent->modifiers();
     }
     return Gui::ExpressionLineEdit::event(event);
 }

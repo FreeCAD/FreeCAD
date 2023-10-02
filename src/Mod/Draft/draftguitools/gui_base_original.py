@@ -44,16 +44,12 @@ import draftguitools.gui_tool_utils as gui_tool_utils
 
 from draftutils.messages import _msg, _log
 
-__metaclass__ = type  # to support Python 2 use of `super()`
-
 
 class DraftTool:
     """The base class of all Draft Tools.
 
     This is the original class that was defined in `DraftTools.py`
     before any re-organization of the code.
-    It must be preserved exactly like this to keep the original tools
-    running without problems.
 
     This class is subclassed by `Creator` and `Modifier`
     to set up a few additional properties of these two types.
@@ -84,7 +80,7 @@ class DraftTool:
         else:
             return False
 
-    def Activated(self, name="None", noplanesetup=False, is_subtool=False):
+    def Activated(self, name="None", is_subtool=False):
         """Execute when the command is called.
 
         If an active Gui Command exists, it will call the `finish` method
@@ -100,11 +96,6 @@ class DraftTool:
             It defaults to `'None'`.
             It is the `featureName` of the object, to know what is being run.
 
-        noplanesetup: bool, optional
-            It defaults to `False`.
-            If it is `False` it will set up the working plane
-            by running `App.DraftWorkingPlane.setup()`.
-
         is_subtool: bool, optional
             It defaults to `False`.
             This is set to `True` when we want to modify an object
@@ -115,6 +106,7 @@ class DraftTool:
         """
         if App.activeDraftCommand and not is_subtool:
             App.activeDraftCommand.finish()
+        App.activeDraftCommand = self
 
         # The Part module is first initialized when using any Gui Command
         # for the first time.
@@ -122,39 +114,33 @@ class DraftTool:
         import Part
         import DraftGeomUtils
 
-        self.ui = None
         self.call = None
-        self.support = None
-        self.point = None
         self.commitList = []
-        self.doc = App.ActiveDocument
-        if not self.doc:
-            self.finish()
-            return
-
-        App.activeDraftCommand = self
-        self.view = gui_utils.get_3d_view()
-        self.ui = Gui.draftToolBar
-        self.featureName = name
-        self.ui.sourceCmd = self
-        self.ui.show()
-        if not noplanesetup:
-            App.DraftWorkingPlane.setup()
-        self.node = []
-        self.pos = []
         self.constrain = None
-        self.obj = None
+        self.doc = App.ActiveDocument
         self.extendedCopy = False
+        self.featureName = name
+        self.node = []
+        self.obj = None
+        self.point = None
+        self.pos = []
+        self.support = None
+        self.ui = Gui.draftToolBar
+        self.ui.sourceCmd = self
+        self.view = gui_utils.get_3d_view()
+        self.wp = App.DraftWorkingPlane
+        self.wp.setup()
+
         self.planetrack = None
         if utils.get_param("showPlaneTracker", False):
             self.planetrack = trackers.PlaneTracker()
         if hasattr(Gui, "Snapper"):
-            Gui.Snapper.setTrackers()
+            Gui.Snapper.setTrackers(tool=True)
 
         _msg("{}".format(16*"-"))
         _msg("GuiCommand: {}".format(self.featureName))
 
-    def finish(self, close=False):
+    def finish(self, cont=False):
         """Finish the current command.
 
         These are general cleaning tasks that are performed
@@ -180,7 +166,7 @@ class DraftTool:
             self.ui.sourceCmd = None
         if self.planetrack:
             self.planetrack.finalize()
-        App.DraftWorkingPlane.restore()
+        self.wp.restore()
         if hasattr(Gui, "Snapper"):
             Gui.Snapper.off()
         if self.call:
@@ -191,7 +177,13 @@ class DraftTool:
                 pass
             self.call = None
         if self.commitList:
-            todo.ToDo.delayCommit(self.commitList)
+            last_cmd = self.commitList[-1][1][-1]
+            if last_cmd.find("recompute") >= 0:
+                self.commitList[-1] = (self.commitList[-1][0], self.commitList[-1][1][:-1])
+                todo.ToDo.delayCommit(self.commitList)
+                todo.ToDo.delayAfter(Gui.doCommand, last_cmd)
+            else:
+                todo.ToDo.delayCommit(self.commitList)
         self.commitList = []
 
     def commit(self, name, func):
@@ -226,7 +218,7 @@ class DraftTool:
               of the current tool
         """
         # Current plane rotation as a string
-        p = App.DraftWorkingPlane.getRotation()
+        p = self.wp.getRotation()
         qr = p.Rotation.Q
         qr = "({0}, {1}, {2}, {3})".format(qr[0], qr[1], qr[2], qr[3])
 
@@ -259,18 +251,11 @@ class DraftTool:
 class Creator(DraftTool):
     """A generic Creator tool, used by creation tools such as line or arc.
 
-    It runs the Activated method from the parent class.
-    If `noplanesetup` is `False`, it sets the appropriate `support` attribute
-    and sets the working plane with `gui_tool_utils.get_support`.
-
     It inherits `DraftTool`, which sets up the majority of the behavior
     of this class.
     """
 
-    def __init__(self):
-        super(Creator, self).__init__()
-
-    def Activated(self, name="None", noplanesetup=False):
+    def Activated(self, name="None"):
         """Execute when the command is called.
 
         Parameters
@@ -278,15 +263,11 @@ class Creator(DraftTool):
         name: str, optional
             It defaults to `'None'`.
             It is the `featureName` of the object, to know what is being run.
-
-        noplanesetup: bool, optional
-            It defaults to `False`.
-            If it is `False` it will set up the working plane
-            by running `App.DraftWorkingPlane.setup()`.
         """
-        super(Creator, self).Activated(name, noplanesetup)
-        if not noplanesetup:
-            self.support = gui_tool_utils.get_support()
+        super().Activated(name)
+        # call self.wp.save to sync with self.wp.restore called in finish method
+        self.wp.save()
+        self.support = gui_tool_utils.get_support()
 
 
 class Modifier(DraftTool):
@@ -300,12 +281,11 @@ class Modifier(DraftTool):
     """
 
     def __init__(self):
-        super(Modifier, self).__init__()
+        super().__init__()
         self.copymode = False
 
-    def Activated(self, name="None", noplanesetup=False, is_subtool=False):
-        super(Modifier, self).Activated(name, noplanesetup, is_subtool)
-        # call DraftWorkingPlane.save to sync with
-        # DraftWorkingPlane.restore called in finish method
-        App.DraftWorkingPlane.save()
+    def Activated(self, name="None", is_subtool=False):
+        super().Activated(name, is_subtool)
+        # call self.wp.save to sync with self.wp.restore called in finish method
+        self.wp.save()
 ## @}

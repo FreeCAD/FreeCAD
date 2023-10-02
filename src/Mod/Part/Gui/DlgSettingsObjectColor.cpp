@@ -20,23 +20,19 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-
-#ifndef _PreComp_
-#endif
 
 #include "DlgSettingsObjectColor.h"
 #include "ui_DlgSettingsObjectColor.h"
-#include <Gui/PrefWidgets.h>
+
 
 using namespace PartGui;
 
 /* TRANSLATOR PartGui::DlgSettingsObjectColor */
 
 /**
- *  Constructs a DlgSettingsObjectColor which is a child of 'parent', with the 
- *  name 'name' and widget flags set to 'f' 
+ *  Constructs a DlgSettingsObjectColor which is a child of 'parent', with the
+ *  name 'name' and widget flags set to 'f'
  */
 DlgSettingsObjectColor::DlgSettingsObjectColor(QWidget* parent)
     : PreferencePage(parent)
@@ -46,13 +42,10 @@ DlgSettingsObjectColor::DlgSettingsObjectColor(QWidget* parent)
     ui->DefaultShapeColor->setDisabled(ui->checkRandomColor->isChecked());
 }
 
-/** 
+/**
  *  Destroys the object and frees any allocated resources
  */
-DlgSettingsObjectColor::~DlgSettingsObjectColor()
-{
-    // no need to delete child widgets, Qt does it all for us
-}
+DlgSettingsObjectColor::~DlgSettingsObjectColor() = default;
 
 void DlgSettingsObjectColor::saveSettings()
 {

@@ -22,6 +22,7 @@
 
 
 #include "PreCompiled.h"
+//#include <array>
 
 // inclusion of the generated files (generated out of MatrixPy.xml)
 #include "RotationPy.h"
@@ -77,7 +78,7 @@ int MatrixPy::PyInit(PyObject* args, PyObject* /*kwd*/)
     }
 
     PyErr_Clear();
-    PyObject *o;
+    PyObject *o{};
     if (PyArg_ParseTuple(args, "O!", &(Base::MatrixPy::Type), &o)) {
         MatrixPy::PointerType ptr = getMatrixPtr();
         (*ptr) = static_cast<MatrixPy*>(o)->value();
@@ -85,10 +86,10 @@ int MatrixPy::PyInit(PyObject* args, PyObject* /*kwd*/)
     }
 
     PyErr_Clear();
-    PyObject *o1;
-    PyObject *o2;
-    PyObject *o3;
-    PyObject *o4 = nullptr;
+    PyObject *o1{};
+    PyObject *o2{};
+    PyObject *o3{};
+    PyObject *o4{};
     if (PyArg_ParseTuple(args, "O!O!O!|O!", &(Base::VectorPy::Type), &o1
                                           , &(Base::VectorPy::Type), &o2
                                           , &(Base::VectorPy::Type), &o3
@@ -239,12 +240,12 @@ PyObject* MatrixPy::richCompare(PyObject *v, PyObject *w, int op)
             return nullptr;
         }
         else if (op == Py_EQ) {
-            res = (m1 == m2) ? Py_True : Py_False;
+            res = (m1 == m2) ? Py_True : Py_False; //NOLINT
             Py_INCREF(res);
             return res;
         }
         else {
-            res = (m1 != m2) ? Py_True : Py_False;
+            res = (m1 != m2) ? Py_True : Py_False; //NOLINT
             Py_INCREF(res);
             return res;
         }
@@ -258,9 +259,9 @@ PyObject* MatrixPy::richCompare(PyObject *v, PyObject *w, int op)
 
 PyObject* MatrixPy::move(PyObject * args)
 {
-    double x,y,z;
+    double x{},y{},z{};
     Base::Vector3d vec;
-    PyObject *pcVecObj;
+    PyObject *pcVecObj{};
 
     do { // dummy do..while for cascaded if
         if (PyArg_ParseTuple(args, "ddd", &x,&y,&z)) {
@@ -298,9 +299,9 @@ PyObject* MatrixPy::move(PyObject * args)
 
 PyObject* MatrixPy::scale(PyObject * args)
 {
-    double x,y,z;
+    double x{},y{},z{};
     Base::Vector3d vec;
-    PyObject *pcVecObj;
+    PyObject *pcVecObj{};
 
     do { // dummy do..while for cascaded if
         if (PyArg_ParseTuple(args, "ddd", &x,&y,&z)) {
@@ -351,12 +352,21 @@ PyObject* MatrixPy::hasScale(PyObject * args)
     Py::Module mod("FreeCAD");
     return Py::new_reference_to(mod.callMemberFunction("ScaleType", Py::TupleN(Py::Int(static_cast<int>(type)))));
 }
-
-PyObject* MatrixPy::nullify(PyObject * args)
+PyObject* MatrixPy::decompose(PyObject * args)
 {
     if (!PyArg_ParseTuple(args, ""))
       return nullptr;
 
+    auto ms = getMatrixPtr()->decompose();
+    Py::Tuple tuple(4);
+    for (int i=0; i<4; i++) {
+        tuple.setItem(i, Py::Matrix(ms[i]));
+    }
+    return Py::new_reference_to(tuple);
+}
+
+PyObject* MatrixPy::nullify()
+{
     PY_TRY {
         getMatrixPtr()->nullify();
         Py_Return;
@@ -364,11 +374,8 @@ PyObject* MatrixPy::nullify(PyObject * args)
     PY_CATCH;
 }
 
-PyObject* MatrixPy::isNull(PyObject * args)
+PyObject* MatrixPy::isNull()
 {
-    if (!PyArg_ParseTuple(args, ""))
-      return nullptr;
-
     PY_TRY {
         bool ok = getMatrixPtr()->isNull();
         return Py::new_reference_to(Py::Boolean(ok));
@@ -376,11 +383,8 @@ PyObject* MatrixPy::isNull(PyObject * args)
     PY_CATCH;
 }
 
-PyObject* MatrixPy::unity(PyObject * args)
+PyObject* MatrixPy::unity()
 {
-    if (!PyArg_ParseTuple(args, ""))
-      return nullptr;
-
     PY_TRY {
         getMatrixPtr()->setToUnity();
         Py_Return;
@@ -388,11 +392,8 @@ PyObject* MatrixPy::unity(PyObject * args)
     PY_CATCH;
 }
 
-PyObject* MatrixPy::isUnity(PyObject * args)
+PyObject* MatrixPy::isUnity()
 {
-    if (!PyArg_ParseTuple(args, ""))
-      return nullptr;
-
     PY_TRY {
         bool ok = getMatrixPtr()->isUnity();
         return Py::new_reference_to(Py::Boolean(ok));
@@ -404,7 +405,7 @@ PyObject* MatrixPy::transform(PyObject * args)
 {
     Base::Vector3d vec;
     Matrix4D mat;
-    PyObject *pcVecObj,*pcMatObj;
+    PyObject *pcVecObj{}, *pcMatObj{};
 
     if (!PyArg_ParseTuple(args, "O!O!: a transform point (Vector) and a transform matrix (Matrix) is needed",
         &(Base::VectorPy::Type), &pcVecObj, &(MatrixPy::Type), &pcMatObj))
@@ -421,7 +422,7 @@ PyObject* MatrixPy::transform(PyObject * args)
 
 PyObject* MatrixPy::col(PyObject * args)
 {
-    int index;
+    int index{};
     if (!PyArg_ParseTuple(args, "i", &index))
         return nullptr;
 
@@ -437,8 +438,8 @@ PyObject* MatrixPy::col(PyObject * args)
 
 PyObject* MatrixPy::setCol(PyObject * args)
 {
-    int index;
-    PyObject* o;
+    int index{};
+    PyObject* o{};
     if (!PyArg_ParseTuple(args, "iO!", &index, &(VectorPy::Type), &o))
         return nullptr;
 
@@ -455,7 +456,7 @@ PyObject* MatrixPy::setCol(PyObject * args)
 
 PyObject* MatrixPy::row(PyObject * args)
 {
-    int index;
+    int index{};
     if (!PyArg_ParseTuple(args, "i", &index))
         return nullptr;
 
@@ -471,8 +472,8 @@ PyObject* MatrixPy::row(PyObject * args)
 
 PyObject* MatrixPy::setRow(PyObject * args)
 {
-    int index;
-    PyObject* o;
+    int index{};
+    PyObject* o{};
     if (!PyArg_ParseTuple(args, "iO!", &index, &(VectorPy::Type), &o))
         return nullptr;
 
@@ -487,25 +488,22 @@ PyObject* MatrixPy::setRow(PyObject * args)
     Py_Return;
 }
 
-PyObject* MatrixPy::trace(PyObject * args)
+PyObject* MatrixPy::diagonal()
 {
-    if (!PyArg_ParseTuple(args, ""))
-        return nullptr;
-
     Matrix4D* mat = getMatrixPtr();
-    Base::Vector3d v = mat->trace();
+    Base::Vector3d v = mat->diagonal();
     return Py::new_reference_to(Py::Vector(v));
 }
 
-PyObject* MatrixPy::setTrace(PyObject * args)
+PyObject* MatrixPy::setDiagonal(PyObject * args)
 {
-    PyObject* o;
+    PyObject* o{};
     if (!PyArg_ParseTuple(args, "O!", &(VectorPy::Type), &o))
         return nullptr;
 
     Base::Vector3d v = Py::Vector(o, false).toVector();
     Matrix4D* mat = getMatrixPtr();
-    mat->setTrace(v);
+    mat->setDiagonal(v);
     Py_Return;
 }
 
@@ -513,7 +511,7 @@ PyObject* MatrixPy::rotateX(PyObject * args)
 {
     double angle = 0;
     do {
-        PyObject *object;
+        PyObject *object{};
         if (PyArg_ParseTuple(args,"O!",&(Base::QuantityPy::Type), &object)) {
             Quantity *q = static_cast<Base::QuantityPy*>(object)->getQuantityPtr();
             if (q->getUnit() == Base::Unit::Angle) {
@@ -543,7 +541,7 @@ PyObject* MatrixPy::rotateY(PyObject * args)
 {
     double angle = 0;
     do {
-        PyObject *object;
+        PyObject *object{};
         if (PyArg_ParseTuple(args,"O!",&(Base::QuantityPy::Type), &object)) {
             Quantity *q = static_cast<Base::QuantityPy*>(object)->getQuantityPtr();
             if (q->getUnit() == Base::Unit::Angle) {
@@ -573,7 +571,7 @@ PyObject* MatrixPy::rotateZ(PyObject * args)
 {
     double angle = 0;
     do {
-        PyObject *object;
+        PyObject *object{};
         if (PyArg_ParseTuple(args,"O!",&(Base::QuantityPy::Type), &object)) {
             Quantity *q = static_cast<Base::QuantityPy*>(object)->getQuantityPtr();
             if (q->getUnit() == Base::Unit::Angle) {
@@ -601,7 +599,7 @@ PyObject* MatrixPy::rotateZ(PyObject * args)
 
 PyObject* MatrixPy::multiply(PyObject * args)
 {
-    PyObject* o;
+    PyObject* o{};
     if (PyArg_ParseTuple(args, "O!", &(MatrixPy::Type), &o)) {
         Matrix4D mat = (*getMatrixPtr()) * static_cast<Base::MatrixPy*>(o)->value();
         return new MatrixPy(new Matrix4D(mat));
@@ -619,7 +617,7 @@ PyObject* MatrixPy::multiply(PyObject * args)
 
 PyObject* MatrixPy::multVec(PyObject * args)
 {
-    PyObject *obj;
+    PyObject *obj{};
     if (!PyArg_ParseTuple(args, "O!", &(VectorPy::Type), &obj))
         return nullptr;
 
@@ -628,11 +626,8 @@ PyObject* MatrixPy::multVec(PyObject * args)
     return new VectorPy(new Vector3d(vec));
 }
 
-PyObject* MatrixPy::invert(PyObject * args)
+PyObject* MatrixPy::invert()
 {
-    if (!PyArg_ParseTuple(args, ""))
-        return nullptr;
-
     PY_TRY {
         if (fabs(getMatrixPtr()->determinant()) > DBL_EPSILON) {
             getMatrixPtr()->inverseGauss();
@@ -646,11 +641,8 @@ PyObject* MatrixPy::invert(PyObject * args)
     PY_CATCH;
 }
 
-PyObject* MatrixPy::inverse(PyObject * args)
+PyObject* MatrixPy::inverse()
 {
-    if (!PyArg_ParseTuple(args, ""))
-        return nullptr;
-
     PY_TRY {
         if (fabs(getMatrixPtr()->determinant()) > DBL_EPSILON) {
             Base::Matrix4D m = *getMatrixPtr();
@@ -665,17 +657,14 @@ PyObject* MatrixPy::inverse(PyObject * args)
     PY_CATCH;
 }
 
-PyObject* MatrixPy::determinant(PyObject * args)
+PyObject* MatrixPy::determinant()
 {
-    if (!PyArg_ParseTuple(args, ""))
-        return nullptr;
-
     return PyFloat_FromDouble(getMatrixPtr()->determinant());
 }
 
 PyObject* MatrixPy::submatrix(PyObject * args)
 {
-    int dim;
+    int dim{};
     if (!PyArg_ParseTuple(args, "i", &dim))
         return nullptr;
 
@@ -741,11 +730,8 @@ PyObject* MatrixPy::isOrthogonal(PyObject * args)
     return Py::new_reference_to(Py::Float(ok ? mult : 0.0));
 }
 
-PyObject* MatrixPy::transposed(PyObject * args)
+PyObject* MatrixPy::transposed()
 {
-    if (!PyArg_ParseTuple(args, ""))
-        return nullptr;
-
     PY_TRY {
         Base::Matrix4D m = *getMatrixPtr();
         m.transpose();
@@ -754,11 +740,8 @@ PyObject* MatrixPy::transposed(PyObject * args)
     PY_CATCH;
 }
 
-PyObject* MatrixPy::transpose(PyObject * args)
+PyObject* MatrixPy::transpose()
 {
-    if (!PyArg_ParseTuple(args, ""))
-        return nullptr;
-
     PY_TRY {
         getMatrixPtr()->transpose();
         Py_Return;
@@ -766,11 +749,8 @@ PyObject* MatrixPy::transpose(PyObject * args)
     PY_CATCH;
 }
 
-PyObject* MatrixPy::analyze(PyObject * args)
+PyObject* MatrixPy::analyze()
 {
-    if (!PyArg_ParseTuple(args, ""))
-        return nullptr;
-
     PY_TRY {
         std::string type = getMatrixPtr()->analyse();
         return PyUnicode_FromString(type.c_str());

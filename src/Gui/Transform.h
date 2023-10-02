@@ -23,10 +23,10 @@
 #ifndef GUI_TRANSFORM_H
 #define GUI_TRANSFORM_H
 
+#include <QDialog>
 #include <set>
 #include <Base/Placement.h>
 
-#include "InputVector.h"
 #include "Selection.h"
 #include "TaskView/TaskDialog.h"
 #include "TaskView/TaskView.h"
@@ -68,7 +68,7 @@ private:
 };
 
 class Ui_Placement;
-class GuiExport Transform : public Gui::LocationDialog
+class GuiExport Transform : public QDialog
 {
     Q_OBJECT
 
@@ -81,25 +81,18 @@ public:
     void setTransformStrategy(TransformStrategy* ts);
 
 protected:
-    Base::Vector3d getDirection() const override;
+    Base::Vector3d getDirection() const;
     void changeEvent(QEvent *e) override;
 
-public Q_SLOTS:
-    void on_applyButton_clicked();
+public:
+    void onApplyButtonClicked();
 
-private Q_SLOTS:
+private:
     void onTransformChanged(int);
-
-private:
     Base::Placement getPlacementData() const;
-    void directionActivated(int) override;
-
-Q_SIGNALS:
-    void directionChanged();
 
 private:
-    using Ui_TransformComp = Gui::LocationUi<Ui_Placement>;
-    Ui_TransformComp* ui;
+    Ui_Placement* ui;
     Base::Placement pm;
     std::set<App::DocumentObject*> selection;
     TransformStrategy* strategy;

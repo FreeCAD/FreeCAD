@@ -41,12 +41,9 @@ ViewProviderHelixParametric::ViewProviderHelixParametric()
     extension.initExtension(this);
 }
 
-ViewProviderHelixParametric::~ViewProviderHelixParametric()
-{
+ViewProviderHelixParametric::~ViewProviderHelixParametric() = default;
 
-}
-
-std::vector<std::string> ViewProviderHelixParametric::getDisplayModes(void) const
+std::vector<std::string> ViewProviderHelixParametric::getDisplayModes() const
 {
     // add your own modes
     std::vector<std::string> StrList;
@@ -72,12 +69,9 @@ ViewProviderSpiralParametric::ViewProviderSpiralParametric()
     extension.initExtension(this);
 }
 
-ViewProviderSpiralParametric::~ViewProviderSpiralParametric()
-{
+ViewProviderSpiralParametric::~ViewProviderSpiralParametric() = default;
 
-}
-
-std::vector<std::string> ViewProviderSpiralParametric::getDisplayModes(void) const
+std::vector<std::string> ViewProviderSpiralParametric::getDisplayModes() const
 {
     // add your own modes
     std::vector<std::string> StrList;

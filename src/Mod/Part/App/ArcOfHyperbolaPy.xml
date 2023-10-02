@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
-  <PythonExport 
+  <PythonExport
       Father="ArcOfConicPy"
-      Name="ArcOfHyperbolaPy" 
+      Name="ArcOfHyperbolaPy"
       PythonName="Part.ArcOfHyperbola"
-      Twin="GeomArcOfHyperbola" 
-      TwinPointer="GeomArcOfHyperbola" 
-      Include="Mod/Part/App/Geometry.h" 
-      Namespace="Part" 
+      Twin="GeomArcOfHyperbola"
+      TwinPointer="GeomArcOfHyperbola"
+      Include="Mod/Part/App/Geometry.h"
+      Namespace="Part"
       FatherInclude="Mod/Part/App/ArcOfConicPy.h"
       FatherNamespace="Part"
       Constructor="true">
@@ -20,7 +20,7 @@
         <UserDocu>The major radius of the hyperbola.</UserDocu>
       </Documentation>
       <Parameter Name="MajorRadius" Type="Float"/>
-    </Attribute>      
+    </Attribute>
     <Attribute Name="MinorRadius" ReadOnly="false">
       <Documentation>
         <UserDocu>The minor radius of the hyperbola.</UserDocu>

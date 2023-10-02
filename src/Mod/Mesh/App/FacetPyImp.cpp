@@ -20,70 +20,117 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
-#include "Mesh.h"
-#include "Facet.h"
-#include <Mod/Mesh/App/FacetPy.h>
-#include <Mod/Mesh/App/FacetPy.cpp>
-#include <Mod/Mesh/App/EdgePy.h>
-
-#include <Base/VectorPy.h>
 #include <Base/GeometryPyCXX.h>
+#include <Base/VectorPy.h>
+
+#include "Facet.h"
+#include "FacetPy.h"
+#include "FacetPy.cpp"
+#include "EdgePy.h"
+#include "Mesh.h"
+
 
 using namespace Mesh;
+
+namespace
+{
+class Index
+{
+    FacetIndex index;
+
+public:
+    Index(FacetIndex index)
+        : index {index}
+    {}
+
+    friend std::ostream& operator<<(std::ostream& os, Index idx)
+    {
+        if (idx.index < MeshCore::FACET_INDEX_MAX) {
+            os << idx.index;
+        }
+        else {
+            os << -1;
+        }
+        return os;
+    }
+};
+}  // namespace
 
 // returns a string which represent the object e.g. when printed in python
 std::string FacetPy::representation() const
 {
+    // clang-format off
     FacetPy::PointerType ptr = getFacetPtr();
     std::stringstream str;
     str << "Facet (";
     if (ptr->isBound()) {
-        str << "(" << ptr->_aclPoints[0].x << ", " << ptr->_aclPoints[0].y << ", " << ptr->_aclPoints[0].z << ", Idx=" << ptr->PIndex[0] << "), ";
-        str << "(" << ptr->_aclPoints[1].x << ", " << ptr->_aclPoints[1].y << ", " << ptr->_aclPoints[1].z << ", Idx=" << ptr->PIndex[1] << "), ";
-        str << "(" << ptr->_aclPoints[2].x << ", " << ptr->_aclPoints[2].y << ", " << ptr->_aclPoints[2].z << ", Idx=" << ptr->PIndex[2] << "), ";
-        str << "Idx=" << ptr->Index << ", (" << ptr->NIndex[0] << ", " << ptr->NIndex[1] << ", " << ptr->NIndex[2] << ")";
+        str << "(" << ptr->_aclPoints[0].x << ", "
+                   << ptr->_aclPoints[0].y << ", "
+                   << ptr->_aclPoints[0].z << ", Idx="
+                   << ptr->PIndex[0] << "), ";
+        str << "(" << ptr->_aclPoints[1].x << ", "
+                   << ptr->_aclPoints[1].y << ", "
+                   << ptr->_aclPoints[1].z << ", Idx="
+                   << ptr->PIndex[1] << "), ";
+        str << "(" << ptr->_aclPoints[2].x << ", "
+                   << ptr->_aclPoints[2].y << ", "
+                   << ptr->_aclPoints[2].z << ", Idx="
+                   << ptr->PIndex[2] << "), ";
+        str << "Idx=" << Index(ptr->Index) << ", ("
+                      << Index(ptr->NIndex[0]) << ", "
+                      << Index(ptr->NIndex[1]) << ", "
+                      << Index(ptr->NIndex[2]) << ")";
     }
     else {
-        str << "(" << ptr->_aclPoints[0].x << ", " << ptr->_aclPoints[0].y << ", " << ptr->_aclPoints[0].z << "), ";
-        str << "(" << ptr->_aclPoints[1].x << ", " << ptr->_aclPoints[1].y << ", " << ptr->_aclPoints[1].z << "), ";
-        str << "(" << ptr->_aclPoints[2].x << ", " << ptr->_aclPoints[2].y << ", " << ptr->_aclPoints[2].z << ")";
+        str << "(" << ptr->_aclPoints[0].x << ", "
+                   << ptr->_aclPoints[0].y << ", "
+                   << ptr->_aclPoints[0].z << "), ";
+        str << "(" << ptr->_aclPoints[1].x << ", "
+                   << ptr->_aclPoints[1].y << ", "
+                   << ptr->_aclPoints[1].z << "), ";
+        str << "(" << ptr->_aclPoints[2].x << ", "
+                   << ptr->_aclPoints[2].y << ", "
+                   << ptr->_aclPoints[2].z << ")";
     }
     str << ")";
- 
+
     return str.str();
+    // clang-format on
 }
 
-PyObject *FacetPy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // Python wrapper
+PyObject* FacetPy::PyMake(struct _typeobject*, PyObject*, PyObject*)  // Python wrapper
 {
-    // create a new instance of FacetPy and the Twin object 
+    // create a new instance of FacetPy and the Twin object
     return new FacetPy(new Facet);
 }
 
 // constructor method
 int FacetPy::PyInit(PyObject* args, PyObject* /*kwds*/)
 {
-    if (!PyArg_ParseTuple(args, ""))
+    if (!PyArg_ParseTuple(args, "")) {
         return -1;
+    }
     return 0;
 }
 
-PyObject*  FacetPy::unbound(PyObject *args)
+PyObject* FacetPy::unbound(PyObject* args)
 {
-    if (!PyArg_ParseTuple(args, ""))
+    if (!PyArg_ParseTuple(args, "")) {
         return nullptr;
+    }
     getFacetPtr()->Index = MeshCore::FACET_INDEX_MAX;
     getFacetPtr()->Mesh = nullptr;
     Py_Return;
 }
 
-PyObject* FacetPy::getEdge(PyObject *args)
+PyObject* FacetPy::getEdge(PyObject* args)
 {
-    int index;
-    if (!PyArg_ParseTuple(args, "i", &index))
+    int index {};
+    if (!PyArg_ParseTuple(args, "i", &index)) {
         return nullptr;
+    }
 
     Edge edge = getFacetPtr()->getEdge(index);
     return new EdgePy(new Edge(edge));
@@ -91,27 +138,28 @@ PyObject* FacetPy::getEdge(PyObject *args)
 
 Py::Long FacetPy::getIndex() const
 {
-    return Py::Long((long) getFacetPtr()->Index);
+    return Py::Long((long)getFacetPtr()->Index);
 }
 
 Py::Boolean FacetPy::getBound() const
 {
-    return Py::Boolean(getFacetPtr()->isBound());
+    return {getFacetPtr()->isBound()};
 }
 
 Py::Object FacetPy::getNormal() const
 {
     Base::VectorPy* normal = new Base::VectorPy(getFacetPtr()->GetNormal());
     normal->setConst();
-    return Py::Object(normal,true);
+    return Py::Object(normal, true);
 }
 
-PyObject*  FacetPy::intersect(PyObject *args)
+PyObject* FacetPy::intersect(PyObject* args)
 {
-    PyObject* object;
-    if (!PyArg_ParseTuple(args, "O!", &FacetPy::Type, &object))
+    PyObject* object {};
+    if (!PyArg_ParseTuple(args, "O!", &FacetPy::Type, &object)) {
         return nullptr;
-    FacetPy  *face = static_cast<FacetPy*>(object);
+    }
+    FacetPy* face = static_cast<FacetPy*>(object);
     FacetPy::PointerType face_ptr = face->getFacetPtr();
     FacetPy::PointerType this_ptr = this->getFacetPtr();
     Base::Vector3f p0, p1;
@@ -142,11 +190,12 @@ PyObject*  FacetPy::intersect(PyObject *args)
     }
 }
 
-PyObject*  FacetPy::isDegenerated(PyObject *args)
+PyObject* FacetPy::isDegenerated(PyObject* args)
 {
     float fEpsilon = MeshCore::MeshDefinitions::_fMinPointDistanceP2;
-    if (!PyArg_ParseTuple(args, "|f", &fEpsilon))
+    if (!PyArg_ParseTuple(args, "|f", &fEpsilon)) {
         return nullptr;
+    }
 
     FacetPy::PointerType face = this->getFacetPtr();
     if (!face->isBound()) {
@@ -158,12 +207,13 @@ PyObject*  FacetPy::isDegenerated(PyObject *args)
     return Py::new_reference_to(Py::Boolean(tria.IsDegenerated(fEpsilon)));
 }
 
-PyObject*  FacetPy::isDeformed(PyObject *args)
+PyObject* FacetPy::isDeformed(PyObject* args)
 {
-    float fMinAngle;
-    float fMaxAngle;
-    if (!PyArg_ParseTuple(args, "ff", &fMinAngle, &fMaxAngle))
+    float fMinAngle {};
+    float fMaxAngle {};
+    if (!PyArg_ParseTuple(args, "ff", &fMinAngle, &fMaxAngle)) {
         return nullptr;
+    }
 
     FacetPy::PointerType face = this->getFacetPtr();
     if (!face->isBound()) {
@@ -182,11 +232,11 @@ Py::List FacetPy::getPoints() const
     FacetPy::PointerType face = this->getFacetPtr();
 
     Py::List pts;
-    for (int i=0; i<3; i++) {
+    for (const auto& vec : face->_aclPoints) {
         Py::Tuple pt(3);
-        pt.setItem(0, Py::Float(face->_aclPoints[i].x));
-        pt.setItem(1, Py::Float(face->_aclPoints[i].y));
-        pt.setItem(2, Py::Float(face->_aclPoints[i].z));
+        pt.setItem(0, Py::Float(vec.x));
+        pt.setItem(1, Py::Float(vec.y));
+        pt.setItem(2, Py::Float(vec.z));
         pts.append(pt);
     }
 
@@ -196,11 +246,12 @@ Py::List FacetPy::getPoints() const
 Py::Tuple FacetPy::getPointIndices() const
 {
     FacetPy::PointerType face = this->getFacetPtr();
-    if (!face->isBound())
-      { return Py::Tuple(); }
+    if (!face->isBound()) {
+        return Py::Tuple();
+    }
 
     Py::Tuple idxTuple(3);
-    for (int i=0; i<3; i++) {
+    for (int i = 0; i < 3; i++) {
         idxTuple.setItem(i, Py::Long(face->PIndex[i]));
     }
     return idxTuple;
@@ -214,8 +265,14 @@ Py::Tuple FacetPy::getNeighbourIndices() const
     }
 
     Py::Tuple idxTuple(3);
-    for (int i=0; i<3; i++) {
-        idxTuple.setItem(i, Py::Long(face->NIndex[i]));
+    for (int i = 0; i < 3; i++) {
+        auto index = face->NIndex[i];
+        if (index < MeshCore::FACET_INDEX_MAX) {
+            idxTuple.setItem(i, Py::Long(index));
+        }
+        else {
+            idxTuple.setItem(i, Py::Long(-1L));
+        }
     }
     return idxTuple;
 }
@@ -302,14 +359,12 @@ Py::Tuple FacetPy::getInCircle() const
     return tuple;
 }
 
-PyObject *FacetPy::getCustomAttributes(const char* /*attr*/) const
+PyObject* FacetPy::getCustomAttributes(const char* /*attr*/) const
 {
     return nullptr;
 }
 
-int FacetPy::setCustomAttributes(const char* /*attr*/, PyObject * /*obj*/)
+int FacetPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
 {
-    return 0; 
+    return 0;
 }
-
-

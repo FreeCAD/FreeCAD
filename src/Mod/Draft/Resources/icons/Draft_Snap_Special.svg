@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   version="1.1"
+   id="svg2726"
+   height="64px"
+   width="64px">
+  <defs
+     id="defs2728">
+    <linearGradient
+       id="linearGradient3791">
+      <stop
+         id="stop3793"
+         offset="0"
+         style="stop-color:#06989a;stop-opacity:1" />
+      <stop
+         id="stop3795"
+         offset="1"
+         style="stop-color:#34e0e2;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient
+       id="linearGradient3783">
+      <stop
+         id="stop3785"
+         offset="0"
+         style="stop-color:#06989a;stop-opacity:1" />
+      <stop
+         id="stop3787"
+         offset="1"
+         style="stop-color:#34e0e2;stop-opacity:1" />
+    </linearGradient>
+    <radialGradient
+       r="34.345188"
+       fy="672.79736"
+       fx="225.26402"
+       cy="672.79736"
+       cx="225.26402"
+       gradientTransform="matrix(1,0,0,0.6985294,0,202.82863)"
+       gradientUnits="userSpaceOnUse"
+       id="radialGradient4274"
+       xlink:href="#linearGradient3144" />
+    <linearGradient
+       id="linearGradient3144">
+      <stop
+         id="stop3146"
+         offset="0"
+         style="stop-color:#ffffff;stop-opacity:1;" />
+      <stop
+         id="stop3148"
+         offset="1"
+         style="stop-color:#ffffff;stop-opacity:0;" />
+    </linearGradient>
+    <radialGradient
+       r="34.345188"
+       fy="672.79736"
+       fx="225.26402"
+       cy="672.79736"
+       cx="225.26402"
+       gradientTransform="matrix(1,0,0,0.6985294,0,202.82863)"
+       gradientUnits="userSpaceOnUse"
+       id="radialGradient4272"
+       xlink:href="#linearGradient3144" />
+    <radialGradient
+       r="34.345188"
+       fy="672.79736"
+       fx="225.26402"
+       cy="672.79736"
+       cx="225.26402"
+       gradientTransform="matrix(1,0,0,0.6985294,0,202.82863)"
+       gradientUnits="userSpaceOnUse"
+       id="radialGradient3011"
+       xlink:href="#linearGradient3144" />
+    <linearGradient
+       gradientUnits="userSpaceOnUse"
+       y2="639.28143"
+       x2="46.826157"
+       y1="767.216"
+       x1="93.347816"
+       id="linearGradient3789"
+       xlink:href="#linearGradient3783" />
+    <linearGradient
+       gradientUnits="userSpaceOnUse"
+       y2="531.11554"
+       x2="121.13501"
+       y1="691.48248"
+       x1="182.81459"
+       id="linearGradient3797"
+       xlink:href="#linearGradient3791" />
+  </defs>
+  <g
+     id="layer1">
+    <g
+       transform="matrix(0.1621282,0,0,0.1621282,6.3605986,-66.108806)"
+       id="g4289">
+      <path
+         id="path2996"
+         d="m 324.67764,438.59616 -74.01551,74.0155 0,197.37467 74.01551,-74.0155 z"
+         style="fill:#06989a;stroke:#042a2a;stroke-width:12.33591652;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:1" />
+      <path
+         id="path3766"
+         d="m 77.959291,512.61166 0,197.37467 172.702829,0 0,-197.37467 z"
+         style="fill:url(#linearGradient3797);stroke:#042a2a;stroke-width:12.33591652000000000;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:1;fill-opacity:1" />
+      <path
+         id="path3768"
+         d="m 77.959291,512.61166 74.015499,-74.0155 172.70284,0 -74.01551,74.0155 z"
+         style="fill:#34e0e2;stroke:#042a2a;stroke-width:12.33591652;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
+      <path
+         id="path3766-3"
+         d="m 90.295211,524.94757 0,172.70284 148.030999,0 0,-172.70284 z"
+         style="fill:none;stroke:#34e0e2;stroke-width:12.33591652;stroke-linecap:round;stroke-linejoin:miter;stroke-opacity:1" />
+      <path
+         id="path2996-6"
+         d="m 312.34171,468.20236 -49.34367,49.34366 0,162.83411 49.34367,-49.34367 z"
+         style="fill:none;stroke:#16d0d2;stroke-width:12.33591652;stroke-linecap:round;stroke-linejoin:miter;stroke-opacity:1" />
+      <circle
+         transform="matrix(1.0606601,0,0,1.0606601,-8.7150832,-42.089462)"
+         r="69.782486"
+         cy="697.43347"
+         cx="70.086983"
+         id="path4161"
+         style="color:#000000;fill:url(#linearGradient3789);fill-opacity:1;fill-rule:nonzero;stroke:#042a2a;stroke-width:11.63041401000000100;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate" />
+      <circle
+         transform="matrix(0.88388345,0,0,0.88388358,3.6746616,81.200412)"
+         r="69.782486"
+         cy="697.43347"
+         cx="70.086983"
+         id="path4161-1"
+         style="color:#000000;fill:none;stroke:#34e0e2;stroke-width:13.95649616;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate" />
+    </g>
+  </g>
+  <metadata
+     id="metadata6640">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+        <cc:license
+           rdf:resource="" />
+        <dc:date>Mon Aug 22 13:49:54 2016 -0300</dc:date>
+        <dc:creator>
+          <cc:Agent>
+            <dc:title>[Yorik van Havre]</dc:title>
+          </cc:Agent>
+        </dc:creator>
+        <dc:rights>
+          <cc:Agent>
+            <dc:title>FreeCAD LGPL2+</dc:title>
+          </cc:Agent>
+        </dc:rights>
+        <dc:publisher>
+          <cc:Agent>
+            <dc:title>FreeCAD</dc:title>
+          </cc:Agent>
+        </dc:publisher>
+        <dc:identifier>FreeCAD/src/Mod/Draft/Resources/icons/Draft_Snap_Special.svg</dc:identifier>
+        <dc:relation>http://www.freecad.org/wiki/index.php?title=Artwork</dc:relation>
+        <dc:contributor>
+          <cc:Agent>
+            <dc:title>[agryson] Alexander Gryson</dc:title>
+          </cc:Agent>
+        </dc:contributor>
+        <dc:description>Cube with circle in front of the lower left corner</dc:description>
+        <dc:subject>
+          <rdf:Bag>
+            <rdf:li>cube</rdf:li>
+            <rdf:li>circle</rdf:li>
+          </rdf:Bag>
+        </dc:subject>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+</svg>

@@ -30,7 +30,7 @@ a few unrelated function useful at various places in the Fem module.
 
 __title__ = "FEM Utilities"
 __author__ = "Markus Hovorka, Bernd Hahnebach, Uwe Stöhr"
-__url__ = "https://www.freecadweb.org"
+__url__ = "https://www.freecad.org"
 
 import os
 import subprocess
@@ -98,7 +98,7 @@ def is_of_type(obj, ty):
 
 
 def is_derived_from(obj, t):
-    """ Check if *obj* is derived from *t* honoring Fems typesytem.
+    """ Check if *obj* is derived from *t* honoring Fems typesystem.
 
     Essentially just call ``obj.isDerivedFrom(t)`` and return it's value. For
     objects using Fems typesystem (see :py:func:`type_of_obj`) return always
@@ -108,7 +108,7 @@ def is_derived_from(obj, t):
      Inheritance of Fem types is not checked. If *obj* uses Fems typesystem the
      type is just checked for equality. If the type doesn't match
      ``obj.isDerivedFrom`` is called as usual. See
-     https://forum.freecadweb.org/viewtopic.php?f=10&t=32625
+     https://forum.freecad.org/viewtopic.php?f=10&t=32625
     """
     if (hasattr(obj, "Proxy") and hasattr(obj.Proxy, "Type") and obj.Proxy.Type == t):
         return True
@@ -271,7 +271,7 @@ def getBoundBoxOfAllDocumentShapes(doc):
     overallboundbox = None
     # netgen mesh obj has an attribute Shape which is an Document obj, which has no BB
     # a FemMesh without a Shape could be clipped too
-    # https://forum.freecadweb.org/viewtopic.php?f=18&t=52920
+    # https://forum.freecad.org/viewtopic.php?f=18&t=52920
     for o in doc.Objects:
 
         FreeCAD.Console.PrintMessage(":\n")  # debug only
@@ -396,3 +396,14 @@ def startProgramInfo(code):
             info.wShowWindow = SW_DEFAULT
         info.dwFlags = subprocess.STARTF_USESHOWWINDOW
         return info
+
+
+def expandParentObject():
+    """ expands parent and selected obj in tree view """
+    trees = FreeCADGui.getMainWindow().findChildren(QtGui.QTreeWidget)
+    for tree in trees:
+        items = tree.selectedItems()
+        if items == []:
+            continue
+        for item in items:
+            tree.expandItem(item)

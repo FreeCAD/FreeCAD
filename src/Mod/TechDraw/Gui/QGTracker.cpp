@@ -22,35 +22,32 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-#include <cassert>
-#include <QGraphicsScene>
-#include <QGraphicsView>
-#include <QGraphicsSceneHoverEvent>
-#include <QEvent>
-#include <QMouseEvent>
-#include <QPainter>
-#include <QPainterPath>
-#include <QPainterPathStroker>
-#include <QStyleOptionGraphicsItem>
-#include <QKeyEvent>
-#include <QTransform>
+# include <cassert>
+# include <limits>
+
+# include <QGraphicsScene>
+# include <QGraphicsSceneHoverEvent>
+# include <QGraphicsView>
+# include <QKeyEvent>
+# include <QPainter>
+# include <QPainterPath>
+# include <QStyleOptionGraphicsItem>
+# include <QTransform>
 #endif
 
-#include <limits>
-
-#include <App/Application.h>
-#include <App/Material.h>
 #include <Base/Console.h>
-
 #include <Mod/TechDraw/App/DrawUtil.h>
+#include <Mod/TechDraw/App/Preferences.h>
 
+#include "PreferencesGui.h"
+#include "QGTracker.h"
+#include "QGIView.h"
+#include "QGSPage.h"
 #include "Rez.h"
 #include "ZVALUE.h"
-#include "QGSPage.h"
-#include "DrawGuiUtil.h"
-#include "QGIView.h"
-#include "QGTracker.h"
 
+
+using namespace TechDraw;
 using namespace TechDrawGui;
 
 QGTracker::QGTracker(QGSPage* inScene, TrackerMode m):
@@ -386,7 +383,6 @@ void QGTracker::setPathFromPoints(std::vector<QPointF> pts)
 {
 //    Base::Console().Message("QGTracker::setPathFromPoints()\n");
     if (pts.empty()) {
-        Base::Console().Log("QGTracker::setPathFromPoints - no pts!\n");
         return;
     }
     prepareGeometryChange();
@@ -403,7 +399,6 @@ void QGTracker::setSquareFromPoints(std::vector<QPointF> pts)
 {
 //    Base::Console().Message("QGTracker::setSquareFromPoints()\n");
     if (pts.empty()) {
-        Base::Console().Log("QGTracker::setSquareFromPoints - no pts!\n");
         return;
     }
     prepareGeometryChange();
@@ -420,7 +415,6 @@ void QGTracker::setCircleFromPoints(std::vector<QPointF> pts)
 {
 //    Base::Console().Message("QGTracker::setCircleFromPoints()\n");
     if (pts.empty()) {
-        Base::Console().Log("QGTracker::setCircleFromPoints - no pts!\n");
         return;
     }
     prepareGeometryChange();
@@ -481,20 +475,14 @@ void QGTracker::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
 
 QColor QGTracker::getTrackerColor()
 {
-    QColor result;
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp")->
-                                                    GetGroup("Preferences")->GetGroup("Mod/TechDraw/Tracker");
-    App::Color trackColor = App::Color((uint32_t) hGrp->GetUnsigned("TrackerColor", 0xFF000000));
-    result = trackColor.asValue<QColor>();
-    return result;
+    App::Color trackColor = App::Color((uint32_t) Preferences::getPreferenceGroup("Tracker")->GetUnsigned("TrackerColor", 0xFF000000));
+    return PreferencesGui::getAccessibleQColor(trackColor.asValue<QColor>());
 }
 
 double QGTracker::getTrackerWeight()
 {
     double result = 1.0;
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp")->
-                                                    GetGroup("Preferences")->GetGroup("Mod/TechDraw/Tracker");
-    result = hGrp->GetFloat("TrackerWeight", 4.0);
+    result = Preferences::getPreferenceGroup("Tracker")->GetFloat("TrackerWeight", 4.0);
 
     return result;
 }

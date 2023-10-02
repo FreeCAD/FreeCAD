@@ -21,49 +21,36 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef SPREADSHEET_PRECOMPILED_H
 #define SPREADSHEET_PRECOMPILED_H
 
 #include <FCConfig.h>
 
-
-// here get the warnings of too long specifiers disabled (needed for VC6)
+// point at which warnings of overly long specifiers disabled (needed for VC6)
 #ifdef _MSC_VER
-# pragma warning(disable : 4005)
-# pragma warning(disable : 4251)
-# pragma warning(disable : 4503)
-# pragma warning(disable : 4786)  // specifier longer then 255 chars
+#pragma warning(disable : 4005)
+#pragma warning(disable : 4251)
+#pragma warning(disable : 4503)
+#pragma warning(disable : 4786)  // specifier longer then 255 chars
 #endif
 
 #ifdef _PreComp_
 
 // standard
-#include <iostream>
-#include <cassert>
 #include <cmath>
 
 // STL
-#include <vector>
-#include <map>
-#include <string>
-#include <list>
-#include <set>
-#include <algorithm>
-#include <stack>
-#include <queue>
-#include <bitset>
+#include <sstream>
 
 #ifdef FC_OS_WIN32
-# include <windows.h>
+#include <windows.h>
 #endif
 
 // Qt Toolkit
 #ifndef __QtAll__
-# include <Gui/QtAll.h>
+#include <Gui/QtAll.h>
 #endif
 
+#endif  //_PreComp_
 
-#endif //_PreComp_
-
-#endif // SPREADSHEET_PRECOMPILED_H
+#endif  // SPREADSHEET_PRECOMPILED_H

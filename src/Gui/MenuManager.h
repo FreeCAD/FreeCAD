@@ -24,6 +24,8 @@
 #define GUI_MENUMANAGER_H
 
 #include <string>
+#include <QList>
+#include <QString>
 #include <FCGlobal.h>
 
 
@@ -77,6 +79,7 @@ class GuiExport MenuManager
 public:
     /** Sets up the menus of a given workbench. */
     void setup(MenuItem*) const;
+    void setupMenuBarCornerWidgets() const;
     /// sets up a context menu out of item
     void setupContextMenu(MenuItem* item, QMenu &menu) const;
     void retranslate() const;

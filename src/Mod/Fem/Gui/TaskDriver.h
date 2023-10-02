@@ -28,47 +28,47 @@
 class Ui_TaskDriver;
 class SoEventCallback;
 
-namespace Base {
+namespace Base
+{
 class Polygon2d;
 }
-namespace App {
+namespace App
+{
 class Property;
 }
 
-namespace Gui {
+namespace Gui
+{
 class ViewProvider;
 class ViewVolumeProjection;
+}  // namespace Gui
+
+namespace Fem
+{
+class FemAnalysis;
 }
 
-namespace Fem{
-    class FemAnalysis;
-}
+
+namespace FemGui
+{
 
 
-
-namespace FemGui {
-
-
-class TaskDriver : public Gui::TaskView::TaskBox
+class TaskDriver: public Gui::TaskView::TaskBox
 {
     Q_OBJECT
 
 public:
-    explicit TaskDriver(Fem::FemAnalysis *pcObject,QWidget *parent = nullptr);
+    explicit TaskDriver(Fem::FemAnalysis* pcObject, QWidget* parent = nullptr);
     ~TaskDriver() override;
 
-
-private Q_SLOTS:
-    void SwitchMethod(int Value);
-
 protected:
-    Fem::FemAnalysis *pcObject;
+    Fem::FemAnalysis* pcObject;
 
 private:
     QWidget* proxy;
-    Ui_TaskDriver* ui;
+    std::unique_ptr<Ui_TaskDriver> ui;
 };
 
-} //namespace FemGui
+}  // namespace FemGui
 
-#endif // FEMGUI_TaskDriver_H
+#endif  // FEMGUI_TaskDriver_H

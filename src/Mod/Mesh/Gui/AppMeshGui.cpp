@@ -20,48 +20,41 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <Inventor/SoDB.h>
-# include <Inventor/SoInput.h>
-# include <Inventor/nodes/SoSeparator.h>
-# include <Inventor/annex/ForeignFiles/SoSTLFileKit.h>
-# include <QApplication>
+#include <Inventor/SoDB.h>
+#include <Inventor/SoInput.h>
+#include <Inventor/annex/ForeignFiles/SoSTLFileKit.h>
+#include <Inventor/nodes/SoSeparator.h>
+
+#include <QApplication>
 #endif
 
-#include <Base/Interpreter.h>
 #include <Base/Console.h>
+#include <Base/Interpreter.h>
 #include <Base/PyObjectBase.h>
-
-#include <CXX/Extensions.hxx>
-#include <CXX/Objects.hxx>
-
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
-#include <Gui/WidgetFactory.h>
 #include <Gui/Language/Translator.h>
+#include <Gui/WidgetFactory.h>
 
-#include <Mod/Mesh/App/MeshProperties.h>
-#include <Mod/Mesh/App/Exporter.h>
-
-#include "images.h"
 #include "DlgEvaluateMeshImp.h"
-#include "PropertyEditorMesh.h"
-#include "DlgSettingsMeshView.h"
 #include "DlgSettingsImportExportImp.h"
-#include "SoFCMeshObject.h"
+#include "DlgSettingsMeshView.h"
+#include "PropertyEditorMesh.h"
 #include "SoFCIndexedFaceSet.h"
+#include "SoFCMeshObject.h"
 #include "SoPolygon.h"
 #include "ThumbnailExtension.h"
 #include "ViewProvider.h"
-#include "ViewProviderMeshFaceSet.h"
 #include "ViewProviderCurvature.h"
+#include "ViewProviderDefects.h"
+#include "ViewProviderMeshFaceSet.h"
+#include "ViewProviderPython.h"
 #include "ViewProviderTransform.h"
 #include "ViewProviderTransformDemolding.h"
-#include "ViewProviderDefects.h"
-#include "ViewProviderPython.h"
 #include "Workbench.h"
+#include "images.h"
 
 
 // use a different name to CreateCommand()
@@ -71,30 +64,30 @@ void loadMeshResource()
 {
     // add resources and reloads the translators
     Q_INIT_RESOURCE(Mesh);
+    Q_INIT_RESOURCE(Mesh_translation);
     Gui::Translator::instance()->refresh();
 }
 
-namespace MeshGui {
-class Module : public Py::ExtensionModule<Module>
+namespace MeshGui
+{
+class Module: public Py::ExtensionModule<Module>
 {
 public:
-    Module() : Py::ExtensionModule<Module>("MeshGui")
+    Module()
+        : Py::ExtensionModule<Module>("MeshGui")
     {
-        add_varargs_method("convertToSTL",&Module::convertToSTL,
-            "Convert a scene into an STL."
-        );
-        initialize("This module is the MeshGui module."); // register with Python
+        add_varargs_method("convertToSTL", &Module::convertToSTL, "Convert a scene into an STL.");
+        initialize("This module is the MeshGui module.");  // register with Python
     }
-
-    ~Module() override {}
 
 private:
     Py::Object convertToSTL(const Py::Tuple& args)
     {
-        char* inname;
-        char* outname;
-        if (!PyArg_ParseTuple(args.ptr(), "etet","utf-8",&inname,"utf-8",&outname))
+        char* inname {};
+        char* outname {};
+        if (!PyArg_ParseTuple(args.ptr(), "etet", "utf-8", &inname, "utf-8", &outname)) {
             throw Py::Exception();
+        }
         std::string inputName = std::string(inname);
         PyMem_Free(inname);
         std::string outputName = std::string(outname);
@@ -103,7 +96,7 @@ private:
         bool ok = false;
         SoInput in;
         if (in.openFile(inputName.c_str())) {
-            SoSeparator * node = SoDB::readAll(&in);
+            SoSeparator* node = SoDB::readAll(&in);
             if (node) {
                 node->ref();
                 SoSTLFileKit* stlKit = new SoSTLFileKit();
@@ -115,7 +108,7 @@ private:
             }
         }
 
-        return Py::Boolean(ok);
+        return Py::Boolean(ok);  // NOLINT
     }
 };
 
@@ -124,7 +117,7 @@ PyObject* initModule()
     return Base::Interpreter().addModule(new Module);
 }
 
-} // namespace MeshGui
+}  // namespace MeshGui
 
 /* Python entry */
 PyMOD_INIT_FUNC(MeshGui)
@@ -138,7 +131,7 @@ PyMOD_INIT_FUNC(MeshGui)
     try {
         Base::Interpreter().loadModule("Mesh");
     }
-    catch(const Base::Exception& e) {
+    catch (const Base::Exception& e) {
         PyErr_SetString(PyExc_ImportError, e.what());
         PyMOD_Return(nullptr);
     }
@@ -153,20 +146,26 @@ PyMOD_INIT_FUNC(MeshGui)
     if (qApp) {
         (void)new MeshGui::CleanupHandler;
     }
-    
+
+    // NOLINTBEGIN
     // try to instantiate flat-mesh commands
-    try{
+    try {
         Base::Interpreter().runString("import MeshFlatteningCommand");
-    } catch (Base::PyException &err){
+    }
+    catch (Base::PyException& err) {
         err.ReportException();
     }
 
     // register preferences pages
-    (void)new Gui::PrefPageProducer<MeshGui::DlgSettingsMeshView> ("Display");
-    (void)new Gui::PrefPageProducer<MeshGui::DlgSettingsImportExport>     ( QT_TRANSLATE_NOOP("QObject", "Import-Export") );
+    (void)new Gui::PrefPageProducer<MeshGui::DlgSettingsMeshView>(
+        QT_TRANSLATE_NOOP("QObject", "Display"));
+    (void)new Gui::PrefPageProducer<MeshGui::DlgSettingsImportExport>(
+        QT_TRANSLATE_NOOP("QObject", "Import-Export"));
 
     Mesh::Extension3MFFactory::addProducer(new MeshGui::ThumbnailExtensionProducer);
+    // NOLINTEND
 
+    // clang-format off
     MeshGui::SoFCMeshObjectElement              ::initClass();
     MeshGui::SoSFMeshObject                     ::initClass();
     MeshGui::SoFCMeshObjectNode                 ::initClass();
@@ -205,6 +204,7 @@ PyMOD_INIT_FUNC(MeshGui)
 
     // add resources and reloads the translators
     loadMeshResource();
+    // clang-format on
 
     PyMOD_Return(mod);
 }

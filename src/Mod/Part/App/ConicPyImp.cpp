@@ -234,5 +234,5 @@ PyObject *ConicPy::getCustomAttributes(const char* ) const
 
 int ConicPy::setCustomAttributes(const char* , PyObject *)
 {
-    return 0; 
+    return 0;
 }

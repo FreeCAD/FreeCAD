@@ -48,7 +48,7 @@
 #endif
 
 #include <boost/range.hpp>
-#include <App/ComplexGeoData.h>
+#include <App/ElementNamingUtils.h>
 #include <App/Document.h>
 #include <Base/BoundBoxPy.h>
 #include <Base/MatrixPy.h>
@@ -194,8 +194,10 @@ public:
         :ref(0),pcLinked(vp)
     {
         FC_LOG("new link to " << pcLinked->getObject()->getFullName());
+        //NOLINTBEGIN
         connChangeIcon = vp->signalChangeIcon.connect(
-                boost::bind(&LinkInfo::slotChangeIcon,this));
+                std::bind(&LinkInfo::slotChangeIcon,this));
+        //NOLINTEND
         vp->forceUpdate(true);
         sensor.setFunction(sensorCB);
         sensor.setData(this);
@@ -207,8 +209,7 @@ public:
         transformSensor.setData(this);
     }
 
-    ~LinkInfo() {
-    }
+    ~LinkInfo() = default;
 
     bool checkName(const char *name) const {
         return isLinked() && strcmp(name,getLinkedName())==0;
@@ -403,7 +404,7 @@ public:
                     auto transform = pcLinked->getTransformNode();
                     const auto &scale = transform->scaleFactor.getValue();
                     if(scale[0]!=1.0 || scale[1]!=1.0 || scale[2]!=1.0) {
-                        SoTransform *trans = new SoTransform;
+                        auto trans = new SoTransform;
                         pcSnapshot->addChild(trans);
                         trans->scaleFactor.setValue(scale);
                         trans->scaleOrientation = transform->scaleOrientation;
@@ -609,7 +610,7 @@ public:
             return false;
         auto geoGroup = pcLinked->getObject();
         auto sobj = geoGroup;
-        while(1) {
+        while(true) {
             std::string objname = std::string(nextsub,dot-nextsub+1);
             if(!geoGroup->getSubObject(objname.c_str())) {
                 // this object is not found under the geo group, abort.
@@ -635,7 +636,7 @@ public:
                 break;
             }
             // new style mapped sub-element
-            if(Data::ComplexGeoData::isMappedElement(dot+1))
+            if(Data::isMappedElement(dot+1))
                 break;
             auto next = strchr(dot+1,'.');
             if(!next) {
@@ -896,7 +897,7 @@ PyObject *LinkView::getPyObject()
 
 void LinkView::setInvalid() {
     if (!PythonObject.is(Py::_None())){
-        Base::PyObjectBase* obj = (Base::PyObjectBase*)PythonObject.ptr();
+        auto obj = static_cast<Base::PyObjectBase*>(PythonObject.ptr());
         obj->setInvalid();
         obj->DecRef();
     }else
@@ -1031,12 +1032,12 @@ void LinkView::setLinkViewObject(ViewProviderDocumentObject *vpd,
     subInfo.clear();
     for(const auto &sub : subs) {
         if(sub.empty()) continue;
-        const char *subelement = Data::ComplexGeoData::findElementName(sub.c_str());
+        const char *subelement = Data::findElementName(sub.c_str());
         std::string subname = sub.substr(0,subelement-sub.c_str());
         auto it = subInfo.find(subname);
         if(it == subInfo.end()) {
             it = subInfo.insert(std::make_pair(subname,std::unique_ptr<SubInfo>())).first;
-            it->second.reset(new SubInfo(*this));
+            it->second = std::make_unique<SubInfo>(*this);
         }
         if(subelement[0])
             it->second->subElements.insert(subelement);
@@ -1077,7 +1078,7 @@ void LinkView::setSize(int _size) {
         pcLinkRoot->addChild(info->pcSwitch);
 
     while(nodeArray.size()<size) {
-        nodeArray.push_back(std::unique_ptr<Element>(new Element(*this)));
+        nodeArray.push_back(std::make_unique<Element>(*this));
         auto &info = *nodeArray.back();
         info.pcRoot->addChild(info.pcTransform);
         if(pcLinkedRoot)
@@ -1129,8 +1130,9 @@ void LinkView::setChildren(const std::vector<App::DocumentObject*> &children,
     std::map<App::DocumentObject*, size_t> groups;
     for(size_t i=0;i<children.size();++i) {
         auto obj = children[i];
-        if(nodeArray.size()<=i)
-            nodeArray.push_back(std::unique_ptr<Element>(new Element(*this)));
+        if(nodeArray.size()<=i) {
+            nodeArray.push_back(std::make_unique<Element>(*this));
+        }
         auto &info = *nodeArray[i];
         info.isGroup = false;
         info.groupIndex = -1;
@@ -1454,7 +1456,7 @@ bool LinkView::linkGetDetailPath(const char *subname, SoFullPath *path, SoDetail
         if (subname[0]>='0' && subname[0]<='9') {
             idx = App::LinkBaseExtension::getArrayIndex(subname,&subname);
         } else {
-            while(1) {
+            while(true) {
                 const char *dot = strchr(subname,'.');
                 if(!dot)
                     break;
@@ -2114,7 +2116,7 @@ std::vector<App::DocumentObject*> ViewProviderLink::claimChildren() const {
         }
     } else if(hasElements(ext) || isGroup(ext)) {
         ret = ext->getElementListValue();
-        if (ext->_getElementCountValue() 
+        if (ext->_getElementCountValue()
                 && ext->getLinkClaimChildValue()
                 && ext->getLinkedObjectValue())
             ret.insert(ret.begin(), ext->getLinkedObjectValue());
@@ -2436,7 +2438,7 @@ void ViewProviderLink::setupContextMenu(QMenu* menu, QObject* receiver, const ch
                     DlgObjectSelection dlg({src}, excludes, getMainWindow());
                     dlg.setMessage(QObject::tr(
                                 "Please select which objects to copy when the configuration is changed"));
-                    QCheckBox *box = new QCheckBox(QObject::tr("Apply to all"), &dlg);
+                    auto box = new QCheckBox(QObject::tr("Apply to all"), &dlg);
                     box->setToolTip(QObject::tr("Apply the setting to all links. Or, uncheck this\n"
                                                 "option to apply only to this link."));
                     box->setChecked(App::LinkParams::getCopyOnChangeApplyToAll());
@@ -2447,16 +2449,16 @@ void ViewProviderLink::setupContextMenu(QMenu* menu, QObject* receiver, const ch
                     bool applyAll = box->isChecked();
                     App::LinkParams::setCopyOnChangeApplyToAll(applyAll);
 
-                    App::Link::OnChangeCopyOptions options;
+                    App::Link::OnChangeCopyOptions options {App::Link::OnChangeCopyOptions::None};
                     if (applyAll)
                         options |= App::Link::OnChangeCopyOptions::ApplyAll;
 
                     App::AutoTransaction guard("Setup configurable object");
                     auto sels = dlg.getSelections(DlgObjectSelection::SelectionOptions::InvertSort);
-                    for (auto it=excludes.begin(); it!=excludes.end(); ++it) {
-                        auto iter = std::lower_bound(sels.begin(), sels.end(), *it);
-                        if (iter == sels.end() || *iter != *it) {
-                            ext->setOnChangeCopyObject(*it, options);
+                    for (const auto & exclude : excludes) {
+                        auto iter = std::lower_bound(sels.begin(), sels.end(), exclude);
+                        if (iter == sels.end() || *iter != exclude) {
+                            ext->setOnChangeCopyObject(exclude, options);
                         } else
                             sels.erase(iter);
                     }
@@ -2633,7 +2635,7 @@ bool ViewProviderLink::initDraggingPlacement() {
                         FC_ERR("initDraggingPlacement() expects return of type tuple(matrix,placement,boundbox)");
                         return false;
                     }
-                    dragCtx.reset(new DraggerContext);
+                    dragCtx = std::make_unique<DraggerContext>();
                     dragCtx->initialPlacement = *static_cast<Base::PlacementPy*>(pypla)->getPlacementPtr();
                     dragCtx->preTransform = *static_cast<Base::MatrixPy*>(pymat)->getMatrixPtr();
                     dragCtx->bbox = *static_cast<Base::BoundBoxPy*>(pybbox)->getBoundBoxPtr();
@@ -2663,7 +2665,7 @@ bool ViewProviderLink::initDraggingPlacement() {
         return false;
     }
 
-    dragCtx.reset(new DraggerContext);
+    dragCtx = std::make_unique<DraggerContext>();
 
     dragCtx->preTransform = doc->getEditingTransform();
     doc->setEditingTransform(dragCtx->preTransform);
@@ -2818,15 +2820,15 @@ void ViewProviderLink::setEditViewer(Gui::View3DInventorViewer* viewer, int ModN
 
     if (pcDragger && viewer)
     {
-        SoPickStyle *rootPickStyle = new SoPickStyle();
+        auto rootPickStyle = new SoPickStyle();
         rootPickStyle->style = SoPickStyle::UNPICKABLE;
         static_cast<SoFCUnifiedSelection*>(
                 viewer->getSceneGraph())->insertChild(rootPickStyle, 0);
 
         if(useCenterballDragger) {
             auto dragger = static_cast<SoCenterballDragger*>(pcDragger.get());
-            SoSeparator *group = new SoAnnotation;
-            SoPickStyle *pickStyle = new SoPickStyle;
+            auto group = new SoAnnotation;
+            auto pickStyle = new SoPickStyle;
             pickStyle->setOverride(true);
             group->addChild(pickStyle);
             group->addChild(pcDragger);
@@ -2835,7 +2837,7 @@ void ViewProviderLink::setEditViewer(Gui::View3DInventorViewer* viewer, int ModN
             // we use an invisible cube sized by the bounding box obtained from
             // initDraggingPlacement() to scale the centerball dragger properly
 
-            auto * ss = (SoSurroundScale*)dragger->getPart("surroundScale", TRUE);
+            auto * ss = static_cast<SoSurroundScale*>(dragger->getPart("surroundScale", TRUE));
             ss->numNodesUpToContainer = 3;
             ss->numNodesUpToReset = 2;
 
@@ -2855,12 +2857,12 @@ void ViewProviderLink::setEditViewer(Gui::View3DInventorViewer* viewer, int ModN
 
             viewer->setupEditingRoot(group,&dragCtx->preTransform);
         }else{
-            SoFCCSysDragger* dragger = static_cast<SoFCCSysDragger*>(pcDragger.get());
+            auto dragger = static_cast<SoFCCSysDragger*>(pcDragger.get());
             dragger->draggerSize.setValue(0.05f);
             dragger->setUpAutoScale(viewer->getSoRenderManager()->getCamera());
             viewer->setupEditingRoot(pcDragger,&dragCtx->preTransform);
 
-            TaskCSysDragger *task = new TaskCSysDragger(this, dragger);
+            auto task = new TaskCSysDragger(this, dragger);
             Gui::Control().showDialog(task);
         }
     }
@@ -2885,12 +2887,12 @@ Base::Placement ViewProviderLink::currentDraggingPlacement() const
     SbVec3f v;
     SbRotation r;
     if (useCenterballDragger) {
-        SoCenterballDragger *dragger = static_cast<SoCenterballDragger*>(pcDragger.get());
+        auto dragger = static_cast<SoCenterballDragger*>(pcDragger.get());
         v = dragger->center.getValue();
         r = dragger->rotation.getValue();
     }
     else {
-        SoFCCSysDragger *dragger = static_cast<SoFCCSysDragger*>(pcDragger.get());
+        auto dragger = static_cast<SoFCCSysDragger*>(pcDragger.get());
         v = dragger->translation.getValue();
         r = dragger->rotation.getValue();
     }
@@ -2914,7 +2916,7 @@ void ViewProviderLink::updateDraggingPlacement(const Base::Placement &pla, bool 
         const auto &rot = pla.getRotation();
         FC_LOG("updating dragger placement (" << pos.x << ", " << pos.y << ", " << pos.z << ')');
         if(useCenterballDragger) {
-            SoCenterballDragger *dragger = static_cast<SoCenterballDragger*>(pcDragger.get());
+            auto dragger = static_cast<SoCenterballDragger*>(pcDragger.get());
             SbBool wasenabled = dragger->enableValueChangedCallbacks(FALSE);
             SbMatrix matrix;
             matrix = convert(pla.toMatrix());
@@ -2925,7 +2927,7 @@ void ViewProviderLink::updateDraggingPlacement(const Base::Placement &pla, bool 
                 dragger->valueChanged();
             }
         }else{
-            SoFCCSysDragger *dragger = static_cast<SoFCCSysDragger*>(pcDragger.get());
+            auto dragger = static_cast<SoFCCSysDragger*>(pcDragger.get());
             dragger->translation.setValue(SbVec3f(pos.x,pos.y,pos.z));
             dragger->rotation.setValue(rot[0],rot[1],rot[2],rot[3]);
         }
@@ -3077,7 +3079,7 @@ std::map<std::string, App::Color> ViewProviderLink::getElementColors(const char 
         // In case of multi-level linking, we recursively call into each level,
         // and merge the colors
         auto vp = this;
-        while(1) {
+        while(true) {
             if(wildcard!=ViewProvider::hiddenMarker() && vp->OverrideMaterial.getValue()) {
                 auto color = ShapeMaterial.getValue().diffuseColor;
                 color.a = ShapeMaterial.getValue().transparency;
@@ -3165,7 +3167,7 @@ std::map<std::string, App::Color> ViewProviderLink::getElementColors(const char 
     }
     std::map<std::string, App::Color> ret;
     for(const auto &v : colors) {
-        const char *pos = 0;
+        const char *pos = nullptr;
         auto sobj = getObject()->resolve(v.first.c_str(),nullptr,nullptr,&pos);
         if(!sobj || !pos)
             continue;

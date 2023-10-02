@@ -24,12 +24,12 @@
 #ifndef MESH_IO_READER_3MF_H
 #define MESH_IO_READER_3MF_H
 
+#include <Mod/Mesh/App/Core/MeshKernel.h>
+#include <Mod/Mesh/MeshGlobal.h>
 #include <iosfwd>
 #include <memory>
 #include <unordered_map>
 #include <xercesc/util/XercesDefs.hpp>
-#include <Mod/Mesh/App/Core/MeshKernel.h>
-#include <Mod/Mesh/MeshGlobal.h>
 
 XERCES_CPP_NAMESPACE_BEGIN
 class DOMDocument;
@@ -49,7 +49,7 @@ public:
      *
      * Passes an input stream to the constructor.
      */
-    explicit Reader3MF(std::istream &str);
+    explicit Reader3MF(std::istream& str);
 
     /*!
      * \brief Reader3MF
@@ -57,17 +57,19 @@ public:
      *
      * Passes a file name to the constructor
      */
-    explicit Reader3MF(const std::string &filename);
+    explicit Reader3MF(const std::string& filename);
     /*!
      * \brief Load the mesh from the input stream or file
      * \return true on success and false otherwise
      */
     bool Load();
     std::vector<int> GetMeshIds() const;
-    const MeshKernel& GetMesh(int id) const {
+    const MeshKernel& GetMesh(int id) const
+    {
         return meshes.at(id).first;
     }
-    const Base::Matrix4D& GetTransform(int id) const {
+    const Base::Matrix4D& GetTransform(int id) const
+    {
         return meshes.at(id).second;
     }
 
@@ -88,7 +90,7 @@ private:
     std::unique_ptr<std::istream> zip;
 };
 
-} // namespace MeshCore
+}  // namespace MeshCore
 
 
 #endif  // MESH_IO_READER_3MF_H

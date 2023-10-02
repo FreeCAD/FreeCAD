@@ -90,13 +90,13 @@
            <string>The default transparency for new shapes</string>
           </property>
           <property name="suffix">
-           <string>%</string>
+           <string notr="true">%</string>
           </property>
           <property name="maximum">
            <number>100</number>
           </property>
           <property name="singleStep">
-           <number>10</number>
+           <number>5</number>
           </property>
           <property name="prefEntry" stdset="0">
            <cstring>DefaultShapeTransparency</cstring>

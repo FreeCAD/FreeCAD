@@ -34,13 +34,13 @@ class SpreadsheetGuiCases(unittest.TestCase):
         self.doc = FreeCAD.newDocument()
         self.sheet = self.doc.addObject("Spreadsheet::Sheet", "Spreadsheet")
         self.view_provider = self.sheet.ViewObject
-    
+
     def getTableView(self):
         return self.view_provider.getView()
 
     def tearDown(self):
         pass
-        #FreeCAD.closeDocument(self.doc.Name)
+        # FreeCAD.closeDocument(self.doc.Name)
 
     def injectSimpleData(self):
         """A utility function to initialize a blank sheet with some known data"""
@@ -75,4 +75,3 @@ class SpreadsheetGuiCases(unittest.TestCase):
         FreeCAD.Gui.runCommand("Std_Paste", 0)
         self.doc.recompute()
         self.assertEqual(self.sheet.get("A1"), self.sheet.get("E5"))
-

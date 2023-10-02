@@ -20,17 +20,20 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef REVERSEENGINEERINGGUI_SEGMENTATIONMANUAL_H
 #define REVERSEENGINEERINGGUI_SEGMENTATIONMANUAL_H
 
+#include <memory>
+
 #include <QDialog>
+
 #include <Gui/TaskView/TaskDialog.h>
 #include <Gui/TaskView/TaskView.h>
 #include <Mod/Mesh/Gui/MeshSelection.h>
-#include <memory>
 
-namespace ReverseEngineeringGui {
+
+namespace ReverseEngineeringGui
+{
 class Ui_SegmentationManual;
 
 /**
@@ -38,7 +41,7 @@ class Ui_SegmentationManual;
  * of a mesh.
  * @author Werner Mayer
  */
-class SegmentationManual : public QWidget
+class SegmentationManual: public QWidget
 {
     Q_OBJECT
 
@@ -48,21 +51,22 @@ public:
     void reject();
     void createSegment();
 
-public Q_SLOTS:
-    void on_selectRegion_clicked();
-    void on_selectAll_clicked();
-    void on_selectComponents_clicked();
-    void on_selectTriangle_clicked();
-    void on_deselectAll_clicked();
-    void on_visibleTriangles_toggled(bool);
-    void on_screenTriangles_toggled(bool);
-    void on_cbSelectComp_toggled(bool);
-    void on_planeDetect_clicked();
-    void on_cylinderDetect_clicked();
-    void on_sphereDetect_clicked();
+public:
+    void setupConnections();
+    void onSelectRegionClicked();
+    void onSelectAllClicked();
+    void onSelectComponentsClicked();
+    void onSelectTriangleClicked();
+    void onDeselectAllClicked();
+    void onVisibleTrianglesToggled(bool);
+    void onScreenTrianglesToggled(bool);
+    void onSelectCompToggled(bool);
+    void onPlaneDetectClicked();
+    void onCylinderDetectClicked();
+    void onSphereDetectClicked();
 
 protected:
-    void changeEvent(QEvent *e) override;
+    void changeEvent(QEvent* e) override;
 
 private:
     class Private;
@@ -75,22 +79,25 @@ private:
 /**
  * Embed the panel into a task dialog.
  */
-class TaskSegmentationManual : public Gui::TaskView::TaskDialog
+class TaskSegmentationManual: public Gui::TaskView::TaskDialog
 {
     Q_OBJECT
 
 public:
     TaskSegmentationManual();
-    ~TaskSegmentationManual() override;
 
 public:
     bool accept() override;
     void clicked(int) override;
 
     QDialogButtonBox::StandardButtons getStandardButtons() const override
-    { return QDialogButtonBox::Ok | QDialogButtonBox::Close; }
-    bool isAllowedAlterDocument(void) const override
-    { return true; }
+    {
+        return QDialogButtonBox::Ok | QDialogButtonBox::Close;
+    }
+    bool isAllowedAlterDocument() const override
+    {
+        return true;
+    }
     void modifyStandardButtons(QDialogButtonBox*) override;
 
 private:
@@ -98,6 +105,6 @@ private:
     Gui::TaskView::TaskBox* taskbox;
 };
 
-}
+}  // namespace ReverseEngineeringGui
 
-#endif // REVERSEENGINEERINGGUI_SEGMENTATIONMANUAL_H
+#endif  // REVERSEENGINEERINGGUI_SEGMENTATIONMANUAL_H

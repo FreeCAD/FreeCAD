@@ -21,21 +21,21 @@
  ***************************************************************************/
 
 #include "PreCompiled.h"
-#ifndef _PreComp_
-#endif
 
 #include "Selection.h"
 #include "ui_Selection.h"
 
-using namespace MeshGui;
 
+using namespace MeshGui;
 
 /* TRANSLATOR MeshGui::Selection */
 
 Selection::Selection(QWidget* parent)
-    : QWidget(parent), ui(new Ui_Selection())
+    : QWidget(parent)
+    , ui(new Ui_Selection())
 {
     ui->setupUi(this);
+    setupConnections();
     ui->addSelection->installEventFilter(this);
     ui->clearSelection->installEventFilter(this);
 
@@ -53,6 +53,20 @@ Selection::~Selection()
     delete ui;
     meshSel.clearSelection();
     meshSel.setEnabledViewerSelection(true);
+}
+
+void Selection::setupConnections()
+{
+    // clang-format off
+    connect(ui->addSelection, &QPushButton::clicked,
+            this, &Selection::onAddSelectionClicked);
+    connect(ui->clearSelection, &QPushButton::clicked,
+            this, &Selection::onClearSelectionClicked);
+    connect(ui->visibleTriangles, &QPushButton::clicked,
+            this, &Selection::onVisibleTrianglesToggled);
+    connect(ui->screenTriangles, &QPushButton::clicked,
+            this, &Selection::onScreenTrianglesToggled);
+    // clang-format on
 }
 
 void Selection::setObjects(const std::vector<Gui::SelectionObject>& o)
@@ -87,22 +101,22 @@ bool Selection::eventFilter(QObject* o, QEvent* e)
     return false;
 }
 
-void Selection::on_addSelection_clicked()
+void Selection::onAddSelectionClicked()
 {
     meshSel.startSelection();
 }
 
-void Selection::on_clearSelection_clicked()
+void Selection::onClearSelectionClicked()
 {
     meshSel.clearSelection();
 }
 
-void Selection::on_visibleTriangles_toggled(bool on)
+void Selection::onVisibleTrianglesToggled(bool on)
 {
     meshSel.setCheckOnlyVisibleTriangles(on);
 }
 
-void Selection::on_screenTriangles_toggled(bool on)
+void Selection::onScreenTrianglesToggled(bool on)
 {
     meshSel.setCheckOnlyPointToUserTriangles(on);
 }

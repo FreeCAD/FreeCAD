@@ -23,18 +23,15 @@
 #ifndef DrawViewSymbol_h_
 #define DrawViewSymbol_h_
 
-#include <Mod/TechDraw/TechDrawGlobal.h>
-
-#include <Mod/TechDraw/TechDrawGlobal.h>
-
 #include <QDomDocument>
-#include <QXmlResultItems>
 
 #include <App/DocumentObject.h>
 #include <App/FeaturePython.h>
 #include <Base/BoundBox.h>
+#include <Mod/TechDraw/TechDrawGlobal.h>
 
 #include "DrawView.h"
+
 
 namespace TechDraw
 {

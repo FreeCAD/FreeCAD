@@ -20,51 +20,74 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <sstream>
+#include <sstream>
 #endif
 
 #include "Edge.h"
 #include "Mesh.h"
 
+
 using namespace Mesh;
 
-Edge::Edge()
-  : Index(-1)
-  , Mesh(nullptr)
+Edge::Edge()  // NOLINT
+    : Mesh(nullptr)
 {
-    for (int i=0; i<2; i++) {
+    for (int i = 0; i < 2; i++) {
         PIndex[i] = MeshCore::POINT_INDEX_MAX;
         NIndex[i] = MeshCore::FACET_INDEX_MAX;
     }
 }
 
-Edge::Edge(const Edge& e)
-  : MeshCore::MeshGeomEdge(e)
-  , Index(e.Index)
-  , Mesh(e.Mesh)
+Edge::Edge(const Edge& e)  // NOLINT
+    : MeshCore::MeshGeomEdge(e)
+    , Index(e.Index)
+    , Mesh(e.Mesh)
 {
-    for (int i=0; i<2; i++) {
+    for (int i = 0; i < 2; i++) {
         PIndex[i] = e.PIndex[i];
         NIndex[i] = e.NIndex[i];
     }
 }
 
-Edge::~Edge()
+Edge::Edge(Edge&& e)  // NOLINT
+    : MeshCore::MeshGeomEdge(e)
+    , Index(e.Index)
+    , Mesh(e.Mesh)
 {
+    for (int i = 0; i < 2; i++) {
+        PIndex[i] = e.PIndex[i];
+        NIndex[i] = e.NIndex[i];
+    }
 }
 
-void Edge::operator = (const Edge& e)
+Edge::~Edge() = default;
+
+Edge& Edge::operator=(const Edge& e)
 {
-    MeshCore::MeshGeomEdge::operator = (e);
-    Mesh  = e.Mesh;
+    MeshCore::MeshGeomEdge::operator=(e);
+    Mesh = e.Mesh;
     Index = e.Index;
-    for (int i=0; i<2; i++) {
+    for (int i = 0; i < 2; i++) {
         PIndex[i] = e.PIndex[i];
         NIndex[i] = e.NIndex[i];
     }
+
+    return *this;
+}
+
+Edge& Edge::operator=(Edge&& e)
+{
+    MeshCore::MeshGeomEdge::operator=(e);
+    Mesh = e.Mesh;
+    Index = e.Index;
+    for (int i = 0; i < 2; i++) {
+        PIndex[i] = e.PIndex[i];
+        NIndex[i] = e.NIndex[i];
+    }
+
+    return *this;
 }
 
 void Edge::unbound()

@@ -6,7 +6,7 @@
 #  OCULUS_LIBRARIES
 #
 # Copyright (c) 2012 I-maginer
-# 
+#
 # This program is free software; you can redistribute it and/or modify it under
 # the terms of the GNU Lesser General Public License as published by the Free Software
 # Foundation; either version 2 of the License, or (at your option) any later
@@ -42,11 +42,11 @@ IF(OCULUS_ROOT)
 	  ${OCULUS_INCLUDE_SEARCH_DIRS}
 	  ${OCULUS_ROOT}/include
   )
-  SET(OCULUS_LIBRARY_SEARCH_RELEASE_DIRS 
+  SET(OCULUS_LIBRARY_SEARCH_RELEASE_DIRS
     ${OCULUS_LIBRARY_SEARCH_DIRS}
     ${OCULUS_ROOT}/Lib/x64/VS2012
   )
-  SET(OCULUS_LIBRARY_SEARCH_DEBUG_DIRS 
+  SET(OCULUS_LIBRARY_SEARCH_DEBUG_DIRS
     ${OCULUS_LIBRARY_SEARCH_DIRS}
     ${OCULUS_ROOT}/Lib/x64/VS2012
   )

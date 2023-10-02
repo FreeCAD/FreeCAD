@@ -20,52 +20,48 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef GUI_TASKVIEW_TaskRobotMessages_H
 #define GUI_TASKVIEW_TaskRobotMessages_H
 
 #include <Gui/TaskView/TaskView.h>
-#include <Gui/Selection.h>
-
 #include <Mod/Robot/App/RobotObject.h>
-#include <Mod/Robot/App/TrajectoryObject.h>
 
 
-class Ui_TaskRobotMessages;
-
-namespace App {
+namespace App
+{
 class Property;
 }
 
-namespace Gui {
+namespace Gui
+{
 class ViewProvider;
 }
 
-namespace RobotGui { 
+namespace RobotGui
+{
 
 
-
-class TaskRobotMessages : public Gui::TaskView::TaskBox
+class Ui_TaskRobotMessages;
+class TaskRobotMessages: public Gui::TaskView::TaskBox
 {
     Q_OBJECT
 
 public:
-    explicit TaskRobotMessages(Robot::RobotObject *pcRobotObject,QWidget *parent = nullptr);
+    explicit TaskRobotMessages(Robot::RobotObject* pcRobotObject, QWidget* parent = nullptr);
     ~TaskRobotMessages() override;
 
 private Q_SLOTS:
-    
+
 
 protected:
-    Robot::RobotObject *pcRobot;
+    Robot::RobotObject* pcRobot;
 
 private:
-
 private:
     QWidget* proxy;
     Ui_TaskRobotMessages* ui;
 };
 
-} //namespace PartDesignGui
+}  // namespace RobotGui
 
-#endif // GUI_TASKVIEW_TASKAPPERANCE_H
+#endif  // GUI_TASKVIEW_TASKAPPERANCE_H

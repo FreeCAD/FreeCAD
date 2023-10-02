@@ -20,58 +20,67 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-#ifndef _PreComp_
-#endif
 
 #include "MeshTexture.h"
 
+
 using namespace Mesh;
 
-MeshTexture::MeshTexture(const Mesh::MeshObject& mesh, const MeshCore::Material &material)
-  : materialRefMesh(material)
+MeshTexture::MeshTexture(const Mesh::MeshObject& mesh, const MeshCore::Material& material)
+    : materialRefMesh(material)
+    , countPointsRefMesh {mesh.countPoints()}
 {
-    countPointsRefMesh = mesh.countPoints();
     unsigned long countFacets = mesh.countFacets();
 
-    if (material.binding == MeshCore::MeshIO::PER_VERTEX && material.diffuseColor.size() == countPointsRefMesh) {
+    if (material.binding == MeshCore::MeshIO::PER_VERTEX
+        && material.diffuseColor.size() == countPointsRefMesh) {
         binding = MeshCore::MeshIO::PER_VERTEX;
-        kdTree.reset(new MeshCore::MeshKDTree(mesh.getKernel().GetPoints()));
+        kdTree = std::make_unique<MeshCore::MeshKDTree>(mesh.getKernel().GetPoints());
     }
-    else if (material.binding == MeshCore::MeshIO::PER_FACE && material.diffuseColor.size() == countFacets) {
+    else if (material.binding == MeshCore::MeshIO::PER_FACE
+             && material.diffuseColor.size() == countFacets) {
         binding = MeshCore::MeshIO::PER_FACE;
-        kdTree.reset(new MeshCore::MeshKDTree(mesh.getKernel().GetPoints()));
-        refPnt2Fac.reset(new MeshCore::MeshRefPointToFacets(mesh.getKernel()));
+        kdTree = std::make_unique<MeshCore::MeshKDTree>(mesh.getKernel().GetPoints());
+        refPnt2Fac = std::make_unique<MeshCore::MeshRefPointToFacets>(mesh.getKernel());
     }
 }
 
-void MeshTexture::apply(const Mesh::MeshObject& mesh, const App::Color& defaultColor, MeshCore::Material &material)
+void MeshTexture::apply(const Mesh::MeshObject& mesh,
+                        const App::Color& defaultColor,
+                        MeshCore::Material& material)
 {
     apply(mesh, true, defaultColor, -1.0f, material);
 }
 
-void MeshTexture::apply(const Mesh::MeshObject& mesh, const App::Color& defaultColor, float max_dist, MeshCore::Material &material)
+void MeshTexture::apply(const Mesh::MeshObject& mesh,
+                        const App::Color& defaultColor,
+                        float max_dist,
+                        MeshCore::Material& material)
 {
     apply(mesh, true, defaultColor, max_dist, material);
 }
 
-void MeshTexture::apply(const Mesh::MeshObject& mesh, MeshCore::Material &material)
+void MeshTexture::apply(const Mesh::MeshObject& mesh, MeshCore::Material& material)
 {
     App::Color defaultColor;
     apply(mesh, false, defaultColor, -1.0f, material);
 }
 
-void MeshTexture::apply(const Mesh::MeshObject& mesh, float max_dist, MeshCore::Material &material)
+void MeshTexture::apply(const Mesh::MeshObject& mesh, float max_dist, MeshCore::Material& material)
 {
     App::Color defaultColor;
     apply(mesh, false, defaultColor, max_dist, material);
 }
 
-void MeshTexture::apply(const Mesh::MeshObject& mesh, bool addDefaultColor, const App::Color& defaultColor,
-                        float max_dist, MeshCore::Material &material)
+void MeshTexture::apply(const Mesh::MeshObject& mesh,
+                        bool addDefaultColor,
+                        const App::Color& defaultColor,
+                        float max_dist,
+                        MeshCore::Material& material)
 {
-    // copy the color values because the passed material could be the same instance as 'materialRefMesh'
+    // copy the color values because the passed material could be the same instance as
+    // 'materialRefMesh'
     std::vector<App::Color> textureColor = materialRefMesh.diffuseColor;
     material.diffuseColor.clear();
     material.binding = MeshCore::MeshIO::OVERALL;
@@ -84,7 +93,7 @@ void MeshTexture::apply(const Mesh::MeshObject& mesh, bool addDefaultColor, cons
 
         if (binding == MeshCore::MeshIO::PER_VERTEX) {
             diffuseColor.reserve(points.size());
-            for (size_t index=0; index<points.size(); index++) {
+            for (size_t index = 0; index < points.size(); index++) {
                 PointIndex pos = findIndex(points[index], max_dist);
                 if (pos < countPointsRefMesh) {
                     diffuseColor.push_back(textureColor[pos]);
@@ -103,7 +112,7 @@ void MeshTexture::apply(const Mesh::MeshObject& mesh, bool addDefaultColor, cons
             // the values of the map give the point indices of the original mesh
             std::vector<PointIndex> pointMap;
             pointMap.reserve(points.size());
-            for (size_t index=0; index<points.size(); index++) {
+            for (size_t index = 0; index < points.size(); index++) {
                 PointIndex pos = findIndex(points[index], max_dist);
                 if (pos < countPointsRefMesh) {
                     pointMap.push_back(pos);
@@ -120,10 +129,10 @@ void MeshTexture::apply(const Mesh::MeshObject& mesh, bool addDefaultColor, cons
                     PointIndex index1 = pointMap[it._aulPoints[0]];
                     PointIndex index2 = pointMap[it._aulPoints[1]];
                     PointIndex index3 = pointMap[it._aulPoints[2]];
-                    if (index1 != MeshCore::POINT_INDEX_MAX &&
-                        index2 != MeshCore::POINT_INDEX_MAX &&
-                        index3 != MeshCore::POINT_INDEX_MAX) {
-                        std::vector<FacetIndex> found = refPnt2Fac->GetIndices(index1, index2, index3);
+                    if (index1 != MeshCore::POINT_INDEX_MAX && index2 != MeshCore::POINT_INDEX_MAX
+                        && index3 != MeshCore::POINT_INDEX_MAX) {
+                        std::vector<FacetIndex> found =
+                            refPnt2Fac->GetIndices(index1, index2, index3);
                         if (found.size() == 1) {
                             diffuseColor.push_back(textureColor[found.front()]);
                         }

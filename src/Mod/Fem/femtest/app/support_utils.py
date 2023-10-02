@@ -23,7 +23,7 @@
 
 __title__ = "Tools for FEM unit tests"
 __author__ = "Bernd Hahnebach"
-__url__ = "https://www.freecadweb.org"
+__url__ = "https://www.freecad.org"
 
 import os
 import sys

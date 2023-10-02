@@ -27,12 +27,12 @@
 #include <Gui/ViewProviderPythonFeature.h>
 #include <Mod/Mesh/Gui/ViewProviderMeshFaceSet.h>
 
-namespace MeshGui {
+namespace MeshGui
+{
 
 using ViewProviderPython = Gui::ViewProviderPythonFeatureT<ViewProviderMeshFaceSet>;
 
-} // namespace MeshGui
+}  // namespace MeshGui
 
 
-#endif // MESHGUI_VIEWPROVIDERPYTHON_H
-
+#endif  // MESHGUI_VIEWPROVIDERPYTHON_H
