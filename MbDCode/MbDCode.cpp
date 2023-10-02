@@ -12,10 +12,7 @@
  * @brief Program to assemble a piston crank system.
  *********************************************************************/
 
-#include <iostream>	
-#include <fstream>	
 #include <filesystem>
-
 #include "CADSystem.h"
 #include "CREATE.h"
 #include "GESpMatParPvPrecise.h"
