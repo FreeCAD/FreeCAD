@@ -141,6 +141,7 @@ void EditableDatumLabel::startEdit(double val, QObject* eventFilteringObj)
     spinBox->setMaximum(INT_MAX);
     spinBox->setButtonSymbols(QAbstractSpinBox::NoButtons);
     spinBox->setKeyboardTracking(false);
+    spinBox->setFocusPolicy(Qt::ClickFocus); // prevent passing focus with tab.
     if (eventFilteringObj) {
         spinBox->installEventFilter(eventFilteringObj);
     }
@@ -193,9 +194,10 @@ void EditableDatumLabel::setFocusToSpinbox()
         Base::Console().Warning("Spinbox doesn't exist in EditableDatumLabel::setFocusToSpinbox.");
         return;
     }
-
-    spinBox->setFocus();
-    spinBox->selectNumber();
+    if (!spinBox->hasFocus()) {
+        spinBox->setFocus();
+        spinBox->selectNumber();
+    }
 }
 
 void EditableDatumLabel::positionSpinbox()
