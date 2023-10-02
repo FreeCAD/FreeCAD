@@ -213,6 +213,7 @@ private:
 
     public:
         bool firstMoveInit = false;
+        int labelIndexWithFocus = 0;
 
     public:
         ToolWidgetManager(DrawSketchDefaultWidgetHandler* dshandler)
@@ -268,6 +269,7 @@ private:
             configureToolWidget();
 
             firstMoveInit = false;
+            labelIndexWithFocus = 0;
         }
 
         void initNLabels(int n)
@@ -286,8 +288,8 @@ private:
                                                           SbColor(0.8f, 0.8f, 0.8f),
                                                           /*autoDistance = */ true);
                 QObject::connect(label, &Gui::EditableDatumLabel::valueChanged, [=](double value) {
-                    labelValueChanged(i, value);
                     label->setColor(SbColor(1.0f, 0.149f, 0.0f));
+                    labelValueChanged(i, value);
                 });
                 onViewParameters.push_back(label);
             }
@@ -300,6 +302,9 @@ private:
             doEnforceWidgetParameters(onSketchPos);
 
             lastWidgetEnforcedPosition = onSketchPos;  // store enforced cursor position.
+
+            // Give focus to current label. In case user interacted outside of 3dview.
+            setFocusToLabel(labelIndexWithFocus);
         }
 
         /** slot triggering when a on view parameter has changed
@@ -307,8 +312,8 @@ private:
          */
         void labelValueChanged(int labelindex, double value)
         {
-            if (labelindex + 1 < onViewParameters.size()) {
-                onViewParameters[labelindex + 1]->setFocusToSpinbox();
+            if (isLabelOfCurrentMode(labelindex + 1)) {
+                setFocusToLabel(labelindex + 1);
             }
 
             // -> A machine does not forward to a next state when adapting the parameter (though it
@@ -321,7 +326,7 @@ private:
             // -> A machine goes back to a previous state if a parameter of a previous state is
             // modified. This ensures
             //    that appropriate autoconstraints are picked.
-            if (isParameterOfPreviousMode(labelindex)) {
+            if (isLabelOfPreviousMode(labelindex)) {
                 // change to previous state
                 handler->setState(getState(labelindex));
             }
@@ -991,7 +996,32 @@ private:
                 toolWidget->setCheckboxChecked(WCheckbox::SecondBox, !secondchecked);
             }
         }
+
+        /* This function give the focus to a spinbox and register to which it gave it.*/
+        void setFocusToLabel(int labelindex)
+        {
+            if (labelindex < onViewParameters.size()) {
+                onViewParameters[labelindex]->setFocusToSpinbox();
+                labelIndexWithFocus = labelindex;
+            }
+        }
         //@}
+
+        void passFocusToNextLabel()
+        {
+            int index = labelIndexWithFocus + 1;
+
+            if (index >= onViewParameters.size()) {
+                index = 0;
+            }
+            while (index < onViewParameters.size()) {
+                if (isLabelOfCurrentMode(index)) {
+                    setFocusToLabel(index);
+                    break;
+                }
+                index++;
+            }
+        }
 
     private:
         /** @name helper functions */
@@ -1119,14 +1149,14 @@ private:
             }
         }
 
-        bool isParameterOfCurrentMode(int parameterindex) const
+        bool isLabelOfCurrentMode(int labelindex) const
         {
-            return getState(parameterindex) == handler->state();
+            return labelindex < onViewParameters.size() && getState(labelindex) == handler->state();
         }
 
-        bool isParameterOfPreviousMode(int parameterindex) const
+        bool isLabelOfPreviousMode(int labelindex) const
         {
-            return getState(parameterindex) < handler->state();
+            return labelindex < onViewParameters.size() && getState(labelindex) < handler->state();
         }
         //@}
     };
@@ -1242,6 +1272,10 @@ private:
 
         if (key == SoKeyboardEvent::J && !pressed && !this->isLastState()) {
             toolWidgetManager.secondKeyShortcut();
+        }
+
+        if (key == SoKeyboardEvent::TAB && !pressed) {
+            toolWidgetManager.passFocusToNextLabel();
         }
     }
     //@}
