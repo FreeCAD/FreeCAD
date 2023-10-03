@@ -28,6 +28,7 @@
 #endif
 
 #include "Workbench.h"
+#include "WorkbenchManipulator.h"
 #include "WorkbenchPy.h"
 #include "Action.h"
 #include "Application.h"
@@ -313,6 +314,12 @@ void Workbench::setupCustomShortcuts() const
     // Now managed by ShortcutManager
 }
 
+void Workbench::createContextMenu(const char* recipient, MenuItem* item) const
+{
+    setupContextMenu(recipient, item);
+    WorkbenchManipulator::changeContextMenu(recipient, item);
+}
+
 void Workbench::setupContextMenu(const char* recipient,MenuItem* item) const
 {
     Q_UNUSED(recipient);
@@ -400,6 +407,7 @@ bool Workbench::activate()
 {
     ToolBarItem* tb = setupToolBars();
     setupCustomToolbars(tb, "Toolbar");
+    WorkbenchManipulator::changeToolBars(tb);
     ToolBarManager::getInstance()->setup( tb );
     delete tb;
 
@@ -409,11 +417,13 @@ bool Workbench::activate()
     //delete cb;
 
     DockWindowItems* dw = setupDockWindows();
+    WorkbenchManipulator::changeDockWindows(dw);
     DockWindowManager::instance()->setup( dw );
     delete dw;
 
     MenuItem* mb = setupMenuBar();
     addPermanentMenuItems(mb);
+    WorkbenchManipulator::changeMenuBar(mb);
     MenuManager::getInstance()->setup( mb );
     delete mb;
 
