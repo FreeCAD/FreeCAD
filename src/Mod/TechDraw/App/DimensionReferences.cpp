@@ -108,7 +108,9 @@ Part::TopoShape ReferenceEntry::asTopoShape() const
 {
 //    Base::Console().Message("RE::asTopoShape()\n");
     TopoDS_Shape geom = getGeometry();
-
+    if (geom.IsNull()) {
+        throw Base::RuntimeError("Dimension Reference has null geometry");
+    }
     if (geom.ShapeType() == TopAbs_VERTEX) {
         TopoDS_Vertex vert = TopoDS::Vertex(geom);
         return asTopoShapeVertex(vert);
